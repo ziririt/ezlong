@@ -1,6 +1,6 @@
 /**
- * Naver Premium Content 스크래퍼 v4
- * content_text 구조 기반 제목 추출
+ * Naver Premium Content 스크래퍼 v5 (최종)
+ * class="content_title" 기반 정확한 제목 추출
  */
 
 import { writeFileSync, readFileSync } from 'fs';
@@ -9,7 +9,6 @@ import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_FILE = join(__dirname, '../data/naver-content.json');
-const DEBUG_FILE = join(__dirname, '../data/debug-html.txt');
 
 const NAVER_UID = 'unis';
 const NAVER_CHANNEL = 'something';
@@ -34,24 +33,22 @@ function extractFromHTML(html) {
   const seen = new Set();
   const results = [];
 
-  // 디버그: content_list 시작부터 4000자 저장
-  const listIdx = html.indexOf('content_list');
-  if (listIdx > 0) {
-    const snippet = html.substring(listIdx, listIdx + 4000);
-    writeFileSync(DEBUG_FILE, snippet, 'utf-8');
-    console.log('[sync] 디버그 저장 (content_list~): ' + snippet.length + 'chars');
-  }
+  // Naver 프리미엄 콘텐츠 구조 (디버깅으로 확인):
+  // <div class="content_item as_thumb">
+  //   <a href="/unis/something/contents/ID" class="content_thumb">...</a>
+  //   <div class="content_text">
+  //     <div class="content_text_link">
+  //       <strong class="content_title">제목</strong>
+  //     </div>
+  //   </div>
+  // </div>
 
-  // 구조: content_item > content_thumb(a[href]) + content_text(strong/a[title])
-  // content_item 블록 전체를 캡처
+  // content_item 블록에서 href + content_title 한번에 추출
   const itemRegex = new RegExp(
-    'class="content_item[^"]*"[\\s\\S]{0,50}' +
-    'href="(/unis/something/contents/([^"]+))"[\\s\\S]{0,2000}?' +
-    'class="content_text"[\\s\\S]{0,600}?' +
-    '(?:<strong[^>]*>([^<]{3,200})<\\/strong>' +
-    '|<a[^>]*title="([^"]{3,200})"' +
-    '|<a[^>]*>([^<]{3,200})<\\/a>' +
-    '|<p[^>]*>([^<]{3,200})<\\/p>)',
+    'class="content_item[^"]*"[\\s\\S]{0,200}' +
+    'href="(/unis/something/contents/([^"]+))"' +
+    '[\\s\\S]{0,2500}?' +
+    'class="content_title[^"]*"[^>]*>\\s*([^<]{2,300})\\s*<',
     'g'
   );
 
@@ -60,13 +57,15 @@ function extractFromHTML(html) {
     const path = m[1], id = m[2];
     if (seen.has(path)) continue;
     seen.add(path);
-    const title = (m[3] || m[4] || m[5] || m[6] || '').trim()
+    const title = m[3].trim()
       .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'");
-    console.log(`[sync] item ${results.length+1}: "${title.substring(0,40) || '(없음)'}"`);
+    console.log(`[sync] ${results.length+1}. "${title}"`);
     results.push({ id, title, url: `https://contents.premium.naver.com${path}`, publishedAt: '' });
   }
 
-  // fallback: 제목 없이 링크만
+  console.log(`[sync] content_title 추출: ${results.length}개`);
+
+  // fallback: content_title 못 찾으면 링크만
   if (results.length === 0) {
     const linkRegex = new RegExp(`href="(/${NAVER_UID}/${NAVER_CHANNEL}/contents/([^"]+))"`, 'g');
     let lm;
@@ -76,7 +75,7 @@ function extractFromHTML(html) {
       seen.add(path);
       results.push({ id, title: '', url: `https://contents.premium.naver.com${path}`, publishedAt: '' });
     }
-    console.log(`[sync] fallback: ${results.length}개 (제목 없음)`);
+    console.log(`[sync] fallback 링크 추출: ${results.length}개`);
   }
 
   return results;
@@ -93,16 +92,17 @@ async function sync() {
     try {
       console.log(`[sync] 요청: ${url}`);
       const html = await fetchPage(url);
-      console.log(`[sync] HTML 길이: ${html.length}`);
+      console.log(`[sync] HTML: ${html.length}자`);
 
-      const fallback = extractFromHTML(html);
-      if (fallback.length) {
+      const extracted = extractFromHTML(html);
+      if (extracted.length) {
+        // 기존 데이터와 병합: 새 추출에 제목 없으면 기존 제목 유지
         const prevMap = new Map((existing.articles || []).map(a => [a.url, a]));
-        articles = fallback.map(a => {
+        articles = extracted.map(a => {
           const prev = prevMap.get(a.url);
           return (prev?.title && !a.title) ? { ...a, title: prev.title, publishedAt: prev.publishedAt } : a;
         });
-        console.log(`[sync] 최종: ${articles.length}개, 제목: ${articles.filter(a=>a.title).length}개`);
+        console.log(`[sync] 최종 ${articles.length}개, 제목 있음: ${articles.filter(a=>a.title).length}개`);
         break;
       }
     } catch (err) {
@@ -110,10 +110,10 @@ async function sync() {
     }
   }
 
-  if (!articles?.length) { console.log('[sync] 글 없음'); process.exit(0); }
+  if (!articles?.length) { console.log('[sync] 결과 없음, 기존 유지'); process.exit(0); }
 
   writeFileSync(DATA_FILE, JSON.stringify({ articles, updatedAt: new Date().toISOString() }, null, 2));
-  console.log('[sync] 완료');
+  console.log('[sync] 저장 완료');
 }
 
 sync().catch(err => { console.error('[sync] 오류:', err); process.exit(1); });
