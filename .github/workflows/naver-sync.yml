@@ -3,10 +3,11 @@ name: Naver Content Sync
 on:
   # 매일 08:59 KST (= 23:59 UTC 전날)
   # 매일 23:59 KST (= 14:59 UTC)
+  # 매일 21:10 KST (= 12:10 UTC)
   schedule:
     - cron: '59 23 * * *'
     - cron: '59 14 * * *'
-        - cron: '10 12 * * *'
+    - cron: '10 12 * * *'
   # 수동 실행용 (Actions 탭 → Run workflow)
   workflow_dispatch:
 
@@ -28,7 +29,7 @@ jobs:
 
       - name: Commit updated data (if changed)
         run: |
-          git config user.name  "github-actions[bot]"
+          git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if git diff --quiet data/naver-content.json; then
             echo "변경 없음, 커밋 생략"
