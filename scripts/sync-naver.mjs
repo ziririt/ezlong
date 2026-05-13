@@ -1,6 +1,6 @@
 /**
- * Naver Premium Content 스크래퍼 v3
- * HTML 구조 파일 저장으로 디버깅
+ * Naver Premium Content 스크래퍼 v4
+ * content_text 구조 기반 제목 추출
  */
 
 import { writeFileSync, readFileSync } from 'fs';
@@ -33,47 +33,52 @@ async function fetchPage(url) {
 function extractFromHTML(html) {
   const seen = new Set();
   const results = [];
-  const contentsPath = `/${NAVER_UID}/${NAVER_CHANNEL}/contents/`;
-  
-  // 첫 번째 링크 위치 찾기
-  const firstLinkIdx = html.indexOf(contentsPath);
-  if (firstLinkIdx > 0) {
-    // 앞뒤 1500자 디버그 파일에 저장
-    const snippet = html.substring(Math.max(0, firstLinkIdx - 1500), firstLinkIdx + 500);
+
+  // 디버그: content_list 시작부터 4000자 저장
+  const listIdx = html.indexOf('content_list');
+  if (listIdx > 0) {
+    const snippet = html.substring(listIdx, listIdx + 4000);
     writeFileSync(DEBUG_FILE, snippet, 'utf-8');
-    console.log('[sync] 디버그 HTML 저장: data/debug-html.txt (' + snippet.length + 'chars)');
+    console.log('[sync] 디버그 저장 (content_list~): ' + snippet.length + 'chars');
   }
 
-  const linkRegex = new RegExp(`href="(/${NAVER_UID}/${NAVER_CHANNEL}/contents/([^"]+))"`, 'g');
-  let match;
-  while ((match = linkRegex.exec(html)) !== null && results.length < MAX_ARTICLES) {
-    const path = match[1];
-    const id = match[2];
+  // 구조: content_item > content_thumb(a[href]) + content_text(strong/a[title])
+  // content_item 블록 전체를 캡처
+  const itemRegex = new RegExp(
+    'class="content_item[^"]*"[\\s\\S]{0,50}' +
+    'href="(/unis/something/contents/([^"]+))"[\\s\\S]{0,2000}?' +
+    'class="content_text"[\\s\\S]{0,600}?' +
+    '(?:<strong[^>]*>([^<]{3,200})<\\/strong>' +
+    '|<a[^>]*title="([^"]{3,200})"' +
+    '|<a[^>]*>([^<]{3,200})<\\/a>' +
+    '|<p[^>]*>([^<]{3,200})<\\/p>)',
+    'g'
+  );
+
+  let m;
+  while ((m = itemRegex.exec(html)) !== null && results.length < MAX_ARTICLES) {
+    const path = m[1], id = m[2];
     if (seen.has(path)) continue;
     seen.add(path);
-
-    const start = Math.max(0, match.index - 1500);
-    const end = Math.min(html.length, match.index + 500);
-    const ctx = html.substring(start, end);
-
-    let title = '';
-    const patterns = [
-      /class="[^"]*title[^"]*"[^>]*>\s*([^<]{4,200})\s*</i,
-      /class="[^"]*subject[^"]*"[^>]*>\s*([^<]{4,200})\s*</i,
-      /class="[^"]*headline[^"]*"[^>]*>\s*([^<]{4,200})\s*</i,
-      /<strong[^>]*>\s*([^<]{4,200})\s*<\/strong>/i,
-      /<h[1-4][^>]*>\s*([^<]{4,200})\s*<\/h[1-4]>/i,
-      /title="([^"]{4,200})"/i,
-    ];
-    for (const pat of patterns) {
-      const m2 = ctx.match(pat);
-      if (m2 && m2[1].trim().length > 3) {
-        title = m2[1].trim().replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'");
-        break;
-      }
-    }
+    const title = (m[3] || m[4] || m[5] || m[6] || '').trim()
+      .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'");
+    console.log(`[sync] item ${results.length+1}: "${title.substring(0,40) || '(없음)'}"`);
     results.push({ id, title, url: `https://contents.premium.naver.com${path}`, publishedAt: '' });
   }
+
+  // fallback: 제목 없이 링크만
+  if (results.length === 0) {
+    const linkRegex = new RegExp(`href="(/${NAVER_UID}/${NAVER_CHANNEL}/contents/([^"]+))"`, 'g');
+    let lm;
+    while ((lm = linkRegex.exec(html)) !== null && results.length < MAX_ARTICLES) {
+      const path = lm[1], id = lm[2];
+      if (seen.has(path)) continue;
+      seen.add(path);
+      results.push({ id, title: '', url: `https://contents.premium.naver.com${path}`, publishedAt: '' });
+    }
+    console.log(`[sync] fallback: ${results.length}개 (제목 없음)`);
+  }
+
   return results;
 }
 
@@ -90,18 +95,6 @@ async function sync() {
       const html = await fetchPage(url);
       console.log(`[sync] HTML 길이: ${html.length}`);
 
-      // __NEXT_DATA__ 확인
-      const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
-      if (m) {
-        console.log('[sync] __NEXT_DATA__ 있음, 길이:', m[1].length);
-      } else {
-        console.log('[sync] __NEXT_DATA__ 없음');
-      }
-
-      // script 태그들 확인
-      const scripts = [...html.matchAll(/<script[^>]*src="([^"]*)"[^>]*>/g)].map(s => s[1]);
-      console.log('[sync] 외부 스크립트 수:', scripts.length);
-
       const fallback = extractFromHTML(html);
       if (fallback.length) {
         const prevMap = new Map((existing.articles || []).map(a => [a.url, a]));
@@ -109,7 +102,7 @@ async function sync() {
           const prev = prevMap.get(a.url);
           return (prev?.title && !a.title) ? { ...a, title: prev.title, publishedAt: prev.publishedAt } : a;
         });
-        console.log(`[sync] HTML 파싱 ${articles.length}개, 제목 있음: ${articles.filter(a=>a.title).length}개`);
+        console.log(`[sync] 최종: ${articles.length}개, 제목: ${articles.filter(a=>a.title).length}개`);
         break;
       }
     } catch (err) {
@@ -117,12 +110,8 @@ async function sync() {
     }
   }
 
-  if (!articles?.length) {
-    console.log('[sync] 글 없음, 기존 유지');
-    process.exit(0);
-  }
+  if (!articles?.length) { console.log('[sync] 글 없음'); process.exit(0); }
 
-  articles.forEach((a, i) => console.log(`  ${i+1}. "${a.title||'(없음)'}"`));
   writeFileSync(DATA_FILE, JSON.stringify({ articles, updatedAt: new Date().toISOString() }, null, 2));
   console.log('[sync] 완료');
 }
