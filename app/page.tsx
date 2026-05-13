@@ -1,4 +1,4 @@
-import naverData from '@/data/naver-content.json';
+import type { NextPage } from 'next';
 
 const AUTHOR_URL =
   'https://contents.premium.naver.com/unis/something/authors/192d7ba6b7bltz';
@@ -9,6 +9,14 @@ interface Article {
   url: string;
   publishedAt: string;
 }
+
+interface NaverData {
+  articles: Article[];
+  updatedAt: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const naverData = require('@/data/naver-content.json') as NaverData;
 
 function formatDate(iso: string): string {
   if (!iso) return '';
@@ -23,8 +31,8 @@ function formatDate(iso: string): string {
   }
 }
 
-export default function Home() {
-  const articles = (naverData.articles as Article[]).slice(0, 5);
+const Home: NextPage = () => {
+  const articles = naverData.articles.slice(0, 5);
   const updatedAt = naverData.updatedAt;
 
   return (
@@ -88,4 +96,6 @@ export default function Home() {
       </div>
     </main>
   );
-}
+};
+
+export default Home;
