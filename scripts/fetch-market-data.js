@@ -369,7 +369,7 @@ async function main() {
   // 가격(지수값)은 ^NDX·^GSPC에서, 등락률은 QQQ·VOO로 보정
   // (Yahoo Finance 인덱스 심볼의 previousClose 기준이 ETF와 달라 오차 발생)
   console.log('\n--- 나스닥100 / S&P500 지수 수집 (Yahoo Finance) ---');
-  const ndxRaw  = await fetchYFIndex('^NDX');
+  const ndxRaw  = await fetchYFIndex('^IXIC');
   const gspcRaw = await fetchYFIndex('^GSPC');
 
   const ndxData = ndxRaw ? {
