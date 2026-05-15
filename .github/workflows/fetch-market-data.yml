@@ -1,82 +1,67 @@
 name: ATMR 시장 데이터 수집
 
 # ─── 스케줄 설명 ────────────────────────────────────────────────────────────
-# 하루 4회 수집 (KST 기준). DST(서머타임) 전환에 대응하기 위해
-# 여름(EDT, UTC-4)과 겨울(EST, UTC-5) 시간대를 모두 등록.
-# 전환 구간에서 1회 중복 실행되더라도 무해하게 덮어쓰기 됩니다.
+# 미국 장 시간(KST 22:30~05:00) 동안 15분 간격으로 수집.
+# 장 외 시간에는 하루 2회 수집 (프리마켓·장후 기준점용).
 #
-# KST 목표 시각    | 여름(UTC) | 겨울(UTC)
-# ---------------- | --------- | ---------
-# 05:05 (장후 마감)  | 20:05     | 21:05
-# 06:00 (포스트 마켓)| 21:00     | 22:00
-# 17:05 (프리 마켓)  | 08:05     | 09:05
-# 22:35 (장중 1시간) | 13:35     | 14:35
+# 장중 15분 간격:
+#   */15 13-21 * * 1-5 (UTC) — EDT·EST 모두 커버 (US 장: 13:30~20:00 or 14:30~21:00 UTC)
+#
+# 장 외 보조 수집:
+#   KST 17:05 (프리마켓)  → 여름 08:05 UTC / 겨울 09:05 UTC
+#   KST 05:05 (장후 마감) → 여름 20:05 UTC / 겨울 21:05 UTC
 #
 on:
   schedule:
-    # 여름(EDT, UTC-4) — 3월 두 번째 일요일 ~ 11월 첫 번째 일요일
-    - cron: '5 20 * * 1-5'   # 05:05 KST (장후)
-    - cron: '0 21 * * 1-5'   # 06:00 KST (포스트마켓)
-    - cron: '5  8 * * 1-5'   # 17:05 KST (프리마켓)
-    - cron: '35 13 * * 1-5'  # 22:35 KST (장중)
+    # ── 장중 15분 간격 (UTC 13~21시, 월~금) ─────────────────────────────────
+    - cron: '*/15 13-21 * * 1-5'
 
-    # 겨울(EST, UTC-5) — 11월 첫 번째 일요일 ~ 3월 두 번째 일요일
-    - cron: '5 21 * * 1-5'   # 05:05 KST
-    - cron: '0 22 * * 1-5'   # 06:00 KST
-    - cron: '5  9 * * 1-5'   # 17:05 KST
-    - cron: '35 14 * * 1-5'  # 22:35 KST
+    # ── 장 외 보조 수집 (프리마켓 · 장후) ────────────────────────────────────
+    - cron: '5  8 * * 1-5'   # 17:05 KST 프리마켓 (여름 EDT)
+    - cron: '5  9 * * 1-5'   # 17:05 KST 프리마켓 (겨울 EST)
+    - cron: '5 20 * * 1-5'   # 05:05 KST 장후 마감 (여름 EDT)
+    - cron: '5 21 * * 1-5'   # 05:05 KST 장후 마감 (겨울 EST)
 
-  # 수동 실행 허용 (GitHub → Actions 탭에서 "Run workflow" 클릭)
   workflow_dispatch:
 
 jobs:
   fetch-and-commit:
     runs-on: ubuntu-latest
-    # 중복 실행 방지: 같은 workflow가 이미 실행 중이면 건너뜀
     concurrency:
       group: fetch-market-data
       cancel-in-progress: false
 
     steps:
-      # ── 1. 저장소 체크아웃 ─────────────────────────────────────────────
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # ── 2. Node.js 설치 ────────────────────────────────────────────────
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      # ── 3. 데이터 수집 실행 ────────────────────────────────────────────
       - name: Run market data fetch script
         env:
           TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
         run: node scripts/fetch-market-data.js
 
-      # ── 4. 변경사항 커밋 및 푸시 ───────────────────────────────────────
       - name: Commit and push market-signals.json
         run: |
           git config user.name  "ATMR Bot"
           git config user.email "atmr-bot@ezlong.com"
-
-          # 변경사항이 없으면 (이미 최신 데이터면) 커밋 건너뜀
           if git diff --quiet data/market-signals.json 2>/dev/null; then
             echo "데이터 변경 없음. 커밋 건너뜀."
             exit 0
           fi
-
           git add data/market-signals.json
           git commit -m "chore: ATMR 시장 데이터 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # ── 5. 실패 시 알림 (선택적) ───────────────────────────────────────
       - name: Notify on failure
         if: failure()
         run: |
           echo "::error::ATMR 데이터 수집 실패. Twelve Data API 키와 GitHub Secrets를 확인하세요."
-          echo "::error::API_KEY 설정: GitHub repo → Settings → Secrets → TWELVEDATA_API_KEY"
