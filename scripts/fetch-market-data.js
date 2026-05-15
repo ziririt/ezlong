@@ -26,7 +26,7 @@ const SYMBOLS = ['QQQ', 'VOO', 'TSLA', 'NVDA', 'VIX', 'DIA', 'IWM', 'SOXX'];
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'market-signals.json');
 
 
-// ── 유틸 ──────────────────────────────────────────────────────────────────
+// ─── 유틸 ──────────────────────────────────────────────────────────────────
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -58,7 +58,7 @@ function httpGet(hostname, reqPath) {
 }
 
 
-// ── 수학 함수들 ────────────────────────────────────────────────────────────
+// ─── 수학 함수들 ────────────────────────────────────────────────────────────
 
 function calcSMA(arr, period) {
   if (arr.length < period) return null;
@@ -199,7 +199,7 @@ function calcSellScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18
 }
 
 
-// ── Yahoo Finance: 지수 현재가 (API 키 불필요, 서버사이드에서 CORS 없음) ──
+// ─── Yahoo Finance: 지수 현재가 (API 키 불필요, 서버사이드에서 CORS 없음) ───
 
 async function fetchYFIndex(symbol) {
   const enc = encodeURIComponent(symbol);
@@ -219,7 +219,7 @@ async function fetchYFIndex(symbol) {
   }
 }
 
-// ── API 호출 (Twelve Data) ─────────────────────────────────────────────────
+// ─── API 호출 (Twelve Data) ─────────────────────────────────────────────────
 
 async function fetchTimeSeries(symbol) {
   const outputsize = symbol === 'VIX' ? 50 : 300;
@@ -245,7 +245,7 @@ async function fetchQuote(symbol) {
 }
 
 
-// ── 종목 처리 ──────────────────────────────────────────────────────────────
+// ─── 종목 처리 ──────────────────────────────────────────────────────────────
 
 function processTimeSeries(raw, symbol, vixPrice) {
   const values  = [...raw.values].reverse(); // 오름차순 정렬 (오래된 → 최신)
@@ -284,7 +284,7 @@ function processTimeSeries(raw, symbol, vixPrice) {
 }
 
 
-// ── 메인 ───────────────────────────────────────────────────────────────────
+// ─── 메인 ───────────────────────────────────────────────────────────────────
 
 async function main() {
   if (!API_KEY) {
@@ -298,7 +298,7 @@ async function main() {
   const processed  = {};
   let   errorCount = 0;
 
-  // ─ 1차: time_series 순차 수집 ────────────────────────────────────────
+  // ── 1차: time_series 순차 수집 ─────────────────────────────────────────
   for (let i = 0; i < SYMBOLS.length; i++) {
     const sym = SYMBOLS[i];
     try {
@@ -315,7 +315,7 @@ async function main() {
     }
   }
 
-  // ─ 2차: VIX 가격 먼저 파싱 (다른 종목 점수 계산에 필요) ────────────────
+  // ── 2차: VIX 가격 먼저 파싱 (다른 종목 점수 계산에 필요) ────────────────
   let vixPrice = 18; // 기본값
   if (rawData['VIX']) {
     try {
@@ -327,7 +327,7 @@ async function main() {
     }
   }
 
-  // ─ 3차: 전체 처리 ─────────────────────────────────────────────────────
+  // ── 3차: 전체 처리 ─────────────────────────────────────────────────────
   for (const sym of SYMBOLS) {
     if (!rawData[sym]) continue;
     try {
@@ -339,7 +339,7 @@ async function main() {
     }
   }
 
-  // ─ 4차: quote (extended hours) 보완 수집 ──────────────────────────────
+  // ── 4차: quote (extended hours) 보완 수집 ──────────────────────────────
   console.log('\n--- Extended hours 데이터 보완 ---');
   for (let i = 0; i < SYMBOLS.length; i++) {
     const sym = SYMBOLS[i];
@@ -365,14 +365,29 @@ async function main() {
     }
   }
 
-  // ─ 5차: 나스닥100·S&P500 지수 현재가 (Yahoo Finance) ─────────────────
+  // ── 5차: 나스닥100·S&P500 지수 현재가 (Yahoo Finance) ─────────────────
+  // 가격(지수값)은 ^NDX·^GSPC에서, 등락률은 QQQ·VOO로 보정
+  // (Yahoo Finance 인덱스 심볼의 previousClose 기준이 ETF와 달라 오차 발생)
   console.log('\n--- 나스닥100 / S&P500 지수 수집 (Yahoo Finance) ---');
-  const ndxData  = await fetchYFIndex('^NDX');
-  const gspcData = await fetchYFIndex('^GSPC');
-  if (ndxData)  console.log(`  ^NDX:  ${ndxData.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}  (${ndxData.changePct >= 0 ? '+' : ''}${ndxData.changePct.toFixed(2)}%)`);
-  if (gspcData) console.log(`  ^GSPC: ${gspcData.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}  (${gspcData.changePct >= 0 ? '+' : ''}${gspcData.changePct.toFixed(2)}%)`);
+  const ndxRaw  = await fetchYFIndex('^NDX');
+  const gspcRaw = await fetchYFIndex('^GSPC');
 
-  // ─ 6차: 저장 ──────────────────────────────────────────────────────────
+  const ndxData = ndxRaw ? {
+    price:     ndxRaw.price,
+    change:    ndxRaw.change,
+    changePct: processed['QQQ']?.changePct ?? ndxRaw.changePct,  // QQQ로 등락률 보정
+  } : null;
+
+  const gspcData = gspcRaw ? {
+    price:     gspcRaw.price,
+    change:    gspcRaw.change,
+    changePct: processed['VOO']?.changePct ?? gspcRaw.changePct,  // VOO로 등락률 보정
+  } : null;
+
+  if (ndxData)  console.log(`  ^NDX:  ${ndxData.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}  (${ndxData.changePct >= 0 ? '+' : ''}${ndxData.changePct.toFixed(2)}%) [QQQ 보정]`);
+  if (gspcData) console.log(`  ^GSPC: ${gspcData.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}  (${gspcData.changePct >= 0 ? '+' : ''}${gspcData.changePct.toFixed(2)}%) [VOO 보정]`);
+
+  // ── 6차: 저장 ──────────────────────────────────────────────────────────
   const now    = new Date();
   const kstStr = now.toLocaleString('ko-KR', {
     timeZone: 'Asia/Seoul',
