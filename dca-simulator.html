@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DCA 복리 시뮬레이터 — 적립식 투자 수익 계산 | EZLONG</title>
+<meta name="description" content="매월 정해진 금액을 꾸준히 적립 투자했을 때 복리로 얼마나 불어나는지 시뮬레이션. DCA 투자 전략으로 미국주식 ETF 장기투자 수익을 직접 계산해보세요." />
+<meta name="keywords" content="DCA 시뮬레이터, 적립식 투자, 복리 계산, 수익 시뮬레이션, 미국주식, ETF 투자, 장기투자, 정액투자, 달러코스트애버리징" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://ezlong.com/dca-simulator.html" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ezlong.com/dca-simulator.html" />
+<meta property="og:title" content="DCA 복리 시뮬레이터 — 적립식 투자 수익 계산 | EZLONG" />
+<meta property="og:description" content="매월 적립식 투자 시 복리 수익을 연도별 그래프로 확인. 미국주식 ETF 장기투자를 위한 무료 DCA 시뮬레이터." />
+<meta property="og:image" content="https://ezlong.com/logo.png" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:site_name" content="EZLONG" />
+
+<!-- JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "DCA 복리 시뮬레이터",
+  "url": "https://ezlong.com/dca-simulator.html",
+  "description": "매월 정해진 금액을 꾸준히 적립 투자했을 때 복리로 얼마나 불어나는지 시뮬레이션하는 무료 도구. 미국주식 ETF 장기투자자를 위한 DCA 수익 계산기.",
+  "applicationCategory": "FinanceApplication",
+  "inLanguage": "ko",
+  "isAccessibleForFree": true,
+  "operatingSystem": "All"
+}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2336764115275414"
+     crossorigin="anonymous"></script>
+<!-- React 18 + Babel만 사용 — 외부 차트 라이브러리 없음 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:       #F5F5F7;
+  --card:     #FFFFFF;
+  --bd:       rgba(0,0,0,0.08);
+  --t1:       #1D1D1F;
+  --t2:       #6E6E73;
+  --t3:       #AEAEB2;
+  --gr:       #34C759;
+  --gr-dk:    #248A3D;
+  --gr-s:     rgba(52,199,89,0.10);
+  --gr-m:     rgba(52,199,89,0.22);
+  --bl:       #007AFF;
+  --bl-dk:    #0040DD;
+  --bl-s:     rgba(0,122,255,0.10);
+  --bl-m:     rgba(0,122,255,0.20);
+  --rd:       #FF3B30;
+  --rd-s:     rgba(255,59,48,0.10);
+  --yl-s:     rgba(255,214,10,0.14);
+  --r:        16px;
+  --r-sm:     10px;
+  --font:     -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  --mono:     'SF Mono', 'Monaco', 'Menlo', monospace;
+  /* 다크모드 대응 추가 변수 */
+  --inp-bg:   #F5F5F7;
+  --inp-bg2:  #FAFAFA;
+  --row-bg:   #FFFFFF;
+  --row-post: #FAFAFA;
+  --row-ret:  #FFF5F5;
+  --hdr-bg:   rgba(255,255,255,.85);
+  --gnav-bg:  rgba(255,255,255,.97);
+  --tip-bg:   #FFFFFF;
+  --chk-border:#C7C7CC;
+  --range-bg: #E5E5EA;
+  --chart-grid:#F0F0F5;
+  --chart-xax:#E5E5EA;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:       #000000;
+    --card:     #1C1C1E;
+    --bd:       rgba(255,255,255,0.11);
+    --t1:       #F5F5F7;
+    --t2:       #AEAEB2;
+    --t3:       #636366;
+    --gr-dk:    #30D158;
+    --gr-s:     rgba(52,199,89,0.16);
+    --gr-m:     rgba(52,199,89,0.28);
+    --bl-dk:    #409CFF;
+    --bl-s:     rgba(0,122,255,0.20);
+    --bl-m:     rgba(0,122,255,0.32);
+    --rd-s:     rgba(255,59,48,0.20);
+    --yl-s:     rgba(255,214,10,0.18);
+    --inp-bg:   #2C2C2E;
+    --inp-bg2:  #252527;
+    --row-bg:   #1C1C1E;
+    --row-post: #232325;
+    --row-ret:  #2A1818;
+    --hdr-bg:   rgba(28,28,30,.92);
+    --gnav-bg:  rgba(28,28,30,.97);
+    --tip-bg:   #2C2C2E;
+    --chk-border:#48484A;
+    --range-bg: #3A3A3C;
+    --chart-grid:#2C2C2E;
+    --chart-xax:#3A3A3C;
+  }
+}
+html, body { font-family: var(--font); background: var(--bg); color: var(--t1); -webkit-font-smoothing: antialiased; overflow-x: hidden; max-width: 100%; width: 100%; }
+svg { max-width: 100%; display: block; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: var(--chk-border); border-radius: 3px; }
+
+input[type=range] { -webkit-appearance: none; width: 100%; height: 4px; border-radius: 2px; background: var(--range-bg); outline: none; cursor: pointer; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--gr); box-shadow: 0 2px 8px rgba(52,199,89,.40); cursor: pointer; }
+input[type=range].blue::-webkit-slider-thumb { background: var(--bl); box-shadow: 0 2px 8px rgba(0,122,255,.40); }
+
+input[type=checkbox] { -webkit-appearance: none; width: 18px; height: 18px; min-width: 18px; border: 1.5px solid var(--chk-border); border-radius: 5px; background: var(--inp-bg); cursor: pointer; position: relative; transition: all .15s; }
+input[type=checkbox]:checked { background: var(--gr); border-color: var(--gr); }
+input[type=checkbox].blue:checked { background: var(--bl); border-color: var(--bl); }
+input[type=checkbox]:checked::after { content: ''; position: absolute; left: 4px; top: 1px; width: 8px; height: 11px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg) scaleX(.9); }
+
+select { -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23AEAEB2' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 13px center; padding-right: 34px !important; }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+@keyframes spin   { to { transform: rotate(360deg); } }
+@keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+@keyframes popIn  { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
+@keyframes bob    { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-7px); } }
+.spin   { animation: spin .9s linear infinite; }
+.fadeUp { animation: fadeUp .4s ease forwards; }
+.popIn  { animation: popIn .22s ease forwards; }
+.bob0   { animation: bob .7s ease infinite; }
+.bob1   { animation: bob .7s .15s ease infinite; }
+.bob2   { animation: bob .7s .30s ease infinite; }
+table { border-collapse: collapse; width: 100%; }
+
+/* 가로 overflow 전역 차단 */
+* { box-sizing: border-box; min-width: 0; }
+img, video, iframe { max-width: 100%; }
+
+/* Grid/Flex 자식 요소의 min-width:auto 팽창 억제 */
+.r-layout > *,
+.r-layout > * > * { min-width: 0; }
+table { min-width: 0; }
+
+/* ── EZLONG 글로벌 헤더 ── */
+#global-nav {
+  height: 48px;
+  background: var(--gnav-bg);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--bd);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.gnav-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.gnav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.gnav-logo-img {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+.gnav-logo-sub {
+  font-size: 11px;
+  color: #AEAEB2;
+  font-weight: 500;
+  padding-left: 2px;
+}
+.gnav-right {
+  font-size: 12px;
+  color: #AEAEB2;
+  font-weight: 500;
+  letter-spacing: -.01em;
+}
+
+/* ── 모바일 세로 모드 안내 배너 ── */
+#mob-hint {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  background: var(--bl-s);
+  border-bottom: 1px solid var(--bl-m);
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12.5px;
+  color: var(--bl-dk);
+  font-weight: 500;
+  line-height: 1.4;
+}
+#mob-hint svg { flex-shrink: 0; }
+#mob-hint button {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #8E8E93;
+  font-size: 20px;
+  line-height: 1;
+  padding: 0 4px;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  #mob-hint { display: flex; }
+}
+@media (max-width: 767px) {
+  .gnav-right { display: none; }
+  .gnav-inner { padding: 0 16px; }
+  .gnav-logo-sub { display: none; }
+}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:767px){
+  .r-layout  { grid-template-columns:1fr !important; padding:14px 16px 60px !important; gap:14px !important; }
+  .r-sticky  { position:static !important; top:auto !important; }
+  .r-hdr     { padding:0 16px !important; height:50px !important; }
+  .r-2col    { grid-template-columns:1fr !important; }
+  .r-3col    { grid-template-columns:1fr 1fr !important; gap:14px !important; }
+  .r-cpad    { padding:44px 20px !important; }
+  .r-table th, .r-table td { padding:8px 10px !important; font-size:11.5px !important; }
+  .r-table .r-hide-mob { display:none !important; }
+  .r-table td div { font-size:12px !important; }
+  .r-table td div + div { font-size:10px !important; }
+  .r-chart-legend { flex-wrap:wrap; gap:8px !important; font-size:11px !important; }
+  .r-footer  { flex-direction:column; gap:6px !important; text-align:center; }
+  .r-card-hdr { flex-direction:column; align-items:flex-start !important; gap:10px !important; }
+  .r-sim-title { font-size:13px !important; }
+  .r-big-val  { font-size:15px !important; }
+}
+@media(max-width:400px){
+  .r-layout  { padding:10px 12px 60px !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── EZLONG 글로벌 헤더 ── -->
+<nav id="global-nav">
+  <div class="gnav-inner">
+    <a href="index.html" class="gnav-logo">
+      <img src="logo.png" alt="EZLONG" class="gnav-logo-img" />
+      <span class="gnav-logo-sub">쉽고 안전한 장기투자로 복리의 마법을</span>
+    </a>
+    <span class="gnav-right">미국주식 투자 도구 모음</span>
+  </div>
+</nav>
+
+<!-- ── 모바일 세로 모드 안내 배너 ── -->
+<div id="mob-hint">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
+    <line x1="12" y1="18" x2="12.01" y2="18"/>
+    <path d="M8 2h8"/>
+    <path d="M9 21h6"/>
+  </svg>
+  <span>스마트폰 가로로 보시면 그래프를 편하게 보실 수 있습니다</span>
+  <button onclick="document.getElementById('mob-hint').style.display='none'" aria-label="닫기">×</button>
+</div>
+
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useCallback, useRef, useEffect, memo } = React;
+
+/* ═══════════════════════════════════════════
+   STATIC DATA
+═══════════════════════════════════════════ */
+const CAGR = {
+  QQQ:21,XLK:21,SOXX:29.5,SPY:14,SCHD:11.5,XLV:10.5,XLP:7.5,GLD:8.5,
+  NVDA:70,AAPL:27.5,MSFT:24.5,GOOG:20,GOOGL:20,AMZN:22.5,META:19.5,
+  TSLA:40,AVGO:34,AMD:46.5,PLTR:27.5,NFLX:22,TSM:25,
+  "BRK-B":13.5,COST:23,V:19,JPM:15,LLY:33,KO:9.5,PG:9.5
+};
+const DESC = {
+  QQQ:"나스닥100 ETF. AI·빅테크 중심 성장주 바구니로 10년 연평균 약 21%.",
+  SPY:"S&P500 ETF. 미국 대형주 500개를 담은 장기 분산 투자의 교과서. 연평균 약 14%.",
+  NVDA:"AI 반도체 독점 기업. 데이터센터 GPU 시장을 사실상 지배, 최근 5년 폭발적 성장.",
+  TSLA:"전기차·에너지·AI 로봇 기업. 변동성이 크지만 장기 성장 스토리가 강력합니다.",
+  AAPL:"글로벌 시총 1위 빅테크. 생태계 락인 효과와 서비스 매출 성장으로 안정적 수익률.",
+  MSFT:"클라우드(Azure)·AI 선두 기업. 기업 소프트웨어 시장 지배력이 탁월합니다.",
+  GOOG:"검색·광고·클라우드·AI 보유한 알파벳. 멀티플 비즈니스로 안정적 성장.",
+  AMZN:"e커머스와 AWS 클라우드 1위 기업. 구조적 성장이 지속됩니다.",
+  META:"페이스북·인스타·왓츠앱 보유. AI 광고 최적화로 수익성이 급격히 개선됐습니다.",
+  AVGO:"브로드컴. AI 커스텀 칩과 네트워킹 반도체로 데이터센터 시장에서 급성장.",
+  AMD:"NVDA의 대항마. AI GPU와 서버 CPU 시장 점유율을 꾸준히 확대 중.",
+  SOXX:"반도체 섹터 ETF. AI 인프라 수혜를 받는 핵심 칩 기업을 담았습니다.",
+  SCHD:"배당성장 ETF. 꾸준한 현금흐름과 자본 성장을 동시에 추구합니다.",
+  GLD:"금 현물 ETF. 포트폴리오 헤지와 인플레이션 방어 수단.",
+  "BRK-B":"워런 버핏의 버크셔 해서웨이. 가치투자 기반 복합 기업으로 장기 안정성이 높습니다.",
+  JPM:"미국 최대 은행 JP모건. 강력한 리테일 뱅킹으로 꾸준한 성장세.",
+  V:"비자 네트워크. 전 세계 결제 인프라 독점에 가까운 지위.",
+  COST:"코스트코. 멤버십 비즈니스 모델로 충성 고객을 만들며 꾸준한 매출 성장.",
+};
+
+/* ═══════════════════════════════════════════
+   CORE ALGORITHM — 제미나이 이관, 원형 유지
+   순서: 투자 투입 → 인출 → 복리 적용 (월 단위)
+═══════════════════════════════════════════ */
+function sN(v, fb=0){ const n=Number(v); return isNaN(n)||!isFinite(n)?fb:n; }
+
+function calcDCA(startUSD, monthlyUSD, annualRate, accumYears, totalYears, exRate, ret){
+  const mr=sN(annualRate)/100/12, ex=sN(exRate,1430);
+  let val=sN(startUSD), inv=sN(startUSD), prev=sN(startUSD), first=0, nextX=2, wdAcc=0;
+  const rows=[];
+  for(let m=1;m<=sN(totalYears)*12;m++){
+    const yr=m/12;
+    const mInv=yr<=sN(accumYears)?sN(monthlyUSD):0;
+    const mWd=ret?.isEnabled&&yr>sN(ret.year)?Math.min(val+mInv,sN(ret.withdrawalUSD)):0;
+    wdAcc+=mWd;
+    val=(val+mInv-mWd)*(1+mr);
+    inv+=mInv;
+    if(m%12===0){
+      const year=m/12;
+      const tv=Math.max(0,Math.round(sN(val)*ex));
+      const ti=Math.round(sN(inv)*ex);
+      const ii=Math.round(sN(startUSD)*ex);
+      const di=Math.round(sN(inv-startUSD)*ex);
+      const pr=Math.max(0,tv-ti);
+      const yw=Math.round(sN(wdAcc)*ex);
+      const mw=Math.round(sN(wdAcc/12)*ex);
+      const dUSD=sN(val)-prev;
+      const base=prev>0?prev:(sN(inv)>0?sN(inv):1);
+      const gPct=base>0?(dUSD/base)*100:0;
+      if(year===1)first=sN(val);
+      let dp; if(year>1&&first>0&&sN(val)>=first*nextX){dp=nextX;nextX*=2;}
+      rows.push({year,totalValue:tv,totalInvested:ti,initialInvested:ii,
+        dcaInvested:di,profit:pr,yearlyIncrease:Math.round(dUSD*ex),
+        yearlyGrowthRate:sN(gPct),doublePoint:dp,yearlyWithdrawal:yw,monthlyWithdrawal:mw});
+      prev=sN(val);wdAcc=0;
+    }
+  }
+  return rows;
+}
+
+/* ═══════════════════════════════════════════
+   FORMATTERS
+═══════════════════════════════════════════ */
+function fKRW(v){
+  const n=Number(v); if(isNaN(n)||!isFinite(n)||n===0)return '0원';
+  const s=n<0?'-':'',a=Math.abs(n);
+  if(a>=1e8){const e=Math.floor(a/1e8),m=Math.floor((a%1e8)/1e4);return `${s}${e}억${m>0?' '+m.toLocaleString()+'만':''}원`;}
+  return `${s}${Math.floor(a/1e4).toLocaleString()}만원`;
+}
+const f1=(v,d=1)=>{const n=Number(v);return isNaN(n)||!isFinite(n)?(0).toFixed(d):n.toFixed(d);};
+const fEok=v=>`${(v/1e8).toFixed(1)}억`;
+const fWon=v=>`${(v*1e4).toLocaleString()}원`;
+
+/* ═══════════════════════════════════════════
+   PRIMITIVE UI
+═══════════════════════════════════════════ */
+function Card({children,style,className}){
+  return <div className={className} style={{background:'var(--card)',borderRadius:'var(--r)',
+    boxShadow:'0 1px 4px rgba(0,0,0,.07)',border:'1px solid var(--bd)',...style}}>{children}</div>;
+}
+
+const INP={width:'100%',padding:'10px 13px',background:'var(--inp-bg)',
+  border:'1px solid var(--bd)',borderRadius:'var(--r-sm)',fontSize:14,
+  fontFamily:'var(--mono)',color:'var(--t1)',outline:'none',transition:'border-color .15s,box-shadow .15s'};
+
+const NumInput=memo(function NumInput({value,onChange,color='green',style}){
+  const [f,setF]=useState(false);
+  const a=color==='blue'?'var(--bl)':'var(--gr)', s=color==='blue'?'var(--bl-s)':'var(--gr-s)';
+  return <input type="number" value={value} onChange={e=>onChange(Number(e.target.value))}
+    onFocus={()=>setF(true)} onBlur={()=>setF(false)}
+    style={{...INP,...(f?{borderColor:a,boxShadow:`0 0 0 3px ${s}`}:{}),...style}}/>;
+});
+
+const SelInput=memo(function SelInput({value,onChange,color='green',children}){
+  const [f,setF]=useState(false);
+  const a=color==='blue'?'var(--bl)':'var(--gr)', s=color==='blue'?'var(--bl-s)':'var(--gr-s)';
+  return <select value={value} onChange={e=>onChange(e.target.value)}
+    onFocus={()=>setF(true)} onBlur={()=>setF(false)}
+    style={{...INP,cursor:'pointer',...(f?{borderColor:a,boxShadow:`0 0 0 3px ${s}`}:{})}}>{children}</select>;
+});
+
+function TkOpts(){return <>
+  <optgroup label="주요 ETF">
+    <option value="QQQ">QQQ — 나스닥 100</option>
+    <option value="SPY">SPY — S&amp;P 500</option>
+    <option value="XLK">XLK — 기술주 섹터</option>
+    <option value="SOXX">SOXX — 반도체</option>
+    <option value="SCHD">SCHD — 배당성장</option>
+    <option value="XLV">XLV — 헬스케어</option>
+    <option value="GLD">GLD — 금</option>
+  </optgroup>
+  <optgroup label="빅테크 & AI">
+    <option value="NVDA">NVDA — 엔비디아</option>
+    <option value="AAPL">AAPL — 애플</option>
+    <option value="MSFT">MSFT — 마이크로소프트</option>
+    <option value="GOOG">GOOG — 구글</option>
+    <option value="AMZN">AMZN — 아마존</option>
+    <option value="META">META — 메타</option>
+    <option value="TSLA">TSLA — 테슬라</option>
+    <option value="AVGO">AVGO — 브로드컴</option>
+    <option value="AMD">AMD — AMD</option>
+  </optgroup>
+  <optgroup label="우량주">
+    <option value="BRK-B">BRK-B — 버크셔</option>
+    <option value="COST">COST — 코스트코</option>
+    <option value="V">V — 비자</option>
+    <option value="JPM">JPM — JP모건</option>
+    <option value="LLY">LLY — 일라이릴리</option>
+  </optgroup>
+</>;}
+
+function Btn({children,onClick,disabled,variant='primary',type='button',style}){
+  const [h,setH]=useState(false);
+  const V={
+    primary:   {bg:h&&!disabled?'var(--gr-dk)':'var(--gr)',c:'white',sh:'0 2px 8px rgba(52,199,89,.30)',br:'none'},
+    secondary: {bg:h&&!disabled?'var(--bl-dk)':'var(--bl)',c:'white',sh:'0 2px 8px rgba(0,122,255,.30)',br:'none'},
+    ghost:     {bg:h&&!disabled?'var(--gr-s)':'transparent',c:'var(--gr-dk)',sh:'none',br:'1px solid var(--gr-m)'},
+    outline:   {bg:h&&!disabled?'var(--inp-bg)':'var(--row-bg)',c:'var(--t2)',sh:'none',br:'1px solid var(--bd)'},
+  }[variant]||{};
+  return <button type={type} onClick={onClick} disabled={disabled}
+    onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
+    style={{display:'inline-flex',alignItems:'center',justifyContent:'center',gap:7,
+      padding:'11px 18px',borderRadius:'var(--r-sm)',fontSize:14,fontWeight:600,
+      cursor:disabled?'not-allowed':'pointer',border:V.br,fontFamily:'var(--font)',
+      background:V.bg,color:V.c,boxShadow:V.sh,opacity:disabled?.45:1,
+      transition:'all .15s',...style}}>{children}</button>;
+}
+
+function Badge({children,color='green'}){
+  const C={
+    green:{bg:'var(--gr-s)',c:'var(--gr-dk)',bd:'1px solid var(--gr-m)'},
+    blue: {bg:'var(--bl-s)',c:'var(--bl-dk)',bd:'1px solid var(--bl-m)'},
+    red:  {bg:'var(--rd-s)',c:'var(--rd)',   bd:'1px solid rgba(255,59,48,.2)'},
+    yellow:{bg:'var(--yl-s)',c:'#7D5900',    bd:'1px solid rgba(255,214,10,.3)'},
+  }[color]||{bg:'#f0f0f0',c:'#333',bd:'1px solid #ddd'};
+  return <span style={{fontSize:11,fontWeight:700,padding:'2px 8px',borderRadius:6,
+    background:C.bg,color:C.c,border:C.bd,display:'inline-block',letterSpacing:'.01em'}}>{children}</span>;
+}
+
+/* ═══════════════════════════════════════════
+   SVG BAR CHART — 순수 SVG, 외부 라이브러리 불필요
+═══════════════════════════════════════════ */
+function SVGBarChart({data, isCmp}){
+  const wrapRef=useRef(null);
+  const [W,setW]=useState(0);
+  const [tip,setTip]=useState(null);
+  const [mxy,setMxy]=useState({x:0,y:0});
+
+  useEffect(()=>{
+    const el=wrapRef.current; if(!el)return;
+    const obs=new ResizeObserver(([e])=>setW(e.contentRect.width||e.target.offsetWidth));
+    obs.observe(el);
+    // 즉시 읽기 — ResizeObserver 콜백 전에 한 번 더 확인
+    const initial=el.getBoundingClientRect().width||el.offsetWidth||el.clientWidth;
+    if(initial>0)setW(initial);
+    return ()=>obs.disconnect();
+  },[]);
+
+  const H=W<500?390:720, mg=W<500?{t:36,r:8,b:34,l:52}:{t:55,r:18,b:40,l:68};
+  const cW=W-mg.l-mg.r, cH=H-mg.t-mg.b;
+  const n=data.length;
+  const maxV=Math.max(...data.map(d=>Math.max(d.totalValue||0,isCmp?(d.totalValue2||0):0)),1);
+
+  // nice Y ticks
+  const rawStep=maxV/5;
+  const mag=Math.pow(10,Math.floor(Math.log10(rawStep)));
+  const niceStep=Math.ceil(rawStep/mag)*mag;
+  const niceMax=Math.ceil(maxV/niceStep)*niceStep;
+  const ticks=[]; for(let i=0;i<=5;i++) ticks.push(niceStep*i);
+
+  const yPx=v=>cH-(v/niceMax)*cH;
+  const hPx=v=>(v/niceMax)*cH;
+
+  // bar sizing
+  const grpW=cW/n;
+  const bW=isCmp?Math.max(3,grpW*0.35):Math.max(4,grpW*0.65);
+  const gap=isCmp?Math.max(1,grpW*0.04):0;
+
+  // label skip — show every N-th
+  const skip=Math.ceil(n/25);
+
+  const fTick=v=>v>=1e8?`${(v/1e8).toFixed(0)}억`:v>=1e4?`${(v/1e4).toFixed(0)}만`:'0';
+  const fLbl=v=>v>=1e8?`${(v/1e8).toFixed(1)}억`:v>=1e4?`${Math.floor(v/1e4)}만`:'';
+
+  const onMove=e=>{
+    const r=wrapRef.current.getBoundingClientRect();
+    setMxy({x:e.clientX-r.left,y:e.clientY-r.top});
+  };
+
+  // W가 결정되기 전에는 빈 컨테이너만 표시 — 모바일 가로 overflow 방지
+  if(!W) return <div ref={wrapRef} style={{width:'100%',height:300,background:'var(--inp-bg2)',borderRadius:8}}/>;
+
+  return (
+    <div ref={wrapRef} style={{position:'relative',width:'100%',height:H,touchAction:'none',overflow:'hidden'}} onMouseMove={onMove} onMouseLeave={()=>setTip(null)}>
+      <svg width={W} height={H} style={{display:'block',maxWidth:'100%'}}>
+        <g transform={`translate(${mg.l},${mg.t})`}>
+          {/* Grid + Y axis labels */}
+          {ticks.map((t,i)=>(
+            <g key={i}>
+              <line x1={0} y1={yPx(t)} x2={cW} y2={yPx(t)} stroke="var(--chart-grid)" strokeWidth={1}/>
+              <text x={-8} y={yPx(t)+4} textAnchor="end" fontSize={11} fill="var(--t3)" fontFamily="var(--mono)">{fTick(t)}</text>
+            </g>
+          ))}
+
+          {/* Bars */}
+          {data.map((d,i)=>{
+            const grpX=i*grpW;
+            const totalGrpW=isCmp?bW*2+gap:bW;
+            const x1=grpX+(grpW-totalGrpW)/2;
+            const x2=x1+bW+gap;
+
+            const h1i=hPx(d.initialInvested||0), h1d=hPx(d.dcaInvested||0), h1p=hPx(d.profit||0);
+            const tot1=h1i+h1d+h1p;
+            const h2i=hPx(d.initialInvested2||0), h2d=hPx(d.dcaInvested2||0), h2p=hPx(d.profit2||0);
+            const tot2=h2i+h2d+h2p;
+
+            const showXLbl=i%skip===0||i===n-1;
+            const showLbl1=i%skip===0||i===n-1;
+            const showLbl2=i%skip===0||i===n-1;
+
+            return (
+              <g key={d.year} style={{cursor:'default'}}
+                onMouseEnter={()=>setTip(d)}
+                onMouseLeave={()=>setTip(null)}>
+
+                {/* Sim 1 stacked bar */}
+                {h1i>0&&<rect x={x1} y={cH-h1i} width={bW} height={h1i} fill="#FF6B6B"/>}
+                {h1d>0&&<rect x={x1} y={cH-h1i-h1d} width={bW} height={h1d} fill="#FFB347"/>}
+                {h1p>0&&<rect x={x1} y={cH-tot1} width={bW} height={h1p} fill="#34C759" rx={2} ry={2}/>}
+
+                {/* Sim 1 top label */}
+                {showLbl1&&d.totalValue>0&&tot1>10&&(
+                  <text x={x1+bW/2} y={cH-tot1-6}
+                    textAnchor="end" dominantBaseline="middle"
+                    transform={`rotate(90,${x1+bW/2},${cH-tot1-6})`}
+                    fontSize={10} fontWeight={700} fill="var(--t1)" fontFamily="var(--mono)">
+                    {fLbl(d.totalValue)}
+                  </text>
+                )}
+
+                {/* Sim 2 stacked bar */}
+                {isCmp&&<>
+                  {h2i>0&&<rect x={x2} y={cH-h2i} width={bW} height={h2i} fill="#93C5FD"/>}
+                  {h2d>0&&<rect x={x2} y={cH-h2i-h2d} width={bW} height={h2d} fill="#60A5FA"/>}
+                  {h2p>0&&<rect x={x2} y={cH-tot2} width={bW} height={h2p} fill="#007AFF" rx={2} ry={2}/>}
+                  {showLbl2&&(d.totalValue2||0)>0&&tot2>10&&(
+                    <text x={x2+bW/2} y={cH-tot2-6}
+                      textAnchor="end" dominantBaseline="middle"
+                      transform={`rotate(90,${x2+bW/2},${cH-tot2-6})`}
+                      fontSize={10} fontWeight={700} fill="var(--t1)" fontFamily="var(--mono)">
+                      {fLbl(d.totalValue2||0)}
+                    </text>
+                  )}
+                </>}
+
+                {/* X axis label */}
+                {showXLbl&&(
+                  <text x={grpX+grpW/2} y={cH+16} textAnchor="middle" fontSize={11} fill="var(--t3)">{d.year}</text>
+                )}
+              </g>
+            );
+          })}
+
+          {/* X axis base */}
+          <line x1={0} y1={cH} x2={cW} y2={cH} stroke="var(--chart-xax)" strokeWidth={1}/>
+          <text x={cW/2} y={cH+32} textAnchor="middle" fontSize={12} fill="#AEAEB2">경과 년수</text>
+        </g>
+      </svg>
+
+      {/* Tooltip */}
+      {tip&&(
+        <div style={{
+          position:'absolute',
+          left:Math.min(mxy.x+14,W-260),
+          top:Math.max(mxy.y-120,8),
+          pointerEvents:'none',zIndex:20
+        }}>
+          <ChartTooltip d={tip} isCmp={isCmp}/>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ChartTooltip({d,isCmp}){
+  const Row=({lbl,col,val})=>(
+    <div style={{display:'flex',justifyContent:'space-between',fontSize:12,color:'var(--t2)',padding:'1px 0 1px 10px'}}>
+      <span style={{display:'flex',alignItems:'center',gap:5}}>
+        <span style={{width:7,height:7,borderRadius:'50%',background:col,display:'inline-block'}}/>
+        {lbl}
+      </span>
+      <span style={{fontFamily:'var(--mono)',fontWeight:600}}>{fKRW(val)}</span>
+    </div>
+  );
+  return (
+    <div style={{background:'var(--tip-bg)',borderRadius:14,boxShadow:'0 8px 32px rgba(0,0,0,.20)',
+      border:'1px solid var(--bd)',padding:'14px 16px',minWidth:230,fontFamily:'var(--font)'}}>
+      <div style={{fontWeight:700,fontSize:14,marginBottom:10,paddingBottom:8,
+        borderBottom:'1px solid var(--bd)',display:'flex',justifyContent:'space-between'}}>
+        <span>{d.year}년차</span>
+        <span style={{fontSize:11,fontWeight:500,color:'var(--t3)'}}>누적 평가액</span>
+      </div>
+      <div style={{marginBottom:isCmp?10:0}}>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+          <span style={{fontSize:12,fontWeight:700,color:'var(--gr-dk)'}}>시뮬레이션 1</span>
+          <span style={{fontSize:13,fontWeight:800,color:'var(--gr-dk)',fontFamily:'var(--mono)'}}>{fKRW(d.totalValue)}</span>
+        </div>
+        <Row lbl="초기투자금" col="#FF6B6B" val={d.initialInvested}/>
+        <Row lbl="월DCA 누계" col="#FFB347" val={d.dcaInvested}/>
+        <Row lbl="복리 수익"  col="#34C759" val={d.profit}/>
+        {d.yearlyWithdrawal>0&&(
+          <div style={{marginTop:7,padding:'7px 9px',background:'var(--rd-s)',borderRadius:7,borderLeft:'3px solid var(--rd)'}}>
+            <div style={{fontSize:11,fontWeight:700,color:'var(--rd)',marginBottom:2}}>은퇴 인출</div>
+            <div style={{display:'flex',justifyContent:'space-between',fontSize:12,color:'var(--rd)',fontFamily:'var(--mono)'}}>
+              <span>연간</span><span>-{fKRW(d.yearlyWithdrawal)}</span>
+            </div>
+            <div style={{display:'flex',justifyContent:'space-between',fontSize:11,color:'var(--rd)',opacity:.75}}>
+              <span>월</span><span>-{fKRW(d.monthlyWithdrawal)}</span>
+            </div>
+          </div>
+        )}
+      </div>
+      {isCmp&&d.totalValue2!=null&&(
+        <div style={{paddingTop:10,borderTop:'1px solid var(--bd)'}}>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+            <span style={{fontSize:12,fontWeight:700,color:'var(--bl-dk)'}}>시뮬레이션 2</span>
+            <span style={{fontSize:13,fontWeight:800,color:'var(--bl-dk)',fontFamily:'var(--mono)'}}>{fKRW(d.totalValue2)}</span>
+          </div>
+          <Row lbl="초기투자금" col="#93C5FD" val={d.initialInvested2||0}/>
+          <Row lbl="월DCA 누계" col="#60A5FA" val={d.dcaInvested2||0}/>
+          <Row lbl="복리 수익"  col="#007AFF" val={d.profit2||0}/>
+          {(d.yearlyWithdrawal2||0)>0&&(
+            <div style={{marginTop:7,padding:'7px 9px',background:'var(--rd-s)',borderRadius:7,borderLeft:'3px solid var(--rd)'}}>
+              <div style={{fontSize:11,fontWeight:700,color:'var(--rd)',marginBottom:2}}>은퇴 인출 (2)</div>
+              <div style={{display:'flex',justifyContent:'space-between',fontSize:12,color:'var(--rd)',fontFamily:'var(--mono)'}}>
+                <span>연간</span><span>-{fKRW(d.yearlyWithdrawal2)}</span>
+              </div>
+              <div style={{display:'flex',justifyContent:'space-between',fontSize:11,color:'var(--rd)',opacity:.75}}>
+                <span>월</span><span>-{fKRW(d.monthlyWithdrawal2)}</span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   SimInputSection — App 외부 독립 컴포넌트
+═══════════════════════════════════════════ */
+const SimInputSection=memo(function SimInputSection({
+  simNum,isCmpMode,
+  ticker,setTicker,monthlyMan,setMonthlyMan,years,setYears,initMan,setInitMan,
+  isRet,setIsRet,wdMan,setWdMan
+}){
+  const bl=simNum===2;
+  const col=bl?'blue':'green';
+  const acBg=bl?'var(--bl-s)':'var(--gr-s)';
+  const acBd=bl?'var(--bl-m)':'var(--gr-m)';
+  const acC =bl?'var(--bl-dk)':'var(--gr-dk)';
+  return (
+    <div style={{background:acBg,borderRadius:'var(--r-sm)',padding:16,border:`1px solid ${acBd}`}}>
+      {isCmpMode&&<div style={{fontSize:11,fontWeight:800,color:acC,textTransform:'uppercase',letterSpacing:'.08em',marginBottom:14}}>시뮬레이션 {simNum}</div>}
+
+      {/* Ticker */}
+      <div style={{marginBottom:14}}>
+        <label style={{fontSize:13,fontWeight:600,display:'block',marginBottom:6}}>티커 선택</label>
+        <SelInput value={ticker} onChange={setTicker} color={col}><TkOpts/></SelInput>
+        {CAGR[ticker]&&(
+          <div style={{marginTop:6,display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
+            <Badge color={col}>참고 CAGR {CAGR[ticker]}%</Badge>
+            {DESC[ticker]&&<span style={{fontSize:11,color:'var(--t2)',lineHeight:1.5}}>{DESC[ticker].split('.')[0]}</span>}
+          </div>
+        )}
+      </div>
+
+      {/* Monthly + Init */}
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:14}}>
+        <div>
+          <label style={{fontSize:12,fontWeight:600,display:'block',marginBottom:5}}>
+            매월 DCA <span style={{float:'right',color:acC,fontFamily:'var(--mono)'}}>{fWon(monthlyMan)}</span>
+          </label>
+          <NumInput value={monthlyMan} onChange={setMonthlyMan} color={col}/>
+        </div>
+        <div>
+          <label style={{fontSize:12,fontWeight:600,display:'block',marginBottom:5}}>
+            초기 투자금 <span style={{float:'right',color:acC,fontFamily:'var(--mono)'}}>{initMan>0?fWon(initMan):'없음'}</span>
+          </label>
+          <NumInput value={initMan} onChange={setInitMan} color={col}/>
+        </div>
+      </div>
+
+      {/* Years */}
+      <div style={{marginBottom:14}}>
+        <label style={{fontSize:12,fontWeight:600,display:'flex',justifyContent:'space-between',marginBottom:8}}>
+          <span>투자 기간</span>
+          <span style={{fontSize:20,fontWeight:800,color:acC,fontFamily:'var(--mono)'}}>{years}년</span>
+        </label>
+        <input type="range" min={1} max={50} value={years} onChange={e=>setYears(Number(e.target.value))} className={bl?'blue':''}/>
+      </div>
+
+      {/* Retirement */}
+      <div style={{paddingTop:12,borderTop:`1px solid ${acBd}`}}>
+        <label style={{display:'flex',alignItems:'center',gap:10,cursor:'pointer',userSelect:'none'}}>
+          <input type="checkbox" className={col} checked={isRet} onChange={e=>setIsRet(e.target.checked)}/>
+          <span style={{fontSize:13,fontWeight:700,color:acC}}>은퇴 후 인출 설정</span>
+        </label>
+        {isRet&&(
+          <div style={{marginTop:12}} className="popIn">
+            <label style={{fontSize:12,fontWeight:600,display:'block',marginBottom:5}}>
+              월 인출액 (만원) <span style={{float:'right',color:acC,fontFamily:'var(--mono)'}}>{fWon(wdMan)}</span>
+            </label>
+            <NumInput value={wdMan} onChange={setWdMan} color={col}/>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+});
+
+/* ═══════════════════════════════════════════
+   MAIN APP
+═══════════════════════════════════════════ */
+const EX_RATE = 1380; // 원/달러 환율 (2026년 5월 기준 참고치 — 설정 불필요)
+
+function App(){
+  // Sim 1
+  const [ticker,setTicker]=useState('QQQ');
+  const [mm,setMm]=useState(100);
+  const [yrs,setYrs]=useState(10);
+  const [init,setInit]=useState(0);
+  const [isRet,setIsRet]=useState(false);
+  const [wd,setWd]=useState(200);
+  // Sim 2
+  const [isCmp,setIsCmp]=useState(false);
+  const [ticker2,setTicker2]=useState('SPY');
+  const [mm2,setMm2]=useState(100);
+  const [yrs2,setYrs2]=useState(10);
+  const [init2,setInit2]=useState(0);
+  const [isRet2,setIsRet2]=useState(false);
+  const [wd2,setWd2]=useState(200);
+  // Common
+  // Results
+  const [results,setResults]=useState([]);
+  const [r1,setR1]=useState(null);
+  const [r2,setR2]=useState(null);
+  const [loading,setLoading]=useState(false);
+  // UI
+  const [showD1,setShowD1]=useState(false);
+  const [showD2,setShowD2]=useState(false);
+  const [verTxt,setVerTxt]=useState('');
+  const [showVer,setShowVer]=useState(false);
+  const resRef=useRef(null);
+  const autoCalcRef=useRef(null);
+
+  // 빠른 조절 슬라이더 변경 시 자동 재계산 (300ms 디바운스)
+  useEffect(()=>{
+    if(!results.length)return;
+    clearTimeout(autoCalcRef.current);
+    autoCalcRef.current=setTimeout(()=>{
+      const a1=CAGR[ticker.toUpperCase()]||10;
+      const a2=isCmp?CAGR[ticker2.toUpperCase()]||10:0;
+      setR1(a1);setR2(a2);
+      const ex=EX_RATE;
+      const maxY=isCmp?Math.max(yrs,yrs2):yrs;
+      const totY=maxY+30;
+      const s1=calcDCA((init*1e4)/ex,(mm*1e4)/ex,a1,yrs,totY,ex,
+        {isEnabled:isRet,year:yrs,withdrawalUSD:(wd*1e4)/ex});
+      let merged=s1;
+      if(isCmp){
+        const s2=calcDCA((init2*1e4)/ex,(mm2*1e4)/ex,a2,yrs2,totY,ex,
+          {isEnabled:isRet2,year:yrs2,withdrawalUSD:(wd2*1e4)/ex});
+        merged=s1.map((row,i)=>({...row,
+          totalValue2:sN(s2[i]?.totalValue),totalInvested2:sN(s2[i]?.totalInvested),
+          initialInvested2:sN(s2[i]?.initialInvested),dcaInvested2:sN(s2[i]?.dcaInvested),
+          profit2:sN(s2[i]?.profit),yearlyIncrease2:sN(s2[i]?.yearlyIncrease),
+          yearlyGrowthRate2:sN(s2[i]?.yearlyGrowthRate),doublePoint2:s2[i]?.doublePoint,
+          yearlyWithdrawal2:sN(s2[i]?.yearlyWithdrawal),monthlyWithdrawal2:sN(s2[i]?.monthlyWithdrawal),
+        }));
+      }
+      setResults(merged);
+    },300);
+    return ()=>clearTimeout(autoCalcRef.current);
+  },[mm,init,wd,mm2,init2,wd2]);
+
+  const maxYrs=isCmp?Math.max(yrs,yrs2):yrs;
+  const totYrs=maxYrs+30;
+  const chartData=results.slice(0,maxYrs);
+  const finalRow=results.length>0?results[Math.min(results.length-1,maxYrs-1)]:null;
+  const lastRow=results.length>0?results[results.length-1]:null;
+
+  const handleSim=useCallback((e)=>{
+    if(e)e.preventDefault(); if(loading)return;
+    setLoading(true);setResults([]);setShowVer(false);
+    setTimeout(()=>{
+      const a1=CAGR[ticker.toUpperCase()]||10;
+      const a2=isCmp?CAGR[ticker2.toUpperCase()]||10:0;
+      setR1(a1);setR2(a2);
+      const ex=EX_RATE;
+      const s1=calcDCA((init*1e4)/ex,(mm*1e4)/ex,a1,yrs,totYrs,ex,
+        {isEnabled:isRet,year:yrs,withdrawalUSD:(wd*1e4)/ex});
+      let merged=s1;
+      if(isCmp){
+        const s2=calcDCA((init2*1e4)/ex,(mm2*1e4)/ex,a2,yrs2,totYrs,ex,
+          {isEnabled:isRet2,year:yrs2,withdrawalUSD:(wd2*1e4)/ex});
+        merged=s1.map((row,i)=>({...row,
+          totalValue2:sN(s2[i]?.totalValue),totalInvested2:sN(s2[i]?.totalInvested),
+          initialInvested2:sN(s2[i]?.initialInvested),dcaInvested2:sN(s2[i]?.dcaInvested),
+          profit2:sN(s2[i]?.profit),yearlyIncrease2:sN(s2[i]?.yearlyIncrease),
+          yearlyGrowthRate2:sN(s2[i]?.yearlyGrowthRate),doublePoint2:s2[i]?.doublePoint,
+          yearlyWithdrawal2:sN(s2[i]?.yearlyWithdrawal),monthlyWithdrawal2:sN(s2[i]?.monthlyWithdrawal),
+        }));
+      }
+      setResults(merged);setLoading(false);
+      setTimeout(()=>resRef.current?.scrollIntoView({behavior:'smooth',block:'start'}),80);
+    },550);
+  },[loading,ticker,ticker2,mm,mm2,yrs,yrs2,init,init2,isRet,isRet2,wd,wd2,isCmp,exRate,totYrs]);
+
+  const handleCSV=()=>{
+    if(!results.length)return;
+    let c='﻿경과년수,평가액1,원금1,수익금1,인출액1';
+    if(isCmp)c+=',평가액2,원금2,수익금2,인출액2';
+    c+='\n';
+    results.forEach(r=>{
+      c+=`${r.year},${r.totalValue},${r.totalInvested},${r.profit},${r.yearlyWithdrawal||0}`;
+      if(isCmp)c+=`,${r.totalValue2||0},${r.totalInvested2||0},${r.profit2||0},${r.yearlyWithdrawal2||0}`;
+      c+='\n';
+    });
+    const a=document.createElement('a');
+    a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(c);
+    a.download=`DCA_${ticker}_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+  };
+
+  const handleVerify=()=>{
+    if(!finalRow||!r1)return;
+    const mult=(finalRow.totalValue/(finalRow.totalInvested||1)).toFixed(1);
+    setVerTxt([
+      `수학적 검증 결과`,``,
+      `${yrs}년간 매월 ${mm}만원을 ${ticker}(연 ${r1}%)에 투자한 시뮬레이션입니다.`,``,
+      `핵심 수치`,
+      `· 월 적용 수익률: ${(r1/12).toFixed(3)}% (연 ${r1}% ÷ 12)`,
+      `· 총 투자 원금: ${fKRW(finalRow.totalInvested)}`,
+      `· 최종 평가액: ${fKRW(finalRow.totalValue)}`,
+      `· 원금 대비: ${mult}배`,``,
+      `왜 이렇게 커지나요?`,
+      `복리는 "이자에 이자가 붙는" 구조입니다. 초기엔 천천히, 후반으로 갈수록 기하급수적으로 불어납니다. 특히 투자 후반 10년이 전체 수익의 60~70%를 만들어냅니다.`,
+      ...(isRet&&finalRow.yearlyWithdrawal>0
+        ?[``,`은퇴 인출 분석`,`매월 ${wd}만원을 인출해도, 남은 자산의 복리 수익이 인출액보다 크면 원금은 계속 불어납니다. 수학적으로 완전히 정상적인 현상입니다.`]
+        :[]),
+      ``,`*과거 수익률은 미래를 보장하지 않으며, 실제 투자에는 세금·수수료·환율 변동이 적용됩니다.*`
+    ].join('\n'));
+    setShowVer(true);
+  };
+
+  const mkdn=(txt)=>txt.split('\n').map((line,i)=>{
+    if(!line)return <div key={i} style={{height:4}}/>;
+    if(line.startsWith('*')&&line.endsWith('*'))return <div key={i} style={{fontStyle:'italic',color:'var(--t3)',fontSize:12,marginTop:10}}>{line.slice(1,-1)}</div>;
+    if(line.startsWith('·'))return <div key={i} style={{paddingLeft:12,lineHeight:1.65,color:'var(--t2)',marginTop:2}}>{line}</div>;
+    const isBold=i===0||['핵심 수치','왜 이렇게 커지나요?','은퇴 인출 분석'].includes(line);
+    return <div key={i} style={{lineHeight:1.65,marginTop:isBold?6:2,fontWeight:isBold?700:400}}>{line}</div>;
+  });
+
+  /* ── RENDER ── */
+  return (
+    <div style={{minHeight:'100vh',background:'var(--bg)',fontFamily:'var(--font)'}}>
+
+      {/* HEADER */}
+      <header style={{background:'var(--hdr-bg)',backdropFilter:'blur(20px)',
+        WebkitBackdropFilter:'blur(20px)',borderBottom:'1px solid var(--bd)',
+        position:'sticky',top:48,zIndex:100}}>
+        <div className="r-hdr" style={{maxWidth:1180,margin:'0 auto',padding:'0 24px',height:54,
+          display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+          <div style={{display:'flex',alignItems:'center',gap:10}}>
+            <div style={{width:32,height:32,borderRadius:9,background:'linear-gradient(135deg,#34C759,#00C281)',
+              display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 8px rgba(52,199,89,.35)'}}>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+              </svg>
+            </div>
+            <div>
+              <div style={{fontSize:15,fontWeight:800,letterSpacing:'-.02em'}}>DCA 복리 시뮬레이터</div>
+              <div style={{fontSize:11,color:'var(--t3)',marginTop:-1}}>복리 시뮬레이터</div>
+            </div>
+          </div>
+          <span style={{fontSize:12,color:'var(--t3)',fontWeight:500}}>Compound Interest Calculator</span>
+        </div>
+      </header>
+
+      {/* GRID */}
+      <main className="r-layout" style={{maxWidth:1180,margin:'0 auto',padding:'28px 24px 80px',
+        display:'grid',gridTemplateColumns:'370px 1fr',gap:24,alignItems:'start'}}>
+
+        {/* ── LEFT PANEL */}
+        <div className="r-sticky" style={{position:'sticky',top:114,display:'flex',flexDirection:'column',gap:16}}>
+          <Card style={{padding:22}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:18}}>
+              <span style={{fontSize:15,fontWeight:700}}>투자 설정</span>
+              <label style={{display:'flex',alignItems:'center',gap:8,cursor:'pointer',userSelect:'none'}}>
+                <input type="checkbox" checked={isCmp} onChange={e=>{const c=e.target.checked;if(c){setTicker2(ticker);setMm2(mm);setYrs2(yrs);setInit2(init);setIsRet2(isRet);setWd2(wd);}setIsCmp(c);}}/>
+                <span style={{fontSize:12,fontWeight:600,color:'var(--t2)'}}>2개 비교</span>
+              </label>
+            </div>
+            <form onSubmit={handleSim} style={{display:'flex',flexDirection:'column',gap:14}}>
+              <SimInputSection simNum={1} isCmpMode={isCmp}
+                ticker={ticker} setTicker={setTicker} monthlyMan={mm} setMonthlyMan={setMm}
+                years={yrs} setYears={setYrs} initMan={init} setInitMan={setInit}
+                isRet={isRet} setIsRet={setIsRet} wdMan={wd} setWdMan={setWd}/>
+              {isCmp&&(
+                <div className="fadeUp">
+                  <SimInputSection simNum={2} isCmpMode={isCmp}
+                    ticker={ticker2} setTicker={setTicker2} monthlyMan={mm2} setMonthlyMan={setMm2}
+                    years={yrs2} setYears={setYrs2} initMan={init2} setInitMan={setInit2}
+                    isRet={isRet2} setIsRet={setIsRet2} wdMan={wd2} setWdMan={setWd2}/>
+                </div>
+              )}
+              <div style={{height:1,background:'var(--bd)'}}/>
+              {/* CTA */}
+              <Btn type="submit" disabled={loading} variant="primary" style={{width:'100%',padding:'13px',fontSize:15}}>
+                {loading
+                  ?<><svg className="spin" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M21 12a9 9 0 1 1-9-9"/></svg>{' '}계산 중...</>
+                  :<>시뮬레이션 시작{' '}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></>
+                }
+              </Btn>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+                <Btn variant="ghost" disabled={!results.length} onClick={handleVerify} style={{fontSize:13,padding:'10px 14px'}}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4"/><path d="M12 2l2 2h4l2 2v4l2 2v4l-2 2v4l-2 2h-4l-2 2-2-2H6l-2-2v-4l-2-2v-4l2-2V6l2-2h4z"/></svg>
+                  검증하기
+                </Btn>
+                <Btn variant="outline" disabled={!results.length} onClick={handleCSV} style={{fontSize:13,padding:'10px 14px'}}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  CSV 저장
+                </Btn>
+              </div>
+            </form>
+          </Card>
+          <div style={{fontSize:11,color:'var(--t3)',lineHeight:1.7,textAlign:'center',padding:'0 4px'}}>
+            과거 수익률은 미래 수익을 보장하지 않습니다.<br/>투자 시 원금 손실의 위험이 있습니다.
+          </div>
+        </div>
+
+        {/* ── RIGHT PANEL */}
+        <div ref={resRef} style={{display:'flex',flexDirection:'column',gap:22}}>
+
+          {/* LOADING */}
+          {loading&&(
+            <Card className="fadeUp r-cpad" style={{padding:'72px 40px',display:'flex',flexDirection:'column',
+              alignItems:'center',justifyContent:'center',textAlign:'center',gap:22}}>
+              <div style={{position:'relative',width:76,height:76}}>
+                <div style={{position:'absolute',inset:0,borderRadius:'50%',border:'4px solid var(--gr-s)'}}/>
+                <div style={{position:'absolute',inset:0,borderRadius:'50%',border:'4px solid var(--gr)',borderTopColor:'transparent',animation:'spin .85s linear infinite'}}/>
+                <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <div style={{fontSize:19,fontWeight:700,marginBottom:8}}>복리 마법을 계산하는 중...</div>
+                <div style={{fontSize:13,color:'var(--t2)',lineHeight:1.65}}>월 단위 시뮬레이션으로 정밀하게 계산합니다</div>
+              </div>
+              <div style={{display:'flex',gap:8}}>
+                {[0,1,2].map(i=><div key={i} className={`bob${i}`} style={{width:8,height:8,borderRadius:'50%',background:'var(--gr)'}}/>)}
+              </div>
+            </Card>
+          )}
+
+          {/* EMPTY */}
+          {!loading&&!results.length&&(
+            <Card className="r-cpad" style={{padding:'72px 40px',display:'flex',flexDirection:'column',
+              alignItems:'center',justifyContent:'center',textAlign:'center',gap:18}}>
+              <div style={{width:68,height:68,borderRadius:'50%',background:'var(--bg)',
+                display:'flex',alignItems:'center',justifyContent:'center',border:'2px dashed var(--bd)'}}>
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+              </div>
+              <div>
+                <div style={{fontSize:17,fontWeight:700,marginBottom:8}}>시뮬레이션 결과가 여기에 표시됩니다</div>
+                <div style={{fontSize:13,color:'var(--t2)',lineHeight:1.7}}>
+                  좌측에서 티커와 투자 조건을 설정하고<br/><strong>시뮬레이션 시작</strong>을 눌러주세요
+                </div>
+              </div>
+              <div style={{fontSize:12,color:'var(--t3)',padding:'10px 18px',background:'var(--bg)',borderRadius:9,border:'1px solid var(--bd)'}}>
+                모든 계산은 USD 기준 수행 후 원화 변환
+              </div>
+            </Card>
+          )}
+
+          {/* RESULTS */}
+          {!loading&&results.length>0&&(
+            <div style={{display:'flex',flexDirection:'column',gap:22}} className="fadeUp">
+
+              {/* ── SUMMARY */}
+              {finalRow&&(
+                <Card style={{padding:22}}>
+                  <div className="r-sim-title" style={{fontSize:15,fontWeight:700,marginBottom:18,display:'flex',alignItems:'center',gap:8}}>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    시뮬레이션 요약{isCmp?' (비교)':''}
+                  </div>
+
+                  {/* 4 key metrics */}
+                  <div className="r-2col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:18}}>
+                    {[
+                      [`투자 종료 시점 자산 (${maxYrs}년차)`,fKRW(finalRow.totalValue),fKRW(finalRow.totalValue2||0),true,true],
+                      ['총 투자 원금',fKRW(finalRow.totalInvested),fKRW(finalRow.totalInvested2||0),false,false],
+                      ['원금 대비 배수',`${f1(finalRow.totalValue/(finalRow.totalInvested||1),1)}배`,`${f1((finalRow.totalValue2||0)/((finalRow.totalInvested2||1)),1)}배`,false,false],
+                      [`추가 30년 후 (${totYrs}년차)`,lastRow?fKRW(lastRow.totalValue):'-',lastRow?fKRW(lastRow.totalValue2||0):'-',false,false],
+                    ].map(([lbl,v1,v2,hl,big])=>(
+                      <div key={lbl} style={{background:hl?'var(--gr-s)':'var(--inp-bg2)',borderRadius:'var(--r-sm)',
+                        padding:'13px 15px',border:hl?'1px solid var(--gr-m)':'1px solid var(--bd)'}}>
+                        <div style={{fontSize:12,color:'var(--t2)',fontWeight:600,marginBottom:7}}>{lbl}</div>
+                        <div style={{display:'flex',gap:14,flexWrap:'wrap',alignItems:'baseline'}}>
+                          <span className={big?'r-big-val':''} style={{fontSize:big?20:15,fontWeight:800,color:'var(--gr-dk)',fontFamily:'var(--mono)',lineHeight:1.2}}>{v1}</span>
+                          {isCmp&&<span className={big?'r-big-val':''} style={{fontSize:big?20:15,fontWeight:800,color:'var(--bl-dk)',fontFamily:'var(--mono)',lineHeight:1.2}}>{v2}</span>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Ticker info */}
+                  <div className="r-2col" style={{display:'grid',gridTemplateColumns:isCmp?'1fr 1fr':'1fr',gap:12}}>
+                    {[[ticker,r1,yrs,mm,'green'],
+                      ...(isCmp?[[ticker2,r2,yrs2,mm2,'blue']]:[])
+                    ].map(([tk,rt,yr,m,col],idx)=>(
+                      <div key={idx} style={{padding:'11px 13px',borderRadius:'var(--r-sm)',
+                        background:col==='blue'?'var(--bl-s)':'var(--gr-s)',
+                        border:col==='blue'?'1px solid var(--bl-m)':'1px solid var(--gr-m)'}}>
+                        <div style={{fontSize:11,color:'var(--t3)',marginBottom:4}}>시뮬레이션 {idx+1}</div>
+                        <div style={{fontSize:17,fontWeight:800}}>{tk}</div>
+                        <div style={{display:'flex',gap:7,marginTop:5,flexWrap:'wrap'}}>
+                          <Badge color={col}>연 {rt}% CAGR</Badge>
+                          <span style={{fontSize:11,color:'var(--t2)'}}>{yr}년 · 월 {m}만원</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Description toggles */}
+                  {[[ticker,showD1,()=>setShowD1(v=>!v),'green'],
+                    ...(isCmp?[[ticker2,showD2,()=>setShowD2(v=>!v),'blue']]:[])]
+                    .filter(([tk])=>DESC[tk]).map(([tk,show,tog,col],i)=>(
+                    <div key={i} style={{marginTop:12}}>
+                      <button onClick={tog} style={{background:'none',border:'none',cursor:'pointer',
+                        fontSize:12,color:col==='blue'?'var(--bl)':'var(--gr)',fontWeight:600,
+                        display:'flex',alignItems:'center',gap:5,fontFamily:'var(--font)'}}>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                          style={{transform:show?'rotate(180deg)':'none',transition:'transform .2s'}}>
+                          <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                        {tk} 종목 설명 {show?'닫기':'보기'}
+                      </button>
+                      {show&&<div className="popIn" style={{marginTop:7,padding:'11px 13px',background:'var(--inp-bg2)',
+                        borderRadius:'var(--r-sm)',fontSize:12,color:'var(--t2)',lineHeight:1.7,border:'1px solid var(--bd)'}}>
+                        {DESC[tk]}
+                      </div>}
+                    </div>
+                  ))}
+
+                  {/* Verification */}
+                  {showVer&&verTxt&&(
+                    <div className="popIn" style={{marginTop:16,padding:16,background:'var(--bl-s)',borderRadius:12,border:'1px solid var(--bl-m)'}}>
+                      <div style={{fontSize:12,fontWeight:700,color:'var(--bl)',marginBottom:10,display:'flex',alignItems:'center',gap:6}}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4"/><path d="M12 2l2 2h4l2 2v4l2 2v4l-2 2v4l-2 2h-4l-2 2-2-2H6l-2-2v-4l-2-2v-4l2-2V6l2-2h4z"/></svg>
+                        수학적 검증 결과
+                        <button onClick={()=>setShowVer(false)} style={{marginLeft:'auto',background:'none',border:'none',cursor:'pointer',color:'var(--t3)',fontSize:16,lineHeight:1}}>×</button>
+                      </div>
+                      <div style={{fontSize:13,color:'var(--t1)'}}>{mkdn(verTxt)}</div>
+                    </div>
+                  )}
+                </Card>
+              )}
+
+              {/* ── CHART */}
+              <Card style={{padding:22}}>
+                <div className="r-card-hdr" style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:18,flexWrap:'wrap',gap:10}}>
+                  <div>
+                    <div style={{fontSize:15,fontWeight:700}}>자산 성장 추이</div>
+                    <div style={{fontSize:12,color:'var(--t3)',marginTop:2}}>투자 기간 {maxYrs}년 기준 · 인출기 제외</div>
+                  </div>
+                  <div className="r-chart-legend" style={{display:'flex',gap:14,fontSize:12,color:'var(--t2)',flexWrap:'wrap'}}>
+                    {[['#FF6B6B','초기투자금'],['#FFB347','월DCA 누계'],['#34C759','복리 수익']].map(([c,l])=>(
+                      <span key={l} style={{display:'flex',alignItems:'center',gap:5}}>
+                        <span style={{width:9,height:9,borderRadius:3,background:c,display:'inline-block'}}/>{l}
+                      </span>
+                    ))}
+                    {isCmp&&[['#93C5FD','초기(2)'],['#60A5FA','DCA(2)'],['#007AFF','수익(2)']].map(([c,l])=>(
+                      <span key={l} style={{display:'flex',alignItems:'center',gap:5}}>
+                        <span style={{width:9,height:9,borderRadius:3,background:c,display:'inline-block'}}/>{l}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <SVGBarChart data={chartData} isCmp={isCmp}/>
+              </Card>
+
+              {/* ── QUICK CONTROLS */}
+              <Card style={{padding:22}}>
+                <div style={{fontSize:14,fontWeight:700,marginBottom:18,display:'flex',alignItems:'center',gap:7}}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M5.34 18.66l-1.41 1.41M22 12h-2M4 12H2M19.07 19.07l-1.41-1.41M5.34 5.34L3.93 3.93"/></svg>
+                  빠른 조절 <span style={{fontSize:12,fontWeight:400,color:'var(--t3)'}}>— 슬라이더 조절 시 바로 반영</span>
+                </div>
+                <div className="r-3col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:22}}>
+                  {[
+                    ['투자 기간',yrs,v=>{setYrs(v);if(isCmp)setYrs2(v);},1,50,1,'blue',v=>`${v}년`],
+                    ['월 DCA 금액',mm,v=>{setMm(v);if(isCmp)setMm2(v);},0,500,10,'green',v=>v===0?'없음':fKRW(v*1e4)],
+                    ['초기 투자금',init,v=>{setInit(v);if(isCmp)setInit2(v);},0,100000,500,'green',v=>v===0?'없음':fKRW(v*1e4)],
+                    ['은퇴 후 월 인출액',wd,v=>{setWd(v);if(isCmp)setWd2(v);},0,2000,50,'blue',v=>v===0?'없음':fKRW(v*1e4)],
+                  ].map(([lbl,val,setter,min,max,step,col,fmt])=>(
+                    <div key={lbl}>
+                      <div style={{display:'flex',justifyContent:'space-between',marginBottom:9}}>
+                        <span style={{fontSize:12,fontWeight:600,color:'var(--t2)'}}>{lbl}</span>
+                        <span style={{fontSize:16,fontWeight:800,color:col==='blue'?'var(--bl)':'var(--gr)',fontFamily:'var(--mono)'}}>{fmt(val)}</span>
+                      </div>
+                      <input type="range" min={min} max={max} step={step}
+                        value={val} onChange={e=>setter(Number(e.target.value))} className={col}/>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+
+              {/* ── DETAIL TABLE */}
+              <Card style={{overflow:'hidden'}}>
+                <div style={{padding:'18px 22px',borderBottom:'1px solid var(--bd)',
+                  display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10}}>
+                  <div>
+                    <div style={{fontSize:15,fontWeight:700}}>연도별 상세 데이터</div>
+                    <div style={{fontSize:12,color:'var(--t3)',marginTop:2}}>투자 기간 + 은퇴 후 30년 전체</div>
+                  </div>
+                  <div style={{fontSize:11,color:'#7D5900',padding:'5px 11px',borderRadius:7,background:'var(--yl-s)',border:'1px solid rgba(255,214,10,.3)'}}>
+                    2배·4배 돌파 시점 확인
+                  </div>
+                </div>
+                <div style={{overflowX:'auto'}}>
+                  <table className="r-table" style={{fontSize:13}}>
+                    <thead>
+                      <tr style={{background:'var(--inp-bg2)'}}>
+                        <th style={{padding:'11px 18px',fontWeight:700,whiteSpace:'nowrap',color:'var(--t2)'}}>경과 년수</th>
+                        <th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--gr-dk)'}}>평가액 1 (전년대비)</th>
+                        {isCmp&&<th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--bl-dk)'}}>평가액 2 (전년대비)</th>}
+                        <th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--t2)',textAlign:'center'}}>수익률 1</th>
+                        {isCmp&&<th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--t2)',textAlign:'center'}}>수익률 2</th>}
+                        {(isRet||isRet2)&&<th style={{padding:'11px 18px',fontWeight:700,whiteSpace:'nowrap',color:'var(--rd)',textAlign:'right'}}>연간 인출액</th>}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {results.map(row=>{
+                        const isPost=row.year>maxYrs;
+                        const isRetActive=isRet||isRet2;
+                        const isRetRow=isPost&&isRetActive;
+                        const isHL=row.doublePoint||row.doublePoint2;
+                        return (
+                          <tr key={row.year}
+                            style={{background:isRetRow?'var(--row-ret)':isPost?'var(--row-post)':isHL?'var(--yl-s)':'var(--row-bg)',borderTop:'1px solid var(--bd)'}}
+                            onMouseEnter={e=>e.currentTarget.style.background='var(--inp-bg)'}
+                            onMouseLeave={e=>e.currentTarget.style.background=isRetRow?'var(--row-ret)':isPost?'var(--row-post)':isHL?'var(--yl-s)':'var(--row-bg)'}>
+                            <td style={{padding:'11px 18px',whiteSpace:'nowrap'}}>
+                              <div style={{display:'flex',alignItems:'center',flexWrap:'wrap',gap:6}}>
+                                <span style={{fontWeight:700,fontFamily:'var(--mono)',fontSize:13}}>{row.year}년</span>
+                                {isRetRow&&<Badge color="red">은퇴인출기</Badge>}
+                                {row.doublePoint&&<Badge color="yellow">{row.doublePoint}배!</Badge>}
+                                {isCmp&&row.doublePoint2&&!row.doublePoint&&<Badge color="blue">(2) {row.doublePoint2}배!</Badge>}
+                              </div>
+                            </td>
+                            <td style={{padding:'11px 16px',whiteSpace:'nowrap'}}>
+                              <div style={{fontWeight:800,color:'var(--gr-dk)',fontFamily:'var(--mono)',fontSize:14}}>{fKRW(row.totalValue)}</div>
+                              <div style={{fontSize:11,color:row.yearlyIncrease>=0?'var(--gr)':'var(--rd)',marginTop:2,fontWeight:600}}>
+                                {row.yearlyIncrease>0?'+':''}{fKRW(row.yearlyIncrease)} ({row.yearlyIncrease>0?'+':''}{f1(row.yearlyGrowthRate,1)}%)
+                              </div>
+                            </td>
+                            {isCmp&&(
+                              <td style={{padding:'11px 16px',whiteSpace:'nowrap'}}>
+                                <div style={{fontWeight:800,color:'var(--bl-dk)',fontFamily:'var(--mono)',fontSize:14}}>{fKRW(row.totalValue2||0)}</div>
+                                <div style={{fontSize:11,color:(row.yearlyIncrease2||0)>=0?'var(--bl)':'var(--rd)',marginTop:2,fontWeight:600}}>
+                                  {(row.yearlyIncrease2||0)>0?'+':''}{fKRW(row.yearlyIncrease2||0)} ({(row.yearlyIncrease2||0)>0?'+':''}{f1(row.yearlyGrowthRate2||0,1)}%)
+                                </div>
+                              </td>
+                            )}
+                            <td style={{padding:'11px 16px',textAlign:'center',whiteSpace:'nowrap'}}>
+                              <span style={{background:'var(--gr-s)',color:'var(--gr-dk)',border:'1px solid var(--gr-m)',fontSize:12,fontWeight:700,padding:'2px 8px',borderRadius:6,display:'inline-block'}}>
+                                {f1(((row.profit||0)/(row.totalInvested||1))*100,1)}%
+                              </span>
+                            </td>
+                            {isCmp&&(
+                              <td style={{padding:'11px 16px',textAlign:'center',whiteSpace:'nowrap'}}>
+                                <span style={{background:'var(--bl-s)',color:'var(--bl-dk)',border:'1px solid var(--bl-m)',fontSize:12,fontWeight:700,padding:'2px 8px',borderRadius:6,display:'inline-block'}}>
+                                  {f1(((row.profit2||0)/((row.totalInvested2||1)))*100,1)}%
+                                </span>
+                              </td>
+                            )}
+                            {(isRet||isRet2)&&(
+                            <td style={{padding:'11px 18px',textAlign:'right',whiteSpace:'nowrap'}}>
+                              {(row.yearlyWithdrawal||0)>0?(
+                                <div>
+                                  <div style={{fontWeight:700,color:'var(--rd)',fontFamily:'var(--mono)',fontSize:13}}>-{fKRW(row.yearlyWithdrawal)}</div>
+                                  <div style={{fontSize:11,color:'rgba(255,59,48,.65)',marginTop:1}}>월 {fKRW(row.monthlyWithdrawal)}</div>
+                                  {isCmp&&(row.yearlyWithdrawal2||0)>0&&(
+                                    <div style={{marginTop:4,paddingTop:4,borderTop:'1px solid rgba(255,59,48,.12)'}}>
+                                      <div style={{fontSize:12,color:'var(--rd)',opacity:.7}}>-{fKRW(row.yearlyWithdrawal2)} (2)</div>
+                                    </div>
+                                  )}
+                                </div>
+                              ):<span style={{color:'var(--t3)'}}>—</span>}
+                            </td>
+                            )}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* FOOTER */}
+      <footer className="r-footer" style={{borderTop:'1px solid var(--bd)',padding:'20px 24px',maxWidth:1180,margin:'0 auto',
+        display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:12}}>
+        <span style={{fontSize:13,fontWeight:600,color:'var(--t3)',display:'flex',alignItems:'center',gap:6}}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          DCA Compound Simulator — ezlong.com
+        </span>
+        <div style={{fontSize:11,color:'var(--t3)',display:'flex',gap:20}}>
+          <span>과거 수익률은 미래 수익을 보장하지 않습니다</span>
+          <span>투자 시 원금 손실의 위험이 있습니다</span>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+</script>
+</body>
+</html>
