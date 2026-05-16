@@ -223,23 +223,71 @@ async function fetchYFIndex(symbol) {
 // ─── CNN Fear & Greed Index ────────────────────────────────────────────────
 
 async function fetchFearAndGreed() {
-  const reqPath = '/index/fearandgreed/graphdata';
-  try {
-    const data = await httpGet('production.dataviz.cnn.io', reqPath);
-    const fg = data?.fear_and_greed;
-    if (!fg || typeof fg.score !== 'number') throw new Error('F&G 응답 데이터 없음');
-    return {
-      score:      Math.round(fg.score),
-      rating:     fg.rating,        // "Extreme Fear"|"Fear"|"Neutral"|"Greed"|"Extreme Greed"
-      prevClose:  fg.previous_close  != null ? Math.round(fg.previous_close)  : null,
-      prev1Week:  fg.previous_1_week != null ? Math.round(fg.previous_1_week) : null,
-      prev1Month: fg.previous_1_month != null ? Math.round(fg.previous_1_month) : null,
-      timestamp:  fg.timestamp || new Date().toISOString(),
+  // 브라우저처럼 보이는 헤더로 직접 요청 (기본 httpGet은 User-Agent가 단순해 차단될 수 있음)
+  return new Promise((resolve) => {
+    const options = {
+      hostname: 'production.dataviz.cnn.io',
+      path: '/index/fearandgreed/graphdata',
+      method: 'GET',
+      headers: {
+        'User-Agent':      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/124 Safari/537.36',
+        'Accept':          'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Referer':         'https://www.cnn.com/markets/fear-and-greed',
+        'Origin':          'https://www.cnn.com',
+      },
+      timeout: 12000,
     };
-  } catch (e) {
-    console.warn(`  [F&G] CNN Fear & Greed 수집 실패: ${e.message}`);
-    return null;
+    const req = https.request(options, res => {
+      let body = '';
+      res.on('data', c => { body += c; });
+      res.on('end', () => {
+        try {
+          if (res.statusCode !== 200) throw new Error(`HTTP ${res.statusCode}`);
+          const data = JSON.parse(body);
+          const fg   = data?.fear_and_greed;
+          if (!fg || typeof fg.score !== 'number') throw new Error('F&G 응답 데이터 없음');
+          resolve({
+            score:      Math.round(fg.score),
+            rating:     fg.rating,
+            prevClose:  fg.previous_close   != null ? Math.round(fg.previous_close)   : null,
+            prev1Week:  fg.previous_1_week   != null ? Math.round(fg.previous_1_week)  : null,
+            prev1Month: fg.previous_1_month  != null ? Math.round(fg.previous_1_month) : null,
+            timestamp:  fg.timestamp || new Date().toISOString(),
+          });
+        } catch (e) {
+          console.warn(`  [F&G] 파싱 실패: ${e.message}`);
+          resolve(null);
+        }
+      });
+    });
+    req.on('error', e => { console.warn(`  [F&G] 네트워크 오류: ${e.message}`); resolve(null); });
+    req.on('timeout', () => { req.destroy(); console.warn('  [F&G] 타임아웃'); resolve(null); });
+    req.end();
+  });
+}
+
+// ─── 매크로 지표: 국채금리·원유·달러·금 (Yahoo Finance) ──────────────────────
+
+async function fetchMacroIndicators() {
+  const targets = [
+    { symbol: '^TNX',     key: 'yield10y',  label: '미10년물 금리',  unit: '%'  },
+    { symbol: '^TYX',     key: 'yield30y',  label: '미30년물 금리',  unit: '%'  },
+    { symbol: 'CL=F',     key: 'oil',       label: 'WTI 원유',       unit: 'USD' },
+    { symbol: 'DX-Y.NYB', key: 'dxy',       label: '달러인덱스 DXY', unit: ''   },
+    { symbol: 'GC=F',     key: 'gold',      label: '금 Gold',        unit: 'USD' },
+  ];
+
+  const result = {};
+  for (const t of targets) {
+    const raw = await fetchYFIndex(t.symbol);
+    if (raw) {
+      result[t.key] = { ...raw, symbol: t.symbol, label: t.label, unit: t.unit };
+      console.log(`  ${t.label}: ${raw.price.toFixed(2)}${t.unit} (${raw.changePct >= 0 ? '+' : ''}${raw.changePct.toFixed(2)}%)`);
+    }
+    await sleep(1000); // 짧은 간격으로 연속 호출
   }
+  return result;
 }
 
 
@@ -436,7 +484,11 @@ async function main() {
     console.warn('  Fear & Greed 수집 실패 — 대시보드 표시 제외');
   }
 
-  // ── 7차: 저장 ──────────────────────────────────────────────────────────
+  // ── 7차: 매크로 지표 (국채금리·원유·달러·금) ────────────────────────────────
+  console.log('\n--- 매크로 지표 수집 (국채금리·원유·달러·금) ---');
+  const macroData = await fetchMacroIndicators();
+
+  // ── 8차: 저장 ──────────────────────────────────────────────────────────
   const now    = new Date();
   const kstStr = now.toLocaleString('ko-KR', {
     timeZone: 'Asia/Seoul',
@@ -455,6 +507,7 @@ async function main() {
       GSPC: gspcData || null,
     },
     fearAndGreed: fgData || null,
+    macro:        Object.keys(macroData).length > 0 ? macroData : null,
   };
 
   const dir = path.dirname(OUTPUT_PATH);
