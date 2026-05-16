@@ -535,6 +535,25 @@ a { text-decoration: none; color: inherit; }
 .gear-sma-label { font-size: 15px; color: var(--t3); font-weight: 600; }
 .gear-sma-val { font-size: 15px; font-weight: 700; color: var(--t1); }
 
+/* ─── 매크로 지표 카드 ────────────────────────────── */
+.macro-card {
+  background: var(--card); border-radius: var(--r); padding: 20px 24px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 20px rgba(0,0,0,0.06);
+  margin-bottom: 16px;
+}
+.macro-title { font-size: 13px; font-weight: 700; color: var(--t2); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px; }
+.macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+.macro-item { display: flex; flex-direction: column; gap: 3px; }
+.macro-label { font-size: 12px; color: var(--t3); font-weight: 600; }
+.macro-val   { font-size: 18px; font-weight: 800; color: var(--t1); letter-spacing: -.02em; }
+.macro-price { font-size: 18px; font-weight: 800; color: var(--t1); letter-spacing: -.02em; }
+.macro-chg { font-size: 12px; font-weight: 600; }
+.macro-chg.up          { color: var(--rd); }   /* 금리·달러 상승 = 주식엔 부담 */
+.macro-chg.down        { color: var(--gr); }
+.macro-chg.neutral-up  { color: var(--gr); }   /* 금·원유 상승 = 일반 상승색 */
+.macro-chg.neutral-dn  { color: var(--rd); }
+.macro-warn { font-size: 12px; color: var(--or); font-weight: 700; margin-top: 2px; }
+
 /* ─── Fear & Greed 카드 ──────────────────────────── */
 .fg-card {
   background: var(--card); border-radius: var(--r); padding: 28px;
@@ -1046,6 +1065,11 @@ a { text-decoration: none; color: inherit; }
         </div>
       </div>
 
+      <!-- 매크로 지표 (국채금리·원유·달러·금) -->
+      <div id="macro-wrap">
+        <div class="skeleton skel-card" style="height:80px;"></div>
+      </div>
+
       <!-- Fear & Greed -->
       <div id="fg-wrap">
         <div class="skeleton skel-card" style="height:100px;"></div>
@@ -1364,6 +1388,7 @@ let stockData    = {};
 let isLoading    = false;
 let indicesData  = null;   // GitHub JSON에서 로드한 NDX·GSPC 지수 현재가
 let fearGreedData = null;  // CNN Fear & Greed Index
+let macroData     = null;  // 매크로 지표 (국채금리·원유·달러·금)
 
 // ─── 수학 함수들 ──────────────────────────────────
 
@@ -1812,6 +1837,7 @@ async function loadAllData(forceRefresh = false) {
       generatedAt  = ghJson.generatedAt;
       indicesData   = ghJson.indices      ?? null;   // NDX·GSPC 지수 현재가 저장
       fearGreedData = ghJson.fearAndGreed ?? null;   // CNN Fear & Greed
+      macroData     = ghJson.macro        ?? null;   // 매크로 지표
       const ageH   = Math.round((Date.now() - new Date(ghJson.generatedAt).getTime()) / 3600000 * 10) / 10;
       console.log(`[GitHub JSON] ${ghJson.generatedAtKST} 기준 데이터 로드 성공 (${ageH}h 전)`);
     } else {
@@ -1914,6 +1940,7 @@ function renderAll(data) {
   renderActionPlan(qqq, voo, soxx, vix);
   renderScoreGrid(qqq, voo, soxx);
   renderGearBox(qqq, vix);
+  renderMacroIndicators(macroData);
   renderFearAndGreed(fearGreedData);
   renderVIX(data['VIX']);
   renderBreadth(dia, iwm, soxx);
@@ -2213,6 +2240,76 @@ function renderBreadth(dia, iwm, soxx) {
         세 지수가 모두 상승 추세면 공격적 매수, 하나라도 하락 추세면 포지션을 재점검해보시기 바랍니다.
       </div>
       <div class="breadth-grid">${html}</div>
+    </div>`;
+}
+
+// ─── 매크로 지표 렌더링 ───────────────────────────
+function renderMacroIndicators(macro) {
+  const wrap = document.getElementById('macro-wrap');
+  if (!wrap) return;
+  if (!macro || Object.keys(macro).length === 0) {
+    wrap.innerHTML = '';
+    return;
+  }
+
+  // 지표 정의 (순서, 레이블, 단위, 방향 해석)
+  // direction: 'inverse' = 값 상승이 주식에 부정적 (금리, 달러)
+  //            'normal'  = 값 상승이 주식에 긍정적 (금, 원유는 중립)
+  const items = [
+    { key: 'yield10y', label: '미10년물', unit: '%',   dir: 'inverse' },
+    { key: 'yield30y', label: '미30년물', unit: '%',   dir: 'inverse' },
+    { key: 'oil',      label: 'WTI 원유', unit: '$',   dir: 'neutral'  },
+    { key: 'dxy',      label: 'DXY 달러', unit: '',    dir: 'inverse' },
+    { key: 'gold',     label: '금 Gold',  unit: '$',   dir: 'neutral'  },
+  ];
+
+  const cells = items.map(item => {
+    const d = macro[item.key];
+    if (!d) return '';
+
+    const price = typeof d.price === 'number' ? d.price : null;
+    const chg   = typeof d.changePercent === 'number' ? d.changePercent : null;
+
+    if (price === null) return '';
+
+    // 가격 포맷
+    let priceStr;
+    if (item.unit === '%') {
+      priceStr = price.toFixed(3) + '%';
+    } else if (item.unit === '$') {
+      priceStr = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    } else {
+      priceStr = price.toFixed(2);
+    }
+
+    // 변화율 포맷 및 색상
+    let chgHtml = '';
+    if (chg !== null) {
+      const sign   = chg >= 0 ? '+' : '';
+      const chgStr = sign + chg.toFixed(2) + '%';
+      // inverse 항목: 상승이면 주식에 부정적(red), 하락이면 긍정(green)
+      // neutral 항목: 방향에 따라 표준 색상
+      let colorClass;
+      if (item.dir === 'inverse') {
+        colorClass = chg > 0 ? 'macro-chg up' : chg < 0 ? 'macro-chg down' : 'macro-chg';
+      } else {
+        colorClass = chg > 0 ? 'macro-chg neutral-up' : chg < 0 ? 'macro-chg neutral-dn' : 'macro-chg';
+      }
+      chgHtml = `<span class="${colorClass}">${chgStr}</span>`;
+    }
+
+    return `
+      <div class="macro-item">
+        <span class="macro-label">${item.label}</span>
+        <span class="macro-price">${priceStr}</span>
+        ${chgHtml}
+      </div>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <div class="macro-card">
+      <div class="macro-title">매크로 지표</div>
+      <div class="macro-grid">${cells}</div>
     </div>`;
 }
 
