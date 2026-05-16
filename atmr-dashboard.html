@@ -2268,7 +2268,7 @@ function renderMacroIndicators(macro) {
     if (!d) return '';
 
     const price = typeof d.price === 'number' ? d.price : null;
-    const chg   = typeof d.changePercent === 'number' ? d.changePercent : null;
+    const chg   = typeof d.changePct === 'number' ? d.changePct : null;
 
     if (price === null) return '';
 
