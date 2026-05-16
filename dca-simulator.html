@@ -1118,12 +1118,11 @@ function App(){
                 </div>
                 <div className="r-3col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:22}}>
                   {[
-                    ['투자 기간',yrs,v=>{setYrs(v);if(isCmp)setYrs2(v);},1,50,1,'blue',v=>`${v}년`],
-                    ['월 DCA 금액',mm,v=>{setMm(v);if(isCmp)setMm2(v);},0,500,10,'green',v=>v===0?'없음':fKRW(v*1e4)],
-                    ['초기 투자금',init,v=>{setInit(v);if(isCmp)setInit2(v);},0,100000,500,'green',v=>v===0?'없음':fKRW(v*1e4)],
-                    ['은퇴 후 월 인출액',wd,v=>{setWd(v);if(isCmp)setWd2(v);},0,2000,50,'blue',v=>v===0?'없음':fKRW(v*1e4)],
-                  ].map(([lbl,val,setter,min,max,step,col,fmt])=>(
-                    <div key={lbl}>
+                    ['투자 기간',yrs,v=>{setYrs(v);if(isCmp)setYrs2(v);},1,50,1,'blue',v=>`${v}년`,false],
+                    ['월 DCA 금액',mm,v=>{setMm(v);if(isCmp)setMm2(v);},0,500,10,'green',v=>v===0?'없음':fKRW(v*1e4),false],
+                    ['초기 투자금',init,v=>{setInit(v);if(isCmp)setInit2(v);},0,100000,500,'green',v=>v===0?'없음':fKRW(v*1e4),true],
+                  ].map(([lbl,val,setter,min,max,step,col,fmt,full])=>(
+                    <div key={lbl} style={full?{gridColumn:'1 / -1'}:{}}>
                       <div style={{display:'flex',justifyContent:'space-between',marginBottom:9}}>
                         <span style={{fontSize:12,fontWeight:600,color:'var(--t2)'}}>{lbl}</span>
                         <span style={{fontSize:16,fontWeight:800,color:col==='blue'?'var(--bl)':'var(--gr)',fontFamily:'var(--mono)'}}>{fmt(val)}</span>
