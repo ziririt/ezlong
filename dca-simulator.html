@@ -830,7 +830,7 @@ function App(){
       setResults(merged);setLoading(false);
       setTimeout(()=>resRef.current?.scrollIntoView({behavior:'smooth',block:'start'}),80);
     },550);
-  },[loading,ticker,ticker2,mm,mm2,yrs,yrs2,init,init2,isRet,isRet2,wd,wd2,isCmp,exRate,totYrs]);
+  },[loading,ticker,ticker2,mm,mm2,yrs,yrs2,init,init2,isRet,isRet2,wd,wd2,isCmp,totYrs]);
 
   const handleCSV=()=>{
     if(!results.length)return;
