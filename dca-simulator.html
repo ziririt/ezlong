@@ -380,9 +380,17 @@ const INP={width:'100%',padding:'10px 13px',background:'var(--inp-bg)',
 
 const NumInput=memo(function NumInput({value,onChange,color='green',style}){
   const [f,setF]=useState(false);
+  const [raw,setRaw]=useState('');
   const a=color==='blue'?'var(--bl)':'var(--gr)', s=color==='blue'?'var(--bl-s)':'var(--gr-s)';
-  return <input type="number" value={value} onChange={e=>onChange(Number(e.target.value))}
-    onFocus={()=>setF(true)} onBlur={()=>setF(false)}
+  return <input type="text" inputMode="numeric" pattern="[0-9]*" placeholder="0"
+    value={f ? raw : (value>0 ? String(value) : '')}
+    onChange={e=>{
+      const v=e.target.value.replace(/[^0-9]/g,'');
+      setRaw(v);
+      onChange(v===''?0:Number(v));
+    }}
+    onFocus={()=>{setF(true);setRaw(value>0?String(value):'');}}
+    onBlur={()=>setF(false)}
     style={{...INP,...(f?{borderColor:a,boxShadow:`0 0 0 3px ${s}`}:{}),...style}}/>;
 });
 
