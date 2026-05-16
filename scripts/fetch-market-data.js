@@ -19,8 +19,9 @@ const API_KEY  = process.env.TWELVEDATA_API_KEY;
 const TD_HOST  = 'api.twelvedata.com';
 const DELAY_MS = 8500;  // 무료 플랜: 8 credits/min → 8.5초 간격
 
-// QQQ, VOO: 주 지표 / TSLA, NVDA: Two Kings / VIX: 변동성 / DIA, IWM, SOXX: 시장 폭
-const SYMBOLS = ['QQQ', 'VOO', 'TSLA', 'NVDA', 'VIX', 'DIA', 'IWM', 'SOXX'];
+// QQQ, VOO: 주 지표 / TSLA, NVDA: Two Kings / DIA, IWM, SOXX: 시장 폭
+// VIX는 Twelve Data 무료플랜 미지원 → Yahoo Finance로 별도 수집
+const SYMBOLS = ['QQQ', 'VOO', 'TSLA', 'NVDA', 'DIA', 'IWM', 'SOXX'];
 
 // 출력 파일 위치 (repo 루트 기준)
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'market-signals.json');
@@ -222,7 +223,7 @@ async function fetchYFIndex(symbol) {
 // ─── API 호출 (Twelve Data) ─────────────────────────────────────────────────
 
 async function fetchTimeSeries(symbol) {
-  const outputsize = symbol === 'VIX' ? 50 : 300;
+  const outputsize = 300;
   const p = `/time_series?symbol=${encodeURIComponent(symbol)}&interval=1day&outputsize=${outputsize}&apikey=${API_KEY}`;
   const data = await httpGet(TD_HOST, p);
   if (data.status === 'error' || !data.values) {
@@ -315,16 +316,16 @@ async function main() {
     }
   }
 
-  // ── 2차: VIX 가격 먼저 파싱 (다른 종목 점수 계산에 필요) ────────────────
+  // ── 2차: VIX 변동성 지수 수집 (Yahoo Finance — Twelve Data 무료플랜 미지원) ──
   let vixPrice = 18; // 기본값
-  if (rawData['VIX']) {
-    try {
-      const vixValues = [...rawData['VIX'].values].reverse();
-      vixPrice = parseFloat(vixValues[vixValues.length - 1].close);
-      console.log(`\nVIX 현재 수준: ${vixPrice.toFixed(2)}`);
-    } catch (e) {
-      console.warn(`VIX 파싱 실패: ${e.message}`);
-    }
+  let vixYF = null;
+  console.log('\n--- VIX 변동성 지수 수집 (Yahoo Finance) ---');
+  vixYF = await fetchYFIndex('^VIX');
+  if (vixYF) {
+    vixPrice = vixYF.price;
+    console.log(` ^VIX: ${vixYF.price.toFixed(2)} (${vixYF.changePct >= 0 ? '+' : ''}${vixYF.changePct.toFixed(2)}%)`);
+  } else {
+    console.warn(` VIX 수집 실패. 기본값 ${vixPrice} 사용.`);
   }
 
   // ── 3차: 전체 처리 ─────────────────────────────────────────────────────
@@ -337,6 +338,22 @@ async function main() {
     } catch (e) {
       console.error(`  ${sym} 처리 실패: ${e.message}`);
     }
+  }
+
+  // VIX: Yahoo Finance에서 수집한 데이터를 processed에 추가
+  if (vixYF) {
+    processed['VIX'] = {
+      symbol:    'VIX',
+      price:     vixYF.price,
+      change:    vixYF.change,
+      changePct: vixYF.changePct,
+      vix:       vixYF.price,
+      buyScore:  null, sellScore: null,
+      sma5: null, sma20: null, sma50: null, sma200: null,
+      rsi:  null, macd:  null, high52: null, low52: null,
+      dev200: null, dev5: null, gear: null,
+    };
+    console.log(`  VIX: ${vixYF.price.toFixed(2)} (Yahoo Finance)`);
   }
 
   // ── 4차: quote (extended hours) 보완 수집 ──────────────────────────────
@@ -369,7 +386,7 @@ async function main() {
   // 가격(지수값)은 ^NDX·^GSPC에서, 등락률은 QQQ·VOO로 보정
   // (Yahoo Finance 인덱스 심볼의 previousClose 기준이 ETF와 달라 오차 발생)
   console.log('\n--- 나스닥100 / S&P500 지수 수집 (Yahoo Finance) ---');
-  const ndxRaw  = await fetchYFIndex('^IXIC');
+  const ndxRaw  = await fetchYFIndex('^IXIC');  // 나스닥 종합지수 (Composite)
   const gspcRaw = await fetchYFIndex('^GSPC');
 
   const ndxData = ndxRaw ? {
