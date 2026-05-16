@@ -220,6 +220,29 @@ async function fetchYFIndex(symbol) {
   }
 }
 
+// ─── CNN Fear & Greed Index ────────────────────────────────────────────────
+
+async function fetchFearAndGreed() {
+  const reqPath = '/index/fearandgreed/graphdata';
+  try {
+    const data = await httpGet('production.dataviz.cnn.io', reqPath);
+    const fg = data?.fear_and_greed;
+    if (!fg || typeof fg.score !== 'number') throw new Error('F&G 응답 데이터 없음');
+    return {
+      score:      Math.round(fg.score),
+      rating:     fg.rating,        // "Extreme Fear"|"Fear"|"Neutral"|"Greed"|"Extreme Greed"
+      prevClose:  fg.previous_close  != null ? Math.round(fg.previous_close)  : null,
+      prev1Week:  fg.previous_1_week != null ? Math.round(fg.previous_1_week) : null,
+      prev1Month: fg.previous_1_month != null ? Math.round(fg.previous_1_month) : null,
+      timestamp:  fg.timestamp || new Date().toISOString(),
+    };
+  } catch (e) {
+    console.warn(`  [F&G] CNN Fear & Greed 수집 실패: ${e.message}`);
+    return null;
+  }
+}
+
+
 // ─── API 호출 (Twelve Data) ─────────────────────────────────────────────────
 
 async function fetchTimeSeries(symbol) {
@@ -404,7 +427,16 @@ async function main() {
   if (ndxData)  console.log(`  ^NDX:  ${ndxData.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}  (${ndxData.changePct >= 0 ? '+' : ''}${ndxData.changePct.toFixed(2)}%) [QQQ 보정]`);
   if (gspcData) console.log(`  ^GSPC: ${gspcData.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}  (${gspcData.changePct >= 0 ? '+' : ''}${gspcData.changePct.toFixed(2)}%) [VOO 보정]`);
 
-  // ── 6차: 저장 ──────────────────────────────────────────────────────────
+  // ── 6차: CNN Fear & Greed Index ───────────────────────────────────────────
+  console.log('\n--- CNN Fear & Greed Index 수집 ---');
+  const fgData = await fetchFearAndGreed();
+  if (fgData) {
+    console.log(`  Fear & Greed: ${fgData.score} (${fgData.rating}) | 전일 ${fgData.prevClose ?? '-'}, 1주전 ${fgData.prev1Week ?? '-'}, 1개월전 ${fgData.prev1Month ?? '-'}`);
+  } else {
+    console.warn('  Fear & Greed 수집 실패 — 대시보드 표시 제외');
+  }
+
+  // ── 7차: 저장 ──────────────────────────────────────────────────────────
   const now    = new Date();
   const kstStr = now.toLocaleString('ko-KR', {
     timeZone: 'Asia/Seoul',
@@ -422,6 +454,7 @@ async function main() {
       NDX:  ndxData  || null,
       GSPC: gspcData || null,
     },
+    fearAndGreed: fgData || null,
   };
 
   const dir = path.dirname(OUTPUT_PATH);
