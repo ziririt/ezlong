@@ -2991,12 +2991,10 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
     }
 
     if (signals.length > 0) {
-      const overlayNote = (ov.buyAdj || ov.sellAdj)
-        ? `<div style="font-size:11px;color:var(--t3);margin-top:6px;padding-top:6px;border-top:1px solid var(--bd);">옵션 수급 오버레이 반영: 매수 스코어 ${ov.buyAdj > 0 ? '+' : ''}${ov.buyAdj ?? 0}pt · 매도 스코어 ${ov.sellAdj > 0 ? '+' : ''}${ov.sellAdj ?? 0}pt</div>`
-        : '';
+      const overlayNote = '';
       optionsSignalBar = `
         <div style="margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--bg2);border-left:3px solid var(--ac);">
-          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:8px;">옵션 시장 수급 분석 (FlashAlpha)</div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:8px;">옵션 시장 수급 분석</div>
           ${signals.map(s => `<div style="font-size:13px;color:${s.color};font-weight:600;line-height:1.55;margin-bottom:4px;">${s.icon} ${s.text}</div>`).join('')}
           ${overlayNote}
         </div>`;
@@ -3119,8 +3117,7 @@ function renderScoreGrid(qqq, voo, soxx) {
     const ovSellAdj = d.optionsSellAdj ?? 0;
     const overlayBadgeHtml = d.optionsOverlayApplied
       ? `<div style="margin-top:8px;padding:6px 10px;border-radius:8px;background:rgba(10,132,255,0.08);border:1px solid rgba(10,132,255,0.2);font-size:11px;color:var(--ac);font-weight:600;line-height:1.5;">
-          옵션 수급 반영: 매수 ${ovBuyAdj > 0 ? '+' : ''}${ovBuyAdj}pt · 매도 ${ovSellAdj > 0 ? '+' : ''}${ovSellAdj}pt
-          <span style="color:var(--t3);font-weight:400;"> (GEX + VIX 구조)</span>
+          옵션 시장 수급 반영
          </div>`
       : '';
 
@@ -3471,9 +3468,8 @@ function renderOptionsMarket(opts) {
       <div style="padding:16px 20px 4px;">
         <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:14px;">
           <span style="font-size:13px;font-weight:700;color:var(--t1);">옵션 시장 수급 구조</span>
-          <span style="font-size:11px;color:var(--t3);">SPY 기준 · FlashAlpha</span>
+          <span style="font-size:11px;color:var(--t3);">SPY 기준</span>
           ${overlayBadge}
-          ${fetchAgo ? `<span style="font-size:11px;color:var(--t3);margin-left:auto;">${fetchAgo}</span>` : ''}
         </div>
 
         ${gexSignal ? `
@@ -3493,12 +3489,7 @@ function renderOptionsMarket(opts) {
           ${oi.pcRatio !== null ? row('P/C Ratio', `${numFmt(oi.pcRatio)} ${oi.pcRatio > 1.2 ? '(역발상 매수 신호)' : oi.pcRatio < 0.7 ? '(콜 과열 경고)' : '(보통)'}`, oi.pcRatio > 1.2 ? 'var(--gr)' : oi.pcRatio < 0.7 ? 'var(--rd)' : 'var(--t2)') : ''}
         </div>
 
-        ${ov.reasons && (ov.reasons.buy?.length || ov.reasons.sell?.length) ? `
-        <div style="margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--bg2);font-size:11.5px;color:var(--t3);line-height:1.6;">
-          <span style="font-weight:700;color:var(--t2);">스코어 조정 근거</span><br>
-          ${ov.reasons.buy?.map(r => `· 매수 ${r}`).join('<br>') || ''}
-          ${ov.reasons.sell?.map(r => `· 매도 ${r}`).join('<br>') || ''}
-        </div>` : ''}
+        ${''}
 
         <div style="padding-bottom:12px;"></div>
       </div>
@@ -3570,10 +3561,10 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       nowHeadline      = '상승 추세 속 과열 신호 발생 — 분할 익절 시작할 타이밍';
       nowHeadlineColor = 'var(--rd)';
     } else if (rsi >= 75 && compBuy < 50) {
-      nowHeadline      = '대세 상승 유지 — RSI 극단 과열, 신규 매수 금지 구간';
+      nowHeadline      = '대세 상승 유지 — RSI 극단 과열, 신규 진입은 서두르지 않는 것이 나을 수 있음';
       nowHeadlineColor = 'var(--or)';
     } else if (rsi >= 70 && compBuy < 50) {
-      nowHeadline      = '상승 추세 유지 중 — RSI 과열로 추격 매수 금지, 눌림목 대기';
+      nowHeadline      = '상승 추세 유지 — RSI 과열 구간. 신규 진입보다 기존 보유 중심이 나을 수 있음';
       nowHeadlineColor = 'var(--or)';
     } else if (compBuy >= 80) {
       nowHeadline      = '대세 상승 + 강한 매수 신호 — 지금이 적극 분할 진입 타이밍';
@@ -3582,10 +3573,10 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       nowHeadline      = '상승 추세 + 매수 신호 양호 — 3-3-4 분할 진입 검토 구간';
       nowHeadlineColor = 'var(--gr)';
     } else if (compBuy >= 50) {
-      nowHeadline      = '상승 추세 유지 — 매수 신호 회복 중, 눌림목 확인 후 신규 진입 대기';
+      nowHeadline      = '상승 추세 유지 — 매수 신호 회복 중. 단기 조정 후 진입 타이밍을 고려해볼 수 있음';
       nowHeadlineColor = 'var(--t1)';
     } else {
-      nowHeadline      = '상승 추세 유지 — 매수 신호 부족, 신규 진입 서두르지 말 것';
+      nowHeadline      = '상승 추세 유지 — 매수 신호 부족, 신규 진입은 여유를 두는 것이 좋을 수 있음';
       nowHeadlineColor = 'var(--or)';
     }
   } else if (compGear === 2) {
@@ -3602,10 +3593,10 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   } else {
     // Gear 1
     if (rsi <= 30 && compBuy >= 55) {
-      nowHeadline      = '하락 추세 + RSI 극단 과매도 — 소량 정찰대만 허용, 대부분 현금';
+      nowHeadline      = '하락 추세 + RSI 극단 과매도 — 소량 정찰대 관점에서 접근 가능하나 대부분 현금 유지 권고';
       nowHeadlineColor = 'var(--rd)';
     } else {
-      nowHeadline      = '하락 추세 진입 — 레버리지 즉시 정리, 현금 비중 확대 필수';
+      nowHeadline      = '하락 추세 진입 — 레버리지 정리와 현금 비중 확대를 검토할 시점';
       nowHeadlineColor = 'var(--rd)';
     }
   }
@@ -3959,37 +3950,37 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       rsn1 = `매도 압력 ${compSell}점이 극단 과열(75점)을 넘었습니다. 추세는 살아있지만 지금은 파는 구간입니다. 한 번에 다 팔지 말고 3번에 나눠서 익절하세요.`;
       col1 = 'var(--rd)'; bg1 = 'var(--rd-s)'; bd1 = 'rgba(255,69,58,0.3)';
     } else if (compSell >= 65) {
-      act1 = '신규 매수 자제 + 보유분 일부 익절 검토하세요';
-      rsn1 = `매도 압력 ${compSell}점으로 익절 신호가 발생했습니다. 추세는 유지 중이지만 상승 여력이 줄어들고 있습니다. 기존 포지션에서 30% 정도는 익절을 고려하세요.`;
+      act1 = '신규 매수 자제 + 보유분 일부 익절 검토 권고';
+      rsn1 = `매도 압력 ${compSell}점으로 익절 신호가 나타나고 있습니다. 추세는 유지 중이지만 상승 여력이 줄어드는 국면입니다. 기존 포지션 일부를 가볍게 하는 것도 고려해볼 수 있습니다.`;
       col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
     } else if (rsi >= 75) {
-      act1 = '신규 진입 금지, 기존 보유분만 유지하세요';
-      rsn1 = `RSI ${rsi.toFixed(0)}으로 극단 과열 구간입니다. 추격 매수했다가 눌릴 경우 손실이 큽니다. RSI가 65 이하로 식으면 그때 추가 진입을 검토하세요.`;
+      act1 = 'RSI 극단 과열 — 신규 진입 자제, 기존 보유 중심 유지';
+      rsn1 = `RSI ${rsi.toFixed(0)}으로 극단 과열 구간입니다. 현 시점에서의 신규 진입은 리스크가 클 수 있습니다. RSI가 65 이하로 안정되면 그때 재검토해보는 것을 권고합니다.`;
       col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
     } else if (rsi >= 70) {
-      act1 = '추격 매수 금지, 눌림목 대기하세요';
-      rsn1 = `RSI ${rsi.toFixed(0)}으로 과열 구간입니다. 기존 보유분은 그대로 두되, 새로 사는 건 RSI가 식을 때까지 기다리세요.`;
+      act1 = 'RSI 과열 구간 — 신규 진입은 여유를 두는 것이 나을 수 있음';
+      rsn1 = `RSI ${rsi.toFixed(0)}으로 과열 구간입니다. 기존 보유분은 그대로 유지하면서, 신규 매수는 RSI가 안정된 뒤에 다시 살펴보는 방향을 참고하세요.`;
       col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
     } else if (compBuy >= 65) {
-      act1 = '분할 진입 가능 — 3번에 나눠서 사세요';
-      rsn1 = `상승 추세 + 매수 신호 ${compBuy}점으로 진입 조건 양호합니다. 한 번에 다 사지 말고 3-3-4 원칙으로 나눠서 진입하세요.`;
+      act1 = '분할 진입 고려 가능 — 3-3-4 원칙 참고';
+      rsn1 = `상승 추세 + 매수 신호 ${compBuy}점으로 진입 조건이 양호한 편입니다. 한 번에 몰아넣기보다 3-3-4 원칙으로 나눠서 진입하는 방식을 참고해보세요.`;
       col1 = 'var(--gr)'; bg1 = 'var(--gr-s)'; bd1 = 'rgba(48,209,88,0.3)';
     } else if (compBuy >= 50) {
       act1 = '기존 포지션 유지, 신규 진입은 신중하게';
-      rsn1 = `상승 추세는 유지 중이나 매수 신호가 ${compBuy}점으로 강하지 않습니다. 급하게 사지 말고 매수 신호가 65점 이상으로 올라올 때를 기다리세요.`;
+      rsn1 = `상승 추세는 유지 중이나 매수 신호가 ${compBuy}점으로 강하지 않은 상태입니다. 매수 신호가 65점 이상으로 올라올 때 진입을 다시 검토하는 것도 좋습니다.`;
       col1 = 'var(--t1)'; bg1 = 'var(--card)'; bd1 = 'var(--bd)';
     } else {
-      act1 = '지금 당장 사지 마세요, 신호 회복 대기';
-      rsn1 = `매수 신호 ${compBuy}점으로 진입 타이밍이 아닙니다. 추세는 살아있으나 신호가 회복될 때까지 현금을 쥐고 기다리세요.`;
+      act1 = '매수 신호 부족 — 신호 회복 후 진입 재검토 권고';
+      rsn1 = `매수 신호 ${compBuy}점으로 지금 바로 진입하기엔 다소 이른 구간입니다. 추세는 살아있으나 신호가 회복될 때까지 여유를 두는 것을 권고합니다.`;
       col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
     }
   } else if (compGear === 2) {
-    act1 = '신규 매수 멈추고, 보유 중이면 절반은 파세요';
-    rsn1 = '시장이 방향을 잃은 횡보 구간입니다. 방향이 확실해질 때까지 비중을 줄이고 기다리세요.';
+    act1 = '신규 매수 자제 권고 — 보유 중이면 비중 축소도 고려할 만';
+    rsn1 = '시장이 방향을 잃은 횡보 구간입니다. 방향이 확실해질 때까지 비중을 줄이고 관망하는 것을 참고해보세요.';
     col1 = 'var(--or)'; bg1 = 'rgba(255,159,10,0.08)'; bd1 = 'rgba(255,159,10,0.3)';
   } else {
-    act1 = '지금 보유 중이면 30% 이하로 줄이고 현금 확보하세요';
-    rsn1 = '하락 추세입니다. 신규 매수 절대 금지. 현금을 쌓아두고 시장이 다시 상승 추세로 돌아올 때를 기다리세요.';
+    act1 = '하락 추세 — 비중 축소와 현금 비중 확대 검토 권고';
+    rsn1 = '하락 추세 구간입니다. 신규 매수는 신중하게 접근하는 것이 좋습니다. 현금 비중을 높여두고 시장이 다시 상승 추세로 전환될 때를 기다리는 것을 권고합니다.';
     col1 = 'var(--rd)'; bg1 = 'var(--rd-s)'; bd1 = 'rgba(255,69,58,0.3)';
   }
   // ── FlashAlpha 옵션 컨텍스트 문장 생성 (있을 때만) ──────────────────────────
