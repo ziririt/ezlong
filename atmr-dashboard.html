@@ -2607,16 +2607,13 @@ async function loadAllData(forceRefresh = false) {
     console.warn(`[GitHub JSON] 로드 실패 (${e.message}). API 직접 호출 전환.`);
   }
 
-  // ── 3-B. FlashAlpha 옵션 데이터 병렬 시도 (실패해도 전체 로딩 중단 안 함) ──
-  fetchOptionsJSON()
-    .then(d => {
-      optionsData = d;
-      console.log(`[FlashAlpha] 옵션 데이터 로드 완료 (매수 조정: ${d.overlay?.buyAdj > 0 ? '+' : ''}${d.overlay?.buyAdj ?? 0}, 매도 조정: ${d.overlay?.sellAdj > 0 ? '+' : ''}${d.overlay?.sellAdj ?? 0})`);
-    })
-    .catch(e => {
-      optionsData = null;
-      console.info(`[FlashAlpha] 옵션 데이터 미사용 (${e.message}) — 기본 점수로 진행`);
-    });
+  // ── 3-B. FlashAlpha 옵션 데이터 — 메인 데이터와 병렬 fetch, 최대 4초 대기 ──
+  // 중요: renderAll() 전에 반드시 await해야 오버레이가 반영된다.
+  // 4초 타임아웃: 느린 네트워크에서도 메인 로딩을 크게 지연시키지 않도록.
+  const optionsPromise = fetchOptionsJSON().catch(e => {
+    console.info(`[FlashAlpha] 옵션 데이터 미사용 (${e.message}) — 기본 점수로 진행`);
+    return null;
+  });
 
   // ── 4. GitHub JSON 실패 시에만 → 실시간 API 직접 호출 ─────────────────
   if (!Object.keys(fetchedData).length) {
@@ -2676,6 +2673,15 @@ async function loadAllData(forceRefresh = false) {
   } else {
     setStatus('cached', '네트워크 오류로 이전 데이터 표시 중. 잠시 후 새로고침하세요.');
     setUpdateTime(new Date(generatedAt));
+  }
+
+  // ── FlashAlpha 옵션 데이터 대기 (최대 4초) — renderAll 전에 반드시 완료 ────
+  optionsData = await Promise.race([
+    optionsPromise,
+    new Promise(r => setTimeout(() => r(null), 4000))
+  ]);
+  if (optionsData) {
+    console.log(`[FlashAlpha] 옵션 데이터 로드 완료 — 매수 ${optionsData.overlay?.buyAdj > 0 ? '+' : ''}${optionsData.overlay?.buyAdj ?? 0}pt, 매도 ${optionsData.overlay?.sellAdj > 0 ? '+' : ''}${optionsData.overlay?.sellAdj ?? 0}pt`);
   }
 
   clearTimeout(hardTimeout);
