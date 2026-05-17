@@ -1,0 +1,114 @@
+name: ATMR 옵션 시장 데이터 수집 (FlashAlpha)
+
+# ─── 스케줄 설명 ────────────────────────────────────────────────────────────
+# 미국 장 마감 직후 1회 수집 (장중 옵션 데이터는 종가 기준으로 확정됨).
+#
+# 마감 시각 (미국 동부 시간 → UTC):
+#   EDT (여름): 16:15 ET = 20:15 UTC
+#   EST (겨울): 16:15 ET = 21:15 UTC
+#
+# DST 전환 구간 양쪽 모두 커밋하므로 중복 실행되는 날이 있으나,
+# concurrency 설정으로 두 번째 실행은 건너뜁니다.
+#
+on:
+  schedule:
+    - cron: '15 20 * * 1-5'   # 16:15 ET (EDT 여름)
+    - cron: '15 21 * * 1-5'   # 16:15 ET (EST 겨울)
+
+  # 수동 실행 허용
+  workflow_dispatch:
+
+jobs:
+  fetch-options:
+    runs-on: ubuntu-latest
+
+    # 중복 실행 방지 (DST 전환일 양쪽 cron 모두 발동 시 두 번째 건너뜀)
+    concurrency:
+      group: fetch-options-data
+      cancel-in-progress: false
+
+    steps:
+      # ── 1. 저장소 체크아웃 ─────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 2. Node.js 설치 ────────────────────────────────────────────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # ── 3. 장 마감 시간대 내 실행 여부 확인 ────────────────────────────
+      # cron은 정확히 목표 시각에 발동하지만, DST 전환일에 두 cron이 모두 발동할 수 있음.
+      # 실제 현재 UTC 시각을 기준으로 16:00~17:30 ET(=20:00~21:30 또는 21:00~22:30 UTC)
+      # 범위 내에서만 수집. 범위 밖이면 스킵.
+      - name: Check market close window
+        id: time_check
+        run: |
+          HOUR=$(date -u +%H)
+          MIN=$(date -u +%M)
+          TOTAL_MIN=$((HOUR * 60 + MIN))
+
+          # EDT: 20:00~21:30 UTC (1200~1290분)
+          # EST: 21:00~22:30 UTC (1260~1350분)
+          # 합집합: 20:00~22:30 UTC (1200~1350분)
+          if [ "$TOTAL_MIN" -ge 1200 ] && [ "$TOTAL_MIN" -le 1350 ]; then
+            echo "IN_WINDOW=true"  >> "$GITHUB_OUTPUT"
+            echo "현재 UTC: $(date -u '+%H:%M') → 수집 실행"
+          else
+            echo "IN_WINDOW=false" >> "$GITHUB_OUTPUT"
+            echo "현재 UTC: $(date -u '+%H:%M') → 수집 시간대 아님, 스킵"
+          fi
+
+      # ── 4. FlashAlpha 데이터 수집 ──────────────────────────────────────
+      - name: Run FlashAlpha options fetch script
+        if: steps.time_check.outputs.IN_WINDOW == 'true'
+        env:
+          FLASHALPHA_API_KEY: ${{ secrets.FLASHALPHA_API_KEY }}
+        run: node scripts/fetch-flashalpha-spy.js
+
+      # ── 5. 변경사항 커밋 및 푸시 ───────────────────────────────────────
+      - name: Commit and push options-latest.json
+        if: steps.time_check.outputs.IN_WINDOW == 'true'
+        run: |
+          git config user.name  "ATMR Bot"
+          git config user.email "atmr-bot@ezlong.com"
+
+          # options-latest.json이 없거나 변경 없으면 커밋 건너뜀
+          if [ ! -f data/options-latest.json ]; then
+            echo "options-latest.json 없음 (수집 실패 가능성). 커밋 건너뜀."
+            exit 0
+          fi
+
+          if git diff --quiet data/options-latest.json 2>/dev/null && \
+             git ls-files --error-unmatch data/options-latest.json 2>/dev/null; then
+            echo "데이터 변경 없음. 커밋 건너뜀."
+            exit 0
+          fi
+
+          git add data/options-latest.json
+          git commit -m "chore: FlashAlpha 옵션 시장 데이터 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+
+          # push 충돌 방지: rebase 후 push (최대 3회 재시도)
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && break
+            echo "push 재시도 $i/3..."
+            sleep 5
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 6. 스킵 안내 ──────────────────────────────────────────────────
+      - name: Skip message
+        if: steps.time_check.outputs.IN_WINDOW != 'true'
+        run: echo "수집 시간대 아님 — 아무 것도 하지 않음."
+
+      # ── 7. 실패 시 알림 ────────────────────────────────────────────────
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "::error::FlashAlpha 옵션 데이터 수집 실패."
+          echo "::error::API 키 설정: GitHub repo → Settings → Secrets → FLASHALPHA_API_KEY"
+          echo "::error::현재 API 키: vBdFDeCc45T1CpcggvAL7BE5MDCXXHKyvLHepciE (Secrets에 등록 필요)"
