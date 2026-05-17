@@ -11,9 +11,13 @@ name: ATMR 시장 데이터 수집
 #   KST 17:05 (프리마켓)  → 여름 08:05 UTC / 겨울 09:05 UTC
 #   KST 05:05 (장후 마감) → 여름 20:05 UTC / 겨울 21:05 UTC
 #
+# DST 전환 구간 중복 실행 시 concurrency 설정으로 무해하게 처리됩니다.
+#
 on:
   schedule:
     # ── 장중 15분 간격 (UTC 13~21시, 월~금) ─────────────────────────────────
+    # 여름(EDT): US장 13:30~20:00 UTC / 겨울(EST): US장 14:30~21:00 UTC
+    # 양쪽 모두 커버. 장 전후 약간 여유 포함 (무해)
     - cron: '*/15 13-21 * * 1-5'
 
     # ── 장 외 보조 수집 (프리마켓 · 장후) ────────────────────────────────────
@@ -22,46 +26,63 @@ on:
     - cron: '5 20 * * 1-5'   # 05:05 KST 장후 마감 (여름 EDT)
     - cron: '5 21 * * 1-5'   # 05:05 KST 장후 마감 (겨울 EST)
 
+  # 수동 실행 허용 (GitHub → Actions 탭에서 "Run workflow" 클릭)
   workflow_dispatch:
 
 jobs:
   fetch-and-commit:
     runs-on: ubuntu-latest
+    # 중복 실행 방지: 같은 workflow가 이미 실행 중이면 건너뜀
     concurrency:
       group: fetch-market-data
       cancel-in-progress: false
 
     steps:
+      # ── 1. 저장소 체크아웃 ─────────────────────────────────────────────
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # ── 2. Node.js 설치 ────────────────────────────────────────────────
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
+      # ── 3. 데이터 수집 실행 ────────────────────────────────────────────
       - name: Run market data fetch script
         env:
           TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
         run: node scripts/fetch-market-data.js
 
+      # ── 4. 변경사항 커밋 및 푸시 ───────────────────────────────────────
       - name: Commit and push market-signals.json
         run: |
           git config user.name  "ATMR Bot"
           git config user.email "atmr-bot@ezlong.com"
+
+          # 변경사항이 없으면 (이미 최신 데이터면) 커밋 건너뜀
           if git diff --quiet data/market-signals.json 2>/dev/null; then
             echo "데이터 변경 없음. 커밋 건너뜀."
             exit 0
           fi
+
           git add data/market-signals.json
           git commit -m "chore: ATMR 시장 데이터 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
-          git push
+
+          # 동시 실행 시 push 충돌 방지: rebase 후 push (최대 3회 재시도)
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && break
+            echo "push 재시도 $i/3..."
+            sleep 5
+          done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # ── 5. 실패 시 알림 ────────────────────────────────────────────────
       - name: Notify on failure
         if: failure()
         run: |
           echo "::error::ATMR 데이터 수집 실패. Twelve Data API 키와 GitHub Secrets를 확인하세요."
+          echo "::error::API_KEY 설정: GitHub repo → Settings → Secrets → TWELVEDATA_API_KEY"
