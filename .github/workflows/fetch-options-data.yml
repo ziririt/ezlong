@@ -15,8 +15,15 @@ on:
     - cron: '15 20 * * 1-5'   # 16:15 ET (EDT 여름)
     - cron: '15 21 * * 1-5'   # 16:15 ET (EST 겨울)
 
-  # 수동 실행 허용
+  # 수동 실행 허용 (force_run: true 로 시간 체크 건너뜀 — 테스트용)
   workflow_dispatch:
+    inputs:
+      force_run:
+        description: '시간 체크 무시하고 즉시 실행 (테스트용)'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
 
 jobs:
   fetch-options:
@@ -51,10 +58,14 @@ jobs:
           MIN=$(date -u +%M)
           TOTAL_MIN=$((HOUR * 60 + MIN))
 
+          # 수동 실행 시 force_run=true 이면 시간 체크 건너뜀
+          if [ "${{ github.event.inputs.force_run }}" = "true" ]; then
+            echo "IN_WINDOW=true" >> "$GITHUB_OUTPUT"
+            echo "force_run=true → 시간 체크 건너뜀, 즉시 실행"
           # EDT: 20:00~21:30 UTC (1200~1290분)
           # EST: 21:00~22:30 UTC (1260~1350분)
           # 합집합: 20:00~22:30 UTC (1200~1350분)
-          if [ "$TOTAL_MIN" -ge 1200 ] && [ "$TOTAL_MIN" -le 1350 ]; then
+          elif [ "$TOTAL_MIN" -ge 1200 ] && [ "$TOTAL_MIN" -le 1350 ]; then
             echo "IN_WINDOW=true"  >> "$GITHUB_OUTPUT"
             echo "현재 UTC: $(date -u '+%H:%M') → 수집 실행"
           else
