@@ -1,40 +1,52 @@
 {
-  "fetchedAt": "2026-05-17T13:30:34.270Z",
+  "fetchedAt": "2026-05-17T11:15:00.000Z",
+  "_note": "테스트용 mock 데이터 (2026-05-17 기준 현실적 추정치) — 화요일 실수집 후 교체됨",
   "source": "flashalpha.io",
   "symbol": "SPY",
+
   "options": {
-    "spyPrice": null,
-    "netGEX": null,
-    "gammaFlip": null,
-    "callWall": null,
-    "putWall": null,
-    "netDEX": null,
-    "aboveGammaFlip": null
+    "spyPrice":    739.17,
+    "netGEX":      1850000000,
+    "gammaFlip":   718.50,
+    "callWall":    750.00,
+    "putWall":     720.00,
+    "netDEX":      420000000,
+    "aboveGammaFlip": true
   },
+
   "volatility": {
-    "skew": null,
-    "vvix": null,
-    "vix1m": null,
-    "vix3m": null,
-    "vix6m": null,
-    "termStructure": "unknown"
+    "skew":          124.8,
+    "vvix":           86.3,
+    "vix1m":          18.43,
+    "vix3m":          20.10,
+    "vix6m":          21.40,
+    "termStructure": "contango"
   },
+
   "oi": {
-    "callOI": null,
-    "putOI": null,
-    "pcRatio": null
+    "callOI":   4820000,
+    "putOI":    3940000,
+    "pcRatio":  0.82
   },
+
   "overlay": {
-    "buyAdj": 0,
-    "sellAdj": 0,
+    "buyAdj":  12,
+    "sellAdj": -8,
     "reasons": {
-      "buy": [],
-      "sell": []
+      "buy": [
+        "SPY(739.17) > 감마 플립(718.50), 순GEX 양수 → 시장 안정 구간 +8",
+        "VIX 콘탱고 (단기 18.4 < 장기 20.1) → 안정 구조 +4"
+      ],
+      "sell": [
+        "SPY(739.17) > 감마 플립(718.50), 순GEX 양수 → 시장 안정 -4",
+        "VIX 콘탱고 → 매도 압력 완화 -4"
+      ]
     }
   },
+
   "fetchStatus": {
-    "snapshot": false,
-    "volMacro": false,
-    "oiData": false
+    "snapshot": true,
+    "volMacro": true,
+    "oiData":   true
   }
 }
