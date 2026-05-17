@@ -337,7 +337,7 @@ async function main() {
       callWall:    snapshot?.callWall    ?? null,
       putWall:     snapshot?.putWall     ?? null,
       netDEX:      snapshot?.netDEX      ?? null,
-      aboveGammaFlip: (snapshot?.spyPrice !== null && snapshot?.gammaFlip !== null)
+      aboveGammaFlip: (snapshot !== null && snapshot?.spyPrice !== null && snapshot?.gammaFlip !== null)
         ? snapshot.spyPrice > snapshot.gammaFlip
         : null,
     },
