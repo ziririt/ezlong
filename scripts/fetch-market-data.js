@@ -490,11 +490,9 @@ async function main() {
 
   // ── 8차: 저장 ──────────────────────────────────────────────────────────
   const now    = new Date();
-  const kstStr = now.toLocaleString('ko-KR', {
-    timeZone: 'Asia/Seoul',
-    year: 'numeric', month: '2-digit', day: '2-digit',
-    hour: '2-digit', minute: '2-digit', hour12: false,
-  });
+  const kstDate = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  const pad2    = n => String(n).padStart(2, '0');
+  const kstStr  = `${kstDate.getUTCFullYear()}-${pad2(kstDate.getUTCMonth()+1)}-${pad2(kstDate.getUTCDate())} ${pad2(kstDate.getUTCHours())}:${pad2(kstDate.getUTCMinutes())}`;
 
   const output = {
     generatedAt:    now.toISOString(),
