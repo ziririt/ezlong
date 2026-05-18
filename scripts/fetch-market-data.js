@@ -222,19 +222,16 @@ async function fetchYFIndex(symbol) {
 
 // ─── CNN Fear & Greed Index ────────────────────────────────────────────────
 
-async function fetchFearAndGreed() {
-  // 브라우저처럼 보이는 헤더로 직접 요청 (기본 httpGet은 User-Agent가 단순해 차단될 수 있음)
+function tryFetchFG(hostname, path, headers) {
   return new Promise((resolve) => {
     const options = {
-      hostname: 'production.dataviz.cnn.io',
-      path: '/index/fearandgreed/graphdata',
-      method: 'GET',
+      hostname, path, method: 'GET',
       headers: {
-        'User-Agent':      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/124 Safari/537.36',
+        'User-Agent':      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
         'Accept':          'application/json, text/plain, */*',
         'Accept-Language': 'en-US,en;q=0.9',
-        'Referer':         'https://www.cnn.com/markets/fear-and-greed',
-        'Origin':          'https://www.cnn.com',
+        'Cache-Control':   'no-cache',
+        ...(headers || {}),
       },
       timeout: 12000,
     };
@@ -243,28 +240,87 @@ async function fetchFearAndGreed() {
       res.on('data', c => { body += c; });
       res.on('end', () => {
         try {
-          if (res.statusCode !== 200) throw new Error(`HTTP ${res.statusCode}`);
-          const data = JSON.parse(body);
-          const fg   = data?.fear_and_greed;
-          if (!fg || typeof fg.score !== 'number') throw new Error('F&G 응답 데이터 없음');
-          resolve({
-            score:      Math.round(fg.score),
-            rating:     fg.rating,
-            prevClose:  fg.previous_close   != null ? Math.round(fg.previous_close)   : null,
-            prev1Week:  fg.previous_1_week   != null ? Math.round(fg.previous_1_week)  : null,
-            prev1Month: fg.previous_1_month  != null ? Math.round(fg.previous_1_month) : null,
-            timestamp:  fg.timestamp || new Date().toISOString(),
-          });
-        } catch (e) {
-          console.warn(`  [F&G] 파싱 실패: ${e.message}`);
-          resolve(null);
-        }
+          if (res.statusCode !== 200) { resolve({ ok: false, reason: `HTTP ${res.statusCode}` }); return; }
+          resolve({ ok: true, body: JSON.parse(body) });
+        } catch (e) { resolve({ ok: false, reason: e.message }); }
       });
     });
-    req.on('error', e => { console.warn(`  [F&G] 네트워크 오류: ${e.message}`); resolve(null); });
-    req.on('timeout', () => { req.destroy(); console.warn('  [F&G] 타임아웃'); resolve(null); });
+    req.on('error', e => resolve({ ok: false, reason: e.message }));
+    req.on('timeout', () => { req.destroy(); resolve({ ok: false, reason: 'timeout' }); });
     req.end();
   });
+}
+
+async function fetchFearAndGreed() {
+  // 엔드포인트 1: CNN production dataviz (기본)
+  const r1 = await tryFetchFG('production.dataviz.cnn.io', '/index/fearandgreed/graphdata', {
+    'Referer': 'https://www.cnn.com/markets/fear-and-greed',
+    'Origin':  'https://www.cnn.com',
+  });
+  if (r1.ok) {
+    const fg = r1.body?.fear_and_greed;
+    if (fg && typeof fg.score === 'number') {
+      console.log(`  [F&G] 엔드포인트1 성공: score=${Math.round(fg.score)}`);
+      return {
+        score:      Math.round(fg.score),
+        rating:     fg.rating,
+        prevClose:  fg.previous_close  != null ? Math.round(fg.previous_close)  : null,
+        prev1Week:  fg.previous_1_week != null ? Math.round(fg.previous_1_week) : null,
+        prev1Month: fg.previous_1_month!= null ? Math.round(fg.previous_1_month): null,
+        timestamp:  fg.timestamp || new Date().toISOString(),
+      };
+    }
+    console.warn(`  [F&G] 엔드포인트1 파싱 실패: fear_and_greed 필드 없음 / score=${fg?.score}`);
+  } else {
+    console.warn(`  [F&G] 엔드포인트1 실패: ${r1.reason}`);
+  }
+
+  // 엔드포인트 2: CNN dataviz (trailing slash)
+  const r2 = await tryFetchFG('production.dataviz.cnn.io', '/index/fearandgreed/graphdata/', {
+    'Referer': 'https://www.cnn.com/',
+    'Origin':  'https://www.cnn.com',
+  });
+  if (r2.ok) {
+    const fg = r2.body?.fear_and_greed;
+    if (fg && typeof fg.score === 'number') {
+      console.log(`  [F&G] 엔드포인트2 성공: score=${Math.round(fg.score)}`);
+      return {
+        score:      Math.round(fg.score),
+        rating:     fg.rating,
+        prevClose:  fg.previous_close  != null ? Math.round(fg.previous_close)  : null,
+        prev1Week:  fg.previous_1_week != null ? Math.round(fg.previous_1_week) : null,
+        prev1Month: fg.previous_1_month!= null ? Math.round(fg.previous_1_month): null,
+        timestamp:  fg.timestamp || new Date().toISOString(),
+      };
+    }
+    console.warn(`  [F&G] 엔드포인트2 파싱 실패`);
+  } else {
+    console.warn(`  [F&G] 엔드포인트2 실패: ${r2.reason}`);
+  }
+
+  // 엔드포인트 3: CNN markets API (구버전 경로)
+  const r3 = await tryFetchFG('markets.money.cnn.com', '/services/api/mood/fearandgreed/current', {
+    'Referer': 'https://money.cnn.com/data/fear-and-greed/',
+    'Origin':  'https://money.cnn.com',
+  });
+  if (r3.ok) {
+    const d = r3.body;
+    const score = d?.fear_and_greed?.score ?? d?.score ?? d?.fgi?.now?.value;
+    if (typeof score === 'number') {
+      console.log(`  [F&G] 엔드포인트3 성공: score=${Math.round(score)}`);
+      return {
+        score:   Math.round(score),
+        rating:  d?.fear_and_greed?.rating ?? d?.rating ?? 'Neutral',
+        timestamp: new Date().toISOString(),
+      };
+    }
+    console.warn(`  [F&G] 엔드포인트3 파싱 실패`);
+  } else {
+    console.warn(`  [F&G] 엔드포인트3 실패: ${r3.reason}`);
+  }
+
+  console.warn('  [F&G] 모든 엔드포인트 실패 — Fear & Greed 데이터 없음');
+  return null;
 }
 
 // ─── 매크로 지표: 국채금리·원유·달러·금 (Yahoo Finance) ──────────────────────
@@ -343,10 +399,11 @@ function processTimeSeries(raw, symbol, vixPrice) {
 
   const dev200 = sma200 ? (price - sma200) / sma200 * 100 : 0;
   const dev5   = sma5   ? (price - sma5)   / sma5   * 100 : 0;
+  const dev20  = sma20  ? (price - sma20)  / sma20  * 100 : 0;  // 20일선 이탈도 추가
   const gear   = getGear(dev200);
 
   const vix    = symbol === 'VIX' ? price : (vixPrice || 18);
-  const obj    = { symbol, price, change, changePct, sma5, sma20, sma50, sma200, rsi, macd, high52, low52, dev200, dev5, gear, vix };
+  const obj    = { symbol, price, change, changePct, sma5, sma20, sma50, sma200, rsi, macd, high52, low52, dev200, dev5, dev20, gear, vix };
 
   return {
     ...obj,
@@ -489,10 +546,62 @@ async function main() {
   const macroData = await fetchMacroIndicators();
 
   // ── 8차: 저장 ──────────────────────────────────────────────────────────
-  const now    = new Date();
+  const now     = new Date();
+  // toLocaleString hour12:false 가 자정을 "24:xx"로 반환하는 Node.js 버그 회피
+  // → UTC+9 수동 계산으로 항상 정확한 KST 문자열 생성
   const kstDate = new Date(now.getTime() + 9 * 60 * 60 * 1000);
   const pad2    = n => String(n).padStart(2, '0');
   const kstStr  = `${kstDate.getUTCFullYear()}-${pad2(kstDate.getUTCMonth()+1)}-${pad2(kstDate.getUTCDate())} ${pad2(kstDate.getUTCHours())}:${pad2(kstDate.getUTCMinutes())}`;
+
+  // ── 이전 신호 히스토리 읽기 (24시간 연속성) ────────────────────────────────
+  // 목적: 대시보드가 "직전 회차 진단"과 비교할 수 있도록 최근 48개 슬롯 보존
+  // 구조: previousSignals = [{ at, atKST, qqq: {rsi, macdHist, dev5, ...}, fg, ... }, ...]
+  // 48개 × 30분 = 24시간 커버
+  const HISTORY_MAX = 48;
+  let previousSignals = [];
+  const dir = path.dirname(OUTPUT_PATH);
+  if (fs.existsSync(OUTPUT_PATH)) {
+    try {
+      const existing = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf8'));
+      // 기존 히스토리 배열 가져오기 (없으면 빈 배열)
+      previousSignals = Array.isArray(existing.previousSignals)
+        ? existing.previousSignals
+        : [];
+
+      // 현재 회차의 핵심 지표를 스냅샷으로 만들어 히스토리에 추가
+      const qqq = existing.symbols?.QQQ;
+      const soxx = existing.symbols?.SOXX;
+      if (qqq) {
+        const snapshot = {
+          at:      existing.generatedAt,
+          atKST:   existing.generatedAtKST,
+          qqq: {
+            rsi:          qqq.rsi ?? null,
+            macdHist:     qqq.macd?.histogram ?? null,
+            dev5:         qqq.dev5 ?? null,
+            dev200:       qqq.dev200 ?? null,
+            gear:         qqq.gear ?? null,
+            buyScore:     qqq.buyScore ?? null,
+            sellScore:    qqq.sellScore ?? null,
+            price:        qqq.price ?? null,
+          },
+          soxxMacdHist: soxx?.macd?.histogram ?? null,
+          fearAndGreed: existing.fearAndGreed?.score ?? null,
+          yield10y:     existing.macro?.yield10y?.price ?? null,
+        };
+        previousSignals.unshift(snapshot);  // 최신 항목을 앞에 추가
+      }
+
+      // 48개 초과분 제거 (오래된 것부터)
+      if (previousSignals.length > HISTORY_MAX) {
+        previousSignals = previousSignals.slice(0, HISTORY_MAX);
+      }
+
+      console.log(`  히스토리 스냅샷 저장: ${previousSignals.length}개 (최대 ${HISTORY_MAX}개 / 24시간)`);
+    } catch (e) {
+      console.warn(`  이전 데이터 읽기 실패 (첫 실행일 수 있음): ${e.message}`);
+    }
+  }
 
   const output = {
     generatedAt:    now.toISOString(),
@@ -504,11 +613,11 @@ async function main() {
       NDX:  ndxData  || null,
       GSPC: gspcData || null,
     },
-    fearAndGreed: fgData || null,
-    macro:        Object.keys(macroData).length > 0 ? macroData : null,
+    fearAndGreed:    fgData || null,
+    macro:           Object.keys(macroData).length > 0 ? macroData : null,
+    previousSignals: previousSignals,   // 24시간 히스토리 (최근 48개 슬롯)
   };
 
-  const dir = path.dirname(OUTPUT_PATH);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2), 'utf8');
 
