@@ -1,0 +1,137 @@
+name: ATMR 시간외 전용 수집 (프리마켓·포스트마켓)
+
+# ─── 목적 ────────────────────────────────────────────────────────────────────
+# 메인 워크플로우(fetch-market-data.yml)와 별도 큐로 실행되어
+# 프리마켓·포스트마켓 시간대 수집을 독립적으로 보장합니다.
+#
+# 수집 목표:
+#   ① 프리마켓 시작 후 1시간 이내 최소 1회 (오전 장 전 분위기 포착)
+#   ② 장 마감 직후 1시간 이내 최소 1회 (실적 발표 초기 반응 포착)
+#   ③ 포스트마켓 종료 직전/직후 최소 1회 (한국인 기상 전 최종 스냅샷)
+#
+# ─── 시간대 기준 ──────────────────────────────────────────────────────────────
+#   여름(EDT, UTC-4, 3~11월):
+#     프리마켓 시작   UTC 08:00 = KST 17:00
+#     장 시작         UTC 13:30 = KST 22:30
+#     장 마감         UTC 20:00 = KST 05:00
+#     포스트마켓 마감 UTC 00:00 = KST 09:00
+#
+#   겨울(EST, UTC-5, 11~3월):
+#     프리마켓 시작   UTC 09:00 = KST 18:00
+#     장 시작         UTC 14:30 = KST 23:30
+#     장 마감         UTC 21:00 = KST 06:00
+#     포스트마켓 마감 UTC 01:00 = KST 10:00
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  schedule:
+    # ════════════════════════════════════════════════════════
+    # ① 프리마켓 시작 후 1시간 이내
+    # 전날 뉴스·선물 흐름 반영, 장 시작 전 방향성 파악
+    # ════════════════════════════════════════════════════════
+
+    # 여름(EDT): 프리마켓 시작 UTC 08:00 → 1시간 창 UTC 08:05~09:00 (KST 17:05~18:00)
+    - cron: '5  8 * * 1-5'   # KST 17:05
+    - cron: '20 8 * * 1-5'   # KST 17:20
+    - cron: '35 8 * * 1-5'   # KST 17:35
+    - cron: '50 8 * * 1-5'   # KST 17:50
+
+    # 겨울(EST): 프리마켓 시작 UTC 09:00 → 1시간 창 UTC 09:05~10:00 (KST 18:05~19:00)
+    - cron: '5  9 * * 1-5'   # KST 18:05
+    - cron: '20 9 * * 1-5'   # KST 18:20
+    - cron: '35 9 * * 1-5'   # KST 18:35
+    - cron: '50 9 * * 1-5'   # KST 18:50
+
+    # ════════════════════════════════════════════════════════
+    # ② 장 마감 직후 1시간 이내
+    # 실적 발표·급등락 초기 반응 포착
+    # ════════════════════════════════════════════════════════
+
+    # 여름(EDT): 장 마감 UTC 20:00 → UTC 20:05~20:50 (KST 05:05~05:50)
+    - cron: '5  20 * * 1-5'   # KST 05:05
+    - cron: '20 20 * * 1-5'   # KST 05:20
+    - cron: '35 20 * * 1-5'   # KST 05:35
+    - cron: '50 20 * * 1-5'   # KST 05:50
+
+    # 겨울(EST): 장 마감 UTC 21:00 → UTC 21:05~21:50 (KST 06:05~06:50)
+    - cron: '5  21 * * 1-5'   # KST 06:05
+    - cron: '20 21 * * 1-5'   # KST 06:20
+    - cron: '35 21 * * 1-5'   # KST 06:35
+    - cron: '50 21 * * 1-5'   # KST 06:50
+
+    # ════════════════════════════════════════════════════════
+    # ③ 포스트마켓 종료 직전/직후 (최종 스냅샷)
+    # 한국인들이 출근·기상 전 최종 데이터를 확인하는 시간대
+    # ════════════════════════════════════════════════════════
+
+    # 여름(EDT): 포스트마켓 마감 UTC 00:00 (KST 09:00) 전후
+    # UTC 23:20~00:20 (KST 08:20~09:20)
+    - cron: '20 23 * * 1-5'   # KST 08:20 — 마감 40분 전
+    - cron: '40 23 * * 1-5'   # KST 08:40 — 마감 20분 전
+    - cron: '5   0 * * 2-6'   # KST 09:05 — 마감 5분 후
+    - cron: '20  0 * * 2-6'   # KST 09:20 — 마감 20분 후
+
+    # 겨울(EST): 포스트마켓 마감 UTC 01:00 (KST 10:00) 전후
+    # UTC 00:20~01:20 (KST 09:20~10:20)
+    - cron: '40  0 * * 2-6'   # KST 09:40 — 마감 20분 전
+    - cron: '5   1 * * 2-6'   # KST 10:05 — 마감 5분 후
+    - cron: '20  1 * * 2-6'   # KST 10:20 — 마감 20분 후
+
+  # 수동 실행 (실적 발표·이벤트 당일 긴급 수집)
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: '수동 실행 사유 (예: NVDA 실적 발표 포스트마켓)'
+        required: false
+        default: '시간외 수동 수집'
+
+jobs:
+  extended-hours-fetch:
+    runs-on: ubuntu-latest
+
+    # 메인 워크플로우와 동일 concurrency 그룹 → 동시 실행 방지, 중복 커밋 없음
+    concurrency:
+      group: fetch-market-data
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run market data fetch script
+        env:
+          TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
+        run: node scripts/fetch-market-data.js
+
+      - name: Commit and push market-signals.json
+        run: |
+          git config user.name  "ATMR Bot"
+          git config user.email "atmr-bot@ezlong.com"
+
+          if git diff --quiet data/market-signals.json 2>/dev/null; then
+            echo "데이터 변경 없음 — 커밋 건너뜀."
+            exit 0
+          fi
+
+          git add data/market-signals.json
+          git commit -m "chore: ATMR 시간외 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && break
+            echo "push 재시도 $i/3..."
+            sleep 5
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "::error::ATMR 시간외 수집 실패. Twelve Data API 키를 확인하세요."
