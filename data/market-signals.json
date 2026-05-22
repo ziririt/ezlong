@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-05-22T10:59:56.760Z",
-  "generatedAtKST": "2026-05-22 19:59 KST",
-  "symbolCount": 8,
+  "generatedAt": "2026-05-22T11:22:49.288Z",
+  "generatedAtKST": "2026-05-22 20:22 KST",
+  "symbolCount": 7,
   "errorCount": 0,
   "symbols": {
     "QQQ": {
@@ -25,9 +25,9 @@
       "dev5": 0.8055868960836954,
       "dev20": 3.218733973872797,
       "gear": 3,
-      "vix": 17.14,
+      "vix": 18,
       "buyScore": 43,
-      "sellScore": 54,
+      "sellScore": 51,
       "isMarketOpen": false
     },
     "VOO": {
@@ -51,9 +51,9 @@
       "dev5": 0.49597803586938444,
       "dev20": 1.7504330492220301,
       "gear": 3,
-      "vix": 17.14,
+      "vix": 18,
       "buyScore": 46,
-      "sellScore": 34,
+      "sellScore": 31,
       "isMarketOpen": false
     },
     "TSLA": {
@@ -77,9 +77,9 @@
       "dev5": 0.8593043561722608,
       "dev20": 2.723142769492044,
       "gear": 3,
-      "vix": 17.14,
+      "vix": 18,
       "buyScore": 52,
-      "sellScore": 20,
+      "sellScore": 17,
       "isMarketOpen": false
     },
     "NVDA": {
@@ -103,9 +103,9 @@
       "dev5": -1.2310736640382922,
       "dev20": 2.3869717756896494,
       "gear": 3,
-      "vix": 17.14,
+      "vix": 18,
       "buyScore": 56,
-      "sellScore": 30,
+      "sellScore": 27,
       "isMarketOpen": false
     },
     "DIA": {
@@ -129,9 +129,9 @@
       "dev5": 1.037869872394772,
       "dev20": 1.514718874293814,
       "gear": 3,
-      "vix": 17.14,
+      "vix": 18,
       "buyScore": 46,
-      "sellScore": 28,
+      "sellScore": 25,
       "isMarketOpen": false
     },
     "IWM": {
@@ -155,9 +155,9 @@
       "dev5": 1.6933862757662288,
       "dev20": 0.9857593027699733,
       "gear": 3,
-      "vix": 17.14,
+      "vix": 18,
       "buyScore": 47,
-      "sellScore": 35,
+      "sellScore": 32,
       "isMarketOpen": false
     },
     "SOXX": {
@@ -181,30 +181,10 @@
       "dev5": 3.039887673546351,
       "dev20": 6.5353467850126234,
       "gear": 3,
-      "vix": 17.14,
+      "vix": 18,
       "buyScore": 45,
-      "sellScore": 62,
+      "sellScore": 59,
       "isMarketOpen": false
-    },
-    "VIX": {
-      "symbol": "VIX",
-      "price": 17.14,
-      "change": -0.6799999999999997,
-      "changePct": -3.815937149270481,
-      "vix": 17.14,
-      "buyScore": null,
-      "sellScore": null,
-      "sma5": null,
-      "sma20": null,
-      "sma50": null,
-      "sma200": null,
-      "rsi": null,
-      "macd": null,
-      "high52": null,
-      "low52": null,
-      "dev200": null,
-      "dev5": null,
-      "gear": null
     }
   },
   "indices": {
@@ -225,7 +205,7 @@
     "prevClose": 58,
     "prev1Week": 63,
     "prev1Month": 68,
-    "timestamp": "2026-05-22T10:40:01+00:00"
+    "timestamp": "2026-05-22T11:05:01+00:00"
   },
   "macro": {
     "yield10y": {
@@ -236,40 +216,49 @@
       "label": "미10년물 금리",
       "unit": "%"
     },
-    "yield30y": {
-      "price": 5.112,
-      "change": -0.016000000000000014,
-      "changePct": -0.31201248049922026,
-      "symbol": "^TYX",
-      "label": "미30년물 금리",
-      "unit": "%"
-    },
     "oil": {
-      "price": 98.11,
-      "change": -10.549999999999997,
-      "changePct": -9.709184612552916,
+      "price": 98.4,
+      "change": -10.259999999999991,
+      "changePct": -9.44229707344008,
       "symbol": "CL=F",
       "label": "WTI 원유",
       "unit": "USD"
     },
     "dxy": {
-      "price": 99.355,
-      "change": 0.3850000000000051,
-      "changePct": 0.38900676972820564,
+      "price": 99.372,
+      "change": 0.402000000000001,
+      "changePct": 0.4061836920278883,
       "symbol": "DX-Y.NYB",
       "label": "달러인덱스 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4514.5,
-      "change": -38,
-      "changePct": -0.8347062053816584,
+      "price": 4516,
+      "change": -36.5,
+      "changePct": -0.8017572762218561,
       "symbol": "GC=F",
       "label": "금 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-05-22T10:59:56.760Z",
+      "atKST": "2026-05-22 19:59 KST",
+      "qqq": {
+        "rsi": 70.31233889359049,
+        "macdHist": -1.2795912672345686,
+        "dev5": 0.8055868960836954,
+        "dev200": 16.386730650153105,
+        "gear": 3,
+        "buyScore": 43,
+        "sellScore": 54,
+        "price": 714.51001
+      },
+      "soxxMacdHist": -2.751093199408345,
+      "fearAndGreed": 58,
+      "yield10y": 4.586
+    },
     {
       "at": "2026-05-22T10:57:49.889Z",
       "atKST": "2026-05-22 19:57 KST",
