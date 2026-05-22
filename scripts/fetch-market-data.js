@@ -557,7 +557,7 @@ async function main() {
   // 목적: 대시보드가 "직전 회차 진단"과 비교할 수 있도록 최근 48개 슬롯 보존
   // 구조: previousSignals = [{ at, atKST, qqq: {rsi, macdHist, dev5, ...}, fg, ... }, ...]
   // 48개 × 30분 = 24시간 커버
-  const HISTORY_MAX = 48;
+  const HISTORY_MAX = 144;
   let previousSignals = [];
   const dir = path.dirname(OUTPUT_PATH);
   if (fs.existsSync(OUTPUT_PATH)) {
