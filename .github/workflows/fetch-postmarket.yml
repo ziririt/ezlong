@@ -106,8 +106,6 @@ jobs:
           node-version: '20'
 
       - name: Run market data fetch script
-        env:
-          TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
         run: node scripts/fetch-market-data.js
 
       - name: Commit and push market-signals.json
@@ -134,4 +132,4 @@ jobs:
       - name: Notify on failure
         if: failure()
         run: |
-          echo "::error::ATMR 시간외 수집 실패. Twelve Data API 키를 확인하세요."
+          echo "::error::ATMR 시간외 수집 실패. GitHub Actions 로그에서 Yahoo Finance 요청 오류를 확인하세요."
