@@ -3,29 +3,29 @@
   "name": "에너지 섹터 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-05-27T02:17:29.115Z",
+  "updatedAt": "2026-05-27T07:18:41.296Z",
   "price": {
     "current": 57.85,
-    "change": -1.64,
-    "changePct": -2.76,
+    "change": 12.165,
+    "changePct": 26.63,
     "high52": 63.46,
-    "low52": 40.44,
-    "pos52": 75.6,
+    "low52": 37.245,
+    "pos52": 78.6,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma5": 59.512,
     "sma20": 58.5375,
-    "sma50": 58.43,
-    "sma200": 49.7598,
-    "rsi": 47.65,
+    "sma50": 58.3919,
+    "sma100": 54.9777,
+    "sma200": 49.2923,
+    "rsi": 47.72,
     "macd": {
-      "macd": 0.446876,
-      "signal": 0.391808,
-      "histogram": 0.055068
+      "macd": 0.458206,
+      "signal": 0.408057,
+      "histogram": 0.050148
     },
     "bb": {
       "upper": 61.3895,
@@ -46,17 +46,26 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
-    "support": 55.13,
-    "resistance": 57.88,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "keyPoints": [],
-    "riskNote": ""
+    "trend": "강세",
+    "strength": 4,
+    "support": 54.98,
+    "resistance": 61.39,
+    "rsiStatus": "중립",
+    "macdStatus": "강세확산",
+    "bbStatus": "중단",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 7,
+    "profitTarget1": 61.32,
+    "profitTarget2": 64.8,
+    "stopLoss": 55.13,
+    "narrative": "현재 XLE는 일봉상 SMA100($54.98)과 SMA200($49.29) 위에 안착하며 상승 추세를 이어가고 있습니다. 현재가($57.85)는 SMA20($58.54)과 SMA50($58.39) 바로 아래에 위치하며 단기 저항을 받고 있으나, 주봉상 SMA20($55.92)과 SMA50($48.45)을 모두 상향 돌파하며 장기적인 강세 모멘텀을 보여주고 있습니다. RSI는 47.7로 중립 구간에 머물러 있어 추가 상승 여력이 충분해 보입니다.",
+    "patternNote": "일봉에서는 단기적으로 SMA20과 SMA50에 의해 저항받는 모습이나, 주봉상으로는 SMA100을 강하게 돌파하며 상승 채널을 형성하고 있습니다.",
+    "keyPoints": [
+      "주봉상 장기 이동평균선(SMA100) 상향 돌파",
+      "일봉상 SMA200 지지력 확인",
+      "RSI 중립 구간으로 추가 상승 여력 존재"
+    ],
+    "riskNote": "일봉상 SMA20($58.54) 저항 돌파 실패 시 단기 되돌림 가능성이 있으며, 스윙 지지선($55.13) 이탈 시 하락 압력이 커질 수 있습니다."
   }
 }

@@ -3,29 +3,29 @@
   "name": "알파벳",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-05-27T02:16:42.553Z",
+  "updatedAt": "2026-05-27T07:17:43.622Z",
   "price": {
     "current": 388.88,
-    "change": 5.91,
-    "changePct": 1.54,
+    "change": 213.89,
+    "changePct": 122.23,
     "high52": 408.61,
-    "low52": 162,
-    "pos52": 92,
+    "low52": 140.53,
+    "pos52": 92.6,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma5": 387.216,
     "sma20": 387.41,
     "sma50": 342.8722,
-    "sma200": 297.1534,
-    "rsi": 61.01,
+    "sma100": 330.8116,
+    "sma200": 296.9216,
+    "rsi": 61.02,
     "macd": {
-      "macd": 12.692747,
-      "signal": 16.258028,
-      "histogram": -3.56528
+      "macd": 12.695934,
+      "signal": 16.262668,
+      "histogram": -3.566734
     },
     "bb": {
       "upper": 415.2477,
@@ -46,17 +46,26 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "강세",
+    "strength": 4,
     "support": 382.77,
     "resistance": 408.61,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "중립",
+    "macdStatus": "약세수렴",
+    "bbStatus": "상단접근",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 7,
+    "profitTarget1": 416.92,
+    "profitTarget2": 444.97,
+    "stopLoss": 380.57,
+    "narrative": "현재 GOOGL 일봉 차트를 보면, 주가는 SMA20 ($387.41) 위에 안착하며 강한 상승세를 유지하고 있습니다. 52주 고가($408.61)에 근접한 $388.88에서 거래되고 있으며, 이는 52주 범위의 92.6%에 해당하는 높은 수준입니다. 주봉 RSI(69.1)는 과매수 구간에 근접하고 있으나, 일봉 RSI(61.0)는 아직 중립 구간에 머물러 있습니다. MACD는 데드���로스 이후 히스토그램이 음전환되었으나, 그 폭이 크지 않아 추가적인 하락보다는 횡보 또는 완만한 상승을 시사합니다. 볼린저밴드 상단($415.25)으로 향하는 움직임이 관찰됩니다.",
+    "patternNote": "일봉상으로는 52주 고가 부근에서 저항을 받고 있으나, 주봉상으로는 20주 이동평균선($333.99)을 크게 상회하며 강한 상승 추세를 이어가고 있습니다.",
+    "keyPoints": [
+      "일봉 주가, SMA20 상회하며 강세 유지",
+      "주봉 RSI 과매수 구간 근접, 일봉 RSI 중립 구간",
+      "볼린저밴드 상단으로의 접근 시도"
+    ],
+    "riskNote": "주봉 RSI가 과매수 구간에 진입한 상태에서 일봉상 52주 고가 저항을 돌파하지 못하고 되돌림이 발생할 경우, 단기 조정 가능성이 있습니다."
   }
 }

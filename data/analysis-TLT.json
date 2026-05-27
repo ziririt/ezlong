@@ -3,40 +3,40 @@
   "name": "미국 장기국채 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-05-27T02:17:40.828Z",
+  "updatedAt": "2026-05-27T07:19:09.790Z",
   "price": {
     "current": 85.1,
-    "change": 0.42,
-    "changePct": 0.5,
-    "high52": 92.19,
+    "change": -6.28,
+    "changePct": -6.87,
+    "high52": 101.64,
     "low52": 82.77,
-    "pos52": 24.7,
+    "pos52": 12.3,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma5": 84.186,
-    "sma20": 84.996,
-    "sma50": 85.9962,
-    "sma200": 88.0259,
-    "rsi": 48.94,
+    "sma20": 84.9486,
+    "sma50": 85.7035,
+    "sma100": 86.4354,
+    "sma200": 86.5817,
+    "rsi": 49.93,
     "macd": {
-      "macd": -0.574865,
-      "signal": -0.614122,
-      "histogram": 0.039257
+      "macd": -0.485526,
+      "signal": -0.509005,
+      "histogram": 0.023479
     },
     "bb": {
-      "upper": 86.7917,
-      "middle": 84.996,
-      "lower": 83.2003,
-      "bandwidth": 0.0423
+      "upper": 86.6614,
+      "middle": 84.9486,
+      "lower": 83.2358,
+      "bandwidth": 0.0403
     }
   },
   "levels": {
     "swingResistance": 86.29,
-    "swingSupport": 84.76,
+    "swingSupport": 85,
     "pivot": {
       "pp": 84.75,
       "r1": 86.72,
@@ -46,17 +46,26 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
-    "support": 84.76,
+    "trend": "횡보",
+    "strength": 2,
+    "support": 85,
     "resistance": 86.29,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "중단",
+    "stage": "축적구간",
     "action": "관망",
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 4,
+    "profitTarget1": 86.72,
+    "profitTarget2": 88.35,
+    "stopLoss": 82.77,
+    "narrative": "TLT 일봉 차트를 보면 현재 가격($85.10)이 20일, 50일, 100일, 200일 이동평균선 아래에 위치하며 단기적으로는 약세 압력을 받고 있습니다. RSI는 49.9로 중립 구간에 머물러 있으며, MACD 역시 시그널선 아래에서 약한 음수 값을 기록하며 모멘텀이 부진한 모습입니다. 볼린저밴드 하단과 중단 사이에서 횡보하며 방향성을 탐색하는 구간으로 ��입니다.",
+    "patternNote": "일봉 차트에서는 52주 저가 부근에서 횡보하며 지지력을 확인하는 패턴이 나타나고 있으며, 주봉상으로는 하락 추세 채널 하단부를 테스트하는 움직임을 보이고 있습니다.",
+    "keyPoints": [
+      "일봉상 주요 이동평균선들이 저항으로 작용하고 있음",
+      "RSI와 MACD 모두 방향성 부재를 나타내고 있음",
+      "주봉상 20주, 50주 이동평균선이 지지선 역할을 할 가능성"
+    ],
+    "riskNote": "일봉상 52주 저가인 $82.77을 하향 이탈할 경우 추가적인 하락이 발생할 수 있습니다."
   }
 }

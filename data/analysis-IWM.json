@@ -3,13 +3,13 @@
   "name": "러셀 2000 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-05-27T02:17:34.986Z",
+  "updatedAt": "2026-05-27T07:18:57.969Z",
   "price": {
     "current": 290.51,
-    "change": 5.39,
-    "changePct": 1.89,
+    "change": 85.07,
+    "changePct": 41.41,
     "high52": 290.55,
-    "low52": 202.67,
+    "low52": 171.73,
     "pos52": 100,
     "marketState": "CLOSED",
     "extPrice": null,
@@ -17,15 +17,15 @@
     "extChangePct": null
   },
   "indicators": {
-    "sma5": 282.198,
     "sma20": 280.8245,
-    "sma50": 267.4788,
-    "sma200": 252.9097,
-    "rsi": 65.67,
+    "sma50": 267.47,
+    "sma100": 263.7057,
+    "sma200": 252.1304,
+    "rsi": 65.69,
     "macd": {
-      "macd": 3.941926,
-      "signal": 4.114948,
-      "histogram": -0.173022
+      "macd": 3.952485,
+      "signal": 4.130217,
+      "histogram": -0.177733
     },
     "bb": {
       "upper": 290.2742,
@@ -46,17 +46,26 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "강세",
+    "strength": 4,
     "support": 270.36,
-    "resistance": null,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "keyPoints": [],
-    "riskNote": ""
+    "resistance": 297.25,
+    "rsiStatus": "중립",
+    "macdStatus": "강세확산",
+    "bbStatus": "상단돌파",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 7,
+    "profitTarget1": 297.25,
+    "profitTarget2": 304,
+    "stopLoss": 270.36,
+    "narrative": "현재 러셀 2000 ETF(IWM)는 일봉상 52주 신고가를 경신하며 강한 상승세를 보이고 있습니다. 모든 단기 및 장기 이동평균선 위에 주가가 안착해 있으며, 특히 SMA200 대비 15% 이상 높은 수준에서 거래되고 있습니다. RSI는 65.7로 과열 구간 직전이며, MACD는 양수 영역에서 시그널 라인을 상향 돌파하며 상승 모멘텀이 강화되고 ���습니다. 볼린저밴드 상단을 돌파하며 강한 상승 압력을 나타내고 있습니다.",
+    "patternNote": "일봉 차트에서는 52주 신고가를 경신하며 강력한 상승 추세가 이어지고 있으며, 주봉 차트에서도 모든 이동평균선을 상향 돌파하며 장기적인 상승 추세가 공고해지고 있습니다.",
+    "keyPoints": [
+      "일봉 52주 신고가 경신 및 모든 이동평균선 상향 돌파",
+      "주봉 RSI 70.4로 과매수 구간 진입 임박",
+      "볼린저밴드 상단 돌파 및 강한 상승 모멘텀 지속"
+    ],
+    "riskNote": "일봉 RSI가 70에 근접하며 과매수 구간 진입 시 단기 되돌림 가능성이 있으며, 볼린저밴드 상단 돌파 후 조정 시 스윙 지지선인 270.36을 하향 이탈할 경우 추가 하락 위험이 있습니다."
   }
 }

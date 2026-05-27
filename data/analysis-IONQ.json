@@ -3,23 +3,23 @@
   "name": "아이온큐",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-05-27T02:16:46.430Z",
+  "updatedAt": "2026-05-27T07:17:50.503Z",
   "price": {
     "current": 63.62,
-    "change": -0.02,
-    "changePct": -0.03,
+    "change": 55.19,
+    "changePct": 654.69,
     "high52": 84.64,
-    "low52": 25.89,
-    "pos52": 64.2,
+    "low52": 6.22,
+    "pos52": 73.2,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma5": 57.412,
     "sma20": 51.678,
     "sma50": 41.5704,
+    "sma100": 40.92,
     "sma200": 47.4515,
     "rsi": 69.17,
     "macd": {
@@ -46,17 +46,26 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "강세",
+    "strength": 4,
     "support": 60.14,
     "resistance": 76.13,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "과매수",
+    "macdStatus": "강세확산",
+    "bbStatus": "상단돌파",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 7,
+    "profitTarget1": 73.03,
+    "profitTarget2": 82.43,
+    "stopLoss": 60.14,
+    "narrative": "아이온큐 일봉 차트를 보면, 현재 가격은 모든 단기 및 장기 이동평균선을 상향 돌파하며 강한 상승세를 보이고 있습니다. 특히 SMA200 대비 34% 이상 높은 위치에 있으며, RSI는 69.2로 과매수 구간 진입을 앞두고 있습니다. MACD는 시그널 라인을 상향 돌파한 후 히스토그램이 양수 영역에서 확대되며 상승 모멘텀이 강화되고 있음을 시사합니다. 볼린저밴드 상단을 돌파하며 강한 상승 압력을 나타내고 있습니다.",
+    "patternNote": "일봉 차트에서 가격이 볼린저밴드 상단을 강하게 돌파하며 상승 채널을 형성하고 있으며, 주봉에서도 상승 추세가 견고하게 유지되고 있습니다.",
+    "keyPoints": [
+      "모든 이동평균선 상향 돌파 및 강한 상승 추세",
+      "MACD 강세 확산 및 모멘텀 강화",
+      "볼린저밴드 상단 돌파 및 과매수 구간 진입 임박"
+    ],
+    "riskNote": "RSI가 과매수 구간에 진입함에 따라 단기적인 되돌림 가능성이 있으며, 스윙 지지선인 60.14를 하향 이탈할 경우 하락 압력이 커질 수 있습니다."
   }
 }

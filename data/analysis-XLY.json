@@ -3,29 +3,29 @@
   "name": "소비재 섹터 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-05-27T02:17:31.097Z",
+  "updatedAt": "2026-05-27T07:18:49.123Z",
   "price": {
     "current": 119.45,
-    "change": 0.27,
-    "changePct": 0.23,
+    "change": 31.68,
+    "changePct": 36.09,
     "high52": 125.01,
-    "low52": 103.855,
-    "pos52": 73.7,
+    "low52": 83.24,
+    "pos52": 86.7,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma5": 118.06,
     "sma20": 118.2385,
-    "sma50": 114.9534,
-    "sma200": 117.4312,
-    "rsi": 57.72,
+    "sma50": 114.9312,
+    "sma100": 116.7011,
+    "sma200": 117.1079,
+    "rsi": 57.75,
     "macd": {
-      "macd": 0.629919,
-      "signal": 0.74012,
-      "histogram": -0.110201
+      "macd": 0.637036,
+      "signal": 0.75034,
+      "histogram": -0.113304
     },
     "bb": {
       "upper": 120.8608,
@@ -35,7 +35,7 @@
     }
   },
   "levels": {
-    "swingResistance": 121.13,
+    "swingResistance": 120.14,
     "swingSupport": 118.9,
     "pivot": {
       "pp": 118.26,
@@ -46,17 +46,26 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "강세",
+    "strength": 4,
     "support": 118.9,
-    "resistance": 121.13,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "keyPoints": [],
-    "riskNote": ""
+    "resistance": 120.14,
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "상단접근",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 7,
+    "profitTarget1": 122.32,
+    "profitTarget2": 125.19,
+    "stopLoss": 118.24,
+    "narrative": "현재 XLY는 일봉상 52주 고가에 근접하며 강한 상승세를 보이고 있습니다. 현재가($119.45)는 모든 주요 이동평균선(SMA20, SMA50, SMA100, SMA200) 위에 위치하며, 특히 SMA100, SMA200 대비 각각 2.36%, 2.00% 위에 있어 상승 모멘텀이 살아있음을 보여줍니다. RSI는 57.8로 과매수 구간은 아니지만 상승 여력이 남아있음을 시사합니다. 주봉상으로도 SMA20, SMA50, SMA100 위에 안착하며 장기적인 상승 추세가 견고함을 나타냅니다. 볼린저밴드 상단에 근접하고 있어 단기적인 저항을 받을 수 있으나, 전반적인 추세는 여전히 강세입니다.",
+    "patternNote": "일봉 차트에서는 52주 고가를 향해 상승하는 채널을 형성하고 있으며, 주봉상으로는 장기 이동평균선들을 지지 삼아 꾸준히 상승하는 모습을 보이고 있습니다.",
+    "keyPoints": [
+      "일봉 및 주봉 모두 주요 이동평균선 상향 돌파 및 지지 확인",
+      "RSI 및 MACD 지표상 추가 상승 여력 존재",
+      "52주 고가 돌파 시 추가 상승 가능성 높음"
+    ],
+    "riskNote": "볼린저밴드 상단에 근접한 상태에서 거래량이 동반되지 않는 상승은 단기 되돌림을 유발할 수 있습니다."
   }
 }

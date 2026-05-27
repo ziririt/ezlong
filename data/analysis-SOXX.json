@@ -3,29 +3,29 @@
   "name": "반도체 ETF (iShares)",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-05-27T02:17:25.199Z",
+  "updatedAt": "2026-05-27T07:18:33.378Z",
   "price": {
     "current": 570.09,
-    "change": 32.76,
-    "changePct": 6.1,
+    "change": 331.53,
+    "changePct": 138.97,
     "high52": 572.95,
-    "low52": 201.12,
-    "pos52": 99.2,
+    "low52": 148.31,
+    "pos52": 99.3,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma5": 529.836,
     "sma20": 502.0425,
-    "sma50": 423.9068,
-    "sma200": 331.4436,
+    "sma50": 423.9026,
+    "sma100": 383.0551,
+    "sma200": 331.0535,
     "rsi": 74.58,
     "macd": {
-      "macd": 32.26232,
-      "signal": 31.760182,
-      "histogram": 0.502138
+      "macd": 32.267207,
+      "signal": 31.767249,
+      "histogram": 0.499958
     },
     "bb": {
       "upper": 567.6928,
@@ -46,17 +46,26 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
-    "support": 326.76,
-    "resistance": null,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "keyPoints": [],
-    "riskNote": ""
+    "trend": "강세",
+    "strength": 5,
+    "support": 524.93,
+    "resistance": 618.11,
+    "rsiStatus": "과매수",
+    "macdStatus": "강세확산",
+    "bbStatus": "상단돌파",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 8,
+    "profitTarget1": 618.11,
+    "profitTarget2": 666.14,
+    "stopLoss": 524.93,
+    "narrative": "현재 SOXX는 일봉과 주봉 모두 강력한 상승세를 보이고 있습니다. 일봉상 현재가는 52주 신고가에 근접하며 모든 이동평균선을 상향 돌파한 상태입니다. RSI는 74.6으로 과매수 구간에 진입했지만, MACD는 양수 영역에서 시그널 라인을 상향 돌파하며 강세 확산 신호를 보내고 있습니다. 볼린저밴드 상단을 강하게 돌파하며 상승 모멘텀이 매우 강함을 시사합니다.",
+    "patternNote": "일봉에서는 볼린저밴드 상단을 강하게 돌파하며 상승 채널을 형성하고 있으며, 주봉 역시 모든 이동평균선을 상향 돌파하며 견고한 상승 추세를 유지하고 있습니다.",
+    "keyPoints": [
+      "일봉 및 주봉 모두 강력한 상승 추세",
+      "모든 이동평균선 상향 돌파 및 지지",
+      "MACD 강세 확산 신호 및 볼린저밴드 상단 돌파"
+    ],
+    "riskNote": "RSI가 과매수 구간에 진입한 상태이므로, 단기적인 차익 실현 매물 출회 가능성에 유의해야 합니다."
   }
 }

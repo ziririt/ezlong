@@ -3,23 +3,23 @@
   "name": "AMD",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-05-27T02:16:52.272Z",
+  "updatedAt": "2026-05-27T07:18:02.951Z",
   "price": {
     "current": 503.89,
-    "change": 36.38,
-    "changePct": 7.78,
+    "change": 337.53,
+    "changePct": 202.89,
     "high52": 506.96,
-    "low52": 108.62,
-    "pos52": 99.2,
+    "low52": 76.48,
+    "pos52": 99.3,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma5": 456.524,
     "sma20": 414.359,
     "sma50": 309.3988,
+    "sma100": 262.7622,
     "sma200": 232.5338,
     "rsi": 77.07,
     "macd": {
@@ -46,17 +46,26 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
-    "support": 224.64,
-    "resistance": null,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "keyPoints": [],
-    "riskNote": ""
+    "trend": "강세",
+    "strength": 5,
+    "support": 373.61,
+    "resistance": 570.57,
+    "rsiStatus": "과매수",
+    "macdStatus": "강세확산",
+    "bbStatus": "상단돌파",
+    "stage": "상승추세",
+    "action": "분할매도",
+    "buyScore": 3,
+    "profitTarget1": 570.57,
+    "profitTarget2": 637.24,
+    "stopLoss": 373.61,
+    "narrative": "현재 AMD는 일봉과 주봉 모두에서 강력한 상승 추세를 보여주고 있습니다. 일봉상 현재가는 52주 고가에 근접하며 볼린저밴드 상단을 돌파했고, SMA200 대비 116% 이상 높은 수준입니다. RSI는 일봉 77.1, 주봉 81.9로 모두 과매수 구간에 진입해 단기적인 과열 신호를 보내고 있습니다. MACD는 일봉, 주봉 모두 골든크로스 이�� 히스토그램이 꾸준히 확대되며 강세 모멘텀을 지지하고 있습니다.",
+    "patternNote": "일봉 차트에서는 볼린저밴드 상단을 강하게 돌파하며 상승 채널을 따라 움직이는 모습이며, 주봉 역시 장기 이동평균선을 크게 상회하며 강력한 상승 추세를 유지하고 있습니다.",
+    "keyPoints": [
+      "일봉 및 주봉 모두 강력한 상승 추세 확인",
+      "RSI 과매수 구간 진입으로 단기 과열 신호",
+      "볼린저밴드 상단 돌파 및 강한 상승 모멘텀 지속"
+    ],
+    "riskNote": "RSI가 과매수 구간에 진입한 상태에서 추가적인 상승 동력이 약해지거나 거래량이 감소할 경우 단기 되돌림 가능성이 있습니다."
   }
 }

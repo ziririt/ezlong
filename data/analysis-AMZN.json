@@ -3,23 +3,23 @@
   "name": "아마존",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-05-27T02:16:50.343Z",
+  "updatedAt": "2026-05-27T07:17:59.002Z",
   "price": {
     "current": 265.29,
-    "change": -1.03,
-    "changePct": -0.39,
+    "change": 84.54,
+    "changePct": 46.77,
     "high52": 278.56,
-    "low52": 196,
-    "pos52": 83.9,
+    "low52": 151.61,
+    "pos52": 89.5,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma5": 264.884,
     "sma20": 267.304,
     "sma50": 243.076,
+    "sma100": 233.191,
     "sma200": 230.7654,
     "rsi": 56.61,
     "macd": {
@@ -46,17 +46,26 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
-    "support": 226.88,
+    "trend": "강세",
+    "strength": 4,
+    "support": 254.13,
     "resistance": 278.56,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "중립",
+    "macdStatus": "강세확산",
+    "bbStatus": "상단접근",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 7,
+    "profitTarget1": 277.5,
+    "profitTarget2": 289.72,
+    "stopLoss": 254.13,
+    "narrative": "아마존 일봉 차트를 보면 현재 가격은 SMA200, SMA100, SMA50 이동평균선을 모두 상향 돌파하며 강한 상승세를 유지하고 있습니다. 특히 현재가($265.29)가 SMA20($267.30) 바로 아래에 위치하며 저항을 받고 있지만, 주봉상으로는 SMA20($233.59) 및 SMA100($214.75)과의 이격이 벌어지며 상승 추세가 견고함을 보여줍니다. 일봉 RSI는 56.6으��� 과열 구간은 아니며, MACD는 골든크로스 이후 히스토그램이 양수 구간에서 점진적으로 확대되며 상승 모멘텀이 살아있음을 시사합니다. 볼린저밴드 상단에 근접하고 있어 단기적인 숨 고르기가 나타날 수 있으나, 전반적인 추세는 여전히 강세입니다.",
+    "patternNote": "일봉 차트에서는 단기적으로 볼린저밴드 상단에 근접하며 저항을 받고 있으나, 주봉 차트에서는 장기 이동평균선들을 상향 돌파하며 견고한 상승 추세를 이어가고 있습니다.",
+    "keyPoints": [
+      "일봉 및 주봉 모두 이동평균선 상향 돌파 및 지지 확인",
+      "일봉 RSI 중립 구간, MACD 강세 확산으로 추가 상승 여력 존재",
+      "주봉 차트의 견고한 상승 추세 유지"
+    ],
+    "riskNote": "일봉 볼린저밴드 상단 저항 돌파 실패 시 단기 되돌림 가능성이 있으며, 핵심 지지선인 S1($254.13) 이탈 시 하락 압력이 커질 수 있습니다."
   }
 }

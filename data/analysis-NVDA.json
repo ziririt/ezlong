@@ -3,29 +3,29 @@
   "name": "엔비디아",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-05-27T02:16:36.641Z",
+  "updatedAt": "2026-05-27T07:17:33.746Z",
   "price": {
     "current": 214.86,
-    "change": -0.47,
-    "changePct": -0.22,
+    "change": 108.391,
+    "changePct": 101.81,
     "high52": 236.54,
-    "low52": 132.92,
-    "pos52": 79.1,
+    "low52": 86.62,
+    "pos52": 85.5,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma5": 218.756,
     "sma20": 214.658,
     "sma50": 197.5,
-    "sma200": 187.2029,
+    "sma100": 191.4756,
+    "sma200": 187.1902,
     "rsi": 53.26,
     "macd": {
-      "macd": 6.097557,
-      "signal": 7.440879,
-      "histogram": -1.343322
+      "macd": 6.097726,
+      "signal": 7.441124,
+      "histogram": -1.343399
     },
     "bb": {
       "upper": 235.197,
@@ -46,17 +46,26 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "강세",
+    "strength": 4,
     "support": 194.74,
     "resistance": 216.83,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "상단접근",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 7,
+    "profitTarget1": 236.02,
+    "profitTarget2": 257.18,
+    "stopLoss": 194.74,
+    "narrative": "현재 엔비디아는 일봉상 SMA200 ($187.19) 위에 안착하며 강한 상승 추세를 이어가고 있습니다. 현재가 $214.86은 SMA20 ($214.66)과 거의 일치하며, 이는 단기적으로 강한 지지력을 보여주고 있습니다. 주봉상으로도 SMA20 ($192.18)과 SMA50 ($183.66) 위에 위치하며 장기적인 상승 모멘텀이 유지되고 있음을 시사합니다. RSI는 일봉 53.3, 주봉 61.8로 과매수 구간은 아니지만 상승 여력을 보여줍니다. MACD는 일봉상 시그널선 아래에 있지만, 주봉 MACD 히스토그램이 3.1916으로 양수 값을 유지하며 상승 추세를 지지하고 있습니다. 볼린저밴드 상단에 근접하고 있으나, 아직 돌파하지는 않은 상태입니다.",
+    "patternNote": "일봉상으로는 단기 저항선인 $216.83을 앞두고 숨 고르기 구간에 진입한 모습이며, 주봉상으로는 상승 채널을 따라 꾸준히 우상향하는 패턴을 보이고 있습니다.",
+    "keyPoints": [
+      "일봉 SMA200 상향 돌파 후 안착, 강한 상승 추세 유지",
+      "주봉상 장기 이동평균선 지지력 확인, 상승 모멘텀 지속",
+      "RSI 및 MACD 지표, 추가 상승 여력 시사"
+    ],
+    "riskNote": "일봉상 스윙 저항선인 $216.83을 돌파하지 못하고 하락할 경우, 단기적인 되돌림이 발생할 수 있습니다."
   }
 }
