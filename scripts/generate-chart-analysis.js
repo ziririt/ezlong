@@ -261,7 +261,7 @@ function bollingerBands(closes, period = 20, mult = 2) {
   });
 }
 
-// ── 지지/저항 레벨 계산───────────────────────────────────────────────────
+// ── 지지/저항 레벨 계산 ───────────────────────────────────────────────────
 
 function findSwingLevels(highs, lows, closes, lookback = 5) {
   const swingHighs = [], swingLows = [];
@@ -296,7 +296,7 @@ function pivotPoints(highs, lows, closes) {
   };
 }
 
-// ── Gemini AI 분석 ───────────────────────────────────────────────────────
+// ── Gemini AI 분석 ────────────────────────────────────────────────────────
 
 async function callGemini(meta, ind, swing, pivot, price) {
   if (!GEMINI_API_KEY) {
@@ -306,7 +306,7 @@ async function callGemini(meta, ind, swing, pivot, price) {
 
   const isKR     = meta.symbol.endsWith('.KS');
   const isCrypto = meta.type === 'crypto';
-  const cur      = isKR ? '웠t' : 'USD';
+  const cur      = isKR ? '원' : 'USD';
   const fmt      = v => v == null ? 'N/A'
     : isKR ? Math.round(v).toLocaleString() + cur
     : isCrypto && v > 1000 ? '$' + v.toLocaleString(undefined, { maximumFractionDigits: 2 })
@@ -316,7 +316,7 @@ async function callGemini(meta, ind, swing, pivot, price) {
     ? ((price - ind.low52) / (ind.high52 - ind.low52) * 100).toFixed(1) + '%'
     : 'N/A';
 
-  const prompt = `당신은 전문 기술적 분석 애널리스트입니다. 아래 데이터를 기반으로 ${meta.name}(${meta.symbol})에 대한 기술적 분석을 수홉하십시오.
+  const prompt = `당신은 전문 기술적 분석 애널리스트입니다. 아래 데이터를 기반으로 ${meta.name}(${meta.symbol})에 대한 기술적 분석을 수행하십시오.
 
 [종목 정보]
 ${meta.context}
@@ -560,7 +560,7 @@ function updateIndex(tickers, results) {
 
 async function main() {
   console.log(`\n=== ATMR 차트 분석 생성기 ===`);
-  console.log(`그룹: ${GROUP} | 티커: ${tickersToProcess.length|개 | 시작: ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })} KST`);
+  console.log(`그룹: ${GROUP} | 티커: ${tickersToProcess.length}개 | 시작: ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })} KST`);
   if (!GEMINI_API_KEY) console.warn('⚠ GEMINI_API_KEY 미설정 — 기술적 데이터만 저장됩니다.');
 
   const results = [];
