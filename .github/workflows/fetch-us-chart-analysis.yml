@@ -74,13 +74,13 @@ jobs:
           git config user.name "ATMR Bot"
           git config user.email "atmr-bot@ezlong.com"
 
-          # 변경사항이 없으면 커밋 건너뜀
-          if git diff --quiet data/; then
+          # 변경사항이 없으면 커밋 건너뜀 (신규 파일 포함 감지)
+          git add data/
+          if git diff --cached --quiet; then
             echo "변경 없음. 커밋 건너뜀."
             exit 0
           fi
 
-          git add data/
           git commit -m "chore: 미국주식 차트 분석 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 
           # push 충돌 방지: rebase 후 push (최대 3회 재시도)
