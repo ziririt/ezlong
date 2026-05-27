@@ -13,10 +13,68 @@
  *   GEMINI_API_KEY  — Google AI Studio API 키
  */
 
-const https         = require('https');
-const fs            = require('fs');
-const path          = require('path');
-const yahooFinance  = require('yahoo-finance2').default;
+const https = require('https');
+const fs    = require('fs');
+const path  = require('path');
+
+// ── Yahoo Finance Crumb 인증 캐시 (세션당 1회만 취득) ─────────────────────
+let _yfCookie = null;
+let _yfCrumb  = null;
+
+async function getYFCrumb() {
+  if (_yfCookie && _yfCrumb) return { cookie: _yfCookie, crumb: _yfCrumb };
+
+  // 1단계: Yahoo Finance 쿠키 취득
+  const cookie = await new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'fc.yahoo.com',
+      path: '/',
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept': '*/*',
+      },
+      timeout: 12000,
+    }, res => {
+      const setCookies = res.headers['set-cookie'] || [];
+      const cookieStr  = setCookies.map(c => c.split(';')[0]).join('; ');
+      res.resume();
+      resolve(cookieStr);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('쿠키 취득 타임아웃')); });
+    req.end();
+  });
+
+  // 2단계: 크럼 문자열 취득
+  const crumb = await new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'query1.finance.yahoo.com',
+      path: '/v1/test/getcrumb',
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept': '*/*',
+        'Cookie': cookie,
+      },
+      timeout: 12000,
+    }, res => {
+      let data = '';
+      res.on('data', c => { data += c; });
+      res.on('end', () => resolve(data.trim()));
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('크럼 취득 타임아웃')); });
+    req.end();
+  });
+
+  if (!crumb || crumb.length < 2) throw new Error(`크럼 취득 실패: "${crumb}"`);
+
+  _yfCookie = cookie;
+  _yfCrumb  = crumb;
+  console.log(`  Yahoo Finance 인증 완료 (crumb: ${crumb.substring(0, 8)}...)`);
+  return { cookie, crumb };
+}
 
 // ── 설정 ──────────────────────────────────────────────────────────────────
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -166,20 +224,45 @@ function httpPost(host, reqPath, body) {
   });
 }
 
-// ── Yahoo Finance OHLCV 수집 (yahoo-finance2 패키지 사용) ────────────────
+// ── Yahoo Finance OHLCV 수집 (v8 API + crumb 인증) ───────────────────────
 
 async function fetchYFChart(symbol) {
-  const period1 = new Date();
-  period1.setFullYear(period1.getFullYear() - 2);
+  const { cookie, crumb } = await getYFCrumb();
 
-  const result = await yahooFinance.chart(symbol, {
-    period1,
-    interval: '1d',
-    includePrePost: true,
-  }, { validateResult: false });   // 비표준 심볼(한국ETF, 크립토) 허용
+  const period2 = Math.floor(Date.now() / 1000);
+  const period1 = period2 - 2 * 365 * 24 * 3600;  // 2년치
+  const encodedCrumb = encodeURIComponent(crumb);
+  const reqPath = `/v8/finance/chart/${encodeURIComponent(symbol)}` +
+    `?period1=${period1}&period2=${period2}&interval=1d&includePrePost=true&crumb=${encodedCrumb}`;
 
-  if (!result || !result.quotes || result.quotes.length === 0) {
-    throw new Error(`차트 결과 없음: ${symbol}`);
+  const data = await new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'query1.finance.yahoo.com',
+      path: reqPath,
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept': 'application/json',
+        'Cookie': cookie,
+      },
+      timeout: 25000,
+    }, res => {
+      let body = '';
+      res.on('data', c => { body += c; });
+      res.on('end', () => {
+        try { resolve(JSON.parse(body)); }
+        catch (e) { reject(new Error(`JSON 파싱 오류: ${e.message}`)); }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Yahoo Finance 타임아웃')); });
+    req.end();
+  });
+
+  const result = data?.chart?.result?.[0];
+  if (!result || !result.timestamp || result.timestamp.length === 0) {
+    const errMsg = data?.chart?.error?.description || '데이터 없음';
+    throw new Error(`차트 결과 없음 (${symbol}): ${errMsg}`);
   }
   return result;
 }
@@ -445,19 +528,21 @@ async function processTicker(meta) {
   // safe 심볼 — 파일명에 사용 (함수 상단에서 정의)
   const safeSymbol = symbol.replace(/[^a-zA-Z0-9]/g, '_');
 
-  // 1. OHLCV 수집 (yahoo-finance2 — 정확한 현재가 보장)
-  const yfResult = await fetchYFChart(symbol);
-  const mta      = yfResult.meta;
-  const quotes   = yfResult.quotes;
+  // 1. OHLCV 수집 (Yahoo Finance v8 API — crumb 인증으로 정확한 현재가 보장)
+  const yfResult   = await fetchYFChart(symbol);
+  const mta        = yfResult.meta;
+  const timestamps = yfResult.timestamp;
+  const quote      = yfResult.indicators.quote[0];
+  const adjcloseArr = yfResult.indicators.adjclose?.[0]?.adjclose;
 
   // split-adjusted close(adjclose)를 사용해 분할/배당 반영
-  const raw = quotes.map(q => ({
-    t: Math.floor(new Date(q.date).getTime() / 1000),
-    o: q.open,
-    h: q.high,
-    l: q.low,
-    c: q.adjclose ?? q.close,
-    v: q.volume ?? 0,
+  const raw = timestamps.map((t, i) => ({
+    t,
+    o: quote.open[i],
+    h: quote.high[i],
+    l: quote.low[i],
+    c: adjcloseArr?.[i] ?? quote.close[i],
+    v: quote.volume[i] ?? 0,
   })).filter(d => d.o != null && d.h != null && d.l != null && d.c != null);
 
   if (raw.length < 30) throw new Error(`데이터 부족: ${raw.length}개`);
