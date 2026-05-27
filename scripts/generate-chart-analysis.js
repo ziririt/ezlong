@@ -172,7 +172,7 @@ async function fetchYFChart(symbol) {
   const enc = encodeURIComponent(symbol);
   const data = await httpGet(
     YF_HOST,
-    `/v8/finance/chart/${enc}?interval=1d&range=1y&includePrePost=true`
+    `/v8/finance/chart/${enc}?interval=1d&range=2y&includePrePost=true`
   );
   const result = data?.chart?.result?.[0];
   if (!result) throw new Error(`차트 결과 없음: ${symbol}`);
@@ -261,6 +261,32 @@ function bollingerBands(closes, period = 20, mult = 2) {
   });
 }
 
+// ── 주봉 집계 ─────────────────────────────────────────────────────────────
+
+function aggregateWeekly(raw) {
+  if (!raw || raw.length === 0) return [];
+  const weeks = {};
+  for (const d of raw) {
+    // 해당 날짜의 월요일(UTC 기준) 타임스탬프를 키로 사용
+    const date = new Date(d.t * 1000);
+    const dayOfWeek = date.getUTCDay(); // 0=일, 1=월 ...
+    const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const monday = new Date(date.getTime() + diffToMonday * 86400000);
+    const weekKey = monday.toISOString().split('T')[0];
+    const weekTs  = Math.floor(monday.getTime() / 1000);
+
+    if (!weeks[weekKey]) {
+      weeks[weekKey] = { t: weekTs, o: d.o, h: d.h, l: d.l, c: d.c, v: d.v || 0 };
+    } else {
+      if (d.h > weeks[weekKey].h) weeks[weekKey].h = d.h;
+      if (d.l < weeks[weekKey].l) weeks[weekKey].l = d.l;
+      weeks[weekKey].c = d.c;                            // 주 마지막 종가
+      weeks[weekKey].v = (weeks[weekKey].v || 0) + (d.v || 0);
+    }
+  }
+  return Object.values(weeks).sort((a, b) => a.t - b.t);
+}
+
 // ── 지지/저항 레벨 계산 ───────────────────────────────────────────────────
 
 function findSwingLevels(highs, lows, closes, lookback = 5) {
@@ -298,7 +324,7 @@ function pivotPoints(highs, lows, closes) {
 
 // ── Gemini AI 분석 ────────────────────────────────────────────────────────
 
-async function callGemini(meta, ind, swing, pivot, price) {
+async function callGemini(meta, ind, swing, pivot, price, weeklyInd) {
   if (!GEMINI_API_KEY) {
     console.warn('  GEMINI_API_KEY 없음 — AI 분석 건너뜀');
     return null;
@@ -316,28 +342,45 @@ async function callGemini(meta, ind, swing, pivot, price) {
     ? ((price - ind.low52) / (ind.high52 - ind.low52) * 100).toFixed(1) + '%'
     : 'N/A';
 
-  const prompt = `당신은 전문 기술적 분석 애널리스트입니다. 아래 데이터를 기반으로 ${meta.name}(${meta.symbol})에 대한 기술적 분석을 수행하십시오.
+  // 주봉 컨텍스트 섹션 (있을 때만 포함)
+  const weeklySection = weeklyInd ? `
+[주봉 지표 — 장기 추세 판단]
+주봉 RSI(14): ${weeklyInd.rsi != null ? weeklyInd.rsi.toFixed(1) : 'N/A'}
+주봉 MACD 히스토그램: ${weeklyInd.macd?.histogram != null ? weeklyInd.macd.histogram.toFixed(4) : 'N/A'}
+주봉 SMA20: ${fmt(weeklyInd.sma20)} | 주봉 SMA50: ${fmt(weeklyInd.sma50)}
+주봉 볼린저밴드 상단: ${fmt(weeklyInd.bb?.upper)} / 하단: ${fmt(weeklyInd.bb?.lower)}
+현재가 vs 주봉 SMA20: ${weeklyInd.sma20 ? ((price / weeklyInd.sma20 - 1) * 100).toFixed(2) + '%' : 'N/A'}
+` : '';
+
+  const prompt = `당신은 실전 경험이 풍부한 기술적 분석 애널리스트입니다. 차트를 직접 보고 설명하듯, 아래 일봉·주봉 데이터를 종합해 ${meta.name}(${meta.symbol})에 대한 심층 분석을 수행하십시오.
 
 [종목 정보]
 ${meta.context}
 
-[가격]
+[일봉 가격]
 현재가: ${fmt(price)} | 52주 고가: ${fmt(ind.high52)} | 52주 저가: ${fmt(ind.low52)} | 52주 위치: ${pos52}
 
-[이동평균선]
+[일봉 이동평균선]
 SMA5: ${fmt(ind.sma5)} | SMA20: ${fmt(ind.sma20)} | SMA50: ${fmt(ind.sma50)} | SMA200: ${fmt(ind.sma200)}
 현재가/SMA200: ${ind.sma200 ? ((price / ind.sma200 - 1) * 100).toFixed(2) + '%' : 'N/A'}
 
-[모멘텀]
+[일봉 모멘텀]
 RSI(14): ${ind.rsi != null ? ind.rsi.toFixed(1) : 'N/A'}
 MACD: ${ind.macd.macd != null ? ind.macd.macd.toFixed(4) : 'N/A'} / 시그널: ${ind.macd.signal != null ? ind.macd.signal.toFixed(4) : 'N/A'} / 히스토그램: ${ind.macd.histogram != null ? ind.macd.histogram.toFixed(4) : 'N/A'}
 
-[볼린저 밴드 20,2]
+[일봉 볼린저밴드 20,2]
 상단: ${fmt(ind.bb.upper)} | 중단(SMA20): ${fmt(ind.bb.middle)} | 하단: ${fmt(ind.bb.lower)} | 밴드폭: ${ind.bb.bandwidth != null ? (ind.bb.bandwidth * 100).toFixed(2) + '%' : 'N/A'}
 
 [지지/저항]
 스윙 저항: ${fmt(swing.resistance)} | 스윙 지지: ${fmt(swing.support)}
 피벗(PP): ${fmt(pivot.pp)} | R1: ${fmt(pivot.r1)} | R2: ${fmt(pivot.r2)} | S1: ${fmt(pivot.s1)} | S2: ${fmt(pivot.s2)}
+${weeklySection}
+분석 지침:
+- narrative는 실제 차트를 보면서 설명하는 듯한 자연스러운 한국어 문체로 작성합니다. (예: "현재 주가가 상승 채널 상단부에 위치해 있으며 RSI가 70에 근접하고 있습니다. MACD는 골든크로스 직후 히스토그램이 점진적으로 확대되고 있어…")
+- profitTarget1은 가장 가까운 1차 익절 목표가, profitTarget2는 2차 목표가입니다. 현재가 대비 현실적인 수준을 설정하십시오.
+- stopLoss는 이 분석 관점의 손절 기준가입니다. 핵심 지지선 하단을 기준으로 설정하십시오.
+- buyScore는 현재 기술적 관점의 매수 매력도입니다 (1=전혀 매력 없음, 10=최고의 진입 기회).
+- patternNote는 일봉·주봉 차트에서 관찰되는 패턴이나 추세 채널을 1~2문장으로 묘사합니다. (예: "일봉에서는 고점을 낮추는 하락 채널이 형성 중이나, 주봉 기준으로는 상승 추세선이 유지되고 있습니다.")
 
 다음 JSON만 반환하십시오. 다른 텍스트는 절대 포함하지 마십시오:
 {
@@ -350,7 +393,12 @@ MACD: ${ind.macd.macd != null ? ind.macd.macd.toFixed(4) : 'N/A'} / 시그널: $
   "bbStatus": "상단돌파" | "상단접근" | "중단" | "하단접근" | "하단이탈",
   "stage": "상승추세" | "분배구간" | "하락추세" | "축적구간",
   "action": "적극매수" | "분할매수" | "관망" | "분할매도" | "적극매도",
-  "narrative": "200자 내외 한국어 기술적 분석 요약문",
+  "buyScore": 1~10 정수,
+  "profitTarget1": 1차 익절 목표가 숫자,
+  "profitTarget2": 2차 익절 목표가 숫자,
+  "stopLoss": 손절 기준가 숫자,
+  "narrative": "250자 내외 한국어 심층 분석 (차트를 보며 설명하는 문체)",
+  "patternNote": "차트 패턴 또는 추세 채널 묘사 1~2문장",
   "keyPoints": ["핵심 포인트 1", "핵심 포인트 2", "핵심 포인트 3"],
   "riskNote": "주요 리스크 한 문장"
 }`;
@@ -361,7 +409,7 @@ MACD: ${ind.macd.macd != null ? ind.macd.macd.toFixed(4) : 'N/A'} / 시그널: $
       `/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
       {
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.15, maxOutputTokens: 1200 },
+        generationConfig: { temperature: 0.15, maxOutputTokens: 1600 },
       }
     );
     const text = resp?.candidates?.[0]?.content?.parts?.[0]?.text || '';
@@ -427,10 +475,62 @@ async function processTicker(meta) {
   const swing = findSwingLevels(highs, lows, closes);
   const pivot = pivotPoints(highs, lows, closes);
 
-  // 4. Gemini AI 분석
-  const aiResult = await callGemini(meta, indicators, swing, pivot, price);
+  // 4. 주봉 집계 + 지표 계산
+  const weekly    = aggregateWeekly(raw);
+  const wCloses   = weekly.map(d => d.c);
+  const wHighs    = weekly.map(d => d.h);
+  const wLows     = weekly.map(d => d.l);
+  const wN        = wCloses.length;
+  let weeklyInd   = null;
+  if (wN >= 26) {
+    const wSma5A   = sma(wCloses, 5);
+    const wSma20A  = sma(wCloses, 20);
+    const wSma50A  = sma(wCloses, Math.min(50, wN));
+    const wSma200A = sma(wCloses, Math.min(200, wN));
+    const wRsiA    = rsi(wCloses, 14);
+    const wMacdA   = macd(wCloses, 12, 26, 9);
+    const wBbA     = bollingerBands(wCloses, 20, 2);
+    weeklyInd = {
+      sma5:   wSma5A[wN - 1],
+      sma20:  wSma20A[wN - 1],
+      sma50:  wSma50A[wN - 1],
+      sma200: wSma200A[wN - 1],
+      rsi:    wRsiA[wN - 1],
+      macd:   wMacdA[wN - 1],
+      bb:     wBbA[wN - 1],
+    };
 
-  // 5. 장외 시세
+    // 주봉 OHLCV + 지표 배열 (차트 렌더링용)
+    const ohlcvWeeklyOut = {
+      ticker:    symbol,
+      name,
+      updatedAt: new Date().toISOString(),
+      currency:  symbol.endsWith('.KS') ? 'KRW' : 'USD',
+      ohlcv: weekly.map(d => ({
+        t: d.t,
+        o: round(d.o, 4), h: round(d.h, 4), l: round(d.l, 4), c: round(d.c, 4),
+        v: d.v,
+      })),
+      ind: {
+        sma5:   wSma5A.map(v   => round(v, 4)),
+        sma20:  wSma20A.map(v  => round(v, 4)),
+        sma50:  wSma50A.map(v  => round(v, 4)),
+        sma200: wSma200A.map(v => round(v, 4)),
+        rsi:    wRsiA.map(v    => round(v, 2)),
+        macd:   wMacdA,
+        bb:     wBbA,
+      },
+    };
+    fs.writeFileSync(
+      path.join(DATA_DIR, `ohlcv-${safeSymbol}-weekly.json`),
+      JSON.stringify(ohlcvWeeklyOut)
+    );
+  }
+
+  // 5. Gemini AI 분석
+  const aiResult = await callGemini(meta, indicators, swing, pivot, price, weeklyInd);
+
+  // 6. 장외 시세
   let extPrice = null, extChange = null, extChangePct = null;
   const marketState = mta.marketState || 'CLOSED';
   if ((marketState === 'PRE' || marketState === 'POST') && mta.regularMarketPrice) {
@@ -440,7 +540,7 @@ async function processTicker(meta) {
     extChangePct = round((extPrice - base) / base * 100, 2);
   }
 
-  // 6. 저장
+  // 7. 저장 (analysis + daily OHLCV — 주봉은 위에서 이미 저장)
   const safeSymbol = symbol.replace(/[^a-zA-Z0-9]/g, '_');
 
   // OHLCV + 지표 배열 (차트 렌더링용)
@@ -509,7 +609,12 @@ async function processTicker(meta) {
       bbStatus: 'N/A',
       stage: 'N/A',
       action: '관망',
+      buyScore: null,
+      profitTarget1: null,
+      profitTarget2: null,
+      stopLoss: null,
       narrative: 'AI 분석 데이터를 불러오는 중입니다.',
+      patternNote: null,
       keyPoints: [],
       riskNote: '',
     },
