@@ -50,6 +50,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install dependencies
+        run: npm install --production
+
       # ── 3. 한국 거래일 여부 판단 ──────────────────────────────────────
       - name: Check Korean trading day
         id: kr_check
