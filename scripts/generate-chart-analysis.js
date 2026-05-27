@@ -13,16 +13,16 @@
  *   GEMINI_API_KEY  — Google AI Studio API 키
  */
 
-const https = require('https');
-const fs    = require('fs');
-const path  = require('path');
+const https         = require('https');
+const fs            = require('fs');
+const path          = require('path');
+const yahooFinance  = require('yahoo-finance2').default;
 
 // ── 설정 ──────────────────────────────────────────────────────────────────
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const YF_HOST        = 'query1.finance.yahoo.com';
 const GEMINI_HOST    = 'generativelanguage.googleapis.com';
 const GEMINI_MODEL   = 'gemini-2.5-flash-lite';   // 비용 최소화 모델
-const DELAY_MS       = 1800;                        // Yahoo Finance 요청 간격
+const DELAY_MS       = 1200;                        // 티커 간 요청 간격
 const DATA_DIR       = path.join(__dirname, '..', 'data');
 
 // ── 티커 메타데이터 정의 ──────────────────────────────────────────────────
@@ -166,16 +166,21 @@ function httpPost(host, reqPath, body) {
   });
 }
 
-// ── Yahoo Finance OHLCV 수집 ──────────────────────────────────────────────
+// ── Yahoo Finance OHLCV 수집 (yahoo-finance2 패키지 사용) ────────────────
 
 async function fetchYFChart(symbol) {
-  const enc = encodeURIComponent(symbol);
-  const data = await httpGet(
-    YF_HOST,
-    `/v8/finance/chart/${enc}?interval=1d&range=2y&includePrePost=true`
-  );
-  const result = data?.chart?.result?.[0];
-  if (!result) throw new Error(`차트 결과 없음: ${symbol}`);
+  const period1 = new Date();
+  period1.setFullYear(period1.getFullYear() - 2);
+
+  const result = await yahooFinance.chart(symbol, {
+    period1,
+    interval: '1d',
+    includePrePost: true,
+  }, { validateResult: false });   // 비표준 심볼(한국ETF, 크립토) 허용
+
+  if (!result || !result.quotes || result.quotes.length === 0) {
+    throw new Error(`차트 결과 없음: ${symbol}`);
+  }
   return result;
 }
 
@@ -347,21 +352,28 @@ async function callGemini(meta, ind, swing, pivot, price, weeklyInd) {
 [주봉 지표 — 장기 추세 판단]
 주봉 RSI(14): ${weeklyInd.rsi != null ? weeklyInd.rsi.toFixed(1) : 'N/A'}
 주봉 MACD 히스토그램: ${weeklyInd.macd?.histogram != null ? weeklyInd.macd.histogram.toFixed(4) : 'N/A'}
-주봉 SMA20: ${fmt(weeklyInd.sma20)} | 주봉 SMA50: ${fmt(weeklyInd.sma50)}
+주봉 SMA20: ${fmt(weeklyInd.sma20)} | 주봉 SMA50: ${fmt(weeklyInd.sma50)} | 주봉 SMA100: ${fmt(weeklyInd.sma100)}
 주봉 볼린저밴드 상단: ${fmt(weeklyInd.bb?.upper)} / 하단: ${fmt(weeklyInd.bb?.lower)}
 현재가 vs 주봉 SMA20: ${weeklyInd.sma20 ? ((price / weeklyInd.sma20 - 1) * 100).toFixed(2) + '%' : 'N/A'}
+현재가 vs 주봉 SMA100: ${weeklyInd.sma100 ? ((price / weeklyInd.sma100 - 1) * 100).toFixed(2) + '%' : 'N/A'}
 ` : '';
 
   const prompt = `당신은 실전 경험이 풍부한 기술적 분석 애널리스트입니다. 차트를 직접 보고 설명하듯, 아래 일봉·주봉 데이터를 종합해 ${meta.name}(${meta.symbol})에 대한 심층 분석을 수행하십시오.
 
-[종목 정보]
+[절대 준수 사항]
+- 오직 이동평균선, RSI, MACD, 볼린저밴드, 거래량, 가격 패턴, 추세 채널 등 순수 기술적 지표만 분석에 사용하십시오.
+- 기업 펀더멘털, 재무제표, 실적, 매출, 금리, 연준 정책, 거시경제, 환율, 산업 트렌드, 규제, 정치적 요인, 경쟁사 동향은 절대 언급하지 마십시오.
+- riskNote에도 반드시 기술적 분석 관점(예: "지지선 이탈 시 추가 하락 위험", "RSI 과매수 구간 진입")만 작성하십시오.
+
+[종목 정보 — 차트 컨텍스트 참고용]
 ${meta.context}
 
 [일봉 가격]
 현재가: ${fmt(price)} | 52주 고가: ${fmt(ind.high52)} | 52주 저가: ${fmt(ind.low52)} | 52주 위치: ${pos52}
 
 [일봉 이동평균선]
-SMA5: ${fmt(ind.sma5)} | SMA20: ${fmt(ind.sma20)} | SMA50: ${fmt(ind.sma50)} | SMA200: ${fmt(ind.sma200)}
+SMA20: ${fmt(ind.sma20)} | SMA50: ${fmt(ind.sma50)} | SMA100: ${fmt(ind.sma100)} | SMA200: ${fmt(ind.sma200)}
+현재가/SMA100: ${ind.sma100 ? ((price / ind.sma100 - 1) * 100).toFixed(2) + '%' : 'N/A'}
 현재가/SMA200: ${ind.sma200 ? ((price / ind.sma200 - 1) * 100).toFixed(2) + '%' : 'N/A'}
 
 [일봉 모멘텀]
@@ -376,11 +388,13 @@ MACD: ${ind.macd.macd != null ? ind.macd.macd.toFixed(4) : 'N/A'} / 시그널: $
 피벗(PP): ${fmt(pivot.pp)} | R1: ${fmt(pivot.r1)} | R2: ${fmt(pivot.r2)} | S1: ${fmt(pivot.s1)} | S2: ${fmt(pivot.s2)}
 ${weeklySection}
 분석 지침:
+- 모든 분석은 순수 기술적 분석에만 근거하십시오. 거시경제·펀더멘털·산업 이슈는 절대 포함하지 마십시오.
 - narrative는 실제 차트를 보면서 설명하는 듯한 자연스러운 한국어 문체로 작성합니다. (예: "현재 주가가 상승 채널 상단부에 위치해 있으며 RSI가 70에 근접하고 있습니다. MACD는 골든크로스 직후 히스토그램이 점진적으로 확대되고 있어…")
-- profitTarget1은 가장 가까운 1차 익절 목표가, profitTarget2는 2차 목표가입니다. 현재가 대비 현실적인 수준을 설정하십시오.
-- stopLoss는 이 분석 관점의 손절 기준가입니다. 핵심 지지선 하단을 기준으로 설정하십시오.
+- profitTarget1은 가장 가까운 1차 익절 목표가, profitTarget2는 2차 목표가입니다. 차트의 저항선·채널 상단 기준으로 설정하십시오.
+- stopLoss는 이 분석 관점의 손절 기준가입니다. 핵심 기술적 지지선 하단을 기준으로 설정하십시오.
 - buyScore는 현재 기술적 관점의 매수 매력도입니다 (1=전혀 매력 없음, 10=최고의 진입 기회).
 - patternNote는 일봉·주봉 차트에서 관찰되는 패턴이나 추세 채널을 1~2문장으로 묘사합니다. (예: "일봉에서는 고점을 낮추는 하락 채널이 형성 중이나, 주봉 기준으로는 상승 추세선이 유지되고 있습니다.")
+- riskNote는 반드시 기술적 분석 관점의 리스크만 작성합니다. (예: "핵심 지지선인 SMA200 이탈 시 추가 하락 압력이 커질 수 있습니다.", "RSI 과매수 구간에서 거래량이 감소하면 단기 되돌림 가능성이 높아집니다.")
 
 다음 JSON만 반환하십시오. 다른 텍스트는 절대 포함하지 마십시오:
 {
@@ -428,16 +442,22 @@ async function processTicker(meta) {
   const { symbol, name } = meta;
   console.log(`  처리: ${symbol} (${name})`);
 
-  // 1. OHLCV 수집
+  // safe 심볼 — 파일명에 사용 (함수 상단에서 정의)
+  const safeSymbol = symbol.replace(/[^a-zA-Z0-9]/g, '_');
+
+  // 1. OHLCV 수집 (yahoo-finance2 — 정확한 현재가 보장)
   const yfResult = await fetchYFChart(symbol);
-  const mta       = yfResult.meta;
-  const ts        = yfResult.timestamp;
-  const q         = yfResult.indicators.quote[0];
+  const mta      = yfResult.meta;
+  const quotes   = yfResult.quotes;
 
-  if (!ts || !q) throw new Error('데이터 없음');
-
-  const raw = ts.map((t, i) => ({
-    t, o: q.open[i], h: q.high[i], l: q.low[i], c: q.close[i], v: q.volume[i],
+  // split-adjusted close(adjclose)를 사용해 분할/배당 반영
+  const raw = quotes.map(q => ({
+    t: Math.floor(new Date(q.date).getTime() / 1000),
+    o: q.open,
+    h: q.high,
+    l: q.low,
+    c: q.adjclose ?? q.close,
+    v: q.volume ?? 0,
   })).filter(d => d.o != null && d.h != null && d.l != null && d.c != null);
 
   if (raw.length < 30) throw new Error(`데이터 부족: ${raw.length}개`);
@@ -448,22 +468,23 @@ async function processTicker(meta) {
   const n      = closes.length;
 
   // 2. 지표 계산
-  const sma5A   = sma(closes, 5);
   const sma20A  = sma(closes, 20);
   const sma50A  = sma(closes, 50);
+  const sma100A = sma(closes, 100);
   const sma200A = sma(closes, 200);
   const rsiA    = rsi(closes, 14);
   const macdA   = macd(closes, 12, 26, 9);
   const bbA     = bollingerBands(closes, 20, 2);
 
-  const price   = closes[n - 1];
+  // regularMarketPrice = Yahoo Finance 실시간 현재가 (정확)
+  const price   = mta.regularMarketPrice ?? closes[n - 1];
   const high52  = Math.max(...highs);
   const low52   = Math.min(...lows);
 
   const indicators = {
-    sma5:   sma5A[n - 1],
     sma20:  sma20A[n - 1],
     sma50:  sma50A[n - 1],
+    sma100: sma100A[n - 1],
     sma200: sma200A[n - 1],
     rsi:    rsiA[n - 1],
     macd:   macdA[n - 1],
@@ -483,17 +504,17 @@ async function processTicker(meta) {
   const wN        = wCloses.length;
   let weeklyInd   = null;
   if (wN >= 26) {
-    const wSma5A   = sma(wCloses, 5);
     const wSma20A  = sma(wCloses, 20);
     const wSma50A  = sma(wCloses, Math.min(50, wN));
+    const wSma100A = sma(wCloses, Math.min(100, wN));
     const wSma200A = sma(wCloses, Math.min(200, wN));
     const wRsiA    = rsi(wCloses, 14);
     const wMacdA   = macd(wCloses, 12, 26, 9);
     const wBbA     = bollingerBands(wCloses, 20, 2);
     weeklyInd = {
-      sma5:   wSma5A[wN - 1],
       sma20:  wSma20A[wN - 1],
       sma50:  wSma50A[wN - 1],
+      sma100: wSma100A[wN - 1],
       sma200: wSma200A[wN - 1],
       rsi:    wRsiA[wN - 1],
       macd:   wMacdA[wN - 1],
@@ -512,9 +533,9 @@ async function processTicker(meta) {
         v: d.v,
       })),
       ind: {
-        sma5:   wSma5A.map(v   => round(v, 4)),
         sma20:  wSma20A.map(v  => round(v, 4)),
         sma50:  wSma50A.map(v  => round(v, 4)),
+        sma100: wSma100A.map(v => round(v, 4)),
         sma200: wSma200A.map(v => round(v, 4)),
         rsi:    wRsiA.map(v    => round(v, 2)),
         macd:   wMacdA,
@@ -530,18 +551,25 @@ async function processTicker(meta) {
   // 5. Gemini AI 분석
   const aiResult = await callGemini(meta, indicators, swing, pivot, price, weeklyInd);
 
-  // 6. 장외 시세
-  let extPrice = null, extChange = null, extChangePct = null;
+  // 6. 장외 시세 (프리마켓 / 포스트마켓)
   const marketState = mta.marketState || 'CLOSED';
-  if ((marketState === 'PRE' || marketState === 'POST') && mta.regularMarketPrice) {
-    const base = mta.previousClose || mta.chartPreviousClose || price;
-    extPrice     = mta.regularMarketPrice;
+  const prevClose   = mta.chartPreviousClose || mta.previousClose || (n >= 2 ? closes[n - 2] : null);
+  let extPrice = null, extChange = null, extChangePct = null;
+  // 프리마켓: price = 프리마켓 현재가, base = 전일 종가
+  // 포스트마켓: price = 포스트마켓 현재가, base = 당일 정규장 종가
+  if (marketState === 'PRE' && mta.preMarketPrice) {
+    extPrice     = mta.preMarketPrice;
+    const base   = prevClose || closes[n - 1];
+    extChange    = round(extPrice - base, 4);
+    extChangePct = round((extPrice - base) / base * 100, 2);
+  } else if (marketState === 'POST' && mta.postMarketPrice) {
+    extPrice     = mta.postMarketPrice;
+    const base   = closes[n - 1];
     extChange    = round(extPrice - base, 4);
     extChangePct = round((extPrice - base) / base * 100, 2);
   }
 
   // 7. 저장 (analysis + daily OHLCV — 주봉은 위에서 이미 저장)
-  const safeSymbol = symbol.replace(/[^a-zA-Z0-9]/g, '_');
 
   // OHLCV + 지표 배열 (차트 렌더링용)
   const ohlcvOut = {
@@ -555,9 +583,9 @@ async function processTicker(meta) {
       v: d.v,
     })),
     ind: {
-      sma5:   sma5A.map(v   => round(v, 4)),
       sma20:  sma20A.map(v  => round(v, 4)),
       sma50:  sma50A.map(v  => round(v, 4)),
+      sma100: sma100A.map(v => round(v, 4)),
       sma200: sma200A.map(v => round(v, 4)),
       rsi:    rsiA.map(v    => round(v, 2)),
       macd:   macdA,
@@ -566,7 +594,6 @@ async function processTicker(meta) {
   };
 
   // 분석 요약 (AI 분석 패널용)
-  const prevClose = raw.length >= 2 ? raw[n - 2].c : null;
   const analysisOut = {
     ticker:    symbol,
     name,
@@ -586,10 +613,10 @@ async function processTicker(meta) {
       extChangePct: extChangePct ? round(extChangePct, 2) : null,
     },
     indicators: {
-      sma5:   round(indicators.sma5,  4),
-      sma20:  round(indicators.sma20, 4),
-      sma50:  round(indicators.sma50, 4),
-      sma200: round(indicators.sma200,4),
+      sma20:  round(indicators.sma20,  4),
+      sma50:  round(indicators.sma50,  4),
+      sma100: round(indicators.sma100, 4),
+      sma200: round(indicators.sma200, 4),
       rsi:    round(indicators.rsi,   2),
       macd:   indicators.macd,
       bb:     indicators.bb,
