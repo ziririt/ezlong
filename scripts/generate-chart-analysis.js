@@ -80,7 +80,7 @@ async function getYFCrumb() {
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_HOST    = 'generativelanguage.googleapis.com';
 const GEMINI_MODEL   = 'gemini-2.5-flash-lite';   // 비용 최소화 모델
-const DELAY_MS       = 1200;                        // 티커 간 요청 간격
+const DELAY_MS       = 4500;                        // 티커 간 요청 간격 (Gemini RPM 한도 대응: 4.5s → 분당 13개)
 const DATA_DIR       = path.join(__dirname, '..', 'data');
 
 // ── 티커 메타데이터 정의 ──────────────────────────────────────────────────
@@ -501,22 +501,35 @@ ${weeklySection}
   "riskNote": "주요 리스크 한 문장"
 }`;
 
-  try {
-    const resp = await httpPost(
-      GEMINI_HOST,
-      `/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
-      {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.15, maxOutputTokens: 1600 },
+  // 최대 3회 재시도 (지수 백오프: 3s → 7s → 15s)
+  const MAX_TRIES = 3;
+  const DELAYS = [3000, 7000, 15000];
+
+  for (let attempt = 1; attempt <= MAX_TRIES; attempt++) {
+    try {
+      const resp = await httpPost(
+        GEMINI_HOST,
+        `/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
+        {
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.15, maxOutputTokens: 1600 },
+        }
+      );
+      const text = resp?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      const m = text.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error('JSON 미포함 응답');
+      const result = JSON.parse(m[0]);
+      if (attempt > 1) console.log(`  Gemini 재시도 성공 (${meta.symbol}, ${attempt}회차)`);
+      return result;
+    } catch (e) {
+      if (attempt < MAX_TRIES) {
+        console.warn(`  Gemini 오류 (${meta.symbol}, ${attempt}/${MAX_TRIES}): ${e.message} — ${DELAYS[attempt-1]/1000}초 후 재시도`);
+        await new Promise(r => setTimeout(r, DELAYS[attempt - 1]));
+      } else {
+        console.error(`  Gemini 최종 실패 (${meta.symbol}): ${e.message}`);
+        return null;
       }
-    );
-    const text = resp?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    const m = text.match(/\{[\s\S]*\}/);
-    if (!m) throw new Error('JSON 미포함 응답');
-    return JSON.parse(m[0]);
-  } catch (e) {
-    console.error(`  Gemini 오류 (${meta.symbol}): ${e.message}`);
-    return null;
+    }
   }
 }
 
@@ -564,8 +577,23 @@ async function processTicker(meta) {
 
   // regularMarketPrice = Yahoo Finance 실시간 현재가 (정확)
   const price   = mta.regularMarketPrice ?? closes[n - 1];
-  const high52  = Math.max(...highs);
-  const low52   = Math.min(...lows);
+
+  // 52주 고저가: Yahoo Finance 공식 값 우선, 없으면 2년 OHLCV에서 계산
+  // — 이상값 방어: low52가 현재가의 30% 미만이면 OHLCV 계산값으로 대체
+  let high52 = mta.fiftyTwoWeekHigh ?? Math.max(...highs);
+  let low52  = mta.fiftyTwoWeekLow  ?? Math.min(...lows);
+
+  // 이상값 필터 — 분할/병합 이전 데이터 오염 대응
+  const calcHigh52 = Math.max(...highs);
+  const calcLow52  = Math.min(...lows);
+  if (price > 0) {
+    // 야후 공식 값이 현재가 대비 너무 낮거나 높으면 계산값으로 교체
+    if (low52  < price * 0.25)  low52  = Math.min(...lows.filter(l  => l  > price * 0.25));
+    if (high52 > price * 5)     high52 = Math.max(...highs.filter(h => h < price * 5));
+    // 계산값도 이상하면 현재가 기준으로 최소한 보정
+    if (!isFinite(low52)  || low52  <= 0) low52  = price * 0.7;
+    if (!isFinite(high52) || high52 <= 0) high52 = price * 1.3;
+  }
 
   const indicators = {
     sma20:  sma20A[n - 1],

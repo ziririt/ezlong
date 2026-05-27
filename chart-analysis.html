@@ -968,7 +968,7 @@ function renderIndToggles() {
     { key:'sma50',   label:'SMA 50',   color: 'var(--chart-sma50)' },
     { key:'sma100',  label:'SMA 100',  color: 'var(--chart-sma100)' },
     { key:'sma200',  label:'SMA 200',  color: 'var(--chart-sma200)' },
-    { key:'bb',      label:'볼린저밴드', color: 'var(--ez-text3)' },
+    { key:'bb',      label:'볼린저밴드', color: IS_DARK ? 'rgba(255,159,10,0.90)' : 'rgba(180,90,0,0.85)' },
     { key:'channel', label:'채널',      color: IS_DARK ? '#FF9F0A' : '#B45309' },
   ];
   return `<div class="ca-ind-toggles">
