@@ -491,6 +491,7 @@ ${weeklySection}
   "stage": "상승추세" | "분배구간" | "하락추세" | "축적구간",
   "action": "적극매수" | "분할매수" | "관망" | "분할매도" | "적극매도",
   "buyScore": 1~10 정수,
+  "scoreReason": "buyScore가 해당 숫자인 핵심 이유를 15~25자 한국어로 (예: 'RSI 과매수·밴드 상단 이탈로 단기 과열', '골든크로스 직후 눌림목 진입 적기', 'SMA200 하향 이탈, 하락 추세 지속 중')",
   "profitTarget1": 1차 익절 목표가 숫자,
   "profitTarget2": 2차 익절 목표가 숫자,
   "stopLoss": 손절 기준가 숫자,
@@ -638,7 +639,9 @@ async function processTicker(meta) {
 
   // 6. 장외 시세 (프리마켓 / 포스트마켓)
   const marketState = mta.marketState || 'CLOSED';
-  const prevClose   = mta.chartPreviousClose || mta.previousClose || (n >= 2 ? closes[n - 2] : null);
+  // regularMarketPreviousClose = 실제 전일 종가 (v8 API 기준)
+  // chartPreviousClose는 차트 시작 시점(2년 전) 종가이므로 절대 사용 불가
+  const prevClose   = mta.regularMarketPreviousClose || mta.previousClose || (n >= 2 ? closes[n - 2] : null);
   let extPrice = null, extChange = null, extChangePct = null;
   // 프리마켓: price = 프리마켓 현재가, base = 전일 종가
   // 포스트마켓: price = 포스트마켓 현재가, base = 당일 정규장 종가
