@@ -1395,6 +1395,19 @@ li.gear-other-sep { display: none !important; }
   text-align: center;
   padding: 4px 12px 8px;
 }
+/* ── 스윙 트레이딩 플랜 카드 ────────────────────────────────────────────── */
+.king-trade-plan { margin-top:14px; padding:12px 14px; background:var(--bg2); border-radius:10px; border:1px solid var(--bd); }
+.ktp-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.ktp-title  { font-size:11px; font-weight:700; color:var(--t2); text-transform:uppercase; letter-spacing:.06em; }
+.ktp-action { font-size:13px; font-weight:800; }
+.ktp-traj   { font-size:12px; color:var(--t2); margin-bottom:3px; line-height:1.5; }
+.ktp-levels { display:grid; grid-template-columns:1fr 1fr; gap:5px 10px; margin-top:9px; }
+.ktp-lv     { display:flex; align-items:center; gap:6px; }
+.ktp-lv-l   { font-size:11px; color:var(--t2); font-weight:600; min-width:28px; }
+.ktp-lv-v   { font-size:14px; font-weight:800; }
+.ktp-lv-v.gr{ color:var(--gr); }
+.ktp-lv-v.rd{ color:var(--rd); }
+.ktp-inval  { font-size:11px; color:var(--t2); margin-top:7px; border-top:1px solid var(--bd); padding-top:6px; }
 </style>
 <style>
 /* ── ez-nav (글로벌 헤더) ── */
@@ -2697,6 +2710,25 @@ async function fetchGitHubJSON() {
   return json;
 }
 
+// ─── TSLA/NVDA Gemini 분석 JSON fetch ────────────
+const _ANALYSIS_RAW = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/';
+
+async function fetchAnalysisJSON(symbol) {
+  const safe = symbol.replace(/[^a-zA-Z0-9]/g, '_');
+  const bust = Math.floor(Date.now() / 3600000);
+  try {
+    const r = await fetch(_ANALYSIS_RAW + 'analysis-' + safe + '.json?t=' + bust, {
+      signal: AbortSignal.timeout(6000)
+    });
+    if (!r.ok) return null;
+    const j = await r.json();
+    return j?.analysis ?? null;
+  } catch(e) {
+    console.warn('[analysis-' + symbol + '] fetch 실패:', e.message);
+    return null;
+  }
+}
+
 // ─── FlashAlpha 옵션 데이터 fetch ─────────────────
 
 async function fetchOptionsJSON() {
@@ -2813,6 +2845,10 @@ async function loadAllData(forceRefresh = false) {
     return null;
   });
 
+  // ── TSLA/NVDA Gemini 분석 JSON 병렬 fetch (실패해도 무시) ─────────────
+  const _tslaAiP = fetchAnalysisJSON('TSLA').catch(() => null);
+  const _nvdaAiP = fetchAnalysisJSON('NVDA').catch(() => null);
+
   // ── 4. GitHub JSON 실패 시에만 → 실시간 API 직접 호출 ─────────────────
   if (!Object.keys(fetchedData).length) {
     let successCount = 0;
@@ -2881,6 +2917,11 @@ async function loadAllData(forceRefresh = false) {
   if (optionsData) {
     console.log(`[FlashAlpha] 옵션 데이터 로드 완료 — 매수 ${optionsData.overlay?.buyAdj > 0 ? '+' : ''}${optionsData.overlay?.buyAdj ?? 0}pt, 매도 ${optionsData.overlay?.sellAdj > 0 ? '+' : ''}${optionsData.overlay?.sellAdj ?? 0}pt`);
   }
+
+  // TSLA/NVDA Gemini 분석 JSON 완료 대기 (병렬로 시작된 것을 renderAll 전에 수신)
+  [window._tslaAnalysis, window._nvdaAnalysis] = await Promise.all([_tslaAiP, _nvdaAiP]);
+  console.log('[KingAI]', 'TSLA:', window._tslaAnalysis ? 'OK' : '없음',
+              '/ NVDA:', window._nvdaAnalysis ? 'OK' : '없음');
 
   clearTimeout(hardTimeout);
   renderAll(fetchedData);
@@ -4380,8 +4421,43 @@ function renderKings(tsla, nvda) {
     const macdStr     = d.macd?.macd != null ? (d.macd.macd >= 0 ? '+' : '') + d.macd.macd.toFixed(2) : '—';
     const macdColor   = d.macd?.histogram > 0 ? 'var(--gr)' : 'var(--rd)';
 
-    // AI 브리핑 생성
-    const brief = generateKingBrief(d);
+    // AI 브리핑 생성 (Gemini 분석 JSON 우선 활용)
+    const _ai = d.symbol === 'TSLA' ? window._tslaAnalysis : window._nvdaAnalysis;
+    const brief = generateKingBrief(d, _ai);
+
+    // 트레이딩 플랜 HTML (string concat — nested template literal 회피)
+    let tradePlanHtml = '';
+    if (_ai && _ai.entry != null) {
+      const _e  = typeof _ai.entry  === 'number' ? _ai.entry.toFixed(2)  : String(_ai.entry  ?? '—');
+      const _s  = typeof _ai.stop   === 'number' ? _ai.stop.toFixed(2)   : String(_ai.stop   ?? '—');
+      const _t  = typeof _ai.target === 'number' ? _ai.target.toFixed(2) : String(_ai.target ?? '—');
+      const _rr = (_ai.entry && _ai.stop && _ai.target && _ai.entry !== _ai.stop)
+        ? ((_ai.target - _ai.entry) / Math.abs(_ai.entry - _ai.stop)).toFixed(1) + ':1' : '—';
+      const _col   = _ai.action === '매수' ? 'var(--gr)' : _ai.action === '매도' ? 'var(--rd)' : 'var(--yl)';
+      const _rsiT  = _ai.rsiTrajectory
+        ? '<div class="ktp-traj">RSI: '  + _ai.rsiTrajectory  + '</div>' : '';
+      const _macdT = _ai.macdTrajectory
+        ? '<div class="ktp-traj">MACD: ' + _ai.macdTrajectory + '</div>' : '';
+      const _patT  = _ai.pricePattern
+        ? '<div class="ktp-traj">' + (_ai.pricePattern.split(' — ')[0] || _ai.pricePattern) + '</div>' : '';
+      const _inv   = _ai.invalidation != null
+        ? '<div class="ktp-inval">무효선: $' + (typeof _ai.invalidation === 'number' ? _ai.invalidation.toFixed(2) : _ai.invalidation) + ' 이탈 시 시나리오 폐기</div>' : '';
+      tradePlanHtml =
+        '<div class="king-trade-plan">' +
+          '<div class="ktp-header">' +
+            '<span class="ktp-title">스윙 트레이딩 플랜</span>' +
+            '<span class="ktp-action" style="color:' + _col + '">Gemini ' + d.symbol + ': ' + (_ai.action ?? '—') + '</span>' +
+          '</div>' +
+          _rsiT + _macdT + _patT +
+          '<div class="ktp-levels">' +
+            '<div class="ktp-lv"><span class="ktp-lv-l">진입</span><span class="ktp-lv-v gr">$' + _e + '</span></div>' +
+            '<div class="ktp-lv"><span class="ktp-lv-l">손절</span><span class="ktp-lv-v rd">$' + _s + '</span></div>' +
+            '<div class="ktp-lv"><span class="ktp-lv-l">목표</span><span class="ktp-lv-v gr">$' + _t + '</span></div>' +
+            '<div class="ktp-lv"><span class="ktp-lv-l">R:R</span><span class="ktp-lv-v" style="color:var(--t1)">' + _rr + '</span></div>' +
+          '</div>' +
+          _inv +
+        '</div>';
+    }
 
     // AI 상담 컨텍스트 저장
     const ctxKey = d.symbol.toLowerCase(); // 'tsla' or 'nvda'
@@ -4481,6 +4557,7 @@ function renderKings(tsla, nvda) {
           <div class="king-ai-brief-label">AI 전략 브리핑</div>
           ${brief}
         </div>
+        ${tradePlanHtml}
 
         <div class="dual-score-row" style="margin-top:16px;">
           <div class="dual-score-col">
@@ -4510,7 +4587,16 @@ function renderKings(tsla, nvda) {
   });
 }
 
-function generateKingBrief(d) {
+function generateKingBrief(d, ai) {
+  // ── Gemini 분석 JSON이 있으면 즉시 반환 (AI 우선) ──────────────────────
+  if (ai && ai.reason) {
+    const _mark = ai.action === '매수' ? '▲ 매수' : ai.action === '매도' ? '▼ 매도' : '◆ 관망';
+    const _cflt = (ai.weeklyConflict && ai.weeklyConflict !== '충돌 없음')
+      ? ' ※ ' + ai.weeklyConflict : '';
+    return '[' + _mark + '] ' + ai.reason + _cflt;
+  }
+
+  // ── 폴백: 기존 룰 기반 브리핑 ──────────────────────────────────────────
   const { symbol, gear, rsi, macd, dev200, dev5, price, sma200 } = d;
   // ── 이전 히스토리(최대 4회)와 일관성 체크 ─────────────────────────────
   const history = loadSignalHistory();
