@@ -2849,15 +2849,15 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
   }
 
   // ── 야구 시그널 인디케이터 ─────────────────────────────────────────────────
-  // BUY 노란불: 공포(낮은 점수) = 불 없음(최적 매수), 탐욕(높은 점수) = 불 3개(매수 자제)
-  const buyBalls  = score >= 66 ? 3 : score >= 46 ? 2 : score >= 26 ? 1 : 0;
+  // BUY 노란불: 볼 많음 = 매수 신호 강함. 공포(낮은 점수) = 3볼(최적 매수), 탐욕(높은 점수) = 0볼(매수 자제)
+  const buyBalls  = score < 26 ? 3 : score < 46 ? 2 : score < 66 ? 1 : 0;
   // SELL 초록불: 공포 = 불 없음(팔지 마라), 탐욕 = 불 3개(차익실현)
   const sellBalls = score >= 76 ? 3 : score >= 56 ? 2 : score >= 36 ? 1 : 0;
-  // HOLD 빨간불: 이동평균선 구조 기반 (데드크로스만이 진짜 위험)
+  // HOLD 하늘색불: 볼 많음 = 보유 신호 강함. 상승 추세 = 3볼, 데드크로스 = 0볼(위험)
   const _sma50     = ref?.sma50;
   const _sma200    = ref?.sma200;
   const deathCross = (_sma50 && _sma200) ? (_sma50 < _sma200) : false;
-  const holdBalls  = deathCross ? 3 : gear === 1 ? 2 : gear === 2 ? 1 : 0;
+  const holdBalls  = deathCross ? 0 : gear === 1 ? 1 : gear === 2 ? 2 : 3;
 
   function biColHtml(label, litCount, color, glowCls, hints) {
     const balls = [0,1,2].map(i => {
@@ -2871,10 +2871,9 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
     </div>`;
   }
 
-  // HOLD 전용: 0볼(추세 정상) → 하늘색 채움볼 3개 / 1~3볼(위험) → 빨간볼
+  // HOLD 전용: 3볼(상승 추세) → 하늘색 / 0~2볼(위험/횡보) → 주황·빨간
   function holdColHtml(n) {
-    const redHints = ['', '200일선 근접', '200일선 이탈', '데드크로스'];
-    if (n === 0) {
+    if (n === 3) {
       const balls = [0,1,2].map(() =>
         `<span class="bi-ball lit gb" style="color:#5AC8FA;"></span>`
       ).join('');
@@ -2884,19 +2883,22 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
         <span class="bi-hint">최적 보유 구간 — 추세와 신호 모두 양호. 편안하게 보유를 이어가세요.</span>
       </div>`;
     }
+    const dangerHints = ['데드크로스 — 하락 추세 진입. 레버리지 즉시 정리하세요.', '하락 추세 — 비중 점진 축소 권장.', '횡보 구간 — 레버리지는 1배수로 전환해두세요.'];
+    const dangerColors = ['#FF453A', '#FF453A', '#FF9F0A'];
+    const c = dangerColors[n] ?? '#FF453A';
     const balls = [0,1,2].map(i => {
       const lit = i < n;
-      return `<span class="bi-ball${lit ? ' lit gr' : ''}" style="color:#FF453A;"></span>`;
+      return `<span class="bi-ball${lit ? ' lit gr' : ''}" style="color:${c};"></span>`;
     }).join('');
     return `<div class="bi-col">
-      <span class="bi-label" style="color:#FF453A;">HOLD</span>
+      <span class="bi-label" style="color:${c};">HOLD</span>
       <div class="bi-balls">${balls}</div>
-      <span class="bi-hint">${redHints[n]}</span>
+      <span class="bi-hint">${dangerHints[n] ?? ''}</span>
     </div>`;
   }
 
   const baseballHtml = `<div class="baseball-signal">
-    ${biColHtml('BUY',  buyBalls,  '#FFB300', 'gy', ['공포 극단 — 역사적 최적 매수 타이밍. 3-3-4 원칙으로 공격적 분할 매수.', '냉각 구간 — 소량 분할 매수 가능. 신호 강화될 때까지 단계적으로 접근.', '온기 진입 — 신규 매수 신중하게. 기존 포지션 유지 중심.', '매수 신호 없음 — F&G 온기 이상 구간. 현 포지션 유지하며 매수 신호 회복 대기.'])}
+    ${biColHtml('BUY',  buyBalls,  '#FFB300', 'gy', ['매수 자제 — F&G 탐욕 구간. 현 포지션 유지, 신규 진입은 신호 회복 후.', '매수 신중 — 탐욕 온기 구간. 기존 포지션 유지 중심으로 운용.', '소량 매수 가능 — 냉각 구간. 신호 강화될 때까지 단계적으로 접근.', '공포 극단 — 역사적 최적 매수 타이밍. 3-3-4 원칙으로 공격적 분할 매수.'])}
     ${biColHtml('SELL', sellBalls, '#30D158', 'gg', ['매도 신호 없음 — 탐욕지수 정상 구간. 기존 포지션을 그대로 유지하세요.', '부분 익절 고려 — 탐욕 온기 시작. 비중 크다면 일부 가볍게 해도 됩니다.', '차익 실현 권장 — 탐욕 과열 진입. 레버리지 먼저 절반 익절 검토하세요.', '적극 익절 — 극단적 탐욕. 분할로 천천히 비중 줄여가세요.'])}
     ${holdColHtml(holdBalls)}
   </div>`;
