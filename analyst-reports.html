@@ -150,6 +150,7 @@ window.addEventListener('load', function(){
 .av-header-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .av-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
 .av-card.bull::before{background:var(--ez-green)}.av-card.neutral::before{background:var(--ez-amber)}.av-card.bear::before{background:var(--ez-red)}
+.av-new-badge{display:inline-block;background:var(--ez-blue);color:#fff;font-size:9px;font-weight:800;letter-spacing:1.2px;padding:2px 7px;border-radius:20px;text-transform:uppercase;vertical-align:middle;flex-shrink:0}
 .av-card:hover{transform:translateX(2px);border-color:var(--ez-blue)}
 .av-price-col{flex-shrink:0;display:flex;flex-direction:column;gap:4px;align-items:flex-start;min-width:80px}
 .av-name-col{flex-shrink:0;text-align:right;min-width:120px;max-width:200px}
@@ -287,7 +288,9 @@ async function loadSnapshots(){
     if(cErr)throw cErr;if(sErr)throw sErr;
     clearTimeout(timer);
     const coMap={};(companies||[]).forEach(c=>{coMap[c.id]=c});
-    allSnapshots=(snaps||[]).map(s=>({...s,companies:coMap[s.company_id]||{}})).sort((a,b)=>(a.companies.display_order||99)-(b.companies.display_order||99));
+    const raw=(snaps||[]).map(s=>({...s,companies:coMap[s.company_id]||{}}));
+    const dedupMap=raw.reduce((acc,s)=>{const cid=s.company_id;if(!acc[cid]||s.id>acc[cid].id)acc[cid]=s;return acc},{});
+    allSnapshots=Object.values(dedupMap).sort((a,b)=>(a.companies.display_order||99)-(b.companies.display_order||99));
     renderList();
     const tsla=allSnapshots.find(s=>s.companies?.ticker==='TSLA');
     if(tsla)selectTicker('TSLA');
@@ -306,16 +309,17 @@ async function selectTicker(ticker){
   document.querySelectorAll('.tk-card').forEach(el=>el.classList.toggle('active',el.dataset.ticker===ticker));
   document.getElementById('report-detail').innerHTML='<div class="ar-loading"><div class="spinner"></div>리포트 로딩 중…</div>';
   const snap=allSnapshots.find(s=>s.companies?.ticker===ticker);if(!snap)return;
-  let{data:views}=await _sb.from('analyst_views').select('*').eq('snapshot_id',snap.id).order('row_order',{ascending:true});
-  if(!views?.length&&snap.company_id){
-    const{data:prevSnaps}=await _sb.from('report_snapshots').select('id').eq('company_id',snap.company_id).order('snapshot_date',{ascending:false}).limit(20);
-    if(prevSnaps?.length){
-      const ids=prevSnaps.map(s=>s.id);
-      const{data:fallback}=await _sb.from('analyst_views').select('*').in('snapshot_id',ids).order('row_order',{ascending:true});
-      views=fallback||[];
-    }
-  }
-  renderDetail(snap,views||[]);
+  // 해당 종목의 모든 snapshot_id 조회 → 전 주차 analyst_views 포함
+  const{data:compSnaps}=await _sb.from('report_snapshots').select('id').eq('company_id',snap.company_id);
+  const snapIds=(compSnaps||[]).map(s=>s.id);
+  const{data:allViews}=snapIds.length?await _sb.from('analyst_views').select('*').in('snapshot_id',snapIds):{data:[]};
+  // 동일 analyst+house 중 reference_date 최신 항목만 유지 (중복 제거)
+  const seen=new Map();
+  [...(allViews||[])].sort((a,b)=>(b.reference_date||'').localeCompare(a.reference_date||'')).forEach(v=>{
+    const k=(v.analyst_name||'')+'|'+(v.house||'');
+    if(!seen.has(k))seen.set(k,v);
+  });
+  renderDetail(snap,Array.from(seen.values()));
 }
 function renderDetail(snap,views){
   const t=snap.companies?.ticker||'',co=snap.companies?.company_name||'',sec=snap.companies?.sector_theme||'';
@@ -326,10 +330,13 @@ function renderDetail(snap,views){
   const low=+snap.pt_low||0,high=+snap.pt_high||0,mean=+snap.pt_mean||0,range=high-low||1;
   const meanPct=Math.max(2,Math.min(98,((mean-low)/range)*100));
   const mdHtml=snap.report_markdown?marked.parse(cleanMd(snap.report_markdown)):'';
-  const stanceOrder={bull:0,neutral:1,bear:2};
-  const sortedViews=[...views].sort((a,b)=>{const stA=stanceOrder[a.stance_bucket]??1,stB=stanceOrder[b.stance_bucket]??1;if(stA!==stB)return stA-stB;if(a.target_price!==null&&b.target_price!==null)return b.target_price-a.target_price;if(a.target_price!==null)return-1;if(b.target_price!==null)return 1;return 0});
-  const isSynth=views.some(v=>v.house==='Synthetic');
-  const avHtml=views.length===0?'<div class="av-empty-state">애널리스트 뷰 데이터가 없습니다.</div>':`${isSynth?'<div class="av-synthetic-note">📊 시나리오 기반 합성 뷰 (Synthetic)</div>':''}<div class="av-grid">${sortedViews.map(v=>{const sb=(v.stance_bucket||'neutral').toLowerCase();return`<div class="av-card ${sb}"><div class="av-header-row"><div class="av-price-col"><div class="av-rating-tag">${v.rating}</div><div class="av-tp-big">${fmtPt(v.target_price)}</div><div><span class="av-stance-badge ${sb}">${sb==='bull'?'강세':sb==='bear'?'약세':'중립'}</span></div></div><div class="av-name-col"><div class="av-name">${v.analyst_name}</div><div class="av-house">${v.house}</div><div class="av-date-small">${v.reference_date||''}</div></div></div><div class="av-thesis">${v.thesis||'—'}</div></div>`}).join('')}</div>`;
+  const rrRank=r=>{const s=(r||'').toLowerCase();return s.includes('buy')?0:s.includes('hold')||s.includes('neutral')?1:2};
+  const realViews=views.filter(v=>v.house!=='Synthetic');
+  const synthViews=views.filter(v=>v.house==='Synthetic');
+  const displayViews=realViews.length>0?realViews:synthViews;
+  const isFallbackSynth=realViews.length===0&&synthViews.length>0;
+  const sortedViews=[...displayViews].sort((a,b)=>{const aH=a.target_price!=null,bH=b.target_price!=null;if(aH&&bH)return b.target_price-a.target_price;if(aH)return-1;if(bH)return 1;return rrRank(a.rating)-rrRank(b.rating);});
+  const avHtml=sortedViews.length===0?'<div class="av-empty-state">애널리스트 뷰 데이터가 없습니다.</div>':`${isFallbackSynth?'<div class="av-synthetic-note">애널리스트 뷰 데이터가 없어서 시나리오 기반 합성 뷰를 보여드립니다.</div>':''}<div class="av-grid">${sortedViews.map(v=>{const sb=(v.stance_bucket||'neutral').toLowerCase();return`<div class="av-card ${sb}"><div class="av-header-row"><div class="av-price-col"><div class="av-rating-tag">${v.rating}</div><div class="av-tp-big">${fmtPt(v.target_price)}</div><div><span class="av-stance-badge ${sb}">${sb==='bull'?'강세':sb==='bear'?'약세':'중립'}</span></div></div><div class="av-name-col"><div class="av-name">${v.analyst_name}</div><div class="av-house">${v.house}</div><div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;"><span class="av-date-small">${v.reference_date||''}</span>${v.snapshot_id===snap.id?'<span class="av-new-badge">NEW</span>':''}</div></div></div><div class="av-thesis">${v.thesis||'—'}</div></div>`}).join('')}</div>`;
   const rs=getRatingStyle(snap.consensus_rating),rLabel=snap.consensus_rating?.split('(')[0].trim()||'—';
   const html=`<div class="rp-content"><div class="rp-hero"><div class="rp-hero-top"><div><div class="rp-ticker-name">${co}</div><div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;"><div class="rp-big-ticker" style="margin:0;">${t}</div><div><div class="rp-consensus-badge" style="color:${rs.color};background:${rs.bg};border-color:${rs.border}">${rLabel}</div><div class="rp-analyst-sub" style="margin-top:4px;">애널리스트 ${ac}명 기준</div></div></div><div class="rp-company-row"><span class="rp-sector-pill">${sec}</span></div></div><div class="rp-hero-right"><div class="rp-date-tag">${snap.snapshot_date} · ${snap.week_key}</div></div></div><div class="rp-kpi-row"><div class="rp-kpi"><div class="rp-kpi-label">Avg Target</div><div class="rp-kpi-val" id="kpi-mean">—</div></div><div class="rp-kpi-divider"></div><div class="rp-kpi"><div class="rp-kpi-label">Upside</div><div class="rp-kpi-val ${up.cls==='pos'?'green':up.cls==='neg'?'red':''}">${up.text}</div></div><div class="rp-kpi-divider"></div><div class="rp-kpi"><div class="rp-kpi-label">High Target</div><div class="rp-kpi-val">${fmtPt(snap.pt_high)}</div></div><div class="rp-kpi-divider"></div><div class="rp-kpi"><div class="rp-kpi-label">Low Target</div><div class="rp-kpi-val">${fmtPt(snap.pt_low)}</div></div></div></div><div class="rp-body"><div class="rp-frame-section" style="padding-top:20px;"><div class="rp-section-label" style="color:var(--ez-blue);font-size:11px;font-weight:800;letter-spacing:1.5px;">VALUATION FRAME</div><div class="rp-frame-pill"><span class="rp-frame-icon">⚖️</span><span>${snap.valuation_frame||'—'}</span></div></div><div class="rp-chart-section"><div class="rp-section-label">Price History</div><div id="analyst-price-chart"></div></div><div class="rp-pt-section"><div class="rp-section-label">Price Target Range</div><div class="rp-pt-range"><div class="rp-pt-track"><div class="rp-pt-fill" id="pt-fill" style="left:0;right:0;"></div><div class="rp-pt-mean-marker" id="pt-mean-dot" style="left:50%;"></div><div class="rp-pt-current" title="컨센서스 평균" id="pt-mean-marker" style="left:50%;"></div></div><div class="rp-pt-labels"><div class="rp-pt-label"><div class="rp-pt-tag">Low · Bear</div><div class="rp-pt-num" style="color:var(--ez-red)">${fmtPt(snap.pt_low)}</div><div class="rp-pt-analyst">${snap.pt_low_analyst||''}</div></div><div class="rp-pt-label center"><div class="rp-pt-tag">Avg · Consensus</div><div class="rp-pt-num" style="color:var(--ez-blue)">${fmtPt(snap.pt_mean)}</div><div class="rp-pt-analyst">${ac}명 평균</div></div><div class="rp-pt-label right"><div class="rp-pt-tag">High · Bull</div><div class="rp-pt-num" style="color:var(--ez-green)">${fmtPt(snap.pt_high)}</div><div class="rp-pt-analyst">${snap.pt_high_analyst||''}</div></div></div></div></div><div class="rp-sentiment-section"><div class="rp-section-label">Analyst Sentiment · ${ac}명</div><div class="rp-sentiment-bars"><div class="rp-sent-row"><div class="rp-sent-label">Buy</div><div class="rp-sent-bar-bg"><div class="rp-sent-bar-fill buy" id="bar-buy" style="width:${buyP}%"></div></div><div class="rp-sent-pct">${buyN}명</div></div><div class="rp-sent-row"><div class="rp-sent-label">Hold</div><div class="rp-sent-bar-bg"><div class="rp-sent-bar-fill hold" id="bar-hold" style="width:${holdP}%"></div></div><div class="rp-sent-pct">${holdN}명</div></div><div class="rp-sent-row"><div class="rp-sent-label">Sell</div><div class="rp-sent-bar-bg"><div class="rp-sent-bar-fill sell" id="bar-sell" style="width:${sellP}%"></div></div><div class="rp-sent-pct">${sellN}명</div></div></div></div><div class="rp-summary-section"><div class="rp-section-label">Summary</div><div class="rp-summary-box">${snap.one_line_summary||'—'}</div></div>${tier1&&mdHtml?`<div class="rp-report-section"><div class="rp-section-label">Research Note</div><div class="markdown-body">${mdHtml}</div></div>`:''}<div class="rp-av-section"><div class="rp-section-label">Analyst Views</div>${avHtml}</div><div class="rp-source-note">${snap.source_note||''}</div></div></div>`;
   const el=document.getElementById('report-detail');el.innerHTML=html;
