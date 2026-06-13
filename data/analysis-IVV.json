@@ -3,7 +3,7 @@
   "name": "S&P500 ETF (iShares)",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-13T17:13:51.665Z",
+  "updatedAt": "2026-06-13T17:55:41.074Z",
   "price": {
     "current": 745.14,
     "change": 4.09,
@@ -46,22 +46,27 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "강세",
+    "strength": 4,
     "support": 734.97,
     "resistance": 753.02,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "중립",
+    "macdStatus": "약세수렴",
+    "bbStatus": "중단",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 7,
+    "scoreReason": "주봉 RSI 양호, 눌림목 매수 기회",
+    "profitTarget1": 764,
+    "profitTarget2": 783.08,
+    "stopLoss": 726.06,
+    "narrative": "현재 IVV는 일봉상 SMA50, SMA100, SMA200 위에 안착하며 강세 흐름을 이어가고 있습니다. 주봉상으로도 SMA20, SMA50, SMA100 위에 위치하며 장기 상승 추세가 견고함을 보여줍니다. 일봉 RSI는 52.9로 중립 구간에 있으며, MACD 히스토그램이 음전환되었으나 아직 데드크로스는 발생하지 않았��니다. 볼린저밴드 하단이 지지선 역할을 하며 반등 가능성을 시사합니다. 주봉 RSI는 65.6으로 상승 여력이 남아있습니다. 현재 가격은 52주 고가에 근접해 있으나, 장기 추세가 강하므로 눌림목 구간에서 분할 매수를 고려할 만합니다.",
+    "patternNote": "일봉 차트에서는 단기 조정을 보이고 있으나, 주봉 차트에서는 상승 채널을 따라 꾸준히 우상향하는 패턴을 유지하고 있습니다.",
+    "keyPoints": [
+      "주봉 기준 장기 상승 추세 유지",
+      "일봉 SMA 지지선 구간 진입",
+      "주봉 RSI 65.6으로 추가 상승 여력 존재"
+    ],
+    "riskNote": "일봉상 SMA20 이탈 시 단기 하락 압력이 커질 수 있으며, MACD 데드크로스 발생 시 약세 전환 가능성이 있습니다."
   }
 }

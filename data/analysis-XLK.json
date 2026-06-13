@@ -3,7 +3,7 @@
   "name": "IT 섹터 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-13T17:15:36.817Z",
+  "updatedAt": "2026-06-13T17:56:32.393Z",
   "price": {
     "current": 184.8,
     "change": 1.59,
@@ -46,22 +46,27 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "강세",
+    "strength": 4,
     "support": 170.83,
     "resistance": 198.73,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "중립",
+    "macdStatus": "약세수렴",
+    "bbStatus": "중단",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 7,
+    "scoreReason": "주봉 RSI 과열 구간 진입",
+    "profitTarget1": 198.73,
+    "profitTarget2": 212.69,
+    "stopLoss": 170.83,
+    "narrative": "현재 일봉 차트는 SMA200 위에 안착하며 상승 추세를 이어가고 있습니다. 현재가($184.80)는 SMA20($184.03)과 거의 같은 수준에 머물러 있으며, 이는 단기적으로 숨 고르기 구간에 진입했음을 시사합니다. 주봉상 RSI가 72.1로 과열 구간에 근접했지만, MACD 히스토그램이 여전히 양수(+)를 유지하며 상승 모멘텀이 살아있음을 보여줍니다. 볼린저밴드 중단선 부근에서 횡보하며 에너지를 응축하는 모습입니다.",
+    "patternNote": "일봉에서는 SMA200을 상향 돌파한 후 횡보하며 새로운 지지대를 형성하는 패턴이 나타나고 있습니다. 주봉상으로는 상승 채널을 따라 꾸준히 우상향하는 추세가 관찰됩니다.",
+    "keyPoints": [
+      "일봉 SMA200 상향 돌파 후 안착",
+      "주봉 RSI 과열 구간 진입 임박",
+      "볼린저밴드 중단선 부근 횡보"
+    ],
+    "riskNote": "주봉 RSI가 70 이상 과매수 구간에 진입할 경우 단기 되돌림 가능성이 있습니다."
   }
 }

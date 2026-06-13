@@ -3,7 +3,7 @@
   "name": "다우존스 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-13T17:14:06.719Z",
+  "updatedAt": "2026-06-13T17:55:48.218Z",
   "price": {
     "current": 513.06,
     "change": 3.7,
@@ -18,7 +18,7 @@
   },
   "indicators": {
     "sma20": 506.3465,
-    "sma50": 495.6567,
+    "sma50": 495.6566,
     "sma100": 488.2188,
     "sma200": 478.2484,
     "rsi": 59.07,
@@ -46,22 +46,27 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "강세",
+    "strength": 4,
     "support": 492.49,
     "resistance": 517.75,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "상단접근",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 7,
+    "scoreReason": "주봉 RSI 67, 상승 추세 유지",
+    "profitTarget1": 523.04,
+    "profitTarget2": 533.03,
+    "stopLoss": 492.49,
+    "narrative": "현재 다우존스 ETF는 일봉상 52주 신고가에 근접하며 강한 상승세를 보이고 있습니다. SMA200 위에 안착한 가격은 SMA20, SMA50, SMA100 위에 위치하며 전반적인 상승 추세를 지지하고 있습니다. RSI는 59.1로 과열 구간은 아니지만, 주봉 RSI가 67.2로 상승 추세가 더욱 공고함을 나타냅니다. MACD는 약세 수렴 중이나 히스토그램이 음전환 후 다시 양전환을 시도하는 모습입니다. 볼린저밴드 상단에 근접하며 단기 과열 가능성도 있으나, 전반적인 추세는 여전히 강세입니다.",
+    "patternNote": "일봉 차트에서 상승 채널을 따라 꾸준히 상승하고 있으며, 주봉 차트에서도 장기 상승 추세가 유지되고 있습니다.",
+    "keyPoints": [
+      "일봉상 52주 신고가 근접",
+      "주봉 RSI 67.2로 강세 유지",
+      "SMA200 상향 돌파 후 지지력 확보"
+    ],
+    "riskNote": "볼린저밴드 상단에 근접하여 단기 되돌림 가능성이 있으며, 스윙 저항선 돌파 실패 시 하락할 수 있습니다."
   }
 }

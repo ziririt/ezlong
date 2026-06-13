@@ -3,7 +3,7 @@
   "name": "인튜이트",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-13T17:12:36.371Z",
+  "updatedAt": "2026-06-13T17:55:04.006Z",
   "price": {
     "current": 276.73,
     "change": -0.18,
@@ -46,22 +46,27 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
-    "support": null,
+    "trend": "약세",
+    "strength": 2,
+    "support": 268.01,
     "resistance": 363.18,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "과매도",
+    "macdStatus": "약세수렴",
+    "bbStatus": "하단접근",
+    "stage": "하락추세",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 3,
+    "scoreReason": "주봉 RSI 과매도 구간 진입",
+    "profitTarget1": 363.18,
+    "profitTarget2": 403.13,
+    "stopLoss": 245.54,
+    "narrative": "현재 인튜이트(INTU)는 일봉과 주봉 모두에서 약세 흐름을 보이고 있습니다. 일봉상 현재가는 52주 최저가에 근접한 $276.73이며, 모든 장기 이동평균선(SMA100, SMA200) 아래에서 거래되고 있습니다. RSI는 32.6으로 과매도 구간에 진입했으며, MACD는 데드크로스 이후 약세 흐름을 이어가고 있습니다. 주봉 역시 RSI가 27.9로 극심한 과매도 상태이며, 주봉 SMA20과의 격차도 상당합니다. 볼린저밴드 하단에 근접한 모습은 단기 반등 가능성을 시사하지만, 추세 전환을 논하기에는 이른 시점입니다.",
+    "patternNote": "일봉에서는 52주 저가 부근에서 지지력을 테스트하고 있으며, 주봉상으로는 장기 하락 추세 속에서 과매도 구간에 진입한 상태입니다.",
+    "keyPoints": [
+      "일봉 및 주봉 모두 약세 추세 지속",
+      "일봉 RSI 32.6, 주봉 RSI 27.9로 과매도 구간",
+      "52주 저가 부근에서 지지력 테스트 중"
+    ],
+    "riskNote": "주봉상 과매도 구간 진입으로 단기 반등 가능성이 있으나, 지지선 이탈 시 추가 하락 위험이 존재합니다."
   }
 }

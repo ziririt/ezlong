@@ -3,7 +3,7 @@
   "name": "미국 장기국채 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-13T17:16:36.929Z",
+  "updatedAt": "2026-06-13T17:57:00.375Z",
   "price": {
     "current": 85.77,
     "change": -0.21,
@@ -24,7 +24,7 @@
     "rsi": 56.23,
     "macd": {
       "macd": 0.12193,
-      "signal": -0.003696,
+      "signal": -0.003697,
       "histogram": 0.125626
     },
     "bb": {
@@ -46,22 +46,27 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "횡보",
+    "strength": 3,
     "support": 85.48,
     "resistance": 85.96,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "중립",
+    "macdStatus": "강세확산",
+    "bbStatus": "중단",
+    "stage": "축적구간",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 5,
+    "scoreReason": "주요 이평선 밀집, 횡보 구간",
+    "profitTarget1": 86.95,
+    "profitTarget2": 88.13,
+    "stopLoss": 83.68,
+    "narrative": "현재 TLT 일봉 차트는 SMA100과 SMA200이 현재가 바로 위에 위치하며 저항선으로 작용하고 있습니다. RSI는 56.2로 중립 구간에 있으며, MACD는 양수 값으로 상승 모멘텀이 유지되고 있습니다. 볼린저밴드 하단과 상단 사이에서 횡보하는 모습이며, 주봉상에서도 주요 이동평균선들이 현재가 주변�� 밀집해 있어 방향성 탐색 구간으로 보입니다. 단기적으로는 85.48 지지선과 85.96 저항선 사이의 움직임을 주목해야 합니다.",
+    "patternNote": "일봉 차트에서는 주요 이동평균선들이 현재가 주변에 밀집하며 횡보하는 패턴을 보이고 있습니다. 주봉상으로는 상승 추세 채널 내에서 움직임을 이어가고 있습니다.",
+    "keyPoints": [
+      "일봉 SMA100, SMA200 저항 구간",
+      "RSI 중립 구간, MACD 상승 모멘텀",
+      "주봉 주요 이평선 밀집, 방향성 탐색"
+    ],
+    "riskNote": "85.48 지지선 이탈 시 하락 압력이 커질 수 있으며, 85.96 저항선 돌파 실패 시 횡보 또는 하락 전환 가능성이 있습니다."
   }
 }

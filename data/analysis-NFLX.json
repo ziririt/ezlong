@@ -3,7 +3,7 @@
   "name": "넷플릭스",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-13T17:11:21.301Z",
+  "updatedAt": "2026-06-13T17:54:27.714Z",
   "price": {
     "current": 80.34,
     "change": -0.93,
@@ -46,22 +46,27 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "약세",
+    "strength": 2,
     "support": 79.23,
     "resistance": 84.66,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "과매도",
+    "macdStatus": "약세수렴",
+    "bbStatus": "하단접근",
+    "stage": "하락추세",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 3,
+    "scoreReason": "RSI 과매도 구간, 지지선 근접",
+    "profitTarget1": 88.12,
+    "profitTarget2": 95.9,
+    "stopLoss": 75.01,
+    "narrative": "현재 넷플릭스 주가는 일봉상 SMA200 하단에서 거래되며 약세 흐름을 이어가고 있습니다. RSI는 29.0으로 과매도 구간에 진입했으며, MACD는 시그널선 하향 돌파 후 약세 흐름을 보이고 있습니다. 볼린저밴드 하단에 근접하며 단기 반등 가능성도 있으나, 주봉상 이동평균선들이 모두 하��하고 있어 추세 전환은 아직 불확실합니다.",
+    "patternNote": "일봉 차트에서 하락 채널을 형성하며 하단으로 접근하고 있으며, 주봉상으로는 장기 하락 추세가 이어지고 있습니다.",
+    "keyPoints": [
+      "일봉 RSI 과매도 구간 진입",
+      "주봉상 장기 이동평균선 하향 추세",
+      "볼린저밴드 하단 근접으로 인한 단기 반등 가능성"
+    ],
+    "riskNote": "핵심 지지선인 79.23을 하향 이탈할 경우 추가 하락 위험이 있습니다."
   }
 }

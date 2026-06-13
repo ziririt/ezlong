@@ -3,7 +3,7 @@
   "name": "테슬라",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-13T17:08:20.894Z",
+  "updatedAt": "2026-06-13T17:53:01.749Z",
   "price": {
     "current": 406.43,
     "change": 7.28,
@@ -46,22 +46,27 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "횡보",
+    "strength": 3,
     "support": 393.63,
     "resistance": 409.28,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "중립",
+    "macdStatus": "약세수렴",
+    "bbStatus": "중단",
+    "stage": "축적구간",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 5,
+    "scoreReason": "주요 이평선 수렴 구간",
+    "profitTarget1": 441.3,
+    "profitTarget2": 476.18,
+    "stopLoss": 375.85,
+    "narrative": "현재 테슬라(TSLA)는 일봉상 SMA100, SMA200이 횡보하며 수렴하는 구간에 있습니다. RSI는 48.9로 중립 구간에 머물러 있으며, MACD는 시그널선 아래에서 약세 수렴 중입니다. 볼린저밴드 역시 중단 부근에서 횡보하며 밴드폭이 축소되는 모습을 보이고 있습니다. 주봉상으로는 50.6의 RSI와 양호한 MACD ���스토그램으로 장기 추세는 긍정적이나, 단기적으로는 방향성 탐색 구간으로 판단됩니다.",
+    "patternNote": "일봉 차트에서는 주요 이동평균선들이 밀집하며 횡보하는 패턴을 보이고 있으며, 주봉 차트에서는 상승 추세선이 유지되고 있습니다.",
+    "keyPoints": [
+      "일봉 SMA100, SMA200 수렴 구간",
+      "RSI, MACD 중립 구간",
+      "주봉상 장기 추세는 긍정적"
+    ],
+    "riskNote": "일봉상 스윙 지지선인 393.63 이탈 시 하락 압력이 증가할 수 있습니다."
   }
 }

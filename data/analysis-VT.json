@@ -3,7 +3,7 @@
   "name": "전세계 주식 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-13T17:16:06.851Z",
+  "updatedAt": "2026-06-13T17:56:46.439Z",
   "price": {
     "current": 156.29,
     "change": 0.68,
@@ -46,22 +46,27 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "강세",
+    "strength": 4,
     "support": 152.03,
     "resistance": 156.42,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "중립",
+    "macdStatus": "약세수렴",
+    "bbStatus": "상단접근",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 7,
+    "scoreReason": "주봉 강세, 일봉 눌림목 구간",
+    "profitTarget1": 160.07,
+    "profitTarget2": 163.84,
+    "stopLoss": 151.54,
+    "narrative": "현재 VT는 일봉상 52주 신고가에 근접하며 강한 상승세를 이어가고 있습니다. 단기적으로는 볼린저밴드 상단에 근접하며 과열 신호가 나타나고 있으나, 주봉상 RSI가 64.9로 여전히 상승 여력이 남아있고 MACD 히스토그램도 양수 구간에서 유지되고 있어 추세 지속 가능성이 높습��다. SMA200 위에 안착한 모습은 장기적인 상승 추세를 지지하고 있습니다.",
+    "patternNote": "일봉 차트에서는 상승 채널을 따라 움직이고 있으며, 주봉 차트에서도 꾸준한 우상향 추세를 유지하고 있습니다.",
+    "keyPoints": [
+      "일봉상 52주 신고가 근접",
+      "주봉 RSI 64.9, 상승 여력 존재",
+      "SMA200 지지선 확보"
+    ],
+    "riskNote": "일봉 볼린저밴드 상단 돌파 실패 시 단기 되돌림 가능성이 있습니다."
   }
 }

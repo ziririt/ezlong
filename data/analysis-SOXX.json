@@ -3,7 +3,7 @@
   "name": "반도체 ETF (iShares)",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-13T17:14:36.634Z",
+  "updatedAt": "2026-06-13T17:56:02.556Z",
   "price": {
     "current": 596.25,
     "change": 9.32,
@@ -46,22 +46,27 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
-    "support": 477.95,
+    "trend": "강세",
+    "strength": 4,
+    "support": 509.85,
     "resistance": 618.84,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "중립",
+    "macdStatus": "강세확산",
+    "bbStatus": "상단접근",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 7,
+    "scoreReason": "주봉 강세, 일봉 눌림목 구간",
+    "profitTarget1": 650.74,
+    "profitTarget2": 705.24,
+    "stopLoss": 509.85,
+    "narrative": "현재 SOXX는 일봉상 SMA200을 크게 상회하며 강한 상승 추세를 이어가고 있습니다. 주봉 RSI가 80.7로 과열 구간에 진입했지만, 주봉 MACD 히스토그램이 17.4781로 양수 확대를 지속하며 장기적인 상승 모멘텀을 시사합니다. 일봉상 현재가는 볼린저밴드 상단에 근접해 있으며, RSI는 61.5로 중립 구간에 머물러 있어 추가 상승 여력을 보여줍니다. MACD는 데드크로스 이후 약세 수렴 중이나 히스토그램이 음수에서 양수로 전환될 가능성을 주시해야 합니다. 단기적으로는 596.25 부근에서 횡보하며 에너지를 응축하는 모습입니다.",
+    "patternNote": "일봉 차트에서는 52주 신고가 부근에서 저항을 받고 있으나, 주봉 차트상으로는 장기 상승 추세가 견고하게 유지되고 있습니다.",
+    "keyPoints": [
+      "주봉 RSI 80.7 과열 구간 진입",
+      "일봉 MACD 히스토그램 음수 축소",
+      "주봉 SMA20 상향 돌파 후 상승세 유지"
+    ],
+    "riskNote": "일봉 볼린저밴드 상단 돌파 실패 시 단기 되돌림 가능성이 있습니다."
   }
 }
