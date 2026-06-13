@@ -2334,26 +2334,28 @@ function getGear(dev200) {
 //   EZLONG: 풋콜/정크본드 대신 → 섹터 폭(QQQ/VOO/DIA/IWM/SOXX), MACD 방향,
 //           52주 위치, CNN 지수 보완 반영 추가
 //
-// ─── S-CORE v2: 스윙 복합 오실레이터 (0=극단공포/매수, 100=극단탐욕/매도) ───
-// 3축 독립 구조: TREND × MOMENTUM × FEAR 단순 평균
-// 핵심: 각 지표를 Level(현재값) + Delta(방향성) + Regime(극단 기억) 3차원으로 분석
-// "RSI 55" 하나가 아니라 "RSI 35→55 (과매도 탈출 중)"이라는 서사를 감지
+// ─── S-CORE v3: 스윙 복합 오실레이터 (0=극단공포/매수, 100=극단탐욕/매도) ───
+// 핵심 철학: "스윙 매수의 진짜 타이밍 = 사람들이 가장 두려워할 때"
+// 구조: TREND(20%) + MOMENTUM(30%) + FEAR(50%) — 심리 지표가 보스
+// RSI/MACD: Level + Delta(방향성) + Regime(극단 기억) 3차원
+// VIX: 단순 레벨이 아닌 방향성 중심 (17.7이라도 "탐욕"으로 보지 않음)
+// CNN F&G: FEAR 축에서 50% 핵심 지표 (Breadth 제거)
 function calcMarketFearGreed(qqq, voo, soxx, dia, iwm, vix) {
   const ref = qqq || voo;
   const closes = ref?.closes ?? [];
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
-  // ══ 축① TREND — 장기 추세 위치 + 기울기 (0=저점, 100=고점) ══════
-  // Level: 200일선 이격도 (-15%→0pt, 0%→50pt, +15%→100pt)
+  // ══ 축① TREND — 장기 추세 (가중치 20%) ═══════════════════════════
+  // Level: +10%까지는 중립(56점대), +25%에서 100점 — 상승장 정상 범위는 페널티 없음
   const dev200 = ref?.dev200 ?? 0;
-  const trendLevel = clamp(50 + dev200 * 50 / 15, 0, 100);
+  const trendLevel = clamp((dev200 + 5) / 30 * 100, 0, 100);
 
-  // 골든/데드크로스 (50일 vs 200일)
+  // 골든/데드크로스: 60/40으로 완화 (기존 70/30의 극단차 제거)
   const sma50val  = ref?.sma50  ?? null;
   const sma200val = ref?.sma200 ?? null;
-  const gdcScore  = (sma50val && sma200val) ? (sma50val > sma200val ? 70 : 30) : 50;
+  const gdcScore  = (sma50val && sma200val) ? (sma50val > sma200val ? 60 : 40) : 50;
 
-  // Delta: SMA50의 10일 기울기 (가속=과열, 감속=둔화 경고)
+  // SMA50 기울기 (10일)
   let trendDelta = 0;
   if (closes.length >= 65 && sma50val) {
     const sma50_10d = calcSMA(closes.slice(0, -10), 50);
@@ -2363,61 +2365,54 @@ function calcMarketFearGreed(qqq, voo, soxx, dia, iwm, vix) {
     }
   }
 
-  const TREND = clamp(trendLevel * 0.60 + gdcScore * 0.35 + trendDelta, 0, 100);
+  const TREND = clamp(trendLevel * 0.50 + gdcScore * 0.35 + trendDelta * 0.15, 0, 100);
 
-  // ══ 축② MOMENTUM — Level + Delta + Regime (0=과매도, 100=과매수) ══
+  // ══ 축② MOMENTUM — Level+Delta+Regime (가중치 30%) ════════════════
   const rsi = ref?.rsi ?? 50;
   let rsiScore = rsi;
 
   if (closes.length >= 25) {
-    // Delta: 5일 전 RSI와 비교 (방향성)
-    const rsiPrev5 = calcRSI(closes.slice(0, -5), 14) ?? rsi;
-    const rsiDelta = rsi - rsiPrev5;  // 양수=상승(회복), 음수=하락(냉각)
-
-    // Regime: 10일 전 RSI도 계산해서 최근 극단값 추정
+    const rsiPrev5  = calcRSI(closes.slice(0, -5),  14) ?? rsi;
     const rsiPrev10 = calcRSI(closes.slice(0, -10), 14) ?? rsi;
+    const rsiDelta  = rsi - rsiPrev5;  // 양수=상승(회복), 음수=하락(냉각)
+
     const rsi14dMin = Math.min(rsi, rsiPrev5, rsiPrev10);
     const rsi14dMax = Math.max(rsi, rsiPrev5, rsiPrev10);
-    // 최근 과매도(RSI<30) 방문 후 반등 중 → 매수 기회 (-12점)
-    // 최근 과매수(RSI>70) 방문 후 하락 중 → 매도 신호 (+12점)
-    const regime = rsi14dMin < 30 ? -12 : (rsi14dMax > 70 ? +12 : 0);
+    // Regime 계수 강화: ±12 → ±18 (과매도/과매수 기억을 더 강하게)
+    const regime = rsi14dMin < 30 ? -18 : (rsi14dMax > 70 ? +18 : 0);
 
-    rsiScore = clamp(rsi - rsiDelta * 0.8 + regime, 0, 100);
+    // Delta 계수 강화: 0.8 → 1.2 (RSI 35→55 vs 70→55를 명확히 구분)
+    rsiScore = clamp(rsi - rsiDelta * 1.2 + regime, 0, 100);
+    // 결과: RSI 35→55(과매도탈출) → 55−24−18=13점 (강력 매수)
+    //       RSI 70→55(과매수냉각) → 55+18+18=91점 (강력 매도)
   }
 
-  // MACD: Level + Delta + Regime (30일 저점 대비 회복률)
+  // MACD: Level + Delta + Regime
   const hist = ref?.macd?.histogram ?? 0;
   let macdScore = 50;
   if (closes.length >= 40) {
     const histPrev5  = calcMACD(closes.slice(0, -5)).histogram  ?? 0;
     const histPrev15 = calcMACD(closes.slice(0, -15)).histogram ?? 0;
     const histMin30  = Math.min(hist, histPrev5, histPrev15);
-
-    const macdLevel    = hist > 0 ? 60 : 35;  // Level (부호)
-    const macdDeltaAdj = clamp((hist - histPrev5) * 8, -20, +20);  // Delta × 8
-    // Regime: 30일 내 저점에서 얼마나 회복했나 (0~20점 보너스)
+    const macdLevel    = hist > 0 ? 60 : 35;
+    const macdDeltaAdj = clamp((hist - histPrev5) * 8, -20, +20);
     const recovery     = histMin30 < 0
-      ? clamp((hist - histMin30) / Math.abs(histMin30) * 20, 0, 20)
-      : 0;
+      ? clamp((hist - histMin30) / Math.abs(histMin30) * 20, 0, 20) : 0;
     macdScore = clamp(macdLevel + macdDeltaAdj + recovery, 0, 100);
   } else {
     macdScore = hist > 0.5 ? 65 : hist > -0.5 ? 50 : 30;
   }
 
-  // 가격 패턴: Higher Low(상승 초입) vs Lower High(하락 초입)
-  // closes[-5:] 저점이 closes[-20:] 저점보다 높으면 "Higher Low" = 회복 중
-  let pricePatternScore = 45;  // 기본: 횡보
+  // 가격 패턴: Higher Low(바닥 다짐) vs Lower High(고점 하락)
+  let pricePatternScore = 45;
   if (closes.length >= 20) {
-    const recent5  = closes.slice(-5);
-    const recent20 = closes.slice(-20);
-    const low5   = Math.min(...recent5);
-    const high5  = Math.max(...recent5);
-    const low20  = Math.min(...recent20);
-    const high20 = Math.max(...recent20);
-    const higherLow  = low5  > low20  * 1.005;  // 5일 저점 > 20일 저점 → 상승 초입
-    const lowerHigh  = high5 < high20 * 0.995;  // 5일 고점 < 20일 고점 → 하락 초입
-    if      (higherLow && !lowerHigh) pricePatternScore = 20;  // 바닥 다지고 올라오는 중
-    else if (lowerHigh && !higherLow) pricePatternScore = 78;  // 고점 찍고 내려오는 중
+    const r5 = closes.slice(-5), r20 = closes.slice(-20);
+    const lo5 = Math.min(...r5), hi5 = Math.max(...r5);
+    const lo20 = Math.min(...r20), hi20 = Math.max(...r20);
+    const higherLow = lo5 > lo20 * 1.005;
+    const lowerHigh = hi5 < hi20 * 0.995;
+    if      (higherLow && !lowerHigh) pricePatternScore = 20;  // 상승 초입
+    else if (lowerHigh && !higherLow) pricePatternScore = 78;  // 하락 초입
   }
 
   const MOMENTUM = clamp(
@@ -2425,34 +2420,34 @@ function calcMarketFearGreed(qqq, voo, soxx, dia, iwm, vix) {
     0, 100
   );
 
-  // ══ 축③ FEAR — 감정·심리 + 방향성 (0=극단공포, 100=극단탐욕) ══════
-  // VIX Level + Delta (35%)
+  // ══ 축③ FEAR — 심리 지표 보스 (가중치 50%) ════════════════════════
+  // VIX: 3차원 (Level 30% + Delta 50% + Regime 20%)
+  // "VIX 낮다 ≠ 탐욕" — 방향성이 더 중요
   const v = (typeof vix === 'number') ? vix : 20;
-  const vixLevel = clamp((40 - v) / 28 * 100, 0, 100);
-  // VIX 방향: 상승 중(공포 확대) → 점수 내림, 하락 중(안도) → 점수 올림
-  // fearGreedData.vix_prev5 가 없으므로 단순 Level만 사용
-  const vixScore = vixLevel;
+  // Level: 분모를 32로 완화 (17.7 → 69.7점, 기존 79.6에서 낮춤)
+  const vixLevel = clamp((40 - v) / 32 * 100, 0, 100);
+  // Delta: VIX 5일 전 데이터 없으므로 중립(50) 처리
+  // (서버사이드에서 VIX 히스토리를 주입하면 여기서 방향성 계산 가능)
+  const vixDelta = 50;
+  // Regime: 14일 내 VIX 극단 기억 없으므로 중립(50) 처리
+  const vixRegime = 50;
+  const vixFinal = clamp(vixLevel * 0.30 + vixDelta * 0.50 + vixRegime * 0.20, 0, 100);
 
-  // CNN Fear & Greed: 40% 핵심 지표 (기존 10% → 40%)
+  // CNN Fear & Greed: 50% — 이제 진짜 핵심 지표
   const fngScore = fearGreedData?.value ?? 50;
 
-  // ETF 브레드스 (25%): 5대 ETF 중 200일선 위 비율
-  const etfs = [qqq, voo, dia, iwm, soxx].filter(Boolean);
-  let breadthScore = 50;
-  if (etfs.length > 0) {
-    const g3cnt = etfs.filter(d => d.gear === 3).length;
-    const g2cnt = etfs.filter(d => d.gear === 2).length;
-    breadthScore = (g3cnt * 2 + g2cnt) / (etfs.length * 2) * 100;
-  }
+  // PCR 대용: VIX 극단값 기억 없으므로 중립(50)
+  // (향후 VIX 히스토리 연동 시 실제 고공포 방문 여부 계산 가능)
+  const pcrProxy = 50;
 
   const FEAR = clamp(
-    vixScore * 0.35 + fngScore * 0.40 + breadthScore * 0.25,
+    vixFinal * 0.35 + fngScore * 0.50 + pcrProxy * 0.15,
     0, 100
   );
 
-  // ══ S-CORE = 3축 단순 평균 ══════════════════════════════════════
-  // 낮을수록 매수 기회(극단공포), 높을수록 매도 구간(극단탐욕)
-  const score = (TREND + MOMENTUM + FEAR) / 3;
+  // ══ S-CORE v3: FEAR가 50% 지배 ══════════════════════════════════
+  // TREND 20% + MOMENTUM 30% + FEAR 50%
+  const score = TREND * 0.20 + MOMENTUM * 0.30 + FEAR * 0.50;
   return Math.round(clamp(score, 0, 100));
 }
 

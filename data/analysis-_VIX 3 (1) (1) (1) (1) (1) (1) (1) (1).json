@@ -1,0 +1,85 @@
+{
+  "ticker": "^VIX",
+  "name": "CBOE 변동성 지수 (VIX)",
+  "assetType": "index",
+  "market": "us",
+  "updatedAt": "2026-06-06T02:40:10.158Z",
+  "price": {
+    "current": 21.51,
+    "change": 6.11,
+    "changePct": 39.68,
+    "high52": 35.3,
+    "low52": 13.38,
+    "pos52": 37.1,
+    "marketState": "CLOSED",
+    "extPrice": null,
+    "extChange": null,
+    "extChangePct": null
+  },
+  "indicators": {
+    "sma20": 17.1225,
+    "sma50": 18.9946,
+    "sma100": 19.9184,
+    "sma200": 18.4238,
+    "rsi": 65.72,
+    "macd": {
+      "macd": -0.395294,
+      "signal": -0.772815,
+      "histogram": 0.377521
+    },
+    "bb": {
+      "upper": 19.9108,
+      "middle": 17.1225,
+      "lower": 14.3342,
+      "bandwidth": 0.3257
+    }
+  },
+  "levels": {
+    "swingResistance": 21.56,
+    "swingSupport": 21.09,
+    "pivot": {
+      "pp": 19.42,
+      "r1": 23.66,
+      "r2": 25.81,
+      "s1": 17.27,
+      "s2": 13.03
+    }
+  },
+  "analysis": {
+    "trend": "강세",
+    "strength": 4,
+    "support": 19.42,
+    "resistance": 23.66,
+    "rsiStatus": "중립",
+    "macdStatus": "강세확산",
+    "bbStatus": "상단접근",
+    "stage": "상승추세",
+    "action": "분할매수",
+    "buyScore": 7,
+    "scoreReason": "MACD 강세확산, 주봉 추세 전환 확인",
+    "profitTarget1": 23.66,
+    "profitTarget2": 25.81,
+    "stopLoss": 18.03,
+    "narrative": "현재 VIX는 21.51달러로, 일봉 기준 모든 주요 이동평균선 위에 위치하며 강한 상승 모멘텀을 보여주고 있습니다. 특히 SMA20, SMA50, SMA100, SMA200이 모두 정배열 초기 단계에 진입하려는 모습입니다. 일봉 RSI는 65.7로 과매수 구간에 근접하고 있으나 아직 진입하지는 않았습니다. MACD는 시그널 선 위에서 히스토그램이 양의 값으로 확대되며 강세 확산을 나타내고 있습니다. 볼린저밴드 상단에 근접해 있으며, 밴드폭이 32.57%로 확대되어 변동성이 커지고 있음을 시사합니다. 주봉 RSI는 53.3으로 중립적인 위치이며, 주봉 MACD 히스토그램은 여전히 음의 값이지만 감소세가 둔화되고 있어 장기적인 관점에서는 하락 압력이 완화되고 있음을 보여줍니다. 주봉 SMA20 위에 주가가 위치하며 장기 추세 전환의 가능성을 높이고 있습니다.",
+    "patternNote": "일봉 차트에서는 최근 저점을 높이며 상승하는 단기 상승 추세 채널이 형성되고 있습니다. 주봉 차트에서는 장기 하락 추세선 돌파 후 지지 테스트를 거쳐 상승 전환을 시도하는 모습입니다.",
+    "keyPoints": [
+      "일봉 모든 이평선 위에서 강한 상승 모멘텀",
+      "MACD 강세 확산으로 추가 상승 기대",
+      "주봉 SMA20 상회하며 장기 추세 전환 시도",
+      "볼린저밴드 상단 접근 및 밴드폭 확대"
+    ],
+    "riskNote": "일봉 RSI가 과매수 구간에 진입하거나 볼린저밴드 상단을 강하게 이탈할 경우 단기적인 되돌림이 발생할 위험이 있습니다. 또한, 스윙 지지선인 21.09달러 이탈 시 단기 상승세가 꺾일 수 있습니다.",
+    "exitNarrative": "현재 RSI가 과매수 구간에 근접하고 볼린저밴드 상단에 접근하고 있어 단기적인 과열 양상을 보일 수 있습니다. 최근 20일 고점 대비 하락률이 미미하여 추가 상승 여력이 남아있지만, RSI가 70을 상회하거나 볼린저밴드 상단을 강하게 돌파 후 지지받지 못한다면 분할 청산을 고려해볼 수 있습니다. 단기적인 조정 가능성에 대비하는 것이 좋습니다.",
+    "trailingStopNote": "매도 기준선 18.03달러 하향 이탈 시 청산"
+  },
+  "leverageMultiple": null,
+  "trailingStop": {
+    "atr14": 1.5726,
+    "recentHigh20": 21.57,
+    "distFromHighPct": 0.28,
+    "atrMultiplier": 2.25,
+    "stopByAtr": 18.03,
+    "stopBySma20": 16.61,
+    "stopBySma50": 18.42
+  }
+}

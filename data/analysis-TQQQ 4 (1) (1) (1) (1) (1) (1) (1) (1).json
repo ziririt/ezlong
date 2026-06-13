@@ -1,0 +1,84 @@
+{
+  "ticker": "TQQQ",
+  "name": "나스닥 3배 레버리지 ETF",
+  "assetType": "etf_leveraged",
+  "market": "us",
+  "updatedAt": "2026-06-06T02:39:42.689Z",
+  "price": {
+    "current": 73.05,
+    "change": -12.17,
+    "changePct": -14.28,
+    "high52": 88.09,
+    "low52": 35.65,
+    "pos52": 71.3,
+    "marketState": "CLOSED",
+    "extPrice": null,
+    "extChange": null,
+    "extChangePct": null
+  },
+  "indicators": {
+    "sma20": 79.4115,
+    "sma50": 64.605,
+    "sma100": 57.3655,
+    "sma200": 54.6303,
+    "rsi": 45.76,
+    "macd": {
+      "macd": 4.883307,
+      "signal": 5.8055,
+      "histogram": -0.922193
+    },
+    "bb": {
+      "upper": 88.669,
+      "middle": 79.4115,
+      "lower": 70.154,
+      "bandwidth": 0.2332
+    }
+  },
+  "levels": {
+    "swingResistance": 79.68,
+    "swingSupport": 70.96,
+    "pivot": {
+      "pp": 77.37,
+      "r1": 83.77,
+      "r2": 94.5,
+      "s1": 66.64,
+      "s2": 60.24
+    }
+  },
+  "analysis": {
+    "trend": "횡보",
+    "strength": 3,
+    "support": 70.15,
+    "resistance": 79.68,
+    "rsiStatus": "중립",
+    "macdStatus": "약세수렴",
+    "bbStatus": "하단접근",
+    "stage": "분배구간",
+    "action": "관망",
+    "buyScore": 4,
+    "scoreReason": "단기 하락 추세, 지지선 확인 필요",
+    "profitTarget1": 79.68,
+    "profitTarget2": 83.77,
+    "stopLoss": 70.15,
+    "narrative": "현재 TQQQ는 일봉상 $73.05에 위치하며, 52주 고점 대비 상당한 하락을 보였습니다. 단기 이동평균선인 SMA20($79.41) 아래에 주가가 위치하며 하락 압력을 받고 있습니다. RSI는 45.8로 중립 구간에 있으나, MACD는 시그널 선 아래로 내려와 히스토그램이 음수 값을 기록하며 단기적인 약세 렴을 나타내고 있습니다. 볼린저밴드 하단($70.15)에 근접하고 있어 단기적인 지지 테스트가 예상됩니다. 주봉 차트에서는 RSI 62.4로 여전히 강세 영역에 있으나, 일봉의 약세 전환이 주봉 추세에 영향을 줄지 주목해야 합니다. 현재 주가는 주봉 SMA20($57.38) 위에 있어 중장기 추세는 아직 견고합니다.",
+    "patternNote": "일봉상 단기적으로 고점을 낮추는 하락 추세가 형성되고 있으며, 주봉상으로는 여전히 상승 추세 채널 내에 있습니다.",
+    "keyPoints": [
+      "일봉 SMA20 아래 위치, 단기 하락 압력",
+      "MACD 약세 수렴, 모멘텀 둔화",
+      "볼린저밴드 하단 근접, 지지 테스트 예상"
+    ],
+    "riskNote": "일봉 볼린저밴드 하단인 $70.15를 하향 이탈할 경우 추가적인 하락 위험이 커질 수 있습니다.",
+    "exitNarrative": "현재 RSI는 과매수 구간이 아니며, 볼린저밴드 하단에 근접하고 있어 단기적인 반등 가능성도 있습니다. 그러나 최근 20일 고점 대비 17.07% 하락한 상태이므로, 단기 반등 시 스윙 저항선인 $79.68 부근에서 일부 물량을 분할 청산하는 것을 고려해볼 수 있습니다.",
+    "trailingStopNote": "매도 기준선 $72.84 하향 이탈 시 청산"
+  },
+  "leverageMultiple": 3,
+  "trailingStop": {
+    "atr14": 3.8119,
+    "recentHigh20": 88.09,
+    "distFromHighPct": 17.07,
+    "atrMultiplier": 4,
+    "stopByAtr": 72.84,
+    "stopBySma20": 75.44,
+    "stopBySma50": 61.37
+  }
+}
