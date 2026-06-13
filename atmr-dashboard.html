@@ -2857,17 +2857,17 @@ function renderAll(data) {
     }
   }
 
-  renderActionPlan(qqq, voo, soxx, vix, dia, iwm);
-  renderScoreGrid(qqq, voo, soxx);
-  renderGearBox(qqq, vix);
-  renderMacroIndicators(macroData);
-  renderVIX(data['VIX']);
-  renderOptionsMarket(optionsData);
-  renderBreadth(dia, iwm, soxx);
+  try { renderActionPlan(qqq, voo, soxx, vix, dia, iwm); } catch(e) { console.error('[renderActionPlan]', e); }
+  try { renderScoreGrid(qqq, voo, soxx); } catch(e) { console.error('[renderScoreGrid]', e); }
+  try { renderGearBox(qqq, vix); } catch(e) { console.error('[renderGearBox]', e); }
+  try { renderMacroIndicators(macroData); } catch(e) { console.error('[renderMacroIndicators]', e); }
+  try { renderVIX(data['VIX']); } catch(e) { console.error('[renderVIX]', e); }
+  try { renderOptionsMarket(optionsData); } catch(e) { console.error('[renderOptionsMarket]', e); }
+  try { renderBreadth(dia, iwm, soxx); } catch(e) { console.error('[renderBreadth]', e); }
   // masterSignal 설정을 위해 renderStrategyGuide를 먼저 실행한다.
   // renderKings는 window.masterSignal을 읽어 시장 맥락 배너를 표시한다.
-  renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vix);
-  renderKings(tsla, nvda);
+  try { renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vix); } catch(e) { console.error('[renderStrategyGuide]', e); }
+  try { renderKings(tsla, nvda); } catch(e) { console.error('[renderKings]', e); }
 
   // 히스토리 저장 & 재렌더
   saveSignalSnapshot(data);
