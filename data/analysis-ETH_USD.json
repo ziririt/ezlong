@@ -3,11 +3,11 @@
   "name": "이더리움",
   "assetType": "crypto",
   "market": "us",
-  "updatedAt": "2026-06-13T15:07:10.430Z",
+  "updatedAt": "2026-06-13T19:53:00.121Z",
   "price": {
-    "current": 1680.15,
-    "change": 15.0222,
-    "changePct": 0.9,
+    "current": 1678.38,
+    "change": 13.2522,
+    "changePct": 0.8,
     "high52": 4953.733,
     "low52": 1506.506,
     "pos52": 5,
@@ -17,51 +17,67 @@
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 1824.5792,
-    "sma50": 2080.5237,
-    "sma100": 2123.3043,
-    "sma200": 2414.411,
-    "rsi": 32.68,
+    "sma20": 1824.4907,
+    "sma50": 2080.4883,
+    "sma100": 2123.2866,
+    "sma200": 2414.4022,
+    "rsi": 32.47,
     "macd": {
-      "macd": -132.159094,
-      "signal": -130.816497,
-      "histogram": -1.342598
+      "macd": -132.300292,
+      "signal": -130.844736,
+      "histogram": -1.455556
     },
     "bb": {
-      "upper": 2189.3389,
-      "middle": 1824.5792,
-      "lower": 1459.8195,
-      "bandwidth": 0.3998
+      "upper": 2189.3914,
+      "middle": 1824.4907,
+      "lower": 1459.5901,
+      "bandwidth": 0.4
     }
   },
   "levels": {
     "swingResistance": 1689.8575,
     "swingSupport": 1542.0004,
     "pivot": {
-      "pp": 1775.02,
-      "r1": 2043.54,
-      "r2": 2406.93,
-      "s1": 1411.63,
-      "s2": 1143.12
+      "pp": 1774.43,
+      "r1": 2042.36,
+      "r2": 2406.34,
+      "s1": 1410.45,
+      "s2": 1142.53
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
-    "support": 1542,
+    "trend": "약세",
+    "strength": 2,
+    "support": 1506.51,
     "resistance": 1689.86,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "과매도",
+    "macdStatus": "약세수렴",
+    "bbStatus": "하단접근",
+    "stage": "축적구간",
+    "action": "매수",
+    "buyScore": 7,
+    "scoreReason": "RSI 과매도 탈출 + MACD 개선 초입",
+    "rsiTrajectory": "28.0 → 32.5 (과매도탈출)",
+    "macdTrajectory": "히스토 -30.3921 → -1.4556 (개선)",
+    "pricePattern": "Higher Low 가능성, 5일 저가 1603.83 > 20일 저가 1506.51",
+    "volComment": "거래량비 0.45 (위축)",
+    "bbPosition": "하단근처",
+    "reason": "RSI가 12.7에서 32.5로 과매도 구간을 탈출하며 상승하고 있으며, MACD 히스토그램 또한 -30.39에서 -1.45로 개선���는 중이다. 5일 저가가 20일 저가보다 높아(1603.83 > 1506.51) 회복 신호가 나타나고 있다.",
+    "entry": 1650,
+    "stop": 1450,
+    "target": 2000,
+    "invalidation": 1450,
+    "weeklyConflict": "주봉은 약세이나 일봉 신호 우선",
+    "profitTarget1": 1800,
+    "profitTarget2": 2000,
+    "stopLoss": 1450,
+    "narrative": "현재 가격은 52주 저점 부근인 $1,506.51에 근접해 있으며, RSI는 과매도 구간을 탈출하여 상승 중이다. MACD 히스토그램 역시 개선되는 모습을 보이며, 5일 저가가 20일 저가보다 높아 회복 가능성을 시사한다. 거래량은 위축되어 있으나, 기술적 반등을 노린 매수 진입을 고려한다. 목표가는 $2,000까지 설정한다.",
+    "patternNote": "현재 가격은 52주 저점 $1,506.51과 5일 저가 $1,603.83 사이에 위치하며, 5일 고가 $1,695.52는 20일 고가 $2,138.41보다 낮아 약세 추세가 이어질 가능성도 있다.",
+    "keyPoints": [
+      "RSI 과매도 탈출 및 상승",
+      "MACD 히스토그램 개선",
+      "5일 저가 > 20일 저가 (Higher Low 가능성)"
+    ],
+    "riskNote": "거래량이 위축된 상태에서 반등이므로, 추세 전환 실패 시 급락 위험이 존재한다."
   }
 }
