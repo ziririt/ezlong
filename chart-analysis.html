@@ -277,6 +277,35 @@
 #chart-rsi   { height: 140px; }
 #chart-macd  { height: 140px; }
 
+/* ── 차트 컨트롤 버튼 ────────────────────────────────────── */
+.ca-chart-ctrl-bar {
+  position: absolute;
+  bottom: 28px;
+  left: 8px;
+  display: flex;
+  gap: 4px;
+  z-index: 15;
+  pointer-events: auto;
+}
+.ca-ctrl-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--ez-border2);
+  background: var(--ez-surface);
+  color: var(--ez-text2);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, color 0.12s;
+  padding: 0;
+  line-height: 1;
+}
+.ca-ctrl-btn:hover { background: var(--ez-card2); color: var(--ez-text); }
+
 /* ── 시간축 토글 (일봉/주봉) ─────────────────────────────── */
 .ca-tf-bar {
   display: flex;
@@ -1243,7 +1272,7 @@ function getChartOptions(height) {
       horzLines: { color: IS_DARK ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)' },
     },
     crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-    rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.08, bottom: 0.08 } },
+    rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.08, bottom: 0.08 }, minimumWidth: 70 },
     timeScale: {
       borderVisible: false,
       timeVisible: true,
@@ -1315,7 +1344,7 @@ function initCharts(ohlcv, ind, analysis) {
   // ── 메인 차트 ──────────────────────────────────────────────
   const mainChart = LightweightCharts.createChart(mainEl, {
     ...getChartOptions(mainEl.offsetHeight || 380),
-    rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.08, bottom: 0.1 } },
+    rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.08, bottom: 0.22 }, minimumWidth: 70 },
   });
   chartInstances.main = mainChart;
 
@@ -1330,18 +1359,96 @@ function initCharts(ohlcv, ind, analysis) {
   });
   candleSeries.setData(ohlcv.map(d => ({ time: d.t, open: d.o, high: d.h, low: d.l, close: d.c })));
 
-  // 지지/저항 라인
+  // ── 거래량 (메인 차트 하단 18%) ───────────────────────────
+  const volSeries = mainChart.addHistogramSeries({
+    priceFormat: { type: 'volume' },
+    priceLineVisible: false,
+    lastValueVisible: false,
+    priceScaleId: 'vol_overlay',
+  });
+  mainChart.priceScale('vol_overlay').applyOptions({ scaleMargins: { top: 0.82, bottom: 0 } });
+  const volData = ohlcv
+    .filter(d => d.v > 0)
+    .map(d => ({
+      time: d.t,
+      value: d.v,
+      color: d.c >= d.o
+        ? (IS_DARK ? 'rgba(48,209,88,0.35)' : 'rgba(26,127,55,0.28)')
+        : (IS_DARK ? 'rgba(255,69,58,0.35)' : 'rgba(217,42,42,0.28)'),
+    }));
+  volSeries.setData(volData);
+
+  // 지지/저항 라인 (우측 축 레이블 제거 → 좌측 HTML 오버레이)
   const ai = analysis.analysis;
   const lv = analysis.levels;
   if (ai.support) {
-    candleSeries.createPriceLine({ price: ai.support, color: IS_DARK?'#30D158':'#1A7F37', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed, title: '지지', axisLabelVisible: true });
+    candleSeries.createPriceLine({ price: ai.support, color: IS_DARK?'#30D158':'#1A7F37', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed, title: '', axisLabelVisible: false });
   }
   if (ai.resistance) {
-    candleSeries.createPriceLine({ price: ai.resistance, color: IS_DARK?'#FF453A':'#D92A2A', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed, title: '저항', axisLabelVisible: true });
+    candleSeries.createPriceLine({ price: ai.resistance, color: IS_DARK?'#FF453A':'#D92A2A', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed, title: '', axisLabelVisible: false });
   }
   // 피벗 포인트
   if (lv?.pivot?.pp) {
-    candleSeries.createPriceLine({ price: lv.pivot.pp, color: IS_DARK?'#AEAEB2':'#8E8E93', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dotted, title: 'PP', axisLabelVisible: false });
+    candleSeries.createPriceLine({ price: lv.pivot.pp, color: IS_DARK?'#AEAEB2':'#8E8E93', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dotted, title: '', axisLabelVisible: false });
+  }
+
+  // 지지/저항 좌측 레이블 오버레이
+  const mainWrap = mainEl.parentElement;  // .ca-chart-wrap (position:relative)
+  function addLeftLabel(price, text, bgColor) {
+    if (!price) return;
+    const el = document.createElement('div');
+    el.className = 'ca-price-left-label';
+    el.textContent = text;
+    el.style.cssText = `position:absolute;left:6px;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700;color:#fff;background:${bgColor};pointer-events:none;z-index:20;white-space:nowrap;opacity:0.92;`;
+    mainWrap.appendChild(el);
+    const reposition = () => {
+      try {
+        const y = candleSeries.priceToCoordinate(price);
+        if (y !== null) el.style.top = `${Math.round(y) - 9}px`;
+      } catch {}
+    };
+    requestAnimationFrame(reposition);
+    mainChart.timeScale().subscribeVisibleTimeRangeChange(reposition);
+    mainChart.subscribeCrosshairMove(reposition);
+  }
+  if (ai.support)    addLeftLabel(ai.support,    '지지', IS_DARK ? '#30D158' : '#1A7F37');
+  if (ai.resistance) addLeftLabel(ai.resistance, '저항', IS_DARK ? '#FF453A' : '#D92A2A');
+
+  // ── 컨트롤 버튼 (축소/확대/새로고침/전체창) ───────────────
+  {
+    const existCtrl = mainWrap.querySelector('.ca-chart-ctrl-bar');
+    if (existCtrl) existCtrl.remove();
+    const ctrlBar = document.createElement('div');
+    ctrlBar.className = 'ca-chart-ctrl-bar';
+    ctrlBar.innerHTML = `
+      <button class="ca-ctrl-btn" title="확대" id="cctrl-in">+</button>
+      <button class="ca-ctrl-btn" title="축소" id="cctrl-out">−</button>
+      <button class="ca-ctrl-btn" title="전체 보기" id="cctrl-fit">↺</button>
+      <button class="ca-ctrl-btn" title="전체 창" id="cctrl-fs">⤢</button>
+    `;
+    mainWrap.appendChild(ctrlBar);
+
+    const zoomChart = (factor) => {
+      const range = mainChart.timeScale().getVisibleLogicalRange();
+      if (!range) return;
+      const mid = (range.from + range.to) / 2;
+      const half = (range.to - range.from) / 2 * factor;
+      mainChart.timeScale().setVisibleLogicalRange({ from: mid - half, to: mid + half });
+      rsiChart .timeScale().setVisibleLogicalRange({ from: mid - half, to: mid + half });
+      macdChart.timeScale().setVisibleLogicalRange({ from: mid - half, to: mid + half });
+    };
+    mainWrap.querySelector('#cctrl-in') .addEventListener('click', () => zoomChart(0.65));
+    mainWrap.querySelector('#cctrl-out').addEventListener('click', () => zoomChart(1.45));
+    mainWrap.querySelector('#cctrl-fit').addEventListener('click', () => {
+      mainChart.timeScale().fitContent();
+      rsiChart .timeScale().fitContent();
+      macdChart.timeScale().fitContent();
+    });
+    mainWrap.querySelector('#cctrl-fs').addEventListener('click', () => {
+      const target = document.querySelector('.ca-charts') || mainWrap;
+      if (document.fullscreenElement) document.exitFullscreen();
+      else if (target.requestFullscreen) target.requestFullscreen();
+    });
   }
 
   // SMA 시리즈
@@ -1405,6 +1512,7 @@ function initCharts(ohlcv, ind, analysis) {
       borderVisible: false,
       scaleMargins: { top: 0.1, bottom: 0.1 },
       entireTextOnly: true,
+      minimumWidth: 70,
     },
     timeScale: { borderVisible: false, visible: false },
   });
@@ -1427,7 +1535,7 @@ function initCharts(ohlcv, ind, analysis) {
   // ── MACD 차트 ──────────────────────────────────────────────
   const macdChart = LightweightCharts.createChart(macdEl, {
     ...getChartOptions(macdEl.offsetHeight || 140),
-    rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.1, bottom: 0.1 } },
+    rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.1, bottom: 0.1 }, minimumWidth: 70 },
     timeScale: { borderVisible: false, visible: false },
   });
   chartInstances.macd = macdChart;
