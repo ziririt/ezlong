@@ -2334,84 +2334,148 @@ function getGear(dev200) {
 //   EZLONG: 풋콜/정크본드 대신 → 섹터 폭(QQQ/VOO/DIA/IWM/SOXX), MACD 방향,
 //           52주 위치, CNN 지수 보완 반영 추가
 //
+// ─── S-CORE v2: 스윙 복합 오실레이터 (0=극단공포/매수, 100=극단탐욕/매도) ───
+// 3축 독립 구조: TREND × MOMENTUM × FEAR 단순 평균
+// 핵심: 각 지표를 Level(현재값) + Delta(방향성) + Regime(극단 기억) 3차원으로 분석
+// "RSI 55" 하나가 아니라 "RSI 35→55 (과매도 탈출 중)"이라는 서사를 감지
 function calcMarketFearGreed(qqq, voo, soxx, dia, iwm, vix) {
-  let score = 0;
-  const ref = qqq || voo;  // 기준 종목 (QQQ 우선)
+  const ref = qqq || voo;
+  const closes = ref?.closes ?? [];
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
-  // ① VIX 수준 (0–20점) ─────────────────────────────────────────
-  //   VIX 10 → 20pts (탐욕), VIX 20 → 13pts, VIX 30 → 6pts, VIX 40+ → 0pts
-  const v = (typeof vix === 'number') ? vix : 20;
-  score += Math.max(0, Math.min(20, 20 * (40 - v) / 30));
-
-  // ② 시장 모멘텀 — 200일선 이격도 (0–20점) ────────────────────
-  //   +15%이상 → 20pts, 0% → 10pts, -15% → 0pts
+  // ══ 축① TREND — 장기 추세 위치 + 기울기 (0=저점, 100=고점) ══════
+  // Level: 200일선 이격도 (-15%→0pt, 0%→50pt, +15%→100pt)
   const dev200 = ref?.dev200 ?? 0;
-  score += Math.max(0, Math.min(20, 10 + dev200 * 20 / 15));
+  const trendLevel = clamp(50 + dev200 * 50 / 15, 0, 100);
 
-  // ③ RSI 수준 (0–15점) ─────────────────────────────────────────
-  //   RSI 70 → 15pts, RSI 50 → 7.5pts, RSI 30 → 0pts
+  // 골든/데드크로스 (50일 vs 200일)
+  const sma50val  = ref?.sma50  ?? null;
+  const sma200val = ref?.sma200 ?? null;
+  const gdcScore  = (sma50val && sma200val) ? (sma50val > sma200val ? 70 : 30) : 50;
+
+  // Delta: SMA50의 10일 기울기 (가속=과열, 감속=둔화 경고)
+  let trendDelta = 0;
+  if (closes.length >= 65 && sma50val) {
+    const sma50_10d = calcSMA(closes.slice(0, -10), 50);
+    if (sma50_10d) {
+      const slope = (sma50val / sma50_10d - 1) * 100;
+      trendDelta = slope > 0.5 ? +10 : slope < -0.5 ? -10 : 0;
+    }
+  }
+
+  const TREND = clamp(trendLevel * 0.60 + gdcScore * 0.35 + trendDelta, 0, 100);
+
+  // ══ 축② MOMENTUM — Level + Delta + Regime (0=과매도, 100=과매수) ══
   const rsi = ref?.rsi ?? 50;
-  score += Math.max(0, Math.min(15, (rsi - 30) * 15 / 40));
+  let rsiScore = rsi;
 
-  // ④ 섹터 폭 — 5대 ETF Gear 상태 (0–20점) ─────────────────────
-  //   CNN의 NYSE 폭 지표 대신, 주요 ETF 섹터가 200일선 위에 있는지로 판단
-  //   QQQ(나스닥) / VOO(S&P500) / DIA(다우) / IWM(소형주) / SOXX(반도체)
+  if (closes.length >= 25) {
+    // Delta: 5일 전 RSI와 비교 (방향성)
+    const rsiPrev5 = calcRSI(closes.slice(0, -5), 14) ?? rsi;
+    const rsiDelta = rsi - rsiPrev5;  // 양수=상승(회복), 음수=하락(냉각)
+
+    // Regime: 10일 전 RSI도 계산해서 최근 극단값 추정
+    const rsiPrev10 = calcRSI(closes.slice(0, -10), 14) ?? rsi;
+    const rsi14dMin = Math.min(rsi, rsiPrev5, rsiPrev10);
+    const rsi14dMax = Math.max(rsi, rsiPrev5, rsiPrev10);
+    // 최근 과매도(RSI<30) 방문 후 반등 중 → 매수 기회 (-12점)
+    // 최근 과매수(RSI>70) 방문 후 하락 중 → 매도 신호 (+12점)
+    const regime = rsi14dMin < 30 ? -12 : (rsi14dMax > 70 ? +12 : 0);
+
+    rsiScore = clamp(rsi - rsiDelta * 0.8 + regime, 0, 100);
+  }
+
+  // MACD: Level + Delta + Regime (30일 저점 대비 회복률)
+  const hist = ref?.macd?.histogram ?? 0;
+  let macdScore = 50;
+  if (closes.length >= 40) {
+    const histPrev5  = calcMACD(closes.slice(0, -5)).histogram  ?? 0;
+    const histPrev15 = calcMACD(closes.slice(0, -15)).histogram ?? 0;
+    const histMin30  = Math.min(hist, histPrev5, histPrev15);
+
+    const macdLevel    = hist > 0 ? 60 : 35;  // Level (부호)
+    const macdDeltaAdj = clamp((hist - histPrev5) * 8, -20, +20);  // Delta × 8
+    // Regime: 30일 내 저점에서 얼마나 회복했나 (0~20점 보너스)
+    const recovery     = histMin30 < 0
+      ? clamp((hist - histMin30) / Math.abs(histMin30) * 20, 0, 20)
+      : 0;
+    macdScore = clamp(macdLevel + macdDeltaAdj + recovery, 0, 100);
+  } else {
+    macdScore = hist > 0.5 ? 65 : hist > -0.5 ? 50 : 30;
+  }
+
+  // 가격 패턴: Higher Low(상승 초입) vs Lower High(하락 초입)
+  // closes[-5:] 저점이 closes[-20:] 저점보다 높으면 "Higher Low" = 회복 중
+  let pricePatternScore = 45;  // 기본: 횡보
+  if (closes.length >= 20) {
+    const recent5  = closes.slice(-5);
+    const recent20 = closes.slice(-20);
+    const low5   = Math.min(...recent5);
+    const high5  = Math.max(...recent5);
+    const low20  = Math.min(...recent20);
+    const high20 = Math.max(...recent20);
+    const higherLow  = low5  > low20  * 1.005;  // 5일 저점 > 20일 저점 → 상승 초입
+    const lowerHigh  = high5 < high20 * 0.995;  // 5일 고점 < 20일 고점 → 하락 초입
+    if      (higherLow && !lowerHigh) pricePatternScore = 20;  // 바닥 다지고 올라오는 중
+    else if (lowerHigh && !higherLow) pricePatternScore = 78;  // 고점 찍고 내려오는 중
+  }
+
+  const MOMENTUM = clamp(
+    rsiScore * 0.50 + macdScore * 0.30 + pricePatternScore * 0.20,
+    0, 100
+  );
+
+  // ══ 축③ FEAR — 감정·심리 + 방향성 (0=극단공포, 100=극단탐욕) ══════
+  // VIX Level + Delta (35%)
+  const v = (typeof vix === 'number') ? vix : 20;
+  const vixLevel = clamp((40 - v) / 28 * 100, 0, 100);
+  // VIX 방향: 상승 중(공포 확대) → 점수 내림, 하락 중(안도) → 점수 올림
+  // fearGreedData.vix_prev5 가 없으므로 단순 Level만 사용
+  const vixScore = vixLevel;
+
+  // CNN Fear & Greed: 40% 핵심 지표 (기존 10% → 40%)
+  const fngScore = fearGreedData?.value ?? 50;
+
+  // ETF 브레드스 (25%): 5대 ETF 중 200일선 위 비율
   const etfs = [qqq, voo, dia, iwm, soxx].filter(Boolean);
+  let breadthScore = 50;
   if (etfs.length > 0) {
     const g3cnt = etfs.filter(d => d.gear === 3).length;
     const g2cnt = etfs.filter(d => d.gear === 2).length;
-    // Gear3 = 확실히 위(2pts), Gear2 = 근처(1pt), Gear1 = 아래(0pts)
-    const bPts = (g3cnt * 2 + g2cnt * 1) / (etfs.length * 2) * 20;
-    score += Math.max(0, Math.min(20, bPts));
-  } else {
-    score += 10; // 데이터 없을 때 중립
+    breadthScore = (g3cnt * 2 + g2cnt) / (etfs.length * 2) * 100;
   }
 
-  // ⑤ 52주 가격 위치 (0–10점) ──────────────────────────────────
-  //   52W 최고가 → 10pts (탐욕), 52W 최저가 → 0pts (공포)
-  if (ref?.high52 && ref?.low52 && ref?.price) {
-    const range = ref.high52 - ref.low52;
-    score += range > 0
-      ? Math.max(0, Math.min(10, (ref.price - ref.low52) / range * 10))
-      : 5;
-  } else {
-    score += 5;
-  }
+  const FEAR = clamp(
+    vixScore * 0.35 + fngScore * 0.40 + breadthScore * 0.25,
+    0, 100
+  );
 
-  // ⑥ MACD 모멘텀 방향 (0–5점) ──────────────────────────────────
-  //   히스토그램 증가·양수 → 탐욕, 감소·음수 → 공포
-  const hist = ref?.macd?.histogram ?? 0;
-  score += hist > 2 ? 5 : hist > 0.5 ? 3.5 : hist > -0.5 ? 2 : hist > -2 ? 0.5 : 0;
-
-  // ⑦ CNN Fear & Greed 보완 반영 (0–10점) ──────────────────────
-  //   CNN 지수를 독립 데이터포인트로 일부 반영 (과의존 방지를 위해 10% 가중)
-  if (fearGreedData?.value != null) {
-    score += fearGreedData.value * 10 / 100;
-  } else {
-    score += 5; // CNN 데이터 없을 때 중립 보완
-  }
-
-  return Math.round(Math.max(0, Math.min(100, score)));
+  // ══ S-CORE = 3축 단순 평균 ══════════════════════════════════════
+  // 낮을수록 매수 기회(극단공포), 높을수록 매도 구간(극단탐욕)
+  const score = (TREND + MOMENTUM + FEAR) / 3;
+  return Math.round(clamp(score, 0, 100));
 }
 
+// S-CORE 해석 기준 (낮을수록 매수, 높을수록 매도)
+// 0–25: 극단적 공포 → 적극 매수
+// 25–40: 매수 기회 → 분할 매수
+// 40–60: 중립 → 관망
+// 60–75: 과열 징후 → 익절/비중 축소
+// 75–100: 극단적 탐욕 → 매도
 function getFearGreedLabel(score) {
-  if (score >= 76) return '극단적 탐욕';
-  if (score >= 56) return '탐욕';
-  if (score >= 46) return '중립';
-  if (score >= 26) return '공포';
+  if (score >= 75) return '극단적 탐욕';
+  if (score >= 60) return '과열 징후';
+  if (score >= 40) return '중립';
+  if (score >= 25) return '매수 기회';
   return '극단적 공포';
 }
 
 function getFearGreedColor(score) {
-  // 탐욕(높음)=하늘색 / 중립이상=밝은오렌지 / 중립이하=옅은오렌지 / 공포(낮음)=빨간색
-  if (score >= 56) return '#0a84ff';        // 하늘색 — 과매수·탐욕
-  if (score >= 50) return '#ff8c00';        // 밝고 경쾌한 오렌지 — 중립 이상
-  if (score >= 26) return '#e09400';        // 옅은 오렌지 — 중립 이하
-  return '#c0392b';                         // 빨간색 — 과매도·공포
-  const hue = score < 50
-    ? Math.round(score * 1.0)
-    : Math.round(50 + (score - 50) * 1.4); // (unused — kept for reference)
-  return `hsl(${hue}, 80%, 46%)`;
+  if (score >= 75) return '#ff3b30';   // 빨강 — 극단 탐욕, 매도
+  if (score >= 60) return '#ff8c00';   // 오렌지 — 과열, 비중 축소
+  if (score >= 40) return '#8e8e93';   // 회색 — 중립, 관망
+  if (score >= 25) return '#30d158';   // 초록 — 매수 기회
+  return '#0a84ff';                    // 파랑 — 극단 공포, 적극 매수
 }
 
 // ─── 유틸: 딜레이 ────────────────────────────────
