@@ -47,7 +47,7 @@ jobs:
     # 중복 실행 방지: 이전 실행이 끝날 때까지 대기
     concurrency:
       group: us-chart-analysis
-      cancel-in-progress: false
+      cancel-in-progress: true
 
     steps:
       # ── 1. 저장소 체크아웃 ────────────────────────────────────────────
