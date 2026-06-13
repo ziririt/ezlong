@@ -136,6 +136,7 @@ async function fetchStooqPrice(symbol) {
     const r = await httpGetRaw('stooq.com', `/q/d/l/?s=${s}&i=d`, {
       'Referer': 'https://stooq.com/',
     });
+    console.log(`  [DBG ${symbol}] HTTP ${r.status} | ${r.body.substring(0, 120).replace(/\n/g, '\\n')}`);
     if (r.status !== 200) throw new Error(`HTTP ${r.status}`);
     const rows = parseStooqCSV(r.body);
     if (rows.length < 2) throw new Error('데이터 부족');
