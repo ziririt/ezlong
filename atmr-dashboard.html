@@ -4981,21 +4981,31 @@ function loadTVChart(frameId, symbol) {
   wrap.className = 'tradingview-widget-container';
   // height:100% 대신 고정 픽셀 — 퍼센트는 TradingView가 레이아웃 계산 시 오차 발생
   wrap.style.cssText = `height:${_TV_H}px;width:100%;`;
+  // 매 세션마다 고유 ID → TradingView iframe localStorage 캐시 우회하여 interval:'1D' 보장
+  const cid = `tv_${frameId}_${Math.floor(Date.now() / 60000)}`;
   const inner = document.createElement('div');
-  inner.className = 'tradingview-widget-container__widget';
+  inner.id = cid;
   inner.style.cssText = `height:${_TV_H}px;width:100%;`;
   const s = document.createElement('script');
   s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
   s.async = true;
   s.textContent = JSON.stringify({
-    autosize: true, symbol, interval: 'D',
+    autosize: true, symbol,
+    interval: '1D',          // 일봉 고정
+    container_id: cid,       // 고유 ID로 localStorage 덮어쓰기 방지
     timezone: 'America/New_York',
     theme: isDark ? 'dark' : 'light',
     style: '1', locale: 'en',
-    // range 파라미터 제거 — range와 interval 동시 사용 시 TradingView가 interval을 무시하고 분봉으로 내려오는 버그
+    range: '6M',             // 약 150 거래일 (6개월 캘린더 ≈ 130~150 거래일)
     hide_top_toolbar: false, hide_legend: false,
     save_image: false, calendar: false, hide_volume: false,
-    studies: ['RSI@tv-basicstudies', 'MACD@tv-basicstudies'],
+    studies: [
+      'RSI@tv-basicstudies',
+      'MACD@tv-basicstudies',
+      { id: 'MASimple@tv-basicstudies', inputs: { length: 50  } },
+      { id: 'MASimple@tv-basicstudies', inputs: { length: 100 } },
+      { id: 'MASimple@tv-basicstudies', inputs: { length: 200 } }
+    ],
     support_host: 'https://www.tradingview.com'
   });
   wrap.appendChild(inner);
