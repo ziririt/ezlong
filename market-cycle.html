@@ -241,9 +241,10 @@ window.addEventListener('load', function(){
     .signal-card.alert-warning { border-color: var(--ez-amber); box-shadow: 0 0 0 1px rgba(180,83,9,0.15),  var(--ez-shadow-sm); }
     .signal-card.alert-ok      { border-color: var(--ez-green); box-shadow: 0 0 0 1px rgba(26,127,55,0.15), var(--ez-shadow-sm); }
     @media (prefers-color-scheme: dark) {
-      .signal-card.alert-danger  { box-shadow: 0 0 0 1px rgba(255,69,58,0.3),  0 4px 20px rgba(255,69,58,0.12); }
-      .signal-card.alert-warning { box-shadow: 0 0 0 1px rgba(255,214,10,0.25),0 4px 20px rgba(255,214,10,0.08); }
-      .signal-card.alert-ok      { box-shadow: 0 0 0 1px rgba(48,209,88,0.22), 0 4px 20px rgba(48,209,88,0.08); }
+      /* 다크모드: 카드 글로우 강도 올림 — 검정 bg에서 테두리 색이 주요 신호 */
+      .signal-card.alert-danger  { box-shadow: 0 0 0 1px rgba(255,69,58,0.5),  0 4px 24px rgba(255,69,58,0.15); }
+      .signal-card.alert-warning { box-shadow: 0 0 0 1px rgba(255,214,10,0.45),0 4px 24px rgba(255,214,10,0.10); }
+      .signal-card.alert-ok      { box-shadow: 0 0 0 1px rgba(48,209,88,0.45), 0 4px 24px rgba(48,209,88,0.10); }
     }
 
     .signal-icon { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ez-text3); margin-bottom: 5px; }
@@ -258,9 +259,11 @@ window.addEventListener('load', function(){
     .badge-amber { background: rgba(180,83,9,0.1);   color: var(--ez-amber); border: 1px solid rgba(180,83,9,0.2); }
     .badge-gray  { background: var(--ez-card2);      color: var(--ez-text3); border: 1px solid var(--ez-border); }
     @media (prefers-color-scheme: dark) {
-      .badge-green { background: rgba(48,209,88,0.14);  border-color: rgba(48,209,88,0.25); }
-      .badge-red   { background: rgba(255,69,58,0.14);  border-color: rgba(255,69,58,0.25); }
-      .badge-amber { background: rgba(255,214,10,0.12); border-color: rgba(255,214,10,0.2); }
+      /* 다크모드: 배지 유색 배경 제거 — 블랙 카드 위에선 테두리+텍스트컬러만으로 충분 */
+      .badge-green { background: transparent; border-color: rgba(48,209,88,0.45); }
+      .badge-red   { background: transparent; border-color: rgba(255,69,58,0.45); }
+      .badge-amber { background: transparent; border-color: rgba(255,214,10,0.40); }
+      .badge-gray  { background: transparent; border-color: rgba(255,255,255,0.18); }
     }
 
     .signal-comment {
@@ -302,10 +305,11 @@ window.addEventListener('load', function(){
     .vix-zone-caution  { background: rgba(180,83,9,0.08);   color: var(--ez-amber); border: 1px solid rgba(180,83,9,0.15); }
     .vix-zone-fear     { background: rgba(217,42,42,0.08);  color: var(--ez-red);   border: 1px solid rgba(217,42,42,0.15); }
     @media (prefers-color-scheme: dark) {
-      .vix-zone-euphoria { background: rgba(255,69,58,0.12);  border-color: rgba(255,69,58,0.22); }
-      .vix-zone-normal   { background: rgba(48,209,88,0.12);  border-color: rgba(48,209,88,0.22); }
-      .vix-zone-caution  { background: rgba(255,214,10,0.10); border-color: rgba(255,214,10,0.18); }
-      .vix-zone-fear     { background: rgba(255,69,58,0.12);  border-color: rgba(255,69,58,0.22); }
+      /* 다크모드: VIX 존 버튼 유색 배경 제거 */
+      .vix-zone-euphoria { background: transparent; border-color: rgba(255,69,58,0.40); }
+      .vix-zone-normal   { background: transparent; border-color: rgba(48,209,88,0.40); }
+      .vix-zone-caution  { background: transparent; border-color: rgba(255,214,10,0.35); }
+      .vix-zone-fear     { background: transparent; border-color: rgba(255,69,58,0.40); }
     }
 
     /* ── 차트 섹션 ── */
