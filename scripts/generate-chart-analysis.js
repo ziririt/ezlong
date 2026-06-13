@@ -512,7 +512,7 @@ ${weeklySection}
         `/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
         {
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.15, maxOutputTokens: 1600 },
+          generationConfig: { temperature: 0.15, maxOutputTokens: 4096, responseMimeType: 'application/json' },
         }
       );
       const text = resp?.candidates?.[0]?.content?.parts?.[0]?.text || '';
