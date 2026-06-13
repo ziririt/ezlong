@@ -560,9 +560,10 @@ function calcWithdrawalSim(assetMan, monthlyWdMan, annualRate, totalYears=30){
   const mWd=sN(monthlyWdMan)*1e4;
   const rows=[{ year:0, assetMan:sN(assetMan) }];
   let exhaustedYear=null;
+  // mWd > 0 인 경우에만 소진 판정 — 인출액 0이면 val=0이어도 소진이 아님
   for(let m=1; m<=totalYears*12; m++){
     val=(val-mWd)*(1+mr);
-    if(val<=0&&exhaustedYear===null){ exhaustedYear=parseFloat((m/12).toFixed(1)); val=0; }
+    if(mWd>0 && val<=0 && exhaustedYear===null){ exhaustedYear=parseFloat((m/12).toFixed(1)); val=0; }
     if(m%12===0) rows.push({ year:m/12, assetMan:Math.max(0,Math.round(val/1e4)) });
   }
   return { rows, exhaustedYear };
@@ -743,7 +744,7 @@ function WithdrawalLineChart({ assetMan, monthlyWdMan, retireAge }){
   const ticks=[]; for(let i=0;i<=4;i++) ticks.push(step*i);
   const yPx=v=>cH-(v/nMax)*cH;
   const xPx=yr=>(yr/totalYears)*cW;
-  const fTick=v=>v>=10000?`${(v/10000).toFixed(0)}억`:v>=1000?`${(v/1000).toFixed(0)}천만`:v>0?`${v}만`:'0';
+  const fTick=v=>v>=10000?`${(v/10000).toFixed(0)}억`:v>=1000?`${(v/1000).toFixed(0)}천만`:v>0?`${Math.round(v)}만`:'0';
   const toPath=rows=>rows.map((r,i)=>`${i===0?'M':'L'}${xPx(r.year).toFixed(1)},${yPx(r.assetMan).toFixed(1)}`).join(' ');
 
   // x축 레이블: 모바일 너비에 따라 간격 조정 (겹침 방지)
@@ -1191,8 +1192,9 @@ function App(){
   const canCalc = yearsLeft > 0;
 
   // 80세까지 잔존 자산 (선택된 CAGR 기준)
+  // 은퇴 자산이 0이면 시뮬레이션 의미 없음 — 박스 표시 안 함
   let residualInfo = null;
-  if(result){
+  if(result && result.effectiveTarget > 0){
     const totalYears = Math.max(5, 80 - retireAge);
     const finalAge = retireAge + totalYears;
     const col = result.gridData[selectedScenario];
