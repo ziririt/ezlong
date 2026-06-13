@@ -174,7 +174,7 @@ def download_closes(symbol, period='2y'):
     if hist.empty:
         raise ValueError(f"빈 응답")
     closes = [float(v) for v in hist['Close'].dropna().tolist()]
-    if len(closes) < 10:
+    if len(closes) < 2:
         raise ValueError(f"데이터 부족: {len(closes)}개")
     return closes
 
@@ -321,8 +321,9 @@ def main():
             closes = closes[-504:]  # 최근 2년치
             processed[sym] = process_symbol(closes, sym, vix_price)
             d = processed[sym]
-            rsi_str = f"{d['rsi']:.1f}" if d['rsi'] is not None else '-'
-            print(f"  → ${d['price']:.2f}, RSI {rsi_str}, SMA200 {d['sma200']:.2f if d['sma200'] else '-'}, Gear {d['gear']}, 매수 {d['buyScore']}, 매도 {d['sellScore']}")
+            rsi_str   = f"{d['rsi']:.1f}"    if d['rsi']   is not None else '-'
+            sma200_str = f"{d['sma200']:.2f}" if d['sma200'] is not None else '-'
+            print(f"  → ${d['price']:.2f}, RSI {rsi_str}, SMA200 {sma200_str}, Gear {d['gear']}, 매수 {d['buyScore']}, 매도 {d['sellScore']}")
         except Exception as e:
             print(f"  → ERROR: {e}")
             error_count += 1
