@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="ko" translate="yes">
 <head>
+<!-- Google tag (gtag.js) - load deferred for LCP performance -->
+<script>
+window.addEventListener('load', function(){
+  var s = document.createElement('script');
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444';
+  s.async = true;
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  window.gtag = gtag;
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+});
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>핵심기업 목표주가 | 월가 애널리스트 컨센서스 — ezlong</title>
@@ -283,8 +297,8 @@ function renderList(){
   const q=document.getElementById('search-input').value.trim().toUpperCase();
   const filtered=allSnapshots.filter(s=>{const t=s.companies?.ticker||'';const n=(s.companies?.company_name||'').toUpperCase();return!q||t.includes(q)||n.includes(q)});
   if(!filtered.length){document.getElementById('ticker-list').innerHTML='<div style="padding:20px;text-align:center;color:var(--ez-text3);font-size:13px;">결과 없음</div>';return}
-  function parseSentiment(rating){const m=rating?.match(/Buy\s+(\d+)%.*Hold\s+(\d+)%.*Sell\s+(\d+)%/);if(m)return{buy:+m[1],hold:+m[2],sell:+m[3]};if(rating?.toLowerCase().includes('strong buy'))return{buy:90,hold:8,sell:2};if(rating?.toLowerCase().includes('buy'))return{buy:65,hold:25,sell:10};return{buy:40,hold:40,sell:20}}
-  const html=filtered.map(s=>{const t=s.companies?.ticker||'';const co=s.companies?.company_name||'';const up=fmtUp(s.upside_pct);const isActive=t===selectedTicker?' active':'';const sent=parseSentiment(s.consensus_rating);return`<div class="tk-card${isActive}" onclick="selectTicker('${t}')" data-ticker="${t}"><div class="tk-row1"><span class="tk-ticker">${t}</span><span class="tk-upside ${up.cls}">${up.text}</span></div><div class="tk-row2">${co}</div><div class="tk-sentiment"><div class="tk-s-buy" style="width:${sent.buy}%"></div><div class="tk-s-hold" style="width:${sent.hold}%"></div><div class="tk-s-sell" style="width:${sent.sell}%"></div></div></div>`}).join('');
+  function parseSentiment(rating){const m=rating?.match(/Buy\s+(\d+)%.*Hold\s+(\d+)%.*Sell\s+(\d+)%/);if(m)return{buy:+m[1],hold:+m[2],sell:+m[3]};if(rating?.toLowerCase().includes('strong buy'))return{buy:90,hold:10,sell:0};if(rating?.toLowerCase().includes('buy'))return{buy:70,hold:30,sell:0};return{buy:50,hold:50,sell:0}}
+  const html=filtered.map(s=>{const t=s.companies?.ticker||'';const co=s.companies?.company_name||'';const up=fmtUp(s.upside_pct);const isActive=t===selectedTicker?' active':'';const sent=parseSentiment(s.consensus_rating);const NEW_TICKERS=new Set(['SPCX']);const isNew=NEW_TICKERS.has(t);return`<div class="tk-card${isActive}" onclick="selectTicker('${t}')" data-ticker="${t}"><div class="tk-row1"><span style="display:inline-flex;align-items:center;gap:4px;"><span class="tk-ticker">${t}</span>${isNew?'<span class="tk-new-badge">NEW</span>':''}</span><span class="tk-upside ${up.cls}">${up.text}</span></div><div class="tk-row2">${co}</div><div class="tk-sentiment"><div class="tk-s-buy" style="width:${sent.buy}%"></div><div class="tk-s-hold" style="width:${sent.hold}%"></div><div class="tk-s-sell" style="width:${sent.sell}%"></div></div></div>`}).join('');
   document.getElementById('ticker-list').innerHTML=html;
 }
 async function selectTicker(ticker){
