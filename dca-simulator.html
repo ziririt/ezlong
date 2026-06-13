@@ -8,6 +8,7 @@
 <meta name="keywords" content="DCA 시뮬레이터, 적립식 투자, 복리 계산, 수익 시뮬레이션, 미국주식, ETF 투자, 장기투자, 정액투자, 달러코스트애버리징" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://ezlong.com/dca-simulator.html" />
+<link rel="stylesheet" href="ez-design.css">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
@@ -150,51 +151,6 @@ img, video, iframe { max-width: 100%; }
 .r-layout > * > * { min-width: 0; }
 table { min-width: 0; }
 
-/* ── EZLONG 글로벌 헤더 ── */
-#global-nav {
-  height: 48px;
-  background: var(--gnav-bg);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid var(--bd);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
-  position: sticky;
-  top: 0;
-  z-index: 200;
-}
-.gnav-inner {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 24px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.gnav-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
-.gnav-logo-img {
-  height: 28px;
-  width: auto;
-  display: block;
-}
-.gnav-logo-sub {
-  font-size: 11px;
-  color: #AEAEB2;
-  font-weight: 500;
-  padding-left: 2px;
-}
-.gnav-right {
-  font-size: 12px;
-  color: #AEAEB2;
-  font-weight: 500;
-  letter-spacing: -.01em;
-}
-
 /* ── 모바일 세로 모드 안내 배너 ── */
 #mob-hint {
   display: none;
@@ -226,12 +182,6 @@ table { min-width: 0; }
 @media (max-width: 767px) and (orientation: portrait) {
   #mob-hint { display: flex; }
 }
-@media (max-width: 767px) {
-  .gnav-right { display: none; }
-  .gnav-inner { padding: 0 16px; }
-  .gnav-logo-sub { display: none; }
-}
-
 /* ─── RESPONSIVE ─── */
 @media(max-width:767px){
   .r-layout  { grid-template-columns:1fr !important; padding:14px 16px 60px !important; gap:14px !important; }
@@ -258,18 +208,7 @@ table { min-width: 0; }
 <body>
 
 <!-- ── EZLONG 글로벌 헤더 ── -->
-<nav id="global-nav">
-  <div class="gnav-inner">
-    <a href="index.html" class="gnav-logo">
-      <picture>
-        <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)" />
-        <img src="logo.png" alt="EZLONG" class="gnav-logo-img" />
-      </picture>
-      <span class="gnav-logo-sub">쉽고 안전한 장기투자로 복리의 마법을</span>
-    </a>
-    <span class="gnav-right">미국주식 투자 도구 모음</span>
-  </div>
-</nav>
+<script src="/ez-nav.js"></script>
 
 <!-- ── 모바일 세로 모드 안내 배너 ── -->
 <div id="mob-hint">
