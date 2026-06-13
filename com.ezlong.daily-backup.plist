@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.ezlong.daily-backup</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/ziririt/Documents/Claude/Projects/미국주식투자자를 위한 ezlong.com/backup-before-session.sh</string>
+  </array>
+
+  <!-- 매일 새벽 02:00 자동 실행 -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>2</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/tmp/ezlong-backup.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/tmp/ezlong-backup-error.log</string>
+
+  <!-- Mac이 켜져 있지 않았다면 다음 번 켤 때 실행 -->
+  <key>RunAtLoad</key>
+  <false/>
+</dict>
+</plist>

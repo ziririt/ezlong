@@ -1,52 +1,49 @@
 #!/bin/bash
 # ============================================================
-# ezlong.com 세션 전 필수 백업 스크립트
-# 사용법: 터미널에서 cd ~/Documents/Claude/Projects/미국주식투자자를\ 위한\ ezlong.com
-#         그 다음 sh backup-before-session.sh
+#  ezlong.com — 세션 전 즉시 백업 스크립트
+#  사용법: sh backup-before-session.sh
+#  저장 위치: ~/Documents/ezlong-backups/  (iCloud 자동 동기화)
 # ============================================================
 
 set -e
 
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-BACKUP_DIR="$PROJECT_DIR/.backup/session_$TIMESTAMP"
+BACKUP_ROOT="$HOME/Documents/ezlong-backups"
+BACKUP_DIR="$BACKUP_ROOT/session_$TIMESTAMP"
 
 echo "======================================"
-echo " ezlong 세션 전 백업 시작: $TIMESTAMP"
+echo " ezlong 세션 전 백업: $TIMESTAMP"
+echo " 저장: $BACKUP_DIR"
 echo "======================================"
 
 mkdir -p "$BACKUP_DIR"
 
-# 핵심 HTML 파일 목록
-CORE_HTML=(
-  "analyst-reports.html"
-  "atmr-dashboard.html"
-  "chart-analysis.html"
-  "compound-calculator.html"
-  "dca-simulator.html"
-  "market-cycle.html"
-  "portfolio-rebalancer.html"
-  "tax-calculator.html"
-  "retirement-calculator.html"
-  "backtest.html"
-  "investor-type.html"
-  "dca-guide.html"
-  "admin.html"
-  "_template.html"
-)
-
-echo "→ HTML 파일 백업 중..."
-for f in "${CORE_HTML[@]}"; do
-  if [ -f "$PROJECT_DIR/$f" ]; then
-    cp "$PROJECT_DIR/$f" "$BACKUP_DIR/"
-    echo "  ✓ $f"
-  fi
+# 핵심 HTML 파일 (중복 사본 제외)
+echo "→ HTML 백업 중..."
+COPIED=0
+for f in "$PROJECT_DIR"/*.html; do
+  FILENAME=$(basename "$f")
+  # 중복 사본 건너뜀
+  [[ "$FILENAME" == *" (1)"* ]] && continue
+  [[ "$FILENAME" == *" (2)"* ]] && continue
+  [[ "$FILENAME" == *" 2."* ]] && continue
+  [[ "$FILENAME" == *" 3."* ]] && continue
+  [[ "$FILENAME" == *" copy"* ]] && continue
+  cp "$f" "$BACKUP_DIR/"
+  COPIED=$((COPIED + 1))
 done
+echo "  ✓ HTML $COPIED개 복사"
 
-echo "→ scripts 폴더 백업 중..."
-cp -r "$PROJECT_DIR/scripts" "$BACKUP_DIR/" 2>/dev/null && echo "  ✓ scripts/" || echo "  - scripts/ 없음"
+# scripts 폴더
+echo "→ scripts 백업 중..."
+if [ -d "$PROJECT_DIR/scripts" ]; then
+  cp -r "$PROJECT_DIR/scripts" "$BACKUP_DIR/"
+  echo "  ✓ scripts/ 복사"
+fi
 
-echo "→ 핵심 이미지 백업 중..."
+# 핵심 이미지
+echo "→ 이미지 백업 중..."
 for img in wallstreet.png logo.png logo-darkmode.png; do
   if [ -f "$PROJECT_DIR/$img" ]; then
     cp "$PROJECT_DIR/$img" "$BACKUP_DIR/"
@@ -54,17 +51,36 @@ for img in wallstreet.png logo.png logo-darkmode.png; do
   fi
 done
 
-echo "→ git 현재 커밋 기록..."
+# git 상태 기록
+echo "→ git 상태 기록 중..."
 cd "$PROJECT_DIR"
-git log --oneline -3 > "$BACKUP_DIR/git_state.txt" 2>/dev/null
-git status --short >> "$BACKUP_DIR/git_state.txt" 2>/dev/null
-echo "  ✓ git_state.txt 저장"
+{
+  echo "=== git log (최근 5커밋) ==="
+  git log --oneline -5 2>/dev/null || echo "git 없음"
+  echo ""
+  echo "=== git status ==="
+  git status --short 2>/dev/null || echo "git 없음"
+} > "$BACKUP_DIR/git_state.txt"
+echo "  ✓ git_state.txt"
+
+# 10일 이상 된 백업 자동 삭제
+echo "→ 오래된 백업 정리 중..."
+if [ -d "$BACKUP_ROOT" ]; then
+  find "$BACKUP_ROOT" -maxdepth 1 -name "session_*" -type d -mtime +10 | while read old; do
+    rm -rf "$old"
+    echo "  → 삭제: $(basename "$old")"
+  done
+fi
 
 echo ""
 echo "======================================"
-echo " 백업 완료 → $BACKUP_DIR"
-echo " 파일 수: $(ls "$BACKUP_DIR"/*.html 2>/dev/null | wc -l | tr -d ' ')개 HTML"
+echo " ✅ 백업 완료!"
+echo " 위치: $BACKUP_DIR"
+echo " HTML: $COPIED개 | iCloud 자동 동기화 중"
 echo "======================================"
 echo ""
-echo "이제 Claude 세션을 시작하세요."
-echo "문제 발생 시 이 폴더의 파일로 복구하세요."
+echo " 복구 방법:"
+echo "   특정 파일: cp \"$BACKUP_DIR/analyst-reports.html\" \"$PROJECT_DIR/\""
+echo "   전체 복구: cp -r \"$BACKUP_DIR\"/*.html \"$PROJECT_DIR/\""
+echo ""
+echo " 이제 Claude 세션을 시작하세요."

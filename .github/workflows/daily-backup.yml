@@ -1,0 +1,81 @@
+name: Daily Backup — HTML + Scripts + Images
+
+on:
+  schedule:
+    - cron: '0 15 * * *'   # 매일 KST 00:00 (UTC 15:00)
+  workflow_dispatch:         # 언제든 수동 실행 가능
+
+permissions:
+  contents: write
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set backup date
+        run: echo "DATE=$(date -u +%Y-%m-%d)" >> $GITHUB_ENV
+
+      - name: Create daily git tag (rollback 포인트)
+        run: |
+          git config user.name  "ezlong-backup-bot"
+          git config user.email "backup@ezlong.com"
+
+          # 오늘 태그 생성 (이미 있으면 덮어씀)
+          git tag -f "backup/${{ env.DATE }}" HEAD
+          git push origin "backup/${{ env.DATE }}" --force
+          echo "✓ 태그 생성: backup/${{ env.DATE }}"
+
+          # 11일 이전 백업 태그 자동 삭제 (10일치만 보존)
+          git fetch --tags
+          CUTOFF=$(date -u -d "11 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-11d +%Y-%m-%d)
+          for tag in $(git tag -l "backup/*"); do
+            TAG_DATE="${tag#backup/}"
+            if [[ "$TAG_DATE" < "$CUTOFF" ]]; then
+              git push origin --delete "$tag" || true
+              git tag -d "$tag" || true
+              echo "→ 오래된 태그 삭제: $tag"
+            fi
+          done
+
+      - name: Collect backup files
+        run: |
+          mkdir -p _backup_upload
+          # HTML 파일 (중복 사본 제외)
+          for f in *.html; do
+            [[ "$f" == *" (1)"* ]] && continue
+            [[ "$f" == *" 2."* ]] && continue
+            [[ "$f" == *" 3."* ]] && continue
+            [[ "$f" == *" copy"* ]] && continue
+            cp "$f" _backup_upload/ 2>/dev/null || true
+          done
+          # scripts 폴더
+          cp -r scripts _backup_upload/ 2>/dev/null || true
+          # 핵심 이미지
+          for img in wallstreet.png logo.png logo-darkmode.png; do
+            cp "$img" _backup_upload/ 2>/dev/null || true
+          done
+          echo "=== 백업 파일 목록 ==="
+          ls _backup_upload/
+          echo "HTML: $(ls _backup_upload/*.html 2>/dev/null | wc -l)개"
+
+      - name: Upload as GitHub Actions artifact (10일 보존)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ezlong-backup-${{ env.DATE }}
+          path: _backup_upload/
+          retention-days: 10
+
+      - name: Summary
+        run: |
+          echo "## ✅ 백업 완료: ${{ env.DATE }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 복구 방법" >> $GITHUB_STEP_SUMMARY
+          echo "**특정 파일 복구:** \`git checkout backup/${{ env.DATE }} -- analyst-reports.html\`" >> $GITHUB_STEP_SUMMARY
+          echo "**전체 복구:** GitHub Actions → Artifacts 탭 → \`ezlong-backup-${{ env.DATE }}\` 다운로드" >> $GITHUB_STEP_SUMMARY
+          echo "**10일 이내 모든 날짜 태그:** \`git tag -l 'backup/*'\`" >> $GITHUB_STEP_SUMMARY
