@@ -12,13 +12,13 @@
     <string>/Users/ziririt/Documents/Claude/Projects/미국주식투자자를 위한 ezlong.com/backup-before-session.sh</string>
   </array>
 
-  <!-- 매일 새벽 02:00 자동 실행 -->
+  <!-- 매일 오후 12:30 자동 실행 (점심시간) -->
   <key>StartCalendarInterval</key>
   <dict>
     <key>Hour</key>
-    <integer>2</integer>
+    <integer>12</integer>
     <key>Minute</key>
-    <integer>0</integer>
+    <integer>30</integer>
   </dict>
 
   <key>StandardOutPath</key>
@@ -27,7 +27,6 @@
   <key>StandardErrorPath</key>
   <string>/tmp/ezlong-backup-error.log</string>
 
-  <!-- Mac이 켜져 있지 않았다면 다음 번 켤 때 실행 -->
   <key>RunAtLoad</key>
   <false/>
 </dict>
