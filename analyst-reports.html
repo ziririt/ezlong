@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko" translate="yes">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>핵심기업 목표주가 | 월가 애널리스트 컨센서스 — ezlong</title>
+<meta name="description" content="TSLA·NVDA·AAPL·MSFT 등 미국 주요 상장사 43개의 월가 애널리스트 목표 주가와 컨센서스를 한눈에 확인. Bull/Bear/Neutral 시나리오, PT High/Mean/Low, 매수·중립·매도 비율, 실시간 주가 차트 제공." />
+<meta name="keywords" content="월가 목표 주가, 애널리스트 목표주가, 주가 컨센서스, TSLA 목표주가, NVDA 목표주가, AAPL 목표주가, 미국주식 애널리스트, Wall Street price target, analyst consensus, Strong Buy, 주식 전망" />
+<meta name="robots" content="index, follow" />
+<meta name="author" content="EZLONG" />
+<link rel="canonical" href="https://ezlong.com/analyst-reports.html" />
+<link rel="alternate" hreflang="ko" href="https://ezlong.com/analyst-reports.html" />
+<link rel="alternate" hreflang="x-default" href="https://ezlong.com/analyst-reports.html" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ezlong.com/analyst-reports.html" />
+<meta property="og:title" content="핵심기업 목표주가 | 월가 애널리스트 컨센서스 — ezlong" />
+<meta property="og:description" content="TSLA·NVDA·AAPL 등 미국 주요 43개 종목의 월가 애널리스트 목표 주가를 한눈에. Bull/Bear/Neutral 시나리오, 매수·중립·매도 비율 실시간 제공." />
+<meta property="og:image" content="https://ezlong.com/wallstreet.png" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:site_name" content="EZLONG" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="핵심기업 목표주가 | 월가 애널리스트 컨센서스 — ezlong" />
+<meta name="twitter:description" content="TSLA·NVDA·AAPL 등 미국 주요 43개 종목의 월가 목표 주가와 컨센서스를 한눈에 확인하세요." />
+<meta name="twitter:image" content="https://ezlong.com/wallstreet.png" />
+<link rel="stylesheet" href="ez-design.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+.ar-brand{position:relative;padding:20px 16px 20px;border-bottom:1px solid var(--ez-border);margin-bottom:0;min-height:220px;overflow:hidden;background:linear-gradient(135deg,#0a0a0f 0%,#111118 100%)}
+.ar-brand::before{content:'';position:absolute;inset:0;background-image:url('wallstreet.png');background-size:cover;background-position:90% center;opacity:0.88}
+.ar-brand::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(5,5,20,0.92) 0%,rgba(5,5,20,0.75) 30%,rgba(5,5,20,0.2) 55%,transparent 75%);pointer-events:none}
+.ar-brand-eyebrow,.ar-brand-main,.ar-brand-rule{position:relative;z-index:1}
+.ar-brand-eyebrow{font-size:10px;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;color:var(--ez-blue);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.ar-brand-eyebrow::before{content:'';display:inline-block;width:18px;height:2px;background:var(--ez-blue);border-radius:1px;flex-shrink:0}
+.ar-brand-main{font-size:34px;font-weight:900;letter-spacing:-1.5px;line-height:0.95;color:#fff;margin-bottom:14px;text-transform:uppercase;text-shadow:0 2px 12px rgba(0,0,0,0.8)}
+.ar-brand-rule{width:36px;height:3px;background:linear-gradient(90deg,var(--ez-blue),transparent);border-radius:2px}
+.ar-layout{display:grid;grid-template-columns:400px minmax(0,860px);height:calc(100vh - 52px);overflow:hidden;background:var(--ez-bg);max-width:1400px;margin:0 auto}
+@media (min-width:1401px){.ar-layout{height:auto;overflow:visible}.ar-detail{overflow-y:visible!important;height:auto!important}.ar-sidebar{position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto}}
+.ar-sidebar{border-right:1px solid var(--ez-border);display:flex;flex-direction:column;background:var(--ez-surface);overflow:hidden}
+.ar-sidebar-header{padding:20px 16px 14px;border-bottom:1px solid var(--ez-border);flex-shrink:0}
+.ar-search{position:relative}
+.ar-search input{width:100%;background:var(--ez-card2);border:1px solid var(--ez-border);border-radius:10px;color:var(--ez-text);font-size:13px;padding:8px 12px 8px 32px;outline:none;font-family:var(--ez-font);transition:border-color 0.15s;box-sizing:border-box}
+.ar-search input:focus{border-color:var(--ez-blue)}
+.ar-search input::placeholder{color:var(--ez-hint)}
+.ar-search::before{content:'';position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;background:var(--ez-hint);mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") center/contain no-repeat;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") center/contain no-repeat}
+.ar-list-header{display:none;align-items:center;justify-content:space-between;padding:6px 16px 4px;border-bottom:1px solid var(--ez-border2)}
+.ar-list-label{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--ez-text3)}
+.ar-list-scroll-hint{font-size:10px;color:var(--ez-hint);animation:bounceDown 1.8s ease-in-out infinite}
+@keyframes bounceDown{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(3px);opacity:1}}
+.ar-ticker-list{overflow-y:auto;flex:1;padding:6px 8px 8px}
+.ar-ticker-list::-webkit-scrollbar{width:3px}
+.ar-ticker-list::-webkit-scrollbar-thumb{background:var(--ez-border);border-radius:2px}
+.tk-card{border-radius:10px;padding:10px 12px;margin-bottom:2px;cursor:pointer;border:1px solid transparent;transition:all 0.18s cubic-bezier(0.25,0.46,0.45,0.94);position:relative;overflow:hidden}
+.tk-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ez-blue);transform:scaleY(0);transition:transform 0.18s;border-radius:0 2px 2px 0}
+.tk-card:hover{background:var(--ez-card2)}.tk-card:hover::before{transform:scaleY(0.6)}
+.tk-card.active{background:var(--ez-blue-dim);border-color:rgba(10,132,255,0.2)}.tk-card.active::before{transform:scaleY(1)}
+.tk-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.tk-ticker{font-size:15px;font-weight:800;color:var(--ez-text);letter-spacing:0.2px}
+.tk-card.active .tk-ticker{color:var(--ez-blue)}
+.tk-upside{font-size:12px;font-weight:700;border-radius:5px;padding:2px 7px}
+.tk-upside.pos{background:rgba(48,209,88,0.12);color:var(--ez-green)}
+.tk-upside.neg{background:rgba(255,69,58,0.10);color:var(--ez-red)}
+.tk-upside.zero{background:var(--ez-card2);color:var(--ez-text3)}
+.tk-row2{font-size:11px;color:var(--ez-text3);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk-sentiment{display:flex;height:3px;border-radius:2px;overflow:hidden;gap:1px}
+.tk-s-buy{background:var(--ez-green);border-radius:2px 0 0 2px}
+.tk-s-hold{background:var(--ez-amber)}
+.tk-s-sell{background:var(--ez-red);border-radius:0 2px 2px 0}
+.ar-detail{overflow-y:auto;overflow-x:hidden;background:var(--ez-bg)}
+.ar-detail::-webkit-scrollbar{width:6px}
+.ar-detail::-webkit-scrollbar-thumb{background:var(--ez-text3);border-radius:3px;min-height:40px}
+.ar-detail::-webkit-scrollbar-thumb:hover{background:var(--ez-blue)}
+.ar-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:14px;color:var(--ez-text3)}
+.ar-empty-icon{font-size:52px;opacity:0.25}
+.ar-empty-title{font-size:17px;font-weight:600;color:var(--ez-text2)}
+.ar-empty-sub{font-size:13px;color:var(--ez-text3)}
+.ar-loading{display:flex;align-items:center;justify-content:center;height:200px;color:var(--ez-text3);font-size:13px;gap:10px}
+.spinner{width:16px;height:16px;border:2px solid var(--ez-border);border-top-color:var(--ez-blue);border-radius:50%;animation:spin 0.65s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.rp-content{animation:fadeSlideUp 0.3s cubic-bezier(0.25,0.46,0.45,0.94) both}
+.rp-hero{padding:36px 40px 28px;border-bottom:1px solid var(--ez-border);position:relative;overflow:hidden}
+.rp-hero::after{content:'';position:absolute;top:0;right:0;width:300px;height:100%;background:radial-gradient(ellipse at top right,var(--ez-blue-dim),transparent 70%);pointer-events:none}
+.rp-hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:24px}
+.rp-ticker-name{font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ez-text3);margin-bottom:4px}
+.rp-big-ticker{font-size:48px;font-weight:900;letter-spacing:-2px;color:var(--ez-text);line-height:1;margin-bottom:6px}
+.rp-company-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rp-sector-pill{font-size:11px;color:var(--ez-text3);background:var(--ez-card2);border-radius:20px;padding:3px 10px}
+.rp-hero-right{text-align:right;flex-shrink:0;padding-top:4px}
+.rp-date-tag{font-size:11px;color:var(--ez-text3);margin-bottom:4px}
+.rp-consensus-badge{display:inline-flex;align-items:center;gap:6px;background:var(--ez-card);border:1px solid var(--ez-border);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;color:var(--ez-text)}
+.rp-analyst-sub{font-size:11px;color:var(--ez-text3);margin-top:6px}
+.rp-kpi-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.rp-kpi{display:flex;flex-direction:column;gap:2px}
+.rp-kpi-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--ez-text3);font-weight:600}
+.rp-kpi-val{font-size:22px;font-weight:800;letter-spacing:-0.5px;color:var(--ez-text);font-variant-numeric:tabular-nums}
+.rp-kpi-val.green{color:var(--ez-green)}.rp-kpi-val.red{color:var(--ez-red)}
+.rp-kpi-divider{width:1px;height:36px;background:var(--ez-border);flex-shrink:0}
+.rp-body{padding:0 40px 60px}
+.rp-pt-section{padding:32px 0 0}
+.rp-section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ez-text3);margin-bottom:20px}
+.rp-pt-range{position:relative;padding:0 0 40px}
+.rp-pt-track{height:6px;background:var(--ez-card2);border-radius:3px;position:relative;margin-bottom:8px}
+.rp-pt-fill{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,rgba(255,69,58,0.4),rgba(10,132,255,0.5),rgba(48,209,88,0.5));border-radius:3px;transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94)}
+.rp-pt-current{position:absolute;top:-5px;width:16px;height:16px;background:var(--ez-text);border:2px solid var(--ez-surface);border-radius:50%;transform:translateX(-50%);box-shadow:0 2px 8px rgba(0,0,0,0.25);transition:left 0.8s cubic-bezier(0.25,0.46,0.45,0.94);z-index:2}
+.rp-pt-mean-marker{position:absolute;top:-3px;width:12px;height:12px;border-radius:50%;background:var(--ez-blue);transform:translateX(-50%);transition:left 0.8s cubic-bezier(0.25,0.46,0.45,0.94);z-index:1}
+.rp-pt-labels{display:flex;justify-content:space-between;margin-top:14px}
+.rp-pt-label{display:flex;flex-direction:column;gap:2px}
+.rp-pt-label.center{text-align:center}.rp-pt-label.right{text-align:right}
+.rp-pt-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;color:var(--ez-text3)}
+.rp-pt-num{font-size:16px;font-weight:800;letter-spacing:-0.3px;font-variant-numeric:tabular-nums}
+.rp-pt-analyst{font-size:10px;color:var(--ez-text3)}
+.rp-sentiment-section{padding:28px 0 0}
+.rp-sentiment-bars{display:flex;flex-direction:column;gap:10px}
+.rp-sent-row{display:grid;grid-template-columns:52px 1fr 40px;align-items:center;gap:12px}
+.rp-sent-label{font-size:12px;font-weight:600;color:var(--ez-text2)}
+.rp-sent-bar-bg{height:8px;background:var(--ez-card2);border-radius:4px;overflow:hidden}
+.rp-sent-bar-fill{height:100%;border-radius:4px;transform-origin:left;transform:scaleX(0);transition:transform 1s cubic-bezier(0.25,0.46,0.45,0.94)}
+.rp-sent-bar-fill.buy{background:var(--ez-green)}.rp-sent-bar-fill.hold{background:var(--ez-amber)}.rp-sent-bar-fill.sell{background:var(--ez-red)}
+.rp-sent-pct{font-size:12px;font-weight:700;text-align:right;color:var(--ez-text2)}
+.rp-summary-section{padding:28px 0 0}
+.rp-summary-box{background:var(--ez-surface);border:1px solid var(--ez-border);border-radius:16px;padding:20px 24px;font-size:15px;line-height:1.7;color:var(--ez-text);position:relative;overflow:hidden}
+.rp-summary-box::before{content:'"';position:absolute;top:-10px;left:16px;font-size:80px;color:var(--ez-blue);opacity:0.08;line-height:1;font-family:Georgia,serif}
+.rp-report-section{padding:28px 0 0}
+.markdown-body{font-size:15px;line-height:1.8;color:var(--ez-text)}
+.markdown-body h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ez-text3);margin:24px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--ez-border)}
+.markdown-body p{margin:0 0 14px}.markdown-body strong{color:var(--ez-text)}
+.rp-frame-section{padding:28px 0 0}
+.rp-frame-pill{display:flex;align-items:flex-start;gap:12px;background:linear-gradient(135deg,var(--ez-blue-dim),rgba(10,132,255,0.04));border:1px solid var(--ez-blue);border-left:4px solid var(--ez-blue);border-radius:12px;padding:16px 20px;font-size:18px;font-weight:700;color:var(--ez-text);line-height:1.5;letter-spacing:-0.2px}
+.rp-frame-icon{width:24px;height:24px;flex-shrink:0;font-size:22px;line-height:1;margin-top:1px}
+.rp-av-section{padding:28px 0 0}
+.rp-chart-section{padding:28px 0 0}
+#analyst-price-chart{border-radius:12px;overflow:hidden;background:var(--ez-card);border:1px solid var(--ez-border);height:260px}
+.av-grid{display:flex;flex-direction:column;gap:10px}
+.av-card{background:var(--ez-surface);border:1px solid var(--ez-border);border-radius:14px;padding:16px 20px;display:flex;flex-direction:column;gap:12px;transition:all 0.15s;position:relative;overflow:hidden}
+.av-header-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.av-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.av-card.bull::before{background:var(--ez-green)}.av-card.neutral::before{background:var(--ez-amber)}.av-card.bear::before{background:var(--ez-red)}
+.av-card:hover{transform:translateX(2px);border-color:var(--ez-blue)}
+.av-price-col{flex-shrink:0;display:flex;flex-direction:column;gap:4px;align-items:flex-start;min-width:80px}
+.av-name-col{flex-shrink:0;text-align:right;min-width:120px;max-width:200px}
+.av-name{font-size:13px;font-weight:700;color:var(--ez-text);margin-bottom:2px;word-break:break-word}
+.av-house{font-size:11px;color:var(--ez-text3);margin-bottom:4px}
+.av-date-small{font-size:10px;color:var(--ez-hint)}
+.av-thesis{font-size:15px;color:var(--ez-text);line-height:1.75}
+.av-tp-big{font-size:20px;font-weight:800;letter-spacing:-0.5px;color:var(--ez-text);font-variant-numeric:tabular-nums}
+.av-rating-tag{font-size:10px;font-weight:600;color:var(--ez-text3);margin-bottom:6px}
+.av-stance-badge{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;border-radius:5px;padding:2px 7px;margin-top:4px}
+.av-stance-badge.bull{background:rgba(48,209,88,0.12);color:var(--ez-green)}
+.av-stance-badge.neutral{background:rgba(255,159,10,0.12);color:var(--ez-amber)}
+.av-stance-badge.bear{background:rgba(255,69,58,0.10);color:var(--ez-red)}
+.av-empty-state{text-align:center;padding:30px;color:var(--ez-text3);font-size:13px;background:var(--ez-card2);border-radius:14px}
+.av-synthetic-note{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--ez-text3);background:var(--ez-card2);border-radius:8px;padding:6px 12px;margin-bottom:12px;width:fit-content}
+.rp-source-note{margin-top:28px;font-size:11px;color:var(--ez-hint);text-align:right}
+@media (max-width:768px){
+.ar-list-header{display:flex}
+.ar-search input{font-size:16px;padding:8px 12px 8px 32px}
+.ar-sidebar-header{padding:0 0 10px}
+.ar-brand{padding:16px 14px 16px;min-height:200px;margin-bottom:0}
+.ar-brand-main{font-size:28px;margin-bottom:10px}
+.ar-brand::before{background-position:88% center}
+.ar-ticker-list{padding:4px 6px 6px}
+.ar-layout{grid-template-columns:1fr;height:auto;overflow:visible;display:flex;flex-direction:column}
+.ar-sidebar{width:100%;height:auto;max-height:none;border-right:none;border-bottom:1px solid var(--ez-border);flex-shrink:0}
+.ar-ticker-list{max-height:195px;overflow-y:auto;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(to bottom,black 55%,transparent 100%);mask-image:linear-gradient(to bottom,black 55%,transparent 100%)}
+.ar-detail{height:auto;overflow:visible;flex:1}
+.rp-hero{padding:18px 16px 14px}
+.rp-body{padding:0 16px 40px}
+.rp-big-ticker{font-size:32px;letter-spacing:-1px}
+.rp-hero-top{flex-direction:column;gap:8px}
+.rp-hero-right{text-align:left}
+.rp-kpi-row{flex-wrap:wrap;gap:10px}
+.rp-kpi-divider{display:none}
+.rp-kpi{min-width:72px}
+.rp-kpi-val{font-size:17px}
+.rp-pt-num{font-size:12px}
+.rp-pt-tag{font-size:9px}
+.rp-pt-analyst{display:none}
+#analyst-price-chart{height:190px}
+.rp-section-label{font-size:10px}
+.av-card{padding:12px 12px 10px;gap:8px}
+.av-header-row{gap:8px}
+.av-price-col{min-width:70px}
+.av-name{font-size:14px;white-space:normal;word-break:break-word;margin-bottom:2px}
+.av-house{font-size:11px}
+.av-date-small{font-size:10px;margin-top:2px}
+.av-name-col{text-align:right;min-width:110px;max-width:160px}
+.av-rating-tag{font-size:13px!important;font-weight:700;color:var(--ez-text2);margin-bottom:0;white-space:nowrap}
+.av-tp-big{font-size:20px!important;line-height:1.1}
+.av-thesis{font-size:13px;line-height:1.7;max-width:100%;color:var(--ez-text);margin-top:10px;padding-top:10px;border-top:1px solid var(--ez-border2)}
+}
+</style>
+</head>
+<body>
+<nav class="ez-nav" aria-label="글로벌 네비게이션">
+  <div class="ez-nav-inner">
+    <a href="/" class="ez-nav-logo" aria-label="EZLONG 홈">
+      <picture>
+        <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+        <img src="logo.png" alt="EZLONG">
+      </picture>
+    </a>
+    <div class="ez-nav-svc-links">
+      <a href="/atmr-dashboard.html"        class="ez-nav-svc-link">스윙 시그널</a>
+      <a href="/chart-analysis.html"        class="ez-nav-svc-link">AI 차트분석</a>
+      <a href="/analyst-reports.html"       class="ez-nav-svc-link active">핵심기업 목표주가</a>
+      <a href="/market-cycle.html"          class="ez-nav-svc-link">Market Cycle</a>
+      <a href="/dca-simulator.html"         class="ez-nav-svc-link">DCA 시뮬레이터</a>
+      <a href="/portfolio-manager.html"     class="ez-nav-svc-link">포트폴리오 복리</a>
+      <a href="/tax-account-simulator.html" class="ez-nav-svc-link">절세 계좌</a>
+      <a href="/compound-calculator.html"   class="ez-nav-svc-link">복리 계산기</a>
+      <a href="/retirement-calculator.html" class="ez-nav-svc-link">은퇴 계산기</a>
+      <a href="/backtest.html"              class="ez-nav-svc-link">백테스트</a>
+      <a href="/risk-diagnostic.html"       class="ez-nav-svc-link">투자성향 테스트</a>
+      <a href="/auto-dca-guide.html"        class="ez-nav-svc-link">DCA 가이드</a>
+    </div>
+  </div>
+</nav>
+<div class="ar-layout">
+  <aside class="ar-sidebar">
+    <div class="ar-sidebar-header">
+      <div class="ar-brand">
+        <div class="ar-brand-eyebrow">Wall Street</div>
+        <div class="ar-brand-main">Price<br>Targets</div>
+        <div class="ar-brand-rule"></div>
+      </div>
+      <div class="ar-search">
+        <input type="search" id="search-input" placeholder="티커 또는 종목명">
+      </div>
+    </div>
+    <div class="ar-list-header">
+      <span class="ar-list-label">종목 선택</span>
+      <span class="ar-list-scroll-hint">↓ 스크롤</span>
+    </div>
+    <div class="ar-ticker-list" id="ticker-list">
+      <div class="ar-loading"><div class="spinner"></div>데이터 불러오는 중…</div>
+    </div>
+  </aside>
+  <section class="ar-detail" id="report-detail">
+    <div class="ar-empty">
+      <div class="ar-empty-icon">📈</div>
+      <div class="ar-empty-title">종목을 선택하세요</div>
+      <div class="ar-empty-sub">36개 미국 주요 상장사의 월가 애널리스트 리포트</div>
+    </div>
+  </section>
+</div>
+<script>
+const SUPABASE_URL='https://qefddgigiujosvormkyr.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlZmRkZ2lnaXVqb3N2b3Jta3lyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwODYzNjEsImV4cCI6MjA5NTY2MjM2MX0.ewQPpe0ncUbzYlXUHN_dH8qi9PXWs3oDsibtAT14yaw';
+const TIER1=new Set(['TSLA','NVDA','AAPL','MSFT','GOOGL','META','AMZN']);
+const _sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+let allSnapshots=[],selectedTicker=null;
+function fmtPt(v){if(!v&&v!==0)return'—';return'$'+Math.round(+v).toLocaleString('en-US')}
+function fmtUp(v){if(v==null)return{text:'—',cls:'zero'};const n=+v;return{text:(n>=0?'+':'')+n.toFixed(2)+'%',cls:n>0?'pos':n<0?'neg':'zero'}}
+function cleanMd(text){return(text||'').replace(/이번\s*주\s*/g,'')}
+function getRatingStyle(rating){
+  if(!rating)return{color:'var(--ez-text3)',bg:'var(--ez-card2)',border:'var(--ez-border)'};
+  const r=(rating.split('(')[0]).toLowerCase().trim();
+  if(r.startsWith('strong buy'))return{color:'#30D158',bg:'rgba(48,209,88,0.12)',border:'rgba(48,209,88,0.35)'};
+  if((r.startsWith('buy')||r.startsWith('outperform')||r.startsWith('overweight'))&&!r.includes('hold')&&!r.includes('mixed'))return{color:'var(--ez-blue)',bg:'var(--ez-blue-dim)',border:'rgba(10,132,255,0.35)'};
+  if(r.includes('mixed')||(r.includes('buy')&&r.includes('hold')))return{color:'#FF9F0A',bg:'rgba(255,159,10,0.12)',border:'rgba(255,159,10,0.35)'};
+  if(r.startsWith('hold')||r.startsWith('neutral')||r.startsWith('market perform'))return{color:'#FFD60A',bg:'rgba(255,214,10,0.10)',border:'rgba(255,214,10,0.30)'};
+  if(r.includes('underperform')||r.includes('underweight')||r.includes('sell')||r.includes('reduce'))return{color:'var(--ez-red)',bg:'rgba(255,69,58,0.12)',border:'rgba(255,69,58,0.35)'};
+  return{color:'var(--ez-text3)',bg:'var(--ez-card2)',border:'var(--ez-border)'}
+}
+async function loadSnapshots(){
+  const timer=setTimeout(()=>{document.getElementById('ticker-list').innerHTML='<div style="padding:20px;color:var(--ez-red);font-size:13px;">연결 타임아웃<br>새로고침해주세요.</div>'},12000);
+  try{
+    const[{data:companies,error:cErr},{data:snaps,error:sErr}]=await Promise.all([
+      _sb.from('companies').select('id,ticker,company_name,sector_theme,display_order').order('display_order',{ascending:true}),
+      _sb.from('report_snapshots').select('id,company_id,snapshot_date,week_key,consensus_rating,analyst_count,pt_mean,pt_median,pt_high,pt_low,pt_high_analyst,pt_low_analyst,upside_pct,one_line_summary,report_markdown,valuation_frame,source_note,is_latest').eq('is_latest',true)
+    ]);
+    if(cErr)throw cErr;if(sErr)throw sErr;
+    clearTimeout(timer);
+    const coMap={};(companies||[]).forEach(c=>{coMap[c.id]=c});
+    allSnapshots=(snaps||[]).map(s=>({...s,companies:coMap[s.company_id]||{}})).sort((a,b)=>(a.companies.display_order||99)-(b.companies.display_order||99));
+    renderList();
+    const tsla=allSnapshots.find(s=>s.companies?.ticker==='TSLA');
+    if(tsla)selectTicker('TSLA');
+  }catch(e){clearTimeout(timer);document.getElementById('ticker-list').innerHTML=`<div style="padding:20px;color:var(--ez-red);font-size:13px;">오류: ${e.message}</div>`}
+}
+function renderList(){
+  const q=document.getElementById('search-input').value.trim().toUpperCase();
+  const filtered=allSnapshots.filter(s=>{const t=s.companies?.ticker||'';const n=(s.companies?.company_name||'').toUpperCase();return!q||t.includes(q)||n.includes(q)});
+  if(!filtered.length){document.getElementById('ticker-list').innerHTML='<div style="padding:20px;text-align:center;color:var(--ez-text3);font-size:13px;">결과 없음</div>';return}
+  function parseSentiment(rating){const m=rating?.match(/Buy\s+(\d+)%.*Hold\s+(\d+)%.*Sell\s+(\d+)%/);if(m)return{buy:+m[1],hold:+m[2],sell:+m[3]};if(rating?.toLowerCase().includes('strong buy'))return{buy:90,hold:8,sell:2};if(rating?.toLowerCase().includes('buy'))return{buy:65,hold:25,sell:10};return{buy:40,hold:40,sell:20}}
+  const html=filtered.map(s=>{const t=s.companies?.ticker||'';const co=s.companies?.company_name||'';const up=fmtUp(s.upside_pct);const isActive=t===selectedTicker?' active':'';const sent=parseSentiment(s.consensus_rating);return`<div class="tk-card${isActive}" onclick="selectTicker('${t}')" data-ticker="${t}"><div class="tk-row1"><span class="tk-ticker">${t}</span><span class="tk-upside ${up.cls}">${up.text}</span></div><div class="tk-row2">${co}</div><div class="tk-sentiment"><div class="tk-s-buy" style="width:${sent.buy}%"></div><div class="tk-s-hold" style="width:${sent.hold}%"></div><div class="tk-s-sell" style="width:${sent.sell}%"></div></div></div>`}).join('');
+  document.getElementById('ticker-list').innerHTML=html;
+}
+async function selectTicker(ticker){
+  selectedTicker=ticker;
+  document.querySelectorAll('.tk-card').forEach(el=>el.classList.toggle('active',el.dataset.ticker===ticker));
+  document.getElementById('report-detail').innerHTML='<div class="ar-loading"><div class="spinner"></div>리포트 로딩 중…</div>';
+  const snap=allSnapshots.find(s=>s.companies?.ticker===ticker);if(!snap)return;
+  let{data:views}=await _sb.from('analyst_views').select('*').eq('snapshot_id',snap.id).order('row_order',{ascending:true});
+  if(!views?.length&&snap.company_id){
+    const{data:prevSnaps}=await _sb.from('report_snapshots').select('id').eq('company_id',snap.company_id).order('snapshot_date',{ascending:false}).limit(20);
+    if(prevSnaps?.length){
+      const ids=prevSnaps.map(s=>s.id);
+      const{data:fallback}=await _sb.from('analyst_views').select('*').in('snapshot_id',ids).order('row_order',{ascending:true});
+      views=fallback||[];
+    }
+  }
+  renderDetail(snap,views||[]);
+}
+function renderDetail(snap,views){
+  const t=snap.companies?.ticker||'',co=snap.companies?.company_name||'',sec=snap.companies?.sector_theme||'';
+  const tier1=TIER1.has(t),up=fmtUp(snap.upside_pct),ac=snap.analyst_count||0;
+  const buyM=snap.consensus_rating?.match(/Buy\s+(\d+)%/),holdM=snap.consensus_rating?.match(/Hold\s+(\d+)%/),sellM=snap.consensus_rating?.match(/Sell\s+(\d+)%/);
+  const buyP=buyM?+buyM[1]:tier1?65:70,holdP=holdM?+holdM[1]:25,sellP=sellM?+sellM[1]:Math.max(0,100-buyP-holdP);
+  const buyN=Math.round(ac*buyP/100),holdN=Math.round(ac*holdP/100),sellN=ac-buyN-holdN;
+  const low=+snap.pt_low||0,high=+snap.pt_high||0,mean=+snap.pt_mean||0,range=high-low||1;
+  const meanPct=Math.max(2,Math.min(98,((mean-low)/range)*100));
+  const mdHtml=snap.report_markdown?marked.parse(cleanMd(snap.report_markdown)):'';
+  const stanceOrder={bull:0,neutral:1,bear:2};
+  const sortedViews=[...views].sort((a,b)=>{const stA=stanceOrder[a.stance_bucket]??1,stB=stanceOrder[b.stance_bucket]??1;if(stA!==stB)return stA-stB;if(a.target_price!==null&&b.target_price!==null)return b.target_price-a.target_price;if(a.target_price!==null)return-1;if(b.target_price!==null)return 1;return 0});
+  const isSynth=views.some(v=>v.house==='Synthetic');
+  const avHtml=views.length===0?'<div class="av-empty-state">애널리스트 뷰 데이터가 없습니다.</div>':`${isSynth?'<div class="av-synthetic-note">📊 시나리오 기반 합성 뷰 (Synthetic)</div>':''}<div class="av-grid">${sortedViews.map(v=>{const sb=(v.stance_bucket||'neutral').toLowerCase();return`<div class="av-card ${sb}"><div class="av-header-row"><div class="av-price-col"><div class="av-rating-tag">${v.rating}</div><div class="av-tp-big">${fmtPt(v.target_price)}</div><div><span class="av-stance-badge ${sb}">${sb==='bull'?'강세':sb==='bear'?'약세':'중립'}</span></div></div><div class="av-name-col"><div class="av-name">${v.analyst_name}</div><div class="av-house">${v.house}</div><div class="av-date-small">${v.reference_date||''}</div></div></div><div class="av-thesis">${v.thesis||'—'}</div></div>`}).join('')}</div>`;
+  const rs=getRatingStyle(snap.consensus_rating),rLabel=snap.consensus_rating?.split('(')[0].trim()||'—';
+  const html=`<div class="rp-content"><div class="rp-hero"><div class="rp-hero-top"><div><div class="rp-ticker-name">${co}</div><div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;"><div class="rp-big-ticker" style="margin:0;">${t}</div><div><div class="rp-consensus-badge" style="color:${rs.color};background:${rs.bg};border-color:${rs.border}">${rLabel}</div><div class="rp-analyst-sub" style="margin-top:4px;">애널리스트 ${ac}명 기준</div></div></div><div class="rp-company-row"><span class="rp-sector-pill">${sec}</span></div></div><div class="rp-hero-right"><div class="rp-date-tag">${snap.snapshot_date} · ${snap.week_key}</div></div></div><div class="rp-kpi-row"><div class="rp-kpi"><div class="rp-kpi-label">Avg Target</div><div class="rp-kpi-val" id="kpi-mean">—</div></div><div class="rp-kpi-divider"></div><div class="rp-kpi"><div class="rp-kpi-label">Upside</div><div class="rp-kpi-val ${up.cls==='pos'?'green':up.cls==='neg'?'red':''}">${up.text}</div></div><div class="rp-kpi-divider"></div><div class="rp-kpi"><div class="rp-kpi-label">High Target</div><div class="rp-kpi-val">${fmtPt(snap.pt_high)}</div></div><div class="rp-kpi-divider"></div><div class="rp-kpi"><div class="rp-kpi-label">Low Target</div><div class="rp-kpi-val">${fmtPt(snap.pt_low)}</div></div></div></div><div class="rp-body"><div class="rp-frame-section" style="padding-top:20px;"><div class="rp-section-label" style="color:var(--ez-blue);font-size:11px;font-weight:800;letter-spacing:1.5px;">VALUATION FRAME</div><div class="rp-frame-pill"><span class="rp-frame-icon">⚖️</span><span>${snap.valuation_frame||'—'}</span></div></div><div class="rp-chart-section"><div class="rp-section-label">Price History</div><div id="analyst-price-chart"></div></div><div class="rp-pt-section"><div class="rp-section-label">Price Target Range</div><div class="rp-pt-range"><div class="rp-pt-track"><div class="rp-pt-fill" id="pt-fill" style="left:0;right:0;"></div><div class="rp-pt-mean-marker" id="pt-mean-dot" style="left:50%;"></div><div class="rp-pt-current" title="컨센서스 평균" id="pt-mean-marker" style="left:50%;"></div></div><div class="rp-pt-labels"><div class="rp-pt-label"><div class="rp-pt-tag">Low · Bear</div><div class="rp-pt-num" style="color:var(--ez-red)">${fmtPt(snap.pt_low)}</div><div class="rp-pt-analyst">${snap.pt_low_analyst||''}</div></div><div class="rp-pt-label center"><div class="rp-pt-tag">Avg · Consensus</div><div class="rp-pt-num" style="color:var(--ez-blue)">${fmtPt(snap.pt_mean)}</div><div class="rp-pt-analyst">${ac}명 평균</div></div><div class="rp-pt-label right"><div class="rp-pt-tag">High · Bull</div><div class="rp-pt-num" style="color:var(--ez-green)">${fmtPt(snap.pt_high)}</div><div class="rp-pt-analyst">${snap.pt_high_analyst||''}</div></div></div></div></div><div class="rp-sentiment-section"><div class="rp-section-label">Analyst Sentiment · ${ac}명</div><div class="rp-sentiment-bars"><div class="rp-sent-row"><div class="rp-sent-label">Buy</div><div class="rp-sent-bar-bg"><div class="rp-sent-bar-fill buy" id="bar-buy" style="width:${buyP}%"></div></div><div class="rp-sent-pct">${buyN}명</div></div><div class="rp-sent-row"><div class="rp-sent-label">Hold</div><div class="rp-sent-bar-bg"><div class="rp-sent-bar-fill hold" id="bar-hold" style="width:${holdP}%"></div></div><div class="rp-sent-pct">${holdN}명</div></div><div class="rp-sent-row"><div class="rp-sent-label">Sell</div><div class="rp-sent-bar-bg"><div class="rp-sent-bar-fill sell" id="bar-sell" style="width:${sellP}%"></div></div><div class="rp-sent-pct">${sellN}명</div></div></div></div><div class="rp-summary-section"><div class="rp-section-label">Summary</div><div class="rp-summary-box">${snap.one_line_summary||'—'}</div></div>${tier1&&mdHtml?`<div class="rp-report-section"><div class="rp-section-label">Research Note</div><div class="markdown-body">${mdHtml}</div></div>`:''}<div class="rp-av-section"><div class="rp-section-label">Analyst Views</div>${avHtml}</div><div class="rp-source-note">${snap.source_note||''}</div></div></div>`;
+  const el=document.getElementById('report-detail');el.innerHTML=html;
+  setTimeout(()=>initPriceChart(t,snap),200);
+  requestAnimationFrame(()=>{requestAnimationFrame(()=>{
+    document.querySelectorAll('.rp-sent-bar-fill').forEach(b=>{const w=b.style.width;b.style.transform=`scaleX(${parseFloat(w)/100})`});
+    const meanDot=document.getElementById('pt-mean-dot'),meanMk=document.getElementById('pt-mean-marker');
+    if(meanDot){meanDot.style.left=meanPct+'%';meanMk.style.left=meanPct+'%'}
+    animateCounter(document.getElementById('kpi-mean'),mean,v=>fmtPt(v));
+  })});
+}
+function animateCounter(el,target,fmt,dur=600){if(!el||!target)return;const start=performance.now();function step(now){const p=Math.min(1,(now-start)/dur);const ease=1-Math.pow(1-p,3);el.textContent=fmt(target*ease);if(p<1)requestAnimationFrame(step);else el.textContent=fmt(target)}requestAnimationFrame(step)}
+const TV_SYM={TSLA:'NASDAQ:TSLA',NVDA:'NASDAQ:NVDA',AAPL:'NASDAQ:AAPL',MSFT:'NASDAQ:MSFT',GOOGL:'NASDAQ:GOOGL',META:'NASDAQ:META',AMZN:'NASDAQ:AMZN',AMD:'NASDAQ:AMD',AVGO:'NASDAQ:AVGO',ASML:'NASDAQ:ASML',TSM:'NYSE:TSM',ARM:'NASDAQ:ARM',PLTR:'NASDAQ:PLTR',IONQ:'NYSE:IONQ',SMCI:'NASDAQ:SMCI',SHOP:'TSX:SHOP',CRWD:'NASDAQ:CRWD',ABNB:'NASDAQ:ABNB',NFLX:'NASDAQ:NFLX',COIN:'NASDAQ:COIN',HOOD:'NASDAQ:HOOD',MARA:'NASDAQ:MARA',RIOT:'NASDAQ:RIOT',SNOW:'NYSE:SNOW',INTU:'NASDAQ:INTU',KVYO:'NYSE:KVYO',CART:'NASDAQ:CART',KVUE:'NYSE:KVUE',CAVA:'NYSE:CAVA',AFRM:'NASDAQ:AFRM',CRCL:'NYSE:CRCL',BMNR:'NYSE:BMNR',SBET:'NASDAQ:SBET',GLBE:'NASDAQ:GLBE',NU:'NYSE:NU',DDOG:'NASDAQ:DDOG',CRWV:'NASDAQ:CRWV',IREN:'NASDAQ:IREN',ORCL:'NYSE:ORCL',MRVL:'NASDAQ:MRVL',MSTR:'NASDAQ:MSTR',TWLO:'NYSE:TWLO',DELL:'NYSE:DELL'};
+function initPriceChart(ticker,snap){
+  const container=document.getElementById('analyst-price-chart');if(!container)return;
+  container.innerHTML='';
+  const sym=TV_SYM[ticker]||'NASDAQ:'+ticker;
+  const IS_DARK=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const wrapper=document.createElement('div');wrapper.className='tradingview-widget-container';wrapper.style.cssText='height:100%;width:100%;';
+  const widgetDiv=document.createElement('div');widgetDiv.className='tradingview-widget-container__widget';widgetDiv.style.cssText='height:100%;width:100%;';
+  wrapper.appendChild(widgetDiv);
+  const cfg={symbol:sym,width:'100%',height:'100%',locale:'en',dateRange:'6M',colorTheme:IS_DARK?'dark':'light',isTransparent:true,autosize:true,noTimeScale:false,chartOnly:false};
+  const script=document.createElement('script');script.type='text/javascript';script.async=true;
+  script.src='https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js';
+  script.textContent=JSON.stringify(cfg);
+  wrapper.appendChild(script);container.appendChild(wrapper);
+}
+document.getElementById('search-input').addEventListener('input',renderList);
+loadSnapshots();
+</script>
+<footer class="ez-footer" role="contentinfo">
+  <div class="ez-footer-inner">
+    <div class="ez-footer-top">
+      <div class="ez-footer-brand">
+        <picture>
+          <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+          <img src="logo.png" alt="EZLONG">
+        </picture>
+        <p class="ez-footer-brand-desc">쉽고 안전한 장기투자 파트너<br>easy.invest.good@gmail.com</p>
+      </div>
+      <div class="ez-footer-links">
+        <div class="ez-footer-col">
+          <span class="ez-footer-col-title">서비스</span>
+          <a href="atmr-dashboard.html">스윙 시그널 대시보드</a>
+          <a href="chart-analysis.html">AI 차트분석</a>
+          <a href="analyst-reports.html">핵심기업 목표주가</a>
+          <a href="market-cycle.html">Market Cycle Monitor</a>
+          <a href="dca-simulator.html">DCA 복리 시뮬레이터</a>
+          <a href="portfolio-manager.html">포트폴리오 복리 시뮬레이터</a>
+          <a href="tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a>
+          <a href="compound-calculator.html">복리 계산기</a>
+          <a href="retirement-calculator.html">은퇴 목표 역산 계산기</a>
+          <a href="backtest.html">몬테카를로 포트폴리오 시뮬레이터</a>
+          <a href="risk-diagnostic.html">투자 행동 자가진단</a>
+          <a href="auto-dca-guide.html">자동 적립식 매수 가이드</a>
+        </div>
+      </div>
+    </div>
+    <div class="ez-footer-bottom">
+      © 2025–2026 유니아빠 &amp; 유니엄마 · EZLONG · easy.invest.good@gmail.com<br>
+      본 서비스에서 제공하는 모든 시뮬레이션 수치는 참고용 추정치이며, 실제 투자 수익을 보장하지 않습니다. 투자 판단의 책임은 투자자 본인에게 있습니다.
+    </div>
+  </div>
+</footer>
+</body>
+</html>
