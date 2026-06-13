@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<link rel="stylesheet" href="ez-design.css">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>복리계산기 — 원금·수익률·기간으로 복리 수익 무료 계산 | EZLONG</title>
+<meta name="description" content="복리계산기로 원금, 연 수익률, 투자 기간, 추가 납입금을 입력해 복리 최종 수익을 한눈에 계산. 미국주식 ETF 장기투자 복리의 마법을 직접 확인하세요. 무료." />
+<meta name="keywords" content="복리계산기, 복리 계산, 복리, 복리 수익률, 투자 수익 계산, 미국주식, ETF 복리, 장기투자, 원금 계산, 수익 시뮬레이션" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://ezlong.com/compound-calculator.html" />
+<!-- ── 국제화 SEO: hreflang + locale alternate ── -->
+<link rel="alternate" hreflang="ko" href="https://ezlong.com/compound-calculator.html">
+<link rel="alternate" hreflang="en" href="https://ezlong.com/en/compound-calculator.html">
+<link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/compound-calculator.html">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="pt_BR">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta name="description" lang="en" content="Compound Interest Calculator for US stocks: Visualize the power of compounding. Enter principal, monthly savings, expected return, and time period to see your investment grow.">
+<meta name="keywords" lang="en" content="compound interest calculator, investment growth calculator, US stock compound return, long term investment calculator, Rule of 72">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ezlong.com/compound-calculator.html" />
+<meta property="og:title" content="복리계산기 — 원금·수익률·기간으로 복리 수익 계산 | EZLONG" />
+<meta property="og:description" content="원금, 연 수익률, 투자 기간, 추가 납입금으로 복리 최종 수익 계산. 미국주식 ETF 장기투자자를 위한 무료 복리계산기." />
+<meta property="og:image" content="https://ezlong.com/logo-preview.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:site_name" content="EZLONG" />
+
+<!-- JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Compound Interest Calculator — US Stock Investment",
+  "description": "Visualize how compound interest grows your US stock investments over time. Calculate final portfolio value based on initial principal, monthly contributions, expected annual return rate, and investment period.",
+  "inLanguage": ["ko", "en"],
+  "url": "https://ezlong.com/compound-calculator.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "복리계산기",
+  "url": "https://ezlong.com/compound-calculator.html",
+  "description": "원금, 연 수익률, 투자 기간, 추가 납입금을 입력하면 복리로 최종 얼마가 되는지 계산하는 무료 복리계산기. 미국주식 ETF 장기투자자를 위한 수익 시뮬레이션 도구.",
+  "applicationCategory": "FinanceApplication",
+  "inLanguage": "ko",
+  "isAccessibleForFree": true,
+  "operatingSystem": "All"
+}
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2336764115275414"
+     crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+/* ─── 리셋 & 기본 ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; min-width: 0; }
+:root {
+  --bg:     #F5F5F7;
+  --bg2:    #EBEBED;
+  --card:   #FFFFFF;
+  --bd:     rgba(0,0,0,0.08);
+  --t1:     #1D1D1F;
+  --t2:     #6E6E73;
+  --t3:     #AEAEB2;
+  --bl:     #0071E3;
+  --bl-dk:  #0040DD;
+  --bl-s:   rgba(0,113,227,0.09);
+  --bl-m:   rgba(0,113,227,0.18);
+  --gr:     #34C759;
+  --gr-dk:  #248A3D;
+  --gr-s:   rgba(52,199,89,0.10);
+  --gr-m:   rgba(52,199,89,0.22);
+  --or:     #FF9F0A;
+  --or-s:   rgba(255,159,10,0.11);
+  --or-m:   rgba(255,159,10,0.24);
+  --pu:     #BF5AF2;
+  --pu-s:   rgba(191,90,242,0.10);
+  --pu-m:   rgba(191,90,242,0.22);
+  --r:      16px;
+  --r-sm:   10px;
+  --shadow: 0 2px 16px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  --font:   -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Pretendard', 'Helvetica Neue', Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:   #000000;
+    --bg2:  #2C2C2E;
+    --card: #1C1C1E;
+    --bd:   rgba(255,255,255,0.10);
+    --t1:   #F5F5F7;
+    --t2:   #AEAEB2;
+    --t3:   #636366;
+    --bl-s: rgba(0,113,227,0.18);
+    --bl-m: rgba(0,113,227,0.32);
+    --gr-s: rgba(52,199,89,0.13);
+    --gr-m: rgba(52,199,89,0.26);
+    --or-s: rgba(255,159,10,0.14);
+    --or-m: rgba(255,159,10,0.28);
+    --pu-s: rgba(191,90,242,0.14);
+    --pu-m: rgba(191,90,242,0.28);
+    --shadow: 0 4px 24px rgba(0,0,0,0.35), 0 1px 4px rgba(0,0,0,0.25);
+  }
+}
+html, body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--t1);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: #C7C7CC; border-radius: 3px; }
+
+/* ── Global Nav ─────────────────────────────────────────── */
+#global-nav {
+  height: 48px;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  position: sticky; top: 0; z-index: 200;
+}
+@media (prefers-color-scheme: dark) {
+  #global-nav { background: rgba(28,28,30,0.96); border-color: rgba(255,255,255,0.07); }
+}
+.gnav-inner {
+  max-width: 900px; margin: 0 auto; padding: 0 24px;
+  height: 100%; display: flex; align-items: center; justify-content: space-between;
+}
+.gnav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.gnav-logo-img { height: 28px; width: auto; display: block; }
+.gnav-logo-sub  { font-size: 11px; color: var(--t3); font-weight: 500; }
+.gnav-right     { font-size: 12px; color: var(--t3); font-weight: 500; }
+
+/* ── Quick Link Banner ──────────────────────────────────── */
+#quick-link-bar {
+  background: var(--bl-s);
+  border-bottom: 1px solid var(--bl-m);
+  padding: 9px 24px;
+  display: flex; align-items: center; gap: 10px;
+}
+.ql-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: .06em; color: var(--t3);
+  background: var(--bg2); border-radius: 4px; padding: 2px 6px; white-space: nowrap;
+}
+.ql-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--bl); font-size: 13px; font-weight: 600;
+  text-decoration: none; transition: opacity .15s;
+}
+.ql-link:hover { opacity: .7; }
+.ql-arr { width: 14px; height: 14px; opacity: .75; flex-shrink: 0; }
+
+/* ── Main Wrap ──────────────────────────────────────────── */
+.main-wrap {
+  max-width: 900px; margin: 0 auto;
+  padding: 28px 24px 80px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+
+/* ── Page Title ─────────────────────────────────────────── */
+.page-title { font-size: 28px; font-weight: 900; letter-spacing: -.06em; line-height: 1.1; }
+.page-sub   { font-size: 14px; color: var(--t2); margin-top: 7px; line-height: 1.6; }
+
+/* ── Card ───────────────────────────────────────────────── */
+.card {
+  background: var(--card); border-radius: var(--r);
+  border: 1px solid var(--bd); box-shadow: var(--shadow);
+  padding: 24px;
+}
+.card-title {
+  font-size: 15px; font-weight: 700; letter-spacing: -.03em;
+  display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
+}
+.badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 6px;
+  font-size: 12px; font-weight: 800; color: white; flex-shrink: 0;
+}
+.badge-a { background: var(--bl); }
+.badge-b { background: var(--or); }
+.badge-c { background: var(--pu); }
+
+/* ── Form ───────────────────────────────────────────────── */
+.form-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  margin-bottom: 20px;
+}
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label { font-size: 12px; font-weight: 600; color: var(--t2); letter-spacing: -.01em; }
+
+.input-wrap {
+  display: flex; align-items: center;
+  background: var(--bg); border: 1.5px solid var(--bd);
+  border-radius: var(--r-sm); padding: 0 13px; height: 44px;
+  transition: border-color .15s;
+}
+.input-wrap:focus-within { border-color: var(--bl); }
+.input-wrap input {
+  flex: 1; border: none; background: transparent; outline: none;
+  font-family: var(--font); font-size: 15px; font-weight: 500;
+  color: var(--t1); min-width: 0;
+}
+.input-unit { font-size: 13px; font-weight: 500; color: var(--t3); white-space: nowrap; margin-left: 6px; flex-shrink: 0; }
+
+/* 한국어 금액 표시 */
+.kor-display {
+  font-size: 12px; font-weight: 600; color: var(--bl);
+  min-height: 18px; letter-spacing: -.01em;
+  transition: opacity .15s;
+}
+
+/* ── Segmented Control ──────────────────────────────────── */
+.seg-group {
+  display: flex; height: 44px; border-radius: var(--r-sm);
+  overflow: hidden; border: 1.5px solid var(--bd);
+}
+.seg-btn {
+  flex: 1; border: none; background: var(--bg); cursor: pointer;
+  font-family: var(--font); font-size: 14px; font-weight: 500;
+  color: var(--t2); transition: all .15s;
+  border-right: 1px solid var(--bd);
+}
+.seg-btn:last-child { border-right: none; }
+.seg-btn.act-bl { background: var(--bl); color: white; font-weight: 700; }
+.seg-btn.act-or { background: var(--or); color: white; font-weight: 700; }
+.seg-btn.act-pu { background: var(--pu); color: white; font-weight: 700; }
+
+/* ── Buttons ────────────────────────────────────────────── */
+.btn-row { display: flex; gap: 10px; margin-bottom: 18px; }
+.btn-primary {
+  flex: 1; height: 46px; border: none; border-radius: var(--r-sm);
+  background: var(--bl); color: white;
+  font-family: var(--font); font-size: 15px; font-weight: 700;
+  cursor: pointer; transition: background .15s, transform .1s;
+  letter-spacing: -.02em;
+}
+.btn-primary:hover { background: var(--bl-dk); }
+.btn-primary:active { transform: scale(.98); }
+.btn-primary.c-or { background: var(--or); }
+.btn-primary.c-or:hover { background: #D97E00; }
+.btn-primary.c-pu { background: var(--pu); }
+.btn-primary.c-pu:hover { background: #A040D0; }
+.btn-primary.c-gr { background: var(--gr); }
+.btn-primary.c-gr:hover { background: var(--gr-dk); }
+.btn-ghost {
+  height: 46px; padding: 0 20px;
+  border: 1.5px solid var(--bd); border-radius: var(--r-sm);
+  background: transparent; color: var(--t2);
+  font-family: var(--font); font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.btn-ghost:hover { border-color: var(--t3); color: var(--t1); }
+
+/* ── Toggle Checkbox ────────────────────────────────────── */
+.add-toggle {
+  display: inline-flex; align-items: center; gap: 9px;
+  cursor: pointer; user-select: none;
+  font-size: 13.5px; font-weight: 600; color: var(--t2);
+}
+.add-toggle input[type="checkbox"] {
+  -webkit-appearance: none; width: 20px; height: 20px; min-width: 20px;
+  border: 1.5px solid #C7C7CC; border-radius: 6px;
+  background: var(--bg); cursor: pointer;
+  position: relative; transition: all .15s;
+}
+.add-toggle.t-or input[type="checkbox"]:checked { background: var(--or); border-color: var(--or); }
+.add-toggle.t-bl input[type="checkbox"]:checked { background: var(--bl); border-color: var(--bl); }
+.add-toggle.t-pu input[type="checkbox"]:checked { background: var(--pu); border-color: var(--pu); }
+.add-toggle input[type="checkbox"]:checked::after {
+  content: ''; position: absolute; left: 5px; top: 2px;
+  width: 8px; height: 12px;
+  border: 2px solid white; border-top: none; border-left: none;
+  transform: rotate(45deg) scaleX(.9);
+}
+
+/* ── 비교 실행 Bar ──────────────────────────────────────── */
+#compare-action-bar {
+  display: flex; gap: 10px; align-items: center;
+  padding: 0 4px;
+}
+
+/* ── Hidden ─────────────────────────────────────────────── */
+.hidden { display: none !important; }
+
+/* ── Summary Grid ───────────────────────────────────────── */
+.summary-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+  margin-bottom: 22px;
+}
+.summary-card {
+  background: var(--bg); border-radius: var(--r-sm);
+  border: 1px solid var(--bd); padding: 13px 15px;
+}
+.summary-label {
+  font-size: 10.5px; font-weight: 700; color: var(--t3);
+  letter-spacing: .04em; text-transform: uppercase; margin-bottom: 5px;
+}
+.summary-value {
+  font-size: 19px; font-weight: 800; letter-spacing: -.04em; color: var(--t1); line-height: 1.1;
+}
+.summary-value.green { color: var(--gr-dk); }
+.summary-value.blue  { color: var(--bl); }
+@media (prefers-color-scheme: dark) { .summary-value.green { color: #4CD964; } }
+
+/* ── Compare Layout ─────────────────────────────────────── */
+.cmp-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px; }
+.cmp-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 22px; }
+.cmp-section-label {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 13px; font-weight: 700; color: var(--t1);
+  margin-bottom: 12px; letter-spacing: -.02em;
+}
+
+/* ── Winner Banner ──────────────────────────────────────── */
+.winner-banner {
+  border-radius: var(--r-sm); padding: 12px 16px;
+  margin-bottom: 22px; font-size: 13px; font-weight: 600;
+  border: 1px solid; line-height: 1.6;
+}
+.win-a { background: var(--bl-s); border-color: var(--bl-m); color: var(--bl-dk); }
+.win-b { background: var(--or-s); border-color: var(--or-m); color: #916000; }
+.win-c { background: var(--pu-s); border-color: var(--pu-m); color: #7B30B8; }
+@media (prefers-color-scheme: dark) {
+  .win-a { color: #60B2FF; }
+  .win-b { color: #FFBC4C; }
+  .win-c { color: #D88BFF; }
+}
+
+/* ── Chart ──────────────────────────────────────────────── */
+.chart-canvas-wrap { position: relative; width: 100%; height: 280px; margin-bottom: 24px; }
+
+/* ── Divider ────────────────────────────────────────────── */
+.section-divider { border: none; border-top: 1px solid var(--bd); margin: 22px 0; }
+
+/* ── Table ──────────────────────────────────────────────── */
+.table-outer { overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.data-table thead th {
+  padding: 9px 12px; background: var(--bg); color: var(--t3);
+  font-size: 10.5px; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; text-align: right;
+  border-bottom: 1px solid var(--bd); white-space: nowrap;
+}
+.data-table thead th:first-child { text-align: left; }
+.data-table tbody td {
+  padding: 8px 12px; text-align: right;
+  border-bottom: 1px solid var(--bd);
+  font-size: 13px; font-weight: 500; color: var(--t1);
+}
+.data-table tbody td:first-child { text-align: left; font-weight: 600; color: var(--t2); white-space: nowrap; }
+.data-table tbody tr:last-child td { border-bottom: none; font-weight: 700; color: var(--t1); background: var(--gr-s); }
+.data-table tbody tr:last-child td:first-child { color: var(--t1); }
+.profit-cell { color: var(--gr-dk) !important; }
+.rate-cell   { color: var(--bl) !important; }
+@media (prefers-color-scheme: dark) { .profit-cell { color: #4CD964 !important; } }
+.table-note { font-size: 11px; color: var(--t3); text-align: center; padding: 8px; margin-top: 4px; }
+
+/* ── Compare Tables ─────────────────────────────────────── */
+.cmp-tables-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.cmp-tables-3 { display: grid; grid-template-columns: 1fr; gap: 20px; }
+.cmp-table-head {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 13px; font-weight: 700; color: var(--t1); margin-bottom: 10px;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 700px) {
+  .cmp-3col { grid-template-columns: 1fr; gap: 14px; }
+  .cmp-tables-2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .gnav-right, .gnav-logo-sub { display: none; }
+  .gnav-inner { padding: 0 16px; }
+  #quick-link-bar { padding: 9px 16px; }
+  .main-wrap { padding: 20px 16px 60px; gap: 16px; }
+  .card { padding: 18px 16px; }
+  .form-grid { grid-template-columns: 1fr; gap: 12px; }
+  .summary-grid { gap: 8px; }
+  .summary-value { font-size: 16px; }
+  .cmp-2col { grid-template-columns: 1fr; gap: 14px; }
+  .chart-canvas-wrap { height: 220px; }
+  .data-table thead th, .data-table tbody td { padding: 7px 8px; font-size: 11.5px; }
+  .page-title { font-size: 24px; }
+}
+@media (max-width: 400px) {
+  .main-wrap { padding: 16px 12px 60px; }
+  .summary-value { font-size: 15px; }
+  .data-table thead th, .data-table tbody td { padding: 6px 6px; font-size: 11px; }
+}
+
+/* ═══════════════════════════════════════════════
+   복리 학습 섹션
+═══════════════════════════════════════════════ */
+.learn-divider {
+  max-width: 900px; margin: 0 auto;
+  padding: 36px 24px 0;
+  display: flex; align-items: center; gap: 16px;
+}
+.learn-divider-line { flex: 1; height: 1px; background: var(--bd); }
+.learn-divider-label {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .10em;
+  color: var(--t3); text-transform: uppercase; white-space: nowrap;
+}
+.learn-wrap {
+  max-width: 900px; margin: 0 auto;
+  padding: 20px 24px 80px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+.learn-main-title {
+  font-size: 22px; font-weight: 900; letter-spacing: -.05em;
+  color: var(--t1); line-height: 1.25;
+}
+.learn-main-sub {
+  font-size: 13.5px; color: var(--t2); margin-top: 7px;
+  font-weight: 400; line-height: 1.65;
+}
+.learn-card {
+  background: var(--card); border-radius: var(--r);
+  border: 1px solid var(--bd); box-shadow: var(--shadow);
+  padding: 26px;
+}
+.learn-card h3 {
+  font-size: 17px; font-weight: 800; letter-spacing: -.04em;
+  color: var(--t1); margin-bottom: 14px; line-height: 1.35;
+}
+.learn-card p {
+  font-size: 14.5px; line-height: 1.85; color: var(--t1);
+  font-weight: 400; margin-bottom: 12px;
+}
+.learn-card p:last-child { margin-bottom: 0; }
+.learn-card strong { font-weight: 700; }
+.quote-pills {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;
+}
+.quote-pill {
+  background: var(--bl-s); border: 1px solid var(--bl-m);
+  border-radius: 20px; padding: 5px 13px;
+  font-size: 13px; color: var(--bl); font-weight: 500;
+  font-style: italic; white-space: nowrap;
+}
+@media (prefers-color-scheme: dark) { .quote-pill { color: #60B2FF; } }
+.formula-block {
+  background: var(--bg); border-left: 3px solid var(--bl);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  padding: 14px 18px; margin: 16px 0;
+  font-size: 15px; font-weight: 700; color: var(--t1);
+  letter-spacing: -.01em; line-height: 1.6;
+}
+.result-block {
+  background: var(--gr-s); border: 1px solid var(--gr-m);
+  border-radius: var(--r-sm); padding: 14px 18px; margin: 14px 0;
+  font-size: 14px; font-weight: 600; color: var(--gr-dk); line-height: 1.85;
+}
+@media (prefers-color-scheme: dark) { .result-block { color: #4CD964; } }
+
+/* 72의 법칙 하이라이트 박스 */
+.rule72-card {
+  background: linear-gradient(135deg, #003D99 0%, #0060CC 45%, #0084FF 100%);
+  border-radius: var(--r); border: none;
+  box-shadow: 0 8px 36px rgba(0,70,150,0.38), 0 2px 8px rgba(0,70,150,0.22);
+  padding: 30px 26px; color: white;
+  position: relative; overflow: hidden;
+}
+.rule72-card::before {
+  content: '72';
+  position: absolute; right: -12px; top: -28px;
+  font-size: 170px; font-weight: 900; color: rgba(255,255,255,0.06);
+  line-height: 1; pointer-events: none; user-select: none; letter-spacing: -.05em;
+}
+.rule72-card h3 {
+  font-size: 19px; font-weight: 900; letter-spacing: -.04em;
+  color: white; margin-bottom: 4px; position: relative;
+}
+.rule72-subtitle {
+  font-size: 13px; color: rgba(255,255,255,0.72);
+  margin-bottom: 20px; font-weight: 500; line-height: 1.55; position: relative;
+}
+.rule72-formula {
+  background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--r-sm); padding: 14px 18px; margin: 0 0 20px;
+  font-size: 16px; font-weight: 800; color: white;
+  letter-spacing: -.02em; text-align: center; position: relative;
+}
+.rule72-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  margin: 0 0 20px; position: relative;
+}
+.rule72-item {
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--r-sm); padding: 14px 10px; text-align: center;
+}
+.rule72-pct {
+  font-size: 26px; font-weight: 900; color: white;
+  letter-spacing: -.04em; margin-bottom: 6px; line-height: 1;
+}
+.rule72-calc {
+  font-size: 11.5px; color: rgba(255,255,255,0.78); font-weight: 600; line-height: 1.55;
+}
+.rule72-card p {
+  font-size: 14px; line-height: 1.85; color: rgba(255,255,255,0.88);
+  font-weight: 400; margin-bottom: 10px; position: relative;
+}
+.rule72-card p:last-child { margin-bottom: 0; }
+.rule72-card strong { color: white; font-weight: 700; }
+.learn-footer {
+  text-align: center; padding: 4px 0 10px;
+  font-size: 12px; color: var(--t3); line-height: 1.8;
+}
+@media (max-width: 640px) {
+  .learn-divider { padding: 28px 16px 0; }
+  .learn-wrap { padding: 16px 16px 60px; gap: 14px; }
+  .learn-card { padding: 20px 18px; }
+  .learn-card h3 { font-size: 16px; }
+  .learn-card p { font-size: 14px; }
+  .rule72-card { padding: 24px 18px; }
+  .rule72-card h3 { font-size: 17px; }
+  .rule72-pct { font-size: 22px; }
+  .learn-main-title { font-size: 20px; }
+  .quote-pill { font-size: 12px; padding: 4px 10px; }
+}
+@media (max-width: 400px) {
+  .rule72-grid { grid-template-columns: 1fr; gap: 8px; }
+  .learn-card { padding: 18px 16px; }
+}
+
+/* ═══ EZ Global Nav + Footer (자동 주입) ═══════════════════════════ */
+.ez-nav {
+  height: auto;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  position: sticky; top: 0; z-index: 9999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+               'Noto Sans KR', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-nav { background: rgba(28,28,30,0.92); border-color: rgba(255,255,255,0.08); }
+}
+.ez-nav-inner {
+  max-width: 1080px; margin: 0 auto; padding: 7px 20px 0;
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+.ez-nav-logo { display: flex; align-items: center; text-decoration: none; padding: 2px 0 10px; }
+.ez-nav-logo img { height: 26px; width: auto; display: block; }
+.ez-nav-back {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 14px; font-weight: 500;
+  color: #0071E3; text-decoration: none; transition: opacity .15s;
+}
+@media (prefers-color-scheme: dark) { .ez-nav-back { color: #0A84FF; } }
+.ez-nav-back:hover { opacity: .7; }
+.ez-nav-back svg { width: 14px; height: 14px; flex-shrink: 0; }
+.ez-nav-svc-links { display: flex; align-items: center; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; width: 100%; margin-left: 0; padding-bottom: 4px; }
+.ez-nav-svc-links::-webkit-scrollbar { display: none; }
+.ez-nav-svc-link { flex-shrink: 0; padding: 5px 10px; border-radius: 6px; font-size: 13px; font-weight: 500; color: #6E6E73; text-decoration: none; white-space: nowrap; transition: all 0.12s; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link { color: #AEAEB2; } }
+.ez-nav-svc-link:hover { background: rgba(0,0,0,0.06); color: #1D1D1F; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link:hover { background: rgba(255,255,255,0.08); color: #F5F5F7; } }
+.ez-nav-svc-link.active { background: rgba(0,113,227,0.08); color: #0071E3; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link.active { background: rgba(10,132,255,0.14); color: #0A84FF; } }
+
+/* ── EZ Footer ──────────────────────────────────────────────────── */
+.ez-footer {
+  background: #FFFFFF;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding: 36px 20px 20px;
+  margin-top: 60px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+               'Noto Sans KR', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer { background: #1C1C1E; border-color: rgba(255,255,255,0.08); }
+}
+.ez-footer-inner {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 28px;
+}
+.ez-footer-top {
+  display: flex; flex-direction: column; gap: 24px;
+}
+@media (min-width: 640px) {
+  .ez-footer-top { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+}
+.ez-footer-brand { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+.ez-footer-brand img { height: 22px; width: auto; display: block; }
+.ez-footer-brand-desc {
+  font-size: 13px; line-height: 1.65;
+  color: #3C3C3E;
+}
+@media (prefers-color-scheme: dark) { .ez-footer-brand-desc { color: #AEAEB2; } }
+.ez-footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
+.ez-footer-col { display: flex; flex-direction: column; gap: 10px; }
+.ez-footer-col-title {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase;
+  color: #1D1D1F;
+}
+@media (prefers-color-scheme: dark) { .ez-footer-col-title { color: #F5F5F7; } }
+.ez-footer-col a {
+  font-size: 13px; color: #3C3C3E;
+  text-decoration: none; transition: color .15s;
+}
+.ez-footer-col a:hover { color: #0071E3; }
+@media (prefers-color-scheme: dark) {
+  .ez-footer-col a { color: #AEAEB2; }
+  .ez-footer-col a:hover { color: #0A84FF; }
+}
+.ez-footer-bottom {
+  font-size: 11px; color: #AEAEB2;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding-top: 20px; line-height: 1.8;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer-bottom { border-color: rgba(255,255,255,0.08); color: #636366; }
+}
+/* ══════════════════════════════════════════════════════════════════ */
+
+
+/* ── Footer Books ─────────────────────────────────────────── */
+.ez-footer-books{display:flex;gap:20px;flex-wrap:wrap;}
+.ez-footer-book{display:flex;gap:10px;align-items:flex-start;}
+.ez-footer-book-cover{flex-shrink:0;width:130px;border-radius:6px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.15);display:block;background:transparent;}
+.ez-footer-book-cover img{width:100%;display:block;}
+.ez-footer-book-info{display:flex;flex-direction:column;gap:3px;}
+.ez-footer-book-title{font-size:11px;font-weight:700;color:#1D1D1F;line-height:1.4;margin-bottom:3px;}
+@media(prefers-color-scheme:dark){.ez-footer-book-title{color:#F5F5F7;}}
+.ez-footer-book-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#AEAEB2;margin-top:5px;}
+.ez-footer-book-btns{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;}
+.ez-footer-book-btn{font-size:11px;color:#3C3C3E;text-decoration:none;transition:color .12s;white-space:nowrap;}
+.ez-footer-book-btn:hover{background:#0071E3;color:#fff;}
+@media(prefers-color-scheme:dark){
+  .ez-footer-book-btn{background:rgba(255,255,255,.1);color:#AEAEB2;}
+  .ez-footer-book-btn:hover{background:#0A84FF;color:#fff;}
+}
+</style>
+</head>
+<body>
+<nav class="ez-nav" aria-label="글로벌 네비게이션">
+  <div class="ez-nav-inner">
+    <a href="/" class="ez-nav-logo" aria-label="EZLONG 홈">
+      <picture>
+        <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+        <img src="logo.png" alt="EZLONG">
+      </picture>
+    </a>
+    <div class="ez-nav-svc-links">
+      <a href="/atmr-dashboard.html"        class="ez-nav-svc-link">스윙 시그널</a>
+      <a href="/chart-analysis.html"        class="ez-nav-svc-link">AI 차트분석</a>
+      <a href="/analyst-reports.html"        class="ez-nav-svc-link">핵심기업 목표주가</a>
+      
+      <a href="/market-cycle.html"          class="ez-nav-svc-link">Market Cycle</a>
+      <a href="/dca-simulator.html"         class="ez-nav-svc-link">DCA 시뮬레이터</a>
+      <a href="/portfolio-manager.html"     class="ez-nav-svc-link">포트폴리오 복리</a>
+      <a href="/tax-account-simulator.html" class="ez-nav-svc-link">절세 계좌</a>
+      <a href="/compound-calculator.html"   class="ez-nav-svc-link active">복리 계산기</a>
+      <a href="/retirement-calculator.html" class="ez-nav-svc-link">은퇴 계산기</a>
+      <a href="/backtest.html"              class="ez-nav-svc-link">백테스트</a>
+      <a href="/risk-diagnostic.html"       class="ez-nav-svc-link">투자성향 테스트</a>
+      <a href="/auto-dca-guide.html"        class="ez-nav-svc-link">DCA 가이드</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── EZLONG 글로벌 헤더 ─────────────────────────────── -->
+
+
+<!-- ── 유틸리티 1 바로가기 ───────────────────────────── -->
+<div id="quick-link-bar">
+  <span class="ql-tag">UTIL 1</span>
+  <a href="dca-simulator.html" class="ql-link">
+    <svg class="ql-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+    </svg>
+    투자 복리 시뮬레이터 바로가기
+    <svg class="ql-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"/>
+    </svg>
+  </a>
+</div>
+
+<!-- ── 메인 ─────────────────────────────────────────── -->
+<div class="main-wrap">
+
+  <!-- 페이지 타이틀 -->
+  <div>
+    <h1 class="page-title">복리 계산기</h1>
+    <p class="page-sub">원금·납입금·기간·수익률을 설정하면 복리의 마법이 얼마나 강력한지 확인할 수 있습니다.</p>
+  </div>
+
+  <!-- ────────────────── 설정 A ────────────────────── -->
+  <div class="card" id="card-a">
+    <div class="card-title">
+      <span class="badge badge-a hidden" id="badge-a-show">A</span>
+      복리 설정
+    </div>
+
+    <div class="form-grid">
+      <!-- 원금 -->
+      <div class="form-group">
+        <label class="form-label" for="a-principal">원금</label>
+        <div class="input-wrap">
+          <input type="text" id="a-principal" inputmode="numeric"
+                 value="1,000,000"
+                 oninput="fmtMoney(this,'a-principal-kor')"
+                 onpaste="setTimeout(()=>fmtMoney(this,'a-principal-kor'),0)"
+                 placeholder="1,000,000"/>
+          <span class="input-unit">원</span>
+        </div>
+        <div class="kor-display" id="a-principal-kor">100만 원</div>
+      </div>
+
+      <!-- 매 회차 납입금 -->
+      <div class="form-group">
+        <label class="form-label" for="a-payment">매 회차 납입금</label>
+        <div class="input-wrap">
+          <input type="text" id="a-payment" inputmode="numeric"
+                 value="100,000"
+                 oninput="fmtMoney(this,'a-payment-kor')"
+                 onpaste="setTimeout(()=>fmtMoney(this,'a-payment-kor'),0)"
+                 placeholder="100,000"/>
+          <span class="input-unit">원</span>
+        </div>
+        <div class="kor-display" id="a-payment-kor">10만 원</div>
+      </div>
+
+      <!-- 기간 -->
+      <div class="form-group">
+        <label class="form-label" for="a-periods">기간</label>
+        <div class="input-wrap">
+          <input type="number" id="a-periods" value="10" min="1" max="10000" step="1" placeholder="10" inputmode="decimal"/>
+          <span class="input-unit" id="a-unit-lbl">년</span>
+        </div>
+      </div>
+
+      <!-- 기간 단위 -->
+      <div class="form-group">
+        <label class="form-label">기간 단위</label>
+        <div class="seg-group" id="a-seg">
+          <button class="seg-btn act-bl" data-v="연" onclick="setUnit('a','연',this)">연</button>
+          <button class="seg-btn"        data-v="월" onclick="setUnit('a','월',this)">월</button>
+          <button class="seg-btn"        data-v="일" onclick="setUnit('a','일',this)">일</button>
+        </div>
+      </div>
+
+      <!-- 평균 수익률 -->
+      <div class="form-group">
+        <label class="form-label" for="a-rate">평균 수익률 (연 기준)</label>
+        <div class="input-wrap">
+          <input type="number" id="a-rate" value="10" min="0" max="5000" step="0.1" placeholder="10" inputmode="decimal"/>
+          <span class="input-unit">%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 단일 계산 버튼 -->
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calculate()">계산하기</button>
+      <button class="btn-ghost" onclick="resetA()">초기화</button>
+    </div>
+
+    <!-- B 추가 토글 -->
+    <label class="add-toggle t-or">
+      <input type="checkbox" id="chk-b" onchange="toggleB()"/>
+      설정 B 비교 추가
+    </label>
+  </div>
+
+  <!-- ────────────────── 설정 B ────────────────────── -->
+  <div class="card hidden" id="card-b">
+    <div class="card-title">
+      <span class="badge badge-b">B</span>
+      복리 설정
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" for="b-principal">원금</label>
+        <div class="input-wrap">
+          <input type="text" id="b-principal" inputmode="numeric"
+                 value="1,000,000"
+                 oninput="fmtMoney(this,'b-principal-kor')"
+                 onpaste="setTimeout(()=>fmtMoney(this,'b-principal-kor'),0)"
+                 placeholder="1,000,000"/>
+          <span class="input-unit">원</span>
+        </div>
+        <div class="kor-display" id="b-principal-kor">100만 원</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="b-payment">매 회차 납입금</label>
+        <div class="input-wrap">
+          <input type="text" id="b-payment" inputmode="numeric"
+                 value="100,000"
+                 oninput="fmtMoney(this,'b-payment-kor')"
+                 onpaste="setTimeout(()=>fmtMoney(this,'b-payment-kor'),0)"
+                 placeholder="100,000"/>
+          <span class="input-unit">원</span>
+        </div>
+        <div class="kor-display" id="b-payment-kor">10만 원</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="b-periods">기간</label>
+        <div class="input-wrap">
+          <input type="number" id="b-periods" value="10" min="1" max="10000" step="1" placeholder="10" inputmode="decimal"/>
+          <span class="input-unit" id="b-unit-lbl">년</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">기간 단위</label>
+        <div class="seg-group" id="b-seg">
+          <button class="seg-btn act-or" data-v="연" onclick="setUnit('b','연',this)">연</button>
+          <button class="seg-btn"        data-v="월" onclick="setUnit('b','월',this)">월</button>
+          <button class="seg-btn"        data-v="일" onclick="setUnit('b','일',this)">일</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="b-rate">평균 수익률 (연 기준)</label>
+        <div class="input-wrap">
+          <input type="number" id="b-rate" value="15" min="0" max="5000" step="0.1" placeholder="15" inputmode="decimal"/>
+          <span class="input-unit">%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-ghost" onclick="resetB()">초기화</button>
+    </div>
+
+    <!-- C 추가 토글 -->
+    <label class="add-toggle t-pu">
+      <input type="checkbox" id="chk-c" onchange="toggleC()"/>
+      설정 C 비교 추가
+    </label>
+  </div>
+
+  <!-- ────────────────── 설정 C ────────────────────── -->
+  <div class="card hidden" id="card-c">
+    <div class="card-title">
+      <span class="badge badge-c">C</span>
+      복리 설정
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" for="c-principal">원금</label>
+        <div class="input-wrap">
+          <input type="text" id="c-principal" inputmode="numeric"
+                 value="1,000,000"
+                 oninput="fmtMoney(this,'c-principal-kor')"
+                 onpaste="setTimeout(()=>fmtMoney(this,'c-principal-kor'),0)"
+                 placeholder="1,000,000"/>
+          <span class="input-unit">원</span>
+        </div>
+        <div class="kor-display" id="c-principal-kor">100만 원</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="c-payment">매 회차 납입금</label>
+        <div class="input-wrap">
+          <input type="text" id="c-payment" inputmode="numeric"
+                 value="100,000"
+                 oninput="fmtMoney(this,'c-payment-kor')"
+                 onpaste="setTimeout(()=>fmtMoney(this,'c-payment-kor'),0)"
+                 placeholder="100,000"/>
+          <span class="input-unit">원</span>
+        </div>
+        <div class="kor-display" id="c-payment-kor">10만 원</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="c-periods">기간</label>
+        <div class="input-wrap">
+          <input type="number" id="c-periods" value="10" min="1" max="10000" step="1" placeholder="10" inputmode="decimal"/>
+          <span class="input-unit" id="c-unit-lbl">년</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">기간 단위</label>
+        <div class="seg-group" id="c-seg">
+          <button class="seg-btn act-pu" data-v="연" onclick="setUnit('c','연',this)">연</button>
+          <button class="seg-btn"        data-v="월" onclick="setUnit('c','월',this)">월</button>
+          <button class="seg-btn"        data-v="일" onclick="setUnit('c','일',this)">일</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="c-rate">평균 수익률 (연 기준)</label>
+        <div class="input-wrap">
+          <input type="number" id="c-rate" value="20" min="0" max="5000" step="0.1" placeholder="20" inputmode="decimal"/>
+          <span class="input-unit">%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-ghost" onclick="resetC()">초기화</button>
+    </div>
+  </div>
+
+  <!-- ── 비교 계산하기 버튼 (B 이상 활성화시 표시) ── -->
+  <div id="compare-action-bar" class="hidden">
+    <button class="btn-primary c-gr" style="flex:1" onclick="calculateCompare()">비교 계산하기</button>
+  </div>
+
+  <!-- ── 결과 영역 ──────────────────────────────── -->
+  <div id="results-section" class="hidden"></div>
+
+</div><!-- /main-wrap -->
+
+<!-- ══════════════════════════════════════════════════════
+     복리 학습 섹션
+══════════════════════════════════════════════════════ -->
+
+<div class="learn-divider" role="separator">
+  <div class="learn-divider-line"></div>
+  <span class="learn-divider-label">복리 이해하기</span>
+  <div class="learn-divider-line"></div>
+</div>
+
+<section id="learn-compound" aria-label="복리의 원리와 개념 설명">
+<div class="learn-wrap">
+
+  <div>
+    <h2 class="learn-main-title">복리의 마법? 숫자가 이상한 게 아닙니다</h2>
+    <p class="learn-main-sub">계산기 결과가 너무 크게 느껴진다면 — 그것은 착각이 아니라, 복리가 원래 그렇습니다.</p>
+  </div>
+
+  <!-- 1. 소개 카드 -->
+  <article class="learn-card">
+    <h3>왜 "계산이 잘못된 거 아닌가요?"라는 말이 나오는가</h3>
+    <div class="quote-pills">
+      <span class="quote-pill">"계산이 잘못된 거 아닌가요?"</span>
+      <span class="quote-pill">"이게 진짜 가능한 숫자인가요?"</span>
+      <span class="quote-pill">"현실은 다르지 않나요?"</span>
+    </div>
+    <p>처음 계산기를 돌려본 사람들이 보이는 반응은 대체로 비슷합니다. 틀리지 않았습니다. 계산도, 숫자도. 복리는 그냥 수학입니다. 믿고 안 믿고의 문제가 아니라, 산술의 문제입니다.</p>
+    <p>다만, 우리 뇌가 이 숫자를 받아들이기 어려운 이유가 있습니다. 인간은 선형적으로 사고하도록 설계되어 있습니다. 1, 2, 3, 4 이런 식으로요. 복리는 1, 2, 4, 8, 16으로 불어납니다. 이 두 가지 성장 방식이 처음엔 별 차이가 없어 보이다가, 시간이 지날수록 완전히 다른 세계를 만들어냅니다. 우리 뇌가 그 차이를 직관적으로 이해하지 못하도록 설계된 것은, 어쩌면 당연합니다. 수십만 년 진화 역사에서 복리를 계산해야 할 일이 없었으니까요.</p>
+  </article>
+
+  <!-- 2. 공식 카드 -->
+  <article class="learn-card">
+    <h3>복리의 공식, 딱 한 줄</h3>
+    <div class="formula-block">미래 가치 = 원금 × (1 + 연 수익률)^투자 연수</div>
+    <p>1,000만 원을 연 10%로 10년 투자하면 어떻게 될까요.</p>
+    <div class="result-block">
+      1,000만원 × (1.10)¹⁰ = 약 2,593만원<br>
+      같은 조건으로 20년이면 6,727만원&nbsp;&nbsp;·&nbsp;&nbsp;30년이면 1억 7,449만원
+    </div>
+    <p>넣은 돈은 1,000만원 하나인데, 30년이 지나면 열일곱 배가 넘습니다. 여기에 매달 납입금을 더하면, 숫자는 더 커집니다. 이 계산기가 보여주는 숫자가 바로 이것입니다.</p>
+  </article>
+
+  <!-- 3. 초반 8~10년 카드 -->
+  <article class="learn-card">
+    <h3>왜 처음 8~10년은 답답한가</h3>
+    <p>복리의 가장 중요한 특성이 하나 있습니다. 초반에는 느립니다. 답답할 정도로.</p>
+    <p>연 10% 수익률로 1,000만원을 운용한다고 할 때, 1년 차 수익은 100만원, 2년 차는 110만원, 3년 차는 121만원. 조금씩 늘기는 하는데 체감이 안 됩니다. 그러다 10년 차가 되면 그해의 수익이 259만원, 20년 차엔 673만원, 30년 차엔 1,745만원이 됩니다. 같은 해에 불어나는 수익이 30배 가까이 차이 납니다.</p>
+    <p>이자에 이자가 붙는 진짜 복리 효과가 눈에 보이기 시작하려면, 최소 8년에서 10년이 필요합니다. 그 전에 포기하면, 정작 가장 중요한 구간을 놓치는 셈입니다. 씨앗을 심고 싹이 안 튼다고 파버리는 것과 같습니다. <strong>복리는 처음이 아니라, 끝으로 갈수록 빨라지는 엔진입니다.</strong></p>
+  </article>
+
+  <!-- 4. 72의 법칙 — 하이라이트 박스 -->
+  <article class="rule72-card">
+    <h3>72의 법칙 — 30초 만에 복리 계산하는 방법</h3>
+    <p class="rule72-subtitle">투자하기 전에, 내 돈이 두 배가 되는 데 얼마나 걸리는지 30초 만에 알 수 있는 근사 공식</p>
+    <div class="rule72-formula">72 ÷ 연 수익률(%) = 원금이 두 배가 되는 연수</div>
+    <div class="rule72-grid">
+      <div class="rule72-item">
+        <div class="rule72-pct">7%</div>
+        <div class="rule72-calc">72 ÷ 7<br>≈ 10.3년 후 두 배</div>
+      </div>
+      <div class="rule72-item">
+        <div class="rule72-pct">10%</div>
+        <div class="rule72-calc">72 ÷ 10<br>= 7.2년 후 두 배</div>
+      </div>
+      <div class="rule72-item">
+        <div class="rule72-pct">12%</div>
+        <div class="rule72-calc">72 ÷ 12<br>= 6년 후 두 배</div>
+      </div>
+    </div>
+    <p>이 법칙은 금융경제학에서 오래전부터 쓰인 근사 공식입니다. 정확한 계산과 오차가 1% 이내로 거의 맞아떨어집니다. 연 수익률이 높을수록 두 배가 되는 시간이 기하급수적으로 빨라집니다.</p>
+    <p>같은 1,000만원이 7% 환경에서 두 번 두 배가 되려면 약 21년이 필요하고, 10% 환경에서는 약 14년이면 됩니다. <strong>7년의 차이가 1,000만원을 4,000만원으로도, 2,593만원으로도 만드는 분기점입니다.</strong></p>
+  </article>
+
+  
+
+</div>
+</section>
+
+<!-- ── JavaScript ───────────────────────────────────── -->
+<script>
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
+const units = { a: '연', b: '연', c: '연' };
+const UNIT_LBL = { '연': '년', '월': '개월', '일': '일' };
+let activeChart = null;
+
+/* ═══════════════════════════════════════════════
+   한국어 금액 변환
+   1,000,000 → "100만 원"
+   15,000,000 → "1천 5백만 원"
+═══════════════════════════════════════════════ */
+function toKorean(n) {
+  if (!n || n <= 0) return '';
+  n = Math.round(n);
+
+  // 4자리 그룹(1~9999)을 한국어로 변환
+  function grp(num) {
+    if (num === 0) return '';
+    const parts = [];
+    const t = Math.floor(num / 1000);
+    const h = Math.floor((num % 1000) / 100);
+    const s = Math.floor((num % 100) / 10);
+    const o = num % 10;
+    if (t > 0) parts.push(t + '천');
+    if (h > 0) parts.push(h + '백');
+    if (s > 0) parts.push(s === 1 && t === 0 && h === 0 ? '십' : s + '십');
+    if (o > 0) parts.push(String(o));
+    return parts.join(' ');
+  }
+
+  const 조v = Math.floor(n / 1_000_000_000_000);
+  const 억v = Math.floor((n % 1_000_000_000_000) / 100_000_000);
+  const 만v = Math.floor((n % 100_000_000) / 10_000);
+  const 원v = n % 10_000;
+
+  const parts = [];
+  if (조v > 0) parts.push(grp(조v) + '조');
+  if (억v > 0) parts.push(grp(억v) + '억');
+  if (만v > 0) parts.push(grp(만v) + '만');
+  if (원v > 0) parts.push(grp(원v));
+  return parts.join(' ') + ' 원';
+}
+
+/* ═══════════════════════════════════════════════
+   콤마 포맷 입력 처리
+═══════════════════════════════════════════════ */
+function fmtMoney(input, korId) {
+  const raw = input.value.replace(/[^0-9]/g, '');
+  const num = parseInt(raw) || 0;
+
+  // 커서 위치 우측 기준으로 보존
+  const fromRight = input.value.length - (input.selectionStart || 0);
+  input.value = num > 0 ? num.toLocaleString('ko-KR') : '';
+  const newPos = Math.max(0, input.value.length - fromRight);
+  try { input.setSelectionRange(newPos, newPos); } catch (e) {}
+
+  if (korId) {
+    const el = document.getElementById(korId);
+    if (el) el.textContent = num > 0 ? toKorean(num) : '';
+  }
+}
+
+function getMoney(id) {
+  return parseInt((document.getElementById(id).value || '').replace(/[^0-9]/g, '')) || 0;
+}
+
+/* ═══════════════════════════════════════════════
+   단위 세그먼트
+═══════════════════════════════════════════════ */
+const ACT_CLASS = { a: 'act-bl', b: 'act-or', c: 'act-pu' };
+
+function setUnit(which, val, btn) {
+  units[which] = val;
+  document.getElementById(which + '-unit-lbl').textContent = UNIT_LBL[val];
+  btn.closest('.seg-group').querySelectorAll('.seg-btn')
+    .forEach(b => b.classList.remove('act-bl', 'act-or', 'act-pu'));
+  btn.classList.add(ACT_CLASS[which]);
+}
+
+/* ═══════════════════════════════════════════════
+   TOGGLE B / C
+═══════════════════════════════════════════════ */
+function toggleB() {
+  const on = document.getElementById('chk-b').checked;
+  document.getElementById('card-b').classList.toggle('hidden', !on);
+  document.getElementById('badge-a-show').classList.toggle('hidden', !on);
+  document.getElementById('compare-action-bar').classList.toggle('hidden', !on);
+  if (!on) {
+    document.getElementById('chk-c').checked = false;
+    document.getElementById('card-c').classList.add('hidden');
+    clearResults();
+  }
+}
+
+function toggleC() {
+  const on = document.getElementById('chk-c').checked;
+  document.getElementById('card-c').classList.toggle('hidden', !on);
+  if (!on) clearResults();
+}
+
+/* ═══════════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════════ */
+function resetCard(w, rate) {
+  const pi = document.getElementById(w + '-principal');
+  const py = document.getElementById(w + '-payment');
+  pi.value = '1,000,000';
+  py.value = '100,000';
+  fmtMoney(pi, w + '-principal-kor');
+  fmtMoney(py, w + '-payment-kor');
+  document.getElementById(w + '-periods').value = 10;
+  document.getElementById(w + '-rate').value = rate;
+  const btn = document.querySelector('#' + w + '-seg .seg-btn[data-v="연"]');
+  setUnit(w, '연', btn);
+  clearResults();
+}
+function resetA() { resetCard('a', 10); }
+function resetB() { resetCard('b', 15); }
+function resetC() { resetCard('c', 20); }
+
+function clearResults() {
+  const sec = document.getElementById('results-section');
+  sec.classList.add('hidden');
+  sec.innerHTML = '';
+  if (activeChart) { activeChart.destroy(); activeChart = null; }
+}
+
+/* ═══════════════════════════════════════════════
+   짧은 금액 표시 (요약 카드용)
+═══════════════════════════════════════════════ */
+function fmtShort(n) {
+  const abs = Math.abs(n); const s = n < 0 ? '-' : '';
+  if (abs >= 1_000_000_000_000) return s + (abs / 1_000_000_000_000).toFixed(1) + '조원';
+  if (abs >= 100_000_000) {
+    const ok = Math.floor(abs / 100_000_000);
+    const man = Math.floor((abs % 100_000_000) / 10_000);
+    return s + ok.toLocaleString() + '억' + (man ? ' ' + man.toLocaleString() + '만' : '') + '원';
+  }
+  if (abs >= 10_000) return s + Math.round(abs / 10_000).toLocaleString() + '만원';
+  return s + Math.round(abs).toLocaleString() + '원';
+}
+function fmtRate(r) { return (r >= 0 ? '+' : '') + r.toFixed(2) + '%'; }
+
+/* ═══════════════════════════════════════════════
+   복리 계산 엔진
+═══════════════════════════════════════════════ */
+function calcCompound(principal, payment, periods, annualRate, unit) {
+  let rp;
+  if      (unit === '연') rp = annualRate / 100;
+  else if (unit === '월') rp = annualRate / 100 / 12;
+  else                    rp = annualRate / 100 / 365;
+
+  const rows = [];
+  for (let t = 1; t <= periods; t++) {
+    const invested = principal + payment * t;
+    let total;
+    if (rp === 0) {
+      total = invested;
+    } else {
+      const f = Math.pow(1 + rp, t);
+      total = principal * f + (payment > 0 ? payment * (f - 1) / rp : 0);
+    }
+    total = Math.max(total, 0);
+    const profit     = total - invested;
+    const returnRate = invested > 0 ? (total / invested - 1) * 100 : 0;
+    rows.push({
+      t,
+      invested: Math.round(invested),
+      profit:   Math.round(profit),
+      total:    Math.round(total),
+      returnRate,
+    });
+  }
+  return rows;
+}
+
+/* ═══════════════════════════════════════════════
+   테이블 샘플링 (max 100행)
+═══════════════════════════════════════════════ */
+function sampleRows(rows, max = 100) {
+  if (rows.length <= max) return { sampled: rows, isSampled: false };
+  const step = Math.ceil(rows.length / max);
+  const sampled = [];
+  for (let i = step - 1; i < rows.length; i += step) sampled.push(rows[i]);
+  if (sampled[sampled.length - 1] !== rows[rows.length - 1])
+    sampled.push(rows[rows.length - 1]);
+  return { sampled, isSampled: true };
+}
+
+/* ═══════════════════════════════════════════════
+   차트 데이터 샘플링 (max 60 포인트)
+═══════════════════════════════════════════════ */
+function sampleChart(rows, max = 60) {
+  if (rows.length <= max) return rows;
+  const step = Math.ceil(rows.length / max);
+  const out = [];
+  for (let i = step - 1; i < rows.length; i += step) out.push(rows[i]);
+  if (out[out.length - 1] !== rows[rows.length - 1]) out.push(rows[rows.length - 1]);
+  return out;
+}
+
+/* ═══════════════════════════════════════════════
+   차트 테마
+═══════════════════════════════════════════════ */
+function isDark() { return window.matchMedia('(prefers-color-scheme: dark)').matches; }
+function chartTheme() {
+  const d = isDark();
+  return {
+    grid:   d ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)',
+    ticks:  d ? '#636366' : '#AEAEB2',
+    legend: d ? '#AEAEB2' : '#6E6E73',
+  };
+}
+function yTickFmt(v) {
+  const a = Math.abs(v);
+  if (a >= 1e8) return (v / 1e8).toFixed(0) + '억';
+  if (a >= 1e4) return (v / 1e4).toFixed(0) + '만';
+  return v;
+}
+
+/* ─── 단일 모드: 스택 바차트 ──────────────────────────── */
+function renderBar(canvasId, rows, unit) {
+  const th = chartTheme();
+  const pts = sampleChart(rows);
+  const labels = pts.map(r => r.t + UNIT_LBL[unit]);
+  if (activeChart) { activeChart.destroy(); activeChart = null; }
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  activeChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: '총 투자금',
+          data: pts.map(r => r.invested),
+          backgroundColor: isDark() ? 'rgba(0,113,227,0.40)' : 'rgba(0,113,227,0.28)',
+          stack: 's', borderWidth: 0,
+        },
+        {
+          label: '수익',
+          data: pts.map(r => Math.max(0, r.profit)),
+          backgroundColor: isDark() ? 'rgba(52,199,89,0.65)' : 'rgba(52,199,89,0.72)',
+          stack: 's', borderWidth: 0, borderRadius: 2,
+        },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', labels: { color: th.legend, font: { size: 12, family: '-apple-system,sans-serif' }, boxWidth: 13, boxHeight: 10, padding: 16 } },
+        tooltip: {
+          mode: 'index',
+          callbacks: {
+            label: c => ` ${c.dataset.label}: ${Math.round(c.raw).toLocaleString()}원`,
+            footer: items => '최종 평가액: ' + Math.round(items.reduce((s,i)=>s+i.raw,0)).toLocaleString() + '원',
+          },
+        },
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { color: th.ticks, font: { size: 11 }, maxTicksLimit: 12 } },
+        y: { stacked: true, grid: { color: th.grid }, ticks: { color: th.ticks, font: { size: 11 }, callback: yTickFmt } },
+      },
+    },
+  });
+}
+
+/* ─── 비교 모드: 라인차트 (2~3개 설정) ───────────────── */
+function renderLine(canvasId, datasets) {
+  // datasets: [{rows, unit, color, label}]
+  const th = chartTheme();
+  const refPts = sampleChart(datasets[0].rows, 50);
+  const labels = refPts.map(r => r.t + UNIT_LBL[datasets[0].unit]);
+  if (activeChart) { activeChart.destroy(); activeChart = null; }
+  const ctx = document.getElementById(canvasId).getContext('2d');
+
+  const chartDatasets = [];
+  datasets.forEach(ds => {
+    const pts = sampleChart(ds.rows, 50);
+    const alpha = isDark() ? '0.10' : '0.07';
+    chartDatasets.push({
+      label: ds.label + ' 최종 평가액',
+      data: pts.map(r => r.total),
+      borderColor: ds.color,
+      backgroundColor: ds.color.replace('1)', alpha).replace('rgb(', 'rgba(') + (ds.color.startsWith('#') ? '18' : ''),
+      fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 5, borderWidth: 2.5,
+    });
+    chartDatasets.push({
+      label: ds.label + ' 총 투자금',
+      data: pts.map(r => r.invested),
+      borderColor: ds.color, backgroundColor: 'transparent',
+      borderDash: [5, 4], fill: false, tension: 0.4,
+      pointRadius: 0, pointHoverRadius: 4, borderWidth: 1.5,
+    });
+  });
+
+  activeChart = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets: chartDatasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', labels: { color: th.legend, font: { size: 11, family: '-apple-system,sans-serif' }, boxWidth: 13, boxHeight: 10, padding: 12 } },
+        tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${Math.round(c.raw).toLocaleString()}원` } },
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: th.ticks, font: { size: 11 }, maxTicksLimit: 10 } },
+        y: { grid: { color: th.grid }, ticks: { color: th.ticks, font: { size: 11 }, callback: yTickFmt } },
+      },
+    },
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   HTML 빌더
+═══════════════════════════════════════════════ */
+function buildSummary(rows) {
+  const last = rows[rows.length - 1];
+  return `
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-label">최종 수익률</div>
+        <div class="summary-value green">${fmtRate(last.returnRate)}</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">최종 평가액</div>
+        <div class="summary-value blue">${fmtShort(last.total)}</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">총 수익금</div>
+        <div class="summary-value">${fmtShort(last.profit)}</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">총 투자금</div>
+        <div class="summary-value">${fmtShort(last.invested)}</div>
+      </div>
+    </div>`;
+}
+
+function buildTable(rows, unit) {
+  const { sampled, isSampled } = sampleRows(rows);
+  const ul = UNIT_LBL[unit];
+  let html = `<div class="table-outer"><table class="data-table">
+    <thead><tr>
+      <th>기간</th><th>원금(누적)</th><th>수익</th><th>최종 평가액</th><th>수익률</th>
+    </tr></thead><tbody>`;
+  sampled.forEach(r => {
+    html += `<tr>
+      <td>${r.t}${ul}</td>
+      <td>${r.invested.toLocaleString()}원</td>
+      <td class="profit-cell">${r.profit.toLocaleString()}원</td>
+      <td>${r.total.toLocaleString()}원</td>
+      <td class="rate-cell">${r.returnRate.toFixed(2)}%</td>
+    </tr>`;
+  });
+  html += `</tbody></table></div>`;
+  if (isSampled) html += `<p class="table-note">※ 전체 ${rows.length}기간 중 ${sampled.length}개 행만 표시됩니다.</p>`;
+  return html;
+}
+
+/* ═══════════════════════════════════════════════
+   입력값 읽기
+═══════════════════════════════════════════════ */
+function readInputs(w) {
+  return {
+    principal: getMoney(w + '-principal'),
+    payment:   getMoney(w + '-payment'),
+    periods:   Math.max(1, parseInt(document.getElementById(w + '-periods').value) || 1),
+    rate:      parseFloat(document.getElementById(w + '-rate').value) || 0,
+    unit:      units[w],
+  };
+}
+
+/* ═══════════════════════════════════════════════
+   단일 계산
+═══════════════════════════════════════════════ */
+function calculate() {
+  const inp  = readInputs('a');
+  const rows = calcCompound(inp.principal, inp.payment, inp.periods, inp.rate, inp.unit);
+  if (!rows.length) return;
+
+  const html = `
+    <div class="card">
+      <div class="card-title">계산 결과</div>
+      ${buildSummary(rows)}
+      <div class="chart-canvas-wrap"><canvas id="main-chart"></canvas></div>
+      <hr class="section-divider"/>
+      <div style="font-size:13px;font-weight:700;color:var(--t2);margin-bottom:12px;">기간별 상세</div>
+      ${buildTable(rows, inp.unit)}
+    </div>`;
+
+  const sec = document.getElementById('results-section');
+  sec.innerHTML = html;
+  sec.classList.remove('hidden');
+  requestAnimationFrame(() => renderBar('main-chart', rows, inp.unit));
+  sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ═══════════════════════════════════════════════
+   비교 계산 (A + B + 선택적 C)
+═══════════════════════════════════════════════ */
+function calculateCompare() {
+  const inpA = readInputs('a');
+  const inpB = readInputs('b');
+  const hasC = !document.getElementById('card-c').classList.contains('hidden');
+  const inpC = hasC ? readInputs('c') : null;
+
+  const rA = calcCompound(inpA.principal, inpA.payment, inpA.periods, inpA.rate, inpA.unit);
+  const rB = calcCompound(inpB.principal, inpB.payment, inpB.periods, inpB.rate, inpB.unit);
+  const rC = hasC ? calcCompound(inpC.principal, inpC.payment, inpC.periods, inpC.rate, inpC.unit) : null;
+
+  if (!rA.length || !rB.length) return;
+
+  const lastA = rA[rA.length - 1];
+  const lastB = rB[rB.length - 1];
+  const lastC = rC ? rC[rC.length - 1] : null;
+
+  // 승자 결정
+  const totals = [
+    { lbl: 'A', val: lastA.total, cls: 'win-a' },
+    { lbl: 'B', val: lastB.total, cls: 'win-b' },
+    ...(hasC ? [{ lbl: 'C', val: lastC.total, cls: 'win-c' }] : []),
+  ];
+  totals.sort((a, b) => b.val - a.val);
+  const winner  = totals[0];
+  const runnerUp = totals[1];
+  const winDiff = winner.val - runnerUp.val;
+
+  // 요약 섹션
+  const summaryColClass = hasC ? 'cmp-3col' : 'cmp-2col';
+  let summaryHTML = `<div class="${summaryColClass}">`;
+  summaryHTML += `<div><div class="cmp-section-label"><span class="badge badge-a">A</span>설정 A</div>${buildSummary(rA)}</div>`;
+  summaryHTML += `<div><div class="cmp-section-label"><span class="badge badge-b">B</span>설정 B</div>${buildSummary(rB)}</div>`;
+  if (hasC) summaryHTML += `<div><div class="cmp-section-label"><span class="badge badge-c">C</span>설정 C</div>${buildSummary(rC)}</div>`;
+  summaryHTML += '</div>';
+
+  // 테이블 섹션
+  const tableColClass = hasC ? 'cmp-tables-3' : 'cmp-tables-2';
+  let tableHTML = `<div class="${tableColClass}">`;
+  tableHTML += `<div><div class="cmp-table-head"><span class="badge badge-a">A</span>설정 A 상세</div>${buildTable(rA, inpA.unit)}</div>`;
+  tableHTML += `<div><div class="cmp-table-head"><span class="badge badge-b">B</span>설정 B 상세</div>${buildTable(rB, inpB.unit)}</div>`;
+  if (hasC) tableHTML += `<div><div class="cmp-table-head"><span class="badge badge-c">C</span>설정 C 상세</div>${buildTable(rC, inpC.unit)}</div>`;
+  tableHTML += '</div>';
+
+  const html = `
+    <div class="card">
+      <div class="card-title">비교 결과</div>
+      ${summaryHTML}
+      <div class="winner-banner ${winner.cls}">
+        설정 <strong>${winner.lbl}</strong>의 최종 평가액이 <strong>${fmtShort(winDiff)}</strong> 가장 높습니다.
+        (${totals.map(t => `${t.lbl}: ${fmtShort(t.val)}`).join(' / ')})
+      </div>
+      <div class="chart-canvas-wrap"><canvas id="cmp-chart"></canvas></div>
+      <hr class="section-divider"/>
+      ${tableHTML}
+    </div>`;
+
+  const sec = document.getElementById('results-section');
+  sec.innerHTML = html;
+  sec.classList.remove('hidden');
+
+  requestAnimationFrame(() => {
+    const ds = [
+      { rows: rA, unit: inpA.unit, color: '#0071E3', label: 'A' },
+      { rows: rB, unit: inpB.unit, color: '#FF9F0A', label: 'B' },
+      ...(hasC ? [{ rows: rC, unit: inpC.unit, color: '#BF5AF2', label: 'C' }] : []),
+    ];
+    renderLine('cmp-chart', ds);
+  });
+
+  sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ═══════════════════════════════════════════════
+   ENTER KEY
+═══════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' || e.target.tagName === 'BUTTON') return;
+  const bOn = !document.getElementById('card-b').classList.contains('hidden');
+  bOn ? calculateCompare() : calculate();
+});
+</script>
+<footer class="ez-footer" role="contentinfo">
+  <div class="ez-footer-inner">
+    <div class="ez-footer-top">
+      <div class="ez-footer-brand">
+        <picture>
+          <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+          <img src="logo.png" alt="EZLONG">
+        </picture>
+        <p class="ez-footer-brand-desc">
+          쉽고 안전한 장기투자 파트너<br>
+          easy.invest.good@gmail.com
+        </p>
+      </div>
+      <div class="ez-footer-books">
+        <div class="ez-footer-book">
+          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-cover" target="_blank" rel="noopener">
+            <img src="book01.png" alt="절대 실패하지 않는 미국 주식 ETF 투자">
+          </a>
+          <div class="ez-footer-book-info">
+            <span class="ez-footer-book-title">절대 실패하지 않는<br>미국 주식 ETF 투자</span>
+            <span class="ez-footer-book-label">종이책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/177260453" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://product.kyobobook.co.kr/detail/S000219205812" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+            </div>
+            <span class="ez-footer-book-label">전자책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=387049914&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/180332209" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012611429" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+              <a href="https://ridibooks.com/books/3844000153" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>
+            </div>
+            <span class="ez-footer-book-label">오디오북</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=388954868&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+            </div>
+            <span class="ez-footer-book-label">구독</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://max.aladin.co.kr/product/387049914?&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.millie.co.kr/v4/book/52e27a74508a4c93" class="ez-footer-book-btn" target="_blank" rel="noopener">밀리</a>
+              <a href="https://cremaclub.yes24.com/BookClub/Detail/180332209" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012611429" class="ez-footer-book-btn" target="_blank" rel="noopener">교보</a>
+            </div>
+          </div>
+        </div>
+        <div class="ez-footer-book">
+          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-cover" target="_blank" rel="noopener">
+            <img src="book02_1.png" alt="월급쟁이 투자 자동화">
+          </a>
+          <div class="ez-footer-book-info">
+            <span class="ez-footer-book-title">월급쟁이<br>투자 자동화</span>
+            <span class="ez-footer-book-label">전자책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+              <a href="https://ridibooks.com/books/6121000386" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>
+            </div>
+            <span class="ez-footer-book-label">오디오북</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=391653601&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+            </div>
+            <span class="ez-footer-book-label">구독</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://max.aladin.co.kr/product/389499456?&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.millie.co.kr/v4/book/e7fbd96e137b4ae1" class="ez-footer-book-btn" target="_blank" rel="noopener">밀리</a>
+              <a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ez-footer-links">
+        <div class="ez-footer-col">
+          <span class="ez-footer-col-title">서비스</span>
+          <a href="atmr-dashboard.html">스윙 시그널 대시보드</a>
+          <a href="chart-analysis.html">AI 차트분석</a>
+          <a href="analyst-reports.html">핵심기업 목표주가</a>
+          <a href="market-cycle.html">Market Cycle Monitor</a>
+          <a href="dca-simulator.html">DCA 복리 시뮬레이터</a>
+          <a href="portfolio-manager.html">포트폴리오 복리 시뮬레이터</a>
+          <a href="tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a>
+          <a href="compound-calculator.html">복리 계산기</a>
+          <a href="retirement-calculator.html">은퇴 목표 역산 계산기</a>
+          <a href="backtest.html">몬테카를로 포트폴리오 시뮬레이터</a>
+          <a href="risk-diagnostic.html">투자 행동 자가진단</a>
+          <a href="auto-dca-guide.html">자동 적립식 매수 가이드</a>
+        </div>
+      </div>
+    </div>
+    <div class="ez-footer-bottom">
+      © 2025–2026 유니아빠 &amp; 유니엄마 · EZLONG · easy.invest.good@gmail.com<br>
+      본 서비스에서 제공하는 모든 시뮬레이션 수치는 참고용 추정치이며, 실제 투자 수익을 보장하지 않습니다. 투자 판단의 책임은 투자자 본인에게 있습니다.
+    </div>
+  </div>
+</footer>
+</body>
+</html>

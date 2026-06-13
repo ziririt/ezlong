@@ -1,0 +1,2411 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>글 쓰기 — EZLONG</title>
+<meta name="robots" content="noindex, nofollow" />
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+<!-- Quill.js -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #F5F5F7;
+  --bg2:      #FFFFFF;
+  --card:     #FFFFFF;
+  --bd:       rgba(0,0,0,0.08);
+  --t1:       #1D1D1F;
+  --t2:       #1D1D1F;
+  --t3:       #3A3A3C;
+  --bl:       #0071E3;
+  --bl-s:     rgba(0,113,227,0.10);
+  --gr:       #34C759;
+  --rd:       #FF3B30;
+  --yl:       #FF9F0A;
+  --yl-s:     rgba(255,159,10,0.12);
+  --r:        18px;
+  --r-sm:     12px;
+  --font:     -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Pretendard', 'Helvetica Neue', Arial, sans-serif;
+  --shadow:   0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-lg:0 12px 48px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  --nav-h:    60px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:     #000000;
+    --bg2:    #1C1C1E;
+    --card:   #1C1C1E;
+    --bd:     rgba(255,255,255,0.10);
+    --t1:     #F5F5F7;
+    --t2:     #F5F5F7;
+    --t3:     #E5E5EA;
+    --bl-s:   rgba(0,113,227,0.20);
+    --shadow: 0 4px 24px rgba(0,0,0,0.30), 0 1px 4px rgba(0,0,0,0.20);
+    --shadow-lg: 0 12px 48px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30);
+  }
+}
+
+html, body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--t1);
+  -webkit-font-smoothing: antialiased;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+body { flex: 1; }
+a { text-decoration: none; color: inherit; }
+
+/* ── NAV ─────────────────────────────────── */
+.nav {
+  height: var(--nav-h);
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--bd);
+  flex-shrink: 0;
+}
+@media (prefers-color-scheme: dark) { .nav { background: rgba(28,28,30,0.95); } }
+.nav-inner { max-width: 1080px; margin: 0 auto; padding: 0 20px; height: 100%; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { display: flex; align-items: center; }
+.nav-logo-img { height: 32px; width: auto; }
+@media (prefers-color-scheme: dark) { .nav-logo-img { filter: brightness(1.1); } }
+.nav-tagline { font-size: 12px; font-weight: 500; color: var(--t2); letter-spacing: -.01em; line-height: 1.5; text-align: right; }
+
+/* ── LOGIN SCREEN ────────────────────────── */
+#login-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--nav-h));
+  padding: 40px 20px;
+}
+.login-card {
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  text-align: center;
+}
+.login-title {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -.03em;
+  color: var(--t1);
+}
+.login-sub { font-size: 14px; color: var(--t3); line-height: 1.5; }
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  background: var(--card);
+  border: 1.5px solid var(--bd);
+  border-radius: 100px;
+  padding: 13px 20px;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--t1);
+  cursor: pointer;
+  transition: box-shadow .2s, border-color .2s;
+  box-shadow: var(--shadow);
+}
+.btn-google:hover {
+  border-color: var(--bl);
+  box-shadow: var(--shadow-lg);
+}
+.btn-google svg { width: 20px; height: 20px; flex-shrink: 0; }
+.login-error {
+  font-size: 13px;
+  color: var(--rd);
+  background: rgba(255,59,48,0.08);
+  border: 1px solid rgba(255,59,48,0.2);
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+  display: none;
+  width: 100%;
+}
+
+/* ── WRITE SCREEN ────────────────────────── */
+#write-screen {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  max-width: 940px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* 상단 고정 영역 (제목·카테고리·툴바) */
+.write-sticky-top {
+  flex-shrink: 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--bd);
+  padding: 16px 20px 0;
+}
+.write-sticky-top-inner {
+  width: 100%;
+}
+
+.write-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.write-page-title {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -.03em;
+  color: var(--t1);
+}
+.write-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--bg);
+  color: var(--t2);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 18px;
+  border-radius: 100px;
+  border: 1px solid var(--bd);
+  cursor: pointer;
+  transition: background .15s;
+  text-decoration: none;
+}
+.btn-secondary:hover { background: var(--bd); }
+.btn-publish {
+  background: var(--gr);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 9px 20px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: opacity .2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-publish:hover { opacity: .85; }
+.btn-publish:disabled { opacity: .5; cursor: not-allowed; }
+.btn-logout-sm {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--t3);
+  background: none;
+  border: 1px solid var(--bd);
+  padding: 7px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: color .15s;
+}
+.btn-logout-sm:hover { color: var(--rd); border-color: var(--rd); }
+
+/* ── 치환 버튼 ──────────────────────────────── */
+.btn-replace {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  color: var(--t2);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 100px;
+  border: 1px solid var(--bd);
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-replace:hover { border-color: var(--bl); color: var(--bl); }
+.btn-replace.active { border-color: var(--bl); color: var(--bl); background: var(--bl-s); }
+.btn-replace svg { width: 13px; height: 13px; }
+
+/* ── 치환 패널 ──────────────────────────────── */
+.replace-panel {
+  display: none;
+  flex-shrink: 0;
+  background: var(--card);
+  border-bottom: 1px solid var(--bd);
+}
+.replace-panel.visible { display: block; }
+.replace-panel-inner {
+  padding: 14px 20px 16px;
+}
+.replace-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.replace-tabs {
+  display: flex;
+  gap: 2px;
+}
+.rtab {
+  background: none;
+  border: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--t3);
+  padding: 5px 13px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: var(--font);
+}
+.rtab.active { background: var(--bl-s); color: var(--bl); }
+.rtab:hover:not(.active) { background: var(--bg); color: var(--t2); }
+.replace-panel-close {
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none; cursor: pointer;
+  color: var(--t3); border-radius: 6px; transition: all .15s;
+}
+.replace-panel-close:hover { background: var(--bg); color: var(--rd); }
+
+.rtab-content { display: none; }
+.rtab-content.active { display: block; }
+
+.rp-row {
+  display: flex; gap: 8px; margin-bottom: 8px;
+}
+.rp-input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: var(--r-sm);
+  padding: 8px 12px;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--t1);
+  outline: none;
+  transition: border-color .15s;
+  min-width: 0;
+}
+.rp-input:focus { border-color: var(--bl); }
+@media (prefers-color-scheme: dark) { .rp-input { background: #2C2C2E; } }
+.rp-actions {
+  display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 8px;
+}
+.rp-btn {
+  font-size: 12px; font-weight: 700;
+  padding: 6px 14px; border-radius: 100px;
+  border: 1px solid var(--bd);
+  background: var(--bg); color: var(--t2);
+  cursor: pointer; transition: all .15s;
+  font-family: var(--font);
+  white-space: nowrap;
+}
+.rp-btn:hover { border-color: var(--bl); color: var(--bl); }
+.rp-btn.primary { background: var(--bl); color: white; border-color: var(--bl); }
+.rp-btn.primary:hover { opacity: .85; }
+.rp-btn.success { background: var(--gr); color: white; border-color: var(--gr); }
+.rp-btn.success:hover { opacity: .85; }
+.rp-msg { font-size: 12px; color: var(--t3); }
+.rp-msg.ok { color: var(--gr); }
+.rp-msg.err { color: var(--rd); }
+
+/* 저장된 치환어 목록 */
+.saved-list {
+  display: flex; flex-direction: column; gap: 5px;
+  margin-bottom: 10px; max-height: 180px; overflow-y: auto;
+}
+.si {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg); border: 1px solid var(--bd);
+  border-radius: var(--r-sm); padding: 7px 12px;
+  font-size: 13px;
+}
+.si-from { font-family: monospace; font-weight: 700; color: var(--t1); min-width: 60px; }
+.si-arrow { color: var(--t3); flex-shrink: 0; }
+.si-to { font-family: monospace; color: var(--t3); flex: 1; font-style: italic; }
+.si-to.has-val { font-style: normal; color: var(--t1); }
+.si-btns { display: flex; gap: 4px; margin-left: auto; }
+.si-btn {
+  font-size: 11px; font-weight: 700;
+  padding: 3px 9px; border-radius: 100px;
+  border: 1px solid var(--bd); background: none;
+  color: var(--t3); cursor: pointer; transition: all .15s;
+  font-family: var(--font);
+}
+.si-btn:hover { border-color: var(--bl); color: var(--bl); }
+.si-btn.del:hover { border-color: var(--rd); color: var(--rd); }
+
+/* 자동 서식 옵션 */
+.auto-opts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.auto-opt {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 13px; color: var(--t1); cursor: pointer; line-height: 1.5;
+}
+.auto-opt input[type="checkbox"] { cursor: pointer; accent-color: var(--bl); margin-top: 2px; flex-shrink: 0; }
+.auto-opt small { display: block; font-size: 11px; color: var(--t3); margin-top: 1px; }
+
+/* ── 모바일: 버튼 아이콘 전용 ───────────────── */
+@media (max-width: 640px) {
+  .write-header { gap: 8px; }
+  .write-header-actions { gap: 6px; }
+
+  .btn-label { display: none; }
+
+  .btn-replace,
+  .btn-draft,
+  .btn-schedule,
+  .btn-unpublish {
+    padding: 9px 10px;
+    gap: 0;
+  }
+  .btn-logout-sm {
+    padding: 7px 10px;
+    gap: 0;
+  }
+  .btn-secondary {
+    padding: 9px 10px;
+    gap: 0;
+  }
+  .btn-publish {
+    padding: 9px 12px;
+    gap: 0;
+  }
+  .write-page-title { font-size: 17px; }
+}
+
+/* 임시저장 버튼 */
+.btn-draft {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  color: var(--t2);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 100px;
+  border: 1px solid var(--bd);
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-draft:hover { border-color: var(--yl); color: var(--yl); }
+.btn-draft svg { width: 13px; height: 13px; }
+
+/* 예약발행 버튼 */
+.btn-schedule {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  color: var(--t2);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 100px;
+  border: 1px solid var(--bd);
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-schedule:hover { border-color: var(--bl); color: var(--bl); }
+.btn-schedule.scheduled { border-color: var(--bl); color: var(--bl); background: var(--bl-s); }
+.btn-schedule svg { width: 13px; height: 13px; }
+
+/* 발행 취소 버튼 (수정 모드에서 발행된 글일 때만 표시) */
+.btn-unpublish {
+  display: none;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  color: var(--rd);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,59,48,0.35);
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-unpublish.visible { display: flex; }
+.btn-unpublish:hover { background: rgba(255,59,48,0.08); border-color: var(--rd); }
+.btn-unpublish:disabled { opacity: .5; cursor: not-allowed; }
+.btn-unpublish svg { width: 13px; height: 13px; }
+
+/* 임시저장 복원 배너 */
+.draft-banner {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: var(--yl-s);
+  border-bottom: 1px solid rgba(255,159,10,0.25);
+  padding: 10px 20px;
+  font-size: 13px;
+  color: var(--t1);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.draft-banner.visible { display: flex; }
+.draft-banner strong { color: var(--yl); }
+.draft-banner-actions { display: flex; gap: 8px; margin-left: auto; }
+.draft-banner button {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,159,10,0.4);
+  background: none;
+  color: var(--yl);
+  cursor: pointer;
+  transition: background .15s;
+}
+.draft-banner button:hover { background: rgba(255,159,10,0.15); }
+.draft-banner button.discard { border-color: var(--bd); color: var(--t3); }
+.draft-banner button.discard:hover { background: var(--bd); color: var(--rd); }
+
+/* 예약발행 모달 */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.visible { display: flex; }
+.modal-card {
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  padding: 28px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.modal-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--t1);
+}
+.modal-sub { font-size: 13px; color: var(--t3); line-height: 1.5; margin-top: -8px; }
+.modal-form-group { display: flex; flex-direction: column; gap: 6px; }
+.modal-label { font-size: 13px; font-weight: 600; color: var(--t1); }
+.modal-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: var(--r-sm);
+  padding: 11px 14px;
+  font-family: var(--font);
+  font-size: 15px;
+  color: var(--t1);
+  outline: none;
+  transition: border-color .15s;
+}
+.modal-input:focus { border-color: var(--bl); }
+@media (prefers-color-scheme: dark) { .modal-input { background: #2C2C2E; color-scheme: dark; } }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.modal-actions .btn-cancel {
+  background: none;
+  border: 1px solid var(--bd);
+  color: var(--t2);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 18px;
+  border-radius: 100px;
+  cursor: pointer;
+}
+.modal-actions .btn-confirm {
+  background: var(--bl);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 9px 20px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+.modal-actions .btn-confirm:hover { opacity: .85; }
+
+/* 상태바 자동저장 표시 */
+.autosave-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gr);
+  display: inline-block;
+  margin-right: 4px;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.autosave-dot.active { opacity: 1; }
+
+/* 입력 필드 */
+.write-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.write-input-title {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: var(--r-sm);
+  padding: 14px 18px;
+  font-family: var(--font);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--t1);
+  outline: none;
+  transition: border-color .15s;
+  box-shadow: var(--shadow);
+}
+.write-input-title:focus { border-color: var(--bl); }
+.write-input-title::placeholder { color: var(--t3); font-weight: 600; }
+@media (prefers-color-scheme: dark) { .write-input-title { background: var(--card); } }
+
+.write-row { display: flex; gap: 10px; }
+.write-select {
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--t1);
+  outline: none;
+  cursor: pointer;
+  transition: border-color .15s;
+  flex: 1;
+}
+.write-select:focus { border-color: var(--bl); }
+
+/* 외부 노출 작성일 행 */
+.display-date-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bl-s);
+  border: 1px solid var(--bl-m);
+  border-radius: var(--r-sm);
+  padding: 9px 16px;
+}
+.display-date-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--bl);
+  white-space: nowrap;
+  letter-spacing: .02em;
+  flex-shrink: 0;
+}
+.write-input-date {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--t1);
+  outline: none;
+  cursor: pointer;
+  flex: 1;
+}
+.write-input-date::-webkit-calendar-picker-indicator {
+  opacity: .6;
+  cursor: pointer;
+  filter: invert(0);
+}
+@media (prefers-color-scheme: dark) {
+  .write-input-date {
+    color-scheme: dark;
+  }
+  .write-input-date::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: .7;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .write-select { background: var(--card); color: var(--t1); }
+  .write-input-title { background: var(--card); }
+}
+
+/* Quill 에디터 커스텀 */
+.editor-scroll-area {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.editor-wrap {
+  flex: 1;
+  background: var(--card);
+  border: none;
+  border-top: 1px solid var(--bd);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.ql-toolbar.ql-snow {
+  border: none;
+  border-bottom: 1px solid var(--bd);
+  padding: 10px 14px;
+  background: var(--bg);
+  flex-shrink: 0;
+}
+@media (prefers-color-scheme: dark) {
+  .ql-toolbar.ql-snow {
+    background: #2C2C2E;
+    border-bottom-color: var(--bd);
+  }
+  .ql-toolbar.ql-snow .ql-stroke { stroke: var(--t1); }
+  .ql-toolbar.ql-snow .ql-fill { fill: var(--t1); }
+  .ql-toolbar.ql-snow .ql-picker-label { color: var(--t1); }
+  .ql-toolbar.ql-snow .ql-picker-options { background: #2C2C2E; }
+}
+.ql-container.ql-snow {
+  border: none;
+  font-family: var(--font);
+  font-size: 17px;
+  flex: 1;
+  overflow-y: auto;
+}
+#editor-body {
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--t1);
+  height: 100%;
+}
+.ql-editor {
+  padding: 24px 28px;
+  min-height: 100%;
+}
+.ql-editor.ql-blank::before { font-style: normal; color: var(--t3); font-size: 17px; }
+
+/* Quill 글자 크기 — style-based(attributors/style/size) */
+.ql-snow .ql-picker.ql-size { width: 52px; }
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before { content: '보통'; }
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="12pt"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12pt"]::before { content: '소'; }
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18pt"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18pt"]::before { content: '대'; }
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="26pt"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="26pt"]::before { content: '특대'; }
+@media (prefers-color-scheme: dark) {
+  .ql-snow .ql-picker.ql-size .ql-picker-options { background: #2C2C2E; color: var(--t1); }
+}
+
+/* 줄 여백 버튼 커스텀 스타일 */
+button.ql-line-spacing {
+  width: auto !important;
+  padding: 0 4px !important;
+}
+button.ql-line-spacing svg {
+  width: 18px;
+  height: 18px;
+}
+@media (prefers-color-scheme: dark) {
+  button.ql-line-spacing svg line,
+  button.ql-line-spacing svg polyline {
+    stroke: var(--t1);
+  }
+}
+
+/* 에디터 내 가로선 (HR) */
+.ql-editor hr {
+  border: none;
+  border-top: 2px solid var(--bd);
+  margin: 1.6em 0;
+  cursor: default;
+}
+@media (prefers-color-scheme: dark) {
+  .ql-editor hr { border-top-color: rgba(255,255,255,0.22); }
+}
+
+/* 가로선 삽입 버튼 */
+button.ql-divider { width: auto !important; padding: 0 3px !important; }
+button.ql-divider svg { width: 20px; height: 12px; }
+
+/* 더보기 버튼 */
+button.ql-more-tools {
+  width: auto !important;
+  padding: 0 7px !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--t3);
+}
+button.ql-more-tools svg { width: 13px; height: 13px; flex-shrink: 0; }
+button.ql-more-tools span { pointer-events: none; }
+button.ql-more-tools.open { color: var(--bl); }
+
+/* ── 확장 툴바 (더보기 패널) ──────────────────── */
+.ql-extended-toolbar {
+  display: none;
+  background: var(--bg);
+  border-bottom: 1px solid var(--bd);
+  padding: 6px 14px;
+  flex-wrap: wrap;
+  gap: 4px 0;
+  align-items: center;
+  flex-shrink: 0;
+}
+.ql-extended-toolbar.visible { display: flex; }
+@media (prefers-color-scheme: dark) {
+  .ql-extended-toolbar { background: #2C2C2E; border-bottom-color: var(--bd); }
+}
+.ext-sep {
+  width: 1px; height: 20px; background: var(--bd);
+  margin: 0 9px; flex-shrink: 0;
+}
+.ext-label {
+  font-size: 10px; font-weight: 700; color: var(--t3);
+  margin-right: 3px; letter-spacing: .06em;
+  text-transform: uppercase; white-space: nowrap;
+  user-select: none; pointer-events: none;
+}
+.ext-group { display: flex; align-items: center; gap: 1px; }
+button.ext-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 28px; border: none; background: none;
+  border-radius: 5px; cursor: pointer; color: var(--t2);
+  font-size: 12px; font-family: var(--font); font-weight: 700;
+  transition: background .12s, color .12s; padding: 0; outline: none;
+}
+button.ext-btn:hover { background: var(--bl-s); color: var(--bl); }
+button.ext-btn.active { background: var(--bl-s); color: var(--bl); }
+button.ext-btn svg { width: 15px; height: 15px; pointer-events: none; }
+button.ext-color {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2.5px solid var(--bd);
+  cursor: pointer; outline: none; margin: 0 2px;
+  transition: transform .12s, box-shadow .12s; flex-shrink: 0;
+}
+button.ext-color:hover { transform: scale(1.2); box-shadow: 0 0 0 2.5px var(--t1); }
+
+/* pt 크기 셀렉트 (메인 툴바) */
+select.ql-pt-size-picker {
+  height: 26px;
+  background: transparent;
+  border: 1px solid var(--bd);
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--t2);
+  cursor: pointer;
+  padding: 0 3px;
+  font-family: var(--font);
+  outline: none;
+  min-width: 52px;
+  transition: border-color .15s;
+}
+select.ql-pt-size-picker:hover { border-color: var(--bl); color: var(--bl); }
+select.ql-pt-size-picker:focus { border-color: var(--bl); }
+@media (prefers-color-scheme: dark) {
+  select.ql-pt-size-picker { background: transparent; color-scheme: dark; }
+}
+
+/* 특수문자 / 이모티콘 패널 */
+.ext-char-panel {
+  display: none;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 1px;
+  padding: 6px 0 3px;
+  border-top: 1px solid var(--bd);
+  margin-top: 4px;
+}
+.ext-char-panel.visible { display: flex; }
+button.ext-char {
+  width: 30px; height: 30px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: none; border: none; border-radius: 5px;
+  font-size: 15px; cursor: pointer; line-height: 1;
+  transition: background .1s; padding: 0; outline: none;
+  flex-shrink: 0;
+}
+button.ext-char:hover { background: var(--bl-s); }
+button.ext-char.emoji { font-size: 18px; width: 34px; height: 34px; }
+
+/* 업로드·저장 상태 바 */
+.editor-status-bar {
+  flex-shrink: 0;
+  background: var(--bg);
+  border-top: 1px solid var(--bd);
+  padding: 6px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+}
+.upload-progress {
+  display: none;
+  font-size: 13px;
+  color: var(--bl);
+}
+.upload-progress.visible { display: block; }
+.save-status {
+  font-size: 13px;
+  color: var(--t3);
+}
+.save-status.success { color: var(--gr); }
+.save-status.error   { color: var(--rd); }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ───────────────────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <img src="logo.png" alt="EZLONG" class="nav-logo-img" />
+    </a>
+    <p class="nav-tagline">관리자 전용<br>글 작성 페이지</p>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+  로그인 화면 (비로그인 상태)
+══════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div>
+      <h1 class="login-title">관리자 로그인</h1>
+      <p class="login-sub">글 작성은 관리자만 가능합니다.<br>구글 계정으로 로그인해 주세요.</p>
+    </div>
+    <div class="login-error" id="login-error"></div>
+    <button class="btn-google" id="btn-login">
+      <!-- Google 로고 SVG -->
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Google 계정으로 로그인
+    </button>
+    <p style="font-size:12px;color:var(--t3);">
+      ziririt@gmail.com 계정으로만 접근 가능합니다.
+    </p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+  글 작성 화면 (로그인 후)
+══════════════════════════════════════ -->
+<div id="write-screen">
+
+  <!-- 상단 고정 영역: 헤더 + 제목 + 카테고리 + 툴바 -->
+  <div class="write-sticky-top">
+    <div class="write-sticky-top-inner">
+
+      <div class="write-header">
+        <div class="write-header-actions">
+          <span class="autosave-dot" id="autosave-dot"></span>
+          <span id="draft-status" style="font-size:13px;color:var(--t3);white-space:nowrap;"></span>
+          <button class="btn-replace" id="btn-replace" title="찾기/치환" onclick="toggleReplacePanel()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+            <span class="btn-label">치환</span>
+          </button>
+          <button class="btn-draft" id="btn-draft" title="임시저장">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            <span class="btn-label">임시저장</span>
+          </button>
+          <button class="btn-schedule" id="btn-schedule" title="예약발행">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="btn-label">예약발행</span>
+          </button>
+          <a href="board.html" class="btn-secondary" title="글 목록">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <span class="btn-label">목록</span>
+          </a>
+          <button class="btn-unpublish" id="btn-unpublish" title="발행 취소 (임시저장으로 되돌리기)" onclick="unpublishPost()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            <span class="btn-label">발행 취소</span>
+          </button>
+          <button class="btn-publish" id="btn-publish">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
+            <span class="btn-label">발행</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="write-fields">
+        <input class="write-input-title" id="post-title" type="text" placeholder="제목을 입력하세요" maxlength="100" />
+        <div class="display-date-row">
+          <span class="display-date-label">외부 노출 작성일</span>
+          <input class="write-input-date" id="post-display-date" type="date" title="방문자에게 보여줄 작성일. 이 날짜 기준으로 목록이 정렬됩니다." />
+        </div>
+        <div class="write-row" id="category-row" style="display:none;">
+          <select class="write-select" id="post-category">
+            <option value="">카테고리 선택 (선택사항)</option>
+            <option value="시황 분석">시황 분석</option>
+            <option value="투자 전략">투자 전략</option>
+            <option value="종목 분석">종목 분석</option>
+            <option value="ETF / 지수">ETF / 지수</option>
+            <option value="테슬라">테슬라</option>
+            <option value="빅테크">빅테크</option>
+            <option value="매크로">매크로</option>
+            <option value="투자 에세이">투자 에세이</option>
+            <option value="공지">공지</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 임시저장 복원 배너 -->
+  <div class="draft-banner" id="draft-banner">
+    <strong>임시저장된 글이 있습니다.</strong>
+    <span id="draft-banner-time" style="color:var(--t3);font-weight:400;"></span>
+    <div class="draft-banner-actions">
+      <button onclick="restoreDraft()">불러오기</button>
+      <button class="discard" onclick="discardDraft()">삭제</button>
+    </div>
+  </div>
+
+  <!-- 치환 패널 -->
+  <div class="replace-panel" id="replace-panel">
+    <div class="replace-panel-inner">
+
+      <div class="replace-panel-head">
+        <div class="replace-tabs">
+          <button class="rtab active" onclick="switchRplTab('manual',this)">찾기/바꾸기</button>
+          <button class="rtab" onclick="switchRplTab('saved',this)">등록된 치환어</button>
+          <button class="rtab" onclick="switchRplTab('auto',this)">자동 서식</button>
+        </div>
+        <button class="replace-panel-close" onclick="closeReplacePanel()" title="닫기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Tab: 찾기/바꾸기 -->
+      <div class="rtab-content active" id="tab-manual">
+        <div class="rp-row">
+          <input class="rp-input" id="rp-find" placeholder="찾을 내용" />
+          <input class="rp-input" id="rp-replace" placeholder="바꿀 내용 (비우면 삭제)" />
+        </div>
+        <div class="rp-actions">
+          <button class="rp-btn" onclick="rpFindNext()">다음 찾기</button>
+          <button class="rp-btn" onclick="rpReplaceOne()">치환</button>
+          <button class="rp-btn primary" onclick="rpReplaceAll()">전체 치환</button>
+          <span class="rp-msg" id="rp-msg"></span>
+        </div>
+      </div>
+
+      <!-- Tab: 등록된 치환어 -->
+      <div class="rtab-content" id="tab-saved">
+        <div class="saved-list" id="saved-list"></div>
+        <div class="rp-actions">
+          <button class="rp-btn" onclick="rpAddSaved()">+ 치환어 추가</button>
+          <button class="rp-btn success" onclick="rpBatchReplace()">일괄 치환</button>
+          <span class="rp-msg" id="batch-msg"></span>
+        </div>
+      </div>
+
+      <!-- Tab: 자동 서식 -->
+      <div class="rtab-content" id="tab-auto">
+        <div class="auto-opts">
+          <label class="auto-opt">
+            <input type="checkbox" id="opt-headings" checked>
+            <span># / ## / ### 제목 → Quill 제목 스타일<small>마크다운 헤딩 마커를 제거하고 H1/H2/H3 서식 적용</small></span>
+          </label>
+          <label class="auto-opt">
+            <input type="checkbox" id="opt-bold-md" checked>
+            <span>**텍스트** → 볼드 변환<small>마크다운 볼드 마커(**) 제거 후 굵게 적용</small></span>
+          </label>
+          <label class="auto-opt">
+            <input type="checkbox" id="opt-auto-h" checked>
+            <span>짧은 단독 줄 → 중간 제목(볼드) 자동 적용<small>2~40자, 문장 끝 구두점 없는 줄을 중간 소제목으로 인식</small></span>
+          </label>
+        </div>
+        <div class="rp-actions">
+          <button class="rp-btn success" onclick="rpAutoFormat()">자동 서식 적용</button>
+          <span class="rp-msg" id="auto-msg"></span>
+        </div>
+
+        <!-- 커스텀 서식 규칙 -->
+        <div style="border-top:1px solid var(--bd);margin-top:12px;padding-top:12px;">
+          <p style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:8px;">커스텀 서식 규칙</p>
+          <p style="font-size:11px;color:var(--t3);margin-bottom:8px;line-height:1.5;">특정 텍스트를 찾아 지정한 서식을 자동 적용합니다.</p>
+          <div class="saved-list" id="fmt-rules-list"></div>
+          <div class="rp-actions">
+            <button class="rp-btn" onclick="rpAddFmtRule()">+ 규칙 추가</button>
+            <span class="rp-msg" id="fmt-rules-msg"></span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 확장 툴바 (더보기) — JS가 .ql-container 바로 앞으로 이동시킴 -->
+  <div class="ql-extended-toolbar" id="ql-extended-toolbar">
+    <span class="ext-label">첨자</span>
+    <div class="ext-group">
+      <button class="ext-btn" data-ext="script-super" title="위 첨자 (Superscript)">X<sup style="font-size:8px;pointer-events:none">2</sup></button>
+      <button class="ext-btn" data-ext="script-sub" title="아래 첨자 (Subscript)">X<sub style="font-size:8px;pointer-events:none">2</sub></button>
+    </div>
+    <div class="ext-sep"></div>
+    <span class="ext-label">인라인코드</span>
+    <div class="ext-group">
+      <button class="ext-btn" data-ext="code-inline" title="인라인 코드 (선택 영역을 코드로)">
+        <svg viewBox="0 0 18 18" fill="none"><polyline points="5,5 1,9 5,13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="13,5 17,9 13,13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="10.5" y1="3" x2="7.5" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="ext-sep"></div>
+    <span class="ext-label">동영상</span>
+    <div class="ext-group">
+      <button class="ext-btn" data-ext="video" title="동영상 삽입 (YouTube URL 입력)">
+        <svg viewBox="0 0 18 18" fill="none"><rect x="1" y="4" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><polygon points="7,7.5 12,9 7,10.5" fill="currentColor"/></svg>
+      </button>
+    </div>
+    <div class="ext-sep"></div>
+    <span class="ext-label">형광펜</span>
+    <div class="ext-group">
+      <button class="ext-color" data-ext="hl-yellow" style="background:#FFD600;" title="노란 형광펜"></button>
+      <button class="ext-color" data-ext="hl-cyan"   style="background:#40C4FF;" title="파란 형광펜"></button>
+      <button class="ext-color" data-ext="hl-pink"   style="background:#FF80AB;" title="분홍 형광펜"></button>
+      <button class="ext-color" data-ext="hl-green"  style="background:#69F0AE;" title="초록 형광펜"></button>
+    </div>
+    <div class="ext-sep"></div>
+    <span class="ext-label">글자색</span>
+    <div class="ext-group">
+      <button class="ext-color" data-ext="fc-red"    style="background:#F44336;" title="빨간 글자"></button>
+      <button class="ext-color" data-ext="fc-blue"   style="background:#2196F3;" title="파란 글자"></button>
+      <button class="ext-color" data-ext="fc-orange" style="background:#FF6D00;" title="주황 글자"></button>
+      <button class="ext-color" data-ext="fc-gray"   style="background:#9E9E9E;" title="회색 글자"></button>
+    </div>
+    <div class="ext-sep"></div>
+    <span class="ext-label">기호/이모</span>
+    <div class="ext-group">
+      <button class="ext-btn" data-ext="toggle-special" title="특수문자 패널" style="font-size:14px;font-weight:900;">Ω</button>
+      <button class="ext-btn" data-ext="toggle-emoji"   title="이모티콘 패널" style="font-size:16px;">😊</button>
+    </div>
+  <!-- 특수문자 패널 (width:100% → 새 행에 표시) -->
+  <div class="ext-char-panel" id="ext-special-panel"></div>
+  <!-- 이모티콘 패널 -->
+  <div class="ext-char-panel" id="ext-emoji-panel"></div>
+  </div>
+
+  <!-- 에디터 스크롤 영역 (툴바 + 본문) -->
+  <div class="editor-scroll-area">
+    <div class="editor-wrap">
+      <div id="editor-body"></div>
+    </div>
+    <div class="editor-status-bar">
+      <div class="upload-progress" id="upload-progress">이미지 업로드 중...</div>
+      <div class="save-status" id="save-status"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 예약발행 모달 -->
+<div class="modal-overlay" id="schedule-modal">
+  <div class="modal-card">
+    <h2 class="modal-title">예약 발행</h2>
+    <p class="modal-sub">발행할 날짜와 시간을 선택해 주세요.<br>해당 시각 이후 글 목록에 공개됩니다.</p>
+    <div class="modal-form-group">
+      <label class="modal-label" for="schedule-datetime">발행 일시</label>
+      <input type="datetime-local" class="modal-input" id="schedule-datetime" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeScheduleModal()">취소</button>
+      <button class="btn-confirm" onclick="confirmSchedule()">예약 설정</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================================================================
+// Firebase 설정 — board.html, post.html, write.html 모두 동일한 값으로 교체
+// ================================================================
+const firebaseConfig = {
+  apiKey:            "AIzaSyBKFL4Y_nZX8P0cczg9174ztL04TCi8GRc",
+  authDomain:        "ezlong-541a8.firebaseapp.com",
+  projectId:         "ezlong-541a8",
+  storageBucket:     "ezlong-541a8.firebasestorage.app",
+  messagingSenderId: "925344506094",
+  appId:             "1:925344506094:web:31b303b8af8b93031393ff"
+};
+
+const ADMIN_EMAIL = "ziririt@gmail.com";
+const AUTHOR_NAME = "유니아빠";
+
+// ── Firebase 초기화 ─────────────────────────────────────────────
+firebase.initializeApp(firebaseConfig);
+const db      = firebase.firestore();
+const auth    = firebase.auth();
+const storage = firebase.storage();
+
+// ── URL 파라미터 (수정 모드) ────────────────────────────────────
+const params = new URLSearchParams(location.search);
+const editId = params.get('id'); // 수정 모드면 postId 존재
+let editPostWasPublished = false; // 수정 대상 글이 발행된 상태였는지 여부
+
+// ── 날짜 유틸 ──────────────────────────────────────────────────
+// Firestore Timestamp → "YYYY-MM-DD" 문자열
+function tsToDateString(ts) {
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+// "YYYY-MM-DD" → 해당 날짜의 정오(12:00) Date 객체 (timezone 안전)
+function dateStringToNoon(str) {
+  const [y, m, d] = str.split('-').map(Number);
+  return new Date(y, m - 1, d, 12, 0, 0, 0);
+}
+// 오늘 날짜의 "YYYY-MM-DD" 문자열
+function todayDateString() {
+  return tsToDateString({ toDate: () => new Date() });
+}
+
+// ── 정렬 (스타일 기반) ────────────────────────────────────────────
+const AlignStyle = Quill.import('attributors/style/align');
+Quill.register(AlignStyle, true);
+
+// ── 글자 크기 — 스타일 기반(attributors/style/size)으로 통합 ─────────
+// 소(12pt)/보통(없음)/대(18pt)/특대(26pt) + 11~38pt 세밀 조절 모두 동일 포맷 사용
+const SizeStyle = Quill.import('attributors/style/size');
+SizeStyle.whitelist = [
+  '11pt','12pt','13pt','14pt','15pt','16pt','17pt','18pt','19pt','20pt',
+  '21pt','22pt','23pt','24pt','25pt','26pt','27pt','28pt','30pt','32pt','34pt','36pt','38pt'
+];
+Quill.register(SizeStyle, true);
+
+// ── 가로선 (HR) 블롯 ────────────────────────────────────────────
+const BlockEmbed = Quill.import('blots/block/embed');
+class DividerBlot extends BlockEmbed {
+  static create() { return super.create(); }
+}
+DividerBlot.blotName = 'divider';
+DividerBlot.tagName = 'hr';
+Quill.register(DividerBlot);
+
+// ── Quill 에디터 초기화 ────────────────────────────────────────
+const quill = new Quill('#editor-body', {
+  theme: 'snow',
+  placeholder: '',
+  modules: {
+    toolbar: {
+      container: [
+        [{ size: ['12pt', false, '18pt', '26pt'] }, { header: [1, 2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ align: [] }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ indent: '-1' }, { indent: '+1' }],
+        ['blockquote', 'code-block'],
+        ['link', 'image'],
+        ['divider'],
+        [{ color: [] }, { background: [] }],
+        ['clean']
+      ],
+      handlers: {
+        image: imageUploadHandler,
+        divider: function() {
+          const range = this.getSelection(true);
+          this.insertText(range.index, '\n', Quill.sources.USER);
+          this.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER);
+          this.setSelection(range.index + 2, Quill.sources.SILENT);
+        }
+      }
+    }
+  }
+});
+
+// ── 줄 여백 추가 (커서 줄 위아래에 빈 줄 삽입) ─────────────────
+function addLineSpacing() {
+  const range = quill.getSelection(true);
+  if (!range) return;
+  const text = quill.getText(); // 항상 \n으로 끝남
+  const idx = range.index;
+
+  // 현재 줄의 시작 인덱스
+  const prevNl = text.lastIndexOf('\n', idx - 1);
+  const lineStart = prevNl === -1 ? 0 : prevNl + 1;
+
+  // 현재 줄의 끝 인덱스 (이 줄을 닫는 \n의 위치)
+  let lineEnd = text.indexOf('\n', idx);
+  if (lineEnd === -1) lineEnd = text.length - 1;
+
+  // ── 아래에 빈 줄 삽입 (인덱스가 높으므로 먼저 처리) ──────────
+  // lineEnd+1 위치가 이미 \n이면 이미 빈 줄 존재 → 건너뜀
+  if (lineEnd + 1 < text.length && text[lineEnd + 1] !== '\n') {
+    quill.insertText(lineEnd + 1, '\n');
+  }
+
+  // ── 위에 빈 줄 삽입 ──────────────────────────────────────────
+  // lineStart 앞이 \n\n 이면 이미 빈 줄 존재 → 건너뜀
+  if (lineStart > 0) {
+    const prevPrevChar = lineStart > 1 ? text[lineStart - 2] : null;
+    if (prevPrevChar !== '\n') {
+      quill.insertText(lineStart, '\n');
+    }
+  }
+
+  // 커서 복원 (빈 줄 삽입으로 인한 인덱스 이동 반영)
+  quill.setSelection(range.index + (lineStart > 0 ? 1 : 0), range.length);
+}
+
+// ── 줄 여백 버튼을 툴바에 동적 추가 ─────────────────────────────
+(function addLineSpacingButton() {
+  const toolbar = quill.getModule('toolbar');
+  const group = document.createElement('span');
+  group.className = 'ql-formats';
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'ql-line-spacing';
+  btn.title = '줄 위아래 여백 추가';
+  btn.innerHTML = `
+    <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="3" y1="9" x2="15" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <polyline points="6,6.5 9,3 12,6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+      <polyline points="6,11.5 9,15 12,11.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    </svg>`;
+  btn.addEventListener('mousedown', e => {
+    e.preventDefault(); // 에디터 포커스 유지
+    addLineSpacing();
+  });
+  group.appendChild(btn);
+  toolbar.container.appendChild(group);
+})();
+
+// ── 가로선(Divider) 버튼 아이콘 주입 ─────────────────────────────
+(function() {
+  const btn = document.querySelector('.ql-divider');
+  if (!btn) return;
+  btn.title = '가로 구분선 삽입';
+  btn.innerHTML = `<svg viewBox="0 0 20 10" fill="none">
+    <line x1="0" y1="5" x2="20" y2="5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="0" cy="5" r="2" fill="currentColor"/>
+    <circle cx="20" cy="5" r="2" fill="currentColor"/>
+  </svg>`;
+})();
+
+// ── "더보기" 버튼 툴바 끝에 추가 ─────────────────────────────────
+let extToolbarOpen = false;
+(function addMoreToolsButton() {
+  const toolbar = quill.getModule('toolbar');
+  const group = document.createElement('span');
+  group.className = 'ql-formats';
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'ql-more-tools';
+  btn.id = 'ql-more-tools-btn';
+  btn.title = '서식 도구 더보기';
+  btn.innerHTML = `
+    <svg viewBox="0 0 16 16" fill="currentColor">
+      <circle cx="2.5" cy="8" r="1.5"/>
+      <circle cx="8" cy="8" r="1.5"/>
+      <circle cx="13.5" cy="8" r="1.5"/>
+    </svg>
+    <span>더보기</span>`;
+  btn.addEventListener('mousedown', e => { e.preventDefault(); toggleExtToolbar(); });
+  group.appendChild(btn);
+  toolbar.container.appendChild(group);
+})();
+
+// ── 확장 툴바를 .ql-container 바로 앞으로 이동 ─────────────────────
+(function positionExtToolbar() {
+  const qlContainer = quill.root.parentNode; // .ql-container.ql-snow
+  const ext = document.getElementById('ql-extended-toolbar');
+  if (ext && qlContainer && qlContainer.parentNode) {
+    qlContainer.parentNode.insertBefore(ext, qlContainer);
+  }
+})();
+
+// ── pt 크기 셀렉트를 메인 툴바 첫 번째 그룹 바로 뒤에 추가 ──────────
+(function addPtSizePicker() {
+  const toolbar = quill.getModule('toolbar');
+  const sizes = [11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,30,32,34,36,38];
+
+  const group = document.createElement('span');
+  group.className = 'ql-formats';
+
+  const label = document.createElement('span');
+  label.style.cssText = 'font-size:11px;font-weight:700;color:var(--t3);margin-right:3px;white-space:nowrap;pointer-events:none;user-select:none;';
+  label.textContent = 'pt';
+
+  const select = document.createElement('select');
+  select.className = 'ql-pt-size-picker';
+  select.id = 'ql-pt-size-select';
+  select.title = '글자 크기 (pt)';
+
+  // 빈 기본 옵션 (변경 없음)
+  const defOpt = document.createElement('option');
+  defOpt.value = '';
+  defOpt.textContent = '—';
+  select.appendChild(defOpt);
+
+  sizes.forEach(pt => {
+    const opt = document.createElement('option');
+    opt.value = pt + 'pt';
+    opt.textContent = pt + 'pt';
+    select.appendChild(opt);
+  });
+
+  select.addEventListener('change', () => {
+    const val = select.value;
+    if (!val) return;
+    quill.format('size', val, Quill.sources.USER);
+    quill.focus();
+    select.value = ''; // 선택 후 리셋 (커서 이동 시 자동 갱신)
+  });
+
+  group.appendChild(label);
+  group.appendChild(select);
+
+  // 첫 번째 ql-formats 그룹 바로 뒤에 삽입
+  const firstGroup = toolbar.container.querySelector('.ql-formats');
+  if (firstGroup) {
+    toolbar.container.insertBefore(group, firstGroup.nextSibling);
+  }
+})();
+
+// 커서 이동 시 현재 pt 크기를 셀렉트에 반영
+quill.on('selection-change', range => {
+  const sel = document.getElementById('ql-pt-size-select');
+  if (!sel || !range) return;
+  const fmt = quill.getFormat(range);
+  // size가 pt 값이면 셀렉트에 반영, 아니면(소/대/특대 등) 빈 값
+  const sz = fmt.size;
+  sel.value = (sz && sz.endsWith('pt')) ? sz : '';
+});
+
+// ── 특수문자 / 이모티콘 패널 데이터 및 생성 ─────────────────────────
+const SPECIAL_CHARS = [
+  '←','→','↑','↓','↔','↕','↗','↘','↙','↖',
+  '⇒','⇐','⇑','⇓','⇔','⟹','⟸',
+  '※','★','☆','■','□','▶','◀','▲','▼','●','○','◎','◇','◆',
+  '♦','♠','♣','♥','♡','♪','♫','♬',
+  '✓','✔','✗','✘','☑','☐','☒',
+  '™','©','®','°','±','×','÷','≠','≤','≥','≈','∞',
+  '∑','√','∂','∆','∫','∏','∇',
+  '¼','½','¾','¹','²','³',
+  '€','£','¥','₩','¢','$',
+  '“','”','‘','’','«','»','‹','›',
+  '…','—','–','·','•','‣','◦',
+  '§','¶','†','‡','¡','¿','‼','‽',
+  '①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩',
+  'Α','Β','Γ','Δ','Ε','Ζ','Η','Θ','Ι','Κ','Λ','Μ',
+  'Ν','Ξ','Ο','Π','Ρ','Σ','Τ','Υ','Φ','Χ','Ψ','Ω',
+];
+
+const EMOJIS = [
+  // 표정
+  '😀','😃','😄','😁','😆','😅','🤣','😂','🙂','🙃','😉','😊','😇',
+  '🥰','😍','🤩','😘','🥳','😏','😒','😞','😔','😟','😕','🙁','😣',
+  '😩','🥺','😢','😭','😤','😠','😡','🤔','🤯','😳','😱','😨','😴',
+  '🤮','🤢','😷','🤒','🤕','🥴','😵','🤠','🥸','🤡','👻','💀','👽',
+  // 손동작/몸
+  '👍','👎','👌','🤌','✌️','🤞','🤟','🤘','👋','✋','🖐','🖖',
+  '👏','🙌','🤝','🙏','💪','🦾','🤜','🤛','✊','👊','🤚',
+  // 하트
+  '❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❣️',
+  '💕','💞','💓','💗','💖','💝','💘','💟',
+  // 물건/이벤트
+  '🔥','⭐','🌟','💫','✨','💥','🎉','🎊','🎈','🎁','🏆','🥇',
+  '🎯','🎲','🎮','🎵','🎶','🎸','📚','✏️','🔑','💡','🔔','⏰',
+  // 날씨/자연
+  '🌙','☀️','⭐','🌈','❄️','⚡','🌊','🌸','🌺','🌻','🍀','🌿',
+  '🌍','🌙','☁️','🌤','⛅','🌧','🌩','⛈','🌪',
+  // 동물
+  '🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐮','🐷',
+  '🐸','🐵','🦁','🐯','🐻‍❄️','🐺','🦝','🦄',
+  // 음식
+  '🍎','🍊','🍋','🍇','🍓','🍑','🍒','🫐','🍕','🍔','🌮',
+  '🍜','🍣','☕','🧋','🍺','🥂','🍷',
+  // 교통/장소
+  '🚀','✈️','🚗','🚢','🏠','🏢','🗼','🗽','⛩','🏖','🏔',
+];
+
+(function buildCharPanels() {
+  const specialPanel = document.getElementById('ext-special-panel');
+  const emojiPanel   = document.getElementById('ext-emoji-panel');
+
+  SPECIAL_CHARS.forEach(ch => {
+    const btn = document.createElement('button');
+    btn.className = 'ext-char';
+    btn.type = 'button';
+    btn.title = ch;
+    btn.textContent = ch;
+    btn.addEventListener('mousedown', e => {
+      e.preventDefault();
+      insertCharAtCursor(ch);
+    });
+    specialPanel.appendChild(btn);
+  });
+
+  EMOJIS.forEach(ch => {
+    const btn = document.createElement('button');
+    btn.className = 'ext-char emoji';
+    btn.type = 'button';
+    btn.title = ch;
+    btn.textContent = ch;
+    btn.addEventListener('mousedown', e => {
+      e.preventDefault();
+      insertCharAtCursor(ch);
+    });
+    emojiPanel.appendChild(btn);
+  });
+})();
+
+function insertCharAtCursor(char) {
+  const range = quill.getSelection(true);
+  quill.insertText(range.index, char, Quill.sources.USER);
+  quill.setSelection(range.index + char.length, 0, Quill.sources.SILENT);
+  quill.focus();
+}
+
+// ── 확장 툴바 토글 ────────────────────────────────────────────────
+function toggleExtToolbar() {
+  extToolbarOpen = !extToolbarOpen;
+  document.getElementById('ql-extended-toolbar').classList.toggle('visible', extToolbarOpen);
+  document.getElementById('ql-more-tools-btn').classList.toggle('open', extToolbarOpen);
+}
+
+// ── 확장 툴바 버튼 이벤트 (이벤트 위임) ─────────────────────────────
+document.getElementById('ql-extended-toolbar').addEventListener('mousedown', e => {
+  const btn = e.target.closest('[data-ext]');
+  if (!btn) return;
+  e.preventDefault(); // 에디터 포커스 유지
+  const act = btn.dataset.ext;
+  const fmt = quill.getFormat();
+
+  switch (act) {
+    case 'script-super':
+      quill.format('script', fmt.script === 'super' ? false : 'super', Quill.sources.USER);
+      break;
+    case 'script-sub':
+      quill.format('script', fmt.script === 'sub' ? false : 'sub', Quill.sources.USER);
+      break;
+    case 'code-inline':
+      quill.format('code', !fmt.code, Quill.sources.USER);
+      break;
+    case 'video': {
+      const raw = prompt('YouTube 또는 동영상 URL을 입력하세요:');
+      if (!raw || !raw.trim()) break;
+      const embedUrl = toEmbedUrl(raw.trim());
+      const range = quill.getSelection(true);
+      quill.insertEmbed(range.index, 'video', embedUrl, Quill.sources.USER);
+      quill.setSelection(range.index + 1, 0, Quill.sources.SILENT);
+      break;
+    }
+    // 형광펜 (background color toggle)
+    case 'hl-yellow': quill.format('background', fmt.background === '#FFD600' ? false : '#FFD600', Quill.sources.USER); break;
+    case 'hl-cyan':   quill.format('background', fmt.background === '#40C4FF' ? false : '#40C4FF', Quill.sources.USER); break;
+    case 'hl-pink':   quill.format('background', fmt.background === '#FF80AB' ? false : '#FF80AB', Quill.sources.USER); break;
+    case 'hl-green':  quill.format('background', fmt.background === '#69F0AE' ? false : '#69F0AE', Quill.sources.USER); break;
+    // 글자색 (color toggle)
+    case 'fc-red':    quill.format('color', fmt.color === '#F44336' ? false : '#F44336', Quill.sources.USER); break;
+    case 'fc-blue':   quill.format('color', fmt.color === '#2196F3' ? false : '#2196F3', Quill.sources.USER); break;
+    case 'fc-orange': quill.format('color', fmt.color === '#FF6D00' ? false : '#FF6D00', Quill.sources.USER); break;
+    case 'fc-gray':   quill.format('color', fmt.color === '#9E9E9E' ? false : '#9E9E9E', Quill.sources.USER); break;
+    case 'toggle-special': {
+      const sp = document.getElementById('ext-special-panel');
+      const em = document.getElementById('ext-emoji-panel');
+      const wasOpen = sp.classList.contains('visible');
+      em.classList.remove('visible');
+      sp.classList.toggle('visible', !wasOpen);
+      break;
+    }
+    case 'toggle-emoji': {
+      const sp = document.getElementById('ext-special-panel');
+      const em = document.getElementById('ext-emoji-panel');
+      const wasOpen = em.classList.contains('visible');
+      sp.classList.remove('visible');
+      em.classList.toggle('visible', !wasOpen);
+      break;
+    }
+  }
+});
+
+// ── YouTube/Vimeo URL → embed URL 변환 ──────────────────────────
+function toEmbedUrl(url) {
+  const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
+  const vm = url.match(/vimeo\.com\/(\d+)/);
+  if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+  return url; // 이미 embed URL이거나 기타 형식
+}
+
+// ── 이미지 업로드 핸들러 ──────────────────────────────────────
+function imageUploadHandler() {
+  const input = document.createElement('input');
+  input.setAttribute('type', 'file');
+  input.setAttribute('accept', 'image/*');
+  input.click();
+
+  input.addEventListener('change', async () => {
+    const file = input.files[0];
+    if (!file) return;
+
+    // 5MB 제한
+    if (file.size > 5 * 1024 * 1024) {
+      alert('이미지는 5MB 이하만 업로드 가능합니다.');
+      return;
+    }
+
+    const progressEl = document.getElementById('upload-progress');
+    progressEl.classList.add('visible');
+
+    try {
+      const ext  = file.name.split('.').pop();
+      const name = `posts/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+      const ref  = storage.ref().child(name);
+
+      await ref.put(file);
+      const url = await ref.getDownloadURL();
+
+      // 현재 커서 위치에 이미지 삽입
+      const range = quill.getSelection(true);
+      quill.insertEmbed(range.index, 'image', url);
+      quill.setSelection(range.index + 1);
+
+    } catch (e) {
+      console.error(e);
+      alert('이미지 업로드에 실패했습니다. Firebase Storage 설정을 확인해 주세요.');
+    } finally {
+      progressEl.classList.remove('visible');
+    }
+  });
+}
+
+// ── 인증 상태 감지 ────────────────────────────────────────────
+auth.onAuthStateChanged(async user => {
+  if (user && user.email === ADMIN_EMAIL) {
+    // 로그인됨 → 에디터 화면 표시
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('write-screen').style.display = 'flex';
+
+    // 수정 모드라면 기존 데이터 로드, 아니면 임시저장 확인
+    if (editId) {
+      document.title = '글 수정 — EZLONG';
+      await loadExistingPost(editId);
+    } else {
+      // 새 글: 외부 노출 작성일 기본값 = 오늘
+      document.getElementById('post-display-date').value = todayDateString();
+      checkDraftOnLoad();
+    }
+  } else {
+    // 비로그인 → 로그인 화면 표시
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('write-screen').style.display = 'none';
+  }
+});
+
+// ── 기존 게시글 로드 (수정 모드) ─────────────────────────────
+async function loadExistingPost(id) {
+  try {
+    const doc = await db.collection('posts').doc(id).get();
+    if (!doc.exists) { alert('게시글을 찾을 수 없습니다.'); return; }
+    const data = doc.data();
+    document.getElementById('post-title').value = data.title || '';
+    document.getElementById('post-category').value = data.category || '';
+    quill.root.innerHTML = data.content || '';
+
+    // 외부 노출 작성일: displayDate 우선, 없으면 createdAt에서 날짜 추출
+    const baseTs = data.displayDate || data.createdAt;
+    document.getElementById('post-display-date').value = baseTs
+      ? tsToDateString(baseTs)
+      : todayDateString();
+
+    // 발행된 글이면 "발행 취소" 버튼 노출
+    editPostWasPublished = data.published === true;
+    if (editPostWasPublished) {
+      document.getElementById('btn-unpublish').classList.add('visible');
+    }
+  } catch (e) {
+    alert('게시글을 불러오지 못했습니다.');
+    console.error(e);
+  }
+}
+
+// ── 구글 로그인 처리 ──────────────────────────────────────────
+document.getElementById('btn-login').addEventListener('click', async () => {
+  const errEl = document.getElementById('login-error');
+  const btn   = document.getElementById('btn-login');
+
+  btn.disabled = true;
+  btn.innerHTML = `<span style="font-size:14px;">로그인 중...</span>`;
+  errEl.style.display = 'none';
+
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const result   = await auth.signInWithPopup(provider);
+    const user     = result.user;
+
+    // 관리자 이메일이 아니면 즉시 로그아웃
+    if (user.email !== ADMIN_EMAIL) {
+      await auth.signOut();
+      errEl.textContent = `${user.email} 계정은 접근 권한이 없습니다.`;
+      errEl.style.display = 'block';
+    }
+  } catch (e) {
+    if (e.code !== 'auth/popup-closed-by-user') {
+      errEl.textContent = `로그인 실패: ${e.message}`;
+      errEl.style.display = 'block';
+    }
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Google 계정으로 로그인`;
+  }
+});
+
+// 로그아웃은 write.html에서 제거됨 (board.html 어드민바에서 사용)
+
+// ── 발행 취소 (임시저장으로 되돌리기) ────────────────────────
+async function unpublishPost() {
+  if (!editId) return;
+  if (!confirm('이 글을 임시저장 상태로 되돌리겠습니까?\n글 목록에서 즉시 숨겨집니다.')) return;
+
+  const btn = document.getElementById('btn-unpublish');
+  btn.disabled = true;
+  btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg><span class="btn-label">처리 중...</span>`;
+
+  try {
+    await db.collection('posts').doc(editId).update({
+      published: false,
+      scheduledAt: null,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    const status = document.getElementById('save-status');
+    status.className = 'save-status success';
+    status.textContent = '임시저장 상태로 변경되었습니다.';
+    editPostWasPublished = false;
+    btn.classList.remove('visible');
+    setTimeout(() => { location.href = 'board.html'; }, 1200);
+  } catch (e) {
+    console.error(e);
+    alert('발행 취소에 실패했습니다: ' + e.message);
+    btn.disabled = false;
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg><span class="btn-label">발행 취소</span>`;
+  }
+}
+
+// ── 게시글 발행/저장 ─────────────────────────────────────────
+document.getElementById('btn-publish').addEventListener('click', async () => {
+  const title    = document.getElementById('post-title').value.trim();
+  const category = document.getElementById('post-category').value;
+  const content  = quill.root.innerHTML;
+  const textLen  = quill.getText().trim().length;
+
+  if (!title) { alert('제목을 입력해 주세요.'); return; }
+  if (textLen < 10) { alert('본문 내용이 너무 짧습니다.'); return; }
+
+  const isScheduled = !!scheduledAt;
+
+  // 예약 발행인 경우 확인
+  if (isScheduled) {
+    const dt = scheduledAt;
+    const msg = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')} ${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')} 에 예약 발행합니다.`;
+    if (!confirm(msg + '\n\n예약 저장하시겠습니까?')) return;
+  }
+
+  const btn    = document.getElementById('btn-publish');
+  const status = document.getElementById('save-status');
+  btn.disabled = true;
+  btn.innerHTML = `<span style="font-size:13px;">${isScheduled ? '예약 저장 중...' : '저장 중...'}</span>`;
+  status.className = 'save-status';
+  status.textContent = '';
+
+  try {
+    // 외부 노출 작성일 처리: 날짜 선택값을 정오 Timestamp로 변환
+    const displayDateVal = document.getElementById('post-display-date').value;
+    const displayDateTs = displayDateVal
+      ? firebase.firestore.Timestamp.fromDate(dateStringToNoon(displayDateVal))
+      : null;
+
+    const postData = {
+      title,
+      category: category || null,
+      content,
+      author:    AUTHOR_NAME,
+      published: !isScheduled,
+      scheduledAt: isScheduled ? firebase.firestore.Timestamp.fromDate(scheduledAt) : null,
+      displayDate: displayDateTs,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    let redirectUrl;
+
+    if (editId) {
+      // 수정 모드
+      await db.collection('posts').doc(editId).update(postData);
+      status.className = 'save-status success';
+      status.textContent = isScheduled ? '예약 발행이 설정되었습니다.' : '수정이 완료되었습니다.';
+      redirectUrl = isScheduled ? 'board.html' : `post.html?id=${editId}`;
+    } else {
+      // 신규 작성
+      postData.createdAt    = firebase.firestore.FieldValue.serverTimestamp();
+      postData.likes        = 0;
+      postData.commentCount = 0;
+      const docRef = await db.collection('posts').add(postData);
+      status.className = 'save-status success';
+      status.textContent = isScheduled ? '예약 발행이 설정되었습니다.' : '게시글이 발행되었습니다.';
+      redirectUrl = isScheduled ? 'board.html' : `post.html?id=${docRef.id}`;
+    }
+
+    // 발행/예약 완료 → 임시저장 삭제
+    clearDraft();
+
+    setTimeout(() => { location.href = redirectUrl; }, 1000);
+
+  } catch (e) {
+    console.error(e);
+    status.className = 'save-status error';
+    status.textContent = `저장 실패: ${e.message}`;
+    btn.disabled = false;
+    btn.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
+      <span class="btn-label">발행</span>`;
+  }
+});
+
+// ── 페이지 이탈 경고 ─────────────────────────────────────────
+window.addEventListener('beforeunload', e => {
+  const hasContent = quill.getText().trim().length > 0 || document.getElementById('post-title').value.trim().length > 0;
+  if (hasContent && !document.getElementById('btn-publish').disabled) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+
+// ════════════════════════════════════════════════════════════
+// 임시저장 (Draft) 기능
+// ════════════════════════════════════════════════════════════
+const DRAFT_KEY = 'ezlong_draft';
+let autoSaveTimer = null;
+
+// 임시저장 실행
+function saveDraft(auto = false) {
+  const title   = document.getElementById('post-title').value.trim();
+  const content = quill.root.innerHTML;
+  const textLen = quill.getText().trim().length;
+
+  // 빈 내용이면 저장 안 함
+  if (!title && textLen < 5) return;
+
+  const draft = {
+    title,
+    category: document.getElementById('post-category').value,
+    displayDate: document.getElementById('post-display-date').value,
+    content,
+    savedAt:  Date.now()
+  };
+  localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+
+  // 저장 표시
+  const dot    = document.getElementById('autosave-dot');
+  const status = document.getElementById('draft-status');
+  dot.classList.add('active');
+  status.textContent = auto ? '자동 임시저장됨' : '임시저장 완료';
+  status.style.color = 'var(--yl)';
+  setTimeout(() => {
+    dot.classList.remove('active');
+    status.textContent = '';
+  }, 2500);
+}
+
+// 임시저장 불러오기 (배너 버튼)
+function restoreDraft() {
+  const raw = localStorage.getItem(DRAFT_KEY);
+  if (!raw) return;
+  try {
+    const draft = JSON.parse(raw);
+    document.getElementById('post-title').value    = draft.title    || '';
+    document.getElementById('post-category').value = draft.category || '';
+    document.getElementById('post-display-date').value = draft.displayDate || todayDateString();
+    quill.root.innerHTML = draft.content || '';
+    quill.setSelection(quill.getLength(), 0);
+    document.getElementById('draft-banner').classList.remove('visible');
+
+    const status = document.getElementById('draft-status');
+    status.textContent = '임시저장 불러옴';
+    status.style.color = 'var(--gr)';
+    setTimeout(() => { status.textContent = ''; }, 2500);
+  } catch(e) { console.error(e); }
+}
+
+// 임시저장 버리기 (배너 버튼)
+function discardDraft() {
+  localStorage.removeItem(DRAFT_KEY);
+  document.getElementById('draft-banner').classList.remove('visible');
+}
+
+// 임시저장 삭제 (발행/예약저장 후)
+function clearDraft() {
+  localStorage.removeItem(DRAFT_KEY);
+  document.getElementById('draft-banner').classList.remove('visible');
+}
+
+// 로그인 후 임시저장 존재 여부 확인
+function checkDraftOnLoad() {
+  const raw = localStorage.getItem(DRAFT_KEY);
+  if (!raw) return;
+  try {
+    const draft = JSON.parse(raw);
+    // 실질적 내용이 없으면 삭제
+    if (!draft.title && (!draft.content || draft.content === '<p><br></p>')) {
+      localStorage.removeItem(DRAFT_KEY);
+      return;
+    }
+    // 저장 시각 포맷
+    const d = new Date(draft.savedAt);
+    const fmt = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')} 저장`;
+    document.getElementById('draft-banner-time').textContent = `(${fmt})`;
+    document.getElementById('draft-banner').classList.add('visible');
+  } catch(e) {
+    localStorage.removeItem(DRAFT_KEY);
+  }
+}
+
+// 자동저장: 5초 무입력 시 트리거
+function triggerAutoSave() {
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(() => saveDraft(true), 5000);
+}
+quill.on('text-change', triggerAutoSave);
+document.getElementById('post-title').addEventListener('input', triggerAutoSave);
+document.getElementById('post-category').addEventListener('change', triggerAutoSave);
+
+// 임시저장 버튼
+document.getElementById('btn-draft').addEventListener('click', () => saveDraft(false));
+
+
+// ════════════════════════════════════════════════════════════
+// 예약발행 모달
+// ════════════════════════════════════════════════════════════
+let scheduledAt = null; // Date 객체, null이면 예약 없음
+
+function openScheduleModal() {
+  // 기본값: 현재 시각 + 1시간, 분은 0으로 초기화
+  const base = new Date();
+  base.setHours(base.getHours() + 1, 0, 0, 0);
+  // datetime-local 입력에 맞는 로컬 ISO 문자열 (YYYY-MM-DDTHH:mm)
+  const toLocal = dt => new Date(dt.getTime() - dt.getTimezoneOffset() * 60000)
+    .toISOString().slice(0, 16);
+
+  document.getElementById('schedule-datetime').value = scheduledAt
+    ? toLocal(scheduledAt)
+    : toLocal(base);
+
+  // 최솟값: 현재 시각
+  document.getElementById('schedule-datetime').min = toLocal(new Date());
+
+  document.getElementById('schedule-modal').classList.add('visible');
+}
+
+function closeScheduleModal() {
+  document.getElementById('schedule-modal').classList.remove('visible');
+}
+
+function confirmSchedule() {
+  const val = document.getElementById('schedule-datetime').value;
+  if (!val) { alert('날짜와 시간을 선택해 주세요.'); return; }
+
+  const dt = new Date(val);
+  if (dt <= new Date()) { alert('현재 시각 이후로 설정해 주세요.'); return; }
+
+  scheduledAt = dt;
+
+  // 발행 버튼 텍스트 변경 (예약이 걸렸음을 표시)
+  const publishBtn = document.getElementById('btn-publish');
+  publishBtn.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
+    <span class="btn-label">예약 저장</span>`;
+
+  // 예약발행 버튼 상태 업데이트
+  const schBtn = document.getElementById('btn-schedule');
+  const mm = String(dt.getMonth()+1).padStart(2,'0');
+  const dd = String(dt.getDate()).padStart(2,'0');
+  const hh = String(dt.getHours()).padStart(2,'0');
+  const mn = String(dt.getMinutes()).padStart(2,'0');
+  schBtn.classList.add('scheduled');
+  schBtn.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span class="btn-label">${mm}/${dd} ${hh}:${mn} 예약</span>`;
+
+  closeScheduleModal();
+}
+
+// 예약발행 버튼 — 이미 예약된 경우 클릭 시 취소/재설정
+document.getElementById('btn-schedule').addEventListener('click', () => {
+  if (scheduledAt) {
+    if (confirm('예약을 초기화하고 재설정하시겠습니까?')) {
+      scheduledAt = null;
+      const schBtn = document.getElementById('btn-schedule');
+      schBtn.classList.remove('scheduled');
+      schBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span class="btn-label">예약발행</span>`;
+      // 발행 버튼도 원래대로
+      document.getElementById('btn-publish').innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
+        <span class="btn-label">발행</span>`;
+      openScheduleModal();
+    }
+  } else {
+    openScheduleModal();
+  }
+});
+
+// 모달 배경 클릭으로 닫기
+document.getElementById('schedule-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('schedule-modal')) closeScheduleModal();
+});
+
+
+// ════════════════════════════════════════════════════════════
+// 찾기/치환 (Replace Panel)
+// ════════════════════════════════════════════════════════════
+const REPLACE_KEY = 'ezlong_replacements';
+
+const DEFAULT_REPLACEMENTS = [
+  { from: '—', to: '-' },
+  { from: '–', to: '-' },
+  { from: '**', to: '' },
+  { from: '* ', to: '' },
+  { from: '· ', to: '' },
+];
+
+let savedReplacements = [];
+
+function loadSavedReplacements() {
+  const raw = localStorage.getItem(REPLACE_KEY);
+  if (raw) {
+    try { savedReplacements = JSON.parse(raw); }
+    catch(e) { savedReplacements = [...DEFAULT_REPLACEMENTS]; }
+  } else {
+    savedReplacements = [...DEFAULT_REPLACEMENTS];
+    localStorage.setItem(REPLACE_KEY, JSON.stringify(savedReplacements));
+  }
+  renderSavedList();
+}
+
+function persistReplacements() {
+  localStorage.setItem(REPLACE_KEY, JSON.stringify(savedReplacements));
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderSavedList() {
+  const c = document.getElementById('saved-list');
+  if (!savedReplacements.length) {
+    c.innerHTML = '<p style="font-size:13px;color:var(--t3);padding:6px 0;">등록된 치환어가 없습니다.</p>';
+    return;
+  }
+  c.innerHTML = savedReplacements.map((item, i) => `
+    <div class="si">
+      <span class="si-from">${escHtml(item.from) || '(빈값)'}</span>
+      <span class="si-arrow">→</span>
+      <span class="si-to ${item.to ? 'has-val' : ''}">${item.to ? escHtml(item.to) : '(삭제)'}</span>
+      <div class="si-btns">
+        <button class="si-btn" onclick="rpApplySingle(${i})">적용</button>
+        <button class="si-btn del" onclick="rpRemoveSaved(${i})">삭제</button>
+      </div>
+    </div>`).join('');
+}
+
+// 패널 열기/닫기 토글
+function toggleReplacePanel() {
+  const panel = document.getElementById('replace-panel');
+  const btn   = document.getElementById('btn-replace');
+  const isOpen = panel.classList.toggle('visible');
+  btn.classList.toggle('active', isOpen);
+  if (isOpen) {
+    loadSavedReplacements();
+    document.getElementById('rp-find').focus();
+  }
+}
+function closeReplacePanel() {
+  document.getElementById('replace-panel').classList.remove('visible');
+  document.getElementById('btn-replace').classList.remove('active');
+}
+
+// 탭 전환
+function switchRplTab(id, btn) {
+  document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.rtab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+// ── 기본 찾기/바꾸기 ──────────────────────────────────────
+let rpFindIdx = 0;
+let rpLastFoundIdx = -1;
+let rpLastFoundSearch = '';
+
+function rpFindNext() {
+  const search = document.getElementById('rp-find').value;
+  if (!search) return;
+  if (search !== rpLastFoundSearch) { rpFindIdx = 0; rpLastFoundSearch = search; }
+
+  const text = quill.getText();
+  let idx = text.indexOf(search, rpFindIdx);
+
+  if (idx === -1 && rpFindIdx > 0) {
+    idx = text.indexOf(search, 0);  // 처음부터 wrap
+  }
+
+  const msg = document.getElementById('rp-msg');
+  if (idx !== -1) {
+    quill.setSelection(idx, search.length);
+    rpLastFoundIdx = idx;
+    rpFindIdx = idx + search.length;
+    const total = (text.split(search).length - 1);
+    msg.className = 'rp-msg ok';
+    msg.textContent = `총 ${total}개 발견`;
+  } else {
+    rpLastFoundIdx = -1;
+    msg.className = 'rp-msg err';
+    msg.textContent = '찾을 수 없음';
+  }
+}
+
+function rpReplaceOne() {
+  const search  = document.getElementById('rp-find').value;
+  const replace = document.getElementById('rp-replace').value;
+  const msg     = document.getElementById('rp-msg');
+  if (!search) return;
+
+  if (rpLastFoundIdx === -1) { rpFindNext(); return; }
+
+  quill.deleteText(rpLastFoundIdx, search.length);
+  if (replace) quill.insertText(rpLastFoundIdx, replace);
+  rpLastFoundIdx = -1;
+  rpFindIdx = rpLastFoundIdx + replace.length;
+  msg.className = 'rp-msg ok';
+  msg.textContent = '치환됨';
+  rpFindNext();
+}
+
+function rpReplaceAll() {
+  const search  = document.getElementById('rp-find').value;
+  const replace = document.getElementById('rp-replace').value;
+  const msg     = document.getElementById('rp-msg');
+  if (!search) return;
+
+  const count = doReplaceAll(search, replace);
+  rpLastFoundIdx = -1; rpFindIdx = 0;
+  msg.className = count > 0 ? 'rp-msg ok' : 'rp-msg';
+  msg.textContent = count > 0 ? `${count}개 치환됨` : '발견 없음';
+}
+
+// 핵심 치환 함수 — 역순 처리로 인덱스 보존
+function doReplaceAll(search, replace) {
+  if (!search) return 0;
+  const text = quill.getText();
+  const positions = [];
+  let idx = text.indexOf(search);
+  while (idx !== -1) {
+    positions.push(idx);
+    idx = text.indexOf(search, idx + search.length);
+  }
+  for (let i = positions.length - 1; i >= 0; i--) {
+    quill.deleteText(positions[i], search.length);
+    if (replace) quill.insertText(positions[i], replace);
+  }
+  return positions.length;
+}
+
+// ── 등록된 치환어 ──────────────────────────────────────────
+function rpAddSaved() {
+  const from = prompt('찾을 내용을 입력하세요:');
+  if (from === null || from === '') return;
+  const to = prompt('바꿀 내용 (빈칸으로 두면 삭제):', '') ?? '';
+  savedReplacements.push({ from, to });
+  persistReplacements();
+  renderSavedList();
+}
+
+function rpRemoveSaved(i) {
+  if (!confirm('삭제하시겠습니까?')) return;
+  savedReplacements.splice(i, 1);
+  persistReplacements();
+  renderSavedList();
+}
+
+function rpApplySingle(i) {
+  const item = savedReplacements[i];
+  const count = doReplaceAll(item.from, item.to);
+  const msg = document.getElementById('batch-msg');
+  msg.className = count > 0 ? 'rp-msg ok' : 'rp-msg';
+  msg.textContent = `${count}개 치환됨`;
+}
+
+function rpBatchReplace() {
+  let total = 0;
+  savedReplacements.forEach(item => { total += doReplaceAll(item.from, item.to); });
+  const msg = document.getElementById('batch-msg');
+  msg.className = total > 0 ? 'rp-msg ok' : 'rp-msg';
+  msg.textContent = total > 0 ? `총 ${total}개 치환됨` : '변경 없음';
+}
+
+// ── 자동 서식 ──────────────────────────────────────────────
+function rpAutoFormat() {
+  const doH    = document.getElementById('opt-headings').checked;
+  const doBold = document.getElementById('opt-bold-md').checked;
+  const doAuto = document.getElementById('opt-auto-h').checked;
+  let changes = 0;
+
+  // 순서 중요: 볼드 마커 먼저(인라인), 헤딩(라인 포맷), 자동감지 순
+  if (doBold) changes += applyBoldMarkers();
+  if (doH)    changes += applyMarkdownHeadings();
+  if (doAuto) changes += applyAutoHeadings();
+
+  const msg = document.getElementById('auto-msg');
+  msg.className = changes > 0 ? 'rp-msg ok' : 'rp-msg';
+  msg.textContent = changes > 0 ? `${changes}곳 서식 적용됨` : '변경 없음';
+}
+
+// 마크다운 **텍스트** → 볼드
+function applyBoldMarkers() {
+  let changes = 0;
+  const text = quill.getText();
+  const re = /\*\*([^*\n]+)\*\*/g;
+  const matches = [];
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    matches.push({ index: m.index, fullLen: m[0].length, inner: m[1] });
+  }
+  // 역순 처리
+  for (let i = matches.length - 1; i >= 0; i--) {
+    const { index, fullLen, inner } = matches[i];
+    quill.deleteText(index, fullLen);
+    quill.insertText(index, inner, { bold: true });
+    changes++;
+  }
+  return changes;
+}
+
+// 마크다운 # 헤딩 → Quill 제목 스타일 (역순)
+function applyMarkdownHeadings() {
+  let changes = 0;
+  const text = quill.getText();
+  const lines = text.split('\n');
+  const lineData = [];
+  let ci = 0;
+  lines.forEach(line => { lineData.push({ line, start: ci }); ci += line.length + 1; });
+
+  for (let i = lineData.length - 1; i >= 0; i--) {
+    const { line, start } = lineData[i];
+    let level = 0, prefixLen = 0;
+    if (line.startsWith('### '))      { level = 3; prefixLen = 4; }
+    else if (line.startsWith('## '))  { level = 2; prefixLen = 3; }
+    else if (line.startsWith('# '))   { level = 1; prefixLen = 2; }
+
+    if (level > 0) {
+      quill.deleteText(start, prefixLen);
+      quill.formatLine(start, 1, 'header', level);
+      changes++;
+    }
+  }
+  return changes;
+}
+
+// 짧은 단독 줄 → 중간 제목(볼드) 자동 감지
+function applyAutoHeadings() {
+  let changes = 0;
+  const text = quill.getText();
+  const lines = text.split('\n');
+  const lineData = [];
+  let ci = 0;
+  lines.forEach((line, idx) => { lineData.push({ line, start: ci, idx }); ci += line.length + 1; });
+
+  const PUNCT_END = /[.。,，!！?？:：…]$/;
+
+  const candidates = lineData.filter(({ line, idx }) => {
+    const t = line.trim();
+    if (t.length < 2 || t.length > 40) return false;
+    if (PUNCT_END.test(t)) return false;
+    // 숫자·기호만으로 구성된 줄 제외
+    if (/^[\d\s\-–—·*#.]+$/.test(t)) return false;
+    // 한글 또는 영문자 포함 필수
+    if (!/[가-힣a-zA-Z]/.test(t)) return false;
+    // 이미 마크다운 마커 있는 줄 제외
+    if (t.startsWith('#') || t.startsWith('*')) return false;
+    // 전후 줄 중 하나라도 내용이 있어야 '중간' 제목
+    const prev = idx > 0 ? lineData[idx - 1].line.trim() : '';
+    const next = idx < lineData.length - 1 ? lineData[idx + 1].line.trim() : '';
+    return prev.length > 0 || next.length > 0;
+  });
+
+  // 역순
+  for (let i = candidates.length - 1; i >= 0; i--) {
+    const { line, start } = candidates[i];
+    const t = line.trim();
+    const leadOffset = line.indexOf(t);
+    // 이미 볼드인지 확인
+    const existingFormats = quill.getFormat(start + leadOffset, t.length);
+    if (!existingFormats.bold) {
+      quill.formatText(start + leadOffset, t.length, { bold: true });
+      changes++;
+    }
+  }
+  return changes;
+}
+
+
+// ════════════════════════════════════════════════════════════
+// 커스텀 서식 규칙
+// ════════════════════════════════════════════════════════════
+const FMT_RULES_KEY = 'ezlong_fmt_rules';
+let customFmtRules = [];
+
+const FMT_LABELS = { bold: '볼드', italic: '이탤릭', h1: 'H1 제목', h2: 'H2 제목', h3: 'H3 소제목' };
+
+function loadFmtRules() {
+  const raw = localStorage.getItem(FMT_RULES_KEY);
+  try { customFmtRules = raw ? JSON.parse(raw) : []; }
+  catch(e) { customFmtRules = []; }
+  renderFmtRules();
+}
+
+function saveFmtRules() {
+  localStorage.setItem(FMT_RULES_KEY, JSON.stringify(customFmtRules));
+}
+
+function renderFmtRules() {
+  const c = document.getElementById('fmt-rules-list');
+  if (!c) return;
+  if (!customFmtRules.length) {
+    c.innerHTML = '<p style="font-size:12px;color:var(--t3);padding:4px 0;">등록된 규칙이 없습니다.</p>';
+    return;
+  }
+  c.innerHTML = customFmtRules.map((r, i) => `
+    <div class="si">
+      <span class="si-from">${escHtml(r.pattern)}</span>
+      <span class="si-arrow">→</span>
+      <span class="si-to has-val">${FMT_LABELS[r.format] || r.format}</span>
+      <div class="si-btns">
+        <button class="si-btn del" onclick="rpRemoveFmtRule(${i})">삭제</button>
+      </div>
+    </div>`).join('');
+}
+
+function rpAddFmtRule() {
+  const pattern = prompt('서식을 적용할 텍스트 패턴을 입력하세요:');
+  if (!pattern) return;
+  const fmtChoice = prompt('서식 선택:\n1) 볼드\n2) 이탤릭\n3) H1 제목\n4) H2 제목\n5) H3 소제목\n\n숫자를 입력하세요:', '1');
+  const fmtMap = { '1': 'bold', '2': 'italic', '3': 'h1', '4': 'h2', '5': 'h3' };
+  const format = fmtMap[fmtChoice];
+  if (!format) { alert('올바른 번호를 입력해 주세요.'); return; }
+  customFmtRules.push({ pattern, format });
+  saveFmtRules();
+  renderFmtRules();
+}
+
+function rpRemoveFmtRule(i) {
+  if (!confirm('삭제하시겠습니까?')) return;
+  customFmtRules.splice(i, 1);
+  saveFmtRules();
+  renderFmtRules();
+}
+
+function applyCustomFmtRules() {
+  let changes = 0;
+  customFmtRules.forEach(rule => {
+    const text = quill.getText();
+    const positions = [];
+    let idx = text.indexOf(rule.pattern);
+    while (idx !== -1) {
+      positions.push(idx);
+      idx = text.indexOf(rule.pattern, idx + rule.pattern.length);
+    }
+    for (let i = positions.length - 1; i >= 0; i--) {
+      const pos = positions[i];
+      if (rule.format === 'h1' || rule.format === 'h2' || rule.format === 'h3') {
+        const level = parseInt(rule.format[1]);
+        quill.formatLine(pos, 1, 'header', level);
+      } else {
+        quill.formatText(pos, rule.pattern.length, rule.format, true);
+      }
+      changes++;
+    }
+  });
+  return changes;
+}
+
+// rpAutoFormat에 커스텀 규칙 포함
+const _origAutoFormat = rpAutoFormat;
+// eslint-disable-next-line no-func-assign
+rpAutoFormat = function() {
+  _origAutoFormat();
+  const extra = applyCustomFmtRules();
+  if (extra > 0) {
+    const msg = document.getElementById('auto-msg');
+    const current = msg.textContent;
+    const m = current.match(/(\d+)곳/);
+    const prev = m ? parseInt(m[1]) : 0;
+    msg.textContent = `${prev + extra}곳 서식 적용됨`;
+  }
+  loadFmtRules(); // 렌더 갱신
+};
+
+// 패널 열릴 때 커스텀 규칙도 로드
+const _origToggle = toggleReplacePanel;
+// eslint-disable-next-line no-func-assign
+toggleReplacePanel = function() {
+  _origToggle();
+  loadFmtRules();
+};
+</script>
+</body>
+</html>

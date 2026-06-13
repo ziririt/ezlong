@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATMR 관리자 — ezlong.com</title>
+  <meta name="robots" content="noindex, nofollow">
+  <script src="https://accounts.google.com/gsi/client" async></script>
+  <style>
+    :root {
+      --bg:      #0d1117;
+      --surface: #161b22;
+      --border:  #30363d;
+      --text:    #e6edf3;
+      --muted:   #8b949e;
+      --green:   #3fb950;
+      --red:     #f85149;
+      --yellow:  #d29922;
+      --blue:    #58a6ff;
+      --accent:  #1f6feb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    /* ── 로그인 화면 ──────────────────────────── */
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 20px;
+    }
+    .login-logo  { font-size: 1.8rem; font-weight: 800; color: var(--blue); letter-spacing: -.03em; }
+    .login-sub   { color: var(--muted); font-size: 0.88rem; }
+    .login-err   { color: var(--red); font-size: 0.85rem; display: none; }
+
+    /* ── 대시보드 ─────────────────────────────── */
+    #dashboard { display: none; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+    /* 헤더 */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .header-title { font-size: 1.25rem; font-weight: 700; color: var(--blue); }
+    .header-right { display: flex; align-items: center; gap: 14px; }
+    .header-meta  { color: var(--muted); font-size: 0.82rem; text-align: right; line-height: 1.6; }
+    .btn-refresh  {
+      background: var(--accent); border: none; color: #fff;
+      padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.82rem;
+    }
+    .btn-refresh:hover { opacity: .85; }
+    .btn-logout  {
+      background: none; border: 1px solid var(--border); color: var(--muted);
+      padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;
+    }
+    .btn-logout:hover { border-color: var(--text); color: var(--text); }
+
+    /* 상태 카드 */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-bottom: 32px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px 20px;
+    }
+    .card-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+    .card-val   { font-size: 1.55rem; font-weight: 700; margin-bottom: 4px; }
+    .card-sub   { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+    .ok    { color: var(--green); }
+    .warn  { color: var(--yellow); }
+    .err   { color: var(--red); }
+    .dim   { color: var(--muted); }
+
+    /* 섹션 */
+    .section { margin-bottom: 36px; }
+    .section-title {
+      font-size: 0.95rem; font-weight: 600;
+      padding-bottom: 10px; border-bottom: 1px solid var(--border);
+      margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+    }
+    .section-badge {
+      font-size: 0.75rem; font-weight: 600; padding: 2px 8px;
+      border-radius: 10px; background: rgba(88,166,255,.12); color: var(--blue);
+    }
+
+    /* 테이블 */
+    .tbl-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+    th {
+      background: var(--surface); color: var(--muted); font-weight: 500;
+      text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,.02); }
+
+    /* 배지 */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 9px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;
+    }
+    .badge::before { content:''; width:6px; height:6px; border-radius:50%; }
+    .b-ok   { background: rgba(63,185,80,.13);  color: var(--green);  }
+    .b-ok::before  { background: var(--green); }
+    .b-fail { background: rgba(248,81,73,.13);  color: var(--red);    }
+    .b-fail::before { background: var(--red); }
+    .b-run  { background: rgba(88,166,255,.13); color: var(--blue);   }
+    .b-run::before  { background: var(--blue); animation: pulse 1.2s infinite; }
+    .b-skip { background: rgba(139,148,158,.13); color: var(--muted); }
+    .b-skip::before { background: var(--muted); }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* 스케줄 분석 */
+    .sched-summary {
+      display: flex; gap: 20px; margin-bottom: 14px; flex-wrap: wrap;
+    }
+    .sched-stat { text-align: center; }
+    .sched-stat-val { font-size: 1.4rem; font-weight: 700; }
+    .sched-stat-lbl { font-size: 0.78rem; color: var(--muted); }
+
+    .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 4px; }
+    .slot {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 12px; border-radius: 6px; font-size: 0.81rem;
+    }
+    .slot-ok   { background: rgba(63,185,80,.07); }
+    .slot-miss { background: rgba(248,81,73,.07); }
+    .slot-skip { background: rgba(139,148,158,.05); color: var(--muted); }
+    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .dot-ok   { background: var(--green); }
+    .dot-miss { background: var(--red); }
+    .dot-skip { background: var(--border); }
+    .slot-time { font-family: 'SF Mono', Consolas, monospace; font-size: 0.79rem; color: var(--muted); min-width: 130px; }
+
+    /* 로딩 */
+    .loading { text-align: center; color: var(--muted); padding: 48px; }
+    .spin {
+      display: inline-block; width: 20px; height: 20px;
+      border: 2px solid var(--border); border-top-color: var(--blue);
+      border-radius: 50%; animation: spin .8s linear infinite; margin-right: 10px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* 경고 배너 */
+    .setup-banner {
+      background: rgba(210,153,34,.08); border: 1px solid rgba(210,153,34,.3);
+      border-radius: 8px; padding: 14px 18px; margin-bottom: 24px;
+      font-size: 0.85rem; color: var(--yellow); line-height: 1.7;
+      display: none;
+    }
+    .setup-banner code {
+      background: rgba(210,153,34,.15); padding: 1px 5px; border-radius: 3px;
+      font-family: monospace;
+    }
+
+    /* 수동 실행 카드 */
+    .dispatch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+    .dispatch-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 16px 18px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .dispatch-card-name  { font-size: .88rem; font-weight: 600; }
+    .dispatch-card-file  { font-size: .77rem; color: var(--muted); font-family: 'SF Mono', Consolas, monospace; }
+    .dispatch-card-desc  { font-size: .8rem;  color: var(--muted); line-height: 1.5; margin-bottom: 4px; }
+    .btn-dispatch {
+      background: var(--accent); border: none; color: #fff;
+      padding: 7px 16px; border-radius: 6px; cursor: pointer;
+      font-size: .82rem; font-weight: 600; align-self: flex-start;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: opacity .15s;
+    }
+    .btn-dispatch:hover  { opacity: .85; }
+    .btn-dispatch:disabled { opacity: .45; cursor: not-allowed; }
+    .dispatch-status {
+      font-size: .79rem; line-height: 1.5; min-height: 18px;
+      margin-top: 2px;
+    }
+    .pat-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 16px 20px; margin-bottom: 16px;
+    }
+    .pat-desc { font-size: .83rem; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
+    .pat-row  { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .pat-input {
+      flex: 1; min-width: 220px;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); padding: 7px 12px; border-radius: 6px;
+      font-size: .83rem; font-family: 'SF Mono', Consolas, monospace;
+    }
+    .pat-input:focus { outline: none; border-color: var(--blue); }
+    .btn-pat-save  {
+      background: var(--accent); border: none; color: #fff;
+      padding: 7px 16px; border-radius: 6px; cursor: pointer; font-size: .82rem;
+    }
+    .btn-pat-clear {
+      background: none; border: 1px solid var(--border); color: var(--muted);
+      padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: .82rem;
+    }
+    .btn-pat-save:hover  { opacity: .85; }
+    .btn-pat-clear:hover { border-color: var(--red); color: var(--red); }
+    .pat-msg { margin-top: 8px; font-size: .81rem; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════
+     로그인 화면
+════════════════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-logo">ATMR 관리자</div>
+  <div class="login-sub">ezlong.com 시스템 모니터링 · 관리자 전용</div>
+  <div id="google-btn"></div>
+  <div class="login-err" id="login-err">접근 권한이 없습니다.</div>
+  <div id="client-id-warn" style="color:var(--yellow);font-size:.82rem;display:none;text-align:center;max-width:400px;line-height:1.6">
+    Google Client ID가 설정되지 않았습니다.<br>아래 설정 안내를 참고해 <code>GOOGLE_CLIENT_ID</code>를 교체하세요.
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     대시보드
+════════════════════════════════════════════════════ -->
+<div id="dashboard">
+  <div class="wrap">
+
+    <!-- 헤더 -->
+    <div class="header">
+      <div class="header-title">ATMR 관리자 대시보드</div>
+      <div class="header-right">
+        <button class="btn-refresh" onclick="loadDashboard()">새로고침</button>
+        <div class="header-meta">
+          <div id="user-email" style="color:var(--text)"></div>
+          <div id="current-time"></div>
+        </div>
+        <button class="btn-logout" onclick="logout()">로그아웃</button>
+      </div>
+    </div>
+
+    <!-- Google Client ID 미설정 경고 배너 -->
+    <div class="setup-banner" id="setup-banner">
+      <strong>Google OAuth Client ID 설정 필요</strong><br>
+      1. <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:var(--yellow)">Google Cloud Console → APIs &amp; Services → Credentials</a> 접속<br>
+      2. "OAuth 2.0 클라이언트 ID" 생성 (유형: 웹 애플리케이션)<br>
+      3. 승인된 자바스크립트 원본에 <code>https://ezlong.com</code> 추가<br>
+      4. 발급된 클라이언트 ID를 이 파일 상단 <code>GOOGLE_CLIENT_ID</code> 상수에 교체
+    </div>
+
+    <!-- 콘텐츠 영역 -->
+    <div id="dash-content">
+      <div class="loading"><span class="spin"></span>데이터 로딩 중...</div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+// ════════════════════════════════════════════════════
+//  설정 — Google OAuth Client ID를 여기에 입력하세요
+// ════════════════════════════════════════════════════
+const GOOGLE_CLIENT_ID = '593290365449-roeudgdj5dcn1kp71o8v32tq8tg2hg8u.apps.googleusercontent.com';
+const ALLOWED_EMAIL    = 'ziririt@gmail.com';
+const GITHUB_REPO      = 'ziririt/ezlong';
+
+// ── KST 실시간 시계 ─────────────────────────────────────────────────
+setInterval(() => {
+  const kst = kstDate(new Date());
+  const f = n => String(n).padStart(2, '0');
+  document.getElementById('current-time').textContent =
+    `${kst.getUTCFullYear()}-${f(kst.getUTCMonth()+1)}-${f(kst.getUTCDate())} `+
+    `${f(kst.getUTCHours())}:${f(kst.getUTCMinutes())}:${f(kst.getUTCSeconds())} KST`;
+}, 1000);
+
+// ── Google 로그인 초기화 ──────────────────────────────────────────────
+window.onload = () => {
+  if (GOOGLE_CLIENT_ID.startsWith('YOUR_')) {
+    document.getElementById('client-id-warn').style.display = 'block';
+    return;
+  }
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleCredentialResponse,
+    auto_select: false,
+  });
+  google.accounts.id.renderButton(
+    document.getElementById('google-btn'),
+    { theme: 'filled_blue', size: 'large', text: 'signin_with', locale: 'ko', shape: 'rectangular' }
+  );
+};
+
+function handleCredentialResponse(response) {
+  try {
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    if (payload.email === ALLOWED_EMAIL) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('user-email').textContent = payload.email;
+      loadDashboard();
+    } else {
+      document.getElementById('login-err').style.display = 'block';
+    }
+  } catch(e) { console.error('Login error:', e); }
+}
+
+function logout() {
+  google.accounts.id.disableAutoSelect();
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+// ════════════════════════════════════════════════════
+//  대시보드 데이터 로드
+// ════════════════════════════════════════════════════
+async function loadDashboard() {
+  document.getElementById('dash-content').innerHTML =
+    '<div class="loading"><span class="spin"></span>데이터 로딩 중...</div>';
+
+  const GH = `https://api.github.com/repos/${GITHUB_REPO}`;
+  const ts  = `?t=${Date.now()}`;
+
+  const [signalsR, optionsR, runsR, commitsSignalR, commitsOptionsR] =
+    await Promise.allSettled([
+      fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/data/market-signals.json${ts}`).then(r => r.json()),
+      fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/data/options-latest.json${ts}`).then(r => r.json()),
+      fetch(`${GH}/actions/runs?per_page=60`).then(r => r.json()),
+      fetch(`${GH}/commits?path=data/market-signals.json&per_page=50`).then(r => r.json()),
+      fetch(`${GH}/commits?path=data/options-latest.json&per_page=20`).then(r => r.json()),
+    ]);
+
+  const signals        = signalsR.status        === 'fulfilled' ? signalsR.value        : null;
+  const options        = optionsR.status        === 'fulfilled' ? optionsR.value        : null;
+  const runs           = runsR.status           === 'fulfilled' ? runsR.value           : null;
+  const commitsSignal  = commitsSignalR.status  === 'fulfilled' ? commitsSignalR.value  : [];
+  const commitsOptions = commitsOptionsR.status === 'fulfilled' ? commitsOptionsR.value : [];
+
+  document.getElementById('dash-content').innerHTML = `
+    ${buildSummary(signals, runs, commitsSignal)}
+    ${buildCards(signals, options, commitsSignal, commitsOptions)}
+    ${buildDispatchSection()}
+    ${buildActionsLog(runs)}
+    ${buildScheduleAnalysis(commitsSignal)}
+  `;
+}
+
+// ════════════════════════════════════════════════════
+//  종합 진단 배너 (최상단)
+// ════════════════════════════════════════════════════
+function buildSummary(signals, runs, commitsSignal) {
+  const now      = new Date();
+  const issues   = [];   // { level:'warn'|'critical', msg, action }
+  const goods    = [];   // 정상 항목
+  const notes    = [];   // 참고 사항 (구조적 특성 등 — 경보 아님)
+
+  // ── 1. 데이터 최신성 ─────────────────────────────
+  if (signals?.generatedAt) {
+    const ageMins        = Math.floor((now - new Date(signals.generatedAt)) / 60000);
+    const inSession      = isCurrentlyMarketSession(now);
+
+    if (inSession && ageMins > 60) {
+      issues.push({ level:'critical',
+        msg: `시장 데이터가 ${ageMins}분째 갱신되지 않고 있습니다.`,
+        action: 'GitHub Actions → "ATMR 시장 데이터 수집" 워크플로우를 수동 Run 하고 실패 로그를 확인하세요.' });
+    } else if (inSession && ageMins > 20) {
+      issues.push({ level:'warn',
+        msg: `시장 데이터가 ${ageMins}분 지연됐습니다.`,
+        action: 'Actions 탭에서 최근 실행 결과를 확인해보세요.' });
+    } else if (!inSession) {
+      // 장 외 시간 — 마지막 세션 이후 수집 여부로 판단
+      const _ls = getLastSessionStart(now);
+      const _lc = (commitsSignal || []).length > 0
+        ? new Date(commitsSignal[0].commit.committer.date) : null;
+      const _sessionOk = !!_ls && !!_lc && _lc >= _ls;
+      if (_sessionOk) {
+        goods.push('장 마감 후 정상 — 마지막 세션 포스트마켓 수집 완료');
+      } else {
+        issues.push({ level:'warn',
+          msg: '마지막 거래 세션의 포스트마켓 수집이 확인되지 않습니다.',
+          action: 'GitHub Actions 실행 이력과 market-signals.json 최신 커밋 시각을 확인하세요.' });
+      }
+    } else {
+      goods.push('시장 데이터 최신성 정상 — ' + ageMins + '분 전 수집');
+    }
+  } else {
+    issues.push({ level:'critical',
+      msg: '시장 데이터 수집에 실패했습니다.',
+      action: 'GitHub Actions 로그에서 Yahoo Finance 요청 실패 여부를 확인하세요. query1.finance.yahoo.com 응답 오류 또는 네트워크 문제일 수 있습니다.' });
+  }
+
+  // ── 2. 최근 Actions 성공/실패 ────────────────────
+  if (runs?.workflow_runs) {
+    const mktRuns = runs.workflow_runs
+      .filter(r => r.name.includes('시장 데이터') && r.status === 'completed')
+      .slice(0, 5);
+    const failCnt = mktRuns.filter(r => r.conclusion === 'failure').length;
+    if (failCnt >= 3) {
+      issues.push({ level:'critical',
+        msg: `최근 5회 수집 중 ${failCnt}회 실패했습니다.`,
+        action: '아래 Actions 로그에서 실패 항목을 클릭해 에러 원인을 확인하세요. API 키 만료 또는 rate limit일 가능성이 높습니다.' });
+    } else if (failCnt >= 1) {
+      issues.push({ level:'warn',
+        msg: `최근 5회 수집 중 ${failCnt}회 실패 기록이 있습니다.`,
+        action: '일시적 오류일 수 있으나 아래 로그에서 원인을 확인해두세요.' });
+    } else if (mktRuns.length > 0) {
+      goods.push('최근 Actions 실행 모두 성공');
+    }
+  }
+
+  // ── 3. 24시간 스케줄 이행률 ──────────────────────
+  // ⚠ GitHub Actions 무료 플랜 특성: 30분 간격 cron은 구조적으로 지연·뭉침이 발생합니다.
+  //   이행률 수치 자체보다 실제 데이터 최신성을 실질적 기준으로 판단합니다.
+  const dayAgo    = new Date(now - 24*60*60*1000);
+  const allSlots  = getExpectedSlots(1);
+  const pastSlots = allSlots.filter(s => s > dayAgo && s < now);
+  if (pastSlots.length > 0) {
+    const ctimes  = (commitsSignal||[]).map(c => new Date(c.commit.committer.date));
+    const matched = pastSlots.filter(slot => {
+      const end = new Date(slot.getTime() + 25*60*1000);
+      return ctimes.some(ct => ct >= slot && ct <= end);
+    }).length;
+    const rate = Math.round(matched / pastSlots.length * 100);
+    // 데이터 실제 최신성 (경보 판단의 실질 기준)
+    // 장중: 90분 이내 수신 = 정상
+    // 장 외: 마지막 세션 시작(UTC 13:00) 이후 커밋 1회 이상 = 정상
+    const dataAgeMins = signals?.generatedAt
+      ? Math.floor((now - new Date(signals.generatedAt)) / 60000) : 9999;
+    let dataIsFresh;
+    if (isCurrentlyMarketSession(now)) {
+      dataIsFresh = dataAgeMins <= 90;
+    } else {
+      const _ls = getLastSessionStart(now);
+      const _lc = (commitsSignal || []).length > 0
+        ? new Date(commitsSignal[0].commit.committer.date) : null;
+      dataIsFresh = !!_ls && !!_lc && _lc >= _ls;
+    }
+
+    if (rate < 80 && !dataIsFresh) {
+      // 이행률 낮고 데이터도 실제로 오래됨 → 진짜 문제
+      issues.push({ level: rate < 50 ? 'critical' : 'warn',
+        msg: `스케줄 이행률 ${rate}% — 데이터 수신도 ${dataAgeMins}분 전에 멈춰 있습니다.`,
+        action: 'keep-alive 워크플로우 실행 여부와 GitHub Actions 활성화 상태를 점검하세요.' });
+    } else if (rate >= 80) {
+      goods.push(`24시간 스케줄 이행률 ${rate}% — 정상`);
+    } else {
+      // 이행률은 낮지만 데이터는 정상 수신 중 → GitHub Actions 구조적 특성, 경보 불필요
+      notes.push(`스케줄 이행률 ${rate}% — GitHub Actions cron 지연 특성상 나타나는 수치입니다. 데이터는 ${dataAgeMins}분 전 정상 수신됐으며 서비스 영향 없습니다.`);
+    }
+  }
+
+  // ── 4. 수집 오류 카운트 ──────────────────────────
+  if (signals?.errorCount > 0) {
+    issues.push({ level:'warn',
+      msg: `마지막 수집에서 ${signals.errorCount}개 종목 수집에 실패했습니다.`,
+      action: 'Yahoo Finance API는 별도 키 없이 무료로 사용되지만, 단기간 대량 요청 시 일시적으로 차단될 수 있습니다. 수 분 후 Actions를 재실행하거나 GitHub Actions 로그에서 HTTP 429/503 오류를 확인하세요.' });
+  } else if (signals?.errorCount === 0) {
+    goods.push(`수집 오류 없음 — ${signals.symbolCount}개 종목 전원 정상`);
+  }
+
+  // ── 종합 레벨 판정 ────────────────────────────────
+  const level = issues.some(i => i.level === 'critical') ? 'critical'
+    : issues.some(i => i.level === 'warn') ? 'warn'
+    : 'ok';
+
+  const theme = {
+    ok:       { bg:'rgba(63,185,80,.07)',  border:'rgba(63,185,80,.3)',  icon:'✓', ic:'var(--green)',  title:'모든 시스템 정상 — 추가 조치 불필요' },
+    warn:     { bg:'rgba(210,153,34,.07)', border:'rgba(210,153,34,.35)',icon:'!', ic:'var(--yellow)', title:'일부 항목 확인이 필요합니다' },
+    critical: { bg:'rgba(248,81,73,.07)',  border:'rgba(248,81,73,.3)',  icon:'✗', ic:'var(--red)',    title:'데이터 수집 문제가 감지됐습니다' },
+  }[level];
+
+  const issueHtml = issues.map(i => `
+    <div style="margin-top:10px;padding:10px 14px;background:rgba(0,0,0,.18);border-radius:6px;border-left:3px solid ${i.level==='critical'?'var(--red)':'var(--yellow)'}">
+      <div style="font-weight:600;margin-bottom:3px">${i.msg}</div>
+      <div style="color:var(--muted);font-size:.81rem">조치 · ${i.action}</div>
+    </div>`).join('');
+
+  // 참고 사항 (파란 정보 박스 — 경보 아님)
+  const noteHtml = notes.length ? notes.map(n => `
+    <div style="margin-top:10px;padding:10px 14px;background:rgba(88,166,255,.06);border-radius:6px;border-left:3px solid rgba(88,166,255,.4)">
+      <div style="color:var(--blue);font-size:.83rem;line-height:1.5">
+        <span style="font-weight:700;margin-right:6px">참고</span>${n}
+      </div>
+    </div>`).join('') : '';
+
+  const goodHtml = goods.length ? `
+    <div style="margin-top:${issues.length||notes.length?'10px':'8px'};display:flex;flex-wrap:wrap;gap:8px">
+      ${goods.map(g => `<span style="font-size:.82rem;color:var(--green);background:rgba(63,185,80,.08);padding:3px 10px;border-radius:10px">✓ ${g}</span>`).join('')}
+    </div>` : '';
+
+  return `
+  <div style="background:${theme.bg};border:1px solid ${theme.border};border-radius:10px;padding:20px 24px;margin-bottom:28px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:34px;height:34px;border-radius:50%;background:${theme.border};display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:800;color:${theme.ic};flex-shrink:0">${theme.icon}</div>
+      <div style="font-size:1.05rem;font-weight:700;color:${theme.ic}">${theme.title}</div>
+      <div style="margin-left:auto;font-size:.78rem;color:var(--muted);white-space:nowrap">${fmtKST(now)} 기준</div>
+    </div>
+    ${issueHtml}${noteHtml}${goodHtml}
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════
+//  섹션 1: 상태 카드
+// ════════════════════════════════════════════════════
+function buildCards(signals, options, commitsSignal, commitsOptions) {
+  const now = new Date();
+
+  // ── market-signals 최신성 ──
+  let sigClass = 'err', sigLabel = '수집 실패', sigAge = '—', sigTime = '—';
+  if (signals?.generatedAt) {
+    const gen    = new Date(signals.generatedAt);
+    const mins   = Math.floor((now - gen) / 60000);
+    sigTime  = fmtKST(gen);
+    sigAge   = mins < 60 ? `${mins}분 전` : mins < 1440
+      ? `${Math.floor(mins/60)}시간 ${mins%60}분 전`
+      : `${Math.floor(mins/1440)}일 전`;
+    if (isCurrentlyMarketSession(now)) {
+      // 장중 판단: 시간 경과 기준
+      sigClass = mins <= 20 ? 'ok' : mins <= 90 ? 'warn' : 'err';
+      sigLabel = mins <= 20 ? '최신' : mins <= 90 ? '지연' : '오래됨';
+    } else {
+      // 장 외 판단: 마지막 세션 이후 수집 여부
+      const _ls = getLastSessionStart(now);
+      const _lc = (commitsSignal || []).length > 0
+        ? new Date(commitsSignal[0].commit.committer.date) : null;
+      const _ok = !!_ls && !!_lc && _lc >= _ls;
+      sigClass = _ok ? 'ok' : 'warn';
+      sigLabel = _ok ? '세션 정상' : '미수집';
+    }
+  }
+
+  // ── options-latest 최신성 ──
+  let optClass = 'dim', optLabel = '—', optAge = '—', optTime = '—';
+  if (commitsOptions?.[0]?.commit?.committer?.date) {
+    const gen  = new Date(commitsOptions[0].commit.committer.date);
+    const mins = Math.floor((now - gen) / 60000);
+    optTime  = fmtKST(gen);
+    optAge   = mins < 60 ? `${mins}분 전` : mins < 1440
+      ? `${Math.floor(mins/60)}시간 ${mins%60}분 전`
+      : `${Math.floor(mins/1440)}일 전`;
+    if (isCurrentlyMarketSession(now)) {
+      optClass = mins <= 30 ? 'ok' : mins <= 120 ? 'warn' : 'err';
+      optLabel = mins <= 30 ? '최신' : mins <= 120 ? '지연' : '오래됨';
+    } else {
+      // 장 외 시간: 마지막 세션 이후 수집 여부
+      const _ls = getLastSessionStart(now);
+      const _ok = !!_ls && gen >= _ls;
+      optClass = _ok ? 'ok' : 'warn';
+      optLabel = _ok ? '세션 정상' : '미수집';
+    }
+  }
+
+  // ── 지난 24시간 커밋 수 ──
+  // GitHub Actions 무료 플랜 특성상 30분 cron은 실제 8~16회 수준으로 실행됨
+  // 장중(~8시간) 기준 현실적 기대치: ~16회. 임계값을 이에 맞게 조정.
+  const dayAgo = new Date(now - 24*60*60*1000);
+  const cnt24  = (commitsSignal || []).filter(c =>
+    new Date(c.commit.committer.date) > dayAgo).length;
+  const cntClass = cnt24 >= 12 ? 'ok' : cnt24 >= 4 ? 'warn' : 'err';
+
+  // ── 수집 에러 카운트 ──
+  const errCnt   = signals?.errorCount ?? '—';
+  const errClass = signals?.errorCount === 0 ? 'ok' : signals?.errorCount > 0 ? 'err' : 'dim';
+
+  // ── 72시간 히스토리 깊이 ──
+  // previousSignals 배열에 실제로 몇 개 쌓였는지 + 가장 오래된 신호 시각
+  const _prevSigs     = signals?.previousSignals ?? [];
+  const _validSigs    = _prevSigs.filter(s => typeof s.swingSignalScore === 'number');
+  const _histCount    = _validSigs.length;
+  const _histMax      = 144;
+  const _histOldest   = _validSigs.length > 0 ? _validSigs[_validSigs.length - 1] : null;
+  const _histOldestAt = _histOldest?.atKST ?? _histOldest?.at ?? null;
+  const _histHours    = _histOldest?.at
+    ? Math.round((now - new Date(_histOldest.at)) / (1000 * 60 * 60)) : null;
+  const _histFill     = Math.round(_histCount / _histMax * 100);
+  const _histClass    = _histCount >= 48 ? 'ok' : _histCount >= 12 ? 'warn' : 'err';
+  const _histLabel    = _histCount >= 48
+    ? `${_histCount}개 / ${_histMax}개`
+    : _histCount >= 1
+    ? `${_histCount}개 (누적 중)`
+    : '없음 (첫 수집 대기)';
+
+  // ── 시간외(프리마켓·포스트마켓) 수집 상태 ────────────────────────
+  const _commitTimes = (commitsSignal || []).map(c => new Date(c.commit.committer.date));
+
+  // 월 기준 DST 간이 판별 (3~11월 = EDT/여름)
+  function isDSTMonth(d) { const m = d.getUTCMonth() + 1; return m >= 3 && m <= 11; }
+
+  // 가장 최근 거래일의 장 마감 시각
+  function getLastMarketClose(now) {
+    const d = new Date(now);
+    for (let i = 0; i < 7; i++) {
+      if ([1,2,3,4,5].includes(d.getUTCDay())) {
+        const closeHour = isDSTMonth(d) ? 20 : 21;
+        const close = new Date(d); close.setUTCHours(closeHour, 0, 0, 0);
+        if (close <= now) return { close, isDST: isDSTMonth(d) };
+      }
+      d.setUTCDate(d.getUTCDate() - 1);
+    }
+    return null;
+  }
+
+  // 가장 최근(또는 다음) 거래일의 프리마켓 시작 시각
+  function getNextPremarketOpen(now) {
+    const d = new Date(now);
+    for (let i = 0; i < 7; i++) {
+      if ([1,2,3,4,5].includes(d.getUTCDay())) {
+        const openHour = isDSTMonth(d) ? 8 : 9;
+        const open = new Date(d); open.setUTCHours(openHour, 0, 0, 0);
+        // 오늘 이미 프리마켓 시작 시각이 지났으면 내일로 넘기지 말고 오늘 것을 반환
+        // (과거 거래일 조회 용도)
+        if (open <= now) return { open, isDST: isDSTMonth(d) };
+      }
+      d.setUTCDate(d.getUTCDate() - 1);
+    }
+    return null;
+  }
+
+  // 수집 창 체크 헬퍼
+  function checkWindow(start, end) {
+    const hit     = _commitTimes.some(ct => ct >= start && ct <= end);
+    const isPast  = now > end;
+    const isNow   = now >= start && now <= end;
+    const cls     = hit ? 'ok' : isPast ? 'err' : isNow ? 'warn' : 'dim';
+    const label   = hit ? '수집 완료' : isPast ? '미수집' : isNow ? '수집 중...' : '대기';
+    const detail  = `창 · ${fmtKST(start)} ~ ${fmtKST(end)}`;
+    return { cls, label, detail };
+  }
+
+  // ─ 프리마켓 수집 창 (시작 후 1시간)
+  const _npm = getNextPremarketOpen(now);
+  let preClass = 'dim', preLabel = '—', preDetail = '프리마켓 대기 중';
+  if (_npm) {
+    const { open } = _npm;
+    const w = checkWindow(open, new Date(open.getTime() + 60*60*1000));
+    preClass = w.cls; preLabel = w.label; preDetail = w.detail;
+  }
+
+  // ─ 포스트마켓 1차 수집 창 (장 마감 후 1시간)
+  const _lmc = getLastMarketClose(now);
+  let pm1Class = 'dim', pm1Label = '—', pm1Detail = '포스트마켓 대기 중';
+  let pm2Class = 'dim', pm2Label = '—', pm2Detail = '포스트마켓 대기 중';
+  if (_lmc) {
+    const { close } = _lmc;
+    const w1 = checkWindow(close, new Date(close.getTime() + 60*60*1000));
+    pm1Class = w1.cls; pm1Label = w1.label; pm1Detail = w1.detail;
+
+    // ─ 포스트마켓 2차 수집 창 (포스트마켓 마감 -45분 ~ +30분, 마감은 장 마감+4h)
+    const pmClose  = new Date(close.getTime() + 4*60*60*1000);
+    const w2 = checkWindow(
+      new Date(pmClose.getTime() - 45*60*1000),
+      new Date(pmClose.getTime() + 30*60*1000)
+    );
+    pm2Class = w2.cls; pm2Label = w2.label; pm2Detail = w2.detail;
+  }
+
+  // ── 포스트마켓 시세 데이터 수신 여부 ──
+  const hasExt     = signals?.hasExtendedPrices;
+  const extClass   = hasExt === true ? 'ok' : hasExt === false ? 'err' : 'dim';
+  const extLabel   = hasExt === true ? '수신 완료' : hasExt === false ? '미수신' : '—';
+  const extQQQprice = signals?.symbols?.QQQ?.extPrice;
+  const extDetail  = hasExt === true
+    ? `QQQ 시간외 · $${extQQQprice?.toFixed(2) ?? '—'}<br>스윙 지수 · ${signals?.swingSignalScore ?? '—'}점`
+    : `정규장 시간 또는 포스트마켓 데이터 없음<br>스윙 지수 · ${signals?.swingSignalScore ?? '—'}점`;
+
+  return `
+  <div class="cards">
+    <div class="card">
+      <div class="card-label">시장 데이터 최신성</div>
+      <div class="card-val ${sigClass}">${sigLabel}</div>
+      <div class="card-sub">마지막 수집 · ${sigTime}<br>경과 시간 · ${sigAge}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">옵션 데이터 최신성</div>
+      <div class="card-val ${optClass}">${optLabel}</div>
+      <div class="card-sub">마지막 수집 · ${optTime}<br>경과 시간 · ${optAge}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">프리마켓 수집 (시작 후 1h)</div>
+      <div class="card-val ${preClass}">${preLabel}</div>
+      <div class="card-sub">${preDetail}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">포스트마켓 1차 수집 (장마감 후 1h)</div>
+      <div class="card-val ${pm1Class}">${pm1Label}</div>
+      <div class="card-sub">${pm1Detail}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">포스트마켓 2차 수집 (마감 전후 45분)</div>
+      <div class="card-val ${pm2Class}">${pm2Label}</div>
+      <div class="card-sub">${pm2Detail}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">24시간 데이터 커밋 횟수</div>
+      <div class="card-val ${cntClass}">${cnt24}회</div>
+      <div class="card-sub">기대치 · 장중 ~16회/일 (Actions 특성상 가변)<br>전체 커밋 이력 · ${(commitsSignal||[]).length}건</div>
+    </div>
+    <div class="card">
+      <div class="card-label">72시간 히스토리 깊이</div>
+      <div class="card-val ${_histClass}">${_histLabel}</div>
+      <div class="card-sub">채움률 · ${_histFill}% (최대 ${_histMax}개 슬롯)<br>${_histHours !== null ? `가장 오래된 신호 · ${_histHours}시간 전 (${_histOldestAt ?? '—'})` : '아직 히스토리 없음 — 수집 후 자동 축적'}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">수집 오류 카운트 (최신)</div>
+      <div class="card-val ${errClass}">${errCnt}</div>
+      <div class="card-sub">종목 수 · ${signals?.symbolCount ?? '—'}개<br>errorCount 0 = 모든 종목 정상</div>
+    </div>
+    <div class="card">
+      <div class="card-label">VIX · Fear &amp; Greed</div>
+      <div class="card-val">${signals?.symbols?.VIX?.price?.toFixed(2) ?? '—'}</div>
+      <div class="card-sub">공포탐욕 · ${signals?.fearAndGreed?.score ?? '—'}점 (${signals?.fearAndGreed?.rating ?? '—'})<br>QQQ · $${signals?.symbols?.QQQ?.price?.toFixed(2) ?? '—'} &nbsp; TSLA · $${signals?.symbols?.TSLA?.price?.toFixed(2) ?? '—'}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">NVDA · SOXX</div>
+      <div class="card-val">$${signals?.symbols?.NVDA?.price?.toFixed(2) ?? '—'}</div>
+      <div class="card-sub">SOXX · $${signals?.symbols?.SOXX?.price?.toFixed(2) ?? '—'}<br>10년물 금리 · ${signals?.macro?.yield10y?.price?.toFixed(3) ?? '—'}%</div>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════
+//  섹션 2: Actions 실행 로그
+// ════════════════════════════════════════════════════
+function buildActionsLog(runsData) {
+  if (!runsData?.workflow_runs) {
+    return `<div class="section">
+      <div class="section-title">Actions 실행 로그</div>
+      <p style="color:var(--muted)">GitHub API 응답 없음 — 비공개 레포이거나 rate limit 초과.</p>
+    </div>`;
+  }
+
+  const runs = runsData.workflow_runs.slice(0, 40);
+
+  // 워크플로우별 최근 실행 성공률 계산
+  const wfStats = {};
+  runs.forEach(r => {
+    if (!wfStats[r.name]) wfStats[r.name] = { total:0, ok:0 };
+    wfStats[r.name].total++;
+    if (r.conclusion === 'success') wfStats[r.name].ok++;
+  });
+
+  const rows = runs.map(r => {
+    const start = new Date(r.run_started_at || r.created_at);
+    const end   = new Date(r.updated_at);
+    const dur   = r.status === 'completed'
+      ? `${Math.round((end - start)/1000)}s` : '—';
+    const badge = r.status !== 'completed'
+      ? `<span class="badge b-run">진행중</span>`
+      : r.conclusion === 'success'
+        ? `<span class="badge b-ok">성공</span>`
+        : r.conclusion === 'skipped'
+          ? `<span class="badge b-skip">건너뜀</span>`
+          : `<span class="badge b-fail">${r.conclusion||'실패'}</span>`;
+    const evtLabel = { schedule:'자동', workflow_dispatch:'수동', push:'Push', repository_dispatch:'API' }[r.event] || r.event;
+    return `<tr>
+      <td>${r.name}</td>
+      <td>${badge}</td>
+      <td style="font-family:monospace;font-size:.79rem">${fmtKST(start)}</td>
+      <td style="color:var(--muted)">${dur}</td>
+      <td><span style="color:var(--muted)">${evtLabel}</span></td>
+    </tr>`;
+  }).join('');
+
+  const statRows = Object.entries(wfStats).map(([name, s]) => {
+    const rate = Math.round(s.ok/s.total*100);
+    const cl   = rate >= 90 ? 'ok' : rate >= 60 ? 'warn' : 'err';
+    return `<tr><td>${name}</td><td class="${cl}">${rate}%</td><td style="color:var(--muted)">${s.ok}/${s.total}</td></tr>`;
+  }).join('');
+
+  return `
+  <div class="section">
+    <div class="section-title">워크플로우 성공률 요약 <span class="section-badge">최근 40건</span></div>
+    <div class="tbl-wrap" style="margin-bottom:24px">
+      <table>
+        <thead><tr><th>워크플로우</th><th>성공률</th><th>성공/전체</th></tr></thead>
+        <tbody>${statRows}</tbody>
+      </table>
+    </div>
+
+    <div class="section-title">Actions 실행 로그 <span class="section-badge">최근 40건</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>워크플로우</th><th>결과</th><th>실행 시각 (KST)</th><th>소요</th><th>유형</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════
+//  섹션 3: 스케줄 준수 분석
+// ════════════════════════════════════════════════════
+function buildScheduleAnalysis(commits) {
+  const now   = new Date();
+  const slots = getExpectedSlots(3); // 지난 3일
+
+  // 실제 커밋 시각 목록
+  const commitTimes = (commits || []).map(c => new Date(c.commit.committer.date));
+
+  // 슬롯별 실행 여부 판정 (슬롯 시작 ~ +20분 이내 커밋 있으면 OK)
+  const results = slots.map(slot => {
+    const slotEnd = new Date(slot.getTime() + 20 * 60 * 1000);
+    const hit     = commitTimes.some(ct => ct >= slot && ct <= slotEnd);
+    return { slot, hit };
+  });
+
+  // 마켓 오픈 슬롯만 집계 (현재 시각 이전)
+  const past    = results.filter(r => r.slot < now);
+  const matched = past.filter(r => r.hit).length;
+  const missed  = past.length - matched;
+  const rate    = past.length > 0 ? Math.round(matched/past.length*100) : 0;
+  const rateClass = rate >= 90 ? 'ok' : rate >= 60 ? 'warn' : 'err';
+
+  // 슬롯 표시 (최신 60개)
+  const slotHtml = results.slice(0, 60).map(({ slot, hit }) => {
+    const isPast = slot < now;
+    const cls    = !isPast ? 'slot-skip' : hit ? 'slot-ok' : 'slot-miss';
+    const dot    = !isPast ? 'dot-skip'  : hit ? 'dot-ok'  : 'dot-miss';
+    const label  = !isPast ? '예정' : hit ? '수집 완료' : '미실행';
+    return `<div class="slot ${cls}">
+      <div class="dot ${dot}"></div>
+      <div class="slot-time">${fmtKST(slot)}</div>
+      <div>${label}</div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="section">
+    <div class="section-title">
+      스케줄 준수 분석 <span class="section-badge">지난 3일</span>
+    </div>
+    <div class="sched-summary">
+      <div class="sched-stat"><div class="sched-stat-val ${rateClass}">${rate}%</div><div class="sched-stat-lbl">이행률</div></div>
+      <div class="sched-stat"><div class="sched-stat-val ok">${matched}</div><div class="sched-stat-lbl">정상 수집</div></div>
+      <div class="sched-stat"><div class="sched-stat-val ${missed>0?'err':'ok'}">${missed}</div><div class="sched-stat-lbl">누락</div></div>
+      <div class="sched-stat"><div class="sched-stat-val">${past.length}</div><div class="sched-stat-lbl">전체 슬롯</div></div>
+    </div>
+    <div style="color:var(--muted);font-size:.8rem;margin-bottom:8px">
+      스케줄 · UTC 13:00~21:30 평일 30분 간격 · 기준 · data/market-signals.json 커밋 시각 · 슬롯+25분 이내 커밋 = 이행
+    </div>
+    <div style="font-size:.79rem;color:var(--blue);background:rgba(88,166,255,.06);border-left:2px solid rgba(88,166,255,.3);padding:7px 12px;border-radius:4px;margin-bottom:12px;line-height:1.55">
+      GitHub Actions 무료 플랜은 30분 간격 cron을 지연·뭉침 실행하는 구조적 특성이 있습니다.
+      이행률 수치가 낮더라도 위 요약 배너에서 데이터 최신성이 정상이라면 실제 서비스에 영향이 없습니다.
+      <span style="opacity:.7">이행률 기준 · 80% 이상 정상 / 50~79% 주의 / 50% 미만 + 데이터 지연 시에만 경보</span>
+    </div>
+    <div class="slot-grid">${slotHtml}</div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════
+//  유틸리티
+// ════════════════════════════════════════════════════
+
+// 현재 미국 정규장+포스트마켓 시간 여부 (UTC 13:00~21:30, 평일)
+function isCurrentlyMarketSession(d) {
+  const dow  = d.getUTCDay();
+  const mins = d.getUTCHours() * 60 + d.getUTCMinutes();
+  return [1,2,3,4,5].includes(dow) && mins >= 13*60 && mins < 21*60+30;
+}
+
+// 가장 최근 거래 세션 시작 시각 반환 (UTC 13:00 기준, 최대 7일 소급)
+function getLastSessionStart(now) {
+  const d = new Date(now);
+  for (let i = 0; i < 7; i++) {
+    const dow = d.getUTCDay();
+    if ([1,2,3,4,5].includes(dow)) {
+      const s = new Date(d);
+      s.setUTCHours(13, 0, 0, 0);
+      if (s <= now) return s;
+    }
+    d.setUTCDate(d.getUTCDate() - 1);
+  }
+  return null;
+}
+
+function kstDate(d) { return new Date(d.getTime() + 9*60*60*1000); }
+function fmtKST(d) {
+  const k = kstDate(new Date(d));
+  const f = n => String(n).padStart(2,'0');
+  return `${k.getUTCFullYear()}-${f(k.getUTCMonth()+1)}-${f(k.getUTCDate())} ${f(k.getUTCHours())}:${f(k.getUTCMinutes())} KST`;
+}
+
+// ════════════════════════════════════════════════════
+//  섹션: 수동 강제 실행 (GitHub Actions Dispatch)
+// ════════════════════════════════════════════════════
+function buildDispatchSection() {
+  const hasPat = !!localStorage.getItem('atmr_gh_pat');
+
+  const workflows = [
+    {
+      file: 'fetch-market-data.yml',
+      id:   'market',
+      name: 'ATMR 시장 데이터 수집',
+      desc: '주가 · 지수 · 매크로 수집 및 스윙 시그널 계산. 정규장 중 데이터가 멈췄을 때 최우선 실행.',
+    },
+    {
+      file: 'fetch-postmarket.yml',
+      id:   'postmkt',
+      name: 'ATMR 시간외 전용 수집',
+      desc: '프리마켓 · 포스트마켓 시세 수집. 시간외 데이터가 누락됐을 때 실행.',
+    },
+    {
+      file: 'fetch-options-data.yml',
+      id:   'options',
+      name: 'ATMR 옵션 데이터 수집',
+      desc: '옵션 체인 · PCR · IV 데이터 수집. 옵션 카드가 비어 있을 때 실행.',
+    },
+  ];
+
+  const btnCards = workflows.map(w => `
+    <div class="dispatch-card">
+      <div class="dispatch-card-name">${w.name}</div>
+      <div class="dispatch-card-file">${w.file}</div>
+      <div class="dispatch-card-desc">${w.desc}</div>
+      <button class="btn-dispatch" id="btn-${w.id}"
+        onclick="dispatchWorkflow('${w.file}','${w.name}','${w.id}')">
+        강제 실행
+      </button>
+      <div class="dispatch-status" id="dispatch-status-${w.id}"></div>
+    </div>`).join('');
+
+  return `
+  <div class="section">
+    <div class="section-title">수동 강제 실행 <span class="section-badge">GitHub Actions Dispatch</span></div>
+
+    <div class="pat-box">
+      <div class="pat-desc">
+        GitHub Actions를 수동으로 트리거하려면 <strong style="color:var(--text)">Personal Access Token (PAT)</strong>이 필요합니다.<br>
+        <a href="https://github.com/settings/tokens/new?scopes=workflow" target="_blank"
+          style="color:var(--blue);font-size:.8rem">
+          GitHub → Settings → Developer settings → Personal access tokens → Generate new token (classic)
+        </a>
+        &nbsp;— 권한: <code style="background:rgba(255,255,255,.07);padding:1px 5px;border-radius:3px;font-family:monospace">workflow</code> 스코프 체크
+      </div>
+      <div class="pat-row">
+        <input type="password" class="pat-input" id="gh-pat-input"
+          placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+          value="${hasPat ? '••••••••••••••••••••' : ''}"
+          onfocus="if(this.value==='••••••••••••••••••••')this.value=''"
+          onblur="if(this.value===''&&${hasPat})this.value='••••••••••••••••••••'"
+        />
+        <button class="btn-pat-save" onclick="savePAT()">저장</button>
+        ${hasPat ? `<button class="btn-pat-clear" onclick="clearPAT()">삭제</button>` : ''}
+      </div>
+      <div class="pat-msg" id="pat-msg" style="color:${hasPat ? 'var(--green)' : 'var(--muted)'}">
+        ${hasPat ? 'PAT 저장됨 — 아래 버튼으로 강제 실행 가능' : 'PAT 미설정 — 토큰을 입력하고 저장하세요'}
+      </div>
+    </div>
+
+    <div class="dispatch-grid">${btnCards}</div>
+  </div>`;
+}
+
+// PAT 저장
+function savePAT() {
+  const input = document.getElementById('gh-pat-input');
+  const val   = (input?.value || '').trim();
+  if (!val || val === '••••••••••••••••••••') {
+    const msg = document.getElementById('pat-msg');
+    if (msg) { msg.style.color = 'var(--yellow)'; msg.textContent = '토큰을 입력하세요'; }
+    return;
+  }
+  localStorage.setItem('atmr_gh_pat', val);
+  input.value = '••••••••••••••••••••';
+  const msg = document.getElementById('pat-msg');
+  if (msg) { msg.style.color = 'var(--green)'; msg.textContent = 'PAT 저장 완료 — 강제 실행 가능'; }
+}
+
+// PAT 삭제
+function clearPAT() {
+  localStorage.removeItem('atmr_gh_pat');
+  loadDashboard(); // 섹션 전체 재렌더로 Clear 버튼도 사라지게
+}
+
+// 워크플로우 강제 실행
+async function dispatchWorkflow(filename, displayName, id) {
+  const pat = localStorage.getItem('atmr_gh_pat');
+  const statusEl = document.getElementById(`dispatch-status-${id}`);
+  const btn      = document.getElementById(`btn-${id}`);
+
+  if (!pat) {
+    if (statusEl) {
+      statusEl.style.color = 'var(--red)';
+      statusEl.textContent = 'PAT가 설정되지 않았습니다. 위에서 토큰을 저장하세요.';
+    }
+    return;
+  }
+
+  // 버튼 로딩 상태
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spin" style="width:12px;height:12px;border-width:2px;margin-right:4px;display:inline-block;vertical-align:middle"></span>요청 중...`;
+  }
+  if (statusEl) { statusEl.textContent = ''; }
+
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${GITHUB_REPO}/actions/workflows/${filename}/dispatches`,
+      {
+        method:  'POST',
+        headers: {
+          'Authorization': `token ${pat}`,
+          'Accept':        'application/vnd.github.v3+json',
+          'Content-Type':  'application/json',
+        },
+        body: JSON.stringify({ ref: 'main' }),
+      }
+    );
+
+    if (btn) { btn.disabled = false; btn.innerHTML = '강제 실행'; }
+
+    if (res.status === 204) {
+      // GitHub는 dispatch 성공 시 204 No Content 반환
+      if (statusEl) {
+        statusEl.style.color = 'var(--green)';
+        statusEl.textContent = `트리거 완료 — ${fmtKST(new Date())}. 10~30초 후 Actions 탭에서 실행 확인.`;
+      }
+      // 5초 후 Actions 로그 자동 갱신
+      setTimeout(() => loadDashboard(), 8000);
+    } else if (res.status === 401) {
+      if (statusEl) {
+        statusEl.style.color = 'var(--red)';
+        statusEl.textContent = '인증 실패 (401) — PAT가 만료됐거나 workflow 스코프 권한이 없습니다.';
+      }
+    } else if (res.status === 403) {
+      if (statusEl) {
+        statusEl.style.color = 'var(--red)';
+        statusEl.textContent = '권한 없음 (403) — 이 레포에 대한 쓰기 권한 또는 workflow 스코프를 확인하세요.';
+      }
+    } else if (res.status === 422) {
+      if (statusEl) {
+        statusEl.style.color = 'var(--red)';
+        statusEl.textContent = '422 오류 — workflow_dispatch 트리거가 없거나 ref(main)를 확인하세요.';
+      }
+    } else {
+      let body = '';
+      try { const j = await res.json(); body = j.message || JSON.stringify(j); } catch(_) {}
+      if (statusEl) {
+        statusEl.style.color = 'var(--red)';
+        statusEl.textContent = `오류 ${res.status}${body ? ' — ' + body.slice(0, 120) : ''}`;
+      }
+    }
+  } catch(e) {
+    if (btn) { btn.disabled = false; btn.innerHTML = '강제 실행'; }
+    if (statusEl) {
+      statusEl.style.color = 'var(--red)';
+      statusEl.textContent = `네트워크 오류 — ${e.message}`;
+    }
+  }
+}
+
+// 예상 실행 슬롯 생성 (cron: */30 13-21 * * 1-5)
+function getExpectedSlots(days = 3) {
+  const now   = new Date();
+  const slots = [];
+  for (let d = days; d >= 0; d--) {
+    const base = new Date(now);
+    base.setUTCDate(base.getUTCDate() - d);
+    const dow = base.getUTCDay(); // 0=Sun 6=Sat
+    if (dow === 0 || dow === 6) continue;
+    for (let h = 13; h <= 21; h++) {
+      for (let m = 0; m < 60; m += 30) {
+        const slot = new Date(base);
+        slot.setUTCHours(h, m, 0, 0);
+        if (slot <= now) slots.push(slot);
+      }
+    }
+  }
+  return slots.reverse(); // 최신 순
+}
+</script>
+</body>
+</html>

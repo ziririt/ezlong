@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+<link rel="stylesheet" href="ez-design.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>포트폴리오 최적 비율 자동 계산 — 몬테카를로 백테스트 | EZLONG</title>
+<meta name="description" content="미국주식 ETF 포트폴리오 최적 비율을 몬테카를로 시뮬레이션으로 자동 계산. NVDA·GOOGL·SPY·QQQ 등 44개 자산의 2006~2025년 20년 실제 데이터 기반. 3,000가지 비율 조합 중 최고 효율(Max Sharpe)·최소 위험·나의 성향 맞춤 포트폴리오를 무료로 찾아드립니다." />
+<meta name="keywords" content="포트폴리오 최적화, 몬테카를로 시뮬레이션, ETF 백테스트, 미국주식 포트폴리오, 자산배분 계산기, 샤프지수, Max Sharpe, 최적 비율, NVDA GOOGL SPY QQQ 포트폴리오, 효율적 투자선, 위험 수익 분석" />
+<meta name="robots" content="index, follow" />
+<meta name="author" content="김성동 (유니아빠)" />
+<link rel="canonical" href="https://ezlong.com/backtest.html" />
+<!-- ── 국제화 SEO: hreflang + locale alternate ── -->
+<link rel="alternate" hreflang="ko" href="https://ezlong.com/backtest.html">
+<link rel="alternate" hreflang="en" href="https://ezlong.com/en/backtest.html">
+<link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/backtest.html">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="pt_BR">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta name="description" lang="en" content="Monte Carlo Portfolio Optimizer for US ETFs: Find the optimal allocation among NVDA, GOOGL, SPY, QQQ and 44 assets using 20 years of real data & 3,000 simulations. Free.">
+<meta name="keywords" lang="en" content="Monte Carlo portfolio optimization, ETF backtest, portfolio allocation, Sharpe ratio, efficient frontier, NVDA GOOGL SPY QQQ portfolio, Max Sharpe, US stock portfolio">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ezlong.com/backtest.html" />
+<meta property="og:title" content="포트폴리오 최적 비율 자동 계산 — 몬테카를로 백테스트 | EZLONG" />
+<meta property="og:description" content="NVDA·GOOGL·SPY·QQQ 등 44개 자산, 20년 실제 데이터로 3,000가지 비율 조합을 분석. 나에게 맞는 최적 포트폴리오 비율을 무료로 계산해보세요." />
+<meta property="og:image" content="https://ezlong.com/logo-preview.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:site_name" content="EZLONG" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="포트폴리오 최적 비율 자동 계산 — 몬테카를로 백테스트 | EZLONG" />
+<meta name="twitter:description" content="NVDA·GOOGL·SPY·QQQ 등 44개 자산, 20년 실제 데이터로 3,000가지 비율 조합 분석. 최적 포트폴리오 비율 무료 계산." />
+<meta name="twitter:image" content="https://ezlong.com/logo-preview.png" />
+
+<!-- JSON-LD: SoftwareApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Monte Carlo Portfolio Optimizer — US ETF Backtest",
+  "description": "Find the optimal portfolio allocation for US ETFs using Monte Carlo simulation with 3,000 combinations. Based on 20 years (2006–2025) of real annual return data for 44 assets including NVDA, GOOGL, SPY, and QQQ.",
+  "inLanguage": ["ko", "en"],
+  "url": "https://ezlong.com/backtest.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "포트폴리오 최적 비율 자동 계산기",
+  "url": "https://ezlong.com/backtest.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "description": "미국주식 ETF 44개 자산의 2006~2025년 20년 실제 연간 수익률 데이터를 기반으로 몬테카를로 시뮬레이션 3,000회를 실행해 최적 포트폴리오 비율을 자동 계산하는 무료 웹 도구.",
+  "inLanguage": "ko",
+  "author": {
+    "@type": "Person",
+    "name": "김성동",
+    "alternateName": "유니아빠",
+    "url": "https://ezlong.com"
+  },
+  "featureList": [
+    "몬테카를로 시뮬레이션 3,000가지 비율 조합 분석",
+    "44개 미국주식·ETF 자산 선택",
+    "20년(2006~2025) / 10년(2016~2025) 기간 선택",
+    "Max Sharpe / Min Vol / 성향 맞춤 3개 포트폴리오 추천",
+    "초기 투자금 + DCA 적립 최종 자산 시뮬레이션",
+    "S&P500 · 나스닥100 벤치마크 비교",
+    "연도별 수익률 히트맵 및 자산 간 상관관계 행렬"
+  ]
+}
+</script>
+
+<!-- JSON-LD: FAQPage (AEO — 답변 엔진 최적화) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "몬테카를로 포트폴리오 최적화란 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "몬테카를로 포트폴리오 최적화는 자산 비율을 수천 가지로 무작위 조합해 각각의 기대수익률·변동성·샤프지수를 계산한 뒤, 그 중 가장 효율적인 비율을 찾는 방법입니다. EZLONG 백테스트 계산기는 3,000가지 비율 조합을 실행해 최고 효율(Max Sharpe)·최소 위험(Min Vol)·투자 성향 맞춤 포트폴리오를 자동으로 추천합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "NVDA와 GOOGL을 포함한 최적 포트폴리오 비율은 얼마인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "NVDA(엔비디아)와 GOOGL(구글) 등을 포함한 최적 포트폴리오 비율은 선택 자산 조합과 투자 성향, 분석 기간에 따라 달라집니다. EZLONG 포트폴리오 백테스트 계산기에서 원하는 자산을 선택하고 '최적 비율 찾기'를 실행하면 2006~2025년 20년 실제 데이터 기반으로 나에게 맞는 최적 비율을 무료로 계산할 수 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "샤프지수(Sharpe Ratio)가 높은 포트폴리오가 좋은 포트폴리오인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "샤프지수(Sharpe Ratio)는 '감수한 위험 한 단위당 얼마나 수익을 냈는가'를 나타냅니다. 1.0 이상이면 우수, 2.0 이상이면 매우 우수한 수준입니다. 단, 샤프지수가 높더라도 절대 수익률이 낮을 수 있으므로 투자 목표에 맞게 최고 효율(Max Sharpe)과 최소 위험(Min Vol) 포트폴리오를 비교해 선택하는 것이 좋습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "SPY와 QQQ 중 어느 ETF가 장기적으로 더 높은 수익을 냈나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "2006~2025년 20년 데이터 기준으로 QQQ(나스닥100)는 SPY(S&P500)보다 높은 CAGR을 기록했습니다. 다만 QQQ는 변동성도 더 높아 낙폭(MDD)이 큰 편입니다. EZLONG 백테스트 계산기에서 두 ETF를 함께 선택하면 최적 혼합 비율과 벤치마크 대비 초과 수익을 직접 확인할 수 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "DCA(적립식 투자)와 거치식 투자 중 어느 것이 더 유리한가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "거치식 투자는 초기에 목돈을 한 번에 투자해 복리 기간을 최대한 활용하는 방식이고, DCA(Dollar Cost Averaging)는 매월 일정액을 꾸준히 적립해 시장 변동성 위험을 분산하는 방식입니다. EZLONG 백테스트 계산기에서 초기 투자금과 월 DCA 금액을 함께 입력하면 두 전략을 합산한 최종 자산을 시뮬레이션해볼 수 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "효율적 투자선(Efficient Frontier)이란 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "효율적 투자선(Efficient Frontier)은 같은 위험(변동성) 수준에서 가장 높은 수익을 내거나, 같은 수익 수준에서 가장 낮은 위험을 가진 포트폴리오들을 이은 곡선입니다. EZLONG 백테스트 차트의 산포도에서 왼쪽 위 경계에 있는 점들이 효율적 투자선에 해당하며, 노란색에 가까울수록 샤프지수가 높은 효율적인 조합입니다."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- JSON-LD: BreadcrumbList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "EZLONG 홈", "item": "https://ezlong.com/" },
+    { "@type": "ListItem", "position": 2, "name": "포트폴리오 최적 비율 자동 계산", "item": "https://ezlong.com/backtest.html" }
+  ]
+}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F5F7;
+  --bg2:#EBEBED;
+  --surface:#FFFFFF;
+  --card:#FFFFFF;
+  --card2:#F5F5F7;
+  --border:rgba(0,0,0,0.08);
+  --border2:rgba(0,0,0,0.14);
+  --text:#1D1D1F;
+  --text2:#3A3A3C;
+  --text3:#6E6E73;
+  --hint:#AEAEB2;
+  --blue:#0071E3;
+  --blue-light:#0064CC;
+  --blue-dim:rgba(0,113,227,0.08);
+  --green:#1A7F37;
+  --red:#D92A2A;
+  --amber:#B45309;
+  --purple:#7C3AED;
+  --cyan:#0891B2;
+  --r:12px; --rs:8px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#000000;
+    --bg2:#111111;
+    --surface:#1C1C1E;
+    --card:#1C1C1E;
+    --card2:#2C2C2E;
+    --border:rgba(255,255,255,0.10);
+    --border2:rgba(255,255,255,0.18);
+    --text:#F5F5F7;
+    --text2:#EBEBED;
+    --text3:#AEAEB2;
+    --hint:#636366;
+    --blue:#0A84FF;
+    --blue-light:#409CFF;
+    --blue-dim:rgba(10,132,255,0.14);
+    --green:#30D158;
+    --red:#FF453A;
+    --amber:#FFD60A;
+    --purple:#BF5AF2;
+    --cyan:#64D2FF;
+  }
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Pretendard Variable','Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.65;overflow-x:hidden}
+
+/* GLOBAL NAV */
+#global-nav{height:48px;background:rgba(255,255,255,0.92);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,0.08);position:sticky;top:0;z-index:200}
+@media (prefers-color-scheme: dark){
+  #global-nav{background:rgba(0,0,0,0.85);border-bottom-color:rgba(255,255,255,0.10)}
+}
+.gnav-inner{max-width:1440px;margin:0 auto;padding:0 24px;height:100%;display:flex;align-items:center;justify-content:space-between}
+.gnav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.gnav-logo-img{height:28px;width:auto;display:block}
+.gnav-logo-sub{font-size:11px;color:var(--text3);font-weight:500}
+.gnav-right{font-size:12px;color:var(--text3);font-weight:500;white-space:nowrap}
+@media(max-width:600px){.gnav-logo-sub,.gnav-right{display:none}}
+
+/* BANNER */
+.banner{background:linear-gradient(135deg,rgba(0,113,227,0.05),rgba(124,58,237,0.04));border-bottom:1px solid var(--border);padding:14px 20px}
+.banner-inner{max-width:1440px;margin:0 auto}
+.banner-desc{font-size:14px;color:var(--text2);line-height:1.7}
+.steps{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.step{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:4px 13px;font-size:13px;color:var(--text2);display:flex;align-items:center;gap:5px}
+.step-n{width:18px;height:18px;border-radius:50%;background:var(--blue-dim);color:var(--blue-light);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+@media(max-width:480px){.steps{display:none}}
+
+/* LAYOUT */
+.main{padding:20px;max-width:1440px;margin:0 auto}
+.cols{display:grid;grid-template-columns:400px 1fr;gap:20px;align-items:start}
+@media(max-width:980px){.cols{grid-template-columns:1fr}}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.card:last-child{margin-bottom:0}
+.sec-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sec-title::before{content:'';display:block;width:3px;height:15px;background:var(--blue);border-radius:2px;flex-shrink:0}
+.sec-hint{font-size:13px;color:var(--text3);margin-bottom:10px;line-height:1.6}
+
+/* ASSET GROUP */
+.ag-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;margin-top:14px}
+.ag-label{font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+.ag-count{font-size:12px;color:var(--hint);background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:2px 8px}
+.ag-label:first-child{margin-top:0}
+
+/* ASSET CHIPS */
+.achips{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.achip{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:9px 11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px;user-select:none;position:relative}
+.achip:hover{border-color:var(--border2);background:var(--card2)}
+.achip.on{border-color:var(--blue);background:var(--blue-dim);box-shadow:none}
+.achip.on .aticker{color:var(--blue-light)}
+.achip.disabled{opacity:.4;cursor:not-allowed}
+.achip-badge{position:absolute;top:4px;right:5px;font-size:11px;font-weight:700;color:rgba(130,188,255,.60);line-height:1;pointer-events:none}
+.adot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.aticker{font-size:13px;font-weight:800;color:var(--text)}
+.aname{font-size:12px;color:var(--text3);margin-top:2px;line-height:1.3}
+.astart{font-size:11px;color:var(--hint);margin-top:2px}
+
+/* MORE BUTTON */
+.more-btn{width:100%;background:transparent;border:1px dashed var(--border2);border-radius:var(--rs);padding:9px;color:var(--text3);font-size:13px;font-weight:600;cursor:pointer;transition:all .12s;margin-top:6px;font-family:inherit}
+.more-btn:hover{background:var(--surface);color:var(--text2);border-color:var(--border)}
+.more-section{display:none}
+.more-section.open{display:block}
+
+/* SELECTION COUNT */
+.sel-count{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 13px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.sel-count-label{font-size:13px;color:var(--text2)}
+.sel-count-val{font-size:15px;font-weight:800;color:var(--blue-light)}
+.sel-count-max{font-size:12px;color:var(--text3)}
+.sel-count.over .sel-count-val{color:var(--red)}
+
+/* DATA PERIOD BADGE */
+.data-badge{background:rgba(0,113,227,0.05);border:1px solid rgba(0,113,227,0.15);border-radius:var(--rs);padding:10px 13px;margin-bottom:12px;font-size:13px;color:var(--text2);line-height:1.7}
+.data-badge strong{color:var(--blue)}
+.data-badge.warn{background:rgba(255,159,10,0.06);border-color:rgba(255,159,10,0.3)}
+.data-badge.warn strong{color:var(--amber)}
+.data-badge.warn .warn-tag{display:inline-block;background:rgba(255,159,10,0.12);border:1px solid rgba(255,159,10,0.35);border-radius:4px;padding:1px 7px;font-size:11px;font-weight:800;color:var(--amber);margin-right:6px;vertical-align:middle}
+
+/* PREFERENCE BUTTONS */
+.pref-group{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.pref-btn{flex:1;min-width:80px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rs);padding:10px 8px;cursor:pointer;transition:all .12s;text-align:center;font-family:inherit}
+.pref-btn:hover{border-color:var(--border2);background:var(--card2)}
+.pref-btn.on{border-color:var(--blue);background:var(--blue-dim)}
+.pref-btn-name{font-size:13px;font-weight:800;color:var(--text)}
+.pref-btn-range{font-size:12px;color:var(--text3);margin-top:3px}
+
+/* SIM COUNT MINI */
+.sim-row{display:flex;align-items:center;gap:10px;margin-top:6px}
+.sim-val{font-size:15px;font-weight:800;color:var(--blue-light);min-width:55px;text-align:right}
+input[type=range]{width:100%;height:4px;background:var(--border2);border-radius:2px;appearance:none;cursor:pointer;outline:none}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--blue);cursor:pointer;border:2px solid #fff;transition:transform .1s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
+
+/* RUN BUTTON */
+.run-btn{width:100%;background:#0071E3;border:none;border-radius:var(--rs);padding:15px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;letter-spacing:.4px;font-family:inherit;margin-top:4px}
+.run-btn:hover{transform:translateY(-1px);background:#0040DD;box-shadow:0 6px 24px rgba(0,113,227,0.3)}
+@media (prefers-color-scheme: dark){
+  .run-btn{background:#0A84FF}
+  .run-btn:hover{background:#409CFF}
+}
+.run-btn:active{transform:translateY(0)}
+.run-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* PROGRESS */
+.prog-wrap{margin:10px 0}
+.prog-bg{background:var(--border);border-radius:4px;height:5px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:4px;transition:width .06s}
+.prog-txt{font-size:13px;color:var(--text2);text-align:center;margin-top:5px}
+
+/* EMPTY STATE */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:320px;color:var(--text3);text-align:center;gap:12px;padding:40px}
+.empty-icon{font-size:48px;opacity:.3}
+.empty-title{font-size:16px;font-weight:700;color:var(--text2)}
+.empty-desc{font-size:14px;color:var(--text3);line-height:1.8}
+
+/* RESULTS TOP INFO */
+.result-info{background:var(--blue-dim);border:1px solid rgba(0,113,227,0.15);border-radius:var(--rs);padding:13px 16px;margin-bottom:16px;font-size:13px;color:var(--text2);line-height:1.7;overflow-wrap:break-word;word-break:break-word}
+.result-info strong{color:var(--blue-light)}
+
+/* 3-WAY PORTFOLIO COMPARISON */
+.comp3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:760px){.comp3{grid-template-columns:1fr}}
+.pf-card{background:var(--surface);border-radius:var(--rs);padding:16px;border:1.5px solid var(--border)}
+.pf-card.mine{border-color:rgba(0,113,227,0.4);background:rgba(0,113,227,0.04)}
+.pf-card.maxs{border-color:rgba(209,42,42,0.4)}
+.pf-card.minv{border-color:rgba(124,58,237,0.5)}
+.pf-badge{display:inline-block;font-size:12px;font-weight:700;border-radius:4px;padding:3px 9px;margin-bottom:8px;letter-spacing:.3px}
+.pf-badge.mine{background:rgba(0,113,227,0.10);color:#0064CC}
+.pf-badge.maxs{background:rgba(209,42,42,0.10);color:#D92A2A}
+.pf-badge.minv{background:rgba(124,58,237,0.10);color:#7C3AED}
+@media (prefers-color-scheme: dark){
+  .pf-card.mine{border-color:rgba(10,132,255,0.5);background:rgba(10,132,255,0.08)}
+  .pf-card.maxs{border-color:rgba(255,69,58,0.5)}
+  .pf-card.minv{border-color:rgba(191,90,242,0.6)}
+  .pf-badge.mine{background:rgba(10,132,255,0.18);color:#409CFF}
+  .pf-badge.maxs{background:rgba(255,69,58,0.18);color:#FF453A}
+  .pf-badge.minv{background:rgba(191,90,242,0.18);color:#BF5AF2}
+}
+.pf-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px}
+.pf-sub{font-size:12px;color:var(--text3);margin-bottom:12px;line-height:1.5}
+.wrow{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.wtk{font-size:12px;font-weight:800;color:var(--text);min-width:40px}
+.wbar-bg{flex:1;height:5px;background:var(--border);border-radius:3px}
+.wbar{height:100%;border-radius:3px}
+.wpct{font-size:12px;font-weight:800;color:var(--text);min-width:38px;text-align:right}
+.pf-stats{display:flex;gap:5px;margin-top:12px}
+.ps{flex:1;background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:10px 6px;text-align:center}
+.ps-l{font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.2px;line-height:1.4}
+.ps-v{font-size:22px;font-weight:900;margin-top:4px;line-height:1.1;letter-spacing:-.5px;word-break:break-word;overflow-wrap:break-word}
+.pos{color:var(--green)}.neg{color:var(--red)}.neu{color:var(--amber)}.blu{color:var(--blue-light)}.pur{color:var(--purple)}
+
+/* CHART WRAPPER */
+.cwrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:16px;margin-bottom:14px;max-width:100%;overflow:hidden}
+.cwrap-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:13px}
+.chart-explain{background:rgba(0,113,227,0.05);border:1px solid rgba(0,113,227,0.15);border-radius:var(--rs);padding:14px 16px;margin-top:13px}
+.ce-title{font-size:13px;font-weight:800;color:var(--text2);margin-bottom:8px}
+.fe-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:600px){.fe-grid{grid-template-columns:1fr}}
+.fe-item{background:var(--card);border-radius:8px;padding:11px 13px;border:1px solid var(--border)}
+.fe-icon{font-size:16px;margin-bottom:4px}
+.fe-t{font-size:13px;font-weight:800;color:var(--text);margin-bottom:3px}
+.fe-d{font-size:12px;color:var(--text2);line-height:1.6}
+
+/* NOTICE */
+.notice{background:rgba(255,159,10,0.05);border:1px solid rgba(255,159,10,0.2);border-radius:var(--rs);padding:11px 14px;font-size:13px;color:var(--text2);line-height:1.7;margin-top:12px}
+.notice strong{color:var(--amber)}
+
+/* ── AI ANALYZING ANIMATION ── */
+.ai-anim-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px;overflow:hidden}
+.ai-anim-header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.ai-pulse-wrap{position:relative;width:60px;height:60px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.ai-ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--blue);animation:aiRingPop 2s ease-out infinite}
+.ai-ring2{position:absolute;inset:-9px;border-radius:50%;border:1.5px solid rgba(0,113,227,.35);animation:aiRingPop 2s ease-out infinite .5s}
+.ai-ring3{position:absolute;inset:-18px;border-radius:50%;border:1px solid rgba(0,113,227,.15);animation:aiRingPop 2s ease-out infinite 1s}
+.ai-core{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0071E3,#7C3AED);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#ffffff;letter-spacing:.5px;position:relative;z-index:1;box-shadow:0 0 20px rgba(0,113,227,0.3)}
+@keyframes aiRingPop{0%{transform:scale(1);opacity:.9}100%{transform:scale(2.2);opacity:0}}
+.ai-anim-title{font-size:15px;font-weight:800;color:var(--text);line-height:1.3}
+.ai-anim-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.ai-status{font-size:13px;color:var(--cyan);margin-top:5px;font-weight:700;min-height:19px}
+
+/* scatter preview */
+.ai-scatter{width:100%;height:210px;position:relative;overflow:hidden;border-radius:8px;background:var(--surface);border:1px solid var(--border);margin-bottom:14px}
+.ai-dot{position:absolute;border-radius:50%;transform:translate(-50%,-50%) scale(0);animation:aiDot var(--d,1.8s) var(--dl,0s) ease-out forwards}
+@keyframes aiDot{0%{transform:translate(-50%,-50%) scale(0);opacity:0}30%{opacity:.9}100%{transform:translate(calc(-50% + var(--tx,0px)),calc(-50% + var(--ty,0px))) scale(1);opacity:.55}}
+.ai-scan{position:absolute;top:0;left:-4px;width:3px;height:100%;background:linear-gradient(to bottom,transparent 0%,rgba(0,113,227,.7) 50%,transparent 100%);animation:aiScan 2.2s ease-in-out infinite;border-radius:2px}
+@keyframes aiScan{0%{left:-4px;opacity:0}8%{opacity:1}92%{opacity:1}100%{left:100%;opacity:0}}
+.ai-nums{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.ai-n{position:absolute;font-size:10px;font-family:monospace;font-weight:700;opacity:0;animation:aiNFloat var(--nd,4s) var(--ndl,0s) linear infinite}
+@keyframes aiNFloat{0%{transform:translateY(110%);opacity:0}15%{opacity:.5}85%{opacity:.5}100%{transform:translateY(-110%);opacity:0}}
+
+/* bottom bar */
+.ai-bar-bg{background:var(--border);border-radius:4px;height:4px;overflow:hidden}
+.ai-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:4px;transition:width .12s linear;width:0%}
+.ai-bar-txt{font-size:12px;color:var(--hint);text-align:center;margin-top:6px}
+
+hr{border:none;border-top:1px solid var(--border);margin:14px 0}
+/* HEATMAP */
+.heatmap-wrap{overflow-x:auto;margin-top:10px;max-width:100%;width:100%}
+.heatmap-table{border-collapse:collapse;font-size:12px;width:100%;min-width:280px}
+.heatmap-table th{background:var(--card2);color:var(--text3);font-weight:700;padding:5px 8px;text-align:center;border:1px solid var(--border);font-size:11px;white-space:nowrap}
+.heatmap-table td{padding:5px 8px;text-align:center;border:1px solid var(--border);font-size:12px;font-weight:700;white-space:nowrap}
+.hm-yr{background:var(--card2);color:var(--text3);font-weight:700;text-align:left!important;font-size:11px}
+/* CORRELATION MATRIX */
+.corr-wrap{overflow-x:auto;margin-top:10px;max-width:100%;width:100%}
+.corr-table{border-collapse:collapse;font-size:13px;width:100%}
+.corr-table th{background:var(--card2);color:var(--text3);font-weight:700;padding:7px 10px;text-align:center;border:1px solid var(--border);font-size:13px;white-space:nowrap}
+.corr-table td{padding:7px 10px;text-align:center;border:1px solid var(--border);font-size:13px;font-weight:700;white-space:nowrap}
+/* BENCHMARK */
+.bench-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.bench-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+@media(max-width:600px){.bench-row{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:540px){.bench-2col{grid-template-columns:1fr}}
+.bench-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 8px;text-align:center}
+.bench-label{font-size:11px;color:var(--text3);font-weight:700;margin-bottom:4px}
+.bench-val{font-size:18px;font-weight:900}
+/* INVESTMENT DISPLAY */
+.inv-display{font-size:13px;color:var(--cyan);margin-top:5px;font-weight:700;min-height:20px}
+.inv-result{background:rgba(0,200,81,0.06);border:1px solid rgba(0,200,81,0.18);border-radius:var(--rs);padding:12px 16px;margin-bottom:14px}
+.inv-result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+.inv-result-grid.inv-4col{grid-template-columns:repeat(4,1fr)}
+@media(max-width:600px){.inv-result-grid,.inv-result-grid.inv-4col{grid-template-columns:1fr 1fr}}
+.inv-item{text-align:center}
+.inv-item-label{font-size:12px;color:var(--text3);font-weight:700;margin-bottom:3px}
+.inv-item-val{font-size:16px;font-weight:900;color:var(--green)}
+/* MDD */
+.mdd-val{color:var(--red)!important}
+/* WEIGHT CONSTRAINTS */
+.wc-row{display:flex;align-items:center;gap:10px;margin-top:8px}
+.wc-label{font-size:13px;color:var(--text2);min-width:80px;font-weight:600}
+.wc-input{width:70px;padding:6px 8px;font-size:13px;font-weight:700;text-align:right}
+.wc-unit{font-size:13px;color:var(--text3)}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+input[type=number],select{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--rs);padding:9px 12px;color:var(--text);font-size:14px;font-weight:600;outline:none;transition:border-color .15s;font-family:inherit}
+input[type=number]:focus,select:focus{border-color:var(--blue)}
+
+/* ── MOBILE RESPONSIVE ── */
+@media(max-width:980px){
+  .main{padding:14px}
+  .cols{gap:14px}
+}
+
+@media(max-width:640px){
+  /* 배너 */
+  .banner{padding:11px 14px}
+  .banner-desc{font-size:13px}
+
+  /* 레이아웃 */
+  .main{padding:10px}
+  .cols{gap:10px}
+  .card{padding:14px 13px;border-radius:10px;margin-bottom:10px}
+  .sec-title{font-size:14px;margin-bottom:10px}
+  .sec-hint{font-size:13px}
+
+  /* 자산 칩 */
+  .achips{grid-template-columns:1fr 1fr;gap:5px}
+  .achip{padding:8px 9px;gap:6px;border-radius:7px}
+  .aticker{font-size:13px}
+  .aname{font-size:12px}
+  .astart{font-size:11px}
+  .achip-badge{font-size:11px;top:3px;right:4px}
+
+  /* 그룹 헤더 */
+  .ag-header{margin-top:12px;margin-bottom:6px}
+  .ag-label{font-size:12px}
+  .ag-count{font-size:12px;padding:2px 7px}
+
+  /* 더 보기 버튼 */
+  .more-btn{font-size:13px;padding:8px}
+
+  /* 선택 카운터 */
+  .sel-count{padding:9px 12px}
+  .sel-count-label{font-size:13px}
+  .sel-count-val{font-size:14px}
+  .sel-count-max{font-size:12px}
+
+  /* 데이터 배지 */
+  .data-badge{font-size:13px;padding:9px 11px}
+
+  /* 투자 성향 버튼 */
+  .pref-group{gap:5px}
+  .pref-btn{min-width:62px;padding:9px 6px}
+  .pref-btn-name{font-size:13px}
+  .pref-btn-range{font-size:12px}
+
+  /* 슬라이더 */
+  .sim-val{font-size:14px;min-width:50px}
+
+  /* 결과 영역 */
+  .result-info{font-size:13px;padding:12px 13px}
+
+  /* 3가지 포트폴리오 카드 */
+  .comp3{grid-template-columns:1fr;gap:10px}
+  .pf-card{padding:14px 13px}
+  .pf-stats{gap:4px}
+  .ps{padding:7px 4px}
+  .ps-l{font-size:11px}
+  .ps-v{font-size:18px}
+
+  /* 차트 */
+  .cwrap{padding:13px 11px}
+  .chart-explain{padding:12px 13px}
+  .fe-grid{grid-template-columns:1fr;gap:6px}
+
+  /* 빈 상태 */
+  .empty{min-height:220px;padding:24px 16px}
+  .empty-title{font-size:15px}
+  .empty-desc{font-size:13px}
+}
+
+/* ═══ EZ Global Nav + Footer (자동 주입) ═══════════════════════════ */
+.ez-nav {
+  height: auto;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  position: sticky; top: 0; z-index: 9999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+               'Noto Sans KR', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-nav { background: rgba(28,28,30,0.92); border-color: rgba(255,255,255,0.08); }
+}
+.ez-nav-inner {
+  max-width: 1080px; margin: 0 auto; padding: 7px 20px 0;
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+.ez-nav-logo { display: flex; align-items: center; text-decoration: none; padding: 2px 0 10px; }
+.ez-nav-logo img { height: 26px; width: auto; display: block; }
+.ez-nav-back {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 14px; font-weight: 500;
+  color: #0071E3; text-decoration: none; transition: opacity .15s;
+}
+@media (prefers-color-scheme: dark) { .ez-nav-back { color: #0A84FF; } }
+.ez-nav-back:hover { opacity: .7; }
+.ez-nav-back svg { width: 14px; height: 14px; flex-shrink: 0; }
+.ez-nav-svc-links { display: flex; align-items: center; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; width: 100%; margin-left: 0; padding-bottom: 4px; }
+.ez-nav-svc-links::-webkit-scrollbar { display: none; }
+.ez-nav-svc-link { flex-shrink: 0; padding: 5px 10px; border-radius: 6px; font-size: 13px; font-weight: 500; color: #6E6E73; text-decoration: none; white-space: nowrap; transition: all 0.12s; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link { color: #AEAEB2; } }
+.ez-nav-svc-link:hover { background: rgba(0,0,0,0.06); color: #1D1D1F; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link:hover { background: rgba(255,255,255,0.08); color: #F5F5F7; } }
+.ez-nav-svc-link.active { background: rgba(0,113,227,0.08); color: #0071E3; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link.active { background: rgba(10,132,255,0.14); color: #0A84FF; } }
+
+/* ── EZ Footer ──────────────────────────────────────────────────── */
+.ez-footer {
+  background: #FFFFFF;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding: 36px 20px 20px;
+  margin-top: 60px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+               'Noto Sans KR', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer { background: #1C1C1E; border-color: rgba(255,255,255,0.08); }
+}
+.ez-footer-inner {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 28px;
+}
+.ez-footer-top {
+  display: flex; flex-direction: column; gap: 24px;
+}
+@media (min-width: 640px) {
+  .ez-footer-top { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+}
+.ez-footer-brand { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+.ez-footer-brand img { height: 22px; width: auto; display: block; }
+.ez-footer-brand-desc {
+  font-size: 13px; line-height: 1.65;
+  color: #3C3C3E;
+}
+@media (prefers-color-scheme: dark) { .ez-footer-brand-desc { color: #AEAEB2; } }
+.ez-footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
+.ez-footer-col { display: flex; flex-direction: column; gap: 10px; }
+.ez-footer-col-title {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase;
+  color: #1D1D1F;
+}
+@media (prefers-color-scheme: dark) { .ez-footer-col-title { color: #F5F5F7; } }
+.ez-footer-col a {
+  font-size: 13px; color: #3C3C3E;
+  text-decoration: none; transition: color .15s;
+}
+.ez-footer-col a:hover { color: #0071E3; }
+@media (prefers-color-scheme: dark) {
+  .ez-footer-col a { color: #AEAEB2; }
+  .ez-footer-col a:hover { color: #0A84FF; }
+}
+.ez-footer-bottom {
+  font-size: 11px; color: #AEAEB2;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding-top: 20px; line-height: 1.8;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer-bottom { border-color: rgba(255,255,255,0.08); color: #636366; }
+}
+/* ══════════════════════════════════════════════════════════════════ */
+
+
+/* ── Footer Books ─────────────────────────────────────────── */
+.ez-footer-books{display:flex;gap:20px;flex-wrap:wrap;}
+.ez-footer-book{display:flex;gap:10px;align-items:flex-start;}
+.ez-footer-book-cover{flex-shrink:0;width:130px;border-radius:6px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.15);display:block;background:transparent;}
+.ez-footer-book-cover img{width:100%;display:block;}
+.ez-footer-book-info{display:flex;flex-direction:column;gap:3px;}
+.ez-footer-book-title{font-size:11px;font-weight:700;color:#1D1D1F;line-height:1.4;margin-bottom:3px;}
+@media(prefers-color-scheme:dark){.ez-footer-book-title{color:#F5F5F7;}}
+.ez-footer-book-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#AEAEB2;margin-top:5px;}
+.ez-footer-book-btns{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;}
+.ez-footer-book-btn{font-size:11px;color:#3C3C3E;text-decoration:none;transition:color .12s;white-space:nowrap;}
+.ez-footer-book-btn:hover{background:#0071E3;color:#fff;}
+@media(prefers-color-scheme:dark){
+  .ez-footer-book-btn{background:rgba(255,255,255,.1);color:#AEAEB2;}
+  .ez-footer-book-btn:hover{background:#0A84FF;color:#fff;}
+}
+</style>
+</head>
+<body>
+<nav class="ez-nav" aria-label="글로벌 네비게이션">
+  <div class="ez-nav-inner">
+    <a href="/" class="ez-nav-logo" aria-label="EZLONG 홈">
+      <picture>
+        <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+        <img src="logo.png" alt="EZLONG">
+      </picture>
+    </a>
+    <div class="ez-nav-svc-links">
+      <a href="/atmr-dashboard.html"        class="ez-nav-svc-link">스윙 시그널</a>
+      <a href="/chart-analysis.html"        class="ez-nav-svc-link">AI 차트분석</a>
+      <a href="/analyst-reports.html"        class="ez-nav-svc-link">핵심기업 목표주가</a>
+      
+      <a href="/market-cycle.html"          class="ez-nav-svc-link">Market Cycle</a>
+      <a href="/dca-simulator.html"         class="ez-nav-svc-link">DCA 시뮬레이터</a>
+      <a href="/portfolio-manager.html"     class="ez-nav-svc-link">포트폴리오 복리</a>
+      <a href="/tax-account-simulator.html" class="ez-nav-svc-link">절세 계좌</a>
+      <a href="/compound-calculator.html"   class="ez-nav-svc-link">복리 계산기</a>
+      <a href="/retirement-calculator.html" class="ez-nav-svc-link">은퇴 계산기</a>
+      <a href="/backtest.html"              class="ez-nav-svc-link active">백테스트</a>
+      <a href="/risk-diagnostic.html"       class="ez-nav-svc-link">투자성향 테스트</a>
+      <a href="/auto-dca-guide.html"        class="ez-nav-svc-link">DCA 가이드</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── EZLONG 글로벌 헤더 ─────────────────────────────── -->
+
+<div class="banner">
+  <div class="banner-inner">
+    <div style="margin-bottom:12px">
+      <div style="display:inline-block;font-size:11px;font-weight:700;background:var(--blue-dim);color:var(--blue);border:1px solid rgba(0,113,227,.2);border-radius:4px;padding:2px 9px;margin-bottom:7px;letter-spacing:.3px">백테스트</div>
+      <h1 style="font-size:22px;font-weight:900;color:var(--text);letter-spacing:-.03em;line-height:1.2;margin:0">몬테카를로 포트폴리오 시뮬레이터</h1>
+    </div>
+    <div class="banner-desc">
+      내가 투자하고 싶은 자산들을 고르면, AI가 <strong style="color:var(--text)">수천 가지 비율 조합</strong>을 계산해
+      "위험 대비 수익이 가장 좋은 황금 비율"을 수학적으로 찾아드립니다.
+      내 투자 성향에 맞는 맞춤 포트폴리오까지 함께 제안합니다.
+    </div>
+    <div style="margin-top:9px;font-size:12px;color:var(--hint);line-height:1.6">
+      ※ 과거 데이터 기반 시뮬레이션입니다. 과거 성과는 미래 수익을 보장하지 않으며, 투자 판단의 참고 자료로만 활용하세요.
+    </div>
+  </div>
+</div>
+
+<div class="main">
+<div class="cols">
+
+<!-- ── LEFT: CONTROLS ── -->
+<div>
+
+  <!-- 자산 선택 -->
+  <div class="card">
+    <div class="sec-title">투자할 자산 선택</div>
+    <div class="sec-hint">섞고 싶은 자산을 골라주세요. 선택한 자산들 사이에서 수학적으로 가장 좋은 비율을 찾아드립니다. 최대 10개까지 선택 가능합니다.</div>
+
+    <div class="sel-count" id="sel-count">
+      <div>
+        <div class="sel-count-label">선택된 자산</div>
+        <div class="sel-count-max">최대 10개까지 선택 가능</div>
+      </div>
+      <div class="sel-count-val" id="sel-num">0 / 10</div>
+    </div>
+
+    <!-- ETF -->
+    <div class="ag-header">
+      <div class="ag-label">인기 ETF</div>
+      <div class="ag-count" id="ag-etf-cnt">0 / 10 선택</div>
+    </div>
+    <div class="achips" id="chips-etf1"></div>
+    <div class="more-section" id="more-etf">
+      <div class="achips" id="chips-etf2" style="margin-top:6px"></div>
+    </div>
+    <button class="more-btn" id="btn-more-etf" onclick="toggleMore('etf')">ETF 10개 더 보기 ▾</button>
+
+    <!-- 시가총액 대형주 -->
+    <div class="ag-header" style="margin-top:14px">
+      <div class="ag-label">시가총액 상위 개별주</div>
+      <div class="ag-count" id="ag-stk-cnt">0 / 10 선택</div>
+    </div>
+    <div class="achips" id="chips-stk1"></div>
+    <div class="more-section" id="more-stk">
+      <div class="achips" id="chips-stk2" style="margin-top:6px"></div>
+    </div>
+    <button class="more-btn" id="btn-more-stk" onclick="toggleMore('stk')">대형주 10개 더 보기 ▾</button>
+
+    <!-- 채권 & 안전자산 -->
+    <div class="ag-header" style="margin-top:14px">
+      <div class="ag-label">채권 & 안전자산</div>
+      <div class="ag-count" id="ag-bond-cnt">0 / 4 선택</div>
+    </div>
+    <div class="achips" id="chips-bond"></div>
+  </div>
+
+  <!-- 계산 설정 -->
+  <div class="card">
+    <div class="sec-title">계산 설정</div>
+
+    <div style="margin-bottom:16px">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px">분석 기간</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:8px">얼마나 오랜 기간의 데이터로 분석할까요?</div>
+      <div class="pref-group" id="pref-period">
+        <button class="pref-btn" onclick="setPeriod('10yr',this)">
+          <div class="pref-btn-name">최근 10년</div>
+          <div class="pref-btn-range">2016 ~ 2025</div>
+        </button>
+        <button class="pref-btn on" onclick="setPeriod('20yr',this)">
+          <div class="pref-btn-name">최근 20년</div>
+          <div class="pref-btn-range">2006 ~ 2025</div>
+        </button>
+        <button class="pref-btn" onclick="setPeriod('pre10yr',this)">
+          <div class="pref-btn-name">코로나 전 10년</div>
+          <div class="pref-btn-range">2010 ~ 2019</div>
+        </button>
+        <button class="pref-btn" onclick="setPeriod('pre20yr',this)">
+          <div class="pref-btn-name">코로나 전 20년</div>
+          <div class="pref-btn-range">2000 ~ 2019</div>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px">리밸런싱 주기</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:8px">보유 중 비율을 얼마나 자주 원래대로 맞출까요?</div>
+      <div class="pref-group" id="pref-rebal">
+        <button class="pref-btn" onclick="setRebal('none',this)">
+          <div class="pref-btn-name">없음</div>
+          <div class="pref-btn-range">비율 그대로 방치</div>
+        </button>
+        <button class="pref-btn on" onclick="setRebal('annual',this)">
+          <div class="pref-btn-name">1년 1회</div>
+          <div class="pref-btn-range">매년 초 리셋 (기본)</div>
+        </button>
+        <button class="pref-btn" onclick="setRebal('semi',this)">
+          <div class="pref-btn-name">6개월 1회</div>
+          <div class="pref-btn-range">연 2회 리셋</div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 투자 성향 -->
+  <div class="card">
+    <div class="sec-title">나의 투자 성향</div>
+
+    <div style="margin-bottom:14px">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px">손실 허용 범위</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:8px">내 계좌가 최대 얼마까지 떨어져도 버틸 수 있나요?</div>
+      <div class="pref-group" id="pref-loss">
+        <button class="pref-btn" onclick="setPref('loss','safe',this)">
+          <div class="pref-btn-name">안전형</div>
+          <div class="pref-btn-range">-10% 이내만</div>
+        </button>
+        <button class="pref-btn on" onclick="setPref('loss','mid',this)">
+          <div class="pref-btn-name">균형형</div>
+          <div class="pref-btn-range">-20~30% 감당</div>
+        </button>
+        <button class="pref-btn" onclick="setPref('loss','bold',this)">
+          <div class="pref-btn-name">과감형</div>
+          <div class="pref-btn-range">상관없음</div>
+        </button>
+      </div>
+    </div>
+
+    <div style="margin-bottom:14px">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px">수익 목표</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:8px">어느 정도의 수익을 기대하나요?</div>
+      <div class="pref-group" id="pref-ret">
+        <button class="pref-btn" onclick="setPref('ret','stable',this)">
+          <div class="pref-btn-name">안정형</div>
+          <div class="pref-btn-range">연 5~8% 목표</div>
+        </button>
+        <button class="pref-btn on" onclick="setPref('ret','growth',this)">
+          <div class="pref-btn-name">성장형</div>
+          <div class="pref-btn-range">연 10~15% 목표</div>
+        </button>
+        <button class="pref-btn" onclick="setPref('ret','aggr',this)">
+          <div class="pref-btn-name">공격형</div>
+          <div class="pref-btn-range">연 20%+ 도전</div>
+        </button>
+      </div>
+    </div>
+
+    <hr>
+
+    <div style="margin-bottom:10px">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px">시뮬레이션 횟수</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:6px">많을수록 정밀하지만 약간 느립니다</div>
+      <div class="sim-row">
+        <input type="range" id="t2-sims" min="1000" max="5000" step="500" value="3000"
+          oninput="document.getElementById('sim-val').textContent=this.value+'가지'">
+        <div class="sim-val" id="sim-val">3000가지</div>
+      </div>
+    </div>
+
+    <div id="data-period-badge" class="data-badge" style="display:none"></div>
+
+    <div style="margin-bottom:12px;margin-top:16px">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px">초기 투자금 <span style="font-size:11px;font-weight:700;background:var(--blue-dim);color:var(--blue);border-radius:3px;padding:1px 7px;margin-left:5px">필수</span></div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:6px">시뮬레이션 시작 시점의 투자 원금입니다.</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <input type="number" id="init-invest" min="1" step="1" value="1000" required inputmode="decimal" style="width:160px;max-width:100%;flex-shrink:1" onfocus="this.select()" onblur="if(!this.value||this.value<1)this.value=1000">
+        <div style="font-size:13px;color:var(--text3)">만원</div>
+      </div>
+      <div class="inv-display" id="inv-display"></div>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px">월 DCA <span style="font-size:11px;font-weight:600;color:var(--hint);margin-left:4px">선택사항</span></div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:6px">매월 정액 추가 적립 시 복리 효과가 더욱 극대화됩니다.</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <input type="number" id="dca-invest" min="0" step="1" value="100" inputmode="decimal" style="width:160px;max-width:100%;flex-shrink:1" onfocus="this.select()" onblur="if(this.value===''||this.value<0)this.value=0">
+        <div style="font-size:13px;color:var(--text3)">만원 / 월</div>
+      </div>
+      <div class="inv-display" id="dca-display"></div>
+    </div>
+
+    <button class="run-btn" id="run-btn" onclick="runOptimize()">최적 비율 찾기 시작</button>
+    <div id="prog-wrap" class="prog-wrap" style="display:none">
+      <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="prog-txt" id="prog-txt">계산 중...</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── RIGHT: RESULTS ── -->
+<div id="results">
+  <div class="card">
+    <div class="empty">
+      <div class="empty-icon">🎯</div>
+      <div class="empty-title">자산을 선택하고 실행해 보세요</div>
+      <div class="empty-desc">왼쪽에서 투자하고 싶은 자산을 2개 이상 고른 뒤<br><strong>최적 비율 찾기 시작</strong> 버튼을 눌러주세요.<br><br>수천 가지 비율 조합을 계산해<br>나만의 최적 포트폴리오를 찾아드립니다.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /cols -->
+</div><!-- /main -->
+
+<script>
+"use strict";
+/* ═══════════════════════════════════════
+   1. PRNG + DATA ENGINE
+═══════════════════════════════════════ */
+function mkRNG(s){s=s>>>0;return()=>{s=(Math.imul(1664525,s)+1013904223)>>>0;return s/4294967296}}
+function rn(rng,sg){const u1=Math.max(rng(),1e-10),u2=rng();return sg*Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2)}
+function genP(ar,vol,seed){
+  const rng=mkRNG(seed);let p=100,ps=[p];
+  for(const a of ar){
+    const sh=Array.from({length:12},()=>rn(rng,vol));
+    const raw=sh.reduce((x,s)=>x*(1+s),1);
+    const sc=Math.pow((1+a)/raw,1/12);
+    for(const s of sh){p*=(1+s)*sc;ps.push(p)}
+  }
+  return ps
+}
+
+/*
+  dataStart = months offset from Dec2004 baseline (index into PRICES array)
+  0=2005부터, 36=2008부터, 60=2010부터, 84=2012부터, 120=2015부터
+  연간수익률 배열(r): 항상 20개, 실제 데이터가 없는 기간은 비슷한 인덱스 자산으로 proxy
+*/
+const A={
+  // ── ETF PRIMARY 10 ──────────────────────────────────────────────────────
+  SPY:{ n:'미국 S&P500 대형주',g:'etf',ds:0,c:'#4d9bff',v:.045,s:1001,
+    r:[-.091,-.119,-.221,.287,.109,.049,.158,.051,-.370,.264,.151,.021,.160,.324,.137,.014,.120,.218,-.044,.315,.184,.287,-.182,.263,.250,.186]},
+  QQQ:{ n:'미국 나스닥100 기술주',g:'etf',ds:0,c:'#9b6bff',v:.060,s:1002,
+    r:[-.368,-.327,-.376,.497,.105,.017,.068,.190,-.417,.547,.198,.027,.183,.366,.199,.094,.070,.327,-.010,.390,.486,.273,-.326,.549,.256,.218]},
+  XLK:{ n:'기술주 섹터 ETF',g:'etf',ds:0,c:'#7c3aed',v:.058,s:1010,
+    r:[-.390,-.300,-.360,.460,.020,.020,.140,.170,-.440,.620,.110,.020,.140,.280,.200,.040,.140,.380,-.020,.500,.430,.340,-.280,.570,.240,.258]},
+  SOXX:{ n:'반도체 ETF',g:'etf',ds:0,c:'#a78bfa',v:.080,s:1015,
+    r:[-.530,-.510,-.540,.860,.220,.100,.060,.030,-.520,.760,.230,-.120,.210,.350,.300,-.010,.350,.380,-.070,.600,.520,.410,-.350,.650,.300,.425]},
+  XLV:{ n:'헬스케어 섹터 ETF',g:'etf',ds:0,c:'#22d3ee',v:.050,s:1017,
+    r:[.250,-.100,-.180,.170,.060,.050,.060,.070,-.220,.180,.030,.120,.160,.410,.250,.060,-.040,.220,.060,.210,.140,.260,-.010,.020,-.040,.152]},
+  XLE:{ n:'에너지 섹터 ETF',g:'etf',ds:0,c:'#fb923c',v:.075,s:1013,
+    r:[.200,-.150,-.090,.260,.310,.400,.200,.340,-.360,.140,.210,.020,.030,.260,-.080,-.220,.270,-.010,-.190,.120,-.330,.550,.650,-.040,.050,.085]},
+  VNQ:{ n:'리츠(부동산) ETF',g:'etf',ds:0,c:'#f472b6',v:.065,s:1012,
+    r:[.260,.130,.030,.380,.330,.120,.340,-.170,-.380,.280,.280,.090,.190,.020,.300,.020,.090,.040,-.040,.290,-.050,.430,-.260,.120,.050,.041]},
+  SCHD:{ n:'미국 배당성장 ETF',g:'etf',ds:132,c:'#34d399',v:.050,s:1011,
+    r:[-.091,-.119,-.221,.287,.109,.049,.158,.051,-.370,.264,.151,.021,.120,.320,.130,.000,.170,.180,-.060,.280,.000,.300,-.030,.040,.100,.051]},
+  VWO:{ n:'신흥국 주식 ETF',g:'etf',ds:0,c:'#fbbf24',v:.070,s:1016,
+    r:[-.280,-.050,-.100,.560,.260,.340,.320,.390,-.530,.750,.190,-.180,.180,-.050,.020,-.150,.120,.320,-.140,.180,.190,-.050,-.200,.100,.080,.257]},
+  ARKK:{ n:'ARK 혁신기술 ETF',g:'etf',ds:180,c:'#f87171',v:.130,s:1014,
+    r:[-.091,-.119,-.221,.287,.109,.017,.068,.190,-.417,.547,.198,.027,.183,.366,.199,.030,-.020,.880,.040,.360,1.570,-.230,-.670,.680,.150,.372]},
+
+  // ── ETF SECONDARY 10 ────────────────────────────────────────────────────
+  VTI:{ n:'미국 전체 주식 ETF',g:'etf2',ds:0,c:'#60a5fa',v:.044,s:1018,
+    r:[-.091,-.119,-.220,.295,.113,.058,.158,.055,-.368,.262,.175,.020,.162,.330,.130,.010,.127,.214,-.048,.308,.180,.288,-.185,.262,.246,.171]},
+  VEA:{ n:'선진국 주식 ETF(미국 제외)',g:'etf2',ds:84,c:'#818cf8',v:.060,s:1020,
+    r:[-.091,-.119,-.221,.287,.109,.120,.120,.110,-.420,.320,.110,-.120,.180,.230,-.050,-.010,.020,.250,-.140,.220,.100,.120,-.160,.180,.060,.352]},
+  EEM:{ n:'신흥국 주식 ETF(iShares)',g:'etf2',ds:0,c:'#a3e635',v:.072,s:1021,
+    r:[-.280,-.050,-.100,.560,.260,.350,.320,.400,-.530,.790,.190,-.180,.180,-.040,-.030,-.150,.120,.380,-.140,.180,.190,-.050,-.220,.100,.080,.340]},
+  XLF:{ n:'금융 섹터 ETF',g:'etf2',ds:0,c:'#38bdf8',v:.075,s:1023,
+    r:[-.220,-.130,-.190,.360,.140,.060,.190,-.200,-.570,.170,.120,-.190,.290,.360,.150,-.020,.220,.220,-.150,.320,-.040,.350,-.120,.100,.280,.149]},
+  XLI:{ n:'산업재 섹터 ETF',g:'etf2',ds:0,c:'#94a3b8',v:.060,s:1025,
+    r:[-.050,-.070,-.130,.310,.150,.050,.140,.120,-.420,.170,.240,-.020,.160,.400,.100,-.040,.190,.210,-.150,.290,.110,.210,-.060,.170,.180,.193]},
+  GDX:{ n:'금 채굴회사 ETF',g:'etf2',ds:72,c:'#d97706',v:.090,s:1022,
+    r:[-.091,-.119,-.221,.287,.109,.090,.410,.110,-.260,.370,.330,-.110,-.120,-.530,-.140,-.200,.530,.120,-.090,.400,.240,-.090,-.100,.080,.240,.548]},
+  HYG:{ n:'미국 하이일드 채권 ETF',g:'etf2',ds:84,c:'#64748b',v:.040,s:1024,
+    r:[-.091,-.119,-.221,.287,.109,.024,.040,.030,-.200,.460,.120,.030,.140,.070,.020,-.050,.130,.070,-.030,.150,.060,.050,-.130,.130,.070,.086]},
+  VIG:{ n:'미국 배당증가 ETF',g:'etf2',ds:72,c:'#4ade80',v:.050,s:1026,
+    r:[-.091,-.119,-.221,.287,.109,.049,.170,.040,-.260,.260,.170,.060,.160,.290,.120,.020,.120,.210,-.040,.300,.130,.250,-.110,.220,.170,.142]},
+  ICLN:{ n:'청정에너지 ETF',g:'etf2',ds:96,c:'#86efac',v:.100,s:1027,
+    r:[-.091,-.119,-.221,.287,.109,.049,.158,.051,-.250,1.250,-.180,-.540,.830,.620,-.240,-.300,.070,.230,-.200,.490,1.380,-.340,-.220,-.300,-.080,.471]},
+  IVV:{ n:'S&P500 ETF (iShares)',g:'etf2',ds:0,c:'#2563eb',v:.045,s:1019,
+    r:[-.091,-.119,-.221,.287,.109,.050,.159,.053,-.368,.266,.153,.023,.162,.326,.139,.016,.122,.220,-.042,.317,.186,.289,-.180,.265,.252,.179]},
+
+  // ── STOCKS PRIMARY 10 ───────────────────────────────────────────────────
+  AAPL:{ n:'애플',g:'stk',ds:0,c:'#e2e8f0',v:.080,s:2003,
+    r:[-.710,.150,-.350,.500,2.010,.650,.170,1.160,-.560,1.500,.530,.240,.330,.050,.410,-.070,.120,.460,-.070,.870,.800,.340,-.260,.490,.300,.091]},
+  MSFT:{ n:'마이크로소프트',g:'stk',ds:0,c:'#60a5fa',v:.075,s:2004,
+    r:[-.630,-.330,-.220,.070,.080,-.010,.150,.210,-.440,.600,.050,-.060,.050,.440,.280,.220,.150,.410,.210,.580,.420,.520,-.280,.570,.150,.156]},
+  NVDA:{ n:'엔비디아',g:'stk',ds:0,c:'#76c442',v:.120,s:1007,
+    r:[.500,-.650,-.570,.950,.750,.100,-.050,-.080,-.760,1.300,.080,-.400,.200,.550,-.250,.650,2.240,.810,-.310,.770,1.220,1.250,-.500,2.390,1.710,.389]},
+  AMZN:{ n:'아마존',g:'stk',ds:0,c:'#f97316',v:.090,s:2005,
+    r:[-.800,-.300,-.600,1.630,.240,.070,-.170,1.360,-.450,1.650,.340,-.040,.460,.590,-.220,1.180,.110,.560,.280,.230,.760,.020,-.500,.810,.430,.052]},
+  GOOGL:{ n:'구글(알파벳)',g:'stk',ds:0,c:'#4ade80',v:.080,s:2006,
+    r:[-.091,-.119,-.221,.287,1.200,1.150,.110,.510,-.560,1.010,-.030,.090,.090,.580,.000,.470,.020,.330,-.010,.280,.310,.650,-.390,.580,.360,.660]},
+  META:{ n:'메타(페이스북)',g:'stk',ds:144,c:'#818cf8',v:.110,s:2007,
+    r:[-.091,-.119,-.221,.287,.109,.017,.068,.190,-.417,.547,.198,.027,-.260,1.050,.430,.340,.100,.530,-.260,.570,.330,.230,-.640,1.940,.700,.131]},
+  TSLA:{ n:'테슬라',g:'stk',ds:120,c:'#ef4444',v:.150,s:1008,
+    r:[-.091,-.119,-.221,.287,.109,.049,.158,.051,-.370,.264,.530,-.100,.130,3.440,-.110,-.100,-.110,.460,.070,.260,6.950,.500,-.650,1.020,.630,.114]},
+  AVGO:{ n:'브로드컴',g:'stk',ds:108,c:'#c4a6ff',v:.090,s:2008,
+    r:[-.091,-.119,-.221,.287,.109,.017,.068,.190,-.417,.240,.610,-.130,.740,.370,.590,.130,.450,.260,-.080,.390,.280,.410,.220,1.000,1.070,.506]},
+  JPM:{ n:'JP모건',g:'stk',ds:0,c:'#38bdf8',v:.080,s:2009,
+    r:[-.030,-.250,-.240,.530,.300,.030,.300,.040,-.270,.560,.030,-.220,.360,.340,.100,.070,.330,.250,-.060,.470,-.050,.270,-.140,.300,.450,.372]},
+  LLY:{ n:'일라이 릴리',g:'stk',ds:0,c:'#f472b6',v:.085,s:2010,
+    r:[-.040,-.140,.020,.270,.190,.020,-.020,.100,-.040,.160,-.010,.180,.210,.250,.200,.150,-.080,.140,.260,.150,.150,.620,.340,.600,.330,.403]},
+
+  // ── STOCKS SECONDARY 10 ─────────────────────────────────────────────────
+  'BRK.B':{ n:'버크셔 해서웨이 B',g:'stk2',ds:0,c:'#78716c',v:.060,s:2011,
+    r:[-.070,.070,-.020,.280,.100,.010,.230,.240,-.320,.020,.220,-.050,.170,.330,.260,-.120,.230,.220,.030,.110,.020,.290,.040,.160,.250,.109]},
+  V:{ n:'비자',g:'stk2',ds:96,c:'#1d4ed8',v:.070,s:2012,
+    r:[-.091,-.119,-.221,.287,.109,.049,.158,.051,-.110,.220,.320,.300,.440,.520,.160,.200,.010,.480,.190,.450,.160,.000,-.030,.230,.180,.118]},
+  NFLX:{ n:'넷플릭스',g:'stk2',ds:0,c:'#dc2626',v:.130,s:2013,
+    r:[-.091,-.119,-.630,2.970,.590,-.200,.640,.190,-.200,1.970,2.170,-.600,1.630,2.980,-.050,1.340,.080,.550,.390,.240,.670,.110,-.510,.650,.860,.052]},
+  AMD:{ n:'AMD',g:'stk2',ds:0,c:'#16a34a',v:.130,s:2014,
+    r:[-.300,-.280,-.600,1.500,.270,.680,.370,-.590,-.890,2.120,.120,-.370,.410,-.410,-.420,-.340,2.950,.160,.000,1.480,1.000,.570,-.550,1.280,.090,.773]},
+  TSM:{ n:'TSMC (ADR)',g:'stk2',ds:0,c:'#0284c7',v:.090,s:2020,
+    r:[-.450,-.350,-.300,.800,.100,-.070,.100,.110,-.510,1.250,.330,-.200,.400,.240,.240,-.020,.250,.670,-.250,.570,.730,.080,-.360,.380,.900,.559]},
+  CRM:{ n:'세일즈포스',g:'stk2',ds:0,c:'#0891b2',v:.095,s:2015,
+    r:[-.091,-.119,-.221,.287,.109,-.020,1.080,.300,-.460,.610,.440,.120,.620,.730,-.050,.300,.150,.490,.540,.200,.530,.130,-.480,.980,-.080,-.202]},
+  COST:{ n:'코스트코',g:'stk2',ds:0,c:'#059669',v:.075,s:2016,
+    r:[.050,.200,-.150,.230,.150,.080,.230,.190,-.220,.290,.240,.170,.280,.260,.200,.140,.080,.270,.160,.470,.280,.510,-.190,.490,.480,-.054]},
+  WMT:{ n:'월마트',g:'stk2',ds:0,c:'#0369a1',v:.065,s:2017,
+    r:[.050,.100,-.020,.030,-.030,-.100,.030,.020,.190,.000,.000,.110,.160,.120,.070,-.290,.130,.420,.050,.320,.270,.020,-.020,.190,.730,.245]},
+  ORCL:{ n:'오라클',g:'stk2',ds:0,c:'#9a3412',v:.085,s:2018,
+    r:[-.340,-.520,-.640,.350,.060,-.060,.430,.310,-.490,.260,.200,.030,.330,-.020,.050,.000,.140,.230,.040,.190,.250,.570,-.080,.310,.770,.181]},
+  INTC:{ n:'인텔',g:'stk2',ds:0,c:'#1e40af',v:.090,s:2019,
+    r:[-.670,.070,-.530,1.130,-.310,-.160,-.170,.110,-.470,.440,-.030,.170,-.150,.260,.410,-.030,.060,.300,-.010,.300,-.160,.010,-.470,.910,-.590,.841]},
+
+  // ── BONDS & SAFE HAVEN ──────────────────────────────────────────────────
+  TLT:{ n:'미국 장기 국채 20년+',g:'bond',ds:0,c:'#28e078',v:.035,s:1003,
+    r:[.210,.040,.170,.020,.090,.077,.013,.103,.337,-.220,.094,.339,.036,-.140,.273,-.016,.013,.095,-.016,.141,.180,-.050,-.312,-.040,-.080,.042]},
+  IEF:{ n:'미국 중기 국채 7-10년',g:'bond',ds:0,c:'#30e8ff',v:.020,s:1004,
+    r:[.140,.070,.120,.000,.050,.020,.037,.091,.140,-.067,.070,.157,.042,-.067,.094,.011,.010,.042,.004,.088,.101,-.035,-.154,.000,-.010,.080]},
+  GLD:{ n:'금 (Gold ETF)',g:'bond',ds:0,c:'#ffbe3a',v:.040,s:1005,
+    r:[-.060,.020,.250,.200,.050,.090,.239,.319,.050,.240,.297,.096,.071,-.280,.000,-.105,.076,.135,-.019,.179,.248,-.035,.004,.131,.280,.637]},
+  BND:{ n:'미국 채권 혼합',g:'bond',ds:0,c:'#94a3b8',v:.015,s:1006,
+    r:[.120,.080,.100,.040,.040,.020,.040,.070,-.020,.060,.060,.079,.042,.002,.060,.005,.026,.035,.001,.086,.077,-.015,-.131,.055,.014,.071]},
+};
+
+/* Pre-generate all price series */
+const PRICES={};
+for(const[t,a]of Object.entries(A)) PRICES[t]=genP(a.r,a.v,a.s);
+
+/* dataStart year for display */
+const DS_YEAR={0:'2000',12:'2001',24:'2002',36:'2003',48:'2004',60:'2005',72:'2006',84:'2007',96:'2008',108:'2009',120:'2010',132:'2011',144:'2012',156:'2013',168:'2014',180:'2015',192:'2016',204:'2017',216:'2018',228:'2019',240:'2020',252:'2021',264:'2022',276:'2023',288:'2024',300:'2025'};
+
+/* Monthly returns helper */
+function mrets(t,s,e){const p=PRICES[t],r=[];for(let i=s+1;i<=e;i++)r.push(p[i]/p[i-1]-1);return r}
+
+/* ═══════════════════════════════════════
+   2. STATE
+═══════════════════════════════════════ */
+const sel=new Set(['SPY','QQQ','NVDA','GOOGL']); // default selection
+const selOrder=['SPY','QQQ','NVDA','GOOGL']; // tracks selection sequence
+let prefLoss='mid', prefRet='growth';
+let period='20yr';      // '10yr' | '20yr'
+let rebalMode='annual'; // 'none' | 'annual' | 'semi'
+let chart2=null;
+
+/* ═══════════════════════════════════════
+   3. BUILD ASSET CHIPS
+═══════════════════════════════════════ */
+const GROUPS={
+  etf1:['SPY','QQQ','XLK','SOXX','XLV','XLE','VNQ','SCHD','VWO','ARKK'],
+  etf2:['VTI','VEA','EEM','XLF','XLI','GDX','HYG','VIG','ICLN','IVV'],
+  stk1:['NVDA','GOOGL','AAPL','MSFT','AMZN','META','TSLA','AVGO','JPM','LLY'],
+  stk2:['BRK.B','V','NFLX','AMD','TSM','CRM','COST','WMT','ORCL','INTC'],
+  bond:['TLT','IEF','GLD','BND']
+};
+
+function chipHTML(t){
+  const d=A[t];
+  const yr=DS_YEAR[d.ds]||'2005';
+  const yrLabel=yr==='2000'?'':`<div class="astart">${yr}년 상장~</div>`;
+  const idx=selOrder.indexOf(t);
+  const badge=idx>=0?`<span class="achip-badge">${idx+1}</span>`:'';
+  return `<div class="achip ${sel.has(t)?'on':''}" id="chip-${t}" onclick="toggleChip('${t}')">
+    <span class="adot" style="background:${d.c}"></span>
+    <div><div class="aticker">${t}</div><div class="aname">${d.n}</div>${yrLabel}</div>
+    ${badge}
+  </div>`;
+}
+
+function buildChips(){
+  document.getElementById('chips-etf1').innerHTML=GROUPS.etf1.map(chipHTML).join('');
+  document.getElementById('chips-etf2').innerHTML=GROUPS.etf2.map(chipHTML).join('');
+  document.getElementById('chips-stk1').innerHTML=GROUPS.stk1.map(chipHTML).join('');
+  document.getElementById('chips-stk2').innerHTML=GROUPS.stk2.map(chipHTML).join('');
+  document.getElementById('chips-bond').innerHTML=GROUPS.bond.map(chipHTML).join('');
+  updateCounts();
+}
+
+function refreshBadges(){
+  selOrder.forEach((t,i)=>{
+    const el=document.getElementById(`chip-${t}`);
+    if(!el)return;
+    let b=el.querySelector('.achip-badge');
+    if(!b){b=document.createElement('span');b.className='achip-badge';el.appendChild(b);}
+    b.textContent=i+1;
+  });
+}
+
+function toggleChip(t){
+  if(sel.has(t)){
+    sel.delete(t);
+    selOrder.splice(selOrder.indexOf(t),1);
+    const el=document.getElementById(`chip-${t}`);
+    el.classList.remove('on');
+    const b=el.querySelector('.achip-badge');
+    if(b)b.remove();
+  } else {
+    if(sel.size>=10){alert('최대 10개까지 선택할 수 있습니다.\n현재 선택을 일부 해제한 뒤 다시 선택해주세요.');return}
+    sel.add(t);
+    selOrder.push(t);
+    document.getElementById(`chip-${t}`).classList.add('on');
+  }
+  refreshBadges();
+  updateCounts();
+  updateDataBadge();
+}
+
+function toggleMore(type){
+  const sec=document.getElementById(`more-${type}`);
+  const btn=document.getElementById(`btn-more-${type}`);
+  if(sec.classList.contains('open')){
+    sec.classList.remove('open');
+    btn.textContent=(type==='etf'?'ETF':'대형주')+' 10개 더 보기 ▾';
+  } else {
+    sec.classList.add('open');
+    btn.textContent=(type==='etf'?'ETF':'대형주')+' 접기 ▴';
+  }
+}
+
+function updateCounts(){
+  const total=sel.size;
+  const etfCnt=[...GROUPS.etf1,...GROUPS.etf2].filter(t=>sel.has(t)).length;
+  const stkCnt=[...GROUPS.stk1,...GROUPS.stk2].filter(t=>sel.has(t)).length;
+  const bndCnt=GROUPS.bond.filter(t=>sel.has(t)).length;
+  document.getElementById('sel-num').textContent=`${total} / 10`;
+  document.getElementById('ag-etf-cnt').textContent=`${etfCnt} / ${[...GROUPS.etf1,...GROUPS.etf2].length} 선택`;
+  document.getElementById('ag-stk-cnt').textContent=`${stkCnt} / ${[...GROUPS.stk1,...GROUPS.stk2].length} 선택`;
+  document.getElementById('ag-bond-cnt').textContent=`${bndCnt} / 4 선택`;
+  const sc=document.getElementById('sel-count');
+  sc.className='sel-count'+(total>=10?' over':'');
+}
+
+function updateDataBadge(){
+  const tickers=[...sel];
+  if(tickers.length<2){document.getElementById('data-period-badge').style.display='none';return}
+  const cfg=getPeriodCfg();
+  const maxDs=Math.max(cfg.modeOffset,...tickers.map(t=>A[t].ds));
+  const yr=DS_YEAR[maxDs]||cfg.startLbl;
+  const years=Math.round((cfg.endIdx-maxDs)/12);
+  const badge=document.getElementById('data-period-badge');
+  badge.style.display='block';
+  const limitTicker=tickers.find(t=>A[t].ds>cfg.modeOffset)||null;
+  if(!limitTicker){
+    badge.className='data-badge';
+    badge.innerHTML=`선택 자산 전체 데이터 보유. <strong>${cfg.startLbl}~${cfg.endLbl}년 (${cfg.fullYrs}년)</strong> 기준으로 계산합니다.`;
+  } else {
+    badge.className='data-badge warn';
+    badge.innerHTML=`<span class="warn-tag">기간 단축</span><strong>${limitTicker}</strong>이 ${yr}년 상장이라 전체 기간 데이터가 없습니다. 실제 분석 기간은 <strong>${yr}~${cfg.endLbl}년 (${years}년)</strong>으로 단축됩니다. ${limitTicker}를 제거하면 ${cfg.fullYrs}년 전체 분석 가능합니다.`;
+  }
+}
+
+/* ═══════════════════════════════════════
+   4. PREFERENCES
+═══════════════════════════════════════ */
+function setPref(type,val,btn){
+  if(type==='loss')prefLoss=val;
+  else prefRet=val;
+  const grp=document.getElementById(`pref-${type}`);
+  grp.querySelectorAll('.pref-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function getPeriodCfg(){
+  if(period==='10yr')  return {modeOffset:192, endIdx:312, startLbl:'2016', endLbl:'2025', fullYrs:10};
+  if(period==='20yr')  return {modeOffset:72,  endIdx:312, startLbl:'2006', endLbl:'2025', fullYrs:20};
+  if(period==='pre10yr') return {modeOffset:120, endIdx:240, startLbl:'2010', endLbl:'2019', fullYrs:10};
+  if(period==='pre20yr') return {modeOffset:0,   endIdx:240, startLbl:'2000', endLbl:'2019', fullYrs:20};
+  return {modeOffset:72, endIdx:312, startLbl:'2006', endLbl:'2025', fullYrs:20};
+}
+
+function setPeriod(val,btn){
+  period=val;
+  document.getElementById('pref-period').querySelectorAll('.pref-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  updateDataBadge();
+}
+
+function setRebal(val,btn){
+  rebalMode=val;
+  document.getElementById('pref-rebal').querySelectorAll('.pref-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+/* Utility score for user preference */
+function utilScore(ret,vol){
+  const S={safe:5,mid:2.5,bold:1}[prefLoss]||2.5;
+  const R={stable:1,growth:2.5,aggr:5}[prefRet]||2.5;
+  return ret*R - vol*S;
+}
+function prefLabel(){
+  const lMap={safe:'안전형',mid:'균형형',bold:'과감형'};
+  const rMap={stable:'안정형',growth:'성장형',aggr:'공격형'};
+  return `${lMap[prefLoss]} × ${rMap[prefRet]}`;
+}
+
+/* ═══════════════════════════════════════
+   5. MONTE CARLO ENGINE
+═══════════════════════════════════════ */
+function showAIAnimation(tickers, nSim){
+  const msgs=['수익률 패턴 분석 중...','공분산 행렬 계산 중...','몬테카를로 시뮬레이션 실행 중...','효율적 투자선 탐색 중...','최적 비율 조합 추출 중...','샤프 지수 최적화 중...','투자 성향 매칭 중...','포트폴리오 프로파일 생성 중...'];
+  const pal=['#0071E3','#7C3AED','#1A7F37','#B45309','#0891B2','#be185d','#2563eb','#7c3aed','#059669','#dc2626'];
+  let dots='';
+  for(let i=0;i<90;i++){
+    const x=(5+Math.random()*90).toFixed(1),y=(8+Math.random()*84).toFixed(1);
+    const tx=((Math.random()-.5)*50).toFixed(0),ty=((Math.random()-.5)*50).toFixed(0);
+    const sz=(2+Math.random()*5).toFixed(1);
+    const c=pal[Math.floor(Math.random()*pal.length)];
+    const d=(1.2+Math.random()*2.2).toFixed(2),dl=(Math.random()*1.8).toFixed(2);
+    dots+=`<div class="ai-dot" style="left:${x}%;top:${y}%;width:${sz}px;height:${sz}px;background:${c};--tx:${tx}px;--ty:${ty}px;--d:${d}s;--dl:${dl}s"></div>`;
+  }
+  const numVals=['+18.6%','+38.9%','SR:2.1','+66.0%','vol:22%','-MDD-','×3.4','+21.8%'];
+  let nums='';
+  for(let i=0;i<8;i++){
+    const x=(3+Math.random()*88).toFixed(0);
+    const c=pal[i%pal.length];
+    const nd=(3+Math.random()*3).toFixed(1),ndl=(Math.random()*4).toFixed(1);
+    nums+=`<div class="ai-n" style="left:${x}%;color:${c};--nd:${nd}s;--ndl:${ndl}s">${numVals[i]}</div>`;
+  }
+  document.getElementById('results').innerHTML=`
+    <div class="ai-anim-card">
+      <div class="ai-anim-header">
+        <div class="ai-pulse-wrap">
+          <div class="ai-ring3"></div><div class="ai-ring2"></div><div class="ai-ring"></div>
+          <div class="ai-core">AI</div>
+        </div>
+        <div>
+          <div class="ai-anim-title">${tickers.join(' · ')}</div>
+          <div class="ai-anim-sub">${nSim.toLocaleString()}가지 비율 조합 계산 중</div>
+          <div class="ai-status" id="ai-status">${msgs[0]}</div>
+        </div>
+      </div>
+      <div class="ai-scatter">
+        ${dots}
+        <div class="ai-nums">${nums}</div>
+        <div class="ai-scan"></div>
+      </div>
+      <div class="ai-bar-bg"><div class="ai-bar-fill" id="ai-bar-fill"></div></div>
+      <div class="ai-bar-txt" id="ai-bar-txt">0 / ${nSim.toLocaleString()}가지 계산 완료</div>
+    </div>`;
+  let mi=0;
+  window._aiMsgTimer=setInterval(()=>{
+    mi=(mi+1)%msgs.length;
+    const el=document.getElementById('ai-status');
+    if(el)el.textContent=msgs[mi]; else clearInterval(window._aiMsgTimer);
+  },1100);
+}
+
+function runOptimize(){
+  const tickers=[...sel];
+  if(tickers.length<2){alert('자산을 2개 이상 선택해주세요.');return}
+  const nSim=parseInt(document.getElementById('t2-sims').value);
+  const RF=0.025;
+  const btn=document.getElementById('run-btn');
+  btn.disabled=true; btn.textContent='계산 중...';
+  const pw=document.getElementById('prog-wrap');
+  const pf=document.getElementById('prog-fill');
+  const pt=document.getElementById('prog-txt');
+  pw.style.display='block';
+  showAIAnimation(tickers, nSim);
+
+  /* Determine common data period */
+  const cfg=getPeriodCfg();
+  const modeOffset=cfg.modeOffset;
+  const endIdx=cfg.endIdx;
+  const effectiveStart=Math.max(modeOffset,...tickers.map(t=>A[t].ds));
+  const n=tickers.length;
+  const nYears=Math.round((endIdx-effectiveStart)/12);
+
+  /* Monthly returns for Markowitz (rebalanced modes) */
+  const retSeries=tickers.map(t=>mrets(t,effectiveStart,endIdx));
+  const T=retSeries[0].length;
+  const means=retSeries.map(r=>r.reduce((s,x)=>s+x,0)/T);
+  const cov=Array.from({length:n},(_,i)=>
+    Array.from({length:n},(_,j)=>{
+      let s=0;for(let k=0;k<T;k++)s+=(retSeries[i][k]-means[i])*(retSeries[j][k]-means[j]);
+      return s/(T-1);
+    })
+  );
+
+  /* Annual price ratios per asset (for no-rebalancing buy-and-hold) */
+  const annualRatios=tickers.map(t=>{
+    const p=PRICES[t];const arr=[];
+    for(let y=0;y<nYears;y++){const s=effectiveStart+y*12;arr.push(p[s+12]/p[s]);}
+    return arr;
+  });
+
+  const results=[];
+  const CHUNK=200;
+  let done=0;
+
+  function next(){
+    const end=Math.min(done+CHUNK,nSim);
+    for(let s=done;s<end;s++){
+      const raw=Array.from({length:n},()=>Math.random());
+      const wsum=raw.reduce((a,b)=>a+b,0);
+      const w=raw.map(x=>x/wsum);
+      let pRet,pVol;
+
+      if(rebalMode==='none'){
+        /* Buy-and-hold: track actual weight drift year by year */
+        let vals=w.slice();
+        const yrRets=[];
+        for(let y=0;y<nYears;y++){
+          const newVals=vals.map((v,i)=>v*annualRatios[i][y]);
+          const newTotal=newVals.reduce((a,b)=>a+b,0);
+          const prevTotal=vals.reduce((a,b)=>a+b,0);
+          yrRets.push(newTotal/prevTotal-1);
+          vals=newVals; // no rebalancing: weights drift
+        }
+        const portVal=vals.reduce((a,b)=>a+b,0);
+        pRet=Math.pow(portVal,1/nYears)-1;
+        const mYr=yrRets.reduce((a,b)=>a+b,0)/nYears;
+        pVol=Math.sqrt(yrRets.reduce((s,r)=>s+(r-mYr)**2,0)/Math.max(nYears-1,1));
+      } else {
+        /* Rebalanced (annual or semi): Markowitz formula */
+        pRet=w.reduce((a,wi,i)=>a+wi*means[i],0)*12;
+        let pVar=0;
+        for(let i=0;i<n;i++)for(let j=0;j<n;j++)pVar+=w[i]*w[j]*cov[i][j];
+        pVol=Math.sqrt(pVar*12);
+      }
+      const sr=(pRet-RF)/pVol;
+      const us=utilScore(pRet,pVol);
+      results.push({w,ret:pRet,vol:pVol,sr,us});
+    }
+    done=end;
+    const pct=(done/nSim*100).toFixed(0);
+    pf.style.width=pct+'%';
+    pt.textContent=`${done.toLocaleString()} / ${nSim.toLocaleString()}가지 조합 계산 완료`;
+    const aiFill=document.getElementById('ai-bar-fill');
+    if(aiFill){aiFill.style.width=pct+'%';document.getElementById('ai-bar-txt').textContent=`${done.toLocaleString()} / ${nSim.toLocaleString()}가지 조합 계산 완료`;}
+    if(done<nSim){requestAnimationFrame(next);return}
+
+    const maxSR=results.reduce((b,r)=>r.sr>b.sr?r:b);
+    const minVol=results.reduce((b,r)=>r.vol<b.vol?r:b);
+    const myPref=results.reduce((b,r)=>r.us>b.us?r:b);
+
+    /* 계산 완료 → AI 분석 마무리 연출 (2.5초) */
+    if(window._aiMsgTimer)clearInterval(window._aiMsgTimer);
+    const postMsgs=['최적 포트폴리오 선별 중...','수익률 시나리오 검증 중...','샤프 지수 우선순위 계산 중...','결과 시각화 준비 중...','포트폴리오 리포트 생성 중...'];
+    let pmi=0;
+    const aiStatus=document.getElementById('ai-status');
+    const aiBarTxt=document.getElementById('ai-bar-txt');
+    if(aiFill)aiFill.style.width='100%';
+    if(aiBarTxt)aiBarTxt.textContent=`${nSim.toLocaleString()}가지 조합 분석 완료 · 결과 정리 중...`;
+    if(aiStatus)aiStatus.textContent=postMsgs[0];
+    const postTimer=setInterval(()=>{pmi=(pmi+1)%postMsgs.length;const el=document.getElementById('ai-status');if(el)el.textContent=postMsgs[pmi];},600);
+    setTimeout(()=>{
+      clearInterval(postTimer);
+      btn.disabled=false; btn.textContent='최적 비율 찾기 시작';
+      pw.style.display='none';
+      renderResults(results,myPref,maxSR,minVol,tickers,effectiveStart,nYears,RF,endIdx);
+    },2500);
+  }
+  requestAnimationFrame(next);
+}
+
+/* ═══════════════════════════════════════
+   6. RENDER RESULTS
+═══════════════════════════════════════ */
+function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,endIdx){
+  const fp=v=>(v>=0?'+':'')+(v*100).toFixed(1)+'%';
+  const fp1=v=>(v*100).toFixed(1)+'%';
+  const yr=DS_YEAR[effStart]||'2000';
+  const endLbl=String(1999+Math.round(endIdx/12));
+  const rebalLabel={none:'리밸런싱 없음 (Buy&Hold)',annual:'1년 1회 리밸런싱',semi:'6개월 1회 리밸런싱'}[rebalMode];
+  const plabel=prefLabel();
+  const INFLATION=0.03; // 연 3% 인플레이션 가정
+
+  /* MDD 계산: 각 포트폴리오에 대해 월별 포트폴리오 가치 추적 */
+  function calcMDD(w){
+    let peak=1, val=1, mdd=0;
+    const monthly=[];
+    for(let m=effStart;m<endIdx;m++){
+      let portRet=0;
+      for(let i=0;i<tickers.length;i++){
+        const p=PRICES[tickers[i]];
+        portRet+=w[i]*(p[m+1]/p[m]-1);
+      }
+      val*=(1+portRet);
+      monthly.push(val);
+      if(val>peak)peak=val;
+      const dd=(peak-val)/peak;
+      if(dd>mdd)mdd=dd;
+    }
+    return mdd;
+  }
+
+  /* 연도별 수익률 계산 (포트폴리오 가중치 기반) */
+  function annualReturns(w){
+    const yrs=[];
+    const startYear=parseInt(yr);
+    for(let y=0;y<nYears;y++){
+      const s=effStart+y*12;
+      let portRet=1;
+      for(let i=0;i<tickers.length;i++){
+        const p=PRICES[tickers[i]];
+        portRet*=Math.pow(p[s+12]/p[s],w[i]);
+      }
+      yrs.push({year:startYear+y,ret:portRet-1});
+    }
+    return yrs;
+  }
+
+  /* 벤치마크 계산 */
+  function benchmarkStats(ticker){
+    const p=PRICES[ticker];
+    if(!p)return null;
+    const s=effStart, e=Math.min(endIdx,p.length-1);
+    const yrs=[];
+    let peak=1,val=1,mdd=0;
+    for(let y=0;y<nYears;y++){
+      const sy=s+y*12;
+      if(sy+12>=p.length)break;
+      const yr_ret=p[sy+12]/p[sy]-1;
+      yrs.push(yr_ret);
+      val*=(1+yr_ret);
+      if(val>peak)peak=val;
+      const dd=(peak-val)/peak;
+      if(dd>mdd)mdd=dd;
+    }
+    const cagr=Math.pow(val,1/nYears)-1;
+    const mean=yrs.reduce((a,b)=>a+b,0)/yrs.length;
+    const vol=Math.sqrt(yrs.reduce((s,r)=>s+(r-mean)**2,0)/Math.max(yrs.length-1,1));
+    const sr=(cagr-RF)/vol;
+    return{ret:cagr,vol,sr,mdd};
+  }
+
+  /* 상관관계 계산 */
+  function pearson(a,b){
+    const n=a.length;
+    const ma=a.reduce((s,x)=>s+x,0)/n, mb=b.reduce((s,x)=>s+x,0)/n;
+    let num=0,da=0,db=0;
+    for(let i=0;i<n;i++){num+=(a[i]-ma)*(b[i]-mb);da+=(a[i]-ma)**2;db+=(b[i]-mb)**2;}
+    return da&&db?num/Math.sqrt(da*db):1;
+  }
+
+  /* Monthly returns series for correlation */
+  const monthlyRets=tickers.map(t=>{
+    const p=PRICES[t],r=[];
+    for(let m=effStart;m<Math.min(endIdx,p.length-1);m++)r.push(p[m+1]/p[m]-1);
+    return r;
+  });
+
+  /* pf card builder */
+  function pfCard(pf,cls,badge,title,sub){
+    const mdd=calcMDD(pf.w);
+    const realRet=((1+pf.ret)/(1+INFLATION))-1;
+    const wrows=tickers.map((t,i)=>pf.w[i]>0.001?`
+      <div class="wrow">
+        <div class="wtk" style="color:${A[t].c}">${t}</div>
+        <div class="wbar-bg"><div class="wbar" style="width:${fp1(pf.w[i])};background:${A[t].c}"></div></div>
+        <div class="wpct">${fp1(pf.w[i])}</div>
+      </div>`:'').join('');
+    const retCls=pf.ret>=0?'pos':'neg';
+    const srCls=pf.sr>=1?'blu':pf.sr>=0.5?'neu':'neg';
+    /* 최종 자산 / 누적 수익률 계산 */
+    const N=nYears*12;
+    const r_m=Math.pow(1+pf.ret,1/12)-1;
+    const dcaFV=dcaAmt>0?(r_m>1e-9?dcaAmt*((Math.pow(1+r_m,N)-1)/r_m):dcaAmt*N):0;
+    const cardFinal=initAmt*Math.pow(1+pf.ret,nYears)+dcaFV;
+    const cardInvested=initAmt+dcaAmt*N;
+    const cardTotalRet=(cardFinal-cardInvested)/cardInvested;
+    const cardTotalRetCls=cardTotalRet>=0?'blu':'neg';
+    const cardFinalCls=cardTotalRet>=0?'blu':'neg';
+    return `<div class="pf-card ${cls}">
+      <div class="pf-badge ${cls}">${badge}</div>
+      <div class="pf-title">${title}</div>
+      <div class="pf-sub">${sub}</div>
+      ${wrows}
+      <div class="pf-stats">
+        <div class="ps"><div class="ps-l">연간 수익</div><div class="ps-v ${retCls}">${fp(pf.ret)}</div></div>
+        <div class="ps"><div class="ps-l">연간 변동</div><div class="ps-v neu">${fp1(pf.vol)}</div></div>
+        <div class="ps"><div class="ps-l">효율점수</div><div class="ps-v ${srCls}">${pf.sr.toFixed(2)}</div></div>
+      </div>
+      <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div class="ps"><div class="ps-l">최대 낙폭 (MDD)</div><div class="ps-v mdd-val">-${(mdd*100).toFixed(1)}%</div></div>
+        <div class="ps"><div class="ps-l">실질수익 (인플레 제외)</div><div class="ps-v ${realRet>=0?'neu':'neg'}">${fp(realRet)}</div></div>
+      </div>
+      <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div class="ps" style="background:var(--card2)">
+          <div class="ps-l">${nYears}년 후 최종 자산</div>
+          <div class="ps-v ${cardFinalCls}" style="font-size:16px">${fmtWon(Math.round(cardFinal/10000)*10000)}</div>
+        </div>
+        <div class="ps" style="background:var(--card2)">
+          <div class="ps-l">누적 수익률</div>
+          <div class="ps-v ${cardTotalRetCls}" style="font-size:16px">${cardTotalRet>=0?'+':''}${Math.round(cardTotalRet*100).toLocaleString()}%</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* Benchmark stats */
+  const bSPY=benchmarkStats('SPY');
+  const bQQQ=benchmarkStats('QQQ');
+
+  /* 초기 투자금 + DCA */
+  const initAmt=(parseInt(document.getElementById('init-invest').value)||1000)*10000;
+  const dcaAmt=(parseInt(document.getElementById('dca-invest').value)||0)*10000;
+
+  function fmtWon(v){
+    if(!v||v<0)return '-';
+    const uk=Math.floor(v/100000000);
+    const chun=Math.floor((v%100000000)/10000000);
+    const baek=Math.floor((v%10000000)/1000000);
+    const man=Math.floor((v%1000000)/10000);
+    let s='';
+    if(uk)s+=uk+'억 ';
+    if(chun)s+=chun+'천';
+    if(baek)s+=baek+'백';
+    if(man&&!s)s+=man+'만';
+    return (s||'0')+'만 원';
+  }
+
+  /* Investment growth section */
+  function invSection(pf){
+    const N=nYears*12;
+    const r_m=Math.pow(1+pf.ret,1/12)-1;
+    const dcaFV=dcaAmt>0?(r_m>1e-9?dcaAmt*((Math.pow(1+r_m,N)-1)/r_m):dcaAmt*N):0;
+    const finalVal=initAmt*Math.pow(1+pf.ret,nYears)+dcaFV;
+    const totalInvested=initAmt+dcaAmt*N;
+    const gain=finalVal-totalInvested;
+    const realFinalVal=finalVal/Math.pow(1+INFLATION,nYears);
+    const dcaLabel=dcaAmt>0?` + 월 ${(dcaAmt/10000).toLocaleString()}만원 DCA`:'';
+    const dcaCell=dcaAmt>0?`<div class="inv-item"><div class="inv-item-label">총 납입금</div><div class="inv-item-val" style="color:var(--text2)">${fmtWon(Math.round(totalInvested/10000)*10000)}</div></div>`:'';
+    return `<div class="inv-result">
+      <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px">초기 ${fmtWon(initAmt)}${dcaLabel} → ${nYears}년 후 예상</div>
+      <div class="inv-result-grid${dcaAmt>0?' inv-4col':''}">
+        ${dcaCell}
+        <div class="inv-item"><div class="inv-item-label">최종 자산 (명목)</div><div class="inv-item-val">${fmtWon(Math.round(finalVal/10000)*10000)}</div></div>
+        <div class="inv-item"><div class="inv-item-label">수익금</div><div class="inv-item-val">${fmtWon(Math.round(gain/10000)*10000)}</div></div>
+        <div class="inv-item"><div class="inv-item-label">최종 자산 (실질)</div><div class="inv-item-val" style="color:var(--cyan)">${fmtWon(Math.round(realFinalVal/10000)*10000)}</div></div>
+      </div>
+    </div>`;
+  }
+
+  /* Annual heatmap */
+  function heatmapHTML(pf){
+    const rets=annualReturns(pf.w);
+    function heatColor(r){
+      const t=Math.max(-1,Math.min(1,r));
+      if(t>=0){
+        const intensity=0.15+t*0.55;
+        return `background:rgba(26,127,55,${intensity});color:${t>0.12?'#fff':'var(--text)'}`;
+      }else{
+        const t2=Math.abs(t);
+        const intensity=0.12+t2*0.55;
+        return `background:rgba(217,42,42,${intensity});color:${t2>0.12?'#fff':'var(--text)'}`;
+      }
+    }
+    const rows=rets.map(({year,ret})=>`
+      <tr><td class="hm-yr">${year}</td><td style="${heatColor(ret)}">${fp(ret)}</td></tr>`).join('');
+    return `<div class="cwrap">
+      <div class="cwrap-title">연도별 수익률 — 맞춤 추천 포트폴리오</div>
+      <div class="heatmap-wrap">
+        <table class="heatmap-table">
+          <thead><tr><th>연도</th><th>수익률</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }
+
+  /* Correlation matrix */
+  function corrMatrixHTML(){
+    if(tickers.length<2)return '';
+    const rows=tickers.map((t1,i)=>{
+      const cells=tickers.map((t2,j)=>{
+        if(i===j)return `<td style="background:rgba(0,113,227,.25);color:var(--text);font-weight:900">1.00</td>`;
+        const r=pearson(monthlyRets[i],monthlyRets[j]);
+        const abs=Math.abs(r);
+        let bg,col;
+        if(r>0){bg=`rgba(26,127,55,${0.08+abs*0.5})`;col=abs>0.4?'#fff':'var(--text)';}
+        else{bg=`rgba(217,42,42,${0.08+abs*0.5})`;col=abs>0.4?'#fff':'var(--text)';}
+        return `<td style="background:${bg};color:${col}">${r>=0?'+':''}${r.toFixed(2)}</td>`;
+      }).join('');
+      return `<tr><th>${t1}</th>${cells}</tr>`;
+    }).join('');
+    const header=tickers.map(t=>`<th>${t}</th>`).join('');
+    return `<div class="cwrap">
+      <div class="cwrap-title">자산 간 상관관계 매트릭스</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:8px">1.00에 가까울수록 같이 움직임(분산 효과 낮음). 낮거나 음수일수록 분산 효과 높음.</div>
+      <div class="corr-wrap">
+        <table class="corr-table">
+          <thead><tr><th></th>${header}</tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }
+
+  /* Benchmark section */
+  function benchHTML(){
+    const spyMdd=bSPY?`-${(bSPY.mdd*100).toFixed(1)}%`:'-';
+    const qqqMdd=bQQQ?`-${(bQQQ.mdd*100).toFixed(1)}%`:'-';
+    const spyReal=bSPY?fp(((1+bSPY.ret)/(1+INFLATION))-1):'-';
+    const qqqReal=bQQQ?fp(((1+bQQQ.ret)/(1+INFLATION))-1):'-';
+    return `<div class="cwrap">
+      <div class="cwrap-title">벤치마크 비교 — S&P500 · 나스닥100 (단순 보유 기준)</div>
+      <div class="bench-2col">
+        <div style="background:var(--surface);border:1px solid rgba(0,113,227,.2);border-radius:8px;padding:14px">
+          <div style="font-size:14px;font-weight:800;color:var(--blue);margin-bottom:10px">S&P500 (SPY)</div>
+          <div class="bench-row" style="margin-top:0">
+            <div class="bench-item"><div class="bench-label">연간수익(CAGR)</div><div class="bench-val pos">${bSPY?fp(bSPY.ret):'-'}</div></div>
+            <div class="bench-item"><div class="bench-label">연간변동성</div><div class="bench-val neu">${bSPY?fp1(bSPY.vol):'-'}</div></div>
+            <div class="bench-item"><div class="bench-label">최대낙폭(MDD)</div><div class="bench-val mdd-val">${spyMdd}</div></div>
+            <div class="bench-item"><div class="bench-label">실질수익률</div><div class="bench-val ${bSPY&&bSPY.ret>INFLATION?'pos':'neg'}">${spyReal}</div></div>
+          </div>
+        </div>
+        <div style="background:var(--surface);border:1px solid rgba(124,58,237,.2);border-radius:8px;padding:14px">
+          <div style="font-size:14px;font-weight:800;color:var(--purple);margin-bottom:10px">나스닥100 (QQQ)</div>
+          <div class="bench-row" style="margin-top:0">
+            <div class="bench-item"><div class="bench-label">연간수익(CAGR)</div><div class="bench-val pos">${bQQQ?fp(bQQQ.ret):'-'}</div></div>
+            <div class="bench-item"><div class="bench-label">연간변동성</div><div class="bench-val neu">${bQQQ?fp1(bQQQ.vol):'-'}</div></div>
+            <div class="bench-item"><div class="bench-label">최대낙폭(MDD)</div><div class="bench-val mdd-val">${qqqMdd}</div></div>
+            <div class="bench-item"><div class="bench-label">실질수익률</div><div class="bench-val ${bQQQ&&bQQQ.ret>INFLATION?'pos':'neg'}">${qqqReal}</div></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  const _cfg=getPeriodCfg();
+  const _modeOffset=_cfg.modeOffset;
+  const _expectedYrs=_cfg.fullYrs;
+  const _endLbl=endLbl;
+  const _limitT=effStart>_modeOffset?tickers.find(t=>A[t].ds===effStart)||'':null;
+  const periodWarning=(_limitT&&nYears<_expectedYrs)?`
+    <div style="background:rgba(255,159,10,0.06);border:1px solid rgba(255,159,10,0.25);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:var(--text2);line-height:1.6">
+      <span style="display:inline-block;background:rgba(255,159,10,0.12);border:1px solid rgba(255,159,10,0.35);border-radius:4px;padding:1px 7px;font-size:11px;font-weight:800;color:var(--amber);margin-right:6px">기간 단축</span>
+      ${_expectedYrs}년 모드를 선택했지만, <strong style="color:var(--amber)">${_limitT}</strong>의 데이터가 <strong style="color:var(--amber)">${yr}년</strong>부터 시작되어 실제 분析 기간은 <strong style="color:var(--amber)">${nYears}년</strong>입니다. 해당 자산을 제거하면 ${_expectedYrs}년 전체 데이터로 분析할 수 있습니다.
+    </div>`:'';
+
+  document.getElementById('results').innerHTML=`
+    <div class="result-info">
+      <strong>${tickers.join(' · ')}</strong><br>
+      ${results.length.toLocaleString()}가지 조합 분析 완료 &middot; 분析 기간 <strong>${yr}~${endLbl}년 (${nYears}년)</strong> &middot; <strong>${rebalLabel}</strong>
+    </div>
+    ${periodWarning}
+
+    <div class="cwrap">
+      <div class="cwrap-title">효율적 투자선 — ${results.length.toLocaleString()}가지 조합의 위험·수익 분포</div>
+      <canvas id="chart2" height="380"></canvas>
+      <div class="chart-explain">
+        <div class="ce-title">이 그래프 읽는 법</div>
+        <div class="fe-grid">
+          <div class="fe-item"><div class="fe-icon">📍</div><div class="fe-t">점 하나 = 비율 조합 하나</div><div class="fe-d">수천 개의 무작위 비율 조합을 모두 점으로 찍은 것. 점이 많을수록 더 정밀합니다.</div></div>
+          <div class="fe-item"><div class="fe-icon">↔</div><div class="fe-t">가로축 = 위험(변동성), 세로축 = 수익</div><div class="fe-d">왼쪽으로 갈수록 안전, 오른쪽으로 갈수록 위험. 위로 갈수록 기대수익이 높습니다.</div></div>
+          <div class="fe-item"><div class="fe-icon">🟡</div><div class="fe-t">노란색 = 효율이 높은 조합</div><div class="fe-d">파란색/초록색은 낮은 효율, 노란색으로 갈수록 같은 위험 대비 수익이 높은 조합입니다.</div></div>
+          <div class="fe-item"><div class="fe-icon">★▲●</div><div class="fe-t">3가지 추천 포트폴리오</div><div class="fe-d">파란 원=내 성향 맞춤, 별=최고 효율(Max Sharpe), 삼각형=최소 위험(Min Vol)입니다.</div></div>
+        </div>
+      </div>
+    </div>
+
+    ${invSection(myPref)}
+
+    <div class="comp3">
+      ${pfCard(myPref,'mine','나의 성향 맞춤','맞춤 추천 포트폴리오',`내 성향(${plabel})에 최적화된 비율 조합`)}
+      ${pfCard(maxSR,'maxs','★ 최고 효율','최고 효율 포트폴리오','위험 대비 수익이 수학적으로 최우수 (Max Sharpe)')}
+      ${pfCard(minVol,'minv','▲ 최소 위험','최소 위험 포트폴리오','손실 위험이 가장 낮은 안정적인 비율 조합')}
+    </div>
+
+    ${benchHTML()}
+
+    ${heatmapHTML(myPref)}
+    ${corrMatrixHTML()}
+
+    <div class="notice">
+      <strong>주의사항</strong> — ${yr}~${endLbl}년 과거 데이터 기반 시뮬레이션 (${rebalLabel}).
+      과거 성과는 미래 수익을 보장하지 않으며, 투자 판단의 참고 자료로만 활용하세요.
+      벤치마크는 동일 기간 SPY/QQQ 100% 단순 보유 기준. 인플레이션 3% 가정.
+    </div>
+  `;
+
+  /* Efficient Frontier Chart */
+  const minS=Math.min(...results.map(r=>r.sr));
+  const maxS=Math.max(...results.map(r=>r.sr));
+  function srColor(sr){
+    const t=Math.max(0,Math.min(1,(sr-minS)/(maxS-minS)));
+    if(t<.5){const u=t/.5;return `rgba(${Math.round(60+u*40)},${Math.round(100+u*100)},${Math.round(220-u*40)},.65)`}
+    const u=(t-.5)/.5;return `rgba(${Math.round(100+u*155)},${Math.round(200-u*60)},${Math.round(60-u*40)},.65)`;
+  }
+  const pts=results.map(r=>({x:+(r.vol*100).toFixed(2),y:+(r.ret*100).toFixed(2),sr:r.sr}));
+  if(chart2)chart2.destroy();
+  chart2=new Chart(document.getElementById('chart2'),{
+    type:'scatter',
+    data:{datasets:[
+      {label:'비율 조합들',data:pts,pointRadius:2.5,pointBackgroundColor:pts.map(d=>srColor(d.sr)),pointBorderColor:'transparent',order:100},
+      {label:`나의 성향 맞춤`,data:[{x:+(myPref.vol*100).toFixed(2),y:+(myPref.ret*100).toFixed(2)}],pointRadius:12,pointStyle:'circle',pointBackgroundColor:'#0071E3',pointBorderColor:'#fff',pointBorderWidth:2,order:2},
+      {label:`★ 최고 효율 (효율점수 ${maxSR.sr.toFixed(2)})`,data:[{x:+(maxSR.vol*100).toFixed(2),y:+(maxSR.ret*100).toFixed(2)}],pointRadius:16,pointStyle:'star',pointBackgroundColor:'#D92A2A',pointBorderColor:'#D92A2A',pointBorderWidth:3,order:1},
+      {label:`▲ 최소 위험 (변동성 ${(minVol.vol*100).toFixed(1)}%)`,data:[{x:+(minVol.vol*100).toFixed(2),y:+(minVol.ret*100).toFixed(2)}],pointRadius:14,pointStyle:'triangle',pointBackgroundColor:'#7C3AED',pointBorderColor:'#7C3AED',pointBorderWidth:2,order:1}
+    ]},
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{labels:{color:'#3A3A3C',font:{size:12},boxWidth:14}},
+        tooltip:{backgroundColor:'rgba(255,255,255,.97)',titleColor:'#1D1D1F',bodyColor:'#3A3A3C',borderColor:'rgba(0,0,0,0.12)',borderWidth:1,
+          callbacks:{label:ctx=>ctx.datasetIndex===0
+            ?` 변동성 ${ctx.parsed.x.toFixed(1)}%  /  수익 ${ctx.parsed.y.toFixed(1)}%`
+            :` ${ctx.dataset.label}  변동성 ${ctx.parsed.x.toFixed(1)}%  수익 ${ctx.parsed.y.toFixed(1)}%`}}
+      },
+      scales:{
+        x:{title:{display:true,text:'연간 변동성 % → 오른쪽일수록 위험',color:'#6E6E73',font:{size:12}},ticks:{color:'#6E6E73',font:{size:11},callback:v=>v+'%'},grid:{color:'rgba(0,0,0,0.06)'}},
+        y:{title:{display:true,text:'연간 기대수익률 % ↑ 위로갈수록 수익 높음',color:'#6E6E73',font:{size:12}},ticks:{color:'#6E6E73',font:{size:11},callback:v=>v+'%'},grid:{color:'rgba(0,0,0,0.06)'}}
+      }
+    }
+  });
+}
+
+/* ═══════════════════════════════════════
+   7. INIT
+═══════════════════════════════════════ */
+buildChips();
+updateDataBadge();
+
+/* Investment input display helpers */
+function showWonLabel(val, wonUnit, elId){
+  const el=document.getElementById(elId);
+  if(!val||val<=0){el.textContent='';return}
+  const won=val*wonUnit;
+  const uk=Math.floor(won/100000000);
+  const chun=Math.floor((won%100000000)/10000000);
+  const baek=Math.floor((won%10000000)/1000000);
+  const man=Math.floor((won%1000000)/10000);
+  let s='';
+  if(uk)s+=uk+'억 ';
+  if(chun)s+=chun+'천';
+  if(baek)s+=baek+'백';
+  if(man&&!s)s+=man+'만';
+  el.textContent='= '+(s||'0')+'만 원';
+}
+document.getElementById('init-invest').addEventListener('input',function(){
+  showWonLabel(parseInt(this.value)||0, 10000, 'inv-display');
+});
+document.getElementById('dca-invest').addEventListener('input',function(){
+  const v=parseInt(this.value)||0;
+  const el=document.getElementById('dca-display');
+  if(!v){el.textContent='';return}
+  el.textContent=`= 월 ${v.toLocaleString()}만원 → 연 ${(v*12).toLocaleString()}만원`;
+});
+/* Init display on load */
+showWonLabel(parseInt(document.getElementById('init-invest').value)||1000, 10000, 'inv-display');
+</script>
+
+<footer class="ez-footer" role="contentinfo">
+  <div class="ez-footer-inner">
+    <div class="ez-footer-top">
+      <div class="ez-footer-brand">
+        <picture>
+          <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+          <img src="logo.png" alt="EZLONG">
+        </picture>
+        <p class="ez-footer-brand-desc">
+          쉽고 안전한 장기투자 파트너<br>
+          easy.invest.good@gmail.com
+        </p>
+      </div>
+      <div class="ez-footer-books">
+        <div class="ez-footer-book">
+          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-cover" target="_blank" rel="noopener">
+            <img src="book01.png" alt="절대 실패하지 않는 미국 주식 ETF 투자">
+          </a>
+          <div class="ez-footer-book-info">
+            <span class="ez-footer-book-title">절대 실패하지 않는<br>미국 주식 ETF 투자</span>
+            <span class="ez-footer-book-label">종이책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/177260453" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://product.kyobobook.co.kr/detail/S000219205812" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+            </div>
+            <span class="ez-footer-book-label">전자책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=387049914&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/180332209" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012611429" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+              <a href="https://ridibooks.com/books/3844000153" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>
+            </div>
+            <span class="ez-footer-book-label">오디오북</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=388954868&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+            </div>
+            <span class="ez-footer-book-label">구독</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://max.aladin.co.kr/product/387049914?&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.millie.co.kr/v4/book/52e27a74508a4c93" class="ez-footer-book-btn" target="_blank" rel="noopener">밀리</a>
+              <a href="https://cremaclub.yes24.com/BookClub/Detail/180332209" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012611429" class="ez-footer-book-btn" target="_blank" rel="noopener">교보</a>
+            </div>
+          </div>
+        </div>
+        <div class="ez-footer-book">
+          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-cover" target="_blank" rel="noopener">
+            <img src="book02_1.png" alt="월급쟁이 투자 자동화">
+          </a>
+          <div class="ez-footer-book-info">
+            <span class="ez-footer-book-title">월급쟁이<br>투자 자동화</span>
+            <span class="ez-footer-book-label">전자책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+              <a href="https://ridibooks.com/books/6121000386" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>
+            </div>
+            <span class="ez-footer-book-label">오디오북</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=391653601&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+            </div>
+            <span class="ez-footer-book-label">구독</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://max.aladin.co.kr/product/389499456?&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.millie.co.kr/v4/book/e7fbd96e137b4ae1" class="ez-footer-book-btn" target="_blank" rel="noopener">밀리</a>
+              <a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ez-footer-links">
+        <div class="ez-footer-col">
+          <span class="ez-footer-col-title">서비스</span>
+          <a href="atmr-dashboard.html">스윙 시그널 대시보드</a>
+          <a href="chart-analysis.html">AI 차트분석</a>
+          <a href="analyst-reports.html">핵심기업 목표주가</a>
+          <a href="market-cycle.html">Market Cycle Monitor</a>
+          <a href="dca-simulator.html">DCA 복리 시뮬레이터</a>
+          <a href="portfolio-manager.html">포트폴리오 복리 시뮬레이터</a>
+          <a href="tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a>
+          <a href="compound-calculator.html">복리 계산기</a>
+          <a href="retirement-calculator.html">은퇴 목표 역산 계산기</a>
+          <a href="backtest.html">몬테카를로 포트폴리오 시뮬레이터</a>
+          <a href="risk-diagnostic.html">투자 행동 자가진단</a>
+          <a href="auto-dca-guide.html">자동 적립식 매수 가이드</a>
+        </div>
+      </div>
+    </div>
+    <div class="ez-footer-bottom">
+      © 2025–2026 유니아빠 &amp; 유니엄마 · EZLONG · easy.invest.good@gmail.com<br>
+      본 서비스에서 제공하는 모든 시뮬레이션 수치는 참고용 추정치이며, 실제 투자 수익을 보장하지 않습니다. 투자 판단의 책임은 투자자 본인에게 있습니다.
+    </div>
+  </div>
+</footer>
+</body>
+</html>

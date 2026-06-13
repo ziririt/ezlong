@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>투자 인사이트 게시판 — EZLONG</title>
+<meta name="description" content="미국주식 장기투자 인사이트, 시황 분석, 투자 전략을 공유하는 게시판입니다." />
+<link rel="canonical" href="https://ezlong.com/board.html" />
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2336764115275414" crossorigin="anonymous"></script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #F5F5F7;
+  --bg2:      #FFFFFF;
+  --card:     #FFFFFF;
+  --bd:       rgba(0,0,0,0.08);
+  --t1:       #1D1D1F;
+  --t2:       #1D1D1F;
+  --t3:       #3A3A3C;
+  --bl:       #0071E3;
+  --bl-dk:    #0040DD;
+  --bl-s:     rgba(0,113,227,0.10);
+  --bl-m:     rgba(0,113,227,0.18);
+  --gr:       #34C759;
+  --gr-s:     rgba(52,199,89,0.10);
+  --rd:       #FF3B30;
+  --yl:       #FF9F0A;
+  --yl-s:     rgba(255,159,10,0.12);
+  --pu:       #BF5AF2;
+  --pu-s:     rgba(191,90,242,0.10);
+  --r:        18px;
+  --r-sm:     12px;
+  --font:     -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Pretendard', 'Helvetica Neue', Arial, sans-serif;
+  --shadow:   0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-lg:0 12px 48px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  --nav-h:    60px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:     #000000;
+    --bg2:    #1C1C1E;
+    --card:   #1C1C1E;
+    --bd:     rgba(255,255,255,0.10);
+    --t1:     #F5F5F7;
+    --t2:     #F5F5F7;
+    --t3:     #E5E5EA;
+    --bl-s:   rgba(0,113,227,0.20);
+    --bl-m:   rgba(0,113,227,0.30);
+    --shadow: 0 4px 24px rgba(0,0,0,0.30), 0 1px 4px rgba(0,0,0,0.20);
+    --shadow-lg: 0 12px 48px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30);
+  }
+}
+
+html {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--t1);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+body { min-height: 100vh; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: #C7C7CC; border-radius: 3px; }
+
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+/* ── NAV ─────────────────────────────────── */
+.nav {
+  position: static;
+  height: var(--nav-h);
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--bd);
+}
+@media (prefers-color-scheme: dark) {
+  .nav { background: rgba(28,28,30,0.95); }
+}
+.nav-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo { display: flex; align-items: center; }
+.nav-logo-img { height: 32px; width: auto; display: block; }
+@media (prefers-color-scheme: dark) { .nav-logo-img { filter: brightness(1.1); } }
+.nav-tagline {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--t2);
+  letter-spacing: -.01em;
+  line-height: 1.5;
+  text-align: right;
+  font-family: 'Apple SD Gothic Neo', 'Pretendard', -apple-system, sans-serif;
+}
+@media (max-width: 600px) { .nav-tagline { font-size: 11px; } }
+
+/* ── PAGE HEADER ─────────────────────────── */
+.page-header {
+  padding: 40px 0 28px;
+}
+.page-header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+.page-header-text {}
+.page-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--bl);
+  background: var(--bl-s);
+  padding: 5px 12px;
+  border-radius: 100px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+.page-title {
+  font-size: clamp(26px, 5vw, 36px);
+  font-weight: 900;
+  letter-spacing: -.03em;
+  line-height: 1.1;
+  color: var(--t1);
+}
+.page-sub {
+  font-size: 14px;
+  color: var(--t3);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* ── WRITE BUTTON ────────────────────────── */
+.btn-write {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: var(--bl);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: opacity .2s, transform .15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-write:hover { opacity: .85; transform: translateY(-1px); }
+.btn-write.visible { display: flex; }
+.btn-write svg { width: 14px; height: 14px; }
+
+/* ── POST LIST ───────────────────────────── */
+.post-list {
+  padding: 0 0 60px;
+}
+.post-list-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.post-card {
+  background: var(--card);
+  border-radius: var(--r);
+  border: 1px solid var(--bd);
+  padding: 22px 24px;
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+.post-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.post-card-category {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--bl);
+  margin-bottom: 8px;
+}
+.post-card-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.3;
+  color: var(--t1);
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.post-card-excerpt {
+  font-size: 14px;
+  color: var(--t3);
+  line-height: 1.6;
+  margin-bottom: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.post-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.post-card-date {
+  font-size: 12px;
+  color: var(--t3);
+}
+.post-card-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+.post-card-stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--t3);
+  font-weight: 500;
+}
+.post-card-stat svg { width: 13px; height: 13px; }
+.post-card-stat.likes { color: var(--rd); }
+
+/* ── EMPTY / LOADING ─────────────────────── */
+.state-box {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--t3);
+}
+.state-box p { font-size: 15px; line-height: 1.7; }
+
+/* ── PAGINATION ──────────────────────────── */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px 20px 60px;
+}
+.pag-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  border: 1px solid var(--bd);
+  background: var(--card);
+  color: var(--t2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+.pag-btn:hover { background: var(--bl-s); color: var(--bl); border-color: var(--bl); }
+.pag-btn:disabled { opacity: .35; cursor: not-allowed; }
+.pag-btn:disabled:hover { background: var(--card); color: var(--t2); border-color: var(--bd); }
+.pag-info { font-size: 13px; color: var(--t3); padding: 0 8px; }
+
+/* ── ADMIN ACTIONS ───────────────────────── */
+.admin-bar {
+  display: none;
+  background: var(--yl-s);
+  border-bottom: 1px solid rgba(255,159,10,0.2);
+  padding: 8px 20px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--yl);
+  font-weight: 600;
+}
+.admin-bar.visible { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.admin-bar .ab-label { font-size: 12px; color: var(--yl); font-weight: 700; }
+.admin-bar button {
+  background: none;
+  border: 1px solid rgba(255,159,10,0.4);
+  color: var(--yl);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background .15s;
+  font-family: var(--font);
+}
+.admin-bar button:hover { background: rgba(255,159,10,0.15); }
+
+/* 관리자 탭 바 */
+.admin-tab-bar {
+  display: none;
+  background: var(--card);
+  border-bottom: 2px solid var(--bd);
+  padding: 0 20px;
+  justify-content: center;
+  gap: 0;
+}
+.admin-tab-bar.visible { display: flex; }
+.atab {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 11px 20px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  background: none;
+  color: var(--t3);
+  cursor: pointer;
+  transition: all .15s;
+  font-family: var(--font);
+  white-space: nowrap;
+}
+.atab.active { color: var(--bl); border-bottom-color: var(--bl); }
+.atab:hover:not(.active) { color: var(--t1); }
+.atab-cnt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 800;
+  background: var(--bd);
+  color: var(--t3);
+  transition: background .2s, color .2s;
+}
+.atab.active .atab-cnt { background: var(--bl); color: white; }
+.atab-cnt.nonzero { background: var(--yl-s); color: var(--yl); }
+.atab.active .atab-cnt.nonzero { background: var(--bl); color: white; }
+@media (prefers-color-scheme: dark) { .admin-tab-bar { background: var(--bg2); } }
+@media (max-width: 480px) { .atab { padding: 10px 12px; font-size: 12px; } }
+
+/* ── FOOTER ──────────────────────────────── */
+.footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--bd);
+  padding: 48px 20px 32px;
+}
+.footer-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.footer-top {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+@media (min-width: 640px) {
+  .footer-top { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+}
+.footer-brand { display: flex; flex-direction: column; gap: 8px; }
+.footer-brand-name { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; letter-spacing: -.04em; color: var(--t1); }
+.footer-brand-desc { font-size: 13px; color: var(--t1); line-height: 1.6; }
+.footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+.footer-link-col { display: flex; flex-direction: column; gap: 10px; }
+.footer-link-col-title { font-size: 12px; font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--t1); }
+.footer-link-col a { font-size: 14px; color: var(--t1); transition: color .15s; }
+.footer-link-col a:hover { color: var(--bl); }
+.footer-bottom { font-size: 11px; color: var(--t3); border-top: 1px solid var(--bd); padding-top: 20px; line-height: 1.7; }
+</style>
+</head>
+<body>
+
+<!-- ── ADMIN BAR ──────────────────────── -->
+<div class="admin-bar" id="admin-bar">
+  <span class="ab-label">관리자 모드</span>
+  <button id="btn-logout">로그아웃</button>
+  <a href="write.html" style="font-size:12px;font-weight:700;padding:4px 12px;border-radius:100px;border:1px solid rgba(0,113,227,0.4);color:var(--bl);background:var(--bl-s);text-decoration:none;">+ 새 글</a>
+</div>
+
+<!-- 관리자 탭 바 -->
+<div class="admin-tab-bar" id="admin-tab-bar">
+  <button class="atab active" id="filter-published" onclick="setFilter('published',this)">
+    발행됨 <span class="atab-cnt" id="cnt-published">0</span>
+  </button>
+  <button class="atab" id="filter-draft" onclick="setFilter('draft',this)">
+    임시저장 <span class="atab-cnt" id="cnt-draft">0</span>
+  </button>
+  <button class="atab" id="filter-scheduled" onclick="setFilter('scheduled',this)">
+    예약발행 <span class="atab-cnt" id="cnt-scheduled">0</span>
+  </button>
+</div>
+
+<!-- ── NAV ───────────────────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <picture>
+        <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)" />
+        <img src="logo.png" alt="EZLONG" class="nav-logo-img" />
+      </picture>
+    </a>
+    <p class="nav-tagline">쉽고 안전한 장기투자로<br>복리의 마법을</p>
+  </div>
+</nav>
+
+<!-- ── PAGE HEADER ───────────────────── -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-header-text">
+      <p class="page-eyebrow">Insight Board</p>
+      <h1 class="page-title">투자 인사이트</h1>
+      <p class="page-sub">미국주식 장기투자에 관한 분석과 생각을 기록합니다</p>
+    </div>
+    <a href="write.html" class="btn-write" id="btn-write">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+      새 글 쓰기
+    </a>
+  </div>
+</div>
+
+<!-- ── POST LIST ─────────────────────── -->
+<div class="post-list">
+  <div class="post-list-inner" id="post-list">
+    <div class="state-box"><p>게시글을 불러오는 중...</p></div>
+  </div>
+</div>
+
+<!-- ── PAGINATION ────────────────────── -->
+<div class="pagination" id="pagination" style="display:none;">
+  <button class="pag-btn" id="btn-prev" disabled>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    이전
+  </button>
+  <span class="pag-info" id="pag-info"></span>
+  <button class="pag-btn" id="btn-next">
+    다음
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </button>
+</div>
+
+<!-- ── FOOTER ────────────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-name">
+          <picture>
+            <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)" />
+            <img src="logo.png" alt="EZLONG" style="height:24px;width:auto;" />
+          </picture>
+        </div>
+        <p class="footer-brand-desc">
+          쉽고 안전한 장기투자 파트너<br>
+          easy.invest.good@gmail.com
+        </p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-link-col">
+          <span class="footer-link-col-title">투자 도구</span>
+          <a href="dca-simulator.html">DCA 시뮬레이터</a>
+          <a href="portfolio-manager.html">포트폴리오 시뮬레이터</a>
+          <a href="tax-account-simulator.html">절세 계좌 시뮬레이터</a>
+          <a href="compound-calculator.html">복리 계산기</a>
+          <a href="atmr-dashboard.html">스윙 시그널 대시보드</a>
+        </div>
+        <div class="footer-link-col">
+          <span class="footer-link-col-title">콘텐츠</span>
+          <a href="board.html">투자 인사이트</a>
+          <a href="index.html#books">저자 도서</a>
+          <a href="index.html#youtube">유튜브</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 EZLONG. All rights reserved.<br>
+      본 서비스에서 제공하는 모든 내용은 참고용이며, 실제 투자 수익을 보장하지 않습니다. 투자 판단의 책임은 투자자 본인에게 있습니다.
+    </div>
+  </div>
+</footer>
+
+<script>
+// ================================================================
+// Firebase 설정 — 아래 값을 본인 Firebase 프로젝트 설정으로 교체하세요
+// Firebase 콘솔 > 프로젝트 설정 > 일반 > 내 앱 > firebaseConfig
+// ================================================================
+const firebaseConfig = {
+  apiKey:            "AIzaSyBKFL4Y_nZX8P0cczg9174ztL04TCi8GRc",
+  authDomain:        "ezlong-541a8.firebaseapp.com",
+  projectId:         "ezlong-541a8",
+  storageBucket:     "ezlong-541a8.firebasestorage.app",
+  messagingSenderId: "925344506094",
+  appId:             "1:925344506094:web:31b303b8af8b93031393ff"
+};
+
+// 관리자 이메일 — 본인 이메일로 변경하세요
+const ADMIN_EMAIL = "ziririt@gmail.com";
+
+// 페이지당 게시글 수
+const PAGE_SIZE = 10;
+
+// ── Firebase 초기화 ─────────────────────────────────────────────
+firebase.initializeApp(firebaseConfig);
+const db   = firebase.firestore();
+const auth = firebase.auth();
+
+// ── 상태 변수 ───────────────────────────────────────────────────
+let currentPage = 1;
+let lastVisible = null;
+let firstVisible = null;
+let pageSnapshots = [null]; // 페이지별 커서 스택
+let isAdmin = false;
+let totalCount = 0;
+let currentFilter = 'published'; // 'published' | 'draft' | 'scheduled'
+
+// ── 관리자 인증 상태 확인 ─────────────────────────────────────
+auth.onAuthStateChanged(user => {
+  isAdmin = user && user.email === ADMIN_EMAIL;
+  document.getElementById('admin-bar').classList.toggle('visible', isAdmin);
+  document.getElementById('admin-tab-bar').classList.toggle('visible', isAdmin);
+  document.getElementById('btn-write').classList.toggle('visible', isAdmin);
+  if (isAdmin) refreshAdminCounts();
+});
+
+// ── 관리자 탭 카운트 갱신 ─────────────────────────────────────
+async function refreshAdminCounts() {
+  if (!isAdmin) return;
+  try {
+    const snapshot = await db.collection('posts').get();
+    const now = new Date();
+    let cntPublished = 0, cntDraft = 0, cntScheduled = 0;
+    snapshot.docs.forEach(doc => {
+      const d = doc.data();
+      if (d.published === true || (d.scheduledAt && d.scheduledAt.toDate() <= now)) {
+        cntPublished++;
+      } else if (!d.published && d.scheduledAt && d.scheduledAt.toDate() > now) {
+        cntScheduled++;
+      } else {
+        cntDraft++;
+      }
+    });
+    const setCount = (id, cnt) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = cnt;
+      el.classList.toggle('nonzero', cnt > 0);
+    };
+    setCount('cnt-published', cntPublished);
+    setCount('cnt-draft', cntDraft);
+    setCount('cnt-scheduled', cntScheduled);
+  } catch (e) {
+    console.error('refreshAdminCounts error:', e);
+  }
+}
+
+// 필터 전환
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.atab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentPage = 1;
+  pageSnapshots = [null];
+  lastVisible = null;
+  loadPosts('init');
+}
+
+document.getElementById('btn-logout').addEventListener('click', () => {
+  auth.signOut();
+});
+
+// ── 날짜 포맷 ─────────────────────────────────────────────────
+function formatDate(ts) {
+  if (!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const days = ['일','월','화','수','목','금','토'];
+  return `${y}.${m}.${day}(${days[d.getDay()]})`;
+}
+
+// ── HTML → 텍스트 발췌 ────────────────────────────────────────
+function htmlToExcerpt(html, len = 120) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html || '';
+  const text = tmp.textContent || tmp.innerText || '';
+  return text.length > len ? text.slice(0, len) + '…' : text;
+}
+
+// ── 게시글 목록 렌더링 ────────────────────────────────────────
+async function loadPosts(direction = 'init') {
+  const container = document.getElementById('post-list');
+  container.innerHTML = '<div class="state-box"><p>불러오는 중...</p></div>';
+
+  try {
+    let query = db.collection('posts')
+      .orderBy('createdAt', 'desc')
+      .limit(PAGE_SIZE);
+
+    if (direction === 'next' && lastVisible) {
+      query = query.startAfter(lastVisible);
+    } else if (direction === 'prev' && pageSnapshots[currentPage - 2]) {
+      query = query.startAt(pageSnapshots[currentPage - 2]);
+    }
+
+    const snapshot = await query.get();
+
+    const now = new Date();
+
+    // 관리자인 경우: 예약 발행 시각이 지난 글 자동 publish (lazy publish)
+    if (isAdmin) {
+      snapshot.docs.forEach(doc => {
+        const d = doc.data();
+        if (!d.published && d.scheduledAt && d.scheduledAt.toDate() <= now) {
+          db.collection('posts').doc(doc.id)
+            .update({ published: true })
+            .catch(e => console.error('lazy publish failed:', e));
+        }
+      });
+    }
+
+    // currentFilter에 따라 클라이언트 필터링
+    let visibleDocs;
+    if (isAdmin && currentFilter === 'draft') {
+      // 임시저장: published=false, 예약 없음 또는 예약 미래
+      visibleDocs = snapshot.docs.filter(doc => {
+        const d = doc.data();
+        return !d.published && (!d.scheduledAt || d.scheduledAt.toDate() > now);
+      });
+    } else if (isAdmin && currentFilter === 'scheduled') {
+      // 예약발행: published=false, scheduledAt이 미래
+      visibleDocs = snapshot.docs.filter(doc => {
+        const d = doc.data();
+        return !d.published && d.scheduledAt && d.scheduledAt.toDate() > now;
+      });
+    } else {
+      // 기본: published=true 또는 예약 시각 지남
+      visibleDocs = snapshot.docs.filter(doc => {
+        const d = doc.data();
+        return d.published === true || (d.scheduledAt && d.scheduledAt.toDate() <= now);
+      });
+    }
+
+    // displayDate 기준 내림차순 정렬 (없으면 createdAt 폴백)
+    visibleDocs.sort((a, b) => {
+      const da = a.data();
+      const db_ = b.data();
+      const getMs = d => {
+        const ts = d.displayDate || d.createdAt;
+        return ts ? ts.toDate().getTime() : 0;
+      };
+      return getMs(db_) - getMs(da); // 내림차순
+    });
+
+    const emptyMsg = currentFilter === 'draft' ? '임시저장된 글이 없습니다.'
+                   : currentFilter === 'scheduled' ? '예약된 글이 없습니다.'
+                   : '아직 작성된 글이 없습니다.<br>첫 번째 인사이트를 기다려 주세요.';
+
+    if (snapshot.empty || visibleDocs.length === 0) {
+      container.innerHTML = `<div class="state-box"><p>${emptyMsg}</p></div>`;
+      document.getElementById('pagination').style.display = 'none';
+      return;
+    }
+
+    firstVisible = snapshot.docs[0];
+    lastVisible  = snapshot.docs[snapshot.docs.length - 1];
+
+    if (direction === 'next') {
+      pageSnapshots[currentPage] = firstVisible;
+    }
+
+    const html = visibleDocs.map(doc => {
+      const d = doc.data();
+      const excerpt = htmlToExcerpt(d.content, 100);
+      const likes   = d.likes || 0;
+      const comments = d.commentCount || 0;
+      // 관리자 뷰: 임시저장/예약 배지
+      let adminBadge = '';
+      if (isAdmin && !d.published) {
+        if (d.scheduledAt && d.scheduledAt.toDate() > now) {
+          const dt = d.scheduledAt.toDate();
+          const ts = `${dt.getMonth()+1}/${dt.getDate()} ${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
+          adminBadge = `<span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--bl-s);color:var(--bl);margin-bottom:6px;display:inline-block;">예약 ${ts}</span>`;
+        } else {
+          adminBadge = `<span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--yl-s);color:var(--yl);margin-bottom:6px;display:inline-block;">임시저장</span>`;
+        }
+      }
+      return `
+        <a class="post-card" href="${(isAdmin && !d.published) ? `write.html?id=${doc.id}` : `post.html?id=${doc.id}`}">
+          ${adminBadge}
+          ${d.category ? `<p class="post-card-category">${d.category}</p>` : ''}
+          <h2 class="post-card-title">${d.title || '(제목 없음)'}</h2>
+          ${excerpt ? `<p class="post-card-excerpt">${excerpt}</p>` : ''}
+          <div class="post-card-meta">
+            <span class="post-card-date">${formatDate(d.displayDate || d.createdAt)}</span>
+            <div class="post-card-stats">
+              ${comments > 0 ? `
+              <span class="post-card-stat">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                ${comments}
+              </span>` : ''}
+              ${likes > 0 ? `
+              <span class="post-card-stat likes">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" width="13" height="13"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                ${likes}
+              </span>` : ''}
+            </div>
+          </div>
+        </a>`;
+    }).join('');
+
+    container.innerHTML = html;
+
+    // 페이지네이션
+    const hasMore = snapshot.docs.length === PAGE_SIZE;
+    document.getElementById('pagination').style.display = 'flex';
+    document.getElementById('btn-prev').disabled = currentPage <= 1;
+    document.getElementById('btn-next').disabled = !hasMore;
+    document.getElementById('pag-info').textContent = `${currentPage} 페이지`;
+
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = '<div class="state-box"><p>게시글을 불러오지 못했습니다.<br>Firebase 설정을 확인해 주세요.</p></div>';
+  }
+}
+
+// ── 페이지네이션 이벤트 ──────────────────────────────────────
+document.getElementById('btn-next').addEventListener('click', () => {
+  currentPage++;
+  loadPosts('next');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+document.getElementById('btn-prev').addEventListener('click', () => {
+  currentPage--;
+  loadPosts('prev');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ── 초기 로드 ────────────────────────────────────────────────
+loadPosts('init');
+</script>
+</body>
+</html>
