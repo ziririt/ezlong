@@ -555,14 +555,16 @@ function calcAccumulation(currentAge, retireAge, currentAssetMan, monthlyMan, an
 }
 
 function calcWithdrawalSim(assetMan, monthlyWdMan, annualRate, totalYears=30){
+  // 자산이 없으면 시뮬레이션 의미 없음 — 루프 진입 자체를 막음
+  if(sN(assetMan) <= 0) return { rows:[{ year:0, assetMan:0 }], exhaustedYear:null };
   const mr=sN(annualRate)/100/12;
   let val=sN(assetMan)*1e4;
   const mWd=sN(monthlyWdMan)*1e4;
   const rows=[{ year:0, assetMan:sN(assetMan) }];
   let exhaustedYear=null;
-  // mWd > 0 인 경우에만 소진 판정 — 인출액 0이면 val=0이어도 소진이 아님
   for(let m=1; m<=totalYears*12; m++){
     val=(val-mWd)*(1+mr);
+    // mWd > 0 인 경우에만 소진 판정 — 인출 0이면 val=0이어도 소진 아님
     if(mWd>0 && val<=0 && exhaustedYear===null){ exhaustedYear=parseFloat((m/12).toFixed(1)); val=0; }
     if(m%12===0) rows.push({ year:m/12, assetMan:Math.max(0,Math.round(val/1e4)) });
   }
@@ -1622,7 +1624,13 @@ function App(){
                   </div>
                 </div>
                 <div style={{fontSize:13,fontWeight:600,color:'var(--t2)',marginBottom:12}}>포트폴리오 수익률별 30년 지속 시뮬레이션</div>
-                <WithdrawalLineChart assetMan={result.effectiveTarget} monthlyWdMan={result.withdrawalMonthlyMan} retireAge={retireAge}/>
+                {result.effectiveTarget > 0 ? (
+                  <WithdrawalLineChart assetMan={result.effectiveTarget} monthlyWdMan={result.withdrawalMonthlyMan} retireAge={retireAge}/>
+                ) : (
+                  <div style={{padding:'32px 20px',textAlign:'center',color:'var(--t3)',fontSize:14,background:'var(--inp-bg)',borderRadius:'var(--r-sm)'}}>
+                    자산 또는 월 투자금액을 입력하면 시뮬레이션이 표시됩니다
+                  </div>
+                )}
                 <div style={{marginTop:16,padding:'14px 16px',
                   background:'var(--tip2-bg)',border:'1px solid var(--tip2-bd)',
                   borderRadius:'var(--r-sm)',fontSize:13,color:'var(--tip2-text)',lineHeight:1.8}}>
