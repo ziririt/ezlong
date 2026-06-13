@@ -982,8 +982,10 @@ async function updateCoppockCard() {
   const valid   = coppock.filter(v => v != null);
 
   if (valid.length < 3) {
-    badge.innerHTML = '<span class="signal-badge badge-gray">데이터 부족</span>';
-    subEl.textContent = '코포크 계산에 최소 103주 필요'; return;
+    badge.innerHTML = '<span class="signal-badge badge-gray">데이터 수집 중</span>';
+    subEl.textContent = '히스토리 확장 중 — 다음 업데이트 후 표시됩니다';
+    document.getElementById('mini-chart-coppock').style.display = 'none';
+    return;
   }
 
   const cur   = valid[valid.length - 1];
@@ -1322,16 +1324,28 @@ async function renderChart(symbol) {
       syncLock = false;
     });
   });
-  // 최초 렌더: 최근 1년(52주) 기본 표시 → RSI/MACD 동기화
-  setTimeout(() => {
-    try {
-      const n = bars.length;
-      priceChart.timeScale().setVisibleLogicalRange({ from: Math.max(0, n - 52), to: n - 1 });
-      // 가격 차트 범위를 RSI/MACD에 동기화
-      const r = priceChart.timeScale().getVisibleRange();
-      if (r) { [rsiChart, macdChart, coppockChart].forEach(ch => { try { ch.timeScale().setVisibleRange(r); } catch(_){} }); }
-    } catch(_) {}
-  }, 80);
+  // 최초 렌더: 최근 1년(52주) 기본 표시
+  // double requestAnimationFrame 방식: 브라우저 레이아웃이 완전히 끝난 뒤 실행
+  // (80ms 고정 타이머는 초기 레이아웃 타이밍에 따라 실패할 수 있어 교체)
+  requestAnimationFrame(() => {
+    // 1차 rAF: 실제 컨테이너 너비로 강제 리사이즈 (초기 width 불일치 해결)
+    [
+      { id: 'chart-container',    ch: priceChart,   h: 360 },
+      { id: 'rsi-container',      ch: rsiChart,     h: 110 },
+      { id: 'macd-container',     ch: macdChart,    h: 110 },
+      { id: 'coppock-container',  ch: coppockChart, h: 90  },
+    ].forEach(({ id, ch, h }) => {
+      const el = document.getElementById(id);
+      if (el && el.clientWidth > 0) { try { ch.resize(el.clientWidth, h); } catch(_){} }
+    });
+    requestAnimationFrame(() => {
+      // 2차 rAF: 리사이즈 반영 후 범위 설정 (subscribeVisibleTimeRangeChange가 나머지 패널 자동 동기화)
+      try {
+        const n = bars.length;
+        priceChart.timeScale().setVisibleLogicalRange({ from: Math.max(0, n - 52), to: n - 1 });
+      } catch(_) {}
+    });
+  });
 
   // 크로스헤어 3패널 연동 (hover/touch 시 세로선 동시 표시)
   let xhairLock = false;
