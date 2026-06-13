@@ -4992,7 +4992,7 @@ function loadTVChart(frameId, symbol) {
     timezone: 'America/New_York',
     theme: isDark ? 'dark' : 'light',
     style: '1', locale: 'en',
-    range: '3M',            // 초기 표시 범위 고정 — 로드마다 스크롤 위치 달라지는 것 방지
+    // range 파라미터 제거 — range와 interval 동시 사용 시 TradingView가 interval을 무시하고 분봉으로 내려오는 버그
     hide_top_toolbar: false, hide_legend: false,
     save_image: false, calendar: false, hide_volume: false,
     studies: ['RSI@tv-basicstudies', 'MACD@tv-basicstudies'],
