@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>페이지 제목 | EZLONG</title>
+
+  <!-- SEO 기본 -->
+  <meta name="description" content="페이지 설명 (150자 이내)">
+  <meta name="keywords" content="미국주식, 키워드1, 키워드2">
+  <meta name="author" content="EZLONG">
+  <link rel="canonical" href="https://ezlong.com/파일명.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="페이지 제목 | EZLONG">
+  <meta property="og:description" content="페이지 설명">
+  <meta property="og:url" content="https://ezlong.com/파일명.html">
+  <meta property="og:image" content="https://ezlong.com/logo-preview.png">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="ko_KR">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="페이지 제목 | EZLONG">
+  <meta name="twitter:description" content="페이지 설명">
+  <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
+
+  <!-- 파비콘 -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+
+  <!-- 공유 디자인 시스템 — 반드시 포함 -->
+  <link rel="stylesheet" href="ez-design.css">
+
+  <style>
+    /* ──────────────────────────────────────────────────
+       이 페이지 전용 CSS
+       ─────────────────────────────────────────────── */
+
+    /* 페이지 브랜드 헤더 (선택) */
+    .page-brand {
+      background: var(--ez-surface);
+      border-bottom: 1px solid var(--ez-border);
+      padding: 32px 20px 28px;
+    }
+    .page-brand-inner {
+      max-width: var(--ez-max-w);
+      margin: 0 auto;
+    }
+    .page-brand-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--ez-blue);
+      margin-bottom: 8px;
+    }
+    .page-brand-title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: var(--ez-text);
+      margin-bottom: 8px;
+    }
+    .page-brand-desc {
+      font-size: 15px;
+      color: var(--ez-text2);
+      line-height: 1.6;
+    }
+
+    /* 메인 콘텐츠 영역 */
+    .page-main {
+      max-width: var(--ez-max-w);
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    /* 카드 컴포넌트 */
+    .ez-card {
+      background: var(--ez-surface);
+      border: 1px solid var(--ez-border);
+      border-radius: var(--ez-r);
+      padding: 24px;
+      box-shadow: var(--ez-shadow);
+    }
+
+    /* 섹션 타이틀 */
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ez-text);
+      margin-bottom: 16px;
+      letter-spacing: -.02em;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     글로벌 헤더 — EZLONG_GUIDE.md 3번 참조
+     현재 페이지 링크에 class="ez-nav-svc-link active" 추가
+     ══════════════════════════════════════════════════ -->
+<nav class="ez-nav" aria-label="글로벌 네비게이션">
+  <div class="ez-nav-inner">
+    <a href="/" class="ez-nav-logo" aria-label="EZLONG 홈">
+      <picture>
+        <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+        <img src="logo.png" alt="EZLONG">
+      </picture>
+    </a>
+    <div class="ez-nav-svc-links">
+      <a href="/atmr-dashboard.html"        class="ez-nav-svc-link">스윙 시그널</a>
+      <a href="/chart-analysis.html"        class="ez-nav-svc-link">AI 차트분석</a>
+      <a href="/analyst-reports.html"       class="ez-nav-svc-link">핵심기업 목표주가</a>
+      <a href="/market-cycle.html"          class="ez-nav-svc-link">Market Cycle</a>
+      <a href="/dca-simulator.html"         class="ez-nav-svc-link">DCA 시뮬레이터</a>
+      <a href="/portfolio-manager.html"     class="ez-nav-svc-link">포트폴리오 복리</a>
+      <a href="/tax-account-simulator.html" class="ez-nav-svc-link">절세 계좌</a>
+      <a href="/compound-calculator.html"   class="ez-nav-svc-link">복리 계산기</a>
+      <a href="/retirement-calculator.html" class="ez-nav-svc-link">은퇴 계산기</a>
+      <a href="/backtest.html"              class="ez-nav-svc-link">백테스트</a>
+      <a href="/risk-diagnostic.html"       class="ez-nav-svc-link">투자성향 테스트</a>
+      <a href="/auto-dca-guide.html"        class="ez-nav-svc-link">DCA 가이드</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════
+     페이지 브랜드 헤더 (선택 — 필요 없으면 삭제)
+     ══════════════════════════════════════════════════ -->
+<div class="page-brand">
+  <div class="page-brand-inner">
+    <div class="page-brand-label">카테고리 라벨</div>
+    <h1 class="page-brand-title">페이지 타이틀</h1>
+    <p class="page-brand-desc">페이지 설명 문구</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     메인 콘텐츠
+     ══════════════════════════════════════════════════ -->
+<main class="page-main">
+
+  <div class="ez-card">
+    <h2 class="section-title">섹션 타이틀</h2>
+    <p>콘텐츠 내용</p>
+  </div>
+
+</main>
+
+<!-- ══════════════════════════════════════════════════
+     글로벌 푸터 — EZLONG_GUIDE.md 4번 참조
+     ══════════════════════════════════════════════════ -->
+<footer class="ez-footer" role="contentinfo">
+  <div class="ez-footer-inner">
+    <div class="ez-footer-top">
+      <div class="ez-footer-brand">
+        <picture>
+          <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+          <img src="logo.png" alt="EZLONG">
+        </picture>
+        <p class="ez-footer-brand-desc">쉽고 안전한 장기투자 파트너<br>easy.invest.good@gmail.com</p>
+      </div>
+      <div class="ez-footer-books">
+        <div class="ez-footer-book">
+          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327"
+             class="ez-footer-book-cover" target="_blank" rel="noopener">
+            <img src="book01.png" alt="절대 실패하지 않는 미국 주식 ETF 투자">
+          </a>
+          <div class="ez-footer-book-info">
+            <span class="ez-footer-book-title">절대 실패하지 않는<br>미국 주식 ETF 투자</span>
+            <span class="ez-footer-book-label">종이책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/177260453" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://product.kyobobook.co.kr/detail/S000219205812" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+            </div>
+          </div>
+        </div>
+        <div class="ez-footer-book">
+          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327"
+             class="ez-footer-book-cover" target="_blank" rel="noopener">
+            <img src="book02.png" alt="월급쟁이 투자 자동화">
+          </a>
+          <div class="ez-footer-book-info">
+            <span class="ez-footer-book-title">월급쟁이<br>투자 자동화</span>
+            <span class="ez-footer-book-label">전자책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+              <a href="https://ridibooks.com/books/6121000386" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ez-footer-links">
+        <div class="ez-footer-col">
+          <span class="ez-footer-col-title">서비스</span>
+          <a href="atmr-dashboard.html">스윙 시그널 대시보드</a>
+          <a href="chart-analysis.html">AI 차트분석</a>
+          <a href="analyst-reports.html">핵심기업 목표주가</a>
+          <a href="market-cycle.html">Market Cycle Monitor</a>
+          <a href="dca-simulator.html">DCA 복리 시뮬레이터</a>
+          <a href="portfolio-manager.html">포트폴리오 복리 시뮬레이터</a>
+          <a href="tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a>
+          <a href="compound-calculator.html">복리 계산기</a>
+          <a href="retirement-calculator.html">은퇴 목표 역산 계산기</a>
+          <a href="backtest.html">몬테카를로 포트폴리오 시뮬레이터</a>
+          <a href="risk-diagnostic.html">투자 행동 자가진단</a>
+          <a href="auto-dca-guide.html">자동 적립식 매수 가이드</a>
+        </div>
+        <div class="ez-footer-col">
+          <span class="ez-footer-col-title">정보</span>
+          <a href="/">소개</a>
+          <a href="mailto:easy.invest.good@gmail.com">문의</a>
+        </div>
+      </div>
+    </div>
+    <div class="ez-footer-bottom">
+      © 2025 EZLONG. 이 사이트의 모든 정보는 투자 참고용이며 투자 권유가 아닙니다.<br>
+      투자 결과에 대한 책임은 투자자 본인에게 있습니다.
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 페이지 전용 JS
+</script>
+</body>
+</html>

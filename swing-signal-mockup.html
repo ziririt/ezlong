@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>스윙 시그널 — 디자인 목업</title>
+<style>
+/* ── atmr-dashboard.html 동일 CSS 변수 ── */
+:root {
+  --bg:    #F5F5F7;
+  --bg2:   #FFFFFF;
+  --card:  #FFFFFF;
+  --bd:    rgba(0,0,0,0.07);
+  --t1:    #1D1D1F;
+  --t2:    #2D2D2F;
+  --t3:    #3D3D3F;
+  --bl:    #0071E3;
+  --bl-m:  rgba(0,113,227,0.16);
+  --gr:    #248A3D;
+  --gr-s:  rgba(36,138,61,0.10);
+  --rd:    #D70015;
+  --rd-s:  rgba(215,0,21,0.10);
+  --yl:    #8E8E93;
+  --or:    #D70015;
+  --r:     20px;
+  --r-sm:  12px;
+  --ac:    #0071E3;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:   #000000; --bg2:  #000000; --card: #1A1A1A;
+    --bd:   rgba(255,255,255,0.13);
+    --t1:   #FFFFFF; --t2:   #E5E5EA; --t3:   #C7C7CC;
+    --bl:   #0A84FF; --bl-m: rgba(10,132,255,0.28);
+    --gr:   #30D158; --gr-s: rgba(48,209,88,0.15);
+    --rd:   #FF453A; --rd-s: rgba(255,69,58,0.15);
+    --yl:   #AEAEB2; --or:   #FF453A;
+    --ac:   #0A84FF;
+  }
+}
+
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  background: var(--bg);
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  color: var(--t1);
+  padding: 32px 20px 60px;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+/* ── 목업 상단 컨트롤 바 ── */
+.mockup-bar {
+  background: var(--card);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  border: 1.5px dashed rgba(10,132,255,0.3);
+  display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+}
+.mockup-bar label { font-size: 12px; font-weight: 600; color: var(--t3); }
+.mockup-bar select, .mockup-bar input[type=range] {
+  accent-color: var(--bl); cursor: pointer;
+}
+.mockup-bar select {
+  background: var(--bg); color: var(--t1);
+  border: 1px solid var(--bd); border-radius: 8px;
+  padding: 4px 8px; font-size: 13px;
+}
+.mockup-tag {
+  font-size: 11px; font-weight: 800; letter-spacing: .08em;
+  color: var(--bl); padding: 3px 10px; border-radius: 20px;
+  background: var(--bl-m);
+}
+
+/* ── 볼카운터 전광판 ── */
+.baseball-signal {
+  display: flex; gap: 0;
+  background: #1a1a1a;
+  border-radius: 14px; overflow: hidden;
+  margin: 0 0 22px;
+  box-shadow: 0 6px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.07);
+}
+.bi-col {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 11px; padding: 22px 14px 18px;
+}
+.bi-col + .bi-col { border-left: 1px solid rgba(255,255,255,0.07); }
+.bi-label { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.bi-balls { display: flex; gap: 10px; align-items: center; }
+.bi-ball {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 2.5px solid currentColor;
+  background: transparent; flex-shrink: 0;
+}
+.bi-ball.lit { background: currentColor; }
+.bi-ball.lit.gy { box-shadow: 0 0 10px 2px rgba(255,179,0,0.55), 0 0 22px rgba(255,179,0,0.25); }
+.bi-ball.lit.gg { box-shadow: 0 0 10px 2px rgba(52,199,89,0.55),  0 0 22px rgba(52,199,89,0.25); }
+.bi-ball.lit.gr { box-shadow: 0 0 10px 2px rgba(255,69,58,0.60),  0 0 22px rgba(255,69,58,0.25); }
+.bi-ball.lit.gb { box-shadow: 0 0 10px 2px rgba(90,200,250,0.60), 0 0 22px rgba(90,200,250,0.25); }
+.bi-hint { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 600; text-align: center; }
+
+/* ── 액션 카드 ── */
+.action-card {
+  border-radius: var(--r); padding: 28px 32px; margin-bottom: 24px;
+  background: var(--card);
+  border-left: 4px solid transparent;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 8px 32px rgba(0,0,0,0.05);
+  position: relative; overflow: hidden;
+}
+.action-card.buy   { border-left-color: var(--gr); }
+.action-card.watch { border-left-color: var(--yl); }
+.action-card.sell  { border-left-color: var(--rd); }
+.action-card.hold  { border-left-color: var(--bl); }
+.action-label { font-size: 15px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--t3); }
+.action-title { font-size: 22px; font-weight: 800; letter-spacing: -.03em; color: var(--t1); margin-top: 4px; line-height: 1.3; }
+.action-desc  { font-size: 15px; line-height: 1.7; color: var(--t2); margin-top: 18px; }
+.action-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.action-pill  {
+  font-size: 14px; font-weight: 700; padding: 5px 14px;
+  border-radius: 100px; border: none;
+}
+.divider { border: none; border-top: 1px solid var(--bd); margin: 16px 0; }
+
+/* ── 옵션 시장 신호 바 ── */
+.options-bar {
+  margin-top: 14px; padding: 12px 14px; border-radius: 10px;
+  background: var(--bg2); border-left: 3px solid var(--ac); overflow: hidden;
+}
+.options-bar-title {
+  font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ac); margin-bottom: 8px;
+}
+.options-bar-row { font-size: 13px; font-weight: 600; line-height: 1.55; margin-bottom: 4px; }
+
+/* ── 섹션 헤더 ── */
+.section-note {
+  font-size: 12px; color: var(--t3); font-weight: 600;
+  margin-bottom: 10px; padding-left: 2px;
+}
+@media (max-width: 520px) {
+  .action-card { padding: 20px 16px; }
+  .bi-col { padding: 16px 8px 14px; gap: 9px; }
+  .bi-ball { width: 24px; height: 24px; border-width: 2px; }
+  .bi-balls { gap: 7px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── 목업 컨트롤 ── -->
+<div class="mockup-bar">
+  <span class="mockup-tag">DESIGN MOCKUP</span>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <label>시나리오</label>
+    <select id="scenario-sel">
+      <option value="0">완만한 하락 추세 (88→77, -2.2점/일)</option>
+      <option value="1">상승 반등 중 (45→68, +4.6점/일)</option>
+      <option value="2">횡보 — 방향 없음 (70→71, ≈0점/일)</option>
+      <option value="3">급락 충격 (80→40, -8점/일)</option>
+      <option value="4">초과열 소폭 하락 (92→85, -1.2점/일)</option>
+    </select>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:180px;">
+    <label>현재 점수: <strong id="score-disp">—</strong></label>
+    <input type="range" id="score-override" min="0" max="100" style="flex:1;" />
+  </div>
+</div>
+
+<!-- ── 볼카운터 전광판 ── -->
+<div class="section-note">볼카운터 전광판</div>
+<div class="baseball-signal" id="ball-bar"></div>
+
+<!-- ── 스윙 시그널 액션 카드 ── -->
+<div class="section-note">스윙 시그널 카드</div>
+<div class="action-card" id="action-card">
+  <div style="padding-bottom:16px;margin-bottom:4px;border-bottom:1px solid var(--bd);">
+    <div id="gauge-wrap" style="margin-bottom:10px;"></div>
+    <div>
+      <div class="action-label">오늘의 시그널</div>
+      <div class="action-title" id="card-title">—</div>
+    </div>
+  </div>
+  <div class="action-desc" id="card-desc">—</div>
+  <div class="action-pills" id="card-pills"></div>
+  <div id="card-options"></div>
+</div>
+
+<script>
+// ── 설정 ───────────────────────────────────────────────────────────────────
+const SLOPE_THRESHOLD = 0.5;
+const MAX_SLOPE       = 5.0;
+const MIN_EXT         = 14;
+const MAX_EXT         = 30;
+
+// ── 시나리오 데이터 ─────────────────────────────────────────────────────────
+const SCENARIOS = [
+  {
+    history: [88,85,81,79,78,77],
+    cls: 'watch', vix: 18.4,
+    title: '온기구간 — 하락 추세 진행 중, 보유 유지',
+    desc:  '시장이 과열 구간에서 온기 구간으로 내려오는 추세입니다. QQQ·VOO는 여전히 <strong>200일선 위 상승 추세</strong>를 유지하고 있으나 방향성은 하락 중입니다. 급하게 추가 매수하기보다 기존 보유분을 유지하며 냉각구간 진입 여부를 확인하시길 권합니다.',
+    buy: 2, sell: 1, hold: 0,
+    pills: [
+      { text:'VIX 18.4', bg:'rgba(155,89,182,0.15)', color:'#9b59b6' },
+      { text:'200일선 위 — 추세 유지', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
+      { text:'QQQ RSI 52.3', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
+      { text:'단기: 반등 중 (MACD·5일선 ↑)', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
+    ],
+    options: { icon:'▲', text:'SPY $739 — 안전 기준선($718) 위. 단기 급락 가능성이 낮은 안정 구간.', color:'var(--gr)' },
+  },
+  {
+    history: [45,50,55,60,64,68],
+    cls: 'buy', vix: 22.1,
+    title: '온기구간 + 상승 추세 — QQQ·VOO 1차 분할매수 적기',
+    desc:  '시장이 냉각구간에서 온기구간으로 상승하는 추세입니다. QQQ·VOO는 <strong>200일선 위 상승 추세</strong>를 유지하고 있습니다. 3-3-4 원칙에 따라 예정 물량의 30%(정찰대)를 먼저 투입하시길 권합니다.',
+    buy: 1, sell: 0, hold: 0,
+    pills: [
+      { text:'VIX 22.1', bg:'rgba(230,97,10,0.12)', color:'var(--or)' },
+      { text:'200일선 위 — 추세 유지', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
+      { text:'QQQ RSI 44.7', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
+      { text:'QQQ·VOO 정찰대 30% 투입', bg:'rgba(215,0,21,0.1)', color:'var(--rd)' },
+    ],
+    options: null,
+  },
+  {
+    history: [70,74,68,72,69,71],
+    cls: 'hold', vix: 17.2,
+    title: '온기구간 — 방향성 없음, 보유 유지',
+    desc:  '시장이 온기구간에서 뚜렷한 방향 없이 횡보 중입니다. QQQ·VOO는 <strong>200일선 위</strong>에서 안정적 구조를 유지하고 있습니다. 신규 진입보다 기존 보유분을 유지하며 추세 방향 확인을 권합니다.',
+    buy: 1, sell: 1, hold: 0,
+    pills: [
+      { text:'VIX 17.2', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
+      { text:'200일선 위 — 추세 유지', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
+      { text:'단기: 혼조 (방향 불명확)', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
+    ],
+    options: { icon:'✓', text:'단기 공포(17.2)가 장기 불안(19.8)보다 낮음 — 변동성 구조 안정적.', color:'var(--gr)' },
+  },
+  {
+    history: [80,72,60,50,44,40],
+    cls: 'buy', vix: 34.8,
+    title: '냉각구간 — 역발상 매수의 최적 타이밍 (추세 유지 중)',
+    desc:  '역사적으로 냉각구간은 최고의 매수 기회였습니다. 단, VIX가 급등한 만큼 레버리지는 자제하고 QQQ·VOO 위주로 분할 투입하시길 권합니다.',
+    buy: 0, sell: 0, hold: 1,
+    pills: [
+      { text:'VIX 34.8 — 극단 공포', bg:'rgba(215,0,21,0.1)', color:'var(--rd)' },
+      { text:'QQQ RSI 28.4 과매도', bg:'rgba(215,0,21,0.1)', color:'var(--rd)' },
+      { text:'역발상 매수 최적 타이밍', bg:'rgba(215,0,21,0.1)', color:'var(--rd)' },
+    ],
+    options: { icon:'▼', text:'SPY $682 — 안전 기준선($718) 아래. 하락 가속 구간 주의.', color:'var(--rd)' },
+  },
+  {
+    history: [92,91,90,88,87,85],
+    cls: 'sell', vix: 14.1,
+    title: '과열구간 — 차익 실현 구간, 레버리지 정리',
+    desc:  '시장이 초과열 구간에서 내려오고 있으나 여전히 과열 구간입니다. 레버리지 ETF 비중을 점진적으로 축소하고, 분할 익절을 시작할 타이밍입니다.',
+    buy: 3, sell: 2, hold: 1,
+    pills: [
+      { text:'VIX 14.1 — 극단 안정', bg:'rgba(0,113,227,0.12)', color:'var(--bl)' },
+      { text:'200일선 위 — 추세 유지', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
+      { text:'레버리지 ETF 비중 축소', bg:'rgba(215,0,21,0.1)', color:'var(--rd)' },
+      { text:'분할 익절 시작', bg:'rgba(215,0,21,0.1)', color:'var(--rd)' },
+    ],
+    options: { icon:'▲', text:'SPY $762 — 상방 저항($750) 돌파. 추가 상승 여부가 관건.', color:'var(--or)' },
+  },
+];
+
+// ── 컬러·레이블 ─────────────────────────────────────────────────────────────
+function getFGColor(s) {
+  if (s >= 60) return '#0a84ff';
+  if (s >= 40) return '#ff8c00';
+  if (s >= 20) return '#e09400';
+  return '#c0392b';
+}
+function getFGLabel(s) {
+  if (s >= 90) return '초과열구간';
+  if (s >= 80) return '과열구간';
+  if (s >= 60) return '온기구간';
+  if (s >= 40) return '미온구간';
+  if (s >= 20) return '냉각구간';
+  if (s >= 10) return '과냉구간';
+  return '초과냉구간';
+}
+
+// ── 선형 회귀 ────────────────────────────────────────────────────────────────
+function calcSlope(pts) {
+  if (!pts || pts.length < 2) return 0;
+  const n = pts.length;
+  const sumT = pts.reduce((a,p)=>a+p.t,0), sumV = pts.reduce((a,p)=>a+p.v,0);
+  const sumTT = pts.reduce((a,p)=>a+p.t*p.t,0), sumTV = pts.reduce((a,p)=>a+p.t*p.v,0);
+  const d = n*sumTT - sumT*sumT;
+  return d===0 ? 0 : (n*sumTV - sumT*sumV)/d;
+}
+
+// ── 게이지 SVG (v6) ──────────────────────────────────────────────────────────
+function makeSwingGaugeSVG(score, fgLabel, scoreColor, slope, periodDays, oldestScore) {
+  const W=320, BX=0, BW=320, BH=18, BY=52, H=98;
+  const ZONES=[
+    {from:0,to:10,color:'#060d1f',short:'초과냉'},   // 극한 다크 네이비
+    {from:10,to:20,color:'#1a3fc4',short:'과냉'},    // 진한 파랑
+    {from:20,to:40,color:'#60a5fa',short:'냉각'},    // 연파랑
+    {from:40,to:60,color:'#8b99a8',short:'미온'},    // 중립 회색
+    {from:60,to:80,color:'#f97316',short:'온기'},    // 오렌지
+    {from:80,to:90,color:'#ff2200',short:'과열'},    // 순수 레드오렌지 — 선명한 열기
+    {from:90,to:100,color:'#e60000',short:'초과열'}, // 순수 레드 — 브라운 제로
+  ];
+  const toX = s => BX+(s/100)*BW;
+  const absSlope = Math.abs(slope);
+  const isD = slope < -SLOPE_THRESHOLD, isI = slope > SLOPE_THRESHOLD;
+  const t = Math.min((absSlope-SLOPE_THRESHOLD)/(MAX_SLOPE-SLOPE_THRESHOLD),1);
+  const ext = (isD||isI) ? MIN_EXT + t*(MAX_EXT-MIN_EXT) : 0;
+
+  const yT = x => { const r=(x-BX)/BW; return isD?BY-(ext/2)*r:isI?BY-(ext/2)*(1-r):BY; };
+  const yB = x => { const r=(x-BX)/BW; return isD?BY+BH+(ext/2)*r:isI?BY+BH+(ext/2)*(1-r):BY+BH; };
+
+  const BR=5; let segs='';
+  ZONES.forEach((z,i)=>{
+    const x1=toX(z.from),x2=toX(z.to);
+    const active=score>=z.from&&(i===ZONES.length-1?score<=100:score<z.to);
+    const t1=yT(x1),b1=yB(x1),t2=yT(x2),b2=yB(x2);
+    let d;
+    if(!isD&&!isI){
+      if(i===0) d=`M ${x1+BR},${BY} H ${x2} V ${BY+BH} H ${x1+BR} Q ${x1},${BY+BH} ${x1},${BY+BH-BR} V ${BY+BR} Q ${x1},${BY} ${x1+BR},${BY} Z`;
+      else if(i===ZONES.length-1) d=`M ${x1},${BY} H ${x2-BR} Q ${x2},${BY} ${x2},${BY+BR} V ${BY+BH-BR} Q ${x2},${BY+BH} ${x2-BR},${BY+BH} H ${x1} Z`;
+      else d=`M ${x1},${BY} H ${x2} V ${BY+BH} H ${x1} Z`;
+    } else { d=`M ${x1},${t1} L ${x2},${t2} L ${x2},${b2} L ${x1},${b1} Z`; }
+    segs+=`<path d="${d}" fill="${z.color}" fill-opacity="${active?1:0.3}"/>\n`;
+    const lx=(x1+x2)/2, ly=(yT(lx)+yB(lx))/2, fs=(x2-x1)<36?7:8.5;
+    segs+=`<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="${fs}" font-weight="${active?800:600}" fill="#fff" opacity="${active?0.95:0.55}">${z.short}</text>\n`;
+  });
+
+  let divs='';
+  [10,20,40,60,80,90].forEach(s=>{
+    const x=toX(s);
+    divs+=`<line x1="${x}" y1="${yT(x)}" x2="${x}" y2="${yB(x)}" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/>`;
+  });
+
+  let prevMark='';
+  if(oldestScore!=null&&(isD||isI)){
+    const px=Math.max(2,Math.min(BW-2,toX(oldestScore)));
+    prevMark=`<line x1="${px}" y1="${yT(px)}" x2="${px}" y2="${yB(px)}" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-dasharray="2.5,2.5"/>`;
+  }
+
+  const mx=Math.max(7,Math.min(BW-7,toX(score)));
+  const mTop=yT(mx), TW=9, TH=8;
+  const needle=`<polygon points="${mx},${mTop} ${mx-TW/2},${mTop-TH} ${mx+TW/2},${mTop-TH}" fill="${scoreColor}" filter="drop-shadow(0 1px 2px rgba(0,0,0,.35))"/>
+    <line x1="${mx}" y1="${mTop}" x2="${mx}" y2="${yB(mx)}" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>`;
+
+  const textX=mx<70?mx+4:mx>BW-70?mx-4:mx;
+  const anchor=mx<70?'start':mx>BW-70?'end':'middle';
+  const baseY=Math.max(16,mTop-TH-5);
+  let dirIcon='';
+  if(isD||isI) dirIcon = slope<0?' ▼':' ▲';
+
+  const scoreLine=`<text x="${textX}" y="${baseY}" text-anchor="${anchor}" font-size="12" font-weight="800" fill="${scoreColor}" letter-spacing="-0.01em">${score}점 · ${fgLabel}${dirIcon}</text>`;
+
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;overflow:visible;">${segs}${divs}${prevMark}${needle}${scoreLine}</svg>`;
+}
+
+// ── 볼카운터 ────────────────────────────────────────────────────────────────
+function renderBalls(buy, sell, hold) {
+  function col(label, n, color, glowCls, hints) {
+    const balls = [0,1,2].map(i=>{
+      const lit=i<n;
+      return `<span class="bi-ball${lit?' lit '+glowCls:''}" style="color:${color};"></span>`;
+    }).join('');
+    return `<div class="bi-col"><span class="bi-label" style="color:${color};">${label}</span><div class="bi-balls">${balls}</div><span class="bi-hint">${hints[n]}</span></div>`;
+  }
+  function holdCol(n) {
+    if(n===0){
+      const balls=[0,1,2].map(()=>`<span class="bi-ball lit gb" style="color:#5AC8FA;"></span>`).join('');
+      return `<div class="bi-col"><span class="bi-label" style="color:#5AC8FA;">HOLD</span><div class="bi-balls">${balls}</div><span class="bi-hint">보유하기 좋음</span></div>`;
+    }
+    const balls=[0,1,2].map((_, i)=>{
+      const lit=i<n;
+      return `<span class="bi-ball${lit?' lit gr':''}" style="color:#FF453A;"></span>`;
+    }).join('');
+    const hints=['','익절 검토 구간','비중 축소 권장','레버리지 즉시 정리'];
+    return `<div class="bi-col"><span class="bi-label" style="color:#FF453A;">HOLD</span><div class="bi-balls">${balls}</div><span class="bi-hint">${hints[n]}</span></div>`;
+  }
+  document.getElementById('ball-bar').innerHTML =
+    col('BUY', buy, '#FFB300','gy',['최적 매수','소량 가능','주의 구간','매수 자제'])
+    + col('SELL',sell,'#30D158','gg',['과매도·보유','부분 익절','차익 실현','적극 익절'])
+    + holdCol(hold);
+}
+
+// ── 렌더 ────────────────────────────────────────────────────────────────────
+let currentScenario = 0;
+
+function render() {
+  const sc = SCENARIOS[currentScenario];
+
+  // 점수 오버라이드 적용
+  const override = parseInt(document.getElementById('score-override').value);
+  const hist = [...sc.history];
+  hist[hist.length-1] = override;
+
+  // 선형 회귀 계산
+  const pts = hist.map((v,i)=>({t:i,v}));
+  const slope = calcSlope(pts);
+  const oldest = hist[0];
+  const period = hist.length - 1;
+  const score  = hist[hist.length-1];
+  const fgLabel = getFGLabel(score);
+  const color   = getFGColor(score);
+
+  document.getElementById('score-disp').textContent = score;
+
+  // 볼카운터
+  renderBalls(sc.buy, sc.sell, sc.hold);
+
+  // 카드
+  const card = document.getElementById('action-card');
+  card.className = 'action-card ' + sc.cls;
+
+  document.getElementById('gauge-wrap').innerHTML =
+    makeSwingGaugeSVG(score, fgLabel, color, slope, period, oldest);
+
+  document.getElementById('card-title').textContent = sc.title;
+  document.getElementById('card-desc').innerHTML    = sc.desc;
+
+  // pills
+  const pillsEl = document.getElementById('card-pills');
+  pillsEl.innerHTML = sc.pills.map(p=>
+    `<span class="action-pill" style="background:${p.bg};color:${p.color};">${p.text}</span>`
+  ).join('');
+
+  // options bar
+  const optEl = document.getElementById('card-options');
+  if(sc.options){
+    optEl.innerHTML = `<div class="options-bar">
+      <div class="options-bar-title">옵션 시장 현황</div>
+      <div class="options-bar-row" style="color:${sc.options.color};">${sc.options.icon} ${sc.options.text}</div>
+    </div>`;
+  } else { optEl.innerHTML=''; }
+}
+
+// 시나리오 초기값 슬라이더 세팅
+function initSlider() {
+  const sc = SCENARIOS[currentScenario];
+  const last = sc.history[sc.history.length-1];
+  const slider = document.getElementById('score-override');
+  slider.value = last;
+  document.getElementById('score-disp').textContent = last;
+}
+
+document.getElementById('scenario-sel').addEventListener('change', e=>{
+  currentScenario = parseInt(e.target.value);
+  initSlider();
+  render();
+});
+document.getElementById('score-override').addEventListener('input', render);
+
+initSlider();
+render();
+</script>
+</body>
+</html>

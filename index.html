@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) - load deferred for LCP performance -->
+<script>
+window.addEventListener('load', function(){
+  var s = document.createElement('script');
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444';
+  s.async = true;
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  window.gtag = gtag;
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+});
+</script>
+<link rel="stylesheet" href="ez-design.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- LCP 히어로 이미지 preload: 브라우저 scan 즉시 요청 -->
+<link rel="preload" as="image" href="hero-mobile.webp" media="(max-width: 767px)" fetchpriority="high">
+<link rel="preload" as="image" href="hero-desktop.webp" media="(min-width: 768px)" fetchpriority="high">
+<title>EZLONG | 미국주식 AI 투자 솔루션</title>
+<meta name="description" content="복리계산기, DCA 시뮬레이터, 절세 계좌 비교, 포트폴리오 최적화, 월가 목표 주가 컨센서스. 미국주식 장기투자자를 위한 무료 도구 모음." />
+<meta name="keywords" content="복리계산기, 복리 계산, DCA 시뮬레이터, 미국주식, ETF 투자, 장기투자, 적립식 투자, 포트폴리오 계산기, 투자 성향 테스트, 투자자 유형, 투자 행동 편향, FOMO 투자, 패닉 셀링, 투자 심리 테스트, 절세 계좌 시뮬레이터" />
+<meta name="robots" content="index, follow" />
+<meta name="naver-site-verification" content="7019c11d8808b80c73afabd57bbc6c35fedf85f7" />
+<link rel="canonical" href="https://ezlong.com/" />
+<!-- ── 국제화 SEO: hreflang + locale alternate ── -->
+<link rel="alternate" hreflang="ko" href="https://ezlong.com/">
+<link rel="alternate" hreflang="en" href="https://ezlong.com/en/">
+<link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="pt_BR">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta name="description" lang="en" content="Free tools for US stock long-term investors — DCA simulator, Monte Carlo portfolio optimizer, tax account calculator, retirement planner & more. No login required.">
+<meta name="keywords" lang="en" content="US stock investment tools, DCA calculator, portfolio optimizer, retirement calculator, compound interest, long-term investing">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ezlong.com/" />
+<meta property="og:title" content="EZLONG | 미국주식 AI 투자 솔루션" />
+<meta property="og:description" content="복리계산기, DCA 시뮬레이터, 절세 계좌 비교, 포트폴리오 최적화. 미국주식 장기투자자를 위한 무료 계산기 6종." />
+<meta property="og:image" content="https://ezlong.com/logo-preview.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:site_name" content="EZLONG" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="EZLONG | 미국주식 AI 투자 솔루션" />
+<meta name="twitter:description" content="복리계산기, DCA 시뮬레이터, 절세 계좌 비교, 포트폴리오 최적화. 미국주식 장기투자자를 위한 무료 계산기 6종." />
+<meta name="twitter:image" content="https://ezlong.com/logo-preview.png" />
+
+<!-- JSON-LD 구조화 데이터 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "EZLONG — Free US Stock Investment Tools",
+  "description": "A free collection of US stock investment tools for long-term investors: DCA compound simulator, Monte Carlo portfolio optimizer, tax-advantaged account calculator, retirement goal planner, and more.",
+  "inLanguage": ["ko", "en"],
+  "url": "https://ezlong.com/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "EZLONG",
+  "url": "https://ezlong.com",
+  "description": "미국주식 장기투자자를 위한 무료 투자 도구 모음. 복리계산기, DCA 시뮬레이터, 포트폴리오 수익 시뮬레이션 제공.",
+  "inLanguage": "ko",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://ezlong.com/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "EZLONG 미국주식 AI 투자 솔루션",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "DCA 복리 시뮬레이터",
+      "url": "https://ezlong.com/dca-simulator.html",
+      "description": "매월 적립식 투자 시 복리 수익을 계산하는 DCA 시뮬레이터"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "포트폴리오 수익 시뮬레이터",
+      "url": "https://ezlong.com/portfolio-manager.html",
+      "description": "ETF 포트폴리오 구성 후 CAGR 기반 복리 수익 시뮬레이션"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "절세 계좌 세후 수익률 시뮬레이터",
+      "url": "https://ezlong.com/tax-account-simulator.html",
+      "description": "연금저축, IRP, ISA, 미국주식 직투 계좌의 세후 복리 수익률과 유동성 리스크를 나이·투자금·유동성 상황별로 비교"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "복리 계산기",
+      "url": "https://ezlong.com/compound-calculator.html",
+      "description": "원금·수익률·기간·추가납입으로 복리 최종 수익 계산"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "스윙 시그널",
+      "url": "https://ezlong.com/atmr-dashboard.html",
+      "description": "QQQ·VOO·TSLA·NVDA 스윙 시그널 점수로 오늘의 매수·매도 타이밍을 분석. RSI·MACD·VIX를 종합한 데이터 기반 판단"
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "Market Cycle Monitor",
+      "url": "https://ezlong.com/market-cycle.html",
+      "description": "S&P500·Nasdaq100·SOXX의 주봉 30W SMA, 브레드스(RSP-SPY), VIX 공포지수 3개 시그널로 미국 주식 시장 중기 변곡점을 조기 경보"
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "name": "은퇴 목표 역산 투자액 계산기",
+      "url": "https://ezlong.com/retirement-calculator.html",
+      "description": "은퇴 후 희망 인출액을 4% 룰로 역산해 필요한 월 적립금을 3가지 수익률 시나리오로 계산"
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "name": "포트폴리오 최적 비율 자동 계산 (몬테카를로 백테스트)",
+      "url": "https://ezlong.com/backtest.html",
+      "description": "미국주식 ETF 44개 자산의 20년 실제 데이터로 3,000가지 비율 조합을 몬테카를로 시뮬레이션해 최적 포트폴리오 비율을 자동 계산"
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "name": "투자 행동 자가진단",
+      "url": "https://ezlong.com/risk-diagnostic.html",
+      "description": "FOMO·패닉 셀링·과도한 거래·레버리지 의존 등 투자 행동 편향을 5가지 영역에서 자가진단. 안정형·주의형·위험형 유형 분류"
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "name": "자동 적립식 매수 가이드",
+      "url": "https://ezlong.com/auto-dca-guide.html",
+      "description": "증권사별 자동매수 기능 명칭과 설정 순서, 잔고 실패 방지 팁을 정리한 DCA 자동화 안내 가이드"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "DCA 복리 시뮬레이터란 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "DCA(Dollar Cost Averaging) 복리 시뮬레이터는 매월 일정 금액을 적립식으로 투자할 때 복리 효과로 자산이 얼마나 불어나는지 계산하는 도구입니다. 초기 투자금, 월 납입액, 연 수익률, 투자 기간을 입력하면 연도별 자산 성장 그래프를 확인할 수 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "연금저축 IRP ISA 중 어느 계좌가 더 유리한가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "연금저축·IRP·ISA는 각각 세액공제 혜택, 운용 자유도, 인출 조건이 다릅니다. EZLONG의 절세 계좌 세후 시뮬레이터에서 나이, 투자금, 소득 수준, 유동성 상황을 입력하면 계좌별 세후 복리 수익률 차이를 그래프로 비교할 수 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "나는 어떤 투자 성향인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "EZLONG의 투자 행동 자가진단 도구에서 FOMO, 패닉 셀링, 과도한 거래, 레버리지 의존, 리스크 관리 등 5가지 영역을 진단합니다. 약 3~6분 소요이며 안정형·주의형·위험형으로 결과가 나옵니다. 무료로 이용 가능합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "복리 계산은 어떻게 하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "복리 계산 공식은 '최종 금액 = 원금 × (1 + 연 수익률)^투자기간'입니다. EZLONG 복리 계산기에서 원금, 연 수익률, 투자 기간, 추가 납입액을 입력하면 복리로 불어나는 최종 자산을 자동으로 계산해줍니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "미국주식 장기투자를 위한 무료 도구는 어디서 찾을 수 있나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "EZLONG(ezlong.com)은 미국주식 장기투자자를 위한 무료 투자 도구를 제공합니다. DCA 복리 시뮬레이터, 포트폴리오 복리 시뮬레이터, 절세 계좌 세후 시뮬레이터, 복리 계산기, 스윙 시그널, 은퇴 목표 역산 계산기, 포트폴리오 최적 비율 자동 계산(몬테카를로 백테스트), 투자 행동 자가진단 등 무료로 이용할 수 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "미국주식 포트폴리오 최적 비율은 어떻게 계산하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "미국주식 포트폴리오 최적 비율은 몬테카를로 시뮬레이션으로 계산합니다. EZLONG 포트폴리오 백테스트 계산기에서 NVDA·GOOGL·SPY·QQQ 등 44개 자산 중 원하는 종목을 선택하면, 2006~2025년 20년 실제 데이터를 기반으로 3,000가지 비율 조합을 자동 분석해 최고 효율(Max Sharpe)·최소 위험·나의 성향 맞춤 3가지 포트폴리오를 무료로 추천해줍니다."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- JSON-LD: Organization (E-E-A-T 신뢰도 강화) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "EZLONG",
+  "url": "https://ezlong.com",
+  "logo": "https://ezlong.com/logo.png",
+  "description": "미국주식 장기투자자를 위한 무료 투자 도구 모음. 복리계산기, DCA 시뮬레이터, 절세 계좌 시뮬레이터, 포트폴리오 수익 시뮬레이터 등을 무료로 제공합니다.",
+  "email": "easy.invest.good@gmail.com",
+  "inLanguage": "ko",
+  "foundingDate": "2024",
+  "sameAs": [
+    "https://contents.premium.naver.com/unis/something"
+  ]
+}
+</script>
+
+<!-- JSON-LD: Person (저자 신뢰도) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "김성동",
+  "alternateName": "유니아빠",
+  "url": "https://ezlong.com",
+  "jobTitle": "미국주식 투자 저자 · 투자 도구 개발자",
+  "description": "미국주식 장기투자 전문가. 《절대 실패하지 않는 미국 주식 ETF 투자》, 《월급쟁이 투자 자동화》 저자. 연봉 대신 복리를 선택하는 삶을 실천하고 가르칩니다.",
+  "sameAs": [
+    "https://ezlong.com",
+    "https://contents.premium.naver.com/unis/something"
+  ]
+}
+</script>
+
+<!-- JSON-LD: Book 1 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "절대 실패하지 않는 미국 주식 ETF 투자",
+  "author": {
+    "@type": "Person",
+    "name": "김성동"
+  },
+  "description": "시가총액 TOP 10 + DCA로 만드는 AI 시대 성공 투자법. 엔비디아, 테슬라, 알파벳, 마이크로소프트 등 미국 빅테크 주식 ETF 투자 전략.",
+  "url": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494",
+  "inLanguage": "ko",
+  "genre": "투자/재테크",
+  "bookFormat": "https://schema.org/Paperback",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494",
+      "seller": { "@type": "Organization", "name": "알라딘" }
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.yes24.com/product/goods/177260453",
+      "seller": { "@type": "Organization", "name": "예스24" }
+    },
+    {
+      "@type": "Offer",
+      "url": "https://product.kyobobook.co.kr/detail/S000219205812",
+      "seller": { "@type": "Organization", "name": "교보문고" }
+    }
+  ]
+}
+</script>
+
+<!-- JSON-LD: Book 2 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "월급쟁이 투자 자동화",
+  "author": {
+    "@type": "Person",
+    "name": "김성동"
+  },
+  "description": "본업에 집중하며 자산 키우는 시스템 만들기. 타이밍을 버리고 자동화로 투자하는 방법. 직장인 투자 자동화 전략.",
+  "url": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456",
+  "inLanguage": "ko",
+  "genre": "투자/재테크",
+  "bookFormat": "https://schema.org/EBook",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456",
+      "seller": { "@type": "Organization", "name": "알라딘" }
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.yes24.com/product/goods/185275759",
+      "seller": { "@type": "Organization", "name": "예스24" }
+    }
+  ]
+}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2336764115275414"
+     crossorigin="anonymous"></script>
+
+<style>
+/* ─── 리셋 & 기본 ─────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* 색상 */
+  --bg:       #F5F5F7;
+  --bg2:      #FFFFFF;
+  --card:     #FFFFFF;
+  --bd:       rgba(0,0,0,0.08);
+  --t1:       #1D1D1F;
+  --t2:       #1D1D1F;
+  --t3:       #3A3A3C;
+  --bl:       #0071E3;
+  --bl-dk:    #0040DD;
+  --bl-s:     rgba(0,113,227,0.10);
+  --bl-m:     rgba(0,113,227,0.18);
+  --gr:       #34C759;
+  --gr-s:     rgba(52,199,89,0.10);
+  --rd:       #FF3B30;
+  --yl:       #FF9F0A;
+  --yl-s:     rgba(255,159,10,0.12);
+  --pu:       #BF5AF2;
+  --pu-s:     rgba(191,90,242,0.10);
+  --r:        18px;
+  --r-sm:     12px;
+  --font:     -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Pretendard', 'Helvetica Neue', Arial, sans-serif;
+  --shadow:   0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-lg:0 12px 48px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  --nav-h:    60px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:     #000000;
+    --bg2:    #1C1C1E;
+    --card:   #1C1C1E;
+    --bd:     rgba(255,255,255,0.10);
+    --t1:     #F5F5F7;
+    --t2:     #F5F5F7;
+    --t3:     #E5E5EA;
+    --bl-s:   rgba(0,113,227,0.20);
+    --bl-m:   rgba(0,113,227,0.30);
+    --gr-s:   rgba(52,199,89,0.15);
+    --yl-s:   rgba(255,159,10,0.15);
+    --pu-s:   rgba(191,90,242,0.15);
+    --shadow: 0 4px 24px rgba(0,0,0,0.30), 0 1px 4px rgba(0,0,0,0.20);
+    --shadow-lg: 0 12px 48px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30);
+  }
+}
+
+html {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--t1);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+body { min-height: 100vh; }
+
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: #C7C7CC; border-radius: 3px; }
+
+/* ─── 공통 레이아웃 ───────────────────────────────── */
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--bl);
+  background: var(--bl-s);
+  padding: 5px 12px;
+  border-radius: 100px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: clamp(26px, 5vw, 38px);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  color: var(--t1);
+  margin-bottom: 10px;
+}
+
+.section-sub {
+  font-size: 15px;
+  color: var(--t2);
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+/* ─── 네비게이션 ──────────────────────────────────── */
+.nav {
+  position: static;
+  height: var(--nav-h);
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--bd);
+}
+
+@media (prefers-color-scheme: dark) {
+  .nav { background: rgba(28,28,30,0.95); }
+}
+
+.nav-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo-img {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  .nav-logo-img { filter: brightness(1.1); }
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--t2);
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--bl); }
+
+.nav-tagline {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--t2);
+  letter-spacing: -.01em;
+  line-height: 1.5;
+  text-align: right;
+  font-family: 'Apple SD Gothic Neo', 'Pretendard', -apple-system, sans-serif;
+}
+
+@media (max-width: 600px) {
+  .nav-links { display: none; }
+  .nav-tagline { font-size: 11px; }
+}
+
+/* ─── Hero ────────────────────────────────────────── */
+.hero {
+  padding: 40px 20px 28px;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--bl);
+  margin-bottom: 20px;
+}
+
+.hero-title {
+  font-size: clamp(36px, 8vw, 64px);
+  font-weight: 900;
+  letter-spacing: -.04em;
+  line-height: 1.05;
+  color: var(--t1);
+  margin-bottom: 20px;
+}
+
+.hero-title em {
+  font-style: normal;
+  color: var(--bl);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--t2);
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bl);
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 100px;
+  transition: opacity .2s, transform .15s;
+}
+.hero-cta:hover { opacity: .85; transform: translateY(-1px); }
+
+.hero-cta svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* ─── 공통 섹션 래퍼 ─────────────────────────────── */
+.section { padding: 36px 0; }
+.section + .section { border-top: 1px solid var(--bd); }
+.section-head { margin-bottom: 20px; }
+
+/* ─── 유틸리티 섹션 ──────────────────────────────── */
+#tools { background: var(--bg); }
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: 1fr;  /* 모바일: 1열 */
+  gap: 16px;
+}
+
+/* PC: 4개 이하 → 2×2, 5개 이상 → 3열(3+2 / 3+3) */
+@media (min-width: 700px) {
+  .tools-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* 5번째 카드가 존재하면 3열로 전환 */
+  .tools-grid:has(.tool-card:nth-child(5)) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.tool-card {
+  background: var(--card);
+  border-radius: var(--r);
+  border: 1px solid var(--bd);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.tool-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.tool-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tool-card-icon svg { width: 20px; height: 20px; }
+
+.tool-card-title {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--t1);
+  line-height: 1.3;
+}
+
+.tool-card-desc {
+  font-size: 15px;
+  color: var(--t1);
+  line-height: 1.7;
+  flex: 1;
+}
+
+.tool-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bl);
+  transition: gap .15s;
+}
+.tool-card-link:hover { gap: 8px; }
+.tool-card-link svg { width: 14px; height: 14px; }
+
+.badge-soon {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--t3);
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: 100px;
+  padding: 3px 9px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .badge-soon { background: #2C2C2E; }
+}
+
+/* ─── 책 섹션 ────────────────────────────────────── */
+#books { background: var(--bg2); }
+
+.books-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.book-card {
+  background: var(--card);
+  border-radius: var(--r);
+  border: 1px solid var(--bd);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: box-shadow .2s;
+}
+.book-card:hover { box-shadow: var(--shadow-lg); }
+
+@media (min-width: 640px) {
+  .book-card { flex-direction: row; }
+  .books-grid { gap: 20px; }
+}
+
+.book-cover {
+  flex-shrink: 0;
+  width: 100%;
+  background: var(--card);
+}
+
+@media (min-width: 640px) {
+  .book-cover {
+    width: 190px;
+    align-self: stretch;
+  }
+  .book-cover img {
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+}
+
+.book-cover img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 이미지 없을 때 플레이스홀더 */
+.book-cover-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--bl-s);
+  color: var(--bl);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  padding: 12px;
+}
+
+.book-info {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+.book-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--bl);
+}
+
+.book-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.3;
+  color: var(--t1);
+}
+
+.book-desc {
+  font-size: 15px;
+  color: var(--t1);
+  line-height: 1.7;
+}
+
+.book-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.book-link-btn {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--bd);
+  color: var(--t1);
+  background: var(--bg);
+  transition: all .15s;
+  cursor: pointer;
+}
+.book-link-btn:hover {
+  background: var(--bl);
+  color: white;
+  border-color: var(--bl);
+}
+
+@media (prefers-color-scheme: dark) {
+  .book-link-btn { background: #2C2C2E; }
+  .book-link-btn:hover { background: var(--bl); }
+}
+
+.book-link-group-label {
+  width: 100%;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--t1);
+  margin-top: 8px;
+}
+
+/* ─── 강의 섹션 ──────────────────────────────────── */
+#courses { background: var(--bg); }
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.course-card {
+  background: var(--card);
+  border-radius: var(--r);
+  border: 1px solid var(--bd);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+  text-decoration: none;
+  display: block;
+}
+.course-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+
+.course-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #E5E5EA;
+  overflow: hidden;
+  position: relative;
+}
+
+.course-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.course-thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pu-s);
+  color: var(--pu);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.course-platform-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(0,0,0,0.65);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.course-info {
+  padding: 16px;
+}
+
+.course-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--t1);
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.course-meta {
+  font-size: 12px;
+  color: var(--t3);
+}
+
+/* ─── 유튜브 섹션 ────────────────────────────────── */
+#youtube { background: var(--bg2); }
+
+.yt-scroll-wrap { width: 100%; }
+
+/* 세로 나열 — 모바일 1열, 태블릿 이상 2열 */
+.yt-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  width: auto;
+}
+
+@media (min-width: 560px) {
+  .yt-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.yt-card {
+  width: auto;
+  background: var(--card);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--bd);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+  display: block;
+  text-decoration: none;
+}
+
+.yt-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+.yt-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: #E5E5EA;
+  position: relative;
+}
+
+.yt-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .3s;
+}
+.yt-card:hover .yt-thumb img { transform: scale(1.04); }
+
+.yt-thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--yl-s);
+  color: var(--yl);
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  padding: 8px;
+}
+
+/* 유튜브 재생 버튼 오버레이 */
+.yt-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  background: rgba(0,0,0,0.30);
+  transition: opacity .2s;
+}
+.yt-card:hover .yt-play { opacity: 1; }
+.yt-play svg { width: 40px; height: 40px; fill: white; }
+
+.yt-info { padding: 12px 14px; }
+
+.yt-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--t1);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ─── Footer ─────────────────────────────────────── */
+.footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--bd);
+  padding: 48px 20px 32px;
+}
+
+.footer-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.footer-top {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .footer-top {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+.footer-brand { display: flex; flex-direction: column; gap: 8px; }
+.footer-brand-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: -.04em;
+  color: var(--t1);
+}
+.footer-brand-desc { font-size: 13px; color: var(--t1); line-height: 1.6; }
+
+.footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+.footer-link-col { display: flex; flex-direction: column; gap: 10px; }
+.footer-link-col-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--t1);
+}
+.footer-link-col a {
+  font-size: 14px;
+  color: var(--t1);
+  transition: color .15s;
+}
+.footer-link-col a:hover { color: var(--bl); }
+
+.footer-bottom {
+  font-size: 11px;
+  color: var(--t3);
+  border-top: 1px solid var(--bd);
+  padding-top: 20px;
+  line-height: 1.7;
+}
+
+/* ─── 유틸리티 ────────────────────────────────────── */
+.color-bl  { color: var(--bl); }
+.color-gr  { color: var(--gr); }
+.color-yl  { color: var(--yl); }
+.color-pu  { color: var(--pu); }
+.color-rd  { color: var(--rd); }
+
+.bg-bl-s { background: var(--bl-s); }
+.bg-gr-s { background: var(--gr-s); }
+.bg-yl-s { background: var(--yl-s); }
+.bg-pu-s { background: var(--pu-s); }
+
+/* ─── 네이버 프리미엄 콘텐츠 섹션 ─────────────────── */
+.naver-channel-title {
+  font-size: clamp(18px, 3vw, 24px);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 20px;
+}
+.naver-channel-label {
+  color: var(--t3);
+  font-weight: 600;
+}
+.naver-channel-sep {
+  color: var(--t3);
+  font-weight: 400;
+  margin: 0 4px;
+}
+.naver-channel-name {
+  color: var(--t1);
+  font-weight: 800;
+}
+.naver-articles { display: flex; flex-direction: column; }
+.naver-article-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--bd);
+  text-decoration: none;
+  transition: opacity .15s;
+}
+.naver-article-item:first-child { border-top: 1px solid var(--bd); }
+.naver-article-item:hover { opacity: .6; }
+.naver-article-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--bl);
+  min-width: 22px;
+  flex-shrink: 0;
+}
+.naver-article-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--t1);
+  flex: 1;
+  line-height: 1.4;
+}
+.naver-article-arrow {
+  flex-shrink: 0;
+  color: var(--t3);
+  opacity: .5;
+}
+.naver-more-wrap {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+}
+.naver-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  border-radius: 100px;
+  background: var(--bl-s);
+  color: var(--bl);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .15s;
+}
+.naver-more-btn:hover { background: var(--bl-m); }
+.naver-loading, .naver-empty {
+  padding: 24px 0;
+  font-size: 15px;
+  color: var(--t3);
+}
+
+/* ─── Hero 배경 이미지 ────────────────────────────── */
+.hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 52vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* 모바일: 산토리니 사진 (WebP 우선, JPG fallback) */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('hero-mobile.webp');
+  background-image: image-set(url('hero-mobile.webp') type('image/webp'), url('hero-mobile.jpg') type('image/jpeg'));
+  background-size: cover;
+  background-position: center 10%;
+  background-repeat: no-repeat;
+  z-index: 0;
+  transition: transform 0.3s ease;
+}
+
+/* PC: 유럽 건물 사진 (WebP 우선, JPG fallback) */
+@media (min-width: 768px) {
+  .hero-bg {
+    background-image: url('hero-desktop.webp');
+    background-image: image-set(url('hero-desktop.webp') type('image/webp'), url('hero-desktop.jpg') type('image/jpeg'));
+    background-position: center 80%;
+  }
+  .hero-section {
+    min-height: 52vh;
+  }
+}
+
+/* 오버레이 그라디언트 */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(0,0,0,0.52) 0%,
+    rgba(0,0,0,0.28) 50%,
+    rgba(0,0,0,0.18) 100%
+  );
+  z-index: 1;
+}
+
+/* 콘텐츠 */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 40px 28px 32px;
+  width: 100%;
+}
+
+.hero-eyebrow-hero {
+  font-size: clamp(11px, 2vw, 13px);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 18px;
+}
+
+.hero-title-hero {
+  font-size: clamp(32px, 6vw, 64px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: #ffffff;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.35);
+  margin-bottom: 20px;
+}
+
+.hero-title-hero em {
+  font-style: normal;
+  color: #FFD60A;
+}
+
+.hero-sub-hero {
+  font-size: clamp(15px, 2.5vw, 18px);
+  font-weight: 400;
+  color: rgba(255,255,255,0.82);
+  line-height: 1.6;
+  max-width: 520px;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+}
+
+@media (min-width: 768px) {
+  .hero-content {
+    padding: 48px 48px 40px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ── 네비게이션 ─────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <picture>
+        <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)" />
+        <img src="logo.png" alt="EZLONG" class="nav-logo-img" />
+      </picture>
+    </a>
+    <p class="nav-tagline">쉽고 안전한 장기투자로<br>복리의 마법을</p>
+  </div>
+</nav>
+
+
+<!-- ── Hero 배경 이미지 ─────────────────────────── -->
+<section class="hero-section">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow-hero">Easy Simple Long-term Investment</p>
+    <h1 class="hero-title-hero">
+      쉽고 단순하게,<br>
+      <em>장기투자</em>의 복리를<br>
+      데이터로 확인하세요
+    </h1>
+    <p class="hero-sub-hero">복리계산기 · DCA 시뮬레이터 · 포트폴리오 분석<br>미국주식 장기투자자를 위한 무료 도구 모음</p>
+    <p style="margin-top:14px;font-size:13px;color:rgba(255,255,255,0.35);letter-spacing:0.3px;">© 2025–2026 유니아빠 & 유니엄마</p>
+  </div>
+</section>
+
+
+<!-- ── 유틸리티 도구 ──────────────────────────────── -->
+<section class="section" id="tools">
+  <div class="wrap">
+    <div class="tools-grid">
+
+      <!-- 스윙 시그널 — 1번째 (최우선 노출) -->
+      <a href="atmr-dashboard.html" class="tool-card" style="text-decoration:none;">
+        <div class="tool-card-header">
+          <div class="tool-card-icon bg-yl-s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="color-yl">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+              <line x1="2" y1="12" x2="4" y2="12"/>
+              <line x1="20" y1="12" x2="22" y2="12"/>
+              <line x1="12" y1="2" x2="12" y2="4"/>
+            </svg>
+          </div>
+          <div class="tool-card-title">
+            <span id="alpha-signal-date" style="display:block;font-size:11px;font-weight:400;letter-spacing:.08em;color:var(--t2);font-family:'SF Pro Text','Helvetica Neue',sans-serif;margin-bottom:3px;"></span>
+            <span id="alpha-signal-card-title" style="font-size:inherit;font-weight:inherit;">스윙 시그널</span>
+          </div>
+        </div>
+        <p class="tool-card-desc">QQQ·VOO·TSLA·NVDA 스윙 시그널 점수로 오늘의 매수·매도 타이밍을 분석. RSI·MACD·Gear 상태·VIX를 종합한 데이터 기반 판단.</p>
+        <span class="tool-card-link">
+          오늘의 신호 확인
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- AI 차트분석 — 2번째 -->
+      <a href="chart-analysis.html" class="tool-card" style="text-decoration:none;">
+        <div class="tool-card-header">
+          <div class="tool-card-icon bg-bl-s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="color-bl">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <div class="tool-card-title">AI 차트분석</div>
+        </div>
+        <p class="tool-card-desc">50개 미국주식·한국주식·ETF·크립토의 캔들 차트, 볼린저밴드, RSI, MACD를 AI가 분석한 매수 매력도 및 기술적 분석 리포트.</p>
+        <span class="tool-card-link">
+          AI 차트 분석 보기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- 목표 주가 — 3번째 (신규) -->
+      <a href="analyst-reports.html" class="tool-card" style="text-decoration:none;">
+        <div class="tool-card-header">
+          <div class="tool-card-icon bg-gr-s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#30D158;">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+              <line x1="16" y1="7" x2="22" y2="7"/>
+              <line x1="22" y1="7" x2="22" y2="13"/>
+            </svg>
+          </div>
+          <div class="tool-card-title">핵심기업 목표주가</div>
+        </div>
+        <p class="tool-card-desc">TSLA·NVDA·AAPL 등 미국 주요 43개 종목의 월가 애널리스트 목표 주가·컨센서스를 한눈에. Bull/Bear/Neutral 시나리오, PT High/Mean/Low, 개별 애널리스트 의견까지 무료 제공.</p>
+        <span class="tool-card-link">
+          핵심기업 목표주가 보기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- Market Cycle Monitor — 4번째 -->
+      <a href="market-cycle.html" class="tool-card" style="text-decoration:none;">
+        <div class="tool-card-header">
+          <div class="tool-card-icon" style="background:rgba(255,159,10,0.10);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#FF9F0A;">
+              <path d="M2 20h20"/>
+              <path d="M6 16 L9 10 L13 14 L16 7 L19 11"/>
+              <circle cx="9" cy="10" r="1.2" fill="currentColor" stroke="none"/>
+              <circle cx="16" cy="7" r="1.2" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <div class="tool-card-title">Market Cycle Monitor</div>
+        </div>
+        <p class="tool-card-desc">S&amp;P500·Nasdaq100·SOXX의 주봉 30W SMA, 브레드스(RSP−SPY), VIX 공포지수 3개 시그널로 중기 변곡점을 조기 경보합니다.</p>
+        <span class="tool-card-link">
+          변곡점 경보 확인
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- DCA 복리 시뮬레이터 -->
+      <a href="dca-simulator.html" class="tool-card" style="text-decoration:none;">
+        <div class="tool-card-header">
+          <div class="tool-card-icon bg-gr-s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="color-gr">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+              <polyline points="16 7 22 7 22 13"/>
+            </svg>
+          </div>
+          <div class="tool-card-title">DCA 복리 시뮬레이터</div>
+        </div>
+        <p class="tool-card-desc">매월 정해진 금액으로 꾸준히 투자했을 때 자산이 얼마나 불어나는지, 연도별 복리 성장 그래프로 확인하세요.</p>
+        <span class="tool-card-link">
+          시뮬레이션 시작
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- 포트폴리오 복리 시뮬레이터 -->
+      <a href="portfolio-manager.html" class="tool-card" style="text-decoration:none;">
+        <div class="tool-card-header">
+          <div class="tool-card-icon bg-bl-s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="color-bl">
+              <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+              <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+            </svg>
+          </div>
+          <div class="tool-card-title">포트폴리오 복리 시뮬레이터</div>
+        </div>
+        <p class="tool-card-desc">8가지 투자 성향별 ETF 포트폴리오를 구성하고, CAGR 기반 복리 계산으로 은퇴 자산을 연도별로 예측하세요.</p>
+        <span class="tool-card-link">
+          시뮬레이션 시작
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- 절세 계좌 vs 해외직투 세후 시뮬레이터 -->
+      <a href="tax-account-simulator.html" class="tool-card" style="text-decoration:none;">
+        <div class="tool-card-header">
+          <div class="tool-card-icon bg-yl-s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="color-yl">
+              <path d="M12 2v20"/>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/>
+              <path d="M4 8h3"/>
+              <path d="M17 16h3"/>
+            </svg>
+          </div>
+          <div class="tool-card-title">절세 계좌 세후 시뮬레이터</div>
+        </div>
+        <p class="tool-card-desc">연금저축·IRP·ISA·미국주식 직투를 나이, 투자금, 소득, 유동성 상황별로 배분하고 세후 복리 격차를 그래프로 비교하세요.</p>
+        <span class="tool-card-link">
+          절세 전략 비교
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- 복리 계산기 -->
+      <a href="compound-calculator.html" class="tool-card" style="text-decoration:none;">
+        <div class="tool-card-header">
+          <div class="tool-card-icon bg-pu-s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="color-pu">
+              <rect x="4" y="2" width="16" height="20" rx="2"/>
+              <line x1="8" y1="10" x2="16" y2="10"/>
+              <line x1="8" y1="14" x2="16" y2="14"/>
+              <line x1="8" y1="18" x2="12" y2="18"/>
+            </svg>
+          </div>
+          <div class="tool-card-title">복리 계산기</div>
+        </div>
+        <p class="tool-card-desc">원금·연 수익률·투자 기간·추가 납입을 입력하면 복리로 얼마나 불어나는지 한눈에 계산해드립니다.</p>
+        <span class="tool-card-link">
+          계산 시작
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- 은퇴 목표 역산 투자액 계산기 (6번째) -->
+      <a href="retirement-calculator.html" class="tool-card" style="text-decoration:none;">
+        <div class="tool-card-header">
+          <div class="tool-card-icon bg-gr-s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="color-gr">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41"/>
+            </svg>
+          </div>
+          <div class="tool-card-title">은퇴 목표 역산 투자액 계산기</div>
+        </div>
+        <p class="tool-card-desc">은퇴 후 매달 원하는 만큼 인출하려면 지금부터 얼마씩 투자해야 할까? 4% 룰과 3가지 수익률 시나리오로 필요 월 적립금을 역산합니다.</p>
+        <span class="tool-card-link">
+          역산 계산하기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- 포트폴리오 최적 비율 자동 계산 (7번째) -->
+      <a href="backtest.html" class="tool-card" style="text-decoration:none;">
+        <div class="tool-card-header">
+          <div class="tool-card-icon bg-pu-s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="color-pu">
+              <circle cx="7" cy="16" r="2"/>
+              <circle cx="17" cy="7" r="2"/>
+              <circle cx="14" cy="17" r="2"/>
+              <path d="M9 16h3"/>
+              <path d="M7 14V6"/>
+              <path d="M17 9v5"/>
+              <path d="M5 8l4-4"/>
+              <path d="M19 13l-3 3"/>
+            </svg>
+          </div>
+          <div class="tool-card-title">몬테카를로 포트폴리오 시뮬레이터</div>
+        </div>
+        <p class="tool-card-desc">NVDA·GOOGL·SPY·QQQ 등 44개 자산, 20년 실제 데이터로 3,000가지 비율 조합을 몬테카를로 분석. 나에게 딱 맞는 최적 포트폴리오 비율을 자동으로 찾아드립니다.</p>
+        <span class="tool-card-link">
+          최적 비율 계산하기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- 투자 행동 자가진단 (8번째) -->
+      <a href="risk-diagnostic.html" class="tool-card" style="text-decoration:none;">
+        <div class="tool-card-header">
+          <div class="tool-card-icon bg-rd-s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="color-rd">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="M12 8v4M12 16h.01"/>
+            </svg>
+          </div>
+          <div class="tool-card-title">투자 행동 자가진단</div>
+        </div>
+        <p class="tool-card-desc">FOMO, 패닉 셀링, 과도한 거래, 레버리지 의존… 나의 투자 행동 오작동을 5가지 영역에서 진단합니다. 약 3~6분 소요.</p>
+        <span class="tool-card-link">
+          진단 시작
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- 자동 적립식 매수 가이드 -->
+      <a href="auto-dca-guide.html" class="tool-card" style="text-decoration:none;">
+        <div class="tool-card-header">
+          <div class="tool-card-icon bg-bl-s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="color-bl">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/>
+              <circle cx="12" cy="12" r="4"/>
+            </svg>
+          </div>
+          <div class="tool-card-title">자동 적립식 매수 가이드</div>
+        </div>
+        <p class="tool-card-desc">진짜 DCA는 버튼을 누르지 않는다. 증권사별 자동매수 기능 명칭과 설정 순서, 잔고 실패 방지 팁까지 한 페이지로 정리했습니다.</p>
+        <span class="tool-card-link">
+          가이드 읽기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ── 네이버 프리미엄 콘텐츠 ──────────────────────── -->
+<section class="section" id="premium">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="section-label">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        프리미엄 콘텐츠
+      </p>
+      <p class="naver-channel-title"><span class="naver-channel-label">네이버 프리미엄 채널</span><span class="naver-channel-sep"> - </span><span class="naver-channel-name">미국주식투자를 위한 지식교양</span></p>
+    </div>
+    <div class="naver-articles" id="naver-articles-list">
+      <p class="naver-loading">콘텐츠를 불러오는 중...</p>
+    </div>
+    <div class="naver-more-wrap">
+      <a href="https://contents.premium.naver.com/unis/something" class="naver-more-btn" target="_blank" rel="noopener noreferrer">
+        네이버 프리미엄 전체 보기
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── 책 섹션 ────────────────────────────────────── -->
+<section class="section" id="books">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        저자 도서
+      </p>
+    </div>
+
+    <div class="books-grid">
+
+      <!--
+        ============================================================
+        책 1 — 표지 이미지 URL을 아래 src에 입력하세요
+        구매/구독 링크도 href="" 안에 입력하세요
+        ============================================================
+      -->
+      <div class="book-card">
+        <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="book-cover" target="_blank" rel="noopener" style="background:transparent;">
+          <img src="book01.png" alt="절대 실패하지 않는 미국 주식 ETF 투자" style="object-fit:contain; object-position:center; padding:8px;" />
+        </a>
+        <div class="book-info">
+          <h3 class="book-title">절대 실패하지 않는<br>미국 주식 ETF 투자</h3>
+          <p class="book-desc">시가총액 TOP 10 + DCA로 만드는 AI 시대 성공 투자법. 엔비디아, 테슬라, 알파벳, 마이크로소프트… 미국 주식 ETF, 그때 시작했으면 얼마나 좋았을까?</p>
+          <div class="book-links">
+            <span class="book-link-group-label">종이책 구매</span>
+            <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="book-link-btn" target="_blank" rel="noopener">알라딘</a>
+            <a href="https://www.yes24.com/product/goods/177260453" class="book-link-btn" target="_blank" rel="noopener">예스24</a>
+            <a href="https://product.kyobobook.co.kr/detail/S000219205812" class="book-link-btn" target="_blank" rel="noopener">교보문고</a>
+            <span class="book-link-group-label">전자책 구매</span>
+            <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=387049914&partner=friedns327" class="book-link-btn" target="_blank" rel="noopener">알라딘</a>
+            <a href="https://www.yes24.com/product/goods/180332209" class="book-link-btn" target="_blank" rel="noopener">예스24</a>
+            <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012611429" class="book-link-btn" target="_blank" rel="noopener">교보문고</a>
+            <a href="https://ridibooks.com/books/3844000153?_s=instant&_q=%EC%A0%88%EB%8C%80+%EC%8B%A4%ED%8C%A8%ED%95%98%EC%A7%80+%EC%95%8A%EB%8A%94+&_rdt_sid=search_instant&_rdt_idx=4&_rdt_arg=%EC%A0%88%EB%8C%80+%EC%8B%A4%ED%8C%A8%ED%95%98%EC%A7%80+%EC%95%8A%EB%8A%94+" class="book-link-btn" target="_blank" rel="noopener">리디북스</a>
+            <span class="book-link-group-label">오디오북 구매</span>
+            <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=388954868&partner=friedns327" class="book-link-btn" target="_blank" rel="noopener">알라딘</a>
+            <span class="book-link-group-label">전자책 구독</span>
+            <a href="https://max.aladin.co.kr/product/387049914?&partner=friedns327" class="book-link-btn" target="_blank" rel="noopener">알라딘 만권당</a>
+            <a href="https://www.millie.co.kr/v4/book/52e27a74508a4c93" class="book-link-btn" target="_blank" rel="noopener">밀리의서재</a>
+            <a href="https://cremaclub.yes24.com/BookClub/Detail/180332209" class="book-link-btn" target="_blank" rel="noopener">예스24</a>
+            <a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012611429" class="book-link-btn" target="_blank" rel="noopener">교보문고</a>
+          </div>
+        </div>
+      </div>
+
+      <!--
+        ============================================================
+        책 2 — 두 번째 책
+        ============================================================
+      -->
+      <div class="book-card">
+        <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="book-cover" target="_blank" rel="noopener" style="background:transparent;">
+          <img src="book02_1.png" alt="월급쟁이 투자 자동화" style="object-fit:contain; object-position:center; padding:8px;" />
+        </a>
+        <div class="book-info">
+          <h3 class="book-title">월급쟁이 투자 자동화</h3>
+          <p class="book-desc">본업에 집중하며 자산 키우는 시스템 만들기. 타이밍을 버리니 투자가 쉬워졌다.</p>
+          <div class="book-links">
+            <span class="book-link-group-label">전자책 구매</span>
+            <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="book-link-btn" target="_blank" rel="noopener">알라딘</a>
+            <a href="https://www.yes24.com/product/goods/185275759" class="book-link-btn" target="_blank" rel="noopener">예스24</a>
+            <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012810587" class="book-link-btn" target="_blank" rel="noopener">교보문고</a>
+            <a href="https://ridibooks.com/books/6121000386?_s=search&_q=%EC%9B%94%EA%B8%89%EC%9F%81%EC%9D%B4+%ED%88%AC%EC%9E%90+%EC%9E%90%EB%8F%99%ED%99%94&_rdt_sid=SearchBookListWithTab" class="book-link-btn" target="_blank" rel="noopener">리디북스</a>
+            <span class="book-link-group-label">오디오북 구매</span>
+            <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=391653601&partner=friedns327" class="book-link-btn" target="_blank" rel="noopener">알라딘</a>
+            <span class="book-link-group-label">전자책 구독</span>
+            <a href="https://max.aladin.co.kr/product/389499456?&partner=friedns327" class="book-link-btn" target="_blank" rel="noopener">알라딘 만권당</a>
+            <a href="https://www.millie.co.kr/v4/book/e7fbd96e137b4ae1" class="book-link-btn" target="_blank" rel="noopener">밀리의서재</a>
+            <a href="https://www.yes24.com/product/goods/185275759" class="book-link-btn" target="_blank" rel="noopener">예스24</a>
+            <a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012810587" class="book-link-btn" target="_blank" rel="noopener">교보문고</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ── 유튜브 섹션 ────────────────────────────────── -->
+<section class="section" id="youtube">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="section-label">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-2.75 12.64 12.64 0 0 0-8.19 0A4.83 4.83 0 0 1 4.41 6.69 4.68 4.68 0 0 0 2 10.5v3a4.68 4.68 0 0 0 2.41 3.81 4.83 4.83 0 0 1 3.77 2.75 12.64 12.64 0 0 0 8.19 0 4.83 4.83 0 0 1 3.77-2.75A4.68 4.68 0 0 0 22 13.5v-3a4.68 4.68 0 0 0-2.41-3.81z"/></svg>
+        유튜브
+      </p>
+    </div>
+
+    <div class="yt-scroll-wrap">
+      <div class="yt-grid">
+
+        <a href="https://www.youtube.com/watch?v=1JR-SRFI3Mw" class="yt-card" target="_blank" rel="noopener">
+          <div class="yt-thumb">
+            <img src="https://img.youtube.com/vi/1JR-SRFI3Mw/maxresdefault.jpg" alt="하락장에서도 ETF 계속 사는 이유" />
+            <div class="yt-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          </div>
+          <div class="yt-info">
+            <div class="yt-title">하락장에서도 ETF 계속 사는 이유, 딱 하나입니다 | 알라딘 만권당TV 김광석의 경제포차</div>
+          </div>
+        </a>
+
+        <a href="https://www.youtube.com/watch?v=R7TA0mWSvIM" class="yt-card" target="_blank" rel="noopener">
+          <div class="yt-thumb">
+            <img src="https://img.youtube.com/vi/R7TA0mWSvIM/maxresdefault.jpg" alt="퇴직금 절대 그냥 두지 마세요" />
+            <div class="yt-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          </div>
+          <div class="yt-info">
+            <div class="yt-title">퇴직금 절대 그냥 두지 마세요! 실패하지 않는 DCA 자동매수법 알려드립니다 | 알라딘 만권당TV</div>
+          </div>
+        </a>
+
+        <a href="https://www.youtube.com/watch?v=sgu3lNOwjZo" class="yt-card" target="_blank" rel="noopener">
+          <div class="yt-thumb">
+            <img src="https://img.youtube.com/vi/sgu3lNOwjZo/maxresdefault.jpg" alt="테슬라 투자 몰빵한 한 직장인의 최후" />
+            <div class="yt-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          </div>
+          <div class="yt-info">
+            <div class="yt-title">테슬라 투자 몰빵한 한 직장인의 최후 | 북언더스탠딩</div>
+          </div>
+        </a>
+
+        <a href="https://www.youtube.com/watch?v=ld7b37mbEjk" class="yt-card" target="_blank" rel="noopener">
+          <div class="yt-thumb">
+            <img src="https://img.youtube.com/vi/ld7b37mbEjk/maxresdefault.jpg" alt="곧 억소리 날 겁니다" />
+            <div class="yt-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          </div>
+          <div class="yt-info">
+            <div class="yt-title">"곧 억소리 날 겁니다" 이때 오는 폭등장 기다리며 | 떠먹여주는TV</div>
+          </div>
+        </a>
+
+        <!-- hidden: 주식 모르면 꼭 보세요 (sBXfPW-M6EI) -->
+        <!-- <a href="https://www.youtube.com/watch?v=sBXfPW-M6EI" class="yt-card" target="_blank" rel="noopener">
+          <div class="yt-thumb">
+            <img src="https://img.youtube.com/vi/sBXfPW-M6EI/maxresdefault.jpg" alt="주식 모르면 꼭 보세요" />
+            <div class="yt-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          </div>
+          <div class="yt-info">
+            <div class="yt-title">"주식 모르면 꼭 보세요" 현금 5천만원 있다면 제발 그냥 '이 ETF'를 사세요 | 떠먹여주는TV</div>
+          </div>
+        </a> -->
+
+        <!-- hidden: S&P500 할 때 아니다 -->
+        <!-- hidden: 이것만 보면 고민 끝 -->
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── Footer ─────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-name">
+          <picture>
+            <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)" />
+            <img src="logo.png" alt="EZLONG" style="height:24px;width:auto;" />
+          </picture>
+        </div>
+        <p class="footer-brand-desc">
+          쉽고 안전한 장기투자 파트너<br>
+          easy.invest.good@gmail.com
+        </p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-link-col">
+          <span class="footer-link-col-title">시장 분석</span>
+          <a href="atmr-dashboard.html">스윙 시그널 대시보드</a>
+          <a href="chart-analysis.html">AI 차트분석</a>
+          <a href="analyst-reports.html">핵심기업 목표주가</a>
+          <a href="market-cycle.html">Market Cycle Monitor</a>
+        </div>
+        <div class="footer-link-col">
+          <span class="footer-link-col-title">투자 계산기</span>
+          <a href="dca-simulator.html">DCA 복리 시뮬레이터</a>
+          <a href="portfolio-manager.html">포트폴리오 복리 시뮬레이터</a>
+          <a href="tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a>
+          <a href="compound-calculator.html">복리 계산기</a>
+          <a href="retirement-calculator.html">은퇴 목표 역산 계산기</a>
+          <a href="backtest.html">몬테카를로 포트폴리오 시뮬레이터</a>
+          <a href="risk-diagnostic.html">투자 행동 자가진단</a>
+          <a href="auto-dca-guide.html">자동 적립식 매수 가이드</a>
+        </div>
+        <div class="footer-link-col">
+          <span class="footer-link-col-title">콘텐츠</span>
+          <a href="#books">저자 도서</a>
+          <a href="#youtube">유튜브</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025–2026 유니아빠 & 유니엄마 · EZLONG · easy.invest.good@gmail.com<br>
+      본 서비스에서 제공하는 모든 시뮬레이션 수치는 참고용 추정치이며, 실제 투자 수익을 보장하지 않습니다. 투자 판단의 책임은 투자자 본인에게 있습니다.
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── 네이버 프리미엄 콘텐츠 로드 ─────────────────── */
+(async function () {
+  const el = document.getElementById('naver-articles-list');
+  if (!el) return;
+  const DATA_URL =
+    'https://raw.githubusercontent.com/ziririt/ezlong/main/data/naver-content.json';
+  try {
+    const r = await fetch(DATA_URL, { cache: 'no-store' });
+    if (!r.ok) throw new Error('fetch failed');
+    const d = await r.json();
+    const arts = (d.articles || []).slice(0, 5);
+    if (!arts.length) {
+      el.innerHTML = '<p class="naver-empty">아직 등록된 글이 없습니다.</p>';
+      return;
+    }
+    el.innerHTML = arts
+      .map(
+        (a, i) => `
+      <a class="naver-article-item" href="${a.url}" target="_blank" rel="noopener noreferrer">
+        <span class="naver-article-num">${String(i + 1).padStart(2, '0')}</span>
+        <span class="naver-article-title">${a.title || '(제목 없음)'}</span>
+        <svg class="naver-article-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>`
+      )
+      .join('');
+  } catch (e) {
+    el.innerHTML =
+      '<p class="naver-empty">콘텐츠를 불러올 수 없습니다.</p>';
+  }
+})();
+</script>
+
+<script>
+// 스윙 시그널 카드 — 날짜 동적 반영
+(function() {
+  const dateEl  = document.getElementById('alpha-signal-date');
+  if (!dateEl) return;
+  const now  = new Date();
+  const kst  = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  const days = ['일', '월', '화', '수', '목', '금', '토'];
+  const y = kst.getFullYear(), m = kst.getMonth() + 1, d = kst.getDate();
+  const day = days[kst.getDay()];
+  dateEl.textContent = `${y}년 ${m}월 ${d}일(${day})`;
+})();
+</script>
+
+</body>
+</html>

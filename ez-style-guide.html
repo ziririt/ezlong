@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EZLONG 디자인 시스템 가이드</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="ez-design.css">
+<style>
+/* 가이드 전용 스타일 */
+.guide-section {
+  background: var(--ez-card);
+  border: 1px solid var(--ez-border);
+  border-radius: var(--ez-r);
+  padding: 28px;
+  margin-bottom: 24px;
+}
+.guide-section-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ez-blue);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--ez-border);
+}
+.swatch-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 80px;
+}
+.swatch-color {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--ez-rs);
+  border: 1px solid var(--ez-border);
+  box-shadow: var(--ez-shadow-sm);
+}
+.swatch-name { font-size: 11px; font-weight: 700; color: var(--ez-text3); text-align: center; }
+.swatch-val  { font-size: 10px; color: var(--ez-hint); font-family: var(--ez-mono); text-align: center; }
+
+.type-row { display: flex; flex-direction: column; gap: 14px; }
+.type-item { display: flex; align-items: baseline; gap: 16px; }
+.type-class { font-size: 11px; font-family: var(--ez-mono); color: var(--ez-blue-lt); background: var(--ez-blue-dim); padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+
+.comp-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+.code-block {
+  background: var(--ez-bg2);
+  border: 1px solid var(--ez-border);
+  border-radius: var(--ez-rs);
+  padding: 14px 16px;
+  font-family: var(--ez-mono);
+  font-size: 13px;
+  color: var(--ez-text2);
+  overflow-x: auto;
+  white-space: pre;
+  line-height: 1.7;
+  margin-top: 10px;
+}
+
+.var-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+}
+.var-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ez-bg);
+  border: 1px solid var(--ez-border);
+  border-radius: var(--ez-rs);
+  padding: 8px 12px;
+}
+.var-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  border: 1px solid var(--ez-border);
+}
+.var-name { font-size: 12px; font-family: var(--ez-mono); color: var(--ez-text2); }
+</style>
+</head>
+<body>
+
+<nav class="ez-nav" aria-label="글로벌 네비게이션">
+  <div class="ez-nav-inner">
+    <a href="/" class="ez-nav-logo" aria-label="EZLONG 홈">
+      <picture>
+        <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+        <img src="logo.png" alt="EZLONG">
+      </picture>
+    </a>
+    <a href="/" class="ez-nav-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5M12 5l-7 7 7 7"/>
+      </svg>
+      홈으로
+    </a>
+  </div>
+</nav>
+
+<main class="ez-main" style="max-width:900px;margin:0 auto">
+
+  <div style="margin-bottom:32px;padding-top:8px">
+    <div class="ez-badge ez-badge-blue" style="margin-bottom:12px">EZLONG Design System v1.0</div>
+    <h1 class="ez-h1" style="margin-bottom:8px">디자인 시스템 가이드</h1>
+    <p class="ez-body">새 툴 페이지를 만들 때 이 페이지를 레퍼런스로 사용하세요. <code style="font-family:var(--ez-mono);font-size:13px;background:var(--ez-blue-dim);padding:2px 7px;border-radius:4px;color:var(--ez-blue-lt)">&lt;link rel="stylesheet" href="ez-design.css"&gt;</code> 하나만 링크하면 됩니다.</p>
+  </div>
+
+
+  <!-- 1. 컬러 시스템 -->
+  <div class="guide-section">
+    <div class="guide-section-title">1. Color System — CSS 변수</div>
+
+    <p class="ez-body-sm" style="margin-bottom:16px">모든 색상은 CSS 커스텀 프로퍼티로 정의되어 있습니다. 다크 모드는 자동 전환됩니다.</p>
+
+    <div class="var-grid" style="margin-bottom:20px">
+      <div class="var-item"><div class="var-dot" style="background:#F5F5F7"></div><span class="var-name">--ez-bg</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#EBEBED"></div><span class="var-name">--ez-bg2</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#FFFFFF;border:1px solid #ddd"></div><span class="var-name">--ez-surface</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#FFFFFF;border:1px solid #ddd"></div><span class="var-name">--ez-card</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#F5F5F7"></div><span class="var-name">--ez-card2</span></div>
+      <div class="var-item"><div class="var-dot" style="background:rgba(0,0,0,0.08)"></div><span class="var-name">--ez-border</span></div>
+      <div class="var-item"><div class="var-dot" style="background:rgba(0,0,0,0.14)"></div><span class="var-name">--ez-border2</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#1D1D1F"></div><span class="var-name">--ez-text</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#3A3A3C"></div><span class="var-name">--ez-text2</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#6E6E73"></div><span class="var-name">--ez-text3</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#AEAEB2"></div><span class="var-name">--ez-hint</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#0071E3"></div><span class="var-name">--ez-blue</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#0064CC"></div><span class="var-name">--ez-blue-lt</span></div>
+      <div class="var-item"><div class="var-dot" style="background:rgba(0,113,227,0.08)"></div><span class="var-name">--ez-blue-dim</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#1A7F37"></div><span class="var-name">--ez-green</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#D92A2A"></div><span class="var-name">--ez-red</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#B45309"></div><span class="var-name">--ez-amber</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#7C3AED"></div><span class="var-name">--ez-purple</span></div>
+      <div class="var-item"><div class="var-dot" style="background:#0891B2"></div><span class="var-name">--ez-cyan</span></div>
+    </div>
+
+    <div class="code-block">/* 다크 모드 자동 처리 예시 */
+background: var(--ez-bg);
+color: var(--ez-text);
+border: 1px solid var(--ez-border);
+
+/* 강조 색상 사용 예시 */
+color: var(--ez-green);    /* 수익·상승 */
+color: var(--ez-red);      /* 손실·하락 */
+color: var(--ez-amber);    /* 경고·주의 */
+color: var(--ez-blue-lt);  /* 링크·강조 수치 */</div>
+  </div>
+
+
+  <!-- 2. 타이포그래피 -->
+  <div class="guide-section">
+    <div class="guide-section-title">2. Typography</div>
+    <div class="type-row">
+      <div class="type-item"><span class="type-class">.ez-h1</span><h1 class="ez-h1">헤드라인 제목 H1</h1></div>
+      <div class="type-item"><span class="type-class">.ez-h2</span><h2 class="ez-h2">섹션 제목 H2</h2></div>
+      <div class="type-item"><span class="type-class">.ez-h3</span><h3 class="ez-h3">카드 제목 H3</h3></div>
+      <div class="type-item"><span class="type-class">.ez-h4</span><h4 class="ez-h4">소제목 H4 (15px 700)</h4></div>
+      <div class="type-item"><span class="type-class">.ez-body</span><p class="ez-body">본문 텍스트 (15px / line-height 1.7) — 주요 설명, 분석 텍스트에 사용</p></div>
+      <div class="type-item"><span class="type-class">.ez-body-sm</span><p class="ez-body-sm">보조 본문 (13px) — 주석, 힌트 텍스트에 사용</p></div>
+      <div class="type-item"><span class="type-class">.ez-caption</span><p class="ez-caption">캡션 (12px) — 플레이스홀더, 날짜, 출처 표기</p></div>
+      <div class="type-item"><span class="type-class">.ez-sec-title</span><div class="ez-sec-title">섹션 타이틀 (파란 강조선 포함)</div></div>
+    </div>
+    <div class="code-block">폰트 스택: -apple-system, BlinkMacSystemFont, 'Pretendard Variable',
+             'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif
+
+/* 굵기 유틸 */
+.ez-fw-700  .ez-fw-800  .ez-fw-900
+
+/* 색상 유틸 */
+.ez-color-blue  .ez-color-green  .ez-color-red  .ez-color-amber  .ez-color-muted</div>
+  </div>
+
+
+  <!-- 3. 버튼 -->
+  <div class="guide-section">
+    <div class="guide-section-title">3. Buttons</div>
+    <div class="comp-row" style="margin-bottom:16px">
+      <button class="ez-btn">주요 CTA 버튼</button>
+      <button class="ez-btn-outline">외곽선 버튼</button>
+      <button class="ez-btn-ghost">고스트 버튼</button>
+      <button class="ez-btn" disabled>비활성화</button>
+    </div>
+    <div class="code-block">&lt;button class="ez-btn"&gt;주요 CTA&lt;/button&gt;
+&lt;button class="ez-btn ez-btn-full"&gt;전체 너비 CTA&lt;/button&gt;
+&lt;button class="ez-btn-outline"&gt;외곽선 버튼&lt;/button&gt;
+&lt;button class="ez-btn-ghost"&gt;고스트 버튼&lt;/button&gt;</div>
+  </div>
+
+
+  <!-- 4. 뱃지 -->
+  <div class="guide-section">
+    <div class="guide-section-title">4. Badges</div>
+    <div class="comp-row" style="margin-bottom:16px">
+      <span class="ez-badge ez-badge-blue">blue</span>
+      <span class="ez-badge ez-badge-green">green</span>
+      <span class="ez-badge ez-badge-red">red</span>
+      <span class="ez-badge ez-badge-amber">amber</span>
+      <span class="ez-badge ez-badge-purple">purple</span>
+    </div>
+    <div class="code-block">&lt;span class="ez-badge ez-badge-blue"&gt;텍스트&lt;/span&gt;
+&lt;span class="ez-badge ez-badge-green"&gt;수익&lt;/span&gt;
+&lt;span class="ez-badge ez-badge-red"&gt;손실&lt;/span&gt;
+&lt;span class="ez-badge ez-badge-amber"&gt;주의&lt;/span&gt;
+&lt;span class="ez-badge ez-badge-purple"&gt;분석&lt;/span&gt;</div>
+  </div>
+
+
+  <!-- 5. 카드 -->
+  <div class="guide-section">
+    <div class="guide-section-title">5. Cards</div>
+    <div class="ez-grid-3" style="margin-bottom:16px">
+      <div class="ez-card">
+        <div class="ez-sec-title">기본 카드</div>
+        <p class="ez-body-sm">.ez-card — 기본 패널, 입력 섹션, 결과 영역에 사용</p>
+      </div>
+      <div class="ez-card-accent">
+        <div class="ez-sec-title">강조 카드</div>
+        <p class="ez-body-sm">.ez-card-accent — 중요 결과, 주요 수치 표시</p>
+      </div>
+      <div class="ez-info-badge">
+        <strong>정보 배지</strong><br>
+        .ez-info-badge — 도구 사용 안내, 데이터 출처 설명
+      </div>
+    </div>
+    <div class="ez-warn-badge" style="margin-bottom:16px">
+      <strong>경고 배지:</strong> .ez-warn-badge — 주의 사항, 제한 사항 표시에 사용
+    </div>
+    <div class="code-block">&lt;div class="ez-card"&gt;...&lt;/div&gt;
+&lt;div class="ez-card-sm"&gt;...&lt;/div&gt;
+&lt;div class="ez-card-accent"&gt;...&lt;/div&gt;
+&lt;div class="ez-info-badge"&gt;...&lt;/div&gt;
+&lt;div class="ez-warn-badge"&gt;...&lt;/div&gt;</div>
+  </div>
+
+
+  <!-- 6. 폼 컴포넌트 -->
+  <div class="guide-section">
+    <div class="guide-section-title">6. Form Components</div>
+    <div class="ez-grid-2" style="margin-bottom:16px">
+      <div>
+        <div class="ez-form-row">
+          <label class="ez-label">기본 인풋</label>
+          <input class="ez-input" type="text" placeholder="예: 1,000,000">
+        </div>
+        <div class="ez-form-row">
+          <label class="ez-label">셀렉트</label>
+          <select class="ez-select">
+            <option>5년</option>
+            <option>10년</option>
+            <option>20년</option>
+          </select>
+        </div>
+        <div class="ez-form-row">
+          <label class="ez-label">인풋 그룹 (단위 포함)</label>
+          <div class="ez-input-group">
+            <input class="ez-input-raw" type="number" placeholder="100">
+            <span class="ez-input-suffix">만원</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="ez-form-row">
+          <label class="ez-label">슬라이더</label>
+          <input class="ez-range" type="range" min="0" max="100" value="60">
+        </div>
+        <div class="ez-form-row" style="margin-top:20px">
+          <label class="ez-label">토글 버튼 그룹</label>
+          <div class="ez-toggle-group">
+            <button class="ez-toggle-btn on">안정형</button>
+            <button class="ez-toggle-btn">균형형</button>
+            <button class="ez-toggle-btn">성장형</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="code-block">&lt;div class="ez-form-row"&gt;
+  &lt;label class="ez-label"&gt;월 적립금&lt;/label&gt;
+  &lt;div class="ez-input-group"&gt;
+    &lt;input class="ez-input-raw" type="number" placeholder="50"&gt;
+    &lt;span class="ez-input-suffix"&gt;만원&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</div>
+  </div>
+
+
+  <!-- 7. 수치 표시 -->
+  <div class="guide-section">
+    <div class="guide-section-title">7. Stat Display</div>
+    <div class="ez-grid-3" style="margin-bottom:16px">
+      <div class="ez-card">
+        <div class="ez-stat">
+          <div class="ez-stat-value blue">+248%</div>
+          <div class="ez-stat-label">10년 누적 수익률</div>
+        </div>
+      </div>
+      <div class="ez-card">
+        <div class="ez-stat">
+          <div class="ez-stat-value green">₩482,000,000</div>
+          <div class="ez-stat-label">예상 최종 자산</div>
+        </div>
+      </div>
+      <div class="ez-card">
+        <div class="ez-stat">
+          <div class="ez-stat-value red">-28.4%</div>
+          <div class="ez-stat-label">최대 낙폭 (MDD)</div>
+        </div>
+      </div>
+    </div>
+    <div class="ez-progress-wrap">
+      <div class="ez-progress-bg">
+        <div class="ez-progress-fill" style="width:72%"></div>
+      </div>
+      <div class="ez-progress-label">분석 중... 72%</div>
+    </div>
+    <div class="code-block">&lt;div class="ez-stat"&gt;
+  &lt;div class="ez-stat-value blue"&gt;+248%&lt;/div&gt;
+  &lt;div class="ez-stat-label"&gt;10년 누적 수익률&lt;/div&gt;
+&lt;/div&gt;
+
+/* ez-stat-value 색상 변형: blue | green | red (기본은 --ez-text) */</div>
+  </div>
+
+
+  <!-- 8. 레이아웃 -->
+  <div class="guide-section">
+    <div class="guide-section-title">8. Layout System</div>
+    <div class="code-block">/* 컨테이너 */
+&lt;div class="ez-container"&gt;      &lt;!-- max-width: 1080px --&gt;
+&lt;div class="ez-container-wide"&gt; &lt;!-- max-width: 1440px --&gt;
+&lt;main class="ez-main"&gt;          &lt;!-- 페이지 메인 (패딩 포함) --&gt;
+
+/* 그리드 */
+&lt;div class="ez-grid-2"&gt;  &lt;!-- 2컬럼, 모바일 1컬럼 --&gt;
+&lt;div class="ez-grid-3"&gt;  &lt;!-- 3컬럼, 모바일 1컬럼 --&gt;
+&lt;div class="ez-cols"&gt;    &lt;!-- 좌 400px + 우 1fr (대시보드 레이아웃) --&gt;
+
+/* 간격 유틸 */
+.ez-mt-0  .ez-mt-8  .ez-mt-16  .ez-mt-24  .ez-mt-40
+.ez-mb-8  .ez-mb-16  .ez-mb-24
+
+/* 레이아웃 반경 */
+--ez-r:   12px  /* 카드 */
+--ez-rs:  8px   /* 버튼, 인풋 */
+--ez-rss: 4px   /* 뱃지, 태그 */</div>
+  </div>
+
+
+  <!-- 9. 새 페이지 템플릿 -->
+  <div class="guide-section">
+    <div class="guide-section-title">9. 새 툴 페이지 최소 템플릿</div>
+    <div class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html lang="ko"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;툴 이름 | EZLONG&lt;/title&gt;
+&lt;link rel="stylesheet" href="ez-design.css"&gt;
+&lt;style&gt;
+/* 이 툴에만 필요한 추가 스타일 여기에 */
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;nav class="ez-nav"&gt;
+  &lt;div class="ez-nav-inner"&gt;
+    &lt;a href="/" class="ez-nav-logo"&gt;
+      &lt;picture&gt;
+        &lt;source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)"&gt;
+        &lt;img src="logo.png" alt="EZLONG"&gt;
+      &lt;/picture&gt;
+    &lt;/a&gt;
+    &lt;a href="/" class="ez-nav-back"&gt;← 홈으로&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;
+
+&lt;div class="ez-banner"&gt;
+  &lt;div class="ez-banner-inner"&gt;
+    &lt;span class="ez-badge ez-badge-blue"&gt;툴 카테고리&lt;/span&gt;
+    &lt;h1&gt;툴 제목&lt;/h1&gt;
+    &lt;p&gt;툴 설명&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;main class="ez-main"&gt;
+  &lt;div class="ez-card"&gt;
+    &lt;div class="ez-sec-title"&gt;섹션 제목&lt;/div&gt;
+    &lt;!-- 콘텐츠 --&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+
+&lt;footer class="ez-footer"&gt;
+  &lt;div class="ez-footer-inner"&gt;
+    &lt;div class="ez-footer-bottom"&gt;
+      © 2025–2026 유니아빠 &amp;amp; 유니엄마 · EZLONG · easy.invest.good@gmail.com&lt;br&gt;
+      본 서비스의 시뮬레이션 수치는 참고용 추정치이며, 투자 결과를 보장하지 않습니다.
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</div>
+  </div>
+
+
+</main>
+
+<footer class="ez-footer" role="contentinfo">
+  <div class="ez-footer-inner">
+    <div class="ez-footer-top">
+      <div class="ez-footer-brand">
+        <picture>
+          <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+          <img src="logo.png" alt="EZLONG">
+        </picture>
+        <p class="ez-footer-brand-desc">쉽고 안전한 장기투자 파트너<br>easy.invest.good@gmail.com</p>
+      </div>
+    </div>
+    <div class="ez-footer-bottom">
+      © 2025–2026 유니아빠 &amp; 유니엄마 · EZLONG · easy.invest.good@gmail.com<br>
+      내부 개발 참고용 가이드 페이지 (noindex)
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

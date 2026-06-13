@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <link rel="stylesheet" href="ez-design.css">
+<meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>자동 DCA 적립식 매수 완전 가이드 | EZLONG</title>
+
+  <!-- SEO 기본 메타 -->
+  <meta name="description" content="카카오페이·토스·미래에셋·키움 증권사별 DCA 자동매수 설정법. 꾸준한 투자를 자동화하면 행동 편향을 이길 수 있습니다." />
+  <meta name="keywords" content="적립식 자동매수, DCA, 주식 모으기, 자동투자, ETF 적립식, 토스증권 주식모으기, 키움 주식더모으기, 미래에셋 적립식, ISA 자동매수" />
+  <meta name="author" content="ezlong.com" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ezlong.com/auto-dca-guide.html" />
+<!-- ── 국제화 SEO: hreflang + locale alternate ── -->
+<link rel="alternate" hreflang="ko" href="https://ezlong.com/auto-dca-guide.html">
+<link rel="alternate" hreflang="en" href="https://ezlong.com/en/auto-dca-guide.html">
+<link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/auto-dca-guide.html">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="pt_BR">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta name="description" lang="en" content="Automatic DCA Guide for US Stocks: Step-by-step setup guide for automatic dollar-cost averaging. Maximize long-term returns with consistent, emotion-free investing.">
+<meta name="keywords" lang="en" content="automatic DCA, dollar cost averaging guide, US stock auto-invest, systematic investment, recurring investment setup, passive investing Korea">
+
+  <!-- Open Graph (SNS 공유) -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="자동 DCA 적립식 매수 완전 가이드" />
+  <meta property="og:description" content="카카오페이·토스·미래에셋·키움 등 주요 증권사의 적립식 자동매수 설정 방법을 한눈에 정리. 월급날 다음날로 설정하는 게 핵심입니다." />
+  <meta property="og:url" content="https://ezlong.com/auto-dca-guide.html" />
+  <meta property="og:site_name" content="ezlong.com" />
+  <meta property="og:locale" content="ko_KR" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="자동 DCA 적립식 매수 완전 가이드" />
+  <meta name="twitter:description" content="카카오페이·토스·미래에셋·키움 증권사별 자동매수 설정 방법 정리. 투자에서 가장 어려운 꾸준함을 기계에 맡기는 방법입니다." />
+
+  <!-- AEO: Article 구조화 데이터 -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Automatic DCA Setup Guide — US Stock Investing",
+  "description": "A comprehensive step-by-step guide to setting up automatic dollar-cost averaging for US stock investments. Learn how to remove emotion from investing and build wealth systematically with recurring purchases.",
+  "inLanguage": ["ko", "en"],
+  "url": "https://ezlong.com/auto-dca-guide.html"
+}
+</script>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "자동 DCA 적립식 매수 완전 가이드",
+    "description": "카카오페이·토스·미래에셋·NH나무·한국투자·키움 등 주요 증권사의 적립식 자동매수 기능 명칭과 설정 방법, 주의사항을 정리한 가이드입니다.",
+    "author": {
+      "@type": "Organization",
+      "name": "ezlong.com",
+      "url": "https://ezlong.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "ezlong.com",
+      "url": "https://ezlong.com"
+    },
+    "datePublished": "2026-05-24",
+    "dateModified": "2026-05-24",
+    "inLanguage": "ko",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://ezlong.com/auto-dca-guide.html"
+    },
+    "about": [
+      { "@type": "Thing", "name": "적립식 자동매수" },
+      { "@type": "Thing", "name": "DCA 투자전략" },
+      { "@type": "Thing", "name": "ETF 장기투자" }
+    ]
+  }
+  </script>
+
+  <!-- AEO: FAQ 구조화 데이터 (AI 검색 응답 최적화) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "적립식 자동매수란 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "적립식 자동매수는 내가 직접 매수 버튼을 누르지 않아도, 매주 또는 매달 정해진 금액으로 자동으로 주식을 사주는 기능입니다. 장기투자와 ETF 투자에서 필수적인 기능으로, 증권사마다 '주식 모으기', '적립식 자동매수', '적립식 투자' 등 다양한 이름으로 제공됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "증권사별 적립식 자동매수 기능 이름이 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "카카오페이증권과 토스증권은 '주식 모으기', 미래에셋은 '적립식 자동매수', NH나무는 '적립식 투자', 한국투자증권은 '적립식 주문', 키움증권은 '주식더모으기'라는 이름을 사용합니다. 기능은 거의 동일합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "자동매수 날짜를 언제로 설정하는 것이 좋나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "월급 들어온 다음날로 설정하는 것이 가장 좋습니다. 자동이체 날짜보다 1~2일 뒤로 매수일을 잡아두면, 잔고 부족으로 자동매수가 실패하는 상황을 대부분 예방할 수 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "키움증권 적립식 자동주문 종료 이후 어떻게 해야 하나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "키움증권의 기존 '주식적립식 자동주문' 기능은 2026년 6월 18일 이후 종료됩니다. 반드시 새로운 '주식더모으기' 기능으로 다시 설정해야 하며, 기존 설정이 자동으로 이어지지 않습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "DCA를 자동으로 해야 하는 이유는 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "직접 매달 버튼을 눌러 사는 방식은 어느 순간 빠지거나 늦어지기 쉽습니다. 자동화하면 시장 상황이나 감정에 흔들리지 않고 꾸준히 투자가 실행됩니다. 진정한 DCA는 내가 신경 쓰지 않아도 굴러가는 구조를 만드는 것입니다."
+        }
+      }
+    ]
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #F5F5F7;
+      --surf:   #FFFFFF;
+      --bl:     #0071E3;
+      --bl-s:   rgba(0,113,227,0.08);
+      --yl:     #FF9F0A;
+      --yl-s:   rgba(255,159,10,0.10);
+      --rd:     #FF3B30;
+      --rd-s:   rgba(255,59,48,0.08);
+      --t1:     #1D1D1F;
+      --t2:     #6E6E73;
+      --t3:     #3A3A3C;
+      --bd:     rgba(0,0,0,0.08);
+      --r:      14px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+      --max-w:  720px;
+      --font:   -apple-system, BlinkMacSystemFont, 'SF Pro Display',
+                'Apple SD Gothic Neo', 'Pretendard', sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:     #000000;
+        --surf:   #1C1C1E;
+        --bl:     #0A84FF;
+        --bl-s:   rgba(10,132,255,0.14);
+        --yl:     #FF9F0A;
+        --yl-s:   rgba(255,159,10,0.14);
+        --rd:     #FF453A;
+        --rd-s:   rgba(255,69,58,0.12);
+        --t1:     #F5F5F7;
+        --t2:     #AEAEB2;
+        --t3:     #E5E5EA;
+        --bd:     rgba(255,255,255,0.10);
+        --shadow: 0 4px 24px rgba(0,0,0,0.30), 0 1px 4px rgba(0,0,0,0.20);
+      }
+    }
+
+    html {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--t1);
+      -webkit-font-smoothing: antialiased;
+    }
+    body { min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* ── 히어로 ──────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 52%, #4f46e5 100%);
+      color: #ffffff;
+      padding: 64px 24px 56px;
+      text-align: center;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      padding: 4px 15px;
+      margin-bottom: 22px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .hero h1 {
+      font-size: clamp(24px, 5vw, 38px);
+      font-weight: 800;
+      line-height: 1.22;
+      margin-bottom: 16px;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: #a5b4fc; /* Apple indigo-light — 활력 있는 라벤더 액센트 */
+    }
+
+    .hero p {
+      font-size: clamp(14px, 2.5vw, 16px);
+      color: rgba(255,255,255,0.72);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ── 컨테이너 ────────────────────────────────────────── */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    /* ── 섹션 ────────────────────────────────────────────── */
+    .section { margin-top: 44px; }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--bl);
+      background: var(--bl-s);
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 14px;
+    }
+
+    /* ── 카드 ────────────────────────────────────────────── */
+    .card {
+      background: var(--surf);
+      border-radius: var(--r);
+      border: 1px solid var(--bd);
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--t1);
+      letter-spacing: -0.02em;
+    }
+
+    .card p {
+      color: var(--t2);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    /* ── 인트로 카드 ─────────────────────────────────────── */
+    .intro-card {
+      background: var(--surf);
+      border: 1px solid var(--bd);
+      border-left: 3px solid var(--bl);
+      border-radius: var(--r);
+      padding: 22px 24px;
+      margin-top: 36px;
+      box-shadow: var(--shadow);
+    }
+
+    .intro-card p {
+      font-size: 15px;
+      color: var(--t2);
+      line-height: 1.8;
+    }
+
+    /* ── 증권사 그리드 ───────────────────────────────────── */
+    .broker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .broker-item {
+      background: var(--surf);
+      border: 1px solid var(--bd);
+      border-radius: 12px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .broker-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--t2);
+      margin-bottom: 5px;
+    }
+
+    .broker-feature {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--t1);
+    }
+
+    /* ── 스텝 ────────────────────────────────────────────── */
+    .steps {
+      list-style: none;
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: var(--surf);
+      border: 1px solid var(--bd);
+      border-radius: var(--r);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--bl-s);
+      color: var(--bl);
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .step-body h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--t1);
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+
+    .step-body p {
+      font-size: 14px;
+      color: var(--t2);
+      line-height: 1.7;
+    }
+
+    /* ── 배지 ────────────────────────────────────────────── */
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .badge-key {
+      background: var(--yl-s);
+      color: var(--yl);
+    }
+
+    /* ── 경고 카드 ───────────────────────────────────────── */
+    .warn-card {
+      background: var(--surf);
+      border: 1px solid var(--bd);
+      border-left: 3px solid var(--yl);
+      border-radius: var(--r);
+      padding: 20px 24px;
+      margin-top: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .warn-card .warn-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--yl);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .warn-card p {
+      font-size: 14px;
+      color: var(--t2);
+      line-height: 1.7;
+    }
+
+    /* ── 키움 위험 인라인 텍스트 ─────────────────────────── */
+    .broker-warn-text {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--rd);
+      line-height: 1.5;
+    }
+
+    .broker-item-warn {
+      border-color: rgba(255,59,48,0.25) !important;
+    }
+
+    /* ── 마무리 카드 ─────────────────────────────────────── */
+    .closing-card {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+      border-radius: var(--r);
+      padding: 36px 28px;
+      text-align: center;
+      margin-top: 44px;
+    }
+
+    .closing-card h2 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+
+    .closing-card p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.75;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    /* ── 반응형 ──────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .hero { padding: 48px 20px 40px; }
+      .broker-grid { grid-template-columns: 1fr 1fr; }
+      .card, .intro-card, .warn-card { padding: 18px 20px; }
+      .step { padding: 16px; }
+    }
+
+    @media (max-width: 380px) {
+      .broker-grid { grid-template-columns: 1fr; }
+    }
+
+/* ═══ EZ Global Nav + Footer (자동 주입) ═══════════════════════════ */
+.ez-nav {
+  height: auto;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  position: sticky; top: 0; z-index: 9999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+               'Noto Sans KR', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-nav { background: rgba(28,28,30,0.92); border-color: rgba(255,255,255,0.08); }
+}
+.ez-nav-inner {
+  max-width: 1080px; margin: 0 auto; padding: 7px 20px 0;
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+.ez-nav-logo { display: flex; align-items: center; text-decoration: none; padding: 2px 0 10px; }
+.ez-nav-logo img { height: 26px; width: auto; display: block; }
+.ez-nav-back {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 14px; font-weight: 500;
+  color: #0071E3; text-decoration: none; transition: opacity .15s;
+}
+@media (prefers-color-scheme: dark) { .ez-nav-back { color: #0A84FF; } }
+.ez-nav-back:hover { opacity: .7; }
+.ez-nav-back svg { width: 14px; height: 14px; flex-shrink: 0; }
+.ez-nav-svc-links { display: flex; align-items: center; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; width: 100%; margin-left: 0; padding-bottom: 4px; }
+.ez-nav-svc-links::-webkit-scrollbar { display: none; }
+.ez-nav-svc-link { flex-shrink: 0; padding: 5px 10px; border-radius: 6px; font-size: 13px; font-weight: 500; color: #6E6E73; text-decoration: none; white-space: nowrap; transition: all 0.12s; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link { color: #AEAEB2; } }
+.ez-nav-svc-link:hover { background: rgba(0,0,0,0.06); color: #1D1D1F; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link:hover { background: rgba(255,255,255,0.08); color: #F5F5F7; } }
+.ez-nav-svc-link.active { background: rgba(0,113,227,0.08); color: #0071E3; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link.active { background: rgba(10,132,255,0.14); color: #0A84FF; } }
+
+/* ── EZ Footer ──────────────────────────────────────────────────── */
+.ez-footer {
+  background: #FFFFFF;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding: 36px 20px 20px;
+  margin-top: 60px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+               'Noto Sans KR', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer { background: #1C1C1E; border-color: rgba(255,255,255,0.08); }
+}
+.ez-footer-inner {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 28px;
+}
+.ez-footer-top {
+  display: flex; flex-direction: column; gap: 24px;
+}
+@media (min-width: 640px) {
+  .ez-footer-top { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+}
+.ez-footer-brand { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+.ez-footer-brand img { height: 22px; width: auto; display: block; }
+.ez-footer-brand-desc {
+  font-size: 13px; line-height: 1.65;
+  color: #3C3C3E;
+}
+@media (prefers-color-scheme: dark) { .ez-footer-brand-desc { color: #AEAEB2; } }
+.ez-footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
+.ez-footer-col { display: flex; flex-direction: column; gap: 10px; }
+.ez-footer-col-title {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase;
+  color: #1D1D1F;
+}
+@media (prefers-color-scheme: dark) { .ez-footer-col-title { color: #F5F5F7; } }
+.ez-footer-col a {
+  font-size: 13px; color: #3C3C3E;
+  text-decoration: none; transition: color .15s;
+}
+.ez-footer-col a:hover { color: #0071E3; }
+@media (prefers-color-scheme: dark) {
+  .ez-footer-col a { color: #AEAEB2; }
+  .ez-footer-col a:hover { color: #0A84FF; }
+}
+.ez-footer-bottom {
+  font-size: 11px; color: #AEAEB2;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding-top: 20px; line-height: 1.8;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer-bottom { border-color: rgba(255,255,255,0.08); color: #636366; }
+}
+/* ══════════════════════════════════════════════════════════════════ */
+
+
+/* ── Footer Books ─────────────────────────────────────────── */
+.ez-footer-books{display:flex;gap:20px;flex-wrap:wrap;}
+.ez-footer-book{display:flex;gap:10px;align-items:flex-start;}
+.ez-footer-book-cover{flex-shrink:0;width:130px;border-radius:6px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.15);display:block;background:transparent;}
+.ez-footer-book-cover img{width:100%;display:block;}
+.ez-footer-book-info{display:flex;flex-direction:column;gap:3px;}
+.ez-footer-book-title{font-size:11px;font-weight:700;color:#1D1D1F;line-height:1.4;margin-bottom:3px;}
+@media(prefers-color-scheme:dark){.ez-footer-book-title{color:#F5F5F7;}}
+.ez-footer-book-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#AEAEB2;margin-top:5px;}
+.ez-footer-book-btns{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;}
+.ez-footer-book-btn{font-size:11px;color:#3C3C3E;text-decoration:none;transition:color .12s;white-space:nowrap;}
+.ez-footer-book-btn:hover{background:#0071E3;color:#fff;}
+@media(prefers-color-scheme:dark){
+  .ez-footer-book-btn{background:rgba(255,255,255,.1);color:#AEAEB2;}
+  .ez-footer-book-btn:hover{background:#0A84FF;color:#fff;}
+}
+</style>
+</head>
+<body>
+<nav class="ez-nav" aria-label="글로벌 네비게이션">
+  <div class="ez-nav-inner">
+    <a href="/" class="ez-nav-logo" aria-label="EZLONG 홈">
+      <picture>
+        <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+        <img src="logo.png" alt="EZLONG">
+      </picture>
+    </a>
+    <div class="ez-nav-svc-links">
+      <a href="/atmr-dashboard.html"        class="ez-nav-svc-link">스윙 시그널</a>
+      <a href="/chart-analysis.html"        class="ez-nav-svc-link">AI 차트분석</a>
+      <a href="/analyst-reports.html"        class="ez-nav-svc-link">핵심기업 목표주가</a>
+      
+      <a href="/market-cycle.html"          class="ez-nav-svc-link">Market Cycle</a>
+      <a href="/dca-simulator.html"         class="ez-nav-svc-link">DCA 시뮬레이터</a>
+      <a href="/portfolio-manager.html"     class="ez-nav-svc-link">포트폴리오 복리</a>
+      <a href="/tax-account-simulator.html" class="ez-nav-svc-link">절세 계좌</a>
+      <a href="/compound-calculator.html"   class="ez-nav-svc-link">복리 계산기</a>
+      <a href="/retirement-calculator.html" class="ez-nav-svc-link">은퇴 계산기</a>
+      <a href="/backtest.html"              class="ez-nav-svc-link">백테스트</a>
+      <a href="/risk-diagnostic.html"       class="ez-nav-svc-link">투자성향 테스트</a>
+      <a href="/auto-dca-guide.html"        class="ez-nav-svc-link active">DCA 가이드</a>
+    </div>
+  </div>
+</nav>
+
+  <!-- 헤더 -->
+  <div class="hero">
+    <div class="hero-tag">투자 자동화 가이드</div>
+    <h1>버튼을 누르지 않는 투자<br><em>진짜 DCA는 자동이어야 완성된다</em></h1>
+    <p>손을 대지 않을수록 더 강해지는 투자법, 적립식 자동매수 완전 정복</p>
+  </div>
+
+  <div class="container">
+
+    <!-- 인트로 -->
+    <div class="intro-card">
+      <p>DCA(Dollar Cost Averaging)를 안다고 해서 DCA를 하고 있는 게 아닙니다. 매달 직접 버튼을 눌러 사는 순간, 그게 어느 날엔가 빠지거나 늦어집니다. 진정한 DCA는 내가 신경 쓰지 않아도 알아서 굴러가는 구조를 만드는 것입니다. 그게 바로 '적립식 자동매수'입니다.</p>
+    </div>
+
+    <!-- 이 기능이 뭔가요? -->
+    <div class="section">
+      <div class="section-label">기능 소개</div>
+      <div class="card">
+        <h2>매달 자동으로 주식을 사주는 기능</h2>
+        <p>요즘 대부분 증권사에는 '적립식 자동매수' 기능이 있습니다. 내가 직접 매번 매수 버튼을 누르지 않아도, 매달(또는 매주) 정해진 금액으로 자동으로 주식을 사주는 기능입니다. 장기투자, 특히 ETF 투자에서는 사실상 필수 기능이라고 봐도 됩니다.</p>
+      </div>
+    </div>
+
+    <!-- 증권사별 이름 -->
+    <div class="section">
+      <div class="section-label">증권사별 명칭</div>
+      <p style="font-size:14px; color:var(--text-sub); margin-bottom:14px;">이름만 다를 뿐, 기능은 거의 동일합니다.</p>
+      <div class="broker-grid">
+        <div class="broker-item">
+          <div class="broker-name">카카오페이증권</div>
+          <div class="broker-feature">주식 모으기</div>
+        </div>
+        <div class="broker-item">
+          <div class="broker-name">토스증권</div>
+          <div class="broker-feature">주식 모으기</div>
+        </div>
+        <div class="broker-item">
+          <div class="broker-name">미래에셋</div>
+          <div class="broker-feature">적립식 자동매수</div>
+        </div>
+        <div class="broker-item">
+          <div class="broker-name">NH나무</div>
+          <div class="broker-feature">적립식 투자</div>
+        </div>
+        <div class="broker-item">
+          <div class="broker-name">한국투자증권</div>
+          <div class="broker-feature">적립식 주문</div>
+        </div>
+        <div class="broker-item broker-item-warn">
+          <div class="broker-name">키움증권</div>
+          <div class="broker-feature">주식더모으기</div>
+          <div class="broker-warn-text">기존 '주식적립식 자동주문'은 6월 18일 종료. 새로 설정 필요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 설정 방법 -->
+    <div class="section">
+      <div class="section-label">설정 방법</div>
+      <p style="font-size:14px; color:var(--text-sub); margin-bottom:14px;">어렵지 않습니다. 순서만 따라가면 됩니다.</p>
+      <ul class="steps">
+        <li class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h3>계좌 선택</h3>
+            <p>일반계좌, ISA, 연금저축 중 선택합니다. 처음이라면 일반계좌나 ISA부터 시작하는 경우가 많습니다.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h3>종목 선택</h3>
+            <p>ETF를 선택하는 것이 가장 안정적입니다. 처음에는 1~3개 정도로 단순하게 시작하는 것이 좋습니다.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h3>매수 금액 입력</h3>
+            <p>대부분 1,000원 단위로도 가능합니다. 일부 증권사는 최소 금액 제한이 있으니 확인이 필요합니다.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h3>매수 날짜 설정 <span class="badge badge-key">핵심</span></h3>
+            <p>가장 추천하는 방법은 <strong>월급 들어온 다음날</strong>로 설정하는 것입니다. 자금 부족으로 자동매수가 실패하는 일을 줄일 수 있습니다. 자동이체 날짜보다 1~2일 뒤로 잡아두면 대부분 해결됩니다.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 잊지 말아야 할 것 -->
+    <div class="section">
+      <div class="section-label">꼭 확인할 것</div>
+      <div class="warn-card">
+        <div class="warn-title">잔고 확인 필수</div>
+        <p>매수일 전에 계좌에 돈이 있어야 자동매수가 실행됩니다. 이걸 놓쳐서 자동매수가 안 되는 경우가 정말 많습니다. 자동이체 날짜보다 1~2일 뒤로 매수일을 잡아두면 대부분 해결됩니다.</p>
+      </div>
+    </div>
+
+
+    <!-- 마무리 -->
+    <div class="closing-card">
+      <h2>꾸준함을 자동으로 해결하는 방법</h2>
+      <p>이 기능 하나만 제대로 설정해두면, 투자에서 가장 어려운 '꾸준함'을 기계가 대신해줍니다. 초보자일수록 오히려 더 강력한 도구입니다. 아직 설정하지 않았다면, 지금 바로 해두세요.</p>
+    </div>
+
+  </div>
+
+  
+
+<footer class="ez-footer" role="contentinfo">
+  <div class="ez-footer-inner">
+    <div class="ez-footer-top">
+      <div class="ez-footer-brand">
+        <picture>
+          <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+          <img src="logo.png" alt="EZLONG">
+        </picture>
+        <p class="ez-footer-brand-desc">
+          쉽고 안전한 장기투자 파트너<br>
+          easy.invest.good@gmail.com
+        </p>
+      </div>
+      <div class="ez-footer-books">
+        <div class="ez-footer-book">
+          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-cover" target="_blank" rel="noopener">
+            <img src="book01.png" alt="절대 실패하지 않는 미국 주식 ETF 투자">
+          </a>
+          <div class="ez-footer-book-info">
+            <span class="ez-footer-book-title">절대 실패하지 않는<br>미국 주식 ETF 투자</span>
+            <span class="ez-footer-book-label">종이책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/177260453" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://product.kyobobook.co.kr/detail/S000219205812" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+            </div>
+            <span class="ez-footer-book-label">전자책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=387049914&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/180332209" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012611429" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+              <a href="https://ridibooks.com/books/3844000153" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>
+            </div>
+            <span class="ez-footer-book-label">오디오북</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=388954868&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+            </div>
+            <span class="ez-footer-book-label">구독</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://max.aladin.co.kr/product/387049914?&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.millie.co.kr/v4/book/52e27a74508a4c93" class="ez-footer-book-btn" target="_blank" rel="noopener">밀리</a>
+              <a href="https://cremaclub.yes24.com/BookClub/Detail/180332209" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012611429" class="ez-footer-book-btn" target="_blank" rel="noopener">교보</a>
+            </div>
+          </div>
+        </div>
+        <div class="ez-footer-book">
+          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-cover" target="_blank" rel="noopener">
+            <img src="book02_1.png" alt="월급쟁이 투자 자동화">
+          </a>
+          <div class="ez-footer-book-info">
+            <span class="ez-footer-book-title">월급쟁이<br>투자 자동화</span>
+            <span class="ez-footer-book-label">전자책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+              <a href="https://ridibooks.com/books/6121000386" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>
+            </div>
+            <span class="ez-footer-book-label">오디오북</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=391653601&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+            </div>
+            <span class="ez-footer-book-label">구독</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://max.aladin.co.kr/product/389499456?&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.millie.co.kr/v4/book/e7fbd96e137b4ae1" class="ez-footer-book-btn" target="_blank" rel="noopener">밀리</a>
+              <a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ez-footer-links">
+        <div class="ez-footer-col">
+          <span class="ez-footer-col-title">서비스</span>
+          <a href="atmr-dashboard.html">스윙 시그널 대시보드</a>
+          <a href="chart-analysis.html">AI 차트분석</a>
+          <a href="analyst-reports.html">핵심기업 목표주가</a>
+          <a href="market-cycle.html">Market Cycle Monitor</a>
+          <a href="dca-simulator.html">DCA 복리 시뮬레이터</a>
+          <a href="portfolio-manager.html">포트폴리오 복리 시뮬레이터</a>
+          <a href="tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a>
+          <a href="compound-calculator.html">복리 계산기</a>
+          <a href="retirement-calculator.html">은퇴 목표 역산 계산기</a>
+          <a href="backtest.html">몬테카를로 포트폴리오 시뮬레이터</a>
+          <a href="risk-diagnostic.html">투자 행동 자가진단</a>
+          <a href="auto-dca-guide.html">자동 적립식 매수 가이드</a>
+        </div>
+      </div>
+    </div>
+    <div class="ez-footer-bottom">
+      © 2025–2026 유니아빠 &amp; 유니엄마 · EZLONG · easy.invest.good@gmail.com<br>
+      본 서비스에서 제공하는 모든 시뮬레이션 수치는 참고용 추정치이며, 실제 투자 수익을 보장하지 않습니다. 투자 판단의 책임은 투자자 본인에게 있습니다.
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,192 @@
+/* ═══════════════════════════════════════════════════════════════════
+   ez-design.css  —  EZLONG 공유 디자인 시스템
+   chart-analysis.html · market-cycle.html · atmr-dashboard.html
+   risk-diagnostic.html 등이 공통으로 참조하는 CSS
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── CSS 변수 (라이트 모드) ─────────────────────────────────────── */
+:root {
+  /* 레이아웃 */
+  --ez-max-w:      1080px;
+  --ez-max-w-wide: 1440px;
+
+  /* 배경·표면 */
+  --ez-bg:      #F5F5F7;
+  --ez-surface: #FFFFFF;
+  --ez-card:    #FFFFFF;
+  --ez-card2:   rgba(0,0,0,0.04);
+
+  /* 테두리 */
+  --ez-border:  rgba(0,0,0,0.08);
+  --ez-border2: rgba(0,0,0,0.05);
+
+  /* 텍스트 */
+  --ez-text:    #1D1D1F;
+  --ez-text2:   #3C3C3E;
+  --ez-text3:   #6E6E73;
+  --ez-hint:    rgba(0,0,0,0.28);
+
+  /* 브랜드 색상 */
+  --ez-blue:     #0071E3;
+  --ez-blue-dim: rgba(0,113,227,0.10);
+  --ez-green:    #1A7F37;
+  --ez-red:      #D92A2A;
+  --ez-amber:    #FF9F0A;
+
+  /* 타이포 */
+  --ez-mono: 'SF Mono', 'Fira Code', Consolas, 'Courier New', monospace;
+  --ez-font: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+
+  /* 반경 */
+  --ez-r:  12px;
+  --ez-rs: 8px;
+
+  /* 그림자 */
+  --ez-shadow:    0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.07);
+  --ez-shadow-lg: 0 4px 24px rgba(0,0,0,0.10), 0 1px 6px rgba(0,0,0,0.06);
+}
+
+/* ── CSS 변수 (다크 모드) ───────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ez-bg:      #000000;
+    --ez-surface: #1C1C1E;
+    --ez-card:    #2C2C2E;
+    --ez-card2:   rgba(255,255,255,0.06);
+
+    --ez-border:  rgba(255,255,255,0.08);
+    --ez-border2: rgba(255,255,255,0.05);
+
+    --ez-text:    #F5F5F7;
+    --ez-text2:   #AEAEB2;
+    --ez-text3:   #8E8E93;
+    --ez-hint:    rgba(255,255,255,0.30);
+
+    --ez-blue:     #0A84FF;
+    --ez-blue-dim: rgba(10,132,255,0.14);
+    --ez-green:    #30D158;
+    --ez-red:      #FF453A;
+    --ez-amber:    #FFD60A;
+  }
+}
+
+/* ── 기본 리셋 ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+/* ── iOS 자동 줌인 방지 ─────────────────────────────────────────── */
+/* iOS Safari는 font-size < 16px인 input 탭 시 자동 확대 → 전역 방지 */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+body {
+  margin: 0;
+  font-family: var(--ez-font);
+  background: var(--ez-bg);
+  color: var(--ez-text);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+
+/* ── EZ 글로벌 네비게이션 ──────────────────────────────────────── */
+.ez-nav {
+  height: auto;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  position: sticky; top: 0; z-index: 9999;
+  font-family: var(--ez-font);
+}
+@media (prefers-color-scheme: dark) {
+  .ez-nav { background: rgba(28,28,30,0.92); border-color: rgba(255,255,255,0.08); }
+}
+.ez-nav-inner {
+  max-width: var(--ez-max-w-wide);
+  margin: 0 auto; padding: 7px 20px 0;
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+.ez-nav-logo { display: flex; align-items: center; text-decoration: none; padding: 2px 0 10px; }
+.ez-nav-logo img { height: 24px; width: auto; display: block; }
+.ez-nav-svc-links {
+  display: flex; align-items: center; gap: 2px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; width: 100%; margin-left: 0; padding-bottom: 4px;
+}
+.ez-nav-svc-links::-webkit-scrollbar { display: none; }
+.ez-nav-svc-link {
+  flex-shrink: 0; padding: 5px 10px; border-radius: 6px;
+  font-size: 13px; font-weight: 500;
+  color: var(--ez-text3); text-decoration: none;
+  white-space: nowrap; transition: all 0.12s;
+}
+.ez-nav-svc-link:hover { background: var(--ez-card2); color: var(--ez-text); }
+.ez-nav-svc-link.active { background: var(--ez-blue-dim); color: var(--ez-blue); }
+
+/* ── EZ 푸터 (2026 리디자인) ────────────────────────────────────── */
+.ez-footer {
+  background: #FFFFFF;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding: 36px 20px 20px;
+  margin-top: 60px;
+  font-family: var(--ez-font);
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer { background: #1C1C1E; border-color: rgba(255,255,255,0.08); }
+}
+.ez-footer-inner { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+.ez-footer-top { display: flex; flex-direction: column; gap: 24px; }
+@media (min-width: 640px) {
+  .ez-footer-top { flex-direction: row; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 32px; }
+}
+.ez-footer-brand { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+.ez-footer-brand img { height: 20px; width: auto; display: block; }
+.ez-footer-brand-desc { font-size: 12px; line-height: 1.65; color: #3C3C3E; }
+@media (prefers-color-scheme: dark) { .ez-footer-brand-desc { color: #AEAEB2; } }
+.ez-footer-books { display: flex; flex-direction: column; gap: 24px; }
+@media (min-width: 640px) { .ez-footer-books { flex-direction: row; gap: 32px; } }
+.ez-footer-book { display: flex; gap: 16px; align-items: flex-start; }
+.ez-footer-book-cover {
+  flex-shrink: 0; width: 130px; border-radius: 6px;
+  overflow: hidden; box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+  display: block; background: transparent;
+}
+.ez-footer-book-cover img { width: 100%; display: block; }
+.ez-footer-book-info { display: flex; flex-direction: column; min-width: 0; }
+.ez-footer-book-title { font-size: 13px; font-weight: 700; color: #1D1D1F; line-height: 1.4; margin-bottom: 10px; }
+@media (prefers-color-scheme: dark) { .ez-footer-book-title { color: #F5F5F7; } }
+.ez-footer-book-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #8E8E93; margin-top: 8px; margin-bottom: 4px; }
+.ez-footer-book-btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.ez-footer-book-btn {
+  font-size: 11px; color: #3C3C3E;
+  text-decoration: none; transition: color .12s; white-space: nowrap;
+}
+.ez-footer-book-btn:hover { color: #0071E3; }
+@media (prefers-color-scheme: dark) {
+  .ez-footer-book-btn { color: #AEAEB2; }
+  .ez-footer-book-btn:hover { color: #0A84FF; }
+}
+.ez-footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
+.ez-footer-col { display: flex; flex-direction: column; gap: 8px; }
+.ez-footer-col-title {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: #1D1D1F; margin-bottom: 2px;
+}
+@media (prefers-color-scheme: dark) { .ez-footer-col-title { color: #F5F5F7; } }
+.ez-footer-col a { font-size: 12px; color: #3C3C3E; text-decoration: none; transition: color .15s; }
+.ez-footer-col a:hover { color: #0071E3; }
+@media (prefers-color-scheme: dark) {
+  .ez-footer-col a { color: #AEAEB2; }
+  .ez-footer-col a:hover { color: #0A84FF; }
+}
+.ez-footer-bottom {
+  font-size: 11px; color: #6E6E73;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  padding-top: 16px; line-height: 1.8;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer-bottom { border-color: rgba(255,255,255,0.07); color: #8E8E93; }
+}

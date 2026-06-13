@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>스윙 지수 게이지 v6 — 추세 회귀</title>
+<style>
+  :root {
+    --bg:#F5F5F7; --card:#FFFFFF; --t1:#1D1D1F; --t2:#2D2D2F; --t3:#6E6E73;
+    --bd:rgba(0,0,0,0.07); --r:16px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#000; --card:#1A1A1A; --t1:#FFF; --t2:#E5E5EA; --t3:#98989D; --bd:rgba(255,255,255,0.13); }
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); font-family:-apple-system,'Helvetica Neue',sans-serif; padding:40px 20px; }
+  h2   { color:var(--t1); font-size:18px; margin-bottom:6px; text-align:center; }
+  p    { color:var(--t3); font-size:13px; text-align:center; margin-bottom:24px; }
+
+  .card {
+    background:var(--card); border-radius:var(--r); padding:24px 28px;
+    box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.05);
+    max-width:700px; margin:0 auto 20px;
+  }
+  .action-label { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--t3); margin-bottom:4px; }
+  .action-title { font-size:18px; font-weight:800; color:var(--t1); line-height:1.35; }
+  .divider { border:none; border-top:1px solid var(--bd); margin:16px 0; }
+
+  .note-box {
+    max-width:700px; margin:0 auto 24px;
+    background:rgba(10,132,255,0.08); border-left:3px solid #0a84ff;
+    border-radius:10px; padding:14px 16px;
+    font-size:12px; color:var(--t2); line-height:1.8;
+  }
+  .note-box strong { color:#0a84ff; }
+
+  /* ── 히스토리 입력 ── */
+  .hist-section {
+    max-width:700px; margin:0 auto 24px;
+    background:var(--card); border-radius:var(--r); padding:20px 24px;
+    box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.05);
+  }
+  .hist-section h3 { font-size:13px; font-weight:700; color:var(--t2); margin-bottom:14px; }
+  .hist-inputs { display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap; }
+  .hist-col { display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .hist-col label { font-size:10px; color:var(--t3); font-weight:600; }
+  .hist-col input[type=number] {
+    width:48px; padding:5px 4px; border-radius:8px;
+    border:1.5px solid var(--bd); background:var(--bg);
+    color:var(--t1); font-size:14px; font-weight:700;
+    text-align:center; -moz-appearance:textfield;
+  }
+  .hist-col input[type=number]:focus { border-color:#0a84ff; outline:none; }
+  .hist-col input[type=number]::-webkit-inner-spin-button,
+  .hist-col input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; }
+  .hist-col.now input { border-color:#0a84ff; background:rgba(10,132,255,0.06); }
+  .hist-col.now label { color:#0a84ff; font-weight:800; }
+
+  .trend-info {
+    max-width:700px; margin:-8px auto 16px;
+    font-size:12px; color:var(--t3); text-align:center; min-height:20px;
+  }
+  .trend-info .tag {
+    display:inline-block; padding:2px 10px; border-radius:20px;
+    font-weight:700; font-size:11px;
+  }
+  .tag-down { background:#fde8e8; color:#dc2626; }
+  .tag-up   { background:#e8f5e9; color:#16a34a; }
+  .tag-flat { background:#f0f0f0; color:var(--t3); }
+
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; max-width:700px; margin:0 auto; }
+  .grid .card { padding:16px 18px; margin:0; }
+  .grid h3 { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--t3); margin-bottom:4px; }
+  .grid .sub { font-size:10px; color:var(--t3); margin-top:6px; }
+</style>
+</head>
+<body>
+
+<h2>스윙 지수 게이지 v6 — 추세 회귀</h2>
+<p>단순 비교 대신 <strong>선형 회귀(기울기)</strong>로 방향성을 판단합니다.</p>
+
+<div class="note-box">
+  <strong>알고리즘 원리</strong><br>
+  저장된 모든 히스토리 포인트에 선형 회귀를 적용 → <strong>하루 기준 기울기(slope/day)</strong>를 추출.<br>
+  88→85→81→79→78→77처럼 매일 조금씩 내려와도 <strong>기울기 ≤ -1점/day</strong>이면 하락 추세로 판정.<br>
+  기울기 절댓값이 클수록 사다리꼴이 더 극적으로 기울고, <strong>±0.5점/day 이하</strong>는 수평.
+</div>
+
+<!-- 히스토리 직접 입력 -->
+<div class="hist-section">
+  <h3>히스토리 직접 입력 (최근 6일 → 오늘) — 빈칸은 무시됩니다</h3>
+  <div class="hist-inputs" id="hist-inputs">
+    <!-- JS로 생성 -->
+  </div>
+</div>
+
+<div class="trend-info" id="trend-info">—</div>
+
+<div class="card">
+  <div id="live-gauge"></div>
+  <hr class="divider">
+  <div class="action-label">오늘의 시그널</div>
+  <div class="action-title" id="live-title">—</div>
+</div>
+
+<h2 style="margin-top:44px;margin-bottom:8px;">대표 시나리오 샘플</h2>
+<p style="margin-bottom:16px;">추세 기울기 기반 방향성 — 느린 추세도 잡힙니다</p>
+<div class="grid" id="sample-grid"></div>
+
+<script>
+// ── 설정값 ──────────────────────────────────────────────────────────────────
+const SLOPE_THRESHOLD = 0.5;  // 하루 ±0.5점 이하 = 수평 판정
+const MAX_SLOPE       = 5.0;  // 하루 5점 이상 = 최대 사다리꼴 (extension maxed)
+
+// ── 컬러·레이블 ──────────────────────────────────────────────────────────────
+function getFGColor(s) {
+  if (s >= 60) return '#0a84ff';
+  if (s >= 40) return '#ff8c00';
+  if (s >= 20) return '#e09400';
+  return '#c0392b';
+}
+function getFGLabel(s) {
+  if (s >= 90) return '초과열구간';
+  if (s >= 80) return '과열구간';
+  if (s >= 60) return '온기구간';
+  if (s >= 40) return '미온구간';
+  if (s >= 20) return '냉각구간';
+  if (s >= 10) return '과냉구간';
+  return '초과냉구간';
+}
+
+// ── 선형 회귀 → 하루 기준 기울기 ────────────────────────────────────────────
+// pts: [{t: 일(day index, 0=가장 오래됨), v: 점수}]
+// 반환: slope (점/day) — 양수=상승, 음수=하락
+function calcSlope(pts) {
+  if (!pts || pts.length < 2) return 0;
+  const n = pts.length;
+  const sumT  = pts.reduce((a, p) => a + p.t, 0);
+  const sumV  = pts.reduce((a, p) => a + p.v, 0);
+  const sumTT = pts.reduce((a, p) => a + p.t * p.t, 0);
+  const sumTV = pts.reduce((a, p) => a + p.t * p.v, 0);
+  const denom = n * sumTT - sumT * sumT;
+  if (denom === 0) return 0;
+  return (n * sumTV - sumT * sumV) / denom;
+}
+
+// ── 게이지 SVG (v6) ──────────────────────────────────────────────────────────
+// slope: 하루 기준 기울기 (점/day), periodDays: 관측 기간(일)
+// oldestScore: 가장 오래된 점수 (점선 마커용)
+function makeSwingGaugeSVG(score, fgLabel, scoreColor, slope, periodDays, oldestScore) {
+  const W = 320, BX = 0, BW = 320, BH = 18;
+  const BY = 52;   // 막대 상단 — 위쪽 텍스트 공간 확보
+  const H  = 98;   // viewBox 높이 — 최대 사다리꼴(tall=48px) 수용
+
+  const ZONES = [
+    { from:  0, to: 10, color:'#060d1f', short:'초과냉' },  // 극한 다크 네이비
+    { from: 10, to: 20, color:'#1a3fc4', short:'과냉'   },  // 진한 파랑
+    { from: 20, to: 40, color:'#60a5fa', short:'냉각'   },  // 연파랑
+    { from: 40, to: 60, color:'#8b99a8', short:'미온'   },  // 중립 회색
+    { from: 60, to: 80, color:'#f97316', short:'온기'   },  // 오렌지
+    { from: 80, to: 90, color:'#ff2200', short:'과열'   },  // 순수 레드오렌지
+    { from: 90, to:100, color:'#e60000', short:'초과열' },  // 순수 레드 (브라운 제로)
+  ];
+
+  const toX = s => BX + (s / 100) * BW;
+
+  // ── 방향 판정 ────────────────────────────────────────────────────────────
+  const absSlope   = Math.abs(slope);
+  const isDecreasing = slope < -SLOPE_THRESHOLD;
+  const isIncreasing = slope > SLOPE_THRESHOLD;
+
+  // threshold 초과 즉시 MIN_EXT(14px) 점프, 강한 추세일수록 최대 MAX_EXT(30px)
+  // narrow=18px 기준 → 최소 tall=32px(1.78×), 최대 tall=48px(2.67×)
+  const MIN_EXT = 14, MAX_EXT = 30;
+  const t = Math.min((absSlope - SLOPE_THRESHOLD) / (MAX_SLOPE - SLOPE_THRESHOLD), 1);
+  const extension = (isDecreasing || isIncreasing) ? MIN_EXT + t * (MAX_EXT - MIN_EXT) : 0;
+
+  const yTop = x => {
+    const r = (x - BX) / BW;
+    if (isDecreasing) return BY - (extension / 2) * r;
+    if (isIncreasing) return BY - (extension / 2) * (1 - r);
+    return BY;
+  };
+  const yBot = x => {
+    const r = (x - BX) / BW;
+    if (isDecreasing) return BY + BH + (extension / 2) * r;
+    if (isIncreasing) return BY + BH + (extension / 2) * (1 - r);
+    return BY + BH;
+  };
+
+  // ── 세그먼트 ─────────────────────────────────────────────────────────────
+  const BR = 5;
+  let segs = '';
+  ZONES.forEach((z, i) => {
+    const x1 = toX(z.from), x2 = toX(z.to);
+    const isActive = score >= z.from && (i === ZONES.length-1 ? score <= 100 : score < z.to);
+    let d;
+    const t1=yTop(x1), b1=yBot(x1), t2=yTop(x2), b2=yBot(x2);
+    if (!isDecreasing && !isIncreasing) {
+      if (i === 0)
+        d = `M ${x1+BR},${BY} H ${x2} V ${BY+BH} H ${x1+BR} Q ${x1},${BY+BH} ${x1},${BY+BH-BR} V ${BY+BR} Q ${x1},${BY} ${x1+BR},${BY} Z`;
+      else if (i === ZONES.length-1)
+        d = `M ${x1},${BY} H ${x2-BR} Q ${x2},${BY} ${x2},${BY+BR} V ${BY+BH-BR} Q ${x2},${BY+BH} ${x2-BR},${BY+BH} H ${x1} Z`;
+      else
+        d = `M ${x1},${BY} H ${x2} V ${BY+BH} H ${x1} Z`;
+    } else {
+      d = `M ${x1},${t1} L ${x2},${t2} L ${x2},${b2} L ${x1},${b1} Z`;
+    }
+    segs += `<path d="${d}" fill="${z.color}" fill-opacity="${isActive ? 1 : 0.3}"/>\n`;
+
+    const lx = (x1 + x2) / 2;
+    const ly = (yTop(lx) + yBot(lx)) / 2;
+    const fs = (x2 - x1) < 36 ? 7 : 8.5;
+    const op = isActive ? 0.95 : 0.55;
+    segs += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle"
+      font-size="${fs}" font-weight="${isActive ? 800 : 600}"
+      fill="#fff" opacity="${op}">${z.short}</text>\n`;
+  });
+
+  // ── 경계선 ───────────────────────────────────────────────────────────────
+  let divs = '';
+  [10,20,40,60,80,90].forEach(s => {
+    const x = toX(s);
+    divs += `<line x1="${x}" y1="${yTop(x)}" x2="${x}" y2="${yBot(x)}"
+      stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/>`;
+  });
+
+  // ── 최초 점수 마커 (점선) ─────────────────────────────────────────────────
+  let prevMarker = '';
+  if (oldestScore != null && (isDecreasing || isIncreasing)) {
+    const px = Math.max(2, Math.min(BW-2, toX(oldestScore)));
+    prevMarker = `<line x1="${px}" y1="${yTop(px)}" x2="${px}" y2="${yBot(px)}"
+      stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-dasharray="2.5,2.5"/>`;
+  }
+
+  // ── 현재 점수 바늘 ───────────────────────────────────────────────────────
+  const mx   = Math.max(7, Math.min(BW-7, toX(score)));
+  const mTop = yTop(mx);
+  const TW = 9, TH = 8;
+  const needle = `
+    <polygon points="${mx},${mTop} ${mx-TW/2},${mTop-TH} ${mx+TW/2},${mTop-TH}"
+      fill="${scoreColor}" filter="drop-shadow(0 1px 2px rgba(0,0,0,.35))"/>
+    <line x1="${mx}" y1="${mTop}" x2="${mx}" y2="${yBot(mx)}"
+      stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>`;
+
+  // ── 텍스트 레이블 ────────────────────────────────────────────────────────
+  const textX  = mx < 70 ? mx + 4 : mx > BW-70 ? mx - 4 : mx;
+  const anchor = mx < 70 ? 'start' : mx > BW-70 ? 'end' : 'middle';
+  const baseY  = Math.max(16, mTop - TH - 5);
+
+  let dirIcon = '';
+  if (isDecreasing || isIncreasing) dirIcon = slope < 0 ? ' ▼' : ' ▲';
+
+  const scoreLine = `<text x="${textX}" y="${baseY}"
+    text-anchor="${anchor}" font-size="12" font-weight="800"
+    fill="${scoreColor}" letter-spacing="-0.01em">${score}점 · ${fgLabel}${dirIcon}</text>`;
+
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"
+    style="width:100%;display:block;overflow:visible;">
+  ${segs}${divs}${prevMarker}${needle}${scoreLine}
+</svg>`;
+}
+
+// ── 히스토리 입력 UI ─────────────────────────────────────────────────────────
+// labels: 가장 왼쪽 = 가장 오래됨, 맨 오른쪽 = 오늘(now)
+const DAY_LABELS = ['5일전','4일전','3일전','2일전','어제','오늘'];
+const DEFAULT_VALS = [88, 85, 81, 79, 78, 77]; // 기본 예시: 완만한 하락 추세
+
+const histContainer = document.getElementById('hist-inputs');
+const inputs = [];
+
+DAY_LABELS.forEach((lbl, i) => {
+  const col = document.createElement('div');
+  col.className = 'hist-col' + (i === DAY_LABELS.length - 1 ? ' now' : '');
+  const label = document.createElement('label');
+  label.textContent = lbl;
+  const inp = document.createElement('input');
+  inp.type = 'number'; inp.min = 0; inp.max = 100;
+  inp.value = DEFAULT_VALS[i];
+  inp.addEventListener('input', updateFromHistory);
+  col.appendChild(label);
+  col.appendChild(inp);
+  histContainer.appendChild(col);
+  inputs.push(inp);
+});
+
+function updateFromHistory() {
+  // 입력된 값만 추출 (빈칸·비숫자 제외), 인덱스를 시간축으로 사용
+  const pts = [];
+  inputs.forEach((inp, i) => {
+    const v = parseFloat(inp.value);
+    if (!isNaN(v) && inp.value.trim() !== '') {
+      pts.push({ t: i, v: Math.max(0, Math.min(100, v)) });
+    }
+  });
+
+  const score = pts.length > 0 ? pts[pts.length - 1].v : 50;
+  const oldest = pts.length > 1 ? pts[0].v : null;
+  const periodDays = pts.length > 1 ? (pts[pts.length-1].t - pts[0].t) : 0;
+  const slope = calcSlope(pts);
+
+  const fgLabel    = getFGLabel(score);
+  const scoreColor = getFGColor(score);
+
+  // 추세 정보 표시
+  const infoEl = document.getElementById('trend-info');
+  if (pts.length >= 2) {
+    const totalChange = score - oldest;
+    const slopeStr = `${slope > 0 ? '+' : ''}${slope.toFixed(2)}점/일`;
+    const cls = slope < -SLOPE_THRESHOLD ? 'tag-down' : slope > SLOPE_THRESHOLD ? 'tag-up' : 'tag-flat';
+    const dir = slope < -SLOPE_THRESHOLD ? '하락 추세' : slope > SLOPE_THRESHOLD ? '상승 추세' : '방향 없음 (수평)';
+    infoEl.innerHTML = `<span class="tag ${cls}">${dir}</span>&nbsp; 기울기 ${slopeStr} · ${Math.round(periodDays)}일간 ${totalChange > 0 ? '+' : ''}${Math.round(totalChange)}점 이동`;
+  } else {
+    infoEl.innerHTML = '점수를 2개 이상 입력하면 추세를 계산합니다.';
+  }
+
+  document.getElementById('live-gauge').innerHTML =
+    makeSwingGaugeSVG(score, fgLabel, scoreColor, slope, periodDays, oldest);
+  document.getElementById('live-title').textContent =
+    fgLabel + (slope < -SLOPE_THRESHOLD ? ' — 하락 추세 진행 중' : slope > SLOPE_THRESHOLD ? ' — 상승 추세 진행 중' : ' — 횡보 구간');
+}
+
+updateFromHistory();
+
+// ── 시나리오 샘플 ────────────────────────────────────────────────────────────
+// history: 오래된것 → 최신 순
+const SCENARIOS = [
+  {
+    label:'완만한 하락 추세 (매일 -2~3점)',
+    sub:'88→85→81→79→78→77 (-2.2점/일) → 사다리꼴 뚜렷',
+    history:[88,85,81,79,78,77],
+  },
+  {
+    label:'완만한 상승 추세 (매일 +1~2점)',
+    sub:'45→47→48→50→51→52 (+1.4점/일) → 완만한 사다리꼴',
+    history:[45,47,48,50,51,52],
+  },
+  {
+    label:'왔다갔다 방향 없음',
+    sub:'70→74→68→72→69→71 (기울기≈0) → 수평',
+    history:[70,74,68,72,69,71],
+  },
+  {
+    label:'급락 (단기 충격)',
+    sub:'80→72→60→50→44→40 (-8점/일) → 매우 극적 사다리꼴',
+    history:[80,72,60,50,44,40],
+  },
+  {
+    label:'급등 (추세 전환)',
+    sub:'30→38→48→56→62→68 (+7.6점/일) → 매우 극적 사다리꼴',
+    history:[30,38,48,56,62,68],
+  },
+  {
+    label:'고점 이후 소폭 하락 (주의 구간)',
+    sub:'91→90→88→87→86→85 (-1.2점/일) → 사다리꼴 가시적',
+    history:[91,90,88,87,86,85],
+  },
+  {
+    label:'저점 이후 소폭 반등',
+    sub:'22→23→24→25→26→27 (+1점/일) → 완만한 상향',
+    history:[22,23,24,25,26,27],
+  },
+  {
+    label:'데이터 부족 (1개)',
+    sub:'오늘 점수만 있음 → 수평',
+    history:[null,null,null,null,null,65],
+  },
+];
+
+const grid = document.getElementById('sample-grid');
+SCENARIOS.forEach(({ label, sub, history }) => {
+  const pts = history.map((v, i) => v != null ? { t: i, v } : null).filter(Boolean);
+  const score   = pts.length > 0 ? pts[pts.length-1].v : 50;
+  const oldest  = pts.length > 1 ? pts[0].v : null;
+  const period  = pts.length > 1 ? pts[pts.length-1].t - pts[0].t : 0;
+  const slope   = calcSlope(pts);
+  const fgLabel = getFGLabel(score);
+  const color   = getFGColor(score);
+
+  const div = document.createElement('div');
+  div.className = 'card';
+  div.innerHTML = `
+    <h3>${label}</h3>
+    ${makeSwingGaugeSVG(score, fgLabel, color, slope, period, oldest)}
+    <p class="sub">${sub}</p>`;
+  grid.appendChild(div);
+});
+</script>
+</body>
+</html>

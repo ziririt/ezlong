@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<link rel="stylesheet" href="ez-design.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>은퇴 목표 역산 투자액 시뮬레이션 — 필요 월 투자액 역산 | EZLONG</title>
+<meta name="description" content="은퇴 후 매달 원하는 만큼 인출하려면 지금부터 매월 얼마나 투자해야 할까? 4% 룰과 3가지 수익률 시나리오(7%·14%·21%)로 역산합니다." />
+<meta name="keywords" content="은퇴 계산기, 은퇴 목표 역산, 필요 월 투자액, 4% 룰, FIRE, 조기은퇴, 미국주식 장기투자, 복리 계산기, 은퇴 자산 계산" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://ezlong.com/retirement-calculator.html" />
+<!-- ── 국제화 SEO: hreflang + locale alternate ── -->
+<link rel="alternate" hreflang="ko" href="https://ezlong.com/retirement-calculator.html">
+<link rel="alternate" hreflang="en" href="https://ezlong.com/en/retirement-calculator.html">
+<link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/retirement-calculator.html">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="pt_BR">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta name="description" lang="en" content="Retirement Goal Calculator: Work backwards from your target retirement fund to find required monthly investment in US stocks. Factor in current savings and expected returns.">
+<meta name="keywords" lang="en" content="retirement calculator, retirement goal, monthly investment needed, US stock retirement, financial independence, FIRE calculator, retirement planning">
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ezlong.com/retirement-calculator.html" />
+<meta property="og:title" content="은퇴 목표 역산 투자액 시뮬레이션 | EZLONG" />
+<meta property="og:description" content="은퇴 후 매달 얼마를 인출하고 싶은지 입력하면, 지금부터 매월 투자해야 할 금액을 역산합니다. 3가지 수익률 시나리오와 4% 룰 포함." />
+<meta property="og:image" content="https://ezlong.com/logo-preview.png" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:site_name" content="EZLONG" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Retirement Goal Reverse Calculator — US Stock Investment",
+  "description": "Calculate how much you need to invest monthly to reach your retirement target. Enter your retirement goal amount, current savings, expected annual return, and years to retirement for a personalized investment roadmap.",
+  "inLanguage": ["ko", "en"],
+  "url": "https://ezlong.com/retirement-calculator.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "은퇴 목표 역산 투자액 시뮬레이션",
+      "url": "https://ezlong.com/retirement-calculator.html",
+      "description": "은퇴 후 매달 원하는 인출액을 4% 룰로 역산하고, 필요한 월 투자액을 3가지 수익률 시나리오로 계산하는 무료 도구.",
+      "applicationCategory": "FinanceApplication",
+      "inLanguage": "ko",
+      "isAccessibleForFree": true,
+      "operatingSystem": "All",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "은퇴 목표 역산 계산기란 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "은퇴 후 매달 원하는 생활비(인출액)를 입력하면, 4% 룰(트리니티 연구)을 적용해 필요한 은퇴 자산을 역산하고, 그 자산을 모으기 위해 지금부터 매월 얼마씩 투자해야 하는지 계산해주는 도구입니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "4% 룰이란 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "4% 룰(트리니티 연구)은 은퇴 자산의 연 4%를 매년 인출하면 30년 이상 자산이 고갈되지 않을 확률이 약 95%라는 연구 결과입니다. 월 500만원을 인출하려면 500만원 × 12개월 ÷ 0.04 = 15억원의 은퇴 자산이 필요합니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "월 500만원 인출을 위해 얼마나 투자해야 하나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "4% 룰 기준 월 500만원 인출에는 15억원의 은퇴 자산이 필요합니다. 40세에 시작해 60세 은퇴를 목표로 연 14% CAGR(S&P500 역사적 평균)을 가정하면 약 115만원/월 투자가 필요합니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "이 계산기에서 사용하는 수익률 시나리오는 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "세 가지 시나리오를 제공합니다. 보수적(연 7%): S&P500 저점 진입 가정, 중간(연 14%): S&P500 역사적 평균 CAGR, 공격적(연 21%): QQQ 나스닥100 10년 평균 수준입니다."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2336764115275414" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ══════════════════════════════════
+   라이트 모드 색상 토큰
+══════════════════════════════════ */
+:root {
+  --bg:       #F5F5F7;
+  --card:     #FFFFFF;
+  --bd:       rgba(0,0,0,0.10);
+  --t1:       #1D1D1F;
+  --t2:       #3A3A3C;
+  --t3:       #6E6E73;
+  --gr:       #34C759;
+  --gr-dk:    #1A7030;
+  --gr-s:     rgba(52,199,89,0.12);
+  --gr-m:     rgba(52,199,89,0.30);
+  --bl:       #007AFF;
+  --bl-dk:    #003A99;
+  --bl-s:     rgba(0,122,255,0.10);
+  --bl-m:     rgba(0,122,255,0.26);
+  --rd:       #CC2200;
+  --rd-s:     rgba(204,34,0,0.10);
+  --r:        16px;
+  --r-sm:     10px;
+  --font:     -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  --mono:     'SF Mono', 'Monaco', 'Menlo', 'Courier New', monospace;
+  --inp-bg:   #EBEBF0;
+  --inp-bg2:  #E2E2E8;
+  --hdr-bg:   rgba(255,255,255,.92);
+  --gnav-bg:  rgba(255,255,255,.97);
+  --tip-bg:   #FFFFFF;
+  --chk-bd:   #AEAEB2;
+  --chart-grid: #E5E5EA;
+  --chart-xax:  #C7C7CC;
+
+  /* ── 컨텍스트 색상 (라이트) ── */
+  /* 성공/긍정 */
+  --ok-bg:    #E6F4EC;
+  --ok-text:  #0D5C27;
+  --ok-bd:    #7EC89A;
+  /* 경고/강조 */
+  --warn-bg:  #FEF3C7;
+  --warn-text:#78350F;
+  --warn-bd:  #F59E0B;
+  /* 정보 */
+  --info-bg:  #EBF3FF;
+  --info-text:#003A99;
+  --info-bd:  #93C5FD;
+  /* 중립 팁 */
+  --tip2-bg:  #F0F0F5;
+  --tip2-text:#3A3A3C;
+  --tip2-bd:  #C7C7CC;
+}
+
+/* ══════════════════════════════════
+   다크 모드 색상 토큰
+   ★ 원칙: 배경은 어둡게, 텍스트는 반드시 밝게 ★
+══════════════════════════════════ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:       #000000;
+    --card:     #1C1C1E;
+    --bd:       rgba(255,255,255,0.14);
+    --t1:       #F5F5F7;
+    --t2:       #D1D1D6;
+    --t3:       #AEAEB2;
+    --gr:       #30D158;
+    --gr-dk:    #4CD964;
+    --gr-s:     rgba(48,209,88,0.18);
+    --gr-m:     rgba(48,209,88,0.40);
+    --bl:       #409CFF;
+    --bl-dk:    #90CAFF;
+    --bl-s:     rgba(64,156,255,0.18);
+    --bl-m:     rgba(64,156,255,0.40);
+    --rd:       #FF6B6B;
+    --rd-s:     rgba(255,107,107,0.20);
+    --inp-bg:   #2C2C2E;
+    --inp-bg2:  #3A3A3C;
+    --hdr-bg:   rgba(28,28,30,.94);
+    --gnav-bg:  rgba(28,28,30,.97);
+    --tip-bg:   #2C2C2E;
+    --chk-bd:   #636366;
+    --chart-grid: #2C2C2E;
+    --chart-xax:  #48484A;
+
+    /* ── 컨텍스트 색상 (다크) ── */
+    /* 성공/긍정 — 어두운 배경 + 밝은 초록 텍스트 */
+    --ok-bg:    rgba(48,209,88,0.16);
+    --ok-text:  #4CD964;
+    --ok-bd:    rgba(48,209,88,0.45);
+    /* 경고 — 어두운 앰버 배경 + 밝은 노랑 텍스트 */
+    --warn-bg:  rgba(255,179,0,0.16);
+    --warn-text:#FFD60A;
+    --warn-bd:  rgba(255,179,0,0.45);
+    /* 정보 — 어두운 파랑 배경 + 밝은 파랑 텍스트 */
+    --info-bg:  rgba(64,156,255,0.16);
+    --info-text:#90CAFF;
+    --info-bd:  rgba(64,156,255,0.45);
+    /* 중립 팁 — 어두운 카드보다 조금 밝은 배경 + 밝은 텍스트 */
+    --tip2-bg:  #2C2C2E;
+    --tip2-text:#D1D1D6;
+    --tip2-bd:  rgba(255,255,255,0.14);
+  }
+}
+
+/* ══════════════════════════════════
+   기본 레이아웃
+══════════════════════════════════ */
+html, body {
+  font-family: var(--font);
+  font-size: 15px;
+  background: var(--bg);
+  color: var(--t1);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* iOS 자동 확대 방지 — input은 반드시 font-size 16px 이상 */
+input, select, textarea {
+  font-size: 16px !important;
+  touch-action: manipulation;
+}
+
+svg { max-width: 100%; display: block; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: var(--chk-bd); border-radius: 3px; }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.fadeUp { animation: fadeUp .35s ease forwards; }
+@keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+.spin { animation: spin .75s linear infinite; display:inline-block; }
+* { box-sizing: border-box; min-width: 0; }
+
+/* ── 글로벌 헤더 ── */
+#global-nav {
+  height: 48px;
+  background: var(--gnav-bg);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--bd);
+  position: sticky; top: 0; z-index: 200;
+}
+.gnav-inner {
+  max-width: 1180px; margin: 0 auto; padding: 0 24px;
+  height: 100%; display: flex; align-items: center; justify-content: space-between;
+}
+.gnav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.gnav-logo-img { height: 28px; width: auto; display: block; }
+.gnav-logo-sub { font-size: 12px; color: var(--t3); font-weight: 500; }
+.gnav-right { font-size: 12px; color: var(--t3); font-weight: 500; }
+
+/* ── 반응형 ── */
+@media (max-width: 767px) {
+  .gnav-right, .gnav-logo-sub { display: none; }
+  .gnav-inner { padding: 0 16px; }
+  .r-layout { grid-template-columns: 1fr !important; padding: 14px 16px 60px !important; gap: 14px !important; }
+  .r-sticky  { position: static !important; top: auto !important; }
+  .r-hdr     { padding: 12px 16px !important; }
+  .r-2col    { grid-template-columns: 1fr !important; }
+  .r-legend  { font-size: 12px !important; gap: 8px !important; }
+  .r-layout-pad { padding: 0 16px 16px !important; }
+}
+@media (max-width: 400px) {
+  .r-layout { padding: 10px 12px 60px !important; }
+}
+
+/* ═══ EZ Global Nav + Footer (자동 주입) ═══════════════════════════ */
+.ez-nav {
+  height: auto;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  position: sticky; top: 0; z-index: 9999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+               'Noto Sans KR', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-nav { background: rgba(28,28,30,0.92); border-color: rgba(255,255,255,0.08); }
+}
+.ez-nav-inner {
+  max-width: 1080px; margin: 0 auto; padding: 7px 20px 0;
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+.ez-nav-logo { display: flex; align-items: center; text-decoration: none; padding: 2px 0 10px; }
+.ez-nav-logo img { height: 26px; width: auto; display: block; }
+.ez-nav-back {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 14px; font-weight: 500;
+  color: #0071E3; text-decoration: none; transition: opacity .15s;
+}
+@media (prefers-color-scheme: dark) { .ez-nav-back { color: #0A84FF; } }
+.ez-nav-back:hover { opacity: .7; }
+.ez-nav-back svg { width: 14px; height: 14px; flex-shrink: 0; }
+.ez-nav-svc-links { display: flex; align-items: center; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; width: 100%; margin-left: 0; padding-bottom: 4px; }
+.ez-nav-svc-links::-webkit-scrollbar { display: none; }
+.ez-nav-svc-link { flex-shrink: 0; padding: 5px 10px; border-radius: 6px; font-size: 13px; font-weight: 500; color: #6E6E73; text-decoration: none; white-space: nowrap; transition: all 0.12s; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link { color: #AEAEB2; } }
+.ez-nav-svc-link:hover { background: rgba(0,0,0,0.06); color: #1D1D1F; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link:hover { background: rgba(255,255,255,0.08); color: #F5F5F7; } }
+.ez-nav-svc-link.active { background: rgba(0,113,227,0.08); color: #0071E3; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link.active { background: rgba(10,132,255,0.14); color: #0A84FF; } }
+
+/* ── EZ Footer ──────────────────────────────────────────────────── */
+.ez-footer {
+  background: #FFFFFF;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding: 36px 20px 20px;
+  margin-top: 60px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+               'Noto Sans KR', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer { background: #1C1C1E; border-color: rgba(255,255,255,0.08); }
+}
+.ez-footer-inner {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 28px;
+}
+.ez-footer-top {
+  display: flex; flex-direction: column; gap: 24px;
+}
+@media (min-width: 640px) {
+  .ez-footer-top { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+}
+.ez-footer-brand { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+.ez-footer-brand img { height: 22px; width: auto; display: block; }
+.ez-footer-brand-desc {
+  font-size: 13px; line-height: 1.65;
+  color: #3C3C3E;
+}
+@media (prefers-color-scheme: dark) { .ez-footer-brand-desc { color: #AEAEB2; } }
+.ez-footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
+.ez-footer-col { display: flex; flex-direction: column; gap: 10px; }
+.ez-footer-col-title {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase;
+  color: #1D1D1F;
+}
+@media (prefers-color-scheme: dark) { .ez-footer-col-title { color: #F5F5F7; } }
+.ez-footer-col a {
+  font-size: 13px; color: #3C3C3E;
+  text-decoration: none; transition: color .15s;
+}
+.ez-footer-col a:hover { color: #0071E3; }
+@media (prefers-color-scheme: dark) {
+  .ez-footer-col a { color: #AEAEB2; }
+  .ez-footer-col a:hover { color: #0A84FF; }
+}
+.ez-footer-bottom {
+  font-size: 11px; color: #AEAEB2;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding-top: 20px; line-height: 1.8;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer-bottom { border-color: rgba(255,255,255,0.08); color: #636366; }
+}
+/* ══════════════════════════════════════════════════════════════════ */
+
+
+/* ── Footer Books ─────────────────────────────────────────── */
+.ez-footer-books{display:flex;gap:20px;flex-wrap:wrap;}
+.ez-footer-book{display:flex;gap:10px;align-items:flex-start;}
+.ez-footer-book-cover{flex-shrink:0;width:130px;border-radius:6px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.15);display:block;background:transparent;}
+.ez-footer-book-cover img{width:100%;display:block;}
+.ez-footer-book-info{display:flex;flex-direction:column;gap:3px;}
+.ez-footer-book-title{font-size:11px;font-weight:700;color:#1D1D1F;line-height:1.4;margin-bottom:3px;}
+@media(prefers-color-scheme:dark){.ez-footer-book-title{color:#F5F5F7;}}
+.ez-footer-book-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#AEAEB2;margin-top:5px;}
+.ez-footer-book-btns{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;}
+.ez-footer-book-btn{font-size:11px;color:#3C3C3E;text-decoration:none;transition:color .12s;white-space:nowrap;}
+.ez-footer-book-btn:hover{background:#0071E3;color:#fff;}
+@media(prefers-color-scheme:dark){
+  .ez-footer-book-btn{background:rgba(255,255,255,.1);color:#AEAEB2;}
+  .ez-footer-book-btn:hover{background:#0A84FF;color:#fff;}
+}
+</style>
+</head>
+<body>
+<nav class="ez-nav" aria-label="글로벌 네비게이션">
+  <div class="ez-nav-inner">
+    <a href="/" class="ez-nav-logo" aria-label="EZLONG 홈">
+      <picture>
+        <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+        <img src="logo.png" alt="EZLONG">
+      </picture>
+    </a>
+    <div class="ez-nav-svc-links">
+      <a href="/atmr-dashboard.html"        class="ez-nav-svc-link">스윙 시그널</a>
+      <a href="/chart-analysis.html"        class="ez-nav-svc-link">AI 차트분석</a>
+      <a href="/analyst-reports.html"        class="ez-nav-svc-link">핵심기업 목표주가</a>
+      
+      <a href="/market-cycle.html"          class="ez-nav-svc-link">Market Cycle</a>
+      <a href="/dca-simulator.html"         class="ez-nav-svc-link">DCA 시뮬레이터</a>
+      <a href="/portfolio-manager.html"     class="ez-nav-svc-link">포트폴리오 복리</a>
+      <a href="/tax-account-simulator.html" class="ez-nav-svc-link">절세 계좌</a>
+      <a href="/compound-calculator.html"   class="ez-nav-svc-link">복리 계산기</a>
+      <a href="/retirement-calculator.html" class="ez-nav-svc-link active">은퇴 계산기</a>
+      <a href="/backtest.html"              class="ez-nav-svc-link">백테스트</a>
+      <a href="/risk-diagnostic.html"       class="ez-nav-svc-link">투자성향 테스트</a>
+      <a href="/auto-dca-guide.html"        class="ez-nav-svc-link">DCA 가이드</a>
+    </div>
+  </div>
+</nav>
+
+
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useCallback, useRef, useEffect, memo } = React;
+
+/* ═══════════════════════════════════════════
+   CONSTANTS
+═══════════════════════════════════════════ */
+const EX_RATE = 1380; // 원/달러 (2026년 5월 기준)
+
+// badgeBg: 불투명 단색 — 라이트/다크 무관하게 흰 텍스트와 충분한 대비
+const SCENARIOS = [
+  { label: '보수적',   rate: 7,  badgeBg: '#0052CC', desc: 'S&P500 역사 평균 수준 (채권+주식 혼합 가정)' },
+  { label: '중간',     rate: 14, badgeBg: '#1A7030', desc: 'QQQ 나스닥100 장기 평균 수준', recommended: true },
+  { label: '공격적',   rate: 21, badgeBg: '#92400E', desc: '나스닥100 최고 구간 수준 (낙관적 시나리오)' },
+];
+
+const WITHDRAWAL_SCENARIOS = [
+  { rate: 4,  color: '#FF9500', label: '연 4% 수익 (채권형)' },
+  { rate: 7,  color: '#34AADC', label: '연 7% 수익 (배당형)' },
+  { rate: 14, color: '#30D158', label: '연 14% 수익 (S&P500형)' },
+  { rate: 21, color: '#BF5AF2', label: '연 21% 수익 (나스닥100형)' },
+];
+
+/*
+  calcDynamicTargets — 4단계 월 수령 목표 동적 계산
+  ★ 최고값 기준: 현재 자산을 14%(중간 시나리오) CAGR로 운용했을 때
+    추가 투자 없이 달성 가능한 월 수령액 (= 14% 컬럼 최상단 행이 '달성가능')
+  ★ 현재 자산이 없으면 기본 타이어 반환
+  반환: 내림차순 4개 배열
+*/
+function calcDynamicTargets(currentAssetMan, yearsLeft, wdPct){
+  if(yearsLeft <= 0) return [300, 200, 100, 50];
+
+  // 14% CAGR × 현재자산만으로 달성 가능한 은퇴 자산
+  const maxAsset = sN(currentAssetMan) * Math.pow(1.14, yearsLeft); // 만원
+  const rawMax   = maxAsset * (sN(wdPct) / 100) / 12;              // 만원/월
+
+  // 현재 자산이 없거나 미미하면 기본 타이어
+  if(rawMax < 30) return [300, 200, 100, 50];
+
+  // 반올림 단위
+  const unit = rawMax >= 2000 ? 500 : rawMax >= 500 ? 100 : rawMax >= 100 ? 50 : 10;
+  const maxV = Math.max(unit, Math.ceil(rawMax / unit) * unit);
+
+  // 6:3:1.5:1 비율로 4단계 내림차순
+  const snap = (v) => Math.max(unit, Math.round(v / unit) * unit);
+  const tiers = [...new Set([snap(maxV/6), snap(maxV/3), snap(maxV/1.5), maxV])];
+  return tiers.sort((a, b) => b - a);
+}
+
+// 연간 인출률 옵션
+const WD_RATES = [
+  { pct: 4,  label: '연 4%',  sub: '트리니티 룰',   safe: true  },
+  { pct: 8,  label: '연 8%',  sub: '중간 인출',      safe: false },
+  { pct: 10, label: '연 10%', sub: '공격적 인출',    safe: false },
+  { pct: 15, label: '연 15%', sub: '매우 공격적',    safe: false },
+];
+
+/* ═══════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════ */
+function sN(v, fb=0){ const n=Number(v); return isNaN(n)||!isFinite(n)?fb:n; }
+
+function fKRW(v){
+  const n=Number(v); if(isNaN(n)||!isFinite(n)||n===0) return '0원';
+  const s=n<0?'-':'', a=Math.abs(n);
+  if(a>=1e8){ const e=Math.floor(a/1e8), m=Math.floor((a%1e8)/1e4);
+    return `${s}${e}억${m>0?' '+m.toLocaleString()+'만':''}원`; }
+  return `${s}${Math.floor(a/1e4).toLocaleString()}만원`;
+}
+
+function fMan(v){
+  const n=Number(v); if(isNaN(n)||n===0) return '0원';
+  const s=n<0?'-':'', a=Math.abs(n);
+  if(a>=10000) return `${s}${(a/10000).toFixed(1)}억원`;
+  return `${s}${a.toLocaleString()}만원`;
+}
+// 숫자와 단위를 분리 — 모바일 표에서 줄 나눔에 사용
+function fManSplit(v){
+  const n=Number(v); if(isNaN(n)||n===0) return {num:'0', unit:'원'};
+  const s=n<0?'-':'', a=Math.abs(n);
+  if(a>=10000) return {num:`${s}${(a/10000).toFixed(1)}`, unit:'억원'};
+  return {num:`${s}${a.toLocaleString()}`, unit:'만원'};
+}
+
+/* ═══════════════════════════════════════════
+   ALGORITHMS
+═══════════════════════════════════════════ */
+function calcReverseDCA(targetMan, currentAge, retireAge, currentAssetMan, annualRate){
+  const years = retireAge - currentAge;
+  if(years <= 0) return null;
+  const n = years * 12;
+  const r = sN(annualRate) / 100 / 12;
+  const FV = (sN(targetMan) * 1e4) / EX_RATE;
+  const PV = (sN(currentAssetMan) * 1e4) / EX_RATE;
+  let mUSD;
+  if(r < 1e-12){ mUSD = (FV - PV) / n; }
+  else { const gf=Math.pow(1+r,n); mUSD = (FV - PV*gf) / ((gf-1)/r); }
+  return Math.round(mUSD * EX_RATE / 1e4);
+}
+
+// wdPct: 연간 인출률 (%, 기본 4)
+function calcWithdrawalMonthly(assetMan, wdPct=4){ return Math.round(sN(assetMan) * (wdPct/100) / 12); }
+function calcTargetFromWithdrawal(mMan, wdPct=4){ return Math.round(sN(mMan) * 12 / (wdPct/100)); }
+function calcFourPct(assetMan){ return calcWithdrawalMonthly(assetMan, 4); } // 하위 호환
+// 연간 인출액(만원/년) + 인출률(%) → 필요 은퇴 자산(만원)
+function calcTargetFromAnnual(annualMan, wdPct=4){ return annualMan>0 ? Math.round(sN(annualMan)*100/wdPct) : 0; }
+
+// 순방향 계산: 현재자산 + 월 투자 → 은퇴 시 자산(만원)
+function calcForwardAsset(currentAssetMan, monthlyBudgetMan, yearsLeft, cagr){
+  if(yearsLeft <= 0) return sN(currentAssetMan);
+  const mr = sN(cagr)/100/12;
+  const n = yearsLeft * 12;
+  const gf = Math.pow(1+mr, n);
+  const startUSD = sN(currentAssetMan)*1e4/EX_RATE;
+  const mUSD     = sN(monthlyBudgetMan)*1e4/EX_RATE;
+  const finalUSD = mr < 1e-12
+    ? startUSD + mUSD * n
+    : startUSD * gf + mUSD * (gf-1) / mr;
+  return Math.round(finalUSD * EX_RATE / 1e4);
+}
+
+function calcAccumulation(currentAge, retireAge, currentAssetMan, monthlyMan, annualRate){
+  const years = retireAge - currentAge; if(years<=0) return [];
+  const mr = sN(annualRate)/100/12;
+  const startUSD = (sN(currentAssetMan)*1e4)/EX_RATE;
+  const mUSD = Math.max(0, sN(monthlyMan)*1e4/EX_RATE);
+  let val=startUSD, inv=startUSD;
+  const rows=[];
+  for(let m=1; m<=years*12; m++){
+    val=(val+mUSD)*(1+mr); inv+=mUSD;
+    if(m%12===0){
+      const tv=Math.max(0,Math.round(val*EX_RATE));
+      const ti=Math.round(inv*EX_RATE);
+      const ii=Math.round(startUSD*EX_RATE);
+      const di=Math.round((inv-startUSD)*EX_RATE);
+      rows.push({ age:currentAge+m/12, year:m/12,
+        totalValue:tv, totalInvested:ti,
+        initialInvested:ii, dcaInvested:di, profit:Math.max(0,tv-ti) });
+    }
+  }
+  return rows;
+}
+
+function calcWithdrawalSim(assetMan, monthlyWdMan, annualRate, totalYears=30){
+  const mr=sN(annualRate)/100/12;
+  let val=sN(assetMan)*1e4;
+  const mWd=sN(monthlyWdMan)*1e4;
+  const rows=[{ year:0, assetMan:sN(assetMan) }];
+  let exhaustedYear=null;
+  for(let m=1; m<=totalYears*12; m++){
+    val=(val-mWd)*(1+mr);
+    if(val<=0&&exhaustedYear===null){ exhaustedYear=parseFloat((m/12).toFixed(1)); val=0; }
+    if(m%12===0) rows.push({ year:m/12, assetMan:Math.max(0,Math.round(val/1e4)) });
+  }
+  return { rows, exhaustedYear };
+}
+
+/* ═══════════════════════════════════════════
+   PRIMITIVE UI
+═══════════════════════════════════════════ */
+function Card({children, style, className}){
+  return <div className={className} style={{
+    background:'var(--card)', borderRadius:'var(--r)',
+    boxShadow:'0 1px 6px rgba(0,0,0,.08)', border:'1px solid var(--bd)', ...style
+  }}>{children}</div>;
+}
+
+/*
+  Badge — 불투명 배경 + 흰색 텍스트
+  라이트/다크 모드 모두 동일한 명도 대비 보장
+*/
+function Badge({ children, bg='#1A7030' }){
+  return <span style={{
+    fontSize:13, fontWeight:700, padding:'3px 10px', borderRadius:6,
+    background:bg, color:'#FFFFFF',
+    display:'inline-block', letterSpacing:'.01em', lineHeight:1.5, whiteSpace:'nowrap',
+  }}>{children}</span>;
+}
+
+const INP_STYLE = {
+  width:'100%', padding:'11px 14px',
+  background:'var(--inp-bg)',
+  border:'1.5px solid var(--bd)',
+  borderRadius:'var(--r-sm)',
+  fontFamily:'var(--mono)',
+  color:'var(--t1)',
+  outline:'none',
+  transition:'border-color .15s, box-shadow .15s',
+};
+
+const NumInput = memo(function NumInput({ value, onChange, color='green', style }){
+  const [f, setF] = useState(false);
+  const [raw, setRaw] = useState('');
+  const ac = color==='blue' ? 'var(--bl)' : 'var(--gr)';
+  const as = color==='blue' ? 'var(--bl-s)' : 'var(--gr-s)';
+  return <input type="number" inputMode="numeric" min="0" placeholder="0"
+    value={f ? raw : (value>0 ? String(value) : '')}
+    onChange={e=>{ const v=e.target.value.replace(/[^0-9]/g,''); setRaw(v); onChange(v===''?0:Number(v)); }}
+    onFocus={()=>{ setF(true); setRaw(''); }}  /* 터치 시 기존값 클리어 → 새 숫자 바로 입력 */
+    onBlur={()=>{ setF(false); if(raw===''){ /* 아무것도 안 입력하면 원래값 유지 */ } }}
+    style={{...INP_STYLE, ...(f?{borderColor:ac, boxShadow:`0 0 0 3px ${as}`}:{}), ...style}}/>;
+});
+
+function Btn({ children, onClick, disabled, style }){
+  const [h, setH] = useState(false);
+  return <button type="button" onClick={onClick} disabled={disabled}
+    onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
+    style={{
+      display:'inline-flex', alignItems:'center', justifyContent:'center',
+      width:'100%', padding:'15px', borderRadius:'var(--r-sm)',
+      fontSize:16, fontWeight:700, border:'none', fontFamily:'var(--font)',
+      background: h&&!disabled ? '#1A7030' : 'var(--gr)',
+      color:'white', boxShadow:'0 2px 10px rgba(52,199,89,.35)',
+      cursor: disabled?'not-allowed':'pointer',
+      opacity: disabled?.45:1, transition:'all .15s', ...style
+    }}>{children}</button>;
+}
+
+/* ═══════════════════════════════════════════
+   SVG 누적 자산 바 차트
+═══════════════════════════════════════════ */
+function AccumChart({ data }){
+  const wrapRef=useRef(null);
+  const [W, setW]=useState(0);
+  const [tip, setTip]=useState(null);
+  const [mxy, setMxy]=useState({x:0,y:0});
+  useEffect(()=>{
+    const el=wrapRef.current; if(!el) return;
+    const obs=new ResizeObserver(([e])=>setW(e.contentRect.width||e.target.offsetWidth));
+    obs.observe(el);
+    const init=el.getBoundingClientRect().width||el.offsetWidth||el.clientWidth;
+    if(init>0) setW(init);
+    return ()=>obs.disconnect();
+  },[]);
+  const n=data.length;
+  const H=W<500?270:390;
+  const mg=W<500?{t:30,r:8,b:36,l:50}:{t:38,r:14,b:42,l:64};
+  const cW=W-mg.l-mg.r, cH=H-mg.t-mg.b;
+  if(!W||!n) return <div ref={wrapRef} style={{width:'100%',height:H,background:'var(--inp-bg)',borderRadius:8}}/>;
+  const maxV=Math.max(...data.map(d=>d.totalValue),1);
+  const mag=Math.pow(10,Math.floor(Math.log10(maxV/5)));
+  const step=Math.ceil((maxV/5)/mag)*mag;
+  const nMax=Math.ceil(maxV/step)*step;
+  const ticks=[]; for(let i=0;i<=5;i++) ticks.push(step*i);
+  const yPx=v=>cH-(v/nMax)*cH;
+  const hPx=v=>(v/nMax)*cH;
+  const grpW=cW/n, bW=Math.max(4,grpW*0.65), skip=Math.ceil(n/15);
+  const fTick=v=>v>=1e8?`${(v/1e8).toFixed(0)}억`:v>=1e4?`${(v/1e4).toFixed(0)}만`:'0';
+  const fLbl=v=>v>=1e8?`${(v/1e8).toFixed(1)}억`:v>=1e4?`${Math.floor(v/1e4)}만`:'';
+  const onMove=e=>{ const r=wrapRef.current.getBoundingClientRect(); setMxy({x:e.clientX-r.left,y:e.clientY-r.top}); };
+  return (
+    <div ref={wrapRef} style={{position:'relative',width:'100%',height:H,overflow:'hidden'}}
+      onMouseMove={onMove} onMouseLeave={()=>setTip(null)}>
+      <svg width={W} height={H} style={{display:'block',maxWidth:'100%'}}>
+        <g transform={`translate(${mg.l},${mg.t})`}>
+          {ticks.map((t,i)=>(
+            <g key={i}>
+              <line x1={0} y1={yPx(t)} x2={cW} y2={yPx(t)} stroke="var(--chart-grid)" strokeWidth={1}/>
+              <text x={-7} y={yPx(t)+4} textAnchor="end" fontSize={11} fill="var(--t3)" fontFamily="var(--mono)">{fTick(t)}</text>
+            </g>
+          ))}
+          {data.map((d,i)=>{
+            const hi=hPx(d.initialInvested||0), hd=hPx(d.dcaInvested||0), hp=hPx(d.profit||0);
+            const tot=hi+hd+hp, grpX=i*grpW, x=grpX+(grpW-bW)/2, showLbl=i%skip===0||i===n-1;
+            return (
+              <g key={d.age} onMouseEnter={()=>setTip(d)} onMouseLeave={()=>setTip(null)}>
+                {hi>0&&<rect x={x} y={cH-hi} width={bW} height={hi} fill="#FF6B6B"/>}
+                {hd>0&&<rect x={x} y={cH-hi-hd} width={bW} height={hd} fill="#FFB347"/>}
+                {hp>0&&<rect x={x} y={cH-tot} width={bW} height={hp} fill="#30D158" rx={2} ry={2}/>}
+                {showLbl&&d.totalValue>0&&tot>8&&(
+                  <text x={x+bW/2} y={cH-tot-6} textAnchor="end" dominantBaseline="middle"
+                    transform={`rotate(90,${x+bW/2},${cH-tot-6})`}
+                    fontSize={10} fontWeight={700} fill="var(--t1)" fontFamily="var(--mono)">{fLbl(d.totalValue)}</text>
+                )}
+                {showLbl&&<text x={grpX+grpW/2} y={cH+14} textAnchor="middle" fontSize={11} fill="var(--t3)">{d.age}</text>}
+              </g>
+            );
+          })}
+          <line x1={0} y1={cH} x2={cW} y2={cH} stroke="var(--chart-xax)" strokeWidth={1}/>
+          <text x={cW/2} y={cH+32} textAnchor="middle" fontSize={12} fill="var(--t3)">나이</text>
+        </g>
+      </svg>
+      {tip&&(
+        <div style={{position:'absolute',left:Math.min(mxy.x+14,W-185),top:Math.max(mxy.y-100,4),
+          background:'var(--tip-bg)',borderRadius:10,padding:'10px 14px',
+          boxShadow:'0 4px 20px rgba(0,0,0,.22)',border:'1px solid var(--bd)',
+          fontSize:13,lineHeight:1.7,pointerEvents:'none',zIndex:10,minWidth:168}}>
+          <div style={{fontWeight:700,marginBottom:4,color:'var(--t1)'}}>{tip.age}세 기준</div>
+          <div style={{color:'var(--t2)'}}>총 자산: <strong style={{color:'var(--gr-dk)'}}>{fKRW(tip.totalValue)}</strong></div>
+          <div style={{color:'var(--t2)'}}>복리 수익: <strong style={{color:'var(--gr-dk)'}}>{fKRW(tip.profit)}</strong></div>
+          <div style={{color:'var(--t2)'}}>월 적립 누계: {fKRW(tip.dcaInvested)}</div>
+          <div style={{color:'var(--t2)'}}>초기 투자금: {fKRW(tip.initialInvested)}</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   SVG 인출 지속성 라인 차트
+═══════════════════════════════════════════ */
+function WithdrawalLineChart({ assetMan, monthlyWdMan, retireAge }){
+  const wrapRef=useRef(null);
+  const [W, setW]=useState(0);
+  useEffect(()=>{
+    const el=wrapRef.current; if(!el) return;
+    const obs=new ResizeObserver(([e])=>setW(e.contentRect.width||e.target.offsetWidth));
+    obs.observe(el);
+    const init=el.getBoundingClientRect().width||el.offsetWidth||el.clientWidth;
+    if(init>0) setW(init);
+    return ()=>obs.disconnect();
+  },[]);
+
+  // 80세까지, 최소 5년
+  const rAge = sN(retireAge, 60);
+  const totalYears = Math.max(5, 80 - rAge);
+
+  const simData=WITHDRAWAL_SCENARIOS.map(s=>({...s,...calcWithdrawalSim(assetMan,monthlyWdMan,s.rate,totalYears)}));
+
+  // 높이 2배
+  const H=W<500?440:560;
+  const mg=W<500?{t:14,r:56,b:52,l:54}:{t:14,r:72,b:60,l:68};
+  const cW=W-mg.l-mg.r, cH=H-mg.t-mg.b;
+  if(!W) return <div ref={wrapRef} style={{width:'100%',height:H,background:'var(--inp-bg)',borderRadius:8}}/>;
+
+  const maxV=Math.max(...simData.flatMap(d=>d.rows.map(r=>r.assetMan)),1);
+  const mag=Math.pow(10,Math.floor(Math.log10(maxV/4)));
+  const step=Math.ceil((maxV/4)/mag)*mag;
+  const nMax=Math.ceil(maxV/step)*step;
+  const ticks=[]; for(let i=0;i<=4;i++) ticks.push(step*i);
+  const yPx=v=>cH-(v/nMax)*cH;
+  const xPx=yr=>(yr/totalYears)*cW;
+  const fTick=v=>v>=10000?`${(v/10000).toFixed(0)}억`:v>=1000?`${(v/1000).toFixed(0)}천만`:v>0?`${v}만`:'0';
+  const toPath=rows=>rows.map((r,i)=>`${i===0?'M':'L'}${xPx(r.year).toFixed(1)},${yPx(r.assetMan).toFixed(1)}`).join(' ');
+
+  // x축 레이블: 모바일 너비에 따라 간격 조정 (겹침 방지)
+  const xStep = W < 420 ? 10 : 5;
+  const xLabels=[];
+  for(let yr=0; yr<=totalYears; yr+=xStep) xLabels.push(yr);
+  if(xLabels[xLabels.length-1]!==totalYears) xLabels.push(totalYears);
+
+  return (
+    <div>
+      <div ref={wrapRef} style={{width:'100%',height:H,overflow:'visible'}}>
+        <svg width={W} height={H} style={{display:'block',maxWidth:'100%',overflow:'visible'}}>
+          <g transform={`translate(${mg.l},${mg.t})`}>
+            {ticks.map((t,i)=>(
+              <g key={i}>
+                <line x1={0} y1={yPx(t)} x2={cW} y2={yPx(t)} stroke="var(--chart-grid)" strokeWidth={1}/>
+                <text x={-7} y={yPx(t)+4} textAnchor="end" fontSize={11} fill="var(--t3)" fontFamily="var(--mono)">{fTick(t)}</text>
+              </g>
+            ))}
+
+            {/* 라인 경로 */}
+            {simData.map((s,i)=>(
+              <path key={i} d={toPath(s.rows)} fill="none" stroke={s.color} strokeWidth={2.5} strokeLinejoin="round"/>
+            ))}
+
+            {/* 최종 잔액 레이블 */}
+            {simData.map((s,i)=>{
+              const lastRow = s.rows[s.rows.length-1];
+              if(!lastRow || lastRow.assetMan <= 0) return null;
+              const x = xPx(lastRow.year);
+              const y = yPx(lastRow.assetMan);
+              return (
+                <g key={`lbl-${i}`}>
+                  <circle cx={x} cy={y} r={4} fill={s.color}/>
+                  <text x={x+8} y={y+4} fontSize={11} fontWeight={700} fill={s.color} fontFamily="var(--mono)">
+                    {fTick(lastRow.assetMan)}
+                  </text>
+                </g>
+              );
+            })}
+
+            {/* X축 선 */}
+            <line x1={0} y1={cH} x2={cW} y2={cH} stroke="var(--chart-xax)" strokeWidth={1}/>
+
+            {/* X축 레이블: 년 + 나이 */}
+            {xLabels.map(yr=>(
+              <g key={yr}>
+                <text x={xPx(yr)} y={cH+16} textAnchor="middle" fontSize={11} fill="var(--t3)">{yr}년</text>
+                <text x={xPx(yr)} y={cH+30} textAnchor="middle" fontSize={10} fill="var(--t3)" opacity={0.75}>
+                  {rAge+yr}
+                </text>
+              </g>
+            ))}
+
+            <text x={cW/2} y={cH+46} textAnchor="middle" fontSize={12} fill="var(--t3)">은퇴 후 경과 연수 / 나이</text>
+          </g>
+        </svg>
+      </div>
+      <div className="r-legend" style={{display:'flex',gap:16,justifyContent:'center',marginTop:12,flexWrap:'wrap'}}>
+        {simData.map((s,i)=>{
+          const lastRow = s.rows[s.rows.length-1];
+          const finalAmt = lastRow ? lastRow.assetMan : 0;
+          return (
+            <div key={i} style={{display:'flex',alignItems:'center',gap:6,fontSize:13,color:'var(--t2)'}}>
+              <div style={{width:22,height:3,background:s.color,borderRadius:2,flexShrink:0}}/>
+              <span>
+                {s.label}
+                {s.exhaustedYear
+                  ? <span style={{color:'#FF3B30',fontWeight:700}}> — {s.exhaustedYear}년 후 소진</span>
+                  : <span style={{color:'var(--gr-dk)',fontWeight:700}}> — {totalYears}년 후 {fTick(finalAmt)} 잔존</span>
+                }
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   결과 그리드 — 순방향: CAGR별 은퇴자산 × 인출률 = 월 수령액
+═══════════════════════════════════════════ */
+const WD_TABLE_RATES_DISPLAY = [15, 10, 8, 4]; // 내림차순
+const WD_RATE_LABELS = { 15:'매우 공격적', 10:'공격적', 8:'중간', 4:'트리니티 룰' };
+
+function ResultsGrid({ gridData, withdrawalRate, onRateChange, selectedScenario, onScenarioSelect }){
+  const COL = '1fr 1fr 1fr 1fr'; // 인출률 행 + 3 CAGR 열
+  const HCOL = '1.3fr 1fr 1fr 1fr'; // 헤더용
+
+  return (
+    <Card style={{overflow:'hidden', marginBottom:20}} className="fadeUp">
+      {/* 헤더 */}
+      <div style={{padding:'18px 20px 14px', borderBottom:'1px solid var(--bd)'}}>
+        <div style={{
+          fontSize:18, fontWeight:800, lineHeight:1.45,
+          marginBottom:12, letterSpacing:'-.01em', color:'var(--gr-dk)',
+        }}>
+          "은퇴 후 월 얼마를 인출하면,<br/>
+          <span style={{color:'var(--bl-dk)'}}>주식 자산 총액이 줄어들지 않을까?</span>"
+        </div>
+        <div style={{
+          marginBottom:0, padding:'10px 14px',
+          background:'var(--ok-bg)', border:'1px solid var(--ok-bd)',
+          borderRadius:'var(--r-sm)', fontSize:13, color:'var(--ok-text)',
+          lineHeight:1.75, fontWeight:500,
+        }}>
+          포트폴리오 연수익률 이하로만 꺼내 쓰면 원금이 줄지 않습니다.
+          아래 표에서 <strong>열(수익률)</strong>을 클릭해 시나리오를 선택하고,
+          <strong> 행(인출률)</strong>을 클릭하면 30년 지속성 시뮬레이션을 확인할 수 있습니다.
+        </div>
+      </div>
+
+      {/* 은퇴 전 CAGR 그룹 헤더 */}
+      <div style={{
+        display:'grid', gridTemplateColumns:HCOL,
+        padding:'6px 20px 2px', background:'var(--inp-bg)',
+      }}>
+        <div/>
+        <div style={{
+          gridColumn:'span 3', fontSize:11, fontWeight:700,
+          color:'var(--gr-dk)', textAlign:'center', letterSpacing:'.04em',
+        }}>
+          ▼ 은퇴 전 연평균 수익률 (CAGR) — 클릭하면 해당 시나리오 기준으로 시뮬레이션
+        </div>
+      </div>
+
+      {/* 컬럼 헤더 */}
+      <div style={{
+        display:'grid', gridTemplateColumns:HCOL,
+        padding:'8px 20px 10px', background:'var(--inp-bg)',
+        borderBottom:'2px solid var(--bd)',
+      }}>
+        <div style={{fontSize:12,color:'var(--t3)',fontWeight:600}}>
+          은퇴 후 인출률<br/>
+          <span style={{fontSize:11,color:'var(--t3)',fontWeight:400}}>▼ 클릭해서 시뮬레이션</span>
+        </div>
+        {gridData.map((col, i)=>(
+          <button key={col.cagr} type="button" onClick={()=>onScenarioSelect(i)}
+            style={{
+              textAlign:'center', cursor:'pointer',
+              background:'none', border:'none', outline:'none', padding:0,
+            }}>
+            <div style={{
+              fontSize:15, fontWeight:800,
+              color: i===selectedScenario ? 'var(--gr-dk)' : 'var(--t2)',
+            }}>{col.cagr}%</div>
+            <div style={{fontSize:11, color: i===selectedScenario ? 'var(--gr-dk)' : 'var(--t3)', marginTop:1}}>
+              {col.label}
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {/* 은퇴 시 예상 자산 행 */}
+      <div style={{
+        display:'grid', gridTemplateColumns:HCOL,
+        padding:'12px 20px', background:'var(--inp-bg2)',
+        borderBottom:'1px solid var(--bd)',
+      }}>
+        <div style={{fontSize:13,color:'var(--t2)',fontWeight:600,display:'flex',alignItems:'center'}}>
+          은퇴 시 예상 자산
+        </div>
+        {gridData.map((col, i)=>{
+          const raw = col.retirementAsset;
+          const isSel = i===selectedScenario;
+          const numStr = raw>=10000 ? `${(raw/10000).toFixed(1)}` : raw.toLocaleString();
+          const unitStr = raw>=10000 ? '억원' : '만원';
+          return (
+            <div key={col.cagr} style={{
+              textAlign:'center',
+              background: isSel ? 'rgba(255,59,48,0.07)' : 'transparent',
+              borderRadius:6, padding:'4px 2px',
+            }}>
+              <div style={{fontSize:14,fontWeight:800,fontFamily:'var(--mono)',
+                color:isSel?'var(--t1)':'var(--t3)',lineHeight:1.15}}>{numStr}</div>
+              <div style={{fontSize:11,color:'var(--t3)',marginTop:1}}>{unitStr}</div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* 인출률별 월 수령액 행 */}
+      {WD_TABLE_RATES_DISPLAY.map((rate, ri)=>{
+        const isSelected = rate === withdrawalRate;
+        const isLast = ri === WD_TABLE_RATES_DISPLAY.length - 1;
+        return (
+          <div key={rate} onClick={()=>onRateChange(rate)}
+            style={{
+              display:'grid', gridTemplateColumns:HCOL,
+              padding:'15px 20px', cursor:'pointer',
+              background: isSelected ? 'var(--gr-s)' : 'transparent',
+              borderBottom: !isLast ? '1px solid var(--bd)' : 'none',
+              transition:'background .15s',
+              alignItems:'center',
+            }}>
+            {/* 인출률 레이블 */}
+            <div>
+              <div style={{fontSize:15,fontWeight:700,color:isSelected?'var(--gr-dk)':'var(--t1)'}}>
+                연 {rate}% 인출
+              </div>
+              <div style={{fontSize:11,color:'var(--t3)',marginTop:2}}>{WD_RATE_LABELS[rate]}</div>
+              {isSelected&&<div style={{fontSize:11,color:'var(--gr-dk)',fontWeight:600,marginTop:3}}>▶ 시뮬레이션 중</div>}
+            </div>
+            {/* 각 CAGR별 월 수령액 — 선택된 열: 분홍 하이라이트 */}
+            {gridData.map((col, i)=>{
+              const inc = col.incomes.find(x=>x.rate===rate);
+              const monthly = inc ? inc.monthly : 0;
+              const isFocus = i===selectedScenario;
+              const cellBg = isFocus
+                ? (isSelected ? 'rgba(255,59,48,0.13)' : 'rgba(255,59,48,0.07)')
+                : 'transparent';
+              const {num, unit} = fManSplit(monthly);
+              const txtColor = isSelected&&isFocus ? 'var(--gr-dk)' : isFocus ? 'var(--t1)' : 'var(--t3)';
+              return (
+                <div key={col.cagr} style={{
+                  textAlign:'center',
+                  background: cellBg,
+                  borderRadius:6, padding:'4px 2px',
+                }}>
+                  <div style={{
+                    fontSize: isFocus ? 20 : 16,
+                    fontWeight:800, fontFamily:'var(--mono)',
+                    color: txtColor, lineHeight:1.15,
+                  }}>{num}</div>
+                  <div style={{fontSize:11,color:'var(--t3)',marginTop:1,lineHeight:1.3}}>
+                    {unit}/월
+                  </div>
+                  {isFocus&&isSelected&&(
+                    <div style={{fontSize:10,color:'var(--t3)',marginTop:2}}>
+                      연 {fKRW(monthly*12*1e4)}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+    </Card>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   연간 인출률 선택 위젯 (결과창 최상단)
+═══════════════════════════════════════════ */
+function WdRateSelector({ value, onChange }){
+  const sel = WD_RATES.find(r=>r.pct===value) || WD_RATES[0];
+  return (
+    <Card style={{padding:'18px 20px', marginBottom:16}} className="fadeUp">
+      <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:12}}>
+        연간 인출률 설정
+        <span style={{
+          marginLeft:10, fontSize:12, fontWeight:500,
+          color:'var(--t3)', verticalAlign:'middle',
+        }}>결과에 즉시 반영됩니다</span>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8}}>
+        {WD_RATES.map(r=>{
+          const isSelected = r.pct===value;
+          return (
+            <button key={r.pct} onClick={()=>onChange(r.pct)}
+              type="button"
+              style={{
+                padding:'12px 6px', borderRadius:'var(--r-sm)',
+                border: isSelected ? '2px solid var(--gr)' : '1.5px solid var(--bd)',
+                background: isSelected ? 'var(--gr-s)' : 'var(--card)',
+                cursor:'pointer', textAlign:'center',
+                transition:'all .15s', outline:'none',
+              }}>
+              <div style={{
+                fontSize:17, fontWeight:800, fontFamily:'var(--mono)',
+                color: isSelected ? 'var(--gr-dk)' : 'var(--t1)',
+                lineHeight:1.2,
+              }}>{r.label}</div>
+              <div style={{fontSize:12,color:'var(--t3)',marginTop:4,lineHeight:1.3}}>{r.sub}</div>
+              {isSelected && r.safe && (
+                <div style={{marginTop:4,fontSize:11,color:'var(--gr-dk)',fontWeight:600}}>기본값</div>
+              )}
+            </button>
+          );
+        })}
+      </div>
+      {value !== 4 && (
+        <div style={{
+          marginTop:12, padding:'11px 14px',
+          background:'var(--warn-bg)', border:'1.5px solid var(--warn-bd)',
+          borderRadius:'var(--r-sm)', fontSize:13,
+          color:'var(--warn-text)', lineHeight:1.65, fontWeight:500,
+        }}>
+          연 {value}% 인출은 트리니티 4% 룰을 초과합니다. 수익률 시나리오에 따라 자산이 조기 소진될 수 있습니다.
+        </div>
+      )}
+    </Card>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   시나리오 테이블
+═══════════════════════════════════════════ */
+function ScenarioTable({ scenarios, selectedIdx, onSelect, withdrawalMonthlyMan, effectiveTarget, wdPct }){
+  return (
+    <Card style={{overflow:'hidden',marginBottom:20}} className="fadeUp">
+      <div style={{padding:'18px 20px 14px',borderBottom:'1px solid var(--bd)'}}>
+        <div style={{fontSize:17,fontWeight:700,color:'var(--t1)',marginBottom:3}}>수익률 시나리오별 필요 월 투자액</div>
+        <div style={{fontSize:13,color:'var(--t2)'}}>행을 클릭하면 해당 시나리오의 성장 차트로 전환됩니다</div>
+      </div>
+
+      {scenarios.map((s,i)=>{
+        const sel=i===selectedIdx, m=s.monthlyMan;
+        const impossible=m===null, done=m!==null&&m<=0;
+        return (
+          <div key={i} onClick={()=>!impossible&&onSelect(i)}
+            style={{display:'flex',alignItems:'center',gap:14,padding:'16px 20px',
+              cursor:impossible?'default':'pointer',
+              background:sel?'var(--gr-s)':'transparent',
+              borderBottom:i<scenarios.length-1?'1px solid var(--bd)':'none',
+              transition:'background .15s'}}>
+            <div style={{width:8,height:8,borderRadius:'50%',flexShrink:0,
+              background:sel?'var(--gr)':'var(--bd)',transition:'background .15s'}}/>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:5,flexWrap:'wrap'}}>
+                <Badge bg={s.badgeBg}>{s.label} {s.rate}%</Badge>
+                {s.recommended&&<Badge bg="#1A5276">권장</Badge>}
+              </div>
+              <div style={{fontSize:13,color:'var(--t2)'}}>{s.desc}</div>
+            </div>
+            <div style={{textAlign:'right',flexShrink:0}}>
+              {impossible ? <div style={{fontSize:13,color:'var(--t3)'}}>계산 불가</div>
+              : done ? <div style={{fontSize:14,fontWeight:700,color:'var(--gr-dk)'}}>이미 달성 가능</div>
+              : (
+                <div>
+                  <div style={{fontSize:22,fontWeight:800,color:'var(--t1)',fontFamily:'var(--mono)',lineHeight:1.1}}>{fMan(m)}</div>
+                  <div style={{fontSize:13,color:'var(--t2)',marginTop:3}}>월 적립 필요</div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+
+      {/* 4% 룰 요약 — 테이블 하단 */}
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',borderTop:'2px solid var(--bd)'}}>
+        <div style={{padding:'16px 20px',borderRight:'1px solid var(--bd)'}}>
+          <div style={{fontSize:13,color:'var(--t2)',marginBottom:5}}>목표 은퇴 자산 (연 {wdPct}% 인출 역산)</div>
+          <div style={{fontSize:18,fontWeight:800,color:'var(--t1)',fontFamily:'var(--mono)'}}>{fKRW(effectiveTarget*1e4)}</div>
+        </div>
+        <div style={{padding:'16px 20px',background:'var(--info-bg)'}}>
+          <div style={{fontSize:13,color:'var(--t2)',marginBottom:5}}>은퇴 후 월 인출 가능액</div>
+          <div style={{fontSize:18,fontWeight:800,color:'var(--info-text)',fontFamily:'var(--mono)'}}>{fMan(withdrawalMonthlyMan)}<span style={{fontSize:13,fontWeight:400,color:'var(--t3)',marginLeft:3}}>/월</span></div>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   시작 시점 비교 인사이트 카드
+═══════════════════════════════════════════ */
+/*
+  InsightCard — 지금 시작 vs 5년/10년 후 시작했을 때
+  은퇴 시 쌓이는 자산 차이를 순방향으로 직관적으로 보여줌
+*/
+function InsightCard({ currentAge, retireAge, currentAssetMan, monthlyBudget }){
+  // 14% CAGR 기준 순방향 계산
+  const assetNow  = calcForwardAsset(currentAssetMan, monthlyBudget, retireAge-currentAge,    14);
+  const asset5    = calcForwardAsset(currentAssetMan, monthlyBudget, retireAge-(currentAge+5), 14);
+  const asset10   = calcForwardAsset(currentAssetMan, monthlyBudget, retireAge-(currentAge+10),14);
+
+  const cases = [
+    { label:'지금 당장 시작',  asset:assetNow, diff:null,            highlight:true },
+    { label:'5년 후 시작',     asset:asset5,   diff:assetNow-asset5  },
+    { label:'10년 후 시작',    asset:asset10,  diff:assetNow-asset10 },
+  ];
+
+  return (
+    <Card style={{padding:'20px'}} className="fadeUp">
+      <div style={{fontSize:17,fontWeight:700,color:'var(--t1)',marginBottom:4}}>
+        지금 시작 안하면 얼마나 손해일까?
+      </div>
+      <div style={{fontSize:13,color:'var(--t2)',marginBottom:16,lineHeight:1.6}}>
+        S&P500 투자(14% CAGR) 기준 — 투자를 미룰수록 복리 기회를 잃는다
+      </div>
+
+      <div style={{display:'flex',flexDirection:'column',gap:10}}>
+        {cases.map((c,i)=>(
+          <div key={i} style={{
+            padding:'14px 16px', borderRadius:'var(--r-sm)',
+            background: c.highlight ? 'var(--ok-bg)' : 'var(--inp-bg)',
+            border: c.highlight ? '1.5px solid var(--ok-bd)' : '1.5px solid transparent',
+          }}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+              <div style={{fontSize:14,fontWeight:c.highlight?700:500,color:c.highlight?'var(--ok-text)':'var(--t2)'}}>
+                {c.label}
+              </div>
+              <div style={{textAlign:'right'}}>
+                <div style={{fontSize:17,fontWeight:800,fontFamily:'var(--mono)',
+                  color:c.highlight?'var(--ok-text)':'var(--t1)'}}>
+                  {fKRW(c.asset*1e4)}
+                </div>
+                <div style={{fontSize:12,color:'var(--t3)',marginTop:2}}>은퇴 시 예상 자산</div>
+              </div>
+            </div>
+            {c.diff!==null&&c.diff>0&&(
+              <div style={{
+                marginTop:8,padding:'7px 10px',
+                background:'var(--warn-bg)',border:'1px solid var(--warn-bd)',
+                borderRadius:7,fontSize:13,color:'var(--warn-text)',fontWeight:600,
+              }}>
+                지금 당장 시작 대비 <strong>{fKRW(c.diff*1e4)} 손해</strong>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div style={{
+        marginTop:14,padding:'13px 15px',
+        background:'var(--warn-bg)',border:'1px solid var(--warn-bd)',
+        borderRadius:'var(--r-sm)',fontSize:13,color:'var(--warn-text)',lineHeight:1.75,fontWeight:500,
+      }}>
+        투자를 5년 미루면 단순히 5년치 수익만 잃는 게 아닙니다. 초반 투자금이 20년 가까이 복리로 불어날 기회를 통째로 잃는 겁니다. 지금 이 순간이 남은 투자 인생에서 가장 이른 시작점입니다.
+      </div>
+    </Card>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   MAIN APP
+═══════════════════════════════════════════ */
+function App(){
+  const [currentAge,      setCurrentAge]      = useState(40);
+  const [retireAge,       setRetireAge]        = useState(60);
+  const [currentAssetMan, setCurrentAssetMan]  = useState(0);
+  const [monthlyBudget,     setMonthlyBudget]      = useState(0);  // 가능한 월 투자 금액(만원)
+  const [withdrawalRate,    setWithdrawalRate]    = useState(4);  // 연간 인출률(%)
+  const [selectedScenario,  setSelectedScenario]  = useState(1);  // 수익률 시나리오 (0=7%,1=14%,2=21%)
+  const [selectedIncomeIdx, setSelectedIncomeIdx] = useState(1);  // 선택된 수령 목표 행
+  const [chartReturnRate,   setChartReturnRate]   = useState(14); // 누적 차트 수익률(%)
+  const [result,            setResult]            = useState(null);
+  const [dirty,             setDirty]             = useState(false);
+  const [btnState,          setBtnState]          = useState('idle'); // 'idle'|'loading'|'done'
+
+  const yearsLeft = retireAge - currentAge;
+  const canCalc = yearsLeft > 0;
+
+  // 80세까지 잔존 자산 (선택된 CAGR 기준)
+  let residualInfo = null;
+  if(result){
+    const totalYears = Math.max(5, 80 - retireAge);
+    const finalAge = retireAge + totalYears;
+    const col = result.gridData[selectedScenario];
+    const sim = calcWithdrawalSim(result.effectiveTarget, result.withdrawalMonthlyMan, col.cagr, totalYears);
+    const lastRow = sim.rows[sim.rows.length-1];
+    residualInfo = {
+      finalAge, cagr: col.cagr,
+      finalAmt: lastRow ? lastRow.assetMan : 0,
+      exhausted: sim.exhaustedYear !== null,
+      exhaustedYear: sim.exhaustedYear,
+    };
+  }
+  const mkSet = setter => v => { setter(v); if(result) setDirty(true); };
+
+  /* ── 순방향 그리드 빌더: CAGR별 은퇴자산 + 인출률별 월 수령액 ── */
+  const WD_TABLE_RATES = [15, 10, 8, 4]; // 내림차순 표시
+
+  const buildForwardGrid = useCallback((budget) => {
+    const yl = retireAge - currentAge;
+    return SCENARIOS.map(s => {
+      const retirementAsset = calcForwardAsset(currentAssetMan, budget, yl, s.rate);
+      const incomes = WD_TABLE_RATES.map(rate => ({
+        rate,
+        monthly: Math.round(retirementAsset * rate / 100 / 12),
+      }));
+      return { cagr: s.rate, label: s.label, retirementAsset, incomes };
+    });
+  }, [currentAge, retireAge, currentAssetMan]);
+
+  // 인출률 행 클릭 → 시뮬레이션 업데이트
+  const handleWdRateChange = useCallback((rate) => {
+    setWithdrawalRate(rate);
+    if(result){
+      const col = result.gridData[selectedScenario];
+      const inc = col.incomes.find(i => i.rate === rate) || col.incomes[3];
+      setResult(prev => ({
+        ...prev,
+        withdrawalMonthlyMan: inc.monthly,
+        effectiveTarget: col.retirementAsset,
+        withdrawalRate: rate,
+      }));
+    }
+  }, [result, selectedScenario]);
+
+  // CAGR 열 클릭 → 시뮬레이션 업데이트 + 차트 갱신
+  const handleScenarioSelect = useCallback((idx) => {
+    setSelectedScenario(idx);
+    if(result){
+      const col = result.gridData[idx];
+      const inc = col.incomes.find(i => i.rate === withdrawalRate) || col.incomes[3];
+      const newChart = calcAccumulation(currentAge, retireAge, currentAssetMan, sN(monthlyBudget), col.cagr);
+      setResult(prev => ({
+        ...prev,
+        chartData: newChart,
+        effectiveTarget: col.retirementAsset,
+        withdrawalMonthlyMan: inc.monthly,
+        chartReturnRate: col.cagr,
+      }));
+    }
+  }, [result, withdrawalRate, monthlyBudget, currentAge, retireAge, currentAssetMan]);
+
+  // 누적 차트 수익률 버튼 변경
+  const handleChartRateChange = useCallback((rate) => {
+    setChartReturnRate(rate);
+    if(result){
+      const newChart = calcAccumulation(currentAge, retireAge, currentAssetMan, sN(monthlyBudget), rate);
+      setResult(prev => ({...prev, chartData: newChart, chartReturnRate: rate}));
+    }
+  }, [result, monthlyBudget, currentAge, retireAge, currentAssetMan]);
+
+  const handleCalc = useCallback(() => {
+    if(btnState === 'loading') return; // 중복 클릭 방지
+    setBtnState('loading');
+
+    // 1.5초 지연 후 계산 (계산 중임을 시각적으로 인지할 시간 확보)
+    setTimeout(() => {
+      const gridData = buildForwardGrid(monthlyBudget);
+      const col = gridData[selectedScenario];
+      const inc = col.incomes.find(i => i.rate === withdrawalRate) || col.incomes[3];
+      const safeRate = [7,14,21].includes(chartReturnRate) ? chartReturnRate : 14;
+      const chartData = calcAccumulation(currentAge, retireAge, currentAssetMan, sN(monthlyBudget), safeRate);
+      setResult({
+        gridData, chartData,
+        withdrawalMonthlyMan: inc.monthly,
+        effectiveTarget: col.retirementAsset,
+        withdrawalRate, chartReturnRate: safeRate,
+      });
+      setDirty(false);
+      setBtnState('done');
+
+      // 1초 후 버튼 원상복귀
+      setTimeout(() => setBtnState('idle'), 1000);
+    }, 1500);
+  }, [currentAge, retireAge, currentAssetMan, monthlyBudget, selectedScenario, withdrawalRate, chartReturnRate, buildForwardGrid, btnState]);
+
+  return (
+    <div>
+      {/* 페이지 헤더 */}
+      <header className="r-hdr" style={{
+        background:'var(--hdr-bg)', backdropFilter:'saturate(180%) blur(20px)',
+        WebkitBackdropFilter:'saturate(180%) blur(20px)',
+        borderBottom:'1px solid var(--bd)',
+        padding:'12px 24px', display:'flex', alignItems:'center',
+        justifyContent:'space-between', position:'sticky', top:48, zIndex:100, gap:12,
+      }}>
+        <div>
+          <h1 style={{fontSize:18,fontWeight:700,color:'var(--t1)',letterSpacing:'-.01em',lineHeight:1.2}}>
+            은퇴 목표 역산 투자액 시뮬레이션
+          </h1>
+          <div style={{fontSize:13,color:'var(--t2)',marginTop:3}}>
+            나이·현재자산·월 투자액 입력 → 은퇴 시 자산 자동 계산 → 인출률별 월 수령액 확인
+          </div>
+        </div>
+      </header>
+
+      {/* 메인 레이아웃 */}
+      <main className="r-layout" style={{
+        maxWidth:1180, margin:'0 auto', padding:'24px 24px 80px',
+        display:'grid', gridTemplateColumns:'370px 1fr', gap:24, alignItems:'start',
+      }}>
+
+        {/* 좌측 입력 패널 */}
+        <div className="r-sticky" style={{position:'sticky',top:130}}>
+          <Card style={{padding:'22px'}}>
+            <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:18,
+              paddingBottom:14,borderBottom:'1px solid var(--bd)'}}>
+              투자 조건 입력
+            </div>
+
+            {/* 나이 */}
+            <div style={{marginBottom:20}}>
+              <div style={{fontSize:13,fontWeight:600,color:'var(--t2)',marginBottom:10}}>나이 설정</div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+                <div>
+                  <div style={{fontSize:13,color:'var(--t3)',marginBottom:6}}>현재 나이</div>
+                  <div style={{display:'flex',alignItems:'center',gap:6}}>
+                    <NumInput value={currentAge} onChange={mkSet(setCurrentAge)} style={{flex:1}}/>
+                    <span style={{fontSize:14,color:'var(--t2)',flexShrink:0,fontWeight:500}}>세</span>
+                  </div>
+                </div>
+                <div>
+                  <div style={{fontSize:13,color:'var(--t3)',marginBottom:6}}>은퇴 목표 나이</div>
+                  <div style={{display:'flex',alignItems:'center',gap:6}}>
+                    <NumInput value={retireAge} onChange={mkSet(setRetireAge)} style={{flex:1}}/>
+                    <span style={{fontSize:14,color:'var(--t2)',flexShrink:0,fontWeight:500}}>세</span>
+                  </div>
+                </div>
+              </div>
+              <div style={{
+                marginTop:10, padding:'10px 14px',
+                background: yearsLeft>0 ? 'var(--ok-bg)' : 'var(--rd-s)',
+                border: yearsLeft>0 ? '1.5px solid var(--ok-bd)' : '1.5px solid rgba(204,34,0,.3)',
+                borderRadius:'var(--r-sm)',
+                fontSize:13, fontWeight:600,
+                color: yearsLeft>0 ? 'var(--ok-text)' : 'var(--rd)',
+              }}>
+                {yearsLeft>0 ? `투자 가능 기간: ${yearsLeft}년 (${yearsLeft*12}개월)` : '은퇴 나이가 현재 나이보다 커야 합니다'}
+              </div>
+            </div>
+
+            {/* 현재 보유 자산 */}
+            <div style={{marginBottom:20}}>
+              <div style={{fontSize:13,fontWeight:600,color:'var(--t2)',marginBottom:10}}>현재 보유 자산</div>
+              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                <NumInput value={currentAssetMan} onChange={mkSet(setCurrentAssetMan)} style={{flex:1}}/>
+                <span style={{fontSize:14,color:'var(--t2)',flexShrink:0,fontWeight:500}}>만원</span>
+              </div>
+              {currentAssetMan>0&&<div style={{fontSize:13,color:'var(--t3)',marginTop:6}}>{fKRW(currentAssetMan*1e4)}</div>}
+            </div>
+
+            {/* 가능한 월 투자 금액 */}
+            <div style={{marginBottom:20}}>
+              <div style={{fontSize:13,fontWeight:600,color:'var(--t2)',marginBottom:4}}>가능한 월 투자 금액</div>
+              <div style={{fontSize:12,color:'var(--t3)',marginBottom:8,lineHeight:1.5}}>
+                입력하면 결과표에서 충분한지 부족한지 바로 확인합니다
+              </div>
+              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                <NumInput value={monthlyBudget} onChange={v=>{ setMonthlyBudget(v); if(result) setDirty(true); }} color="blue" style={{flex:1}}/>
+                <span style={{fontSize:14,color:'var(--t2)',flexShrink:0,fontWeight:500}}>만원/월</span>
+              </div>
+              {monthlyBudget>0&&(
+                <div style={{marginTop:6,fontSize:13,color:'var(--bl-dk)',fontWeight:500}}>
+                  연 {fKRW(monthlyBudget*12*1e4)} 투자 가능
+                </div>
+              )}
+            </div>
+
+
+            {dirty&&(
+              <div style={{marginBottom:14,padding:'10px 14px',
+                background:'var(--warn-bg)',border:'1.5px solid var(--warn-bd)',
+                borderRadius:'var(--r-sm)',fontSize:13,color:'var(--warn-text)',fontWeight:500}}>
+                입력값이 변경되었습니다. 다시 계산해주세요.
+              </div>
+            )}
+
+            <button type="button" onClick={handleCalc}
+              disabled={!canCalc || btnState==='loading'}
+              style={{
+                display:'inline-flex', alignItems:'center', justifyContent:'center',
+                gap:8, width:'100%', padding:'15px',
+                borderRadius:'var(--r-sm)', fontSize:16, fontWeight:700,
+                border:'none', fontFamily:'var(--font)', cursor: (!canCalc||btnState==='loading') ? 'not-allowed' : 'pointer',
+                opacity: !canCalc ? 0.45 : 1,
+                transition:'background .2s, box-shadow .2s',
+                background: btnState==='done' ? '#1A7030'
+                          : btnState==='loading' ? '#40D870'
+                          : 'var(--gr)',
+                color:'white',
+                boxShadow: btnState==='loading'
+                  ? '0 2px 16px rgba(52,199,89,.55)'
+                  : '0 2px 10px rgba(52,199,89,.35)',
+              }}>
+              {btnState==='loading' && (
+                <span className="spin" style={{
+                  width:18, height:18, flexShrink:0,
+                  border:'2.5px solid rgba(255,255,255,0.35)',
+                  borderTop:'2.5px solid white',
+                  borderRadius:'50%',
+                }}/>
+              )}
+              {btnState==='done' && <span style={{fontSize:18}}>✓</span>}
+              {btnState==='loading' ? '계산 중...'
+               : btnState==='done'    ? '계산 완료'
+               :                        '역산 계산하기'}
+            </button>
+          </Card>
+
+        </div>
+
+        {/* 우측 결과 패널 */}
+        <div>
+          {!result ? (
+            <Card style={{padding:'64px 40px',textAlign:'center'}}>
+              <svg width="56" height="56" viewBox="0 0 56 56" fill="none" style={{margin:'0 auto 20px'}}>
+                <rect width="56" height="56" rx="16" fill="var(--gr-s)"/>
+                <path d="M14 42L22 30L30 36L40 20" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="40" cy="16" r="5" fill="var(--gr)" opacity=".3"/>
+                <path d="M14 42h28" stroke="var(--t3)" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+              <div style={{fontSize:18,fontWeight:700,color:'var(--t1)',marginBottom:10}}>
+                투자 조건을 입력하고 계산하기를 눌러주세요
+              </div>
+              <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.8,maxWidth:340,margin:'0 auto'}}>
+                나이와 현재 자산을 입력하고<br/>
+                수익률·인출률을 선택하면<br/>
+                월 수령 목표별 필요 월 투자액을 한눈에 비교합니다
+              </div>
+            </Card>
+          ) : (
+            <>
+              {/* ① 자산 축적 시뮬레이션 — 결과 최상단 */}
+              <Card style={{padding:'18px 20px',marginBottom:20}} className="fadeUp">
+                <div style={{marginBottom:14}}>
+                  <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:4}}>자산 축적을 위한 연평균 수익률 시뮬레이션</div>
+                  <div style={{fontSize:16,fontWeight:700,color:'var(--bl-dk)',marginBottom:12}}>
+                    {yearsLeft}년간 어디에 투자하시겠습니까?
+                  </div>
+                  {/* 수익률 선택 카드 — 3개 독립 카드, 존재감 있게 */}
+                  {(()=>{
+                    const cur = [7,14,21].includes(result.chartReturnRate||chartReturnRate) ? (result.chartReturnRate||chartReturnRate) : 14;
+                    const tabs = [
+                      {r:7,  label:'보수적', desc:'S&P500 평균 수준'},
+                      {r:14, label:'중간',   desc:'QQQ 나스닥 평균'},
+                      {r:21, label:'공격적', desc:'최상 구간 기준'},
+                    ];
+                    return (
+                      <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:14}}>
+                        {tabs.map(t=>{
+                          const sel = t.r===cur;
+                          return (
+                            <button key={t.r} type="button" onClick={()=>handleChartRateChange(t.r)}
+                              style={{
+                                padding:'14px 6px 12px',
+                                borderRadius:'var(--r-sm)',
+                                border: sel ? '2.5px solid var(--gr)' : '1.5px solid var(--bd)',
+                                background: sel ? 'var(--gr)' : 'var(--card)',
+                                cursor:'pointer', outline:'none',
+                                textAlign:'center',
+                                boxShadow: sel
+                                  ? '0 4px 18px rgba(52,199,89,0.42)'
+                                  : '0 1px 4px rgba(0,0,0,.07)',
+                                transition:'all .18s',
+                              }}>
+                              {/* 퍼센트 숫자 — 크고 굵게 */}
+                              <div style={{
+                                fontSize:26, fontWeight:900, fontFamily:'var(--mono)',
+                                lineHeight:1.1,
+                                color: sel ? '#FFFFFF' : 'var(--t1)',
+                              }}>{t.r}%</div>
+                              {/* 레이블 */}
+                              <div style={{
+                                fontSize:13, fontWeight:700, marginTop:4,
+                                color: sel ? 'rgba(255,255,255,0.95)' : 'var(--t2)',
+                              }}>{t.label}</div>
+                              {/* 소설명 */}
+                              <div style={{
+                                fontSize:10, marginTop:3,
+                                color: sel ? 'rgba(255,255,255,0.7)' : 'var(--t3)',
+                              }}>{t.desc}</div>
+                              {/* 선택 안 된 경우 — "탭해서 선택" 힌트 */}
+                              {!sel && (
+                                <div style={{
+                                  marginTop:8,
+                                  fontSize:10, fontWeight:700,
+                                  color:'var(--gr-dk)',
+                                  background:'var(--gr-s)',
+                                  border:'1px solid var(--gr-m)',
+                                  borderRadius:20,
+                                  padding:'3px 8px',
+                                  display:'inline-block',
+                                  lineHeight:1.4,
+                                }}>탭해서 선택</div>
+                              )}
+                              {/* 선택된 경우 — 체크 표시 */}
+                              {sel && (
+                                <div style={{
+                                  marginTop:8, fontSize:13, fontWeight:800,
+                                  color:'rgba(255,255,255,0.9)',
+                                }}>✓ 선택됨</div>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    );
+                  })()}
+                  <div style={{display:'flex',gap:12,flexWrap:'wrap'}}>
+                    {[['#FF6B6B','초기 투자금'],['#FFB347','월 투자액 누계'],['#30D158','복리 수익']].map(([c,l])=>(
+                      <span key={l} style={{display:'flex',alignItems:'center',gap:5,fontSize:13,color:'var(--t2)'}}>
+                        <span style={{width:10,height:10,background:c,borderRadius:2,display:'inline-block',flexShrink:0}}/>
+                        {l}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <AccumChart data={result.chartData}/>
+                {result.chartData.length>0&&(
+                  <div style={{marginTop:14,display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10}} className="r-2col">
+                    {[
+                      {label:'투자 시작', val:result.chartData[0]?.totalValue, sub:'1년차'},
+                      {label:'중간 지점', val:result.chartData[Math.floor(result.chartData.length/2)]?.totalValue, sub:`${Math.floor(result.chartData.length/2)+1}년차`},
+                      {label:'은퇴 시점', val:result.chartData[result.chartData.length-1]?.totalValue, sub:`${result.chartData.length}년차`},
+                    ].map((item,i)=>(
+                      <div key={i} style={{padding:'12px',background:'var(--inp-bg)',borderRadius:'var(--r-sm)',textAlign:'center'}}>
+                        <div style={{fontSize:12,color:'var(--t3)',marginBottom:3}}>{item.label} ({item.sub})</div>
+                        <div style={{fontSize:14,fontWeight:700,color:'var(--t1)',fontFamily:'var(--mono)'}}>{fKRW(item.val)}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Card>
+
+              {/* ② 월 수령액 테이블 */}
+              <ResultsGrid
+                gridData={result.gridData}
+                withdrawalRate={result.withdrawalRate || withdrawalRate}
+                onRateChange={handleWdRateChange}
+                selectedScenario={selectedScenario}
+                onScenarioSelect={handleScenarioSelect}
+              />
+
+              {/* ③ 잔존 자산 강조 박스 — 테이블 바로 아래 */}
+              {residualInfo && (
+                <div style={{
+                  marginBottom:20,
+                  padding:'20px 22px',
+                  borderRadius:'var(--r)',
+                  border: residualInfo.exhausted
+                    ? '2px solid var(--rd)'
+                    : '2px solid var(--gr)',
+                  background: residualInfo.exhausted
+                    ? 'var(--rd-s)'
+                    : 'var(--gr-s)',
+                }} className="fadeUp">
+                  <div style={{fontSize:13,color:'var(--t2)',marginBottom:6}}>
+                    선택 시나리오 ({residualInfo.cagr}% CAGR 기준) —
+                    연 {result.withdrawalRate||4}% 인출 시
+                  </div>
+                  {residualInfo.exhausted ? (
+                    <>
+                      <div style={{fontSize:22,fontWeight:900,color:'var(--rd)',fontFamily:'var(--mono)',marginBottom:4}}>
+                        {residualInfo.exhaustedYear}년 후 자산 소진
+                      </div>
+                      <div style={{fontSize:14,color:'var(--rd)',fontWeight:600}}>
+                        {retireAge + (residualInfo.exhaustedYear||0)}세에 자산이 0이 됩니다.
+                        인출률을 낮추거나 수익률이 높은 포트폴리오가 필요합니다.
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div style={{fontSize:13,color:'var(--t2)',marginBottom:2}}>
+                        {residualInfo.finalAge}세 때 예상 잔존 자산
+                      </div>
+                      <div style={{fontSize:32,fontWeight:900,color:'var(--gr-dk)',fontFamily:'var(--mono)',lineHeight:1.1,marginBottom:4}}>
+                        {fKRW(residualInfo.finalAmt*1e4)}
+                      </div>
+                      <div style={{fontSize:13,color:'var(--ok-text)',fontWeight:600}}>
+                        죽을 때까지 자산이 남아있습니다. 오히려 불어날 수도 있습니다.
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+
+              {/* 4% 룰 인출 시뮬레이션 */}
+              <Card style={{padding:'18px 20px',marginBottom:20}} className="fadeUp">
+                <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:4}}>
+                  은퇴 인출 지속성 시뮬레이션 (연 {result.withdrawalRate||4}% 인출 기준)
+                </div>
+                <div style={{fontSize:13,color:'var(--t2)',marginBottom:18,lineHeight:1.6}}>
+                  은퇴 자산에서 매년 {result.withdrawalRate||4}%를 인출할 때, 포트폴리오 수익률에 따라 30년간 자산이 얼마나 유지되는지 보여줍니다.
+                </div>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:20}} className="r-2col">
+                  <div style={{padding:'18px',background:'var(--ok-bg)',borderRadius:'var(--r-sm)',textAlign:'center',
+                    border:'1.5px solid var(--ok-bd)'}}>
+                    <div style={{fontSize:13,color:'var(--t2)',marginBottom:6}}>목표 은퇴 자산</div>
+                    <div style={{fontSize:21,fontWeight:800,color:'var(--t1)',fontFamily:'var(--mono)',lineHeight:1}}>{fKRW(result.effectiveTarget*1e4)}</div>
+                  </div>
+                  <div style={{padding:'18px',background:'var(--info-bg)',borderRadius:'var(--r-sm)',textAlign:'center',
+                    border:'1.5px solid var(--info-bd)'}}>
+                    <div style={{fontSize:13,color:'var(--t2)',marginBottom:6}}>월 인출액 (연 {result.withdrawalRate||4}% 기준)</div>
+                    <div style={{fontSize:21,fontWeight:800,color:'var(--info-text)',fontFamily:'var(--mono)',lineHeight:1}}>{fMan(result.withdrawalMonthlyMan)}</div>
+                    <div style={{fontSize:13,color:'var(--t3)',marginTop:4}}>연간 {fKRW(result.withdrawalMonthlyMan*12*1e4)}</div>
+                  </div>
+                </div>
+                <div style={{fontSize:13,fontWeight:600,color:'var(--t2)',marginBottom:12}}>포트폴리오 수익률별 30년 지속 시뮬레이션</div>
+                <WithdrawalLineChart assetMan={result.effectiveTarget} monthlyWdMan={result.withdrawalMonthlyMan} retireAge={retireAge}/>
+                <div style={{marginTop:16,padding:'14px 16px',
+                  background:'var(--tip2-bg)',border:'1px solid var(--tip2-bd)',
+                  borderRadius:'var(--r-sm)',fontSize:13,color:'var(--tip2-text)',lineHeight:1.8}}>
+                  <strong style={{color:'var(--t1)',fontWeight:700}}>이 그래프가 뜻하는 것:</strong> 은퇴 첫날 모아둔 자산에서 매달 인출을 시작했을 때, 포트폴리오의 연 수익률에 따라 30년 후 자산이 얼마나 남는지를 보여줍니다.<br/>
+                  수익률이 높을수록 인출해도 자산이 줄지 않거나 오히려 불어날 수 있습니다. 인플레이션 조정 없이 명목 금액 기준으로 계산합니다.
+                </div>
+              </Card>
+
+              <InsightCard
+                currentAge={currentAge}
+                retireAge={retireAge}
+                currentAssetMan={currentAssetMan}
+                monthlyBudget={monthlyBudget}
+              />
+            </>
+          )}
+        </div>
+      </main>
+
+      {/* ══ 수익률 가정 안내 박스 ══ */}
+      <div style={{maxWidth:1180,margin:'0 auto',padding:'0 24px 20px'}} className="r-layout-pad">
+        <div style={{
+          padding:'18px 22px',
+          background:'var(--card)',
+          border:'1px solid var(--bd)',
+          borderRadius:'var(--r)',
+          boxShadow:'0 1px 4px rgba(0,0,0,.06)',
+        }}>
+          <div style={{fontSize:13,fontWeight:700,color:'var(--t1)',marginBottom:10}}>수익률 가정 안내</div>
+          <div style={{display:'flex',flexDirection:'column',gap:6,fontSize:12,color:'var(--t2)',lineHeight:1.7}}>
+            <div><strong style={{color:'var(--bl-dk)'}}>7% 보수적</strong> — S&P500 장기 역사 평균(~10%) 기준 보수적 시나리오. 채권+주식 혼합 포트폴리오에 가까운 수준.</div>
+            <div><strong style={{color:'var(--gr-dk)'}}>14% 중간</strong> — QQQ 나스닥100 장기 평균 수준. 특정 구간(2010~2024)에서 실현된 수치.</div>
+            <div><strong style={{color:'#92400E'}}>21% 공격적</strong> — 나스닥100 최고 구간 기준 낙관적 시나리오. 과거 일부 구간에서만 달성된 수치.</div>
+          </div>
+          <div style={{marginTop:12,paddingTop:10,borderTop:'1px solid var(--bd)',fontSize:11,color:'var(--t3)',lineHeight:1.7}}>
+            복리 계산은 수학적으로 정확하나, 미래 수익률은 보장되지 않으며 실제 결과는 크게 다를 수 있습니다.
+            환율 {EX_RATE.toLocaleString()}원/달러 기준 · 투자 결정의 책임은 투자자 본인에게 있습니다 · © 2025–2026 EZLONG
+          </div>
+        </div>
+      </div>
+
+      {/* ══ 복리의 마법 설명 섹션 ══ */}
+      <div style={{maxWidth:1180,margin:'0 auto',padding:'0 24px 60px'}}>
+
+        {/* 섹션 헤더 */}
+        <div style={{marginBottom:20,paddingTop:8,borderTop:'1px solid var(--bd)'}}>
+          <div style={{fontSize:11,fontWeight:700,letterSpacing:'.12em',textTransform:'uppercase',
+            color:'var(--bl)',background:'var(--bl-s)',display:'inline-block',
+            padding:'4px 12px',borderRadius:100,marginBottom:12}}>
+            복리 기초 가이드
+          </div>
+          <div style={{fontSize:24,fontWeight:800,color:'var(--t1)',lineHeight:1.3,letterSpacing:'-.02em',marginBottom:8}}>
+            복리의 마법?<br/>숫자가 이상한 게 아닙니다
+          </div>
+          <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.8,maxWidth:680}}>
+            처음 계산기를 돌려본 사람들이 보이는 반응은 대체로 비슷합니다.
+            "계산이 잘못된 거 아닌가요?" "이게 진짜 가능한 숫자인가요?"
+            틀리지 않았습니다. 계산도, 숫자도. 복리는 그냥 수학입니다.
+            믿고 안 믿고의 문제가 아니라, 산술의 문제입니다.
+          </div>
+        </div>
+
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}} className="r-2col">
+
+          {/* 왜 뇌가 거부하나 */}
+          <div style={{
+            padding:'20px 22px',
+            background:'var(--card)',
+            border:'1px solid var(--bd)',
+            borderRadius:'var(--r)',
+            boxShadow:'0 1px 4px rgba(0,0,0,.06)',
+          }}>
+            <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:10}}>왜 우리 뇌는 복리를 거부하는가</div>
+            <div style={{fontSize:13,color:'var(--t2)',lineHeight:1.85}}>
+              인간은 <strong style={{color:'var(--t1)'}}>선형적으로 사고하도록 설계</strong>되어 있습니다. 1, 2, 3, 4 이런 식으로요.
+              복리는 1, 2, 4, 8, 16으로 불어납니다.
+              이 두 가지 성장 방식이 처음엔 별 차이가 없어 보이다가,
+              시간이 지날수록 완전히 다른 세계를 만들어냅니다.<br/><br/>
+              우리 뇌가 그 차이를 직관적으로 이해하지 못하는 건 어쩌면 당연합니다.
+              수십만 년 진화 역사에서 복리를 계산해야 할 일이 없었으니까요.
+            </div>
+          </div>
+
+          {/* 공식 */}
+          <div style={{
+            padding:'20px 22px',
+            background:'var(--card)',
+            border:'1px solid var(--bd)',
+            borderRadius:'var(--r)',
+            boxShadow:'0 1px 4px rgba(0,0,0,.06)',
+          }}>
+            <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:10}}>복리의 공식, 딱 한 줄</div>
+            <div style={{
+              padding:'12px 16px',
+              background:'var(--inp-bg)',
+              borderRadius:'var(--r-sm)',
+              fontFamily:'var(--mono)',
+              fontSize:13,
+              color:'var(--gr-dk)',
+              fontWeight:700,
+              marginBottom:12,
+              lineHeight:1.6,
+            }}>
+              미래 가치 = 원금 × (1 + 연 수익률)^투자 연수
+            </div>
+            <div style={{fontSize:13,color:'var(--t2)',lineHeight:1.85}}>
+              1,000만원을 연 10%로 투자하면<br/>
+              · 10년: <strong style={{color:'var(--t1)'}}>2,593만원</strong><br/>
+              · 20년: <strong style={{color:'var(--t1)'}}>6,727만원</strong><br/>
+              · 30년: <strong style={{color:'var(--t1)'}}>1억 7,449만원</strong><br/>
+              넣은 돈은 1,000만원 하나인데, 30년이면 <strong style={{color:'var(--gr-dk)'}}>열일곱 배</strong>가 넘습니다.
+            </div>
+          </div>
+
+          {/* 초반 8~10년 */}
+          <div style={{
+            padding:'20px 22px',
+            background:'var(--card)',
+            border:'1px solid var(--bd)',
+            borderRadius:'var(--r)',
+            boxShadow:'0 1px 4px rgba(0,0,0,.06)',
+          }}>
+            <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:10}}>왜 처음 8~10년은 답답한가</div>
+            <div style={{fontSize:13,color:'var(--t2)',lineHeight:1.85}}>
+              연 10% 수익률로 1,000만원을 운용할 때<br/>
+              1년 차 수익: 100만원 → 2년 차: 110만원 → 3년 차: 121만원.<br/>
+              조금씩 늘기는 하는데 체감이 안 됩니다.<br/><br/>
+              그러다 10년 차가 되면 <strong style={{color:'var(--t1)'}}>그해 수익이 259만원</strong>,
+              20년 차엔 <strong style={{color:'var(--t1)'}}>673만원</strong>,
+              30년 차엔 <strong style={{color:'var(--gr-dk)'}}>1,745만원</strong>이 됩니다.
+              같은 해 수익이 30배 가까이 차이 납니다.<br/><br/>
+              <strong style={{color:'var(--rd)'}}>그 전에 포기하면, 정작 가장 중요한 구간을 놓치는 셈입니다.</strong>
+              씨앗을 심고 싹이 안 튼다고 파버리는 것과 같습니다.
+            </div>
+          </div>
+
+          {/* 72의 법칙 — 특별 하이라이트 */}
+          <div style={{
+            padding:'20px 22px',
+            background:'linear-gradient(135deg, #1a3a6b 0%, #0d2248 100%)',
+            border:'1px solid rgba(100,150,255,0.25)',
+            borderRadius:'var(--r)',
+            boxShadow:'0 4px 20px rgba(0,50,150,0.3)',
+            color:'#E8F0FF',
+          }}>
+            <div style={{
+              display:'inline-block',
+              fontSize:11,fontWeight:700,letterSpacing:'.1em',textTransform:'uppercase',
+              background:'rgba(100,180,255,0.18)',
+              border:'1px solid rgba(100,180,255,0.35)',
+              borderRadius:100,padding:'3px 10px',
+              color:'#90CAFF',marginBottom:10,
+            }}>TIP — 72의 법칙</div>
+            <div style={{fontSize:15,fontWeight:800,color:'#FFFFFF',marginBottom:10}}>
+              30초 만에 복리 계산하는 방법
+            </div>
+            <div style={{
+              padding:'12px 16px',
+              background:'rgba(255,255,255,0.08)',
+              borderRadius:'var(--r-sm)',
+              fontFamily:'var(--mono)',
+              fontSize:14,fontWeight:800,
+              color:'#FFD60A',
+              marginBottom:12,
+              textAlign:'center',
+            }}>
+              72 ÷ 연 수익률(%) = 원금이 두 배가 되는 연수
+            </div>
+            <div style={{fontSize:13,color:'#C8DEFF',lineHeight:1.85}}>
+              · 수익률 7% → 72 ÷ 7 = <strong style={{color:'#FFFFFF'}}>약 10.3년</strong> 후 두 배<br/>
+              · 수익률 10% → 72 ÷ 10 = <strong style={{color:'#FFFFFF'}}>7.2년</strong> 후 두 배<br/>
+              · 수익률 12% → 72 ÷ 12 = <strong style={{color:'#FFFFFF'}}>6년</strong> 후 두 배<br/><br/>
+              이 법칙은 금융경제학에서 오래전부터 쓰인 근사 공식으로,
+              정확한 계산과 오차가 <strong style={{color:'#FFD60A'}}>1% 이내</strong>로 거의 맞아떨어집니다.
+              같은 1,000만원이 7% 환경에서는 약 21년 후 4,000만원이 되고,
+              10% 환경에서는 14년이면 됩니다.
+              <strong style={{color:'#90CAFF'}}> 7년의 차이가 결과를 완전히 바꿉니다.</strong>
+            </div>
+          </div>
+
+        </div>
+
+        {/* 하단 면책 */}
+        <div style={{marginTop:20,fontSize:11,color:'var(--t3)',lineHeight:1.7,textAlign:'center',paddingBottom:20}}>
+          본 시뮬레이터는 투자 정보 제공 목적으로만 사용됩니다. 실제 수익률은 다를 수 있으며, 투자 결정의 책임은 투자자 본인에게 있습니다. © 2025–2026 EZLONG
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+<footer class="ez-footer" role="contentinfo">
+  <div class="ez-footer-inner">
+    <div class="ez-footer-top">
+      <div class="ez-footer-brand">
+        <picture>
+          <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+          <img src="logo.png" alt="EZLONG">
+        </picture>
+        <p class="ez-footer-brand-desc">
+          쉽고 안전한 장기투자 파트너<br>
+          easy.invest.good@gmail.com
+        </p>
+      </div>
+      <div class="ez-footer-books">
+        <div class="ez-footer-book">
+          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-cover" target="_blank" rel="noopener">
+            <img src="book01.png" alt="절대 실패하지 않는 미국 주식 ETF 투자">
+          </a>
+          <div class="ez-footer-book-info">
+            <span class="ez-footer-book-title">절대 실패하지 않는<br>미국 주식 ETF 투자</span>
+            <span class="ez-footer-book-label">종이책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/177260453" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://product.kyobobook.co.kr/detail/S000219205812" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+            </div>
+            <span class="ez-footer-book-label">전자책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=387049914&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/180332209" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012611429" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+              <a href="https://ridibooks.com/books/3844000153" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>
+            </div>
+            <span class="ez-footer-book-label">오디오북</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=388954868&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+            </div>
+            <span class="ez-footer-book-label">구독</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://max.aladin.co.kr/product/387049914?&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.millie.co.kr/v4/book/52e27a74508a4c93" class="ez-footer-book-btn" target="_blank" rel="noopener">밀리</a>
+              <a href="https://cremaclub.yes24.com/BookClub/Detail/180332209" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012611429" class="ez-footer-book-btn" target="_blank" rel="noopener">교보</a>
+            </div>
+          </div>
+        </div>
+        <div class="ez-footer-book">
+          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-cover" target="_blank" rel="noopener">
+            <img src="book02_1.png" alt="월급쟁이 투자 자동화">
+          </a>
+          <div class="ez-footer-book-info">
+            <span class="ez-footer-book-title">월급쟁이<br>투자 자동화</span>
+            <span class="ez-footer-book-label">전자책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+              <a href="https://ridibooks.com/books/6121000386" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>
+            </div>
+            <span class="ez-footer-book-label">오디오북</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=391653601&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+            </div>
+            <span class="ez-footer-book-label">구독</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://max.aladin.co.kr/product/389499456?&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.millie.co.kr/v4/book/e7fbd96e137b4ae1" class="ez-footer-book-btn" target="_blank" rel="noopener">밀리</a>
+              <a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ez-footer-links">
+        <div class="ez-footer-col">
+          <span class="ez-footer-col-title">서비스</span>
+          <a href="atmr-dashboard.html">스윙 시그널 대시보드</a>
+          <a href="chart-analysis.html">AI 차트분석</a>
+          <a href="analyst-reports.html">핵심기업 목표주가</a>
+          <a href="market-cycle.html">Market Cycle Monitor</a>
+          <a href="dca-simulator.html">DCA 복리 시뮬레이터</a>
+          <a href="portfolio-manager.html">포트폴리오 복리 시뮬레이터</a>
+          <a href="tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a>
+          <a href="compound-calculator.html">복리 계산기</a>
+          <a href="retirement-calculator.html">은퇴 목표 역산 계산기</a>
+          <a href="backtest.html">몬테카를로 포트폴리오 시뮬레이터</a>
+          <a href="risk-diagnostic.html">투자 행동 자가진단</a>
+          <a href="auto-dca-guide.html">자동 적립식 매수 가이드</a>
+        </div>
+      </div>
+    </div>
+    <div class="ez-footer-bottom">
+      © 2025–2026 유니아빠 &amp; 유니엄마 · EZLONG · easy.invest.good@gmail.com<br>
+      본 서비스에서 제공하는 모든 시뮬레이션 수치는 참고용 추정치이며, 실제 투자 수익을 보장하지 않습니다. 투자 판단의 책임은 투자자 본인에게 있습니다.
+    </div>
+  </div>
+</footer>
+</body>
+</html>

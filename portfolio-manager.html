@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<link rel="stylesheet" href="ez-design.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ETF 포트폴리오 복리 수익 시뮬레이터 | EZLONG</title>
+<meta name="description" content="ETF 포트폴리오를 직접 구성하고 CAGR 기반 복리 시뮬레이션으로 은퇴 자산을 예측. 미국주식 장기투자자를 위한 무료 포트폴리오 계산기." />
+<meta name="keywords" content="포트폴리오 시뮬레이터, ETF 포트폴리오, 수익 시뮬레이션, 복리, 미국주식, 은퇴 자산 계산, CAGR, 장기투자, 투자 성향, ETF 투자" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://ezlong.com/portfolio-manager.html" />
+<!-- ── 국제화 SEO: hreflang + locale alternate ── -->
+<link rel="alternate" hreflang="ko" href="https://ezlong.com/portfolio-manager.html">
+<link rel="alternate" hreflang="en" href="https://ezlong.com/en/portfolio-manager.html">
+<link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/portfolio-manager.html">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="pt_BR">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta name="description" lang="en" content="US Stock Portfolio Return Simulator: Compare ETF allocations and simulate compound returns with DCA contributions. Find your ideal portfolio mix with historical returns.">
+<meta name="keywords" lang="en" content="portfolio return simulator, ETF allocation, compound return, US stock portfolio, DCA portfolio, investment return calculator">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ezlong.com/portfolio-manager.html" />
+<meta property="og:title" content="ETF 포트폴리오 복리 수익 시뮬레이터 | EZLONG" />
+<meta property="og:description" content="투자 성향별 ETF 포트폴리오 구성 후 복리 수익 시뮬레이션. 미국주식 장기투자자를 위한 무료 포트폴리오 계산기." />
+<meta property="og:image" content="https://ezlong.com/logo-preview.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:site_name" content="EZLONG" />
+
+<!-- JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Portfolio Return Simulator — US Stock ETFs",
+  "description": "Simulate compound returns for custom US stock ETF portfolio allocations. Add multiple ETFs, set DCA monthly contributions, and compare projected final values over any investment horizon.",
+  "inLanguage": ["ko", "en"],
+  "url": "https://ezlong.com/portfolio-manager.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "ETF 포트폴리오 수익 시뮬레이터",
+  "url": "https://ezlong.com/portfolio-manager.html",
+  "description": "8가지 투자 성향별 ETF 포트폴리오를 구성하고 CAGR 기반 복리 수익 시뮬레이션으로 은퇴 자산을 연도별로 예측하는 무료 도구.",
+  "applicationCategory": "FinanceApplication",
+  "inLanguage": "ko",
+  "isAccessibleForFree": true,
+  "operatingSystem": "All"
+}
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2336764115275414"
+     crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F5F7;--bg2:#FFFFFF;--card:#FFFFFF;--bd:rgba(0,0,0,0.08);
+  --t1:#1D1D1F;--t2:#6E6E73;--t3:#AEAEB2;
+  --bl:#0071E3;--bl-dk:#0040DD;--bl-s:rgba(0,113,227,0.10);--bl-m:rgba(0,113,227,0.18);
+  --gr:#34C759;--gr-s:rgba(52,199,89,0.10);--gr-m:rgba(52,199,89,0.22);
+  --rd:#FF3B30;--rd-s:rgba(255,59,48,0.10);
+  --yl:#FF9F0A;--yl-s:rgba(255,159,10,0.12);
+  --pu:#BF5AF2;--pu-s:rgba(191,90,242,0.10);
+  --or:#FF6B35;--or-s:rgba(255,107,53,0.10);
+  --r:16px;--r-sm:10px;
+  --font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Pretendard','Helvetica Neue',Arial,sans-serif;
+  --mono:'SF Mono','Monaco','Menlo',monospace;
+  --shadow:0 4px 24px rgba(0,0,0,0.06),0 1px 4px rgba(0,0,0,0.04);
+  --shadow-lg:0 12px 48px rgba(0,0,0,0.10),0 2px 8px rgba(0,0,0,0.06);
+  --nav-h:56px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#000;--bg2:#1C1C1E;--card:#1C1C1E;--bd:rgba(255,255,255,0.10);
+    --t1:#F5F5F7;--t2:#AEAEB2;--t3:#636366;
+    --bl-s:rgba(0,113,227,0.20);--bl-m:rgba(0,113,227,0.28);
+    --gr-s:rgba(52,199,89,0.15);--gr-m:rgba(52,199,89,0.25);
+    --rd-s:rgba(255,59,48,0.15);--yl-s:rgba(255,159,10,0.15);
+    --pu-s:rgba(191,90,242,0.15);--or-s:rgba(255,107,53,0.15);
+    --shadow:0 4px 24px rgba(0,0,0,0.30),0 1px 4px rgba(0,0,0,0.20);
+    --shadow-lg:0 12px 48px rgba(0,0,0,0.50),0 2px 8px rgba(0,0,0,0.30);
+  }
+}
+html{font-family:var(--font);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased}
+body{min-height:100vh}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:#C7C7CC;border-radius:3px}
+
+/* Nav */
+.nav{height:var(--nav-h);background:rgba(255,255,255,0.92);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:100}
+@media(prefers-color-scheme:dark){.nav{background:rgba(28,28,30,0.92)}}
+.nav-inner{max-width:900px;margin:0 auto;padding:0 20px;height:100%;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:8px}
+.nav-logo-img{height:26px;width:auto;display:block}
+.nav-back{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:500;color:var(--bl);cursor:pointer;transition:opacity .15s}
+.nav-back:hover{opacity:.7}
+.nav-back svg{width:14px;height:14px}
+
+/* Wrap */
+.wrap{max-width:900px;margin:0 auto;padding:0 20px 80px}
+
+/* Step Indicator */
+.step-bar{display:flex;align-items:center;gap:0;padding:28px 0 24px;overflow-x:auto}
+.step-bar::-webkit-scrollbar{display:none}
+.step-item{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:all .25s}
+.step-dot.done{background:var(--gr);color:#fff}
+.step-dot.active{background:var(--bl);color:#fff;box-shadow:0 0 0 4px var(--bl-s)}
+.step-dot.pending{background:var(--bg2);color:var(--t3);border:1.5px solid var(--bd)}
+.step-label{font-size:12px;font-weight:600;transition:color .25s}
+.step-label.active{color:var(--bl)}
+.step-label.done{color:var(--gr)}
+.step-label.pending{color:var(--t3)}
+.step-sep{width:28px;height:1.5px;background:var(--bd);margin:0 4px;flex-shrink:0}
+@media(max-width:480px){.step-label{display:none}}
+
+/* Step content animation */
+@keyframes stepIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.step-content{animation:stepIn .28s ease-out both}
+
+/* Section headers */
+.page-title{font-size:clamp(22px,5vw,30px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:6px}
+.page-sub{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:24px}
+
+/* Cards */
+.card{background:var(--card);border-radius:var(--r);border:1px solid var(--bd);box-shadow:var(--shadow);overflow:hidden}
+.card-pad{padding:20px}
+
+/* Style cards */
+.style-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:24px}
+.style-card{background:var(--card);border-radius:var(--r);border:2px solid var(--bd);padding:20px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.style-card:hover{border-color:var(--bl-m);box-shadow:var(--shadow)}
+.style-card.active{border-color:var(--bl);background:var(--bl-s)}
+.style-card-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;flex-shrink:0}
+.style-card-icon svg{width:20px;height:20px}
+.style-card-name{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:5px;line-height:1.3}
+.style-card-desc{font-size:12px;color:var(--t2);line-height:1.55}
+.style-card-check{position:absolute;top:16px;right:16px;width:20px;height:20px;border-radius:50%;background:var(--bl);display:flex;align-items:center;justify-content:center}
+.style-card-check svg{width:12px;height:12px;color:#fff}
+
+/* Leverage toggle */
+.leverage-row{margin-top:12px;display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--bd)}
+.leverage-label{font-size:12px;font-weight:600;color:var(--t2)}
+
+/* Custom input */
+.custom-row{margin-top:12px;padding-top:12px;border-top:1px solid var(--bd)}
+.custom-input{width:100%;padding:8px 12px;border-radius:8px;border:1.5px solid var(--bd);background:var(--bg);color:var(--t1);font-size:13px;font-family:var(--font);outline:none;transition:border-color .15s;margin-bottom:8px}
+.custom-input:focus{border-color:var(--bl)}
+.btn-sm{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all .15s}
+
+/* ETF list */
+.etf-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.etf-row{background:var(--card);border-radius:var(--r-sm);border:1px solid var(--bd);padding:14px 16px;display:flex;flex-direction:column;gap:10px;transition:box-shadow .15s}
+.etf-row:hover{box-shadow:var(--shadow)}
+.etf-row-top{display:flex;align-items:flex-start;gap:10px}
+.etf-cat-badge{font-size:10px;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:100px;flex-shrink:0;margin-top:1px}
+.etf-info{flex:1;min-width:0}
+.etf-name{font-size:13px;font-weight:700;color:var(--t1);line-height:1.35}
+.etf-ticker{font-size:11px;font-weight:600;color:var(--t3);font-family:var(--mono);margin-top:2px}
+.etf-return{font-size:12px;font-weight:700;color:var(--bl);margin-top:2px}
+.etf-controls{display:flex;align-items:center;gap:8px}
+.etf-weight-input{width:52px;padding:5px 8px;border-radius:6px;border:1.5px solid var(--bd);background:var(--bg);color:var(--t1);font-size:13px;font-weight:700;font-family:var(--mono);text-align:right;outline:none}
+.etf-weight-input:focus{border-color:var(--bl)}
+.etf-pct{font-size:13px;font-weight:600;color:var(--t2)}
+.etf-del{width:26px;height:26px;border-radius:6px;border:none;background:var(--rd-s);color:var(--rd);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
+.etf-del:hover{background:var(--rd);color:#fff}
+.etf-del svg{width:14px;height:14px}
+.etf-slider-row{display:flex;align-items:center;gap:8px}
+.etf-slider{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:var(--bd);outline:none;cursor:pointer}
+.etf-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--bl);box-shadow:0 1px 6px rgba(0,113,227,.35);cursor:pointer}
+
+/* Weight total bar */
+.weight-total-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:var(--r-sm);border:1.5px solid var(--bd);background:var(--bg2);margin-bottom:12px}
+.weight-total-label{font-size:13px;font-weight:600;color:var(--t2)}
+.weight-total-value{font-size:18px;font-weight:800;font-family:var(--mono);letter-spacing:-.02em}
+.weight-bar{height:6px;border-radius:3px;background:var(--bd);margin:8px 0;overflow:hidden}
+.weight-bar-fill{height:100%;border-radius:3px;transition:width .3s,background .3s}
+
+/* Inputs */
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:var(--bd);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--bl);box-shadow:0 2px 8px rgba(0,113,227,.35);cursor:pointer}
+input[type=range].green::-webkit-slider-thumb{background:var(--gr);box-shadow:0 2px 8px rgba(52,199,89,.35)}
+input[type=checkbox]{-webkit-appearance:none;width:16px;height:16px;min-width:16px;border:1.5px solid var(--bd);border-radius:4px;background:var(--bg2);cursor:pointer;position:relative;transition:all .15s}
+input[type=checkbox]:checked{background:var(--bl);border-color:var(--bl)}
+input[type=checkbox]:checked::after{content:'';position:absolute;left:4px;top:1px;width:6px;height:9px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) scaleX(.9)}
+
+/* Sim inputs */
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:520px){.sim-grid{grid-template-columns:1fr}}
+.sim-input-card{background:var(--card);border-radius:var(--r);border:1px solid var(--bd);padding:18px;box-shadow:var(--shadow)}
+.sim-input-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);margin-bottom:8px}
+.sim-input-value{font-size:24px;font-weight:800;letter-spacing:-.03em;color:var(--t1);margin-bottom:10px;font-family:var(--mono)}
+.sim-input-unit{font-size:14px;font-weight:600;color:var(--t3);margin-left:3px}
+.sim-input-range{margin-bottom:4px}
+.sim-input-minmax{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);font-family:var(--mono)}
+.sim-return-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:100px;font-size:13px;font-weight:700;margin-bottom:20px}
+
+/* Results */
+.result-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
+@media(min-width:640px){.result-metrics{grid-template-columns:repeat(4,1fr)}}
+.metric-card{background:var(--card);border-radius:var(--r);border:1px solid var(--bd);padding:16px;box-shadow:var(--shadow)}
+.metric-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+.metric-value{font-size:20px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.metric-sub{font-size:11px;color:var(--t3);margin-top:3px}
+
+/* Chart */
+.chart-wrap{background:var(--card);border-radius:var(--r);border:1px solid var(--bd);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.chart-legend{display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--t2)}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* Table */
+.table-wrap{background:var(--card);border-radius:var(--r);border:1px solid var(--bd);overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px}
+.table-header{padding:14px 18px;background:var(--bg);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.table-title{font-size:13px;font-weight:700;color:var(--t1)}
+.table-toggle{font-size:12px;color:var(--bl);cursor:pointer;font-weight:600;background:none;border:none;padding:0}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{padding:8px 14px;text-align:right;font-weight:700;color:var(--t3);font-size:10px;letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid var(--bd);background:var(--bg)}
+thead th:first-child{text-align:left}
+tbody td{padding:8px 14px;text-align:right;color:var(--t2);border-bottom:1px solid var(--bd);font-family:var(--mono);font-size:11px}
+tbody td:first-child{text-align:left;font-family:var(--font);font-weight:600;color:var(--t1);font-size:12px}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--bl-s)}
+.td-profit{color:var(--gr);font-weight:700}
+
+/* Portfolio summary */
+.portfolio-summary{background:var(--card);border-radius:var(--r);border:1px solid var(--bd);padding:18px;box-shadow:var(--shadow);margin-bottom:16px}
+.portfolio-summary-title{font-size:12px;font-weight:700;color:var(--t3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+.portfolio-pills{display:flex;flex-wrap:wrap;gap:6px}
+.portfolio-pill{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;background:var(--bl-s);color:var(--bl)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 24px;border-radius:100px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .18s;font-family:var(--font)}
+.btn svg{width:16px;height:16px}
+.btn-primary{background:var(--bl);color:#fff}
+.btn-primary:hover{background:var(--bl-dk);transform:translateY(-1px)}
+.btn-primary:disabled{background:var(--t3);cursor:not-allowed;transform:none}
+.btn-secondary{background:var(--bg2);color:var(--t1);border:1.5px solid var(--bd)}
+.btn-secondary:hover{border-color:var(--bl-m);background:var(--bl-s)}
+.btn-ghost{background:transparent;color:var(--bl);padding:10px 16px}
+.btn-ghost:hover{background:var(--bl-s)}
+.btn-green{background:var(--gr);color:#fff}
+.btn-green:hover{background:var(--gr-dk,#248A3D);transform:translateY(-1px)}
+.btn-nav-row{display:flex;align-items:center;justify-content:space-between;padding-top:12px;gap:10px;flex-wrap:wrap}
+.btn-add-etf{display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:var(--r-sm);border:1.5px dashed var(--bl-m);background:var(--bl-s);color:var(--bl);font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;width:100%;justify-content:center}
+.btn-add-etf:hover{background:var(--bl-m)}
+.btn-add-etf svg{width:16px;height:16px}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:flex-end;justify-content:center;padding:0}
+@media(min-width:600px){.modal-overlay{align-items:center;padding:20px}}
+.modal{background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:560px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;animation:modalIn .25s ease-out}
+@media(min-width:600px){.modal{border-radius:24px;max-height:70vh}}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal-header{padding:20px 20px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-title{font-size:16px;font-weight:800;letter-spacing:-.02em}
+.modal-close{width:28px;height:28px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2);transition:all .15s}
+.modal-close:hover{background:var(--rd-s);color:var(--rd)}
+.modal-close svg{width:16px;height:16px}
+.modal-search{padding:12px 16px;border-bottom:1px solid var(--bd);flex-shrink:0}
+.modal-search-input{width:100%;padding:9px 14px;border-radius:10px;border:1.5px solid var(--bd);background:var(--bg);color:var(--t1);font-size:14px;font-family:var(--font);outline:none;transition:border-color .15s}
+.modal-search-input:focus{border-color:var(--bl)}
+.modal-body{overflow-y:auto;flex:1;padding:10px}
+.modal-etf-item{padding:12px;border-radius:10px;cursor:pointer;transition:background .15s;display:flex;align-items:flex-start;gap:10px}
+.modal-etf-item:hover{background:var(--bl-s)}
+.modal-etf-info{flex:1;min-width:0}
+.modal-etf-name{font-size:13px;font-weight:700;color:var(--t1);line-height:1.3}
+.modal-etf-meta{font-size:11px;color:var(--t3);margin-top:2px;display:flex;gap:8px}
+.modal-etf-add{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--bl);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;margin-top:2px;transition:all .15s}
+.modal-etf-add:hover{background:var(--bl-dk);transform:scale(1.1)}
+.modal-etf-add svg{width:14px;height:14px}
+.modal-manual{padding:12px 16px;border-top:1px solid var(--bd);flex-shrink:0;display:flex;gap:8px}
+.modal-manual-input{flex:1;padding:8px 12px;border-radius:8px;border:1.5px solid var(--bd);background:var(--bg);color:var(--t1);font-size:13px;font-family:var(--mono);outline:none;text-transform:uppercase;transition:border-color .15s}
+.modal-manual-input:focus{border-color:var(--bl)}
+
+/* Pie chart */
+.pie-wrap{display:flex;align-items:center;gap:20px;padding:16px;background:var(--bg);border-radius:var(--r-sm);margin-bottom:20px}
+.pie-legend{display:flex;flex-direction:column;gap:6px;flex:1}
+.pie-legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2)}
+.pie-legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.pie-legend-pct{font-weight:700;color:var(--t1);font-family:var(--mono);margin-left:auto}
+
+/* Tooltip */
+.chart-tooltip{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;box-shadow:var(--shadow-lg);pointer-events:none;position:absolute;z-index:50;white-space:nowrap;font-size:12px;min-width:160px}
+.chart-tooltip-year{font-weight:800;color:var(--t1);margin-bottom:6px;font-size:13px}
+.chart-tooltip-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:3px}
+.chart-tooltip-label{color:var(--t2)}
+.chart-tooltip-val{font-weight:700;font-family:var(--mono)}
+
+/* Responsive tweaks */
+@media(max-width:480px){
+  .btn-nav-row{flex-direction:column-reverse}
+  .btn-nav-row .btn{width:100%}
+  .result-metrics{grid-template-columns:1fr 1fr}
+  .metric-value{font-size:16px}
+}
+
+/* ═══ EZ Global Nav + Footer (자동 주입) ═══════════════════════════ */
+.ez-nav {
+  height: auto;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  position: sticky; top: 0; z-index: 9999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+               'Noto Sans KR', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-nav { background: rgba(28,28,30,0.92); border-color: rgba(255,255,255,0.08); }
+}
+.ez-nav-inner {
+  max-width: 1080px; margin: 0 auto; padding: 7px 20px 0;
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+.ez-nav-logo { display: flex; align-items: center; text-decoration: none; padding: 2px 0 10px; }
+.ez-nav-logo img { height: 26px; width: auto; display: block; }
+.ez-nav-back {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 14px; font-weight: 500;
+  color: #0071E3; text-decoration: none; transition: opacity .15s;
+}
+@media (prefers-color-scheme: dark) { .ez-nav-back { color: #0A84FF; } }
+.ez-nav-back:hover { opacity: .7; }
+.ez-nav-back svg { width: 14px; height: 14px; flex-shrink: 0; }
+.ez-nav-svc-links { display: flex; align-items: center; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; width: 100%; margin-left: 0; padding-bottom: 4px; }
+.ez-nav-svc-links::-webkit-scrollbar { display: none; }
+.ez-nav-svc-link { flex-shrink: 0; padding: 5px 10px; border-radius: 6px; font-size: 13px; font-weight: 500; color: #6E6E73; text-decoration: none; white-space: nowrap; transition: all 0.12s; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link { color: #AEAEB2; } }
+.ez-nav-svc-link:hover { background: rgba(0,0,0,0.06); color: #1D1D1F; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link:hover { background: rgba(255,255,255,0.08); color: #F5F5F7; } }
+.ez-nav-svc-link.active { background: rgba(0,113,227,0.08); color: #0071E3; }
+@media (prefers-color-scheme: dark) { .ez-nav-svc-link.active { background: rgba(10,132,255,0.14); color: #0A84FF; } }
+
+/* ── EZ Footer ──────────────────────────────────────────────────── */
+.ez-footer {
+  background: #FFFFFF;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding: 36px 20px 20px;
+  margin-top: 60px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+               'Noto Sans KR', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer { background: #1C1C1E; border-color: rgba(255,255,255,0.08); }
+}
+.ez-footer-inner {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 28px;
+}
+.ez-footer-top {
+  display: flex; flex-direction: column; gap: 24px;
+}
+@media (min-width: 640px) {
+  .ez-footer-top { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+}
+.ez-footer-brand { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+.ez-footer-brand img { height: 22px; width: auto; display: block; }
+.ez-footer-brand-desc {
+  font-size: 13px; line-height: 1.65;
+  color: #3C3C3E;
+}
+@media (prefers-color-scheme: dark) { .ez-footer-brand-desc { color: #AEAEB2; } }
+.ez-footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
+.ez-footer-col { display: flex; flex-direction: column; gap: 10px; }
+.ez-footer-col-title {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase;
+  color: #1D1D1F;
+}
+@media (prefers-color-scheme: dark) { .ez-footer-col-title { color: #F5F5F7; } }
+.ez-footer-col a {
+  font-size: 13px; color: #3C3C3E;
+  text-decoration: none; transition: color .15s;
+}
+.ez-footer-col a:hover { color: #0071E3; }
+@media (prefers-color-scheme: dark) {
+  .ez-footer-col a { color: #AEAEB2; }
+  .ez-footer-col a:hover { color: #0A84FF; }
+}
+.ez-footer-bottom {
+  font-size: 11px; color: #AEAEB2;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding-top: 20px; line-height: 1.8;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer-bottom { border-color: rgba(255,255,255,0.08); color: #636366; }
+}
+/* ══════════════════════════════════════════════════════════════════ */
+
+
+/* ── Footer Books ─────────────────────────────────────────── */
+.ez-footer-books{display:flex;gap:20px;flex-wrap:wrap;}
+.ez-footer-book{display:flex;gap:10px;align-items:flex-start;}
+.ez-footer-book-cover{flex-shrink:0;width:130px;border-radius:6px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.15);display:block;background:transparent;}
+.ez-footer-book-cover img{width:100%;display:block;}
+.ez-footer-book-info{display:flex;flex-direction:column;gap:3px;}
+.ez-footer-book-title{font-size:11px;font-weight:700;color:#1D1D1F;line-height:1.4;margin-bottom:3px;}
+@media(prefers-color-scheme:dark){.ez-footer-book-title{color:#F5F5F7;}}
+.ez-footer-book-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#AEAEB2;margin-top:5px;}
+.ez-footer-book-btns{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;}
+.ez-footer-book-btn{font-size:11px;color:#3C3C3E;text-decoration:none;transition:color .12s;white-space:nowrap;}
+.ez-footer-book-btn:hover{background:#0071E3;color:#fff;}
+@media(prefers-color-scheme:dark){
+  .ez-footer-book-btn{background:rgba(255,255,255,.1);color:#AEAEB2;}
+  .ez-footer-book-btn:hover{background:#0A84FF;color:#fff;}
+}
+</style>
+</head>
+<body>
+<nav class="ez-nav" aria-label="글로벌 네비게이션">
+  <div class="ez-nav-inner">
+    <a href="/" class="ez-nav-logo" aria-label="EZLONG 홈">
+      <picture>
+        <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+        <img src="logo.png" alt="EZLONG">
+      </picture>
+    </a>
+    <div class="ez-nav-svc-links">
+      <a href="/atmr-dashboard.html"        class="ez-nav-svc-link">스윙 시그널</a>
+      <a href="/chart-analysis.html"        class="ez-nav-svc-link">AI 차트분석</a>
+      <a href="/analyst-reports.html"        class="ez-nav-svc-link">핵심기업 목표주가</a>
+      
+      <a href="/market-cycle.html"          class="ez-nav-svc-link">Market Cycle</a>
+      <a href="/dca-simulator.html"         class="ez-nav-svc-link">DCA 시뮬레이터</a>
+      <a href="/portfolio-manager.html"     class="ez-nav-svc-link active">포트폴리오 복리</a>
+      <a href="/tax-account-simulator.html" class="ez-nav-svc-link">절세 계좌</a>
+      <a href="/compound-calculator.html"   class="ez-nav-svc-link">복리 계산기</a>
+      <a href="/retirement-calculator.html" class="ez-nav-svc-link">은퇴 계산기</a>
+      <a href="/backtest.html"              class="ez-nav-svc-link">백테스트</a>
+      <a href="/risk-diagnostic.html"       class="ez-nav-svc-link">투자성향 테스트</a>
+      <a href="/auto-dca-guide.html"        class="ez-nav-svc-link">DCA 가이드</a>
+    </div>
+  </div>
+</nav>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useMemo, useRef, useEffect, useCallback } = React;
+
+/* ═══════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════ */
+const ETFS = {
+  TIGER_TECH: { ticker: 'TIGER_TECH', name: 'TIGER 미국테크TOP10 INDXX', category: 'Core', description: '애플, MS, NVDA 등 시장이 검증한 가장 강한 기업 명단을 자동으로 추종', annualReturn: 25 },
+  TIMEFOLIO_NAS: { ticker: 'TIMEFOLIO_NAS', name: 'TIMEFOLIO 미국나스닥100액티브', category: 'Core', description: '나스닥100 기반에 빅테크 비중을 더 공격적으로 높인 액티브 ETF', annualReturn: 22 },
+  QQQ: { ticker: 'QQQ', name: 'QQQ / TIGER 미국나스닥100', category: 'Core', description: '나스닥 100 지수를 추종하는 대표적 성장주 ETF', annualReturn: 19.5 },
+  QQQM: { ticker: 'QQQM', name: 'QQQM / ACE 미국나스닥100', category: 'Core', description: '빅테크·AI 플랫폼 중심 나스닥 인덱스', annualReturn: 19.5 },
+  VOO: { ticker: 'VOO', name: 'VOO/SPY / TIGER 미국S&P500', category: 'Core', description: '미국 대형주 500개 기업에 분산 투자하는 기본형 ETF', annualReturn: 13.5 },
+  KODEX_AI_TECH: { ticker: 'KODEX_AI_TECH', name: 'KODEX 미국AI테크TOP10', category: 'Core', description: 'AI 대표 종목 집중 투자', annualReturn: 27.5 },
+  QLD: { ticker: 'QLD', name: 'ProShares Ultra QQQ (2배 레버리지)', category: 'Core', description: '나스닥 100 지수 일간 수익률의 2배 추종', annualReturn: 29 },
+  TQQQ: { ticker: 'TQQQ', name: 'ProShares UltraPro QQQ (3배)', category: 'Core', description: '나스닥 100 지수 일간 수익률의 3배 추종', annualReturn: 34 },
+  SMH: { ticker: 'SMH', name: 'SOXX/SMH / TIGER 미국반도체MV', category: 'Infrastructure', description: 'AI 인프라 핵심 글로벌 반도체 하드웨어', annualReturn: 27 },
+  TIGER_KR_SEMI: { ticker: 'TIGER_KR_SEMI', name: 'TIGER 반도체 TOP10', category: 'Infrastructure', description: 'SK하이닉스/삼성전자 등 55% 이상 포함된 한국 반도체 ETF', annualReturn: 15 },
+  USD: { ticker: 'USD', name: 'ProShares Ultra Semiconductors (2배)', category: 'Infrastructure', description: '반도체 섹터 일간 수익률의 2배 추종', annualReturn: 52.5 },
+  SOXL: { ticker: 'SOXL', name: 'Direxion Daily Semiconductor Bull 3X', category: 'Infrastructure', description: '반도체 섹터 일간 수익률의 3배 추종', annualReturn: 31 },
+  KODEX_POWER: { ticker: 'KODEX_POWER', name: 'KODEX 미국AI전력핵심인프라액티브', category: 'Satellite', description: 'AI 데이터센터 전력/냉각 인프라(버티브, 이튼 등) 전략적 베팅', annualReturn: 18 },
+  TIGER_ROBO: { ticker: 'TIGER_ROBO', name: 'TIGER 글로벌AI&로보틱스INDXX', category: 'Satellite', description: 'AI와 로봇의 융합 테마 하드웨어/소프트웨어 밸류체인 전반', annualReturn: 15 },
+  KIWOOM_Q: { ticker: 'KIWOOM_Q', name: 'KIWOOM 미국양자컴퓨팅', category: 'Satellite', description: '아이온큐 등 미래 기술 양자 컴퓨팅에 대한 소액 전략적 베팅', annualReturn: 20 },
+  JEPQ: { ticker: 'JEPQ', name: 'JPMorgan Nasdaq Equity Premium Income', category: 'Satellite', description: '나스닥 100 기반 커버드콜 고배당 ETF', annualReturn: 16 },
+  ITA: { ticker: 'ITA', name: 'ITA / KODEX 미국방위산업나스닥액티브', category: 'Buffer', description: '미국 방산 사이클 베팅 및 글로벌 안보 위기 대응', annualReturn: 12 },
+  XLV: { ticker: 'XLV', name: 'XLV / KODEX 미국헬스케어(합성)', category: 'Buffer', description: '대형 제약·바이오·의료기기 위주 고령화 수혜 섹터', annualReturn: 11 },
+  XLU: { ticker: 'XLU', name: 'XLU / TIGER 미국필수소비&유틸리티', category: 'Buffer', description: 'AI 데이터센터 전력 수요 폭증의 직접 수혜 전통 인프라', annualReturn: 10 },
+  SCHD: { ticker: 'SCHD', name: 'SCHD / TIGER 미국배당다우존스', category: 'Defensive', description: '우량 배당주 중심의 안정적 수익 및 배당 성장', annualReturn: 11.5 },
+  JEPI: { ticker: 'JEPI', name: 'JPMorgan Equity Premium Income', category: 'Defensive', description: 'S&P 500 기반 커버드콜 안정적 배당 ETF', annualReturn: 8.5 },
+  GLD: { ticker: 'GLD', name: 'GLD / ACE KRX금현물', category: 'Defensive', description: '달러 약세 및 지정학 리스크 헤지용 금 자산', annualReturn: 7.5 },
+  XLP: { ticker: 'XLP', name: 'XLP / TIGER 미국필수소비재', category: 'Defensive', description: '순수 낙폭 완충용 필수소비재 및 디펜시브 섹터', annualReturn: 7.5 },
+  TLT: { ticker: 'TLT', name: 'iShares 20+ Year Treasury Bond', category: 'Defensive', description: '미국 20년 이상 장기 국채 투자', annualReturn: 1 },
+  CASH: { ticker: 'CASH', name: 'Strategic Cash (전략적 현금)', category: 'Cash', description: '하락장에서 추가 매수 여력을 남겨두는 전략적 여백', annualReturn: 3 },
+};
+
+const STYLES = {
+  RECOMMENDED_2026: {
+    label: '2026 AI 대격변기 추천',
+    desc: '코어 50%, 위성 20%, 완충 20%, 현금 10%의 AI 대격변기 생존 모델',
+    color: '#0071E3', bgColor: 'var(--bl-s)',
+    weights: [
+      { ticker: 'TIGER_TECH', weight: 25 }, { ticker: 'TIMEFOLIO_NAS', weight: 15 },
+      { ticker: 'TIGER_KR_SEMI', weight: 10 }, { ticker: 'KODEX_POWER', weight: 10 },
+      { ticker: 'TIGER_ROBO', weight: 7 }, { ticker: 'KIWOOM_Q', weight: 3 },
+      { ticker: 'ITA', weight: 7 }, { ticker: 'XLV', weight: 7 },
+      { ticker: 'XLU', weight: 6 }, { ticker: 'CASH', weight: 10 }
+    ]
+  },
+  AGGRESSIVE_AI: {
+    label: 'AI/반도체 공격적 수익 추구형',
+    desc: '인프라와 코어 플랫폼에 70% 이상 집중하여 최대 수익을 추구',
+    color: '#FF3B30', bgColor: 'var(--rd-s)',
+    weights: [
+      { ticker: 'SMH', weight: 24 }, { ticker: 'TIGER_KR_SEMI', weight: 11 },
+      { ticker: 'KODEX_AI_TECH', weight: 35 }, { ticker: 'KODEX_POWER', weight: 20 },
+      { ticker: 'KIWOOM_Q', weight: 10 }
+    ],
+    leverage: [
+      { ticker: 'SMH', weight: 20 }, { ticker: 'TIGER_KR_SEMI', weight: 9 },
+      { ticker: 'KODEX_AI_TECH', weight: 29 }, { ticker: 'KODEX_POWER', weight: 16 },
+      { ticker: 'KIWOOM_Q', weight: 8 }, { ticker: 'QLD', weight: 10 },
+      { ticker: 'USD', weight: 8 }
+    ]
+  },
+  MODERATE_AI: {
+    label: 'AI/반도체 온화한 수익 추구형',
+    desc: 'AI 성장을 추구하되 유틸리티 등 AI 수혜 방어주로 안정성을 보강',
+    color: '#FF9F0A', bgColor: 'var(--yl-s)',
+    weights: [
+      { ticker: 'TIGER_TECH', weight: 40 }, { ticker: 'SMH', weight: 14 },
+      { ticker: 'TIGER_KR_SEMI', weight: 6 }, { ticker: 'XLU', weight: 15 },
+      { ticker: 'XLV', weight: 15 }, { ticker: 'CASH', weight: 10 }
+    ]
+  },
+  STABLE_AI: {
+    label: 'AI/반도체 안정 추구형',
+    desc: '빅테크 코어와 배당 성장, 헬스케어 비중을 높여 변동성을 관리',
+    color: '#34C759', bgColor: 'var(--gr-s)',
+    weights: [
+      { ticker: 'QQQM', weight: 35 }, { ticker: 'TIGER_KR_SEMI', weight: 5 },
+      { ticker: 'SCHD', weight: 20 }, { ticker: 'XLV', weight: 20 },
+      { ticker: 'XLU', weight: 10 }, { ticker: 'GLD', weight: 10 }
+    ]
+  },
+  MAX_STABLE_AI: {
+    label: 'AI/반도체 최대 안정형',
+    desc: 'AI 테마를 유지하되 금, 현금, 필수소비재 비중을 극대화',
+    color: '#BF5AF2', bgColor: 'var(--pu-s)',
+    weights: [
+      { ticker: 'QQQM', weight: 20 }, { ticker: 'SCHD', weight: 20 },
+      { ticker: 'XLP', weight: 20 }, { ticker: 'GLD', weight: 20 },
+      { ticker: 'CASH', weight: 20 }
+    ]
+  },
+  NON_AI_STABLE: {
+    label: 'AI 무관 안정/비변동성 추구형',
+    desc: 'AI 섹터와 무관한 전통적 자산 배분으로 극강의 안정성을 추구',
+    color: '#636366', bgColor: 'rgba(99,99,102,0.10)',
+    weights: [
+      { ticker: 'SCHD', weight: 30 }, { ticker: 'XLP', weight: 30 },
+      { ticker: 'GLD', weight: 20 }, { ticker: 'CASH', weight: 20 }
+    ]
+  },
+  BASIC_NON_AI: {
+    label: 'AI 무관 기본형',
+    desc: '미국 대표 지수와 배당주를 결합한 가장 대중적이고 기본적인 포트폴리오',
+    color: '#8E8E93', bgColor: 'rgba(142,142,147,0.10)',
+    weights: [
+      { ticker: 'QQQ', weight: 50 }, { ticker: 'VOO', weight: 30 },
+      { ticker: 'SCHD', weight: 20 }
+    ]
+  },
+  CUSTOM: {
+    label: '완전 개인화',
+    desc: '내가 직접 비중을 설정하는 나만의 포트폴리오',
+    color: '#FF6B35', bgColor: 'var(--or-s)',
+    weights: [
+      { ticker: 'TIGER_TECH', weight: 25 }, { ticker: 'SMH', weight: 17 },
+      { ticker: 'TIGER_KR_SEMI', weight: 8 }, { ticker: 'XLU', weight: 25 },
+      { ticker: 'SCHD', weight: 25 }
+    ]
+  }
+};
+
+const CATEGORY_COLORS = {
+  Core: '#0071E3', Infrastructure: '#FF9F0A',
+  Satellite: '#BF5AF2', Defensive: '#34C759',
+  Buffer: '#FF6B35', Cash: '#8E8E93',
+};
+
+const STYLE_ICONS = {
+  RECOMMENDED_2026: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M10 2l2.09 4.26L17 7.27l-3.5 3.41.83 4.82L10 13.27l-4.33 2.23.83-4.82L3 7.27l4.91-.71z"/>
+    </svg>
+  ),
+  AGGRESSIVE_AI: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M10 2v4M6.5 6.5l-2.8-2.8M13.5 6.5l2.8-2.8M2 10h4M18 10h-4M4.9 15.1l2.8-2.8M15.1 15.1l-2.8-2.8M10 18v-4"/>
+      <circle cx="10" cy="10" r="3"/>
+    </svg>
+  ),
+  MODERATE_AI: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M4 15l4-8 4 6 2-3 3 5"/>
+    </svg>
+  ),
+  STABLE_AI: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M10 2l6 3v5c0 3.87-2.56 7.5-6 9-3.44-1.5-6-5.13-6-9V5z"/>
+    </svg>
+  ),
+  MAX_STABLE_AI: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M10 2l5 2.5v4.5c0 3.2-2.1 6.2-5 7.5-2.9-1.3-5-4.3-5-7.5V4.5z"/>
+      <path d="M10 5l3.5 1.75v3.25c0 2.2-1.5 4.25-3.5 5.25"/>
+    </svg>
+  ),
+  NON_AI_STABLE: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M10 4a4 4 0 100 8 4 4 0 000-8z"/>
+      <path d="M6 16h8M10 12v4"/>
+      <path d="M3 16c0-2.76 3.13-5 7-5s7 2.24 7 5"/>
+    </svg>
+  ),
+  BASIC_NON_AI: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M3 9l7-6 7 6v9H3z"/>
+      <path d="M8 18v-6h4v6"/>
+    </svg>
+  ),
+  CUSTOM: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <circle cx="10" cy="10" r="3"/>
+      <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42"/>
+    </svg>
+  ),
+};
+
+/* ═══════════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════════ */
+function formatKRW(v) {
+  const n = Math.round(v);
+  if (n >= 10000) {
+    const uk = Math.floor(n / 10000);
+    const man = n % 10000;
+    return man === 0 ? `${uk.toLocaleString()}억` : `${uk.toLocaleString()}억 ${man.toLocaleString()}만`;
+  }
+  return `${n.toLocaleString()}만`;
+}
+
+function formatAxisLabel(v) {
+  if (v === 0) return '0';
+  if (v >= 10000) {
+    const uk = v / 10000;
+    if (Number.isInteger(uk)) return `${uk}억`;
+    return `${uk.toFixed(1)}억`;
+  }
+  if (v >= 1000) return `${(v/1000).toFixed(1)}천만`;
+  return `${Math.round(v)}만`;
+}
+
+function calculatePortfolioReturn(items) {
+  const total = items.reduce((s, it) => s + it.weight, 0);
+  if (total === 0) return 0;
+  return items.reduce((s, it) => {
+    const r = it.annualReturn ?? it.etf.annualReturn;
+    return s + r * (it.weight / total);
+  }, 0);
+}
+
+function runSimulation(portfolio, init, monthly, duration) {
+  const wr = calculatePortfolioReturn(portfolio);
+  const monthlyRate = Math.pow(1 + wr / 100, 1 / 12) - 1;
+  let bal = init;
+  const results = [];
+  for (let yr = 0; yr <= duration; yr++) {
+    results.push({
+      year: yr,
+      balance: Math.round(bal),
+      contribution: Math.round(init + monthly * 12 * yr),
+    });
+    if (yr < duration) {
+      for (let m = 0; m < 12; m++) {
+        bal = (bal + monthly) * (1 + monthlyRate);
+      }
+    }
+  }
+  return results;
+}
+
+/* ═══════════════════════════════════════════════
+   SVG AREA CHART
+═══════════════════════════════════════════════ */
+function SimChart({ data }) {
+  const [tooltip, setTooltip] = useState(null);
+  const svgRef = useRef(null);
+  const W = 700, H = 260;
+  const pad = { top: 16, right: 20, bottom: 36, left: 72 };
+  const cw = W - pad.left - pad.right;
+  const ch = H - pad.top - pad.bottom;
+
+  const maxV = Math.max(...data.map(d => d.balance), 1);
+  const xS = i => (i / Math.max(data.length - 1, 1)) * cw;
+  const yS = v => ch - Math.max(0, (v / maxV)) * ch;
+
+  const pts = (key) => data.map((d, i) => `${xS(i)},${yS(d[key])}`).join(' ');
+  const areaPath = (key) => {
+    const ps = data.map((d, i) => `${xS(i)},${yS(d[key])}`);
+    return `M 0,${ch} L ${ps.join(' L ')} L ${xS(data.length-1)},${ch} Z`;
+  };
+
+  // Y ticks: 5 levels
+  const yTickCount = 5;
+  const yTicks = Array.from({length: yTickCount + 1}, (_, i) => ({
+    v: Math.round((maxV * i) / yTickCount / 100) * 100,
+    y: yS(Math.round((maxV * i) / yTickCount / 100) * 100)
+  }));
+
+  // X ticks
+  const xStep = data.length <= 11 ? 1 : data.length <= 21 ? 2 : 5;
+  const xTicks = data.filter((d, i) => i % xStep === 0 || i === data.length - 1);
+
+  const handleMouseMove = (e) => {
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const rawX = e.clientX - rect.left - (pad.left * rect.width / W);
+    const pct = rawX / ((cw) * rect.width / W);
+    const idx = Math.min(data.length - 1, Math.max(0, Math.round(pct * (data.length - 1))));
+    if (idx >= 0 && idx < data.length) setTooltip({ idx });
+  };
+
+  const td = tooltip && data[tooltip.idx];
+
+  return (
+    <div style={{position:'relative'}}>
+      <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} style={{width:'100%',height:'auto',display:'block'}}
+        onMouseMove={handleMouseMove} onMouseLeave={() => setTooltip(null)}>
+        <defs>
+          <linearGradient id="gBal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#0071E3" stopOpacity="0.25"/>
+            <stop offset="100%" stopColor="#0071E3" stopOpacity="0.03"/>
+          </linearGradient>
+          <linearGradient id="gCon" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#8E8E93" stopOpacity="0.22"/>
+            <stop offset="100%" stopColor="#8E8E93" stopOpacity="0.02"/>
+          </linearGradient>
+        </defs>
+        <g transform={`translate(${pad.left},${pad.top})`}>
+          {/* Grid */}
+          {yTicks.map((t, i) => (
+            <g key={i}>
+              <line x1="0" y1={t.y} x2={cw} y2={t.y} stroke="rgba(0,0,0,0.06)" strokeWidth="1"/>
+              <text x="-8" y={t.y + 4} textAnchor="end" fontSize="10" fill="#AEAEB2"
+                fontFamily="-apple-system,BlinkMacSystemFont,sans-serif">
+                {formatAxisLabel(t.v)}
+              </text>
+            </g>
+          ))}
+          {/* Areas */}
+          <path d={areaPath('balance')} fill="url(#gBal)"/>
+          <path d={areaPath('contribution')} fill="url(#gCon)"/>
+          {/* Lines */}
+          <polyline points={pts('balance')} fill="none" stroke="#0071E3" strokeWidth="2.2" strokeLinejoin="round"/>
+          <polyline points={pts('contribution')} fill="none" stroke="#8E8E93" strokeWidth="1.5"
+            strokeLinejoin="round" strokeDasharray="5 3"/>
+          {/* Crosshair */}
+          {tooltip && (
+            <>
+              <line x1={xS(tooltip.idx)} y1={0} x2={xS(tooltip.idx)} y2={ch}
+                stroke="#AEAEB2" strokeWidth="1" strokeDasharray="3 2"/>
+              <circle cx={xS(tooltip.idx)} cy={yS(data[tooltip.idx].balance)} r={4.5}
+                fill="#0071E3" stroke="white" strokeWidth="2"/>
+              <circle cx={xS(tooltip.idx)} cy={yS(data[tooltip.idx].contribution)} r={3.5}
+                fill="#8E8E93" stroke="white" strokeWidth="1.5"/>
+            </>
+          )}
+          {/* X axis */}
+          {xTicks.map((d, i) => (
+            <text key={i} x={xS(data.indexOf(d))} y={ch + 22} textAnchor="middle"
+              fontSize="10" fill="#AEAEB2" fontFamily="-apple-system,sans-serif">
+              {d.year}년
+            </text>
+          ))}
+          {/* Invisible hit area */}
+          <rect x={0} y={0} width={cw} height={ch} fill="transparent" style={{cursor:'crosshair'}}/>
+        </g>
+      </svg>
+      {/* Tooltip */}
+      {tooltip && td && (
+        <div className="chart-tooltip" style={{
+          top: 20, left: `calc(${(xS(tooltip.idx) + pad.left) / W * 100}% + 12px)`,
+          transform: tooltip.idx > data.length * 0.7 ? 'translateX(calc(-100% - 24px))' : 'none'
+        }}>
+          <div className="chart-tooltip-year">{td.year}년차</div>
+          <div className="chart-tooltip-row">
+            <span className="chart-tooltip-label" style={{color:'#0071E3'}}>예상 자산</span>
+            <span className="chart-tooltip-val" style={{color:'#0071E3'}}>{formatKRW(td.balance)}원</span>
+          </div>
+          <div className="chart-tooltip-row">
+            <span className="chart-tooltip-label">누적 원금</span>
+            <span className="chart-tooltip-val">{formatKRW(td.contribution)}원</span>
+          </div>
+          {td.contribution > 0 && (
+            <div className="chart-tooltip-row">
+              <span className="chart-tooltip-label">수익 배수</span>
+              <span className="chart-tooltip-val" style={{color:'#34C759'}}>
+                {(td.balance / td.contribution).toFixed(2)}배
+              </span>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   DONUT CHART (포트폴리오 구성)
+═══════════════════════════════════════════════ */
+function DonutChart({ portfolio }) {
+  const grouped = {};
+  portfolio.forEach(it => {
+    const cat = it.etf.category;
+    grouped[cat] = (grouped[cat] || 0) + it.weight;
+  });
+  const entries = Object.entries(grouped).filter(([,w]) => w > 0);
+  const total = entries.reduce((s, [,w]) => s + w, 0);
+
+  let cumAngle = -90;
+  const R = 38, cx = 50, cy = 50;
+
+  const slices = entries.map(([cat, w]) => {
+    const angle = (w / total) * 360;
+    const startAngle = cumAngle * Math.PI / 180;
+    const endAngle = (cumAngle + angle) * Math.PI / 180;
+    cumAngle += angle;
+    const x1 = cx + R * Math.cos(startAngle);
+    const y1 = cy + R * Math.sin(startAngle);
+    const x2 = cx + R * Math.cos(endAngle);
+    const y2 = cy + R * Math.sin(endAngle);
+    const large = angle > 180 ? 1 : 0;
+    const color = CATEGORY_COLORS[cat] || '#8E8E93';
+    return { cat, w, color, d: `M ${cx} ${cy} L ${x1} ${y1} A ${R} ${R} 0 ${large} 1 ${x2} ${y2} Z` };
+  });
+
+  return (
+    <div className="pie-wrap">
+      <svg viewBox="0 0 100 100" style={{width:90,height:90,flexShrink:0}}>
+        {slices.map(s => (
+          <path key={s.cat} d={s.d} fill={s.color} opacity="0.9"/>
+        ))}
+        <circle cx={cx} cy={cy} r={22} fill="var(--bg)"/>
+        <text x={cx} y={cy - 5} textAnchor="middle" fontSize="7" fill="var(--t3)" fontFamily="-apple-system,sans-serif">ETF</text>
+        <text x={cx} y={cy + 6} textAnchor="middle" fontSize="8" fontWeight="700" fill="var(--t1)" fontFamily="-apple-system,sans-serif">구성</text>
+      </svg>
+      <div className="pie-legend">
+        {slices.map(s => (
+          <div key={s.cat} className="pie-legend-item">
+            <div className="pie-legend-dot" style={{background:s.color}}/>
+            <span style={{color:'var(--t2)',fontSize:12}}>{s.cat}</span>
+            <span className="pie-legend-pct" style={{color:s.color}}>{s.w}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   ETF SEARCH MODAL
+═══════════════════════════════════════════════ */
+function ETFModal({ onClose, onAdd, existingTickers }) {
+  const [q, setQ] = useState('');
+  const [manual, setManual] = useState('');
+
+  const filtered = useMemo(() =>
+    Object.values(ETFS).filter(e =>
+      !existingTickers.includes(e.ticker) &&
+      (e.name.toLowerCase().includes(q.toLowerCase()) || e.ticker.toLowerCase().includes(q.toLowerCase()))
+    ), [q, existingTickers]);
+
+  const handleManualAdd = () => {
+    const t = manual.trim().toUpperCase();
+    if (!t) return;
+    const existing = Object.values(ETFS).find(e => e.ticker === t);
+    if (existing) { onAdd(existing); return; }
+    onAdd({ ticker: t, name: t, category: 'Core', description: '사용자 직접 추가 종목', annualReturn: 10 });
+    setManual('');
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <span className="modal-title">ETF 추가</span>
+          <button className="modal-close" onClick={onClose}>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M4 4l8 8M12 4l-8 8"/>
+            </svg>
+          </button>
+        </div>
+        <div className="modal-search">
+          <input className="modal-search-input" placeholder="ETF 이름 또는 티커 검색..." value={q}
+            onChange={e => setQ(e.target.value)} autoFocus/>
+        </div>
+        <div className="modal-body">
+          {filtered.length === 0 && (
+            <div style={{padding:'24px',textAlign:'center',color:'var(--t3)',fontSize:13}}>
+              검색 결과가 없습니다. 아래 직접 입력을 이용하세요.
+            </div>
+          )}
+          {filtered.map(etf => (
+            <div key={etf.ticker} className="modal-etf-item" onClick={() => onAdd(etf)}>
+              <div className="modal-etf-info">
+                <div className="modal-etf-name">{etf.name}</div>
+                <div className="modal-etf-meta">
+                  <span style={{fontFamily:'var(--mono)',color:'var(--t3)'}}>{etf.ticker}</span>
+                  <span style={{color:CATEGORY_COLORS[etf.category]||'#8E8E93'}}>{etf.category}</span>
+                  <span style={{color:'var(--bl)'}}>연 {etf.annualReturn}%</span>
+                </div>
+              </div>
+              <button className="modal-etf-add" onClick={e => { e.stopPropagation(); onAdd(etf); }}>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M8 3v10M3 8h10"/>
+                </svg>
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="modal-manual">
+          <input className="modal-manual-input" placeholder="티커 직접 입력 (예: NVDA)" value={manual}
+            onChange={e => setManual(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleManualAdd()}/>
+          <button className="btn btn-primary btn-sm" onClick={handleManualAdd}
+            style={{borderRadius:8,fontSize:12,padding:'8px 14px'}}>추가</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   STEP INDICATOR
+═══════════════════════════════════════════════ */
+function StepBar({ step }) {
+  const steps = ['스타일 선택', '비중 설정', '시뮬레이션 확인', '결과 확인'];
+  return (
+    <div className="step-bar">
+      {steps.map((label, i) => {
+        const n = i + 1;
+        const st = step > n ? 'done' : step === n ? 'active' : 'pending';
+        return (
+          <React.Fragment key={n}>
+            {i > 0 && <div className="step-sep" style={st === 'done' || step > i ? {background:'var(--gr)'} : {}}/>}
+            <div className="step-item">
+              <div className={`step-dot ${st}`}>
+                {st === 'done' ? (
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M2 6l3 3 5-5"/>
+                  </svg>
+                ) : n}
+              </div>
+              <span className={`step-label ${st}`}>{label}</span>
+            </div>
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   MAIN APP
+═══════════════════════════════════════════════ */
+function App() {
+  const [step, setStep] = useState(1);
+  const [selectedStyle, setSelectedStyle] = useState(null);
+  const [customText, setCustomText] = useState('');
+  const [isLeveraged, setIsLeveraged] = useState(false);
+  const [portfolio, setPortfolio] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+
+  // Simulation inputs
+  const [initInvest, setInitInvest] = useState(1000);  // 만원
+  const [monthlyAmt, setMonthlyAmt] = useState(100);   // 만원
+  const [duration, setDuration] = useState(20);        // years
+
+  // Derived
+  const totalWeight = useMemo(() => portfolio.reduce((s, it) => s + it.weight, 0), [portfolio]);
+  const weightedReturn = useMemo(() => calculatePortfolioReturn(portfolio), [portfolio]);
+  const simData = useMemo(() => {
+    if (portfolio.length === 0) return [];
+    return runSimulation(portfolio, initInvest, monthlyAmt, duration);
+  }, [portfolio, initInvest, monthlyAmt, duration]);
+
+  const finalBalance = simData.length > 0 ? simData[simData.length - 1].balance : 0;
+  const totalContrib = simData.length > 0 ? simData[simData.length - 1].contribution : 0;
+  const totalProfit = finalBalance - totalContrib;
+  const multiplier = totalContrib > 0 ? finalBalance / totalContrib : 0;
+
+  // Return color
+  const returnColor = weightedReturn >= 20 ? 'var(--rd)' : weightedReturn >= 12 ? 'var(--bl)' : weightedReturn >= 7 ? 'var(--gr)' : 'var(--t3)';
+  const returnBg = weightedReturn >= 20 ? 'var(--rd-s)' : weightedReturn >= 12 ? 'var(--bl-s)' : weightedReturn >= 7 ? 'var(--gr-s)' : 'rgba(0,0,0,0.05)';
+
+  function handleStyleSelect(styleKey, lev) {
+    setSelectedStyle(styleKey);
+    const s = STYLES[styleKey];
+    const weights = (lev && s.leverage) ? s.leverage : s.weights;
+    setPortfolio(weights.map(w => ({
+      etf: ETFS[w.ticker] || { ticker: w.ticker, name: w.ticker, category: 'Core', description: '사용자 추가', annualReturn: 10 },
+      weight: w.weight
+    })));
+    if (styleKey !== 'CUSTOM') setStep(2);
+  }
+
+  function handleWeightChange(ticker, val) {
+    setPortfolio(prev => prev.map(it => it.etf.ticker === ticker ? { ...it, weight: Math.max(0, Math.min(100, val)) } : it));
+  }
+
+  function handleReturnChange(ticker, val) {
+    setPortfolio(prev => prev.map(it => it.etf.ticker === ticker ? { ...it, annualReturn: Math.max(0, Math.min(100, val)) } : it));
+  }
+
+  function removeETF(ticker) {
+    setPortfolio(prev => prev.filter(it => it.etf.ticker !== ticker));
+  }
+
+  function addETF(etf) {
+    if (portfolio.some(p => p.etf.ticker === etf.ticker)) { setShowModal(false); return; }
+    setPortfolio(prev => [...prev, { etf, weight: 0 }]);
+    setShowModal(false);
+  }
+
+  function autoBalance() {
+    const n = portfolio.length;
+    if (n === 0) return;
+    const base = Math.floor(100 / n);
+    const rem = 100 - base * n;
+    setPortfolio(prev => prev.map((it, i) => ({ ...it, weight: base + (i < rem ? 1 : 0) })));
+  }
+
+  function resetAll() {
+    setStep(1); setSelectedStyle(null); setCustomText(''); setIsLeveraged(false);
+    setPortfolio([]); setInitInvest(1000); setMonthlyAmt(100); setDuration(20);
+  }
+
+  /* ─ Step 1 ─ */
+  const renderStep1 = () => (
+    <div key="s1" className="step-content">
+      <div className="page-title">투자 성향 선택</div>
+      <p className="page-sub">2026년 AI 대격변기를 반영한 8가지 전략 중 나에게 맞는 스타일을 선택하세요.</p>
+      <div className="style-grid">
+        {Object.entries(STYLES).map(([key, s]) => {
+          const isActive = selectedStyle === key;
+          const isCustom = key === 'CUSTOM';
+          const isAgg = key === 'AGGRESSIVE_AI';
+          return (
+            <div key={key} className={`style-card ${isActive ? 'active' : ''}`}
+              style={isActive ? { borderColor: s.color, background: s.bgColor } : {}}
+              onClick={() => {
+                if (isCustom) { setSelectedStyle('CUSTOM'); return; }
+                handleStyleSelect(key, isAgg ? isLeveraged : false);
+              }}>
+              <div className="style-card-icon" style={{ background: s.bgColor, color: s.color }}>
+                {STYLE_ICONS[key]}
+              </div>
+              <div className="style-card-name">{s.label}</div>
+              <div className="style-card-desc">{s.desc}</div>
+
+              {isAgg && (
+                <div className="leverage-row" onClick={e => e.stopPropagation()}>
+                  <input type="checkbox" checked={isLeveraged} id="lev-chk"
+                    onChange={e => setIsLeveraged(e.target.checked)}/>
+                  <label htmlFor="lev-chk" className="leverage-label" style={{cursor:'pointer'}}>
+                    2배 레버리지 추가 (QLD, USD)
+                  </label>
+                </div>
+              )}
+
+              {isCustom && isActive && (
+                <div className="custom-row" onClick={e => e.stopPropagation()}>
+                  <input className="custom-input" maxLength={50} placeholder="추구하는 투자 방향 (50자 이내)"
+                    value={customText} onChange={e => setCustomText(e.target.value)}/>
+                  <button className="btn btn-primary btn-sm"
+                    style={{background: s.color, borderRadius:8, fontSize:12, padding:'8px 14px', width:'100%'}}
+                    disabled={!customText.trim()}
+                    onClick={() => handleStyleSelect('CUSTOM', false)}>
+                    커스텀으로 시작하기
+                  </button>
+                </div>
+              )}
+
+              {isActive && !isCustom && (
+                <div className="style-card-check" style={{background: s.color}}>
+                  <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M2 6l3 3 5-5"/>
+                  </svg>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  /* ─ Step 2 ─ */
+  const renderStep2 = () => {
+    const sInfo = STYLES[selectedStyle];
+    const isValid = totalWeight === 100;
+    const fillPct = Math.min(100, totalWeight);
+    return (
+      <div key="s2" className="step-content">
+        <div className="page-title">포트폴리오 비중 설정</div>
+        <p className="page-sub">ETF별 비중을 조절하고, 합계 100%를 맞춰주세요.</p>
+
+        {/* Style badge */}
+        <div style={{
+          display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderRadius:'var(--r)',
+          background: sInfo?.bgColor || 'var(--bl-s)',marginBottom:20,border:'1px solid var(--bd)'
+        }}>
+          <div style={{color: sInfo?.color || 'var(--bl)',flexShrink:0}}>
+            {STYLE_ICONS[selectedStyle]}
+          </div>
+          <div>
+            <div style={{fontSize:14,fontWeight:800,color:'var(--t1)'}}>{sInfo?.label}</div>
+            <div style={{fontSize:12,color:'var(--t2)',marginTop:2}}>{sInfo?.desc}</div>
+          </div>
+        </div>
+
+        {/* 상단 다음 버튼 */}
+        <div style={{display:'flex',justifyContent:'flex-end',marginBottom:14}}>
+          <button className="btn btn-primary" disabled={!isValid} onClick={() => setStep(3)}>
+            시뮬레이션 확인
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M6 4l4 4-4 4"/>
+            </svg>
+          </button>
+        </div>
+
+        {/* Weight bar */}
+        <div style={{
+          background:'var(--bg2)',borderRadius:'var(--r-sm)',border:'1.5px solid var(--bd)',
+          padding:'14px 16px',marginBottom:12
+        }}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
+            <span className="weight-total-label">합계 비중</span>
+            <span className="weight-total-value" style={{
+              color: isValid ? 'var(--gr)' : totalWeight > 100 ? 'var(--rd)' : 'var(--bl)'
+            }}>{totalWeight}%</span>
+          </div>
+          <div style={{
+            height:8,borderRadius:4,background:'var(--bd)',overflow:'hidden',
+            display:'flex',justifyContent:'center'
+          }}>
+            <div style={{
+              width:'100%',height:'100%',position:'relative',borderRadius:4,overflow:'hidden'
+            }}>
+              <div style={{
+                position:'absolute',left:'50%',top:0,height:'100%',borderRadius:4,
+                transform:'translateX(-50%)',
+                width: `${Math.min(100, totalWeight)}%`,
+                background: isValid ? 'var(--gr)' : totalWeight > 100 ? 'var(--rd)' : 'var(--bl)',
+                transition:'width .3s,background .3s'
+              }}/>
+            </div>
+          </div>
+          {!isValid && (
+            <div style={{fontSize:11,color: totalWeight > 100 ? 'var(--rd)' : 'var(--t3)',marginTop:5,textAlign:'center'}}>
+              {totalWeight > 100 ? `${totalWeight - 100}% 초과 — 비중을 줄여주세요` : `${100 - totalWeight}% 부족 — 합계를 100%로 맞춰주세요`}
+            </div>
+          )}
+        </div>
+
+        {/* ETF list */}
+        <div className="etf-list">
+          {portfolio.map(it => {
+            const cat = it.etf.category;
+            const catColor = CATEGORY_COLORS[cat] || '#8E8E93';
+            const retVal = it.annualReturn ?? it.etf.annualReturn;
+            return (
+              <div key={it.etf.ticker} className="etf-row">
+                <div className="etf-row-top">
+                  <div className="etf-cat-badge" style={{
+                    background: `${catColor}18`, color: catColor
+                  }}>{cat}</div>
+                  <div className="etf-info">
+                    <div className="etf-name">{it.etf.name}</div>
+                    <div className="etf-ticker">{it.etf.ticker}</div>
+                    <div className="etf-return">기대수익률 연 {retVal.toFixed(1)}%</div>
+                  </div>
+                  <div className="etf-controls">
+                    <input type="number" className="etf-weight-input" min={0} max={100} inputMode="decimal"
+                      value={it.weight} onChange={e => handleWeightChange(it.etf.ticker, Number(e.target.value))}/>
+                    <span className="etf-pct">%</span>
+                    <button className="etf-del" onClick={() => removeETF(it.etf.ticker)}>
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M3 5h10M8 5V3M7 3h2M6 5v8M10 5v8M4 5l.5 8h7l.5-8"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div className="etf-slider-row">
+                  <input type="range" className="etf-slider" min={0} max={100}
+                    value={it.weight} onChange={e => handleWeightChange(it.etf.ticker, Number(e.target.value))}
+                    style={{'--track-fill':`${it.weight}%`}}/>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <button className="btn-add-etf" onClick={() => setShowModal(true)}>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <path d="M8 3v10M3 8h10"/>
+          </svg>
+          ETF 추가하기
+        </button>
+
+        <div style={{marginTop:14,display:'flex',gap:8,flexWrap:'wrap'}}>
+          <button className="btn btn-secondary btn-sm" style={{fontSize:12,padding:'8px 14px',borderRadius:8}}
+            onClick={autoBalance}>
+            균등 분배
+          </button>
+          <button className="btn btn-secondary btn-sm" style={{fontSize:12,padding:'8px 14px',borderRadius:8}}
+            onClick={() => handleStyleSelect(selectedStyle, isLeveraged)}>
+            초기화
+          </button>
+        </div>
+
+        <div className="btn-nav-row" style={{marginTop:20}}>
+          <button className="btn btn-secondary" onClick={() => setStep(1)}>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M10 12l-4-4 4-4"/>
+            </svg>
+            이전
+          </button>
+          <button className="btn btn-primary" disabled={!isValid} onClick={() => setStep(3)}>
+            시뮬레이션 확인
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M6 4l4 4-4 4"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  /* ─ Step 3 ─ */
+  const renderStep3 = () => {
+    const returnText = `기대 연평균 수익률 ${weightedReturn.toFixed(2)}%`;
+    return (
+      <div key="s3" className="step-content">
+        <div className="page-title">시뮬레이션 확인</div>
+        <p className="page-sub">초기 투자금, 월 적립금, 투자 기간을 입력하면 복리 효과를 예측합니다.</p>
+
+        {/* Return badge */}
+        <div className="sim-return-badge" style={{background: returnBg, color: returnColor}}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M7 2v10M3 6l4-4 4 4"/>
+          </svg>
+          {returnText}
+        </div>
+
+        {/* Pie chart */}
+        {portfolio.length > 0 && <DonutChart portfolio={portfolio}/>}
+
+        {/* Inputs */}
+        <div className="sim-grid">
+          {/* Init */}
+          <div className="sim-input-card">
+            <div className="sim-input-label">초기 투자금</div>
+            <div className="sim-input-value">{initInvest.toLocaleString()}<span className="sim-input-unit">만원</span></div>
+            <input type="range" min={0} max={10000} step={100} value={initInvest}
+              onChange={e => setInitInvest(Number(e.target.value))} className="sim-input-range"/>
+            <div className="sim-input-minmax"><span>0만</span><span>1억</span></div>
+          </div>
+          {/* Monthly */}
+          <div className="sim-input-card">
+            <div className="sim-input-label">월 적립금</div>
+            <div className="sim-input-value">{monthlyAmt.toLocaleString()}<span className="sim-input-unit">만원</span></div>
+            <input type="range" min={10} max={1000} step={10} value={monthlyAmt}
+              onChange={e => setMonthlyAmt(Number(e.target.value))} className="sim-input-range green"/>
+            <div className="sim-input-minmax"><span>10만</span><span>1000만</span></div>
+          </div>
+          {/* Duration */}
+          <div className="sim-input-card" style={{gridColumn:'1 / -1'}}>
+            <div className="sim-input-label">투자 기간</div>
+            <div className="sim-input-value">{duration}<span className="sim-input-unit">년</span></div>
+            <input type="range" min={1} max={40} step={1} value={duration}
+              onChange={e => setDuration(Number(e.target.value))} className="sim-input-range"/>
+            <div className="sim-input-minmax"><span>1년</span><span>40년</span></div>
+          </div>
+        </div>
+
+        {/* Quick preview */}
+        {simData.length > 0 && (
+          <div style={{background:'var(--bl-s)',borderRadius:'var(--r)',padding:'14px 18px',
+            border:'1px solid var(--bl-m)',marginBottom:8}}>
+            <div style={{fontSize:12,fontWeight:700,color:'var(--bl)',marginBottom:8}}>예상 결과 미리보기</div>
+            <div style={{fontSize:20,fontWeight:800,color:'var(--t1)',letterSpacing:'-.03em'}}>
+              {formatKRW(finalBalance)}원
+            </div>
+            <div style={{fontSize:12,color:'var(--t2)',marginTop:4}}>
+              원금 {formatKRW(totalContrib)}원의 <strong style={{color:'var(--gr)'}}>{multiplier.toFixed(2)}배</strong>
+              &nbsp;/ 수익 {formatKRW(totalProfit)}원
+            </div>
+          </div>
+        )}
+
+        <div className="btn-nav-row" style={{marginTop:16}}>
+          <button className="btn btn-secondary" onClick={() => setStep(2)}>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M10 12l-4-4 4-4"/>
+            </svg>
+            이전
+          </button>
+          <button className="btn btn-primary" onClick={() => setStep(4)}>
+            결과 보기
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M6 4l4 4-4 4"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  /* ─ Step 4 ─ */
+  const [showFullTable, setShowFullTable] = useState(false);
+  const tableRows = showFullTable ? simData : simData.filter((d, i) => i % Math.max(1, Math.floor(duration / 8)) === 0 || i === simData.length - 1);
+
+  const renderStep4 = () => (
+    <div key="s4" className="step-content">
+      <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',flexWrap:'wrap',gap:8,marginBottom:20}}>
+        <div>
+          <div className="page-title">{duration}년 후 예상 자산</div>
+          <div style={{fontSize:32,fontWeight:900,letterSpacing:'-.04em',color:'var(--t1)',marginTop:4}}>
+            {formatKRW(finalBalance)}원
+          </div>
+          <div style={{fontSize:14,color:'var(--gr)',fontWeight:700,marginTop:4}}>
+            원금 대비 {multiplier.toFixed(2)}배 · 수익 {formatKRW(totalProfit)}원
+          </div>
+        </div>
+        <div style={{flexShrink:0}}>
+          <div className="sim-return-badge" style={{background: returnBg, color: returnColor, marginBottom:0}}>
+            연 {weightedReturn.toFixed(2)}% 기대수익률
+          </div>
+        </div>
+      </div>
+
+      {/* Metrics */}
+      <div className="result-metrics">
+        {[
+          { label: '최종 예상 자산', val: `${formatKRW(finalBalance)}원`, sub: `${duration}년 후`, color: 'var(--bl)' },
+          { label: '누적 원금', val: `${formatKRW(totalContrib)}원`, sub: `초기+적립`, color: 'var(--t1)' },
+          { label: '총 수익', val: `${formatKRW(totalProfit)}원`, sub: `세전 추산`, color: 'var(--gr)' },
+          { label: '수익 배수', val: `${multiplier.toFixed(2)}배`, sub: `원금 대비`, color: 'var(--yl)' },
+        ].map((m, i) => (
+          <div key={i} className="metric-card">
+            <div className="metric-label">{m.label}</div>
+            <div className="metric-value" style={{color: m.color}}>{m.val}</div>
+            <div className="metric-sub">{m.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Chart */}
+      <div className="chart-wrap">
+        <div className="chart-legend">
+          <div className="legend-item">
+            <div className="legend-dot" style={{background:'#0071E3'}}/>
+            <span>예상 자산</span>
+          </div>
+          <div className="legend-item">
+            <div className="legend-dot" style={{background:'#8E8E93'}}/>
+            <span>누적 원금</span>
+          </div>
+        </div>
+        <SimChart data={simData}/>
+      </div>
+
+      {/* Portfolio summary */}
+      <div className="portfolio-summary">
+        <div className="portfolio-summary-title">포트폴리오 구성 ({STYLES[selectedStyle]?.label || '커스텀'})</div>
+        <div className="portfolio-pills">
+          {portfolio.filter(it => it.weight > 0).map(it => (
+            <div key={it.etf.ticker} className="portfolio-pill"
+              style={{background: `${CATEGORY_COLORS[it.etf.category]||'#8E8E93'}18`, color: CATEGORY_COLORS[it.etf.category]||'#8E8E93'}}>
+              {it.etf.ticker} <span style={{opacity:.7}}>{it.weight}%</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Year table */}
+      <div className="table-wrap">
+        <div className="table-header">
+          <span className="table-title">연도별 자산 변화</span>
+          <button className="table-toggle" onClick={() => setShowFullTable(v => !v)}>
+            {showFullTable ? '간략히' : '전체 보기'}
+          </button>
+        </div>
+        <div style={{overflowX:'auto'}}>
+          <table>
+            <thead>
+              <tr>
+                <th style={{textAlign:'left'}}>년차</th>
+                <th>누적 원금</th>
+                <th>예상 자산</th>
+                <th>수익</th>
+                <th>배수</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tableRows.map(d => {
+                const profit = d.balance - d.contribution;
+                const mult = d.contribution > 0 ? (d.balance / d.contribution).toFixed(2) : '-';
+                return (
+                  <tr key={d.year}>
+                    <td>{d.year}년차</td>
+                    <td>{formatKRW(d.contribution)}원</td>
+                    <td style={{color:'var(--bl)',fontWeight:700}}>{formatKRW(d.balance)}원</td>
+                    <td className="td-profit">+{formatKRW(profit)}원</td>
+                    <td style={{color:'var(--yl)',fontWeight:700}}>{mult}x</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
+        <button className="btn btn-secondary" onClick={() => setStep(3)}>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M10 12l-4-4 4-4"/>
+          </svg>
+          설정 변경
+        </button>
+        <button className="btn btn-secondary" onClick={() => setStep(2)}>
+          포트폴리오 수정
+        </button>
+        <button className="btn btn-ghost" onClick={resetAll}>
+          처음부터
+        </button>
+      </div>
+
+      {/* Disclaimer */}
+      <div style={{marginTop:24,padding:'14px 16px',borderRadius:'var(--r-sm)',
+        background:'var(--yl-s)',border:'1px solid rgba(255,159,10,0.2)'}}>
+        <div style={{fontSize:11,color:'var(--t2)',lineHeight:1.7}}>
+          <strong style={{color:'var(--yl)'}}>투자 유의사항</strong>  이 시뮬레이터는 과거 데이터 기반의 가정치를 활용한 참고용 도구입니다.
+          실제 수익률은 시장 환경에 따라 크게 달라질 수 있으며, 레버리지 ETF는 변동성 침식(Volatility Decay)으로
+          인해 장기 보유 시 예상과 다른 결과가 나올 수 있습니다. 모든 투자 결정은 본인의 판단과 책임 아래 이루어져야 합니다.
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderStep = () => {
+    if (step === 1) return renderStep1();
+    if (step === 2) return renderStep2();
+    if (step === 3) return renderStep3();
+    if (step === 4) return renderStep4();
+  };
+
+  return (
+    <>
+
+      <div className="wrap">
+        <StepBar step={step}/>
+
+        {renderStep()}
+      </div>
+
+      {showModal && (
+        <ETFModal
+          onClose={() => setShowModal(false)}
+          onAdd={addETF}
+          existingTickers={portfolio.map(p => p.etf.ticker)}
+        />
+      )}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+
+<footer class="ez-footer" role="contentinfo">
+  <div class="ez-footer-inner">
+    <div class="ez-footer-top">
+      <div class="ez-footer-brand">
+        <picture>
+          <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
+          <img src="logo.png" alt="EZLONG">
+        </picture>
+        <p class="ez-footer-brand-desc">
+          쉽고 안전한 장기투자 파트너<br>
+          easy.invest.good@gmail.com
+        </p>
+      </div>
+      <div class="ez-footer-books">
+        <div class="ez-footer-book">
+          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-cover" target="_blank" rel="noopener">
+            <img src="book01.png" alt="절대 실패하지 않는 미국 주식 ETF 투자">
+          </a>
+          <div class="ez-footer-book-info">
+            <span class="ez-footer-book-title">절대 실패하지 않는<br>미국 주식 ETF 투자</span>
+            <span class="ez-footer-book-label">종이책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/177260453" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://product.kyobobook.co.kr/detail/S000219205812" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+            </div>
+            <span class="ez-footer-book-label">전자책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=387049914&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/180332209" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012611429" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+              <a href="https://ridibooks.com/books/3844000153" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>
+            </div>
+            <span class="ez-footer-book-label">오디오북</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=388954868&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+            </div>
+            <span class="ez-footer-book-label">구독</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://max.aladin.co.kr/product/387049914?&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.millie.co.kr/v4/book/52e27a74508a4c93" class="ez-footer-book-btn" target="_blank" rel="noopener">밀리</a>
+              <a href="https://cremaclub.yes24.com/BookClub/Detail/180332209" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012611429" class="ez-footer-book-btn" target="_blank" rel="noopener">교보</a>
+            </div>
+          </div>
+        </div>
+        <div class="ez-footer-book">
+          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-cover" target="_blank" rel="noopener">
+            <img src="book02_1.png" alt="월급쟁이 투자 자동화">
+          </a>
+          <div class="ez-footer-book-info">
+            <span class="ez-footer-book-title">월급쟁이<br>투자 자동화</span>
+            <span class="ez-footer-book-label">전자책</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
+              <a href="https://ridibooks.com/books/6121000386" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>
+            </div>
+            <span class="ez-footer-book-label">오디오북</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=391653601&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+            </div>
+            <span class="ez-footer-book-label">구독</span>
+            <div class="ez-footer-book-btns">
+              <a href="https://max.aladin.co.kr/product/389499456?&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
+              <a href="https://www.millie.co.kr/v4/book/e7fbd96e137b4ae1" class="ez-footer-book-btn" target="_blank" rel="noopener">밀리</a>
+              <a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
+              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ez-footer-links">
+        <div class="ez-footer-col">
+          <span class="ez-footer-col-title">서비스</span>
+          <a href="atmr-dashboard.html">스윙 시그널 대시보드</a>
+          <a href="chart-analysis.html">AI 차트분석</a>
+          <a href="analyst-reports.html">핵심기업 목표주가</a>
+          <a href="market-cycle.html">Market Cycle Monitor</a>
+          <a href="dca-simulator.html">DCA 복리 시뮬레이터</a>
+          <a href="portfolio-manager.html">포트폴리오 복리 시뮬레이터</a>
+          <a href="tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a>
+          <a href="compound-calculator.html">복리 계산기</a>
+          <a href="retirement-calculator.html">은퇴 목표 역산 계산기</a>
+          <a href="backtest.html">몬테카를로 포트폴리오 시뮬레이터</a>
+          <a href="risk-diagnostic.html">투자 행동 자가진단</a>
+          <a href="auto-dca-guide.html">자동 적립식 매수 가이드</a>
+        </div>
+      </div>
+    </div>
+    <div class="ez-footer-bottom">
+      © 2025–2026 유니아빠 &amp; 유니엄마 · EZLONG · easy.invest.good@gmail.com<br>
+      본 서비스에서 제공하는 모든 시뮬레이션 수치는 참고용 추정치이며, 실제 투자 수익을 보장하지 않습니다. 투자 판단의 책임은 투자자 본인에게 있습니다.
+    </div>
+  </div>
+</footer>
+</body>
+</html>

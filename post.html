@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title id="page-title">투자 인사이트 — EZLONG</title>
+<meta name="description" id="page-desc" content="EZLONG 투자 인사이트" />
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2336764115275414" crossorigin="anonymous"></script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+<!-- Quill CSS (뷰어용 스타일) -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #F5F5F7;
+  --bg2:      #FFFFFF;
+  --card:     #FFFFFF;
+  --bd:       rgba(0,0,0,0.08);
+  --t1:       #1D1D1F;
+  --t2:       #1D1D1F;
+  --t3:       #3A3A3C;
+  --bl:       #0071E3;
+  --bl-s:     rgba(0,113,227,0.10);
+  --bl-m:     rgba(0,113,227,0.18);
+  --gr:       #34C759;
+  --gr-s:     rgba(52,199,89,0.10);
+  --rd:       #FF3B30;
+  --yl:       #FF9F0A;
+  --yl-s:     rgba(255,159,10,0.12);
+  --pu:       #BF5AF2;
+  --r:        18px;
+  --r-sm:     12px;
+  --font:     -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Pretendard', 'Helvetica Neue', Arial, sans-serif;
+  --shadow:   0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-lg:0 12px 48px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  --nav-h:    60px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:     #000000;
+    --bg2:    #1C1C1E;
+    --card:   #1C1C1E;
+    --bd:     rgba(255,255,255,0.10);
+    --t1:     #F5F5F7;
+    --t2:     #F5F5F7;
+    --t3:     #E5E5EA;
+    --bl-s:   rgba(0,113,227,0.20);
+    --bl-m:   rgba(0,113,227,0.30);
+    --shadow: 0 4px 24px rgba(0,0,0,0.30), 0 1px 4px rgba(0,0,0,0.20);
+    --shadow-lg: 0 12px 48px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30);
+  }
+}
+
+html {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--t1);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+body { min-height: 100vh; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: #C7C7CC; border-radius: 3px; }
+
+/* ── NAV ─────────────────────────────────── */
+.nav {
+  height: var(--nav-h);
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--bd);
+}
+@media (prefers-color-scheme: dark) { .nav { background: rgba(28,28,30,0.95); } }
+.nav-inner { max-width: 1080px; margin: 0 auto; padding: 0 20px; height: 100%; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { display: flex; align-items: center; }
+.nav-logo-img { height: 32px; width: auto; }
+@media (prefers-color-scheme: dark) { .nav-logo-img { filter: brightness(1.1); } }
+.nav-tagline { font-size: 12px; font-weight: 500; color: var(--t2); letter-spacing: -.01em; line-height: 1.5; text-align: right; }
+
+/* ── ADMIN BAR ───────────────────────────── */
+.admin-bar {
+  display: none;
+  background: var(--yl-s);
+  border-bottom: 1px solid rgba(255,159,10,0.2);
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--yl);
+  font-weight: 600;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+}
+.admin-bar.visible { display: flex; }
+.admin-bar button {
+  background: none;
+  border: 1px solid rgba(255,159,10,0.4);
+  color: var(--yl);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.admin-bar button:hover { background: rgba(255,159,10,0.15); }
+.admin-bar .btn-danger { border-color: rgba(255,59,48,0.4); color: var(--rd); }
+.admin-bar .btn-danger:hover { background: rgba(255,59,48,0.1); }
+
+/* ── MAIN LAYOUT ─────────────────────────── */
+.main { max-width: 900px; margin: 0 auto; padding: 40px 20px 80px; }
+
+/* ── BACK LINK ───────────────────────────── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--bl);
+  margin-bottom: 28px;
+  transition: gap .15s;
+}
+.back-link:hover { gap: 10px; }
+.back-link svg { width: 14px; height: 14px; }
+
+/* ── POST HEADER ─────────────────────────── */
+.post-category {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--bl);
+  background: var(--bl-s);
+  padding: 4px 11px;
+  border-radius: 100px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+.post-title {
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: 900;
+  letter-spacing: -.03em;
+  line-height: 1.15;
+  color: var(--t1);
+  margin-bottom: 16px;
+}
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--bd);
+  margin-bottom: 36px;
+}
+.post-meta-date { font-size: 13px; color: var(--t3); }
+.post-meta-author { font-size: 13px; color: var(--t3); font-weight: 600; }
+
+/* ── POST CONTENT ────────────────────────── */
+.post-content {
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--t1);
+  margin-bottom: 48px;
+}
+
+/* Quill 뷰어 스타일 재정의 */
+.post-content .ql-editor {
+  padding: 0;
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--t1);
+}
+.post-content .ql-editor p { margin-bottom: 1em; }
+.post-content .ql-editor h1 { font-size: 28px; font-weight: 800; letter-spacing: -.02em; margin: 1.4em 0 .6em; line-height: 1.2; }
+.post-content .ql-editor h2 { font-size: 22px; font-weight: 800; letter-spacing: -.02em; margin: 1.2em 0 .5em; line-height: 1.25; }
+.post-content .ql-editor h3 { font-size: 18px; font-weight: 700; margin: 1em 0 .4em; }
+.post-content .ql-editor ul,
+.post-content .ql-editor ol { padding-left: 1.5em; margin-bottom: 1em; }
+.post-content .ql-editor li { margin-bottom: .35em; }
+.post-content .ql-editor blockquote {
+  border-left: 3px solid var(--bl);
+  padding-left: 16px;
+  color: var(--t3);
+  margin: 1.2em 0;
+  font-style: italic;
+}
+.post-content .ql-editor img { max-width: 100%; border-radius: var(--r-sm); margin: 1em 0; }
+.post-content .ql-editor a { color: var(--bl); text-decoration: underline; }
+.post-content .ql-editor strong { font-weight: 700; }
+.post-content .ql-editor pre.ql-syntax {
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: var(--r-sm);
+  padding: 16px;
+  font-size: 14px;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+/* 다크모드에서 Quill 배경 */
+@media (prefers-color-scheme: dark) {
+  .post-content .ql-editor pre.ql-syntax { background: #2C2C2E; }
+}
+
+/* ── LIKE BUTTON ─────────────────────────── */
+.like-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 0;
+  border-top: 1px solid var(--bd);
+  border-bottom: 1px solid var(--bd);
+  margin-bottom: 48px;
+}
+.btn-like {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 100px;
+  border: 2px solid var(--bd);
+  background: var(--card);
+  color: var(--t3);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+}
+.btn-like:hover { border-color: var(--rd); color: var(--rd); background: rgba(255,59,48,0.05); }
+.btn-like.liked { border-color: var(--rd); color: var(--rd); background: rgba(255,59,48,0.08); }
+.btn-like svg { width: 18px; height: 18px; transition: transform .2s; }
+.btn-like:hover svg, .btn-like.liked svg { transform: scale(1.15); }
+.like-count-label { font-size: 13px; color: var(--t3); }
+
+/* ── COMMENTS ────────────────────────────── */
+.comments-section { margin-bottom: 40px; }
+.comments-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--t1);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.comment-count-badge {
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--bl-s);
+  color: var(--bl);
+  padding: 3px 9px;
+  border-radius: 100px;
+}
+
+/* 댓글 작성 폼 */
+.comment-form {
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+}
+.comment-form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.comment-input-name {
+  width: 140px;
+  flex-shrink: 0;
+}
+.comment-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--t1);
+  outline: none;
+  transition: border-color .15s;
+}
+.comment-input:focus { border-color: var(--bl); }
+.comment-textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--t1);
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color .15s;
+  margin-bottom: 10px;
+}
+.comment-textarea:focus { border-color: var(--bl); }
+@media (prefers-color-scheme: dark) {
+  .comment-input, .comment-textarea { background: #2C2C2E; }
+}
+.comment-form-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-comment-submit {
+  background: var(--bl);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 9px 20px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+.btn-comment-submit:hover { opacity: .85; }
+.btn-comment-submit:disabled { opacity: .5; cursor: not-allowed; }
+
+/* 댓글 목록 */
+.comment-list { display: flex; flex-direction: column; gap: 12px; }
+.comment-item {
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: var(--r-sm);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.comment-author {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--t1);
+}
+.comment-date { font-size: 12px; color: var(--t3); }
+.comment-body {
+  font-size: 14px;
+  color: var(--t1);
+  line-height: 1.7;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.comment-footer { display: flex; align-items: center; gap: 12px; }
+.btn-comment-like {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--t3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color .15s;
+}
+.btn-comment-like:hover { color: var(--rd); }
+.btn-comment-like.liked { color: var(--rd); }
+.btn-comment-like svg { width: 13px; height: 13px; }
+.btn-comment-delete {
+  font-size: 12px;
+  color: var(--t3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color .15s;
+  display: none;
+  margin-left: auto;
+}
+.btn-comment-delete:hover { color: var(--rd); }
+.btn-comment-delete.visible { display: block; }
+
+.comment-empty { font-size: 14px; color: var(--t3); text-align: center; padding: 24px; }
+
+/* ── FOOTER ──────────────────────────────── */
+.footer { background: var(--bg2); border-top: 1px solid var(--bd); padding: 48px 20px 32px; }
+.footer-inner { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+.footer-top { display: flex; flex-direction: column; gap: 16px; }
+@media (min-width: 640px) { .footer-top { flex-direction: row; align-items: flex-start; justify-content: space-between; } }
+.footer-brand { display: flex; flex-direction: column; gap: 8px; }
+.footer-brand-name { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; letter-spacing: -.04em; color: var(--t1); }
+.footer-brand-desc { font-size: 13px; color: var(--t1); line-height: 1.6; }
+.footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+.footer-link-col { display: flex; flex-direction: column; gap: 10px; }
+.footer-link-col-title { font-size: 12px; font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--t1); }
+.footer-link-col a { font-size: 14px; color: var(--t1); transition: color .15s; }
+.footer-link-col a:hover { color: var(--bl); }
+.footer-bottom { font-size: 11px; color: var(--t3); border-top: 1px solid var(--bd); padding-top: 20px; line-height: 1.7; }
+
+/* ── NOT FOUND ───────────────────────────── */
+.not-found { text-align: center; padding: 80px 20px; }
+.not-found h2 { font-size: 24px; font-weight: 800; margin-bottom: 12px; color: var(--t1); }
+.not-found p { font-size: 15px; color: var(--t3); }
+</style>
+</head>
+<body>
+
+<!-- ── ADMIN BAR ──────────────────────── -->
+<div class="admin-bar" id="admin-bar">
+  관리자 모드
+  <button id="btn-edit">수정</button>
+  <button class="btn-danger" id="btn-delete">삭제</button>
+  <button id="btn-logout">로그아웃</button>
+</div>
+
+<!-- ── NAV ───────────────────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <picture>
+        <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)" />
+        <img src="logo.png" alt="EZLONG" class="nav-logo-img" />
+      </picture>
+    </a>
+    <p class="nav-tagline">쉽고 안전한 장기투자로<br>복리의 마법을</p>
+  </div>
+</nav>
+
+<!-- ── MAIN ──────────────────────────── -->
+<main class="main" id="main-content">
+  <div class="not-found" style="display:none" id="not-found-box">
+    <h2>게시글을 찾을 수 없습니다</h2>
+    <p>삭제되었거나 존재하지 않는 글입니다.</p>
+    <a href="board.html" style="color:var(--bl);font-weight:600;margin-top:16px;display:inline-block;">목록으로 돌아가기</a>
+  </div>
+
+  <div id="post-area">
+    <!-- 뒤로 가기 -->
+    <a href="board.html" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      목록으로
+    </a>
+
+    <!-- 게시글 헤더 -->
+    <div id="post-header">
+      <p class="post-category" id="post-category" style="display:none;"></p>
+      <h1 class="post-title" id="post-title">불러오는 중...</h1>
+      <div class="post-meta">
+        <span class="post-meta-author" id="post-author"></span>
+        <span class="post-meta-date" id="post-date"></span>
+      </div>
+    </div>
+
+    <!-- 본문 -->
+    <div class="post-content">
+      <div class="ql-editor" id="post-body"></div>
+    </div>
+
+    <!-- 좋아요 -->
+    <div class="like-section">
+      <button class="btn-like" id="btn-like">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="like-icon"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span id="like-count">0</span>
+      </button>
+      <span class="like-count-label">이 글이 도움이 됐다면 좋아요를 눌러주세요</span>
+    </div>
+
+    <!-- 댓글 -->
+    <section class="comments-section">
+      <h2 class="comments-title">
+        댓글
+        <span class="comment-count-badge" id="comment-count-badge">0</span>
+      </h2>
+
+      <!-- 댓글 작성 폼 -->
+      <div class="comment-form">
+        <div class="comment-form-row">
+          <input class="comment-input comment-input-name" id="comment-name" type="text" placeholder="이름 (필수)" maxlength="20" />
+        </div>
+        <textarea class="comment-textarea" id="comment-body" placeholder="댓글을 남겨주세요 (최대 500자)" maxlength="500" rows="3"></textarea>
+        <div class="comment-form-footer">
+          <button class="btn-comment-submit" id="btn-comment-submit">댓글 등록</button>
+        </div>
+      </div>
+
+      <!-- 댓글 목록 -->
+      <div class="comment-list" id="comment-list">
+        <p class="comment-empty">아직 댓글이 없습니다. 첫 댓글을 남겨보세요.</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- ── FOOTER ────────────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-name">
+          <picture>
+            <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)" />
+            <img src="logo.png" alt="EZLONG" style="height:24px;width:auto;" />
+          </picture>
+        </div>
+        <p class="footer-brand-desc">쉽고 안전한 장기투자 파트너<br>easy.invest.good@gmail.com</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-link-col">
+          <span class="footer-link-col-title">투자 도구</span>
+          <a href="dca-simulator.html">DCA 시뮬레이터</a>
+          <a href="portfolio-manager.html">포트폴리오 시뮬레이터</a>
+          <a href="tax-account-simulator.html">절세 계좌 시뮬레이터</a>
+          <a href="compound-calculator.html">복리 계산기</a>
+        </div>
+        <div class="footer-link-col">
+          <span class="footer-link-col-title">콘텐츠</span>
+          <a href="board.html">투자 인사이트</a>
+          <a href="index.html#books">저자 도서</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 EZLONG. All rights reserved.<br>
+      본 서비스에서 제공하는 모든 내용은 참고용이며, 실제 투자 수익을 보장하지 않습니다.
+    </div>
+  </div>
+</footer>
+
+<script>
+// ================================================================
+// Firebase 설정 — board.html, post.html, write.html 모두 동일한 값으로 교체
+// ================================================================
+const firebaseConfig = {
+  apiKey:            "AIzaSyBKFL4Y_nZX8P0cczg9174ztL04TCi8GRc",
+  authDomain:        "ezlong-541a8.firebaseapp.com",
+  projectId:         "ezlong-541a8",
+  storageBucket:     "ezlong-541a8.firebasestorage.app",
+  messagingSenderId: "925344506094",
+  appId:             "1:925344506094:web:31b303b8af8b93031393ff"
+};
+
+const ADMIN_EMAIL = "ziririt@gmail.com";
+
+// ── Firebase 초기화 ─────────────────────────────────────────────
+firebase.initializeApp(firebaseConfig);
+const db   = firebase.firestore();
+const auth = firebase.auth();
+
+// ── URL에서 게시글 ID 파싱 ─────────────────────────────────────
+const params = new URLSearchParams(location.search);
+const postId = params.get('id');
+
+let isAdmin = false;
+let postData = null;
+
+// ── 날짜 포맷 ─────────────────────────────────────────────────
+function formatDate(ts) {
+  if (!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const days = ['일','월','화','수','목','금','토'];
+  return `${y}.${m}.${day}(${days[d.getDay()]})`;
+}
+
+// ── 관리자 인증 상태 ───────────────────────────────────────────
+auth.onAuthStateChanged(user => {
+  isAdmin = user && user.email === ADMIN_EMAIL;
+  document.getElementById('admin-bar').style.display = isAdmin ? 'flex' : 'none';
+});
+
+document.getElementById('btn-logout').addEventListener('click', () => auth.signOut());
+document.getElementById('btn-edit').addEventListener('click', () => {
+  if (postId) location.href = `write.html?id=${postId}`;
+});
+document.getElementById('btn-delete').addEventListener('click', async () => {
+  if (!confirm('이 게시글을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
+  try {
+    await db.collection('posts').doc(postId).update({ published: false });
+    alert('삭제되었습니다.');
+    location.href = 'board.html';
+  } catch (e) {
+    alert('삭제 중 오류가 발생했습니다.');
+  }
+});
+
+// ── 게시글 로드 ────────────────────────────────────────────────
+async function loadPost() {
+  if (!postId) {
+    showNotFound();
+    return;
+  }
+  try {
+    const doc = await db.collection('posts').doc(postId).get();
+    if (!doc.exists || !doc.data().published) {
+      showNotFound();
+      return;
+    }
+    postData = doc.data();
+
+    // 메타 태그 업데이트
+    document.getElementById('page-title').textContent = `${postData.title} — EZLONG`;
+    document.getElementById('page-desc').content = postData.title;
+
+    // 카테고리
+    if (postData.category) {
+      const catEl = document.getElementById('post-category');
+      catEl.textContent = postData.category;
+      catEl.style.display = 'inline-block';
+    }
+
+    // 제목/메타
+    document.getElementById('post-title').textContent = postData.title || '(제목 없음)';
+    document.getElementById('post-author').textContent = postData.author || '유니아빠';
+    document.getElementById('post-date').textContent = formatDate(postData.displayDate || postData.createdAt);
+
+    // 본문 (Quill HTML)
+    document.getElementById('post-body').innerHTML = postData.content || '';
+
+    // 좋아요
+    updateLikeUI(postData.likes || 0);
+    checkLikeState();
+
+    // 댓글 로드
+    loadComments();
+
+  } catch (e) {
+    console.error(e);
+    showNotFound();
+  }
+}
+
+function showNotFound() {
+  document.getElementById('post-area').style.display = 'none';
+  document.getElementById('not-found-box').style.display = 'block';
+}
+
+// ── 좋아요 ────────────────────────────────────────────────────
+const LIKE_KEY = `ezlong_post_liked_${postId}`;
+
+function checkLikeState() {
+  const liked = localStorage.getItem(LIKE_KEY) === '1';
+  const btn = document.getElementById('btn-like');
+  const icon = document.getElementById('like-icon');
+  btn.classList.toggle('liked', liked);
+  if (liked) {
+    icon.setAttribute('fill', 'var(--rd)');
+    icon.setAttribute('stroke', 'var(--rd)');
+  } else {
+    icon.setAttribute('fill', 'none');
+    icon.setAttribute('stroke', 'currentColor');
+  }
+}
+
+function updateLikeUI(count) {
+  document.getElementById('like-count').textContent = count;
+}
+
+document.getElementById('btn-like').addEventListener('click', async () => {
+  if (!postId) return;
+  const liked = localStorage.getItem(LIKE_KEY) === '1';
+  const newLiked = !liked;
+  const delta = newLiked ? 1 : -1;
+
+  // 낙관적 UI 업데이트
+  const current = parseInt(document.getElementById('like-count').textContent, 10) || 0;
+  updateLikeUI(Math.max(0, current + delta));
+  localStorage.setItem(LIKE_KEY, newLiked ? '1' : '0');
+  checkLikeState();
+
+  try {
+    await db.collection('posts').doc(postId).update({
+      likes: firebase.firestore.FieldValue.increment(delta)
+    });
+  } catch (e) {
+    // 롤백
+    updateLikeUI(Math.max(0, current));
+    localStorage.setItem(LIKE_KEY, liked ? '1' : '0');
+    checkLikeState();
+    console.error(e);
+  }
+});
+
+// ── 댓글 로드 ─────────────────────────────────────────────────
+async function loadComments() {
+  const list = document.getElementById('comment-list');
+  try {
+    const snapshot = await db.collection('posts').doc(postId)
+      .collection('comments')
+      .orderBy('createdAt', 'asc')
+      .get();
+
+    const count = snapshot.size;
+    document.getElementById('comment-count-badge').textContent = count;
+
+    if (count === 0) {
+      list.innerHTML = '<p class="comment-empty">아직 댓글이 없습니다. 첫 댓글을 남겨보세요.</p>';
+      return;
+    }
+
+    list.innerHTML = snapshot.docs.map(doc => {
+      const c = doc.data();
+      const commentLikeKey = `ezlong_comment_liked_${doc.id}`;
+      const commentLiked = localStorage.getItem(commentLikeKey) === '1';
+      return `
+        <div class="comment-item" data-id="${doc.id}">
+          <div class="comment-header">
+            <span class="comment-author">${escapeHtml(c.author || '익명')}</span>
+            <span class="comment-date">${formatDate(c.createdAt)}</span>
+          </div>
+          <div class="comment-body">${escapeHtml(c.body || '')}</div>
+          <div class="comment-footer">
+            <button class="btn-comment-like ${commentLiked ? 'liked' : ''}" data-id="${doc.id}" data-likes="${c.likes || 0}">
+              <svg viewBox="0 0 24 24" fill="${commentLiked ? 'var(--rd)' : 'none'}" stroke="${commentLiked ? 'var(--rd)' : 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <span class="clike-count">${c.likes || 0}</span>
+            </button>
+            <button class="btn-comment-delete ${isAdmin ? 'visible' : ''}" data-id="${doc.id}">삭제</button>
+          </div>
+        </div>`;
+    }).join('');
+
+    // 댓글 좋아요 이벤트
+    list.querySelectorAll('.btn-comment-like').forEach(btn => {
+      btn.addEventListener('click', () => handleCommentLike(btn));
+    });
+
+    // 댓글 삭제 이벤트 (관리자만)
+    list.querySelectorAll('.btn-comment-delete').forEach(btn => {
+      btn.addEventListener('click', () => handleCommentDelete(btn.dataset.id));
+    });
+
+  } catch (e) {
+    console.error(e);
+    list.innerHTML = '<p class="comment-empty">댓글을 불러오지 못했습니다.</p>';
+  }
+}
+
+// ── 댓글 좋아요 ──────────────────────────────────────────────
+async function handleCommentLike(btn) {
+  const commentId = btn.dataset.id;
+  const likeKey   = `ezlong_comment_liked_${commentId}`;
+  const liked     = localStorage.getItem(likeKey) === '1';
+  const delta     = liked ? -1 : 1;
+  const countEl   = btn.querySelector('.clike-count');
+  const svgEl     = btn.querySelector('svg');
+
+  // 낙관적 업데이트
+  const cur = parseInt(countEl.textContent, 10) || 0;
+  countEl.textContent = Math.max(0, cur + delta);
+  localStorage.setItem(likeKey, liked ? '0' : '1');
+  btn.classList.toggle('liked', !liked);
+  if (!liked) {
+    svgEl.setAttribute('fill', 'var(--rd)');
+    svgEl.setAttribute('stroke', 'var(--rd)');
+  } else {
+    svgEl.setAttribute('fill', 'none');
+    svgEl.setAttribute('stroke', 'currentColor');
+  }
+
+  try {
+    await db.collection('posts').doc(postId)
+      .collection('comments').doc(commentId)
+      .update({ likes: firebase.firestore.FieldValue.increment(delta) });
+  } catch (e) {
+    // 롤백
+    countEl.textContent = cur;
+    localStorage.setItem(likeKey, liked ? '1' : '0');
+    btn.classList.toggle('liked', liked);
+    console.error(e);
+  }
+}
+
+// ── 댓글 삭제 ────────────────────────────────────────────────
+async function handleCommentDelete(commentId) {
+  if (!confirm('이 댓글을 삭제하시겠습니까?')) return;
+  try {
+    await db.collection('posts').doc(postId)
+      .collection('comments').doc(commentId).delete();
+    // 댓글 수 업데이트
+    await db.collection('posts').doc(postId)
+      .update({ commentCount: firebase.firestore.FieldValue.increment(-1) });
+    loadComments();
+  } catch (e) {
+    alert('삭제 중 오류가 발생했습니다.');
+  }
+}
+
+// ── 댓글 등록 ────────────────────────────────────────────────
+document.getElementById('btn-comment-submit').addEventListener('click', async () => {
+  const name = document.getElementById('comment-name').value.trim();
+  const body = document.getElementById('comment-body').value.trim();
+
+  if (!name) { alert('이름을 입력해 주세요.'); return; }
+  if (!body)  { alert('댓글 내용을 입력해 주세요.'); return; }
+  if (body.length > 500) { alert('댓글은 500자 이내로 작성해 주세요.'); return; }
+
+  const btn = document.getElementById('btn-comment-submit');
+  btn.disabled = true;
+  btn.textContent = '등록 중...';
+
+  try {
+    // 스팸 방지: 1분 안에 같은 이름+내용 중복 체크 (간단)
+    await db.collection('posts').doc(postId).collection('comments').add({
+      author:    name,
+      body:      body,
+      likes:     0,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    // 댓글 수 증가
+    await db.collection('posts').doc(postId)
+      .update({ commentCount: firebase.firestore.FieldValue.increment(1) });
+
+    document.getElementById('comment-name').value = '';
+    document.getElementById('comment-body').value = '';
+    await loadComments();
+
+  } catch (e) {
+    alert('댓글 등록 중 오류가 발생했습니다.');
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '댓글 등록';
+  }
+});
+
+// ── HTML 이스케이프 ───────────────────────────────────────────
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// ── 초기화 ──────────────────────────────────────────────────
+loadPost();
+</script>
+</body>
+</html>
