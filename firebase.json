@@ -4,27 +4,14 @@
     "ignore": [
       "firebase.json",
       ".firebaserc",
+      ".firebaseignore",
+      ".git",
+      ".git/**",
       "**/.*",
-      "**/node_modules/**"
-    ],
-    "cleanUrls": false,
-    "trailingSlash": false,
-    "rewrites": [
-      { "source": "/admin", "destination": "/admin.html" }
-    ],
-    "headers": [
-      {
-        "source": "/**/*.html",
-        "headers": [
-          { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
-        ]
-      },
-      {
-        "source": "/",
-        "headers": [
-          { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
-        ]
-      }
+      "**/node_modules/**",
+      "**/*.md",
+      "_template.html",
+      "analyst-pipeline/**"
     ]
   }
 }
