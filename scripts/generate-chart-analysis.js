@@ -441,64 +441,117 @@ async function callGemini(meta, ind, swing, pivot, price, weeklyInd) {
 현재가 vs 주봉 SMA100: ${weeklyInd.sma100 ? ((price / weeklyInd.sma100 - 1) * 100).toFixed(2) + '%' : 'N/A'}
 ` : '';
 
-  const prompt = `당신은 실전 경험이 풍부한 기술적 분석 애널리스트입니다. 차트를 직접 보고 설명하듯, 아래 일봉·주봉 데이터를 종합해 ${meta.name}(${meta.symbol})에 대한 심층 분석을 수행하십시오.
+  // RSI/MACD 궤적 라벨 (프롬프트 가독성용)
+  const rsiNow     = ind.rsi     != null ? ind.rsi.toFixed(1)       : 'N/A';
+  const rsiPrev    = ind.rsi5dAgo != null ? ind.rsi5dAgo.toFixed(1) : 'N/A';
+  const histNow    = ind.macd.histogram != null ? ind.macd.histogram.toFixed(4) : 'N/A';
+  const histPrev   = ind.macdHist5d     != null ? ind.macdHist5d.toFixed(4)     : 'N/A';
+  const volR       = ind.volRatio != null ? ind.volRatio.toFixed(2) : 'N/A';
+
+  const prompt = `너는 15년 경력의 스윙 트레이더다. 분석가처럼 "~할 수 있다", "가능성이 있다"라고 얼버무리지 마라.
+매번 하나의 방향을 정하고, 그 근거를 숫자로 대라. 확신이 없을 때는 "관망"이라고 말하고, 왜 관망인지 이유를 써라.
 
 [절대 준수 사항]
-- 오직 이동평균선, RSI, MACD, 볼린저밴드, 거래량, 가격 패턴, 추세 채널 등 순수 기술적 지표만 분석에 사용하십시오.
-- 기업 펀더멘털, 재무제표, 실적, 매출, 금리, 연준 정책, 거시경제, 환율, 산업 트렌드, 규제, 정치적 요인, 경쟁사 동향은 절대 언급하지 마십시오.
-- riskNote에도 반드시 기술적 분석 관점(예: "지지선 이탈 시 추가 하락 위험", "RSI 과매수 구간 진입")만 작성하십시오.
+- 오직 이동평균선, RSI, MACD, 볼린저밴드, 거래량, 가격 패턴 등 순수 기술적 지표만 사용하라.
+- 기업 펀더멘털, 실적, 금리, 연준, 거시경제, 환율, 산업 트렌드, 규제, 정치적 요인은 절대 언급하지 마라.
 
-[종목 정보 — 차트 컨텍스트 참고용]
+[종목 정보]
 ${meta.context}
 
 [일봉 가격]
 현재가: ${fmt(price)} | 52주 고가: ${fmt(ind.high52)} | 52주 저가: ${fmt(ind.low52)} | 52주 위치: ${pos52}
 
-[일봉 이동평균선]
-SMA20: ${fmt(ind.sma20)} | SMA50: ${fmt(ind.sma50)} | SMA100: ${fmt(ind.sma100)} | SMA200: ${fmt(ind.sma200)}
-현재가/SMA100: ${ind.sma100 ? ((price / ind.sma100 - 1) * 100).toFixed(2) + '%' : 'N/A'}
+[이동평균선]
+SMA5: ${fmt(ind.sma5)} | SMA20: ${fmt(ind.sma20)} | SMA50: ${fmt(ind.sma50)} | SMA100: ${fmt(ind.sma100)} | SMA200: ${fmt(ind.sma200)}
 현재가/SMA200: ${ind.sma200 ? ((price / ind.sma200 - 1) * 100).toFixed(2) + '%' : 'N/A'}
 
-[일봉 모멘텀]
-RSI(14): ${ind.rsi != null ? ind.rsi.toFixed(1) : 'N/A'}
-MACD: ${ind.macd.macd != null ? ind.macd.macd.toFixed(4) : 'N/A'} / 시그널: ${ind.macd.signal != null ? ind.macd.signal.toFixed(4) : 'N/A'} / 히스토그램: ${ind.macd.histogram != null ? ind.macd.histogram.toFixed(4) : 'N/A'}
+[RSI 궤적 — 숫자 하나로 말하지 마라, 방향을 봐라]
+RSI(14) 현재: ${rsiNow}
+RSI(14) 5일 전: ${rsiPrev}
+RSI 14일 최저/최고: ${ind.rsi14dLow != null ? ind.rsi14dLow.toFixed(1) : 'N/A'} / ${ind.rsi14dHigh != null ? ind.rsi14dHigh.toFixed(1) : 'N/A'}
 
-[일봉 볼린저밴드 20,2]
+[MACD 궤적 — 히스토그램 방향이 핵심]
+MACD: ${ind.macd.macd != null ? ind.macd.macd.toFixed(4) : 'N/A'} / 시그널: ${ind.macd.signal != null ? ind.macd.signal.toFixed(4) : 'N/A'}
+히스토그램 현재: ${histNow} | 5일 전: ${histPrev}
+
+[볼린저밴드 20,2]
 상단: ${fmt(ind.bb.upper)} | 중단(SMA20): ${fmt(ind.bb.middle)} | 하단: ${fmt(ind.bb.lower)} | 밴드폭: ${ind.bb.bandwidth != null ? (ind.bb.bandwidth * 100).toFixed(2) + '%' : 'N/A'}
+
+[가격 패턴 진단용]
+5일 고가/저가: ${fmt(ind.high5d)} / ${fmt(ind.low5d)}
+20일 고가/저가: ${fmt(ind.high20d)} / ${fmt(ind.low20d)}
+
+[거래량]
+5일 평균 대비 거래량 비율: ${volR}
 
 [지지/저항]
 스윙 저항: ${fmt(swing.resistance)} | 스윙 지지: ${fmt(swing.support)}
 피벗(PP): ${fmt(pivot.pp)} | R1: ${fmt(pivot.r1)} | R2: ${fmt(pivot.r2)} | S1: ${fmt(pivot.s1)} | S2: ${fmt(pivot.s2)}
 ${weeklySection}
-분석 지침:
-- 모든 분석은 순수 기술적 분석에만 근거하십시오. 거시경제·펀더멘털·산업 이슈는 절대 포함하지 마십시오.
-- narrative는 실제 차트를 보면서 설명하는 듯한 자연스러운 한국어 문체로 작성합니다. (예: "현재 주가가 상승 채널 상단부에 위치해 있으며 RSI가 70에 근접하고 있습니다. MACD는 골든크로스 직후 히스토그램이 점진적으로 확대되고 있어…")
-- profitTarget1은 가장 가까운 1차 익절 목표가, profitTarget2는 2차 목표가입니다. 차트의 저항선·채널 상단 기준으로 설정하십시오.
-- stopLoss는 이 분석 관점의 손절 기준가입니다. 핵심 기술적 지지선 하단을 기준으로 설정하십시오.
-- buyScore는 현재 기술적 관점의 매수 매력도입니다 (1=전혀 매력 없음, 10=최고의 진입 기회).
-- patternNote는 일봉·주봉 차트에서 관찰되는 패턴이나 추세 채널을 1~2문장으로 묘사합니다. (예: "일봉에서는 고점을 낮추는 하락 채널이 형성 중이나, 주봉 기준으로는 상승 추세선이 유지되고 있습니다.")
-- riskNote는 반드시 기술적 분석 관점의 리스크만 작성합니다. (예: "핵심 지지선인 SMA200 이탈 시 추가 하락 압력이 커질 수 있습니다.", "RSI 과매수 구간에서 거래량이 감소하면 단기 되돌림 가능성이 높아집니다.")
+[판단 규칙 — 반드시 지켜라]
 
-다음 JSON만 반환하십시오. 다른 텍스트는 절대 포함하지 마십시오:
+1. action은 "매수" / "매도" / "관망" 중 하나만. "매수 우위지만 관망" 같은 혼합 금지.
+
+2. RSI 궤적으로 판단:
+   - 과매도 탈출 (30~45권 → 50 이상 회복): 매수 점수
+   - 과매수 냉각 (70 이상 → 60 이하): 매도 점수
+   - 중립 구간 횡보: 방향성 결여, 관망 가중
+   rsiTrajectory에 반드시 "${rsiPrev} → ${rsiNow} (해석)" 형식으로 써라.
+
+3. MACD 히스토그램 궤적으로 판단:
+   - 음수지만 개선 중(+방향): 바닥 다지는 중, 매수 준비
+   - 양수지만 악화 중(-방향): 강세 꺾임, 매도 준비
+   macdTrajectory에 반드시 "히스토 ${histPrev} → ${histNow} (개선/악화/유지)" 형식으로 써라.
+
+4. 가격 패턴 진단:
+   - 5일 저가 > 20일 저가 * 1.005 → Higher Low → 회복 신호 → 매수 점수
+   - 5일 고가 < 20일 고가 * 0.995 → Lower High → 약화 신호 → 매도 점수
+   - 둘 다 아니면 → 횡보 → 관망 가능성
+
+5. 볼린저밴드 리스크:
+   - 현재가 하단~중단 + RSI 상승 중 → 매수 기회
+   - 현재가 상단~중단 + RSI 하락 중 → 매도 기회
+   - 중단 부근 횡보 → 방향성 결여
+
+6. 거래량:
+   - vol_ratio > 1.3: 움직임에 힘 (방향 신뢰도 상승)
+   - vol_ratio < 0.7: 무기력한 움직임 (신뢰도 하락)
+
+7. 주봉-일봉 충돌 시: 결론은 일봉 기준. weeklyConflict에 충돌 내용 명시.
+
+8. entry/stop/target/invalidation 4개는 반드시 숫자 (기술적 지지/저항 기반).
+
+다음 JSON만 반환하라. 다른 텍스트는 절대 붙이지 마라:
 {
   "trend": "강세" | "약세" | "횡보",
-  "strength": 1~5 정수 (추세 강도),
-  "support": 핵심 지지가격 숫자,
-  "resistance": 핵심 저항가격 숫자,
+  "strength": 1~5 정수,
+  "support": 핵심 지지가 숫자,
+  "resistance": 핵심 저항가 숫자,
   "rsiStatus": "과매수" | "중립" | "과매도",
   "macdStatus": "골든크로스" | "데드크로스" | "강세확산" | "약세수렴" | "중립",
   "bbStatus": "상단돌파" | "상단접근" | "중단" | "하단접근" | "하단이탈",
   "stage": "상승추세" | "분배구간" | "하락추세" | "축적구간",
-  "action": "적극매수" | "분할매수" | "관망" | "분할매도" | "적극매도",
+  "action": "매수" | "매도" | "관망",
   "buyScore": 1~10 정수,
-  "scoreReason": "buyScore가 해당 숫자인 핵심 이유를 15~25자 한국어로 (예: 'RSI 과매수·밴드 상단 이탈로 단기 과열', '골든크로스 직후 눌림목 진입 적기', 'SMA200 하향 이탈, 하락 추세 지속 중')",
+  "scoreReason": "buyScore 이유 15~25자 (예: 'RSI 과매도탈출+Higher Low 회복 초입', 'MACD 악화+Lower High 하락 초입')",
+  "rsiTrajectory": "${rsiPrev} → ${rsiNow} (과매도탈출/과매수냉각/중립지속 중 택1)",
+  "macdTrajectory": "히스토 ${histPrev} → ${histNow} (개선/악화/유지 중 택1)",
+  "pricePattern": "Higher Low 또는 Lower High 또는 횡보 — 설명 한 줄",
+  "volComment": "거래량비 ${volR} (급증/정상/위축 중 택1)",
+  "bbPosition": "상단근처" | "중단근처" | "하단근처",
+  "reason": "판단 근거 2~3줄 (숫자 포함, 가장 강한 근거만)",
+  "entry": 진입가 숫자,
+  "stop": 손절가 숫자,
+  "target": 목표가 숫자,
+  "invalidation": 무효선 숫자,
+  "weeklyConflict": "충돌 없음" 또는 "주봉은 XXX이나 일봉 신호 우선",
   "profitTarget1": 1차 익절 목표가 숫자,
   "profitTarget2": 2차 익절 목표가 숫자,
   "stopLoss": 손절 기준가 숫자,
-  "narrative": "250자 내외 한국어 심층 분석 (차트를 보며 설명하는 문체)",
-  "patternNote": "차트 패턴 또는 추세 채널 묘사 1~2문장",
+  "narrative": "200자 내외 트레이더 관점 분석 (숫자 기반, 방향 명확, '~할 수 있다' 금지)",
+  "patternNote": "차트 패턴 또는 추세 채널 1~2문장",
   "keyPoints": ["핵심 포인트 1", "핵심 포인트 2", "핵심 포인트 3"],
-  "riskNote": "주요 리스크 한 문장"
+  "riskNote": "기술적 리스크 한 문장"
 }`;
 
   // 최대 3회 재시도 (지수 백오프: 3s → 7s → 15s)
@@ -575,6 +628,7 @@ async function processTicker(meta) {
   const n      = closes.length;
 
   // 2. 지표 계산
+  const sma5A   = sma(closes, 5);
   const sma20A  = sma(closes, 20);
   const sma50A  = sma(closes, 50);
   const sma100A = sma(closes, 100);
@@ -582,6 +636,7 @@ async function processTicker(meta) {
   const rsiA    = rsi(closes, 14);
   const macdA   = macd(closes, 12, 26, 9);
   const bbA     = bollingerBands(closes, 20, 2);
+  const volumes  = raw.map(d => d.v);
 
   // regularMarketPrice = Yahoo Finance 실시간 현재가 (정확)
   const price   = mta.regularMarketPrice ?? closes[n - 1];
@@ -603,15 +658,33 @@ async function processTicker(meta) {
     if (!isFinite(high52) || high52 <= 0) high52 = price * 1.3;
   }
 
+  // 궤적 지표 계산 (5일 전 vs 현재)
+  const rsi5dAgo    = n > 5  ? (rsiA[n - 6]              ?? null) : null;
+  const rsi14dVals  = rsiA.slice(Math.max(0, n - 14)).filter(v => v != null);
+  const rsi14dLow   = rsi14dVals.length ? Math.min(...rsi14dVals) : null;
+  const rsi14dHigh  = rsi14dVals.length ? Math.max(...rsi14dVals) : null;
+  const macdHist5d  = n > 5  ? (macdA[n - 6]?.histogram  ?? null) : null;
+  const high5d      = n >= 5  ? Math.max(...highs.slice(n - 5))  : Math.max(...highs);
+  const low5d       = n >= 5  ? Math.min(...lows.slice(n - 5))   : Math.min(...lows);
+  const high20d     = n >= 20 ? Math.max(...highs.slice(n - 20)) : Math.max(...highs);
+  const low20d      = n >= 20 ? Math.min(...lows.slice(n - 20))  : Math.min(...lows);
+  const vol5dAvg    = volumes.slice(Math.max(0, n - 6), n - 1).reduce((a, b) => a + (b || 0), 0) / 5;
+  const volRatio    = vol5dAvg > 0 ? round(volumes[n - 1] / vol5dAvg, 2) : null;
+
   const indicators = {
+    sma5:  sma5A[n - 1],
     sma20:  sma20A[n - 1],
     sma50:  sma50A[n - 1],
     sma100: sma100A[n - 1],
     sma200: sma200A[n - 1],
     rsi:    rsiA[n - 1],
+    rsi5dAgo, rsi14dLow, rsi14dHigh,
     macd:   macdA[n - 1],
+    macdHist5d,
     bb:     bbA[n - 1],
     high52, low52,
+    high5d, low5d, high20d, low20d,
+    volRatio,
   };
 
   // 3. 지지/저항
