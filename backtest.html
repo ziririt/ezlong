@@ -356,14 +356,16 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
 /* CHART WRAPPER */
 .cwrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:16px;margin-bottom:14px;max-width:100%;overflow:hidden}
 .cwrap-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:13px}
-.chart-explain{background:rgba(0,113,227,0.05);border:1px solid rgba(0,113,227,0.15);border-radius:var(--rs);padding:14px 16px;margin-top:13px}
-.ce-title{font-size:13px;font-weight:800;color:var(--text2);margin-bottom:8px}
-.fe-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media(max-width:600px){.fe-grid{grid-template-columns:1fr}}
-.fe-item{background:var(--card);border-radius:8px;padding:11px 13px;border:1px solid var(--border)}
-.fe-icon{font-size:16px;margin-bottom:4px}
-.fe-t{font-size:13px;font-weight:800;color:var(--text);margin-bottom:3px}
-.fe-d{font-size:12px;color:var(--text2);line-height:1.6}
+.frontier-layout{display:flex;gap:14px;align-items:flex-start;margin-top:10px}
+.frontier-chart{flex:1 1 0;min-width:0}
+.chart-explain{background:rgba(0,113,227,0.05);border:1px solid rgba(0,113,227,0.15);border-radius:var(--rs);padding:12px 13px;flex:0 0 220px;margin-top:0}
+.ce-title{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:7px}
+.fe-grid{display:grid;grid-template-columns:1fr;gap:6px}
+.fe-item{background:var(--card);border-radius:7px;padding:8px 10px;border:1px solid var(--border)}
+.fe-icon{font-size:14px;margin-bottom:2px}
+.fe-t{font-size:12px;font-weight:800;color:var(--text);margin-bottom:2px}
+.fe-d{font-size:11px;color:var(--text2);line-height:1.5}
+@media(max-width:640px){.frontier-layout{flex-direction:column}.chart-explain{flex:none;width:100%;margin-top:10px}}
 
 /* NOTICE */
 .notice{background:rgba(255,159,10,0.05);border:1px solid rgba(255,159,10,0.2);border-radius:var(--rs);padding:11px 14px;font-size:13px;color:var(--text2);line-height:1.7;margin-top:12px}
@@ -502,8 +504,6 @@ input[type=number]:focus,select:focus{border-color:var(--blue)}
 
   /* 차트 */
   .cwrap{padding:13px 11px}
-  .chart-explain{padding:12px 13px}
-  .fe-grid{grid-template-columns:1fr;gap:6px}
 
   /* 빈 상태 */
   .empty{min-height:220px;padding:24px 16px}
@@ -1580,14 +1580,20 @@ function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,en
 
     <div class="cwrap">
       <div class="cwrap-title">효율적 투자선 — ${results.length.toLocaleString()}가지 조합의 위험·수익 분포</div>
-      <canvas id="chart2" height="380"></canvas>
-      <div class="chart-explain">
-        <div class="ce-title">이 그래프 읽는 법</div>
-        <div class="fe-grid">
-          <div class="fe-item"><div class="fe-icon">📍</div><div class="fe-t">점 하나 = 비율 조합 하나</div><div class="fe-d">수천 개의 무작위 비율 조합을 모두 점으로 찍은 것. 점이 많을수록 더 정밀합니다.</div></div>
-          <div class="fe-item"><div class="fe-icon">↔</div><div class="fe-t">가로축 = 위험(변동성), 세로축 = 수익</div><div class="fe-d">왼쪽으로 갈수록 안전, 오른쪽으로 갈수록 위험. 위로 갈수록 기대수익이 높습니다.</div></div>
-          <div class="fe-item"><div class="fe-icon">🟡</div><div class="fe-t">노란색 = 효율이 높은 조합</div><div class="fe-d">파란색/초록색은 낮은 효율, 노란색으로 갈수록 같은 위험 대비 수익이 높은 조합입니다.</div></div>
-          <div class="fe-item"><div class="fe-icon">★▲●</div><div class="fe-t">3가지 추천 포트폴리오</div><div class="fe-d">파란 원=내 성향 맞춤, 별=최고 효율(Max Sharpe), 삼각형=최소 위험(Min Vol)입니다.</div></div>
+      <div class="frontier-layout">
+        <div class="frontier-chart">
+          <div style="position:relative;height:220px">
+            <canvas id="chart2"></canvas>
+          </div>
+        </div>
+        <div class="chart-explain">
+          <div class="ce-title">이 그래프 읽는 법</div>
+          <div class="fe-grid">
+            <div class="fe-item"><div class="fe-icon">📍</div><div class="fe-t">점 하나 = 비율 조합 하나</div><div class="fe-d">수천 개의 비율 조합을 각각 점으로 표시. 점이 많을수록 정밀합니다.</div></div>
+            <div class="fe-item"><div class="fe-icon">↔</div><div class="fe-t">가로 = 위험, 세로 = 수익</div><div class="fe-d">왼쪽일수록 안전, 위로 갈수록 기대수익이 높습니다.</div></div>
+            <div class="fe-item"><div class="fe-icon">🟡</div><div class="fe-t">노란색 = 효율 높은 조합</div><div class="fe-d">노란색에 가까울수록 같은 위험 대비 수익이 높습니다.</div></div>
+            <div class="fe-item"><div class="fe-icon">★▲●</div><div class="fe-t">3가지 추천 포트폴리오</div><div class="fe-d">● 성향맞춤 &nbsp;★ 최고효율 &nbsp;▲ 최소위험</div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1632,6 +1638,7 @@ function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,en
     ]},
     options:{
       responsive:true,
+      maintainAspectRatio:false,
       plugins:{
         legend:{labels:{color:'#3A3A3C',font:{size:12},boxWidth:14}},
         tooltip:{backgroundColor:'rgba(255,255,255,.97)',titleColor:'#1D1D1F',bodyColor:'#3A3A3C',borderColor:'rgba(0,0,0,0.12)',borderWidth:1,
