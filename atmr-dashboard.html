@@ -1396,18 +1396,18 @@ li.gear-other-sep { display: none !important; }
   padding: 4px 12px 8px;
 }
 /* ── 스윙 트레이딩 플랜 카드 ────────────────────────────────────────────── */
-.king-trade-plan { margin-top:14px; padding:12px 14px; background:var(--bg2); border-radius:10px; border:1px solid var(--bd); }
-.ktp-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-.ktp-title  { font-size:11px; font-weight:700; color:var(--t2); text-transform:uppercase; letter-spacing:.06em; }
-.ktp-action { font-size:13px; font-weight:800; }
-.ktp-traj   { font-size:12px; color:var(--t2); margin-bottom:3px; line-height:1.5; }
-.ktp-levels { display:grid; grid-template-columns:1fr 1fr; gap:5px 10px; margin-top:9px; }
-.ktp-lv     { display:flex; align-items:center; gap:6px; }
-.ktp-lv-l   { font-size:11px; color:var(--t2); font-weight:600; min-width:28px; }
-.ktp-lv-v   { font-size:14px; font-weight:800; }
+.king-trade-plan { margin-top:14px; padding:14px 16px; background:var(--bg2); border-radius:10px; border:1px solid var(--bd); }
+.ktp-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.ktp-title  { font-size:12px; font-weight:600; color:var(--t2); letter-spacing:.04em; margin-left:auto; }
+.ktp-action { font-size:16px; font-weight:900; }
+.ktp-traj   { font-size:14px; color:var(--t2); margin-bottom:4px; line-height:1.6; }
+.ktp-levels { display:grid; grid-template-columns:1fr 1fr; gap:6px 12px; margin-top:10px; }
+.ktp-lv     { display:flex; align-items:center; gap:8px; }
+.ktp-lv-l   { font-size:13px; color:var(--t2); font-weight:600; min-width:30px; }
+.ktp-lv-v   { font-size:16px; font-weight:800; }
 .ktp-lv-v.gr{ color:var(--gr); }
 .ktp-lv-v.rd{ color:var(--rd); }
-.ktp-inval  { font-size:11px; color:var(--t2); margin-top:7px; border-top:1px solid var(--bd); padding-top:6px; }
+.ktp-inval  { font-size:13px; color:var(--t2); margin-top:8px; border-top:1px solid var(--bd); padding-top:7px; }
 </style>
 <style>
 /* ── ez-nav (글로벌 헤더) ── */
@@ -1776,15 +1776,9 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">새로 들어간다면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3">아래 3가지를 동시에 만족할 때만 진입하세요
-                    <ul class="dot-list" style="margin-top:4px;">
-                      <li class="dot-sub"><span class="ok">① 지금 시장이 상승 추세(200일선 위)인가</span></li>
-                      <li class="dot-sub"><span class="ok">② 매수 신호가 50점 이상인가</span></li>
-                      <li class="dot-sub"><span class="ok">③ 매도 압력이 65점 미만인가</span></li>
-                    </ul>
-                  </li>
-                  <li data-for-gear="2"><span class="warn">지금은 시장이 방향을 못 잡는 횡보 구간입니다</span> — 2배수로 새로 들어가지 마세요. 1배수 ETF로 대신하세요</li>
-                  <li data-for-gear="1"><span class="no">지금은 하락 추세입니다</span> — 2배수 신규 매수는 절대 안 됩니다</li>
+                  <li data-for-gear="3"><span class="warn">QLD·SSO 진입 분석 중</span> — 실시간 Gear·매수점수·매도압력 기준으로 판정합니다</li>
+                  <li data-for-gear="2"><span class="no">지금 2배수 신규 매수 금지</span> — 횡보 구간. 레버리지 진입은 Gear 3 복귀 후</li>
+                  <li data-for-gear="1"><span class="no">지금 2배수 신규 매수 절대 금지</span> — 하락 추세. 레버리지는 Gear 3에서만 허용</li>
                 </ul>
               </div>
             </div>
@@ -1793,7 +1787,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">손실 중이라면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3"><span class="warn">2배수 손실 중 — 추가 매수 금지</span>. 3조건(Gear/매수점수/매도점수) 재확인. 하나라도 기준 미달이면 1배수로 낮추세요</li>
+                  <li data-for-gear="3"><span class="no">지금 2배수 물타기 금지</span> — 추가 매수 없이 손절선 재확인하세요. RSI 35 이하 극과매도 전까지 추가 진입 없음</li>
                   <li data-for-gear="2"><span class="no">시장이 횡보 중에 2배수에서 손실이 났다면</span> — 더 사지 마세요. 일단 일반 ETF로 바꾸고, 시장이 다시 상승 추세로 돌아올 때를 기다리세요</li>
                   <li data-for-gear="1"><span class="no">하락 추세에서 2배수 손실 중이라면</span> — 절대 추가 매수 금지. 레버리지 ETF는 하락할 때 손실이 2배로 쌓입니다. 지금 팔고 나오는 것이 맞습니다</li>
                 </ul>
@@ -1804,7 +1798,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">수익 중이라면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3"><span class="ok">추세 좋고 3조건 유지되고 RSI 65 미만이고 수익이 10% 이상이면</span> — 소량만 추가 가능. 단, 전체 계좌에서 2배수 비중이 50%를 넘지 않도록 하세요</li>
+                  <li data-for-gear="3"><span class="warn">불타기 분석 중</span> — 실시간 매수점수·RSI 기준으로 추가 여부 판정합니다</li>
                   <li data-for-gear="2"><span class="warn">시장이 횡보 중이면</span> — 더 사지 마세요. 수익이 나고 있는 지금 조금씩 줄여두는 것이 낫습니다</li>
                   <li data-for-gear="1"><span class="no">하락 추세라면</span> — 추가 매수 절대 금지. 지금 들고 있는 것부터 단계적으로 정리하세요</li>
                 </ul>
@@ -1857,16 +1851,9 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">새로 들어간다면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3">아래 조건을 전부 만족할 때만 진입하세요
-                    <ul class="dot-list" style="margin-top:4px;">
-                      <li class="dot-sub"><span class="ok">① 시장이 상승 추세이고 매수 신호 50점 이상</span></li>
-                      <li class="dot-sub"><span class="ok">② 매도 압력 55점 미만</span></li>
-                      <li class="dot-sub"><span class="ok">③ RSI 55 이상이고 MACD가 플러스 구간</span></li>
-                    </ul>
-                    <span style="font-size:12px;color:var(--t3);">전체 계좌의 5~20% 이내로만 — 이 한도는 절대 넘지 마세요</span>
-                  </li>
-                  <li data-for-gear="2"><span class="warn">지금은 시장이 방향을 잃고 횡보 중입니다</span> — 3배수로 새로 들어가지 마세요. 2배수도 지금 들어가는 건 다시 한번 생각해보세요</li>
-                  <li data-for-gear="1"><span class="no">지금은 하락 추세입니다</span> — 3배수 신규 매수는 절대 안 됩니다</li>
+                  <li data-for-gear="3"><span class="warn">TQQQ·UPRO 진입 분석 중</span> — 실시간 5조건 기준으로 판정합니다. 계좌 5~20% 한도 절대 엄수</li>
+                  <li data-for-gear="2"><span class="no">지금 3배수 신규 매수 절대 금지</span> — 횡보 구간. 레버리지 3배수는 Gear 3에서만 허용</li>
+                  <li data-for-gear="1"><span class="no">지금 3배수 신규 매수 절대 금지</span> — 하락 추세. 보유 중이면 즉시 청산하세요</li>
                 </ul>
               </div>
             </div>
@@ -1886,7 +1873,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">수익 중이라면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3"><span class="ok">추세 좋고 모든 조건 유지되고 RSI 60 미만이고 수익이 15% 이상이면</span> — 소량만 추가 가능. 3배수 전체 비중이 계좌의 20%를 절대 넘지 않도록 하세요</li>
+                  <li data-for-gear="3"><span class="warn">불타기 분석 중</span> — 실시간 조건으로 추가 여부 판정합니다. 3배수 계좌 비중 20% 절대 초과 금지</li>
                   <li data-for-gear="2"><span class="warn">시장이 횡보 중이면</span> — 추가 매수 금지. 오히려 수익이 나고 있는 지금 2배수로 낮추면서 이익을 지키세요</li>
                   <li data-for-gear="1"><span class="no">하락 추세라면</span> — 절대 추가 매수 금지. 지금 들고 있는 것을 즉시 전부 파세요</li>
                 </ul>
@@ -4386,7 +4373,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       }
     }
 
-    // ── 1배수 신규진입/물타기/불타기 카드 동적 업데이트 ──────────────────────
+    // ── 1배수·2배수·3배수 신규진입/물타기/불타기 카드 동적 업데이트 ─────────
     document.querySelectorAll('.ltier-card.tier1 .ltier-cat-item').forEach(card => {
       const head = card.querySelector('.ltier-cat-head');
       if (!head) return;
@@ -4421,6 +4408,76 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
           li.innerHTML = '<span class="ok">불타기 가능</span>. 매수 매력도 ' + compBuy + '점, RSI ' + rsi.toFixed(0) + ' 과열 아님 — 보유 종목 소량 추가 가능. 총 계좌 비중 주의';
         } else {
           li.innerHTML = '<span class="warn">지금은 더 사지 마세요</span>. 매수 ' + compBuy + '점 / RSI ' + rsi.toFixed(0) + ' — 불타기 조건 미충족. 현 포지션 유지';
+        }
+      }
+    });
+
+    // ── 2배수 신규진입/물타기/불타기 동적 업데이트 ──────────────────────────
+    document.querySelectorAll('.ltier-card.tier2 .ltier-cat-item').forEach(card => {
+      const head = card.querySelector('.ltier-cat-head');
+      if (!head) return;
+      const li = card.querySelector('li[data-for-gear="3"]');
+      if (!li) return;
+      const headTxt = head.textContent.trim();
+
+      if (headTxt === '새로 들어간다면') {
+        if (compSell >= 65) {
+          li.innerHTML = '<span class="no">지금 QLD·SSO 신규 매수 금지</span> — 매도 압력 ' + compSell + '점 기준(65점) 초과. 압력 해소 후 재진입';
+        } else if (rsi >= 70) {
+          li.innerHTML = '<span class="no">지금 QLD·SSO 신규 매수 금지</span> — RSI ' + rsi.toFixed(0) + ' 과열. RSI 65 이하 복귀 후 진입';
+        } else if (lev2x) {
+          li.innerHTML = '<span class="ok">지금 QLD·SSO 30% 1차 진입 가능</span> — Gear 3 + 매수 ' + compBuy + '점 + 매도 압력 ' + compSell + '점 — 3조건 충족. 전체 계좌 2배수 비중 50% 한도 엄수';
+        } else if (compBuy >= 50) {
+          li.innerHTML = '<span class="warn">지금 QLD·SSO 신중 진입 가능</span> — Gear 3, 매수 ' + compBuy + '점 충족. 단, 매도 압력 ' + compSell + '점 확인 필요. 1차(30%)만 먼저';
+        } else {
+          li.innerHTML = '<span class="no">지금 QLD·SSO 신규 매수 금지</span> — 매수 신호 ' + compBuy + '점 기준(50점) 미달. 신호 회복 후 재진입';
+        }
+      } else if (headTxt === '손실 중이라면') {
+        if (rsi <= 35) {
+          li.innerHTML = '<span class="warn">RSI ' + rsi.toFixed(0) + ' 극과매도 — 소량 추가 한 번만 허용</span>. 손절선 미리 정하고 Gear 3 추세 유지 재확인 필수. 이후 추가는 없음';
+        } else {
+          li.innerHTML = '<span class="no">지금 2배수 물타기 금지</span> — RSI ' + rsi.toFixed(0) + ' (기준 35 이하 아님). 손실 확대 위험. 추가 진입 없이 손절선 재확인';
+        }
+      } else if (headTxt === '수익 중이라면') {
+        if (compSell >= 65) {
+          li.innerHTML = '<span class="warn">불타기 금지 — 오히려 익절 구간</span>. 매도 압력 ' + compSell + '점. 수익 포지션 일부 팔아서 비중 줄이세요';
+        } else if (lev2x && compBuy >= 60 && rsi < 65) {
+          li.innerHTML = '<span class="ok">지금 QLD·SSO 소량 추가 가능</span> — 매수 ' + compBuy + '점, RSI ' + rsi.toFixed(0) + ', 3조건 유지. 전체 계좌 2배수 비중 50% 절대 초과 금지';
+        } else {
+          li.innerHTML = '<span class="warn">지금 더 사지 마세요</span> — 매수 ' + compBuy + '점 / RSI ' + rsi.toFixed(0) + '. 불타기 기준 미달. 현 포지션 유지';
+        }
+      }
+    });
+
+    // ── 3배수 신규진입/물타기/불타기 동적 업데이트 ──────────────────────────
+    document.querySelectorAll('.ltier-card.tier3 .ltier-cat-item').forEach(card => {
+      const head = card.querySelector('.ltier-cat-head');
+      if (!head) return;
+      const li = card.querySelector('li[data-for-gear="3"]');
+      if (!li) return;
+      const headTxt = head.textContent.trim();
+
+      if (headTxt === '새로 들어간다면') {
+        if (lev3x) {
+          li.innerHTML = '<span class="ok">TQQQ·UPRO 지금 진입 가능</span> — Gear 3 + 매수 ' + compBuy + '점 + 매도압력 ' + compSell + '점 + RSI ' + rsi.toFixed(0) + ' + MACD ' + (macdHist >= 0 ? '+' : '') + macdHist.toFixed(2) + ' — 5조건 충족. 전체 계좌 5~20% 한도 엄수';
+        } else if (compSell >= 55) {
+          li.innerHTML = '<span class="no">TQQQ·UPRO 신규 매수 금지</span> — 매도 압력 ' + compSell + '점 기준(55점) 초과. 3배수는 절대 진입 불가';
+        } else if (rsi < 55) {
+          li.innerHTML = '<span class="no">TQQQ·UPRO 신규 매수 금지</span> — RSI ' + rsi.toFixed(0) + ' (기준 55 미달). RSI 55↑ + MACD 양전 동시 충족 필요';
+        } else if (macdHist <= 0) {
+          li.innerHTML = '<span class="no">TQQQ·UPRO 신규 매수 금지</span> — MACD ' + macdHist.toFixed(2) + ' 음수. 모멘텀 양전 확인 후 진입';
+        } else {
+          li.innerHTML = '<span class="no">TQQQ·UPRO 신규 매수 금지</span> — 매수 ' + compBuy + '점 (기준 60점 미달). 조건 강화 후 진입';
+        }
+      } else if (headTxt === '손실 중이라면') {
+        li.innerHTML = '<span class="no">3배수 물타기 절대 금지</span> — 지금 즉시 2배수 이하로 낮추세요. 3배수는 하루 3% 하락 = 내 계좌 9% 손실. 추가 매수 없음';
+      } else if (headTxt === '수익 중이라면') {
+        if (compSell >= 55) {
+          li.innerHTML = '<span class="warn">불타기 금지 — 오히려 비중 축소 구간</span>. 매도 압력 ' + compSell + '점. 3배수 비중 줄이세요';
+        } else if (lev3x && compBuy >= 65 && rsi < 60) {
+          li.innerHTML = '<span class="ok">TQQQ·UPRO 소량 추가 가능</span> — 매수 ' + compBuy + '점, RSI ' + rsi.toFixed(0) + ', 5조건 유지. 전체 계좌 3배수 비중 20% 절대 초과 금지';
+        } else {
+          li.innerHTML = '<span class="warn">지금 더 사지 마세요</span> — 매수 ' + compBuy + '점 / RSI ' + rsi.toFixed(0) + '. 3배수 불타기 기준 미달. 현 포지션 유지';
         }
       }
     });
@@ -4489,8 +4546,8 @@ function renderKings(tsla, nvda) {
       tradePlanHtml =
         '<div class="king-trade-plan">' +
           '<div class="ktp-header">' +
+            '<span class="ktp-action" style="color:' + _col + '">' + (_ai.action ?? '—') + '</span>' +
             '<span class="ktp-title">스윙 트레이딩 플랜</span>' +
-            '<span class="ktp-action" style="color:' + _col + '">Gemini ' + d.symbol + ': ' + (_ai.action ?? '—') + '</span>' +
           '</div>' +
           _rsiT + _macdT + _patT +
           '<div class="ktp-levels">' +
@@ -4637,7 +4694,9 @@ function generateKingBrief(d, ai) {
     const _mark = ai.action === '매수' ? '▲ 매수' : ai.action === '매도' ? '▼ 매도' : '◆ 관망';
     const _cflt = (ai.weeklyConflict && ai.weeklyConflict !== '충돌 없음')
       ? ' ※ ' + ai.weeklyConflict : '';
-    return '[' + _mark + '] ' + ai.reason + _cflt;
+    // ◆가 reason 본문 안에 있으면 인코딩 오류 문자 — 제거 후 공백 정리
+    const _reason = ai.reason.replace(/◆/g, '').replace(/\s{2,}/g, ' ').trim();
+    return '[' + _mark + '] ' + _reason + _cflt;
   }
 
   // ── 폴백: 기존 룰 기반 브리핑 ──────────────────────────────────────────
@@ -4679,30 +4738,30 @@ function generateKingBrief(d, ai) {
   }
   const lines = [];
 
-  // [W] 주간 기어 상태
+  // [W] 주간 기어 상태 — 직접 판정문 (가정법 사용 금지)
   if (gear === 3) {
     if (rsi > 70) {
-      lines.push(`[주봉] ${symbol}은 현재 200일선 위 상승 추세 구간입니다. 다만 RSI ${rsi.toFixed(0)}으로 과매수 상태이므로, 3-3-4 원칙에 따라 1차 익절(30%) 실행을 권장합니다.`);
+      lines.push(`[주봉] ${symbol} RSI ${rsi.toFixed(0)} 과매수 — 신규 매수하지 마세요. 기존 보유분 1/3 익절 실행하세요.`);
     } else if (rsi < 40) {
-      lines.push(`[주봉] ${symbol}은 현재 200일선 위 상승 추세 구간 내 일시적 조정 중입니다. RSI ${rsi.toFixed(0)}까지 하락했으므로 기술적 반등을 노린 1차 정찰대(30%) 투입을 고려할 수 있습니다.`);
+      lines.push(`[주봉] ${symbol} Gear 3 상승 추세 + RSI ${rsi.toFixed(0)} 과매도 — 지금 1차 정찰대(30%) 매수하세요.`);
     } else {
-      lines.push(`[주봉] ${symbol}은 현재 200일선 위 상승 추세 구간을 유지 중입니다. RSI ${rsi.toFixed(0)}으로 과열 없이 건강한 추세입니다. 추세 추종 매수 및 보유 유지 권장.`);
+      lines.push(`[주봉] ${symbol} Gear 3 상승 추세 유지 — 포지션 그대로 유지하세요. RSI ${rsi.toFixed(0)}, 매도 신호 없음.`);
     }
   } else if (gear === 2) {
-    lines.push(`[주봉] ${symbol}은 현재 200일선(${sma200?.toFixed(1) ?? '—'}) 근처 횡보 구간입니다. 방향이 확정되지 않은 상태이므로 신규 매수보다 관망을 권장합니다.`);
+    lines.push(`[주봉] ${symbol} Gear 2 횡보 구간 — 지금 신규 매수하지 마세요. 방향 확정 전까지 현금 대기.`);
   } else {
     if (rsi < 30) {
-      lines.push(`[주봉] ${symbol}은 현재 200일선 아래 하락 추세 구간입니다. 단, RSI ${rsi.toFixed(0)}으로 극도의 과매도 상태이므로 패닉 예외 규칙을 적용해 소량 정찰대 진입을 검토할 수 있습니다.`);
+      lines.push(`[주봉] ${symbol} Gear 1 하락 추세 + RSI ${rsi.toFixed(0)} 극과매도 — 소량(10%) 정찰대만 허용. 나머지는 현금 유지.`);
     } else {
-      lines.push(`[주봉] ${symbol}은 현재 200일선 아래 하락 추세 구간입니다. 레버리지를 즉시 해제하고 현금 비중을 70% 이상으로 높일 것을 권장합니다.`);
+      lines.push(`[주봉] ${symbol} Gear 1 하락 추세 — 레버리지 즉시 해제하세요. 현금 70% 이상 유지.`);
     }
   }
 
-  // [D] 일간 MACD 상태
+  // [D] 일간 MACD 상태 — 직접 판정문
   if (macd?.histogram > 0) {
-    lines.push(`[일봉] MACD 히스토그램 +${macd.histogram.toFixed(2)} — 단기 상승 모멘텀 살아있음. 매수 타이밍에 유리한 환경.`);
+    lines.push(`[일봉] MACD +${macd.histogram.toFixed(2)} — 단기 상승 모멘텀 확인. 매수 신호 보조 중.`);
   } else if (macd?.histogram < 0) {
-    lines.push(`[일봉] MACD 히스토그램 ${macd.histogram.toFixed(2)} — 단기 하락 압력 존재. 추가 하락 가능성을 열어두고 진입을 서두르지 말 것.`);
+    lines.push(`[일봉] MACD ${macd.histogram.toFixed(2)} 음수 — 단기 하락 압력. 성급한 진입 금지.`);
   }
 
   return lines.join(' ') + consistencyNote;
