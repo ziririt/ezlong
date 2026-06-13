@@ -84,6 +84,8 @@ git tag -f "stable-$(date +%Y%m%d)" && git push origin --tags
 /Users/ziririt/Documents/Claude/Projects/미국주식투자자를 위한 ezlong.com/
 ├── index.html                  ← 메인 홈
 ├── ez-design.css               ← 공유 디자인 시스템 (모든 페이지가 참조)
+├── ez-nav.js                   ← 글로벌 헤더 공유 스크립트 ★
+├── ez-footer.js                ← 글로벌 푸터 공유 스크립트 ★
 ├── EZLONG_GUIDE.md             ← 이 파일 (개발 가이드)
 ├── DEPLOY_CHECKLIST.md         ← 배포 전 이미지 확인 체크리스트
 ├── _template.html              ← 새 페이지 작성용 표준 골격
@@ -107,142 +109,92 @@ git tag -f "stable-$(date +%Y%m%d)" && git push origin --tags
 
 ## 2. 현재 서비스 페이지 목록 (nav 링크 포함 필수)
 
-| URL | 페이지명 | nav 표시명 |
+| URL | 페이지명 | nav 표시명 (ez-nav.js 기준) |
 |---|---|---|
 | `/` | 메인 홈 | — |
 | `/atmr-dashboard.html` | 스윙 시그널 대시보드 | 스윙 시그널 |
 | `/chart-analysis.html` | AI 차트분석 | AI 차트분석 |
-| `/analyst-reports.html` | 핵심기업 목표주가 | 핵심기업 목표주가 |
+| `/analyst-reports.html` | 핵심기업 목표주가 | 목표주가 |
 | `/market-cycle.html` | Market Cycle Monitor | Market Cycle |
 | `/dca-simulator.html` | DCA 복리 시뮬레이터 | DCA 시뮬레이터 |
-| `/portfolio-manager.html` | 포트폴리오 복리 시뮬레이터 | 포트폴리오 복리 |
+| `/portfolio-manager.html` | 포트폴리오 복리 시뮬레이터 | 포트폴리오 |
 | `/tax-account-simulator.html` | 절세 계좌 세후 시뮬레이터 | 절세 계좌 |
 | `/compound-calculator.html` | 복리 계산기 | 복리 계산기 |
 | `/retirement-calculator.html` | 은퇴 목표 역산 계산기 | 은퇴 계산기 |
 | `/backtest.html` | 몬테카를로 포트폴리오 시뮬레이터 | 백테스트 |
-| `/risk-diagnostic.html` | 투자 행동 자가진단 | 투자성향 테스트 |
+| `/risk-diagnostic.html` | 투자 행동 자가진단 | 투자성향 |
 | `/auto-dca-guide.html` | 자동 적립식 매수 가이드 | DCA 가이드 |
 
-> **새 페이지를 추가할 때:** 이 표에 행 추가 + 아래 글로벌 헤더/푸터 HTML 스니펫도 반드시 업데이트
+> **새 페이지를 추가할 때:** 이 표에 행 추가 + `ez-nav.js` · `ez-footer.js` 두 파일에 링크 추가 → git commit → firebase deploy
 
 ---
 
-## 3. 글로벌 헤더 HTML 스니펫 (copy-paste 용)
+## 3. 글로벌 헤더 — ez-nav.js (2026-06-14 일원화)
 
-> **규칙:** 모든 페이지는 이 HTML을 `<body>` 직후에 그대로 넣는다.  
-> 현재 페이지에 해당하는 `<a>` 태그에만 `class="ez-nav-svc-link active"` 추가.  
-> **레이아웃:** 로고가 위, 서비스 링크가 아래 (2-row, ez-design.css의 `flex-direction: column` 적용)
+> **규칙:** 모든 서비스 페이지는 `<body>` 직후에 아래 한 줄만 넣는다.  
+> active 클래스는 `window.location.pathname` 기준으로 **ez-nav.js가 자동 처리**한다.  
+> 수동으로 `<nav>` HTML을 작성하지 않는다.
 
 ```html
-<nav class="ez-nav" aria-label="글로벌 네비게이션">
-  <div class="ez-nav-inner">
-    <a href="/" class="ez-nav-logo" aria-label="EZLONG 홈">
-      <picture>
-        <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
-        <img src="logo.png" alt="EZLONG">
-      </picture>
-    </a>
-    <div class="ez-nav-svc-links">
-      <a href="/atmr-dashboard.html"        class="ez-nav-svc-link">스윙 시그널</a>
-      <a href="/chart-analysis.html"        class="ez-nav-svc-link">AI 차트분석</a>
-      <a href="/analyst-reports.html"       class="ez-nav-svc-link">핵심기업 목표주가</a>
-      <a href="/market-cycle.html"          class="ez-nav-svc-link">Market Cycle</a>
-      <a href="/dca-simulator.html"         class="ez-nav-svc-link">DCA 시뮬레이터</a>
-      <a href="/portfolio-manager.html"     class="ez-nav-svc-link">포트폴리오 복리</a>
-      <a href="/tax-account-simulator.html" class="ez-nav-svc-link">절세 계좌</a>
-      <a href="/compound-calculator.html"   class="ez-nav-svc-link">복리 계산기</a>
-      <a href="/retirement-calculator.html" class="ez-nav-svc-link">은퇴 계산기</a>
-      <a href="/backtest.html"              class="ez-nav-svc-link">백테스트</a>
-      <a href="/risk-diagnostic.html"       class="ez-nav-svc-link">투자성향 테스트</a>
-      <a href="/auto-dca-guide.html"        class="ez-nav-svc-link">DCA 가이드</a>
-    </div>
-  </div>
-</nav>
+<!-- ── EZLONG 글로벌 헤더 ── -->
+<script src="/ez-nav.js"></script>
 ```
 
-**`en/` 서브폴더 페이지의 경우** — 경로 앞에 `../` 추가:
+**`<head>` 에 ez-design.css 링크가 반드시 먼저 있어야 한다:**
 ```html
-<a href="../atmr-dashboard.html" class="ez-nav-svc-link">스윙 시그널</a>
-<!-- 나머지도 동일하게 ../ 적용 -->
-<img src="../logo.png" alt="EZLONG">
-<source srcset="../logo-darkmode.png" ...>
+<link rel="stylesheet" href="ez-design.css">
 ```
+
+### 헤더 내용 수정 방법
+
+nav 항목 추가/삭제/이름 변경 → **`ez-nav.js` 파일 하나만 수정** → git commit → firebase deploy  
+모든 페이지에 자동 반영됨. 개별 HTML 파일은 건드리지 않는다.
+
+```javascript
+// ez-nav.js 내 links 배열 (수정 위치)
+var links = [
+  ['/atmr-dashboard.html',        '스윙 시그널'],
+  ['/chart-analysis.html',        'AI 차트분석'],
+  ['/analyst-reports.html',       '목표주가'],
+  ['/market-cycle.html',          'Market Cycle'],
+  ['/dca-simulator.html',         'DCA 시뮬레이터'],
+  ['/portfolio-manager.html',     '포트폴리오'],
+  ['/tax-account-simulator.html', '절세 계좌'],
+  ['/compound-calculator.html',   '복리 계산기'],
+  ['/retirement-calculator.html', '은퇴 계산기'],
+  ['/backtest.html',              '백테스트'],
+  ['/risk-diagnostic.html',       '투자성향'],
+  ['/auto-dca-guide.html',        'DCA 가이드']
+];
+```
+
+> 라벨 길이 주의: 1280px 뷰포트 기준 12개 항목이 전부 보여야 한다. 너무 길면 마지막 항목이 잘림.
 
 ---
 
-## 4. 글로벌 푸터 HTML 스니펫 (copy-paste 용)
+## 4. 글로벌 푸터 — ez-footer.js (2026-06-14 일원화)
 
-> **규칙:** 모든 페이지는 `</body>` 직전에 이 HTML을 그대로 넣는다.
+> **규칙:** 모든 서비스 페이지는 `</body>` 직전에 아래 한 줄만 넣는다.  
+> 수동으로 `<footer>` HTML을 작성하지 않는다.
 
 ```html
-<footer class="ez-footer" role="contentinfo">
-  <div class="ez-footer-inner">
-    <div class="ez-footer-top">
-      <div class="ez-footer-brand">
-        <picture>
-          <source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">
-          <img src="logo.png" alt="EZLONG">
-        </picture>
-        <p class="ez-footer-brand-desc">쉽고 안전한 장기투자 파트너<br>easy.invest.good@gmail.com</p>
-      </div>
-      <div class="ez-footer-books">
-        <div class="ez-footer-book">
-          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327"
-             class="ez-footer-book-cover" target="_blank" rel="noopener">
-            <img src="book01.png" alt="절대 실패하지 않는 미국 주식 ETF 투자">
-          </a>
-          <div class="ez-footer-book-info">
-            <span class="ez-footer-book-title">절대 실패하지 않는<br>미국 주식 ETF 투자</span>
-            <span class="ez-footer-book-label">종이책</span>
-            <div class="ez-footer-book-btns">
-              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
-              <a href="https://www.yes24.com/product/goods/177260453" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
-              <a href="https://product.kyobobook.co.kr/detail/S000219205812" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
-            </div>
-          </div>
-        </div>
-        <div class="ez-footer-book">
-          <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327"
-             class="ez-footer-book-cover" target="_blank" rel="noopener">
-            <img src="book02_trans2.png" alt="월급쟁이 투자 자동화">
-          </a>
-          <div class="ez-footer-book-info">
-            <span class="ez-footer-book-title">월급쟁이<br>투자 자동화</span>
-            <span class="ez-footer-book-label">전자책</span>
-            <div class="ez-footer-book-btns">
-              <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>
-              <a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>
-              <a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>
-              <a href="https://ridibooks.com/books/6121000386" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ez-footer-links">
-        <div class="ez-footer-col">
-          <span class="ez-footer-col-title">서비스</span>
-          <a href="atmr-dashboard.html">스윙 시그널 대시보드</a>
-          <a href="chart-analysis.html">AI 차트분석</a>
-          <a href="analyst-reports.html">핵심기업 목표주가</a>
-          <a href="market-cycle.html">Market Cycle Monitor</a>
-          <a href="dca-simulator.html">DCA 복리 시뮬레이터</a>
-          <a href="portfolio-manager.html">포트폴리오 복리 시뮬레이터</a>
-          <a href="tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a>
-          <a href="compound-calculator.html">복리 계산기</a>
-          <a href="retirement-calculator.html">은퇴 목표 역산 계산기</a>
-          <a href="backtest.html">몬테카를로 포트폴리오 시뮬레이터</a>
-          <a href="risk-diagnostic.html">투자 행동 자가진단</a>
-          <a href="auto-dca-guide.html">자동 적립식 매수 가이드</a>
-        </div>
-      </div>
-    </div>
-    <div class="ez-footer-bottom">
-      © 2025 EZLONG. 이 사이트의 모든 정보는 투자 참고용이며 투자 권유가 아닙니다.<br>
-      투자 결과에 대한 책임은 투자자 본인에게 있습니다.
-    </div>
-  </div>
-</footer>
+<!-- ── EZLONG 글로벌 푸터 ── -->
+<script src="/ez-footer.js"></script>
 ```
+
+### 푸터 내용 수정 방법
+
+책 링크 추가/변경, 서비스 링크 추가/삭제 → **`ez-footer.js` 파일 하나만 수정** → git commit → firebase deploy  
+모든 페이지에 자동 반영됨.
+
+### 푸터 구성 (ez-footer.js 기준)
+
+. **브랜드 영역**: EZLONG 로고 + 소개 문구  
+. **책 영역**: 도서 2권 (book01.png, book02_1.png) + 구매 링크 (종이책/전자책/오디오북/구독)  
+. **서비스 링크**: 12개 서비스 전체 목록  
+. **하단 카피라이트**: © 2025–2026 유니아빠 & 유니엄마 · EZLONG
+
+> 푸터 CSS는 `ez-design.css`의 `.ez-footer*` 클래스에 정의돼 있다. 인라인 CSS 추가 금지.
 
 ---
 
@@ -422,10 +374,25 @@ git rebase --abort  # (필요한 경우)
 ## 10. 새 서비스 페이지 추가 시 체크리스트
 
 1. `_template.html` 복사 → `새파일.html` 생성
-2. 위 2번 서비스 목록 표에 행 추가
-3. **글로벌 헤더** 스니펫의 `ez-nav-svc-links`에 새 링크 추가
-4. **글로벌 푸터** 스니펫의 서비스 목록에 새 링크 추가
-5. 기존 **모든 페이지**의 헤더/푸터에 동일하게 추가 (총 12개+ 파일)
+2. 새 HTML에 반드시 포함:
+   ```html
+   <link rel="stylesheet" href="ez-design.css">
+   ```
+   ```html
+   <!-- body 직후 -->
+   <!-- ── EZLONG 글로벌 헤더 ── -->
+   <script src="/ez-nav.js"></script>
+   ```
+   ```html
+   <!-- /body 직전 -->
+   <!-- ── EZLONG 글로벌 푸터 ── -->
+   <script src="/ez-footer.js"></script>
+   ```
+3. **`ez-nav.js`** 의 `links` 배열에 새 항목 추가 (URL, 짧은 라벨)
+4. **`ez-footer.js`** 의 서비스 링크 목록에 새 항목 추가
+5. 위 2번 서비스 목록 표에 행 추가 (이 가이드 문서)
 6. `index.html` 툴 카드 그리드에 카드 추가
 7. `sitemap.xml`에 URL 추가
-8. 배포 + URL 확인
+8. git commit → git push → firebase deploy + URL 확인
+
+> **핵심:** 3·4번만 하면 기존 모든 페이지에 자동 반영. 개별 HTML 파일을 손댈 필요 없다.
