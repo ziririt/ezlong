@@ -44,15 +44,19 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # ── 2. Node.js 설치 ────────────────────────────────────────────────
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      # ── 2. Python 설치 ────────────────────────────────────────────────
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          node-version: '20'
+          python-version: '3.11'
 
-      # ── 3. 데이터 수집 실행 ────────────────────────────────────────────
+      # ── 3. yfinance 설치 ──────────────────────────────────────────────
+      - name: Install dependencies
+        run: pip install yfinance --quiet
+
+      # ── 4. 데이터 수집 실행 ────────────────────────────────────────────
       - name: Run market data fetch script
-        run: node scripts/fetch-market-data.js
+        run: python scripts/fetch-market-data.py
 
       # ── 4. 변경사항 커밋 및 푸시 ───────────────────────────────────────
       - name: Commit and push market-signals.json
@@ -78,9 +82,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # ── 5. 실패 시 알림 ────────────────────────────────────────────────
+      # ── 6. 실패 시 알림 ────────────────────────────────────────────────
       - name: Notify on failure
         if: failure()
         run: |
-          echo "::error::ATMR 데이터 수집 실패. GitHub Actions 로그에서 Yahoo Finance 요청 오류를 확인하세요."
-          echo "::error::query1.finance.yahoo.com 응답 실패 또는 네트워크 문제일 수 있습니다."
+          echo "::error::ATMR 데이터 수집 실패. GitHub Actions 로그에서 yfinance 요청 오류를 확인하세요."
