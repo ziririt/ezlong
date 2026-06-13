@@ -4363,10 +4363,9 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
         } else {
           el2x.innerHTML = `<span class="warn">추세는 유지 중이나 2배수 허용 조건 미충족 (매수 ${compBuy}점, 매도 ${compSell}점)</span> — 조건이 회복될 때까지 비중을 줄이고 대기하세요`;
         }
-      }
       } else {
         // lev2x=true — 실제 수치 표시
-        el2x.innerHTML = `<span class="ok">Gear ${compGear} ✓ + 매수 ${compBuy}점 ✓ + 매도 압력 ${compSell}점 ✓ — 3조건 충족</span> — QLD·SSO 2배수 유지하세요. 청산 기준까지 ${65 - compSell}점 여유`;
+        el2x.innerHTML = `<span class="ok">Gear ${compGear} + 매수 ${compBuy}점 + 매도 압력 ${compSell}점 — 3조건 충족</span> — QLD·SSO 2배수 유지하세요. 청산 기준까지 ${65 - compSell}점 여유`;
       }
     }
 
@@ -4381,10 +4380,9 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
         } else if (!lev2x) {
           el3x.innerHTML = `<span class="warn">3배수 진입 조건 일부 미충족 (매수 ${compBuy}점·매도 ${compSell}점)</span> — 현재 시장 조건을 재확인하고 조건이 완전히 맞춰지지 않으면 2배수로 낮추세요`;
         }
-      }
       } else {
         // lev3x=true — 실제 수치 표시
-        el3x.innerHTML = `<span class="ok">Gear ${compGear} ✓ + 매수 ${compBuy}점 ✓ + 매도 압력 ${compSell}점 ✓ — 3조건 충족</span> — TQQQ·UPRO 유지하세요. 계좌 20% 한도 초과 금지`;
+        el3x.innerHTML = `<span class="ok">Gear ${compGear} + 매수 ${compBuy}점 + 매도 압력 ${compSell}점 — 3조건 충족</span> — TQQQ·UPRO 유지하세요. 계좌 20% 한도 초과 금지`;
       }
     }
 
