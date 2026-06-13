@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
  * ATMR 시장 데이터 수집 스크립트 (GitHub Actions용)
- * Yahoo Finance (비공식 chart API) → data/market-signals.json 저장
+ * Stooq.com (무료, API 키 불필요) → data/market-signals.json 저장
  *
  * 실행: node scripts/fetch-market-data.js
  *
  * 요구사항: Node.js 18+ (내장 https 모듈만 사용, npm 패키지 불필요)
- * API 키 불필요 — Yahoo Finance 내부 API 사용
+ * API 키 불필요 — Stooq.com CSV API 사용
  */
 
 'use strict';
@@ -16,13 +16,32 @@ const fs     = require('fs');
 const path   = require('path');
 
 // ─── 설정 ──────────────────────────────────────────────────────────────────
-const DELAY_MS = 2000;  // Yahoo Finance 연속 호출 간격 (2초)
+const DELAY_MS = 1500;  // Stooq 연속 호출 간격 (1.5초)
 
 // QQQ, VOO: 주 지표 / TSLA, NVDA: Two Kings / DIA, IWM, SOXX: 시장 폭
 const SYMBOLS = ['QQQ', 'VOO', 'TSLA', 'NVDA', 'DIA', 'IWM', 'SOXX'];
 
 // 출력 파일 위치 (repo 루트 기준)
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'market-signals.json');
+
+// ─── Stooq 심볼 매핑 ───────────────────────────────────────────────────────
+const STOOQ_SYM = {
+  'QQQ':      'qqq.us',
+  'VOO':      'voo.us',
+  'TSLA':     'tsla.us',
+  'NVDA':     'nvda.us',
+  'DIA':      'dia.us',
+  'IWM':      'iwm.us',
+  'SOXX':     'soxx.us',
+  '^VIX':     '%5evix',
+  '^IXIC':    '%5endq',
+  '^GSPC':    '%5espx',
+  '^TNX':     '10us.b',
+  '^TYX':     '30us.b',
+  'CL=F':     'cl.f',
+  'DX-Y.NYB': 'dx.f',
+  'GC=F':     'gc.f',
+};
 
 
 // ─── 유틸 ──────────────────────────────────────────────────────────────────
@@ -38,7 +57,7 @@ function httpGetRaw(hostname, reqPath, extraHeaders) {
       method: 'GET',
       headers: Object.assign({
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-        'Accept': 'application/json, text/plain, */*',
+        'Accept': 'text/html,application/xhtml+xml,text/csv,*/*',
         'Accept-Language': 'en-US,en;q=0.9',
       }, extraHeaders),
       timeout: 15000,
@@ -55,44 +74,82 @@ function httpGetRaw(hostname, reqPath, extraHeaders) {
   });
 }
 
-// Yahoo Finance crumb/cookie (429 대응용)
-let _yfCrumb  = null;
-let _yfCookie = null;
 
-async function initYFSession() {
+// ─── Stooq CSV 파싱 ────────────────────────────────────────────────────────
+function parseStooqCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  // 헤더 스킵, 날짜 오름차순 정렬
+  return lines.slice(1)
+    .map(l => {
+      const parts = l.split(',');
+      const date  = parts[0] ? parts[0].trim() : '';
+      const open  = parseFloat(parts[1]);
+      const high  = parseFloat(parts[2]);
+      const low   = parseFloat(parts[3]);
+      const close = parseFloat(parts[4]);
+      const vol   = parseFloat(parts[5]) || 0;
+      return { date, open, high, low, close, volume: vol };
+    })
+    .filter(r => r.date && !isNaN(r.close) && r.close > 0)
+    .sort((a, b) => a.date < b.date ? -1 : 1);
+}
+
+
+// ─── Stooq: 종목 히스토리 수집 (2년치 일봉) ─────────────────────────────────
+async function fetchStooqHistory(symbol) {
+  const s = STOOQ_SYM[symbol] || (symbol.toLowerCase() + '.us');
+  const r = await httpGetRaw('stooq.com', `/q/d/l/?s=${s}&i=d`, {
+    'Referer': 'https://stooq.com/',
+  });
+  if (r.status !== 200) throw new Error(`HTTP ${r.status}`);
+
+  const rows = parseStooqCSV(r.body);
+  if (rows.length < 30) throw new Error(`${symbol}: 데이터 부족 (${rows.length}행)`);
+
+  // 최근 2년치 (약 504 거래일)
+  const recent  = rows.slice(-504);
+  const closes  = recent.map(row => row.close);
+  const last    = recent[recent.length - 1];
+  const prev    = recent[recent.length - 2];
+  const change  = last.close - prev.close;
+  const changePct = prev.close > 0 ? (change / prev.close * 100) : 0;
+
+  return {
+    closes,
+    price:       last.close,
+    change,
+    changePct,
+    meta:        { date: last.date, fiftyTwoWeekHigh: null, fiftyTwoWeekLow: null },
+    extPrice:    null,
+    extChange:   null,
+    extChangePct: null,
+    marketState: 'CLOSED',
+  };
+}
+
+
+// ─── Stooq: 현재가 단순 조회 ──────────────────────────────────────────────
+async function fetchStooqPrice(symbol) {
   try {
-    const r = await httpGetRaw('query2.finance.yahoo.com', '/v1/test/getcrumb', {
-      'Referer': 'https://finance.yahoo.com',
+    const s = STOOQ_SYM[symbol] || (symbol.toLowerCase() + '.us');
+    const r = await httpGetRaw('stooq.com', `/q/d/l/?s=${s}&i=d`, {
+      'Referer': 'https://stooq.com/',
     });
-    if (r.status === 200 && r.body && r.body.length < 50) {
-      _yfCrumb = r.body.trim();
-      const cookies = r.headers['set-cookie'] || [];
-      _yfCookie = (Array.isArray(cookies) ? cookies : [cookies])
-        .map(c => c.split(';')[0]).join('; ');
-      console.log('  [YF] crumb 획득 성공 (' + _yfCrumb.substring(0, 6) + '...)');
-      return true;
-    }
-  } catch(e) { /* 무시 */ }
-  console.warn('  [YF] crumb 획득 실패 — 기본 방식 유지');
-  return false;
+    if (r.status !== 200) throw new Error(`HTTP ${r.status}`);
+    const rows = parseStooqCSV(r.body);
+    if (rows.length < 2) throw new Error('데이터 부족');
+    const last  = rows[rows.length - 1];
+    const prev  = rows[rows.length - 2];
+    const change    = last.close - prev.close;
+    const changePct = prev.close > 0 ? (change / prev.close * 100) : 0;
+    return { price: last.close, change, changePct };
+  } catch (e) {
+    console.warn(`  [Stooq] ${symbol} 수집 실패: ${e.message}`);
+    return null;
+  }
 }
 
-async function httpGet(hostname, reqPath, retried) {
-  const extraHeaders = _yfCookie ? { 'Cookie': _yfCookie } : {};
-  const crumbSuffix  = _yfCrumb ? (reqPath.includes('?') ? '&' : '?') + 'crumb=' + encodeURIComponent(_yfCrumb) : '';
-  const r = await httpGetRaw(hostname, reqPath + crumbSuffix, extraHeaders);
-  if (r.status === 200) {
-    try { return JSON.parse(r.body); }
-    catch (e) { throw new Error('JSON parse 실패: ' + e.message); }
-  }
-  if (r.status === 429 && !retried) {
-    console.warn('  [YF] 429 — crumb 방식으로 재시도');
-    const ok = await initYFSession();
-    await sleep(ok ? 3000 : 30000);
-    return httpGet(hostname, reqPath, true);
-  }
-  throw new Error('HTTP ' + r.status + ' for ' + reqPath);
-}
 
 // ─── 수학 함수들 ────────────────────────────────────────────────────────────
 
@@ -235,69 +292,6 @@ function calcSellScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18
 }
 
 
-// ─── Yahoo Finance: 종목 히스토리 + 현재가 수집 ─────────────────────────────
-
-async function fetchYFHistory(symbol) {
-  const enc = encodeURIComponent(symbol);
-  // range=2y: SMA200 계산에 충분한 2년치 일봉
-  const reqPath = `/v8/finance/chart/${enc}?interval=1d&range=2y`;
-  const data = await httpGet('query1.finance.yahoo.com', reqPath);
-
-  const result = data?.chart?.result?.[0];
-  if (!result) throw new Error(`${symbol}: chart result 없음`);
-
-  const meta       = result.meta;
-  const timestamps = result.timestamp || [];
-  const rawCloses  = result.indicators?.quote?.[0]?.close || [];
-
-  // null/NaN 제거
-  const closes = rawCloses.filter(v => v !== null && v !== undefined && !isNaN(v));
-
-  if (closes.length < 30) throw new Error(`${symbol}: 데이터 부족 (${closes.length}개)`);
-
-  const price    = meta.regularMarketPrice;
-  const prev     = meta.previousClose ?? meta.chartPreviousClose ?? price;
-  const change   = price - prev;
-  const changePct = prev > 0 ? (change / prev * 100) : 0;
-
-  // 시간외 가격 (프리마켓 / 포스트마켓)
-  const marketState  = meta.marketState; // "PRE", "REGULAR", "POST", "CLOSED"
-  let extPrice = null, extChange = null, extChangePct = null;
-  if (marketState === 'PRE') {
-    extPrice     = meta.preMarketPrice     ?? null;
-    extChange    = meta.preMarketChange    ?? null;
-    extChangePct = meta.preMarketChangePercent ?? null;
-  } else if (marketState === 'POST') {
-    extPrice     = meta.postMarketPrice    ?? null;
-    extChange    = meta.postMarketChange   ?? null;
-    extChangePct = meta.postMarketChangePercent ?? null;
-  }
-
-  return { closes, price, change, changePct, meta, extPrice, extChange, extChangePct, marketState };
-}
-
-
-// ─── Yahoo Finance: 지수 현재가 (단순 현재가만 필요한 경우) ────────────────────
-
-async function fetchYFIndex(symbol) {
-  const enc = encodeURIComponent(symbol);
-  const reqPath = `/v8/finance/chart/${enc}?interval=1d&range=5d`;
-  try {
-    const data = await httpGet('query1.finance.yahoo.com', reqPath);
-    const meta = data?.chart?.result?.[0]?.meta;
-    if (!meta?.regularMarketPrice) throw new Error('regularMarketPrice 없음');
-    const price     = meta.regularMarketPrice;
-    const prev      = meta.previousClose ?? meta.chartPreviousClose ?? price;
-    const change    = price - prev;
-    const changePct = prev > 0 ? (change / prev * 100) : 0;
-    return { price, change, changePct };
-  } catch (e) {
-    console.warn(`  [YF] ${symbol} 수집 실패: ${e.message}`);
-    return null;
-  }
-}
-
-
 // ─── 종목 처리 ──────────────────────────────────────────────────────────────
 
 function processSymbol(raw, symbol, vixPrice) {
@@ -310,7 +304,7 @@ function processSymbol(raw, symbol, vixPrice) {
   const rsi    = calcRSI(closes, 14);
   const macd   = calcMACD(closes);
 
-  // 52주 고저: meta에 있으면 우선 사용, 없으면 최근 252봉에서 계산
+  // 52주 고저: Stooq는 meta 없으므로 최근 252봉에서 계산
   const high52 = meta?.fiftyTwoWeekHigh ?? Math.max(...closes.slice(-252));
   const low52  = meta?.fiftyTwoWeekLow  ?? Math.min(...closes.slice(-252));
 
@@ -415,7 +409,7 @@ async function fetchFearAndGreed() {
 }
 
 
-// ─── 매크로 지표: 국채금리·원유·달러·금 (Yahoo Finance) ──────────────────────
+// ─── 매크로 지표: 국채금리·원유·달러·금 (Stooq) ──────────────────────────────
 
 async function fetchMacroIndicators() {
   const targets = [
@@ -428,7 +422,7 @@ async function fetchMacroIndicators() {
 
   const result = {};
   for (const t of targets) {
-    const raw = await fetchYFIndex(t.symbol);
+    const raw = await fetchStooqPrice(t.symbol);
     if (raw) {
       result[t.key] = { ...raw, symbol: t.symbol, label: t.label, unit: t.unit };
       console.log(`  ${t.label}: ${raw.price.toFixed(2)}${t.unit} (${raw.changePct >= 0 ? '+' : ''}${raw.changePct.toFixed(2)}%)`);
@@ -443,31 +437,31 @@ async function fetchMacroIndicators() {
 
 async function main() {
   console.log(`\n=== ATMR 데이터 수집 시작 (${new Date().toISOString()}) ===\n`);
-  console.log('데이터 소스: Yahoo Finance (API 키 불필요)\n');
+  console.log('데이터 소스: Stooq.com (API 키 불필요)\n');
 
   const processed  = {};
   let   errorCount = 0;
 
   // ── 1차: VIX 먼저 수집 (종목 처리에 필요) ──────────────────────────────
   let vixPrice = 18;
-  let vixYF    = null;
+  let vixData  = null;
   console.log('--- VIX 변동성 지수 수집 ---');
-  vixYF = await fetchYFIndex('^VIX');
-  if (vixYF) {
-    vixPrice = vixYF.price;
-    console.log(` ^VIX: ${vixYF.price.toFixed(2)} (${vixYF.changePct >= 0 ? '+' : ''}${vixYF.changePct.toFixed(2)}%)`);
+  vixData = await fetchStooqPrice('^VIX');
+  if (vixData) {
+    vixPrice = vixData.price;
+    console.log(` ^VIX: ${vixData.price.toFixed(2)} (${vixData.changePct >= 0 ? '+' : ''}${vixData.changePct.toFixed(2)}%)`);
   } else {
     console.warn(` VIX 수집 실패. 기본값 ${vixPrice} 사용.`);
   }
   await sleep(DELAY_MS);
 
-  // ── 2차: 7개 심볼 순차 수집 (Yahoo Finance 히스토리) ────────────────────
-  console.log('\n--- 종목별 히스토리 수집 (Yahoo Finance, 2년치 일봉) ---');
+  // ── 2차: 7개 심볼 순차 수집 (Stooq 히스토리) ────────────────────────────
+  console.log('\n--- 종목별 히스토리 수집 (Stooq.com, 2년치 일봉) ---');
   for (let i = 0; i < SYMBOLS.length; i++) {
     const sym = SYMBOLS[i];
     try {
       console.log(`[${i + 1}/${SYMBOLS.length}] ${sym} 수집 중...`);
-      const raw = await fetchYFHistory(sym);
+      const raw = await fetchStooqHistory(sym);
       processed[sym] = processSymbol(raw, sym, vixPrice);
       const d = processed[sym];
       console.log(`  → $${d.price.toFixed(2)}, RSI ${d.rsi?.toFixed(1)}, SMA200 ${d.sma200?.toFixed(2)}, Gear ${d.gear}, 매수 ${d.buyScore}, 매도 ${d.sellScore}`);
@@ -479,13 +473,13 @@ async function main() {
   }
 
   // VIX를 processed에 추가
-  if (vixYF) {
+  if (vixData) {
     processed['VIX'] = {
       symbol:    'VIX',
-      price:     vixYF.price,
-      change:    vixYF.change,
-      changePct: vixYF.changePct,
-      vix:       vixYF.price,
+      price:     vixData.price,
+      change:    vixData.change,
+      changePct: vixData.changePct,
+      vix:       vixData.price,
       buyScore: null, sellScore: null,
       sma5: null, sma20: null, sma50: null, sma200: null,
       rsi:  null, macd:  null, high52: null, low52: null,
@@ -496,9 +490,9 @@ async function main() {
   // ── 3차: 나스닥100·S&P500 지수 현재가 ──────────────────────────────────
   console.log('\n--- 나스닥100 / S&P500 지수 수집 ---');
   await sleep(DELAY_MS);
-  const ndxRaw  = await fetchYFIndex('^IXIC');
+  const ndxRaw  = await fetchStooqPrice('^IXIC');
   await sleep(DELAY_MS);
-  const gspcRaw = await fetchYFIndex('^GSPC');
+  const gspcRaw = await fetchStooqPrice('^GSPC');
 
   const ndxData = ndxRaw ? {
     price:     ndxRaw.price,
@@ -580,7 +574,7 @@ async function main() {
     generatedAtKST: kstStr + ' KST',
     symbolCount:    Object.keys(processed).length,
     errorCount,
-    dataSource:     'Yahoo Finance',
+    dataSource:     'Stooq.com',
     symbols:        processed,
     indices: {
       NDX:  ndxData  || null,
