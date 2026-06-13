@@ -280,16 +280,18 @@
 /* ── 차트 컨트롤 버튼 ────────────────────────────────────── */
 .ca-chart-ctrl-bar {
   position: absolute;
-  bottom: 28px;
-  left: 8px;
+  bottom: 88px;          /* 거래량 바 살짝 위 */
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   gap: 4px;
   z-index: 15;
   pointer-events: auto;
+  white-space: nowrap;
 }
 .ca-ctrl-btn {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 8px;
   border: 1px solid var(--ez-border2);
   background: var(--ez-surface);
@@ -303,8 +305,25 @@
   transition: background 0.12s, color 0.12s;
   padding: 0;
   line-height: 1;
+  opacity: 0.85;
 }
-.ca-ctrl-btn:hover { background: var(--ez-card2); color: var(--ez-text); }
+.ca-ctrl-btn:hover { background: var(--ez-card2); color: var(--ez-text); opacity: 1; }
+@media (max-width: 768px) {
+  .ca-ctrl-btn { width: 38px; height: 38px; font-size: 17px; }
+  .ca-chart-ctrl-bar { gap: 6px; bottom: 80px; }
+}
+
+/* ── 전체 창 모드 (iOS 포함 모바일 호환) ────────────────── */
+.ca-charts.ca-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 9999;
+  background: var(--ez-bg, #000);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
 /* ── 시간축 토글 (일봉/주봉) ─────────────────────────────── */
 .ca-tf-bar {
@@ -1445,9 +1464,33 @@ function initCharts(ohlcv, ind, analysis) {
       macdChart.timeScale().fitContent();
     });
     mainWrap.querySelector('#cctrl-fs').addEventListener('click', () => {
-      const target = document.querySelector('.ca-charts') || mainWrap;
-      if (document.fullscreenElement) document.exitFullscreen();
-      else if (target.requestFullscreen) target.requestFullscreen();
+      const chartsEl = document.querySelector('.ca-charts');
+      const fsBtn    = mainWrap.querySelector('#cctrl-fs');
+      const entering = !chartsEl.classList.contains('ca-fullscreen');
+      if (entering) {
+        chartsEl.classList.add('ca-fullscreen');
+        const vh = window.innerHeight;
+        mainChart.applyOptions({ height: Math.round(vh * 0.58) });
+        rsiChart .applyOptions({ height: Math.round(vh * 0.17) });
+        macdChart.applyOptions({ height: Math.round(vh * 0.17) });
+        document.body.style.overflow = 'hidden';
+        fsBtn.textContent = '✕';
+        fsBtn.title = '닫기';
+        chartsEl.scrollTop = 0;
+      } else {
+        chartsEl.classList.remove('ca-fullscreen');
+        mainChart.applyOptions({ height: 380 });
+        rsiChart .applyOptions({ height: 140 });
+        macdChart.applyOptions({ height: 140 });
+        document.body.style.overflow = '';
+        fsBtn.textContent = '⤢';
+        fsBtn.title = '전체 창';
+      }
+      setTimeout(() => {
+        mainChart.timeScale().fitContent();
+        rsiChart .timeScale().fitContent();
+        macdChart.timeScale().fitContent();
+      }, 50);
     });
   }
 
@@ -1613,6 +1656,17 @@ function initCharts(ohlcv, ind, analysis) {
     macdChart.timeScale().setVisibleRange(timeRange);
   }
 
+  // 우측 가격 스케일 너비 동기화 → 3패널 세로 격자 일직선
+  setTimeout(() => {
+    try {
+      const w = mainChart.priceScale('right').width();
+      if (w > 0) {
+        rsiChart .applyOptions({ rightPriceScale: { minimumWidth: w } });
+        macdChart.applyOptions({ rightPriceScale: { minimumWidth: w } });
+      }
+    } catch {}
+  }, 200);
+
   // 리사이즈 대응
   const ro = new ResizeObserver(() => {
     if (mainEl) mainChart.applyOptions({ width: mainEl.clientWidth });
@@ -1636,6 +1690,14 @@ function toggleChartSeries(key, visible) {
     chartSeries[key].applyOptions({ visible });
   }
 }
+
+// ── 전체 창 ESC 종료 ─────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const btn = document.getElementById('cctrl-fs');
+    if (btn && btn.title === '닫기') btn.click();
+  }
+});
 
 // ── 초기화 ────────────────────────────────────────────────────
 renderMarketContextBar();
