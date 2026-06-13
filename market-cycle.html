@@ -815,7 +815,7 @@ function coppockCalc(closes) {
 // ── 데이터 로드 ───────────────────────────────────────────────────────────
 async function fetchWeekly(symbol) {
   if (weeklyCache[symbol]) return weeklyCache[symbol];
-  const url = DATA_BASE + 'ohlcv-' + TICKERS[symbol].file + '-weekly.json';
+  const url = DATA_BASE + 'mc-ohlcv-' + TICKERS[symbol].file + '-weekly.json';
   const res = await fetch(url);
   if (!res.ok) throw new Error(symbol + ' 데이터 없음 (HTTP ' + res.status + ')');
   const json = await res.json();
@@ -1325,27 +1325,28 @@ async function renderChart(symbol) {
     });
   });
   // 최초 렌더: 최근 1년(52주) 기본 표시
-  // double requestAnimationFrame 방식: 브라우저 레이아웃이 완전히 끝난 뒤 실행
-  // (80ms 고정 타이머는 초기 레이아웃 타이밍에 따라 실패할 수 있어 교체)
-  requestAnimationFrame(() => {
-    // 1차 rAF: 실제 컨테이너 너비로 강제 리사이즈 (초기 width 불일치 해결)
-    [
-      { id: 'chart-container',    ch: priceChart,   h: 360 },
-      { id: 'rsi-container',      ch: rsiChart,     h: 110 },
-      { id: 'macd-container',     ch: macdChart,    h: 110 },
-      { id: 'coppock-container',  ch: coppockChart, h: 90  },
-    ].forEach(({ id, ch, h }) => {
-      const el = document.getElementById(id);
-      if (el && el.clientWidth > 0) { try { ch.resize(el.clientWidth, h); } catch(_){} }
+  // ResizeObserver 원샷 방식: 차트 컨테이너에 실제 너비가 잡히는 최초 시점에 범위 설정.
+  // rAF/setTimeout 방식은 브라우저 레이아웃 완료 시점을 보장할 수 없어 교체.
+  {
+    let _rangeInitDone = false;
+    const _initRo = new ResizeObserver(entries => {
+      for (const e of entries) {
+        if (e.contentRect.width > 10 && !_rangeInitDone) {
+          _rangeInitDone = true;
+          _initRo.disconnect();
+          // 추가 50ms: 동일 프레임 내 연쇄 ResizeObserver 콜백이 완료된 뒤 범위 설정
+          setTimeout(() => {
+            try {
+              const n = bars.length;
+              priceChart.timeScale().setVisibleLogicalRange({ from: Math.max(0, n - 52), to: n - 1 });
+            } catch(_) {}
+          }, 50);
+          break;
+        }
+      }
     });
-    requestAnimationFrame(() => {
-      // 2차 rAF: 리사이즈 반영 후 범위 설정 (subscribeVisibleTimeRangeChange가 나머지 패널 자동 동기화)
-      try {
-        const n = bars.length;
-        priceChart.timeScale().setVisibleLogicalRange({ from: Math.max(0, n - 52), to: n - 1 });
-      } catch(_) {}
-    });
-  });
+    _initRo.observe(document.getElementById('chart-container'));
+  }
 
   // 크로스헤어 3패널 연동 (hover/touch 시 세로선 동시 표시)
   let xhairLock = false;

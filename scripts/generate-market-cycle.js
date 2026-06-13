@@ -231,9 +231,9 @@ async function main() {
         ohlcv,
       };
 
-      const filePath = path.join(DATA_DIR, `ohlcv-${file}-weekly.json`);
+      const filePath = path.join(DATA_DIR, `mc-ohlcv-${file}-weekly.json`);
       fs.writeFileSync(filePath, JSON.stringify(output));
-      console.log(`  저장 완료: ohlcv-${file}-weekly.json (${ohlcv.length}봉)`);
+      console.log(`  저장 완료: mc-ohlcv-${file}-weekly.json (${ohlcv.length}봉)`);
       successCount++;
     } catch (err) {
       console.error(`  오류 [${symbol}]: ${err.message}`);
