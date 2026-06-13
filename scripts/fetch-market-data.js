@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 /**
  * ATMR 시장 데이터 수집 스크립트 (GitHub Actions용)
- * Twelve Data API → data/market-signals.json 저장
+ * Yahoo Finance (비공식 chart API) → data/market-signals.json 저장
  *
- * 실행: TWELVEDATA_API_KEY=xxxx node scripts/fetch-market-data.js
+ * 실행: node scripts/fetch-market-data.js
  *
  * 요구사항: Node.js 18+ (내장 https 모듈만 사용, npm 패키지 불필요)
+ * API 키 불필요 — Yahoo Finance 내부 API 사용
  */
 
 'use strict';
@@ -15,12 +16,9 @@ const fs     = require('fs');
 const path   = require('path');
 
 // ─── 설정 ──────────────────────────────────────────────────────────────────
-const API_KEY  = process.env.TWELVEDATA_API_KEY;
-const TD_HOST  = 'api.twelvedata.com';
-const DELAY_MS = 8500;  // 무료 플랜: 8 credits/min → 8.5초 간격
+const DELAY_MS = 2000;  // Yahoo Finance 연속 호출 간격 (2초)
 
 // QQQ, VOO: 주 지표 / TSLA, NVDA: Two Kings / DIA, IWM, SOXX: 시장 폭
-// VIX는 Twelve Data 무료플랜 미지원 → Yahoo Finance로 별도 수집
 const SYMBOLS = ['QQQ', 'VOO', 'TSLA', 'NVDA', 'DIA', 'IWM', 'SOXX'];
 
 // 출력 파일 위치 (repo 루트 기준)
@@ -31,26 +29,25 @@ const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'market-signals.json');
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-function httpGet(hostname, reqPath) {
+function httpGetRaw(hostname, reqPath, extraHeaders) {
+  extraHeaders = extraHeaders || {};
   return new Promise((resolve, reject) => {
     const options = {
       hostname,
       path: reqPath,
       method: 'GET',
-      headers: { 'User-Agent': 'ATMR-Dashboard/1.0' },
+      headers: Object.assign({
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.9',
+      }, extraHeaders),
       timeout: 15000,
     };
     const req = https.request(options, res => {
-      if (res.statusCode !== 200) {
-        reject(new Error(`HTTP ${res.statusCode} for ${reqPath}`));
-        return;
-      }
       let body = '';
+      const headers = res.headers;
       res.on('data', chunk => { body += chunk; });
-      res.on('end', () => {
-        try { resolve(JSON.parse(body)); }
-        catch (e) { reject(new Error(`JSON parse 실패: ${e.message}`)); }
-      });
+      res.on('end', () => resolve({ status: res.statusCode, body, headers }));
     });
     req.on('error', reject);
     req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
@@ -58,6 +55,44 @@ function httpGet(hostname, reqPath) {
   });
 }
 
+// Yahoo Finance crumb/cookie (429 대응용)
+let _yfCrumb  = null;
+let _yfCookie = null;
+
+async function initYFSession() {
+  try {
+    const r = await httpGetRaw('query2.finance.yahoo.com', '/v1/test/getcrumb', {
+      'Referer': 'https://finance.yahoo.com',
+    });
+    if (r.status === 200 && r.body && r.body.length < 50) {
+      _yfCrumb = r.body.trim();
+      const cookies = r.headers['set-cookie'] || [];
+      _yfCookie = (Array.isArray(cookies) ? cookies : [cookies])
+        .map(c => c.split(';')[0]).join('; ');
+      console.log('  [YF] crumb 획득 성공 (' + _yfCrumb.substring(0, 6) + '...)');
+      return true;
+    }
+  } catch(e) { /* 무시 */ }
+  console.warn('  [YF] crumb 획득 실패 — 기본 방식 유지');
+  return false;
+}
+
+async function httpGet(hostname, reqPath, retried) {
+  const extraHeaders = _yfCookie ? { 'Cookie': _yfCookie } : {};
+  const crumbSuffix  = _yfCrumb ? (reqPath.includes('?') ? '&' : '?') + 'crumb=' + encodeURIComponent(_yfCrumb) : '';
+  const r = await httpGetRaw(hostname, reqPath + crumbSuffix, extraHeaders);
+  if (r.status === 200) {
+    try { return JSON.parse(r.body); }
+    catch (e) { throw new Error('JSON parse 실패: ' + e.message); }
+  }
+  if (r.status === 429 && !retried) {
+    console.warn('  [YF] 429 — crumb 방식으로 재시도');
+    const ok = await initYFSession();
+    await sleep(ok ? 3000 : 30000);
+    return httpGet(hostname, reqPath, true);
+  }
+  throw new Error('HTTP ' + r.status + ' for ' + reqPath);
+}
 
 // ─── 수학 함수들 ────────────────────────────────────────────────────────────
 
@@ -200,7 +235,49 @@ function calcSellScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18
 }
 
 
-// ─── Yahoo Finance: 지수 현재가 (API 키 불필요, 서버사이드에서 CORS 없음) ───
+// ─── Yahoo Finance: 종목 히스토리 + 현재가 수집 ─────────────────────────────
+
+async function fetchYFHistory(symbol) {
+  const enc = encodeURIComponent(symbol);
+  // range=2y: SMA200 계산에 충분한 2년치 일봉
+  const reqPath = `/v8/finance/chart/${enc}?interval=1d&range=2y`;
+  const data = await httpGet('query1.finance.yahoo.com', reqPath);
+
+  const result = data?.chart?.result?.[0];
+  if (!result) throw new Error(`${symbol}: chart result 없음`);
+
+  const meta       = result.meta;
+  const timestamps = result.timestamp || [];
+  const rawCloses  = result.indicators?.quote?.[0]?.close || [];
+
+  // null/NaN 제거
+  const closes = rawCloses.filter(v => v !== null && v !== undefined && !isNaN(v));
+
+  if (closes.length < 30) throw new Error(`${symbol}: 데이터 부족 (${closes.length}개)`);
+
+  const price    = meta.regularMarketPrice;
+  const prev     = meta.previousClose ?? meta.chartPreviousClose ?? price;
+  const change   = price - prev;
+  const changePct = prev > 0 ? (change / prev * 100) : 0;
+
+  // 시간외 가격 (프리마켓 / 포스트마켓)
+  const marketState  = meta.marketState; // "PRE", "REGULAR", "POST", "CLOSED"
+  let extPrice = null, extChange = null, extChangePct = null;
+  if (marketState === 'PRE') {
+    extPrice     = meta.preMarketPrice     ?? null;
+    extChange    = meta.preMarketChange    ?? null;
+    extChangePct = meta.preMarketChangePercent ?? null;
+  } else if (marketState === 'POST') {
+    extPrice     = meta.postMarketPrice    ?? null;
+    extChange    = meta.postMarketChange   ?? null;
+    extChangePct = meta.postMarketChangePercent ?? null;
+  }
+
+  return { closes, price, change, changePct, meta, extPrice, extChange, extChangePct, marketState };
+}
+
+
+// ─── Yahoo Finance: 지수 현재가 (단순 현재가만 필요한 경우) ────────────────────
 
 async function fetchYFIndex(symbol) {
   const enc = encodeURIComponent(symbol);
@@ -219,6 +296,43 @@ async function fetchYFIndex(symbol) {
     return null;
   }
 }
+
+
+// ─── 종목 처리 ──────────────────────────────────────────────────────────────
+
+function processSymbol(raw, symbol, vixPrice) {
+  const { closes, price, change, changePct, meta, extPrice, extChange, extChangePct, marketState } = raw;
+
+  const sma5   = calcSMA(closes, 5);
+  const sma20  = calcSMA(closes, 20);
+  const sma50  = calcSMA(closes, 50);
+  const sma200 = calcSMA(closes, Math.min(200, closes.length));
+  const rsi    = calcRSI(closes, 14);
+  const macd   = calcMACD(closes);
+
+  // 52주 고저: meta에 있으면 우선 사용, 없으면 최근 252봉에서 계산
+  const high52 = meta?.fiftyTwoWeekHigh ?? Math.max(...closes.slice(-252));
+  const low52  = meta?.fiftyTwoWeekLow  ?? Math.min(...closes.slice(-252));
+
+  const dev200 = sma200 ? (price - sma200) / sma200 * 100 : 0;
+  const dev5   = sma5   ? (price - sma5)   / sma5   * 100 : 0;
+  const dev20  = sma20  ? (price - sma20)  / sma20  * 100 : 0;
+  const gear   = getGear(dev200);
+
+  const vix = vixPrice || 18;
+  const obj = { symbol, price, change, changePct, sma5, sma20, sma50, sma200, rsi, macd, high52, low52, dev200, dev5, dev20, gear, vix };
+
+  return {
+    ...obj,
+    buyScore:    calcBuyScore(obj),
+    sellScore:   calcSellScore(obj),
+    extPrice:    extPrice    ?? null,
+    extChange:   extChange   ?? null,
+    extChangePct: extChangePct ?? null,
+    isMarketOpen: marketState === 'REGULAR',
+  };
+}
+
 
 // ─── CNN Fear & Greed Index ────────────────────────────────────────────────
 
@@ -252,7 +366,6 @@ function tryFetchFG(hostname, path, headers) {
 }
 
 async function fetchFearAndGreed() {
-  // 엔드포인트 1: CNN production dataviz (기본)
   const r1 = await tryFetchFG('production.dataviz.cnn.io', '/index/fearandgreed/graphdata', {
     'Referer': 'https://www.cnn.com/markets/fear-and-greed',
     'Origin':  'https://www.cnn.com',
@@ -270,12 +383,11 @@ async function fetchFearAndGreed() {
         timestamp:  fg.timestamp || new Date().toISOString(),
       };
     }
-    console.warn(`  [F&G] 엔드포인트1 파싱 실패: fear_and_greed 필드 없음 / score=${fg?.score}`);
+    console.warn(`  [F&G] 엔드포인트1 파싱 실패`);
   } else {
     console.warn(`  [F&G] 엔드포인트1 실패: ${r1.reason}`);
   }
 
-  // 엔드포인트 2: CNN dataviz (trailing slash)
   const r2 = await tryFetchFG('production.dataviz.cnn.io', '/index/fearandgreed/graphdata/', {
     'Referer': 'https://www.cnn.com/',
     'Origin':  'https://www.cnn.com',
@@ -298,30 +410,10 @@ async function fetchFearAndGreed() {
     console.warn(`  [F&G] 엔드포인트2 실패: ${r2.reason}`);
   }
 
-  // 엔드포인트 3: CNN markets API (구버전 경로)
-  const r3 = await tryFetchFG('markets.money.cnn.com', '/services/api/mood/fearandgreed/current', {
-    'Referer': 'https://money.cnn.com/data/fear-and-greed/',
-    'Origin':  'https://money.cnn.com',
-  });
-  if (r3.ok) {
-    const d = r3.body;
-    const score = d?.fear_and_greed?.score ?? d?.score ?? d?.fgi?.now?.value;
-    if (typeof score === 'number') {
-      console.log(`  [F&G] 엔드포인트3 성공: score=${Math.round(score)}`);
-      return {
-        score:   Math.round(score),
-        rating:  d?.fear_and_greed?.rating ?? d?.rating ?? 'Neutral',
-        timestamp: new Date().toISOString(),
-      };
-    }
-    console.warn(`  [F&G] 엔드포인트3 파싱 실패`);
-  } else {
-    console.warn(`  [F&G] 엔드포인트3 실패: ${r3.reason}`);
-  }
-
   console.warn('  [F&G] 모든 엔드포인트 실패 — Fear & Greed 데이터 없음');
   return null;
 }
+
 
 // ─── 매크로 지표: 국채금리·원유·달러·금 (Yahoo Finance) ──────────────────────
 
@@ -341,113 +433,25 @@ async function fetchMacroIndicators() {
       result[t.key] = { ...raw, symbol: t.symbol, label: t.label, unit: t.unit };
       console.log(`  ${t.label}: ${raw.price.toFixed(2)}${t.unit} (${raw.changePct >= 0 ? '+' : ''}${raw.changePct.toFixed(2)}%)`);
     }
-    await sleep(1000); // 짧은 간격으로 연속 호출
+    await sleep(1000);
   }
   return result;
-}
-
-
-// ─── API 호출 (Twelve Data) ─────────────────────────────────────────────────
-
-async function fetchTimeSeries(symbol) {
-  const outputsize = 300;
-  const p = `/time_series?symbol=${encodeURIComponent(symbol)}&interval=1day&outputsize=${outputsize}&apikey=${API_KEY}`;
-  const data = await httpGet(TD_HOST, p);
-  if (data.status === 'error' || !data.values) {
-    throw new Error(`[time_series] ${symbol}: ${data.message || '데이터 없음'}`);
-  }
-  return data;
-}
-
-async function fetchQuote(symbol) {
-  // /quote는 extended hours 데이터 포함 (extended_price, is_market_open 등)
-  const p = `/quote?symbol=${encodeURIComponent(symbol)}&apikey=${API_KEY}`;
-  try {
-    const data = await httpGet(TD_HOST, p);
-    if (data.status === 'error') return null;
-    return data;
-  } catch (e) {
-    console.warn(`  [quote] ${symbol} 실패 (무시): ${e.message}`);
-    return null;
-  }
-}
-
-
-// ─── 종목 처리 ──────────────────────────────────────────────────────────────
-
-function processTimeSeries(raw, symbol, vixPrice) {
-  const values  = [...raw.values].reverse(); // 오름차순 정렬 (오래된 → 최신)
-  const closes  = values.map(v => parseFloat(v.close)).filter(v => !isNaN(v));
-
-  if (closes.length < 30) throw new Error(`데이터 부족: ${closes.length}개`);
-
-  const price    = closes[closes.length - 1];
-  const prevPrice = closes[closes.length - 2];
-  const change   = price - prevPrice;
-  const changePct = (change / prevPrice) * 100;
-
-  const sma5   = calcSMA(closes, 5);
-  const sma20  = calcSMA(closes, 20);
-  const sma50  = calcSMA(closes, 50);
-  const sma200 = calcSMA(closes, Math.min(200, closes.length));
-  const rsi    = calcRSI(closes, 14);
-  const macd   = calcMACD(closes);
-
-  const last252 = closes.slice(-252);
-  const high52  = Math.max(...last252);
-  const low52   = Math.min(...last252);
-
-  const dev200 = sma200 ? (price - sma200) / sma200 * 100 : 0;
-  const dev5   = sma5   ? (price - sma5)   / sma5   * 100 : 0;
-  const dev20  = sma20  ? (price - sma20)  / sma20  * 100 : 0;  // 20일선 이탈도 추가
-  const gear   = getGear(dev200);
-
-  const vix    = symbol === 'VIX' ? price : (vixPrice || 18);
-  const obj    = { symbol, price, change, changePct, sma5, sma20, sma50, sma200, rsi, macd, high52, low52, dev200, dev5, dev20, gear, vix };
-
-  return {
-    ...obj,
-    buyScore:  calcBuyScore(obj),
-    sellScore: calcSellScore(obj),
-  };
 }
 
 
 // ─── 메인 ───────────────────────────────────────────────────────────────────
 
 async function main() {
-  if (!API_KEY) {
-    console.error('ERROR: TWELVEDATA_API_KEY 환경변수가 없습니다.');
-    process.exit(1);
-  }
-
   console.log(`\n=== ATMR 데이터 수집 시작 (${new Date().toISOString()}) ===\n`);
+  console.log('데이터 소스: Yahoo Finance (API 키 불필요)\n');
 
-  const rawData    = {};
   const processed  = {};
   let   errorCount = 0;
 
-  // ── 1차: time_series 순차 수집 ─────────────────────────────────────────
-  for (let i = 0; i < SYMBOLS.length; i++) {
-    const sym = SYMBOLS[i];
-    try {
-      console.log(`[${i + 1}/${SYMBOLS.length}] ${sym} time_series 수집 중...`);
-      rawData[sym] = await fetchTimeSeries(sym);
-      console.log(`  → ${rawData[sym].values.length}개 레코드 수집 완료`);
-    } catch (e) {
-      console.error(`  → ERROR: ${e.message}`);
-      errorCount++;
-    }
-    if (i < SYMBOLS.length - 1) {
-      process.stdout.write(`  딜레이 ${DELAY_MS / 1000}초 대기 중...\n`);
-      await sleep(DELAY_MS);
-    }
-  }
-
-  // ── 2차: VIX 변동성 지수 수집 (Yahoo Finance — Twelve Data 무료플랜 미지원) ──
-  let vixPrice = 18; // 기본값
-  let vixYF = null;
-  console.log('\n--- VIX 변동성 지수 수집 (Yahoo Finance) ---');
+  // ── 1차: VIX 먼저 수집 (종목 처리에 필요) ──────────────────────────────
+  let vixPrice = 18;
+  let vixYF    = null;
+  console.log('--- VIX 변동성 지수 수집 ---');
   vixYF = await fetchYFIndex('^VIX');
   if (vixYF) {
     vixPrice = vixYF.price;
@@ -455,20 +459,26 @@ async function main() {
   } else {
     console.warn(` VIX 수집 실패. 기본값 ${vixPrice} 사용.`);
   }
+  await sleep(DELAY_MS);
 
-  // ── 3차: 전체 처리 ─────────────────────────────────────────────────────
-  for (const sym of SYMBOLS) {
-    if (!rawData[sym]) continue;
+  // ── 2차: 7개 심볼 순차 수집 (Yahoo Finance 히스토리) ────────────────────
+  console.log('\n--- 종목별 히스토리 수집 (Yahoo Finance, 2년치 일봉) ---');
+  for (let i = 0; i < SYMBOLS.length; i++) {
+    const sym = SYMBOLS[i];
     try {
-      processed[sym] = processTimeSeries(rawData[sym], sym, vixPrice);
+      console.log(`[${i + 1}/${SYMBOLS.length}] ${sym} 수집 중...`);
+      const raw = await fetchYFHistory(sym);
+      processed[sym] = processSymbol(raw, sym, vixPrice);
       const d = processed[sym];
-      console.log(`  ${sym}: $${d.price.toFixed(2)}, RSI ${d.rsi?.toFixed(1)}, Gear ${d.gear}, 매수 ${d.buyScore}, 매도 ${d.sellScore}`);
+      console.log(`  → $${d.price.toFixed(2)}, RSI ${d.rsi?.toFixed(1)}, SMA200 ${d.sma200?.toFixed(2)}, Gear ${d.gear}, 매수 ${d.buyScore}, 매도 ${d.sellScore}`);
     } catch (e) {
-      console.error(`  ${sym} 처리 실패: ${e.message}`);
+      console.error(`  → ERROR: ${e.message}`);
+      errorCount++;
     }
+    if (i < SYMBOLS.length - 1) await sleep(DELAY_MS);
   }
 
-  // VIX: Yahoo Finance에서 수집한 데이터를 processed에 추가
+  // VIX를 processed에 추가
   if (vixYF) {
     processed['VIX'] = {
       symbol:    'VIX',
@@ -476,64 +486,38 @@ async function main() {
       change:    vixYF.change,
       changePct: vixYF.changePct,
       vix:       vixYF.price,
-      buyScore:  null, sellScore: null,
+      buyScore: null, sellScore: null,
       sma5: null, sma20: null, sma50: null, sma200: null,
       rsi:  null, macd:  null, high52: null, low52: null,
       dev200: null, dev5: null, gear: null,
     };
-    console.log(`  VIX: ${vixYF.price.toFixed(2)} (Yahoo Finance)`);
   }
 
-  // ── 4차: quote (extended hours) 보완 수집 ──────────────────────────────
-  console.log('\n--- Extended hours 데이터 보완 ---');
-  for (let i = 0; i < SYMBOLS.length; i++) {
-    const sym = SYMBOLS[i];
-    if (!processed[sym]) continue;
-    if (i > 0) await sleep(DELAY_MS);
-    console.log(`  ${sym} quote 수집 중...`);
-    const q = await fetchQuote(sym);
-    if (q) {
-      const ext = parseFloat(q.extended_price);
-      const extChg = parseFloat(q.extended_change);
-      const extPct = parseFloat(q.extended_percent_change);
-      if (!isNaN(ext)) {
-        processed[sym].extPrice      = ext;
-        processed[sym].extChange     = isNaN(extChg) ? null : extChg;
-        processed[sym].extChangePct  = isNaN(extPct) ? null : extPct;
-        processed[sym].extTimestamp  = q.extended_timestamp || null;
-        processed[sym].isMarketOpen  = q.is_market_open === true || q.is_market_open === 'true';
-        console.log(`    → extended $${ext.toFixed(2)} (${extPct > 0 ? '+' : ''}${(extPct || 0).toFixed(2)}%)`);
-      } else {
-        processed[sym].isMarketOpen  = q.is_market_open === true || q.is_market_open === 'true';
-        console.log(`    → extended hours 데이터 없음 (정규장 시간 또는 미지원)`);
-      }
-    }
-  }
-
-  // ── 5차: 나스닥100·S&P500 지수 현재가 (Yahoo Finance) ─────────────────
-  // 가격(지수값)은 ^NDX·^GSPC에서, 등락률은 QQQ·VOO로 보정
-  // (Yahoo Finance 인덱스 심볼의 previousClose 기준이 ETF와 달라 오차 발생)
-  console.log('\n--- 나스닥100 / S&P500 지수 수집 (Yahoo Finance) ---');
-  const ndxRaw  = await fetchYFIndex('^IXIC');  // 나스닥 종합지수 (Composite)
+  // ── 3차: 나스닥100·S&P500 지수 현재가 ──────────────────────────────────
+  console.log('\n--- 나스닥100 / S&P500 지수 수집 ---');
+  await sleep(DELAY_MS);
+  const ndxRaw  = await fetchYFIndex('^IXIC');
+  await sleep(DELAY_MS);
   const gspcRaw = await fetchYFIndex('^GSPC');
 
   const ndxData = ndxRaw ? {
     price:     ndxRaw.price,
     change:    ndxRaw.change,
-    changePct: processed['QQQ']?.changePct ?? ndxRaw.changePct,  // QQQ로 등락률 보정
+    changePct: processed['QQQ']?.changePct ?? ndxRaw.changePct,
   } : null;
 
   const gspcData = gspcRaw ? {
     price:     gspcRaw.price,
     change:    gspcRaw.change,
-    changePct: processed['VOO']?.changePct ?? gspcRaw.changePct,  // VOO로 등락률 보정
+    changePct: processed['VOO']?.changePct ?? gspcRaw.changePct,
   } : null;
 
-  if (ndxData)  console.log(`  ^NDX:  ${ndxData.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}  (${ndxData.changePct >= 0 ? '+' : ''}${ndxData.changePct.toFixed(2)}%) [QQQ 보정]`);
-  if (gspcData) console.log(`  ^GSPC: ${gspcData.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}  (${gspcData.changePct >= 0 ? '+' : ''}${gspcData.changePct.toFixed(2)}%) [VOO 보정]`);
+  if (ndxData)  console.log(`  ^IXIC: ${ndxData.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}  (${ndxData.changePct >= 0 ? '+' : ''}${ndxData.changePct.toFixed(2)}%)`);
+  if (gspcData) console.log(`  ^GSPC: ${gspcData.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}  (${gspcData.changePct >= 0 ? '+' : ''}${gspcData.changePct.toFixed(2)}%)`);
 
-  // ── 6차: CNN Fear & Greed Index ───────────────────────────────────────────
+  // ── 4차: CNN Fear & Greed Index ───────────────────────────────────────────
   console.log('\n--- CNN Fear & Greed Index 수집 ---');
+  await sleep(DELAY_MS);
   const fgData = await fetchFearAndGreed();
   if (fgData) {
     console.log(`  Fear & Greed: ${fgData.score} (${fgData.rating}) | 전일 ${fgData.prevClose ?? '-'}, 1주전 ${fgData.prev1Week ?? '-'}, 1개월전 ${fgData.prev1Month ?? '-'}`);
@@ -541,63 +525,51 @@ async function main() {
     console.warn('  Fear & Greed 수집 실패 — 대시보드 표시 제외');
   }
 
-  // ── 7차: 매크로 지표 (국채금리·원유·달러·금) ────────────────────────────────
+  // ── 5차: 매크로 지표 ────────────────────────────────────────────────────
   console.log('\n--- 매크로 지표 수집 (국채금리·원유·달러·금) ---');
+  await sleep(DELAY_MS);
   const macroData = await fetchMacroIndicators();
 
-  // ── 8차: 저장 ──────────────────────────────────────────────────────────
+  // ── 6차: 저장 ──────────────────────────────────────────────────────────
   const now     = new Date();
-  // toLocaleString hour12:false 가 자정을 "24:xx"로 반환하는 Node.js 버그 회피
-  // → UTC+9 수동 계산으로 항상 정확한 KST 문자열 생성
   const kstDate = new Date(now.getTime() + 9 * 60 * 60 * 1000);
   const pad2    = n => String(n).padStart(2, '0');
   const kstStr  = `${kstDate.getUTCFullYear()}-${pad2(kstDate.getUTCMonth()+1)}-${pad2(kstDate.getUTCDate())} ${pad2(kstDate.getUTCHours())}:${pad2(kstDate.getUTCMinutes())}`;
 
-  // ── 이전 신호 히스토리 읽기 (24시간 연속성) ────────────────────────────────
-  // 목적: 대시보드가 "직전 회차 진단"과 비교할 수 있도록 최근 48개 슬롯 보존
-  // 구조: previousSignals = [{ at, atKST, qqq: {rsi, macdHist, dev5, ...}, fg, ... }, ...]
-  // 48개 × 30분 = 24시간 커버
+  // 이전 신호 히스토리 읽기 (24시간 연속성)
   const HISTORY_MAX = 144;
   let previousSignals = [];
   const dir = path.dirname(OUTPUT_PATH);
   if (fs.existsSync(OUTPUT_PATH)) {
     try {
       const existing = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf8'));
-      // 기존 히스토리 배열 가져오기 (없으면 빈 배열)
-      previousSignals = Array.isArray(existing.previousSignals)
-        ? existing.previousSignals
-        : [];
-
-      // 현재 회차의 핵심 지표를 스냅샷으로 만들어 히스토리에 추가
-      const qqq = existing.symbols?.QQQ;
+      previousSignals = Array.isArray(existing.previousSignals) ? existing.previousSignals : [];
+      const qqq  = existing.symbols?.QQQ;
       const soxx = existing.symbols?.SOXX;
       if (qqq) {
         const snapshot = {
           at:      existing.generatedAt,
           atKST:   existing.generatedAtKST,
           qqq: {
-            rsi:          qqq.rsi ?? null,
-            macdHist:     qqq.macd?.histogram ?? null,
-            dev5:         qqq.dev5 ?? null,
-            dev200:       qqq.dev200 ?? null,
-            gear:         qqq.gear ?? null,
-            buyScore:     qqq.buyScore ?? null,
-            sellScore:    qqq.sellScore ?? null,
-            price:        qqq.price ?? null,
+            rsi:       qqq.rsi       ?? null,
+            macdHist:  qqq.macd?.histogram ?? null,
+            dev5:      qqq.dev5      ?? null,
+            dev200:    qqq.dev200    ?? null,
+            gear:      qqq.gear      ?? null,
+            buyScore:  qqq.buyScore  ?? null,
+            sellScore: qqq.sellScore ?? null,
+            price:     qqq.price     ?? null,
           },
           soxxMacdHist: soxx?.macd?.histogram ?? null,
           fearAndGreed: existing.fearAndGreed?.score ?? null,
           yield10y:     existing.macro?.yield10y?.price ?? null,
         };
-        previousSignals.unshift(snapshot);  // 최신 항목을 앞에 추가
+        previousSignals.unshift(snapshot);
       }
-
-      // 48개 초과분 제거 (오래된 것부터)
       if (previousSignals.length > HISTORY_MAX) {
         previousSignals = previousSignals.slice(0, HISTORY_MAX);
       }
-
-      console.log(`  히스토리 스냅샷 저장: ${previousSignals.length}개 (최대 ${HISTORY_MAX}개 / 24시간)`);
+      console.log(`\n  히스토리 스냅샷 저장: ${previousSignals.length}개 (최대 ${HISTORY_MAX}개)`);
     } catch (e) {
       console.warn(`  이전 데이터 읽기 실패 (첫 실행일 수 있음): ${e.message}`);
     }
@@ -608,6 +580,7 @@ async function main() {
     generatedAtKST: kstStr + ' KST',
     symbolCount:    Object.keys(processed).length,
     errorCount,
+    dataSource:     'Yahoo Finance',
     symbols:        processed,
     indices: {
       NDX:  ndxData  || null,
@@ -615,7 +588,7 @@ async function main() {
     },
     fearAndGreed:    fgData || null,
     macro:           Object.keys(macroData).length > 0 ? macroData : null,
-    previousSignals: previousSignals,   // 24시간 히스토리 (최근 48개 슬롯)
+    previousSignals: previousSignals,
   };
 
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -625,7 +598,7 @@ async function main() {
   console.log(`=== 생성 시각: ${kstStr} KST ===\n`);
 
   if (errorCount === SYMBOLS.length) {
-    console.error('모든 종목 수집 실패. GitHub Actions를 확인하세요.');
+    console.error('모든 종목 수집 실패. GitHub Actions 로그를 확인하세요.');
     process.exit(1);
   }
 }
