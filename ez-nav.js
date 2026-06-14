@@ -16,7 +16,7 @@
     ['/atmr-dashboard.html',        '스윙 시그널',    "스윙 트레이더를 위한 '스윙 시그널'"],
     ['/chart-analysis.html',        'AI 차트분석',    'AI 차트 분석'],
     ['/analyst-reports.html',       '월가 목표주가',  '월가 목표주가'],
-    ['/market-cycle.html',          '마켓 사이클',    '마켓 사이클 모니터'],
+    ['/market-cycle.html',          '마켓 사이클',    '하락장 변곡점 감시'],
     ['/dca-simulator.html',         'DCA 시뮬레이터', 'DCA 복리 시뮬레이터'],
     ['/portfolio-manager.html',     'AI 포트폴리오',  '투자성향별 AI 포트폴리오'],
     ['/tax-account-simulator.html', '절세 계좌',      '절세 계좌 시뮬레이터'],
