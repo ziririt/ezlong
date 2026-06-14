@@ -97,7 +97,6 @@ a { color: inherit; }
 
 /* ── EZ 글로벌 네비게이션 ──────────────────────────────────────── */
 .ez-nav {
-  height: auto;
   background: rgba(255,255,255,0.92);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -108,6 +107,8 @@ a { color: inherit; }
 @media (prefers-color-scheme: dark) {
   .ez-nav { background: rgba(10,10,10,0.92); border-color: rgba(255,255,255,0.10); }
 }
+
+/* ─ PC 기본 레이아웃 ─ */
 .ez-nav-inner {
   max-width: var(--ez-max-w-wide);
   margin: 0 auto; padding: 7px 20px 0;
@@ -118,7 +119,7 @@ a { color: inherit; }
 .ez-nav-svc-links {
   display: flex; align-items: center; gap: 2px;
   overflow-x: auto; -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; width: 100%; margin-left: 0; padding-bottom: 4px;
+  scrollbar-width: none; width: 100%; padding-bottom: 4px;
 }
 .ez-nav-svc-links::-webkit-scrollbar { display: none; }
 .ez-nav-svc-link {
@@ -128,7 +129,73 @@ a { color: inherit; }
   white-space: nowrap; transition: all 0.12s;
 }
 .ez-nav-svc-link:hover { background: var(--ez-card2); color: var(--ez-text); }
-.ez-nav-svc-link.active { background: var(--ez-blue-dim); color: var(--ez-blue); }
+.ez-nav-svc-link.active { background: var(--ez-blue-dim); color: var(--ez-blue); font-weight: 700; }
+
+/* ─ 모바일 토글 버튼 (PC에서는 숨김) ─ */
+.ez-mob-toggle {
+  display: none;
+  align-items: center; gap: 5px;
+  padding: 6px 13px;
+  background: var(--ez-blue-dim);
+  border: 1.5px solid rgba(0,113,227,0.3);
+  border-radius: 20px;
+  color: var(--ez-blue);
+  font-size: 13px; font-weight: 700;
+  font-family: var(--ez-font);
+  cursor: pointer; white-space: nowrap;
+  transition: background 0.12s;
+  margin-left: auto;
+}
+@media (prefers-color-scheme: dark) {
+  .ez-mob-toggle { border-color: rgba(10,132,255,0.4); }
+}
+.ez-mob-toggle-arrow {
+  font-size: 10px; display: inline-block;
+  transition: transform 0.2s;
+}
+.ez-mob-toggle.open .ez-mob-toggle-arrow { transform: rotate(180deg); }
+
+/* ─ 모바일 풀스크린 오버레이 메뉴 ─ */
+.ez-mob-menu {
+  display: none;
+  position: fixed; inset: 0;
+  padding-top: 52px;          /* 모바일 nav 높이만큼 여백 */
+  background: var(--ez-surface);
+  z-index: 9998;
+  overflow-y: auto;
+  flex-direction: column;
+}
+.ez-mob-menu.open { display: flex; }
+
+.ez-mob-item {
+  display: flex; align-items: center;
+  padding: 17px 24px;
+  font-size: 16px; font-weight: 600;
+  color: var(--ez-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ez-border);
+  transition: background 0.1s;
+}
+.ez-mob-item:active { background: var(--ez-card2); }
+.ez-mob-item.active {
+  color: var(--ez-blue);
+  background: var(--ez-blue-dim);
+  font-weight: 800;
+  border-left: 3px solid var(--ez-blue);
+  padding-left: 21px;
+}
+
+/* ─ 모바일에서만 토글 보이고 PC칩 숨김 ─ */
+@media (max-width: 768px) {
+  .ez-nav-inner {
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 16px;
+  }
+  .ez-nav-logo { padding: 0; }
+  .ez-nav-svc-links { display: none !important; }
+  .ez-mob-toggle { display: flex; }
+}
 
 /* ── EZ 푸터 (2026 리디자인) ────────────────────────────────────── */
 .ez-footer {
