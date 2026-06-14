@@ -46,6 +46,10 @@
       '</a>';
   }
 
+  /* ez-mob-menu를 <nav> 바깥(형제)에 배치
+     이유: <nav>에 backdrop-filter가 있으면 iOS Safari 등에서
+     position:fixed 자식이 viewport 기준이 아닌 부모 크기로 갇혀
+     오버레이가 nav 높이(~50px)로 클리핑되는 버그가 발생함 */
   var html =
     '<nav class="ez-nav" id="ez-nav" aria-label="글로벌 네비게이션">' +
       '<div class="ez-nav-inner">' +
@@ -65,11 +69,11 @@
           '<span class="ez-mob-toggle-arrow">&#9662;</span>' +
         '</button>' +
       '</div>' +
-      /* 모바일 오버레이 메뉴 */
-      '<div class="ez-mob-menu" id="ez-mob-menu" aria-hidden="true">' +
-        mobileItems +
-      '</div>' +
-    '</nav>';
+    '</nav>' +
+    /* 모바일 오버레이 메뉴 — <nav> 형제 요소로 분리 (backdrop-filter 제약 탈출) */
+    '<div class="ez-mob-menu" id="ez-mob-menu" aria-hidden="true">' +
+      mobileItems +
+    '</div>';
 
   document.write(html);
 
