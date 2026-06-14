@@ -307,9 +307,24 @@
   opacity: 0.85;
 }
 .ca-ctrl-btn:hover { background: var(--ez-card2); color: var(--ez-text); opacity: 1; }
+
+/* ── 전체 창 버튼 — 파란색으로 존재감 강조 ─────────────── */
+#cctrl-fs {
+  color: var(--ez-blue);
+  border-color: var(--ez-blue);
+  opacity: 1;               /* 다른 버튼(0.85)보다 선명하게 */
+  width: 34px;
+  height: 34px;
+}
+#cctrl-fs:hover {
+  background: var(--ez-blue);
+  color: #fff;
+  border-color: var(--ez-blue);
+}
 @media (max-width: 768px) {
   .ca-ctrl-btn { width: 38px; height: 38px; font-size: 17px; }
   .ca-chart-ctrl-bar { gap: 6px; bottom: 80px; }
+  #cctrl-fs { width: 44px; height: 44px; }
 }
 
 /* ── 전체 창 모드 (iOS 포함 모바일 호환) ────────────────── */
@@ -318,10 +333,11 @@
   top: 0;
   left: 0;
   width: 100vw;
+  height: 100vh;         /* 세로도 뷰포트 100% 채움 */
+  height: 100dvh;        /* iOS Safari 주소창 숨김·표시 대응 (dynamic viewport) */
   z-index: 9999;
   background: var(--ez-bg, #000);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;      /* 차트가 높이를 딱 채우므로 스크롤 불필요 */
 }
 
 /* ── 시간축 토글 (일봉/주봉) ─────────────────────────────── */
@@ -1434,11 +1450,14 @@ function initCharts(ohlcv, ind, analysis) {
     if (existCtrl) existCtrl.remove();
     const ctrlBar = document.createElement('div');
     ctrlBar.className = 'ca-chart-ctrl-bar';
+    // ── 아이콘: Material Design Fullscreen / Fullscreen Exit SVG ──────
+    const _EXPAND_SVG   = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:block"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>`;
+    const _COMPRESS_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:block"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>`;
     ctrlBar.innerHTML = `
       <button class="ca-ctrl-btn" title="확대" id="cctrl-in">+</button>
       <button class="ca-ctrl-btn" title="축소" id="cctrl-out">−</button>
       <button class="ca-ctrl-btn" title="전체 보기" id="cctrl-fit">↺</button>
-      <button class="ca-ctrl-btn" title="전체 창" id="cctrl-fs">⤢</button>
+      <button class="ca-ctrl-btn" title="전체 창 보기" id="cctrl-fs">${_EXPAND_SVG}</button>
     `;
     mainWrap.appendChild(ctrlBar);
 
@@ -1464,12 +1483,17 @@ function initCharts(ohlcv, ind, analysis) {
       const entering = !chartsEl.classList.contains('ca-fullscreen');
       if (entering) {
         chartsEl.classList.add('ca-fullscreen');
-        const vh = window.innerHeight;
-        mainChart.applyOptions({ height: Math.round(vh * 0.58) });
-        rsiChart .applyOptions({ height: Math.round(vh * 0.17) });
-        macdChart.applyOptions({ height: Math.round(vh * 0.17) });
+        const vh     = window.innerHeight;
+        // tf-bar(일봉/주봉 토글)의 실제 높이를 빼고 남은 공간을 차트로 채움
+        const tfBar  = chartsEl.querySelector('.ca-tf-bar');
+        const tfBarH = tfBar ? tfBar.offsetHeight : 44;
+        const avail  = vh - tfBarH;
+        // 주가창 62%(≈ 전체 뷰포트의 60%+), RSI 19%, MACD 19% — 합이 100%
+        mainChart.applyOptions({ height: Math.round(avail * 0.62) });
+        rsiChart .applyOptions({ height: Math.round(avail * 0.19) });
+        macdChart.applyOptions({ height: Math.round(avail * 0.19) });
         document.body.style.overflow = 'hidden';
-        fsBtn.textContent = '✕';
+        fsBtn.innerHTML = _COMPRESS_SVG;
         fsBtn.title = '닫기';
         chartsEl.scrollTop = 0;
       } else {
@@ -1478,8 +1502,8 @@ function initCharts(ohlcv, ind, analysis) {
         rsiChart .applyOptions({ height: 140 });
         macdChart.applyOptions({ height: 140 });
         document.body.style.overflow = '';
-        fsBtn.textContent = '⤢';
-        fsBtn.title = '전체 창';
+        fsBtn.innerHTML = _EXPAND_SVG;
+        fsBtn.title = '전체 창 보기';
       }
       setTimeout(() => {
         mainChart.timeScale().fitContent();
