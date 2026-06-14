@@ -49,6 +49,55 @@ git tag -f "stable-$(date +%Y%m%d)" && git push origin --tags
 - `git add -A` → 의도치 않은 파일 포함
 - pull 없이 `firebase deploy` → 구버전이 운영 서버 덮어씀
 
+### 7. firebase deploy 누락 — 2026-06-14 교훈
+
+**배경:** git push 후 `firebase deploy`를 실행하지 않아 라이브 서버에 구버전이 수 시간 동안 서빙됨.
+유저는 캐시 문제로 오해해 몇 시간을 낭비함. Claude는 "캐시 삭제"를 반복 권유했는데 이것이 완전히 틀린 진단이었음.
+
+**규칙:**
+- git push 완료 후 반드시 `firebase deploy --only hosting` 실행을 안내한다.
+- 라이브 반영 여부가 의심될 때 **가장 먼저** 확인할 것: `https://ezlong.com/ez-nav.js` 와 `https://ezlong-541a8.web.app/ez-nav.js` **둘 다** fetch해서 버전 비교.
+- GitHub Actions 자동 배포는 이 프로젝트에서 신뢰하지 않는다. 항상 수동 `firebase deploy` 필수.
+
+**버전 불일치 진단 트리 (반드시 이 순서로 확인):**
+
+| 상황 | 원인 | 해결 |
+|------|------|------|
+| ezlong-541a8.web.app = 구버전 | firebase deploy 미실행 | `firebase deploy --only hosting` |
+| ezlong-541a8.web.app = 신버전, ezlong.com = 구버전 | Cloudflare 등 CDN 캐시 | Cloudflare 대시보드에서 캐시 Purge |
+| 둘 다 신버전인데 브라우저만 구버전 | 브라우저 캐시 | 강력새로고침 (이때만 캐시삭제 권유) |
+
+**"캐시 삭제하라" 권유는 위 트리에서 마지막 단계에서만. 절대 첫 번째 대응으로 하지 말 것.**
+
+---
+
+## 라이트모드 가독성 — 절대 금지 목록 (2026-06-14 명문화)
+
+> 100회 이상 같은 지적을 받았다. 아래 항목은 코드 작성 후 즉시 셀프 체크한다.
+
+**금지 1 — 폰트 크기**
+HTML DOM 텍스트에 14px 미만 절대 금지. `font-size: 11px / 12px / 13px` 발견 즉시 14px로 올린다.
+(예외: TradingView·Chart.js 등 라이브러리가 캔버스에 직접 렌더하는 텍스트만 허용)
+
+**금지 2 — ez-hint 텍스트 사용**
+`var(--ez-hint)` = 라이트모드에서 #B7B7B7 (대비비 1.6:1). DOM 텍스트 색으로 절대 금지.
+대신 `var(--ez-text2)`(#3C3C3E, 대비비 7.5:1) 사용.
+
+**금지 3 — 노랑/앰버 라이트모드 텍스트**
+`#FFD60A`, `var(--ez-amber)(=#FF9F0A)` → 라이트모드 흰 배경에서 대비 불가.
+반드시 `IS_DARK ? '#FFD60A' : '#B87900'` 형태로 분기.
+risknote 텍스트는 `#92400E` 고정.
+
+**금지 4 — alpha 배지 배경 + 동일 계열 텍스트**
+`background:${color}20; color:${color}` 패턴 절대 금지.
+배지는 `background:${color}; color:#fff` (solid 배경 + 흰 글자) 사용.
+
+**금지 5 — 회색 배경 위 text3 / 얇은 폰트**
+card2 등 회색 배경에 `--ez-text3` 텍스트 금지 → `--ez-text2` 사용.
+`font-weight: 300` 금지. 최소 400(시스템 기본).
+
+상세 규칙·코드 예시 → **EZLONG_GUIDE.md 섹션 6 "라이트모드 가독성 절대 규칙"** 참조.
+
 ---
 
 ## 글로벌 헤더·푸터 — 핵심 규칙
