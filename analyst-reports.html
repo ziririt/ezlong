@@ -304,8 +304,8 @@ function renderDetail(snap,views){
   const t=snap.companies?.ticker||'',co=snap.companies?.company_name||'',sec=snap.companies?.sector_theme||'';
   const tier1=TIER1.has(t),up=fmtUp(snap.upside_pct),ac=snap.analyst_count||0;
   const buyM=snap.consensus_rating?.match(/Buy\s+(\d+)%/),holdM=snap.consensus_rating?.match(/Hold\s+(\d+)%/),sellM=snap.consensus_rating?.match(/Sell\s+(\d+)%/);
-  const buyP=buyM?+buyM[1]:tier1?65:70,holdP=holdM?+holdM[1]:25,sellP=sellM?+sellM[1]:Math.max(0,100-buyP-holdP);
-  const buyN=Math.round(ac*buyP/100),holdN=Math.round(ac*holdP/100),sellN=ac-buyN-holdN;
+  let buyP=buyM?+buyM[1]:tier1?65:70,holdP=holdM?+holdM[1]:25,sellP=sellM?+sellM[1]:Math.max(0,100-buyP-holdP);
+  let buyN=Math.round(ac*buyP/100),holdN=Math.round(ac*holdP/100),sellN=ac-buyN-holdN;
   const low=+snap.pt_low||0,high=+snap.pt_high||0,mean=+snap.pt_mean||0,range=high-low||1;
   const meanPct=Math.max(2,Math.min(98,((mean-low)/range)*100));
   const mdHtml=snap.report_markdown?marked.parse(cleanMd(snap.report_markdown)):'';
@@ -314,6 +314,7 @@ function renderDetail(snap,views){
   const synthViews=views.filter(v=>v.house==='Synthetic');
   const displayViews=realViews.length>0?realViews:synthViews;
   const isFallbackSynth=realViews.length===0&&synthViews.length>0;
+  if(realViews.length>0){buyN=realViews.filter(v=>(v.stance_bucket||'').toLowerCase()==='bull').length;holdN=realViews.filter(v=>(v.stance_bucket||'').toLowerCase()==='neutral').length;sellN=realViews.filter(v=>(v.stance_bucket||'').toLowerCase()==='bear').length;const tot=buyN+holdN+sellN;if(tot>0){buyP=Math.round(buyN/tot*100);holdP=Math.round(holdN/tot*100);sellP=Math.round(sellN/tot*100);}}
   const sortedViews=[...displayViews].sort((a,b)=>{const aH=a.target_price!=null,bH=b.target_price!=null;if(aH&&bH)return b.target_price-a.target_price;if(aH)return-1;if(bH)return 1;return rrRank(a.rating)-rrRank(b.rating);});
   const avHtml=sortedViews.length===0?'<div class="av-empty-state">애널리스트 뷰 데이터가 없습니다.</div>':`${isFallbackSynth?'<div class="av-synthetic-note">애널리스트 뷰 데이터가 없어서 시나리오 기반 합성 뷰를 보여드립니다.</div>':''}<div class="av-grid">${sortedViews.map(v=>{const sb=(v.stance_bucket||'neutral').toLowerCase();return`<div class="av-card ${sb}"><div class="av-header-row"><div class="av-price-col"><div class="av-rating-tag">${v.rating}</div><div class="av-tp-big">${fmtPt(v.target_price)}</div><div><span class="av-stance-badge ${sb}">${sb==='bull'?'강세':sb==='bear'?'약세':'중립'}</span></div></div><div class="av-name-col"><div class="av-name">${v.analyst_name}</div><div class="av-house">${v.house}</div><div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;"><span class="av-date-small">${v.reference_date||''}</span>${v.snapshot_id===snap.id?'<span class="av-new-badge">NEW</span>':''}</div></div></div><div class="av-thesis">${v.thesis||'—'}</div></div>`}).join('')}</div>`;
   const rs=getRatingStyle(snap.consensus_rating),rLabel=snap.consensus_rating?.split('(')[0].trim()||'—';
