@@ -951,7 +951,18 @@ function updateSidebarTicker(safe, data) {
     chgEl.textContent   = pct != null ? (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%' : '';
     chgEl.className     = 'ca-ticker-chg ' + (pct >= 0 ? 'up' : 'down');
   }
-  if (act && ACTION_DOTS[act]) {
+  // strength(1~5) 기반 5단계 컬러 (없으면 action 기반 폴백)
+  const str = data?.analysis?.strength;
+  if (str != null && str >= 1) {
+    const STRENGTH_COLORS = {
+      5: '#30D158',  // 초강세 — 진초록
+      4: '#7ED321',  // 강세   — 연두
+      3: '#FFD60A',  // 중립   — 노랑
+      2: '#8E8E93',  // 약세   — 회색
+      1: '#FF453A',  // 하락   — 빨강
+    };
+    dotEl.style.background = STRENGTH_COLORS[str] ?? '#8E8E93';
+  } else if (act && ACTION_DOTS[act]) {
     dotEl.style.background = ACTION_DOTS[act];
   }
 }
