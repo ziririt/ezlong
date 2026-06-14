@@ -1,14 +1,14 @@
 /**
  * ez-nav.js — EZLONG 글로벌 네비게이션 공유 스크립트
- * 사용법: <script src="/ez-nav.js"></script>
+ * 사용법: <body> 직후 <script src="/ez-nav.js"></script>
  * - ez-design.css 가 먼저 로드되어 있어야 합니다.
  * - PC: 수평 스크롤 칩 메뉴
  * - 모바일: 현재 페이지 칩 탭 → 풀스크린 오버레이 전체 메뉴
  *
- * [2026-06-14 수정] ez-mob-menu를 document.body.appendChild()로 주입
- * 이유: <nav>에 backdrop-filter가 있으면 iOS Safari 등에서
- *       position:fixed 자식이 viewport가 아닌 부모 크기로 갇히는 버그 발생.
- *       body 직계 자식으로 주입하면 containing block 문제 원천 차단.
+ * [2026-06-14 v3] document.write 완전 제거 — DOM API 전용
+ * document.write + appendChild 혼용 시 HTML 파서가 </nav>를
+ * 처리하기 전에 appendChild가 실행되어 menu가 nav 안으로 삽입되는
+ * 파서 버그 확인. createElement + insertBefore 방식으로 교체.
  */
 (function () {
   /* [href, 짧은 이름(PC칩), 긴 이름(모바일 오버레이)] */
@@ -29,70 +29,67 @@
 
   var p = window.location.pathname;
   var activeShort = '메뉴';
-  var desktopLinks = '';
-  var mobileItems  = '';
+  var desktopLinksHTML = '';
+  var mobileItemsHTML  = '';
 
   for (var i = 0; i < links.length; i++) {
-    var href      = links[i][0];
-    var shortLbl  = links[i][1];
-    var fullLbl   = links[i][2];
-    var isActive  = (p === href) || (p === href.slice(1));
+    var href     = links[i][0];
+    var shortLbl = links[i][1];
+    var fullLbl  = links[i][2];
+    var active   = (p === href) || (p === href.slice(1));
 
-    if (isActive) activeShort = shortLbl;
+    if (active) activeShort = shortLbl;
 
-    desktopLinks +=
-      '<a href="' + href + '" class="ez-nav-svc-link' + (isActive ? ' active' : '') + '">' +
+    desktopLinksHTML +=
+      '<a href="' + href + '" class="ez-nav-svc-link' + (active ? ' active' : '') + '">' +
         shortLbl +
       '</a>';
 
-    mobileItems +=
-      '<a href="' + href + '" class="ez-mob-item' + (isActive ? ' active' : '') + '">' +
+    mobileItemsHTML +=
+      '<a href="' + href + '" class="ez-mob-item' + (active ? ' active' : '') + '">' +
         fullLbl +
       '</a>';
   }
 
-  /* ── 1. nav HTML만 document.write ── */
-  document.write(
-    '<nav class="ez-nav" id="ez-nav" aria-label="글로벌 네비게이션">' +
-      '<div class="ez-nav-inner">' +
-        '<a href="/" class="ez-nav-logo" aria-label="EZLONG 홈">' +
-          '<picture>' +
-            '<source srcset="/logo-darkmode.png" media="(prefers-color-scheme: dark)">' +
-            '<img src="/logo.png" alt="EZLONG">' +
-          '</picture>' +
-        '</a>' +
-        '<div class="ez-nav-svc-links">' + desktopLinks + '</div>' +
-        '<button class="ez-mob-toggle" id="ez-mob-toggle" ' +
-               'onclick="ezNavToggle()" aria-expanded="false" aria-haspopup="true">' +
-          '<span class="ez-mob-toggle-label">' + activeShort + '</span>' +
-          '<span class="ez-mob-toggle-arrow">&#9662;</span>' +
-        '</button>' +
-      '</div>' +
-    '</nav>'
-  );
+  /* ── 1. <nav> 생성 ── */
+  var nav = document.createElement('nav');
+  nav.className = 'ez-nav';
+  nav.id = 'ez-nav';
+  nav.setAttribute('aria-label', '글로벌 네비게이션');
+  nav.innerHTML =
+    '<div class="ez-nav-inner">' +
+      '<a href="/" class="ez-nav-logo" aria-label="EZLONG 홈">' +
+        '<picture>' +
+          '<source srcset="/logo-darkmode.png" media="(prefers-color-scheme: dark)">' +
+          '<img src="/logo.png" alt="EZLONG">' +
+        '</picture>' +
+      '</a>' +
+      '<div class="ez-nav-svc-links">' + desktopLinksHTML + '</div>' +
+      '<button class="ez-mob-toggle" id="ez-mob-toggle" ' +
+             'onclick="ezNavToggle()" aria-expanded="false" aria-haspopup="true">' +
+        '<span class="ez-mob-toggle-label">' + activeShort + '</span>' +
+        '<span class="ez-mob-toggle-arrow">&#9662;</span>' +
+      '</button>' +
+    '</div>';
 
-  /* ── 2. 모바일 오버레이 메뉴는 document.body에 직접 appendChild ──
-     backdrop-filter를 가진 <nav> 의 자식이 되지 않도록 body 직계로 주입.
-     position:fixed 가 항상 viewport 기준으로 동작하게 됨. */
-  function injectMobileMenu() {
-    if (document.getElementById('ez-mob-menu')) return;
-    var el = document.createElement('div');
-    el.className = 'ez-mob-menu';
-    el.id = 'ez-mob-menu';
-    el.setAttribute('aria-hidden', 'true');
-    el.innerHTML = mobileItems;
-    document.body.appendChild(el);
-  }
+  /* ── 2. <div class="ez-mob-menu"> 생성 — nav와 완전 분리 ── */
+  var mobMenu = document.createElement('div');
+  mobMenu.className = 'ez-mob-menu';
+  mobMenu.id = 'ez-mob-menu';
+  mobMenu.setAttribute('aria-hidden', 'true');
+  mobMenu.innerHTML = mobileItemsHTML;
 
-  /* ez-nav.js는 <body> 직후에 로드되므로 document.body는 이미 존재.
-     즉시 실행하되, 혹시 모를 타이밍 문제를 DOMContentLoaded로 보완. */
-  if (document.body) {
-    injectMobileMenu();
-  } else {
-    document.addEventListener('DOMContentLoaded', injectMobileMenu);
-  }
+  /* ── 3. 현재 스크립트 태그 바로 앞에 nav, 그 다음 mobMenu 삽입 ──
+     document.write 없이 현재 스크립트 위치(currentScript)를
+     기준점으로 삼아 insertBefore로 정확한 위치에 배치. */
+  var scriptEl = document.currentScript;
+  var parent   = scriptEl ? scriptEl.parentNode : document.body;
+  var ref      = scriptEl ? scriptEl.nextSibling : null;
 
-  /* ── 3. 토글 함수 — 전역 등록 ── */
+  parent.insertBefore(nav, ref);
+  parent.insertBefore(mobMenu, ref);  /* nav 다음에, 페이지 본문보다 앞에 */
+
+  /* ── 4. 토글 함수 — 전역 등록 ── */
   window.ezNavToggle = function () {
     var menu = document.getElementById('ez-mob-menu');
     var btn  = document.getElementById('ez-mob-toggle');
