@@ -99,12 +99,12 @@
 }
 
 .ca-ticker-info { flex: 1; min-width: 0; }
-.ca-ticker-sym  { font-size: 13px; font-weight: 700; color: var(--ez-text); }
-.ca-ticker-name { font-size: 13px; color: var(--ez-text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ca-ticker-sym  { font-size: 14px; font-weight: 700; color: var(--ez-text); }
+.ca-ticker-name { font-size: 14px; color: var(--ez-text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .ca-ticker-right { text-align: right; flex-shrink: 0; }
-.ca-ticker-price { font-size: 13px; font-weight: 600; color: var(--ez-text); font-family: var(--ez-mono); }
-.ca-ticker-chg   { font-size: 13px; font-family: var(--ez-mono); }
+.ca-ticker-price { font-size: 14px; font-weight: 600; color: var(--ez-text); font-family: var(--ez-mono); }
+.ca-ticker-chg   { font-size: 14px; font-family: var(--ez-mono); }
 .ca-ticker-chg.up   { color: var(--ez-green); }
 .ca-ticker-chg.down { color: var(--ez-red); }
 
@@ -124,7 +124,7 @@
   justify-content: center;
   height: 100%;
   gap: 12px;
-  color: var(--ez-text3);
+  color: var(--ez-text2);
   padding: 40px;
 }
 #empty-state .es-icon {
@@ -147,7 +147,7 @@
 }
 .ca-ph-left { flex: 1; min-width: 0; }
 .ca-ph-sym  { font-size: 22px; font-weight: 900; color: var(--ez-text); letter-spacing: -0.02em; }
-.ca-ph-name { font-size: 13px; color: var(--ez-text3); margin-top: 2px; }
+.ca-ph-name { font-size: 14px; color: var(--ez-text2); margin-top: 2px; }
 .ca-ph-price-row {
   display: flex;
   align-items: baseline;
@@ -160,7 +160,7 @@
 .ca-ph-change.up   { color: var(--ez-green); }
 .ca-ph-change.down { color: var(--ez-red); }
 .ca-ph-state {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   padding: 2px 7px;
   border-radius: 100px;
@@ -197,7 +197,7 @@
   border-radius: 3px;
   background: linear-gradient(90deg, var(--ez-red), var(--ez-amber), var(--ez-green));
 }
-.ca-ph-52-labels { display: flex; justify-content: space-between; font-size: 13px; color: var(--ez-text2); font-family: var(--ez-mono); width: 140px; margin-left: auto; }
+.ca-ph-52-labels { display: flex; justify-content: space-between; font-size: 14px; color: var(--ez-text2); font-family: var(--ez-mono); width: 140px; margin-left: auto; }
 
 /* ── 차트/분석 탭 ────────────────────────────────────────── */
 .ca-tabs {
@@ -243,7 +243,7 @@
   border: 1px solid var(--ez-border2);
   background: transparent;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--ez-text2);
   transition: all 0.15s;
@@ -264,7 +264,7 @@
   position: absolute;
   top: 8px;
   left: 12px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--ez-text2);
   z-index: 10;
@@ -333,7 +333,7 @@
   border-bottom: 1px solid var(--ez-border);
   align-items: center;
 }
-.ca-tf-label { font-size: 13px; font-weight: 700; color: var(--ez-text2); margin-right: 4px; }
+.ca-tf-label { font-size: 14px; font-weight: 700; color: var(--ez-text2); margin-right: 4px; }
 .ca-tf-btn {
   padding: 3px 12px;
   border-radius: 100px;
@@ -369,7 +369,7 @@
   gap: 5px;
   padding: 5px 12px;
   border-radius: 100px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   border: 1px solid transparent;
 }
@@ -389,9 +389,9 @@
   border-radius: var(--ez-rs);
   padding: 10px 12px;
 }
-.ca-ind-cell-label { font-size: 13px; color: var(--ez-text); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+.ca-ind-cell-label { font-size: 14px; color: var(--ez-text2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
 .ca-ind-cell-val   { font-size: 14px; font-weight: 700; color: var(--ez-text); }
-.ca-ind-cell-sub   { font-size: 13px; color: var(--ez-text); margin-top: 2px; font-family: var(--ez-mono); }
+.ca-ind-cell-sub   { font-size: 14px; color: var(--ez-text2); margin-top: 2px; font-family: var(--ez-mono); }
 
 .ca-narrative {
   font-size: 14px;
@@ -405,7 +405,7 @@
 }
 
 .ca-keypoints { margin-bottom: 14px; }
-.ca-keypoints-title { font-size: 13px; font-weight: 700; color: var(--ez-text2); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+.ca-keypoints-title { font-size: 14px; font-weight: 700; color: var(--ez-text); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
 .ca-kp-item {
   display: flex;
   gap: 8px;
@@ -422,12 +422,20 @@
   gap: 8px;
   align-items: flex-start;
   font-size: 14px;
-  color: var(--ez-amber);
-  background: rgba(180,83,9,0.07);
-  border: 1px solid rgba(180,83,9,0.2);
+  font-weight: 600;
+  color: #92400E;
+  background: rgba(180,83,9,0.08);
+  border: 1px solid rgba(180,83,9,0.25);
   border-radius: var(--ez-rs);
   padding: 10px 14px;
   line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  .ca-risknote {
+    color: var(--ez-amber);
+    background: rgba(255,214,10,0.07);
+    border-color: rgba(255,214,10,0.2);
+  }
 }
 
 /* ── 매수 매력도 스코어 ───────────────────────────────────── */
@@ -440,7 +448,7 @@
   background: var(--ez-card2);
   border-radius: var(--ez-rs);
 }
-.ca-buy-score-label { font-size: 13px; font-weight: 700; color: var(--ez-text); text-transform: uppercase; letter-spacing: 0.04em; flex-shrink: 0; }
+.ca-buy-score-label { font-size: 14px; font-weight: 700; color: var(--ez-text); text-transform: uppercase; letter-spacing: 0.04em; flex-shrink: 0; }
 .ca-buy-score-bar {
   flex: 1;
   height: 8px;
@@ -483,7 +491,7 @@
   border-radius: var(--ez-rs);
   text-align: center;
 }
-.ca-target-cell-label { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.ca-target-cell-label { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
 .ca-target-cell-val   { font-size: 15px; font-weight: 800; font-family: var(--ez-mono); }
 
 /* ── 패턴 노트 ───────────────────────────────────────────── */
@@ -500,8 +508,8 @@
 
 /* ── 업데이트 시각 ────────────────────────────────────────── */
 .ca-updated {
-  font-size: 13px;
-  color: var(--ez-text3);
+  font-size: 14px;
+  color: var(--ez-text2);
   padding: 10px 20px;
   background: var(--ez-surface);
   border-top: 1px solid var(--ez-border);
@@ -554,14 +562,14 @@
   gap: 3px;
   padding: 2px 8px;
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   border: 1px solid currentColor;
   flex-shrink: 0;
 }
 .ca-market-bar-link {
   margin-left: auto;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--ez-blue);
   text-decoration: none;
@@ -688,7 +696,7 @@
 <!-- ── 시장 컨텍스트 배너 ────────────────────────────────── -->
 <div class="ca-market-bar" id="market-context-bar">
   <span class="ca-market-bar-label">시장 컨텍스트</span>
-  <span style="color:var(--ez-hint);font-size:11px;">불러오는 중…</span>
+  <span style="color:var(--ez-text2);font-size:14px;">불러오는 중…</span>
 </div>
 
 <!-- ── 메인 레이아웃 ──────────────────────────────────────── -->
@@ -703,7 +711,7 @@
       <button class="ca-grp-btn" data-grp="crypto">크립토</button>
     </div>
     <div class="ca-ticker-list" id="ticker-list">
-      <div style="padding:20px; text-align:center; color:var(--ez-hint); font-size:13px;">
+      <div style="padding:20px; text-align:center; color:var(--ez-text2); font-size:14px;">
         데이터 불러오는 중…
       </div>
     </div>
@@ -734,14 +742,14 @@ const IS_DARK   = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const ACTION_COLORS = {
   '적극매수': { bg: 'rgba(26,127,55,0.12)',    text: 'var(--ez-green)',  border: 'rgba(26,127,55,0.3)' },
   '분할매수': { bg: 'rgba(0,113,227,0.10)',    text: 'var(--ez-blue)',   border: 'rgba(0,113,227,0.25)' },
-  '관망':     { bg: 'rgba(110,110,115,0.10)', text: 'var(--ez-text3)',  border: 'rgba(110,110,115,0.2)' },
-  '분할매도': { bg: 'rgba(180,83,9,0.10)',     text: 'var(--ez-amber)',  border: 'rgba(180,83,9,0.25)' },
+  '관망':     { bg: 'rgba(110,110,115,0.10)', text: IS_DARK ? 'var(--ez-text3)' : 'var(--ez-text2)',  border: 'rgba(110,110,115,0.2)' },
+  '분할매도': { bg: 'rgba(180,83,9,0.10)',     text: IS_DARK ? 'var(--ez-amber)' : '#92400E',  border: 'rgba(180,83,9,0.25)' },
   '적극매도': { bg: 'rgba(217,42,42,0.12)',    text: 'var(--ez-red)',    border: 'rgba(217,42,42,0.3)' },
 };
 const TREND_COLORS = {
   '강세': IS_DARK ? '#30D158' : '#1A7F37',
   '약세': IS_DARK ? '#FF453A' : '#D92A2A',
-  '횡보': 'var(--ez-text3)',
+  '횡보': IS_DARK ? '#8E8E93' : '#3C3C3E',
 };
 const STAGE_COLORS = {
   '상승추세': IS_DARK ? '#30D158' : '#1A7F37',
@@ -751,7 +759,7 @@ const STAGE_COLORS = {
 };
 const RSI_COLORS = {
   '과매수': IS_DARK ? '#FF453A' : '#D92A2A',
-  '중립':   'var(--ez-text3)',
+  '중립':   IS_DARK ? '#8E8E93' : '#3C3C3E',
   '과매도': IS_DARK ? '#30D158' : '#1A7F37',
 };
 const ACTION_DOTS = {
@@ -835,25 +843,26 @@ async function renderMarketContextBar() {
     const price   = qqq.price  ?? null;
 
     // Gear 칩
-    const gearColor = gear === 3 ? '#30D158' : gear === 2 ? '#FFD60A' : '#FF453A';
+    const gearColor = gear === 3 ? (IS_DARK ? '#30D158' : '#1A7F37') : gear === 2 ? (IS_DARK ? '#FFD60A' : '#B87900') : (IS_DARK ? '#FF453A' : '#D92A2A');
     const gearLabel = gear === 3 ? '상승 추세' : gear === 2 ? '횡보 구간' : '하락 추세';
     const gearChip  = `<span class="ca-market-chip" style="color:${gearColor};border-color:${gearColor};">Gear${gear} ${gearLabel}</span>`;
 
     // 200일선 대비
     const devStr  = dev200 != null
-      ? `<span class="ca-market-chip" style="color:${dev200 >= 0 ? '#30D158' : '#FF453A'};border-color:${dev200 >= 0 ? '#30D158' : '#FF453A'};">200일선 ${dev200 >= 0 ? '+' : ''}${dev200.toFixed(1)}%</span>`
+      ? `<span class="ca-market-chip" style="color:${dev200 >= 0 ? (IS_DARK?'#30D158':'#1A7F37') : (IS_DARK?'#FF453A':'#D92A2A')};border-color:${dev200 >= 0 ? (IS_DARK?'#30D158':'#1A7F37') : (IS_DARK?'#FF453A':'#D92A2A')};">200일선 ${dev200 >= 0 ? '+' : ''}${dev200.toFixed(1)}%</span>`
       : '';
 
     // RSI 칩
-    const rsiColor = rsi == null ? 'var(--ez-text3)'
-      : rsi >= 70 ? '#FF453A' : rsi <= 30 ? '#30D158' : 'var(--ez-text3)';
+    const neutralChipC = IS_DARK ? 'var(--ez-text2)' : '#3C3C3E';
+    const rsiColor = rsi == null ? neutralChipC
+      : rsi >= 70 ? (IS_DARK?'#FF453A':'#D92A2A') : rsi <= 30 ? (IS_DARK?'#30D158':'#1A7F37') : neutralChipC;
     const rsiChip  = rsi != null
       ? `<span class="ca-market-chip" style="color:${rsiColor};border-color:${rsiColor};">QQQ RSI ${rsi.toFixed(1)}</span>`
       : '';
 
     // VIX 칩
-    const vixColor = vix == null ? 'var(--ez-text3)'
-      : vix >= 30 ? '#FF453A' : vix >= 20 ? '#FFD60A' : vix <= 15 ? '#30D158' : 'var(--ez-text3)';
+    const vixColor = vix == null ? neutralChipC
+      : vix >= 30 ? (IS_DARK?'#FF453A':'#D92A2A') : vix >= 20 ? (IS_DARK?'#FFD60A':'#B87900') : vix <= 15 ? (IS_DARK?'#30D158':'#1A7F37') : neutralChipC;
     const vixChip  = vix != null
       ? `<span class="ca-market-chip" style="color:${vixColor};border-color:${vixColor};">VIX ${vix.toFixed(1)}</span>`
       : '';
@@ -900,7 +909,7 @@ function renderSidebar(group) {
     : entries.filter(([, v]) => getGroupKey(v.type, v.market) === group);
 
   if (filtered.length === 0) {
-    list.innerHTML = `<div style="padding:24px;text-align:center;color:var(--ez-hint);font-size:13px;">데이터 없음<br><small>워크플로 실행 후 갱신됩니다</small></div>`;
+    list.innerHTML = `<div style="padding:24px;text-align:center;color:var(--ez-text2);font-size:14px;">데이터 없음<br><small style="font-size:14px;">워크플로 실행 후 갱신됩니다</small></div>`;
     return;
   }
 
@@ -910,7 +919,7 @@ function renderSidebar(group) {
     const grpKey = getGroupKey(meta.type, meta.market);
     return `<div class="ca-ticker-item${sym === currentSymbol ? ' active' : ''}"
                  data-sym="${sym}" data-safe="${safe}" data-grp="${grpKey}">
-      <div class="ca-ticker-dot" id="dot-${safe}" style="background:var(--ez-hint)"></div>
+      <div class="ca-ticker-dot" id="dot-${safe}" style="background:var(--ez-border2)"></div>
       <div class="ca-ticker-info">
         <div class="ca-ticker-sym">${sym}</div>
         <div class="ca-ticker-name">${meta.name}</div>
@@ -955,11 +964,11 @@ function updateSidebarTicker(safe, data) {
   const str = data?.analysis?.strength;
   if (str != null && str >= 1) {
     const STRENGTH_COLORS = {
-      5: '#30D158',  // 초강세 — 진초록
-      4: '#7ED321',  // 강세   — 연두
-      3: '#FFD60A',  // 중립   — 노랑
-      2: '#8E8E93',  // 약세   — 회색
-      1: '#FF453A',  // 하락   — 빨강
+      5: IS_DARK ? '#30D158' : '#1A7F37',  // 초강세 — 진초록
+      4: IS_DARK ? '#7ED321' : '#4B7A00',  // 강세   — 연두/짙은녹
+      3: IS_DARK ? '#FFD60A' : '#B87900',  // 중립   — 노랑/황갈
+      2: IS_DARK ? '#8E8E93' : '#6E6E73',  // 약세   — 회색
+      1: IS_DARK ? '#FF453A' : '#D92A2A',  // 하락   — 빨강
     };
     dotEl.style.background = STRENGTH_COLORS[str] ?? '#8E8E93';
   } else if (act && ACTION_DOTS[act]) {
@@ -1005,9 +1014,9 @@ async function selectTicker(symbol, safe) {
   } catch(e) {
     cv.innerHTML = `<div class="ca-loading">
       <div style="font-size:32px;opacity:.4">⚠</div>
-      <div style="font-weight:700;color:var(--ez-text2)">데이터를 불러올 수 없습니다</div>
-      <div style="font-size:12px;color:var(--ez-hint)">${e.message}</div>
-      <div style="font-size:12px;color:var(--ez-text3);margin-top:4px">워크플로 실행 후 데이터가 생성됩니다.</div>
+      <div style="font-weight:700;color:var(--ez-text)">데이터를 불러올 수 없습니다</div>
+      <div style="font-size:14px;color:var(--ez-text2)">${e.message}</div>
+      <div style="font-size:14px;color:var(--ez-text2);margin-top:4px">워크플로 실행 후 데이터가 생성됩니다.</div>
     </div>`;
   }
 }
@@ -1024,7 +1033,7 @@ function renderChartView(container, analysis, ohlcvData, ohlcvWeekly) {
 
     <!-- 2순위: 차트 섹션 제목 -->
     <div style="padding:12px 20px 0; background:var(--ez-surface); border-top:1px solid var(--ez-border);">
-      <div style="font-size:12px; font-weight:700; color:var(--ez-text3); text-transform:uppercase; letter-spacing:0.05em;">기술적 차트</div>
+      <div style="font-size:14px; font-weight:700; color:var(--ez-text2); text-transform:uppercase; letter-spacing:0.05em;">기술적 차트</div>
     </div>
 
     <!-- 3순위: 차트 컨트롤 + 차트 -->
@@ -1143,8 +1152,8 @@ function renderAnalysisPanel(analysis, currency) {
   if (!ai) return '';
 
   const actionC = ACTION_COLORS[ai.action] || ACTION_COLORS['관망'];
-  const trendC  = TREND_COLORS[ai.trend]  || 'var(--ez-text3)';
-  const stageC  = STAGE_COLORS[ai.stage]  || 'var(--ez-text3)';
+  const trendC  = TREND_COLORS[ai.trend]  || 'var(--ez-text2)';
+  const stageC  = STAGE_COLORS[ai.stage]  || 'var(--ez-text2)';
   const TREND_BG = { '강세':'rgba(26,127,55,0.12)', '약세':'rgba(217,42,42,0.12)', '횡보':'rgba(110,110,115,0.10)' };
   const trendBg = TREND_BG[ai.trend] || 'rgba(110,110,115,0.10)';
 
@@ -1176,10 +1185,10 @@ function renderAnalysisPanel(analysis, currency) {
 
   // 매수 매력도 스코어 색상
   const scoreVal = ai.buyScore;
-  const scoreColor = scoreVal == null ? 'var(--ez-text3)'
+  const scoreColor = scoreVal == null ? 'var(--ez-text2)'
     : scoreVal >= 8 ? (IS_DARK ? '#30D158' : '#1A7F37')
     : scoreVal >= 6 ? (IS_DARK ? '#0A84FF' : '#0071E3')
-    : scoreVal >= 4 ? 'var(--ez-amber)'
+    : scoreVal >= 4 ? (IS_DARK ? '#FFD60A' : '#B87900')
     : (IS_DARK ? '#FF453A' : '#D92A2A');
 
   // scoreReason: AI가 생성한 값 우선, 없으면 기존 필드에서 자동 생성
@@ -1231,7 +1240,7 @@ function renderAnalysisPanel(analysis, currency) {
       <span class="ca-badge ca-badge-lg" style="background:${actionC.bg};color:${actionC.text};border-color:${actionC.border}">
         ${ai.action || '관망'}
       </span>
-      <span class="ca-badge" style="color:${stageC};background:${stageC}20;border-color:${stageC}40">
+      <span class="ca-badge" style="background:${stageC};color:#fff;border-color:${stageC}">
         ${ai.stage || '—'}
       </span>
     </div>
@@ -1242,7 +1251,7 @@ function renderAnalysisPanel(analysis, currency) {
       <div class="ca-buy-score-bar">
         <div class="ca-buy-score-fill" style="width:${scoreVal * 10}%;background:${scoreColor}"></div>
       </div>
-      <span class="ca-buy-score-num" style="color:${scoreColor}">${scoreVal}<span style="font-size:12px;font-weight:600;color:var(--ez-text3)">/10</span></span>
+      <span class="ca-buy-score-num" style="color:${scoreColor}">${scoreVal}<span style="font-size:14px;font-weight:600;color:var(--ez-text2)">/10</span></span>
     </div>
     ${scoreReason ? `<div class="ca-score-reason" style="color:${scoreColor}">${scoreReason}</div>` : ''}` : ''}
 
@@ -1269,7 +1278,7 @@ function getChartOptions(height) {
     height,
     layout: {
       background: { type: 'solid', color: IS_DARK ? '#1C1C1E' : '#FFFFFF' },
-      textColor:  IS_DARK ? '#8E8E93' : '#6E6E73',
+      textColor:  IS_DARK ? '#8E8E93' : '#3C3C3E',
       fontSize:   11,
     },
     grid: {
