@@ -139,12 +139,19 @@
     "safeSymbol": "QQQ",
     "lastUpdated": "2026-06-13T21:22:11.144Z"
   },
-  "SPY": {
-    "name": "S&P500 ETF (SPDR)",
-    "type": "etf",
+  "QLD": {
+    "name": "나스닥 100 2X ETF",
+    "type": "etf_leveraged",
     "market": "us",
-    "safeSymbol": "SPY",
-    "lastUpdated": "2026-06-13T21:22:11.144Z"
+    "safeSymbol": "QLD",
+    "lastUpdated": null
+  },
+  "TQQQ": {
+    "name": "나스닥 100 3X ETF",
+    "type": "etf_leveraged",
+    "market": "us",
+    "safeSymbol": "TQQQ",
+    "lastUpdated": null
   },
   "VOO": {
     "name": "S&P500 ETF (Vanguard)",
@@ -153,19 +160,26 @@
     "safeSymbol": "VOO",
     "lastUpdated": "2026-06-13T21:22:11.144Z"
   },
-  "IVV": {
-    "name": "S&P500 ETF (iShares)",
+  "SPY": {
+    "name": "S&P500 ETF (SPDR)",
     "type": "etf",
     "market": "us",
-    "safeSymbol": "IVV",
+    "safeSymbol": "SPY",
     "lastUpdated": "2026-06-13T21:22:11.144Z"
   },
-  "DIA": {
-    "name": "다우존스 ETF",
-    "type": "etf",
+  "SSO": {
+    "name": "S&P500 2X ETF",
+    "type": "etf_leveraged",
     "market": "us",
-    "safeSymbol": "DIA",
-    "lastUpdated": "2026-06-13T21:22:11.144Z"
+    "safeSymbol": "SSO",
+    "lastUpdated": null
+  },
+  "UPRO": {
+    "name": "S&P500 3X ETF",
+    "type": "etf_leveraged",
+    "market": "us",
+    "safeSymbol": "UPRO",
+    "lastUpdated": null
   },
   "SMH": {
     "name": "반도체 ETF (VanEck)",
@@ -181,18 +195,74 @@
     "safeSymbol": "SOXX",
     "lastUpdated": "2026-06-13T21:22:11.144Z"
   },
-  "XLF": {
-    "name": "금융 섹터 ETF",
+  "USD": {
+    "name": "달러 강세 ETF",
     "type": "etf",
     "market": "us",
-    "safeSymbol": "XLF",
+    "safeSymbol": "USD",
+    "lastUpdated": null
+  },
+  "SOXL": {
+    "name": "반도체 3X ETF",
+    "type": "etf_leveraged",
+    "market": "us",
+    "safeSymbol": "SOXL",
+    "lastUpdated": null
+  },
+  "SCHD": {
+    "name": "고배당 미국 주식 ETF",
+    "type": "etf",
+    "market": "us",
+    "safeSymbol": "SCHD",
     "lastUpdated": "2026-06-13T21:22:11.144Z"
+  },
+  "JEPI": {
+    "name": "커버드콜 월배당 ETF",
+    "type": "etf",
+    "market": "us",
+    "safeSymbol": "JEPI",
+    "lastUpdated": "2026-06-13T21:22:11.144Z"
+  },
+  "DIA": {
+    "name": "다우존스 ETF",
+    "type": "etf",
+    "market": "us",
+    "safeSymbol": "DIA",
+    "lastUpdated": "2026-06-13T21:22:11.144Z"
+  },
+  "IWM": {
+    "name": "러셀 2000 ETF",
+    "type": "etf",
+    "market": "us",
+    "safeSymbol": "IWM",
+    "lastUpdated": "2026-06-13T21:22:11.144Z"
+  },
+  "IVV": {
+    "name": "S&P500 ETF (iShares)",
+    "type": "etf",
+    "market": "us",
+    "safeSymbol": "IVV",
+    "lastUpdated": "2026-06-13T21:22:11.144Z"
+  },
+  "^VIX": {
+    "name": "VIX 변동성 지수",
+    "type": "etf",
+    "market": "us",
+    "safeSymbol": "_VIX",
+    "lastUpdated": null
   },
   "XLE": {
     "name": "에너지 섹터 ETF",
     "type": "etf",
     "market": "us",
     "safeSymbol": "XLE",
+    "lastUpdated": "2026-06-13T21:22:11.144Z"
+  },
+  "XLF": {
+    "name": "금융 섹터 ETF",
+    "type": "etf",
+    "market": "us",
+    "safeSymbol": "XLF",
     "lastUpdated": "2026-06-13T21:22:11.144Z"
   },
   "XLY": {
@@ -207,13 +277,6 @@
     "type": "etf",
     "market": "us",
     "safeSymbol": "XLK",
-    "lastUpdated": "2026-06-13T21:22:11.144Z"
-  },
-  "IWM": {
-    "name": "러셀 2000 ETF",
-    "type": "etf",
-    "market": "us",
-    "safeSymbol": "IWM",
     "lastUpdated": "2026-06-13T21:22:11.144Z"
   },
   "VT": {
@@ -235,41 +298,6 @@
     "type": "etf",
     "market": "us",
     "safeSymbol": "TLT",
-    "lastUpdated": "2026-06-13T21:22:11.144Z"
-  },
-  "IEF": {
-    "name": "미국 중기국채 ETF",
-    "type": "etf",
-    "market": "us",
-    "safeSymbol": "IEF",
-    "lastUpdated": "2026-06-13T21:22:11.144Z"
-  },
-  "HYG": {
-    "name": "하이일드 회사채 ETF",
-    "type": "etf",
-    "market": "us",
-    "safeSymbol": "HYG",
-    "lastUpdated": "2026-06-13T21:22:11.144Z"
-  },
-  "LQD": {
-    "name": "투자등급 회사채 ETF",
-    "type": "etf",
-    "market": "us",
-    "safeSymbol": "LQD",
-    "lastUpdated": "2026-06-13T21:22:11.144Z"
-  },
-  "SCHD": {
-    "name": "고배당 미국 주식 ETF",
-    "type": "etf",
-    "market": "us",
-    "safeSymbol": "SCHD",
-    "lastUpdated": "2026-06-13T21:22:11.144Z"
-  },
-  "JEPI": {
-    "name": "커버드콜 월배당 ETF",
-    "type": "etf",
-    "market": "us",
-    "safeSymbol": "JEPI",
     "lastUpdated": "2026-06-13T21:22:11.144Z"
   },
   "069500.KS": {

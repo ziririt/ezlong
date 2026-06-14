@@ -108,26 +108,37 @@ const TICKERS_US_STOCKS = [
 ];
 
 const TICKERS_US_ETFS = [
-  { symbol:'QQQ',  name:'나스닥 100 ETF',          type:'etf', context:'AI·빅테크 중심 나스닥 100 추종 ETF입니다.' },
-  { symbol:'SPY',  name:'S&P500 ETF (SPDR)',        type:'etf', context:'미국 대형주 500개를 담은 장기 분산 투자의 교과서입니다.' },
-  { symbol:'VOO',  name:'S&P500 ETF (Vanguard)',    type:'etf', context:'SPY와 동일한 S&P500 추종. 운용보수가 더 낮습니다.' },
-  { symbol:'IVV',  name:'S&P500 ETF (iShares)',     type:'etf', context:'SPY, VOO와 동일한 S&P500 추종. iShares 브랜드입니다.' },
-  { symbol:'DIA',  name:'다우존스 ETF',              type:'etf', context:'미국 다우존스 산업평균지수 30개 종목 추종 ETF입니다.' },
-  { symbol:'SMH',  name:'반도체 ETF (VanEck)',       type:'etf', context:'VanEck 반도체 ETF. NVDA, TSMC 등 글로벌 반도체 기업을 담습니다.' },
-  { symbol:'SOXX', name:'반도체 ETF (iShares)',      type:'etf', context:'iShares 반도체 ETF. 미국 반도체 섹터에 집중 투자합니다.' },
-  { symbol:'XLF',  name:'금융 섹터 ETF',             type:'etf', context:'S&P500 금융 섹터. 금리 방향성과 신용 사이클에 민감합니다.' },
-  { symbol:'XLE',  name:'에너지 섹터 ETF',           type:'etf', context:'S&P500 에너지 섹터. 유가와 높은 상관관계를 보입니다.' },
-  { symbol:'XLY',  name:'소비재 섹터 ETF',           type:'etf', context:'S&P500 경기소비재 섹터. 경기 사이클에 민감하게 반응합니다.' },
-  { symbol:'XLK',  name:'IT 섹터 ETF',              type:'etf', context:'S&P500 기술 섹터. AAPL, MSFT 비중이 높습니다.' },
-  { symbol:'IWM',  name:'러셀 2000 ETF',            type:'etf', context:'미국 소형주 2000개 추종. 경기민감도와 달러 강세에 취약합니다.' },
-  { symbol:'VT',   name:'전세계 주식 ETF',           type:'etf', context:'전 세계 주식시장을 포괄하는 Vanguard 글로벌 ETF입니다.' },
-  { symbol:'VTI',  name:'미국 전체 주식 ETF',        type:'etf', context:'미국 상장 전체 주식을 담는 Vanguard ETF입니다.' },
-  { symbol:'TLT',  name:'미국 장기국채 ETF',         type:'etf', context:'이 상품은 만기 20년 이상 미국 국채 ETF입니다. 가격과 금리가 역방향으로 움직이므로 연준 금리 방향성 컨텍스트를 반드시 포함하십시오.' },
-  { symbol:'IEF',  name:'미국 중기국채 ETF',         type:'etf', context:'이 상품은 만기 7~10년 미국 국채 ETF입니다. TLT보다 금리 민감도가 낮으며 안전자산 선호 흐름을 측정하는 지표로도 활용됩니다.' },
-  { symbol:'HYG',  name:'하이일드 회사채 ETF',        type:'etf', context:'이 상품은 미국 하이일드(투기등급) 회사채 ETF입니다. 신용 스프레드 확대 시 가격이 급락하며 리스크온/오프 심리를 반영합니다.' },
-  { symbol:'LQD',  name:'투자등급 회사채 ETF',        type:'etf', context:'이 상품은 미국 투자등급 회사채 ETF입니다. 국채 대비 스프레드와 금리 방향성을 함께 분석해야 합니다.' },
-  { symbol:'SCHD', name:'고배당 미국 주식 ETF',       type:'etf', context:'미국 우량 고배당주 ETF. 배당 성장성과 재무 건전성을 기준으로 종목을 선별합니다.' },
-  { symbol:'JEPI', name:'커버드콜 월배당 ETF',        type:'etf', context:'이 상품은 S&P500 기반 커버드콜 전략 월배당 ETF입니다. 상승장에서 주가 참여가 제한되므로 분석 초점을 배당 안정성과 변동성 수준에 맞추십시오.' },
+  // ── 나스닥 ────────────────────────────────────────────────────────────────
+  { symbol:'QQQ',  name:'나스닥 100 ETF',           type:'etf',           context:'AI·빅테크 중심 나스닥 100 추종 ETF입니다.' },
+  { symbol:'QLD',  name:'나스닥 100 2X ETF',         type:'etf_leveraged', context:'ProShares Ultra QQQ. 나스닥 100 일일 수익률의 2배를 추구합니다. 반드시 단기 트레이딩 관점에서만 분석하십시오.' },
+  { symbol:'TQQQ', name:'나스닥 100 3X ETF',         type:'etf_leveraged', context:'ProShares UltraPro QQQ. 나스닥 100 일일 수익률의 3배를 추구합니다. 변동성 끌림(volatility drag) 손실이 발생하므로 단기 트레이딩 전용입니다.' },
+  // ── S&P500 ───────────────────────────────────────────────────────────────
+  { symbol:'VOO',  name:'S&P500 ETF (Vanguard)',     type:'etf',           context:'SPY와 동일한 S&P500 추종. 운용보수가 더 낮습니다.' },
+  { symbol:'SPY',  name:'S&P500 ETF (SPDR)',         type:'etf',           context:'미국 대형주 500개를 담은 장기 분산 투자의 교과서입니다.' },
+  { symbol:'SSO',  name:'S&P500 2X ETF',             type:'etf_leveraged', context:'ProShares Ultra S&P500. S&P500 일일 수익률의 2배를 추구합니다. 반드시 단기 트레이딩 관점에서만 분석하십시오.' },
+  { symbol:'UPRO', name:'S&P500 3X ETF',             type:'etf_leveraged', context:'ProShares UltraPro S&P500. S&P500 일일 수익률의 3배를 추구합니다. 변동성 끌림(volatility drag) 손실이 발생하므로 단기 트레이딩 전용입니다.' },
+  // ── 반도체 ───────────────────────────────────────────────────────────────
+  { symbol:'SMH',  name:'반도체 ETF (VanEck)',        type:'etf',           context:'VanEck 반도체 ETF. NVDA, TSMC 등 글로벌 반도체 기업을 담습니다.' },
+  { symbol:'SOXX', name:'반도체 ETF (iShares)',       type:'etf',           context:'iShares 반도체 ETF. 미국 반도체 섹터에 집중 투자합니다.' },
+  { symbol:'USD',  name:'달러 강세 ETF',              type:'etf',           context:'달러 인덱스 추종 ETF입니다. 달러 강세/약세 흐름을 트래킹합니다.' },
+  { symbol:'SOXL', name:'반도체 3X ETF',              type:'etf_leveraged', context:'Direxion Daily Semiconductor Bull 3X. 필라델피아 반도체 지수의 3배를 추구합니다. 단기 트레이딩 전용입니다.' },
+  // ── 배당·인컴 ─────────────────────────────────────────────────────────────
+  { symbol:'SCHD', name:'고배당 미국 주식 ETF',        type:'etf',           context:'미국 우량 고배당주 ETF. 배당 성장성과 재무 건전성을 기준으로 종목을 선별합니다.' },
+  { symbol:'JEPI', name:'커버드콜 월배당 ETF',         type:'etf',           context:'이 상품은 S&P500 기반 커버드콜 전략 월배당 ETF입니다. 상승장에서 주가 참여가 제한되므로 분석 초점을 배당 안정성과 변동성 수준에 맞추십시오.' },
+  // ── 지수·광역 ─────────────────────────────────────────────────────────────
+  { symbol:'DIA',  name:'다우존스 ETF',               type:'etf',           context:'미국 다우존스 산업평균지수 30개 종목 추종 ETF입니다.' },
+  { symbol:'IWM',  name:'러셀 2000 ETF',             type:'etf',           context:'미국 소형주 2000개 추종. 경기민감도와 달러 강세에 취약합니다.' },
+  { symbol:'IVV',  name:'S&P500 ETF (iShares)',      type:'etf',           context:'SPY, VOO와 동일한 S&P500 추종. iShares 브랜드입니다.' },
+  { symbol:'^VIX', name:'VIX 변동성 지수',            type:'etf',           context:'CBOE 변동성 지수(공포 지수). S&P500 옵션 내재 변동성으로 시장 심리를 측정합니다. 지수이므로 직접 매매는 불가하나 기술적 분석으로 시장 국면 판단에 활용합니다.' },
+  // ── 섹터 ─────────────────────────────────────────────────────────────────
+  { symbol:'XLE',  name:'에너지 섹터 ETF',            type:'etf',           context:'S&P500 에너지 섹터. 유가와 높은 상관관계를 보입니다.' },
+  { symbol:'XLF',  name:'금융 섹터 ETF',              type:'etf',           context:'S&P500 금융 섹터. 금리 방향성과 신용 사이클에 민감합니다.' },
+  { symbol:'XLY',  name:'소비재 섹터 ETF',            type:'etf',           context:'S&P500 경기소비재 섹터. 경기 사이클에 민감하게 반응합니다.' },
+  { symbol:'XLK',  name:'IT 섹터 ETF',               type:'etf',           context:'S&P500 기술 섹터. AAPL, MSFT 비중이 높습니다.' },
+  // ── 글로벌·채권 ───────────────────────────────────────────────────────────
+  { symbol:'VT',   name:'전세계 주식 ETF',            type:'etf',           context:'전 세계 주식시장을 포괄하는 Vanguard 글로벌 ETF입니다.' },
+  { symbol:'VTI',  name:'미국 전체 주식 ETF',         type:'etf',           context:'미국 상장 전체 주식을 담는 Vanguard ETF입니다.' },
+  { symbol:'TLT',  name:'미국 장기국채 ETF',          type:'etf',           context:'이 상품은 만기 20년 이상 미국 국채 ETF입니다. 가격과 금리가 역방향으로 움직이므로 연준 금리 방향성 컨텍스트를 반드시 포함하십시오.' },
 ];
 
 const TICKERS_KR_ETFS = [
@@ -148,6 +159,16 @@ const TICKERS_CRYPTO = [
   { symbol:'XRP-USD', name:'리플',      type:'crypto', context:'국제 송금 특화 암호화폐. SEC 소송 결과와 금융기관 파트너십 동향이 핵심 이벤트입니다.' },
   { symbol:'DOGE-USD', name:'도지코인', type:'crypto', context:'밈코인으로 출발한 암호화폐. 일론 머스크의 SNS 언급과 소셜 미디어 심리에 가격이 강하게 반응합니다.' },
   { symbol:'ADA-USD', name:'카르다노',  type:'crypto', context:'학술적 접근 방식의 블록체인 플랫폼 암호화폐. 이더리움과 경쟁하는 레이어1 스마트컨트랙트 플랫폼입니다.' },
+];
+
+// ── 전역 표시 순서 (사이드바 정렬 기준) ──────────────────────────────────────
+// updateIndex()가 이 순서를 기준으로 chart-index.json을 항상 재정렬한다.
+const TICKER_ORDER = [
+  ...TICKERS_US_STOCKS.map(t => t.symbol),
+  ...TICKERS_US_ETFS.map(t => t.symbol),
+  ...TICKERS_KR_ETFS.map(t => t.symbol),
+  ...TICKERS_KR_STOCKS.map(t => t.symbol),
+  ...TICKERS_CRYPTO.map(t => t.symbol),
 ];
 
 // ── 실행 그룹 결정 ────────────────────────────────────────────────────────
@@ -871,6 +892,8 @@ function updateIndex(tickers, results) {
   } catch {}
 
   const now = new Date().toISOString();
+
+  // 현재 배치의 성공한 심볼 업데이트
   tickers.forEach((t, i) => {
     if (results[i]) {
       idx[t.symbol] = {
@@ -882,7 +905,19 @@ function updateIndex(tickers, results) {
       };
     }
   });
-  fs.writeFileSync(idxPath, JSON.stringify(idx, null, 2));
+
+  // TICKER_ORDER 기준으로 전체 인덱스 순서 재정렬
+  // → 사이드바 표시 순서가 항상 TICKER_ORDER를 따름
+  const ordered = {};
+  TICKER_ORDER.forEach(sym => {
+    if (idx[sym]) ordered[sym] = idx[sym];
+  });
+  // TICKER_ORDER에 없는 레거시 심볼은 마지막에 보존
+  Object.entries(idx).forEach(([sym, val]) => {
+    if (!ordered[sym]) ordered[sym] = val;
+  });
+
+  fs.writeFileSync(idxPath, JSON.stringify(ordered, null, 2));
 }
 
 // ── 메인 ─────────────────────────────────────────────────────────────────
