@@ -4,6 +4,11 @@
  * - ez-design.css 가 먼저 로드되어 있어야 합니다.
  * - PC: 수평 스크롤 칩 메뉴
  * - 모바일: 현재 페이지 칩 탭 → 풀스크린 오버레이 전체 메뉴
+ *
+ * [2026-06-14 수정] ez-mob-menu를 document.body.appendChild()로 주입
+ * 이유: <nav>에 backdrop-filter가 있으면 iOS Safari 등에서
+ *       position:fixed 자식이 viewport가 아닌 부모 크기로 갇히는 버그 발생.
+ *       body 직계 자식으로 주입하면 containing block 문제 원천 차단.
  */
 (function () {
   /* [href, 짧은 이름(PC칩), 긴 이름(모바일 오버레이)] */
@@ -46,38 +51,48 @@
       '</a>';
   }
 
-  /* ez-mob-menu를 <nav> 바깥(형제)에 배치
-     이유: <nav>에 backdrop-filter가 있으면 iOS Safari 등에서
-     position:fixed 자식이 viewport 기준이 아닌 부모 크기로 갇혀
-     오버레이가 nav 높이(~50px)로 클리핑되는 버그가 발생함 */
-  var html =
+  /* ── 1. nav HTML만 document.write ── */
+  document.write(
     '<nav class="ez-nav" id="ez-nav" aria-label="글로벌 네비게이션">' +
       '<div class="ez-nav-inner">' +
-        /* 로고 */
         '<a href="/" class="ez-nav-logo" aria-label="EZLONG 홈">' +
           '<picture>' +
-            '<source srcset="logo-darkmode.png" media="(prefers-color-scheme: dark)">' +
-            '<img src="logo.png" alt="EZLONG">' +
+            '<source srcset="/logo-darkmode.png" media="(prefers-color-scheme: dark)">' +
+            '<img src="/logo.png" alt="EZLONG">' +
           '</picture>' +
         '</a>' +
-        /* PC: 수평 칩 */
         '<div class="ez-nav-svc-links">' + desktopLinks + '</div>' +
-        /* 모바일: 현재 페이지 칩 (메뉴 토글) */
         '<button class="ez-mob-toggle" id="ez-mob-toggle" ' +
                'onclick="ezNavToggle()" aria-expanded="false" aria-haspopup="true">' +
           '<span class="ez-mob-toggle-label">' + activeShort + '</span>' +
           '<span class="ez-mob-toggle-arrow">&#9662;</span>' +
         '</button>' +
       '</div>' +
-    '</nav>' +
-    /* 모바일 오버레이 메뉴 — <nav> 형제 요소로 분리 (backdrop-filter 제약 탈출) */
-    '<div class="ez-mob-menu" id="ez-mob-menu" aria-hidden="true">' +
-      mobileItems +
-    '</div>';
+    '</nav>'
+  );
 
-  document.write(html);
+  /* ── 2. 모바일 오버레이 메뉴는 document.body에 직접 appendChild ──
+     backdrop-filter를 가진 <nav> 의 자식이 되지 않도록 body 직계로 주입.
+     position:fixed 가 항상 viewport 기준으로 동작하게 됨. */
+  function injectMobileMenu() {
+    if (document.getElementById('ez-mob-menu')) return;
+    var el = document.createElement('div');
+    el.className = 'ez-mob-menu';
+    el.id = 'ez-mob-menu';
+    el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = mobileItems;
+    document.body.appendChild(el);
+  }
 
-  /* 토글 함수 — 전역 등록 */
+  /* ez-nav.js는 <body> 직후에 로드되므로 document.body는 이미 존재.
+     즉시 실행하되, 혹시 모를 타이밍 문제를 DOMContentLoaded로 보완. */
+  if (document.body) {
+    injectMobileMenu();
+  } else {
+    document.addEventListener('DOMContentLoaded', injectMobileMenu);
+  }
+
+  /* ── 3. 토글 함수 — 전역 등록 ── */
   window.ezNavToggle = function () {
     var menu = document.getElementById('ez-mob-menu');
     var btn  = document.getElementById('ez-mob-toggle');
