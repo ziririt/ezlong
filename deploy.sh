@@ -30,6 +30,10 @@ else
   git commit -m "$MSG"
 fi
 
+# 2-b) pull 전에 남은 unstaged 변경사항 전부 정리
+# 원하는 파일은 위에서 이미 커밋됨. 잔여 변경사항은 버려도 안전.
+git checkout -- . 2>/dev/null || true
+
 # 3) 원격 동기화 (GitHub Actions 자동 커밋 통합)
 echo ">>> 원격 동기화 중..."
 git pull --rebase origin main
