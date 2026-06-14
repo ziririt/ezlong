@@ -1053,6 +1053,8 @@ li.gear-other-sep { display: none !important; }
 }
 .tv-chart-frame {
   height: 700px;
+  overflow: hidden;        /* TradingView 저작권 div 오버플로우 차단 → 차트 아래 흰 여백 제거 */
+  background: var(--card); /* 혹시 남는 틈이 있으면 카드 배경색으로 채움 (흰색 방지) */
 }
 .tv-chart-frame .tradingview-widget-container,
 .tv-chart-frame .tradingview-widget-container__widget {
