@@ -1222,7 +1222,12 @@ a { text-decoration: none; color: inherit; }
         <img src="logo.png" alt="EZLONG" class="nav-logo-img" />
       </picture>
     </a>
-    <p class="nav-tagline">쉽고 안전한 장기투자로<br>복리의 마법을</p>
+    <button class="ez-mob-toggle" id="ez-mob-toggle"
+            onclick="ezNavToggle()" aria-expanded="false" aria-haspopup="true"
+            style="display:flex;margin-left:auto;">
+      <span class="ez-mob-toggle-label">투자 AI 도구</span>
+      <span class="ez-mob-toggle-arrow">&#9662;</span>
+    </button>
   </div>
 </nav>
 
@@ -1760,6 +1765,38 @@ a { text-decoration: none; color: inherit; }
   const day = days[kst.getDay()];
   dateEl.textContent = `${y}년 ${m}월 ${d}일(${day})`;
 })();
+</script>
+
+<!-- ── 투자 AI 도구 오버레이 메뉴 ─────────────────── -->
+<div class="ez-mob-menu" id="ez-mob-menu" aria-hidden="true">
+  <a href="/atmr-dashboard.html"        class="ez-mob-item">스윙 트레이더를 위한 '스윙 시그널'</a>
+  <a href="/chart-analysis.html"        class="ez-mob-item">AI 차트 분석</a>
+  <a href="/analyst-reports.html"       class="ez-mob-item">월가 목표주가</a>
+  <a href="/market-cycle.html"          class="ez-mob-item">하락장 변곡점 감시</a>
+  <a href="/dca-simulator.html"         class="ez-mob-item">DCA 복리 시뮬레이터</a>
+  <a href="/portfolio-manager.html"     class="ez-mob-item">투자성향별 AI 포트폴리오</a>
+  <a href="/tax-account-simulator.html" class="ez-mob-item">절세 계좌 시뮬레이터</a>
+  <a href="/compound-calculator.html"   class="ez-mob-item">복리 계산기</a>
+  <a href="/retirement-calculator.html" class="ez-mob-item">은퇴목표역산 투자액 시뮬레이터</a>
+  <a href="/backtest.html"              class="ez-mob-item">몬테카를로 포트폴리오 백테스트</a>
+  <a href="/risk-diagnostic.html"       class="ez-mob-item">투자성향 자가진단</a>
+  <a href="/auto-dca-guide.html"        class="ez-mob-item">투자 자동화 가이드</a>
+</div>
+<script>
+window.ezNavToggle = function () {
+  var menu = document.getElementById('ez-mob-menu');
+  var btn  = document.getElementById('ez-mob-toggle');
+  if (!menu || !btn) return;
+  var opening = !menu.classList.contains('open');
+  if (opening) {
+    var nav = document.querySelector('nav.nav');
+    if (nav) menu.style.paddingTop = nav.getBoundingClientRect().height + 'px';
+  }
+  menu.classList.toggle('open', opening);
+  btn.classList.toggle('open', opening);
+  btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
+  document.body.style.overflow = opening ? 'hidden' : '';
+};
 </script>
 
 </body>
