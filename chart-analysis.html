@@ -1688,7 +1688,7 @@ function initCharts(ohlcv, ind, analysis) {
   macdChart.timeScale().fitContent();
 
   const isMobile = window.innerWidth < 768;
-  const barsToShow = isMobile ? 80 : Math.min(200, ohlcv.length);
+  const barsToShow = isMobile ? 40 : Math.min(120, ohlcv.length);  // 모바일 40거래일, PC 120거래일
   if (ohlcv.length > barsToShow) {
     const fromTime = ohlcv[ohlcv.length - barsToShow].t;
     const toTime   = ohlcv[ohlcv.length - 1].t;
