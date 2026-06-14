@@ -89,12 +89,24 @@
   parent.insertBefore(nav, ref);
   parent.insertBefore(mobMenu, ref);  /* nav 다음에, 페이지 본문보다 앞에 */
 
-  /* ── 4. 토글 함수 — 전역 등록 ── */
+  /* ── 4. 모바일 메뉴 padding-top 동적 조정 ──
+     각 페이지마다 nav 실제 높이가 다를 수 있으므로
+     메뉴 열기 직전에 getBoundingClientRect()로 실측 후 적용. */
+  function syncMenuTop() {
+    var navEl  = document.getElementById('ez-nav');
+    var menuEl = document.getElementById('ez-mob-menu');
+    if (navEl && menuEl) {
+      menuEl.style.paddingTop = navEl.getBoundingClientRect().height + 'px';
+    }
+  }
+
+  /* ── 5. 토글 함수 — 전역 등록 ── */
   window.ezNavToggle = function () {
     var menu = document.getElementById('ez-mob-menu');
     var btn  = document.getElementById('ez-mob-toggle');
     if (!menu || !btn) return;
     var opening = !menu.classList.contains('open');
+    if (opening) syncMenuTop();   /* 열기 직전에 nav 높이 재측정 */
     menu.classList.toggle('open', opening);
     btn.classList.toggle('open', opening);
     btn.setAttribute('aria-expanded', opening ? 'true' : 'false');

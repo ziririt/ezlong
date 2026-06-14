@@ -169,7 +169,7 @@ a { color: inherit; }
 
 .ez-mob-item {
   display: flex; align-items: center;
-  padding: 17px 24px;
+  padding: 12px 22px;
   font-size: 16px; font-weight: 600;
   color: var(--ez-text);
   text-decoration: none;
@@ -182,19 +182,21 @@ a { color: inherit; }
   background: var(--ez-blue-dim);
   font-weight: 800;
   border-left: 3px solid var(--ez-blue);
-  padding-left: 21px;
+  padding-left: 19px;
 }
 
-/* ─ 모바일에서만 토글 보이고 PC칩 숨김 ─ */
+/* ─ 모바일에서만 토글 보이고 PC칩 숨김 ─
+   !important: 각 페이지 인라인 CSS가 flex-direction:column 등으로
+   덮어쓰는 것을 방지. 글로벌 모바일 레이아웃 강제 적용. */
 @media (max-width: 768px) {
   .ez-nav-inner {
-    flex-direction: row;
-    align-items: center;
-    padding: 10px 16px;
+    flex-direction: row !important;
+    align-items: center !important;
+    padding: 10px 16px !important;
   }
-  .ez-nav-logo { padding: 0; }
+  .ez-nav-logo { padding: 0 !important; }
   .ez-nav-svc-links { display: none !important; }
-  .ez-mob-toggle { display: flex; }
+  .ez-mob-toggle { display: flex !important; }
 }
 
 /* ── EZ 푸터 (2026 리디자인) ────────────────────────────────────── */
