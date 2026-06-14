@@ -1,27 +1,29 @@
-name: 한국주식·암호화폐 차트 분석 생성
+name: 한국주식 차트 분석 생성
 
 # ─── 스케줄 설명 ────────────────────────────────────────────────────────────
-# KST(UTC+9) 기준 하루 5회 실행.
+# KST(UTC+9) 기준 한국 정규장 시간 매시 1회 실행
+# 장 시작 5분 후(9:05 KST) ~ 장마감 5분 후(15:35 KST)
+# → 9:05 · 10:05 · 11:05 · 12:05 · 13:05 · 14:05 · 15:05 · 15:35 KST (8회/일)
 #
-# 시점 1 (KST 09:10 = UTC 00:10): KOSPI 장 시작 10분 후 + 크립토
-# 시점 2 (KST 12:10 = UTC 03:10): 점심 + 크립토
-# 시점 3 (KST 15:40 = UTC 06:40): KOSPI 장 마감 10분 후 + 크립토
-# 시점 4 (KST 18:10 = UTC 09:10): 크립토 전용
-# 시점 5 (KST 22:10 = UTC 13:10): 크립토 전용
+# KST → UTC 변환 (UTC+9):
+#   09:05 KST = 00:05 UTC
+#   15:35 KST = 06:35 UTC
 #
-# 한국 주식/ETF: 평일(월~금) + 한국 공휴일 아닌 날만 실행
-# 암호화폐: 365일 24시간 실행
+# 암호화폐는 fetch-crypto-analysis.yml 워크플로에서 별도 처리
+# 한국 주식/ETF: 평일(월~금) + 공휴일 아닌 날만 실행
 #
 
 on:
   schedule:
-    - cron: '10 0 * * *'    # KST 09:10 — 한국주식 + 크립토
-    - cron: '10 3 * * *'    # KST 12:10 — 한국주식 + 크립토
-    - cron: '40 6 * * *'    # KST 15:40 — 한국주식 + 크립토
-    - cron: '10 9 * * *'    # KST 18:10 — 크립토 전용
-    - cron: '10 13 * * *'   # KST 22:10 — 크립토 전용
+    - cron: '5 0 * * *'    # KST 09:05
+    - cron: '5 1 * * *'    # KST 10:05
+    - cron: '5 2 * * *'    # KST 11:05
+    - cron: '5 3 * * *'    # KST 12:05
+    - cron: '5 4 * * *'    # KST 13:05
+    - cron: '5 5 * * *'    # KST 14:05
+    - cron: '5 6 * * *'    # KST 15:05
+    - cron: '35 6 * * *'   # KST 15:35 (장마감 5분 후)
 
-  # 수동 실행 허용
   workflow_dispatch:
     inputs:
       force_kr:
@@ -107,26 +109,20 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/generate-chart-analysis.js kr
 
-      # ── 5. 암호화폐 차트 분석 (365일 항상 실행) ──────────────────────
-      - name: Run crypto chart analysis
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/generate-chart-analysis.js crypto
-
-      # ── 6. 변경사항 커밋 및 푸시 ─────────────────────────────────────
+      # ── 5. 변경사항 커밋 및 푸시 ─────────────────────────────────────
       - name: Commit and push analysis data
+        if: steps.kr_check.outputs.run_kr == 'true'
         run: |
           git config user.name "ATMR Bot"
           git config user.email "atmr-bot@ezlong.com"
 
-          # 변경사항이 없으면 커밋 건너뜀 (신규 파일 포함 감지)
           git add data/
           if git diff --cached --quiet; then
             echo "변경 없음. 커밋 건너뜀."
             exit 0
           fi
 
-          git commit -m "chore: 한국주식·크립토 차트 분석 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+          git commit -m "chore: 한국주식 차트 분석 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 
           for i in 1 2 3; do
             git pull --rebase origin main && git push && break
@@ -136,9 +132,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # ── 7. 실패 시 알림 ───────────────────────────────────────────────
+      # ── 6. 실패 시 알림 ───────────────────────────────────────────────
       - name: Notify on failure
         if: failure()
         run: |
-          echo "::error::한국주식·크립토 차트 분석 실패. GitHub Actions 로그에서 오류를 확인하세요."
+          echo "::error::한국주식 차트 분석 실패. GitHub Actions 로그에서 오류를 확인하세요."
           echo "::error::Yahoo Finance 응답 오류 또는 Gemini API 키 문제일 수 있습니다."

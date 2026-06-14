@@ -1,50 +1,33 @@
 name: 미국주식 차트 분석 생성
 
 # ─── 스케줄 설명 ────────────────────────────────────────────────────────────
-# 미국 정규장 기준 하루 4회 실행 (EDT/EST 양쪽 커버).
+# 미국 정규장 시간(평일) 매시 1회 실행
+# 장 시작 5분 후(9:35 AM ET) ~ 장마감 5분 전(3:55 PM ET)
+# → 9:35 · 10:35 · 11:35 · 12:35 · 13:35 · 14:35 · 15:35 ET (7회/일)
 #
-# 시점 1 — 정규장 시작 10분 후 (9:40 AM ET)
-#   EDT(UTC-4): 13:40 UTC | EST(UTC-5): 14:40 UTC
-#
-# 시점 2 — 정규장 시작 1시간 후 (10:30 AM ET)
-#   EDT(UTC-4): 14:30 UTC | EST(UTC-5): 15:30 UTC
-#
-# 시점 3 — 장 마감 30분 후 포스트마켓 포함 (4:30 PM ET)
-#   EDT(UTC-4): 20:30 UTC | EST(UTC-5): 21:30 UTC
-#
-# 시점 4 — 포스트마켓 1시간 후 (5:00 PM ET)
-#   EDT(UTC-4): 21:00 UTC | EST(UTC-5): 22:00 UTC
-#
-# DST 전환 주에는 일부 cron이 중복 또는 누락될 수 있으나,
-# concurrency 설정으로 무해하게 처리됩니다.
+# EDT(UTC-4) 기준: 13:35~19:35 UTC
+# EST(UTC-5) 기준: 14:35~20:35 UTC
+# → 두 시즌 모두 커버하기 위해 13:35~20:35 UTC 총 8개 cron 사용
+# → 내부 ET 시각 체크(9:30~16:00)로 장 외 cron 자동 필터링
 #
 
 on:
   schedule:
-    # ── 시점 1: 정규장 시작 10분 후 ──────────────────────────────────────
-    - cron: '40 13 * * 1-5'   # EDT (UTC-4)  →  9:40 AM ET
-    - cron: '40 14 * * 1-5'   # EST (UTC-5)  →  9:40 AM ET
+    - cron: '35 13 * * 1-5'   # EDT  9:35 AM ET
+    - cron: '35 14 * * 1-5'   # EDT 10:35 / EST  9:35 AM ET
+    - cron: '35 15 * * 1-5'   # EDT 11:35 / EST 10:35 AM ET
+    - cron: '35 16 * * 1-5'   # EDT 12:35 / EST 11:35 AM ET
+    - cron: '35 17 * * 1-5'   # EDT 13:35 / EST 12:35 PM ET
+    - cron: '35 18 * * 1-5'   # EDT 14:35 / EST 13:35 PM ET
+    - cron: '35 19 * * 1-5'   # EDT 15:35 / EST 14:35 PM ET
+    - cron: '35 20 * * 1-5'   # EST 15:35 PM ET
 
-    # ── 시점 2: 정규장 시작 1시간 후 ─────────────────────────────────────
-    - cron: '30 14 * * 1-5'   # EDT (UTC-4)  → 10:30 AM ET
-    - cron: '30 15 * * 1-5'   # EST (UTC-5)  → 10:30 AM ET
-
-    # ── 시점 3: 장 마감 30분 후 (포스트마켓 포함) ──────────────────────
-    - cron: '30 20 * * 1-5'   # EDT (UTC-4)  →  4:30 PM ET
-    - cron: '30 21 * * 1-5'   # EST (UTC-5)  →  4:30 PM ET
-
-    # ── 시점 4: 포스트마켓 1시간 후 ──────────────────────────────────────
-    - cron: '0 21 * * 1-5'    # EDT (UTC-4)  →  5:00 PM ET
-    - cron: '0 22 * * 1-5'    # EST (UTC-5)  →  5:00 PM ET
-
-  # 수동 실행 허용
   workflow_dispatch:
 
 jobs:
   analyze:
     runs-on: ubuntu-latest
 
-    # 중복 실행 방지: 이전 실행이 끝날 때까지 대기
     concurrency:
       group: us-chart-analysis
       cancel-in-progress: true
@@ -65,19 +48,34 @@ jobs:
       - name: Install dependencies
         run: npm install --production
 
-      # ── 3. 미국 주식/ETF 차트 분석 실행 ──────────────────────────────
+      # ── 3. 미국 정규장 시간 체크 (ET 9:30~16:00) ─────────────────────
+      - name: Check US market hours
+        id: market_check
+        run: |
+          ET_TIME=$(TZ=America/New_York date +%H%M)
+          echo "현재 ET 시각: $ET_TIME"
+          if [ "$ET_TIME" -lt "0930" ] || [ "$ET_TIME" -ge "1600" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "장 외 시간 — 건너뜀 (ET $ET_TIME)"
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "장 중 — 분석 실행 (ET $ET_TIME)"
+          fi
+
+      # ── 4. 미국 주식/ETF 차트 분석 실행 ──────────────────────────────
       - name: Run US stocks/ETFs chart analysis
+        if: steps.market_check.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/generate-chart-analysis.js us
 
-      # ── 4. 변경사항 커밋 및 푸시 ─────────────────────────────────────
+      # ── 5. 변경사항 커밋 및 푸시 ─────────────────────────────────────
       - name: Commit and push analysis data
+        if: steps.market_check.outputs.skip != 'true'
         run: |
           git config user.name "ATMR Bot"
           git config user.email "atmr-bot@ezlong.com"
 
-          # 변경사항이 없으면 커밋 건너뜀 (신규 파일 포함 감지)
           git add data/
           if git diff --cached --quiet; then
             echo "변경 없음. 커밋 건너뜀."
@@ -86,7 +84,6 @@ jobs:
 
           git commit -m "chore: 미국주식 차트 분석 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 
-          # push 충돌 방지: rebase 후 push (최대 3회 재시도)
           for i in 1 2 3; do
             git pull --rebase origin main && git push && break
             echo "push 재시도 $i/3..."
@@ -95,7 +92,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # ── 5. 실패 시 알림 ───────────────────────────────────────────────
+      # ── 6. 실패 시 알림 ───────────────────────────────────────────────
       - name: Notify on failure
         if: failure()
         run: |
