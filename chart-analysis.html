@@ -1381,6 +1381,23 @@ function initCharts(ohlcv, ind, analysis) {
   const macdEl = document.getElementById('chart-macd');
   if (!mainEl || !rsiEl || !macdEl) return;
 
+  // ── 초기 표시 기간 제한: 데이터 슬라이스로 setVisibleRange 타이밍 이슈 완전 우회 ──
+  // setVisibleRange/setVisibleLogicalRange는 내부 fitContent 타이밍과 충돌해 3회 연속 실패.
+  // 차트에 넘기는 ohlcv·ind 배열 자체를 잘라서 넘기면 fitContent가 자동으로 N봉만 표시.
+  {
+    const _mob = window.innerWidth < 768;
+    const _keep = _mob ? 40 : 120;  // 모바일 40거래일, PC 120거래일
+    if (ohlcv.length > _keep) {
+      const _from = ohlcv.length - _keep;
+      ohlcv = ohlcv.slice(_from);
+      const _newInd = {};
+      for (const [k, v] of Object.entries(ind)) {
+        _newInd[k] = Array.isArray(v) ? v.slice(_from) : v;
+      }
+      ind = _newInd;
+    }
+  }
+
   const currency = ohlcv[0] ? (analysis.ticker.endsWith('.KS') ? 'KRW' : 'USD') : 'USD';
   const priceFmt = {
     type: 'price',
@@ -1686,22 +1703,6 @@ function initCharts(ohlcv, ind, analysis) {
   mainChart.timeScale().fitContent();
   rsiChart .timeScale().fitContent();
   macdChart.timeScale().fitContent();
-
-  const isMobile = window.innerWidth < 768;
-  const barsToShow = isMobile ? 40 : Math.min(120, ohlcv.length);  // 모바일 40거래일, PC 120거래일
-  if (ohlcv.length > barsToShow) {
-    // setTimeout(300): ResizeObserver 초기 콜백 + 200ms rightPriceScale 동기화 모두 끝난 뒤 실행
-    // setVisibleLogicalRange(인덱스 기반): 시간 포맷 이슈 없이 마지막 N봉을 정확히 표시
-    setTimeout(() => {
-      try {
-        const from = ohlcv.length - barsToShow;
-        const to   = ohlcv.length;  // 우측 여백 포함
-        [mainChart, rsiChart, macdChart].forEach(c => {
-          c.timeScale().setVisibleLogicalRange({ from, to });
-        });
-      } catch {}
-    }, 300);
-  }
 
   // 우측 가격 스케일 너비 동기화 → 3패널 세로 격자 일직선
   setTimeout(() => {
