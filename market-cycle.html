@@ -843,6 +843,18 @@ function commentVix(v) {
   return 'VIX ' + v.toFixed(1) + ' — 극단적 공포 구간입니다. 역사적 데이터 기준, 이 수준에서 분할매수를 시작한 장기 투자자들의 성과는 압도적으로 긍정적이었습니다.';
 }
 function commentChart(symbol, lastC, lastSma, pct) {
+  // ── TNX는 역방향 해석: 금리 상승 = 주식 악재, 금리 하락 = 주식 호재 ──────
+  if (symbol === 'TNX') {
+    const base = 'TNX 주봉 종가 ' + lastC.toFixed(2) + '% / 30W SMA ' + lastSma.toFixed(2) + '% → 괴리 ' + (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%.';
+    if (pct > 10)
+      return base + ' 금리가 30W SMA 대비 ' + pct.toFixed(1) + '% 위에서 강하게 상승 중입니다. 고금리 장기화 신호로 AI·반도체 등 고멀티플 성장주의 할인율이 확대되는 압력이 강해집니다. 기술주 비중을 보수적으로 유지하고, 금리가 SMA 아래로 내려올 때까지 신규 확대를 자제하세요.';
+    if (pct > 0)
+      return base + ' 금리가 30W SMA 직상단에서 등락 중입니다. 금리가 SMA를 지키면 기술주 밸류에이션 압박이 이어지고, SMA 아래로 내려오면 성장주에 우호적인 전환 신호가 됩니다. 포지션 규모를 줄이고 방향 확정을 기다리는 것이 현명합니다.';
+    if (pct > -5)
+      return base + ' 금리가 30W SMA를 하방 돌파했습니다. 금리 완화 추세의 시작 가능성이 있으며, 이 상태가 지속되면 AI·반도체 등 성장주의 할인율이 낮아지는 우호적 환경이 됩니다. 단기 반등 가능성에 유의하면서 기술주 비중 확대를 고려해볼 수 있습니다.';
+    return base + ' 금리가 30W SMA를 여유 있게 하회하며 하락 추세 중입니다. 무위험 채권 매력이 낮아지고 성장주 프리미엄이 살아나는 환경입니다. AI·반도체 기업들의 밸류에이션에 유리하며, 비중 확대를 검토하기 좋은 매크로 조건입니다.';
+  }
+  // ── 주식 ETF(SPY/QQQ/SOXX): 가격 상승 = 호재 일반 해석 ────────────────
   const names = { SPY: 'S&P500(SPY)', QQQ: '나스닥100(QQQ)', SOXX: '반도체(SOXX)' };
   const base = (names[symbol] || symbol) + ' 주봉 종가 $' + lastC.toFixed(2) + ' / 30W SMA $' + lastSma.toFixed(2) + ' → 괴리 ' + (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%.';
   if (pct > 30)
@@ -1093,9 +1105,9 @@ function makeChartColors() {
   const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   return {
     dark,
-    bg:      dark ? '#1C1C1E' : '#FFFFFF',
+    bg:      dark ? '#111111' : '#FFFFFF',
     grid:    dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
-    txt:     dark ? '#AEAEB2' : '#6E6E73',
+    txt:     dark ? '#C8C8CC' : '#6E6E73',
     border:  dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
     up:      dark ? '#30D158' : '#1A7F37',
     down:    dark ? '#FF453A' : '#D92A2A',
@@ -1167,6 +1179,10 @@ async function renderChart(symbol) {
 
   // 1) 가격 차트
   const priceChart = createSubChart('chart-container', 360, c, {});
+  // TNX(국채금리)는 달러가 아니라 퍼센트 단위 — 축 레이블을 "x.xx%" 형식으로 표시
+  if (symbol === 'TNX') {
+    priceChart.applyOptions({ localization: { priceFormatter: p => p.toFixed(2) + '%' } });
+  }
   const candleSeries = priceChart.addCandlestickSeries({
     upColor: c.up, downColor: c.down,
     borderUpColor: c.up, borderDownColor: c.down,
