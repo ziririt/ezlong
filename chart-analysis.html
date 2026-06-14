@@ -1690,18 +1690,17 @@ function initCharts(ohlcv, ind, analysis) {
   const isMobile = window.innerWidth < 768;
   const barsToShow = isMobile ? 40 : Math.min(120, ohlcv.length);  // 모바일 40거래일, PC 120거래일
   if (ohlcv.length > barsToShow) {
-    const fromTime = ohlcv[ohlcv.length - barsToShow].t;
-    const toTime   = ohlcv[ohlcv.length - 1].t;
-    const timeRange = { from: fromTime, to: toTime };
-    // setTimeout(0): ResizeObserver 초기 콜백(width 재설정→내부 fitContent)이 먼저 실행된 뒤
-    // 이 range가 덮어쓰이지 않도록 다음 태스크에서 적용
+    // setTimeout(300): ResizeObserver 초기 콜백 + 200ms rightPriceScale 동기화 모두 끝난 뒤 실행
+    // setVisibleLogicalRange(인덱스 기반): 시간 포맷 이슈 없이 마지막 N봉을 정확히 표시
     setTimeout(() => {
       try {
-        mainChart.timeScale().setVisibleRange(timeRange);
-        rsiChart .timeScale().setVisibleRange(timeRange);
-        macdChart.timeScale().setVisibleRange(timeRange);
+        const from = ohlcv.length - barsToShow;
+        const to   = ohlcv.length;  // 우측 여백 포함
+        [mainChart, rsiChart, macdChart].forEach(c => {
+          c.timeScale().setVisibleLogicalRange({ from, to });
+        });
       } catch {}
-    }, 0);
+    }, 300);
   }
 
   // 우측 가격 스케일 너비 동기화 → 3패널 세로 격자 일직선
