@@ -1693,9 +1693,15 @@ function initCharts(ohlcv, ind, analysis) {
     const fromTime = ohlcv[ohlcv.length - barsToShow].t;
     const toTime   = ohlcv[ohlcv.length - 1].t;
     const timeRange = { from: fromTime, to: toTime };
-    mainChart.timeScale().setVisibleRange(timeRange);
-    rsiChart .timeScale().setVisibleRange(timeRange);
-    macdChart.timeScale().setVisibleRange(timeRange);
+    // setTimeout(0): ResizeObserver 초기 콜백(width 재설정→내부 fitContent)이 먼저 실행된 뒤
+    // 이 range가 덮어쓰이지 않도록 다음 태스크에서 적용
+    setTimeout(() => {
+      try {
+        mainChart.timeScale().setVisibleRange(timeRange);
+        rsiChart .timeScale().setVisibleRange(timeRange);
+        macdChart.timeScale().setVisibleRange(timeRange);
+      } catch {}
+    }, 0);
   }
 
   // 우측 가격 스케일 너비 동기화 → 3패널 세로 격자 일직선
