@@ -1423,6 +1423,24 @@ li.gear-other-sep { display: none !important; }
 .ez-nav-svc-link:hover{background:rgba(0,0,0,0.05);color:#1D1D1F}
 @media(prefers-color-scheme:dark){.ez-nav-svc-link:hover{background:rgba(255,255,255,0.08);color:#F5F5F7}}
 .ez-nav-svc-link.active{background:rgba(10,132,255,0.12);color:#0A84FF}
+/* ── 모바일 nav 오버레이 ── */
+.ez-mob-toggle{display:none;align-items:center;gap:5px;padding:6px 13px;background:rgba(0,113,227,0.10);border:1.5px solid rgba(0,113,227,0.3);border-radius:20px;color:#0071E3;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background 0.12s;margin-left:auto}
+@media(prefers-color-scheme:dark){.ez-mob-toggle{border-color:rgba(10,132,255,0.4);color:#0A84FF}}
+.ez-mob-toggle-arrow{font-size:10px;display:inline-block;transition:transform 0.2s}
+.ez-mob-toggle.open .ez-mob-toggle-arrow{transform:rotate(180deg)}
+.ez-mob-menu{display:none;position:fixed;inset:0;padding-top:52px;background:#FFFFFF;z-index:9998;overflow-y:auto;flex-direction:column}
+@media(prefers-color-scheme:dark){.ez-mob-menu{background:#0A0A0A}}
+.ez-mob-menu.open{display:flex}
+.ez-mob-item{display:flex;align-items:center;padding:17px 24px;font-size:16px;font-weight:600;color:#1D1D1F;text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.08);transition:background 0.1s}
+@media(prefers-color-scheme:dark){.ez-mob-item{color:#FFFFFF;border-color:rgba(255,255,255,0.14)}}
+.ez-mob-item:active{background:rgba(0,0,0,0.04)}
+.ez-mob-item.active{color:#0071E3;background:rgba(0,113,227,0.10);font-weight:800;border-left:3px solid #0071E3;padding-left:21px}
+@media(max-width:768px){
+  .ez-nav-inner{flex-direction:row;align-items:center;padding:10px 16px}
+  .ez-nav-logo{padding:0}
+  .ez-nav-svc-links{display:none!important}
+  .ez-mob-toggle{display:flex}
+}
 /* ── ez-footer (글로벌 푸터) ── */
 .ez-footer{background:#fff;border-top:1px solid rgba(0,0,0,0.08);padding:36px 20px 20px;margin-top:60px;font-family:-apple-system,BlinkMacSystemFont,'Pretendard','SF Pro Display',sans-serif}
 @media(prefers-color-scheme:dark){.ez-footer{background:#1C1C1E;border-color:rgba(255,255,255,0.08)}}
