@@ -1482,20 +1482,38 @@ function initCharts(ohlcv, ind, analysis) {
       const fsBtn    = mainWrap.querySelector('#cctrl-fs');
       const entering = !chartsEl.classList.contains('ca-fullscreen');
       if (entering) {
+        // ① 풀스크린 클래스 적용 + body 스크롤 차단
         chartsEl.classList.add('ca-fullscreen');
-        const vh     = window.innerHeight;
-        // tf-bar(일봉/주봉 토글)의 실제 높이를 빼고 남은 공간을 차트로 채움
-        const tfBar  = chartsEl.querySelector('.ca-tf-bar');
-        const tfBarH = tfBar ? tfBar.offsetHeight : 44;
-        const avail  = vh - tfBarH;
-        // 주가창 62%(≈ 전체 뷰포트의 60%+), RSI 19%, MACD 19% — 합이 100%
-        mainChart.applyOptions({ height: Math.round(avail * 0.62) });
-        rsiChart .applyOptions({ height: Math.round(avail * 0.19) });
-        macdChart.applyOptions({ height: Math.round(avail * 0.19) });
         document.body.style.overflow = 'hidden';
+        // ② 스크롤 오프셋 완전 초기화 (iOS Safari 주소창·페이지 스크롤 대응)
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        chartsEl.scrollTop = 0;
         fsBtn.innerHTML = _COMPRESS_SVG;
         fsBtn.title = '닫기';
-        chartsEl.scrollTop = 0;
+        // ③ CSS 적용 후 실제 렌더된 컨테이너 높이로 차트 크기 계산
+        //    (tf-bar는 .ca-charts 외부 sibling이므로 풀스크린 오버레이에 포함되지 않음)
+        //    window.innerHeight 대신 clientHeight 사용 — iOS dvh 정확 반영
+        requestAnimationFrame(() => {
+          const actualH  = chartsEl.clientHeight;
+          const isMobile = window.innerWidth < 768;
+          if (isMobile) {
+            // 모바일: 주가 70%, RSI 15%, MACD 15%
+            mainChart.applyOptions({ height: Math.round(actualH * 0.70) });
+            rsiChart .applyOptions({ height: Math.round(actualH * 0.15) });
+            macdChart.applyOptions({ height: Math.round(actualH * 0.15) });
+          } else {
+            // PC: 주가 62%, RSI 19%, MACD 19%
+            mainChart.applyOptions({ height: Math.round(actualH * 0.62) });
+            rsiChart .applyOptions({ height: Math.round(actualH * 0.19) });
+            macdChart.applyOptions({ height: Math.round(actualH * 0.19) });
+          }
+          setTimeout(() => {
+            mainChart.timeScale().fitContent();
+            rsiChart .timeScale().fitContent();
+            macdChart.timeScale().fitContent();
+          }, 50);
+        });
       } else {
         chartsEl.classList.remove('ca-fullscreen');
         mainChart.applyOptions({ height: 380 });
@@ -1504,12 +1522,12 @@ function initCharts(ohlcv, ind, analysis) {
         document.body.style.overflow = '';
         fsBtn.innerHTML = _EXPAND_SVG;
         fsBtn.title = '전체 창 보기';
+        setTimeout(() => {
+          mainChart.timeScale().fitContent();
+          rsiChart .timeScale().fitContent();
+          macdChart.timeScale().fitContent();
+        }, 50);
       }
-      setTimeout(() => {
-        mainChart.timeScale().fitContent();
-        rsiChart .timeScale().fitContent();
-        macdChart.timeScale().fitContent();
-      }, 50);
     });
   }
 
