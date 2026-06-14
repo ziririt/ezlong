@@ -64,8 +64,8 @@
   border-radius: var(--ez-rss);
   border: 1px solid var(--ez-border2);
   background: transparent;
-  color: var(--ez-text3);
-  font-size: 12px;
+  color: var(--ez-text2);
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
@@ -100,11 +100,11 @@
 
 .ca-ticker-info { flex: 1; min-width: 0; }
 .ca-ticker-sym  { font-size: 13px; font-weight: 700; color: var(--ez-text); }
-.ca-ticker-name { font-size: 11px; color: var(--ez-text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ca-ticker-name { font-size: 13px; color: var(--ez-text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .ca-ticker-right { text-align: right; flex-shrink: 0; }
 .ca-ticker-price { font-size: 13px; font-weight: 600; color: var(--ez-text); font-family: var(--ez-mono); }
-.ca-ticker-chg   { font-size: 11px; font-family: var(--ez-mono); }
+.ca-ticker-chg   { font-size: 13px; font-family: var(--ez-mono); }
 .ca-ticker-chg.up   { color: var(--ez-green); }
 .ca-ticker-chg.down { color: var(--ez-red); }
 
@@ -160,7 +160,7 @@
 .ca-ph-change.up   { color: var(--ez-green); }
 .ca-ph-change.down { color: var(--ez-red); }
 .ca-ph-state {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   padding: 2px 7px;
   border-radius: 100px;
@@ -174,13 +174,13 @@
   flex-wrap: wrap;
   margin-top: 2px;
 }
-.ca-ph-meta-item { font-size: 12px; color: var(--ez-text3); }
-.ca-ph-meta-item strong { color: var(--ez-text); font-weight: 600; }
+.ca-ph-meta-item { font-size: 14px; color: var(--ez-text2); }
+.ca-ph-meta-item strong { color: var(--ez-text); font-weight: 700; }
 .ca-ph-updated { margin-left: 4px; }
-.ca-ph-updated strong { color: var(--ez-hint) !important; font-weight: 500 !important; }
+.ca-ph-updated strong { color: var(--ez-text2) !important; font-weight: 700 !important; }
 
 .ca-ph-right { text-align: right; flex-shrink: 0; }
-.ca-ph-52 { font-size: 12px; color: var(--ez-text3); margin-bottom: 6px; }
+.ca-ph-52 { font-size: 14px; color: var(--ez-text2); margin-bottom: 6px; }
 .ca-ph-52-bar {
   width: 140px;
   height: 6px;
@@ -197,7 +197,7 @@
   border-radius: 3px;
   background: linear-gradient(90deg, var(--ez-red), var(--ez-amber), var(--ez-green));
 }
-.ca-ph-52-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--ez-hint); font-family: var(--ez-mono); width: 140px; margin-left: auto; }
+.ca-ph-52-labels { display: flex; justify-content: space-between; font-size: 13px; color: var(--ez-text2); font-family: var(--ez-mono); width: 140px; margin-left: auto; }
 
 /* ── 차트/분석 탭 ────────────────────────────────────────── */
 .ca-tabs {
@@ -211,7 +211,7 @@
   padding: 10px 18px;
   font-size: 14px;
   font-weight: 700;
-  color: var(--ez-text3);
+  color: var(--ez-text2);
   cursor: pointer;
   border-bottom: 2px solid transparent;
   margin-bottom: -2px;
@@ -243,9 +243,9 @@
   border: 1px solid var(--ez-border2);
   background: transparent;
   cursor: pointer;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--ez-text3);
+  color: var(--ez-text2);
   transition: all 0.15s;
 }
 .ca-ind-pill .dot { width: 7px; height: 7px; border-radius: 50%; }
@@ -264,9 +264,9 @@
   position: absolute;
   top: 8px;
   left: 12px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
-  color: var(--ez-text3);
+  color: var(--ez-text2);
   z-index: 10;
   pointer-events: none;
   text-transform: uppercase;
@@ -333,14 +333,14 @@
   border-bottom: 1px solid var(--ez-border);
   align-items: center;
 }
-.ca-tf-label { font-size: 11px; font-weight: 700; color: var(--ez-text3); margin-right: 4px; }
+.ca-tf-label { font-size: 13px; font-weight: 700; color: var(--ez-text2); margin-right: 4px; }
 .ca-tf-btn {
   padding: 3px 12px;
   border-radius: 100px;
   border: 1px solid var(--ez-border2);
   background: transparent;
-  color: var(--ez-text3);
-  font-size: 12px;
+  color: var(--ez-text2);
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.15s;
@@ -389,14 +389,14 @@
   border-radius: var(--ez-rs);
   padding: 10px 12px;
 }
-.ca-ind-cell-label { font-size: 11px; color: var(--ez-text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+.ca-ind-cell-label { font-size: 13px; color: var(--ez-text); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
 .ca-ind-cell-val   { font-size: 14px; font-weight: 700; color: var(--ez-text); }
-.ca-ind-cell-sub   { font-size: 11px; color: var(--ez-text3); margin-top: 2px; font-family: var(--ez-mono); }
+.ca-ind-cell-sub   { font-size: 13px; color: var(--ez-text); margin-top: 2px; font-family: var(--ez-mono); }
 
 .ca-narrative {
   font-size: 14px;
   line-height: 1.75;
-  color: var(--ez-text2);
+  color: var(--ez-text);
   margin-bottom: 16px;
   padding: 14px 16px;
   background: var(--ez-card2);
@@ -405,13 +405,13 @@
 }
 
 .ca-keypoints { margin-bottom: 14px; }
-.ca-keypoints-title { font-size: 12px; font-weight: 700; color: var(--ez-text3); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+.ca-keypoints-title { font-size: 13px; font-weight: 700; color: var(--ez-text2); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
 .ca-kp-item {
   display: flex;
   gap: 8px;
   align-items: flex-start;
-  font-size: 13px;
-  color: var(--ez-text2);
+  font-size: 14px;
+  color: var(--ez-text);
   line-height: 1.6;
   margin-bottom: 5px;
 }
@@ -421,7 +421,7 @@
   display: flex;
   gap: 8px;
   align-items: flex-start;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--ez-amber);
   background: rgba(180,83,9,0.07);
   border: 1px solid rgba(180,83,9,0.2);
@@ -440,7 +440,7 @@
   background: var(--ez-card2);
   border-radius: var(--ez-rs);
 }
-.ca-buy-score-label { font-size: 12px; font-weight: 700; color: var(--ez-text3); text-transform: uppercase; letter-spacing: 0.04em; flex-shrink: 0; }
+.ca-buy-score-label { font-size: 13px; font-weight: 700; color: var(--ez-text); text-transform: uppercase; letter-spacing: 0.04em; flex-shrink: 0; }
 .ca-buy-score-bar {
   flex: 1;
   height: 8px;
@@ -460,7 +460,7 @@
 
 /* 매수 매력도 이유 한 줄 */
 .ca-score-reason {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   margin-top: -10px;
   margin-bottom: 16px;
@@ -468,7 +468,7 @@
   background: var(--ez-card2);
   border-radius: var(--ez-rs);
   letter-spacing: 0.01em;
-  opacity: 0.9;
+  color: var(--ez-text);
 }
 
 /* ── 익절/손절 타겟 그리드 ───────────────────────────────── */
@@ -483,14 +483,14 @@
   border-radius: var(--ez-rs);
   text-align: center;
 }
-.ca-target-cell-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; opacity: 0.7; }
+.ca-target-cell-label { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
 .ca-target-cell-val   { font-size: 15px; font-weight: 800; font-family: var(--ez-mono); }
 
 /* ── 패턴 노트 ───────────────────────────────────────────── */
 .ca-pattern-note {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.65;
-  color: var(--ez-text3);
+  color: var(--ez-text);
   background: var(--ez-card2);
   border-radius: var(--ez-rs);
   padding: 10px 14px;
@@ -500,8 +500,8 @@
 
 /* ── 업데이트 시각 ────────────────────────────────────────── */
 .ca-updated {
-  font-size: 11px;
-  color: var(--ez-hint);
+  font-size: 13px;
+  color: var(--ez-text3);
   padding: 10px 20px;
   background: var(--ez-surface);
   border-top: 1px solid var(--ez-border);
@@ -516,7 +516,7 @@
   justify-content: center;
   height: 100%;
   gap: 12px;
-  color: var(--ez-text3);
+  color: var(--ez-text2);
   font-size: 14px;
   padding: 60px;
 }
@@ -537,8 +537,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
-  color: var(--ez-text3);
+  font-size: 14px;
+  color: var(--ez-text2);
   flex-wrap: wrap;
   min-height: 30px;
 }
@@ -554,20 +554,18 @@
   gap: 3px;
   padding: 2px 8px;
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   border: 1px solid currentColor;
-  opacity: 0.85;
   flex-shrink: 0;
 }
 .ca-market-bar-link {
   margin-left: auto;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--ez-blue);
   text-decoration: none;
   flex-shrink: 0;
-  opacity: 0.8;
 }
 .ca-market-bar-link:hover { opacity: 1; }
 
@@ -576,7 +574,7 @@
   background: rgba(0,113,227,0.08);
   border-bottom: 1px solid rgba(0,113,227,0.2);
   padding: 7px 20px;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--ez-blue);
   font-weight: 600;
   text-align: center;
@@ -613,9 +611,9 @@
 .ez-nav-link {
   padding: 5px 10px;
   border-radius: var(--ez-rss);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  color: var(--ez-text3);
+  color: var(--ez-text2);
   text-decoration: none;
   transition: all 0.12s;
   white-space: nowrap;
@@ -1199,16 +1197,16 @@ function renderAnalysisPanel(analysis, currency) {
   // 익절/손절 타겟
   const targetsHtml = (ai.profitTarget1 || ai.profitTarget2 || ai.stopLoss) ? `
     <div class="ca-targets-grid">
-      <div class="ca-target-cell" style="background:rgba(26,127,55,0.10);border:1px solid rgba(26,127,55,0.2)">
-        <div class="ca-target-cell-label" style="color:${IS_DARK?'#30D158':'#1A7F37'}">1차 익절</div>
+      <div class="ca-target-cell" style="background:var(--ez-card2);border:1px solid rgba(26,127,55,0.35)">
+        <div class="ca-target-cell-label" style="color:var(--ez-text)">1차 익절</div>
         <div class="ca-target-cell-val" style="color:${IS_DARK?'#30D158':'#1A7F37'}">${ai.profitTarget1 ? fmtPrice(ai.profitTarget1, currency) : '—'}</div>
       </div>
-      <div class="ca-target-cell" style="background:rgba(26,127,55,0.07);border:1px solid rgba(26,127,55,0.15)">
-        <div class="ca-target-cell-label" style="color:${IS_DARK?'#30D158':'#1A7F37'}">2차 익절</div>
+      <div class="ca-target-cell" style="background:var(--ez-card2);border:1px solid rgba(26,127,55,0.25)">
+        <div class="ca-target-cell-label" style="color:var(--ez-text)">2차 익절</div>
         <div class="ca-target-cell-val" style="color:${IS_DARK?'#30D158':'#1A7F37'}">${ai.profitTarget2 ? fmtPrice(ai.profitTarget2, currency) : '—'}</div>
       </div>
-      <div class="ca-target-cell" style="background:rgba(217,42,42,0.10);border:1px solid rgba(217,42,42,0.2)">
-        <div class="ca-target-cell-label" style="color:${IS_DARK?'#FF453A':'#D92A2A'}">손절 기준</div>
+      <div class="ca-target-cell" style="background:var(--ez-card2);border:1px solid rgba(217,42,42,0.35)">
+        <div class="ca-target-cell-label" style="color:var(--ez-text)">손절 기준</div>
         <div class="ca-target-cell-val" style="color:${IS_DARK?'#FF453A':'#D92A2A'}">${ai.stopLoss ? fmtPrice(ai.stopLoss, currency) : '—'}</div>
       </div>
     </div>` : '';

@@ -1149,7 +1149,7 @@ li.gear-other-sep { display: none !important; }
 /* ─── 히어로 배너 (야구 bg) ──────────────────────────── */
 .hero-banner {
   position: relative;
-  background-image: url(hero-swing.jpg);
+  background-image: url(hero-swing.jpg?v=2);
   background-size: cover;
   background-position: right 30%;
   overflow: hidden;
@@ -5006,7 +5006,7 @@ function loadTVChart(frameId, symbol) {
   s.async = true;
   s.textContent = JSON.stringify({
     autosize: true, symbol,
-    interval: '1D',          // 일봉 고정
+    interval: 'D',            // 일봉 고정 (TradingView 공식: 'D', '1D' 아님)
     container_id: cid,       // 고유 ID로 localStorage 덮어쓰기 방지
     timezone: 'America/New_York',
     theme: isDark ? 'dark' : 'light',
