@@ -120,7 +120,7 @@ const TICKERS_US_ETFS = [
   // ── 반도체 ───────────────────────────────────────────────────────────────
   { symbol:'SMH',  name:'반도체 ETF (VanEck)',        type:'etf',           context:'VanEck 반도체 ETF. NVDA, TSMC 등 글로벌 반도체 기업을 담습니다.' },
   { symbol:'SOXX', name:'반도체 ETF (iShares)',       type:'etf',           context:'iShares 반도체 ETF. 미국 반도체 섹터에 집중 투자합니다.' },
-  { symbol:'USD',  name:'달러 강세 ETF',              type:'etf',           context:'달러 인덱스 추종 ETF입니다. 달러 강세/약세 흐름을 트래킹합니다.' },
+  { symbol:'USD',  name:'반도체 2X ETF',               type:'etf_leveraged', context:'NYSE 상장 ProShares Ultra Semiconductors(USD) — 다우존스 미국 반도체 지수 일일 수익률의 2배를 추구하는 레버리지 ETF입니다. 레버리지 특성상 단기 변동성이 크므로 단기 트레이딩 관점으로 분석하십시오.' },
   { symbol:'SOXL', name:'반도체 3X ETF',              type:'etf_leveraged', context:'Direxion Daily Semiconductor Bull 3X. 필라델피아 반도체 지수의 3배를 추구합니다. 단기 트레이딩 전용입니다.' },
   // ── 배당·인컴 ─────────────────────────────────────────────────────────────
   { symbol:'SCHD', name:'고배당 미국 주식 ETF',        type:'etf',           context:'미국 우량 고배당주 ETF. 배당 성장성과 재무 건전성을 기준으로 종목을 선별합니다.' },
