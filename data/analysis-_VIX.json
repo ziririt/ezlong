@@ -1,0 +1,83 @@
+{
+  "ticker": "^VIX",
+  "name": "VIX 변동성 지수",
+  "assetType": "etf",
+  "market": "us",
+  "updatedAt": "2026-06-14T04:12:16.842Z",
+  "price": {
+    "current": 17.68,
+    "change": -1.76,
+    "changePct": -9.05,
+    "high52": 35.3,
+    "low52": 13.38,
+    "pos52": 19.6,
+    "marketState": "CLOSED",
+    "extPrice": null,
+    "extChange": null,
+    "extChangePct": null
+  },
+  "indicators": {
+    "sma20": 17.5325,
+    "sma50": 18.2508,
+    "sma100": 20.0453,
+    "sma200": 18.5391,
+    "rsi": 48.65,
+    "macd": {
+      "macd": 0.309177,
+      "signal": -0.097719,
+      "histogram": 0.406896
+    },
+    "bb": {
+      "upper": 21.3623,
+      "middle": 17.5325,
+      "lower": 13.7027,
+      "bandwidth": 0.4369
+    }
+  },
+  "levels": {
+    "swingResistance": 17.74,
+    "swingSupport": 17.5,
+    "pivot": {
+      "pp": 18.73,
+      "r1": 22.29,
+      "r2": 26.89,
+      "s1": 14.13,
+      "s2": 10.57
+    }
+  },
+  "analysis": {
+    "trend": "약세",
+    "strength": 2,
+    "support": 17.5,
+    "resistance": 17.74,
+    "rsiStatus": "중립",
+    "macdStatus": "강세확산",
+    "bbStatus": "중단",
+    "stage": "분배구간",
+    "action": "관망",
+    "buyScore": 4,
+    "scoreReason": "RSI 중립 구간 횡보, MACD 개선 중",
+    "rsiTrajectory": "65.7 → 48.6 (과매도탈출)",
+    "macdTrajectory": "히스토 0.3775 → 0.4069 (개선)",
+    "pricePattern": "Higher Low 또는 Lower High 또는 횡보",
+    "volComment": "거래량비 N/A",
+    "bbPosition": "중단근처",
+    "reason": "현재가(17.68)가 SMA20(17.53) 위에 위치하나, SMA5(19.63) 및 SMA50(18.25) 아래에 있어 방향성 부재. RSI는 과매도 구간에서 반등했으나 중립 구간에서 횡보 ��.",
+    "entry": 17.5,
+    "stop": 17.74,
+    "target": 16,
+    "invalidation": 17.74,
+    "weeklyConflict": "주봉은 약세이나 일봉 신호 우선",
+    "profitTarget1": 17,
+    "profitTarget2": 16.5,
+    "stopLoss": 17.74,
+    "narrative": "VIX 지수는 현재 17.68로, 52주 저가(13.38) 대비 19.6% 수준에 머물러 있다. SMA200 대비 4.63% 하락한 상태이며, RSI는 48.6으로 중립 구간에 위치한다. MACD 히스토그램은 0.4069로 개선되고 있으나, 가격은 SMA5와 SMA50 아래에 있어 명확한 상승 추세로 보기 어렵다. 17.50 지지선과 17.74 저항선 사이에서 횡보할 가능성이 높다.",
+    "patternNote": "현재 가격은 볼린저밴드 중단 부근에서 횡보하며 명확한 패턴을 형성하지 않고 있다.",
+    "keyPoints": [
+      "현재가(17.68)는 SMA20(17.53) 상회하나 SMA5(19.63) 하회",
+      "RSI(48.6)는 중립 구간에서 횡보, MACD 히스토그램(0.4069)은 개선 중",
+      "주요 지지선 17.50, 저항선 17.74 구간에서 횡보 가능성 높음"
+    ],
+    "riskNote": "17.74 저항선 돌파 실패 시 하락 위험이 존재한다."
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "ticker": "TQQQ",
+  "name": "나스닥 100 3X ETF",
+  "assetType": "etf_leveraged",
+  "market": "us",
+  "updatedAt": "2026-06-14T04:10:36.389Z",
+  "price": {
+    "current": 77.52,
+    "change": 1.51,
+    "changePct": 1.99,
+    "high52": 88.09,
+    "low52": 35.71,
+    "pos52": 79.8,
+    "marketState": "CLOSED",
+    "extPrice": null,
+    "extChange": null,
+    "extChangePct": null
+  },
+  "indicators": {
+    "sma20": 78.8315,
+    "sma50": 68.0046,
+    "sma100": 58.411,
+    "sma200": 55.3868,
+    "rsi": 53,
+    "macd": {
+      "macd": 1.848089,
+      "signal": 3.563705,
+      "histogram": -1.715616
+    },
+    "bb": {
+      "upper": 89.238,
+      "middle": 78.8315,
+      "lower": 68.425,
+      "bandwidth": 0.264
+    }
+  },
+  "levels": {
+    "swingResistance": 79.68,
+    "swingSupport": 70.96,
+    "pivot": {
+      "pp": 77.47,
+      "r1": 88.14,
+      "r2": 98.77,
+      "s1": 66.84,
+      "s2": 56.17
+    }
+  },
+  "analysis": {
+    "trend": "약세",
+    "strength": 2,
+    "support": 70.96,
+    "resistance": 79.68,
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "중단",
+    "stage": "분배구간",
+    "action": "관망",
+    "buyScore": 4,
+    "scoreReason": "RSI 중립, MACD 악화, Lower High 발생",
+    "rsiTrajectory": "45.8 → 53.0 (과매도탈출 중)",
+    "macdTrajectory": "히스토 -0.9222 → -1.7156 (악화 중)",
+    "pricePattern": "5일 저가($66.79)가 20일 저가($66.79)보다 낮으므로 Lower Low 발생",
+    "volComment": "거래량비 0.88 (정상)",
+    "bbPosition": "중단근처",
+    "reason": "MACD 히스토그램이 음수에서 악화되고 있으며, 5일 고가($79.34)가 20일 고가($88.09)보다 낮아 Lower High 패턴이 ��타나고 있습니다. 현재가($77.52)는 볼린저밴드 중단($78.83) 아래에 위치합니다.",
+    "entry": 77.52,
+    "stop": 79.68,
+    "target": 70.96,
+    "invalidation": 79.68,
+    "weeklyConflict": "충돌 없음",
+    "profitTarget1": 74,
+    "profitTarget2": 70,
+    "stopLoss": 79.68,
+    "narrative": "현재 ProShares UltraPro QQQ는 약세 추세에 있으며, MACD 히스토그램이 음수에서 악화되는 신호가 포착됩니다. 5일 고가가 20일 고가보다 낮아 Lower High 패턴이 형성되고 있어 추가 하락 가능성이 높습니다. RSI는 과매도 구간에서 벗어나고 있으나, 전반적인 하락 압력이 우세합니다. 단기적으로는 70.96 지지선 이탈 시 매도 관점으로 접근합니다.",
+    "patternNote": "현재 가격은 20일 볼린저밴드 중단 부근에서 저항받고 있으며, 하락 채널을 형성하고 있습니다.",
+    "keyPoints": [
+      "MACD 히스토그램 악화",
+      "Lower High 패턴 발생",
+      "RSI 과매도 탈출 시도"
+    ],
+    "riskNote": "RSI가 50 이상으로 상승할 경우 단기 반등 가능성이 있습니다."
+  }
+}

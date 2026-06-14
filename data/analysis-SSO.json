@@ -1,0 +1,83 @@
+{
+  "ticker": "SSO",
+  "name": "S&P500 2X ETF",
+  "assetType": "etf_leveraged",
+  "market": "us",
+  "updatedAt": "2026-06-14T04:10:57.423Z",
+  "price": {
+    "current": 66.51,
+    "change": 0.68,
+    "changePct": 1.03,
+    "high52": 70.13,
+    "low52": 44.985,
+    "pos52": 85.6,
+    "marketState": "CLOSED",
+    "extPrice": null,
+    "extChange": null,
+    "extChangePct": null
+  },
+  "indicators": {
+    "sma20": 67.3445,
+    "sma50": 63.6922,
+    "sma100": 60.0796,
+    "sma200": 58.3028,
+    "rsi": 51.69,
+    "macd": {
+      "macd": 0.522382,
+      "signal": 1.173337,
+      "histogram": -0.650955
+    },
+    "bb": {
+      "upper": 70.7557,
+      "middle": 67.3445,
+      "lower": 63.9333,
+      "bandwidth": 0.1013
+    }
+  },
+  "levels": {
+    "swingResistance": 68.35,
+    "swingSupport": 65.04,
+    "pivot": {
+      "pp": 66.6,
+      "r1": 70.04,
+      "r2": 73.56,
+      "s1": 63.08,
+      "s2": 59.64
+    }
+  },
+  "analysis": {
+    "trend": "횡보",
+    "strength": 3,
+    "support": 65.04,
+    "resistance": 68.35,
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "중단",
+    "stage": "축적구간",
+    "action": "관망",
+    "buyScore": 5,
+    "scoreReason": "RSI 중립 구간 횡보, MACD 악화 중",
+    "rsiTrajectory": "48.0 → 51.7 (중립지속)",
+    "macdTrajectory": "히스토 -0.3651 → -0.6510 (악화)",
+    "pricePattern": "5일 저가($63.17) > 20일 저가($63.17 * 1.005) 거짓, 5일 고가($67.53) < 20일 고가($70.13 * 0.995) 참 → Lower High",
+    "volComment": "거래량비 0.97 (정상)",
+    "bbPosition": "중단근처",
+    "reason": "현재가($66.51)가 SMA20($67.34) 아래에 위치하며 MACD 히스토그램이 악화되고 있어 하락 압력이 우세하다. 5일 고가가 20일 고가보다 낮아 약화 신호가 나타났다.",
+    "entry": 65.04,
+    "stop": 68.35,
+    "target": 63.08,
+    "invalidation": 68.35,
+    "weeklyConflict": "충돌 없음",
+    "profitTarget1": 63.08,
+    "profitTarget2": 59.64,
+    "stopLoss": 68.35,
+    "narrative": "현재가 $66.51은 SMA20 $67.34 아래에 위치하며, MACD 히스토그램이 -0.3651에서 -0.6510으로 악화되고 있다. 5일 고가가 20일 고가보다 낮아 Lower High 패턴이 형성되었으며, 이는 약세 전환 가능성을 시사한다. 1차 목표가는 S1인 $63.08이며, 손절가는 스윙 저항인 $68.35로 설정한다.",
+    "patternNote": "5일 고가가 20일 고가보다 낮아 Lower High 패턴이 형성되었으며, 이는 약세 전환 가능성을 시사한다.",
+    "keyPoints": [
+      "MACD 히스토그램 악화 (-0.3651 → -0.6510)",
+      "5일 고가 < 20일 고가 * 0.995 (Lower High 형성)",
+      "현재가 SMA20 하회 및 약세 전환 가능성"
+    ],
+    "riskNote": "현재가 $66.51이 스윙 지지선 $65.04를 하회할 경우 추가 하락 위험이 있다."
+  }
+}

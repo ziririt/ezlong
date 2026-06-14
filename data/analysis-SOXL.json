@@ -1,85 +1,83 @@
 {
   "ticker": "SOXL",
-  "name": "반도체 3배 레버리지 ETF",
+  "name": "반도체 3X ETF",
   "assetType": "etf_leveraged",
   "market": "us",
-  "updatedAt": "2026-06-06T02:39:51.461Z",
+  "updatedAt": "2026-06-14T04:11:33.796Z",
   "price": {
-    "current": 182.54,
-    "change": -80.16,
-    "changePct": -30.51,
+    "current": 234.68,
+    "change": 10.69,
+    "changePct": 4.77,
     "high52": 284.58,
-    "low52": 45.7,
-    "pos52": 57.3,
+    "low52": 58.79,
+    "pos52": 77.9,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 201.6075,
-    "sma50": 136.442,
-    "sma100": 98.1634,
-    "sma200": 68.5291,
-    "rsi": 48.64,
+    "sma20": 208.714,
+    "sma50": 152.7634,
+    "sma100": 105.8056,
+    "sma200": 73.1222,
+    "rsi": 57.81,
     "macd": {
-      "macd": 29.656341,
-      "signal": 29.935685,
-      "histogram": -0.279344
+      "macd": 18.8518,
+      "signal": 23.532125,
+      "histogram": -4.680325
     },
     "bb": {
-      "upper": 275.0996,
-      "middle": 201.6075,
-      "lower": 128.1154,
-      "bandwidth": 0.7291
+      "upper": 280.8347,
+      "middle": 208.714,
+      "lower": 136.5933,
+      "bandwidth": 0.6911
     }
   },
   "levels": {
-    "swingResistance": 191.29,
+    "swingResistance": 284.58,
     "swingSupport": 135.02,
     "pivot": {
-      "pp": 200.71,
-      "r1": 266.41,
-      "r2": 350.27,
-      "s1": 116.85,
-      "s2": 51.15
+      "pp": 218.09,
+      "r1": 301.17,
+      "r2": 367.65,
+      "s1": 151.61,
+      "s2": 68.53
     }
   },
   "analysis": {
     "trend": "강세",
     "strength": 4,
     "support": 135.02,
-    "resistance": 191.29,
+    "resistance": 284.58,
     "rsiStatus": "중립",
-    "macdStatus": "약세수렴",
+    "macdStatus": "중립",
     "bbStatus": "중단",
     "stage": "상승추세",
-    "action": "관망",
-    "buyScore": 5,
-    "scoreReason": "단기 하락세이나 주봉 강세 추세 유지",
-    "profitTarget1": 200.71,
-    "profitTarget2": 266.41,
-    "stopLoss": 171.41,
-    "narrative": "SOXL의 일봉 차트를 보면 현재 주가는 $182.54로, 단기 이동평균선인 SMA20($201.61) 아래에 위치하며 단기적인 하락 압력을 받고 있습니다. RSI(14)는 48.6으로 중립 구간에 있으며, MACD 히스토그램은 음전하며 약세 수렴을 보이고 있습니다. 볼린저밴드 중단선($201.61) 아래에서 움직이며 밴드폭이 72.91%로 여전히 높은 변동성을 시사합니다. 하지만 주봉 차트에서는 RSI가 69.9로 강세 구간에 있고, 주봉 MACD 히스토그램은 양의 값을 유지하며 장기적인 상승 추세가 견고함을 보여줍니다. 주봉 SMA20($99.85)과 SMA100($44.50) 위에 주가가 크게 위치하며 장기적인 강세 추세가 지속되고 있습니다. 현재는 단기 조정 국면으로 보입니다.",
-    "patternNote": "일봉상으로는 단기 고점을 낮추는 움직임이 관찰되나, 주봉 기준으로는 명확한 상승 추세 채널이 유지되고 있습니다.",
+    "action": "매수",
+    "buyScore": 7,
+    "scoreReason": "RSI 과매도탈출 + Higher Low 회복 초입",
+    "rsiTrajectory": "48.6 → 57.8 (과매도탈출)",
+    "macdTrajectory": "히스토 -0.2793 → -4.6803 (개선)",
+    "pricePattern": "5일 저가($157.56) > 20일 저가($135.02) * 1.005 → Higher Low 회복",
+    "volComment": "거래량비 0.53 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "RSI가 48.6에서 57.8로 상승하며 과매도 구간을 탈출했고, 5일 저가가 20일 저가보다 높아 Higher Low 패턴이 형성��었습니다. MACD 히스토그램도 개선되는 흐름을 보입니다.",
+    "entry": 234.68,
+    "stop": 157.56,
+    "target": 284.58,
+    "invalidation": 135.02,
+    "weeklyConflict": "충돌 없음",
+    "profitTarget1": 260,
+    "profitTarget2": 275,
+    "stopLoss": 157.56,
+    "narrative": "현재가 $234.68은 SMA20 $208.71 위에 있으며, RSI는 57.8로 상승 추세입니다. 5일 저가가 20일 저가보다 높아 기술적 반등 가능성이 높습니다. 52주 고가인 $284.58을 향한 상승을 기대하며, $157.56 지지선 이탈 시 매도합니다. 거래량은 위축되었으나, RSI와 가격 패턴이 긍정적입니다.",
+    "patternNote": "현재 가격은 볼린저밴드 중단 부근에서 지지를 받으며 상승하려는 움직임을 보이고 있습니다. 52주 고가까지의 상승 여력이 남아있습니다.",
     "keyPoints": [
-      "일봉 SMA20 아래에서 단기 하락 압력",
-      "주봉 RSI 강세 구간 및 MACD 양의 히스토그램으로 장기 상승 추세 유지",
-      "볼린저밴드 중단 아래 위치하며 단기 조정 국면",
-      "ATR 트레일링 스탑 $171.41이 중요한 지지선 역할"
+      "RSI 과매도 탈출 및 상승 전환",
+      "Higher Low 가격 패턴 형성",
+      "MACD 히스토그램 개선세"
     ],
-    "riskNote": "일봉 SMA20 이탈 및 MACD 약세 수렴은 단기 추가 하락 가능성을 시사하며, ATR 트레일링 스탑 $171.41 하향 이탈 시 손절 고려가 필요합니다.",
-    "exitNarrative": "현재 RSI는 중립 구간에 있으나, 최근 20일 고점 대비 35.86% 하락한 상태입니다. 단기적으로 볼린저밴드 중단선 아래에 위치하고 있어 추가 하락 가능성도 있습니다. 만약 주가가 $200.71 피벗 저항선을 돌파하고 RSI가 과매수 구간에 진입한다면, 분할 청산을 고려해볼 수 있습니다. 단기적인 반등 시 $191.29 스윙 저항선 부근에서 일부 이익 실현을 고려할 수 있습니다.",
-    "trailingStopNote": "매도 기준선 $171.41 하향 이탈 시 청산"
-  },
-  "leverageMultiple": 3,
-  "trailingStop": {
-    "atr14": 28.293,
-    "recentHigh20": 284.58,
-    "distFromHighPct": 35.86,
-    "atrMultiplier": 4,
-    "stopByAtr": 171.41,
-    "stopBySma20": 191.53,
-    "stopBySma50": 129.62
+    "riskNote": "거래량이 위축된 상태에서 상승이 지속될 경우 추세 전환에 실패할 위험이 있습니다."
   }
 }
