@@ -333,11 +333,28 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;         /* 세로도 뷰포트 100% 채움 */
-  height: 100dvh;        /* iOS Safari 주소창 숨김·표시 대응 (dynamic viewport) */
+  height: 100vh;
+  height: 100dvh;
   z-index: 9999;
   background: var(--ez-bg, #000);
-  overflow: hidden;      /* 차트가 높이를 딱 채우므로 스크롤 불필요 */
+  overflow: hidden;
+  /* flex로 wrap 비율 제어 — JS 높이 계산 불필요 */
+  display: flex;
+  flex-direction: column;
+}
+/* 각 차트 wrap: flex 비율 70/15/15 */
+.ca-charts.ca-fullscreen > .ca-chart-wrap {
+  min-height: 0;          /* flex 자식이 축소될 수 있도록 */
+}
+.ca-charts.ca-fullscreen > .ca-chart-wrap:nth-child(1) { flex: 70; }
+.ca-charts.ca-fullscreen > .ca-chart-wrap:nth-child(2) { flex: 15; }
+.ca-charts.ca-fullscreen > .ca-chart-wrap:nth-child(3) { flex: 15; }
+/* 차트 div: wrap을 100% 채움 — LightweightCharts autoSize가 여기서 크기를 읽음 */
+.ca-charts.ca-fullscreen #chart-main,
+.ca-charts.ca-fullscreen #chart-rsi,
+.ca-charts.ca-fullscreen #chart-macd {
+  height: 100% !important;
+  width: 100% !important;
 }
 
 /* ── 시간축 토글 (일봉/주봉) ─────────────────────────────── */
@@ -1482,32 +1499,31 @@ function initCharts(ohlcv, ind, analysis) {
       const fsBtn    = mainWrap.querySelector('#cctrl-fs');
       const entering = !chartsEl.classList.contains('ca-fullscreen');
       if (entering) {
-        // ① 풀스크린 클래스 적용 + body 스크롤 차단
+        // ① 풀스크린 클래스 적용 + 스크롤 초기화
         chartsEl.classList.add('ca-fullscreen');
         document.body.style.overflow = 'hidden';
-        // ② 스크롤 오프셋 완전 초기화 (iOS Safari 주소창·페이지 스크롤 대응)
         window.scrollTo(0, 0);
         document.documentElement.scrollTop = 0;
+        chartsEl.scrollTop = 0;
         fsBtn.innerHTML = _COMPRESS_SVG;
         fsBtn.title = '닫기';
-        // ③ getBoundingClientRect()로 강제 reflow — classList.add 직후에도 CSS height:100dvh를 즉시 계산
-        //    (overflow:hidden 상태에서 scrollTop 접근은 reflow를 보장하지 않음 → 이 방식으로 대체)
-        const actualH = chartsEl.getBoundingClientRect().height || window.innerHeight;
-        chartsEl.scrollTop = 0;  // reflow 완료 후 스크롤 초기화
-        // ④ 모바일·PC 모두 70% / 15% / 15%
-        mainChart.applyOptions({ height: Math.round(actualH * 0.70) });
-        rsiChart .applyOptions({ height: Math.round(actualH * 0.15) });
-        macdChart.applyOptions({ height: Math.round(actualH * 0.15) });
+        // ② autoSize: true — LightweightCharts가 CSS flex wrap 크기를 자동 감지·채움
+        //    CSS flex 70/15/15가 비율을 제어, JS는 높이를 계산하지 않음
+        mainChart.applyOptions({ autoSize: true });
+        rsiChart .applyOptions({ autoSize: true });
+        macdChart.applyOptions({ autoSize: true });
         setTimeout(() => {
           mainChart.timeScale().fitContent();
           rsiChart .timeScale().fitContent();
           macdChart.timeScale().fitContent();
-        }, 50);
+        }, 100);
       } else {
+        // ③ 풀스크린 해제 — autoSize 끄고 원래 고정 크기 복원
         chartsEl.classList.remove('ca-fullscreen');
-        mainChart.applyOptions({ height: 380 });
-        rsiChart .applyOptions({ height: 140 });
-        macdChart.applyOptions({ height: 140 });
+        const _mob = window.innerWidth < 768;
+        mainChart.applyOptions({ autoSize: false, height: _mob ? 260 : 380 });
+        rsiChart .applyOptions({ autoSize: false, height: _mob ? 110 : 140 });
+        macdChart.applyOptions({ autoSize: false, height: _mob ? 110 : 140 });
         document.body.style.overflow = '';
         fsBtn.innerHTML = _EXPAND_SVG;
         fsBtn.title = '전체 창 보기';
