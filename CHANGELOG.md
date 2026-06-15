@@ -103,9 +103,22 @@ e49505e0b  fix: 글로벌 푸터 다크모드 #AEAEB2→#C8C8CC
 a65c24f1c  docs: 배포 키워드 자동 트리거 규칙 추가
 dd88816e5  seo: sitemap lastmod + robots.txt 추가
 e5e54f2f3  fix: 푸터 books 레이아웃 통일
+6b0f5b4ee  docs: CHANGELOG 2026-06-15 작업 이력 추가 + 마무리 트리거 규칙
 ```
 
-Firebase 배포: ✅ 완료 (KST 11:xx ~ 12:xx)
-안정 태그: `stable-20260614` (전날 기준 — 오늘 태그 미생성)
+Firebase 배포: ✅ 완료 (KST 11:56 최종 확인)
+
+**글로벌 푸터 통일 최종 확인 (오후 세션)**
+- ez-design.css firebase deploy 재실행 — 이전 배포에서 CSS 미반영된 것 수정
+- Cloudflare 캐시 퍼지 완료: `/ez-design.css`, `/ez-footer.js`
+- `chart-analysis.html`, `analyst-reports.html` ezlong.com에서 최종 확인 ✅
+- 모든 페이지 글로벌 푸터 통일 완전 완료 ✅
+
+안정 태그: `stable-20260615` ← **오늘 버전 기준점. 이후 문제 발생 시 이 태그로 복구**
+
+```bash
+# 태그 생성 (아래 명령 터미널에서 실행)
+git tag -f "stable-20260615" && git push origin --tags
+```
 
 ---
