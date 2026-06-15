@@ -3,46 +3,46 @@
   "name": "브로드컴",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-15T15:06:55.314Z",
+  "updatedAt": "2026-06-15T16:07:04.669Z",
   "price": {
-    "current": 390.42,
-    "change": 8.35,
-    "changePct": 2.19,
+    "current": 393.61,
+    "change": 11.54,
+    "changePct": 3.02,
     "high52": 495,
     "low52": 244.17,
-    "pos52": 58.3,
+    "pos52": 59.6,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 416.99,
-    "sma50": 407.965,
-    "sma100": 366.1169,
-    "sma200": 357.7304,
-    "rsi": 44.19,
+    "sma20": 417.1495,
+    "sma50": 408.0288,
+    "sma100": 366.1488,
+    "sma200": 357.7464,
+    "rsi": 45.19,
     "macd": {
-      "macd": -6.623951,
-      "signal": 0.789417,
-      "histogram": -7.413368
+      "macd": -6.36948,
+      "signal": 0.840311,
+      "histogram": -7.209791
     },
     "bb": {
-      "upper": 476.8627,
-      "middle": 416.99,
-      "lower": 357.1173,
-      "bandwidth": 0.2872
+      "upper": 476.7547,
+      "middle": 417.1495,
+      "lower": 357.5444,
+      "bandwidth": 0.2858
     }
   },
   "levels": {
     "swingResistance": 403,
     "swingSupport": 370.65,
     "pivot": {
-      "pp": 418.58,
-      "r1": 466.84,
-      "r2": 543.25,
-      "s1": 342.17,
-      "s2": 293.91
+      "pp": 419.65,
+      "r1": 468.96,
+      "r2": 544.32,
+      "s1": 344.29,
+      "s2": 294.98
     }
   },
   "analysis": {
@@ -56,28 +56,28 @@
     "stage": "축적구간",
     "action": "관망",
     "buyScore": 4,
-    "scoreReason": "RSI 중립, MACD 악화, 횡보 패턴",
-    "rsiTrajectory": "43.3 → 44.2 (중립지속 중)",
-    "macdTrajectory": "히스토 -5.6594 → -7.4134 (악화)",
-    "pricePattern": "횡보",
-    "volComment": "거래량비 0.22 (위축)",
+    "scoreReason": "RSI 중립, MACD 악화, 5일 저가 > 20일 저가",
+    "rsiTrajectory": "43.3 → 45.2 (중립지속 중)",
+    "macdTrajectory": "히스토 -5.6594 → -7.2098 (악화)",
+    "pricePattern": "5일 저가($370.33)가 20일 저가($370.33)보다 높으므로 회복 신호",
+    "volComment": "거래량비 0.29 (위축)",
     "bbPosition": "중단근처",
-    "reason": "현재가 SMA20 아래 위치, MACD 히스토그램 악화, 거래량 위축으로 방향성 부재.",
-    "entry": 390.42,
-    "stop": 403,
-    "target": 370.65,
-    "invalidation": 403,
-    "weeklyConflict": "충돌 없음",
-    "profitTarget1": 380,
-    "profitTarget2": 360,
-    "stopLoss": 403,
-    "narrative": "현재 주가는 SMA20 ($416.99) 아래에서 거래되고 있으며, MACD 히스토그램은 -7.4134로 악화 추세다. 5일 평균 대비 거래량 비율이 0.22로 매우 낮아 매수세가 붙지 않고 있다. RSI는 44.2로 중립 구간에 머물러 있어 명확한 방향성을 제시하지 못한다. 370.65 지지선이 깨지면 추가 하락 가능성이 높다.",
-    "patternNote": "현재 가격은 5일 고가/저가 범위($407.87 / $370.33) 내에서 움직이며 뚜렷한 패턴을 형성하지 못하고 있다.",
+    "reason": "MACD 히스토그램이 음수에서 더 악화되고 있으며, 거래량이 5일 평균 대비 0.29로 매우 위축되어 방향�� 판단이 어렵다. RSI도 중립 구간에 머물러 있다.",
+    "entry": 393.61,
+    "stop": 370.65,
+    "target": 403,
+    "invalidation": 417.15,
+    "weeklyConflict": "주봉은 강세(SMA20 위, RSI 55.1)이나 일봉 신호 우선",
+    "profitTarget1": 403,
+    "profitTarget2": 417.15,
+    "stopLoss": 370.65,
+    "narrative": "현재 가격은 SMA200 대비 10.02% 위에 있지만, SMA20($417.15)과 SMA50($408.03) 아래에 위치하며 저항 구간에 근접해 있다. MACD 히스토그램이 음수에서 악화되는 추세이며 거래량도 극도로 위축되어 있어 매수/매도 결정에 필요한 동력이 부족하다. 5일 저가가 20일 저가보다 높다는 점은 긍정적이나, 전반적인 지표들이 방향성을 명확히 제시하지 못하고 있어 관망이 최선이다.",
+    "patternNote": "가격은 20일 저가 대비 5일 저가가 높아지는 상승 채널의 하단부를 형성하고 있다.",
     "keyPoints": [
-      "SMA20 하향 돌파 및 저항 확인",
-      "MACD 히스토그램 악화 지속",
-      "낮은 거래량으로 인한 방향성 부재"
+      "MACD 히스토그램 악화 및 거래량 위축",
+      "RSI 중립 구간 횡보",
+      "5일 저가 > 20일 저가 패턴"
     ],
-    "riskNote": "370.65 지지선 이탈 시 급락 위험이 존재한다."
+    "riskNote": "SMA20($417.15) 돌파 실패 시 하락 위험이 존재한다."
   }
 }
