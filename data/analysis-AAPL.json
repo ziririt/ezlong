@@ -3,51 +3,51 @@
   "name": "애플",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-15T16:05:58.259Z",
+  "updatedAt": "2026-06-15T17:05:57.131Z",
   "price": {
-    "current": 297.43,
-    "change": 6.3,
-    "changePct": 2.16,
+    "current": 296.55,
+    "change": 5.42,
+    "changePct": 1.86,
     "high52": 317.4,
     "low52": 195.07,
-    "pos52": 83.7,
+    "pos52": 83,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 303.741,
-    "sma50": 286.197,
-    "sma100": 273.1307,
-    "sma200": 266.7944,
-    "rsi": 50.42,
+    "sma20": 303.697,
+    "sma50": 286.1794,
+    "sma100": 273.1219,
+    "sma200": 266.79,
+    "rsi": 49.62,
     "macd": {
-      "macd": 1.952346,
-      "signal": 5.033831,
-      "histogram": -3.081484
+      "macd": 1.882146,
+      "signal": 5.019791,
+      "histogram": -3.137644
     },
     "bb": {
-      "upper": 318.8784,
-      "middle": 303.741,
-      "lower": 288.6036,
-      "bandwidth": 0.0997
+      "upper": 318.9124,
+      "middle": 303.697,
+      "lower": 288.4816,
+      "bandwidth": 0.1002
     }
   },
   "levels": {
     "swingResistance": 317.4,
     "swingSupport": 266.95,
     "pivot": {
-      "pp": 300.74,
-      "r1": 314.09,
-      "r2": 330.76,
-      "s1": 284.07,
-      "s2": 270.72
+      "pp": 300.44,
+      "r1": 313.51,
+      "r2": 330.46,
+      "s1": 283.49,
+      "s2": 270.42
     }
   },
   "analysis": {
     "trend": "횡보",
-    "strength": 3,
+    "strength": 2,
     "support": 287.38,
     "resistance": 300.75,
     "rsiStatus": "중립",
@@ -56,28 +56,28 @@
     "stage": "축적구간",
     "action": "관망",
     "buyScore": 4,
-    "scoreReason": "RSI 중립, MACD 악화, 5일 저가 20일 저가 하회",
-    "rsiTrajectory": "53.4 → 50.4 (중립지속)",
-    "macdTrajectory": "히스토 -1.6321 → -3.0815 (악화)",
-    "pricePattern": "5일 저가($287.38)가 20일 저가($287.38)와 같거나 낮아 약세 전환 가능성",
-    "volComment": "거래량비 0.29 (위축)",
+    "scoreReason": "RSI 중립, MACD 악화, 5일 저가 > 20일 저가",
+    "rsiTrajectory": "53.4 → 49.6 (중립지속 중)",
+    "macdTrajectory": "히스토 -1.6321 → -3.1376 (악화)",
+    "pricePattern": "Higher Low (5일 저가 $287.38 > 20일 저가 $287.38)",
+    "volComment": "거래량비 0.33 (위축)",
     "bbPosition": "중단근처",
-    "reason": "MACD 히스토그램이 악화되고 있으며, 5일 저가가 20일 저가와 같거나 낮아 약세 전환 가능성이 높다. 거래량도 위축되어 방향성 부재.",
-    "entry": 297.43,
-    "stop": 300.75,
-    "target": 287.38,
-    "invalidation": 300.75,
+    "reason": "MACD 히스토그램이 음전환 후 악화되고 있으며, 거래량이 5일 평균 대비 0.33으로 위축되어 추세 전환 동력이 부족하다. RSI 또한 중립 구간에서 횡보하며 방향성을 제시하지 못하고 있다.",
+    "entry": 296.55,
+    "stop": 287.38,
+    "target": 300.75,
+    "invalidation": 303.7,
     "weeklyConflict": "충돌 없음",
-    "profitTarget1": 290,
-    "profitTarget2": 280,
-    "stopLoss": 305,
-    "narrative": "현재 가격은 50일 이동평균선($286.20) 위에 있지만, 20일 이동평균선($303.74) 아래에서 저항받고 있다. MACD 히스토그램이 음수에서 더 악화되는 추세이며, 5일 저가가 20일 저가와 같거나 낮아 하락 압력이 우세하다. 거래량도 현저히 줄어 방향성을 잡기 어렵다. 287.38 지지선 이탈 시 매도 관점으로 접근한다.",
-    "patternNote": "현재 가격은 20일 볼린저밴드 중단 부근에서 횡보하며 방향성을 탐색 중이다.",
+    "profitTarget1": 300.75,
+    "profitTarget2": 313.51,
+    "stopLoss": 287.38,
+    "narrative": "현재가 $296.55는 SMA200 대비 11.15% 위에 있지만, SMA20 ($303.70) 저항에 막혀 하락 중이다. MACD 히스토그램이 음전환 후 악화되고 거래량이 위축되어 매수세가 약하다. 5일 저가가 20일 저가보다 높아 지지력을 확인했지만, 명확한 상승 추세로 보기 어렵다. 300.75 저항 돌파 여부를 확인하며 관망한다.",
+    "patternNote": "5일 저가가 20일 저가보다 높아 기술적 반등 가능성을 열어두지만, SMA20 저항이 강하다.",
     "keyPoints": [
-      "MACD 히스토그램 악화",
-      "5일 저가 20일 저가 하회 가능성",
-      "거래량 위축으로 인한 방향성 부재"
+      "SMA20 저항선 $303.70 돌파 여부 확인",
+      "MACD 히스토그램 악화 및 거래량 위축",
+      "5일 저가 $287.38 지지력 확인"
     ],
-    "riskNote": "287.38 지지선이 붕괴될 경우 급락 위험이 있다."
+    "riskNote": "SMA20 저항 돌파 실패 시 $287.38 지지선까지 하락할 위험이 있다."
   }
 }
