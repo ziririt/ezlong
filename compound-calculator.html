@@ -579,7 +579,7 @@ html, body {
                'Noto Sans KR', sans-serif;
 }
 @media (prefers-color-scheme: dark) {
-  .ez-footer { background: #1C1C1E; border-color: rgba(255,255,255,0.08); }
+  .ez-footer { background: #0A0A0A; border-color: rgba(255,255,255,0.10); }
 }
 .ez-footer-inner {
   max-width: 1080px; margin: 0 auto;
@@ -594,10 +594,10 @@ html, body {
 .ez-footer-brand { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
 .ez-footer-brand img { height: 22px; width: auto; display: block; }
 .ez-footer-brand-desc {
-  font-size: 13px; line-height: 1.65;
+  font-size: 14px; line-height: 1.65;
   color: #3C3C3E;
 }
-@media (prefers-color-scheme: dark) { .ez-footer-brand-desc { color: #AEAEB2; } }
+@media (prefers-color-scheme: dark) { .ez-footer-brand-desc { color: #F5F5F7; } }
 .ez-footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
 .ez-footer-col { display: flex; flex-direction: column; gap: 10px; }
 .ez-footer-col-title {
@@ -607,21 +607,21 @@ html, body {
 }
 @media (prefers-color-scheme: dark) { .ez-footer-col-title { color: #F5F5F7; } }
 .ez-footer-col a {
-  font-size: 13px; color: #3C3C3E;
+  font-size: 14px; color: #3C3C3E;
   text-decoration: none; transition: color .15s;
 }
 .ez-footer-col a:hover { color: #0071E3; }
 @media (prefers-color-scheme: dark) {
-  .ez-footer-col a { color: #AEAEB2; }
+  .ez-footer-col a { color: #F5F5F7; }
   .ez-footer-col a:hover { color: #0A84FF; }
 }
 .ez-footer-bottom {
-  font-size: 11px; color: #AEAEB2;
-  border-top: 1px solid rgba(0,0,0,0.08);
-  padding-top: 20px; line-height: 1.8;
+  font-size: 14px; color: #3C3C3E;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  padding-top: 16px; line-height: 1.8;
 }
 @media (prefers-color-scheme: dark) {
-  .ez-footer-bottom { border-color: rgba(255,255,255,0.08); color: #636366; }
+  .ez-footer-bottom { border-color: rgba(255,255,255,0.07); color: #F5F5F7; }
 }
 /* ══════════════════════════════════════════════════════════════════ */
 
@@ -632,15 +632,16 @@ html, body {
 .ez-footer-book-cover{flex-shrink:0;width:130px;border-radius:6px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.15);display:block;background:transparent;}
 .ez-footer-book-cover img{width:100%;display:block;}
 .ez-footer-book-info{display:flex;flex-direction:column;gap:3px;}
-.ez-footer-book-title{font-size:11px;font-weight:700;color:#1D1D1F;line-height:1.4;margin-bottom:3px;}
+.ez-footer-book-title{font-size:14px;font-weight:700;color:#1D1D1F;line-height:1.4;margin-bottom:6px;}
 @media(prefers-color-scheme:dark){.ez-footer-book-title{color:#F5F5F7;}}
-.ez-footer-book-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#AEAEB2;margin-top:5px;}
+.ez-footer-book-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#3C3C3E;margin-top:5px;}
+@media(prefers-color-scheme:dark){.ez-footer-book-label{color:#F5F5F7;}}
 .ez-footer-book-btns{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;}
-.ez-footer-book-btn{font-size:11px;color:#3C3C3E;text-decoration:none;transition:color .12s;white-space:nowrap;}
+.ez-footer-book-btn{font-size:14px;color:#3C3C3E;text-decoration:none;transition:color .12s;white-space:nowrap;}
 .ez-footer-book-btn:hover{background:#0071E3;color:#fff;}
 @media(prefers-color-scheme:dark){
-  .ez-footer-book-btn{background:rgba(255,255,255,.1);color:#AEAEB2;}
-  .ez-footer-book-btn:hover{background:#0A84FF;color:#fff;}
+  .ez-footer-book-btn{color:#F5F5F7;}
+  .ez-footer-book-btn:hover{color:#0A84FF;}
 }
 </style>
 </head>
@@ -1027,11 +1028,18 @@ function toKorean(n) {
 ═══════════════════════════════════════════════ */
 function fmtMoney(input, korId) {
   const raw = input.value.replace(/[^0-9]/g, '');
-  const num = parseInt(raw) || 0;
+  // 빈 입력이면 필드 비움
+  if (raw === '') {
+    input.value = '';
+    if (korId) { const el = document.getElementById(korId); if (el) el.textContent = ''; }
+    return;
+  }
+  const num = parseInt(raw, 10);
 
   // 커서 위치 우측 기준으로 보존
   const fromRight = input.value.length - (input.selectionStart || 0);
-  input.value = num > 0 ? num.toLocaleString('ko-KR') : '';
+  // 0은 '0' 그대로 표시, 양수는 천 단위 콤마 포맷
+  input.value = num === 0 ? '0' : num.toLocaleString('ko-KR');
   const newPos = Math.max(0, input.value.length - fromRight);
   try { input.setSelectionRange(newPos, newPos); } catch (e) {}
 
@@ -1353,10 +1361,28 @@ function readInputs(w) {
 }
 
 /* ═══════════════════════════════════════════════
+   입력 오류 표시 헬퍼
+═══════════════════════════════════════════════ */
+function showCalcError(msg) {
+  const sec = document.getElementById('results-section');
+  sec.innerHTML = `
+    <div class="card" style="border-left:4px solid #FF453A;padding:16px 20px;">
+      <div style="font-size:15px;font-weight:700;color:#FF453A;margin-bottom:6px;">입력 오류</div>
+      <div style="font-size:14px;color:var(--t2);">${msg}</div>
+    </div>`;
+  sec.classList.remove('hidden');
+  sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ═══════════════════════════════════════════════
    단일 계산
 ═══════════════════════════════════════════════ */
 function calculate() {
   const inp  = readInputs('a');
+  if (inp.principal === 0 && inp.payment === 0) {
+    showCalcError('원금 또는 매 회차 납입금 중 하나는 반드시 1원 이상 입력해야 합니다.');
+    return;
+  }
   const rows = calcCompound(inp.principal, inp.payment, inp.periods, inp.rate, inp.unit);
   if (!rows.length) return;
 
@@ -1385,6 +1411,20 @@ function calculateCompare() {
   const inpB = readInputs('b');
   const hasC = !document.getElementById('card-c').classList.contains('hidden');
   const inpC = hasC ? readInputs('c') : null;
+
+  // 원금 + 납입금 둘 다 0이면 오류
+  if (inpA.principal === 0 && inpA.payment === 0) {
+    showCalcError('설정 A — 원금 또는 납입금 중 하나는 반드시 1원 이상 입력해야 합니다.');
+    return;
+  }
+  if (inpB.principal === 0 && inpB.payment === 0) {
+    showCalcError('설정 B — 원금 또는 납입금 중 하나는 반드시 1원 이상 입력해야 합니다.');
+    return;
+  }
+  if (hasC && inpC.principal === 0 && inpC.payment === 0) {
+    showCalcError('설정 C — 원금 또는 납입금 중 하나는 반드시 1원 이상 입력해야 합니다.');
+    return;
+  }
 
   const rA = calcCompound(inpA.principal, inpA.payment, inpA.periods, inpA.rate, inpA.unit);
   const rB = calcCompound(inpB.principal, inpB.payment, inpB.periods, inpB.rate, inpB.unit);
