@@ -225,11 +225,12 @@ function getGear(dev200) {
 function calcBuyScore({ price, sma5, sma50 = null, sma200, rsi, macd, high52, low52, vix = 18,
                         rsi5dAgo = null, hist5dAgo = null,
                         high5d = null, low5d = null, high20dExcl = null, low20dExcl = null,
-                        volRatio = null }) {
+                        volRatio = null, upDays5 = null }) {
   if (!price || !sma200 || !rsi) return 50;
   let score = 0;
   const dev200 = (price - sma200) / sma200 * 100;
   const inUptrend       = dev200 > 0;                              // 기본: 200일선 위
+  const inNearUptrend   = dev200 > -2;                             // 200일선 -2% 이내 (회복 시도 구간) [2026-06-16 신규]
   const inStrongUptrend = inUptrend && sma50 != null && sma50 > sma200;  // 강화: 골든크로스 상태
 
   // 1. Gear 상태 (0~25점) — 200일선 기준 대세 판단
@@ -259,30 +260,33 @@ function calcBuyScore({ price, sma5, sma50 = null, sma200, rsi, macd, high52, lo
   }
 
   // 3. 단기 추세 정렬 (0~15점) — 5일선 위 = 상승 확인, 아래 = 눌림목 기회 [2026-06-16 개선]
-  // 구버전: 5일선 이격도(0~20pt) — 아래일수록 고점수 (상승장을 구조적으로 과소평가)
+  // inNearUptrend 추가: 200일선 -2% 이내는 회복 시도 구간으로 인정 [TV AI 피드백 반영]
   if (sma5) {
     const dev5 = (price - sma5) / sma5 * 100;
-    if (dev5 < -3)                    score += 15;  // 강한 눌림 — 매수 기회
-    else if (dev5 < -1.5)             score += 13;  // 눌림목
-    else if (dev5 < 0)                score += 11;  // 약한 눌림
-    else if (dev5 < 1.5 && inUptrend) score += 10;  // 5일선 근접 상방, 추세 확인
-    else if (dev5 < 3   && inUptrend) score += 8;   // 5일선 위, 적당한 모멘텀
-    else if (dev5 < 5   && inUptrend) score += 6;   // 단기 과도, 일부 조정 필요
-    else if (inUptrend)               score += 3;   // 5%↑ 이상 과도한 단기 급등
-    else                              score += 2;   // 하락 추세 중 5일선 위 = 약세
+    if (dev5 < -3)                           score += 15;  // 강한 눌림 — 매수 기회
+    else if (dev5 < -1.5)                    score += 13;  // 눌림목
+    else if (dev5 < 0)                       score += 11;  // 약한 눌림
+    else if (dev5 < 1.5 && inUptrend)        score += 10;  // 5일선 근접 상방, 추세 확인
+    else if (dev5 < 1.5 && inNearUptrend)    score += 8;   // 200일선 -2% 이내 + 5일선 위 = 회복 시도 인정
+    else if (dev5 < 3   && inUptrend)        score += 8;   // 5일선 위, 적당한 모멘텀
+    else if (dev5 < 3   && inNearUptrend)    score += 6;   // 200일선 근처에서 5일선 위
+    else if (dev5 < 5   && inUptrend)        score += 6;   // 단기 과도, 일부 조정 필요
+    else if (inUptrend)                      score += 3;   // 5%↑ 이상 과도한 단기 급등
+    else if (inNearUptrend)                  score += 3;   // 200일선 근처, 5일선 확실히 위
+    else                                     score += 1;   // 완전 하락추세 중 5일선 위 = 약세
   } else { score += 8; }
 
   // 4. 시장 환경 (0~15점) — VIX 확장: 안정적 상승장도 좋은 투자 환경 [2026-06-16 개선]
-  // 구버전: VIX 공포(0~15pt) — VIX<17 = 1pt (평온한 상승장을 완전히 무시)
+  // inNearUptrend 추가: 200일선 근처 회복 시도 구간도 일부 인정 [TV AI 피드백 반영]
   if (vix > 35)                      score += 15;  // 공포 — 최고 매수 기회
   else if (vix > 28)                 score += 12;  // 불안
   else if (vix > 22)                 score += 9;   // 경계
-  else if (vix > 17)                 score += inUptrend ? 8 : 7;
-  else if (vix > 14)                 score += inStrongUptrend ? 11 : inUptrend ? 8 : 5;  // 골든크로스 상승장 = 최강
-  else                               score += inStrongUptrend ? 6 : inUptrend ? 4 : 3;   // VIX<14 과도 안정
+  else if (vix > 17)                 score += inUptrend ? 8 : inNearUptrend ? 7 : 6;
+  else if (vix > 14)                 score += inStrongUptrend ? 11 : inUptrend ? 8 : inNearUptrend ? 6 : 5;  // 골든크로스=최강, 200일선 근처도 인정
+  else                               score += inStrongUptrend ? 6 : inUptrend ? 4 : inNearUptrend ? 3 : 2;   // VIX<14 과도 안정
 
   // 5. MACD 종합 (0~14점) — MACD 라인 위치 + 히스토그램 심도 통합 [2026-06-16 개선]
-  // 구버전: 히스토그램만 0~10pt (MACD 라인이 양수인지 음수인지 전혀 구분 안 함)
+  // 히스토 양전환(음→양) 강화: 골든크로스 직전 가장 강한 매수 신호 [TV AI 피드백 반영]
   {
     const macdLine = macd?.macd ?? 0;
     const hist     = macd?.histogram ?? 0;
@@ -298,11 +302,13 @@ function calcBuyScore({ price, sma5, sma50 = null, sma200, rsi, macd, high52, lo
       if (hist < -3)      macdScore = 10;  // 깊은 과매도 → 반등 기대
       else if (hist < -1) macdScore = 7;
       else if (hist < 0)  macdScore = 4;
-      else                macdScore = 6;   // MACD 음수지만 히스토 양전환 (골든크로스 직전)
+      else                macdScore = 9;   // MACD 음수지만 히스토 양전환 = 골든크로스 직전 강한 신호 [6→9]
     }
     if (hist5dAgo !== null) {
-      const histDelta = hist - hist5dAgo;
-      if (histDelta > 0.5)       macdScore += 2;  // 히스토 개선 중
+      const histDelta          = hist - hist5dAgo;
+      const histTurnedPositive = hist >= 0 && hist5dAgo < 0;  // 음→양 전환 = 강한 반등 신호
+      if (histTurnedPositive)    macdScore += 3;  // 양전환 보너스 강화 [신규]
+      else if (histDelta > 0.5)  macdScore += 2;  // 히스토 개선 중
       else if (histDelta < -0.5) macdScore -= 2;  // 히스토 악화 중
     }
     score += Math.max(0, Math.min(14, macdScore));
@@ -331,6 +337,16 @@ function calcBuyScore({ price, sma5, sma50 = null, sma200, rsi, macd, high52, lo
     else if (volRatio > 0.8) score += 3;  // 정상 수준
     else if (volRatio > 0.5) score += 2;  // 약간 부진
     else                     score += 1;  // 매우 부진 (신호 신뢰도 낮음)
+  }
+
+  // 9. 방향성 팩터 (±4pt) — 최근 5거래일 상승 일수 [TV AI 피드백 반영, 2026-06-16 신규]
+  // 절대값이 아닌 "방향"을 직접 반영. 4~5일 연속 상승 = 강한 추세 확인
+  if (upDays5 !== null) {
+    if      (upDays5 >= 4) score += 4;  // 4~5일 상승 = 강한 상승 방향
+    else if (upDays5 >= 3) score += 2;  // 3일 상승 = 상승 우세
+    else if (upDays5 === 1) score -= 1; // 1일 상승 = 하락 방향 우세
+    else if (upDays5 === 0) score -= 3; // 전거래일 모두 하락 = 강한 하락 방향
+    // upDays5 === 2: 중립 (0점 추가 없음)
   }
 
   return Math.min(100, Math.max(0, Math.round(score)));
@@ -418,6 +434,11 @@ function processSymbol(raw, symbol, vixPrice) {
   const high20dExcl = closes.length > 20 ? Math.max(...closes.slice(-20, -5)) : null;
   const low20dExcl  = closes.length > 20 ? Math.min(...closes.slice(-20, -5)) : null;
 
+  // 방향성 팩터 — 최근 5거래일 중 상승 일수 (TV AI 피드백 반영, 2026-06-16)
+  const upDays5 = closes.length > 6
+    ? closes.slice(-6).reduce((cnt, c, i, arr) => i === 0 ? cnt : (c > arr[i - 1] ? cnt + 1 : cnt), 0)
+    : null;
+
   // 52주 고저: Stooq는 meta 없으므로 최근 252봉에서 계산
   const high52 = meta?.fiftyTwoWeekHigh ?? Math.max(...closes.slice(-252));
   const low52  = meta?.fiftyTwoWeekLow  ?? Math.min(...closes.slice(-252));
@@ -428,7 +449,7 @@ function processSymbol(raw, symbol, vixPrice) {
   const gear   = getGear(dev200);
 
   const vix = vixPrice || 18;
-  const obj = { symbol, price, change, changePct, sma5, sma20, sma50, sma200, rsi, macd, high52, low52, dev200, dev5, dev20, gear, vix, rsi5dAgo, hist5dAgo, high5d, low5d, high20dExcl, low20dExcl, volRatio };
+  const obj = { symbol, price, change, changePct, sma5, sma20, sma50, sma200, rsi, macd, high52, low52, dev200, dev5, dev20, gear, vix, rsi5dAgo, hist5dAgo, high5d, low5d, high20dExcl, low20dExcl, volRatio, upDays5 };
 
   return {
     ...obj,
