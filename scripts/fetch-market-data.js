@@ -110,13 +110,21 @@ async function fetchStooqHistory(symbol) {
   // 최근 2년치 (약 504 거래일)
   const recent  = rows.slice(-504);
   const closes  = recent.map(row => row.close);
+  const volumes = recent.map(row => row.volume || 0);
   const last    = recent[recent.length - 1];
   const prev    = recent[recent.length - 2];
   const change  = last.close - prev.close;
   const changePct = prev.close > 0 ? (change / prev.close * 100) : 0;
 
+  // volRatio: 당일 거래량 / 최근 20일 평균 거래량 (당일 제외)
+  const latestVol = volumes[volumes.length - 1] || 0;
+  const vol20     = volumes.slice(-21, -1);
+  const vol20Avg  = vol20.length > 0 ? vol20.reduce((a, b) => a + b, 0) / vol20.length : 0;
+  const volRatio  = (vol20Avg > 1000) ? latestVol / vol20Avg : null;
+
   return {
     closes,
+    volRatio,
     price:       last.close,
     change,
     changePct,
@@ -214,52 +222,93 @@ function getGear(dev200) {
   return 1;
 }
 
-function calcBuyScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18,
+function calcBuyScore({ price, sma5, sma50 = null, sma200, rsi, macd, high52, low52, vix = 18,
                         rsi5dAgo = null, hist5dAgo = null,
-                        high5d = null, low5d = null, high20dExcl = null, low20dExcl = null }) {
+                        high5d = null, low5d = null, high20dExcl = null, low20dExcl = null,
+                        volRatio = null }) {
   if (!price || !sma200 || !rsi) return 50;
   let score = 0;
   const dev200 = (price - sma200) / sma200 * 100;
-  if (dev200 > 2)        score += 25;
-  else if (dev200 > -2)  score += 12;
-  if (rsi < 30)          score += 25;
-  else if (rsi < 40)     score += 20;
-  else if (rsi < 50)     score += 14;
-  else if (rsi < 60)     score += 8;
-  else if (rsi < 70)     score += 3;
-  // RSI 추세 보정 ±5pt — 5일 전 RSI 기준으로 판단 (38→55 회복 vs 72→55 냉각)
+  const inUptrend       = dev200 > 0;                              // 기본: 200일선 위
+  const inStrongUptrend = inUptrend && sma50 != null && sma50 > sma200;  // 강화: 골든크로스 상태
+
+  // 1. Gear 상태 (0~25점) — 200일선 기준 대세 판단
+  if (dev200 > 2)       score += 25;
+  else if (dev200 > -2) score += 12;
+  // dev200 ≤ -2: 0점 (하락 추세)
+
+  // 2. RSI 구간 (0~20점) — 골든크로스 상승장에서 RSI 60~70 = 건강한 모멘텀으로 인정 [2026-06-16 개선]
+  if (rsi < 30)      score += 20;
+  else if (rsi < 40) score += 16;
+  else if (rsi < 50) score += 12;
+  else if (rsi < 60) score += 8;
+  else if (rsi < 70) score += inStrongUptrend ? 13 : inUptrend ? 10 : 4;  // 골든크로스 확인시 최대, 단순 상승장은 중간
+  else if (rsi < 80) score += 2;
+  // RSI ≥ 80: 0점 (극단 과매수)
+
+  // 2a. RSI 모멘텀 보정 (−5~+5pt) — 과열 경고 먼저, 그 다음 회복/모멘텀 보너스
   if (rsi5dAgo !== null) {
     const rsiDelta = rsi - rsi5dAgo;
-    if (rsi5dAgo < 40 && rsiDelta > 3)        score += 5;  // 과매도탈출 — 강한 회복 신호
-    else if (rsi5dAgo < 45 && rsiDelta > 3)   score += 3;  // 저RSI에서 회복 중
-    else if (rsi5dAgo > 65 && rsiDelta < -3)  score += 2;  // 과매수냉각 — 살짝 긍정
-    else if (rsi > 65 && rsiDelta > 5)        score -= 5;  // 이미 고RSI에서 급등 중
-    else if (rsi > 65 && rsiDelta > 3)        score -= 3;
+    if (rsi > 65 && rsiDelta > 5)              score -= 5;  // 이미 고RSI 급등 중 (최우선 감점)
+    else if (rsi > 65 && rsiDelta > 3)         score -= 3;  // 고RSI 상승 중
+    else if (rsi5dAgo < 40 && rsiDelta > 3)    score += 5;  // 과매도탈출 — 강한 회복 신호
+    else if (rsi5dAgo < 45 && rsiDelta > 3)    score += 3;  // 저RSI에서 회복 중
+    else if (rsiDelta > 10 && inUptrend)       score += 4;  // 상승장 강한 RSI 모멘텀 [신규]
+    else if (rsiDelta > 5  && inUptrend)       score += 2;  // 상승장 RSI 상승 중 [신규]
+    else if (rsi5dAgo > 65 && rsiDelta < -3)   score += 2;  // 과매수냉각 — 살짝 긍정
   }
+
+  // 3. 단기 추세 정렬 (0~15점) — 5일선 위 = 상승 확인, 아래 = 눌림목 기회 [2026-06-16 개선]
+  // 구버전: 5일선 이격도(0~20pt) — 아래일수록 고점수 (상승장을 구조적으로 과소평가)
   if (sma5) {
     const dev5 = (price - sma5) / sma5 * 100;
-    if (dev5 < -3)         score += 20;
-    else if (dev5 < -1.5)  score += 16;
-    else if (dev5 < 0)     score += 11;
-    else if (dev5 < 1.5)   score += 6;
-    else                   score += 2;
-  } else { score += 10; }
-  if (vix > 35)          score += 15;
-  else if (vix > 28)     score += 12;
-  else if (vix > 22)     score += 8;
-  else if (vix > 17)     score += 5;
-  else                   score += 1;
-  const hist = macd?.histogram ?? 0;
-  if (hist < -2)         score += 10;
-  else if (hist < 0)     score += 7;
-  else if (hist < 1)     score += 4;
-  else if (hist < 3)     score += 2;
-  // MACD 히스토그램 추세 보정 ±3pt — 음수→덜음(개선)과 양수→더양(악화) 구분
-  if (hist5dAgo !== null) {
-    const histDelta = hist - hist5dAgo;
-    if (histDelta > 0.5)       score += 3;  // 개선 중
-    else if (histDelta < -0.5) score -= 2;  // 악화 중
+    if (dev5 < -3)                    score += 15;  // 강한 눌림 — 매수 기회
+    else if (dev5 < -1.5)             score += 13;  // 눌림목
+    else if (dev5 < 0)                score += 11;  // 약한 눌림
+    else if (dev5 < 1.5 && inUptrend) score += 10;  // 5일선 근접 상방, 추세 확인
+    else if (dev5 < 3   && inUptrend) score += 8;   // 5일선 위, 적당한 모멘텀
+    else if (dev5 < 5   && inUptrend) score += 6;   // 단기 과도, 일부 조정 필요
+    else if (inUptrend)               score += 3;   // 5%↑ 이상 과도한 단기 급등
+    else                              score += 2;   // 하락 추세 중 5일선 위 = 약세
+  } else { score += 8; }
+
+  // 4. 시장 환경 (0~15점) — VIX 확장: 안정적 상승장도 좋은 투자 환경 [2026-06-16 개선]
+  // 구버전: VIX 공포(0~15pt) — VIX<17 = 1pt (평온한 상승장을 완전히 무시)
+  if (vix > 35)                      score += 15;  // 공포 — 최고 매수 기회
+  else if (vix > 28)                 score += 12;  // 불안
+  else if (vix > 22)                 score += 9;   // 경계
+  else if (vix > 17)                 score += inUptrend ? 8 : 7;
+  else if (vix > 14)                 score += inStrongUptrend ? 11 : inUptrend ? 8 : 5;  // 골든크로스 상승장 = 최강
+  else                               score += inStrongUptrend ? 6 : inUptrend ? 4 : 3;   // VIX<14 과도 안정
+
+  // 5. MACD 종합 (0~14점) — MACD 라인 위치 + 히스토그램 심도 통합 [2026-06-16 개선]
+  // 구버전: 히스토그램만 0~10pt (MACD 라인이 양수인지 음수인지 전혀 구분 안 함)
+  {
+    const macdLine = macd?.macd ?? 0;
+    const hist     = macd?.histogram ?? 0;
+    let macdScore;
+    if (macdLine > 0) {
+      // MACD 라인 양수 = 중기 추세 건강
+      if (hist > 1)       macdScore = 12;  // 완전 강세 (라인+히스토 모두 양수)
+      else if (hist > -1) macdScore = 9;   // 강세, 히스토 소폭 음
+      else if (hist > -2) macdScore = 6;   // 히스토 약화 중
+      else                macdScore = 4;   // MACD 양수지만 히스토 깊은 음 (냉각)
+    } else {
+      // MACD 라인 음수 = 과매도 심도로 반등 기회 가늠
+      if (hist < -3)      macdScore = 10;  // 깊은 과매도 → 반등 기대
+      else if (hist < -1) macdScore = 7;
+      else if (hist < 0)  macdScore = 4;
+      else                macdScore = 6;   // MACD 음수지만 히스토 양전환 (골든크로스 직전)
+    }
+    if (hist5dAgo !== null) {
+      const histDelta = hist - hist5dAgo;
+      if (histDelta > 0.5)       macdScore += 2;  // 히스토 개선 중
+      else if (histDelta < -0.5) macdScore -= 2;  // 히스토 악화 중
+    }
+    score += Math.max(0, Math.min(14, macdScore));
   }
+
+  // 6. 52주 위치 (0~5점) — 저점 근처일수록 장기 매수 가치↑
   if (high52 && low52 && high52 > low52) {
     const pos52 = (price - low52) / (high52 - low52) * 100;
     if (pos52 < 20)      score += 5;
@@ -267,11 +316,23 @@ function calcBuyScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18,
     else if (pos52 < 60) score += 3;
     else if (pos52 < 80) score += 1;
   }
-  // 가격 패턴 ±3pt — Higher Low(회복) vs Lower High(약화)
+
+  // 7. 가격 패턴 ±3pt — Higher Low(회복) vs Lower High(약화)
   if (high5d !== null && low5d !== null && high20dExcl !== null && low20dExcl !== null) {
     if (low5d > low20dExcl * 1.005)        score += 3;  // Higher Low — 저점 높아짐
     else if (high5d < high20dExcl * 0.995) score -= 3;  // Lower High — 고점 낮아짐
   }
+
+  // 8. 거래량 확인 (0~7pt) — 거래량 뒷받침 유무 [2026-06-16 TV AI 추천]
+  // volRatio = 당일거래량 / 20일평균. null이면 데이터 없음 → 0점 (중립)
+  if (volRatio !== null) {
+    if      (volRatio > 1.5) score += 7;  // 거래량 폭증 — 움직임 강한 신뢰
+    else if (volRatio > 1.2) score += 5;  // 평균 이상
+    else if (volRatio > 0.8) score += 3;  // 정상 수준
+    else if (volRatio > 0.5) score += 2;  // 약간 부진
+    else                     score += 1;  // 매우 부진 (신호 신뢰도 낮음)
+  }
+
   return Math.min(100, Math.max(0, Math.round(score)));
 }
 
@@ -339,7 +400,7 @@ function calcSellScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18
 // ─── 종목 처리 ──────────────────────────────────────────────────────────────
 
 function processSymbol(raw, symbol, vixPrice) {
-  const { closes, price, change, changePct, meta, extPrice, extChange, extChangePct, marketState } = raw;
+  const { closes, volRatio = null, price, change, changePct, meta, extPrice, extChange, extChangePct, marketState } = raw;
 
   const sma5   = calcSMA(closes, 5);
   const sma20  = calcSMA(closes, 20);
@@ -367,7 +428,7 @@ function processSymbol(raw, symbol, vixPrice) {
   const gear   = getGear(dev200);
 
   const vix = vixPrice || 18;
-  const obj = { symbol, price, change, changePct, sma5, sma20, sma50, sma200, rsi, macd, high52, low52, dev200, dev5, dev20, gear, vix, rsi5dAgo, hist5dAgo, high5d, low5d, high20dExcl, low20dExcl };
+  const obj = { symbol, price, change, changePct, sma5, sma20, sma50, sma200, rsi, macd, high52, low52, dev200, dev5, dev20, gear, vix, rsi5dAgo, hist5dAgo, high5d, low5d, high20dExcl, low20dExcl, volRatio };
 
   return {
     ...obj,
