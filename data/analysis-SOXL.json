@@ -3,46 +3,46 @@
   "name": "반도체 3X ETF",
   "assetType": "etf_leveraged",
   "market": "us",
-  "updatedAt": "2026-06-15T17:09:22.210Z",
+  "updatedAt": "2026-06-15T18:13:26.385Z",
   "price": {
-    "current": 269.2,
-    "change": 34.52,
-    "changePct": 14.71,
+    "current": 272.66,
+    "change": 37.98,
+    "changePct": 16.18,
     "high52": 284.58,
-    "low52": 67.98,
-    "pos52": 92.9,
+    "low52": 70.48,
+    "pos52": 94.4,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 213.965,
-    "sma50": 157.0924,
-    "sma100": 107.8628,
-    "sma200": 74.3274,
-    "rsi": 62.95,
+    "sma20": 214.138,
+    "sma50": 157.1616,
+    "sma100": 107.8974,
+    "sma200": 74.3447,
+    "rsi": 63.39,
     "macd": {
-      "macd": 21.684027,
-      "signal": 23.162506,
-      "histogram": -1.478478
+      "macd": 21.960038,
+      "signal": 23.217708,
+      "histogram": -1.25767
     },
     "bb": {
-      "upper": 287.6275,
-      "middle": 213.965,
-      "lower": 140.3025,
-      "bandwidth": 0.6885
+      "upper": 288.3329,
+      "middle": 214.138,
+      "lower": 139.9431,
+      "bandwidth": 0.693
     }
   },
   "levels": {
     "swingResistance": 284.58,
     "swingSupport": 135.02,
     "pivot": {
-      "pp": 229.6,
-      "r1": 324.18,
-      "r2": 379.16,
-      "s1": 174.62,
-      "s2": 80.04
+      "pp": 230.75,
+      "r1": 326.49,
+      "r2": 380.31,
+      "s1": 176.93,
+      "s2": 81.19
     }
   },
   "analysis": {
@@ -51,33 +51,33 @@
     "support": 135.02,
     "resistance": 284.58,
     "rsiStatus": "중립",
-    "macdStatus": "중립",
+    "macdStatus": "강세확산",
     "bbStatus": "상단접근",
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도탈출 + Higher Low 회복 초입",
-    "rsiTrajectory": "54.4 → 62.9 (과매도탈출)",
-    "macdTrajectory": "히스토 -2.5463 → -1.4785 (개선)",
-    "pricePattern": "Higher Low (5일 저가 $157.56 > 20일 저가 $135.02)",
-    "volComment": "거래량비 0.33 (위축)",
+    "scoreReason": "RSI 상승 + MACD 개선 + Higher Low",
+    "rsiTrajectory": "54.4 → 63.4 (중립지속 중)",
+    "macdTrajectory": "히스토 -2.5463 → -1.2577 (개선)",
+    "pricePattern": "5일 고가($272.93) < 20일 고가($284.58) * 0.995 이지만, 5일 저가($157.56) > 20일 저가($135.02) * 1.005 이므로 Higher Low 회복 신호",
+    "volComment": "거래량비 0.36 (위축)",
     "bbPosition": "상단근처",
-    "reason": "RSI가 과매도 구간을 벗어나 상승 중이며, 5일 저가가 20일 저가보다 높아 회복 신호가 나타났다. MACD 히스토그램도 개��되는 추세다.",
-    "entry": 260,
-    "stop": 230,
-    "target": 324.18,
+    "reason": "현재가($272.66)는 52주 고가($284.58)에 근접하���, RSI는 63.4로 상승세를 보이고 MACD 히스토그램은 개선되고 있다. 5일 저가가 20일 저가보다 높아 회복 신호가 관찰된다.",
+    "entry": 270,
+    "stop": 250,
+    "target": 326.49,
     "invalidation": 135.02,
-    "weeklyConflict": "충돌 없음",
-    "profitTarget1": 284.58,
-    "profitTarget2": 300,
-    "stopLoss": 230,
-    "narrative": "현재가 $269.20은 52주 고가 $284.58에 근접하며 강한 상승세를 보이고 있다. RSI는 62.9로 중립 구간에 진입했고, MACD 히스토그램은 개선되고 있다. 5일 저가가 20일 저가보다 높아 추가 상승 가능성이 높다. 1차 목표가는 52주 고가 $284.58이며, 손절선은 $230.00으로 설정한다.",
-    "patternNote": "주봉 RSI 79.2로 과매수 구간에 진입했으나, 일봉상으로는 회복 추세가 나타나고 있다.",
+    "weeklyConflict": "주봉 RSI 79.4 (과매수)이나 일봉 신호 우선",
+    "profitTarget1": 295,
+    "profitTarget2": 310,
+    "stopLoss": 250,
+    "narrative": "Direxion Daily Semiconductor Bull 3X는 현재 $272.66에 거래되며 52주 고가 $284.58에 근접하고 있다. RSI는 63.4로 상승 중이며 MACD 히스토그램은 개선되는 추세다. 5일 저가가 20일 저가보다 높아 회복 신호가 관찰된다. 주봉 RSI는 과매수 구간이지만 일봉 기준으로는 상승 추세가 유지되고 있어 매수 관점으로 접근한다. 1차 목표가는 $295.00, 2차 목표가는 $310.00으로 설정하며, 손절선은 $250.00으로 관리한다.",
+    "patternNote": "현재 가격은 52주 고가에 근접하며 상승 채널을 유지하고 있다.",
     "keyPoints": [
-      "일봉 RSI 과매도 탈출 및 상승세",
-      "5일 저가 > 20일 저가 (Higher Low 패턴)",
-      "MACD 히스토그램 개선 추세"
+      "RSI 상승 및 MACD 히스토그램 개선",
+      "5일 저가 > 20일 저가로 회복 신호",
+      "주봉 과매수 대비 일봉 강세 유지"
     ],
-    "riskNote": "주봉 RSI가 과매수 구간에 있어 단기 조정 가능성이 존재한다."
+    "riskNote": "주봉 RSI가 79.4로 과매수 구간에 진입하여 단기 조정 가능성이 존재한다."
   }
 }
