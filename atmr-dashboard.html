@@ -3913,10 +3913,14 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
 
   // ── 레버리지 가능 여부 판단 (종합 신호 기반) ──────────
   // 2x 조건: 종합 Gear 3 + 매수 매력도 50점 이상(관망 이상) + 매도 압력 65점 미만(익절 구간 아님)
-  // 3x 조건: 2x 조건 + QQQ RSI > 55 + MACD 양전환 + 매도 압력 55점 미만 + 매수 60점 이상(소량 진입 수준)
-  // 임계값 근거: buy 50 = 시장 신호 탭 '관망(50+)' 기준선, buy 60 = '소량 정찰대(60+)' 기준선
-  const lev2x = compGear === 3 && compBuy >= 50 && compSell < 65;
-  const lev3x = compGear === 3 && rsi > 55 && macdHist > 0 && compSell < 55 && compBuy >= 60;
+  // 3x 조건: 2단계 분리 (TV AI 피드백 반영, 2026-06-16)
+  // MACD 라인(macd.macd) > 0 = 중기 추세 양호 → 부분 진입 허용
+  // MACD 히스토그램 > 0 = 라인이 시그널 위 → 적극 진입
+  // 히스토그램 음수 = 단기 숨고르기일 뿐, 중기 추세가 살아있으면 부분 진입 가능
+  const macdLine  = qqq?.macd?.macd ?? 0;  // MACD 라인 (양수 = 중기 상승 추세)
+  const lev2x     = compGear === 3 && compBuy >= 50 && compSell < 65;
+  const lev3xFull = compGear === 3 && rsi > 55 && macdHist > 0 && compSell < 55 && compBuy >= 60;  // 5조건 완전 충족 = 적극 진입
+  const lev3x     = compGear === 3 && rsi > 55 && macdLine > 0  && compSell < 55 && compBuy >= 60;  // MACD 라인 양수 = 부분 진입 허용
 
   // ── 보유/익절 종합 판단 ────────────────────────
   // holdLabel과 buyAction이 동일한 compBuy+compGear+sellPressure 기준에서 흘러내리도록 통일.
@@ -3980,10 +3984,16 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   }
 
   let lev3Label, lev3Color, lev3Sub;
-  if (lev3x) {
-    lev3Label = '신규 진입 가능 — 전체의 5~20% 이내 한정';
+  if (lev3xFull) {
+    // 5조건 완전 충족 = 적극 진입
+    lev3Label = '3배수 신규 진입 가능 — 전체의 5~20% 이내, 1차(50%) 먼저 진입';
     lev3Color = 'var(--gr)';
-    lev3Sub   = `전 조건 충족: Gear ${compGear} ✓ · RSI ${rsi.toFixed(0)}>55 ✓ · MACD>0 ✓ · 매도 압력 ${compSell}점 양호`;
+    lev3Sub   = `5조건 완전 충족: Gear ${compGear} ✓ · RSI ${rsi.toFixed(0)}>55 ✓ · MACD 라인+히스토그램 모두 양수 ✓ · 매수 ${compBuy}점 ✓ · 매도 압력 ${compSell}점 양호`;
+  } else if (lev3x) {
+    // MACD 라인 양수 but 히스토그램 음수 = 단기 숨고르기, 부분 진입 허용
+    lev3Label = `3배수 1차(50%) 부분 진입 허용 — MACD 라인 +${macdLine.toFixed(2)} (중기 추세 양호), 단기 숨고르기 중`;
+    lev3Color = 'var(--or)';
+    lev3Sub   = `MACD 라인 양수(중기 추세 살아있음) / 히스토그램 ${macdHist.toFixed(2)} (단기 숨고르기). 라인이 양수인 한 부분(50%) 진입 허용. 히스토그램 양전환 확인 후 나머지 50% 추가하세요.`;
   } else if (compSell >= 55) {
     lev3Label = '3배수 신규 진입은 지금 당장 하지 마세요 — 기존 TQQQ·SOXL이 있다면 2배수 이하로 먼저 교체해두는 것을 권합니다';
     lev3Color = 'var(--rd)';
@@ -3993,7 +4003,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     lev3Color = 'var(--rd)';
     lev3Sub   = `종합 Gear ${compGear} — 3배수 레버리지 가장 먼저 처분해야 할 구간`;
   } else {
-    const condStr = `RSI>55: ${rsi>55?'✓':'✗ ('+rsi.toFixed(0)+')'} · MACD>0: ${macdHist>0?'✓':'✗'} · 매수 60점+: ${compBuy>=60?'✓':'✗ ('+compBuy+'점)'}`;
+    const condStr = `RSI>55: ${rsi>55?'✓':'✗ ('+rsi.toFixed(0)+')'} · MACD 라인>0: ${macdLine>0?'✓ (+'+macdLine.toFixed(2)+')':'✗ ('+macdLine.toFixed(2)+')'} · 매수 60점+: ${compBuy>=60?'✓':'✗ ('+compBuy+'점)'}`;
     lev3Label = '3배수 신규 진입은 아직 이른 시점 — 아래 조건들이 좀 더 갖춰진 뒤에 검토하세요';
     lev3Color = 'var(--t1)';
     lev3Sub   = condStr;
@@ -4367,10 +4377,16 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   // ── 3배수 지금 행동 ──
   let act3, rsn3, col3, bg3, bd3;
   if (compGear === 3) {
-    if (lev3x) {
-      act3 = '3배수 보유 유지 가능 — 전 조건 충족';
-      rsn3 = `상승 추세 + RSI ${rsi.toFixed(0)} + 매수 ${compBuy}점 + 매도 압력 ${compSell}점 — 3배수 허용 조건 모두 통과. 전체 계좌의 20%를 절대 넘지 마세요.`;
+    if (lev3xFull) {
+      // 5조건 완전 충족 = 적극 진입
+      act3 = '3배수 보유·신규 진입 모두 가능 — 전 조건 충족, 적극 진입 허용';
+      rsn3 = `Gear ${compGear} + RSI ${rsi.toFixed(0)} + MACD 라인·히스토그램 모두 양수 + 매수 ${compBuy}점 + 매도 압력 ${compSell}점 — 5조건 완전 통과. 1차(30~50%) 진입 후 신호 강화 확인하며 추가하세요. 전체 계좌 20% 한도는 지켜주세요.`;
       col3 = 'var(--gr)'; bg3 = 'var(--gr-s)'; bd3 = 'rgba(48,209,88,0.3)';
+    } else if (lev3x) {
+      // MACD 라인 양수 but 히스토그램 음수 = 단기 숨고르기, 부분 진입 허용
+      act3 = `3배수 1차(50%) 분할 진입 고려 — MACD 라인 +${macdLine.toFixed(2)} 양수, 단기 숨고르기 중`;
+      rsn3 = `MACD 라인 +${macdLine.toFixed(2)} (중기 추세 살아있음). 히스토그램 ${macdHist.toFixed(2)}은 단기 숨고르기. Gear ${compGear} + RSI ${rsi.toFixed(0)} + 매수 ${compBuy}점 — 지금 1차(50%) 먼저 진입하고, 히스토그램이 양전환하면 나머지 50% 추가하세요. 전체 계좌 20% 한도는 반드시 지키세요.`;
+      col3 = 'var(--or)'; bg3 = 'rgba(255,159,10,0.08)'; bd3 = 'rgba(255,159,10,0.3)';
     } else if (compSell >= 55) {
       act3 = '지금 즉시 2배수로 낮추세요';
       rsn3 = `매도 압력 ${compSell}점이 3배수 기준(55점)을 넘었습니다. 스윙 시그널 탭과 동일 판단 — 지금 TQQQ·SOXL을 팔고 QLD·SSO 또는 QQQ로 교체하세요. 기다릴수록 손실이 빠르게 커집니다.`;
@@ -4380,13 +4396,13 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       rsn3 = `RSI ${rsi.toFixed(0)}으로 3배수 허용 기준(55 이상)을 하회합니다. 모멘텀이 약해지고 있는 신호입니다. 조건이 다시 갖춰지면 그때 올리면 됩니다.`;
       col3 = 'var(--or)'; bg3 = 'rgba(255,159,10,0.08)'; bd3 = 'rgba(255,159,10,0.3)';
     } else {
-      // lev3x 실패 — 정확한 조건 진단 (compSell<55·rsi>55인데 나머지 조건 실패)
+      // lev3x 완전 실패 (MACD 라인도 음수이거나 매수 점수 부족)
       const _f = [];
-      if (macdHist <= 0) _f.push(`MACD ${macdHist >= 0 ? '+' : ''}${macdHist.toFixed(2)} → 양전환 미확인`);
+      if (macdLine <= 0) _f.push(`MACD 라인 ${macdLine.toFixed(2)} → 라인 음전환 (기준: 0 이상)`);
       if (compBuy < 60)  _f.push(`매수 신호 ${compBuy}점 → 기준 60점 미달`);
       const _failNote = _f.length ? _f.join(' / ') : '5조건 중 일부 미충족';
-      act3 = '3배수 조건 일부 미충족 — 지금은 2배수 유지 권장';
-      rsn3 = `3배수 허용 5조건 중 일부 미충족. ${_failNote}. 추세와 매수 신호는 괜찮지만 모멘텀 확인이 필요합니다. 조건이 갖춰지면 그때 올리세요.`;
+      act3 = '3배수 조건 미충족 — 지금은 2배수 유지 권장';
+      rsn3 = `${_failNote}. 추세와 매수 신호가 갖춰지면 그때 3배수로 올리세요.`;
       col3 = 'var(--or)'; bg3 = 'rgba(255,159,10,0.08)'; bd3 = 'rgba(255,159,10,0.3)';
     }
   } else if (compGear === 2) {
@@ -4465,8 +4481,12 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
           el3x.innerHTML = `<span class="warn">3배수 진입 조건 일부 미충족 (매수 ${compBuy}점·매도 ${compSell}점)</span> — 현재 시장 조건을 재확인하고 조건이 완전히 맞춰지지 않으면 2배수로 낮추세요`;
         }
       } else {
-        // lev3x=true — 실제 수치 표시
-        el3x.innerHTML = `<span class="ok">Gear ${compGear} + 매수 ${compBuy}점 + 매도 압력 ${compSell}점 — 3조건 충족</span> — TQQQ·UPRO 유지하세요. 계좌 20% 한도 초과 금지`;
+        // lev3x=true — 세분화 (lev3xFull vs 부분 허용)
+        if (lev3xFull) {
+          el3x.innerHTML = `<span class="ok">5조건 완전 충족 — TQQQ·UPRO 보유 유지 및 추가도 가능</span>. Gear ${compGear} + RSI ${rsi.toFixed(0)} + MACD 라인·히스토그램 모두 양수 + 매수 ${compBuy}점 + 매도 ${compSell}점. 계좌 20% 한도 초과 금지`;
+        } else {
+          el3x.innerHTML = `<span class="ok">MACD 단기 숨고르기지만 보유 유지 OK</span>. 라인 +${macdLine.toFixed(2)} (중기 추세 살아있음) / 히스토그램 ${macdHist.toFixed(2)} (단기 조정). 히스토그램 양전환 후 추가 매수 검토. 계좌 20% 한도 지키세요`;
+        }
       }
     }
 
@@ -4546,14 +4566,16 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     // ── tier3 신규진입 ──
     const li3new = document.getElementById('tier3-new-g3');
     if (li3new) {
-      if (lev3x) {
-        li3new.innerHTML = '<span class="ok">TQQQ·UPRO 지금 진입 가능</span> — Gear 3 + 매수 ' + compBuy + '점 + 매도압력 ' + compSell + '점 + RSI ' + rsi.toFixed(0) + ' + MACD ' + (macdHist >= 0 ? '+' : '') + macdHist.toFixed(2) + ' — 5조건 충족. 전체 계좌 5~20% 한도 엄수';
+      if (lev3xFull) {
+        li3new.innerHTML = '<span class="ok">TQQQ·UPRO 적극 진입 가능</span> — Gear ' + compGear + ' + RSI ' + rsi.toFixed(0) + ' + MACD 라인·히스토그램 모두 양수 + 매수 ' + compBuy + '점 + 매도압력 ' + compSell + '점 — 5조건 완전 충족. 전체 계좌 5~20% 한도 엄수';
+      } else if (lev3x) {
+        li3new.innerHTML = '<span class="ok">TQQQ·UPRO 1차(50%) 부분 진입 가능</span> — MACD 라인 +' + macdLine.toFixed(2) + ' (중기 추세 OK) / 히스토그램 ' + macdHist.toFixed(2) + ' (단기 숨고르기). 히스토그램 양전환 후 나머지 50% 추가. 전체 계좌 5~20% 한도 엄수';
       } else if (compSell >= 55) {
         li3new.innerHTML = '<span class="no">TQQQ·UPRO 신규 매수 금지</span> — 매도 압력 ' + compSell + '점 기준(55점) 초과. 3배수는 절대 진입 불가';
       } else if (rsi < 55) {
-        li3new.innerHTML = '<span class="no">TQQQ·UPRO 신규 매수 금지</span> — RSI ' + rsi.toFixed(0) + ' (기준 55 미달). RSI 55↑ + MACD 양전 동시 충족 필요';
-      } else if (macdHist <= 0) {
-        li3new.innerHTML = '<span class="no">TQQQ·UPRO 신규 매수 금지</span> — MACD ' + macdHist.toFixed(2) + ' 음수. 모멘텀 양전 확인 후 진입';
+        li3new.innerHTML = '<span class="no">TQQQ·UPRO 신규 매수 금지</span> — RSI ' + rsi.toFixed(0) + ' (기준 55 미달). RSI 55↑ + MACD 라인 양전 동시 충족 필요';
+      } else if (macdLine <= 0) {
+        li3new.innerHTML = '<span class="no">TQQQ·UPRO 신규 매수 금지</span> — MACD 라인 ' + macdLine.toFixed(2) + ' 음수. 중기 추세 전환 확인 후 진입';
       } else {
         li3new.innerHTML = '<span class="no">TQQQ·UPRO 신규 매수 금지</span> — 매수 ' + compBuy + '점 (기준 60점 미달). 조건 강화 후 진입';
       }
