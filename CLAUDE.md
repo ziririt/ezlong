@@ -69,6 +69,46 @@ git tag -f "stable-$(date +%Y%m%d)" && git push origin --tags
 
 **"캐시 삭제하라" 권유는 위 트리에서 마지막 단계에서만. 절대 첫 번째 대응으로 하지 말 것.**
 
+### 8. 공유 함수 동기화 규칙 — 핵심 함수가 여러 파일에 존재한다
+
+`calcBuyScore` / `calcSellScore`는 **두 파일에 동시 존재**하며, 하나만 고치면 화면에 반영되지 않는다.
+
+| 함수 | 파일 1 (서버 계산) | 파일 2 (클라이언트 재계산) |
+|------|--------------------|---------------------------|
+| `calcBuyScore` | `scripts/fetch-market-data.js` | `atmr-dashboard.html` (line ~2151) |
+| `calcSellScore` | `scripts/fetch-market-data.js` | `atmr-dashboard.html` (line ~2253) |
+
+**규칙:**
+- 두 함수 중 하나라도 수정 시 **반드시 두 파일 모두** 동시에 수정한다.
+- 수정 전 grep으로 전체 파일 확인:
+```bash
+grep -rn "function calcBuyScore\|function calcSellScore" . --include="*.html" --include="*.js" | grep -v ".backup/"
+```
+- `atmr-dashboard.html`은 JSON에서 데이터를 받아 클라이언트에서 **재계산하여 덮어쓴다**. 서버 JSON의 점수는 무시된다. 이것이 핵심 구조다.
+
+### 9. .firebaseignore 관리 — 드래프트 파일 배포 차단
+
+`.firebaseignore`에 반드시 포함되어야 할 패턴:
+```
+atmr-dashboard [0-9]*.html   # 숫자 붙은 드래프트 버전 전부 제외
+_github-setup/               # 서버 스크립트 폴더 제외
+```
+
+알고리즘 변경 배포 전, 숫자 버전 파일이 `.firebaseignore`에 제외되어 있는지 반드시 확인한다.
+
+### 10. 배포 전 3분 체크리스트 (알고리즘 변경 시 필수)
+
+```
+[ ] 1. 백업 스크립트 실행 완료 확인
+[ ] 2. 공유 함수 전체 grep — 동기화 누락 파일 없는지
+[ ] 3. .firebaseignore — 드래프트 파일 제외 패턴 확인
+[ ] 4. git status — 의도치 않은 파일 포함 여부 확인
+[ ] 5. git pull 먼저 실행
+[ ] 6. git add [파일 명시] — 절대 git add -A 금지
+[ ] 7. git commit → git push → firebase deploy --only hosting
+[ ] 8. https://ezlong-541a8.web.app/ 에서 직접 기능 확인
+```
+
 ---
 
 ## 라이트모드 가독성 — 절대 금지 목록 (2026-06-14 명문화)

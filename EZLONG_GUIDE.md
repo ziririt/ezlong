@@ -76,6 +76,45 @@ cp ~/Documents/ezlong-backups/session_20260614_*/analyst-reports.html \
 git tag -f "stable-$(date +%Y%m%d)" && git push origin --tags
 ```
 
+### 0-7. 공유 함수 수정 전 전수 검색 필수 (2026-06-15 추가)
+
+**배경:** `calcBuyScore` / `calcSellScore`가 `fetch-market-data.js`(서버)와 `atmr-dashboard.html`(클라이언트) **두 곳에 동시 존재**한다.
+서버 JSON의 점수값은 `atmr-dashboard.html`에서 클라이언트 재계산으로 **완전히 덮어쓰인다**.
+한 곳만 고치면 화면에 반영되지 않는다 — 이 사실을 모르고 서버 파일만 수정해 화면이 바뀌지 않는 사태를 방지하기 위해 이 규칙을 추가.
+
+**규칙:**
+- 어떤 함수든 수정 전 grep으로 전체 코드베이스에서 검색한다:
+```bash
+grep -rn "function calcBuyScore\|function calcSellScore" . --include="*.html" --include="*.js" | grep -v ".backup/"
+```
+- 검색 결과의 **모든 파일을 동시에** 수정한다. 누락 파일이 있으면 배포해도 효과 없음.
+- 알고리즘 변경 후 **단위 테스트**로 양쪽 결과값이 동일한지 확인한다.
+
+### 0-8. .firebaseignore 관리 — 드래프트 파일 차단 (2026-06-15 추가)
+
+**배경:** 숫자 버전 드래프트 파일(`atmr-dashboard 1.html` 등)이 Firebase에 배포되어 운영 서버에 불필요한 파일이 쌓였다.
+
+**규칙:**
+- 새 HTML 파일·폴더 추가 시 운영 불필요 항목은 즉시 `.firebaseignore`에 추가한다.
+- 현재 적용 중인 패턴: `atmr-dashboard [0-9]*.html`, `_github-setup/`
+- 배포 전 `.firebaseignore` 확인 — 누락된 드래프트 패턴 없는지 점검한다.
+
+### 0-9. 배포 전 알고리즘 변경 체크리스트 (2026-06-15 추가)
+
+알고리즘 수정을 포함하는 배포 시 반드시 이 순서로 진행한다:
+
+```
+[ ] 1. 백업 스크립트 실행 완료
+[ ] 2. 공유 함수 grep → 동기화 누락 파일 없는지 확인
+[ ] 3. .firebaseignore → 드래프트 파일 제외 패턴 확인
+[ ] 4. git status → 의도치 않은 파일 포함 여부 확인
+[ ] 5. git pull origin main
+[ ] 6. git add [수정 파일 명시 — 절대 git add -A 금지]
+[ ] 7. git commit → git push origin main
+[ ] 8. firebase deploy --only hosting
+[ ] 9. https://ezlong-541a8.web.app/ 에서 직접 기능 확인
+```
+
 ---
 
 ## 1. 프로젝트 구조
@@ -396,3 +435,261 @@ git rebase --abort  # (필요한 경우)
 8. git commit → git push → firebase deploy + URL 확인
 
 > **핵심:** 3·4번만 하면 기존 모든 페이지에 자동 반영. 개별 HTML 파일을 손댈 필요 없다.
+
+---
+
+## 11. LightweightCharts 차트 크기 제어 — 확정 패턴 (2026-06-14)
+
+`chart-analysis.html`은 TradingView의 오픈소스 **LightweightCharts v4.2.0**을 사용한다.
+이 라이브러리는 캔버스 기반 렌더링을 하기 때문에, 차트 크기 제어에 고유한 규칙이 있다.
+
+### 11-1. 차트 크기를 CSS로만 제어하면 안 되는 이유
+
+LightweightCharts는 컨테이너 div(`#chart-main` 등)에 **inline style**로 높이를 직접 쓴다.
+CSS 룰셋은 inline style에 밀리기 때문에, CSS `height: 380px`와 LightweightCharts의 내부 값이 충돌하면 항상 LightweightCharts가 이긴다.
+반대로 CSS에 `!important`를 쓰면 LightweightCharts의 렌더 크기와 CSS 크기가 어긋나서 빈 공간이 생긴다.
+
+### 11-2. 풀스크린 차트 크기 제어 — 확정 패턴
+
+**JS로 높이를 계산해서 `applyOptions`에 넣는 방식은 쓰지 않는다.**
+타이밍 문제(`requestAnimationFrame`, `getBoundingClientRect`, `clientHeight` 모두 실패)가 반복됐다.
+
+**올바른 패턴:**
+
+```css
+/* CSS flex가 비율을 계산 */
+.ca-charts.ca-fullscreen {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+.ca-charts.ca-fullscreen > .ca-chart-wrap { min-height: 0; }
+.ca-charts.ca-fullscreen > .ca-chart-wrap:nth-child(1) { flex: 70; }
+.ca-charts.ca-fullscreen > .ca-chart-wrap:nth-child(2) { flex: 15; }
+.ca-charts.ca-fullscreen > .ca-chart-wrap:nth-child(3) { flex: 15; }
+
+/* chart div가 flex wrap을 100% 채움 */
+.ca-charts.ca-fullscreen #chart-main,
+.ca-charts.ca-fullscreen #chart-rsi,
+.ca-charts.ca-fullscreen #chart-macd {
+  height: 100% !important;
+  width: 100% !important;
+}
+```
+
+```javascript
+// 진입: autoSize:true로 LightweightCharts가 CSS 컨테이너를 자동 감지
+mainChart.applyOptions({ autoSize: true });
+rsiChart .applyOptions({ autoSize: true });
+macdChart.applyOptions({ autoSize: true });
+
+// 해제: autoSize 끄고 원래 고정 크기 복원
+const _mob = window.innerWidth < 768;
+mainChart.applyOptions({ autoSize: false, height: _mob ? 260 : 380 });
+rsiChart .applyOptions({ autoSize: false, height: _mob ? 110 : 140 });
+macdChart.applyOptions({ autoSize: false, height: _mob ? 110 : 140 });
+```
+
+**왜 이게 동작하는가:**
+- CSS flex는 동기적으로 비율을 계산해서 각 wrap의 높이를 확정한다.
+- `height: 100% !important`로 chart div가 wrap을 꽉 채운다.
+- `autoSize: true`를 주면 LightweightCharts가 내부 ResizeObserver로 컨테이너 크기를 감지하고, JS가 개입하지 않아도 알아서 크기를 맞춘다.
+- JS의 타이밍 문제(RAF, setTimeout 등) 자체가 사라진다.
+
+### 11-3. 비율 변경 방법
+
+비율을 바꾸고 싶으면 CSS의 `flex` 숫자만 바꾸면 된다. JS 건드릴 필요 없다.
+
+```css
+/* 예: 주가창 60%, RSI 20%, MACD 20% 로 바꾸고 싶을 때 */
+.ca-charts.ca-fullscreen > .ca-chart-wrap:nth-child(1) { flex: 60; }
+.ca-charts.ca-fullscreen > .ca-chart-wrap:nth-child(2) { flex: 20; }
+.ca-charts.ca-fullscreen > .ca-chart-wrap:nth-child(3) { flex: 20; }
+```
+
+### 11-4. 지시 문구 (풀스크린 비율 변경)
+
+> "chart-analysis.html 풀스크린 차트 비율을 주가창 70%, RSI 15%, MACD 15%로 바꿔줘.
+> **CSS flex 방식, autoSize:true 패턴**으로."
+
+이 한 줄이면 Claude가 즉시 올바른 방식으로 처리한다.
+
+---
+
+## 12. LightweightCharts 초기 표시 기간 제한 — 확정 패턴 (2026-06-14)
+
+### 12-1. 시도했다가 실패한 방법 3가지 (절대 다시 쓰지 말 것)
+
+LightweightCharts에서 "차트 초기 로드 시 마지막 N봉만 보여줘"를 구현할 때,
+아래 방식은 **모두 동작하지 않는다.** 이유: `fitContent()` 호출 → 타임축 sync 이벤트 발동 → ResizeObserver 초기 콜백 → rightPriceScale 200ms 동기화 등이 연쇄 실행되는 과정에서 설정한 범위가 덮어씌워진다.
+
+**실패 1 — `setVisibleRange(시간값)` + `setTimeout(0)`**
+```javascript
+// 동작 안 함. ResizeObserver가 먼저 fitContent를 재실행함.
+setTimeout(() => {
+  mainChart.timeScale().setVisibleRange({ from: fromTime, to: toTime });
+}, 0);
+```
+
+**실패 2 — `setVisibleRange(시간값)` + `setTimeout(300)`**
+```javascript
+// 동작 안 함. subscribeVisibleTimeRangeChange sync 루프에 휩쓸림.
+setTimeout(() => {
+  mainChart.timeScale().setVisibleRange({ from: fromTime, to: toTime });
+}, 300);
+```
+
+**실패 3 — `setVisibleLogicalRange(인덱스값)` + `setTimeout(300)`**
+```javascript
+// 동작 안 함. 내부 타이밍과의 충돌은 시간값/인덱스값 무관하게 동일하게 발생.
+setTimeout(() => {
+  mainChart.timeScale().setVisibleLogicalRange({ from: 380, to: 500 });
+}, 300);
+```
+
+### 12-2. 올바른 패턴 — 데이터 슬라이스
+
+**차트에 넘기는 `ohlcv`·`ind` 배열 자체를 잘라서 넘긴다.**
+`fitContent()`가 잘린 N봉에 자동으로 맞춰지므로 범위 제한 API를 쓸 필요가 없다.
+
+```javascript
+function initCharts(ohlcv, ind, analysis) {
+  // ... 차트 인스턴스 제거, DOM 요소 조회 ...
+  if (!mainEl || !rsiEl || !macdEl) return;
+
+  // ← 여기서 바로 슬라이스 (이후 모든 코드가 잘린 배열을 자동으로 사용)
+  {
+    const _mob = window.innerWidth < 768;
+    const _keep = _mob ? 40 : 120;   // 모바일 40거래일, PC 120거래일
+    if (ohlcv.length > _keep) {
+      const _from = ohlcv.length - _keep;
+      ohlcv = ohlcv.slice(_from);
+      const _newInd = {};
+      for (const [k, v] of Object.entries(ind)) {
+        _newInd[k] = Array.isArray(v) ? v.slice(_from) : v;
+      }
+      ind = _newInd;
+    }
+  }
+
+  // 이후 코드는 ohlcv, ind를 그대로 사용 — 변경 불필요
+  // fitContent()가 슬라이스된 N봉에 맞게 자동 조정됨
+```
+
+**핵심 규칙:**
+- `ohlcv`와 `ind` 배열을 동일한 `_from` 인덱스로 슬라이스해야 인덱스 정합이 유지된다.
+- `ind` 값 중 배열이 아닌 것(숫자, 객체 등)은 그대로 통과시킨다.
+- 서버사이드 pre-compute된 인디케이터 값은 전체 기간 기준으로 정확하게 계산돼 있으므로, 마지막 N개만 잘라도 값은 정확하다.
+
+### 12-3. 지시 문구 (다음에 같은 작업 시)
+
+> "chart-analysis.html 초기 표시 기간을 모바일 X거래일, PC Y거래일로 바꿔줘.
+> **데이터 슬라이스 방식**으로."
+
+`initCharts` 함수 진입 직후의 슬라이스 블록에서 `_keep` 값만 바꾸면 된다.
+
+---
+
+## 13. 공유 로직 관리 대장 — 다중 파일 동기화 규칙 (2026-06-15)
+
+### 13-1. 배경 및 핵심 구조
+
+`atmr-dashboard.html`은 서버가 생성한 `data/atmr-data.json`을 fetch해서 그 안의 `buyScore`/`sellScore`를 그냥 쓰지 않는다.
+클라이언트 JS에서 **원시 지표값(`rsi`, `macd`, `sma5`, `closes` 등)을 다시 받아 재계산해서 덮어쓴다.**
+
+```
+fetch-market-data.js (서버)            atmr-dashboard.html (클라이언트)
+  ↓ calcBuyScore() 계산                  ↓ 동일 이름의 calcBuyScore() 재계산
+  ↓ JSON에 buyScore 저장                 ↓ JSON의 buyScore 무시하고 자체 계산 값 사용
+  ↓ atmr-data.json 생성                  ↓ 화면에 최종 표시
+```
+
+**결론:** 서버 JSON의 `buyScore`는 로깅·히스토리 목적으로만 존재. 실제 화면은 클라이언트 재계산 값.
+
+### 13-2. 현재 동기화 대상 파일 목록
+
+| 함수 | 파일 | 위치 (약) | 비고 |
+|------|------|-----------|------|
+| `calcBuyScore` | `scripts/fetch-market-data.js` | line ~280 | 서버 실행 |
+| `calcBuyScore` | `atmr-dashboard.html` | line ~2151 | 클라이언트 실행, 화면에 반영 |
+| `calcSellScore` | `scripts/fetch-market-data.js` | line ~310 | 서버 실행 |
+| `calcSellScore` | `atmr-dashboard.html` | line ~2253 | 클라이언트 실행, 화면에 반영 |
+
+새 파일이 추가되면 이 목록도 업데이트한다.
+
+### 13-3. 동기화 확인 명령
+
+```bash
+# 함수 존재 위치 전체 검색
+grep -rn "function calcBuyScore\|function calcSellScore" . \
+  --include="*.html" --include="*.js" | grep -v ".backup/"
+
+# 두 파일의 파라미터 시그니처 비교
+grep -A2 "function calcBuyScore" scripts/fetch-market-data.js
+grep -A2 "function calcBuyScore" atmr-dashboard.html
+```
+
+### 13-4. 알고리즘 변경 시 단위 테스트 패턴
+
+```javascript
+// 수정 후 Node.js REPL 또는 브라우저 콘솔에서 확인
+// 과매도탈출 시나리오: rsi5dAgo=38, rsi=55 → buyScore +5점 기대
+const score = calcBuyScore({
+  price: 200, sma5: 198, sma200: 180,
+  rsi: 55, macd: { histogram: 0.3 },
+  high52: 250, low52: 140, vix: 18,
+  rsi5dAgo: 38, hist5dAgo: 0.2,
+  high5d: 202, low5d: 196,
+  high20dExcl: 205, low20dExcl: 190
+});
+console.log(score); // 기대값: 이전 스냅샷 대비 +5점
+```
+
+### 13-5. 파라미터 전달 구조 차이
+
+서버(fetch-market-data.js)와 클라이언트(atmr-dashboard.html)는 파라미터 전달 방식이 약간 다르다:
+
+**서버:**
+```javascript
+calcBuyScore({ price, sma5, sma200, rsi, macd, high52, low52, vix,
+               rsi5dAgo, hist5dAgo, high5d, low5d, high20dExcl, low20dExcl })
+// 각 변수를 직접 전달
+```
+
+**클라이언트 (`atmr-dashboard.html`):**
+```javascript
+calcBuyScore({
+  price: data.price, sma5: data.sma5, sma200: data.sma200,
+  rsi: data.rsi, macd: data.macd, high52: data.high52w,
+  low52: data.low52w, vix: data.vix,
+  rsi5dAgo: data.rsi5dAgo,       // JSON 필드에서 직접
+  hist5dAgo: data.hist5dAgo,     // JSON 필드에서 직접
+  high5d: data.high5d, low5d: data.low5d,
+  high20dExcl: data.high20dExcl, low20dExcl: data.low20dExcl
+})
+// data 객체의 프로퍼티를 펼쳐서 전달
+```
+
+새 파라미터 추가 시 양쪽 전달 방식 모두 업데이트해야 한다.
+
+### 13-6. 신규 지표 추가 시 체크리스트
+
+새 지표를 `calcBuyScore`에 추가할 때 반드시 확인:
+
+```
+[ ] 1. fetch-market-data.js: processSymbol에서 새 지표값 계산
+[ ] 2. fetch-market-data.js: obj 객체에 새 필드 추가
+[ ] 3. fetch-market-data.js: calcBuyScore 파라미터 추가 + 로직 수정
+[ ] 4. fetch-market-data.js: calcSellScore 동일 작업
+[ ] 5. atmr-dashboard.html: calcBuyScore 파라미터 추가 + 동일 로직
+[ ] 6. atmr-dashboard.html: calcSellScore 동일 작업
+[ ] 7. atmr-dashboard.html: calcBuyScore 호출부 (line ~2918)에 새 필드 전달
+[ ] 8. atmr-dashboard.html: calcSellScore 호출부 (line ~2919)에 새 필드 전달
+[ ] 9. 단위 테스트로 양쪽 동일 결과 확인
+```
+
+### 13-7. generate-chart-analysis.js — 이미 선진화된 파일
+
+`scripts/generate-chart-analysis.js`는 이미 `rsi5dAgo`, `volRatio`, 볼린저밴드, Higher Low/Lower High를 독자적으로 구현하고 있다.
+이 파일은 AI 차트분석용 별도 파이프라인으로 `atmr-dashboard`와 공유 로직 없음.
+중복 구현이 아니며, 무결하다. 건드리기 전 반드시 파일 목적 먼저 확인할 것.
