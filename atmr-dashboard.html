@@ -1052,13 +1052,13 @@ li.gear-other-sep { display: none !important; }
   font-size: 15px; font-weight: 400; color: var(--t3); margin-left: 8px;
 }
 .tv-chart-frame {
-  height: 700px;
-  overflow: hidden;        /* TradingView 저작권 div 오버플로우 차단 → 차트 아래 흰 여백 제거 */
-  background: var(--card); /* 혹시 남는 틈이 있으면 카드 배경색으로 채움 (흰색 방지) */
+  height: 670px;           /* 위젯(700px)보다 30px 작게 → overflow:hidden이 저작권 바(~28px) 클리핑 */
+  overflow: hidden;        /* 핵심: 프레임(670) < 위젯(700) 차이를 잘라냄 — 같은 높이면 작동 안 함 */
+  background: var(--card);
 }
 .tv-chart-frame .tradingview-widget-container,
 .tv-chart-frame .tradingview-widget-container__widget {
-  height: 700px !important;
+  height: 700px !important; /* 프레임(670px)보다 반드시 크게 유지해야 overflow:hidden 효과 발생 */
   width: 100% !important;
 }
 
@@ -1142,8 +1142,8 @@ li.gear-other-sep { display: none !important; }
   .gear-items { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
   .split-344 { grid-template-columns: 1fr; }
   .tab-btn { font-size: 14px; padding: 16px 6px; min-height: 72px; }
-  /* 모바일 차트 높이 조정 */
-  .tv-chart-frame { height: 500px !important; }
+  /* 모바일 차트 높이 조정 — 프레임(470) < 위젯(500) 구조 동일하게 유지 */
+  .tv-chart-frame { height: 470px !important; }
   .tv-chart-frame .tradingview-widget-container,
   .tv-chart-frame .tradingview-widget-container__widget { height: 500px !important; }
 }
@@ -5057,7 +5057,7 @@ function renderHistory() {
 function initTradingViewCharts() {}
 
 // ── TradingView 차트 동적 생성 (다크모드 자동 감지) ────────
-const _TV_H = 700; // 차트 고정 높이 — CSS .tv-chart-frame 과 동일하게 유지
+const _TV_H = 700; // 위젯 고정 높이 — CSS .tv-chart-frame(670px)보다 30px 크게 유지해야 저작권 바 클리핑 작동
 function loadTVChart(frameId, symbol) {
   const frame = document.getElementById(frameId);
   if (!frame) return;
