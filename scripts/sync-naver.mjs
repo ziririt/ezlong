@@ -14,7 +14,7 @@ const NAVER_UID = 'unis';
 const NAVER_CHANNEL = 'something';
 const CHANNEL_BASE = `https://contents.premium.naver.com/${NAVER_UID}/${NAVER_CHANNEL}`;
 const AUTHOR_URL = `${CHANNEL_BASE}/authors/192d7ba6b7bltz`;
-const MAX_ARTICLES = 5;
+const MAX_ARTICLES = 10;
 
 const FETCH_HEADERS = {
   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
