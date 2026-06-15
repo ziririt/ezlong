@@ -3,81 +3,81 @@
   "name": "러셀 2000 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-15T18:13:55.850Z",
+  "updatedAt": "2026-06-15T18:54:42.091Z",
   "price": {
-    "current": 294.92,
-    "change": 1.97,
-    "changePct": 0.67,
+    "current": 294.69,
+    "change": 1.74,
+    "changePct": 0.59,
     "high52": 297.9,
     "low52": 206.81,
-    "pos52": 96.7,
+    "pos52": 96.5,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 286.561,
-    "sma50": 279.1262,
-    "sma100": 267.9586,
-    "sma200": 256.4937,
-    "rsi": 61.49,
+    "sma20": 286.5495,
+    "sma50": 279.1216,
+    "sma100": 267.9563,
+    "sma200": 256.4925,
+    "rsi": 61.3,
     "macd": {
-      "macd": 3.300596,
-      "signal": 3.299628,
-      "histogram": 0.000968
+      "macd": 3.282247,
+      "signal": 3.295958,
+      "histogram": -0.013711
     },
     "bb": {
-      "upper": 298.1851,
-      "middle": 286.561,
-      "lower": 274.9369,
-      "bandwidth": 0.0811
+      "upper": 298.1409,
+      "middle": 286.5495,
+      "lower": 274.9581,
+      "bandwidth": 0.0809
     }
   },
   "levels": {
     "swingResistance": null,
     "swingSupport": 270.63,
     "pivot": {
-      "pp": 287.82,
-      "r1": 305,
-      "r2": 315.09,
-      "s1": 277.73,
-      "s2": 260.55
+      "pp": 287.74,
+      "r1": 304.85,
+      "r2": 315.01,
+      "s1": 277.58,
+      "s2": 260.47
     }
   },
   "analysis": {
     "trend": "강세",
     "strength": 4,
     "support": 270.63,
-    "resistance": 305,
+    "resistance": 297.9,
     "rsiStatus": "중립",
-    "macdStatus": "강세확산",
+    "macdStatus": "중립",
     "bbStatus": "중단",
-    "stage": "상승추세",
+    "stage": "축적구간",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도탈출 + MACD 개선 + Higher Low 회복",
-    "rsiTrajectory": "51.4 → 61.5 (과매도탈출 중)",
-    "macdTrajectory": "히스토 -0.8976 → 0.0010 (개선 중)",
-    "pricePattern": "5일 고가($297.90)가 20일 고가($297.90)와 같고, 5일 저가($277.62)가 20일 저가($270.63)보다 높음 (Higher Low 형성)",
-    "volComment": "거래량비 0.45 (위축)",
+    "scoreReason": "RSI 과매도탈출+Higher Low 회복 초입",
+    "rsiTrajectory": "51.4 → 61.3 (과매도탈출)",
+    "macdTrajectory": "히스토 -0.8976 → -0.0137 (개선)",
+    "pricePattern": "5일 저가($277.62) > 20일 저가($270.63) * 1.005 → Higher Low 회복",
+    "volComment": "거래량비 0.48 (위축)",
     "bbPosition": "중단근처",
-    "reason": "RSI가 51.4에서 61.5로 상승하며 과매도 구간을 탈출��고, MACD 히스토그램이 음수에서 양수로 전환되며 개선되고 있다. 5일 저가가 20일 저가보다 높아 회복 신호가 나타났다.",
-    "entry": 295,
-    "stop": 270.63,
-    "target": 305,
+    "reason": "RSI가 51.4에서 61.3으로 상승하며 과매도 구간을 탈출했고, 5일 저가가 20일 저가보다 높아 Higher Low 패턴이 형성���었습니다. MACD 히스토그램도 개선되는 모습을 보입니다.",
+    "entry": 290,
+    "stop": 277.58,
+    "target": 304.85,
     "invalidation": 270.63,
     "weeklyConflict": "충돌 없음",
     "profitTarget1": 300,
-    "profitTarget2": 305,
-    "stopLoss": 270.63,
-    "narrative": "현재가 $294.92는 52주 고가 $297.90에 근접하며 강한 상승세를 보이고 있다. RSI는 51.4에서 61.5로 상승하며 과매도 구간을 벗어났고, MACD 히스토그램은 음수에서 양수로 전환되며 상승 모멘텀이 강화되고 있다. 5일 저가가 20일 저가보다 높은 Higher Low 패턴이 형성되어 추가 상승 가능성이 높다. 거래량은 위축되었으나, 기술적 지표들이 긍정적인 신호를 보내고 있어 매수 진입을 결정한다.",
-    "patternNote": "현재 가격은 52주 고가에 근접하며 강한 상승 추세를 유지하고 있다.",
+    "profitTarget2": 304.85,
+    "stopLoss": 277.58,
+    "narrative": "현재가 $294.69는 52주 고가 $297.90에 근접하며 강한 상승세를 보이고 있습니다. SMA5($289.02), SMA20($286.55), SMA50($279.12) 등 단기 및 중기 이동평균선 위에 안착했으며, RSI는 61.3으로 상승 추세입니다. MACD 히스토그램이 개선되고 있으며, 5일 저가가 20일 저가보다 높아 Higher Low 패턴이 형성되었습니다. 52주 고가 돌파 시 추가 상승이 기대됩니다.",
+    "patternNote": "현재 가격은 52주 고가에 근접하며 상승 채널을 유지하고 있습니다.",
     "keyPoints": [
-      "RSI 51.4 → 61.5 상승 (과매도 탈출)",
-      "MACD 히스토그램 -0.8976 → 0.0010 개선 (상승 모멘텀 강화)",
-      "5일 저가 > 20일 저가 (Higher Low 형성)"
+      "RSI 과매도 탈출 및 상승 추세",
+      "Higher Low 패턴 형성",
+      "단기 이동평균선 지지 확인"
     ],
-    "riskNote": "거래량이 위축된 상태에서 52주 고가 저항을 돌파하지 못할 경우 하락할 위험이 있다."
+    "riskNote": "거래량이 위축된 상태에서 52주 고가 돌파 시 매물 저항에 부딪힐 수 있습니다."
   }
 }

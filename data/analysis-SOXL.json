@@ -3,46 +3,46 @@
   "name": "반도체 3X ETF",
   "assetType": "etf_leveraged",
   "market": "us",
-  "updatedAt": "2026-06-15T18:13:26.385Z",
+  "updatedAt": "2026-06-15T18:54:12.394Z",
   "price": {
-    "current": 272.66,
-    "change": 37.98,
-    "changePct": 16.18,
+    "current": 274.12,
+    "change": 39.44,
+    "changePct": 16.81,
     "high52": 284.58,
     "low52": 70.48,
-    "pos52": 94.4,
+    "pos52": 95.1,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 214.138,
-    "sma50": 157.1616,
-    "sma100": 107.8974,
-    "sma200": 74.3447,
-    "rsi": 63.39,
+    "sma20": 214.211,
+    "sma50": 157.1908,
+    "sma100": 107.912,
+    "sma200": 74.352,
+    "rsi": 63.58,
     "macd": {
-      "macd": 21.960038,
-      "signal": 23.217708,
-      "histogram": -1.25767
+      "macd": 22.076504,
+      "signal": 23.241001,
+      "histogram": -1.164497
     },
     "bb": {
-      "upper": 288.3329,
-      "middle": 214.138,
-      "lower": 139.9431,
-      "bandwidth": 0.693
+      "upper": 288.6386,
+      "middle": 214.211,
+      "lower": 139.7834,
+      "bandwidth": 0.6949
     }
   },
   "levels": {
     "swingResistance": 284.58,
     "swingSupport": 135.02,
     "pivot": {
-      "pp": 230.75,
-      "r1": 326.49,
-      "r2": 380.31,
-      "s1": 176.93,
-      "s2": 81.19
+      "pp": 231.24,
+      "r1": 327.46,
+      "r2": 380.8,
+      "s1": 177.9,
+      "s2": 81.68
     }
   },
   "analysis": {
@@ -51,33 +51,33 @@
     "support": 135.02,
     "resistance": 284.58,
     "rsiStatus": "중립",
-    "macdStatus": "강세확산",
+    "macdStatus": "중립",
     "bbStatus": "상단접근",
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 상승 + MACD 개선 + Higher Low",
-    "rsiTrajectory": "54.4 → 63.4 (중립지속 중)",
-    "macdTrajectory": "히스토 -2.5463 → -1.2577 (개선)",
-    "pricePattern": "5일 고가($272.93) < 20일 고가($284.58) * 0.995 이지만, 5일 저가($157.56) > 20일 저가($135.02) * 1.005 이므로 Higher Low 회복 신호",
-    "volComment": "거래량비 0.36 (위축)",
+    "scoreReason": "RSI 과매도탈출 + Higher Low 회복 초입",
+    "rsiTrajectory": "54.4 → 63.6 (과매도탈출 중)",
+    "macdTrajectory": "히스토 -2.5463 → -1.1645 (개선 중)",
+    "pricePattern": "Higher Low 회복 신호",
+    "volComment": "거래량비 0.39 (위축)",
     "bbPosition": "상단근처",
-    "reason": "현재가($272.66)는 52주 고가($284.58)에 근접하���, RSI는 63.4로 상승세를 보이고 MACD 히스토그램은 개선되고 있다. 5일 저가가 20일 저가보다 높아 회복 신호가 관찰된다.",
-    "entry": 270,
-    "stop": 250,
-    "target": 326.49,
-    "invalidation": 135.02,
-    "weeklyConflict": "주봉 RSI 79.4 (과매수)이나 일봉 신호 우선",
-    "profitTarget1": 295,
-    "profitTarget2": 310,
-    "stopLoss": 250,
-    "narrative": "Direxion Daily Semiconductor Bull 3X는 현재 $272.66에 거래되며 52주 고가 $284.58에 근접하고 있다. RSI는 63.4로 상승 중이며 MACD 히스토그램은 개선되는 추세다. 5일 저가가 20일 저가보다 높아 회복 신호가 관찰된다. 주봉 RSI는 과매수 구간이지만 일봉 기준으로는 상승 추세가 유지되고 있어 매수 관점으로 접근한다. 1차 목표가는 $295.00, 2차 목표가는 $310.00으로 설정하며, 손절선은 $250.00으로 관리한다.",
-    "patternNote": "현재 가격은 52주 고가에 근접하며 상승 채널을 유지하고 있다.",
+    "reason": "일봉 RSI가 54.4에서 63.6으로 상승하며 과매도 구간을 벗어났고, 5일 저가($157.56)가 20일 저가($135.02)보다 높아 회복 신호가 나타났다. 주봉 RSI 79.6은 과매수 구간이지만, 일봉의 회복 신호가 더 강하다.",
+    "entry": 274.12,
+    "stop": 231.24,
+    "target": 284.58,
+    "invalidation": 231.24,
+    "weeklyConflict": "주봉 RSI 79.6은 과매수이나 일봉 신호 우선",
+    "profitTarget1": 284.58,
+    "profitTarget2": 327.46,
+    "stopLoss": 231.24,
+    "narrative": "현재가 $274.12는 52주 고가 $284.58에 근접하며 강한 상승세를 보이고 있다. 일봉 RSI가 54.4에서 63.6으로 상승하며 과매도 구간을 탈출했고, 5일 저가가 20일 저가보다 높아 회복 패턴이 나타났다. 거래량은 위축되었으나, RSI와 가격 패턴의 긍정적 신호가 매수세를 지지한다. 1차 목표가는 52주 고가인 $284.58이며, 손절선은 피벗 지지선인 $231.24로 설정한다.",
+    "patternNote": "5일 저가($157.56)가 20일 저가($135.02)보다 높아 Higher Low 패턴이 형성되며 회복세를 나타내고 있다.",
     "keyPoints": [
-      "RSI 상승 및 MACD 히스토그램 개선",
-      "5일 저가 > 20일 저가로 회복 신호",
-      "주봉 과매수 대비 일봉 강세 유지"
+      "일봉 RSI 과매도 탈출 및 상승세 지속",
+      "Higher Low 가격 패턴 형성",
+      "주봉 RSI 과매수 구간 진입 (일봉 신호 우선)"
     ],
-    "riskNote": "주봉 RSI가 79.4로 과매수 구간에 진입하여 단기 조정 가능성이 존재한다."
+    "riskNote": "주봉 RSI 79.6은 과매수 구간으로, 언제든 조정이 올 수 있는 리스크가 존재한다."
   }
 }

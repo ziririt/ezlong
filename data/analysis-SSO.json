@@ -3,46 +3,46 @@
   "name": "S&P500 2X ETF",
   "assetType": "etf_leveraged",
   "market": "us",
-  "updatedAt": "2026-06-15T18:12:48.695Z",
+  "updatedAt": "2026-06-15T18:53:35.016Z",
   "price": {
-    "current": 68.9,
-    "change": 2.39,
-    "changePct": 3.59,
+    "current": 68.925,
+    "change": 2.415,
+    "changePct": 3.63,
     "high52": 70.13,
     "low52": 44.985,
-    "pos52": 95.1,
+    "pos52": 95.2,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 67.468,
-    "sma50": 64.0154,
-    "sma100": 60.1871,
-    "sma200": 58.3842,
-    "rsi": 59.54,
+    "sma20": 67.4693,
+    "sma50": 64.0159,
+    "sma100": 60.1874,
+    "sma200": 58.3843,
+    "rsi": 59.61,
     "macd": {
-      "macd": 0.659484,
-      "signal": 1.070566,
-      "histogram": -0.411082
+      "macd": 0.661479,
+      "signal": 1.070965,
+      "histogram": -0.409486
     },
     "bb": {
-      "upper": 70.9164,
-      "middle": 67.468,
-      "lower": 64.0196,
-      "bandwidth": 0.1022
+      "upper": 70.9198,
+      "middle": 67.4693,
+      "lower": 64.0187,
+      "bandwidth": 0.1023
     }
   },
   "levels": {
     "swingResistance": 70.13,
     "swingSupport": 65.04,
     "pivot": {
-      "pp": 67.4,
-      "r1": 71.63,
-      "r2": 74.36,
-      "s1": 64.67,
-      "s2": 60.44
+      "pp": 67.41,
+      "r1": 71.65,
+      "r2": 74.37,
+      "s1": 64.69,
+      "s2": 60.45
     }
   },
   "analysis": {
@@ -51,33 +51,33 @@
     "support": 65.04,
     "resistance": 70.13,
     "rsiStatus": "중립",
-    "macdStatus": "강세확산",
+    "macdStatus": "중립",
     "bbStatus": "중단",
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도탈출+MACD 개선 중",
-    "rsiTrajectory": "49.4 → 59.5 (과매도탈출)",
-    "macdTrajectory": "히스토 -0.5114 → -0.4111 (개선)",
-    "pricePattern": "Higher Low",
-    "volComment": "거래량비 0.38 (위축)",
+    "scoreReason": "RSI 과매도탈출 + Higher Low 회복 초입",
+    "rsiTrajectory": "49.4 → 59.6 (과매도탈출)",
+    "macdTrajectory": "히스토 -0.5114 → -0.4095 (개선)",
+    "pricePattern": "Higher Low 회복 신호",
+    "volComment": "거래량비 0.40 (위축)",
     "bbPosition": "중단근처",
-    "reason": "RSI가 49.4에서 59.5로 상승하며 과매도 구간을 탈출했고, MACD 히스토그램이 개선되고 있습니다. 5일 저가($63.17)가 20일 저가($63.17)보다 높거나 같아 회복 신호입니다.",
+    "reason": "5일 저가($63.17)가 20일 저가($63.17)보다 높으며, RSI가 49.4에서 59.6으로 상승하며 과매도 구간을 탈출했습니다. MACD 히스토그램도 개선되는 추세입니다.",
     "entry": 68.5,
-    "stop": 65,
-    "target": 72,
-    "invalidation": 65.04,
+    "stop": 65.04,
+    "target": 70.13,
+    "invalidation": 63.17,
     "weeklyConflict": "충돌 없음",
-    "profitTarget1": 70.5,
-    "profitTarget2": 71.5,
+    "profitTarget1": 69.5,
+    "profitTarget2": 70.13,
     "stopLoss": 65.04,
-    "narrative": "현재가 $68.90은 SMA20 $67.47 위에 위치하며 단기 강세 흐름을 지지합니다. RSI가 49.4에서 59.5로 상승하며 과매도 탈출 신호를 보냈고, MACD 히스토그램 또한 개선되는 추세입니다. 5일 저가가 20일 저가와 같거나 높아 회복세를 나타내며, 주봉 RSI 66.9는 여전히 강세 구간에 있습니다. 거래량은 위축되었으나, 전반적인 기술적 지표는 상승 추세를 지지하므로 매수 관점입니다.",
-    "patternNote": "현재 가격은 52주 고가($70.13)에 근접하며 상승 채널을 유지하고 있습니다.",
+    "narrative": "현재가 $68.92는 SMA5($66.15)와 SMA20($67.47) 위에 위치하며 단기 강세 흐름을 지지하고 있습니다. 5일 저가가 20일 저가보다 높아진 'Higher Low' 패턴이 형성되었고, RSI가 49.4에서 59.6으로 상승하며 과매도 구간을 벗어났습니다. MACD 히스토그램 또한 개선되는 추세로, 추가 상승 가능성이 높습니다. 52주 고가인 $70.13을 향한 매수 진입을 고려합니다.",
+    "patternNote": "5일 저가가 20일 저가보다 높아진 'Higher Low' 패턴이 형성되며 회복 신호를 보이고 있습니다.",
     "keyPoints": [
-      "RSI 과매도 탈출 및 상승 전환",
-      "MACD 히스토그램 개선 추세",
-      "5일 저가 기준 회복 신호 발생"
+      "Higher Low 패턴 형성",
+      "RSI 과매도 탈출 및 상승",
+      "MACD 히스토그램 개선"
     ],
-    "riskNote": "거래량이 위축된 상태에서 52주 고가 저항 돌파 여부가 중요합니다."
+    "riskNote": "거래량이 평균 이하로 위축된 상태에서 상승이 지속될 경우, 추세 전환의 위험이 있습니다."
   }
 }

@@ -3,46 +3,46 @@
   "name": "나스닥 100 2X ETF",
   "assetType": "etf_leveraged",
   "market": "us",
-  "updatedAt": "2026-06-15T18:12:18.919Z",
+  "updatedAt": "2026-06-15T18:53:05.521Z",
   "price": {
-    "current": 99.13,
-    "change": 5.75,
-    "changePct": 6.16,
+    "current": 99.18,
+    "change": 5.8,
+    "changePct": 6.21,
     "high52": 101.19,
     "low52": 53.16,
-    "pos52": 95.7,
+    "pos52": 95.8,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 94.3995,
-    "sma50": 85.3916,
-    "sma100": 76.2656,
-    "sma200": 73.0075,
-    "rsi": 61.5,
+    "sma20": 94.402,
+    "sma50": 85.3926,
+    "sma100": 76.2661,
+    "sma200": 73.0077,
+    "rsi": 61.55,
     "macd": {
-      "macd": 2.113088,
-      "signal": 2.923942,
-      "histogram": -0.810854
+      "macd": 2.117076,
+      "signal": 2.924739,
+      "histogram": -0.807663
     },
     "bb": {
-      "upper": 102.7263,
-      "middle": 94.3995,
-      "lower": 86.0727,
-      "bandwidth": 0.1764
+      "upper": 102.7345,
+      "middle": 94.402,
+      "lower": 86.0695,
+      "bandwidth": 0.1765
     }
   },
   "levels": {
     "swingResistance": 101.19,
     "swingSupport": 87.52,
     "pivot": {
-      "pp": 94.97,
-      "r1": 105.35,
-      "r2": 111.56,
-      "s1": 88.76,
-      "s2": 78.38
+      "pp": 94.99,
+      "r1": 105.38,
+      "r2": 111.58,
+      "s1": 88.79,
+      "s2": 78.4
     }
   },
   "analysis": {
@@ -51,33 +51,33 @@
     "support": 87.52,
     "resistance": 101.19,
     "rsiStatus": "중립",
-    "macdStatus": "중립",
+    "macdStatus": "강세확산",
     "bbStatus": "중단",
     "stage": "축적구간",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도 탈출 + Higher Low 회복 초입",
-    "rsiTrajectory": "52.1 → 61.5 (과매도 탈출 중)",
-    "macdTrajectory": "히스토 -1.0864 → -0.8109 (개선 중)",
-    "pricePattern": "Higher Low 회복 신호",
-    "volComment": "거래량비 0.51 (위축)",
+    "scoreReason": "RSI 과매도탈출+MACD 개선+Higher Low 회복",
+    "rsiTrajectory": "52.1 → 61.6 (과매도탈출 중)",
+    "macdTrajectory": "히스토 -1.0864 → -0.8077 (개선 중)",
+    "pricePattern": "5일 저가($84.60)가 20일 저가($84.60)보다 높지 않아 횡보",
+    "volComment": "거래량비 0.53 (위축)",
     "bbPosition": "중단근처",
-    "reason": "5일 저가($84.60)가 20일 저가($84.60)보다 높고, RSI가 52.1에서 61.5로 상승하며 과매도 구간을 탈출하고 있습니다. MACD 히스토그램도 개선되는 추세��니다.",
+    "reason": "RSI가 52.1에서 61.6으로 상승하며 과매도 구간을 탈출했고, MACD 히스토그램도 개선되고 있다. 52주 신고가 근처에서 횡보하며 매물 소화 중이다.",
     "entry": 99,
-    "stop": 95.5,
-    "target": 105.35,
-    "invalidation": 94.4,
+    "stop": 87.52,
+    "target": 105.38,
+    "invalidation": 84.6,
     "weeklyConflict": "충돌 없음",
-    "profitTarget1": 103,
-    "profitTarget2": 105.35,
-    "stopLoss": 95.5,
-    "narrative": "현재가 $99.13은 52주 고가 $101.19에 근접하며 강한 상승세를 보이고 있습니다. 5일 저가가 20일 저가보다 높아진 'Higher Low' 패턴이 형성되었고, RSI는 52.1에서 61.5로 상승하며 과매수 구간 진입 가능성을 시사합니다. MACD 히스토그램 또한 개선되는 추세로, 추가 상승 여력이 충분합니다. 5일 평균 대비 거래량 비율이 0.51로 낮은 점은 아쉽지만, 전반적인 기술적 지표는 매수 관점을 지지합니다.",
-    "patternNote": "5일 저가가 20일 저가보다 높아지며 회복세를 보이는 'Higher Low' 패턴이 나타나고 있습니다.",
+    "profitTarget1": 102.73,
+    "profitTarget2": 105.38,
+    "stopLoss": 94.4,
+    "narrative": "QQQ 레버리지 상품인 TQQQ는 현재 52주 신고가($101.19)에 근접하며 강한 상승세를 보이고 있다. RSI는 61.6으로 중립 구간에 있으며, MACD 히스토그램은 개선되고 있다. 5일 평균 거래량 대비 0.53으로 거래량은 위축되었으나, 이는 매물 소화 과정으로 해석된다. 52주 저가($53.16) 대비 현재가($99.18)는 86% 상승한 상태로, 단기적으로는 52주 고가 돌파를 시도할 것으로 예상된다. 1차 목표가는 볼린저밴드 상단인 $102.73, 2차 목표가는 피벗 R1인 $105.38으로 설정한다. 손절선은 SMA20인 $94.40으로 설정하여 리스크를 관리한다.",
+    "patternNote": "현재 가격은 52주 신고가 근처에서 횡보하며 매물대를 소화하고 있으며, 이는 추가 상승을 위한 축적 구간으로 해석될 수 있다.",
     "keyPoints": [
-      "Higher Low 패턴 형성",
-      "RSI 과매도 탈출 및 상승",
-      "MACD 히스토그램 개선 추세"
+      "RSI 과매도 탈출 및 상승 추세",
+      "MACD 히스토그램 개선 신호",
+      "52주 신고가 근접 및 매물 소화"
     ],
-    "riskNote": "현재가 $99.13이 볼린저밴드 상단 $102.73에 근접해 있어 단기 과열 위험이 존재합니다."
+    "riskNote": "52주 신고가 돌파 실패 시 급락 가능성이 있다."
   }
 }
