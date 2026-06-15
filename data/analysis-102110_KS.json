@@ -3,46 +3,46 @@
   "name": "TIGER 200",
   "assetType": "etf",
   "market": "kr",
-  "updatedAt": "2026-06-15T05:21:39.115Z",
+  "updatedAt": "2026-06-15T06:05:49.492Z",
   "price": {
-    "current": 137200,
-    "change": 7625,
-    "changePct": 5.88,
+    "current": 136200,
+    "change": 6625,
+    "changePct": 5.11,
     "high52": 143570,
     "low52": 38710,
-    "pos52": 93.9,
-    "marketState": "CLOSED",
+    "pos52": 93,
+    "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 127436.5,
-    "sma50": 109927.6306,
-    "sma100": 94982.7047,
-    "sma200": 74081.6774,
-    "rsi": 61.77,
+    "sma20": 127386.5,
+    "sma50": 109907.6306,
+    "sma100": 94972.7045,
+    "sma200": 74076.6773,
+    "rsi": 61.16,
     "macd": {
-      "macd": 5636.017524,
-      "signal": 6785.995371,
-      "histogram": -1149.977847
+      "macd": 5556.245445,
+      "signal": 6770.040956,
+      "histogram": -1213.795511
     },
     "bb": {
-      "upper": 144199.7912,
-      "middle": 127436.5,
-      "lower": 110673.2088,
-      "bandwidth": 0.2631
+      "upper": 144038.6029,
+      "middle": 127386.5,
+      "lower": 110734.3971,
+      "bandwidth": 0.2614
     }
   },
   "levels": {
     "swingResistance": 143570,
     "swingSupport": 117615,
     "pivot": {
-      "pp": 130445,
-      "r1": 150325,
-      "r2": 163450,
-      "s1": 117320,
-      "s2": 97440
+      "pp": 130111.67,
+      "r1": 149658.33,
+      "r2": 163116.67,
+      "s1": 116653.33,
+      "s2": 97106.67
     }
   },
   "analysis": {
@@ -52,32 +52,32 @@
     "resistance": 143570,
     "rsiStatus": "중립",
     "macdStatus": "중립",
-    "bbStatus": "상단접근",
+    "bbStatus": "중단",
     "stage": "상승추세",
     "action": "관망",
     "buyScore": 5,
-    "scoreReason": "RSI 과매도탈출 후 중립 구간, 5일 저가 > 20일 저가",
-    "rsiTrajectory": "49.1 → 61.8 (과매도탈출)",
-    "macdTrajectory": "히스토 -975.1625 → -1149.9778 (악화)",
-    "pricePattern": "5일 저가(117,960) > 20일 저가(110,565)로 회복 신호",
-    "volComment": "거래량비 0.45 (위축)",
-    "bbPosition": "상단근처",
-    "reason": "주봉 RSI 81.5로 과매수 구간 진입. 일봉 MACD 히스토그램 악화 중. 52주 고가 근접으로 매도 압��� 예상.",
+    "scoreReason": "RSI 과매도탈출 + 5일 저가 > 20일 저가",
+    "rsiTrajectory": "49.1 → 61.2 (과매도탈출)",
+    "macdTrajectory": "히스토 -975.1625 → -1213.7955 (개선)",
+    "pricePattern": "Higher Low",
+    "volComment": "거래량비 0.52 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "주봉 RSI 81.2 과매수 진입, 일봉 MACD 히스토그램 개선 중이나 음수 유지. 52주 신고가 근접하여 저항 구간 진입.",
     "entry": 130000,
     "stop": 117615,
     "target": 143570,
-    "invalidation": 117615,
-    "weeklyConflict": "주봉은 과매수(RSI 81.5)이나 일봉 신호 우선",
-    "profitTarget1": 135000,
-    "profitTarget2": 140000,
-    "stopLoss": 127437,
-    "narrative": "현재가 137,200원은 52주 고가 143,570원에 근접하며 매도 압력이 예상된다. 주봉 RSI 81.5는 과매수 구간이며, 일봉 MACD 히스토그램은 악화되고 있다. 5일 저가가 20일 저가보다 높아 회복 신호가 있으나, 거래량이 위축되어 추세 전환 신뢰도가 낮다. 1차 저항선 143,570원 돌파 여부 확인 후 진입 결정이 필요하다.",
-    "patternNote": "52주 신고가 경신 후 저항 구간 진입. 5일 저가 패턴은 긍정적이나 거래량 부재로 힘이 실리지 못하고 있다.",
+    "invalidation": 110565,
+    "weeklyConflict": "주봉 RSI 81.2 과매수 진입, 일봉 신호 우선",
+    "profitTarget1": 138000,
+    "profitTarget2": 141000,
+    "stopLoss": 117615,
+    "narrative": "현재가 136,200원은 52주 고가 143,570원에 근접한 강세 구간이다. 주봉 RSI 81.2는 과매수 영역 진입 신호이며, 일봉 MACD 히스토그램은 음수에서 개선되는 추세다. 5일 저가 117,960원이 20일 저가 110,565원보다 높아 'Higher Low' 패턴이 형성되었다. 그러나 5일 평균 대비 거래량 비율이 0.52로 위축되어 있어 추가 상승 동력이 약하다. 52주 고가 저항 돌파 여부가 관건이다.",
+    "patternNote": "5일 저가 117,960원이 20일 저가 110,565원보다 높아 'Higher Low' 패턴을 형성하며 회복 신호를 보이고 있다.",
     "keyPoints": [
-      "52주 고가 근접으로 매도 압력 예상",
-      "주봉 RSI 과매수 구간 진입",
-      "일봉 MACD 히스토그램 악화 및 거래량 위축"
+      "주봉 RSI 81.2 과매수 진입",
+      "52주 고가 143,570원 근접",
+      "일봉 MACD 히스토그램 개선 중 (음수)"
     ],
-    "riskNote": "주봉 과매수 및 일봉 MACD 악화 신호는 하락 위험을 시사한다."
+    "riskNote": "주봉 RSI 과매수 진입과 52주 고가 저항 구간 진입으로 인한 차익 실현 매물 출현 가능성이 높다."
   }
 }
