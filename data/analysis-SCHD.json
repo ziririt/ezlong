@@ -3,35 +3,35 @@
   "name": "고배당 미국 주식 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-15T19:09:32.926Z",
+  "updatedAt": "2026-06-15T19:34:04.789Z",
   "price": {
-    "current": 32.695,
-    "change": -0.125,
-    "changePct": -0.38,
+    "current": 32.685,
+    "change": -0.135,
+    "changePct": -0.41,
     "high52": 32.92,
     "low52": 26.16,
-    "pos52": 96.7,
+    "pos52": 96.5,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 32.4242,
-    "sma50": 31.7255,
-    "sma100": 31.1611,
+    "sma20": 32.4237,
+    "sma50": 31.7253,
+    "sma100": 31.161,
     "sma200": 29.0553,
-    "rsi": 61.04,
+    "rsi": 60.78,
     "macd": {
-      "macd": 0.23652,
-      "signal": 0.250237,
-      "histogram": -0.013716
+      "macd": 0.235723,
+      "signal": 0.250077,
+      "histogram": -0.014354
     },
     "bb": {
-      "upper": 32.8848,
-      "middle": 32.4242,
-      "lower": 31.9637,
-      "bandwidth": 0.0284
+      "upper": 32.8831,
+      "middle": 32.4237,
+      "lower": 31.9644,
+      "bandwidth": 0.0283
     }
   },
   "levels": {
@@ -39,10 +39,10 @@
     "swingSupport": 31.27,
     "pivot": {
       "pp": 32.42,
-      "r1": 33.19,
+      "r1": 33.18,
       "r2": 33.68,
-      "s1": 31.93,
-      "s2": 31.17
+      "s1": 31.92,
+      "s2": 31.16
     }
   },
   "analysis": {
@@ -51,33 +51,33 @@
     "support": 31.27,
     "resistance": 32.79,
     "rsiStatus": "중립",
-    "macdStatus": "강세확산",
+    "macdStatus": "중립",
     "bbStatus": "중단",
     "stage": "상승추세",
-    "action": "매수",
-    "buyScore": 7,
-    "scoreReason": "RSI 상승 + MACD 개선 + Higher Low",
-    "rsiTrajectory": "55.5 → 61.0 (중립지속 중)",
-    "macdTrajectory": "히스토 -0.0487 → -0.0137 (개선)",
-    "pricePattern": "Higher Low",
-    "volComment": "거래량비 1.01 (정상)",
+    "action": "관망",
+    "buyScore": 5,
+    "scoreReason": "RSI 중립, MACD 개선 중, 5일 고가/저가 횡보",
+    "rsiTrajectory": "55.5 → 60.8 (중립지속 중)",
+    "macdTrajectory": "히스토 -0.0487 → -0.0144 (개선)",
+    "pricePattern": "5일 고가/저가가 20일 고가/저가 범위 내에서 횡보",
+    "volComment": "거래량비 1.05 (정상)",
     "bbPosition": "중단근처",
-    "reason": "5일 저가($32.07)가 20일 저가($31.66)보다 높아 회복 신호이며, MACD 히스토그램이 개선되고 있다. RSI도 55.5에서 61.0으로 상승 중이다.",
-    "entry": 32.7,
-    "stop": 31.93,
-    "target": 33.19,
-    "invalidation": 31.27,
+    "reason": "현재가 SMA200 대비 12.49% 상승, 주봉 RSI 71.0으로 과매수 구간 진입 임박. 일봉 MACD 히스토그램 개선 중이나 아직 골든크로스 미발생.",
+    "entry": 32.42,
+    "stop": 31.96,
+    "target": 32.79,
+    "invalidation": 31.66,
     "weeklyConflict": "충돌 없음",
-    "profitTarget1": 32.93,
-    "profitTarget2": 33.19,
-    "stopLoss": 31.93,
-    "narrative": "현재가 $32.70은 52주 고가 $32.92에 근접하며 강한 상승세를 보이고 있다. 5일 저가 $32.07이 20일 저가 $31.66보다 높아 'Higher Low' 패턴이 형성되며 회복 신호가 나타났다. MACD 히스토그램이 음수에서 개선되는 추세(-0.0487 → -0.0137)이며, RSI 또한 55.5에서 61.0으로 상승하며 매수세를 지지한다. 주봉 RSI 71.1은 과매수 구간이지만, 일봉상 추세가 강하다. 1차 목표가 $32.93, 2차 목표가 $33.19를 설정하며, 손절가는 $31.93으로 설정한다.",
-    "patternNote": "현재 가격은 52주 고가에 근접하며 상승 채널 상단으로 향하고 있다.",
+    "profitTarget1": 32.69,
+    "profitTarget2": 32.88,
+    "stopLoss": 32.07,
+    "narrative": "현재가 $32.69는 52주 고가 $32.92에 근접하며 강세 흐름을 유지하고 있다. SMA5, SMA20, SMA50, SMA100, SMA200 모두 정배열을 이루며 상승 추세를 지지하고 있다. 다만, 주봉 RSI가 71.0으로 과매수 구간 진입을 앞두고 있어 추가 상승 시 저항에 부딪힐 가능성이 있다. 일봉 MACD 히스토그램이 개선되는 점은 긍정적이나, 아직 추세 전환을 확신하기 어렵다. 따라서 현재 구간에서는 관망하며 다음 방향성을 확인하는 것이 합리적이다.",
+    "patternNote": "현재 가격은 볼린저밴드 중단 부근에서 횡보하며 방향성을 탐색하고 있다.",
     "keyPoints": [
-      "Higher Low 패턴 형성",
-      "MACD 히스토그램 개선",
-      "RSI 상승 추세 유지"
+      "SMA 정배열 유지, 상승 추세 지속",
+      "주봉 RSI 과매수 진입 임박, 단기 저항 가능성",
+      "일봉 MACD 히스토그램 개선, 추가 상승 여력 존재"
     ],
-    "riskNote": "52주 고가 $32.92 돌파 실패 시 하락 전환 가능성이 있다."
+    "riskNote": "주봉 RSI 과매수 진입 시 단기 차익 실현 매물이 출회될 수 있다."
   }
 }
