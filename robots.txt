@@ -1,0 +1,53 @@
+# ── 주요 검색엔진 크롤러 (SEO) ────────────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+
+User-agent: Yeti
+Allow: /
+
+# ── AI 답변 엔진 크롤러 (AEO — 허용 필수) ─────────────────────────────────────
+# ChatGPT, Perplexity, Claude 등이 ezlong.com 내용을 AI 답변 소스로 활용하게 한다.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# ── SEO 상업적 스크레이퍼 (차단 — 비용 대비 가치 없음) ──────────────────────
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+# ── 데이터 원본 파일은 크롤링 불필요 ─────────────────────────────────────────
+# JSON 데이터 파일과 내부 설정 파일은 노출 불필요
+User-agent: *
+Disallow: /data/
+Disallow: /options-latest.json
+Disallow: /firebase.json
+Disallow: /.firebaserc
+
+# ── 전체 기본 정책: 허용 ──────────────────────────────────────────────────────
+User-agent: *
+Allow: /
+
+Sitemap: https://ezlong.com/sitemap.xml
