@@ -1463,17 +1463,16 @@ li.gear-other-sep { display: none !important; }
 .ez-footer-bottom{font-size:14px;color:#3C3C3E;border-top:1px solid rgba(0,0,0,0.06);padding-top:16px;line-height:1.8}
 @media(prefers-color-scheme:dark){.ez-footer-bottom{border-color:rgba(255,255,255,0.07);color:#F5F5F7}}
 /* ── ez-footer 책 섹션 — ez-design.css 미로드로 인한 누락 보완 */
-.ez-footer-books{display:flex;flex-direction:column;gap:24px}
-@media(min-width:640px){.ez-footer-books{flex-direction:row;gap:32px}}
-.ez-footer-book{display:flex;gap:16px;align-items:flex-start}
+.ez-footer-books{display:flex;gap:20px;flex-wrap:wrap}
+.ez-footer-book{display:flex;gap:10px;align-items:flex-start}
 .ez-footer-book-cover{flex-shrink:0;width:130px;border-radius:6px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,0.15);display:block;background:transparent}
 .ez-footer-book-cover img{width:100%;display:block}
-.ez-footer-book-info{display:flex;flex-direction:column;min-width:0}
-.ez-footer-book-title{font-size:14px;font-weight:700;color:#1D1D1F;line-height:1.4;margin-bottom:10px}
+.ez-footer-book-info{display:flex;flex-direction:column;gap:3px}
+.ez-footer-book-title{font-size:14px;font-weight:700;color:#1D1D1F;line-height:1.4;margin-bottom:6px}
 @media(prefers-color-scheme:dark){.ez-footer-book-title{color:#F5F5F7}}
-.ez-footer-book-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#3C3C3E;margin-top:8px;margin-bottom:4px}
+.ez-footer-book-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#3C3C3E;margin-top:5px}
 @media(prefers-color-scheme:dark){.ez-footer-book-label{color:#F5F5F7}}
-.ez-footer-book-btns{display:flex;flex-wrap:wrap;gap:6px}
+.ez-footer-book-btns{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px}
 .ez-footer-book-btn{font-size:14px;color:#3C3C3E;text-decoration:none;transition:color .12s;white-space:nowrap}
 .ez-footer-book-btn:hover{color:#0071E3}
 @media(prefers-color-scheme:dark){.ez-footer-book-btn{color:#F5F5F7}.ez-footer-book-btn:hover{color:#0A84FF}}
