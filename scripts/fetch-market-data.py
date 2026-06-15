@@ -294,13 +294,18 @@ def calc_sell_score(price, sma5, sma200, rsi, macd, high52, low52, vix=18,
 # ─── yfinance 데이터 수집 ───────────────────────────────────────────────────
 
 def download_history(symbol, period='2y'):
-    """종목 종가 + 거래량 리스트 반환 (날짜 오름차순)"""
+    """종목 종가 + 거래량 리스트 반환 (날짜 오름차순)
+    Close NaN 행 제거 후 Volume도 동일 행만 유지 → closes/volumes 항상 동일 길이·동일 날짜
+    """
     ticker = yf.Ticker(symbol)
     hist = ticker.history(period=period, interval='1d', auto_adjust=True)
     if hist.empty:
         raise ValueError("빈 응답")
-    closes  = [float(v) for v in hist['Close'].dropna().tolist()]
-    volumes = [float(v) for v in hist['Volume'].fillna(0).tolist()]
+    df = hist[['Close', 'Volume']].copy()
+    df = df.dropna(subset=['Close'])        # Close NaN 행 제거
+    df['Volume'] = df['Volume'].fillna(0)   # Volume NaN → 0 (날짜 유지)
+    closes  = [float(v) for v in df['Close'].tolist()]
+    volumes = [float(v) for v in df['Volume'].tolist()]
     if len(closes) < 2:
         raise ValueError(f"데이터 부족: {len(closes)}개")
     return closes, volumes

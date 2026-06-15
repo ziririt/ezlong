@@ -59,9 +59,9 @@ async function getYFCrumb() {
       },
       timeout: 12000,
     }, res => {
-      let data = '';
-      res.on('data', c => { data += c; });
-      res.on('end', () => resolve(data.trim()));
+      const chunks = [];
+      res.on('data', c => { chunks.push(c); });
+      res.on('end', () => resolve(Buffer.concat(chunks).toString('utf8').trim()));
     });
     req.on('error', reject);
     req.on('timeout', () => { req.destroy(); reject(new Error('크럼 취득 타임아웃')); });
@@ -205,10 +205,10 @@ function httpGet(host, reqPath) {
       },
       timeout: 20000,
     }, res => {
-      let data = '';
-      res.on('data', c => { data += c; });
+      const chunks = [];
+      res.on('data', c => { chunks.push(c); });
       res.on('end', () => {
-        try { resolve(JSON.parse(data)); }
+        try { resolve(JSON.parse(Buffer.concat(chunks).toString('utf8'))); }
         catch (e) { reject(new Error(`JSON 파싱 오류: ${e.message}`)); }
       });
     });
@@ -231,10 +231,10 @@ function httpPost(host, reqPath, body) {
       },
       timeout: 30000,
     }, res => {
-      let data = '';
-      res.on('data', c => { data += c; });
+      const chunks = [];
+      res.on('data', c => { chunks.push(c); });
       res.on('end', () => {
-        try { resolve(JSON.parse(data)); }
+        try { resolve(JSON.parse(Buffer.concat(chunks).toString('utf8'))); }
         catch (e) { reject(new Error(`JSON 파싱 오류: ${e.message}`)); }
       });
     });
@@ -268,10 +268,10 @@ async function fetchYFChart(symbol) {
       },
       timeout: 25000,
     }, res => {
-      let body = '';
-      res.on('data', c => { body += c; });
+      const chunks = [];
+      res.on('data', c => { chunks.push(c); });
       res.on('end', () => {
-        try { resolve(JSON.parse(body)); }
+        try { resolve(JSON.parse(Buffer.concat(chunks).toString('utf8'))); }
         catch (e) { reject(new Error(`JSON 파싱 오류: ${e.message}`)); }
       });
     });
