@@ -2707,13 +2707,26 @@ function parseYahooRaw(result, symbol) {
   const vol20Avg  = vol20.length > 0 ? vol20.reduce((a, b) => a + b, 0) / vol20.length : 0;
   const volRatio  = (vol20Avg > 1000) ? latestVol / vol20Avg : null;
 
+  // calcBuyScore 추가 팩터 — closes 배열에서 직접 계산 [2026-06-16 추가: 클라이언트 파이프라인 완성]
+  const rsi5dAgo    = closes.length > 20 ? calcRSI(closes.slice(0, -5), 14)       : null;
+  const hist5dAgo   = closes.length > 35 ? calcMACD(closes.slice(0, -5)).histogram : null;
+  const high5d      = closes.length >= 5  ? Math.max(...closes.slice(-5))           : null;
+  const low5d       = closes.length >= 5  ? Math.min(...closes.slice(-5))           : null;
+  const high20dExcl = closes.length > 20  ? Math.max(...closes.slice(-20, -5))      : null;
+  const low20dExcl  = closes.length > 20  ? Math.min(...closes.slice(-20, -5))      : null;
+  // 방향성 팩터: 최근 5거래일 상승 일수
+  const upDays5     = closes.length > 6
+    ? closes.slice(-6).reduce((cnt, c, i, arr) => i === 0 ? cnt : (c > arr[i - 1] ? cnt + 1 : cnt), 0)
+    : null;
+
   return {
     symbol, price: currentPrice, change, changePct,
     sma5, sma20, sma50, sma200, rsi, macd,
     high52: Math.max(...last252), low52: Math.min(...last252),
     dev200, dev5, gear: getGear(dev200),
     closes: closes.slice(-250),
-    volRatio
+    volRatio,
+    rsi5dAgo, hist5dAgo, high5d, low5d, high20dExcl, low20dExcl, upDays5
   };
 }
 
