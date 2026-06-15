@@ -28,5 +28,6 @@ jobs:
             echo "변경 없음, 커밋 생략"
           else
             git commit -m "chore: naver content sync $(date +'%Y-%m-%d %H:%M KST')"
+            git pull --rebase origin main
             git push origin main
           fi

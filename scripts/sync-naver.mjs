@@ -96,13 +96,24 @@ async function sync() {
 
       const extracted = extractFromHTML(html);
       if (extracted.length) {
-        // 기존 데이터와 병합: 새 추출에 제목 없으면 기존 제목 유지
-        const prevMap = new Map((existing.articles || []).map(a => [a.url, a]));
-        articles = extracted.map(a => {
+        // 누적 병합: 새 기사 상단 + 기존 기사(새 목록에 없는 것) 하단 추가, MAX_ARTICLES 상한
+        const prevArticles = existing.articles || [];
+        const prevMap = new Map(prevArticles.map(a => [a.url, a]));
+        const newUrls = new Set(extracted.map(a => a.url));
+
+        // 새 기사: 기존에 제목/publishedAt 있으면 유지
+        const mergedNew = extracted.map(a => {
           const prev = prevMap.get(a.url);
-          return (prev?.title && !a.title) ? { ...a, title: prev.title, publishedAt: prev.publishedAt } : a;
+          return (prev?.title && !a.title)
+            ? { ...a, title: prev.title, publishedAt: prev.publishedAt }
+            : a;
         });
-        console.log(`[sync] 최종 ${articles.length}개, 제목 있음: ${articles.filter(a=>a.title).length}개`);
+
+        // 기존 기사 중 이번 스크랩에 없는 것만 뒤에 붙임
+        const prevOnly = prevArticles.filter(a => !newUrls.has(a.url));
+
+        articles = [...mergedNew, ...prevOnly].slice(0, MAX_ARTICLES);
+        console.log(`[sync] 최종 ${articles.length}개 (새 ${mergedNew.length}개 + 누적 ${prevOnly.length}개), 제목 있음: ${articles.filter(a=>a.title).length}개`);
         break;
       }
     } catch (err) {
