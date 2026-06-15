@@ -123,13 +123,25 @@ git tag -f "stable-20260615" && git push origin --tags
 
 ---
 
-**TradingView 차트 하단 여백 버그 수정 (저녁 세션)**
+**TradingView 차트 하단 여백 버그 수정 (오후 1세션)**
 
 - `fe5244f61` — `atmr-dashboard.html` TradingView 저작권 바 흰 여백 완전 제거
 - 원인: 프레임(700px)과 위젯(700px)이 동일 높이 → `overflow:hidden`이 아무것도 클리핑 못함
 - 수정: 프레임 `670px` / 위젯 `700px`으로 분리 → 하단 30px 차이로 저작권 바 클리핑
 - 모바일도 동일 구조 적용: 프레임 `470px` / 위젯 `500px`
 - 핵심 교훈: **`overflow:hidden`은 프레임 < 위젯일 때만 작동. 높이가 같으면 무효.**
+
+---
+
+**한국주식 장중/장마감 오표시 수정 (오후 2세션)**
+
+- `defaf77cf` — `chart-analysis.html` + `scripts/generate-chart-analysis.js` 동시 수정
+- 원인: Yahoo Finance v8 API가 `.KS` 종목의 `marketState`를 자주 누락 → `|| 'CLOSED'` 폴백이 항상 발동 → 장 중에도 "장마감" 표시
+- 클라이언트 수정: `getKRXMarketStateNow()` 함수 추가. `.KS`/`.KQ` 종목은 브라우저 현재 시각(KST) 기준으로 KRX 장 상태를 직접 계산 (평일 09:00~15:30 KST → 장중, 그 외 → 장마감)
+- 서버 수정: `generate-chart-analysis.js`에도 동일 계산 로직 추가 → JSON에도 정확한 값 저장
+- 한국주식 라벨: `REGULAR` → `장중` / 미국주식 `REGULAR` → `정규장` 으로 분리
+- 한계: 한국 공휴일 미처리 (~14일/년) — 허용 가능 수준
+- 부가: `git merge.autoedit no` 전역 설정 → vim 무한 루프 영구 차단
 
 ```bash
 # 롤백 필요 시 (차트 여백이 오히려 필요한 경우)
