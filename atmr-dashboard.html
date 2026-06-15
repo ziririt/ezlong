@@ -2553,8 +2553,8 @@ function getMarketVerdict(score, gear, rsi, sellP) {
       headlineColor = 'var(--or)';
     } else {
       headline      = g >= 3
-        ? `Gear 3 상승 추세 + 매수 신호 ${Math.round(score)}점 — 소량 정찰대 투입 고려`
-        : `매수 매력도 ${Math.round(score)}점 상승 중 — Gear 3 전환 확인 후 소량 진입`;
+        ? `매수 신호 ${Math.round(score)}점 — 지금 1차(30%) 분할 매수 시작하세요 (3-3-4 원칙)`
+        : `매수 신호 ${Math.round(score)}점 — Gear 3 전환 확인 후 1차(30%) 진입 준비`;
       headlineColor = g >= 3 ? 'var(--gr)' : 'var(--or)';
     }
   } else if (score >= 50) {
@@ -3179,7 +3179,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
     ${biColHtml('BUY',  buyBalls,  '#FFB300', 'gy', [
       '매수 신호 없음 — 리스크 오프 구간. 현금 비중 유지하세요.',                        // 0볼: score <50
       '추세 확인 대기 — 신호 강화 후 소량 진입 검토.',                                  // 1볼: score 50~64
-      '소량 정찰대 투입 고려 — 3-3-4 원칙, 1차 30% 먼저.',                              // 2볼: score 65~79
+      '1차(30%) 분할 매수 시작 — 3-3-4 원칙, 오늘 30% 먼저 투입하세요.',                  // 2볼: score 65~79
       '최적 매수 구간 — 3-3-4 원칙으로 공격적 분할 매수 타이밍.'                        // 3볼: score 80+
     ])}
     ${biColHtml('SELL', sellBalls, '#30D158', 'gg', [
@@ -3235,16 +3235,16 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
   } else if (score >= 65) {
     // ── 소량 정찰대 ─────────────────────────────────────────────────────────
     if (gear >= 3) {
-      title = `Gear 3 상승 추세 + 매수 신호 ${score}점 — 소량 정찰대 투입 고려`;
-      desc  = `QQQ·VOO <strong>${gearText}</strong>. 매수 매력도 <strong>${score}점</strong>으로 진입 조건을 충족하고 있습니다. RSI <strong>${rsi?.toFixed(1) ?? '—'}</strong>. 예정 물량의 30%(1차 정찰대)를 먼저 투입하고, 신호가 더 강화되면 추가 진입을 검토하세요.`;
+      title = `매수 신호 ${score}점 — 지금 1차(30%) 분할 매수 시작하세요 (3-3-4 원칙)`;
+      desc  = `QQQ·VOO <strong>${gearText}</strong>. 매수 매력도 <strong>${score}점</strong>으로 진입 조건을 충족합니다. RSI <strong>${rsi?.toFixed(1) ?? '—'}</strong>. 3-3-4 원칙에 따라 오늘 1차(30%) → 신호 강화 후 2차(30%) → 추세 안정 확인 후 3차(40%) 순으로 진입하세요.`;
       pills = [
         {text: gearText,                          tone: 'neutral'},
         {text: `RSI ${rsi?.toFixed(0) ?? '—'}`,   tone: rsiTone},
-        {text: '정찰대 30% 투입 고려',            tone: 'negative'},
+        {text: '1차(30%) 지금 매수',              tone: 'negative'},
       ];
     } else {
-      title = `매수 신호 ${score}점 상승 중 — Gear 3 전환 확인 후 소량 진입`;
-      desc  = `매수 매력도 <strong>${score}점</strong>으로 충분하나 QQQ·VOO가 <strong>${gearText}</strong>입니다. 추세 전환(Gear 3) 확인 후 소량 정찰대 진입을 시작하세요. RSI <strong>${rsi?.toFixed(1) ?? '—'}</strong>. 레버리지 ETF는 Gear 3 복귀 후로 미루세요.`;
+      title = `매수 신호 ${score}점 — Gear 3 전환 확인 후 1차(30%) 진입 준비`;
+      desc  = `매수 매력도 <strong>${score}점</strong>으로 충분하나 QQQ·VOO가 <strong>${gearText}</strong>입니다. Gear 3 전환을 확인한 후 1차(30%) 진입을 시작하세요. RSI <strong>${rsi?.toFixed(1) ?? '—'}</strong>. 레버리지 ETF는 Gear 3 복귀 후로 미루세요.`;
       pills = [
         {text: gearText,                          tone: gear === 2 ? 'caution' : 'negative'},
         {text: 'Gear 3 전환 대기',                tone: 'caution'},
@@ -4380,8 +4380,13 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       rsn3 = `RSI ${rsi.toFixed(0)}으로 3배수 허용 기준(55 이상)을 하회합니다. 모멘텀이 약해지고 있는 신호입니다. 조건이 다시 갖춰지면 그때 올리면 됩니다.`;
       col3 = 'var(--or)'; bg3 = 'rgba(255,159,10,0.08)'; bd3 = 'rgba(255,159,10,0.3)';
     } else {
-      act3 = '3배수 비중을 줄이거나 2배수로 낮추세요';
-      rsn3 = `매수 신호 ${compBuy}점으로 3배수 허용 기준(60점)에 미달합니다. 조건이 완전히 맞춰지지 않은 상태에서 3배수를 들고 있는 것은 리스크가 큽니다.`;
+      // lev3x 실패 — 정확한 조건 진단 (compSell<55·rsi>55인데 나머지 조건 실패)
+      const _f = [];
+      if (macdHist <= 0) _f.push(`MACD ${macdHist >= 0 ? '+' : ''}${macdHist.toFixed(2)} → 양전환 미확인`);
+      if (compBuy < 60)  _f.push(`매수 신호 ${compBuy}점 → 기준 60점 미달`);
+      const _failNote = _f.length ? _f.join(' / ') : '5조건 중 일부 미충족';
+      act3 = '3배수 조건 일부 미충족 — 지금은 2배수 유지 권장';
+      rsn3 = `3배수 허용 5조건 중 일부 미충족. ${_failNote}. 추세와 매수 신호는 괜찮지만 모멘텀 확인이 필요합니다. 조건이 갖춰지면 그때 올리세요.`;
       col3 = 'var(--or)'; bg3 = 'rgba(255,159,10,0.08)'; bd3 = 'rgba(255,159,10,0.3)';
     }
   } else if (compGear === 2) {
