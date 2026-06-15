@@ -122,3 +122,18 @@ git tag -f "stable-20260615" && git push origin --tags
 ```
 
 ---
+
+**TradingView 차트 하단 여백 버그 수정 (저녁 세션)**
+
+- `fe5244f61` — `atmr-dashboard.html` TradingView 저작권 바 흰 여백 완전 제거
+- 원인: 프레임(700px)과 위젯(700px)이 동일 높이 → `overflow:hidden`이 아무것도 클리핑 못함
+- 수정: 프레임 `670px` / 위젯 `700px`으로 분리 → 하단 30px 차이로 저작권 바 클리핑
+- 모바일도 동일 구조 적용: 프레임 `470px` / 위젯 `500px`
+- 핵심 교훈: **`overflow:hidden`은 프레임 < 위젯일 때만 작동. 높이가 같으면 무효.**
+
+```bash
+# 롤백 필요 시 (차트 여백이 오히려 필요한 경우)
+git checkout fe5244f61^ -- atmr-dashboard.html
+```
+
+---
