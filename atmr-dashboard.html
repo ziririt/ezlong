@@ -2033,8 +2033,8 @@ li.gear-other-sep { display: none !important; }
         </details>
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:15px;">스윙 시그널 점수는 어떻게 계산되나요?</summary>
-          <p style="margin-top:10px;font-size:15px;color:var(--t2);line-height:1.7;">매수 매력도(0~100점) = Gear 상태(0~25) + RSI 구간(0~20) + RSI 모멘텀 보정(±5) + 단기 추세 정렬(0~15) + 시장 환경·VIX(0~15) + MACD 종합(0~14) + 52주 저점 근접(0~5) + 가격 패턴 HL/LH(±3).</p>
-          <p style="margin-top:8px;font-size:15px;color:var(--t2);line-height:1.7;">핵심은 <strong>상승 추세(200일선 위)에서 건강한 모멘텀도 매수 신호로 인정</strong>한다는 점입니다. RSI 60~70이라도 200일선 위에 있으면 13점(과거엔 3점), VIX 15~17이어도 상승장이면 11점(과거엔 1점), 5일선 위에 있어도 추세 확인 신호로 긍정 점수를 줍니다. MACD는 라인 자체가 양수인지(중기 추세 건강), 히스토그램 심도(과매도 여부), 추세 방향(개선·악화)을 통합해 0~14점으로 산출합니다.</p>
+          <p style="margin-top:10px;font-size:15px;color:var(--t2);line-height:1.7;">매수 매력도(0~100점) = Gear 상태(0~25) + RSI 구간(0~20) + RSI 모멘텀 보정(±5) + 단기 추세 정렬(0~15) + 시장 환경·VIX(0~15) + MACD 종합(0~14) + 52주 저점 근접(0~5) + 가격 패턴 HL/LH(±3). 8개 팩터를 동시에 계산해 단일 점수로 통합합니다.</p>
+          <p style="margin-top:8px;font-size:15px;color:var(--t2);line-height:1.7;">이 알고리즘의 핵심 설계 철학은 <strong>'공포장에서만 매수 신호를 내는 단순한 역발상 전략이 아니다'</strong>는 점입니다. RSI 60~70의 강한 모멘텀이 200일선 위 상승 추세와 함께 나타나면 매수 신호로 인식하고, VIX가 안정된 상승장에서도 긍정 점수를 부여합니다. 즉 추세·모멘텀·수급·변동성이 동시에 정렬될 때를 포착하는 방식입니다. MACD는 라인 위치(중기 추세 방향) + 히스토그램 심도(단기 가속도) + 추세 방향(개선·악화)의 세 차원을 통합해 0~14점으로 산출합니다. 매도 적합도(0~100점)도 동일한 팩터 구조로 설계되어 매수 신호와 매도 신호가 같은 논리 위에서 서로 견제합니다.</p>
           <p style="margin-top:8px;font-size:15px;color:var(--t2);line-height:1.7;">데이터는 미국 장중(KST 약 22:30~06:00) 30분 간격으로, 장 외에는 프리마켓·장후 각 1회 자동 수집됩니다.</p>
         </details>
       </div>
