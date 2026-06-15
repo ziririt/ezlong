@@ -167,4 +167,36 @@ card2 등 회색 배경에 `--ez-text3` 텍스트 금지 → `--ez-text2` 사용
 
 ---
 
+## 세션 마무리 자동 트리거 — CHANGELOG.md 작성
+
+유저 메시지에 다음 단어 중 하나라도 등장하면 **CHANGELOG.md를 자동으로 업데이트**한다:
+
+> **트리거 단어:** `마무리`, `정리해줘`, `작업 정리`, `changelog`, `오늘 정리`
+
+### 실행 순서
+
+1. sandbox bash에서 오늘 커밋 이력 조회:
+```bash
+git log --since="YYYY-MM-DD 00:00" --oneline --no-merges
+```
+2. chore(자동 데이터 커밋)·keep-alive 항목 제외하고 실제 작업 커밋만 분류
+3. CHANGELOG.md에 새 날짜 섹션 추가 (기존 내용 위에 prepend 방식 아닌 파일 맨 위 `---` 다음에 삽입)
+4. 알고리즘 변경이 있으면 반드시 복구 git 명령어 포함
+5. 커밋 명령 제시:
+```bash
+git add CHANGELOG.md
+git commit -m "docs: CHANGELOG 2026-MM-DD 작업 이력 추가"
+git push
+```
+
+### CHANGELOG.md가 없으면
+
+새로 생성한다. 포맷은 기존 CHANGELOG.md 참조.
+
+### 여러 대화방에서 작업했더라도
+
+git log는 모든 커밋을 포함하므로 어느 대화방에서 트리거해도 오늘 전체 작업이 통합된다.
+
+---
+
 전체 규칙·CSS 변수·배포 체크리스트·Git 워크플로우 → **EZLONG_GUIDE.md** 참조
