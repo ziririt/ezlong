@@ -3022,6 +3022,22 @@ function renderAll(data) {
   // 각 종목에 VIX 주입 (Signal Score 계산용)
   [qqq, voo, tsla, nvda, dia, iwm, soxx].forEach(d => { if (d) d.vix = vix; });
 
+  // closes 배열로 추가 팩터 보강 — 소스(TwelveData·Yahoo·서버JSON)에 관계없이 공통 적용
+  // [2026-06-16] parseTwelveData가 rsi5dAgo 등 미계산 → renderAll 직전 여기서 일괄 처리
+  [qqq, voo, tsla, nvda, dia, iwm, soxx].forEach(d => {
+    if (!d?.closes || d.closes.length < 10) return;
+    const cl = d.closes;
+    if (d.rsi5dAgo    === undefined) d.rsi5dAgo    = cl.length > 20 ? calcRSI(cl.slice(0, -5), 14)        : null;
+    if (d.hist5dAgo   === undefined) d.hist5dAgo   = cl.length > 35 ? calcMACD(cl.slice(0, -5)).histogram  : null;
+    if (d.high5d      === undefined) d.high5d      = cl.length >= 5  ? Math.max(...cl.slice(-5))            : null;
+    if (d.low5d       === undefined) d.low5d       = cl.length >= 5  ? Math.min(...cl.slice(-5))            : null;
+    if (d.high20dExcl === undefined) d.high20dExcl = cl.length > 20  ? Math.max(...cl.slice(-20, -5))       : null;
+    if (d.low20dExcl  === undefined) d.low20dExcl  = cl.length > 20  ? Math.min(...cl.slice(-20, -5))       : null;
+    if (d.upDays5     === undefined) d.upDays5     = cl.length > 6
+      ? cl.slice(-6).reduce((cnt, c, i, arr) => i === 0 ? cnt : (c > arr[i - 1] ? cnt + 1 : cnt), 0)
+      : null;
+  });
+
   // Signal Score 계산
   [qqq, voo, tsla, nvda, dia, iwm, soxx].forEach(d => {
     if (d) {
@@ -5347,15 +5363,35 @@ async function updateLivePrices() {
     if (r.ok) {
       const j = await r.json();
       if (j?.indices) indicesData = j.indices;
-      // VIX 전광판 칩 — symbols.VIX에서 직접 채움 (CORS 우회)
+      // VIX 전광판 칩 + 분석 카드 — symbols.VIX에서 직접 채움 (CORS 우회, Yahoo 직접 fetch 불가)
       const vixSym = j?.symbols?.VIX;
       if (vixSym?.price != null) {
+        const vixClr = vixSym.changePct >= 0 ? 'var(--rd)' : 'var(--gr)'; // VIX 상승=위험=빨강
+        const vixSign = vixSym.changePct >= 0 ? '+' : '';
+        const vixHtml = `<span style="font-weight:700;">${vixSym.price.toFixed(2)}</span> <span style="font-size:13px;color:${vixClr};">${vixSign}${vixSym.changePct.toFixed(2)}%</span>`;
         const vixStripEl = document.getElementById('live-price-VIX-strip');
-        if (vixStripEl) {
-          const vixClr = vixSym.changePct >= 0 ? 'var(--rd)' : 'var(--gr)'; // VIX 상승=위험=빨강
-          const vixSign = vixSym.changePct >= 0 ? '+' : '';
-          vixStripEl.innerHTML = `<span style="font-weight:700;">${vixSym.price.toFixed(2)}</span> <span style="font-size:13px;color:${vixClr};">${vixSign}${vixSym.changePct.toFixed(2)}%</span>`;
+        if (vixStripEl) vixStripEl.innerHTML = vixHtml;
+        const vixCardEl = document.getElementById('live-price-VIX');
+        if (vixCardEl) vixCardEl.innerHTML = vixHtml;
+      }
+      // ② 카드 현재가 — JSON symbols에서 읽어옴 (Yahoo Finance CORS 전면 차단)
+      const cardSymbols = ['QQQ', 'VOO', 'SOXX', 'TSLA', 'NVDA'];
+      for (const sym of cardSymbols) {
+        const s = j?.symbols?.[sym];
+        if (!s?.price) continue;
+        const el = document.getElementById(`live-price-${sym}`);
+        if (!el) continue;
+        const isUp = (s.changePct ?? 0) >= 0;
+        const clr = isUp ? 'var(--gr)' : 'var(--rd)';
+        const sign = isUp ? '+' : '';
+        let html = `<span style="font-weight:800;font-size:17px;">$${s.price.toFixed(2)}</span><br><span style="font-size:13px;color:${clr};font-weight:600;">${sign}${s.changePct.toFixed(2)}%</span>`;
+        if (!s.isMarketOpen && s.extPrice != null) {
+          const extIsUp = (s.extChangePct ?? 0) >= 0;
+          const extClr = extIsUp ? 'var(--gr)' : 'var(--rd)';
+          const extSign = extIsUp ? '+' : '';
+          html += `<div style="font-size:11px;color:var(--t2);margin-top:2px;">애프터 $${s.extPrice.toFixed(2)} <span style="color:${extClr};">${extSign}${(s.extChangePct ?? 0).toFixed(2)}%</span></div>`;
         }
+        el.innerHTML = html;
       }
     }
   } catch(e) { /* 무시 */ }
@@ -5368,25 +5404,6 @@ async function updateLivePrices() {
       const html = renderIndexChip(indicesData[key]);
       if (!html) continue;
       const el = document.getElementById(id);
-      if (el) el.innerHTML = html;
-    }
-  }
-  // ② 카드 현재가 (Score Card · Kings) — 기존 실시간 API 유지 (ETF라 CORS 간혹 통과)
-  const cardTargets = [
-    {sym:'QQQ'}, {sym:'VOO'}, {sym:'SOXX'},
-    {sym:'TSLA'}, {sym:'NVDA'}, {sym:'^VIX'}
-  ];
-  for (const t of cardTargets) {
-    const html = await fetchLivePrice(t.sym);
-    if (!html) continue;
-    if (t.sym === '^VIX') {
-      // VIX는 두 곳 동시 업데이트: 분석 카드 + 전광판
-      const vixCard  = document.getElementById('live-price-VIX');
-      const vixStrip = document.getElementById('live-price-VIX-strip');
-      if (vixCard)  vixCard.innerHTML  = html;
-      if (vixStrip) vixStrip.innerHTML = html;
-    } else {
-      const el = document.getElementById(`live-price-${t.sym}`);
       if (el) el.innerHTML = html;
     }
   }

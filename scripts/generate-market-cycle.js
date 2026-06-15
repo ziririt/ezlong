@@ -160,10 +160,10 @@ async function fetchWeeklyOHLCV(symbol) {
       },
       timeout: 30000,   // 일봉 8년치는 데이터 양이 많으므로 여유 있게
     }, res => {
-      let body = '';
-      res.on('data', c => { body += c; });
+      const chunks = [];
+      res.on('data', c => { chunks.push(c); });
       res.on('end', () => {
-        try { resolve(JSON.parse(body)); }
+        try { resolve(JSON.parse(Buffer.concat(chunks).toString('utf8'))); }
         catch (e) { reject(new Error(`JSON 파싱 오류: ${e.message}`)); }
       });
     });
