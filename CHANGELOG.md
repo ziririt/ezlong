@@ -5,6 +5,85 @@
 
 ---
 
+## [2026-06-16] fetch-market-data.py 전면 교체 + CORS 전면 대응 + UTF-8 청크 깨짐 수정
+
+### 알고리즘 변경 ★ (복구 시 최우선 참조)
+
+**fetch-market-data.py — Python calcBuyScore/calcSellScore 신버전으로 전면 교체 (`dae90038c`, `4422cbcc6`)**
+
+배경: GitHub Actions는 `.py`를 실행한다. `.js`만 수정하는 착각이 오랜 기간 지속됐다.
+구버전 Python이 팩터 없는 JSON을 생성 → 클라이언트가 팩터 null로 재계산 → TSLA 48점 고착.
+
+팩터 7종 추가 (`dae90038c`):
+- `rsi5dAgo` — RSI 5일 전 값 → 모멘텀 보정 ±5pt
+- `hist5dAgo` — MACD 히스토그램 5일 전 → 방향성 보정 ±3pt
+- `high5d / low5d` — 최근 5일 고가/저가 → 가격 패턴 ±3pt
+- `high20dExcl / low20dExcl` — 이전 20일(5일 제외) 고가/저가
+- `volRatio` — 오늘 거래량 / 20일 평균 → 거래량 팩터 0~7pt
+- `upDays5` — 최근 5일 중 상승일 수 → 방향성 팩터 ±4pt
+
+closes/volumes 날짜 동기화 버그 수정 (`4422cbcc6`):
+- Close NaN 행 제거 시 Volume도 같은 행 삭제 누락 → DataFrame 기반 처리로 교체
+
+변경 파일:
+- `scripts/fetch-market-data.py` — GitHub Actions 실행 파일 (핵심)
+- `atmr-dashboard.html` (line ~2151, ~2253) — 클라이언트 재계산 (이미 신버전이었음)
+
+```bash
+# 팩터 7종 추가 버전 참조
+git show dae90038c:scripts/fetch-market-data.py
+
+# 날짜 동기화 수정 버전 참조
+git show 4422cbcc6:scripts/fetch-market-data.py
+
+# 이 커밋 이전으로 롤백 (팩터 없는 구버전)
+git checkout dae90038c^ -- scripts/fetch-market-data.py
+```
+
+---
+
+### 3배수 레버리지 메시지 3단계 분리
+
+**compSell 단일 임계값(55점) → 55/65/75 3단계로 분리 (`atmr-dashboard.html`)**
+
+기존: `compSell >= 55`이면 "즉시 팔아라 / 기다릴수록 손실 커진다" 강경 단일 메시지
+수정: 매도 압력 수준별로 3단계 차등 대응
+
+. 55점 이상(주의 구간): "현 포지션 유지 무방, 추가 매수 자제"
+. 65점 이상(경계 구간): "일부 2배수 교체 검토"
+. 75점 이상(위험 수준): "지금 2배수 이하로 낮추세요"
+
+배경: 불장 첫날 급등 시 매도 압력 55점에서 "즉시 팔아라"가 나오는 것은 명백히 과한 메시지.
+RSI 80 이상 장기 과열 구간과 단순 주의 구간을 동일하게 취급하는 설계 오류를 수정.
+
+수정 위치 (3곳 모두 완료):
+. `lev3Label/lev3Sub` — line ~4041
+. `act3/rsn3` — line ~4434
+. `el3x.innerHTML` (보유자 섹션) — line ~4520
+
+```bash
+# 이 수정 이전 버전으로 롤백
+git checkout 9d4047493 -- atmr-dashboard.html
+```
+
+---
+
+### 인프라 수정
+
+**CORS 차단 전면 대응 — JSON 기반으로 교체 (`9d4047493`)**
+- 문제: Yahoo Finance 직접 fetch가 `ezlong-541a8.web.app` 도메인에서 전면 CORS 차단
+- 기존: `cardTargets = [QQQ, VOO, SOXX, TSLA, NVDA, ^VIX]` → `fetchLivePrice` → 전부 실패
+- 수정: `updateLivePrices` ① 블록 안에서 `j.symbols[sym]`으로 카드 현재가 직접 채움 (VIX 포함)
+- 파일: `atmr-dashboard.html`
+
+**UTF-8 청크 깨짐 수정 (`4422cbcc6`, `9d4047493`)**
+- 문제: Node.js `res.on('data', c => { data += c; })` — 한국어 3바이트 문자가 청크 경계에서 잘림
+- 증상: AI 브리핑에서 `중립 → 중립` → `중��` 등으로 깨짐
+- 수정: `Buffer.concat(chunks).toString('utf8')` 방식으로 전면 교체
+- 파일: `scripts/generate-chart-analysis.js`, `scripts/generate-market-cycle.js`
+
+---
+
 ## [2026-06-15] 알고리즘 추세 분석 추가 + 글로벌 푸터 가독성 전면 수정
 
 ### 알고리즘 변경 ★ (복구 시 최우선 참조)

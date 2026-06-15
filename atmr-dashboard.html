@@ -4038,10 +4038,18 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     lev3Label = `3배수 1차(50%) 부분 진입 허용 — MACD 라인 +${macdLine.toFixed(2)} (중기 추세 양호), 단기 숨고르기 중`;
     lev3Color = 'var(--or)';
     lev3Sub   = `MACD 라인 양수(중기 추세 살아있음) / 히스토그램 ${macdHist.toFixed(2)} (단기 숨고르기). 라인이 양수인 한 부분(50%) 진입 허용. 히스토그램 양전환 확인 후 나머지 50% 추가하세요.`;
-  } else if (compSell >= 55) {
-    lev3Label = '3배수 신규 진입은 지금 당장 하지 마세요 — 기존 TQQQ·SOXL이 있다면 2배수 이하로 먼저 교체해두는 것을 권합니다';
+  } else if (compSell >= 75) {
+    lev3Label = '3배수 신규 진입 금지 — 기존 TQQQ·SOXL 보유 중이라면 지금 2배수로 낮추세요';
     lev3Color = 'var(--rd)';
-    lev3Sub   = `매도 압력 ${compSell}점 ≥ 55 — 3배수는 익절 구간 직전부터 먼저 정리`;
+    lev3Sub   = `매도 압력 ${compSell}점(기준 75점 초과) — RSI 과열·MACD 역전 신호 겹침. 추가 상승보다 하락 리스크가 더 크다는 신호입니다`;
+  } else if (compSell >= 65) {
+    lev3Label = '3배수 신규 진입 자제 — 매도 압력 경계 수준, 기존 보유 일부 축소 검토';
+    lev3Color = 'var(--or)';
+    lev3Sub   = `매도 압력 ${compSell}점(경계 구간 65점 진입). 신규 진입은 하지 말고, 기존 TQQQ·SOXL 보유 중이라면 일부 QLD·SSO로 교체를 검토하세요`;
+  } else if (compSell >= 55) {
+    lev3Label = '3배수 신규 진입 자제 — 매도 압력 주의 구간, 기존 보유는 유지 가능';
+    lev3Color = 'var(--or)';
+    lev3Sub   = `매도 압력 ${compSell}점(주의 구간 55점 진입). 신규 매수는 자제하되 기존 포지션은 유지해도 됩니다. 65점 초과 시 비중 축소를 검토하세요`;
   } else if (compGear < 3) {
     lev3Label = '3배수는 지금 가장 먼저 정리해야 할 포지션입니다 — 추세가 무너진 구간에서 3배수는 손실이 빠르게 복리로 쌓입니다';
     lev3Color = 'var(--rd)';
@@ -4431,10 +4439,18 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       act3 = `3배수 1차(50%) 분할 진입 고려 — MACD 라인 +${macdLine.toFixed(2)} 양수, 단기 숨고르기 중`;
       rsn3 = `MACD 라인 +${macdLine.toFixed(2)} (중기 추세 살아있음). 히스토그램 ${macdHist.toFixed(2)}은 단기 숨고르기. Gear ${compGear} + RSI ${rsi.toFixed(0)} + 매수 ${compBuy}점 — 지금 1차(50%) 먼저 진입하고, 히스토그램이 양전환하면 나머지 50% 추가하세요. 전체 계좌 20% 한도는 반드시 지키세요.`;
       col3 = 'var(--or)'; bg3 = 'rgba(255,159,10,0.08)'; bd3 = 'rgba(255,159,10,0.3)';
-    } else if (compSell >= 55) {
-      act3 = '지금 즉시 2배수로 낮추세요';
-      rsn3 = `매도 압력 ${compSell}점이 3배수 기준(55점)을 넘었습니다. 스윙 시그널 탭과 동일 판단 — 지금 TQQQ·SOXL을 팔고 QLD·SSO 또는 QQQ로 교체하세요. 기다릴수록 손실이 빠르게 커집니다.`;
+    } else if (compSell >= 75) {
+      act3 = '3배수 비중 즉시 축소 — 매도 압력 위험 수준';
+      rsn3 = `매도 압력 ${compSell}점(기준 75점 초과). RSI 과열과 MACD 역전이 겹쳤습니다. TQQQ·SOXL을 지금 2배수 이하로 낮추는 것이 유리합니다.`;
       col3 = 'var(--rd)'; bg3 = 'var(--rd-s)'; bd3 = 'rgba(255,69,58,0.3)';
+    } else if (compSell >= 65) {
+      act3 = '3배수 일부 축소 검토 — 매도 압력 경계 수준';
+      rsn3 = `매도 압력 ${compSell}점이 경계 구간(65점)에 진입했습니다. TQQQ·SOXL 보유 중이라면 일부를 QLD·SSO로 교체하거나 비중을 줄이는 것을 검토하세요.`;
+      col3 = 'var(--or)'; bg3 = 'rgba(255,159,10,0.08)'; bd3 = 'rgba(255,159,10,0.3)';
+    } else if (compSell >= 55) {
+      act3 = '3배수 추가 매수 자제 — 매도 압력 주의 구간';
+      rsn3 = `매도 압력 ${compSell}점(주의 구간 55점 진입). 기존 보유 포지션은 유지해도 되나, 추가 매수는 자제하세요. 65점 초과 시 비중 축소를 검토하세요.`;
+      col3 = 'var(--or)'; bg3 = 'rgba(255,159,10,0.08)'; bd3 = 'rgba(255,159,10,0.3)';
     } else if (rsi <= 55) {
       act3 = '지금 2배수로 낮추세요';
       rsn3 = `RSI ${rsi.toFixed(0)}으로 3배수 허용 기준(55 이상)을 하회합니다. 모멘텀이 약해지고 있는 신호입니다. 조건이 다시 갖춰지면 그때 올리면 됩니다.`;
@@ -4517,8 +4533,12 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     const el3x = document.getElementById('hold-g3-3x');
     if (el3x) {
       if (!lev3x) {
-        if (compSell >= 55) {
-          el3x.innerHTML = `<span class="no">지금은 3배수 매도 압력(${compSell}점)이 기준치(55점)를 초과했습니다</span> — 스윙 시그널 탭과 동일 판단: 3배수를 즉시 2배수 이하로 낮추세요. 기다릴수록 손실이 빠르게 커집니다`;
+        if (compSell >= 75) {
+          el3x.innerHTML = `<span class="no">매도 압력 ${compSell}점 — 위험 수준. 3배수를 지금 2배수 이하로 낮추세요</span>. RSI 과열·MACD 역전 겹침. 추가 상승보다 하락 리스크가 더 큰 구간입니다`;
+        } else if (compSell >= 65) {
+          el3x.innerHTML = `<span class="warn">매도 압력 ${compSell}점(경계 구간) — 3배수 보유 중이라면 일부 2배수로 교체를 검토하세요</span>. 65점 초과는 가볍게 가져가는 게 유리한 구간입니다`;
+        } else if (compSell >= 55) {
+          el3x.innerHTML = `<span class="warn">매도 압력 ${compSell}점(주의 구간) — 현 포지션 유지는 무방하나 추가 매수는 자제하세요</span>. 65점 초과 시 비중 축소 검토`;
         } else if (rsi <= 55) {
           el3x.innerHTML = `<span class="warn">RSI(${rsi.toFixed(0)})가 3배수 기준(55)을 하회합니다</span> — 3배수 허용 조건 미충족. 지금 2배수로 낮추고 조건이 다시 갖춰질 때까지 대기하세요`;
         } else if (!lev2x) {
