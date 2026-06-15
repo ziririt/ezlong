@@ -214,7 +214,9 @@ function getGear(dev200) {
   return 1;
 }
 
-function calcBuyScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18 }) {
+function calcBuyScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18,
+                        rsi5dAgo = null, hist5dAgo = null,
+                        high5d = null, low5d = null, high20dExcl = null, low20dExcl = null }) {
   if (!price || !sma200 || !rsi) return 50;
   let score = 0;
   const dev200 = (price - sma200) / sma200 * 100;
@@ -225,6 +227,15 @@ function calcBuyScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18 
   else if (rsi < 50)     score += 14;
   else if (rsi < 60)     score += 8;
   else if (rsi < 70)     score += 3;
+  // RSI 추세 보정 ±5pt — 5일 전 RSI 기준으로 판단 (38→55 회복 vs 72→55 냉각)
+  if (rsi5dAgo !== null) {
+    const rsiDelta = rsi - rsi5dAgo;
+    if (rsi5dAgo < 40 && rsiDelta > 3)        score += 5;  // 과매도탈출 — 강한 회복 신호
+    else if (rsi5dAgo < 45 && rsiDelta > 3)   score += 3;  // 저RSI에서 회복 중
+    else if (rsi5dAgo > 65 && rsiDelta < -3)  score += 2;  // 과매수냉각 — 살짝 긍정
+    else if (rsi > 65 && rsiDelta > 5)        score -= 5;  // 이미 고RSI에서 급등 중
+    else if (rsi > 65 && rsiDelta > 3)        score -= 3;
+  }
   if (sma5) {
     const dev5 = (price - sma5) / sma5 * 100;
     if (dev5 < -3)         score += 20;
@@ -243,6 +254,12 @@ function calcBuyScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18 
   else if (hist < 0)     score += 7;
   else if (hist < 1)     score += 4;
   else if (hist < 3)     score += 2;
+  // MACD 히스토그램 추세 보정 ±3pt — 음수→덜음(개선)과 양수→더양(악화) 구분
+  if (hist5dAgo !== null) {
+    const histDelta = hist - hist5dAgo;
+    if (histDelta > 0.5)       score += 3;  // 개선 중
+    else if (histDelta < -0.5) score -= 2;  // 악화 중
+  }
   if (high52 && low52 && high52 > low52) {
     const pos52 = (price - low52) / (high52 - low52) * 100;
     if (pos52 < 20)      score += 5;
@@ -250,10 +267,17 @@ function calcBuyScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18 
     else if (pos52 < 60) score += 3;
     else if (pos52 < 80) score += 1;
   }
+  // 가격 패턴 ±3pt — Higher Low(회복) vs Lower High(약화)
+  if (high5d !== null && low5d !== null && high20dExcl !== null && low20dExcl !== null) {
+    if (low5d > low20dExcl * 1.005)        score += 3;  // Higher Low — 저점 높아짐
+    else if (high5d < high20dExcl * 0.995) score -= 3;  // Lower High — 고점 낮아짐
+  }
   return Math.min(100, Math.max(0, Math.round(score)));
 }
 
-function calcSellScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18 }) {
+function calcSellScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18,
+                         rsi5dAgo = null, hist5dAgo = null,
+                         high5d = null, low5d = null, high20dExcl = null, low20dExcl = null }) {
   if (!price || !sma200 || !rsi) return 50;
   let score = 0;
   const dev200 = (price - sma200) / sma200 * 100;
@@ -267,6 +291,14 @@ function calcSellScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18
   else if (rsi > 70)    score += 17;
   else if (rsi > 65)    score += 10;
   else if (rsi > 60)    score += 4;
+  // RSI 추세 보정 ±5pt — 5일 전 RSI 기준 (70→80 급등 vs 65→55 냉각)
+  if (rsi5dAgo !== null) {
+    const rsiDelta = rsi - rsi5dAgo;
+    if (rsi5dAgo >= 65 && rsiDelta > 3)       score += 5;  // 이미 과열에서 더 상승 — 강한 매도 압력
+    else if (rsi5dAgo >= 60 && rsiDelta > 3)  score += 3;  // 고RSI 구간 상승
+    else if (rsi5dAgo >= 65 && rsiDelta < -3) score -= 3;  // 과매수 냉각 중 — 매도 시그널 약화
+    else if (rsi < 40 && rsiDelta < -5)       score -= 5;  // 급락해서 과매도 — 매도 시그널 소멸
+  }
   if (sma5) {
     const dev5 = (price - sma5) / sma5 * 100;
     if (dev5 > 4)         score += 20;
@@ -282,12 +314,23 @@ function calcSellScore({ price, sma5, sma200, rsi, macd, high52, low52, vix = 18
   if (hist > 3)         score += 8;
   else if (hist > 1.5)  score += 6;
   else if (hist > 0)    score += 3;
+  // MACD 히스토그램 추세 보정 ±3pt — 양수 히스토가 더 커지면(악화) 매도 압력
+  if (hist5dAgo !== null) {
+    const histDelta = hist - hist5dAgo;
+    if (histDelta > 0.5)       score += 3;  // 히스토 상승(강세 확대) — 매도 시그널 강화
+    else if (histDelta < -0.5) score -= 2;  // 히스토 하락(강세 약화) — 매도 시그널 완화
+  }
   if (high52 && low52 && high52 > low52) {
     const pos52 = (price - low52) / (high52 - low52) * 100;
     if (pos52 > 90)      score += 5;
     else if (pos52 > 80) score += 4;
     else if (pos52 > 70) score += 3;
     else if (pos52 > 60) score += 1;
+  }
+  // 가격 패턴 ±3pt — Lower High(약화) vs Higher Low(회복)
+  if (high5d !== null && low5d !== null && high20dExcl !== null && low20dExcl !== null) {
+    if (high5d < high20dExcl * 0.995)     score += 3;  // Lower High — 상승 모멘텀 약화
+    else if (low5d > low20dExcl * 1.005)  score -= 3;  // Higher Low — 하방 지지 강화
   }
   return Math.min(100, Math.max(0, Math.round(score)));
 }
@@ -305,6 +348,15 @@ function processSymbol(raw, symbol, vixPrice) {
   const rsi    = calcRSI(closes, 14);
   const macd   = calcMACD(closes);
 
+  // 추세 분석 — 5일 전 RSI·MACD 히스토그램 [TradingView 개선 반영]
+  const rsi5dAgo    = closes.length > 20 ? calcRSI(closes.slice(0, -5), 14)       : null;
+  const hist5dAgo   = closes.length > 35 ? calcMACD(closes.slice(0, -5)).histogram : null;
+  // 가격 패턴 — Higher Low / Lower High (closes 기반)
+  const high5d      = Math.max(...closes.slice(-5));
+  const low5d       = Math.min(...closes.slice(-5));
+  const high20dExcl = closes.length > 20 ? Math.max(...closes.slice(-20, -5)) : null;
+  const low20dExcl  = closes.length > 20 ? Math.min(...closes.slice(-20, -5)) : null;
+
   // 52주 고저: Stooq는 meta 없으므로 최근 252봉에서 계산
   const high52 = meta?.fiftyTwoWeekHigh ?? Math.max(...closes.slice(-252));
   const low52  = meta?.fiftyTwoWeekLow  ?? Math.min(...closes.slice(-252));
@@ -315,7 +367,7 @@ function processSymbol(raw, symbol, vixPrice) {
   const gear   = getGear(dev200);
 
   const vix = vixPrice || 18;
-  const obj = { symbol, price, change, changePct, sma5, sma20, sma50, sma200, rsi, macd, high52, low52, dev200, dev5, dev20, gear, vix };
+  const obj = { symbol, price, change, changePct, sma5, sma20, sma50, sma200, rsi, macd, high52, low52, dev200, dev5, dev20, gear, vix, rsi5dAgo, hist5dAgo, high5d, low5d, high20dExcl, low20dExcl };
 
   return {
     ...obj,
