@@ -768,7 +768,19 @@ async function processTicker(meta) {
   const aiResult = await callGemini(meta, indicators, swing, pivot, price, weeklyInd);
 
   // 6. 장외 시세 (프리마켓 / 포스트마켓)
-  const marketState = mta.marketState || 'CLOSED';
+  // 한국 주식(.KS): Yahoo Finance v8 API가 marketState를 누락하는 경우가 많아 'CLOSED' 폴백으로 오표시
+  // → 스크립트 실행 시각의 UTC를 기준으로 KRX 장 상태(09:00~15:30 KST = 00:00~06:30 UTC) 직접 계산
+  function getKRXMarketState() {
+    const now = new Date();
+    const day = now.getUTCDay(); // 0=일 1=월..5=금 6=토
+    const totalMinUTC = now.getUTCHours() * 60 + now.getUTCMinutes();
+    if (day >= 1 && day <= 5 && totalMinUTC >= 0 && totalMinUTC < 390) return 'REGULAR'; // 390분 = 6h30m
+    return 'CLOSED';
+  }
+  const isKRSymbol = symbol.endsWith('.KS') || symbol.endsWith('.KQ');
+  const marketState = isKRSymbol
+    ? (mta.marketState || getKRXMarketState())
+    : (mta.marketState || 'CLOSED');
   // regularMarketPreviousClose = 실제 전일 종가 (v8 API 기준)
   // chartPreviousClose는 차트 시작 시점(2년 전) 종가이므로 절대 사용 불가
   const prevClose   = mta.regularMarketPreviousClose || mta.previousClose || (n >= 2 ? closes[n - 2] : null);

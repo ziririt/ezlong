@@ -1116,11 +1116,31 @@ function renderTfBar(ohlcvWeekly) {
   </div>`;
 }
 
+// ── KRX 장 상태 실시간 계산 ────────────────────────────────────
+// Yahoo Finance v8 API가 한국 주식의 marketState를 신뢰성 있게 반환하지 않음
+// → 브라우저 현재 시각(KST) 기준으로 KRX 정규장 여부를 직접 판별
+function getKRXMarketStateNow() {
+  const now = new Date();
+  const kst = new Date(now.getTime() + 9 * 3600 * 1000); // UTC → KST(UTC+9)
+  const day = kst.getUTCDay(); // 0=일, 1=월 ... 5=금, 6=토
+  const totalMin = kst.getUTCHours() * 60 + kst.getUTCMinutes();
+  // KRX 정규장: 평일 09:00~15:30 KST
+  if (day >= 1 && day <= 5 && totalMin >= 9 * 60 && totalMin < 15 * 60 + 30) return 'REGULAR';
+  return 'CLOSED';
+}
+
 // ── 가격 헤더 ─────────────────────────────────────────────────
 function renderPriceHeader(analysis, currency) {
   const p = analysis.price;
   const isUp = (p.changePct ?? 0) >= 0;
-  const stateLabel = { REGULAR:'정규장', PRE:'프리마켓', POST:'포스트마켓', CLOSED:'장마감' }[p.marketState] || p.marketState;
+  // 한국 주식(.KS/.KQ): Yahoo Finance가 marketState를 누락하는 경우가 많아 항상 CLOSED 표시됨
+  // → 클라이언트 현재 시각 기준 KRX 장 상태로 덮어씀
+  const isKRStock = analysis.ticker && (analysis.ticker.endsWith('.KS') || analysis.ticker.endsWith('.KQ'));
+  const effectiveState = isKRStock ? getKRXMarketStateNow() : (p.marketState ?? 'CLOSED');
+  // 한국주식: 장중/장마감 / 미국주식: 정규장/프리마켓/포스트마켓/장마감
+  const stateLabel = isKRStock
+    ? ({ REGULAR:'장중', CLOSED:'장마감' }[effectiveState] || effectiveState)
+    : ({ REGULAR:'정규장', PRE:'프리마켓', POST:'포스트마켓', CLOSED:'장마감' }[effectiveState] || effectiveState);
   const pos52w = Math.max(0, Math.min(100, p.pos52 ?? 50));
 
   return `<div class="ca-price-hdr">
