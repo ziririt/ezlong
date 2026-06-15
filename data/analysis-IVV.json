@@ -3,46 +3,46 @@
   "name": "S&P500 ETF (iShares)",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-15T14:10:41.312Z",
+  "updatedAt": "2026-06-15T15:09:58.573Z",
   "price": {
-    "current": 754.71,
-    "change": 9.57,
-    "changePct": 1.28,
+    "current": 756.23,
+    "change": 11.09,
+    "changePct": 1.49,
     "high52": 764,
     "low52": 594.71,
-    "pos52": 94.5,
+    "pos52": 95.4,
     "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 749.1465,
-    "sma50": 728.0692,
-    "sma100": 703.0534,
-    "sma200": 687.6998,
-    "rsi": 58.54,
+    "sma20": 749.2225,
+    "sma50": 728.0996,
+    "sma100": 703.0686,
+    "sma200": 687.7074,
+    "rsi": 59.31,
     "macd": {
-      "macd": 4.274211,
-      "signal": 6.82565,
-      "histogram": -2.551439
+      "macd": 4.395496,
+      "signal": 6.849907,
+      "histogram": -2.454412
     },
     "bb": {
-      "upper": 767.7802,
-      "middle": 749.1465,
-      "lower": 730.5128,
-      "bandwidth": 0.0497
+      "upper": 767.9585,
+      "middle": 749.2225,
+      "lower": 730.4865,
+      "bandwidth": 0.05
     }
   },
   "levels": {
     "swingResistance": 764,
     "swingSupport": 734.97,
     "pivot": {
-      "pp": 748.22,
-      "r1": 770.49,
-      "r2": 786.27,
-      "s1": 732.44,
-      "s2": 710.17
+      "pp": 748.73,
+      "r1": 771.5,
+      "r2": 786.78,
+      "s1": 733.45,
+      "s2": 710.68
     }
   },
   "analysis": {
@@ -56,28 +56,28 @@
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도탈출+Higher Low 회복 초입",
-    "rsiTrajectory": "50.8 → 58.5 (과매도탈출)",
-    "macdTrajectory": "히스토 -2.9117 → -2.5514 (개선)",
+    "scoreReason": "RSI 과매도탈출 + Higher Low 회복 초입",
+    "rsiTrajectory": "50.8 → 59.3 (과매도탈출)",
+    "macdTrajectory": "히스토 -2.9117 → -2.4544 (개선)",
     "pricePattern": "Higher Low 회복 신호",
-    "volComment": "거래량비 0.03 (위축)",
+    "volComment": "거래량비 0.06 (위축)",
     "bbPosition": "중단근처",
-    "reason": "현재가 $754.71은 SMA20 $749.15 위에 위치하며, RSI가 50.8에서 58.5로 상승하며 과매도 구간을 탈출했습니다. 또한 5일 저가 $725.95가 20일 저가 $725.95보다 높게 ���성되어 회복 신호가 나타났습니다.",
-    "entry": 755,
+    "reason": "RSI가 50.8에서 59.3으로 상승하며 과매도 구간을 탈출했고, 5일 저가($725.95)가 20일 저가($725.95)와 같거나 높아 Higher Low 패턴을 형성하고 있습니다. MACD 히스토그램도 개선되는 추세입니다.",
+    "entry": 756.23,
     "stop": 734.97,
     "target": 764,
     "invalidation": 734.97,
     "weeklyConflict": "충돌 없음",
-    "profitTarget1": 760,
-    "profitTarget2": 764,
+    "profitTarget1": 764,
+    "profitTarget2": 771.5,
     "stopLoss": 734.97,
-    "narrative": "SPY는 현재 $754.71로 52주 신고가 $764.00에 근접하며 강세 추세를 이어가고 있습니다. SMA20 $749.15 위에 안착했으며, RSI가 50선을 돌파하며 상승 동력을 확보했습니다. 5일 저가가 20일 저가보다 높아진 'Higher Low' 패턴은 추가 상승 가능성을 시사합니다. 거래량은 위축되었으나, 전반적인 기술적 지표는 매수 관점을 지지합니다.",
-    "patternNote": "현재 가격은 20일 볼린저밴드 상단 $767.78과 중단 $749.15 사이에서 움직이며 상승 채널을 형성하고 있습니다.",
+    "narrative": "현재 SPY는 52주 최고가에 근접한 강세 흐름을 이어가고 있습니다. RSI가 50선을 회복하며 상승 추세를 지지하고 있으며, MACD 히스토그램 또한 개선되는 모습을 보입니다. 5일 저가가 20일 저가 대비 높아진 패턴은 추가 상승 가능성을 시사합니다. 거래량은 위축되었으나, 주요 지지선인 $734.97을 유지하며 상승세를 이어갈 것으로 판단됩니다.",
+    "patternNote": "현재 가격은 52주 최고가 부근에서 저항을 받고 있으나, RSI와 MACD의 긍정적인 신호가 이를 돌파할 가능성을 높이고 있습니다.",
     "keyPoints": [
-      "SMA20 상향 돌파 및 지지",
-      "RSI 50선 돌파 및 상승",
+      "RSI 50선 회복 및 상승 추세",
+      "MACD 히스토그램 개선",
       "Higher Low 패턴 형성"
     ],
-    "riskNote": "52주 고가 $764.00 저항 돌파 실패 시 하락 위험이 있습니다."
+    "riskNote": "52주 최고가 저항 돌파 실패 시 하락 전환 가능성이 있습니다."
   }
 }
