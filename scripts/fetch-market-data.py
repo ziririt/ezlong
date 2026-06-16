@@ -36,6 +36,21 @@ OUTPUT_PATH = os.path.normpath(
 )
 
 
+# ─── 시장 상태 판단 ────────────────────────────────────────────────────────
+
+def get_is_us_market_open():
+    """미국 동부시간 기준 정규장 오픈 여부 (9:30~16:00, 주중)
+    pytz 없이 UTC 기반 어림 계산. 서머타임 전환일 ±1일 오차 감수.
+    """
+    now_utc = datetime.now(timezone.utc)
+    if now_utc.weekday() >= 5:  # 토(5), 일(6)
+        return False
+    # EDT(UTC-4): 3월~11월, EST(UTC-5): 나머지 월
+    offset = -4 if 3 <= now_utc.month <= 11 else -5
+    et_total_min = ((now_utc.hour + offset) % 24) * 60 + now_utc.minute
+    return 570 <= et_total_min < 960  # 9:30 ~ 16:00
+
+
 # ─── 수학 함수 ─────────────────────────────────────────────────────────────
 
 def calc_sma(closes, period):
@@ -417,7 +432,7 @@ def process_symbol(closes, volumes, symbol, vix_price):
         'extPrice':      None,
         'extChange':     None,
         'extChangePct':  None,
-        'isMarketOpen':  False,
+        'isMarketOpen':  get_is_us_market_open(),
         # 최근 5거래일 일봉 변동률 — [0]=오늘, [1]=어제, [2]=2일전, ...
         'recentDailyReturns': [
             round((closes[-(i+1)] - closes[-(i+2)]) / closes[-(i+2)] * 100, 2)
