@@ -3,15 +3,15 @@
   "name": "카르다노",
   "assetType": "crypto",
   "market": "us",
-  "updatedAt": "2026-06-16T15:06:12.586Z",
+  "updatedAt": "2026-06-16T21:06:18.954Z",
   "price": {
-    "current": 0.1746,
-    "change": -0.004,
-    "changePct": -2.22,
-    "high52": 0.8723,
+    "current": 0.1741,
+    "change": -0.0045,
+    "changePct": -2.5,
+    "high52": 0.8685,
     "low52": 0.1492,
     "pos52": 3.5,
-    "marketState": "CLOSED",
+    "marketState": "POST",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
@@ -21,17 +21,17 @@
     "sma50": 0.2288,
     "sma100": 0.2418,
     "sma200": 0.2932,
-    "rsi": 35.65,
+    "rsi": 35.44,
     "macd": {
-      "macd": -0.017426,
-      "signal": -0.019459,
-      "histogram": 0.002034
+      "macd": -0.017466,
+      "signal": -0.019467,
+      "histogram": 0.002002
     },
     "bb": {
       "upper": 0.2466,
       "middle": 0.1892,
       "lower": 0.1318,
-      "bandwidth": 0.6067
+      "bandwidth": 0.6071
     }
   },
   "levels": {
@@ -50,34 +50,34 @@
     "strength": 2,
     "support": 0.15,
     "resistance": 0.27,
-    "rsiStatus": "중립",
+    "rsiStatus": "과매도",
     "macdStatus": "중립",
-    "bbStatus": "중단",
+    "bbStatus": "하단접근",
     "stage": "축적구간",
     "action": "관망",
     "buyScore": 4,
-    "scoreReason": "RSI 과매도 탈출 시도, 5일 저가 지지 확인",
-    "rsiTrajectory": "29.3 → 35.6 (과매도탈출 중)",
+    "scoreReason": "RSI 과매도 탈출 시도하나 추세 약함",
+    "rsiTrajectory": "29.3 → 35.4 (과매도탈출 중)",
     "macdTrajectory": "히스토 -0.0037 → 0.0020 (개선 중)",
-    "pricePattern": "5일 저가($0.17)가 20일 저가($0.15)보다 높음 (Higher Low 가능성)",
-    "volComment": "거래량비 1.05 (정상)",
-    "bbPosition": "중단근처",
-    "reason": "RSI가 과매도 구간을 탈출하며 상승하고 있고, MACD 히스토그램도 개선되고 있습니다. 5일 저가가 20일 저가보다 높아 회복 신호가 나타나고 있습니다.",
+    "pricePattern": "5일 저가 $0.17, 20일 저가 $0.15로 Higher Low 형성",
+    "volComment": "거래량비 0.92 (정상)",
+    "bbPosition": "하단근처",
+    "reason": "일봉 RSI가 과매도 구간에서 반등 시도 중이며, 5일 저가가 20일 저가보다 높아 회복 신호가 나타나고 있습니다. 그러나 주봉 RSI가 30.3으로 여전히 과매도 구간에 머물러 있고, 주봉 SMA20과의 괴리가 -28.51%로 커 약세 추세가 지속되고 있어 관망이 필요합니다.",
     "entry": 0.17,
     "stop": 0.15,
     "target": 0.23,
     "invalidation": 0.15,
-    "weeklyConflict": "주봉은 약세 추세(주봉 RSI 30.3, 주봉 SMA20 $0.24 하회)이나 일봉 신호 우선",
+    "weeklyConflict": "주봉은 약세이나 일봉 신호 우선",
     "profitTarget1": 0.2,
     "profitTarget2": 0.23,
     "stopLoss": 0.15,
-    "narrative": "현재가 $0.17은 52주 저가 $0.15에 근접하며 기술적 반등 가능성을 보입니다. RSI는 과매도 구간을 벗어나 35.6으로 상승했고, MACD 히스토그램도 개선되는 긍정적 신호가 나타납니다. 5일 저가가 20일 저가보다 높아 'Higher Low' 패턴이 형성될 수 있습니다. 다만, 주봉 차트가 여전히 약세 추세를 나타내고 있어 상승 추세 전환을 확신하기 어렵습니다. 0.15 지지선 이탈 시 추가 하락 위험이 있습니다.",
-    "patternNote": "현재 가격은 52주 저가 부근에서 지지를 받으며 반등을 시도하는 패턴을 보입니다. 0.15 지지선이 붕괴되지 않는 것이 중요합니다.",
+    "narrative": "현재가 $0.17은 52주 저가 $0.15에 근접하며 기술적 반등 가능성이 있습니다. 일봉 RSI는 35.4로 과매도 구간에서 벗어나고 있으며, 5일 저가가 20일 저가보다 높아(Higher Low) 회복 신호가 나타나고 있습니다. 그러나 주봉 RSI 30.3, 주봉 SMA20과의 괴리 -28.51% 등 장기 추세는 여전히 약세입니다. 단기 반등 시도에 베팅하기에는 리스크가 크므로, 0.23 저항선 돌파 여부를 확인하며 관망하는 것이 합리적입니다.",
+    "patternNote": "일봉상 5일 저가가 20일 저가보다 높아 회복 패턴의 초입으로 볼 수 있습니다.",
     "keyPoints": [
-      "RSI 과매도 탈출 및 상승",
-      "MACD 히스토그램 개선",
-      "5일 저가 > 20일 저가 (Higher Low 가능성)"
+      "일봉 RSI 과매도 탈출 시도",
+      "5일 저가 > 20일 저가 (Higher Low)",
+      "주봉 RSI 30.3 및 SMA20 괴리율 -28.51%로 약세 지속"
     ],
-    "riskNote": "주봉 차트의 약세 추세가 일봉 반등을 제한할 수 있습니다."
+    "riskNote": "주봉 약세 추세가 강하게 유지되고 있어 일봉 반등이 실패할 위험이 높습니다."
   }
 }
