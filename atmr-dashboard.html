@@ -5208,8 +5208,9 @@ function renderRecentContext(symbols) {
       border:1px solid ${IS_DARK ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'};
       border-radius:10px;padding:10px 14px;margin-bottom:12px;
       font-size:14px;line-height:1.8;
+      display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;
     ">
-      <span style="color:var(--ez-text3);font-size:12px;font-weight:600;letter-spacing:.05em;margin-right:10px;">최근 흐름</span>
+      <span style="color:var(--ez-text3);font-size:12px;font-weight:600;letter-spacing:.05em;margin-right:10px;white-space:nowrap;">최근 흐름</span>
       ${chips.join('')}
     </div>`;
 }

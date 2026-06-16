@@ -5,6 +5,96 @@
 
 ---
 
+## [2026-06-17] — 최근 흐름 맥락 추가 + isMarketOpen 수정 + data/ 폴더 대청소
+
+### 1. 최근 5거래일 등락률 컨텍스트 전면 주입 (알고리즘 수치 변경 없음)
+
+**배경:** Gemini AI 차트분석이 "월요일 급등+화요일 급락" 같은 최근 흐름을 언급하지 않아 사용자로부터 "이 AI가 시장 상황을 알고 있는 건가?" 반응 발생.
+
+**수정 파일 3개, 커밋: `d281988f2`**
+
+. `scripts/fetch-market-data.py` — `process_symbol()` 반환 dict에 `recentDailyReturns` 배열 추가. `[0]=오늘, [1]=어제, [2]=2일전, ...` 순서.
+. `scripts/generate-chart-analysis.js` — `callGemini()` 프롬프트에 `[최근 5거래일 일봉 변동률 — 반드시 이 흐름을 분석에 언급하라]` 섹션 삽입.
+. `atmr-dashboard.html` — `#recent-context-wrap` 배너 추가. QQQ·SOXX·TSLA·NVDA 최근 2일전→어제→오늘 흐름을 상단에 표시.
+
+복구 명령:
+```bash
+git show d281988f2 -- scripts/generate-chart-analysis.js | head -80
+git show d281988f2 -- scripts/fetch-market-data.py | head -40
+```
+
+---
+
+### 2. marketState 'CLOSED' 하드코딩 버그 수정
+
+**배경:** `generate-chart-analysis.js`에서 Yahoo Finance v8 API `marketState` null 반환 시 무조건 `'CLOSED'`로 fallback → 장 중에도 "장마감" 표시됨.
+
+**수정 파일: `generate-chart-analysis.js`, 커밋: `7473e3f55`**
+
+추가된 함수:
+```javascript
+function getUSMarketState() {
+  const now = new Date();
+  const etStr = now.toLocaleString('en-US', { timeZone: 'America/New_York' });
+  const et = new Date(etStr);
+  const day = et.getDay();
+  if (day === 0 || day === 6) return 'CLOSED';
+  const totalMin = et.getHours() * 60 + et.getMinutes();
+  if (totalMin >= 240 && totalMin < 570)  return 'PRE';
+  if (totalMin >= 570 && totalMin < 960)  return 'REGULAR';
+  if (totalMin >= 960 && totalMin < 1200) return 'POST';
+  return 'CLOSED';
+}
+```
+
+---
+
+### 3. isMarketOpen 하드코딩 제거 (fetch-market-data.py)
+
+**배경:** `market-signals.json`의 `isMarketOpen` 필드가 항상 `false`로 기록됨.
+
+**수정 파일: `scripts/fetch-market-data.py`, 커밋: `026b4d1d9`**
+
+추가된 함수:
+```python
+def get_is_us_market_open():
+    now_utc = datetime.now(timezone.utc)
+    if now_utc.weekday() >= 5: return False
+    offset = -4 if 3 <= now_utc.month <= 11 else -5
+    et_total_min = ((now_utc.hour + offset) % 24) * 60 + now_utc.minute
+    return 570 <= et_total_min < 960  # 9:30 ~ 16:00
+```
+
+`'isMarketOpen': False` → `'isMarketOpen': get_is_us_market_open()`
+
+---
+
+### 4. UI 말투 전환 — 스윙전략 정적 HTML 구간 (atmr-dashboard.html)
+
+1배수·2배수·3배수 전략 섹션(line 1705~1929) 잔여 "~하세요" 표현 일괄 진단형 전환. 자동 점검 grep 결과 0줄 확인.
+
+수정 파일: `atmr-dashboard.html`, 커밋: `026b4d1d9`
+
+---
+
+### 5. data/ 폴더 중복 파일 대청소 (git 미추적 로컬 파일)
+
+**원인:** macOS Finder에서 파일 복사 시 자동 생성되는 `(1)`, `(1) 2`, ` 2`, ` 3`... suffix 파일들이 수천 개 누적됨.
+
+**삭제 내역:**
+. 공백 포함 중복 파일 7,088개 삭제 (git 미추적 — push 불필요)
+. 숫자만 있는 유령 파일 8개 삭제 (PLTR 등 잘못된 파일명)
+. 정리 전: 7,318개 → 정리 후: 230개
+
+**안전성 검증:**
+. `.backup/20260613_211306/` → 840개 온전
+. `.backup/clean_20260613_211324/` → 14개 온전
+. 핵심 파일(market-signals.json, analysis-NVDA/TSLA/QQQ.json 등) → 모두 존재 확인
+
+재발방지: CLAUDE.md 규칙 12번 추가 — "data/ 폴더 파일 관리 규칙"
+
+---
+
 ## [2026-06-16] 3회차 — "~하세요" 행동 촉구 표현 전면 진단/분석형 전환
 
 ### UX 말투 원칙 수립 + 전면 적용 (알고리즘 수치 변경 없음)
