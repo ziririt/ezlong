@@ -3,46 +3,46 @@
   "name": "IT 섹터 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-16T18:48:22.772Z",
+  "updatedAt": "2026-06-16T19:10:50.412Z",
   "price": {
-    "current": 187.98,
-    "change": -3.81,
-    "changePct": -1.99,
+    "current": 187.61,
+    "change": -4.18,
+    "changePct": -2.18,
     "high52": 198.73,
     "low52": 119.375,
-    "pos52": 86.5,
+    "pos52": 86,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 185.492,
-    "sma50": 170.1828,
-    "sma100": 154.7361,
-    "sma200": 148.5149,
-    "rsi": 57.22,
+    "sma20": 185.4735,
+    "sma50": 170.1754,
+    "sma100": 154.7324,
+    "sma200": 148.513,
+    "rsi": 56.82,
     "macd": {
-      "macd": 4.408239,
-      "signal": 5.556249,
-      "histogram": -1.14801
+      "macd": 4.378724,
+      "signal": 5.550346,
+      "histogram": -1.171622
     },
     "bb": {
-      "upper": 199.2727,
-      "middle": 185.492,
-      "lower": 171.7113,
-      "bandwidth": 0.1486
+      "upper": 199.2418,
+      "middle": 185.4735,
+      "lower": 171.7052,
+      "bandwidth": 0.1485
     }
   },
   "levels": {
     "swingResistance": 198.73,
     "swingSupport": 172.88,
     "pivot": {
-      "pp": 185.85,
-      "r1": 200.86,
-      "r2": 213.75,
-      "s1": 172.96,
-      "s2": 157.95
+      "pp": 185.72,
+      "r1": 200.62,
+      "r2": 213.62,
+      "s1": 172.72,
+      "s2": 157.82
     }
   },
   "analysis": {
@@ -56,28 +56,28 @@
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도탈출+Higher Low 회복 초입",
-    "rsiTrajectory": "52.1 → 57.2 (과매도탈출)",
-    "macdTrajectory": "히스토 -1.6181 → -1.1480 (개선)",
-    "pricePattern": "Higher Low 회복 신호",
-    "volComment": "거래량비 0.36 (위축)",
+    "scoreReason": "RSI 상승세 + Higher Low 패턴 초입",
+    "rsiTrajectory": "52.1 → 56.8 (중립지속 중)",
+    "macdTrajectory": "히스토 -1.6181 → -1.1716 (개선)",
+    "pricePattern": "5일 저가($176.15) > 20일 저가($170.83)로 Higher Low 패턴 형성",
+    "volComment": "거래량비 0.37 (위축)",
     "bbPosition": "중단근처",
-    "reason": "5일 저가($176.15)가 20일 저가($170.83)보다 높아 회복 신호이며, RSI가 52.1에서 57.2로 상승 중입니다.",
-    "entry": 187.98,
+    "reason": "5일 저가($176.15)가 20일 저가($170.83)보다 높아 회복 신호이며, RSI가 52.1에서 56.8로 상승 중임.",
+    "entry": 187.61,
     "stop": 172.88,
     "target": 198.73,
-    "invalidation": 172.88,
+    "invalidation": 170.83,
     "weeklyConflict": "충돌 없음",
     "profitTarget1": 192.25,
     "profitTarget2": 198.73,
     "stopLoss": 172.88,
-    "narrative": "현재가 $187.98은 SMA20 $185.49 위에 위치하며, 5일 저가가 20일 저가보다 높아 회복세를 보입니다. RSI는 57.2로 상승 중이며, MACD 히스토그램도 개선되고 있어 추가 상승을 기대합니다. 1차 목표가는 5일 고가 $192.25, 2차 목표가는 52주 고가 $198.73으로 설정합니다. 손절선은 스윙 지지선인 $172.88을 기준으로 합니다.",
-    "patternNote": "5일 저가가 20일 저가보다 높아 상승 채널 내에서의 회복 패턴을 형성하고 있습니다.",
+    "narrative": "현재가 $187.61은 SMA20 $185.47 위에 위치하며, 5일 저가가 20일 저가보다 높아 회복세를 나타낸다. RSI는 56.8로 상승 중이며, MACD 히스토그램은 개선되고 있다. 52주 고가 $198.73을 향한 상승을 예상하며, 지지선 $172.88 이탈 시 매도한다.",
+    "patternNote": "일봉상 5일 저가가 20일 저가보다 높아지며 상승 추세의 지속 가능성을 시사한다.",
     "keyPoints": [
-      "5일 저가 > 20일 저가 (Higher Low 형성)",
-      "RSI 52.1 → 57.2 상승",
-      "MACD 히스토그램 개선"
+      "Higher Low 패턴 형성으로 회복 신호",
+      "RSI 상승세 및 MACD 히스토그램 개선",
+      "52주 고가 $198.73을 향한 상승 기대"
     ],
-    "riskNote": "거래량이 평균 대비 낮아 상승 동력이 약할 수 있습니다."
+    "riskNote": "거래량이 위축된 상태에서 52주 고가 저항 돌파 시 추가 상승 동력 부족 가능성 있음."
   }
 }
