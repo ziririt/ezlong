@@ -3,46 +3,46 @@
   "name": "TIGER 200",
   "assetType": "etf",
   "market": "kr",
-  "updatedAt": "2026-06-16T06:05:52.423Z",
+  "updatedAt": "2026-06-16T06:41:58.043Z",
   "price": {
-    "current": 139260,
-    "change": 2950,
-    "changePct": 2.16,
+    "current": 139520,
+    "change": 3210,
+    "changePct": 2.35,
     "high52": 143570,
     "low52": 39270,
-    "pos52": 95.9,
-    "marketState": "REGULAR",
+    "pos52": 96.1,
+    "marketState": "CLOSED",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 128490.75,
-    "sma50": 111060.1655,
-    "sma100": 95670.6637,
-    "sma200": 74560.1423,
-    "rsi": 63.09,
+    "sma20": 128503.75,
+    "sma50": 111065.3655,
+    "sma100": 95673.2637,
+    "sma200": 74561.4422,
+    "rsi": 63.24,
     "macd": {
-      "macd": 5959.178887,
-      "signal": 6609.27253,
-      "histogram": -650.093643
+      "macd": 5979.919628,
+      "signal": 6613.420679,
+      "histogram": -633.501051
     },
     "bb": {
-      "upper": 145241.6668,
-      "middle": 128490.75,
-      "lower": 111739.8332,
-      "bandwidth": 0.2607
+      "upper": 145288.4472,
+      "middle": 128503.75,
+      "lower": 111719.0528,
+      "bandwidth": 0.2612
     }
   },
   "levels": {
     "swingResistance": 143570,
     "swingSupport": 117615,
     "pivot": {
-      "pp": 131131.67,
-      "r1": 151698.33,
-      "r2": 164136.67,
-      "s1": 118693.33,
-      "s2": 98126.67
+      "pp": 131218.33,
+      "r1": 151871.67,
+      "r2": 164223.33,
+      "s1": 118866.67,
+      "s2": 98213.33
     }
   },
   "analysis": {
@@ -52,32 +52,32 @@
     "resistance": 143570,
     "rsiStatus": "중립",
     "macdStatus": "강세확산",
-    "bbStatus": "중단",
+    "bbStatus": "상단접근",
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도탈출 + Higher Low 회복 초입",
-    "rsiTrajectory": "57.8 → 63.1 (과매도탈출 중)",
-    "macdTrajectory": "히스토 -1148.5610 → -650.0936 (개선 중)",
-    "pricePattern": "Higher Low (5일 저가 117,960원 > 20일 저가 110,565원 * 1.005)",
-    "volComment": "거래량비 0.88 (정상)",
-    "bbPosition": "중단근처",
-    "reason": "RSI가 과매도 구간을 벗어나 상승 중이며, MACD 히스토그램이 개선되는 모습을 보이고 있습니다. 5일 저가가 20일 저가보다 높아 새로운 저점을 높이는 패턴이 나타나고 있습니다.",
-    "entry": 135000,
+    "scoreReason": "RSI 상승 중 + Higher Low 회복",
+    "rsiTrajectory": "57.8 → 63.2 (중립 지속 중)",
+    "macdTrajectory": "히스토 -1148.5610 → -633.5011 (개선)",
+    "pricePattern": "5일 저가 117,960원 > 20일 저가 110,565원 * 1.005 (Higher Low 회복)",
+    "volComment": "거래량비 0.92 (정상)",
+    "bbPosition": "상단근처",
+    "reason": "52주 신고가 근접, 5일 저가가 20일 저가보다 높아 회복 신호 확인. MACD 히스토그램 개선세 지속.",
+    "entry": 139520,
     "stop": 117615,
     "target": 143570,
-    "invalidation": 110565,
+    "invalidation": 117615,
     "weeklyConflict": "충돌 없음",
-    "profitTarget1": 140000,
-    "profitTarget2": 142000,
+    "profitTarget1": 141000,
+    "profitTarget2": 142500,
     "stopLoss": 117615,
-    "narrative": "KOSPI 200 ETF는 현재 52주 신고가에 근접하며 강한 상승 추세를 이어가고 있습니다. RSI는 63.1로 상승 중이며, MACD 히스토그램은 개선세를 보이고 있습니다. 5일 저가가 20일 저가보다 높아 새로운 지지선을 형성하며 상승 여력을 확보했습니다. 135,000원 부근에서 진입하여 143,570원 돌파를 목표로 합니다. 손절선은 117,615원으로 설정합니다.",
-    "patternNote": "현재 가격은 52주 고가인 143,570원에 근접하며 강한 상승 채널을 유지하고 있습니다.",
+    "narrative": "현재가 139,520원은 52주 고가 143,570원에 근접하며 강세 추세를 이어가고 있다. 5일 저가가 20일 저가보다 높아지며 회복 패턴이 나타나고 있으며, MACD 히스토그램은 개선세를 보이고 있다. RSI는 63.2로 중립 구간에 있지만 상승 추세에 있다. 117,615원 지지선이 유지된다면 143,570원 돌파를 시도할 것이다.",
+    "patternNote": "가격은 52주 신고가에 근접하며 상승 채널 상단을 테스트하고 있다.",
     "keyPoints": [
-      "RSI 상승 추세 지속",
-      "MACD 히스토그램 개선",
-      "52주 고가 근접 및 신고가 경신 가능성"
+      "52주 고가 근접 및 돌파 시도",
+      "Higher Low 패턴 형성 확인",
+      "MACD 히스토그램 개선세 지속"
     ],
-    "riskNote": "52주 고가 저항 구간에서 차익 실현 매물이 출회될 경우 단기 조정을 받을 수 있습니다."
+    "riskNote": "볼린저밴드 상단에 근접하여 단기 과열 가능성이 있으나, RSI가 70을 넘지 않아 추가 상승 여력이 있다."
   }
 }
