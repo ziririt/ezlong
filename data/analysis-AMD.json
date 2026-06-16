@@ -3,46 +3,46 @@
   "name": "AMD",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-16T18:07:03.569Z",
+  "updatedAt": "2026-06-16T18:18:31.828Z",
   "price": {
-    "current": 520.13,
-    "change": -27.13,
-    "changePct": -4.96,
+    "current": 518.98,
+    "change": -28.28,
+    "changePct": -5.17,
     "high52": 558.37,
-    "low52": 130.24,
-    "pos52": 91.1,
+    "low52": 130,
+    "pos52": 90.8,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 493.0885,
-    "sma50": 399.374,
-    "sma100": 305.1698,
-    "sma200": 257.59,
-    "rsi": 59.36,
+    "sma20": 493.031,
+    "sma50": 399.351,
+    "sma100": 305.1583,
+    "sma200": 257.5842,
+    "rsi": 59.13,
     "macd": {
-      "macd": 30.60366,
-      "signal": 34.568659,
-      "histogram": -3.964999
+      "macd": 30.51192,
+      "signal": 34.550311,
+      "histogram": -4.038391
     },
     "bb": {
-      "upper": 561.3618,
-      "middle": 493.0885,
-      "lower": 424.8152,
-      "bandwidth": 0.2769
+      "upper": 561.215,
+      "middle": 493.031,
+      "lower": 424.847,
+      "bandwidth": 0.2766
     }
   },
   "levels": {
     "swingResistance": 546.44,
     "swingSupport": 437.23,
     "pivot": {
-      "pp": 490.62,
-      "r1": 587.88,
-      "r2": 655.63,
-      "s1": 422.87,
-      "s2": 325.61
+      "pp": 490.24,
+      "r1": 587.11,
+      "r2": 655.25,
+      "s1": 422.1,
+      "s2": 325.23
     }
   },
   "analysis": {
@@ -52,32 +52,32 @@
     "resistance": 546.44,
     "rsiStatus": "중립",
     "macdStatus": "강세확산",
-    "bbStatus": "중단",
+    "bbStatus": "상단접근",
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도탈출+MACD 개선 중",
-    "rsiTrajectory": "55.3 → 59.4 (중립지속 중)",
-    "macdTrajectory": "히스토 -8.1910 → -3.9650 (개선)",
-    "pricePattern": "Higher Low 또는 Lower High 또는 횡보 — 5일 저가 448.33, 20일 저가 393.36",
-    "volComment": "거래량비 0.51 (위축)",
-    "bbPosition": "중단근처",
-    "reason": "MACD 히스토그램이 음수에서 양수로 전환되며 개선되고 있으며, RSI도 55.3에서 59.4로 상승하며 매수세를 지지하고 있습니다. 52주 신고가 근처에서 거래 중입니다.",
-    "entry": 520.13,
-    "stop": 493.09,
+    "scoreReason": "RSI 상승세 + MACD 개선 + Higher Low",
+    "rsiTrajectory": "55.3 → 59.1 (중립지속 중)",
+    "macdTrajectory": "히스토 -8.1910 → -4.0384 (개선)",
+    "pricePattern": "5일 저가($448.33)가 20일 저가($393.36)보다 높으므로 회복 신호",
+    "volComment": "거래량비 0.52 (위축)",
+    "bbPosition": "상단근처",
+    "reason": "현재가($518.98)는 SMA20($493.03) 위에 있으며, MACD 히스토그램이 개선되고 있다. 5일 저가가 20일 저가보다 높아 회복 신호가 나타난다.",
+    "entry": 515,
+    "stop": 437.23,
     "target": 546.44,
-    "invalidation": 493.09,
+    "invalidation": 437.23,
     "weeklyConflict": "충돌 없음",
     "profitTarget1": 535,
-    "profitTarget2": 545,
-    "stopLoss": 493.09,
-    "narrative": "현재가 $520.13은 SMA20 $493.09 위에 있으며, MACD 히스토그램은 -8.1910에서 -3.9650으로 개선되고 있습니다. RSI 또한 55.3에서 59.4로 상승하며 추가 상승 가능성을 시사합니다. 5일 평균 거래량 대비 0.51로 거래량은 위축되었으나, 기술적 지표들은 긍정적인 신호를 보내고 있어 매수 관점입니다.",
-    "patternNote": "현재 가격은 52주 고가($558.37)에 근접한 강세 구간에 있으며, SMA200 대비 101.92% 수준입니다.",
+    "profitTarget2": 546.44,
+    "stopLoss": 437.23,
+    "narrative": "현재 가격은 52주 고가에 근접하며 강한 상승 추세를 유지하고 있다. SMA20 위에 안착했으며, MACD 히스토그램이 개선되는 긍정적인 신호가 포착된다. 5일 저가가 20일 저가보다 높아 추가 상승 가능성이 높다. 거래량은 위축되었으나, 전반적인 기술적 지표는 매수세를 지지한다.",
+    "patternNote": "가격은 볼린저밴드 상단에 근접하며 상승 채널을 따라 움직이고 있다.",
     "keyPoints": [
-      "MACD 히스토그램 개선세",
-      "RSI 상승 추세 유지",
-      "52주 신고가 근접"
+      "SMA20 지지력 확인",
+      "MACD 히스토그램 개선",
+      "5일 저가 Higher Low 패턴"
     ],
-    "riskNote": "현재가 $520.13은 볼린저밴드 상단 $561.36에 근접해 있어 단기 과열 위험이 있습니다."
+    "riskNote": "볼린저밴드 상단에서 저항을 받을 경우 단기 조정 가능성이 있다."
   }
 }
