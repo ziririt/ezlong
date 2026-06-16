@@ -469,13 +469,26 @@ async function callGemini(meta, ind, swing, pivot, price, weeklyInd) {
   const histPrev   = ind.macdHist5d     != null ? ind.macdHist5d.toFixed(4)     : 'N/A';
   const volR       = ind.volRatio != null ? ind.volRatio.toFixed(2) : 'N/A';
 
+  // 최근 5거래일 등락률 — 프롬프트 맥락용
+  const recentReturnSection = (() => {
+    const arr = ind.recentDailyReturns;
+    if (!arr || arr.length === 0) return '';
+    const labels = ['오늘(최근)', '어제', '2일 전', '3일 전', '4일 전'];
+    const lines = arr.map((r, i) => {
+      if (r == null) return `${labels[i]}: N/A`;
+      const sign = r >= 0 ? '+' : '';
+      return `${labels[i]}: ${sign}${r.toFixed(2)}%`;
+    }).join(' | ');
+    return `\n[최근 5거래일 일봉 변동률 — 반드시 이 흐름을 분석에 언급하라]\n${lines}\n`;
+  })();
+
   const prompt = `너는 15년 경력의 스윙 트레이더다. 분석가처럼 "~할 수 있다", "가능성이 있다"라고 얼버무리지 마라.
 매번 하나의 방향을 정하고, 그 근거를 숫자로 대라. 확신이 없을 때는 "관망"이라고 말하고, 왜 관망인지 이유를 써라.
 
 [절대 준수 사항]
 - 오직 이동평균선, RSI, MACD, 볼린저밴드, 거래량, 가격 패턴 등 순수 기술적 지표만 사용하라.
 - 기업 펀더멘털, 실적, 금리, 연준, 거시경제, 환율, 산업 트렌드, 규제, 정치적 요인은 절대 언급하지 마라.
-
+${recentReturnSection}
 [종목 정보]
 ${meta.context}
 
@@ -707,6 +720,15 @@ async function processTicker(meta) {
     high5d, low5d, high20d, low20d,
     volRatio,
   };
+
+  // 최근 5거래일 일봉 변동률 — [0]=오늘, [1]=어제, [2]=2일전, ...
+  const recentDailyReturns = [];
+  for (let i = 0; i < Math.min(5, n - 1); i++) {
+    const curr = closes[n - 1 - i];
+    const prev = closes[n - 2 - i];
+    recentDailyReturns.push(prev > 0 ? +((curr - prev) / prev * 100).toFixed(2) : null);
+  }
+  indicators.recentDailyReturns = recentDailyReturns;
 
   // 3. 지지/저항
   const swing = findSwingLevels(highs, lows, closes);

@@ -1557,6 +1557,9 @@ li.gear-other-sep { display: none !important; }
     <!-- ────────────────────────────────────────── -->
     <div class="tab-pane active" id="tab-market">
 
+      <!-- 최근 시장 흐름 맥락 배너 -->
+      <div id="recent-context-wrap"></div>
+
       <!-- 시그널 히스토리 (최근 4회) -->
       <div id="history-wrap"></div>
 
@@ -3121,6 +3124,7 @@ function renderAll(data) {
     window._sVerdict = getMarketVerdict(_sc, _g, _r, 50);
   }
 
+  try { renderRecentContext(data); } catch(e) { console.error('[renderRecentContext]', e); }
   try { renderActionPlan(qqq, voo, soxx, vix, dia, iwm); } catch(e) { console.error('[renderActionPlan]', e); }
   try { renderScoreGrid(qqq, voo, soxx); } catch(e) { console.error('[renderScoreGrid]', e); }
   try { renderGearBox(qqq, vix); } catch(e) { console.error('[renderGearBox]', e); }
@@ -5161,6 +5165,53 @@ function loadSignalHistory() {
     if (!raw) return [];
     return JSON.parse(raw) || [];
   } catch(e) { return []; }
+}
+
+// ─── 최근 시장 흐름 맥락 배너 ──────────────────────────────────────────────
+function renderRecentContext(symbols) {
+  const wrap = document.getElementById('recent-context-wrap');
+  if (!wrap) return;
+
+  // recentDailyReturns가 있는 심볼만 표시 (데이터 없으면 배너 숨김)
+  const targets = [
+    { key: 'QQQ',  label: 'QQQ'  },
+    { key: 'SOXX', label: 'SOXX' },
+    { key: 'TSLA', label: 'TSLA' },
+    { key: 'NVDA', label: 'NVDA' },
+  ];
+
+  const hasData = targets.some(t => symbols[t.key]?.recentDailyReturns?.length >= 2);
+  if (!hasData) { wrap.innerHTML = ''; return; }
+
+  const IS_DARK = document.body.classList.contains('dark');
+  const fmtR = r => {
+    if (r == null) return '<span style="color:var(--ez-text3)">N/A</span>';
+    const sign = r >= 0 ? '+' : '';
+    const color = r >= 0 ? 'var(--gr)' : 'var(--rd)';
+    return `<span style="color:${color};font-weight:700;">${sign}${r.toFixed(2)}%</span>`;
+  };
+
+  const chips = targets.map(({ key, label }) => {
+    const arr = symbols[key]?.recentDailyReturns;
+    if (!arr || arr.length < 2) return null;
+    // arr[0]=오늘, arr[1]=어제, arr[2]=2일전
+    const parts = [];
+    if (arr[2] != null) parts.push(`2일전 ${fmtR(arr[2])}`);
+    if (arr[1] != null) parts.push(`어제 ${fmtR(arr[1])}`);
+    if (arr[0] != null) parts.push(`오늘 ${fmtR(arr[0])}`);
+    return `<span style="margin-right:16px;white-space:nowrap;"><strong style="color:var(--ez-text2);margin-right:4px;">${label}</strong>${parts.join(' → ')}</span>`;
+  }).filter(Boolean);
+
+  wrap.innerHTML = `
+    <div style="
+      background:${IS_DARK ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'};
+      border:1px solid ${IS_DARK ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'};
+      border-radius:10px;padding:10px 14px;margin-bottom:12px;
+      font-size:14px;line-height:1.8;
+    ">
+      <span style="color:var(--ez-text3);font-size:12px;font-weight:600;letter-spacing:.05em;margin-right:10px;">최근 흐름</span>
+      ${chips.join('')}
+    </div>`;
 }
 
 function renderHistory() {

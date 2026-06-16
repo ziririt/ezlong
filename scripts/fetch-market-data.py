@@ -418,6 +418,12 @@ def process_symbol(closes, volumes, symbol, vix_price):
         'extChange':     None,
         'extChangePct':  None,
         'isMarketOpen':  False,
+        # 최근 5거래일 일봉 변동률 — [0]=오늘, [1]=어제, [2]=2일전, ...
+        'recentDailyReturns': [
+            round((closes[-(i+1)] - closes[-(i+2)]) / closes[-(i+2)] * 100, 2)
+            if len(closes) > i + 1 and closes[-(i+2)] != 0 else None
+            for i in range(5)
+        ],
     }
 
 
