@@ -95,6 +95,26 @@ def get_is_us_market_open():
 
 ---
 
+### 6. 모바일 "최근 흐름" 가로 넘침 수정 (atmr-dashboard.html)
+
+**배경:** 스마트폰에서 "최근 흐름" 배너가 화면 너비를 초과해 가로로 스크롤되는 현상 발견 (스크린샷 확인). QQQ·SOXX·TSLA 칩들이 한 줄에 고정되어 flex 컨테이너가 넘쳐흐름.
+
+**수정 내용:** `renderRecentContext()` 내 컨테이너 div에 `display:flex; flex-wrap:wrap; align-items:center; gap:4px 0;` 추가. 각 칩은 `white-space:nowrap` 유지하되 줄바꿈 가능하게 전환.
+
+수정 파일: `atmr-dashboard.html`, 커밋: `0893cfaa2`
+
+---
+
+### 7. 전체 자동 업데이트 스케줄 점검 결과 (이상 없음)
+
+. `fetch-market-data.py` — 평일 UTC 13~21시 30분 간격, 마지막 실행 2026-06-16T22:31 UTC ✓
+. `generate-chart-analysis.js us` — 장중 매시 :35, QQQ/SPY/SOXX 마지막 업데이트 2026-06-16T20:00 UTC (ET 15:35 장마감 직후) ✓
+. FlashAlpha 옵션·크립토·마켓사이클 — 정상 ✓
+. `generate-swing-briefing.js` 별도 파일은 6월 14일 대형사고 시 소실. 기능은 `generate-chart-analysis.js us`가 흡수해 정상 서비스 중.
+. `isMarketOpen` 픽스(`026b4d1d9`)는 마지막 자동 실행(22:31 UTC)보다 2분 늦게 push됨 — 오늘 US 장 오픈(UTC 13:30) 이후 첫 실행에서 `True` 반환 확인 필요.
+
+---
+
 ## [2026-06-16] 3회차 — "~하세요" 행동 촉구 표현 전면 진단/분석형 전환
 
 ### UX 말투 원칙 수립 + 전면 적용 (알고리즘 수치 변경 없음)
