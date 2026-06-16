@@ -3,46 +3,46 @@
   "name": "KODEX 레버리지",
   "assetType": "etf_leveraged",
   "market": "kr",
-  "updatedAt": "2026-06-16T05:05:56.860Z",
+  "updatedAt": "2026-06-16T05:25:17.296Z",
   "price": {
-    "current": 212225,
-    "change": 9195,
-    "changePct": 4.53,
+    "current": 212435,
+    "change": 9405,
+    "changePct": 4.63,
     "high52": 231260,
     "low52": 55535,
-    "pos52": 89.2,
+    "pos52": 89.3,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 184490.75,
-    "sma50": 143494.5,
-    "sma100": 112130.35,
-    "sma200": 75332.25,
-    "rsi": 61.52,
+    "sma20": 184501.25,
+    "sma50": 143498.7,
+    "sma100": 112132.45,
+    "sma200": 75333.3,
+    "rsi": 61.56,
     "macd": {
-      "macd": 13415.250362,
-      "signal": 15135.139492,
-      "histogram": -1719.88913
+      "macd": 13432.002498,
+      "signal": 15138.489919,
+      "histogram": -1706.487421
     },
     "bb": {
-      "upper": 231702.4589,
-      "middle": 184490.75,
-      "lower": 137279.0411,
-      "bandwidth": 0.5118
+      "upper": 231737.7138,
+      "middle": 184501.25,
+      "lower": 137264.7862,
+      "bandwidth": 0.512
     }
   },
   "levels": {
     "swingResistance": 231260,
     "swingSupport": 138150,
     "pivot": {
-      "pp": 193878.33,
-      "r1": 249606.67,
-      "r2": 286988.33,
-      "s1": 156496.67,
-      "s2": 100768.33
+      "pp": 193948.33,
+      "r1": 249746.67,
+      "r2": 287058.33,
+      "s1": 156636.67,
+      "s2": 100838.33
     }
   },
   "analysis": {
@@ -56,28 +56,28 @@
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도탈출 + MACD 개선 + Higher Low 회복",
-    "rsiTrajectory": "55.4 → 61.5 (과매도탈출 중)",
-    "macdTrajectory": "히스토 -3085.8284 → -1719.8891 (개선 중)",
+    "scoreReason": "RSI 상승 + Higher Low 패턴",
+    "rsiTrajectory": "55.4 → 61.6 (과매도탈출 중)",
+    "macdTrajectory": "히스토 -3085.8284 → -1706.4874 (개선 중)",
     "pricePattern": "5일 저가 150,955원 > 20일 저가 138,150원 * 1.005 (Higher Low)",
-    "volComment": "거래량비 0.68 (위축)",
+    "volComment": "거래량비 0.70 (위축)",
     "bbPosition": "중단근처",
-    "reason": "RSI가 과매도 구간을 탈출하며 상승 전환했고, MACD 히스토그램도 개선되고 있다. 5일 저가가 20일 저가보다 높아 회복 신호가 나타났다.",
-    "entry": 210000,
-    "stop": 193878,
+    "reason": "RSI가 55.4에서 61.6으로 상승하며 과매도 구간을 탈출했고, 5일 저가가 20일 저가보다 높아(Higher Low) 회복 신호가 나타났다. MACD 히스토그램도 개선되는 추세다.",
+    "entry": 212435,
+    "stop": 193948,
     "target": 231260,
-    "invalidation": 193878,
-    "weeklyConflict": "충돌 없음",
+    "invalidation": 193948,
+    "weeklyConflict": "주봉은 과매수(RSI 78.4)이나 일봉 신호 우선",
     "profitTarget1": 220000,
-    "profitTarget2": 231260,
-    "stopLoss": 193878,
-    "narrative": "현재가 212,225원은 52주 고가 231,260원에 근접하며 강한 상승 추세를 이어가고 있다. RSI는 55.4에서 61.5로 상승하며 과매도 구간을 탈출했고, MACD 히스토그램은 -3085에서 -1719로 개선되며 상승 동력을 확보했다. 5일 저가가 20일 저가보다 높아 추가 상승 가능성이 높다. 193,878원 피벗 지지선을 기준으로 231,260원 저항선까지의 상승을 목표로 매수한다.",
-    "patternNote": "현재 가격은 52주 고가에 근접하며 강한 상승 채널을 유지하고 있다.",
+    "profitTarget2": 230000,
+    "stopLoss": 193948,
+    "narrative": "현재가 212,435원은 SMA20 184,501원 위에 있으며, RSI가 55.4에서 61.6으로 상승하며 과매도 탈출을 시도하고 있다. 5일 저가 150,955원이 20일 저가 138,150원보다 높아(Higher Low) 회복 가능성이 있다. MACD 히스토그램도 개선 추세다. 52주 고가 231,260원을 목표로 매수한다.",
+    "patternNote": "현재 가격은 52주 고가 부근에 있으며, 5일 저가가 20일 저가보다 높아 회복세를 보이고 있다.",
     "keyPoints": [
-      "RSI 과매도 탈출 및 상승 전환",
-      "MACD 히스토그램 개선세 지속",
-      "Higher Low 패턴 형성으로 회복 신호"
+      "RSI 과매도 탈출 및 상승 추세",
+      "Higher Low 패턴 형성",
+      "MACD 히스토그램 개선"
     ],
-    "riskNote": "거래량 비율이 0.68로 낮아 상승 동력의 지속성이 약할 수 있다."
+    "riskNote": "거래량 비율이 0.70으로 낮아 상승 동력이 약할 수 있으며, 주봉 RSI가 78.4로 과매수 구간에 진입해 있다."
   }
 }
