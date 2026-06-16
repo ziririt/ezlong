@@ -3,46 +3,46 @@
   "name": "반도체 2X ETF",
   "assetType": "etf_leveraged",
   "market": "us",
-  "updatedAt": "2026-06-16T16:09:30.068Z",
+  "updatedAt": "2026-06-16T17:09:17.078Z",
   "price": {
-    "current": 101.45,
-    "change": 3.44,
-    "changePct": 3.51,
+    "current": 100.68,
+    "change": -6.15,
+    "changePct": -5.76,
     "high52": 116.5,
     "low52": 30.6,
-    "pos52": 82.5,
-    "marketState": "CLOSED",
+    "pos52": 81.6,
+    "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 98.7605,
-    "sma50": 85.6862,
-    "sma100": 69.8825,
-    "sma200": 60.7248,
-    "rsi": 55.72,
+    "sma20": 99.457,
+    "sma50": 86.7874,
+    "sma100": 70.3771,
+    "sma200": 61.0309,
+    "rsi": 53.98,
     "macd": {
-      "macd": 2.818606,
-      "signal": 4.382135,
-      "histogram": -1.563529
+      "macd": 3.162938,
+      "signal": 4.206963,
+      "histogram": -1.044025
     },
     "bb": {
-      "upper": 112.9941,
-      "middle": 98.7605,
-      "lower": 84.5269,
-      "bandwidth": 0.2882
+      "upper": 113.7461,
+      "middle": 99.457,
+      "lower": 85.1679,
+      "bandwidth": 0.2873
     }
   },
   "levels": {
     "swingResistance": 105.32,
     "swingSupport": 86.6,
     "pivot": {
-      "pp": 100.33,
-      "r1": 117.62,
-      "r2": 133.8,
-      "s1": 84.15,
-      "s2": 66.86
+      "pp": 100.07,
+      "r1": 117.11,
+      "r2": 133.54,
+      "s1": 83.64,
+      "s2": 66.6
     }
   },
   "analysis": {
@@ -51,33 +51,33 @@
     "support": 86.6,
     "resistance": 105.32,
     "rsiStatus": "중립",
-    "macdStatus": "중립",
+    "macdStatus": "강세확산",
     "bbStatus": "중단",
     "stage": "축적구간",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도탈출 + Higher Low 회복 초입",
-    "rsiTrajectory": "50.8 → 55.7 (과매도탈출)",
-    "macdTrajectory": "히스토 -1.7365 → -1.5635 (개선)",
-    "pricePattern": "Higher Low — 5일 저가($83.03)가 20일 저가($83.03)보다 높음",
-    "volComment": "거래량비 0.53 (위축)",
+    "scoreReason": "RSI 과매도탈출 + MACD 개선 + Higher Low 회복",
+    "rsiTrajectory": "49.5 → 54.0 (과매도탈출)",
+    "macdTrajectory": "히스토 -2.1169 → -1.0440 (개선)",
+    "pricePattern": "Higher Low (5일 저가 86.17 > 20일 저가 83.03)",
+    "volComment": "거래량비 0.56 (위축)",
     "bbPosition": "중단근처",
-    "reason": "RSI가 50선 이상으로 회복하며 과매도 구간을 탈출했고, 5일 저가가 20일 저가와 같거나 높게 형성되며 지지력을 확인했다. MACD 히스토그램도 개선되는 추세다.",
-    "entry": 101.45,
+    "reason": "RSI가 과매도 구간을 벗어나 상승 전환했고, MACD 히스토그램도 개선되는 흐름을 보입니다. 5일 저가가 20일 저가보다 높아진 'Higher Low' 패턴이 형성되며 회복 신호가 나타났습니다.",
+    "entry": 100.07,
     "stop": 86.6,
-    "target": 116.5,
+    "target": 105.32,
     "invalidation": 86.6,
     "weeklyConflict": "충돌 없음",
-    "profitTarget1": 105.32,
-    "profitTarget2": 112.99,
+    "profitTarget1": 103.5,
+    "profitTarget2": 105.32,
     "stopLoss": 86.6,
-    "narrative": "USD는 현재 $101.45에서 거래되며, 5일 저가 $83.03이 20일 저가 $83.03과 같거나 높은 Higher Low 패턴을 형성하며 회복세를 보이고 있다. RSI는 50.8에서 55.7로 상승하며 과매도 구간을 벗어났고, MACD 히스토그램 또한 개선되는 추세다. 5일 평균 대비 거래량 비율이 0.53으로 위축된 점은 아쉽지만, 기술적 지표들이 매수 신호를 보내고 있어 단기 상승을 기대한다. 1차 목표가는 스윙 저항선인 $105.32, 2차 목표가는 볼린저밴드 상단인 $112.99로 설정한다. 손절선은 52주 저가이자 스윙 지지선인 $86.60으로 설정한다.",
-    "patternNote": "현재 가격은 20일 볼린저밴드 중간선 부근에서 거래되고 있으며, 5일 저가가 20일 저가와 같거나 높은 Higher Low 패턴을 형성하며 상승 전환 가능성을 시사한다.",
+    "narrative": "USD는 현재 $100.68에 거래되며, SMA20 ($99.46) 위에서 지지를 받고 있습니다. RSI는 49.5에서 54.0으로 상승하며 과매도 구간을 탈출했고, MACD 히스토그램은 -2.1169에서 -1.0440으로 개선되었습니다. 5일 저가($86.17)가 20일 저가($83.03)보다 높아진 'Higher Low' 패턴이 형성되어 상승 추세 전환 가능성이 높습니다. 단, 거래량 비율이 0.56으로 낮아 추세 강화에는 시간이 필요할 수 있습니다. 피벗 포인트인 $100.07을 지지 삼아 스윙 저항선인 $105.32를 목표로 매수 진입합니다. 손절선은 직전 지지선인 $86.60으로 설정합니다.",
+    "patternNote": "현재 가격은 볼린저밴드 중단 부근에서 횡보하며 에너지를 응축하는 모습입니다. 5일 저가가 20일 저가보다 높아지며 상승 전환의 초기 신호가 포착되었습니다.",
     "keyPoints": [
-      "RSI 50선 회복 및 과매도 탈출",
-      "Higher Low 패턴 형성으로 지지력 확인",
-      "MACD 히스토그램 개선 추세"
+      "RSI 과매도 탈출 및 상승 전환",
+      "MACD 히스토그램 개선세",
+      "Higher Low 가격 패턴 형성"
     ],
-    "riskNote": "거래량 비율이 0.53으로 낮아 추세 전환의 신뢰도가 다소 떨어질 수 있다."
+    "riskNote": "거래량 비율이 0.56으로 낮아 상승 모멘텀이 약할 수 있으며, 볼린저밴드 상단 저항선까지의 거리가 약 5%로 제한적입니다."
   }
 }
