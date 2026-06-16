@@ -1052,13 +1052,13 @@ li.gear-other-sep { display: none !important; }
   font-size: 15px; font-weight: 400; color: var(--t3); margin-left: 8px;
 }
 .tv-chart-frame {
-  height: 670px;           /* 위젯(700px)보다 30px 작게 → overflow:hidden이 저작권 바(~28px) 클리핑 */
-  overflow: hidden;        /* 핵심: 프레임(670) < 위젯(700) 차이를 잘라냄 — 같은 높이면 작동 안 함 */
+  height: 680px;           /* 위젯(700px)보다 20px 작게 → 저작권 바(~18px)만 클리핑, x축 날짜 보존 */
+  overflow: hidden;        /* 핵심: 프레임(680) < 위젯(700) 차이를 잘라냄 — 같은 높이면 작동 안 함 */
   background: var(--card);
 }
 .tv-chart-frame .tradingview-widget-container,
 .tv-chart-frame .tradingview-widget-container__widget {
-  height: 700px !important; /* 프레임(670px)보다 반드시 크게 유지해야 overflow:hidden 효과 발생 */
+  height: 700px !important; /* 프레임(680px)보다 반드시 크게 유지해야 overflow:hidden 효과 발생 */
   width: 100% !important;
 }
 
@@ -1142,8 +1142,8 @@ li.gear-other-sep { display: none !important; }
   .gear-items { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
   .split-344 { grid-template-columns: 1fr; }
   .tab-btn { font-size: 14px; padding: 16px 6px; min-height: 72px; }
-  /* 모바일 차트 높이 조정 — 프레임(470) < 위젯(500) 구조 동일하게 유지 */
-  .tv-chart-frame { height: 470px !important; }
+  /* 모바일 차트 높이 조정 — 프레임(480) < 위젯(500) — 20px 클리핑으로 x축 날짜 보존 */
+  .tv-chart-frame { height: 480px !important; }
   .tv-chart-frame .tradingview-widget-container,
   .tv-chart-frame .tradingview-widget-container__widget { height: 500px !important; }
 }
@@ -5302,7 +5302,8 @@ function loadTVChart(frameId, symbol) {
   s.async = true;
   s.textContent = JSON.stringify({
     autosize: true, symbol,
-    interval: 'D',            // 일봉 고정 — range 없애야 TradingView가 interval 덮어쓰지 않음
+    interval: 'D',            // 일봉 고정
+    range: '6M',              // 초기 표시 기간 6개월 고정 — interval:'D'와 공존 가능
     container_id: cid,       // 밀리초 단위 고유 ID → 매 로드마다 신규 위젯
     timezone: 'America/New_York',
     theme: isDark ? 'dark' : 'light',
