@@ -777,10 +777,24 @@ async function processTicker(meta) {
     if (day >= 1 && day <= 5 && totalMinUTC >= 0 && totalMinUTC < 390) return 'REGULAR'; // 390분 = 6h30m
     return 'CLOSED';
   }
+  // 미국 주식: Yahoo Finance v8 API가 marketState를 누락하는 경우 시간 기반으로 직접 계산
+  // 프리마켓 04:00~09:30 ET, 정규장 09:30~16:00 ET, 포스트마켓 16:00~20:00 ET
+  function getUSMarketState() {
+    const now = new Date();
+    const etStr = now.toLocaleString('en-US', { timeZone: 'America/New_York' });
+    const et = new Date(etStr);
+    const day = et.getDay(); // 0=일, 6=토
+    if (day === 0 || day === 6) return 'CLOSED';
+    const totalMin = et.getHours() * 60 + et.getMinutes();
+    if (totalMin >= 240 && totalMin < 570)  return 'PRE';     // 04:00~09:30 ET
+    if (totalMin >= 570 && totalMin < 960)  return 'REGULAR'; // 09:30~16:00 ET
+    if (totalMin >= 960 && totalMin < 1200) return 'POST';    // 16:00~20:00 ET
+    return 'CLOSED';
+  }
   const isKRSymbol = symbol.endsWith('.KS') || symbol.endsWith('.KQ');
   const marketState = isKRSymbol
     ? (mta.marketState || getKRXMarketState())
-    : (mta.marketState || 'CLOSED');
+    : (mta.marketState || getUSMarketState());
   // regularMarketPreviousClose = 실제 전일 종가 (v8 API 기준)
   // chartPreviousClose는 차트 시작 시점(2년 전) 종가이므로 절대 사용 불가
   const prevClose   = mta.regularMarketPreviousClose || mta.previousClose || (n >= 2 ? closes[n - 2] : null);
