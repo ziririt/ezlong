@@ -3,46 +3,46 @@
   "name": "반도체 ETF (VanEck)",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-16T18:20:44.425Z",
+  "updatedAt": "2026-06-16T18:46:41.819Z",
   "price": {
-    "current": 626.82,
-    "change": -20.28,
-    "changePct": -3.13,
+    "current": 625.9,
+    "change": -21.2,
+    "changePct": -3.28,
     "high52": 649.24,
     "low52": 257.12,
-    "pos52": 94.3,
+    "pos52": 94,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 599.3885,
-    "sma50": 538.583,
-    "sma100": 468.7624,
-    "sma200": 407.313,
-    "rsi": 59.53,
+    "sma20": 599.3425,
+    "sma50": 538.5646,
+    "sma100": 468.7532,
+    "sma200": 407.3084,
+    "rsi": 59.31,
     "macd": {
-      "macd": 23.186537,
-      "signal": 24.39766,
-      "histogram": -1.211124
+      "macd": 23.113148,
+      "signal": 24.382983,
+      "histogram": -1.269835
     },
     "bb": {
-      "upper": 653.3657,
-      "middle": 599.3885,
-      "lower": 545.4113,
-      "bandwidth": 0.1801
+      "upper": 653.2276,
+      "middle": 599.3425,
+      "lower": 545.4574,
+      "bandwidth": 0.1798
     }
   },
   "levels": {
     "swingResistance": 642.77,
     "swingSupport": 554.66,
     "pivot": {
-      "pp": 601.31,
-      "r1": 674.75,
-      "r2": 722.68,
-      "s1": 553.38,
-      "s2": 479.94
+      "pp": 601,
+      "r1": 674.14,
+      "r2": 722.37,
+      "s1": 552.77,
+      "s2": 479.63
     }
   },
   "analysis": {
@@ -52,17 +52,17 @@
     "resistance": 642.77,
     "rsiStatus": "중립",
     "macdStatus": "중립",
-    "bbStatus": "상단접근",
+    "bbStatus": "중단",
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도탈출+Higher Low 회복 초입",
-    "rsiTrajectory": "55.7 → 59.5 (과매도탈출)",
-    "macdTrajectory": "히스토 -4.8482 → -1.2111 (개선)",
-    "pricePattern": "Higher Low 회복 신호",
-    "volComment": "거래량비 0.56 (위축)",
-    "bbPosition": "상단근처",
-    "reason": "5일 저가($568.29)가 20일 저가($527.87) 대비 1.07배 높아 'Higher Low' 패턴을 형성하며 회복 신호가 나타났다. MACD 히스토그램 또한 개선되는 추세다.",
+    "scoreReason": "RSI 과매도탈출 + Higher Low 회복 초입",
+    "rsiTrajectory": "55.7 → 59.3 (과매도탈출 중)",
+    "macdTrajectory": "히스토 -4.8482 → -1.2698 (개선 중)",
+    "pricePattern": "Higher Low — 5일 저가($568.29)가 20일 저가($527.87)보다 높음",
+    "volComment": "거래량비 0.59 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "5일 저가가 20일 저가보다 높아 회복 신호이며, MACD 히스토그램이 개선되고 있다. RSI도 과매도 구간을 벗어나 상승 중이다.",
     "entry": 620,
     "stop": 554.66,
     "target": 642.77,
@@ -70,14 +70,14 @@
     "weeklyConflict": "충돌 없음",
     "profitTarget1": 635,
     "profitTarget2": 642.77,
-    "stopLoss": 599.39,
-    "narrative": "현재가 $626.82는 52주 고가 $649.24에 근접하며 강세 흐름을 이어가고 있다. 5일 저가가 20일 저가보다 높아 'Higher Low' 패턴이 형성되었고, MACD 히스토그램이 개선되는 점은 긍정적이다. RSI 또한 과매도 구간을 탈출하며 상승세를 보이고 있어 단기 매수 관점에서 접근한다. 다만, 거래량이 평균 대비 낮은 점은 유의해야 한다.",
-    "patternNote": "현재 가격은 볼린저밴드 상단에 근접하며 상승 추세 채널 상단을 따라 움직이고 있다.",
+    "stopLoss": 554.66,
+    "narrative": "현재가 $625.90은 SMA20 $599.34 위에 위치하며 상승 추세를 지지하고 있다. 5일 저가가 20일 저가보다 높아 회복 신호가 나타났으며, MACD 히스토그램이 개선되는 중이다. RSI 또한 50선을 회복하며 긍정적인 흐름을 보이고 있다. 1차 목표가는 $635.00, 2차 목표가는 $642.77이며, 손절선은 $554.66으로 설정한다.",
+    "patternNote": "현재 가격은 볼린저밴드 중단 부근에서 횡보하며 에너지를 응축하는 모습이다. 이전 저점 대비 높아지는 패턴이 관찰된다.",
     "keyPoints": [
-      "Higher Low 패턴 형성 및 회복 신호",
-      "MACD 히스토그램 개선 추세",
-      "RSI 과매도 구간 탈출"
+      "5일 저가 > 20일 저가: 회복 신호",
+      "MACD 히스토그램 개선 중",
+      "RSI 50선 회복"
     ],
-    "riskNote": "볼린저밴드 상단에 근접한 상태에서 거래량이 동반되지 않는 상승은 과열 위험을 내포한다."
+    "riskNote": "거래량이 위축된 상태에서 상승이 지속될 경우 추세 전환 위험이 있다."
   }
 }

@@ -3,11 +3,11 @@
   "name": "고배당 미국 주식 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-16T18:21:14.465Z",
+  "updatedAt": "2026-06-16T18:47:12.888Z",
   "price": {
-    "current": 32.565,
-    "change": -0.065,
-    "changePct": -0.2,
+    "current": 32.56,
+    "change": -0.07,
+    "changePct": -0.21,
     "high52": 32.92,
     "low52": 26.16,
     "pos52": 94.7,
@@ -17,19 +17,19 @@
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 32.4472,
-    "sma50": 31.7627,
-    "sma100": 31.1969,
+    "sma20": 32.447,
+    "sma50": 31.7626,
+    "sma100": 31.1968,
     "sma200": 29.0826,
-    "rsi": 57.7,
+    "rsi": 57.57,
     "macd": {
-      "macd": 0.222436,
-      "signal": 0.243847,
-      "histogram": -0.021411
+      "macd": 0.222037,
+      "signal": 0.243767,
+      "histogram": -0.02173
     },
     "bb": {
-      "upper": 32.8694,
-      "middle": 32.4472,
+      "upper": 32.8689,
+      "middle": 32.447,
       "lower": 32.0251,
       "bandwidth": 0.026
     }
@@ -51,33 +51,33 @@
     "support": 31.27,
     "resistance": 32.79,
     "rsiStatus": "중립",
-    "macdStatus": "중립",
+    "macdStatus": "강세확산",
     "bbStatus": "중단",
-    "stage": "상승추세",
-    "action": "관망",
-    "buyScore": 5,
-    "scoreReason": "RSI 중립 구간 횡보, MACD 개선 중",
-    "rsiTrajectory": "57.5 → 57.7 (중립지속 중)",
-    "macdTrajectory": "히스토 -0.0501 → -0.0214 (개선)",
-    "pricePattern": "5일 저가($32.24) > 20일 저가($31.84) * 1.005 → Higher Low → 회복 신호",
-    "volComment": "거래량비 0.66 (위축)",
+    "stage": "축적구간",
+    "action": "매수",
+    "buyScore": 7,
+    "scoreReason": "RSI 중립+MACD 개선+Higher Low 회복",
+    "rsiTrajectory": "57.5 → 57.6 (중립지속 중)",
+    "macdTrajectory": "히스토 -0.0501 → -0.0217 (개선)",
+    "pricePattern": "5일 저가($32.24) > 20일 저가($31.84) * 1.005 → Higher Low 회복 신호",
+    "volComment": "거래량비 0.69 (위축)",
     "bbPosition": "중단근처",
-    "reason": "현재가 SMA20 상단에 위치하며 주봉 RSI 69.4로 강세 유지. 일봉 MACD 히스토그램 개선 중이나 거래량 위축으로 추세 전환 신뢰도 낮음.",
+    "reason": "MACD 히스토그램 개선세와 5일 저가가 20일 저가보다 높아진 Higher Low 패턴이 매수 근거다. 현재가 $32.56은 SMA20 $32.45 위에 있다.",
     "entry": 32.5,
     "stop": 31.8,
     "target": 33.5,
-    "invalidation": 31.8,
+    "invalidation": 31.27,
     "weeklyConflict": "충돌 없음",
     "profitTarget1": 33,
     "profitTarget2": 33.5,
     "stopLoss": 31.8,
-    "narrative": "주봉 RSI 69.4로 강세 구간 진입. 일봉 MACD 히스토그램이 음수에서 개선되는 흐름을 보이며 바닥 다지기 가능성 시사. 그러나 5일 평균 대비 거래량 비율이 0.66으로 위축되어 있어 추세 전환의 강한 동력은 부족. 52주 신고가 $32.92 돌파 여부가 중요하며, 돌파 시 33.50까지 상승 기대. 31.80 지지선 이탈 시 하락 전환 가능성 있음.",
-    "patternNote": "일봉 차트에서 5일 저가가 20일 저가보다 높아지는 'Higher Low' 패턴이 나타나며 회복 신호로 해석될 수 있습니다.",
+    "narrative": "현재가 $32.56은 SMA20 $32.45 위에 안착하며 강세 추세를 이어가고 있다. MACD 히스토그램이 음수 구간에서 개선되고 있으며, 5일 저가가 20일 저가보다 높아진 Higher Low 패턴이 확인되어 추가 상승을 기대한다. 거래량은 위축되었으나, 지지선 $31.27 이탈 전까지는 매수 관점을 유지한다.",
+    "patternNote": "현재 가격은 52주 신고가 $32.92에 근접하며 상승 채널을 유지하고 있다.",
     "keyPoints": [
-      "주봉 RSI 69.4로 강세 유지",
-      "일봉 MACD 히스토그램 개선 중",
-      "거래량 위축으로 추세 전환 신뢰도 낮음"
+      "MACD 히스토그램 개선세",
+      "Higher Low 패턴 형성",
+      "SMA20 상향 돌파 및 지지"
     ],
-    "riskNote": "거래량 위축 상태에서 52주 신고가 돌파 실패 시 하락 반전 위험 존재."
+    "riskNote": "거래량이 위축된 상태에서 52주 고가 돌파 실패 시 하락 위험이 있다."
   }
 }
