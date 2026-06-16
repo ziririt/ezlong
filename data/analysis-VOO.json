@@ -3,46 +3,46 @@
   "name": "S&P500 ETF (Vanguard)",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-16T17:08:31.842Z",
+  "updatedAt": "2026-06-16T18:08:43.319Z",
   "price": {
-    "current": 691.695,
-    "change": 9.745,
-    "changePct": 1.43,
+    "current": 691.52,
+    "change": 9.57,
+    "changePct": 1.4,
     "high52": 699.15,
     "low52": 545.75,
-    "pos52": 95.1,
+    "pos52": 95,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 685.6057,
-    "sma50": 666.2569,
-    "sma100": 643.3692,
-    "sma200": 629.3216,
-    "rsi": 59.21,
+    "sma20": 685.597,
+    "sma50": 666.2534,
+    "sma100": 643.3674,
+    "sma200": 629.3207,
+    "rsi": 59.12,
     "macd": {
-      "macd": 4.00834,
-      "signal": 6.274124,
-      "histogram": -2.265784
+      "macd": 3.994381,
+      "signal": 6.271332,
+      "histogram": -2.276951
     },
     "bb": {
-      "upper": 702.7292,
-      "middle": 685.6057,
-      "lower": 668.4823,
-      "bandwidth": 0.05
+      "upper": 702.7082,
+      "middle": 685.597,
+      "lower": 668.4858,
+      "bandwidth": 0.0499
     }
   },
   "levels": {
     "swingResistance": 699.15,
     "swingSupport": 672.55,
     "pivot": {
-      "pp": 685.06,
-      "r1": 705.79,
-      "r2": 719.89,
-      "s1": 670.96,
-      "s2": 650.22
+      "pp": 685,
+      "r1": 705.67,
+      "r2": 719.83,
+      "s1": 670.84,
+      "s2": 650.17
     }
   },
   "analysis": {
@@ -52,32 +52,32 @@
     "resistance": 699.15,
     "rsiStatus": "중립",
     "macdStatus": "중립",
-    "bbStatus": "상단접근",
+    "bbStatus": "중단",
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 7,
     "scoreReason": "RSI 과매도탈출 + Higher Low 회복 초입",
-    "rsiTrajectory": "50.9 → 59.2 (과매도탈출)",
-    "macdTrajectory": "히스토 -2.6601 → -2.2658 (개선)",
+    "rsiTrajectory": "50.9 → 59.1 (과매도탈출)",
+    "macdTrajectory": "히스토 -2.6601 → -2.2770 (개선)",
     "pricePattern": "Higher Low 회복 신호",
-    "volComment": "거래량비 0.24 (위축)",
-    "bbPosition": "상단접근",
-    "reason": "현재가 $691.70은 52주 고가 $699.15에 근접하며 강세 추세를 유지하고 있다. RSI가 50.9에서 59.2로 상승하며 과매도 구간을 탈출했고, MACD 히스토그램 또한 개선되는 모습을 보이고 있다. 5일 저가($664.32)가 20일 저가($664.32)보다 높거나 같아 Higher Low 패턴이 형성되며 회복 신호가 나타났다.",
-    "entry": 685.06,
+    "volComment": "거래량비 0.27 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "현재가 52주 신고가 근처이며, RSI가 과매도 구간에서 회복하며 상승 중. MACD 히스토그램도 개선되는 모습을 보임.",
+    "entry": 685,
     "stop": 672.55,
-    "target": 705.79,
+    "target": 699.15,
     "invalidation": 672.55,
     "weeklyConflict": "충돌 없음",
-    "profitTarget1": 705.79,
-    "profitTarget2": 719.89,
+    "profitTarget1": 695,
+    "profitTarget2": 705.67,
     "stopLoss": 672.55,
-    "narrative": "S&P 500 추종 ETF는 현재 $691.70으로 52주 고가 $699.15에 근접하며 강한 상승세를 이어가고 있다. RSI는 50.9에서 59.2로 상승하며 과매도 구간을 벗어났고, MACD 히스토그램도 개선되는 긍정적인 신호를 보낸다. 5일 저가가 20일 저가보다 높거나 같은 Higher Low 패턴이 형성되어 회복 가능성이 높다. 피벗 포인트 $685.06을 지지 삼아 1차 목표가 $705.79를 설정한다. 손절선은 스윙 지지선인 $672.55로 설정하여 리스크를 관리한다.",
-    "patternNote": "현재 가격은 볼린저밴드 상단에 근접하며 상승 추세를 이어가고 있으나, 거래량은 위축되어 있어 추가 상승 동력은 제한적일 수 있다.",
+    "narrative": "S&P 500 추종 ETF는 52주 신고가에 근접하며 강세 흐름을 이어가고 있다. RSI는 50선을 회복하며 상승 동력을 얻고 있으며, MACD 히스토그램 또한 개선되는 추세다. 5일 저가가 20일 저가보다 높아진 'Higher Low' 패턴이 형성되며 회복 신호가 나타나고 있다. 거래량은 위축되었으나, 신고가 돌파 시 추가 상승 가능성이 높다. 685.00 부근에서 진입하여 699.15 저항선 돌파를 노린다.",
+    "patternNote": "현재가 52주 신고가에 근접하며 상승 채널 상단부를 테스트하고 있다.",
     "keyPoints": [
-      "RSI 과매도 탈출 및 상승세 지속",
-      "MACD 히스토그램 개선 신호",
-      "Higher Low 패턴 형성으로 회복 기대"
+      "52주 신고가 근접 및 돌파 시도",
+      "RSI 50선 회복 및 상승 추세",
+      "MACD 히스토그램 개선세"
     ],
-    "riskNote": "볼린저밴드 상단에 근접한 상태에서 거래량이 동반되지 않는 상승은 과열 신호일 수 있으며, 급격한 되돌림 가능성에 유의해야 한다."
+    "riskNote": "거래량이 위축된 상태에서 신고가를 돌파하지 못하고 하락할 경우, 672.55 지지선 이탈 위험이 있다."
   }
 }

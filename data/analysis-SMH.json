@@ -3,46 +3,46 @@
   "name": "반도체 ETF (VanEck)",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-16T17:09:00.994Z",
+  "updatedAt": "2026-06-16T18:09:14.234Z",
   "price": {
-    "current": 627.79,
-    "change": -19.31,
-    "changePct": -2.98,
+    "current": 629.46,
+    "change": -17.64,
+    "changePct": -2.73,
     "high52": 649.24,
     "low52": 257.12,
-    "pos52": 94.5,
+    "pos52": 95,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 599.437,
-    "sma50": 538.6024,
-    "sma100": 468.7721,
-    "sma200": 407.3178,
-    "rsi": 59.77,
+    "sma20": 599.5205,
+    "sma50": 538.6358,
+    "sma100": 468.7888,
+    "sma200": 407.3262,
+    "rsi": 60.2,
     "macd": {
-      "macd": 23.263913,
-      "signal": 24.413136,
-      "histogram": -1.149222
+      "macd": 23.397136,
+      "signal": 24.43978,
+      "histogram": -1.042644
     },
     "bb": {
-      "upper": 653.5144,
-      "middle": 599.437,
-      "lower": 545.3596,
-      "bandwidth": 0.1804
+      "upper": 653.7776,
+      "middle": 599.5205,
+      "lower": 545.2634,
+      "bandwidth": 0.181
     }
   },
   "levels": {
     "swingResistance": 642.77,
     "swingSupport": 554.66,
     "pivot": {
-      "pp": 601.63,
-      "r1": 675.4,
-      "r2": 723,
-      "s1": 554.03,
-      "s2": 480.26
+      "pp": 602.19,
+      "r1": 676.51,
+      "r2": 723.56,
+      "s1": 555.14,
+      "s2": 480.82
     }
   },
   "analysis": {
@@ -51,33 +51,33 @@
     "support": 554.66,
     "resistance": 642.77,
     "rsiStatus": "중립",
-    "macdStatus": "중립",
-    "bbStatus": "중단",
+    "macdStatus": "강세확산",
+    "bbStatus": "상단접근",
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 상승 + Higher Low 회복 초입",
-    "rsiTrajectory": "55.7 → 59.8 (중립지속 중)",
-    "macdTrajectory": "히스토 -4.8482 → -1.1492 (개선)",
-    "pricePattern": "5일 저가($568.29) > 20일 저가($527.87) * 1.005 → Higher Low 회복 신호",
-    "volComment": "거래량비 0.50 (위축)",
-    "bbPosition": "중단근처",
-    "reason": "5일 저가($568.29)가 20일 저가($527.87) 대비 1.005 이상 상승하며 회복 신호 발생. MACD 히스토그램도 개선 중.",
-    "entry": 620,
-    "stop": 580,
-    "target": 675,
-    "invalidation": 554.66,
+    "scoreReason": "RSI 상승 + MACD 개선 + Higher Low 회복",
+    "rsiTrajectory": "55.7 → 60.2 (중립지속 중)",
+    "macdTrajectory": "히스토 -4.8482 → -1.0426 (개선)",
+    "pricePattern": "Higher Low 회복 신호",
+    "volComment": "거래량비 0.55 (위축)",
+    "bbPosition": "상단근처",
+    "reason": "현재가 52주 신고가 근처에서 저항받고 있으나, SMA200 대비 54.53% 상승하며 강세 유지 중. RSI는 60.2로 상승 추세이며, MACD 히스토그램은 개선되고 있음. 5일 저가($568.29)가 20일 저가($527.87)보다 높아 회복 신호.",
+    "entry": 635,
+    "stop": 599.52,
+    "target": 676.51,
+    "invalidation": 599.52,
     "weeklyConflict": "충돌 없음",
-    "profitTarget1": 642.77,
-    "profitTarget2": 675.4,
-    "stopLoss": 599.44,
-    "narrative": "현재가 $627.79는 52주 고가 $649.24에 근접하며 강세 추세를 이어가고 있다. 5일 저가가 20일 저가보다 높아지며 회복 패턴이 나타나고 있으며, MACD 히스토그램도 개선되는 모습을 보인다. 거래량은 위축되었으나, RSI가 55.7에서 59.8로 상승하며 추가 상승 여력을 시사한다. 1차 목표가는 스윙 저항선인 $642.77, 2차 목표가는 피벗 R1인 $675.40으로 설정한다. 손절선은 SMA20인 $599.44로 설정하여 리스크를 관리한다.",
-    "patternNote": "현재 가격은 52주 고가에 근접하며 상승 채널을 유지하고 있다.",
+    "profitTarget1": 650,
+    "profitTarget2": 665,
+    "stopLoss": 599.52,
+    "narrative": "반도체 ETF는 52주 신고가 부근에서 단기 저항에 직면했으나, 장기 이동평균선 대비 높은 위치와 RSI의 꾸준한 상승세가 긍정적이다. MACD 히스토그램 개선은 추가 상승 가능성을 시사한다. 5일 저가가 20일 저가보다 높아 기술적 반등이 기대된다. 635.00 진입, 599.52 손절, 676.51 목표로 매수한다.",
+    "patternNote": "현재 가격은 52주 고가($649.24)에 근접하며 저항을 받고 있으나, 5일 저가가 20일 저가보다 높아 상승 추세가 유지되고 있다.",
     "keyPoints": [
-      "Higher Low 패턴 발생 및 회복 신호",
-      "MACD 히스토그램 개선 추세",
-      "RSI 상승세 유지"
+      "52주 신고가 근접 저항 구간",
+      "RSI 60.2 상승 추세 유지",
+      "MACD 히스토그램 개선 신호"
     ],
-    "riskNote": "거래량이 위축된 상태에서 52주 고가 저항 돌파 시 추가 상승 동력이 약할 수 있다."
+    "riskNote": "볼린저밴드 상단($653.78) 돌파 실패 시 하락 위험이 있다."
   }
 }

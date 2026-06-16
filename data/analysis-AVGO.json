@@ -3,46 +3,46 @@
   "name": "브로드컴",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-16T17:06:59.112Z",
+  "updatedAt": "2026-06-16T18:07:11.268Z",
   "price": {
-    "current": 379.265,
-    "change": -2.805,
-    "changePct": -0.73,
+    "current": 380.59,
+    "change": -13.35,
+    "changePct": -3.39,
     "high52": 495,
     "low52": 244.17,
-    "pos52": 53.9,
+    "pos52": 54.4,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 416.4323,
-    "sma50": 407.7419,
-    "sma100": 366.0054,
-    "sma200": 357.6746,
-    "rsi": 40.72,
+    "sma20": 415.16,
+    "sma50": 409.3586,
+    "sma100": 366.71,
+    "sma200": 358.1165,
+    "rsi": 41.92,
     "macd": {
-      "macd": -7.513809,
-      "signal": 0.611445,
-      "histogram": -8.125254
+      "macd": -7.693252,
+      "signal": -0.862189,
+      "histogram": -6.831062
     },
     "bb": {
-      "upper": 477.4809,
-      "middle": 416.4323,
-      "lower": 355.3836,
-      "bandwidth": 0.2932
+      "upper": 476.7931,
+      "middle": 415.16,
+      "lower": 353.5269,
+      "bandwidth": 0.2969
     }
   },
   "levels": {
     "swingResistance": 386.48,
     "swingSupport": 370.65,
     "pivot": {
-      "pp": 414.87,
-      "r1": 459.4,
-      "r2": 539.54,
-      "s1": 334.73,
-      "s2": 290.19
+      "pp": 415.31,
+      "r1": 460.28,
+      "r2": 539.98,
+      "s1": 335.61,
+      "s2": 290.64
     }
   },
   "analysis": {
@@ -51,33 +51,33 @@
     "support": 370.65,
     "resistance": 386.48,
     "rsiStatus": "중립",
-    "macdStatus": "중립",
+    "macdStatus": "약세수렴",
     "bbStatus": "중단",
     "stage": "분배구간",
     "action": "관망",
     "buyScore": 4,
-    "scoreReason": "RSI 중립 구간 횡보, MACD 악화, 5일 저가 > 20일 저가",
-    "rsiTrajectory": "43.3 → 40.7 (중립 지속)",
-    "macdTrajectory": "히스토 -5.6594 → -8.1253 (악화)",
-    "pricePattern": "5일 저가($370.33) > 20일 저가($370.33) * 1.005는 아니지만, 5일 고가($407.87) < 20일 고가($495.00) * 0.995로 Lower High 가능성",
-    "volComment": "거래량비 0.38 (위축)",
+    "scoreReason": "RSI 중립, MACD 개선, 5일 저가 > 20일 저가",
+    "rsiTrajectory": "42.3 → 41.9 (중립지속 중)",
+    "macdTrajectory": "히스토 -7.0303 → -6.8311 (개선)",
+    "pricePattern": "5일 저가($370.55)가 20일 저가($370.33)보다 높아 Higher Low 패턴 형성 중",
+    "volComment": "거래량비 0.45 (위축)",
     "bbPosition": "중단근처",
-    "reason": "MACD 히스토그램이 악화되며 음전환 후 하락세를 이어가고 있으며, 5일 평균 거래량 대비 비율이 0.38로 현저히 낮아 매수세가 부족하다. 현재가($379.26)는 SMA5($382.23) 아래에 위치하며 약세 신호다.",
-    "entry": 370.65,
-    "stop": 386.48,
-    "target": 334.73,
-    "invalidation": 386.48,
-    "weeklyConflict": "주봉 RSI는 52.2로 중립이나, 일봉 MACD 히스토그램이 악화되는 점을 우선한다.",
-    "profitTarget1": 355.38,
-    "profitTarget2": 334.73,
-    "stopLoss": 386.48,
-    "narrative": "현재 가격은 SMA5와 SMA20 아래에서 저항을 받고 있으며, MACD 히스토그램은 지속적으로 악화되며 약세 흐름을 강화하고 있다. 거래량 또한 현저히 위축되어 있어 추가 하락 가능성이 높다. 5일 저가가 20일 저가 대비 소폭 상승했지만, 이는 강한 매수세 동반이 없어 신뢰도가 낮다. 370.65 지지선 이탈 시 334.73까지 하락할 수 있다.",
-    "patternNote": "현재 가격은 52주 고가 대비 약 23.4% 하락한 상태이며, 20일 고가 대비 하락하며 Lower High 패턴을 형성할 가능성이 있다.",
+    "reason": "SMA5($382.85)가 SMA20($415.16) 아래에 있고, 5일 평균 대비 거래량 비율이 0.45로 낮아 매수세가 약함. RSI는 41.9로 중립 구간에 머물러 방향성이 불확실함.",
+    "entry": 375,
+    "stop": 365,
+    "target": 395,
+    "invalidation": 365,
+    "weeklyConflict": "충돌 없음",
+    "profitTarget1": 390,
+    "profitTarget2": 405,
+    "stopLoss": 365,
+    "narrative": "현재 주가는 SMA200($358.12) 위에 있지만, SMA5($382.85)가 SMA20($415.16) 및 SMA50($409.36) 아래에 위치하며 하락 압력을 받고 있다. 5일 저가가 20일 저가보다 높아 반등 가능성은 있으나, 거래량이 위축되어 추세 전환을 확신하기 어렵다. 370.65 지지선 이탈 시 추가 하락 가능성이 높아 관망한다.",
+    "patternNote": "현재 가격은 5일 저가($370.55)가 20일 저가($370.33)보다 높아 약한 회복 신호를 보이고 있으나, SMA5가 SMA20 아래에 있어 상승 동력이 부족하다.",
     "keyPoints": [
-      "MACD 히스토그램 지속적 악화",
-      "거래량 현저히 위축",
-      "SMA5, SMA20 저항 구간"
+      "SMA5가 SMA20, SMA50 아래 위치",
+      "5일 저가 > 20일 저가로 약한 회복 신호",
+      "거래량 위축으로 추세 전환 불확실"
     ],
-    "riskNote": "370.65 지지선이 붕괴될 경우 급락 위험이 있다."
+    "riskNote": "370.65 지지선 이탈 시 급락 위험이 존재한다."
   }
 }

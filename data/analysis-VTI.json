@@ -3,46 +3,46 @@
   "name": "미국 전체 주식 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-16T17:10:59.134Z",
+  "updatedAt": "2026-06-16T18:11:15.009Z",
   "price": {
-    "current": 371.615,
-    "change": -0.915,
-    "changePct": -0.25,
+    "current": 371.37,
+    "change": -1.16,
+    "changePct": -0.31,
     "high52": 374.7,
     "low52": 291.97,
-    "pos52": 96.3,
+    "pos52": 96,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 367.8152,
-    "sma50": 358.0509,
-    "sma100": 345.3061,
-    "sma200": 337.5952,
-    "rsi": 59.45,
+    "sma20": 367.803,
+    "sma50": 358.046,
+    "sma100": 345.3036,
+    "sma200": 337.594,
+    "rsi": 59.09,
     "macd": {
-      "macd": 2.701074,
-      "signal": 3.349833,
-      "histogram": -0.648758
+      "macd": 2.681531,
+      "signal": 3.345924,
+      "histogram": -0.664394
     },
     "bb": {
-      "upper": 377.179,
-      "middle": 367.8152,
-      "lower": 358.4515,
-      "bandwidth": 0.0509
+      "upper": 377.1474,
+      "middle": 367.803,
+      "lower": 358.4586,
+      "bandwidth": 0.0508
     }
   },
   "levels": {
     "swingResistance": 374.7,
     "swingSupport": 358.8,
     "pivot": {
-      "pp": 367.53,
-      "r1": 378.78,
-      "r2": 385.95,
-      "s1": 360.36,
-      "s2": 349.11
+      "pp": 367.45,
+      "r1": 378.62,
+      "r2": 385.87,
+      "s1": 360.2,
+      "s2": 349.03
     }
   },
   "analysis": {
@@ -51,33 +51,33 @@
     "support": 358.8,
     "resistance": 374.7,
     "rsiStatus": "중립",
-    "macdStatus": "중립",
+    "macdStatus": "강세확산",
     "bbStatus": "중단",
     "stage": "상승추세",
-    "action": "관망",
-    "buyScore": 5,
-    "scoreReason": "RSI 중립 구간 횡보, MACD 개선 중",
-    "rsiTrajectory": "50.2 → 59.5 (중립 구간 횡보 중)",
-    "macdTrajectory": "히스토 -1.5673 → -0.6488 (개선 중)",
-    "pricePattern": "Higher Low 또는 Lower High 아님, 횡보",
-    "volComment": "거래량비 0.46 (위축)",
+    "action": "매수",
+    "buyScore": 7,
+    "scoreReason": "RSI 과매도탈출+Higher Low 회복 초입",
+    "rsiTrajectory": "50.2 → 59.1 (과매도탈출)",
+    "macdTrajectory": "히스토 -1.5673 → -0.6644 (개선)",
+    "pricePattern": "Higher Low 회복 신호",
+    "volComment": "거래량비 0.52 (위축)",
     "bbPosition": "중단근처",
-    "reason": "현재가 SMA200 대비 10.08% 상승, 주봉 RSI 68.7로 강세 유지. 그러나 일봉 거래량 위축 및 5일/20일 가격 패턴 횡보로 방향성 부재.",
-    "entry": 371.62,
+    "reason": "현재가 52주 신고가 근처이며, RSI는 50선 회복 후 상승 중. MACD 히스토그램도 개선되며 상승 추세 유지.",
+    "entry": 371,
     "stop": 358.8,
-    "target": 374.7,
+    "target": 378.62,
     "invalidation": 358.8,
     "weeklyConflict": "충돌 없음",
     "profitTarget1": 374.7,
-    "profitTarget2": 378.78,
+    "profitTarget2": 378.62,
     "stopLoss": 358.8,
-    "narrative": "Vanguard ETF는 현재 52주 신고가 근처에서 횡보 중이다. 일봉상 SMA200 대비 10% 이상 상승하며 강세 추세를 유지하고 있으나, 거래량 위축과 5일/20일 가격 패턴의 뚜렷한 방향성 부재로 인해 추가 상승 여력은 제한적이다. 주봉 RSI는 68.7로 여전히 강세 구간에 있지만, 일봉 MACD 히스토그램이 개선되는 추세임에도 불구하고 시그널선 하회하며 방향성을 잡지 못하고 있다. 따라서 현재 구간에서는 섣부른 매수/매도보다는 관망하며 추세를 확인하는 것이 합리적이다.",
-    "patternNote": "현재 가격은 52주 고가인 374.70에 근접하며 저항을 받고 있다. 5일 저가와 20일 저가가 유사한 수준을 유지하며 지지선 358.80을 테스트할 가능성도 있다.",
+    "narrative": "Vanguard ETF는 52주 신고가에 근접한 강세 흐름을 보이고 있다. RSI는 50선을 돌파하며 과매도 구간에서 벗어났고, MACD 히스토그램은 음수에서 양수로 전환되며 상승 모멘텀이 강화되고 있다. 5일 저가가 20일 저가보다 높아진 'Higher Low' 패턴이 형성되며 추가 상승 가능성이 높다. 다만, 거래량이 평균 이하로 위축된 점은 부담 요인이다.",
+    "patternNote": "현재가 52주 신고가 부근에서 저항을 받고 있으나, 상승 채널을 유지하며 강한 상승 추세를 이어가고 있다.",
     "keyPoints": [
-      "52주 고가 근처 저항 구간 진입",
-      "일봉 거래량 위축으로 인한 방향성 부재",
-      "주봉 RSI는 강세 유지하나 일봉 MACD 중립"
+      "52주 신고가 근접 강세",
+      "RSI 50선 회복 및 상승",
+      "MACD 히스토그램 개선"
     ],
-    "riskNote": "52주 고가 저항 돌파 실패 시 하락 전환 가능성이 있다."
+    "riskNote": "거래량이 위축된 상태에서 52주 신고가 저항 돌파 실패 시 하락 위험이 있다."
   }
 }
