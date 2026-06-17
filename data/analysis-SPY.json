@@ -3,46 +3,46 @@
   "name": "S&P500 ETF (SPDR)",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-16T20:00:02.657Z",
+  "updatedAt": "2026-06-17T14:10:39.887Z",
   "price": {
-    "current": 750.69,
-    "change": -4.14,
-    "changePct": -0.55,
+    "current": 750.38,
+    "change": 0.05,
+    "changePct": 0.01,
     "high52": 760.4,
     "low52": 591.89,
-    "pos52": 94.2,
-    "marketState": "POST",
+    "pos52": 94.1,
+    "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 746.4595,
-    "sma50": 726.6166,
-    "sma100": 700.5093,
-    "sma200": 685.1769,
-    "rsi": 57.32,
+    "sma20": 747.274,
+    "sma50": 728.4326,
+    "sma100": 701.136,
+    "sma200": 685.7289,
+    "rsi": 57.09,
     "macd": {
-      "macd": 4.74278,
-      "signal": 6.424945,
-      "histogram": -1.682165
+      "macd": 4.801266,
+      "signal": 6.095615,
+      "histogram": -1.294349
     },
     "bb": {
-      "upper": 765.1321,
-      "middle": 746.4595,
-      "lower": 727.7869,
-      "bandwidth": 0.05
+      "upper": 765.0531,
+      "middle": 747.274,
+      "lower": 729.4949,
+      "bandwidth": 0.0476
     }
   },
   "levels": {
     "swingResistance": 760.4,
     "swingSupport": 731.53,
     "pivot": {
-      "pp": 744.56,
-      "r1": 766.53,
-      "r2": 782.37,
-      "s1": 728.72,
-      "s2": 706.75
+      "pp": 744.46,
+      "r1": 766.32,
+      "r2": 782.27,
+      "s1": 728.51,
+      "s2": 706.65
     }
   },
   "analysis": {
@@ -51,33 +51,33 @@
     "support": 731.53,
     "resistance": 760.4,
     "rsiStatus": "중립",
-    "macdStatus": "강세확산",
+    "macdStatus": "중립",
     "bbStatus": "중단",
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도탈출 + MACD 개선 + Higher Low 회복",
-    "rsiTrajectory": "49.0 → 57.3 (과매도탈출 중)",
-    "macdTrajectory": "히스토 -3.4849 → -1.6822 (개선 중)",
-    "pricePattern": "Higher Low 회복 신호",
-    "volComment": "거래량비 0.63 (위축)",
+    "scoreReason": "RSI 과매도탈출+Higher Low 회복 초입",
+    "rsiTrajectory": "40.7 → 57.1 (과매도탈출)",
+    "macdTrajectory": "히스토 -4.5100 → -1.2943 (개선)",
+    "pricePattern": "Higher Low",
+    "volComment": "거래량비 0.10 (위축)",
     "bbPosition": "중단근처",
-    "reason": "RSI가 49에서 57.3으로 상승하며 과매도 구간을 탈출했고, MACD 히스토그램이 개선되고 있다. 5일 저가($724.41)가 20일 저가($722.59)보다 높아 Higher Low 패턴이 형성되며 회복 신호가 나타났다.",
-    "entry": 750,
-    "stop": 728.72,
-    "target": 766.53,
-    "invalidation": 728.72,
+    "reason": "최근 5거래일 일봉 변동률 +1.76%, +0.54%, +1.70%로 강한 회복세를 보였고, RSI가 40.7에서 57.1로 상승하며 과매도 구간을 탈출했다. MACD 히스토그램 또한 개선되는 추세다.",
+    "entry": 750.38,
+    "stop": 731.53,
+    "target": 760.4,
+    "invalidation": 731.53,
     "weeklyConflict": "충돌 없음",
-    "profitTarget1": 760.4,
-    "profitTarget2": 775,
-    "stopLoss": 728.72,
-    "narrative": "현재가 $750.69는 SMA200 대비 9.56% 위에 있으며, 주봉 RSI 67.7로 강세 추세를 유지하고 있다. 일봉 RSI는 49에서 57.3으로 상승하며 과매도 구간을 벗어났고, MACD 히스토그램은 -3.48에서 -1.68로 개선되고 있다. 5일 저가가 20일 저가보다 높아 Higher Low 패턴이 형성되며 회복세를 보이고 있다. 거래량은 평균 대비 적지만, 기술적 지표들이 매수 신호를 보내고 있어 단기 상승을 기대한다. 1차 목표가는 52주 고가인 $760.40, 2차 목표가는 $775.00으로 설정한다. 손절선은 S1 지지선인 $728.72로 설정한다.",
-    "patternNote": "현재 가격은 52주 신고가 근처에서 저항을 받고 있으나, RSI와 MACD의 개선 신호로 추가 상승 가능성이 있다.",
+    "profitTarget1": 756.68,
+    "profitTarget2": 765.05,
+    "stopLoss": 731.53,
+    "narrative": "최근 5거래일 동안 3번의 상승을 기록하며 긍정적인 흐름을 보이고 있다. 특히 4일 전 +1.70%, 2일 전 +1.76%의 강한 상승은 매수세 유입을 시사한다. RSI가 40.7에서 57.1로 상승하며 과매도 구간을 벗어났고, MACD 히스토그램도 개선되는 추세다. 5일 저가($724.41)가 20일 저가($722.59) 대비 높은 'Higher Low' 패턴을 형성하며 회복 신호가 나타났다. 현재가 $750.38은 SMA20 $747.27 위에 위치하며 단기 상승 추세를 지지하고 있다. 52주 고가 $760.40을 향한 상승을 기대한다.",
+    "patternNote": "5일 저가($724.41)가 20일 저가($722.59)보다 높아 'Higher Low' 패턴을 형성하며 회복세를 보이고 있다.",
     "keyPoints": [
-      "RSI 과매도 탈출 및 상승",
-      "MACD 히스토그램 개선",
-      "Higher Low 가격 패턴 형성"
+      "최근 5거래일 3번의 상승 기록",
+      "RSI 과매도 탈출 및 MACD 개선",
+      "Higher Low 패턴 형성 및 회복 신호"
     ],
-    "riskNote": "거래량이 평균 이하로 동반되지 않아 상승 탄력이 약할 수 있다."
+    "riskNote": "거래량 비율이 0.10으로 낮아 상승 동력이 약할 수 있다."
   }
 }

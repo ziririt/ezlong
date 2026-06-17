@@ -3,52 +3,52 @@
   "name": "에너지 섹터 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-16T20:01:38.736Z",
+  "updatedAt": "2026-06-17T14:13:16.416Z",
   "price": {
-    "current": 55.37,
-    "change": -0.18,
-    "changePct": -0.32,
+    "current": 54.835,
+    "change": -0.525,
+    "changePct": -0.95,
     "high52": 63.46,
     "low52": 42.05,
-    "pos52": 62.2,
-    "marketState": "POST",
+    "pos52": 59.7,
+    "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 57.887,
-    "sma50": 57.6386,
-    "sma100": 56.5931,
-    "sma200": 50.4266,
-    "rsi": 39.38,
+    "sma20": 57.5637,
+    "sma50": 57.5319,
+    "sma100": 56.6527,
+    "sma200": 50.48,
+    "rsi": 37.47,
     "macd": {
-      "macd": -0.42552,
-      "signal": -0.135952,
-      "histogram": -0.289568
+      "macd": -0.580271,
+      "signal": -0.224944,
+      "histogram": -0.355328
     },
     "bb": {
-      "upper": 60.6612,
-      "middle": 57.887,
-      "lower": 55.1128,
-      "bandwidth": 0.0958
+      "upper": 60.1782,
+      "middle": 57.5637,
+      "lower": 54.9493,
+      "bandwidth": 0.0908
     }
   },
   "levels": {
     "swingResistance": 57.88,
-    "swingSupport": 55.13,
+    "swingSupport": 54.12,
     "pivot": {
-      "pp": 57.34,
-      "r1": 59.73,
-      "r2": 64.08,
-      "s1": 52.99,
-      "s2": 50.6
+      "pp": 57.09,
+      "r1": 59.44,
+      "r2": 64.05,
+      "s1": 52.49,
+      "s2": 50.14
     }
   },
   "analysis": {
     "trend": "약세",
     "strength": 2,
-    "support": 55.13,
+    "support": 54.12,
     "resistance": 57.88,
     "rsiStatus": "과매도",
     "macdStatus": "약세수렴",
@@ -56,28 +56,28 @@
     "stage": "분배구간",
     "action": "관망",
     "buyScore": 3,
-    "scoreReason": "RSI 과매도 탈출 시도하나 MACD 악화",
-    "rsiTrajectory": "46.8 → 39.4 (과매도 탈출 시도 중)",
-    "macdTrajectory": "히스토 -0.0779 → -0.2896 (악화 중)",
-    "pricePattern": "5일 저가($54.96)가 20일 저가($54.96)와 같아 Higher Low 형성 실패",
-    "volComment": "거래량비 0.99 (정상)",
+    "scoreReason": "RSI 과매도 진입, 5일 저가 20일 저가 하회",
+    "rsiTrajectory": "51.1 → 37.5 (과매도 진입)",
+    "macdTrajectory": "히스토 -0.0442 → -0.3553 (악화)",
+    "pricePattern": "5일 저가($54.75)가 20일 저가($54.75)와 같아 횡보 구간으로 판단",
+    "volComment": "거래량비 0.17 (위축)",
     "bbPosition": "하단근처",
-    "reason": "현재가($55.37)가 SMA20($57.89) 및 스윙 저항($57.88) 하단에 위치하며, MACD 히스토그램이 악화되고 있어 추가 하락 가능성이 높다.",
-    "entry": 55.13,
-    "stop": 57.88,
-    "target": 52.99,
+    "reason": "최근 5거래일 연속 하락하며 RSI가 37.5로 과매도 구간에 진입했고, MACD 히스토그램 또한 악화되고 있어 매도 압력이 지속되고 있습니다. 5일 저가와 20일 저가가 동일하여 추가 하락 가능성이 있습니다.",
+    "entry": 54.12,
+    "stop": 56.08,
+    "target": 52.49,
     "invalidation": 57.88,
     "weeklyConflict": "주봉은 중립 구간이나 일봉 신호 우선",
-    "profitTarget1": 52.99,
-    "profitTarget2": 50.6,
-    "stopLoss": 57.88,
-    "narrative": "S&P500 에너지 섹터는 현재 $55.37로, SMA20($57.89) 및 스윙 저항($57.88) 아래에 위치하며 약세 흐름을 보이고 있다. RSI는 과매도 구간 진입 후 반등을 시도하고 있으나, MACD 히스토그램이 음전환 후 악화되는 모습은 추가 하락 가능성을 시사한다. 5일 저가가 20일 저가와 같아 추세 전환 신호인 Higher Low를 형성하지 못했다. 거래량은 정상 수준으로, 현재 구간에서의 방향성 결정을 기다리며 관망한다.",
-    "patternNote": "현재 가격은 볼린저밴드 하단에 근접하며 하락 압력을 받고 있다.",
+    "profitTarget1": 53.5,
+    "profitTarget2": 52,
+    "stopLoss": 55.5,
+    "narrative": "S&P500 에너지 섹터는 최근 5거래일 동안 5.47% 하락하며 약세를 보이고 있습니다. 현재가 $54.84는 볼린저밴드 하단($54.95)에 근접했으며, RSI는 37.5로 과매도 구간에 진입했습니다. MACD 히스토그램은 -0.3553으로 악화되고 있어 추가 하락 가능성이 높습니다. 5일 저가와 20일 저가가 동일하여 횡보 가능성도 있으나, 전반적인 하락 추세가 강합니다. 54.12 지지선 이탈 시 52.49까지 하락할 수 있습니다.",
+    "patternNote": "5일 저가와 20일 저가가 동일하여 횡보 가능성을 시사하지만, 전반적인 하락 추세가 우세합니다.",
     "keyPoints": [
-      "SMA20 및 스윙 저항 하단 위치",
-      "MACD 히스토그램 악화",
-      "Higher Low 미형성"
+      "최근 5거래일 연속 하락세 지속",
+      "RSI 37.5 과매도 구간 진입",
+      "MACD 히스토그램 악화"
     ],
-    "riskNote": "볼린저밴드 하단 지지 실패 시 급락 위험이 있다."
+    "riskNote": "볼린저밴드 하단 근처에서 반등할 가능성도 있으나, 현재 하락 추세가 강해 추가 하락 위험이 높습니다."
   }
 }
