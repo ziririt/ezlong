@@ -173,6 +173,26 @@ def get_sparkline(ticker_obj, days=5):
         return []
 
 
+def get_sparkline_hourly(ticker_obj):
+    """종합지수 카드용 — 5일 1시간봉 (~35개 포인트). 일봉 5개보다 훨씬 상세."""
+    try:
+        hist = ticker_obj.history(period='5d', interval='1h')
+        if hist.empty:
+            return []
+        closes = [round(float(c), 2) for c in hist['Close'].tolist()]
+        return closes  # 장중 35개 안팎
+    except Exception:
+        try:
+            # 1h 실패 시 30m 폴백
+            hist = ticker_obj.history(period='5d', interval='30m')
+            if hist.empty:
+                return []
+            closes = [round(float(c), 2) for c in hist['Close'].tolist()]
+            return closes
+        except Exception:
+            return []
+
+
 def fetch_ticker(symbol):
     try:
         t = yf.Ticker(symbol)
@@ -248,23 +268,27 @@ def main():
     etf_data      = build_array(ETF_LIST,     cache)
 
     # 종합지수 수집 (^GSPC, ^NDX, ^DJI) — 실제 지수 값 (S&P 7000+, NDX 26000+, DJI 51000+)
-    print('\n종합지수 수집 중...')
+    print('\n종합지수 수집 중 (1시간봉 스파크라인)...')
     indices_data = []
     for yf_sym, meta in INDICES_MAP.items():
         print(f'  {yf_sym:<8}', end=' ')
         raw = fetch_ticker(yf_sym)
+        # 스파크라인만 1시간봉으로 교체 (~35개 포인트, 5일 일봉 5개보다 7배 상세)
+        t_obj = yf.Ticker(yf_sym)
+        hourly_spark = get_sparkline_hourly(t_obj)
         entry = {
             'symbol':    meta['symbol'],
             'name':      meta['name'],
             'price':     raw['price'],
             'change':    raw['change'],
             'changePct': raw['changePct'],
-            'sparkline': raw['sparkline'],
+            'sparkline': hourly_spark if hourly_spark else raw['sparkline'],
         }
         indices_data.append(entry)
         price_str = f"{raw['price']:,.2f}" if raw['price'] else 'N/A'
         pct_str = f"{raw['changePct']:+.2f}%" if raw['changePct'] is not None else ''
-        print(f"{price_str:>14} {pct_str}")
+        pts = len(entry['sparkline'])
+        print(f"{price_str:>14} {pct_str}  (스파크라인 {pts}pts)")
         time.sleep(0.25)
 
     # SPCX 강제 포함 — yfinance 미지원 시에도 Massive API가 가격 제공하므로 항상 표시
