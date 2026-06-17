@@ -9,23 +9,30 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout (최신 main)
         uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Pull latest before scraping
+        run: git pull origin main
+
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: Scrape Naver Premium Content
         run: node scripts/sync-naver.mjs
+
       - name: Commit updated data (if changed)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
+          git add data/naver-content.json
           if git diff --staged --quiet; then
             echo "변경 없음, 커밋 생략"
           else
-            git commit -m "chore: naver content sync $(date +'%Y-%m-%d %H:%M KST')"
-            git pull --rebase origin main
+            git commit -m "chore: naver content sync $(TZ='Asia/Seoul' date +'%Y-%m-%d %H:%M KST')"
             git push origin main
           fi
