@@ -1712,12 +1712,12 @@ showWonLabel(parseInt(document.getElementById('init-invest').value)||1000, 10000
   var tickers = aParam.split(',').map(Number)
     .filter(function(n){ return MAP[n]; })
     .map(function(n){ return MAP[n]; })
-    .filter(function(t){ return typeof toggleChip === 'function' && document.getElementById('chip-' + t); });
+    .filter(function(t){ return document.getElementById('chip-' + t) !== null; });
 
   if (tickers.length === 0) return;
 
-  // 기본 선택(SPY,QQQ,NVDA,GOOGL) 클리어
-  sel.forEach(function(t){ toggleChip(t); });
+  // 기본 선택(SPY,QQQ,NVDA,GOOGL) 클리어 — Array.from으로 스냅샷 후 순회
+  Array.from(sel).forEach(function(t){ toggleChip(t); });
 
   // 진단 결과 티커 선택
   tickers.forEach(function(t){ toggleChip(t); });
