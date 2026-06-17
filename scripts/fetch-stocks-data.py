@@ -62,6 +62,13 @@ SP500_TOP100 = [
     'ZTS',  'ELV',  'WM',   'CVS',  'PYPL', 'BA',    'USB',  'SBUX',  'MAR',  'MDLZ',
 ]
 
+# 종합지수 — yfinance 심볼 → 표시 심볼 매핑
+INDICES_MAP = {
+    '^GSPC': {'symbol': 'SPX', 'name': 'S&P 500'},
+    '^NDX':  {'symbol': 'NDX', 'name': 'Nasdaq 100'},
+    '^DJI':  {'symbol': 'DJI', 'name': 'Dow Jones'},
+}
+
 ETF_LIST = [
     'QQQ',  'SPY',  'DIA',  'IVV',  'VOO',  'VTI',  'IWM',  'SOXX', 'SMH',  'XLK',
     'XLF',  'XLE',  'XLV',  'XLY',  'XLI',  'ARKK', 'TQQQ', 'SQQQ', 'SOXL', 'SOXS',
@@ -240,6 +247,26 @@ def main():
     sp500_data    = build_array(SP500_TOP100, cache)
     etf_data      = build_array(ETF_LIST,     cache)
 
+    # 종합지수 수집 (^GSPC, ^NDX, ^DJI) — 실제 지수 값 (S&P 7000+, NDX 26000+, DJI 51000+)
+    print('\n종합지수 수집 중...')
+    indices_data = []
+    for yf_sym, meta in INDICES_MAP.items():
+        print(f'  {yf_sym:<8}', end=' ')
+        raw = fetch_ticker(yf_sym)
+        entry = {
+            'symbol':    meta['symbol'],
+            'name':      meta['name'],
+            'price':     raw['price'],
+            'change':    raw['change'],
+            'changePct': raw['changePct'],
+            'sparkline': raw['sparkline'],
+        }
+        indices_data.append(entry)
+        price_str = f"{raw['price']:,.2f}" if raw['price'] else 'N/A'
+        pct_str = f"{raw['changePct']:+.2f}%" if raw['changePct'] is not None else ''
+        print(f"{price_str:>14} {pct_str}")
+        time.sleep(0.25)
+
     # SPCX 강제 포함 — yfinance 미지원 시에도 Massive API가 가격 제공하므로 항상 표시
     if not any(x['symbol'] == 'SPCX' for x in top100_data):
         spcx_rank = US_TOP100.index('SPCX') + 1  # rank 3
@@ -264,6 +291,7 @@ def main():
         'nasdaq100': nasdaq100_data,
         'sp500':     sp500_data,
         'etf':       etf_data,
+        'indices':   indices_data,   # 종합지수: SPX / NDX / DJI 실제 지수 값
     }
 
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)

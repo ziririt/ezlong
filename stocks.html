@@ -784,26 +784,33 @@ function buildSparklineSmall(closes, isUp) {
 }
 
 function renderIndexCards() {
+  // allData.indices = [{symbol:'SPX',...}, {symbol:'NDX',...}, {symbol:'DJI',...}]
+  // 실제 지수 값 표시 — $ 없이 콤마 포맷 (7,420.09 / 26,021.66 / 51,492.55)
   var CARDS = [
-    { sym: 'SPY', name: 'S&P 500', sparkEl: 'ix-sp-spark', priceEl: 'ix-sp-price', pctEl: 'ix-sp-pct' },
-    { sym: 'QQQ', name: 'Nasdaq',  sparkEl: 'ix-qq-spark', priceEl: 'ix-qq-price', pctEl: 'ix-qq-pct' },
-    { sym: 'DIA', name: 'Dow 30',  sparkEl: 'ix-di-spark', priceEl: 'ix-di-price', pctEl: 'ix-di-pct' },
+    { idxSym: 'SPX', sparkEl: 'ix-sp-spark', priceEl: 'ix-sp-price', pctEl: 'ix-sp-pct' },
+    { idxSym: 'NDX', sparkEl: 'ix-qq-spark', priceEl: 'ix-qq-price', pctEl: 'ix-qq-pct' },
+    { idxSym: 'DJI', sparkEl: 'ix-di-spark', priceEl: 'ix-di-price', pctEl: 'ix-di-pct' },
   ];
   CARDS.forEach(function(c) {
-    var etfEntry   = allData  && allData.etf  ? allData.etf.find(function(x) { return x.symbol === c.sym; }) : null;
-    var live       = pricesData && pricesData.prices ? pricesData.prices[c.sym] : null;
-    var price      = (live && live.price)     ? live.price     : (etfEntry ? etfEntry.price : null);
-    var pct        = (live && live.changePct != null) ? live.changePct : (etfEntry ? etfEntry.changePct : null);
-    var sparklines = etfEntry ? (etfEntry.sparkline || []) : [];
+    var idxEntry   = allData && allData.indices ? allData.indices.find(function(x) { return x.symbol === c.idxSym; }) : null;
+    var price      = idxEntry ? idxEntry.price     : null;
+    var pct        = idxEntry ? idxEntry.changePct : null;
+    var sparklines = idxEntry ? (idxEntry.sparkline || []) : [];
 
-    var isUp  = pct != null ? pct >= 0 : true;
-    var sparkEl  = document.getElementById(c.sparkEl);
-    var priceEl  = document.getElementById(c.priceEl);
-    var pctEl    = document.getElementById(c.pctEl);
+    var isUp    = pct != null ? pct >= 0 : true;
+    var sparkEl = document.getElementById(c.sparkEl);
+    var priceEl = document.getElementById(c.priceEl);
+    var pctEl   = document.getElementById(c.pctEl);
     if (!sparkEl || !priceEl || !pctEl) return;
 
     sparkEl.innerHTML = buildSparklineSmall(sparklines, isUp);
-    priceEl.textContent = price != null ? '$' + price.toFixed(2) : '--';
+
+    // 지수 값: 달러 기호 없이, 콤마 3자리 포맷
+    if (price != null) {
+      priceEl.textContent = price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    } else {
+      priceEl.textContent = '--';
+    }
 
     if (pct != null) {
       var sign = pct >= 0 ? '+' : '';
@@ -1115,11 +1122,10 @@ var EXTRA_NAMES = {
 };
 
 function getTVSym(symbol) {
-  // 종합지수 — SP:SPX/TVC:SPX 등은 임베드에서 차단됨 (TradingView 독점 데이터)
-  // CME 선물 심볼 사용: 실제 지수 가격대(S&P 5800+, NDX 21000+)로 표시, 0.1~0.3% 차이
-  if (symbol === 'SPX') return 'CME_MINI:ES1!';   // E-mini S&P 500 선물
-  if (symbol === 'NDX') return 'CME:NQ1!';         // Nasdaq-100 E-mini 선물
-  if (symbol === 'DJI') return 'CBOT:YM1!';        // E-mini Dow Jones 선물
+  // 종합지수 — TradingView 임베드 위젯에서 작동하는 심볼
+  if (symbol === 'SPX') return 'SP:SPX';        // S&P 500
+  if (symbol === 'NDX') return 'NASDAQ:NDX';    // Nasdaq 100 (사용자 확인: symbol=NASDAQ%3ANDX)
+  if (symbol === 'DJI') return 'DJ:DJI';        // Dow Jones Industrial Average
   var s = symbol.replace('-', '.');
   if (NYSE_SYMS[symbol]) return 'NYSE:' + s;
   if (AMEX_SYMS[symbol]) return 'AMEX:' + s;
