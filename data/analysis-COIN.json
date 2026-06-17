@@ -3,65 +3,81 @@
   "name": "코인베이스",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-17T14:09:31.221Z",
+  "updatedAt": "2026-06-17T15:09:42.007Z",
   "price": {
-    "current": 169.93,
-    "change": 0.31,
-    "changePct": 0.18,
+    "current": 168.36,
+    "change": -1.26,
+    "changePct": -0.74,
     "high52": 444.65,
     "low52": 139.36,
-    "pos52": 10,
+    "pos52": 9.5,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 172.8025,
-    "sma50": 185.6596,
-    "sma100": 184.2515,
-    "sma200": 239.526,
-    "rsi": 46.85,
+    "sma20": 172.724,
+    "sma50": 185.6282,
+    "sma100": 184.2358,
+    "sma200": 239.5182,
+    "rsi": 45.98,
     "macd": {
-      "macd": -7.691122,
-      "signal": -7.902141,
-      "histogram": 0.211019
+      "macd": -7.816363,
+      "signal": -7.92719,
+      "histogram": 0.110826
     },
     "bb": {
-      "upper": 199.4232,
-      "middle": 172.8025,
-      "lower": 146.1818,
-      "bandwidth": 0.3081
+      "upper": 199.3874,
+      "middle": 172.724,
+      "lower": 146.0606,
+      "bandwidth": 0.3087
     }
   },
   "levels": {
     "swingResistance": 192.45,
     "swingSupport": 163.13,
     "pivot": {
-      "pp": 171.48,
-      "r1": 195.07,
-      "r2": 220.22,
-      "s1": 146.33,
-      "s2": 122.74
+      "pp": 170.95,
+      "r1": 194.03,
+      "r2": 219.69,
+      "s1": 145.29,
+      "s2": 122.21
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "약세",
+    "strength": 2,
     "support": 163.13,
     "resistance": 192.45,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "중단",
+    "stage": "축적구간",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 4,
+    "scoreReason": "RSI 반등 시도, 그러나 저항 구간 근접",
+    "rsiTrajectory": "36.9 → 46.0 (과매도탈출 중)",
+    "macdTrajectory": "히스토 -3.4248 → 0.1108 (개선 중)",
+    "pricePattern": "5일 저가($152.19)가 20일 저가($147.88)보다 높음 (Higher Low)",
+    "volComment": "거래량비 0.27 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "최근 5거래일 변동성 확대 후 횡보 구간 진입. RSI는 과매도 구간 탈출 시도 중이나, SMA20 저항선에 막혀 방향성 부재.",
+    "entry": 168.36,
+    "stop": 152.19,
+    "target": 192.45,
+    "invalidation": 147.88,
+    "weeklyConflict": "주봉은 약세 추세이나 일봉 신호 우선",
+    "profitTarget1": 180.79,
+    "profitTarget2": 192.45,
+    "stopLoss": 152.19,
+    "narrative": "암호화폐 거래소는 최근 5거래일간 6.16% 상승 후 0.74% 하락하며 변동성 장세를 보였다. 현재 가격은 SMA20($172.72) 아래에 위치하며 저항을 받고 있다. RSI는 36.9에서 46.0으로 상승하며 과매도 구간을 벗어나려 하지만, MACD 히스토그램이 개선되는 속도가 느리다. 5일 저가가 20일 저가보다 높아 기술적 반등 가능성은 있으나, 거래량이 0.27로 위축되어 추세 전환 신뢰도가 낮다. SMA20 저항 돌파 여부가 중요하다.",
+    "patternNote": "현재 가격은 52주 저가($139.36)와 고가($444.65)의 중간 지점 아래에 위치하며, 5일 저가가 20일 저가보다 높아 기술적 반등을 시도하는 모습이다.",
+    "keyPoints": [
+      "RSI 과매도 탈출 시도",
+      "SMA20 저항선 돌파 실패",
+      "거래량 위축으로 인한 추세 전환 신뢰도 하락"
+    ],
+    "riskNote": "SMA20 저항선을 돌파하지 못하고 하락할 경우, 5일 저가 지지선이 붕괴될 위험이 있다."
   }
 }

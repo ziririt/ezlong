@@ -3,65 +3,81 @@
   "name": "미국 전체 주식 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-17T14:14:22.586Z",
+  "updatedAt": "2026-06-17T15:14:56.398Z",
   "price": {
-    "current": 370.895,
-    "change": 0.525,
-    "changePct": 0.14,
+    "current": 370.425,
+    "change": 0.055,
+    "changePct": 0.01,
     "high52": 374.7,
     "low52": 291.97,
-    "pos52": 95.4,
+    "pos52": 94.8,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 368.2947,
-    "sma50": 358.9353,
-    "sma100": 345.6076,
-    "sma200": 337.8663,
-    "rsi": 58.22,
+    "sma20": 368.2712,
+    "sma50": 358.9259,
+    "sma100": 345.6029,
+    "sma200": 337.8639,
+    "rsi": 57.71,
     "macd": {
-      "macd": 2.68679,
-      "signal": 3.201334,
-      "histogram": -0.514544
+      "macd": 2.649297,
+      "signal": 3.193835,
+      "histogram": -0.544538
     },
     "bb": {
-      "upper": 376.9577,
-      "middle": 368.2947,
-      "lower": 359.6318,
-      "bandwidth": 0.047
+      "upper": 376.9083,
+      "middle": 368.2712,
+      "lower": 359.6342,
+      "bandwidth": 0.0469
     }
   },
   "levels": {
     "swingResistance": 374.7,
     "swingSupport": 358.8,
     "pivot": {
-      "pp": 367.29,
-      "r1": 378.3,
-      "r2": 385.71,
-      "s1": 359.88,
-      "s2": 348.87
+      "pp": 367.13,
+      "r1": 377.99,
+      "r2": 385.56,
+      "s1": 359.57,
+      "s2": 348.71
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "강세",
+    "strength": 4,
     "support": 358.8,
     "resistance": 374.7,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "중단",
+    "stage": "상승추세",
+    "action": "매수",
+    "buyScore": 7,
+    "scoreReason": "RSI 과매도탈출 + Higher Low 회복 초입",
+    "rsiTrajectory": "42.2 → 57.7 (과매도탈출)",
+    "macdTrajectory": "히스토 -2.0689 → -0.5445 (개선)",
+    "pricePattern": "Higher Low 회복 신호",
+    "volComment": "거래량비 0.27 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "최근 5거래일 일봉 변동률은 +0.01%, -0.58%, +1.68%, +0.57%, +1.75%로 변동성이 있었으나, RSI가 42.2에서 57.7로 상승하며 과매도 구간을 탈출했고, 5일 저가($357.75)가 20일 저가($356.28)보다 높아 Higher Low 패턴이 형성되었습니다. MACD 히스토그램도 개선되는 추세입니다.",
+    "entry": 370,
+    "stop": 358.8,
+    "target": 374.7,
+    "invalidation": 358.8,
+    "weeklyConflict": "충돌 없음",
+    "profitTarget1": 372.5,
+    "profitTarget2": 374.7,
+    "stopLoss": 358.8,
+    "narrative": "Vanguard ETF는 현재가 $370.43으로 52주 고가 $374.70에 근접하며 강세 추세를 이어가고 있습니다. RSI가 42.2에서 57.7로 상승하며 과매도 구간을 벗어났고, 5일 저가가 20일 저가보다 높아지며 기술적 반등 가능성이 높아졌습니다. MACD 히스토그램 또한 개선되는 추세로 매수 관점에서 접근합니다. 1차 목표가는 $372.50, 2차 목표가는 52주 고가인 $374.70으로 설정합니다. 손절선은 5일 저가이자 스윙 지지선인 $358.80으로 설정하여 리스크를 관리합니다.",
+    "patternNote": "5일 저가가 20일 저가보다 높아지며 기술적 반등을 시사하는 Higher Low 패턴이 나타나고 있습니다.",
+    "keyPoints": [
+      "RSI 과매도 구간 탈출 및 상승 추세",
+      "Higher Low 패턴 형성으로 기술적 반등 기대",
+      "52주 고가 저항선 근접 구간에서의 매수"
+    ],
+    "riskNote": "거래량이 위축된 상태에서 52주 고가 저항선에 근접하므로 추가 상승 시 저항에 부딪힐 가능성이 있습니다."
   }
 }

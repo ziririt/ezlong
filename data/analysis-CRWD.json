@@ -3,65 +3,81 @@
   "name": "크라우드스트라이크",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-17T14:08:49.924Z",
+  "updatedAt": "2026-06-17T15:09:02.748Z",
   "price": {
-    "current": 684.85,
-    "change": -8.06,
-    "changePct": -1.16,
+    "current": 681.93,
+    "change": -10.98,
+    "changePct": -1.58,
     "high52": 785.66,
     "low52": 342.72,
-    "pos52": 77.2,
+    "pos52": 76.6,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 684.499,
-    "sma50": 555.2998,
-    "sma100": 483.8328,
-    "sma200": 486.7798,
-    "rsi": 58.4,
+    "sma20": 684.353,
+    "sma50": 555.2414,
+    "sma100": 483.8036,
+    "sma200": 486.7652,
+    "rsi": 57.77,
     "macd": {
-      "macd": 34.629702,
-      "signal": 45.040094,
-      "histogram": -10.410392
+      "macd": 34.396768,
+      "signal": 44.993507,
+      "histogram": -10.596739
     },
     "bb": {
-      "upper": 770.8599,
-      "middle": 684.499,
-      "lower": 598.1381,
-      "bandwidth": 0.2523
+      "upper": 770.7209,
+      "middle": 684.353,
+      "lower": 597.9851,
+      "bandwidth": 0.2524
     }
   },
   "levels": {
     "swingResistance": 785.66,
     "swingSupport": 617.74,
     "pivot": {
-      "pp": 694.6,
-      "r1": 775.91,
-      "r2": 866.97,
-      "s1": 603.54,
-      "s2": 522.23
+      "pp": 693.63,
+      "r1": 773.96,
+      "r2": 866,
+      "s1": 601.59,
+      "s2": 521.26
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "횡보",
+    "strength": 3,
     "support": 617.74,
     "resistance": 785.66,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "중단",
+    "stage": "축적구간",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 4,
+    "scoreReason": "RSI 중립, MACD 개선 약함, 횡보 패턴",
+    "rsiTrajectory": "53.4 → 57.8 (중립지속 중)",
+    "macdTrajectory": "히스토 -10.7039 → -10.5967 (개선)",
+    "pricePattern": "5일 고가/저가 범위가 20일 고가/저가 범위 내에 있어 횡보",
+    "volComment": "거래량비 0.14 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "현재가 SMA20 부근에서 횡보 중이며, 거래량 위축으로 방향성 부재. RSI도 중립 구간에 머물러 관망이 합리적.",
+    "entry": 681.93,
+    "stop": 617.74,
+    "target": 785.66,
+    "invalidation": 617.74,
+    "weeklyConflict": "충돌 없음",
+    "profitTarget1": 730,
+    "profitTarget2": 770,
+    "stopLoss": 635.95,
+    "narrative": "최근 5거래일 변동성은 컸으나, 현재가는 SMA20 부근에서 횡보하며 방향성을 탐색 중입니다. 거래량은 0.14로 위축되어 있어 추세 전환의 동력이 부족합니다. RSI는 57.8로 중립 구간에 머물러 있으며, MACD 히스토그램은 개선되고 있으나 여전히 음수 영역에 있어 강세 전환을 확신하기 어렵습니다. 52주 고가 $785.66과 52주 저가 $342.72 사이에서 76.6% 위치에 있어 상단 저항이 강합니다. 따라서 현재는 관망하며 617.74 지지선 또는 785.66 저항선 돌파를 기다리는 것이 현명합니다.",
+    "patternNote": "현재 가격은 20일 볼린저밴드 중간선 부근에서 횡보하며 명확한 추세를 형성하지 못하고 있습니다.",
+    "keyPoints": [
+      "현재가 SMA20 부근 횡보",
+      "거래량 0.14로 위축",
+      "RSI 57.8 중립 구간"
+    ],
+    "riskNote": "617.74 지지선 이탈 시 하락 추세로 전환될 위험이 있습니다."
   }
 }
