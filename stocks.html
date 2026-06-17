@@ -268,10 +268,17 @@
       border-bottom: 1px solid var(--ez-border);
     }
     .dv-back {
-      background: none; border: none;
-      color: var(--ez-blue); font-size: 26px; font-weight: 300;
-      cursor: pointer; padding: 0; line-height: 1; flex-shrink: 0;
+      display: flex; align-items: center; gap: 5px;
+      background: var(--ez-surface2, var(--ez-surface));
+      border: 1.5px solid var(--ez-border);
+      border-radius: 20px;
+      padding: 7px 14px 7px 10px;
+      color: var(--ez-text); font-size: 15px; font-weight: 700;
+      cursor: pointer; flex-shrink: 0; line-height: 1;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity .15s;
     }
+    .dv-back:active { opacity: .6; }
     .dv-sym-block { flex: 1; min-width: 0; }
     .dv-ticker { display: block; font-size: 20px; font-weight: 700; color: var(--ez-text); line-height: 1.2; }
     .dv-name   { display: block; font-size: 14px; color: var(--ez-text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -508,7 +515,7 @@
   <div class="dv-sticky">
 
     <div class="dv-topbar">
-      <button class="dv-back" onclick="goBack()" aria-label="목록으로">‹</button>
+      <button class="dv-back" onclick="goBack()" aria-label="목록으로">← 목록</button>
       <div class="dv-sym-block">
         <span class="dv-ticker" id="dv-ticker"></span>
         <span class="dv-name"   id="dv-name"></span>
@@ -952,7 +959,13 @@ function openDetail(symbol) {
 }
 
 function goBack() {
-  history.back();   // stocks.html#SYM → stocks.html (hashchange 발생)
+  // history.back() 대신 hash 직접 클리어:
+  // TradingView iframe이 포커스를 가져가면 history.back이 iframe 내부 이동에 소비됨
+  if (location.hash) {
+    history.back();  // 브라우저 뒤로가기와 히스토리 스택 일치를 위해 back() 우선
+  } else {
+    handleHash();    // 폴백: hash 없으면 직접 목록 표시
+  }
 }
 
 function fillDetail(symbol) {
@@ -1191,11 +1204,10 @@ var EXTRA_NAMES = {
 };
 
 function getTVSym(symbol) {
-  // 종합지수 — TradingView 임베드 위젯에서 작동하는 심볼
-  // SP:SPX / DJ:DJI 는 "TradingView에서만 제공되는 심볼" 알림 → 브로커 CFD 심볼로 교체
-  if (symbol === 'SPX')  return 'CAPITALCOM:US500';  // S&P 500 CFD (Capital.com, 임베드 무료 제공)
-  if (symbol === 'NDX')  return 'NASDAQ:NDX';        // Nasdaq 100 (사용자 확인: 정상 작동)
-  if (symbol === 'DJI')  return 'CAPITALCOM:US30';   // Dow Jones CFD (Capital.com)
+  // 종합지수 — SP:SPX / NASDAQ:NDX / DJ:DJI 는 TradingView 구독 전용 → Capital.com CFD로 대체
+  if (symbol === 'SPX')  return 'CAPITALCOM:US500';  // S&P 500 (Capital.com CFD, 무료 임베드)
+  if (symbol === 'NDX')  return 'CAPITALCOM:US100';  // Nasdaq 100 (Capital.com CFD, 무료 임베드)
+  if (symbol === 'DJI')  return 'CAPITALCOM:US30';   // Dow Jones 30 (Capital.com CFD, 무료 임베드)
   if (symbol === 'SOXX') return 'NASDAQ:SOXX';       // iShares 반도체 ETF — NASDAQ 상장
   if (symbol === 'SOXL') return 'NASDAQ:SOXL';       // Direxion 반도체 3× ETF — NASDAQ 상장
   if (symbol === 'SOXS') return 'NASDAQ:SOXS';       // Direxion 반도체 -3× ETF — NASDAQ 상장

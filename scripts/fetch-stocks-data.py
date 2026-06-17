@@ -162,35 +162,21 @@ OUTPUT_PATH = os.path.normpath(
 
 # ─── 수집 함수 ────────────────────────────────────────────────────────────────
 
-def get_sparkline(ticker_obj, days=5):
+def get_sparkline(ticker_obj):
+    """1개월 일봉 (~21개 포인트) — GitHub Actions Azure IP에서 intraday는 차단됨."""
     try:
-        hist = ticker_obj.history(period='5d', interval='1d')
+        hist = ticker_obj.history(period='1mo', interval='1d')
         if hist.empty:
             return []
         closes = [round(float(c), 2) for c in hist['Close'].tolist()]
-        return closes[-days:]
+        return closes  # 약 21~22개
     except Exception:
         return []
 
 
 def get_sparkline_hourly(ticker_obj):
-    """종합지수 카드용 — 5일 1시간봉 (~35개 포인트). 일봉 5개보다 훨씬 상세."""
-    try:
-        hist = ticker_obj.history(period='5d', interval='1h')
-        if hist.empty:
-            return []
-        closes = [round(float(c), 2) for c in hist['Close'].tolist()]
-        return closes  # 장중 35개 안팎
-    except Exception:
-        try:
-            # 1h 실패 시 30m 폴백
-            hist = ticker_obj.history(period='5d', interval='30m')
-            if hist.empty:
-                return []
-            closes = [round(float(c), 2) for c in hist['Close'].tolist()]
-            return closes
-        except Exception:
-            return []
+    """종합지수 카드용 — 1개월 일봉 사용 (intraday는 GitHub Actions Azure IP 차단)."""
+    return get_sparkline(ticker_obj)
 
 
 def fetch_ticker(symbol):
