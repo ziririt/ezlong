@@ -70,15 +70,15 @@ jobs:
             exit 0
           fi
 
+          git fetch origin main
+          git reset --hard origin/main
           git add data/market-signals.json
+          if git diff --staged --quiet; then
+            echo "데이터 변경 없음 — 커밋 건너뜀."
+            exit 0
+          fi
           git commit -m "chore: ATMR 시장 데이터 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
-
-          # 동시 실행 시 push 충돌 방지: rebase 후 push (최대 3회 재시도)
-          for i in 1 2 3; do
-            git pull --rebase origin main && git push && break
-            echo "push 재시도 $i/3..."
-            sleep 5
-          done
+          git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

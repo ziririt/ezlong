@@ -100,13 +100,16 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          node-version: '20'
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install yfinance --quiet
 
       - name: Run market data fetch script
-        run: node scripts/fetch-market-data.js
+        run: python3 scripts/fetch-market-data.py
 
       - name: Commit and push market-signals.json
         run: |
@@ -118,14 +121,15 @@ jobs:
             exit 0
           fi
 
+          git fetch origin main
+          git reset --hard origin/main
           git add data/market-signals.json
+          if git diff --staged --quiet; then
+            echo "데이터 변경 없음 — 커밋 건너뜀."
+            exit 0
+          fi
           git commit -m "chore: ATMR 시간외 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
-
-          for i in 1 2 3; do
-            git pull --rebase origin main && git push && break
-            echo "push 재시도 $i/3..."
-            sleep 5
-          done
+          git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
