@@ -276,11 +276,9 @@
     <div class="sp-header-meta" id="data-ts">데이터 로딩 중…</div>
   </div>
 
-  <!-- 메인 탭 (5개, 플랫) -->
+  <!-- 메인 탭 (3개, 플랫) -->
   <div class="main-tabs">
     <button class="mtab active" data-tab="top100"    onclick="switchTab('top100',this)">시총100</button>
-    <button class="mtab"        data-tab="nasdaq100" onclick="switchTab('nasdaq100',this)">나스닥100</button>
-    <button class="mtab"        data-tab="sp500"     onclick="switchTab('sp500',this)">S&amp;P500</button>
     <button class="mtab"        data-tab="etf"       onclick="switchTab('etf',this)">ETF</button>
     <button class="mtab"        data-tab="portfolio" onclick="switchTab('portfolio',this)">나의 포트폴리오</button>
   </div>
@@ -290,22 +288,6 @@
     <div id="list-top100" class="stock-list"></div>
     <div id="more-top100" class="load-more-wrap" style="display:none">
       <button class="load-more-btn" onclick="loadMore('top100')"></button>
-    </div>
-  </div>
-
-  <!-- 패널: 나스닥 100 -->
-  <div id="panel-nasdaq100" class="panel">
-    <div id="list-nasdaq100" class="stock-list"></div>
-    <div id="more-nasdaq100" class="load-more-wrap" style="display:none">
-      <button class="load-more-btn" onclick="loadMore('nasdaq100')"></button>
-    </div>
-  </div>
-
-  <!-- 패널: S&P 500 -->
-  <div id="panel-sp500" class="panel">
-    <div id="list-sp500" class="stock-list"></div>
-    <div id="more-sp500" class="load-more-wrap" style="display:none">
-      <button class="load-more-btn" onclick="loadMore('sp500')"></button>
     </div>
   </div>
 
@@ -442,7 +424,7 @@ var listScrollPos = 0;
 var editMode      = false;
 var dragSrcIdx    = -1;
 
-var visibleCount = { top100: 30, nasdaq100: 30, sp500: 30 };
+var visibleCount = { top100: 30 };
 var LOAD_STEPS   = [30, 50, 70, 100];
 
 var LS_FAVES = 'ezlong_pf_faves';
@@ -482,7 +464,7 @@ async function loadData() {
     }
   } catch(e) {
     document.getElementById('data-ts').textContent = '데이터 미수신';
-    ['list-top100','list-nasdaq100','list-sp500','list-etf'].forEach(function(id) {
+    ['list-top100','list-etf'].forEach(function(id) {
       var el = document.getElementById(id);
       if (el) el.innerHTML =
         '<div class="no-data">' +
@@ -495,11 +477,9 @@ async function loadData() {
 
 function renderAll() {
   renderList('top100');
-  renderList('nasdaq100');
-  renderList('sp500');
   renderETF();
   renderPortfolio();
-  ['top100','nasdaq100','sp500'].forEach(updateLoadMore);
+  updateLoadMore('top100');
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
