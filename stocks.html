@@ -1047,6 +1047,20 @@ function renderTVChart(symbol, period) {
     var loadingEl = document.getElementById('tv-loading');
     if (loadingEl) loadingEl.style.display = 'none';
     tvWidget = new TradingView.widget(cfg);
+
+    // 1D: 차트 로드 완료 후 오늘 프리마켓 시작(4am ET)~포스트마켓 끝(8pm ET + 여유)으로 정확히 줌인
+    // onChartReady → setVisibleRange가 constructor의 from 파라미터보다 정밀하게 동작함
+    if (period === '1D' && typeof tvWidget.onChartReady === 'function') {
+      (function(fromTs) {
+        tvWidget.onChartReady(function() {
+          try {
+            // to: 현재 + 4시간 여유 (포스트마켓 끝까지 오른쪽 여백 확보)
+            var toTs = Math.floor(Date.now() / 1000) + 4 * 3600;
+            tvWidget.chart().setVisibleRange({ from: fromTs, to: toTs });
+          } catch(e) {}
+        });
+      })(getTodayPremarketUnix());
+    }
   } else {
     container.innerHTML =
       '<div class="tv-loading">TradingView 로딩 실패<br><small style="font-size:14px;">새로고침 후 다시 시도해주세요</small></div>';
