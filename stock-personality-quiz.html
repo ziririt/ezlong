@@ -1295,6 +1295,15 @@ function buildResult() {
   const companiesToAdd = (state.companies || []).filter(t => t !== 'unknown' && !portoTickers.includes(t) && TICKER_TO_ID[t]);
 
   companiesToAdd.forEach(t => {
+    // 10개 초과 시 비중 가장 낮은 기존 종목 제거
+    if (portoTickers.length >= 10) {
+      let minIdx = 0;
+      for (let i = 1; i < portoPcts.length; i++) {
+        if (portoPcts[i] < portoPcts[minIdx]) minIdx = i;
+      }
+      portoTickers.splice(minIdx, 1);
+      portoPcts.splice(minIdx, 1);
+    }
     const addPct = 8; // 8% 배정
     const total  = portoPcts.reduce((a, b) => a + b, 0);
     // 기존 비중을 비례 축소해 8% 확보
