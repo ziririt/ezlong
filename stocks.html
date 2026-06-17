@@ -98,10 +98,48 @@
       padding: 14px 16px 8px; background: var(--ez-bg);
     }
     .pf-header-title { font-size: 16px; font-weight: 600; color: var(--ez-text2); }
+    .pf-header-btns { display: flex; gap: 8px; align-items: center; }
     .pf-edit-btn {
       padding: 6px 14px; font-size: 14px; font-weight: 500;
       color: var(--ez-blue); background: var(--ez-blue-dim);
       border: none; border-radius: var(--ez-rs); cursor: pointer;
+    }
+    .pf-id-btn {
+      padding: 6px 12px; font-size: 14px; font-weight: 500;
+      color: var(--ez-text2); background: var(--ez-surface);
+      border: 1px solid var(--ez-border); border-radius: var(--ez-rs); cursor: pointer;
+    }
+    /* 포트폴리오 ID 패널 */
+    .pf-id-panel {
+      margin: 0 12px 12px; padding: 16px;
+      background: var(--ez-surface); border: 1px solid var(--ez-border);
+      border-radius: 14px;
+    }
+    .pf-id-section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--ez-text3); margin-bottom: 6px;
+    }
+    .pf-id-desc {
+      font-size: 14px; color: var(--ez-text2); line-height: 1.65; margin-bottom: 14px;
+    }
+    .pf-id-row { display: flex; gap: 8px; margin-bottom: 12px; }
+    .pf-id-input {
+      flex: 1; padding: 9px 12px; font-size: 14px; font-weight: 500;
+      color: var(--ez-text); background: var(--ez-bg);
+      border: 1px solid var(--ez-border); border-radius: var(--ez-rs);
+      font-family: monospace; letter-spacing: .03em;
+    }
+    .pf-id-input:focus { outline: none; border-color: var(--ez-blue); }
+    .pf-id-action-btn {
+      padding: 9px 14px; font-size: 14px; font-weight: 600;
+      color: #fff; background: var(--ez-blue);
+      border: none; border-radius: var(--ez-rs); cursor: pointer; white-space: nowrap;
+    }
+    .pf-id-divider {
+      border: none; border-top: 1px solid var(--ez-border); margin: 14px 0;
+    }
+    .pf-id-notice {
+      font-size: 14px; color: var(--ez-text3); margin-top: 10px; line-height: 1.5;
     }
     .pf-add-row {
       display: flex; gap: 8px;
@@ -183,7 +221,7 @@
 
     /* TradingView 차트 컨테이너 — 고정 높이, 문서 흐름 안에 있음 */
     #tv-chart-container {
-      width: 100%; height: 500px;
+      width: 100%; height: 1000px;
       position: relative; background: var(--ez-surface);
     }
     #tv_chart_div { width: 100%; height: 100%; }
@@ -240,9 +278,9 @@
 
   <!-- 메인 탭 (5개, 플랫) -->
   <div class="main-tabs">
-    <button class="mtab active" data-tab="top100"    onclick="switchTab('top100',this)">미국 시총 100</button>
-    <button class="mtab"        data-tab="nasdaq100" onclick="switchTab('nasdaq100',this)">나스닥 100</button>
-    <button class="mtab"        data-tab="sp500"     onclick="switchTab('sp500',this)">S&amp;P 500</button>
+    <button class="mtab active" data-tab="top100"    onclick="switchTab('top100',this)">시총100</button>
+    <button class="mtab"        data-tab="nasdaq100" onclick="switchTab('nasdaq100',this)">나스닥100</button>
+    <button class="mtab"        data-tab="sp500"     onclick="switchTab('sp500',this)">S&amp;P500</button>
     <button class="mtab"        data-tab="etf"       onclick="switchTab('etf',this)">ETF</button>
     <button class="mtab"        data-tab="portfolio" onclick="switchTab('portfolio',this)">나의 포트폴리오</button>
   </div>
@@ -280,11 +318,43 @@
   <div id="panel-portfolio" class="panel">
     <div class="pf-header">
       <span class="pf-header-title">내 관심 종목</span>
-      <button class="pf-edit-btn" id="pf-edit-btn" onclick="toggleEditMode()" style="display:none">편집</button>
+      <div class="pf-header-btns">
+        <button class="pf-id-btn" id="pf-id-btn" onclick="toggleIdPanel()">나의 ID</button>
+        <button class="pf-edit-btn" id="pf-edit-btn" onclick="toggleEditMode()" style="display:none">편집</button>
+      </div>
     </div>
+
+    <!-- 포트폴리오 ID 패널 (기기 간 동기화) -->
+    <div id="pf-id-panel" class="pf-id-panel" style="display:none">
+      <p class="pf-id-desc">
+        <strong>나의 ID</strong>는 내 포트폴리오 종목 목록을 하나의 코드로 압축한 것이에요.<br>
+        아래 코드를 복사해두면, 다른 기기(태블릿·PC·다른 스마트폰)에서 그대로 불러올 수 있어요.
+        별도 회원가입·로그인 없이 코드 하나만으로 이동됩니다.
+      </p>
+
+      <!-- 내보내기 -->
+      <div class="pf-id-section-label">내 포트폴리오 코드 (복사해두세요)</div>
+      <div class="pf-id-row">
+        <input class="pf-id-input" id="pf-id-export-input" readonly placeholder="종목을 추가하면 코드가 생성돼요">
+        <button class="pf-id-action-btn" onclick="copyPortfolioCode()" id="pf-id-copy-btn">복사</button>
+      </div>
+
+      <hr class="pf-id-divider">
+
+      <!-- 불러오기 -->
+      <div class="pf-id-section-label">다른 기기의 코드로 불러오기</div>
+      <div class="pf-id-row">
+        <input class="pf-id-input" id="pf-id-import-input" placeholder="코드 붙여넣기 후 '불러오기' 클릭">
+        <button class="pf-id-action-btn" onclick="importPortfolioCode()" style="background:var(--ez-green)">불러오기</button>
+      </div>
+      <p class="pf-id-notice">
+        불러오기 시 현재 포트폴리오가 있으면 덮어쓸지 물어봐요. 코드는 종목 티커만 담고 있으며, 가격 정보는 포함되지 않아요.
+      </p>
+    </div>
+
     <div id="pf-add-row" class="pf-add-row" style="display:none">
       <input class="pf-add-input" id="pf-add-input" type="text"
-             placeholder="티커 입력 (예: AAPL)" maxlength="10"
+             placeholder="티커 입력 (예: AAPL, QLD)" maxlength="10"
              oninput="this.value=this.value.toUpperCase()"
              onkeydown="if(event.key==='Enter')addTicker()">
       <button class="pf-add-btn" onclick="addTicker()">추가</button>
@@ -602,13 +672,18 @@ function fillDetail(symbol) {
 }
 
 function findItem(symbol) {
-  if (!allData) return null;
-  var keys = ['top100','nasdaq100','sp500','etf'];
-  for (var k = 0; k < keys.length; k++) {
-    var list = allData[keys[k]] || [];
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].symbol === symbol) return list[i];
+  if (allData) {
+    var keys = ['top100','nasdaq100','sp500','etf'];
+    for (var k = 0; k < keys.length; k++) {
+      var list = allData[keys[k]] || [];
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].symbol === symbol) return list[i];
+      }
     }
+  }
+  // 데이터 파일에 없는 티커: EXTRA_NAMES로 이름만 보완 (가격은 미지원)
+  if (EXTRA_NAMES[symbol]) {
+    return { symbol: symbol, name: EXTRA_NAMES[symbol], price: null, changePct: null, sparkline: [] };
   }
   return null;
 }
@@ -618,7 +693,7 @@ function findItem(symbol) {
 // CLAUDE.md 규칙 13: interval:'D' + range 동시 사용 절대 금지
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 var TV_PERIOD_MAP = {
-  '1D':  { interval: '5',  range: '1D'  },
+  '1D':  { interval: '5'               },   // range 없음 — range 지정 시 TradingView가 1분봉 auto-select
   '5D':  { interval: '60', range: '5D'  },
   '1M':  { interval: 'D'               },   // ← range 없음 필수
   '3M':  { interval: 'D'               },   // ← range 없음 필수
@@ -641,7 +716,7 @@ function getYTDOpts() {
     : { interval: 'W', range: 'YTD' };
 }
 
-// 거래소 매핑 (NYSE vs NASDAQ)
+// 거래소 매핑 — NYSE 개별 종목
 var NYSE_SYMS = {
   'BRK-B':1,'JPM':1,'V':1,'MA':1,'JNJ':1,'PG':1,'HD':1,'UNH':1,'XOM':1,
   'BAC':1,'KO':1,'WMT':1,'CVX':1,'GE':1,'GS':1,'CAT':1,'AXP':1,'MS':1,
@@ -652,9 +727,121 @@ var NYSE_SYMS = {
   'MMC':1,'PGR':1,'ADP':1,'DHR':1,'IBM':1,'HON':1,
 };
 
+// NYSE Arca ETF (TradingView에서 AMEX: 프리픽스 사용)
+var AMEX_SYMS = {
+  // 주요 지수 ETF
+  'SPY':1,'IVV':1,'VOO':1,'VTI':1,'IWM':1,'ONEQ':1,
+  // 섹터 ETF (SPDR Select Sector)
+  'XLK':1,'XLF':1,'XLE':1,'XLV':1,'XLY':1,'XLI':1,'XLC':1,'XLU':1,'XLP':1,'XLB':1,'XLRE':1,
+  // 반도체·기술
+  'SMH':1,'SOXX':1,
+  // 원자재·귀금속
+  'GLD':1,'SLV':1,'IAU':1,'GDX':1,'GDXJ':1,'USO':1,'UNG':1,'PDBC':1,'DBC':1,
+  // 채권 ETF
+  'HYG':1,'LQD':1,'JNK':1,'VCIT':1,'VCSH':1,'BSV':1,'BIV':1,
+  // 리츠·부동산
+  'VNQ':1,'VNQI':1,
+  // 바이오·헬스
+  'XBI':1,'BOTZ':1,'ICLN':1,
+  // 테마·인터넷
+  'ARKK':1,'ARKW':1,'ARKG':1,'ARKF':1,'ARKQ':1,
+  'KWEB':1,'FXI':1,'MCHI':1,
+  // 글로벌
+  'EEM':1,'EFA':1,'VEA':1,'VWO':1,'SPDW':1,'SPEM':1,'ACWI':1,
+  // 레버리지 ETF — ProShares (NYSE Arca)
+  'QLD':1,'SSO':1,'SDS':1,'UPRO':1,'UDOW':1,'DDM':1,'DXD':1,'URTY':1,'SRTY':1,
+  'SPXU':1,'SPXL':1,'SPXS':1,
+  // 레버리지 ETF — Direxion (NYSE Arca)
+  'SOXL':1,'SOXS':1,'TECL':1,'TECS':1,'LABU':1,'LABD':1,
+  'FAS':1,'FAZ':1,'TNA':1,'TZA':1,'TMF':1,'TMV':1,
+  'NAIL':1,'CURE':1,'NUGT':1,'DUST':1,'WEBL':1,'HIBL':1,
+  // 기타
+  'VGT':1,'VHT':1,'VCR':1,'VFH':1,'VDE':1,'VAW':1,'VIS':1,'VPU':1,
+  'IBIT':1,'FBTC':1,
+};
+
+// 데이터 파일에 없는 티커 이름 보완 (포트폴리오 직접 검색 추가 시)
+var EXTRA_NAMES = {
+  // 레버리지 ETF (ProShares) — QQQ 계열
+  'QLD':   'QQQ 2배 레버리지 (ProShares)',
+  'TQQQ':  'QQQ 3배 레버리지 (ProShares)',
+  'SQQQ':  'QQQ 3배 인버스 (ProShares)',
+  // S&P500 레버리지
+  'UPRO':  'S&P500 3배 레버리지 (ProShares)',
+  'SSO':   'S&P500 2배 레버리지 (ProShares)',
+  'SDS':   'S&P500 2배 인버스 (ProShares)',
+  'SPXU':  'S&P500 3배 인버스 (ProShares)',
+  'SPXL':  'S&P500 3배 레버리지 (Direxion)',
+  'SPXS':  'S&P500 3배 인버스 (Direxion)',
+  // 다우·러셀
+  'UDOW':  '다우30 3배 레버리지 (ProShares)',
+  'SDOW':  '다우30 3배 인버스 (ProShares)',
+  'DDM':   '다우30 2배 레버리지 (ProShares)',
+  'DXD':   '다우30 2배 인버스 (ProShares)',
+  'URTY':  '러셀2000 3배 레버리지 (ProShares)',
+  'SRTY':  '러셀2000 3배 인버스 (ProShares)',
+  // 반도체 (Direxion)
+  'SOXL':  '반도체 3배 레버리지 (Direxion)',
+  'SOXS':  '반도체 3배 인버스 (Direxion)',
+  // 기술·금융 (Direxion)
+  'TECL':  '기술주 3배 레버리지 (Direxion)',
+  'TECS':  '기술주 3배 인버스 (Direxion)',
+  'FAS':   '금융주 3배 레버리지 (Direxion)',
+  'FAZ':   '금융주 3배 인버스 (Direxion)',
+  // 바이오·소형주·채권 (Direxion)
+  'LABU':  '바이오테크 3배 레버리지 (Direxion)',
+  'LABD':  '바이오테크 3배 인버스 (Direxion)',
+  'TNA':   '소형주 3배 레버리지 (Direxion)',
+  'TZA':   '소형주 3배 인버스 (Direxion)',
+  'TMF':   '20년 국채 3배 레버리지 (Direxion)',
+  'TMV':   '20년 국채 3배 인버스 (Direxion)',
+  'NAIL':  '주택건설주 3배 레버리지 (Direxion)',
+  'CURE':  '헬스케어 3배 레버리지 (Direxion)',
+  'NUGT':  '금광주 2배 레버리지 (Direxion)',
+  'DUST':  '금광주 2배 인버스 (Direxion)',
+  'WEBL':  '인터넷 3배 레버리지 (Direxion)',
+  // 원자재·귀금속 ETF
+  'GLD':   'SPDR Gold Shares',
+  'SLV':   'iShares Silver Trust',
+  'IAU':   'iShares Gold Trust',
+  'GDX':   'VanEck Gold Miners ETF',
+  'GDXJ':  'VanEck Junior Gold Miners ETF',
+  'USO':   'United States Oil Fund',
+  // 채권 ETF
+  'TLT':   'iShares 20+ Year Treasury ETF',
+  'HYG':   'iShares High Yield Corp Bond ETF',
+  'LQD':   'iShares Investment Grade Corp ETF',
+  'IEF':   'iShares 7-10 Year Treasury ETF',
+  'SHY':   'iShares 1-3 Year Treasury ETF',
+  'BND':   'Vanguard Total Bond Market ETF',
+  'AGG':   'iShares Core U.S. Aggregate Bond ETF',
+  // 글로벌 ETF
+  'EEM':   'iShares MSCI Emerging Markets ETF',
+  'EFA':   'iShares MSCI EAFE ETF',
+  'VEA':   'Vanguard FTSE Developed Markets ETF',
+  'VWO':   'Vanguard FTSE Emerging Markets ETF',
+  'KWEB':  'KraneShares China Internet ETF',
+  'FXI':   'iShares China Large-Cap ETF',
+  // 섹터·테마 ETF
+  'ARKK':  'ARK Innovation ETF',
+  'ARKW':  'ARK Next Generation Internet ETF',
+  'ARKG':  'ARK Genomic Revolution ETF',
+  'VNQ':   'Vanguard Real Estate ETF',
+  'XBI':   'SPDR S&P Biotech ETF',
+  'IBB':   'iShares Biotechnology ETF',
+  'SMH':   'VanEck Semiconductor ETF',
+  'BOTZ':  'Global X Robotics & AI ETF',
+  'ICLN':  'iShares Clean Energy ETF',
+  // 비트코인 ETF
+  'IBIT':  'iShares Bitcoin Trust ETF',
+  'FBTC':  'Fidelity Wise Origin Bitcoin ETF',
+};
+
 function getTVSym(symbol) {
   var s = symbol.replace('-', '.');
-  return (NYSE_SYMS[symbol] ? 'NYSE' : 'NASDAQ') + ':' + s;
+  if (NYSE_SYMS[symbol]) return 'NYSE:' + s;
+  if (AMEX_SYMS[symbol]) return 'AMEX:' + s;
+  return 'NASDAQ:' + s;
 }
 
 function clearTVCache() {
@@ -719,6 +906,7 @@ function renderTVChart(symbol, period) {
     style:             '1',
     hide_side_toolbar: false,
     hide_top_toolbar:  false,
+    hide_legend:       true,   // 차트 내부 기업명·OHLC 레전드 숨김 (상단 커스텀 UI로 대체)
     allow_symbol_change: false,
     save_image:        false,
     withdateranges:    false,
@@ -808,6 +996,77 @@ function updateStarBtn(sym) {
   var faved = isFaved(sym);
   btn.textContent = faved ? '★' : '☆';
   btn.classList.toggle('faved', faved);
+}
+
+// ── 포트폴리오 ID (기기 간 동기화) ──────────
+function genPortfolioCode() {
+  var faves = getFaves();
+  if (!faves.length) return '';
+  try { return btoa(faves.join(',')); } catch(e) { return ''; }
+}
+
+function toggleIdPanel() {
+  var panel = document.getElementById('pf-id-panel');
+  if (!panel) return;
+  var isOpen = panel.style.display !== 'none';
+  if (!isOpen) {
+    var code = genPortfolioCode();
+    var exportEl = document.getElementById('pf-id-export-input');
+    if (exportEl) exportEl.value = code;
+    if (!code) {
+      var exportEl2 = document.getElementById('pf-id-export-input');
+      if (exportEl2) exportEl2.placeholder = '종목을 먼저 추가해주세요';
+    }
+  }
+  panel.style.display = isOpen ? 'none' : 'block';
+}
+
+function copyPortfolioCode() {
+  var input = document.getElementById('pf-id-export-input');
+  var btn   = document.getElementById('pf-id-copy-btn');
+  if (!input || !input.value) return;
+  var code = input.value;
+  function showCopied() {
+    if (btn) { btn.textContent = '복사됨!'; btn.style.background = 'var(--ez-green)'; }
+    setTimeout(function() {
+      if (btn) { btn.textContent = '복사'; btn.style.background = ''; }
+    }, 1800);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(showCopied).catch(function() {
+      input.select(); document.execCommand('copy'); showCopied();
+    });
+  } else {
+    input.select(); document.execCommand('copy'); showCopied();
+  }
+}
+
+function importPortfolioCode() {
+  var input = document.getElementById('pf-id-import-input');
+  var raw   = (input ? input.value : '').trim();
+  if (!raw) { alert('코드를 붙여넣어주세요.'); return; }
+  var syms;
+  try {
+    var decoded = atob(raw);
+    syms = decoded.split(',')
+      .map(function(s) { return s.trim().toUpperCase(); })
+      .filter(function(s) { return s && /^[A-Z0-9\.\-]{1,15}$/.test(s); });
+  } catch(e) { syms = []; }
+  if (!syms.length) {
+    alert('올바른 포트폴리오 코드가 아니에요.\n다른 기기에서 "나의 ID" 버튼으로 생성한 코드를 붙여넣어주세요.');
+    return;
+  }
+  var current = getFaves();
+  if (current.length >= 2) {
+    if (!confirm('현재 포트폴리오(' + current.length + '개 종목)를 새 코드(' + syms.length + '개 종목)로 덮어쓸까요?')) return;
+  }
+  saveFaves(syms);
+  if (input) input.value = '';
+  // 코드도 새로 갱신
+  var exportEl = document.getElementById('pf-id-export-input');
+  if (exportEl) exportEl.value = genPortfolioCode();
+  renderPortfolio();
+  alert('불러오기 완료! ' + syms.length + '개 종목이 추가됐어요.');
 }
 
 // ── 편집 모드 ──────────────────────────────
