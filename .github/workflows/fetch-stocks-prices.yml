@@ -17,9 +17,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          # 최신 커밋을 가져오기 위해 fetch-depth 1 (빠른 체크아웃)
-          fetch-depth: 1
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -41,6 +38,5 @@ jobs:
           else
             KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
             git commit -m "data: stocks-prices.json ${KST}"
-            git pull --rebase origin main
-            git push
+            git push origin main
           fi
