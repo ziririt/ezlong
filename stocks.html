@@ -74,6 +74,17 @@
     .sr-pct.dn   { background: var(--ez-red);   color: #fff; }
     .sr-pct.flat { background: var(--ez-card2);  color: var(--ez-text2); }
 
+    /* ── 확장시간 (포스트/나이트/프리마켓) ── */
+    .sr-ext {
+      display: flex; align-items: center; justify-content: flex-end;
+      gap: 3px; margin-top: 3px; line-height: 1;
+    }
+    .sr-ext-ico { font-size: 11px; color: #9a85c9; }
+    .sr-ext-pct { font-size: 14px; font-weight: 500; }
+    .sr-ext-pct.up   { color: var(--ez-green); }
+    .sr-ext-pct.dn   { color: var(--ez-red); }
+    .sr-ext-pct.flat { color: var(--ez-text3); }
+
     /* ── LIST: 더보기 ── */
     .load-more-wrap { padding: 14px 16px; background: var(--ez-surface); border-top: 1px solid var(--ez-border); }
     .load-more-btn {
@@ -220,9 +231,15 @@
     .ptab.active { color: var(--ez-blue); border-bottom-color: var(--ez-blue); font-weight: 700; }
 
     /* TradingView 차트 컨테이너 — 고정 높이, 문서 흐름 안에 있음 */
+    /* 전체 높이 안에서 TradingView가 주가/RSI/MACD 비율을 자동 분배 (~60/20/20)
+       모바일 480px → 주가~288 / RSI~96 / MACD~96 : 한 화면에 전부 표시 가능
+       데스크탑 650px → 주가~390 / RSI~130 / MACD~130 */
     #tv-chart-container {
-      width: 100%; height: 1000px;
+      width: 100%; height: 650px;
       position: relative; background: var(--ez-surface);
+    }
+    @media (max-width: 480px) {
+      #tv-chart-container { height: 480px; }
     }
     #tv_chart_div { width: 100%; height: 100%; }
     .tv-loading {
@@ -422,6 +439,7 @@
 // 상태
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 var allData       = null;
+var pricesData    = null;   // stocks-prices.json (Massive API, 10분 갱신)
 var currentTab    = 'top100';
 var currentSym    = null;
 var currentPeriod = '1D';
@@ -457,17 +475,29 @@ document.addEventListener('DOMContentLoaded', function() {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 async function loadData() {
   try {
-    var r = await fetch('/data/stocks-data.json?t=' + Date.now());
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    allData = await r.json();
-    var ts = allData.generatedAtKST || '';
-    document.getElementById('data-ts').textContent = ts ? '업데이트: ' + ts : '';
-    renderAll();
-    // 데이터 로드 후 초기 hash 처리
-    var hash = location.hash.slice(1);
-    if (hash) {
-      fillDetail(hash);
+    // stocks-data.json(스파크라인·이름, 하루 1회)과
+    // stocks-prices.json(현재가·등락률·확장시간, 10분 갱신)을 병렬 로드
+    var ts = Date.now();
+    var results = await Promise.all([
+      fetch('/data/stocks-data.json?t='   + ts),
+      fetch('/data/stocks-prices.json?t=' + ts).catch(function() { return null; })
+    ]);
+    var r1 = results[0], r2 = results[1];
+    if (!r1.ok) throw new Error('HTTP ' + r1.status);
+    allData = await r1.json();
+
+    if (r2 && r2.ok) {
+      pricesData = await r2.json();
+      var label = pricesData.updatedAtKST || allData.generatedAtKST || '';
+      document.getElementById('data-ts').textContent = label ? '주가 ' + label + ' (15분 지연)' : '';
+    } else {
+      var label = allData.generatedAtKST || '';
+      document.getElementById('data-ts').textContent = label ? '스파크라인 ' + label : '';
     }
+
+    renderAll();
+    var hash = location.hash.slice(1);
+    if (hash) fillDetail(hash);
   } catch(e) {
     document.getElementById('data-ts').textContent = '데이터 미수신';
     ['list-top100','list-semi','list-etf'].forEach(function(id) {
@@ -560,26 +590,49 @@ function renderETF() {
 }
 
 function rowHTML(item, noRank) {
-  var isUp   = item.changePct != null && item.changePct >= 0;
-  var isFlat = item.changePct == null || item.changePct === 0;
+  var sym  = item.symbol;
+  // pricesData 우선: 현재가·등락률·확장시간 (Massive API, 10분 갱신)
+  var live      = (pricesData && pricesData.prices && pricesData.prices[sym]) || null;
+  var price     = (live && live.price     != null) ? live.price     : item.price;
+  var changePct = (live && live.changePct != null) ? live.changePct : item.changePct;
+  var extPct    = live ? live.extPct     : null;
+  var extSes    = live ? live.extSession : null;
+
+  var isUp   = changePct != null && changePct >= 0;
+  var isFlat = changePct == null;
   var pctCls = isFlat ? 'flat' : (isUp ? 'up' : 'dn');
-  var priceStr = item.price != null
-    ? '$' + item.price.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})
+  var priceStr = price != null
+    ? '$' + price.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})
     : '—';
-  var pctStr = item.changePct != null
-    ? (isUp && !isFlat ? '+' : '') + item.changePct.toFixed(2) + '%'
+  var pctStr = changePct != null
+    ? (isUp && !isFlat ? '+' : '') + changePct.toFixed(2) + '%'
     : '—';
+
+  // 확장시간 표시 (포스트/나이트: ☽, 프리마켓: ☀)
+  var extHtml = '';
+  if (extPct != null && extSes) {
+    var eUp   = extPct >= 0;
+    var eCls  = extPct === 0 ? 'flat' : (eUp ? 'up' : 'dn');
+    var eStr  = (eUp ? '+' : '') + extPct.toFixed(2) + '%';
+    var eIco  = extSes === 'pre' ? '&#9728;' : '&#9789;';  // ☀ or ☽
+    extHtml = '<div class="sr-ext">' +
+      '<span class="sr-ext-ico">' + eIco + '</span>' +
+      '<span class="sr-ext-pct ' + eCls + '">' + eStr + '</span>' +
+    '</div>';
+  }
+
   return [
-    '<div class="stock-row" onclick="openDetail(\'' + item.symbol + '\')">',
+    '<div class="stock-row" onclick="openDetail(\'' + sym + '\')">',
       noRank ? '' : '<div class="sr-rank">' + (item.rank || '') + '</div>',
       '<div class="sr-info">',
-        '<span class="sr-ticker">' + item.symbol + '</span>',
+        '<span class="sr-ticker">' + sym + '</span>',
         '<span class="sr-name">'   + (item.name || '') + '</span>',
       '</div>',
-      '<div class="sr-spark">' + buildSparkline(item.sparkline, isUp) + '</div>',
+      '<div class="sr-spark">' + buildSparkline(item.sparkline || [], isUp) + '</div>',
       '<div class="sr-right">',
         '<div class="sr-price">' + priceStr + '</div>',
         '<div class="sr-pct ' + pctCls + '">' + pctStr + '</div>',
+        extHtml,
       '</div>',
     '</div>',
   ].join('');
@@ -1193,13 +1246,16 @@ function renderPortfolio() {
     // 편집 모드 — 드래그 핸들 + 삭제 버튼
     listEl.innerHTML = faves.map(function(sym, idx) {
       var item     = findItem(sym) || { symbol: sym, name: sym, price: null, changePct: null, sparkline: [] };
-      var isUp     = item.changePct != null && item.changePct >= 0;
-      var isFlat   = item.changePct == null;
+      var live     = (pricesData && pricesData.prices && pricesData.prices[sym]) || null;
+      var pfPrice  = (live && live.price     != null) ? live.price     : item.price;
+      var pfPct    = (live && live.changePct != null) ? live.changePct : item.changePct;
+      var isUp     = pfPct != null && pfPct >= 0;
+      var isFlat   = pfPct == null;
       var pctCls   = isFlat ? 'flat' : (isUp ? 'up' : 'dn');
-      var priceStr = item.price != null
-        ? '$' + item.price.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : '—';
-      var pctStr   = item.changePct != null
-        ? (isUp && !isFlat ? '+' : '') + item.changePct.toFixed(2) + '%' : '—';
+      var priceStr = pfPrice != null
+        ? '$' + pfPrice.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : '—';
+      var pctStr   = pfPct != null
+        ? (isUp && !isFlat ? '+' : '') + pfPct.toFixed(2) + '%' : '—';
       return [
         '<div class="stock-row edit-mode" draggable="true"',
         ' data-idx="' + idx + '" data-sym="' + sym + '"',

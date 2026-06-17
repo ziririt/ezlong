@@ -1,0 +1,46 @@
+name: Fetch Real-time Stock Prices
+
+on:
+  schedule:
+    # ── 장중·프리마켓·포스트마켓 (Mon–Fri, 3am–6pm ET = 8am–23pm UTC)
+    - cron: '*/10 8-23 * * 1-5'
+    # ── 포스트마켓 후반·나이트마켓 (Mon–Fri, 7pm–11:50pm ET = 0–4am UTC 다음날 Tue–Sat)
+    - cron: '*/10 0-4 * * 2-6'
+  workflow_dispatch:   # 수동 실행 허용
+
+jobs:
+  fetch-prices:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # 최신 커밋을 가져오기 위해 fetch-depth 1 (빠른 체크아웃)
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run fetch-stocks-prices.py
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python scripts/fetch-stocks-prices.py
+
+      - name: Commit stocks-prices.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main  # 동시 커밋 충돌 방지
+          git add data/stocks-prices.json
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
+            git commit -m "data: stocks-prices.json ${KST}"
+            git push
+          fi
