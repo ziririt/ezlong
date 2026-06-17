@@ -100,8 +100,8 @@
     }
     .mtab {
       flex: 1;
-      padding: 14px 8px 12px;
-      font-size: 14px; font-weight: 600;
+      padding: 21px 8px 18px;
+      font-size: 16px; font-weight: 600;
       color: var(--ez-text3);
       background: none; border: none;
       border-bottom: 3px solid transparent;
@@ -342,11 +342,21 @@
     }
     .da-badge.bull { background: rgba(26,127,55,.15); color: var(--ez-green); }
     .da-badge.bear { background: rgba(217,42,42,.12); color: var(--ez-red); }
-    .da-narrative {
-      font-size: 15px;           /* 15pt 요구사항 */
-      color: var(--ez-text2);
-      line-height: 1.7;
+    .da-narrative { font-size: 15px; color: var(--ez-text2); line-height: 1.7; }
+    /* 구조화 narrative — 섹션 제목 + 닷불릿 */
+    .da-sec-title {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+      color: var(--ez-text3); text-transform: uppercase;
+      margin: 16px 0 6px; padding-bottom: 4px;
+      border-bottom: 1px solid var(--ez-border);
     }
+    .da-sec-title:first-child { margin-top: 0; }
+    .da-bullet {
+      display: flex; gap: 8px; align-items: flex-start;
+      font-size: 15px; color: var(--ez-text2);
+      line-height: 1.65; margin-bottom: 5px;
+    }
+    .da-bullet-dot { color: var(--ez-blue); font-weight: 800; flex-shrink: 0; margin-top: 1px; }
     .da-risk { margin-top: 10px; font-size: 14px; color: #92400E; line-height: 1.5; }
     .da-updated { margin-top: 10px; font-size: 14px; color: var(--ez-text3); }
   </style>
@@ -1251,6 +1261,33 @@ function changePeriod(period, btn) {
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// narrative 파싱 렌더러
+// [소제목] → da-sec-title / · 항목 → da-bullet
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderNarrative(text) {
+  if (!text) return '';
+  function esc(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  var html = '';
+  text.split('\n').forEach(function(line) {
+    line = line.trim();
+    if (!line) return;
+    // [소제목] 패턴
+    if (/^\[.+\]$/.test(line)) {
+      html += '<div class="da-sec-title">' + esc(line.slice(1, -1)) + '</div>';
+    // · 불릿 항목
+    } else if (line.charAt(0) === '·' || line.startsWith('·') || line.startsWith('• ') || line.startsWith('- ')) {
+      var content = line.replace(/^[·•\-]\s*/, '');
+      html += '<div class="da-bullet"><span class="da-bullet-dot">·</span><span>' + esc(content) + '</span></div>';
+    } else {
+      html += '<div style="font-size:15px;color:var(--ez-text2);line-height:1.65;margin-bottom:5px;">' + esc(line) + '</div>';
+    }
+  });
+  return html;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // AI 분석 로드
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 async function loadAnalysis(symbol) {
@@ -1268,9 +1305,9 @@ async function loadAnalysis(symbol) {
     if (a.trend) badges += '<span class="da-badge ' + trendCls + '">' + a.trend + '</span>';
     if (a.stage) badges += '<span class="da-badge neut">'   + a.stage  + '</span>';
     if (a.action) badges += '<span class="da-badge neut">'  + a.action + '</span>';
-    document.getElementById('da-badges').innerHTML   = badges;
-    document.getElementById('da-narrative').textContent = a.narrative || '';
-    document.getElementById('da-risk').textContent      = a.riskNote ? '주의: ' + a.riskNote : '';
+    document.getElementById('da-badges').innerHTML = badges;
+    document.getElementById('da-narrative').innerHTML = renderNarrative(a.narrative || '');
+    document.getElementById('da-risk').textContent = a.riskNote ? '주의: ' + a.riskNote : '';
 
     if (d.updatedAt) {
       var dt = new Date(d.updatedAt);
