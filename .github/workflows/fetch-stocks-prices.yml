@@ -32,7 +32,6 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # 원격 최신 상태로 동기화 (stocks-prices.json은 untracked이므로 보존됨)
           git fetch origin main
           git reset --hard origin/main
           git add data/stocks-prices.json
