@@ -464,37 +464,37 @@
 // 보완 관계 텍스트 (MBTI 그룹 × 투자 스타일)
 // ════════════════════════════════════════════════════════
 const COMPAT_TEXTS = {
-'NT_1':'논리적 분석가인 당신에게 단기 매매는 맞지 않습니다. 장기 데이터 중심 전략이 NT 기질의 강점을 극대화합니다.',
-'NT_2':'NT형의 체계적 사고는 ETF 분산투자와 완벽하게 맞습니다. 분석이 분산을 뒷받침합니다.',
-'NT_3':'배당 + 성장의 균형 전략. NT의 분석력으로 퀄리티 기업을 고르면 배당 성장주 전략의 완성도가 높아집니다.',
-'NT_4':'NT형이 가치투자를 만나면 내재가치 계산의 정교도가 최고치입니다. 단, 과도한 분석이 기회를 놓칠 수 있습니다.',
-'NT_5':'퀀트·모멘텀 전략은 NT의 논리 체계와 완벽한 조합입니다. 규칙 기반 시스템이 감정을 완전히 배제합니다.',
-'NF_1':'직관으로 진입하고 스토리로 보유합니다. NF의 강점이지만 단기 매매와 조합하면 손절 기준이 흔들립니다.',
-'NF_2':'NF형의 공감력이 기업 선택에 좋은 필터가 됩니다. ETF 코어를 먼저 구축하고 스토리 종목을 추가하는 구조를 권장합니다.',
-'NF_3':'배당 성장주 전략. NF의 기업 애착이 장기 보유를 뒷받침합니다. 좋아하는 기업이 배당을 지급하면 더 오래 보유합니다.',
-'NF_4':'NF형의 가치투자는 "세상에 좋은 기업"과 "저평가 기업"을 동일시하는 함정이 있습니다. 가치는 스토리가 아닌 숫자로 판단하세요.',
-'NF_5':'퀀트 전략은 NF의 직관과 충돌합니다. 규칙이 직관을 배제하기 때문입니다. 규칙을 따르는 훈련이 필요합니다.',
-'SJ_1':'SJ형에게 단기 매매는 가장 맞지 않는 스타일입니다. 계획 수립 → 원칙 실행 → 장기 보유가 SJ의 자연스러운 투자 방식입니다.',
-'SJ_2':'SJ + ETF 분산투자 = 이 서비스 최고의 조합입니다. 월 자동이체 + 연 리밸런싱 + 장기 보유. 가장 단순하고 가장 효과적입니다.',
-'SJ_3':'배당 성장주 전략은 SJ의 안정 욕구와 잘 맞습니다. 다만 배당 집착으로 성장 비중이 너무 줄어드는 것을 주의하세요.',
-'SJ_4':'가치투자의 규율이 SJ 기질과 잘 맞습니다. 체크리스트 기반 종목 선택과 원칙적 보유가 SJ의 강점입니다.',
-'SJ_5':'퀀트 전략은 SJ형의 규칙 준수 성향과 잘 맞습니다. 단, 규칙이 바뀔 때 적응하는 유연성이 필요합니다.',
-'SP_1':'단기 매매는 SP의 행동력과 잘 맞는 것처럼 보이지만, 가장 위험한 조합입니다. 손절 규칙 없이는 반드시 큰 손실이 옵니다.',
-'SP_2':'SP형이 ETF 분산투자를 선택하면 "지루하다"는 느낌이 올 수 있습니다. 코어 ETF + 위성 개별주 전략이 SP에게 가장 현실적입니다.',
-'SP_3':'배당 성장주의 긴 기다림이 SP형에게는 가장 어렵습니다. 배당 자동 재투자 기능을 활용해 지루함을 없애세요.',
-'SP_4':'가치투자의 인내심은 SP형에게 가장 어려운 요소입니다. 규칙 기반 매수 기준과 명확한 목표 가격 설정이 필수입니다.',
-'SP_5':'퀀트·모멘텀 전략은 SP의 빠른 행동과 잘 맞습니다. 다만 모든 신호를 신뢰하는 훈련이 필요합니다.'
+'NT_risk':'논리적 분석가인 당신에게 단기 매매는 맞지 않습니다. 장기 데이터 중심 전략이 NT 기질의 강점을 극대화합니다.',
+'NT_stable':'NT형의 체계적 사고는 ETF 분산투자와 완벽하게 맞습니다. 분석이 분산을 뒷받침합니다.',
+'NT_daytrading':'배당 + 성장의 균형 전략. NT의 분석력으로 퀄리티 기업을 고르면 배당 성장주 전략의 완성도가 높아집니다.',
+'NT_swing':'NT형이 가치투자를 만나면 내재가치 계산의 정교도가 최고치입니다. 단, 과도한 분석이 기회를 놓칠 수 있습니다.',
+'NT_longterm':'퀀트·모멘텀 전략은 NT의 논리 체계와 완벽한 조합입니다. 규칙 기반 시스템이 감정을 완전히 배제합니다.',
+'NF_risk':'직관으로 진입하고 스토리로 보유합니다. NF의 강점이지만 단기 매매와 조합하면 손절 기준이 흔들립니다.',
+'NF_stable':'NF형의 공감력이 기업 선택에 좋은 필터가 됩니다. ETF 코어를 먼저 구축하고 스토리 종목을 추가하는 구조를 권장합니다.',
+'NF_daytrading':'배당 성장주 전략. NF의 기업 애착이 장기 보유를 뒷받침합니다. 좋아하는 기업이 배당을 지급하면 더 오래 보유합니다.',
+'NF_swing':'NF형의 가치투자는 "세상에 좋은 기업"과 "저평가 기업"을 동일시하는 함정이 있습니다. 가치는 스토리가 아닌 숫자로 판단하세요.',
+'NF_longterm':'퀀트 전략은 NF의 직관과 충돌합니다. 규칙이 직관을 배제하기 때문입니다. 규칙을 따르는 훈련이 필요합니다.',
+'SJ_risk':'SJ형에게 단기 매매는 가장 맞지 않는 스타일입니다. 계획 수립 → 원칙 실행 → 장기 보유가 SJ의 자연스러운 투자 방식입니다.',
+'SJ_stable':'SJ + ETF 분산투자 = 이 서비스 최고의 조합입니다. 월 자동이체 + 연 리밸런싱 + 장기 보유. 가장 단순하고 가장 효과적입니다.',
+'SJ_daytrading':'배당 성장주 전략은 SJ의 안정 욕구와 잘 맞습니다. 다만 배당 집착으로 성장 비중이 너무 줄어드는 것을 주의하세요.',
+'SJ_swing':'가치투자의 규율이 SJ 기질과 잘 맞습니다. 체크리스트 기반 종목 선택과 원칙적 보유가 SJ의 강점입니다.',
+'SJ_longterm':'퀀트 전략은 SJ형의 규칙 준수 성향과 잘 맞습니다. 단, 규칙이 바뀔 때 적응하는 유연성이 필요합니다.',
+'SP_risk':'단기 매매는 SP의 행동력과 잘 맞는 것처럼 보이지만, 가장 위험한 조합입니다. 손절 규칙 없이는 반드시 큰 손실이 옵니다.',
+'SP_stable':'SP형이 ETF 분산투자를 선택하면 "지루하다"는 느낌이 올 수 있습니다. 코어 ETF + 위성 개별주 전략이 SP에게 가장 현실적입니다.',
+'SP_daytrading':'배당 성장주의 긴 기다림이 SP형에게는 가장 어렵습니다. 배당 자동 재투자 기능을 활용해 지루함을 없애세요.',
+'SP_swing':'가치투자의 인내심은 SP형에게 가장 어려운 요소입니다. 규칙 기반 매수 기준과 명확한 목표 가격 설정이 필수입니다.',
+'SP_longterm':'퀀트·모멘텀 전략은 SP의 빠른 행동과 잘 맞습니다. 다만 모든 신호를 신뢰하는 훈련이 필요합니다.'
 };
 
 // ════════════════════════════════════════════════════════
 // 경험 레벨 텍스트
 // ════════════════════════════════════════════════════════
 const EXP_TEXTS = {
-'1':'투자 경험이 거의 없는 단계입니다. 지금 가장 중요한 것은 시작하는 것입니다. 복잡한 전략보다 QQQ + IVV 두 종목으로 시작하고, 매달 자동이체를 설정하세요. 완벽한 타이밍은 없습니다. 시작이 최고의 전략입니다.',
-'2':'ETF 투자를 시작했지만 개별주에 대한 호기심이 생기는 단계입니다. ETF 코어 60% + 관심 있는 빅테크 개별주 40%로 구성해보세요. 개별주는 잘 아는 기업부터 시작합니다.',
-'3':'개별주와 ETF를 균형 있게 운용할 수 있는 단계입니다. 포트폴리오에 섹터 배분 개념을 도입하고, 연 1회 리밸런싱을 정례화하세요. 과잉거래를 줄이는 것이 이 단계의 핵심입니다.',
-'4':'경험이 축적된 단계입니다. 시장 사이클을 이해하고 섹터 로테이션을 활용할 수 있습니다. 레버리지 ETF 소량(10% 이내) 활용, 옵션 커버드콜 전략 탐색이 가능합니다.',
-'5':'시장의 다양한 국면을 경험한 베테랑 단계입니다. 개인적인 투자 원칙이 완성되어 있습니다. 복잡한 전략보다 검증된 원칙을 지키는 것이 이 단계의 핵심 과제입니다.'
+'beginner':'투자 경험이 거의 없는 단계입니다. 지금 가장 중요한 것은 시작하는 것입니다. 복잡한 전략보다 QQQ + IVV 두 종목으로 시작하고, 매달 자동이체를 설정하세요. 완벽한 타이밍은 없습니다. 시작이 최고의 전략입니다.',
+'early':'ETF 투자를 시작했지만 개별주에 대한 호기심이 생기는 단계입니다. ETF 코어 60% + 관심 있는 빅테크 개별주 40%로 구성해보세요. 개별주는 잘 아는 기업부터 시작합니다.',
+'mid':'개별주와 ETF를 균형 있게 운용할 수 있는 단계입니다. 포트폴리오에 섹터 배분 개념을 도입하고, 연 1회 리밸런싱을 정례화하세요. 과잉거래를 줄이는 것이 이 단계의 핵심입니다.',
+'advanced':'경험이 축적된 단계입니다. 시장 사이클을 이해하고 섹터 로테이션을 활용할 수 있습니다. 레버리지 ETF 소량(10% 이내) 활용, 옵션 커버드콜 전략 탐색이 가능합니다.',
+'veteran':'시장의 다양한 국면을 경험한 베테랑 단계입니다. 개인적인 투자 원칙이 완성되어 있습니다. 복잡한 전략보다 검증된 원칙을 지키는 것이 이 단계의 핵심 과제입니다.'
 };
 
 // ════════════════════════════════════════════════════════
@@ -531,7 +531,7 @@ const COMPANY_TEXTS = {
 // 스타일 레이블
 // ════════════════════════════════════════════════════════
 const STYLE_LABELS = {
-'1':'단기 매매형','2':'ETF 분산형','3':'배당 성장형','4':'가치투자형','5':'퀀트·모멘텀형'
+'risk':'단기 매매형','stable':'ETF 분산형','daytrading':'배당 성장형','swing':'가치투자형','longterm':'퀀트·모멘텀형'
 };
 
 
@@ -1028,6 +1028,7 @@ showPanel('step-q1');
 <script src="/ez-footer.js"></script>
 
 <script>
+
 // ════════════════════════════════════════════════════════
 // stock-personality-quiz.js — DATA & LOGIC
 // ════════════════════════════════════════════════════════
@@ -1413,6 +1414,304 @@ advice:'직관과 절제의 조합이 당신의 가장 강력한 무기다. 50�
 
 }; // END BASE_PROFILES
 
+
+// ════════════════════════════════════════════════════════
+// 퀴즈 상태 관리
+// ════════════════════════════════════════════════════════
+const state = {
+  gender: null, ageGroup: null, mbtiKnow: null,
+  mbtiDirect: null, mbtiDerived: null,
+  expLevel: null, styleLevel: null, companies: []
+};
+const subAnswers = { qa: null, qb: null, qc: null, qd: null };
+const panelHistory = [];
+
+function getMbtiGroup() {
+  const m = state.mbtiDirect || state.mbtiDerived;
+  return m ? (MBTI_TO_GROUP[m] || m) : null;  // 직접 그룹 선택 시 그대로 사용
+}
+function getProfileKey() {
+  const g = state.gender, a = state.ageGroup, mbti = getMbtiGroup();
+  if (!g || !a || !mbti) return null;
+  return g + '_' + a + '_' + mbti;
+}
+
+// ════════════════════════════════════════════════════════
+// 패널 네비게이션 (클래스: quiz-step)
+// ════════════════════════════════════════════════════════
+function showPanel(id) {
+  const current = document.querySelector('.quiz-step.active');
+  if (current) panelHistory.push(current.id);
+  document.querySelectorAll('.quiz-step').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if (panel) { panel.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+function showSubStep(id) {
+  document.querySelectorAll('.sub-step').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+}
+
+// 뒤로 가기
+const backBtn = document.getElementById('quiz-back');
+if (backBtn) {
+  backBtn.addEventListener('click', function() {
+    if (panelHistory.length) {
+      const prev = panelHistory.pop();
+      document.querySelectorAll('.quiz-step').forEach(p => p.classList.remove('active'));
+      const panel = document.getElementById(prev);
+      if (panel) { panel.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+    }
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// choice-card 이벤트 위임 (Q1/Q2/Q3/Q4/Q5 통합)
+// ════════════════════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  const card = e.target.closest('.choice-card');
+  if (!card) return;
+
+  const q    = card.dataset.q;
+  const subq = card.dataset.subq;
+  const val  = card.dataset.val;
+
+  // ── Q1 성별
+  if (q === 'gender') {
+    state.gender = val;
+    document.querySelectorAll('.choice-card[data-q="gender"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    setTimeout(() => showPanel('step-q2'), 280);
+    return;
+  }
+
+  // ── Q2 연령
+  if (q === 'age') {
+    state.ageGroup = val;
+    document.querySelectorAll('.choice-card[data-q="age"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    setTimeout(() => showPanel('step-q3'), 280);
+    return;
+  }
+
+  // ── Q3 MBTI 알고 있는지
+  if (q === 'mbti-know') {
+    state.mbtiKnow = val;
+    document.querySelectorAll('.choice-card[data-q="mbti-know"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    if (val === 'yes') setTimeout(() => showPanel('step-q3-grid'), 280);
+    else { setTimeout(() => { showPanel('step-q3-sub'); showSubStep('sub-qa'); }, 280); }
+    return;
+  }
+
+  // ── Q3-sub 서브 질문 (qa/qb/qc/qd)
+  if (subq) {
+    subAnswers[subq] = val;
+    document.querySelectorAll(`.choice-card[data-subq="${subq}"]`).forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+
+    const order = ['qa','qb','qc','qd'];
+    const idx = order.indexOf(subq);
+    if (idx < order.length - 1) {
+      setTimeout(() => showSubStep('sub-' + order[idx+1]), 280);
+    } else {
+      // 모든 서브 질문 완료 → MBTI 그룹 추론
+      // qd에서 직접 그룹(NT/NF/SJ/SP) 선택했으면 그것 사용
+      if (['NT','NF','SJ','SP'].includes(subAnswers.qd)) {
+        state.mbtiDerived = subAnswers.qd;
+      } else {
+        // TF + JP + NS 조합으로 추론
+        const tf = subAnswers.qa; // T or F
+        const jp = subAnswers.qb; // J or P
+        const ns = subAnswers.qc; // N or S
+        const mbti4 = (tf==='T'&&ns==='N')?'NT':(tf==='F'&&ns==='N')?'NF':(ns==='S'&&jp==='J')?'SJ':'SP';
+        state.mbtiDerived = mbti4;
+      }
+      const dispEl = document.getElementById('derived-mbti-display');
+      if (dispEl) dispEl.textContent = state.mbtiDerived;
+      setTimeout(() => showPanel('step-q4'), 350);
+    }
+    return;
+  }
+
+  // ── Q4 투자 경력
+  if (q === 'exp') {
+    state.expLevel = val;
+    document.querySelectorAll('.choice-card[data-q="exp"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    setTimeout(() => showPanel('step-q5'), 280);
+    return;
+  }
+
+  // ── Q5 투자 스타일
+  if (q === 'style') {
+    state.styleLevel = val;
+    document.querySelectorAll('.choice-card[data-q="style"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    setTimeout(() => showPanel('step-q6'), 280);
+    return;
+  }
+});
+
+// ════════════════════════════════════════════════════════
+// Q3-grid — MBTI 직접 선택
+// ════════════════════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.mbti-btn');
+  if (!btn) return;
+  state.mbtiDirect = btn.dataset.mbti;
+  document.querySelectorAll('.mbti-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  setTimeout(() => showPanel('step-q4'), 280);
+});
+
+// ════════════════════════════════════════════════════════
+// Q6 — 선호 기업 (최대 3개)
+// ════════════════════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.company-btn');
+  if (!btn) return;
+  const val = btn.dataset.company;
+  if (!val || val === 'unknown') {
+    // "잘 모르겠다" → 선택 안 함으로 처리, 바로 결과로
+    buildResult();
+    showPanel('step-result');
+    return;
+  }
+  const idx = state.companies.indexOf(val);
+  if (idx >= 0) {
+    state.companies.splice(idx, 1);
+    btn.classList.remove('selected');
+  } else if (state.companies.length < 3) {
+    state.companies.push(val);
+    btn.classList.add('selected');
+  }
+  // next 버튼 활성화 (1개 이상 선택 시)
+  const nextBtn = document.getElementById('q6-next-btn');
+  if (nextBtn) nextBtn.disabled = state.companies.length === 0;
+});
+
+const q6NextBtn = document.getElementById('q6-next-btn');
+if (q6NextBtn) {
+  q6NextBtn.addEventListener('click', function() {
+    buildResult();
+    showPanel('step-result');
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// 결과 생성
+// ════════════════════════════════════════════════════════
+function buildResult() {
+  const key = getProfileKey();
+  const profile = BASE_PROFILES[key];
+  if (!profile) {
+    document.getElementById('result-content').innerHTML =
+      '<p style="color:var(--ez-red);padding:2rem;font-size:16px;">프로필 데이터를 찾을 수 없습니다. (key: ' + key + ')<br>다시 진단해주세요.</p>';
+    return;
+  }
+
+  const isBeginnerExp = (state.expLevel === 'beginner' || state.expLevel === 'early');
+  const porto = isBeginnerExp && profile.portfolio.beginner ? profile.portfolio.beginner : profile.portfolio.default;
+  const mbtiGroup = getMbtiGroup();
+  const styleKey = mbtiGroup + '_' + state.styleLevel;
+  const compatText = COMPAT_TEXTS[styleKey] || '';
+  const expText = EXP_TEXTS[state.expLevel] || '';
+  const genderTextKey = state.gender === 'male' ? 'male' : 'female';
+  const genderNote = (profile.genderNote && profile.genderNote[genderTextKey] && profile.genderNote[genderTextKey] !== '(해당 없음)') ? profile.genderNote[genderTextKey] : null;
+
+  const ids = porto.tickers.map(t => TICKER_TO_ID[t]).filter(Boolean);
+  const btUrl = '/backtest.html?a=' + ids.join(',');
+
+  const groupColors = { NT:'#3b82f6', NF:'#10b981', SJ:'#f59e0b', SP:'#ef4444' };
+  const groupColor = groupColors[mbtiGroup] || '#6366f1';
+
+  let barHtml = '', legendHtml = '';
+  porto.tickers.forEach((ticker, i) => {
+    const pct = porto.pcts[i];
+    const clr = BAR_COLORS[i % BAR_COLORS.length];
+    barHtml += `<div class="port-bar-seg" style="width:${pct}%;background:${clr};" title="${ticker} ${pct}%"></div>`;
+    legendHtml += `<div class="port-legend-item"><span class="port-legend-dot" style="background:${clr};"></span><span class="port-legend-ticker">${ticker}</span><span class="port-legend-pct">${pct}%</span></div>`;
+  });
+
+  const strengthsHtml = profile.strengths.map(s => `<li>${s}</li>`).join('');
+  const cautionsHtml  = profile.cautions.map(c  => `<li>${c}</li>`).join('');
+
+  let companyHtml = '';
+  if (state.companies.length > 0) {
+    const compItems = state.companies.map(t => {
+      const desc = COMPANY_TEXTS[t] || TICKER_DESC[t] || '';
+      return `<div class="company-card"><div class="company-ticker">${t}</div><div class="company-desc">${desc}</div></div>`;
+    }).join('');
+    companyHtml = `<div class="result-section"><div class="result-section-title">관심 기업 투자 인사이트</div>${compItems}</div>`;
+  }
+
+  const styleLabel = STYLE_LABELS[state.styleLevel] || state.styleLevel;
+  const expLabels = {beginner:'입문자',early:'초급자',mid:'중급자',advanced:'고급자',veteran:'베테랑'};
+  const expLabel = expLabels[state.expLevel] || '';
+  const ageLabels = {'20s':'20대','30s':'30대','40s':'40대','50s':'50대'};
+  const ageLabel = ageLabels[state.ageGroup] || '';
+  const genderLabel = state.gender === 'male' ? '남성' : '여성';
+  const mbtiDisplay = state.mbtiDirect ? state.mbtiDirect : (state.mbtiDerived ? state.mbtiDerived + ' (추정)' : '');
+
+  document.getElementById('result-content').innerHTML = `
+    <div class="result-header-block">
+      <div class="result-badge" style="background:${groupColor}20;color:${groupColor};border:1px solid ${groupColor}40;">${mbtiGroup} · ${profile.typeCode}</div>
+      <h2 class="result-typename">${profile.typeName}</h2>
+      <div class="result-tags">
+        <span class="result-tag">${genderLabel}</span>
+        <span class="result-tag">${ageLabel}</span>
+        <span class="result-tag">${mbtiDisplay}</span>
+        <span class="result-tag">${expLabel}</span>
+        <span class="result-tag">${styleLabel}</span>
+      </div>
+    </div>
+    <div class="result-section">
+      <div class="result-section-title">나의 투자 DNA</div>
+      <p class="result-dna-text">${profile.dna}</p>
+      ${genderNote ? `<div class="result-gender-note">${genderNote}</div>` : ''}
+    </div>
+    <div class="result-section">
+      <div class="result-section-title">추천 포트폴리오${isBeginnerExp ? ' (입문자 버전)' : ''}</div>
+      <div class="port-bar-wrap"><div class="port-bar">${barHtml}</div></div>
+      <div class="port-legend">${legendHtml}</div>
+      <a href="${btUrl}" class="btn-backtest" target="_blank" rel="noopener">이 포트폴리오 백테스트 해보기 →</a>
+      ${isBeginnerExp ? '<p class="beginner-note">경험이 쌓이면 Default 포트폴리오로 전환하세요.</p>' : ''}
+    </div>
+    <div class="result-section result-two-col">
+      <div>
+        <div class="result-section-title">강점</div>
+        <ul class="result-list strengths-list">${strengthsHtml}</ul>
+      </div>
+      <div>
+        <div class="result-section-title">주의할 점</div>
+        <ul class="result-list cautions-list">${cautionsHtml}</ul>
+      </div>
+    </div>
+    <div class="result-section">
+      <div class="result-section-title">투자 스타일 진단 — ${styleLabel}</div>
+      <p class="result-compat-text">${compatText}</p>
+    </div>
+    <div class="result-section">
+      <div class="result-section-title">경험 레벨별 조언 — ${expLabel}</div>
+      <p class="result-exp-text">${expText}</p>
+    </div>
+    ${companyHtml}
+    <div class="result-section result-advice-block">
+      <div class="result-advice-label">핵심 조언</div>
+      <p class="result-advice-text">${profile.advice}</p>
+    </div>
+    <div class="result-action-row">
+      <button class="btn-retry" onclick="location.reload()">다시 진단하기</button>
+      <a href="/backtest.html" class="btn-backtest-main">포트폴리오 최적화 툴 →</a>
+    </div>
+  `;
+}
+
+// ════════════════════════════════════════════════════════
+// 초기화
+// ════════════════════════════════════════════════════════
+showPanel('step-q1');
 
 </script>
 </body>
