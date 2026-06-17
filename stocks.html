@@ -995,6 +995,19 @@ function destroyTVWidget() {
   }
 }
 
+// 오늘 프리마켓 시작(4am ET)을 Unix 타임스탬프(초)로 반환
+// EDT(3~11월): UTC-4, EST(11~3월): UTC-5
+function getTodayPremarketUnix() {
+  var now = new Date();
+  var month = now.getUTCMonth() + 1;
+  var etOffset = (month >= 3 && month <= 11) ? 4 : 5;  // EDT=4h, EST=5h
+  var etNow = new Date(now.getTime() - etOffset * 3600000);
+  var y = etNow.getUTCFullYear(), mo = etNow.getUTCMonth(), d = etNow.getUTCDate();
+  // 그날 4:00 AM ET → UTC 기준
+  var premarket4am = new Date(Date.UTC(y, mo, d, 4 + etOffset, 0, 0));
+  return Math.floor(premarket4am.getTime() / 1000);
+}
+
 function renderTVChart(symbol, period) {
   clearTVCache();
   destroyTVWidget();
@@ -1027,6 +1040,8 @@ function renderTVChart(symbol, period) {
     studies:           getStudies(period),
   };
   if (opts.range) cfg.range = opts.range;
+  // 1D: 오늘 프리마켓 시작(4am ET)부터 현재까지 초기 줌인 — 15분봉 유지하면서 오늘만 보이게
+  if (period === '1D') cfg.from = getTodayPremarketUnix();
 
   if (typeof TradingView !== 'undefined' && TradingView.widget) {
     var loadingEl = document.getElementById('tv-loading');
