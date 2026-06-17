@@ -14,6 +14,7 @@
   /* [href, 짧은 이름(PC칩), 긴 이름(모바일 오버레이)] */
   var links = [
     ['/atmr-dashboard.html',        '스윙 시그널',    "스윙 트레이더를 위한 '스윙 시그널'"],
+    ['/stocks.html',                '심플 주가',      '심플 주가 정보'],
     ['/chart-analysis.html',        'AI 차트분석',    'AI 차트 분석'],
     ['/analyst-reports.html',       '월가 목표주가',  '월가 목표주가'],
     ['/market-cycle.html',          '마켓 사이클',    '하락장 변곡점 감시'],

@@ -79,6 +79,7 @@
             '<div class="ez-footer-col">' +
               '<span class="ez-footer-col-title">서비스</span>' +
               '<a href="/atmr-dashboard.html">스윙 시그널 대시보드</a>' +
+              '<a href="/stocks.html">심플 주가 정보</a>' +
               '<a href="/chart-analysis.html">AI 차트분석</a>' +
               '<a href="/analyst-reports.html">핵심기업 목표주가</a>' +
               '<a href="/market-cycle.html">Market Cycle Monitor</a>' +

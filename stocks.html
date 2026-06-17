@@ -489,7 +489,7 @@ async function loadData() {
     if (r2 && r2.ok) {
       pricesData = await r2.json();
       var label = pricesData.updatedAtKST || allData.generatedAtKST || '';
-      document.getElementById('data-ts').textContent = label ? '주가 ' + label + ' (15분 지연)' : '';
+      document.getElementById('data-ts').textContent = label ? '주가 ' + label + ' · 15분마다 업데이트' : '';
     } else {
       var label = allData.generatedAtKST || '';
       document.getElementById('data-ts').textContent = label ? '스파크라인 ' + label : '';
