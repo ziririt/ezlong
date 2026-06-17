@@ -201,8 +201,8 @@
       border-radius: 14px;
     }
     .pf-id-section-label {
-      font-size: 14px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-      color: var(--ez-text3); margin-bottom: 6px;
+      font-size: 15px; font-weight: 800; letter-spacing: .04em;
+      color: var(--ez-text2); margin-bottom: 6px;
     }
     .pf-id-desc {
       font-size: 14px; color: var(--ez-text2); line-height: 1.65; margin-bottom: 14px;
@@ -430,7 +430,7 @@
     <div class="pf-header">
       <span class="pf-header-title">내 관심 종목</span>
       <div class="pf-header-btns">
-        <button class="pf-id-btn" id="pf-id-btn" onclick="toggleIdPanel()">동기화를 위한 나의 ID</button>
+        <button class="pf-id-btn" id="pf-id-btn" onclick="toggleIdPanel()">내 기기 동기화</button>
         <button class="pf-edit-btn" id="pf-edit-btn" onclick="toggleEditMode()" style="display:none">편집</button>
       </div>
     </div>
@@ -461,6 +461,9 @@
       <p class="pf-id-notice">
         불러오기 시 현재 포트폴리오가 있으면 덮어쓸지 물어봐요. 코드는 종목 티커만 담고 있으며, 가격 정보는 포함되지 않아요.
       </p>
+      <div style="text-align:center; margin-top:20px;">
+        <button onclick="toggleIdPanel()" style="padding:10px 36px;font-size:15px;font-weight:600;border-radius:10px;border:1px solid var(--ez-border);background:var(--ez-surface);color:var(--ez-text2);cursor:pointer;">닫기</button>
+      </div>
     </div>
 
     <div id="pf-add-row" class="pf-add-row" style="display:none">
