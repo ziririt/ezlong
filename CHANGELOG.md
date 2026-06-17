@@ -5,6 +5,42 @@
 
 ---
 
+## [2026-06-17] — chart-analysis.html 모노스페이스 폰트 전면 제거 + CLAUDE.md 규칙 15 추가
+
+### 커밋: `417c3a51c`
+
+**수정 파일: `chart-analysis.html`, `CLAUDE.md`**
+
+---
+
+### 1. chart-analysis.html — --ez-mono 폰트 전면 제거 (2시간 소요 누락 사고)
+
+**문제:** 티커 가격·등락률·매수점수·타겟가·지표 등 7개 CSS 클래스에 `font-family: var(--ez-mono)` 잔존. `--ez-mono = 'SF Mono', 'Fira Code', Consolas, 'Courier New', monospace` — 얇고 가독성 없는 코드 전용 폰트. `atmr-dashboard.html`만 수정하고 `chart-analysis.html` 누락.
+
+**수정된 CSS 클래스 7개:**
+
+. `.ca-ticker-price` — `font-family: var(--ez-mono)` 제거
+. `.ca-ticker-chg` — `font-family: var(--ez-mono)` 제거
+. `.ca-ph-price` — `font-family: var(--ez-mono)` 제거
+. `.ca-ph-change` — `font-family: var(--ez-mono)` 제거
+. `.ca-ph-52-labels` — `font-family: var(--ez-mono)` 제거
+. `.ca-ind-cell-sub` — `font-family: var(--ez-mono)` 제거
+. `.ca-buy-score-num` — `font-family: var(--ez-mono)` 제거
+. `.ca-target-cell-val` — `font-family: var(--ez-mono)` 제거 + 모바일 `font-size: 13px` → `14px` 수정
+
+**결과:** 모든 가격·수치 텍스트가 시스템 기본 폰트(`-apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo'`) 상속.
+
+---
+
+### 2. CLAUDE.md 규칙 15 추가 — --ez-mono 가격 표시 금지
+
+재발 방지를 위해 규칙 15 추가. 폰트 관련 배포 전 grep 점검 명령 포함:
+```bash
+grep -rn "font-family.*ez-mono\|font-family.*SF Mono\|font-variant-numeric" *.html | grep -v "//\|/\*"
+```
+
+---
+
 ## [2026-06-17] — TradingView 일봉 강제 수정 + 폰트 14px 미만 전면 제거 + 규칙 명문화
 
 ### 커밋: `bb2bfbfec`

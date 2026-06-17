@@ -359,4 +359,45 @@ if (chgEl) {
 
 ---
 
+## 15. --ez-mono 폰트 가격·수치 표시 사용 금지 (2026-06-17 명문화)
+
+**배경:** `chart-analysis.html`의 티커 가격·등락률·매수점수·타겟가 등 7개 CSS 클래스에 `font-family: var(--ez-mono)`가 박혀있었다. `--ez-mono = 'SF Mono', 'Fira Code', Consolas, 'Courier New', monospace` — 얇고 가독성 없는 코드 전용 폰트. `atmr-dashboard.html`만 수정하고 `chart-analysis.html`은 누락해 2시간 이상 소요.
+
+### 절대 금지
+
+```css
+/* 아래 패턴 UI 가격/수치 표시에 절대 금지 */
+font-family: var(--ez-mono);   /* ❌ — 'SF Mono', 'Fira Code', Consolas, 'Courier New', monospace */
+font-family: 'SF Mono', monospace;   /* ❌ */
+font-variant-numeric: tabular-nums;  /* ❌ — 모노스페이스 효과 유발 */
+```
+
+### --ez-mono 용도
+
+`--ez-mono`는 **코드 스니펫 표시 전용**이다. 가격, 등락률, 점수, 날짜 등 일반 수치에 쓰지 않는다.
+
+### 올바른 방법
+
+```css
+/* font-family 지정 없음 → html { font-family: var(--font) } 상속 */
+.ca-ticker-price { font-size: 14px; font-weight: 600; color: var(--ez-text); }
+```
+
+### 파일별 배포 전 자동 점검
+
+```bash
+# 모든 HTML 파일에서 --ez-mono 가격 표시 오용 검사
+grep -rn "font-family.*ez-mono\|font-family.*SF Mono\|font-variant-numeric" *.html | grep -v "//\|/\*"
+# 결과 0이어야 정상
+```
+
+### 수정 필요 시 여러 파일 동시 확인
+
+`--ez-mono` 관련 수정 시 아래 파일 모두 grep:
+- `atmr-dashboard.html`
+- `chart-analysis.html`
+- 새로 추가된 HTML 파일
+
+---
+
 전체 규칙·CSS 변수·배포 체크리스트·Git 워크플로우 → **EZLONG_GUIDE.md** 참조
