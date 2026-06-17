@@ -24,7 +24,8 @@
     ['/retirement-calculator.html', '은퇴 계산기',    '은퇴목표역산 투자액 시뮬레이터'],
     ['/backtest.html',              '백테스트',       '몬테카를로 포트폴리오 백테스트'],
     ['/risk-diagnostic.html',       '투자성향 진단',  '투자성향 자가진단'],
-    ['/auto-dca-guide.html',        '자동화 가이드',  '투자 자동화 가이드']
+    ['/auto-dca-guide.html',        '자동화 가이드',  '투자 자동화 가이드'],
+    ['/stock-personality-quiz.html','투자유형 진단',  '성×연령×MBTI 투자유형 진단']
   ];
 
   var p = window.location.pathname;

@@ -90,6 +90,7 @@
               '<a href="/backtest.html">몬테카를로 포트폴리오 시뮬레이터</a>' +
               '<a href="/risk-diagnostic.html">투자 행동 자가진단</a>' +
               '<a href="/auto-dca-guide.html">자동 적립식 매수 가이드</a>' +
+              '<a href="/stock-personality-quiz.html">투자유형 자가진단</a>' +
             '</div>' +
           '</div>' +
         '</div>' +
