@@ -271,4 +271,92 @@ cd data/ && ls | grep " " | while IFS= read -r f; do rm -f "$f"; done
 
 ---
 
+## 13. TradingView interval 충돌 금지 — 반복 사고 방지 (2026-06-17 명문화)
+
+**배경:** `interval:'D'` + `range:'6M'` 동시 지정 시 TradingView가 `interval`을 무시하고 6개월에 최적화된 2h 봉을 자동 선택. PC·모바일 모두 2시간봉이 표시되어 차트 가독성 붕괴. 동일 문제 2회 이상 반복 발생.
+
+### 절대 금지
+
+```javascript
+// 이 조합 절대 금지 — range가 interval을 덮어씀
+{ interval: 'D', range: '6M' }   // ❌ 금지
+{ interval: 'D', range: '12M' }  // ❌ 금지 (어떤 range 값이든 금지)
+```
+
+### 올바른 방법
+
+```javascript
+// interval만 단독 사용 — range 파라미터 아예 제거
+{ interval: 'D' }   // ✅ 일봉 고정
+```
+
+### 추가 방어 — localStorage 클리어 필수
+
+`loadTVChart` 함수 호출 시 반드시 TradingView localStorage 키 클리어:
+
+```javascript
+try {
+  const toDelete = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && (k.startsWith('tv.') || k.startsWith('chartWidget') || k.includes('tradingview'))) {
+      toDelete.push(k);
+    }
+  }
+  toDelete.forEach(k => localStorage.removeItem(k));
+} catch(e) {}
+```
+
+**우리 앱 localStorage 키 (삭제 대상 아님):**
+- `atmr_cache_v7` — 데이터 캐시
+- `ezlong_alpha_history_v2` — 알파 히스토리
+
+### 배포 전 자동 점검
+
+```bash
+grep -n "interval.*range\|range.*interval" atmr-dashboard.html | grep -v "//\|#"
+# 결과 0이어야 정상. interval과 range가 같은 줄에 있으면 충돌 위험.
+```
+
+---
+
+## 14. 폰트 14px 미만 절대 금지 — 재발 방지 (2026-06-17 강화)
+
+**배경:** "14px 미만 금지" 규칙이 CSS 클래스에는 적용됐으나 JS 생성 HTML 인라인 스타일에서 반복적으로 위반. 동일 지적 수십 회 반복. 2026-06-17 전체 일괄 수정.
+
+### 자동 점검 grep (코드 작성 후 즉시 실행)
+
+```bash
+# 인라인 style 속성 내 위반 검사
+grep -n "font-size:1[013]px\|font-size: 1[013]px" atmr-dashboard.html | grep -v "ez-nav\|ez-footer"
+# 결과 0이어야 정상
+```
+
+### 특히 위반 잦은 패턴 — 이 패턴 발견 즉시 수정
+
+| 금지 패턴 | 교체 방법 |
+|-----------|-----------|
+| `font-size:13px` (인라인) | 제거 → CSS 클래스 사용 |
+| `font-size:11px` (인라인) | 제거 → CSS 클래스 사용 |
+| JS 템플릿: `\`...<span style="font-size:13px;...">\`` | `font-size` 제거, `color`만 인라인 허용 |
+| `font-family: 'SF Mono', monospace` | 완전 제거 → 시스템 기본 폰트 상속 |
+
+### JS 생성 HTML의 가격/변동률 표시 올바른 패턴
+
+```javascript
+// ❌ 금지 — 인라인 font-size가 CSS 클래스를 오버라이드
+el.innerHTML = `<span style="font-weight:800;font-size:17px;">$${price}</span>
+               <br><span style="font-size:13px;color:${clr};">${pct}%</span>`;
+
+// ✅ 올바름 — CSS 클래스가 폰트 제어, 인라인은 color만
+el.textContent = `$${price}`;
+const chgEl = el.nextElementSibling;
+if (chgEl) {
+  chgEl.textContent = pct + '%';
+  chgEl.className = chgEl.className.replace(/\s*(up|dn)\b/g, '') + (isUp ? ' up' : ' dn');
+}
+```
+
+---
+
 전체 규칙·CSS 변수·배포 체크리스트·Git 워크플로우 → **EZLONG_GUIDE.md** 참조

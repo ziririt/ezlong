@@ -5,6 +5,61 @@
 
 ---
 
+## [2026-06-17] — TradingView 일봉 강제 수정 + 폰트 14px 미만 전면 제거 + 규칙 명문화
+
+### 커밋: `bb2bfbfec`
+
+**수정 파일: `atmr-dashboard.html`, `CLAUDE.md`**
+
+---
+
+### 1. TradingView 차트 2시간봉 → 일봉 복구 (root cause 확정, 2회차 재발)
+
+**문제:** PC·모바일 모두 일봉(`interval:'D'`)이 아닌 2시간봉(2h)으로 차트가 표시됨. 직전 세션에서 `range:'6M'`을 추가했는데, 이것이 원인이었다.
+
+**Root cause:** TradingView `embed-widget-advanced-chart.js`에서 `range` 파라미터를 지정하면 `interval` 파라미터를 무시하고 해당 range에 최적화된 interval을 자동 선택한다. `range:'6M'` → 2h 자동 선택.
+
+**수정 내용 (`loadTVChart` 함수):**
+
+. `range: '6M'` 파라미터 완전 제거 — interval과 range 동시 사용 영구 금지
+. 위젯 생성 전 TradingView localStorage 키(`tv.*`, `chartWidget*`, `*tradingview*`) 전체 클리어 — 사용자가 이전에 수동으로 선택한 interval 캐시 무효화
+. 우리 앱 키(`atmr_cache_v7`, `ezlong_alpha_history_v2`)는 클리어 대상 아님 (패턴 비매칭 확인)
+
+**복구 방법 (이 수정을 되돌려야 할 경우):**
+```bash
+# range 파라미터를 원래대로 추가하는 것은 2시간봉 버그를 다시 유발하므로 하지 말 것
+# 만약 초기 기간 제어가 필요하면 interval:'D'만 유지하고 range 없이 운영
+git show bb2bfbfec -- atmr-dashboard.html | grep -A 30 "loadTVChart"
+```
+
+---
+
+### 2. 폰트 14px 미만 전면 제거 (반복 지적 사항 일괄 해결)
+
+**문제:** `font-size:13px`, `font-size:11px` 인라인 스타일이 JS 생성 HTML과 CSS 클래스 곳곳에 잔존. 가격·변동률 표시가 시스템 기본 폰트보다 얇고 작아 가독성 저하.
+
+**수정 내용:**
+
+. JS `updateLivePrices()` — 인라인 `font-size:17px`, `font-size:13px`, `font-size:11px` 모두 제거. `el.textContent`로 교체해 CSS 클래스(`.score-price`, `.score-change`, `.king-price`, `.king-change`)가 폰트를 제어하도록 변경
+. 애프터마켓 가격 표시 → `.live-ext` CSS 클래스(14px)로 대체
+. `renderIndexChip()`, `fetchStripPrice()`, `fetchLivePrice()` 내 `font-size:13px` 제거
+. VIX HTML 인라인 `font-size:13px` 제거
+. `.title-date` CSS — `font-family: 'SF Mono', monospace` 및 `font-variant-numeric: tabular-nums` 제거
+. `.pchip-lbl` 12px → 14px
+. CSS 클래스 전체 (`ball-ph`, `ltier-*`, `macro-*`, `dot-sub` 등) — 11px/13px → 14px 일괄 치환
+. **결과: 파일 내 14px 미만 폰트 0개**
+
+---
+
+### 3. CLAUDE.md 규칙 추가 (재발 방지)
+
+새 규칙 2개 추가:
+
+. **규칙 13 — TradingView interval/range 충돌 금지**: `interval`과 `range` 동시 사용 절대 금지. 배포 전 grep 점검 명령 포함.
+. **규칙 14 — 폰트 14px 미만 재발 방지**: JS 인라인 font-size 금지 패턴·올바른 패턴 코드 예시 포함. 자동 점검 grep 포함.
+
+---
+
 ## [2026-06-17] — 최근 흐름 맥락 추가 + isMarketOpen 수정 + data/ 폴더 대청소
 
 ### 1. 최근 5거래일 등락률 컨텍스트 전면 주입 (알고리즘 수치 변경 없음)
