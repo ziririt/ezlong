@@ -1295,7 +1295,7 @@ function buildResult() {
   const genderNote = (profile.genderNote && profile.genderNote[genderTextKey] && profile.genderNote[genderTextKey] !== '(해당 없음)') ? profile.genderNote[genderTextKey] : null;
 
   const ids = porto.tickers.map(t => TICKER_TO_ID[t]).filter(Boolean);
-  const btUrl = '/backtest.html?a=' + ids.join(',');
+  const btUrl = 'https://ezlong.com/backtest.html?a=' + ids.join(',');
 
   const groupColors = { NT:'#3b82f6', NF:'#10b981', SJ:'#f59e0b', SP:'#ef4444' };
   const groupColor = groupColors[mbtiGroup] || '#6366f1';
@@ -1349,7 +1349,7 @@ function buildResult() {
       <div class="result-section-title">추천 포트폴리오${isBeginnerExp ? ' (입문자 버전)' : ''}</div>
       <div class="port-bar-wrap"><div class="port-bar">${barHtml}</div></div>
       <div class="port-legend">${legendHtml}</div>
-      <a href="${btUrl}" class="btn-backtest" target="_blank" rel="noopener">이 포트폴리오 백테스트 해보기 →</a>
+      <a href="${btUrl}" class="btn-backtest" target="_blank" rel="noopener">이 포트폴리오로 장기투자 수익률 백테스트 해보기 →</a>
       ${isBeginnerExp ? '<p class="beginner-note">경험이 쌓이면 Default 포트폴리오로 전환하세요.</p>' : ''}
     </div>
     <div class="result-section result-two-col">
@@ -1377,7 +1377,7 @@ function buildResult() {
     </div>
     <div class="result-action-row">
       <button class="btn-retry" onclick="location.reload()">다시 진단하기</button>
-      <a href="/backtest.html" class="btn-backtest-main">포트폴리오 최적화 툴 →</a>
+      <a href="https://ezlong.com/backtest.html" class="btn-backtest-main">포트폴리오 최적화 툴 →</a>
     </div>
   `;
 }
