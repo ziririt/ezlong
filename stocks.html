@@ -276,9 +276,10 @@
     <div class="sp-header-meta" id="data-ts">데이터 로딩 중…</div>
   </div>
 
-  <!-- 메인 탭 (3개, 플랫) -->
+  <!-- 메인 탭 (4개, 플랫) -->
   <div class="main-tabs">
     <button class="mtab active" data-tab="top100"    onclick="switchTab('top100',this)">시총100</button>
+    <button class="mtab"        data-tab="semi"      onclick="switchTab('semi',this)">반도체</button>
     <button class="mtab"        data-tab="etf"       onclick="switchTab('etf',this)">ETF</button>
     <button class="mtab"        data-tab="portfolio" onclick="switchTab('portfolio',this)">나의 포트폴리오</button>
   </div>
@@ -289,6 +290,11 @@
     <div id="more-top100" class="load-more-wrap" style="display:none">
       <button class="load-more-btn" onclick="loadMore('top100')"></button>
     </div>
+  </div>
+
+  <!-- 패널: 반도체 -->
+  <div id="panel-semi" class="panel">
+    <div id="list-semi" class="stock-list"></div>
   </div>
 
   <!-- 패널: ETF -->
@@ -464,7 +470,7 @@ async function loadData() {
     }
   } catch(e) {
     document.getElementById('data-ts').textContent = '데이터 미수신';
-    ['list-top100','list-etf'].forEach(function(id) {
+    ['list-top100','list-semi','list-etf'].forEach(function(id) {
       var el = document.getElementById(id);
       if (el) el.innerHTML =
         '<div class="no-data">' +
@@ -475,8 +481,54 @@ async function loadData() {
   }
 }
 
+// 반도체 종목 — 시총 순위 고정 리스트
+var SEMI_LIST = [
+  {rank:1,  symbol:'NVDA', name:'NVIDIA'},
+  {rank:2,  symbol:'AVGO', name:'Broadcom'},
+  {rank:3,  symbol:'TSM',  name:'Taiwan Semiconductor (TSMC ADR)'},
+  {rank:4,  symbol:'ASML', name:'ASML Holding'},
+  {rank:5,  symbol:'AMD',  name:'Advanced Micro Devices'},
+  {rank:6,  symbol:'INTC', name:'Intel'},
+  {rank:7,  symbol:'QCOM', name:'Qualcomm'},
+  {rank:8,  symbol:'TXN',  name:'Texas Instruments'},
+  {rank:9,  symbol:'ADI',  name:'Analog Devices'},
+  {rank:10, symbol:'MU',   name:'Micron Technology'},
+  {rank:11, symbol:'MRVL', name:'Marvell Technology'},
+  {rank:12, symbol:'NXPI', name:'NXP Semiconductors'},
+  {rank:13, symbol:'MCHP', name:'Microchip Technology'},
+  {rank:14, symbol:'MPWR', name:'Monolithic Power Systems'},
+  {rank:15, symbol:'SWKS', name:'Skyworks Solutions'},
+  {rank:16, symbol:'QRVO', name:'Qorvo'},
+  {rank:17, symbol:'AMAT', name:'Applied Materials'},
+  {rank:18, symbol:'LRCX', name:'Lam Research'},
+  {rank:19, symbol:'KLAC', name:'KLA Corporation'},
+  {rank:20, symbol:'TER',  name:'Teradyne'},
+  {rank:21, symbol:'SNPS', name:'Synopsys'},
+  {rank:22, symbol:'CDNS', name:'Cadence Design Systems'},
+  {rank:23, symbol:'ON',   name:'ON Semiconductor'},
+  {rank:24, symbol:'GFS',  name:'GlobalFoundries'},
+  {rank:25, symbol:'LSCC', name:'Lattice Semiconductor'},
+];
+
+function renderSemiconductor() {
+  var el = document.getElementById('list-semi');
+  if (!el) return;
+  el.innerHTML = SEMI_LIST.map(function(s) {
+    var data = findItem(s.symbol);
+    return rowHTML({
+      rank:      s.rank,
+      symbol:    s.symbol,
+      name:      s.name,
+      price:     data ? data.price     : null,
+      changePct: data ? data.changePct : null,
+      sparkline: data ? (data.sparkline || []) : []
+    }, false);
+  }).join('');
+}
+
 function renderAll() {
   renderList('top100');
+  renderSemiconductor();
   renderETF();
   renderPortfolio();
   updateLoadMore('top100');
@@ -698,6 +750,7 @@ function getYTDOpts() {
 
 // 거래소 매핑 — NYSE 개별 종목
 var NYSE_SYMS = {
+  'TSM':1,  // Taiwan Semiconductor ADR (NYSE)
   'BRK-B':1,'JPM':1,'V':1,'MA':1,'JNJ':1,'PG':1,'HD':1,'UNH':1,'XOM':1,
   'BAC':1,'KO':1,'WMT':1,'CVX':1,'GE':1,'GS':1,'CAT':1,'AXP':1,'MS':1,
   'RTX':1,'DE':1,'PLD':1,'NEE':1,'CB':1,'SO':1,'COP':1,'EOG':1,'UPS':1,
@@ -742,6 +795,32 @@ var AMEX_SYMS = {
 
 // 데이터 파일에 없는 티커 이름 보완 (포트폴리오 직접 검색 추가 시)
 var EXTRA_NAMES = {
+  // 반도체 개별 종목 (시총 순위)
+  'NVDA':  'NVIDIA',
+  'AVGO':  'Broadcom',
+  'TSM':   'Taiwan Semiconductor (TSMC ADR)',
+  'ASML':  'ASML Holding',
+  'AMD':   'Advanced Micro Devices',
+  'INTC':  'Intel',
+  'QCOM':  'Qualcomm',
+  'TXN':   'Texas Instruments',
+  'ADI':   'Analog Devices',
+  'MU':    'Micron Technology',
+  'MRVL':  'Marvell Technology',
+  'NXPI':  'NXP Semiconductors',
+  'MCHP':  'Microchip Technology',
+  'MPWR':  'Monolithic Power Systems',
+  'SWKS':  'Skyworks Solutions',
+  'QRVO':  'Qorvo',
+  'AMAT':  'Applied Materials',
+  'LRCX':  'Lam Research',
+  'KLAC':  'KLA Corporation',
+  'TER':   'Teradyne',
+  'SNPS':  'Synopsys',
+  'CDNS':  'Cadence Design Systems',
+  'ON':    'ON Semiconductor',
+  'GFS':   'GlobalFoundries',
+  'LSCC':  'Lattice Semiconductor',
   // 레버리지 ETF (ProShares) — QQQ 계열
   'QLD':   'QQQ 2배 레버리지 (ProShares)',
   'TQQQ':  'QQQ 3배 레버리지 (ProShares)',
