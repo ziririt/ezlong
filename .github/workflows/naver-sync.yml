@@ -1,12 +1,8 @@
 name: Naver Content Sync
 
 on:
-  schedule:
-    - cron: '59 23 * * *'   # KST 08:59
-    - cron: '35 4 * * *'    # KST 13:35
-    - cron: '35 9 * * *'    # KST 18:35
-    - cron: '10 12 * * *'   # KST 21:10
-    - cron: '59 14 * * *'   # KST 23:59
+  # GitHub Actions 내부 schedule 제거 — cron-job.org가 외부에서 정확히 트리거
+  # (GitHub 내부 cron은 수 시간 지연/스킵 가능 → 신뢰 불가)
   workflow_dispatch:
 
 jobs:
