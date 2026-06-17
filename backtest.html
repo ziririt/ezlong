@@ -1692,6 +1692,57 @@ document.getElementById('dca-invest').addEventListener('input',function(){
 showWonLabel(parseInt(document.getElementById('init-invest').value)||1000, 10000, 'inv-display');
 </script>
 
+<!-- ── 투자유형 진단 URL 파라미터 프리셋 ── -->
+<script>
+(function initDiagnosisPreset() {
+  const DIAGNOSIS_ASSET_MAP = {
+    1:'SPY',2:'QQQ',3:'IVV',4:'SCHB',5:'VTI',6:'VUG',7:'VTV',8:'VOO',
+    9:'SCHG',10:'SCHV',11:'QUAL',12:'MTUM',13:'SPLG',14:'SPYG',15:'SPYV',
+    16:'DGRO',17:'VIG',18:'NOBL',19:'SDY',20:'DVY',21:'TLT',22:'IEF',
+    23:'SHY',24:'BND',25:'NVDA',26:'AAPL',27:'MSFT',28:'GOOGL',29:'AMZN',
+    30:'META',31:'TSLA',32:'AVGO',33:'V',34:'MA',35:'COST',36:'LLY',
+    37:'NFLX',38:'CRM',39:'ORCL',40:'AMD',41:'PLTR',42:'GLD',43:'SOXX',44:'INTC'
+  };
+  var params = new URLSearchParams(window.location.search);
+  var aParam = params.get('a');
+  if (!aParam) return;
+  var ids = aParam.split(',').map(Number).filter(function(n){ return DIAGNOSIS_ASSET_MAP[n]; });
+  if (ids.length === 0) return;
+  var tickers = ids.map(function(id){ return DIAGNOSIS_ASSET_MAP[id]; });
+
+  // DOM 준비 후 체크박스 자동 선택
+  function applyPreset() {
+    var applied = 0;
+    tickers.forEach(function(ticker) {
+      // 백테스트는 체크박스 또는 버튼으로 자산 선택
+      var cb = document.querySelector('input[type="checkbox"][value="' + ticker + '"]');
+      if (cb && !cb.checked) { cb.checked = true; cb.dispatchEvent(new Event('change', {bubbles:true})); applied++; return; }
+      var btn = document.querySelector('[data-ticker="' + ticker + '"]');
+      if (btn && !btn.classList.contains('selected') && !btn.classList.contains('active')) {
+        btn.click(); applied++;
+      }
+    });
+    return applied;
+  }
+
+  // DOMContentLoaded 이후 시도, 안 되면 500ms 후 재시도
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(applyPreset, 300); });
+  } else {
+    var n = applyPreset();
+    if (n === 0) setTimeout(applyPreset, 500);
+  }
+
+  // 배너로 안내
+  var banner = document.createElement('div');
+  banner.id = 'diagnosis-banner';
+  banner.style.cssText = 'position:fixed;top:60px;left:50%;transform:translateX(-50%);background:#3b82f6;color:#fff;padding:.5rem 1.2rem;border-radius:999px;font-size:15px;font-weight:600;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.25);';
+  banner.textContent = '투자유형 진단 결과: ' + tickers.join(', ') + ' 자동 선택됨';
+  document.body.appendChild(banner);
+  setTimeout(function(){ banner.style.transition='opacity .5s'; banner.style.opacity='0'; setTimeout(function(){ banner.remove(); }, 500); }, 4000);
+})();
+</script>
+
 <!-- ── EZLONG 글로벌 푸터 ── -->
 <script src="/ez-footer.js"></script>
 </body>
