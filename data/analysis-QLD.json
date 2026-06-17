@@ -3,46 +3,46 @@
   "name": "나스닥 100 2X ETF",
   "assetType": "etf_leveraged",
   "market": "us",
-  "updatedAt": "2026-06-17T16:10:23.864Z",
+  "updatedAt": "2026-06-17T16:51:23.147Z",
   "price": {
-    "current": 96.385,
-    "change": 0.925,
-    "changePct": 0.97,
+    "current": 96.08,
+    "change": 0.62,
+    "changePct": 0.65,
     "high52": 101.19,
     "low52": 53.16,
-    "pos52": 90,
+    "pos52": 89.4,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 95.0278,
-    "sma50": 86.6947,
-    "sma100": 76.7483,
-    "sma200": 73.3387,
-    "rsi": 56.45,
+    "sma20": 95.0125,
+    "sma50": 86.6886,
+    "sma100": 76.7452,
+    "sma200": 73.3372,
+    "rsi": 56.07,
     "macd": {
-      "macd": 2.100199,
-      "signal": 2.624597,
-      "histogram": -0.524398
+      "macd": 2.075876,
+      "signal": 2.619733,
+      "histogram": -0.543856
     },
     "bb": {
-      "upper": 102.7597,
-      "middle": 95.0278,
-      "lower": 87.2958,
-      "bandwidth": 0.1627
+      "upper": 102.7349,
+      "middle": 95.0125,
+      "lower": 87.2901,
+      "bandwidth": 0.1626
     }
   },
   "levels": {
     "swingResistance": 101.19,
     "swingSupport": 87.52,
     "pivot": {
-      "pp": 94.06,
-      "r1": 103.52,
-      "r2": 110.65,
-      "s1": 86.93,
-      "s2": 77.47
+      "pp": 93.96,
+      "r1": 103.31,
+      "r2": 110.55,
+      "s1": 86.72,
+      "s2": 77.37
     }
   },
   "analysis": {
@@ -53,31 +53,31 @@
     "rsiStatus": "중립",
     "macdStatus": "강세확산",
     "bbStatus": "중단",
-    "stage": "상승추세",
+    "stage": "축적구간",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도탈출+MACD 개선+Higher Low 회복",
-    "rsiTrajectory": "42.1 → 56.5 (과매도탈출)",
-    "macdTrajectory": "히스토 -1.7860 → -0.5244 (개선)",
-    "pricePattern": "5일 저가($86.84) > 20일 저가($84.60) * 1.005 → Higher Low 회복 신호",
-    "volComment": "거래량비 0.29 (위축)",
+    "scoreReason": "RSI 과매도탈출+Higher Low 회복 초입",
+    "rsiTrajectory": "42.1 → 56.1 (과매도탈출)",
+    "macdTrajectory": "히스토 -1.7860 → -0.5439 (개선)",
+    "pricePattern": "Higher Low 회복 신호",
+    "volComment": "거래량비 0.30 (위축)",
     "bbPosition": "중단근처",
-    "reason": "최근 5거래일 변동성 확대 후, RSI가 과매도 구간(42.1)에서 56.5로 회복했고, MACD 히스토그램도 개선되는 추세다. 5일 저가가 20일 저가보다 높아 Higher Low 패턴이 형성되며 회복 신호가 나타났다.",
-    "entry": 96.39,
+    "reason": "최근 5거래일 변동성 확대 후 RSI 42.1에서 56.1로 회복, MACD 히스토그램 개선. 5일 저가($86.84)가 20일 저가($84.60) 대비 높아 회복 신호 발생.",
+    "entry": 95.5,
     "stop": 87.52,
     "target": 101.19,
-    "invalidation": 87.52,
+    "invalidation": 86.84,
     "weeklyConflict": "충돌 없음",
-    "profitTarget1": 99.44,
-    "profitTarget2": 101.19,
+    "profitTarget1": 99,
+    "profitTarget2": 101,
     "stopLoss": 87.52,
-    "narrative": "QQQ 레버리지 상품으로, 최근 5거래일간 6.55% 상승, 3.75% 하락 등 큰 변동성을 보였다. 현재가 $96.39는 SMA20($95.03) 위에 위치하며 지지받는 모습이다. RSI가 42.1에서 56.5로 상승 전환했고, MACD 히스토그램도 -1.7860에서 -0.5244로 개선되며 상승 추세 복귀 가능성을 시사한다. 5일 저가가 20일 저가보다 높아 Higher Low 패턴이 형성되었으며, 이는 회복 신호로 해석된다. 52주 고가인 $101.19를 향한 상승을 기대하며 매수한다. 손절은 5일 저가이자 스윙 지지선인 $87.52로 설정한다.",
-    "patternNote": "5일 저가가 20일 저가보다 높아지며 상승 추세 회복을 시사하는 Higher Low 패턴이 나타났다.",
+    "narrative": "QQQ 레버리지 상품인 UPRO는 최근 5거래일간 6.55%, 1.30%, 6.21%, -3.75%, 0.65%의 변동성을 보이며 방향성을 탐색 중이다. 일봉 RSI가 42.1에서 56.1로 상승하며 과매도 구간을 탈출했고, MACD 히스토그램 역시 -1.7860에서 -0.5439로 개선되며 약세가 완화되고 있다. 5일 저가($86.84)가 20일 저가($84.60)보다 높아 Higher Low 패턴이 형성되며 회복 신호가 나타났다. 현재가($96.08)는 SMA20($95.01) 위에 위치하며 지지력을 확인하고 있다. 52주 고가($101.19)를 향한 상승을 기대하며 매수 진입한다. 거래량은 평균 대비 위축되어 있으나, RSI와 가격 패턴의 회복 신호가 더 강하다.",
+    "patternNote": "일봉상 5일 저가가 20일 저가보다 높아지며 상승 추세 회복을 시도하는 패턴이다.",
     "keyPoints": [
       "RSI 과매도 탈출 및 상승 전환",
-      "MACD 히스토그램 개선 추세",
-      "Higher Low 패턴 형성으로 회복 신호"
+      "MACD 히스토그램 개선세",
+      "Higher Low 가격 패턴 형성"
     ],
-    "riskNote": "거래량 비율이 0.29로 낮아 상승 동력이 약할 수 있으며, 52주 고가 저항선 돌파 여부가 중요하다."
+    "riskNote": "현재가($96.08)가 볼린저밴드 중단($95.01) 부근에 위치하여 추가 상승 시 저항에 부딪힐 수 있다."
   }
 }

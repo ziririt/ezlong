@@ -3,65 +3,81 @@
   "name": "스노우플레이크",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-17T16:08:37.108Z",
+  "updatedAt": "2026-06-17T16:50:06.420Z",
   "price": {
-    "current": 237.65,
-    "change": -0.67,
-    "changePct": -0.28,
+    "current": 237.41,
+    "change": -0.91,
+    "changePct": -0.38,
     "high52": 284.99,
     "low52": 118.3,
-    "pos52": 71.6,
+    "pos52": 71.5,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 226.3635,
-    "sma50": 178.222,
-    "sma100": 175.6516,
-    "sma200": 205.7265,
-    "rsi": 62.5,
+    "sma20": 226.3515,
+    "sma50": 178.2172,
+    "sma100": 175.6492,
+    "sma200": 205.7253,
+    "rsi": 62.35,
     "macd": {
-      "macd": 18.472665,
-      "signal": 20.978457,
-      "histogram": -2.505792
+      "macd": 18.45352,
+      "signal": 20.974628,
+      "histogram": -2.521108
     },
     "bb": {
-      "upper": 293.0363,
-      "middle": 226.3635,
-      "lower": 159.6907,
-      "bandwidth": 0.5891
+      "upper": 293.0163,
+      "middle": 226.3515,
+      "lower": 159.6867,
+      "bandwidth": 0.589
     }
   },
   "levels": {
     "swingResistance": 249.99,
     "swingSupport": 236,
     "pivot": {
-      "pp": 228.01,
-      "r1": 294.63,
-      "r2": 351.61,
-      "s1": 171.03,
-      "s2": 104.4
+      "pp": 227.93,
+      "r1": 294.47,
+      "r2": 351.53,
+      "s1": 170.87,
+      "s2": 104.32
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "횡보",
+    "strength": 2,
     "support": 236,
     "resistance": 249.99,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "중단",
+    "stage": "축적구간",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 4,
+    "scoreReason": "RSI 중립, MACD 악화, 5일 저가 > 20일 저가",
+    "rsiTrajectory": "66.1 → 62.4 (과매수냉각 중)",
+    "macdTrajectory": "히스토 1.6654 → -2.5211 (악화 중)",
+    "pricePattern": "5일 저가($230.02)가 20일 저가($161.39)보다 높음 (Higher Low 가능성)",
+    "volComment": "거래량비 0.35 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "최근 5거래일 변동성이 크지만, 현재가는 5일 평균 거래량 대비 0.35로 위축된 상태이며, MACD 히스토그램이 악화되고 있어 방향성 부재. RSI도 과매수 구간에서 하락 중.",
+    "entry": 237,
+    "stop": 249.99,
+    "target": 230,
+    "invalidation": 249.99,
+    "weeklyConflict": "주봉은 강세이나 일봉 신호 우선",
+    "profitTarget1": 230,
+    "profitTarget2": 220,
+    "stopLoss": 249.99,
+    "narrative": "현재 가격은 52주 고가 대비 71.5% 위치에 있으며, 5일 평균 거래량 대비 0.35로 거래량이 위축되어 있다. MACD 히스토그램이 1.6654에서 -2.5211로 악화되었고, RSI도 66.1에서 62.4로 하락하며 과매수 구간에서 벗어나고 있다. 5일 저가($230.02)가 20일 저가($161.39)보다 높아 기술적 반등 가능성도 있으나, 5일 고가($246.77)가 20일 고가($284.99)보다 낮아 추가 상승은 제한적이다. 스윙 저항선 $249.99 돌파 여부가 중요하며, 현재로서는 방향성이 불확실하여 관망한다.",
+    "patternNote": "5일 저가($230.02)가 20일 저가($161.39)보다 높아 기술적 반등 가능성을 시사하나, 5일 고가($246.77)가 20일 고가($284.99)보다 낮아 추세 전환은 불확실하다.",
+    "keyPoints": [
+      "최근 5거래일 변동성 후 거래량 위축",
+      "MACD 히스토그램 악화 및 RSI 과매수 구간 이탈",
+      "스윙 저항선 $249.99 돌파 여부 중요"
+    ],
+    "riskNote": "스윙 저항선 $249.99를 돌파하지 못할 경우 하락 위험이 존재한다."
   }
 }
