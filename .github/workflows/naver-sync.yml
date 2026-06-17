@@ -14,9 +14,6 @@ jobs:
         with:
           ref: main
 
-      - name: Pull latest before scraping
-        run: git pull origin main
-
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
@@ -29,6 +26,17 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 스크래핑 결과 임시 저장
+          cp data/naver-content.json /tmp/naver-content-new.json
+
+          # remote 최신 상태로 완전히 맞춤 (conflict 원천 차단)
+          git fetch origin main
+          git reset --hard origin/main
+
+          # 스크래핑 결과 복원
+          cp /tmp/naver-content-new.json data/naver-content.json
+
           git add data/naver-content.json
           if git diff --staged --quiet; then
             echo "변경 없음, 커밋 생략"
