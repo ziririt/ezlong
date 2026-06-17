@@ -725,7 +725,7 @@ function findItem(symbol) {
 // CLAUDE.md 규칙 13: interval:'D' + range 동시 사용 절대 금지
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 var TV_PERIOD_MAP = {
-  '1D':  { interval: '5'               },   // range 없음 — range 지정 시 TradingView가 1분봉 auto-select
+  '1D':  { interval: '15', range: '1D'  },   // 15분봉 + 오늘 세션. interval:'D' 가 아니므로 range 충돌 없음 (규칙 13은 interval:'D' 한정)
   '5D':  { interval: '60', range: '5D'  },
   '1M':  { interval: 'D'               },   // ← range 없음 필수
   '3M':  { interval: 'D'               },   // ← range 없음 필수
@@ -969,6 +969,7 @@ function renderTVChart(symbol, period) {
     allow_symbol_change: false,
     save_image:        false,
     withdateranges:    false,
+    prePostMarketData: true,   // 프리마켓(4am ET) + 포스트마켓(8pm ET) 표시
     studies:           getStudies(period),
   };
   if (opts.range) cfg.range = opts.range;
