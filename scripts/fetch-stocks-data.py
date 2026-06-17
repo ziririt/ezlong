@@ -63,9 +63,9 @@ SP500_TOP100 = [
 ]
 
 ETF_LIST = [
-    'QQQ',  'SPY',  'IVV',  'VOO',  'VTI',  'IWM',  'SOXX', 'SMH',  'XLK',  'XLF',
-    'XLE',  'XLV',  'XLY',  'XLI',  'ARKK', 'TQQQ', 'SQQQ', 'SOXL', 'SOXS', 'UPRO',
-    'GLD',  'SLV',  'TLT',  'HYG',  'LQD',  'VNQ',  'XBI',  'IBB',  'ICLN', 'BOTZ',
+    'QQQ',  'SPY',  'DIA',  'IVV',  'VOO',  'VTI',  'IWM',  'SOXX', 'SMH',  'XLK',
+    'XLF',  'XLE',  'XLV',  'XLY',  'XLI',  'ARKK', 'TQQQ', 'SQQQ', 'SOXL', 'SOXS',
+    'UPRO', 'GLD',  'SLV',  'TLT',  'HYG',  'LQD',  'VNQ',  'XBI',  'IBB',  'ICLN', 'BOTZ',
 ]
 
 # ─── 회사명 사전 ──────────────────────────────────────────────────────────────
@@ -142,6 +142,7 @@ COMPANY_NAMES = {
     'UPRO':'ProShares UltraPro S&P500', 'GLD':'SPDR Gold Shares',
     'SLV':'iShares Silver Trust', 'TLT':'iShares 20+ Year Treasury Bond',
     'HYG':'iShares High Yield Corp Bond', 'LQD':'iShares IG Corporate Bond',
+    'DIA':'SPDR Dow Jones Industrial Average ETF',
     'VNQ':'Vanguard Real Estate ETF', 'XBI':'SPDR Biotech ETF',
     'IBB':'iShares Biotechnology ETF', 'ICLN':'iShares Global Clean Energy',
     'BOTZ':'Global X Robotics & AI ETF',
@@ -238,6 +239,18 @@ def main():
     nasdaq100_data = build_array(NASDAQ100,   cache)
     sp500_data    = build_array(SP500_TOP100, cache)
     etf_data      = build_array(ETF_LIST,     cache)
+
+    # SPCX 강제 포함 — yfinance 미지원 시에도 Massive API가 가격 제공하므로 항상 표시
+    if not any(x['symbol'] == 'SPCX' for x in top100_data):
+        spcx_rank = US_TOP100.index('SPCX') + 1  # rank 3
+        spcx_stub = {
+            'rank': spcx_rank, 'symbol': 'SPCX', 'name': 'SpaceX',
+            'price': None, 'change': None, 'changePct': None, 'sparkline': []
+        }
+        top100_data.insert(spcx_rank - 1, spcx_stub)
+        for i, item in enumerate(top100_data):
+            item['rank'] = i + 1
+        print(f'  SPCX stub 강제 삽입 완료 (rank {spcx_rank}) — yfinance 미지원, Massive API 가격 사용')
 
     ok_t = sum(1 for x in top100_data   if x['price'])
     ok_n = sum(1 for x in nasdaq100_data if x['price'])

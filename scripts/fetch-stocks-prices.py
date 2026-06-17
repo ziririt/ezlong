@@ -66,9 +66,9 @@ SP500_TOP100 = [
 ]
 
 ETF_LIST = [
-    'QQQ',  'SPY',  'IVV',  'VOO',  'VTI',  'IWM',  'SOXX', 'SMH',  'XLK',  'XLF',
-    'XLE',  'XLV',  'XLY',  'XLI',  'ARKK', 'TQQQ', 'SQQQ', 'SOXL', 'SOXS', 'UPRO',
-    'GLD',  'SLV',  'TLT',  'HYG',  'LQD',  'VNQ',  'XBI',  'IBB',  'ICLN', 'BOTZ',
+    'QQQ',  'SPY',  'DIA',  'IVV',  'VOO',  'VTI',  'IWM',  'SOXX', 'SMH',  'XLK',
+    'XLF',  'XLE',  'XLV',  'XLY',  'XLI',  'ARKK', 'TQQQ', 'SQQQ', 'SOXL', 'SOXS',
+    'UPRO', 'GLD',  'SLV',  'TLT',  'HYG',  'LQD',  'VNQ',  'XBI',  'IBB',  'ICLN', 'BOTZ',
 ]
 
 # 반도체 종목 (CLAUDE.md 참고)

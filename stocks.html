@@ -23,6 +23,35 @@
     .sp-header-title { font-size: 20px; font-weight: 700; color: var(--ez-text); }
     .sp-header-meta  { font-size: 14px; color: var(--ez-text3); margin-top: 2px; }
 
+    /* ── 종합지수 카드 바 ── */
+    .index-bar {
+      display: flex; gap: 10px;
+      padding: 10px 14px;
+      overflow-x: auto; scrollbar-width: none;
+      background: var(--ez-bg);
+      border-bottom: 1px solid var(--ez-border);
+    }
+    .index-bar::-webkit-scrollbar { display: none; }
+    .ix-card {
+      display: flex; align-items: center; gap: 10px;
+      flex-shrink: 0;
+      background: var(--ez-surface);
+      border: 1px solid var(--ez-border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      min-width: 168px; cursor: default;
+    }
+    .ix-left { flex-shrink: 0; }
+    .ix-name { font-size: 14px; font-weight: 700; color: var(--ez-text); line-height: 1.2; }
+    .ix-etf  { font-size: 14px; color: var(--ez-text3); margin-top: 1px; }
+    .ix-spark { flex-shrink: 0; }
+    .ix-right { text-align: right; flex-shrink: 0; min-width: 60px; }
+    .ix-price { font-size: 14px; font-weight: 600; color: var(--ez-text); line-height: 1.3; }
+    .ix-pct   { display: inline-block; margin-top: 3px; padding: 2px 7px; border-radius: 5px; font-size: 14px; font-weight: 600; }
+    .ix-pct.up   { background: var(--ez-green); color: #fff; }
+    .ix-pct.dn   { background: var(--ez-red);   color: #fff; }
+    .ix-pct.flat { background: var(--ez-card2);  color: var(--ez-text2); }
+
     /* ── LIST: 메인 탭 (5개) ── */
     .main-tabs {
       display: flex;
@@ -79,7 +108,7 @@
       display: flex; align-items: center; justify-content: flex-end;
       gap: 3px; margin-top: 3px; line-height: 1;
     }
-    .sr-ext-ico { font-size: 11px; color: #9a85c9; }
+    .sr-ext-ico { font-size: 14px; color: #9a85c9; }
     .sr-ext-pct { font-size: 14px; font-weight: 500; }
     .sr-ext-pct.up   { color: var(--ez-green); }
     .sr-ext-pct.dn   { color: var(--ez-red); }
@@ -127,7 +156,7 @@
       border-radius: 14px;
     }
     .pf-id-section-label {
-      font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      font-size: 14px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
       color: var(--ez-text3); margin-bottom: 6px;
     }
     .pf-id-desc {
@@ -291,6 +320,43 @@
   <div class="sp-header">
     <div class="sp-header-title">심플 주가 정보</div>
     <div class="sp-header-meta" id="data-ts">데이터 로딩 중…</div>
+  </div>
+
+  <!-- 종합지수 카드 (S&P 500 / Nasdaq / Dow 30) -->
+  <div class="index-bar" id="index-bar">
+    <div class="ix-card" id="ix-sp500">
+      <div class="ix-left">
+        <div class="ix-name">S&amp;P 500</div>
+        <div class="ix-etf">SPY 기준</div>
+      </div>
+      <div class="ix-spark" id="ix-sp-spark"></div>
+      <div class="ix-right">
+        <div class="ix-price" id="ix-sp-price">--</div>
+        <div class="ix-pct flat" id="ix-sp-pct">--</div>
+      </div>
+    </div>
+    <div class="ix-card" id="ix-nasdaq">
+      <div class="ix-left">
+        <div class="ix-name">Nasdaq</div>
+        <div class="ix-etf">QQQ 기준</div>
+      </div>
+      <div class="ix-spark" id="ix-qq-spark"></div>
+      <div class="ix-right">
+        <div class="ix-price" id="ix-qq-price">--</div>
+        <div class="ix-pct flat" id="ix-qq-pct">--</div>
+      </div>
+    </div>
+    <div class="ix-card" id="ix-dow">
+      <div class="ix-left">
+        <div class="ix-name">Dow 30</div>
+        <div class="ix-etf">DIA 기준</div>
+      </div>
+      <div class="ix-spark" id="ix-di-spark"></div>
+      <div class="ix-right">
+        <div class="ix-price" id="ix-di-price">--</div>
+        <div class="ix-pct flat" id="ix-di-pct">--</div>
+      </div>
+    </div>
   </div>
 
   <!-- 메인 탭 (4개, 플랫) -->
@@ -495,7 +561,15 @@ async function loadData() {
       document.getElementById('data-ts').textContent = label ? '스파크라인 ' + label : '';
     }
 
+    // SPCX 폴백 — stocks-data.json에 없을 경우 rank 3에 stub 삽입
+    // Massive API(stocks-prices.json)는 SPCX 15분 갱신 지원 확인
+    if (allData.top100 && !allData.top100.some(function(x) { return x.symbol === 'SPCX'; })) {
+      allData.top100.splice(2, 0, { rank: 3, symbol: 'SPCX', name: 'SpaceX', price: null, changePct: null, sparkline: [] });
+      for (var _i = 3; _i < allData.top100.length; _i++) allData.top100[_i].rank = _i + 1;
+    }
+
     renderAll();
+    renderIndexCards();
     var hash = location.hash.slice(1);
     if (hash) fillDetail(hash);
   } catch(e) {
@@ -654,6 +728,60 @@ function buildSparkline(closes, isUp) {
   return '<svg width="64" height="32" viewBox="0 0 64 32">' +
     '<polyline points="' + pts + '" fill="none" stroke="' + clr +
     '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 종합지수 카드 (S&P500 / Nasdaq / Dow 30)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function buildSparklineSmall(closes, isUp) {
+  if (!closes || closes.length < 2) {
+    return '<svg width="56" height="28"><line x1="0" y1="14" x2="56" y2="14" stroke="var(--ez-border)" stroke-width="1" stroke-dasharray="3,2"/></svg>';
+  }
+  var min = Math.min.apply(null, closes);
+  var max = Math.max.apply(null, closes);
+  var range = max - min || 1;
+  var W = 56, H = 28, pad = 2;
+  var pts = closes.map(function(v, i) {
+    return (pad + (i / (closes.length - 1)) * (W - pad * 2)).toFixed(1) + ',' +
+           (H - pad - ((v - min) / range) * (H - pad * 2)).toFixed(1);
+  }).join(' ');
+  var clr = isUp ? 'var(--ez-green)' : 'var(--ez-red)';
+  return '<svg width="56" height="28" viewBox="0 0 56 28">' +
+    '<polyline points="' + pts + '" fill="none" stroke="' + clr +
+    '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+
+function renderIndexCards() {
+  var CARDS = [
+    { sym: 'SPY', name: 'S&P 500', sparkEl: 'ix-sp-spark', priceEl: 'ix-sp-price', pctEl: 'ix-sp-pct' },
+    { sym: 'QQQ', name: 'Nasdaq',  sparkEl: 'ix-qq-spark', priceEl: 'ix-qq-price', pctEl: 'ix-qq-pct' },
+    { sym: 'DIA', name: 'Dow 30',  sparkEl: 'ix-di-spark', priceEl: 'ix-di-price', pctEl: 'ix-di-pct' },
+  ];
+  CARDS.forEach(function(c) {
+    var etfEntry   = allData  && allData.etf  ? allData.etf.find(function(x) { return x.symbol === c.sym; }) : null;
+    var live       = pricesData && pricesData.prices ? pricesData.prices[c.sym] : null;
+    var price      = (live && live.price)     ? live.price     : (etfEntry ? etfEntry.price : null);
+    var pct        = (live && live.changePct != null) ? live.changePct : (etfEntry ? etfEntry.changePct : null);
+    var sparklines = etfEntry ? (etfEntry.sparkline || []) : [];
+
+    var isUp  = pct != null ? pct >= 0 : true;
+    var sparkEl  = document.getElementById(c.sparkEl);
+    var priceEl  = document.getElementById(c.priceEl);
+    var pctEl    = document.getElementById(c.pctEl);
+    if (!sparkEl || !priceEl || !pctEl) return;
+
+    sparkEl.innerHTML = buildSparklineSmall(sparklines, isUp);
+    priceEl.textContent = price != null ? '$' + price.toFixed(2) : '--';
+
+    if (pct != null) {
+      var sign = pct >= 0 ? '+' : '';
+      pctEl.textContent = sign + pct.toFixed(2) + '%';
+      pctEl.className   = 'ix-pct ' + (pct > 0 ? 'up' : pct < 0 ? 'dn' : 'flat');
+    } else {
+      pctEl.textContent = '--';
+      pctEl.className   = 'ix-pct flat';
+    }
+  });
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
