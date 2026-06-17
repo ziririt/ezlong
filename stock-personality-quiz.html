@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta http-equiv="content-language" content="ko">
   <title>나의 투자 유형은? MBTI로 찾는 맞춤 투자 포트폴리오 | EZLONG</title>
   <meta name="description" content="성별·연령·MBTI 조합으로 나의 미국 주식 투자 유형을 진단합니다. NT·NF·SJ·SP 유형별 40가지 맞춤 포트폴리오와 종목 비중을 무료로 제공합니다.">
   <meta name="keywords" content="MBTI 투자유형, 미국주식 포트폴리오, 투자유형 진단, MBTI 주식, 나스닥 포트폴리오, QQQ IVV 비중, 투자성향 테스트, 미국주식 추천">
@@ -862,7 +863,7 @@ cautions:['완벽한 분석을 기다리다 진입 타이밍을 반복적으로 
 genderNote:{male:'분석에 자신 있는 남성 NT는 "내가 고른 종목"에 과잉 집중하는 경향이 있습니다. 포트폴리오 재조정은 연 2회로 제한하세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['QQQ','NVDA','GOOGL','MSFT','META','AMZN','AAPL','IVV'],pcts:[30,15,15,12,10,8,5,5]},
-  beginner:{tickers:['QQQ','IVV'],pcts:[70,30]}},
+  beginner:{tickers:['QQQ','SOXX','IVV','MSFT','NVDA','GOOGL','AAPL','META'],pcts:[28,10,10,16,14,10,7,5]}},
 advice:'분석이 완벽한 순간은 오지 않는다. 지금 아는 것만으로 충분하다.'},
 
 'female_20s_NT':{typeCode:'A-2',typeName:'수면 아래의 전략가',
@@ -872,7 +873,7 @@ cautions:['Fidelity: 여성의 14%만 "투자를 잘 안다"고 자평 → 과�
 genderNote:{male:'(해당 없음)',female:'여성 투자자의 진짜 문제는 자신감 부족입니다. 당신의 분석은 충분히 좋습니다. 비중을 키우는 것이 두 번째 과제입니다.'},
 portfolio:{
   default:{tickers:['QQQ','NVDA','GOOGL','MSFT','AAPL','META','AMZN','IVV'],pcts:[30,15,15,13,10,8,5,4]},
-  beginner:{tickers:['QQQ','IVV'],pcts:[65,35]}},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','NVDA','GOOGL','AAPL','META'],pcts:[25,12,8,16,14,12,8,5]}},
 advice:'지금 가진 분석으로도 충분하다. 비중을 키우는 게 두 번째 과제다.'},
 
 'male_30s_NT':{typeCode:'A-3',typeName:'농축된 확신의 포트폴리오 빌더',
@@ -882,7 +883,7 @@ cautions:['"내가 분석한 기업"에 대한 집착 → 단일 종목 30% 이�
 genderNote:{male:'분석력이 높을수록 과잉거래 위험도 높습니다. 포트폴리오 재조정 횟수를 연 2회로 규칙화하세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['QQQ','NVDA','MSFT','GOOGL','AMZN','META','AVGO','AAPL','IVV'],pcts:[20,15,13,12,10,10,8,7,5]},
-  beginner:{tickers:['QQQ','NVDA','MSFT','IVV'],pcts:[40,20,20,20]}},
+  beginner:{tickers:['QQQ','SOXX','IVV','MSFT','NVDA','GOOGL','AAPL','AVGO'],pcts:[22,10,8,18,16,12,8,6]}},
 advice:'포트폴리오 재조정은 연 2회로 제한하라. 분석할수록 더 많이 거래하게 된다.'},
 
 'female_30s_NT':{typeCode:'A-4',typeName:'체계적인 성장 설계자',
@@ -892,7 +893,7 @@ cautions:['30대 초중반에 투자 규모가 소득 대비 너무 작은 경�
 genderNote:{male:'(해당 없음)',female:'30대 여성 NT는 이 서비스에서 수익률 기댓값이 가장 높은 유형 중 하나입니다. 낮은 거래빈도 + 원칙 고수 = 복리의 완벽한 조건. 비중을 키우세요.'},
 portfolio:{
   default:{tickers:['QQQ','MSFT','GOOGL','NVDA','AAPL','META','AMZN','IVV'],pcts:[28,14,13,12,12,10,7,4]},
-  beginner:{tickers:['QQQ','MSFT','IVV'],pcts:[50,25,25]}},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','NVDA','GOOGL','AAPL','META'],pcts:[24,10,8,18,14,13,8,5]}},
 advice:'당신의 분석은 충분히 좋다. 이제는 비중을 키울 차례다.'},
 
 'male_40s_NT':{typeCode:'A-5',typeName:'포트폴리오 아키텍트',
@@ -902,7 +903,7 @@ cautions:['복잡한 포트폴리오 = 높은 거래비용 + 낮은 수익','40�
 genderNote:{male:'Barber & Odean: 가장 활발한 거래자는 시장 대비 연 7%+ 낮은 수익. 종목 수를 5개 이하로 줄이세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['IVV','QQQ','MSFT','GOOGL','NVDA','AAPL','AMZN','META','V','COST'],pcts:[15,12,11,10,9,8,8,7,10,10]},
-  beginner:{tickers:['IVV','QQQ','MSFT','NVDA'],pcts:[35,25,20,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','NVDA','GOOGL','AAPL','AMZN','V','COST'],pcts:[14,12,8,12,10,9,8,7,10,10]}},
 advice:'포트폴리오 종목 수를 5개 이하로 줄여라. 단순함이 복잡함을 이긴다.'},
 
 'female_40s_NT':{typeCode:'A-6',typeName:'신중한 균형 전략가',
@@ -912,7 +913,7 @@ cautions:['"이제 조심해야 해"라는 40대 심리 → 방어 전환이 10�
 genderNote:{male:'(해당 없음)',female:'Fidelity: 여성이 남성보다 0.4%p 높은 수익률. 당신의 느린 결정이 이미 강점입니다. 40대에도 성장 비중 60%를 유지하세요.'},
 portfolio:{
   default:{tickers:['IVV','QQQ','MSFT','GOOGL','NVDA','AAPL','AMZN','V','COST'],pcts:[18,14,11,10,9,9,9,10,10]},
-  beginner:{tickers:['IVV','QQQ','MSFT','AAPL'],pcts:[35,25,20,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','NVDA','GOOGL','AAPL','AMZN','V','COST'],pcts:[15,11,8,12,10,9,8,7,10,10]}},
 advice:'60대가 되기 전엔 주식 비중 65%를 지켜라.'},
 
 'male_50s_NT':{typeCode:'A-7',typeName:'20년 지평으로 시장을 설계하는 전략가',
@@ -922,7 +923,7 @@ cautions:['과잉분석 → 불필요한 재조정 위험','남성 거래 빈도
 genderNote:{male:'50대 남성 NT의 가장 큰 위험은 "이번 기회는 다르다"는 확신입니다. 확신은 비중으로, 과잉 확신은 리스크로 이어집니다. 종목당 비중 상한선을 미리 설정하세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['QQQ','MSFT','NVDA','GOOGL','AMZN','AAPL','META','AVGO'],pcts:[24,16,14,13,11,10,8,4]},
-  beginner:{tickers:['QQQ','MSFT'],pcts:[65,35]}},
+  beginner:{tickers:['QQQ','SOXX','IVV','MSFT','NVDA','GOOGL','AAPL','AVGO'],pcts:[22,10,8,18,15,12,8,7]}},
 advice:'AI 사이클의 정점에서 데이터로 베팅하라. 50대의 지식과 38년 운용 기간은 강력한 무기다.'},
 
 // NF_SJ_SP_PLACEHOLDER
@@ -933,7 +934,7 @@ cautions:['분석 중독: 새 변수가 나올 때마다 재검토 → 불필요
 genderNote:{male:'(해당 없음)',female:'분석력 + 여성 절제 = 이 서비스 최고의 조합 중 하나입니다. 완벽한 포트폴리오를 설계하느라 성장을 포기하지 마세요.'},
 portfolio:{
   default:{tickers:['QQQ','MSFT','GOOGL','NVDA','AAPL','AMZN','META','AVGO'],pcts:[22,16,15,12,12,11,8,4]},
-  beginner:{tickers:['QQQ','MSFT'],pcts:[60,40]}},
+  beginner:{tickers:['QQQ','SOXX','IVV','MSFT','NVDA','GOOGL','AAPL','META'],pcts:[20,10,10,18,14,12,10,6]}},
 advice:'분석력 + 39년 운용 기간 = 최강의 무기다. 완벽한 설계를 기다리느라 성장을 포기하지 마라.'},
 
 // ════════════════════════════════════════════════════════
@@ -947,7 +948,7 @@ cautions:['"이 기업은 결국 좋아질 거야"라는 내러티브가 손절�
 genderNote:{male:'NF 남성 투자자는 확신이 강할수록 비중을 더 높이는 경향이 있습니다. 포지션 크기를 감정이 아닌 규칙으로 결정하세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['QQQ','META','TSLA','NVDA','AMZN','GOOGL','MSFT','IVV'],pcts:[28,15,13,12,11,10,7,4]},
-  beginner:{tickers:['QQQ','IVV'],pcts:[70,30]}},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','META','TSLA','GOOGL','AMZN'],pcts:[28,12,6,14,13,10,10,7]}},
 advice:'스토리가 흔들려도 숫자가 괜찮으면 보유하라. 판단 기준은 느낌이 아닌 실적이다.'},
 
 'female_20s_NF':{typeCode:'B-2',typeName:'공감으로 고르고 원칙으로 보유하는 투자자',
@@ -957,7 +958,7 @@ cautions:['Fidelity: 여성의 14%만 "투자를 잘 안다"고 자평 → 비�
 genderNote:{male:'(해당 없음)',female:'당신의 직관적 기업 선택은 생각보다 훨씬 좋은 결과를 냅니다. 문제는 비중이 너무 작다는 것입니다. 소득의 20% 이상을 투자금으로 전환하는 것이 첫 번째 과제입니다.'},
 portfolio:{
   default:{tickers:['QQQ','AAPL','META','GOOGL','MSFT','AMZN','NVDA','IVV'],pcts:[28,14,13,12,11,10,8,4]},
-  beginner:{tickers:['QQQ','IVV'],pcts:[65,35]}},
+  beginner:{tickers:['QQQ','IVV','SOXX','AAPL','MSFT','GOOGL','META','AMZN'],pcts:[25,12,6,15,12,11,10,9]}},
 advice:'좋은 기업을 고르는 당신의 직관을 믿어라. 비중을 키우는 것이 두 번째 과제다.'},
 
 'male_30s_NF':{typeCode:'B-3',typeName:'비전을 현실로 만드는 투자자',
@@ -967,7 +968,7 @@ cautions:['"이 기업은 내가 잘 안다"는 친숙함이 손절을 방해','
 genderNote:{male:'NF 남성이 30대에 가장 조심해야 할 것은 "좋아하는 기업"과 "좋은 투자"를 혼동하는 것입니다. 애착이 클수록 손절 기준이 흐려집니다.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['QQQ','MSFT','META','GOOGL','NVDA','AMZN','AAPL','IVV'],pcts:[22,15,13,12,11,10,9,8]},
-  beginner:{tickers:['QQQ','MSFT','META','IVV'],pcts:[40,20,20,20]}},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','META','GOOGL','AMZN','NVDA'],pcts:[22,10,6,16,14,12,10,10]}},
 advice:'애착이 클수록 손절 기준을 더 엄격하게 숫자로 설정해라.'},
 
 'female_30s_NF':{typeCode:'B-4',typeName:'의미 있는 기업에 장기 투자하는 설계자',
@@ -977,7 +978,7 @@ cautions:['30대 여성의 현금 보유 비중 과다 경향','좋은 기업인
 genderNote:{male:'(해당 없음)',female:'당신의 기업 선택 기준은 이미 충분히 좋습니다. 지금 부족한 것은 선택이 아닌 비중입니다. "이 정도 금액으로는 별 의미가 없지"라는 생각이 가장 큰 적입니다.'},
 portfolio:{
   default:{tickers:['QQQ','MSFT','AAPL','GOOGL','META','AMZN','NVDA','IVV'],pcts:[25,15,13,12,11,10,9,5]},
-  beginner:{tickers:['QQQ','MSFT','AAPL','IVV'],pcts:[45,20,18,17]}},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','META','AMZN'],pcts:[23,10,5,15,13,12,11,11]}},
 advice:'기업 선택은 충분히 잘하고 있다. 이제는 비중을 키울 차례다.'},
 
 'male_40s_NF':{typeCode:'B-5',typeName:'철학이 있는 투자가',
@@ -987,7 +988,7 @@ cautions:['가치 기반 포트폴리오가 특정 섹터 쏠림으로 이어질
 genderNote:{male:'NF 40대 남성은 철학을 포트폴리오에 너무 많이 담으면 분산이 깨집니다. 철학은 종목 선택 필터로만 사용하고, 비중은 숫자로 결정하세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['IVV','QQQ','MSFT','GOOGL','AAPL','AMZN','META','V','COST'],pcts:[17,13,12,11,10,9,8,10,10]},
-  beginner:{tickers:['IVV','QQQ','MSFT','GOOGL'],pcts:[35,25,20,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','GOOGL','AAPL','META','AMZN','V','COST'],pcts:[13,11,6,12,11,10,9,8,10,10]}},
 advice:'투자 철학은 종목 필터로만 사용하라. 비중은 숫자가 결정한다.'},
 
 'female_40s_NF':{typeCode:'B-6',typeName:'가치 중심 포트폴리오 설계자',
@@ -997,7 +998,7 @@ cautions:['"지켜보다 타이밍 놓침" 반복','40대 여성: 현금 비중 
 genderNote:{male:'(해당 없음)',female:'40대에 "이제 조심해야 해"라는 마음이 생기는 건 자연스럽습니다. 그러나 기대수명 90세 기준으로 아직 운용 기간이 50년 남았습니다. 성장 비중 60% 이상을 유지하세요.'},
 portfolio:{
   default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','META','AMZN','V','COST'],pcts:[18,13,11,10,10,9,9,10,10]},
-  beginner:{tickers:['IVV','QQQ','MSFT','AAPL'],pcts:[35,25,20,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','META','AMZN','V','COST'],pcts:[14,10,6,11,10,10,9,10,10,10]}},
 advice:'40대에도 성장 비중 60%는 정당하다. 시간이 리스크를 상쇄한다.'},
 
 'male_50s_NF':{typeCode:'B-7',typeName:'비전을 담아 30년을 설계하는 투자자',
@@ -1007,7 +1008,7 @@ cautions:['방어 전환 심리가 너무 이름 → 배당주·채권 과잉 �
 genderNote:{male:'50대 남성 NF는 좋아하는 성장 기업을 지키는 것이 최선입니다. 방어 전환은 60대 이후로 미루세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['QQQ','MSFT','GOOGL','AAPL','META','AMZN','NVDA','COST','LLY'],pcts:[19,13,12,11,10,9,6,10,10]},
-  beginner:{tickers:['QQQ','AAPL'],pcts:[60,40]}},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','GOOGL','AAPL','META','AMZN','COST','LLY'],pcts:[17,8,5,12,11,9,8,10,10,10]}},
 advice:'좋아하는 기업을 38년 더 보유하는 것 — 그것이 이미 최고의 투자다.'},
 
 'female_50s_NF':{typeCode:'B-8',typeName:'응원하며 30년을 보유하는 투자자',
@@ -1017,7 +1018,7 @@ cautions:['"이제 보수적으로" 심리 → 성장 비중 지나치게 빨리
 genderNote:{male:'(해당 없음)',female:'Fidelity: 여성이 남성보다 0.4%p 높은 수익률의 비결은 덜 판다는 것입니다. 50대에도 이 강점을 유지하세요. 성장 비중 65% 이상을 지켜내는 것이 핵심입니다.'},
 portfolio:{
   default:{tickers:['QQQ','MSFT','AAPL','GOOGL','META','AMZN','NVDA','COST','LLY'],pcts:[17,13,13,11,10,9,7,10,10]},
-  beginner:{tickers:['QQQ','AAPL'],pcts:[60,40]}},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','META','AMZN','COST','LLY'],pcts:[15,8,5,12,11,10,9,10,10,10]}},
 advice:'직관 + 절제 + 40년 운용 기간 = 복리의 최강 조합이다. 성장을 포기하지 마라.'},
 
 // ════════════════════════════════════════════════════════
@@ -1031,7 +1032,7 @@ cautions:['"최적 계획"을 세우느라 시작이 늦어지는 역설','SJ 20
 genderNote:{male:'계획을 세우고 실행하는 것은 좋습니다. 그 계획이 20대에 너무 보수적이지 않은지 확인하세요. 20대의 안정은 채권·배당이 아니라 장기 보유입니다.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['QQQ','MSFT','AAPL','GOOGL','NVDA','AMZN','META','IVV'],pcts:[30,14,13,12,11,10,7,3]},
-  beginner:{tickers:['QQQ','IVV'],pcts:[60,40]}},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA'],pcts:[25,15,6,16,14,12,8,4]}},
 advice:'완벽한 계획을 기다리지 마라. 지금 시작하는 것이 최고의 계획이다.'},
 
 'female_20s_SJ':{typeCode:'C-2',typeName:'규율 있는 DCA 실행자',
@@ -1040,8 +1041,8 @@ strengths:['규칙 기반 DCA 실행 — 감정 개입 없음','낮은 거래빈
 cautions:['투자 비중이 소득의 10% 미만인 경우가 많음','"나는 잘 모르니까"라는 이유로 성장주를 완전히 배제','Gen Z 현금 보유 평균 33.88% → 인플레이션에 매년 침식'],
 genderNote:{male:'(해당 없음)',female:'당신은 이미 좋은 투자자입니다. 지금 필요한 것은 더 많이 투자하는 것입니다. 소득의 20~30%를 투자금으로 전환하는 것이 20대 최고의 재정 결정입니다.'},
 portfolio:{
-  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','NVDA','AMZN','IVV'],pcts:[32,15,14,12,11,9,7]},
-  beginner:{tickers:['QQQ','IVV'],pcts:[60,40]}},
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','NVDA','AMZN','META','AVGO','IVV'],pcts:[27,13,12,10,9,7,8,8,6]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA'],pcts:[24,16,5,16,14,12,9,4]}},
 advice:'좋은 습관은 이미 갖췄다. 이제는 금액을 키울 차례다.'},
 
 'male_30s_SJ':{typeCode:'C-3',typeName:'시스템으로 자산을 쌓는 투자자',
@@ -1051,7 +1052,7 @@ cautions:['규칙에 너무 집착 → 시장 변화 대응이 느림','30대 SJ
 genderNote:{male:'시스템을 만들고 지키는 것은 탁월한 강점입니다. 단, 그 시스템이 3년마다 한 번씩 "여전히 유효한가"를 점검해야 합니다.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','V','AVGO','IVV'],pcts:[22,14,13,12,11,10,8,6,4]},
-  beginner:{tickers:['QQQ','MSFT','AAPL','IVV'],pcts:[40,20,20,20]}},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','V'],pcts:[24,12,6,18,14,12,10,4]}},
 advice:'시스템을 만들어라. 그리고 3년마다 한 번씩 점검하라.'},
 
 'female_30s_SJ':{typeCode:'C-4',typeName:'안정적으로 자산을 형성하는 투자자',
@@ -1061,7 +1062,7 @@ cautions:['30대 자산 형성기에 투자 비중이 지나치게 낮은 경향
 genderNote:{male:'(해당 없음)',female:'30대는 복리 엔진이 가장 강하게 돌아가는 시기입니다. 안정을 원한다면 채권이 아니라 오래 보유할 수 있는 대형 성장주를 선택하세요. 시간이 리스크를 상쇄합니다.'},
 portfolio:{
   default:{tickers:['QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','V','META','IVV'],pcts:[24,14,13,12,11,9,8,5,4]},
-  beginner:{tickers:['QQQ','MSFT','IVV'],pcts:[50,25,25]}},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA'],pcts:[23,13,5,17,13,12,10,7]}},
 advice:'안정의 답은 채권이 아니라 오래 보유하는 것이다.'},
 
 'male_40s_SJ':{typeCode:'C-5',typeName:'자산을 지키며 키우는 투자자',
@@ -1071,7 +1072,7 @@ cautions:['40대 SJ 남성: "이제 지켜야 한다"는 심리가 성장 비중
 genderNote:{male:'40대에 "이제 보수적으로"는 10~15년 이른 결정입니다. 55세 이후에 방어 전환을 계획하세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','V','COST'],pcts:[18,13,12,11,10,9,7,10,10]},
-  beginner:{tickers:['IVV','QQQ','MSFT','AAPL'],pcts:[35,25,20,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','V','COST'],pcts:[14,11,5,13,12,10,9,6,10,10]}},
 advice:'방어 전환은 55세 이후로 미뤄라. 40대는 아직 성장 구간이다.'},
 
 'female_40s_SJ':{typeCode:'C-6',typeName:'원칙으로 안전망을 구축하는 투자자',
@@ -1081,7 +1082,7 @@ cautions:['"이제 안전하게"라는 40대 심리로 현금 비중 과다','�
 genderNote:{male:'(해당 없음)',female:'당신의 절제와 원칙 준수가 가장 강력한 투자 무기입니다. 40대에도 성장 비중 60% 이상을 유지하세요. 시간이 당신 편입니다.'},
 portfolio:{
   default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','V','COST'],pcts:[21,12,11,10,10,9,7,10,10]},
-  beginner:{tickers:['IVV','QQQ','MSFT','AAPL'],pcts:[35,25,20,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','V','COST'],pcts:[15,10,5,13,12,10,9,6,10,10]}},
 advice:'절제가 복리의 가장 강력한 도구다. 60대까지 성장 비중을 지켜라.'},
 
 'male_50s_SJ':{typeCode:'C-7',typeName:'원칙으로 자산을 완성하는 투자자',
@@ -1091,7 +1092,7 @@ cautions:['채권·배당 과잉 편입으로 기대수익률 급락 주의','"�
 genderNote:{male:'단순하게 가세요. QQQ + MSFT + AAPL + V. 4~7개 종목, 연 1회 리밸런싱. 이것이 이미 최고의 포트폴리오입니다.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','V','COST'],pcts:[21,16,13,12,10,8,10,10]},
-  beginner:{tickers:['QQQ','MSFT'],pcts:[60,40]}},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','V','COST'],pcts:[16,8,5,14,12,10,5,10,10,10]}},
 advice:'원칙을 지켜온 30년이 당신의 포트폴리오다. 단순하게, 오래.'},
 
 'female_50s_SJ':{typeCode:'C-8',typeName:'원칙의 결실을 키우는 투자자',
@@ -1100,8 +1101,8 @@ strengths:['원칙 준수 + 낮은 거래빈도 = 복리 극대화 달성','여�
 cautions:['50대에 현금 비중이 지나치게 높아지는 경향','"이제 조심해야 해"라는 심리로 성장 비중 너무 빨리 축소 주의','V, COST 비중을 너무 높이면 성장 둔화 위험'],
 genderNote:{male:'(해당 없음)',female:'수십 년간 원칙을 지켜온 것 자체가 이미 탁월한 결과입니다. 50대에도 주식 비중 65% 이상을 유지하세요. 아직 40년이 남아 있습니다.'},
 portfolio:{
-  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','AMZN','V','COST'],pcts:[23,18,16,13,10,10,10]},
-  beginner:{tickers:['QQQ','MSFT'],pcts:[60,40]}},
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','META','V','COST'],pcts:[19,15,13,11,7,9,6,10,10]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','V','COST'],pcts:[15,8,5,14,13,10,5,10,10,10]}},
 advice:'원칙의 결실을 수확하되, 40년을 더 키울 포트폴리오를 유지하라.'},
 
 // ════════════════════════════════════════════════════════
@@ -1115,7 +1116,7 @@ cautions:['손절 기준 없음 → 손실이 "기다리면 회복"으로 전환
 genderNote:{male:'행동력은 강점입니다. 손절 기준을 숫자로 미리 정해두지 않으면 그 행동력이 독이 됩니다. 포트폴리오의 30%는 절대 건드리지 않는 코어를 만드세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['QQQ','NVDA','META','TSLA','AMZN','GOOGL','MSFT','AVGO','IVV'],pcts:[22,15,12,12,11,10,8,6,4]},
-  beginner:{tickers:['QQQ','NVDA','IVV'],pcts:[50,25,25]}},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','META','TSLA','MSFT','GOOGL'],pcts:[24,10,7,18,12,11,10,8]}},
 advice:'코어 30%는 절대 건드리지 않는 규칙을 지금 만들어라.'},
 
 'female_20s_SP':{typeCode:'D-2',typeName:'직관으로 기회를 포착하는 투자자',
@@ -1125,7 +1126,7 @@ cautions:['직관이 맞을 때와 틀릴 때를 구분하는 기준이 없음',
 genderNote:{male:'(해당 없음)',female:'직관을 믿되, 포지션 크기는 숫자로 결정하세요. 흥분이 클수록 비중을 줄이는 역규칙이 당신에게 가장 잘 맞습니다.'},
 portfolio:{
   default:{tickers:['QQQ','NVDA','META','AAPL','GOOGL','AMZN','TSLA','IVV'],pcts:[25,15,13,12,11,10,10,4]},
-  beginner:{tickers:['QQQ','NVDA','IVV'],pcts:[50,25,25]}},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','META','TSLA','MSFT','GOOGL'],pcts:[22,10,7,16,13,10,10,12]}},
 advice:'직관을 믿되 포지션 크기는 규칙으로 결정하라.'},
 
 'male_30s_SP':{typeCode:'D-3',typeName:'시장 감각으로 움직이는 투자자',
@@ -1135,7 +1136,7 @@ cautions:['손절 없음 → 단기 포지션이 장기 포지션으로 전환�
 genderNote:{male:'30대 SP 남성에게 가장 필요한 것은 감각을 규율로 보완하는 것입니다. 포트폴리오의 50%는 자동이체 ETF 코어로 고정하고, 나머지 50%로만 전술적 운용을 하세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['QQQ','NVDA','META','AMZN','GOOGL','MSFT','TSLA','AVGO','IVV'],pcts:[20,15,12,12,11,10,9,7,4]},
-  beginner:{tickers:['QQQ','NVDA','MSFT','IVV'],pcts:[40,20,20,20]}},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','META','TSLA','MSFT','AVGO','GOOGL'],pcts:[22,10,6,18,12,11,10,7,4]}},
 advice:'코어 50%는 자동이체 ETF로 고정하라. 나머지 50%로만 전술적 운용.'},
 
 'female_30s_SP':{typeCode:'D-4',typeName:'트렌드를 앞서 읽는 투자자',
@@ -1145,7 +1146,7 @@ cautions:['트렌드가 지나간 후에도 포지션을 보유하는 경향','�
 genderNote:{male:'(해당 없음)',female:'트렌드를 읽는 직관은 강점입니다. 단, 그 트렌드가 끝났을 때 포지션을 정리하는 기준을 미리 만들어두세요. 출구 전략이 진입 전략만큼 중요합니다.'},
 portfolio:{
   default:{tickers:['QQQ','NVDA','META','AAPL','AMZN','GOOGL','MSFT','NFLX','IVV'],pcts:[22,14,12,12,11,10,9,6,4]},
-  beginner:{tickers:['QQQ','NVDA','META','IVV'],pcts:[45,20,18,17]}},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','META','AAPL','MSFT','GOOGL'],pcts:[20,10,7,16,15,11,10,11]}},
 advice:'진입만큼 출구 기준을 명확하게 세워라. 트렌드는 반드시 끝난다.'},
 
 'male_40s_SP':{typeCode:'D-5',typeName:'경험 기반의 베테랑 기회주의자',
@@ -1155,7 +1156,7 @@ cautions:['40대 SP 남성: 과거 성공 경험이 자신감 과잉으로 이�
 genderNote:{male:'경험이 자산입니다. 단, 40대에는 포트폴리오의 40%는 반드시 장기 코어로 고정하세요. 전술적 운용은 나머지 60%로만 하세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['IVV','QQQ','NVDA','MSFT','GOOGL','AMZN','META','TSLA','V','COST'],pcts:[13,12,11,10,9,9,8,8,10,10]},
-  beginner:{tickers:['IVV','QQQ','NVDA','MSFT'],pcts:[35,25,20,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','NVDA','MSFT','GOOGL','META','TSLA','V','COST'],pcts:[11,10,8,13,11,10,9,8,10,10]}},
 advice:'코어 40%는 고정하라. 전술 운용은 나머지에서만.'},
 
 'female_40s_SP':{typeCode:'D-6',typeName:'유연하게 시장에 대응하는 투자자',
@@ -1165,7 +1166,7 @@ cautions:['40대 여성 SP: 과거 큰 손실 경험이 있다면 지나친 보�
 genderNote:{male:'(해당 없음)',female:'직관을 믿되, 그 직관이 과거의 상처에서 나온 두려움인지 아니면 진짜 시장 감지인지를 구분하세요. 두려움 기반 결정은 대부분 틀립니다.'},
 portfolio:{
   default:{tickers:['IVV','QQQ','NVDA','MSFT','GOOGL','META','AMZN','AAPL','V','COST'],pcts:[15,11,10,10,9,9,8,8,10,10]},
-  beginner:{tickers:['IVV','QQQ','NVDA','MSFT'],pcts:[35,25,20,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','NVDA','MSFT','GOOGL','META','AAPL','V','COST'],pcts:[12,10,7,13,10,10,10,8,10,10]}},
 advice:'직관과 절제의 균형이 당신의 가장 강력한 무기다.'},
 
 'male_50s_SP':{typeCode:'D-7',typeName:'시장 감각이 완성된 베테랑 기회주의자',
@@ -1175,7 +1176,7 @@ cautions:['"이번 기회는 다르다"는 확신이 집중 리스크로 이어�
 genderNote:{male:'50대 SP 남성의 감각은 여전히 자산입니다. 단, 종목당 비중 상한선을 미리 설정해서 집중 리스크를 통제하세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['QQQ','NVDA','MSFT','GOOGL','META','AMZN','TSLA','AVGO'],pcts:[22,16,14,13,12,11,8,4]},
-  beginner:{tickers:['QQQ','NVDA'],pcts:[55,45]}},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','MSFT','GOOGL','META','TSLA'],pcts:[20,10,8,18,14,12,10,8]}},
 advice:'시장 감각은 38년 운용 기간과 함께할 때 빛난다. 기회를 계속 포착하되 분산으로 지켜라.'},
 
 'female_50s_SP':{typeCode:'D-8',typeName:'직관과 경험이 융합된 투자자',
@@ -1185,7 +1186,7 @@ cautions:['갑작스러운 보수화로 성장 기회를 과도하게 포기 주
 genderNote:{male:'(해당 없음)',female:'50대 여성 SP의 진짜 강점은 직관과 절제의 조합입니다. 그 강점을 믿으세요. 50대에도 성장 비중 65% 이상은 정당합니다.'},
 portfolio:{
   default:{tickers:['QQQ','NVDA','MSFT','GOOGL','META','AMZN','AAPL','TSLA'],pcts:[20,15,14,13,12,11,9,6]},
-  beginner:{tickers:['QQQ','NVDA'],pcts:[55,45]}},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','MSFT','GOOGL','META','AAPL'],pcts:[18,10,8,16,14,12,12,10]}},
 advice:'직관과 절제의 조합이 당신의 가장 강력한 무기다. 50대에도 성장을 포기하지 마라.'}
 
 ,
@@ -1199,7 +1200,7 @@ cautions:['과거 경험 과신이 새로운 기술 트렌드 진입을 막을 �
 genderNote:{male:'60대 남성 NT에게 가장 중요한 과제는 자산 이전 설계입니다. 포트폴리오 단순화와 세금 효율성을 병행하세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['IVV','QQQ','MSFT','GOOGL','AAPL','AMZN','NVDA','V','COST'],pcts:[19,14,12,10,10,8,7,10,10]},
-  beginner:{tickers:['IVV','QQQ','MSFT'],pcts:[50,30,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','GOOGL','AAPL','AMZN','NVDA','V','COST'],pcts:[16,12,6,12,10,10,8,6,10,10]}},
 advice:'자산을 지키면서 키우는 것, 둘 다 가능하다. 단, 자산 이전 계획도 지금부터 시작해야 한다.'},
 
 'female_60s_NT':{typeCode:'A-10',typeName:'정밀하게 자산을 보존하는 전략가',
@@ -1209,7 +1210,7 @@ cautions:['너무 방어적으로 가면 물가 상승률도 이기지 못하는
 genderNote:{male:'(해당 없음)',female:'60대 여성의 가장 큰 재무 리스크는 인플레이션입니다. 채권·현금 비중을 과도하게 늘리면 구매력이 잠식됩니다. 주식 비중 55% 이상을 유지하세요.'},
 portfolio:{
   default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','V','COST'],pcts:[23,14,12,11,11,9,10,10]},
-  beginner:{tickers:['IVV','QQQ','MSFT'],pcts:[50,30,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','V','COST'],pcts:[17,11,5,12,11,10,8,6,10,10]}},
 advice:'완벽한 보존은 없다. 성장 없는 보존은 인플레이션에 서서히 먹힌다. 주식 비중 55% 이상을 유지하라.'},
 
 // ════════════════════════════════════════════════════════
@@ -1222,7 +1223,7 @@ cautions:['좋아하는 기업에 대한 감정적 집착이 객관적 판단을
 genderNote:{male:'60대 NF 남성의 과제는 "좋은 기업"과 "지금 좋은 투자"를 구분하는 것입니다. 철학은 필터로, 비중은 숫자로 결정하세요.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['IVV','QQQ','MSFT','GOOGL','AAPL','META','AMZN','COST','LLY'],pcts:[19,13,11,10,10,9,8,10,10]},
-  beginner:{tickers:['IVV','QQQ','AAPL'],pcts:[50,30,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','META','AMZN','COST','LLY'],pcts:[15,11,4,11,11,10,8,10,10,10]}},
 advice:'철학이 있는 포트폴리오는 폭락장에서 더 강하다. 다만 철학도 데이터로 검증받아야 한다.'},
 
 'female_60s_NF':{typeCode:'B-10',typeName:'신뢰하는 기업과 오래 함께하는 투자자',
@@ -1232,7 +1233,7 @@ cautions:['신뢰가 높은 기업이 반드시 좋은 투자인 것은 아님',
 genderNote:{male:'(해당 없음)',female:'60대 여성 NF의 강점은 장기 보유입니다. 30년 운용 기간 동안 인플레이션에 대응하려면 성장주 비중을 줄이지 않는 것이 중요합니다.'},
 portfolio:{
   default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','META','AMZN','COST','LLY'],pcts:[20,12,11,10,10,9,8,10,10]},
-  beginner:{tickers:['IVV','QQQ','AAPL'],pcts:[50,30,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','META','AMZN','COST','LLY'],pcts:[16,10,4,10,11,10,9,10,10,10]}},
 advice:'신뢰하는 기업을 오래 보유하는 것, 그것이 복리다. 단 인플레이션을 이길 수 있는 기업이어야 한다.'},
 
 // ════════════════════════════════════════════════════════
@@ -1245,7 +1246,7 @@ cautions:['원칙에 너무 집착해 변화하는 시장에 유연하게 대응
 genderNote:{male:'60대 SJ 남성에게 필요한 것은 리밸런싱 규칙 단순화입니다. 복잡한 시스템을 유지할수록 실행 오류가 늘어납니다.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','V','COST'],pcts:[25,15,14,12,10,4,10,10]},
-  beginner:{tickers:['IVV','QQQ','MSFT'],pcts:[55,30,15]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','V','COST'],pcts:[18,12,5,13,10,9,5,8,10,10]}},
 advice:'원칙이 있는 포트폴리오는 흔들리지 않는다. 단, 원칙도 인플레이션 앞에서는 검증받아야 한다.'},
 
 'female_60s_SJ':{typeCode:'C-10',typeName:'검증된 설계로 자산을 완성한 투자자',
@@ -1255,7 +1256,7 @@ cautions:['현금 보유 과다 경향 — 주식 50% 이상 유지 권장','V·
 genderNote:{male:'(해당 없음)',female:'60대 여성의 평균 기대수명은 남성보다 깁니다. 포트폴리오가 30년을 버텨야 한다는 것을 항상 염두에 두세요. 성장 비중을 지키세요.'},
 portfolio:{
   default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','V','COST'],pcts:[27,14,13,12,10,4,10,10]},
-  beginner:{tickers:['IVV','QQQ','MSFT'],pcts:[55,30,15]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','V','COST'],pcts:[19,11,4,13,10,9,4,10,10,10]}},
 advice:'원칙의 결실을 수확하되, 30년 더 버틸 포트폴리오를 유지하라.'},
 
 // ════════════════════════════════════════════════════════
@@ -1268,7 +1269,7 @@ cautions:['직관과 경험 과신 위험 — 과잉 집중으로 이어지지 �
 genderNote:{male:'60대 SP 남성의 감각은 여전히 자산입니다. 단, IVV가 받쳐주지 않으면 감각도 위험합니다.',female:'(해당 없음)'},
 portfolio:{
   default:{tickers:['IVV','QQQ','NVDA','MSFT','GOOGL','AMZN','META','V','COST'],pcts:[17,14,11,11,10,9,8,10,10]},
-  beginner:{tickers:['IVV','QQQ','NVDA'],pcts:[45,35,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','NVDA','MSFT','GOOGL','META','AMZN','V','COST'],pcts:[14,12,8,13,11,10,9,3,10,10]}},
 advice:'감각은 여전히 자산이다. IVV가 받쳐주지 않으면 감각도 위험하다.'},
 
 'female_60s_SP':{typeCode:'D-10',typeName:'직관과 경험으로 균형을 찾은 투자자',
@@ -1278,7 +1279,7 @@ cautions:['직관에 과의존 시 검증되지 않은 섹터 진입 위험','�
 genderNote:{male:'(해당 없음)',female:'60대 여성의 직관은 오랜 소비자 경험에서 나옵니다. 그 직관을 데이터로 검증하는 습관을 유지하세요. 30년 운용 기간 동안 성장 비중을 지키세요.'},
 portfolio:{
   default:{tickers:['IVV','QQQ','MSFT','GOOGL','NVDA','AMZN','AAPL','V','COST'],pcts:[19,13,11,10,10,9,8,10,10]},
-  beginner:{tickers:['IVV','QQQ','NVDA'],pcts:[45,35,20]}},
+  beginner:{tickers:['IVV','QQQ','SOXX','NVDA','MSFT','GOOGL','META','AAPL','V','COST'],pcts:[15,12,7,11,11,10,9,5,10,10]}},
 advice:'직관은 여전히 자산이다. IVV가 기반이 되고 직관이 알파를 더하는 구조를 유지하라.'}
 }; // END BASE_PROFILES
 
@@ -1522,8 +1523,8 @@ function showAiLoading() {
 // ════════════════════════════════════════════════════════
 // 포트폴리오 해설 생성
 // ════════════════════════════════════════════════════════
-function buildRationale(porto, mbtiGroup, ageGroup) {
-  const ETFs    = ['QQQ','IVV','VTI','VOO'];
+function buildRationale(porto, mbtiGroup, ageGroup, mbtiDisplayFull) {
+  const ETFs    = ['QQQ','IVV','VTI','VOO','SOXX'];
   const ANCHORS = ['V','COST','LLY','BRK.B','VIG','SCHD'];
 
   const tickers = porto.tickers;
@@ -1541,11 +1542,12 @@ function buildRationale(porto, mbtiGroup, ageGroup) {
   const satellites = tickers.filter((t,i) => i > 0 && !ETFs.includes(t) && !ANCHORS.includes(t));
   const satPcts    = satellites.map(t => pcts[tickers.indexOf(t)]);
 
+  const _disp = mbtiDisplayFull || mbtiGroup;
   const mbtiSatDesc = {
-    NT: 'NT(분석가)형은 AI·반도체 인프라에 대한 데이터 기반 확신을 반영합니다. NVDA·AVGO 같은 반도체 설계 기업의 비중이 높은 이유입니다.',
-    NF: 'NF(외교관)형은 "세상을 바꾸는 기업"에 투자하는 원칙을 반영합니다. META·TSLA처럼 비전이 명확한 기업, 그리고 헬스케어 혁신(LLY)이 포함되는 이유입니다.',
-    SJ: 'SJ(관리자)형은 수십 년 실적으로 검증된 기업을 선호합니다. MSFT·AAPL처럼 변동성이 낮고 현금흐름이 안정적인 기업의 비중이 높습니다.',
-    SP: 'SP(탐험가)형은 모멘텀과 성장 속도에 반응합니다. NVDA·META·TSLA처럼 섹터 내 가장 빠르게 움직이는 기업들이 포트폴리오에 들어오는 이유입니다.'
+    NT: `${_disp}형은 AI·반도체 인프라에 대한 데이터 기반 확신을 반영합니다. NVDA·AVGO 같은 반도체 설계 기업의 비중이 높은 이유입니다.`,
+    NF: `${_disp}형은 "세상을 바꾸는 기업"에 투자하는 원칙을 반영합니다. META·TSLA처럼 비전이 명확한 기업, 그리고 헬스케어 혁신(LLY)이 포함되는 이유입니다.`,
+    SJ: `${_disp}형은 수십 년 실적으로 검증된 기업을 선호합니다. MSFT·AAPL처럼 변동성이 낮고 현금흐름이 안정적인 기업의 비중이 높습니다.`,
+    SP: `${_disp}형은 모멘텀과 성장 속도에 반응합니다. NVDA·META·TSLA처럼 섹터 내 가장 빠르게 움직이는 기업들이 포트폴리오에 들어오는 이유입니다.`
   };
 
   let satHtml = '';
@@ -1679,8 +1681,34 @@ function buildResult() {
     legendHtml += `<div class="port-legend-item"><span class="port-legend-dot" style="background:${clr};"></span><span class="port-legend-ticker">${ticker}</span><span class="port-legend-pct">${pct}%</span></div>`;
   });
 
-  const strengthsHtml = profile.strengths.map(s => `<li>${s}</li>`).join('');
-  const cautionsHtml  = profile.cautions.map(c  => `<li>${c}</li>`).join('');
+  // ── MBTI 2글자 → 4글자 치환 ──
+  // 사용자가 직접 4글자 선택 시 그 값, 아니면 해당 그룹 전체 나열
+  const GROUP_MEMBERS = {
+    NT: 'INTJ·INTP·ENTJ·ENTP',
+    NF: 'INFJ·INFP·ENFJ·ENFP',
+    SJ: 'ISTJ·ISFJ·ESTJ·ESFJ',
+    SP: 'ISTP·ISFP·ESTP·ESFP'
+  };
+  // mbtiDirect는 정확한 4글자 (예: "ISTJ"), mbtiDerived는 그룹 약어 (예: "SJ")
+  const mbtiDisplayFull = state.mbtiDirect
+    ? state.mbtiDirect
+    : (GROUP_MEMBERS[mbtiGroup] || mbtiGroup);
+
+  // 텍스트 내 "NT형", "NT 분석가", "SJ는", "SJ 남성" 등을 치환
+  function replaceMbtiAbbr(text) {
+    if (!text) return text;
+    // 각 그룹 약어를 mbtiDisplayFull로 치환 (해당 그룹만)
+    // 예: SJ → "ISTJ" 또는 "ISTJ·ISFJ·ESTJ·ESFJ"
+    return text.replace(/\b(NT|NF|SJ|SP)\b/g, (match) => {
+      if (match === mbtiGroup) return mbtiDisplayFull;
+      return match; // 다른 그룹 약어는 그대로
+    });
+  }
+
+  const dnaText     = replaceMbtiAbbr(profile.dna);
+  const genderNoteText = genderNote ? replaceMbtiAbbr(genderNote) : null;
+  const strengthsHtml = profile.strengths.map(s => `<li>${replaceMbtiAbbr(s)}</li>`).join('');
+  const cautionsHtml  = profile.cautions.map(c  => `<li>${replaceMbtiAbbr(c)}</li>`).join('');
 
   let companyHtml = '';
   if (state.companies.length > 0) {
@@ -1706,15 +1734,15 @@ function buildResult() {
       <div class="result-tags">
         <span class="result-tag">${genderLabel}</span>
         <span class="result-tag">${ageLabel}</span>
-        <span class="result-tag">${mbtiDisplay}</span>
+        <span class="result-tag">${mbtiDisplayFull}</span>
         <span class="result-tag">${expLabel}</span>
         <span class="result-tag">${styleLabel}</span>
       </div>
     </div>
     <div class="result-section">
       <div class="result-section-title">나의 투자 DNA</div>
-      <p class="result-dna-text">${profile.dna}</p>
-      ${genderNote ? `<div class="result-gender-note">${genderNote}</div>` : ''}
+      <p class="result-dna-text">${dnaText}</p>
+      ${genderNoteText ? `<div class="result-gender-note">${genderNoteText}</div>` : ''}
     </div>
     <div class="result-section">
       <div class="result-section-title">추천 포트폴리오${isBeginnerExp ? ' (입문자 버전)' : ''}</div>
@@ -1724,7 +1752,7 @@ function buildResult() {
       ${isBeginnerExp ? '<p class="beginner-note">경험이 쌓이면 Default 포트폴리오로 전환하세요.</p>' : ''}
     </div>
 
-    ${buildRationale(porto, mbtiGroup, state.ageGroup)}
+    ${buildRationale(porto, mbtiGroup, state.ageGroup, mbtiDisplayFull)}
     <div class="result-section result-two-col">
       <div>
         <div class="result-section-title">강점</div>
