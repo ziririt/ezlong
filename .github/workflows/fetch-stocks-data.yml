@@ -1,0 +1,41 @@
+name: Fetch Stocks Data
+
+on:
+  schedule:
+    # 매일 22:00 UTC (KST 07:00) — 미장 마감(16:00 ET) 후 약 2시간 여유
+    - cron: '0 22 * * 1-5'
+  workflow_dispatch:  # 수동 실행 허용
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install yfinance --break-system-packages 2>/dev/null || pip install yfinance
+
+      - name: Run fetch-stocks-data.py
+        run: python scripts/fetch-stocks-data.py
+
+      - name: Commit stocks-data.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/stocks-data.json
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
+            git commit -m "data: stocks-data.json 업데이트 ${KST}"
+            git push
+          fi
