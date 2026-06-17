@@ -3,46 +3,46 @@
   "name": "금융 섹터 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-17T19:15:57.166Z",
+  "updatedAt": "2026-06-17T19:44:07.979Z",
   "price": {
-    "current": 54.235,
-    "change": -0.115,
-    "changePct": -0.21,
+    "current": 54.022,
+    "change": -0.328,
+    "changePct": -0.6,
     "high52": 56.52,
     "low52": 47.67,
-    "pos52": 74.2,
+    "pos52": 71.8,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 52.2232,
-    "sma50": 51.8921,
-    "sma100": 51.4094,
-    "sma200": 52.2785,
-    "rsi": 69.64,
+    "sma20": 52.2126,
+    "sma50": 51.8878,
+    "sma100": 51.4072,
+    "sma200": 52.2775,
+    "rsi": 66.95,
     "macd": {
-      "macd": 0.621191,
-      "signal": 0.35617,
-      "histogram": 0.265021
+      "macd": 0.604184,
+      "signal": 0.352768,
+      "histogram": 0.251415
     },
     "bb": {
-      "upper": 54.1037,
-      "middle": 52.2232,
-      "lower": 50.3428,
-      "bandwidth": 0.072
+      "upper": 54.0492,
+      "middle": 52.2126,
+      "lower": 50.376,
+      "bandwidth": 0.0703
     }
   },
   "levels": {
     "swingResistance": 54.25,
     "swingSupport": 53.06,
     "pivot": {
-      "pp": 53.22,
-      "r1": 55.91,
-      "r2": 57.58,
-      "s1": 51.54,
-      "s2": 48.85
+      "pp": 53.14,
+      "r1": 55.77,
+      "r2": 57.51,
+      "s1": 51.4,
+      "s2": 48.77
     }
   },
   "analysis": {
@@ -50,34 +50,34 @@
     "strength": 4,
     "support": 53.06,
     "resistance": 54.25,
-    "rsiStatus": "과매수",
+    "rsiStatus": "중립",
     "macdStatus": "강세확산",
     "bbStatus": "상단접근",
     "stage": "상승추세",
     "action": "매수",
-    "buyScore": 8,
-    "scoreReason": "RSI 과매수 진입 + MACD 강세 확산",
-    "rsiTrajectory": "56.1 → 69.6 (과매수 진입 중)",
-    "macdTrajectory": "히스토 0.0793 → 0.2650 (개선)",
-    "pricePattern": "5일 고가/저가 ($54.89 / $52.04)는 20일 고가/저가 ($54.89 / $50.52) 대비 고점은 같고 저점은 높아짐 (Higher Low 형성)",
-    "volComment": "거래량비 0.87 (정상)",
+    "buyScore": 7,
+    "scoreReason": "RSI 과매도탈출 + MACD 강세확산",
+    "rsiTrajectory": "56.1 → 67.0 (과매도탈출)",
+    "macdTrajectory": "히스토 0.0793 → 0.2514 (개선)",
+    "pricePattern": "5일 고가($54.89) > 20일 고가($54.89 * 0.995) 이고 5일 저가($52.04) > 20일 저가($50.52 * 1.005) 이므로 Higher Low 회복 신호",
+    "volComment": "거래량비 1.01 (정상)",
     "bbPosition": "상단근처",
-    "reason": "일봉 RSI가 69.6으로 과매수 구간 진입했으며, MACD 히스토그램이 0.2650으로 개선되며 강세 확산 중이다. 5일 저가가 20일 저가보다 높아 Higher Low 패턴이 형성되었다.",
-    "entry": 54.23,
+    "reason": "최근 5거래일 변동률은 +0.75%, +1.37%, +0.41%, +1.47%, -0.60%로 상승세가 우세하며, RSI가 56.1에서 67.0으로 상승하며 과매도 구간을 탈출했고, MACD 히스토그램 또한 0.0793에서 0.2514로 개선되며 강세 확산 신호를 보이고 있다.",
+    "entry": 54,
     "stop": 53.06,
-    "target": 55.91,
-    "invalidation": 53.06,
+    "target": 55.77,
+    "invalidation": 54.25,
     "weeklyConflict": "충돌 없음",
-    "profitTarget1": 55.91,
-    "profitTarget2": 57.58,
+    "profitTarget1": 55,
+    "profitTarget2": 55.77,
     "stopLoss": 53.06,
-    "narrative": "S&P500 금융 섹터는 현재 강세 추세에 있다. 일봉 RSI가 69.6으로 과매수 구간에 진입했으나, MACD 히스토그램이 0.2650으로 개선되며 상승 모멘텀이 강화되고 있다. 5일 저가가 20일 저가보다 높아지며 상승 추세가 지속될 가능성이 높다. 52주 고가인 $56.52 돌파를 목표로 매수 진입한다.",
-    "patternNote": "현재 가격은 볼린저밴드 상단에 근접하고 있으며, 5일간의 가격 움직임은 Higher Low 패턴을 형성하며 상승 추세를 지지하고 있다.",
+    "narrative": "최근 5거래일의 상승 흐름과 RSI의 과매도 탈출, MACD 히스토그램의 개선은 금융 섹터의 상승 추세를 지지한다. 현재가($54.02)가 볼린저밴드 상단($54.05)에 근접했으나, 5일 저가가 20일 저가 대비 높아진 Higher Low 패턴이 형성되며 추가 상승 여력이 있다. 스윙 지지선($53.06)을 손절선으로 설정하고 1차 목표가 $55.00, 2차 목표가 $55.77을 설정한다.",
+    "patternNote": "5일 저가가 20일 저가보다 높아진 Higher Low 패턴이 형성되며 회복 신호를 보이고 있다.",
     "keyPoints": [
-      "일봉 RSI 과매수 진입 (69.6)",
-      "MACD 히스토그램 개선 및 강세 확산 (0.2650)",
-      "Higher Low 가격 패턴 형성"
+      "최근 5거래일 상승 흐름 지속",
+      "RSI 과매도 탈출 및 MACD 강세 확산",
+      "Higher Low 패턴 형성으로 추가 상승 기대"
     ],
-    "riskNote": "RSI 과매수 구간 진입으로 인한 단기 되돌림 가능성에 유의해야 한다."
+    "riskNote": "현재가가 볼린저밴드 상단에 근접하여 단기 과열 가능성이 존재한다."
   }
 }
