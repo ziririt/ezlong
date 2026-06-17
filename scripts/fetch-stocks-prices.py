@@ -27,7 +27,7 @@ OUTPUT_PATH = os.path.normpath(
 # ─── 수집 대상 심볼 ────────────────────────────────────────────────────────────
 # stocks-data.json 과 동일한 종목 전체 (중복 제거)
 US_TOP100 = [
-    'NVDA', 'AAPL', 'SPCX', 'MSFT', 'AMZN', 'GOOGL', 'META', 'TSLA', 'BRK-B', 'AVGO',
+    'NVDA', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'SPCX', 'META', 'TSLA', 'BRK-B', 'AVGO',
     'LLY',  'JPM',  'UNH', 'V',    'XOM',  'MA',   'COST', 'PG',  'JNJ',  'HD',
     'NFLX', 'ABBV', 'BAC', 'WMT',  'MRK',  'KO',   'CVX',  'ASML','ORCL', 'AMD',
     'CRM',  'ADBE', 'TMO', 'ACN',  'LIN',  'MCD',  'CSCO', 'ABT', 'GE',   'INTU',

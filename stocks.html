@@ -3,9 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>심플 주가 정보 | EZLONG</title>
-  <meta name="description" content="미국 시총 100·나스닥 100·S&P 500 주요 종목의 현재가와 등락률을 한눈에 확인하는 주가 뷰어.">
-  <meta name="robots" content="noindex">
+  <title>심플 주가 정보 — 미국 시총 100 실시간 주가 | EZLONG</title>
+  <meta name="description" content="NVDA·AAPL·TSLA·MSFT·AMZN 등 미국 시총 100위 종목의 현재 주가와 등락률을 15분마다 업데이트. S&P 500·나스닥·다우존스 지수 포함. 스파크라인 차트·포트폴리오 관리 무료 제공.">
+  <meta name="keywords" content="미국주식 주가, 미국 시총 100, NVDA 주가, TSLA 주가, AAPL 주가, MSFT 주가, SPCX 주가, 스페이스엑스 주가, S&P500 지수, 나스닥 지수, 실시간 주가, 미국주식 시세, 주가 확인">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://ezlong.com/stocks.html">
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://ezlong.com/stocks.html">
+  <meta property="og:title"       content="심플 주가 정보 — 미국 시총 100 실시간 주가 | EZLONG">
+  <meta property="og:description" content="NVDA·AAPL·TSLA 등 미국 시총 100위 종목 주가를 15분마다 업데이트. S&P 500·나스닥·다우 지수 + 스파크라인 차트 무료 제공.">
+  <meta property="og:site_name"   content="EZLONG">
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary">
+  <meta name="twitter:title"       content="심플 주가 정보 | EZLONG">
+  <meta name="twitter:description" content="미국 시총 100 실시간 주가. NVDA·AAPL·TSLA·MSFT 등 15분 갱신.">
+  <!-- JSON-LD 구조화 데이터 (AEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "심플 주가 정보",
+    "url": "https://ezlong.com/stocks.html",
+    "description": "미국 시총 100위 종목의 실시간 주가·등락률·스파크라인 차트. S&P 500, 나스닥, 다우존스 지수 포함. 15분마다 Massive API로 자동 갱신.",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+    "publisher": { "@type": "Organization", "name": "EZLONG", "url": "https://ezlong.com" },
+    "featureList": [
+      "미국 시총 100 실시간 주가",
+      "S&P 500 · 나스닥 · 다우존스 지수 카드",
+      "5일 스파크라인 차트",
+      "TradingView 상세 차트",
+      "포트폴리오 관심 종목 관리",
+      "프리마켓 · 포스트마켓 등락률"
+    ]
+  }
+  </script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
   <link rel="stylesheet" href="ez-design.css">
 
@@ -56,27 +90,34 @@
     .ix-pct.dn   { color: var(--ez-red); }
     .ix-pct.flat { color: var(--ez-text3); }
 
-    /* ── LIST: 메인 탭 (5개) ── */
+    /* ── LIST: 메인 탭 (4개, 균등 너비) ── */
     .main-tabs {
       display: flex;
       background: var(--ez-surface);
-      border-bottom: 1px solid var(--ez-border);
-      padding: 0 4px;
+      border-bottom: 2px solid var(--ez-border);
+      padding: 0;
       position: sticky; top: 68px; z-index: 99;
-      overflow-x: auto; scrollbar-width: none;
     }
-    .main-tabs::-webkit-scrollbar { display: none; }
     .mtab {
-      flex-shrink: 0;
-      padding: 11px 10px 9px;
-      font-size: 14px; font-weight: 500;
+      flex: 1;
+      padding: 14px 8px 12px;
+      font-size: 14px; font-weight: 600;
       color: var(--ez-text3);
       background: none; border: none;
-      border-bottom: 2px solid transparent;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
       cursor: pointer; white-space: nowrap;
-      transition: color .15s, border-color .15s;
+      text-align: center;
+      transition: color .15s, border-color .15s, background .15s;
+      -webkit-tap-highlight-color: transparent;
     }
-    .mtab.active { color: var(--ez-blue); border-bottom-color: var(--ez-blue); font-weight: 700; }
+    .mtab:hover { color: var(--ez-text2); background: var(--ez-card2); }
+    .mtab.active {
+      color: var(--ez-blue);
+      border-bottom-color: var(--ez-blue);
+      font-weight: 700;
+      background: var(--ez-bg);
+    }
 
     /* ── LIST: 종목 행 ── */
     .stock-list { background: var(--ez-surface); }
@@ -550,11 +591,11 @@ async function loadData() {
       document.getElementById('data-ts').textContent = label ? '스파크라인 ' + label : '';
     }
 
-    // SPCX 폴백 — stocks-data.json에 없을 경우 rank 3에 stub 삽입
+    // SPCX 폴백 — stocks-data.json에 없을 경우 rank 6에 stub 삽입 (AMZN 바로 다음, 아마존 6위)
     // Massive API(stocks-prices.json)는 SPCX 15분 갱신 지원 확인
     if (allData.top100 && !allData.top100.some(function(x) { return x.symbol === 'SPCX'; })) {
-      allData.top100.splice(2, 0, { rank: 3, symbol: 'SPCX', name: 'SpaceX', price: null, changePct: null, sparkline: [] });
-      for (var _i = 3; _i < allData.top100.length; _i++) allData.top100[_i].rank = _i + 1;
+      allData.top100.splice(5, 0, { rank: 6, symbol: 'SPCX', name: 'SpaceX', price: null, changePct: null, sparkline: [] });
+      for (var _i = 6; _i < allData.top100.length; _i++) allData.top100[_i].rank = _i + 1;
     }
 
     renderAll();
@@ -1074,11 +1115,11 @@ var EXTRA_NAMES = {
 };
 
 function getTVSym(symbol) {
-  // 종합지수 — TradingView 전용 심볼
-  // 종합지수 — 임베드 위젯은 TVC:* 심볼 전용 (SP:SPX 등은 TradingView 사이트 전용으로 차단됨)
-  if (symbol === 'SPX') return 'TVC:SPX';
-  if (symbol === 'NDX') return 'TVC:NDX';
-  if (symbol === 'DJI') return 'TVC:DJI';
+  // 종합지수 — SP:SPX/TVC:SPX 등은 임베드에서 차단됨 (TradingView 독점 데이터)
+  // CME 선물 심볼 사용: 실제 지수 가격대(S&P 5800+, NDX 21000+)로 표시, 0.1~0.3% 차이
+  if (symbol === 'SPX') return 'CME_MINI:ES1!';   // E-mini S&P 500 선물
+  if (symbol === 'NDX') return 'CME:NQ1!';         // Nasdaq-100 E-mini 선물
+  if (symbol === 'DJI') return 'CBOT:YM1!';        // E-mini Dow Jones 선물
   var s = symbol.replace('-', '.');
   if (NYSE_SYMS[symbol]) return 'NYSE:' + s;
   if (AMEX_SYMS[symbol]) return 'AMEX:' + s;

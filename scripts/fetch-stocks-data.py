@@ -24,7 +24,7 @@ except ImportError:
 # 미국 시총 100: GOOG/GOOGL 중 GOOGL만 포함, BRK-B만 포함, TSM/ASML/SPCX 포함
 # SPCX = SpaceX (2026-06-12 나스닥 상장, 시총 약 $2.6조 — 미국 3~5위권)
 US_TOP100 = [
-    'NVDA', 'AAPL', 'SPCX', 'MSFT', 'AMZN', 'GOOGL', 'META', 'TSLA', 'BRK-B', 'AVGO',
+    'NVDA', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'SPCX', 'META', 'TSLA', 'BRK-B', 'AVGO',
     'LLY',  'JPM',  'UNH', 'V',    'XOM',  'MA',   'COST', 'PG',  'JNJ',  'HD',
     'NFLX', 'ABBV', 'BAC', 'WMT',  'MRK',  'KO',   'CVX',  'ASML','ORCL', 'AMD',
     'CRM',  'ADBE', 'TMO', 'ACN',  'LIN',  'MCD',  'CSCO', 'ABT', 'GE',   'INTU',
