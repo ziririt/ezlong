@@ -3,65 +3,81 @@
   "name": "이더리움",
   "assetType": "crypto",
   "market": "us",
-  "updatedAt": "2026-06-17T13:06:05.511Z",
+  "updatedAt": "2026-06-17T14:05:50.739Z",
   "price": {
-    "current": 1756.1,
-    "change": -34.2982,
-    "changePct": -1.92,
+    "current": 1754.3,
+    "change": -36.0982,
+    "changePct": -2.02,
     "high52": 4953.733,
     "low52": 1506.5057,
     "pos52": 7.2,
-    "marketState": "PRE",
+    "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 1767.2871,
-    "sma50": 2036.2256,
-    "sma100": 2115.1882,
-    "sma200": 2389.41,
-    "rsi": 42.09,
+    "sma20": 1767.1971,
+    "sma50": 2036.1896,
+    "sma100": 2115.1702,
+    "sma200": 2389.401,
+    "rsi": 41.96,
     "macd": {
-      "macd": -86.690274,
-      "signal": -112.334279,
-      "histogram": 25.644005
+      "macd": -86.833858,
+      "signal": -112.362995,
+      "histogram": 25.529138
     },
     "bb": {
-      "upper": 2050.439,
-      "middle": 1767.2871,
-      "lower": 1484.1352,
-      "bandwidth": 0.3204
+      "upper": 2050.3643,
+      "middle": 1767.1971,
+      "lower": 1484.0299,
+      "bandwidth": 0.3205
     }
   },
   "levels": {
     "swingResistance": 1872.9396,
     "swingSupport": 1753.3154,
     "pivot": {
-      "pp": 1768.38,
-      "r1": 2030.26,
-      "r2": 2304.42,
-      "s1": 1494.22,
-      "s2": 1232.35
+      "pp": 1767.78,
+      "r1": 2029.06,
+      "r2": 2303.82,
+      "s1": 1493.02,
+      "s2": 1231.75
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "횡보",
+    "strength": 2,
     "support": 1753.32,
     "resistance": 1872.94,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "중단",
+    "stage": "축적구간",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 4,
+    "scoreReason": "RSI 과매도 탈출했으나 추세 전환 미확인",
+    "rsiTrajectory": "30.8 → 42.0 (과매도탈출)",
+    "macdTrajectory": "히스토 -8.0004 → 25.5291 (개선)",
+    "pricePattern": "Higher Low 또는 Lower High 또는 횡보 — 5일 저가($1,654.21)가 20일 저가($1,506.51)보다 높음",
+    "volComment": "거래량비 1.02 (정상)",
+    "bbPosition": "중단근처",
+    "reason": "최근 5거래일 변동률은 -2.02%, -0.25%, +4.08%, +2.64%, +0.91%로 방향성 부재. RSI는 과매도 구간을 탈출했으나 50 이상으로 안착하지 못했고, MACD 히스토그램은 개선되고 있으나 아직 골든크로스 발생 전임. 주봉 RSI 34.1, 주봉 MACD 히스토그램 -7.0475로 여전히 약세 구간임.",
+    "entry": 1753.32,
+    "stop": 1654.21,
+    "target": 1872.94,
+    "invalidation": 2042.54,
+    "weeklyConflict": "주봉은 약세이나 일봉 신호 우선",
+    "profitTarget1": 1800,
+    "profitTarget2": 1850,
+    "stopLoss": 1654.21,
+    "narrative": "현재 가격은 52주 저점 대비 7.2% 수준으로, 52주 저가($1,506.51)와 스윙 지지선($1,753.32) 사이에서 횡보 중이다. 최근 5거래일 일봉 변동률은 방향성을 보여주지 못하고 있으며, RSI는 과매도 구간을 탈출했지만 50 이상으로 확실한 상승 추세를 보이지 않고 있다. MACD 히스토그램은 개선되고 있으나, 주봉 지표들은 여전히 약세를 나타내고 있어 추가 상승보다는 횡보하며 에너지를 축적할 가능성이 높다. 따라서 1,753.32 지지선 이탈 시 추가 하락 가능성이 있으며, 1,872.94 저항선 돌파 시 상승 추세로 전환될 수 있다. 현재로서는 명확한 방향성이 없어 관망이 최선이다.",
+    "patternNote": "현재 가격은 52주 저가($1,506.51)와 스윙 지지선($1,753.32) 사이에서 횡보하며 축적 구간을 형성하고 있다.",
+    "keyPoints": [
+      "최근 5거래일 일봉 변동률 방향성 부재",
+      "RSI 과매도 탈출했으나 50 이상 안착 실패",
+      "주봉 지표 여전히 약세, 일봉 기준 관망 필요"
+    ],
+    "riskNote": "1,753.32 스윙 지지선 이탈 시 급락 위험이 존재한다."
   }
 }

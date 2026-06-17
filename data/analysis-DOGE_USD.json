@@ -3,15 +3,15 @@
   "name": "도지코인",
   "assetType": "crypto",
   "market": "us",
-  "updatedAt": "2026-06-17T13:06:31.126Z",
+  "updatedAt": "2026-06-17T14:06:40.371Z",
   "price": {
-    "current": 0.0861,
-    "change": -0.001,
-    "changePct": -1.19,
+    "current": 0.0862,
+    "change": -0.0009,
+    "changePct": -1.08,
     "high52": 0.3056,
     "low52": 0.0781,
     "pos52": 3.5,
-    "marketState": "PRE",
+    "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
@@ -21,17 +21,17 @@
     "sma50": 0.1001,
     "sma100": 0.0973,
     "sma200": 0.1086,
-    "rsi": 37.28,
+    "rsi": 37.42,
     "macd": {
-      "macd": -0.003724,
-      "signal": -0.004264,
-      "histogram": 0.00054
+      "macd": -0.003717,
+      "signal": -0.004262,
+      "histogram": 0.000545
     },
     "bb": {
       "upper": 0.1015,
       "middle": 0.0893,
       "lower": 0.0772,
-      "bandwidth": 0.2716
+      "bandwidth": 0.2715
     }
   },
   "levels": {
@@ -46,38 +46,38 @@
     }
   },
   "analysis": {
-    "trend": "횡보",
+    "trend": "약세",
     "strength": 2,
     "support": 0.08,
     "resistance": 0.09,
     "rsiStatus": "과매도",
     "macdStatus": "중립",
-    "bbStatus": "중단",
+    "bbStatus": "하단접근",
     "stage": "축적구간",
-    "action": "관망",
-    "buyScore": 4,
-    "scoreReason": "RSI 과매도 탈출 시도, 5일 저가 지지 확인",
-    "rsiTrajectory": "35.2 → 37.3 (과매도탈출 중)",
+    "action": "매수",
+    "buyScore": 6,
+    "scoreReason": "RSI 과매도 탈출 + 5일 저가 지지 확인",
+    "rsiTrajectory": "35.2 → 37.4 (과매도 탈출 중)",
     "macdTrajectory": "히스토 -0.0005 → 0.0005 (개선 중)",
-    "pricePattern": "5일 저가 0.09, 20일 저가 0.08로 Higher Low 패턴 형성 중",
-    "volComment": "거래량비 0.75 (위축)",
-    "bbPosition": "중단근처",
-    "reason": "최근 5거래일 연속 하락 후 RSI 과매도 구간에서 반등 시도 중. 5일 저가가 20일 저가보다 높아 회복 가능성 있으나, 거래량 부진으로 추세 전환 확신 부족.",
+    "pricePattern": "5일 저가 $0.09, 20일 저가 $0.08. Higher Low 패턴 형성 중.",
+    "volComment": "거래량비 0.66 (위축)",
+    "bbPosition": "하단근처",
+    "reason": "최근 5거래일 연속 하락 후 RSI가 과매도 구간에서 반등하기 시작했으며, 5일 저가가 20일 저가보다 높아 회복 신호가 나타나고 있다. MACD 히스토그램도 개선되는 모습을 보이고 있다.",
     "entry": 0.09,
-    "stop": 0.08,
-    "target": 0.1,
+    "stop": 0.07,
+    "target": 0.11,
     "invalidation": 0.08,
-    "weeklyConflict": "충돌 없음",
+    "weeklyConflict": "주봉 RSI 36.4로 약세이나 일봉 신호 우선",
     "profitTarget1": 0.1,
     "profitTarget2": 0.11,
     "stopLoss": 0.08,
-    "narrative": "최근 5거래일 연속 하락세가 멈추고 0.09달러 저항선 부근에서 횡보 중이다. RSI는 과매도 구간에서 상승하며 반등 신호를 보내고 있으며, MACD 히스토그램도 개선되는 모습을 보인다. 5일 저가가 20일 저가보다 높아 회복 가능성이 있으나, 거래량이 5일 평균의 75% 수준으로 부진하여 추세 전환을 확신하기 어렵다. 0.08달러 지지선이 깨지지 않는다면 0.10달러 저항선 돌파를 시도할 수 있다.",
-    "patternNote": "현재 가격은 0.08달러 지지선과 0.09달러 저항선 사이에서 좁은 범위 내에서 움직이고 있다.",
+    "narrative": "최근 5거래일 동안 3일 연속 하락하며 약세를 보였으나, 현재가 $0.09는 52주 저가 $0.08과 가까운 지지선에 위치한다. RSI가 35.2에서 37.4로 상승하며 과매도 구간 탈출을 시도하고 있으며, MACD 히스토그램 또한 음수에서 양수로 전환되며 개선되는 조짐을 보인다. 5일 저가 $0.09가 20일 저가 $0.08보다 높아 기술적 반등 가능성이 열려있다. 거래량은 위축되어 있으나, 지지선에서의 반등을 기대하며 매수 진입한다.",
+    "patternNote": "현재 가격은 52주 저가 부근에서 횡보하며 바닥을 다지는 패턴을 형성하고 있다.",
     "keyPoints": [
       "RSI 과매도 탈출 시도",
-      "5일 저가 > 20일 저가 (Higher Low 형성)",
-      "거래량 부진으로 인한 추세 전환 불확실성"
+      "5일 저가 $0.09 > 20일 저가 $0.08 (Higher Low 형성)",
+      "주봉 RSI는 약세이나 일봉 기준 반등 기대"
     ],
-    "riskNote": "0.08달러 지지선이 붕괴될 경우 추가 하락 가능성이 높다."
+    "riskNote": "거래량이 동반되지 않은 반등은 지속력이 약할 수 있으며, $0.08 지지선 이탈 시 추가 하락 위험이 있다."
   }
 }
