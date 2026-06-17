@@ -417,6 +417,21 @@
 
   <!-- 패널: 반도체 -->
   <div id="panel-semi" class="panel">
+    <!-- 반도체 ETF 카드 (SOXX / SOXL) — 종합지수 카드와 동일 구조 -->
+    <div class="index-bar" id="semi-etf-bar">
+      <div class="ix-card" onclick="openDetail('SOXX')">
+        <div class="ix-name">SOXX</div>
+        <div class="ix-spark" id="semi-soxx-spark"></div>
+        <div class="ix-price" id="semi-soxx-price">--</div>
+        <div class="ix-pct flat" id="semi-soxx-pct">--</div>
+      </div>
+      <div class="ix-card" onclick="openDetail('SOXL')">
+        <div class="ix-name">SOXL 3×</div>
+        <div class="ix-spark" id="semi-soxl-spark"></div>
+        <div class="ix-price" id="semi-soxl-price">--</div>
+        <div class="ix-pct flat" id="semi-soxl-pct">--</div>
+      </div>
+    </div>
     <div id="list-semi" class="stock-list"></div>
   </div>
 
@@ -613,6 +628,7 @@ async function loadData() {
 
     renderAll();
     renderIndexCards();
+    renderSemiEtfCards();
     var hash = location.hash.slice(1);
     if (hash) fillDetail(hash);
   } catch(e) {
@@ -821,6 +837,46 @@ function renderIndexCards() {
     // 지수 값: 달러 기호 없이, 콤마 3자리 포맷
     if (price != null) {
       priceEl.textContent = price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    } else {
+      priceEl.textContent = '--';
+    }
+
+    if (pct != null) {
+      var sign = pct >= 0 ? '+' : '';
+      pctEl.textContent = sign + pct.toFixed(2) + '%';
+      pctEl.className   = 'ix-pct ' + (pct > 0 ? 'up' : pct < 0 ? 'dn' : 'flat');
+    } else {
+      pctEl.textContent = '--';
+      pctEl.className   = 'ix-pct flat';
+    }
+  });
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 반도체 ETF 카드 (SOXX / SOXL)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderSemiEtfCards() {
+  var SEMI_ETFS = [
+    { sym: 'SOXX', sparkEl: 'semi-soxx-spark', priceEl: 'semi-soxx-price', pctEl: 'semi-soxx-pct' },
+    { sym: 'SOXL', sparkEl: 'semi-soxl-spark', priceEl: 'semi-soxl-price', pctEl: 'semi-soxl-pct' },
+  ];
+  SEMI_ETFS.forEach(function(c) {
+    var item   = findItem(c.sym);
+    var live   = (pricesData && pricesData.prices && pricesData.prices[c.sym]) || null;
+    var price  = (live && live.price     != null) ? live.price     : (item ? item.price     : null);
+    var pct    = (live && live.changePct != null) ? live.changePct : (item ? item.changePct : null);
+    var sparks = item ? (item.sparkline || []) : [];
+
+    var isUp    = pct != null ? pct >= 0 : true;
+    var sparkEl = document.getElementById(c.sparkEl);
+    var priceEl = document.getElementById(c.priceEl);
+    var pctEl   = document.getElementById(c.pctEl);
+    if (!sparkEl || !priceEl || !pctEl) return;
+
+    sparkEl.innerHTML = buildSparklineSmall(sparks, isUp);
+
+    if (price != null) {
+      priceEl.textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     } else {
       priceEl.textContent = '--';
     }
@@ -1136,9 +1192,10 @@ var EXTRA_NAMES = {
 
 function getTVSym(symbol) {
   // 종합지수 — TradingView 임베드 위젯에서 작동하는 심볼
-  if (symbol === 'SPX') return 'SP:SPX';        // S&P 500
-  if (symbol === 'NDX') return 'NASDAQ:NDX';    // Nasdaq 100 (사용자 확인: symbol=NASDAQ%3ANDX)
-  if (symbol === 'DJI') return 'DJ:DJI';        // Dow Jones Industrial Average
+  // SP:SPX / DJ:DJI 는 "TradingView에서만 제공되는 심볼" 알림 → 브로커 CFD 심볼로 교체
+  if (symbol === 'SPX') return 'CAPITALCOM:US500';  // S&P 500 CFD (Capital.com, 임베드 무료 제공)
+  if (symbol === 'NDX') return 'NASDAQ:NDX';        // Nasdaq 100 (사용자 확인: 정상 작동)
+  if (symbol === 'DJI') return 'CAPITALCOM:US30';   // Dow Jones CFD (Capital.com)
   var s = symbol.replace('-', '.');
   if (NYSE_SYMS[symbol]) return 'NYSE:' + s;
   if (AMEX_SYMS[symbol]) return 'AMEX:' + s;
