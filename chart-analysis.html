@@ -103,8 +103,8 @@
 .ca-ticker-name { font-size: 14px; color: var(--ez-text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .ca-ticker-right { text-align: right; flex-shrink: 0; }
-.ca-ticker-price { font-size: 14px; font-weight: 600; color: var(--ez-text); font-family: var(--ez-mono); }
-.ca-ticker-chg   { font-size: 14px; font-family: var(--ez-mono); }
+.ca-ticker-price { font-size: 14px; font-weight: 600; color: var(--ez-text); }
+.ca-ticker-chg   { font-size: 14px; }
 .ca-ticker-chg.up   { color: var(--ez-green); }
 .ca-ticker-chg.down { color: var(--ez-red); }
 
@@ -155,8 +155,8 @@
   margin-top: 6px;
   flex-wrap: wrap;
 }
-.ca-ph-price { font-size: 28px; font-weight: 800; font-family: var(--ez-mono); color: var(--ez-text); letter-spacing: -0.02em; }
-.ca-ph-change { font-size: 16px; font-weight: 600; font-family: var(--ez-mono); }
+.ca-ph-price { font-size: 28px; font-weight: 800; color: var(--ez-text); letter-spacing: -0.02em; }
+.ca-ph-change { font-size: 16px; font-weight: 600; }
 .ca-ph-change.up   { color: var(--ez-green); }
 .ca-ph-change.down { color: var(--ez-red); }
 .ca-ph-state {
@@ -197,7 +197,7 @@
   border-radius: 3px;
   background: linear-gradient(90deg, var(--ez-red), var(--ez-amber), var(--ez-green));
 }
-.ca-ph-52-labels { display: flex; justify-content: space-between; font-size: 14px; color: var(--ez-text2); font-family: var(--ez-mono); width: 140px; margin-left: auto; }
+.ca-ph-52-labels { display: flex; justify-content: space-between; font-size: 14px; color: var(--ez-text2); width: 140px; margin-left: auto; }
 
 /* ── 차트/분석 탭 ────────────────────────────────────────── */
 .ca-tabs {
@@ -424,7 +424,7 @@
 }
 .ca-ind-cell-label { font-size: 14px; color: var(--ez-text2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
 .ca-ind-cell-val   { font-size: 14px; font-weight: 700; color: var(--ez-text); }
-.ca-ind-cell-sub   { font-size: 14px; color: var(--ez-text2); margin-top: 2px; font-family: var(--ez-mono); }
+.ca-ind-cell-sub   { font-size: 14px; color: var(--ez-text2); margin-top: 2px; }
 
 .ca-narrative {
   font-size: 14px;
@@ -497,7 +497,7 @@
   border-radius: 4px;
   transition: width 0.4s ease;
 }
-.ca-buy-score-num { font-size: 18px; font-weight: 900; font-family: var(--ez-mono); flex-shrink: 0; }
+.ca-buy-score-num { font-size: 18px; font-weight: 900; flex-shrink: 0; }
 
 /* 매수 매력도 이유 한 줄 */
 .ca-score-reason {
@@ -525,7 +525,7 @@
   text-align: center;
 }
 .ca-target-cell-label { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-.ca-target-cell-val   { font-size: 15px; font-weight: 800; font-family: var(--ez-mono); }
+.ca-target-cell-val   { font-size: 15px; font-weight: 800; }
 
 /* ── 패턴 노트 ───────────────────────────────────────────── */
 .ca-pattern-note {
@@ -687,7 +687,7 @@
   .ca-ind-grid { grid-template-columns: repeat(2, 1fr); }
   .ca-ph-52-bar, .ca-ph-52-labels { width: 100px; }
   .ca-targets-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
-  .ca-target-cell-val { font-size: 13px; }
+  .ca-target-cell-val { font-size: 14px; }
 }
 
 /* ── 다크모드 차트 색상 변수 ──────────────────────────────── */
