@@ -5,6 +5,103 @@
 
 ---
 
+## [2026-06-18] — Massive API 실시간 주가 연동 + stocks.html 차트 개선
+
+### 커밋 이력 (주요 작업)
+
+. `154661be9` — fetch+reset 충돌 해결 + 포트폴리오 ID 레이블 변경
+. `67c26e503` — fetch+reset 방식으로 push 충돌 완전 해결
+. `4a4414c41` — 실시간 주가 UI + 확장시간 표시 + nav/footer 업데이트
+. `0c77e4160` — shallow clone 충돌 제거, pull --rebase 제거
+. `5dd0a3a6e` — Massive API 실시간 가격 + 확장시간(프리/포스트/나이트마켓) 표시
+. `22913a33b` — 1D 차트 15분봉·오늘 세션·프리포스트마켓 적용
+. `d24224dd6` — fetch-stocks-prices.yml 주석 제거
+
+---
+
+### 1. 신규 파일: `scripts/fetch-stocks-prices.py`
+
+Massive API (구 Polygon.io) 를 호출해 220개 종목 현재가·등락률·확장시간 데이터를 `data/stocks-prices.json`에 저장. stdlib만 사용, yfinance 불필요. 배치 200개씩 API 호출.
+
+출력 필드: `price`, `change`, `changePct`, `extPrice`, `extPct`, `extSession`('pre'|'post'|null)
+
+확장시간 로직:
+. postMarket.c → day.c 대비 등락률 → session='post'
+. preMarket.c → prevDay.c 대비 등락률 → session='pre'
+. 차이가 0.001 미만이면 None 처리
+
+---
+
+### 2. 신규 파일: `.github/workflows/fetch-stocks-prices.yml`
+
+GitHub Actions 스케줄: 월~금 장중(ET 3am~6pm) + 포스트/나이트마켓(ET 7pm~11:50pm) 10분 간격 실행.
+
+**핵심 수정 이력 — 반복 실패 5회 끝에 확정된 git 커밋 패턴:**
+
+```bash
+# ❌ 실패 패턴 — unstaged 파일이 있으면 rebase 즉시 실패
+git pull --rebase origin main
+
+# ✅ 확정 패턴 (untracked 파일은 reset --hard로 삭제되지 않음)
+git fetch origin main
+git reset --hard origin/main
+git add data/stocks-prices.json
+git commit -m "data: ..."
+git push origin main
+```
+
+→ CLAUDE.md 규칙 16 추가
+
+---
+
+### 3. `stocks.html` — 이중 JSON 아키텍처 + 확장시간 UI
+
+**이중 JSON 구조:**
+. `stocks-data.json` — 1일 1회, 스파크라인+종목명
+. `stocks-prices.json` — 10분마다, 현재가+등락률+확장시간
+
+**확장시간 표시 (야후 파이낸스 동일 구조):**
+. 종가 + 정규장 등락률 (기존)
+. ☽ / ☀ 아이콘 + 포스트/프리마켓 등락률 (신규)
+
+**기타 변경:**
+. `나의 ID` → `동기화를 위한 나의 ID` 버튼 레이블 변경
+. 타임스탬프: `주가 HH:MM KST · 15분마다 업데이트`
+
+---
+
+### 4. 보안 확인 — API 키 미노출 검증
+
+```bash
+grep -rn "MASSIVE_API_KEY\|massive\.com.*apiKey" *.html *.js # 결과 0 확인
+```
+
+MASSIVE_API_KEY는 GitHub Secret에만 저장. 클라이언트 코드 완전 미노출.
+
+---
+
+### 5. 신규 규칙 (CLAUDE.md)
+
+. 규칙 16 — GitHub Actions git 커밋 패턴 (pull--rebase 절대 금지)
+. 규칙 17 — Massive API 보안 규칙 및 이중 JSON 아키텍처
+
+---
+
+### 6. [당일 추가] stocks.html 차트 개선 (2026-06-18 후속)
+
+. **1D 15분봉 수정** — `range:'1D'` 제거: TradingView가 `interval:'15'`를 `range:'1D'`와 함께 쓰면 1분봉으로 강제 변경하는 것 확인. range 완전 제거로 15분봉 확정.
+. **시간대 KST 변경** — `timezone: 'America/New_York'` → `timezone: 'Asia/Seoul'`
+. **이평선 개편** — 50/100/200일 → 10/50/100일, 색상 부여: 10일=파랑(#3B82F6), 50일=보라(#8B5CF6), 100일=회색(#9CA3AF)
+. CLAUDE.md 규칙 13 보강 — `interval:'15' + range:'1D'`도 금지 목록에 추가
+
+**복구 명령 (이평선 이전 버전으로):**
+```bash
+git revert HEAD  # 또는
+git checkout <이전 커밋 SHA> -- stocks.html
+```
+
+---
+
 ## [2026-06-17] — chart-analysis.html 모노스페이스 폰트 전면 제거 + CLAUDE.md 규칙 15 추가
 
 ### 커밋: `417c3a51c`

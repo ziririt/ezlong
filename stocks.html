@@ -776,9 +776,10 @@ function findItem(symbol) {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // TRADINGVIEW
 // CLAUDE.md 규칙 13: interval:'D' + range 동시 사용 절대 금지
+// 주의: range:'1D' + interval:'15' 조합도 TradingView가 interval을 1분봉으로 오버라이드함 → range 완전 제거
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 var TV_PERIOD_MAP = {
-  '1D':  { interval: '15', range: '1D'  },   // 15분봉 + 오늘 세션. interval:'D' 가 아니므로 range 충돌 없음 (규칙 13은 interval:'D' 한정)
+  '1D':  { interval: '15' },   // range 제거 필수 — range:'1D' 지정 시 TradingView가 1분봉으로 강제 변경
   '5D':  { interval: '60', range: '5D'  },
   '1M':  { interval: 'D'               },   // ← range 없음 필수
   '3M':  { interval: 'D'               },   // ← range 없음 필수
@@ -975,15 +976,15 @@ function isDark() {
 
 // 기간별 보조지표:
 // 1D/5D → RSI + MACD만 (인트라데이, 이평선은 '일봉' 기준 아님)
-// 1M 이상 → MA(50/100/200) + RSI + MACD
+// 1M 이상 → MA(10/50/100) + RSI + MACD  (10=파랑, 50=보라, 100=회색)
 function getStudies(period) {
   var osc = ['RSI@tv-basicstudies', 'MACD@tv-basicstudies'];
   var intraday = ['1D', '5D'];
   if (intraday.indexOf(period) >= 0) return osc;
   return [
-    { id: 'MASimple@tv-basicstudies', inputs: { length: 50  } },
-    { id: 'MASimple@tv-basicstudies', inputs: { length: 100 } },
-    { id: 'MASimple@tv-basicstudies', inputs: { length: 200 } },
+    { id: 'MASimple@tv-basicstudies', inputs: { length: 10  }, overrides: { 'Plot.color': '#3B82F6', 'Plot.linewidth': 2 } },  // 10일 — 파랑
+    { id: 'MASimple@tv-basicstudies', inputs: { length: 50  }, overrides: { 'Plot.color': '#8B5CF6', 'Plot.linewidth': 2 } },  // 50일 — 보라
+    { id: 'MASimple@tv-basicstudies', inputs: { length: 100 }, overrides: { 'Plot.color': '#9CA3AF', 'Plot.linewidth': 2 } },  // 100일 — 회색
   ].concat(osc);
 }
 
@@ -1014,7 +1015,7 @@ function renderTVChart(symbol, period) {
     autosize:          true,
     theme:             isDark() ? 'dark' : 'light',
     locale:            'kr',
-    timezone:          'America/New_York',
+    timezone:          'Asia/Seoul',
     style:             '1',
     hide_side_toolbar: false,
     hide_top_toolbar:  false,

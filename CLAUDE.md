@@ -279,15 +279,17 @@ cd data/ && ls | grep " " | while IFS= read -r f; do rm -f "$f"; done
 
 ```javascript
 // 이 조합 절대 금지 — range가 interval을 덮어씀
-{ interval: 'D', range: '6M' }   // ❌ 금지
-{ interval: 'D', range: '12M' }  // ❌ 금지 (어떤 range 값이든 금지)
+{ interval: 'D',  range: '6M' }   // ❌ 금지 — interval:'D' + range
+{ interval: 'D',  range: '12M' }  // ❌ 금지 (어떤 range 값이든 금지)
+{ interval: '15', range: '1D' }   // ❌ 금지 — 2026-06-18 확인: 이 조합도 TradingView가 1분봉으로 강제 변경
 ```
 
 ### 올바른 방법
 
 ```javascript
 // interval만 단독 사용 — range 파라미터 아예 제거
-{ interval: 'D' }   // ✅ 일봉 고정
+{ interval: 'D'  }   // ✅ 일봉 고정
+{ interval: '15' }   // ✅ 15분봉 고정 (1D 뷰에서 range 없이 단독 사용)
 ```
 
 ### 추가 방어 — localStorage 클리어 필수
@@ -397,6 +399,78 @@ grep -rn "font-family.*ez-mono\|font-family.*SF Mono\|font-variant-numeric" *.ht
 - `atmr-dashboard.html`
 - `chart-analysis.html`
 - 새로 추가된 HTML 파일
+
+---
+
+## 16. GitHub Actions git 커밋 패턴 — pull --rebase 절대 금지 (2026-06-18 명문화)
+
+**배경:** `fetch-stocks-prices.yml` 워크플로우에서 `git pull --rebase`를 사용하다 5회 이상 `cannot pull with rebase: You have unstaged changes` 에러 반복. Python 스크립트가 생성한 파일이 unstaged 상태에서 rebase를 시도하면 무조건 실패한다.
+
+### 절대 금지
+
+```yaml
+# Actions 워크플로우에서 이 패턴 절대 금지
+- run: git pull --rebase origin main   # ❌ unstaged 파일 있으면 실패
+- run: git pull origin main            # ❌ merge commit 생성 위험
+```
+
+### 올바른 패턴 (GitHub Actions 전용)
+
+```yaml
+- name: Commit & push
+  run: |
+    git config user.name  "github-actions[bot]"
+    git config user.email "github-actions[bot]@users.noreply.github.com"
+    git fetch origin main
+    git reset --hard origin/main      # 로컬을 원격 기준으로 리셋 (untracked 파일은 보존됨)
+    git add data/파일명.json           # 파일 명시 — git add -A 절대 금지
+    if git diff --staged --quiet; then
+      echo "변경 없음 — 커밋 생략"
+    else
+      git commit -m "data: 파일명 ${KST}"
+      git push origin main
+    fi
+```
+
+### 핵심 원리
+
+`git reset --hard origin/main`은 **untracked 파일을 건드리지 않는다.** Python 스크립트가 방금 생성한 JSON 파일은 untracked 상태이므로 reset 후에도 살아있다. 그 다음 `git add`로 명시적으로 추가하면 정상 동작.
+
+---
+
+## 17. Massive API 보안 규칙 및 이중 JSON 아키텍처 (2026-06-18 명문화)
+
+**배경:** stocks.html에 실시간 주가를 표시하기 위해 Massive API (구 Polygon.io) 도입. API 키를 클라이언트 코드에 절대 노출하지 않는 구조로 확정.
+
+### API 키 보안 — 절대 규칙
+
+```
+MASSIVE_API_KEY → GitHub Secret에만 저장
+클라이언트 HTML/JS → 절대 포함 금지
+```
+
+노출 여부 점검:
+```bash
+grep -rn "MASSIVE_API_KEY\|massive\.com.*apiKey" *.html *.js | grep -v ".py\|.yml"
+# 결과 0이어야 정상
+```
+
+### 이중 JSON 아키텍처
+
+| 파일 | 갱신 주기 | 내용 | 실행 주체 |
+|------|-----------|------|-----------|
+| `data/stocks-data.json` | 1일 1회 (장 마감 후) | 스파크라인 + 종목명 + 섹터 | yfinance GitHub Actions |
+| `data/stocks-prices.json` | 10분마다 (장중) | 현재가 + 등락률 + 확장시간 | Massive API GitHub Actions |
+
+- `stocks.html`은 두 JSON을 `Promise.all`로 병렬 fetch
+- `pricesData`(Massive) 있으면 price/changePct 덮어씀, 없으면 `stocks-data.json` 값 그대로 사용
+- 확장시간: `extPrice`, `extPct`, `extSession` (`'pre'` | `'post'` | null)
+
+### 요금제
+
+- **현재: $29/월 Stocks Starter** — 15분 지연 데이터
+- 실시간($199/월)은 추후 업그레이드 예정
+- UI 표기: `"15분마다 업데이트"` — "(15분 지연)" 표현 금지
 
 ---
 
