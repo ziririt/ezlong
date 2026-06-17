@@ -17,7 +17,9 @@ const fs     = require('fs');
 const path   = require('path');
 
 // ─── 설정 ──────────────────────────────────────────────────────────────────
-const DELAY_MS = 800;  // Yahoo Finance 연속 호출 간격
+const DELAY_MS      = 2500;   // Yahoo Finance 연속 호출 간격 (429 방지: 넉넉히)
+const RETRY_MAX     = 3;      // 429/에러 시 최대 재시도 횟수
+const RETRY_BASE_MS = 3000;   // 재시도 기본 대기 (지수 증가: 3s → 6s → 12s)
 
 // QQQ, VOO: 주 지표 / TSLA, NVDA: Two Kings / DIA, IWM, SOXX: 시장 폭
 const SYMBOLS = ['QQQ', 'VOO', 'TSLA', 'NVDA', 'DIA', 'IWM', 'SOXX'];
@@ -64,13 +66,39 @@ function httpGetRaw(hostname, reqPath, extraHeaders) {
 }
 
 
+// ─── Yahoo Finance: 재시도 래퍼 ─────────────────────────────────────────────
+// 429 Too Many Requests 또는 기타 에러 시 지수 백오프로 재시도
+async function yfGet(hostname, reqPath) {
+  let lastErr;
+  for (let attempt = 0; attempt < RETRY_MAX; attempt++) {
+    if (attempt > 0) {
+      const wait = RETRY_BASE_MS * Math.pow(2, attempt - 1);
+      console.log(`  [YF] 재시도 ${attempt}/${RETRY_MAX - 1} — ${wait}ms 대기...`);
+      await sleep(wait);
+    }
+    try {
+      const r = await httpGetRaw(hostname, reqPath, {});
+      if (r.status === 429) {
+        lastErr = new Error(`HTTP 429 Too Many Requests`);
+        console.warn(`  [YF] 429 rate-limited (시도 ${attempt + 1}/${RETRY_MAX})`);
+        continue;  // 재시도
+      }
+      return r;
+    } catch (e) {
+      lastErr = e;
+      console.warn(`  [YF] 요청 에러 (시도 ${attempt + 1}/${RETRY_MAX}): ${e.message}`);
+    }
+  }
+  throw lastErr;
+}
+
+
 // ─── Yahoo Finance: 종목 히스토리 수집 (2년치 일봉) ──────────────────────────
 async function fetchYFHistory(symbol) {
   const encoded = encodeURIComponent(symbol);
-  const r = await httpGetRaw(
+  const r = await yfGet(
     'query1.finance.yahoo.com',
-    `/v8/finance/chart/${encoded}?interval=1d&range=2y`,
-    {}
+    `/v8/finance/chart/${encoded}?interval=1d&range=2y`
   );
   if (r.status !== 200) throw new Error(`HTTP ${r.status}`);
 
@@ -137,10 +165,9 @@ async function fetchYFHistory(symbol) {
 async function fetchYFPrice(symbol) {
   try {
     const encoded = encodeURIComponent(symbol);
-    const r = await httpGetRaw(
+    const r = await yfGet(
       'query1.finance.yahoo.com',
-      `/v8/finance/chart/${encoded}?interval=1d&range=5d`,
-      {}
+      `/v8/finance/chart/${encoded}?interval=1d&range=5d`
     );
     if (r.status !== 200) throw new Error(`HTTP ${r.status}`);
     let json;
