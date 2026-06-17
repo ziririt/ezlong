@@ -38,7 +38,6 @@
       border-radius: 12px;
       padding: 10px 10px;
       cursor: pointer;
-      text-decoration: none;
       transition: opacity .15s;
       -webkit-tap-highlight-color: transparent;
     }
@@ -326,7 +325,7 @@
 
   <!-- 종합지수 카드 (S&P 500 / Nasdaq / Dow 30) -->
   <div class="index-bar" id="index-bar">
-    <a class="ix-card" id="ix-sp500" href="https://www.tradingview.com/symbols/SPX/?exchange=SP" target="_blank" rel="noopener">
+    <div class="ix-card" id="ix-sp500" onclick="openDetail('SPX')">
       <div class="ix-left">
         <div class="ix-name">S&amp;P 500</div>
         <div class="ix-etf">SPY</div>
@@ -336,8 +335,8 @@
         <div class="ix-price" id="ix-sp-price">--</div>
         <div class="ix-pct flat" id="ix-sp-pct">--</div>
       </div>
-    </a>
-    <a class="ix-card" id="ix-nasdaq" href="https://www.tradingview.com/symbols/NASDAQ-NDX/" target="_blank" rel="noopener">
+    </div>
+    <div class="ix-card" id="ix-nasdaq" onclick="openDetail('NDX')">
       <div class="ix-left">
         <div class="ix-name">Nasdaq</div>
         <div class="ix-etf">QQQ</div>
@@ -347,8 +346,8 @@
         <div class="ix-price" id="ix-qq-price">--</div>
         <div class="ix-pct flat" id="ix-qq-pct">--</div>
       </div>
-    </a>
-    <a class="ix-card" id="ix-dow" href="https://www.tradingview.com/symbols/DJ-DJI/" target="_blank" rel="noopener">
+    </div>
+    <div class="ix-card" id="ix-dow" onclick="openDetail('DJI')">
       <div class="ix-left">
         <div class="ix-name">Dow 30</div>
         <div class="ix-etf">DIA</div>
@@ -358,7 +357,7 @@
         <div class="ix-price" id="ix-di-price">--</div>
         <div class="ix-pct flat" id="ix-di-pct">--</div>
       </div>
-    </a>
+    </div>
   </div>
 
   <!-- 메인 탭 (4개, 플랫) -->
@@ -1078,9 +1077,17 @@ var EXTRA_NAMES = {
   // 비트코인 ETF
   'IBIT':  'iShares Bitcoin Trust ETF',
   'FBTC':  'Fidelity Wise Origin Bitcoin ETF',
+  // 종합지수 (인덱스 카드 클릭 시 디테일 페이지)
+  'SPX':   'S&P 500 Index',
+  'NDX':   'Nasdaq 100 Index',
+  'DJI':   'Dow Jones Industrial Average',
 };
 
 function getTVSym(symbol) {
+  // 종합지수 — TradingView 전용 심볼
+  if (symbol === 'SPX') return 'SP:SPX';
+  if (symbol === 'NDX') return 'NASDAQ:NDX';
+  if (symbol === 'DJI') return 'DJ:DJI';
   var s = symbol.replace('-', '.');
   if (NYSE_SYMS[symbol]) return 'NYSE:' + s;
   if (AMEX_SYMS[symbol]) return 'AMEX:' + s;
