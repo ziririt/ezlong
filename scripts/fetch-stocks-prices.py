@@ -67,7 +67,7 @@ SP500_TOP100 = [
 
 ETF_LIST = [
     'QQQ',  'SPY',  'DIA',  'IVV',  'VOO',  'VTI',  'IWM',  'SOXX', 'SMH',  'XLK',
-    'XLF',  'XLE',  'XLV',  'XLY',  'XLI',  'ARKK', 'TQQQ', 'SQQQ', 'SOXL', 'SOXS',
+    'XLF',  'XLE',  'XLV',  'XLY',  'XLI',  'ARKK', 'TQQQ', 'QLD',  'SQQQ', 'SOXL', 'SOXS',
     'UPRO', 'GLD',  'SLV',  'TLT',  'HYG',  'LQD',  'VNQ',  'XBI',  'IBB',  'ICLN', 'BOTZ',
 ]
 
