@@ -226,7 +226,13 @@ a { color: inherit; }
   overflow: hidden; box-shadow: 0 3px 12px rgba(0,0,0,0.15);
   display: block; background: transparent;
 }
-.ez-footer-book-cover img { width: 100%; display: block; }
+.ez-footer-book-cover img { width: 100%; height: auto; display: block; }
+/* 모바일: 표지 위·텍스트 아래 세로 배치 */
+@media (max-width: 639px) {
+  .ez-footer-books { flex-direction: column; gap: 28px; }
+  .ez-footer-book  { flex-direction: column; gap: 10px; }
+  .ez-footer-book-cover { width: 100px; }
+}
 .ez-footer-book-info { display: flex; flex-direction: column; gap: 3px; }
 .ez-footer-book-title { font-size: 14px; font-weight: 700; color: #1D1D1F; line-height: 1.4; margin-bottom: 6px; }
 @media (prefers-color-scheme: dark) { .ez-footer-book-title { color: #F5F5F7; } }
