@@ -325,20 +325,20 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
 .comp3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
 @media(max-width:760px){.comp3{grid-template-columns:1fr}}
 .pf-card{background:var(--surface);border-radius:var(--rs);padding:16px;border:1.5px solid var(--border)}
-.pf-card.mine{border-color:rgba(0,113,227,0.4);background:rgba(0,113,227,0.04)}
-.pf-card.maxs{border-color:rgba(209,42,42,0.4)}
-.pf-card.minv{border-color:rgba(124,58,237,0.5)}
-.pf-badge{display:inline-block;font-size:12px;font-weight:700;border-radius:4px;padding:3px 9px;margin-bottom:8px;letter-spacing:.3px}
-.pf-badge.mine{background:rgba(0,113,227,0.10);color:#0064CC}
-.pf-badge.maxs{background:rgba(209,42,42,0.10);color:#D92A2A}
-.pf-badge.minv{background:rgba(124,58,237,0.10);color:#7C3AED}
+.pf-card.mine{border-color:rgba(0,113,227,0.35);background:rgba(0,113,227,0.03)}
+.pf-card.maxs{border-color:rgba(0,0,0,0.10)}
+.pf-card.minv{border-color:rgba(0,0,0,0.10)}
+.pf-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;border-radius:5px;padding:4px 10px;margin-bottom:10px;letter-spacing:.3px}
+.pf-badge.mine{background:#0071E3;color:#fff}
+.pf-badge.maxs{background:#D92A2A;color:#fff}
+.pf-badge.minv{background:#7C3AED;color:#fff}
 @media (prefers-color-scheme: dark){
-  .pf-card.mine{border-color:rgba(10,132,255,0.5);background:rgba(10,132,255,0.08)}
-  .pf-card.maxs{border-color:rgba(255,69,58,0.5)}
-  .pf-card.minv{border-color:rgba(191,90,242,0.6)}
-  .pf-badge.mine{background:rgba(10,132,255,0.18);color:#409CFF}
-  .pf-badge.maxs{background:rgba(255,69,58,0.18);color:#FF453A}
-  .pf-badge.minv{background:rgba(191,90,242,0.18);color:#BF5AF2}
+  .pf-card.mine{border-color:rgba(10,132,255,0.4);background:rgba(10,132,255,0.06)}
+  .pf-card.maxs{border-color:rgba(255,255,255,0.10)}
+  .pf-card.minv{border-color:rgba(255,255,255,0.10)}
+  .pf-badge.mine{background:#0A84FF}
+  .pf-badge.maxs{background:#FF453A}
+  .pf-badge.minv{background:#BF5AF2}
 }
 .pf-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px}
 .pf-sub{font-size:12px;color:var(--text3);margin-bottom:12px;line-height:1.5}
@@ -398,12 +398,34 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
 .ai-bar-txt{font-size:12px;color:var(--hint);text-align:center;margin-top:6px}
 
 hr{border:none;border-top:1px solid var(--border);margin:14px 0}
-/* HEATMAP */
+/* CHART HEIGHT — responsive */
+.chart-canvas-wrap{position:relative;width:100%;height:440px}
+@media(max-width:640px){.chart-canvas-wrap{height:300px}}
+
+/* ANNUAL RETURNS — Apple-style */
+.annual-ret-wrap{padding:4px 0}
+.ar-row{display:grid;grid-template-columns:52px 1fr 70px;align-items:center;gap:14px;padding:9px 6px;border-bottom:1px solid var(--border);transition:background .1s}
+.ar-row:last-child{border-bottom:none}
+.ar-row:hover{background:var(--card2);border-radius:7px}
+.ar-year{font-size:14px;font-weight:700;color:var(--text2);text-align:center}
+.ar-bar-area{position:relative;height:8px;background:var(--border);border-radius:4px;overflow:visible}
+.ar-center-line{position:absolute;left:50%;top:0;width:1px;height:100%;background:var(--border2);z-index:1}
+.ar-bar{position:absolute;top:0;height:100%;border-radius:4px}
+.ar-bar.pos-bar{left:50%}
+.ar-bar.neg-bar{right:50%}
+.ar-pct{font-size:14px;font-weight:800;text-align:right}
+.ar-pct.pos{color:var(--green)}
+.ar-pct.neg{color:var(--red)}
+.ar-header-row{display:grid;grid-template-columns:52px 1fr 70px;align-items:center;gap:14px;padding:6px 6px 10px;border-bottom:2px solid var(--border2)}
+.ar-h{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;text-align:center}
+.ar-h.right{text-align:right}
+
+/* HEATMAP (legacy, no longer rendered) */
 .heatmap-wrap{overflow-x:auto;margin-top:10px;max-width:100%;width:100%}
 .heatmap-table{border-collapse:collapse;font-size:12px;width:100%;min-width:280px}
 .heatmap-table th{background:var(--card2);color:var(--text3);font-weight:700;padding:5px 8px;text-align:center;border:1px solid var(--border);font-size:11px;white-space:nowrap}
 .heatmap-table td{padding:5px 8px;text-align:center;border:1px solid var(--border);font-size:12px;font-weight:700;white-space:nowrap}
-.hm-yr{background:var(--card2);color:var(--text3);font-weight:700;text-align:left!important;font-size:11px}
+.hm-yr{background:var(--card2);color:var(--text3);font-weight:700;text-align:center!important;font-size:11px}
 /* CORRELATION MATRIX */
 .corr-wrap{overflow-x:auto;margin-top:10px;max-width:100%;width:100%}
 .corr-table{border-collapse:collapse;font-size:13px;width:100%}
@@ -1392,7 +1414,7 @@ function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,en
         <div class="wpct">${fp1(pf.w[i])}</div>
       </div>`:'').join('');
     const retCls=pf.ret>=0?'pos':'neg';
-    const srCls=pf.sr>=1?'blu':pf.sr>=0.5?'neu':'neg';
+    const srCls='blu';
     /* 최종 자산 / 누적 수익률 계산 */
     const N=nYears*12;
     const r_m=Math.pow(1+pf.ret,1/12)-1;
@@ -1409,12 +1431,12 @@ function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,en
       ${wrows}
       <div class="pf-stats">
         <div class="ps"><div class="ps-l">연간 수익</div><div class="ps-v ${retCls}">${fp(pf.ret)}</div></div>
-        <div class="ps"><div class="ps-l">연간 변동</div><div class="ps-v neu">${fp1(pf.vol)}</div></div>
+        <div class="ps"><div class="ps-l">연간 변동</div><div class="ps-v" style="color:var(--text2)">${fp1(pf.vol)}</div></div>
         <div class="ps"><div class="ps-l">효율점수</div><div class="ps-v ${srCls}">${pf.sr.toFixed(2)}</div></div>
       </div>
       <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
         <div class="ps"><div class="ps-l">최대 낙폭 (MDD)</div><div class="ps-v mdd-val">-${(mdd*100).toFixed(1)}%</div></div>
-        <div class="ps"><div class="ps-l">실질수익 (인플레 제외)</div><div class="ps-v ${realRet>=0?'neu':'neg'}">${fp(realRet)}</div></div>
+        <div class="ps"><div class="ps-l">실질수익 (인플레 제외)</div><div class="ps-v" style="color:var(--text2)">${fp(realRet)}</div></div>
       </div>
       <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
         <div class="ps" style="background:var(--card2)">
@@ -1473,29 +1495,36 @@ function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,en
     </div>`;
   }
 
-  /* Annual heatmap */
+  /* Annual returns — Apple-style bar chart */
   function heatmapHTML(pf){
     const rets=annualReturns(pf.w);
-    function heatColor(r){
-      const t=Math.max(-1,Math.min(1,r));
-      if(t>=0){
-        const intensity=0.15+t*0.55;
-        return `background:rgba(26,127,55,${intensity});color:${t>0.12?'#fff':'var(--text)'}`;
-      }else{
-        const t2=Math.abs(t);
-        const intensity=0.12+t2*0.55;
-        return `background:rgba(217,42,42,${intensity});color:${t2>0.12?'#fff':'var(--text)'}`;
-      }
-    }
-    const rows=rets.map(({year,ret})=>`
-      <tr><td class="hm-yr">${year}</td><td style="${heatColor(ret)}">${fp(ret)}</td></tr>`).join('');
+    const maxAbs=Math.max(...rets.map(r=>Math.abs(r.ret)),0.01);
+    const rows=rets.map(({year,ret})=>{
+      const isPos=ret>=0;
+      /* 바 너비: 최대값 대비 비율로 50% 공간 사용 */
+      const barW=(Math.abs(ret)/maxAbs*48).toFixed(1);
+      const pctStr=(ret>=0?'+':'')+(ret*100).toFixed(1)+'%';
+      const barStyle=isPos
+        ?`left:50%;width:${barW}%;background:var(--green);opacity:0.75`
+        :`right:50%;width:${barW}%;background:var(--red);opacity:0.75`;
+      return `<div class="ar-row">
+        <div class="ar-year">${year}</div>
+        <div class="ar-bar-area">
+          <div class="ar-center-line"></div>
+          <div class="ar-bar ${isPos?'pos-bar':'neg-bar'}" style="${barStyle}"></div>
+        </div>
+        <div class="ar-pct ${isPos?'pos':'neg'}">${pctStr}</div>
+      </div>`;
+    }).join('');
     return `<div class="cwrap">
       <div class="cwrap-title">연도별 수익률 — 맞춤 추천 포트폴리오</div>
-      <div class="heatmap-wrap">
-        <table class="heatmap-table">
-          <thead><tr><th>연도</th><th>수익률</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
+      <div class="annual-ret-wrap">
+        <div class="ar-header-row">
+          <div class="ar-h">연도</div>
+          <div class="ar-h" style="text-align:center">손익 분포</div>
+          <div class="ar-h right">수익률</div>
+        </div>
+        ${rows}
       </div>
     </div>`;
   }
@@ -1579,7 +1608,7 @@ function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,en
 
     <div class="cwrap">
       <div class="cwrap-title">효율적 투자선 — ${results.length.toLocaleString()}가지 조합의 위험·수익 분포</div>
-      <div style="position:relative;width:100%;height:220px">
+      <div class="chart-canvas-wrap">
         <canvas id="chart2"></canvas>
       </div>
       <div class="chart-explain">
@@ -1602,6 +1631,10 @@ function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,en
     </div>
 
     ${benchHTML()}
+
+    <div style="padding:4px 0 16px">
+      <button class="run-btn" onclick="runOptimize()" style="max-width:420px;margin:0 auto;display:block">최적 비율 찾기 시작</button>
+    </div>
 
     ${heatmapHTML(myPref)}
     ${corrMatrixHTML()}
