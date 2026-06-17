@@ -21,22 +21,23 @@ except ImportError:
     sys.exit(1)
 
 # ─── 종목 리스트 ──────────────────────────────────────────────────────────────
-# 미국 시총 100: GOOG/GOOGL 중 GOOGL만 포함, BRK-B만 포함, TSM/ASML 포함
+# 미국 시총 100: GOOG/GOOGL 중 GOOGL만 포함, BRK-B만 포함, TSM/ASML/SPCX 포함
+# SPCX = SpaceX (2026-06-12 나스닥 상장, 시총 약 $2.6조 — 미국 3~5위권)
 US_TOP100 = [
-    'NVDA', 'AAPL', 'MSFT', 'AMZN', 'GOOGL', 'META', 'TSLA', 'BRK-B', 'AVGO', 'LLY',
-    'JPM', 'UNH', 'V',    'XOM',  'MA',   'COST', 'PG',  'JNJ',  'HD',   'NFLX',
-    'ABBV', 'BAC', 'WMT', 'MRK',  'KO',   'CVX',  'ASML','ORCL', 'AMD',  'CRM',
-    'ADBE', 'TMO', 'ACN', 'LIN',  'MCD',  'CSCO', 'ABT', 'GE',   'INTU', 'IBM',
-    'NOW',  'AMGN','ISRG','PM',   'DHR',  'TXN',  'QCOM','SPGI', 'BKNG', 'AMAT',
-    'GS',   'CAT', 'TSM', 'BLK',  'AXP',  'VRTX', 'REGN','SYK',  'T',    'MS',
-    'RTX',  'GILD','BSX', 'ETN',  'PLD',  'DE',   'ADI', 'LRCX', 'MU',   'KLAC',
-    'NEE',  'CB',  'SCHW','COP',  'EOG',  'PGR',  'ADP', 'UPS',  'TJX',  'ICE',
-    'PANW', 'LOW', 'CME', 'CI',   'C',    'BMY',  'ZTS', 'ELV',  'WM',   'CVS',
-    'BA',   'HON', 'SO',  'ARM',  'PLTR', 'MELI', 'CRWD','APP',  'WELL', 'MMC',
+    'NVDA', 'AAPL', 'SPCX', 'MSFT', 'AMZN', 'GOOGL', 'META', 'TSLA', 'BRK-B', 'AVGO',
+    'LLY',  'JPM',  'UNH', 'V',    'XOM',  'MA',   'COST', 'PG',  'JNJ',  'HD',
+    'NFLX', 'ABBV', 'BAC', 'WMT',  'MRK',  'KO',   'CVX',  'ASML','ORCL', 'AMD',
+    'CRM',  'ADBE', 'TMO', 'ACN',  'LIN',  'MCD',  'CSCO', 'ABT', 'GE',   'INTU',
+    'IBM',  'NOW',  'AMGN','ISRG', 'PM',   'DHR',  'TXN',  'QCOM','SPGI', 'BKNG',
+    'AMAT', 'GS',   'CAT', 'TSM',  'BLK',  'AXP',  'VRTX', 'REGN','SYK',  'T',
+    'MS',   'RTX',  'GILD','BSX',  'ETN',  'PLD',  'DE',   'ADI', 'LRCX', 'MU',
+    'KLAC', 'NEE',  'CB',  'SCHW', 'COP',  'EOG',  'PGR',  'ADP', 'UPS',  'TJX',
+    'ICE',  'PANW', 'LOW', 'CME',  'CI',   'C',    'BMY',  'ZTS', 'ELV',  'WM',
+    'CVS',  'BA',   'HON', 'SO',   'ARM',  'PLTR', 'MELI', 'CRWD','APP',  'MMC',
 ]
 
 NASDAQ100 = [
-    'NVDA', 'AAPL', 'MSFT', 'AMZN', 'META', 'TSLA', 'AVGO', 'GOOGL', 'GOOG', 'COST',
+    'NVDA', 'AAPL', 'SPCX', 'MSFT', 'AMZN', 'META', 'TSLA', 'AVGO', 'GOOGL', 'GOOG',
     'NFLX', 'ASML', 'AMD',  'ADBE', 'CSCO', 'TMUS', 'PEP',  'QCOM',  'INTU', 'CMCSA',
     'TXN',  'HON',  'AMGN', 'ISRG', 'SBUX', 'GILD', 'REGN', 'BKNG',  'VRTX', 'ADI',
     'PANW', 'LRCX', 'MU',   'KLAC', 'SNPS', 'CDNS', 'MRVL', 'CEG',   'ORLY', 'MAR',
@@ -69,6 +70,7 @@ ETF_LIST = [
 
 # ─── 회사명 사전 ──────────────────────────────────────────────────────────────
 COMPANY_NAMES = {
+    'SPCX':'SpaceX',
     'AAPL':'Apple Inc.', 'MSFT':'Microsoft Corp.', 'NVDA':'NVIDIA Corp.',
     'AMZN':'Amazon.com Inc.', 'META':'Meta Platforms', 'GOOGL':'Alphabet (A)',
     'GOOG':'Alphabet (C)', 'TSLA':'Tesla Inc.', 'AVGO':'Broadcom Inc.',
