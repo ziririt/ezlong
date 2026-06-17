@@ -1286,7 +1286,32 @@ function buildResult() {
   }
 
   const isBeginnerExp = (state.expLevel === 'beginner' || state.expLevel === 'early');
-  const porto = isBeginnerExp && profile.portfolio.beginner ? profile.portfolio.beginner : profile.portfolio.default;
+  const basePorto = isBeginnerExp && profile.portfolio.beginner ? profile.portfolio.beginner : profile.portfolio.default;
+
+  // ── 관심 기업 포트폴리오에 반영 ──
+  // 선택한 기업 중 이미 포트폴리오에 없는 것만 추가
+  const portoTickers = [...basePorto.tickers];
+  const portoPcts   = [...basePorto.pcts];
+  const companiesToAdd = (state.companies || []).filter(t => t !== 'unknown' && !portoTickers.includes(t) && TICKER_TO_ID[t]);
+
+  companiesToAdd.forEach(t => {
+    const addPct = 8; // 8% 배정
+    const total  = portoPcts.reduce((a, b) => a + b, 0);
+    // 기존 비중을 비례 축소해 8% 확보
+    for (let i = 0; i < portoPcts.length; i++) {
+      portoPcts[i] = Math.round(portoPcts[i] * (100 - addPct) / total * 10) / 10;
+    }
+    portoTickers.push(t);
+    portoPcts.push(addPct);
+  });
+
+  // 합이 100이 되도록 정수 반올림 후 오차 보정
+  const pctTotal = portoPcts.reduce((a, b) => a + b, 0);
+  const roundedPcts = portoPcts.map(p => Math.round(p * 100 / pctTotal));
+  const diff = 100 - roundedPcts.reduce((a, b) => a + b, 0);
+  roundedPcts[0] += diff;  // 첫 번째(비중 최대) 종목에 오차 흡수
+
+  const porto = { tickers: portoTickers, pcts: roundedPcts };
   const mbtiGroup = getMbtiGroup();
   const styleKey = mbtiGroup + '_' + state.styleLevel;
   const compatText = COMPAT_TEXTS[styleKey] || '';
