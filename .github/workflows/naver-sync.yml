@@ -5,6 +5,11 @@ on:
   # (GitHub 내부 cron은 수 시간 지연/스킵 가능 → 신뢰 불가)
   workflow_dispatch:
 
+# 동시 실행 방지 — 이전 실행 중이면 새 것으로 교체
+concurrency:
+  group: naver-sync
+  cancel-in-progress: true
+
 jobs:
   sync:
     runs-on: ubuntu-latest
