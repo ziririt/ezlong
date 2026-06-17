@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-실시간 주가 수집 — Massive REST API (구 Polygon.io)
-stocks-prices.json 에 현재가·등락률만 저장 (스파크라인 없음)
+실시간 주가 수집 — Massive REST API (구 Polygon.io) + yfinance 확장시간 보완
+stocks-prices.json 에 현재가·등락률·확장시간 데이터 저장 (스파크라인 없음)
 GitHub Actions에서 10분마다 실행 → 최대 10분 시차
 
 환경변수: MASSIVE_API_KEY
@@ -195,6 +195,67 @@ def parse_snapshot(data):
     return result
 
 
+def get_extended_hours_yfinance(symbols):
+    """
+    yfinance fast_info로 확장시간(프리/포스트) 데이터 수집
+    Massive API $29 플랜이 postMarket/preMarket 필드를 미제공하는 경우 보완.
+    GitHub Actions Azure IP에서 fast_info(quote endpoint)는 차단되지 않음.
+    """
+    try:
+        import yfinance as yf
+    except ImportError:
+        print('  [yfinance] 미설치 — 확장시간 데이터 생략')
+        return {}
+
+    result = {}
+    # yfinance Tickers: 심볼 간 스페이스 구분, BRK-B → BRK-B (yfinance는 하이픈 OK)
+    BATCH = 50  # 너무 많으면 요청 과부하
+    total = len(symbols)
+
+    for i in range(0, total, BATCH):
+        batch = symbols[i:i + BATCH]
+        batch_str = ' '.join(batch)
+        try:
+            tickers_obj = yf.Tickers(batch_str)
+            for sym in batch:
+                try:
+                    fi = tickers_obj.tickers[sym].fast_info
+
+                    pre_price  = getattr(fi, 'pre_market_price',  None)
+                    post_price = getattr(fi, 'post_market_price', None)
+                    # 정규장 종가(오늘) 또는 전일 종가
+                    reg_price  = getattr(fi, 'regular_market_price',          None)
+                    prev_close = getattr(fi, 'regular_market_previous_close', None) \
+                              or getattr(fi, 'previous_close',                None)
+
+                    ext_price = ext_pct = ext_session = None
+
+                    if post_price and post_price > 0 and reg_price and reg_price > 0:
+                        if abs(post_price - reg_price) > 0.001:
+                            ext_price   = round(post_price, 2)
+                            ext_pct     = round((post_price - reg_price) / reg_price * 100, 2)
+                            ext_session = 'post'
+                    elif pre_price and pre_price > 0 and prev_close and prev_close > 0:
+                        if abs(pre_price - prev_close) > 0.001:
+                            ext_price   = round(pre_price, 2)
+                            ext_pct     = round((pre_price - prev_close) / prev_close * 100, 2)
+                            ext_session = 'pre'
+
+                    result[sym] = {
+                        'extPrice':   ext_price,
+                        'extPct':     ext_pct,
+                        'extSession': ext_session,
+                    }
+                except Exception:
+                    pass  # 개별 종목 실패 시 무시
+        except Exception as e:
+            print(f'  [yfinance] 배치 오류 ({batch[0]}~): {e}')
+
+    ext_ok = sum(1 for v in result.values() if v.get('extPct') is not None)
+    print(f'  [yfinance] 확장시간: {ext_ok}/{len(symbols)} 종목 수집')
+    return result
+
+
 def main():
     if not MASSIVE_API_KEY:
         print('ERROR: MASSIVE_API_KEY 환경변수 없음. GitHub Secret 확인 필요.')
@@ -203,7 +264,8 @@ def main():
     now_utc = datetime.now(timezone.utc)
     kst = now_utc + timedelta(hours=9)
     print('=' * 55)
-    print('  실시간 주가 수집 — stocks-prices.json (Massive API)')
+    print('  실시간 주가 수집 — stocks-prices.json')
+    print('  소스: Massive API(정규장) + yfinance(확장시간)')
     print(f'  실행: {kst.strftime("%Y-%m-%d %H:%M KST")}')
     print('=' * 55)
 
@@ -212,11 +274,11 @@ def main():
 
     prices = {}
 
-    # 250개씩 나눠서 요청 (Massive API 상 안전한 배치 크기)
+    # ── 1단계: Massive API — 정규장 현재가·등락률 ────────────────────────────
     BATCH = 200
     for i in range(0, len(symbols), BATCH):
         batch = symbols[i:i + BATCH]
-        print(f'  배치 {i // BATCH + 1}: {len(batch)}개 요청 중...', end=' ', flush=True)
+        print(f'  [Massive] 배치 {i // BATCH + 1}: {len(batch)}개 요청 중...', end=' ', flush=True)
         try:
             data = fetch_snapshot_batch(batch, MASSIVE_API_KEY)
             parsed = parse_snapshot(data)
@@ -226,9 +288,30 @@ def main():
         except Exception as e:
             print(f'ERROR: {e}')
 
-    # 결과 출력
     ok_total = sum(1 for v in prices.values() if v['price'] is not None)
-    print(f'\n  완료: {ok_total}/{len(symbols)} 종목 가격 수집')
+    print(f'\n  [Massive] 완료: {ok_total}/{len(symbols)} 종목 가격 수집')
+
+    # Massive API가 확장시간 데이터를 이미 제공했는지 확인
+    massive_ext_ok = sum(1 for v in prices.values() if v.get('extPct') is not None)
+    print(f'  [Massive] 확장시간 데이터: {massive_ext_ok}개')
+
+    # ── 2단계: yfinance — 확장시간 보완 (Massive API 미제공 시) ──────────────
+    # Massive API가 확장시간을 하나도 주지 않을 때만 yfinance 사용 (비용 절감)
+    if massive_ext_ok == 0:
+        print('\n  [yfinance] Massive API 확장시간 없음 → yfinance로 보완...')
+        ext_data = get_extended_hours_yfinance(symbols)
+        for sym, ext in ext_data.items():
+            if sym in prices:
+                prices[sym]['extPrice']   = ext['extPrice']
+                prices[sym]['extPct']     = ext['extPct']
+                prices[sym]['extSession'] = ext['extSession']
+            # prices에 없는 심볼이면 무시 (가격 없이 확장시간만 있는 케이스)
+    else:
+        print(f'  [yfinance] 생략 — Massive API가 이미 {massive_ext_ok}개 확장시간 제공')
+
+    # 최종 결과
+    final_ext_ok = sum(1 for v in prices.values() if v.get('extPct') is not None)
+    print(f'\n  최종 확장시간 데이터: {final_ext_ok}개 종목')
 
     output = {
         'updatedAt':    now_utc.isoformat(),

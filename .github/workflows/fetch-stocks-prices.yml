@@ -23,6 +23,9 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install dependencies
+        run: pip install yfinance --quiet
+
       - name: Run fetch-stocks-prices.py
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
