@@ -3,15 +3,15 @@
   "name": "TIGER 200",
   "assetType": "etf",
   "market": "kr",
-  "updatedAt": "2026-06-16T11:54:42.183Z",
+  "updatedAt": "2026-06-17T00:05:54.818Z",
   "price": {
     "current": 139520,
     "change": 3210,
     "changePct": 2.35,
     "high52": 143570,
-    "low52": 39270,
-    "pos52": 96.1,
-    "marketState": "CLOSED",
+    "low52": 34900,
+    "pos52": 96.3,
+    "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
@@ -19,8 +19,8 @@
   "indicators": {
     "sma20": 128503.75,
     "sma50": 111065.3655,
-    "sma100": 95673.2637,
-    "sma200": 74561.4423,
+    "sma100": 95673.2635,
+    "sma200": 74561.4421,
     "rsi": 63.24,
     "macd": {
       "macd": 5979.919628,
@@ -52,17 +52,17 @@
     "resistance": 143570,
     "rsiStatus": "중립",
     "macdStatus": "강세확산",
-    "bbStatus": "상단접근",
+    "bbStatus": "중단",
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 7,
-    "scoreReason": "RSI 과매도탈출 + Higher Low 회복 초입",
-    "rsiTrajectory": "57.8 → 63.2 (중립지속 중)",
-    "macdTrajectory": "히스토 -1148.5610 → -633.5011 (개선)",
+    "scoreReason": "RSI 과매도탈출+Higher Low 회복 초입",
+    "rsiTrajectory": "57.8 → 63.2 (과매도탈출 중)",
+    "macdTrajectory": "히스토 -1148.5610 → -633.5011 (개선 중)",
     "pricePattern": "Higher Low 회복 신호",
     "volComment": "거래량비 0.92 (정상)",
-    "bbPosition": "상단근처",
-    "reason": "현재가 52주 신고가 근접, SMA200 대비 87.12%로 강세 유지. MACD 히스토그램 개선세 지속.",
+    "bbPosition": "중단근처",
+    "reason": "최근 5거래일 4일 상승으로 강한 상승 모멘텀 확인. RSI 57.8에서 63.2로 상승하며 과매도 구간 탈출. MACD 히스토그램 개선 중.",
     "entry": 139520,
     "stop": 117615,
     "target": 143570,
@@ -71,13 +71,13 @@
     "profitTarget1": 141000,
     "profitTarget2": 142500,
     "stopLoss": 117615,
-    "narrative": "KOSPI 200 ETF는 52주 신고가에 근접하며 강세 추세를 이어가고 있다. SMA200 대비 87.12%의 높은 위치와 개선되는 MACD 히스토그램은 추가 상승 가능성을 시사한다. 117,615원 지지선을 확보한 상태에서 143,570원 저항선 돌파를 시도할 것으로 예상된다.",
-    "patternNote": "5일 저가(117,960원)가 20일 저가(110,565원) 대비 높아 회복 신호가 나타나고 있다.",
+    "narrative": "최근 5거래일 동안 4일간의 상승은 139,520원 현재가에 강한 매수세를 반영한다. RSI가 57.8에서 63.2로 상승하며 과매도 구간을 벗어났고, MACD 히스토그램 또한 개선되는 추세다. 5일 저가(117,960원)가 20일 저가(110,565원) 대비 높아(1.06배) Higher Low 패턴이 형성되고 있어 추가 상승을 기대한다. 143,570원 스윙 저항선 돌파를 목표로 매수 진입한다.",
+    "patternNote": "5일 저가 117,960원이 20일 저가 110,565원보다 높아 회복 신호인 Higher Low 패턴이 나타나고 있다.",
     "keyPoints": [
-      "52주 신고가 근접 및 강세 유지",
-      "MACD 히스토그램 개선세 지속",
-      "117,615원 지지선 확보"
+      "최근 5거래일 4일 상승으로 강한 매수세 확인",
+      "RSI 과매도 구간 탈출 및 MACD 히스토그램 개선",
+      "Higher Low 패턴 형성으로 추가 상승 기대"
     ],
-    "riskNote": "볼린저밴드 상단에 근접하여 단기 과열 가능성이 존재한다."
+    "riskNote": "143,570원 스윙 저항선 돌파 실패 시 하락 전환 가능성이 있다."
   }
 }
