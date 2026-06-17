@@ -487,7 +487,7 @@
 
   <!-- 진행 표시 -->
   <div id="quiz-progress">
-    <div class="progress-label" id="progress-label">질문 1 / 6</div>
+    <div class="progress-label" id="progress-label">질문 1 / 5</div>
     <div class="progress-bar-track">
       <div class="progress-bar-fill" id="progress-fill" style="width:16.7%"></div>
     </div>
@@ -1248,9 +1248,9 @@ function showPanel(id) {
   // 진행 표시 업데이트
   const stepMap = {
     'step-q1':1,'step-q2':2,'step-q3':3,'step-q3-grid':3,'step-q3-sub':3,
-    'step-q4':4,'step-q5':5,'step-q6':6
+    'step-q4':4,'step-q5':5
   };
-  const total = 6;
+  const total = 5;
   const num = stepMap[id] || null;
   const labelEl = document.getElementById('progress-label');
   const fillEl  = document.getElementById('progress-fill');
@@ -1452,6 +1452,93 @@ function showAiLoading() {
 }
 
 // ════════════════════════════════════════════════════════
+// 포트폴리오 해설 생성
+// ════════════════════════════════════════════════════════
+function buildRationale(porto, mbtiGroup, ageGroup) {
+  const ETFs    = ['QQQ','IVV','VTI','VOO'];
+  const ANCHORS = ['V','COST','LLY','BRK.B','VIG','SCHD'];
+
+  const tickers = porto.tickers;
+  const pcts    = porto.pcts;
+
+  // 1층 코어: 첫 번째 티커 (비중 최대)
+  const coreTicker = tickers[0];
+  const corePct    = pcts[0];
+  const isQQQ = coreTicker === 'QQQ';
+  const coreDesc = isQQQ
+    ? `<b>${coreTicker} ${corePct}%</b> — 나스닥100 ETF가 코어입니다. 개별주가 전부 흔들려도 QQQ 하나만 있으면 미국 최상위 기술주 100개를 동시에 보유한 셈입니다. ${ageGroup === '20s' || ageGroup === '30s' ? '20~30대 성장 구간에서는 기술주 집중이 정당합니다.' : ''}`
+    : `<b>${coreTicker} ${corePct}%</b> — S&P500 ETF가 코어입니다. 미국 상위 500개 기업을 한 번에 담는 가장 넓은 안전망입니다. ${ageGroup === '60s' ? '60대 이상에서는 폭넓은 분산이 하방 방어의 핵심입니다.' : ''}`;
+
+  // 2층 위성: ETF·앵커 제외한 나머지
+  const satellites = tickers.filter((t,i) => i > 0 && !ETFs.includes(t) && !ANCHORS.includes(t));
+  const satPcts    = satellites.map(t => pcts[tickers.indexOf(t)]);
+
+  const mbtiSatDesc = {
+    NT: 'NT(분석가)형은 AI·반도체 인프라에 대한 데이터 기반 확신을 반영합니다. NVDA·AVGO 같은 반도체 설계 기업의 비중이 높은 이유입니다.',
+    NF: 'NF(외교관)형은 "세상을 바꾸는 기업"에 투자하는 원칙을 반영합니다. META·TSLA처럼 비전이 명확한 기업, 그리고 헬스케어 혁신(LLY)이 포함되는 이유입니다.',
+    SJ: 'SJ(관리자)형은 수십 년 실적으로 검증된 기업을 선호합니다. MSFT·AAPL처럼 변동성이 낮고 현금흐름이 안정적인 기업의 비중이 높습니다.',
+    SP: 'SP(탐험가)형은 모멘텀과 성장 속도에 반응합니다. NVDA·META·TSLA처럼 섹터 내 가장 빠르게 움직이는 기업들이 포트폴리오에 들어오는 이유입니다.'
+  };
+
+  let satHtml = '';
+  if (satellites.length > 0) {
+    const satList = satellites.map((t,i) => `<b>${t} ${satPcts[i]}%</b>`).join('·');
+    satHtml = `${satList} — ${mbtiSatDesc[mbtiGroup] || '빅테크 개별주로 ETF 대비 초과 수익을 추구합니다.'}`;
+  }
+
+  // 3층 앵커: V·COST·LLY 등 방어 우량주
+  const anchorTickers = tickers.filter(t => ANCHORS.includes(t));
+  const anchorPcts    = anchorTickers.map(t => pcts[tickers.indexOf(t)]);
+  let anchorHtml = '';
+  if (anchorTickers.length > 0) {
+    const anchorDescs = {
+      V:    'V(비자)는 불황에도 카드 수수료가 나오는 경기방어 우량주',
+      COST: 'COST(코스트코)는 불황에 멤버십이 오히려 느는 방어적 성장주',
+      LLY:  'LLY(일라이릴리)는 GLP-1·비만치료제 혁신을 이끄는 헬스케어 성장주',
+      'BRK.B': 'BRK.B(버크셔)는 분산된 사업 포트폴리오를 가진 복합 우량주',
+      VIG:  'VIG는 배당 성장 ETF, 현금흐름 안정에 기여',
+      SCHD: 'SCHD는 고배당 우량주 ETF, 하방 안정성에 기여'
+    };
+    const anchorList = anchorTickers.map((t,i) => {
+      const d = anchorDescs[t] || t;
+      return `<li style="margin-bottom:.4rem;"><b>${t} ${anchorPcts[i]}%</b> — ${d}</li>`;
+    }).join('');
+    anchorHtml = `<ul style="margin:.5rem 0 0;padding-left:1.2rem;list-style:disc;">${anchorList}</ul>`;
+  }
+
+  // 조립
+  let html = `<div class="result-section" style="border-left:3px solid var(--ez-blue);padding-left:1.2rem;">
+    <div class="result-section-title">이 포트폴리오가 이렇게 구성된 이유</div>
+    <div style="display:flex;flex-direction:column;gap:1rem;font-size:15px;line-height:1.7;color:var(--ez-text);">
+      <div>
+        <span style="font-size:14px;font-weight:700;color:var(--ez-blue);letter-spacing:.05em;">1층 — 코어 (시장 베타)</span><br>
+        ${coreDesc}
+      </div>`;
+
+  if (satHtml) {
+    html += `
+      <div>
+        <span style="font-size:14px;font-weight:700;color:var(--ez-blue);letter-spacing:.05em;">2층 — 위성 (알파 추구)</span><br>
+        ${satHtml}
+      </div>`;
+  }
+
+  if (anchorHtml) {
+    html += `
+      <div>
+        <span style="font-size:14px;font-weight:700;color:var(--ez-blue);letter-spacing:.05em;">3층 — 앵커 (안정성)</span><br>
+        경기 사이클을 덜 타는 우량주입니다.${anchorHtml}
+      </div>`;
+  }
+
+  html += `
+    </div>
+  </div>`;
+
+  return html;
+}
+
+// ════════════════════════════════════════════════════════
 // 결과 생성
 // ════════════════════════════════════════════════════════
 function buildResult() {
@@ -1564,6 +1651,8 @@ function buildResult() {
       <a href="${btUrl}" class="btn-backtest" target="_blank" rel="noopener">이 포트폴리오로 장기투자 수익률 백테스트 해보기 →</a>
       ${isBeginnerExp ? '<p class="beginner-note">경험이 쌓이면 Default 포트폴리오로 전환하세요.</p>' : ''}
     </div>
+
+    ${buildRationale(porto, mbtiGroup, state.ageGroup)}
     <div class="result-section result-two-col">
       <div>
         <div class="result-section-title">강점</div>
