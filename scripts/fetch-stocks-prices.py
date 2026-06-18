@@ -199,15 +199,18 @@ def parse_snapshot(data):
         if not ticker:
             continue
 
-        # ── 정규장 가격: lastTrade.p 우선 → day.c
+        # ── 정규장 가격: lastTrade.p → day.c → prevDay.c 순으로 폴백
+        # 장마감 후 심야 시간대엔 lastTrade.p / day.c 가 0으로 올 수 있으므로 >0 필터 필수
         price = None
-        try:
-            price = round(float(item['lastTrade']['p']), 2)
-        except (KeyError, TypeError, ValueError):
-            pass
-        if price is None:
+        for _path in [('lastTrade', 'p'), ('day', 'c'), ('prevDay', 'c')]:
             try:
-                price = round(float(item['day']['c']), 2)
+                _v = item
+                for _k in _path:
+                    _v = _v[_k]
+                _p = float(_v)
+                if _p > 0:
+                    price = round(_p, 2)
+                    break
             except (KeyError, TypeError, ValueError):
                 pass
 
