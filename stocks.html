@@ -987,15 +987,24 @@ function renderIndexCards() {
     var pct        = (liveIdx && liveIdx.price != null && liveIdx.changePct != null) ? liveIdx.changePct : (idxEntry ? idxEntry.changePct : null);
     var sparklines = idxEntry ? (idxEntry.sparkline || []) : [];
 
-    // 인덱스 스파클라인: 30일 일봉(stocks-data.json) 고정
-    // ETF 인트라데이(SPY/QQQ/DIA)는 실제 지수와 방향 다를 수 있어 색상 불일치 유발 → 사용 안 함
+    // 인덱스 스파클라인: ETF 인트라데이(SPY/QQQ/DIA) 우선 — 당일(또는 직전 거래일) 흐름
+    // 기준선 = ETF prevClose → 스파클라인 색상이 changePct 방향과 일치
+    // ETF 인트라데이 없으면(주말·휴장) 30일 일봉 폴백
+    var ETF_MAP = { 'SPX': 'SPY', 'NDX': 'QQQ', 'DJI': 'DIA' };
+    var etfSym      = ETF_MAP[c.idxSym];
+    var etfLive     = pricesData && pricesData.prices && etfSym ? pricesData.prices[etfSym] : null;
+    var etfIntraday = etfLive && etfLive.intraday && etfLive.intraday.length >= 2 ? etfLive.intraday : null;
+    var etfPrevClose = etfLive ? etfLive.prevClose : null;
+
     var isUp    = pct != null ? pct >= 0 : true;
     var sparkEl = document.getElementById(c.sparkEl);
     var priceEl = document.getElementById(c.priceEl);
     var pctEl   = document.getElementById(c.pctEl);
     if (!sparkEl || !priceEl || !pctEl) return;
 
-    sparkEl.innerHTML = buildSparklineSmall(sparklines, isUp);
+    sparkEl.innerHTML = etfIntraday
+      ? buildSparklineSmall(etfIntraday, isUp, etfPrevClose)
+      : buildSparklineSmall(sparklines,  isUp);
 
     // 지수 값: 달러 기호 없이, 콤마 3자리 포맷
     if (price != null) {
