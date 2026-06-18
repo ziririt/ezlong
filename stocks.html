@@ -792,7 +792,7 @@ function rowHTML(item, noRank) {
       noRank ? '' : '<div class="sr-rank">' + (item.rank || '') + '</div>',
       '<div class="sr-info">',
         '<span class="sr-ticker">' + sym + '</span>',
-        '<span class="sr-name">'   + (item.name || '') + '</span>',
+        '<span class="sr-name">'   + cleanName(item.name || '') + '</span>',
       '</div>',
       '<div class="sr-spark">' + buildSparkline(item.sparkline || [], isUp) + '</div>',
       '<div class="sr-right">',
@@ -802,6 +802,21 @@ function rowHTML(item, noRank) {
       '</div>',
     '</div>',
   ].join('');
+}
+
+function cleanName(name) {
+  // ETF 브랜드 접두어 제거 — Invesco, SPDR, iShares, Vanguard, VanEck 등
+  return name
+    .replace(/^invesco\s+/i,   '')
+    .replace(/^spdr\s+/i,      '')
+    .replace(/^ishares\s+/i,   '')
+    .replace(/^vanguard\s+/i,  '')
+    .replace(/^vaneck\s+/i,    '')
+    .replace(/^schwab\s+/i,    '')
+    .replace(/^direxion\s+/i,  '')
+    .replace(/^proshares\s+/i, '')
+    .replace(/^global x\s+/i,  '')
+    .trim();
 }
 
 function buildSparkline(closes, isUp) {
