@@ -462,6 +462,12 @@ def main():
     market_close_ms = int(datetime(intraday_dt.year, intraday_dt.month, intraday_dt.day,
                                    16 + utc_offset, 0, tzinfo=timezone.utc).timestamp() * 1000)
 
+    # 현재 미국 동부시간 — 어떤 세션인지 판단
+    now_et          = datetime.now(timezone.utc) - timedelta(hours=utc_offset)
+    is_premarket    = 4 <= now_et.hour < 9 or (now_et.hour == 9 and now_et.minute < 30)
+    is_postmarket   = 16 <= now_et.hour < 20
+    # is_premarket 중에는 intraday_date = 어제이므로 봉 기반 ext 계산이 부정확 → Yahoo 우선
+
     intraday_ext_ok = 0
     for sym, bar_pairs in intraday_data.items():
         if sym not in prices or not bar_pairs:
@@ -471,16 +477,18 @@ def main():
         closes = [c for _, c in bar_pairs]
         prices[sym]['intraday'] = closes
 
-        # ── ext 정보가 아직 없을 때만 인트라데이 봉으로 계산
-        if prices[sym].get('extPct') is not None:
+        # ── ext 정보가 이미 있거나 프리마켓 시간대면 건너뜀 (Yahoo가 더 정확)
+        if prices[sym].get('extPct') is not None or is_premarket:
             continue
-
-        day_close_ref = prices[sym].get('dayClose')
 
         # 포스트마켓 봉 (t >= 4PM ET UTC ms)
         post_bars = [(t, c) for t, c in bar_pairs if t >= market_close_ms]
-        # 프리마켓 봉 (t < 9:30 AM ET UTC ms)
-        pre_bars  = [(t, c) for t, c in bar_pairs if t < market_open_ms]
+        # 정규장 봉 (9:30AM~4PM ET)
+        reg_bars  = [c for t, c in bar_pairs if market_open_ms <= t < market_close_ms]
+
+        # day_close_ref: Massive API day.c 우선 → 없으면 인트라데이 정규장 마지막 봉
+        # (Massive API는 장외 시간대에 day.c = 0을 반환하는 경우 있음)
+        day_close_ref = prices[sym].get('dayClose') or (reg_bars[-1] if reg_bars else None)
 
         if post_bars and day_close_ref:
             last_post_c = post_bars[-1][1]
@@ -489,26 +497,19 @@ def main():
                 prices[sym]['extPct']     = round((last_post_c - day_close_ref) / day_close_ref * 100, 2)
                 prices[sym]['extSession'] = 'post'
                 intraday_ext_ok += 1
-        elif pre_bars:
-            # 프리마켓은 전일 종가(prevClose) 대비
-            prev_close_ref = prices[sym].get('prevClose')
-            if prev_close_ref:
-                last_pre_c = pre_bars[-1][1]
-                if abs(last_pre_c - prev_close_ref) > 0.001:
-                    prices[sym]['extPrice']   = round(last_pre_c, 2)
-                    prices[sym]['extPct']     = round((last_pre_c - prev_close_ref) / prev_close_ref * 100, 2)
-                    prices[sym]['extSession'] = 'pre'
-                    intraday_ext_ok += 1
 
     print(f'  [인트라데이] 봉 기반 확장시간 계산: {intraday_ext_ok}개 종목')
 
     # ── 3단계: Yahoo Finance v8/quote API — 확장시간 보완 ────────────────────
-    # 인트라데이 봉 계산 후에도 ext 없는 종목 보완용
+    # 프리마켓 시간대: 인트라데이는 어제 봉이라 부정확 → Yahoo 반드시 실행
+    # 그 외: 인트라데이 봉으로 이미 80% 이상 커버되면 생략
     already_ext = sum(1 for v in prices.values() if v.get('extPct') is not None)
-    if already_ext >= len(symbols) * 0.8:
+    skip_yahoo  = (not is_premarket) and (already_ext >= len(symbols) * 0.8)
+    if skip_yahoo:
         print(f'  [Yahoo] 확장시간 이미 충분({already_ext}개) — Yahoo 수집 생략')
     else:
-        print('\n  [Yahoo] 확장시간 수집 중 (v8/quote API)...')
+        reason = '프리마켓 — 오늘 데이터 필요' if is_premarket else f'ext 부족({already_ext}개)'
+        print(f'\n  [Yahoo] 확장시간 수집 중 ({reason})...')
         ext_data = get_extended_hours_yahoo(symbols)
         for sym, ext in ext_data.items():
             if sym in prices and prices[sym].get('extPct') is None:
