@@ -825,6 +825,15 @@ let currentTab     = 'chart';  // 'chart' | 'report'
 // ── narrative 텍스트 → 구조화 HTML 변환 ──────────────────────────
 function buildNarrative(text) {
   if (!text) return '';
+  // Gemini가 narrative를 string 대신 object로 반환하는 경우 대응
+  // { "[추세 위치]": ["항목1","항목2"], ... } → 텍스트 형식으로 변환
+  if (typeof text === 'object') {
+    text = Object.entries(text).map(function([section, content]) {
+      var items = Array.isArray(content) ? content : (typeof content === 'string' ? [content] : [String(content)]);
+      return section + '\n' + items.map(function(i){ return '· ' + String(i).replace(/^[·•]\s*/, ''); }).join('\n');
+    }).join('\n');
+  }
+  if (typeof text !== 'string') return '';
   var sections = [];
   var currentSection = null;
   var lines = text.split('\n');
