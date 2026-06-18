@@ -1167,31 +1167,26 @@ function findItem(symbol) {
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // TRADINGVIEW
-// CLAUDE.md 규칙 13: interval:'D' + range 동시 사용 절대 금지
-// 주의: range:'1D' + interval:'15' 조합도 TradingView가 interval을 1분봉으로 오버라이드함 → range 완전 제거
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// TradingView 기간 설정
+// CLAUDE.md 규칙 13: interval + range 동시 사용 절대 금지
+// 해결책: range만 사용 → TradingView가 기간에 맞는 최적 봉을 자동 선택
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 var TV_PERIOD_MAP = {
-  '1D':  { interval: '15' },   // range 제거 필수 — range:'1D' 지정 시 TradingView가 1분봉으로 강제 변경
-  '5D':  { interval: '60', range: '5D'  },
-  '1M':  { interval: 'D'               },   // ← range 없음 필수
-  '3M':  { interval: 'D'               },   // ← range 없음 필수
-  '6M':  { interval: 'W',  range: '6M'  },
-  '1Y':  { interval: 'W',  range: '12M' },
-  '2Y':  { interval: 'M',  range: '24M' },
-  '3Y':  { interval: 'M',  range: '36M' },
-  '5Y':  { interval: 'M',  range: '60M' },
-  'ALL': { interval: 'M',  range: 'ALL' },
+  '1D':  { range: '1D'  },   // TradingView 자동봉 — 15분봉 내외 자동 선택
+  '5D':  { range: '5D'  },   // TradingView 자동봉 — 30분~1시간봉 자동 선택
+  '1M':  { range: '1M'  },   // TradingView 자동봉 — 일봉 자동 선택
+  '3M':  { range: '3M'  },
+  '6M':  { range: '6M'  },
+  '1Y':  { range: '12M' },
+  '2Y':  { range: '24M' },
+  '3Y':  { range: '36M' },
+  '5Y':  { range: '60M' },
+  'ALL': { range: 'ALL' },
 };
 
 function getYTDOpts() {
-  // 1월 1일부터 오늘까지 일 수
-  var now  = new Date();
-  var jan1 = new Date(now.getFullYear(), 0, 1);
-  var days = (now - jan1) / 86400000;
-  // <90일(3개월): 일봉 + range 없음 / ≥90일: 주봉 + YTD range
-  return days < 90
-    ? { interval: 'D' }
-    : { interval: 'W', range: 'YTD' };
+  return { range: 'YTD' };   // TradingView 자동봉
 }
 
 // 거래소 매핑 — NYSE 개별 종목
@@ -1427,7 +1422,6 @@ function renderTVChart(symbol, period) {
   var cfg = {
     container_id:      'tv_chart_div',
     symbol:            tvSym,
-    interval:          opts.interval,
     autosize:          true,
     theme:             isDark() ? 'dark' : 'light',
     locale:            'kr',
@@ -1435,35 +1429,21 @@ function renderTVChart(symbol, period) {
     style:             '10',  // Baseline 차트 — 기간 시작가 기준 등락 시각화
     hide_side_toolbar: false,
     hide_top_toolbar:  false,
-    hide_legend:       true,   // 차트 내부 기업명·OHLC 레전드 숨김 (상단 커스텀 UI로 대체)
+    hide_legend:       true,
     allow_symbol_change: false,
     save_image:        false,
     withdateranges:    false,
-    prePostMarketData: true,   // 프리마켓(4am ET) + 포스트마켓(8pm ET) 표시
+    prePostMarketData: true,
     studies:           getStudies(period),
   };
+  // range만 지정 — interval 제거 (TradingView 자동봉 선택)
+  // CLAUDE.md 규칙 13: interval + range 동시 사용 절대 금지
   if (opts.range) cfg.range = opts.range;
-  // 1D: 오늘 프리마켓 시작(4am ET)부터 현재까지 초기 줌인 — 15분봉 유지하면서 오늘만 보이게
-  if (period === '1D') cfg.from = getTodayPremarketUnix();
 
   if (typeof TradingView !== 'undefined' && TradingView.widget) {
     var loadingEl = document.getElementById('tv-loading');
     if (loadingEl) loadingEl.style.display = 'none';
     tvWidget = new TradingView.widget(cfg);
-
-    // 1D: 차트 로드 완료 후 오늘 프리마켓 시작(4am ET)~포스트마켓 끝(8pm ET + 여유)으로 정확히 줌인
-    // onChartReady → setVisibleRange가 constructor의 from 파라미터보다 정밀하게 동작함
-    if (period === '1D' && typeof tvWidget.onChartReady === 'function') {
-      (function(fromTs) {
-        tvWidget.onChartReady(function() {
-          try {
-            // to: 현재 + 4시간 여유 (포스트마켓 끝까지 오른쪽 여백 확보)
-            var toTs = Math.floor(Date.now() / 1000) + 4 * 3600;
-            tvWidget.chart().setVisibleRange({ from: fromTs, to: toTs });
-          } catch(e) {}
-        });
-      })(getTodayPremarketUnix());
-    }
   } else {
     container.innerHTML =
       '<div class="tv-loading">TradingView 로딩 실패<br><small style="font-size:14px;">새로고침 후 다시 시도해주세요</small></div>';
@@ -1486,24 +1466,36 @@ function updatePeriodReturn(sym, period) {
   var el = document.getElementById('dv-period-return');
   if (!el) return;
 
-  // 1D는 오늘 등락이 이미 dv-chg에 있으므로 숨김
-  if (period === '1D') { el.style.display = 'none'; return; }
-
   var item = findItem(sym);
-  var pp   = item && item.periodPrices;
-  var cur  = item && item.price;
+  var live = (pricesData && pricesData.prices && pricesData.prices[sym]) || null;
 
-  var keyMap = { '5D':'5d','1M':'1m','3M':'3m','6M':'6m','YTD':'ytd','1Y':'1y','2Y':'2y','3Y':'3y','5Y':'5y','ALL':'5y' };
-  var ppKey  = keyMap[period];
-  var startPrice = pp && ppKey && pp[ppKey];
+  // 현재가: Massive API → yfinance 폴백
+  var cur = (live && live.price != null) ? live.price : (item && item.price);
 
-  // periodPrices 없을 때 스파크라인으로 폴백 (5D·1M만 가능)
-  if (!startPrice && item && item.sparkline && item.sparkline.length >= 2) {
-    var sp = item.sparkline;
-    if (period === '5D' && sp.length >= 6) {
-      startPrice = sp[sp.length - 6];
-    } else if (period === '1M') {
-      startPrice = sp[0];
+  var startPrice = null;
+  var labelMap = {
+    '1D':'시가 대비', '5D':'5일간','1M':'1개월간','3M':'3개월간',
+    '6M':'6개월간','YTD':'연초 이후','1Y':'1년간','2Y':'2년간',
+    '3Y':'3년간','5Y':'5년간','ALL':'전체'
+  };
+
+  if (period === '1D') {
+    // 1D: Massive API 오늘 시초가(dayOpen) 기준
+    // 시초가 없으면 dv-chg의 변동률과 중복되므로 숨김
+    var dayOpen = live && live.dayOpen;
+    if (!dayOpen) { el.style.display = 'none'; return; }
+    startPrice = dayOpen;
+  } else {
+    // 5D+: periodPrices(yfinance 역사 기준가) → sparkline 폴백
+    var pp    = item && item.periodPrices;
+    var keyMap = { '5D':'5d','1M':'1m','3M':'3m','6M':'6m','YTD':'ytd','1Y':'1y','2Y':'2y','3Y':'3y','5Y':'5y','ALL':'5y' };
+    var ppKey  = keyMap[period];
+    startPrice = pp && ppKey && pp[ppKey];
+
+    if (!startPrice && item && item.sparkline && item.sparkline.length >= 2) {
+      var sp = item.sparkline;
+      if (period === '5D' && sp.length >= 6) startPrice = sp[sp.length - 6];
+      else if (period === '1M')               startPrice = sp[0];
     }
   }
 
@@ -1513,7 +1505,6 @@ function updatePeriodReturn(sym, period) {
   var pct  = (diff / startPrice) * 100;
   var isUp = diff >= 0;
   var sign = isUp ? '+' : '';
-  var labelMap = { '5D':'5일간','1M':'1개월간','3M':'3개월간','6M':'6개월간','YTD':'연초 이후','1Y':'1년간','2Y':'2년간','3Y':'3년간','5Y':'5년간','ALL':'전체' };
 
   el.className = 'dv-period-return ' + (isUp ? 'up' : 'dn');
   el.innerHTML =

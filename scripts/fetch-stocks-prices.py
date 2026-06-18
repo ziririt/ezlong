@@ -167,6 +167,7 @@ def parse_snapshot(data):
             except (KeyError, TypeError, ValueError):
                 return None
 
+        day_open   = safe_float(item, 'day', 'o')   # 오늘 시초가 — 1D 수익률 계산용
         day_close  = safe_float(item, 'day', 'c')
         prev_close = safe_float(item, 'prevDay', 'c')
 
@@ -188,6 +189,7 @@ def parse_snapshot(data):
             'price':      price,
             'change':     change,
             'changePct':  change_pct,
+            'dayOpen':    round(day_open, 2) if day_open else None,  # 오늘 시초가
             'extPrice':   ext_price,
             'extPct':     ext_pct,
             'extSession': ext_session,
