@@ -612,9 +612,9 @@ def main():
     print(f'\n  [Index] SPX·NDX·DJI 실시간 지수 수집 중...')
     live_indices = fetch_index_snapshot(MASSIVE_API_KEY)
     if live_indices:
-        print(f'  [Index] 완료: {len(live_indices)}개 지수 — ' +
-              ', '.join(f"{x[\"symbol\"]} {x[\"price\"]} ({x[\"changePct\"]:+.2f}%)"
-                        for x in live_indices if x.get("changePct") is not None))
+        parts = [f"{x['symbol']} {x['price']} ({x['changePct']:+.2f}%)"
+                 for x in live_indices if x.get('changePct') is not None]
+        print(f'  [Index] 완료: {len(live_indices)}개 지수 — ' + ', '.join(parts))
     else:
         print(f'  [Index] 수집 실패 — stocks-data.json 폴백 사용')
 
