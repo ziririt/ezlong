@@ -759,7 +759,7 @@ function renderETF() {
 function rowHTML(item, noRank) {
   var sym  = item.symbol;
   var live      = (pricesData && pricesData.prices && pricesData.prices[sym]) || null;
-  var price     = (live && live.price != null) ? live.price : item.price;
+  var price     = (live && live.price > 0) ? live.price : item.price;
   var extPct    = live ? live.extPct     : null;
   var extSes    = live ? live.extSession : null;
 
@@ -1010,7 +1010,7 @@ function renderSemiEtfCards() {
   SEMI_ETFS.forEach(function(c) {
     var item   = findItem(c.sym);
     var live   = (pricesData && pricesData.prices && pricesData.prices[c.sym]) || null;
-    var price  = (live && live.price     != null) ? live.price     : (item ? item.price     : null);
+    var price  = (live && live.price > 0) ? live.price : (item ? item.price : null);
     var pct    = (live && live.changePct != null) ? live.changePct : (item ? item.changePct : null);
     var sparks = item ? (item.sparkline || []) : [];
 
@@ -1117,7 +1117,7 @@ function fillDetail(symbol) {
   document.getElementById('dv-name').textContent   = item ? (item.name || '') : '';
 
   // 실시간 가격: Massive API → yfinance 폴백
-  var price = (live && live.price != null) ? live.price : (item ? item.price : null);
+  var price = (live && live.price > 0) ? live.price : (item ? item.price : null);
 
   // changePct: 목록과 동일한 calcChangePct 사용 → 완전 일치
   var changePct = calcChangePct(price, item ? item.sparkline : null, live);
@@ -1484,7 +1484,7 @@ function updatePeriodReturn(sym, period) {
   var live = (pricesData && pricesData.prices && pricesData.prices[sym]) || null;
 
   // 현재가: Massive API → yfinance 폴백
-  var cur = (live && live.price != null) ? live.price : (item && item.price);
+  var cur = (live && live.price > 0) ? live.price : (item && item.price);
 
   var startPrice = null;
   var labelMap = {
@@ -1766,7 +1766,7 @@ function renderPortfolio() {
     listEl.innerHTML = faves.map(function(sym, idx) {
       var item     = findItem(sym) || { symbol: sym, name: sym, price: null, changePct: null, sparkline: [] };
       var live     = (pricesData && pricesData.prices && pricesData.prices[sym]) || null;
-      var pfPrice  = (live && live.price     != null) ? live.price     : item.price;
+      var pfPrice  = (live && live.price > 0) ? live.price : item.price;
       var pfPct    = (live && live.changePct != null) ? live.changePct : item.changePct;
       var isUp     = pfPct != null && pfPct >= 0;
       var isFlat   = pfPct == null;
