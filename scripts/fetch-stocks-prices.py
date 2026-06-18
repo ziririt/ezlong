@@ -195,64 +195,71 @@ def parse_snapshot(data):
     return result
 
 
-def get_extended_hours_yfinance(symbols):
+def get_extended_hours_yahoo(symbols):
     """
-    yfinance fast_info로 확장시간(프리/포스트) 데이터 수집
-    Massive API $29 플랜이 postMarket/preMarket 필드를 미제공하는 경우 보완.
-    GitHub Actions Azure IP에서 fast_info(quote endpoint)는 차단되지 않음.
-    """
-    try:
-        import yfinance as yf
-    except ImportError:
-        print('  [yfinance] 미설치 — 확장시간 데이터 생략')
-        return {}
+    Yahoo Finance v8/quote API로 확장시간(프리/포스트/나이트) 데이터 직접 수집.
 
+    - yfinance fast_info는 세션 종료 후 post_market_price = None 반환하는 버그 있음.
+    - Yahoo Finance v8 API는 당일 내내 postMarketPrice 필드를 유지 → 나이트 데드존에서도 수집 가능.
+    - GitHub Actions(서버사이드) 호출이므로 CORS 제한 없음.
+    - BRK-B → BRK-B (Yahoo는 하이픈 그대로 수용)
+    """
     result = {}
-    # yfinance Tickers: 심볼 간 스페이스 구분, BRK-B → BRK-B (yfinance는 하이픈 OK)
-    BATCH = 50  # 너무 많으면 요청 과부하
-    total = len(symbols)
+    BATCH = 100  # Yahoo v8/quote는 100개 이상도 처리하나 100개씩 분할로 안정성 확보
 
-    for i in range(0, total, BATCH):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+        'Accept': 'application/json',
+    }
+
+    for i in range(0, len(symbols), BATCH):
         batch = symbols[i:i + BATCH]
-        batch_str = ' '.join(batch)
+        syms_str = ','.join(batch)
+        url = (
+            'https://query2.finance.yahoo.com/v8/finance/quote'
+            '?symbols=' + urllib.parse.quote(syms_str) +
+            '&fields=regularMarketPrice,regularMarketPreviousClose'
+            ',postMarketPrice,preMarketPrice,postMarketChangePercent,preMarketChangePercent'
+        )
         try:
-            tickers_obj = yf.Tickers(batch_str)
-            for sym in batch:
-                try:
-                    fi = tickers_obj.tickers[sym].fast_info
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                data = json.loads(resp.read().decode())
 
-                    pre_price  = getattr(fi, 'pre_market_price',  None)
-                    post_price = getattr(fi, 'post_market_price', None)
-                    # 정규장 종가(오늘) 또는 전일 종가
-                    reg_price  = getattr(fi, 'regular_market_price',          None)
-                    prev_close = getattr(fi, 'regular_market_previous_close', None) \
-                              or getattr(fi, 'previous_close',                None)
+            for quote in data.get('quoteResponse', {}).get('result', []):
+                sym        = quote.get('symbol', '')
+                reg_price  = quote.get('regularMarketPrice')
+                prev_close = quote.get('regularMarketPreviousClose')
+                post_price = quote.get('postMarketPrice')
+                pre_price  = quote.get('preMarketPrice')
+                # Yahoo가 직접 계산한 % 값도 제공 — 있으면 우선 사용
+                post_pct_raw = quote.get('postMarketChangePercent')
+                pre_pct_raw  = quote.get('preMarketChangePercent')
 
-                    ext_price = ext_pct = ext_session = None
+                ext_price = ext_pct = ext_session = None
 
-                    if post_price and post_price > 0 and reg_price and reg_price > 0:
-                        if abs(post_price - reg_price) > 0.001:
-                            ext_price   = round(post_price, 2)
-                            ext_pct     = round((post_price - reg_price) / reg_price * 100, 2)
-                            ext_session = 'post'
-                    elif pre_price and pre_price > 0 and prev_close and prev_close > 0:
-                        if abs(pre_price - prev_close) > 0.001:
-                            ext_price   = round(pre_price, 2)
-                            ext_pct     = round((pre_price - prev_close) / prev_close * 100, 2)
-                            ext_session = 'pre'
+                if post_price and reg_price and abs(post_price - reg_price) > 0.001:
+                    ext_price   = round(post_price, 2)
+                    ext_pct     = round(post_pct_raw, 2) if post_pct_raw is not None \
+                                  else round((post_price - reg_price) / reg_price * 100, 2)
+                    ext_session = 'post'
+                elif pre_price and prev_close and abs(pre_price - prev_close) > 0.001:
+                    ext_price   = round(pre_price, 2)
+                    ext_pct     = round(pre_pct_raw, 2) if pre_pct_raw is not None \
+                                  else round((pre_price - prev_close) / prev_close * 100, 2)
+                    ext_session = 'pre'
 
-                    result[sym] = {
-                        'extPrice':   ext_price,
-                        'extPct':     ext_pct,
-                        'extSession': ext_session,
-                    }
-                except Exception:
-                    pass  # 개별 종목 실패 시 무시
+                result[sym] = {
+                    'extPrice':   ext_price,
+                    'extPct':     ext_pct,
+                    'extSession': ext_session,
+                }
+
         except Exception as e:
-            print(f'  [yfinance] 배치 오류 ({batch[0]}~): {e}')
+            print(f'  [Yahoo] 배치 {i // BATCH + 1} 오류: {e}')
 
     ext_ok = sum(1 for v in result.values() if v.get('extPct') is not None)
-    print(f'  [yfinance] 확장시간: {ext_ok}/{len(symbols)} 종목 수집')
+    print(f'  [Yahoo] 확장시간: {ext_ok}/{len(symbols)} 종목 수집')
     return result
 
 
@@ -265,7 +272,7 @@ def main():
     kst = now_utc + timedelta(hours=9)
     print('=' * 55)
     print('  실시간 주가 수집 — stocks-prices.json')
-    print('  소스: Massive API(정규장) + yfinance(확장시간)')
+    print('  소스: Massive API(정규장) + Yahoo Finance v8(확장시간)')
     print(f'  실행: {kst.strftime("%Y-%m-%d %H:%M KST")}')
     print('=' * 55)
 
@@ -295,19 +302,19 @@ def main():
     massive_ext_ok = sum(1 for v in prices.values() if v.get('extPct') is not None)
     print(f'  [Massive] 확장시간 데이터: {massive_ext_ok}개')
 
-    # ── 2단계: yfinance — 확장시간 보완 (Massive API 미제공 시) ──────────────
-    # Massive API가 확장시간을 하나도 주지 않을 때만 yfinance 사용 (비용 절감)
-    if massive_ext_ok == 0:
-        print('\n  [yfinance] Massive API 확장시간 없음 → yfinance로 보완...')
-        ext_data = get_extended_hours_yfinance(symbols)
+    # ── 2단계: Yahoo Finance v8/quote API — 확장시간 수집 ────────────────────
+    # Massive $29 플랜은 postMarket/preMarket 필드 미제공 → 항상 Yahoo로 수집
+    # Yahoo v8 API는 나이트 데드존(20:00~04:00 ET)에서도 당일 마지막 after-hours 가격 유지
+    if massive_ext_ok > 0:
+        print(f'  [Massive] 확장시간 {massive_ext_ok}개 이미 있음 — Yahoo 보완 생략')
+    else:
+        print('\n  [Yahoo] 확장시간 수집 중 (v8/quote API)...')
+        ext_data = get_extended_hours_yahoo(symbols)
         for sym, ext in ext_data.items():
             if sym in prices:
                 prices[sym]['extPrice']   = ext['extPrice']
                 prices[sym]['extPct']     = ext['extPct']
                 prices[sym]['extSession'] = ext['extSession']
-            # prices에 없는 심볼이면 무시 (가격 없이 확장시간만 있는 케이스)
-    else:
-        print(f'  [yfinance] 생략 — Massive API가 이미 {massive_ext_ok}개 확장시간 제공')
 
     # 최종 결과
     final_ext_ok = sum(1 for v in prices.values() if v.get('extPct') is not None)
