@@ -8,6 +8,10 @@ on:
     - cron: '*/10 0-4 * * 2-6'
   workflow_dispatch:   # 수동 실행 허용
 
+concurrency:
+  group: stocks-prices        # 동일 워크플로우 동시 실행 방지
+  cancel-in-progress: true    # 대기 중인 실행 취소 — 항상 최신 데이터만 커밋
+
 jobs:
   fetch-prices:
     runs-on: ubuntu-latest
