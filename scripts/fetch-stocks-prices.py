@@ -15,6 +15,7 @@ import time
 import urllib.request
 import urllib.parse
 from datetime import datetime, timezone, timedelta
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # ─── API 설정 ─────────────────────────────────────────────────────────────────
 MASSIVE_API_KEY = os.environ.get('MASSIVE_API_KEY', '')
@@ -87,6 +88,79 @@ def all_unique_symbols():
             seen.add(sym)
             result.append(sym)
     return result
+
+
+def get_intraday_date():
+    """
+    인트라데이 5분봉 수집 대상 날짜를 미국 동부시간(ET) 기준으로 결정.
+    - 장중/장 마감 후: 오늘 날짜
+    - 프리마켓(9:30 AM ET 이전): 직전 거래일
+    - 주말/공휴일: 직전 거래일 (최대 3일 소급)
+    """
+    # EDT = UTC-4, EST = UTC-5 (6~10월은 EDT)
+    et_offset = timedelta(hours=-4)
+    now_et = datetime.now(timezone.utc) + et_offset
+
+    day = now_et.date()
+
+    # 9:30 AM ET 이전이면 전일로
+    if now_et.hour < 9 or (now_et.hour == 9 and now_et.minute < 30):
+        day = day - timedelta(days=1)
+
+    # 주말 소급 (토요일→금요일, 일요일→금요일)
+    for _ in range(3):
+        if day.weekday() < 5:  # 0=월 … 4=금
+            break
+        day -= timedelta(days=1)
+
+    return day.strftime('%Y-%m-%d')
+
+
+def fetch_intraday_bars(ticker, date, api_key):
+    """
+    Massive API v2 aggregates — 5분봉 장중 종가 배열 반환.
+    실패 또는 데이터 없음이면 빈 리스트 반환.
+    """
+    safe_ticker = urllib.parse.quote(ticker, safe='')
+    url = (
+        f'{BASE_URL}/v2/aggs/ticker/{safe_ticker}/range/5/minute/{date}/{date}'
+        f'?adjusted=false&sort=asc&limit=1000&apiKey={api_key}'
+    )
+    req = urllib.request.Request(url, headers={'Accept': 'application/json'})
+    try:
+        with urllib.request.urlopen(req, timeout=12) as resp:
+            data = json.loads(resp.read().decode())
+        results = data.get('results', [])
+        if not results:
+            return []
+        return [round(float(bar['c']), 2) for bar in results if 'c' in bar]
+    except Exception:
+        return []
+
+
+def fetch_intraday_all(symbols, date, api_key, max_workers=15):
+    """
+    전체 심볼 인트라데이 5분봉 병렬 수집 (ThreadPoolExecutor).
+    반환: (dict{sym: [floats]}, ok_count)
+    """
+    result = {}
+
+    def _fetch(sym):
+        return sym, fetch_intraday_bars(sym, date, api_key)
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {executor.submit(_fetch, sym): sym for sym in symbols}
+        ok = 0
+        for future in as_completed(futures):
+            try:
+                sym, bars = future.result()
+                result[sym] = bars
+                if bars:
+                    ok += 1
+            except Exception:
+                pass
+
+    return result, ok
 
 
 def fetch_snapshot_batch(symbols, api_key):
@@ -342,7 +416,22 @@ def main():
     massive_ext_ok = sum(1 for v in prices.values() if v.get('extPct') is not None)
     print(f'  [Massive] 확장시간 데이터: {massive_ext_ok}개')
 
-    # ── 2단계: Yahoo Finance v8/quote API — 확장시간 수집 ────────────────────
+    # ── 2단계: Massive API aggregates — 인트라데이 5분봉 수집 ─────────────────
+    intraday_date = get_intraday_date()
+    print(f'\n  [인트라데이] {intraday_date} 5분봉 수집 중 ({len(symbols)}개, 병렬 15)...', flush=True)
+    intraday_data, intraday_ok = fetch_intraday_all(symbols, intraday_date, MASSIVE_API_KEY)
+    print(f'  [인트라데이] 완료: {intraday_ok}/{len(symbols)} 종목 데이터 확보')
+
+    for sym, bars in intraday_data.items():
+        if sym in prices and bars:
+            # dayOpen을 intraday[0]으로 prepend → buildSparkline의 closes[0] = 시초가(베이스라인)
+            day_open = prices[sym].get('dayOpen')
+            if day_open:
+                prices[sym]['intraday'] = [day_open] + bars
+            else:
+                prices[sym]['intraday'] = bars
+
+    # ── 3단계: Yahoo Finance v8/quote API — 확장시간 수집 ────────────────────
     # Massive $29 플랜은 postMarket/preMarket 필드 미제공 → 항상 Yahoo로 수집
     # Yahoo v8 API는 나이트 데드존(20:00~04:00 ET)에서도 당일 마지막 after-hours 가격 유지
     if massive_ext_ok > 0:

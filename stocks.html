@@ -796,7 +796,12 @@ function rowHTML(item, noRank) {
         '<span class="sr-ticker">' + sym + '</span>',
         '<span class="sr-name">'   + cleanName(item.name || '') + '</span>',
       '</div>',
-      '<div class="sr-spark">' + buildSparkline(item.sparkline || [], isUp) + '</div>',
+      '<div class="sr-spark">' + (function() {
+        // 인트라데이(5분봉) 우선 — live.intraday[0]=dayOpen(베이스라인), 이후=장중 변곡점
+        // 없으면 item.sparkline(월간 추세) 폴백
+        var intradayBars = live && live.intraday && live.intraday.length >= 2 ? live.intraday : null;
+        return buildSparkline(intradayBars || item.sparkline || []);
+      })() + '</div>',
       '<div class="sr-right">',
         '<div class="sr-price">' + priceStr + '</div>',
         '<div class="sr-pct ' + pctCls + '">' + pctStr + '</div>',
