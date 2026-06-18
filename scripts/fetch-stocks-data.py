@@ -76,7 +76,7 @@ SP500_TOP100 = [
 # 종합지수 — yfinance 심볼 → 표시 심볼 매핑
 INDICES_MAP = {
     '^GSPC': {'symbol': 'SPX', 'name': 'S&P 500'},
-    '^NDX':  {'symbol': 'NDX', 'name': 'Nasdaq 100'},
+    '^IXIC': {'symbol': 'NDX', 'name': 'Nasdaq'},      # Nasdaq Composite (Yahoo Finance 기준)
     '^DJI':  {'symbol': 'DJI', 'name': 'Dow Jones'},
 }
 
@@ -330,7 +330,7 @@ def main():
     sp500_data    = build_array(SP500_TOP100, cache)
     etf_data      = build_array(ETF_LIST,     cache)
 
-    # 종합지수 수집 (^GSPC, ^NDX, ^DJI) — 실제 지수 값 (S&P 7000+, NDX 26000+, DJI 51000+)
+    # 종합지수 수집 (^GSPC, ^IXIC, ^DJI) — Yahoo Finance 기준 (S&P 7500+, Nasdaq Composite 26000+, DJI 51000+)
     print('\n종합지수 수집 중 (1시간봉 스파크라인)...')
     indices_data = []
     for yf_sym, meta in INDICES_MAP.items():
