@@ -28,18 +28,18 @@ OUTPUT_PATH = os.path.normpath(
 # ─── 수집 대상 심볼 ────────────────────────────────────────────────────────────
 # stocks-data.json 과 동일한 종목 전체 (중복 제거)
 US_TOP100 = [
-    # 시총 순위 1~10 (2026-06-18 업데이트, us-stock-top200.csv 기준)
-    'NVDA', 'GOOGL', 'AAPL', 'MSFT', 'AMZN', 'SPCX',  'AVGO', 'TSLA', 'META', 'MU',
+    # 시총 순위 1~10 (TSM 7위 수동 추가 2026-06-19)
+    'NVDA', 'GOOGL', 'AAPL', 'MSFT', 'AMZN', 'SPCX',  'TSM',  'AVGO', 'TSLA', 'META',
     # 11~20
-    'BRK-B','LLY',   'WMT',  'JPM',  'AMD',  'ASML',  'V',    'INTC', 'XOM',  'JNJ',
+    'MU',   'BRK-B', 'LLY',  'WMT',  'JPM',  'AMD',   'ASML', 'V',    'INTC', 'XOM',
     # 21~30
-    'ORCL', 'AMAT',  'LRCX', 'CSCO', 'ARM',  'CAT',   'MA',   'COST', 'BAC',  'ABBV',
+    'JNJ',  'ORCL',  'AMAT', 'LRCX', 'CSCO', 'ARM',   'CAT',  'MA',   'COST', 'BAC',
     # 31~40
-    'GE',   'UNH',   'MS',   'CVX',  'PG',   'KO',    'HD',   'GS',   'NFLX', 'PLTR',
+    'ABBV', 'GE',    'UNH',  'MS',   'CVX',  'PG',    'KO',   'HD',   'GS',   'NFLX',
     # 41~50
-    'KLAC', 'SNDK',  'MRK',  'GEV',  'PM',   'TXN',   'DELL', 'RTX',  'WFC',  'MRVL',
+    'PLTR', 'KLAC',  'SNDK', 'MRK',  'GEV',  'PM',    'TXN',  'DELL', 'RTX',  'WFC',
     # 51~60
-    'IBM',  'C',     'WDC',  'STX',  'LIN',  'AXP',   'PANW', 'QCOM', 'ANET', 'ADI',
+    'MRVL', 'IBM',   'C',    'WDC',  'STX',  'LIN',   'AXP',  'PANW', 'QCOM', 'ANET',
     # 61~70
     'MCD',  'APH',   'TMUS', 'PEP',  'VZ',   'AMGN',  'TJX',  'NEE',  'BA',   'DIS',
     # 71~80
