@@ -135,9 +135,14 @@
     .sr-rank { font-size: 14px; color: var(--ez-text3); min-width: 22px; text-align: right; }
     .sr-info { flex: 1; min-width: 0; }
     .sr-ticker { display: block; font-size: 17px; font-weight: 700; color: var(--ez-text); line-height: 1.2; }
-    .sr-name   { display: block; font-size: 14px; color: var(--ez-text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 155px; }
+    .sr-name   { display: block; font-size: 14px; color: var(--ez-text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; }
     .sr-spark  { flex-shrink: 0; }
+    .sr-spark-svg { width: 90px; height: 32px; display: block; }
     .sr-right  { text-align: right; flex-shrink: 0; min-width: 88px; }
+    @media (min-width: 768px) {
+      .sr-spark-svg { width: 180px; }
+      .sr-name { max-width: 130px; }
+    }
     .sr-price  { font-size: 17px; font-weight: 600; color: var(--ez-text); line-height: 1.2; }
     .sr-pct {
       display: inline-block; margin-top: 3px;
@@ -792,18 +797,18 @@ function rowHTML(item, noRank) {
 
 function buildSparkline(closes, isUp) {
   if (!closes || closes.length < 2) {
-    return '<svg width="64" height="32"><line x1="0" y1="16" x2="64" y2="16" stroke="var(--ez-border)" stroke-width="1" stroke-dasharray="4,3"/></svg>';
+    return '<svg class="sr-spark-svg" width="90" height="32" viewBox="0 0 90 32" preserveAspectRatio="none"><line x1="0" y1="16" x2="90" y2="16" stroke="var(--ez-border)" stroke-width="1" stroke-dasharray="4,3"/></svg>';
   }
   var min = Math.min.apply(null, closes);
   var max = Math.max.apply(null, closes);
   var range = max - min || 1;
-  var W = 64, H = 32, pad = 3;
+  var W = 90, H = 32, pad = 3;
   var pts = closes.map(function(v, i) {
     return (pad + (i / (closes.length - 1)) * (W - pad * 2)).toFixed(1) + ',' +
            (H - pad - ((v - min) / range) * (H - pad * 2)).toFixed(1);
   }).join(' ');
   var clr = isUp ? 'var(--ez-green)' : 'var(--ez-red)';
-  return '<svg width="64" height="32" viewBox="0 0 64 32">' +
+  return '<svg class="sr-spark-svg" width="90" height="32" viewBox="0 0 90 32" preserveAspectRatio="none">' +
     '<polyline points="' + pts + '" fill="none" stroke="' + clr +
     '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 }
