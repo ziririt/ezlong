@@ -195,44 +195,82 @@ def parse_snapshot(data):
     return result
 
 
+def get_yahoo_crumb():
+    """
+    Yahoo Finance API v8 크럼(crumb) + 쿠키 획득.
+    Yahoo Finance는 2024년 이후 crumb 없는 요청에 HTTP 500 반환.
+    fc.yahoo.com → cookie 발급 → getcrumb API로 crumb 획득.
+    """
+    import http.cookiejar
+
+    cj     = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+
+    ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/125.0'
+
+    # 1단계: fc.yahoo.com — 쿠키(A1 등) 발급
+    try:
+        opener.open(
+            urllib.request.Request('https://fc.yahoo.com', headers={'User-Agent': ua}),
+            timeout=10,
+        )
+    except Exception:
+        pass  # 리디렉션 오류가 나도 쿠키는 저장됨
+
+    # 2단계: crumb 획득
+    crumb_req = urllib.request.Request(
+        'https://query1.finance.yahoo.com/v1/test/getcrumb',
+        headers={'User-Agent': ua, 'Accept': '*/*'},
+    )
+    with opener.open(crumb_req, timeout=10) as resp:
+        crumb = resp.read().decode().strip()
+
+    return opener, crumb
+
+
 def get_extended_hours_yahoo(symbols):
     """
     Yahoo Finance v8/quote API로 확장시간(프리/포스트/나이트) 데이터 직접 수집.
 
-    - yfinance fast_info는 세션 종료 후 post_market_price = None 반환하는 버그 있음.
-    - Yahoo Finance v8 API는 당일 내내 postMarketPrice 필드를 유지 → 나이트 데드존에서도 수집 가능.
-    - GitHub Actions(서버사이드) 호출이므로 CORS 제한 없음.
-    - BRK-B → BRK-B (Yahoo는 하이픈 그대로 수용)
+    - crumb 인증 포함 → HTTP 500 우회
+    - Yahoo v8 API는 당일 내내 postMarketPrice 유지 → 나이트 데드존도 커버
+    - GitHub Actions(서버사이드)이므로 CORS 제한 없음
     """
     result = {}
-    BATCH = 100  # Yahoo v8/quote는 100개 이상도 처리하나 100개씩 분할로 안정성 확보
+    BATCH = 100
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-        'Accept': 'application/json',
-    }
+    # 크럼 획득
+    try:
+        opener, crumb = get_yahoo_crumb()
+        print(f'  [Yahoo] 크럼 획득 완료 ({crumb[:8]}...)')
+    except Exception as e:
+        print(f'  [Yahoo] 크럼 획득 실패: {e} — 확장시간 수집 생략')
+        return result
+
+    ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/125.0'
 
     for i in range(0, len(symbols), BATCH):
-        batch = symbols[i:i + BATCH]
+        batch    = symbols[i:i + BATCH]
         syms_str = ','.join(batch)
         url = (
             'https://query2.finance.yahoo.com/v8/finance/quote'
-            '?symbols=' + urllib.parse.quote(syms_str) +
-            '&fields=regularMarketPrice,regularMarketPreviousClose'
-            ',postMarketPrice,preMarketPrice,postMarketChangePercent,preMarketChangePercent'
+            '?symbols='  + urllib.parse.quote(syms_str)
+            + '&crumb='  + urllib.parse.quote(crumb)
+            + '&fields=regularMarketPrice,regularMarketPreviousClose'
+              ',postMarketPrice,preMarketPrice'
+              ',postMarketChangePercent,preMarketChangePercent'
         )
         try:
-            req = urllib.request.Request(url, headers=headers)
-            with urllib.request.urlopen(req, timeout=20) as resp:
+            req = urllib.request.Request(url, headers={'User-Agent': ua, 'Accept': 'application/json'})
+            with opener.open(req, timeout=20) as resp:
                 data = json.loads(resp.read().decode())
 
             for quote in data.get('quoteResponse', {}).get('result', []):
-                sym        = quote.get('symbol', '')
-                reg_price  = quote.get('regularMarketPrice')
-                prev_close = quote.get('regularMarketPreviousClose')
-                post_price = quote.get('postMarketPrice')
-                pre_price  = quote.get('preMarketPrice')
-                # Yahoo가 직접 계산한 % 값도 제공 — 있으면 우선 사용
+                sym          = quote.get('symbol', '')
+                reg_price    = quote.get('regularMarketPrice')
+                prev_close   = quote.get('regularMarketPreviousClose')
+                post_price   = quote.get('postMarketPrice')
+                pre_price    = quote.get('preMarketPrice')
                 post_pct_raw = quote.get('postMarketChangePercent')
                 pre_pct_raw  = quote.get('preMarketChangePercent')
 
