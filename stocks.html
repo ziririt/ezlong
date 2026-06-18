@@ -822,6 +822,8 @@ function cleanName(name) {
 
 function buildSparkline(closes, isUp) {
   var W = 90, H = 32, pad = 3;
+  // 최근 5영업일만 사용 — 배지(오늘 등락)와 방향 일치
+  if (closes && closes.length > 5) closes = closes.slice(-5);
   if (!closes || closes.length < 2) {
     return '<svg class="sr-spark-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">' +
       '<line x1="' + pad + '" y1="' + (H/2) + '" x2="' + (W-pad) + '" y2="' + (H/2) + '" stroke="var(--ez-border)" stroke-width="1" stroke-dasharray="4,3"/></svg>';
@@ -1167,7 +1169,7 @@ var NYSE_SYMS = {
   'TJX':1,'ICE':1,'LOW':1,'CME':1,'WELL':1,'CI':1,'C':1,'BMY':1,'ZTS':1,
   'ELV':1,'WM':1,'CVS':1,'BA':1,'LLY':1,'ABBV':1,'MRK':1,'ABT':1,'LIN':1,
   'TMO':1,'ACN':1,'PM':1,'SPGI':1,'BLK':1,'SYK':1,'T':1,'BSX':1,'ETN':1,
-  'MMC':1,'PGR':1,'ADP':1,'DHR':1,'IBM':1,'HON':1,
+  'MMC':1,'PGR':1,'ADP':1,'DHR':1,'IBM':1,'HON':1,'ORCL':1,
 };
 
 // NYSE Arca ETF (TradingView에서 AMEX: 프리픽스 사용)
