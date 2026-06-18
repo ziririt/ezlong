@@ -205,23 +205,28 @@ def get_period_prices(ticker_obj, hist_1m):
         closes5y = hist5y['Close']
         idx5y    = hist5y.index
 
+        # timezone-aware → UTC naive로 통일 (pandas astype int64 오작동 방지)
+        import pandas as pd
+        try:
+            idx_utc = idx5y.tz_convert('UTC').tz_localize(None)
+        except Exception:
+            try:
+                idx_utc = idx5y.tz_localize(None)
+            except Exception:
+                idx_utc = idx5y
+
         def price_before(days_ago):
             """days_ago 이전 날짜에 가장 가까운 주봉 종가"""
-            cutoff_ts = (now - timedelta(days=days_ago)).timestamp()
-            try:
-                idx_ts = idx5y.astype('int64') // 10 ** 9
-            except Exception:
-                return None
-            mask = idx_ts <= int(cutoff_ts)
+            cutoff = pd.Timestamp(now - timedelta(days=days_ago)).tz_localize(None)
+            mask = idx_utc <= cutoff
             if not mask.any():
                 return None
             return round(float(closes5y[mask].iloc[-1]), 2)
 
-        # YTD: 올해 첫 거래일 종가 (1월 1일 ~ 2일 사이 가장 이른 주봉)
-        jan1_ts = int(datetime(now.year, 1, 1, tzinfo=timezone.utc).timestamp())
+        # YTD: 올해 첫 거래일 종가
         try:
-            idx_ts_ytd = idx5y.astype('int64') // 10 ** 9
-            mask_ytd = idx_ts_ytd >= jan1_ts
+            jan1 = pd.Timestamp(datetime(now.year, 1, 1)).tz_localize(None)
+            mask_ytd = idx_utc >= jan1
             if mask_ytd.any():
                 result['ytd'] = round(float(closes5y[mask_ytd].iloc[0]), 2)
         except Exception:
