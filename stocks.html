@@ -976,7 +976,8 @@ function renderIndexCards() {
                      : null;
     var idxEntry   = allData && allData.indices ? allData.indices.find(function(x) { return x.symbol === c.idxSym; }) : null;
     var price      = (liveIdx && liveIdx.price)     ? liveIdx.price     : (idxEntry ? idxEntry.price     : null);
-    var pct        = (liveIdx && liveIdx.changePct != null) ? liveIdx.changePct : (idxEntry ? idxEntry.changePct : null);
+    // ETF 프록시(price=null)는 changePct 신뢰 불가 → stocks-data.json 값 우선
+    var pct        = (liveIdx && liveIdx.price != null && liveIdx.changePct != null) ? liveIdx.changePct : (idxEntry ? idxEntry.changePct : null);
     var sparklines = idxEntry ? (idxEntry.sparkline || []) : [];
 
     var isUp    = pct != null ? pct >= 0 : true;

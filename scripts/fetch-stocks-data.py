@@ -381,9 +381,18 @@ def main():
         'indices':   indices_data,   # 종합지수: SPX / NDX / DJI 실제 지수 값
     }
 
+    # NaN/Infinity → None(null) 변환 — 브라우저 JSON.parse() 오류 방지
+    def sanitize(obj):
+        if isinstance(obj, float):
+            import math
+            return None if (math.isnan(obj) or math.isinf(obj)) else obj
+        if isinstance(obj, list):  return [sanitize(v) for v in obj]
+        if isinstance(obj, dict):  return {k: sanitize(v) for k, v in obj.items()}
+        return obj
+
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
     with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
-        json.dump(output, f, ensure_ascii=False, separators=(',', ':'))
+        json.dump(sanitize(output), f, ensure_ascii=False, separators=(',', ':'))
 
     print('\n' + '=' * 55)
     print(f'  완료: {OUTPUT_PATH}')
