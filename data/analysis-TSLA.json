@@ -3,65 +3,81 @@
   "name": "테슬라",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-18T18:16:18.081Z",
+  "updatedAt": "2026-06-18T19:05:55.057Z",
   "price": {
-    "current": 395.095,
-    "change": -1.285,
-    "changePct": -0.32,
+    "current": 394.64,
+    "change": -1.74,
+    "changePct": -0.44,
     "high52": 498.83,
     "low52": 288.77,
-    "pos52": 50.6,
+    "pos52": 50.4,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 413.4278,
-    "sma50": 402.3795,
-    "sma100": 400.0205,
-    "sma200": 416.9368,
-    "rsi": 44.89,
+    "sma20": 413.405,
+    "sma50": 402.3704,
+    "sma100": 400.016,
+    "sma200": 416.9345,
+    "rsi": 44.74,
     "macd": {
-      "macd": -3.280034,
-      "signal": -0.590684,
-      "histogram": -2.68935
+      "macd": -3.31633,
+      "signal": -0.597943,
+      "histogram": -2.718386
     },
     "bb": {
-      "upper": 447.0545,
-      "middle": 413.4278,
-      "lower": 379.801,
-      "bandwidth": 0.1627
+      "upper": 447.0819,
+      "middle": 413.405,
+      "lower": 379.7281,
+      "bandwidth": 0.1629
     }
   },
   "levels": {
     "swingResistance": 409.28,
     "swingSupport": 393.63,
     "pivot": {
-      "pp": 406.95,
-      "r1": 433.75,
-      "r2": 472.4,
-      "s1": 368.3,
-      "s2": 341.5
+      "pp": 406.8,
+      "r1": 433.44,
+      "r2": 472.25,
+      "s1": 367.99,
+      "s2": 341.35
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "횡보",
+    "strength": 2,
     "support": 393.63,
     "resistance": 409.28,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "중단",
+    "stage": "축적구간",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 4,
+    "scoreReason": "RSI 중립 구간 횡보, MACD 개선 중",
+    "rsiTrajectory": "46.3 → 44.7 (중립 지속 중)",
+    "macdTrajectory": "히스토 -5.5256 → -2.7184 (개선)",
+    "pricePattern": "5일 저가($384.70) > 20일 저가($380.15) * 1.005 → Higher Low",
+    "volComment": "거래량비 0.83 (정상)",
+    "bbPosition": "중단근처",
+    "reason": "최근 5거래일 연속 하락 후 반등 시도했으나 SMA20($413.41) 저항에 막힘. RSI는 44.7로 중립 구간에서 횡보 중이며, MACD 히스토그램은 개선되고 있으나 아직 골든크로스 발생 전임.",
+    "entry": 393.63,
+    "stop": 384.7,
+    "target": 409.28,
+    "invalidation": 413.41,
+    "weeklyConflict": "주봉은 SMA20($397.12) 상회하나 일봉 신호 우선",
+    "profitTarget1": 402.65,
+    "profitTarget2": 413.41,
+    "stopLoss": 380.15,
+    "narrative": "[추세 위치]\n· 현재가($394.64) vs SMA5/20/50($402.65/$413.41/$402.37) — 단기·중기 추세 하회, 약세 구간\n· SMA100($400.02)/200($416.93) 대비 위치 — 중장기 추세 하회, 약세 강화\n· 52주 위치(50.4%) + 현 가격대 역사적 의미 — 52주 중간값 부근, 변동성 구간 진입\n[모멘텀 지표]\n· RSI 궤적 (46.3→44.7) + 중립 판단 + 하락 방향성 확인\n· MACD 히스토그램 궤적 (히스토 -5.5256→-2.7184) + 개선 진단 + 약세 약화 신호\n· 볼린저밴드 현재가 위치 (하단 $379.73 ~ 중단 $413.40) + 밴드폭 16.29%로 확장 구간\n[지지·저항 구조]\n· 스윙 지지선 ($393.63) + 근거 (5일 저가, 피벗 S1($367.99) 상회)\n· 스윙 저항선 ($409.28) + 돌파 시 의미 — SMA20 저항 구간\n· 5일/20일 고가·저가 패턴 (Higher Low) + 회복 신호 확인\n[거래량·결론]\n· 거래량 비율 (0.83배) + 움직임의 신뢰도 하락\n· 현 구간 진단 (축적구간) + 진입 조건 — 393.63 지지 확인 후 409.28 돌파 시 매수",
+    "patternNote": "5일 저가($384.70)가 20일 저가($380.15)보다 높아 Higher Low 패턴 형성 중. 이는 회복 신호로 해석 가능.",
+    "keyPoints": [
+      "최근 5거래일 연속 하락 후 반등 시도했으나 SMA20 저항에 막힘",
+      "RSI는 44.7로 중립 구간에서 횡보 중이며, MACD 히스토그램은 개선되고 있음",
+      "393.63 지지선 확인 후 409.28 저항선 돌파 시 매수 진입 고려"
+    ],
+    "riskNote": "현재가($394.64)가 SMA20($413.41) 및 스윙 저항선($409.28) 하단에 위치하여 추가 하락 가능성 존재."
   }
 }
