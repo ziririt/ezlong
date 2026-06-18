@@ -612,11 +612,13 @@ def main():
     print(f'\n  [Index] SPX·NDX·DJI 실시간 지수 수집 중...')
     live_indices = fetch_index_snapshot(MASSIVE_API_KEY)
     if live_indices:
-        parts = [f"{x['symbol']} {x['price']} ({x['changePct']:+.2f}%)"
-                 for x in live_indices if x.get('changePct') is not None]
-        print(f'  [Index] 완료: {len(live_indices)}개 지수 — ' + ', '.join(parts))
+        idx_parts = []
+        for x in live_indices:
+            if x.get('changePct') is not None:
+                idx_parts.append('%s %s (%+.2f%%)' % (x['symbol'], x['price'], x['changePct']))
+        print('  [Index] 완료: %d개 지수 — %s' % (len(live_indices), ', '.join(idx_parts)))
     else:
-        print(f'  [Index] 수집 실패 — stocks-data.json 폴백 사용')
+        print('  [Index] 수집 실패 — stocks-data.json 폴백 사용')
 
     output = {
         'updatedAt':    now_utc.isoformat(),
