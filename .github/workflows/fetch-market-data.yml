@@ -59,26 +59,22 @@ jobs:
         run: python scripts/fetch-market-data.py
 
       # ── 4. 변경사항 커밋 및 푸시 ───────────────────────────────────────
+      # 주의: git reset --hard / git pull --rebase 절대 금지 (CLAUDE.md 규칙 16)
+      # actions/checkout@v4 이 이미 올바른 origin/main 상태로 체크아웃해줌.
+      # Python이 덮어쓴 파일을 그대로 staged → diff → 커밋. 이게 전부.
       - name: Commit and push market-signals.json
         run: |
           git config user.name  "ATMR Bot"
           git config user.email "atmr-bot@ezlong.com"
 
-          # 변경사항이 없으면 (이미 최신 데이터면) 커밋 건너뜀
-          if git diff --quiet data/market-signals.json 2>/dev/null; then
-            echo "데이터 변경 없음. 커밋 건너뜀."
-            exit 0
-          fi
-
-          git fetch origin main
-          git reset --hard origin/main
           git add data/market-signals.json
           if git diff --staged --quiet; then
             echo "데이터 변경 없음 — 커밋 건너뜀."
             exit 0
           fi
-          git commit -m "chore: ATMR 시장 데이터 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
-          git push origin main
+          KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
+          git commit -m "chore: ATMR 시장 데이터 업데이트 ${KST}"
+          git push origin main || (git fetch origin main && git merge --ff-only origin/main && git push origin main)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
