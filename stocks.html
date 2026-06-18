@@ -140,7 +140,7 @@
     .sr-spark-svg { width: 90px; height: 32px; display: block; }
     .sr-right  { text-align: right; flex-shrink: 0; min-width: 88px; }
     @media (min-width: 768px) {
-      .sr-info  { flex: none; width: 160px; }   /* 고정 폭 → 스파크라인 시작 위치 통일 */
+      .sr-info  { flex: none; width: 200px; }   /* 고정 폭 → 스파크라인 시작 위치 통일 */
       .sr-spark { flex: 1; }
       .sr-spark-svg { width: 180px; height: 32px; }
       .sr-name  { max-width: 130px; }
@@ -831,10 +831,10 @@ function buildSparkline(closes, isUp) {
   // 고유 ID (clip-path용)
   var uid = 'sp' + (Math.random() * 1e6 | 0);
 
-  // 베이스라인 좌우 10% 연장 (데이터 범위 기준)
+  // 베이스라인 좌우 5% 연장 (데이터 범위 기준)
   var dataW  = W - pad * 2;
-  var extX1  = (pad - dataW * 0.1).toFixed(1);
-  var extX2  = (W - pad + dataW * 0.1).toFixed(1);
+  var extX1  = (pad - dataW * 0.05).toFixed(1);
+  var extX2  = (W - pad + dataW * 0.05).toFixed(1);
 
   var uid = 'sp' + (Math.random() * 1e6 | 0);
 
