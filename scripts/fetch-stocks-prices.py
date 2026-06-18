@@ -118,9 +118,10 @@ def get_intraday_date():
 
 def fetch_intraday_bars(ticker, date, api_key):
     """
-    Massive API v2 aggregates — RTH(정규장 9:30 AM~4:05 PM ET) 5분봉 종가 배열 반환.
-    프리마켓(4AM~9:30AM) · 포스트마켓(4PM~8PM) 봉은 필터링 제거.
-    Polygon 응답의 t 필드 = Unix 밀리초(UTC).
+    Massive API v2 aggregates — 5분봉 전체 세션 종가 배열 반환.
+    프리마켓(4AM~9:30AM) + 정규장(9:30AM~4PM) + 포스트마켓(4PM~8PM) 모두 포함.
+    시간순 정렬(sort=asc). Polygon t 필드 = Unix ms UTC.
+    베이스라인은 별도 dayOpen 값으로 처리 — 여기선 필터하지 않는다.
     """
     safe_ticker = urllib.parse.quote(ticker, safe='')
     url = (
@@ -134,19 +135,7 @@ def fetch_intraday_bars(ticker, date, api_key):
         results = data.get('results', [])
         if not results:
             return []
-
-        # ── RTH 필터: 9:30 AM ET ~ 4:05 PM ET (마지막 봉 포함 buffer +5분) ──
-        # 동부시간 오프셋: EDT(3~11월)=-4h, EST(12~2월)=-5h
-        month = int(date[5:7])
-        et_hours = -4 if 3 <= month <= 11 else -5
-        et_tz = timezone(timedelta(hours=et_hours))
-
-        y, m, dn = int(date[:4]), int(date[5:7]), int(date[8:10])
-        rth_open_ms  = int(datetime(y, m, dn, 9, 30, tzinfo=et_tz).timestamp() * 1000)
-        rth_close_ms = int(datetime(y, m, dn, 16, 5,  tzinfo=et_tz).timestamp() * 1000)
-
-        rth = [b for b in results if rth_open_ms <= b.get('t', 0) <= rth_close_ms]
-        return [round(float(bar['c']), 2) for bar in rth if 'c' in bar]
+        return [round(float(bar['c']), 2) for bar in results if 'c' in bar]
     except Exception:
         return []
 
@@ -437,12 +426,9 @@ def main():
 
     for sym, bars in intraday_data.items():
         if sym in prices and bars:
-            # dayOpen을 intraday[0]으로 prepend → buildSparkline의 closes[0] = 시초가(베이스라인)
-            day_open = prices[sym].get('dayOpen')
-            if day_open:
-                prices[sym]['intraday'] = [day_open] + bars
-            else:
-                prices[sym]['intraday'] = bars
+            # 시간순 그대로 저장 (프리마켓→정규장→포스트마켓)
+            # 베이스라인은 dayOpen 필드(별도)를 stocks.html에서 참조
+            prices[sym]['intraday'] = bars
 
     # ── 3단계: Yahoo Finance v8/quote API — 확장시간 수집 ────────────────────
     # Massive $29 플랜은 postMarket/preMarket 필드 미제공 → 항상 Yahoo로 수집

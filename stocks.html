@@ -797,10 +797,15 @@ function rowHTML(item, noRank) {
         '<span class="sr-name">'   + cleanName(item.name || '') + '</span>',
       '</div>',
       '<div class="sr-spark">' + (function() {
-        // 인트라데이(5분봉) 우선 — live.intraday[0]=dayOpen(베이스라인), 이후=장중 변곡점
-        // 없으면 item.sparkline(월간 추세) 폴백
+        // 인트라데이(5분봉, 프리+정규장+포스트 전체) 우선 사용
+        // 베이스라인 = live.dayOpen(정규장 9:30 AM 시가) → 이 값 기준으로 초록/빨강 분리
+        // 인트라데이 없으면 item.sparkline(월간 추세, closes[0] 베이스라인) 폴백
         var intradayBars = live && live.intraday && live.intraday.length >= 2 ? live.intraday : null;
-        return buildSparkline(intradayBars || item.sparkline || []);
+        var dayOpen      = live && live.dayOpen ? live.dayOpen : null;
+        if (intradayBars) {
+          return buildSparkline(intradayBars, dayOpen);  // dayOpen = 베이스라인
+        }
+        return buildSparkline(item.sparkline || []);     // 월간 폴백: closes[0] 베이스라인
       })() + '</div>',
       '<div class="sr-right">',
         '<div class="sr-price">' + priceStr + '</div>',
@@ -844,7 +849,9 @@ function calcChangePct(price, sparkline, live) {
   return null;  // yfinance item.changePct는 호출측에서 추가 폴백
 }
 
-function buildSparkline(closes, isUp) {
+function buildSparkline(closes, baselineValue) {
+  // baselineValue: 인트라데이 시 dayOpen(정규장 시가)을 별도로 받아 베이스라인으로 사용.
+  //               미전달 또는 null이면 closes[0](기간 첫 가격)으로 폴백.
   var W = 90, H = 32, pad = 3;
   if (!closes || closes.length < 2) {
     return '<svg class="sr-spark-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">' +
@@ -857,8 +864,10 @@ function buildSparkline(closes, isUp) {
   function toY(v) { return H - pad - ((v - min) / range) * (H - pad * 2); }
   function toX(i) { return pad + (i / (closes.length - 1)) * (W - pad * 2); }
 
-  // 베이스라인 = 기간 시작가(closes[0]) — 베이스라인 차트 기준
-  var baseVal = closes[0];
+  // 베이스라인: 인트라데이면 dayOpen(정규장 시가) 사용, 아니면 closes[0]
+  var baseVal = (baselineValue != null && baselineValue > 0) ? baselineValue : closes[0];
+  // baseVal이 closes 범위 밖으로 벗어나면 클램핑 (시각적 오버플로 방지)
+  baseVal = Math.max(min, Math.min(max, baseVal));
   var baseY   = toY(baseVal).toFixed(1);
 
   var pts = closes.map(function(v, i) { return toX(i).toFixed(1) + ',' + toY(v).toFixed(1); });
