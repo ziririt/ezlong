@@ -90,9 +90,24 @@ def all_unique_symbols():
     return result
 
 
+def is_us_edt(dt):
+    """주어진 날짜(date 또는 datetime)가 미국 EDT(여름시간, UTC-4)인지 반환. False면 EST(UTC-5)."""
+    from datetime import date as _date
+    d = dt if isinstance(dt, _date) and not isinstance(dt, datetime) else dt.date() if isinstance(dt, datetime) else dt
+    year = d.year
+    # DST 시작: 3월 두 번째 일요일
+    m8 = datetime(year, 3, 8)
+    dst_start = datetime(year, 3, 8 + (6 - m8.weekday()) % 7).date()
+    # DST 종료: 11월 첫 번째 일요일
+    n1 = datetime(year, 11, 1)
+    dst_end = datetime(year, 11, 1 + (6 - n1.weekday()) % 7).date()
+    return dst_start <= d < dst_end
+
+
 def get_intraday_date():
     """
     인트라데이 5분봉 수집 대상 날짜를 미국 동부시간(ET) 기준으로 결정.
+    반환 형식: 'YYYY-MM-DD' 문자열.
     - 장중/장 마감 후: 오늘 날짜
     - 프리마켓(9:30 AM ET 이전): 직전 거래일
     - 주말/공휴일: 직전 거래일 (최대 3일 소급)
@@ -135,7 +150,7 @@ def fetch_intraday_bars(ticker, date, api_key):
         results = data.get('results', [])
         if not results:
             return []
-        return [round(float(bar['c']), 2) for bar in results if 'c' in bar]
+        return [(int(bar['t']), round(float(bar['c']), 2)) for bar in results if 'c' in bar and 't' in bar]
     except Exception:
         return []
 
@@ -277,7 +292,9 @@ def parse_snapshot(data):
             'price':      price,
             'change':     change,
             'changePct':  change_pct,
-            'dayOpen':    round(day_open, 2) if day_open else None,  # 오늘 시초가
+            'dayOpen':    round(day_open, 2) if day_open else None,
+            'dayClose':   round(day_close, 2) if day_close else None,   # 정규장 종가 (포스트마켓 기준점)
+            'prevClose':  round(prev_close, 2) if prev_close else None,  # 전일 종가 (프리마켓 기준점)
             'extPrice':   ext_price,
             'extPct':     ext_pct,
             'extSession': ext_session,
@@ -436,22 +453,65 @@ def main():
     intraday_data, intraday_ok = fetch_intraday_all(symbols, intraday_date, MASSIVE_API_KEY)
     print(f'  [인트라데이] 완료: {intraday_ok}/{len(symbols)} 종목 데이터 확보')
 
-    for sym, bars in intraday_data.items():
-        if sym in prices and bars:
-            # 시간순 그대로 저장 (프리마켓→정규장→포스트마켓)
-            # 베이스라인은 dayOpen 필드(별도)를 stocks.html에서 참조
-            prices[sym]['intraday'] = bars
+    # 인트라데이 날짜 기준 정규장 UTC 시각 계산 (EDT/EST 자동 판단)
+    intraday_dt = datetime.strptime(intraday_date, '%Y-%m-%d')
+    utc_offset  = 4 if is_us_edt(intraday_dt) else 5   # EDT=UTC-4, EST=UTC-5
+    # 정규장: 9:30 AM ET ~ 4:00 PM ET
+    market_open_ms  = int(datetime(intraday_dt.year, intraday_dt.month, intraday_dt.day,
+                                   9 + utc_offset, 30, tzinfo=timezone.utc).timestamp() * 1000)
+    market_close_ms = int(datetime(intraday_dt.year, intraday_dt.month, intraday_dt.day,
+                                   16 + utc_offset, 0, tzinfo=timezone.utc).timestamp() * 1000)
 
-    # ── 3단계: Yahoo Finance v8/quote API — 확장시간 수집 ────────────────────
-    # Massive $29 플랜은 postMarket/preMarket 필드 미제공 → 항상 Yahoo로 수집
-    # Yahoo v8 API는 나이트 데드존(20:00~04:00 ET)에서도 당일 마지막 after-hours 가격 유지
-    if massive_ext_ok > 0:
-        print(f'  [Massive] 확장시간 {massive_ext_ok}개 이미 있음 — Yahoo 보완 생략')
+    intraday_ext_ok = 0
+    for sym, bar_pairs in intraday_data.items():
+        if sym not in prices or not bar_pairs:
+            continue
+
+        # ── 스파클라인용 종가 배열 (기존 구조 유지)
+        closes = [c for _, c in bar_pairs]
+        prices[sym]['intraday'] = closes
+
+        # ── ext 정보가 아직 없을 때만 인트라데이 봉으로 계산
+        if prices[sym].get('extPct') is not None:
+            continue
+
+        day_close_ref = prices[sym].get('dayClose')
+
+        # 포스트마켓 봉 (t >= 4PM ET UTC ms)
+        post_bars = [(t, c) for t, c in bar_pairs if t >= market_close_ms]
+        # 프리마켓 봉 (t < 9:30 AM ET UTC ms)
+        pre_bars  = [(t, c) for t, c in bar_pairs if t < market_open_ms]
+
+        if post_bars and day_close_ref:
+            last_post_c = post_bars[-1][1]
+            if abs(last_post_c - day_close_ref) > 0.001:
+                prices[sym]['extPrice']   = round(last_post_c, 2)
+                prices[sym]['extPct']     = round((last_post_c - day_close_ref) / day_close_ref * 100, 2)
+                prices[sym]['extSession'] = 'post'
+                intraday_ext_ok += 1
+        elif pre_bars:
+            # 프리마켓은 전일 종가(prevClose) 대비
+            prev_close_ref = prices[sym].get('prevClose')
+            if prev_close_ref:
+                last_pre_c = pre_bars[-1][1]
+                if abs(last_pre_c - prev_close_ref) > 0.001:
+                    prices[sym]['extPrice']   = round(last_pre_c, 2)
+                    prices[sym]['extPct']     = round((last_pre_c - prev_close_ref) / prev_close_ref * 100, 2)
+                    prices[sym]['extSession'] = 'pre'
+                    intraday_ext_ok += 1
+
+    print(f'  [인트라데이] 봉 기반 확장시간 계산: {intraday_ext_ok}개 종목')
+
+    # ── 3단계: Yahoo Finance v8/quote API — 확장시간 보완 ────────────────────
+    # 인트라데이 봉 계산 후에도 ext 없는 종목 보완용
+    already_ext = sum(1 for v in prices.values() if v.get('extPct') is not None)
+    if already_ext >= len(symbols) * 0.8:
+        print(f'  [Yahoo] 확장시간 이미 충분({already_ext}개) — Yahoo 수집 생략')
     else:
         print('\n  [Yahoo] 확장시간 수집 중 (v8/quote API)...')
         ext_data = get_extended_hours_yahoo(symbols)
         for sym, ext in ext_data.items():
-            if sym in prices:
+            if sym in prices and prices[sym].get('extPct') is None:
                 prices[sym]['extPrice']   = ext['extPrice']
                 prices[sym]['extPct']     = ext['extPct']
                 prices[sym]['extSession'] = ext['extSession']
