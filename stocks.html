@@ -140,10 +140,10 @@
     .sr-spark-svg { width: 90px; height: 32px; display: block; }
     .sr-right  { text-align: right; flex-shrink: 0; min-width: 88px; }
     @media (min-width: 768px) {
-      .sr-info { flex: none; }           /* PC: 이름 영역 고정, 스파크라인 좌측으로 */
-      .sr-spark-svg { width: 180px; }
-      .sr-name { max-width: 130px; }
-      .sr-right { margin-left: auto; }   /* PC: 가격은 우측 고정 */
+      .sr-info  { flex: none; }
+      .sr-spark { flex: 1; display: flex; justify-content: center; align-items: center; }
+      .sr-spark-svg { width: 180px; height: 32px; }
+      .sr-name  { max-width: 130px; }
     }
     .sr-price  { font-size: 17px; font-weight: 600; color: var(--ez-text); line-height: 1.2; }
     .sr-pct {
@@ -1315,7 +1315,7 @@ function renderTVChart(symbol, period) {
     theme:             isDark() ? 'dark' : 'light',
     locale:            'kr',
     timezone:          'Asia/Seoul',
-    style:             '9',   // Baseline 차트 — 기간 시작가 기준 등락 시각화
+    style:             '10',  // Baseline 차트 — 기간 시작가 기준 등락 시각화
     hide_side_toolbar: false,
     hide_top_toolbar:  false,
     hide_legend:       true,   // 차트 내부 기업명·OHLC 레전드 숨김 (상단 커스텀 UI로 대체)
@@ -1379,6 +1379,16 @@ function updatePeriodReturn(sym, period) {
   var keyMap = { '5D':'5d','1M':'1m','3M':'3m','6M':'6m','YTD':'ytd','1Y':'1y','2Y':'2y','3Y':'3y','5Y':'5y','ALL':'5y' };
   var ppKey  = keyMap[period];
   var startPrice = pp && ppKey && pp[ppKey];
+
+  // periodPrices 없을 때 스파크라인으로 폴백 (5D·1M만 가능)
+  if (!startPrice && item && item.sparkline && item.sparkline.length >= 2) {
+    var sp = item.sparkline;
+    if (period === '5D' && sp.length >= 6) {
+      startPrice = sp[sp.length - 6];
+    } else if (period === '1M') {
+      startPrice = sp[0];
+    }
+  }
 
   if (!startPrice || !cur) { el.style.display = 'none'; return; }
 
