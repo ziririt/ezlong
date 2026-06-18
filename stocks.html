@@ -1535,11 +1535,7 @@ async function loadAnalysis(symbol) {
     document.getElementById('da-narrative').innerHTML = renderNarrative(a.narrative || '');
     document.getElementById('da-risk').textContent = a.riskNote ? '주의: ' + a.riskNote : '';
 
-    if (d.updatedAt) {
-      var dt = new Date(d.updatedAt);
-      document.getElementById('da-updated').textContent =
-        '분석 기준: ' + dt.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' });
-    }
+    document.getElementById('da-updated').textContent = '';
     secEl.style.display = '';
   } catch(e) {
     // 분석 파일 없음 — 정상
