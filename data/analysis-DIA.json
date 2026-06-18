@@ -3,11 +3,11 @@
   "name": "다우존스 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-18T16:13:13.238Z",
+  "updatedAt": "2026-06-18T16:53:19.848Z",
   "price": {
-    "current": 516.37,
-    "change": 0.07,
-    "changePct": 0.01,
+    "current": 516.32,
+    "change": 0.02,
+    "changePct": 0,
     "high52": 524.17,
     "low52": 419.62,
     "pos52": 92.5,
@@ -17,20 +17,20 @@
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 510.644,
-    "sma50": 499.6069,
-    "sma100": 489.3355,
-    "sma200": 479.6015,
-    "rsi": 59.13,
+    "sma20": 510.6415,
+    "sma50": 499.6059,
+    "sma100": 489.335,
+    "sma200": 479.6013,
+    "rsi": 59.09,
     "macd": {
-      "macd": 5.166031,
-      "signal": 5.012846,
-      "histogram": 0.153186
+      "macd": 5.162044,
+      "signal": 5.012048,
+      "histogram": 0.149996
     },
     "bb": {
-      "upper": 521.1423,
-      "middle": 510.644,
-      "lower": 500.1457,
+      "upper": 521.1343,
+      "middle": 510.6415,
+      "lower": 500.1487,
       "bandwidth": 0.0411
     }
   },
@@ -38,30 +38,46 @@
     "swingResistance": 517.75,
     "swingSupport": 500.1,
     "pivot": {
-      "pp": 512.58,
-      "r1": 527.96,
-      "r2": 539.54,
-      "s1": 501,
-      "s2": 485.62
+      "pp": 512.57,
+      "r1": 527.92,
+      "r2": 539.53,
+      "s1": 500.96,
+      "s2": 485.61
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "강세",
+    "strength": 4,
     "support": 500.1,
-    "resistance": 517.75,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "resistance": 524.17,
+    "rsiStatus": "중립",
+    "macdStatus": "강세확산",
+    "bbStatus": "중단",
+    "stage": "상승추세",
+    "action": "매수",
+    "buyScore": 7,
+    "scoreReason": "RSI 상승세 + Higher Low 패턴 확인",
+    "rsiTrajectory": "56.1 → 59.1 (중립 지속 중)",
+    "macdTrajectory": "히스토 -0.9700 → 0.1500 (개선)",
+    "pricePattern": "Higher Low 패턴 확인",
+    "volComment": "거래량비 0.67 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "SMA20 상향 돌파 및 RSI 상승세 지속. 5일 고가/저가 패턴이 20일 고가/저가 패턴 대비 상승 추세 유지.",
+    "entry": 516.32,
+    "stop": 509.48,
+    "target": 524.17,
+    "invalidation": 500.1,
+    "weeklyConflict": "충돌 없음",
+    "profitTarget1": 521.13,
+    "profitTarget2": 527.92,
+    "stopLoss": 509.48,
+    "narrative": "[추세 위치]\n· 현재가($516.32) vs SMA5/20/50($517.11/$510.64/$499.61) — 단기 하회, 중기 상회 추세 확인\n· SMA100/200($489.33/$479.60) 대비 7.66% 상회 — 중장기 추세 강도 유지\n· 52주 위치(92.5%) + 현 가격대 역사적 고점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (56.1→59.1) — 중립 구간 지속 중, 상승 모멘텀 유지 확인\n· MACD 히스토그램 궤적 (-0.9700→0.1500) — 개선 확인, 약세 수렴 구간 탈피 신호\n· 볼린저밴드 현재가 위치 (중단 $510.64) — 중단 부근 횡보 구간, 밴드폭 4.11% 축소\n[지지·저항 구조]\n· 스윙 지지선 ($500.10) — 볼린저밴드 하단 및 20일 저가 기반 지지선\n· 스윙 저항선 ($517.75) — 단기 저항선, 돌파 시 52주 고가 재도전 가능성\n· 5일/20일 고가·저가 패턴 (5일 고가 $524.17 / 5일 저가 $509.48 vs 20일 고가 $524.17 / 20일 저가 $497.21) — Higher Low 패턴 확인, 회복 신호\n[거래량·결론]\n· 거래량 비율 (0.67) — 5일 평균 대비 위축된 거래량, 움직임의 신뢰도 하락\n· 현 구간 진단 (축적 구간) — 단기 저항 돌파 시 매수 진입 고려",
+    "patternNote": "5일 저가($509.48)가 20일 저가($497.21) 대비 높아지며 Higher Low 패턴 형성, 회복 신호 확인.",
+    "keyPoints": [
+      "SMA20 상향 돌파 및 RSI 상승세 지속",
+      "Higher Low 패턴 형성으로 회복 신호 확인",
+      "거래량 위축으로 인한 추세 신뢰도 하락 주의"
+    ],
+    "riskNote": "현재가($516.32)가 SMA5($517.11) 하회하며 단기 저항에 부딪히는 모습, 500.10 지지선 이탈 시 하락 전환 가능성."
   }
 }
