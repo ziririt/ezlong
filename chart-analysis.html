@@ -436,6 +436,17 @@
   border-radius: var(--ez-rs);
   border-left: 3px solid var(--ez-blue);
 }
+.ca-narrative-section { margin-bottom: 12px; }
+.ca-narrative-section:last-child { margin-bottom: 0; }
+.ca-narrative-heading {
+  font-size: 14px; font-weight: 700; color: var(--ez-text);
+  margin-bottom: 5px; letter-spacing: 0.02em;
+}
+.ca-narrative-item {
+  display: flex; gap: 6px; align-items: flex-start;
+  font-size: 14px; color: var(--ez-text2); line-height: 1.65; margin-bottom: 3px;
+}
+.ca-narrative-dot { flex-shrink: 0; color: var(--ez-blue); font-weight: 900; margin-top: 1px; }
 
 .ca-keypoints { margin-bottom: 14px; }
 .ca-keypoints-title { font-size: 14px; font-weight: 700; color: var(--ez-text); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
@@ -456,7 +467,7 @@
   align-items: flex-start;
   font-size: 14px;
   font-weight: 600;
-  color: var(--ez-red);
+  color: #FF3B30;
   background: rgba(255,59,48,0.07);
   border: 1px solid rgba(255,59,48,0.25);
   border-radius: var(--ez-rs);
@@ -810,6 +821,44 @@ let smaVisibility  = { sma20: true, sma50: true, sma100: true, sma200: true, bb:
 let chartInstances = {};  // mainChart, rsiChart, macdChart
 let chartSeries    = {};  // 각 시리즈 참조 (토글용)
 let currentTab     = 'chart';  // 'chart' | 'report'
+
+// ── narrative 텍스트 → 구조화 HTML 변환 ──────────────────────────
+function buildNarrative(text) {
+  if (!text) return '';
+  var sections = [];
+  var currentSection = null;
+  var lines = text.split('\n');
+  lines.forEach(function(line) {
+    line = line.trim();
+    if (!line) return;
+    var secMatch = line.match(/^\[(.+?)\]$/);
+    if (secMatch) {
+      currentSection = { heading: secMatch[1], items: [] };
+      sections.push(currentSection);
+    } else if (line.startsWith('·') || line.startsWith('•')) {
+      var item = line.replace(/^[·•]\s*/, '');
+      if (currentSection) {
+        currentSection.items.push(item);
+      } else {
+        // 소속 섹션 없는 닷블릿
+        sections.push({ heading: null, items: [item] });
+      }
+    } else {
+      // 섹션 밖 일반 텍스트
+      sections.push({ heading: null, items: [line], plain: true });
+    }
+  });
+  return sections.map(function(s) {
+    if (s.plain) {
+      return '<div class="ca-narrative-item" style="margin-bottom:6px;">' + s.items[0] + '</div>';
+    }
+    var h = s.heading ? '<div class="ca-narrative-heading">' + s.heading + '</div>' : '';
+    var items = s.items.map(function(it) {
+      return '<div class="ca-narrative-item"><span class="ca-narrative-dot">·</span><span>' + it + '</span></div>';
+    }).join('');
+    return '<div class="ca-narrative-section">' + h + items + '</div>';
+  }).join('');
+}
 
 // ── 유틸리티 ──────────────────────────────────────────────────
 function fmtPrice(v, currency) {
@@ -1303,7 +1352,7 @@ function renderAnalysisPanel(analysis, currency) {
 
     ${targetsHtml}
 
-    ${ai.narrative ? `<div class="ca-narrative">${ai.narrative}</div>` : ''}
+    ${ai.narrative ? `<div class="ca-narrative">${buildNarrative(ai.narrative)}</div>` : ''}
 
     ${ai.patternNote ? `<div class="ca-pattern-note">${ai.patternNote}</div>` : ''}
 
