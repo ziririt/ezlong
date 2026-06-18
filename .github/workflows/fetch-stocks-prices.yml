@@ -35,8 +35,10 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          cp data/stocks-prices.json /tmp/new-stocks-prices.json
           git fetch origin main
           git reset --hard origin/main
+          cp /tmp/new-stocks-prices.json data/stocks-prices.json
           git add data/stocks-prices.json
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 생략"
