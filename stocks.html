@@ -856,7 +856,7 @@ function buildSparkline(closes, isUp) {
 // 종합지수 카드 (S&P500 / Nasdaq / Dow 30)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function buildSparklineSmall(closes, isUp) {
-  // 카드 전체 너비로 확장 — viewBox 고정 + width="100%"
+  // 카드 전체 너비로 확장 — viewBox 고정 + width="100%" / 베이스라인 스타일
   var W = 200, H = 36, pad = 2;
   if (!closes || closes.length < 2) {
     return '<svg width="100%" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">' +
@@ -865,14 +865,39 @@ function buildSparklineSmall(closes, isUp) {
   var min = Math.min.apply(null, closes);
   var max = Math.max.apply(null, closes);
   var range = max - min || 1;
-  var pts = closes.map(function(v, i) {
-    return (pad + (i / (closes.length - 1)) * (W - pad * 2)).toFixed(1) + ',' +
-           (H - pad - ((v - min) / range) * (H - pad * 2)).toFixed(1);
-  }).join(' ');
-  var clr = isUp ? 'var(--ez-green)' : 'var(--ez-red)';
-  return '<svg width="100%" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">' +
-    '<polyline points="' + pts + '" fill="none" stroke="' + clr +
-    '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function toY(v) { return H - pad - ((v - min) / range) * (H - pad * 2); }
+  function toX(i) { return pad + (i / (closes.length - 1)) * (W - pad * 2); }
+
+  // 베이스라인 = 첫 번째 종가 (기간 시작가)
+  var baseVal = closes[0];
+  var baseY   = toY(baseVal).toFixed(1);
+
+  var pts = closes.map(function(v, i) { return toX(i).toFixed(1) + ',' + toY(v).toFixed(1); });
+  var polyPts = pts.join(' ');
+
+  var lastX   = toX(closes.length - 1).toFixed(1);
+  var fillPoly = polyPts + ' ' + lastX + ',' + baseY + ' ' + pad.toFixed(1) + ',' + baseY;
+
+  var uid = 'sm' + (Math.random() * 1e6 | 0);
+
+  var s = '<svg width="100%" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">';
+  s += '<defs>';
+  s += '<clipPath id="' + uid + 'u"><rect x="0" y="0" width="' + W + '" height="' + baseY + '"/></clipPath>';
+  s += '<clipPath id="' + uid + 'd"><rect x="0" y="' + baseY + '" width="' + W + '" height="' + (H - parseFloat(baseY)) + '"/></clipPath>';
+  s += '</defs>';
+  // 초록 영역 (위)
+  s += '<polygon points="' + fillPoly + '" fill="var(--ez-green)" opacity="0.18" clip-path="url(#' + uid + 'u)"/>';
+  // 빨강 영역 (아래)
+  s += '<polygon points="' + fillPoly + '" fill="var(--ez-red)" opacity="0.18" clip-path="url(#' + uid + 'd)"/>';
+  // 베이스라인 점선 (회색)
+  s += '<line x1="' + pad + '" y1="' + baseY + '" x2="' + (W-pad) + '" y2="' + baseY + '" stroke="var(--ez-border)" stroke-width="1" stroke-dasharray="3,3"/>';
+  // 초록 라인 (위)
+  s += '<polyline points="' + polyPts + '" fill="none" stroke="var(--ez-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#' + uid + 'u)"/>';
+  // 빨강 라인 (아래)
+  s += '<polyline points="' + polyPts + '" fill="none" stroke="var(--ez-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#' + uid + 'd)"/>';
+  s += '</svg>';
+  return s;
 }
 
 function renderIndexCards() {
