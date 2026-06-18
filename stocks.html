@@ -1361,8 +1361,8 @@ function getTVSym(symbol) {
   if (symbol === 'NDX')  return 'CAPITALCOM:US100';  // Nasdaq 100 (Capital.com CFD, 무료 임베드)
   if (symbol === 'DJI')  return 'CAPITALCOM:US30';   // Dow Jones 30 (Capital.com CFD, 무료 임베드)
   if (symbol === 'SOXX') return 'NASDAQ:SOXX';       // iShares 반도체 ETF — NASDAQ 상장
-  if (symbol === 'SOXL') return 'NASDAQ:SOXL';       // Direxion 반도체 3× ETF — NASDAQ 상장
-  if (symbol === 'SOXS') return 'NASDAQ:SOXS';       // Direxion 반도체 -3× ETF — NASDAQ 상장
+  if (symbol === 'SOXL') return 'AMEX:SOXL';         // Direxion 반도체 3× ETF — NYSE ARCA(AMEX) 상장
+  if (symbol === 'SOXS') return 'AMEX:SOXS';         // Direxion 반도체 -3× ETF — NYSE ARCA(AMEX) 상장
   var s = symbol.replace('-', '.');
   if (NYSE_SYMS[symbol]) return 'NYSE:' + s;
   if (AMEX_SYMS[symbol]) return 'AMEX:' + s;
