@@ -118,8 +118,9 @@ def get_intraday_date():
 
 def fetch_intraday_bars(ticker, date, api_key):
     """
-    Massive API v2 aggregates — 5분봉 장중 종가 배열 반환.
-    실패 또는 데이터 없음이면 빈 리스트 반환.
+    Massive API v2 aggregates — RTH(정규장 9:30 AM~4:05 PM ET) 5분봉 종가 배열 반환.
+    프리마켓(4AM~9:30AM) · 포스트마켓(4PM~8PM) 봉은 필터링 제거.
+    Polygon 응답의 t 필드 = Unix 밀리초(UTC).
     """
     safe_ticker = urllib.parse.quote(ticker, safe='')
     url = (
@@ -133,7 +134,19 @@ def fetch_intraday_bars(ticker, date, api_key):
         results = data.get('results', [])
         if not results:
             return []
-        return [round(float(bar['c']), 2) for bar in results if 'c' in bar]
+
+        # ── RTH 필터: 9:30 AM ET ~ 4:05 PM ET (마지막 봉 포함 buffer +5분) ──
+        # 동부시간 오프셋: EDT(3~11월)=-4h, EST(12~2월)=-5h
+        month = int(date[5:7])
+        et_hours = -4 if 3 <= month <= 11 else -5
+        et_tz = timezone(timedelta(hours=et_hours))
+
+        y, m, dn = int(date[:4]), int(date[5:7]), int(date[8:10])
+        rth_open_ms  = int(datetime(y, m, dn, 9, 30, tzinfo=et_tz).timestamp() * 1000)
+        rth_close_ms = int(datetime(y, m, dn, 16, 5,  tzinfo=et_tz).timestamp() * 1000)
+
+        rth = [b for b in results if rth_open_ms <= b.get('t', 0) <= rth_close_ms]
+        return [round(float(bar['c']), 2) for bar in rth if 'c' in bar]
     except Exception:
         return []
 
