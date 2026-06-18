@@ -583,6 +583,18 @@ var visibleCount = { top100: 30 };
 var LOAD_STEPS   = [30, 50, 70, 100];
 
 var LS_FAVES = 'ezlong_pf_faves';
+var CK_FAVES = 'ezlong_pf';   // 쿠키 키 (localStorage 소실 시 복구용)
+
+function _setCookie(name, value, days) {
+  var d = new Date();
+  d.setTime(d.getTime() + days * 864e5);
+  document.cookie = name + '=' + encodeURIComponent(value) +
+    ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+}
+function _getCookie(name) {
+  var m = document.cookie.match('(?:^|; )' + name + '=([^;]*)');
+  return m ? decodeURIComponent(m[1]) : null;
+}
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // INIT
@@ -1399,10 +1411,24 @@ async function loadAnalysis(symbol) {
 // 포트폴리오 + 즐겨찾기
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function getFaves() {
-  try { return JSON.parse(localStorage.getItem(LS_FAVES) || '[]'); } catch(e) { return []; }
+  try {
+    // 1순위: localStorage
+    var ls = localStorage.getItem(LS_FAVES);
+    if (ls) return JSON.parse(ls);
+    // 2순위: 쿠키 (iOS Safari가 localStorage를 소실한 경우 복구)
+    var ck = _getCookie(CK_FAVES);
+    if (ck) {
+      var arr = JSON.parse(ck);
+      try { localStorage.setItem(LS_FAVES, ck); } catch(e) {}  // 복구 기록
+      return arr;
+    }
+  } catch(e) {}
+  return [];
 }
 function saveFaves(arr) {
-  localStorage.setItem(LS_FAVES, JSON.stringify(arr.slice(0, 100)));
+  var str = JSON.stringify(arr.slice(0, 100));
+  try { localStorage.setItem(LS_FAVES, str); } catch(e) {}
+  _setCookie(CK_FAVES, str, 365);  // 1년 유효
 }
 function isFaved(sym) { return getFaves().indexOf(sym) >= 0; }
 
