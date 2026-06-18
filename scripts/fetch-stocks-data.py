@@ -163,20 +163,78 @@ OUTPUT_PATH = os.path.normpath(
 # ─── 수집 함수 ────────────────────────────────────────────────────────────────
 
 def get_sparkline(ticker_obj):
-    """1개월 일봉 (~21개 포인트) — GitHub Actions Azure IP에서 intraday는 차단됨."""
+    """1개월 일봉 (~21개 포인트) — DataFrame도 함께 반환"""
     try:
         hist = ticker_obj.history(period='1mo', interval='1d')
         if hist.empty:
-            return []
+            return [], None
         closes = [round(float(c), 2) for c in hist['Close'].tolist()]
-        return closes  # 약 21~22개
+        return closes, hist
     except Exception:
-        return []
+        return [], None
 
 
 def get_sparkline_hourly(ticker_obj):
     """종합지수 카드용 — 1개월 일봉 사용 (intraday는 GitHub Actions Azure IP 차단)."""
-    return get_sparkline(ticker_obj)
+    closes, _ = get_sparkline(ticker_obj)
+    return closes
+
+
+def get_period_prices(ticker_obj, hist_1m):
+    """기간별 시작 가격 — 기간 수익률 계산용 (1D 제외)
+    5D / 1M: 이미 받은 1개월 일봉 활용
+    3M ~ 5Y: 5년 주봉 1회 다운로드
+    """
+    result = {}
+    try:
+        now = datetime.now(timezone.utc)
+
+        # ── 5D, 1M: 1개월 일봉에서 계산 ──────────────────────────
+        if hist_1m is not None and not hist_1m.empty:
+            c1m = [float(v) for v in hist_1m['Close'].tolist()]
+            if len(c1m) >= 6:
+                result['5d'] = round(c1m[-6], 2)   # 5 거래일 전 종가
+            if len(c1m) >= 1:
+                result['1m'] = round(c1m[0], 2)    # 한달 전 첫 거래일 종가
+
+        # ── 3M ~ 5Y: 5년 주봉 ────────────────────────────────────
+        hist5y = ticker_obj.history(period='5y', interval='1wk', auto_adjust=True)
+        if hist5y.empty:
+            return result
+
+        closes5y = hist5y['Close']
+        idx5y    = hist5y.index
+
+        def price_before(days_ago):
+            """days_ago 이전 날짜에 가장 가까운 주봉 종가"""
+            cutoff_ts = (now - timedelta(days=days_ago)).timestamp()
+            try:
+                idx_ts = idx5y.astype('int64') // 10 ** 9
+            except Exception:
+                return None
+            mask = idx_ts <= int(cutoff_ts)
+            if not mask.any():
+                return None
+            return round(float(closes5y[mask].iloc[-1]), 2)
+
+        # YTD: 올해 첫 거래일 종가 (1월 1일 ~ 2일 사이 가장 이른 주봉)
+        jan1_ts = int(datetime(now.year, 1, 1, tzinfo=timezone.utc).timestamp())
+        try:
+            idx_ts_ytd = idx5y.astype('int64') // 10 ** 9
+            mask_ytd = idx_ts_ytd >= jan1_ts
+            if mask_ytd.any():
+                result['ytd'] = round(float(closes5y[mask_ytd].iloc[0]), 2)
+        except Exception:
+            pass
+
+        for key, days in [('3m', 92), ('6m', 183), ('1y', 365), ('2y', 730), ('3y', 1095), ('5y', 1825)]:
+            v = price_before(days)
+            if v:
+                result[key] = v
+
+    except Exception as e:
+        pass   # 오류 시 빈 dict — 클라이언트에서 해당 기간 수익률 숨김 처리
+    return result
 
 
 def fetch_ticker(symbol):
@@ -195,7 +253,8 @@ def fetch_ticker(symbol):
         if price and prev_close and prev_close != 0:
             change = round(price - prev_close, 2)
             change_pct = round((change / prev_close) * 100, 2)
-        sparkline = get_sparkline(t)
+        sparkline, hist_1m = get_sparkline(t)
+        period_prices = get_period_prices(t, hist_1m)   # 기간별 시작 가격
         return {
             'symbol': symbol,
             'name': COMPANY_NAMES.get(symbol, symbol),
@@ -203,6 +262,7 @@ def fetch_ticker(symbol):
             'change': change,
             'changePct': change_pct,
             'sparkline': sparkline,
+            'periodPrices': period_prices,
         }
     except Exception as e:
         print(f"  ERROR {symbol}: {e}")
@@ -213,6 +273,7 @@ def fetch_ticker(symbol):
             'change': None,
             'changePct': None,
             'sparkline': [],
+            'periodPrices': {},
         }
 
 

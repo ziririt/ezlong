@@ -140,8 +140,10 @@
     .sr-spark-svg { width: 90px; height: 32px; display: block; }
     .sr-right  { text-align: right; flex-shrink: 0; min-width: 88px; }
     @media (min-width: 768px) {
+      .sr-info { flex: none; }           /* PC: 이름 영역 고정, 스파크라인 좌측으로 */
       .sr-spark-svg { width: 180px; }
       .sr-name { max-width: 130px; }
+      .sr-right { margin-left: auto; }   /* PC: 가격은 우측 고정 */
     }
     .sr-price  { font-size: 17px; font-weight: 600; color: var(--ez-text); line-height: 1.2; }
     .sr-pct {
@@ -294,11 +296,16 @@
     }
     .dv-star.faved { color: #FFD60A; }
 
-    .dv-price-row { padding: 12px 16px 10px; border-bottom: 1px solid var(--ez-border); }
+    .dv-price-row { padding: 12px 16px 6px; }
     .dv-price { font-size: 32px; font-weight: 700; color: var(--ez-text); display: inline-block; }
     .dv-chg   { font-size: 17px; font-weight: 500; margin-left: 10px; }
     .dv-chg.up { color: var(--ez-green); }
     .dv-chg.dn { color: var(--ez-red); }
+    /* 기간 수익률 표시 — 1D 제외 */
+    .dv-period-return { padding: 2px 16px 10px; border-bottom: 1px solid var(--ez-border); font-size: 15px; }
+    .dv-period-return.up { color: var(--ez-green); }
+    .dv-period-return.dn { color: var(--ez-red); }
+    .dv-pr-label { font-size: 14px; color: var(--ez-text3); margin-left: 6px; font-weight: 400; }
 
     .dv-period-tabs {
       display: flex; gap: 0; padding: 0 6px;
@@ -532,6 +539,8 @@
       <span class="dv-price" id="dv-price">—</span>
       <span class="dv-chg"   id="dv-chg"></span>
     </div>
+    <!-- 기간 수익률 — 1D는 숨김, 나머지는 기간별 등락 표시 -->
+    <div class="dv-period-return" id="dv-period-return" style="display:none"></div>
 
     <div class="dv-period-tabs">
       <button class="ptab active" data-period="1D"  onclick="changePeriod('1D',this)">1D</button>
@@ -594,7 +603,7 @@ function _setCookie(name, value, days) {
   var d = new Date();
   d.setTime(d.getTime() + days * 864e5);
   document.cookie = name + '=' + encodeURIComponent(value) +
-    ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+    ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax;Secure';
 }
 function _getCookie(name) {
   var m = document.cookie.match('(?:^|; )' + name + '=([^;]*)');
@@ -1015,7 +1024,7 @@ function fillDetail(symbol) {
   document.querySelectorAll('.ptab').forEach(function(b) {
     b.classList.toggle('active', b.dataset.period === '1D');
   });
-
+  updatePeriodReturn(symbol, '1D');   // 1D에서는 숨김 처리됨
   renderTVChart(symbol, '1D');
 
   document.getElementById('detail-analysis').style.display = 'none';
@@ -1306,7 +1315,7 @@ function renderTVChart(symbol, period) {
     theme:             isDark() ? 'dark' : 'light',
     locale:            'kr',
     timezone:          'Asia/Seoul',
-    style:             '1',
+    style:             '9',   // Baseline 차트 — 기간 시작가 기준 등락 시각화
     hide_side_toolbar: false,
     hide_top_toolbar:  false,
     hide_legend:       true,   // 차트 내부 기업명·OHLC 레전드 숨김 (상단 커스텀 UI로 대체)
@@ -1349,7 +1358,41 @@ function changePeriod(period, btn) {
   currentPeriod = period;
   document.querySelectorAll('.ptab').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
+  updatePeriodReturn(currentSym, period);
   renderTVChart(currentSym, period);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 기간별 수익률 표시
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function updatePeriodReturn(sym, period) {
+  var el = document.getElementById('dv-period-return');
+  if (!el) return;
+
+  // 1D는 오늘 등락이 이미 dv-chg에 있으므로 숨김
+  if (period === '1D') { el.style.display = 'none'; return; }
+
+  var item = findItem(sym);
+  var pp   = item && item.periodPrices;
+  var cur  = item && item.price;
+
+  var keyMap = { '5D':'5d','1M':'1m','3M':'3m','6M':'6m','YTD':'ytd','1Y':'1y','2Y':'2y','3Y':'3y','5Y':'5y','ALL':'5y' };
+  var ppKey  = keyMap[period];
+  var startPrice = pp && ppKey && pp[ppKey];
+
+  if (!startPrice || !cur) { el.style.display = 'none'; return; }
+
+  var diff = cur - startPrice;
+  var pct  = (diff / startPrice) * 100;
+  var isUp = diff >= 0;
+  var sign = isUp ? '+' : '';
+  var labelMap = { '5D':'5일간','1M':'1개월간','3M':'3개월간','6M':'6개월간','YTD':'연초 이후','1Y':'1년간','2Y':'2년간','3Y':'3년간','5Y':'5년간','ALL':'전체' };
+
+  el.className = 'dv-period-return ' + (isUp ? 'up' : 'dn');
+  el.innerHTML =
+    '<strong>' + sign + diff.toFixed(2) + ' (' + sign + pct.toFixed(2) + '%)</strong>' +
+    '<span class="dv-pr-label">' + (labelMap[period] || period) + '</span>';
+  el.style.display = '';
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
