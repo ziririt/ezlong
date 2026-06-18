@@ -851,9 +851,11 @@ function calcChangePct(price, sparkline, live) {
   return null;  // yfinance item.changePct는 호출측에서 추가 폴백
 }
 
-function buildSparkline(closes, baselineValue) {
+function buildSparkline(rawCloses, baselineValue) {
   // baselineValue: 인트라데이 시 dayOpen(정규장 시가)을 별도로 받아 베이스라인으로 사용.
   //               미전달 또는 null이면 closes[0](기간 첫 가격)으로 폴백.
+  // null/NaN/Infinity 필터링 — JSON에 null이 포함될 경우 SVG 좌표가 NaN이 되는 것 방지
+  var closes = (rawCloses || []).filter(function(v) { return v != null && isFinite(v); });
   var W = 90, H = 32, pad = 3;
   if (!closes || closes.length < 2) {
     return '<svg class="sr-spark-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">' +
@@ -911,7 +913,9 @@ function buildSparkline(closes, baselineValue) {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // 종합지수 카드 (S&P500 / Nasdaq / Dow 30)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function buildSparklineSmall(closes, isUp) {
+function buildSparklineSmall(rawCloses, isUp, baselineValue) {
+  // null/NaN/Infinity 필터링 — SVG 좌표 NaN 방지
+  var closes = (rawCloses || []).filter(function(v) { return v != null && isFinite(v); });
   // 카드 전체 너비로 확장 — viewBox 고정 + width="100%" / 베이스라인 스타일
   var W = 200, H = 36, pad = 2;
   if (!closes || closes.length < 2) {
@@ -925,8 +929,9 @@ function buildSparklineSmall(closes, isUp) {
   function toY(v) { return H - pad - ((v - min) / range) * (H - pad * 2); }
   function toX(i) { return pad + (i / (closes.length - 1)) * (W - pad * 2); }
 
-  // 베이스라인 = 첫 번째 종가 (기간 시작가)
-  var baseVal = closes[0];
+  // 베이스라인: 인트라데이면 dayOpen 사용, 없으면 첫 번째 종가
+  var baseVal = (baselineValue != null && baselineValue > 0) ? baselineValue : closes[0];
+  baseVal = Math.max(min, Math.min(max, baseVal));
   var baseY   = toY(baseVal).toFixed(1);
 
   var pts = closes.map(function(v, i) { return toX(i).toFixed(1) + ',' + toY(v).toFixed(1); });
@@ -980,13 +985,23 @@ function renderIndexCards() {
     var pct        = (liveIdx && liveIdx.price != null && liveIdx.changePct != null) ? liveIdx.changePct : (idxEntry ? idxEntry.changePct : null);
     var sparklines = idxEntry ? (idxEntry.sparkline || []) : [];
 
+    // 스파클라인: ETF 인트라데이(SPY/QQQ/DIA) 우선 → 당일 흐름 표시
+    // 장 마감/휴장 시 인트라데이 없으면 30일 일봉으로 폴백
+    var ETF_MAP = { 'SPX': 'SPY', 'NDX': 'QQQ', 'DJI': 'DIA' };
+    var etfSym  = ETF_MAP[c.idxSym];
+    var etfLive = pricesData && pricesData.prices && etfSym ? pricesData.prices[etfSym] : null;
+    var etfIntraday = etfLive && etfLive.intraday && etfLive.intraday.length >= 2 ? etfLive.intraday : null;
+    var etfDayOpen  = etfLive ? etfLive.dayOpen : null;
+
     var isUp    = pct != null ? pct >= 0 : true;
     var sparkEl = document.getElementById(c.sparkEl);
     var priceEl = document.getElementById(c.priceEl);
     var pctEl   = document.getElementById(c.pctEl);
     if (!sparkEl || !priceEl || !pctEl) return;
 
-    sparkEl.innerHTML = buildSparklineSmall(sparklines, isUp);
+    sparkEl.innerHTML = etfIntraday
+      ? buildSparklineSmall(etfIntraday, isUp, etfDayOpen)
+      : buildSparklineSmall(sparklines,  isUp);
 
     // 지수 값: 달러 기호 없이, 콤마 3자리 포맷
     if (price != null) {
@@ -1021,13 +1036,19 @@ function renderSemiEtfCards() {
     var pct    = (live && live.changePct != null) ? live.changePct : (item ? item.changePct : null);
     var sparks = item ? (item.sparkline || []) : [];
 
+    // 스파클라인: live.intraday 우선(당일 흐름) → 없으면 30일 일봉 폴백
+    var intradayBars = live && live.intraday && live.intraday.length >= 2 ? live.intraday : null;
+    var dayOpen      = live ? live.dayOpen : null;
+
     var isUp    = pct != null ? pct >= 0 : true;
     var sparkEl = document.getElementById(c.sparkEl);
     var priceEl = document.getElementById(c.priceEl);
     var pctEl   = document.getElementById(c.pctEl);
     if (!sparkEl || !priceEl || !pctEl) return;
 
-    sparkEl.innerHTML = buildSparklineSmall(sparks, isUp);
+    sparkEl.innerHTML = intradayBars
+      ? buildSparklineSmall(intradayBars, isUp, dayOpen)
+      : buildSparklineSmall(sparks, isUp);
 
     if (price != null) {
       priceEl.textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
