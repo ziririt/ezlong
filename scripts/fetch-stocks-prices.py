@@ -250,6 +250,15 @@ def parse_snapshot(data):
         day_close  = safe_float(item, 'day', 'c')
         prev_close = safe_float(item, 'prevDay', 'c')
 
+        # todaysChangePerc = 0 이지만 day.c · prevDay.c로 실제 변동을 알 수 있으면 재계산
+        # (SPCX 등 Massive API가 changePerc를 0으로 잘못 반환하는 케이스 대응)
+        if (change_pct is None or (change_pct == 0 and (change is None or change == 0))) \
+                and day_close and prev_close and prev_close > 0:
+            computed = round((day_close - prev_close) / prev_close * 100, 2)
+            if abs(computed) > 0.01:   # 실제 변화가 있을 때만 덮어씀
+                change_pct = computed
+                change = round(day_close - prev_close, 2)
+
         post_c = safe_float(item, 'postMarket', 'c')
         pre_c  = safe_float(item, 'preMarket', 'c')
 
