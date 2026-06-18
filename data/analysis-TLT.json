@@ -3,65 +3,81 @@
   "name": "미국 장기국채 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-18T14:15:45.057Z",
+  "updatedAt": "2026-06-18T15:16:23.981Z",
   "price": {
-    "current": 87.06,
-    "change": 0.73,
-    "changePct": 0.85,
+    "current": 87.13,
+    "change": 0.8,
+    "changePct": 0.93,
     "high52": 92.19,
     "low52": 82.77,
-    "pos52": 45.5,
+    "pos52": 46.3,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 85.3729,
-    "sma50": 85.309,
-    "sma100": 86.0192,
-    "sma200": 86.4042,
-    "rsi": 65.94,
+    "sma20": 85.3764,
+    "sma50": 85.3104,
+    "sma100": 86.0199,
+    "sma200": 86.4046,
+    "rsi": 66.37,
     "macd": {
-      "macd": 0.36261,
-      "signal": 0.155658,
-      "histogram": 0.206952
+      "macd": 0.368194,
+      "signal": 0.156775,
+      "histogram": 0.211419
     },
     "bb": {
-      "upper": 86.7829,
-      "middle": 85.3729,
-      "lower": 83.9629,
-      "bandwidth": 0.033
+      "upper": 86.8034,
+      "middle": 85.3764,
+      "lower": 83.9495,
+      "bandwidth": 0.0334
     }
   },
   "levels": {
     "swingResistance": 87.2,
     "swingSupport": 87.03,
     "pivot": {
-      "pp": 85.86,
-      "r1": 88.38,
-      "r2": 89.7,
-      "s1": 84.53,
-      "s2": 82.01
+      "pp": 85.88,
+      "r1": 88.43,
+      "r2": 89.72,
+      "s1": 84.58,
+      "s2": 82.03
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "강세",
+    "strength": 4,
     "support": 87.03,
     "resistance": 87.2,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "중립",
+    "macdStatus": "강세확산",
+    "bbStatus": "상단접근",
+    "stage": "상승추세",
+    "action": "매수",
+    "buyScore": 7,
+    "scoreReason": "RSI 과매도탈출 + Higher Low 회복 초입",
+    "rsiTrajectory": "58.4 → 66.4 (과매도탈출)",
+    "macdTrajectory": "히스토 0.1129 → 0.2114 (개선)",
+    "pricePattern": "Higher Low 회복 신호",
+    "volComment": "거래량비 0.42 (위축)",
+    "bbPosition": "상단근처",
+    "reason": "최근 5거래일 연속 상승세로 RSI가 66.4까지 상승하며 강세 모멘텀을 유지하고 있으며, MACD 히스토그램 또한 개선되는 추세입니다. 5일 고가($87.18)가 20일 고가($87.18)와 같고 5일 저가($85.41)가 20일 저가($83.33)보다 높아 Higher Low 패턴이 형성되었습니다. 현재가($87.13)가 볼린저밴드 상단($86.80)에 근접하며 추가 상승 여력이 있습니다.",
+    "entry": 87.15,
+    "stop": 86.8,
+    "target": 88.43,
+    "invalidation": 87.2,
+    "weeklyConflict": "없음",
+    "profitTarget1": 87.8,
+    "profitTarget2": 88.43,
+    "stopLoss": 86.8,
+    "narrative": "[추세 위치]\n· 현재가($87.13) vs SMA5/20/50($86.23/$85.38/$85.31) — 단기·중기 추세 상회하며 강세 확인\n· SMA100/200($86.02/$86.40) 대비 위치 — 중장기 추세 상회하며 강도 유지\n· 52주 위치(46.3%) + 현 가격대 역사적 중간 수준 확인\n[모멘텀 지표]\n· RSI 궤적 (58.4→66.4) — 과매도 탈출 후 중립 구간 진입 및 상승 모멘텀 확인\n· MACD 히스토그램 궤적 (0.1129→0.2114) — 개선되며 강세 확산 신호 확인\n· 볼린저밴드 현재가 위치 (상단 $86.80) — 상단 근접하며 추가 상승 가능성 시사\n[지지·저항 구조]\n· 스윙 지지선 ($87.03) — 최근 가격대 지지력 확인\n· 스윙 저항선 ($87.20) — 단기 저항 구간 돌파 시 추가 상승 기대\n· 5일/20일 고가·저가 패턴 (Higher Low) — 회복 추세 강화 신호 확인\n[거래량·결론]\n· 거래량 비율 (0.42배) — 거래량 위축 속 상승, 추세 지속력은 약화 가능성\n· 현 구간 진단 (상승추세) — 스윙 지지선($87.03) 상향 돌파 시 매수 진입 고려",
+    "patternNote": "5일 저가($85.41)가 20일 저가($83.33)보다 높아 Higher Low 패턴이 형성되며 회복 추세가 강화되고 있습니다.",
+    "keyPoints": [
+      "최근 5거래일 연속 상승세 및 RSI 66.4로 강세 모멘텀 유지",
+      "Higher Low 패턴 형성으로 회복 추세 강화",
+      "볼린저밴드 상단($86.80) 근접 및 스윙 저항선($87.20) 돌파 시 추가 상승 기대"
+    ],
+    "riskNote": "거래량 비율이 0.42로 낮아 상승 추세의 지속력이 약화될 수 있으며, 스윙 저항선($87.20) 돌파 실패 시 하락 전환 가능성이 있습니다."
   }
 }

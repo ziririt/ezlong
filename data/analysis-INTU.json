@@ -3,65 +3,81 @@
   "name": "인튜이트",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-18T14:09:24.150Z",
+  "updatedAt": "2026-06-18T15:11:03.375Z",
   "price": {
-    "current": 266.89,
-    "change": -2.19,
-    "changePct": -0.81,
+    "current": 264.18,
+    "change": -4.9,
+    "changePct": -1.82,
     "high52": 813.7,
     "low52": 259.23,
-    "pos52": 1.4,
+    "pos52": 0.9,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 300.279,
-    "sma50": 354.0568,
-    "sma100": 393.0237,
-    "sma200": 521.2831,
-    "rsi": 31.32,
+    "sma20": 300.1435,
+    "sma50": 354.0026,
+    "sma100": 392.9966,
+    "sma200": 521.2695,
+    "rsi": 30.74,
     "macd": {
-      "macd": -26.132977,
-      "signal": -24.942854,
-      "histogram": -1.190123
+      "macd": -26.349161,
+      "signal": -24.986091,
+      "histogram": -1.36307
     },
     "bb": {
-      "upper": 343.5276,
-      "middle": 300.279,
-      "lower": 257.0304,
-      "bandwidth": 0.2881
+      "upper": 343.8245,
+      "middle": 300.1435,
+      "lower": 256.4625,
+      "bandwidth": 0.2911
     }
   },
   "levels": {
     "swingResistance": 363.18,
     "swingSupport": null,
     "pivot": {
-      "pp": 296.43,
-      "r1": 333.64,
-      "r2": 400.38,
-      "s1": 229.69,
-      "s2": 192.48
+      "pp": 295.53,
+      "r1": 331.83,
+      "r2": 399.48,
+      "s1": 227.88,
+      "s2": 191.58
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
-    "support": null,
+    "trend": "약세",
+    "strength": 2,
+    "support": 259.23,
     "resistance": 363.18,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "과매도",
+    "macdStatus": "중립",
+    "bbStatus": "하단접근",
+    "stage": "하락추세",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 3,
+    "scoreReason": "RSI 과매도 구간 진입, MACD 개선 조짐",
+    "rsiTrajectory": "32.6 → 30.7 (과매도탈출 중)",
+    "macdTrajectory": "히스토 -3.2407 → -1.3631 (개선 중)",
+    "pricePattern": "5일 저가 $259.23, 20일 저가 $259.23 (동일 저가 형성)",
+    "volComment": "거래량비 0.40 (위축)",
+    "bbPosition": "하단근처",
+    "reason": "최근 5거래일 연속 하락세(-1.82%, -4.24%)로 약세 흐름이 이어지고 있으며, RSI가 30.7로 과매도 구간에 진입했습니다. MACD 히스토그램은 개선되는 모습을 보이나, 거래량이 5일 평균 대비 0.40으로 위축되어 추세 전환 신뢰도가 낮습니다.",
+    "entry": 260,
+    "stop": 250,
+    "target": 290,
+    "invalidation": 270,
+    "weeklyConflict": "주봉은 약세이나 일봉 신호 우선",
+    "profitTarget1": 275,
+    "profitTarget2": 290,
+    "stopLoss": 259.23,
+    "narrative": "[추세 위치]\n· 현재가($264.18) vs SMA5/20/50($274.55/$300.14/$354.00) — 단기·중기 추세 하회, 약세 구간 진입 확인\n· SMA100/200($393.00/$521.27) 대비 위치 — 중장기 추세 하락 강도 심화 확인\n· 52주 위치(0.9%) + 현 가격대 역사적 저점 부근 위치 확인\n[모멘텀 지표]\n· RSI 궤적 (32.6→30.7) + 과매도 구간 진입, 하락세 둔화 신호 확인\n· MACD 히스토그램 궤적 (히스토 -3.2407→-1.3631) + 개선 중, 약세 전환 가능성 시사\n· 볼린저밴드 현재가 위치 (하단 $256.46 근처) + 밴드폭 축소, 변동성 감소 구간 진입\n[지지·저항 구조]\n· 스윙 지지선 ($259.23) + 52주 최저가와 일치, 강력한 지지 구간 형성\n· 스윙 저항선 ($363.18) + 20일 고가와 일치, 단기 저항 구간 형성\n· 5일/20일 고가·저가 패턴 (동일 저가 형성) + 횡보 구간, 추세 전환 모색\n[거래량·결론]\n· 거래량 비율 (0.40배) + 움직임의 신뢰도 하락, 관망 필요 구간\n· 현 구간 진단 (축적 구간) + 52주 최저가 지지 확인 시 매수, 이탈 시 매도 관망 조건 제시",
+    "patternNote": "5일 저가와 20일 저가가 $259.23으로 동일하게 형성되며 바닥 다지기 패턴을 보이고 있습니다.",
+    "keyPoints": [
+      "최근 5거래일 연속 하락세로 약세 흐름 지속",
+      "RSI 과매도 구간 진입 및 MACD 개선 조짐",
+      "거래량 위축으로 추세 전환 신뢰도 낮음"
+    ],
+    "riskNote": "52주 최저가인 $259.23 지지선 이탈 시 급락 위험 존재"
   }
 }
