@@ -521,9 +521,12 @@ def main():
 
     print(f'  [인트라데이] Massive 봉 기반 확장시간: {intraday_ext_ok}개 종목')
 
-    # ── 3단계: Yahoo Finance — Massive 봉에서 못 잡은 나머지만 보완 ──────────────
+    # ── 3단계: Yahoo Finance — 포스트마켓/overnight 전용 보완 ────────────────────
+    # 프리마켓은 Massive 5분봉으로 충분 — Yahoo 호출 생략 (429 레이트리밋 방지)
     already_ext = sum(1 for v in prices.values() if v.get('extPct') is not None)
-    if already_ext >= len(symbols) * 0.8:
+    if is_premarket:
+        print(f'  [Yahoo] 프리마켓 구간 — 생략 (Massive 봉 기반 {already_ext}개 확보)')
+    elif already_ext >= len(symbols) * 0.8:
         print(f'  [Yahoo] 확장시간 이미 충분({already_ext}개) — Yahoo 수집 생략')
     else:
         print(f'\n  [Yahoo] 확장시간 보완 중 ({already_ext}개 이미 확보)...')
