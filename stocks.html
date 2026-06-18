@@ -847,8 +847,8 @@ function buildSparkline(closes, isUp) {
   s += '<polygon points="' + fillPoly + '" fill="var(--ez-green)" opacity="0.18" clip-path="url(#' + uid + 'u)"/>';
   // 빨강 영역 (아래)
   s += '<polygon points="' + fillPoly + '" fill="var(--ez-red)" opacity="0.18" clip-path="url(#' + uid + 'd)"/>';
-  // 베이스라인 점선 — 좌우 10% 연장, 진한 회색
-  s += '<line x1="' + extX1 + '" y1="' + baseY + '" x2="' + extX2 + '" y2="' + baseY + '" stroke="var(--ez-text3)" stroke-width="1.2" stroke-dasharray="3,3" stroke-opacity="0.8"/>';
+  // 베이스라인 점선 — 가늘고 촘촘하게
+  s += '<line x1="' + extX1 + '" y1="' + baseY + '" x2="' + extX2 + '" y2="' + baseY + '" stroke="var(--ez-text3)" stroke-width="0.7" stroke-dasharray="2,2" stroke-opacity="0.75"/>';
   // 초록 라인 (베이스라인 위)
   s += '<polyline points="' + polyPts + '" fill="none" stroke="var(--ez-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#' + uid + 'u)"/>';
   // 빨강 라인 (베이스라인 아래)
@@ -900,8 +900,8 @@ function buildSparklineSmall(closes, isUp) {
   s += '<polygon points="' + fillPoly + '" fill="var(--ez-green)" opacity="0.18" clip-path="url(#' + uid + 'u)"/>';
   // 빨강 영역 (아래)
   s += '<polygon points="' + fillPoly + '" fill="var(--ez-red)" opacity="0.18" clip-path="url(#' + uid + 'd)"/>';
-  // 베이스라인 점선 — 좌우 10% 연장, 진한 회색
-  s += '<line x1="' + extX1 + '" y1="' + baseY + '" x2="' + extX2 + '" y2="' + baseY + '" stroke="var(--ez-text3)" stroke-width="1.4" stroke-dasharray="4,3" stroke-opacity="0.8"/>';
+  // 베이스라인 점선 — 가늘고 촘촘하게
+  s += '<line x1="' + extX1 + '" y1="' + baseY + '" x2="' + extX2 + '" y2="' + baseY + '" stroke="var(--ez-text3)" stroke-width="0.7" stroke-dasharray="2,2" stroke-opacity="0.75"/>';
   // 초록 라인 (위)
   s += '<polyline points="' + polyPts + '" fill="none" stroke="var(--ez-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#' + uid + 'u)"/>';
   // 빨강 라인 (아래)
