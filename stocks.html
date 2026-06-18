@@ -758,26 +758,13 @@ function renderETF() {
 
 function rowHTML(item, noRank) {
   var sym  = item.symbol;
-  // pricesData 우선: 현재가·확장시간 (Massive API, 10분 갱신)
   var live      = (pricesData && pricesData.prices && pricesData.prices[sym]) || null;
   var price     = (live && live.price != null) ? live.price : item.price;
   var extPct    = live ? live.extPct     : null;
   var extSes    = live ? live.extSession : null;
 
-  // changePct: Massive API 현재가 + sparkline[-2](yfinance 어제 종가)로 직접 계산
-  // → Massive API의 prevDay 오류 보정 (ETF 등 일부 종목 changePct 부정확 문제)
-  var changePct = null;
-  var spark = item.sparkline || [];
-  if (price != null && spark.length >= 2) {
-    var prevClose = spark[spark.length - 2];
-    if (prevClose > 0) {
-      changePct = Math.round((price - prevClose) / prevClose * 10000) / 100;
-    }
-  }
-  // sparkline 없거나 계산 불가 시 Massive API 값 폴백
-  if (changePct == null) {
-    changePct = (live && live.changePct != null) ? live.changePct : item.changePct;
-  }
+  var changePct = calcChangePct(price, item.sparkline, live);
+  if (changePct == null) changePct = item.changePct;  // yfinance 최종 폴백
 
   var isUp   = changePct != null && changePct >= 0;
   var isFlat = changePct == null;
@@ -832,6 +819,24 @@ function cleanName(name) {
     .replace(/^proshares\s+/i, '')
     .replace(/^global x\s+/i,  '')
     .trim();
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// changePct 계산 — 목록·디테일 공용 (일관성 보장)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function calcChangePct(price, sparkline, live) {
+  var spark = sparkline || [];
+  // ① sparkline이 충분할 때(15포인트+): sparkline[-2]를 전일 종가로 사용
+  //    → Massive API prevDay 오류(일부 ETF) 보정 / SPCX 등 OTC 소수 포인트는 제외
+  if (price != null && spark.length >= 15) {
+    var prevClose = spark[spark.length - 2];
+    if (prevClose > 0) {
+      return Math.round((price - prevClose) / prevClose * 10000) / 100;
+    }
+  }
+  // ② 폴백: Massive API → yfinance 순서
+  if (live && live.changePct != null) return live.changePct;
+  return null;  // yfinance item.changePct는 호출측에서 추가 폴백
 }
 
 function buildSparkline(closes, isUp) {
@@ -1092,16 +1097,33 @@ function goBack() {
 function fillDetail(symbol) {
   currentSym    = symbol;
   var item      = findItem(symbol);
+  var live      = (pricesData && pricesData.prices && pricesData.prices[symbol]) || null;
 
   document.getElementById('dv-ticker').textContent = symbol;
   document.getElementById('dv-name').textContent   = item ? (item.name || '') : '';
 
-  if (item && item.price != null) {
+  // 실시간 가격: Massive API → yfinance 폴백
+  var price = (live && live.price != null) ? live.price : (item ? item.price : null);
+
+  // changePct: 목록과 동일한 calcChangePct 사용 → 완전 일치
+  var changePct = calcChangePct(price, item ? item.sparkline : null, live);
+  if (changePct == null && item) changePct = item.changePct;
+
+  // 절대 등락: sparkline[-2] 역산 or yfinance item.change 폴백
+  var changeAbs = null;
+  var spark = item ? (item.sparkline || []) : [];
+  if (price != null && spark.length >= 15) {
+    changeAbs = price - spark[spark.length - 2];
+  } else if (item && item.change != null) {
+    changeAbs = item.change;
+  }
+
+  if (price != null) {
     document.getElementById('dv-price').textContent =
-      '$' + item.price.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-    var isUp   = item.changePct >= 0;
-    var chgStr = (item.change != null ? (isUp ? '+' : '') + item.change.toFixed(2) : '') +
-                 (item.changePct != null ? ' (' + (isUp ? '+' : '') + item.changePct.toFixed(2) + '%)' : '');
+      '$' + price.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+    var isUp   = changePct != null && changePct >= 0;
+    var chgStr = (changeAbs != null ? (isUp ? '+' : '') + changeAbs.toFixed(2) : '') +
+                 (changePct != null ? ' (' + (isUp ? '+' : '') + changePct.toFixed(2) + '%)' : '');
     var chgEl  = document.getElementById('dv-chg');
     chgEl.textContent = chgStr;
     chgEl.className   = 'dv-chg ' + (isUp ? 'up' : 'dn');
