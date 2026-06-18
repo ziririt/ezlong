@@ -228,6 +228,43 @@ def fetch_snapshot_batch(symbols, api_key):
         return json.loads(resp.read().decode())
 
 
+def fetch_index_snapshot(api_key):
+    """
+    Massive v3 indices snapshot — SPX·NDX·DJI 실시간 지수값 수집
+    https://api.massive.com/v3/snapshot/indices?ticker.any_of=I:SPX,I:NDX,I:DJI
+    반환: [{'symbol':'SPX','price':...,'changePct':...,'change':...}, ...]
+    """
+    params = urllib.parse.urlencode({
+        'ticker.any_of': 'I:SPX,I:NDX,I:DJI',
+        'apiKey': api_key,
+    })
+    url = f'{BASE_URL}/v3/snapshot/indices?{params}'
+    req = urllib.request.Request(url, headers={'Accept': 'application/json'})
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode())
+        results = []
+        sym_map = {'I:SPX': 'SPX', 'I:NDX': 'NDX', 'I:DJI': 'DJI'}
+        for item in data.get('results', []):
+            ticker  = item.get('ticker', '')
+            symbol  = sym_map.get(ticker, ticker.replace('I:', ''))
+            session = item.get('session', {})
+            price   = session.get('close') or session.get('value')
+            change  = session.get('change')
+            pct     = session.get('change_percent')
+            if price and price > 0:
+                results.append({
+                    'symbol':    symbol,
+                    'price':     round(float(price), 2),
+                    'change':    round(float(change), 2) if change is not None else None,
+                    'changePct': round(float(pct),    2) if pct    is not None else None,
+                })
+        return results
+    except Exception as e:
+        print(f'  [Index] 수집 실패: {e}')
+        return []
+
+
 def parse_snapshot(data):
     """
     응답에서 { ticker: {price, changePct, extPrice, extPct, extSession} } 딕셔너리 추출
@@ -571,9 +608,20 @@ def main():
     final_ext_ok = sum(1 for v in prices.values() if v.get('extPct') is not None)
     print(f'\n  최종 확장시간 데이터: {final_ext_ok}개 종목')
 
+    # ── 4단계: 주요 지수 실시간 수집 (SPX·NDX·DJI) ───────────────────────────
+    print(f'\n  [Index] SPX·NDX·DJI 실시간 지수 수집 중...')
+    live_indices = fetch_index_snapshot(MASSIVE_API_KEY)
+    if live_indices:
+        print(f'  [Index] 완료: {len(live_indices)}개 지수 — ' +
+              ', '.join(f"{x[\"symbol\"]} {x[\"price\"]} ({x[\"changePct\"]:+.2f}%)"
+                        for x in live_indices if x.get("changePct") is not None))
+    else:
+        print(f'  [Index] 수집 실패 — stocks-data.json 폴백 사용')
+
     output = {
         'updatedAt':    now_utc.isoformat(),
         'updatedAtKST': kst.strftime('%Y-%m-%d %H:%M KST'),
+        'indices':      live_indices,   # SPX·NDX·DJI 실시간 (빈 리스트면 UI에서 폴백)
         'prices': prices,
     }
 

@@ -970,9 +970,13 @@ function renderIndexCards() {
     { idxSym: 'DJI', sparkEl: 'ix-di-spark', priceEl: 'ix-di-price', pctEl: 'ix-di-pct' },
   ];
   CARDS.forEach(function(c) {
+    // pricesData.indices(10분마다 갱신) 우선 → 없으면 allData.indices(일 1회) 폴백
+    var liveIdx    = pricesData && pricesData.indices
+                     ? pricesData.indices.find(function(x) { return x.symbol === c.idxSym; })
+                     : null;
     var idxEntry   = allData && allData.indices ? allData.indices.find(function(x) { return x.symbol === c.idxSym; }) : null;
-    var price      = idxEntry ? idxEntry.price     : null;
-    var pct        = idxEntry ? idxEntry.changePct : null;
+    var price      = (liveIdx && liveIdx.price)     ? liveIdx.price     : (idxEntry ? idxEntry.price     : null);
+    var pct        = (liveIdx && liveIdx.changePct != null) ? liveIdx.changePct : (idxEntry ? idxEntry.changePct : null);
     var sparklines = idxEntry ? (idxEntry.sparkline || []) : [];
 
     var isUp    = pct != null ? pct >= 0 : true;
