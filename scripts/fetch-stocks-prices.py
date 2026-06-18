@@ -28,16 +28,46 @@ OUTPUT_PATH = os.path.normpath(
 # ─── 수집 대상 심볼 ────────────────────────────────────────────────────────────
 # stocks-data.json 과 동일한 종목 전체 (중복 제거)
 US_TOP100 = [
-    'NVDA', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'SPCX', 'META', 'TSLA', 'BRK-B', 'AVGO',
-    'LLY',  'JPM',  'UNH', 'V',    'XOM',  'MA',   'COST', 'PG',  'JNJ',  'HD',
-    'NFLX', 'ABBV', 'BAC', 'WMT',  'MRK',  'KO',   'CVX',  'ASML','ORCL', 'AMD',
-    'CRM',  'ADBE', 'TMO', 'ACN',  'LIN',  'MCD',  'CSCO', 'ABT', 'GE',   'INTU',
-    'IBM',  'NOW',  'AMGN','ISRG', 'PM',   'DHR',  'TXN',  'QCOM','SPGI', 'BKNG',
-    'AMAT', 'GS',   'CAT', 'TSM',  'BLK',  'AXP',  'VRTX', 'REGN','SYK',  'T',
-    'MS',   'RTX',  'GILD','BSX',  'ETN',  'PLD',  'DE',   'ADI', 'LRCX', 'MU',
-    'KLAC', 'NEE',  'CB',  'SCHW', 'COP',  'EOG',  'PGR',  'ADP', 'UPS',  'TJX',
-    'ICE',  'PANW', 'LOW', 'CME',  'CI',   'C',    'BMY',  'ZTS', 'ELV',  'WM',
-    'CVS',  'BA',   'HON', 'SO',   'ARM',  'PLTR', 'MELI', 'CRWD','APP',  'MMC',
+    # 시총 순위 1~10 (2026-06-18 업데이트, us-stock-top200.csv 기준)
+    'NVDA', 'GOOGL', 'AAPL', 'MSFT', 'AMZN', 'SPCX',  'AVGO', 'TSLA', 'META', 'MU',
+    # 11~20
+    'BRK-B','LLY',   'WMT',  'JPM',  'AMD',  'ASML',  'V',    'INTC', 'XOM',  'JNJ',
+    # 21~30
+    'ORCL', 'AMAT',  'LRCX', 'CSCO', 'ARM',  'CAT',   'MA',   'COST', 'BAC',  'ABBV',
+    # 31~40
+    'GE',   'UNH',   'MS',   'CVX',  'PG',   'KO',    'HD',   'GS',   'NFLX', 'PLTR',
+    # 41~50
+    'KLAC', 'SNDK',  'MRK',  'GEV',  'PM',   'TXN',   'DELL', 'RTX',  'WFC',  'MRVL',
+    # 51~60
+    'IBM',  'C',     'WDC',  'STX',  'LIN',  'AXP',   'PANW', 'QCOM', 'ANET', 'ADI',
+    # 61~70
+    'MCD',  'APH',   'TMUS', 'PEP',  'VZ',   'AMGN',  'TJX',  'NEE',  'BA',   'DIS',
+    # 71~80
+    'CRWD', 'BLK',   'TMO',  'SCHW', 'IBKR', 'APP',   'ETN',  'DE',   'T',    'GILD',
+    # 81~90
+    'ABT',  'UNP',   'BX',   'GLW',  'PFE',  'WELL',  'HON',  'UBER', 'ISRG', 'SHOP',
+    # 91~100
+    'COP',  'PLD',   'BKNG', 'CB',   'CRM',  'CVS',   'DHR',  'COF',  'SPGI', 'LMT',
+    # 101~110 (가격 추적용, stocks-data.json 스파크라인 없음)
+    'VRT',  'LOW',   'PGR',  'PH',   'VRTX', 'SYK',   'MO',   'SBUX', 'PDD',  'HWM',
+    # 111~120
+    'BMY',  'NEM',   'CDNS', 'EQIX', 'PWR',  'FTNT',  'TT',   'SO',   'MAR',  'SNY',
+    # 121~130
+    'MDT',  'BNY',   'FCX',  'CMI',  'NOW',  'GD',    'CEG',  'DUK',  'ACN',  'HOOD',
+    # 131~140
+    'PNC',  'CME',   'MCK',  'USB',  'MNST', 'UPS',   'SNPS', 'JCI',  'ADP',  'KKR',
+    # 141~150
+    'WMB',  'WM',    'HCA',  'ELV',  'ABNB', 'CSX',   'AMT',  'EMR',  'MMM',  'MELI',
+    # 151~160
+    'CMCSA','RCL',   'DDOG', 'APO',  'MCO',  'HLT',   'MRSH', 'NOC',  'MDLZ', 'ADBE',
+    # 161~170
+    'NTES', 'FDX',   'SHW',  'ICE',  'ECL',  'CI',    'ITW',  'NXPI', 'SLB',  'ROST',
+    # 171~180
+    'COHR', 'TDG',   'INTU', 'ORLY', 'CRH',  'CL',    'DASH', 'GM',   'MPC',  'VLO',
+    # 181~190
+    'MPWR', 'EOG',   'NBIS', 'AEP',  'AON',  'KMI',   'CVNA', 'SPG',  'FIX',  'CTAS',
+    # 191~200
+    'LITE', 'NSC',   'PSX',  'BSX',  'MSI',  'WBD',   'DLR',  'URI',  'NKE',  'TRV',
 ]
 
 NASDAQ100 = [
