@@ -5,7 +5,138 @@
 
 ---
 
-## [2026-06-18] — Massive API 실시간 주가 연동 + stocks.html 차트 개선
+## [2026-06-19] 3차 세션 — periodPrices 3M+ 버그 수정 + US_TOP100 시총 순위 업데이트
+
+### 커밋 이력 (주요 작업)
+
+. `a85f110f0` — fix: periodPrices 3M+ 0% 버그 — pandas Timestamp 비교로 교체
+. `560ba7f6f` — data: US_TOP100 시총 순위 업데이트 (2026-06-18 CSV 기준, 101~200위 가격추적 추가)
+
+---
+
+### 1. periodPrices 3M+ 0% 버그 수정 (`scripts/fetch-stocks-data.py`)
+
+디테일 페이지에서 1M 수익률은 오차 있고, 3M 이상은 전부 0%로 표시되던 버그.
+
+**원인:** `pandas DatetimeIndex.astype('int64')`가 timezone-aware 인덱스에서 정상 동작하지 않아, `cutoff` 이전 데이터 슬라이스가 항상 비어 현재가를 그대로 반환.
+
+**수정 내용:**
+```python
+# 이전 (버그)
+idx_ts = idx5y.astype('int64') // 10 ** 9
+mask = idx_ts <= int(cutoff_ts)
+
+# 수정 후
+idx_utc = idx5y.tz_convert('UTC').tz_localize(None)
+cutoff = pd.Timestamp(now - timedelta(days=days_ago)).tz_localize(None)
+mask = idx_utc <= cutoff
+```
+
+**검증:** NVDA periodPrices = `{'5d':200.42, '1m':222.06, 'ytd':184.63, '3m':172.5, '6m':180.77, '1y':143.66, '2y':126.36, '3y':42.13, '5y':18.57}` — 정상 확인.
+
+**복구 방법:**
+```bash
+git revert a85f110f0  # periodPrices fix 롤백
+```
+
+---
+
+### 2. US_TOP100 시총 순위 업데이트 (us-stock-top200.csv 기준)
+
+**`fetch-stocks-data.py`** — 1~100위 정렬 교체. 주요 변경:
+. 이전: NVDA·AAPL·MSFT·GOOGL 순 → 현재: NVDA·GOOGL·AAPL·MSFT 순
+. 신규 진입: MU(10위), INTC(18위), SNDK(42위), GEV(44위), DELL(47위), WFC(49위), MRVL(50위), WDC(53위), STX(54위), ANET(59위), APH(62위), IBKR(75위), WELL(86위), UBER(88위), SHOP(90위), COF(98위)
+. 제외: ADBE, ACN, INTU, NOW, REGN, SYK, BSX, EOG, PGR, ADP, UPS, ICE, CME, CI, BMY, ZTS, ELV, WM, MMC, TSM
+
+**`fetch-stocks-prices.py`** — 101~200위 가격 추적 추가. `US_TOP100` 변수를 200개로 확장. 10분마다 `stocks-prices.json`에 현재가·등락률 수집.
+
+---
+
+## [2026-06-18] 2차 세션 — 프리/포스트마켓 등락률 + 스파클라인 전체 세션 + SPCX 버그 수정
+
+### 커밋 이력 (주요 작업)
+
+. `c80d0e804` — fix: 프리마켓 구간 Yahoo 호출 완전 제거 — Massive 봉 전용
+. `07b24cfc3` — fix: 프리마켓 ext를 Massive API 오늘 봉으로 교체 — Yahoo 의존 제거
+. `394c3a78f` — fix: 프리마켓 시간대 Yahoo 강제 실행 + day_close_ref 인트라데이 봉에서 추출
+. `c31aa2c65` — feat: 포스트/프리마켓 등락률 목록 상시 표시 — 인트라데이 봉+타임스탬프 기반
+. `b8ecacd63` — fix: SPCX changePct 0% 버그 — day.c/prevDay.c로 재계산, live.price>0 폴백
+. `777ceeeb7` — fix: live.price > 0 체크 — Massive API price=0 폴백 버그 수정
+. `4df6847c6` — fix: 심야 price=0 버그 — prevDay.c 폴백 추가
+. `d6c923f35` — feat: 스파클라인 전체 세션(프리+정규+포스트) + dayOpen 베이스라인
+. `bf2e84120` — fix: 인트라데이 스파클라인 RTH만 필터링 (장외시간 제거)
+. `dab2b0cc4` — feat: 스파클라인 인트라데이 5분봉으로 교체 (Massive API aggregates)
+
+---
+
+### 1. 프리/포스트마켓 등락률 목록 상시 표시 (`stocks.html`)
+
+종목 목록 우측에 정규장 등락률 밑에 확장시간 등락률 추가 표시.
+
+. 프리마켓: ☀ 아이콘 + 초록/빨강 등락률
+. 포스트마켓: ☽ 아이콘 + 초록/빨강 등락률
+. `extPct != null && extSes` 조건 충족 시에만 표시
+
+---
+
+### 2. 프리마켓 데이터 소스 확정 — Massive API 5분봉
+
+**핵심 발견:** Massive API 스냅샷의 `preMarket.c`는 항상 None. 5분봉 aggregates 엔드포인트만 프리마켓 데이터를 제공.
+
+**최종 구조 (`fetch-stocks-prices.py`):**
+
+```python
+# 프리마켓(ET 4AM~9:30AM): 오늘 날짜 5분봉 별도 수집
+if is_premarket:
+    today_str = now_et.date().strftime('%Y-%m-%d')
+    today_intraday, _ = fetch_intraday_all(symbols, today_str, KEY)
+    # last bar = 프리마켓 현재가 (15분 지연)
+    # prev_close_ref = prevDay.c 또는 어제 정규장 마지막 봉
+    # extPct = (last_pre_c - prev_close_ref) / prev_close_ref * 100
+```
+
+**Yahoo Finance 완전 제거 (프리마켓):**
+. 프리마켓 시간대엔 `is_premarket` 조건으로 Yahoo 호출 차단
+. Yahoo는 포스트마켓/overnight 80% 미만일 때만 보완용으로 잔존
+
+**복구 방법 (문제 발생 시):**
+```bash
+git revert c80d0e804  # Yahoo 제거 롤백
+git revert 07b24cfc3  # 5분봉 기반 롤백
+```
+
+---
+
+### 3. SPCX changePct 0% 버그 수정
+
+Massive API가 SPCX의 `todaysChangePerc`를 0으로 반환하는 버그. `day.c`와 `prevDay.c`로 직접 재계산.
+
+```python
+if change_pct == 0 and day_close and prev_close:
+    computed = (day_close - prev_close) / prev_close * 100
+    if abs(computed) > 0.01:
+        change_pct = computed
+```
+
+---
+
+### 4. 스파클라인 전체 세션 + dayOpen 베이스라인
+
+. 5분봉 인트라데이 전체(프리+정규+포스트) 스파클라인 표시
+. `dayOpen`(정규장 시가)을 베이스라인으로 초록/빨강 분기
+. `live.price > 0` 체크로 price=0 폴백 버그 수정 (5곳)
+
+---
+
+### 5. 신규 확정 사항 (CLAUDE.md 규칙 17 보완)
+
+. Massive API snapshot `preMarket.c` = **항상 None** — 절대 이걸로 프리마켓 데이터 기대하지 말 것
+. 프리마켓 데이터 소스: `/v2/aggs/ticker/{sym}/range/5/minute/{today}/{today}`
+. 스냅샷의 `preMarket` 객체 자체가 None으로 옴 (`preMarket=None` 확인)
+
+---
+
+## [2026-06-18] 1차 세션 — Massive API 실시간 주가 연동 + stocks.html 차트 개선
 
 ### 커밋 이력 (주요 작업)
 
