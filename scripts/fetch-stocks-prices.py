@@ -609,16 +609,30 @@ def main():
     print(f'\n  최종 확장시간 데이터: {final_ext_ok}개 종목')
 
     # ── 4단계: 주요 지수 실시간 수집 (SPX·NDX·DJI) ───────────────────────────
-    print(f'\n  [Index] SPX·NDX·DJI 실시간 지수 수집 중...')
+    # Massive v3 indices 엔드포인트 시도 → 실패 시 SPY/QQQ/DIA 프록시 폴백
+    print('\n  [Index] SPX·NDX·DJI 실시간 지수 수집 중...')
     live_indices = fetch_index_snapshot(MASSIVE_API_KEY)
-    if live_indices:
+
+    if not live_indices:
+        # SPY→SPX, QQQ→NDX, DIA→DJI 프록시 (등락률만; 가격은 UI에서 stocks-data 폴백)
+        proxy_map = [('SPX', 'SPY'), ('NDX', 'QQQ'), ('DJI', 'DIA')]
+        for idx_sym, etf_sym in proxy_map:
+            etf = prices.get(etf_sym, {})
+            if etf.get('changePct') is not None:
+                live_indices.append({
+                    'symbol':    idx_sym,
+                    'price':     None,  # UI가 stocks-data.json 가격 유지
+                    'change':    etf.get('change'),
+                    'changePct': etf['changePct'],
+                })
+        src = 'ETF 프록시(SPY/QQQ/DIA)' if live_indices else '없음(stocks-data 폴백)'
+        print('  [Index] Massive v3 미지원 — %s 사용: %d개' % (src, len(live_indices)))
+    else:
         idx_parts = []
         for x in live_indices:
             if x.get('changePct') is not None:
                 idx_parts.append('%s %s (%+.2f%%)' % (x['symbol'], x['price'], x['changePct']))
         print('  [Index] 완료: %d개 지수 — %s' % (len(live_indices), ', '.join(idx_parts)))
-    else:
-        print('  [Index] 수집 실패 — stocks-data.json 폴백 사용')
 
     output = {
         'updatedAt':    now_utc.isoformat(),
