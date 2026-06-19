@@ -2781,8 +2781,8 @@ function loadStaleCache() {
 // ─── GitHub Actions JSON 수집 ─────────────────────
 
 async function fetchGitHubJSON() {
-  // 5분 단위 캐시 버스팅 → CDN 스테일 방지
-  const bust = Math.floor(Date.now() / 300000);
+  // 매 요청마다 고유 URL → GitHub CDN 캐시 완전 우회 (5분 단위로는 CDN 히트 발생)
+  const bust = Date.now();
   const url  = `${GITHUB_JSON_URL}?t=${bust}`;
   const r = await fetch(url, {
     cache: 'no-cache',
@@ -2880,6 +2880,7 @@ async function loadAllData(forceRefresh = false) {
   }, 30000);
 
   // ── 1. 로컬 캐시 체크 (1시간 TTL, 강제 새로고침 시 건너뜀) ──────────────
+  // stale-while-revalidate: 캐시 데이터 즉시 표시 + 백그라운드에서 GitHub 갱신 체크
   if (!forceRefresh) {
     const cache = loadCache();
     if (cache) {
@@ -2890,6 +2891,21 @@ async function loadAllData(forceRefresh = false) {
       renderAll(stockData);
       isLoading = false;
       btn?.classList.remove('loading');
+      // 백그라운드 갱신 — GitHub generatedAt이 캐시보다 1분 이상 새로우면 조용히 업데이트
+      fetchGitHubJSON().then(ghJson => {
+        if (!ghJson?.generatedAt || !ghJson?.symbols) return;
+        const githubTs = new Date(ghJson.generatedAt).getTime();
+        if (githubTs > cache.timestamp + 60000) {
+          stockData     = ghJson.symbols;
+          indicesData   = ghJson.indices      ?? indicesData;
+          fearGreedData = ghJson.fearAndGreed ?? fearGreedData;
+          macroData     = ghJson.macro        ?? macroData;
+          saveCache(stockData);
+          renderAll(stockData);
+          setUpdateTime(new Date(ghJson.generatedAt));
+          setStatus('ok', '스윙 시그널 최신 데이터 자동 반영 완료');
+        }
+      }).catch(() => {});
       return;
     }
   }
