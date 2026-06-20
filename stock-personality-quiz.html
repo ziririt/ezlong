@@ -124,10 +124,15 @@
 
     /* ── 진행 표시 ── */
     #quiz-progress { margin-bottom: 28px; }
+    .progress-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
     .progress-label {
       font-size: 14px;
       color: var(--ez-text2);
-      margin-bottom: 8px;
       font-weight: 600;
     }
     .progress-bar-track {
@@ -280,9 +285,9 @@
       color: var(--ez-text2);
       font-size: 14px;
       cursor: pointer;
-      padding: 8px 0;
-      margin-top: 12px;
+      padding: 0;
       display: none;
+      flex-shrink: 0;
     }
     #quiz-back:hover { color: var(--ez-text); }
 
@@ -621,7 +626,10 @@
 
   <!-- 진행 표시 -->
   <div id="quiz-progress">
-    <div class="progress-label" id="progress-label">질문 1 / 5</div>
+    <div class="progress-top-row">
+      <button id="quiz-back">‹ 이전</button>
+      <div class="progress-label" id="progress-label">질문 1 / 5</div>
+    </div>
     <div class="progress-bar-track">
       <div class="progress-bar-fill" id="progress-fill" style="width:16.7%"></div>
     </div>
@@ -801,7 +809,6 @@
     <div id="result-content"></div>
   </div>
 
-  <button id="quiz-back">← 이전 질문으로</button>
 
 </div><!-- /#quiz-container -->
 
@@ -889,26 +896,26 @@ const EXP_TEXTS = {
 };
 
 const COMPANY_TEXTS = {
-'AAPL':'애플을 선택하셨군요. 스마트폰 안에 생태계를 만든 기업입니다. 아이폰을 쓰는 사람이 맥북을 사고, 에어팟을 끼고, iCloud를 씁니다. 단, 성장 속도가 느려졌습니다. 서비스 매출이 그것을 메우는 구조입니다.',
-'MSFT':'마이크로소프트를 선택하셨군요. 회사에서 쓰는 소프트웨어 대부분이 마이크로소프트 제품인 이유, 기업 고객은 한 번 쓰기 시작하면 바꾸기 어렵기 때문입니다. Azure + Copilot + 오피스 구독. 경기 침체에도 매출이 흔들리지 않는 구조입니다.',
-'GOOGL':'구글을 선택하셨군요. 검색 광고 독점이 현금을 쌓고, 그 현금으로 AI와 클라우드에 투자합니다. DeepMind, YouTube, GCP. 하나만 잘 돼도 회사 전체가 달라집니다. AI 전쟁에서 가장 많은 무기를 들고 있는 기업입니다.',
-'AMZN':'아마존을 선택하셨군요. 이커머스는 낮은 마진, AWS는 높은 마진. 이 둘이 합쳐져서 이익 대부분이 AWS에서 납니다. 광고 사업까지 급성장 중입니다. 클라우드 1위 + AI 인프라 + 광고, 세 개가 동시에 돌아가는 구조입니다.',
-'META':'메타를 선택하셨군요. 전 세계 30억 명이 매일 쓰는 SNS를 소유하고 있습니다. AI 광고 최적화로 단가가 올라가고 있고, Llama 오픈소스 모델로 AI 생태계 주도권을 노리고 있습니다. 이번 AI 베팅은 잘 가고 있습니다.',
-'NVDA':'엔비디아를 선택하셨군요. AI를 훈련하려면 GPU가 필요하고, GPU는 NVDA가 독점에 가깝습니다. H100, B200, 그 다음 세대. 수요가 공급을 항상 앞서고 있습니다. 단, 밸류에이션이 높습니다. 많은 미래가 이미 가격에 반영됐습니다.',
-'TSLA':'테슬라를 선택하셨군요. 전기차 + 에너지 저장 + FSD + 로보틱스 + 로보택시. 그 중 하나라도 터지면 주가는 완전히 달라집니다. 단, 어떤 것도 아직 확실하지 않습니다. 변동성이 포트폴리오를 흔들지 않을 비중으로만 보유하세요.',
-'AVGO':'브로드컴을 선택하셨군요. NVDA가 GPU를 팔면, AVGO는 그 GPU들을 연결하는 네트워크를 팝니다. AI 커스텀 반도체 + 네트워킹 + VMware 인수. 조용히 성장하고 있는 AI 인프라의 두 번째 수혜 기업입니다.',
-'V':'비자를 선택하셨군요. 돈을 빌려주지 않으면서 결제 수수료만 가져가는 구조입니다. 신용 리스크 없이 글로벌 거래 성장을 먹습니다. 지루하지만 강한 기업입니다. 경기가 나빠져도 부도 위험은 없습니다.',
-'COST':'코스트코를 선택하셨군요. 연회비를 내고 가입한 회원이 이탈하지 않는 기업입니다. 회원 갱신율 90% 이상. 인플레이션이 와도 절약하려는 회원이 더 많이 방문합니다. 불황에 강한 구조입니다.',
-'LLY':'릴리를 선택하셨군요. GLP-1 비만·당뇨 치료제 시장의 선두 기업입니다. 마운자로와 젭바운드의 수요가 공급을 초과하고 있습니다. 비만 치료가 의료 패러다임을 바꾸고 있습니다. 단, 밸류에이션이 높고 특허 만료 리스크가 있습니다.',
-'NFLX':'넷플릭스를 선택하셨군요. 스트리밍 1위를 굳혔습니다. 광고 요금제로 수익을 다각화하고 있습니다. AI 콘텐츠 추천으로 체류 시간이 늘면서 구독자 이탈을 막는 효과가 커지고 있습니다.',
-'AMD':'AMD를 선택하셨군요. CPU와 AI 가속기 시장에서 NVDA에 도전하는 기업입니다. MI300 시리즈가 데이터센터 고객을 조금씩 뺏어오고 있습니다. NVDA 대비 가격 경쟁력이 있습니다. 단, CUDA 생태계 장벽은 아직 높습니다.',
-'PLTR':'팔란티어를 선택하셨군요. AI 소프트웨어 플랫폼으로 정부와 기업 고객에게 데이터 분석을 팝니다. 미국 정부가 핵심 고객이라는 것이 안정성이자 성장의 한계입니다. AIP가 기업 시장에서 얼마나 확장되는지가 다음 성장 동력입니다.',
-'SPY':'SPY를 선택하셨군요. S&P 500 지수 그 자체입니다. 미국 대형주 500개를 한 번에 보유합니다. 장기적으로 거의 모든 액티브 펀드를 이깁니다. 워런 버핏이 가장 많이 추천하는 방식입니다.',
-'QQQ':'QQQ를 선택하셨군요. 나스닥 100 ETF, 빅테크 집중 포트폴리오입니다. NVDA, AAPL, MSFT, AMZN, META가 상위를 차지합니다. S&P 500보다 성장성이 높고 변동성도 큽니다. AI 사이클 수혜를 집중적으로 받는 구조입니다.',
-'IVV':'IVV를 선택하셨군요. 블랙록의 S&P 500 ETF입니다. SPY와 동일한 지수를 추종하지만 운용보수 0.03%로 더 저렴합니다. 장기 보유할수록 그 차이가 납니다. 코어 포지션으로 가장 효율적인 선택입니다.',
-'TLT':'TLT를 선택하셨군요. 20년 만기 미국 국채 ETF입니다. 금리가 내리면 채권 가격은 오릅니다. 경기 침체 시 주식이 빠질 때 방어 역할을 합니다. 단, 금리가 오를 때는 주식보다 더 큰 손실이 날 수 있습니다. 포트폴리오의 일부 헤지로만 활용하세요.',
-'GLD':'GLD를 선택하셨군요. 금 ETF입니다. 달러가 약해지거나 인플레이션이 올 때 강세를 보입니다. 지정학적 리스크가 커질 때도 오릅니다. 수익을 만들기보다 리스크를 분산하는 역할입니다. 포트폴리오의 5~10% 헤지로 적당합니다.',
-'SOXX':'SOXX를 선택하셨군요. 반도체 섹터 ETF입니다. NVDA, AVGO, AMD, 인텔, TSMC 등 반도체 산업 전체에 분산 투자합니다. AI 수혜를 NVDA 단일 종목이 아닌 섹터 전체로 분산하는 방법입니다.'
+'AAPL':'스마트폰 안에 생태계를 만든 기업입니다. 아이폰을 쓰는 사람이 맥북을 사고, 에어팟을 끼고, iCloud를 씁니다. 단, 성장 속도가 느려졌습니다. 서비스 매출이 그것을 메우는 구조입니다.',
+'MSFT':'회사에서 쓰는 소프트웨어 대부분이 마이크로소프트 제품인 이유, 기업 고객은 한 번 쓰기 시작하면 바꾸기 어렵기 때문입니다. Azure + Copilot + 오피스 구독. 경기 침체에도 매출이 흔들리지 않는 구조입니다.',
+'GOOGL':'검색 광고 독점이 현금을 쌓고, 그 현금으로 AI와 클라우드에 투자합니다. DeepMind, YouTube, GCP. 하나만 잘 돼도 회사 전체가 달라집니다. AI 전쟁에서 가장 많은 무기를 들고 있는 기업입니다.',
+'AMZN':'이커머스는 낮은 마진, AWS는 높은 마진. 이 둘이 합쳐져서 이익 대부분이 AWS에서 납니다. 광고 사업까지 급성장 중입니다. 클라우드 1위 + AI 인프라 + 광고, 세 개가 동시에 돌아가는 구조입니다.',
+'META':'전 세계 30억 명이 매일 쓰는 SNS를 소유하고 있습니다. AI 광고 최적화로 단가가 올라가고 있고, Llama 오픈소스 모델로 AI 생태계 주도권을 노리고 있습니다. 이번 AI 베팅은 잘 가고 있습니다.',
+'NVDA':'AI를 훈련하려면 GPU가 필요하고, GPU는 NVDA가 독점에 가깝습니다. H100, B200, 그 다음 세대. 수요가 공급을 항상 앞서고 있습니다. 단, 밸류에이션이 높습니다. 많은 미래가 이미 가격에 반영됐습니다.',
+'TSLA':'전기차 + 에너지 저장 + FSD + 로보틱스 + 로보택시. 그 중 하나라도 터지면 주가는 완전히 달라집니다. 단, 어떤 것도 아직 확실하지 않습니다. 변동성이 포트폴리오를 흔들지 않을 비중으로만 보유하세요.',
+'AVGO':'NVDA가 GPU를 팔면, AVGO는 그 GPU들을 연결하는 네트워크를 팝니다. AI 커스텀 반도체 + 네트워킹 + VMware 인수. 조용히 성장하고 있는 AI 인프라의 두 번째 수혜 기업입니다.',
+'V':'돈을 빌려주지 않으면서 결제 수수료만 가져가는 구조입니다. 신용 리스크 없이 글로벌 거래 성장을 먹습니다. 지루하지만 강한 기업입니다. 경기가 나빠져도 부도 위험은 없습니다.',
+'COST':'연회비를 내고 가입한 회원이 이탈하지 않는 기업입니다. 회원 갱신율 90% 이상. 인플레이션이 와도 절약하려는 회원이 더 많이 방문합니다. 불황에 강한 구조입니다.',
+'LLY':'GLP-1 비만·당뇨 치료제 시장의 선두 기업입니다. 마운자로와 젭바운드의 수요가 공급을 초과하고 있습니다. 비만 치료가 의료 패러다임을 바꾸고 있습니다. 단, 밸류에이션이 높고 특허 만료 리스크가 있습니다.',
+'NFLX':'스트리밍 1위를 굳혔습니다. 광고 요금제로 수익을 다각화하고 있습니다. AI 콘텐츠 추천으로 체류 시간이 늘면서 구독자 이탈을 막는 효과가 커지고 있습니다.',
+'AMD':'CPU와 AI 가속기 시장에서 NVDA에 도전하는 기업입니다. MI300 시리즈가 데이터센터 고객을 조금씩 뺏어오고 있습니다. NVDA 대비 가격 경쟁력이 있습니다. 단, CUDA 생태계 장벽은 아직 높습니다.',
+'PLTR':'AI 소프트웨어 플랫폼으로 정부와 기업 고객에게 데이터 분석을 팝니다. 미국 정부가 핵심 고객이라는 것이 안정성이자 성장의 한계입니다. AIP가 기업 시장에서 얼마나 확장되는지가 다음 성장 동력입니다.',
+'SPY':'S&P 500 지수 그 자체입니다. 미국 대형주 500개를 한 번에 보유합니다. 장기적으로 거의 모든 액티브 펀드를 이깁니다. 워런 버핏이 가장 많이 추천하는 방식입니다.',
+'QQQ':'나스닥 100 ETF, 빅테크 집중 포트폴리오입니다. NVDA, AAPL, MSFT, AMZN, META가 상위를 차지합니다. S&P 500보다 성장성이 높고 변동성도 큽니다. AI 사이클 수혜를 집중적으로 받는 구조입니다.',
+'IVV':'블랙록의 S&P 500 ETF입니다. SPY와 동일한 지수를 추종하지만 운용보수 0.03%로 더 저렴합니다. 장기 보유할수록 그 차이가 납니다. 코어 포지션으로 가장 효율적인 선택입니다.',
+'TLT':'20년 만기 미국 국채 ETF입니다. 금리가 내리면 채권 가격은 오릅니다. 경기 침체 시 주식이 빠질 때 방어 역할을 합니다. 단, 금리가 오를 때는 주식보다 더 큰 손실이 날 수 있습니다. 포트폴리오의 일부 헤지로만 활용하세요.',
+'GLD':'금 ETF입니다. 달러가 약해지거나 인플레이션이 올 때 강세를 보입니다. 지정학적 리스크가 커질 때도 오릅니다. 수익을 만들기보다 리스크를 분산하는 역할입니다. 포트폴리오의 5~10% 헤지로 적당합니다.',
+'SOXX':'반도체 섹터 ETF입니다. NVDA, AVGO, AMD, 인텔, TSMC 등 반도체 산업 전체에 분산 투자합니다. AI 수혜를 NVDA 단일 종목이 아닌 섹터 전체로 분산하는 방법입니다.'
 };
 
 const STYLE_LABELS = {
@@ -1396,6 +1403,9 @@ function showPanel(id) {
   } else if (progEl) {
     progEl.style.display = 'none'; // 결과 화면 등
   }
+  // 이전 버튼 가시성 — 히스토리가 있고 결과 화면이 아닐 때만 표시
+  const bBtn = document.getElementById('quiz-back');
+  if (bBtn) bBtn.style.display = (panelHistory.length > 0 && id !== 'step-result') ? '' : 'none';
 }
 function showSubStep(id) {
   document.querySelectorAll('.sub-step').forEach(s => s.classList.remove('active'));
@@ -1412,6 +1422,17 @@ if (backBtn) {
       document.querySelectorAll('.quiz-step').forEach(p => p.classList.remove('active'));
       const panel = document.getElementById(prev);
       if (panel) { panel.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+      // 진행 표시 업데이트
+      const stepMap = {'step-q1':1,'step-q2':2,'step-q3':3,'step-q3-grid':3,'step-q3-sub':3,'step-q4':4,'step-q5':5};
+      const num = stepMap[prev];
+      if (num) {
+        const lbl = document.getElementById('progress-label');
+        const fill = document.getElementById('progress-fill');
+        if (lbl) lbl.textContent = '질문 ' + num + ' / 5';
+        if (fill) fill.style.width = (num / 5 * 100).toFixed(1) + '%';
+      }
+      // 이전 버튼 가시성 업데이트
+      backBtn.style.display = panelHistory.length > 0 ? '' : 'none';
     }
   });
 }
