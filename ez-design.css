@@ -199,6 +199,41 @@ a { color: inherit; }
   .ez-mob-toggle { display: flex !important; }
 }
 
+/* ── 푸터 서비스 메뉴 그리드 ────────────────────────────────────── */
+.ez-footer-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--ez-border);
+  margin-bottom: 28px;
+}
+.ez-footer-nav-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--ez-border);
+  background: var(--ez-card);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ez-text2);
+  text-decoration: none;
+  line-height: 1.35;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.ez-footer-nav-item:hover {
+  background: var(--ez-blue-dim);
+  color: var(--ez-blue);
+  border-color: rgba(0,113,227,0.25);
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer-nav-item:hover { border-color: rgba(10,132,255,0.3); }
+}
+@media (max-width: 639px) {
+  .ez-footer-nav-grid { grid-template-columns: repeat(2, 1fr); gap: 5px; }
+}
+
 /* ── EZ 푸터 (2026 리디자인) ────────────────────────────────────── */
 .ez-footer {
   background: #FFFFFF;

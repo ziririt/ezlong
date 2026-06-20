@@ -1466,6 +1466,11 @@ li.gear-other-sep { display: none !important; }
 @media(prefers-color-scheme:dark){.ez-footer-col a{color:#F5F5F7}.ez-footer-col a:hover{color:#0A84FF}}
 .ez-footer-bottom{font-size:14px;color:#3C3C3E;border-top:1px solid rgba(0,0,0,0.06);padding-top:16px;line-height:1.8}
 @media(prefers-color-scheme:dark){.ez-footer-bottom{border-color:rgba(255,255,255,0.07);color:#F5F5F7}}
+.ez-footer-nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding-bottom:28px;border-bottom:1px solid rgba(0,0,0,0.08);margin-bottom:28px}
+.ez-footer-nav-item{display:flex;align-items:flex-start;padding:10px 14px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);background:#FFFFFF;font-size:14px;font-weight:600;color:#3C3C3E;text-decoration:none;line-height:1.35;transition:background .12s,color .12s,border-color .12s}
+.ez-footer-nav-item:hover{background:rgba(0,113,227,0.10);color:#0071E3;border-color:rgba(0,113,227,0.25)}
+@media(prefers-color-scheme:dark){.ez-footer-nav-grid{border-bottom-color:rgba(255,255,255,0.10)}.ez-footer-nav-item{background:#111;border-color:rgba(255,255,255,0.14);color:#C8C8CC}.ez-footer-nav-item:hover{background:rgba(10,132,255,0.12);color:#0A84FF;border-color:rgba(10,132,255,0.3)}}
+@media(max-width:639px){.ez-footer-nav-grid{grid-template-columns:repeat(2,1fr);gap:5px}}
 /* ── ez-footer 책 섹션 — ez-design.css 미로드로 인한 누락 보완 */
 .ez-footer-books{display:flex;gap:20px;flex-wrap:wrap}
 .ez-footer-book{display:flex;gap:10px;align-items:flex-start}

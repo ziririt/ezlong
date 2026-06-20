@@ -7,6 +7,25 @@
   var html =
     '<footer class="ez-footer" role="contentinfo">' +
       '<div class="ez-footer-inner">' +
+
+        '<!-- 서비스 메뉴 그리드 (푸터 최상단) -->' +
+        '<nav class="ez-footer-nav-grid" aria-label="서비스 메뉴">' +
+          '<a href="/atmr-dashboard.html" class="ez-footer-nav-item">스윙 시그널 대시보드</a>' +
+          '<a href="/stocks.html" class="ez-footer-nav-item">심플 주가 정보</a>' +
+          '<a href="/chart-analysis.html" class="ez-footer-nav-item">AI 차트분석</a>' +
+          '<a href="/analyst-reports.html" class="ez-footer-nav-item">핵심기업 목표주가</a>' +
+          '<a href="/market-cycle.html" class="ez-footer-nav-item">Market Cycle Monitor</a>' +
+          '<a href="/dca-simulator.html" class="ez-footer-nav-item">DCA 복리 시뮬레이터</a>' +
+          '<a href="/portfolio-manager.html" class="ez-footer-nav-item">포트폴리오 복리 시뮬레이터</a>' +
+          '<a href="/tax-account-simulator.html" class="ez-footer-nav-item">절세 계좌 세후 시뮬레이터</a>' +
+          '<a href="/compound-calculator.html" class="ez-footer-nav-item">복리 계산기</a>' +
+          '<a href="/retirement-calculator.html" class="ez-footer-nav-item">은퇴 목표 역산 계산기</a>' +
+          '<a href="/backtest.html" class="ez-footer-nav-item">몬테카를로 포트폴리오 시뮬레이터</a>' +
+          '<a href="/risk-diagnostic.html" class="ez-footer-nav-item">투자 행동 자가진단</a>' +
+          '<a href="/stock-personality-quiz.html" class="ez-footer-nav-item">MBTI로 찾는 맞춤 투자 포트폴리오</a>' +
+          '<a href="/auto-dca-guide.html" class="ez-footer-nav-item">자동 적립식 매수 가이드</a>' +
+        '</nav>' +
+
         '<div class="ez-footer-top">' +
           '<div class="ez-footer-brand">' +
             '<picture>' +
@@ -75,26 +94,8 @@
               '</div>' +
             '</div>' +
           '</div>' +
-          '<div class="ez-footer-links">' +
-            '<div class="ez-footer-col">' +
-              '<span class="ez-footer-col-title">서비스</span>' +
-              '<a href="/atmr-dashboard.html">스윙 시그널 대시보드</a>' +
-              '<a href="/stocks.html">심플 주가 정보</a>' +
-              '<a href="/chart-analysis.html">AI 차트분석</a>' +
-              '<a href="/analyst-reports.html">핵심기업 목표주가</a>' +
-              '<a href="/market-cycle.html">Market Cycle Monitor</a>' +
-              '<a href="/dca-simulator.html">DCA 복리 시뮬레이터</a>' +
-              '<a href="/portfolio-manager.html">포트폴리오 복리 시뮬레이터</a>' +
-              '<a href="/tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a>' +
-              '<a href="/compound-calculator.html">복리 계산기</a>' +
-              '<a href="/retirement-calculator.html">은퇴 목표 역산 계산기</a>' +
-              '<a href="/backtest.html">몬테카를로 포트폴리오 시뮬레이터</a>' +
-              '<a href="/risk-diagnostic.html">투자 행동 자가진단</a>' +
-              '<a href="/stock-personality-quiz.html">MBTI로 찾는 맞춤 투자 포트폴리오</a>' +
-              '<a href="/auto-dca-guide.html">자동 적립식 매수 가이드</a>' +
-            '</div>' +
-          '</div>' +
         '</div>' +
+
         '<div class="ez-footer-bottom">' +
           '© 2025–2026 유니아빠 &amp; 유니엄마 · EZLONG · easy.invest.good@gmail.com<br>' +
           '본 서비스에서 제공하는 모든 시뮬레이션 수치는 참고용 추정치이며, 실제 투자 수익을 보장하지 않습니다. 투자 판단의 책임은 투자자 본인에게 있습니다.' +
