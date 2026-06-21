@@ -24,7 +24,6 @@
   <meta name="twitter:description" content="운 지수 진단, 맞춤 행동 처방, 7일 개운 루틴을 제공하는 모바일 운세 테스트입니다.">
   <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script type="application/ld+json">
   [
     {
@@ -363,15 +362,6 @@
       .screen{padding-bottom:calc(60px + env(safe-area-inset-bottom))}
     }
 
-    /* Image save modal */
-    .img-modal{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
-    .img-modal.open{opacity:1;pointer-events:all}
-    .img-modal img{max-width:100%;max-height:75vh;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.6)}
-    .img-modal-tip{font-size:13px;color:var(--dim);text-align:center;margin-top:18px;line-height:1.6}
-    .img-modal-close{margin-top:20px;padding:12px 36px;background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.4);border-radius:50px;color:var(--gold);font-size:14px;font-family:inherit;cursor:pointer}
-    .btn-save{display:block;width:100%;padding:15px;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.4);border-radius:50px;color:var(--gold);font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;letter-spacing:.04em;transition:all .3s;margin-bottom:10px}
-    .btn-save:hover{background:rgba(212,175,55,.2)}
-    .btn-save:active{transform:scale(.97)}
   </style>
 </head>
 <body>
@@ -608,17 +598,9 @@
     </div><!-- /resultCard -->
 
     <div style="padding-bottom:10px;margin-top:20px">
-      <button class="btn-save" onclick="saveAsImage()">이미지로 저장하기</button>
       <button class="btn-ghost" onclick="restart()">다시 진단받기</button>
     </div>
   </div>
-</div>
-
-<!-- Image save modal -->
-<div class="img-modal" id="imgModal">
-  <img id="capturedImg" src="" alt="운세 결과">
-  <p class="img-modal-tip">이미지를 길게 눌러 사진 앨범에 저장하세요</p>
-  <button class="img-modal-close" onclick="closeImgModal()">닫기</button>
 </div>
 
 </div><!-- #app -->
@@ -1154,124 +1136,6 @@ function goResultCard(idx){
 }
 
 function moveResultCard(dir){goResultCard(resultCardIdx+dir)}
-
-// ── IMAGE SAVE ─────────────────────
-function saveAsImage(){
-  const card=document.getElementById('resultCard');
-  const btn=document.querySelector('.btn-save');
-  btn.textContent='생성 중...';btn.disabled=true;
-
-  // Use html2canvas if available, else manual canvas
-  if(typeof html2canvas!=='undefined'){
-    html2canvas(card,{
-      backgroundColor:'#080C18',
-      scale:2,
-      useCORS:true,
-      allowTaint:true,
-      logging:false,
-      ignoreElements:el=>el.id==='sf'||el.classList.contains('nebula')
-    }).then(canvas=>{
-      showModal(canvas.toDataURL('image/png'));
-      btn.textContent='이미지로 저장하기';btn.disabled=false;
-    }).catch(()=>{fallbackCapture(card,btn)});
-  } else {
-    fallbackCapture(card,btn);
-  }
-}
-
-function fallbackCapture(card,btn){
-  // Manual canvas rendering of key result info
-  const ft=S.fortune;if(!ft){btn.textContent='이미지로 저장하기';btn.disabled=false;return}
-  const grade=GRADES.find(g=>ft.total>=g.min);
-  const W=720,H=960;
-  const c=document.createElement('canvas');c.width=W;c.height=H;
-  const ctx=c.getContext('2d');
-
-  // Background
-  ctx.fillStyle='#080C18';ctx.fillRect(0,0,W,H);
-  // Star decoration
-  for(let i=0;i<60;i++){
-    ctx.fillStyle=`rgba(255,255,255,${Math.random()*.6+.1})`;
-    ctx.beginPath();ctx.arc(Math.random()*W,Math.random()*H,Math.random()*1.5+.5,0,Math.PI*2);ctx.fill();
-  }
-  // Header bar
-  const hg=ctx.createLinearGradient(0,0,W,0);hg.addColorStop(0,'rgba(30,50,120,.4)');hg.addColorStop(1,'rgba(80,20,120,.2)');
-  ctx.fillStyle=hg;ctx.fillRect(0,0,W,160);
-
-  // App name
-  ctx.fillStyle='rgba(212,175,55,.5)';ctx.font='bold 22px serif';ctx.textAlign='center';
-  ctx.fillText('운명 최적화',W/2,44);
-
-  // Grade
-  ctx.fillStyle='rgba(184,145,31,1)';ctx.font='16px sans-serif';
-  ctx.fillText(grade.g,W/2,80);
-
-  // Title
-  const gtx=ctx.createLinearGradient(W/2-150,0,W/2+150,0);
-  gtx.addColorStop(0,'#C9A227');gtx.addColorStop(.5,'#FFD700');gtx.addColorStop(1,'#C9A227');
-  ctx.fillStyle=gtx;ctx.font='bold 36px serif';
-  ctx.fillText(grade.t,W/2,126);
-
-  // Score circle
-  ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=14;
-  ctx.beginPath();ctx.arc(W/2,260,80,0,Math.PI*2);ctx.stroke();
-  const sg=ctx.createLinearGradient(W/2-80,260,W/2+80,260);
-  sg.addColorStop(0,'#B8911F');sg.addColorStop(1,'#FFD700');
-  ctx.strokeStyle=sg;ctx.lineWidth=14;ctx.lineCap='round';
-  ctx.beginPath();ctx.arc(W/2,260,80,-Math.PI/2,-Math.PI/2+(Math.PI*2*ft.total/100));ctx.stroke();
-  ctx.fillStyle='#FFD700';ctx.font='bold 64px sans-serif';ctx.textAlign='center';
-  ctx.fillText(ft.total,W/2,278);
-  ctx.fillStyle='rgba(136,150,168,1)';ctx.font='16px sans-serif';
-  ctx.fillText('운 지수',W/2,308);
-
-  // Category bars
-  const cats=[{l:'재물운',v:ft.w},{l:'귀인운',v:ft.n},{l:'건강운',v:ft.h},{l:'기운',v:ft.e}];
-  let y=380;
-  cats.forEach(cat=>{
-    ctx.fillStyle='rgba(136,150,168,1)';ctx.font='20px sans-serif';ctx.textAlign='left';
-    ctx.fillText(cat.l,60,y);
-    ctx.fillStyle='rgba(255,255,255,.07)';ctx.beginPath();
-    ctx.roundRect(160,y-18,440,12,6);ctx.fill();
-    const bg2=ctx.createLinearGradient(160,0,600,0);bg2.addColorStop(0,'#B8911F');bg2.addColorStop(1,'#FFD700');
-    ctx.fillStyle=bg2;ctx.beginPath();
-    ctx.roundRect(160,y-18,Math.max(8,440*cat.v/100),12,6);ctx.fill();
-    ctx.fillStyle='#FFD700';ctx.textAlign='right';ctx.font='20px sans-serif';
-    ctx.fillText(cat.v,W-60,y);
-    y+=52;
-  });
-
-  // Reading excerpt
-  const reading=buildReport(ft).summary;
-  const words=reading.substring(0,110)+'...';
-  ctx.fillStyle='rgba(184,184,200,.85)';ctx.font='18px serif';ctx.textAlign='center';
-  wrapText(ctx,words,W/2,600,580,28);
-
-  // Footer
-  ctx.fillStyle='rgba(136,150,168,.5)';ctx.font='15px sans-serif';ctx.textAlign='center';
-  const kst=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-  ctx.fillText('운명 최적화 · '+kst,W/2,H-30);
-
-  showModal(c.toDataURL('image/png'));
-  btn.textContent='이미지로 저장하기';btn.disabled=false;
-}
-
-function wrapText(ctx,text,x,y,maxW,lineH){
-  const words=text.split('');let line='';
-  for(let w of words){
-    const test=line+w;
-    if(ctx.measureText(test).width>maxW&&line!==''){ctx.fillText(line,x,y);line=w;y+=lineH;}
-    else line=test;
-  }
-  if(line)ctx.fillText(line,x,y);
-}
-
-function showModal(dataUrl){
-  document.getElementById('capturedImg').src=dataUrl;
-  document.getElementById('imgModal').classList.add('open');
-}
-function closeImgModal(){
-  document.getElementById('imgModal').classList.remove('open');
-}
 
 // ── RESTART ────────────────────────
 function restart(){
