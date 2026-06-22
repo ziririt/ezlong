@@ -3,14 +3,14 @@
   "name": "도지코인",
   "assetType": "crypto",
   "market": "us",
-  "updatedAt": "2026-06-22T14:06:46.104Z",
+  "updatedAt": "2026-06-22T15:06:27.252Z",
   "price": {
-    "current": 0.0846,
-    "change": 0.0024,
-    "changePct": 2.95,
+    "current": 0.0838,
+    "change": 0.0016,
+    "changePct": 1.96,
     "high52": 0.3056,
     "low52": 0.0781,
-    "pos52": 2.9,
+    "pos52": 2.5,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
@@ -21,17 +21,17 @@
     "sma50": 0.0977,
     "sma100": 0.0967,
     "sma200": 0.107,
-    "rsi": 39.03,
+    "rsi": 36.69,
     "macd": {
-      "macd": -0.003566,
-      "signal": -0.003898,
-      "histogram": 0.000331
+      "macd": -0.003632,
+      "signal": -0.003911,
+      "histogram": 0.000279
     },
     "bb": {
       "upper": 0.0906,
       "middle": 0.0855,
-      "lower": 0.0804,
-      "bandwidth": 0.1197
+      "lower": 0.0803,
+      "bandwidth": 0.1207
     }
   },
   "levels": {
@@ -46,22 +46,38 @@
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "약세",
+    "strength": 2,
     "support": 0.08,
     "resistance": 0.09,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "하단접근",
+    "stage": "축적구간",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 3,
+    "scoreReason": "RSI 중립 구간 횡보 + 5일 저가 횡보",
+    "rsiTrajectory": "36.8 → 36.7 (중립지속 중)",
+    "macdTrajectory": "히스토 0.0005 → 0.0003 (유지)",
+    "pricePattern": "5일 저가와 20일 저가가 동일하여 횡보 구간",
+    "volComment": "거래량비 0.95 (정상)",
+    "bbPosition": "하단근처",
+    "reason": "현재가 $0.08은 52주 저가이자 볼린저밴드 하단과 스윙 지지선에 해당하며, RSI가 36.7로 과매도 구간은 아니지만 반등 모멘텀이 약함. MACD 히스토그램도 개선되지 않고 유지되는 중이라 추가 하락 위험은 제한적이나 상승 전환 신호도 부족함.",
+    "entry": 0.08,
+    "stop": 0.07,
+    "target": 0.09,
+    "invalidation": 0.08,
+    "weeklyConflict": "주봉은 약세 추세이나 일봉 신호 우선",
+    "profitTarget1": 0.085,
+    "profitTarget2": 0.09,
+    "stopLoss": 0.075,
+    "narrative": "[추세 위치]\n· 현재가($0.08) vs SMA5/20/50($0.08/$0.09/$0.10) — 단기 추세 하회, 중기 추세 하회, 장기 추세 하회\n· SMA100/200($0.10/$0.11) 대비 위치 — 중장기 추세 약세 확인\n· 52주 위치(2.5%) + 현 가격대 역사적 저점 구간 확인\n[모멘텀 지표]\n· RSI 궤적 (36.8→36.7) + 중립 판단 + 방향성 결여 확인\n· MACD 히스토그램 궤적 (0.0005→0.0003) + 유지 진단 + 추세 전환 신호 없음\n· 볼린저밴드 현재가 위치 (하단 $0.08) + 밴드폭 12.07%로 변동성 축소 구간 확인\n[지지·저항 구조]\n· 스윙 지지선 ($0.08) + 근거 (52주 저가, 볼린저밴드 하단, 피벗 S1)\n· 스윙 저항선 ($0.09) + 돌파 시 단기 반등 가능성\n· 5일/20일 고가·저가 패턴 (횡보) + 추세 방향성 부재 진단\n[거래량·결론]\n· 거래량 비율 (0.95배) + 움직임의 신뢰도 보통 수준\n· 현 구간 진단 (축적구간) + 관망 조건: $0.09 저항 돌파 시 매수 고려",
+    "patternNote": "현재 가격은 52주 저가이자 볼린저밴드 하단에 위치하며, 5일간의 가격 변동률은 +1.96%, -1.70%, +0.08%, +0.12%, -2.76%로 큰 방향성 없이 횡보하는 모습.",
+    "keyPoints": [
+      "현재가 $0.08은 52주 저가이자 볼린저밴드 하단, 스윙 지지선으로 강력한 지지 구간.",
+      "RSI 36.7, MACD 히스토그램 개선 없음으로 상승 모멘텀 부재.",
+      "주봉 RSI 36.1로 약세 추세 지속, 일봉 기준 관망."
+    ],
+    "riskNote": "현재가 $0.08 지지선 이탈 시 추가 하락 가능성 존재."
   }
 }
