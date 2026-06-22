@@ -28,14 +28,25 @@ jobs:
         run: python scripts/fetch-stocks-data.py
 
       - name: Commit stocks-data.json
+        id: commit
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/stocks-data.json
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 생략"
+            echo "changed=false" >> $GITHUB_OUTPUT
           else
             KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
             git commit -m "data: stocks-data.json 업데이트 ${KST}"
             git push origin main || (git fetch origin main && git merge --no-ff -m "chore: merge origin/main after push conflict" origin/main && git push origin main)
+            echo "changed=true" >> $GITHUB_OUTPUT
           fi
+
+      - name: Deploy to Firebase Hosting
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          npm install -g firebase-tools --quiet 2>/dev/null
+          firebase deploy --only hosting --token "$FIREBASE_TOKEN" --non-interactive

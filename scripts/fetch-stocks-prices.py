@@ -140,8 +140,45 @@ def get_intraday_date():
     반환 형식: 'YYYY-MM-DD' 문자열.
     - 장중/장 마감 후: 오늘 날짜
     - 프리마켓(9:30 AM ET 이전): 직전 거래일
-    - 주말/공휴일: 직전 거래일 (최대 3일 소급)
+    - 주말/공휴일: 직전 거래일 (최대 7일 소급)
     """
+    # 미국 주요 시장 공휴일 (NYSE 기준, 2025~2027)
+    US_MARKET_HOLIDAYS = {
+        # 2025
+        datetime(2025, 1, 1).date(),   # New Year's Day
+        datetime(2025, 1, 20).date(),  # MLK Day
+        datetime(2025, 2, 17).date(),  # Presidents Day
+        datetime(2025, 4, 18).date(),  # Good Friday
+        datetime(2025, 5, 26).date(),  # Memorial Day
+        datetime(2025, 6, 19).date(),  # Juneteenth
+        datetime(2025, 7, 4).date(),   # Independence Day
+        datetime(2025, 9, 1).date(),   # Labor Day
+        datetime(2025, 11, 27).date(), # Thanksgiving
+        datetime(2025, 12, 25).date(), # Christmas
+        # 2026
+        datetime(2026, 1, 1).date(),   # New Year's Day
+        datetime(2026, 1, 19).date(),  # MLK Day
+        datetime(2026, 2, 16).date(),  # Presidents Day
+        datetime(2026, 4, 3).date(),   # Good Friday
+        datetime(2026, 5, 25).date(),  # Memorial Day
+        datetime(2026, 6, 19).date(),  # Juneteenth ← 이번 문제 원인
+        datetime(2026, 7, 3).date(),   # Independence Day (observed)
+        datetime(2026, 9, 7).date(),   # Labor Day
+        datetime(2026, 11, 26).date(), # Thanksgiving
+        datetime(2026, 12, 25).date(), # Christmas
+        # 2027
+        datetime(2027, 1, 1).date(),   # New Year's Day
+        datetime(2027, 1, 18).date(),  # MLK Day
+        datetime(2027, 2, 15).date(),  # Presidents Day
+        datetime(2027, 3, 26).date(),  # Good Friday
+        datetime(2027, 5, 31).date(),  # Memorial Day
+        datetime(2027, 6, 18).date(),  # Juneteenth (observed)
+        datetime(2027, 7, 5).date(),   # Independence Day (observed)
+        datetime(2027, 9, 6).date(),   # Labor Day
+        datetime(2027, 11, 25).date(), # Thanksgiving
+        datetime(2027, 12, 24).date(), # Christmas (observed)
+    }
+
     # EDT = UTC-4, EST = UTC-5 (6~10월은 EDT)
     et_offset = timedelta(hours=-4)
     now_et = datetime.now(timezone.utc) + et_offset
@@ -152,9 +189,9 @@ def get_intraday_date():
     if now_et.hour < 9 or (now_et.hour == 9 and now_et.minute < 30):
         day = day - timedelta(days=1)
 
-    # 주말 소급 (토요일→금요일, 일요일→금요일)
-    for _ in range(3):
-        if day.weekday() < 5:  # 0=월 … 4=금
+    # 주말/공휴일 소급 (최대 7일)
+    for _ in range(7):
+        if day.weekday() < 5 and day not in US_MARKET_HOLIDAYS:
             break
         day -= timedelta(days=1)
 
