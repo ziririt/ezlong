@@ -334,17 +334,11 @@ def parse_snapshot(data):
                 pass
 
         # ── 정규장 등락률·등락액
+        # 주의: Massive API의 todaysChangePerc·todaysChange는 내부 기준가가 prevDay.c와
+        # 불일치하는 경우가 있음 (Juneteenth 등 공휴일 직후 특히 심각).
+        # → 항상 day.c / prevDay.c로 직접 계산. todaysChange* 값은 참조만.
         change_pct = None
-        try:
-            change_pct = round(float(item['todaysChangePerc']), 2)
-        except (KeyError, TypeError, ValueError):
-            pass
-
-        change = None
-        try:
-            change = round(float(item['todaysChange']), 2)
-        except (KeyError, TypeError, ValueError):
-            pass
+        change     = None
 
         # ── 확장시간 (포스트마켓 / 나이트마켓 / 프리마켓)
         # Polygon/Massive v2 snapshot 응답에 postMarket / preMarket 객체가 포함됨
@@ -369,14 +363,20 @@ def parse_snapshot(data):
         day_close  = safe_float(item, 'day', 'c')
         prev_close = safe_float(item, 'prevDay', 'c')
 
-        # todaysChangePerc = 0 이지만 day.c · prevDay.c로 실제 변동을 알 수 있으면 재계산
-        # (SPCX 등 Massive API가 changePerc를 0으로 잘못 반환하는 케이스 대응)
-        if (change_pct is None or (change_pct == 0 and (change is None or change == 0))) \
-                and day_close and prev_close and prev_close > 0:
-            computed = round((day_close - prev_close) / prev_close * 100, 2)
-            if abs(computed) > 0.01:   # 실제 변화가 있을 때만 덮어씀
-                change_pct = computed
-                change = round(day_close - prev_close, 2)
+        # day.c · prevDay.c로 직접 계산 (Yahoo Finance 기준과 일치)
+        if day_close and prev_close and prev_close > 0:
+            change     = round(day_close - prev_close, 2)
+            change_pct = round((day_close - prev_close) / prev_close * 100, 2)
+        else:
+            # fallback: Massive API 제공값 사용 (day.c 없는 비정규 종목 등)
+            try:
+                change_pct = round(float(item['todaysChangePerc']), 2)
+            except (KeyError, TypeError, ValueError):
+                pass
+            try:
+                change = round(float(item['todaysChange']), 2)
+            except (KeyError, TypeError, ValueError):
+                pass
 
         post_c = safe_float(item, 'postMarket', 'c')
         pre_c  = safe_float(item, 'preMarket', 'c')
