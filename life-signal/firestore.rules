@@ -1,0 +1,68 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function ownsUser(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function hasNoForbiddenFields(data) {
+      return !('birthDate' in data)
+        && !('birthDateInput' in data)
+        && !('bloodType' in data)
+        && !('name' in data)
+        && !('email' in data)
+        && !('phone' in data)
+        && !('location' in data)
+        && !('address' in data)
+        && !('assetSize' in data)
+        && !('holdings' in data)
+        && !('diagnosis' in data)
+        && !('workplace' in data)
+        && !('school' in data);
+    }
+
+    match /users/{uid} {
+      allow read, delete: if ownsUser(uid);
+      allow create, update: if ownsUser(uid)
+        && hasNoForbiddenFields(request.resource.data);
+
+      match /assessments/{assessmentId} {
+        allow read, delete: if ownsUser(uid);
+        allow create, update: if ownsUser(uid)
+          && hasNoForbiddenFields(request.resource.data);
+      }
+
+      match /reports/{reportId} {
+        allow read, delete: if ownsUser(uid);
+        allow create, update: if ownsUser(uid)
+          && hasNoForbiddenFields(request.resource.data);
+      }
+
+      match /dailyCheckins/{dateId} {
+        allow read, delete: if ownsUser(uid);
+        allow create, update: if ownsUser(uid)
+          && hasNoForbiddenFields(request.resource.data);
+      }
+    }
+
+    match /content/{docId} {
+      allow read: if true;
+      allow write: if false;
+
+      match /{subPath=**} {
+        allow read: if true;
+        allow write: if false;
+      }
+    }
+
+    match /system/dailySignals/{dateId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

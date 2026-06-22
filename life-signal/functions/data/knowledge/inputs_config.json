@@ -1,0 +1,83 @@
+{
+  "version": "2026-06-22-no-bloodtype",
+  "removedFields": [
+    "bloodType"
+  ],
+  "requiredInputs": [
+    {
+      "id": "birthDateInput",
+      "label": "출생연월일",
+      "storeRaw": false,
+      "purpose": "ageRange, zodiac, chineseZodiac, seasonElement, lifePath 계산 후 폐기"
+    },
+    {
+      "id": "gender",
+      "label": "성별",
+      "options": [
+        "male",
+        "female",
+        "prefer_not_to_say"
+      ],
+      "purpose": "문체 보정"
+    },
+    {
+      "id": "personalityType",
+      "label": "성향유형",
+      "options": "16-type or unknown",
+      "purpose": "8개 성향 클러스터 매핑"
+    },
+    {
+      "id": "answers",
+      "label": "질문 응답",
+      "scale": "1-5",
+      "purpose": "핵심 진단"
+    },
+    {
+      "id": "todayMood",
+      "label": "오늘 기분",
+      "options": [
+        "light",
+        "tired",
+        "complex",
+        "motivated",
+        "low",
+        "neutral",
+        "need_courage",
+        "need_order"
+      ],
+      "purpose": "오늘의 포춘 시그널 보정"
+    }
+  ],
+  "optionalInputs": [
+    {
+      "id": "interestMode",
+      "options": [
+        "daily",
+        "money",
+        "people",
+        "health",
+        "energy",
+        "work",
+        "investor"
+      ]
+    },
+    {
+      "id": "investorMode",
+      "type": "boolean"
+    }
+  ],
+  "neverCollect": [
+    "name",
+    "email",
+    "phone",
+    "address",
+    "gpsLocation",
+    "deviceModel",
+    "bloodType",
+    "assetAmount",
+    "stockHoldings",
+    "medicalDiagnosis",
+    "religion",
+    "politicalView"
+  ]
+}

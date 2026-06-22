@@ -1,0 +1,474 @@
+[
+  {
+    "id": "tr_low_01",
+    "if": {
+      "questionId": "q_sleep",
+      "lte": 2
+    },
+    "addLeakage": "sleep_debt",
+    "priority": 100,
+    "explain": "수면 회복 응답이 낮아 회복 누수를 우선 탐지"
+  },
+  {
+    "id": "tr_low_02",
+    "if": {
+      "questionId": "q_screen",
+      "lte": 2
+    },
+    "addLeakage": "screen_drain",
+    "priority": 92,
+    "explain": "잠들기 전 화면 자극이 강함"
+  },
+  {
+    "id": "tr_low_03",
+    "if": {
+      "questionId": "q_space",
+      "lte": 2
+    },
+    "addLeakage": "clutter_noise",
+    "priority": 96,
+    "explain": "공간 정돈 상태가 낮아 환경 잡음 탐지"
+  },
+  {
+    "id": "tr_low_04",
+    "if": {
+      "questionId": "q_goal",
+      "lte": 2
+    },
+    "addLeakage": "goal_blur",
+    "priority": 98,
+    "explain": "목표 선명도가 낮음"
+  },
+  {
+    "id": "tr_low_05",
+    "if": {
+      "questionId": "q_money_leak",
+      "lte": 2
+    },
+    "addLeakage": "money_leak",
+    "priority": 94,
+    "explain": "돈과 시간의 누수 점검이 약함"
+  },
+  {
+    "id": "tr_low_06",
+    "if": {
+      "questionId": "q_contact",
+      "lte": 2
+    },
+    "addLeakage": "social_withdrawal",
+    "priority": 93,
+    "explain": "먼저 연락하는 신호가 약함"
+  },
+  {
+    "id": "tr_low_07",
+    "if": {
+      "questionId": "q_ask",
+      "lte": 2
+    },
+    "addLeakage": "no_ask",
+    "priority": 91,
+    "explain": "도움 요청 회피 패턴"
+  },
+  {
+    "id": "tr_low_08",
+    "if": {
+      "questionId": "q_give",
+      "lte": 2
+    },
+    "addLeakage": "gratitude_gap",
+    "priority": 70,
+    "explain": "관계 신호와 호혜성이 약함"
+  },
+  {
+    "id": "tr_low_09",
+    "if": {
+      "questionId": "q_boundary",
+      "lte": 2
+    },
+    "addLeakage": "overgiving",
+    "priority": 90,
+    "explain": "거절과 경계가 어려움"
+  },
+  {
+    "id": "tr_low_10",
+    "if": {
+      "questionId": "q_finish",
+      "lte": 2
+    },
+    "addLeakage": "no_completion",
+    "priority": 95,
+    "explain": "작은 완료 경험 부족"
+  },
+  {
+    "id": "tr_low_11",
+    "if": {
+      "questionId": "q_decisions",
+      "lte": 2
+    },
+    "addLeakage": "decision_fatigue",
+    "priority": 93,
+    "explain": "하루의 사소한 결정이 많음"
+  },
+  {
+    "id": "tr_low_12",
+    "if": {
+      "questionId": "q_selftalk",
+      "lte": 2
+    },
+    "addLeakage": "negative_self_talk",
+    "priority": 94,
+    "explain": "자기언어가 거칠거나 비난적"
+  },
+  {
+    "id": "tr_low_13",
+    "if": {
+      "questionId": "q_walk",
+      "lte": 2
+    },
+    "addLeakage": "body_noise",
+    "priority": 86,
+    "explain": "움직임 부족으로 몸의 소음 가능성"
+  },
+  {
+    "id": "tr_low_14",
+    "if": {
+      "questionId": "q_emotion_regulation",
+      "lte": 2
+    },
+    "addLeakage": "emotion_decision",
+    "priority": 90,
+    "explain": "감정 상태에서 큰 결정 위험"
+  },
+  {
+    "id": "tr_low_15",
+    "if": {
+      "questionId": "q_new_route",
+      "lte": 2
+    },
+    "addLeakage": "low_exposure",
+    "priority": 83,
+    "explain": "새로운 동선과 경험 노출 부족"
+  },
+  {
+    "id": "tr_low_16",
+    "if": {
+      "questionId": "q_learning",
+      "lte": 2
+    },
+    "addLeakage": "learning_gap",
+    "priority": 80,
+    "explain": "긴 글과 배움 자극 부족"
+  },
+  {
+    "id": "tr_low_17",
+    "if": {
+      "questionId": "q_risk",
+      "lte": 2
+    },
+    "addLeakage": "risk_blindness",
+    "priority": 78,
+    "explain": "리스크 검토가 약함"
+  },
+  {
+    "id": "tr_low_18",
+    "if": {
+      "questionId": "q_opportunity",
+      "lte": 2
+    },
+    "addLeakage": "no_capture",
+    "priority": 86,
+    "explain": "기회 단서를 기록하지 않음"
+  },
+  {
+    "id": "tr_low_19",
+    "if": {
+      "questionId": "q_no_compare",
+      "lte": 2
+    },
+    "addLeakage": "comparison_drain",
+    "priority": 82,
+    "explain": "비교로 리듬이 흔들림"
+  },
+  {
+    "id": "tr_low_20",
+    "if": {
+      "questionId": "q_morning",
+      "lte": 2
+    },
+    "addLeakage": "morning_disorder",
+    "priority": 85,
+    "explain": "하루 첫 30분의 질서가 약함"
+  },
+  {
+    "id": "tr_low_21",
+    "if": {
+      "questionId": "q_plan_tiny",
+      "lte": 2
+    },
+    "addLeakage": "perfection_delay",
+    "priority": 82,
+    "explain": "작은 첫 단계로 쪼개기 어려움"
+  },
+  {
+    "id": "tr_low_22",
+    "if": {
+      "questionId": "q_share_idea",
+      "lte": 2
+    },
+    "addLeakage": "isolation_loop",
+    "priority": 76,
+    "explain": "아이디어를 안전하게 공유하지 못함"
+  },
+  {
+    "id": "tr_low_23",
+    "if": {
+      "questionId": "q_pause_buy",
+      "lte": 2
+    },
+    "addLeakage": "resource_untracked",
+    "priority": 88,
+    "explain": "소비 충동에 멈춤 장치가 약함"
+  },
+  {
+    "id": "tr_low_24",
+    "if": {
+      "questionId": "q_recover_after_fail",
+      "lte": 2
+    },
+    "addLeakage": "fear_loop",
+    "priority": 87,
+    "explain": "어긋난 뒤 작게 재시작하기 어려움"
+  },
+  {
+    "id": "tr_low_25",
+    "if": {
+      "questionId": "q_reduce_noise",
+      "lte": 2
+    },
+    "addLeakage": "attention_scatter",
+    "priority": 84,
+    "explain": "알림·탭·메시지 잡음이 많음"
+  },
+  {
+    "id": "tr_low_26",
+    "if": {
+      "questionId": "q_values",
+      "lte": 2
+    },
+    "addLeakage": "meaning_drop",
+    "priority": 85,
+    "explain": "중요한 가치가 흐림"
+  },
+  {
+    "id": "combo_health_sleep_screen",
+    "ifAll": [
+      {
+        "questionId": "q_sleep",
+        "lte": 2
+      },
+      {
+        "questionId": "q_screen",
+        "lte": 2
+      }
+    ],
+    "addLeakage": "sleep_debt",
+    "priority": 120,
+    "explain": "수면과 화면 자극이 함께 낮아 밤 루틴이 핵심"
+  },
+  {
+    "id": "combo_energy_space_finish",
+    "ifAll": [
+      {
+        "questionId": "q_space",
+        "lte": 2
+      },
+      {
+        "questionId": "q_finish",
+        "lte": 2
+      }
+    ],
+    "addLeakage": "clutter_noise",
+    "priority": 115,
+    "explain": "공간 잡음과 미완료가 함께 누적됨"
+  },
+  {
+    "id": "combo_wealth_goal_money",
+    "ifAll": [
+      {
+        "questionId": "q_goal",
+        "lte": 2
+      },
+      {
+        "questionId": "q_money_leak",
+        "lte": 2
+      }
+    ],
+    "addLeakage": "goal_blur",
+    "priority": 116,
+    "explain": "돈의 방향과 누수 관리가 동시에 흐림"
+  },
+  {
+    "id": "combo_people_contact_ask",
+    "ifAll": [
+      {
+        "questionId": "q_contact",
+        "lte": 2
+      },
+      {
+        "questionId": "q_ask",
+        "lte": 2
+      }
+    ],
+    "addLeakage": "social_withdrawal",
+    "priority": 114,
+    "explain": "연락과 도움 요청이 모두 약해 관계 통로가 좁아짐"
+  },
+  {
+    "id": "combo_emotion_selftalk",
+    "ifAll": [
+      {
+        "questionId": "q_selftalk",
+        "lte": 2
+      },
+      {
+        "questionId": "q_emotion_regulation",
+        "lte": 2
+      }
+    ],
+    "addLeakage": "fear_loop",
+    "priority": 113,
+    "explain": "자기언어와 감정 결정 패턴이 함께 흔들림"
+  },
+  {
+    "id": "combo_opportunity_capture_exposure",
+    "ifAll": [
+      {
+        "questionId": "q_new_route",
+        "lte": 2
+      },
+      {
+        "questionId": "q_opportunity",
+        "lte": 2
+      }
+    ],
+    "addLeakage": "low_exposure",
+    "priority": 111,
+    "explain": "기회 노출과 기록이 모두 약함"
+  },
+  {
+    "id": "combo_boundary_family_workload",
+    "ifAll": [
+      {
+        "questionId": "q_boundary",
+        "lte": 2
+      },
+      {
+        "questionId": "q_workload",
+        "lte": 2
+      }
+    ],
+    "addLeakage": "boundary_weak",
+    "priority": 112,
+    "explain": "책임과 관계를 떠안는 패턴이 강함"
+  },
+  {
+    "id": "tr_context_01",
+    "if": {
+      "questionId": "q_financial_order",
+      "lte": 2
+    },
+    "addLeakage": "resource_untracked",
+    "priority": 75,
+    "explain": "q_financial_order 응답이 낮아 resource_untracked 보조 탐지"
+  },
+  {
+    "id": "tr_context_02",
+    "if": {
+      "questionId": "q_career_signal",
+      "lte": 2
+    },
+    "addLeakage": "goal_blur",
+    "priority": 74,
+    "explain": "q_career_signal 응답이 낮아 goal_blur 보조 탐지"
+  },
+  {
+    "id": "tr_context_03",
+    "if": {
+      "questionId": "q_student_focus",
+      "lte": 2
+    },
+    "addLeakage": "attention_scatter",
+    "priority": 73,
+    "explain": "q_student_focus 응답이 낮아 attention_scatter 보조 탐지"
+  },
+  {
+    "id": "tr_context_04",
+    "if": {
+      "questionId": "q_family_balance",
+      "lte": 2
+    },
+    "addLeakage": "relationship_friction",
+    "priority": 72,
+    "explain": "q_family_balance 응답이 낮아 relationship_friction 보조 탐지"
+  },
+  {
+    "id": "tr_context_05",
+    "if": {
+      "questionId": "q_second_career",
+      "lte": 2
+    },
+    "addLeakage": "meaning_drop",
+    "priority": 71,
+    "explain": "q_second_career 응답이 낮아 meaning_drop 보조 탐지"
+  },
+  {
+    "id": "tr_context_06",
+    "if": {
+      "questionId": "q_elder_connection",
+      "lte": 2
+    },
+    "addLeakage": "isolation_loop",
+    "priority": 70,
+    "explain": "q_elder_connection 응답이 낮아 isolation_loop 보조 탐지"
+  },
+  {
+    "id": "tr_context_07",
+    "if": {
+      "questionId": "q_microjoy",
+      "lte": 2
+    },
+    "addLeakage": "meaning_drop",
+    "priority": 69,
+    "explain": "q_microjoy 응답이 낮아 meaning_drop 보조 탐지"
+  },
+  {
+    "id": "tr_context_08",
+    "if": {
+      "questionId": "q_kindness",
+      "lte": 2
+    },
+    "addLeakage": "gratitude_gap",
+    "priority": 68,
+    "explain": "q_kindness 응답이 낮아 gratitude_gap 보조 탐지"
+  },
+  {
+    "id": "tr_context_09",
+    "if": {
+      "questionId": "q_document",
+      "lte": 2
+    },
+    "addLeakage": "no_capture",
+    "priority": 67,
+    "explain": "q_document 응답이 낮아 no_capture 보조 탐지"
+  },
+  {
+    "id": "tr_context_10",
+    "if": {
+      "questionId": "q_body_check",
+      "lte": 2
+    },
+    "addLeakage": "body_noise",
+    "priority": 66,
+    "explain": "q_body_check 응답이 낮아 body_noise 보조 탐지"
+  }
+]

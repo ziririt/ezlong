@@ -1,0 +1,69 @@
+{
+  "version": "2026-06-22",
+  "externalAxes": [
+    "wealth",
+    "people",
+    "health",
+    "energy"
+  ],
+  "internalAxes": [
+    "recovery",
+    "clarity",
+    "execution",
+    "connection",
+    "opportunity",
+    "resource",
+    "meaning"
+  ],
+  "weights": {
+    "birthDerived": 0.15,
+    "questionAnswers": 0.75,
+    "personalityCluster": 0.1
+  },
+  "randomness": {
+    "useRandomNoise": false,
+    "useSeededVariation": true,
+    "seedFields": [
+      "systemKey",
+      "date"
+    ]
+  },
+  "scoreBands": [
+    {
+      "min": 90,
+      "grade": "S",
+      "title": "흐름이 크게 열린 날",
+      "copy": "오늘은 기회 신호가 잘 보이는 날입니다. 다만 과속보다 정교한 선택이 중요합니다."
+    },
+    {
+      "min": 80,
+      "grade": "A",
+      "title": "강한 기운이 흐르는 날",
+      "copy": "작은 실행을 붙이면 좋은 흐름이 실제 성과로 이어질 수 있습니다."
+    },
+    {
+      "min": 70,
+      "grade": "B",
+      "title": "순풍을 타는 날",
+      "copy": "흐름은 나쁘지 않습니다. 가장 약한 통로 하나만 정리하면 충분합니다."
+    },
+    {
+      "min": 60,
+      "grade": "C",
+      "title": "균형을 다지는 날",
+      "copy": "오늘은 크게 밀어붙이기보다 누수를 막고 리듬을 회복하는 쪽이 좋습니다."
+    },
+    {
+      "min": 0,
+      "grade": "D",
+      "title": "내실을 쌓는 날",
+      "copy": "운이 없는 날이 아니라, 에너지를 다시 모으는 날입니다."
+    }
+  ],
+  "calculationNotes": [
+    "혈액형은 과학적 근거가 약하므로 사용하지 않는다.",
+    "생년월일 원본은 저장하지 않고 파생값만 사용한다.",
+    "MBTI는 공식 진단이 아니라 성향 클러스터 보조값으로만 사용한다.",
+    "질문 응답이 개인화의 핵심이다."
+  ]
+}

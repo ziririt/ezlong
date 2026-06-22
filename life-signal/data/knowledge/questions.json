@@ -1,0 +1,912 @@
+[
+  {
+    "id": "q_sleep",
+    "text": "최근 잠을 충분히 자고 컨디션이 안정적이었다",
+    "scale": {
+      "1": "피로가 누적됐다",
+      "5": "회복감이 있었다"
+    },
+    "externalAxisWeights": {
+      "health": 3,
+      "energy": 2
+    },
+    "internalAxisWeights": {
+      "recovery": 3,
+      "execution": 1
+    },
+    "tags": [
+      "sleep",
+      "recovery"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_space",
+    "text": "지금 내 책상이나 방, 현관은 비교적 정돈되어 있다",
+    "scale": {
+      "1": "어수선하다",
+      "5": "정돈되어 있다"
+    },
+    "externalAxisWeights": {
+      "health": 1,
+      "energy": 3
+    },
+    "internalAxisWeights": {
+      "clarity": 1,
+      "execution": 2,
+      "recovery": 1
+    },
+    "tags": [
+      "clutter",
+      "environment"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_meaning",
+    "text": "최근 하루를 의미 있게 보낸 느낌이 있다",
+    "scale": {
+      "1": "낭비한 느낌이 크다",
+      "5": "의미가 있었다"
+    },
+    "externalAxisWeights": {
+      "wealth": 1,
+      "energy": 3
+    },
+    "internalAxisWeights": {
+      "meaning": 3,
+      "execution": 1
+    },
+    "tags": [
+      "meaning",
+      "self_efficacy"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_gratitude",
+    "text": "최근 고맙다고 느낀 순간이 있었다",
+    "scale": {
+      "1": "거의 없었다",
+      "5": "분명히 있었다"
+    },
+    "externalAxisWeights": {
+      "people": 2,
+      "energy": 2,
+      "health": 1
+    },
+    "internalAxisWeights": {
+      "connection": 2,
+      "meaning": 2,
+      "recovery": 1
+    },
+    "tags": [
+      "gratitude",
+      "relationship"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_give",
+    "text": "나는 주변에 먼저 작은 도움이나 신호를 주는 편이다",
+    "scale": {
+      "1": "받기만 하는 편",
+      "5": "먼저 주는 편"
+    },
+    "externalAxisWeights": {
+      "people": 3,
+      "energy": 1
+    },
+    "internalAxisWeights": {
+      "connection": 3,
+      "meaning": 1
+    },
+    "tags": [
+      "giving",
+      "reciprocity"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_goal",
+    "text": "지금 내가 원하는 방향이 어느 정도 선명하다",
+    "scale": {
+      "1": "흐릿하다",
+      "5": "선명하다"
+    },
+    "externalAxisWeights": {
+      "wealth": 2,
+      "energy": 2
+    },
+    "internalAxisWeights": {
+      "clarity": 4
+    },
+    "tags": [
+      "goal",
+      "clarity"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_finish",
+    "text": "최근 작게라도 끝낸 일이 있다",
+    "scale": {
+      "1": "미완료가 많다",
+      "5": "끝낸 일이 있다"
+    },
+    "externalAxisWeights": {
+      "wealth": 1,
+      "energy": 3
+    },
+    "internalAxisWeights": {
+      "execution": 4
+    },
+    "tags": [
+      "completion",
+      "execution"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_money_leak",
+    "text": "최근 구독·장바구니·충동소비를 점검했다",
+    "scale": {
+      "1": "방치했다",
+      "5": "점검했다"
+    },
+    "externalAxisWeights": {
+      "wealth": 3
+    },
+    "internalAxisWeights": {
+      "resource": 4
+    },
+    "tags": [
+      "money_leak",
+      "resource"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_contact",
+    "text": "최근 먼저 안부를 보낸 사람이 있다",
+    "scale": {
+      "1": "없다",
+      "5": "있다"
+    },
+    "externalAxisWeights": {
+      "people": 3
+    },
+    "internalAxisWeights": {
+      "connection": 4
+    },
+    "tags": [
+      "weak_ties",
+      "contact"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_walk",
+    "text": "최근 몸을 움직이거나 걸은 시간이 있었다",
+    "scale": {
+      "1": "거의 없었다",
+      "5": "있었다"
+    },
+    "externalAxisWeights": {
+      "health": 3,
+      "energy": 1
+    },
+    "internalAxisWeights": {
+      "recovery": 2,
+      "execution": 1
+    },
+    "tags": [
+      "walk",
+      "body"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_screen",
+    "text": "잠들기 전 화면 자극을 줄인 편이다",
+    "scale": {
+      "1": "화면을 오래 봤다",
+      "5": "줄였다"
+    },
+    "externalAxisWeights": {
+      "health": 3,
+      "energy": 1
+    },
+    "internalAxisWeights": {
+      "recovery": 3
+    },
+    "tags": [
+      "screen",
+      "sleep"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_ask",
+    "text": "필요할 때 도움을 요청할 수 있다",
+    "scale": {
+      "1": "혼자 끌어안는다",
+      "5": "요청할 수 있다"
+    },
+    "externalAxisWeights": {
+      "people": 3,
+      "energy": 1
+    },
+    "internalAxisWeights": {
+      "connection": 3,
+      "meaning": 1
+    },
+    "tags": [
+      "help_request",
+      "relationship"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_risk",
+    "text": "중요한 선택 전에 리스크를 계산하는 편이다",
+    "scale": {
+      "1": "충동적이다",
+      "5": "계산한다"
+    },
+    "externalAxisWeights": {
+      "wealth": 2,
+      "energy": 1
+    },
+    "internalAxisWeights": {
+      "resource": 2,
+      "clarity": 1
+    },
+    "tags": [
+      "risk",
+      "decision"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_opportunity",
+    "text": "새로운 정보나 기회를 발견하면 메모해둔다",
+    "scale": {
+      "1": "흘려보낸다",
+      "5": "메모한다"
+    },
+    "externalAxisWeights": {
+      "wealth": 2,
+      "energy": 1
+    },
+    "internalAxisWeights": {
+      "opportunity": 3,
+      "execution": 1
+    },
+    "tags": [
+      "opportunity",
+      "capture"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_selftalk",
+    "text": "요즘 나 자신에게 하는 말은 비교적 부드럽다",
+    "scale": {
+      "1": "거칠고 비난적이다",
+      "5": "부드럽다"
+    },
+    "externalAxisWeights": {
+      "health": 1,
+      "energy": 3
+    },
+    "internalAxisWeights": {
+      "meaning": 2,
+      "recovery": 2
+    },
+    "tags": [
+      "self_talk",
+      "emotion"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_decisions",
+    "text": "하루의 사소한 결정이 너무 많지 않게 정리되어 있다",
+    "scale": {
+      "1": "결정이 너무 많다",
+      "5": "정리되어 있다"
+    },
+    "externalAxisWeights": {
+      "wealth": 1,
+      "health": 1,
+      "energy": 2
+    },
+    "internalAxisWeights": {
+      "clarity": 2,
+      "resource": 1,
+      "recovery": 1
+    },
+    "tags": [
+      "decision_fatigue"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_new_route",
+    "text": "최근 평소와 다른 길이나 경험을 일부러 선택했다",
+    "scale": {
+      "1": "늘 같은 패턴이다",
+      "5": "새 경험이 있었다"
+    },
+    "externalAxisWeights": {
+      "people": 1,
+      "energy": 2
+    },
+    "internalAxisWeights": {
+      "opportunity": 3
+    },
+    "tags": [
+      "openness",
+      "serendipity"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_emotion_regulation",
+    "text": "감정이 흔들려도 바로 큰 결정을 내리지 않는 편이다",
+    "scale": {
+      "1": "감정대로 결정한다",
+      "5": "멈춘다"
+    },
+    "externalAxisWeights": {
+      "wealth": 1,
+      "health": 2,
+      "energy": 1
+    },
+    "internalAxisWeights": {
+      "recovery": 2,
+      "clarity": 2
+    },
+    "tags": [
+      "emotion",
+      "decision"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_learning",
+    "text": "최근 긴 글이나 책을 읽고 생각을 정리했다",
+    "scale": {
+      "1": "짧은 자극 위주였다",
+      "5": "읽고 정리했다"
+    },
+    "externalAxisWeights": {
+      "wealth": 1,
+      "energy": 2
+    },
+    "internalAxisWeights": {
+      "clarity": 2,
+      "meaning": 1
+    },
+    "tags": [
+      "learning",
+      "attention"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_boundary",
+    "text": "에너지를 빼앗는 부탁이나 대화를 거절할 수 있다",
+    "scale": {
+      "1": "거절이 어렵다",
+      "5": "거절할 수 있다"
+    },
+    "externalAxisWeights": {
+      "people": 1,
+      "health": 2,
+      "energy": 2
+    },
+    "internalAxisWeights": {
+      "recovery": 2,
+      "connection": 1,
+      "clarity": 1
+    },
+    "tags": [
+      "boundary",
+      "overgiving"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_student_focus",
+    "text": "오늘 공부나 해야 할 일 하나를 정해볼 수 있다",
+    "scale": {
+      "1": "아니다",
+      "5": "그렇다"
+    },
+    "externalAxisWeights": {
+      "energy": 2,
+      "wealth": 1
+    },
+    "internalAxisWeights": {
+      "clarity": 2,
+      "execution": 1
+    },
+    "tags": [
+      "student",
+      "focus"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_career_signal",
+    "text": "내가 잘하는 일을 설명하는 한 문장을 갖고 있다",
+    "scale": {
+      "1": "아니다",
+      "5": "그렇다"
+    },
+    "externalAxisWeights": {
+      "wealth": 2,
+      "energy": 1
+    },
+    "internalAxisWeights": {
+      "clarity": 3
+    },
+    "tags": [
+      "career",
+      "identity"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_family_balance",
+    "text": "가까운 관계 때문에 내 에너지가 모두 소진되지는 않는다",
+    "scale": {
+      "1": "아니다",
+      "5": "그렇다"
+    },
+    "externalAxisWeights": {
+      "people": 2,
+      "health": 2
+    },
+    "internalAxisWeights": {
+      "connection": 1,
+      "recovery": 2
+    },
+    "tags": [
+      "family",
+      "boundary"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_second_career",
+    "text": "쌓아온 경험을 다음 형태로 바꿔볼 생각이 있다",
+    "scale": {
+      "1": "아니다",
+      "5": "그렇다"
+    },
+    "externalAxisWeights": {
+      "wealth": 2,
+      "energy": 2
+    },
+    "internalAxisWeights": {
+      "meaning": 2,
+      "opportunity": 2
+    },
+    "tags": [
+      "second_career",
+      "meaning"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_elder_connection",
+    "text": "최근 누군가와 따뜻한 대화를 나눴다",
+    "scale": {
+      "1": "아니다",
+      "5": "그렇다"
+    },
+    "externalAxisWeights": {
+      "people": 3,
+      "health": 1
+    },
+    "internalAxisWeights": {
+      "connection": 3,
+      "meaning": 1
+    },
+    "tags": [
+      "elder",
+      "connection"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_financial_order",
+    "text": "돈과 관련된 기록이나 기준을 최근 확인했다",
+    "scale": {
+      "1": "아니다",
+      "5": "그렇다"
+    },
+    "externalAxisWeights": {
+      "wealth": 3
+    },
+    "internalAxisWeights": {
+      "resource": 3,
+      "clarity": 1
+    },
+    "tags": [
+      "finance",
+      "resource"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_workload",
+    "text": "요즘 일이나 책임의 양이 감당 가능한 수준이다",
+    "scale": {
+      "1": "아니다",
+      "5": "그렇다"
+    },
+    "externalAxisWeights": {
+      "health": 2,
+      "energy": 2
+    },
+    "internalAxisWeights": {
+      "recovery": 2,
+      "execution": 1
+    },
+    "tags": [
+      "workload",
+      "recovery"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_microjoy",
+    "text": "작지만 기분 좋아지는 행동을 일부러 했다",
+    "scale": {
+      "1": "아니다",
+      "5": "그렇다"
+    },
+    "externalAxisWeights": {
+      "health": 1,
+      "energy": 2
+    },
+    "internalAxisWeights": {
+      "recovery": 1,
+      "meaning": 2
+    },
+    "tags": [
+      "joy",
+      "recovery"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_share_idea",
+    "text": "내 아이디어를 안전한 사람 한 명에게 공유할 수 있다",
+    "scale": {
+      "1": "어렵다",
+      "5": "가능하다"
+    },
+    "externalAxisWeights": {
+      "people": 2,
+      "energy": 1
+    },
+    "internalAxisWeights": {
+      "connection": 2,
+      "opportunity": 1
+    },
+    "tags": [
+      "share",
+      "opportunity"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_plan_tiny",
+    "text": "큰 계획을 아주 작은 첫 단계로 쪼갤 수 있다",
+    "scale": {
+      "1": "어렵다",
+      "5": "가능하다"
+    },
+    "externalAxisWeights": {
+      "wealth": 1,
+      "energy": 3
+    },
+    "internalAxisWeights": {
+      "execution": 4
+    },
+    "tags": [
+      "microhabit",
+      "execution"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_pause_buy",
+    "text": "사고 싶은 것이 생기면 하루 정도 멈출 수 있다",
+    "scale": {
+      "1": "어렵다",
+      "5": "가능하다"
+    },
+    "externalAxisWeights": {
+      "wealth": 3
+    },
+    "internalAxisWeights": {
+      "resource": 3,
+      "recovery": 1
+    },
+    "tags": [
+      "spending_pause",
+      "resource"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_body_check",
+    "text": "몸의 긴장 신호를 알아차리는 편이다",
+    "scale": {
+      "1": "어렵다",
+      "5": "가능하다"
+    },
+    "externalAxisWeights": {
+      "health": 3
+    },
+    "internalAxisWeights": {
+      "recovery": 3
+    },
+    "tags": [
+      "body_awareness"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_weak_tie",
+    "text": "친하지 않아도 좋은 정보를 나눌 사람을 떠올릴 수 있다",
+    "scale": {
+      "1": "어렵다",
+      "5": "가능하다"
+    },
+    "externalAxisWeights": {
+      "people": 3,
+      "wealth": 1
+    },
+    "internalAxisWeights": {
+      "connection": 3,
+      "opportunity": 1
+    },
+    "tags": [
+      "weak_ties"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_no_compare",
+    "text": "남과 비교해도 내 리듬으로 돌아올 수 있다",
+    "scale": {
+      "1": "어렵다",
+      "5": "가능하다"
+    },
+    "externalAxisWeights": {
+      "health": 1,
+      "energy": 3
+    },
+    "internalAxisWeights": {
+      "meaning": 3,
+      "recovery": 1
+    },
+    "tags": [
+      "comparison",
+      "meaning"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_morning",
+    "text": "하루의 첫 30분이 비교적 안정적이다",
+    "scale": {
+      "1": "어렵다",
+      "5": "가능하다"
+    },
+    "externalAxisWeights": {
+      "health": 1,
+      "energy": 3
+    },
+    "internalAxisWeights": {
+      "execution": 2,
+      "recovery": 1
+    },
+    "tags": [
+      "morning",
+      "routine"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_document",
+    "text": "중요한 생각을 머리 밖에 적어두는 편이다",
+    "scale": {
+      "1": "어렵다",
+      "5": "가능하다"
+    },
+    "externalAxisWeights": {
+      "wealth": 1,
+      "energy": 2
+    },
+    "internalAxisWeights": {
+      "clarity": 2,
+      "execution": 1
+    },
+    "tags": [
+      "document",
+      "clarity"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_recover_after_fail",
+    "text": "일이 틀어져도 다시 작게 시작할 수 있다",
+    "scale": {
+      "1": "어렵다",
+      "5": "가능하다"
+    },
+    "externalAxisWeights": {
+      "health": 2,
+      "energy": 2
+    },
+    "internalAxisWeights": {
+      "recovery": 2,
+      "execution": 2
+    },
+    "tags": [
+      "resilience"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_reduce_noise",
+    "text": "알림, 탭, 메시지 같은 잡음을 줄일 수 있다",
+    "scale": {
+      "1": "어렵다",
+      "5": "가능하다"
+    },
+    "externalAxisWeights": {
+      "health": 1,
+      "energy": 2
+    },
+    "internalAxisWeights": {
+      "clarity": 2,
+      "recovery": 1
+    },
+    "tags": [
+      "noise",
+      "attention"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_kindness",
+    "text": "작은 친절이나 칭찬을 먼저 건넬 수 있다",
+    "scale": {
+      "1": "어렵다",
+      "5": "가능하다"
+    },
+    "externalAxisWeights": {
+      "people": 3,
+      "energy": 1
+    },
+    "internalAxisWeights": {
+      "connection": 3,
+      "meaning": 1
+    },
+    "tags": [
+      "kindness",
+      "connection"
+    ],
+    "groups": [
+      "all"
+    ]
+  },
+  {
+    "id": "q_values",
+    "text": "내가 중요하게 여기는 가치 1개를 말할 수 있다",
+    "scale": {
+      "1": "어렵다",
+      "5": "가능하다"
+    },
+    "externalAxisWeights": {
+      "energy": 2,
+      "wealth": 1
+    },
+    "internalAxisWeights": {
+      "meaning": 3,
+      "clarity": 1
+    },
+    "tags": [
+      "values",
+      "meaning"
+    ],
+    "groups": [
+      "all"
+    ]
+  }
+]
