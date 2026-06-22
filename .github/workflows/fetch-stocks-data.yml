@@ -45,8 +45,9 @@ jobs:
 
       - name: Deploy to Firebase Hosting
         if: steps.commit.outputs.changed == 'true'
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: |
-          npm install -g firebase-tools --quiet 2>/dev/null
-          firebase deploy --only hosting --token "$FIREBASE_TOKEN" --non-interactive
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_EZLONG_541A8 }}'
+          channelId: live
+          projectId: ezlong-541a8
