@@ -5,6 +5,42 @@
 
 ---
 
+## [2026-06-23] 세션 — 데이터 파이프라인 완전 정상화 + Firebase 자동 배포 구조 확립
+
+### 커밋 이력 (주요 작업)
+
+. `8c1a5ce1c` — ci: Firebase deploy를 서비스 계정 방식으로 교체 (FIREBASE_TOKEN → service account)
+. `1fc303dc1` — fix: 인덱스 카드 ETF 프록시 changePct 우선 적용 (price=null 폴백 제거)
+. `6f988fb8b` — fix: get_intraday_date() 미국 공휴일 소급 처리 추가 (Juneteenth 버그)
+. `bcaba9666` — ci: GitHub Actions에 Firebase 자동 배포 추가
+
+---
+
+### 1. Firebase 자동 배포 구조 확립
+
+**문제:** `fetch-stocks-prices.yml`이 10분마다 데이터를 GitHub에 push했지만, `firebase-hosting.yml`은 GitHub bot push를 트리거로 인식하지 않아 라이브 서버에 반영 안 됨. (GitHub 보안 정책)
+
+**해결:** `fetch-stocks-prices.yml`과 `fetch-stocks-data.yml` 모두 Firebase deploy step에 `FirebaseExtended/action-hosting-deploy@v0` (서비스 계정 방식) 추가. 데이터 변경 시 commit → push → Firebase 자동 배포 체인 완성.
+
+### 2. 미국 공휴일 소급 처리 버그 수정 (`scripts/fetch-stocks-prices.py`)
+
+**문제:** `get_intraday_date()`가 주말만 소급하고 공휴일은 처리 못 함. 6/22(월) 프리마켓 실행 시 6/19(Juneteenth 공휴일)를 대상 날짜로 잡아 `0/284 종목 데이터 확보`.
+
+**수정:** 2025~2027 NYSE 공휴일 목록 추가, 소급 최대 7일로 확장.
+
+### 3. 인덱스 카드 등락률 버그 수정 (`stocks.html`)
+
+**문제:** ETF 프록시 방식(`price=null`)일 때 `changePct`도 stocks-data.json(어제 종가 기준)으로 폴백해 어제 등락률이 표시됨.
+
+**수정:** `price != null` 조건 제거 → ETF 프록시 `changePct` 오늘 실시간값 우선 적용.
+
+### 잔여 과제
+
+. GitHub Actions 10분 cron 신뢰성 문제 — cron-job.org → `workflow_dispatch` API 방식으로 보완 예정
+. 스파클라인 베이스라인 정책 — `dayOpen`(시초가) 기준 확정 필요 (현재 `closes[0]` 폴백 사용 중)
+
+---
+
 ## [2026-06-19] 3차 세션 — periodPrices 3M+ 버그 수정 + US_TOP100 시총 순위 업데이트
 
 ### 커밋 이력 (주요 작업)
