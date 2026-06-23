@@ -3,65 +3,81 @@
   "name": "S&P500 ETF (iShares)",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-23T17:15:50.005Z",
+  "updatedAt": "2026-06-23T17:37:48.601Z",
   "price": {
-    "current": 740.82,
-    "change": -6.96,
-    "changePct": -0.93,
+    "current": 741.18,
+    "change": -6.6,
+    "changePct": -0.88,
     "high52": 764,
     "low52": 606.31,
-    "pos52": 85.3,
+    "pos52": 85.5,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 748.527,
-    "sma50": 733.662,
-    "sma100": 703.9509,
-    "sma200": 688.5193,
-    "rsi": 49.12,
+    "sma20": 748.545,
+    "sma50": 733.6692,
+    "sma100": 703.9545,
+    "sma200": 688.5211,
+    "rsi": 49.33,
     "macd": {
-      "macd": 3.16991,
-      "signal": 4.848815,
-      "histogram": -1.678905
+      "macd": 3.198627,
+      "signal": 4.854559,
+      "histogram": -1.655931
     },
     "bb": {
-      "upper": 766.4927,
-      "middle": 748.527,
-      "lower": 730.5613,
-      "bandwidth": 0.048
+      "upper": 766.4805,
+      "middle": 748.545,
+      "lower": 730.6095,
+      "bandwidth": 0.0479
     }
   },
   "levels": {
     "swingResistance": 753.02,
     "swingSupport": 734.97,
     "pivot": {
-      "pp": 743.59,
-      "r1": 761.23,
-      "r2": 781.64,
-      "s1": 723.18,
-      "s2": 705.54
+      "pp": 743.71,
+      "r1": 761.47,
+      "r2": 781.76,
+      "s1": 723.42,
+      "s2": 705.66
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "횡보",
+    "strength": 3,
     "support": 734.97,
     "resistance": 753.02,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "중단",
+    "stage": "축적구간",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 4,
+    "scoreReason": "RSI 중립 구간 횡보, MACD 개선세 약함",
+    "rsiTrajectory": "60.4 → 49.3 (중립지속 중)",
+    "macdTrajectory": "히스토 -2.3109 → -1.6559 (개선)",
+    "pricePattern": "5일 저가($735.75) > 20일 저가($725.95) * 1.005 → Higher Low 회복 신호",
+    "volComment": "거래량비 0.17 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "최근 5거래일 변동성 확대 후 횡보 구간 진입. RSI는 중립 구간에서 방향성 부재, MACD 히스토그램은 개선 중이나 강세 전환 신호는 미약함. 거래량 위축으로 추세 전환 동력 부족.",
+    "entry": 745,
+    "stop": 730,
+    "target": 755,
+    "invalidation": 734.97,
+    "weeklyConflict": "충돌 없음",
+    "profitTarget1": 750,
+    "profitTarget2": 755,
+    "stopLoss": 730,
+    "narrative": "[추세 위치]\n· 현재가($741.18) vs SMA5/20/50($746.74/$748.54/$733.67) — 단기 하회, 중기 상회 추세\n· SMA100/200($703.95/$688.52) 대비 위치 — 중장기 추세 강도 유지\n· 52주 위치(85.5%) + 현 가격대 역사적 고점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (60.4→49.3) + 중립 판단 + 하락 방향성 확인\n· MACD 히스토그램 궤적 (-2.3109→-1.6559) + 개선 진단 + 약한 추세 전환 신호\n· 볼린저밴드 현재가 위치 (중단 $748.54) + 밴드폭 축소 구간\n[지지·저항 구조]\n· 스윙 지지선 ($734.97) + 근거 (20일 저가, 피벗 S1 하단)\n· 스윙 저항선 ($753.02) + 돌파 시 단기 상승 전환 가능성\n· 5일/20일 고가·저가 패턴 (Higher Low) + 회복 추세 확인\n[거래량·결론]\n· 거래량 비율 (0.17배) + 움직임의 신뢰도 하락\n· 현 구간 진단 (축적구간) + 734.97 지지 확인 시 매수, 753.02 저항 돌파 시 매수 고려",
+    "patternNote": "5일 저가 패턴은 Higher Low를 형성하며 회복 신호를 보이나, 거래량 위축으로 추세 전환 동력은 약함.",
+    "keyPoints": [
+      "최근 5거래일 변동성 확대 후 횡보 구간 진입",
+      "RSI 중립 구간 횡보, MACD 히스토그램 개선세 약함",
+      "거래량 위축으로 추세 전환 동력 부족"
+    ],
+    "riskNote": "현재가($741.18)가 SMA20($748.54) 하회하며 단기 저항 구간에 위치, 734.97 지지선 이탈 시 하락 위험"
   }
 }
