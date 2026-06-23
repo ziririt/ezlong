@@ -3,81 +3,65 @@
   "name": "미국 전체 주식 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-23T18:37:18.815Z",
+  "updatedAt": "2026-06-23T19:17:06.067Z",
   "price": {
-    "current": 364.42,
-    "change": -4.39,
-    "changePct": -1.19,
+    "current": 364.111,
+    "change": -4.699,
+    "changePct": -1.27,
     "high52": 374.7,
     "low52": 297.94,
-    "pos52": 86.6,
+    "pos52": 86.2,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 368.3955,
-    "sma50": 360.813,
-    "sma100": 346.3368,
-    "sma200": 338.6309,
-    "rsi": 49,
+    "sma20": 368.38,
+    "sma50": 360.8068,
+    "sma100": 346.3337,
+    "sma200": 338.6293,
+    "rsi": 48.65,
     "macd": {
-      "macd": 1.822958,
-      "signal": 2.621866,
-      "histogram": -0.798908
+      "macd": 1.798268,
+      "signal": 2.616928,
+      "histogram": -0.81866
     },
     "bb": {
-      "upper": 376.9215,
-      "middle": 368.3955,
-      "lower": 359.8695,
-      "bandwidth": 0.0463
+      "upper": 376.9359,
+      "middle": 368.38,
+      "lower": 359.8242,
+      "bandwidth": 0.0465
     }
   },
   "levels": {
     "swingResistance": 368.25,
     "swingSupport": 358.8,
     "pivot": {
-      "pp": 365.13,
-      "r1": 373.99,
-      "r2": 383.55,
-      "s1": 355.57,
-      "s2": 346.71
+      "pp": 365.03,
+      "r1": 373.78,
+      "r2": 383.45,
+      "s1": 355.36,
+      "s2": 346.61
     }
   },
   "analysis": {
-    "trend": "횡보",
-    "strength": 3,
+    "trend": "분석 대기",
+    "strength": 0,
     "support": 358.8,
     "resistance": 368.25,
-    "rsiStatus": "중립",
-    "macdStatus": "중립",
-    "bbStatus": "중단",
-    "stage": "축적구간",
+    "rsiStatus": "N/A",
+    "macdStatus": "N/A",
+    "bbStatus": "N/A",
+    "stage": "N/A",
     "action": "관망",
-    "buyScore": 4,
-    "scoreReason": "RSI 중립 구간 횡보, MACD 개선 중",
-    "rsiTrajectory": "60.9 → 49.0 (중립 지속 중)",
-    "macdTrajectory": "히스토 -1.0032 → -0.7989 (개선)",
-    "pricePattern": "Higher Low 또는 Lower High 또는 횡보 — 5일 저가($362.87)가 20일 저가($356.28)보다 높고, 5일 고가($373.16)가 20일 고가($374.70)보다 낮아 횡보 구간",
-    "volComment": "거래량비 0.63 (위축)",
-    "bbPosition": "중단근처",
-    "reason": "최근 5거래일 변동성이 크지만, 현재가는 SMA20($368.40) 아래에서 저항받고 있으며 RSI는 49.0으로 중립 구간에 머물러 방향성이 불확실하다. MACD 히스토그램은 개선되고 있으나 아직 추세 전환을 확신하기 어렵다.",
-    "entry": 364.42,
-    "stop": 358.8,
-    "target": 368.25,
-    "invalidation": 358.8,
-    "weeklyConflict": "충돌 없음",
-    "profitTarget1": 368.25,
-    "profitTarget2": 373.99,
-    "stopLoss": 358.8,
-    "narrative": "[추세 위치]\n· 현재가($364.42) vs SMA5/20/50($367.87/$368.40/$360.81) — 단기 추세 하회, 중기 추세 상회\n· SMA100($346.34)/SMA200($338.63) 대비 위치 — 중장기 추세 강도 유지\n· 52주 위치(86.6%) + 현 가격대 역사적 고점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (60.9→49.0) + 중립 판단 + 하락 추세 확인\n· MACD 히스토그램 궤적 (-1.0032→-0.7989) + 개선 진단 + 약세 수렴 확인\n· 볼린저밴드 현재가 위치 (중단 $368.40) + 밴드폭 축소 구간\n[지지·저항 구조]\n· 스윙 지지선 ($358.80) + 근거 (볼린저 하단, 20일 저가 부근)\n· 스윙 저항선 ($368.25) + 돌파 시 단기 강세 전환 가능성\n· 5일/20일 고가·저가 패턴 (Higher Low/Lower High) + 횡보 추세 확인\n[거래량·결론]\n· 거래량 비율 (0.63배) + 움직임의 신뢰도 하락\n· 현 구간 진단 (축적 구간) + 관망 조건: 5일 저가 이상 지지 확인 시 매수 고려",
-    "patternNote": "5일 고가/저가 범위($373.16/$362.87)가 20일 고가/저가 범위($374.70/$356.28) 내에 위치하며 좁아지는 패턴으로, 에너지를 응축하는 구간으로 해석.",
-    "keyPoints": [
-      "최근 5거래일 변동성 확대 후 현재는 SMA20 저항 구간에서 횡보",
-      "RSI는 중립 구간에서 하락 추세, MACD 히스토그램은 개선 중으로 방향성 탐색",
-      "거래량 위축으로 인한 신뢰도 하락, 5일 저가($362.87) 지지 여부가 중요"
-    ],
-    "riskNote": "현재가($364.42)가 SMA20($368.40) 아래에서 저항받고 있으며, 5일 평균 대비 거래량 비율이 0.63으로 낮아 매수세가 약한 상태에서 하락 시 지지선($358.80) 이탈 위험."
+    "buyScore": null,
+    "profitTarget1": null,
+    "profitTarget2": null,
+    "stopLoss": null,
+    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
+    "patternNote": null,
+    "keyPoints": [],
+    "riskNote": ""
   }
 }
