@@ -3,65 +3,81 @@
   "name": "마이크로소프트",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-23T19:06:14.383Z",
+  "updatedAt": "2026-06-23T19:29:20.638Z",
   "price": {
-    "current": 373.53,
-    "change": 6.19,
-    "changePct": 1.69,
+    "current": 373.8,
+    "change": 6.46,
+    "changePct": 1.76,
     "high52": 555.45,
     "low52": 356.28,
-    "pos52": 8.7,
+    "pos52": 8.8,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 408.309,
-    "sma50": 412.4112,
-    "sma100": 402.5915,
-    "sma200": 448.225,
-    "rsi": 35.09,
+    "sma20": 408.3225,
+    "sma50": 412.4166,
+    "sma100": 402.5942,
+    "sma200": 448.2264,
+    "rsi": 35.25,
     "macd": {
-      "macd": -11.141342,
-      "signal": -6.020907,
-      "histogram": -5.120436
+      "macd": -11.119805,
+      "signal": -6.016599,
+      "histogram": -5.103205
     },
     "bb": {
-      "upper": 458.2703,
-      "middle": 408.309,
-      "lower": 358.3477,
-      "bandwidth": 0.2447
+      "upper": 458.2464,
+      "middle": 408.3225,
+      "lower": 358.3986,
+      "bandwidth": 0.2445
     }
   },
   "levels": {
     "swingResistance": 394.65,
     "swingSupport": 356.28,
     "pivot": {
-      "pp": 402.31,
-      "r1": 437.54,
-      "r2": 501.56,
-      "s1": 338.29,
-      "s2": 303.06
+      "pp": 402.4,
+      "r1": 437.72,
+      "r2": 501.65,
+      "s1": 338.47,
+      "s2": 303.15
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "약세",
+    "strength": 2,
     "support": 356.28,
     "resistance": 394.65,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "과매도",
+    "macdStatus": "약세수렴",
+    "bbStatus": "하단접근",
+    "stage": "축적구간",
+    "action": "매수",
+    "buyScore": 7,
+    "scoreReason": "RSI 과매도 탈출 + Higher Low 회복 초입",
+    "rsiTrajectory": "42.8 → 35.3 (과매도탈출 중)",
+    "macdTrajectory": "히스토 -4.7722 → -5.1032 (악화 중)",
+    "pricePattern": "Higher Low 가능성, 5일 저가($367.07) > 20일 저가($367.07) * 1.005는 아님",
+    "volComment": "거래량비 0.63 (위축)",
+    "bbPosition": "하단근처",
+    "reason": "최근 5거래일 변동성 확대 후 하락세 지속, RSI는 과매도 구간 진입 후 반등 시도 중. 52주 저가($356.28) 부근에서 지지 확인 시 매수 고려.",
+    "entry": 360,
+    "stop": 350,
+    "target": 390,
+    "invalidation": 356.28,
+    "weeklyConflict": "주봉은 약세이나 일봉 신호 우선",
+    "profitTarget1": 380,
+    "profitTarget2": 390,
+    "stopLoss": 350,
+    "narrative": "[추세 위치]\n· 현재가($373.80) vs SMA5($378.66)/SMA20($408.32)/SMA50($412.42) — 단기 하회, 중단기 하회, 중기 하회\n· SMA100($402.59)/SMA200($448.23) 대비 위치 — 중장기 하회, 중장기 하회\n· 52주 위치(8.8%) + 현 가격대 역사적 저점 부근\n[모멘텀 지표]\n· RSI 궤적 (42.8→35.3) + 과매도 판단 + 하락세 지속 중\n· MACD 히스토그램 궤적 (히스토 -4.7722→-5.1032) + 악화 진단 + 약세 지속 신호\n· 볼린저밴드 현재가 위치 (하단 $358.40) + 밴드폭 축소 구간\n[지지·저항 구조]\n· 스윙 지지선 ($356.28) + 근거 (52주 저가, 볼린저 하단)\n· 스윙 저항선 ($394.65) + 돌파 시 단기 반등 기대\n· 5일/20일 고가·저가 패턴 (횡보) + 추세 전환 불확실\n[거래량·결론]\n· 거래량 비율 (0.63) + 움직임의 신뢰도 하락\n· 현 구간 진단 (축적구간) + 52주 저가 지지 확인 시 매수 진입 고려",
+    "patternNote": "52주 저가 부근에서 지지 확인 시 반등 기대",
+    "keyPoints": [
+      "RSI 과매도 구간 진입 후 반등 시도",
+      "52주 저가($356.28) 지지 여부 중요",
+      "거래량 위축으로 인한 추세 전환 신뢰도 낮음"
+    ],
+    "riskNote": "52주 저가($356.28) 이탈 시 추가 하락 가능성"
   }
 }
