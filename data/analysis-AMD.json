@@ -3,65 +3,81 @@
   "name": "AMD",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-23T16:13:39.550Z",
+  "updatedAt": "2026-06-23T17:08:40.937Z",
   "price": {
-    "current": 527.755,
-    "change": -23.875,
-    "changePct": -4.33,
+    "current": 520.865,
+    "change": -30.765,
+    "changePct": -5.58,
     "high52": 562.99,
     "low52": 132.93,
-    "pos52": 91.8,
+    "pos52": 90.2,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 509.9718,
-    "sma50": 423.0013,
-    "sma100": 316.1762,
-    "sma200": 264.9276,
-    "rsi": 57.99,
+    "sma20": 509.6273,
+    "sma50": 422.8635,
+    "sma100": 316.1073,
+    "sma200": 264.8931,
+    "rsi": 56.67,
     "macd": {
-      "macd": 29.539859,
-      "signal": 31.551943,
-      "histogram": -2.012083
+      "macd": 28.990229,
+      "signal": 31.442016,
+      "histogram": -2.451788
     },
     "bb": {
-      "upper": 561.308,
-      "middle": 509.9718,
-      "lower": 458.6355,
-      "bandwidth": 0.2013
+      "upper": 560.5725,
+      "middle": 509.6273,
+      "lower": 458.682,
+      "bandwidth": 0.1999
     }
   },
   "levels": {
     "swingResistance": 546.44,
     "swingSupport": 437.23,
     "pivot": {
-      "pp": 509.33,
-      "r1": 581.42,
-      "r2": 635.08,
-      "s1": 455.66,
-      "s2": 383.57
+      "pp": 507.03,
+      "r1": 576.83,
+      "r2": 632.79,
+      "s1": 451.07,
+      "s2": 381.27
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
-    "support": 437.23,
+    "trend": "강세",
+    "strength": 3,
+    "support": 506.81,
     "resistance": 546.44,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "중단",
+    "stage": "상승추세",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 4,
+    "scoreReason": "RSI 하락세, MACD 개선세, 5일 저가 지지",
+    "rsiTrajectory": "65.2 → 56.7 (과매수 냉각 중)",
+    "macdTrajectory": "히스토 -4.4625 → -2.4518 (개선 중)",
+    "pricePattern": "5일 저가($506.81)가 20일 저가($437.23)보다 높아 Higher Low 패턴 형성 중",
+    "volComment": "거래량비 0.45 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "최근 5거래일 변동성이 크며, 현재가 SMA5($525.93) 하향 이탈 후 SMA20($509.63) 부근에서 지지 여부 확인 필요. 거래량 위축으로 방향성 판단 어려움.",
+    "entry": 525.93,
+    "stop": 506.81,
+    "target": 546.44,
+    "invalidation": 506.81,
+    "weeklyConflict": "충돌 없음",
+    "profitTarget1": 535,
+    "profitTarget2": 540,
+    "stopLoss": 500,
+    "narrative": "[추세 위치]\n· 현재가($520.87) vs SMA5/20/50($525.93/$509.63/$422.86) — 단기 SMA5 하회, SMA20 상회하며 중기 추세 지지 확인 중\n· SMA100/200($316.11/$264.89) 대비 높은 위치 — 중장기 추세 강세 유지\n· 52주 위치(90.2%) — 역사적 고점 부근에서 강한 상승세 확인\n[모멘텀 지표]\n· RSI 궤적 (65.2→56.7) — 과매수 구간에서 하락하며 중립 구간으로 진입, 냉각 신호\n· MACD 히스토그램 궤적 (-4.4625→-2.4518) — 음수 구간에서 개선되며 약세 약화 신호\n· 볼린저밴드 현재가 위치 (중단 $509.63) — 중단 부근에서 횡보하며 방향성 탐색 구간\n[지지·저항 구조]\n· 스윙 지지선 ($437.23) — 52주 저가 및 볼린저 하단과 일치하는 강력한 지지 구간\n· 스윙 저항선 ($546.44) — 5일 고가와 일치하는 단기 저항 구간\n· 5일/20일 고가·저가 패턴 (Higher Low) — 5일 저가($506.81)가 20일 저가($437.23)보다 높아 회복 신호 확인\n[거래량·결론]\n· 거래량 비율 (0.45) — 5일 평균 대비 현저히 낮은 거래량으로 움직임의 신뢰도 하락\n· 현 구간 진단 (축적구간) — SMA20 지지 확인 시 매수 진입 고려, 이탈 시 관망 전환",
+    "patternNote": "5일 저가가 20일 저가보다 높아지며 상승 추세의 회복 가능성을 시사하는 Higher Low 패턴 형성 중.",
+    "keyPoints": [
+      "최근 5거래일 큰 변동성 후 SMA20 지지 여부 확인 필요",
+      "RSI는 과매수 구간에서 하락, MACD 히스토그램은 개선되며 상반된 신호",
+      "거래량 위축으로 인한 방향성 판단의 어려움"
+    ],
+    "riskNote": "현재가 SMA5 하회 및 거래량 위축으로 인한 단기 하락 위험 존재."
   }
 }

@@ -3,65 +3,81 @@
   "name": "에너지 섹터 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-23T16:20:49.599Z",
+  "updatedAt": "2026-06-23T17:16:10.705Z",
   "price": {
-    "current": 54.305,
-    "change": 0.245,
-    "changePct": 0.45,
+    "current": 54.485,
+    "change": 0.425,
+    "changePct": 0.79,
     "high52": 63.46,
     "low52": 42.05,
-    "pos52": 57.2,
+    "pos52": 58.1,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 56.3738,
-    "sma50": 56.93,
-    "sma100": 56.3938,
-    "sma200": 50.2765,
-    "rsi": 39.44,
+    "sma20": 56.3828,
+    "sma50": 56.9336,
+    "sma100": 56.3956,
+    "sma200": 50.2774,
+    "rsi": 40.45,
     "macd": {
-      "macd": -0.914138,
-      "signal": -0.538576,
-      "histogram": -0.375562
+      "macd": -0.899787,
+      "signal": -0.535706,
+      "histogram": -0.364082
     },
     "bb": {
-      "upper": 59.3181,
-      "middle": 56.3738,
-      "lower": 53.4294,
-      "bandwidth": 0.1045
+      "upper": 59.3028,
+      "middle": 56.3828,
+      "lower": 53.4627,
+      "bandwidth": 0.1036
     }
   },
   "levels": {
     "swingResistance": 57.88,
     "swingSupport": 54.12,
     "pivot": {
-      "pp": 55.68,
-      "r1": 58.19,
-      "r2": 62.08,
-      "s1": 51.79,
-      "s2": 49.28
+      "pp": 55.74,
+      "r1": 58.31,
+      "r2": 62.14,
+      "s1": 51.91,
+      "s2": 49.34
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "횡보",
+    "strength": 2,
     "support": 54.12,
     "resistance": 57.88,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "중단",
+    "stage": "축적구간",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 4,
+    "scoreReason": "RSI 중립 구간 횡보, MACD 개선 없음",
+    "rsiTrajectory": "40.0 → 40.5 (중립지속 중)",
+    "macdTrajectory": "히스토 -0.2120 → -0.3641 (개선)",
+    "pricePattern": "횡보",
+    "volComment": "거래량비 0.41 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "최근 5거래일 변동성이 작고, 이동평균선들이 꼬여있어 방향성이 부재함. RSI와 볼린저밴드도 중립 구간에 머물러 있어 관망이 필요함.",
+    "entry": 54.12,
+    "stop": 53.17,
+    "target": 57.88,
+    "invalidation": 57.88,
+    "weeklyConflict": "충돌 없음",
+    "profitTarget1": 55.74,
+    "profitTarget2": 57.88,
+    "stopLoss": 53.17,
+    "narrative": "[추세 위치]· 현재가($54.48) vs SMA5/20/50($54.23/$56.38/$56.93) — 단기 추세 하회, 중기 추세 하회· SMA100/200($56.40/$50.28) 대비 위치 — 중장기 추세 약세 진단· 52주 위치(58.1%) + 현 가격대 역사적 의미 — 52주 고가 대비 하락, 저가 대비 상승 구간[모멘텀 지표]· RSI 궤적 (40.0→40.5) + 중립 판단 + 방향성 없음· MACD 히스토그램 궤적 (히스토 -0.2120→-0.3641) + 개선 진단 + 추세 전환 신호 없음· 볼린저밴드 현재가 위치 (중단 $56.38) + 밴드폭 10.36%로 정상 수준[지지·저항 구조]· 스윙 지지선 ($54.12) + 근거 (5일 저가, 피벗 S1 하단)· 스윙 저항선 ($57.88) + 돌파 시 중기 이동평균선 상향 돌파 기대· 5일/20일 고가·저가 패턴 (횡보) + 추세 방향성 부재[거래량·결론]· 거래량 비율 (0.41) + 움직임의 신뢰도 하락· 현 구간 진단 (축적구간) + 진입 조건: 54.12 지지 확인 및 56.38 중단 돌파 시 매수",
+    "patternNote": "최근 5거래일 동안 5일 고가($55.48)와 5일 저가($53.17) 범위 내에서 횡보하며 방향성을 탐색하는 구간.",
+    "keyPoints": [
+      "이동평균선들이 꼬여있어 명확한 추세 부재",
+      "RSI와 볼린저밴드가 중립 구간에 머물러 모멘텀 약함",
+      "거래량 위축으로 인한 신뢰도 하락"
+    ],
+    "riskNote": "현재가($54.48)가 스윙 지지선($54.12)에 근접해 있어 하방 경직성을 보이나, 20일 이동평균선($56.38) 저항 돌파 여부가 중요함."
   }
 }
