@@ -892,25 +892,44 @@ async function processTicker(meta) {
       swingSupport:    swing.support    ? round(swing.support,    4) : null,
       pivot,
     },
-    analysis: aiResult ?? {
-      trend: '분석 대기',
-      strength: 0,
-      support:    swing.support    ? round(swing.support,    2) : null,
-      resistance: swing.resistance ? round(swing.resistance, 2) : null,
-      rsiStatus: 'N/A',
-      macdStatus: 'N/A',
-      bbStatus: 'N/A',
-      stage: 'N/A',
-      action: '관망',
-      buyScore: null,
-      profitTarget1: null,
-      profitTarget2: null,
-      stopLoss: null,
-      narrative: 'AI 분석 데이터를 불러오는 중입니다.',
-      patternNote: null,
-      keyPoints: [],
-      riskNote: '',
-    },
+    analysis: (() => {
+      // Gemini 성공 → 새 분석 사용
+      if (aiResult) return aiResult;
+
+      // Gemini 실패 → 기존 파일에 유효한 분석이 있으면 보존 (플레이스홀더로 덮어쓰지 않음)
+      const existingPath = path.join(DATA_DIR, `analysis-${safeSymbol}.json`);
+      try {
+        if (fs.existsSync(existingPath)) {
+          const prev = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
+          const prevNarrative = prev?.analysis?.narrative ?? '';
+          if (prevNarrative && prevNarrative !== 'AI 분석 데이터를 불러오는 중입니다.' && prevNarrative.length > 30) {
+            console.warn(`  Gemini 실패 — 기존 분석 보존: ${symbol} (${prev.updatedAt ?? '날짜미상'})`);
+            return prev.analysis;
+          }
+        }
+      } catch (e) { /* 기존 파일 읽기 실패 — 폴백 사용 */ }
+
+      // 기존 유효 데이터 없음 → 폴백
+      return {
+        trend: '분석 대기',
+        strength: 0,
+        support:    swing.support    ? round(swing.support,    2) : null,
+        resistance: swing.resistance ? round(swing.resistance, 2) : null,
+        rsiStatus: 'N/A',
+        macdStatus: 'N/A',
+        bbStatus: 'N/A',
+        stage: 'N/A',
+        action: '관망',
+        buyScore: null,
+        profitTarget1: null,
+        profitTarget2: null,
+        stopLoss: null,
+        narrative: 'AI 분석 데이터를 불러오는 중입니다.',
+        patternNote: null,
+        keyPoints: [],
+        riskNote: '',
+      };
+    })(),
   };
 
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
