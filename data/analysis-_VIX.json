@@ -3,65 +3,81 @@
   "name": "VIX 변동성 지수",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-06-23T15:16:03.535Z",
+  "updatedAt": "2026-06-23T16:20:34.365Z",
   "price": {
-    "current": 19.35,
-    "change": 2.07,
-    "changePct": 11.98,
+    "current": 19.13,
+    "change": 1.85,
+    "changePct": 10.71,
     "high52": 35.3,
     "low52": 13.38,
-    "pos52": 27.2,
+    "pos52": 26.2,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 17.568,
-    "sma50": 17.7558,
-    "sma100": 20.1115,
-    "sma200": 18.5905,
-    "rsi": 54.05,
+    "sma20": 17.557,
+    "sma50": 17.7514,
+    "sma100": 20.1093,
+    "sma200": 18.5894,
+    "rsi": 53.52,
     "macd": {
-      "macd": 0.013855,
-      "signal": -0.052246,
-      "histogram": 0.066101
+      "macd": -0.003695,
+      "signal": -0.055756,
+      "histogram": 0.052061
     },
     "bb": {
-      "upper": 21.5497,
-      "middle": 17.568,
-      "lower": 13.5863,
-      "bandwidth": 0.4533
+      "upper": 21.5202,
+      "middle": 17.557,
+      "lower": 13.5938,
+      "bandwidth": 0.4515
     }
   },
   "levels": {
     "swingResistance": 19.38,
     "swingSupport": 17.99,
     "pivot": {
-      "pp": 19.29,
-      "r1": 23.4,
-      "r2": 27.45,
-      "s1": 15.24,
-      "s2": 11.13
+      "pp": 19.22,
+      "r1": 23.25,
+      "r2": 27.38,
+      "s1": 15.09,
+      "s2": 11.06
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "횡보",
+    "strength": 3,
     "support": 17.99,
     "resistance": 19.38,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "중립",
+    "macdStatus": "중립",
+    "bbStatus": "중단",
+    "stage": "축적구간",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 4,
+    "scoreReason": "RSI 중립 구간 횡보 + 5일 저가 20일 저가 하회",
+    "rsiTrajectory": "44.8 → 53.5 (중립 지속 중)",
+    "macdTrajectory": "히스토 0.1640 → 0.0521 (개선)",
+    "pricePattern": "5일 저가($15.77)가 20일 저가($15.18)보다 높으므로 Higher Low 가능성 있으나, 5일 고가($20.54)가 20일 고가($23.34)보다 낮으므로 Lower High 패턴도 동시에 나타남",
+    "volComment": "N/A (급증/정상/위축)",
+    "bbPosition": "중단근처",
+    "reason": "최근 5거래일 변동성이 크지만, 현재가는 SMA5, SMA20, SMA50 모두 하회하며 저항 구간에 근접. RSI는 중립 구간에서 횡보하며 방향성 부재.",
+    "entry": 18.5,
+    "stop": 17.9,
+    "target": 20.5,
+    "invalidation": 19.38,
+    "weeklyConflict": "충돌 없음",
+    "profitTarget1": 19.5,
+    "profitTarget2": 20.5,
+    "stopLoss": 17.5,
+    "narrative": "[추세 위치]\n· 현재가($19.13) vs SMA5/20/50($17.53/$17.56/$17.75) — 단기·중기 추세 하회, 저항 구간 근접 진단\n· SMA100($20.11)/SMA200($18.59) 대비 위치 — 중장기 추세 하회, 약세 구간 진입 가능성\n· 52주 위치(26.2%) + 현 가격대 역사적 저점 부근 위치 진단\n[모멘텀 지표]\n· RSI 궤적 (44.8→53.5) + 중립 구간 지속, 방향성 부재 확인\n· MACD 히스토그램 궤적 (0.1640→0.0521) + 개선 중, 약세 전환 신호는 아직 미확인\n· 볼린저밴드 현재가 위치($19.13)는 중단($17.56) 상회, 상단($21.52) 하회 구간, 밴드폭(45.15%)은 넓은 편\n[지지·저항 구조]\n· 스윙 지지선 ($17.99) + 피벗 지지선($19.22)과 근접, 5일 저가($15.77) 대비 높은 수준\n· 스윙 저항선 ($19.38) + 5일 고가($20.54)와 근접, 돌파 시 단기 반등 기대\n· 5일/20일 고가·저가 패턴 (Higher Low 가능성, Lower High 가능성) + 추세 전환 불확실 진단\n[거래량·결론]\n· 거래량 비율 N/A + 움직임의 신뢰도 판단 불가\n· 현 구간 진단 (축적구간) + 17.99 지지 및 19.38 저항 돌파 시 매수 진입 고려",
+    "patternNote": "최근 5거래일 일봉 변동률은 +10.71%, +5.37%, -11.06%, +12.37%, +1.30%로 극심한 변동성을 보이며 방향성 탐색 구간.",
+    "keyPoints": [
+      "최근 5거래일 극심한 변동성 후 방향성 탐색 구간",
+      "현재가 SMA5/20/50 하회, 저항 구간 근접",
+      "RSI 중립 구간 횡보, 방향성 부재"
+    ],
+    "riskNote": "현재가($19.13)가 스윙 저항선($19.38)에 근접해 있어 추가 상승 시 저항에 부딪힐 가능성 높음."
   }
 }
