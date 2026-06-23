@@ -5,6 +5,52 @@
 
 ---
 
+## [2026-06-24] 세션 — 스윙 시그널/전략/집중분석 시장 흐름 컨텍스트 추가 + 차트분석 안정화
+
+### 커밋 이력 (주요 작업)
+
+. `6b9cf5ad0` — fix: 스윙 시그널 최근 시장 급락 컨텍스트 추가 + 차트분석 Gemini 실패 시 기존 데이터 보존
+. `7a50d6cb4` — fix: 스윙시그널 시장흐름 배너 1순위 배치 + 스윙전략/TSLA·NVDA 집중분석 최근 흐름 컨텍스트 추가 + Gemini 실패 시 기존 분석 보존
+. `423334aaa` — fix: 스윙시그널 시장흐름 1순위 배치 + 스윙전략·TSLA·NVDA 최근흐름 컨텍스트 + Gemini실패시 기존분석 보존 + 차트분석워크플로 수동실행시 시간체크 우회
+
+---
+
+### 1. 스윙 시그널 탭 — "오늘의 시장 흐름 — 주의" 배너 위치 변경 (`atmr-dashboard.html`)
+
+**문제:** QQQ -3.29%, SOXX -7.88% 급락일임에도 스윙 시그널 해설이 "72점 분할 진입 적합 구간"만 표시하고 시장 급락 맥락을 전혀 언급하지 않음. 배너가 진입 근거 **뒤(3번째)**에 위치.
+
+**수정:** `buildRecentContextHtml()` 반환값 포맷 변경 (앞 `<br><br>` → 뒤 `<br><br>`), 세 곳의 `desc` 문자열에서 `${buildRecentContextHtml()}` 위치를 **맨 앞(1번째)**으로 이동.
+
+**트리거 조건:** QQQ 이틀 연속 -0.5% 이상 하락, QQQ 당일 -2% 이상, SOXX 당일 -4% 이상.
+
+### 2. 스윙 전략 탭 — 시장 흐름 컨텍스트 배너 추가 (`atmr-dashboard.html`)
+
+**추가:** `buildStrategyContextBanner()` 함수 신규 작성 — QQQ/SOXX/TSLA/NVDA `recentDailyReturns` 기반으로 "오늘의 시장 흐름 — 전략 수립 시 반드시 고려" 배너를 전략 가이드 카드 **최상단**에 표시.
+
+**내용:** QQQ 연속 하락, SOXX 급락, TSLA/NVDA ±3% 이상 급등락 감지 시 각각 한 줄 해설 자동 생성.
+
+### 3. 테슬라/엔비디아 집중분석 탭 — 종목별 최근 등락 흐름 배너 추가 (`atmr-dashboard.html`)
+
+**추가:** `stockRecentBanner` 블록 — 각 종목의 오늘/어제/2일 전 등락률을 수치로 시각화(빨강/초록). 이틀 연속 하락(-1% 이상) 또는 ±3% 이상 급등락 시 한 줄 코멘트 자동 생성.
+
+**위치:** `msBanner`(시장 전체 맥락) 바로 아래, `king-header` 바로 위.
+
+### 4. 차트분석 Gemini 실패 시 기존 데이터 보존 (`scripts/generate-chart-analysis.js`)
+
+**문제:** Gemini API 실패(과부하, 타임아웃) 시 `analysis: aiResult ?? { narrative: 'AI 분석 데이터를 불러오는 중입니다.' }` 패턴으로 기존 유효 분석을 placeholder로 덮어씀. TSLA, IONQ, QLD 등 16개 종목 항상 placeholder 표시.
+
+**수정:** IIFE 패턴으로 교체 — Gemini 실패 시 기존 JSON 파일을 읽어 `narrative`가 placeholder가 아니고 30자 이상이면 기존 분석 보존. 신규 종목(기존 파일 없음)은 기존대로 placeholder 사용.
+
+### 5. 차트분석 워크플로 수동 실행 시 시간 체크 우회 (`.github/workflows/fetch-us-chart-analysis.yml`)
+
+**문제:** `workflow_dispatch`(수동 실행)임에도 ET 시간 체크(09:30~16:00)에 막혀 장 외 시간에 수동 실행 불가. "장 외 시간 — 건너뜀 (ET 1852)" 메시지 후 skip.
+
+**수정:** `if [ "${{ github.event_name }}" = "workflow_dispatch" ]` 조건 추가 — 수동 실행 시 시간 체크 완전 우회, 강제 실행. cron 스케줄은 기존 ET 시간 체크 그대로 유지.
+
+**추가 수정:** Step 5의 `git pull --rebase origin main` 을 Rule 16 확정 패턴 `git push origin main || (git fetch origin main && git merge --ff-only origin/main && git push origin main)` 으로 교체.
+
+---
+
 ## [2026-06-23] 세션 — 데이터 파이프라인 완전 정상화 + Firebase 자동 배포 구조 확립
 
 ### 커밋 이력 (주요 작업)
