@@ -3,65 +3,81 @@
   "name": "넷플릭스",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-23T17:31:48.164Z",
+  "updatedAt": "2026-06-23T18:09:07.831Z",
   "price": {
-    "current": 73.085,
-    "change": 0.205,
-    "changePct": 0.28,
+    "current": 73.375,
+    "change": 0.495,
+    "changePct": 0.68,
     "high52": 134.115,
     "low52": 71.81,
-    "pos52": 2,
+    "pos52": 2.5,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 81.5102,
-    "sma50": 88.0463,
-    "sma100": 88.8726,
-    "sma200": 97.8331,
-    "rsi": 22.32,
+    "sma20": 81.5247,
+    "sma50": 88.0521,
+    "sma100": 88.8755,
+    "sma200": 97.8345,
+    "rsi": 23.56,
     "macd": {
-      "macd": -3.595727,
-      "signal": -2.91069,
-      "histogram": -0.685037
+      "macd": -3.572593,
+      "signal": -2.906063,
+      "histogram": -0.66653
     },
     "bb": {
-      "upper": 89.6664,
-      "middle": 81.5102,
-      "lower": 73.3541,
-      "bandwidth": 0.2001
+      "upper": 89.6218,
+      "middle": 81.5247,
+      "lower": 73.4277,
+      "bandwidth": 0.1986
     }
   },
   "levels": {
     "swingResistance": 77.3,
     "swingSupport": 69.643,
     "pivot": {
-      "pp": 77.88,
-      "r1": 83.94,
-      "r2": 94.8,
-      "s1": 67.02,
-      "s2": 60.95
+      "pp": 77.97,
+      "r1": 84.13,
+      "r2": 94.89,
+      "s1": 67.21,
+      "s2": 61.05
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "약세",
+    "strength": 2,
     "support": 69.64,
     "resistance": 77.3,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "과매도",
+    "macdStatus": "약세수렴",
+    "bbStatus": "하단접근",
+    "stage": "축적구간",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 3,
+    "scoreReason": "RSI 과매도 진입, MACD 악화 지속",
+    "rsiTrajectory": "35.8 → 23.6 (과매도 진입 중)",
+    "macdTrajectory": "히스토 -0.0838 → -0.6665 (악화 지속)",
+    "pricePattern": "5일 저가 $71.81, 20일 저가 $71.81로 Higher Low 패턴 형성 중",
+    "volComment": "거래량비 0.44 (위축)",
+    "bbPosition": "하단근처",
+    "reason": "최근 5거래일 변동률은 +0.68%, -5.82%, +0.55%, -2.24%, -3.61%로 변동성이 크며 하락세가 우세하다. RSI가 23.6으로 과매도 구간에 진입했고, MACD 히스토그램은 -0.6665로 악화되고 있어 추가 하락 가능성이 있다. 다만, 5일 저가가 20일 저가와 동일한 $71.81로 Higher Low 패턴의 초입으로 볼 수 있어 매수 관점에서 접근하기에는 이르다.",
+    "entry": 73.38,
+    "stop": 69.64,
+    "target": 77.3,
+    "invalidation": 71.81,
+    "weeklyConflict": "주봉은 약세이나 일봉 신호 우선",
+    "profitTarget1": 75.86,
+    "profitTarget2": 81.52,
+    "stopLoss": 69.64,
+    "narrative": "[추세 위치]\n· 현재가($73.38)는 SMA5($75.86) 및 SMA20($81.52) 하회, SMA50($88.05) 하회 — 단기·중기 추세 약세 확인\n· SMA100($88.88) 및 SMA200($97.83) 대비 각각 -17.07%, -25.00% 위치 — 중장기 추세 약세 강도 확인\n· 52주 위치(2.5%) + 현 가격대는 52주 저가($71.81)에 근접한 역사적 저가 구간\n[모멘텀 지표]\n· RSI 궤적 (35.8 → 23.6) — 과매도 구간 진입 확인, 하락세 지속\n· MACD 히스토그램 궤적 (-0.0838 → -0.6665) — 악화 지속, 약세 추세 강화 신호\n· 볼린저밴드 현재가 위치 (하단 $73.43 근처) + 밴드폭 19.86%는 평균 수준으로 변동성 확대 가능성\n[지지·저항 구조]\n· 스윙 지지선 ($69.64) — 52주 저가($71.81) 및 주봉 하단($72.31)과 근접한 핵심 지지 구간\n· 스윙 저항선 ($77.30) — 단기 반등 시 첫 번째 저항 구간\n· 5일/20일 고가·저가 패턴 (5일 저가 $71.81, 20일 저가 $71.81) — Higher Low 패턴 형성 중, 바닥 다지기 가능성 시사\n[거래량·결론]\n· 거래량 비율 0.44 — 5일 평균 대비 위축된 거래량, 움직임의 신뢰도 하락\n· 현 구간 진단 (축적구간) — RSI 과매도 진입 및 MACD 악화 지속으로 추가 하락 가능성 있으나, Higher Low 패턴 형성으로 매수 진입은 관망하며 지지선 확인 후 접근 필요",
+    "patternNote": "5일 저가와 20일 저가가 동일한 $71.81로 형성되며 바닥을 다지는 듯한 Higher Low 패턴의 초입 구간으로 해석된다.",
+    "keyPoints": [
+      "RSI 23.6 과매도 구간 진입",
+      "MACD 히스토그램 악화 지속 (-0.6665)",
+      "5일/20일 저가 $71.81로 Higher Low 패턴 초입"
+    ],
+    "riskNote": "현재가($73.38)가 볼린저밴드 하단($73.43)에 근접해 있어 하단 이탈 시 추가 하락 위험이 존재한다."
   }
 }

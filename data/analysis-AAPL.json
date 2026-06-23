@@ -3,65 +3,81 @@
   "name": "애플",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-06-23T17:28:58.714Z",
+  "updatedAt": "2026-06-23T18:06:43.735Z",
   "price": {
-    "current": 299.37,
-    "change": 2.36,
-    "changePct": 0.79,
+    "current": 298.884,
+    "change": 1.874,
+    "changePct": 0.63,
     "high52": 317.4,
     "low52": 199.26,
-    "pos52": 84.7,
+    "pos52": 84.3,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 302.526,
-    "sma50": 290.1476,
-    "sma100": 275.3748,
-    "sma200": 268.3904,
-    "rsi": 52.41,
+    "sma20": 302.5017,
+    "sma50": 290.1379,
+    "sma100": 275.3699,
+    "sma200": 268.388,
+    "rsi": 51.92,
     "macd": {
-      "macd": 1.005598,
-      "signal": 2.440995,
-      "histogram": -1.435396
+      "macd": 0.966854,
+      "signal": 2.433246,
+      "histogram": -1.466392
     },
     "bb": {
-      "upper": 318.1529,
-      "middle": 302.526,
-      "lower": 286.8992,
-      "bandwidth": 0.1033
+      "upper": 318.1496,
+      "middle": 302.5017,
+      "lower": 286.8538,
+      "bandwidth": 0.1035
     }
   },
   "levels": {
     "swingResistance": 317.4,
     "swingSupport": 287.38,
     "pivot": {
-      "pp": 301.38,
-      "r1": 315.39,
-      "r2": 331.4,
-      "s1": 285.37,
-      "s2": 271.36
+      "pp": 301.22,
+      "r1": 315.06,
+      "r2": 331.24,
+      "s1": 285.04,
+      "s2": 271.2
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "강세",
+    "strength": 4,
     "support": 287.38,
     "resistance": 317.4,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
-    "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "rsiStatus": "중립",
+    "macdStatus": "강세확산",
+    "bbStatus": "중단",
+    "stage": "상승추세",
+    "action": "매수",
+    "buyScore": 7,
+    "scoreReason": "RSI 중립 구간 + MACD 개선 + Higher Low 패턴",
+    "rsiTrajectory": "49.5 → 51.9 (중립지속 중)",
+    "macdTrajectory": "히스토 -3.1459 → -1.4664 (개선)",
+    "pricePattern": "Higher Low 패턴 확인",
+    "volComment": "거래량비 0.44 (위축)",
+    "bbPosition": "중단근처",
+    "reason": "최근 5거래일 변동성 속에서 5일 저가가 20일 저가보다 높아지는 Higher Low 패턴이 나타나고 있으며, MACD 히스토그램이 개선되는 흐름을 보이고 있어 추가 상승을 기대할 수 있다. 현재가 $298.88은 SMA5 $297.82를 상회하며 지지력을 확인하고 있다.",
+    "entry": 298,
+    "stop": 287.38,
+    "target": 315.06,
+    "invalidation": 287.38,
+    "weeklyConflict": "충돌 없음",
+    "profitTarget1": 308,
+    "profitTarget2": 315.06,
+    "stopLoss": 287.38,
+    "narrative": "[추세 위치]\n· 현재가($298.88) vs SMA5/20/50($297.82/$302.50/$290.14) — 단기 추세 상회, 중기 추세 하회\n· SMA100($275.37)/SMA200($268.39) 대비 위치 — 중장기 추세 강세 유지\n· 52주 위치(84.3%) + 현 가격대 역사적 고점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (49.5→51.9) + 중립 구간 지속 중 + 상승 방향성 확인\n· MACD 히스토그램 궤적 (-3.1459→-1.4664) + 개선 진단 + 추세 전환 신호 가능성\n· 볼린저밴드 현재가 위치 (중단 $302.50) + 밴드폭 10.35%로 정상 수준\n[지지·저항 구조]\n· 스윙 지지선 ($287.38) + 근거 (20일 저가, 볼린저 하단)\n· 스윙 저항선 ($317.40) + 돌파 시 신고가 경신 가능성\n· 5일/20일 고가·저가 패턴 (Higher Low) + 회복 추세 해석\n[거래량·결론]\n· 거래량 비율 (0.44배) + 움직임의 신뢰도 하락\n· 현 구간 진단 (축적 구간) + 287.38 지지 확인 시 매수 진입 조건",
+    "patternNote": "5일 저가가 20일 저가보다 높아지는 Higher Low 패턴이 형성되며 회복세를 나타내고 있다.",
+    "keyPoints": [
+      "Higher Low 패턴 형성으로 회복 신호 확인",
+      "MACD 히스토그램 개선으로 상승 모멘텀 강화",
+      "287.38 지지선 확보 시 매수 진입 유효"
+    ],
+    "riskNote": "거래량 비율이 0.44로 낮아 현재 상승 움직임의 신뢰도가 낮으며, 52주 고가 저항선 돌파 여부가 중요."
   }
 }
