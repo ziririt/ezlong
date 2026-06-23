@@ -3,35 +3,35 @@
   "name": "리플",
   "assetType": "crypto",
   "market": "us",
-  "updatedAt": "2026-06-23T12:06:13.085Z",
+  "updatedAt": "2026-06-23T13:06:21.774Z",
   "price": {
-    "current": 1.1079,
-    "change": -0.0207,
-    "changePct": -1.84,
+    "current": 1.0982,
+    "change": -0.0304,
+    "changePct": -2.7,
     "high52": 3.6502,
     "low52": 1.0547,
-    "pos52": 2.1,
+    "pos52": 1.7,
     "marketState": "PRE",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 1.1477,
-    "sma50": 1.2818,
-    "sma100": 1.336,
+    "sma20": 1.1472,
+    "sma50": 1.2816,
+    "sma100": 1.3359,
     "sma200": 1.5338,
-    "rsi": 37.11,
+    "rsi": 36.11,
     "macd": {
-      "macd": -0.03933,
-      "signal": -0.041786,
-      "histogram": 0.002456
+      "macd": -0.040103,
+      "signal": -0.04194,
+      "histogram": 0.001837
     },
     "bb": {
-      "upper": 1.2221,
-      "middle": 1.1477,
-      "lower": 1.0733,
-      "bandwidth": 0.1296
+      "upper": 1.2228,
+      "middle": 1.1472,
+      "lower": 1.0717,
+      "bandwidth": 0.1317
     }
   },
   "levels": {
@@ -39,29 +39,45 @@
     "swingSupport": 1.0547,
     "pivot": {
       "pp": 1.15,
-      "r1": 1.25,
-      "r2": 1.39,
+      "r1": 1.24,
+      "r2": 1.38,
       "s1": 1.01,
-      "s2": 0.92
+      "s2": 0.91
     }
   },
   "analysis": {
-    "trend": "분석 대기",
-    "strength": 0,
+    "trend": "약세",
+    "strength": 2,
     "support": 1.05,
     "resistance": 1.26,
-    "rsiStatus": "N/A",
-    "macdStatus": "N/A",
-    "bbStatus": "N/A",
-    "stage": "N/A",
+    "rsiStatus": "과매도",
+    "macdStatus": "중립",
+    "bbStatus": "하단접근",
+    "stage": "축적구간",
     "action": "관망",
-    "buyScore": null,
-    "profitTarget1": null,
-    "profitTarget2": null,
-    "stopLoss": null,
-    "narrative": "AI 분석 데이터를 불러오는 중입니다.",
-    "patternNote": null,
-    "keyPoints": [],
-    "riskNote": ""
+    "buyScore": 4,
+    "scoreReason": "RSI 과매도 진입 + 5일 저가 지지 확인",
+    "rsiTrajectory": "40.3 → 36.1 (과매도 진입 중)",
+    "macdTrajectory": "히스토 0.0103 → 0.0018 (악화)",
+    "pricePattern": "5일 저가($1.10)가 20일 저가($1.05)보다 높음 (Higher Low 가능성)",
+    "volComment": "거래량비 1.17 (정상)",
+    "bbPosition": "하단근처",
+    "reason": "최근 5거래일 일봉 변동률은 -2.70%, -2.14% 등 하락세가 강하다. RSI는 36.1로 과매도 구간에 진입했으며, MACD 히스토그램은 악화되고 있다. SMA5($1.13)가 현재가($1.10) 아래에 있어 단기 저항으로 작용한다.",
+    "entry": 1.08,
+    "stop": 1,
+    "target": 1.2,
+    "invalidation": 1.15,
+    "weeklyConflict": "주봉 RSI(30.2)도 과매도 구간이나, 주봉 MACD 히스토그램(0.0063)은 양수 유지. 일봉 기준 우선.",
+    "profitTarget1": 1.15,
+    "profitTarget2": 1.22,
+    "stopLoss": 1.05,
+    "narrative": "[추세 위치]\n· 현재가($1.10) vs SMA5/20/50($1.13/$1.15/$1.28) — 단기·중기 추세 하회, 저항 구간 진입.\n· SMA100/200($1.34/$1.53) 대비 위치 — 중장기 추세 하회, 약세 구간.\n· 52주 위치(1.7%) + 현 가격대 역사적 저점 부근.\n[모멘텀 지표]\n· RSI 궤적 (40.3→36.1) — 과매도 구간 진입, 하락 모멘텀 지속.\n· MACD 히스토그램 궤적 (0.0103→0.0018) — 악화, 약세 전환 신호.\n· 볼린저밴드 현재가 위치 (하단 $1.07) — 하단 접근 구간, 밴드폭(13.17%)은 보통 수준.\n[지지·저항 구조]\n· 스윙 지지선 ($1.05) — 52주 최저가 및 볼린저밴드 하단과 일치.\n· 스윙 저항선 ($1.26) — SMA50 및 20일 고가와 근접.\n· 5일/20일 고가·저가 패턴 (Higher Low 가능성) — 5일 저가($1.10)가 20일 저가($1.05)보다 높음.\n[거래량·결론]\n· 거래량 비율 (1.17배) — 정상 수준, 움직임의 신뢰도 보통.\n· 현 구간 진단 (축적구간) — RSI 과매도 진입 및 5일 저가 지지 확인 시 매수 고려, SMA5 돌파 시 관망.",
+    "patternNote": "5일 저가가 20일 저가보다 높은 Higher Low 패턴의 초입 구간으로, 기술적 반등 가능성 존재.",
+    "keyPoints": [
+      "RSI 36.1 과매도 구간 진입",
+      "5일 저가 $1.10, 20일 저가 $1.05 대비 Higher Low 가능성",
+      "SMA5 $1.13이 단기 저항으로 작용"
+    ],
+    "riskNote": "현재가($1.10)가 SMA5($1.13) 아래에 위치하며 단기 하락 압력이 지속될 수 있음."
   }
 }
