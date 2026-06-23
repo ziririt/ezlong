@@ -49,17 +49,23 @@ jobs:
         run: npm install --production
 
       # ── 3. 미국 정규장 시간 체크 (ET 9:30~16:00) ─────────────────────
+      # workflow_dispatch(수동 실행) 시에는 시간 체크 우회 — 장 외에서도 강제 실행 가능
       - name: Check US market hours
         id: market_check
         run: |
-          ET_TIME=$(TZ=America/New_York date +%H%M)
-          echo "현재 ET 시각: $ET_TIME"
-          if [ "$ET_TIME" -lt "0930" ] || [ "$ET_TIME" -ge "1600" ]; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-            echo "장 외 시간 — 건너뜀 (ET $ET_TIME)"
-          else
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "skip=false" >> $GITHUB_OUTPUT
-            echo "장 중 — 분석 실행 (ET $ET_TIME)"
+            echo "수동 실행(workflow_dispatch) — 시간 체크 우회, 강제 실행"
+          else
+            ET_TIME=$(TZ=America/New_York date +%H%M)
+            echo "현재 ET 시각: $ET_TIME"
+            if [ "$ET_TIME" -lt "0930" ] || [ "$ET_TIME" -ge "1600" ]; then
+              echo "skip=true" >> $GITHUB_OUTPUT
+              echo "장 외 시간 — 건너뜀 (ET $ET_TIME)"
+            else
+              echo "skip=false" >> $GITHUB_OUTPUT
+              echo "장 중 — 분석 실행 (ET $ET_TIME)"
+            fi
           fi
 
       # ── 4. 미국 주식/ETF 차트 분석 실행 ──────────────────────────────
@@ -82,13 +88,10 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore: 미국주식 차트 분석 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+          KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
+          git commit -m "chore: 미국주식 차트 분석 업데이트 ${KST}"
 
-          for i in 1 2 3; do
-            git pull --rebase origin main && git push && break
-            echo "push 재시도 $i/3..."
-            sleep 5
-          done
+          git push origin main || (git fetch origin main && git merge --ff-only origin/main && git push origin main)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
