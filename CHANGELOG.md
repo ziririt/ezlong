@@ -5,6 +5,69 @@
 
 ---
 
+## [2026-06-25] 세션 — 긍정 vs 부정 UI 개선 + Gemini 안정화 + SEO/AEO 최적화
+
+### 커밋 이력 (주요 작업)
+
+. `a0c09ccbe` — feat: market-vs.html SEO/AEO 최적화, sitemap 업데이트
+. `f1076b950` — ux: 핵심 이슈 레이블 고정 문구 '(최근 6시간, 향후 12시간 감안)'
+. `5cf5da694` — fix: Gemini 프롬프트 지시문 노출 방지, 폴백 모델 수정, JSON 100자 이내 문구 삭제
+. `7a4bdf209` — fix: 폴백 모델 gemini-2.0-flash-lite → gemini-2.0-flash (404 수정)
+. `7cd93f5fa` — fix: 워크플로우 push 전략 ff-only→ours, Gemini 폴백, 디자인 개선
+. `59c82a482` — ux: 몇대몇 회전각 -30deg → -20deg 조정
+. `1df64b0a0` — fix: 차트분석 수동실행 cron 취소 방지 + Node24 req.destroy 이중reject 수정
+. `063b3d0f2` — docs: CLAUDE.md 18항 추가 (위험 등급제 + 검증 분리 + 재시도 상한선)
+
+---
+
+### 1. Gemini API 안정화 — 폴백 모델 + 재시도 로직
+
+**문제:** `gemini-2.5-flash-lite`가 연속 503 반환. 폴백으로 지정한 `gemini-2.0-flash-lite`도 404.
+
+**수정:**
+- 1차: `gemini-2.5-flash-lite` 3회 재시도 (15s / 30s / 60s 백오프)
+- 폴백: `gemini-2.0-flash` (GA 모델, 안정적) 2회 재시도
+- 파일: `scripts/fetch-market-scorecard.py`
+
+**수정 복구:**
+```bash
+git checkout 7a4bdf209 -- scripts/fetch-market-scorecard.py
+```
+
+### 2. GitHub Actions cron 미실행 해결 — cron-job.org 외부 트리거
+
+**문제:** GitHub Actions는 신규 워크플로우 cron을 자주 스킵(GitHub 정책상 빈 repo는 최대 60일 미실행 시 비활성화).
+
+**해결:** cron-job.org에서 GitHub API `workflow_dispatch` 호출로 5개 스케줄 외부 트리거 등록 (KST 07:00 / 12:00 / 18:30 / 22:00 / 23:30, Asia/Seoul 시간대).
+
+### 3. UI 개선 — `market-vs.html`
+
+- 새로고침 버튼 제거 → `.mv-updated-bar` 업데이트 시각 바로 교체
+- 카드 간 연결선 추가: 위쪽 방향 삼각형 화살표 + 세로 선 (높이 72px)
+- 최신 카드 vs 과거 카드 시각 차별화: 과거 카드 `opacity: 0.65` + "이전 분석" 뱃지
+- 페이지 타이틀 타이포그라피 강화: 긍정(#1D7A3E, 46px 900) vs 부정(#C0392B, 46px 900), "몇대몇" 우측 윗첨자 `-20deg` 회전
+- 핵심 이슈 레이블: "향후 핵심 이슈(최근 6시간, 향후 12시간 감안)" 고정 문구
+
+### 4. Gemini 프롬프트 지시문 노출 방지
+
+**문제:** Gemini가 출력 JSON 값 안에 "100자 이내" 같은 지시문 텍스트를 그대로 포함.
+
+**수정:** 프롬프트 구조를 `=== 출력 규칙 ===`(지시사항) + `=== JSON 구조 ===`(빈 문자열 플레이스홀더) 두 섹션으로 분리. 마지막 규칙에 "위 지시문 내용을 절대 출력값에 포함하지 마세요" 추가.
+
+### 5. SEO/AEO 최적화 — `market-vs.html`
+
+- `<title>`: "미국 주식 시장 긍정 vs 부정 몇대몇 — 하루 5회 AI 시황 분석 | EZLONG"
+- meta description, keywords, canonical, OG, Twitter Card 신설
+- JSON-LD 구조화 데이터: `WebApplication` + `FAQPage` (AEO) 조합
+  - FAQ 질문 3개: "지금 미국 주식 시장 분위기는?", "오늘 긍정/부정 요인은?", "나스닥 전망은?"
+- 파비콘: ⚖️ (저울 이모지)
+
+### 6. `sitemap.xml` 업데이트
+
+`market-vs.html` 추가, `changefreq: hourly`, `priority: 0.95`.
+
+---
+
 ## [2026-06-24] 세션 2 — 긍정 vs 부정 몇대몇 페이지 신설 (14번째 툴)
 
 ### 커밋 이력 (주요 작업)
