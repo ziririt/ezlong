@@ -5,11 +5,12 @@
 
 ---
 
-## [2026-06-25] 세션 2 — Gemini 2.5-flash 전환 + 매크로 인과관계 규칙 + JSON 데이터 수정
+## [2026-06-25] 세션 2 — Gemini 모델 전략 확정 + 매크로 인과관계 규칙 + JSON 수정
 
 ### 추가 작업 (세션 1 마무리 후)
 
 . `scripts/fetch-market-scorecard.py` — Gemini 1차 모델 `gemini-2.5-flash`로 확정, 폴백 `gemini-2.0-flash`
+. `scripts/generate-chart-analysis.js` — `gemini-2.5-flash-lite` → `gemini-2.0-flash` (GA 안정, 고볼륨 대응)
 . `scripts/fetch-market-scorecard.py` — 매크로 인과관계 절대 규칙 프롬프트 추가
 . `data/market-scorecard-data.json` — 원유 가격 하락 논리 오류 4개 항목 수정
 . `CLAUDE.md` — Gemini 모델 설정 개정 (gemini-2.5-flash-lite 사용 금지 명문화)
