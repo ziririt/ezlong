@@ -55,16 +55,19 @@
   letter-spacing: -2px;
 }
 
-/* "몇대몇" — 부정 우측 윗첨자 */
+/* "몇대몇" — 부정 우측 윗첨자 + 30도 기울기 */
 .mv-header-super {
-  font-size: 15px;
+  font-size: 19px;
   font-weight: 700;
   color: var(--ez-text2);
   letter-spacing: -0.3px;
   line-height: 1;
   align-self: flex-start;
-  padding-top: 4px;
-  margin-left: -2px;
+  padding-top: 2px;
+  margin-left: 0px;
+  transform: rotate(30deg);
+  transform-origin: left top;
+  display: inline-block;
 }
 
 .mv-header-sub {
