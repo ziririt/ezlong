@@ -23,9 +23,12 @@ except ImportError:
     sys.exit(1)
 
 # ─── 설정 ───────────────────────────────────────────────────────────────────
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
-GEMINI_MODEL   = 'gemini-2.5-flash-lite'
-GEMINI_URL     = f'https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}'
+GEMINI_API_KEY     = os.environ.get('GEMINI_API_KEY', '')
+GEMINI_MODEL       = 'gemini-2.5-flash-lite'          # 1차 시도
+GEMINI_MODEL_FALLBACK = 'gemini-2.0-flash-lite'       # 폴백 (GA, 저렴, 안정적)
+
+def _gemini_url(model):
+    return f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}'
 
 MAX_ENTRIES = 10
 
@@ -206,9 +209,40 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines):
 """
 
 
-def call_gemini(prompt, max_retries=3):
+def _call_single_model(model, payload, max_retries=3):
+    """단일 모델로 최대 max_retries회 시도. 성공 시 dict 반환, 실패 시 None."""
+    url = _gemini_url(model)
+    wait_secs = [15, 30, 60]
+
+    for attempt in range(max_retries):
+        try:
+            resp = requests.post(url, json=payload, timeout=60)
+            resp.raise_for_status()
+            data = resp.json()
+            text = data["candidates"][0]["content"]["parts"][0]["text"]
+            text = text.strip()
+            text = re.sub(r'^```[a-zA-Z]*\n?', '', text)
+            text = re.sub(r'\n?```$', '', text)
+            return json.loads(text)
+        except requests.exceptions.RequestException as e:
+            status = getattr(e.response, 'status_code', None) if hasattr(e, 'response') else None
+            print(f"  ERROR: {model} 요청 실패 (시도 {attempt+1}/{max_retries}) — {e}")
+            if attempt < max_retries - 1 and status in (None, 429, 500, 502, 503, 504):
+                wait = wait_secs[attempt]
+                print(f"  {wait}초 후 재시도...")
+                time.sleep(wait)
+                continue
+            return None
+        except (KeyError, IndexError, json.JSONDecodeError) as e:
+            print(f"  ERROR: {model} 응답 파싱 실패 — {e}")
+            return None
+
+    return None
+
+
+def call_gemini(prompt):
     if not GEMINI_API_KEY:
-        print("WARNING: GEMINI_API_KEY 없음 — 더미 데이터 반환")
+        print("WARNING: GEMINI_API_KEY 없음 — 스킵")
         return None
 
     payload = {
@@ -219,32 +253,19 @@ def call_gemini(prompt, max_retries=3):
         }
     }
 
-    wait_secs = [15, 30, 60]  # 재시도 대기: 15초 → 30초 → 60초
+    # 1차: gemini-2.5-flash-lite (3회 재시도)
+    print(f"  1차 시도: {GEMINI_MODEL}")
+    result = _call_single_model(GEMINI_MODEL, payload, max_retries=3)
+    if result:
+        print(f"  성공: {GEMINI_MODEL}")
+        return result
 
-    for attempt in range(max_retries):
-        try:
-            resp = requests.post(GEMINI_URL, json=payload, timeout=60)
-            resp.raise_for_status()
-            data = resp.json()
-            text = data["candidates"][0]["content"]["parts"][0]["text"]
-            # JSON만 추출 (앞뒤 마크다운 제거)
-            text = text.strip()
-            text = re.sub(r'^```[a-zA-Z]*\n?', '', text)
-            text = re.sub(r'\n?```$', '', text)
-            return json.loads(text)
-        except requests.exceptions.RequestException as e:
-            status = getattr(e.response, 'status_code', None) if hasattr(e, 'response') else None
-            print(f"ERROR: Gemini API 요청 실패 (시도 {attempt+1}/{max_retries}) — {e}")
-            # 503/429/500 등 서버 측 일시 오류는 재시도
-            if attempt < max_retries - 1 and status in (None, 429, 500, 502, 503, 504):
-                wait = wait_secs[attempt]
-                print(f"  {wait}초 후 재시도...")
-                time.sleep(wait)
-                continue
-            return None
-        except (KeyError, IndexError, json.JSONDecodeError) as e:
-            print(f"ERROR: Gemini 응답 파싱 실패 — {e}")
-            return None
+    # 폴백: gemini-2.0-flash-lite (2회 재시도)
+    print(f"  폴백 전환: {GEMINI_MODEL_FALLBACK}")
+    result = _call_single_model(GEMINI_MODEL_FALLBACK, payload, max_retries=2)
+    if result:
+        print(f"  성공(폴백): {GEMINI_MODEL_FALLBACK}")
+        return result
 
     return None
 

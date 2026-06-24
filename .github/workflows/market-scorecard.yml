@@ -67,7 +67,7 @@ jobs:
           fi
           KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
           git commit -m "data: 긍정vs부정 분석 업데이트 ${KST}"
-          git push origin main || (git fetch origin main && git merge --ff-only origin/main && git push origin main)
+          git push origin main || (git fetch origin main && git merge origin/main -X ours --no-edit && git push origin main)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
