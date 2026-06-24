@@ -191,24 +191,27 @@ nav 항목 추가/삭제/이름 변경 → **`ez-nav.js` 파일 하나만 수정
 모든 페이지에 자동 반영됨. 개별 HTML 파일은 건드리지 않는다.
 
 ```javascript
-// ez-nav.js 내 links 배열 (수정 위치)
+// ez-nav.js 내 links 배열 (수정 위치) — 2026-06-24 현재 15개
 var links = [
-  ['/atmr-dashboard.html',        '스윙 시그널'],
-  ['/chart-analysis.html',        'AI 차트분석'],
-  ['/analyst-reports.html',       '목표주가'],
-  ['/market-cycle.html',          'Market Cycle'],
-  ['/dca-simulator.html',         'DCA 시뮬레이터'],
-  ['/portfolio-manager.html',     '포트폴리오'],
-  ['/tax-account-simulator.html', '절세 계좌'],
-  ['/compound-calculator.html',   '복리 계산기'],
-  ['/retirement-calculator.html', '은퇴 계산기'],
-  ['/backtest.html',              '백테스트'],
-  ['/risk-diagnostic.html',       '투자성향'],
-  ['/auto-dca-guide.html',        'DCA 가이드']
+  ['/atmr-dashboard.html',        '스윙 시그널',    "스윙 트레이더를 위한 '스윙 시그널'"],
+  ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇 — 하루 5회 시황 분석'],
+  ['/stocks.html',                '심플 주가',      '심플 주가 정보'],
+  ['/chart-analysis.html',        'AI 차트분석',    'AI 차트 분석'],
+  ['/analyst-reports.html',       '월가 목표주가',  '월가 목표주가'],
+  ['/market-cycle.html',          '마켓 사이클',    '하락장 변곡점 감시'],
+  ['/dca-simulator.html',         'DCA 시뮬레이터', 'DCA 복리 시뮬레이터'],
+  ['/portfolio-manager.html',     'AI 포트폴리오',  '투자성향별 AI 포트폴리오'],
+  ['/tax-account-simulator.html', '절세 계좌',      '절세 계좌 시뮬레이터'],
+  ['/compound-calculator.html',   '복리 계산기',    '복리 계산기'],
+  ['/retirement-calculator.html', '은퇴 계산기',    '은퇴목표역산 투자액 시뮬레이터'],
+  ['/backtest.html',              '백테스트',       '몬테카를로 포트폴리오 백테스트'],
+  ['/risk-diagnostic.html',       '투자성향 진단',  '투자성향 자가진단'],
+  ['/stock-personality-quiz.html','투자유형 진단',  'MBTI로 찾는 맞춤 투자 포트폴리오'],
+  ['/auto-dca-guide.html',        '자동화 가이드',  '투자 자동화 가이드']
 ];
 ```
 
-> 라벨 길이 주의: 1280px 뷰포트 기준 12개 항목이 전부 보여야 한다. 너무 길면 마지막 항목이 잘림.
+> 라벨 길이 주의: PC 가로 스크롤 칩 메뉴이므로 항목 수 제한 없음. 모바일은 풀스크린 오버레이로 표시되어 무제한.
 
 ---
 

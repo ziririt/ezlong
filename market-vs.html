@@ -6,18 +6,19 @@
 <title>긍정 vs 부정 몇대몇 — EZLONG</title>
 <link rel="stylesheet" href="ez-design.css">
 <style>
-/* ── 페이지 레이아웃 ── */
+/* ── 페이지 레이아웃 — PC 최대 너비 600px 중앙 정렬 ── */
 .mv-page {
   background: var(--ez-bg);
   min-height: 100vh;
   padding-bottom: 80px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .mv-header {
   padding: 20px 16px 12px;
   background: var(--ez-surface);
   border-bottom: 1px solid var(--ez-border);
-  margin-bottom: 0;
 }
 
 .mv-header-title {
@@ -28,15 +29,12 @@
   line-height: 1.2;
 }
 
-.mv-header-title .vs {
-  color: #1D3461;
-}
-
+.mv-header-title .vs { color: #1D3461; }
 .mv-header-title .pos-word { color: #1D7A3E; }
 .mv-header-title .neg-word { color: #C0392B; }
 
 .mv-header-sub {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--ez-text3);
   margin-top: 4px;
   font-weight: 500;
@@ -49,11 +47,10 @@
   padding: 10px 16px;
   background: var(--ez-surface);
   border-bottom: 1px solid var(--ez-border);
-  margin-bottom: 0;
 }
 
 .mv-refresh-info {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--ez-text3);
 }
 
@@ -63,7 +60,7 @@
   border: none;
   border-radius: 20px;
   padding: 6px 14px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
@@ -72,9 +69,7 @@
 .mv-refresh-btn:active { opacity: 0.8; }
 
 /* ── 카드 스택 ── */
-.mv-stack {
-  padding: 12px 0 0;
-}
+.mv-stack { padding: 12px 0 0; }
 
 /* ── 개별 스코어카드 ── */
 .mv-card {
@@ -108,9 +103,7 @@
   letter-spacing: -0.3px;
 }
 
-.mv-ts-latest {
-  background: #1D7A3E;
-}
+.mv-ts-latest { background: #1D7A3E; }
 
 /* 핵심 이벤트 */
 .mv-event {
@@ -120,9 +113,9 @@
 }
 
 .mv-event-label {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.04em;
   color: #1D7A3E;
   text-transform: uppercase;
   margin-bottom: 5px;
@@ -138,7 +131,7 @@
 }
 
 .mv-event-time {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--ez-text2);
   margin-bottom: 3px;
@@ -168,7 +161,7 @@
 .mv-score-side.right { text-align: right; }
 
 .mv-score-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   margin-bottom: 0;
 }
@@ -235,16 +228,11 @@
   border-top: 1px solid var(--ez-border2);
 }
 
-.mv-factor-col {
-  padding: 12px 14px;
-}
-
-.mv-factor-col.left {
-  border-right: 1px solid var(--ez-border2);
-}
+.mv-factor-col { padding: 12px 14px; }
+.mv-factor-col.left { border-right: 1px solid var(--ez-border2); }
 
 .mv-factor-col-title {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 800;
   letter-spacing: -0.1px;
   margin-bottom: 10px;
@@ -252,10 +240,7 @@
 .mv-factor-col-title.pos { color: #1D7A3E; }
 .mv-factor-col-title.neg { color: #C0392B; }
 
-.mv-factor-item {
-  margin-bottom: 10px;
-}
-
+.mv-factor-item { margin-bottom: 10px; }
 .mv-factor-item:last-child { margin-bottom: 0; }
 
 .mv-factor-score {
@@ -268,7 +253,7 @@
 .mv-factor-score.neg { color: #C0392B; }
 
 .mv-factor-name {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--ez-text);
   line-height: 1.3;
@@ -276,9 +261,9 @@
 }
 
 .mv-factor-desc {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--ez-text3);
+  color: var(--ez-text2);
   line-height: 1.35;
   margin-top: 1px;
 }
@@ -308,7 +293,7 @@
 /* ── 하단 안내 ── */
 .mv-footer-note {
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--ez-text3);
   padding: 16px 20px 0;
   line-height: 1.6;
@@ -443,7 +428,7 @@ function renderEntry(e, isLatest) {
   }
 
   var latestClass = isLatest ? ' mv-ts-latest' : '';
-  var latestBadge = isLatest ? ' &nbsp;<span style="font-size:12px;font-weight:700;background:rgba(255,255,255,0.25);padding:2px 7px;border-radius:20px;">최신</span>' : '';
+  var latestBadge = isLatest ? ' &nbsp;<span style="font-size:14px;font-weight:700;background:rgba(255,255,255,0.25);padding:2px 8px;border-radius:20px;">최신</span>' : '';
 
   return (
     '<div class="mv-card">' +
