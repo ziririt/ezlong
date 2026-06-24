@@ -5,16 +5,18 @@
 
 ---
 
-## [2026-06-25] 세션 — 긍정 vs 부정 UI 개선 + Gemini 안정화 + SEO/AEO 최적화
+## [2026-06-25] 세션 — 긍정 vs 부정 UI 개선 + Gemini 안정화 + SEO/AEO + 스윙분석 시장컨텍스트 + 미국차트분석 워크플로 안정화
 
 ### 커밋 이력 (주요 작업)
 
+. `7a50d6cb4` — fix: 스윙시그널 시장흐름 배너 1순위 배치 + 스윙전략/TSLA·NVDA 집중분석 최근 흐름 컨텍스트 추가 + Gemini 실패 시 기존 분석 보존
 . `a0c09ccbe` — feat: market-vs.html SEO/AEO 최적화, sitemap 업데이트
 . `f1076b950` — ux: 핵심 이슈 레이블 고정 문구 '(최근 6시간, 향후 12시간 감안)'
 . `5cf5da694` — fix: Gemini 프롬프트 지시문 노출 방지, 폴백 모델 수정, JSON 100자 이내 문구 삭제
 . `7a4bdf209` — fix: 폴백 모델 gemini-2.0-flash-lite → gemini-2.0-flash (404 수정)
 . `7cd93f5fa` — fix: 워크플로우 push 전략 ff-only→ours, Gemini 폴백, 디자인 개선
 . `59c82a482` — ux: 몇대몇 회전각 -30deg → -20deg 조정
+. `e1f781a71` — fix: 미국차트분석 워크플로 push 전략 ff-only→rebase (동시 push 충돌 해결)
 . `1df64b0a0` — fix: 차트분석 수동실행 cron 취소 방지 + Node24 req.destroy 이중reject 수정
 . `063b3d0f2` — docs: CLAUDE.md 18항 추가 (위험 등급제 + 검증 분리 + 재시도 상한선)
 
@@ -65,6 +67,84 @@ git checkout 7a4bdf209 -- scripts/fetch-market-scorecard.py
 ### 6. `sitemap.xml` 업데이트
 
 `market-vs.html` 추가, `changefreq: hourly`, `priority: 0.95`.
+
+---
+
+### 7. 스윙 분석 시장 컨텍스트 배너 추가 — `atmr-dashboard.html`
+
+**변경 내용:**
+
+. **'오늘의 시장 흐름' 배너 — 1순위 배치 (이전: 3순위)**
+  - `buildRecentContextHtml()` 반환값을 desc 문자열 맨 앞으로 이동
+  - 시장 급락 경고를 진입 근거보다 먼저 보여줌으로써 실수 진입 방지
+
+. **스윙전략 탭 — `buildStrategyContextBanner()` 신설**
+  - QQQ 이틀 연속 하락, QQQ -2% 이상 급락, SOXX -4% 이상 급락, TSLA/NVDA ±3% 이상 시 배너 표시
+  - 경보 색상: 하락 계열 `var(--rd)`, 급등 계열 `var(--or)`
+  - 전략 가이드 상단에 배치 — "위 흐름이 반영된 상태에서 아래 전략 가이드를 확인할 것" 안내
+
+. **TSLA/NVDA 집중분석 탭 — `stockRecentBanner` 추가**
+  - 각 종목 카드 상단에 최근 3일 등락률(오늘/어제/2일전) 수치 표시
+  - 이틀 연속 -1% 초과 하락 시 "단기 하락 압력" 요약, 당일 ±3% 시 "급등/급락" 요약
+
+. **Gemini 분석 실패 시 기존 데이터 보존 (generate-chart-analysis.js)**
+  - `aiResult`가 null일 때 기존 `analysis-{symbol}.json`에서 이전 분석 로드
+  - narrative가 placeholder 문구(`AI 분석 데이터를 불러오는 중입니다.`)가 아니고 30자 이상일 때만 보존
+  - 보존 시 콘솔에 `Gemini 실패 — 기존 분석 보존: {symbol} ({날짜})` 경고 출력
+
+**복구:**
+```bash
+git checkout 7a50d6cb4^ -- atmr-dashboard.html scripts/generate-chart-analysis.js
+```
+
+---
+
+### 8. 미국주식 차트분석 워크플로 안정화 — `fetch-us-chart-analysis.yml`
+
+**원인 분석:**
+
+미국 차트분석 워크플로(43개 종목, ~8분 소요)가 장 중에 정상 발화했음에도 커밋이 생성되지 않던 문제의 근본 원인 2가지 확인.
+
+1. **git diverge로 커밋 미생성 (e1f781a71):** 다른 워크플로(크립토·ATMR)가 분석 실행 중 push → `git push` 실패 → `ff-only merge` 시도도 실패(diverge) → Step exit 실패. 매 cron 실행마다 반복.
+
+2. **지연 cron에 의한 SIGTERM 취소 (1df64b0a0):** GitHub Actions cron은 수십 분 지연 발화가 잦음. 15:35 UTC cron이 16:04 UTC에 지연 발화 → 수동 실행 중이던 run을 `cancel-in-progress: true`가 SIGTERM으로 강제 종료 → Node.js에서 `Error: The operation was canceled.` (try-catch 불통과, 프로세스 레벨 종료).
+
+**수정 내용:**
+
+. **ff-only → rebase** (e1f781a71)
+  ```yaml
+  git push origin main || (git fetch origin main && git rebase origin/main && git push origin main)
+  ```
+  다른 워크플로 커밋 위에 차트분석 커밋을 rebase → 선형 이력 유지, 데이터 손실 없음.
+
+. **수동 실행 독립 concurrency group** (1df64b0a0)
+  ```yaml
+  group: ${{ github.event_name == 'workflow_dispatch' && format('us-chart-analysis-manual-{0}', github.run_id) || 'us-chart-analysis' }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
+  ```
+  - workflow_dispatch: run_id 기반 유일 그룹 → cron이 절대 취소 불가
+  - schedule: 공유 그룹 + cancel-in-progress → 지연 cron을 신규 cron이 정리
+
+. **Node.js 24 req.destroy() 이중 reject 수정** (1df64b0a0)
+  - `req.destroy()` 후 `reject()` 별도 호출 → `req.on('error', reject)` + `reject()` 이중 발화
+  - `req.destroy(new Error('타임아웃'))` 방식으로 변경 → error event 단일 발화
+
+**복구:**
+```bash
+git checkout e1f781a71^ -- .github/workflows/fetch-us-chart-analysis.yml scripts/generate-chart-analysis.js
+```
+
+---
+
+### 9. CLAUDE.md 18항 추가 — 위험 등급제 + 검증 분리 + 재시도 상한선
+
+반복 사고 패턴을 방지하기 위한 작업 규율을 명문화. 핵심: 작업 크기에 맞게 의식(ceremony) 수준을 조절한다.
+
+. **0등급 (외과수술):** CSS·문구·단일 파일 한두 줄 → 하네스 없이 진행, grep 셀프체크만
+. **1등급 (기능·다중 파일):** Task 리스트로 추적 + 끝에 검증 1회
+. **2등급 (고위험):** 알고리즘 변경, 10개+ 파일 동시 수정 → 제3자 서브에이전트 감사 필수 (자기 검증 편향 차단)
+. **재시도 상한선 3회:** 같은 파일·같은 증상 3회 수정 후에도 미해결 시 → 즉시 멈추고 상황 보고
+. **STATE.md 금지:** 루프 상태는 휘발성 Task 리스트만 사용. CHANGELOG.md 단일화.
 
 ---
 
