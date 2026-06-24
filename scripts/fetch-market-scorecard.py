@@ -24,8 +24,8 @@ except ImportError:
 
 # ─── 설정 ───────────────────────────────────────────────────────────────────
 GEMINI_API_KEY     = os.environ.get('GEMINI_API_KEY', '')
-GEMINI_MODEL       = 'gemini-2.5-flash-lite'          # 1차 시도
-GEMINI_MODEL_FALLBACK = 'gemini-2.0-flash'             # 폴백 (GA, 안정적)
+GEMINI_MODEL       = 'gemini-2.0-flash'                # 1차 시도 (GA, 안정적)
+GEMINI_MODEL_FALLBACK = 'gemini-2.5-flash-lite'        # 폴백 (프리뷰, 불안정 — 2026-06-25 순서 변경)
 
 def _gemini_url(model):
     return f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}'
@@ -190,6 +190,18 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines):
 - summary: 단기 시장 구도 총평 (한국어, 50자 이내)
 - 모든 문자열 값은 한국어, 분석/진단형 문체 ("~하세요" 금지)
 - name 필드: 20자 이내, desc 필드: 30자 이내
+
+=== 매크로 인과관계 절대 규칙 (위반 시 신뢰도 훼손) ===
+- 원유/유가 하락 → 에너지 비용 감소, 인플레이션 완화 → 긍정(positive) 분류
+  예외: '글로벌 수요 붕괴 신호'로 판단될 경우에만 부정 가능 (이유에 반드시 '경기 둔화 우려' 명시)
+- "인플레이션 우려 완화"를 desc에 적으면서 negative_factors에 넣는 것은 절대 금지
+- VIX 하락 → 긍정(positive), VIX 상승 → 부정(negative)
+- 국채금리 하락 → 성장주/기술주 긍정, 국채금리 상승 → 성장주 부정
+- 달러 강세 → 미국 수출주/신흥국 자금 유출 우려 → 부정
+- 달러 약세 → 수출주 실적 개선, 원자재 지지 → 긍정
+- 지정학적 리스크 완화 → 긍정, 지정학적 긴장 고조 → 부정
+- desc에 쓴 인과관계 방향이 긍정/부정 분류와 반드시 일치해야 함
+
 - 위 지시문 내용을 절대 출력값에 포함하지 마세요
 
 === JSON 구조 ===
