@@ -402,39 +402,46 @@ grep -rn "font-family.*ez-mono\|font-family.*SF Mono\|font-variant-numeric" *.ht
 
 ---
 
-## 16. GitHub Actions git 커밋 패턴 — pull --rebase 절대 금지 (2026-06-18 명문화)
+## 16. GitHub Actions git 커밋 패턴 — 확정 (2026-06-18 2차 개정)
 
-**배경:** `fetch-stocks-prices.yml` 워크플로우에서 `git pull --rebase`를 사용하다 5회 이상 `cannot pull with rebase: You have unstaged changes` 에러 반복. Python 스크립트가 생성한 파일이 unstaged 상태에서 rebase를 시도하면 무조건 실패한다.
+**배경 1:** `git pull --rebase` → `cannot pull with rebase: You have unstaged changes` 에러 반복.  
+**배경 2 (더 심각):** `git reset --hard origin/main`으로 교체했더니 **tracked 파일**인 `data/stocks-data.json`을 덮어써서 Python이 방금 생성한 신규 JSON이 사라짐. 이후 `git diff --staged`가 항상 "변경 없음"을 출력해 커밋이 단 한 번도 일어나지 않았다. 스파크라인 5포인트 고착 원인. 수 시간 디버깅 낭비. **절대 재발 금지.**
 
 ### 절대 금지
 
 ```yaml
-# Actions 워크플로우에서 이 패턴 절대 금지
-- run: git pull --rebase origin main   # ❌ unstaged 파일 있으면 실패
-- run: git pull origin main            # ❌ merge commit 생성 위험
+- run: git pull --rebase origin main        # ❌ unstaged 파일 있으면 실패
+- run: git pull origin main                 # ❌ merge commit 생성 위험
+- run: git reset --hard origin/main         # ❌ tracked 파일을 덮어써 신규 JSON 소멸
 ```
 
-### 올바른 패턴 (GitHub Actions 전용)
+### 확정 패턴 (GitHub Actions 전용) — 2026-06-18 검증 완료
 
 ```yaml
 - name: Commit & push
   run: |
     git config user.name  "github-actions[bot]"
     git config user.email "github-actions[bot]@users.noreply.github.com"
-    git fetch origin main
-    git reset --hard origin/main      # 로컬을 원격 기준으로 리셋 (untracked 파일은 보존됨)
     git add data/파일명.json           # 파일 명시 — git add -A 절대 금지
     if git diff --staged --quiet; then
       echo "변경 없음 — 커밋 생략"
     else
+      KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
       git commit -m "data: 파일명 ${KST}"
-      git push origin main
+      git push origin main || (git fetch origin main && git merge --ff-only origin/main && git push origin main)
     fi
 ```
 
 ### 핵심 원리
 
-`git reset --hard origin/main`은 **untracked 파일을 건드리지 않는다.** Python 스크립트가 방금 생성한 JSON 파일은 untracked 상태이므로 reset 후에도 살아있다. 그 다음 `git add`로 명시적으로 추가하면 정상 동작.
+- `actions/checkout@v4`가 이미 올바른 origin/main 상태로 체크아웃해준다. 추가 fetch/reset 불필요.
+- Python 스크립트가 `data/파일명.json`을 덮어쓰면 working tree가 HEAD와 달라진다.
+- `git add` → `git diff --staged` → 다르면 커밋 → push. 이게 전부다.
+- 동시 push 충돌 시: `git push` 실패 → `ff-only merge` 재시도. diverge면 step 실패, 다음 cycle에서 재시도. 데이터 손실 없음.
+
+### `git reset --hard`를 쓰면 안 되는 이유 (재확인용)
+
+`data/stocks-data.json`은 **tracked 파일**이다. `git reset --hard origin/main`은 tracked 파일을 origin/main 버전으로 강제 복원한다. Python이 새로 쓴 내용이 모두 사라진다. 이 함정은 untracked 파일에만 쓸 때는 안전하지만, tracked 데이터 파일에는 절대 쓰면 안 된다.
 
 ---
 
@@ -466,11 +473,55 @@ grep -rn "MASSIVE_API_KEY\|massive\.com.*apiKey" *.html *.js | grep -v ".py\|.ym
 - `pricesData`(Massive) 있으면 price/changePct 덮어씀, 없으면 `stocks-data.json` 값 그대로 사용
 - 확장시간: `extPrice`, `extPct`, `extSession` (`'pre'` | `'post'` | null)
 
+### 프리마켓 데이터 소스 확정 (2026-06-18 검증)
+
+**핵심:** Massive API 스냅샷의 `preMarket` 객체는 **항상 None**이다. 스냅샷으로 프리마켓 데이터를 기대하지 말 것.
+
+프리마켓 데이터는 **aggregates 5분봉 엔드포인트**에서만 제공된다:
+```
+GET /v2/aggs/ticker/{sym}/range/5/minute/{today}/{today}?adjusted=false&sort=asc
+```
+
+프리마켓 구조 (`fetch-stocks-prices.py`):
+- `is_premarket` = ET 4AM~9:30AM
+- 오늘 날짜 5분봉 별도 수집 → 마지막 봉 = 프리마켓 현재가 (15분 지연)
+- 기준가 = `prevDay.c` (전일 종가)
+- 프리마켓 시간대엔 Yahoo Finance 호출 완전 차단 (`is_premarket` 조건)
+- 약 130~140개 종목에서 프리마켓 봉 수집 가능 (나머지는 거래 없음)
+
 ### 요금제
 
 - **현재: $29/월 Stocks Starter** — 15분 지연 데이터
 - 실시간($199/월)은 추후 업그레이드 예정
 - UI 표기: `"15분마다 업데이트"` — "(15분 지연)" 표현 금지
+
+---
+
+## 18. 작업 방식 — 위험 등급제 + 검증 분리 + 재시도 상한선 (2026-06-25 명문화)
+
+**배경:** 오케스트레이터·서브에이전트·하네스·루프 개념을 ezlong에 적용. 핵심은 "도입"이 아니라 **위험에 맞춰 켜고 끄는 규율**이다. 잘 돌던 작은 작업엔 의식(ceremony)을 붙이지 않는다. 우리가 실제로 다쳤던 고위험 작업에만 안전망을 두른다.
+
+### 위험 등급으로 의식 수준을 결정한다
+
+작업이 들어오면 먼저 등급부터 매긴다.
+
+- **0등급 (외과수술):** CSS·문구·단일 파일 한두 줄. 하네스 안 켠다. 고치고 → 해당 규칙 grep 셀프체크 → 보고. (지금까지 방식 그대로. 여기에 의식 붙이면 퇴보.)
+- **1등급 (기능·다중 파일):** 새 도구 페이지, 2~5개 파일 연동. Task 리스트로 진행 추적 + 끝에 검증 1회. 서브에이전트는 선택.
+- **2등급 (고위험):** 알고리즘 변경(`calcBuyScore`/`calcSellScore`, lev3x 임계값, 물타기 로직), 10개+ 파일 동시 수정, API 키·보안. 아래 풀하네스 적용.
+
+### 2등급 필수 규율
+
+- **검증은 작성자가 아닌 제3자에게.** 코드 수정 완료 후, 변경을 보지 못한 **깨끗한 서브에이전트(Agent 도구)**를 띄워 diff를 감사시킨다. 감사 기준: 8항 이중 동기화, 15·14항 grep 규칙, 라이트모드 절대 금지 목록. 통과 전에는 유저에게 배포를 안내하지 않는다. (자기 검증 편향 차단)
+- **10개+ 파일은 계획 먼저.** git tag(5항) 직후 Plan 서브에이전트로 의존 순서·사이드이펙트를 뽑아 유저 승인 → 그 다음 수정.
+
+### 재시도 상한선 (전 등급 공통)
+
+- 같은 파일·같은 증상을 **3회** 고쳤는데도 안 되면 더 시도하지 않는다. 멈추고 시도 내역·실패 이유·다음 가설을 정리해 유저에게 보고하고 판단을 기다린다.
+- 특히 "캐시 삭제" 같은 진단을 반복하기 전에 이 규칙을 먼저 적용한다. (2026-06-14 캐시 오진 사건 재발 방지)
+
+### STATE.md는 만들지 않는다
+
+루프 상태(진행 중·완료·에스컬레이션)는 **휘발성 Task 리스트**로 추적한다. 영구 기록은 CHANGELOG.md 하나로 단일화. 별도 STATE.md를 만들면 진실의 출처가 둘로 갈라져 사고 원인이 된다.
 
 ---
 
