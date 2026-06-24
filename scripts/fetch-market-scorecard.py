@@ -24,8 +24,8 @@ except ImportError:
 
 # ─── 설정 ───────────────────────────────────────────────────────────────────
 GEMINI_API_KEY     = os.environ.get('GEMINI_API_KEY', '')
-GEMINI_MODEL       = 'gemini-2.0-flash'                # 1차 시도 (GA, 안정적)
-GEMINI_MODEL_FALLBACK = 'gemini-2.5-flash-lite'        # 폴백 (프리뷰, 불안정 — 2026-06-25 순서 변경)
+GEMINI_MODEL       = 'gemini-2.5-flash'                # 1차 시도 (GA, 고품질 — 2026-06-25 확정)
+GEMINI_MODEL_FALLBACK = 'gemini-2.0-flash'             # 폴백 (GA, 안정적)
 
 def _gemini_url(model):
     return f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}'
