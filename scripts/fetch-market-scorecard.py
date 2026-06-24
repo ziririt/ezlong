@@ -176,36 +176,39 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines):
 === 분석 지시 ===
 위 데이터를 바탕으로 최근 6시간 + 향후 12시간 미국 주식시장에 영향을 주는 긍정/부정 요인을 분석하세요.
 
-반드시 아래 JSON 형식으로만 응답하세요. 다른 텍스트 없이 JSON만 출력합니다.
+아래 JSON 구조로만 응답하세요. JSON 외 다른 텍스트는 절대 출력하지 마세요.
 
+=== 출력 규칙 ===
+- key_event.name: 현재 시장에서 가장 중요한 이슈 한 줄 (한국어, 20자 이내)
+- key_event.time: 이슈가 해당되는 시점 또는 기간 (한국어, 30자 이내)
+- key_event.why: 이 이슈가 왜 시장에 중요한지 (한국어, 40자 이내, 쉼표로 구분)
+- positive_total + negative_total = 반드시 100
+- positive_factors 각 score 합계 = positive_total
+- negative_factors 각 score 합계 = negative_total
+- 요인 수: 각 3~5개
+- 실제 영향력 기반 점수 배분 (50:50 기계적 배분 금지)
+- summary: 단기 시장 구도 총평 (한국어, 50자 이내)
+- 모든 문자열 값은 한국어, 분석/진단형 문체 ("~하세요" 금지)
+- name 필드: 20자 이내, desc 필드: 30자 이내
+- 위 지시문 내용을 절대 출력값에 포함하지 마세요
+
+=== JSON 구조 ===
 {{
   "key_event": {{
-    "name": "가장 중요한 이슈명 (한국어, 20자 이내)",
-    "time": "이슈 시점 또는 기간 설명 (한국어, 30자 이내)",
-    "why": "왜 중요한지 한 줄 (한국어, 쉼표·가운뎃점으로 구분, 40자 이내)"
+    "name": "",
+    "time": "",
+    "why": ""
   }},
-  "positive_total": 긍정_합계_숫자,
-  "negative_total": 부정_합계_숫자,
-  "summary": "총평 한 문장 (한국어, 50자 이내). 단기 구도와 완충재를 언급.",
+  "positive_total": 0,
+  "negative_total": 0,
+  "summary": "",
   "positive_factors": [
-    {{"score": 점수, "name": "요인명 (15자 이내)", "desc": "설명 (30자 이내)"}},
-    ...
+    {{"score": 0, "name": "", "desc": ""}}
   ],
   "negative_factors": [
-    {{"score": 점수, "name": "요인명 (15자 이내)", "desc": "설명 (30자 이내)"}},
-    ...
+    {{"score": 0, "name": "", "desc": ""}}
   ]
 }}
-
-규칙:
-- positive_total + negative_total = 정확히 100
-- 긍정 요인 각 score 합계 = positive_total
-- 부정 요인 각 score 합계 = negative_total
-- 요인 수: 각 3~5개 (중요도 낮으면 억지로 채우지 않음)
-- 실제 영향력 기반으로 점수 배분 (기계적 50:50 금지)
-- 모든 텍스트 한국어
-- 분석/진단형 문체 사용 ("~하세요" 행동 촉구 금지)
-- 설명은 짧고 간결하게
 """
 
 
