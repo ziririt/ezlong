@@ -180,8 +180,8 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines):
 
 {{
   "key_event": {{
-    "name": "가장 중요한 이벤트명 (한국어, 20자 이내)",
-    "time": "이벤트 시점 설명 (한국어, 30자 이내)",
+    "name": "가장 중요한 이슈명 (한국어, 20자 이내)",
+    "time": "이슈 시점 또는 기간 설명 (한국어, 30자 이내)",
     "why": "왜 중요한지 한 줄 (한국어, 쉼표·가운뎃점으로 구분, 40자 이내)"
   }},
   "positive_total": 긍정_합계_숫자,
