@@ -54,12 +54,12 @@
 /* 타임라인 엔트리 래퍼 */
 .mv-entry { position: relative; }
 
-/* 카드 간 연결선 + 노드 */
+/* 카드 간 연결선 + 위쪽 화살표 */
 .mv-connector {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 32px;
+  height: 72px;
   position: relative;
   z-index: 0;
 }
@@ -70,13 +70,15 @@
   background: var(--ez-border);
 }
 
-.mv-connector-node {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--ez-border);
+/* 위쪽 화살표 (삼각형) */
+.mv-connector-arrow {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 11px solid var(--ez-border);
   flex-shrink: 0;
-  margin: 3px 0;
+  margin: 0;
 }
 
 /* ── 개별 스코어카드 ── */
@@ -334,7 +336,7 @@
   .mv-ts-latest { background: #1D7A3E; }
   .mv-card-past { background: #F2F2F7; }
   .mv-connector-line { background: #C8C8CA; }
-  .mv-connector-node { background: #C8C8CA; }
+  .mv-connector-arrow { border-bottom-color: #C8C8CA; }
 }
 
 /* ── 다크모드 ── */
@@ -431,8 +433,7 @@ function renderStack(data) {
     if (i < entries.length - 1) {
       html +=
         '<div class="mv-connector">' +
-          '<div class="mv-connector-line"></div>' +
-          '<div class="mv-connector-node"></div>' +
+          '<div class="mv-connector-arrow"></div>' +
           '<div class="mv-connector-line"></div>' +
         '</div>';
     }
