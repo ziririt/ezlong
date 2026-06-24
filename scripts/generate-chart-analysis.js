@@ -42,7 +42,7 @@ async function getYFCrumb() {
       resolve(cookieStr);
     });
     req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('쿠키 취득 타임아웃')); });
+    req.on('timeout', () => { req.destroy(new Error('쿠키 취득 타임아웃')); });
     req.end();
   });
 
@@ -64,7 +64,7 @@ async function getYFCrumb() {
       res.on('end', () => resolve(Buffer.concat(chunks).toString('utf8').trim()));
     });
     req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('크럼 취득 타임아웃')); });
+    req.on('timeout', () => { req.destroy(new Error('크럼 취득 타임아웃')); });
     req.end();
   });
 
@@ -213,7 +213,7 @@ function httpGet(host, reqPath) {
       });
     });
     req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('요청 타임아웃')); });
+    req.on('timeout', () => { req.destroy(new Error('요청 타임아웃')); });
     req.end();
   });
 }
@@ -239,7 +239,7 @@ function httpPost(host, reqPath, body) {
       });
     });
     req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Gemini 타임아웃')); });
+    req.on('timeout', () => { req.destroy(new Error('Gemini 타임아웃')); });
     req.write(bodyStr);
     req.end();
   });
@@ -276,7 +276,7 @@ async function fetchYFChart(symbol) {
       });
     });
     req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Yahoo Finance 타임아웃')); });
+    req.on('timeout', () => { req.destroy(new Error('Yahoo Finance 타임아웃')); });
     req.end();
   });
 

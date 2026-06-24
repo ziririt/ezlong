@@ -29,8 +29,10 @@ jobs:
     runs-on: ubuntu-latest
 
     concurrency:
-      group: us-chart-analysis
-      cancel-in-progress: true
+      # workflow_dispatch(수동 실행)은 run_id로 유일한 그룹 생성 → cron이 절대 취소 불가
+      # schedule(cron)은 공유 그룹 → 지연된 이전 cron을 새 cron이 취소 가능
+      group: ${{ github.event_name == 'workflow_dispatch' && format('us-chart-analysis-manual-{0}', github.run_id) || 'us-chart-analysis' }}
+      cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 
     steps:
       # ── 1. 저장소 체크아웃 ────────────────────────────────────────────
