@@ -16,27 +16,55 @@
 }
 
 .mv-header {
-  padding: 20px 16px 12px;
+  padding: 24px 18px 18px;
   background: var(--ez-surface);
   border-bottom: 1px solid var(--ez-border);
 }
 
-.mv-header-title {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--ez-text);
-  letter-spacing: -0.5px;
-  line-height: 1.2;
+/* 메인 타이틀 라인 — 긍정 VS 부정 */
+.mv-header-main {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  line-height: 1;
+  margin-bottom: 6px;
 }
 
-.mv-header-title .vs { color: #1D3461; }
-.mv-header-title .pos-word { color: #1D7A3E; }
-.mv-header-title .neg-word { color: #C0392B; }
+.mv-header-pos {
+  font-size: 42px;
+  font-weight: 900;
+  color: #1D7A3E;
+  letter-spacing: -2px;
+}
+
+.mv-header-vs {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ez-text3);
+  letter-spacing: 1px;
+  padding: 0 2px;
+  align-self: center;
+}
+
+.mv-header-neg {
+  font-size: 42px;
+  font-weight: 900;
+  color: #C0392B;
+  letter-spacing: -2px;
+}
+
+/* 서브 타이틀 라인 — 몇대몇 */
+.mv-header-sub-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ez-text2);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
 
 .mv-header-sub {
   font-size: 14px;
   color: var(--ez-text3);
-  margin-top: 4px;
   font-weight: 500;
 }
 
@@ -354,9 +382,12 @@
 <div class="mv-page">
 
   <div class="mv-header">
-    <div class="mv-header-title">
-      <span class="pos-word">긍정</span> <span class="vs">VS</span> <span class="neg-word">부정</span> 몇대몇
+    <div class="mv-header-main">
+      <span class="mv-header-pos">긍정</span>
+      <span class="mv-header-vs">VS</span>
+      <span class="mv-header-neg">부정</span>
     </div>
+    <div class="mv-header-sub-title">몇대몇</div>
     <div class="mv-header-sub">최근 6시간 + 향후 12시간 기준 · 하루 5회 업데이트</div>
   </div>
 
