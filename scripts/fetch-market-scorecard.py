@@ -12,6 +12,7 @@ import json
 import os
 import sys
 import re
+import time
 import requests
 from datetime import datetime, timezone, timedelta
 
@@ -205,7 +206,7 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines):
 """
 
 
-def call_gemini(prompt):
+def call_gemini(prompt, max_retries=3):
     if not GEMINI_API_KEY:
         print("WARNING: GEMINI_API_KEY 없음 — 더미 데이터 반환")
         return None
@@ -218,22 +219,34 @@ def call_gemini(prompt):
         }
     }
 
-    try:
-        resp = requests.post(GEMINI_URL, json=payload, timeout=60)
-        resp.raise_for_status()
-        data = resp.json()
-        text = data["candidates"][0]["content"]["parts"][0]["text"]
-        # JSON만 추출 (앞뒤 마크다운 제거)
-        text = text.strip()
-        text = re.sub(r'^```[a-zA-Z]*\n?', '', text)
-        text = re.sub(r'\n?```$', '', text)
-        return json.loads(text)
-    except requests.exceptions.RequestException as e:
-        print(f"ERROR: Gemini API 요청 실패 — {e}")
-        return None
-    except (KeyError, IndexError, json.JSONDecodeError) as e:
-        print(f"ERROR: Gemini 응답 파싱 실패 — {e}")
-        return None
+    wait_secs = [15, 30, 60]  # 재시도 대기: 15초 → 30초 → 60초
+
+    for attempt in range(max_retries):
+        try:
+            resp = requests.post(GEMINI_URL, json=payload, timeout=60)
+            resp.raise_for_status()
+            data = resp.json()
+            text = data["candidates"][0]["content"]["parts"][0]["text"]
+            # JSON만 추출 (앞뒤 마크다운 제거)
+            text = text.strip()
+            text = re.sub(r'^```[a-zA-Z]*\n?', '', text)
+            text = re.sub(r'\n?```$', '', text)
+            return json.loads(text)
+        except requests.exceptions.RequestException as e:
+            status = getattr(e.response, 'status_code', None) if hasattr(e, 'response') else None
+            print(f"ERROR: Gemini API 요청 실패 (시도 {attempt+1}/{max_retries}) — {e}")
+            # 503/429/500 등 서버 측 일시 오류는 재시도
+            if attempt < max_retries - 1 and status in (None, 429, 500, 502, 503, 504):
+                wait = wait_secs[attempt]
+                print(f"  {wait}초 후 재시도...")
+                time.sleep(wait)
+                continue
+            return None
+        except (KeyError, IndexError, json.JSONDecodeError) as e:
+            print(f"ERROR: Gemini 응답 파싱 실패 — {e}")
+            return None
+
+    return None
 
 
 # ─── JSON 업데이트 ───────────────────────────────────────────────────────────
