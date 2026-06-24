@@ -79,7 +79,7 @@ async function getYFCrumb() {
 // ── 설정 ──────────────────────────────────────────────────────────────────
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_HOST    = 'generativelanguage.googleapis.com';
-const GEMINI_MODEL   = 'gemini-2.5-flash-lite';   // 2026-06 현재 안정 모델
+const GEMINI_MODEL   = 'gemini-2.0-flash';         // GA 안정 모델 (2026-06-25 변경: flash-lite 프리뷰→2.0-flash GA)
 const DELAY_MS       = 4500;                        // 티커 간 요청 간격 (Gemini RPM 한도 대응: 4.5s → 분당 13개)
 const DATA_DIR       = path.join(__dirname, '..', 'data');
 
