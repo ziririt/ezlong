@@ -40,43 +40,60 @@
   font-weight: 500;
 }
 
-.mv-refresh-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
+.mv-updated-bar {
+  padding: 8px 16px;
   background: var(--ez-surface);
   border-bottom: 1px solid var(--ez-border);
-}
-
-.mv-refresh-info {
   font-size: 14px;
   color: var(--ez-text3);
 }
 
-.mv-refresh-btn {
-  background: var(--ez-blue);
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
+/* ── 카드 스택 — 타임라인 구조 ── */
+.mv-stack { padding: 16px 0 0; }
+
+/* 타임라인 엔트리 래퍼 */
+.mv-entry { position: relative; }
+
+/* 카드 간 연결선 + 노드 */
+.mv-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 32px;
+  position: relative;
+  z-index: 0;
 }
 
-.mv-refresh-btn:active { opacity: 0.8; }
+.mv-connector-line {
+  width: 2px;
+  flex: 1;
+  background: var(--ez-border);
+}
 
-/* ── 카드 스택 ── */
-.mv-stack { padding: 12px 0 0; }
+.mv-connector-node {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ez-border);
+  flex-shrink: 0;
+  margin: 3px 0;
+}
 
 /* ── 개별 스코어카드 ── */
 .mv-card {
   background: var(--ez-surface);
-  margin: 0 0 12px 0;
   border-top: 1px solid var(--ez-border);
   border-bottom: 1px solid var(--ez-border);
+}
+
+/* 과거 카드 — 시각적으로 "지나감" 처리 */
+.mv-card-past {
+  background: var(--ez-bg);
+}
+.mv-card-past .mv-event,
+.mv-card-past .mv-score-section,
+.mv-card-past .mv-factors {
+  opacity: 0.65;
 }
 
 /* 타임스탬프 — 핵심 강조 */
@@ -85,15 +102,24 @@
   align-items: center;
   gap: 10px;
   padding: 14px 16px;
-  background: #1D3461;
+  background: #3A3A3C;  /* 과거 = 무채색 */
 }
 
 .mv-ts-icon {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #fff;
+  background: rgba(255,255,255,0.5);
   flex-shrink: 0;
+}
+
+/* 최신 카드 — 타임스탬프 초록 강조 */
+.mv-ts-latest {
+  background: #1D7A3E;
+}
+.mv-ts-latest .mv-ts-icon {
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
 }
 
 .mv-ts-text {
@@ -103,7 +129,10 @@
   letter-spacing: -0.3px;
 }
 
-.mv-ts-latest { background: #1D7A3E; }
+/* 과거 카드 타임스탬프 텍스트 — 약간 흐리게 */
+.mv-ts:not(.mv-ts-latest) .mv-ts-text {
+  opacity: 0.75;
+}
 
 /* 핵심 이벤트 */
 .mv-event {
@@ -299,10 +328,20 @@
   line-height: 1.6;
 }
 
-/* ── 다크모드 타임스탬프 ── */
+/* ── 라이트모드 — 과거 타임스탬프 색 ── */
+@media (prefers-color-scheme: light) {
+  .mv-ts { background: #5A5A5E; }
+  .mv-ts-latest { background: #1D7A3E; }
+  .mv-card-past { background: #F2F2F7; }
+  .mv-connector-line { background: #C8C8CA; }
+  .mv-connector-node { background: #C8C8CA; }
+}
+
+/* ── 다크모드 ── */
 @media (prefers-color-scheme: dark) {
-  .mv-ts { background: #0D1E38; }
+  .mv-ts { background: #2C2C2E; }
   .mv-ts-latest { background: #0D4A22; }
+  .mv-card-past { background: #1C1C1E; }
 }
 </style>
 </head>
@@ -319,10 +358,7 @@
     <div class="mv-header-sub">최근 6시간 + 향후 12시간 기준 · 하루 5회 업데이트</div>
   </div>
 
-  <div class="mv-refresh-row">
-    <span class="mv-refresh-info" id="mv-updated-at">데이터 로딩 중...</span>
-    <button class="mv-refresh-btn" onclick="loadData()">새로고침</button>
-  </div>
+  <div class="mv-updated-bar" id="mv-updated-at">데이터 로딩 중...</div>
 
   <div class="mv-stack" id="mv-stack">
     <div class="mv-loading">분석 데이터 불러오는 중...</div>
@@ -341,7 +377,7 @@ var DATA_URL = '/data/market-scorecard-data.json';
 var MAX_SHOW = 10;
 
 function loadData() {
-  document.getElementById('mv-updated-at').textContent = '불러오는 중...';
+  document.getElementById('mv-updated-at').textContent = '데이터 로딩 중...';
 
   fetch(DATA_URL + '?t=' + Date.now())
     .then(function(r) {
@@ -391,7 +427,15 @@ function renderStack(data) {
 
   var html = '';
   for (var i = 0; i < entries.length; i++) {
-    html += renderEntry(entries[i], i === 0);
+    html += '<div class="mv-entry">' + renderEntry(entries[i], i === 0) + '</div>';
+    if (i < entries.length - 1) {
+      html +=
+        '<div class="mv-connector">' +
+          '<div class="mv-connector-line"></div>' +
+          '<div class="mv-connector-node"></div>' +
+          '<div class="mv-connector-line"></div>' +
+        '</div>';
+    }
   }
   stack.innerHTML = html;
 }
@@ -428,10 +472,13 @@ function renderEntry(e, isLatest) {
   }
 
   var latestClass = isLatest ? ' mv-ts-latest' : '';
-  var latestBadge = isLatest ? ' &nbsp;<span style="font-size:14px;font-weight:700;background:rgba(255,255,255,0.25);padding:2px 8px;border-radius:20px;">최신</span>' : '';
+  var latestBadge = isLatest
+    ? ' &nbsp;<span style="font-size:14px;font-weight:700;background:rgba(255,255,255,0.25);padding:2px 8px;border-radius:20px;">최신</span>'
+    : ' &nbsp;<span style="font-size:14px;font-weight:500;color:rgba(255,255,255,0.45);">이전 분석</span>';
+  var cardClass = isLatest ? 'mv-card' : 'mv-card mv-card-past';
 
   return (
-    '<div class="mv-card">' +
+    '<div class="' + cardClass + '">' +
 
       /* 타임스탬프 — 크게 강조 */
       '<div class="mv-ts' + latestClass + '">' +
