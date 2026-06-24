@@ -152,6 +152,7 @@ grep -rn "function calcBuyScore\|function calcSellScore" . --include="*.html" --
 |---|---|---|
 | `/` | 메인 홈 | — |
 | `/atmr-dashboard.html` | 스윙 시그널 대시보드 | 스윙 시그널 |
+| `/market-vs.html` | 긍정 vs 부정 몇대몇 | 긍정vs부정 |
 | `/chart-analysis.html` | AI 차트분석 | AI 차트분석 |
 | `/analyst-reports.html` | 핵심기업 목표주가 | 목표주가 |
 | `/market-cycle.html` | Market Cycle Monitor | Market Cycle |

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>긍정 vs 부정 몇대몇 — EZLONG</title>
+<link rel="stylesheet" href="ez-design.css">
+<style>
+/* ── 페이지 레이아웃 ── */
+.mv-page {
+  background: var(--ez-bg);
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.mv-header {
+  padding: 20px 16px 12px;
+  background: var(--ez-surface);
+  border-bottom: 1px solid var(--ez-border);
+  margin-bottom: 0;
+}
+
+.mv-header-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ez-text);
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.mv-header-title .vs {
+  color: #1D3461;
+}
+
+.mv-header-title .pos-word { color: #1D7A3E; }
+.mv-header-title .neg-word { color: #C0392B; }
+
+.mv-header-sub {
+  font-size: 13px;
+  color: var(--ez-text3);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.mv-refresh-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--ez-surface);
+  border-bottom: 1px solid var(--ez-border);
+  margin-bottom: 0;
+}
+
+.mv-refresh-info {
+  font-size: 13px;
+  color: var(--ez-text3);
+}
+
+.mv-refresh-btn {
+  background: var(--ez-blue);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.mv-refresh-btn:active { opacity: 0.8; }
+
+/* ── 카드 스택 ── */
+.mv-stack {
+  padding: 12px 0 0;
+}
+
+/* ── 개별 스코어카드 ── */
+.mv-card {
+  background: var(--ez-surface);
+  margin: 0 0 12px 0;
+  border-top: 1px solid var(--ez-border);
+  border-bottom: 1px solid var(--ez-border);
+}
+
+/* 타임스탬프 — 핵심 강조 */
+.mv-ts {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: #1D3461;
+}
+
+.mv-ts-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.mv-ts-text {
+  font-size: 18px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.3px;
+}
+
+.mv-ts-latest {
+  background: #1D7A3E;
+}
+
+/* 핵심 이벤트 */
+.mv-event {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--ez-border2);
+  background: var(--ez-card2);
+}
+
+.mv-event-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  color: #1D7A3E;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.mv-event-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ez-text);
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.mv-event-time {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ez-text2);
+  margin-bottom: 3px;
+}
+
+.mv-event-why {
+  font-size: 14px;
+  color: var(--ez-text2);
+  line-height: 1.4;
+}
+
+/* 점수 구도 */
+.mv-score-section {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--ez-border2);
+}
+
+.mv-score-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.mv-score-side { flex: 1; }
+.mv-score-side.left { text-align: left; }
+.mv-score-side.right { text-align: right; }
+
+.mv-score-label {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+.mv-score-label.pos { color: #1D7A3E; }
+.mv-score-label.neg { color: #C0392B; }
+
+.mv-score-num {
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.mv-score-num.pos { color: #1D7A3E; }
+.mv-score-num.neg { color: #C0392B; }
+
+.mv-score-vs {
+  font-size: 18px;
+  font-weight: 800;
+  color: #1D3461;
+  padding: 0 8px;
+}
+
+/* 막대 그래프 */
+.mv-bar {
+  display: flex;
+  height: 32px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.mv-bar-pos {
+  background: #1D7A3E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.mv-bar-neg {
+  background: #C0392B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.mv-summary {
+  font-size: 14px;
+  color: var(--ez-text2);
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* 2열 요인 */
+.mv-factors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid var(--ez-border2);
+}
+
+.mv-factor-col {
+  padding: 12px 14px;
+}
+
+.mv-factor-col.left {
+  border-right: 1px solid var(--ez-border2);
+}
+
+.mv-factor-col-title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: -0.1px;
+  margin-bottom: 10px;
+}
+.mv-factor-col-title.pos { color: #1D7A3E; }
+.mv-factor-col-title.neg { color: #C0392B; }
+
+.mv-factor-item {
+  margin-bottom: 10px;
+}
+
+.mv-factor-item:last-child { margin-bottom: 0; }
+
+.mv-factor-score {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+.mv-factor-score.pos { color: #1D7A3E; }
+.mv-factor-score.neg { color: #C0392B; }
+
+.mv-factor-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ez-text);
+  line-height: 1.3;
+  margin-top: 1px;
+}
+
+.mv-factor-desc {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ez-text3);
+  line-height: 1.35;
+  margin-top: 1px;
+}
+
+.mv-factor-divider {
+  height: 1px;
+  background: var(--ez-border2);
+  margin: 7px 0;
+}
+
+/* ── 로딩/에러 상태 ── */
+.mv-loading, .mv-error {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ez-text3);
+  font-size: 16px;
+}
+
+.mv-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ez-text3);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ── 하단 안내 ── */
+.mv-footer-note {
+  text-align: center;
+  font-size: 12px;
+  color: var(--ez-text3);
+  padding: 16px 20px 0;
+  line-height: 1.6;
+}
+
+/* ── 다크모드 타임스탬프 ── */
+@media (prefers-color-scheme: dark) {
+  .mv-ts { background: #0D1E38; }
+  .mv-ts-latest { background: #0D4A22; }
+}
+</style>
+</head>
+<body>
+
+<script src="/ez-nav.js"></script>
+
+<div class="mv-page">
+
+  <div class="mv-header">
+    <div class="mv-header-title">
+      <span class="pos-word">긍정</span> <span class="vs">VS</span> <span class="neg-word">부정</span> 몇대몇
+    </div>
+    <div class="mv-header-sub">최근 6시간 + 향후 12시간 기준 · 하루 5회 업데이트</div>
+  </div>
+
+  <div class="mv-refresh-row">
+    <span class="mv-refresh-info" id="mv-updated-at">데이터 로딩 중...</span>
+    <button class="mv-refresh-btn" onclick="loadData()">새로고침</button>
+  </div>
+
+  <div class="mv-stack" id="mv-stack">
+    <div class="mv-loading">분석 데이터 불러오는 중...</div>
+  </div>
+
+  <div class="mv-footer-note">
+    AI 자동 분석 · 개인 참고용 · 투자 판단은 본인 책임
+  </div>
+
+</div>
+
+<script src="/ez-footer.js"></script>
+
+<script>
+var DATA_URL = '/data/market-scorecard-data.json';
+var MAX_SHOW = 10;
+
+function loadData() {
+  document.getElementById('mv-updated-at').textContent = '불러오는 중...';
+
+  fetch(DATA_URL + '?t=' + Date.now())
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      renderStack(data);
+    })
+    .catch(function(e) {
+      document.getElementById('mv-stack').innerHTML =
+        '<div class="mv-error">데이터를 불러오지 못했습니다.<br>' + e.message + '</div>';
+      document.getElementById('mv-updated-at').textContent = '불러오기 실패';
+    });
+}
+
+function renderStack(data) {
+  var entries = data.entries || [];
+  var maxEntries = data.max_entries || MAX_SHOW;
+
+  // 최신순 정렬 (id 내림차순)
+  entries = entries.slice().sort(function(a, b) {
+    return (b.id || '').localeCompare(a.id || '');
+  });
+
+  // 최대 10개
+  entries = entries.slice(0, maxEntries);
+
+  // updated_at 표시
+  var updatedEl = document.getElementById('mv-updated-at');
+  if (data.updated_at) {
+    var d = new Date(data.updated_at);
+    var kst = new Date(d.getTime() + 9 * 3600 * 1000);
+    var mm = kst.getUTCMonth() + 1;
+    var dd = kst.getUTCDate();
+    var hh = String(kst.getUTCHours()).padStart(2, '0');
+    var mi = String(kst.getUTCMinutes()).padStart(2, '0');
+    updatedEl.textContent = '최종 업데이트: ' + mm + '/' + dd + ' ' + hh + ':' + mi + ' KST · 총 ' + entries.length + '개';
+  }
+
+  var stack = document.getElementById('mv-stack');
+
+  if (!entries.length) {
+    stack.innerHTML = '<div class="mv-empty">아직 분석 데이터가 없습니다.<br>매일 5회 자동 업데이트됩니다.</div>';
+    return;
+  }
+
+  var html = '';
+  for (var i = 0; i < entries.length; i++) {
+    html += renderEntry(entries[i], i === 0);
+  }
+  stack.innerHTML = html;
+}
+
+function renderEntry(e, isLatest) {
+  var pos = e.positive_total || 0;
+  var neg = e.negative_total || 0;
+  var kev = e.key_event || {};
+
+  // 긍정 요인
+  var posFactors = '';
+  var pf = e.positive_factors || [];
+  for (var i = 0; i < pf.length; i++) {
+    if (i > 0) posFactors += '<div class="mv-factor-divider"></div>';
+    posFactors +=
+      '<div class="mv-factor-item">' +
+        '<div class="mv-factor-score pos">' + pf[i].score + '</div>' +
+        '<div class="mv-factor-name">' + escHtml(pf[i].name) + '</div>' +
+        '<div class="mv-factor-desc">' + escHtml(pf[i].desc) + '</div>' +
+      '</div>';
+  }
+
+  // 부정 요인
+  var negFactors = '';
+  var nf = e.negative_factors || [];
+  for (var j = 0; j < nf.length; j++) {
+    if (j > 0) negFactors += '<div class="mv-factor-divider"></div>';
+    negFactors +=
+      '<div class="mv-factor-item">' +
+        '<div class="mv-factor-score neg">' + nf[j].score + '</div>' +
+        '<div class="mv-factor-name">' + escHtml(nf[j].name) + '</div>' +
+        '<div class="mv-factor-desc">' + escHtml(nf[j].desc) + '</div>' +
+      '</div>';
+  }
+
+  var latestClass = isLatest ? ' mv-ts-latest' : '';
+  var latestBadge = isLatest ? ' &nbsp;<span style="font-size:12px;font-weight:700;background:rgba(255,255,255,0.25);padding:2px 7px;border-radius:20px;">최신</span>' : '';
+
+  return (
+    '<div class="mv-card">' +
+
+      /* 타임스탬프 — 크게 강조 */
+      '<div class="mv-ts' + latestClass + '">' +
+        '<div class="mv-ts-icon"></div>' +
+        '<div class="mv-ts-text">' + escHtml(e.timestamp_kst || '') + latestBadge + '</div>' +
+      '</div>' +
+
+      /* 핵심 이벤트 */
+      '<div class="mv-event">' +
+        '<div class="mv-event-label">향후 핵심 이벤트</div>' +
+        '<div class="mv-event-name">' + escHtml(kev.name || '-') + '</div>' +
+        '<div class="mv-event-time">' + escHtml(kev.time || '') + '</div>' +
+        '<div class="mv-event-why">' + escHtml(kev.why || '') + '</div>' +
+      '</div>' +
+
+      /* 점수 구도 */
+      '<div class="mv-score-section">' +
+        '<div class="mv-score-row">' +
+          '<div class="mv-score-side left">' +
+            '<div class="mv-score-label pos">긍정</div>' +
+            '<div class="mv-score-num pos">' + pos + '</div>' +
+          '</div>' +
+          '<div class="mv-score-vs">VS</div>' +
+          '<div class="mv-score-side right">' +
+            '<div class="mv-score-label neg">부정</div>' +
+            '<div class="mv-score-num neg">' + neg + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="mv-bar">' +
+          '<div class="mv-bar-pos" style="width:' + pos + '%">' + pos + '</div>' +
+          '<div class="mv-bar-neg" style="width:' + neg + '%">' + neg + '</div>' +
+        '</div>' +
+        '<div class="mv-summary">' + escHtml(e.summary || '') + '</div>' +
+      '</div>' +
+
+      /* 2열 요인 */
+      '<div class="mv-factors">' +
+        '<div class="mv-factor-col left">' +
+          '<div class="mv-factor-col-title pos">긍정 합계 ' + pos + '</div>' +
+          posFactors +
+        '</div>' +
+        '<div class="mv-factor-col">' +
+          '<div class="mv-factor-col-title neg">부정 합계 ' + neg + '</div>' +
+          negFactors +
+        '</div>' +
+      '</div>' +
+
+    '</div>'
+  );
+}
+
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+loadData();
+</script>
+
+</body>
+</html>
