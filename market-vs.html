@@ -16,22 +16,24 @@
 }
 
 .mv-header {
-  padding: 24px 18px 18px;
+  padding: 28px 18px 18px;
   background: var(--ez-surface);
   border-bottom: 1px solid var(--ez-border);
+  text-align: center;
 }
 
-/* 메인 타이틀 라인 — 긍정 VS 부정 */
+/* 메인 타이틀 — 가운데 정렬, 인라인 블록으로 "몇대몇" 우측 첨자 가능하게 */
 .mv-header-main {
-  display: flex;
+  display: inline-flex;
   align-items: baseline;
-  gap: 6px;
+  gap: 8px;
   line-height: 1;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
+  position: relative;
 }
 
 .mv-header-pos {
-  font-size: 42px;
+  font-size: 46px;
   font-weight: 900;
   color: #1D7A3E;
   letter-spacing: -2px;
@@ -41,25 +43,28 @@
   font-size: 18px;
   font-weight: 700;
   color: var(--ez-text3);
-  letter-spacing: 1px;
-  padding: 0 2px;
+  letter-spacing: 2px;
   align-self: center;
+  padding: 0 2px;
 }
 
 .mv-header-neg {
-  font-size: 42px;
+  font-size: 46px;
   font-weight: 900;
   color: #C0392B;
   letter-spacing: -2px;
 }
 
-/* 서브 타이틀 라인 — 몇대몇 */
-.mv-header-sub-title {
-  font-size: 20px;
+/* "몇대몇" — 부정 우측 윗첨자 */
+.mv-header-super {
+  font-size: 15px;
   font-weight: 700;
   color: var(--ez-text2);
-  letter-spacing: -0.5px;
-  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+  line-height: 1;
+  align-self: flex-start;
+  padding-top: 4px;
+  margin-left: -2px;
 }
 
 .mv-header-sub {
@@ -386,8 +391,8 @@
       <span class="mv-header-pos">긍정</span>
       <span class="mv-header-vs">VS</span>
       <span class="mv-header-neg">부정</span>
+      <span class="mv-header-super">몇대몇</span>
     </div>
-    <div class="mv-header-sub-title">몇대몇</div>
     <div class="mv-header-sub">최근 6시간 + 향후 12시간 기준 · 하루 5회 업데이트</div>
   </div>
 
