@@ -188,6 +188,15 @@
   margin-bottom: 5px;
 }
 
+.mv-event-label-time {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ez-text3);
+  margin-left: 4px;
+}
+
 .mv-event-name {
   font-size: 20px;
   font-weight: 800;
@@ -197,12 +206,6 @@
   margin-bottom: 4px;
 }
 
-.mv-event-time {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ez-text2);
-  margin-bottom: 3px;
-}
 
 .mv-event-why {
   font-size: 14px;
@@ -528,9 +531,8 @@ function renderEntry(e, isLatest) {
 
       /* 핵심 이벤트 */
       '<div class="mv-event">' +
-        '<div class="mv-event-label">향후 핵심 이슈</div>' +
+        '<div class="mv-event-label">향후 핵심 이슈<span class="mv-event-label-time">(최근 6시간, 향후 12시간 감안)</span></div>' +
         '<div class="mv-event-name">' + escHtml(kev.name || '-') + '</div>' +
-        '<div class="mv-event-time">' + escHtml(kev.time || '') + '</div>' +
         '<div class="mv-event-why">' + escHtml(kev.why || '') + '</div>' +
       '</div>' +
 
