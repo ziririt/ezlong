@@ -13,6 +13,8 @@
 . `df5681c97` — fix: Firebase '이미 활성 버전' 에러를 성공으로 처리
 . `e235fa39e` — feat: TSLA·머스크 부정 재료 기준 강화 — 수치·사실 근거 없는 비방 제외
 . `3e8f174c0` — fix: Firebase 배포 CI 토큰 방식으로 교체 (서비스 계정 인증 실패)
+. `b1b42ccd6` — docs: Gemini 모델 설정 2차 개정 — 폴백 1.5-flash, thinkingConfig 금지 명문화
+. `9b9ff06bf` — data: 19:45 잘못된 분석 항목 삭제 (마이크론 어닝 서프라이즈 당시 오진)
 
 ---
 
@@ -63,6 +65,11 @@ git checkout e235fa39e^ -- scripts/fetch-market-scorecard.py
 ```bash
 git checkout 3e6fa5154^ -- scripts/generate-chart-analysis.js
 ```
+
+### 4. 운영 조치 (커밋 없음)
+
+. cron-job.org scorecard 잡 4개 (noon/eve/night/late) Inactive → Active 전환
+. `fetch-market-cycle.yml` / `watchdog.yml` 로컬에만 존재 확인 → 별도 push 필요 (미완료)
 
 ---
 
