@@ -100,11 +100,9 @@ jobs:
 
           git commit -m "chore: 크립토 차트 분석 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 
-          for i in 1 2 3; do
-            git pull --rebase origin main && git push && break
-            echo "push 재시도 $i/3..."
-            sleep 5
-          done
+          # git pull --rebase 금지 (CLAUDE.md Rule 16 — unstaged 파일 있으면 실패)
+          # merge -X ours: 충돌 시 워크플로 생성 데이터를 우선 (chart-index.json 등)
+          git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
