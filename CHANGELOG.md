@@ -5,6 +5,112 @@
 
 ---
 
+## [2026-06-26] 세션 2 — Gemini 2.0-flash 종료 대응 + 차트 분석 파이프라인 전면 안정화
+
+### 커밋 이력 (주요 작업)
+
+. `8a1f87413` — fix: chart-index.json 티커 순서 재정렬 + TSM·MU 신규 추가
+. `69336052e` — fix: Gemini 2.0-flash deprecated → 2.5-flash + chart-index 충돌 방지 merge -X ours
+. `b438a966d` — fix: git pull --rebase 금지 패턴 5개 워크플로 일괄 수정 → merge -X ours
+. `c97bd1e56` — perf: 차트 분석 스케줄 최적화 — US 4회/KR 4회/크립토 6회, DEBUG 스텝 제거
+. `20e265158` — fix: maxOutputTokens 4096→8192 (JSON 잘림), 폴백모델 1.5-flash→1.5-flash-latest
+. `ccfe54795` — fix: firebase-tools 버전 15.22.0 고정 (15.22.2 OAuth 버그 대응)
+. `2bf21bfb7` — fix: Gemini HTTP 타임아웃 30s→90s (2.5-flash thinking 토큰 처리 시간)
+. `26a49b35d` — fix: Gemini 타임아웃 180s·재시도 4회·폴백 제거 (v1beta 1.5계열 전멸 대응)
+
+---
+
+### 1. Gemini 2.0-flash 서비스 종료 → 2.5-flash 전환 (`69336052e`)
+
+**경위:** Google이 `gemini-2.0-flash` 서비스를 종료. 전체 티커가 "no longer available" 에러로 분석 불가.
+
+**수정:** `scripts/generate-chart-analysis.js`에서 `GEMINI_MODEL` = `gemini-2.5-flash` (GA 정식 출시)로 교체. 폴백은 `gemini-1.5-flash`로 임시 설정 (이후 추가 수정).
+
+**복구:**
+```bash
+git checkout 69336052e^ -- scripts/generate-chart-analysis.js
+```
+
+---
+
+### 2. chart-index.json rebase 충돌 해결 (`69336052e`)
+
+**경위:** `data/chart-index.json`을 수동으로 편집(TSM·MU 추가, 순서 재정렬)한 상태에서 워크플로가 같은 파일을 push → rebase 충돌로 워크플로 push 실패.
+
+**수정:** 워크플로 push 전략을 `merge -X ours origin/main`으로 전환. 자동 생성 데이터 파일은 항상 "로컬 워크플로 버전"이 우선하는 구조로 확정.
+
+---
+
+### 3. git pull --rebase 5개 워크플로 일괄 수정 (`b438a966d`)
+
+**경위:** CLAUDE.md Rule 16(pull --rebase 금지) 위반 워크플로 5개 발견.
+
+**수정 대상:** `fetch-crypto-analysis.yml`, `fetch-kr-crypto-analysis.yml`, `watchdog.yml`, `fetch-options-data.yml`, `fetch-market-cycle.yml`
+
+**변경 패턴:**
+```bash
+# 이전 (금지)
+git pull --rebase origin main
+
+# 이후 (확정)
+git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
+```
+
+---
+
+### 4. 차트 분석 스케줄 최적화 (비용 절감) (`c97bd1e56`)
+
+. 미국주식: 7회/일 → **4회/일** (09:35 / 10:35 / 11:35 / 15:35 ET)
+. 한국주식: 8회/일 → **4회/일** (09:05 / 12:05 / 14:05 / 15:35 KST)
+. 암호화폐: ~19회/일 → **6회/일** (KST 06~24시, 3시간 간격), cron-job.org → GitHub Actions 네이티브 cron 전환
+. 암호화폐 워크플로에서 DEBUG Gemini API 테스트 스텝 제거
+
+**절감 효과:** Gemini API 호출 약 60~68% 감소
+
+**복구:**
+```bash
+git checkout c97bd1e56^ -- .github/workflows/fetch-us-chart-analysis.yml .github/workflows/fetch-kr-crypto-analysis.yml .github/workflows/fetch-crypto-analysis.yml
+```
+
+---
+
+### 5. maxOutputTokens 8192 + 폴백 모델 수정 (`20e265158`)
+
+**경위:** `gemini-2.5-flash`가 `narrative` 필드를 생성하는 도중 4096 토큰 한도에서 JSON을 잘라버려 파싱 오류.
+
+**수정:** `maxOutputTokens` 4096 → **8192**. 폴백 `gemini-1.5-flash` → `gemini-1.5-flash-latest`로 변경 (버전 미지정 시 v1beta 404).
+
+---
+
+### 6. firebase-tools 버전 고정 (`ccfe54795`)
+
+**경위:** `firebase-tools@15.22.2`에서 OAuth 인증 관련 버그 발생 → Firebase 배포 워크플로 실패.
+
+**수정:** `firebase-hosting.yml`에서 `npm install -g firebase-tools@15.22.0` 버전 고정.
+
+**복구:**
+```bash
+git checkout ccfe54795^ -- .github/workflows/firebase-hosting.yml
+```
+
+---
+
+### 7. Gemini 타임아웃 대폭 상향 + 폴백 제거 (`2bf21bfb7`, `26a49b35d`)
+
+**경위:** `gemini-2.5-flash`의 thinking 토큰 처리로 인해 NVDA 등 복잡한 종목에서 30s → 90s로 상향 후에도 타임아웃 지속 발생. 동시에 `gemini-1.5-flash-latest`도 v1beta 404 확인 → 폴백 모델이 완전히 무의미해짐.
+
+**최종 설정 (`26a49b35d`):**
+. 타임아웃: 30s → 90s → **180s (3분)**
+. 재시도: 3회 → **4회**, 딜레이 [3s/7s/15s] → **[5s/15s/45s]**
+. 폴백 모델: **완전 제거** (`gemini-2.5-flash` 단독 사용)
+
+**복구:**
+```bash
+git checkout 26a49b35d^ -- scripts/generate-chart-analysis.js
+```
+
+---
+
 ## [2026-06-26] 세션 — Firebase CI 토큰 전환 + TSLA 부정 재료 기준 강화 + TSM·MU 추가
 
 ### 커밋 이력 (주요 작업)
