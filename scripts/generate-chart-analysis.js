@@ -80,7 +80,7 @@ async function getYFCrumb() {
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_HOST    = 'generativelanguage.googleapis.com';
 const GEMINI_MODEL          = 'gemini-2.5-flash';   // 1차 모델 (2026-06-26 변경: 2.0-flash deprecated → 2.5-flash GA)
-const GEMINI_FALLBACK_MODEL = 'gemini-1.5-flash';   // 폴백 모델 (v1beta 검증 완료)
+const GEMINI_FALLBACK_MODEL = 'gemini-1.5-flash-latest';   // 폴백 모델 (2026-06-26: 1.5-flash → 1.5-flash-latest로 변경, v1beta 404 대응)
 const DELAY_MS       = 4500;                        // 티커 간 요청 간격 (Gemini RPM 한도 대응: 4.5s → 분당 13개)
 const DATA_DIR       = path.join(__dirname, '..', 'data');
 
@@ -603,7 +603,7 @@ ${weeklySection}
           `/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`,
           {
             contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.15, maxOutputTokens: 4096, responseMimeType: 'application/json' },
+            generationConfig: { temperature: 0.15, maxOutputTokens: 8192, responseMimeType: 'application/json' },
           }
         );
         // thinking 토큰 처리 (gemini-2.5-flash): thought:true 파트는 제외하고 실제 응답만 추출
