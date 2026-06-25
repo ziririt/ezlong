@@ -232,7 +232,7 @@ function httpPost(host, reqPath, body) {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(bodyStr),
       },
-      timeout: 30000,
+      timeout: 90000,  // gemini-2.5-flash thinking 토큰 처리 시간 고려 (30s→90s, 2026-06-26)
     }, res => {
       const chunks = [];
       res.on('data', c => { chunks.push(c); });
