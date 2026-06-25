@@ -25,7 +25,7 @@ except ImportError:
 # ─── 설정 ───────────────────────────────────────────────────────────────────
 GEMINI_API_KEY     = os.environ.get('GEMINI_API_KEY', '')
 GEMINI_MODEL       = 'gemini-2.5-flash'                # 1차 시도 (GA, 고품질 — 2026-06-25 확정)
-GEMINI_MODEL_FALLBACK = 'gemini-2.0-flash'             # 폴백 (GA, 안정적)
+GEMINI_MODEL_FALLBACK = 'gemini-1.5-flash'             # 폴백 — gemini-2.0-flash는 v1beta 404 확인, 1.5-flash로 변경
 
 def _gemini_url(model):
     return f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}'
@@ -275,19 +275,9 @@ def call_gemini(prompt):
         print("WARNING: GEMINI_API_KEY 없음 — 스킵")
         return None
 
-    # gemini-2.5-flash: thinking 비활성화 (thinkingBudget:0) — JSON 구조 출력 안정성 확보
-    # thinkingBudget:0 은 thinking 토큰을 완전히 끄므로 비용 추가 없음
-    payload_25flash = {
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {
-            "temperature": 0.4,
-            "responseMimeType": "application/json"
-        },
-        "thinkingConfig": {"thinkingBudget": 0}
-    }
-
-    # gemini-2.0-flash: thinking 없음, 기본 payload
-    payload_20flash = {
+    # 공통 payload — thinkingConfig 제거 (v1beta 400 오류 원인)
+    # thinking 토큰은 _call_single_model 내부 parts 루프로 처리
+    payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
             "temperature": 0.4,
@@ -295,16 +285,16 @@ def call_gemini(prompt):
         }
     }
 
-    # 1차: gemini-2.5-flash (thinking 비활성, 3회 재시도)
+    # 1차: gemini-2.5-flash (3회 재시도)
     print(f"  1차 시도: {GEMINI_MODEL}")
-    result = _call_single_model(GEMINI_MODEL, payload_25flash, max_retries=3)
+    result = _call_single_model(GEMINI_MODEL, payload, max_retries=3)
     if result:
         print(f"  성공: {GEMINI_MODEL}")
         return result
 
-    # 폴백: gemini-2.0-flash (2회 재시도)
+    # 폴백: gemini-1.5-flash (2회 재시도) — gemini-2.0-flash는 v1beta 404
     print(f"  폴백 전환: {GEMINI_MODEL_FALLBACK}")
-    result = _call_single_model(GEMINI_MODEL_FALLBACK, payload_20flash, max_retries=2)
+    result = _call_single_model(GEMINI_MODEL_FALLBACK, payload, max_retries=2)
     if result:
         print(f"  성공(폴백): {GEMINI_MODEL_FALLBACK}")
         return result
