@@ -1,38 +1,31 @@
-name: 암호화폐 차트 분석 생성
+name: Market Cycle 주봉 데이터 생성
 
 # ─── 스케줄 설명 ────────────────────────────────────────────────────────────
-# KST 06:00~24:00 구간, 3시간 간격 6회 실행 (GitHub Actions 자체 cron)
+# 미국 정규장 마감(4PM ET) 후 1회 실행.
 #
-# KST 시각  │ UTC    │ 비고
-# 06:05 KST │ 21:05  │ 아침 (전날 UTC 기준)
-# 09:05 KST │ 00:05  │ 오전 (한국 장 시작)
-# 12:05 KST │ 03:05  │ 오후
-# 15:05 KST │ 06:05  │ 한국 장마감 직후
-# 18:05 KST │ 09:05  │ 저녁 (미국 프리마켓)
-# 21:05 KST │ 12:05  │ 밤 (미국 장중)
+# 시점 — 장 마감 1시간 7분 후 (5:07 PM ET)
+#   EDT(UTC-4): 21:07 UTC | EST(UTC-5): 22:07 UTC
 #
-# ※ cron-job.org 잡 비활성화 필요 (중복 실행 방지)
-# 비용 절감: ~19회/일 → 6회/일 (68% 절감)
+# ※ GitHub 내부 schedule cron 제거 — cron-job.org workflow_dispatch 방식으로 대체.
+# 트리거 URL: POST https://api.github.com/repos/ziririt/ezlong/actions/workflows/fetch-market-cycle.yml/dispatches
+# 실행 시각(UTC, 평일): 21:07 (EDT), 22:07 (EST)
+#
+# 주봉 데이터는 일일 변화가 미미하므로 하루 1회 실행으로 충분.
+# 차트분석(fetch-us-chart-analysis.yml)과 동일한 시각에 실행하여
+# Market Cycle Monitor와 AI 차트분석이 동시에 갱신되도록 구성.
 #
 
 on:
-  schedule:
-    - cron: '5 21 * * *'   # KST 06:05
-    - cron: '5 0  * * *'   # KST 09:05
-    - cron: '5 3  * * *'   # KST 12:05
-    - cron: '5 6  * * *'   # KST 15:05
-    - cron: '5 9  * * *'   # KST 18:05
-    - cron: '5 12 * * *'   # KST 21:05
-
+  # ── cron-job.org 가 GitHub API workflow_dispatch 를 직접 트리거함 ──────
   workflow_dispatch:
 
 jobs:
-  analyze:
-    name: 크립토 차트 분석
+  fetch-weekly:
     runs-on: ubuntu-latest
 
+    # 중복 실행 방지
     concurrency:
-      group: crypto-analysis
+      group: market-cycle-weekly
       cancel-in-progress: false
 
     steps:
@@ -46,45 +39,42 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '20'
 
-      - name: Install dependencies
-        run: npm install --production
-
-      # ── 3. 암호화폐 차트 분석 (재시도 3회) ───────────────────────────
-      - name: Run crypto chart analysis
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      # ── 3. 주봉 데이터 수집 (재시도 3회) ──────────────────────────────
+      - name: Run market cycle weekly data fetch
         run: |
           for attempt in 1 2 3; do
-            echo "크립토 분석 시도 ${attempt}/3..."
-            if node scripts/generate-chart-analysis.js crypto; then
-              echo "크립토 분석 성공 (시도 ${attempt})"
+            echo "Market Cycle 주봉 수집 시도 ${attempt}/3..."
+            if node scripts/generate-market-cycle.js; then
+              echo "주봉 수집 성공 (시도 ${attempt})"
               break
             fi
             if [ "$attempt" -lt 3 ]; then
               echo "실패. 30초 후 재시도..."
               sleep 30
             else
-              echo "::error::크립토 분석 3회 모두 실패"
+              echo "::error::Market Cycle 주봉 수집 3회 모두 실패"
               exit 1
             fi
           done
 
       # ── 4. 변경사항 커밋 및 푸시 ─────────────────────────────────────
-      - name: Commit and push analysis data
+      - name: Commit and push weekly OHLCV data
         run: |
           git config user.name "ATMR Bot"
           git config user.email "atmr-bot@ezlong.com"
 
-          git add data/
+          # 변경사항이 없으면 커밋 건너뜀
+          git add data/ohlcv-*-weekly.json
           if git diff --cached --quiet; then
             echo "변경 없음. 커밋 건너뜀."
             exit 0
           fi
 
-          git commit -m "chore: 크립토 차트 분석 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+          git commit -m "chore: Market Cycle 주봉 데이터 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 
+          # git pull --rebase 금지 (CLAUDE.md Rule 16)
           git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -93,5 +83,5 @@ jobs:
       - name: Notify on failure
         if: failure()
         run: |
-          echo "::error::크립토 차트 분석 실패. GitHub Actions 로그에서 오류를 확인하세요."
-          echo "::error::Yahoo Finance 응답 오류 또는 Gemini API 키 문제일 수 있습니다."
+          echo "::error::Market Cycle 주봉 데이터 수집 실패. GitHub Actions 로그에서 오류를 확인하세요."
+          echo "::error::Yahoo Finance 응답 오류일 수 있습니다."

@@ -1,0 +1,84 @@
+name: 감시견 (Watchdog) — 자동 업데이트 모니터링
+
+# ─── 역할 ──────────────────────────────────────────────────────────────────
+# 30분마다 실행해 모든 데이터 파일의 freshness를 점검합니다.
+# 오래된 파일이 감지되면 해당 워크플로를 자동으로 트리거합니다.
+#
+# 트리거 방법:
+#   cron-job.org → POST https://api.github.com/repos/ziririt/ezlong/actions/workflows/watchdog.yml/dispatches
+#   실행 주기: 매시 :17 과 :47 (UTC) — 비표준 분수로 GitHub Actions 큐 혼잡 회피
+#
+# 감시 대상:
+#   - 미국주식 차트분석 (fetch-us-chart-analysis.yml)
+#   - 한국주식 차트분석 (fetch-kr-crypto-analysis.yml)
+#   - 크립토 차트분석  (fetch-crypto-analysis.yml)
+#   - ATMR 시장데이터  (fetch-market-data.yml)
+#   - FlashAlpha 옵션  (fetch-options-data.yml)
+#
+
+on:
+  workflow_dispatch:   # cron-job.org 에서 직접 트리거
+
+# ─── 권한 ──────────────────────────────────────────────────────────────────
+# contents: write → watchdog-status.json 커밋
+# actions:  write → 다른 워크플로 workflow_dispatch 트리거
+permissions:
+  contents: write
+  actions:  write
+
+jobs:
+  watchdog:
+    name: 감시견 점검
+    runs-on: ubuntu-latest
+
+    # 중복 실행 방지
+    concurrency:
+      group: watchdog
+      cancel-in-progress: false
+
+    steps:
+      # ── 1. 저장소 체크아웃 (데이터 파일 로컬 읽기용) ──────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 2. Node.js 설치 ───────────────────────────────────────────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # ── 3. 감시견 실행 ────────────────────────────────────────────────
+      - name: Run watchdog
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "감시견 시작: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+          node scripts/watchdog.js
+          echo "감시견 완료: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+
+      # ── 4. 감시견 상태 파일 커밋 ──────────────────────────────────────
+      - name: Commit watchdog status
+        run: |
+          git config user.name  "ATMR Watchdog"
+          git config user.email "watchdog@ezlong.com"
+
+          git add data/watchdog-status.json
+          if git diff --cached --quiet; then
+            echo "변경 없음 — 커밋 건너뜀"
+            exit 0
+          fi
+
+          git commit -m "chore: 감시견 상태 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+
+          # git pull --rebase 금지 (CLAUDE.md Rule 16)
+          git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 5. 실패 알림 ──────────────────────────────────────────────────
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "::error::감시견 실행 실패. Actions 로그를 확인하세요."

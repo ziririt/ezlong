@@ -1,27 +1,22 @@
 name: 한국주식 차트 분석 생성
 
 # ─── 스케줄 설명 ────────────────────────────────────────────────────────────
-# KST(UTC+9) 기준 한국 정규장 시간 매시 1회 실행
-# 장 시작 5분 후(9:05 KST) ~ 장마감 5분 후(15:35 KST)
-# → 9:05 · 10:05 · 11:05 · 12:05 · 13:05 · 14:05 · 15:05 · 15:35 KST (8회/일)
+# 평일(월~금) 4회 실행 (장중 3회 + 장마감 직후 1회)
+# 목표 실행 시각 (KST 기준):
+#   09:05 KST — 장 시작 직후  = 00:05 UTC
+#   12:05 KST — 장중           = 03:05 UTC
+#   14:05 KST — 장중           = 05:05 UTC
+#   15:35 KST — 장마감 5분 후  = 06:35 UTC
 #
-# KST → UTC 변환 (UTC+9):
-#   09:05 KST = 00:05 UTC
-#   15:35 KST = 06:35 UTC
-#
-# 암호화폐는 fetch-crypto-analysis.yml 워크플로에서 별도 처리
-# 한국 주식/ETF: 평일(월~금) + 공휴일 아닌 날만 실행
+# 공휴일·주말은 kr_check 스텝에서 자동 필터링
+# 비용 절감: 8회/일 → 4회/일 (50% 절감)
 #
 
 on:
   schedule:
     - cron: '5 0 * * *'    # KST 09:05
-    - cron: '5 1 * * *'    # KST 10:05
-    - cron: '5 2 * * *'    # KST 11:05
     - cron: '5 3 * * *'    # KST 12:05
-    - cron: '5 4 * * *'    # KST 13:05
     - cron: '5 5 * * *'    # KST 14:05
-    - cron: '5 6 * * *'    # KST 15:05
     - cron: '35 6 * * *'   # KST 15:35 (장마감 5분 후)
 
   workflow_dispatch:
@@ -124,11 +119,7 @@ jobs:
 
           git commit -m "chore: 한국주식 차트 분석 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 
-          for i in 1 2 3; do
-            git pull --rebase origin main && git push && break
-            echo "push 재시도 $i/3..."
-            sleep 5
-          done
+          git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
