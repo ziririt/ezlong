@@ -5,6 +5,39 @@
 
 ---
 
+## [2026-06-26] 세션 3 — 차트 분석 사이드바 불릿 컬러 버그 수정
+
+### 커밋 이력
+
+. `6855cb99d` — fix: 사이드바 불릿 color strength→buyScore 기반으로 교체 + 14px 미만 폰트 수정
+
+---
+
+### 1. 사이드바 불릿 컬러 — strength→buyScore 전환
+
+**버그:** `strength`(1~5)는 추세의 강도(방향 없음)를 나타냄. 하락 추세가 명확할수록 strength가 높아져 초록 불릿이 표시됨. TSLA: strength 5(초록) ↔ buyScore 1(매력도 최하) 완전 역전.
+
+**수정 (`6855cb99d`):** 불릿 컬러를 `buyScore`(1~10) 기반으로 교체 — 상세 패널 매수 매력도 바와 동일한 색상 기준 적용.
+
+. buyScore 8~10 → 진초록 (강한 매수 신호)
+. buyScore 6~7 → 파랑 (매수 우위)
+. buyScore 4~5 → 노랑 (중립/관망)
+. buyScore 2~3 → 회색 (약세)
+. buyScore 1 → 빨강 (매수 비권고)
+
+`strength`는 상세 패널의 추세 강도 점(5개) 표시에만 유지 — `trendC`(추세 방향 색상)로 채워지므로 방향 정보 포함.
+
+**복구:**
+```bash
+git checkout 6855cb99d^ -- chart-analysis.html
+```
+
+### 2. 차트 오버레이 레이블 폰트 14px 미만 위반 수정
+
+. `addLeftLabel` 함수의 지지/저항 레이블: `font-size:10px` → `font-size:14px` (CLAUDE.md Rule 금지 1 준수)
+
+---
+
 ## [2026-06-26] 세션 2 — Gemini 2.0-flash 종료 대응 + 차트 분석 파이프라인 전면 안정화
 
 ### 커밋 이력 (주요 작업)
