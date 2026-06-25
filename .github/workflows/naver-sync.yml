@@ -32,20 +32,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # 스크래핑 결과 임시 저장
-          cp data/naver-content.json /tmp/naver-content-new.json
-
-          # remote 최신 상태로 완전히 맞춤 (conflict 원천 차단)
-          git fetch origin main
-          git reset --hard origin/main
-
-          # 스크래핑 결과 복원
-          cp /tmp/naver-content-new.json data/naver-content.json
-
+          # git reset --hard 금지 (CLAUDE.md Rule 2/16) — tracked 파일 소멸 위험
+          # actions/checkout@v4가 이미 올바른 상태. 추가 fetch/reset 불필요.
           git add data/naver-content.json
           if git diff --staged --quiet; then
             echo "변경 없음, 커밋 생략"
           else
             git commit -m "chore: naver content sync $(TZ='Asia/Seoul' date +'%Y-%m-%d %H:%M KST')"
-            git push origin main
+            git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
           fi

@@ -116,20 +116,15 @@ jobs:
           git config user.name  "ATMR Bot"
           git config user.email "atmr-bot@ezlong.com"
 
-          if git diff --quiet data/market-signals.json 2>/dev/null; then
-            echo "데이터 변경 없음 — 커밋 건너뜀."
-            exit 0
-          fi
-
-          git fetch origin main
-          git reset --hard origin/main
+          # git reset --hard 금지 (CLAUDE.md Rule 2/16) — tracked 파일 소멸 위험
+          # actions/checkout@v4가 이미 올바른 상태로 체크아웃. 추가 fetch/reset 불필요.
           git add data/market-signals.json
           if git diff --staged --quiet; then
             echo "데이터 변경 없음 — 커밋 건너뜀."
             exit 0
           fi
           git commit -m "chore: ATMR 시간외 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
-          git push origin main
+          git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
