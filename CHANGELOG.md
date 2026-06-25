@@ -5,6 +5,87 @@
 
 ---
 
+## [2026-06-25] 세션 3 — Gemini thinking 파싱 수정 + 폴백 확정 + 워크플로 안정화 + Firebase 인증 복구
+
+### 커밋 이력 (주요 작업)
+
+. `40a80b912` — fix: ATMR 시장데이터 워크플로 push 전략 ff-only→rebase (diverge 해결)
+. `5671223c6` — fix: 프리마켓 가격 수집 추가 + 프롬프트에 뉴스>가격 우선 원칙 명시
+. `7e92396d0` — fix: thinkingConfig 제거(400), 폴백 gemini-1.5-flash로 변경(2.0-flash 404 확인)
+. `b3be79b25` — fix: market-scorecard에 Firebase 직접 배포 스텝 추가 — GITHUB_TOKEN push 트리거 우회
+. `afb737789` — fix: gemini-2.5-flash thinking 토큰 파싱 오류 수정 — thinkingBudget:0 + parts 순회
+. `a2f4b6f20` — fix: GA 스크립트 9개 페이지 추가, 템플릿 및 가이드 업데이트
+. `864992f95` — fix: 스코어카드 스케줄 10분 앞당기기 — 각 정각에 결과 준비
+
+---
+
+### 1. Gemini 2.5-flash thinking 토큰 파싱 오류 수정
+
+**문제:** `gemini-2.5-flash`가 `thinkingBudget:0`을 설정해도 thinking 토큰을 parts 배열에 포함해 반환. 기존 파서가 첫 번째 part만 읽어 빈 문자열이나 불완전한 JSON을 반환.
+
+**수정 (`afb737789`):** `_call_single_model` 내부에서 parts를 순회하며 `part.get("thought")` 가 True인 항목을 건너뜀. `thinkingBudget:0` 설정 유지.
+
+**추가 발견 (`7e92396d0`):** `thinkingConfig` 파라미터 자체가 v1beta API에서 400 Bad Request 반환 확인. → `thinkingConfig` 완전 제거, `thinkingBudget` 파라미터도 제거.
+
+**폴백 모델 변경:** `gemini-2.0-flash` → `gemini-1.5-flash` (v1beta에서 2.0-flash가 404 반환 확인). `gemini-1.5-flash`는 v1beta에서 검증 완료.
+
+**확정 체계 (CLAUDE.md 2026-06-25 2차 개정 반영):**
+. 1차: `gemini-2.5-flash` — GA 정식, thinking 토큰은 parts 루프로 필터
+. 폴백: `gemini-1.5-flash` — v1beta 안정
+. 사용 금지: `gemini-2.5-flash-lite`(불안정), `gemini-2.0-flash`(v1beta 404), `thinkingConfig` 파라미터
+
+**복구:**
+```bash
+git checkout afb737789^ -- scripts/fetch-market-scorecard.py
+```
+
+---
+
+### 2. market-scorecard 워크플로 — Firebase 직접 배포 스텝 추가
+
+**문제:** `market-scorecard.yml`이 `data/market-scorecard-data.json`을 커밋·push하면, `firebase-hosting.yml`이 main push 이벤트로 트리거돼 Firebase 자동 배포를 시도 → 인증 오류(서비스 계정 키 만료)로 실패. 배포 실패 알림이 매 실행마다 발생.
+
+**수정 (`b3be79b25`):** `market-scorecard.yml` 에 Firebase 직접 배포 스텝 추가. `GITHUB_TOKEN` 으로 push하는 GitHub Actions bot 커밋은 `firebase-hosting.yml` 의 push 트리거를 우회(GitHub Actions 정책). 스코어카드 데이터 업데이트 시 HTML 자산까지 불필요하게 재배포되는 문제도 해소.
+
+---
+
+### 3. 스코어카드 스케줄 10분 앞당기기
+
+**변경 (`864992f95`):** 기존 cron이 정각 이후 10분 뒤 결과가 준비됐던 구조 → 각 정각에 맞춰 결과가 나오도록 스케줄 10분 앞당김. 사용자가 정각에 새로고침하면 최신 분석이 바로 보임.
+
+---
+
+### 4. GA 스크립트 9개 페이지 추가
+
+**변경 (`a2f4b6f20`):** Google Analytics 추적 스크립트를 누락된 9개 페이지에 일괄 추가. `_template.html` 및 `EZLONG_GUIDE.md` 신규 페이지 작성 체크리스트 업데이트.
+
+---
+
+### 5. 프리마켓 가격 수집 추가
+
+**변경 (`5671223c6`):** `fetch-stocks-prices.py`에 프리마켓 시간대(ET 4AM~9:30AM) 5분봉 aggregates 수집 추가. 기존 스냅샷의 `preMarket` 객체는 항상 None이라 사용 불가 — aggregates 엔드포인트로 대체. 프롬프트에 "뉴스>가격 우선 원칙" 명시: Gemini가 단순 가격 변동보다 뉴스·이벤트 기반 분석을 우선하도록.
+
+---
+
+### 6. ATMR 시장데이터 워크플로 diverge 수정
+
+**문제 (`40a80b912`):** `fetch-market-data.yml`의 push 전략이 `ff-only`로 남아있어, 다른 워크플로가 동시에 push하면 diverge → `ff-only merge` 실패 → Step exit 128 → 커밋 미생성.
+
+**수정:** `ff-only` → `rebase` 동일 패턴 적용.
+```yaml
+git push origin main || (git fetch origin main && git rebase origin/main && git push origin main)
+```
+
+---
+
+### 7. Firebase 서비스 계정 키 재발급 (수동)
+
+**문제:** `firebase-hosting.yml` 의 `FIREBASE_SERVICE_ACCOUNT_EZLONG_541A8` 시크릿에 저장된 서비스 계정 키 만료 → 모든 자동 배포 인증 실패 (`Premature close` on OAuth token endpoint).
+
+**수동 조치:** Google Cloud Console → IAM → 서비스 계정 → 새 JSON 키 생성 → GitHub Secrets 교체 → 워크플로 재실행 성공 확인.
+
+---
+
 ## [2026-06-25] 세션 2 — Gemini 모델 전략 확정 + 매크로 인과관계 규칙 + JSON 수정
 
 ### 추가 작업 (세션 1 마무리 후)
