@@ -79,8 +79,8 @@ async function getYFCrumb() {
 // ── 설정 ──────────────────────────────────────────────────────────────────
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_HOST    = 'generativelanguage.googleapis.com';
-const GEMINI_MODEL          = 'gemini-2.5-flash';   // 1차 모델 (2026-06-26 변경: 2.0-flash deprecated → 2.5-flash GA)
-const GEMINI_FALLBACK_MODEL = 'gemini-1.5-flash-latest';   // 폴백 모델 (2026-06-26: 1.5-flash → 1.5-flash-latest로 변경, v1beta 404 대응)
+const GEMINI_MODEL          = 'gemini-2.5-flash';   // 1차 모델 (GA 정식 출시, 2026-06-26 확인)
+// 폴백 모델 제거 — v1beta에서 1.5 계열 전부 404 (gemini-1.5-flash-latest 포함, 2026-06-26 확인)
 const DELAY_MS       = 4500;                        // 티커 간 요청 간격 (Gemini RPM 한도 대응: 4.5s → 분당 13개)
 const DATA_DIR       = path.join(__dirname, '..', 'data');
 
@@ -232,7 +232,7 @@ function httpPost(host, reqPath, body) {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(bodyStr),
       },
-      timeout: 90000,  // gemini-2.5-flash thinking 토큰 처리 시간 고려 (30s→90s, 2026-06-26)
+      timeout: 180000, // gemini-2.5-flash thinking 토큰 처리 시간 고려 (30s→90s→180s, 2026-06-26)
     }, res => {
       const chunks = [];
       res.on('data', c => { chunks.push(c); });
@@ -591,10 +591,11 @@ ${weeklySection}
   "riskNote": "기술적 리스크 한 문장"
 }`;
 
-  // 단일 모델 호출 (최대 3회 재시도, 지수 백오프: 3s → 7s → 15s)
+  // 단일 모델 호출 (최대 4회 재시도, 지수 백오프: 5s → 15s → 45s)
+  // gemini-2.5-flash는 thinking 토큰으로 인해 간헐적 타임아웃 발생 → 긴 딜레이로 model 재시도 효과
   async function _callWithModel(model) {
-    const MAX_TRIES = 3;
-    const DELAYS = [3000, 7000, 15000];
+    const MAX_TRIES = 4;
+    const DELAYS = [5000, 15000, 45000];
 
     for (let attempt = 1; attempt <= MAX_TRIES; attempt++) {
       try {
@@ -639,13 +640,8 @@ ${weeklySection}
     }
   }
 
-  // 1차: GEMINI_MODEL (gemini-2.5-flash)
-  let result = await _callWithModel(GEMINI_MODEL);
-  if (result) return result;
-
-  // 폴백: GEMINI_FALLBACK_MODEL (gemini-1.5-flash)
-  console.log(`  폴백 모델 시도 (${meta.symbol}): ${GEMINI_FALLBACK_MODEL}`);
-  return await _callWithModel(GEMINI_FALLBACK_MODEL);
+  // gemini-2.5-flash 단독 사용 (v1beta 1.5계열 전부 404 — 2026-06-26 확인)
+  return await _callWithModel(GEMINI_MODEL);
 }
 
 // ── 티커 1개 처리 ─────────────────────────────────────────────────────────

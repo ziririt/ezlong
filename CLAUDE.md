@@ -159,16 +159,18 @@ card2 등 회색 배경에 `--ez-text3` 텍스트 금지 → `--ez-text2` 사용
 
 ---
 
-## Gemini API 모델 설정 (2026-06-26 3차 개정)
+## Gemini API 모델 설정 (2026-06-26 4차 개정)
 
 - **1차 모델: `gemini-2.5-flash`** — GA 정식 출시, 안정적. thinking 토큰은 parts 루프로 처리
-- **폴백 모델: `gemini-1.5-flash-latest`** — 2026-06-26 확인. `gemini-1.5-flash`(버전 미지정)는 v1beta 404 → 사용 금지
+- **폴백 모델: 없음** — v1beta에서 1.5 계열 전부 404 (`gemini-1.5-flash-latest` 포함). 대신 재시도 4회(5s→15s→45s 백오프) 적용
+- **HTTP 타임아웃: 180000ms (3분)** — gemini-2.5-flash thinking 토큰이 90초 초과 가능 (2026-06-26 확인). 90s로 부족
 - **maxOutputTokens: 8192** — narrative 필드 길이로 인해 4096에서 JSON 잘림 발생 확인 (2026-06-26). 반드시 8192 이상 유지
 - `gemini-2.5-flash-lite` 사용 금지 — 프리뷰(불안정), 503 빈발, 매크로 논리 오류 반복 확인됨
 - `gemini-2.0-flash` 사용 금지 — Google이 서비스 종료 (2026-06-26 확인)
+- `gemini-1.5-flash`, `gemini-1.5-flash-latest` 사용 금지 — v1beta 404 (2026-06-26 확인)
 - `thinkingConfig` 파라미터 사용 금지 — v1beta API 400 Bad Request 오류 발생 (2026-06-25 확인)
-- thinking 토큰 처리: `_call_single_model` / `_callWithModel` 내부에서 `part.get("thought")` / `p.thought` 체크로 건너뜀
-- **변경 배경:** gemini-2.5-flash-lite 매크로 논리 오류 → gemini-2.5-flash 전환. gemini-2.0-flash deprecated. gemini-1.5-flash v1beta 404 → gemini-1.5-flash-latest로 변경 (2026-06-26).
+- thinking 토큰 처리: `_callWithModel` 내부에서 `p.thought` 체크로 건너뜀
+- **변경 배경:** gemini-2.0-flash deprecated → gemini-2.5-flash 전환. 1.5계열 v1beta 전멸 → 폴백 제거 후 재시도 강화. thinking 토큰으로 인한 타임아웃 → 180s로 상향 (2026-06-26).
 
 ---
 
