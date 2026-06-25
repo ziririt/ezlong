@@ -71,7 +71,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # ── 6. 실패 시 알림 ───────────────────────────────────────────────
+      # ── 6. Firebase Hosting 배포 ──────────────────────────────────────
+      # GITHUB_TOKEN으로 push된 커밋은 firebase-hosting.yml을 트리거하지 않음 (GitHub 정책).
+      # 따라서 JSON 업데이트 후 이 스텝에서 직접 Firebase에 배포한다.
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_EZLONG_541A8 }}'
+          channelId: live
+          projectId: ezlong-541a8
+
+      # ── 7. 실패 시 알림 ───────────────────────────────────────────────
       - name: Notify on failure
         if: failure()
         run: |
