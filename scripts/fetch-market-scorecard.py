@@ -83,19 +83,38 @@ def safe_pct(val):
 # ─── 시장 데이터 수집 ─────────────────────────────────────────────────────────
 
 def fetch_equity_data():
-    """주요 지수·종목 현재가 + 등락률"""
+    """주요 지수·종목 현재가 + 등락률 (프리마켓/시간외 포함)"""
     rows = []
     for sym in EQUITY_TICKERS:
         try:
             t = yf.Ticker(sym)
             info = t.fast_info
-            price   = getattr(info, 'last_price', None)
-            prev    = getattr(info, 'previous_close', None)
+            prev = getattr(info, 'previous_close', None)
+
+            # 프리마켓/시간외 포함 최신 가격 시도
+            price = None
+            session_tag = ''
+            try:
+                hist = t.history(period='1d', prepost=True, interval='1m')
+                if not hist.empty:
+                    price = float(hist['Close'].iloc[-1])
+                    ts = hist.index[-1]
+                    # 정규장(9:30-16:00 ET) 외 시간이면 태그 추가
+                    et_hour = (ts.utctimetuple().tm_hour - 4) % 24  # ET 근사
+                    if et_hour < 9 or et_hour >= 16:
+                        session_tag = ' [프리/시간외]'
+            except Exception:
+                pass
+
+            # 폴백: fast_info 기본값
+            if not price:
+                price = getattr(info, 'last_price', None)
+
             if price and prev:
                 pct = (price - prev) / prev * 100
-                rows.append(f'{sym}: ${price:,.2f} ({safe_pct(pct)})')
+                rows.append(f'{sym}: ${price:,.2f} ({safe_pct(pct)}){session_tag}')
             elif price:
-                rows.append(f'{sym}: ${price:,.2f}')
+                rows.append(f'{sym}: ${price:,.2f}{session_tag}')
         except Exception as ex:
             rows.append(f'{sym}: 데이터 없음 ({ex})')
     return rows
@@ -162,6 +181,13 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines):
 
     return f"""당신은 미국 주식시장 시황 분석 전문가입니다.
 현재 시각(KST): {kst_now.strftime('%Y-%m-%d %H:%M')} ({schedule_label})
+
+=== 데이터 시점 안내 (분석 전 반드시 숙지) ===
+- 가격 데이터 중 [프리/시간외] 표시가 없는 항목은 직전 미국 정규장 종가 기준
+- [프리/시간외] 표시 항목은 현재 프리마켓 또는 시간외 실시간 가격
+- 뉴스 헤드라인은 가장 최신 정보를 담고 있으며 프리마켓 동향을 반영
+- 가격 데이터와 뉴스가 서로 다른 방향을 가리킬 때: 뉴스 헤드라인을 현재 시장 판단의 1차 기준으로 사용
+- 예시: 가격은 전일 하락이지만 뉴스에서 "Futures Jump", "premarket surge", "어닝 서프라이즈" 언급 → 현재 긍정 신호로 분류
 
 === 현재 시장 데이터 ===
 [주요 지수·종목]
