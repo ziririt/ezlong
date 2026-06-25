@@ -77,7 +77,14 @@ jobs:
       - name: Deploy to Firebase Hosting
         run: |
           npm install -g firebase-tools --quiet
-          firebase deploy --only hosting --project ezlong-541a8 --token "${{ secrets.FIREBASE_CI_TOKEN }}"
+          OUTPUT=$(firebase deploy --only hosting --project ezlong-541a8 --token "${{ secrets.FIREBASE_CI_TOKEN }}" 2>&1)
+          EXIT_CODE=$?
+          echo "$OUTPUT"
+          if [ $EXIT_CODE -ne 0 ]; then
+            # "이미 동일한 버전이 활성화됨" → 실질적으로 배포 성공 상태이므로 0으로 처리
+            echo "$OUTPUT" | grep -q "is the current active version" && echo "이미 최신 버전 배포 중 — 정상." && exit 0
+            exit $EXIT_CODE
+          fi
 
       # ── 7. 실패 시 알림 ───────────────────────────────────────────────
       - name: Notify on failure
