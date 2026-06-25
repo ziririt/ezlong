@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-25T21:01:19.919492+00:00",
-  "generatedAtKST": "2026-06-26 06:01 KST",
+  "generatedAt": "2026-06-25T21:07:37.299900+00:00",
+  "generatedAtKST": "2026-06-26 06:07 KST",
   "symbolCount": 8,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -21,7 +21,7 @@
         "histogram": -3.3607
       },
       "high52": 745.3409,
-      "low52": 538.5661,
+      "low52": 538.566,
       "dev200": 13.7082,
       "dev5": -1.0089,
       "dev20": -1.2676,
@@ -65,7 +65,7 @@
         "histogram": -2.2013
       },
       "high52": 698.26,
-      "low52": 553.0899,
+      "low52": 553.09,
       "dev200": 6.8164,
       "dev5": -0.6878,
       "dev20": -1.3845,
@@ -352,7 +352,7 @@
     "prevClose": 26,
     "prev1Week": 38,
     "prev1Month": 59,
-    "timestamp": "2026-06-25T20:46:21+00:00"
+    "timestamp": "2026-06-25T20:49:18+00:00"
   },
   "macro": {
     "yield10y": {
@@ -372,31 +372,48 @@
       "unit": "%"
     },
     "oil": {
-      "price": 71.44,
-      "change": 1.1,
-      "changePct": 1.5638,
+      "price": 71.43,
+      "change": 1.09,
+      "changePct": 1.5496,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 101.439,
-      "change": -0.171,
-      "changePct": -0.1683,
+      "price": 101.45,
+      "change": -0.16,
+      "changePct": -0.1575,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4040.3,
-      "change": 50.0,
-      "changePct": 1.253,
+      "price": 4041.8,
+      "change": 51.5,
+      "changePct": 1.2906,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-06-25T21:01:19.919492+00:00",
+      "atKST": "2026-06-26 06:01 KST",
+      "qqq": {
+        "rsi": 50.17,
+        "macdHist": -3.3607,
+        "dev5": -1.0089,
+        "dev200": 13.7082,
+        "gear": 3,
+        "buyScore": 60,
+        "sellScore": 28,
+        "price": 716.38
+      },
+      "soxxMacdHist": -1.4297,
+      "fearAndGreed": 25,
+      "yield10y": 4.392
+    },
     {
       "at": "2026-06-25T20:52:45.934961+00:00",
       "atKST": "2026-06-26 05:52 KST",
@@ -2827,23 +2844,6 @@
       "soxxMacdHist": -1.0906,
       "fearAndGreed": 38,
       "yield10y": 4.459
-    },
-    {
-      "at": "2026-06-17T18:01:33.204706+00:00",
-      "atKST": "2026-06-18 03:01 KST",
-      "qqq": {
-        "rsi": 56.71,
-        "macdHist": -2.1666,
-        "dev5": 0.3184,
-        "dev200": 16.5995,
-        "gear": 3,
-        "buyScore": 71,
-        "sellScore": 31,
-        "price": 730.9801
-      },
-      "soxxMacdHist": -0.9964,
-      "fearAndGreed": 40,
-      "yield10y": 4.43
     }
   ]
 }
