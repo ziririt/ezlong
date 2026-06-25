@@ -1044,18 +1044,18 @@ function updateSidebarTicker(safe, data) {
     chgEl.textContent   = pct != null ? (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%' : '';
     chgEl.className     = 'ca-ticker-chg ' + (pct >= 0 ? 'up' : 'down');
   }
-  // strength(1~5) 기반 5단계 컬러 (없으면 action 기반 폴백)
-  const str = data?.analysis?.strength;
-  if (str != null && str >= 1) {
-    const STRENGTH_COLORS = {
-      5: IS_DARK ? '#30D158' : '#1A7F37',  // 초강세 — 진초록
-      4: IS_DARK ? '#7ED321' : '#4B7A00',  // 강세   — 연두/짙은녹
-      3: IS_DARK ? '#FFD60A' : '#B87900',  // 중립   — 노랑/황갈
-      2: IS_DARK ? '#8E8E93' : '#6E6E73',  // 약세   — 회색
-      1: IS_DARK ? '#FF453A' : '#D92A2A',  // 하락   — 빨강
-    };
-    dotEl.style.background = STRENGTH_COLORS[str] ?? '#8E8E93';
+  // buyScore(1~10) 기반 컬러 — 상세 패널 매수 매력도 바와 동일한 기준
+  // (strength는 추세 강도만 반영하므로 하락 강세도 초록으로 표시되는 버그 있음)
+  const buyScore = data?.analysis?.buyScore;
+  if (buyScore != null) {
+    dotEl.style.background =
+        buyScore >= 8 ? (IS_DARK ? '#30D158' : '#1A7F37')  // 강한 매수 신호 — 진초록
+      : buyScore >= 6 ? (IS_DARK ? '#0A84FF' : '#0071E3')  // 매수 우위      — 파랑
+      : buyScore >= 4 ? (IS_DARK ? '#FFD60A' : '#B87900')  // 중립/관망      — 노랑
+      : buyScore >= 2 ? (IS_DARK ? '#8E8E93' : '#6E6E73')  // 약세           — 회색
+      :                 (IS_DARK ? '#FF453A' : '#D92A2A');  // 매수 비권고    — 빨강
   } else if (act && ACTION_DOTS[act]) {
+    // buyScore 없는 구형 데이터 폴백
     dotEl.style.background = ACTION_DOTS[act];
   }
 }
@@ -1534,7 +1534,7 @@ function initCharts(ohlcv, ind, analysis) {
     const el = document.createElement('div');
     el.className = 'ca-price-left-label';
     el.textContent = text;
-    el.style.cssText = `position:absolute;left:6px;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700;color:#fff;background:${bgColor};pointer-events:none;z-index:20;white-space:nowrap;opacity:0.92;`;
+    el.style.cssText = `position:absolute;left:6px;padding:1px 5px;border-radius:3px;font-size:14px;font-weight:700;color:#fff;background:${bgColor};pointer-events:none;z-index:20;white-space:nowrap;opacity:0.92;`;
     mainWrap.appendChild(el);
     const reposition = () => {
       try {
