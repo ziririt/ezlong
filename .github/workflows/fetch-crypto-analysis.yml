@@ -1,19 +1,28 @@
 name: 암호화폐 차트 분석 생성
 
 # ─── 스케줄 설명 ────────────────────────────────────────────────────────────
-# cron-job.org 가 매시 :05분에 workflow_dispatch로 트리거 (24시간 365일)
-# cron 표현식: 5 * * * * (Asia/Seoul — 주말 포함 매일 24회)
+# KST 06:00~24:00 구간, 3시간 간격 6회 실행 (GitHub Actions 자체 cron)
 #
-# ※ :05 비표준 분수 사용 — GitHub Actions cron은 :00/:10/:15/:30/:45에
-#   전 세계 job이 폭주해 지연/스킵이 발생함. :05는 큐 혼잡이 현저히 낮음.
+# KST 시각  │ UTC    │ 비고
+# 06:05 KST │ 21:05  │ 아침 (전날 UTC 기준)
+# 09:05 KST │ 00:05  │ 오전 (한국 장 시작)
+# 12:05 KST │ 03:05  │ 오후
+# 15:05 KST │ 06:05  │ 한국 장마감 직후
+# 18:05 KST │ 09:05  │ 저녁 (미국 프리마켓)
+# 21:05 KST │ 12:05  │ 밤 (미국 장중)
 #
-# 크립토는 주말·공휴일 관계없이 365일 24시간 거래 → 거래일 체크 없음
+# ※ cron-job.org 잡 비활성화 필요 (중복 실행 방지)
+# 비용 절감: ~19회/일 → 6회/일 (68% 절감)
 #
 
 on:
-  # ── cron-job.org 가 GitHub API workflow_dispatch 를 직접 트리거함 ──────
-  # 트리거 URL: POST https://api.github.com/repos/ziririt/ezlong/actions/workflows/fetch-crypto-analysis.yml/dispatches
-  # 실행 주기: 매시 :05분 (KST), 7일 24시간
+  schedule:
+    - cron: '5 21 * * *'   # KST 06:05
+    - cron: '5 0  * * *'   # KST 09:05
+    - cron: '5 3  * * *'   # KST 12:05
+    - cron: '5 6  * * *'   # KST 15:05
+    - cron: '5 9  * * *'   # KST 18:05
+    - cron: '5 12 * * *'   # KST 21:05
 
   workflow_dispatch:
 
@@ -37,36 +46,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
-      # ── 크립토 업데이트 시간 체크 (KST 06:00~01:00) ─────────────────────
-      - name: Check crypto update window
-        id: time_check
-        run: |
-          KST_HOUR=$(TZ=Asia/Seoul date +%H)
-          echo "현재 KST 시각: ${KST_HOUR}시"
-          # 새벽 01시~05시(KST 01~05)는 건너뜀
-          if [ "$KST_HOUR" -ge "1" ] && [ "$KST_HOUR" -lt "6" ]; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-            echo "크립토 비활성 시간대 (KST ${KST_HOUR}시, 01~05시 비활성). 건너뜀."
-          else
-            echo "skip=false" >> $GITHUB_OUTPUT
-            echo "크립토 업데이트 활성 (KST ${KST_HOUR}시)"
-          fi
+      - name: Install dependencies
+        run: npm install --production
 
-      # ── DEBUG: Gemini API 직접 테스트 ────────────────────────────
-      - name: Debug Gemini API
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          echo "=== v1 모델 목록 ==="
-          curl -s "https://generativelanguage.googleapis.com/v1/models?key=$GEMINI_API_KEY" | python3 -c "import sys,json; d=json.load(sys.stdin); [print(m.get('name','')) for m in d.get('models',[])]" 2>&1 | head -10 || echo "목록 실패"
-          echo "=== gemini-flash-latest 테스트 ==="
-          curl -s -X POST "https://generativelanguage.googleapis.com/v1/models/gemini-flash-latest:generateContent?key=$GEMINI_API_KEY" -H "Content-Type: application/json" -d '{"contents":[{"parts":[{"text":"Say OK"}]}],"generationConfig":{"maxOutputTokens":5}}' | head -c 300
-
-            # ── 3. 암호화폐 차트 분석 (재시도 3회) ───────────────────────────
+      # ── 3. 암호화폐 차트 분석 (재시도 3회) ───────────────────────────
       - name: Run crypto chart analysis
-        if: steps.time_check.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
@@ -87,7 +73,6 @@ jobs:
 
       # ── 4. 변경사항 커밋 및 푸시 ─────────────────────────────────────
       - name: Commit and push analysis data
-        if: steps.time_check.outputs.skip != 'true'
         run: |
           git config user.name "ATMR Bot"
           git config user.email "atmr-bot@ezlong.com"
@@ -100,8 +85,6 @@ jobs:
 
           git commit -m "chore: 크립토 차트 분석 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 
-          # git pull --rebase 금지 (CLAUDE.md Rule 16 — unstaged 파일 있으면 실패)
-          # merge -X ours: 충돌 시 워크플로 생성 데이터를 우선 (chart-index.json 등)
           git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

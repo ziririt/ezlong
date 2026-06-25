@@ -1,26 +1,35 @@
 name: 미국주식 차트 분석 생성
 
 # ─── 스케줄 설명 ────────────────────────────────────────────────────────────
-# 미국 정규장 시간(평일) 매시 1회 실행
-# 장 시작 5분 후(9:35 AM ET) ~ 장마감 5분 전(3:55 PM ET)
-# → 9:35 · 10:35 · 11:35 · 12:35 · 13:35 · 14:35 · 15:35 ET (7회/일)
+# 평일(월~금) 4회 실행 (장중 3회 + 장마감 직후 1회)
+# 목표 실행 시각 (ET 기준):
+#   09:35 ET — 장 시작 직후
+#   10:35 ET
+#   11:35 ET
+#   15:35 ET — 장마감 5분 후
 #
-# EDT(UTC-4) 기준: 13:35~19:35 UTC
-# EST(UTC-5) 기준: 14:35~20:35 UTC
-# → 두 시즌 모두 커버하기 위해 13:35~20:35 UTC 총 8개 cron 사용
-# → 내부 ET 시각 체크(9:30~16:00)로 장 외 cron 자동 필터링
+# DST 전환 커버: EDT(UTC-4)·EST(UTC-5) 두 시즌 모두 아래 cron으로 대응.
+# → 내부 ET 시각 체크로 목표 시간대(09:30~12:05 / 15:30~16:05)만 실행.
+#
+#  UTC cron  │ EDT(UTC-4)  │ EST(UTC-5)  │ 동작
+#  35 13     │ 09:35 ET ✓  │ 08:35 ET ✗  │ 여름만 실행
+#  35 14     │ 10:35 ET ✓  │ 09:35 ET ✓  │ 항상 실행
+#  35 15     │ 11:35 ET ✓  │ 10:35 ET ✓  │ 항상 실행
+#  35 16     │ 12:35 ET ✗  │ 11:35 ET ✓  │ 겨울만 실행
+#  35 19     │ 15:35 ET ✓  │ 14:35 ET ✗  │ 여름만 실행
+#  35 20     │ 16:35 ET ✗  │ 15:35 ET ✓  │ 겨울만 실행
+#
+# 비용 절감: 7회/일 → 4회/일 (43% 절감)
 #
 
 on:
   schedule:
-    - cron: '35 13 * * 1-5'   # EDT  9:35 AM ET
-    - cron: '35 14 * * 1-5'   # EDT 10:35 / EST  9:35 AM ET
-    - cron: '35 15 * * 1-5'   # EDT 11:35 / EST 10:35 AM ET
-    - cron: '35 16 * * 1-5'   # EDT 12:35 / EST 11:35 AM ET
-    - cron: '35 17 * * 1-5'   # EDT 13:35 / EST 12:35 PM ET
-    - cron: '35 18 * * 1-5'   # EDT 14:35 / EST 13:35 PM ET
-    - cron: '35 19 * * 1-5'   # EDT 15:35 / EST 14:35 PM ET
-    - cron: '35 20 * * 1-5'   # EST 15:35 PM ET
+    - cron: '35 13 * * 1-5'   # EDT  9:35 ET
+    - cron: '35 14 * * 1-5'   # EDT 10:35 / EST  9:35 ET
+    - cron: '35 15 * * 1-5'   # EDT 11:35 / EST 10:35 ET
+    - cron: '35 16 * * 1-5'   # EST 11:35 ET
+    - cron: '35 19 * * 1-5'   # EDT 15:35 ET
+    - cron: '35 20 * * 1-5'   # EST 15:35 ET
 
   workflow_dispatch:
 
@@ -29,8 +38,6 @@ jobs:
     runs-on: ubuntu-latest
 
     concurrency:
-      # workflow_dispatch(수동 실행)은 run_id로 유일한 그룹 생성 → cron이 절대 취소 불가
-      # schedule(cron)은 공유 그룹 → 지연된 이전 cron을 새 cron이 취소 가능
       group: ${{ github.event_name == 'workflow_dispatch' && format('us-chart-analysis-manual-{0}', github.run_id) || 'us-chart-analysis' }}
       cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 
@@ -50,36 +57,38 @@ jobs:
       - name: Install dependencies
         run: npm install --production
 
-      # ── 3. 미국 정규장 시간 체크 (ET 9:30~16:00) ─────────────────────
-      # workflow_dispatch(수동 실행) 시에는 시간 체크 우회 — 장 외에서도 강제 실행 가능
-      - name: Check US market hours
-        id: market_check
+      # ── 3. ET 목표 시간대 체크 ───────────────────────────────────────
+      # 허용 구간: 09:30~12:04 (장초반 3회) / 15:30~16:04 (장마감 직후)
+      # workflow_dispatch(수동)는 시간 체크 우회 — 언제든 강제 실행 가능
+      - name: Check target ET time window
+        id: time_check
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "skip=false" >> $GITHUB_OUTPUT
-            echo "수동 실행(workflow_dispatch) — 시간 체크 우회, 강제 실행"
+            echo "수동 실행 — 시간 체크 우회"
           else
             ET_TIME=$(TZ=America/New_York date +%H%M)
             echo "현재 ET 시각: $ET_TIME"
-            if [ "$ET_TIME" -lt "0930" ] || [ "$ET_TIME" -ge "1600" ]; then
-              echo "skip=true" >> $GITHUB_OUTPUT
-              echo "장 외 시간 — 건너뜀 (ET $ET_TIME)"
-            else
+            if ([ "$ET_TIME" -ge "0930" ] && [ "$ET_TIME" -lt "1205" ]) || \
+               ([ "$ET_TIME" -ge "1530" ] && [ "$ET_TIME" -lt "1605" ]); then
               echo "skip=false" >> $GITHUB_OUTPUT
-              echo "장 중 — 분석 실행 (ET $ET_TIME)"
+              echo "목표 시간대 — 분석 실행 (ET $ET_TIME)"
+            else
+              echo "skip=true" >> $GITHUB_OUTPUT
+              echo "목표 시간대 외 — 건너뜀 (ET $ET_TIME)"
             fi
           fi
 
       # ── 4. 미국 주식/ETF 차트 분석 실행 ──────────────────────────────
       - name: Run US stocks/ETFs chart analysis
-        if: steps.market_check.outputs.skip != 'true'
+        if: steps.time_check.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/generate-chart-analysis.js us
 
       # ── 5. 변경사항 커밋 및 푸시 ─────────────────────────────────────
       - name: Commit and push analysis data
-        if: steps.market_check.outputs.skip != 'true'
+        if: steps.time_check.outputs.skip != 'true'
         run: |
           git config user.name "ATMR Bot"
           git config user.email "atmr-bot@ezlong.com"
@@ -93,8 +102,6 @@ jobs:
           KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
           git commit -m "chore: 미국주식 차트 분석 업데이트 ${KST}"
 
-          # 다른 워크플로(크립토·ATMR 등)가 분석 실행 중 push해서 diverge하는 경우를 처리
-          # rebase는 chart-index.json 등 동일 파일 수정 시 충돌 → merge -X ours로 로컬(워크플로 생성 데이터)을 우선
           git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
