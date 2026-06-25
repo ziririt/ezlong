@@ -24,8 +24,9 @@ except ImportError:
 
 # ─── 설정 ───────────────────────────────────────────────────────────────────
 GEMINI_API_KEY     = os.environ.get('GEMINI_API_KEY', '')
-GEMINI_MODEL       = 'gemini-2.5-flash'                # 1차 시도 (GA, 고품질 — 2026-06-25 확정)
-GEMINI_MODEL_FALLBACK = 'gemini-1.5-flash'             # 폴백 — gemini-2.0-flash는 v1beta 404 확인, 1.5-flash로 변경
+GEMINI_MODEL       = 'gemini-2.5-flash'                # 1차·유일 모델 (GA 정식, 2026-06-26 확정)
+# 폴백 없음 — v1beta에서 1.5 계열 전부 404, 2.0-flash 서비스 종료 (2026-06-26 확인)
+# 대신 재시도 4회 + 5s→15s→45s→120s 백오프 (429 Rate Limit 대응)
 
 def _gemini_url(model):
     return f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}'
@@ -257,14 +258,17 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines):
 """
 
 
-def _call_single_model(model, payload, max_retries=3):
-    """단일 모델로 최대 max_retries회 시도. 성공 시 dict 반환, 실패 시 None."""
+def _call_single_model(model, payload, max_retries=4):
+    """단일 모델로 최대 max_retries회 시도. 성공 시 dict 반환, 실패 시 None.
+    429 Rate Limit은 더 긴 백오프 적용 (5s→15s→45s→120s).
+    """
     url = _gemini_url(model)
-    wait_secs = [15, 30, 60]
+    wait_secs        = [5, 15, 45, 120]   # 일반 오류 백오프
+    wait_secs_429    = [30, 60, 120, 180]  # 429 Rate Limit 전용 (더 길게)
 
     for attempt in range(max_retries):
         try:
-            resp = requests.post(url, json=payload, timeout=60)
+            resp = requests.post(url, json=payload, timeout=180)
             resp.raise_for_status()
             data = resp.json()
 
@@ -291,7 +295,8 @@ def _call_single_model(model, payload, max_retries=3):
             status = getattr(e.response, 'status_code', None) if hasattr(e, 'response') else None
             print(f"  ERROR: {model} 요청 실패 (시도 {attempt+1}/{max_retries}) — {e}")
             if attempt < max_retries - 1 and status in (None, 429, 500, 502, 503, 504):
-                wait = wait_secs[attempt]
+                # 429는 별도 백오프
+                wait = wait_secs_429[attempt] if status == 429 else wait_secs[attempt]
                 print(f"  {wait}초 후 재시도...")
                 time.sleep(wait)
                 continue
@@ -314,22 +319,16 @@ def call_gemini(prompt):
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
             "temperature": 0.4,
+            "maxOutputTokens": 8192,
             "responseMimeType": "application/json"
         }
     }
 
-    # 1차: gemini-2.5-flash (3회 재시도)
+    # gemini-2.5-flash 단독 4회 재시도 (폴백 없음 — v1beta 1.5계열 전부 404)
     print(f"  1차 시도: {GEMINI_MODEL}")
-    result = _call_single_model(GEMINI_MODEL, payload, max_retries=3)
+    result = _call_single_model(GEMINI_MODEL, payload, max_retries=4)
     if result:
         print(f"  성공: {GEMINI_MODEL}")
-        return result
-
-    # 폴백: gemini-1.5-flash (2회 재시도) — gemini-2.0-flash는 v1beta 404
-    print(f"  폴백 전환: {GEMINI_MODEL_FALLBACK}")
-    result = _call_single_model(GEMINI_MODEL_FALLBACK, payload, max_retries=2)
-    if result:
-        print(f"  성공(폴백): {GEMINI_MODEL_FALLBACK}")
         return result
 
     return None
