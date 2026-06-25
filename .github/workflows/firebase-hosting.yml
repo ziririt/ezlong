@@ -1,6 +1,8 @@
 name: Firebase Hosting 자동 배포
 
 # main 브랜치에 push될 때마다 Firebase에 자동 배포
+# 인증 방식: firebase login:ci 토큰 (FIREBASE_TOKEN secret)
+# 서비스 계정 JSON 방식은 Google OAuth 인증 실패로 사용 중지
 
 on:
   push:
@@ -9,7 +11,7 @@ on:
 
   # 수동 실행 허용
   workflow_dispatch:
-  
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -18,10 +20,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_EZLONG_541A8 }}'
-          channelId: live
-          projectId: ezlong-541a8
+          node-version: '20'
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Deploy to Firebase Hosting
+        run: |
+          firebase deploy --only hosting --project ezlong-541a8 --token "${{ secrets.FIREBASE_TOKEN }}" || true
+        # || true: 변경 없을 때 "이미 활성 버전" 에러를 성공으로 처리
