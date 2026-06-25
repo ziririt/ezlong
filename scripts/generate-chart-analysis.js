@@ -79,7 +79,8 @@ async function getYFCrumb() {
 // ── 설정 ──────────────────────────────────────────────────────────────────
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_HOST    = 'generativelanguage.googleapis.com';
-const GEMINI_MODEL   = 'gemini-2.0-flash';         // GA 안정 모델 (2026-06-25 변경: flash-lite 프리뷰→2.0-flash GA)
+const GEMINI_MODEL          = 'gemini-2.5-flash';   // 1차 모델 (2026-06-26 변경: 2.0-flash deprecated → 2.5-flash GA)
+const GEMINI_FALLBACK_MODEL = 'gemini-1.5-flash';   // 폴백 모델 (v1beta 검증 완료)
 const DELAY_MS       = 4500;                        // 티커 간 요청 간격 (Gemini RPM 한도 대응: 4.5s → 분당 13개)
 const DATA_DIR       = path.join(__dirname, '..', 'data');
 
@@ -590,44 +591,61 @@ ${weeklySection}
   "riskNote": "기술적 리스크 한 문장"
 }`;
 
-  // 최대 3회 재시도 (지수 백오프: 3s → 7s → 15s)
-  const MAX_TRIES = 3;
-  const DELAYS = [3000, 7000, 15000];
+  // 단일 모델 호출 (최대 3회 재시도, 지수 백오프: 3s → 7s → 15s)
+  async function _callWithModel(model) {
+    const MAX_TRIES = 3;
+    const DELAYS = [3000, 7000, 15000];
 
-  for (let attempt = 1; attempt <= MAX_TRIES; attempt++) {
-    try {
-      const resp = await httpPost(
-        GEMINI_HOST,
-        `/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
-        {
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.15, maxOutputTokens: 4096, responseMimeType: 'application/json' },
+    for (let attempt = 1; attempt <= MAX_TRIES; attempt++) {
+      try {
+        const resp = await httpPost(
+          GEMINI_HOST,
+          `/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`,
+          {
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.15, maxOutputTokens: 4096, responseMimeType: 'application/json' },
+          }
+        );
+        // thinking 토큰 처리 (gemini-2.5-flash): thought:true 파트는 제외하고 실제 응답만 추출
+        const parts = resp?.candidates?.[0]?.content?.parts || [];
+        const text = parts.filter(p => !p.thought).map(p => p.text || '').join('');
+        if (!text) {
+          // 실제 Gemini 에러 메시지 추출
+          const apiErr = resp?.error?.message;
+          const blockReason = resp?.promptFeedback?.blockReason;
+          const finishReason = resp?.candidates?.[0]?.finishReason;
+          const detail = apiErr || blockReason || (finishReason ? `finishReason=${finishReason}` : null) || JSON.stringify(resp).slice(0, 300);
+          throw new Error(`JSON 미포함 응답 [${detail}]`);
         }
-      );
-      const text = resp?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      if (!text) {
-        // 실제 Gemini 에러 메시지 추출
-        const apiErr = resp?.error?.message;
-        const blockReason = resp?.promptFeedback?.blockReason;
-        const finishReason = resp?.candidates?.[0]?.finishReason;
-        const detail = apiErr || blockReason || (finishReason ? `finishReason=${finishReason}` : null) || JSON.stringify(resp).slice(0, 300);
-        throw new Error(`JSON 미포함 응답 [${detail}]`);
-      }
-      const m = text.match(/\{[\s\S]*\}/);
-      if (!m) throw new Error(`JSON 미포함 응답 [text=${text.slice(0,200)}]`);
-      const result = JSON.parse(m[0]);
-      if (attempt > 1) console.log(`  Gemini 재시도 성공 (${meta.symbol}, ${attempt}회차)`);
-      return result;
-    } catch (e) {
-      if (attempt < MAX_TRIES) {
-        console.warn(`  Gemini 오류 (${meta.symbol}, ${attempt}/${MAX_TRIES}): ${e.message} — ${DELAYS[attempt-1]/1000}초 후 재시도`);
-        await new Promise(r => setTimeout(r, DELAYS[attempt - 1]));
-      } else {
-        console.error(`  Gemini 최종 실패 (${meta.symbol}): ${e.message}`);
-        return null;
+        const m = text.match(/\{[\s\S]*\}/);
+        if (!m) throw new Error(`JSON 미포함 응답 [text=${text.slice(0,200)}]`);
+        const result = JSON.parse(m[0]);
+        if (attempt > 1) console.log(`  Gemini 재시도 성공 (${meta.symbol}, ${model}, ${attempt}회차)`);
+        return result;
+      } catch (e) {
+        // 모델 deprecated/404 에러는 재시도 없이 즉시 null 반환
+        if (e.message.includes('no longer available') || e.message.includes('404')) {
+          console.error(`  Gemini 모델 미지원 (${meta.symbol}): ${model} — ${e.message}`);
+          return null;
+        }
+        if (attempt < MAX_TRIES) {
+          console.warn(`  Gemini 오류 (${meta.symbol}, ${attempt}/${MAX_TRIES}, ${model}): ${e.message} — ${DELAYS[attempt-1]/1000}초 후 재시도`);
+          await new Promise(r => setTimeout(r, DELAYS[attempt - 1]));
+        } else {
+          console.error(`  Gemini 최종 실패 (${meta.symbol}, ${model}): ${e.message}`);
+          return null;
+        }
       }
     }
   }
+
+  // 1차: GEMINI_MODEL (gemini-2.5-flash)
+  let result = await _callWithModel(GEMINI_MODEL);
+  if (result) return result;
+
+  // 폴백: GEMINI_FALLBACK_MODEL (gemini-1.5-flash)
+  console.log(`  폴백 모델 시도 (${meta.symbol}): ${GEMINI_FALLBACK_MODEL}`);
+  return await _callWithModel(GEMINI_FALLBACK_MODEL);
 }
 
 // ── 티커 1개 처리 ─────────────────────────────────────────────────────────

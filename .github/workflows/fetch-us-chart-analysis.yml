@@ -94,8 +94,8 @@ jobs:
           git commit -m "chore: 미국주식 차트 분석 업데이트 ${KST}"
 
           # 다른 워크플로(크립토·ATMR 등)가 분석 실행 중 push해서 diverge하는 경우를 처리
-          # ff-only는 diverge 시 실패 → rebase로 로컬 커밋을 remote HEAD 위에 올린 후 재push
-          git push origin main || (git fetch origin main && git rebase origin/main && git push origin main)
+          # rebase는 chart-index.json 등 동일 파일 수정 시 충돌 → merge -X ours로 로컬(워크플로 생성 데이터)을 우선
+          git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
