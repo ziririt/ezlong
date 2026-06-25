@@ -5,6 +5,67 @@
 
 ---
 
+## [2026-06-26] 세션 — Firebase CI 토큰 전환 + TSLA 부정 재료 기준 강화 + TSM·MU 추가
+
+### 커밋 이력 (주요 작업)
+
+. `3e6fa5154` — feat: 미국주식 티커 순서 재정렬 + TSM·MU 추가 (총 21개)
+. `df5681c97` — fix: Firebase '이미 활성 버전' 에러를 성공으로 처리
+. `e235fa39e` — feat: TSLA·머스크 부정 재료 기준 강화 — 수치·사실 근거 없는 비방 제외
+. `3e8f174c0` — fix: Firebase 배포 CI 토큰 방식으로 교체 (서비스 계정 인증 실패)
+
+---
+
+### 1. Firebase 자동 배포 — 서비스 계정 → CI 토큰 방식으로 전환
+
+**경위:** 서비스 계정 키 재발급 후에도 `firebase-hosting.yml`의 `FirebaseExtended/action-hosting-deploy@v0`가 계속 인증 실패. 서비스 계정 방식 자체가 불안정하다는 판단 하에 CI 토큰 방식으로 전환.
+
+**수정 (`3e8f174c0`):** `firebaseServiceAccount` 파라미터 제거 → `FIREBASE_TOKEN` secret 기반 `firebase deploy --only hosting --token` 방식으로 교체.
+
+**추가 수정 (`df5681c97`):** `firebase deploy`가 배포할 파일 변경이 없을 때 "이미 활성 버전" 에러(exit code 1) 반환 → `|| true`로 처리해 정상 종료로 인식.
+
+**복구:**
+```bash
+git checkout 3e8f174c0^ -- .github/workflows/firebase-hosting.yml
+```
+
+---
+
+### 2. TSLA·머스크 부정 재료 기준 강화
+
+**변경 (`e235fa39e`):** `fetch-market-scorecard.py` Gemini 프롬프트에 TSLA 전용 필터 규칙 추가.
+
+. 수치·사실 기반 부정 재료만 허용: 실적 미달, 납품 지연, 리콜, 규제 제재, 법적 분쟁 등
+. 근거 없는 비방·정치적 논란·개인 이미지 관련 보도는 부정 재료로 분류 금지
+. 일론 머스크 관련 뉴스는 Tesla 사업에 직접 영향이 있을 때만 반영
+
+**복구:**
+```bash
+git checkout e235fa39e^ -- scripts/fetch-market-scorecard.py
+```
+
+---
+
+### 3. 미국주식 티커 순서 재정렬 + TSM·MU 신규 추가
+
+**변경 (`3e6fa5154`):** `scripts/generate-chart-analysis.js` 의 `TICKERS_US_STOCKS` 재정렬 (19개 → 21개).
+
+상위 14개 확정 순서:
+. TSLA → NVDA → AAPL → MSFT → GOOGL → AMZN → META → AVGO → TSM → MU → AMD → ASML → PLTR → IONQ
+
+신규 추가:
+. `TSM` (TSMC) — 글로벌 파운드리 1위. NVIDIA·Apple·AMD 최첨단 반도체 위탁생산
+. `MU` (마이크론) — 미국 유일 메모리 반도체 기업. DRAM·NAND·HBM, AI 수요 핵심 수혜
+
+이하 기존 순서 유지: NFLX → SHOP → SNOW → CRWD → ABNB → INTU → COIN
+
+**복구:**
+```bash
+git checkout 3e6fa5154^ -- scripts/generate-chart-analysis.js
+```
+
+---
+
 ## [2026-06-25] 세션 3 — Gemini thinking 파싱 수정 + 폴백 확정 + 워크플로 안정화 + Firebase 인증 복구
 
 ### 커밋 이력 (주요 작업)
