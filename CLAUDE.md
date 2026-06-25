@@ -159,13 +159,14 @@ card2 등 회색 배경에 `--ez-text3` 텍스트 금지 → `--ez-text2` 사용
 
 ---
 
-## Gemini API 모델 설정 (2026-06-25 개정)
+## Gemini API 모델 설정 (2026-06-25 2차 개정)
 
-- **1차 모델: `gemini-2.5-flash`** — GA 정식 출시, 안정적, 논리 오류 적음
-- **폴백 모델: `gemini-2.0-flash`** — GA 안정적, 1차 실패 시 사용
+- **1차 모델: `gemini-2.5-flash`** — GA 정식 출시, 안정적, 논리 오류 적음. thinking 토큰은 parts 루프로 처리
+- **폴백 모델: `gemini-1.5-flash`** — v1beta 검증 완료. `gemini-2.0-flash`는 v1beta에서 404 → 사용 금지
 - `gemini-2.5-flash-lite` 사용 금지 — 프리뷰(불안정), 503 빈발, 매크로 논리 오류 반복 확인됨
-- `thinkingConfig` 사용 금지 (토큰 비용 폭증)
-- **변경 배경:** gemini-2.5-flash-lite가 원유 가격 하락을 "인플레이션 우려"로 잘못 분류하는 등 매크로 인과관계 오류 반복 확인 (2026-06-25). 월 추가 비용 약 300원으로 gemini-2.5-flash 전환 결정.
+- `thinkingConfig` 파라미터 사용 금지 — v1beta API 400 Bad Request 오류 발생 (2026-06-25 확인)
+- thinking 토큰 처리: `_call_single_model` 내부에서 `part.get("thought")` 체크로 건너뜀
+- **변경 배경:** gemini-2.5-flash-lite 매크로 논리 오류 → gemini-2.5-flash 전환. gemini-2.0-flash v1beta 404 → gemini-1.5-flash 폴백으로 변경 (2026-06-25).
 
 ---
 
