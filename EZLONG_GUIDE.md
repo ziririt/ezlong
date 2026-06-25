@@ -416,8 +416,23 @@ git rebase --abort  # (필요한 경우)
 
 ## 10. 새 서비스 페이지 추가 시 체크리스트
 
-1. `_template.html` 복사 → `새파일.html` 생성
-2. 새 HTML에 반드시 포함:
+1. `_template.html` 복사 → `새파일.html` 생성 (GA 스크립트가 이미 포함되어 있음)
+2. **GA 스크립트 확인** — `<head>` 최상단에 반드시 포함:
+   ```html
+   <!-- Google tag (gtag.js) -->
+   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+   <script>
+     window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+     gtag('js', new Date());
+     gtag('config', 'G-8DY4BGP444');
+   </script>
+   ```
+   누락 여부 확인:
+   ```bash
+   grep -l "G-8DY4BGP444" 새파일.html  # 출력 없으면 누락
+   ```
+3. 새 HTML에 반드시 포함:
    ```html
    <link rel="stylesheet" href="ez-design.css">
    ```
@@ -431,14 +446,20 @@ git rebase --abort  # (필요한 경우)
    <!-- ── EZLONG 글로벌 푸터 ── -->
    <script src="/ez-footer.js"></script>
    ```
-3. **`ez-nav.js`** 의 `links` 배열에 새 항목 추가 (URL, 짧은 라벨)
-4. **`ez-footer.js`** 의 서비스 링크 목록에 새 항목 추가
-5. 위 2번 서비스 목록 표에 행 추가 (이 가이드 문서)
-6. `index.html` 툴 카드 그리드에 카드 추가
-7. `sitemap.xml`에 URL 추가
-8. git commit → git push → firebase deploy + URL 확인
+4. **`ez-nav.js`** 의 `links` 배열에 새 항목 추가 (URL, 짧은 라벨)
+5. **`ez-footer.js`** 의 서비스 링크 목록에 새 항목 추가
+6. 위 2번 서비스 목록 표에 행 추가 (이 가이드 문서)
+7. `index.html` 툴 카드 그리드에 카드 추가
+8. `sitemap.xml`에 URL 추가
+9. SEO/AEO 메타태그 추가: title, description, canonical, OG, Twitter Card, JSON-LD
+10. git commit → git push → firebase deploy + URL 확인
 
-> **핵심:** 3·4번만 하면 기존 모든 페이지에 자동 반영. 개별 HTML 파일을 손댈 필요 없다.
+> **핵심:** 4·5번만 하면 기존 모든 페이지에 자동 반영. 개별 HTML 파일을 손댈 필요 없다.
+
+> **GA 누락 전체 점검 명령 (신규 페이지 배포 전 실행):**
+> ```bash
+> for f in *.html; do grep -qL "G-8DY4BGP444" "$f" 2>/dev/null && echo "GA 누락: $f"; done
+> ```
 
 ---
 
