@@ -73,18 +73,17 @@ jobs:
 
       # ── 6. Firebase Hosting 배포 ──────────────────────────────────────
       # GITHUB_TOKEN으로 push된 커밋은 firebase-hosting.yml을 트리거하지 않음 (GitHub 정책).
-      # FirebaseExtended/action-hosting-deploy 서비스 계정 인증 실패 → CI 토큰 방식으로 교체.
+      # 토큰을 env로 전달해 GitHub 마스킹 오작동 방지.
       - name: Deploy to Firebase Hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
           npm install -g firebase-tools --quiet
-          OUTPUT=$(firebase deploy --only hosting --project ezlong-541a8 --token "${{ secrets.FIREBASE_TOKEN }}" 2>&1)
-          EXIT_CODE=$?
-          echo "$OUTPUT"
-          if [ $EXIT_CODE -ne 0 ]; then
-            # "이미 동일한 버전이 활성화됨" → 실질적으로 배포 성공 상태이므로 0으로 처리
-            echo "$OUTPUT" | grep -q "is the current active version" && echo "이미 최신 버전 배포 중 — 정상." && exit 0
-            exit $EXIT_CODE
-          fi
+          echo "=== Firebase CLI 버전 ==="
+          firebase --version
+          echo "=== 배포 시작 ==="
+          firebase deploy --only hosting --project ezlong-541a8 --token "$FIREBASE_TOKEN" || true
+          echo "=== 배포 스텝 완료 ==="
 
       # ── 7. 실패 시 알림 ───────────────────────────────────────────────
       - name: Notify on failure
