@@ -141,10 +141,14 @@ def fetch_macro_data():
     return rows
 
 
-def fetch_news_headlines(max_per_ticker=3, max_total=20):
-    """yfinance .news 로 최신 헤드라인 수집"""
+def fetch_news_headlines(max_per_ticker=3, max_total=20, max_age_hours=6):
+    """yfinance .news 로 최신 헤드라인 수집 — 6시간 이내 기사만 포함"""
     headlines = []
     seen = set()
+    now_ts = time.time()
+    cutoff_ts = now_ts - (max_age_hours * 3600)
+    skipped = 0
+
     tickers_for_news = ['QQQ', 'NVDA', 'TSLA', 'AAPL', 'MSFT', 'GOOGL', 'SPY', '^TNX']
     for sym in tickers_for_news:
         if len(headlines) >= max_total:
@@ -156,21 +160,55 @@ def fetch_news_headlines(max_per_ticker=3, max_total=20):
             for item in news:
                 if count >= max_per_ticker:
                     break
-                # yfinance news 구조: title / link / providerPublishTime / publisher
+                if not isinstance(item, dict):
+                    continue
+
+                # 발행 시각 추출 — 신/구 yfinance 구조 모두 처리
+                pub_ts = None
+                content = item.get('content', {})
+                if isinstance(content, dict):
+                    pub_date_str = content.get('pubDate', '')
+                    if pub_date_str:
+                        try:
+                            from datetime import timezone as tz
+                            pub_dt = datetime.fromisoformat(pub_date_str.replace('Z', '+00:00'))
+                            pub_ts = pub_dt.timestamp()
+                        except Exception:
+                            pass
+                if pub_ts is None:
+                    pub_ts = item.get('providerPublishTime')  # 구버전: Unix timestamp
+
+                # ── 시간 필터: 24시간 초과 기사 제외 ──────────────────────────
+                if pub_ts and pub_ts < cutoff_ts:
+                    skipped += 1
+                    continue
+
+                # 제목 추출
                 title = None
-                if isinstance(item, dict):
-                    # 최신 yfinance 구조: content.title
-                    content = item.get('content', {})
-                    if isinstance(content, dict):
-                        title = content.get('title')
-                    if not title:
-                        title = item.get('title')
-                if title and title not in seen:
-                    headlines.append(title)
-                    seen.add(title)
-                    count += 1
+                if isinstance(content, dict):
+                    title = content.get('title')
+                if not title:
+                    title = item.get('title')
+                if not title or title in seen:
+                    continue
+
+                # 경과 시간 레이블 추가 (Gemini가 신선도 판단에 활용)
+                if pub_ts:
+                    hours_ago = (now_ts - pub_ts) / 3600
+                    if hours_ago < 1:
+                        age_label = f"({int(hours_ago * 60)}분 전)"
+                    else:
+                        age_label = f"({hours_ago:.1f}시간 전)"
+                    title = f"{title} {age_label}"
+
+                headlines.append(title)
+                seen.add(title.split(' (')[0])  # 원제목 기준 중복 제거
+                count += 1
         except Exception:
             pass
+
+    if skipped:
+        print(f"    (6시간 초과 기사 {skipped}건 제외됨)")
     return headlines
 
 
@@ -186,9 +224,11 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines):
 === 데이터 시점 안내 (분석 전 반드시 숙지) ===
 - 가격 데이터 중 [프리/시간외] 표시가 없는 항목은 직전 미국 정규장 종가 기준
 - [프리/시간외] 표시 항목은 현재 프리마켓 또는 시간외 실시간 가격
-- 뉴스 헤드라인은 가장 최신 정보를 담고 있으며 프리마켓 동향을 반영
-- 가격 데이터와 뉴스가 서로 다른 방향을 가리킬 때: 뉴스 헤드라인을 현재 시장 판단의 1차 기준으로 사용
-- 예시: 가격은 전일 하락이지만 뉴스에서 "Futures Jump", "premarket surge", "어닝 서프라이즈" 언급 → 현재 긍정 신호로 분류
+- 뉴스 헤드라인은 최근 6시간 이내 발행된 기사만 포함 (각 기사에 경과 시간 표시)
+- 판단 우선순위: ① 실시간 가격·VIX 데이터 → ② 6시간 이내 뉴스 헤드라인 순으로 적용
+- 가격 데이터가 광범위한 하락(-1% 이상 지수 하락, VIX 상승)을 보이면, 뉴스가 긍정적이어도 전체 판단은 부정 우위
+- 오래된 뉴스 이벤트(예: 수일 전 실적 발표)는 이미 가격에 반영되었으므로 핵심 이슈로 분류 금지
+- 가격 데이터와 뉴스가 상충할 때: 실시간 가격·선물 데이터를 1차 기준으로 사용
 
 === 현재 시장 데이터 ===
 [주요 지수·종목]
@@ -229,12 +269,22 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines):
 - 지정학적 리스크 완화 → 긍정, 지정학적 긴장 고조 → 부정
 - desc에 쓴 인과관계 방향이 긍정/부정 분류와 반드시 일치해야 함
 
-=== 테슬라($TSLA) · 일론 머스크 관련 재료 취급 원칙 ===
-- 근거 없는 비방, 정치적 공격, SNS 여론, 언론의 감정적 보도는 부정 재료로 분류 금지
-- 부정 재료로 분류하려면 반드시 아래 중 하나에 해당해야 함:
-  실적 쇼크(EPS·매출 컨센서스 miss 수치 명시), 대규모 리콜(건수 명시),
-  정부 규제 제재(기관·내용 명시), 차량 인도 수치 급감(전분기 대비 % 명시)
-- 위 기준 미충족 시 테슬라·머스크 관련 항목은 부정 재료 목록에서 제외
+=== 테슬라($TSLA) · 일론 머스크 관련 재료 취급 원칙 (엄격 적용) ===
+
+[절대 부정 재료로 분류하면 안 되는 것들 — 아래 패턴 발견 즉시 제외]
+- 머스크 본인의 발언, 인터뷰, 경고, 예측, SNS 게시물 (예: "AI 생산 부족 경고", "전망 발언" 등)
+- 정치적 공격, 머스크 개인 행동 비판, 언론의 감정적 보도
+- OpenAI·Anthropic·Google 등 타 AI 기업 뉴스를 테슬라·머스크와 묶어서 "AI 섹터 우려"로 분류하는 것
+- "테슬라 및 AI 섹터 우려", "머스크 관련 심리 위축" 같은 막연한 묶음 표현
+- 테슬라를 AI·반도체 섹터 하락과 자동 연결하는 분류
+
+[테슬라 부정 재료로 인정되는 유일한 기준 — 수치·사실 근거 必]
+- 실적 쇼크: EPS 또는 매출이 컨센서스 대비 miss, 반드시 수치 명시
+- 대규모 리콜: 건수 명시
+- 정부·규제기관 제재: 기관명과 제재 내용 명시
+- 차량 인도 수치 급감: 전분기 대비 % 명시
+
+위 기준 중 하나라도 수치·사실 근거 없이 해당하지 않으면 테슬라·머스크 관련 항목은 부정 재료 목록에 절대 포함하지 않는다.
 
 - 위 지시문 내용을 절대 출력값에 포함하지 마세요
 
