@@ -728,6 +728,67 @@ a { text-decoration: none; color: inherit; }
   font-size: 15px; font-weight: 700; color: var(--bl);
   letter-spacing: .10em; text-transform: uppercase; margin-bottom: 6px;
 }
+
+/* ── 시황 브리핑 배너 (스윙 지수 상단) ──────────────────── */
+.mkt-brief-banner {
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  border: 1.5px solid;
+}
+.mkt-brief-banner.high {
+  background: rgba(255,59,48,0.07);
+  border-color: rgba(255,59,48,0.30);
+}
+.mkt-brief-banner.medium {
+  background: rgba(255,159,10,0.07);
+  border-color: rgba(255,159,10,0.30);
+}
+.mkt-brief-banner.low {
+  background: rgba(48,209,88,0.07);
+  border-color: rgba(48,209,88,0.25);
+}
+.mkt-brief-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 800; letter-spacing: .06em;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.mkt-brief-tag.high   { color: var(--rd); }
+.mkt-brief-tag.medium { color: var(--or); }
+.mkt-brief-tag.low    { color: var(--gr); }
+.mkt-brief-title {
+  font-size: 15px; font-weight: 800; color: var(--t1);
+  margin-bottom: 8px; line-height: 1.4;
+}
+.mkt-brief-summary {
+  font-size: 14px; color: var(--t2); line-height: 1.65;
+  margin-bottom: 10px;
+}
+.mkt-brief-items {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.mkt-brief-items li {
+  font-size: 14px; color: var(--t2); line-height: 1.55;
+  padding-left: 14px; position: relative;
+}
+.mkt-brief-items li::before {
+  content: '·'; position: absolute; left: 0; color: var(--t3); font-weight: 700;
+}
+.mkt-brief-updated {
+  font-size: 14px; color: var(--t3); margin-top: 10px;
+}
+/* 스윙 지수 변동성 경고 배지 */
+.swing-volatility-warn {
+  display: inline-block;
+  font-size: 14px; font-weight: 700;
+  color: #92400E; background: rgba(180,83,9,0.10);
+  border-radius: 8px; padding: 4px 10px;
+  margin-top: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  .swing-volatility-warn { color: #FFD60A; background: rgba(255,159,10,0.13); }
+}
 .king-score-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
 .king-score-num { font-size: 32px; font-weight: 900; letter-spacing: -.03em; line-height: 1; }
 .king-score-num.buy   { color: var(--gr); }
@@ -1572,6 +1633,9 @@ li.gear-other-sep { display: none !important; }
       <!-- 시그널 히스토리 (최근 4회) -->
       <div id="history-wrap"></div>
 
+      <!-- 시황 브리핑 배너 (swing-brief.json — alertLevel high/medium 시 표시) -->
+      <div id="market-brief-wrap"></div>
+
       <!-- 오늘의 행동 가이드 -->
       <div id="action-plan-wrap">
         <div class="skeleton skel-card"></div>
@@ -2081,6 +2145,9 @@ const GITHUB_JSON_URL     = 'https://raw.githubusercontent.com/ziririt/ezlong/ma
 // FlashAlpha 옵션 시장 데이터 (장 마감 후 1회 업데이트)
 const GITHUB_OPTIONS_URL  = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/options-latest.json';
 const GITHUB_JSON_TTL = 2 * 60 * 60 * 1000; // GitHub JSON 유효 기간: 2시간
+// 시황 브리핑 (alertLevel high/medium 시 스윙 지수 상단에 표시)
+const GITHUB_BRIEF_URL = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/swing-brief.json';
+let swingBriefData = null; // 전역 캐시
 
 // ─── 종목 정의 ────────────────────────────────────
 const SYMBOLS = {
@@ -3171,6 +3238,46 @@ function renderAll(data) {
   setInterval(updateLivePrices, 30000);
 }
 
+// ── 시황 브리핑 배너 렌더링 ──────────────────────────────────
+function renderMarketBrief(brief) {
+  const wrap = document.getElementById('market-brief-wrap');
+  if (!wrap) return;
+  if (!brief || !brief.alertLevel || brief.alertLevel === 'none') {
+    wrap.innerHTML = '';
+    return;
+  }
+  const lvl = brief.alertLevel; // 'high' | 'medium' | 'low'
+  const tagText = { high: '긴급 시황', medium: '시황 주의', low: '시황 참고' }[lvl] || '시황';
+  const kst = brief.updatedAt
+    ? (() => {
+        const d = new Date(brief.updatedAt);
+        const k = new Date(d.getTime() + 9 * 3600000);
+        return `${k.getUTCFullYear()}-${String(k.getUTCMonth()+1).padStart(2,'0')}-${String(k.getUTCDate()).padStart(2,'0')} `
+             + `${String(k.getUTCHours()).padStart(2,'0')}:${String(k.getUTCMinutes()).padStart(2,'0')} KST`;
+      })()
+    : '';
+  const itemsHtml = (brief.items || [])
+    .map(t => `<li>${t}</li>`).join('');
+  wrap.innerHTML = `
+    <div class="mkt-brief-banner ${lvl}">
+      <div class="mkt-brief-tag ${lvl}">${tagText}</div>
+      <div class="mkt-brief-title">${brief.title || ''}</div>
+      <div class="mkt-brief-summary">${brief.summary || ''}</div>
+      ${itemsHtml ? `<ul class="mkt-brief-items">${itemsHtml}</ul>` : ''}
+      ${kst ? `<div class="mkt-brief-updated">기준 시각: ${kst}</div>` : ''}
+    </div>`;
+}
+
+// swing-brief.json 비동기 로드 (오류 시 무시)
+(async function loadSwingBrief() {
+  try {
+    const res = await fetch(GITHUB_BRIEF_URL + '?t=' + Date.now());
+    if (!res.ok) return;
+    swingBriefData = await res.json();
+    renderMarketBrief(swingBriefData);
+  } catch { /* 브리핑 없어도 대시보드 정상 동작 */ }
+})();
+
 function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
   const wrap = document.getElementById('action-plan-wrap');
   if (!qqq && !voo) { wrap.innerHTML = ''; return; }
@@ -3462,6 +3569,12 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
     }
   }
 
+  // 시황 브리핑 high/medium 시 스윙 지수 하단에 변동성 경고 배지 표시
+  const briefAlert = swingBriefData?.alertLevel;
+  const volatilityWarn = (briefAlert === 'high' || briefAlert === 'medium')
+    ? `<div class="swing-volatility-warn">시황 변동성 주의 — 지수 수치만 보고 판단 금지. 상단 시황 브리핑 반드시 확인</div>`
+    : '';
+
   wrap.innerHTML = `
     <div class="action-card ${cls}">
       <!-- 스윙 지수 + 타이틀 -->
@@ -3470,6 +3583,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
           <div style="font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:4px;">스윙 지수</div>
           <div style="font-size:60px;font-weight:900;line-height:1;color:${scoreColor};letter-spacing:-.04em;">${score}</div>
           <div style="font-size:12px;font-weight:700;color:${scoreColor};margin-top:3px;">${fgLabel}</div>
+          ${volatilityWarn}
         </div>
         <div style="flex:1;min-width:0;">
           <div class="action-label">오늘의 시그널</div>
