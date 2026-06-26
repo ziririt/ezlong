@@ -836,6 +836,8 @@ let currentOhlcvWeekly = null;
 let currentTimeframe  = 'daily';   // 'daily' | 'weekly'
 let smaVisibility  = { sma20: true, sma50: true, sma100: true, sma200: true, bb: true, channel: true };
 let chartInstances = {};  // mainChart, rsiChart, macdChart
+// 한국 주식 실시간 가격 캐시 (fetch-kr-prices.yml 이 10분마다 갱신)
+let krPricesCache = null;   // { updatedAt, session, prices: { "069500.KS": {...} } }
 let chartSeries    = {};  // 각 시리즈 참조 (토글용)
 let currentTab     = 'chart';  // 'chart' | 'report'
 
@@ -979,10 +981,14 @@ async function renderMarketContextBar() {
 
 // ── 인덱스 로드 & 사이드바 렌더 ──────────────────────────────
 async function initIndex() {
-  // 인덱스 로드 — 실제 data/ 파일 우선, 없으면 빈 리스트
+  // 인덱스 + 한국주식 실시간 가격 병렬 로드
   let idx = {};
-  try { idx = await fetchJSON(DATA_BASE + 'chart-index.json'); }
-  catch { idx = {}; }
+  const [idxResult, krResult] = await Promise.allSettled([
+    fetchJSON(DATA_BASE + 'chart-index.json'),
+    fetchJSON(DATA_BASE + 'kr-prices.json'),
+  ]);
+  if (idxResult.status === 'fulfilled') idx = idxResult.value;
+  if (krResult.status === 'fulfilled')  krPricesCache = krResult.value;
   tickerIndex = idx;
 
   // 데이터 없음 배너 (완전히 비어있을 때만)
@@ -1219,20 +1225,41 @@ function renderPriceHeader(analysis, currency) {
     stateLabel = { REGULAR:'정규장', PRE:'프리마켓', POST:'포스트마켓', CLOSED:'장마감' }[s] || s;
   }
 
-  // 한국 주식 장중 가격 스냅샷 경고
-  // analysis-*.json 가격은 분석 실행 시점 스냅샷 — 실시간 아님
-  // 장중(09:00~15:30 KST)에 데이터가 60분 이상 경과했으면 경고 표시
+  // ── 한국 주식: kr-prices.json 실시간 가격 오버레이 ──────────
+  // fetch-kr-prices.yml 이 10분마다 data/kr-prices.json 갱신
+  // krPricesCache 가 있고 데이터가 20분 이내이면 실시간 가격으로 덮어씀
+  let livePrice = null;
+  let krLiveUpdatedAt = null;
   let staleWarn = '';
-  if (isKRStock && analysis.updatedAt) {
+
+  if (isKRStock && krPricesCache?.prices?.[analysis.ticker]) {
+    const kpUpdated = new Date(krPricesCache.updatedAt);
+    const ageMin    = Math.round((new Date() - kpUpdated) / 60000);
+    if (ageMin <= 20) {
+      livePrice      = krPricesCache.prices[analysis.ticker];
+      krLiveUpdatedAt = krPricesCache.updatedAt;
+    }
+  }
+
+  // 실시간 가격이 있으면 분석 스냅샷을 덮어쓴 표시 값 결정
+  const dispPrice     = livePrice ? livePrice.price     : p.current;
+  const dispChange    = livePrice ? livePrice.change     : p.change;
+  const dispChangePct = livePrice ? livePrice.changePct  : p.changePct;
+  const dispUp        = (dispChangePct ?? 0) >= 0;
+  const dispUpdatedAt = krLiveUpdatedAt ?? analysis.updatedAt;
+  const dispLabel     = krLiveUpdatedAt ? '실시간' : '데이터 기준';
+
+  // 실시간 피드 없이 장중 60분 이상 경과 → 경고
+  if (isKRStock && !livePrice) {
     const now = new Date();
     const kst = new Date(now.getTime() + 9 * 3600 * 1000);
     const dayKST = kst.getUTCDay();
     const minKST = kst.getUTCHours() * 60 + kst.getUTCMinutes();
-    const isKRXOpen = dayKST >= 1 && dayKST <= 5 && minKST >= 540 && minKST < 930; // 09:00~15:30
+    const isKRXOpen = dayKST >= 1 && dayKST <= 5 && minKST >= 540 && minKST < 930;
     if (isKRXOpen) {
       const ageMin = Math.round((now - new Date(analysis.updatedAt)) / 60000);
       if (ageMin > 60) {
-        staleWarn = `<div class="ca-stale-warn">가격은 분석 시점(${ageMin}분 전) 스냅샷 — 장중 실시간 반영 안 됨</div>`;
+        staleWarn = `<div class="ca-stale-warn">가격은 분석 시점(${ageMin}분 전) 스냅샷 — 실시간 피드 갱신 대기 중</div>`;
       }
     }
   }
@@ -1244,8 +1271,8 @@ function renderPriceHeader(analysis, currency) {
       <div class="ca-ph-sym">${analysis.ticker}</div>
       <div class="ca-ph-name">${analysis.name} · ${analysis.assetType.toUpperCase()} · ${analysis.market.toUpperCase()}</div>
       <div class="ca-ph-price-row">
-        <span class="ca-ph-price">${fmtPrice(p.current, currency)}</span>
-        <span class="ca-ph-change ${isUp?'up':'down'}">${fmtChg(p.change, p.changePct, currency)}</span>
+        <span class="ca-ph-price">${fmtPrice(dispPrice, currency)}</span>
+        <span class="ca-ph-change ${dispUp?'up':'down'}">${fmtChg(dispChange, dispChangePct, currency)}</span>
         <span class="ca-ph-state">${stateLabel}</span>
       </div>
       ${staleWarn}
@@ -1253,7 +1280,7 @@ function renderPriceHeader(analysis, currency) {
         <span class="ca-ph-meta-item">52주 고가 <strong>${fmtPrice(p.high52, currency)}</strong></span>
         <span class="ca-ph-meta-item">52주 저가 <strong>${fmtPrice(p.low52, currency)}</strong></span>
         <span class="ca-ph-meta-item">위치 <strong>${p.pos52?.toFixed(1)}%</strong></span>
-        <span class="ca-ph-meta-item ca-ph-updated">데이터 기준 <strong>${fmtKST(analysis.updatedAt)} KST</strong></span>
+        <span class="ca-ph-meta-item ca-ph-updated">${dispLabel} <strong>${fmtKST(dispUpdatedAt)} KST</strong></span>
       </div>
     </div>
     <div class="ca-ph-right">
