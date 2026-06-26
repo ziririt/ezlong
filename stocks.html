@@ -767,12 +767,14 @@ function renderETF() {
 function rowHTML(item, noRank) {
   var sym  = item.symbol;
   var live      = (pricesData && pricesData.prices && pricesData.prices[sym]) || null;
-  var price     = (live && live.price > 0) ? live.price : item.price;
+  // 장 마감 후: yfinance 정규장 종가 우선 (포스트마켓 가격 오염 방지)
+  var price     = isUSMarketOpen()
+    ? ((live && live.price > 0) ? live.price : item.price)
+    : ((item.price > 0) ? item.price : (live && live.price > 0 ? live.price : null));
   var extPct    = live ? live.extPct     : null;
   var extSes    = live ? live.extSession : null;
 
-  var changePct = calcChangePct(price, item.sparkline, live);
-  if (changePct == null) changePct = item.changePct;  // yfinance 최종 폴백
+  var changePct = calcChangePct(price, item.sparkline, live, item.changePct);
 
   var isUp   = changePct != null && changePct >= 0;
   var isFlat = changePct == null;
@@ -842,23 +844,41 @@ function cleanName(name) {
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// changePct 계산 — 목록·디테일 공용 (일관성 보장)
+// ── 미국 정규장 시간대 여부 (간이 EDT UTC-4, 전역 재사용) ──────────────
+function isUSMarketOpen() {
+  var now  = new Date();
+  var et   = new Date(now.getTime() - 4 * 3600000); // 간이 EDT(UTC-4)
+  var day  = et.getUTCDay();
+  var mins = et.getUTCHours() * 60 + et.getUTCMinutes();
+  return day >= 1 && day <= 5 && mins >= 570 && mins < 960; // 9:30~16:00 ET
+}
+
+// ── changePct 계산 — 목록·디테일 공용 (일관성 보장) ────────────────────
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function calcChangePct(price, sparkline, live) {
+// itemChangePct: stocks-data.json(yfinance) 기준 등락률 — 정규장 종가 기준, 오염 없음
+function calcChangePct(price, sparkline, live, itemChangePct) {
   var spark = sparkline || [];
-  // ① Massive API changePct 우선 — 야후파이낸스와 일치, 가장 정확
-  //    prevClose(전일 종가) 기반으로 API가 직접 계산한 값
-  if (live && live.changePct != null) return live.changePct;
-  // ② sparkline 폴백: spark[-1]을 전일 종가로 사용
-  //    stocks-data.json이 장 시작 전 생성되므로 spark[-1] = 어제 종가 (spark[-2] 아님)
-  //    SPCX 등 Massive API 미지원 종목, ETF 일부 케이스 대응
+  // 장 마감 후: Massive API day.c가 포스트마켓 거래가로 오염됨
+  //   → yfinance 정규장 종가(itemChangePct) 우선 사용
+  if (!isUSMarketOpen()) {
+    if (itemChangePct != null) return itemChangePct;   // ① yfinance 종가 기준
+    // yfinance 없으면 sparkline 폴백
+    if (price != null && spark.length >= 15) {
+      var pc0 = spark[spark.length - 2];               // ② spark 전일 종가
+      if (pc0 > 0) return Math.round((price - pc0) / pc0 * 10000) / 100;
+    }
+    return null;
+  }
+  // 장중: Massive API live.changePct 우선 — 실시간 추적
+  if (live && live.changePct != null) return live.changePct;  // ③ 실시간
+  // sparkline 폴백 (Massive API 미지원 종목)
   if (price != null && spark.length >= 15) {
     var prevClose = spark[spark.length - 1];
     if (prevClose > 0) {
       return Math.round((price - prevClose) / prevClose * 10000) / 100;
     }
   }
-  return null;  // yfinance item.changePct는 호출측에서 추가 폴백
+  return null;
 }
 
 function buildSparkline(rawCloses, baselineValue) {
@@ -1002,14 +1022,7 @@ function renderIndexCards() {
       if (liveIdx && liveIdx.price != null && liveIdx.changePct != null) {
         pct = liveIdx.changePct; return; // Massive v3 직접 수집 성공
       }
-      // EDT(UTC-4) 기준 정규장 시간대 판별
-      var nowUTC = new Date();
-      var etMs   = nowUTC.getTime() - 4 * 3600000; // 간이 EDT
-      var etDate = new Date(etMs);
-      var etDay  = etDate.getUTCDay();
-      var etMins = etDate.getUTCHours() * 60 + etDate.getUTCMinutes();
-      var inRTH  = etDay >= 1 && etDay <= 5 && etMins >= 570 && etMins < 960;
-      if (inRTH && liveIdx && liveIdx.changePct != null) {
+      if (isUSMarketOpen() && liveIdx && liveIdx.changePct != null) {
         pct = liveIdx.changePct; return; // 장중: ETF 프록시 실시간
       }
       // 장 마감 후: yfinance 정규장 종가 기준 우선
@@ -1068,8 +1081,12 @@ function renderSemiEtfCards() {
   SEMI_ETFS.forEach(function(c) {
     var item   = findItem(c.sym);
     var live   = (pricesData && pricesData.prices && pricesData.prices[c.sym]) || null;
-    var price  = (live && live.price > 0) ? live.price : (item ? item.price : null);
-    var pct    = (live && live.changePct != null) ? live.changePct : (item ? item.changePct : null);
+    var price  = isUSMarketOpen()
+      ? ((live && live.price > 0) ? live.price : (item ? item.price : null))
+      : ((item && item.price > 0) ? item.price : (live && live.price > 0 ? live.price : null));
+    var pct    = isUSMarketOpen()
+      ? ((live && live.changePct != null) ? live.changePct : (item ? item.changePct : null))
+      : ((item && item.changePct != null) ? item.changePct : (live ? live.changePct : null));
     var sparks = item ? (item.sparkline || []) : [];
 
     // 스파클라인: live.intraday 우선(당일 흐름) → 없으면 30일 일봉 폴백
@@ -1181,12 +1198,13 @@ function fillDetail(symbol) {
   document.getElementById('dv-ticker').textContent = symbol;
   document.getElementById('dv-name').textContent   = item ? (item.name || '') : '';
 
-  // 실시간 가격: Massive API → yfinance 폴백
-  var price = (live && live.price > 0) ? live.price : (item ? item.price : null);
+  // 가격: 장 마감 후엔 yfinance 정규장 종가 우선 (포스트마켓 오염 방지)
+  var price = isUSMarketOpen()
+    ? ((live && live.price > 0) ? live.price : (item ? item.price : null))
+    : ((item && item.price > 0) ? item.price : (live && live.price > 0 ? live.price : null));
 
   // changePct: 목록과 동일한 calcChangePct 사용 → 완전 일치
-  var changePct = calcChangePct(price, item ? item.sparkline : null, live);
-  if (changePct == null && item) changePct = item.changePct;
+  var changePct = calcChangePct(price, item ? item.sparkline : null, live, item ? item.changePct : null);
 
   // 절대 등락: sparkline[-2] 역산 or yfinance item.change 폴백
   var changeAbs = null;
@@ -1548,8 +1566,10 @@ function updatePeriodReturn(sym, period) {
   var item = findItem(sym);
   var live = (pricesData && pricesData.prices && pricesData.prices[sym]) || null;
 
-  // 현재가: Massive API → yfinance 폴백
-  var cur = (live && live.price > 0) ? live.price : (item && item.price);
+  // 현재가: 장 마감 후엔 yfinance 정규장 종가 우선
+  var cur = isUSMarketOpen()
+    ? ((live && live.price > 0) ? live.price : (item && item.price))
+    : ((item && item.price > 0) ? item.price : (live && live.price > 0 ? live.price : null));
 
   var startPrice = null;
   var labelMap = {
@@ -1831,8 +1851,12 @@ function renderPortfolio() {
     listEl.innerHTML = faves.map(function(sym, idx) {
       var item     = findItem(sym) || { symbol: sym, name: sym, price: null, changePct: null, sparkline: [] };
       var live     = (pricesData && pricesData.prices && pricesData.prices[sym]) || null;
-      var pfPrice  = (live && live.price > 0) ? live.price : item.price;
-      var pfPct    = (live && live.changePct != null) ? live.changePct : item.changePct;
+      var pfPrice  = isUSMarketOpen()
+        ? ((live && live.price > 0) ? live.price : item.price)
+        : ((item.price > 0) ? item.price : (live && live.price > 0 ? live.price : null));
+      var pfPct    = isUSMarketOpen()
+        ? ((live && live.changePct != null) ? live.changePct : item.changePct)
+        : ((item.changePct != null) ? item.changePct : (live ? live.changePct : null));
       var isUp     = pfPct != null && pfPct >= 0;
       var isFlat   = pfPct == null;
       var pctCls   = isFlat ? 'flat' : (isUp ? 'up' : 'dn');
