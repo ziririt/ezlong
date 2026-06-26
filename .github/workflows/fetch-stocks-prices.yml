@@ -6,6 +6,8 @@ on:
     - cron: '*/10 8-23 * * 1-5'
     # ── 포스트마켓 후반·나이트마켓 (Mon–Fri, 7pm–11:50pm ET = 0–4am UTC 다음날 Tue–Sat)
     - cron: '*/10 0-4 * * 2-6'
+    # ── 정규장 종가 확정 스냅샷 (Mon–Fri, 4:05 PM ET = 20:05 UTC) — day.c 포스트마켓 오염 전
+    - cron: '5 20 * * 1-5'
   workflow_dispatch:   # 수동 실행 허용
 
 concurrency:
