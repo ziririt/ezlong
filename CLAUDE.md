@@ -159,18 +159,30 @@ card2 등 회색 배경에 `--ez-text3` 텍스트 금지 → `--ez-text2` 사용
 
 ---
 
-## Gemini API 모델 설정 (2026-06-26 4차 개정)
+## Gemini API 모델 설정 (2026-06-27 5차 개정)
 
-- **1차 모델: `gemini-2.5-flash`** — GA 정식 출시, 안정적. thinking 토큰은 parts 루프로 처리
-- **폴백 모델: 없음** — v1beta에서 1.5 계열 전부 404 (`gemini-1.5-flash-latest` 포함). 대신 재시도 4회(5s→15s→45s 백오프) 적용
-- **HTTP 타임아웃: 180000ms (3분)** — gemini-2.5-flash thinking 토큰이 90초 초과 가능 (2026-06-26 확인). 90s로 부족
-- **maxOutputTokens: 8192** — narrative 필드 길이로 인해 4096에서 JSON 잘림 발생 확인 (2026-06-26). 반드시 8192 이상 유지
-- `gemini-2.5-flash-lite` 사용 금지 — 프리뷰(불안정), 503 빈발, 매크로 논리 오류 반복 확인됨
-- `gemini-2.0-flash` 사용 금지 — Google이 서비스 종료 (2026-06-26 확인)
+### 파일별 모델 분리 — 비용 절감 (2026-06-27)
+
+| 파일 | 모델 | 이유 |
+|------|------|------|
+| `scripts/generate-chart-analysis.js` | **`gemini-2.5-flash-lite`** | 차트 패턴 판독은 flash-lite로 충분. flash 대비 ~7배 저렴 |
+| `scripts/fetch-market-scorecard.py` | **`gemini-2.5-flash`** | 전체 시황 복합 판단 → 고품질 필요 |
+
+### 공통 설정
+- **`thinkingBudget: 0`** — generationConfig 안에 `thinkingConfig: { thinkingBudget: 0 }` 포함 (2026-06-27 적용)
+  - gemini-2.5-flash의 thinking 토큰($3.50/1M)을 차단 → 일반 출력($0.30/1M) 요금만 부과
+  - 6월 25일 400 에러는 임시 버그였던 것으로 확인. 현재 정상 작동
+- **폴백 모델: 없음** — v1beta에서 1.5 계열 전부 404. 재시도 4회(백오프) 적용
+- **maxOutputTokens: 8192** — 반드시 유지 (4096에서 JSON 잘림 확인됨)
+- `gemini-2.0-flash` 사용 금지 — Google 서비스 종료 (2026-06-26 확인)
 - `gemini-1.5-flash`, `gemini-1.5-flash-latest` 사용 금지 — v1beta 404 (2026-06-26 확인)
-- `thinkingConfig` 파라미터 사용 금지 — v1beta API 400 Bad Request 오류 발생 (2026-06-25 확인)
-- thinking 토큰 처리: `_callWithModel` 내부에서 `p.thought` 체크로 건너뜀
-- **변경 배경:** gemini-2.0-flash deprecated → gemini-2.5-flash 전환. 1.5계열 v1beta 전멸 → 폴백 제거 후 재시도 강화. thinking 토큰으로 인한 타임아웃 → 180s로 상향 (2026-06-26).
+- thinking 토큰 parts 루프 처리 코드는 유지 (thinkingBudget:0이 무시될 경우 방어)
+
+### 비용 절감 구조 (2026-06-27 적용)
+- chart-analysis: flash → flash-lite (7배 절감) + thinkingBudget:0
+- scorecard: flash + thinkingBudget:0 (thinking 토큰 차단, ~90% 절감)
+- crypto cron: 6회/일 → 3회/일 (50% 절감)
+- **예상 일일 비용: 평일 ₩11,950 → ₩1,500 수준**
 
 ---
 

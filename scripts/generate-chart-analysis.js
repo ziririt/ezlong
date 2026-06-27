@@ -79,8 +79,9 @@ async function getYFCrumb() {
 // ── 설정 ──────────────────────────────────────────────────────────────────
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_HOST    = 'generativelanguage.googleapis.com';
-const GEMINI_MODEL          = 'gemini-2.5-flash';   // 1차 모델 (GA 정식 출시, 2026-06-26 확인)
-// 폴백 모델 제거 — v1beta에서 1.5 계열 전부 404 (gemini-1.5-flash-latest 포함, 2026-06-26 확인)
+const GEMINI_MODEL          = 'gemini-2.5-flash-lite'; // 비용 절감 모델 (2026-06-27: flash→flash-lite, thinkingBudget:0 병행)
+// flash-lite: 차트 분석(패턴 판독)에 충분한 성능, flash 대비 ~7배 저렴
+// scorecard(fetch-market-scorecard.py)는 복잡한 시장 판단 필요 → gemini-2.5-flash 유지
 const DELAY_MS       = 4500;                        // 티커 간 요청 간격 (Gemini RPM 한도 대응: 4.5s → 분당 13개)
 const DATA_DIR       = path.join(__dirname, '..', 'data');
 
