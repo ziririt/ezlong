@@ -24,9 +24,9 @@ except ImportError:
 
 # ─── 설정 ───────────────────────────────────────────────────────────────────
 GEMINI_API_KEY     = os.environ.get('GEMINI_API_KEY', '')
-GEMINI_MODEL       = 'gemini-2.5-flash'                # 1차·유일 모델 (GA 정식, 2026-06-26 확정)
+GEMINI_MODEL       = 'gemini-2.5-flash-lite'           # 임시 flash-lite (2026-06-27: flash 쿼터 소진 대응)
+# 7월 1일 쿼터 리셋 후 gemini-2.5-flash로 복구 예정
 # 폴백 없음 — v1beta에서 1.5 계열 전부 404, 2.0-flash 서비스 종료 (2026-06-26 확인)
-# 대신 재시도 4회 + 5s→15s→45s→120s 백오프 (429 Rate Limit 대응)
 
 def _gemini_url(model):
     return f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}'
