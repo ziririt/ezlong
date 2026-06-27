@@ -1,6 +1,57 @@
 {
   "entries": [
     {
+      "id": "2026-06-27-21:50",
+      "timestamp_kst": "2026-06-27(토) 21:50 KST",
+      "key_event": {
+        "name": "기술주 하락세 지속",
+        "time": "현재 및 향후 12시간",
+        "why": "QQQ, NVDA, SOXX 등 하락, AI 섹터 우려"
+      },
+      "positive_total": 45,
+      "negative_total": 55,
+      "summary": "기술주 약세 속 일부 종목 강세, 시장 방향성 탐색 중",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "국채금리 하락",
+          "desc": "미10년 국채금리 하락, 성장주 투자 심리 개선"
+        },
+        {
+          "score": 15,
+          "name": "달러 약세",
+          "desc": "달러 인덱스 하락, 원자재 및 수출주에 긍정적"
+        },
+        {
+          "score": 10,
+          "name": "개별 종목 강세",
+          "desc": "MSFT, AAPL 등 일부 대형 기술주 상승"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "기술주 전반 약세",
+          "desc": "QQQ, NVDA, SOXX 등 하락, AI 섹터 우려"
+        },
+        {
+          "score": 15,
+          "name": "유가 하락",
+          "desc": "WTI 원유 하락, 경기 둔화 우려 자극"
+        },
+        {
+          "score": 10,
+          "name": "VIX 소폭 상승",
+          "desc": "변동성 지수 상승, 투자 심리 위축 가능성"
+        },
+        {
+          "score": 5,
+          "name": "애플 chip 규제 우려",
+          "desc": "애플, 중국 반도체 기업 구매 승인 요청"
+        }
+      ]
+    },
+    {
       "id": "2026-06-27-21:12",
       "timestamp_kst": "2026-06-27(토) 21:12 KST",
       "key_event": {
@@ -518,69 +569,8 @@
           "desc": "시장의 불확실성 및 변동성 증가"
         }
       ]
-    },
-    {
-      "id": "2026-06-26-00:34",
-      "timestamp_kst": "2026-06-26(금) 00:34 KST",
-      "key_event": {
-        "name": "AI 기대 vs 인플레 우려",
-        "time": "최근 6시간 및 향후 12시간",
-        "why": "시장 방향성 결정, 기술주 실적 기대, 금리 인상 압력"
-      },
-      "positive_total": 55,
-      "negative_total": 45,
-      "summary": "AI 성장 기대감과 인플레이션 우려가 상충하며 시장 변동성 확대 예상",
-      "positive_factors": [
-        {
-          "score": 25,
-          "name": "AI 테마 강세",
-          "desc": "AI 성장 기대 및 지정학적 리스크 완화"
-        },
-        {
-          "score": 15,
-          "name": "국채금리 하락",
-          "desc": "성장주 투자심리 개선"
-        },
-        {
-          "score": 10,
-          "name": "마이크론 실적 호조",
-          "desc": "AI 메모리 수요 및 관련주 강세"
-        },
-        {
-          "score": 5,
-          "name": "달러 약세",
-          "desc": "수출 기업 실적 개선 기대"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "인플레이션 재점화",
-          "desc": "PCE 지표 상승으로 금리 인상 압력"
-        },
-        {
-          "score": 10,
-          "name": "애플 주가 하락",
-          "desc": "AI 칩 비용 전가 및 가격 인상"
-        },
-        {
-          "score": 10,
-          "name": "엔비디아 경쟁 심화",
-          "desc": "AI 칩 시장 경쟁 가열 및 주가 하락"
-        },
-        {
-          "score": 5,
-          "name": "VIX 지수 상승",
-          "desc": "시장 불확실성 및 변동성 확대"
-        },
-        {
-          "score": 5,
-          "name": "유가 상승",
-          "desc": "에너지 비용 증가, 인플레이션 압력"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-06-27T12:12:12Z",
+  "updated_at": "2026-06-27T12:50:50Z",
   "max_entries": 10
 }
