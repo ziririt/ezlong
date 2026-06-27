@@ -363,14 +363,15 @@ def call_gemini(prompt):
         print("WARNING: GEMINI_API_KEY 없음 — 스킵")
         return None
 
-    # 공통 payload — thinkingConfig 제거 (v1beta 400 오류 원인)
-    # thinking 토큰은 _call_single_model 내부 parts 루프로 처리
+    # thinkingBudget: 0 — thinking 토큰 비활성화 (비용 절감, 2026-06-27)
+    # gemini-2.5-flash는 thinking 토큰을 자동 생성해 요금이 12배 비쌈
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
             "temperature": 0.4,
             "maxOutputTokens": 8192,
-            "responseMimeType": "application/json"
+            "responseMimeType": "application/json",
+            "thinkingConfig": {"thinkingBudget": 0}
         }
     }
 

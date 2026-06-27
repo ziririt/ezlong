@@ -604,7 +604,7 @@ ${weeklySection}
           `/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`,
           {
             contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.15, maxOutputTokens: 8192, responseMimeType: 'application/json' },
+            generationConfig: { temperature: 0.15, maxOutputTokens: 8192, responseMimeType: 'application/json', thinkingConfig: { thinkingBudget: 0 } },
           }
         );
         // thinking 토큰 처리 (gemini-2.5-flash): thought:true 파트는 제외하고 실제 응답만 추출
