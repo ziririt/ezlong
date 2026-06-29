@@ -214,9 +214,28 @@ def fetch_news_headlines(max_per_ticker=3, max_total=20, max_age_hours=6):
 
 # ─── Gemini 호출 ──────────────────────────────────────────────────────────────
 
-def build_prompt(kst_now, equity_rows, macro_rows, headlines):
+def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None):
     schedule_label = SCHEDULE_LABELS.get(kst_now.hour, f'{kst_now.hour}:00')
     news_block = '\n'.join(f'- {h}' for h in headlines) if headlines else '- 뉴스 데이터 없음'
+
+    # 직전 카드 맥락 블록 구성 (일관성 유지용)
+    prev_block = ""
+    if prev_entries:
+        prev_block = "\n=== 직전 생성된 카드 (일관성 유지 — 반드시 참고) ===\n"
+        for pe in prev_entries[:2]:
+            prev_block += f"[{pe['id']}] 핵심이슈: {pe['key_event']['name']}\n"
+            if pe['key_event'].get('why'):
+                prev_block += f"이유: {pe['key_event']['why']}\n"
+            if pe.get('summary'):
+                prev_block += f"요약: {pe['summary'][:150]}\n"
+            prev_block += "\n"
+        prev_block += """[일관성 원칙 — 엄격 적용]
+- 직전 카드에서 언급된 핵심 이슈가 아직 해소되지 않은 이벤트라면, 이번 카드에도 반드시 포함해야 함
+  예: 직전 카드에 "내일 도하 협상"이 핵심이라면, 협상이 끝나기 전까지 모든 카드에 불확실성 포함
+- 핵심 이슈가 바뀐 경우, 반드시 새로운 중대 뉴스 이벤트가 발생했기 때문이어야 함
+- key_event.name은 뉴스 이벤트여야 함. "기술주 프리마켓 강세/약세" 같은 시장 상태 표현 절대 금지
+
+"""
 
     return f"""당신은 미국 주식시장 시황 분석 전문가입니다.
 현재 시각(KST): {kst_now.strftime('%Y-%m-%d %H:%M')} ({schedule_label})
@@ -230,7 +249,7 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines):
 - 오래된 뉴스 이벤트(예: 수일 전 실적 발표)는 이미 가격에 반영되었으므로 핵심 이슈로 분류 금지
 - 가격 데이터와 뉴스가 상충할 때: 실시간 가격·선물 데이터를 1차 기준으로 사용
 
-=== 현재 시장 데이터 ===
+{prev_block}=== 현재 시장 데이터 ===
 [주요 지수·종목]
 {chr(10).join(equity_rows)}
 
@@ -270,6 +289,39 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines):
 - 달러 약세 → 수출주 실적 개선, 원자재 지지 → 긍정
 - 지정학적 리스크 완화 → 긍정, 지정학적 긴장 고조 → 부정
 - desc에 쓴 인과관계 방향이 긍정/부정 분류와 반드시 일치해야 함
+
+=== 호재/악재 선별 기준 — 반드시 원인을 찾아라 ===
+
+[핵심 원칙]
+- "기술주 프리마켓 상승/하락"은 결과(시장 반응)다. 원인(왜 상승하는지)이 호재/악재다.
+- 원인을 모르면 그 방향은 호재/악재 목록에 절대 포함하지 않는다.
+- key_event.name은 반드시 뉴스 이벤트나 매크로 원인이어야 한다. 시장 상태 묘사 금지.
+  금지 예: "기술주 프리마켓 강세", "나스닥 선물 상승" → 이건 결과임
+  허용 예: "미-이란 전술적 휴전 합의", "Fed 파월 인하 신호", "CPI 예상치 하회"
+
+[시장 전체 재료로 인정 — 이것만 호재/악재로 분류]
+1. 지정학 이벤트: 전쟁·협상·제재·관세 (리스크온/오프 전체 영향)
+2. 매크로 경제지표: CPI, 고용보고서, GDP, PMI, 소비자심리
+3. Fed·중앙은행: 금리 결정, FOMC 성명, 파월 발언, 인플레이션 신호
+4. 무역·관세 정책: 트럼프 관세 발표·철회, 무역협상 타결·결렬
+5. 벨웨더 실적 (섹터 전체 신호로 작동하는 경우만):
+   - NVDA 실적 → AI·반도체 섹터 전체 신호
+   - MU 실적 → 메모리·반도체 사이클 신호
+   - JPM·BAC 실적 → 금융섹터 신호
+   단, "실적이 섹터 전체의 건강을 나타낸다"는 맥락이 명확한 경우만 인정
+6. 공급망·원자재: 유가 방향, 반도체 공급 부족, 항구 파업 등
+
+[개별 기업 이슈 — 시장 전체 재료로 절대 금지]
+- 소프트웨어 버전업·기능 추가 (예: TSLA FSD 업데이트) → TSLA 개별 재료
+- 개별 인도량·배송 수치 (예: TSLA Q2 인도량 추정치) → TSLA 개별 재료
+- 1~2개 증권사 목표가 상향/하향 (단독) → 해당 종목 개별 재료
+- 경영진 SNS·인터뷰 발언 (실적 발표 외) → 해당 종목 개별 재료
+
+[예외 — 개별 기업이지만 시장 전체 재료로 인정 가능한 케이스]
+- S&P500 시총 상위 5개(AAPL, MSFT, NVDA, AMZN, GOOGL) 기습 가격 인상
+  → 인플레이션 신호·소비자 지출 영향으로 시장 전체에 파급. 인정.
+- 나스닥 가중치 5% 이상 종목의 어닝 서프라이즈/쇼크 (실적 발표)
+  → 섹터 전체 심리 전환 가능. 인정.
 
 === 동일 기업·티커 양측 동시 등장 절대 금지 ===
 - MSFT, AAPL, NVDA, TSLA, GOOGL, AMZN, META, SOXX, QQQ, SPY 등 특정 기업·티커가
@@ -455,8 +507,10 @@ def validate_content(entry):
     errors = []
 
     # ── 체크 1: 동일 기업·티커가 긍정·부정 양쪽에 동시 등장 ──────────────────
+    # 영어 티커 + 한국어 기업명 모두 체크 (한국어만 쓰면 영어 티커 검사 통과 버그 방지)
     TICKERS = ['msft', 'aapl', 'nvda', 'tsla', 'googl', 'amzn', 'meta',
-               'soxx', 'qqq', 'spy', 'amd', 'broadcom', 'mu ']
+               'soxx', 'qqq', 'spy', 'amd', 'broadcom', 'mu ',
+               '마이크로소프트', '애플', '엔비디아', '테슬라', '구글', '아마존', '메타', '브로드컴']
     for ticker in TICKERS:
         in_pos = any(ticker in t for t in pos_texts)
         in_neg = any(ticker in t for t in neg_texts)
@@ -509,9 +563,15 @@ def main():
     for h in headlines[:5]:
         print(f"    - {h}")
 
-    # 2. Gemini 분석
+    # 2. 기존 데이터 로드 (직전 카드 맥락을 프롬프트에 넣기 위해 먼저 로드)
+    data = load_existing()
+    prev_entries = data.get("entries", [])[:2]  # 최근 2개 → 일관성 맥락용
+    if prev_entries:
+        print(f"  직전 카드 참고: {[e['id'] for e in prev_entries]}")
+
+    # 3. Gemini 분석
     print("  [4] Gemini AI 분석 중...")
-    prompt = build_prompt(kst_now, equity_rows, macro_rows, headlines)
+    prompt = build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries)
     result = call_gemini(prompt)
 
     if not result:
@@ -520,11 +580,11 @@ def main():
 
     print(f"  결과: 긍정 {result.get('positive_total')} vs 부정 {result.get('negative_total')}")
 
-    # 3. 항목 생성 + 검증
+    # 4. 항목 생성 + 검증
     entry = build_entry(kst_now, result)
     validate_entry(entry)
 
-    # 3-1. 내용 모순 검증 — 모순 발견 시 1회 재시도 (2026-06-29 추가)
+    # 4-1. 내용 모순 검증 — 모순 발견 시 1회 재시도 (2026-06-29 추가)
     content_errors = validate_content(entry)
     if content_errors:
         print(f"  WARNING: 내용 모순 {len(content_errors)}건 발견 — 재시도")
@@ -545,8 +605,7 @@ def main():
         else:
             print(f"  재시도 실패 — 1차 결과 그대로 사용")
 
-    # 4. 기존 데이터 로드 + 신규 항목 추가
-    data = load_existing()
+    # 5. 신규 항목 추가
     entries = data.get("entries", [])
 
     # 같은 id가 있으면 덮어씀 (중복 방지)
@@ -560,7 +619,7 @@ def main():
     data["updated_at"] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     data["max_entries"] = MAX_ENTRIES
 
-    # 5. 저장
+    # 6. 저장
     save_data(data)
     print(f"  총 항목 수: {len(entries)}")
     print("=== 완료 ===")
