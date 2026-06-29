@@ -805,17 +805,7 @@ function toggleType(id, isSafe) {
   const h = holdings.find(h => h.id === id);
   if (!h) return;
   h.isSafe = isSafe;
-  // 해당 행의 버튼만 갱신
-  const tr = document.getElementById('hrow-' + id);
-  if (tr) {
-    tr.querySelectorAll('.t-btn').forEach(btn => {
-      btn.className = 't-btn';
-      if (btn.dataset.safe === 'true' && isSafe) btn.classList.add('on-safe');
-      if (btn.dataset.safe === 'false' && !isSafe) btn.classList.add('on-risky');
-    });
-  }
-  renderSummary();
-  recalc();
+  renderAll(); // 안전↔위험 전환 시 위치(정렬)도 재배치
 }
 
 /* ── 셀 편집 ────────────────────────────────────────────── */
@@ -858,8 +848,17 @@ function onEdit(id, field, rawVal) {
   recalc();
 }
 
+/* ── 정렬 — 안전자산 먼저, 각 그룹 내 평가금액 높은순 ── */
+function sortHoldings() {
+  holdings.sort((a, b) => {
+    if (a.isSafe !== b.isSafe) return b.isSafe - a.isSafe; // 안전 먼저
+    return (b.totalValue || 0) - (a.totalValue || 0);       // 평가금액 내림차순
+  });
+}
+
 /* ── 렌더링 ─────────────────────────────────────────────── */
 function renderAll() {
+  sortHoldings();
   document.getElementById('holdingsCard').style.display = holdings.length ? '' : 'none';
   document.getElementById('resultCard').style.display   = holdings.length ? '' : 'none';
   renderHoldingsTable();
