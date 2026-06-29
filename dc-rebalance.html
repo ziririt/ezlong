@@ -12,20 +12,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>DC·IRP 안전자산 리밸런싱 계산기 | EZLONG</title>
-  <meta name="description" content="퇴직연금 DC·IRP 계좌 스크린샷을 업로드하면 안전자산 30% 규정을 맞추기 위한 종목별 매도 좌수를 자동 계산합니다.">
-  <meta name="keywords" content="퇴직연금, DC계좌, IRP, 안전자산 30%, 리밸런싱 계산기, 매도 좌수">
+  <meta name="description" content="퇴직연금 DC·IRP 계좌 스크린샷을 업로드하면 안전자산 30% 규정을 맞추기 위한 종목별 매도 수량을 자동 계산합니다.">
+  <meta name="keywords" content="퇴직연금, DC계좌, IRP, 안전자산 30%, 리밸런싱 계산기, 매도 수량">
   <meta name="author" content="EZLONG">
   <link rel="canonical" href="https://ezlong.com/dc-rebalance.html">
   <meta property="og:type" content="website">
   <meta property="og:title" content="DC·IRP 안전자산 리밸런싱 계산기 | EZLONG">
-  <meta property="og:description" content="퇴직연금 DC·IRP 스크린샷 업로드 → 안전자산 30% 맞추기 위한 종목별 매도 좌수 자동 계산">
+  <meta property="og:description" content="퇴직연금 DC·IRP 스크린샷 업로드 → 안전자산 30% 맞추기 위한 종목별 매도 수량 자동 계산">
   <meta property="og:url" content="https://ezlong.com/dc-rebalance.html">
   <meta property="og:image" content="https://ezlong.com/logo-preview.png">
   <meta property="og:site_name" content="EZLONG">
   <meta property="og:locale" content="ko_KR">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="DC·IRP 안전자산 리밸런싱 계산기 | EZLONG">
-  <meta name="twitter:description" content="퇴직연금 DC·IRP 스크린샷 업로드 → 안전자산 30% 맞추기 위한 종목별 매도 좌수 자동 계산">
+  <meta name="twitter:description" content="퇴직연금 DC·IRP 스크린샷 업로드 → 안전자산 30% 맞추기 위한 종목별 매도 수량 자동 계산">
   <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
   <link rel="stylesheet" href="ez-design.css">
@@ -437,7 +437,7 @@
   <div class="page-brand-inner">
     <div class="page-brand-label">퇴직연금 유틸리티</div>
     <h1 class="page-brand-title">DC·IRP 안전자산 리밸런싱 계산기</h1>
-    <p class="page-brand-desc">보유 종목 스크린샷을 업로드하면 안전자산 30% 규정을 충족하기 위한 종목별 매도 좌수를 자동 계산합니다.</p>
+    <p class="page-brand-desc">보유 종목 스크린샷을 업로드하면 안전자산 30% 규정을 충족하기 위한 종목별 매도 수량을 자동 계산합니다.</p>
   </div>
 </div>
 
@@ -450,7 +450,7 @@
     <div class="upload-zone" id="uploadZone">
       <div class="upload-icon">📸</div>
       <div class="upload-title">스크린샷을 여기에 드래그하거나 클릭해서 업로드</div>
-      <div class="upload-desc">최대 5장까지 동시 업로드 — 화면이 여러 페이지로 나뉜 경우 모두 올려주세요</div>
+      <div class="upload-desc">최대 10장까지 업로드 가능 — <strong style="color:var(--ez-text);">현재가·보유수량·평가금액이 모두 보이는 화면</strong>을 캡쳐해 올려주세요. 계좌가 여러 페이지로 나뉜 경우 모두 올려주세요.</div>
     </div>
     <input type="file" id="fileInput" accept="image/*" multiple>
 
@@ -476,10 +476,10 @@
 
     <div class="info-box">
       <strong>안전자산 자동 분류</strong>가 적용되었습니다.
-      국고채·회사채·머니마켓·채권혼합50·TDF 등은 <span style="color:#1E8A3C; font-weight:700;">안전</span>으로,
+      국고채·회사채·머니마켓·채권혼합·TDF 등은 <span style="color:#1E8A3C; font-weight:700;">안전</span>으로,
       주식형 ETF는 <span style="color:#C0190F; font-weight:700;">위험</span>으로 분류됩니다.
       잘못 분류된 종목은 토글로 직접 수정하세요.
-      <span style="display:block; margin-top:6px; color:var(--ez-text2);">보유좌수·기준가가 빈 칸이면 직접 입력해야 매도 좌수를 계산할 수 있습니다.</span>
+      <span style="display:block; margin-top:6px; color:var(--ez-text2);">보유수량·현재가가 빈 칸이면 직접 입력해야 매도 수량을 계산할 수 있습니다.</span>
     </div>
 
     <div class="summary-row" id="summaryRow"></div>
@@ -490,8 +490,8 @@
           <tr>
             <th>종목명</th>
             <th>분류</th>
-            <th style="text-align:right; min-width:70px;">보유좌수</th>
-            <th style="text-align:right; min-width:70px;">기준가(원)</th>
+            <th style="text-align:right; min-width:70px;">보유수량</th>
+            <th style="text-align:right; min-width:70px;">현재가(원)</th>
             <th style="text-align:right; min-width:90px;">평가금액(원)</th>
             <th></th>
           </tr>
@@ -522,16 +522,16 @@
       <div class="result-meta" id="resultMeta"></div>
 
       <div class="result-sub-title">비안전자산 매도 계획</div>
-      <div class="result-sub-desc">아래 좌수만큼 매도한 뒤 안전자산(채권형 ETF·예금 등)으로 전환하세요.</div>
+      <div class="result-sub-desc">아래 수량만큼 매도한 뒤 안전자산(채권형 ETF·예금 등)으로 전환하세요.</div>
 
       <div class="tbl-wrap">
         <table class="r-tbl">
           <thead>
             <tr>
               <th>종목명</th>
-              <th style="text-align:right;">현재 좌수</th>
-              <th style="text-align:right;">매도 좌수</th>
-              <th style="text-align:right;">매도 후 좌수</th>
+              <th style="text-align:right;">현재 수량</th>
+              <th style="text-align:right;">매도 수량</th>
+              <th style="text-align:right;">매도 후 수량</th>
               <th style="text-align:right;">매도 금액</th>
             </tr>
           </thead>
@@ -543,8 +543,8 @@
 
       <div class="caution-box">
         <strong>주의사항</strong><br>
-        · 매도 좌수는 올림(ceil) 처리되므로 실제 매도금액이 계산값보다 약간 클 수 있습니다.<br>
-        · 기준가 미입력 종목은 매도 금액(예상)만 표시됩니다. 기준가를 입력하면 좌수가 계산됩니다.<br>
+        · 매도 수량은 올림(ceil) 처리되므로 실제 매도금액이 계산값보다 약간 클 수 있습니다.<br>
+        · 현재가 미입력 종목은 매도 금액(예상)만 표시됩니다. 현재가를 입력하면 수량이 계산됩니다.<br>
         · 이 결과는 투자 참고용이며 투자 권유가 아닙니다. 투자 결과의 책임은 투자자 본인에게 있습니다.
       </div>
     </div>
@@ -572,12 +572,14 @@ const SAFE_PATTERNS = [
   /회사채/,
   // 미국 채권형
   /미국채|미국장기국채|미국30년국채|미국투자등급|미국투자등급회사채/,
-  // 채권혼합 50 (주식≤50% → 안전자산)
-  /채권혼합50|채권혼합 50/,
+  // 채권혼합 (주식≤50% → 안전자산 — 비율 표기 없이도 채권혼합이면 안전)
+  /채권혼합/,
   /미국채혼합/,
   /S&P500.*채권|S.P500.*미국채/i,
-  /나스닥.*채권혼합/i,
-  /배당.*미국채혼합/i,
+  /나스닥.*채권/i,
+  /배당.*미국채/i,
+  // 금+채권 혼합 ETF (인플레이션 헤지형 안전자산)
+  /금.*채권|채권.*금/i,
   // TDF·자산배분 안정형
   /\bTDF\b/i,
   /TRF\s*370/i,
@@ -607,7 +609,7 @@ function getKey() { return _GK.join(''); }
 const uploadZone = document.getElementById('uploadZone');
 const fileInput  = document.getElementById('fileInput');
 const parseBtn   = document.getElementById('parseBtn');
-const MAX_IMGS   = 5;
+const MAX_IMGS   = 10;
 
 uploadZone.addEventListener('click', () => fileInput.click());
 uploadZone.addEventListener('dragover', e => {
@@ -701,11 +703,13 @@ async function parseImages() {
 
 필드:
 - name: 상품명 또는 종목명 (원문 그대로)
-- quantity: 보유좌수 또는 주수 (숫자만, 없으면 null)
-- unitPrice: 기준가 또는 1좌당 현재가 (숫자만, 없으면 null)
-- totalValue: 평가금액 (숫자만, 반드시 포함)
+- quantity: 보유수량 또는 보유좌수 (숫자만, 없으면 null)
+- unitPrice: 현재가 또는 기준가 (1주/1좌당 가격, 숫자만, 없으면 null)
+- totalValue: 평가금액 또는 평가액 (숫자만, 반드시 포함)
 
-숫자에서 쉼표와 통화 기호를 제거하고 순수 숫자만 입력하세요.
+화면에서 "현재가", "기준가", "1좌당 가격" 등으로 표시된 열을 unitPrice로 추출하세요.
+"보유수량", "보유좌수", "수량" 등으로 표시된 열을 quantity로 추출하세요.
+숫자에서 쉼표와 통화 기호(원, ₩)를 제거하고 순수 숫자만 입력하세요.
 응답은 JSON 배열만, 마크다운 코드블록 없이 순수 JSON으로 출력하세요.`;
 
   const allParsed = [];
@@ -898,7 +902,7 @@ function makeHRow(h) {
     </td>
     <td>
       <input class="e-cell right" data-field="unitPrice" data-id="${h.id}"
-             value="${h.unitPrice !== null ? numFmt(h.unitPrice) : ''}" placeholder="—"
+             value="${h.unitPrice !== null ? numFmt(h.unitPrice) : ''}" placeholder="현재가"
              style="width:72px;">
     </td>
     <td>
@@ -1011,15 +1015,15 @@ function recalc() {
     tr.innerHTML = `
       <td class="r-name">${escHtml(h.name || '(종목명 없음)')}</td>
       <td style="text-align:right; color:var(--ez-text2); font-size:14px;">
-        ${h.quantity !== null ? numFmt(h.quantity) + ' 좌' : '—'}
+        ${h.quantity !== null ? numFmt(h.quantity) : '—'}
       </td>
       <td style="text-align:right;">
         ${sharesToSell !== null
-          ? `<span class="sell-cnt">${numFmt(sharesToSell)} 좌</span>`
-          : `<span class="r-note">기준가 미입력</span>`}
+          ? `<span class="sell-cnt">${numFmt(sharesToSell)}</span>`
+          : `<span class="r-note">현재가 미입력</span>`}
       </td>
       <td style="text-align:right; color:var(--ez-text2); font-size:14px;">
-        ${remainShares !== null ? numFmt(remainShares) + ' 좌' : '—'}
+        ${remainShares !== null ? numFmt(remainShares) : '—'}
       </td>
       <td style="text-align:right;">
         <div style="font-size:16px; font-weight:700; color:var(--ez-text);">${wonFmt(actualSell)}</div>
