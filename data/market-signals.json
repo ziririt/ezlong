@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-27T05:04:25.037172+00:00",
-  "generatedAtKST": "2026-06-27 14:04 KST",
+  "generatedAt": "2026-06-29T02:11:47.725774+00:00",
+  "generatedAtKST": "2026-06-29 11:11 KST",
   "symbolCount": 8,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -33,7 +33,7 @@
       "low5d": 706.52,
       "high20dExcl": 745.3409,
       "low20dExcl": 692.9285,
-      "volRatio": 0.9061,
+      "volRatio": 0.9065,
       "upDays5": 1,
       "buyScore": 63,
       "sellScore": 28,
@@ -65,7 +65,7 @@
         "histogram": -2.4095
       },
       "high52": 696.2325,
-      "low52": 555.8488,
+      "low52": 555.8489,
       "dev200": 6.1966,
       "dev5": -0.7381,
       "dev20": -1.7394,
@@ -121,7 +121,7 @@
       "low5d": 375.12,
       "high20dExcl": 435.79,
       "low20dExcl": 381.59,
-      "volRatio": 1.153,
+      "volRatio": 1.1531,
       "upDays5": 2,
       "buyScore": 40,
       "sellScore": 4,
@@ -165,7 +165,7 @@
       "low5d": 192.53,
       "high20dExcl": 224.0988,
       "low20dExcl": 200.42,
-      "volRatio": 1.0637,
+      "volRatio": 1.0639,
       "upDays5": 0,
       "buyScore": 56,
       "sellScore": 1,
@@ -209,7 +209,7 @@
       "low5d": 516.62,
       "high20dExcl": 520.021,
       "low20dExcl": 498.8887,
-      "volRatio": 0.6828,
+      "volRatio": 0.683,
       "upDays5": 3,
       "buyScore": 73,
       "sellScore": 22,
@@ -253,7 +253,7 @@
       "low5d": 295.32,
       "high20dExcl": 295.59,
       "low20dExcl": 280.9818,
-      "volRatio": 1.3435,
+      "volRatio": 1.3437,
       "upDays5": 4,
       "buyScore": 77,
       "sellScore": 38,
@@ -297,7 +297,7 @@
       "low5d": 589.94,
       "high20dExcl": 639.45,
       "low20dExcl": 539.5139,
-      "volRatio": 0.9597,
+      "volRatio": 0.9601,
       "upDays5": 2,
       "buyScore": 64,
       "sellScore": 27,
@@ -355,32 +355,65 @@
     "timestamp": "2026-06-26T23:59:57+00:00"
   },
   "macro": {
+    "yield10y": {
+      "price": 4.372,
+      "change": -0.02,
+      "changePct": -0.4554,
+      "symbol": "^TNX",
+      "label": "\ubbf810\ub144\ubb3c \uae08\ub9ac",
+      "unit": "%"
+    },
+    "yield30y": {
+      "price": 4.864,
+      "change": 0.006,
+      "changePct": 0.1235,
+      "symbol": "^TYX",
+      "label": "\ubbf830\ub144\ubb3c \uae08\ub9ac",
+      "unit": "%"
+    },
     "oil": {
-      "price": 69.23,
-      "change": -2.69,
-      "changePct": -3.7403,
+      "price": 70.04,
+      "change": 0.81,
+      "changePct": 1.17,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 101.36,
-      "change": -0.07,
-      "changePct": -0.069,
+      "price": 101.363,
+      "change": 0.003,
+      "changePct": 0.003,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4078.7,
-      "change": 48.2,
-      "changePct": 1.1959,
+      "price": 4080.7,
+      "change": 2.0,
+      "changePct": 0.049,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-06-27T05:04:25.037172+00:00",
+      "atKST": "2026-06-27 14:04 KST",
+      "qqq": {
+        "rsi": 46.65,
+        "macdHist": -3.9828,
+        "dev5": -1.4649,
+        "dev200": 12.0286,
+        "gear": 3,
+        "buyScore": 63,
+        "sellScore": 28,
+        "price": 706.52
+      },
+      "soxxMacdHist": -3.7866,
+      "fearAndGreed": 25,
+      "yield10y": null
+    },
     {
       "at": "2026-06-27T04:55:29.206512+00:00",
       "atKST": "2026-06-27 13:55 KST",
@@ -2811,23 +2844,6 @@
       "soxxMacdHist": -2.1579,
       "fearAndGreed": 27,
       "yield10y": 4.408
-    },
-    {
-      "at": "2026-06-24T17:01:32.431677+00:00",
-      "atKST": "2026-06-25 02:01 KST",
-      "qqq": {
-        "rsi": 48.77,
-        "macdHist": -3.0798,
-        "dev5": -1.7117,
-        "dev200": 13.2585,
-        "gear": 3,
-        "buyScore": 65,
-        "sellScore": 30,
-        "price": 712.765
-      },
-      "soxxMacdHist": -1.715,
-      "fearAndGreed": 27,
-      "yield10y": 4.41
     }
   ]
 }
