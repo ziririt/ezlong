@@ -261,6 +261,8 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines):
 === 매크로 인과관계 절대 규칙 (위반 시 신뢰도 훼손) ===
 - 원유/유가 하락 → 에너지 비용 감소, 인플레이션 완화 → 긍정(positive) 분류
   예외: '글로벌 수요 붕괴 신호'로 판단될 경우에만 부정 가능 (이유에 반드시 '경기 둔화 우려' 명시)
+- 원유/유가 상승 → 인플레이션 압력 → 기술주·성장주에 부정(negative) 분류. 절대로 긍정 요인으로 분류 금지.
+  (유가 상승이 에너지 섹터에 긍정임은 맞으나, 이 분석은 기술주 투자자 대상이므로 기술주 관점 적용)
 - "인플레이션 우려 완화"를 desc에 적으면서 negative_factors에 넣는 것은 절대 금지
 - VIX 하락 → 긍정(positive), VIX 상승 → 부정(negative)
 - 국채금리 하락 → 성장주/기술주 긍정, 국채금리 상승 → 성장주 부정
@@ -268,6 +270,13 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines):
 - 달러 약세 → 수출주 실적 개선, 원자재 지지 → 긍정
 - 지정학적 리스크 완화 → 긍정, 지정학적 긴장 고조 → 부정
 - desc에 쓴 인과관계 방향이 긍정/부정 분류와 반드시 일치해야 함
+
+=== 동일 기업·티커 양측 동시 등장 절대 금지 ===
+- MSFT, AAPL, NVDA, TSLA, GOOGL, AMZN, META, SOXX, QQQ, SPY 등 특정 기업·티커가
+  positive_factors와 negative_factors 양쪽에 동시에 등장하는 것은 절대 금지.
+- 위반 예 (금지): 긍정에 "MSFT, AAPL 강세" + 부정에 "MSFT 실적 우려" → 명백한 모순
+- 해결법: 가장 최근 6시간 이내 데이터에서 해당 기업의 방향이 긍정인지 부정인지 하나로 결정한 뒤, 한쪽에만 배치
+- 판단이 어려우면 해당 기업 항목을 생략하고 다른 재료를 사용할 것
 
 === 테슬라($TSLA) · 일론 머스크 관련 재료 취급 원칙 (엄격 적용) ===
 
@@ -435,6 +444,48 @@ def validate_entry(entry):
         print(f"WARNING: 부정 요인 합계 {neg_sum} ≠ {neg_total}")
 
 
+def validate_content(entry):
+    """내용 모순 검증 — 동일 기업 양측 등장, 유가 방향 오류, VIX 방향 오류"""
+    def texts(factors):
+        return [(f.get('name', '') + ' ' + f.get('desc', '')).lower() for f in factors]
+
+    pos_texts = texts(entry.get('positive_factors', []))
+    neg_texts = texts(entry.get('negative_factors', []))
+
+    errors = []
+
+    # ── 체크 1: 동일 기업·티커가 긍정·부정 양쪽에 동시 등장 ──────────────────
+    TICKERS = ['msft', 'aapl', 'nvda', 'tsla', 'googl', 'amzn', 'meta',
+               'soxx', 'qqq', 'spy', 'amd', 'broadcom', 'mu ']
+    for ticker in TICKERS:
+        in_pos = any(ticker in t for t in pos_texts)
+        in_neg = any(ticker in t for t in neg_texts)
+        if in_pos and in_neg:
+            errors.append(f"모순: '{ticker.strip()}'가 긍정·부정 양쪽에 동시 등장")
+
+    # ── 체크 2: 유가 상승을 긍정 요인으로 분류 (기술주 투자자 관점에선 인플레 압력) ──
+    OIL_RISE = ['유가 상승', '유가상승', 'wti 상승', '원유 상승', '유가 올', '원유 올',
+                '유가가 상승', '원유가 상승', '에너지 가격 상승']
+    for kw in OIL_RISE:
+        if any(kw in t for t in pos_texts):
+            errors.append(f"오류: '{kw}'를 긍정 요인 분류 — 기술주 관점에선 인플레이션 압력(부정)")
+            break
+
+    # ── 체크 3: VIX 방향 오류 ────────────────────────────────────────────────
+    if any('vix' in t and ('상승' in t or '급등' in t or '올라' in t) for t in pos_texts):
+        errors.append("오류: VIX 상승이 긍정 요인에 분류됨 (VIX↑ = 공포지수 상승 = 부정)")
+    if any('vix' in t and ('하락' in t or '안정' in t or '내려' in t) for t in neg_texts):
+        errors.append("오류: VIX 하락이 부정 요인에 분류됨 (VIX↓ = 안정 = 긍정)")
+
+    # ── 체크 4: 국채금리 방향 오류 ──────────────────────────────────────────
+    if any(('국채금리' in t or '금리' in t) and ('상승' in t or '급등' in t) for t in pos_texts):
+        errors.append("오류: 국채금리 상승이 긍정 요인에 분류됨 (금리↑ = 성장주 밸류 압박 = 부정)")
+    if any(('국채금리' in t or '금리' in t) and ('하락' in t or '안정' in t) for t in neg_texts):
+        errors.append("오류: 국채금리 하락이 부정 요인에 분류됨 (금리↓ = 성장주 유리 = 긍정)")
+
+    return errors
+
+
 # ─── 메인 ────────────────────────────────────────────────────────────────────
 
 def main():
@@ -472,6 +523,27 @@ def main():
     # 3. 항목 생성 + 검증
     entry = build_entry(kst_now, result)
     validate_entry(entry)
+
+    # 3-1. 내용 모순 검증 — 모순 발견 시 1회 재시도 (2026-06-29 추가)
+    content_errors = validate_content(entry)
+    if content_errors:
+        print(f"  WARNING: 내용 모순 {len(content_errors)}건 발견 — 재시도")
+        for err in content_errors:
+            print(f"    ❌ {err}")
+        result2 = call_gemini(prompt)
+        if result2:
+            entry2 = build_entry(kst_now, result2)
+            validate_entry(entry2)
+            errors2 = validate_content(entry2)
+            if errors2:
+                print(f"  WARNING: 재시도에도 모순 {len(errors2)}건 존재 — 1차 결과 그대로 사용")
+                for err in errors2:
+                    print(f"    ❌ {err}")
+            else:
+                print(f"  ✅ 재시도 성공 — 모순 없는 결과 채택")
+                entry = entry2
+        else:
+            print(f"  재시도 실패 — 1차 결과 그대로 사용")
 
     # 4. 기존 데이터 로드 + 신규 항목 추가
     data = load_existing()
