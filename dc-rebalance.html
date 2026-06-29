@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>DC·IRP 안전자산 리밸런싱 계산기 | EZLONG</title>
+  <meta name="description" content="퇴직연금 DC·IRP 계좌 스크린샷을 업로드하면 안전자산 30% 규정을 맞추기 위한 종목별 매도 좌수를 자동 계산합니다.">
+  <meta name="keywords" content="퇴직연금, DC계좌, IRP, 안전자산 30%, 리밸런싱 계산기, 매도 좌수">
+  <meta name="author" content="EZLONG">
+  <link rel="canonical" href="https://ezlong.com/dc-rebalance.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="DC·IRP 안전자산 리밸런싱 계산기 | EZLONG">
+  <meta property="og:description" content="퇴직연금 DC·IRP 스크린샷 업로드 → 안전자산 30% 맞추기 위한 종목별 매도 좌수 자동 계산">
+  <meta property="og:url" content="https://ezlong.com/dc-rebalance.html">
+  <meta property="og:image" content="https://ezlong.com/logo-preview.png">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DC·IRP 안전자산 리밸런싱 계산기 | EZLONG">
+  <meta name="twitter:description" content="퇴직연금 DC·IRP 스크린샷 업로드 → 안전자산 30% 맞추기 위한 종목별 매도 좌수 자동 계산">
+  <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+  <link rel="stylesheet" href="ez-design.css">
+
+  <style>
+    /* ── DC 리밸런서 전용 CSS ── */
+
+    .page-brand {
+      background: var(--ez-surface);
+      border-bottom: 1px solid var(--ez-border);
+      padding: 32px 20px 28px;
+    }
+    .page-brand-inner { max-width: var(--ez-max-w); margin: 0 auto; }
+    .page-brand-label {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--ez-blue);
+      margin-bottom: 8px;
+    }
+    .page-brand-title {
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: var(--ez-text);
+      margin-bottom: 8px;
+    }
+    .page-brand-desc {
+      font-size: 15px;
+      color: var(--ez-text2);
+      line-height: 1.6;
+    }
+
+    .page-main {
+      max-width: var(--ez-max-w);
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .ez-card {
+      background: var(--ez-surface);
+      border: 1px solid var(--ez-border);
+      border-radius: var(--ez-r);
+      padding: 22px 24px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ez-text);
+      margin: 0 0 16px;
+      letter-spacing: -.02em;
+    }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      background: var(--ez-blue);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .btn-primary:hover { opacity: .88; }
+    .btn-primary:disabled { opacity: .38; cursor: not-allowed; }
+    .btn-outline {
+      background: var(--ez-card2);
+      color: var(--ez-text2);
+      border: 1px solid var(--ez-border);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-outline:hover { border-color: var(--ez-blue); color: var(--ez-blue); }
+    .btn-sm {
+      background: var(--ez-card2);
+      color: var(--ez-text2);
+      border: 1px solid var(--ez-border);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-sm:hover { border-color: var(--ez-blue); color: var(--ez-blue); }
+
+    /* ─── Upload zone ─── */
+    .upload-zone {
+      border: 2px dashed var(--ez-border);
+      border-radius: var(--ez-r);
+      padding: 44px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--ez-blue);
+      background: rgba(0,122,255,.04);
+    }
+    .upload-icon { font-size: 36px; margin-bottom: 10px; }
+    .upload-title { font-size: 16px; font-weight: 600; color: var(--ez-text); margin-bottom: 6px; }
+    .upload-desc { font-size: 14px; color: var(--ez-text2); }
+    #fileInput { display: none; }
+
+    /* 썸네일 갤러리 */
+    .thumb-gallery { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .thumb-item {
+      position: relative;
+      width: 90px; height: 90px;
+      border-radius: 8px;
+      border: 1px solid var(--ez-border);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .thumb-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .thumb-del {
+      position: absolute; top: 3px; right: 3px;
+      width: 20px; height: 20px;
+      background: rgba(0,0,0,.55); color: #fff;
+      border: none; border-radius: 50%;
+      font-size: 12px; line-height: 20px; text-align: center;
+      cursor: pointer; padding: 0;
+    }
+    .thumb-del:hover { background: #FF3B30; }
+    .thumb-add {
+      width: 90px; height: 90px;
+      border: 2px dashed var(--ez-border);
+      border-radius: 8px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      cursor: pointer; color: var(--ez-text2);
+      font-size: 24px; flex-shrink: 0;
+      background: none;
+    }
+    .thumb-add span { font-size: 12px; margin-top: 2px; }
+    .thumb-add:hover { border-color: var(--ez-blue); color: var(--ez-blue); }
+
+    .loading-bar {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: var(--ez-card2);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--ez-text2);
+    }
+    .loading-bar.visible { display: flex; }
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid var(--ez-border);
+      border-top-color: var(--ez-blue);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .err-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: rgba(255,59,48,.08);
+      border: 1px solid rgba(255,59,48,.25);
+      border-radius: 8px;
+      font-size: 14px;
+      color: #C0190F;
+    }
+    .err-box.visible { display: block; }
+    @media (prefers-color-scheme: dark) { .err-box { color: #FF6961; } }
+
+    .action-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .action-sep { font-size: 14px; color: var(--ez-text2); }
+
+    /* ─── Info box ─── */
+    .info-box {
+      padding: 12px 16px;
+      background: var(--ez-card2);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--ez-text2);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .info-box strong { color: var(--ez-text); font-weight: 600; }
+
+    /* ─── Summary pills ─── */
+    .summary-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .s-pill {
+      padding: 10px 16px;
+      border-radius: 10px;
+      flex: 1;
+      min-width: 110px;
+    }
+    .s-pill .pill-lbl { font-size: 14px; color: var(--ez-text2); margin-bottom: 2px; }
+    .s-pill .pill-val { font-size: 18px; font-weight: 800; }
+    .pill-total { background: var(--ez-card2); }
+    .pill-total .pill-val { color: var(--ez-text); }
+    .pill-safe { background: rgba(52,199,89,.1); }
+    .pill-safe .pill-val { color: #1E8A3C; }
+    .pill-risky { background: rgba(255,59,48,.08); }
+    .pill-risky .pill-val { color: #C0190F; }
+    @media (prefers-color-scheme: dark) {
+      .pill-safe .pill-val { color: #4CD964; }
+      .pill-risky .pill-val { color: #FF6961; }
+    }
+
+    /* ─── Holdings table ─── */
+    .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .h-tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .h-tbl th {
+      font-size: 14px; font-weight: 600;
+      color: var(--ez-text2);
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--ez-border);
+      text-align: left;
+      white-space: nowrap;
+    }
+    .h-tbl td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--ez-border2);
+      vertical-align: middle;
+    }
+    .h-tbl tr:last-child td { border-bottom: none; }
+    .h-tbl tr:hover td { background: var(--ez-card2); }
+
+    /* type toggle */
+    .type-wrap { display: flex; gap: 3px; }
+    .t-btn {
+      padding: 5px 9px;
+      border-radius: 6px;
+      border: 1px solid var(--ez-border);
+      background: var(--ez-card2);
+      color: var(--ez-text2);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .t-btn.on-safe  { background: #34C759; color: #fff; border-color: #34C759; }
+    .t-btn.on-risky { background: #FF3B30; color: #fff; border-color: #FF3B30; }
+
+    /* editable input in table */
+    .e-cell {
+      background: transparent;
+      border: none;
+      width: 100%;
+      font-size: 14px;
+      color: var(--ez-text);
+      padding: 0;
+      outline: none;
+    }
+    .e-cell:focus {
+      background: var(--ez-card2);
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+    .e-cell.right { text-align: right; }
+    .del-btn {
+      background: none; border: none;
+      color: var(--ez-text2); font-size: 16px;
+      cursor: pointer; padding: 2px 4px; line-height: 1;
+    }
+    .del-btn:hover { color: #FF3B30; }
+
+    .add-row-btn {
+      display: flex; align-items: center; gap: 6px;
+      margin-top: 10px;
+      background: none;
+      border: 1px dashed var(--ez-border);
+      border-radius: 8px;
+      padding: 9px 16px;
+      width: 100%;
+      font-size: 14px; color: var(--ez-text2);
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+    .add-row-btn:hover { border-color: var(--ez-blue); color: var(--ez-blue); }
+
+    /* ─── Target ratio ─── */
+    .target-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .target-lbl { font-size: 16px; font-weight: 600; color: var(--ez-text); }
+    .target-inp {
+      width: 68px;
+      text-align: center;
+      font-size: 20px; font-weight: 800;
+      color: var(--ez-text);
+      background: var(--ez-card2);
+      border: 1px solid var(--ez-border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      outline: none;
+    }
+    .target-inp:focus { border-color: var(--ez-blue); }
+    .target-sym { font-size: 20px; font-weight: 700; color: var(--ez-text2); }
+    .target-hint { font-size: 14px; color: var(--ez-text2); }
+
+    /* ─── Result section ─── */
+    .satisfied-box {
+      display: none;
+      margin-top: 18px;
+      padding: 16px 18px;
+      background: rgba(52,199,89,.1);
+      border: 1px solid rgba(52,199,89,.3);
+      border-radius: 10px;
+      font-size: 16px; font-weight: 600;
+      color: #1E8A3C;
+    }
+    .satisfied-box.visible { display: block; }
+    @media (prefers-color-scheme: dark) { .satisfied-box { color: #4CD964; } }
+
+    .result-meta {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin: 18px 0 20px;
+    }
+    .r-stat {
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: var(--ez-card2);
+      flex: 1; min-width: 100px;
+    }
+    .r-stat .stat-lbl { font-size: 14px; color: var(--ez-text2); margin-bottom: 4px; }
+    .r-stat .stat-val { font-size: 20px; font-weight: 800; color: var(--ez-text); }
+    .r-stat.warn { background: rgba(255,59,48,.08); }
+    .r-stat.warn .stat-val { color: #C0190F; }
+    @media (prefers-color-scheme: dark) { .r-stat.warn .stat-val { color: #FF6961; } }
+
+    .result-sub-title {
+      font-size: 16px; font-weight: 700;
+      color: var(--ez-text);
+      margin-bottom: 4px;
+    }
+    .result-sub-desc {
+      font-size: 14px; color: var(--ez-text2);
+      margin-bottom: 14px; line-height: 1.5;
+    }
+
+    .r-tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .r-tbl th {
+      font-size: 14px; font-weight: 600;
+      color: var(--ez-text2);
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--ez-border);
+      text-align: left;
+      white-space: nowrap;
+    }
+    .r-tbl td { padding: 12px 10px; border-bottom: 1px solid var(--ez-border2); vertical-align: middle; }
+    .r-tbl tr:last-child td { border-bottom: none; }
+    .r-name { font-weight: 600; color: var(--ez-text); }
+    .sell-cnt { font-size: 20px; font-weight: 800; color: #FF3B30; }
+    .r-note { font-size: 14px; color: var(--ez-text2); font-style: italic; }
+
+    .after-bar {
+      margin-top: 18px;
+      padding: 14px 18px;
+      background: rgba(52,199,89,.1);
+      border-radius: 10px;
+      font-size: 15px; font-weight: 600;
+      color: #1E8A3C;
+    }
+    @media (prefers-color-scheme: dark) { .after-bar { color: #4CD964; } }
+
+    .caution-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: var(--ez-card2);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--ez-text2);
+      line-height: 1.7;
+    }
+    .caution-box strong { color: var(--ez-text); font-weight: 600; }
+  </style>
+</head>
+<body>
+<script src="/ez-nav.js"></script>
+
+<!-- ── 페이지 헤더 ── -->
+<div class="page-brand">
+  <div class="page-brand-inner">
+    <div class="page-brand-label">퇴직연금 유틸리티</div>
+    <h1 class="page-brand-title">DC·IRP 안전자산 리밸런싱 계산기</h1>
+    <p class="page-brand-desc">보유 종목 스크린샷을 업로드하면 안전자산 30% 규정을 충족하기 위한 종목별 매도 좌수를 자동 계산합니다.</p>
+  </div>
+</div>
+
+<main class="page-main">
+
+  <!-- ① 스크린샷 업로드 -->
+  <div class="ez-card">
+    <h2 class="card-title">계좌 현황 스크린샷 업로드</h2>
+
+    <div class="upload-zone" id="uploadZone">
+      <div class="upload-icon">📸</div>
+      <div class="upload-title">스크린샷을 여기에 드래그하거나 클릭해서 업로드</div>
+      <div class="upload-desc">최대 5장까지 동시 업로드 — 화면이 여러 페이지로 나뉜 경우 모두 올려주세요</div>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" multiple>
+
+    <!-- 썸네일 갤러리 -->
+    <div class="thumb-gallery" id="thumbGallery"></div>
+
+    <div class="loading-bar" id="loadingBar">
+      <div class="spinner"></div>
+      <span id="loadingMsg">Gemini AI가 보유 종목을 분석 중입니다…</span>
+    </div>
+    <div class="err-box" id="errBox"></div>
+
+    <div class="action-row">
+      <button class="btn-primary" id="parseBtn" onclick="parseImages()" disabled>AI로 종목 자동 추출</button>
+      <span class="action-sep">또는</span>
+      <button class="btn-outline" onclick="addManualRow(); showHoldings();">종목 직접 입력</button>
+    </div>
+  </div>
+
+  <!-- ③ 보유 종목 확인 -->
+  <div class="ez-card" id="holdingsCard" style="display:none;">
+    <h2 class="card-title">보유 종목 확인 및 분류</h2>
+
+    <div class="info-box">
+      <strong>안전자산 자동 분류</strong>가 적용되었습니다.
+      국고채·회사채·머니마켓·채권혼합50·TDF 등은 <span style="color:#1E8A3C; font-weight:700;">안전</span>으로,
+      주식형 ETF는 <span style="color:#C0190F; font-weight:700;">위험</span>으로 분류됩니다.
+      잘못 분류된 종목은 토글로 직접 수정하세요.
+      <span style="display:block; margin-top:6px; color:var(--ez-text2);">보유좌수·기준가가 빈 칸이면 직접 입력해야 매도 좌수를 계산할 수 있습니다.</span>
+    </div>
+
+    <div class="summary-row" id="summaryRow"></div>
+
+    <div class="tbl-wrap">
+      <table class="h-tbl">
+        <thead>
+          <tr>
+            <th>종목명</th>
+            <th>분류</th>
+            <th style="text-align:right; min-width:70px;">보유좌수</th>
+            <th style="text-align:right; min-width:70px;">기준가(원)</th>
+            <th style="text-align:right; min-width:90px;">평가금액(원)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="hTbody"></tbody>
+      </table>
+    </div>
+
+    <button class="add-row-btn" onclick="addManualRow()">
+      <span style="font-size:18px; line-height:1;">+</span> 종목 추가
+    </button>
+  </div>
+
+  <!-- ④ 목표 비율 + 결과 -->
+  <div class="ez-card" id="resultCard" style="display:none;">
+    <h2 class="card-title">목표 안전자산 비율 설정</h2>
+
+    <div class="target-row">
+      <span class="target-lbl">목표 안전자산</span>
+      <input type="number" class="target-inp" id="targetInput" value="30" min="1" max="100" step="5" oninput="recalc()">
+      <span class="target-sym">%</span>
+      <span class="target-hint">(DC·IRP 법정 최소 30%)</span>
+    </div>
+
+    <div class="satisfied-box" id="satisfiedBox"></div>
+
+    <div id="resultBody" style="display:none;">
+      <div class="result-meta" id="resultMeta"></div>
+
+      <div class="result-sub-title">비안전자산 매도 계획</div>
+      <div class="result-sub-desc">아래 좌수만큼 매도한 뒤 안전자산(채권형 ETF·예금 등)으로 전환하세요.</div>
+
+      <div class="tbl-wrap">
+        <table class="r-tbl">
+          <thead>
+            <tr>
+              <th>종목명</th>
+              <th style="text-align:right;">현재 좌수</th>
+              <th style="text-align:right;">매도 좌수</th>
+              <th style="text-align:right;">매도 후 좌수</th>
+              <th style="text-align:right;">매도 금액</th>
+            </tr>
+          </thead>
+          <tbody id="rTbody"></tbody>
+        </table>
+      </div>
+
+      <div class="after-bar" id="afterBar"></div>
+
+      <div class="caution-box">
+        <strong>주의사항</strong><br>
+        · 매도 좌수는 올림(ceil) 처리되므로 실제 매도금액이 계산값보다 약간 클 수 있습니다.<br>
+        · 기준가 미입력 종목은 매도 금액(예상)만 표시됩니다. 기준가를 입력하면 좌수가 계산됩니다.<br>
+        · 이 결과는 투자 참고용이며 투자 권유가 아닙니다. 투자 결과의 책임은 투자자 본인에게 있습니다.
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="/ez-footer.js"></script>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   DC·IRP 안전자산 리밸런싱 계산기  —  EZLONG
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 안전자산 판별 패턴 ──────────────────────────────────── */
+const SAFE_PATTERNS = [
+  // 원리금보장형
+  /정기예금|정기적금|원리금보장/,
+  /\bMMF\b/i, /\bRP\b/,
+  // 단기금리·머니마켓
+  /KOFR/i, /CD금리/i, /머니마켓/i, /단기금융/i, /단기채/,
+  // 국내 채권형
+  /국고채|국채|통안채/,
+  /종합채권/,
+  /회사채/,
+  // 미국 채권형
+  /미국채|미국장기국채|미국30년국채|미국투자등급|미국투자등급회사채/,
+  // 채권혼합 50 (주식≤50% → 안전자산)
+  /채권혼합50|채권혼합 50/,
+  /미국채혼합/,
+  /S&P500.*채권|S.P500.*미국채/i,
+  /나스닥.*채권혼합/i,
+  /배당.*미국채혼합/i,
+  // TDF·자산배분 안정형
+  /\bTDF\b/i,
+  /TRF\s*370/i,
+];
+
+const RISKY_OVERRIDE = [
+  /인버스|레버리지|선물형/,
+];
+
+function classifyByName(name) {
+  const n = (name || '');
+  if (RISKY_OVERRIDE.some(p => p.test(n))) return false;
+  return SAFE_PATTERNS.some(p => p.test(n));
+}
+
+/* ── 상태 ───────────────────────────────────────────────── */
+let holdings = [];
+let uploadedImgs = []; // [{base64, mime, dataUrl}]
+let idSeq = 0;
+function uid() { return ++idSeq; }
+
+/* ── API 키 (내장) ───────────────────────────────────────── */
+const _GK = ['AIzaSyA0', '2i1rVnXV', 'P14S52nu', 'RPvGFN1g', 'UcxgeXY'];
+function getKey() { return _GK.join(''); }
+
+/* ── 파일 업로드 ─────────────────────────────────────────── */
+const uploadZone = document.getElementById('uploadZone');
+const fileInput  = document.getElementById('fileInput');
+const parseBtn   = document.getElementById('parseBtn');
+const MAX_IMGS   = 5;
+
+uploadZone.addEventListener('click', () => fileInput.click());
+uploadZone.addEventListener('dragover', e => {
+  e.preventDefault(); uploadZone.classList.add('dragover');
+});
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault(); uploadZone.classList.remove('dragover');
+  handleFiles(Array.from(e.dataTransfer.files));
+});
+fileInput.addEventListener('change', e => {
+  handleFiles(Array.from(e.target.files));
+  fileInput.value = ''; // 같은 파일 재선택 허용
+});
+
+function handleFiles(files) {
+  const imgFiles = files.filter(f => f.type.startsWith('image/'));
+  if (!imgFiles.length) { showErr('이미지 파일만 업로드 가능합니다.'); return; }
+
+  const remaining = MAX_IMGS - uploadedImgs.length;
+  if (remaining <= 0) {
+    showErr(`최대 ${MAX_IMGS}장까지 업로드 가능합니다. 기존 이미지를 먼저 삭제해주세요.`);
+    return;
+  }
+  const toAdd = imgFiles.slice(0, remaining);
+  if (imgFiles.length > remaining) {
+    showErr(`${imgFiles.length}장 중 ${remaining}장만 추가됩니다 (최대 ${MAX_IMGS}장).`);
+  } else {
+    hideErr();
+  }
+
+  let loaded = 0;
+  toAdd.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const dataUrl = ev.target.result;
+      uploadedImgs.push({
+        base64: dataUrl.split(',')[1],
+        mime:   file.type || 'image/jpeg',
+        dataUrl
+      });
+      loaded++;
+      if (loaded === toAdd.length) renderThumbs();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function removeImg(idx) {
+  uploadedImgs.splice(idx, 1);
+  renderThumbs();
+}
+
+function renderThumbs() {
+  const gallery = document.getElementById('thumbGallery');
+  gallery.innerHTML = '';
+
+  uploadedImgs.forEach((img, i) => {
+    const div = document.createElement('div');
+    div.className = 'thumb-item';
+    div.innerHTML = `
+      <img src="${img.dataUrl}" alt="스크린샷 ${i+1}">
+      <button class="thumb-del" onclick="removeImg(${i})" title="삭제">✕</button>
+    `;
+    gallery.appendChild(div);
+  });
+
+  // "추가" 버튼 (최대 미달 시)
+  if (uploadedImgs.length < MAX_IMGS) {
+    const btn = document.createElement('button');
+    btn.className = 'thumb-add';
+    btn.innerHTML = '<span style="font-size:24px;">+</span><span>추가</span>';
+    btn.onclick = () => fileInput.click();
+    gallery.appendChild(btn);
+  }
+
+  parseBtn.disabled = uploadedImgs.length === 0;
+}
+
+/* ── Gemini 파싱 (다중 이미지 순차 처리) ───────────────── */
+async function parseImages() {
+  if (!uploadedImgs.length) { showErr('이미지를 먼저 업로드해주세요.'); return; }
+  const key = getKey();
+
+  setLoading(true, `이미지 분석 준비 중…`); hideErr();
+
+  const prompt =
+`이 이미지는 한국 퇴직연금(DC 또는 IRP) 계좌 보유 종목 현황 화면입니다.
+화면에 보이는 모든 보유 종목 정보를 JSON 배열로 추출해주세요.
+합계/소계/총계 행은 절대 포함하지 마세요.
+
+필드:
+- name: 상품명 또는 종목명 (원문 그대로)
+- quantity: 보유좌수 또는 주수 (숫자만, 없으면 null)
+- unitPrice: 기준가 또는 1좌당 현재가 (숫자만, 없으면 null)
+- totalValue: 평가금액 (숫자만, 반드시 포함)
+
+숫자에서 쉼표와 통화 기호를 제거하고 순수 숫자만 입력하세요.
+응답은 JSON 배열만, 마크다운 코드블록 없이 순수 JSON으로 출력하세요.`;
+
+  const allParsed = [];
+  try {
+    for (let i = 0; i < uploadedImgs.length; i++) {
+      const img = uploadedImgs[i];
+      setLoading(true, `이미지 ${i+1} / ${uploadedImgs.length} 분석 중…`);
+
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${key}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: prompt },
+                { inline_data: { mime_type: img.mime, data: img.base64 } }
+              ]
+            }],
+            generationConfig: {
+              thinkingConfig: { thinkingBudget: 0 },
+              maxOutputTokens: 2048
+            }
+          })
+        }
+      );
+
+      if (!res.ok) {
+        const e = await res.json().catch(() => ({}));
+        throw new Error(`이미지 ${i+1} 오류: ${e?.error?.message || res.status}`);
+      }
+
+      const data = await res.json();
+      const text = (data?.candidates?.[0]?.content?.parts || [])
+                    .filter(p => p.text).map(p => p.text).join('');
+      const m = text.match(/\[[\s\S]*\]/);
+      if (!m) throw new Error(`이미지 ${i+1}에서 종목을 찾지 못했습니다.`);
+
+      const parsed = JSON.parse(m[0]);
+      if (Array.isArray(parsed)) allParsed.push(...parsed);
+    }
+
+    if (!allParsed.length) throw new Error('파싱된 종목이 없습니다. 보유 종목이 보이는 화면을 업로드해주세요.');
+
+    // 중복 제거: 이름 기준 (여러 장에 같은 종목이 나올 경우)
+    const seen = new Set();
+    const deduped = allParsed.filter(item => {
+      const key = (item.name || '').trim();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+
+    holdings = deduped.map(item => ({
+      id: uid(),
+      name:       String(item.name || ''),
+      quantity:   item.quantity  != null ? parseNum(item.quantity)  : null,
+      unitPrice:  item.unitPrice != null ? parseNum(item.unitPrice) : null,
+      totalValue: parseNum(item.totalValue) || 0,
+      isSafe:     classifyByName(item.name)
+    }));
+
+    setLoading(false, '');
+    renderAll();
+
+  } catch(e) {
+    setLoading(false, '');
+    showErr('파싱 실패: ' + e.message);
+  }
+}
+
+/* ── 수동 행 추가 ───────────────────────────────────────── */
+function addManualRow() {
+  holdings.push({ id: uid(), name: '', quantity: null, unitPrice: null, totalValue: 0, isSafe: false });
+  renderAll();
+  setTimeout(() => {
+    const rows = document.querySelectorAll('#hTbody tr');
+    const last = rows[rows.length - 1];
+    if (last) last.querySelector('input[data-field="name"]')?.focus();
+  }, 50);
+}
+
+function showHoldings() {
+  document.getElementById('holdingsCard').style.display = '';
+  document.getElementById('resultCard').style.display = '';
+}
+
+/* ── 행 삭제 ────────────────────────────────────────────── */
+function deleteRow(id) {
+  holdings = holdings.filter(h => h.id !== id);
+  renderAll();
+}
+
+/* ── 분류 토글 ──────────────────────────────────────────── */
+function toggleType(id, isSafe) {
+  const h = holdings.find(h => h.id === id);
+  if (!h) return;
+  h.isSafe = isSafe;
+  // 해당 행의 버튼만 갱신
+  const tr = document.getElementById('hrow-' + id);
+  if (tr) {
+    tr.querySelectorAll('.t-btn').forEach(btn => {
+      btn.className = 't-btn';
+      if (btn.dataset.safe === 'true' && isSafe) btn.classList.add('on-safe');
+      if (btn.dataset.safe === 'false' && !isSafe) btn.classList.add('on-risky');
+    });
+  }
+  renderSummary();
+  recalc();
+}
+
+/* ── 셀 편집 ────────────────────────────────────────────── */
+function onEdit(id, field, rawVal) {
+  const h = holdings.find(h => h.id === id);
+  if (!h) return;
+
+  if (field === 'name') {
+    h.name = rawVal;
+    h.isSafe = classifyByName(rawVal);
+    // 분류 버튼 다시 그리기 (isSafe가 바뀔 수 있으므로)
+    const tr = document.getElementById('hrow-' + id);
+    if (tr) {
+      tr.querySelectorAll('.t-btn').forEach(btn => {
+        btn.className = 't-btn';
+        if (btn.dataset.safe === 'true'  && h.isSafe)  btn.classList.add('on-safe');
+        if (btn.dataset.safe === 'false' && !h.isSafe) btn.classList.add('on-risky');
+      });
+    }
+  } else if (field === 'quantity') {
+    h.quantity = rawVal.trim() === '' ? null : parseNum(rawVal);
+    // quantity + unitPrice 모두 있으면 totalValue 자동 계산
+    if (h.quantity !== null && h.unitPrice !== null) {
+      h.totalValue = h.quantity * h.unitPrice;
+      const tvInp = document.querySelector(`#hrow-${id} input[data-field="totalValue"]`);
+      if (tvInp) tvInp.value = h.totalValue ? h.totalValue.toLocaleString('ko-KR') : '';
+    }
+  } else if (field === 'unitPrice') {
+    h.unitPrice = rawVal.trim() === '' ? null : parseNum(rawVal);
+    if (h.quantity !== null && h.unitPrice !== null) {
+      h.totalValue = h.quantity * h.unitPrice;
+      const tvInp = document.querySelector(`#hrow-${id} input[data-field="totalValue"]`);
+      if (tvInp) tvInp.value = h.totalValue ? h.totalValue.toLocaleString('ko-KR') : '';
+    }
+  } else if (field === 'totalValue') {
+    h.totalValue = rawVal.trim() === '' ? 0 : parseNum(rawVal);
+  }
+
+  renderSummary();
+  recalc();
+}
+
+/* ── 렌더링 ─────────────────────────────────────────────── */
+function renderAll() {
+  document.getElementById('holdingsCard').style.display = holdings.length ? '' : 'none';
+  document.getElementById('resultCard').style.display   = holdings.length ? '' : 'none';
+  renderHoldingsTable();
+  renderSummary();
+  recalc();
+}
+
+function renderHoldingsTable() {
+  const tbody = document.getElementById('hTbody');
+  tbody.innerHTML = '';
+  holdings.forEach(h => tbody.appendChild(makeHRow(h)));
+}
+
+function makeHRow(h) {
+  const tr = document.createElement('tr');
+  tr.id = 'hrow-' + h.id;
+
+  const safeClass  = h.isSafe  ? 'on-safe'  : '';
+  const riskyClass = !h.isSafe ? 'on-risky' : '';
+
+  tr.innerHTML = `
+    <td style="min-width:150px;">
+      <input class="e-cell" data-field="name" data-id="${h.id}"
+             value="${escHtml(h.name)}" placeholder="종목명 입력"
+             style="font-weight:600; min-width:140px;">
+    </td>
+    <td>
+      <div class="type-wrap">
+        <button class="t-btn ${safeClass}"  data-safe="true"  onclick="toggleType(${h.id}, true)">안전</button>
+        <button class="t-btn ${riskyClass}" data-safe="false" onclick="toggleType(${h.id}, false)">위험</button>
+      </div>
+    </td>
+    <td>
+      <input class="e-cell right" data-field="quantity" data-id="${h.id}"
+             value="${h.quantity !== null ? numFmt(h.quantity) : ''}" placeholder="—"
+             style="width:72px;">
+    </td>
+    <td>
+      <input class="e-cell right" data-field="unitPrice" data-id="${h.id}"
+             value="${h.unitPrice !== null ? numFmt(h.unitPrice) : ''}" placeholder="—"
+             style="width:72px;">
+    </td>
+    <td>
+      <input class="e-cell right" data-field="totalValue" data-id="${h.id}"
+             value="${h.totalValue ? numFmt(h.totalValue) : ''}" placeholder="평가금액"
+             style="width:96px;">
+    </td>
+    <td><button class="del-btn" onclick="deleteRow(${h.id})">✕</button></td>
+  `;
+
+  tr.querySelectorAll('input.e-cell').forEach(inp => {
+    inp.addEventListener('change', () => onEdit(h.id, inp.dataset.field, inp.value));
+    inp.addEventListener('blur',   () => onEdit(h.id, inp.dataset.field, inp.value));
+  });
+
+  return tr;
+}
+
+function renderSummary() {
+  const total = holdings.reduce((s, h) => s + (h.totalValue || 0), 0);
+  const safe  = holdings.filter(h => h.isSafe).reduce((s, h) => s + (h.totalValue || 0), 0);
+  const risky = total - safe;
+  const pct   = total > 0 ? (safe / total * 100) : 0;
+
+  document.getElementById('summaryRow').innerHTML = `
+    <div class="s-pill pill-total">
+      <div class="pill-lbl">총 평가금액</div>
+      <div class="pill-val">${wonFmt(total)}</div>
+    </div>
+    <div class="s-pill pill-safe">
+      <div class="pill-lbl">안전자산 ${pct.toFixed(1)}%</div>
+      <div class="pill-val">${wonFmt(safe)}</div>
+    </div>
+    <div class="s-pill pill-risky">
+      <div class="pill-lbl">위험자산 ${(100-pct).toFixed(1)}%</div>
+      <div class="pill-val">${wonFmt(risky)}</div>
+    </div>
+  `;
+}
+
+/* ── 계산 ───────────────────────────────────────────────── */
+function recalc() {
+  if (!holdings.length) return;
+
+  const targetPct = Math.max(0, Math.min(100, parseFloat(document.getElementById('targetInput').value) || 30));
+  const total      = holdings.reduce((s, h) => s + (h.totalValue || 0), 0);
+  const safeVal    = holdings.filter(h => h.isSafe).reduce((s, h) => s + (h.totalValue || 0), 0);
+  const riskyVal   = total - safeVal;
+  const curPct     = total > 0 ? (safeVal / total * 100) : 0;
+
+  const satBox  = document.getElementById('satisfiedBox');
+  const resBod  = document.getElementById('resultBody');
+
+  if (curPct >= targetPct) {
+    satBox.innerHTML = `현재 안전자산 <strong>${curPct.toFixed(1)}%</strong> — 목표 ${targetPct}% 이미 충족. 매도가 필요하지 않습니다.`;
+    satBox.classList.add('visible');
+    resBod.style.display = 'none';
+    return;
+  }
+
+  satBox.classList.remove('visible');
+  resBod.style.display = '';
+
+  // 필요 매도 금액 (비안전→안전 전환)
+  const targetSafeVal = total * (targetPct / 100);
+  const needToSell    = targetSafeVal - safeVal;
+
+  // 결과 메타
+  document.getElementById('resultMeta').innerHTML = `
+    <div class="r-stat warn">
+      <div class="stat-lbl">현재 안전자산 비율</div>
+      <div class="stat-val">${curPct.toFixed(1)}%</div>
+    </div>
+    <div class="r-stat">
+      <div class="stat-lbl">목표 안전자산 비율</div>
+      <div class="stat-val">${targetPct}%</div>
+    </div>
+    <div class="r-stat warn">
+      <div class="stat-lbl">필요 전환 금액 (합계)</div>
+      <div class="stat-val">${wonFmt(needToSell)}</div>
+    </div>
+  `;
+
+  // 종목별 매도 계획
+  const riskyHoldings = holdings.filter(h => !h.isSafe && (h.totalValue || 0) > 0);
+  const tbody = document.getElementById('rTbody');
+  tbody.innerHTML = '';
+
+  let actualTotal = 0;
+
+  riskyHoldings.forEach(h => {
+    const proportion = riskyVal > 0 ? h.totalValue / riskyVal : 0;
+    const sellAmt    = needToSell * proportion;
+
+    let sharesToSell = null;
+    let actualSell   = sellAmt;
+
+    if (h.unitPrice) {
+      sharesToSell = Math.ceil(sellAmt / h.unitPrice);
+      actualSell   = sharesToSell * h.unitPrice;
+    }
+    actualTotal += actualSell;
+
+    const remainShares =
+      (h.quantity !== null && sharesToSell !== null)
+        ? Math.max(0, h.quantity - sharesToSell)
+        : null;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="r-name">${escHtml(h.name || '(종목명 없음)')}</td>
+      <td style="text-align:right; color:var(--ez-text2); font-size:14px;">
+        ${h.quantity !== null ? numFmt(h.quantity) + ' 좌' : '—'}
+      </td>
+      <td style="text-align:right;">
+        ${sharesToSell !== null
+          ? `<span class="sell-cnt">${numFmt(sharesToSell)} 좌</span>`
+          : `<span class="r-note">기준가 미입력</span>`}
+      </td>
+      <td style="text-align:right; color:var(--ez-text2); font-size:14px;">
+        ${remainShares !== null ? numFmt(remainShares) + ' 좌' : '—'}
+      </td>
+      <td style="text-align:right;">
+        <div style="font-size:16px; font-weight:700; color:var(--ez-text);">${wonFmt(actualSell)}</div>
+        ${sharesToSell === null ? '<div style="font-size:14px; color:var(--ez-text2);">(예상)</div>' : ''}
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // 매도 후 예상 비율
+  const newSafePct = total > 0 ? ((safeVal + actualTotal) / total * 100) : 0;
+  document.getElementById('afterBar').innerHTML =
+    `매도 후 예상 안전자산 비율: <strong style="font-size:20px; margin-left:4px;">${newSafePct.toFixed(1)}%</strong>`;
+}
+
+/* ── 유틸 ───────────────────────────────────────────────── */
+function parseNum(v) {
+  return parseFloat(String(v).replace(/,/g, '').replace(/[^\d.]/g, '')) || 0;
+}
+function numFmt(n) {
+  if (n === null || n === undefined || isNaN(n)) return '';
+  return Math.round(n).toLocaleString('ko-KR');
+}
+function wonFmt(n) {
+  if (n === null || n === undefined) return '—';
+  const abs = Math.abs(n);
+  if (abs >= 1e8) return (n / 1e8).toFixed(1).replace(/\.0$/, '') + '억원';
+  if (abs >= 1e4) return Math.round(n / 1e4).toLocaleString('ko-KR') + '만원';
+  return n.toLocaleString('ko-KR') + '원';
+}
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function showErr(msg) {
+  const el = document.getElementById('errBox');
+  el.textContent = msg; el.classList.add('visible');
+}
+function hideErr() { document.getElementById('errBox').classList.remove('visible'); }
+function setLoading(on, msg) {
+  document.getElementById('loadingBar').classList.toggle('visible', on);
+  if (msg) document.getElementById('loadingMsg').textContent = msg;
+  parseBtn.disabled = on || uploadedImgs.length === 0;
+}
+
+/* ── 초기화 ─────────────────────────────────────────────── */
+</script>
+</body>
+</html>

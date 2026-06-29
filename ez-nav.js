@@ -27,7 +27,8 @@
     ['/backtest.html',              '백테스트',       '몬테카를로 포트폴리오 백테스트'],
     ['/risk-diagnostic.html',       '투자성향 진단',  '투자성향 자가진단'],
     ['/stock-personality-quiz.html','투자유형 진단',  'MBTI로 찾는 맞춤 투자 포트폴리오'],
-    ['/auto-dca-guide.html',        '자동화 가이드',  '투자 자동화 가이드']
+    ['/auto-dca-guide.html',        '자동화 가이드',  '투자 자동화 가이드'],
+    ['/dc-rebalance.html',          'DC 리밸런서',    'DC·IRP 안전자산 리밸런싱 계산기']
   ];
 
   var p = window.location.pathname;
