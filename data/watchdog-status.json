@@ -1,9 +1,9 @@
 {
-  "lastRun": "2026-07-01T16:21:57.863Z",
-  "lastRunKST": "2026-07-02 01:21:57 KST",
+  "lastRun": "2026-07-01T17:17:16.758Z",
+  "lastRunKST": "2026-07-02 02:17:16 KST",
   "summary": {
-    "ok": 2,
-    "triggered": 2,
+    "ok": 3,
+    "triggered": 1,
     "alreadyRunning": 0,
     "stale": 0,
     "skipped": 1,
@@ -14,18 +14,18 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-07-01T16:21:57.863Z",
-      "lastUpdate": "2026-06-30T22:00:55.656Z",
-      "ageHours": 18.4,
+      "checkedAt": "2026-07-01T17:17:16.758Z",
+      "lastUpdate": "2026-07-01T16:23:50.634Z",
+      "ageHours": 0.9,
       "maxAgeHours": 2.5,
-      "status": "TRIGGERED",
-      "reason": "18.4h 지연 감지 → 자동 트리거"
+      "status": "OK",
+      "reason": "최신 (0.9h 전 업데이트)"
     },
     {
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-07-01T16:21:57.863Z",
+      "checkedAt": "2026-07-01T17:17:16.758Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -33,19 +33,19 @@
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-07-01T16:21:57.863Z",
+      "checkedAt": "2026-07-01T17:17:16.758Z",
       "lastUpdate": "2026-07-01T15:49:37.326Z",
-      "ageHours": 0.5,
+      "ageHours": 1.5,
       "maxAgeHours": 5,
       "status": "OK",
-      "reason": "최신 (0.5h 전 업데이트)"
+      "reason": "최신 (1.5h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-07-01T16:21:57.863Z",
-      "lastUpdate": "2026-07-01T16:01:17.127756+00:00",
+      "checkedAt": "2026-07-01T17:17:16.758Z",
+      "lastUpdate": "2026-07-01T17:01:19.294230+00:00",
       "ageHours": 0.3,
       "maxAgeHours": 1.5,
       "status": "OK",
@@ -55,12 +55,12 @@
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-07-01T16:21:57.863Z",
+      "checkedAt": "2026-07-01T17:17:16.758Z",
       "lastUpdate": "2026-06-30T21:46:06.171Z",
-      "ageHours": 18.6,
+      "ageHours": 19.5,
       "maxAgeHours": 6,
       "status": "TRIGGERED",
-      "reason": "18.6h 지연 감지 → 자동 트리거"
+      "reason": "19.5h 지연 감지 → 자동 트리거"
     }
   ]
 }
