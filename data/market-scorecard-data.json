@@ -1,6 +1,57 @@
 {
   "entries": [
     {
+      "id": "2026-07-02-07:00",
+      "timestamp_kst": "2026-07-02(목) 07:00 KST",
+      "key_event": {
+        "name": "AI 모멘텀 지속 속 금리 상승",
+        "time": "현재 및 향후 12시간",
+        "why": "기술주 강세, 반도체 랠리, 금리 상승 압력 혼재"
+      },
+      "positive_total": 45,
+      "negative_total": 55,
+      "summary": "AI 주도 기술주 강세에도 불구하고 금리 상승 압력이 시장 상승 동력을 제한하는 양상.",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "AI 주도 기술주 강세",
+          "desc": "AI 관련 기업들의 견조한 모멘텀 지속, 기술주 전반의 상승 견인"
+        },
+        {
+          "score": 15,
+          "name": "TSLA, AAPL, MSFT 프리마켓 강세",
+          "desc": "주요 기술주들의 시간외 거래 강세, 시장 심리 일부 지지"
+        },
+        {
+          "score": 10,
+          "name": "금 가격 상승",
+          "desc": "안전 자산 선호 심리 반영, 인플레이션 헤지 수요"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "미 국채 금리 급등",
+          "desc": "인플레이션 우려 및 통화정책 긴축 가능성 부각, 성장주 부담"
+        },
+        {
+          "score": 15,
+          "name": "SOXX 시간외 급락",
+          "desc": "반도체 섹터 전반의 차익 실현 매물 출회, 투자 심리 위축"
+        },
+        {
+          "score": 10,
+          "name": "WTI 원유 가격 하락",
+          "desc": "글로벌 경기 둔화 우려 신호, 에너지 섹터 약세"
+        },
+        {
+          "score": 5,
+          "name": "VIX 공포지수 상승",
+          "desc": "시장 불확실성 증가, 투자 심리 위축 가능성"
+        }
+      ]
+    },
+    {
       "id": "2026-07-02-01:40",
       "timestamp_kst": "2026-07-02(목) 01:40 KST",
       "key_event": {
@@ -423,49 +474,8 @@
           "desc": "Beyond Meat, Penn Entertainment 등 개별 이슈"
         }
       ]
-    },
-    {
-      "id": "2026-07-01-01:32",
-      "timestamp_kst": "2026-07-01(수) 01:32 KST",
-      "key_event": {
-        "name": "AI 모멘텀 지속",
-        "time": "향후 12시간",
-        "why": "AI 섹터 강세, 기술주 전반 상승 견인"
-      },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "AI 모멘텀과 금리 상승 압력이 혼재된 시장, 변동성 유의",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "AI 섹터 강세 지속",
-          "desc": "NVDA, SOXX 등 AI 관련주 강세, 기술주 전반 동반 상승"
-        },
-        {
-          "score": 15,
-          "name": "금리 하락 압력 완화",
-          "desc": "VIX 공포지수 하락, 시장 변동성 축소 기대"
-        },
-        {
-          "score": 15,
-          "name": "달러 약세 전환",
-          "desc": "수출주 실적 개선 및 원자재 가격 지지 기대"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "미 국채금리 상승",
-          "desc": "성장주·기술주 밸류에이션 부담 가중 우려"
-        },
-        {
-          "score": 15,
-          "name": "테슬라 인도량 우려",
-          "desc": "Q2 인도량 예상치 하회 가능성, 개별 기업 리스크"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-07-01T16:41:38Z",
+  "updated_at": "2026-07-01T22:01:00Z",
   "max_entries": 10
 }
