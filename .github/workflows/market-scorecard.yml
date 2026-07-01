@@ -45,13 +45,15 @@ jobs:
 
       # ── 3. 의존성 설치 ────────────────────────────────────────────────
       - name: Install dependencies
-        run: pip install yfinance requests --quiet
+        run: pip install yfinance requests feedparser --quiet
 
       # ── 4. 분석 스크립트 실행 ─────────────────────────────────────────
       - name: Run market scorecard analysis
         run: python scripts/fetch-market-scorecard.py
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY:        ${{ secrets.GEMINI_API_KEY }}
+          ALPHAVANTAGE_API_KEY:  ${{ secrets.ALPHAVANTAGE_API_KEY }}
+          FRED_API_KEY:          ${{ secrets.FRED_API_KEY }}
 
       # ── 5. 변경사항 커밋 및 푸시 ──────────────────────────────────────
       # 주의: git reset --hard / git pull --rebase 절대 금지 (CLAUDE.md 규칙 16)

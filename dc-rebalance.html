@@ -12,7 +12,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>DC·IRP 안전자산 리밸런싱 계산기 | EZLONG</title>
-  <meta name="description" content="퇴직연금 DC·IRP 계좌 스크린샷을 업로드하면 안전자산 30% 규정을 맞추기 위한 종목별 매도 수량을 자동 계산합니다.">
+  <meta name="description" content="퇴직연금 DC·IRP 계좌 현황 파일(스크린샷·엑셀·CSV·텍스트)을 업로드하면 안전자산 30% 규정을 맞추기 위한 종목별 매도 수량을 자동 계산합니다.">
   <meta name="keywords" content="퇴직연금, DC계좌, IRP, 안전자산 30%, 리밸런싱 계산기, 매도 수량">
   <meta name="author" content="EZLONG">
   <link rel="canonical" href="https://ezlong.com/dc-rebalance.html">
@@ -29,6 +29,8 @@
   <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
   <link rel="stylesheet" href="ez-design.css">
+  <!-- SheetJS: 엑셀 파일 파싱 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
   <style>
     /* ── DC 리밸런서 전용 CSS ── */
@@ -173,6 +175,27 @@
     }
     .thumb-add span { font-size: 12px; margin-top: 2px; }
     .thumb-add:hover { border-color: var(--ez-blue); color: var(--ez-blue); }
+
+    /* 비이미지 파일 썸네일 */
+    .thumb-file { background: var(--ez-card2); cursor: default; }
+    .thumb-file-inner {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 5px; padding: 8px;
+      box-sizing: border-box;
+    }
+    .thumb-ext-badge {
+      background: var(--ez-blue); color: #fff;
+      font-size: 14px; font-weight: 800;
+      padding: 2px 8px; border-radius: 5px;
+    }
+    .thumb-fname {
+      font-size: 14px; color: var(--ez-text2);
+      text-align: center; word-break: break-all;
+      line-height: 1.3; width: 100%;
+      overflow: hidden;
+    }
 
     .loading-bar {
       display: none;
@@ -437,22 +460,22 @@
   <div class="page-brand-inner">
     <div class="page-brand-label">퇴직연금 유틸리티</div>
     <h1 class="page-brand-title">DC·IRP 안전자산 리밸런싱 계산기</h1>
-    <p class="page-brand-desc">보유 종목 스크린샷을 업로드하면 안전자산 30% 규정을 충족하기 위한 종목별 매도 수량을 자동 계산합니다.</p>
+    <p class="page-brand-desc">보유 종목 화면(스크린샷), 엑셀(XLSX), CSV, 텍스트 파일을 업로드하면 안전자산 30% 규정을 충족하기 위한 종목별 매도 수량을 자동 계산합니다.</p>
   </div>
 </div>
 
 <main class="page-main">
 
-  <!-- ① 스크린샷 업로드 -->
+  <!-- ① 파일 업로드 -->
   <div class="ez-card">
-    <h2 class="card-title">계좌 현황 스크린샷 업로드</h2>
+    <h2 class="card-title">계좌 현황 파일 업로드</h2>
 
     <div class="upload-zone" id="uploadZone">
-      <div class="upload-icon">📸</div>
-      <div class="upload-title">스크린샷을 여기에 드래그하거나 클릭해서 업로드</div>
-      <div class="upload-desc">최대 10장까지 업로드 가능 — <strong style="color:var(--ez-text);">현재가·보유수량·평가금액이 모두 보이는 화면</strong>을 캡쳐해 올려주세요. 계좌가 여러 페이지로 나뉜 경우 모두 올려주세요.</div>
+      <div class="upload-icon">📂</div>
+      <div class="upload-title">파일을 여기에 드래그하거나 클릭해서 업로드</div>
+      <div class="upload-desc">최대 10개까지 업로드 가능 — <strong style="color:var(--ez-text);">스크린샷(JPG/PNG), 엑셀(XLSX/XLS), CSV, 텍스트(TXT/MD)</strong> 형식을 지원합니다. 스크린샷은 현재가·보유수량·평가금액이 모두 보이는 화면으로 캡쳐해주세요.</div>
     </div>
-    <input type="file" id="fileInput" accept="image/*" multiple>
+    <input type="file" id="fileInput" accept="image/*,.xlsx,.xls,.csv,.txt,.md" multiple>
 
     <!-- 썸네일 갤러리 -->
     <div class="thumb-gallery" id="thumbGallery"></div>
@@ -464,7 +487,7 @@
     <div class="err-box" id="errBox"></div>
 
     <div class="action-row">
-      <button class="btn-primary" id="parseBtn" onclick="parseImages()" disabled>AI로 종목 자동 추출</button>
+      <button class="btn-primary" id="parseBtn" onclick="parseFiles()" disabled>AI로 종목 자동 추출</button>
       <span class="action-sep">또는</span>
       <button class="btn-outline" onclick="addManualRow(); showHoldings();">종목 직접 입력</button>
     </div>
@@ -511,7 +534,7 @@
 
     <div class="target-row">
       <span class="target-lbl">목표 안전자산</span>
-      <input type="number" class="target-inp" id="targetInput" value="30" min="1" max="100" step="5" oninput="recalc()">
+      <input type="number" class="target-inp" id="targetInput" value="30" min="1" max="100" step="1" oninput="recalc()">
       <span class="target-sym">%</span>
       <span class="target-hint">(DC·IRP 법정 최소 30%)</span>
     </div>
@@ -597,7 +620,7 @@ function classifyByName(name) {
 
 /* ── 상태 ───────────────────────────────────────────────── */
 let holdings = [];
-let uploadedImgs = []; // [{base64, mime, dataUrl}]
+let uploadedFiles = []; // [{type:'image'|'text', name, ...}]
 let idSeq = 0;
 function uid() { return ++idSeq; }
 
@@ -609,7 +632,15 @@ function getKey() { return _GK.join(''); }
 const uploadZone = document.getElementById('uploadZone');
 const fileInput  = document.getElementById('fileInput');
 const parseBtn   = document.getElementById('parseBtn');
-const MAX_IMGS   = 10;
+const MAX_FILES  = 10;
+
+function getFileExt(name) {
+  return (name.split('.').pop() || '').toUpperCase();
+}
+function isImageFile(f)  { return f.type.startsWith('image/'); }
+function isExcelFile(f)  { return /\.(xlsx|xls)$/i.test(f.name); }
+function isTextFile(f)   { return /\.(csv|txt|md)$/i.test(f.name); }
+function isSupported(f)  { return isImageFile(f) || isExcelFile(f) || isTextFile(f); }
 
 uploadZone.addEventListener('click', () => fileInput.click());
 uploadZone.addEventListener('dragover', e => {
@@ -622,44 +653,85 @@ uploadZone.addEventListener('drop', e => {
 });
 fileInput.addEventListener('change', e => {
   handleFiles(Array.from(e.target.files));
-  fileInput.value = ''; // 같은 파일 재선택 허용
+  fileInput.value = '';
 });
 
 function handleFiles(files) {
-  const imgFiles = files.filter(f => f.type.startsWith('image/'));
-  if (!imgFiles.length) { showErr('이미지 파일만 업로드 가능합니다.'); return; }
-
-  const remaining = MAX_IMGS - uploadedImgs.length;
-  if (remaining <= 0) {
-    showErr(`최대 ${MAX_IMGS}장까지 업로드 가능합니다. 기존 이미지를 먼저 삭제해주세요.`);
+  const supported = files.filter(isSupported);
+  if (!supported.length) {
+    showErr('지원 파일 형식: 스크린샷(JPG/PNG), 엑셀(XLSX/XLS), CSV, TXT, MD');
     return;
   }
-  const toAdd = imgFiles.slice(0, remaining);
-  if (imgFiles.length > remaining) {
-    showErr(`${imgFiles.length}장 중 ${remaining}장만 추가됩니다 (최대 ${MAX_IMGS}장).`);
+  if (files.length > supported.length) {
+    showErr('일부 파일 형식이 지원되지 않아 제외되었습니다. 지원: 이미지, XLSX, CSV, TXT, MD');
   } else {
     hideErr();
   }
 
-  let loaded = 0;
-  toAdd.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = ev => {
-      const dataUrl = ev.target.result;
-      uploadedImgs.push({
-        base64: dataUrl.split(',')[1],
-        mime:   file.type || 'image/jpeg',
-        dataUrl
+  const remaining = MAX_FILES - uploadedFiles.length;
+  if (remaining <= 0) {
+    showErr(`최대 ${MAX_FILES}개까지 업로드 가능합니다. 기존 파일을 먼저 삭제해주세요.`);
+    return;
+  }
+  const toAdd = supported.slice(0, remaining);
+  if (supported.length > remaining) {
+    showErr(`${supported.length}개 중 ${remaining}개만 추가됩니다 (최대 ${MAX_FILES}개).`);
+  }
+
+  const promises = toAdd.map(file => {
+    if (isImageFile(file)) {
+      return new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          const dataUrl = ev.target.result;
+          resolve({
+            type: 'image', name: file.name,
+            base64: dataUrl.split(',')[1],
+            mime: file.type || 'image/jpeg',
+            dataUrl,
+            ext: getFileExt(file.name) || 'IMG'
+          });
+        };
+        reader.readAsDataURL(file);
       });
-      loaded++;
-      if (loaded === toAdd.length) renderThumbs();
-    };
-    reader.readAsDataURL(file);
+    } else if (isExcelFile(file)) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          try {
+            const wb = XLSX.read(ev.target.result, { type: 'array' });
+            const ws = wb.Sheets[wb.SheetNames[0]];
+            // 수식 셀(=로 시작)을 빈 문자열로 치환 후 CSV 변환
+            const rawCsv = XLSX.utils.sheet_to_csv(ws);
+            const text = rawCsv.split('\n').map(row =>
+              row.split(',').map(cell =>
+                cell.trim().startsWith('=') ? '' : cell
+              ).join(',')
+            ).join('\n');
+            resolve({ type: 'text', name: file.name, text, ext: getFileExt(file.name) });
+          } catch(e) { reject(new Error(file.name + ' 파싱 실패: ' + e.message)); }
+        };
+        reader.onerror = () => reject(new Error(file.name + ' 읽기 실패'));
+        reader.readAsArrayBuffer(file);
+      });
+    } else {
+      return new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          resolve({ type: 'text', name: file.name, text: ev.target.result, ext: getFileExt(file.name) });
+        };
+        reader.readAsText(file, 'UTF-8');
+      });
+    }
   });
+
+  Promise.all(promises)
+    .then(results => { uploadedFiles.push(...results); renderThumbs(); })
+    .catch(e => showErr('파일 읽기 실패: ' + e.message));
 }
 
-function removeImg(idx) {
-  uploadedImgs.splice(idx, 1);
+function removeFile(idx) {
+  uploadedFiles.splice(idx, 1);
   renderThumbs();
 }
 
@@ -667,18 +739,29 @@ function renderThumbs() {
   const gallery = document.getElementById('thumbGallery');
   gallery.innerHTML = '';
 
-  uploadedImgs.forEach((img, i) => {
+  uploadedFiles.forEach((f, i) => {
     const div = document.createElement('div');
-    div.className = 'thumb-item';
-    div.innerHTML = `
-      <img src="${img.dataUrl}" alt="스크린샷 ${i+1}">
-      <button class="thumb-del" onclick="removeImg(${i})" title="삭제">✕</button>
-    `;
+    if (f.type === 'image') {
+      div.className = 'thumb-item';
+      div.innerHTML = `
+        <img src="${f.dataUrl}" alt="${escHtml(f.name)}">
+        <button class="thumb-del" onclick="removeFile(${i})" title="삭제">✕</button>
+      `;
+    } else {
+      div.className = 'thumb-item thumb-file';
+      const shortName = f.name.length > 8 ? f.name.substring(0, 7) + '…' : f.name;
+      div.innerHTML = `
+        <div class="thumb-file-inner">
+          <div class="thumb-ext-badge">${f.ext}</div>
+          <div class="thumb-fname">${escHtml(shortName)}</div>
+        </div>
+        <button class="thumb-del" onclick="removeFile(${i})" title="삭제">✕</button>
+      `;
+    }
     gallery.appendChild(div);
   });
 
-  // "추가" 버튼 (최대 미달 시)
-  if (uploadedImgs.length < MAX_IMGS) {
+  if (uploadedFiles.length < MAX_FILES) {
     const btn = document.createElement('button');
     btn.className = 'thumb-add';
     btn.innerHTML = '<span style="font-size:24px;">+</span><span>추가</span>';
@@ -686,17 +769,18 @@ function renderThumbs() {
     gallery.appendChild(btn);
   }
 
-  parseBtn.disabled = uploadedImgs.length === 0;
+  parseBtn.disabled = uploadedFiles.length === 0;
 }
 
-/* ── Gemini 파싱 (다중 이미지 순차 처리) ───────────────── */
-async function parseImages() {
-  if (!uploadedImgs.length) { showErr('이미지를 먼저 업로드해주세요.'); return; }
+/* ── Gemini 파싱 (이미지 + 텍스트/엑셀 파일 지원) ──────── */
+async function parseFiles() {
+  if (!uploadedFiles.length) { showErr('파일을 먼저 업로드해주세요.'); return; }
   const key = getKey();
 
-  setLoading(true, `이미지 분석 준비 중…`); hideErr();
+  setLoading(true, '분석 준비 중…'); hideErr();
 
-  const prompt =
+  // 이미지용 프롬프트
+  const imgPrompt =
 `이 이미지는 한국 퇴직연금(DC 또는 IRP) 계좌 보유 종목 현황 화면입니다.
 화면에 보이는 모든 보유 종목 정보를 JSON 배열로 추출해주세요.
 합계/소계/총계 행은 절대 포함하지 마세요.
@@ -712,55 +796,99 @@ async function parseImages() {
 숫자에서 쉼표와 통화 기호(원, ₩)를 제거하고 순수 숫자만 입력하세요.
 응답은 JSON 배열만, 마크다운 코드블록 없이 순수 JSON으로 출력하세요.`;
 
+  // 텍스트/엑셀용 프롬프트 (데이터가 뒤에 이어 붙음)
+  const textPrompt =
+`이 데이터는 한국 퇴직연금(DC 또는 IRP) 계좌 보유 종목 현황 파일입니다.
+아래 데이터에서 모든 보유 종목 정보를 JSON 배열로 추출해주세요.
+합계/소계/총계 행은 절대 포함하지 마세요.
+
+필드:
+- name: 상품명 또는 종목명 (원문 그대로)
+- quantity: 보유수량 또는 보유좌수 (숫자만, 없으면 null)
+- unitPrice: 현재가 또는 기준가 (1주/1좌당 가격, 숫자만). 현재가 셀이 비어 있으면 평가금액÷수량으로 직접 계산하세요.
+- totalValue: 평가금액 또는 평가액 (숫자만, 반드시 포함)
+
+"현재가", "기준가", "1좌당 가격" 등의 열을 unitPrice로 추출하세요.
+"보유수량", "보유좌수", "수량" 등의 열을 quantity로 추출하세요.
+숫자에서 쉼표와 통화 기호(원, ₩)를 제거하고 순수 숫자만 입력하세요.
+응답은 반드시 JSON 배열만, 마크다운 코드블록이나 부연 설명 없이 [ ] 로 시작해서 ] 로 끝나는 순수 JSON으로만 출력하세요.
+
+데이터:`;
+
   const allParsed = [];
   try {
-    for (let i = 0; i < uploadedImgs.length; i++) {
-      const img = uploadedImgs[i];
-      setLoading(true, `이미지 ${i+1} / ${uploadedImgs.length} 분석 중…`);
+    for (let i = 0; i < uploadedFiles.length; i++) {
+      const f = uploadedFiles[i];
+      setLoading(true, `파일 ${i+1} / ${uploadedFiles.length} (${f.name}) 분석 중…`);
 
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${key}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{
-              parts: [
-                { text: prompt },
-                { inline_data: { mime_type: img.mime, data: img.base64 } }
-              ]
-            }],
-            generationConfig: {
-              thinkingConfig: { thinkingBudget: 0 },
-              maxOutputTokens: 2048
-            }
-          })
-        }
-      );
-
-      if (!res.ok) {
-        const e = await res.json().catch(() => ({}));
-        throw new Error(`이미지 ${i+1} 오류: ${e?.error?.message || res.status}`);
+      let requestBody;
+      if (f.type === 'image') {
+        requestBody = {
+          contents: [{
+            parts: [
+              { text: imgPrompt },
+              { inline_data: { mime_type: f.mime, data: f.base64 } }
+            ]
+          }],
+          generationConfig: {
+            thinkingConfig: { thinkingBudget: 0 },
+            maxOutputTokens: 2048
+          }
+        };
+      } else {
+        requestBody = {
+          contents: [{
+            parts: [{ text: textPrompt + '\n\n' + f.text }]
+          }],
+          generationConfig: {
+            thinkingConfig: { thinkingBudget: 0 },
+            maxOutputTokens: 4096
+          }
+        };
       }
 
-      const data = await res.json();
-      const text = (data?.candidates?.[0]?.content?.parts || [])
-                    .filter(p => p.text).map(p => p.text).join('');
-      const m = text.match(/\[[\s\S]*\]/);
-      if (!m) throw new Error(`이미지 ${i+1}에서 종목을 찾지 못했습니다.`);
+      // 재시도 로직 (서버 과부하 시 최대 3회, 지수 백오프)
+      let res, lastErr;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        if (attempt > 1) {
+          const wait = attempt * 4000;
+          setLoading(true, `파일 ${i+1} (${f.name}) — 서버 과부하, ${wait/1000}초 후 재시도 (${attempt}/3)…`);
+          await new Promise(r => setTimeout(r, wait));
+        }
+        res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${key}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+          }
+        );
+        if (res.ok) { lastErr = null; break; }
+        const eBody = await res.json().catch(() => ({}));
+        lastErr = eBody?.error?.message || res.status;
+        // 429(과부하)/503(unavailable) 외 오류는 즉시 실패
+        if (res.status !== 429 && res.status !== 503) break;
+      }
+      if (lastErr) throw new Error(`파일 ${i+1} (${f.name}) 오류: ${lastErr}`);
 
-      const parsed = JSON.parse(m[0]);
+      const data = await res.json();
+      const rawText = (data?.candidates?.[0]?.content?.parts || [])
+                    .filter(p => p.text).map(p => p.text).join('');
+      // 마크다운 코드블록 제거 후 bracket-balanced 추출
+      const cleaned = rawText.replace(/```[a-z]*\s*/gi, '').replace(/```/g, '');
+      const parsed = extractJSONArray(cleaned);
+      if (!parsed) throw new Error(`파일 ${i+1} (${f.name})에서 종목을 찾지 못했습니다.`);
       if (Array.isArray(parsed)) allParsed.push(...parsed);
     }
 
-    if (!allParsed.length) throw new Error('파싱된 종목이 없습니다. 보유 종목이 보이는 화면을 업로드해주세요.');
+    if (!allParsed.length) throw new Error('파싱된 종목이 없습니다. 보유 종목이 포함된 파일을 업로드해주세요.');
 
-    // 중복 제거: 이름 기준 (여러 장에 같은 종목이 나올 경우)
+    // 중복 제거: 이름 기준
     const seen = new Set();
     const deduped = allParsed.filter(item => {
-      const key = (item.name || '').trim();
-      if (seen.has(key)) return false;
-      seen.add(key);
+      const k = (item.name || '').trim();
+      if (seen.has(k)) return false;
+      seen.add(k);
       return true;
     });
 
@@ -1039,6 +1167,28 @@ function recalc() {
     `매도 후 예상 안전자산 비율: <strong style="font-size:20px; margin-left:4px;">${newSafePct.toFixed(1)}%</strong>`;
 }
 
+/* ── JSON 배열 추출기 (bracket-balanced) ────────────────── */
+function extractJSONArray(text) {
+  const start = text.indexOf('[');
+  if (start === -1) return null;
+  let depth = 0, inStr = false, escape = false;
+  for (let i = start; i < text.length; i++) {
+    const c = text[i];
+    if (escape) { escape = false; continue; }
+    if (c === '\\' && inStr) { escape = true; continue; }
+    if (c === '"') { inStr = !inStr; continue; }
+    if (inStr) continue;
+    if (c === '[' || c === '{') depth++;
+    else if (c === ']' || c === '}') {
+      depth--;
+      if (depth === 0) {
+        try { return JSON.parse(text.substring(start, i + 1)); } catch(e) { return null; }
+      }
+    }
+  }
+  return null;
+}
+
 /* ── 유틸 ───────────────────────────────────────────────── */
 function parseNum(v) {
   return parseFloat(String(v).replace(/,/g, '').replace(/[^\d.]/g, '')) || 0;
@@ -1065,7 +1215,7 @@ function hideErr() { document.getElementById('errBox').classList.remove('visible
 function setLoading(on, msg) {
   document.getElementById('loadingBar').classList.toggle('visible', on);
   if (msg) document.getElementById('loadingMsg').textContent = msg;
-  parseBtn.disabled = on || uploadedImgs.length === 0;
+  parseBtn.disabled = on || uploadedFiles.length === 0;
 }
 
 /* ── 초기화 ─────────────────────────────────────────────── */

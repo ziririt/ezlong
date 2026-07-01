@@ -5,6 +5,103 @@
 
 ---
 
+## [2026-06-27] 세션 — Gemini API 비용 폭증 원인 분석 + 3단계 비용 절감 + 스코어카드 JSON 정리
+
+### 커밋 이력 (주요 작업)
+
+. `cb95c3ef2` — fix: scorecard 임시 flash-lite 전환 (6월 flash 쿼터 소진 대응)
+. `c82709e5f` — fix: 비용절감 3단계 — flash-lite(차트), thinkingBudget:0, crypto 6→3회/일
+. `f1e8f4d9e` — fix: thinkingBudget:0 추가 — gemini-2.5-flash thinking 토큰 비용 절감
+. `f07678701` — data: 2026-06-27 09:36 주말 시황 업데이트 (나스닥 주간 -4.6% 마감)
+
+### 어제(2026-06-26) 이어진 작업
+
+. `4121f2d94` — data: 18:20·15:38 카드 삭제 + 18:43 상세 분석 추가 + 11:50 머스크 언급 수정
+. `44a7b3ad5` — data: 18:20 잘못된 분석 교체 — 실제 시황 반영 (부정 75 vs 긍정 25)
+. `f6c2b6975` — fix: 뉴스 필터 6시간 이내로 강화 + 가격 데이터 우선순위 역전
+. `8008738f1` — fix: Firebase 배포 스텝 단순화 — env 방식 + 직접 출력
+. `4080593cf` — fix: Firebase 토큰 시크릿명 수정 — FIREBASE_CI_TOKEN → FIREBASE_TOKEN
+. `1d9fde78c` — fix: 스코어카드 스케줄 원복 — 06:50/18:20 KST 유지
+
+---
+
+### 1. Gemini API 비용 폭증 원인 분석
+
+**배경:** 6월 25일부터 Gemini API 비용이 ₩11,950/일(평일)로 급증. 6월 1~26일 누적 ₩53.9K.
+
+**원인:** `gemini-2.5-flash`는 thinking 토큰을 자동 생성($3.50/1M = 일반 출력의 12배). 워크플로별 일일 호출 수:
+. US 차트: 45종목 × 4회 = 180 calls/평일
+. 크립토: 5종목 × 6회 = 30 calls/일(주말 포함)
+. KR: 6종목 × 4회 = 24 calls/평일
+. 스코어카드: 1 × 5회 = 5 calls/일
+. 평일 합계: 239 calls → thinking 토큰 포함 약 ₩11,950/일
+
+---
+
+### 2. Gemini API 비용 절감 3단계
+
+**1단계 — thinkingBudget: 0 추가** (`f1e8f4d9e`)
+
+`generationConfig` 안에 `thinkingConfig: { thinkingBudget: 0 }` 추가. 두 스크립트 모두 적용.
+. `scripts/generate-chart-analysis.js`: generationConfig에 thinkingConfig 추가
+. `scripts/fetch-market-scorecard.py`: generationConfig에 thinkingConfig 추가
+
+**2단계 — 차트 분석 gemini-2.5-flash → gemini-2.5-flash-lite** (`c82709e5f`)
+
+. `generate-chart-analysis.js` 모델 교체 (US 45종목·KR 6종목·크립토 5종목 전부)
+. `fetch-market-scorecard.py`는 복잡한 시장 판단 필요 → gemini-2.5-flash 유지 (이후 6월 쿼터 소진으로 임시 flash-lite 전환)
+
+**3단계 — 크립토 cron 6회/일 → 3회/일** (`c82709e5f`)
+
+. KST 06:05 / 14:05 / 22:05 (3회 유지, 나머지 3회 제거)
+
+**예상 절감 효과:**
+. 이전: 평일 ₩11,950/일
+. 이후: 평일 ≈ ₩1,400~1,600/일
+. 월간 ₩260K → ₩35K 수준 (87% 절감)
+
+---
+
+### 3. 6월 Gemini 쿼터 소진 대응
+
+**상황:** `thinkingBudget:0` 적용 후에도 429 지속. 지출 한도 증액과 API 할당량(quota)은 별개로 관리됨.
+
+**조치:**
+. 새 Google AI Studio 프로젝트 + 새 API 키 발급
+. GitHub Secret `GEMINI_API_KEY` 교체 → 즉시 정상 동작 확인 (`gemini-2.5-flash-lite`, 긍정 35 vs 부정 65)
+
+**scorecard 임시 모델 변경** (`cb95c3ef2`):
+. `fetch-market-scorecard.py`: `gemini-2.5-flash` → `gemini-2.5-flash-lite` (6월 30일까지 임시)
+. 7월 1일 쿼터 리셋 후 `gemini-2.5-flash`로 복구 예정
+
+**복구 (7월 1일 이후):**
+```bash
+# fetch-market-scorecard.py 27번째 줄
+GEMINI_MODEL = 'gemini-2.5-flash'
+```
+
+---
+
+### 4. 스코어카드 JSON 정리 + 수동 업데이트
+
+**잘못된 카드 삭제:**
+. 18:20 KST (긍정 60 vs 부정 40, 2일 전 마이크론 뉴스 반영 — 실제 나스닥 선물 -1.21%와 정반대)
+. 15:38 KST (긍정 45 vs 부정 55 — 상황 불일치)
+
+**수동 분석 카드 추가 (18:43 KST):**
+. OpenAI IPO 2027년 연기 + 애플 가격 인상, 긍정 25 vs 부정 75
+. 나스닥 선물 -1.21%, AAPL -6.15%, 소프트뱅크 -12%, KOSPI -5.81%
+
+**11:50 KST 카드 머스크 언급 제거:**
+. "테슬라 및 AI 섹터 우려 — 일론 머스크의 AI 생산 부족 경고" → "OpenAI IPO 연기 및 AI 밸류에이션 우려"로 교체
+
+**스코어카드 개선 (fetch-market-scorecard.py):**
+. 뉴스 필터: 24시간 → **6시간 이내만** 수집 (오래된 뉴스 오염 차단)
+. 판단 우선순위: 뉴스 → **실시간 가격·선물 데이터 우선** (가격 -1% 이상 하락 시 뉴스 무관 부정 우위)
+. TSLA·머스크 부정 재료 필터 강화: 발언·SNS·정치 보도 금지, 수치 근거(EPS·리콜 수·규제 기관) 있을 때만 부정 허용
+
+---
+
 ## [2026-06-26] 세션 3 — 차트 분석 사이드바 불릿 컬러 버그 수정
 
 ### 커밋 이력

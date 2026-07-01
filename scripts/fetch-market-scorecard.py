@@ -212,11 +212,178 @@ def fetch_news_headlines(max_per_ticker=3, max_total=20, max_age_hours=6):
     return headlines
 
 
+# ─── Google News RSS ─────────────────────────────────────────────────────────
+
+def fetch_google_news_rss(max_per_query=4, max_age_hours=12):
+    """Google News RSS로 최신 금융 헤드라인 수집 — API 키 불필요"""
+    try:
+        import feedparser
+    except ImportError:
+        print("  feedparser 미설치 — Google News RSS 스킵")
+        return []
+
+    import calendar as cal
+    now_ts = time.time()
+    cutoff  = now_ts - (max_age_hours * 3600)
+
+    queries = [
+        "US+stock+market+S%26P+500+Nasdaq",
+        "Federal+Reserve+interest+rate+inflation",
+        "US+Iran+geopolitics+oil",
+        "tech+earnings+semiconductor+AI",
+    ]
+
+    headlines = []
+    seen = set()
+
+    for q in queries:
+        try:
+            url  = (f"https://news.google.com/rss/search"
+                    f"?q={q}+when:{max_age_hours}h&hl=en-US&gl=US&ceid=US:en")
+            feed = feedparser.parse(url)
+            count = 0
+            for entry in feed.entries:
+                if count >= max_per_query:
+                    break
+                title = entry.get('title', '').strip()
+                if not title or title in seen:
+                    continue
+                pub = entry.get('published_parsed')
+                if pub:
+                    pub_ts = cal.timegm(pub)
+                    if pub_ts < cutoff:
+                        continue
+                    h_ago = (now_ts - pub_ts) / 3600
+                    age   = f"{int(h_ago*60)}분전" if h_ago < 1 else f"{h_ago:.1f}h전"
+                    headlines.append(f"[구글뉴스 {age}] {title}")
+                else:
+                    headlines.append(f"[구글뉴스] {title}")
+                seen.add(title)
+                count += 1
+        except Exception as e:
+            print(f"  Google News RSS 오류 ({q[:20]}): {e}")
+
+    print(f"    Google News RSS: {len(headlines)}건")
+    return headlines
+
+
+# ─── Alpha Vantage News Sentiment ────────────────────────────────────────────
+
+def fetch_alphavantage_news(max_items=15):
+    """Alpha Vantage NEWS_SENTIMENT — 감성 점수 내장 뉴스 (무료 25회/일)"""
+    AV_KEY = os.environ.get('ALPHAVANTAGE_API_KEY', '')
+    if not AV_KEY:
+        return [], ""
+
+    time_from = (datetime.now(timezone.utc) - timedelta(hours=12)).strftime('%Y%m%dT%H%M')
+    try:
+        resp = requests.get(
+            "https://www.alphavantage.co/query",
+            params={
+                "function":  "NEWS_SENTIMENT",
+                "topics":    "financial_markets,economy_macro,technology",
+                "time_from": time_from,
+                "sort":      "RELEVANCE",
+                "limit":     max_items,
+                "apikey":    AV_KEY,
+            },
+            timeout=20
+        )
+        data = resp.json()
+        if "feed" not in data:
+            print(f"  Alpha Vantage 응답 이상: {list(data.keys())}")
+            return [], ""
+
+        items   = []
+        bullish = 0
+        bearish = 0
+        for item in data["feed"][:max_items]:
+            title = item.get("title", "")
+            score = float(item.get("overall_sentiment_score", 0))
+            if score >  0.15: bullish += 1; tag = f"↑{score:+.2f}"
+            elif score < -0.15: bearish += 1; tag = f"↓{score:+.2f}"
+            else:               tag = f"→{score:+.2f}"
+            items.append(f"[AV {tag}] {title}")
+
+        total   = bullish + bearish
+        summary = (f"Alpha Vantage 감성 집계: 긍정 {bullish}건 / 부정 {bearish}건 / 중립 {max_items-total}건"
+                   if total > 0 else "")
+        print(f"    Alpha Vantage: {len(items)}건 (긍정 {bullish} / 부정 {bearish})")
+        return items, summary
+
+    except Exception as e:
+        print(f"  Alpha Vantage 오류: {e}")
+        return [], ""
+
+
+# ─── FRED 매크로 지표 ─────────────────────────────────────────────────────────
+
+def fetch_fred_macro():
+    """FRED API로 실제 발표된 매크로 수치 수집 (무료)"""
+    FRED_KEY = os.environ.get('FRED_API_KEY', '')
+    if not FRED_KEY:
+        return []
+
+    SERIES = {
+        "CPIAUCSL": "CPI 소비자물가(%)",
+        "FEDFUNDS":  "Fed 기준금리(%)",
+        "T10Y2Y":    "10Y-2Y 스프레드(경기선행, %)",
+        "UNRATE":    "실업률(%)",
+        "T10YIE":    "10년 기대인플레이션(%)",
+    }
+
+    rows = []
+    for sid, label in SERIES.items():
+        try:
+            resp = requests.get(
+                "https://api.stlouisfed.org/fred/series/observations",
+                params={"series_id": sid, "api_key": FRED_KEY,
+                        "sort_order": "desc", "limit": 2, "file_type": "json"},
+                timeout=10
+            )
+            obs = resp.json().get("observations", [])
+            if not obs:
+                continue
+            val = obs[0].get("value", ".")
+            if val == ".":
+                continue
+            val_f = float(val)
+            date  = obs[0]["date"]
+            if len(obs) > 1 and obs[1].get("value", ".") != ".":
+                diff = val_f - float(obs[1]["value"])
+                rows.append(f"{label}: {val_f:.2f}% ({'+' if diff>=0 else ''}{diff:.2f}% 전기대비) [{date}]")
+            else:
+                rows.append(f"{label}: {val_f:.2f}% [{date}]")
+        except Exception as e:
+            print(f"  FRED {sid} 오류: {e}")
+
+    print(f"    FRED 매크로: {len(rows)}개 지표")
+    return rows
+
+
 # ─── Gemini 호출 ──────────────────────────────────────────────────────────────
 
-def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None):
+def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
+                 rss_headlines=None, av_items=None, av_summary="", fred_rows=None):
     schedule_label = SCHEDULE_LABELS.get(kst_now.hour, f'{kst_now.hour}:00')
-    news_block = '\n'.join(f'- {h}' for h in headlines) if headlines else '- 뉴스 데이터 없음'
+
+    # yfinance 뉴스 + Google News RSS 합산
+    all_headlines = list(headlines or []) + list(rss_headlines or [])
+    news_block = '\n'.join(f'- {h}' for h in all_headlines) if all_headlines else '- 뉴스 데이터 없음'
+
+    # Alpha Vantage 섹션
+    av_block = ""
+    if av_items:
+        av_block = "\n=== Alpha Vantage 뉴스 감성 (전문 금융뉴스, 감성 점수 포함) ===\n"
+        if av_summary:
+            av_block += f"{av_summary}\n"
+        av_block += '\n'.join(f'- {h}' for h in av_items) + "\n"
+
+    # FRED 실제 수치 섹션
+    fred_block = ""
+    if fred_rows:
+        fred_block = "\n=== FRED 실제 발표 매크로 수치 (추정치 아닌 공식 발표값) ===\n"
+        fred_block += '\n'.join(f'- {r}' for r in fred_rows) + "\n"
 
     # 직전 카드 맥락 블록 구성 (일관성 유지용)
     prev_block = ""
@@ -239,7 +406,7 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None)
 
     return f"""당신은 미국 주식시장 시황 분석 전문가입니다.
 현재 시각(KST): {kst_now.strftime('%Y-%m-%d %H:%M')} ({schedule_label})
-
+{fred_block}{av_block}
 === 데이터 시점 안내 (분석 전 반드시 숙지) ===
 - 가격 데이터 중 [프리/시간외] 표시가 없는 항목은 직전 미국 정규장 종가 기준
 - [프리/시간외] 표시 항목은 현재 프리마켓 또는 시간외 실시간 가격
@@ -557,11 +724,22 @@ def main():
     for r in macro_rows:
         print(f"    {r}")
 
-    print("  [3] 뉴스 헤드라인 수집...")
+    print("  [3] 뉴스 헤드라인 수집 (yfinance)...")
     headlines = fetch_news_headlines()
-    print(f"    {len(headlines)}개 헤드라인 수집")
-    for h in headlines[:5]:
+    print(f"    yfinance: {len(headlines)}건")
+    for h in headlines[:3]:
         print(f"    - {h}")
+
+    print("  [3-a] Google News RSS 수집...")
+    rss_headlines = fetch_google_news_rss()
+
+    print("  [3-b] Alpha Vantage 뉴스 감성 수집...")
+    av_items, av_summary = fetch_alphavantage_news()
+
+    print("  [3-c] FRED 매크로 실수치 수집...")
+    fred_rows = fetch_fred_macro()
+    for r in fred_rows:
+        print(f"    {r}")
 
     # 2. 기존 데이터 로드 (직전 카드 맥락을 프롬프트에 넣기 위해 먼저 로드)
     data = load_existing()
@@ -571,7 +749,9 @@ def main():
 
     # 3. Gemini 분석
     print("  [4] Gemini AI 분석 중...")
-    prompt = build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries)
+    prompt = build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries,
+                          rss_headlines=rss_headlines, av_items=av_items,
+                          av_summary=av_summary, fred_rows=fred_rows)
     result = call_gemini(prompt)
 
     if not result:

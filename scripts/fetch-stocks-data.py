@@ -256,16 +256,33 @@ def get_period_prices(ticker_obj, hist_1m):
 def fetch_ticker(symbol):
     try:
         t = yf.Ticker(symbol)
-        fi = t.fast_info
+
+        # ── 비조정(unadjusted) 5일 히스토리로 당일 종가·등락률 계산 ──────────
+        # fi.previous_close(fast_info)는 yfinance 내부 조정값으로
+        # 야후 파이낸스 웹사이트 "Prev Close" / "% Chg" 표시값과 다를 수 있음.
+        # auto_adjust=False 히스토리 → 거래소 원시 종가 → 야후 파이낸스 표시와 일치.
         price = None
         prev_close = None
-        try:
-            price = round(float(fi.last_price), 2) if fi.last_price else None
-            prev_close = round(float(fi.previous_close), 2) if fi.previous_close else None
-        except Exception:
-            pass
         change = None
         change_pct = None
+        try:
+            hist5d = t.history(period='5d', interval='1d', auto_adjust=False)
+            if not hist5d.empty:
+                c5d = [round(float(v), 2) for v in hist5d['Close'].tolist() if v and v > 0]
+                if c5d:
+                    price = c5d[-1]
+                if len(c5d) >= 2:
+                    prev_close = c5d[-2]
+        except Exception:
+            pass
+        # fast_info 폴백 (히스토리 실패 시)
+        if price is None:
+            try:
+                fi = t.fast_info
+                price = round(float(fi.last_price), 2) if fi.last_price else None
+                prev_close = round(float(fi.previous_close), 2) if fi.previous_close else None
+            except Exception:
+                pass
         if price and prev_close and prev_close != 0:
             change = round(price - prev_close, 2)
             change_pct = round((change / prev_close) * 100, 2)
