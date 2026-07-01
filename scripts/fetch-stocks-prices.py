@@ -531,7 +531,12 @@ def main():
     prices = {}
 
     # ── 1단계: Massive API — 정규장 현재가·등락률 ────────────────────────────
-    BATCH = 200
+    # 2026-07-02: BATCH=200으로 한 번에 요청하면 Massive snapshot API가 이유 없이
+    # 일부 심볼(NVDA·AAPL·MSFT·GOOGL·TSM 등 시총 최상위 종목 포함)을 응답에서
+    # 누락시키는 현상 확인. 결과적으로 해당 종목은 stocks-data.json(1일 1회 갱신)
+    # 폴백으로 떨어져 최대 2일 가까이 된 가격이 "실시간"인 것처럼 노출됨.
+    # → 배치 축소(60) + 누락분 재시도(최대 2회, 20개씩)로 방어.
+    BATCH = 60
     for i in range(0, len(symbols), BATCH):
         batch = symbols[i:i + BATCH]
         print(f'  [Massive] 배치 {i // BATCH + 1}: {len(batch)}개 요청 중...', end=' ', flush=True)
@@ -543,6 +548,35 @@ def main():
             print(f'OK ({ok}/{len(batch)} 성공)')
         except Exception as e:
             print(f'ERROR: {e}')
+
+    ok_total = sum(1 for v in prices.values() if v['price'] is not None)
+    print(f'\n  [Massive] 1차 완료: {ok_total}/{len(symbols)} 종목 가격 수집')
+
+    # ── 1-1단계: 누락 심볼 재시도 (최대 2회, 20개씩 소배치) ───────────────────
+    missing = [s for s in symbols if prices.get(s, {}).get('price') is None]
+    retry_round = 0
+    RETRY_BATCH = 20
+    while missing and retry_round < 2:
+        retry_round += 1
+        print(f'  [Massive] 누락 {len(missing)}개 재시도 {retry_round}차...', flush=True)
+        recovered = 0
+        for i in range(0, len(missing), RETRY_BATCH):
+            sub = missing[i:i + RETRY_BATCH]
+            try:
+                data = fetch_snapshot_batch(sub, MASSIVE_API_KEY)
+                parsed = parse_snapshot(data)
+                for sym, v in parsed.items():
+                    if v.get('price') is not None:
+                        prices[sym] = v
+                        recovered += 1
+            except Exception as e:
+                print(f'    배치({sub[:3]}...) 오류: {e}')
+            time.sleep(1)  # 레이트리밋 여유
+        print(f'  [Massive] {retry_round}차 재시도 복구: {recovered}개')
+        missing = [s for s in symbols if prices.get(s, {}).get('price') is None]
+
+    if missing:
+        print(f'::warning::[Massive] 최종 누락 {len(missing)}개 — stocks-data.json 폴백 사용됨: {", ".join(missing)}')
 
     ok_total = sum(1 for v in prices.values() if v['price'] is not None)
     print(f'\n  [Massive] 완료: {ok_total}/{len(symbols)} 종목 가격 수집')
@@ -675,6 +709,7 @@ def main():
         'updatedAt':    now_utc.isoformat(),
         'updatedAtKST': kst.strftime('%Y-%m-%d %H:%M KST'),
         'indices':      live_indices,   # SPX·NDX·DJI 실시간 (빈 리스트면 UI에서 폴백)
+        'missingSymbols': missing,      # 재시도 후에도 못 받은 심볼 — 모니터링용 (2026-07-02 추가)
         'prices': prices,
     }
 
