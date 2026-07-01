@@ -1,12 +1,12 @@
 {
-  "lastRun": "2026-07-01T21:47:19.914Z",
-  "lastRunKST": "2026-07-02 06:47:19 KST",
+  "lastRun": "2026-07-01T22:17:21.099Z",
+  "lastRunKST": "2026-07-02 07:17:21 KST",
   "summary": {
-    "ok": 3,
-    "triggered": 0,
+    "ok": 1,
+    "triggered": 1,
     "alreadyRunning": 0,
     "stale": 0,
-    "skipped": 2,
+    "skipped": 3,
     "errors": 0
   },
   "results": [
@@ -14,18 +14,18 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-07-01T21:47:19.914Z",
+      "checkedAt": "2026-07-01T22:17:21.099Z",
       "lastUpdate": "2026-07-01T19:18:45.120Z",
-      "ageHours": 2.5,
+      "ageHours": 3,
       "maxAgeHours": 2.5,
-      "status": "OK",
-      "reason": "최신 (2.5h 전 업데이트)"
+      "status": "TRIGGERED",
+      "reason": "3h 지연 감지 → 자동 트리거"
     },
     {
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-07-01T21:47:19.914Z",
+      "checkedAt": "2026-07-01T22:17:21.099Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -33,29 +33,26 @@
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-07-01T21:47:19.914Z",
+      "checkedAt": "2026-07-01T22:17:21.099Z",
       "lastUpdate": "2026-07-01T21:17:34.157Z",
-      "ageHours": 0.5,
+      "ageHours": 1,
       "maxAgeHours": 5,
       "status": "OK",
-      "reason": "최신 (0.5h 전 업데이트)"
+      "reason": "최신 (1h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-07-01T21:47:19.914Z",
-      "lastUpdate": "2026-07-01T21:44:02.980038+00:00",
-      "ageHours": 0.1,
-      "maxAgeHours": 1.5,
-      "status": "OK",
-      "reason": "최신 (0.1h 전 업데이트)"
+      "checkedAt": "2026-07-01T22:17:21.099Z",
+      "status": "SKIP",
+      "reason": "비활성 시간대"
     },
     {
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-07-01T21:47:19.914Z",
+      "checkedAt": "2026-07-01T22:17:21.099Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     }
