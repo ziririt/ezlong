@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-07-01T17:17:16.758Z",
-  "lastRunKST": "2026-07-02 02:17:16 KST",
+  "lastRun": "2026-07-01T17:47:19.798Z",
+  "lastRunKST": "2026-07-02 02:47:19 KST",
   "summary": {
     "ok": 3,
     "triggered": 1,
@@ -14,18 +14,18 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-07-01T17:17:16.758Z",
+      "checkedAt": "2026-07-01T17:47:19.798Z",
       "lastUpdate": "2026-07-01T16:23:50.634Z",
-      "ageHours": 0.9,
+      "ageHours": 1.4,
       "maxAgeHours": 2.5,
       "status": "OK",
-      "reason": "최신 (0.9h 전 업데이트)"
+      "reason": "최신 (1.4h 전 업데이트)"
     },
     {
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-07-01T17:17:16.758Z",
+      "checkedAt": "2026-07-01T17:47:19.798Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -33,19 +33,19 @@
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-07-01T17:17:16.758Z",
+      "checkedAt": "2026-07-01T17:47:19.798Z",
       "lastUpdate": "2026-07-01T15:49:37.326Z",
-      "ageHours": 1.5,
+      "ageHours": 2,
       "maxAgeHours": 5,
       "status": "OK",
-      "reason": "최신 (1.5h 전 업데이트)"
+      "reason": "최신 (2h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-07-01T17:17:16.758Z",
-      "lastUpdate": "2026-07-01T17:01:19.294230+00:00",
+      "checkedAt": "2026-07-01T17:47:19.798Z",
+      "lastUpdate": "2026-07-01T17:31:09.534709+00:00",
       "ageHours": 0.3,
       "maxAgeHours": 1.5,
       "status": "OK",
@@ -55,12 +55,12 @@
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-07-01T17:17:16.758Z",
+      "checkedAt": "2026-07-01T17:47:19.798Z",
       "lastUpdate": "2026-06-30T21:46:06.171Z",
-      "ageHours": 19.5,
+      "ageHours": 20,
       "maxAgeHours": 6,
       "status": "TRIGGERED",
-      "reason": "19.5h 지연 감지 → 자동 트리거"
+      "reason": "20h 지연 감지 → 자동 트리거"
     }
   ]
 }
