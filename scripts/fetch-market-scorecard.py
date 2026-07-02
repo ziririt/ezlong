@@ -24,9 +24,8 @@ except ImportError:
 
 # ─── 설정 ───────────────────────────────────────────────────────────────────
 GEMINI_API_KEY     = os.environ.get('GEMINI_API_KEY', '')
-GEMINI_MODEL       = 'gemini-2.5-flash-lite'           # 임시 flash-lite (2026-06-27: flash 쿼터 소진 대응)
-# 7월 1일 쿼터 리셋 후 gemini-2.5-flash로 복구 예정
-# 폴백 없음 — v1beta에서 1.5 계열 전부 404, 2.0-flash 서비스 종료 (2026-06-26 확인)
+GEMINI_MODEL       = 'gemini-2.5-flash'                # 2026-07-03 복구 (7/1 쿼터 리셋 완료 — CLAUDE.md 규정: 스코어카드는 복합 판단이라 flash)
+# 폴백: gemini-2.5-flash-lite (call_gemini 내 구현) — 1.5 계열 전부 404, 2.0-flash 서비스 종료 (2026-06-26 확인)
 
 def _gemini_url(model):
     return f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}'
@@ -68,6 +67,8 @@ def append_ledger(ledger, kst_now, entry):
     line = f"긍정 {entry['positive_total']} : 부정 {entry['negative_total']} — {entry['key_event']['name']}"
     if entry.get('summary'):
         line += f" | {entry['summary']}"
+    if entry.get('mixed_factors'):
+        line += f" | 혼조: {entry['mixed_factors'][0].get('name', '')}"
     ledger.append({'d': kst_now.strftime('%Y-%m-%d'), 't': kst_now.strftime('%H:%M'), 'k': line[:160]})
     return ledger[-LEDGER_MAX:]
 
@@ -122,6 +123,81 @@ def get_kst_now():
     return datetime.now(timezone.utc) + timedelta(hours=9)
 
 
+# ─── 미국 시장 세션 판정 (2026-07-03 신설) ────────────────────────────────────
+# 배경: 기존 코드는 정규장 밖을 전부 '[프리/시간외]' 한 덩어리로 태깅 + ET를
+# UTC-4 고정 근사로 계산 → AI가 포스트마켓 시간에 '프리마켓 약세'라고 쓰는 사고 발생.
+# zoneinfo로 서머타임까지 정확히 반영한다.
+
+try:
+    from zoneinfo import ZoneInfo
+    ET_TZ = ZoneInfo('America/New_York')
+except Exception:
+    ET_TZ = None  # 폴백: 세션 판정 불가 시 세션 블록 생략 (본 기능은 계속 동작)
+
+
+def get_us_session(dt_utc=None):
+    """현재 미국 시장 세션 판정 (DST 자동 반영).
+    returns (code, label) — pre/regular/post/closed/weekend"""
+    if ET_TZ is None:
+        return '', ''
+    now_et = (dt_utc or datetime.now(timezone.utc)).astimezone(ET_TZ)
+    wd = now_et.weekday()
+    hm = now_et.hour + now_et.minute / 60
+    if wd >= 5:
+        return 'weekend', '주말 휴장'
+    if 4.0 <= hm < 9.5:
+        return 'pre', '프리마켓'
+    if 9.5 <= hm < 16.0:
+        return 'regular', '정규장'
+    if 16.0 <= hm < 20.0:
+        return 'post', '포스트마켓(시간외)'
+    return 'closed', '휴장(정규장 마감 후 야간)'
+
+
+def session_tag_for_ts(ts):
+    """가격 데이터 봉의 타임스탬프 → 세션 태그 문자열"""
+    if ET_TZ is None:
+        return ''
+    try:
+        ts_et = ts.astimezone(ET_TZ)
+    except Exception:
+        return ''
+    today_et = datetime.now(ET_TZ).date()
+    if ts_et.date() != today_et:
+        return ' [직전 거래일 종가]'
+    hm = ts_et.hour + ts_et.minute / 60
+    if 4.0 <= hm < 9.5:
+        return ' [프리마켓 실시간]'
+    if 9.5 <= hm < 16.0:
+        return ' [정규장]'
+    if 16.0 <= hm < 20.0:
+        return ' [포스트마켓 실시간]'
+    return ' [야간/시간외]'
+
+
+# ─── 중복 실행 가드 (2026-07-03 신설) ─────────────────────────────────────────
+# 배경: 2026-07-03 06:47(감시견 구조 트리거) + 06:50(정기 cron)이 3분 간격으로
+# 겹쳐 카드가 18분 만에 2번 생성됨. 직전 카드가 30분 이내면 실행을 건너뛴다.
+# FORCE_SCORECARD=1 환경변수로 우회 가능 (수동 재생성용).
+
+MIN_GAP_MINUTES = 30
+
+
+def recent_entry_exists(kst_now):
+    if os.environ.get('FORCE_SCORECARD') == '1':
+        return False
+    try:
+        with open(OUTPUT_PATH, 'r', encoding='utf-8') as f:
+            entries = json.load(f).get('entries', [])
+        if not entries:
+            return False
+        last = datetime.strptime(entries[0].get('id', ''), '%Y-%m-%d-%H:%M')
+        diff_min = (kst_now.replace(tzinfo=None) - last).total_seconds() / 60
+        return 0 <= diff_min < MIN_GAP_MINUTES
+    except Exception:
+        return False
+
+
 def kst_label(dt):
     """2026-06-24(수) 22:00 KST 형태"""
     weekday = ['월', '화', '수', '목', '금', '토', '일'][dt.weekday()]
@@ -151,7 +227,7 @@ def fetch_equity_data():
             info = t.fast_info
             prev = getattr(info, 'previous_close', None)
 
-            # 프리마켓/시간외 포함 최신 가격 시도
+            # 프리마켓/포스트마켓 포함 최신 가격 시도
             price = None
             session_tag = ''
             try:
@@ -159,10 +235,8 @@ def fetch_equity_data():
                 if not hist.empty:
                     price = float(hist['Close'].iloc[-1])
                     ts = hist.index[-1]
-                    # 정규장(9:30-16:00 ET) 외 시간이면 태그 추가
-                    et_hour = (ts.utctimetuple().tm_hour - 4) % 24  # ET 근사
-                    if et_hour < 9 or et_hour >= 16:
-                        session_tag = ' [프리/시간외]'
+                    # 2026-07-03: DST 무시 근사 폐기 → zoneinfo 기반 정확 세션 태깅
+                    session_tag = session_tag_for_ts(ts)
             except Exception:
                 pass
 
@@ -290,6 +364,10 @@ def fetch_google_news_rss(max_per_query=4, max_age_hours=12):
         "Federal+Reserve+interest+rate+inflation",
         "US+Iran+geopolitics+oil",
         "tech+earnings+semiconductor+AI",
+        # 2026-07-03 추가 — 금리·경제지표의 '시장 반응/해석'을 직접 수집
+        # (고용 둔화에도 금리 상승 같은 괴리를 AI가 뉴스로 파악할 수 있게)
+        "US+treasury+yields+bond+market+reaction",
+        "jobs+report+economic+data+market+reaction",
     ]
 
     headlines = []
@@ -424,8 +502,26 @@ def fetch_fred_macro():
 
 def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
                  rss_headlines=None, av_items=None, av_summary="", fred_rows=None,
-                 history_block=""):
+                 history_block="", session_code="", session_label=""):
     schedule_label = SCHEDULE_LABELS.get(kst_now.hour, f'{kst_now.hour}:00')
+
+    # ── 세션 인지 블록 (2026-07-03 신설) ─────────────────────────────────────
+    session_block = ""
+    if session_code:
+        framing = {
+            'pre':     "- 프리마켓 진행 중. 재료는 '몇 시간 뒤 열릴 오늘 정규장'에 영향을 줄 변수 중심으로 선별하라.",
+            'regular': "- 정규장 진행 중. 장중 실시간 가격 움직임과 그 원인 중심으로 선별하라.",
+            'post':    "- 정규장은 이미 마감됐고 지금은 포스트마켓이다. 재료는 (1) 방금 끝난 정규장 결과를 만든 원인 (2) 다음 정규장에 영향을 줄 변수, 이 두 관점으로 선별하라.",
+            'closed':  "- 정규장·포스트마켓 모두 끝난 야간 휴장이다. 재료는 (1) 직전 정규장 결과를 만든 원인 (2) 다음 정규장에 영향을 줄 변수, 이 두 관점으로 선별하라.",
+            'weekend': "- 주말 휴장이다. 재료는 직전 주 마감 상황과 다음 주 개장에 영향을 줄 변수 중심으로 선별하라.",
+        }.get(session_code, "")
+        session_block = f"""
+=== 현재 미국 시장 세션: {session_label} (위반 시 전체 신뢰도 훼손) ===
+- 세션 정의: 프리마켓 = ET 04:00~09:30 / 정규장 = ET 09:30~16:00 / 포스트마켓(시간외) = ET 16:00~20:00 / 그 외 = 휴장
+- 현재 세션이 아닌 세션 명칭을 요인 이름·설명·핵심이슈에 쓰는 것 절대 금지.
+  (예: 지금이 포스트마켓·휴장이면 '프리마켓 약세' 같은 표현 금지 — 프리마켓은 아직 시작도 안 했다)
+{framing}
+"""
 
     # yfinance 뉴스 + Google News RSS 합산
     all_headlines = list(headlines or []) + list(rss_headlines or [])
@@ -466,10 +562,10 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 
     return f"""당신은 미국 주식시장 시황 분석 전문가입니다.
 현재 시각(KST): {kst_now.strftime('%Y-%m-%d %H:%M')} ({schedule_label})
-{fred_block}{av_block}
+{session_block}{fred_block}{av_block}
 === 데이터 시점 안내 (분석 전 반드시 숙지) ===
-- 가격 데이터 중 [프리/시간외] 표시가 없는 항목은 직전 미국 정규장 종가 기준
-- [프리/시간외] 표시 항목은 현재 프리마켓 또는 시간외 실시간 가격
+- 가격 데이터의 세션 태그를 그대로 신뢰하라: [프리마켓 실시간] [정규장] [포스트마켓 실시간] [야간/시간외] [직전 거래일 종가]
+- 태그 없는 항목은 직전 미국 정규장 종가 기준
 - 뉴스 헤드라인은 최근 6시간 이내 발행된 기사만 포함 (각 기사에 경과 시간 표시)
 - 판단 우선순위: ① 실시간 가격·VIX 데이터 → ② 6시간 이내 뉴스 헤드라인 순으로 적용
 - 가격 데이터가 광범위한 하락(-1% 이상 지수 하락, VIX 상승)을 보이면, 뉴스가 긍정적이어도 전체 판단은 부정 우위
@@ -500,6 +596,7 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - negative_factors 각 score 합계 = negative_total
 - 요인 수: 각 3~5개
 - 실제 영향력 기반 점수 배분 (50:50 기계적 배분 금지)
+- mixed_factors: 해석이 엇갈리는 혼조·양면 재료 0~3개 (점수 없음, 아래 규칙 참조)
 - summary: 단기 시장 구도 총평 (한국어, 50자 이내)
 - 모든 문자열 값은 한국어, 분석/진단형 문체 ("~하세요" 금지)
 - name 필드: 20자 이내, desc 필드: 30자 이내
@@ -550,6 +647,23 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 나스닥 가중치 5% 이상 종목의 어닝 서프라이즈/쇼크 (실적 발표)
   → 섹터 전체 심리 전환 가능. 인정.
 
+=== 혼조·양면 재료 (mixed_factors) — 2026-07-03 신설 ===
+- 시장 해석이 실제로 엇갈리는 재료는 긍정/부정 어느 한쪽에 억지로 배치하지 말고 mixed_factors(0~3개, 점수 없음)에 넣어라.
+- mixed 판단 기준 (하나라도 해당하면 mixed):
+  1. 같은 재료에 대해 상반된 해석이 동시에 유통 중 (예: 고용 둔화 → '금리 인하 기대' 호재 해석 vs '경기 침체 신호' 악재 해석)
+  2. 실제 시장 반응(가격)이 교과서적 예상과 반대로 나옴 (예: 고용 둔화 발표 후 오히려 금리 상승, 기술주 하락)
+  3. 자산군별 반응이 상충 (예: 주식은 악재로, 채권은 호재로 반응)
+- mixed 항목의 desc에는 어떤 해석과 어떤 해석이 충돌하는지 양쪽을 모두 서술하라.
+- 긍정/부정 요인에 배치한 재료라도 해석 논란이 남아 있으면 desc에 '해석 엇갈림' 명시.
+- positive_total + negative_total = 100 규칙은 유지 (mixed는 점수 배분에 미포함)
+- 억지로 mixed를 채우지 마라. 방향이 명확한 재료는 긍정/부정에 두는 것이 원칙이다.
+
+=== 재료 간 괴리 명시 — 맥락 없는 단독 서술 금지 ===
+- 두 데이터가 교과서적 인과와 반대로 움직이면, 그 괴리 자체를 반드시 서술하라.
+  나쁜 예: name '미 국채 금리 상승', desc '성장주 투자 매력 감소' (맥락 없음)
+  좋은 예: name '고용 둔화에도 금리 상승', desc '인하 기대보다 재정·수급 우려 우세, 성장주 압박'
+- 같은 카드 안의 재료들이 서로 모순돼 보이면 summary에서 그 모순을 인정하고 '방향성 혼조'로 서술하라.
+
 === 동일 기업·티커 양측 동시 등장 절대 금지 ===
 - MSFT, AAPL, NVDA, TSLA, GOOGL, AMZN, META, SOXX, QQQ, SPY 등 특정 기업·티커가
   positive_factors와 negative_factors 양쪽에 동시에 등장하는 것은 절대 금지.
@@ -591,6 +705,9 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
   ],
   "negative_factors": [
     {{"score": 0, "name": "", "desc": ""}}
+  ],
+  "mixed_factors": [
+    {{"name": "", "desc": ""}}
   ]
 }}
 """
@@ -711,7 +828,8 @@ def build_entry(kst_now, result):
         "negative_total":   int(result.get("negative_total", 50)),
         "summary":          result.get("summary", ""),
         "positive_factors": result.get("positive_factors", []),
-        "negative_factors": result.get("negative_factors", [])
+        "negative_factors": result.get("negative_factors", []),
+        "mixed_factors":    (result.get("mixed_factors") or [])[:3]  # 혼조·양면 (2026-07-03)
     }
 
 
@@ -732,13 +850,17 @@ def validate_entry(entry):
         print(f"WARNING: 부정 요인 합계 {neg_sum} ≠ {neg_total}")
 
 
-def validate_content(entry):
-    """내용 모순 검증 — 동일 기업 양측 등장, 유가 방향 오류, VIX 방향 오류"""
+def validate_content(entry, session_code=''):
+    """내용 모순 검증 — 동일 기업 양측 등장, 유가 방향 오류, VIX 방향 오류, 세션 용어 오용"""
     def texts(factors):
         return [(f.get('name', '') + ' ' + f.get('desc', '')).lower() for f in factors]
 
     pos_texts = texts(entry.get('positive_factors', []))
     neg_texts = texts(entry.get('negative_factors', []))
+    mixed_texts = texts(entry.get('mixed_factors', []))
+    kev = entry.get('key_event', {})
+    kev_text = (kev.get('name', '') + ' ' + kev.get('why', '')).lower()
+    all_texts = pos_texts + neg_texts + mixed_texts + [kev_text]
 
     errors = []
 
@@ -773,6 +895,22 @@ def validate_content(entry):
     if any(('국채금리' in t or '금리' in t) and ('하락' in t or '안정' in t) for t in neg_texts):
         errors.append("오류: 국채금리 하락이 부정 요인에 분류됨 (금리↓ = 성장주 유리 = 긍정)")
 
+    # ── 체크 5: 세션 용어 오용 (2026-07-03) — 포스트마켓 시간에 '프리마켓 약세' 같은 사고 방지 ──
+    if session_code in ('post', 'closed', 'weekend'):
+        if any('프리마켓' in t for t in all_texts):
+            errors.append(f"세션 오류: 현재 세션({session_code})인데 '프리마켓' 표현 사용 — 프리마켓은 아직 시작 전")
+    if session_code == 'pre':
+        if any('포스트마켓' in t for t in all_texts):
+            errors.append("세션 오류: 현재 프리마켓인데 '포스트마켓' 표현 사용")
+
+    # ── 체크 6: key_event가 시장 상태 묘사 (원인이 아닌 결과) ────────────────
+    STATE_WORDS = ['프리마켓', '포스트마켓', '시간외', '선물 상승', '선물 하락', '선물 약세', '선물 강세']
+    kev_name = kev.get('name', '')
+    for w in STATE_WORDS:
+        if w in kev_name:
+            errors.append(f"오류: key_event.name '{kev_name}'은 시장 상태 묘사(결과) — 원인 이벤트로 교체 필요")
+            break
+
     return errors
 
 
@@ -781,6 +919,15 @@ def validate_content(entry):
 def main():
     kst_now = get_kst_now()
     print(f"=== 긍정 vs 부정 분석 시작 ({kst_label(kst_now)}) ===")
+
+    # 0. 중복 실행 가드 (2026-07-03) — 감시견 구조 + 정기 cron 겹침 방지
+    if recent_entry_exists(kst_now):
+        print(f"  직전 카드가 {MIN_GAP_MINUTES}분 이내 생성됨 — 중복 실행 건너뜀 (FORCE_SCORECARD=1로 우회 가능)")
+        sys.exit(0)
+
+    # 0-1. 현재 미국 시장 세션 판정 (2026-07-03)
+    session_code, session_label = get_us_session()
+    print(f"  현재 미국 세션: {session_label or '판정 불가'}")
 
     # 1. 시장 데이터 수집
     print("  [1] 주식·지수 데이터 수집...")
@@ -827,7 +974,8 @@ def main():
     prompt = build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries,
                           rss_headlines=rss_headlines, av_items=av_items,
                           av_summary=av_summary, fred_rows=fred_rows,
-                          history_block=history_block)
+                          history_block=history_block,
+                          session_code=session_code, session_label=session_label)
     result = call_gemini(prompt)
 
     if not result:
@@ -840,8 +988,8 @@ def main():
     entry = build_entry(kst_now, result)
     validate_entry(entry)
 
-    # 4-1. 내용 모순 검증 — 모순 발견 시 1회 재시도 (2026-06-29 추가)
-    content_errors = validate_content(entry)
+    # 4-1. 내용 모순 검증 — 모순 발견 시 1회 재시도 (2026-06-29 추가, 2026-07-03 세션 검증 확장)
+    content_errors = validate_content(entry, session_code)
     if content_errors:
         print(f"  WARNING: 내용 모순 {len(content_errors)}건 발견 — 재시도")
         for err in content_errors:
@@ -850,7 +998,7 @@ def main():
         if result2:
             entry2 = build_entry(kst_now, result2)
             validate_entry(entry2)
-            errors2 = validate_content(entry2)
+            errors2 = validate_content(entry2, session_code)
             if errors2:
                 print(f"  WARNING: 재시도에도 모순 {len(errors2)}건 존재 — 1차 결과 그대로 사용")
                 for err in errors2:
