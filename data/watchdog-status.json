@@ -1,10 +1,10 @@
 {
-  "lastRun": "2026-07-02T11:17:17.873Z",
-  "lastRunKST": "2026-07-02 20:17:17 KST",
+  "lastRun": "2026-07-02T11:47:18.649Z",
+  "lastRunKST": "2026-07-02 20:47:18 KST",
   "summary": {
     "ok": 1,
-    "triggered": 1,
-    "alreadyRunning": 0,
+    "triggered": 0,
+    "alreadyRunning": 1,
     "stale": 0,
     "skipped": 3,
     "errors": 0
@@ -14,18 +14,18 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-07-02T11:17:17.873Z",
+      "checkedAt": "2026-07-02T11:47:18.649Z",
       "lastUpdate": "2026-07-02T08:17:34.405Z",
-      "ageHours": 3,
+      "ageHours": 3.5,
       "maxAgeHours": 2.5,
-      "status": "TRIGGERED",
-      "reason": "3h 지연 감지 → 자동 트리거"
+      "status": "ALREADY_RUNNING",
+      "reason": "워크플로 이미 실행 중"
     },
     {
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-07-02T11:17:17.873Z",
+      "checkedAt": "2026-07-02T11:47:18.649Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -33,18 +33,18 @@
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-07-02T11:17:17.873Z",
+      "checkedAt": "2026-07-02T11:47:18.649Z",
       "lastUpdate": "2026-07-02T08:13:51.291Z",
-      "ageHours": 3.1,
+      "ageHours": 3.6,
       "maxAgeHours": 5,
       "status": "OK",
-      "reason": "최신 (3.1h 전 업데이트)"
+      "reason": "최신 (3.6h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-07-02T11:17:17.873Z",
+      "checkedAt": "2026-07-02T11:47:18.649Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -52,7 +52,7 @@
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-07-02T11:17:17.873Z",
+      "checkedAt": "2026-07-02T11:47:18.649Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     }
