@@ -5,6 +5,62 @@
 
 ---
 
+## [2026-07-03] 세션 — 전수 점검 + AI 판단 3영업일 연속성 + 자가치유 감시 체계 + 영문판 첫 배포
+
+### 커밋 이력 (자동 데이터 커밋 제외)
+
+. `152a0ecd2` — feat: AI 판단 3영업일 연속성(판단 원장) + 영문판 첫 배포 + 배포모델 개정 + SEO 수정 (29개 파일)
+. `8167db912` — feat: 감시견 10개 파이프라인 전면 확장 + native cron 백업 + 스코어카드 Gemini 폴백 (5개 파일)
+
+### 1. AI 판단 3영업일 연속성 — "판단 원장(judgment ledger)" (CLAUDE.md 20항 신설)
+
+유저 반복 요구 반영. 모든 AI 판단이 당일 스냅샷만 보는 "기억상실" 구조를 수술.
+
+- `generate-chart-analysis.js`: 원장(`data/judgment-history-{us,kr,crypto}.json`)에서 직전 3영업일+오늘 장중 판단을 프롬프트에 주입, 생성 후 한 줄 요약 append(심볼당 15개 prune), JSON에 `continuity` 필드 추가
+- `fetch-market-scorecard.py`: `data/judgment-history-scorecard.json` 동일 구조 (20개 prune)
+- `atmr-dashboard.html`: previousSignals 기반 "매수 신호 흐름 (QQQ 기준): 06/30 63 → 07/01 70 → 07/02 69 — 개선 흐름" 라인 신설 (`.swing-trend-line`)
+- 원장 부재/파손 시 단발 생성 폴백 — 본 기능 무중단. 유닛 테스트 21종 통과.
+
+### 2. 자가치유 감시 체계 — 감시견 5→10개 전면 확장
+
+- 신규 감시: scorecard(8h), stocks-prices(0.75h — GitHub cron이 10분 주기를 1~3h로 지연시키는 실측 대응), stocks-data(26h), market-cycle(30h), kr-prices(1h)
+- `watchdog.yml`에 GitHub native cron 백업(`23 * * * *`) — cron-job.org 단일 의존(동반 침묵) 제거
+- 스코어카드 Gemini 폴백 모델 추가 (flash-lite 4회 실패 시 flash 2회) — 7/2 저녁 5연속 실패 대응
+- **배포 5분 뒤 첫 라운드에서 19일 정지된 market-cycle을 자동 감지·트리거·복구 실증 (01:47 KST)**
+
+### 3. 영문판 사상 첫 배포 + SEO/AEO
+
+- en/ 폴더 16페이지가 git 미추적 → 라이브 404였음을 발견, 첫 커밋·배포. https://ezlong.com/en/ 정상화
+- 탭 딥링크: `atmr-dashboard.html#swing-strategy`, `#tsla-nvda` (해시 라우팅 + replaceState)
+- hreflang 누락 2페이지(atmr-dashboard, dca-simulator) 추가, en/index og:image 404 수정(logo-preview.png), sitemap lastmod 12건 갱신, llms.txt 신설
+- 배포 제외 패턴을 비공식 .firebaseignore에서 **firebase.json ignore 배열로 이전** (*.bak, 드래프트, 목업, Next.js 잔재 등)
+
+### 4. 배포 모델 공식화 + 문서 모순 수술
+
+- 라이브 대조로 실증: push = firebase-hosting.yml 자동 배포, 라이브 = git 추적 파일 → CLAUDE.md 3·7항 개정 (수동 firebase deploy는 비상용 격하)
+- EZLONG_GUIDE.md 9장의 6/14 사고 원인 절차(`git stash + pull --rebase`) 폐기·교체, 2장 서비스 표 갱신, 이미지 수동 목록 폐지, DEPLOY_CHECKLIST 유령 참조 제거, ~/Desktop/ezlong 경로 폐기 반영
+- `fetch-market-cycle.yml` 이중 버그 수정: native cron 복원(21:10/22:10 UTC) + git add 패턴 `ohlcv-*` → `mc-ohlcv-*` (트리거가 살아 있었어도 커밋 불가였던 결함)
+- EZLONG_MASTER_PLAN.md 신설 — 전수 점검 결과 + Phase 로드맵 + 결정 기록
+
+### 복구 명령어 (필요시)
+
+```bash
+# 판단 원장/감시견 확장 전체 되돌리기
+git revert 8167db912 152a0ecd2
+
+# 특정 파일만 이전 버전으로
+git checkout 152a0ecd2^ -- scripts/generate-chart-analysis.js scripts/fetch-market-scorecard.py
+git checkout 8167db912^ -- scripts/watchdog.js
+```
+
+### 남은 작업 (마스터 플랜 참조)
+
+- Phase 2 잔여: 스윙 브리핑 GitHub Actions 이식(승인됨), health-check.py, 워치독 서킷브레이커
+- Phase 3: 영문판 내부링크(ez-footer English 섹션), 영어 롱테일 블로그 3편, Bing/IndexNow
+- 유저 확인 대기: GSC 등록 여부, admin.html·ez-style-guide.html 공개 유지 여부
+
+---
+
 ## [2026-07-02] 세션 — 심플 주가 실시간 데이터 파이프라인 이중 장애 복구
 
 ### 커밋 이력 (주요 작업)
