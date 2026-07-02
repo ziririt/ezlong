@@ -1,10 +1,10 @@
 {
-  "lastRun": "2026-07-02T13:47:17.465Z",
-  "lastRunKST": "2026-07-02 22:47:17 KST",
+  "lastRun": "2026-07-02T14:47:18.101Z",
+  "lastRunKST": "2026-07-02 23:47:18 KST",
   "summary": {
-    "ok": 3,
+    "ok": 2,
     "triggered": 1,
-    "alreadyRunning": 0,
+    "alreadyRunning": 1,
     "stale": 0,
     "skipped": 1,
     "errors": 0
@@ -14,18 +14,18 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-07-02T13:47:17.465Z",
+      "checkedAt": "2026-07-02T14:47:18.101Z",
       "lastUpdate": "2026-07-02T11:17:32.930Z",
-      "ageHours": 2.5,
+      "ageHours": 3.5,
       "maxAgeHours": 2.5,
-      "status": "OK",
-      "reason": "최신 (2.5h 전 업데이트)"
+      "status": "ALREADY_RUNNING",
+      "reason": "워크플로 이미 실행 중"
     },
     {
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-07-02T13:47:17.465Z",
+      "checkedAt": "2026-07-02T14:47:18.101Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -33,19 +33,19 @@
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-07-02T13:47:17.465Z",
+      "checkedAt": "2026-07-02T14:47:18.101Z",
       "lastUpdate": "2026-07-02T13:17:38.452Z",
-      "ageHours": 0.5,
+      "ageHours": 1.5,
       "maxAgeHours": 5,
       "status": "OK",
-      "reason": "최신 (0.5h 전 업데이트)"
+      "reason": "최신 (1.5h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-07-02T13:47:17.465Z",
-      "lastUpdate": "2026-07-02T13:31:10.315508+00:00",
+      "checkedAt": "2026-07-02T14:47:18.101Z",
+      "lastUpdate": "2026-07-02T14:31:07.986357+00:00",
       "ageHours": 0.3,
       "maxAgeHours": 1.5,
       "status": "OK",
@@ -55,12 +55,12 @@
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-07-02T13:47:17.465Z",
+      "checkedAt": "2026-07-02T14:47:18.101Z",
       "lastUpdate": "2026-07-01T21:47:07.299Z",
-      "ageHours": 16,
+      "ageHours": 17,
       "maxAgeHours": 6,
       "status": "TRIGGERED",
-      "reason": "16h 지연 감지 → 자동 트리거"
+      "reason": "17h 지연 감지 → 자동 트리거"
     }
   ]
 }
