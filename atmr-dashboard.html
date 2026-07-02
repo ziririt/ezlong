@@ -17,6 +17,10 @@
 <meta name="robots" content="index, follow" />
 <meta name="author" content="EZLONG — 미국주식투자자를 위한 데이터 툴" />
 <link rel="canonical" href="https://ezlong.com/atmr-dashboard.html" />
+<!-- 국제화 SEO: hreflang (2026-07-03 추가 — en 버전과 양방향 연결) -->
+<link rel="alternate" hreflang="ko" href="https://ezlong.com/atmr-dashboard.html" />
+<link rel="alternate" hreflang="en" href="https://ezlong.com/en/atmr-dashboard.html" />
+<link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/atmr-dashboard.html" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://ezlong.com/atmr-dashboard.html" />
 <meta property="og:title" content="스윙 시그널(Swing Signal) — 오늘의 미국주식 매수·매도 타이밍 | EZLONG" />
@@ -460,6 +464,9 @@ a { text-decoration: none; color: inherit; }
 }
 .action-label { font-size: 15px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--t3); }
 .action-title { font-size: 22px; font-weight: 800; letter-spacing: -.03em; color: var(--t1); margin-top: 2px; }
+/* 3영업일 판단 연속성 라인 (2026-07-03) */
+.swing-trend-line { font-size: 14px; font-weight: 600; color: var(--t2); margin-top: 8px; line-height: 1.5; }
+.swing-trend-line b { color: var(--t1); }
 .action-desc { font-size: 15px; line-height: 1.7; color: var(--t2); }
 .action-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .action-pill {
@@ -2972,6 +2979,7 @@ async function loadAllData(forceRefresh = false) {
           indicesData   = ghJson.indices      ?? indicesData;
           fearGreedData = ghJson.fearAndGreed ?? fearGreedData;
           macroData     = ghJson.macro        ?? macroData;
+          window._prevSignals = ghJson.previousSignals ?? window._prevSignals; // 3영업일 흐름용 (2026-07-03)
           saveCache(stockData);
           renderAll(stockData);
           setUpdateTime(new Date(ghJson.generatedAt));
@@ -3002,6 +3010,7 @@ async function loadAllData(forceRefresh = false) {
       indicesData   = ghJson.indices      ?? null;   // NDX·GSPC 지수 현재가 저장
       fearGreedData = ghJson.fearAndGreed ?? null;   // CNN Fear & Greed
       macroData     = ghJson.macro        ?? null;   // 매크로 지표
+      window._prevSignals = ghJson.previousSignals ?? null;  // 3영업일 흐름용 (2026-07-03)
       const ageH   = Math.round((Date.now() - new Date(ghJson.generatedAt).getTime()) / 3600000 * 10) / 10;
       console.log(`[GitHub JSON] ${ghJson.generatedAtKST} 기준 데이터 로드 성공 (${ageH}h 전)`);
     } else {
@@ -3328,6 +3337,31 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
     return `<b>오늘의 시장 흐름 — 주의</b><br>${items}<br>· 위 흐름 감안 시 신규 진입은 분산 진입(1차 소량) 원칙 더욱 중요<br><br>`;
   }
 
+  // ── 3영업일 판단 연속성 라인 (2026-07-03) ─────────────────────────────────
+  // 서버 스냅샷(previousSignals)의 QQQ 매수신호를 날짜별 마지막 값으로 추려 흐름 표시.
+  // 스냅샷은 거래일에만 쌓이므로 날짜 자체가 영업일 — 휴일 테이블 불필요.
+  function buildTrendLineHtml() {
+    try {
+      const ps = window._prevSignals;
+      if (!Array.isArray(ps) || ps.length < 2) return '';
+      const sorted = [...ps]
+        .filter(s => s && s.atKST && s.qqq && typeof s.qqq.buyScore === 'number')
+        .sort((a, b) => (a.atKST < b.atKST ? -1 : 1));
+      if (sorted.length < 2) return '';
+      const byDate = new Map();
+      for (const s of sorted) byDate.set(s.atKST.slice(0, 10), s.qqq.buyScore); // 날짜별 마지막 값
+      const days = [...byDate.entries()].slice(-4);
+      if (days.length < 2) return '';
+      const todayKST = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
+      const parts = days.map(([d, v]) =>
+        `${d === todayKST ? '오늘' : d.slice(5).replace('-', '/')} <b>${v}</b>`).join(' → ');
+      const diff  = days[days.length - 1][1] - days[0][1];
+      const label = diff >= 5 ? '개선 흐름' : diff <= -5 ? '약화 흐름' : '횡보';
+      return `<div class="swing-trend-line">매수 신호 흐름 (QQQ 기준): ${parts} — ${label}</div>`;
+    } catch { return ''; }
+  }
+  const trendLineHtml = buildTrendLineHtml();
+
   // ── action card 타입: 높을수록 매수 (S-CORE 방향과 동일) ─────────────────
   const cls = score >= 65 ? 'buy' : score >= 50 ? 'hold' : score >= 38 ? 'watch' : 'sell';
 
@@ -3588,6 +3622,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
         <div style="flex:1;min-width:0;">
           <div class="action-label">오늘의 시그널</div>
           <div class="action-title">${title}</div>
+          ${trendLineHtml}
         </div>
       </div>
       <div class="action-desc" style="margin-top:18px;">${desc}</div>
@@ -3605,6 +3640,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
     `VIX: ${typeof vix === 'number' ? vix.toFixed(1) : '—'}\n` +
     `QQQ RSI: ${rsi?.toFixed(1) ?? '—'}, Gear: ${gear} (${gearText})\n` +
     `오늘의 시그널: ${title}\n` +
+    (trendLineHtml ? `3영업일 흐름: ${trendLineHtml.replace(/<[^>]+>/g, '')}\n` : '') +
     `상세 분석: ${desc.replace(/<[^>]+>/g, '')}`;
 }
 
@@ -5356,7 +5392,32 @@ function switchTab(tab) {
   document.getElementById(`tab-${tab}`).classList.add('active');
   const idx = ['market','strategy','kings'].indexOf(tab);
   document.querySelectorAll('.tab-btn')[idx]?.classList.add('active');
+
+  // ── 탭 딥링크 (2026-07-03): 각 탭에 공유 가능한 해시 URL 부여 ──────────
+  // #swing-strategy = 스윙 전략, #tsla-nvda = TSLA·NVDA 집중 분석
+  const TAB_HASH = { market: '', strategy: '#swing-strategy', kings: '#tsla-nvda' };
+  try {
+    history.replaceState(null, '', location.pathname + location.search + (TAB_HASH[tab] ?? ''));
+  } catch (e) { /* 미지원 브라우저 무시 */ }
 }
+
+// ── 해시 딥링크 진입/변경 처리 (2026-07-03) ─────────────────────────────────
+// https://ezlong.com/atmr-dashboard.html#swing-strategy → 스윙 전략 탭 바로 열림
+// https://ezlong.com/atmr-dashboard.html#tsla-nvda      → TSLA·NVDA 탭 바로 열림
+function tabFromHash() {
+  const h = (location.hash || '').toLowerCase();
+  if (h === '#swing-strategy' || h === '#strategy')                 return 'strategy';
+  if (h === '#tsla-nvda' || h === '#kings' || h === '#tesla-nvidia') return 'kings';
+  return null;
+}
+(function initTabDeepLink() {
+  const t = tabFromHash();
+  if (t) { try { switchTab(t); } catch (e) {} }
+  window.addEventListener('hashchange', () => {
+    const nt = tabFromHash();
+    if (nt) { try { switchTab(nt); window.scrollTo({ top: 0 }); } catch (e) {} }
+  });
+})();
 
 // ─── 한국 날짜 제목 설정 ─────────────────────────
 

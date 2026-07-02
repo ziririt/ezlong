@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+  <title>Monte Carlo Portfolio Simulator — Free 10,000-Run Tool | EZLONG</title>
+  <meta name="description" content="Free Monte Carlo portfolio simulator with 10,000 runs. Test NVDA, AAPL, SPY, QQQ portfolios using 20 years of real data. Find Max Sharpe Ratio allocation. No login required.">
+  <meta name="keywords" content="Monte Carlo portfolio simulator, portfolio optimization, Sharpe ratio calculator, ETF backtest, US stock portfolio, efficient frontier, portfolio stress test, NVDA AAPL SPY QQQ portfolio free">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="en">
+  <meta name="author" content="EZLONG">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Monte Carlo Portfolio Simulator — Free 10,000-Run Tool | EZLONG">
+  <meta property="og:description" content="Free Monte Carlo portfolio simulator with 10,000 runs. Test NVDA, AAPL, SPY, QQQ portfolios using 20 years of real data. Find Max Sharpe Ratio allocation. No login required.">
+  <meta property="og:url" content="https://ezlong.com/en/backtest.html">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://ezlong.com/logo-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Monte Carlo Portfolio Simulator — Free 10,000-Run Tool | EZLONG">
+  <meta name="twitter:description" content="Free Monte Carlo portfolio simulator with 10,000 runs. Test NVDA, AAPL, SPY, QQQ portfolios using 20 years of real data. Find Max Sharpe Ratio allocation. No login required.">
+  <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
+  <link rel="alternate" hreflang="en" href="https://ezlong.com/en/backtest.html">
+  <link rel="alternate" hreflang="ko" href="https://ezlong.com/backtest.html">
+  <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/backtest.html">
+  <link rel="canonical" href="https://ezlong.com/en/backtest.html">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "EZLONG",
+    "url": "https://ezlong.com",
+    "logo": "https://ezlong.com/logo.png",
+    "email": "easy.invest.good@gmail.com",
+    "sameAs": ["https://ezlong.com/en/"],
+    "description": "EZLONG provides free, no-signup US stock investment tools for long-term investors worldwide."
+  }
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"EZLONG","item":"https://ezlong.com/en/"},{"@type":"ListItem","position":2,"name":"Monte Carlo Portfolio Simulator","item":"https://ezlong.com/en/backtest.html"}]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"EZLONG Monte Carlo Portfolio Simulator","description":"Free Monte Carlo portfolio simulator running 10,000 simulations on US stock portfolios using 20 years of real market data to find the optimal allocation by Sharpe Ratio.","url":"https://ezlong.com/en/backtest.html","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"All","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"EZLONG","url":"https://ezlong.com","logo":"https://ezlong.com/logo.png","email":"easy.invest.good@gmail.com"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"HowTo","name":"How to run a Monte Carlo portfolio simulation","description":"Free Monte Carlo portfolio simulator with 10,000 runs. Test NVDA, AAPL, SPY, QQQ portfolios using 20 years of real data. Find Max Sharpe Ratio allocation. No login required.","totalTime":"PT5M","tool":[{"@type":"HowToTool","name":"Web browser"}],"supply":[{"@type":"HowToSupply","name":"Free — no account required"}],"step":[
+    {"@type":"HowToStep","position":1,"name":"Open the Monte Carlo Simulator","text":"Click Open Tool below to access the simulator. It runs entirely in your browser — no download or login needed."},
+    {"@type":"HowToStep","position":2,"name":"Select your assets","text":"Choose from the list of 44 US stocks and ETFs. You can add multiple assets including NVDA, GOOGL, SPY, QQQ, TSLA, AAPL, and more. Start with 3-5 assets for a manageable analysis."},
+    {"@type":"HowToStep","position":3,"name":"Set your allocation (optional)","text":"For the Custom Portfolio option, enter the percentage you want in each asset. Percentages must sum to 100%. For Maximum Sharpe and Minimum Volatility portfolios, the simulator finds the optimal weights automatically."},
+    {"@type":"HowToStep","position":4,"name":"Set your investment amount and period","text":"Enter your initial portfolio value and the investment horizon in years. Typical inputs are $10,000-$100,000 initial value and 10-30 year horizon."},
+    {"@type":"HowToStep","position":5,"name":"Run the simulation","text":"Click Calculate or Run Simulation. The tool runs 10,000 scenarios and displays results in seconds."},
+    {"@type":"HowToStep","position":6,"name":"Read your results","text":"The fan chart shows median, 10th percentile (bad scenario), and 90th percentile (good scenario) paths. The table shows optimal weights for Maximum Sharpe and Minimum Volatility portfolios, plus Sharpe Ratio and annualized return for each."}
+  ]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What is a Monte Carlo simulation for investing?","acceptedAnswer":{"@type":"Answer","text":"A Monte Carlo simulation runs thousands of random-walk scenarios using historical return distributions to show the full range of possible portfolio outcomes. Instead of one projected number, you get a probability distribution — showing best case, worst case, and everything in between."}},
+    {"@type":"Question","name":"How many assets are available in this simulator?","acceptedAnswer":{"@type":"Answer","text":"The EZLONG Monte Carlo Portfolio Simulator includes 44 US stocks and ETFs: NVDA, GOOGL, AAPL, MSFT, TSLA, AMZN, SPY, QQQ, VTI, SCHD, TLT, and more. All are based on 20 years of real data (2006-2025)."}},
+    {"@type":"Question","name":"What is the Sharpe Ratio and why does it matter?","acceptedAnswer":{"@type":"Answer","text":"The Sharpe Ratio measures how much return you get per unit of risk (volatility). A higher Sharpe Ratio means better risk-adjusted efficiency. The Maximum Sharpe portfolio gives you the best return-per-risk combination — not necessarily the highest absolute return, but the most efficient use of risk."}},
+    {"@type":"Question","name":"What is the Minimum Volatility portfolio?","acceptedAnswer":{"@type":"Answer","text":"The Minimum Volatility portfolio is the allocation that achieves the lowest possible portfolio volatility given your chosen assets. It suits risk-averse investors who prioritize capital preservation over maximum growth."}},
+    {"@type":"Question","name":"What does the fan chart show?","acceptedAnswer":{"@type":"Answer","text":"The fan chart displays three paths over your investment horizon: the 90th percentile (top 10% of simulated outcomes — optimistic case), the 50th percentile (median), and the 10th percentile (bottom 10% — pessimistic case). All three bands are shown simultaneously so you see the full range of realistic outcomes."}},
+    {"@type":"Question","name":"How is this different from a simple compound return calculator?","acceptedAnswer":{"@type":"Answer","text":"A simple compound calculator assumes constant returns every year (e.g., 10% every year). Monte Carlo simulation uses random returns each year based on historical distributions, capturing the real volatility of markets. This gives a much more realistic picture of long-term investing uncertainty."}},
+    {"@type":"Question","name":"What is the efficient frontier?","acceptedAnswer":{"@type":"Answer","text":"The efficient frontier is the set of portfolios that offer the highest expected return for a given level of risk. Portfolios on the frontier are efficient — you cannot get more return without taking more risk, and you cannot reduce risk without sacrificing return. The simulator plots your portfolio on this frontier."}},
+    {"@type":"Question","name":"Is this Monte Carlo simulator free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free. No login, no email, no subscription. The simulator runs 10,000 scenarios in your browser using 20 years of real data at no cost."}}
+  ]}
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F5F5F7; --surface: #FFFFFF; --text: #1D1D1F;
+      --text2: #424245; --text3: #6E6E73; --border: #D2D2D7;
+      --blue: #0071E3; --blue-lt: #0064CC; --green: #1A7F37;
+      --r: 12px; --max-w: 860px;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158; }
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.65; }
+    .en-nav { position:sticky; top:0; z-index:100; background:rgba(255,255,255,0.88); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:0 24px; height:52px; display:flex; align-items:center; justify-content:space-between; }
+    @media (prefers-color-scheme: dark) { .en-nav { background:rgba(28,28,30,0.88); } }
+    .en-nav-logo { font-size:17px; font-weight:700; color:var(--text); text-decoration:none; letter-spacing:-0.02em; }
+    .en-nav-right { display:flex; gap:20px; align-items:center; }
+    .en-nav-link { font-size:14px; color:var(--blue); text-decoration:none; font-weight:500; }
+    .en-nav-link:hover { text-decoration:underline; }
+    .breadcrumb { max-width:var(--max-w); margin:0 auto; padding:14px 24px 0; font-size:13px; color:var(--text3); }
+    .breadcrumb a { color:var(--blue); text-decoration:none; }
+    .breadcrumb a:hover { text-decoration:underline; }
+    .breadcrumb span { margin:0 6px; }
+    .hero { background:var(--surface); border-bottom:1px solid var(--border); padding:64px 24px 52px; text-align:center; }
+    .hero-badge { display:inline-block; background:#E8F5E9; color:var(--green); font-size:11px; font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:18px; }
+    @media (prefers-color-scheme: dark) { .hero-badge { background:#0A3D1C; color:#30D158; } }
+    .hero h1 { font-size:clamp(26px,5vw,44px); font-weight:700; letter-spacing:-0.03em; line-height:1.1; margin-bottom:14px; color:var(--text); }
+    .hero-sub { font-size:clamp(15px,2.2vw,18px); color:var(--text3); margin-bottom:30px; max-width:620px; margin-left:auto; margin-right:auto; }
+    .cta-group { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:16px; }
+    .btn-primary { display:inline-flex; align-items:center; gap:6px; background:var(--blue); color:#fff; border-radius:980px; padding:13px 26px; font-size:15px; font-weight:600; text-decoration:none; transition:background .15s; }
+    .btn-primary:hover { background:var(--blue-lt); }
+    .btn-secondary { display:inline-flex; align-items:center; gap:6px; background:transparent; color:var(--blue); border:1.5px solid var(--blue); border-radius:980px; padding:12px 24px; font-size:15px; font-weight:600; text-decoration:none; transition:all .15s; }
+    .btn-secondary:hover { background:var(--blue); color:#fff; }
+    .auto-translate-note { font-size:12.5px; color:var(--text3); }
+    .stats-row { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; background:var(--surface); border-bottom:1px solid var(--border); padding:24px; }
+    .stat-item { text-align:center; }
+    .stat-value { font-size:22px; font-weight:700; color:var(--blue); letter-spacing:-0.02em; }
+    .stat-label { font-size:12px; color:var(--text3); margin-top:2px; }
+    .main { max-width:var(--max-w); margin:0 auto; padding:56px 24px; }
+    .section { margin-bottom:56px; }
+    .section-title { font-size:22px; font-weight:700; letter-spacing:-0.02em; margin-bottom:16px; color:var(--text); }
+    .section-body { font-size:16px; color:var(--text2); line-height:1.75; margin-bottom:12px; }
+    .step-list { list-style:none; margin-top:20px; display:grid; gap:0; }
+    .step-item { display:flex; gap:16px; padding:20px 0; border-bottom:1px solid var(--border); }
+    .step-item:first-child { border-top:1px solid var(--border); }
+    .step-num { flex-shrink:0; width:32px; height:32px; border-radius:50%; background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; margin-top:2px; }
+    .step-body { flex:1; }
+    .step-name { font-size:15px; font-weight:700; color:var(--text); display:block; margin-bottom:6px; }
+    .step-text { font-size:15px; color:var(--text2); line-height:1.65; }
+    .faq-item { border-top:1px solid var(--border); padding:22px 0; }
+    .faq-item:last-child { border-bottom:1px solid var(--border); }
+    .faq-q { font-size:16px; font-weight:600; color:var(--text); margin-bottom:8px; line-height:1.4; }
+    .faq-a { font-size:15px; color:var(--text2); line-height:1.72; }
+    .related-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:32px; }
+    .rel-grid { display:flex; flex-wrap:wrap; gap:12px; margin-top:16px; }
+    .rel-card { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:12px 18px; font-size:14px; font-weight:600; color:var(--blue); text-decoration:none; transition:all .15s; }
+    .rel-card:hover { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .cta-card { background:var(--blue); border-radius:var(--r); padding:44px 32px; text-align:center; color:#fff; margin-top:56px; }
+    .cta-card h2 { font-size:26px; font-weight:700; margin-bottom:10px; letter-spacing:-0.02em; }
+    .cta-card p { font-size:16px; opacity:.85; margin-bottom:24px; }
+    .btn-white { display:inline-block; background:#fff; color:var(--blue); border-radius:980px; padding:13px 28px; font-size:15px; font-weight:700; text-decoration:none; transition:opacity .15s; }
+    .btn-white:hover { opacity:.88; }
+    .en-footer { background:var(--surface); border-top:1px solid var(--border); padding:36px 24px; text-align:center; color:var(--text3); font-size:12.5px; line-height:1.9; }
+    .en-footer a { color:var(--blue); text-decoration:none; }
+    .en-footer a:hover { text-decoration:underline; }
+    @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+  </style>
+</head>
+<body>
+  <nav class="en-nav" role="navigation" aria-label="Main navigation">
+    <a class="en-nav-logo" href="https://ezlong.com/en/">EZLONG</a>
+    <div class="en-nav-right">
+      <a class="en-nav-link" href="https://ezlong.com/en/">All Tools</a>
+      <a class="en-nav-link" href="https://ezlong.com/backtest.html">&#54620;&#44397;&#50612; &rarr;</a>
+    </div>
+  </nav>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="https://ezlong.com/en/">EZLONG</a><span>/</span><span>Monte Carlo Portfolio Simulator</span>
+  </nav>
+  <section class="hero">
+    <div class="hero-badge">Free &middot; No Sign-up &middot; Instant Access</div>
+    <h1>Monte Carlo Portfolio Simulator</h1>
+    <p class="hero-sub">Run 10,000 simulations on your US stock portfolio and see the full range of possible outcomes</p>
+    <div class="cta-group">
+      <a class="btn-primary" href="https://ezlong.com/backtest.html" target="_blank" rel="noopener">Open Tool &rarr;</a>
+      <a class="btn-secondary" href="https://ezlong.com/en/">Browse All Tools</a>
+    </div>
+    <p class="auto-translate-note">Tool UI is in Korean &mdash; Chrome, Edge &amp; Safari auto-translate automatically.</p>
+  </section>
+  <div class="stats-row" role="region" aria-label="Key statistics">
+    <div class="stat-item"><div class="stat-value">44 assets</div><div class="stat-label">US stocks and ETFs</div></div>
+    <div class="stat-item"><div class="stat-value">10,000 runs</div><div class="stat-label">per simulation</div></div>
+    <div class="stat-item"><div class="stat-value">20 years</div><div class="stat-label">of real market data</div></div>
+  </div>
+  <main class="main" id="main-content">
+    <section class="section">
+      <h2 class="section-title">What is Monte Carlo Portfolio Simulator?</h2>
+      <p class="section-body">The Monte Carlo Portfolio Simulator uses 20 years of real US stock market data (2006-2025) to run 10,000 random portfolio simulations and find your optimal asset allocation. Instead of guessing what percentage to put in NVDA versus SPY versus QQQ, the simulator runs thousands of combinations and identifies the allocation with the best risk-adjusted return — measured by the Sharpe Ratio.</p>
+      <p class="section-body">You can choose from 44 assets including major US stocks (NVDA, GOOGL, AAPL, MSFT, TSLA, AMZN) and ETFs (SPY, QQQ, VTI, SCHD, TLT). The simulator calculates three key portfolio types: Maximum Sharpe Ratio (best efficiency), Minimum Volatility (lowest risk), and a Custom allocation you design yourself.</p>
+      <p class="section-body">The output is a fan chart showing your portfolio's probability distribution across time — the median path, the optimistic 90th percentile, and the pessimistic 10th percentile — so you understand not just the expected outcome but the full range of realistic possibilities.</p>
+    </section>
+    <section class="section">
+      <h2 class="section-title">Why Use This Tool?</h2>
+      <p class="section-body">Single-number projections — 'your portfolio will be worth $X in 20 years' — are dangerously misleading. The stock market is not predictable in a straight line: returns are volatile, sequence matters, and the range of outcomes is wide. The Monte Carlo method explicitly models this uncertainty.</p>
+      <p class="section-body">By running 10,000 different random-walk scenarios based on actual historical return distributions, the simulator shows you what the realistic best case, worst case, and most likely case look like. This lets you ask better questions: 'Can I afford this allocation if I get the worst 10% outcome?' If yes, you have a robust portfolio. If not, you need to adjust.</p>
+    </section>
+    <section class="section">
+      <h2 class="section-title">How to run a Monte Carlo portfolio simulation</h2>
+      <ol class="step-list">
+        <li class="step-item">
+          <span class="step-num">1</span>
+          <div class="step-body"><strong class="step-name">Open the Monte Carlo Simulator</strong><p class="step-text">Click Open Tool below to access the simulator. It runs entirely in your browser — no download or login needed.</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">2</span>
+          <div class="step-body"><strong class="step-name">Select your assets</strong><p class="step-text">Choose from the list of 44 US stocks and ETFs. You can add multiple assets including NVDA, GOOGL, SPY, QQQ, TSLA, AAPL, and more. Start with 3-5 assets for a manageable analysis.</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">3</span>
+          <div class="step-body"><strong class="step-name">Set your allocation (optional)</strong><p class="step-text">For the Custom Portfolio option, enter the percentage you want in each asset. Percentages must sum to 100%. For Maximum Sharpe and Minimum Volatility portfolios, the simulator finds the optimal weights automatically.</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">4</span>
+          <div class="step-body"><strong class="step-name">Set your investment amount and period</strong><p class="step-text">Enter your initial portfolio value and the investment horizon in years. Typical inputs are $10,000-$100,000 initial value and 10-30 year horizon.</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">5</span>
+          <div class="step-body"><strong class="step-name">Run the simulation</strong><p class="step-text">Click Calculate or Run Simulation. The tool runs 10,000 scenarios and displays results in seconds.</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">6</span>
+          <div class="step-body"><strong class="step-name">Read your results</strong><p class="step-text">The fan chart shows median, 10th percentile (bad scenario), and 90th percentile (good scenario) paths. The table shows optimal weights for Maximum Sharpe and Minimum Volatility portfolios, plus Sharpe Ratio and annualized return for each.</p></div>
+        </li>
+      </ol>
+    </section>
+    <section class="section">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">What is a Monte Carlo simulation for investing?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">A Monte Carlo simulation runs thousands of random-walk scenarios using historical return distributions to show the full range of possible portfolio outcomes. Instead of one projected number, you get a probability distribution — showing best case, worst case, and everything in between.</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">How many assets are available in this simulator?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">The EZLONG Monte Carlo Portfolio Simulator includes 44 US stocks and ETFs: NVDA, GOOGL, AAPL, MSFT, TSLA, AMZN, SPY, QQQ, VTI, SCHD, TLT, and more. All are based on 20 years of real data (2006-2025).</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">What is the Sharpe Ratio and why does it matter?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">The Sharpe Ratio measures how much return you get per unit of risk (volatility). A higher Sharpe Ratio means better risk-adjusted efficiency. The Maximum Sharpe portfolio gives you the best return-per-risk combination — not necessarily the highest absolute return, but the most efficient use of risk.</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">What is the Minimum Volatility portfolio?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">The Minimum Volatility portfolio is the allocation that achieves the lowest possible portfolio volatility given your chosen assets. It suits risk-averse investors who prioritize capital preservation over maximum growth.</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">What does the fan chart show?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">The fan chart displays three paths over your investment horizon: the 90th percentile (top 10% of simulated outcomes — optimistic case), the 50th percentile (median), and the 10th percentile (bottom 10% — pessimistic case). All three bands are shown simultaneously so you see the full range of realistic outcomes.</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">How is this different from a simple compound return calculator?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">A simple compound calculator assumes constant returns every year (e.g., 10% every year). Monte Carlo simulation uses random returns each year based on historical distributions, capturing the real volatility of markets. This gives a much more realistic picture of long-term investing uncertainty.</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">What is the efficient frontier?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">The efficient frontier is the set of portfolios that offer the highest expected return for a given level of risk. Portfolios on the frontier are efficient — you cannot get more return without taking more risk, and you cannot reduce risk without sacrificing return. The simulator plots your portfolio on this frontier.</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">Is this Monte Carlo simulator free?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">Yes, completely free. No login, no email, no subscription. The simulator runs 10,000 scenarios in your browser using 20 years of real data at no cost.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section related-section">
+      <h2 class="section-title">Related Free Tools</h2>
+      <div class="rel-grid">
+          <a class="rel-card" href="https://ezlong.com/en/portfolio-manager.html">Portfolio Compound Simulator</a>
+          <a class="rel-card" href="https://ezlong.com/en/dca-simulator.html">DCA Compound Simulator</a>
+          <a class="rel-card" href="https://ezlong.com/en/atmr-dashboard.html">Swing Signal Dashboard</a>
+      </div>
+    </section>
+    <div class="cta-card">
+      <h2>Try Monte Carlo Portfolio Simulator Now</h2>
+      <p>Free, no sign-up, runs instantly in your browser. Chrome auto-translates Korean to English.</p>
+      <a class="btn-white" href="https://ezlong.com/backtest.html" target="_blank" rel="noopener">Open Monte Carlo Portfolio Simulator &rarr;</a>
+    </div>
+  </main>
+  <footer class="en-footer" role="contentinfo">
+    <p><a href="https://ezlong.com/en/">EZLONG</a> &mdash; Free US Stock Investment Tools<br>
+    &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
+    <small>Educational tools only. Not financial advice. All investments carry risk. Past performance does not guarantee future results.</small></p>
+  </footer>
+</body>
+</html>

@@ -188,6 +188,59 @@ switch (GROUP) {
     process.exit(1);
 }
 
+// ── 판단 원장 (judgment ledger) — 3영업일 판단 연속성 (2026-07-03) ─────────
+// 목적: 매 실행이 과거 판단을 모르는 "기억상실" 문제 해결.
+//   쓰기 — 매 생성 성공 시 심볼별로 한 줄 요약을 원장에 append (심볼당 최대 15개 유지)
+//   읽기 — 생성 직전 최근 날짜들(직전 3영업일 + 오늘 장중)의 판단을 프롬프트에 주입
+// 파일은 그룹별 분리(us/kr/crypto) — 워크플로 동시 실행 시 커밋 충돌 방지.
+// 원장이 없거나 깨져도 기존처럼 단발 생성으로 동작한다 (무중단 폴백).
+
+const LEDGER_MAX_PER_SYMBOL = 15;
+
+function ledgerPath() {
+  return path.join(DATA_DIR, `judgment-history-${GROUP}.json`);
+}
+
+function loadLedger() {
+  try {
+    const obj = JSON.parse(fs.readFileSync(ledgerPath(), 'utf8'));
+    return (obj && typeof obj === 'object') ? obj : {};
+  } catch { return {}; }
+}
+
+function saveLedger(ledger) {
+  try { fs.writeFileSync(ledgerPath(), JSON.stringify(ledger)); }
+  catch (e) { console.warn(`  판단 원장 저장 실패: ${e.message}`); }
+}
+
+function kstDateStr(d = new Date()) {
+  return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul' }).format(d); // YYYY-MM-DD
+}
+
+function kstTimeStr(d = new Date()) {
+  return new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', hour12: false, hour: '2-digit', minute: '2-digit' }).format(d);
+}
+
+// 최근 판단 컨텍스트: 날짜별 마지막 판단만 추려 최대 4일치(직전 3영업일 + 오늘 장중) 반환.
+// 파이프라인이 거래일에만 돌므로 원장에 존재하는 날짜 자체가 영업일 — 별도 휴일 테이블 불필요.
+function ledgerContextLines(ledger, symbol) {
+  const arr = Array.isArray(ledger[symbol]) ? ledger[symbol] : [];
+  if (!arr.length) return null;
+  const byDate = new Map();
+  for (const e of arr) if (e && e.d && e.k) byDate.set(e.d, e); // 시간순 append → 날짜별 마지막 판단만 남음
+  const days = [...byDate.values()].slice(-4);
+  if (!days.length) return null;
+  return days.map(e => `${e.d} ${e.t || ''}: ${e.k}`).join('\n');
+}
+
+function appendLedger(ledger, symbol, summaryLine) {
+  if (!Array.isArray(ledger[symbol])) ledger[symbol] = [];
+  ledger[symbol].push({ d: kstDateStr(), t: kstTimeStr(), k: summaryLine });
+  if (ledger[symbol].length > LEDGER_MAX_PER_SYMBOL) {
+    ledger[symbol] = ledger[symbol].slice(-LEDGER_MAX_PER_SYMBOL);
+  }
+}
+
 // ── 유틸리티 ──────────────────────────────────────────────────────────────
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
@@ -437,7 +490,7 @@ function pivotPoints(highs, lows, closes) {
 
 // ── Gemini AI 분석 ────────────────────────────────────────────────────────
 
-async function callGemini(meta, ind, swing, pivot, price, weeklyInd) {
+async function callGemini(meta, ind, swing, pivot, price, weeklyInd, historyLines) {
   if (!GEMINI_API_KEY) {
     console.warn('  GEMINI_API_KEY 없음 — AI 분석 건너뜀');
     return null;
@@ -486,13 +539,24 @@ async function callGemini(meta, ind, swing, pivot, price, weeklyInd) {
     return `\n[최근 5거래일 일봉 변동률 — 반드시 이 흐름을 분석에 언급하라]\n${lines}\n`;
   })();
 
+  // 판단 연속성 섹션 — 직전 3영업일 + 오늘 장중 판단 기록 (2026-07-03)
+  const historySection = historyLines ? `
+[직전 판단 기록 — 최근 3영업일 + 오늘 장중 (판단 연속성 필수)]
+${historyLines}
+연속성 규칙 (반드시 지켜라):
+- 오늘 판단은 위 기록의 흐름 위에서 내려라. 처음 보는 종목처럼 서술하지 마라.
+- action/stage가 직전 기록과 달라지면, reason에 무엇이 달라졌는지(어떤 지표·가격 변화 때문인지) 반드시 명시하라.
+- 같은 판단이 이어지면 "N일 연속" 형태로 흐름을 서술하라.
+- 단, 위 기록에 끌려가서 현재 데이터와 다른 판단을 내리지는 마라. 기록은 맥락이고, 판단 근거는 항상 오늘의 지표다.
+` : '';
+
   const prompt = `너는 15년 경력의 스윙 트레이더다. 분석가처럼 "~할 수 있다", "가능성이 있다"라고 얼버무리지 마라.
 매번 하나의 방향을 정하고, 그 근거를 숫자로 대라. 확신이 없을 때는 "관망"이라고 말하고, 왜 관망인지 이유를 써라.
 
 [절대 준수 사항]
 - 오직 이동평균선, RSI, MACD, 볼린저밴드, 거래량, 가격 패턴 등 순수 기술적 지표만 사용하라.
 - 기업 펀더멘털, 실적, 금리, 연준, 거시경제, 환율, 산업 트렌드, 규제, 정치적 요인은 절대 언급하지 마라.
-${recentReturnSection}
+${historySection}${recentReturnSection}
 [종목 정보]
 ${meta.context}
 
@@ -589,7 +653,8 @@ ${weeklySection}
   "narrative": "반드시 단일 문자열(string)로 작성하라. JSON object나 배열로 반환하면 절대 안 된다. 아래 4개 섹션을 \\n으로 구분된 하나의 string 안에 모두 담아라. 섹션 제목은 대괄호로 감싸라([추세 위치] 형태). 각 항목은 · 으로 시작. 문장 끝은 서술어 없이 명사형으로 끝맺기 (예: '~구간', '~확인', '~진단', '~수준'). '~할 수 있다', '~가능성', '~예상', '~전망' 절대 금지. 항목마다 숫자값 필수 포함. 각 항목은 충분한 해석이 담긴 한 문장 — 너무 짧아서 의미 파악이 안 될 정도로 짧게 쓰지 마라. 섹션당 2~3개 항목.\n\n[추세 위치]\n· 현재가($숫자) vs SMA5/20/50($숫자/$숫자/$숫자) — 단기·중기 추세 위치 진단 + 상회/하회 여부\n· SMA100/200($숫자/$숫자) 대비 위치 — 중장기 추세 강도 판단\n· 52주 위치(%숫자) + 현 가격대 역사적 의미\n[모멘텀 지표]\n· RSI 궤적 (이전값→현재값) + 과매수/과매도/중립 판단 + 방향성 해석\n· MACD 히스토그램 궤적 (이전값→현재값) + 개선/악화 진단 + 추세 전환 신호 여부\n· 볼린저밴드 현재가 위치 (상단/중단/하단 $숫자) + 밴드폭 수준 해석\n[지지·저항 구조]\n· 스윙 지지선 ($숫자) + 근거 (피벗/스윙저점/이동평균 기반)\n· 스윙 저항선 ($숫자) + 돌파 시 의미\n· 5일/20일 고가·저가 패턴 (Higher Low / Lower High / 횡보) + 추세 해석\n[거래량·결론]\n· 거래량 비율 (5일 평균 대비 숫자배) + 움직임의 신뢰도 판단\n· 현 구간 진단 (축적/분배/상승추세/하락추세) + 진입·관망 조건 명시",
   "patternNote": "차트 패턴 또는 추세 채널 1~2문장",
   "keyPoints": ["핵심 포인트 1", "핵심 포인트 2", "핵심 포인트 3"],
-  "riskNote": "기술적 리스크 한 문장"
+  "riskNote": "기술적 리스크 한 문장",
+  "continuity": "${historyLines ? "직전 판단 기록 대비 오늘의 흐름 1~2문장. 판단 유지면 'N일 연속 ~' 형태, 판단 전환이면 전환 이유(지표 변화)를 숫자와 함께 명시" : "기록 없음 — 첫 판단"}"
 }`;
 
   // 단일 모델 호출 (최대 4회 재시도, 지수 백오프: 5s → 15s → 45s)
@@ -803,8 +868,25 @@ async function processTicker(meta) {
     );
   }
 
-  // 5. Gemini AI 분석
-  const aiResult = await callGemini(meta, indicators, swing, pivot, price, weeklyInd);
+  // 5. Gemini AI 분석 — 판단 원장에서 직전 3영업일 기록을 읽어 연속성 컨텍스트로 주입
+  const ledger       = loadLedger();
+  const historyLines = ledgerContextLines(ledger, symbol);
+  const aiResult = await callGemini(meta, indicators, swing, pivot, price, weeklyInd, historyLines);
+
+  // 판단 원장 기록 — Gemini 신규 판단 성공 시에만 (실패 시 기존 분석 보존 경로는 기록하지 않음)
+  if (aiResult && aiResult.action) {
+    try {
+      const summaryLine = [
+        `$${round(price, 2)}`,
+        indicators.rsi != null ? `RSI ${round(indicators.rsi, 1)}` : null,
+        `${aiResult.action}${aiResult.buyScore != null ? `(매수점수 ${aiResult.buyScore})` : ''}`,
+        aiResult.stage || null,
+        aiResult.scoreReason || null,
+      ].filter(Boolean).join(' · ').slice(0, 120);
+      appendLedger(ledger, symbol, summaryLine);
+      saveLedger(ledger);
+    } catch (e) { console.warn(`  판단 원장 기록 실패 (${symbol}): ${e.message}`); }
+  }
 
   // 6. 장외 시세 (프리마켓 / 포스트마켓)
   // 한국 주식(.KS): Yahoo Finance v8 API가 marketState를 누락하는 경우가 많아 'CLOSED' 폴백으로 오표시

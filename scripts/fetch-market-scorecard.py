@@ -37,6 +37,65 @@ OUTPUT_PATH = os.path.normpath(
     os.path.join(os.path.dirname(__file__), '..', 'data', 'market-scorecard-data.json')
 )
 
+# 판단 원장 (judgment ledger) — 3영업일 판단 연속성 (2026-07-03)
+# market-scorecard-data.json은 10개 상한(약 2일치)이라 3영업일 맥락에 부족 → 별도 원장 유지.
+# 원장이 없거나 깨져도 기존처럼 동작한다 (무중단 폴백).
+LEDGER_PATH = os.path.normpath(
+    os.path.join(os.path.dirname(__file__), '..', 'data', 'judgment-history-scorecard.json')
+)
+LEDGER_MAX = 20  # 하루 5회 × 4일
+
+
+def load_ledger():
+    try:
+        with open(LEDGER_PATH, 'r', encoding='utf-8') as f:
+            obj = json.load(f)
+        return obj if isinstance(obj, list) else []
+    except Exception:
+        return []
+
+
+def save_ledger(ledger):
+    try:
+        with open(LEDGER_PATH, 'w', encoding='utf-8') as f:
+            json.dump(ledger, f, ensure_ascii=False)
+    except Exception as e:
+        print(f"  판단 원장 저장 실패: {e}")
+
+
+def append_ledger(ledger, kst_now, entry):
+    """생성된 카드의 핵심을 한 줄로 원장에 기록 (결정적 조합 — Gemini 의존 없음)"""
+    line = f"긍정 {entry['positive_total']} : 부정 {entry['negative_total']} — {entry['key_event']['name']}"
+    if entry.get('summary'):
+        line += f" | {entry['summary']}"
+    ledger.append({'d': kst_now.strftime('%Y-%m-%d'), 't': kst_now.strftime('%H:%M'), 'k': line[:160]})
+    return ledger[-LEDGER_MAX:]
+
+
+def ledger_context_block(ledger):
+    """최근 4개 날짜(직전 3영업일 + 오늘)의 날짜별 마지막 판단으로 연속성 블록 구성.
+    파이프라인이 여는 날에만 돌므로 원장의 날짜 자체가 영업일 — 별도 휴일 테이블 불필요."""
+    if not ledger:
+        return ""
+    by_date = {}
+    for e in ledger:
+        if isinstance(e, dict) and e.get('d') and e.get('k'):
+            by_date[e['d']] = e  # 시간순 append → 날짜별 마지막 판단만 남음
+    days = list(by_date.values())[-4:]
+    if not days:
+        return ""
+    lines = '\n'.join(f"- {e['d']} {e.get('t', '')}: {e['k']}" for e in days)
+    return f"""
+=== 직전 3영업일 판단 흐름 (연속성 — 반드시 참고) ===
+{lines}
+[연속성 규칙]
+- 오늘 카드는 위 흐름 위에서 판단하라. 매번 처음 보는 시장처럼 서술하지 마라.
+- 긍정/부정 구도가 직전 영업일 대비 개선/악화/유지 중 무엇인지 summary에 반영하라 (예: '3일 연속 긍정 우위 유지', '어제 부정 우위에서 긍정 전환').
+- 구도가 크게 바뀌면(±15p 이상) 그 원인 이벤트를 key_event 또는 요인에 반드시 포함하라.
+- 단, 위 기록에 끌려가 현재 데이터와 다른 판단을 내리지는 마라. 판단 근거는 항상 오늘의 가격·뉴스다.
+
+"""
+
 # 시장 티커
 EQUITY_TICKERS = ['QQQ', 'SPY', 'TSLA', 'NVDA', 'AAPL', 'MSFT', 'GOOGL', 'SOXX']
 MACRO_TICKERS  = {
@@ -364,7 +423,8 @@ def fetch_fred_macro():
 # ─── Gemini 호출 ──────────────────────────────────────────────────────────────
 
 def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
-                 rss_headlines=None, av_items=None, av_summary="", fred_rows=None):
+                 rss_headlines=None, av_items=None, av_summary="", fred_rows=None,
+                 history_block=""):
     schedule_label = SCHEDULE_LABELS.get(kst_now.hour, f'{kst_now.hour}:00')
 
     # yfinance 뉴스 + Google News RSS 합산
@@ -416,7 +476,7 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 오래된 뉴스 이벤트(예: 수일 전 실적 발표)는 이미 가격에 반영되었으므로 핵심 이슈로 분류 금지
 - 가격 데이터와 뉴스가 상충할 때: 실시간 가격·선물 데이터를 1차 기준으로 사용
 
-{prev_block}=== 현재 시장 데이터 ===
+{history_block}{prev_block}=== 현재 시장 데이터 ===
 [주요 지수·종목]
 {chr(10).join(equity_rows)}
 
@@ -747,11 +807,18 @@ def main():
     if prev_entries:
         print(f"  직전 카드 참고: {[e['id'] for e in prev_entries]}")
 
+    # 2-1. 판단 원장 로드 — 직전 3영업일 판단 흐름 (2026-07-03)
+    ledger = load_ledger()
+    history_block = ledger_context_block(ledger)
+    if history_block:
+        print(f"  판단 원장 참고: {len(ledger)}개 기록")
+
     # 3. Gemini 분석
     print("  [4] Gemini AI 분석 중...")
     prompt = build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries,
                           rss_headlines=rss_headlines, av_items=av_items,
-                          av_summary=av_summary, fred_rows=fred_rows)
+                          av_summary=av_summary, fred_rows=fred_rows,
+                          history_block=history_block)
     result = call_gemini(prompt)
 
     if not result:
@@ -801,6 +868,15 @@ def main():
 
     # 6. 저장
     save_data(data)
+
+    # 6-1. 판단 원장 기록 (2026-07-03) — 실패해도 본 저장에는 영향 없음
+    try:
+        ledger = append_ledger(ledger, kst_now, entry)
+        save_ledger(ledger)
+        print(f"  판단 원장 기록 완료 ({len(ledger)}개)")
+    except Exception as e:
+        print(f"  판단 원장 기록 실패: {e}")
+
     print(f"  총 항목 수: {len(entries)}")
     print("=== 완료 ===")
 

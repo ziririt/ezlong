@@ -62,7 +62,7 @@ jobs:
           git config user.name  "Market Scorecard Bot"
           git config user.email "scorecard-bot@ezlong.com"
 
-          git add data/market-scorecard-data.json
+          git add data/market-scorecard-data.json data/judgment-history-scorecard.json
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 건너뜀."
             exit 0

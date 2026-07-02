@@ -126,7 +126,7 @@ grep -rn "function calcBuyScore\|function calcSellScore" . --include="*.html" --
 ├── ez-nav.js                   ← 글로벌 헤더 공유 스크립트 ★
 ├── ez-footer.js                ← 글로벌 푸터 공유 스크립트 ★
 ├── EZLONG_GUIDE.md             ← 이 파일 (개발 가이드)
-├── DEPLOY_CHECKLIST.md         ← 배포 전 이미지 확인 체크리스트
+├── EZLONG_MASTER_PLAN.md       ← 종합 점검·개선 로드맵 (2026-07-02 신설)
 ├── _template.html              ← 새 페이지 작성용 표준 골격
 ├── *.html                      ← 각 서비스 페이지
 ├── en/                         ← 영문 버전 페이지
@@ -162,10 +162,16 @@ grep -rn "function calcBuyScore\|function calcSellScore" . --include="*.html" --
 | `/compound-calculator.html` | 복리 계산기 | 복리 계산기 |
 | `/retirement-calculator.html` | 은퇴 목표 역산 계산기 | 은퇴 계산기 |
 | `/backtest.html` | 몬테카를로 포트폴리오 시뮬레이터 | 백테스트 |
-| `/risk-diagnostic.html` | 투자 행동 자가진단 | 투자성향 |
-| `/auto-dca-guide.html` | 자동 적립식 매수 가이드 | DCA 가이드 |
+| `/risk-diagnostic.html` | 투자 행동 자가진단 | 투자성향 진단 |
+| `/stocks.html` | 심플 주가 정보 | 심플 주가 |
+| `/stock-personality-quiz.html` | MBTI 투자유형 진단 | 투자유형 진단 |
+| `/auto-dca-guide.html` | 자동 적립식 매수 가이드 | 자동화 가이드 |
 
-> **새 페이지를 추가할 때:** 이 표에 행 추가 + `ez-nav.js` · `ez-footer.js` 두 파일에 링크 추가 → git commit → firebase deploy
+> 블로그형 롱테일 페이지(2026-07-02 추가, nav 미포함): tesla-monthly-dca-10years, nvda-monthly-dca-5years, aapl-vs-msft-dividend-dca, fire-retirement-4percent-rule, isa-irp-us-stock-tax-comparison
+>
+> ⚠️ 이 표는 낡기 쉽다. **진실의 원천은 `ez-nav.js`의 links 배열**이다. 불일치 발견 시 이 표를 ez-nav.js에 맞춘다.
+
+> **새 페이지를 추가할 때:** 이 표에 행 추가 + `ez-nav.js` · `ez-footer.js` 두 파일에 링크 추가 → git commit → git push (push = 자동 배포)
 
 ---
 
@@ -310,15 +316,11 @@ var links = [
 
 ## 7. 이미지 파일 관리 규칙
 
-### 현재 등록된 이미지 파일 (2026-06-01 기준, 21개)
-```
-baseball-bg.jpg       bg-swing-preview.png  bg-swing.jpg
-bg-swing.png          bg-swing.webp         book01.png
-book01.webp           book02.png            book02.webp
-book02_trans2.png     hero-desktop.jpg      hero-desktop.webp
-hero-mobile.jpg       hero-mobile.webp      hero-swing.jpg
-logo-darkmode.png     logo-darkmode.webp    logo-preview.png
-logo-preview.webp     logo.png              wallstreet.png
+### 이미지 파일 현황 확인 (수동 목록 폐지 — 2026-07-03)
+
+> 문서에 이미지 목록을 수동 유지하는 방식은 항상 낡는다. 현황은 명령으로 확인한다:
+```bash
+cd ~/Desktop/ezlong && ls *.png *.jpg *.jpeg *.webp 2>/dev/null
 ```
 
 ### 새 이미지 추가 시 절차 (CRITICAL — 반드시 이 순서대로)
@@ -366,26 +368,27 @@ done
 > 로컬이 remote보다 뒤처진 상태에서 배포하면 **구버전 파일이 운영 서버를 덮어쓴다.**  
 > 실제로 2026-06-01에 이 실수로 ezlong.com 메인, 헤더, 푸터가 통째로 깨졌다.
 
-### 올바른 배포 워크플로우 — 반드시 2단계로 실행
+### 올바른 배포 워크플로우 (2026-07-03 전면 개정 — push = 자동 배포)
 
-> 파일 편집이 끝난 뒤, 아래 두 덩어리를 순서대로 실행한다.  
-> 1차 실행 후 결과를 확인하고 문제가 없으면 2차를 실행한다.
+> ⚠️ **구 절차 폐기:** 이전 버전의 "1차 실행: `git stash && git pull --rebase && git stash pop`"은
+> **2026-06-14 대형사고의 원인 명령**이므로 절대 사용하지 않는다. CLAUDE.md 금지 목록과 동일.
+>
+> **배포 모델 (2026-07-03 라이브 대조로 확정):** main에 push되면 `firebase-hosting.yml`이
+> 자동 배포한다. 라이브 = git 추적 파일. **push가 곧 배포다.**
+> 수동 `firebase deploy`는 Actions 장애 시 비상용으로만 사용한다 — 로컬의 미추적 파일
+> (드래프트·백업 등)이 함께 올라가고, 커밋 없는 수정은 다음 자동 배포가 조용히 되돌리기 때문.
 
-**1차 실행 — 동기화 및 복원**
+**표준 절차** (`변경한파일1 변경한파일2 ...` 부분만 실제 파일명으로 교체)
 ```bash
-cd ~/Desktop/ezlong && git status && git stash && git pull --rebase origin main && git stash pop && git status
-```
-→ 마지막 `git status`에서 편집한 파일만 modified로 표시되고 conflict가 없으면 2차 진행.
-
-**2차 실행 — 커밋 & 배포** (`변경한파일1 변경한파일2 ...` 부분만 실제 파일명으로 교체)
-```bash
-cd ~/Desktop/ezlong && git add 변경한파일1 변경한파일2 && git commit -m "feat: 변경 내용 설명" && git pull --rebase origin main && git push origin main && firebase deploy --only hosting
+cd ~/Desktop/ezlong && git status                # 0. 상태 확인 — 의도치 않은 파일 없는지
+git pull origin main                             # 1. 먼저 최신 받기 (--rebase 금지)
+git add 변경한파일1 변경한파일2                    # 2. 수정한 파일만 명시 (git add -A 금지)
+git commit -m "feat: 변경 내용 설명"              # 3. 커밋
+git push origin main                             # 4. push = 배포. 1~2분 후 라이브 확인
 ```
 
-> **예시** (write.html, board.html, post.html을 수정한 경우):
-> ```bash
-> cd ~/Desktop/ezlong && git add write.html board.html post.html && git commit -m "feat: 글 작성 페이지 개선" && git pull --rebase origin main && git push origin main && firebase deploy --only hosting
-> ```
+> pull에서 충돌이 나면 멈추고 충돌 파일을 확인한다. 충돌 해결 전 push 금지.
+> 배포 확인: https://ezlong-541a8.web.app/ 에서 변경 내용 직접 확인 (1~2분 소요).
 
 ### 문제 발생 시 복구 방법
 
@@ -393,13 +396,13 @@ cd ~/Desktop/ezlong && git add 변경한파일1 변경한파일2 && git commit -
 1. https://console.firebase.google.com → Hosting → Release history
 2. 정상 버전 선택 → "Revert to this release"
 
-**git으로 복구:**
+**git으로 복구 (특정 파일을 원격 최신 버전으로 되돌리기):**
 ```bash
-git stash                          # 로컬 미커밋 변경사항 임시 저장
-git pull --rebase origin main      # GitHub 최신 버전으로 복구
-/opt/homebrew/bin/firebase deploy --only hosting   # 복구 배포
-git stash pop                      # 내 변경사항 복원
+git fetch origin main
+git checkout origin/main -- 파일명.html   # 해당 파일만 원격 버전으로 복원
+git add 파일명.html && git commit -m "fix: 원격 버전 복원" && git push origin main
 ```
+> `git pull --rebase`·`git stash` 조합은 사용하지 않는다 (2026-06-14 사고 원인).
 
 **lock 파일 문제 시:**
 ```bash

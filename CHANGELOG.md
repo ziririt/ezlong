@@ -5,6 +5,45 @@
 
 ---
 
+## [2026-07-02] 세션 — 심플 주가 실시간 데이터 파이프라인 이중 장애 복구
+
+### 커밋 이력 (주요 작업)
+
+. `a70899a1e` — fix: 심플 주가 실시간 배치 누락 복구 + market-scorecard 반영
+
+### 증상
+
+stocks.html "심플 주가" 페이지에서 NVDA·AAPL·MSFT·GOOGL·TSM·SOXX 등 시총 상위 종목의 가격·등락률·스파크라인이 실제 시세와 전혀 다르게 표시됨(아이패드 네이티브 주식 위젯과 대조해 발견).
+
+### 원인 (두 파이프라인이 동시에 조용히 고장)
+
+1. `stocks-prices.json`(10분 갱신) — `fetch-stocks-prices.py`가 `BATCH=200`으로 Massive API에 스냅샷을 한 번에 요청했는데, API가 에러 없이 일부 심볼을 응답에서 누락. 약 230개 중 60개만 정상 수신됐고 하필 NVDA·AAPL·MSFT·GOOGL·TSM이 매번 빠짐.
+2. `stocks-data.json`(일 1회 갱신) — `fetch-stocks-data.py`의 `fetch_ticker()`가 yfinance `fast_info`에 의존했는데 이 값이 조용히 비어버려 2026-06-17 이후 약 2주간 실질 내용이 갱신되지 않은 채 커밋만 반복됨(파일이 한 줄짜리 JSON이라 diff 통계가 내용 변화를 반영하지 못했음).
+
+폴백 구조상(실시간 파일에 없으면 일 1회 파일로 대체) 두 파일이 동시에 문제였던 종목만 골라 2주 전 가격이 노출됨.
+
+### 조치
+
+1. `fetch-stocks-prices.py`: `BATCH` 200→60 축소, 누락 심볼 20개씩 최대 2회 재시도, 최종 누락분은 `missingSymbols` 필드 + GitHub Actions `::warning::` 로그로 노출.
+2. `fetch-stocks-data.py`: 가격 소스를 `fast_info`에서 `t.history(period='5d', auto_adjust=False)` 우선으로 교체, `fast_info`는 폴백으로만 사용.
+3. CLAUDE.md에 19번 항목으로 재발방지 규칙 및 점검 명령 추가.
+
+### 검증
+
+수동 workflow_dispatch 실행 결과 284개 중 281개 정상 수신(남은 BRK-B·ANSS·MMC 3개는 Massive 쪽 개별 데이터 공백 — 배치 크기와 무관, 6/17 스냅샷에도 이미 null). NVDA $197.58·TSM $444.23·S&P500 7,483.23 등 야후 파이낸스 대조 결과 소수점까지 일치.
+
+### 복구 명령어 (필요시)
+
+```bash
+# 전체 되돌리기 (market-scorecard 변경도 함께 되돌아감 — 주의)
+git revert a70899a1e
+
+# fetch-stocks-prices.py / fetch-stocks-data.py만 되돌리려면
+git checkout <이전커밋SHA> -- scripts/fetch-stocks-prices.py scripts/fetch-stocks-data.py
+```
+
+---
+
 ## [2026-06-27] 세션 — Gemini API 비용 폭증 원인 분석 + 3단계 비용 절감 + 스코어카드 JSON 정리
 
 ### 커밋 이력 (주요 작업)

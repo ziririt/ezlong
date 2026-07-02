@@ -26,10 +26,13 @@ sh ~/Documents/Claude/Projects/미국주식투자자를\ 위한\ ezlong.com/back
 - **금지: `git add`, `git commit`, `git push`, `git pull`, `git rebase`, `git stash`**
 - 모두 유저가 터미널에서 직접 실행한다.
 
-### 3. pull-first 철칙
+### 3. pull-first 철칙 + push = 자동 배포 (2026-07-03 개정)
 
-배포 순서: `git pull` → `git add [파일 명시]` → `git commit` → `git push` → `firebase deploy`
-pull 없이 `firebase deploy` 절대 금지.
+배포 순서: `git pull` → `git add [파일 명시]` → `git commit` → `git push` — **push가 곧 배포다.**
+
+- `firebase-hosting.yml`이 main push마다 자동 배포한다. 라이브 = git 추적 파일 (2026-07-03 라이브 대조로 실증).
+- **수동 `firebase deploy`는 Actions 장애 시 비상용으로만.** 평소 사용 금지 — 로컬 미추적 잡파일(드래프트·.bak)이 함께 올라가고, 커밋 없는 수정은 다음 자동 배포가 조용히 되돌린다("고쳤는데 사라졌다" 미스터리의 원인).
+- 참고: 봇(GITHUB_TOKEN) push는 firebase-hosting.yml을 트리거하지 않는다. 대신 scorecard 워크플로가 하루 5회 자체 deploy 스텝을 실행한다.
 
 ### 4. 이미지는 단독 커밋
 
@@ -49,21 +52,20 @@ git tag -f "stable-$(date +%Y%m%d)" && git push origin --tags
 - `git add -A` → 의도치 않은 파일 포함
 - pull 없이 `firebase deploy` → 구버전이 운영 서버 덮어씀
 
-### 7. firebase deploy 누락 — 2026-06-14 교훈
+### 7. 라이브 반영 확인 절차 — 2026-07-03 전면 개정 (구 "firebase deploy 누락" 항목 대체)
 
-**배경:** git push 후 `firebase deploy`를 실행하지 않아 라이브 서버에 구버전이 수 시간 동안 서빙됨.
-유저는 캐시 문제로 오해해 몇 시간을 낭비함. Claude는 "캐시 삭제"를 반복 권유했는데 이것이 완전히 틀린 진단이었음.
+**배경:** 2026-06-14엔 수동 deploy 누락이 문제였으나, 2026-07-03 라이브 대조 결과 현재는
+push 시 자동 배포가 지배적 경로임이 확정됐다(3항). 이 항목은 그에 맞춰 개정됐다.
 
 **규칙:**
-- git push 완료 후 반드시 `firebase deploy --only hosting` 실행을 안내한다.
+- 유저 git push 완료 후: "1~2분 뒤 라이브에서 확인" 안내. 수동 deploy 안내 금지.
 - 라이브 반영 여부가 의심될 때 **가장 먼저** 확인할 것: `https://ezlong.com/ez-nav.js` 와 `https://ezlong-541a8.web.app/ez-nav.js` **둘 다** fetch해서 버전 비교.
-- GitHub Actions 자동 배포는 이 프로젝트에서 신뢰하지 않는다. 항상 수동 `firebase deploy` 필수.
 
 **버전 불일치 진단 트리 (반드시 이 순서로 확인):**
 
 | 상황 | 원인 | 해결 |
 |------|------|------|
-| ezlong-541a8.web.app = 구버전 | firebase deploy 미실행 | `firebase deploy --only hosting` |
+| ezlong-541a8.web.app = 구버전 | firebase-hosting.yml 실행 실패 또는 미트리거 | GitHub Actions에서 해당 워크플로 로그 확인 → 필요 시 Run workflow 수동 실행. 그래도 안 되면 비상용 수동 `firebase deploy --only hosting` |
 | ezlong-541a8.web.app = 신버전, ezlong.com = 구버전 | Cloudflare 등 CDN 캐시 | Cloudflare 대시보드에서 캐시 Purge |
 | 둘 다 신버전인데 브라우저만 구버전 | 브라우저 캐시 | 강력새로고침 (이때만 캐시삭제 권유) |
 
@@ -541,6 +543,71 @@ GET /v2/aggs/ticker/{sym}/range/5/minute/{today}/{today}?adjusted=false&sort=asc
 ### STATE.md는 만들지 않는다
 
 루프 상태(진행 중·완료·에스컬레이션)는 **휘발성 Task 리스트**로 추적한다. 영구 기록은 CHANGELOG.md 하나로 단일화. 별도 STATE.md를 만들면 진실의 출처가 둘로 갈라져 사고 원인이 된다.
+
+---
+
+## 19. 실시간 주가 파이프라인 이중 장애 — 재발방지 (2026-07-02 명문화)
+
+**배경:** 심플 주가(stocks.html)에서 NVDA·AAPL·MSFT·GOOGL·TSM·SOXX 등 시총 상위 종목의 가격·등락률·스파크라인이 실제 시세와 전혀 다르게 표시됨. 유저가 아이패드 네이티브 주식 위젯과 비교해 발견. 원인은 두 파이프라인이 동시에 조용히 망가진 것.
+
+### 원인 1 — Massive API 배치 요청 크기 상한
+
+`scripts/fetch-stocks-prices.py`가 `BATCH=200`으로 스냅샷을 한 번에 요청하면, Massive(구 Polygon.io) API가 **에러 없이** 일부 심볼을 응답에서 빠뜨린다. 약 230개 요청 중 60개만 살아남는 식으로, 하필 NVDA·AAPL·MSFT·GOOGL·TSM 같은 대형주가 매번 누락 대상에 걸렸다.
+
+**규칙:**
+- `BATCH`는 **60을 넘기지 않는다.** 심볼 리스트가 늘어나도 배치 크기는 고정, 배치 개수만 늘릴 것.
+- 1차 요청 후 누락된 심볼은 20개씩 최대 2회 재시도한다(이미 코드에 반영됨).
+- 재시도 후에도 남는 심볼은 `stocks-prices.json`의 `missingSymbols` 필드와 GitHub Actions `::warning::` 로그로 노출한다. **"숫자가 실제랑 안 맞다"는 제보가 오면 가장 먼저 이 필드부터 확인할 것** — 로그를 뒤질 필요 없이 바로 원인 파악 가능.
+- BRK-B·ANSS·MMC는 배치 크기와 무관하게 Massive 쪽에 원래부터 데이터가 없는 개별 종목이다(재시도해도 항상 실패). 이 3개가 `missingSymbols`에 뜨는 건 정상이며 조치 불필요.
+
+### 원인 2 — yfinance fast_info 조용한 실패
+
+`scripts/fetch-stocks-data.py`(일 1회 갱신)의 `fetch_ticker()`가 `t.fast_info.last_price`/`previous_close`에 의존했는데, 이 값이 예외를 던지지 않고 조용히 비어버리면서 **2026-06-17부터 약 2주간 실질적으로 갱신되지 않았다.** `git log`상으로는 매일 커밋이 있었지만(파일이 한 줄짜리 JSON이라 diff가 항상 "1 line changed"로만 보임), 실제 콘텐츠(`generatedAt`)는 그대로였다.
+
+**규칙:**
+- 가격 소스는 `fast_info`가 아니라 **`t.history(period='5d', interval='1d', auto_adjust=False)`를 우선 사용**한다(야후 파이낸스 웹사이트 표시값과 일치). `fast_info`는 히스토리 실패 시 폴백으로만 쓴다.
+- 일 1회 갱신 파일(`stocks-data.json`)의 `generatedAt`이 실제로 오늘 날짜인지 **커밋 메시지가 아니라 파일 내용으로** 확인하는 습관을 들일 것. 한 줄짜리 JSON은 커밋 diff 통계(`N line changed`)가 내용 변화량을 말해주지 않는다.
+
+### 두 원인이 겹치는 구조
+
+`stocks.html`은 `stocks-prices.json`(10분 갱신)에 종목이 없으면 `stocks-data.json`(일 1회)으로 폴백한다. 위 두 파일이 **동시에** 문제였던 종목만 골라 2주 전 가격이 노출됐다. 하나만 고쳐서는 재발한다 — 두 파일 모두 점검해야 완전히 해결된다.
+
+### 점검 명령
+
+```bash
+# 실시간 파일에 실제로 뭐가 빠졌는지 (missingSymbols 필드)
+python3 -c "import json; d=json.load(open('data/stocks-prices.json')); print(d.get('missingSymbols'))"
+
+# 일 1회 파일이 진짜 오늘 갱신됐는지 (커밋 메시지 말고 내용으로)
+python3 -c "import json; d=json.load(open('data/stocks-data.json')); print(d.get('generatedAtKST'))"
+```
+
+---
+
+## 20. AI 판단 3영업일 연속성 — 판단 원장(judgment ledger) 절대 보호 (2026-07-03 구축)
+
+**배경:** 유저가 수차례 요구 — 스윙시그널·차트분석·TSLA/NVDA·긍정vs부정 모두 최근 3영업일
+판단 흐름을 참조해야 한다. 매번 당일 스냅샷만 보고 "기억상실" 판단을 내리는 구조를 이날 수술했다.
+
+**구조 (제거·우회 절대 금지):**
+
+| 파이프라인 | 원장 파일 | 읽기/쓰기 위치 |
+|-----------|----------|---------------|
+| AI 차트분석 (us/kr/crypto) | `data/judgment-history-{us,kr,crypto}.json` | `generate-chart-analysis.js` — 프롬프트 historySection 주입 + 생성 후 append |
+| 긍정vs부정 | `data/judgment-history-scorecard.json` | `fetch-market-scorecard.py` — history_block 주입 + append_ledger |
+| 스윙 시그널 | `market-signals.json`의 previousSignals 재활용 | `atmr-dashboard.html` buildTrendLineHtml() — 3영업일 매수신호 흐름 라인 |
+
+**원리:**
+- 원장 파일은 그룹별 분리 — 워크플로 동시 실행 시 커밋 충돌 방지.
+- "최근 4개의 서로 다른 날짜"(직전 3영업일 + 오늘) 방식 — 파이프라인이 거래일에만 돌므로 휴일 테이블 불필요.
+- 원장이 없거나 깨져도 단발 생성으로 폴백. 원장 코드가 본 기능을 죽이는 일은 없다.
+- 심볼당 15개(차트) / 20개(스코어카드) prune — 파일 크기 영구 상한.
+- 차트분석 JSON에 `continuity` 필드 추가됨 (3일 흐름 서술).
+
+**규칙:**
+- 이 파이프라인들을 수정할 때 원장 주입·기록 코드를 제거하거나 건너뛰지 않는다.
+- 새 AI 판단 기능을 만들 때도 원장 연동을 기본 포함한다.
+- 워크플로 yml에서 `git add data/`가 아닌 파일 명시 방식이면 원장 파일을 add 목록에 반드시 포함한다 (market-scorecard.yml에 반영됨).
 
 ---
 
