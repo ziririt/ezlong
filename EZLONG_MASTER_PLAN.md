@@ -186,7 +186,16 @@
 
 **수정 파일:** `scripts/generate-chart-analysis.js`, `scripts/fetch-market-scorecard.py`, (스윙 서술은 previousSignals 활용 확인 후) `atmr-dashboard.html` 또는 `fetch-market-data.py`, 관련 워크플로 yml 2~3개. 2등급 규율 적용: 백업 → git tag → 구현 → 깨끗한 서브에이전트 diff 감사 → 배포.
 
-### Phase 2 — 감시 체계 확장 (2등급 작업, 1세션, 서브에이전트 검증 필수)
+### Phase 2 — 감시 체계 확장 — **핵심부 구현 완료 (2026-07-03 새벽 2차 커밋, 독립 감사 통과)**
+
+> 완료: watchdog 감시 대상 5→10개(scorecard·stocks-prices·stocks-data·market-cycle·kr-prices),
+> watchdog.yml에 GitHub native cron 백업(매시 :23) 추가 — cron-job.org 동반 침묵 시나리오 제거,
+> 스코어카드 Gemini 폴백 모델(flash-lite 실패 시 flash) 추가.
+> 배경 실측(2026-07-03 01:30): 긍정vs부정이 7/2 저녁부터 5회 연속 실패(Gemini 단계),
+> 심플주가 10분 cron이 GitHub 지연으로 실제 1~3시간 간격으로만 실행되고 있었음.
+> 남은 것: 스윙 브리핑 GitHub Actions 이식, health-check.py, 워치독 서킷브레이커(연속 TRIGGERED N회 시 중단 — 감사 권고), isWorkflowInProgress에 queued 상태 포함.
+
+
 
 목표: **"어떤 파이프라인이 죽어도 24시간 내 자동 감지"**. 설계:
 

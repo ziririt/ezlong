@@ -8,16 +8,28 @@ name: 감시견 (Watchdog) — 자동 업데이트 모니터링
 #   cron-job.org → POST https://api.github.com/repos/ziririt/ezlong/actions/workflows/watchdog.yml/dispatches
 #   실행 주기: 매시 :17 과 :47 (UTC) — 비표준 분수로 GitHub Actions 큐 혼잡 회피
 #
-# 감시 대상:
+# 감시 대상 (2026-07-03 확장 — 10개):
 #   - 미국주식 차트분석 (fetch-us-chart-analysis.yml)
 #   - 한국주식 차트분석 (fetch-kr-crypto-analysis.yml)
 #   - 크립토 차트분석  (fetch-crypto-analysis.yml)
 #   - ATMR 시장데이터  (fetch-market-data.yml)
 #   - FlashAlpha 옵션  (fetch-options-data.yml)
+#   - 긍정vs부정       (market-scorecard.yml)
+#   - 심플주가 실시간  (fetch-stocks-prices.yml)
+#   - 심플주가 일간    (fetch-stocks-data.yml)
+#   - 마켓사이클 주봉  (fetch-market-cycle.yml)
+#   - 한국 주가        (fetch-kr-prices.yml)
 #
 
 on:
-  workflow_dispatch:   # cron-job.org 에서 직접 트리거
+  # ── 2026-07-03: GitHub native cron 백업 추가 ──────────────────────────
+  # 배경: cron-job.org 단일 의존이라 그쪽이 죽으면 감시 체계 전체가 동반 침묵
+  # (2026-07-01 18시간 공백 실증). native cron은 지연될 순 있어도 결국 돈다.
+  # cron-job.org 30분 주기가 살아 있으면 concurrency 그룹이 중복을 정리한다.
+  schedule:
+    - cron: '23 * * * *'   # 매시 :23 (비표준 분수 — Actions 큐 혼잡 회피)
+
+  workflow_dispatch:   # cron-job.org 에서 직접 트리거 (매시 :17, :47)
 
 # ─── 권한 ──────────────────────────────────────────────────────────────────
 # contents: write → watchdog-status.json 커밋

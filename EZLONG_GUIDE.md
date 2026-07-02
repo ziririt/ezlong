@@ -140,7 +140,7 @@ grep -rn "function calcBuyScore\|function calcSellScore" . --include="*.html" --
 /opt/homebrew/bin/firebase deploy --only hosting
 ```
 
-**Git 저장소:** `~/Desktop/ezlong` (→ 프로젝트 폴더 심볼릭 링크)  
+**Git 저장소:** 프로젝트 폴더 자체 (`~/Documents/Claude/Projects/미국주식투자자를 위한 ezlong.com`) — 구 `~/Desktop/ezlong` 경로는 2026-07-03 확인 결과 더 이상 존재하지 않음  
 **원격 저장소:** GitHub (origin/main)  
 **배포 URL:** https://ezlong.com
 

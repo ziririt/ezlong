@@ -98,6 +98,73 @@ const MONITORS = [
       const h   = now.getUTCHours() + now.getUTCMinutes() / 60;
       return day >= 1 && day <= 5 && h >= 13.5 && h <= 21.0;
     }
+  },
+
+  // ─── 2026-07-03 확장: 감시 사각지대 5개 편입 ─────────────────────────────
+  // 배경: market-cycle 19일 정지, scorecard 야간 실패, stocks-prices가
+  // GitHub cron 지연으로 10분 주기가 실제 1~3시간이 되는 문제를 전부 감시망에 넣는다.
+
+  {
+    id:             'scorecard',
+    name:           '긍정vs부정 스코어카드',
+    workflow:       'market-scorecard.yml',
+    checkFile:      'market-scorecard-data.json',
+    timestampField: 'updated_at',
+    // 설계상 최대 공백 7.5h(23:30→익일 06:50). 8.0h로 새벽 오탐 없이
+    // "하루 중 어떤 회차든 누락되면 다음 라운드에 재트리거"를 보장.
+    maxAgeHours:    8.0,
+    isActive: () => true   // 매일 5회 (주말 포함 설계)
+  },
+  {
+    id:             'stocks-prices',
+    name:           '심플 주가 실시간',
+    workflow:       'fetch-stocks-prices.yml',
+    checkFile:      'stocks-prices.json',
+    timestampField: 'updatedAt',
+    // 설계 10분 주기지만 GitHub cron이 1~3h씩 밀리는 실측(2026-07-02) →
+    // 45분 넘게 낡으면 재트리거해 체감 최대 지연을 ~1h 이내로 억제.
+    maxAgeHours:    0.75,
+    // cron 활성 구간: UTC 평일 08:00~23:59 (KST 17:00~익일 08:59)
+    isActive: (now) => {
+      const day = now.getUTCDay();
+      const h   = now.getUTCHours() + now.getUTCMinutes() / 60;
+      return day >= 1 && day <= 5 && h >= 8.0;
+    }
+  },
+  {
+    id:             'stocks-data',
+    name:           '심플 주가 일간(스파크라인)',
+    workflow:       'fetch-stocks-data.yml',
+    checkFile:      'stocks-data.json',
+    timestampField: 'generatedAt',
+    // 일 1회(평일 UTC 22:00). 26h 초과 = 하루 누락. 월요일 새벽엔 주말 공백으로
+    // 조기 1회 트리거되지만 금요 종가 데이터 재생성일 뿐이라 무해.
+    maxAgeHours:    26.0,
+    isActive: (now) => { const day = now.getUTCDay(); return day >= 1 && day <= 5; }
+  },
+  {
+    id:             'market-cycle',
+    name:           '마켓 사이클 주봉',
+    workflow:       'fetch-market-cycle.yml',
+    checkFile:      'mc-ohlcv-SPY-weekly.json',
+    timestampField: 'updatedAt',
+    // 일 1회(평일 UTC 21:10). 19일 정지 사고(6/13~7/2)의 직접 재발 방지 항목.
+    maxAgeHours:    30.0,
+    isActive: (now) => { const day = now.getUTCDay(); return day >= 1 && day <= 5; }
+  },
+  {
+    id:             'kr-prices',
+    name:           '한국 주가',
+    workflow:       'fetch-kr-prices.yml',
+    checkFile:      'kr-prices.json',
+    timestampField: 'updatedAt',
+    maxAgeHours:    1.0,
+    // 한국 장중: UTC 평일 00:00~07:00 (KST 09:00~16:00)
+    isActive: (now) => {
+      const day = now.getUTCDay();
+      const h   = now.getUTCHours() + now.getUTCMinutes() / 60;
+      return day >= 1 && day <= 5 && h >= 0.0 && h <= 7.0;
+    }
   }
 ];
 

@@ -663,11 +663,20 @@ def call_gemini(prompt):
         }
     }
 
-    # gemini-2.5-flash 단독 4회 재시도 (폴백 없음 — v1beta 1.5계열 전부 404)
     print(f"  1차 시도: {GEMINI_MODEL}")
     result = _call_single_model(GEMINI_MODEL, payload, max_retries=4)
     if result:
         print(f"  성공: {GEMINI_MODEL}")
+        return result
+
+    # 폴백 모델 (2026-07-03 추가) — 배경: 7/2 저녁 18:20~01:16 사이 5회 연속 실패로
+    # 스코어카드가 밤새 갱신되지 않았음. 1차 모델(쿼터/일시 장애) 실패 시 형제 모델로 재시도.
+    # 1.5 계열은 v1beta 404라 사용 불가 — 2.5 계열 내에서만 폴백.
+    fallback = 'gemini-2.5-flash' if GEMINI_MODEL != 'gemini-2.5-flash' else 'gemini-2.5-flash-lite'
+    print(f"  1차 모델 전체 실패 → 폴백 시도: {fallback}")
+    result = _call_single_model(fallback, payload, max_retries=2)
+    if result:
+        print(f"  성공(폴백): {fallback}")
         return result
 
     return None
