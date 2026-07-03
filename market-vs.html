@@ -425,10 +425,11 @@
   margin: 7px 0;
 }
 
-/* ── 혼조·양면 재료 (2026-07-03 신설) ── */
+/* ── 혼조·양면 재료 (2026-07-03 신설, 같은 날 요인 2열 위로 이동) ── */
 .mv-mixed {
   border-top: 1px solid var(--ez-border2);
   padding: 12px 14px;
+  /* border-bottom 없음 — 바로 아래 .mv-factors의 border-top이 구분선 역할 (이중선 방지) */
 }
 
 .mv-mixed-title {
@@ -693,6 +694,9 @@ function renderEntry(e, isLatest) {
         '<div class="mv-summary">' + escHtml(e.summary || '') + '</div>' +
       '</div>' +
 
+      /* 혼조·양면 재료 (있을 때만) — 점수 구도 바로 아래, 요인 2열 위 (2026-07-03 상단 이동) */
+      mixedHtml +
+
       /* 2열 요인 */
       '<div class="mv-factors">' +
         '<div class="mv-factor-col left">' +
@@ -704,9 +708,6 @@ function renderEntry(e, isLatest) {
           negFactors +
         '</div>' +
       '</div>' +
-
-      /* 혼조·양면 재료 (있을 때만) */
-      mixedHtml +
 
     '</div>'
   );
