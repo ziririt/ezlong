@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>오늘의 차트 | EZLONG</title>
+
+  <!-- SEO 기본 -->
+  <meta name="description" content="SOXX·QQQ·SOXL·TQQQ·TSLA·NVDA 6종목의 이동평균·RSI·52주 고저를 하루 2회 AI가 분석하는 오늘의 차트. 최신순 누적.">
+  <meta name="keywords" content="미국주식, 오늘의 차트, TSLA, NVDA, SOXX, QQQ, SOXL, TQQQ, 기술적분석, RSI, 이동평균선">
+  <meta name="author" content="EZLONG">
+  <link rel="canonical" href="https://ezlong.com/today-chart.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="오늘의 차트 | EZLONG">
+  <meta property="og:description" content="SOXX·QQQ·SOXL·TQQQ·TSLA·NVDA 6종목 기술적 분석, 하루 2회 자동 업데이트">
+  <meta property="og:url" content="https://ezlong.com/today-chart.html">
+  <meta property="og:image" content="https://ezlong.com/logo-preview.png">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="ko_KR">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="오늘의 차트 | EZLONG">
+  <meta name="twitter:description" content="SOXX·QQQ·SOXL·TQQQ·TSLA·NVDA 6종목 기술적 분석, 하루 2회 자동 업데이트">
+  <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
+
+  <!-- 파비콘 -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+
+  <!-- 공유 디자인 시스템 -->
+  <link rel="stylesheet" href="ez-design.css">
+
+  <style>
+    .page-brand {
+      background: var(--ez-surface);
+      border-bottom: 1px solid var(--ez-border);
+      padding: 32px 20px 28px;
+    }
+    .page-brand-inner { max-width: var(--ez-max-w); margin: 0 auto; }
+    .page-brand-label {
+      font-size: 14px; font-weight: 700; letter-spacing: .10em; text-transform: uppercase;
+      color: var(--ez-blue); margin-bottom: 8px;
+    }
+    .page-brand-title {
+      font-size: clamp(24px, 4vw, 36px); font-weight: 800; letter-spacing: -.03em;
+      color: var(--ez-text); margin-bottom: 8px;
+    }
+    .page-brand-desc { font-size: 15px; color: var(--ez-text2); line-height: 1.6; }
+    .page-brand-updated { font-size: 14px; color: var(--ez-text2); margin-top: 10px; }
+
+    .page-main { max-width: var(--ez-max-w); margin: 0 auto; padding: 24px 20px 60px; }
+
+    /* 필터 칩 */
+    .tc-filters {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;
+    }
+    .tc-chip {
+      font-size: 14px; font-weight: 700; padding: 7px 16px; border-radius: 100px;
+      border: 1px solid var(--ez-border); background: var(--ez-surface); color: var(--ez-text2);
+      cursor: pointer; transition: all .15s;
+    }
+    .tc-chip:hover { border-color: var(--ez-blue); color: var(--ez-blue); }
+    .tc-chip.active { background: var(--ez-blue); border-color: var(--ez-blue); color: #fff; }
+
+    /* 상단 고정 디스클레이머 */
+    .tc-disclaimer {
+      font-size: 14px; color: var(--ez-text2); line-height: 1.6; background: var(--ez-card2);
+      border: 1px solid var(--ez-border); border-radius: var(--ez-rs); padding: 14px 18px; margin-bottom: 28px;
+    }
+
+    /* 카드 */
+    .tc-list { display: flex; flex-direction: column; gap: 20px; }
+    .tc-card {
+      background: var(--ez-surface); border: 1px solid var(--ez-border); border-radius: var(--ez-r);
+      padding: 24px; box-shadow: var(--ez-shadow);
+    }
+    .tc-card-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+    .tc-symbol-badge {
+      font-size: 14px; font-weight: 800; padding: 3px 12px; border-radius: 100px; background: var(--ez-blue); color: #fff;
+    }
+    .tc-change-badge {
+      font-size: 14px; font-weight: 800; padding: 3px 12px; border-radius: 100px; color: #fff;
+    }
+    .tc-change-badge.up { background: var(--ez-green); }
+    .tc-change-badge.down { background: var(--ez-red); }
+    .tc-timestamp { font-size: 14px; color: var(--ez-text2); margin-left: auto; }
+
+    .tc-headline {
+      font-size: clamp(18px, 2.6vw, 22px); font-weight: 800; letter-spacing: -.02em;
+      color: var(--ez-text); line-height: 1.35; margin-bottom: 14px;
+    }
+    .tc-price-row { font-size: 20px; font-weight: 800; color: var(--ez-text); margin-bottom: 16px; }
+
+    .tc-chart-wrap { margin-bottom: 18px; }
+    .tc-chart-wrap img {
+      width: 100%; height: auto; display: block; border-radius: var(--ez-rs); border: 1px solid var(--ez-border);
+    }
+
+    .tc-indicators {
+      font-size: 14px; color: var(--ez-text2); line-height: 1.8; background: var(--ez-card2);
+      border-radius: var(--ez-rs); padding: 12px 16px; margin-bottom: 18px;
+    }
+
+    .tc-body p {
+      font-size: 16px; line-height: 1.85; color: var(--ez-text); margin: 0 0 16px;
+    }
+    .tc-body p:last-child { margin-bottom: 0; }
+
+    .tc-tags { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tc-tag {
+      font-size: 14px; background: var(--ez-card2); color: var(--ez-text2); padding: 4px 12px; border-radius: 100px;
+    }
+
+    .tc-state {
+      text-align: center; padding: 60px 20px; color: var(--ez-text2); font-size: 15px; line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── EZLONG 글로벌 헤더 ── -->
+<script src="/ez-nav.js"></script>
+
+<div class="page-brand">
+  <div class="page-brand-inner">
+    <div class="page-brand-label">오늘의 차트</div>
+    <h1 class="page-brand-title">SOXX·QQQ·SOXL·TQQQ·TSLA·NVDA — 오늘의 차트</h1>
+    <p class="page-brand-desc">6종목의 이동평균(5·20·50·200일)·RSI(14)·52주 고저를 하루 2회(오전 6:30, 밤 10:35 KST) AI가 자동 분석합니다. 최신순 누적.</p>
+    <p class="page-brand-updated" id="tc-updated-at">데이터 불러오는 중...</p>
+  </div>
+</div>
+
+<main class="page-main">
+
+  <div class="tc-disclaimer">
+    본 콘텐츠는 공개된 시세·뉴스 데이터를 기반으로 AI가 자동 생성한 참고용 분석이며 투자 자문이 아닙니다. 매수·매도 시그널이 아니며, 실제 투자 판단과 그 책임은 투자자 본인에게 있습니다.
+  </div>
+
+  <div class="tc-filters" id="tc-filters"></div>
+
+  <div class="tc-list" id="tc-list">
+    <div class="tc-state">차트를 불러오는 중...</div>
+  </div>
+
+</main>
+
+<!-- ── EZLONG 글로벌 푸터 ── -->
+<script src="/ez-footer.js"></script>
+
+<script>
+var DATA_URL = '/data/today-chart-data.json';
+var SYMBOL_ORDER = ['SOXX', 'QQQ', 'SOXL', 'TQQQ', 'TSLA', 'NVDA'];
+var allEntries = [];
+var currentFilter = '전체';
+
+function escHtml(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function fmtPct(v) {
+  if (v === null || v === undefined) return 'N/A';
+  var sign = v >= 0 ? '+' : '';
+  return sign + v.toFixed(2) + '%';
+}
+
+function loadData() {
+  fetch(DATA_URL + '?t=' + Date.now())
+    .then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function (data) {
+      allEntries = (data.entries || []).slice().sort(function (a, b) {
+        return (b.id || '').localeCompare(a.id || '');
+      });
+      renderUpdatedAt(data);
+      renderFilters();
+      renderList();
+    })
+    .catch(function (e) {
+      document.getElementById('tc-list').innerHTML =
+        '<div class="tc-state">데이터를 불러오지 못했습니다.<br>' + escHtml(e.message) + '</div>';
+      document.getElementById('tc-updated-at').textContent = '불러오기 실패';
+    });
+}
+
+function renderUpdatedAt(data) {
+  var el = document.getElementById('tc-updated-at');
+  if (!data.updated_at) { el.textContent = ''; return; }
+  var d = new Date(data.updated_at);
+  var kst = new Date(d.getTime() + 9 * 3600 * 1000);
+  var mm = kst.getUTCMonth() + 1;
+  var dd = kst.getUTCDate();
+  var hh = String(kst.getUTCHours()).padStart(2, '0');
+  var mi = String(kst.getUTCMinutes()).padStart(2, '0');
+  el.textContent = '최종 업데이트: ' + mm + '/' + dd + ' ' + hh + ':' + mi + ' KST · 총 ' + allEntries.length + '개';
+}
+
+function renderFilters() {
+  var present = {};
+  allEntries.forEach(function (e) { present[e.symbol] = true; });
+  var syms = SYMBOL_ORDER.filter(function (s) { return present[s]; });
+  var html = '<button class="tc-chip active" data-f="전체">전체</button>';
+  syms.forEach(function (s) {
+    html += '<button class="tc-chip" data-f="' + s + '">' + s + '</button>';
+  });
+  var container = document.getElementById('tc-filters');
+  container.innerHTML = html;
+  container.querySelectorAll('.tc-chip').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      container.querySelectorAll('.tc-chip').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentFilter = btn.getAttribute('data-f');
+      renderList();
+    });
+  });
+}
+
+function renderList() {
+  var list = document.getElementById('tc-list');
+  var entries = allEntries;
+  if (currentFilter !== '전체') {
+    entries = entries.filter(function (e) { return e.symbol === currentFilter; });
+  }
+  if (!entries.length) {
+    list.innerHTML = '<div class="tc-state">아직 분석 데이터가 없습니다.<br>매일 2회(06:30 · 22:35 KST) 자동 업데이트됩니다.</div>';
+    return;
+  }
+  list.innerHTML = entries.map(renderCard).join('');
+}
+
+function renderCard(e) {
+  var changeClass = (e.change_pct || 0) >= 0 ? 'up' : 'down';
+  var paragraphs = (e.paragraphs || []).map(function (p) {
+    return '<p>' + escHtml(p) + '</p>';
+  }).join('');
+  var tags = (e.tags || []).map(function (t) {
+    return '<span class="tc-tag">' + escHtml(t) + '</span>';
+  }).join('');
+
+  var indParts = [];
+  if (e.sma5 != null) indParts.push('5일선 ' + e.sma5);
+  if (e.sma20 != null) indParts.push('20일선 ' + e.sma20);
+  if (e.sma50 != null) indParts.push('50일선 ' + e.sma50);
+  if (e.sma200 != null) indParts.push('200일선 ' + e.sma200);
+  if (e.rsi14 != null) indParts.push('RSI(14) ' + e.rsi14);
+  if (e.high52 != null) indParts.push('52주 고가 ' + e.high52 + '(' + e.high52_date + ')');
+  if (e.low52 != null) indParts.push('52주 저가 ' + e.low52 + '(' + e.low52_date + ')');
+  var r = e.returns || {};
+  var retParts = [];
+  if (r['1w'] != null) retParts.push('1주 ' + fmtPct(r['1w']));
+  if (r['1m'] != null) retParts.push('1개월 ' + fmtPct(r['1m']));
+  if (r['3m'] != null) retParts.push('3개월 ' + fmtPct(r['3m']));
+  if (r['6m'] != null) retParts.push('6개월 ' + fmtPct(r['6m']));
+  if (r['ytd'] != null) retParts.push('연초대비 ' + fmtPct(r['ytd']));
+
+  return (
+    '<div class="tc-card">' +
+      '<div class="tc-card-top">' +
+        '<span class="tc-symbol-badge">' + escHtml(e.symbol) + '</span>' +
+        '<span class="tc-change-badge ' + changeClass + '">' + fmtPct(e.change_pct) + '</span>' +
+        '<span class="tc-timestamp">' + escHtml(e.timestamp_kst) + '</span>' +
+      '</div>' +
+      '<h2 class="tc-headline">' + escHtml(e.headline) + '</h2>' +
+      '<div class="tc-price-row">' + (e.price != null ? e.price.toFixed(2) : '-') + ' USD</div>' +
+      (e.chart_path ? '<div class="tc-chart-wrap"><img src="' + escHtml(e.chart_path) + '" alt="' + escHtml(e.symbol) + ' 차트 — 이동평균선·RSI" loading="lazy"></div>' : '') +
+      '<div class="tc-indicators">' + escHtml(indParts.join(' · ')) + (retParts.length ? '<br>기간 수익률 — ' + escHtml(retParts.join(' · ')) : '') + '</div>' +
+      '<div class="tc-body">' + paragraphs + '</div>' +
+      (tags ? '<div class="tc-tags">' + tags + '</div>' : '') +
+    '</div>'
+  );
+}
+
+loadData();
+</script>
+
+</body>
+</html>

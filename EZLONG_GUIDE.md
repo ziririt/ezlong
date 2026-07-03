@@ -169,6 +169,8 @@ grep -rn "function calcBuyScore\|function calcSellScore" . --include="*.html" --
 
 > 블로그형 롱테일 페이지(2026-07-02 추가, nav 미포함): tesla-monthly-dca-10years, nvda-monthly-dca-5years, aapl-vs-msft-dividend-dca, fire-retirement-4percent-rule, isa-irp-us-stock-tax-comparison
 >
+> **`/today-chart.html` (2026-07-04 신설, 의도적 비공개 상태):** SOXX·QQQ·SOXL·TQQQ·TSLA·NVDA 6종목을 하루 2회(KST 06:30/22:35) AI가 자동 분석하는 코너. 백엔드(`scripts/fetch-today-chart.py` + `.github/workflows/fetch-today-chart.yml`)는 정상 가동 중이나, 유저가 한동안 혼자 모니터링하고 싶다고 요청해 **ez-nav.js·ez-footer.js·index.html·sitemap.xml에는 의도적으로 링크를 넣지 않았다.** 직접 URL로만 접근 가능. 나중에 "메뉴에 추가해줘" 요청이 오면 그때 4개 파일에 링크를 추가한다 — 이 상태를 오작동이나 누락으로 착각해 임의로 nav에 추가하지 말 것.
+>
 > ⚠️ 이 표는 낡기 쉽다. **진실의 원천은 `ez-nav.js`의 links 배열**이다. 불일치 발견 시 이 표를 ez-nav.js에 맞춘다.
 
 > **새 페이지를 추가할 때:** 이 표에 행 추가 + `ez-nav.js` · `ez-footer.js` 두 파일에 링크 추가 → git commit → git push (push = 자동 배포)

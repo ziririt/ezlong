@@ -1,0 +1,86 @@
+name: 오늘의 차트 — 자동 분석
+
+# ─── 스케줄 설명 ────────────────────────────────────────────────────────────
+# 하루 2회 KST 기준 업데이트 (UTC = KST - 9h)
+#   KST 06:30 = UTC 전날 21:30
+#   KST 22:35 = UTC 13:35
+#
+# 인수인계서(ezlong_주요차트분석_인수인계서.md, 2026-07-03) 3-5절 스케줄 그대로 채택.
+# 매일 실행(주말 포함) — 휴장일에는 직전 종가 기준으로 분석되며 스크립트 내
+# 이상치 가드(가격 0/누락, 데이터 부족)로 자동 스킵된다.
+# ─────────────────────────────────────────────────────────────────────────────
+on:
+  schedule:
+    - cron: '30 21 * * *'   # KST 06:30
+    - cron: '35 13 * * *'   # KST 22:35
+
+  workflow_dispatch:
+
+jobs:
+  analyze-and-update:
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: today-chart
+      cancel-in-progress: false
+
+    steps:
+      # ── 1. 저장소 체크아웃 ─────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 2. Python 설치 ────────────────────────────────────────────────
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # ── 3. 한글 폰트 설치 (matplotlib 차트 한글 라벨용) ───────────────
+      - name: Install Noto Sans CJK font
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk
+
+      # ── 4. 의존성 설치 ────────────────────────────────────────────────
+      - name: Install dependencies
+        run: pip install yfinance requests matplotlib --quiet
+
+      # ── 5. 오늘의 차트 분석 스크립트 실행 ─────────────────────────────
+      - name: Run today-chart analysis
+        run: python scripts/fetch-today-chart.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      # ── 6. 변경사항 커밋 및 푸시 ──────────────────────────────────────
+      # 주의: git reset --hard / git pull --rebase 절대 금지 (CLAUDE.md 규칙)
+      - name: Commit and push data
+        run: |
+          git config user.name  "Today Chart Bot"
+          git config user.email "today-chart-bot@ezlong.com"
+
+          git add data/today-chart-data.json data/judgment-history-today-chart.json data/today-chart-imgs/
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 건너뜀."
+            exit 0
+          fi
+          KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
+          git commit -m "data: 오늘의 차트 업데이트 ${KST}"
+          git push origin main || (git fetch origin main && git merge origin/main -X ours --no-edit && git push origin main)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 7. Firebase Hosting 배포 ──────────────────────────────────────
+      # GITHUB_TOKEN으로 push된 커밋은 firebase-hosting.yml을 트리거하지 않으므로
+      # (GitHub 정책) 이 워크플로에서 직접 배포한다 (market-scorecard.yml과 동일 패턴).
+      - name: Deploy to Firebase Hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          npm install -g firebase-tools --quiet
+          firebase deploy --only hosting --project ezlong-541a8 --token "$FIREBASE_TOKEN" || true
+
+      # ── 8. 실패 시 알림 ───────────────────────────────────────────────
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "::error::오늘의 차트 분석 실패. Yahoo Finance 응답 오류 또는 Gemini API 키 문제일 수 있습니다."

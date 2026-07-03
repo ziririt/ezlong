@@ -596,6 +596,7 @@ python3 -c "import json; d=json.load(open('data/stocks-data.json')); print(d.get
 | AI 차트분석 (us/kr/crypto) | `data/judgment-history-{us,kr,crypto}.json` | `generate-chart-analysis.js` — 프롬프트 historySection 주입 + 생성 후 append |
 | 긍정vs부정 | `data/judgment-history-scorecard.json` | `fetch-market-scorecard.py` — history_block 주입 + append_ledger |
 | 스윙 시그널 | `market-signals.json`의 previousSignals 재활용 | `atmr-dashboard.html` buildTrendLineHtml() — 3영업일 매수신호 흐름 라인 |
+| 오늘의 차트 (SOXX/QQQ/SOXL/TQQQ/TSLA/NVDA, 2026-07-04 신설) | `data/judgment-history-today-chart.json` (종목별 dict) | `scripts/fetch-today-chart.py` — ledger_context_block() 주입 + append_ledger() |
 
 **원리:**
 - 원장 파일은 그룹별 분리 — 워크플로 동시 실행 시 커밋 충돌 방지.
