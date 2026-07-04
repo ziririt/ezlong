@@ -2,7 +2,16 @@
    ez-design.css  —  EZLONG 공유 디자인 시스템
    chart-analysis.html · market-cycle.html · atmr-dashboard.html
    risk-diagnostic.html 등이 공통으로 참조하는 CSS
+
+   [2026-07-04] 애플 스타일 리디자인 1단계 — Manrope 웹폰트 도입 +
+   반경(radius) 확대. 색상·텍스트 변수는 라이트모드 가독성 사고
+   이후 검증된 값이라 의도적으로 유지 (CLAUDE.md 라이트모드 절대 규칙 참조).
    ═══════════════════════════════════════════════════════════════════ */
+
+/* Manrope — 영문/숫자(티커·가격·퍼센트) 전용. 한글 글리프가 없어
+   한글 텍스트는 자동으로 --ez-font의 다음 순번(애플 시스템 폰트)으로
+   폴백된다 — 별도 분기 코드 불필요. */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 /* ── CSS 변수 (라이트 모드) ─────────────────────────────────────── */
 :root {
@@ -35,11 +44,11 @@
 
   /* 타이포 */
   --ez-mono: 'SF Mono', 'Fira Code', Consolas, 'Courier New', monospace;
-  --ez-font: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --ez-font: 'Manrope', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
 
-  /* 반경 */
-  --ez-r:  12px;
-  --ez-rs: 8px;
+  /* 반경 — 2026-07-04 애플 스타일 리디자인: 12→16 / 8→10로 소폭 확대 */
+  --ez-r:  16px;
+  --ez-rs: 10px;
 
   /* 그림자 */
   --ez-shadow:    0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.07);
@@ -271,7 +280,7 @@ a { color: inherit; }
 .ez-footer-book-info { display: flex; flex-direction: column; gap: 3px; }
 .ez-footer-book-title { font-size: 14px; font-weight: 700; color: #1D1D1F; line-height: 1.4; margin-bottom: 6px; }
 @media (prefers-color-scheme: dark) { .ez-footer-book-title { color: #F5F5F7; } }
-.ez-footer-book-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #3C3C3E; margin-top: 5px; }
+.ez-footer-book-label { font-size: 14px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #3C3C3E; margin-top: 5px; }
 @media (prefers-color-scheme: dark) { .ez-footer-book-label { color: #F5F5F7; } }
 .ez-footer-book-btns { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 2px; }
 .ez-footer-book-btn {
@@ -286,7 +295,7 @@ a { color: inherit; }
 .ez-footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
 .ez-footer-col { display: flex; flex-direction: column; gap: 8px; }
 .ez-footer-col-title {
-  font-size: 11px; font-weight: 700;
+  font-size: 14px; font-weight: 700;
   letter-spacing: .10em; text-transform: uppercase; color: #1D1D1F; margin-bottom: 2px;
 }
 @media (prefers-color-scheme: dark) { .ez-footer-col-title { color: #F5F5F7; } }
