@@ -334,7 +334,7 @@ const INP={width:'100%',padding:'10px 13px',background:'var(--inp-bg)',
   border:'1px solid var(--bd)',borderRadius:'var(--r-sm)',fontSize:14,
   fontFamily:'var(--mono)',color:'var(--t1)',outline:'none',transition:'border-color .15s,box-shadow .15s'};
 
-const NumInput=memo(function NumInput({value,onChange,color='green',style}){
+const NumInput=memo(function NumInput({value,onChange,color='blue',style}){
   const [f,setF]=useState(false);
   const [raw,setRaw]=useState('');
   const a=color==='blue'?'var(--bl)':'var(--gr)', s=color==='blue'?'var(--bl-s)':'var(--gr-s)';
@@ -391,9 +391,9 @@ function TkOpts(){return <>
 function Btn({children,onClick,disabled,variant='primary',type='button',style}){
   const [h,setH]=useState(false);
   const V={
-    primary:   {bg:h&&!disabled?'var(--gr-dk)':'var(--gr)',c:'white',sh:'0 2px 8px rgba(52,199,89,.30)',br:'none'},
-    secondary: {bg:h&&!disabled?'var(--bl-dk)':'var(--bl)',c:'white',sh:'0 2px 8px rgba(0,122,255,.30)',br:'none'},
-    ghost:     {bg:h&&!disabled?'var(--gr-s)':'transparent',c:'var(--gr-dk)',sh:'none',br:'1px solid var(--gr-m)'},
+    primary:   {bg:h&&!disabled?'var(--bl-dk)':'var(--bl)',c:'white',sh:'0 2px 8px rgba(0,122,255,.30)',br:'none'},
+    secondary: {bg:h&&!disabled?'var(--gr-dk)':'var(--gr)',c:'white',sh:'0 2px 8px rgba(52,199,89,.30)',br:'none'},
+    ghost:     {bg:h&&!disabled?'var(--bl-s)':'transparent',c:'var(--bl-dk)',sh:'none',br:'1px solid var(--bl-m)'},
     outline:   {bg:h&&!disabled?'var(--inp-bg)':'var(--row-bg)',c:'var(--t2)',sh:'none',br:'1px solid var(--bd)'},
   }[variant]||{};
   return <button type={type} onClick={onClick} disabled={disabled}
@@ -405,7 +405,7 @@ function Btn({children,onClick,disabled,variant='primary',type='button',style}){
       transition:'all .15s',...style}}>{children}</button>;
 }
 
-function Badge({children,color='green'}){
+function Badge({children,color='blue'}){
   const C={
     green:{bg:'var(--gr-s)',c:'var(--gr-dk)',bd:'1px solid var(--gr-m)'},
     blue: {bg:'var(--bl-s)',c:'var(--bl-dk)',bd:'1px solid var(--bl-m)'},
@@ -634,7 +634,7 @@ const SimInputSection=memo(function SimInputSection({
   isRet,setIsRet,wdMan,setWdMan
 }){
   const bl=simNum===2;
-  const col=bl?'blue':'green';
+  const col=bl?'green':'blue';
   const acBg=bl?'var(--bl-s)':'var(--gr-s)';
   const acBd=bl?'var(--bl-m)':'var(--gr-m)';
   const acC =bl?'var(--bl-dk)':'var(--gr-dk)';
@@ -852,8 +852,8 @@ function App(){
         <div className="r-hdr" style={{maxWidth:1180,margin:'0 auto',padding:'0 24px',height:54,
           display:'flex',alignItems:'center',justifyContent:'space-between'}}>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
-            <div style={{width:32,height:32,borderRadius:9,background:'linear-gradient(135deg,#34C759,#00C281)',
-              display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 8px rgba(52,199,89,.35)'}}>
+            <div style={{width:32,height:32,borderRadius:9,background:'linear-gradient(135deg,var(--bl),var(--bl-dk))',
+              display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 8px rgba(0,113,227,.35)'}}>
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
               </svg>
@@ -861,7 +861,7 @@ function App(){
             <div>
               <div style={{fontSize:15,fontWeight:800,letterSpacing:'-.02em'}}>DCA 복리 시뮬레이터</div>
               <a href="#dca-guide" onClick={e=>{e.preventDefault();document.getElementById('dca-guide').scrollIntoView({behavior:'smooth'});}}
-                style={{fontSize:11,color:'var(--gr)',marginTop:2,display:'inline-flex',alignItems:'center',gap:3,textDecoration:'none',fontWeight:600,cursor:'pointer',letterSpacing:'-.01em'}}>
+                style={{fontSize:11,color:'var(--bl)',marginTop:2,display:'inline-flex',alignItems:'center',gap:3,textDecoration:'none',fontWeight:600,cursor:'pointer',letterSpacing:'-.01em'}}>
                 DCA란 무엇? ↓
               </a>
             </div>
