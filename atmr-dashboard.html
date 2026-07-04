@@ -351,7 +351,7 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 680px) {
   .tab-bar { grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .tab-btn { padding: 18px 8px; font-size: 15px; gap: 5px; min-height: 76px; }
-  .tab-btn-sub { display: block; font-size: 10px; letter-spacing: 0; line-height: 1.4; word-break: keep-all; }
+  .tab-btn-sub { display: block; font-size: 14px; letter-spacing: 0; line-height: 1.4; word-break: keep-all; }
 }
 .tab-pane { display: none; }
 .tab-pane.active { display: block; }
@@ -443,7 +443,7 @@ a { text-decoration: none; color: inherit; }
   .ball-ph-col { padding: 16px 8px 14px; gap: 9px; }
   .ball-ph-item { width: 24px; height: 24px; border-width: 2px; }
   .ball-ph-row { gap: 7px; }
-  .ball-ph-hint { font-size: 10px; }
+  .ball-ph-hint { font-size: 14px; }
 }
 @media (max-width: 380px) {
   .ball-ph-col { padding: 13px 5px 11px; }
@@ -666,15 +666,15 @@ a { text-decoration: none; color: inherit; }
 .macro-title { font-size: 14px; font-weight: 700; color: var(--t2); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px; }
 .macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
 .macro-item { display: flex; flex-direction: column; gap: 3px; }
-.macro-label { font-size: 12px; color: var(--t3); font-weight: 600; }
+.macro-label { font-size: 14px; color: var(--t3); font-weight: 600; }
 .macro-val   { font-size: 18px; font-weight: 800; color: var(--t1); letter-spacing: -.02em; }
 .macro-price { font-size: 18px; font-weight: 800; color: var(--t1); letter-spacing: -.02em; }
-.macro-chg { font-size: 12px; font-weight: 600; }
+.macro-chg { font-size: 14px; font-weight: 600; }
 .macro-chg.up          { color: var(--rd); }   /* 금리·달러 상승 = 주식엔 부담 */
 .macro-chg.down        { color: var(--gr); }
 .macro-chg.neutral-up  { color: var(--gr); }   /* 금·원유 상승 = 일반 상승색 */
 .macro-chg.neutral-dn  { color: var(--rd); }
-.macro-warn { font-size: 12px; color: var(--or); font-weight: 700; margin-top: 2px; }
+.macro-warn { font-size: 14px; color: var(--or); font-weight: 700; margin-top: 2px; }
 
 
 /* ─── VIX 카드 ───────────────────────────────────── */
@@ -941,7 +941,7 @@ a { text-decoration: none; color: inherit; }
 /* 기준 점수 — 모바일에서는 숨김 */
 .ltier-score-col { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; width: 138px; }
 .ltier-score-item { display: flex; flex-direction: column; gap: 3px; }
-.ltier-score-lbl { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--t3); }
+.ltier-score-lbl { font-size: 14px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--t3); }
 .ltier-score-track { height: 3px; background: var(--bd); border-radius: 2px; overflow: hidden; }
 .ltier-score-fill  { height: 100%; border-radius: 2px; }
 .ltier-score-fill.buy  { background: var(--gr); }
@@ -968,7 +968,7 @@ a { text-decoration: none; color: inherit; }
 /* 배지: 테두리만, 배경 없음 */
 .ltier-cat-badge {
   display: inline-flex; align-items: center;
-  font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  font-size: 14px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
   padding: 2px 8px; border-radius: 20px;
   border: 1px solid currentColor;
   width: fit-content;
@@ -1042,7 +1042,7 @@ li.gear-other-sep { display: none !important; }
 .now-score-item strong { font-size: 16px; font-weight: 800; }
 .now-actions { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px; }
 .now-row { display: flex; gap: 12px; align-items: flex-start; }
-.now-tier-badge { flex-shrink: 0; font-size: 12px; font-weight: 700; border-radius: 100px; padding: 2px 10px; margin-top: 3px; border: 1px solid; }
+.now-tier-badge { flex-shrink: 0; font-size: 14px; font-weight: 700; border-radius: 100px; padding: 2px 10px; margin-top: 3px; border: 1px solid; }
 .now-tier-badge.t1 { color: var(--gr); background: transparent; border-color: var(--gr); }
 .now-tier-badge.t2 { color: var(--bl); background: transparent; border-color: var(--bl); }
 .now-tier-badge.t3 { color: var(--rd); background: transparent; border-color: var(--rd); }
@@ -1334,7 +1334,7 @@ li.gear-other-sep { display: none !important; }
 .bi-ball.lit.gr { box-shadow: 0 0 10px 2px rgba(255,69,58,0.60),  0 0 22px rgba(255,69,58,0.25); }
 .bi-ball.lit.gb { box-shadow: 0 0 10px 2px rgba(90,200,250,0.60), 0 0 22px rgba(90,200,250,0.25); }
 .bi-hint {
-  font-size: 12px;
+  font-size: 14px;
   color: rgba(255,255,255,0.55);
   font-weight: 600;
   text-align: center;
@@ -1397,7 +1397,7 @@ li.gear-other-sep { display: none !important; }
 }
 .ai-chat-toggle .ai-chevron {
   margin-left: auto;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--t3);
   transition: transform .2s;
 }
@@ -1491,7 +1491,7 @@ li.gear-other-sep { display: none !important; }
 /* ── 스윙 트레이딩 플랜 카드 ────────────────────────────────────────────── */
 .king-trade-plan { margin-top:14px; padding:14px 16px; background:var(--bg2); border-radius:10px; border:1px solid var(--bd); }
 .ktp-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-.ktp-title  { font-size:12px; font-weight:600; color:var(--t2); letter-spacing:.04em; margin-left:auto; }
+.ktp-title  { font-size:14px; font-weight:600; color:var(--t2); letter-spacing:.02em; margin-left:auto; }
 .ktp-action { font-size:16px; font-weight:900; }
 .ktp-traj   { font-size:14px; color:var(--t2); margin-bottom:4px; line-height:1.6; }
 .ktp-levels { display:grid; grid-template-columns:1fr 1fr; gap:6px 12px; margin-top:10px; }
@@ -3588,7 +3588,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
       const overlayNote = '';
       optionsSignalBar = `
         <div style="margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--bg2);border-left:3px solid var(--ac);">
-          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:8px;">옵션 시장 수급 분석</div>
+          <div style="font-size:14px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ac);margin-bottom:8px;">옵션 시장 수급 분석</div>
           ${signals.map(s => `<div style="font-size:14px;color:${s.color};font-weight:600;line-height:1.55;margin-bottom:4px;">${s.icon} ${s.text}</div>`).join('')}
           ${overlayNote}
         </div>`;
@@ -3608,7 +3608,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
         <div style="text-align:center;flex-shrink:0;">
           <div style="font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:4px;">스윙 지수</div>
           <div style="font-size:60px;font-weight:900;line-height:1;color:${scoreColor};letter-spacing:-.04em;">${score}</div>
-          <div style="font-size:12px;font-weight:700;color:${scoreColor};margin-top:3px;">${fgLabel}</div>
+          <div style="font-size:14px;font-weight:700;color:${scoreColor};margin-top:3px;">${fgLabel}</div>
           ${volatilityWarn}
         </div>
         <div style="flex:1;min-width:0;">
@@ -3746,7 +3746,7 @@ function renderScoreGrid(qqq, voo, soxx) {
             <div class="dual-gauge" style="margin:7px 0 6px;">
               <div class="dual-gauge-fill" style="width:${bs}%;background:${bGauge};"></div>
             </div>
-            <div style="font-size:12px;font-weight:600;color:${bText.c};line-height:1.4;">${bText.msg}</div>
+            <div style="font-size:14px;font-weight:600;color:${bText.c};line-height:1.4;">${bText.msg}</div>
           </div>
           <div class="dual-score-divider"></div>
           <div class="dual-score-col">
@@ -3758,7 +3758,7 @@ function renderScoreGrid(qqq, voo, soxx) {
             <div class="dual-gauge" style="margin:7px 0 6px;">
               <div class="dual-gauge-fill" style="width:${ss}%;background:${sGauge};"></div>
             </div>
-            <div style="font-size:12px;font-weight:600;color:${sText.c};line-height:1.4;">${sText.msg}</div>
+            <div style="font-size:14px;font-weight:600;color:${sText.c};line-height:1.4;">${sText.msg}</div>
           </div>
         </div>
 
@@ -4059,7 +4059,7 @@ function renderOptionsMarket(opts) {
   // ── 항목별 행 렌더러 ─────────────────────────────
   const row = (label, value, color) => value
     ? `<div style="display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--bd);">
-        <span style="font-size:12px;color:var(--t3);font-weight:500;flex-shrink:0;margin-right:12px;">${label}</span>
+        <span style="font-size:14px;color:var(--t3);font-weight:500;flex-shrink:0;margin-right:12px;">${label}</span>
         <span style="font-size:14px;color:${color || 'var(--t1)'};font-weight:600;text-align:right;line-height:1.4;">${value}</span>
        </div>`
     : '';
@@ -4077,9 +4077,9 @@ function renderOptionsMarket(opts) {
 
         ${gexSignal ? `
         <div style="padding:10px 14px;border-radius:10px;background:${gexBg};margin-bottom:10px;">
-          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${gexColor};opacity:.75;margin-bottom:4px;">Gamma Exposure (GEX)</div>
+          <div style="font-size:14px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${gexColor};opacity:.75;margin-bottom:4px;">Gamma Exposure (GEX)</div>
           <div style="font-size:14px;font-weight:600;color:${gexColor};">${gexSignal}</div>
-          ${o.spyPrice !== null ? `<div style="font-size:12px;color:var(--t3);margin-top:4px;">SPY ${numFmt(o.spyPrice)} · 감마 플립 ${numFmt(o.gammaFlip)} · 순GEX ${o.netGEX !== null ? (o.netGEX > 0 ? '+' : '') + o.netGEX.toExponential(2) : 'N/A'}</div>` : ''}
+          ${o.spyPrice !== null ? `<div style="font-size:14px;color:var(--t3);margin-top:4px;">SPY ${numFmt(o.spyPrice)} · 감마 플립 ${numFmt(o.gammaFlip)} · 순GEX ${o.netGEX !== null ? (o.netGEX > 0 ? '+' : '') + o.netGEX.toExponential(2) : 'N/A'}</div>` : ''}
         </div>` : ''}
 
         <div style="padding:0 4px;">
@@ -4148,8 +4148,8 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   const gearStepHTML = [1,2,3].map(n => {
     const on = n === compGear;
     const chip = on
-      ? `<span style="padding:3px 11px;border-radius:20px;font-size:12px;font-weight:800;color:${_gc[n]};background:transparent;border:1.5px solid ${_ge[n]};">Gear&nbsp;${n}</span>`
-      : `<span style="padding:3px 11px;border-radius:20px;font-size:12px;font-weight:500;color:var(--t3);border:1.5px solid var(--bd);">Gear&nbsp;${n}</span>`;
+      ? `<span style="padding:3px 11px;border-radius:20px;font-size:14px;font-weight:800;color:${_gc[n]};background:transparent;border:1.5px solid ${_ge[n]};">Gear&nbsp;${n}</span>`
+      : `<span style="padding:3px 11px;border-radius:20px;font-size:14px;font-weight:500;color:var(--t3);border:1.5px solid var(--bd);">Gear&nbsp;${n}</span>`;
     return chip + (n < 3 ? `<span style="color:var(--t3);font-size:14px;margin:0 1px;">→</span>` : '');
   }).join('');
 
@@ -4503,7 +4503,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       <!-- 헤더: 현재 추세 상태 -->
       <div class="now-header" style="background:var(--bg);border-bottom:1px solid ${nowHeadlineColor}33;flex-direction:column;align-items:flex-start;gap:12px;">
         <div>
-          <div style="font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">지금 시장 상태 — QQQ · VOO · SOXX 종합</div>
+          <div style="font-size:14px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">지금 시장 상태 — QQQ · VOO · SOXX 종합</div>
           <div style="font-size:20px;font-weight:800;color:${nowHeadlineColor};letter-spacing:-.02em;line-height:1.3;">${nowHeadline}</div>
         </div>
         <div style="display:flex;align-items:center;gap:2px;">${gearStepHTML}</div>
@@ -4552,7 +4552,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
         <div style="font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);flex-shrink:0;margin-top:3px;">손절 조건</div>
         <div>
           <div style="font-size:14px;font-weight:700;color:${stopLossColor};line-height:1.4;">${stopLossLabel}</div>
-          ${stopLossSub ? `<div style="font-size:12px;color:var(--t2);margin-top:3px;">${stopLossSub}</div>` : ''}
+          ${stopLossSub ? `<div style="font-size:14px;color:var(--t2);margin-top:3px;">${stopLossSub}</div>` : ''}
         </div>
       </div>
 
@@ -4565,7 +4565,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   // 조건별 해설이 아니라, 지금 이 순간의 단일 행동 지침을 가장 크게 보여준다.
   function buildNowActionHTML(action, reason, color, bg, border) {
     return `<div style="margin:0 16px 20px;padding:18px 20px;border-radius:14px;background:var(--card);border-left:3px solid ${color};border-top:1px solid var(--bd);border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);">
-      <div style="font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:${color};opacity:.75;margin-bottom:8px;">지금 해야 할 것</div>
+      <div style="font-size:14px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${color};opacity:.75;margin-bottom:8px;">지금 해야 할 것</div>
       <div style="font-size:20px;font-weight:900;color:${color};line-height:1.25;letter-spacing:-.02em;">${action}</div>
       <div style="font-size:14px;color:var(--t2);margin-top:8px;line-height:1.55;border-top:1px solid var(--bd);padding-top:8px;">${reason}</div>
     </div>`;
@@ -4653,7 +4653,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       const _scoreNote = (_ov.buyAdj || _ov.sellAdj)
         ? ` (스코어: 매수 ${_ov.buyAdj > 0 ? '+' : ''}${_ov.buyAdj ?? 0}pt · 매도 ${_ov.sellAdj > 0 ? '+' : ''}${_ov.sellAdj ?? 0}pt 반영)`
         : '';
-      optionsCtxNote = `<br><span style="color:var(--ac);font-size:12px;opacity:.9;">● ${_notes.join(' / ')}${_scoreNote}</span>`;
+      optionsCtxNote = `<br><span style="color:var(--ac);font-size:14px;opacity:.9;">● ${_notes.join(' / ')}${_scoreNote}</span>`;
     }
   }
 
@@ -5127,7 +5127,7 @@ function renderKings(tsla, nvda) {
         msColor = 'var(--t2)'; msBg = 'var(--bg)';
       }
       msBanner = `<div style="margin:0 0 14px;padding:10px 14px;border-radius:10px;background:var(--bg);border-left:3px solid ${msColor};font-size:14px;font-weight:600;color:${msColor};line-height:1.5;">
-        <span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.7;display:block;margin-bottom:3px;">시장 전체 맥락 — 스윙 시그널과 동일 기준</span>
+        <span style="font-size:14px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;opacity:.7;display:block;margin-bottom:3px;">시장 전체 맥락 — 스윙 시그널과 동일 기준</span>
         ${msText}
       </div>`;
     }
@@ -5581,7 +5581,7 @@ function renderRecentContext(symbols) {
       font-size:14px;line-height:1.8;
       display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;
     ">
-      <span style="color:var(--ez-text3);font-size:12px;font-weight:600;letter-spacing:.05em;margin-right:10px;white-space:nowrap;">최근 흐름</span>
+      <span style="color:var(--ez-text3);font-size:14px;font-weight:600;letter-spacing:.05em;margin-right:10px;white-space:nowrap;">최근 흐름</span>
       ${chips.join('')}
     </div>`;
 }
