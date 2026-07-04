@@ -1498,77 +1498,7 @@ li.gear-other-sep { display: none !important; }
 .ktp-lv-v.rd{ color:var(--rd); }
 .ktp-inval  { font-size:14px; color:var(--t2); margin-top:8px; border-top:1px solid var(--bd); padding-top:7px; }
 </style>
-<style>
-/* ── ez-nav (글로벌 헤더) ── */
-.ez-nav{height:auto;background:rgba(255,255,255,0.92);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,0.08);position:sticky;top:0;z-index:9999;font-family:-apple-system,BlinkMacSystemFont,'Pretendard','SF Pro Display',sans-serif}
-@media(prefers-color-scheme:dark){.ez-nav{background:rgba(28,28,30,0.92);border-color:rgba(255,255,255,0.08)}}
-.ez-nav-inner{max-width:1260px;margin:0 auto;padding:7px 20px 0;display:flex;flex-direction:column;align-items:flex-start}
-.ez-nav-logo{display:flex;align-items:center;text-decoration:none;padding:2px 0 10px}
-.ez-nav-logo img{height:24px;width:auto;display:block}
-.ez-nav-svc-links{display:flex;align-items:center;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;width:100%;padding-bottom:4px}
-.ez-nav-svc-links::-webkit-scrollbar{display:none}
-.ez-nav-svc-link{flex-shrink:0;padding:5px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#3C3C3E;text-decoration:none;white-space:nowrap;transition:all 0.12s}
-@media(prefers-color-scheme:dark){.ez-nav-svc-link{color:#AEAEB2}}
-.ez-nav-svc-link:hover{background:rgba(0,0,0,0.05);color:#1D1D1F}
-@media(prefers-color-scheme:dark){.ez-nav-svc-link:hover{background:rgba(255,255,255,0.08);color:#F5F5F7}}
-.ez-nav-svc-link.active{background:rgba(10,132,255,0.12);color:#0A84FF}
-/* ── 모바일 nav 오버레이 ── */
-.ez-mob-toggle{display:none;align-items:center;gap:5px;padding:6px 13px;background:rgba(0,113,227,0.10);border:1.5px solid rgba(0,113,227,0.3);border-radius:20px;color:#0071E3;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background 0.12s;margin-left:auto}
-@media(prefers-color-scheme:dark){.ez-mob-toggle{border-color:rgba(10,132,255,0.4);color:#0A84FF}}
-.ez-mob-toggle-arrow{font-size:10px;display:inline-block;transition:transform 0.2s}
-.ez-mob-toggle.open .ez-mob-toggle-arrow{transform:rotate(180deg)}
-.ez-mob-menu{display:none;position:fixed;inset:0;padding-top:52px;background:#FFFFFF;z-index:9998;overflow-y:auto;flex-direction:column}
-@media(prefers-color-scheme:dark){.ez-mob-menu{background:#0A0A0A}}
-.ez-mob-menu.open{display:flex}
-.ez-mob-item{display:flex;align-items:center;padding:17px 24px;font-size:16px;font-weight:600;color:#1D1D1F;text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.08);transition:background 0.1s}
-@media(prefers-color-scheme:dark){.ez-mob-item{color:#FFFFFF;border-color:rgba(255,255,255,0.14)}}
-.ez-mob-item:active{background:rgba(0,0,0,0.04)}
-.ez-mob-item.active{color:#0071E3;background:rgba(0,113,227,0.10);font-weight:800;border-left:3px solid #0071E3;padding-left:21px}
-@media(max-width:768px){
-  .ez-nav-inner{flex-direction:row;align-items:center;padding:10px 16px}
-  .ez-nav-logo{padding:0}
-  .ez-nav-svc-links{display:none!important}
-  .ez-mob-toggle{display:flex}
-}
-/* ── ez-footer (글로벌 푸터) ── */
-.ez-footer{background:#fff;border-top:1px solid rgba(0,0,0,0.08);padding:36px 20px 20px;margin-top:60px;font-family:-apple-system,BlinkMacSystemFont,'Pretendard','SF Pro Display',sans-serif}
-@media(prefers-color-scheme:dark){.ez-footer{background:#0A0A0A;border-color:rgba(255,255,255,0.10)}}
-.ez-footer-inner{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
-.ez-footer-top{display:flex;flex-direction:column;gap:24px}
-@media(min-width:640px){.ez-footer-top{flex-direction:row;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:32px}}
-.ez-footer-brand{display:flex;flex-direction:column;gap:8px;flex-shrink:0}
-.ez-footer-brand img{height:20px;width:auto;display:block}
-.ez-footer-brand-desc{font-size:14px;line-height:1.65;color:#3C3C3E}
-@media(prefers-color-scheme:dark){.ez-footer-brand-desc{color:#F5F5F7}}
-.ez-footer-links{display:flex;gap:32px;flex-wrap:wrap}
-.ez-footer-col{display:flex;flex-direction:column;gap:8px}
-.ez-footer-col-title{font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#1D1D1F;margin-bottom:2px}
-@media(prefers-color-scheme:dark){.ez-footer-col-title{color:#F5F5F7}}
-.ez-footer-col a{font-size:14px;color:#3C3C3E;text-decoration:none;transition:color .15s}
-.ez-footer-col a:hover{color:#0071E3}
-@media(prefers-color-scheme:dark){.ez-footer-col a{color:#F5F5F7}.ez-footer-col a:hover{color:#0A84FF}}
-.ez-footer-bottom{font-size:14px;color:#3C3C3E;border-top:1px solid rgba(0,0,0,0.06);padding-top:16px;line-height:1.8}
-@media(prefers-color-scheme:dark){.ez-footer-bottom{border-color:rgba(255,255,255,0.07);color:#F5F5F7}}
-.ez-footer-nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding-bottom:28px;border-bottom:1px solid rgba(0,0,0,0.08);margin-bottom:28px}
-.ez-footer-nav-item{display:flex;align-items:flex-start;padding:10px 14px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);background:#FFFFFF;font-size:14px;font-weight:600;color:#3C3C3E;text-decoration:none;line-height:1.35;transition:background .12s,color .12s,border-color .12s}
-.ez-footer-nav-item:hover{background:rgba(0,113,227,0.10);color:#0071E3;border-color:rgba(0,113,227,0.25)}
-@media(prefers-color-scheme:dark){.ez-footer-nav-grid{border-bottom-color:rgba(255,255,255,0.10)}.ez-footer-nav-item{background:#111;border-color:rgba(255,255,255,0.14);color:#C8C8CC}.ez-footer-nav-item:hover{background:rgba(10,132,255,0.12);color:#0A84FF;border-color:rgba(10,132,255,0.3)}}
-@media(max-width:639px){.ez-footer-nav-grid{grid-template-columns:repeat(2,1fr);gap:5px}}
-/* ── ez-footer 책 섹션 — ez-design.css 미로드로 인한 누락 보완 */
-.ez-footer-books{display:flex;gap:20px;flex-wrap:wrap}
-.ez-footer-book{display:flex;gap:10px;align-items:flex-start}
-.ez-footer-book-cover{flex-shrink:0;width:130px;border-radius:6px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,0.15);display:block;background:transparent}
-.ez-footer-book-cover img{width:100%;display:block}
-.ez-footer-book-info{display:flex;flex-direction:column;gap:3px}
-.ez-footer-book-title{font-size:14px;font-weight:700;color:#1D1D1F;line-height:1.4;margin-bottom:6px}
-@media(prefers-color-scheme:dark){.ez-footer-book-title{color:#F5F5F7}}
-.ez-footer-book-label{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#3C3C3E;margin-top:5px}
-@media(prefers-color-scheme:dark){.ez-footer-book-label{color:#F5F5F7}}
-.ez-footer-book-btns{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px}
-.ez-footer-book-btn{font-size:14px;color:#3C3C3E;text-decoration:none;transition:color .12s;white-space:nowrap}
-.ez-footer-book-btn:hover{color:#0071E3}
-@media(prefers-color-scheme:dark){.ez-footer-book-btn{color:#F5F5F7}.ez-footer-book-btn:hover{color:#0A84FF}}
-</style>
+<!-- EZ Global Nav + Footer: ez-design.css 공유 스타일 사용 (2026-07-04 로컬 중복 제거 — nav max-width 1260px가 공유 1440px를 가리던 원인) -->
 </head>
 
 <body>
