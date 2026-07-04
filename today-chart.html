@@ -252,10 +252,10 @@ function renderCard(e) {
   }).join('');
 
   var indParts = [];
-  if (e.sma5 != null) indParts.push('5일선 ' + e.sma5);
-  if (e.sma20 != null) indParts.push('20일선 ' + e.sma20);
-  if (e.sma50 != null) indParts.push('50일선 ' + e.sma50);
-  if (e.sma200 != null) indParts.push('200일선 ' + e.sma200);
+  if (e.ema5 != null) indParts.push('5일선(EMA) ' + e.ema5);
+  if (e.ema20 != null) indParts.push('20일선(EMA) ' + e.ema20);
+  if (e.ema50 != null) indParts.push('50일선(EMA) ' + e.ema50);
+  if (e.ema200 != null) indParts.push('200일선(EMA) ' + e.ema200);
   if (e.rsi14 != null) indParts.push('RSI(14) ' + e.rsi14);
   if (e.bb_upper != null) indParts.push('볼린저 ' + e.bb_lower + '~' + e.bb_upper);
   if (e.adx14 != null) indParts.push('ADX(14) ' + e.adx14);

@@ -1742,6 +1742,11 @@ li.gear-other-sep { display: none !important; }
           <div class="skeleton skel-card" style="height:220px;"></div>
         </div>
 
+        <!-- ①-2 AI 차트분석 코멘트 (QQQ/VOO/SOXX) — 2026-07-04 신설.
+             chart-analysis 파이프라인이 이미 생성한 data/analysis-{QQQ,VOO,SOXX}.json을
+             그대로 재사용한다. 별도 Gemini 호출 없음 — 비용 중복 없음. -->
+        <div id="chart-ai-comments-wrap"></div>
+
         <!-- ② Gear 개념 설명 — 현황 아래 참고 -->
         <div class="gear-explain-card">
           <div class="gear-explain-title">Gear란? — 이 사이트의 추세 판별 신호</div>
@@ -3032,6 +3037,13 @@ async function loadAllData(forceRefresh = false) {
   const _tslaAiP = fetchAnalysisJSON('TSLA').catch(() => null);
   const _nvdaAiP = fetchAnalysisJSON('NVDA').catch(() => null);
 
+  // ── QQQ/VOO/SOXX 차트분석 JSON 병렬 fetch (2026-07-04 신설) ───────────
+  // chart-analysis 파이프라인이 이미 만들어 둔 data/analysis-{symbol}.json 재사용.
+  // 별도 Gemini 호출 없음 — King(TSLA/NVDA) 패턴과 동일한 방식.
+  const _qqqAiP  = fetchAnalysisJSON('QQQ').catch(() => null);
+  const _vooAiP  = fetchAnalysisJSON('VOO').catch(() => null);
+  const _soxxAiP = fetchAnalysisJSON('SOXX').catch(() => null);
+
   // ── 4. GitHub JSON 실패 시에만 → 실시간 API 직접 호출 ─────────────────
   if (!Object.keys(fetchedData).length) {
     let successCount = 0;
@@ -3105,6 +3117,13 @@ async function loadAllData(forceRefresh = false) {
   [window._tslaAnalysis, window._nvdaAnalysis] = await Promise.all([_tslaAiP, _nvdaAiP]);
   console.log('[KingAI]', 'TSLA:', window._tslaAnalysis ? 'OK' : '없음',
               '/ NVDA:', window._nvdaAnalysis ? 'OK' : '없음');
+
+  // QQQ/VOO/SOXX 차트분석 JSON 완료 대기 (2026-07-04 신설)
+  [window._qqqAnalysis, window._vooAnalysis, window._soxxAnalysis] =
+    await Promise.all([_qqqAiP, _vooAiP, _soxxAiP]);
+  console.log('[ChartAI]', 'QQQ:', window._qqqAnalysis ? 'OK' : '없음',
+              '/ VOO:', window._vooAnalysis ? 'OK' : '없음',
+              '/ SOXX:', window._soxxAnalysis ? 'OK' : '없음');
 
   clearTimeout(hardTimeout);
   renderAll(fetchedData);
@@ -3236,6 +3255,7 @@ function renderAll(data) {
   // masterSignal 설정을 위해 renderStrategyGuide를 먼저 실행한다.
   // renderKings는 window.masterSignal을 읽어 시장 맥락 배너를 표시한다.
   try { renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vix); } catch(e) { console.error('[renderStrategyGuide]', e); }
+  try { renderChartAiComments(); } catch(e) { console.error('[renderChartAiComments]', e); }
   try { renderKings(tsla, nvda); } catch(e) { console.error('[renderKings]', e); }
 
   // 히스토리 저장 & 재렌더
@@ -4957,6 +4977,51 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     `3배수 레버리지: ${lev3x ? '진입 가능' : '진입 비추'}\n` +
     `보유 전략 판단: ${holdLabel} (${holdSub})\n` +
     `VIX: ${vix.toFixed(1)}`;
+}
+
+// ─── AI 차트분석 코멘트 (QQQ/VOO/SOXX) ────────────────────────────────────
+// 2026-07-04 신설. calcBuyScore/calcSellScore/lev3x 판단 로직은 전혀 건드리지 않는다 —
+// window._qqqAnalysis 등(chart-analysis 파이프라인이 이미 만든 data/analysis-*.json)을
+// "지금 상황" 카드 아래에 참고용으로 덧붙이기만 한다. 데이터 없으면 조용히 비움.
+function renderChartAiComments() {
+  const wrap = document.getElementById('chart-ai-comments-wrap');
+  if (!wrap) return;
+
+  const items = [
+    { sym: 'QQQ',  label: '나스닥100 ETF', ai: window._qqqAnalysis },
+    { sym: 'VOO',  label: 'S&P500 ETF',   ai: window._vooAnalysis },
+    { sym: 'SOXX', label: '반도체 ETF',    ai: window._soxxAnalysis },
+  ].filter(x => x.ai);
+
+  if (!items.length) { wrap.innerHTML = ''; return; }
+
+  const actionColor = (action) => action === '매수' ? 'var(--gr)' : action === '매도' ? 'var(--rd)' : 'var(--or)';
+
+  const cards = items.map(({ sym, label, ai }) => {
+    const kp = (ai.keyPoints || []).slice(0, 3)
+      .map(k => `<li style="margin-top:4px;">${k}</li>`).join('');
+    const risk = ai.riskNote
+      ? `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);font-size:14px;color:var(--t2);line-height:1.5;"><b style="color:var(--t1);">리스크 노트 —</b> ${ai.riskNote}</div>`
+      : '';
+    return `
+      <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div>
+            <span style="font-size:16px;font-weight:800;color:var(--t1);">${sym}</span>
+            <span style="font-size:14px;color:var(--t2);margin-left:6px;">${label}</span>
+          </div>
+          <span style="font-size:14px;font-weight:700;padding:3px 10px;border-radius:20px;border:1.5px solid ${actionColor(ai.action)};color:${actionColor(ai.action)};">${ai.action ?? '—'}${ai.buyScore != null ? ' · ' + ai.buyScore + '점' : ''}</span>
+        </div>
+        <ul style="margin:0;padding-left:18px;font-size:14px;color:var(--t1);line-height:1.5;">${kp}</ul>
+        ${risk}
+      </div>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <div style="margin-bottom:20px;">
+      <div style="font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;">AI 차트분석 코멘트 — 종목별 참고</div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">${cards}</div>
+    </div>`;
 }
 
 function renderKings(tsla, nvda) {

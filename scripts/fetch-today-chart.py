@@ -130,6 +130,24 @@ def sma(vals, n):
     return out
 
 
+def ema(vals, n):
+    """지수이동평균(EMA). 2026-07-04: 5·20·50·200일선을 SMA에서 EMA로 전환.
+    이유 — 트레이딩뷰 기본 이평선(및 유저가 대조하는 코파일럿 리포트)이 EMA 기준이라
+    SMA 값이 크게 어긋나 보이는 문제가 실사용 중 발견됨. 시작 n개 구간은 단순평균으로
+    시드(seed)한 뒤 표준 EMA 승수(2/(n+1))로 이어간다 — 트레이딩뷰 값과 소수점까지 검증됨."""
+    out = [None] * len(vals)
+    if len(vals) < n:
+        return out
+    seed = sum(vals[:n]) / n
+    out[n - 1] = seed
+    k = 2 / (n + 1)
+    e = seed
+    for i in range(n, len(vals)):
+        e = vals[i] * k + e * (1 - k)
+        out[i] = e
+    return out
+
+
 def rsi(vals, n=14):
     """단순 평균 gain/loss 방식 (Wilder 방식 아님 — 인수인계서 원본 로직 유지)"""
     out = [None] * len(vals)
@@ -278,10 +296,11 @@ def fibonacci_levels(swing_high, swing_low):
 def compute_indicators(dates, closes, highs=None, lows=None):
     has_hl = bool(highs) and bool(lows) and len(highs) == len(closes) and len(lows) == len(closes)
 
-    s5 = sma(closes, 5)
-    s20 = sma(closes, 20)
-    s50 = sma(closes, 50)
-    s200 = sma(closes, 200)
+    # 2026-07-04: SMA → EMA 전환 (트레이딩뷰 기본 이평선과 일치시키기 위함, ema() 주석 참고)
+    s5 = ema(closes, 5)
+    s20 = ema(closes, 20)
+    s50 = ema(closes, 50)
+    s200 = ema(closes, 200)
     r = rsi(closes, 14)
     bb_mid, bb_upper, bb_lower = bollinger_bands(closes, 20, 2.0)
 
@@ -311,10 +330,10 @@ def compute_indicators(dates, closes, highs=None, lows=None):
     return {
         'price': round(closes[-1], 2),
         'prev_close': round(closes[-2], 2) if len(closes) >= 2 else None,
-        'sma5': round(s5[-1], 2) if s5[-1] is not None else None,
-        'sma20': round(s20[-1], 2) if s20[-1] is not None else None,
-        'sma50': round(s50[-1], 2) if s50[-1] is not None else None,
-        'sma200': round(s200[-1], 2) if s200[-1] is not None else None,
+        'ema5': round(s5[-1], 2) if s5[-1] is not None else None,
+        'ema20': round(s20[-1], 2) if s20[-1] is not None else None,
+        'ema50': round(s50[-1], 2) if s50[-1] is not None else None,
+        'ema200': round(s200[-1], 2) if s200[-1] is not None else None,
         'rsi14': round(r[-1], 1) if r[-1] is not None else None,
         'bb_upper': round(bb_upper[-1], 2) if bb_upper[-1] is not None else None,
         'bb_mid': round(bb_mid[-1], 2) if bb_mid[-1] is not None else None,
@@ -336,8 +355,10 @@ def compute_indicators(dates, closes, highs=None, lows=None):
             '6m': period_return(closes, 126),
             'ytd': ytd_return(dates, closes),
         },
-        '_sma_series': {'sma5': s5, 'sma20': s20, 'sma50': s50, 'sma200': s200, 'rsi': r,
-                         'bb_upper': bb_upper, 'bb_lower': bb_lower},
+        # 2026-07-04: adx/stochastic 전체 시리즈 추가 — 차트 하단 보조지표 패널 렌더링용
+        '_ma_series': {'ema5': s5, 'ema20': s20, 'ema50': s50, 'ema200': s200, 'rsi': r,
+                        'bb_upper': bb_upper, 'bb_lower': bb_lower,
+                        'adx': adx_series, 'stoch_k': stoch_k, 'stoch_d': stoch_d},
     }
 
 
@@ -383,16 +404,18 @@ def content_style_errors(result, symbol):
 
 def fetch_history(symbol):
     """2년치 일봉 — auto_adjust=False로 야후 파이낸스 표시값과 일치 (CLAUDE.md 19항).
-    High/Low도 함께 반환 — ADX·스토캐스틱 정확 계산에 필요(2026-07-04 추가)."""
+    High/Low도 함께 반환 — ADX·스토캐스틱 정확 계산에 필요(2026-07-04 추가).
+    Volume도 반환 — 차트 하단 거래량 바 표시용(2026-07-04 추가)."""
     t = yf.Ticker(symbol)
     hist = t.history(period='2y', interval='1d', auto_adjust=False)
     if hist.empty:
-        return [], [], [], []
+        return [], [], [], [], []
     dates = [d.to_pydatetime() for d in hist.index]
     closes = [float(c) for c in hist['Close'].tolist()]
     highs = [float(c) for c in hist['High'].tolist()]
     lows = [float(c) for c in hist['Low'].tolist()]
-    return dates, closes, highs, lows
+    volumes = [float(v) for v in hist['Volume'].tolist()]
+    return dates, closes, highs, lows, volumes
 
 
 def fetch_news(symbol, max_items=4, max_age_hours=20):
@@ -437,39 +460,61 @@ def fetch_news(symbol, max_items=4, max_age_hours=20):
 
 # ─── 차트 이미지 생성 ────────────────────────────────────────────────────────
 
-COLORS = {"price": "#1f3864", "sma5": "#e07b39", "sma20": "#c0392b", "sma50": "#7d3c98", "sma200": "#2e8b57"}
+COLORS = {"price": "#1f3864", "ema5": "#e07b39", "ema20": "#c0392b", "ema50": "#7d3c98", "ema200": "#2e8b57"}
 
 
-def render_chart(symbol, dates, closes, ind, out_path):
-    s = ind['_sma_series']
+def render_chart(symbol, dates, closes, ind, out_path, volumes=None):
+    """가격+EMA+볼린저+거래량(주가 패널 하단, 트레이딩뷰 스타일) / RSI / 스토캐스틱 / ADX
+    4단 구성. 2026-07-04: 거래량·스토캐스틱·ADX 패널 신설(요청 반영)."""
+    s = ind['_ma_series']
     window = 180
     dts = dates[-window:]
     ps = closes[-window:]
-    s5 = s['sma5'][-window:]
-    s20 = s['sma20'][-window:]
-    s50 = s['sma50'][-window:]
-    s200 = s['sma200'][-window:]
+    s5 = s['ema5'][-window:]
+    s20 = s['ema20'][-window:]
+    s50 = s['ema50'][-window:]
+    s200 = s['ema200'][-window:]
     r = s['rsi'][-window:]
     bb_u = s['bb_upper'][-window:]
     bb_l = s['bb_lower'][-window:]
+    adx_v = s['adx'][-window:]
+    k_v = s['stoch_k'][-window:]
+    d_v = s['stoch_d'][-window:]
+    vol = (volumes or [])[-window:]
 
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 6.2), sharex=True,
-                                    gridspec_kw={"height_ratios": [3, 1]}, dpi=150)
+    fig, (ax1, ax2, ax3, ax4) = plt.subplots(
+        4, 1, figsize=(10, 10.4), sharex=True,
+        gridspec_kw={"height_ratios": [3.2, 1, 1, 0.8]}, dpi=150)
     fig.patch.set_facecolor("white")
 
+    # ── 1) 가격 + EMA + 볼린저 + 거래량(하단 오버레이) ──────────────────────
     if any(v is not None for v in bb_u):
         ax1.plot(dts, bb_u, color="#9aa5b1", linewidth=0.9, linestyle="--", label="볼린저 상단")
         ax1.plot(dts, bb_l, color="#9aa5b1", linewidth=0.9, linestyle="--", label="볼린저 하단")
         ax1.fill_between(dts, bb_l, bb_u, color="#9aa5b1", alpha=0.06)
-    ax1.plot(dts, ps, color=COLORS["price"], linewidth=1.6, label=f"{symbol} 종가")
+
+    if vol and any(v is not None for v in vol):
+        vol_ax = ax1.twinx()
+        # 국내 관례(양봉=빨강/상승, 음봉=파랑/하락)에 맞춰 배치
+        vol_colors = ["#d9534f" if (i == 0 or ps[i] >= ps[i - 1]) else "#2e6da4"
+                      for i in range(len(ps))]
+        vol_ax.bar(dts, vol, color=vol_colors, alpha=0.35, width=0.8, zorder=1)
+        vmax = max((v for v in vol if v is not None), default=1)
+        vol_ax.set_ylim(0, vmax * 4.2)  # 거래량 바가 패널 하단 ~25%만 차지하도록 스케일 압축
+        vol_ax.set_yticks([])
+        vol_ax.set_zorder(ax1.get_zorder() - 1)
+        ax1.patch.set_visible(False)
+
+    ax1.plot(dts, ps, color=COLORS["price"], linewidth=1.6, label=f"{symbol} 종가", zorder=3)
+    # 2026-07-04: 범례에 (EMA) 명시 — SMA로 오해하지 않도록 최소 한 번은 표기
     if any(v is not None for v in s5):
-        ax1.plot(dts, s5, color=COLORS["sma5"], linewidth=1.0, label="5일선")
+        ax1.plot(dts, s5, color=COLORS["ema5"], linewidth=1.0, label="5일선(EMA)", zorder=3)
     if any(v is not None for v in s20):
-        ax1.plot(dts, s20, color=COLORS["sma20"], linewidth=1.0, label="20일선")
+        ax1.plot(dts, s20, color=COLORS["ema20"], linewidth=1.0, label="20일선(EMA)", zorder=3)
     if any(v is not None for v in s50):
-        ax1.plot(dts, s50, color=COLORS["sma50"], linewidth=1.1, label="50일선")
+        ax1.plot(dts, s50, color=COLORS["ema50"], linewidth=1.1, label="50일선(EMA)", zorder=3)
     if any(v is not None for v in s200):
-        ax1.plot(dts, s200, color=COLORS["sma200"], linewidth=1.3, label="200일선")
+        ax1.plot(dts, s200, color=COLORS["ema200"], linewidth=1.3, label="200일선(EMA)", zorder=3)
 
     last_price = ps[-1]
     last_date = dts[-1]
@@ -482,6 +527,7 @@ def render_chart(symbol, dates, closes, ind, out_path):
     ax1.grid(alpha=0.25)
     ax1.set_ylabel("USD")
 
+    # ── 2) RSI(14) ──────────────────────────────────────────────────────────
     ax2.plot(dts, r, color="#146c43", linewidth=1.3)
     ax2.axhline(70, color="#c0392b", linestyle="--", linewidth=0.8, alpha=0.7)
     ax2.axhline(30, color="#2e8b57", linestyle="--", linewidth=0.8, alpha=0.7)
@@ -489,8 +535,27 @@ def render_chart(symbol, dates, closes, ind, out_path):
     ax2.set_ylabel("RSI(14)")
     ax2.grid(alpha=0.25)
 
-    ax2.xaxis.set_major_locator(mdates.MonthLocator())
-    ax2.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
+    # ── 3) 스토캐스틱(14,3) %K/%D ────────────────────────────────────────────
+    if any(v is not None for v in k_v):
+        ax3.plot(dts, k_v, color="#1f77b4", linewidth=1.1, label="%K")
+        ax3.plot(dts, d_v, color="#e07b39", linewidth=1.0, linestyle="--", label="%D")
+        ax3.axhline(80, color="#c0392b", linestyle="--", linewidth=0.8, alpha=0.6)
+        ax3.axhline(20, color="#2e8b57", linestyle="--", linewidth=0.8, alpha=0.6)
+        ax3.set_ylim(0, 100)
+        ax3.legend(loc="upper left", fontsize=7, ncol=2, frameon=False)
+    ax3.set_ylabel("스토캐스틱")
+    ax3.grid(alpha=0.25)
+
+    # ── 4) ADX(14) ───────────────────────────────────────────────────────────
+    if any(v is not None for v in adx_v):
+        ax4.plot(dts, adx_v, color="#6b4c9a", linewidth=1.2)
+        ax4.axhline(25, color="#888888", linestyle="--", linewidth=0.8, alpha=0.6)
+    ax4.set_ylabel("ADX(14)")
+    ax4.set_ylim(bottom=0)
+    ax4.grid(alpha=0.25)
+
+    ax4.xaxis.set_major_locator(mdates.MonthLocator())
+    ax4.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
     fig.autofmt_xdate(rotation=30)
 
     fig.tight_layout()
@@ -626,10 +691,11 @@ def build_prompt(symbol, ind, dates, kst_now, news_headlines, ledger_block):
 === 오늘 계산된 실제 수치 (이 값만 근거로 사용, 추측 금지) ===
 현재가(직전 종가): {ind['price']:,.2f} USD
 전일 대비 등락률: {fmt_pct(change_pct)}
-5일 이동평균: {ind['sma5']}
-20일 이동평균: {ind['sma20']}
-50일 이동평균: {ind['sma50']}
-200일 이동평균: {ind['sma200']}
+5일 지수이동평균(EMA): {ind['ema5']}
+20일 지수이동평균(EMA): {ind['ema20']}
+50일 지수이동평균(EMA): {ind['ema50']}
+200일 지수이동평균(EMA): {ind['ema200']}
+(주의: 단순이동평균 SMA가 아닌 지수이동평균 EMA입니다. 글에서 이평선을 언급할 때 최소 한 번은 "EMA" 또는 "지수이동평균"임을 명시하세요.)
 RSI(14): {ind['rsi14']}
 {bb_line}{adx_line}{stoch_line}{fib_line}52주 최고가: {ind['high52']} ({ind['high52_date']})
 52주 최저가: {ind['low52']} ({ind['low52_date']})
@@ -784,7 +850,7 @@ def main():
     for symbol in SYMBOLS:
         print(f"  [{symbol}] 데이터 수집...")
         try:
-            dates, closes, highs, lows = fetch_history(symbol)
+            dates, closes, highs, lows, volumes = fetch_history(symbol)
         except Exception as e:
             print(f"    ERROR: {symbol} 시세 수집 실패 — {e}")
             continue
@@ -830,7 +896,7 @@ def main():
         img_fname = f"{symbol}_{kst_now.strftime('%Y%m%d_%H%M')}.png"
         img_path = os.path.join(IMG_DIR, img_fname)
         try:
-            render_chart(symbol, dates, closes, ind, img_path)
+            render_chart(symbol, dates, closes, ind, img_path, volumes=volumes)
         except Exception as e:
             print(f"    ERROR: {symbol} 차트 생성 실패 — {e}")
             continue
@@ -843,7 +909,7 @@ def main():
             "timestamp_kst": kst_label(kst_now),
             "price": ind['price'],
             "change_pct": change_pct,
-            "sma5": ind['sma5'], "sma20": ind['sma20'], "sma50": ind['sma50'], "sma200": ind['sma200'],
+            "ema5": ind['ema5'], "ema20": ind['ema20'], "ema50": ind['ema50'], "ema200": ind['ema200'],
             "rsi14": ind['rsi14'],
             "bb_upper": ind.get('bb_upper'), "bb_mid": ind.get('bb_mid'), "bb_lower": ind.get('bb_lower'),
             "adx14": ind.get('adx14'),
