@@ -118,7 +118,7 @@
         '</div>' +
 
         '<div class="ez-footer-bottom">' +
-          '© 2025–2026 유니아빠 &amp; 유니엄마 · EZLONG · easy.invest.good@gmail.com<br>' +
+          '© 2025–2026 유니아빠 · EZLONG · easy.invest.good@gmail.com<br>' +
           '본 서비스에서 제공하는 모든 시뮬레이션 수치는 참고용 추정치이며, 실제 투자 수익을 보장하지 않습니다. 투자 판단의 책임은 투자자 본인에게 있습니다.' +
         '</div>' +
       '</div>' +
