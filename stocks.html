@@ -816,7 +816,7 @@ function rowHTML(item, noRank) {
         var intradayBars = live && live.intraday && live.intraday.length >= 2 ? live.intraday : null;
         // 베이스라인 = prevClose (어제 종가) → changePct 색상과 일치
         // dayOpen 기준이면 갭 상승/하락 시 스파클라인 색상이 % 배지와 불일치
-        var prevClose    = live && live.prevClose ? live.prevClose : null;
+        var prevClose    = resolveSparkBaseline(live && live.prevClose ? live.prevClose : null, live ? live.price : null, intradayBars);
         if (intradayBars) {
           return buildSparkline(intradayBars, prevClose);  // prevClose = 베이스라인
         }
@@ -854,6 +854,20 @@ function isUSMarketOpen() {
   var day  = et.getUTCDay();
   var mins = et.getUTCHours() * 60 + et.getUTCMinutes();
   return day >= 1 && day <= 5 && mins >= 570 && mins < 960; // 9:30~16:00 ET
+}
+
+// ── 스파클라인 베이스라인 보정 — 주말·공휴일 비거래일 스냅샷 방어 (2026-07-04) ──
+// 배경: 비거래일에 Massive 스냅샷이 day.c===prevDay.c로 동일하게 내려와
+// live.prevClose가 실제 "어제 종가"가 아니라 "그 거래일 자체의 종가"(=현재가)와 같아진다.
+// 이 값을 그대로 베이스라인으로 쓰면 그날 상승분 전체가 베이스라인 아래로 깔려버려
+// 스파클라인이 changePct 배지(+)와 반대(전체 빨강)로 보이는 착시가 생긴다(AAPL·SPCX 확인).
+// prevClose와 현재가가 사실상 같으면(비거래일 스냅샷) 신뢰하지 않고,
+// intraday 배열 자체의 첫 값(그 거래일 시작가)으로 대체한다 — 목록·지수·ETF 3곳 공용.
+function resolveSparkBaseline(prevClose, referencePrice, intradayBars) {
+  if (prevClose != null && referencePrice != null && Math.abs(prevClose - referencePrice) < 0.005) {
+    return (intradayBars && intradayBars.length) ? intradayBars[0] : null;
+  }
+  return prevClose;
 }
 
 // ── changePct 계산 — 목록·디테일 공용 (일관성 보장) ────────────────────
@@ -1043,7 +1057,7 @@ function renderIndexCards() {
     var etfSym      = ETF_MAP[c.idxSym];
     var etfLive     = pricesData && pricesData.prices && etfSym ? pricesData.prices[etfSym] : null;
     var etfIntraday = etfLive && etfLive.intraday && etfLive.intraday.length >= 2 ? etfLive.intraday : null;
-    var etfPrevClose = etfLive ? etfLive.prevClose : null;
+    var etfPrevClose = resolveSparkBaseline(etfLive ? etfLive.prevClose : null, etfLive ? etfLive.price : null, etfIntraday);
 
     var isUp    = pct != null ? pct >= 0 : true;
     var sparkEl = document.getElementById(c.sparkEl);
@@ -1095,7 +1109,7 @@ function renderSemiEtfCards() {
     // 스파클라인: live.intraday 우선(당일 흐름) → 없으면 30일 일봉 폴백
     // 베이스라인 = prevClose → changePct 색상과 일치
     var intradayBars = live && live.intraday && live.intraday.length >= 2 ? live.intraday : null;
-    var prevClose    = live ? live.prevClose : null;
+    var prevClose    = resolveSparkBaseline(live ? live.prevClose : null, live ? live.price : null, intradayBars);
 
     var isUp    = pct != null ? pct >= 0 : true;
     var sparkEl = document.getElementById(c.sparkEl);
