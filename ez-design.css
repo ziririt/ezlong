@@ -9,11 +9,18 @@
    ═══════════════════════════════════════════════════════════════════ */
 
 /* Manrope — 영문/숫자(티커·가격·퍼센트) 전용. 한글 글리프가 없어
-   한글 텍스트는 자동으로 --ez-font의 다음 순번으로 폴백된다.
-   Noto Sans KR도 웹폰트로 함께 로드 — 시스템에 애플/맑은고딕이
-   없거나 브라우저 generic sans-serif 매핑이 어긋난 환경(윈도우 등)에서
-   한글이 명조체(세리프)로 깨지는 것을 방지 (2026-07-04 긴급 수정). */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
+   한글 텍스트는 자동으로 --ez-font의 다음 순번(-apple-system → Apple SD
+   Gothic Neo)으로 폴백된다.
+   [2026-07-04 철회] 한때 Noto Sans KR을 웹폰트로 함께 로드했었다.
+   당시 명조체 버그는 실제로는 이 페이지에 ez-design.css 링크 자체가
+   빠져있던 게 원인(위 파일 상단 주석 참조)이라 Noto Sans KR은 애초에
+   불필요한 조치였고, 오히려 iOS에서 Apple SD Gothic Neo 대신 Noto Sans
+   KR이 매칭되어 아이폰 기본 폰트와 다른 두껍고 각진 한글이 렌더링되는
+   부작용을 일으켰다(iOS 실기기 스크린샷으로 확인, 가독성·심미성 저하
+   불만). 그래서 Noto Sans KR 로드를 제거하고 -apple-system/Apple SD
+   Gothic Neo에 한글 렌더링을 다시 맡긴다. 'Malgun Gothic'은 윈도우에
+   실제로 설치돼 있는 시스템 폰트 이름이라 이름만 남겨둬도 무해하다. */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 /* ── CSS 변수 (라이트 모드) ─────────────────────────────────────── */
 :root {
@@ -46,7 +53,7 @@
 
   /* 타이포 */
   --ez-mono: 'SF Mono', 'Fira Code', Consolas, 'Courier New', monospace;
-  --ez-font: 'Manrope', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  --ez-font: 'Manrope', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
 
   /* 반경 — 2026-07-04 애플 스타일 리디자인: 12→16 / 8→10로 소폭 확대 */
   --ez-r:  16px;
