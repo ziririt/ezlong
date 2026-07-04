@@ -441,6 +441,15 @@ a { text-decoration: none; color: inherit; }
   .ball-ph-row { gap: 5px; }
 }
 
+/* ─── AI 차트분석 코멘트 카드 — 모바일 1열 전환 (2026-07-04 가독성 수정)
+   기존 flex:1;min-width:0; 조합은 flex-wrap이 있어도 min-content가 0이라
+   절대 줄바꿈되지 않고 좁은 화면에서 3칸이 그대로 짜부라졌다.
+   680px 이하에서는 100% 폭 1열로 전환. */
+.ai-comment-card { flex: 1 1 240px; min-width: 240px; }
+@media (max-width: 680px) {
+  .ai-comment-card { flex: 1 1 100%; min-width: 100%; }
+}
+
 
 /* ─── 오늘의 행동 가이드 (Action Plan) ────────────── */
 /* Apple 스타일: 컬러 배경 없음. 왼쪽 4px 컬러 스트라이프만 */
@@ -5023,7 +5032,7 @@ function renderChartAiComments() {
       ? `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);font-size:14px;color:var(--t2);line-height:1.5;"><b style="color:var(--t1);">리스크 노트 —</b> ${ai.riskNote}</div>`
       : '';
     return `
-      <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;flex:1;min-width:0;">
+      <div class="ai-comment-card" style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
           <div>
             <span style="font-size:16px;font-weight:800;color:var(--t1);">${sym}</span>
