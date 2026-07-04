@@ -2967,6 +2967,19 @@ async function loadAllData(forceRefresh = false) {
     btn?.classList.remove('loading');
   }, 30000);
 
+  // ── 1-A. Gemini 분석 JSON 5종 병렬 fetch — 캐시 경로/실시간 경로 공통 시작 ──
+  // 2026-07-04 버그수정: 기존엔 이 fetch가 "3. GitHub Actions..." 섹션 안에서만
+  // 시작됐는데, 그 지점은 캐시 히트 시 아래 1번(로컬 캐시 체크)에서 이미 return 해버려
+  // 절대 도달하지 못했다 — 즉 1시간 TTL 캐시가 살아있는 재방문(반복 새로고침 포함)에서는
+  // King/차트AI 카드에 AI 데이터가 "영원히" 채워지지 않는 구조적 누락이었다.
+  // (네트워크 타임아웃 문제로 오진했던 원인 — 실제로는 fetch 자체가 시작조차 안 됐음.)
+  // 함수 최상단으로 끌어올려 캐시 경로에서도 반드시 시작되도록 수정.
+  const _tslaAiP = fetchAnalysisJSON('TSLA').catch(() => null);
+  const _nvdaAiP = fetchAnalysisJSON('NVDA').catch(() => null);
+  const _qqqAiP  = fetchAnalysisJSON('QQQ').catch(() => null);
+  const _vooAiP  = fetchAnalysisJSON('VOO').catch(() => null);
+  const _soxxAiP = fetchAnalysisJSON('SOXX').catch(() => null);
+
   // ── 1. 로컬 캐시 체크 (1시간 TTL, 강제 새로고침 시 건너뜀) ──────────────
   // stale-while-revalidate: 캐시 데이터 즉시 표시 + 백그라운드에서 GitHub 갱신 체크
   if (!forceRefresh) {
@@ -2995,6 +3008,17 @@ async function loadAllData(forceRefresh = false) {
           setStatus('ok', '스윙 시그널 최신 데이터 자동 반영 완료');
         }
       }).catch(() => {});
+      // 캐시 경로에서도 AI 분석 5종이 도착하는 대로 King/차트AI 카드만 조용히 갱신
+      // (전체 재렌더 아님 — 가격/점수 등은 이미 캐시로 표시된 상태 유지)
+      Promise.all([_tslaAiP, _nvdaAiP, _qqqAiP, _vooAiP, _soxxAiP]).then(([t, n, q, v, s]) => {
+        window._tslaAnalysis = t; window._nvdaAnalysis = n;
+        window._qqqAnalysis  = q; window._vooAnalysis  = v; window._soxxAnalysis = s;
+        console.log('[ChartAI/KingAI] 캐시 경로 AI 데이터 도착 — TSLA:', t ? 'OK' : '없음',
+                    '/ NVDA:', n ? 'OK' : '없음', '/ QQQ:', q ? 'OK' : '없음',
+                    '/ VOO:', v ? 'OK' : '없음', '/ SOXX:', s ? 'OK' : '없음');
+        try { renderChartAiComments(); } catch(e) { console.error('[renderChartAiComments]', e); }
+        try { renderKings(stockData['TSLA'], stockData['NVDA']); } catch(e) { console.error('[renderKings]', e); }
+      });
       return;
     }
   }
@@ -3037,16 +3061,7 @@ async function loadAllData(forceRefresh = false) {
     return null;
   });
 
-  // ── TSLA/NVDA Gemini 분석 JSON 병렬 fetch (실패해도 무시) ─────────────
-  const _tslaAiP = fetchAnalysisJSON('TSLA').catch(() => null);
-  const _nvdaAiP = fetchAnalysisJSON('NVDA').catch(() => null);
-
-  // ── QQQ/VOO/SOXX 차트분석 JSON 병렬 fetch (2026-07-04 신설) ───────────
-  // chart-analysis 파이프라인이 이미 만들어 둔 data/analysis-{symbol}.json 재사용.
-  // 별도 Gemini 호출 없음 — King(TSLA/NVDA) 패턴과 동일한 방식.
-  const _qqqAiP  = fetchAnalysisJSON('QQQ').catch(() => null);
-  const _vooAiP  = fetchAnalysisJSON('VOO').catch(() => null);
-  const _soxxAiP = fetchAnalysisJSON('SOXX').catch(() => null);
+  // (TSLA/NVDA/QQQ/VOO/SOXX Gemini 분석 fetch는 1-A에서 함수 최상단으로 이동함 — 2026-07-04)
 
   // ── 4. GitHub JSON 실패 시에만 → 실시간 API 직접 호출 ─────────────────
   if (!Object.keys(fetchedData).length) {
