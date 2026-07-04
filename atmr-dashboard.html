@@ -121,6 +121,12 @@
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2336764115275414" crossorigin="anonymous"></script>
 
+<link rel="stylesheet" href="ez-design.css">
+<!-- 2026-07-04 긴급 수정: 이 페이지에 ez-design.css 링크가 누락돼 있었음.
+     --ez-font/--ez-blue/--ez-r 등 공유 변수가 전부 undefined였고,
+     특히 --font:var(--ez-font)가 무효 참조가 되어 폰트가 브라우저 기본값(세리프)으로
+     깨졌다. 이 한 줄이 근본 수정이며, 위 464번째 줄대의 Manrope/Noto Sans KR
+     웹폰트 교체는 이 버그와 무관한 별개 개선이었다. -->
 <style>
 /* ─── 리셋 & 기본 ─────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
