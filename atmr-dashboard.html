@@ -2883,17 +2883,21 @@ async function fetchGitHubJSON() {
 // ─── TSLA/NVDA Gemini 분석 JSON fetch ────────────
 const _ANALYSIS_RAW = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/';
 
-async function fetchAnalysisJSON(symbol) {
+async function fetchAnalysisJSON(symbol, _retry) {
   const safe = symbol.replace(/[^a-zA-Z0-9]/g, '_');
   const bust = Math.floor(Date.now() / 3600000);
   try {
+    // 2026-07-04: 6s→9s로 상향. 콜드 로드 시 QQQ/VOO/SOXX 등 여러 종목을
+    // 동시에 fetch하면 커넥션 경합으로 6s 안에 응답이 안 오는 경우가 실측 확인됨.
     const r = await fetch(_ANALYSIS_RAW + 'analysis-' + safe + '.json?t=' + bust, {
-      signal: AbortSignal.timeout(6000)
+      signal: AbortSignal.timeout(9000)
     });
     if (!r.ok) return null;
     const j = await r.json();
     return j?.analysis ?? null;
   } catch(e) {
+    // 타임아웃/일시적 네트워크 실패 시 1회만 재시도 (콜드 커넥션 대응)
+    if (!_retry) return fetchAnalysisJSON(symbol, true);
     console.warn('[analysis-' + symbol + '] fetch 실패:', e.message);
     return null;
   }
