@@ -133,7 +133,7 @@
   --t1:       #1D1D1F;
   --t2:       #2D2D2F;   /* 진한 회색 — 눈 나쁜 분도 읽기 편한 수준 */
   --t3:       #3D3D3F;   /* 보조 텍스트도 충분히 진하게 */
-  --bl:       #0071E3;   /* Apple 공식 blue */
+  --bl:       var(--ez-blue);   /* ez-design.css 공유 blue로 통합 */
   --bl-dk:    #0040DD;
   --bl-s:     rgba(0,113,227,0.09);
   --bl-m:     rgba(0,113,227,0.16);
@@ -151,9 +151,9 @@
   /* 오렌지 제거 — 레드로 통합 */
   --or:       #D70015;
   --or-s:     rgba(215,0,21,0.10);
-  --r:        20px;     /* 더 둥근 카드 — 2026 트렌드 */
+  --r:        20px;     /* 의도적 확대 유지 — 공유 기본값(--ez-r:16px)보다 큼, 2026 트렌드 반영 */
   --r-sm:     12px;
-  --font:     -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Pretendard', 'Helvetica Neue', Arial, sans-serif;
+  --font:     var(--ez-font);
   --shadow:   0 1px 8px rgba(0,0,0,0.05), 0 4px 20px rgba(0,0,0,0.06);
   --shadow-lg:0 8px 40px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.05);
   --nav-h:    56px;
@@ -168,7 +168,7 @@
     --t1:     #FFFFFF;   /* 다크모드: 순백 */
     --t2:     #E5E5EA;   /* 다크모드: 거의 흰색 — 회색 텍스트 지양 */
     --t3:     #C7C7CC;   /* 다크모드: 밝은 회색 */
-    --bl:     #0A84FF;   /* iOS 다크모드 블루 */
+    --bl:     var(--ez-blue);   /* ez-design.css 공유 blue로 통합 */
     --bl-s:   rgba(10,132,255,0.18);
     --bl-m:   rgba(10,132,255,0.28);
     --gr:     #30D158;   /* iOS 다크모드 그린 */

@@ -142,7 +142,7 @@
     :root {
       --bg:     #F5F5F7;
       --surf:   #FFFFFF;
-      --bl:     #0071E3;
+      --bl:     var(--ez-blue);
       --bl-s:   rgba(0,113,227,0.08);
       --yl:     #FF9F0A;
       --yl-s:   rgba(255,159,10,0.10);
@@ -152,18 +152,17 @@
       --t2:     #6E6E73;
       --t3:     #3A3A3C;
       --bd:     rgba(0,0,0,0.08);
-      --r:      14px;
+      --r:      14px; /* 공유 기본값(16px)과 다름 — 통합 보류, 확인 필요 */
       --shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
       --max-w:  720px;
-      --font:   -apple-system, BlinkMacSystemFont, 'SF Pro Display',
-                'Apple SD Gothic Neo', 'Pretendard', sans-serif;
+      --font:   var(--ez-font);
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
         --bg:     #000000;
         --surf:   #1C1C1E;
-        --bl:     #0A84FF;
+        --bl:     var(--ez-blue);
         --bl-s:   rgba(10,132,255,0.14);
         --yl:     #FF9F0A;
         --yl-s:   rgba(255,159,10,0.14);
