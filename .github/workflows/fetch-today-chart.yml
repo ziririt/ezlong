@@ -15,6 +15,11 @@ on:
     - cron: '35 13 * * *'   # KST 22:35
 
   workflow_dispatch:
+    inputs:
+      force:
+        description: '중복 실행 가드(180분) 무시하고 강제 실행'
+        type: boolean
+        default: false
 
 jobs:
   analyze-and-update:
@@ -50,6 +55,7 @@ jobs:
         run: python scripts/fetch-today-chart.py
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          FORCE_TODAYCHART: ${{ (github.event_name == 'workflow_dispatch' && inputs.force) && '1' || '0' }}
 
       # ── 6. 변경사항 커밋 및 푸시 ──────────────────────────────────────
       # 주의: git reset --hard / git pull --rebase 절대 금지 (CLAUDE.md 규칙)
