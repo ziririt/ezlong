@@ -193,8 +193,12 @@
   }
 }
 
-html { font-size: 18px; font-family: var(--font); background: var(--bg); color: var(--t1); -webkit-font-smoothing: antialiased; scroll-behavior: smooth; overflow-x: hidden; }
-body { min-height: 100vh; overflow-x: hidden; }
+html { font-size: 18px; font-family: var(--font); background: var(--bg); color: var(--t1); -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+/* 2026-07-04: overflow-x:hidden을 html/body에서 제거 — body 직계 자식인 .ez-nav의
+   position:sticky가 스크롤 시 풀리는 원인이었음(overflow 지정 시 WebKit이 해당
+   요소를 스크롤 컨테이너로 승격하며 sticky 기준점이 깨지는 버그). 가로 스크롤
+   방지는 body 바로 다음 wrapper div로 이전(아래 본문 참조). */
+body { min-height: 100vh; }
 a { text-decoration: none; color: inherit; }
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-thumb { background: #C7C7CC; border-radius: 3px; }
@@ -1505,6 +1509,10 @@ li.gear-other-sep { display: none !important; }
 
 <!-- ── EZLONG 글로벌 헤더 ── -->
 <script src="/ez-nav.js"></script>
+
+<!-- 2026-07-04: overflow-x:hidden 래퍼 — html/body 대신 여기서 가로 스크롤 차단.
+     nav는 이 밖(위)에 있어 position:sticky 정상 작동. -->
+<div style="overflow-x:hidden;width:100%;">
 
 <!-- ── 본문 ──────────────────────────────────── -->
 <main>
@@ -6137,6 +6145,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- TradingView 차트 라이브러리 -->
 <script src="https://s3.tradingview.com/tv.js" onload="initTradingViewCharts()" async></script>
+
+</div><!-- /overflow-x wrapper (2026-07-04) -->
 
 </body>
 </html>

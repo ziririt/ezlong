@@ -205,8 +205,10 @@
     --cyan:#64D2FF;
   }
 }
-html{scroll-behavior:smooth;overflow-x:hidden}
-body{font-family:-apple-system,BlinkMacSystemFont,'Pretendard Variable','Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.65;overflow-x:hidden}
+html{scroll-behavior:smooth}
+/* 2026-07-04: overflow-x:hidden을 html,body에서 제거 — body 직계 자식인 .ez-nav의
+   position:sticky가 깨지는 원인이었음. 가로 스크롤 방지는 body 바로 다음 wrapper div로 이전. */
+body{font-family:-apple-system,BlinkMacSystemFont,'Pretendard Variable','Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.65}
 
 /* GLOBAL NAV */
 #global-nav{height:48px;background:rgba(255,255,255,0.92);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,0.08);position:sticky;top:0;z-index:200}
@@ -574,6 +576,10 @@ input[type=number]:focus,select:focus{border-color:var(--blue)}
 <script src="/ez-nav.js"></script>
 
 <!-- ── EZLONG 글로벌 헤더 ─────────────────────────────── -->
+
+<!-- 2026-07-04: overflow-x:hidden 래퍼 — html/body 대신 여기서 가로 스크롤 차단.
+     nav는 이 밖(위)에 있어 position:sticky 정상 작동. -->
+<div style="overflow-x:hidden;width:100%;">
 
 <div class="banner">
   <div class="banner-inner">
@@ -1688,5 +1694,8 @@ showWonLabel(parseInt(document.getElementById('init-invest').value)||1000, 10000
 
 <!-- ── EZLONG 글로벌 푸터 ── -->
 <script src="/ez-footer.js"></script>
+
+</div><!-- /overflow-x wrapper (2026-07-04) -->
+
 </body>
 </html>

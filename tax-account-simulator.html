@@ -245,8 +245,9 @@ html,body{
   color:var(--t1);
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
-  overflow-x:hidden;
 }
+/* 2026-07-04: overflow-x:hidden을 html,body에서 제거 — body 직계 자식인 .ez-nav의
+   position:sticky가 깨지는 원인이었음. 가로 스크롤 방지는 body 바로 다음 wrapper div로 이전. */
 a{text-decoration:none;color:inherit}
 button,input,select{font-family:var(--font)}
 ::-webkit-scrollbar{width:5px;height:5px}
@@ -793,6 +794,9 @@ tr:last-child td{border-bottom:0}
 <!-- ── EZLONG 글로벌 헤더 ── -->
 <script src="/ez-nav.js"></script>
 
+<!-- 2026-07-04: overflow-x:hidden 래퍼 — html/body 대신 여기서 가로 스크롤 차단.
+     nav는 이 밖(위)에 있어 position:sticky 정상 작동. -->
+<div style="overflow-x:hidden;width:100%;">
 
 <div id="root"></div>
 
@@ -1541,5 +1545,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 
 <!-- ── EZLONG 글로벌 푸터 ── -->
 <script src="/ez-footer.js"></script>
+
+</div><!-- /overflow-x wrapper (2026-07-04) -->
+
 </body>
 </html>

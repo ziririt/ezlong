@@ -222,9 +222,10 @@ html, body {
   background: var(--bg);
   color: var(--t1);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
   max-width: 100%;
 }
+/* 2026-07-04: overflow-x:hidden을 html,body에서 제거 — body 직계 자식인 .ez-nav의
+   position:sticky가 깨지는 원인이었음. 가로 스크롤 방지는 body 바로 다음 wrapper div로 이전. */
 
 /* iOS 자동 확대 방지 — input은 반드시 font-size 16px 이상 */
 input, select, textarea {
@@ -303,6 +304,9 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
 <!-- ── EZLONG 글로벌 헤더 ── -->
 <script src="/ez-nav.js"></script>
 
+<!-- 2026-07-04: overflow-x:hidden 래퍼 — html/body 대신 여기서 가로 스크롤 차단.
+     nav는 이 밖(위)에 있어 position:sticky 정상 작동. -->
+<div style="overflow-x:hidden;width:100%;">
 
 <div id="root"></div>
 
@@ -1729,7 +1733,7 @@ function App(){
         </div>
 
         {/* 하단 면책 */}
-        <div style={{marginTop:20,fontSize:11,color:'var(--t3)',lineHeight:1.7,textAlign:'center',paddingBottom:20}}>
+        <div style={{marginTop:20,fontSize:14,color:'var(--t3)',lineHeight:1.7,textAlign:'center',paddingBottom:20}}>
           본 시뮬레이터는 투자 정보 제공 목적으로만 사용됩니다. 실제 수익률은 다를 수 있으며, 투자 결정의 책임은 투자자 본인에게 있습니다. © 2025–2026 EZLONG
         </div>
       </div>
@@ -1741,5 +1745,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
 <!-- ── EZLONG 글로벌 푸터 ── -->
 <script src="/ez-footer.js"></script>
+
+</div><!-- /overflow-x wrapper (2026-07-04) -->
+
 </body>
 </html>

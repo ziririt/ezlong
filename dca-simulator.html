@@ -122,7 +122,9 @@
     --chart-xax:#3A3A3C;
   }
 }
-html, body { font-family: var(--font); background: var(--bg); color: var(--t1); -webkit-font-smoothing: antialiased; overflow-x: hidden; max-width: 100%; width: 100%; }
+html, body { font-family: var(--font); background: var(--bg); color: var(--t1); -webkit-font-smoothing: antialiased; max-width: 100%; width: 100%; }
+/* 2026-07-04: overflow-x:hidden을 html,body에서 제거 — body 직계 자식인 .ez-nav의
+   position:sticky가 깨지는 원인이었음. 가로 스크롤 방지는 body 바로 다음 wrapper div로 이전. */
 svg { max-width: 100%; display: block; }
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-thumb { background: var(--chk-border); border-radius: 3px; }
@@ -221,6 +223,10 @@ table { min-width: 0; }
 
 <!-- ── EZLONG 글로벌 헤더 ── -->
 <script src="/ez-nav.js"></script>
+
+<!-- 2026-07-04: overflow-x:hidden 래퍼 — html/body 대신 여기서 가로 스크롤 차단.
+     nav는 이 밖(위)에 있어 position:sticky 정상 작동. -->
+<div style="overflow-x:hidden;width:100%;">
 
 <!-- ── 모바일 세로 모드 안내 배너 ── -->
 <div id="mob-hint">
@@ -1316,5 +1322,8 @@ function App(){
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
 </script>
 <script src="/ez-footer.js"></script>
+
+</div><!-- /overflow-x wrapper (2026-07-04) -->
+
 </body>
 </html>
