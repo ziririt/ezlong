@@ -460,6 +460,19 @@ a { text-decoration: none; color: inherit; }
   .ai-comment-card { flex: 1 1 100%; min-width: 100%; }
 }
 
+/* ─── 최근 흐름 배너 — 종목 4개 2x2 고정 그리드 (2026-07-04)
+   flex-wrap 자동 줄바꿈은 라벨 텍스트 길이에 따라 1줄/3+1줄로 들쭉날쭉해질 수 있어
+   PC에서는 항상 2열x2행으로 고정. 모바일은 1열로 세로 스택. */
+.recent-flow-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px 24px;
+  flex: 1;
+  min-width: 0;
+}
+@media (max-width: 640px) {
+  .recent-flow-grid { grid-template-columns: 1fr; }
+}
 
 /* ─── 오늘의 행동 가이드 (Action Plan) ────────────── */
 /* Apple 스타일: 컬러 배경 없음. 왼쪽 4px 컬러 스트라이프만 */
@@ -1265,9 +1278,16 @@ li.gear-other-sep { display: none !important; }
   max-width: 960px;
   margin: 0 auto;
   padding: 44px 20px 36px;
+  min-height: 360px;   /* 2026-07-04: 헤더 설명문 삭제 후 배경 사진이 같이 줄어드는 것 방지 */
+  box-sizing: border-box;
 }
 .hero-banner .page-header { padding: 0; background: transparent; }
-.hero-banner .title-date  { color: rgba(255,255,255,0.52); }
+.hero-banner .title-date  {
+  color: rgba(255,255,255,0.52);
+  /* 2026-07-04: Manrope가 숫자만 라틴 폰트로 그려 한글(년/월/일/토)과 자간이 어긋나 보이던 문제 —
+     날짜 표기는 시스템 기본 폰트로 고정 */
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+}
 .hero-banner .title-sub   { color: rgba(255,255,255,0.72); }
 .hero-banner .title-hero  { color: #FFD60A; text-shadow: 0 2px 28px rgba(0,0,0,0.7); }
 @media (prefers-color-scheme: dark) { .hero-banner .title-hero { color: #FFD60A; } }
@@ -1279,8 +1299,19 @@ li.gear-other-sep { display: none !important; }
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
+/* 2026-07-04: PC에서 title-hero 폭이 넓어지면서 그 폭에 종속된 title-date 우측정렬이
+   본문 오른쪽 끝과 안 맞아 보이던 문제 — 날짜를 헤더 우상단에 절대 배치로 고정 */
+@media (min-width: 641px) {
+  .hero-banner .page-header { position: relative; }
+  .hero-banner .title-date {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .hero-banner .page-title { padding-top: 26px; }
+}
 @media (max-width: 640px) {
-  .hero-content { padding: 32px 20px 28px; }
+  .hero-content { padding: 32px 20px 28px; min-height: 0; }
 }
 
 /* ─── 볼카운터 탭 외부 고정 영역 ─────────────────────── */
@@ -5560,15 +5591,18 @@ function renderRecentContext(symbols) {
     return `<span style="color:${color};font-weight:700;">${sign}${r.toFixed(2)}%</span>`;
   };
 
+  // 2026-07-04: "2일전/어제/오늘" 표현 삭제 — 이 배너를 보는 시점이 항상 당일이라는
+  // 보장이 없어(다음날 봐도 "오늘"로 표기되는 오해 소지) 값만 화살표로 연결한다.
+  const arrow = '<span style="margin:0 6px;color:var(--ez-text3);">→</span>';
   const chips = targets.map(({ key, label }) => {
     const arr = symbols[key]?.recentDailyReturns;
     if (!arr || arr.length < 2) return null;
-    // arr[0]=오늘, arr[1]=어제, arr[2]=2일전
+    // arr[0]=가장 최근, arr[1]=그 전, arr[2]=그 이전 — 과거→최근 순으로 나열
     const parts = [];
-    if (arr[2] != null) parts.push(`2일전 ${fmtR(arr[2])}`);
-    if (arr[1] != null) parts.push(`어제 ${fmtR(arr[1])}`);
-    if (arr[0] != null) parts.push(`오늘 ${fmtR(arr[0])}`);
-    return `<span style="margin-right:16px;white-space:nowrap;"><strong style="color:var(--ez-text2);margin-right:4px;">${label}</strong>${parts.join(' → ')}</span>`;
+    if (arr[2] != null) parts.push(fmtR(arr[2]));
+    if (arr[1] != null) parts.push(fmtR(arr[1]));
+    if (arr[0] != null) parts.push(fmtR(arr[0]));
+    return `<span style="white-space:nowrap;"><strong style="color:var(--ez-text2);">${label}</strong><span style="margin:0 8px;color:var(--ez-text3);">:</span>${parts.join(arrow)}</span>`;
   }).filter(Boolean);
 
   wrap.innerHTML = `
@@ -5577,10 +5611,10 @@ function renderRecentContext(symbols) {
       border:1px solid ${IS_DARK ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'};
       border-radius:10px;padding:10px 14px;margin-bottom:12px;
       font-size:14px;line-height:1.8;
-      display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;
+      display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px 12px;
     ">
-      <span style="color:var(--ez-text3);font-size:14px;font-weight:600;letter-spacing:.05em;margin-right:10px;white-space:nowrap;">최근 흐름</span>
-      ${chips.join('')}
+      <span style="color:var(--ez-text3);font-size:14px;font-weight:600;letter-spacing:.05em;white-space:nowrap;padding-top:2px;">최근 흐름</span>
+      <div class="recent-flow-grid">${chips.join('')}</div>
     </div>`;
 }
 
