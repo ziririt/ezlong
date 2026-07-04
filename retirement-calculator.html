@@ -499,11 +499,11 @@ const INP_STYLE = {
   transition:'border-color .15s, box-shadow .15s',
 };
 
-const NumInput = memo(function NumInput({ value, onChange, color='green', style }){
+const NumInput = memo(function NumInput({ value, onChange, color='blue', style }){
   const [f, setF] = useState(false);
   const [raw, setRaw] = useState('');
-  const ac = color==='blue' ? 'var(--bl)' : 'var(--gr)';
-  const as = color==='blue' ? 'var(--bl-s)' : 'var(--gr-s)';
+  const ac = color==='blue' ? 'var(--bl)' : 'var(--bl)';
+  const as = color==='blue' ? 'var(--bl-s)' : 'var(--bl-s)';
   return <input type="number" inputMode="numeric" min="0" placeholder="0"
     value={f ? raw : (value>0 ? String(value) : '')}
     onChange={e=>{ const v=e.target.value.replace(/[^0-9]/g,''); setRaw(v); onChange(v===''?0:Number(v)); }}
@@ -520,8 +520,8 @@ function Btn({ children, onClick, disabled, style }){
       display:'inline-flex', alignItems:'center', justifyContent:'center',
       width:'100%', padding:'15px', borderRadius:'var(--r-sm)',
       fontSize:16, fontWeight:700, border:'none', fontFamily:'var(--font)',
-      background: h&&!disabled ? '#1A7030' : 'var(--gr)',
-      color:'white', boxShadow:'0 2px 10px rgba(52,199,89,.35)',
+      background: h&&!disabled ? 'var(--bl-dk)' : 'var(--bl)',
+      color:'white', boxShadow:'0 2px 10px rgba(0,113,227,.35)',
       cursor: disabled?'not-allowed':'pointer',
       opacity: disabled?.45:1, transition:'all .15s', ...style
     }}>{children}</button>;
@@ -597,8 +597,8 @@ function AccumChart({ data }){
           boxShadow:'0 4px 20px rgba(0,0,0,.22)',border:'1px solid var(--bd)',
           fontSize:13,lineHeight:1.7,pointerEvents:'none',zIndex:10,minWidth:168}}>
           <div style={{fontWeight:700,marginBottom:4,color:'var(--t1)'}}>{tip.age}세 기준</div>
-          <div style={{color:'var(--t2)'}}>총 자산: <strong style={{color:'var(--gr-dk)'}}>{fKRW(tip.totalValue)}</strong></div>
-          <div style={{color:'var(--t2)'}}>복리 수익: <strong style={{color:'var(--gr-dk)'}}>{fKRW(tip.profit)}</strong></div>
+          <div style={{color:'var(--t2)'}}>총 자산: <strong style={{color:'var(--bl-dk)'}}>{fKRW(tip.totalValue)}</strong></div>
+          <div style={{color:'var(--t2)'}}>복리 수익: <strong style={{color:'var(--bl-dk)'}}>{fKRW(tip.profit)}</strong></div>
           <div style={{color:'var(--t2)'}}>월 적립 누계: {fKRW(tip.dcaInvested)}</div>
           <div style={{color:'var(--t2)'}}>초기 투자금: {fKRW(tip.initialInvested)}</div>
         </div>
@@ -711,7 +711,7 @@ function WithdrawalLineChart({ assetMan, monthlyWdMan, retireAge }){
                 {s.label}
                 {s.exhaustedYear
                   ? <span style={{color:'#FF3B30',fontWeight:700}}> — {s.exhaustedYear}년 후 소진</span>
-                  : <span style={{color:'var(--gr-dk)',fontWeight:700}}> — {totalYears}년 후 {fTick(finalAmt)} 잔존</span>
+                  : <span style={{color:'var(--bl-dk)',fontWeight:700}}> — {totalYears}년 후 {fTick(finalAmt)} 잔존</span>
                 }
               </span>
             </div>
@@ -738,7 +738,7 @@ function ResultsGrid({ gridData, withdrawalRate, onRateChange, selectedScenario,
       <div style={{padding:'18px 20px 14px', borderBottom:'1px solid var(--bd)'}}>
         <div style={{
           fontSize:18, fontWeight:800, lineHeight:1.45,
-          marginBottom:12, letterSpacing:'-.01em', color:'var(--gr-dk)',
+          marginBottom:12, letterSpacing:'-.01em', color:'var(--bl-dk)',
         }}>
           "은퇴 후 월 얼마를 인출하면,<br/>
           <span style={{color:'var(--bl-dk)'}}>주식 자산 총액이 줄어들지 않을까?</span>"
@@ -763,7 +763,7 @@ function ResultsGrid({ gridData, withdrawalRate, onRateChange, selectedScenario,
         <div/>
         <div style={{
           gridColumn:'span 3', fontSize:11, fontWeight:700,
-          color:'var(--gr-dk)', textAlign:'center', letterSpacing:'.04em',
+          color:'var(--bl-dk)', textAlign:'center', letterSpacing:'.04em',
         }}>
           ▼ 은퇴 전 연평균 수익률 (CAGR) — 클릭하면 해당 시나리오 기준으로 시뮬레이션
         </div>
@@ -787,9 +787,9 @@ function ResultsGrid({ gridData, withdrawalRate, onRateChange, selectedScenario,
             }}>
             <div style={{
               fontSize:15, fontWeight:800,
-              color: i===selectedScenario ? 'var(--gr-dk)' : 'var(--t2)',
+              color: i===selectedScenario ? 'var(--bl-dk)' : 'var(--t2)',
             }}>{col.cagr}%</div>
-            <div style={{fontSize:11, color: i===selectedScenario ? 'var(--gr-dk)' : 'var(--t3)', marginTop:1}}>
+            <div style={{fontSize:11, color: i===selectedScenario ? 'var(--bl-dk)' : 'var(--t3)', marginTop:1}}>
               {col.label}
             </div>
           </button>
@@ -833,18 +833,18 @@ function ResultsGrid({ gridData, withdrawalRate, onRateChange, selectedScenario,
             style={{
               display:'grid', gridTemplateColumns:HCOL,
               padding:'15px 20px', cursor:'pointer',
-              background: isSelected ? 'var(--gr-s)' : 'transparent',
+              background: isSelected ? 'var(--bl-s)' : 'transparent',
               borderBottom: !isLast ? '1px solid var(--bd)' : 'none',
               transition:'background .15s',
               alignItems:'center',
             }}>
             {/* 인출률 레이블 */}
             <div>
-              <div style={{fontSize:15,fontWeight:700,color:isSelected?'var(--gr-dk)':'var(--t1)'}}>
+              <div style={{fontSize:15,fontWeight:700,color:isSelected?'var(--bl-dk)':'var(--t1)'}}>
                 연 {rate}% 인출
               </div>
               <div style={{fontSize:11,color:'var(--t3)',marginTop:2}}>{WD_RATE_LABELS[rate]}</div>
-              {isSelected&&<div style={{fontSize:11,color:'var(--gr-dk)',fontWeight:600,marginTop:3}}>▶ 시뮬레이션 중</div>}
+              {isSelected&&<div style={{fontSize:11,color:'var(--bl-dk)',fontWeight:600,marginTop:3}}>▶ 시뮬레이션 중</div>}
             </div>
             {/* 각 CAGR별 월 수령액 — 선택된 열: 분홍 하이라이트 */}
             {gridData.map((col, i)=>{
@@ -855,7 +855,7 @@ function ResultsGrid({ gridData, withdrawalRate, onRateChange, selectedScenario,
                 ? (isSelected ? 'rgba(255,59,48,0.13)' : 'rgba(255,59,48,0.07)')
                 : 'transparent';
               const {num, unit} = fManSplit(monthly);
-              const txtColor = isSelected&&isFocus ? 'var(--gr-dk)' : isFocus ? 'var(--t1)' : 'var(--t3)';
+              const txtColor = isSelected&&isFocus ? 'var(--bl-dk)' : isFocus ? 'var(--t1)' : 'var(--t3)';
               return (
                 <div key={col.cagr} style={{
                   textAlign:'center',
@@ -907,19 +907,19 @@ function WdRateSelector({ value, onChange }){
               type="button"
               style={{
                 padding:'12px 6px', borderRadius:'var(--r-sm)',
-                border: isSelected ? '2px solid var(--gr)' : '1.5px solid var(--bd)',
-                background: isSelected ? 'var(--gr-s)' : 'var(--card)',
+                border: isSelected ? '2px solid var(--bl)' : '1.5px solid var(--bd)',
+                background: isSelected ? 'var(--bl-s)' : 'var(--card)',
                 cursor:'pointer', textAlign:'center',
                 transition:'all .15s', outline:'none',
               }}>
               <div style={{
                 fontSize:17, fontWeight:800, fontFamily:'var(--mono)',
-                color: isSelected ? 'var(--gr-dk)' : 'var(--t1)',
+                color: isSelected ? 'var(--bl-dk)' : 'var(--t1)',
                 lineHeight:1.2,
               }}>{r.label}</div>
               <div style={{fontSize:12,color:'var(--t3)',marginTop:4,lineHeight:1.3}}>{r.sub}</div>
               {isSelected && r.safe && (
-                <div style={{marginTop:4,fontSize:11,color:'var(--gr-dk)',fontWeight:600}}>기본값</div>
+                <div style={{marginTop:4,fontSize:11,color:'var(--bl-dk)',fontWeight:600}}>기본값</div>
               )}
             </button>
           );
@@ -957,11 +957,11 @@ function ScenarioTable({ scenarios, selectedIdx, onSelect, withdrawalMonthlyMan,
           <div key={i} onClick={()=>!impossible&&onSelect(i)}
             style={{display:'flex',alignItems:'center',gap:14,padding:'16px 20px',
               cursor:impossible?'default':'pointer',
-              background:sel?'var(--gr-s)':'transparent',
+              background:sel?'var(--bl-s)':'transparent',
               borderBottom:i<scenarios.length-1?'1px solid var(--bd)':'none',
               transition:'background .15s'}}>
             <div style={{width:8,height:8,borderRadius:'50%',flexShrink:0,
-              background:sel?'var(--gr)':'var(--bd)',transition:'background .15s'}}/>
+              background:sel?'var(--bl)':'var(--bd)',transition:'background .15s'}}/>
             <div style={{flex:1,minWidth:0}}>
               <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:5,flexWrap:'wrap'}}>
                 <Badge bg={s.badgeBg}>{s.label} {s.rate}%</Badge>
@@ -971,7 +971,7 @@ function ScenarioTable({ scenarios, selectedIdx, onSelect, withdrawalMonthlyMan,
             </div>
             <div style={{textAlign:'right',flexShrink:0}}>
               {impossible ? <div style={{fontSize:13,color:'var(--t3)'}}>계산 불가</div>
-              : done ? <div style={{fontSize:14,fontWeight:700,color:'var(--gr-dk)'}}>이미 달성 가능</div>
+              : done ? <div style={{fontSize:14,fontWeight:700,color:'var(--bl-dk)'}}>이미 달성 가능</div>
               : (
                 <div>
                   <div style={{fontSize:22,fontWeight:800,color:'var(--t1)',fontFamily:'var(--mono)',lineHeight:1.1}}>{fMan(m)}</div>
@@ -1194,15 +1194,19 @@ function App(){
         background:'var(--hdr-bg)', backdropFilter:'saturate(180%) blur(20px)',
         WebkitBackdropFilter:'saturate(180%) blur(20px)',
         borderBottom:'1px solid var(--bd)',
-        padding:'12px 24px', display:'flex', alignItems:'center',
-        justifyContent:'space-between', position:'sticky', top:48, zIndex:100, gap:12,
+        position:'sticky', top:48, zIndex:100,
       }}>
-        <div>
-          <h1 style={{fontSize:18,fontWeight:700,color:'var(--t1)',letterSpacing:'-.01em',lineHeight:1.2}}>
-            은퇴 목표 역산 투자액 시뮬레이션
-          </h1>
-          <div style={{fontSize:13,color:'var(--t2)',marginTop:3}}>
-            나이·현재자산·월 투자액 입력 → 은퇴 시 자산 자동 계산 → 인출률별 월 수령액 확인
+        <div style={{
+          maxWidth:1180, margin:'0 auto', padding:'12px 24px',
+          display:'flex', alignItems:'center', justifyContent:'space-between', gap:12,
+        }}>
+          <div>
+            <h1 style={{fontSize:18,fontWeight:700,color:'var(--t1)',letterSpacing:'-.01em',lineHeight:1.2}}>
+              은퇴 목표 역산 투자액 시뮬레이션
+            </h1>
+            <div style={{fontSize:13,color:'var(--t2)',marginTop:3}}>
+              나이·현재자산·월 투자액 입력 → 은퇴 시 자산 자동 계산 → 인출률별 월 수령액 확인
+            </div>
           </div>
         </div>
       </header>
@@ -1299,7 +1303,7 @@ function App(){
                 transition:'background .2s, box-shadow .2s',
                 background: btnState==='done' ? '#1A7030'
                           : btnState==='loading' ? '#40D870'
-                          : 'var(--gr)',
+                          : 'var(--bl)',
                 color:'white',
                 boxShadow: btnState==='loading'
                   ? '0 2px 16px rgba(52,199,89,.55)'
@@ -1327,9 +1331,9 @@ function App(){
           {!result ? (
             <Card style={{padding:'64px 40px',textAlign:'center'}}>
               <svg width="56" height="56" viewBox="0 0 56 56" fill="none" style={{margin:'0 auto 20px'}}>
-                <rect width="56" height="56" rx="16" fill="var(--gr-s)"/>
-                <path d="M14 42L22 30L30 36L40 20" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <circle cx="40" cy="16" r="5" fill="var(--gr)" opacity=".3"/>
+                <rect width="56" height="56" rx="16" fill="var(--bl-s)"/>
+                <path d="M14 42L22 30L30 36L40 20" stroke="var(--bl)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="40" cy="16" r="5" fill="var(--bl)" opacity=".3"/>
                 <path d="M14 42h28" stroke="var(--t3)" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
               <div style={{fontSize:18,fontWeight:700,color:'var(--t1)',marginBottom:10}}>
@@ -1367,8 +1371,8 @@ function App(){
                               style={{
                                 padding:'14px 6px 12px',
                                 borderRadius:'var(--r-sm)',
-                                border: sel ? '2.5px solid var(--gr)' : '1.5px solid var(--bd)',
-                                background: sel ? 'var(--gr)' : 'var(--card)',
+                                border: sel ? '2.5px solid var(--bl)' : '1.5px solid var(--bd)',
+                                background: sel ? 'var(--bl)' : 'var(--card)',
                                 cursor:'pointer', outline:'none',
                                 textAlign:'center',
                                 boxShadow: sel
@@ -1397,9 +1401,9 @@ function App(){
                                 <div style={{
                                   marginTop:8,
                                   fontSize:10, fontWeight:700,
-                                  color:'var(--gr-dk)',
-                                  background:'var(--gr-s)',
-                                  border:'1px solid var(--gr-m)',
+                                  color:'var(--bl-dk)',
+                                  background:'var(--bl-s)',
+                                  border:'1px solid var(--bl-m)',
                                   borderRadius:20,
                                   padding:'3px 8px',
                                   display:'inline-block',
@@ -1462,10 +1466,10 @@ function App(){
                   borderRadius:'var(--r)',
                   border: residualInfo.exhausted
                     ? '2px solid var(--rd)'
-                    : '2px solid var(--gr)',
+                    : '2px solid var(--bl)',
                   background: residualInfo.exhausted
                     ? 'var(--rd-s)'
-                    : 'var(--gr-s)',
+                    : 'var(--bl-s)',
                 }} className="fadeUp">
                   <div style={{fontSize:13,color:'var(--t2)',marginBottom:6}}>
                     선택 시나리오 ({residualInfo.cagr}% CAGR 기준) —
@@ -1486,7 +1490,7 @@ function App(){
                       <div style={{fontSize:13,color:'var(--t2)',marginBottom:2}}>
                         {residualInfo.finalAge}세 때 예상 잔존 자산
                       </div>
-                      <div style={{fontSize:32,fontWeight:900,color:'var(--gr-dk)',fontFamily:'var(--mono)',lineHeight:1.1,marginBottom:4}}>
+                      <div style={{fontSize:32,fontWeight:900,color:'var(--bl-dk)',fontFamily:'var(--mono)',lineHeight:1.1,marginBottom:4}}>
                         {fKRW(residualInfo.finalAmt*1e4)}
                       </div>
                       <div style={{fontSize:13,color:'var(--ok-text)',fontWeight:600}}>
@@ -1557,7 +1561,7 @@ function App(){
           <div style={{fontSize:13,fontWeight:700,color:'var(--t1)',marginBottom:10}}>수익률 가정 안내</div>
           <div style={{display:'flex',flexDirection:'column',gap:6,fontSize:12,color:'var(--t2)',lineHeight:1.7}}>
             <div><strong style={{color:'var(--bl-dk)'}}>7% 보수적</strong> — S&P500 장기 역사 평균(~10%) 기준 보수적 시나리오. 채권+주식 혼합 포트폴리오에 가까운 수준.</div>
-            <div><strong style={{color:'var(--gr-dk)'}}>14% 중간</strong> — QQQ 나스닥100 장기 평균 수준. 특정 구간(2010~2024)에서 실현된 수치.</div>
+            <div><strong style={{color:'var(--bl-dk)'}}>14% 중간</strong> — QQQ 나스닥100 장기 평균 수준. 특정 구간(2010~2024)에서 실현된 수치.</div>
             <div><strong style={{color:'#92400E'}}>21% 공격적</strong> — 나스닥100 최고 구간 기준 낙관적 시나리오. 과거 일부 구간에서만 달성된 수치.</div>
           </div>
           <div style={{marginTop:12,paddingTop:10,borderTop:'1px solid var(--bd)',fontSize:11,color:'var(--t3)',lineHeight:1.7}}>
@@ -1624,7 +1628,7 @@ function App(){
               borderRadius:'var(--r-sm)',
               fontFamily:'var(--mono)',
               fontSize:13,
-              color:'var(--gr-dk)',
+              color:'var(--bl-dk)',
               fontWeight:700,
               marginBottom:12,
               lineHeight:1.6,
@@ -1636,7 +1640,7 @@ function App(){
               · 10년: <strong style={{color:'var(--t1)'}}>2,593만원</strong><br/>
               · 20년: <strong style={{color:'var(--t1)'}}>6,727만원</strong><br/>
               · 30년: <strong style={{color:'var(--t1)'}}>1억 7,449만원</strong><br/>
-              넣은 돈은 1,000만원 하나인데, 30년이면 <strong style={{color:'var(--gr-dk)'}}>열일곱 배</strong>가 넘습니다.
+              넣은 돈은 1,000만원 하나인데, 30년이면 <strong style={{color:'var(--bl-dk)'}}>열일곱 배</strong>가 넘습니다.
             </div>
           </div>
 
@@ -1655,7 +1659,7 @@ function App(){
               조금씩 늘기는 하는데 체감이 안 됩니다.<br/><br/>
               그러다 10년 차가 되면 <strong style={{color:'var(--t1)'}}>그해 수익이 259만원</strong>,
               20년 차엔 <strong style={{color:'var(--t1)'}}>673만원</strong>,
-              30년 차엔 <strong style={{color:'var(--gr-dk)'}}>1,745만원</strong>이 됩니다.
+              30년 차엔 <strong style={{color:'var(--bl-dk)'}}>1,745만원</strong>이 됩니다.
               같은 해 수익이 30배 가까이 차이 납니다.<br/><br/>
               <strong style={{color:'var(--rd)'}}>그 전에 포기하면, 정작 가장 중요한 구간을 놓치는 셈입니다.</strong>
               씨앗을 심고 싹이 안 튼다고 파버리는 것과 같습니다.
