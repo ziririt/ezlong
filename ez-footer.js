@@ -94,6 +94,26 @@
                 '</div>' +
               '</div>' +
             '</div>' +
+            '<div class="ez-footer-book">' +
+              '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=396190995" class="ez-footer-book-cover" target="_blank" rel="noopener">' +
+                '<img src="/book03.png" alt="월급쟁이 투자자를 위한 AI 자동 투자 시스템">' +
+              '</a>' +
+              '<div class="ez-footer-book-info">' +
+                '<span class="ez-footer-book-title">AI 자동<br>투자 시스템</span>' +
+                '<span class="ez-footer-book-label">전자책</span>' +
+                '<div class="ez-footer-book-btns">' +
+                  '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=396190995" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
+                  '<a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000013172896" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>' +
+                  '<a href="https://ridibooks.com/books/6121000541" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>' +
+                '</div>' +
+                '<span class="ez-footer-book-label">구독</span>' +
+                '<div class="ez-footer-book-btns">' +
+                  '<a href="https://max.aladin.co.kr/product/396190995" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
+                  '<a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000013172896" class="ez-footer-book-btn" target="_blank" rel="noopener">교보</a>' +
+                  '<a href="https://www.millie.co.kr/v4/book/35c79b670e944931" class="ez-footer-book-btn" target="_blank" rel="noopener">밀리</a>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
           '</div>' +
         '</div>' +
 
