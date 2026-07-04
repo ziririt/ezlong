@@ -1215,6 +1215,23 @@ a { text-decoration: none; color: inherit; }
     padding: 48px 48px 40px;
   }
 }
+
+/* PC: "투자 AI 도구" 드롭다운 — 버튼이 우측 상단에 있는데 메뉴가
+   좌측 전체화면으로 열리면 동선이 너무 멀다 (2026-07-04 수정).
+   데스크톱 폭에서는 버튼 바로 아래, 우측에 붙는 작은 패널로 전환. */
+@media (min-width: 769px) {
+  #ez-mob-menu {
+    inset: auto;
+    top: 68px;
+    right: 20px;
+    left: auto;
+    width: 340px;
+    max-height: calc(100vh - 90px);
+    border-radius: 16px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.28);
+    border: 1px solid var(--bd);
+  }
+}
 </style>
 </head>
 
