@@ -1036,11 +1036,35 @@ async function initIndex() {
     document.querySelector('.ca-layout').before(banner);
   }
 
-  renderSidebar('etf_us');
+  // URL 해시(#QQQ, #TSLA, #BTC-USD 등)로 바로가기 지원 — 2026-07-04 신설.
+  // 매칭 안 되면 기존과 동일하게 etf_us 그룹 + QQQ 기본 선택으로 폴백.
+  const hashSym  = decodeURIComponent(location.hash.slice(1)).toUpperCase();
+  const hashMeta = hashSym ? idx[hashSym] : null;
+  const initialGroup = hashMeta ? getGroupKey(hashMeta.type, hashMeta.market) : 'etf_us';
+
+  document.querySelectorAll('.ca-grp-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.grp === initialGroup));
+  renderSidebar(initialGroup);
   bindGroupButtons();
-  // QQQ 기본 선택
-  const qqqEl = document.querySelector('.ca-ticker-item[data-sym="QQQ"]');
-  if (qqqEl) qqqEl.click();
+
+  if (hashMeta) {
+    selectTicker(hashSym, hashMeta.safeSymbol);
+  } else {
+    // QQQ 기본 선택
+    const qqqEl = document.querySelector('.ca-ticker-item[data-sym="QQQ"]');
+    if (qqqEl) qqqEl.click();
+  }
+
+  // 페이지를 이미 열어둔 상태에서 해시만 바뀌는 경우(내부 링크 클릭 등)도 지원
+  window.addEventListener('hashchange', () => {
+    const sym  = decodeURIComponent(location.hash.slice(1)).toUpperCase();
+    const meta = tickerIndex[sym];
+    if (!meta || sym === currentSymbol) return;
+    const grp = getGroupKey(meta.type, meta.market);
+    document.querySelectorAll('.ca-grp-btn').forEach(b => b.classList.toggle('active', b.dataset.grp === grp));
+    renderSidebar(grp);
+    selectTicker(sym, meta.safeSymbol);
+  });
 }
 
 function renderSidebar(group) {
@@ -1132,6 +1156,11 @@ function bindGroupButtons() {
 // ── 티커 선택 ─────────────────────────────────────────────────
 async function selectTicker(symbol, safe) {
   currentSymbol = symbol;
+  // URL 해시 갱신 — 종목별 바로가기 링크(#QQQ, #TSLA 등) 지원.
+  // replaceState는 hashchange 이벤트를 발생시키지 않으므로 위 리스너와 순환 호출 안 됨.
+  if (decodeURIComponent(location.hash.slice(1)).toUpperCase() !== symbol.toUpperCase()) {
+    history.replaceState(null, '', '#' + symbol);
+  }
   // active 표시
   document.querySelectorAll('.ca-ticker-item').forEach(el => {
     el.classList.toggle('active', el.dataset.sym === symbol);
