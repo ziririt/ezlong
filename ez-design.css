@@ -9,9 +9,11 @@
    ═══════════════════════════════════════════════════════════════════ */
 
 /* Manrope — 영문/숫자(티커·가격·퍼센트) 전용. 한글 글리프가 없어
-   한글 텍스트는 자동으로 --ez-font의 다음 순번(애플 시스템 폰트)으로
-   폴백된다 — 별도 분기 코드 불필요. */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+   한글 텍스트는 자동으로 --ez-font의 다음 순번으로 폴백된다.
+   Noto Sans KR도 웹폰트로 함께 로드 — 시스템에 애플/맑은고딕이
+   없거나 브라우저 generic sans-serif 매핑이 어긋난 환경(윈도우 등)에서
+   한글이 명조체(세리프)로 깨지는 것을 방지 (2026-07-04 긴급 수정). */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
 
 /* ── CSS 변수 (라이트 모드) ─────────────────────────────────────── */
 :root {
@@ -44,7 +46,7 @@
 
   /* 타이포 */
   --ez-mono: 'SF Mono', 'Fira Code', Consolas, 'Courier New', monospace;
-  --ez-font: 'Manrope', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --ez-font: 'Manrope', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
 
   /* 반경 — 2026-07-04 애플 스타일 리디자인: 12→16 / 8→10로 소폭 확대 */
   --ez-r:  16px;
