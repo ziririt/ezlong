@@ -107,12 +107,16 @@ img { max-width: 100%; display: block; }
 a { color: inherit; }
 
 /* ── EZ 글로벌 네비게이션 ──────────────────────────────────────── */
+/* position/top/z-index는 !important — 2026-07-04: PC 스크롤 시 상단 고정
+   요구사항. 페이지별 로컬 CSS가 이 값을 실수로 덮어써 스크롤 시 사라지는
+   사고를 막기 위해 강제 적용. */
 .ez-nav {
   background: rgba(255,255,255,0.92);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid rgba(0,0,0,0.08);
-  position: sticky; top: 0; z-index: 9999;
+  position: sticky !important; top: 0 !important; z-index: 9999 !important;
+  width: 100%;
   font-family: var(--ez-font);
 }
 @media (prefers-color-scheme: dark) {
