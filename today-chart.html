@@ -257,6 +257,9 @@ function renderCard(e) {
   if (e.sma50 != null) indParts.push('50일선 ' + e.sma50);
   if (e.sma200 != null) indParts.push('200일선 ' + e.sma200);
   if (e.rsi14 != null) indParts.push('RSI(14) ' + e.rsi14);
+  if (e.bb_upper != null) indParts.push('볼린저 ' + e.bb_lower + '~' + e.bb_upper);
+  if (e.adx14 != null) indParts.push('ADX(14) ' + e.adx14);
+  if (e.stoch_k != null) indParts.push('스토캐스틱 %K ' + e.stoch_k + (e.stoch_is_approx ? '(근사)' : ''));
   if (e.high52 != null) indParts.push('52주 고가 ' + e.high52 + '(' + e.high52_date + ')');
   if (e.low52 != null) indParts.push('52주 저가 ' + e.low52 + '(' + e.low52_date + ')');
   var r = e.returns || {};

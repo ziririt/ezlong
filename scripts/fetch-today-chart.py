@@ -171,17 +171,142 @@ def ytd_return(dates, closes):
     return None
 
 
-def compute_indicators(dates, closes):
+def bollinger_bands(closes, n=20, k=2.0):
+    """중심선(SMA20)·상단·하단 밴드. 종가 기준(표준 방식)."""
+    mid = sma(closes, n)
+    upper = [None] * len(closes)
+    lower = [None] * len(closes)
+    for i in range(n - 1, len(closes)):
+        window = closes[i - n + 1:i + 1]
+        m = mid[i]
+        var = sum((c - m) ** 2 for c in window) / n
+        std = var ** 0.5
+        upper[i] = m + k * std
+        lower[i] = m - k * std
+    return mid, upper, lower
+
+
+def true_range_and_dm(highs, lows, closes):
+    """True Range, +DM, -DM 시리즈 (ADX 계산용 원재료). highs/lows 필요."""
+    n = len(closes)
+    tr = [None] * n
+    plus_dm = [None] * n
+    minus_dm = [None] * n
+    for i in range(1, n):
+        high, low, prev_close = highs[i], lows[i], closes[i - 1]
+        tr[i] = max(high - low, abs(high - prev_close), abs(low - prev_close))
+        up_move = highs[i] - highs[i - 1]
+        down_move = lows[i - 1] - lows[i]
+        plus_dm[i] = up_move if (up_move > down_move and up_move > 0) else 0.0
+        minus_dm[i] = down_move if (down_move > up_move and down_move > 0) else 0.0
+    return tr, plus_dm, minus_dm
+
+
+def adx(highs, lows, closes, n=14):
+    """ADX(14) — Wilder 방식. highs/lows가 없으면 호출하지 않는다(근사 금지)."""
+    tr, plus_dm, minus_dm = true_range_and_dm(highs, lows, closes)
+    length = len(closes)
+    adx_out = [None] * length
+    if length < n * 2 + 1:
+        return adx_out
+
+    def wilder_smooth(vals, start, n):
+        """Wilder 방식 지수평활 합계 시리즈"""
+        out = [None] * len(vals)
+        first_sum = sum(v for v in vals[start + 1:start + 1 + n] if v is not None)
+        out[start + n] = first_sum
+        for i in range(start + n + 1, len(vals)):
+            out[i] = out[i - 1] - out[i - 1] / n + vals[i]
+        return out
+
+    tr_smooth = wilder_smooth(tr, 0, n)
+    plus_smooth = wilder_smooth(plus_dm, 0, n)
+    minus_smooth = wilder_smooth(minus_dm, 0, n)
+
+    dx = [None] * length
+    for i in range(n, length):
+        if tr_smooth[i] and tr_smooth[i] > 0:
+            plus_di = 100 * plus_smooth[i] / tr_smooth[i]
+            minus_di = 100 * minus_smooth[i] / tr_smooth[i]
+            denom = plus_di + minus_di
+            dx[i] = 100 * abs(plus_di - minus_di) / denom if denom > 0 else 0.0
+
+    # ADX = DX의 n기간 Wilder 평활
+    valid_dx_start = next((i for i in range(length) if dx[i] is not None), None)
+    if valid_dx_start is None or length - valid_dx_start < n:
+        return adx_out
+    first_adx_idx = valid_dx_start + n - 1
+    adx_out[first_adx_idx] = sum(dx[valid_dx_start:valid_dx_start + n]) / n
+    for i in range(first_adx_idx + 1, length):
+        if dx[i] is not None and adx_out[i - 1] is not None:
+            adx_out[i] = (adx_out[i - 1] * (n - 1) + dx[i]) / n
+    return adx_out
+
+
+def stochastic(highs, lows, closes, n=14, d=3, close_only=False):
+    """스토캐스틱 %K/%D. close_only=True면 High/Low 없이 종가의 롤링 최고/최저로 근사(정확도 낮음, 라벨링 필수)."""
+    length = len(closes)
+    k = [None] * length
+    for i in range(n - 1, length):
+        if close_only:
+            window_high = max(closes[i - n + 1:i + 1])
+            window_low = min(closes[i - n + 1:i + 1])
+        else:
+            window_high = max(highs[i - n + 1:i + 1])
+            window_low = min(lows[i - n + 1:i + 1])
+        denom = window_high - window_low
+        k[i] = 100 * (closes[i] - window_low) / denom if denom > 0 else 50.0
+    d_line = [None] * length
+    for i in range(length):
+        window = [v for v in k[max(0, i - d + 1):i + 1] if v is not None]
+        if len(window) == d:
+            d_line[i] = sum(window) / d
+    return k, d_line
+
+
+def fibonacci_levels(swing_high, swing_low):
+    """스윙 고점→저점 되돌림 레벨 (하락 조정 국면 기준, NVDA.md와 동일 관례)"""
+    diff = swing_high - swing_low
+    return {
+        '0.236': round(swing_high - diff * 0.236, 2),
+        '0.382': round(swing_high - diff * 0.382, 2),
+        '0.5':   round(swing_high - diff * 0.5, 2),
+        '0.618': round(swing_high - diff * 0.618, 2),
+    }
+
+
+def compute_indicators(dates, closes, highs=None, lows=None):
+    has_hl = bool(highs) and bool(lows) and len(highs) == len(closes) and len(lows) == len(closes)
+
     s5 = sma(closes, 5)
     s20 = sma(closes, 20)
     s50 = sma(closes, 50)
     s200 = sma(closes, 200)
     r = rsi(closes, 14)
+    bb_mid, bb_upper, bb_lower = bollinger_bands(closes, 20, 2.0)
+
+    if has_hl:
+        adx_series = adx(highs, lows, closes, 14)
+        stoch_k, stoch_d = stochastic(highs, lows, closes, 14, 3, close_only=False)
+        stoch_is_approx = False
+    else:
+        adx_series = [None] * len(closes)
+        stoch_k, stoch_d = stochastic(closes, closes, closes, 14, 3, close_only=True)
+        stoch_is_approx = True
 
     window_1y = closes[-252:] if len(closes) >= 252 else closes
     window_1y_dates = dates[-252:] if len(dates) >= 252 else dates
     high52_idx = max(range(len(window_1y)), key=lambda i: window_1y[i])
     low52_idx = min(range(len(window_1y)), key=lambda i: window_1y[i])
+
+    # 피보나치 되돌림 — 52주 고점 이후 형성된 최근 스윙 저점 기준 (NVDA.md와 동일 관례:
+    # ATH → 그 이후 가장 낮은 종가). 고점이 배열 맨 끝(즉 아직 조정이 없음)이면 계산 생략.
+    fib = None
+    if high52_idx < len(window_1y) - 1:
+        post_high = window_1y[high52_idx + 1:]
+        if post_high:
+            swing_low_val = min(post_high)
+            fib = fibonacci_levels(window_1y[high52_idx], swing_low_val)
 
     return {
         'price': round(closes[-1], 2),
@@ -191,6 +316,14 @@ def compute_indicators(dates, closes):
         'sma50': round(s50[-1], 2) if s50[-1] is not None else None,
         'sma200': round(s200[-1], 2) if s200[-1] is not None else None,
         'rsi14': round(r[-1], 1) if r[-1] is not None else None,
+        'bb_upper': round(bb_upper[-1], 2) if bb_upper[-1] is not None else None,
+        'bb_mid': round(bb_mid[-1], 2) if bb_mid[-1] is not None else None,
+        'bb_lower': round(bb_lower[-1], 2) if bb_lower[-1] is not None else None,
+        'adx14': round(adx_series[-1], 1) if adx_series[-1] is not None else None,
+        'stoch_k': round(stoch_k[-1], 1) if stoch_k[-1] is not None else None,
+        'stoch_d': round(stoch_d[-1], 1) if stoch_d[-1] is not None else None,
+        'stoch_is_approx': stoch_is_approx,
+        'fib': fib,
         'high52': round(window_1y[high52_idx], 2),
         'high52_date': window_1y_dates[high52_idx].strftime('%Y-%m-%d'),
         'low52': round(window_1y[low52_idx], 2),
@@ -203,7 +336,8 @@ def compute_indicators(dates, closes):
             '6m': period_return(closes, 126),
             'ytd': ytd_return(dates, closes),
         },
-        '_sma_series': {'sma5': s5, 'sma20': s20, 'sma50': s50, 'sma200': s200, 'rsi': r},
+        '_sma_series': {'sma5': s5, 'sma20': s20, 'sma50': s50, 'sma200': s200, 'rsi': r,
+                         'bb_upper': bb_upper, 'bb_lower': bb_lower},
     }
 
 
@@ -248,14 +382,17 @@ def content_style_errors(result, symbol):
 # ─── 데이터 수집 ─────────────────────────────────────────────────────────────
 
 def fetch_history(symbol):
-    """2년치 일봉 — auto_adjust=False로 야후 파이낸스 표시값과 일치 (CLAUDE.md 19항)"""
+    """2년치 일봉 — auto_adjust=False로 야후 파이낸스 표시값과 일치 (CLAUDE.md 19항).
+    High/Low도 함께 반환 — ADX·스토캐스틱 정확 계산에 필요(2026-07-04 추가)."""
     t = yf.Ticker(symbol)
     hist = t.history(period='2y', interval='1d', auto_adjust=False)
     if hist.empty:
-        return [], []
+        return [], [], [], []
     dates = [d.to_pydatetime() for d in hist.index]
     closes = [float(c) for c in hist['Close'].tolist()]
-    return dates, closes
+    highs = [float(c) for c in hist['High'].tolist()]
+    lows = [float(c) for c in hist['Low'].tolist()]
+    return dates, closes, highs, lows
 
 
 def fetch_news(symbol, max_items=4, max_age_hours=20):
@@ -313,11 +450,17 @@ def render_chart(symbol, dates, closes, ind, out_path):
     s50 = s['sma50'][-window:]
     s200 = s['sma200'][-window:]
     r = s['rsi'][-window:]
+    bb_u = s['bb_upper'][-window:]
+    bb_l = s['bb_lower'][-window:]
 
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 6.2), sharex=True,
                                     gridspec_kw={"height_ratios": [3, 1]}, dpi=150)
     fig.patch.set_facecolor("white")
 
+    if any(v is not None for v in bb_u):
+        ax1.plot(dts, bb_u, color="#9aa5b1", linewidth=0.9, linestyle="--", label="볼린저 상단")
+        ax1.plot(dts, bb_l, color="#9aa5b1", linewidth=0.9, linestyle="--", label="볼린저 하단")
+        ax1.fill_between(dts, bb_l, bb_u, color="#9aa5b1", alpha=0.06)
     ax1.plot(dts, ps, color=COLORS["price"], linewidth=1.6, label=f"{symbol} 종가")
     if any(v is not None for v in s5):
         ax1.plot(dts, s5, color=COLORS["sma5"], linewidth=1.0, label="5일선")
@@ -335,7 +478,7 @@ def render_chart(symbol, dates, closes, ind, out_path):
                  textcoords="offset points", xytext=(8, 4), fontsize=9, color="red", fontweight="bold")
 
     ax1.set_title(SYMBOL_NAMES.get(symbol, symbol), fontsize=13, fontweight="bold", loc="left", color="#1F3864")
-    ax1.legend(loc="upper left", fontsize=8, ncol=5, frameon=False)
+    ax1.legend(loc="upper left", fontsize=8, ncol=4, frameon=False)
     ax1.grid(alpha=0.25)
     ax1.set_ylabel("USD")
 
@@ -457,6 +600,25 @@ def build_prompt(symbol, ind, dates, kst_now, news_headlines, ledger_block):
 
     musk_block = TSLA_MUSK_GUARD if symbol == 'TSLA' else ""
 
+    bb_line = ""
+    if ind.get('bb_upper') is not None:
+        bb_line = f"볼린저밴드(20,2): 상단 {ind['bb_upper']} / 중심(20일선) {ind['bb_mid']} / 하단 {ind['bb_lower']}\n"
+
+    adx_line = ""
+    if ind.get('adx14') is not None:
+        adx_line = f"ADX(14): {ind['adx14']} (20 미만이면 추세 약함/횡보, 25 이상이면 뚜렷한 추세)\n"
+
+    stoch_line = ""
+    if ind.get('stoch_k') is not None:
+        approx_note = " (종가 기준 근사치 — 고가/저가 데이터 없어 정밀도 낮음)" if ind.get('stoch_is_approx') else ""
+        stoch_line = f"스토캐스틱(14,3): %K {ind['stoch_k']} / %D {ind['stoch_d']}{approx_note}\n"
+
+    fib_line = ""
+    if ind.get('fib'):
+        f_ = ind['fib']
+        fib_line = (f"피보나치 되돌림(52주 고점 {ind['high52']} → 그 이후 최저 종가 기준): "
+                    f"0.236={f_['0.236']} / 0.382={f_['0.382']} / 0.5={f_['0.5']} / 0.618={f_['0.618']}\n")
+
     return f"""당신은 미국 주식·ETF 기술적 분석 콘텐츠를 작성하는 애널리스트입니다.
 현재 시각(KST): {kst_label(kst_now)}
 종목: {SYMBOL_NAMES.get(symbol, symbol)} ({SYMBOL_NAMES_KR.get(symbol, '')})
@@ -469,7 +631,7 @@ def build_prompt(symbol, ind, dates, kst_now, news_headlines, ledger_block):
 50일 이동평균: {ind['sma50']}
 200일 이동평균: {ind['sma200']}
 RSI(14): {ind['rsi14']}
-52주 최고가: {ind['high52']} ({ind['high52_date']})
+{bb_line}{adx_line}{stoch_line}{fib_line}52주 최고가: {ind['high52']} ({ind['high52_date']})
 52주 최저가: {ind['low52']} ({ind['low52_date']})
 기간별 수익률 — 1일: {fmt_pct(r['1d'])} / 1주: {fmt_pct(r['1w'])} / 1개월: {fmt_pct(r['1m'])} / 3개월: {fmt_pct(r['3m'])} / 6개월: {fmt_pct(r['6m'])} / 연초대비(YTD): {fmt_pct(r['ytd'])}
 
@@ -622,7 +784,7 @@ def main():
     for symbol in SYMBOLS:
         print(f"  [{symbol}] 데이터 수집...")
         try:
-            dates, closes = fetch_history(symbol)
+            dates, closes, highs, lows = fetch_history(symbol)
         except Exception as e:
             print(f"    ERROR: {symbol} 시세 수집 실패 — {e}")
             continue
@@ -631,7 +793,7 @@ def main():
             print(f"    ERROR: {symbol} 시세 데이터 없음 — 건너뜀")
             continue
 
-        ind = compute_indicators(dates, closes)
+        ind = compute_indicators(dates, closes, highs, lows)
 
         change_pct = None
         if ind.get('prev_close'):
@@ -683,6 +845,10 @@ def main():
             "change_pct": change_pct,
             "sma5": ind['sma5'], "sma20": ind['sma20'], "sma50": ind['sma50'], "sma200": ind['sma200'],
             "rsi14": ind['rsi14'],
+            "bb_upper": ind.get('bb_upper'), "bb_mid": ind.get('bb_mid'), "bb_lower": ind.get('bb_lower'),
+            "adx14": ind.get('adx14'),
+            "stoch_k": ind.get('stoch_k'), "stoch_d": ind.get('stoch_d'), "stoch_is_approx": ind.get('stoch_is_approx'),
+            "fib": ind.get('fib'),
             "high52": ind['high52'], "high52_date": ind['high52_date'],
             "low52": ind['low52'], "low52_date": ind['low52_date'],
             "returns": ind['returns'],
