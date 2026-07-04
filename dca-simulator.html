@@ -350,7 +350,7 @@ const NumInput=memo(function NumInput({value,onChange,color='blue',style}){
     style={{...INP,...(f?{borderColor:a,boxShadow:`0 0 0 3px ${s}`}:{}),...style}}/>;
 });
 
-const SelInput=memo(function SelInput({value,onChange,color='green',children}){
+const SelInput=memo(function SelInput({value,onChange,color='blue',children}){
   const [f,setF]=useState(false);
   const a=color==='blue'?'var(--bl)':'var(--gr)', s=color==='blue'?'var(--bl-s)':'var(--gr-s)';
   return <select value={value} onChange={e=>onChange(e.target.value)}
@@ -635,9 +635,9 @@ const SimInputSection=memo(function SimInputSection({
 }){
   const bl=simNum===2;
   const col=bl?'green':'blue';
-  const acBg=bl?'var(--bl-s)':'var(--gr-s)';
-  const acBd=bl?'var(--bl-m)':'var(--gr-m)';
-  const acC =bl?'var(--bl-dk)':'var(--gr-dk)';
+  const acBg=bl?'var(--gr-s)':'var(--bl-s)';
+  const acBd=bl?'var(--gr-m)':'var(--bl-m)';
+  const acC =bl?'var(--gr-dk)':'var(--bl-dk)';
   return (
     <div style={{background:acBg,borderRadius:'var(--r-sm)',padding:16,border:`1px solid ${acBd}`}}>
       {isCmpMode&&<div style={{fontSize:11,fontWeight:800,color:acC,textTransform:'uppercase',letterSpacing:'.08em',marginBottom:14}}>시뮬레이션 {simNum}</div>}
@@ -676,7 +676,7 @@ const SimInputSection=memo(function SimInputSection({
           <span>투자 기간</span>
           <span style={{fontSize:20,fontWeight:800,color:acC,fontFamily:'var(--mono)'}}>{years}년</span>
         </label>
-        <input type="range" min={1} max={50} value={years} onChange={e=>setYears(Number(e.target.value))} className={bl?'blue':''}/>
+        <input type="range" min={1} max={50} value={years} onChange={e=>setYears(Number(e.target.value))} className={bl?'':'blue'}/>
       </div>
 
       {/* Retirement */}
