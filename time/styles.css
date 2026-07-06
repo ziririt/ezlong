@@ -21,11 +21,6 @@
 
 html { min-height: 100%; }
 
-html,
-body {
-  overscroll-behavior-y: none;
-}
-
 body {
   min-height: 100%;
   margin: 0;
@@ -219,10 +214,10 @@ button { font: inherit; }
     linear-gradient(186deg, transparent 0 58%, rgba(255,255,255,0.08) 59%, transparent 62%);
   background-size: 140px 190px, 180px 230px, 220px 260px, 160px 210px, 240px 260px, 280px 320px;
   background-position: 0 0, 48px 24px, 88px 12px, 26px 78px, 0 0, 50px 30px;
-  filter: blur(0.12px);
+  filter: blur(0.15px);
   mix-blend-mode: screen;
   backdrop-filter: blur(0.9px);
-  animation: windowRainDrift 46s ease-in-out infinite;
+  animation: windowRainDrift 48s ease-in-out infinite;
 }
 
 .clock-app[data-weather="rain"] .sky-photo::after { opacity: 0.34; }
@@ -452,7 +447,7 @@ button { font: inherit; }
 
 .settings-head p {
   color: rgba(255,255,255,0.66);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
 }
 
@@ -516,6 +511,38 @@ button { font: inherit; }
   cursor: pointer;
 }
 
+.settings-divider {
+  height: 1px;
+  margin: 22px 0 18px;
+  background: rgba(255,255,255,0.14);
+}
+
+.settings-block {
+  margin: 0;
+}
+
+.settings-subtitle {
+  margin: 0 0 10px;
+  color: rgba(255,255,255,0.94);
+  font-size: 17px;
+  font-weight: 780;
+}
+
+.settings-desc {
+  margin: 0 0 8px;
+  color: rgba(255,255,255,0.78);
+  font-size: 14px;
+  font-weight: 620;
+  line-height: 1.5;
+}
+
+.settings-desc-muted {
+  margin-bottom: 0;
+  color: rgba(255,255,255,0.5);
+  font-size: 14px;
+  font-weight: 560;
+}
+
 .weather-chip strong {
   flex: 0 0 auto;
   font-size: clamp(15px, 4.2vw, 18px);
@@ -531,7 +558,12 @@ button { font: inherit; }
 }
 
 .mini-weather {
-  display: none;
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 1.25em;
+  height: 1.25em;
+  vertical-align: middle;
 }
 
 .mini-weather.sun-icon {
@@ -546,6 +578,49 @@ button { font: inherit; }
   background:
     radial-gradient(circle at 65% 35%, #fff 0 38%, transparent 39%),
     radial-gradient(circle at 45% 44%, transparent 0 37%, #fff 38% 48%, transparent 49%);
+}
+
+.mini-weather.cloud-icon {
+  background:
+    radial-gradient(circle at 37% 52%, #fff 0 40%, transparent 41%),
+    radial-gradient(circle at 63% 42%, #fff 0 36%, transparent 37%),
+    radial-gradient(ellipse at 50% 66%, #fff 0 30%, transparent 32%);
+  opacity: 0.94;
+}
+
+.mini-weather.rain-icon,
+.mini-weather.snow-icon {
+  background:
+    radial-gradient(circle at 37% 40%, #fff 0 38%, transparent 39%),
+    radial-gradient(circle at 63% 32%, #fff 0 34%, transparent 35%),
+    radial-gradient(ellipse at 50% 54%, #fff 0 28%, transparent 30%);
+  opacity: 0.94;
+}
+
+.mini-weather.rain-icon::after {
+  content: "";
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  bottom: -22%;
+  height: 26%;
+  background:
+    linear-gradient(200deg, #fff, transparent 75%) 2% 0 / 20% 100% no-repeat,
+    linear-gradient(200deg, #fff, transparent 75%) 40% 0 / 20% 100% no-repeat,
+    linear-gradient(200deg, #fff, transparent 75%) 78% 0 / 20% 100% no-repeat;
+}
+
+.mini-weather.snow-icon::after {
+  content: "";
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: -22%;
+  height: 22%;
+  background:
+    radial-gradient(circle, #fff 0 48%, transparent 50%) 4% 50% / 22% 100% no-repeat,
+    radial-gradient(circle, #fff 0 48%, transparent 50%) 42% 50% / 22% 100% no-repeat,
+    radial-gradient(circle, #fff 0 48%, transparent 50%) 80% 50% / 22% 100% no-repeat;
 }
 
 .clock-stage {
@@ -665,7 +740,8 @@ button { font: inherit; }
 
 .clock-meta {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
   margin: 0 0 clamp(14px, 2.6vh, 24px);
@@ -683,13 +759,75 @@ button { font: inherit; }
   backdrop-filter: none;
   display: inline-flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 7px;
   color: rgba(255,255,255,0.92);
   font-weight: 650;
-  text-align: right;
+  text-align: left;
   white-space: nowrap;
   text-shadow: 0 2px 18px rgba(0,0,0,0.28);
+}
+
+.music-controls {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  flex: 0 0 auto;
+}
+
+.music-controls .icon-button {
+  width: 1.5em;
+  height: 1.5em;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 2px 18px rgba(0,0,0,0.28);
+}
+
+.note-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  position: relative;
+}
+
+.note-icon::before {
+  content: "\266A";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.3em;
+  line-height: 1;
+}
+
+.toggle-icon {
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+}
+
+.toggle-icon.play-icon {
+  width: 0;
+  height: 0;
+  margin-left: 0.15em;
+  border-top: 0.5em solid transparent;
+  border-bottom: 0.5em solid transparent;
+  border-left: 0.8em solid #fff;
+  filter: drop-shadow(0 2px 10px rgba(0,0,0,0.28));
+}
+
+.toggle-icon.pause-icon {
+  background:
+    linear-gradient(#fff, #fff) 6% 0 / 28% 100% no-repeat,
+    linear-gradient(#fff, #fff) 66% 0 / 28% 100% no-repeat;
+  filter: drop-shadow(0 2px 10px rgba(0,0,0,0.28));
+}
+
+.music-toggle.is-playing .toggle-icon.pause-icon {
+  animation: none;
 }
 
 .quote-panel {
@@ -722,7 +860,7 @@ button { font: inherit; }
 .quote-kicker {
   margin-bottom: 12px;
   color: rgba(255,255,255,0.76);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -829,45 +967,13 @@ button { font: inherit; }
 }
 .dot.active { background: #fff; }
 
-.native-dock {
-  position: absolute;
-  right: max(14px, env(safe-area-inset-right));
-  bottom: calc(52px + env(safe-area-inset-bottom));
-  z-index: 7;
-  display: flex;
-  gap: 8px;
-  opacity: 0.72;
-}
-
-.native-action {
-  appearance: none;
-  border: 1px solid rgba(255,255,255,0.20);
-  border-radius: 999px;
-  padding: 8px 10px;
-  color: rgba(255,255,255,0.86);
-  background: rgba(12, 20, 30, 0.34);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-  backdrop-filter: blur(16px);
-}
-
-.native-action span {
-  display: block;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.native-dock.is-notified [data-native-notify] {
-  background: rgba(10, 132, 255, 0.32);
-}
-
 .photo-credit {
   grid-column: 3;
   justify-self: start;
   max-width: min(32vw, 180px);
   overflow: hidden;
   color: rgba(238,242,246,0.38);
-  font-size: 14px;
+  font-size: 9px;
   font-weight: 400;
   line-height: 1;
   text-decoration: none;
@@ -994,23 +1100,23 @@ button { font: inherit; }
 
 @keyframes windowRainDrift {
   0% {
-    opacity: 0.28;
-    background-position: 0 -18px, 48px -10px, 88px -26px, 26px 22px, 72px -20px, 0 -12px, 50px -18px;
+    opacity: 0.20;
+    background-position: 0 -18px, 48px -10px, 88px -26px, 26px 22px, 0 -12px, 50px -18px;
     transform: translate3d(-0.8%, -0.4%, 0) scale(1.01);
   }
   42% {
-    opacity: 0.42;
-    background-position: 0 32px, 48px 46px, 88px 28px, 26px 94px, 72px 52px, 0 42px, 50px 36px;
+    opacity: 0.31;
+    background-position: 0 32px, 48px 46px, 88px 28px, 26px 94px, 0 42px, 50px 36px;
     transform: translate3d(0.4%, 0.5%, 0) scale(1.018);
   }
   72% {
-    opacity: 0.34;
-    background-position: 0 76px, 48px 102px, 88px 84px, 26px 146px, 72px 116px, 0 86px, 50px 90px;
+    opacity: 0.24;
+    background-position: 0 76px, 48px 102px, 88px 84px, 26px 146px, 0 86px, 50px 90px;
     transform: translate3d(0.9%, 1%, 0) scale(1.022);
   }
   100% {
-    opacity: 0.26;
-    background-position: 0 128px, 48px 154px, 88px 136px, 26px 202px, 72px 184px, 0 138px, 50px 144px;
+    opacity: 0.18;
+    background-position: 0 128px, 48px 154px, 88px 136px, 26px 202px, 0 138px, 50px 144px;
     transform: translate3d(1.2%, 1.4%, 0) scale(1.025);
   }
 }

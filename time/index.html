@@ -38,7 +38,16 @@
             <strong id="tempLabel">28°</strong>
             <span id="weatherSummary">맑음</span>
           </div>
+          <div class="music-controls" aria-label="배경음악">
+            <button class="icon-button music-note-button" id="musicSettingsOpen" type="button" aria-label="음악 설정 열기" aria-controls="quoteSettings" aria-expanded="false">
+              <span class="note-icon" aria-hidden="true"></span>
+            </button>
+            <button class="icon-button music-toggle" id="musicToggle" type="button" aria-label="음악 재생" aria-pressed="false">
+              <span class="toggle-icon play-icon" aria-hidden="true"></span>
+            </button>
+          </div>
         </div>
+        <audio id="bgAudio" preload="none"></audio>
         <div class="flip-clock" aria-label="현재 시간">
           <div class="flip-unit" data-unit="hours">
             <span class="flip-card" id="hourTens">1</span>
@@ -108,11 +117,20 @@
 
         <div class="field-grid" id="categoryOptions"></div>
         <button class="settings-save" type="button" id="settingsSave">확인</button>
+
+        <div class="settings-divider" aria-hidden="true"></div>
+
+        <section class="settings-block" aria-label="음악 · 플레이리스트">
+          <h3 class="settings-subtitle">음악 · 플레이리스트</h3>
+          <p class="settings-desc" id="musicPlaylistInfo">기본 플레이리스트 · 총 0곡</p>
+          <p class="settings-desc settings-desc-muted">계절·날씨·시간에 맞는 자동 선곡은 준비 중입니다. 지금은 전체 트랙이 순서대로 이어집니다.</p>
+        </section>
       </section>
     </aside>
   </main>
 
   <script src="investment-quotes.js"></script>
+  <script src="music-playlist.js"></script>
   <script src="app.js?v=20260706-photo-focus"></script>
 </body>
 </html>

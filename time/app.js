@@ -158,7 +158,7 @@ const categoryLabels = {
   retirement: "은퇴 준비"
 };
 
-let quotes = baseQuotes.map((quote) => ({
+const quotes = baseQuotes.map((quote) => ({
   ...quote,
   category: getQuoteCategory(quote)
 }));
@@ -175,6 +175,10 @@ const settingsSave = document.getElementById("settingsSave");
 const allCategories = document.getElementById("allCategories");
 const categoryOptions = document.getElementById("categoryOptions");
 const webviewScale = document.getElementById("ezlongWebviewScale");
+const musicSettingsOpen = document.getElementById("musicSettingsOpen");
+const musicToggle = document.getElementById("musicToggle");
+const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
+const bgAudio = document.getElementById("bgAudio");
 const digitElements = [
   document.getElementById("hourTens"),
   document.getElementById("hourOnes"),
@@ -185,7 +189,6 @@ const digitElements = [
 let activeScene = "";
 let activeQuoteMinute = "";
 let lastQuoteTitle = "";
-let recentQuoteAuthors = [];
 let quoteDeck = [];
 let selectedCategories = new Set();
 let lastScenePhoto = {};
@@ -279,11 +282,19 @@ function currentPrecipitation(current = {}) {
 function weatherCodeToTag(code, current = {}) {
   const precipitation = currentPrecipitation(current);
   if ([45, 48].includes(code)) return "mist";
-  if ([51, 53, 55, 56, 57, 61, 80].includes(code)) return "light-rain";
-  if ([53, 63, 81].includes(code) && precipitation < 0.5) return "light-rain";
-  if ([53, 63, 81].includes(code)) return "rain";
+  if ([51, 55, 56, 57, 61, 80].includes(code)) return "light-rain";
+  if ([53].includes(code)) return "light-rain";
+  if ([63, 81].includes(code) && precipitation < 0.5) return "light-rain";
+  if ([63, 81].includes(code)) return "rain";
   if ([65, 66, 67, 82].includes(code)) return "heavy-rain";
+  if ([95, 96, 99].includes(code)) return "heavy-rain";
   if ([71, 73, 75, 77, 85, 86].includes(code)) return "snow";
+  // Open-Meteo의 weather_code는 격자모델 기반 종합판정이라 국지성 장마비를
+  // 놓칠 때가 있다. code가 맑음/약간흐림/흐림이어도 실측 강수량이 있으면 비로 덮어쓴다.
+  if ([0, 1, 2, 3].includes(code)) {
+    if (precipitation >= 0.5) return "rain";
+    if (precipitation > 0) return "light-rain";
+  }
   if ([3].includes(code)) return "cloudy";
   if ([1, 2].includes(code)) return "partly-cloudy";
   return "clear";
@@ -295,8 +306,70 @@ function weatherTagGroup(tag) {
   return tag;
 }
 
+function weatherIconFor(tag, isDay) {
+  const group = weatherTagGroup(tag);
+  if (group === "rain") return "rain-icon";
+  if (group === "snow") return "snow-icon";
+  if (group === "cloudy") return "cloud-icon";
+  return isDay === false ? "moon-icon" : "sun-icon";
+}
+
 function photoRotationSlot() {
   return String(Math.floor(Date.now() / (15 * 60 * 1000)));
+}
+
+function photoBatchSlot() {
+  // 활성 4장 후보군 자체를 2시간마다 새로 뽑는다. 장마처럼 같은 날씨/계절/시간대가
+  // 며칠씩 이어져도 대기화면 사진이 계속 바뀌도록 하기 위함 (photoSetKey에 사용).
+  return String(Math.floor(Date.now() / (2 * 60 * 60 * 1000)));
+}
+
+const photoHistoryStorageKey = "ezlong:photoHistory";
+const photoHistoryMaxPerContext = 400;
+
+function loadPhotoHistory() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(photoHistoryStorageKey) || "{}");
+    return raw && typeof raw === "object" ? raw : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function savePhotoHistory(history) {
+  try {
+    localStorage.setItem(photoHistoryStorageKey, JSON.stringify(history));
+  } catch (error) {
+    // localStorage를 못 쓰는 환경이어도 앱 동작에는 지장이 없어야 한다.
+  }
+}
+
+function photoHistoryContextKey() {
+  // 정확한 weather tag(예: light-rain/rain/heavy-rain) 대신 그룹 단위(rain/cloudy/snow/clear)로
+  // 묶어서 히스토리를 공유한다. 장마 기간처럼 세부 태그가 오가도 "비 계열" 전체 사진 풀을
+  // 하나의 순환 대상으로 취급해야 실제로 겹치지 않는 효과가 난다.
+  return [getCurrentSeason(), weatherTagGroup(weatherState.tag)].join("|");
+}
+
+function pickNonRepeatingPhotos(pool, count) {
+  if (pool.length <= count) return shuffledPhotos(pool);
+
+  const historyKey = photoHistoryContextKey();
+  const history = loadPhotoHistory();
+  const recentUrls = new Set(history[historyKey] || []);
+
+  // 최근에 보여준 적 없는 사진을 우선 사용하고, 그것만으로 부족할 때만(=이미 거의
+  // 다 순환했을 때) 전체 후보군에서 다시 뽑는다. 그래서 같은 날씨가 오래 이어져도
+  // 전체 사진을 다 보여주기 전까지는 반복되지 않는다.
+  const unseen = pool.filter((image) => !recentUrls.has(imageUrl(image)));
+  const source = unseen.length >= count ? unseen : pool;
+  const picked = shuffledPhotos(source).slice(0, count);
+
+  const updatedHistory = [...(history[historyKey] || []), ...picked.map(imageUrl)].slice(-photoHistoryMaxPerContext);
+  history[historyKey] = updatedHistory;
+  savePhotoHistory(history);
+
+  return picked;
 }
 
 function getCurrentSeason(date = new Date()) {
@@ -350,7 +423,7 @@ function photoSetKey(sceneId) {
   const timeBuckets = getSceneTimeBuckets(sceneId);
   const currentTag = weatherState.tag;
   const currentSeason = getCurrentSeason();
-  return [currentSeason, currentTag, timeBuckets.join("-")].join("|");
+  return [currentSeason, currentTag, timeBuckets.join("-"), photoBatchSlot()].join("|");
 }
 
 function matchingArchivePhotos(sceneId) {
@@ -375,7 +448,6 @@ function matchingArchivePhotos(sceneId) {
       return true;
     });
   };
-
   const archivePhotos = backgroundArchive
     .filter((image) => {
       const seasonMatch = seasonMatches(image);
@@ -384,7 +456,6 @@ function matchingArchivePhotos(sceneId) {
       return seasonMatch && timeMatch && exactWeatherMatch && moodSafe(image) && imageUrl(image);
     })
     .map((image) => image);
-
   const groupedArchivePhotos = backgroundArchive
     .filter((image) => {
       const seasonMatch = seasonMatches(image);
@@ -393,7 +464,6 @@ function matchingArchivePhotos(sceneId) {
       return seasonMatch && timeMatch && weatherMatch && moodSafe(image) && imageUrl(image);
     })
     .map((image) => image);
-
   const fallbackArchivePhotos = backgroundArchive
     .filter((image) => seasonMatches(image) && image.timeBuckets?.some((bucket) => timeBuckets.includes(bucket)) && moodSafe(image) && imageUrl(image))
     .map((image) => image);
@@ -416,8 +486,13 @@ function ensurePhotoSet(sceneId) {
 
   const candidates = matchingArchivePhotos(sceneId);
   const fallbackCandidates = scenePhotos[sceneId] || [];
-  const photos = candidates.length > 0 ? candidates : fallbackCandidates;
-  activePhotoSet = shuffledPhotos(photos).slice(0, 4);
+  // 실제 아카이브 매칭 사진이 4장 미만이면(예: 새벽/야간처럼 촬영분이 아직 적은 시간대)
+  // 로컬 기본 사진으로 채워서 항상 최대 4장 후보가 나오도록 한다.
+  const seenUrls = new Set(candidates.map((image) => imageUrl(image)));
+  const photos = candidates.length >= 4
+    ? candidates
+    : [...candidates, ...fallbackCandidates.filter((image) => !seenUrls.has(imageUrl(image)))];
+  activePhotoSet = pickNonRepeatingPhotos(photos, 4);
   activePhotoSetKey = nextKey;
   activePhotoIndex = activePhotoSet.length > 0 ? Math.floor(Date.now() / (15 * 60 * 1000)) % activePhotoSet.length : 0;
   activePhotoSlot = "";
@@ -455,7 +530,7 @@ function pickScenePhoto(sceneId) {
 function selectPhotoIndex(index) {
   if (!activePhotoSet.length) return;
   activePhotoIndex = (index + activePhotoSet.length) % activePhotoSet.length;
-  manualPhotoUntil = Date.now() + 5 * 60 * 1000;
+  manualPhotoUntil = Date.now() + 15 * 60 * 1000;
   activePhotoSlot = photoRotationSlot();
   setScene(activeScene || getSceneForHour(new Date().getHours()), { syncDots: true, force: true });
 }
@@ -550,9 +625,6 @@ function renderWeather() {
 
 function weatherCodeToSummary(code, current = {}) {
   const precipitation = currentPrecipitation(current);
-  if ([0].includes(code)) return "맑음";
-  if ([1, 2].includes(code)) return "구름 약간";
-  if ([3].includes(code)) return "흐림";
   if ([45, 48].includes(code)) return "안개";
   if ([51].includes(code)) return "옅은 이슬비";
   if ([53].includes(code)) return "이슬비";
@@ -566,6 +638,15 @@ function weatherCodeToSummary(code, current = {}) {
   if ([65, 66, 67, 82].includes(code)) return "강한 비";
   if ([71, 73, 75, 77, 85, 86].includes(code)) return "눈";
   if ([95, 96, 99].includes(code)) return "뇌우";
+  // weatherCodeToTag와 동일한 실측 강수량 덮어쓰기: code가 맑음/흐림 계열이어도
+  // 실제 내리는 비가 감지되면 텍스트도 비로 보여준다.
+  if ([0, 1, 2, 3].includes(code)) {
+    if (precipitation >= 0.5) return "비";
+    if (precipitation > 0) return "약한 비";
+  }
+  if ([0].includes(code)) return "맑음";
+  if ([1, 2].includes(code)) return "구름 약간";
+  if ([3].includes(code)) return "흐림";
   return "날씨";
 }
 
@@ -588,12 +669,13 @@ function requestCurrentWeather() {
         const current = weather.current || {};
         const location = await reverseGeocode(latitude, longitude);
 
+        const tag = weatherCodeToTag(current.weather_code, current);
         weatherState = {
           location,
           temp: Number.isFinite(current.temperature_2m) ? `${Math.round(current.temperature_2m)}°` : "--°",
           summary: weatherCodeToSummary(current.weather_code, current),
-          icon: current.is_day === 0 ? "moon-icon" : "sun-icon",
-          tag: weatherCodeToTag(current.weather_code, current)
+          icon: weatherIconFor(tag, current.is_day !== 0),
+          tag
         };
       } catch (error) {
         weatherState = { location: "현재 위치", temp: "--°", summary: "날씨 오류", icon: "sun-icon", tag: "clear" };
@@ -627,48 +709,6 @@ async function loadBackgroundArchive() {
     backgroundArchive = [];
     backgroundArchiveLoaded = true;
     if (activeScene) setScene(activeScene, { syncDots: true, force: true });
-  }
-}
-
-function normalizeQuote(quote) {
-  if (!quote?.text || !quote?.title || !quote?.author) return null;
-  return {
-    english: quote.english || "",
-    text: quote.text,
-    title: quote.title,
-    author: quote.author,
-    category: getQuoteCategory(quote),
-    sourceUrl: quote.sourceUrl || "",
-    rights: quote.rights || "short-quote"
-  };
-}
-
-async function loadQuoteArchive() {
-  try {
-    const response = await fetch("data/quote-archive-manifest.json", { cache: "no-cache" });
-    if (!response.ok) return;
-    const data = await response.json();
-    const archivedQuotes = Array.isArray(data.quotes)
-      ? data.quotes.map(normalizeQuote).filter(Boolean)
-      : [];
-    if (archivedQuotes.length === 0) return;
-
-    const seen = new Set();
-    quotes = [...baseQuotes, ...archivedQuotes]
-      .map(normalizeQuote)
-      .filter(Boolean)
-      .filter((quote) => {
-        const key = `${quote.title}|${quote.author}|${quote.text}`;
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
-    quoteDeck = [];
-    lastQuoteTitle = "";
-    recentQuoteAuthors = [];
-    renderQuote(getNextQuote());
-  } catch (error) {
-    // Keep bundled quotes if archive loading fails.
   }
 }
 
@@ -723,22 +763,6 @@ function getNextQuote() {
     quoteDeck = shuffleQuotes(eligibleQuotes);
   }
 
-  if (quoteDeck.length > 1) {
-    const shouldAvoidFirst =
-      quoteDeck[0].title === lastQuoteTitle || recentQuoteAuthors.includes(quoteDeck[0].author);
-    const idealAlternativeIndex = quoteDeck.findIndex(
-      (quote) => quote.title !== lastQuoteTitle && !recentQuoteAuthors.includes(quote.author)
-    );
-    const fallbackAlternativeIndex = quoteDeck.findIndex(
-      (quote) => quote.title !== lastQuoteTitle || !recentQuoteAuthors.includes(quote.author)
-    );
-    const alternativeIndex = idealAlternativeIndex > 0 ? idealAlternativeIndex : fallbackAlternativeIndex;
-
-    if (shouldAvoidFirst && alternativeIndex > 0) {
-      [quoteDeck[0], quoteDeck[alternativeIndex]] = [quoteDeck[alternativeIndex], quoteDeck[0]];
-    }
-  }
-
   if (quoteDeck.length > 1 && quoteDeck[0].title === lastQuoteTitle) {
     const alternativeIndex = quoteDeck.findIndex((quote) => quote.title !== lastQuoteTitle);
     if (alternativeIndex > 0) {
@@ -748,7 +772,6 @@ function getNextQuote() {
 
   const quote = quoteDeck.shift();
   lastQuoteTitle = quote.title;
-  recentQuoteAuthors = [quote.author, ...recentQuoteAuthors.filter((author) => author !== quote.author)].slice(0, 3);
   return quote;
 }
 
@@ -797,12 +820,71 @@ function openSettings() {
   settingsPanel.classList.add("is-open");
   settingsPanel.setAttribute("aria-hidden", "false");
   settingsOpen.setAttribute("aria-expanded", "true");
+  if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "true");
 }
 
 function closeSettings() {
   settingsPanel.classList.remove("is-open");
   settingsPanel.setAttribute("aria-hidden", "true");
   settingsOpen.setAttribute("aria-expanded", "false");
+  if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "false");
+}
+
+let musicIndex = 0;
+let musicPlaying = false;
+
+function loadMusicTrack(index) {
+  if (!bgAudio || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  const track = musicPlaylist[index % musicPlaylist.length];
+  const base = typeof musicSourceBaseUrl === "string" ? musicSourceBaseUrl.trim() : "";
+  if (!base) {
+    bgAudio.src = track.file;
+    return;
+  }
+  const fileName = track.file.replace(/^assets\/music\//, "");
+  bgAudio.src = `${base.replace(/\/$/, "")}/${fileName}`;
+}
+
+function renderMusicToggle() {
+  if (!musicToggle) return;
+  musicToggle.classList.toggle("is-playing", musicPlaying);
+  musicToggle.setAttribute("aria-pressed", String(musicPlaying));
+  musicToggle.setAttribute("aria-label", musicPlaying ? "음악 일시정지" : "음악 재생");
+  const icon = musicToggle.querySelector(".toggle-icon");
+  if (icon) icon.className = `toggle-icon ${musicPlaying ? "pause-icon" : "play-icon"}`;
+}
+
+function playMusic() {
+  if (!bgAudio) return;
+  if (!bgAudio.src) loadMusicTrack(musicIndex);
+  bgAudio.play().catch(() => {
+    musicPlaying = false;
+    renderMusicToggle();
+  });
+}
+
+function pauseMusic() {
+  if (!bgAudio) return;
+  bgAudio.pause();
+}
+
+function toggleMusic() {
+  musicPlaying = !musicPlaying;
+  if (musicPlaying) playMusic(); else pauseMusic();
+  renderMusicToggle();
+}
+
+function playNextTrack() {
+  if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  musicIndex = (musicIndex + 1) % musicPlaylist.length;
+  loadMusicTrack(musicIndex);
+  if (musicPlaying) bgAudio.play().catch(() => {});
+}
+
+function renderMusicPlaylistInfo() {
+  if (!musicPlaylistInfo) return;
+  const total = Array.isArray(musicPlaylist) ? musicPlaylist.length : 0;
+  musicPlaylistInfo.textContent = `기본 플레이리스트 · 총 ${total}곡`;
 }
 
 function applyCategorySelection() {
@@ -853,6 +935,8 @@ if (skyRoom) {
 
 renderCategoryOptions();
 loadSavedCategories();
+renderMusicPlaylistInfo();
+renderMusicToggle();
 settingsOpen.addEventListener("click", openSettings);
 settingsSave.addEventListener("click", () => {
   saveSelectedCategories();
@@ -861,6 +945,9 @@ settingsSave.addEventListener("click", () => {
 document.querySelectorAll("[data-settings-close]").forEach((element) => {
   element.addEventListener("click", closeSettings);
 });
+if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", openSettings);
+if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
+if (bgAudio) bgAudio.addEventListener("ended", playNextTrack);
 allCategories.addEventListener("change", () => {
   if (allCategories.checked) {
     document.querySelectorAll("[data-category-option]").forEach((input) => {
@@ -889,7 +976,6 @@ window.visualViewport?.addEventListener("resize", syncFirstScreenHeight);
 syncFirstScreenHeight();
 resizeEzlongWebview();
 loadBackgroundArchive();
-loadQuoteArchive();
 tick();
 requestCurrentWeather();
 window.setInterval(tick, 1000);
