@@ -10,8 +10,10 @@
   --haze: rgba(255, 255, 255, 0.08);
   --photo: none;
   --photo-position: center center;
+  --photo-size: cover;
   --first-screen-height: 100svh;
   --first-screen-tail: 0px;
+  --browser-bottom-lift: 0px;
   color-scheme: light;
 }
 
@@ -90,7 +92,7 @@ button { font: inherit; }
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto auto;
   gap: clamp(12px, 2.2vh, 24px);
-  padding: max(28px, env(safe-area-inset-top)) clamp(8px, 2.4vw, 26px) max(24px, env(safe-area-inset-bottom));
+  padding: max(28px, env(safe-area-inset-top)) clamp(8px, 2.4vw, 26px) calc(max(24px, env(safe-area-inset-bottom)) + var(--browser-bottom-lift));
   background:
     radial-gradient(circle at 50% 12%, rgba(255,255,255,0.24), transparent 36%),
     linear-gradient(180deg, var(--sky-top), var(--sky-mid) 46%, var(--sky-low));
@@ -110,7 +112,7 @@ button { font: inherit; }
     linear-gradient(180deg, rgba(5, 10, 18, 0.10), rgba(5, 10, 18, 0.04) 44%, rgba(5, 10, 18, 0.18)),
     var(--photo);
   background-position: center center, var(--photo-position);
-  background-size: cover, cover;
+  background-size: cover, var(--photo-size);
   transform: scale(1.015);
   transform-origin: 46% 42%;
   animation: livingSky 76s ease-in-out infinite alternate;
@@ -694,10 +696,10 @@ button { font: inherit; }
   width: min(100%, 820px);
   margin: 0 auto;
   padding: clamp(22px, 5vw, 34px);
-  border: 1px solid rgba(255,255,255,0.20);
+  border: 1px solid rgba(255,255,255,0.16);
   border-radius: clamp(24px, 6vw, 38px);
-  background: rgba(13, 20, 31, 0.34);
-  backdrop-filter: blur(16px) saturate(1.08);
+  background: rgba(13, 20, 31, 0.24);
+  backdrop-filter: blur(12px) saturate(1.04);
   box-shadow: 0 22px 70px rgba(0,0,0,0.16);
   transition: background 900ms ease, transform 1400ms ease, opacity 1400ms ease, filter 1400ms ease;
 }
