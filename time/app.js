@@ -214,6 +214,22 @@ function resizeEzlongWebview() {
   webviewScale.style.setProperty("--webview-frame-height", `${Math.ceil(height / scale)}px`);
 }
 
+function syncFirstScreenHeight() {
+  if (!app) return;
+  const viewportHeight = Math.ceil(Math.max(
+    window.innerHeight || 0,
+    window.visualViewport?.height || 0
+  ));
+  const touchDevice = window.matchMedia("(pointer: coarse)").matches;
+  const standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  const safariBottomGuard = touchDevice && !standalone
+    ? Math.min(164, Math.max(96, Math.round(viewportHeight * 0.09)))
+    : 0;
+
+  app.style.setProperty("--first-screen-height", `${viewportHeight + safariBottomGuard}px`);
+  app.style.setProperty("--first-screen-tail", `${safariBottomGuard}px`);
+}
+
 function padTime(value) {
   return String(value).padStart(2, "0");
 }
@@ -733,8 +749,13 @@ categoryOptions.addEventListener("change", (event) => {
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeSettings();
 });
-window.addEventListener("resize", resizeEzlongWebview);
+window.addEventListener("resize", () => {
+  syncFirstScreenHeight();
+  resizeEzlongWebview();
+});
+window.visualViewport?.addEventListener("resize", syncFirstScreenHeight);
 
+syncFirstScreenHeight();
 resizeEzlongWebview();
 loadBackgroundArchive();
 loadQuoteArchive();

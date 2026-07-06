@@ -10,6 +10,8 @@
   --haze: rgba(255, 255, 255, 0.08);
   --photo: url("assets/bg-midday.jpg");
   --photo-position: center center;
+  --first-screen-height: 100svh;
+  --first-screen-tail: 0px;
   color-scheme: light;
 }
 
@@ -85,14 +87,12 @@ button { font: inherit; }
 
 .sky-room {
   position: relative;
-  min-height: 100svh;
-  height: 100svh;
-  height: 100dvh;
-  max-height: 100dvh;
+  min-height: var(--first-screen-height);
+  height: var(--first-screen-height);
   overflow: hidden;
   isolation: isolate;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  grid-template-rows: auto minmax(0, 1fr) auto auto var(--first-screen-tail);
   gap: clamp(12px, 2.2vh, 24px);
   padding: max(28px, env(safe-area-inset-top)) clamp(8px, 2.4vw, 26px) max(24px, env(safe-area-inset-bottom));
 }
