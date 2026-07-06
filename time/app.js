@@ -456,6 +456,13 @@ function matchingArchivePhotos(sceneId) {
       return seasonMatch && timeMatch && exactWeatherMatch && moodSafe(image) && imageUrl(image);
     })
     .map((image) => image);
+
+  // 정확한 날씨 태그(예: light-rain) 매칭 사진이 이미 충분하면(4장 이상) 그것만 쓴다.
+  // 예전 코드는 매칭 수와 무관하게 그룹/폴백 티어를 항상 합쳐버려서, 비가 오는데도
+  // 맑음/흐림 태그의 무관한 사진이 후보에 섞여 4장 중 1장만 비 사진으로 보이는 문제가 있었다.
+  const exactPhotos = uniquePhotos(archivePhotos);
+  if (exactPhotos.length >= 4) return exactPhotos;
+
   const groupedArchivePhotos = backgroundArchive
     .filter((image) => {
       const seasonMatch = seasonMatches(image);
@@ -464,11 +471,14 @@ function matchingArchivePhotos(sceneId) {
       return seasonMatch && timeMatch && weatherMatch && moodSafe(image) && imageUrl(image);
     })
     .map((image) => image);
+  const groupedPhotos = uniquePhotos([...exactPhotos, ...groupedArchivePhotos]);
+  if (groupedPhotos.length >= 4) return groupedPhotos;
+
   const fallbackArchivePhotos = backgroundArchive
     .filter((image) => seasonMatches(image) && image.timeBuckets?.some((bucket) => timeBuckets.includes(bucket)) && moodSafe(image) && imageUrl(image))
     .map((image) => image);
 
-  return uniquePhotos([...archivePhotos, ...groupedArchivePhotos, ...fallbackArchivePhotos]);
+  return uniquePhotos([...groupedPhotos, ...fallbackArchivePhotos]);
 }
 
 function shuffledPhotos(items) {
