@@ -671,20 +671,20 @@ button { font: inherit; }
 
 .clock-meta .weather-chip {
   box-sizing: border-box;
-  width: clamp(82px, 23.1vw, 166px);
-  padding: 8px 14px;
-  border: 1px solid rgba(255,255,255,0.22);
-  border-radius: clamp(14px, 3vw, 26px);
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(18px);
+  max-width: min(48vw, 240px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 5px;
+  justify-content: flex-end;
+  gap: 7px;
   color: rgba(255,255,255,0.92);
   font-weight: 650;
-  text-align: center;
+  text-align: right;
   white-space: nowrap;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.28);
 }
 
 .quote-panel {
