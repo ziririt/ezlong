@@ -158,7 +158,7 @@ const categoryLabels = {
   retirement: "은퇴 준비"
 };
 
-const quotes = baseQuotes.map((quote) => ({
+let quotes = baseQuotes.map((quote) => ({
   ...quote,
   category: getQuoteCategory(quote)
 }));
@@ -497,6 +497,47 @@ async function loadBackgroundArchive() {
   }
 }
 
+function normalizeQuote(quote) {
+  if (!quote?.text || !quote?.title || !quote?.author) return null;
+  return {
+    english: quote.english || "",
+    text: quote.text,
+    title: quote.title,
+    author: quote.author,
+    category: getQuoteCategory(quote),
+    sourceUrl: quote.sourceUrl || "",
+    rights: quote.rights || "short-quote"
+  };
+}
+
+async function loadQuoteArchive() {
+  try {
+    const response = await fetch("data/quote-archive-manifest.json", { cache: "no-cache" });
+    if (!response.ok) return;
+    const data = await response.json();
+    const archivedQuotes = Array.isArray(data.quotes)
+      ? data.quotes.map(normalizeQuote).filter(Boolean)
+      : [];
+    if (archivedQuotes.length === 0) return;
+
+    const seen = new Set();
+    quotes = [...baseQuotes, ...archivedQuotes]
+      .map(normalizeQuote)
+      .filter(Boolean)
+      .filter((quote) => {
+        const key = `${quote.title}|${quote.author}|${quote.text}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    quoteDeck = [];
+    lastQuoteTitle = "";
+    renderQuote(getNextQuote());
+  } catch (error) {
+    // Keep bundled quotes if archive loading fails.
+  }
+}
+
 async function reverseGeocode(latitude, longitude) {
   try {
     const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&accept-language=ko`;
@@ -677,6 +718,7 @@ window.addEventListener("resize", resizeEzlongWebview);
 
 resizeEzlongWebview();
 loadBackgroundArchive();
+loadQuoteArchive();
 tick();
 requestCurrentWeather();
 window.setInterval(tick, 1000);
