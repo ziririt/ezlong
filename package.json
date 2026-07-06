@@ -3,5 +3,11 @@
   "version": "1.0.0",
   "description": "ezlong.com GitHub Actions 자동화 스크립트",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "image-size": "^1.1.1"
+  },
+  "scripts": {
+    "archive:time-backgrounds": "node scripts/upload-time-background-storage.js"
+  }
 }
