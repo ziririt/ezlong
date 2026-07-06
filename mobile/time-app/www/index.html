@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>ezlong time</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="clock-app" data-scene="midday">
+    <section class="sky-room" aria-label="플립시계">
+      <div class="sky-photo" aria-hidden="true">
+        <span class="sun"></span>
+        <span class="moon"></span>
+        <span class="cloud cloud-a"></span>
+        <span class="cloud cloud-b"></span>
+        <span class="leaves leaves-a"></span>
+        <span class="leaves leaves-b"></span>
+        <span class="stars"></span>
+      </div>
+      <div class="hero-shade" aria-hidden="true"></div>
+
+      <header class="top-bar">
+        <button class="icon-button" id="settingsOpen" type="button" aria-label="오늘의 한 문장 설정 열기" aria-controls="quoteSettings" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="date-chip" id="dateLabel">7월 6일 월요일</div>
+        <div class="app-brand" aria-label="ezlong.com">
+          ezlong.com
+        </div>
+      </header>
+
+      <section class="clock-stage" aria-live="polite">
+        <div class="clock-meta">
+          <div class="weather-chip" aria-label="현재 날씨">
+            <span id="weatherIcon" class="mini-weather sun-icon" aria-hidden="true"></span>
+            <strong id="tempLabel">28°</strong>
+            <span id="weatherSummary">맑음</span>
+          </div>
+        </div>
+        <div class="flip-clock" aria-label="현재 시간">
+          <div class="flip-unit" data-unit="hours">
+            <span class="flip-card" id="hourTens">1</span>
+            <span class="flip-card" id="hourOnes">2</span>
+          </div>
+          <span class="clock-colon" aria-hidden="true">:</span>
+          <div class="flip-unit" data-unit="minutes">
+            <span class="flip-card" id="minuteTens">1</span>
+            <span class="flip-card" id="minuteOnes">0</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="quote-panel" aria-label="오늘의 한 문장">
+        <p class="quote-english" id="quoteEnglish">The intelligent investor is a realist who sells to optimists and buys from pessimists.</p>
+        <blockquote id="quoteText">현명한 투자자는 현실주의자다. 낙관론자에게 팔고, 비관론자에게서 산다.</blockquote>
+        <div class="quote-foot">
+          <cite id="quoteSource">&lt;현명한 투자자&gt; 벤저민 그레이엄</cite>
+          <span class="quote-timer" aria-hidden="true"><span id="quoteProgress"></span></span>
+        </div>
+      </section>
+
+      <div class="scene-dots" aria-label="배경 시간대 선택">
+        <span class="dot-group">
+          <button class="dot active" type="button" data-scene-button="midday" aria-label="점심"></button>
+          <button class="dot" type="button" data-scene-button="golden-hour" aria-label="저녁"></button>
+          <button class="dot" type="button" data-scene-button="night" aria-label="밤"></button>
+          <button class="dot" type="button" data-scene-button="morning" aria-label="아침"></button>
+        </span>
+        <a class="photo-credit" id="photoCredit" href="#" target="_blank" rel="noopener" aria-label="배경 사진 출처">Photo: ezlong archive</a>
+      </div>
+    </section>
+
+    <section class="ezlong-webview" aria-label="ezlong.com 웹뷰">
+      <div class="webview-scale" id="ezlongWebviewScale">
+        <iframe
+          class="ezlong-frame"
+          title="ezlong.com"
+          src="https://ezlong.com"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="fullscreen; clipboard-write"
+        ></iframe>
+      </div>
+      <footer class="webview-footer">
+        <a class="webview-open" href="https://ezlong.com" target="_blank" rel="noopener" aria-label="ezlong.com 새창 열기">
+          <span aria-hidden="true"></span>
+        </a>
+      </footer>
+    </section>
+
+    <aside class="settings-panel" id="quoteSettings" aria-hidden="true" aria-label="오늘의 한 문장 설정">
+      <div class="settings-backdrop" data-settings-close></div>
+      <section class="settings-sheet" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+        <header class="settings-head">
+          <div>
+            <p>오늘의 한 문장</p>
+            <h2 id="settingsTitle">관심 분야 설정</h2>
+          </div>
+          <button class="settings-close" type="button" aria-label="설정 닫기" data-settings-close>×</button>
+        </header>
+
+        <label class="field-option field-option-all">
+          <input type="checkbox" id="allCategories" checked>
+          <span>모든 분야</span>
+        </label>
+
+        <div class="field-grid" id="categoryOptions"></div>
+        <button class="settings-save" type="button" id="settingsSave">확인</button>
+      </section>
+    </aside>
+  </main>
+
+  <script src="investment-quotes.js"></script>
+  <script src="app.js"></script>
+  <script type="module" src="native-app.js"></script>
+</body>
+</html>
