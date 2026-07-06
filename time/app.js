@@ -454,14 +454,16 @@ function renderWeather() {
 function weatherCodeToSummary(code, current = {}) {
   const precipitation = currentPrecipitation(current);
   if ([0].includes(code)) return "맑음";
-  if ([1, 2].includes(code)) return "구름 조금";
+  if ([1, 2].includes(code)) return "구름 약간";
   if ([3].includes(code)) return "흐림";
   if ([45, 48].includes(code)) return "안개";
-  if ([51, 56].includes(code)) return "약한 이슬비";
+  if ([51].includes(code)) return "옅은 이슬비";
   if ([53].includes(code)) return "이슬비";
-  if ([55, 57].includes(code)) return "강한 이슬비";
+  if ([55].includes(code)) return "짙은 이슬비";
+  if ([56].includes(code)) return "살짝 어는 이슬비";
+  if ([57].includes(code)) return "어는 이슬비";
   if ([61, 80].includes(code)) return "약한 비";
-  if ([63, 81].includes(code) && precipitation <= 0) return "가끔 약한 비";
+  if ([63, 81].includes(code) && precipitation <= 0) return "간간이 약한 비";
   if ([63, 81].includes(code) && precipitation < 0.5) return "약한 비";
   if ([63, 81].includes(code)) return "비";
   if ([65, 66, 67, 82].includes(code)) return "강한 비";
