@@ -190,38 +190,39 @@ button { font: inherit; }
 .clock-app[data-weather="light-rain"] .sky-photo::before,
 .clock-app[data-weather="rain"] .sky-photo::before,
 .clock-app[data-weather="heavy-rain"] .sky-photo::before {
-  opacity: 0.42;
+  opacity: 0.50;
   background:
-    radial-gradient(ellipse at 26% 18%, rgba(255,255,255,0.24), transparent 32%),
-    radial-gradient(ellipse at 72% 22%, rgba(205,220,232,0.18), transparent 34%),
-    linear-gradient(180deg, rgba(135,153,170,0.24), rgba(39,54,70,0.22));
+    radial-gradient(ellipse at 26% 18%, rgba(255,255,255,0.30), transparent 32%),
+    radial-gradient(ellipse at 72% 22%, rgba(205,220,232,0.22), transparent 34%),
+    linear-gradient(180deg, rgba(128,148,166,0.30), rgba(32,48,64,0.26));
   mix-blend-mode: screen;
-  backdrop-filter: blur(0.8px) saturate(0.94);
+  backdrop-filter: blur(1.15px) saturate(0.94);
   animation: mistDrift 42s linear infinite;
 }
 
 .clock-app[data-weather="light-rain"] .sky-photo::after,
 .clock-app[data-weather="rain"] .sky-photo::after,
 .clock-app[data-weather="heavy-rain"] .sky-photo::after {
-  opacity: 0.26;
+  opacity: 0.38;
   background:
-    radial-gradient(ellipse 5px 8px at 12% 18%, rgba(255,255,255,0.62) 0 10%, rgba(218,235,245,0.28) 28%, transparent 62%),
-    radial-gradient(ellipse 4px 7px at 34% 42%, rgba(255,255,255,0.48) 0 12%, rgba(214,231,242,0.24) 30%, transparent 64%),
-    radial-gradient(ellipse 6px 10px at 61% 24%, rgba(255,255,255,0.54) 0 10%, rgba(214,231,242,0.22) 32%, transparent 65%),
-    radial-gradient(ellipse 3px 5px at 82% 58%, rgba(255,255,255,0.44) 0 14%, rgba(214,231,242,0.20) 34%, transparent 66%),
-    linear-gradient(178deg, transparent 0 42%, rgba(255,255,255,0.12) 43%, transparent 46%),
-    linear-gradient(186deg, transparent 0 58%, rgba(255,255,255,0.08) 59%, transparent 62%);
-  background-size: 140px 190px, 180px 230px, 220px 260px, 160px 210px, 240px 260px, 280px 320px;
-  background-position: 0 0, 48px 24px, 88px 12px, 26px 78px, 0 0, 50px 30px;
-  filter: blur(0.15px);
+    radial-gradient(ellipse 5px 9px at 12% 18%, rgba(255,255,255,0.74) 0 10%, rgba(218,235,245,0.34) 29%, transparent 64%),
+    radial-gradient(ellipse 4px 8px at 34% 42%, rgba(255,255,255,0.58) 0 12%, rgba(214,231,242,0.30) 31%, transparent 66%),
+    radial-gradient(ellipse 6px 11px at 61% 24%, rgba(255,255,255,0.64) 0 10%, rgba(214,231,242,0.28) 33%, transparent 67%),
+    radial-gradient(ellipse 3px 6px at 82% 58%, rgba(255,255,255,0.54) 0 14%, rgba(214,231,242,0.26) 35%, transparent 68%),
+    radial-gradient(ellipse 2px 9px at 49% 9%, rgba(255,255,255,0.42), transparent 62%),
+    linear-gradient(178deg, transparent 0 42%, rgba(255,255,255,0.18) 43%, transparent 46%),
+    linear-gradient(186deg, transparent 0 58%, rgba(255,255,255,0.12) 59%, transparent 62%);
+  background-size: 140px 190px, 180px 230px, 220px 260px, 160px 210px, 120px 260px, 240px 260px, 280px 320px;
+  background-position: 0 0, 48px 24px, 88px 12px, 26px 78px, 72px 4px, 0 0, 50px 30px;
+  filter: blur(0.08px);
   mix-blend-mode: screen;
-  backdrop-filter: blur(1.1px);
-  animation: windowRainDrift 48s ease-in-out infinite;
+  backdrop-filter: blur(1.35px);
+  animation: windowRainDrift 46s ease-in-out infinite;
 }
 
-.clock-app[data-weather="rain"] .sky-photo::after { opacity: 0.34; }
+.clock-app[data-weather="rain"] .sky-photo::after { opacity: 0.45; }
 .clock-app[data-weather="heavy-rain"] .sky-photo::after {
-  opacity: 0.44;
+  opacity: 0.56;
   backdrop-filter: blur(1.6px);
   animation-duration: 38s;
 }
@@ -956,23 +957,23 @@ button { font: inherit; }
 
 @keyframes windowRainDrift {
   0% {
-    opacity: 0.20;
-    background-position: 0 -18px, 48px -10px, 88px -26px, 26px 22px, 0 -12px, 50px -18px;
+    opacity: 0.28;
+    background-position: 0 -18px, 48px -10px, 88px -26px, 26px 22px, 72px -20px, 0 -12px, 50px -18px;
     transform: translate3d(-0.8%, -0.4%, 0) scale(1.01);
   }
   42% {
-    opacity: 0.31;
-    background-position: 0 32px, 48px 46px, 88px 28px, 26px 94px, 0 42px, 50px 36px;
+    opacity: 0.42;
+    background-position: 0 32px, 48px 46px, 88px 28px, 26px 94px, 72px 52px, 0 42px, 50px 36px;
     transform: translate3d(0.4%, 0.5%, 0) scale(1.018);
   }
   72% {
-    opacity: 0.24;
-    background-position: 0 76px, 48px 102px, 88px 84px, 26px 146px, 0 86px, 50px 90px;
+    opacity: 0.34;
+    background-position: 0 76px, 48px 102px, 88px 84px, 26px 146px, 72px 116px, 0 86px, 50px 90px;
     transform: translate3d(0.9%, 1%, 0) scale(1.022);
   }
   100% {
-    opacity: 0.18;
-    background-position: 0 128px, 48px 154px, 88px 136px, 26px 202px, 0 138px, 50px 144px;
+    opacity: 0.26;
+    background-position: 0 128px, 48px 154px, 88px 136px, 26px 202px, 72px 184px, 0 138px, 50px 144px;
     transform: translate3d(1.2%, 1.4%, 0) scale(1.025);
   }
 }
