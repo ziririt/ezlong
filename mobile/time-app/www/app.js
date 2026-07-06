@@ -165,6 +165,7 @@ let quotes = baseQuotes.map((quote) => ({
 
 const app = document.querySelector(".clock-app");
 const dots = document.querySelectorAll("[data-scene-button]");
+const skyRoom = document.querySelector(".sky-room");
 const photoCredit = document.getElementById("photoCredit");
 const quotePanel = document.querySelector(".quote-panel");
 const quoteProgress = document.getElementById("quoteProgress");
@@ -191,6 +192,14 @@ let lastScenePhoto = {};
 let lastDigits = ["", "", "", ""];
 let timeHasRendered = false;
 let manualSceneUntil = 0;
+let backgroundArchiveLoaded = false;
+let weatherResolved = false;
+let activePhotoSet = [];
+let activePhotoSetKey = "";
+let activePhotoIndex = 0;
+let activePhotoSlot = "";
+let manualPhotoUntil = 0;
+let swipeStart = null;
 const categoryStorageKey = "ezlong:selectedCategories";
 let weatherState = {
   location: "위치 확인 중",
@@ -212,6 +221,28 @@ function resizeEzlongWebview() {
   const scale = Math.max(1, width / mobileViewportWidth);
   webviewScale.style.setProperty("--webview-scale", String(scale));
   webviewScale.style.setProperty("--webview-frame-height", `${Math.ceil(height / scale)}px`);
+}
+
+function syncFirstScreenHeight() {
+  if (!app) return;
+  const viewportHeight = Math.ceil(Math.max(
+    window.innerHeight || 0,
+    window.visualViewport?.height || 0
+  ));
+  const touchDevice = window.matchMedia("(pointer: coarse)").matches;
+  const standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  const safariBottomGuard = touchDevice && !standalone
+    ? Math.min(164, Math.max(96, Math.round(viewportHeight * 0.09)))
+    : 0;
+  const userAgent = navigator.userAgent || "";
+  const iOSSafari = touchDevice && /Safari/i.test(userAgent) && !/CriOS|FxiOS|EdgiOS/i.test(userAgent);
+  const browserBottomLift = iOSSafari && !standalone
+    ? Math.min(72, Math.max(46, Math.round(viewportHeight * 0.055)))
+    : 0;
+
+  app.style.setProperty("--first-screen-height", `${viewportHeight + safariBottomGuard}px`);
+  app.style.setProperty("--first-screen-tail", `${safariBottomGuard}px`);
+  app.style.setProperty("--browser-bottom-lift", `${browserBottomLift}px`);
 }
 
 function padTime(value) {
@@ -248,10 +279,10 @@ function currentPrecipitation(current = {}) {
 function weatherCodeToTag(code, current = {}) {
   const precipitation = currentPrecipitation(current);
   if ([45, 48].includes(code)) return "mist";
-  if ([51, 56, 61, 80].includes(code)) return "light-rain";
+  if ([51, 53, 55, 56, 57, 61, 80].includes(code)) return "light-rain";
   if ([53, 63, 81].includes(code) && precipitation < 0.5) return "light-rain";
   if ([53, 63, 81].includes(code)) return "rain";
-  if ([55, 57, 65, 66, 67, 82].includes(code)) return "heavy-rain";
+  if ([65, 66, 67, 82].includes(code)) return "heavy-rain";
   if ([71, 73, 75, 77, 85, 86].includes(code)) return "snow";
   if ([3].includes(code)) return "cloudy";
   if ([1, 2].includes(code)) return "partly-cloudy";
@@ -262,6 +293,10 @@ function weatherTagGroup(tag) {
   if (["light-rain", "rain", "heavy-rain"].includes(tag)) return "rain";
   if (["partly-cloudy", "cloudy", "mist"].includes(tag)) return "cloudy";
   return tag;
+}
+
+function photoRotationSlot() {
+  return String(Math.floor(Date.now() / (15 * 60 * 1000)));
 }
 
 function getCurrentSeason(date = new Date()) {
@@ -311,48 +346,126 @@ function renderPhotoCredit(image) {
   photoCredit.toggleAttribute("aria-hidden", !url || url === "#");
 }
 
-function pickScenePhoto(sceneId) {
+function photoSetKey(sceneId) {
+  const timeBuckets = getSceneTimeBuckets(sceneId);
+  const currentTag = weatherState.tag;
+  const currentSeason = getCurrentSeason();
+  return [currentSeason, currentTag, timeBuckets.join("-")].join("|");
+}
+
+function matchingArchivePhotos(sceneId) {
   const timeBuckets = getSceneTimeBuckets(sceneId);
   const currentTag = weatherState.tag;
   const groupedTag = weatherTagGroup(currentTag);
   const currentSeason = getCurrentSeason();
   const seasonMatches = (image) => image.seasonTags?.includes(currentSeason);
+  const moodSafe = (image) => {
+    if (currentTag !== "light-rain") return true;
+    const weatherTags = image.weatherTags || [];
+    const moodTags = image.moodTags || [];
+    return !weatherTags.some((tag) => ["heavy-rain", "thunderstorm"].includes(tag))
+      && !moodTags.some((tag) => ["storm-front", "dramatic-sky"].includes(tag));
+  };
+  const uniquePhotos = (items) => {
+    const seen = new Set();
+    return items.filter((image) => {
+      const url = imageUrl(image);
+      if (!url || seen.has(url)) return false;
+      seen.add(url);
+      return true;
+    });
+  };
+
   const archivePhotos = backgroundArchive
     .filter((image) => {
       const seasonMatch = seasonMatches(image);
       const timeMatch = image.timeBuckets?.some((bucket) => timeBuckets.includes(bucket));
       const exactWeatherMatch = image.weatherTags?.includes(currentTag);
-      return seasonMatch && timeMatch && exactWeatherMatch && imageUrl(image);
+      return seasonMatch && timeMatch && exactWeatherMatch && moodSafe(image) && imageUrl(image);
     })
     .map((image) => image);
+
   const groupedArchivePhotos = backgroundArchive
     .filter((image) => {
       const seasonMatch = seasonMatches(image);
       const timeMatch = image.timeBuckets?.some((bucket) => timeBuckets.includes(bucket));
       const weatherMatch = image.weatherTags?.includes(groupedTag);
-      return seasonMatch && timeMatch && weatherMatch && imageUrl(image);
+      return seasonMatch && timeMatch && weatherMatch && moodSafe(image) && imageUrl(image);
     })
     .map((image) => image);
-  const fallbackArchivePhotos = backgroundArchive
-    .filter((image) => seasonMatches(image) && image.timeBuckets?.some((bucket) => timeBuckets.includes(bucket)) && imageUrl(image))
-    .map((image) => image);
-  const photos = archivePhotos.length > 0
-    ? archivePhotos
-    : groupedArchivePhotos.length > 0
-      ? groupedArchivePhotos
-      : fallbackArchivePhotos.length > 0
-        ? fallbackArchivePhotos
-        : scenePhotos[sceneId] || [];
-  if (photos.length === 0) return "";
 
-  let photo = photos[Math.floor(Math.random() * photos.length)];
-  if (photos.length > 1 && imageUrl(photo) === lastScenePhoto[sceneId]) {
-    const nextIndex = (photos.indexOf(photo) + 1) % photos.length;
-    photo = photos[nextIndex];
+  const fallbackArchivePhotos = backgroundArchive
+    .filter((image) => seasonMatches(image) && image.timeBuckets?.some((bucket) => timeBuckets.includes(bucket)) && moodSafe(image) && imageUrl(image))
+    .map((image) => image);
+
+  return uniquePhotos([...archivePhotos, ...groupedArchivePhotos, ...fallbackArchivePhotos]);
+}
+
+function shuffledPhotos(items) {
+  const shuffled = [...items];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
+}
+
+function ensurePhotoSet(sceneId) {
+  const nextKey = photoSetKey(sceneId);
+  if (activePhotoSetKey === nextKey && activePhotoSet.length > 0) return;
+
+  const candidates = matchingArchivePhotos(sceneId);
+  const fallbackCandidates = scenePhotos[sceneId] || [];
+  const photos = candidates.length > 0 ? candidates : fallbackCandidates;
+  activePhotoSet = shuffledPhotos(photos).slice(0, 4);
+  activePhotoSetKey = nextKey;
+  activePhotoIndex = activePhotoSet.length > 0 ? Math.floor(Date.now() / (15 * 60 * 1000)) % activePhotoSet.length : 0;
+  activePhotoSlot = "";
+  manualPhotoUntil = 0;
+}
+
+function syncPhotoDots() {
+  dots.forEach((dot, index) => {
+    const hasPhoto = index < activePhotoSet.length;
+    dot.classList.toggle("active", index === activePhotoIndex && hasPhoto);
+    dot.disabled = !hasPhoto;
+    dot.setAttribute("aria-label", hasPhoto ? `배경 사진 ${index + 1}` : `배경 사진 ${index + 1} 없음`);
+  });
+}
+
+function pickScenePhoto(sceneId) {
+  if (!backgroundArchiveLoaded || !weatherResolved) return "";
+
+  ensurePhotoSet(sceneId);
+  if (activePhotoSet.length === 0) return "";
+
+  if (Date.now() >= manualPhotoUntil) {
+    const nextSlot = photoRotationSlot();
+    if (activePhotoSlot !== nextSlot) {
+      activePhotoIndex = Number(nextSlot) % activePhotoSet.length;
+      activePhotoSlot = nextSlot;
+    }
   }
 
+  const photo = activePhotoSet[activePhotoIndex];
   lastScenePhoto[sceneId] = imageUrl(photo);
   return photo;
+}
+
+function selectPhotoIndex(index) {
+  if (!activePhotoSet.length) return;
+  activePhotoIndex = (index + activePhotoSet.length) % activePhotoSet.length;
+  manualPhotoUntil = Date.now() + 5 * 60 * 1000;
+  activePhotoSlot = photoRotationSlot();
+  setScene(activeScene || getSceneForHour(new Date().getHours()), { syncDots: true, force: true });
+}
+
+function movePhoto(direction) {
+  selectPhotoIndex(activePhotoIndex + direction);
+}
+
+function shouldRotatePhoto() {
+  return Date.now() >= manualPhotoUntil && activePhotoSet.length > 0 && activePhotoSlot !== photoRotationSlot();
 }
 
 function animateDigit(element) {
@@ -386,7 +499,8 @@ function renderTime(now = new Date()) {
   timeHasRendered = true;
   renderDate(now);
   if (Date.now() >= manualSceneUntil) {
-    setScene(getSceneForHour(now.getHours()), { syncDots: true });
+    const nextScene = getSceneForHour(now.getHours());
+    setScene(nextScene, { syncDots: true, force: activeScene === nextScene && shouldRotatePhoto() });
   }
 }
 
@@ -408,15 +522,20 @@ function setScene(sceneId, options = {}) {
   activeScene = sceneId;
   app.dataset.scene = sceneId;
   const photo = pickScenePhoto(sceneId);
-  app.style.setProperty("--photo", `url("${imageUrl(photo)}")`);
+  const photoUrl = imageUrl(photo);
+  app.classList.toggle("is-photo-ready", Boolean(photoUrl));
+  if (photoUrl) {
+    app.style.setProperty("--photo", `url("${photoUrl}")`);
+    app.style.setProperty("--photo-position", photo?.photoPosition || "center center");
+    app.style.setProperty("--photo-size", photo?.photoSize || "cover");
+  }
   renderPhotoCredit(photo);
+  syncPhotoDots();
 
   renderWeather();
 
   if (options.syncDots) {
-    dots.forEach((dot) => {
-      dot.classList.toggle("active", dot.dataset.sceneButton === sceneId);
-    });
+    syncPhotoDots();
   }
 }
 
@@ -432,14 +551,16 @@ function renderWeather() {
 function weatherCodeToSummary(code, current = {}) {
   const precipitation = currentPrecipitation(current);
   if ([0].includes(code)) return "맑음";
-  if ([1, 2].includes(code)) return "구름 조금";
+  if ([1, 2].includes(code)) return "구름 약간";
   if ([3].includes(code)) return "흐림";
   if ([45, 48].includes(code)) return "안개";
-  if ([51, 56].includes(code)) return "약한 이슬비";
+  if ([51].includes(code)) return "옅은 이슬비";
   if ([53].includes(code)) return "이슬비";
-  if ([55, 57].includes(code)) return "강한 이슬비";
+  if ([55].includes(code)) return "짙은 이슬비";
+  if ([56].includes(code)) return "살짝 어는 이슬비";
+  if ([57].includes(code)) return "어는 이슬비";
   if ([61, 80].includes(code)) return "약한 비";
-  if ([63, 81].includes(code) && precipitation <= 0) return "가끔 약한 비";
+  if ([63, 81].includes(code) && precipitation <= 0) return "간간이 약한 비";
   if ([63, 81].includes(code) && precipitation < 0.5) return "약한 비";
   if ([63, 81].includes(code)) return "비";
   if ([65, 66, 67, 82].includes(code)) return "강한 비";
@@ -451,7 +572,9 @@ function weatherCodeToSummary(code, current = {}) {
 function requestCurrentWeather() {
   if (!navigator.geolocation) {
     weatherState = { location: "Seoul", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
+    weatherResolved = true;
     renderWeather();
+    if (activeScene) setScene(activeScene, { syncDots: true, force: true });
     return;
   }
 
@@ -475,12 +598,15 @@ function requestCurrentWeather() {
       } catch (error) {
         weatherState = { location: "현재 위치", temp: "--°", summary: "날씨 오류", icon: "sun-icon", tag: "clear" };
       }
+      weatherResolved = true;
       renderWeather();
       if (activeScene) setScene(activeScene, { syncDots: true, force: true });
     },
     () => {
       weatherState = { location: "Seoul", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
+      weatherResolved = true;
       renderWeather();
+      if (activeScene) setScene(activeScene, { syncDots: true, force: true });
     },
     { enableHighAccuracy: false, timeout: 9000, maximumAge: 10 * 60 * 1000 }
   );
@@ -489,12 +615,18 @@ function requestCurrentWeather() {
 async function loadBackgroundArchive() {
   try {
     const response = await fetch("data/background-manifest.json", { cache: "no-cache" });
-    if (!response.ok) return;
+    if (!response.ok) {
+      backgroundArchiveLoaded = true;
+      return;
+    }
     const data = await response.json();
     backgroundArchive = Array.isArray(data.images) ? data.images : [];
+    backgroundArchiveLoaded = true;
     if (activeScene) setScene(activeScene, { syncDots: true, force: true });
   } catch (error) {
     backgroundArchive = [];
+    backgroundArchiveLoaded = true;
+    if (activeScene) setScene(activeScene, { syncDots: true, force: true });
   }
 }
 
@@ -698,11 +830,26 @@ function tick() {
 }
 
 dots.forEach((dot) => {
-  dot.addEventListener("click", () => {
-    manualSceneUntil = Date.now() + 60 * 1000;
-    setScene(dot.dataset.sceneButton, { syncDots: true, force: true });
-  });
+  dot.addEventListener("click", () => selectPhotoIndex([...dots].indexOf(dot)));
 });
+
+if (skyRoom) {
+  skyRoom.addEventListener("touchstart", (event) => {
+    const touch = event.touches[0];
+    swipeStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
+  }, { passive: true });
+
+  skyRoom.addEventListener("touchend", (event) => {
+    if (!swipeStart) return;
+    const touch = event.changedTouches[0];
+    if (!touch) return;
+    const dx = touch.clientX - swipeStart.x;
+    const dy = touch.clientY - swipeStart.y;
+    swipeStart = null;
+    if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.35) return;
+    movePhoto(dx < 0 ? 1 : -1);
+  }, { passive: true });
+}
 
 renderCategoryOptions();
 loadSavedCategories();
@@ -733,8 +880,13 @@ categoryOptions.addEventListener("change", (event) => {
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeSettings();
 });
-window.addEventListener("resize", resizeEzlongWebview);
+window.addEventListener("resize", () => {
+  syncFirstScreenHeight();
+  resizeEzlongWebview();
+});
+window.visualViewport?.addEventListener("resize", syncFirstScreenHeight);
 
+syncFirstScreenHeight();
 resizeEzlongWebview();
 loadBackgroundArchive();
 loadQuoteArchive();

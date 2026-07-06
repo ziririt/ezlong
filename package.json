@@ -9,6 +9,7 @@
   },
   "scripts": {
     "archive:time-backgrounds": "node scripts/upload-time-background-storage.js",
-    "archive:time-quotes": "node scripts/merge-time-quotes.js"
+    "archive:time-quotes": "node scripts/merge-time-quotes.js",
+    "verify:time": "node scripts/verify-time-deploy.js"
   }
 }

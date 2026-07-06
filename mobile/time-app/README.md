@@ -19,7 +19,7 @@ npm run cap:open:android
 - Local first-screen clock/weather/quote experience, not a blank remote WebView.
 - Native haptics on scene and settings interactions.
 - Native local notification opt-in for a daily investment mindset quote.
-- Native device/platform detection for app-only polish.
+- Native device share sheet for the app page.
 - Offline-capable bundled quote/background seed data.
 - Live `ezlong.com` access remains available below the main clock.
 

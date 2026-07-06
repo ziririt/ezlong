@@ -1,4 +1,4 @@
-package com.getcapacitor.myapp;
+package com.ezlong.time;
 
 import static org.junit.Assert.*;
 

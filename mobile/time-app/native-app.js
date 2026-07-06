@@ -1,6 +1,6 @@
 const bridge = window.Capacitor;
 const plugins = bridge?.Plugins || {};
-const { App, Device, Haptics, LocalNotifications, Preferences, SplashScreen, StatusBar } = plugins;
+const { Haptics, LocalNotifications, Share, SplashScreen, StatusBar } = plugins;
 
 const notificationKey = "dailyQuoteNotificationEnabled";
 const quoteHour = 8;
@@ -23,20 +23,19 @@ async function setupSystemChrome() {
   if (!isNativeApp()) return;
   try {
     await StatusBar?.setStyle({ style: "DARK" });
-    await StatusBar?.setBackgroundColor({ color: "#0f1824" });
+    await StatusBar?.setBackgroundColor({ color: "#121b2a" });
     await SplashScreen?.hide();
   } catch {
     // Native chrome setup should never block the clock.
   }
 }
 
-async function getPreference(key) {
-  const result = await Preferences?.get?.({ key });
-  return result?.value || "";
+function getPreference(key) {
+  return window.localStorage.getItem(key) || "";
 }
 
-async function setPreference(key, value) {
-  await Preferences?.set?.({ key, value });
+function setPreference(key, value) {
+  window.localStorage.setItem(key, value);
 }
 
 async function enableDailyQuoteNotification() {
@@ -60,7 +59,7 @@ async function enableDailyQuoteNotification() {
       }
     ]
   });
-  await setPreference(notificationKey, "true");
+  setPreference(notificationKey, "true");
   return true;
 }
 
@@ -86,24 +85,18 @@ function createNativeDock() {
 
   dock.querySelector("[data-native-share]")?.addEventListener("click", async () => {
     await lightTap();
-    if (navigator.share) {
-      await navigator.share({
-        title: "ezlong time",
-        text: "투자 멘탈을 잡아주는 날씨 플립시계",
-        url: "https://ezlong.com/time/"
-      });
+    const sharePayload = {
+      title: "ezlong time",
+      text: "투자 멘탈을 잡아주는 날씨 플립시계",
+      url: "https://ezlong.com/time/"
+    };
+
+    if (isNativeApp() && Share) {
+      await Share.share(sharePayload);
+    } else if (navigator.share) {
+      await navigator.share(sharePayload);
     }
   });
-}
-
-async function annotateDevice() {
-  if (!isNativeApp() || !Device) return;
-  try {
-    const info = await Device.getInfo();
-    document.documentElement.dataset.nativePlatform = info.platform || "native";
-  } catch {
-    document.documentElement.dataset.nativePlatform = "native";
-  }
 }
 
 function wireNativeInteractions() {
@@ -111,23 +104,23 @@ function wireNativeInteractions() {
     element.addEventListener("click", lightTap);
   });
 
-  App?.addListener?.("appStateChange", ({ isActive }) => {
-    document.documentElement.classList.toggle("app-paused", !isActive);
+  document.addEventListener("visibilitychange", () => {
+    document.documentElement.classList.toggle("app-paused", document.hidden);
   });
 }
 
-async function restoreNotificationState() {
-  if ((await getPreference(notificationKey)) === "true") {
+function restoreNotificationState() {
+  if (getPreference(notificationKey) === "true") {
     document.querySelector(".native-dock")?.classList.add("is-notified");
   }
 }
 
 async function start() {
   await setupSystemChrome();
-  await annotateDevice();
+  document.documentElement.dataset.nativePlatform = bridge?.getPlatform?.() || "native";
   createNativeDock();
   wireNativeInteractions();
-  await restoreNotificationState();
+  restoreNotificationState();
 }
 
 start();
