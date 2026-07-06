@@ -8,7 +8,7 @@
   --sky-mid: #bfe9ff;
   --sky-low: #f8fbef;
   --haze: rgba(255, 255, 255, 0.08);
-  --photo: url("assets/bg-midday.jpg");
+  --photo: none;
   --photo-position: center center;
   --first-screen-height: 100svh;
   --first-screen-tail: 0px;
@@ -51,7 +51,6 @@ button { font: inherit; }
   --sky-mid: #bcecff;
   --sky-low: #f8fbef;
   --haze: rgba(255,255,255,0.10);
-  --photo: url("assets/bg-midday.jpg");
   --photo-position: center center;
 }
 
@@ -61,7 +60,6 @@ button { font: inherit; }
   --sky-mid: #eeb899;
   --sky-low: #ff9f35;
   --haze: rgba(255, 183, 98, 0.18);
-  --photo: url("assets/bg-golden-hour.jpg");
   --photo-position: center center;
 }
 
@@ -71,7 +69,6 @@ button { font: inherit; }
   --sky-mid: #123d68;
   --sky-low: #2a5d85;
   --haze: rgba(105, 160, 228, 0.12);
-  --photo: url("assets/bg-night.jpg");
   --photo-position: center center;
 }
 
@@ -81,7 +78,6 @@ button { font: inherit; }
   --sky-mid: #dff4ff;
   --sky-low: #fbf7df;
   --haze: rgba(255, 248, 202, 0.16);
-  --photo: url("assets/bg-morning.jpg");
   --photo-position: center center;
 }
 
@@ -95,6 +91,9 @@ button { font: inherit; }
   grid-template-rows: auto minmax(0, 1fr) auto auto var(--first-screen-tail);
   gap: clamp(12px, 2.2vh, 24px);
   padding: max(28px, env(safe-area-inset-top)) clamp(8px, 2.4vw, 26px) max(24px, env(safe-area-inset-bottom));
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255,255,255,0.24), transparent 36%),
+    linear-gradient(180deg, var(--sky-top), var(--sky-mid) 46%, var(--sky-low));
 }
 
 .sky-photo,
@@ -116,7 +115,12 @@ button { font: inherit; }
   transform-origin: 46% 42%;
   animation: livingSky 76s ease-in-out infinite alternate;
   filter: saturate(1.04) contrast(1.03);
-  transition: background 900ms ease, filter 900ms ease;
+  opacity: 0;
+  transition: background 900ms ease, filter 900ms ease, opacity 900ms ease;
+}
+
+.clock-app.is-photo-ready .sky-photo {
+  opacity: 1;
 }
 
 .sky-photo::before,

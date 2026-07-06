@@ -191,6 +191,8 @@ let lastScenePhoto = {};
 let lastDigits = ["", "", "", ""];
 let timeHasRendered = false;
 let manualSceneUntil = 0;
+let backgroundArchiveLoaded = false;
+let weatherResolved = false;
 const categoryStorageKey = "ezlong:selectedCategories";
 let weatherState = {
   location: "위치 확인 중",
@@ -328,6 +330,8 @@ function renderPhotoCredit(image) {
 }
 
 function pickScenePhoto(sceneId) {
+  if (!backgroundArchiveLoaded || !weatherResolved) return "";
+
   const timeBuckets = getSceneTimeBuckets(sceneId);
   const currentTag = weatherState.tag;
   const groupedTag = weatherTagGroup(currentTag);
@@ -424,7 +428,9 @@ function setScene(sceneId, options = {}) {
   activeScene = sceneId;
   app.dataset.scene = sceneId;
   const photo = pickScenePhoto(sceneId);
-  app.style.setProperty("--photo", `url("${imageUrl(photo)}")`);
+  const photoUrl = imageUrl(photo);
+  app.classList.toggle("is-photo-ready", Boolean(photoUrl));
+  if (photoUrl) app.style.setProperty("--photo", `url("${photoUrl}")`);
   renderPhotoCredit(photo);
 
   renderWeather();
@@ -467,7 +473,9 @@ function weatherCodeToSummary(code, current = {}) {
 function requestCurrentWeather() {
   if (!navigator.geolocation) {
     weatherState = { location: "Seoul", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
+    weatherResolved = true;
     renderWeather();
+    if (activeScene) setScene(activeScene, { syncDots: true, force: true });
     return;
   }
 
@@ -491,12 +499,15 @@ function requestCurrentWeather() {
       } catch (error) {
         weatherState = { location: "현재 위치", temp: "--°", summary: "날씨 오류", icon: "sun-icon", tag: "clear" };
       }
+      weatherResolved = true;
       renderWeather();
       if (activeScene) setScene(activeScene, { syncDots: true, force: true });
     },
     () => {
       weatherState = { location: "Seoul", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
+      weatherResolved = true;
       renderWeather();
+      if (activeScene) setScene(activeScene, { syncDots: true, force: true });
     },
     { enableHighAccuracy: false, timeout: 9000, maximumAge: 10 * 60 * 1000 }
   );
@@ -505,12 +516,18 @@ function requestCurrentWeather() {
 async function loadBackgroundArchive() {
   try {
     const response = await fetch("data/background-manifest.json", { cache: "no-cache" });
-    if (!response.ok) return;
+    if (!response.ok) {
+      backgroundArchiveLoaded = true;
+      return;
+    }
     const data = await response.json();
     backgroundArchive = Array.isArray(data.images) ? data.images : [];
+    backgroundArchiveLoaded = true;
     if (activeScene) setScene(activeScene, { syncDots: true, force: true });
   } catch (error) {
     backgroundArchive = [];
+    backgroundArchiveLoaded = true;
+    if (activeScene) setScene(activeScene, { syncDots: true, force: true });
   }
 }
 
