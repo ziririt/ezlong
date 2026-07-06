@@ -13,7 +13,7 @@ const manifestPath = path.join(root, "time", "data", "background-manifest.json")
 const publicManifestPath = manifestPath;
 const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS || path.join(root, "firebase-service-account.json");
 const projectId = process.env.FIREBASE_PROJECT_ID || "ezlong-541a8";
-const bucketName = process.env.FIREBASE_STORAGE_BUCKET || `${projectId}.appspot.com`;
+const bucketName = process.env.FIREBASE_STORAGE_BUCKET || `${projectId}.firebasestorage.app`;
 const allowedExtensions = new Set([".jpg", ".jpeg", ".png", ".webp"]);
 
 function optionValue(name, fallback = "") {
