@@ -17,6 +17,11 @@
 
 html { min-height: 100%; }
 
+html,
+body {
+  overscroll-behavior-y: none;
+}
+
 body {
   min-height: 100%;
   margin: 0;
@@ -81,6 +86,9 @@ button { font: inherit; }
 .sky-room {
   position: relative;
   min-height: 100svh;
+  height: 100svh;
+  height: 100dvh;
+  max-height: 100dvh;
   overflow: hidden;
   isolation: isolate;
   display: grid;
