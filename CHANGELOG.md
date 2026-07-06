@@ -5,6 +5,61 @@
 
 ---
 
+## [2026-07-06] 세션 — ezlong.com/time 투자 멘탈 날씨 앱 신설 + Capacitor 모바일 셸 + Claude Cowork 인수인계 검증
+
+### 배경
+
+codex가 하루 종일 `ezlong.com/time`(플립시계 + 날씨 + 투자 명저 문장 + 자연 배경사진) 신규 서비스를 개발. 저녁에 Claude Cowork로 인수인계서를 넘겨 나머지(배경사진 로직 점검, 문장 아카이브 병합 도구, 모바일 Capacitor 셸, 배포/검증 자동화)를 진행. codex가 운영 repo(`/tmp/ezlong-drizzle`)에 선별 반영·배포까지 마쳤고, Claude가 그 반영 커밋을 제3자 감사로 검증.
+
+### 커밋 이력 (자동 데이터 커밋 제외, 시간순)
+
+- `d1516fd7c` feat: add time weather clock app — 첫 화면(플립시계/날씨/투자문장) 신설
+- `6ad96c6f2` fix: keep time hero within mobile viewport
+- `9479bd5e9` / `c59c3b558` feat: add / expand time quote archive
+- `9129cc3cd` fix: add rainy time backgrounds
+- `eeebc675c` feat: add mobile app shell — Capacitor 최초 골격
+- `45366ab4c` chore: exclude mobile sources from hosting
+- `3702d6725`, `8613d19c2`, `0a71c2cfc`, `807e3fa43`, `63f876ddb`, `965fbb7ce`, `ca0f8ae67` chore: collect time weather backgrounds — 계절/날씨/시간대별 사진 반복 수집(이슬비 30장, 구름 23장 포함)
+- `35cefcc9b` fix: enable firebase storage photo archive
+- `e6ce1a53b` fix: prevent time webview peeking on first screen
+- `44cda381e` fix: force refreshed first-screen layout assets
+- `d1ab3a5d2` fix: simplify weather text overlay
+- `0196ab040` fix: wait for weather photo before showing background
+- `e2cd21ce6` fix: soften rainy weather mood
+- `835e46761` fix: make background dots weather photo slots
+- `0a71c2cfc` chore: add cloudy backgrounds and cowork handover — Claude Cowork 인수인계서 최초 작성
+- `2b82ed3eb` chore: reconcile time app tooling and mobile scaffold — Claude Cowork 세션 산출물 운영 반영 (아래 상세)
+- `c3ac02b1a` fix: raise time app small text to minimum size — 라이트모드 14px 규칙 위반 4곳 수정
+
+### Claude Cowork 세션에서 한 일
+
+- 로컬 프리뷰("투자서 날씨 앱 2")에서 `weatherCodeToTag()` 죽은 코드 정리, `background-manifest.json` 83장 무결성 전수 검사(계절/날씨/시간대 태그 누락 0건, cloudy/drizzling 교차오염 0건)
+- `data/quote-archive-manifest.json` 신설 + `scripts/merge-time-quotes.js`(중복 제거 기준: title+author+text) 작성
+- `scripts/verify-time-deploy.js`, `scripts/safe-deploy.sh` 작성 — 배포 전 자동 점검(문법/manifest/문장 아카이브) + pull→add(명시)→commit→push 순서 고정
+- `mobile/time-app` Capacitor 스캐폴드(`package.json`, `capacitor.config.ts`, `appId: com.ezlong.time`) 작성 후 `npm install` / `npx cap add android` / `npx cap add ios` / `npx cap sync` 전부 실제 실행해 통과 확인
+- codex가 운영 repo에 반영한 `2b82ed3eb`를 제3자 감사: 시크릿 미포함, `node_modules`/빌드 산출물 미트래킹, `native-app.js`가 실제 설치된 Capacitor 플러그인만 참조하는지, 문장 아카이브 저자 분산 로직(`recentQuoteAuthors`, 최근 3명 회피)이 로컬 프리뷰의 퇴행 버전으로 덮이지 않고 보존됐는지 확인 — 전부 통과
+- 감사 중 발견한 `time/styles.css`의 14px 미만 인라인 폰트 3곳(13px×2, 11px)을 지적 → codex가 즉시 수정(`c3ac02b1a`)하면서 `.photo-credit`의 9px까지 추가로 정리
+
+### 검증
+
+- `npm run verify:time`(로컬 + `--remote=https://ezlong.com/time`) 통과: 이미지 83장(구름 23/이슬비 30, 교차오염 0), 문장 114개(중복 0)
+- Firebase Hosting 배포 완료, 운영 HTML에서 `viewport-fit=cover` 반영 확인
+- `time/styles.css` 13px 이하 잔여 0건 재확인 (`c3ac02b1a` 이후)
+
+### 복구 명령어 (문제 시)
+
+```bash
+git log --oneline -- time/ mobile/time-app/ scripts/verify-time-deploy.js scripts/safe-deploy.sh scripts/merge-time-quotes.js | head -10
+git checkout 2b82ed3eb~1 -- time/ mobile/time-app/   # reconcile 이전으로 되돌림 (필요 시에만)
+```
+
+### 남은 과제 (다음 세션)
+
+1. 앱 출시 준비 — 아이콘/스플래시 교체, Xcode/Android Studio 실제 빌드·서명, 심사 제출 자료 정리
+2. 콘텐츠 확장 — 투자 명저 문장 추가(원고 필요), 계절/날씨/시간대별 사진 수집 루틴 고도화
+
+---
+
 ## [2026-07-03] 오전 세션 — 스코어카드 품질 수술 (세션 인지 + 혼조 재료 + 중복 실행 가드)
 
 ### 배경 — 유저 지적 3건
