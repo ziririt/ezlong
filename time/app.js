@@ -184,6 +184,7 @@ const digitElements = [
 let activeScene = "";
 let activeQuoteMinute = "";
 let lastQuoteTitle = "";
+let recentQuoteAuthors = [];
 let quoteDeck = [];
 let selectedCategories = new Set();
 let lastScenePhoto = {};
@@ -532,6 +533,7 @@ async function loadQuoteArchive() {
       });
     quoteDeck = [];
     lastQuoteTitle = "";
+    recentQuoteAuthors = [];
     renderQuote(getNextQuote());
   } catch (error) {
     // Keep bundled quotes if archive loading fails.
@@ -589,6 +591,22 @@ function getNextQuote() {
     quoteDeck = shuffleQuotes(eligibleQuotes);
   }
 
+  if (quoteDeck.length > 1) {
+    const shouldAvoidFirst =
+      quoteDeck[0].title === lastQuoteTitle || recentQuoteAuthors.includes(quoteDeck[0].author);
+    const idealAlternativeIndex = quoteDeck.findIndex(
+      (quote) => quote.title !== lastQuoteTitle && !recentQuoteAuthors.includes(quote.author)
+    );
+    const fallbackAlternativeIndex = quoteDeck.findIndex(
+      (quote) => quote.title !== lastQuoteTitle || !recentQuoteAuthors.includes(quote.author)
+    );
+    const alternativeIndex = idealAlternativeIndex > 0 ? idealAlternativeIndex : fallbackAlternativeIndex;
+
+    if (shouldAvoidFirst && alternativeIndex > 0) {
+      [quoteDeck[0], quoteDeck[alternativeIndex]] = [quoteDeck[alternativeIndex], quoteDeck[0]];
+    }
+  }
+
   if (quoteDeck.length > 1 && quoteDeck[0].title === lastQuoteTitle) {
     const alternativeIndex = quoteDeck.findIndex((quote) => quote.title !== lastQuoteTitle);
     if (alternativeIndex > 0) {
@@ -598,6 +616,7 @@ function getNextQuote() {
 
   const quote = quoteDeck.shift();
   lastQuoteTitle = quote.title;
+  recentQuoteAuthors = [quote.author, ...recentQuoteAuthors.filter((author) => author !== quote.author)].slice(0, 3);
   return quote;
 }
 
