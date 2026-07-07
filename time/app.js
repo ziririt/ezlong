@@ -984,6 +984,45 @@ function standbyPlayer() {
   return musicPlayers[1 - activePlayerIndex];
 }
 
+// 2026-07-07: "크로스페이드가 볼륨이 줄어드는 느낌이 전혀 없이 뚝 끊긴다"는
+// 반복된 재지적의 진짜 원인 — iOS Safari/WKWebView는 HTMLMediaElement의
+// .volume 프로퍼티를 조용히 무시한다(하드웨어 볼륨 버튼만 존중하도록 iOS 5
+// 시절부터 의도된 플랫폼 제약. 에러도 안 뜨고 그냥 아무 효과가 없다).
+// 그래서 지금까지 player.volume = t로 아무리 값을 바꿔도 두 트랙이 항상
+// 풀볼륨으로 겹쳐 재생되다가 첫 트랙이 ended되며 뚝 끊기는 것처럼 들렸던
+// 것이다. Web Audio API의 GainNode는 iOS에서도 정상적으로 볼륨을 조절하는
+// 표준 우회법이라, 볼륨 제어를 전부 여기로 옮긴다.
+let audioContext = null;
+let playerGainNodes = null; // musicPlayers와 같은 순서의 GainNode 배열
+
+function ensureAudioGraph() {
+  if (audioContext) return;
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) return; // 극히 예외적으로 없는 환경 — setPlayerVolume이 .volume으로 폴백
+  try {
+    audioContext = new AudioContextClass();
+    playerGainNodes = musicPlayers.map((player) => {
+      const source = audioContext.createMediaElementSource(player);
+      const gain = audioContext.createGain();
+      source.connect(gain);
+      gain.connect(audioContext.destination);
+      return gain;
+    });
+  } catch (error) {
+    audioContext = null;
+    playerGainNodes = null;
+  }
+}
+
+function setPlayerVolume(player, value) {
+  const index = musicPlayers.indexOf(player);
+  if (playerGainNodes && playerGainNodes[index]) {
+    playerGainNodes[index].gain.value = value;
+    return;
+  }
+  player.volume = value; // Web Audio API를 못 쓰는 환경(구형 브라우저 등)의 폴백
+}
+
 function resetActiveWatchState() {
   musicErrorRetryCount = 0;
   stallRetryCount = 0;
@@ -993,7 +1032,7 @@ function resetActiveWatchState() {
 
 function loadMusicTrack(player, index) {
   if (!player || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
-  player.volume = 1;
+  setPlayerVolume(player, 1);
   const track = musicPlaylist[index % musicPlaylist.length];
   const base = typeof musicSourceBaseUrl === "string" ? musicSourceBaseUrl.trim() : "";
   // player.duration을 매 timeupdate마다 그대로 신뢰하면, 간혹 재생 도중
@@ -1044,17 +1083,17 @@ function updateMusicProgress(event) {
     crossfadeTriggered = true;
     pendingNextIndex = pickNextTrackIndex();
     loadMusicTrack(standby, pendingNextIndex);
-    standby.volume = 0;
+    setPlayerVolume(standby, 0);
     standby.play().catch(() => {});
     recordTrackHeard(pendingNextIndex);
   }
 
   if (crossfadeTriggered && standby) {
     const t = Math.max(0, Math.min(1, remaining / musicFadeOutSeconds)); // 1 → 0으로 줄어듦
-    player.volume = t;
-    standby.volume = 1 - t;
-  } else if (player.volume !== 1) {
-    player.volume = 1;
+    setPlayerVolume(player, t);
+    setPlayerVolume(standby, 1 - t);
+  } else {
+    setPlayerVolume(player, 1);
   }
 }
 
@@ -1106,6 +1145,12 @@ function renderMusicToggle() {
 // 똑같이 막힌 상태라 반응이 없었을 것 — 실패하면 load()로 리셋 후 같은
 // 위치에서 재시도하도록 바꾼다.
 function playMusic() {
+  // 유저의 실제 탭(toggleMusic 클릭)으로만 호출되는 지점이라, iOS가 요구하는
+  // "사용자 제스처 안에서" AudioContext를 만들고 깨우는 조건을 만족한다.
+  ensureAudioGraph();
+  if (audioContext && audioContext.state === "suspended") {
+    audioContext.resume().catch(() => {});
+  }
   const player = activePlayer();
   if (!player) return;
   if (!player.src) {
@@ -1173,7 +1218,7 @@ function handleActivePlayerEnded(event) {
     musicIndex = pendingNextIndex;
     pendingNextIndex = -1;
     crossfadeTriggered = false;
-    activePlayer().volume = 1;
+    setPlayerVolume(activePlayer(), 1);
     // 방어 코드(2026-07-07): 위 updateMusicProgress에서 걸었던 standby.play()가
     // 어떤 이유로든(iOS 앱 환경 등) 실제로는 재생을 못 시작했을 경우를 대비해,
     // 역할을 바꾼 새 activePlayer가 확실히 재생 중인 상태로 만든다. 이미
@@ -1313,3 +1358,17 @@ tick();
 requestCurrentWeather();
 window.setInterval(tick, 1000);
 window.setInterval(musicStallWatchdog, 2000);
+
+// 2026-07-07: 앱을 켜고 첫 곡을 재생할 때 초반 몇 초간 짧게 끊기는 증상 —
+// 재생 버튼을 누른 그 순간에야 트랙 파일을 받기 시작해서 벌어지는 지연으로
+// 판단, 앱이 뜨자마자(재생 버튼을 누르기 전부터) 첫 곡을 미리 로드해서
+// preload="auto"가 백그라운드로 버퍼링을 시작하게 한다. 나중에 playMusic()이
+// 실행될 때 player.src가 이미 채워져 있으면 새로 로드하지 않고 바로
+// play()만 호출하므로, 이미 버퍼링된 상태에서 재생을 시작하게 된다.
+(function prefetchFirstTrack() {
+  const player = activePlayer();
+  if (!player || player.src) return;
+  musicIndex = pickNextTrackIndex();
+  loadMusicTrack(player, musicIndex);
+  recordTrackHeard(musicIndex);
+})();

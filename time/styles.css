@@ -356,6 +356,11 @@ button { font: inherit; }
   grid-template-columns: minmax(62px, 1fr) auto minmax(74px, 1fr);
   align-items: center;
   gap: 7px;
+  /* 2026-07-07: 좌우가 끝단에 바짝 붙어 균형감이 없다는 지적 — .sky-room
+     자체 padding(clamp(8px,2.4vw,26px))에 더해 이 줄에만 같은 양을
+     한 번 더 얹어서 상단바만 여백이 약 2배가 되게 한다(문장박스는
+     .sky-room padding만 적용되므로 그대로 유지됨). */
+  padding-inline: clamp(8px, 2.4vw, 26px);
 }
 
 .icon-button,
@@ -608,6 +613,11 @@ button { font: inherit; }
   text-align: center;
   text-shadow: 0 2px 24px rgba(0,0,0,0.24);
   transform: translateY(clamp(-54px, -5.4vh, -28px));
+  box-sizing: border-box;
+  /* top-bar와 동일한 이유 — 플립시계·날씨/음악 줄만 여백을 한 번 더
+     얹는다. 대신 flip-card 쪽 너비를 그만큼 줄여서(아래 참조) 전체 폭이
+     넘치지 않게 맞춘다. */
+  padding-inline: clamp(8px, 2.4vw, 26px);
 }
 
 .flip-clock {
@@ -628,8 +638,11 @@ button { font: inherit; }
   position: relative;
   display: grid;
   place-items: center;
-  width: clamp(82px, 23.1vw, 166px);
-  height: clamp(124px, 35vw, 244px);
+  /* 2026-07-07: .clock-stage에 좌우 padding을 새로 얹은 만큼(위 참조)
+     카드 폭을 살짝 줄여서 4장 합계가 넘치지 않게 맞췄다(23.1vw→22vw,
+     최소/최대값도 같은 비율로 축소). 세로 비율은 유지. */
+  width: clamp(78px, 22vw, 158px);
+  height: clamp(118px, 33.3vw, 239px);
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.22);
   border-radius: clamp(14px, 3vw, 26px);
