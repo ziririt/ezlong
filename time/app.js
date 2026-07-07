@@ -181,7 +181,6 @@ const musicSkip = document.getElementById("musicSkip");
 const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
 const bgAudio = document.getElementById("bgAudio");
 const bgAudioB = document.getElementById("bgAudioB");
-const musicDebugLine = document.getElementById("musicDebugLine");
 const digitElements = [
   document.getElementById("hourTens"),
   document.getElementById("hourOnes"),
@@ -231,6 +230,20 @@ function resizeEzlongWebview() {
 
 let lastAppliedScreenHeight = 0;
 
+// 2026-07-07: iOS 네이티브 앱(WKWebView)에서 문장박스 하단 및 점4개 줄이
+// 화면 밖으로 잘리는 버그의 원인을 찾음 — 아래 safariBottomGuard/
+// browserBottomLift는 "모바일 사파리 주소창이 접혔다 폈다 하는 상황"을
+// 대비해 실제 화면 높이보다 최대 143px 더 크게 --first-screen-height를
+// 잡아주는 보정값인데, 네이티브 앱은 주소창 자체가 아예 없는 풀스크린
+// WKWebView라서 이 보정이 전혀 필요 없다. 그런데 `standalone` 판정이
+// PWA(홈화면 추가) 여부만 보고, "브라우저 chrome이 없는 네이티브 래퍼"는
+// 구분하지 못해서 일반 모바일 사파리 탭과 똑같이 취급되어 실제 화면보다
+// 143px(852pt 기준 약 17%)나 더 큰 높이로 grid를 계산 — 그 초과분만큼
+// scene-dots·quote-panel 하단이 화면 밖으로 밀려났다. iOS 앱(ContentView.swift)이
+// URL 뒤에 붙여주는 ?native=ios 쿼리스트링으로 "이건 chrome 없는 네이티브
+// 래퍼다"를 구분해서 이 보정을 건너뛴다.
+const isNativeWrapper = new URLSearchParams(window.location.search).get("native") === "ios";
+
 function syncFirstScreenHeight() {
   if (!app) return;
   const viewportHeight = Math.ceil(Math.max(
@@ -243,7 +256,7 @@ function syncFirstScreenHeight() {
   if (Math.abs(viewportHeight - lastAppliedScreenHeight) <= 2 && lastAppliedScreenHeight > 0) return;
   lastAppliedScreenHeight = viewportHeight;
   const touchDevice = window.matchMedia("(pointer: coarse)").matches;
-  const standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  const standalone = isNativeWrapper || window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
   const safariBottomGuard = touchDevice && !standalone
     ? Math.min(164, Math.max(96, Math.round(viewportHeight * 0.09)))
     : 0;
@@ -939,56 +952,6 @@ function pickNextTrackIndex() {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-// 2026-07-07 테스트용 진단 로그. "덜 끝났는데 끊긴다"는 체감이 진짜인지
-// 확인하기 위해, 트랙별로 (1)선언된 재생시간 (2)실제 몇 초까지 재생됐는지
-// (3)몇 초 남기고 페이드아웃을 시작했는지를 화면에 문자로 남긴다.
-// 이전에 한 번 비슷한 걸 넣었다가 지웠는데, 그때는 이 표시 영역이 grid
-// 레이아웃 안에 있어서 높이가 들쭉날쭉해지며 플립시계가 흔들리는 원인이
-//됐다. 이번엔 index.html에서 position:fixed 오버레이로 따로 빼서
-// 그리드 흐름에 전혀 영향을 주지 않는다.
-const musicDebugEntries = [];
-const MUSIC_DEBUG_MAX = 5;
-
-function musicDebugRender() {
-  if (!musicDebugLine) return;
-  musicDebugLine.textContent = musicDebugEntries
-    .slice(-MUSIC_DEBUG_MAX)
-    .map((entry) => {
-      const durStr = Number.isFinite(entry.dur) ? entry.dur.toFixed(1) : "?";
-      const fadeStr = entry.fadeAt != null ? ` · fade@${entry.fadeAt.toFixed(1)}s` : "";
-      const endStr = entry.endAt != null
-        ? ` · end@${entry.endAt.toFixed(1)}s(Δ${(entry.endAt - entry.dur).toFixed(1)}${entry.tag ? `,${entry.tag}` : ""})`
-        : " · 재생중";
-      return `${entry.file} dur=${durStr}s${fadeStr}${endStr}`;
-    })
-    .join("\n");
-}
-
-function musicDebugStart(file, dur) {
-  musicDebugEntries.push({ file, dur, fadeAt: null, endAt: null, tag: "" });
-  if (musicDebugEntries.length > MUSIC_DEBUG_MAX * 2) {
-    musicDebugEntries.splice(0, musicDebugEntries.length - MUSIC_DEBUG_MAX);
-  }
-  musicDebugRender();
-}
-
-function musicDebugMarkFade(file, at) {
-  const entry = [...musicDebugEntries].reverse().find((item) => item.file === file && item.endAt == null);
-  if (entry && entry.fadeAt == null) {
-    entry.fadeAt = at;
-    musicDebugRender();
-  }
-}
-
-function musicDebugMarkEnd(file, at, tag) {
-  const entry = [...musicDebugEntries].reverse().find((item) => item.file === file && item.endAt == null);
-  if (entry) {
-    entry.endAt = at;
-    entry.tag = tag || "";
-    musicDebugRender();
-  }
-}
-
 let musicErrorRetryCount = 0;
 let stallRetryCount = 0;
 let stallWatchCurrentTime = -1;
@@ -1000,7 +963,9 @@ let stallWatchSince = Date.now();
 // 재지적 — 페이드만 하는 게 아니라 이 시점에 실제로 다음 곡을 미리 재생
 // 시작해서 무음 구간 자체가 없도록 구조를 바꿨다(ffmpeg 완전디코드로 파일
 // 자체가 그 지점에서 끝나는 것 자체는 이미 확인됨 — 버그가 아니라 편집).
-const musicFadeOutSeconds = 3.5;
+// 2026-07-07 재조정: iOS 앱에서 페이드 없이 뚝 끊긴다는 재지적 — 0.5초
+// 앞당겨 4초로 늘려서 크로스페이드가 트리거될 여유를 더 준다.
+const musicFadeOutSeconds = 4;
 
 // 두 개의 <audio>를 번갈아 쓴다 — 하나(activePlayer)가 페이드아웃되는 동안
 // 다른 하나(standbyPlayer)가 이미 다음 곡을 재생 중이어야 겹치는 소리가
@@ -1031,11 +996,16 @@ function loadMusicTrack(player, index) {
   player.volume = 1;
   const track = musicPlaylist[index % musicPlaylist.length];
   const base = typeof musicSourceBaseUrl === "string" ? musicSourceBaseUrl.trim() : "";
-  const debugLabel = track.file.split("/").pop();
-  player.dataset.debugFile = debugLabel;
-  player.addEventListener("loadedmetadata", function onDebugMeta() {
-    if (player.dataset.debugFile === debugLabel) {
-      musicDebugStart(debugLabel, player.duration);
+  // player.duration을 매 timeupdate마다 그대로 신뢰하면, 간혹 재생 도중
+  // duration이 일시적으로 NaN/Infinity를 보고하는 환경(특히 iOS 앱의
+  // WKWebView)에서 크로스페이드 트리거(remaining <= musicFadeOutSeconds)
+  // 자체가 못 걸려 "페이드 없이 뚝 끊기고 다음곡으로" 증상으로 이어질 수
+  // 있다. loadedmetadata 시점에 확보한 값을 dataset에 캐싱해두고
+  // updateMusicProgress에서 폴백으로 쓴다.
+  delete player.dataset.cachedDuration;
+  player.addEventListener("loadedmetadata", function onCacheDuration() {
+    if (Number.isFinite(player.duration) && player.duration > 0) {
+      player.dataset.cachedDuration = String(player.duration);
     }
   }, { once: true });
   if (!base) {
@@ -1050,11 +1020,20 @@ function updateMusicProgress(event) {
   const player = event ? event.target : activePlayer();
   if (player !== activePlayer()) return; // standby(미리 준비 중인 다음곡)의 timeupdate는 무시
   if (!musicToggle || !player) return;
-  const duration = player.duration;
+  // player.duration이 일시적으로 NaN/Infinity가 되는 환경 대비 — loadMusicTrack의
+  // loadedmetadata 시점에 캐싱해둔 값을 폴백으로 쓴다(위 loadMusicTrack 주석 참조).
+  const liveDuration = player.duration;
+  const duration = Number.isFinite(liveDuration) && liveDuration > 0
+    ? liveDuration
+    : parseFloat(player.dataset.cachedDuration || "NaN");
   const hasDuration = Number.isFinite(duration) && duration > 0;
   const progress = hasDuration
     ? Math.min(1, Math.max(0, player.currentTime / duration))
     : 0;
+  // 5차 수정(2026-07-07): border-width 두께 변화(2~4차 시도)가 실기기에서
+  // 여전히 안 보인다는 재지적 — border 두께 조절 자체를 버리고, 프로그레스
+  // 링에 흔히 쓰는 conic-gradient 채움 방식으로 교체(styles.css 참조).
+  // 여긴 0~1 진행률 숫자만 넘기면 된다.
   musicToggle.style.setProperty("--progress", String(progress));
 
   if (!hasDuration) return;
@@ -1068,7 +1047,6 @@ function updateMusicProgress(event) {
     standby.volume = 0;
     standby.play().catch(() => {});
     recordTrackHeard(pendingNextIndex);
-    if (player.dataset.debugFile) musicDebugMarkFade(player.dataset.debugFile, player.currentTime);
   }
 
   if (crossfadeTriggered && standby) {
@@ -1103,7 +1081,7 @@ function musicStallWatchdog() {
   stallWatchSince = now;
   if (stallRetryCount >= 2) {
     stallRetryCount = 0;
-    playNextTrack("stall");
+    playNextTrack();
     return;
   }
   stallRetryCount += 1;
@@ -1162,7 +1140,7 @@ function toggleMusic() {
 
 // 스킵 버튼(수동)은 크로스페이드 없이 즉시 곡을 바꾼다 — 유저가 직접 누른
 // 즉각 반응이 우선이고, 곡이 끝나기 전 자동 전환과는 성격이 다르다.
-function playNextTrack(reason = "skip") {
+function playNextTrack() {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
   crossfadeTriggered = false;
   pendingNextIndex = -1;
@@ -1172,7 +1150,6 @@ function playNextTrack(reason = "skip") {
     standby.removeAttribute("src");
   }
   const player = activePlayer();
-  if (player.dataset.debugFile) musicDebugMarkEnd(player.dataset.debugFile, player.currentTime, reason);
   musicIndex = pickNextTrackIndex();
   loadMusicTrack(player, musicIndex);
   recordTrackHeard(musicIndex);
@@ -1190,7 +1167,6 @@ function handleActivePlayerEnded(event) {
   if (player !== activePlayer()) return;
   const standby = standbyPlayer();
   if (crossfadeTriggered && standby && pendingNextIndex >= 0) {
-    if (player.dataset.debugFile) musicDebugMarkEnd(player.dataset.debugFile, player.currentTime, "swap");
     player.pause();
     player.currentTime = 0;
     activePlayerIndex = 1 - activePlayerIndex;
@@ -1198,10 +1174,15 @@ function handleActivePlayerEnded(event) {
     pendingNextIndex = -1;
     crossfadeTriggered = false;
     activePlayer().volume = 1;
+    // 방어 코드(2026-07-07): 위 updateMusicProgress에서 걸었던 standby.play()가
+    // 어떤 이유로든(iOS 앱 환경 등) 실제로는 재생을 못 시작했을 경우를 대비해,
+    // 역할을 바꾼 새 activePlayer가 확실히 재생 중인 상태로 만든다. 이미
+    // 재생 중이면 이 호출은 사실상 아무 효과가 없어 무해하다.
+    activePlayer().play().catch(() => {});
     resetActiveWatchState();
     return;
   }
-  playNextTrack("no-fade");
+  playNextTrack();
 }
 
 function renderMusicPlaylistInfo() {
@@ -1270,7 +1251,7 @@ document.querySelectorAll("[data-settings-close]").forEach((element) => {
 });
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", openSettings);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
-if (musicSkip) musicSkip.addEventListener("click", () => playNextTrack("skip"));
+if (musicSkip) musicSkip.addEventListener("click", () => playNextTrack());
 // 2026-07-07: "곡이 중간에 뚝 끊긴다"는 신고는 ffmpeg 완전디코드로 확인한
 // 결과 버그가 아니었다(파일이 정말 그 지점에서 끝남) — 대신 크로스페이드로
 // 무음 구간 자체를 없앴다(위 musicFadeOutSeconds 설명 참조). 두 <audio>
@@ -1292,12 +1273,12 @@ musicPlayers.forEach((player) => {
     const code = player.error ? player.error.code : 0;
     const isFatal = code === 3 || code === 4; // MEDIA_ERR_DECODE / MEDIA_ERR_SRC_NOT_SUPPORTED
     if (isFatal || musicErrorRetryCount >= 1) {
-      playNextTrack("error");
+      playNextTrack();
       return;
     }
     musicErrorRetryCount += 1;
     player.load();
-    player.play().catch(() => playNextTrack("error"));
+    player.play().catch(() => playNextTrack());
   });
 });
 allCategories.addEventListener("change", () => {

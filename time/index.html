@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260707-icons-v18">
+  <link rel="stylesheet" href="styles.css?v=20260707-fixes-v22">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -44,9 +44,8 @@
             <button class="icon-button music-skip" id="musicSkip" type="button" aria-label="다음 곡"></button>
           </div>
         </div>
-        <audio id="bgAudio" preload="none"></audio>
-        <audio id="bgAudioB" preload="none"></audio>
-        <p id="musicDebugLine" class="music-debug-line" aria-hidden="true"></p>
+        <audio id="bgAudio" preload="auto"></audio>
+        <audio id="bgAudioB" preload="auto"></audio>
         <div class="flip-clock" aria-label="현재 시간">
           <div class="flip-unit" data-unit="hours">
             <span class="flip-card" id="hourTens">1</span>
@@ -129,7 +128,7 @@
   </main>
 
   <script src="investment-quotes.js"></script>
-  <script src="music-playlist.js?v=20260707-icons-v18"></script>
-  <script src="app.js?v=20260707-icons-v18"></script>
+  <script src="music-playlist.js?v=20260707-fixes-v22"></script>
+  <script src="app.js?v=20260707-fixes-v22"></script>
 </body>
 </html>

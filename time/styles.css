@@ -19,7 +19,14 @@
 
 * { box-sizing: border-box; }
 
-html { min-height: 100%; }
+/* 2026-07-07: 1페이지(.sky-room)에서 2페이지(.ezlong-webview)로 넘어가는
+   전환이 그냥 자연 스크롤이라, 위로 스와이프하면 어중간한 위치에서 멈춰
+   두 페이지가 걸쳐 보이는 "안 멋진" 상태가 됐다. scroll-snap으로 스와이프
+   방향에 따라 정확히 한 페이지에 딱 맞춰 멈추게 한다. */
+html {
+  min-height: 100%;
+  scroll-snap-type: y mandatory;
+}
 
 body {
   min-height: 100%;
@@ -84,6 +91,8 @@ button { font: inherit; }
   height: var(--first-screen-height);
   overflow: hidden;
   isolation: isolate;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto auto;
   gap: clamp(12px, 2.2vh, 24px);
@@ -765,16 +774,14 @@ button { font: inherit; }
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.28));
 }
 
-/* --progress를 순수 숫자 타입으로 등록한다. 등록 안 된 커스텀 프로퍼티를
-   calc()에서 곱셈에 쓰면 일부 WebKit 버전에서 조용히 무시되고 border-width가
-   초기값(2px)에 고정된 채 안 바뀌는 경우가 있었다(2026-07-07 재지적: "진행률
-   표시가 아예 안 된다") — @property로 <number>라고 명시하면 안정적으로 계산된다. */
-@property --progress {
-  syntax: '<number>';
-  inherits: true;
-  initial-value: 0;
-}
-
+/* 2026-07-07 5차 수정: border-width 두께 변화 방식(2~4차 시도)이 실기기에서
+   계속 "안 보인다"는 재지적을 받았다 — 두께 변화폭(2→3.5px) 자체가 48px
+   버튼 위에서 육안으로 감지하기엔 너무 미세했을 가능성이 크다. 매커니즘을
+   통째로 교체: 두께를 조절하는 대신, 로딩스피너/프로그레스링에 흔히 쓰는
+   conic-gradient(진행률만큼 밝은 색으로 채워지는 부채꼴) + mask(가운데를
+   뚫어 고정 두께의 링만 남김) 방식으로 바꿨다. 이 방식은 "밝은 부분이
+   자라난다"는 뚜렷한 색 대비 변화라 두께 미세조정보다 훨씬 확실하게 보인다.
+   app.js의 updateMusicProgress()가 --progress에 0~1 진행률 숫자를 그대로 넣는다. */
 .music-toggle {
   --progress: 0;
 }
@@ -792,38 +799,18 @@ button { font: inherit; }
   border: 2px solid rgba(255,255,255,0.3);
 }
 
-/* 진행률 표시 — 별도 링을 겹쳐 그리면(이전 버전) 두 개의 동그라미가
-   포개져 보여 오류처럼 보인다는 지적을 받았다. 유저의 원안대로
-   하나의 테두리 굵기 자체가 진행률만큼 두꺼워지는 방식으로 교체.
-   처음 버전은 +6px(2→8px)로 너무 굵고, border-color도 0.9로 올려놔서
-   시작부터 스킵 버튼 링보다 진해 보였다(2026-07-07 재지적) — 색은 스킵
-   버튼과 완전히 동일한 값(공용 규칙의 0.3)으로 되돌리고, 굵기 증가폭도
-   +1.5px(2→3.5px)로 훨씬 절제된 폭으로 줄였다. */
+/* 진행률 표시 — border 대신 conic-gradient 부채꼴을 그린 뒤, mask로
+   가운데를 도넛 모양으로 뚫어 고정 3px 두께의 링만 남긴다. 진행률(0~1)
+   만큼 밝은 색(0.95)이 시계방향으로 채워지고 나머지는 어두운 색(0.28,
+   스킵 버튼의 정적 링과 비슷한 톤)으로 남아 뚜렷하게 대비된다. */
 .music-toggle::before {
-  border-width: calc(2px + 1.5px * var(--progress));
-  transition: border-width 0.25s linear;
-}
-
-/* 2026-07-07 테스트용 진단 오버레이. 예전에 비슷한 debug 표시줄을 grid
-   문서 흐름 안에 넣었다가, 내용 길이에 따라 이 요소의 높이가 계속
-   바뀌면서 플립시계가 미세하게 흔들리는 원인이 됐다. 이번엔
-   position:fixed로 완전히 그리드 밖으로 빼서 어떤 텍스트가 들어와도
-   .sky-room의 레이아웃 계산에는 전혀 관여하지 않는다. */
-.music-debug-line {
-  position: fixed;
-  left: 8px;
-  right: 8px;
-  bottom: max(8px, env(safe-area-inset-bottom));
-  z-index: 30;
-  margin: 0;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: rgba(0,0,0,0.62);
-  color: #fff;
-  font-size: 14px;
-  line-height: 1.4;
-  white-space: pre-line;
-  pointer-events: none;
+  border: none;
+  background: conic-gradient(
+    rgba(255,255,255,0.95) calc(var(--progress, 0) * 360deg),
+    rgba(255,255,255,0.28) 0deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
 }
 
 .music-note-button { background-image: url("assets/icons/music/note.png"); background-size: 92%; }
@@ -1017,6 +1004,8 @@ button { font: inherit; }
   background: #101722;
   color: #101722;
   overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .webview-scale {
