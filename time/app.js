@@ -177,6 +177,7 @@ const categoryOptions = document.getElementById("categoryOptions");
 const webviewScale = document.getElementById("ezlongWebviewScale");
 const musicSettingsOpen = document.getElementById("musicSettingsOpen");
 const musicToggle = document.getElementById("musicToggle");
+const musicSkip = document.getElementById("musicSkip");
 const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
 const bgAudio = document.getElementById("bgAudio");
 const digitElements = [
@@ -487,11 +488,22 @@ function matchingArchivePhotos(sceneId) {
   const weatherPriorityPhotos = uniquePhotos([...groupedPhotos, ...weatherOnlyPhotos]);
   if (weatherPriorityPhotos.length >= 4) return weatherPriorityPhotos;
 
+  // 계절까지 맞는 날씨 사진이 4장이 안 될 때, 다음 우선순위는 "계절/시간대는 달라도
+  // 날씨(비/눈/맑음 등)만은 맞는 사진"이다. 유저가 반복적으로 지적한 건 항상
+  // "날씨가 안 맞는다"였지 "계절이 안 맞는다"가 아니었다 — 그래서 날씨 정확도를
+  // 계절 정확도보다 우선한다. 이 단계는 아직 실제 아카이브 사진(태그 있음)이라
+  // 완전 무관 사진(로컬 제네릭 폴백)보다는 훨씬 낫다.
+  const weatherAnySeasonPhotos = backgroundArchive
+    .filter((image) => image.weatherTags?.includes(groupedTag) && moodSafe(image) && imageUrl(image))
+    .map((image) => image);
+  const weatherOverSeasonPhotos = uniquePhotos([...weatherPriorityPhotos, ...weatherAnySeasonPhotos]);
+  if (weatherOverSeasonPhotos.length >= 4) return weatherOverSeasonPhotos;
+
   const fallbackArchivePhotos = backgroundArchive
     .filter((image) => seasonMatches(image) && image.timeBuckets?.some((bucket) => timeBuckets.includes(bucket)) && moodSafe(image) && imageUrl(image))
     .map((image) => image);
 
-  return uniquePhotos([...weatherPriorityPhotos, ...fallbackArchivePhotos]);
+  return uniquePhotos([...weatherOverSeasonPhotos, ...fallbackArchivePhotos]);
 }
 
 function shuffledPhotos(items) {
@@ -856,6 +868,48 @@ function closeSettings() {
 let musicIndex = 0;
 let musicPlaying = false;
 
+const musicHistoryStorageKey = "ezlong:musicHistory";
+
+function loadMusicHistory() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(musicHistoryStorageKey) || "[]");
+    return Array.isArray(raw) ? raw.filter((value) => Number.isInteger(value)) : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveMusicHistory(history) {
+  try {
+    localStorage.setItem(musicHistoryStorageKey, JSON.stringify(history));
+  } catch (error) {
+    // localStorage를 못 쓰는 환경이어도 재생 자체는 지장이 없어야 한다.
+  }
+}
+
+// 재생했든(끝까지) 스킵했든 "들었다"로 기록한다. 전체 곡을 한 바퀴 다 돌기
+// 전까지는 같은 곡이 다시 나오지 않도록 하기 위함(같은 곡이 자주 반복된다는 피드백 반영).
+// 곡 수만큼 채워지면(=한 바퀴 완주) 다음 곡부터 새 사이클로 리셋한다.
+function recordTrackHeard(index) {
+  if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  let history = loadMusicHistory().filter((value) => value !== index);
+  history.push(index);
+  if (history.length >= musicPlaylist.length) history = [index];
+  saveMusicHistory(history);
+}
+
+function pickNextTrackIndex() {
+  const total = Array.isArray(musicPlaylist) ? musicPlaylist.length : 0;
+  if (total === 0) return 0;
+  const heard = new Set(loadMusicHistory());
+  const unheard = [];
+  for (let i = 0; i < total; i += 1) {
+    if (!heard.has(i)) unheard.push(i);
+  }
+  const pool = unheard.length > 0 ? unheard : Array.from({ length: total }, (_, i) => i);
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
 function loadMusicTrack(index) {
   if (!bgAudio || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
   const track = musicPlaylist[index % musicPlaylist.length];
@@ -877,7 +931,11 @@ function renderMusicToggle() {
 
 function playMusic() {
   if (!bgAudio) return;
-  if (!bgAudio.src) loadMusicTrack(musicIndex);
+  if (!bgAudio.src) {
+    musicIndex = pickNextTrackIndex();
+    loadMusicTrack(musicIndex);
+    recordTrackHeard(musicIndex);
+  }
   bgAudio.play().catch(() => {
     musicPlaying = false;
     renderMusicToggle();
@@ -897,8 +955,9 @@ function toggleMusic() {
 
 function playNextTrack() {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
-  musicIndex = (musicIndex + 1) % musicPlaylist.length;
+  musicIndex = pickNextTrackIndex();
   loadMusicTrack(musicIndex);
+  recordTrackHeard(musicIndex);
   if (musicPlaying) bgAudio.play().catch(() => {});
 }
 
@@ -968,7 +1027,14 @@ document.querySelectorAll("[data-settings-close]").forEach((element) => {
 });
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", openSettings);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
+if (musicSkip) musicSkip.addEventListener("click", playNextTrack);
 if (bgAudio) bgAudio.addEventListener("ended", playNextTrack);
+// 파일이 손상됐거나(예: moov atom 없음) 네트워크 오류로 디코딩 실패하면 'ended'가
+// 아니라 'error'가 뜬다. 예전엔 이 경우 아무 처리가 없어 소리 없이 멈춘 채로
+// "재생중" 상태만 유지되는 버그가 있었다 — 다음 곡으로 자동 진행하도록 수정.
+if (bgAudio) bgAudio.addEventListener("error", () => {
+  if (musicPlaying) playNextTrack();
+});
 allCategories.addEventListener("change", () => {
   if (allCategories.checked) {
     document.querySelectorAll("[data-category-option]").forEach((input) => {
