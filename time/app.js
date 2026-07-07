@@ -458,12 +458,24 @@ function matchingArchivePhotos(sceneId) {
   const groupedTag = weatherTagGroup(currentTag);
   const currentSeason = getCurrentSeason();
   const seasonMatches = (image) => image.seasonTags?.includes(currentSeason);
+  // 2026-07-07 재발 방지: 예전엔 currentTag === "light-rain"일 때만 heavy-rain/
+  // 폭풍 이미지를 걸러냈다 — 그런데 "흐림(cloudy)"인데 번개 치는 사진이 나온
+  // 실제 사고가 있었다. 원인은 사진 데이터(background-manifest.json)에서
+  // 벼락/폭풍 사진 일부가 weatherTags에 "cloudy"를 부가 태그로 같이 갖고
+  // 있었던 것 — 태그 자체는 고쳤지만(2026-07-08), 앞으로 자동 수집
+  // 파이프라인이 비슷하게 잘못 태깅해도 화면에 안 나오도록 로직도 같이
+  // 강화한다. "극적인 폭풍/번개" 성격의 사진은 실제 날씨가 진짜
+  // heavy-rain(폭우/뇌우)급일 때만 허용하고, 그 외 모든 날씨(맑음/흐림/
+  // 옅은 비 등)에서는 무조건 제외한다.
+  const dramaticStormMoodTags = ["storm-front", "dramatic-sky", "lightning", "night-storm", "summer-thunderstorm"];
   const moodSafe = (image) => {
-    if (currentTag !== "light-rain") return true;
     const weatherTags = image.weatherTags || [];
     const moodTags = image.moodTags || [];
-    return !weatherTags.some((tag) => ["heavy-rain", "thunderstorm"].includes(tag))
-      && !moodTags.some((tag) => ["storm-front", "dramatic-sky"].includes(tag));
+    const isDramaticStorm = weatherTags.includes("heavy-rain")
+      || weatherTags.includes("thunderstorm")
+      || moodTags.some((tag) => dramaticStormMoodTags.includes(tag));
+    if (!isDramaticStorm) return true;
+    return currentTag === "heavy-rain";
   };
   const uniquePhotos = (items) => {
     const seen = new Set();
