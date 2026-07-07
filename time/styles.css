@@ -356,11 +356,11 @@ button { font: inherit; }
   grid-template-columns: minmax(62px, 1fr) auto minmax(74px, 1fr);
   align-items: center;
   gap: 7px;
-  /* 2026-07-07: 좌우가 끝단에 바짝 붙어 균형감이 없다는 지적 — .sky-room
-     자체 padding(clamp(8px,2.4vw,26px))에 더해 이 줄에만 같은 양을
-     한 번 더 얹어서 상단바만 여백이 약 2배가 되게 한다(문장박스는
-     .sky-room padding만 적용되므로 그대로 유지됨). */
-  padding-inline: clamp(8px, 2.4vw, 26px);
+  /* 2026-07-07: 좌우가 끝단에 바짝 붙어 균형감이 없다는 지적 — 1차로
+     .sky-room 자체 padding만큼(clamp(8px,2.4vw,26px)) 추가했더니 "차이를
+     모르겠다"는 재지적. 추가폭을 그 2배(sky-room 대비 총 3배 수준)로
+     다시 키웠다(문장박스는 .sky-room padding만 적용되므로 그대로 유지됨). */
+  padding-inline: clamp(16px, 4.8vw, 52px);
 }
 
 .icon-button,
@@ -614,10 +614,10 @@ button { font: inherit; }
   text-shadow: 0 2px 24px rgba(0,0,0,0.24);
   transform: translateY(clamp(-54px, -5.4vh, -28px));
   box-sizing: border-box;
-  /* top-bar와 동일한 이유 — 플립시계·날씨/음악 줄만 여백을 한 번 더
-     얹는다. 대신 flip-card 쪽 너비를 그만큼 줄여서(아래 참조) 전체 폭이
-     넘치지 않게 맞춘다. */
-  padding-inline: clamp(8px, 2.4vw, 26px);
+  /* top-bar와 동일한 이유 — "차이를 모르겠다"는 재지적으로 추가폭을 2배로
+     다시 키움. 대신 flip-card 쪽 너비를 그만큼 더 줄여서(아래 참조) 전체
+     폭이 넘치지 않게 맞춘다. */
+  padding-inline: clamp(16px, 4.8vw, 52px);
 }
 
 .flip-clock {
@@ -638,11 +638,11 @@ button { font: inherit; }
   position: relative;
   display: grid;
   place-items: center;
-  /* 2026-07-07: .clock-stage에 좌우 padding을 새로 얹은 만큼(위 참조)
-     카드 폭을 살짝 줄여서 4장 합계가 넘치지 않게 맞췄다(23.1vw→22vw,
-     최소/최대값도 같은 비율로 축소). 세로 비율은 유지. */
-  width: clamp(78px, 22vw, 158px);
-  height: clamp(118px, 33.3vw, 239px);
+  /* 2026-07-07: .clock-stage 좌우 padding을 재차 키운 만큼(위 참조) 카드
+     폭을 한 번 더 줄였다(23.1vw→20.5vw, 최소/최대값도 같은 비율로 축소).
+     세로 비율은 유지. */
+  width: clamp(72px, 20.5vw, 146px);
+  height: clamp(110px, 31vw, 222px);
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.22);
   border-radius: clamp(14px, 3vw, 26px);

@@ -967,6 +967,19 @@ let stallWatchSince = Date.now();
 // 앞당겨 4초로 늘려서 크로스페이드가 트리거될 여유를 더 준다.
 const musicFadeOutSeconds = 4;
 
+// 2026-07-07 추가: "정말 한 번도 볼륨이 줄어드는 느낌이 없었다"는 재지적을
+// 계속 받아서 재조사한 결과, 볼륨 자체(GainNode)는 문제가 아니라 크로스페이드
+// 트리거 조건(remaining <= musicFadeOutSeconds)이 애초에 걸리지 않았을
+// 가능성이 가장 유력하다는 결론에 도달했다 — player.duration이 네트워크
+// 스트리밍 도중 안정적으로 잡히지 않으면(hasDuration=false) 이 함수가 매번
+// 조기 return되어 크로스페이드 자체가 시작도 못 한다. 이번엔 다음 곡을 훨씬
+// 여유 있게(끝나기 18초 전) 통째로 미리 받아두는 방식으로 바꿔서, 그 시점의
+// duration은 완전히 로컬에 있는 blob 기준이라 네트워크와 무관하게 확실히
+// 잡힌다. musicFadeOutSeconds(4초)는 여전히 "언제부터 볼륨을 실제로 줄이기
+// 시작할지"의 타이밍으로 그대로 쓰고, 이 값은 "언제부터 다음 곡을 미리
+// 받기 시작할지"를 가리키는 별도의, 더 이른 시점이다.
+const musicPrebufferLeadSeconds = 18;
+
 // 두 개의 <audio>를 번갈아 쓴다 — 하나(activePlayer)가 페이드아웃되는 동안
 // 다른 하나(standbyPlayer)가 이미 다음 곡을 재생 중이어야 겹치는 소리가
 // 난다. 곡이 끝나면 역할만 서로 바꾼다(swap), 새로 로드하지 않는다.
@@ -1030,32 +1043,53 @@ function resetActiveWatchState() {
   stallWatchSince = Date.now();
 }
 
-function loadMusicTrack(player, index) {
+// 2026-07-07 재작성: 진행형 스트리밍(player.src = url)은 네트워크 상황에 따라
+// (1) 재생 20초 지점에서 몇 초씩 멈추는 버퍼링 정지, (2) duration/loadedmetadata가
+// 안정적으로 안 잡혀 크로스페이드 트리거 자체가 못 걸리는 문제, 두 가지의
+// 공통 원인으로 보인다. 파일 전체를 fetch로 통째로 받아 Blob URL로 재생하면
+// 재생 시작 이후로는 완전히 로컬 데이터라 두 문제 모두 원천적으로 사라진다.
+// prebuffer:false는 옛 방식(즉시 스트리밍) 폴백 — 지금은 모든 호출부가
+// prebuffer:true를 쓴다.
+async function loadMusicTrack(player, index, { prebuffer = true } = {}) {
   if (!player || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
   setPlayerVolume(player, 1);
   const track = musicPlaylist[index % musicPlaylist.length];
   const base = typeof musicSourceBaseUrl === "string" ? musicSourceBaseUrl.trim() : "";
-  // player.duration을 매 timeupdate마다 그대로 신뢰하면, 간혹 재생 도중
-  // duration이 일시적으로 NaN/Infinity를 보고하는 환경(특히 iOS 앱의
-  // WKWebView)에서 크로스페이드 트리거(remaining <= musicFadeOutSeconds)
-  // 자체가 못 걸려 "페이드 없이 뚝 끊기고 다음곡으로" 증상으로 이어질 수
-  // 있다. loadedmetadata 시점에 확보한 값을 dataset에 캐싱해두고
-  // updateMusicProgress에서 폴백으로 쓴다.
+  const fileName = track.file.replace(/^assets\/music\//, "");
+  const url = base ? `${base.replace(/\/$/, "")}/${fileName}` : track.file;
+
   delete player.dataset.cachedDuration;
   player.addEventListener("loadedmetadata", function onCacheDuration() {
     if (Number.isFinite(player.duration) && player.duration > 0) {
       player.dataset.cachedDuration = String(player.duration);
     }
   }, { once: true });
-  if (!base) {
-    player.src = track.file;
+
+  if (!prebuffer) {
+    player.src = url;
     return;
   }
-  const fileName = track.file.replace(/^assets\/music\//, "");
-  player.src = `${base.replace(/\/$/, "")}/${fileName}`;
+
+  player.dataset.pendingUrl = url;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`music fetch failed: ${response.status}`);
+    const blob = await response.blob();
+    // fetch가 진행되는 동안 같은 player에 더 최신 로드 요청이 들어왔다면
+    // (예: 스킵을 연타) 이 결과는 버리고 최신 요청 결과만 반영되게 한다.
+    if (player.dataset.pendingUrl !== url) return;
+    const objectUrl = URL.createObjectURL(blob);
+    if (player.dataset.blobUrl) URL.revokeObjectURL(player.dataset.blobUrl);
+    player.dataset.blobUrl = objectUrl;
+    player.src = objectUrl;
+  } catch (error) {
+    // fetch 실패(오프라인 등) 시 예전처럼 직접 스트리밍 URL로 폴백 —
+    // 최소한 재생 자체는 되게 한다.
+    if (player.dataset.pendingUrl === url) player.src = url;
+  }
 }
 
-function updateMusicProgress(event) {
+async function updateMusicProgress(event) {
   const player = event ? event.target : activePlayer();
   if (player !== activePlayer()) return; // standby(미리 준비 중인 다음곡)의 timeupdate는 무시
   if (!musicToggle || !player) return;
@@ -1079,13 +1113,25 @@ function updateMusicProgress(event) {
   const remaining = duration - player.currentTime;
   const standby = standbyPlayer();
 
-  if (!crossfadeTriggered && standby && remaining <= musicFadeOutSeconds && remaining > 0.05) {
-    crossfadeTriggered = true;
+  // 1단계 — 여유 있게(끝나기 18초 전) 다음 곡 전체를 미리 통째로 받아둔다.
+  // 이렇게 받은 blob은 그 자체가 완전한 로컬 파일이라 duration/loadedmetadata가
+  // 네트워크 상태와 무관하게 즉시, 확실하게 잡힌다 — 아래 2단계 크로스페이드
+  // 트리거가 "duration을 못 믿어서 아예 안 걸리는" 문제 자체를 없앤다.
+  if (pendingNextIndex < 0 && standby && remaining <= musicPrebufferLeadSeconds) {
     pendingNextIndex = pickNextTrackIndex();
-    loadMusicTrack(standby, pendingNextIndex);
+    recordTrackHeard(pendingNextIndex);
+    standby._pendingLoad = loadMusicTrack(standby, pendingNextIndex, { prebuffer: true });
+  }
+
+  // 2단계 — 실제 크로스페이드 시작(끝나기 4초 전). 1단계에서 이미 준비
+  // 중이던(또는 이미 완료된) standby를 그대로 쓴다.
+  if (!crossfadeTriggered && standby && pendingNextIndex >= 0 && remaining <= musicFadeOutSeconds && remaining > 0.05) {
+    crossfadeTriggered = true;
+    if (standby._pendingLoad) {
+      try { await standby._pendingLoad; } catch (error) { /* 폴백은 loadMusicTrack 내부에서 처리됨 */ }
+    }
     setPlayerVolume(standby, 0);
     standby.play().catch(() => {});
-    recordTrackHeard(pendingNextIndex);
   }
 
   if (crossfadeTriggered && standby) {
@@ -1144,7 +1190,7 @@ function renderMusicToggle() {
 // 그리고 멈춘 상태에서 재생 버튼을 눌렀을 때 단순히 play()만 다시 부르면
 // 똑같이 막힌 상태라 반응이 없었을 것 — 실패하면 load()로 리셋 후 같은
 // 위치에서 재시도하도록 바꾼다.
-function playMusic() {
+async function playMusic() {
   // 유저의 실제 탭(toggleMusic 클릭)으로만 호출되는 지점이라, iOS가 요구하는
   // "사용자 제스처 안에서" AudioContext를 만들고 깨우는 조건을 만족한다.
   ensureAudioGraph();
@@ -1153,12 +1199,17 @@ function playMusic() {
   }
   const player = activePlayer();
   if (!player) return;
-  if (!player.src) {
+  if (!player.src && !player._pendingLoad) {
+    // 앱 실행 직후 prefetchFirstTrack()이 이미 이 트랙을 미리 받고 있는
+    // 중이라면(_pendingLoad) 여기서 새로 고르지 않고 그 결과를 그대로 쓴다.
     musicIndex = pickNextTrackIndex();
-    loadMusicTrack(player, musicIndex);
     recordTrackHeard(musicIndex);
-    resetActiveWatchState();
-    if (musicToggle) musicToggle.style.setProperty("--progress", "0");
+    player._pendingLoad = loadMusicTrack(player, musicIndex, { prebuffer: true });
+  }
+  resetActiveWatchState();
+  if (musicToggle) musicToggle.style.setProperty("--progress", "0");
+  if (player._pendingLoad) {
+    try { await player._pendingLoad; } catch (error) { /* 폴백은 loadMusicTrack 내부에서 처리됨 */ }
   }
   const resumeFrom = player.currentTime;
   player.play().catch(() => {
@@ -1185,7 +1236,7 @@ function toggleMusic() {
 
 // 스킵 버튼(수동)은 크로스페이드 없이 즉시 곡을 바꾼다 — 유저가 직접 누른
 // 즉각 반응이 우선이고, 곡이 끝나기 전 자동 전환과는 성격이 다르다.
-function playNextTrack() {
+async function playNextTrack() {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
   crossfadeTriggered = false;
   pendingNextIndex = -1;
@@ -1196,11 +1247,14 @@ function playNextTrack() {
   }
   const player = activePlayer();
   musicIndex = pickNextTrackIndex();
-  loadMusicTrack(player, musicIndex);
   recordTrackHeard(musicIndex);
   resetActiveWatchState();
   if (musicToggle) musicToggle.style.setProperty("--progress", "0");
-  if (musicPlaying) player.play().catch(() => {});
+  player._pendingLoad = loadMusicTrack(player, musicIndex, { prebuffer: true });
+  if (musicPlaying) {
+    try { await player._pendingLoad; } catch (error) { /* 폴백은 loadMusicTrack 내부에서 처리됨 */ }
+    player.play().catch(() => {});
+  }
 }
 
 // 자동 종료(곡이 끝) 처리 — 크로스페이드가 이미 걸려서 standby가 겹쳐
@@ -1369,6 +1423,6 @@ window.setInterval(musicStallWatchdog, 2000);
   const player = activePlayer();
   if (!player || player.src) return;
   musicIndex = pickNextTrackIndex();
-  loadMusicTrack(player, musicIndex);
   recordTrackHeard(musicIndex);
+  player._pendingLoad = loadMusicTrack(player, musicIndex, { prebuffer: true });
 })();
