@@ -1236,6 +1236,18 @@ function toggleMusic() {
 
 // 스킵 버튼(수동)은 크로스페이드 없이 즉시 곡을 바꾼다 — 유저가 직접 누른
 // 즉각 반응이 우선이고, 곡이 끝나기 전 자동 전환과는 성격이 다르다.
+//
+// 2026-07-08 버그 수정: "재생 중에는 스킵이 안 먹힌다(멈춤 상태에서는
+// 먹힌다)" — 예전 코드는 전체 파일을 fetch로 통째로 받는(prebuffer)
+// 작업이 끝나길 await한 뒤에야 player.play()를 불렀다. 그 await(네트워크
+// 요청, 파일 크기에 따라 수백ms~수초) 동안 iOS는 이 클릭을 "유저 제스처"로
+// 인정하는 유효 구간을 지나쳐버려서, 이후의 play() 호출이 아무 에러 없이
+// 조용히 무시됐다. 멈춤 상태에서 스킵을 누르면 재생 자체는 안 하고 다음
+// 트랙만 준비해두고 끝나서, 나중에 재생 버튼을 누르는 "새로운" 제스처가
+// play()를 불러 문제가 없었던 것 — 그래서 딱 "재생 중에만" 증상이 있었다.
+// 고친 방법: loadMusicTrack을 prebuffer:false로 불러 await 없이(같은 함수
+// 안에서 네트워크를 기다리지 않고) 곧바로 player.src를 스트리밍 URL로
+// 세팅하고, 그 즉시(제스처가 아직 살아있는 채로) player.play()를 부른다.
 async function playNextTrack() {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
   crossfadeTriggered = false;
@@ -1244,15 +1256,24 @@ async function playNextTrack() {
   if (standby) {
     standby.pause();
     standby.removeAttribute("src");
+    // 백그라운드로 이 standby를 향해 이미 날아가고 있던 prebuffer fetch가
+    // 있었다면, 그 결과가 나중에 도착했을 때 방금 지운 src를 도로 채워
+    // 넣지 못하도록 대상 URL 표식을 함께 지운다.
+    delete standby.dataset.pendingUrl;
   }
   const player = activePlayer();
   musicIndex = pickNextTrackIndex();
   recordTrackHeard(musicIndex);
   resetActiveWatchState();
   if (musicToggle) musicToggle.style.setProperty("--progress", "0");
-  player._pendingLoad = loadMusicTrack(player, musicIndex, { prebuffer: true });
+  if (player.dataset.blobUrl) {
+    URL.revokeObjectURL(player.dataset.blobUrl);
+    delete player.dataset.blobUrl;
+  }
+  delete player.dataset.pendingUrl;
+  player._pendingLoad = null;
+  loadMusicTrack(player, musicIndex, { prebuffer: false });
   if (musicPlaying) {
-    try { await player._pendingLoad; } catch (error) { /* 폴백은 loadMusicTrack 내부에서 처리됨 */ }
     player.play().catch(() => {});
   }
 }
