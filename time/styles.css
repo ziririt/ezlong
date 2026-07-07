@@ -762,8 +762,12 @@ button { font: inherit; }
   --progress: 0;
 }
 
-/* 정적 트랙 링 — 재생 진행률과 무관하게 항상 흐리게 보이는 배경 원. */
-.music-toggle::before {
+/* 정적 트랙 링 — 재생 진행률과 무관하게 항상 흐리게 보이는 배경 원.
+   스킵 버튼에도 같은 두께/위치로 넣어서 두 버튼 크기가 시각적으로
+   어긋나지 않게 맞춘다(원래 유저가 준 원본 이미지는 재생/일시정지 링이
+   스킵 링보다 살짝 작게 그려져 있었다 — 지금은 둘 다 CSS로 통일). */
+.music-toggle::before,
+.music-skip::before {
   content: "";
   position: absolute;
   inset: 4%;
