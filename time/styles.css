@@ -810,9 +810,17 @@ button { font: inherit; }
   width: min(100%, 820px);
   margin: 0 auto;
   padding: clamp(22px, 5vw, 34px);
+  /* 문장이 바뀔 때마다(1분마다) 길이에 따라 폰트 크기가 달라지고, 영어 원문
+     유무에 따라 줄 수도 달라져서 이 박스의 실제 높이가 매번 조금씩
+     바뀌었다. 이 박스는 플립시계와 같은 grid(.sky-room)의 flexible한 행
+     바로 아래에 있어서, 이 박스 높이가 바뀌면 플립시계가 위아래로 미세하게
+     밀리는 원인이 됐다(2026-07-07 재지적: "숫자판 바뀔 때마다 여전히
+     흔들린다"). 최대치 기준으로 min-height를 고정해서 내용 길이와 무관하게
+     박스 자체 높이가 항상 같도록 만든다. */
+  min-height: clamp(210px, 46vw, 300px);
   border: 1px solid rgba(255,255,255,0.16);
   border-radius: clamp(24px, 6vw, 38px);
-  background: rgba(13, 20, 31, 0.16);
+  background: rgba(13, 20, 31, 0.10);
   backdrop-filter: blur(12px) saturate(1.04);
   box-shadow: 0 22px 70px rgba(0,0,0,0.16);
   transition: background 900ms ease, transform 1400ms ease, opacity 1400ms ease, filter 1400ms ease;

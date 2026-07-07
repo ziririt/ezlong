@@ -942,13 +942,32 @@ let stallRetryCount = 0;
 let stallWatchCurrentTime = -1;
 let stallWatchSince = Date.now();
 
+// 곡 끝나기 이만큼(초) 전부터 서서히 볼륨을 줄인다. 2026-07-07 유저가 "3초
+// 정도 남은 느낌에서 강제로 끊긴다"고 재차 지적해서, ffmpeg로 실제 파일을
+// 직접 완전 디코드해 확인했다 — declared duration(ffprobe)과 실제 디코드된
+// 마지막 타임스탬프가 4개 트랙 전부 0.03초 이내로 정확히 일치했다. 즉 파일
+// 자체가 그 지점에서 끝나는 게 맞고, 재생 코드가 일찍 끊는 버그는 아니다.
+// 다만 Suno로 만든 루프용 트랙이라 페이드 없이 뚝 끝나게 편집돼 있어서
+// 사람 귀에는 "중간에 끊긴" 것처럼 들린다 — 그래서 재생 쪽에서 마지막
+// 구간을 부드럽게 줄여주는 게 임시방편이 아니라 이 상황에 맞는 정공법이다.
+const musicFadeOutSeconds = 2.5;
+
 function updateMusicProgress() {
   if (!musicToggle || !bgAudio) return;
   const duration = bgAudio.duration;
-  const progress = Number.isFinite(duration) && duration > 0
+  const hasDuration = Number.isFinite(duration) && duration > 0;
+  const progress = hasDuration
     ? Math.min(1, Math.max(0, bgAudio.currentTime / duration))
     : 0;
   musicToggle.style.setProperty("--progress", String(progress));
+
+  if (!hasDuration) return;
+  const remaining = duration - bgAudio.currentTime;
+  if (remaining <= musicFadeOutSeconds) {
+    bgAudio.volume = Math.max(0.05, Math.min(1, remaining / musicFadeOutSeconds));
+  } else if (bgAudio.volume !== 1) {
+    bgAudio.volume = 1;
+  }
 }
 
 // error/ended 어느 쪽도 안 뜨고 재생위치가 그대로 멈춰있는 "조용한 정지"를
@@ -989,6 +1008,7 @@ function loadMusicTrack(index) {
   stallRetryCount = 0;
   stallWatchCurrentTime = -1;
   stallWatchSince = Date.now();
+  bgAudio.volume = 1;
   if (musicToggle) musicToggle.style.setProperty("--progress", "0");
   const track = musicPlaylist[index % musicPlaylist.length];
   const base = typeof musicSourceBaseUrl === "string" ? musicSourceBaseUrl.trim() : "";
