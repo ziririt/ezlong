@@ -356,13 +356,15 @@ button { font: inherit; }
   grid-template-columns: minmax(62px, 1fr) auto minmax(74px, 1fr);
   align-items: center;
   gap: 7px;
-  /* 2026-07-07 3차 수정: 1차(clamp(8,2.4vw,26))도 2차(clamp(16,4.8vw,52))도
-     "차이를 모르겠다"는 재지적을 받았다 — 매번 폭을 계산상으로만 조금씩
-     늘렸을 뿐, 실제 화면에서 체감되는 수준까지 과감하게 늘리지 못했다.
-     이번엔 원래 기본값(1차 이전 베이스라인, clamp(8,2.4vw,26)) 대비 총
-     여백이 약 3배가 되도록 큰 폭으로 재조정한다(문장박스는 .sky-room
-     padding 7px만 적용되므로 그대로 유지됨). */
-  padding-inline: clamp(32px, 11vw, 64px);
+  /* 2026-07-07 4차 수정: 1~3차 모두 "얼마나 늘렸는지"에만 집중하다 3차에서
+     플립시계 쪽을 과하게 줄여버렸다(유저 재지적: "플립시계가 너무 작아졌다").
+     이번엔 여백 자체는 1~2차보다 살짝만 더 키우는 수준으로 절제하고
+     (원래 기본값 대비 약 2배 선), 대신 .flip-clock을 grid fr 기반으로
+     바꿔서(아래 .flip-clock/.flip-card 참조) 플립시계 폭이 이 padding
+     안쪽 끝까지 정확히 — top-bar와 완전히 같은 여백선까지 — 자동으로
+     꽉 채워지도록 만들었다. 문장박스는 .sky-room padding 7px만 적용되므로
+     그대로 유지됨. */
+  padding-inline: clamp(18px, 5vw, 36px);
 }
 
 .icon-button,
@@ -616,14 +618,22 @@ button { font: inherit; }
   text-shadow: 0 2px 24px rgba(0,0,0,0.24);
   transform: translateY(clamp(-54px, -5.4vh, -28px));
   box-sizing: border-box;
-  /* top-bar와 동일한 이유 — 3차 재조정. flip-card/clock-colon 쪽 너비를
-     그만큼 더 줄여서(아래 참조) 전체 폭이 넘치지 않게 맞춘다. */
-  padding-inline: clamp(32px, 11vw, 64px);
+  /* 2026-07-07 4차 수정: 1~3차 모두 "padding을 얼마 늘렸으니 카드를 얼마
+     줄이면 딱 맞는다"를 vw 퍼센트로 손계산하는 방식이었다 — 콜론의 실제
+     렌더 폭(음수 margin과 폰트 실측 폭)을 정확히 알 수 없어서 매번 살짝
+     넘치거나(1~2차, 그래서 안 늘어나 보임) 과하게 줄이는(3차, 너무 작아짐)
+     오차가 났다. 손계산을 아예 그만두고 CSS Grid의 fr 단위로 넘긴다 —
+     4자리 카드 컬럼을 전부 1fr로 주면 브라우저가 "콜론이 쓰고 남은 공간"을
+     정확히 4등분해서 채운다. padding-inline이 얼마든 항상 정확히 그
+     안쪽 끝까지(=top-bar와 완전히 같은 여백선) 딱 채워지고 넘치는 일도
+     없다 — 유저 요구("플립시계 여백 = 페이지 여백")를 손계산 없이
+     수학적으로 보장한다. */
+  padding-inline: clamp(18px, 5vw, 36px);
 }
 
 .flip-clock {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   gap: clamp(2px, 0.8vw, 8px);
   width: 100%;
@@ -631,23 +641,28 @@ button { font: inherit; }
 }
 
 .flip-unit {
-  display: flex;
-  gap: clamp(2px, 0.8vw, 8px);
+  /* 이 래퍼 자체는 박스를 만들지 않고 사라진다 — 안의 flip-card 2개가
+     .flip-clock의 grid 컬럼에 직접 참여해서 콜론을 사이에 둔 4컬럼
+     레이아웃이 그대로 성립한다. */
+  display: contents;
 }
 
 .flip-card {
   position: relative;
   display: grid;
   place-items: center;
-  /* 2026-07-07 3차 재계산: padding-inline을 clamp(32,11vw,64)로 크게
-     키우면서, 원래 최초 베이스라인 카드 크기(clamp(82px,23.1vw,166px))
-     기준으로 새 가용폭 비율(≈0.812배, python으로 375~430px 전 구간
-     검증)만큼 정확히 비례 축소했다 — 최초 베이스라인은 원래 padding에서
-     넘치지 않고 딱 맞았던 값이므로, 같은 비율로 줄이면 새 padding에서도
-     동일한 여유폭으로 안전하게 들어온다(1~2차처럼 감으로 줄이다 재차
-     넘치는 실수 방지). */
-  width: clamp(67px, 18.7vw, 135px);
-  height: clamp(101px, 28.3vw, 198px);
+  /* grid 트랙(1fr)이 실제 너비를 정하므로 고정 width는 없앤다.
+     min-width:0 필수 — 없으면 grid가 내용(숫자 폰트) 크기 밑으로
+     트랙을 못 줄여서 여전히 넘칠 수 있다. 세로 비율은 원래 카드
+     (82~166px 폭 : 124~244px 높이 ≈ 1:1.49)를 aspect-ratio로 유지. */
+  min-width: 0;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  /* 폰트 크기는 카드 자신의 실제 렌더 폭(cqi = 이 카드의 inline-size 1%)에
+     비례시킨다 — 원본 비율(font-size vw ÷ card-width vw ≈ 1.15~1.2)을
+     그대로 옮겨온 값. 카드 폭이 grid에 의해 얼마로 정해지든 항상 같은
+     비율로 맞아떨어진다. */
+  container-type: inline-size;
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.22);
   border-radius: clamp(14px, 3vw, 26px);
@@ -659,7 +674,7 @@ button { font: inherit; }
     inset 0 -1px 0 rgba(0,0,0,0.32),
     0 24px 66px rgba(0,0,0,0.22);
   color: #fff;
-  font-size: clamp(98px, 27.6vw, 190px);
+  font-size: clamp(98px, 118cqi, 190px);
   font-weight: 760;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -728,10 +743,10 @@ button { font: inherit; }
 .clock-colon {
   margin: 0 -8px;
   color: rgba(255,255,255,0.88);
-  /* flip-card와 같은 이유로 같이 축소 — 최초 베이스라인(clamp(80px,21vw,148px))
-     대비 동일 비율(≈0.812배)로 줄임. 안 그러면 콜론 혼자 남아 여전히
-     여백을 잡아먹는다. */
-  font-size: clamp(65px, 17vw, 120px);
+  /* 2026-07-07 4차: 이제 .flip-clock이 grid라 콜론 폭이 얼마든 카드 4개가
+     남은 공간을 정확히 나눠 채운다 — 콜론을 억지로 축소할 필요가 없어져
+     원래 베이스라인 크기(clamp(80px,21vw,148px))로 되돌린다. */
+  font-size: clamp(80px, 21vw, 148px);
   font-weight: 700;
   line-height: 1;
   transform: translateY(-0.06em);
