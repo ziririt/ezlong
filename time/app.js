@@ -180,7 +180,6 @@ const musicToggle = document.getElementById("musicToggle");
 const musicSkip = document.getElementById("musicSkip");
 const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
 const bgAudio = document.getElementById("bgAudio");
-const musicDebugLine = document.getElementById("musicDebugLine");
 const digitElements = [
   document.getElementById("hourTens"),
   document.getElementById("hourOnes"),
@@ -952,37 +951,6 @@ function updateMusicProgress() {
   musicToggle.style.setProperty("--progress", String(progress));
 }
 
-// 임시 진단용 — "곡이 중간에 뚝 끊긴다"는 재발 신고 원인을 실기기에서 바로
-// 확인하기 위한 디버그 표시. error.code / networkState / readyState / 재생위치를
-// 화면에 남겨서 유저가 다음에 끊길 때 스크린샷으로 보내줄 수 있게 한다.
-// 원인 확정 후 제거 예정 — musicDebugLine, 이 함수, 호출부 3곳(error/ended) 삭제하면 됨.
-function readableErrorCode(code) {
-  switch (code) {
-    case 1: return "ABORTED";
-    case 2: return "NETWORK";
-    case 3: return "DECODE";
-    case 4: return "SRC_NOT_SUPPORTED";
-    default: return "NONE";
-  }
-}
-
-function logMusicDebug(label) {
-  if (!musicDebugLine || !bgAudio || !Array.isArray(musicPlaylist)) return;
-  const track = musicPlaylist[musicIndex % musicPlaylist.length];
-  const fileName = track ? track.file.replace(/^assets\/music\//, "") : "?";
-  const code = bgAudio.error ? bgAudio.error.code : 0;
-  const duration = Number.isFinite(bgAudio.duration) ? bgAudio.duration.toFixed(1) : "?";
-  const time = new Date().toLocaleTimeString("ko-KR", { hour12: false });
-  const info = `DEBUG ${time} [${label}] ${fileName} · err=${readableErrorCode(code)}(${code}) · net=${bgAudio.networkState} · ready=${bgAudio.readyState} · t=${bgAudio.currentTime.toFixed(1)}/${duration}`;
-  musicDebugLine.textContent = info;
-  try {
-    const log = JSON.parse(localStorage.getItem("ezlong:musicDebugLog") || "[]");
-    log.push(info);
-    while (log.length > 20) log.shift();
-    localStorage.setItem("ezlong:musicDebugLog", JSON.stringify(log));
-  } catch (error) { /* localStorage 불가 환경 무시 */ }
-}
-
 // error/ended 어느 쪽도 안 뜨고 재생위치가 그대로 멈춰있는 "조용한 정지"를
 // 잡아내는 watchdog. 6초 동안 currentTime이 안 움직이면 멈춘 것으로 보고
 // 먼저 load()+같은 위치 재생을 두 번까지 시도하고, 그래도 안 되면 다음
@@ -1004,13 +972,11 @@ function musicStallWatchdog() {
   if (now - stallWatchSince < 6000) return;
   stallWatchSince = now;
   if (stallRetryCount >= 2) {
-    logMusicDebug(`stall-giveup→skip`);
     stallRetryCount = 0;
     playNextTrack();
     return;
   }
   stallRetryCount += 1;
-  logMusicDebug(`stall-detected(retry${stallRetryCount})`);
   const savedTime = current;
   bgAudio.load();
   bgAudio.currentTime = savedTime;
@@ -1057,7 +1023,6 @@ function playMusic() {
   }
   const resumeFrom = bgAudio.currentTime;
   bgAudio.play().catch(() => {
-    logMusicDebug("resume-failed→reload retry");
     const savedTime = resumeFrom;
     bgAudio.load();
     bgAudio.currentTime = savedTime;
@@ -1154,28 +1119,20 @@ document.querySelectorAll("[data-settings-close]").forEach((element) => {
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", openSettings);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", playNextTrack);
-if (bgAudio) bgAudio.addEventListener("ended", () => {
-  const duration = bgAudio.duration;
-  const gap = Number.isFinite(duration) ? duration - bgAudio.currentTime : 0;
-  logMusicDebug(gap > 2 ? "ended-early(정상종료 아닐 가능성)" : "ended-normal");
-  playNextTrack();
-});
+// 2026-07-07 진단 결과: "곡이 중간에 뚝 끊긴다"는 신고는 버그가 아니라
+// Suno로 만든 트랙 자체가 짧아서(58곡 평균 118초, 절반 이상이 2분 미만,
+// 가장 짧은 곡은 49초) 생긴 오해였다 — 디버그 로그로 실기기에서 3회
+// 재현 확인, 매번 currentTime이 duration과 정확히 일치하는 정상 종료였다.
+// 진단용 화면 표시(musicDebugLine)는 이제 필요 없어져서 제거했다 — 그
+// 텍스트가 나타났다 사라지며 레이아웃 높이가 바뀌어 플립시계가 미세하게
+// 흔들리는 부작용까지 있었다(2026-07-07 재지적, "숫자판 바뀔 때마다
+// 위아래로 몇 픽셀 흔들린다"). 아래 error 재시도 로직 자체는 유지한다.
+if (bgAudio) bgAudio.addEventListener("ended", playNextTrack);
 if (bgAudio) bgAudio.addEventListener("timeupdate", updateMusicProgress);
-// 파일이 진짜 손상된 경우(디코드 불가/형식 미지원, moov atom 없음 등)와
-// 일시적인 네트워크 끊김을 구분한다. 예전 버전은 error가 뜨면 원인 불문하고
-// 무조건 즉시 다음 곡으로 넘겼는데, 그러면 정상 파일도 재생 중 순간적인
-// 네트워크 끊김만 있으면 중간에 끊기고 다음 곡으로 넘어가버리는 문제가 생긴다
-// (2026-07-07 유저 리포트: "멀쩡한 곡들도 다 중간에 끊긴다"). 네트워크성
-// 오류는 같은 곡을 한 번 더 시도하고, 그래도 안 되거나 디코드/형식 문제면
-// 그때 다음 곡으로 넘어간다.
 if (bgAudio) bgAudio.addEventListener("error", () => {
   if (!musicPlaying) return;
   const code = bgAudio.error ? bgAudio.error.code : 0;
   const isFatal = code === 3 || code === 4; // MEDIA_ERR_DECODE / MEDIA_ERR_SRC_NOT_SUPPORTED
-  // 이 error 리스너 자체는 진작부터 있었는데, 화면 디버그 줄에 남기는 걸
-  // 빼먹었었다 — 그래서 실제로 error 이벤트가 떠서 다음 곡으로 넘어간
-  // 경우에도 "에러메시지가 안 뜬다"고 보였을 수 있다(2026-07-07 재지적).
-  logMusicDebug(isFatal ? "error-fatal→skip" : `error-network(retry${musicErrorRetryCount})`);
   if (isFatal || musicErrorRetryCount >= 1) {
     playNextTrack();
     return;
