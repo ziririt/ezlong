@@ -633,7 +633,15 @@ button { font: inherit; }
 
 .flip-clock {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto minmax(0, 1fr) minmax(0, 1fr);
+  /* 4차 수정에서 발견된 버그: cqi 단위는 "자기 자신"의 container-type을
+     참조하지 못한다(스펙상 자신을 제외한 가장 가까운 조상 컨테이너를
+     찾는다) — .flip-card에 container-type과 font-size(cqi)를 같이 뒀더니
+     조상 중 어떤 컨테이너도 못 찾아 뷰포트 기준으로 튕겨서 숫자가 화면을
+     뚫고 나올 만큼 커졌다. 그래서 그리드 컬럼을 "카드 4개"가 아니라
+     "숫자단위(시/분) 2개 + 콜론"으로 되돌리고, container-type은 실제
+     박스를 유지하는 .flip-unit에 둔다 — .flip-card는 그 조상을 정상적으로
+     찾을 수 있다. */
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: clamp(2px, 0.8vw, 8px);
   width: 100%;
@@ -641,28 +649,24 @@ button { font: inherit; }
 }
 
 .flip-unit {
-  /* 이 래퍼 자체는 박스를 만들지 않고 사라진다 — 안의 flip-card 2개가
-     .flip-clock의 grid 컬럼에 직접 참여해서 콜론을 사이에 둔 4컬럼
-     레이아웃이 그대로 성립한다. */
-  display: contents;
+  display: flex;
+  gap: clamp(2px, 0.8vw, 8px);
+  min-width: 0;
+  /* flip-card가 cqi로 참조할 실제 컨테이너 — 카드 2개+간격 폭 기준. */
+  container-type: inline-size;
 }
 
 .flip-card {
   position: relative;
   display: grid;
   place-items: center;
-  /* grid 트랙(1fr)이 실제 너비를 정하므로 고정 width는 없앤다.
-     min-width:0 필수 — 없으면 grid가 내용(숫자 폰트) 크기 밑으로
-     트랙을 못 줄여서 여전히 넘칠 수 있다. 세로 비율은 원래 카드
-     (82~166px 폭 : 124~244px 높이 ≈ 1:1.49)를 aspect-ratio로 유지. */
+  /* grid/flex 트랙이 실제 너비를 정하므로 고정 width는 없앤다.
+     min-width:0 필수 — 없으면 내용(숫자 폰트) 크기 밑으로 트랙을 못
+     줄여서 여전히 넘칠 수 있다. 세로 비율은 원래 카드(82~166px 폭 :
+     124~244px 높이 ≈ 1:1.49)를 aspect-ratio로 유지. */
+  flex: 1 1 0;
   min-width: 0;
-  width: 100%;
   aspect-ratio: 2 / 3;
-  /* 폰트 크기는 카드 자신의 실제 렌더 폭(cqi = 이 카드의 inline-size 1%)에
-     비례시킨다 — 원본 비율(font-size vw ÷ card-width vw ≈ 1.15~1.2)을
-     그대로 옮겨온 값. 카드 폭이 grid에 의해 얼마로 정해지든 항상 같은
-     비율로 맞아떨어진다. */
-  container-type: inline-size;
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.22);
   border-radius: clamp(14px, 3vw, 26px);
@@ -674,7 +678,10 @@ button { font: inherit; }
     inset 0 -1px 0 rgba(0,0,0,0.32),
     0 24px 66px rgba(0,0,0,0.22);
   color: #fff;
-  font-size: clamp(98px, 118cqi, 190px);
+  /* .flip-unit(카드 2개+간격)을 기준 컨테이너로 삼으므로, 카드 1개 폭은
+     대략 유닛 폭의 절반 — 원본 비율(font/card ≈1.15~1.2)을 유닛 기준으로
+     환산하면 대략 58cqi (100*1.17/(2+간격비율)). */
+  font-size: clamp(98px, 58cqi, 190px);
   font-weight: 760;
   line-height: 1;
   font-variant-numeric: tabular-nums;
