@@ -568,6 +568,10 @@ button { font: inherit; }
   flex: 0 0 auto;
   width: 1.25em;
   height: 1.25em;
+  /* 터치 대상은 아니지만(순수 표시용), 저시력 사용자 식별성을 위해
+     작은 화면에서도 최소 크기를 보장한다. */
+  min-width: 30px;
+  min-height: 30px;
   vertical-align: middle;
   background-repeat: no-repeat;
   background-position: center;
@@ -738,6 +742,11 @@ button { font: inherit; }
 .music-controls .icon-button {
   width: 2em;
   height: 2em;
+  /* 이 3개는 실제 탭하는 버튼이다. iOS HIG 최소 44x44pt, Android Material
+     최소 48x48dp 기준을 뷰포트 크기와 무관하게 항상 만족시켜야 한다.
+     em 기반 크기는 글자 크기가 작은 화면에서 이 기준 밑으로 내려갔었다. */
+  min-width: 48px;
+  min-height: 48px;
   display: grid;
   place-items: center;
   padding: 0;
