@@ -118,7 +118,11 @@ button { font: inherit; }
   animation: livingSky 76s ease-in-out infinite alternate;
   filter: saturate(1.04) contrast(1.03);
   opacity: 0;
-  transition: background 900ms ease, filter 900ms ease, opacity 900ms ease;
+  /* background(=position/size 포함)는 transition에서 뺐다. 사진마다 photoPosition/
+     photoSize 값이 다르면 이 값을 900ms 동안 서서히 보간하면서 확대/축소되는
+     것처럼 보였다(2026-07-07 유저 리포트: "어떤 사진만 리사이징된다") — 사진이
+     바뀔 때 위치/크기는 즉시 적용하고, opacity/filter만 부드럽게 전환한다. */
+  transition: filter 900ms ease, opacity 900ms ease;
 }
 
 .clock-app.is-photo-ready .sky-photo {
@@ -788,6 +792,20 @@ button { font: inherit; }
 .music-toggle { background-image: url("assets/icons/music/play.png"); }
 .music-toggle.is-playing { background-image: url("assets/icons/music/pause.png"); }
 .music-skip { background-image: url("assets/icons/music/skip.png"); }
+
+/* 임시 진단용 — 곡이 중간에 끊기는 원인을 실제 기기에서 확인하기 위한 디버그 줄.
+   원인 파악 후 제거 예정. 평소엔 비어 있어서 눈에 안 띈다. */
+.music-debug-line {
+  margin: 6px 0 0;
+  color: rgba(255, 214, 10, 0.92);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: left;
+  word-break: break-all;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.5);
+}
+.music-debug-line:empty { display: none; }
 
 .quote-panel {
   width: min(100%, 820px);

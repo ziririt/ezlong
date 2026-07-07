@@ -180,6 +180,7 @@ const musicToggle = document.getElementById("musicToggle");
 const musicSkip = document.getElementById("musicSkip");
 const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
 const bgAudio = document.getElementById("bgAudio");
+const musicDebugLine = document.getElementById("musicDebugLine");
 const digitElements = [
   document.getElementById("hourTens"),
   document.getElementById("hourOnes"),
@@ -525,6 +526,22 @@ function shuffledPhotos(items) {
   return shuffled;
 }
 
+const preloadedPhotoUrls = new Set();
+
+// 점(dot)으로 다른 배경사진으로 넘길 때 ~1초 로딩 지연이 있었다 — 그 사진을
+// 처음 화면에 쓸 때가 되어서야 브라우저가 다운로드를 시작했기 때문이다.
+// 4장 세트가 정해지는 시점(ensurePhotoSet)에 바로 전부 미리 받아두면,
+// 실제로 그 사진으로 전환될 땐 이미 브라우저 캐시에 있어 지연이 없다.
+function preloadPhotoSet(photos) {
+  photos.forEach((photo) => {
+    const url = imageUrl(photo);
+    if (!url || preloadedPhotoUrls.has(url)) return;
+    preloadedPhotoUrls.add(url);
+    const preloadImage = new Image();
+    preloadImage.src = url;
+  });
+}
+
 function ensurePhotoSet(sceneId) {
   const nextKey = photoSetKey(sceneId);
   if (activePhotoSetKey === nextKey && activePhotoSet.length > 0) return;
@@ -542,6 +559,7 @@ function ensurePhotoSet(sceneId) {
   activePhotoIndex = activePhotoSet.length > 0 ? Math.floor(Date.now() / (15 * 60 * 1000)) % activePhotoSet.length : 0;
   activePhotoSlot = "";
   manualPhotoUntil = 0;
+  preloadPhotoSet(activePhotoSet);
 }
 
 function syncPhotoDots() {
@@ -931,6 +949,37 @@ function updateMusicProgress() {
   musicToggle.style.setProperty("--progress", String(progress));
 }
 
+// 임시 진단용 — "곡이 중간에 뚝 끊긴다"는 재발 신고 원인을 실기기에서 바로
+// 확인하기 위한 디버그 표시. error.code / networkState / readyState / 재생위치를
+// 화면에 남겨서 유저가 다음에 끊길 때 스크린샷으로 보내줄 수 있게 한다.
+// 원인 확정 후 제거 예정 — musicDebugLine, 이 함수, 호출부 3곳(error/ended) 삭제하면 됨.
+function readableErrorCode(code) {
+  switch (code) {
+    case 1: return "ABORTED";
+    case 2: return "NETWORK";
+    case 3: return "DECODE";
+    case 4: return "SRC_NOT_SUPPORTED";
+    default: return "NONE";
+  }
+}
+
+function logMusicDebug(label) {
+  if (!musicDebugLine || !bgAudio || !Array.isArray(musicPlaylist)) return;
+  const track = musicPlaylist[musicIndex % musicPlaylist.length];
+  const fileName = track ? track.file.replace(/^assets\/music\//, "") : "?";
+  const code = bgAudio.error ? bgAudio.error.code : 0;
+  const duration = Number.isFinite(bgAudio.duration) ? bgAudio.duration.toFixed(1) : "?";
+  const time = new Date().toLocaleTimeString("ko-KR", { hour12: false });
+  const info = `DEBUG ${time} [${label}] ${fileName} · err=${readableErrorCode(code)}(${code}) · net=${bgAudio.networkState} · ready=${bgAudio.readyState} · t=${bgAudio.currentTime.toFixed(1)}/${duration}`;
+  musicDebugLine.textContent = info;
+  try {
+    const log = JSON.parse(localStorage.getItem("ezlong:musicDebugLog") || "[]");
+    log.push(info);
+    while (log.length > 20) log.shift();
+    localStorage.setItem("ezlong:musicDebugLog", JSON.stringify(log));
+  } catch (error) { /* localStorage 불가 환경 무시 */ }
+}
+
 function loadMusicTrack(index) {
   if (!bgAudio || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
   musicErrorRetryCount = 0;
@@ -1051,7 +1100,12 @@ document.querySelectorAll("[data-settings-close]").forEach((element) => {
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", openSettings);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", playNextTrack);
-if (bgAudio) bgAudio.addEventListener("ended", playNextTrack);
+if (bgAudio) bgAudio.addEventListener("ended", () => {
+  const duration = bgAudio.duration;
+  const gap = Number.isFinite(duration) ? duration - bgAudio.currentTime : 0;
+  logMusicDebug(gap > 2 ? "ended-early(정상종료 아닐 가능성)" : "ended-normal");
+  playNextTrack();
+});
 if (bgAudio) bgAudio.addEventListener("timeupdate", updateMusicProgress);
 // 파일이 진짜 손상된 경우(디코드 불가/형식 미지원, moov atom 없음 등)와
 // 일시적인 네트워크 끊김을 구분한다. 예전 버전은 error가 뜨면 원인 불문하고
