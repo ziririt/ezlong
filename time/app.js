@@ -1172,6 +1172,10 @@ if (bgAudio) bgAudio.addEventListener("error", () => {
   if (!musicPlaying) return;
   const code = bgAudio.error ? bgAudio.error.code : 0;
   const isFatal = code === 3 || code === 4; // MEDIA_ERR_DECODE / MEDIA_ERR_SRC_NOT_SUPPORTED
+  // 이 error 리스너 자체는 진작부터 있었는데, 화면 디버그 줄에 남기는 걸
+  // 빼먹었었다 — 그래서 실제로 error 이벤트가 떠서 다음 곡으로 넘어간
+  // 경우에도 "에러메시지가 안 뜬다"고 보였을 수 있다(2026-07-07 재지적).
+  logMusicDebug(isFatal ? "error-fatal→skip" : `error-network(retry${musicErrorRetryCount})`);
   if (isFatal || musicErrorRetryCount >= 1) {
     playNextTrack();
     return;
