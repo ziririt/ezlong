@@ -474,11 +474,24 @@ function matchingArchivePhotos(sceneId) {
   const groupedPhotos = uniquePhotos([...exactPhotos, ...groupedArchivePhotos]);
   if (groupedPhotos.length >= 4) return groupedPhotos;
 
+  // 같은 시간대에 날씨가 맞는 사진이 부족할 때, 다음 우선순위는 "시간대 무관하지만
+  // 날씨는 맞는 사진"이다. 시간대가 살짝 어긋난 비 사진 쪽이, 시간대는 맞지만
+  // 맑은 하늘이 나오는 사진보다 사용자에게 덜 어색하다(오늘 사용자 피드백 반영).
+  const weatherOnlyPhotos = backgroundArchive
+    .filter((image) => {
+      const seasonMatch = seasonMatches(image);
+      const weatherMatch = image.weatherTags?.includes(groupedTag);
+      return seasonMatch && weatherMatch && moodSafe(image) && imageUrl(image);
+    })
+    .map((image) => image);
+  const weatherPriorityPhotos = uniquePhotos([...groupedPhotos, ...weatherOnlyPhotos]);
+  if (weatherPriorityPhotos.length >= 4) return weatherPriorityPhotos;
+
   const fallbackArchivePhotos = backgroundArchive
     .filter((image) => seasonMatches(image) && image.timeBuckets?.some((bucket) => timeBuckets.includes(bucket)) && moodSafe(image) && imageUrl(image))
     .map((image) => image);
 
-  return uniquePhotos([...groupedPhotos, ...fallbackArchivePhotos]);
+  return uniquePhotos([...weatherPriorityPhotos, ...fallbackArchivePhotos]);
 }
 
 function shuffledPhotos(items) {
@@ -860,8 +873,6 @@ function renderMusicToggle() {
   musicToggle.classList.toggle("is-playing", musicPlaying);
   musicToggle.setAttribute("aria-pressed", String(musicPlaying));
   musicToggle.setAttribute("aria-label", musicPlaying ? "음악 일시정지" : "음악 재생");
-  const icon = musicToggle.querySelector(".toggle-icon");
-  if (icon) icon.className = `toggle-icon ${musicPlaying ? "pause-icon" : "play-icon"}`;
 }
 
 function playMusic() {
