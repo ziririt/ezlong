@@ -356,11 +356,13 @@ button { font: inherit; }
   grid-template-columns: minmax(62px, 1fr) auto minmax(74px, 1fr);
   align-items: center;
   gap: 7px;
-  /* 2026-07-07: 좌우가 끝단에 바짝 붙어 균형감이 없다는 지적 — 1차로
-     .sky-room 자체 padding만큼(clamp(8px,2.4vw,26px)) 추가했더니 "차이를
-     모르겠다"는 재지적. 추가폭을 그 2배(sky-room 대비 총 3배 수준)로
-     다시 키웠다(문장박스는 .sky-room padding만 적용되므로 그대로 유지됨). */
-  padding-inline: clamp(16px, 4.8vw, 52px);
+  /* 2026-07-07 3차 수정: 1차(clamp(8,2.4vw,26))도 2차(clamp(16,4.8vw,52))도
+     "차이를 모르겠다"는 재지적을 받았다 — 매번 폭을 계산상으로만 조금씩
+     늘렸을 뿐, 실제 화면에서 체감되는 수준까지 과감하게 늘리지 못했다.
+     이번엔 원래 기본값(1차 이전 베이스라인, clamp(8,2.4vw,26)) 대비 총
+     여백이 약 3배가 되도록 큰 폭으로 재조정한다(문장박스는 .sky-room
+     padding 7px만 적용되므로 그대로 유지됨). */
+  padding-inline: clamp(32px, 11vw, 64px);
 }
 
 .icon-button,
@@ -614,10 +616,9 @@ button { font: inherit; }
   text-shadow: 0 2px 24px rgba(0,0,0,0.24);
   transform: translateY(clamp(-54px, -5.4vh, -28px));
   box-sizing: border-box;
-  /* top-bar와 동일한 이유 — "차이를 모르겠다"는 재지적으로 추가폭을 2배로
-     다시 키움. 대신 flip-card 쪽 너비를 그만큼 더 줄여서(아래 참조) 전체
-     폭이 넘치지 않게 맞춘다. */
-  padding-inline: clamp(16px, 4.8vw, 52px);
+  /* top-bar와 동일한 이유 — 3차 재조정. flip-card/clock-colon 쪽 너비를
+     그만큼 더 줄여서(아래 참조) 전체 폭이 넘치지 않게 맞춘다. */
+  padding-inline: clamp(32px, 11vw, 64px);
 }
 
 .flip-clock {
@@ -638,16 +639,15 @@ button { font: inherit; }
   position: relative;
   display: grid;
   place-items: center;
-  /* 2026-07-07 재계산: 이전 값(20.5vw)이 실제로는 새 padding-inline을
-     감안한 폭 계산이 부족해서, 카드 4개+콜론 합계가 여전히 .clock-stage의
-     새 padding 안쪽 가용폭을 넘어섰다 — 그래서 여백이 넓어져도 플립시계가
-     그 여백까지 넘쳐 흘러(overflow) 시각적으로 "여백이 그대로"인 것처럼
-     보였다(카드가 padding 경계를 넘어 .sky-room 바깥쪽 7px 경계에서만
-     잘렸기 때문). 가용폭 = 100vw - sky-room 7px×2 - clock-stage
-     padding(4.8vw×2) 기준으로 4장+콜론+간격 합이 실제로 들어오도록
-     23.1vw→17vw로 재축소(콜론도 21vw→15.5vw로 같이 축소). */
-  width: clamp(60px, 17vw, 122px);
-  height: clamp(91px, 25.8vw, 180px);
+  /* 2026-07-07 3차 재계산: padding-inline을 clamp(32,11vw,64)로 크게
+     키우면서, 원래 최초 베이스라인 카드 크기(clamp(82px,23.1vw,166px))
+     기준으로 새 가용폭 비율(≈0.812배, python으로 375~430px 전 구간
+     검증)만큼 정확히 비례 축소했다 — 최초 베이스라인은 원래 padding에서
+     넘치지 않고 딱 맞았던 값이므로, 같은 비율로 줄이면 새 padding에서도
+     동일한 여유폭으로 안전하게 들어온다(1~2차처럼 감으로 줄이다 재차
+     넘치는 실수 방지). */
+  width: clamp(67px, 18.7vw, 135px);
+  height: clamp(101px, 28.3vw, 198px);
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.22);
   border-radius: clamp(14px, 3vw, 26px);
@@ -728,9 +728,10 @@ button { font: inherit; }
 .clock-colon {
   margin: 0 -8px;
   color: rgba(255,255,255,0.88);
-  /* flip-card와 같은 이유로 같이 축소(21vw→15.5vw) — 안 그러면 콜론 혼자
-     남아 여전히 여백을 잡아먹는다. */
-  font-size: clamp(59px, 15.5vw, 109px);
+  /* flip-card와 같은 이유로 같이 축소 — 최초 베이스라인(clamp(80px,21vw,148px))
+     대비 동일 비율(≈0.812배)로 줄임. 안 그러면 콜론 혼자 남아 여전히
+     여백을 잡아먹는다. */
+  font-size: clamp(65px, 17vw, 120px);
   font-weight: 700;
   line-height: 1;
   transform: translateY(-0.06em);
