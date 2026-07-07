@@ -227,12 +227,19 @@ function resizeEzlongWebview() {
   webviewScale.style.setProperty("--webview-frame-height", `${Math.ceil(height / scale)}px`);
 }
 
+let lastAppliedScreenHeight = 0;
+
 function syncFirstScreenHeight() {
   if (!app) return;
   const viewportHeight = Math.ceil(Math.max(
     window.innerHeight || 0,
     window.visualViewport?.height || 0
   ));
+  // 뷰포트 높이가 1~2px 수준으로만 흔들리는 경우(서브픽셀 반올림, 스크롤바 유무 등)는
+  // 무시한다 — 실제 모바일 사파리 주소창 접힘처럼 의미 있는 변화일 때만 다시 세팅해서
+  // 불필요한 재조정(및 그로 인한 사진 영역 리사이즈 체감)을 줄인다.
+  if (Math.abs(viewportHeight - lastAppliedScreenHeight) <= 2 && lastAppliedScreenHeight > 0) return;
+  lastAppliedScreenHeight = viewportHeight;
   const touchDevice = window.matchMedia("(pointer: coarse)").matches;
   const standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
   const safariBottomGuard = touchDevice && !standalone

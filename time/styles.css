@@ -88,6 +88,11 @@ button { font: inherit; }
   grid-template-rows: auto minmax(0, 1fr) auto auto;
   gap: clamp(12px, 2.2vh, 24px);
   padding: max(28px, env(safe-area-inset-top)) clamp(8px, 2.4vw, 26px) calc(max(24px, env(safe-area-inset-bottom)) + var(--browser-bottom-lift));
+  /* 모바일 사파리는 페이지가 뜨고 0.3~0.5초 뒤 주소창이 접히면서 실제
+     뷰포트 높이가 재계산된다(syncFirstScreenHeight가 그때 --first-screen-height를
+     다시 세팅함). 사진이 아니라 이 컨테이너의 height 자체가 그 순간 한 번
+     튀는 것이었다 — transition을 걸어서 튐을 부드러운 조정으로 바꾼다. */
+  transition: height 260ms ease;
   background:
     radial-gradient(circle at 50% 12%, rgba(255,255,255,0.24), transparent 36%),
     linear-gradient(180deg, var(--sky-top), var(--sky-mid) 46%, var(--sky-low));
