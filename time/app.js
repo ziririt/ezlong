@@ -181,6 +181,7 @@ const musicSkip = document.getElementById("musicSkip");
 const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
 const bgAudio = document.getElementById("bgAudio");
 const bgAudioB = document.getElementById("bgAudioB");
+const musicDebugLine = document.getElementById("musicDebugLine");
 const digitElements = [
   document.getElementById("hourTens"),
   document.getElementById("hourOnes"),
@@ -938,6 +939,56 @@ function pickNextTrackIndex() {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+// 2026-07-07 테스트용 진단 로그. "덜 끝났는데 끊긴다"는 체감이 진짜인지
+// 확인하기 위해, 트랙별로 (1)선언된 재생시간 (2)실제 몇 초까지 재생됐는지
+// (3)몇 초 남기고 페이드아웃을 시작했는지를 화면에 문자로 남긴다.
+// 이전에 한 번 비슷한 걸 넣었다가 지웠는데, 그때는 이 표시 영역이 grid
+// 레이아웃 안에 있어서 높이가 들쭉날쭉해지며 플립시계가 흔들리는 원인이
+//됐다. 이번엔 index.html에서 position:fixed 오버레이로 따로 빼서
+// 그리드 흐름에 전혀 영향을 주지 않는다.
+const musicDebugEntries = [];
+const MUSIC_DEBUG_MAX = 5;
+
+function musicDebugRender() {
+  if (!musicDebugLine) return;
+  musicDebugLine.textContent = musicDebugEntries
+    .slice(-MUSIC_DEBUG_MAX)
+    .map((entry) => {
+      const durStr = Number.isFinite(entry.dur) ? entry.dur.toFixed(1) : "?";
+      const fadeStr = entry.fadeAt != null ? ` · fade@${entry.fadeAt.toFixed(1)}s` : "";
+      const endStr = entry.endAt != null
+        ? ` · end@${entry.endAt.toFixed(1)}s(Δ${(entry.endAt - entry.dur).toFixed(1)}${entry.tag ? `,${entry.tag}` : ""})`
+        : " · 재생중";
+      return `${entry.file} dur=${durStr}s${fadeStr}${endStr}`;
+    })
+    .join("\n");
+}
+
+function musicDebugStart(file, dur) {
+  musicDebugEntries.push({ file, dur, fadeAt: null, endAt: null, tag: "" });
+  if (musicDebugEntries.length > MUSIC_DEBUG_MAX * 2) {
+    musicDebugEntries.splice(0, musicDebugEntries.length - MUSIC_DEBUG_MAX);
+  }
+  musicDebugRender();
+}
+
+function musicDebugMarkFade(file, at) {
+  const entry = [...musicDebugEntries].reverse().find((item) => item.file === file && item.endAt == null);
+  if (entry && entry.fadeAt == null) {
+    entry.fadeAt = at;
+    musicDebugRender();
+  }
+}
+
+function musicDebugMarkEnd(file, at, tag) {
+  const entry = [...musicDebugEntries].reverse().find((item) => item.file === file && item.endAt == null);
+  if (entry) {
+    entry.endAt = at;
+    entry.tag = tag || "";
+    musicDebugRender();
+  }
+}
+
 let musicErrorRetryCount = 0;
 let stallRetryCount = 0;
 let stallWatchCurrentTime = -1;
@@ -980,6 +1031,13 @@ function loadMusicTrack(player, index) {
   player.volume = 1;
   const track = musicPlaylist[index % musicPlaylist.length];
   const base = typeof musicSourceBaseUrl === "string" ? musicSourceBaseUrl.trim() : "";
+  const debugLabel = track.file.split("/").pop();
+  player.dataset.debugFile = debugLabel;
+  player.addEventListener("loadedmetadata", function onDebugMeta() {
+    if (player.dataset.debugFile === debugLabel) {
+      musicDebugStart(debugLabel, player.duration);
+    }
+  }, { once: true });
   if (!base) {
     player.src = track.file;
     return;
@@ -1010,6 +1068,7 @@ function updateMusicProgress(event) {
     standby.volume = 0;
     standby.play().catch(() => {});
     recordTrackHeard(pendingNextIndex);
+    if (player.dataset.debugFile) musicDebugMarkFade(player.dataset.debugFile, player.currentTime);
   }
 
   if (crossfadeTriggered && standby) {
@@ -1044,7 +1103,7 @@ function musicStallWatchdog() {
   stallWatchSince = now;
   if (stallRetryCount >= 2) {
     stallRetryCount = 0;
-    playNextTrack();
+    playNextTrack("stall");
     return;
   }
   stallRetryCount += 1;
@@ -1103,7 +1162,7 @@ function toggleMusic() {
 
 // 스킵 버튼(수동)은 크로스페이드 없이 즉시 곡을 바꾼다 — 유저가 직접 누른
 // 즉각 반응이 우선이고, 곡이 끝나기 전 자동 전환과는 성격이 다르다.
-function playNextTrack() {
+function playNextTrack(reason = "skip") {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
   crossfadeTriggered = false;
   pendingNextIndex = -1;
@@ -1113,6 +1172,7 @@ function playNextTrack() {
     standby.removeAttribute("src");
   }
   const player = activePlayer();
+  if (player.dataset.debugFile) musicDebugMarkEnd(player.dataset.debugFile, player.currentTime, reason);
   musicIndex = pickNextTrackIndex();
   loadMusicTrack(player, musicIndex);
   recordTrackHeard(musicIndex);
@@ -1130,6 +1190,7 @@ function handleActivePlayerEnded(event) {
   if (player !== activePlayer()) return;
   const standby = standbyPlayer();
   if (crossfadeTriggered && standby && pendingNextIndex >= 0) {
+    if (player.dataset.debugFile) musicDebugMarkEnd(player.dataset.debugFile, player.currentTime, "swap");
     player.pause();
     player.currentTime = 0;
     activePlayerIndex = 1 - activePlayerIndex;
@@ -1140,7 +1201,7 @@ function handleActivePlayerEnded(event) {
     resetActiveWatchState();
     return;
   }
-  playNextTrack();
+  playNextTrack("no-fade");
 }
 
 function renderMusicPlaylistInfo() {
@@ -1209,7 +1270,7 @@ document.querySelectorAll("[data-settings-close]").forEach((element) => {
 });
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", openSettings);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
-if (musicSkip) musicSkip.addEventListener("click", playNextTrack);
+if (musicSkip) musicSkip.addEventListener("click", () => playNextTrack("skip"));
 // 2026-07-07: "곡이 중간에 뚝 끊긴다"는 신고는 ffmpeg 완전디코드로 확인한
 // 결과 버그가 아니었다(파일이 정말 그 지점에서 끝남) — 대신 크로스페이드로
 // 무음 구간 자체를 없앴다(위 musicFadeOutSeconds 설명 참조). 두 <audio>
@@ -1231,12 +1292,12 @@ musicPlayers.forEach((player) => {
     const code = player.error ? player.error.code : 0;
     const isFatal = code === 3 || code === 4; // MEDIA_ERR_DECODE / MEDIA_ERR_SRC_NOT_SUPPORTED
     if (isFatal || musicErrorRetryCount >= 1) {
-      playNextTrack();
+      playNextTrack("error");
       return;
     }
     musicErrorRetryCount += 1;
     player.load();
-    player.play().catch(() => playNextTrack());
+    player.play().catch(() => playNextTrack("error"));
   });
 });
 allCategories.addEventListener("change", () => {

@@ -804,6 +804,28 @@ button { font: inherit; }
   transition: border-width 0.25s linear;
 }
 
+/* 2026-07-07 테스트용 진단 오버레이. 예전에 비슷한 debug 표시줄을 grid
+   문서 흐름 안에 넣었다가, 내용 길이에 따라 이 요소의 높이가 계속
+   바뀌면서 플립시계가 미세하게 흔들리는 원인이 됐다. 이번엔
+   position:fixed로 완전히 그리드 밖으로 빼서 어떤 텍스트가 들어와도
+   .sky-room의 레이아웃 계산에는 전혀 관여하지 않는다. */
+.music-debug-line {
+  position: fixed;
+  left: 8px;
+  right: 8px;
+  bottom: max(8px, env(safe-area-inset-bottom));
+  z-index: 30;
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.62);
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-line;
+  pointer-events: none;
+}
+
 .music-note-button { background-image: url("assets/icons/music/note.png"); background-size: 92%; }
 .music-toggle { background-image: url("assets/icons/music/play.png"); }
 .music-toggle.is-playing { background-image: url("assets/icons/music/pause.png"); }
@@ -821,14 +843,16 @@ button { font: inherit; }
      흔들린다"). 최대치 기준으로 min-height를 고정해서 내용 길이와 무관하게
      박스 자체 높이가 항상 같도록 만든다. */
   min-height: clamp(210px, 46vw, 300px);
-  border: 1px solid rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: clamp(24px, 6vw, 38px);
-  /* 2026-07-07: "여전히 많이 불투명해서 사진을 너무 가린다" 재지적 —
-     배경 진하기(0.10→0.05)와 블러(12px→6px)를 함께 낮춰 사진이 비쳐
-     보이는 정도를 더 키움. */
-  background: rgba(13, 20, 31, 0.05);
-  backdrop-filter: blur(6px) saturate(1.04);
-  box-shadow: 0 22px 70px rgba(0,0,0,0.12);
+  /* 2026-07-07: "통크게 투명도를 높여달라"는 재지적 — 배경 진하기를
+     0.10→0.05→0.02로, 블러도 12px→6px→3px로 대폭 낮춰 뒤 사진이
+     거의 그대로 비치게 함. 대신 글자 자체의 text-shadow를 진하게 키워서
+     밝은 사진 위에서도 읽히도록 보완(아래 quote-kicker/english/blockquote/
+     quote-foot 공통 text-shadow 참조). */
+  background: rgba(13, 20, 31, 0.02);
+  backdrop-filter: blur(3px) saturate(1.04);
+  box-shadow: 0 22px 70px rgba(0,0,0,0.08);
   transition: background 900ms ease, transform 1400ms ease, opacity 1400ms ease, filter 1400ms ease;
 }
 
@@ -844,7 +868,9 @@ button { font: inherit; }
 .quote-foot,
 .scene-dots {
   margin: 0;
-  text-shadow: 0 1px 16px rgba(0,0,0,0.18);
+  /* 문장박스 배경을 거의 투명하게 낮춘 만큼(위 .quote-panel 참조),
+     밝은 사진 위에서도 글자가 읽히도록 그림자를 더 진하고 넓게 잡음. */
+  text-shadow: 0 1px 4px rgba(0,0,0,0.55), 0 2px 20px rgba(0,0,0,0.35);
 }
 
 .quote-kicker {
