@@ -619,4 +619,43 @@ python3 -c "import json; d=json.load(open('data/stocks-data.json')); print(d.get
 
 ---
 
+## 21. 심플 주가 "장마감~일봉갱신" 공백 구간 브릿지 (2026-07-08 구축)
+
+**배경:** `stocks.html`은 장 마감 중(정규장 종료~다음 갱신) 개별 종목·지수 가격/등락률을
+`stocks-data.json`(일 1회, 평일 07:00 KST 이후 갱신)에서 우선 가져오도록 설계돼 있다.
+그런데 정규장은 그보다 최대 2시간 앞선 05:00 KST에 이미 끝난다. 이 05:00~07:30 KST 사이엔
+일봉 파일이 "어제" 데이터를 그대로 들고 있어서, 개별 종목·지수 3개(S&P500·나스닥·다우)·
+스파클라인이 동시에 하루 전 값을 오늘 것처럼 보여주는 상태가 매 거래일 아침 반복 발생했다
+(2026-07-08 확인 — 07:16 KST 유저 확인 시 AAPL이 월요일 종가+등락률 그대로 표시, 지수 3개도
+전부 하루 전 값). 07:31~07:33 KST에 일봉 파일이 정상 갱신되며 자동 해소됐지만, 유저가
+매일 출근 전 이 공백 시간대에 확인하는 패턴이라 반복 재발했다.
+
+**구조 (제거·우회 절대 금지):**
+
+| 함수/변수 | 역할 | 위치 |
+|-----------|------|------|
+| `isDailyStale()` | `allData.generatedAtKST` 날짜 ≠ 오늘 KST 날짜 → true | stocks.html (isUSMarketOpen 근처) |
+| `bridgeOK` | `isDailyStale() && live.extSession === 'post'` (개별 종목/ETF는 `live.dayClose>0` 추가 체크) | rowHTML / renderIndexCards / renderSemiEtfCards 3곳 |
+| 가격 브릿지 | 개별 종목·ETF: `live.dayClose`(확정 정규장 종가) 그대로 사용. 지수 3개: `idxEntry.price × (1 + etfLive.changePct/100)` 근사치 | 동일 3곳 |
+| 등락률 브릿지 | `live.changePct`(day.c/prevDay.c 기준, 포스트마켓 잡음 없음) 우선 | `calcChangePct()` + renderIndexCards |
+
+**원리:**
+- `extSession === 'post'`는 Massive가 실제 포스트마켓 거래를 확인했을 때만 서게 되므로,
+  주말·공휴일 비거래일 스냅샷(day.c===prevDay.c 오염, 2026-07-04 사고 사례)에서는 자연히
+  `null`이 되어 브릿지가 발동하지 않는다 — 별도 방어 코드 불필요.
+- 브릿지는 `isDailyStale()`이 true인 동안만 켜지고, 일봉 파일이 오늘 걸로 갱신되는 즉시
+  자동으로 꺼진다. 코드 개입 불필요.
+- 지수 가격 브릿지(ETF 등락률 비율 근사)는 추정치다. 실측 대조(2026-07-08): SPX/DJI는
+  실제값과 0.03~0.06% 오차, NDX는 QQQ-NDX 추적오차로 최대 0.7% 오차 발생 가능 — 그래도
+  브릿지 없을 때(최대 하루 전 값, 방향 자체가 반대로 나올 수 있음)보다는 항상 낫다.
+
+**규칙:**
+- `isDailyStale()`/`bridgeOK` 로직을 건드릴 땐 rowHTML·renderIndexCards·renderSemiEtfCards
+  3곳 전부 동시에 확인한다 (8항 공유 함수 동기화 원칙과 동일 적용).
+- 지수 가격 근사식을 "더 정확하게" 바꾸고 싶어도, Massive가 SPX/NDX/DJI 실제 가격을
+  직접 주지 않는 한(v3 indices 엔드포인트 미지원 상태, 17항 참조) 완전 정확한 값은
+  얻을 수 없다는 걸 전제로 판단할 것.
+
+---
+
 전체 규칙·CSS 변수·배포 체크리스트·Git 워크플로우 → **EZLONG_GUIDE.md** 참조
