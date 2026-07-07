@@ -959,7 +959,9 @@ button { font: inherit; }
 
 .photo-credit {
   grid-column: 3;
-  justify-self: start;
+  /* 2026-07-07: 점4개 바로 옆이 아니라 페이지 맨 우측 끝으로 정렬 */
+  justify-self: end;
+  text-align: right;
   max-width: min(32vw, 180px);
   overflow: hidden;
   color: rgba(238,242,246,0.38);
