@@ -180,6 +180,7 @@ const musicToggle = document.getElementById("musicToggle");
 const musicSkip = document.getElementById("musicSkip");
 const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
 const bgAudio = document.getElementById("bgAudio");
+const bgAudioB = document.getElementById("bgAudioB");
 const digitElements = [
   document.getElementById("hourTens"),
   document.getElementById("hourOnes"),
@@ -942,31 +943,81 @@ let stallRetryCount = 0;
 let stallWatchCurrentTime = -1;
 let stallWatchSince = Date.now();
 
-// 곡 끝나기 이만큼(초) 전부터 서서히 볼륨을 줄인다. 2026-07-07 유저가 "3초
-// 정도 남은 느낌에서 강제로 끊긴다"고 재차 지적해서, ffmpeg로 실제 파일을
-// 직접 완전 디코드해 확인했다 — declared duration(ffprobe)과 실제 디코드된
-// 마지막 타임스탬프가 4개 트랙 전부 0.03초 이내로 정확히 일치했다. 즉 파일
-// 자체가 그 지점에서 끝나는 게 맞고, 재생 코드가 일찍 끊는 버그는 아니다.
-// 다만 Suno로 만든 루프용 트랙이라 페이드 없이 뚝 끝나게 편집돼 있어서
-// 사람 귀에는 "중간에 끊긴" 것처럼 들린다 — 그래서 재생 쪽에서 마지막
-// 구간을 부드럽게 줄여주는 게 임시방편이 아니라 이 상황에 맞는 정공법이다.
-const musicFadeOutSeconds = 2.5;
+// 곡 끝나기 이만큼(초) 전부터 다음 곡을 미리 재생 시작해서 겹치게(크로스페이드)
+// 넘긴다. 2026-07-07: 처음엔 페이드아웃만(무음 구간 있음) 2.5초로 넣었는데
+// 유저가 "그래도 끊긴다, 3.5초로 하고 바로 다음곡으로 연결해야 할 듯"이라고
+// 재지적 — 페이드만 하는 게 아니라 이 시점에 실제로 다음 곡을 미리 재생
+// 시작해서 무음 구간 자체가 없도록 구조를 바꿨다(ffmpeg 완전디코드로 파일
+// 자체가 그 지점에서 끝나는 것 자체는 이미 확인됨 — 버그가 아니라 편집).
+const musicFadeOutSeconds = 3.5;
 
-function updateMusicProgress() {
-  if (!musicToggle || !bgAudio) return;
-  const duration = bgAudio.duration;
+// 두 개의 <audio>를 번갈아 쓴다 — 하나(activePlayer)가 페이드아웃되는 동안
+// 다른 하나(standbyPlayer)가 이미 다음 곡을 재생 중이어야 겹치는 소리가
+// 난다. 곡이 끝나면 역할만 서로 바꾼다(swap), 새로 로드하지 않는다.
+const musicPlayers = [bgAudio, bgAudioB].filter(Boolean);
+let activePlayerIndex = 0;
+let crossfadeTriggered = false;
+let pendingNextIndex = -1;
+
+function activePlayer() {
+  return musicPlayers[activePlayerIndex] || bgAudio;
+}
+
+function standbyPlayer() {
+  if (musicPlayers.length < 2) return null;
+  return musicPlayers[1 - activePlayerIndex];
+}
+
+function resetActiveWatchState() {
+  musicErrorRetryCount = 0;
+  stallRetryCount = 0;
+  stallWatchCurrentTime = -1;
+  stallWatchSince = Date.now();
+}
+
+function loadMusicTrack(player, index) {
+  if (!player || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  player.volume = 1;
+  const track = musicPlaylist[index % musicPlaylist.length];
+  const base = typeof musicSourceBaseUrl === "string" ? musicSourceBaseUrl.trim() : "";
+  if (!base) {
+    player.src = track.file;
+    return;
+  }
+  const fileName = track.file.replace(/^assets\/music\//, "");
+  player.src = `${base.replace(/\/$/, "")}/${fileName}`;
+}
+
+function updateMusicProgress(event) {
+  const player = event ? event.target : activePlayer();
+  if (player !== activePlayer()) return; // standby(미리 준비 중인 다음곡)의 timeupdate는 무시
+  if (!musicToggle || !player) return;
+  const duration = player.duration;
   const hasDuration = Number.isFinite(duration) && duration > 0;
   const progress = hasDuration
-    ? Math.min(1, Math.max(0, bgAudio.currentTime / duration))
+    ? Math.min(1, Math.max(0, player.currentTime / duration))
     : 0;
   musicToggle.style.setProperty("--progress", String(progress));
 
   if (!hasDuration) return;
-  const remaining = duration - bgAudio.currentTime;
-  if (remaining <= musicFadeOutSeconds) {
-    bgAudio.volume = Math.max(0.05, Math.min(1, remaining / musicFadeOutSeconds));
-  } else if (bgAudio.volume !== 1) {
-    bgAudio.volume = 1;
+  const remaining = duration - player.currentTime;
+  const standby = standbyPlayer();
+
+  if (!crossfadeTriggered && standby && remaining <= musicFadeOutSeconds && remaining > 0.05) {
+    crossfadeTriggered = true;
+    pendingNextIndex = pickNextTrackIndex();
+    loadMusicTrack(standby, pendingNextIndex);
+    standby.volume = 0;
+    standby.play().catch(() => {});
+    recordTrackHeard(pendingNextIndex);
+  }
+
+  if (crossfadeTriggered && standby) {
+    const t = Math.max(0, Math.min(1, remaining / musicFadeOutSeconds)); // 1 → 0으로 줄어듦
+    player.volume = t;
+    standby.volume = 1 - t;
+  } else if (player.volume !== 1) {
+    player.volume = 1;
   }
 }
 
@@ -975,13 +1026,14 @@ function updateMusicProgress() {
 // 먼저 load()+같은 위치 재생을 두 번까지 시도하고, 그래도 안 되면 다음
 // 곡으로 넘긴다(무한정 멈춰있는 것보단 낫다).
 function musicStallWatchdog() {
-  if (!bgAudio || !musicPlaying || bgAudio.paused) {
+  const player = activePlayer();
+  if (!player || !musicPlaying || player.paused) {
     stallRetryCount = 0;
     stallWatchCurrentTime = -1;
     return;
   }
   const now = Date.now();
-  const current = bgAudio.currentTime;
+  const current = player.currentTime;
   if (Math.abs(current - stallWatchCurrentTime) > 0.4) {
     stallWatchCurrentTime = current;
     stallWatchSince = now;
@@ -997,27 +1049,9 @@ function musicStallWatchdog() {
   }
   stallRetryCount += 1;
   const savedTime = current;
-  bgAudio.load();
-  bgAudio.currentTime = savedTime;
-  bgAudio.play().catch(() => {});
-}
-
-function loadMusicTrack(index) {
-  if (!bgAudio || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
-  musicErrorRetryCount = 0;
-  stallRetryCount = 0;
-  stallWatchCurrentTime = -1;
-  stallWatchSince = Date.now();
-  bgAudio.volume = 1;
-  if (musicToggle) musicToggle.style.setProperty("--progress", "0");
-  const track = musicPlaylist[index % musicPlaylist.length];
-  const base = typeof musicSourceBaseUrl === "string" ? musicSourceBaseUrl.trim() : "";
-  if (!base) {
-    bgAudio.src = track.file;
-    return;
-  }
-  const fileName = track.file.replace(/^assets\/music\//, "");
-  bgAudio.src = `${base.replace(/\/$/, "")}/${fileName}`;
+  player.load();
+  player.currentTime = savedTime;
+  player.play().catch(() => {});
 }
 
 function renderMusicToggle() {
@@ -1030,23 +1064,26 @@ function renderMusicToggle() {
 // 에러 이벤트도, ended 이벤트도 없이 재생이 조용히 멈추는 증상이 있었다
 // (2026-07-07 유저 리포트: "에러메시지도 안 뜨고 그냥 멈춘다. 재생 버튼
 // 눌러도 재생이 안 된다"). 이건 브라우저가 error를 던지지 않고 그냥
-// 버퍼링에서 멈춰버리는 경우라, 아래 watchdog으로 별도 감지한다.
+// 버퍼링에서 멈춰버리는 경우라, 위 watchdog으로 별도 감지한다.
 // 그리고 멈춘 상태에서 재생 버튼을 눌렀을 때 단순히 play()만 다시 부르면
 // 똑같이 막힌 상태라 반응이 없었을 것 — 실패하면 load()로 리셋 후 같은
 // 위치에서 재시도하도록 바꾼다.
 function playMusic() {
-  if (!bgAudio) return;
-  if (!bgAudio.src) {
+  const player = activePlayer();
+  if (!player) return;
+  if (!player.src) {
     musicIndex = pickNextTrackIndex();
-    loadMusicTrack(musicIndex);
+    loadMusicTrack(player, musicIndex);
     recordTrackHeard(musicIndex);
+    resetActiveWatchState();
+    if (musicToggle) musicToggle.style.setProperty("--progress", "0");
   }
-  const resumeFrom = bgAudio.currentTime;
-  bgAudio.play().catch(() => {
+  const resumeFrom = player.currentTime;
+  player.play().catch(() => {
     const savedTime = resumeFrom;
-    bgAudio.load();
-    bgAudio.currentTime = savedTime;
-    bgAudio.play().catch(() => {
+    player.load();
+    player.currentTime = savedTime;
+    player.play().catch(() => {
       musicPlaying = false;
       renderMusicToggle();
     });
@@ -1054,8 +1091,8 @@ function playMusic() {
 }
 
 function pauseMusic() {
-  if (!bgAudio) return;
-  bgAudio.pause();
+  activePlayer()?.pause();
+  standbyPlayer()?.pause();
 }
 
 function toggleMusic() {
@@ -1064,12 +1101,46 @@ function toggleMusic() {
   renderMusicToggle();
 }
 
+// 스킵 버튼(수동)은 크로스페이드 없이 즉시 곡을 바꾼다 — 유저가 직접 누른
+// 즉각 반응이 우선이고, 곡이 끝나기 전 자동 전환과는 성격이 다르다.
 function playNextTrack() {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  crossfadeTriggered = false;
+  pendingNextIndex = -1;
+  const standby = standbyPlayer();
+  if (standby) {
+    standby.pause();
+    standby.removeAttribute("src");
+  }
+  const player = activePlayer();
   musicIndex = pickNextTrackIndex();
-  loadMusicTrack(musicIndex);
+  loadMusicTrack(player, musicIndex);
   recordTrackHeard(musicIndex);
-  if (musicPlaying) bgAudio.play().catch(() => {});
+  resetActiveWatchState();
+  if (musicToggle) musicToggle.style.setProperty("--progress", "0");
+  if (musicPlaying) player.play().catch(() => {});
+}
+
+// 자동 종료(곡이 끝) 처리 — 크로스페이드가 이미 걸려서 standby가 겹쳐
+// 재생 중이었다면 역할만 바꾼다(새로 로드하지 않으니 무음 구간이 없다).
+// 크로스페이드가 못 걸린 예외적인 경우(길이 정보를 못 받았거나 페이드
+// 구간을 놓친 경우)에만 기존처럼 즉시 다음 곡을 새로 로드한다.
+function handleActivePlayerEnded(event) {
+  const player = event.target;
+  if (player !== activePlayer()) return;
+  const standby = standbyPlayer();
+  if (crossfadeTriggered && standby && pendingNextIndex >= 0) {
+    player.pause();
+    player.currentTime = 0;
+    activePlayerIndex = 1 - activePlayerIndex;
+    musicIndex = pendingNextIndex;
+    pendingNextIndex = -1;
+    crossfadeTriggered = false;
+    activePlayer().volume = 1;
+    resetActiveWatchState();
+    return;
+  }
+  playNextTrack();
 }
 
 function renderMusicPlaylistInfo() {
@@ -1139,27 +1210,34 @@ document.querySelectorAll("[data-settings-close]").forEach((element) => {
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", openSettings);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", playNextTrack);
-// 2026-07-07 진단 결과: "곡이 중간에 뚝 끊긴다"는 신고는 버그가 아니라
-// Suno로 만든 트랙 자체가 짧아서(58곡 평균 118초, 절반 이상이 2분 미만,
-// 가장 짧은 곡은 49초) 생긴 오해였다 — 디버그 로그로 실기기에서 3회
-// 재현 확인, 매번 currentTime이 duration과 정확히 일치하는 정상 종료였다.
-// 진단용 화면 표시(musicDebugLine)는 이제 필요 없어져서 제거했다 — 그
-// 텍스트가 나타났다 사라지며 레이아웃 높이가 바뀌어 플립시계가 미세하게
-// 흔들리는 부작용까지 있었다(2026-07-07 재지적, "숫자판 바뀔 때마다
-// 위아래로 몇 픽셀 흔들린다"). 아래 error 재시도 로직 자체는 유지한다.
-if (bgAudio) bgAudio.addEventListener("ended", playNextTrack);
-if (bgAudio) bgAudio.addEventListener("timeupdate", updateMusicProgress);
-if (bgAudio) bgAudio.addEventListener("error", () => {
-  if (!musicPlaying) return;
-  const code = bgAudio.error ? bgAudio.error.code : 0;
-  const isFatal = code === 3 || code === 4; // MEDIA_ERR_DECODE / MEDIA_ERR_SRC_NOT_SUPPORTED
-  if (isFatal || musicErrorRetryCount >= 1) {
-    playNextTrack();
-    return;
-  }
-  musicErrorRetryCount += 1;
-  bgAudio.load();
-  bgAudio.play().catch(() => playNextTrack());
+// 2026-07-07: "곡이 중간에 뚝 끊긴다"는 신고는 ffmpeg 완전디코드로 확인한
+// 결과 버그가 아니었다(파일이 정말 그 지점에서 끝남) — 대신 크로스페이드로
+// 무음 구간 자체를 없앴다(위 musicFadeOutSeconds 설명 참조). 두 <audio>
+// 모두에 리스너를 걸고, 각 핸들러 안에서 activePlayer인지 standby인지
+// 구분해서 처리한다.
+musicPlayers.forEach((player) => {
+  player.addEventListener("timeupdate", updateMusicProgress);
+  player.addEventListener("ended", handleActivePlayerEnded);
+  player.addEventListener("error", () => {
+    if (player !== activePlayer()) {
+      // 미리 준비 중이던 다음 곡(standby)이 로드/재생에 실패한 경우 —
+      // 크로스페이드를 취소하고, 곡이 끝나는 시점에 기존 방식(즉시 새로
+      // 고르기)으로 자연스럽게 되돌아가게 한다.
+      crossfadeTriggered = false;
+      pendingNextIndex = -1;
+      return;
+    }
+    if (!musicPlaying) return;
+    const code = player.error ? player.error.code : 0;
+    const isFatal = code === 3 || code === 4; // MEDIA_ERR_DECODE / MEDIA_ERR_SRC_NOT_SUPPORTED
+    if (isFatal || musicErrorRetryCount >= 1) {
+      playNextTrack();
+      return;
+    }
+    musicErrorRetryCount += 1;
+    player.load();
+    player.play().catch(() => playNextTrack());
+  });
 });
 allCategories.addEventListener("change", () => {
   if (allCategories.checked) {

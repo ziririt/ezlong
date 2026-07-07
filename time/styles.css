@@ -138,18 +138,20 @@ button { font: inherit; }
 }
 
 .sky-photo::before {
-  opacity: 0.34;
+  /* 2026-07-07: "뚫어지게 봐도 모를 정도로 약하다"는 지적으로 강도를 올림
+     (opacity 0.34→0.48, 그라디언트 진하기도 함께 올림). */
+  opacity: 0.48;
   background:
-    linear-gradient(103deg, transparent 0 20%, rgba(255,255,255,0.16) 42%, transparent 68%),
-    linear-gradient(18deg, transparent 0 32%, rgba(255,255,255,0.10) 50%, transparent 74%);
+    linear-gradient(103deg, transparent 0 18%, rgba(255,255,255,0.24) 42%, transparent 70%),
+    linear-gradient(18deg, transparent 0 30%, rgba(255,255,255,0.16) 50%, transparent 76%);
   mix-blend-mode: screen;
   animation: lightDrift 36s ease-in-out infinite alternate;
 }
 
 .sky-photo::after {
-  opacity: 0.23;
+  opacity: 0.34;
   background:
-    repeating-linear-gradient(178deg, transparent 0 50px, rgba(255,255,255,0.12) 82px, transparent 136px);
+    repeating-linear-gradient(178deg, transparent 0 50px, rgba(255,255,255,0.18) 82px, transparent 136px);
   filter: blur(18px);
   animation: mistDrift 48s linear infinite;
 }
@@ -167,21 +169,22 @@ button { font: inherit; }
 
 .clock-app[data-weather="clear"] .sky-photo::before,
 .clock-app[data-weather="partly-cloudy"] .sky-photo::before {
-  opacity: 0.38;
+  /* 2026-07-07: 착시 효과가 너무 약하다는 지적으로 강도를 올림 */
+  opacity: 0.54;
   background:
-    radial-gradient(circle at 18% 18%, rgba(255,248,214,0.34), transparent 28%),
-    linear-gradient(112deg, transparent 0 18%, rgba(255,246,204,0.18) 42%, transparent 66%),
-    linear-gradient(18deg, transparent 0 34%, rgba(255,255,255,0.10) 52%, transparent 76%);
+    radial-gradient(circle at 18% 18%, rgba(255,248,214,0.46), transparent 30%),
+    linear-gradient(112deg, transparent 0 16%, rgba(255,246,204,0.26) 42%, transparent 68%),
+    linear-gradient(18deg, transparent 0 32%, rgba(255,255,255,0.16) 52%, transparent 78%);
   mix-blend-mode: screen;
   animation: sunlightBreathe 42s ease-in-out infinite alternate;
 }
 
 .clock-app[data-weather="clear"] .sky-photo::after,
 .clock-app[data-weather="partly-cloudy"] .sky-photo::after {
-  opacity: 0.20;
+  opacity: 0.30;
   background:
-    radial-gradient(circle at 28% 28%, rgba(255,255,255,0.20), transparent 24%),
-    repeating-linear-gradient(178deg, transparent 0 54px, rgba(255,255,255,0.10) 84px, transparent 142px);
+    radial-gradient(circle at 28% 28%, rgba(255,255,255,0.28), transparent 26%),
+    repeating-linear-gradient(178deg, transparent 0 54px, rgba(255,255,255,0.16) 84px, transparent 142px);
   filter: blur(20px);
   animation: warmAirDrift 58s ease-in-out infinite alternate;
 }
@@ -818,11 +821,14 @@ button { font: inherit; }
      흔들린다"). 최대치 기준으로 min-height를 고정해서 내용 길이와 무관하게
      박스 자체 높이가 항상 같도록 만든다. */
   min-height: clamp(210px, 46vw, 300px);
-  border: 1px solid rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.14);
   border-radius: clamp(24px, 6vw, 38px);
-  background: rgba(13, 20, 31, 0.10);
-  backdrop-filter: blur(12px) saturate(1.04);
-  box-shadow: 0 22px 70px rgba(0,0,0,0.16);
+  /* 2026-07-07: "여전히 많이 불투명해서 사진을 너무 가린다" 재지적 —
+     배경 진하기(0.10→0.05)와 블러(12px→6px)를 함께 낮춰 사진이 비쳐
+     보이는 정도를 더 키움. */
+  background: rgba(13, 20, 31, 0.05);
+  backdrop-filter: blur(6px) saturate(1.04);
+  box-shadow: 0 22px 70px rgba(0,0,0,0.12);
   transition: background 900ms ease, transform 1400ms ease, opacity 1400ms ease, filter 1400ms ease;
 }
 
@@ -1063,23 +1069,23 @@ button { font: inherit; }
 }
 
 @keyframes lightDrift {
-  from { transform: translate3d(-5%, 0.4%, 0) rotate(0.001deg); }
-  to { transform: translate3d(5%, -2.6%, 0) rotate(0.001deg); }
+  from { transform: translate3d(-7%, 0.6%, 0) rotate(0.001deg); }
+  to { transform: translate3d(7%, -3.6%, 0) rotate(0.001deg); }
 }
 
 @keyframes mistDrift {
-  from { transform: translate3d(-4%, -1.2%, 0); }
-  to { transform: translate3d(4%, 1.2%, 0); }
+  from { transform: translate3d(-6%, -1.8%, 0); }
+  to { transform: translate3d(6%, 1.8%, 0); }
 }
 
 @keyframes sunlightBreathe {
-  from { transform: translate3d(-3%, 1%, 0) scale(1); opacity: 0.28; }
-  to { transform: translate3d(3%, -2%, 0) scale(1.03); opacity: 0.46; }
+  from { transform: translate3d(-4%, 1.4%, 0) scale(1); opacity: 0.34; }
+  to { transform: translate3d(4%, -2.8%, 0) scale(1.05); opacity: 0.58; }
 }
 
 @keyframes warmAirDrift {
-  from { transform: translate3d(-2%, 0.8%, 0); }
-  to { transform: translate3d(2.5%, -1.4%, 0); }
+  from { transform: translate3d(-3%, 1.1%, 0); }
+  to { transform: translate3d(3.5%, -1.9%, 0); }
 }
 
 @keyframes windowRainDrift {
