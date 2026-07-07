@@ -766,7 +766,9 @@ button { font: inherit; }
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 0 0 clamp(14px, 2.6vh, 24px);
+  /* 2026-07-07: 플립시계 폭이 줄어들면서 이 줄(날씨/음악)이 시계 위에
+     "떠 있는" 느낌이라는 재지적 — 시계와의 간격을 절반 정도로 줄임. */
+  margin: 0 0 clamp(7px, 1.3vh, 12px);
   color: rgba(255,255,255,0.84);
   font-size: clamp(13px, 3.5vw, 22px);
   font-weight: 620;
@@ -794,18 +796,22 @@ button { font: inherit; }
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
-  gap: 14px;
+  /* 2026-07-07: 플립시계 숫자판이 작아진 뒤로 재생/스킵 버튼이 상대적으로
+     커 보인다는 재지적 — 버튼 자체를 줄인 김에(아래 참조) 같은 음악
+     그룹이라는 느낌을 유지하면서 간격도 좁힘(14px→8px, 탭 간섭 없는
+     선에서). */
+  gap: 8px;
   flex: 0 0 auto;
 }
 
 .music-controls .icon-button {
-  width: 2em;
-  height: 2em;
-  /* 이 3개는 실제 탭하는 버튼이다. iOS HIG 최소 44x44pt, Android Material
-     최소 48x48dp 기준을 뷰포트 크기와 무관하게 항상 만족시켜야 한다.
-     em 기반 크기는 글자 크기가 작은 화면에서 이 기준 밑으로 내려갔었다. */
-  min-width: 48px;
-  min-height: 48px;
+  width: 1.7em;
+  height: 1.7em;
+  /* 2026-07-07: 48px는 iOS HIG 44pt 기준을 여유있게 넘기던 값 — 시각적
+     균형을 위해 44px(iOS HIG 최소 권장치)까지만 줄인다. 이 밑으로는
+     내리지 않는다(탭 정확도 저하 방지). */
+  min-width: 44px;
+  min-height: 44px;
   position: relative;
   display: grid;
   place-items: center;
@@ -815,6 +821,16 @@ button { font: inherit; }
   background-position: center;
   background-size: 82%;
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.28));
+}
+
+/* 2026-07-07: 음표(설정 열기) 버튼은 재생/스킵과 달리 날씨 아이콘과
+   나란히 있어 크기 차이가 도드라졌다 — 날씨 아이콘(.mini-weather)과
+   동일한 치수로 맞춘다. */
+.music-note-button {
+  width: 1.25em;
+  height: 1.25em;
+  min-width: 30px;
+  min-height: 30px;
 }
 
 /* 2026-07-07 5차 수정: border-width 두께 변화 방식(2~4차 시도)이 실기기에서
