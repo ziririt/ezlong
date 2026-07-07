@@ -315,6 +315,9 @@ function weatherTagGroup(tag) {
 }
 
 function weatherIconFor(tag, isDay) {
+  // partly-cloudy(구름 약간)는 해+구름 아이콘으로, cloudy/mist(흐림·안개)는
+  // 구름만 있는 아이콘으로 구분한다 — 유저 디자인 세트에 둘 다 있어서 세분화.
+  if (tag === "partly-cloudy") return "sun-cloud-icon";
   const group = weatherTagGroup(tag);
   if (group === "rain") return "rain-icon";
   if (group === "snow") return "snow-icon";

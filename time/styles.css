@@ -569,64 +569,18 @@ button { font: inherit; }
   width: 1.25em;
   height: 1.25em;
   vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 92%;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.28));
 }
 
-.mini-weather.sun-icon {
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, #fff 0 38%, transparent 40%),
-    conic-gradient(from 0deg, transparent 0 7%, #fff 7% 12%, transparent 12% 20%, #fff 20% 25%, transparent 25% 33%, #fff 33% 38%, transparent 38% 46%, #fff 46% 51%, transparent 51% 59%, #fff 59% 64%, transparent 64% 72%, #fff 72% 77%, transparent 77% 85%, #fff 85% 90%, transparent 90%);
-}
-
-.mini-weather.moon-icon {
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 65% 35%, #fff 0 38%, transparent 39%),
-    radial-gradient(circle at 45% 44%, transparent 0 37%, #fff 38% 48%, transparent 49%);
-}
-
-.mini-weather.cloud-icon {
-  background:
-    radial-gradient(circle at 37% 52%, #fff 0 40%, transparent 41%),
-    radial-gradient(circle at 63% 42%, #fff 0 36%, transparent 37%),
-    radial-gradient(ellipse at 50% 66%, #fff 0 30%, transparent 32%);
-  opacity: 0.94;
-}
-
-.mini-weather.rain-icon,
-.mini-weather.snow-icon {
-  background:
-    radial-gradient(circle at 37% 40%, #fff 0 38%, transparent 39%),
-    radial-gradient(circle at 63% 32%, #fff 0 34%, transparent 35%),
-    radial-gradient(ellipse at 50% 54%, #fff 0 28%, transparent 30%);
-  opacity: 0.94;
-}
-
-.mini-weather.rain-icon::after {
-  content: "";
-  position: absolute;
-  left: 16%;
-  right: 16%;
-  bottom: -22%;
-  height: 26%;
-  background:
-    linear-gradient(200deg, #fff, transparent 75%) 2% 0 / 20% 100% no-repeat,
-    linear-gradient(200deg, #fff, transparent 75%) 40% 0 / 20% 100% no-repeat,
-    linear-gradient(200deg, #fff, transparent 75%) 78% 0 / 20% 100% no-repeat;
-}
-
-.mini-weather.snow-icon::after {
-  content: "";
-  position: absolute;
-  left: 14%;
-  right: 14%;
-  bottom: -22%;
-  height: 22%;
-  background:
-    radial-gradient(circle, #fff 0 48%, transparent 50%) 4% 50% / 22% 100% no-repeat,
-    radial-gradient(circle, #fff 0 48%, transparent 50%) 42% 50% / 22% 100% no-repeat,
-    radial-gradient(circle, #fff 0 48%, transparent 50%) 80% 50% / 22% 100% no-repeat;
-}
+.mini-weather.sun-icon { background-image: url("assets/icons/weather/sun.png"); }
+.mini-weather.moon-icon { background-image: url("assets/icons/weather/moon.png"); }
+.mini-weather.sun-cloud-icon { background-image: url("assets/icons/weather/sun_cloud.png"); }
+.mini-weather.cloud-icon { background-image: url("assets/icons/weather/cloud.png"); }
+.mini-weather.rain-icon { background-image: url("assets/icons/weather/rain.png"); }
+.mini-weather.snow-icon { background-image: url("assets/icons/weather/snow.png"); }
 
 .clock-stage {
   align-self: center;
@@ -788,33 +742,16 @@ button { font: inherit; }
   place-items: center;
   padding: 0;
   color: rgba(255,255,255,0.92);
-}
-
-/* note-icon/toggle-icon는 svg라 .icon-button span(햄버거 3줄용) 규칙에
-   영향을 받지 않는다. 예전에는 <span>을 써서 그 규칙에 가로채여
-   25px x 2.5px짜리 얇은 막대로 찌그러지는 버그가 있었다.
-   svg 자체 크기를 좌측 날씨 아이콘(.mini-weather, 1.25em)과 시각적으로
-   맞추기 위해 1.6em로 키움 — viewBox 내부 여백 때문에 1.25em로는
-   실제 보이는 글자/도형이 더 작아 보였다. */
-.music-controls .icon-button svg {
-  width: 1.6em;
-  height: 1.6em;
-  display: block;
-  overflow: visible;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 82%;
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.28));
 }
 
-.toggle-icon .icon-pause {
-  display: none;
-}
-
-.music-toggle.is-playing .toggle-icon .icon-play {
-  display: none;
-}
-
-.music-toggle.is-playing .toggle-icon .icon-pause {
-  display: block;
-}
+.music-note-button { background-image: url("assets/icons/music/note.png"); background-size: 92%; }
+.music-toggle { background-image: url("assets/icons/music/play.png"); }
+.music-toggle.is-playing { background-image: url("assets/icons/music/pause.png"); }
+.music-skip { background-image: url("assets/icons/music/skip.png"); }
 
 .quote-panel {
   width: min(100%, 820px);
