@@ -747,6 +747,7 @@ button { font: inherit; }
      em 기반 크기는 글자 크기가 작은 화면에서 이 기준 밑으로 내려갔었다. */
   min-width: 48px;
   min-height: 48px;
+  position: relative;
   display: grid;
   place-items: center;
   padding: 0;
@@ -755,6 +756,31 @@ button { font: inherit; }
   background-position: center;
   background-size: 82%;
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.28));
+}
+
+.music-toggle {
+  --progress: 0;
+}
+
+/* 정적 트랙 링 — 재생 진행률과 무관하게 항상 흐리게 보이는 배경 원. */
+.music-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+/* 동적 진행률 아크 — 12시 방향에서 시계방향으로 --progress(0~1)만큼 채워진다.
+   conic-gradient로 원판을 그린 뒤 mask로 가운데를 뚫어 링 모양만 남긴다. */
+.music-toggle::after {
+  content: "";
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  background: conic-gradient(#fff calc(var(--progress) * 360deg), transparent 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2.5px));
 }
 
 .music-note-button { background-image: url("assets/icons/music/note.png"); background-size: 92%; }

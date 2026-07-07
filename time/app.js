@@ -920,8 +920,21 @@ function pickNextTrackIndex() {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+let musicErrorRetryCount = 0;
+
+function updateMusicProgress() {
+  if (!musicToggle || !bgAudio) return;
+  const duration = bgAudio.duration;
+  const progress = Number.isFinite(duration) && duration > 0
+    ? Math.min(1, Math.max(0, bgAudio.currentTime / duration))
+    : 0;
+  musicToggle.style.setProperty("--progress", String(progress));
+}
+
 function loadMusicTrack(index) {
   if (!bgAudio || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  musicErrorRetryCount = 0;
+  if (musicToggle) musicToggle.style.setProperty("--progress", "0");
   const track = musicPlaylist[index % musicPlaylist.length];
   const base = typeof musicSourceBaseUrl === "string" ? musicSourceBaseUrl.trim() : "";
   if (!base) {
@@ -1039,11 +1052,25 @@ if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", openSettings)
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", playNextTrack);
 if (bgAudio) bgAudio.addEventListener("ended", playNextTrack);
-// 파일이 손상됐거나(예: moov atom 없음) 네트워크 오류로 디코딩 실패하면 'ended'가
-// 아니라 'error'가 뜬다. 예전엔 이 경우 아무 처리가 없어 소리 없이 멈춘 채로
-// "재생중" 상태만 유지되는 버그가 있었다 — 다음 곡으로 자동 진행하도록 수정.
+if (bgAudio) bgAudio.addEventListener("timeupdate", updateMusicProgress);
+// 파일이 진짜 손상된 경우(디코드 불가/형식 미지원, moov atom 없음 등)와
+// 일시적인 네트워크 끊김을 구분한다. 예전 버전은 error가 뜨면 원인 불문하고
+// 무조건 즉시 다음 곡으로 넘겼는데, 그러면 정상 파일도 재생 중 순간적인
+// 네트워크 끊김만 있으면 중간에 끊기고 다음 곡으로 넘어가버리는 문제가 생긴다
+// (2026-07-07 유저 리포트: "멀쩡한 곡들도 다 중간에 끊긴다"). 네트워크성
+// 오류는 같은 곡을 한 번 더 시도하고, 그래도 안 되거나 디코드/형식 문제면
+// 그때 다음 곡으로 넘어간다.
 if (bgAudio) bgAudio.addEventListener("error", () => {
-  if (musicPlaying) playNextTrack();
+  if (!musicPlaying) return;
+  const code = bgAudio.error ? bgAudio.error.code : 0;
+  const isFatal = code === 3 || code === 4; // MEDIA_ERR_DECODE / MEDIA_ERR_SRC_NOT_SUPPORTED
+  if (isFatal || musicErrorRetryCount >= 1) {
+    playNextTrack();
+    return;
+  }
+  musicErrorRetryCount += 1;
+  bgAudio.load();
+  bgAudio.play().catch(() => playNextTrack());
 });
 allCategories.addEventListener("change", () => {
   if (allCategories.checked) {
