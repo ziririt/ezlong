@@ -939,6 +939,9 @@ function pickNextTrackIndex() {
 }
 
 let musicErrorRetryCount = 0;
+let stallRetryCount = 0;
+let stallWatchCurrentTime = -1;
+let stallWatchSince = Date.now();
 
 function updateMusicProgress() {
   if (!musicToggle || !bgAudio) return;
@@ -980,9 +983,46 @@ function logMusicDebug(label) {
   } catch (error) { /* localStorage 불가 환경 무시 */ }
 }
 
+// error/ended 어느 쪽도 안 뜨고 재생위치가 그대로 멈춰있는 "조용한 정지"를
+// 잡아내는 watchdog. 6초 동안 currentTime이 안 움직이면 멈춘 것으로 보고
+// 먼저 load()+같은 위치 재생을 두 번까지 시도하고, 그래도 안 되면 다음
+// 곡으로 넘긴다(무한정 멈춰있는 것보단 낫다).
+function musicStallWatchdog() {
+  if (!bgAudio || !musicPlaying || bgAudio.paused) {
+    stallRetryCount = 0;
+    stallWatchCurrentTime = -1;
+    return;
+  }
+  const now = Date.now();
+  const current = bgAudio.currentTime;
+  if (Math.abs(current - stallWatchCurrentTime) > 0.4) {
+    stallWatchCurrentTime = current;
+    stallWatchSince = now;
+    stallRetryCount = 0;
+    return;
+  }
+  if (now - stallWatchSince < 6000) return;
+  stallWatchSince = now;
+  if (stallRetryCount >= 2) {
+    logMusicDebug(`stall-giveup→skip`);
+    stallRetryCount = 0;
+    playNextTrack();
+    return;
+  }
+  stallRetryCount += 1;
+  logMusicDebug(`stall-detected(retry${stallRetryCount})`);
+  const savedTime = current;
+  bgAudio.load();
+  bgAudio.currentTime = savedTime;
+  bgAudio.play().catch(() => {});
+}
+
 function loadMusicTrack(index) {
   if (!bgAudio || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
   musicErrorRetryCount = 0;
+  stallRetryCount = 0;
+  stallWatchCurrentTime = -1;
+  stallWatchSince = Date.now();
   if (musicToggle) musicToggle.style.setProperty("--progress", "0");
   const track = musicPlaylist[index % musicPlaylist.length];
   const base = typeof musicSourceBaseUrl === "string" ? musicSourceBaseUrl.trim() : "";
@@ -1001,6 +1041,13 @@ function renderMusicToggle() {
   musicToggle.setAttribute("aria-label", musicPlaying ? "음악 일시정지" : "음악 재생");
 }
 
+// 에러 이벤트도, ended 이벤트도 없이 재생이 조용히 멈추는 증상이 있었다
+// (2026-07-07 유저 리포트: "에러메시지도 안 뜨고 그냥 멈춘다. 재생 버튼
+// 눌러도 재생이 안 된다"). 이건 브라우저가 error를 던지지 않고 그냥
+// 버퍼링에서 멈춰버리는 경우라, 아래 watchdog으로 별도 감지한다.
+// 그리고 멈춘 상태에서 재생 버튼을 눌렀을 때 단순히 play()만 다시 부르면
+// 똑같이 막힌 상태라 반응이 없었을 것 — 실패하면 load()로 리셋 후 같은
+// 위치에서 재시도하도록 바꾼다.
 function playMusic() {
   if (!bgAudio) return;
   if (!bgAudio.src) {
@@ -1008,9 +1055,16 @@ function playMusic() {
     loadMusicTrack(musicIndex);
     recordTrackHeard(musicIndex);
   }
+  const resumeFrom = bgAudio.currentTime;
   bgAudio.play().catch(() => {
-    musicPlaying = false;
-    renderMusicToggle();
+    logMusicDebug("resume-failed→reload retry");
+    const savedTime = resumeFrom;
+    bgAudio.load();
+    bgAudio.currentTime = savedTime;
+    bgAudio.play().catch(() => {
+      musicPlaying = false;
+      renderMusicToggle();
+    });
   });
 }
 
@@ -1157,3 +1211,4 @@ loadBackgroundArchive();
 tick();
 requestCurrentWeather();
 window.setInterval(tick, 1000);
+window.setInterval(musicStallWatchdog, 2000);
