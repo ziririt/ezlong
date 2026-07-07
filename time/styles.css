@@ -638,11 +638,16 @@ button { font: inherit; }
   position: relative;
   display: grid;
   place-items: center;
-  /* 2026-07-07: .clock-stage 좌우 padding을 재차 키운 만큼(위 참조) 카드
-     폭을 한 번 더 줄였다(23.1vw→20.5vw, 최소/최대값도 같은 비율로 축소).
-     세로 비율은 유지. */
-  width: clamp(72px, 20.5vw, 146px);
-  height: clamp(110px, 31vw, 222px);
+  /* 2026-07-07 재계산: 이전 값(20.5vw)이 실제로는 새 padding-inline을
+     감안한 폭 계산이 부족해서, 카드 4개+콜론 합계가 여전히 .clock-stage의
+     새 padding 안쪽 가용폭을 넘어섰다 — 그래서 여백이 넓어져도 플립시계가
+     그 여백까지 넘쳐 흘러(overflow) 시각적으로 "여백이 그대로"인 것처럼
+     보였다(카드가 padding 경계를 넘어 .sky-room 바깥쪽 7px 경계에서만
+     잘렸기 때문). 가용폭 = 100vw - sky-room 7px×2 - clock-stage
+     padding(4.8vw×2) 기준으로 4장+콜론+간격 합이 실제로 들어오도록
+     23.1vw→17vw로 재축소(콜론도 21vw→15.5vw로 같이 축소). */
+  width: clamp(60px, 17vw, 122px);
+  height: clamp(91px, 25.8vw, 180px);
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.22);
   border-radius: clamp(14px, 3vw, 26px);
@@ -723,7 +728,9 @@ button { font: inherit; }
 .clock-colon {
   margin: 0 -8px;
   color: rgba(255,255,255,0.88);
-  font-size: clamp(80px, 21vw, 148px);
+  /* flip-card와 같은 이유로 같이 축소(21vw→15.5vw) — 안 그러면 콜론 혼자
+     남아 여전히 여백을 잡아먹는다. */
+  font-size: clamp(59px, 15.5vw, 109px);
   font-weight: 700;
   line-height: 1;
   transform: translateY(-0.06em);
