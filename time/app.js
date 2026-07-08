@@ -924,6 +924,14 @@ function closeSettings() {
 
 let musicIndex = 0;
 let musicPlaying = false;
+// 2026-07-08 버그 수정: 재생/일시정지를 빠르게 연타하면(또는 오디오
+// 리소스 준비가 늦어지는 사이 다시 누르면) 먼저 눌렀던 재생 시도가 뒤늦게
+// 비동기로 끝나면서, 그 사이 사용자가 이미 일시정지로 바꾼 뒤인데도
+// player.play()를 실행해버려 "버튼은 일시정지 상태인데 소리는 계속 남"
+// 현상이 발생했다 — 토글을 누를 때마다 토큰을 새로 발급해서, 오래된
+// 토큰을 들고 있는 재생 시도는 자기 차례가 아니게 되면 조용히 중단하게
+// 한다.
+let musicActionToken = 0;
 
 const musicHistoryStorageKey = "ezlong:musicHistory";
 
@@ -1316,7 +1324,7 @@ function renderMusicToggle() {
 // 그리고 멈춘 상태에서 재생 버튼을 눌렀을 때 단순히 play()만 다시 부르면
 // 똑같이 막힌 상태라 반응이 없었을 것 — 실패하면 load()로 리셋 후 같은
 // 위치에서 재시도하도록 바꾼다.
-async function playMusic() {
+async function playMusic(token) {
   // 유저의 실제 탭(toggleMusic 클릭)으로만 호출되는 지점이라, iOS가 요구하는
   // "사용자 제스처 안에서" AudioContext를 만들고 깨우는 조건을 만족한다.
   ensureAudioGraph();
@@ -1339,6 +1347,9 @@ async function playMusic() {
   if (audioContext && audioContext.state !== "running") {
     try { await audioContext.resume(); } catch (error) { /* 실패해도 아래에서 play 자체는 시도한다 */ }
   }
+  // 이 await 도중에 사용자가 다시 눌러 더 최신 토큰이 발급됐다면, 이
+  // 재생 시도는 이제 유효하지 않다 — 여기서 조용히 멈춘다.
+  if (token !== musicActionToken) return;
   const player = activePlayer();
   if (!player) return;
   if (!player.src && !player._pendingLoad) {
@@ -1356,12 +1367,15 @@ async function playMusic() {
   if (player._pendingLoad) {
     try { await player._pendingLoad; } catch (error) { /* 폴백은 loadMusicTrack 내부에서 처리됨 */ }
   }
+  if (token !== musicActionToken) return; // fetch 대기 중 다시 눌렀다면 여기서도 중단
   const resumeFrom = player.currentTime;
   player.play().catch(() => {
+    if (token !== musicActionToken) return;
     const savedTime = resumeFrom;
     player.load();
     player.currentTime = savedTime;
     player.play().catch(() => {
+      if (token !== musicActionToken) return;
       musicPlaying = false;
       renderMusicToggle();
     });
@@ -1396,7 +1410,8 @@ function notifyNativeAudioKeepAlive(isPlaying) {
 
 function toggleMusic() {
   musicPlaying = !musicPlaying;
-  if (musicPlaying) playMusic(); else pauseMusic();
+  musicActionToken += 1; // 이 클릭이 "가장 최신 의도"임을 표시 — 이전 재생 시도는 이 값으로 자기 차례가 지났음을 안다.
+  if (musicPlaying) playMusic(musicActionToken); else pauseMusic();
   renderMusicToggle();
   notifyNativeAudioKeepAlive(musicPlaying);
 }
@@ -1466,6 +1481,7 @@ window.__flipzenShadowStopped = function () {};
 // 세팅하고, 그 즉시(제스처가 아직 살아있는 채로) player.play()를 부른다.
 async function playNextTrack() {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  musicActionToken += 1; // 진행 중이던 이전 재생 시도(있었다면)를 무효화한다.
   crossfadeTriggered = false;
   pendingNextIndex = -1;
   const standby = standbyPlayer();
@@ -1608,6 +1624,7 @@ function playTrackFromHistory(file) {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
   const index = musicPlaylist.findIndex((track) => track && track.file === file);
   if (index < 0) return;
+  musicActionToken += 1; // 진행 중이던 이전 재생 시도(있었다면)를 무효화한다.
   crossfadeTriggered = false;
   pendingNextIndex = -1;
   const standby = standbyPlayer();
