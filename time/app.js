@@ -1439,18 +1439,16 @@ function sendNativeHeartbeat() {
 // 네이티브가 그림자 재생을 끝내면서(포그라운드 복귀 시) 마지막으로 재생
 // 중이던 위치를 알려준다 — HTML5 오디오를 그 근처로 맞춰서 이어받는다.
 // 백그라운드 앰비언트 성격이라 초 단위까지 정확히 맞을 필요는 없다.
-window.__flipzenShadowStopped = function (finalTime) {
-  try {
-    const player = activePlayer();
-    if (!player) return;
-    if (Number.isFinite(finalTime) && finalTime > 0) {
-      player.currentTime = finalTime;
-    }
-    if (musicPlaying) player.play().catch(() => {});
-  } catch (error) {
-    // 무시 — 실패해도 기존 위치에서 그냥 이어진다.
-  }
-};
+// 2026-07-08 버그 수정: 이 콜백이 자동으로 seek+play를 실행했는데, 그림자
+// 재생이 사실상 제대로 시작도 못 한 채 바로 종료되는 경우가 대부분이라
+// finalTime 자체가 신뢰할 만한 위치가 아니었다. 게다가 유저가 포그라운드로
+// 돌아와 직접 재생 버튼을 누르는 시점과 이 콜백이 거의 동시에 실행되면서,
+// 서로 다른 위치로 seek하고 각자 play()를 부르는 두 흐름이 충돌해 소리가
+// 겹치며 씹히는 새 버그가 생겼다. 그림자 재생 기능 자체가 아직 안정적으로
+// 동작하지 않는 상태이므로, 이 콜백은 당분간 아무 것도 하지 않는다 — 재생
+// 시작은 항상 유저의 명시적 탭에서만 일어나게 한다(네이티브는 여전히 이
+// 함수를 호출하지만, 정의돼 있으니 에러 없이 조용히 무시된다).
+window.__flipzenShadowStopped = function () {};
 
 // 스킵 버튼(수동)은 크로스페이드 없이 즉시 곡을 바꾼다 — 유저가 직접 누른
 // 즉각 반응이 우선이고, 곡이 끝나기 전 자동 전환과는 성격이 다르다.
