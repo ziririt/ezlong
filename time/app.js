@@ -1699,12 +1699,27 @@ if (appBrand && skyRoom && ezlongSection) {
   appBrand.addEventListener("click", () => {
     if (skyRoom.classList.contains("is-flipping-away")) return; // 연타 방지
     skyRoom.classList.add("is-flipping-away");
+
+    // 2026-07-08 버그 수정: "누르면 ezlong.com으로 넘어갔다가 1초 안에
+    // 다시 원래 화면으로 튕겨 돌아온다"는 재지적 — 원인은 .sky-room에 걸린
+    // scroll-snap-stop:always다. 이 값은 "진짜 유저 스와이프"만 스냅 대상
+    // 으로 신뢰하도록 설계돼 있어서, scrollIntoView()로 프로그램이 직접
+    // 스크롤을 시키면 WebKit이 이걸 신뢰하지 않고 원래 스냅 위치(sky-room)
+    // 로 되돌려버리는 경우가 있다. 스크롤이 실제로 끝날 때까지만 스냅을
+    // 잠깐 꺼서 방해받지 않게 하고, 끝나면 원래대로 복구한다(스와이프로
+    // 넘기는 기존 동작은 전혀 건드리지 않는다).
+    const html = document.documentElement;
+    html.style.scrollSnapType = "none";
+
     window.setTimeout(() => {
       ezlongSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 260); // 회전이 절반쯤 진행됐을 때 스크롤을 시작해 자연스럽게 이어지게 한다.
     window.setTimeout(() => {
       skyRoom.classList.remove("is-flipping-away");
     }, 900); // 화면 밖으로 충분히 벗어난 뒤 원상태로 리셋(다음에 다시 볼 때 정상 모습).
+    window.setTimeout(() => {
+      html.style.scrollSnapType = ""; // 스크롤이 완전히 끝난 뒤 스냅을 복구한다.
+    }, 1300);
   });
 }
 
