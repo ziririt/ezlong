@@ -175,6 +175,8 @@ const settingsSave = document.getElementById("settingsSave");
 const allCategories = document.getElementById("allCategories");
 const categoryOptions = document.getElementById("categoryOptions");
 const webviewScale = document.getElementById("ezlongWebviewScale");
+const ezlongSection = document.querySelector(".ezlong-webview");
+const appBrand = document.querySelector(".app-brand");
 const musicSettingsOpen = document.getElementById("musicSettingsOpen");
 const musicToggle = document.getElementById("musicToggle");
 const musicSkip = document.getElementById("musicSkip");
@@ -1555,6 +1557,24 @@ if (skyRoom) {
     if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.35) return;
     movePhoto(dx < 0 ? 1 : -1);
   }, { passive: true });
+}
+
+// 2026-07-08: 우측 상단 "ezlong.com" 글자를 탭하면, 위로 스와이프했을 때와
+// 같은 목적지(ezlong-webview 섹션)로 이동하되 플립시계 컨셉에 맞는 "위로
+// 플립" 연출을 더해서 이동한다. 실제 페이지 전환은 이미 있는 scroll-snap
+// 스크롤을 그대로 쓰고(styles.css .clock-app/.sky-room 참조), 그 위에
+// sky-room을 카드처럼 위로 젖히는 3D 회전 애니메이션만 얹는다.
+if (appBrand && skyRoom && ezlongSection) {
+  appBrand.addEventListener("click", () => {
+    if (skyRoom.classList.contains("is-flipping-away")) return; // 연타 방지
+    skyRoom.classList.add("is-flipping-away");
+    window.setTimeout(() => {
+      ezlongSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 260); // 회전이 절반쯤 진행됐을 때 스크롤을 시작해 자연스럽게 이어지게 한다.
+    window.setTimeout(() => {
+      skyRoom.classList.remove("is-flipping-away");
+    }, 900); // 화면 밖으로 충분히 벗어난 뒤 원상태로 리셋(다음에 다시 볼 때 정상 모습).
+  });
 }
 
 renderCategoryOptions();

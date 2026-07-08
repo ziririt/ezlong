@@ -47,6 +47,7 @@ button { font: inherit; }
 .clock-app {
   min-height: 100vh;
   background: #eef3f5;
+  perspective: 1400px; /* 2026-07-08: 아래 .sky-room.is-flipping-away 3D 회전용 */
 }
 
 .clock-app[data-scene="midday"] {
@@ -101,10 +102,19 @@ button { font: inherit; }
      뷰포트 높이가 재계산된다(syncFirstScreenHeight가 그때 --first-screen-height를
      다시 세팅함). 사진이 아니라 이 컨테이너의 height 자체가 그 순간 한 번
      튀는 것이었다 — transition을 걸어서 튐을 부드러운 조정으로 바꾼다. */
-  transition: height 260ms ease;
+  transition: height 260ms ease, transform 0.55s cubic-bezier(0.6, 0.04, 0.22, 1);
+  transform-origin: bottom center;
+  backface-visibility: hidden;
   background:
     radial-gradient(circle at 50% 12%, rgba(255,255,255,0.24), transparent 36%),
     linear-gradient(180deg, var(--sky-top), var(--sky-mid) 46%, var(--sky-low));
+}
+
+/* 2026-07-08: 우측 상단 "ezlong.com" 탭 시 플립시계 카드처럼 화면 전체가
+   위로 젖혀지며 다음 섹션(ezlong-webview)으로 넘어가는 연출. app.js가
+   이 클래스를 잠깐 붙였다 뗀다(스크롤이 시작된 뒤 원상태로 리셋). */
+.sky-room.is-flipping-away {
+  transform: rotateX(-92deg);
 }
 
 .sky-photo,
@@ -402,6 +412,7 @@ button { font: inherit; }
   letter-spacing: 0;
   text-shadow: 0 2px 18px rgba(0,0,0,0.42);
   white-space: nowrap;
+  cursor: pointer; /* 2026-07-08: 탭하면 ezlong.com 섹션으로 플립 전환된다 */
 }
 
 .date-chip {
