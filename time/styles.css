@@ -584,6 +584,65 @@ button { font: inherit; }
   font-weight: 560;
 }
 
+/* 2026-07-08: "들은 음악 히스토리" — 최근 재생 목록 + 곡별 바로 듣기 버튼.
+   settings-block과 같은 톤(다크 글래스 패널 위 rgba(255,255,255,alpha))을 그대로 따른다. */
+.music-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.music-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 14px;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+}
+
+.music-history-item.is-current {
+  border-color: rgba(255,255,255,0.32);
+  background: rgba(255,255,255,0.16);
+}
+
+.music-history-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(255,255,255,0.84);
+  font-size: 14px;
+  font-weight: 620;
+}
+
+.music-history-play {
+  flex: 0 0 auto;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid rgba(255,255,255,0.26);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.86);
+  color: #101722;
+  font-size: 14px;
+  font-weight: 760;
+  cursor: pointer;
+}
+
+.music-history-item.is-current .music-history-play {
+  background: rgba(255,255,255,0.3);
+  color: #fff;
+  border-color: rgba(255,255,255,0.4);
+}
+
 .weather-chip strong {
   flex: 0 0 auto;
   font-size: clamp(15px, 4.2vw, 18px);

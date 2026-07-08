@@ -181,6 +181,7 @@ const musicSettingsOpen = document.getElementById("musicSettingsOpen");
 const musicToggle = document.getElementById("musicToggle");
 const musicSkip = document.getElementById("musicSkip");
 const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
+const musicHistoryList = document.getElementById("musicHistoryList");
 const bgAudio = document.getElementById("bgAudio");
 const bgAudioB = document.getElementById("bgAudioB");
 const digitElements = [
@@ -1304,6 +1305,7 @@ function renderMusicToggle() {
   musicToggle.classList.toggle("is-playing", musicPlaying);
   musicToggle.setAttribute("aria-pressed", String(musicPlaying));
   musicToggle.setAttribute("aria-label", musicPlaying ? "음악 일시정지" : "음악 재생");
+  renderMusicHistoryList(); // 재생/일시정지에 따라 "바로 듣기"/"재생 중" 라벨도 같이 갱신한다.
 }
 
 // 에러 이벤트도, ended 이벤트도 없이 재생이 조용히 멈추는 증상이 있었다
@@ -1335,7 +1337,9 @@ async function playMusic() {
     // 중이라면(_pendingLoad) 여기서 새로 고르지 않고 그 결과를 그대로 쓴다.
     musicIndex = pickNextTrackIndex();
     recordTrackHeard(musicIndex);
+    recordPlayLog(musicIndex);
     renderMusicPlaylistInfo();
+    renderMusicHistoryList();
     player._pendingLoad = loadMusicTrack(player, musicIndex, { prebuffer: true });
   }
   resetActiveWatchState();
@@ -1467,7 +1471,9 @@ async function playNextTrack() {
   const player = activePlayer();
   musicIndex = pickNextTrackIndex();
   recordTrackHeard(musicIndex);
+  recordPlayLog(musicIndex);
   renderMusicPlaylistInfo();
+  renderMusicHistoryList();
   resetActiveWatchState();
   if (musicToggle) musicToggle.style.setProperty("--progress", "0");
   if (player.dataset.blobUrl) {
@@ -1496,7 +1502,9 @@ function handleActivePlayerEnded(event) {
     activePlayerIndex = 1 - activePlayerIndex;
     musicIndex = pendingNextIndex;
     pendingNextIndex = -1;
+    recordPlayLog(musicIndex);
     renderMusicPlaylistInfo();
+    renderMusicHistoryList();
     crossfadeTriggered = false;
     setPlayerVolume(activePlayer(), 1);
     // 방어 코드(2026-07-07): 위 updateMusicProgress에서 걸었던 standby.play()가
@@ -1525,6 +1533,106 @@ function renderMusicPlaylistInfo() {
   } else {
     musicPlaylistInfo.textContent = `기본 플레이리스트 · 총 ${total}곡`;
   }
+}
+
+// 2026-07-08: "지금 재생 중" 표시만으로는 방금 지나간 곡을 다시 찾아 듣기
+// 어렵다는 요청 — 실제로 재생 대상이 된 곡을 최신순으로 기록해두고, 음악
+// 설정 패널에 목록으로 보여주며 곡마다 "바로 듣기" 버튼을 붙인다.
+const musicPlayLogStorageKey = "ezlong:musicPlayLog";
+const musicPlayLogMax = 30;
+
+function loadMusicPlayLog() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(musicPlayLogStorageKey) || "[]");
+    return Array.isArray(raw) ? raw.filter((entry) => entry && typeof entry.file === "string") : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveMusicPlayLog(log) {
+  try {
+    localStorage.setItem(musicPlayLogStorageKey, JSON.stringify(log));
+  } catch (error) {
+    // localStorage를 못 쓰는 환경이어도 재생 자체에는 지장이 없어야 한다.
+  }
+}
+
+// 같은 곡을 다시 들으면 중복으로 쌓지 않고 맨 위로 올린다(흔한 "최근 재생" UX 관례).
+function recordPlayLog(index) {
+  if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  const track = musicPlaylist[index % musicPlaylist.length];
+  if (!track || !track.file) return;
+  let log = loadMusicPlayLog().filter((entry) => entry.file !== track.file);
+  log.unshift({ file: track.file, title: track.title || track.file, playlist: track.playlist || "", at: Date.now() });
+  if (log.length > musicPlayLogMax) log = log.slice(0, musicPlayLogMax);
+  saveMusicPlayLog(log);
+}
+
+function renderMusicHistoryList() {
+  if (!musicHistoryList) return;
+  const log = loadMusicPlayLog();
+  if (log.length === 0) {
+    musicHistoryList.innerHTML = '<li class="settings-desc settings-desc-muted">아직 재생 기록이 없습니다.</li>';
+    return;
+  }
+  const currentTrack = Array.isArray(musicPlaylist) && musicPlaylist.length > 0
+    ? musicPlaylist[musicIndex % musicPlaylist.length]
+    : null;
+  musicHistoryList.innerHTML = log.map((entry) => {
+    const isCurrent = Boolean(currentTrack && currentTrack.file === entry.file);
+    const variant = entry.playlist && entry.playlist !== "SINGLE" ? ` (${entry.playlist})` : "";
+    const buttonLabel = isCurrent && musicPlaying ? "재생 중" : "바로 듣기";
+    return `<li class="music-history-item${isCurrent ? " is-current" : ""}">`
+      + `<span class="music-history-title">${entry.title}${variant}</span>`
+      + `<button type="button" class="music-history-play" data-history-file="${entry.file}">${buttonLabel}</button>`
+      + `</li>`;
+  }).join("");
+}
+
+// 히스토리 목록의 "바로 듣기" 버튼 — 스킵 버튼과 같은 방식(크로스페이드 없이
+// 즉시 전환)으로 유저가 지정한 곡으로 바로 바꾼다. playNextTrack과 전환
+// 로직은 같고, 다음 곡을 무작위로 고르는 대신 지정된 파일을 찾아 튼다는
+// 점만 다르다 — 기존 playNextTrack은 그대로 두고 별도 함수로 추가해서
+// (현재 실기기 검증 대기 중인) 기존 재생 전환 로직에 영향을 주지 않는다.
+function playTrackFromHistory(file) {
+  if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  const index = musicPlaylist.findIndex((track) => track && track.file === file);
+  if (index < 0) return;
+  crossfadeTriggered = false;
+  pendingNextIndex = -1;
+  const standby = standbyPlayer();
+  if (standby) {
+    standby.pause();
+    standby.removeAttribute("src");
+    delete standby.dataset.pendingUrl;
+  }
+  const player = activePlayer();
+  musicIndex = index;
+  recordTrackHeard(musicIndex);
+  recordPlayLog(musicIndex);
+  renderMusicPlaylistInfo();
+  resetActiveWatchState();
+  if (musicToggle) musicToggle.style.setProperty("--progress", "0");
+  if (player.dataset.blobUrl) {
+    URL.revokeObjectURL(player.dataset.blobUrl);
+    delete player.dataset.blobUrl;
+  }
+  delete player.dataset.pendingUrl;
+  player._pendingLoad = null;
+  loadMusicTrack(player, musicIndex, { prebuffer: false });
+  musicPlaying = true;
+  player.play().catch(() => {});
+  renderMusicToggle();
+  notifyNativeAudioKeepAlive(true);
+}
+
+if (musicHistoryList) {
+  musicHistoryList.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-history-file]");
+    if (!button) return;
+    playTrackFromHistory(button.dataset.historyFile);
+  });
 }
 
 function applyCategorySelection() {
@@ -1720,7 +1828,9 @@ window.setInterval(musicStallWatchdog, 2000);
   }
   musicIndex = resumeIndex >= 0 ? resumeIndex : pickNextTrackIndex();
   recordTrackHeard(musicIndex);
+  recordPlayLog(musicIndex);
   renderMusicPlaylistInfo();
+  renderMusicHistoryList();
   player._pendingLoad = loadMusicTrack(player, musicIndex, { prebuffer: true });
 })();
 

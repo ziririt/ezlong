@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260708-fixes-v45">
+  <link rel="stylesheet" href="styles.css?v=20260708-fixes-v46">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -124,12 +124,19 @@
           <p class="settings-desc" id="musicPlaylistInfo">기본 플레이리스트 · 총 0곡</p>
           <p class="settings-desc settings-desc-muted">계절·날씨·시간에 맞는 자동 선곡은 준비 중입니다. 지금은 전체 트랙이 순서대로 이어집니다.</p>
         </section>
+
+        <div class="settings-divider" aria-hidden="true"></div>
+
+        <section class="settings-block" aria-label="들은 음악 히스토리">
+          <h3 class="settings-subtitle">들은 음악 히스토리</h3>
+          <ul class="music-history-list" id="musicHistoryList" aria-live="polite"></ul>
+        </section>
       </section>
     </aside>
   </main>
 
   <script src="investment-quotes.js"></script>
-  <script src="music-playlist.js?v=20260708-fixes-v45"></script>
-  <script src="app.js?v=20260708-fixes-v45"></script>
+  <script src="music-playlist.js?v=20260708-fixes-v46"></script>
+  <script src="app.js?v=20260708-fixes-v46"></script>
 </body>
 </html>
