@@ -1398,14 +1398,20 @@ function pauseMusic() {
 // 재생을 누르지 않았는데도 앱이 오디오를 재생 중인 것처럼 보이는 걸 막기
 // 위해). 일반 브라우저(웹)에서는 window.webkit이 없으므로 아무 동작도
 // 하지 않는다 — 웹 동작에는 영향 없음.
+// 2026-07-08 긴급 비활성화: 백그라운드 지속재생 자체를 포기하기로 결정한
+// 뒤에도 이 무음 킵얼라이브 트릭(SilentAudioKeepAlive, 4회 시도 중 1차
+// 시도)이 재생을 누를 때마다 계속 native로 켜지고 있었다 — 네이티브
+// AVAudioEngine이 AVAudioSession을 독자적으로 setCategory/setActive하면서
+// WKWebView 내부 <audio>가 Web Audio API(GainNode)로 물려 쓰는 오디오
+// 세션과 충돌해, "진행률(currentTime)은 정상으로 흘러가는데 실제 소리는
+// 전혀 안 나는" 증상을 유발한 것으로 보인다(유저 리포트: 스피커로 들을 때
+// 발생, 곡을 넘겨도 동일 — 같은 오디오 세션을 계속 공유하는 native 엔진이
+// 원인이라는 정황과 일치). 백그라운드 지속재생 기능 자체를 이미 포기했으므로
+// (CHANGELOG 2026-07-08 참조) 이 트릭을 계속 켤 이유가 없다 — 호출 자체를
+// 막아 native SilentAudioKeepAlive가 다시는 시작되지 않게 한다. 네이티브
+// 코드(SilentAudioKeepAlive.swift)는 그대로 남겨두되(무해), 트리거만 끊는다.
 function notifyNativeAudioKeepAlive(isPlaying) {
-  try {
-    window.webkit.messageHandlers.flipzenAudioKeepAlive.postMessage(
-      isPlaying ? "start" : "stop"
-    );
-  } catch (error) {
-    // 네이티브 래퍼가 아니면(일반 웹) 핸들러가 없어 여기로 떨어진다 — 정상.
-  }
+  // 의도적으로 아무 동작도 하지 않음 — 위 설명 참조.
 }
 
 function toggleMusic() {
