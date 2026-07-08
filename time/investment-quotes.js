@@ -526,5 +526,12 @@ window.investmentQuotes = [
     "title": "원칙",
     "author": "레이 달리오",
     "category": "mindset"
+  },
+  {
+    "english": "It never was my thinking that made the big money for me. It always was my sitting. Men who can both be right and sit tight are uncommon.",
+    "text": "나에게 큰돈을 벌어준 것은 뛰어난 판단력이 아니라 버티는 힘이었다. 시장의 방향을 맞추는 것 자체는 어려운 일이 아니다. 정말 어려운 것은 옳았을 때 끝까지 그 자리를 지키는 일이다.",
+    "title": "주식 투자자의 회상",
+    "author": "제시 리버모어",
+    "category": "patience"
   }
 ];
