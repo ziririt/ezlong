@@ -1055,6 +1055,21 @@ button { font: inherit; }
 }
 .dot.active { background: #fff; }
 
+/* 2026-07-08: 유저-Claude 간 "이 업데이트가 실제로 반영됐는지" 확인용 버전
+   표시. 배포마다 바뀌는 캐시버스팅 버전(index.html의 ?v=)과는 별개 —
+   이건 제품 완성도 기준 수동 버전(ver.0.8 등)이라 기능이 쌓일 때만 사람이
+   직접 올린다. */
+.app-version {
+  grid-column: 1;
+  justify-self: start;
+  color: rgba(238,242,246,0.38);
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.18);
+  white-space: nowrap;
+}
+
 .photo-credit {
   grid-column: 3;
   /* 2026-07-07: 점4개 바로 옆이 아니라 페이지 맨 우측 끝으로 정렬 */
