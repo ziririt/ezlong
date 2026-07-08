@@ -1308,6 +1308,24 @@ function musicStallWatchdog() {
   player.play().catch(() => {});
 }
 
+// 2026-07-08: pause/playing 네이티브 이벤트 디바운스 동기화 — 위
+// musicPlayers.forEach 안의 리스너 설명 참조. 여러 이벤트가 겹쳐 도착해도
+// 마지막에 한 번, 그 시점의 실제 오디오 상태(player.paused)만 확정 반영한다.
+let musicStateSyncTimer = null;
+function scheduleMusicStateSync() {
+  if (musicStateSyncTimer !== null) return;
+  musicStateSyncTimer = window.setTimeout(() => {
+    musicStateSyncTimer = null;
+    const player = activePlayer();
+    if (!player) return;
+    const actuallyPlaying = !player.paused && !player.ended;
+    if (actuallyPlaying !== musicPlaying) {
+      musicPlaying = actuallyPlaying;
+      renderMusicToggle();
+    }
+  }, 120);
+}
+
 function renderMusicToggle() {
   if (!musicToggle) return;
   musicToggle.classList.toggle("is-playing", musicPlaying);
@@ -1803,19 +1821,21 @@ musicPlayers.forEach((player) => {
   // (재생 의도인데 UI는 이미 멈춤 아이콘) 순서로 꼬여서 여러 번 눌러야
   // 겨우 재생되는 원인이 됐다. <audio> 엘리먼트가 실제로 멈추거나
   // 재생되는 순간(원인 불문)을 그대로 반영해 항상 실제 상태와 동기화한다.
+  // 2026-07-08 재수정: pause/playing 이벤트는 브라우저 큐를 거쳐 비동기로
+  // 도착한다 — 연타 등으로 재생/일시정지 시도가 겹치면, 먼저 눌렀던
+  // 시도의 이벤트가 나중 시도의 이벤트보다 늦게 도착해 최신 상태를
+  // 덮어써버리는 경우가 있었다("재생 중인데 버튼은 일시정지 표시" 재발
+  // 원인). 이벤트가 올 때마다 바로 반영하지 않고 짧게 모았다가(디바운스)
+  // 그 시점의 실제 <audio>.paused 값 하나만 확정적으로 반영하도록 바꾼다 —
+  // 이벤트가 몇 개, 어떤 순서로 도착하든 결과는 항상 실제 재생 상태와
+  // 일치한다.
   player.addEventListener("pause", () => {
     if (player !== activePlayer()) return; // 크로스페이드 전환 중 옛 active player의 의도된 pause는 무시
-    if (musicPlaying) {
-      musicPlaying = false;
-      renderMusicToggle();
-    }
+    scheduleMusicStateSync();
   });
   player.addEventListener("playing", () => {
     if (player !== activePlayer()) return;
-    if (!musicPlaying) {
-      musicPlaying = true;
-      renderMusicToggle();
-    }
+    scheduleMusicStateSync();
   });
 });
 allCategories.addEventListener("change", () => {
