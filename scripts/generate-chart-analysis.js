@@ -725,6 +725,13 @@ ${weeklySection}${adxSection}
    반드시 "ADX ${ind.adx?.adx != null ? ind.adx.adx.toFixed(1) : 'N/A'}로 추세 미형성 — 충격성 변동 가능성"
    같은 형태로 ADX 근거를 명시하라. 방향성(DI)이 강해 보인다고 해서 추세로 단정하지 마라.
 
+10. buyScore(1~10)는 매수와 매도를 하나로 잇는 연속 척도다 (매수/매도 각각의 별도 점수가 아니다).
+    반드시 아래 5구간 중 하나에 들어맞게 매겨라: 8~10=강한 매수 신호 · 6~7=매수 우위 ·
+    4~5=중립/관망 · 2~3=매도 우위 · 1=강한 매도 신호.
+    action="매수"면 buyScore는 6 이상, action="매도"면 buyScore는 4 이하, action="관망"이면
+    4~6 사이여야 한다. action과 buyScore가 서로 모순되면(예: action="매도"인데 buyScore=8)
+    절대 안 된다.
+
 다음 JSON만 반환하라. 다른 텍스트는 절대 붙이지 마라:
 {
   "trend": "강세" | "약세" | "횡보",
@@ -736,7 +743,7 @@ ${weeklySection}${adxSection}
   "bbStatus": "상단돌파" | "상단접근" | "중단" | "하단접근" | "하단이탈",
   "stage": "상승추세" | "분배구간" | "하락추세" | "축적구간",
   "action": "매수" | "매도" | "관망",
-  "buyScore": 1~10 정수,
+  "buyScore": 1~10 정수 (규칙 10의 5구간·action 일치 기준 준수),
   "scoreReason": "buyScore 이유 15~25자 (예: 'RSI 과매도탈출+Higher Low 회복 초입', 'MACD 악화+Lower High 하락 초입')",
   "rsiTrajectory": "${rsiPrev} → ${rsiNow} (과매도탈출/과매수냉각/중립지속 중 택1)",
   "macdTrajectory": "히스토 ${histPrev} → ${histNow} (개선/악화/유지 중 택1)",

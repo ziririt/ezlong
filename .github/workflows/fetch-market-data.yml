@@ -55,7 +55,11 @@ jobs:
         run: pip install yfinance --quiet
 
       # ── 4. 데이터 수집 실행 ────────────────────────────────────────────
+      # GEMINI_API_KEY: 스윙 연속성 서술(swingContinuity) 생성용 (2026-07-09 추가).
+      # 키가 없거나 호출 실패해도 스크립트는 죽지 않고 swingContinuity만 null로 저장된다.
       - name: Run market data fetch script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/fetch-market-data.py
 
       # ── 4. 변경사항 커밋 및 푸시 ───────────────────────────────────────

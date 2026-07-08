@@ -35,6 +35,12 @@ OUTPUT_PATH = os.path.normpath(
     os.path.join(os.path.dirname(__file__), '..', 'data', 'market-signals.json')
 )
 
+# ─── Gemini 설정 (스윙 연속성 서술 전용, 2026-07-09 신설) ───────────────────
+# 주의: calc_buy_score/calc_sell_score 등 점수 산출 로직에는 절대 관여하지 않는다.
+# 이미 계산된 숫자를 "며칠간 어떻게 이어졌는지" 서술하는 용도로만 사용.
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
+GEMINI_MODEL   = 'gemini-2.5-flash-lite'  # 비용 절감 — chart-analysis와 동일 모델 (CLAUDE.md 기준)
+
 
 # ─── 시장 상태 판단 ────────────────────────────────────────────────────────
 
@@ -483,6 +489,117 @@ def fetch_fear_and_greed():
     return None
 
 
+# ─── 스윙 연속성 서술 (Gemini, 2026-07-09 신설) ─────────────────────────────
+# chart-analysis 파이프라인의 judgment ledger continuity와 같은 목적:
+# "오늘 처음 보는 것처럼" 매일 스냅샷만 보여주던 스윙 시그널 화면에
+# 최근 며칠 흐름을 종합한 서술을 붙인다. 점수 산출 로직(calc_buy_score 등)은
+# 절대 건드리지 않는다 — 이미 계산된 숫자만 서술 재료로 넘긴다.
+
+def _qqq_score_history_lines(previous_signals, today_qqq):
+    """previousSignals(최신이 맨 앞)에서 날짜별 '가장 최근' QQQ 스냅샷만 추려
+    오래된 날짜 → 최근 날짜 순으로 최대 4일 + 오늘(today_qqq) 리스트 반환."""
+    by_date = {}
+    # 오래된 것부터 순회하며 덮어써서, 같은 날짜는 그날의 마지막(가장 최근) 값만 남긴다.
+    for s in reversed(previous_signals):
+        d = (s.get('atKST') or '')[:10]
+        q = s.get('qqq') or {}
+        if d and isinstance(q.get('buyScore'), (int, float)):
+            by_date[d] = q
+    days = list(by_date.items())[-4:]
+    today_kst = (datetime.now(timezone.utc) + timedelta(hours=9)).strftime('%Y-%m-%d')
+    if today_qqq is not None and today_qqq.get('buyScore') is not None:
+        days = [d for d in days if d[0] != today_kst] + [(today_kst, today_qqq)]
+    lines = []
+    for d, q in days:
+        label = '오늘' if d == today_kst else d[5:]
+        lines.append(
+            f"{label}: 매수점수 {q.get('buyScore')} · 매도점수 {q.get('sellScore')} · "
+            f"RSI {q.get('rsi')} · Gear {q.get('gear')}"
+        )
+    return lines
+
+
+def generate_swing_continuity(processed, previous_signals, fg_data):
+    """실패해도 파이프라인 전체를 절대 중단시키지 않는다 — None 반환 시
+    프런트엔드가 기존 방식(숫자 나열)으로 조용히 폴백한다."""
+    if not GEMINI_API_KEY:
+        print("  [swingContinuity] GEMINI_API_KEY 없음 — 건너뜀")
+        return None
+    try:
+        qqq = processed.get('QQQ')
+        if not qqq:
+            return None
+        today_qqq = {
+            'rsi': qqq.get('rsi'), 'buyScore': qqq.get('buyScore'),
+            'sellScore': qqq.get('sellScore'), 'gear': qqq.get('gear'),
+        }
+        history_lines = _qqq_score_history_lines(previous_signals, today_qqq)
+        if len(history_lines) < 2:
+            print("  [swingContinuity] 히스토리 부족(초기 실행 등) — 건너뜀")
+            return None
+
+        def fmt_returns(sym):
+            d = processed.get(sym)
+            if not d:
+                return f"{sym}: 데이터 없음"
+            arr = d.get('recentDailyReturns') or []
+            # arr[0]=오늘 ... 과거→오늘 순으로 보이게 뒤집는다
+            vals = ' → '.join(
+                (f"{v:+.2f}%" if v is not None else 'N/A') for v in reversed(arr)
+            )
+            return f"{sym}: {vals}"
+
+        returns_lines = [fmt_returns(s) for s in ['QQQ', 'SOXX', 'TSLA', 'NVDA']]
+
+        prompt = (
+            "너는 15년 경력 스윙 트레이더다. 아래 데이터만 근거로 "
+            "\"최근 며칠 흐름이 오늘 시그널로 어떻게 이어졌는지\" 딱 2~3문장으로 서술하라.\n\n"
+            "[QQQ 매수/매도 점수 최근 흐름 — 날짜별]\n"
+            + "\n".join(history_lines) + "\n\n"
+            "[최근 5거래일 일봉 등락률 — 과거→오늘 순]\n"
+            + "\n".join(returns_lines) + "\n\n"
+            f"[참고] VIX: {qqq.get('vix')} · Fear&Greed: {fg_data.get('score') if fg_data else 'N/A'}\n\n"
+            "절대 규칙:\n"
+            "- 위에 주어진 숫자만 사용하라. 새로운 숫자를 지어내지 마라.\n"
+            "- \"~하세요\", \"~하십시오\" 같은 명령형 금지. \"~구간\", \"~권고\", \"~흐름\" 같은 진단형 표현만 사용.\n"
+            "- 오늘 점수가 며칠 전과 비교해 개선/악화/유지 중 무엇인지 반드시 언급하라.\n"
+            "- 종목 간 온도차가 있으면(예: 반도체만 유독 약세) 그 차이를 짚어라.\n"
+            "- 순수 텍스트로만 답하라. 마크다운, 따옴표, JSON 금지."
+        )
+
+        payload = {
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {
+                "temperature": 0.3,
+                "maxOutputTokens": 1024,
+                "thinkingConfig": {"thinkingBudget": 0},
+            },
+        }
+        url = (
+            f"https://generativelanguage.googleapis.com/v1beta/models/"
+            f"{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
+        )
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode('utf-8'),
+            headers={'Content-Type': 'application/json'},
+            method='POST',
+        )
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+
+        parts = (((data.get('candidates') or [{}])[0]).get('content') or {}).get('parts') or []
+        text = ''.join(p.get('text', '') for p in parts if not p.get('thought')).strip()
+        if not text:
+            print("  [swingContinuity] Gemini 빈 응답 — 건너뜀")
+            return None
+        print(f"  [swingContinuity] 생성 완료 ({len(text)}자)")
+        return text
+    except Exception as e:
+        print(f"  [swingContinuity] 실패(무시하고 계속 진행): {e}")
+        return None
+
+
 # ─── 메인 ───────────────────────────────────────────────────────────────────
 
 def main():
@@ -600,6 +717,10 @@ def main():
         except Exception as e:
             print(f"  이전 데이터 읽기 실패: {e}")
 
+    # ── 6.5. 스윙 연속성 서술 (실패해도 무시하고 계속) ──────────────────
+    print("\n--- 스윙 연속성 서술 생성 (Gemini) ---")
+    swing_continuity = generate_swing_continuity(processed, previous_signals, fg_data)
+
     output = {
         'generatedAt':    now.isoformat(),
         'generatedAtKST': kst_str + ' KST',
@@ -611,6 +732,7 @@ def main():
         'fearAndGreed':   fg_data,
         'macro':          macro_data if macro_data else None,
         'previousSignals': previous_signals,
+        'swingContinuity': swing_continuity,
     }
 
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
