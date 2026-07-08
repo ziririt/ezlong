@@ -427,6 +427,91 @@ function bollingerBands(closes, period = 20, mult = 2) {
   });
 }
 
+// ── ADX / +DI / −DI (Wilder, 2026-07-09 신설) ────────────────────────────
+// 목적: "급락 = 추세적 붕괴"로 성급히 단정하는 것을 막는 필터.
+// ADX는 방향이 아니라 "추세의 강도"만 알려준다 — DI가 강하게 한쪽으로
+// 쏠려도 ADX가 낮으면 그 하락/상승은 아직 추세로 굳어지지 않은
+// 충격성 변동(shock)일 가능성이 높다. 독립 검증(2026-07-09): 실제
+// data/ohlcv-SOXX.json(2026-07-07 종가 기준)으로 아래와 동일한 로직을
+// Python으로 별도 재구현해 대조 — ADX 16.78 / +DI 19.65 / -DI 36.80로
+// TradingView 리포트 수치(ADX 17.58, DI− 36 부근)와 일치 확인.
+function adx(highs, lows, closes, period = 14) {
+  const n = closes.length;
+  const tr = new Array(n).fill(0);
+  const plusDM  = new Array(n).fill(0);
+  const minusDM = new Array(n).fill(0);
+
+  for (let i = 1; i < n; i++) {
+    const hl = highs[i] - lows[i];
+    const hc = Math.abs(highs[i] - closes[i - 1]);
+    const lc = Math.abs(lows[i]  - closes[i - 1]);
+    tr[i] = Math.max(hl, hc, lc);
+
+    const upMove   = highs[i] - highs[i - 1];
+    const downMove = lows[i - 1] - lows[i];
+    plusDM[i]  = (upMove > downMove && upMove > 0) ? upMove : 0;
+    minusDM[i] = (downMove > upMove && downMove > 0) ? downMove : 0;
+  }
+
+  // Wilder 스무딩 — 첫 값은 1~period 구간의 단순 합, 이후는 누적 스무딩
+  function wilderSmooth(arr) {
+    const out = new Array(n).fill(null);
+    if (n <= period) return out;
+    let seed = 0;
+    for (let i = 1; i <= period; i++) seed += arr[i];
+    out[period] = seed;
+    for (let i = period + 1; i < n; i++) {
+      out[i] = out[i - 1] - (out[i - 1] / period) + arr[i];
+    }
+    return out;
+  }
+
+  const trS      = wilderSmooth(tr);
+  const plusDMS  = wilderSmooth(plusDM);
+  const minusDMS = wilderSmooth(minusDM);
+
+  const plusDI  = new Array(n).fill(null);
+  const minusDI = new Array(n).fill(null);
+  const dx      = new Array(n).fill(null);
+
+  for (let i = period; i < n; i++) {
+    if (trS[i]) {
+      plusDI[i]  = 100 * plusDMS[i]  / trS[i];
+      minusDI[i] = 100 * minusDMS[i] / trS[i];
+    } else {
+      plusDI[i] = 0; minusDI[i] = 0;
+    }
+    const s = plusDI[i] + minusDI[i];
+    dx[i] = s ? 100 * Math.abs(plusDI[i] - minusDI[i]) / s : 0;
+  }
+
+  const adxArr = new Array(n).fill(null);
+  const start = period * 2; // ADX 첫 값 = 그 이전 period개 DX의 단순평균
+  if (n > start) {
+    let seedAdx = 0;
+    for (let i = period; i < start; i++) seedAdx += dx[i];
+    adxArr[start - 1] = seedAdx / period;
+    for (let i = start; i < n; i++) {
+      adxArr[i] = (adxArr[i - 1] * (period - 1) + dx[i]) / period;
+    }
+  }
+
+  return closes.map((_, i) => ({
+    plusDI:  plusDI[i]  != null ? round(plusDI[i], 2)  : null,
+    minusDI: minusDI[i] != null ? round(minusDI[i], 2) : null,
+    adx:     adxArr[i]  != null ? round(adxArr[i], 2)  : null,
+  }));
+}
+
+// ADX 값 → 결정론적 라벨 (LLM에게 판정을 맡기지 않고 JS에서 직접 분류)
+function classifyADX(v) {
+  if (v == null) return null;
+  if (v < 20) return '무추세(충격 가능)';
+  if (v < 25) return '추세 형성 초기';
+  if (v < 50) return '뚜렷한 추세';
+  return '과열된 추세(소멸 경계)';
+}
+
 // ── 주봉 집계 ─────────────────────────────────────────────────────────────
 
 function aggregateWeekly(raw) {
@@ -519,6 +604,19 @@ async function callGemini(meta, ind, swing, pivot, price, weeklyInd, historyLine
 현재가 vs 주봉 SMA100: ${weeklyInd.sma100 ? ((price / weeklyInd.sma100 - 1) * 100).toFixed(2) + '%' : 'N/A'}
 ` : '';
 
+  // ADX/DI 섹션 (2026-07-09 신설) — "급락=추세붕괴" 성급한 단정을 막는 필터.
+  // ADX/DI는 JS에서 결정론적으로 계산·분류한 값을 그대로 주입한다 (Gemini가 임계값을 직접 판정하지 않음).
+  const adxSection = ind.adx?.adx != null ? `
+[ADX/DI(14) — 추세의 "강도"를 재는 지표. 방향은 알려주지 않는다]
+ADX: ${ind.adx.adx.toFixed(1)} (${ind.adx.status}) | 5일 전 ADX: ${ind.adx5dAgo != null ? ind.adx5dAgo.toFixed(1) : 'N/A'}
++DI: ${ind.adx.plusDI != null ? ind.adx.plusDI.toFixed(1) : 'N/A'} | -DI: ${ind.adx.minusDI != null ? ind.adx.minusDI.toFixed(1) : 'N/A'}
+해석 규칙 (반드시 지켜라):
+- ADX 20 미만: 지금의 상승/하락은 "추세"가 아니라 "충격성 변동"일 가능성이 높다. -DI가 +DI보다 훨씬 커도(또는 반대여도) 그 방향성이 아직 추세로 굳어지지 않았다는 뜻이다. 이 구간에서 급락을 "추세적 붕괴"로, 급등을 "추세적 상승 전환"으로 단정하지 마라 — "되돌림 가능성이 있는 충격"으로 표현하라.
+- ADX 20~25: 추세가 막 형성되는 초기 단계. 방향 확정은 아직 이르다.
+- ADX 25 이상 + DI 방향과 가격 방향 일치: 진짜 추세로 판단해도 된다.
+- ADX 50 이상: 과열 — 추세 소멸(반전) 경계 구간임을 함께 언급하라.
+` : '';
+
   // RSI/MACD 궤적 라벨 (프롬프트 가독성용)
   const rsiNow     = ind.rsi     != null ? ind.rsi.toFixed(1)       : 'N/A';
   const rsiPrev    = ind.rsi5dAgo != null ? ind.rsi5dAgo.toFixed(1) : 'N/A';
@@ -589,7 +687,7 @@ MACD: ${ind.macd.macd != null ? ind.macd.macd.toFixed(4) : 'N/A'} / 시그널: $
 [지지/저항]
 스윙 저항: ${fmt(swing.resistance)} | 스윙 지지: ${fmt(swing.support)}
 피벗(PP): ${fmt(pivot.pp)} | R1: ${fmt(pivot.r1)} | R2: ${fmt(pivot.r2)} | S1: ${fmt(pivot.s1)} | S2: ${fmt(pivot.s2)}
-${weeklySection}
+${weeklySection}${adxSection}
 [판단 규칙 — 반드시 지켜라]
 
 1. action은 "매수" / "매도" / "관망" 중 하나만. "매수 우위지만 관망" 같은 혼합 금지.
@@ -622,6 +720,10 @@ ${weeklySection}
 7. 주봉-일봉 충돌 시: 결론은 일봉 기준. weeklyConflict에 충돌 내용 명시.
 
 8. entry/stop/target/invalidation 4개는 반드시 숫자 (기술적 지지/저항 기반).
+
+9. ADX가 20 미만인데 며칠 새 급락/급등이 있었다면, keyPoints나 riskNote 중 하나에
+   반드시 "ADX ${ind.adx?.adx != null ? ind.adx.adx.toFixed(1) : 'N/A'}로 추세 미형성 — 충격성 변동 가능성"
+   같은 형태로 ADX 근거를 명시하라. 방향성(DI)이 강해 보인다고 해서 추세로 단정하지 마라.
 
 다음 JSON만 반환하라. 다른 텍스트는 절대 붙이지 마라:
 {
@@ -752,6 +854,7 @@ async function processTicker(meta) {
   const rsiA    = rsi(closes, 14);
   const macdA   = macd(closes, 12, 26, 9);
   const bbA     = bollingerBands(closes, 20, 2);
+  const adxA    = adx(highs, lows, closes, 14);
   const volumes  = raw.map(d => d.v);
 
   // regularMarketPrice = Yahoo Finance 실시간 현재가 (정확)
@@ -786,6 +889,7 @@ async function processTicker(meta) {
   const low20d      = n >= 20 ? Math.min(...lows.slice(n - 20))  : Math.min(...lows);
   const vol5dAvg    = volumes.slice(Math.max(0, n - 6), n - 1).reduce((a, b) => a + (b || 0), 0) / 5;
   const volRatio    = vol5dAvg > 0 ? round(volumes[n - 1] / vol5dAvg, 2) : null;
+  const adx5dAgo    = n > 5 ? (adxA[n - 6]?.adx ?? null) : null;
 
   const indicators = {
     sma5:  sma5A[n - 1],
@@ -798,6 +902,8 @@ async function processTicker(meta) {
     macd:   macdA[n - 1],
     macdHist5d,
     bb:     bbA[n - 1],
+    adx:    { ...adxA[n - 1], status: classifyADX(adxA[n - 1]?.adx) },
+    adx5dAgo,
     high52, low52,
     high5d, low5d, high20d, low20d,
     volRatio,
@@ -985,6 +1091,7 @@ async function processTicker(meta) {
       rsi:    round(indicators.rsi,   2),
       macd:   indicators.macd,
       bb:     indicators.bb,
+      adx:    indicators.adx,
     },
     levels: {
       swingResistance: swing.resistance ? round(swing.resistance, 4) : null,

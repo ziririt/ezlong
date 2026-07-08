@@ -5004,6 +5004,11 @@ function renderChartAiComments() {
     const risk = ai.riskNote
       ? `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);font-size:14px;color:var(--t2);line-height:1.5;"><b style="color:var(--t1);">리스크 노트 —</b> ${ai.riskNote}</div>`
       : '';
+    // 2026-07-09: 판단 원장(judgment ledger)이 매일 생성해온 continuity를 처음으로 화면에 노출.
+    // "오늘 처음 보는 것처럼" 매번 새로 진단하는 느낌을 없애는 목적 — 배지 바로 아래 최상단 배치.
+    const continuity = ai.continuity
+      ? `<div style="margin-bottom:10px;padding:8px 10px;background:rgba(10,132,255,0.08);border-left:3px solid var(--bl);border-radius:6px;font-size:14px;color:var(--t1);line-height:1.5;">${ai.continuity}</div>`
+      : '';
     return `
       <div class="ai-comment-card" style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
@@ -5013,6 +5018,7 @@ function renderChartAiComments() {
           </div>
           <span style="font-size:14px;font-weight:700;padding:3px 10px;border-radius:20px;border:1.5px solid ${actionColor(ai.action)};color:${actionColor(ai.action)};">${ai.action ?? '—'}${ai.buyScore != null ? ' · ' + ai.buyScore + '점' : ''}</span>
         </div>
+        ${continuity}
         <ul style="margin:0;padding-left:18px;font-size:14px;color:var(--t1);line-height:1.5;">${kp}</ul>
         ${risk}
       </div>`;
@@ -5072,12 +5078,17 @@ function renderKings(tsla, nvda) {
         ? '<div class="ktp-traj">' + (_ai.pricePattern.split(' — ')[0] || _ai.pricePattern) + '</div>' : '';
       const _inv   = _ai.invalidation != null
         ? '<div class="ktp-inval">무효선: $' + (typeof _ai.invalidation === 'number' ? _ai.invalidation.toFixed(2) : _ai.invalidation) + ' 이탈 시 시나리오 폐기</div>' : '';
+      // 2026-07-09: 판단 원장 continuity 최초 노출 — "오늘 처음 보는 것처럼" 매번 리셋되는
+      // 느낌을 없애기 위해 트레이딩 플랜 헤더 바로 아래, RSI/MACD 궤적보다 먼저 배치.
+      const _continuity = _ai.continuity
+        ? '<div class="ktp-continuity" style="margin:6px 0;padding:8px 10px;background:rgba(10,132,255,0.08);border-left:3px solid var(--bl);border-radius:6px;font-size:14px;color:var(--t1);line-height:1.5;">' + _ai.continuity + '</div>' : '';
       tradePlanHtml =
         '<div class="king-trade-plan">' +
           '<div class="ktp-header">' +
             '<span class="ktp-action" style="color:' + _col + '">' + (_ai.action ?? '—') + '</span>' +
             '<span class="ktp-title">스윙 트레이딩 플랜</span>' +
           '</div>' +
+          _continuity +
           _rsiT + _macdT + _patT +
           '<div class="ktp-levels">' +
             '<div class="ktp-lv"><span class="ktp-lv-l">진입</span><span class="ktp-lv-v gr">$' + _e + '</span></div>' +
