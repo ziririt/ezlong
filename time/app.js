@@ -952,15 +952,106 @@ function recordTrackHeard(index) {
   saveMusicHistory(history);
 }
 
+// 2026-07-08: 로그인 없이(디바이스 local storage 기준) "싫어요" 학습 —
+// 10초 이상 들은 곡을 수동 스킵하면 그 곡을 다시 안 틀어준다. 인덱스가
+// 아니라 파일명(track.file)으로 저장해야 플레이리스트 순서가 바뀌어도
+// 안전하다.
+const musicDislikedStorageKey = "ezlong:musicDisliked";
+const musicDislikeMinSeconds = 10;
+
+function loadDislikedTracks() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(musicDislikedStorageKey) || "[]");
+    return Array.isArray(raw) ? raw.filter((value) => typeof value === "string") : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveDislikedTracks(list) {
+  try {
+    localStorage.setItem(musicDislikedStorageKey, JSON.stringify(list));
+  } catch (error) {
+    // localStorage를 못 쓰는 환경이어도 재생 자체는 지장이 없어야 한다.
+  }
+}
+
+// 스킵 버튼(수동)을 누른 시점에만 호출한다 — 자동 크로스페이드/종료 전환은
+// "싫어요" 신호로 보지 않는다(유저가 직접 넘긴 게 아니므로).
+function recordDislikeIfWarranted(player, index) {
+  if (!player || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  if (!Number.isFinite(player.currentTime) || player.currentTime < musicDislikeMinSeconds) return;
+  const track = musicPlaylist[index % musicPlaylist.length];
+  if (!track || !track.file) return;
+  const disliked = loadDislikedTracks();
+  if (!disliked.includes(track.file)) {
+    disliked.push(track.file);
+    saveDislikedTracks(disliked);
+  }
+}
+
+// 2026-07-08: 로그인 없이 "마지막 재생 곡/위치"를 기억해서 앱을 다시 켰을 때
+// 이어들을 수 있게 한다. 이것도 파일명 기준으로 저장한다.
+const musicResumeStorageKey = "ezlong:musicResume";
+let lastResumeSaveAt = 0;
+
+function loadMusicResume() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(musicResumeStorageKey) || "null");
+    if (raw && typeof raw.file === "string" && Number.isFinite(raw.time)) return raw;
+  } catch (error) {
+    // 무시 — 복원 없이 그냥 새로 고른다.
+  }
+  return null;
+}
+
+function saveMusicResume() {
+  try {
+    const player = activePlayer();
+    if (!player || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+    const track = musicPlaylist[musicIndex % musicPlaylist.length];
+    if (!track || !track.file) return;
+    localStorage.setItem(musicResumeStorageKey, JSON.stringify({
+      file: track.file,
+      time: player.currentTime || 0,
+    }));
+  } catch (error) {
+    // localStorage를 못 쓰는 환경이어도 재생 자체는 지장이 없어야 한다.
+  }
+}
+
+// timeupdate마다(초당 여러 번) 매번 쓰지 않도록 5초에 한 번으로 제한한다.
+// force=true는 일시정지/스킵/화면 전환처럼 "지금 확실히 저장해야 하는"
+// 시점에 제한을 무시하고 즉시 저장한다.
+function maybeSaveMusicResume(force = false) {
+  const now = Date.now();
+  if (!force && now - lastResumeSaveAt < 5000) return;
+  lastResumeSaveAt = now;
+  saveMusicResume();
+}
+
 function pickNextTrackIndex() {
   const total = Array.isArray(musicPlaylist) ? musicPlaylist.length : 0;
   if (total === 0) return 0;
   const heard = new Set(loadMusicHistory());
+  const disliked = new Set(loadDislikedTracks());
+  const isDisliked = (i) => {
+    const track = musicPlaylist[i];
+    return Boolean(track && track.file && disliked.has(track.file));
+  };
   const unheard = [];
   for (let i = 0; i < total; i += 1) {
-    if (!heard.has(i)) unheard.push(i);
+    if (!heard.has(i) && !isDisliked(i)) unheard.push(i);
   }
-  const pool = unheard.length > 0 ? unheard : Array.from({ length: total }, (_, i) => i);
+  let pool = unheard;
+  if (pool.length === 0) {
+    // 안 들은 곡 중 싫어요 아닌 게 없으면, 싫어요만 제외하고 전체에서 고른다.
+    pool = Array.from({ length: total }, (_, i) => i).filter((i) => !isDisliked(i));
+  }
+  if (pool.length === 0) {
+    // 모든 곡이 싫어요 처리된 극단적 경우 — 그래도 뭔가는 재생돼야 한다.
+    pool = Array.from({ length: total }, (_, i) => i);
+  }
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
@@ -1105,6 +1196,7 @@ async function updateMusicProgress(event) {
   const player = event ? event.target : activePlayer();
   if (player !== activePlayer()) return; // standby(미리 준비 중인 다음곡)의 timeupdate는 무시
   if (!musicToggle || !player) return;
+  maybeSaveMusicResume(); // 5초에 한 번, 재생 위치를 로그인 없이 기억해둔다.
   // player.duration이 일시적으로 NaN/Infinity가 되는 환경 대비 — loadMusicTrack의
   // loadedmetadata 시점에 캐싱해둔 값을 폴백으로 쓴다(위 loadMusicTrack 주석 참조).
   const liveDuration = player.duration;
@@ -1236,6 +1328,7 @@ async function playMusic() {
 }
 
 function pauseMusic() {
+  maybeSaveMusicResume(true); // 멈추는 순간 위치를 확실히 저장해둔다.
   activePlayer()?.pause();
   standbyPlayer()?.pause();
 }
@@ -1383,7 +1476,12 @@ document.querySelectorAll("[data-settings-close]").forEach((element) => {
 });
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", openSettings);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
-if (musicSkip) musicSkip.addEventListener("click", () => playNextTrack());
+if (musicSkip) musicSkip.addEventListener("click", () => {
+  // playNextTrack()이 musicIndex/activePlayer를 바꿔버리기 전에, "지금 듣던
+  // 곡"을 기준으로 싫어요 여부를 판단해야 한다.
+  recordDislikeIfWarranted(activePlayer(), musicIndex);
+  playNextTrack();
+});
 // 2026-07-07: "곡이 중간에 뚝 끊긴다"는 신고는 ffmpeg 완전디코드로 확인한
 // 결과 버그가 아니었다(파일이 정말 그 지점에서 끝남) — 대신 크로스페이드로
 // 무음 구간 자체를 없앴다(위 musicFadeOutSeconds 설명 참조). 두 <audio>
@@ -1455,7 +1553,33 @@ window.setInterval(musicStallWatchdog, 2000);
 (function prefetchFirstTrack() {
   const player = activePlayer();
   if (!player || player.src) return;
-  musicIndex = pickNextTrackIndex();
+  // 2026-07-08: 로그인 없이 저장해둔 "마지막으로 듣던 곡/위치"가 있으면
+  // 그걸 이어서 준비한다(자동재생은 아니고, 재생 버튼을 누르면 그 지점부터
+  // 시작되도록 미리 로드+탐색만 해둔다).
+  const resume = loadMusicResume();
+  let resumeIndex = -1;
+  let resumeTime = 0;
+  if (resume && Array.isArray(musicPlaylist)) {
+    const idx = musicPlaylist.findIndex((track) => track && track.file === resume.file);
+    if (idx >= 0) {
+      resumeIndex = idx;
+      resumeTime = resume.time;
+    }
+  }
+  musicIndex = resumeIndex >= 0 ? resumeIndex : pickNextTrackIndex();
   recordTrackHeard(musicIndex);
   player._pendingLoad = loadMusicTrack(player, musicIndex, { prebuffer: true });
+  if (resumeIndex >= 0 && resumeTime > 0.5) {
+    player.addEventListener("loadedmetadata", function applyResumeTime() {
+      try { player.currentTime = resumeTime; } catch (error) { /* 무시 — 처음부터 재생돼도 무방 */ }
+    }, { once: true });
+  }
 })();
+
+// 2026-07-08: 앱이 백그라운드로 가거나(다른 앱 전환) 아예 종료될 때도 마지막
+// 재생 위치를 놓치지 않도록 강제 저장한다. timeupdate 기반 저장(5초 간격)만
+// 믿으면 그 사이에 앱이 꺼질 경우 최대 5초 분량이 유실될 수 있다.
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") maybeSaveMusicResume(true);
+});
+window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
