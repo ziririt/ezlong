@@ -3,53 +3,53 @@
   "name": "VIX 변동성 지수",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-07-08T15:56:07.040Z",
+  "updatedAt": "2026-07-08T18:26:59.968Z",
   "price": {
-    "current": 18.17,
-    "change": 2.04,
-    "changePct": 12.65,
+    "current": 16.72,
+    "change": 0.59,
+    "changePct": 3.66,
     "high52": 35.3,
     "low52": 13.38,
-    "pos52": 21.9,
+    "pos52": 15.2,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 17.8035,
-    "sma50": 17.5058,
-    "sma100": 19.9775,
-    "sma200": 18.685,
-    "rsi": 52.42,
+    "sma20": 17.731,
+    "sma50": 17.4768,
+    "sma100": 19.963,
+    "sma200": 18.6777,
+    "rsi": 47.32,
     "macd": {
-      "macd": -0.307012,
-      "signal": -0.206434,
-      "histogram": -0.100578
+      "macd": -0.422681,
+      "signal": -0.229567,
+      "histogram": -0.193114
     },
     "bb": {
-      "upper": 21.0498,
-      "middle": 17.8035,
-      "lower": 14.5572,
-      "bandwidth": 0.3647
+      "upper": 21.006,
+      "middle": 17.731,
+      "lower": 14.456,
+      "bandwidth": 0.3694
     }
   },
   "levels": {
-    "swingResistance": 18.5,
-    "swingSupport": 17.99,
+    "swingResistance": 17.24,
+    "swingSupport": 16.23,
     "pivot": {
-      "pp": 19.01,
-      "r1": 22.5,
-      "r2": 26.82,
-      "s1": 14.69,
-      "s2": 11.2
+      "pp": 18.53,
+      "r1": 21.53,
+      "r2": 26.34,
+      "s1": 13.72,
+      "s2": 10.72
     }
   },
   "analysis": {
     "trend": "횡보",
     "strength": 3,
-    "support": 17.99,
-    "resistance": 18.5,
+    "support": 16.23,
+    "resistance": 17.24,
     "rsiStatus": "중립",
     "macdStatus": "중립",
     "bbStatus": "중단",
@@ -57,28 +57,28 @@
     "action": "관망",
     "buyScore": 4,
     "scoreReason": "RSI 중립, MACD 악화 지속, Lower High",
-    "rsiTrajectory": "45.3 → 52.4 (중립지속 중)",
-    "macdTrajectory": "히스토 -0.0740 → -0.1006 (악화)",
-    "pricePattern": "Lower High 지속",
+    "rsiTrajectory": "45.3 → 47.3 (중립지속 중)",
+    "macdTrajectory": "히스토 -0.0740 → -0.1931 (악화 유지)",
+    "pricePattern": "Lower High 패턴 지속",
     "volComment": "거래량비 N/A",
     "bbPosition": "중단근처",
-    "reason": "MACD 악화 지속 및 Lower High 패턴이 3일 연속 관망을 유지하게 한다. RSI가 50선을 회복했으나 추세 전환을 확신하기 어렵다.",
-    "entry": 0,
-    "stop": 0,
-    "target": 0,
-    "invalidation": 0,
-    "weeklyConflict": "충돌 없음",
-    "profitTarget1": 0,
-    "profitTarget2": 0,
-    "stopLoss": 0,
-    "narrative": "[추세 위치]\n· 현재가($18.17) vs SMA5/20/50($16.52/$17.80/$17.51) — 단기·중기 추세 상회, 중기 추세 하회\n· SMA100/200($19.98/$18.68) 대비 위치 — 중장기 추세 하회, 약세 강도\n· 52주 위치(21.9%) + 현 가격대 역사적 저점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (45.3→52.4) + 중립 판단 + 상승 전환 시도 중이나 추세 약함\n· MACD 히스토그램 궤적 (-0.0740→-0.1006) + 악화 진단 + 약세 추세 지속 신호\n· 볼린저밴드 현재가 위치 (중단 $17.80) + 밴드폭 36.47%로 변동성 확대 가능성\n[지지·저항 구조]\n· 스윙 지지선 ($17.99) + 피벗 기반 지지\n· 스윙 저항선 ($18.50) + 돌파 시 단기 반등 기대\n· 5일/20일 고가·저가 패턴 (Lower High) + 약세 추세 지속\n[거래량·결론]\n· 거래량 비율 N/A + 움직임의 신뢰도 판단 불가\n· 현 구간 진단 (축적구간) + 관망 조건: RSI 50 이상 안착 및 MACD 개선 확인",
-    "patternNote": "5일 고가($18.91)가 20일 고가($23.34) 하회하며 Lower High 패턴이 지속되고 있다.",
+    "reason": "SMA5는 상승했으나 SMA20/50 하회, MACD 히스토그램 악화 지속으로 매수세 약함. 5일 연속 횡보하며 방향성 부재.",
+    "entry": 16.23,
+    "stop": 15.53,
+    "target": 17.24,
+    "invalidation": 17.24,
+    "weeklyConflict": "주봉은 약세이나 일봉 신호 우선",
+    "profitTarget1": 17.24,
+    "profitTarget2": 18.53,
+    "stopLoss": 15.53,
+    "narrative": "[추세 위치]\n· 현재가($16.72) vs SMA5/20/50($16.23/$17.73/$17.48) — 단기 상승 후 중기 저항 하회 구간\n· SMA100/200($19.96/$18.68) 대비 위치 — 중장기 추세 하방 압력 확인 수준\n· 52주 위치(15.2%) + 현 가격대 역사적 저점 부근 구간\n[모멘텀 지표]\n· RSI 궤적 (45.3→47.3) + 중립 판단 + 약한 상승 흐름 확인\n· MACD 히스토그램 궤적 (-0.0740→-0.1931) + 악화 진단 + 약세 추세 지속 신호\n· 볼린저밴드 현재가 위치 (중단 $17.73) + 밴드폭 축소 구간\n[지지·저항 구조]\n· 스윙 지지선 ($16.23) + SMA5 기반 지지 확인\n· 스윙 저항선 ($17.24) + 돌파 시 단기 반등 기대\n· 5일/20일 고가·저가 패턴 (Lower High) + 약세 추세 지속 진단\n[거래량·결론]\n· 거래량 비율 (N/A) + 움직임의 신뢰도 판단 불가\n· 현 구간 진단 (축적구간) + 17.24 돌파 시 매수 진입 고려",
+    "patternNote": "5일 연속 16달러 초중반에서 횡보하며 17.24 저항선 돌파 시도 중.",
     "keyPoints": [
+      "SMA5는 상승했으나 SMA20/50 하회",
       "MACD 히스토그램 악화 지속",
-      "Lower High 패턴 3일 연속 관망 유지",
-      "RSI 50선 회복 시도 중이나 추세 약함"
+      "5일 연속 횡보하며 방향성 부재"
     ],
-    "riskNote": "현재가($18.17)가 SMA200($18.68) 하회하며 중장기 추세 약세가 지속되고 있다.",
-    "continuity": "3일 연속 관망 유지. RSI 궤적이 45.3에서 52.4로 상승했으나, MACD 히스토그램이 -0.0740에서 -0.1006으로 악화되며 추세 전환 신호로 보기 어렵다."
+    "riskNote": "16.23 지지선 이탈 시 추가 하락 위험 존재.",
+    "continuity": "3일 연속 관망 유지. 금일 RSI는 소폭 상승했으나 MACD 히스토그램 악화가 지속되며 Lower High 패턴이 유지되어 관망 기조 유지."
   }
 }
