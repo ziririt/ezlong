@@ -1335,6 +1335,7 @@ async function playMusic() {
     // 중이라면(_pendingLoad) 여기서 새로 고르지 않고 그 결과를 그대로 쓴다.
     musicIndex = pickNextTrackIndex();
     recordTrackHeard(musicIndex);
+    renderMusicPlaylistInfo();
     player._pendingLoad = loadMusicTrack(player, musicIndex, { prebuffer: true });
   }
   resetActiveWatchState();
@@ -1466,6 +1467,7 @@ async function playNextTrack() {
   const player = activePlayer();
   musicIndex = pickNextTrackIndex();
   recordTrackHeard(musicIndex);
+  renderMusicPlaylistInfo();
   resetActiveWatchState();
   if (musicToggle) musicToggle.style.setProperty("--progress", "0");
   if (player.dataset.blobUrl) {
@@ -1494,6 +1496,7 @@ function handleActivePlayerEnded(event) {
     activePlayerIndex = 1 - activePlayerIndex;
     musicIndex = pendingNextIndex;
     pendingNextIndex = -1;
+    renderMusicPlaylistInfo();
     crossfadeTriggered = false;
     setPlayerVolume(activePlayer(), 1);
     // 방어 코드(2026-07-07): 위 updateMusicProgress에서 걸었던 standby.play()가
@@ -1507,10 +1510,21 @@ function handleActivePlayerEnded(event) {
   playNextTrack();
 }
 
+// 2026-07-08: "지금 재생 중인 곡이 뭔지 궁금하다"는 질문에 답할 방법이
+// 화면 어디에도 없었다(재생/스킵 버튼만 있고 곡명 표시가 없었음) — 음악
+// 설정 패널에 이미 있던 총 곡수 안내에 현재 곡 제목을 덧붙인다.
 function renderMusicPlaylistInfo() {
   if (!musicPlaylistInfo) return;
   const total = Array.isArray(musicPlaylist) ? musicPlaylist.length : 0;
-  musicPlaylistInfo.textContent = `기본 플레이리스트 · 총 ${total}곡`;
+  const track = Array.isArray(musicPlaylist) && musicPlaylist.length > 0
+    ? musicPlaylist[musicIndex % musicPlaylist.length]
+    : null;
+  if (track && track.title) {
+    const variant = track.playlist && track.playlist !== "SINGLE" ? ` (${track.playlist})` : "";
+    musicPlaylistInfo.textContent = `지금 재생 중: ${track.title}${variant} · 전체 ${total}곡`;
+  } else {
+    musicPlaylistInfo.textContent = `기본 플레이리스트 · 총 ${total}곡`;
+  }
 }
 
 function applyCategorySelection() {
@@ -1706,6 +1720,7 @@ window.setInterval(musicStallWatchdog, 2000);
   }
   musicIndex = resumeIndex >= 0 ? resumeIndex : pickNextTrackIndex();
   recordTrackHeard(musicIndex);
+  renderMusicPlaylistInfo();
   player._pendingLoad = loadMusicTrack(player, musicIndex, { prebuffer: true });
 })();
 
