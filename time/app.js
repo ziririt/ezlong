@@ -1153,13 +1153,30 @@ function resetActiveWatchState() {
 // 재생 시작 이후로는 완전히 로컬 데이터라 두 문제 모두 원천적으로 사라진다.
 // prebuffer:false는 옛 방식(즉시 스트리밍) 폴백 — 지금은 모든 호출부가
 // prebuffer:true를 쓴다.
+// 트랙 하나의 실제 재생 URL을 계산한다(상대경로 또는 musicSourceBaseUrl
+// 기준 CDN 경로). 네이티브 브릿지(백그라운드 그림자 재생기)에도 그대로
+// 재사용한다 — 두 군데서 URL 계산 방식이 어긋나지 않게 여기 한 곳에만 둔다.
+function resolveTrackUrl(track) {
+  const base = typeof musicSourceBaseUrl === "string" ? musicSourceBaseUrl.trim() : "";
+  const fileName = track.file.replace(/^assets\/music\//, "");
+  return base ? `${base.replace(/\/$/, "")}/${fileName}` : track.file;
+}
+
+// 네이티브 쪽(별도 프로세스)은 페이지의 상대경로 개념이 없으므로, 반드시
+// 완전한 절대 URL(https://...)로 변환해서 넘겨줘야 한다.
+function resolveTrackAbsoluteUrl(track) {
+  try {
+    return new URL(resolveTrackUrl(track), window.location.href).href;
+  } catch (error) {
+    return resolveTrackUrl(track);
+  }
+}
+
 async function loadMusicTrack(player, index, { prebuffer = true } = {}) {
   if (!player || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
   setPlayerVolume(player, 1);
   const track = musicPlaylist[index % musicPlaylist.length];
-  const base = typeof musicSourceBaseUrl === "string" ? musicSourceBaseUrl.trim() : "";
-  const fileName = track.file.replace(/^assets\/music\//, "");
-  const url = base ? `${base.replace(/\/$/, "")}/${fileName}` : track.file;
+  const url = resolveTrackUrl(track);
 
   delete player.dataset.cachedDuration;
   player.addEventListener("loadedmetadata", function onCacheDuration() {
@@ -1298,8 +1315,16 @@ async function playMusic() {
   // 유저의 실제 탭(toggleMusic 클릭)으로만 호출되는 지점이라, iOS가 요구하는
   // "사용자 제스처 안에서" AudioContext를 만들고 깨우는 조건을 만족한다.
   ensureAudioGraph();
+  // 2026-07-08 버그 수정: 에어팟을 뺐다 다시 끼우는 등 오디오 라우트가
+  // 바뀐 직후엔 AudioContext가 suspended 상태로 남아있는 경우가 있다.
+  // 예전엔 resume()을 기다리지 않고(fire-and-forget) 곧바로 player.play()를
+  // 불렀는데, resume()이 아직 끝나기 전에 재생이 시작되면 <audio> 엘리먼트
+  // 자체는 "재생 중"이 되지만 GainNode(볼륨 담당) 뒤쪽 AudioContext가 아직
+  // 안 살아있어서 소리가 전혀 안 나는 상태가 됐다 — 버튼은 "일시정지"로
+  // 바뀌는데 실제 소리는 없어서 다시 눌러야만 재생되는 증상의 원인이었다.
+  // resume()을 확실히 기다린 뒤에 play()를 호출한다.
   if (audioContext && audioContext.state === "suspended") {
-    audioContext.resume().catch(() => {});
+    try { await audioContext.resume(); } catch (error) { /* 실패해도 아래에서 play 자체는 시도한다 */ }
   }
   const player = activePlayer();
   if (!player) return;
@@ -1333,11 +1358,81 @@ function pauseMusic() {
   standbyPlayer()?.pause();
 }
 
+// 2026-07-08: iOS 네이티브 래퍼(WKWebView)에서 "다른 앱으로 전환하면 음악이
+// 멈춘다"는 문제 대응. WKWebView 내부 HTML5 <audio>는 AVAudioSession
+// 카테고리/백그라운드 모드를 앱 쪽에서 아무리 올바르게 설정해도, 앱이
+// 백그라운드로 가는 순간 오디오 자체가 조용히 정지되는 경우가 있다(WebKit이
+// 자체적으로 미디어를 서스펜드하는 알려진 동작). 이를 우회하기 위해 네이티브
+// 쪽에 무음 오디오를 계속 흘려보내 오디오 세션을 "재생 중" 상태로 유지시키는
+// 트릭을 쓴다 — 실제 음악 재생/정지 상태와 동기화해서 켜고 끈다(유저가
+// 재생을 누르지 않았는데도 앱이 오디오를 재생 중인 것처럼 보이는 걸 막기
+// 위해). 일반 브라우저(웹)에서는 window.webkit이 없으므로 아무 동작도
+// 하지 않는다 — 웹 동작에는 영향 없음.
+function notifyNativeAudioKeepAlive(isPlaying) {
+  try {
+    window.webkit.messageHandlers.flipzenAudioKeepAlive.postMessage(
+      isPlaying ? "start" : "stop"
+    );
+  } catch (error) {
+    // 네이티브 래퍼가 아니면(일반 웹) 핸들러가 없어 여기로 떨어진다 — 정상.
+  }
+}
+
 function toggleMusic() {
   musicPlaying = !musicPlaying;
   if (musicPlaying) playMusic(); else pauseMusic();
   renderMusicToggle();
+  notifyNativeAudioKeepAlive(musicPlaying);
 }
+
+// 2026-07-08: 무음 킵얼라이브 트릭만으로는 실기기 테스트 결과 백그라운드
+// 음악이 계속 재생되지 않는 것으로 확인됐다 — WKWebView가 앱 백그라운드
+// 전환 시 HTML5 <audio> 자체를 정지시키는 구조적 한계로 보인다. 그래서
+// 백그라운드 구간에서만 네이티브 AVPlayer가 "그림자"처럼 같은 곡을
+// 이어받아 재생하고, 포그라운드로 돌아오면 다시 HTML5 오디오가 이어받는
+// 방식을 추가한다. 기존 크로스페이드·다음곡 선택·싫어요 학습 로직은 전혀
+// 건드리지 않는다(전부 포그라운드 전용으로 그대로 남는다) — 백그라운드
+// 중엔 같은 곡을 그대로 반복 재생하는 정도로 단순하게 처리하고, 화면으로
+// 돌아오면 기존 로직이 정상적으로 이어받는다.
+function notifyNativeShadowStart() {
+  try {
+    const player = activePlayer();
+    if (!player || !musicPlaying || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+    const track = musicPlaylist[musicIndex % musicPlaylist.length];
+    if (!track) return;
+    window.webkit.messageHandlers.flipzenShadowPlayer.postMessage({
+      action: "start",
+      url: resolveTrackAbsoluteUrl(track),
+      time: player.currentTime || 0,
+    });
+  } catch (error) {
+    // 네이티브 래퍼가 아니면(일반 웹) 핸들러가 없어 여기로 떨어진다 — 정상.
+  }
+}
+
+function notifyNativeShadowStop() {
+  try {
+    window.webkit.messageHandlers.flipzenShadowPlayer.postMessage({ action: "stop" });
+  } catch (error) {
+    // 웹에서는 핸들러가 없어 여기로 떨어진다 — 정상.
+  }
+}
+
+// 네이티브가 그림자 재생을 끝내면서(포그라운드 복귀 시) 마지막으로 재생
+// 중이던 위치를 알려준다 — HTML5 오디오를 그 근처로 맞춰서 이어받는다.
+// 백그라운드 앰비언트 성격이라 초 단위까지 정확히 맞을 필요는 없다.
+window.__flipzenShadowStopped = function (finalTime) {
+  try {
+    const player = activePlayer();
+    if (!player) return;
+    if (Number.isFinite(finalTime) && finalTime > 0) {
+      player.currentTime = finalTime;
+    }
+    if (musicPlaying) player.play().catch(() => {});
+  } catch (error) {
+    // 무시 — 실패해도 기존 위치에서 그냥 이어진다.
+  }
+};
 
 // 스킵 버튼(수동)은 크로스페이드 없이 즉시 곡을 바꾼다 — 유저가 직접 누른
 // 즉각 반응이 우선이고, 곡이 끝나기 전 자동 전환과는 성격이 다르다.
@@ -1510,6 +1605,29 @@ musicPlayers.forEach((player) => {
     player.load();
     player.play().catch(() => playNextTrack());
   });
+  // 2026-07-08 버그 수정: 에어팟을 뺐다 다시 끼우면 iOS/WKWebView가
+  // <audio>를 우리 코드 호출 없이 강제로 일시정지시킨다(라우트 변경 시
+  // 표준 동작). 그런데 musicPlaying 변수는 toggleMusic()을 눌렀을 때만
+  // 바뀌는 구조라, 이렇게 "코드가 모르는 사이에" 멈춘 경우 musicPlaying은
+  // 계속 true로 남아 재생 버튼이 계속 "일시정지" 아이콘으로 표시됐다 —
+  // 그 상태에서 버튼을 눌러도 실제로는 (일시정지→재생) 순서가 아니라
+  // (재생 의도인데 UI는 이미 멈춤 아이콘) 순서로 꼬여서 여러 번 눌러야
+  // 겨우 재생되는 원인이 됐다. <audio> 엘리먼트가 실제로 멈추거나
+  // 재생되는 순간(원인 불문)을 그대로 반영해 항상 실제 상태와 동기화한다.
+  player.addEventListener("pause", () => {
+    if (player !== activePlayer()) return; // 크로스페이드 전환 중 옛 active player의 의도된 pause는 무시
+    if (musicPlaying) {
+      musicPlaying = false;
+      renderMusicToggle();
+    }
+  });
+  player.addEventListener("playing", () => {
+    if (player !== activePlayer()) return;
+    if (!musicPlaying) {
+      musicPlaying = true;
+      renderMusicToggle();
+    }
+  });
 });
 allCategories.addEventListener("change", () => {
   if (allCategories.checked) {
@@ -1553,33 +1671,33 @@ window.setInterval(musicStallWatchdog, 2000);
 (function prefetchFirstTrack() {
   const player = activePlayer();
   if (!player || player.src) return;
-  // 2026-07-08: 로그인 없이 저장해둔 "마지막으로 듣던 곡/위치"가 있으면
-  // 그걸 이어서 준비한다(자동재생은 아니고, 재생 버튼을 누르면 그 지점부터
-  // 시작되도록 미리 로드+탐색만 해둔다).
+  // 2026-07-08: 로그인 없이 저장해둔 "마지막으로 듣던 곡"이 있으면 같은 곡을
+  // 이어서 준비한다 — 단, 듣던 "초"까지는 맞추지 않고 항상 처음부터 재생한다.
+  // (버그 수정: 예전엔 정확한 초까지 seek했는데, loadedmetadata가 늦게 와서
+  // 재생 시작 후 몇 초간 진행바가 안 움직이다가 갑자기 그 지점으로 뚝
+  // 끊기며 점프하는 불쾌한 증상이 있었다. 유저 피드백: "굳이 직전에 50초까지
+  // 들었으면 51초부터 이어서 들을 필요는 없고, 해당 곡이면 된다" — 곡 단위
+  // 이어듣기만 남기고 초 단위 탐색은 완전히 제거한다.)
   const resume = loadMusicResume();
   let resumeIndex = -1;
-  let resumeTime = 0;
   if (resume && Array.isArray(musicPlaylist)) {
     const idx = musicPlaylist.findIndex((track) => track && track.file === resume.file);
-    if (idx >= 0) {
-      resumeIndex = idx;
-      resumeTime = resume.time;
-    }
+    if (idx >= 0) resumeIndex = idx;
   }
   musicIndex = resumeIndex >= 0 ? resumeIndex : pickNextTrackIndex();
   recordTrackHeard(musicIndex);
   player._pendingLoad = loadMusicTrack(player, musicIndex, { prebuffer: true });
-  if (resumeIndex >= 0 && resumeTime > 0.5) {
-    player.addEventListener("loadedmetadata", function applyResumeTime() {
-      try { player.currentTime = resumeTime; } catch (error) { /* 무시 — 처음부터 재생돼도 무방 */ }
-    }, { once: true });
-  }
 })();
 
 // 2026-07-08: 앱이 백그라운드로 가거나(다른 앱 전환) 아예 종료될 때도 마지막
 // 재생 위치를 놓치지 않도록 강제 저장한다. timeupdate 기반 저장(5초 간격)만
 // 믿으면 그 사이에 앱이 꺼질 경우 최대 5초 분량이 유실될 수 있다.
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "hidden") maybeSaveMusicResume(true);
+  if (document.visibilityState === "hidden") {
+    maybeSaveMusicResume(true);
+    notifyNativeShadowStart();
+  } else if (document.visibilityState === "visible") {
+    notifyNativeShadowStop();
+  }
 });
 window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
