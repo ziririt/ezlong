@@ -1306,6 +1306,7 @@ function renderMusicToggle() {
   musicToggle.setAttribute("aria-pressed", String(musicPlaying));
   musicToggle.setAttribute("aria-label", musicPlaying ? "음악 일시정지" : "음악 재생");
   renderMusicHistoryList(); // 재생/일시정지에 따라 "바로 듣기"/"재생 중" 라벨도 같이 갱신한다.
+  sendNativeHeartbeat(); // 재생 상태가 바뀌는 즉시 네이티브 쪽 캐시도 최신으로 — 2초 주기를 기다리지 않는다.
 }
 
 // 에러 이벤트도, ended 이벤트도 없이 재생이 조용히 멈추는 증상이 있었다
@@ -1327,7 +1328,15 @@ async function playMusic() {
   // 안 살아있어서 소리가 전혀 안 나는 상태가 됐다 — 버튼은 "일시정지"로
   // 바뀌는데 실제 소리는 없어서 다시 눌러야만 재생되는 증상의 원인이었다.
   // resume()을 확실히 기다린 뒤에 play()를 호출한다.
-  if (audioContext && audioContext.state === "suspended") {
+  // 2026-07-08 재수정: 에어팟을 뺐다 다시 끼우는 재검증에서 "재생 버튼을
+  // 눌러도 소리가 전혀 안 나고, 일시정지→재생을 몇 번 반복해야 겨우
+  // 소리가 난다"는 증상이 남아있었다 — state === "suspended"만 체크했는데,
+  // iOS WebKit은 오디오 라우트가 끊겼다가 복구되는 구간에서 AudioContext를
+  // "suspended"가 아닌 다른 비-running 상태로 두는 경우가 있어(예:
+  // "interrupted") 이 조건에 안 걸려 resume()이 호출되지 않았다. "running"이
+  // 아니면 무조건 resume을 시도하도록 조건을 넓힌다 — resume()은 이미
+  // running인 컨텍스트에 불러도 안전하므로 넓혀도 부작용이 없다.
+  if (audioContext && audioContext.state !== "running") {
     try { await audioContext.resume(); } catch (error) { /* 실패해도 아래에서 play 자체는 시도한다 */ }
   }
   const player = activePlayer();
@@ -1392,36 +1401,38 @@ function toggleMusic() {
   notifyNativeAudioKeepAlive(musicPlaying);
 }
 
-// 2026-07-08: 무음 킵얼라이브 트릭만으로는 실기기 테스트 결과 백그라운드
-// 음악이 계속 재생되지 않는 것으로 확인됐다 — WKWebView가 앱 백그라운드
-// 전환 시 HTML5 <audio> 자체를 정지시키는 구조적 한계로 보인다. 그래서
-// 백그라운드 구간에서만 네이티브 AVPlayer가 "그림자"처럼 같은 곡을
-// 이어받아 재생하고, 포그라운드로 돌아오면 다시 HTML5 오디오가 이어받는
-// 방식을 추가한다. 기존 크로스페이드·다음곡 선택·싫어요 학습 로직은 전혀
-// 건드리지 않는다(전부 포그라운드 전용으로 그대로 남는다) — 백그라운드
-// 중엔 같은 곡을 그대로 반복 재생하는 정도로 단순하게 처리하고, 화면으로
-// 돌아오면 기존 로직이 정상적으로 이어받는다.
-function notifyNativeShadowStart() {
+// 2026-07-08 재설계: 무음 킵얼라이브 트릭만으로는 실기기 테스트 결과
+// 백그라운드 음악이 계속 재생되지 않는 것으로 확인됐다 — WKWebView가 앱
+// 백그라운드 전환 시 HTML5 <audio> 자체를 정지시키는 구조적 한계로 보인다.
+// 처음엔 visibilitychange 시점에 JS가 네이티브로 "지금 곡/위치"를 보내
+// 그림자 재생(BackgroundShadowPlayer)을 그 순간에 새로 시작시키려 했는데,
+// 실기기 재테스트 결과 여전히 백그라운드 전환 즉시 소리가 끊겼다 — 앱이
+// 백그라운드로 넘어가는 순간 WKWebView의 WebContent 프로세스 자체가
+// 거의 즉시 멈춰버려서, 그 타이밍에 새로 보내는 postMessage가 네이티브에
+// 도착하기도 전에 오디오가 이미 끊긴 것으로 보인다(JS 왕복에 의존한 게
+// 원인). 그래서 트리거 방식을 바꾼다 — 재생 중인 동안 2초마다 "지금 곡
+// URL/위치"를 네이티브에 미리 흘려보내두고(heartbeat), 네이티브 쪽이 앱
+// 생명주기 알림(didEnterBackground)을 직접 감지해서 그 시점에 가장 최근
+// heartbeat 값으로 즉시 그림자 재생을 시작한다 — 이제 그 순간에 JS 왕복을
+// 기다릴 필요가 없어서 타이밍 경쟁 자체가 사라진다. 기존 크로스페이드·
+// 다음곡 선택·싫어요 학습 로직은 전혀 건드리지 않는다.
+function sendNativeHeartbeat() {
   try {
+    if (!musicPlaying || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) {
+      window.webkit.messageHandlers.flipzenShadowPlayer.postMessage({ action: "heartbeat", playing: false });
+      return;
+    }
     const player = activePlayer();
-    if (!player || !musicPlaying || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
     const track = musicPlaylist[musicIndex % musicPlaylist.length];
-    if (!track) return;
+    if (!player || !track) return;
     window.webkit.messageHandlers.flipzenShadowPlayer.postMessage({
-      action: "start",
+      action: "heartbeat",
+      playing: true,
       url: resolveTrackAbsoluteUrl(track),
       time: player.currentTime || 0,
     });
   } catch (error) {
     // 네이티브 래퍼가 아니면(일반 웹) 핸들러가 없어 여기로 떨어진다 — 정상.
-  }
-}
-
-function notifyNativeShadowStop() {
-  try {
-    window.webkit.messageHandlers.flipzenShadowPlayer.postMessage({ action: "stop" });
-  } catch (error) {
-    // 웹에서는 핸들러가 없어 여기로 떨어진다 — 정상.
   }
 }
 
@@ -1803,6 +1814,7 @@ tick();
 requestCurrentWeather();
 window.setInterval(tick, 1000);
 window.setInterval(musicStallWatchdog, 2000);
+window.setInterval(sendNativeHeartbeat, 2000); // 백그라운드 그림자 재생용 heartbeat — 위 sendNativeHeartbeat 주석 참조.
 
 // 2026-07-07: 앱을 켜고 첫 곡을 재생할 때 초반 몇 초간 짧게 끊기는 증상 —
 // 재생 버튼을 누른 그 순간에야 트랙 파일을 받기 시작해서 벌어지는 지연으로
@@ -1840,9 +1852,9 @@ window.setInterval(musicStallWatchdog, 2000);
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") {
     maybeSaveMusicResume(true);
-    notifyNativeShadowStart();
-  } else if (document.visibilityState === "visible") {
-    notifyNativeShadowStop();
+    // 그림자 재생 시작은 더 이상 여기서 트리거하지 않는다 — 네이티브가
+    // 앱 생명주기 알림으로 직접 감지해서 heartbeat 캐시로 시작한다(위
+    // sendNativeHeartbeat 주석 참조). 이 시점엔 위치 저장만 하면 된다.
   }
 });
 window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
