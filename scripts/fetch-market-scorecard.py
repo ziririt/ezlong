@@ -562,9 +562,14 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
   예: 직전 카드에 "내일 도하 협상"이 핵심이라면, 협상이 끝나기 전까지 모든 카드에 불확실성 포함
 - 핵심 이슈가 바뀐 경우, 반드시 새로운 중대 뉴스 이벤트가 발생했기 때문이어야 함
 - key_event.name은 뉴스 이벤트여야 함. "기술주 프리마켓 강세/약세" 같은 시장 상태 표현 절대 금지
-- [혼조 연속성 — 엄격 적용] 직전 카드에 혼조 재료(mixed_factors)가 있으면, 그 해석 논쟁이 확정됐다는
-  새로운 근거(방향을 결정지은 뉴스·가격 반응)가 없는 한 이번 카드에도 반드시 유지해야 함.
-  해석 논쟁은 30분~몇 시간 만에 사라지지 않는다. 제외하려면 제외 근거가 오늘 데이터에 있어야 함.
+- [혼조 연속성 — 완화 적용, 2026-07-09 개정] 직전 카드의 혼조 재료(mixed_factors)는 참고만 하되,
+  오늘 데이터에서 다시 확인되지 않으면 자동으로 유지하지 마라. 판단 기준은 항상 '오늘의 최신 뉴스·
+  가격 데이터'다. 같은 혼조 재료를 이번 카드에도 넣으려면, 그 주제가 아래 [최신 뉴스 헤드라인] 또는
+  [현재 시장 데이터]에 오늘도 실제로 등장해야 한다. "전 카드에도 있었으니까"라는 이유만으로 반복
+  삽입하는 것은 금지. 특히 key_event(핵심 이슈) 자체가 이미 다른 사건으로 교체됐다면, 이전 핵심
+  이슈에서 파생된 혼조 재료는 대부분 더 이상 '최근 6시간+향후 12시간' 판단에 실질적 영향이 없다고
+  보고 제외를 우선 검토하라. (배경: 며칠 전 이슈의 혼조 재료가 핵심 이슈가 완전히 바뀐 뒤에도
+  근거 없이 그대로 반복 복사되는 사고가 실제로 발생함 — 반드시 오늘 데이터로 재검증할 것)
 
 """
 
@@ -665,6 +670,10 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 긍정/부정 요인에 배치한 재료라도 해석 논란이 남아 있으면 desc에 '해석 엇갈림' 명시.
 - positive_total + negative_total = 100 규칙은 유지 (mixed는 점수 배분에 미포함)
 - 억지로 mixed를 채우지 마라. 방향이 명확한 재료는 긍정/부정에 두는 것이 원칙이다.
+- [오늘 데이터 재검증 필수, 2026-07-09 추가] mixed_factors는 반드시 이번 프롬프트의
+  [현재 시장 데이터] 또는 [최신 뉴스 헤드라인]에 실제로 등장하는 재료여야 한다. 며칠 전 이벤트를
+  오늘 데이터 근거 없이 습관적으로 반복 삽입하는 것은 금지. 직전 카드 참고 블록에 있다는 이유만으로
+  넣지 말고, 매번 오늘 데이터 기준으로 처음부터 다시 판단하라.
 
 === 재료 간 괴리 명시 — 맥락 없는 단독 서술 금지 ===
 - 두 데이터가 교과서적 인과와 반대로 움직이면, 그 괴리 자체를 반드시 서술하라.
@@ -841,6 +850,60 @@ def build_entry(kst_now, result):
     }
 
 
+MIXED_FACTOR_STALE_HOURS = 24  # 혼조 재료 무한 반복 방지 — 이 시간 이상 연속되면 오늘 데이터 재확인 요구
+
+
+def prune_stale_mixed_factors(entry, existing_entries, headlines, rss_headlines, kst_now):
+    """혼조 재료(mixed_factors)가 STALE_HOURS 넘게 연속 반복되고 있는데 오늘 뉴스에도
+    등장하지 않으면 강제로 제거한다 — 프롬프트 지시만으로는 막지 못한 실제 사고에 대한 안전장치.
+
+    배경 (2026-07-09): "고용 둔화 해석 논쟁" 혼조 재료가 7/4~7/9까지 핵심 이슈가
+    "고용 둔화"에서 "미-이란 긴장·유가 급등"으로 완전히 바뀐 뒤에도 문구 그대로 반복 등장.
+    원인은 prev_block의 "직전 카드 혼조 재료는 새 근거 없이는 반드시 유지" 지시가 너무 강해서
+    LLM이 매번 오늘 데이터를 새로 판단하지 않고 그대로 복사하는 쪽을 택한 것으로 추정.
+    프롬프트를 완화했지만(위 참조), LLM 준수에만 의존하지 않도록 코드에서도 이중 차단한다.
+    """
+    mixed = entry.get('mixed_factors') or []
+    if not mixed:
+        return entry, []
+
+    all_news_text = ' '.join((headlines or []) + (rss_headlines or [])).lower()
+    kept, dropped = [], []
+
+    for mf in mixed:
+        name = (mf.get('name') or '').strip()
+        if not name:
+            continue
+
+        # 직전 카드들을 최신순으로 거슬러 올라가며 동일 이름이 몇 시간째 연속되는지 확인
+        first_seen_id = entry.get('id')
+        for e in existing_entries:
+            prior_names = [(m.get('name') or '') for m in e.get('mixed_factors', [])]
+            if name in prior_names:
+                first_seen_id = e.get('id', first_seen_id)
+            else:
+                break  # 연속 기록이 끊기면 그 지점에서 중단
+
+        try:
+            first_seen_dt = datetime.strptime(first_seen_id, '%Y-%m-%d-%H:%M')
+            age_hours = (kst_now.replace(tzinfo=None) - first_seen_dt).total_seconds() / 3600
+        except Exception:
+            age_hours = 0
+
+        if age_hours >= MIXED_FACTOR_STALE_HOURS:
+            # 오늘 뉴스에 실제로 등장하는지 느슨하게 확인 (이름 앞부분이 뉴스 텍스트에 있는지)
+            probe = name[:6].lower() if len(name) >= 6 else name.lower()
+            grounded = bool(probe) and probe in all_news_text
+            if not grounded:
+                dropped.append((name, round(age_hours, 1)))
+                continue
+
+        kept.append(mf)
+
+    entry['mixed_factors'] = kept
+    return entry, dropped
+
+
 def validate_entry(entry):
     """점수 합계 검증"""
     pos_total = entry["positive_total"]
@@ -994,6 +1057,15 @@ def main():
 
     # 4. 항목 생성 + 검증
     entry = build_entry(kst_now, result)
+
+    # 4-0. 혼조 재료 고착 방지 (2026-07-09) — 프롬프트 준수에만 의존하지 않는 코드 안전장치
+    entry, dropped_mixed = prune_stale_mixed_factors(
+        entry, data.get("entries", []), headlines, rss_headlines, kst_now
+    )
+    if dropped_mixed:
+        for name, age in dropped_mixed:
+            print(f"  WARNING: 혼조 재료 '{name}' {age}시간째 반복 & 오늘 뉴스 미확인 — 자동 제거")
+
     validate_entry(entry)
 
     # 4-1. 내용 모순 검증 — 모순 발견 시 1회 재시도 (2026-06-29 추가, 2026-07-03 세션 검증 확장)
@@ -1005,6 +1077,12 @@ def main():
         result2 = call_gemini(prompt)
         if result2:
             entry2 = build_entry(kst_now, result2)
+            entry2, dropped_mixed2 = prune_stale_mixed_factors(
+                entry2, data.get("entries", []), headlines, rss_headlines, kst_now
+            )
+            if dropped_mixed2:
+                for name, age in dropped_mixed2:
+                    print(f"  WARNING: (재시도) 혼조 재료 '{name}' {age}시간째 반복 & 오늘 뉴스 미확인 — 자동 제거")
             validate_entry(entry2)
             errors2 = validate_content(entry2, session_code)
             if errors2:
