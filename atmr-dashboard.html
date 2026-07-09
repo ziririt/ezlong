@@ -1378,18 +1378,26 @@ li.gear-other-sep { display: none !important; }
 }
 
 /* ─── 모바일: 볼카운트 전광판 잘림 방지 ─────────────── */
+/* 2026-07-10: 3단(BUY/SELL/HOLD) 좁은 컬럼에서 기본 폰트(16px)를 그대로
+   쓰면 설명 텍스트가 4줄까지 줄바꿈되어 가독성을 오히려 해쳤다(유저 제보).
+   이 박스 컨텍스트에 한해서만 예외적으로 16px 미만을 허용 — 사이트 전역
+   16px 최소 규칙([[feedback_ezlong_typography_policy]])의 명시적 사용자
+   승인 예외 케이스. */
 @media (max-width: 520px) {
   .action-card { padding: 20px 16px; }
   .bi-col { padding: 16px 8px 14px; gap: 9px; }
   .bi-ball { width: 24px; height: 24px; border-width: 2px; }
   .bi-balls { gap: 7px; }
-  .bi-hint { font-size: 16px; }
+  .bi-label { font-size: 14px; letter-spacing: .14em; }
+  .bi-hint { font-size: 13px; line-height: 1.35; }
 }
 @media (max-width: 380px) {
   .action-card { padding: 18px 12px; }
   .bi-col { padding: 13px 5px 11px; }
   .bi-ball { width: 21px; height: 21px; }
   .bi-balls { gap: 5px; }
+  .bi-label { font-size: 13px; letter-spacing: .10em; }
+  .bi-hint { font-size: 12.5px; }
 }
 
 /* ─── AI 상담 채팅 위젯 ───────────────────────── */
