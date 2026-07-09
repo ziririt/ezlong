@@ -13,6 +13,7 @@ import os
 import sys
 import re
 import time
+import difflib
 import requests
 from datetime import datetime, timezone, timedelta
 
@@ -852,48 +853,124 @@ def build_entry(kst_now, result):
 
 MIXED_FACTOR_STALE_HOURS = 24  # 혼조 재료 무한 반복 방지 — 이 시간 이상 연속되면 오늘 데이터 재확인 요구
 
+# 혼조 재료 이름에서 걸러낼 범용 접속/서술어 — 이 단어들만으로는 "오늘 뉴스에도 있다"고
+# 판정하지 않는다. "해석/논쟁/엇갈림/지속" 같은 말은 완전히 다른 주제에도 붙는 상투구라,
+# 이것만 매칭돼도 grounded로 오판하면 안전장치가 사실상 무력화된다 (2026-07-10).
+MIXED_FACTOR_GENERIC_WORDS = {
+    '해석', '논쟁', '엇갈림', '우려', '지속', '고조', '완화', '기대', '전망',
+    '반등', '상승', '하락', '둔화', '데이터', '신호', '전환', '심리', '변수',
+    '요인', '가능성', '불확실성', '지수', '재료',
+}
 
-def prune_stale_mixed_factors(entry, existing_entries, headlines, rss_headlines, kst_now):
-    """혼조 재료(mixed_factors)가 STALE_HOURS 넘게 연속 반복되고 있는데 오늘 뉴스에도
+
+def _mixed_factor_similar(a, b, threshold=0.55):
+    """혼조 재료 이름 두 개가 리워딩만 다른 같은 주제인지 판정.
+    예: '고용 둔화 해석 논쟁' vs '고용 데이터 해석 논쟁' → 대부분 겹침, 같은 주제로 판정."""
+    if not a or not b:
+        return False
+    return difflib.SequenceMatcher(None, a, b).ratio() >= threshold
+
+
+def _grounding_tokens(name):
+    """오늘 뉴스/데이터 grounding 체크에 쓸 '의미 있는' 토큰만 추림.
+    범용 접속어(해석/논쟁 등)만 남으면 안전장치가 무력화되므로, 그런 경우에만 폴백으로
+    전체 토큰을 쓴다."""
+    tokens = [t for t in re.split(r'\s+', name) if len(t) >= 2]
+    specific = [t for t in tokens if t not in MIXED_FACTOR_GENERIC_WORDS]
+    return specific or tokens
+
+
+def _ledger_mixed_history(ledger):
+    """판단 원장(ledger)의 압축된 'k' 라인에서 '혼조: <이름>' 부분만 뽑아
+    (datetime, name) 목록으로 복원한다.
+
+    data.json(entries, 최근 10개=~2일치)과 달리 원장은 사후 수동 정리로 지워지지 않는다
+    (2026-07-09 정리 때도 원장 원본은 그대로 남아 있었음). 그래서 며칠 전 반복되다 잠깐
+    끊기고 다시 나오는 재활용 소재를 잡아낼 수 있는 유일한 소스다."""
+    out = []
+    for e in (ledger or []):
+        if not isinstance(e, dict):
+            continue
+        k = e.get('k') or ''
+        if '혼조: ' not in k:
+            continue
+        name = k.split('혼조: ', 1)[1].strip()
+        if not name:
+            continue
+        try:
+            dt = datetime.strptime(f"{e.get('d','')} {e.get('t','')}", '%Y-%m-%d %H:%M')
+        except Exception:
+            continue
+        out.append((dt, name))
+    return out
+
+
+def _collect_mixed_history(existing_entries, ledger):
+    """data.json(최근 10개, 정확한 구조)과 판단 원장(최근 20개, ~4일, 사후정리로도
+    안 지워짐)을 합쳐 (datetime, name) 후보 목록을 만든다."""
+    candidates = []
+    for e in (existing_entries or []):
+        if not isinstance(e, dict):
+            continue
+        try:
+            dt = datetime.strptime(e.get('id', ''), '%Y-%m-%d-%H:%M')
+        except Exception:
+            continue
+        for m in (e.get('mixed_factors') or []):
+            try:
+                nm = (m.get('name') or '').strip()
+            except Exception:
+                continue
+            if nm:
+                candidates.append((dt, nm))
+    candidates.extend(_ledger_mixed_history(ledger))
+    return candidates
+
+
+def prune_stale_mixed_factors(entry, existing_entries, headlines, rss_headlines, kst_now,
+                               ledger=None, equity_rows=None, macro_rows=None):
+    """혼조 재료(mixed_factors)가 STALE_HOURS 넘게 반복되고 있는데 오늘 뉴스·데이터에도
     등장하지 않으면 강제로 제거한다 — 프롬프트 지시만으로는 막지 못한 실제 사고에 대한 안전장치.
 
     배경 (2026-07-09): "고용 둔화 해석 논쟁" 혼조 재료가 7/4~7/9까지 핵심 이슈가
     "고용 둔화"에서 "미-이란 긴장·유가 급등"으로 완전히 바뀐 뒤에도 문구 그대로 반복 등장.
-    원인은 prev_block의 "직전 카드 혼조 재료는 새 근거 없이는 반드시 유지" 지시가 너무 강해서
-    LLM이 매번 오늘 데이터를 새로 판단하지 않고 그대로 복사하는 쪽을 택한 것으로 추정.
-    프롬프트를 완화했지만(위 참조), LLM 준수에만 의존하지 않도록 코드에서도 이중 차단한다.
+    1차 조치로 "직전 카드부터 끊김없이 이어진 반복 24시간+"만 잡는 안전장치를 넣었다.
+
+    배경 (2026-07-10, 2차 사고): 1차 조치를 배포한 지 하루 만에 "고용 데이터 해석 논쟁"
+    (리워딩만 다른 동일 주제)이 재발함. 원인은 두 가지였다 —
+    ① 중간에 "미-이란 긴장"으로 3사이클(약 10시간) 다른 혼조 재료가 끼어들면서 "끊김없는
+       연속"이 깨져, 코드가 이걸 신규 재료로 오판(age=0)해 24시간 체크 자체가 발동 안 함.
+    ② 사람이 수동으로 오염된 과거 카드의 mixed_factors를 비웠기 때문에, data.json
+       existing_entries만 봐서는 "예전에 있었다"는 흔적조차 안 남아 있었음.
+    그래서 이번엔 (a) existing_entries가 끊겨도 판단 원장(ledger, 사후정리로 안 지워짐)까지
+    합쳐서 "며칠 전에도 있었나"를 다시 찾고, (b) 이름이 완전히 같지 않고 리워딩만 다른 경우도
+    같은 주제로 인식(difflib 유사도)하도록 강화했다.
     """
     mixed = entry.get('mixed_factors') or []
     if not mixed:
         return entry, []
 
-    all_news_text = ' '.join((headlines or []) + (rss_headlines or [])).lower()
-    kept, dropped = [], []
+    all_context_text = ' '.join(
+        list(headlines or []) + list(rss_headlines or []) +
+        list(equity_rows or []) + list(macro_rows or [])
+    ).lower()
 
+    history = _collect_mixed_history(existing_entries, ledger)
+    now_naive = kst_now.replace(tzinfo=None)
+
+    kept, dropped = [], []
     for mf in mixed:
         name = (mf.get('name') or '').strip()
         if not name:
             continue
 
-        # 직전 카드들을 최신순으로 거슬러 올라가며 동일 이름이 몇 시간째 연속되는지 확인
-        first_seen_id = entry.get('id')
-        for e in existing_entries:
-            prior_names = [(m.get('name') or '') for m in e.get('mixed_factors', [])]
-            if name in prior_names:
-                first_seen_id = e.get('id', first_seen_id)
-            else:
-                break  # 연속 기록이 끊기면 그 지점에서 중단
-
-        try:
-            first_seen_dt = datetime.strptime(first_seen_id, '%Y-%m-%d-%H:%M')
-            age_hours = (kst_now.replace(tzinfo=None) - first_seen_dt).total_seconds() / 3600
-        except Exception:
-            age_hours = 0
+        matches = [dt for dt, hname in history if _mixed_factor_similar(name, hname)]
+        first_seen_dt = min(matches) if matches else now_naive
+        age_hours = (now_naive - first_seen_dt).total_seconds() / 3600
 
         if age_hours >= MIXED_FACTOR_STALE_HOURS:
-            # 오늘 뉴스에 실제로 등장하는지 느슨하게 확인 (이름 앞부분이 뉴스 텍스트에 있는지)
-            probe = name[:6].lower() if len(name) >= 6 else name.lower()
-            grounded = bool(probe) and probe in all_news_text
+            tokens = _grounding_tokens(name)
+            grounded = any(tok.lower() in all_context_text for tok in tokens)
             if not grounded:
                 dropped.append((name, round(age_hours, 1)))
                 continue
@@ -1058,9 +1135,11 @@ def main():
     # 4. 항목 생성 + 검증
     entry = build_entry(kst_now, result)
 
-    # 4-0. 혼조 재료 고착 방지 (2026-07-09) — 프롬프트 준수에만 의존하지 않는 코드 안전장치
+    # 4-0. 혼조 재료 고착 방지 (2026-07-09 신설, 2026-07-10 강화) — 프롬프트 준수에만
+    # 의존하지 않는 코드 안전장치. ledger를 함께 넘겨 끊겼다 재등장하는 패턴도 잡는다.
     entry, dropped_mixed = prune_stale_mixed_factors(
-        entry, data.get("entries", []), headlines, rss_headlines, kst_now
+        entry, data.get("entries", []), headlines, rss_headlines, kst_now,
+        ledger=ledger, equity_rows=equity_rows, macro_rows=macro_rows
     )
     if dropped_mixed:
         for name, age in dropped_mixed:
@@ -1078,7 +1157,8 @@ def main():
         if result2:
             entry2 = build_entry(kst_now, result2)
             entry2, dropped_mixed2 = prune_stale_mixed_factors(
-                entry2, data.get("entries", []), headlines, rss_headlines, kst_now
+                entry2, data.get("entries", []), headlines, rss_headlines, kst_now,
+                ledger=ledger, equity_rows=equity_rows, macro_rows=macro_rows
             )
             if dropped_mixed2:
                 for name, age in dropped_mixed2:
