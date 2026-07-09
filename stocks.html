@@ -1064,34 +1064,45 @@ function renderIndexCards() {
     // 일봉 파일이 오늘 걸로 갱신되면 이 브릿지는 자동으로 꺼진다.
     var bridgeOK = isDailyStale() && etfLive && etfLive.extSession === 'post' && etfLive.changePct != null;
 
+    // ⚠️ NDX(나스닥) 전용 예외 (2026-07-10 확정): idxEntry(^IXIC, yfinance)는 "나스닥 종합지수"인데
+    // ETF 프록시로 쓰는 QQQ는 "나스닥 100"(대형 기술주 100개)을 추종한다 — 서로 다른 지수다.
+    // 두 지수는 하루 등락률이 꽤 벌어질 수 있고(2026-07-10 실측: QQQ +1.46% vs 종합지수 실제
+    // +0.94%, 0.52%p 차이), 이걸 그대로 대체값으로 쓰면 "가격은 종합지수인데 등락률은 100지수"
+    // 라는 내부 불일치가 생겨 사용자가 보기에 숫자가 항상 조금씩 어긋나 보인다.
+    // → NDX는 ETF 프록시(장중 실시간·공백구간 브릿지) 모두 건너뛰고 항상 idxEntry만 신뢰한다.
+    //   실시간성은 일부 포기하지만(하루 1회 갱신) 지수 정의가 일치하는 정확한 값을 우선한다.
+    //   스파클라인 "모양"만 QQQ 인트라데이를 계속 쓴다(숫자가 아닌 시각 참고용이라 허용).
+    var isCompositeIdx = c.idxSym === 'NDX';
+
     // ── 인덱스 changePct 소스 선택 ──────────────────────────────────────
     // Massive v3 직접 수집(price!=null): 항상 신뢰
     // ETF 프록시(price==null): day.c가 포스트마켓 거래가로 오염됨
-    //   → 장중(9:30~16:00 ET)에만 ETF 프록시 사용 (라이브 추적)
+    //   → 장중(9:30~16:00 ET)에만 ETF 프록시 사용 (라이브 추적) — SPX/DJI만
     //   → 장 마감 후엔 yfinance 종가(stocks-data.json) 우선 — 정규장 기준 정확
-    //   → 단, 일봉 파일이 아직 오늘 걸로 안 바뀐 공백 구간엔 위 브릿지가 최우선
+    //   → 단, 일봉 파일이 아직 오늘 걸로 안 바뀐 공백 구간엔 위 브릿지가 최우선 — SPX/DJI만
+    //   → NDX는 위 예외로 ETF 프록시 자체를 쓰지 않음
     var pct;
     (function() {
       if (liveIdx && liveIdx.price != null && liveIdx.changePct != null) {
         pct = liveIdx.changePct; return; // Massive v3 직접 수집 성공
       }
-      if (isUSMarketOpen() && liveIdx && liveIdx.changePct != null) {
+      if (!isCompositeIdx && isUSMarketOpen() && liveIdx && liveIdx.changePct != null) {
         pct = liveIdx.changePct; return; // 장중: ETF 프록시 실시간
       }
-      if (bridgeOK) {
+      if (!isCompositeIdx && bridgeOK) {
         pct = etfLive.changePct; return; // 공백 구간 브릿지
       }
-      // 장 마감 후: yfinance 정규장 종가 기준 우선
+      // 장 마감 후(NDX는 항상): yfinance 정규장 종가 기준 우선
       if (idxEntry && idxEntry.changePct != null) {
         pct = idxEntry.changePct; return;
       }
-      pct = (liveIdx && liveIdx.changePct != null) ? liveIdx.changePct : null;
+      pct = (!isCompositeIdx && liveIdx && liveIdx.changePct != null) ? liveIdx.changePct : null;
     }());
 
     var price;
     if (liveIdx && liveIdx.price) {
       price = liveIdx.price;
-    } else if (bridgeOK && idxEntry && idxEntry.price) {
+    } else if (!isCompositeIdx && bridgeOK && idxEntry && idxEntry.price) {
       price = Math.round(idxEntry.price * (1 + etfLive.changePct / 100) * 100) / 100; // 브릿지 근사치
     } else {
       price = idxEntry ? idxEntry.price : null;

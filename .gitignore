@@ -11,7 +11,9 @@ node_modules/
 # 세션 전 로컬 백업 (git 추적 제외)
 .backup/
 
-# Firebase Storage archive credentials and local staging
+# 사진 이미지 아카이브 (Firebase Storage 별도 관리 — git 추적 절대 금지)
+# 원본 고해상도 사진은 이 폴더들에 두고 scripts/upload-image-archive.js로 업로드한다.
+# git에는 이미지 실물이 아니라 data/image-archive-manifest.json(URL 목록)만 들어간다.
 _image-archive-staging/
 firebase-service-account*.json
 *serviceAccountKey*.json

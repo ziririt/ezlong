@@ -333,6 +333,58 @@ cd ~/Desktop/ezlong && ls *.png *.jpg *.jpeg *.webp 2>/dev/null
 5. `curl -I https://ezlong.com/파일명` 으로 HTTP 200 확인
 6. 200 확인 후 완료 보고
 
+> 위 절차는 **소수의 브랜드 자산**(로고, 히어로 배경, 책 표지 등 프로젝트 루트에 두는 파일)에만
+> 적용한다. 대량의 고용량 원본 사진은 아래 7-1 아카이브 시스템을 사용한다.
+
+### 7-1. 대용량 사진 아카이브 — Firebase Storage (2026-07-06 신설)
+
+**배경:** 프로젝트 루트에 이미지를 원본 그대로 git 커밋하는 방식은 `.git` 폴더를 무한정
+불어나게 한다(2026-07-06 확인 시점 `.git` 2.8GB, 실제 워킹 디렉토리 이미지는 17MB뿐 —
+과거 대용량 원본이 여러 버전 히스토리에 누적된 결과). 수백 장 단위로 고해상도 사진을
+계속 추가할 계획이라면 이 방식은 확장 불가능하다. 그래서 이미지 실물은 git 밖,
+Firebase Storage 별도 버킷에 두고 git에는 URL 목록(manifest)만 커밋하는 구조로 분리했다.
+
+**구조:**
+
+| 구성 요소 | 위치 | git 추적 |
+|-----------|------|----------|
+| 원본 고해상도 사진 | 로컬 스테이징 폴더(예: `~/Documents/ezlong-image-archive/`) → Firebase Storage `archive/{카테고리}/` | 추적 안 함 |
+| 접근 규칙 | `storage.rules` (archive/** 읽기 공개, 쓰기는 Admin SDK만) | 추적함 |
+| 업로드 스크립트 | `scripts/upload-image-archive.js` | 추적함 |
+| URL 인덱스 | `data/image-archive-manifest.json` | 추적함 (가볍다 — 텍스트만) |
+| 서비스 계정 키 | `firebase-service-account.json` (프로젝트 루트) | **절대 추적 안 함** — `.gitignore` 등록 완료 |
+
+**최초 1회 설정:**
+1. Firebase 콘솔(console.firebase.google.com) → `ezlong-541a8` 프로젝트 → Storage → 시작하기
+   (Storage는 Blaze 요금제가 필요할 수 있음 — 콘솔에서 안내에 따라 활성화)
+2. 프로젝트 설정 → 서비스 계정 탭 → "새 비공개 키 생성" → JSON 다운로드
+3. 다운로드한 파일을 프로젝트 루트에 `firebase-service-account.json` 이름으로 저장
+4. 터미널에서 `npm install` (firebase-admin, image-size 설치)
+5. `firebase deploy --only storage --project ezlong-541a8` 로 storage.rules 최초 배포
+
+**사진 추가할 때마다 (반복 작업):**
+1. 원본 사진을 로컬 스테이징 폴더의 카테고리별 하위 폴더에 넣는다
+   (예: `~/Documents/ezlong-image-archive/hero/새배경.jpg`)
+   — 카테고리 예시: `hero`, `book-covers`, `backgrounds`, `logos`, `blog`, `misc`
+   — 파일명은 공백·한글 없이 kebab-case (macOS Finder 복사 시 공백 파일명이 중복 폭발을
+     일으킨 12항 사고와 동일한 이유)
+2. `node scripts/upload-image-archive.js ~/Documents/ezlong-image-archive` 실행
+   — 이미 업로드된 파일(같은 경로)은 자동으로 건너뛰므로 몇 번을 다시 실행해도 안전
+   — 실행 후 `data/image-archive-manifest.json`에 공개 URL이 자동 기록됨
+3. `git add data/image-archive-manifest.json && git commit -m "assets: 이미지 아카이브 URL 추가" && git push`
+   (이미지 실물이 아니라 URL 텍스트만 커밋되므로 저장소 용량에 거의 영향 없음)
+
+**웹페이지에서 사용할 때:**
+`data/image-archive-manifest.json`의 `images` 배열에서 `fileName`으로 찾아 `publicUrl`을
+그대로 `<img src="...">` 에 사용한다. 이 URL은 Firebase Storage가 영구 제공하는 공개
+다운로드 URL이며, `storage.rules`가 `archive/**` 읽기를 공개로 열어뒀기 때문에 별도
+토큰 없이도 항상 접근 가능하다.
+
+**참고:** 기존에 이미 git 히스토리에 쌓인 대용량 원본(book02_1.png 등)을 히스토리에서
+제거해 `.git` 용량 자체를 줄이는 작업(git-filter-repo 등)은 별도의 고위험 작업이며
+이 신설 항목의 범위가 아니다. 필요 시 별도로 계획(Plan)부터 세울 것 — CLAUDE.md 18항
+2등급 규율 적용 대상.
+
 ---
 
 ## 8. 배포 전/후 필수 체크리스트
