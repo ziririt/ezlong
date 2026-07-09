@@ -5,6 +5,48 @@
 
 ---
 
+## [2026-07-10] 세션 (5차) — 지수 상세 차트 TradingView 심볼 교체 (CAPITALCOM→TVC)
+
+### 배경
+
+유저가 나스닥 카드를 눌러 들어간 TradingView 상세 차트(1D/1분봉) 스크린샷을 보내며, 지수
+3개(S&P500·나스닥·다우) 상세 차트만 시작 시각이 전날 22:30 KST(다른 모든 종목·ETF 차트의
+표준 시작점 — 프리마켓 시작)가 아니라 당일 06:00 KST경이라고 제보. 다른 차트는 전부 정상.
+
+### 원인
+
+지수 3개의 상세 차트는 `getTVSym()`에서 `CAPITALCOM:US500/US100/US30`(Capital.com CFD)을
+써왔다. 웹 검색으로 확인한 결과 Capital.com 지수 CFD는 선물 기반 24/5 연속 거래(일~금 밤새
+끊김 없이 거래)라, TradingView의 "1D" 자동 범위가 NYSE 정규장 캘린더가 아니라 CFD 자체
+세션 리셋 시점을 기준으로 잡히는 것으로 추정됨 — 다른 실제 상장 종목·ETF(NASDAQ:/NYSE:/AMEX:
+접두어, NYSE 정규 세션 보유)와 근본적으로 다른 거래 캘린더를 쓰는 심볼이었다.
+
+부가로 확인된 기존 결함: NDX 상세 차트가 `CAPITALCOM:US100`(나스닥100)이라 목록 카드가
+보여주는 나스닥 "종합"지수(^IXIC, 22항)와 애초에 다른 지수를 그리고 있었다.
+
+### 조치
+
+`getTVSym()`에서 `TVC:SPX`/`TVC:IXIC`/`TVC:DJI`(TradingView 자체 무료 인덱스 피드)로 교체.
+웹 검색 확인: TVC:SPX·TVC:DJI는 "SP:SPX·DJ:DJI와 차트가 동일하며 누구나 이용 가능"— 유료
+구독 없이도 실지수(NYSE 연동 세션)를 그대로 쓸 수 있다는 뜻. TVC:IXIC는 나스닥 종합지수
+자체 심볼이라 NDX 상세 차트도 마침내 목록 카드와 같은 지수를 가리키게 됨. `SYMBOL_NAMES['NDX']`
+라벨도 "Nasdaq 100 Index" → "Nasdaq Composite Index"로 정정. 상세: CLAUDE.md 22항 추가조치.
+
+### 검증 한계 — 반드시 배포 후 육안 확인
+
+TradingView 위젯은 브라우저 JS 라이브러리라 샌드박스에서 직접 렌더링 검증이 불가능하다.
+`node --check`로 문법 오류만 확인했고, 실제 차트 시작 시각·데이터 정상 표시 여부는 배포 후
+브라우저에서 지수 3개 상세 페이지 1D/1분봉 진입해 직접 확인 필요.
+
+### 복구 명령어 (TVC 심볼이 문제 있을 경우)
+
+```bash
+git log --oneline -5 -- stocks.html
+git checkout <직전 커밋 해시> -- stocks.html
+```
+
+---
+
 ## [2026-07-10] 세션 (4차) — bridgeOK "extSession==='post' 단독 조건" 공백 수정
 
 ### 배경

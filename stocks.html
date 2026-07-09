@@ -1508,15 +1508,21 @@ var EXTRA_NAMES = {
   'FBTC':  'Fidelity Wise Origin Bitcoin ETF',
   // 종합지수 (인덱스 카드 클릭 시 디테일 페이지)
   'SPX':   'S&P 500 Index',
-  'NDX':   'Nasdaq 100 Index',
+  'NDX':   'Nasdaq Composite Index',  // 2026-07-10 정정 — "NDX"는 이 사이트에서 항상 나스닥 "종합"지수(^IXIC)를 가리킨다(22항). 예전엔 잘못 "Nasdaq 100"으로 표기
   'DJI':   'Dow Jones Industrial Average',
 };
 
 function getTVSym(symbol) {
-  // 종합지수 — SP:SPX / NASDAQ:NDX / DJ:DJI 는 TradingView 구독 전용 → Capital.com CFD로 대체
-  if (symbol === 'SPX')  return 'CAPITALCOM:US500';  // S&P 500 (Capital.com CFD, 무료 임베드)
-  if (symbol === 'NDX')  return 'CAPITALCOM:US100';  // Nasdaq 100 (Capital.com CFD, 무료 임베드)
-  if (symbol === 'DJI')  return 'CAPITALCOM:US30';   // Dow Jones 30 (Capital.com CFD, 무료 임베드)
+  // 종합지수 디테일 차트 (2026-07-10 변경): 기존 Capital.com CFD(CAPITALCOM:US500/100/30)는
+  // 24/5 선물 기반 연속 거래라 TradingView의 "1D" 자동 범위가 NYSE 정규장 기준이 아닌
+  // 자체 세션 리셋 시점(한국시각 06:00경)부터 시작 — 다른 실제 상장 종목·ETF 차트(전날
+  // 22:30 KST 프리마켓 시작)와 달라서 유저 혼란 유발. TVC(TradingView 자체 무료 인덱스
+  // 피드) 심볼로 교체 — 실제 지수(NYSE 세션 연동)라 다른 차트와 동일한 시작 시점 기대.
+  // 부가 효과: NDX를 CAPITALCOM:US100(나스닥100)에서 TVC:IXIC(나스닥 "종합", ^IXIC)로
+  // 바꿔 22항에서 확정한 "NDX=종합지수" 정의와 디테일 차트도 마침내 일치.
+  if (symbol === 'SPX')  return 'TVC:SPX';   // S&P 500 실지수 (TradingView 무료 임베드)
+  if (symbol === 'NDX')  return 'TVC:IXIC';  // 나스닥 종합지수 ^IXIC 실지수 (TradingView 무료 임베드)
+  if (symbol === 'DJI')  return 'TVC:DJI';   // 다우존스 30 실지수 (TradingView 무료 임베드)
   if (symbol === 'SOXX') return 'NASDAQ:SOXX';       // iShares 반도체 ETF — NASDAQ 상장
   if (symbol === 'SOXL') return 'AMEX:SOXL';         // Direxion 반도체 3× ETF — NYSE ARCA(AMEX) 상장
   if (symbol === 'SOXS') return 'AMEX:SOXS';         // Direxion 반도체 -3× ETF — NYSE ARCA(AMEX) 상장
