@@ -96,12 +96,14 @@
 }
 
 .ca-grp-btn {
-  padding: 4px 10px;
+  padding: 4px 8px;
   border-radius: var(--ez-rss);
   border: 1px solid var(--ez-border2);
   background: transparent;
   color: var(--ez-text2);
-  font-size: 16px;
+  /* 2026-07-10: 사이드바 300px 고정폭에 16px 기본크기를 쓰면 4개 필터칩
+     ("크립토")이 2줄로 밀려난다 — 좁은 칩 UI 예외로 축소(.bi-hint와 동일 패턴) */
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
