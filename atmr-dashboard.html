@@ -5128,7 +5128,9 @@ function renderKings(tsla, nvda) {
 
     // 트레이딩 플랜 HTML (string concat — nested template literal 회피)
     let tradePlanHtml = '';
-    if (_ai && _ai.entry != null) {
+    // 2026-07-09: entry===0(Gemini 간헐적 미준수 응답)은 "레벨 없음"으로 취급 — truthy 체크로
+    // $0.00 노출 방지 (chart-analysis.html의 profitTarget1 등 기존 truthy 체크 패턴과 통일).
+    if (_ai && _ai.entry && _ai.stop && _ai.target) {
       const _e  = typeof _ai.entry  === 'number' ? _ai.entry.toFixed(2)  : String(_ai.entry  ?? '—');
       const _s  = typeof _ai.stop   === 'number' ? _ai.stop.toFixed(2)   : String(_ai.stop   ?? '—');
       const _t  = typeof _ai.target === 'number' ? _ai.target.toFixed(2) : String(_ai.target ?? '—');
@@ -5141,7 +5143,7 @@ function renderKings(tsla, nvda) {
         ? '<div class="ktp-traj">MACD: ' + _ai.macdTrajectory + '</div>' : '';
       const _patT  = _ai.pricePattern
         ? '<div class="ktp-traj">' + (_ai.pricePattern.split(' — ')[0] || _ai.pricePattern) + '</div>' : '';
-      const _inv   = _ai.invalidation != null
+      const _inv   = _ai.invalidation
         ? '<div class="ktp-inval">무효선: $' + (typeof _ai.invalidation === 'number' ? _ai.invalidation.toFixed(2) : _ai.invalidation) + ' 이탈 시 시나리오 폐기</div>' : '';
       // 2026-07-09: 판단 원장 continuity 최초 노출 — "오늘 처음 보는 것처럼" 매번 리셋되는
       // 느낌을 없애기 위해 트레이딩 플랜 헤더 바로 아래, RSI/MACD 궤적보다 먼저 배치.
