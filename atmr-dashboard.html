@@ -2227,7 +2227,7 @@ function calcBuyScore(data) {
   const { price, sma5, sma50 = null, sma200, rsi, macd, high52, low52, vix = 18,
           rsi5dAgo = null, hist5dAgo = null,
           high5d = null, low5d = null, high20dExcl = null, low20dExcl = null,
-          volRatio = null, upDays5 = null } = data;
+          volRatio = null, upDays5 = null, adx = null } = data;
   if (!price || !sma200 || !rsi) return 50;
 
   let score = 0;
@@ -2351,6 +2351,13 @@ function calcBuyScore(data) {
     // upDays5 === 2: 중립 (0점 추가 없음)
   }
 
+  // 10. 추세 강도 보정 (ADX) [2026-07-09 신규] — Python calc_buy_score와 완전 동기화.
+  // 무추세(ADX<20)에서는 200일선 위/눌림목 팩터가 만점을 줘도 확신을 낮춘다.
+  if (adx !== null) {
+    if (adx < 20)      score -= 8;
+    else if (adx < 25) score -= 3;
+  }
+
   return Math.min(100, Math.max(0, Math.round(score)));
 }
 
@@ -2375,7 +2382,8 @@ function getScoreLabel(score) {
 function calcSellScore(data) {
   const { price, sma5, sma200, rsi, macd, high52, low52, vix = 18,
           rsi5dAgo = null, hist5dAgo = null,
-          high5d = null, low5d = null, high20dExcl = null, low20dExcl = null } = data;
+          high5d = null, low5d = null, high20dExcl = null, low20dExcl = null,
+          adx = null } = data;
   if (!price || !sma200 || !rsi) return 50;
 
   let score = 0;
@@ -2452,6 +2460,12 @@ function calcSellScore(data) {
   if (high5d !== null && low5d !== null && high20dExcl !== null && low20dExcl !== null) {
     if (high5d < high20dExcl * 0.995)     score += 3;  // Lower High — 상승 모멘텀 약화
     else if (low5d > low20dExcl * 1.005)  score -= 3;  // Higher Low — 하방 지지 강화
+  }
+
+  // 추세 강도 보정 (ADX) [2026-07-09 신규] — calcBuyScore와 대칭, Python calc_sell_score와 동기화.
+  if (adx !== null) {
+    if (adx < 20)      score -= 8;
+    else if (adx < 25) score -= 3;
   }
 
   return Math.min(100, Math.max(0, Math.round(score)));

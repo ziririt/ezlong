@@ -75,16 +75,21 @@ push 시 자동 배포가 지배적 경로임이 확정됐다(3항). 이 항목�
 
 `calcBuyScore` / `calcSellScore`는 **두 파일에 동시 존재**하며, 하나만 고치면 화면에 반영되지 않는다.
 
-| 함수 | 파일 1 (서버 계산) | 파일 2 (클라이언트 재계산) |
+| 함수 | 파일 1 (서버 계산, 실제 운영 스크립트) | 파일 2 (클라이언트 재계산) |
 |------|--------------------|---------------------------|
-| `calcBuyScore` | `scripts/fetch-market-data.js` | `atmr-dashboard.html` (line ~2151) |
-| `calcSellScore` | `scripts/fetch-market-data.js` | `atmr-dashboard.html` (line ~2253) |
+| `calc_buy_score` / `calcBuyScore` | `scripts/fetch-market-data.py` | `atmr-dashboard.html` (line ~2226) |
+| `calc_sell_score` / `calcSellScore` | `scripts/fetch-market-data.py` | `atmr-dashboard.html` (line ~2382) |
+
+**2026-07-09 정정:** 이전 버전은 파일 1을 `scripts/fetch-market-data.js`로 잘못 기재하고 있었다.
+`fetch-market-data.yml` 워크플로가 실제로 실행하는 건 `.py`이며, `.js` 버전은 사용되지 않는
+레거시 파일이다(`grep -rn "python.*fetch-market-data\|node.*fetch-market-data" .github/workflows/`로
+확인 가능). `.js` 쪽을 고쳐봐야 라이브에 반영되지 않으니 동기화 대상에서 제외한다.
 
 **규칙:**
-- 두 함수 중 하나라도 수정 시 **반드시 두 파일 모두** 동시에 수정한다.
+- 두 함수 중 하나라도 수정 시 **반드시 두 파일 모두**(`.py` + `atmr-dashboard.html`) 동시에 수정한다.
 - 수정 전 grep으로 전체 파일 확인:
 ```bash
-grep -rn "function calcBuyScore\|function calcSellScore" . --include="*.html" --include="*.js" | grep -v ".backup/"
+grep -rn "def calc_buy_score\|def calc_sell_score\|function calcBuyScore\|function calcSellScore" . --include="*.html" --include="*.py" | grep -v ".backup/"
 ```
 - `atmr-dashboard.html`은 JSON에서 데이터를 받아 클라이언트에서 **재계산하여 덮어쓴다**. 서버 JSON의 점수는 무시된다. 이것이 핵심 구조다.
 
