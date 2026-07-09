@@ -851,13 +851,22 @@
 const DATA_BASE = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/';
 const IS_DARK   = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
+// 2026-07-09 정정: action 값이 예전엔 5단계(적극매수/분할매수/관망/분할매도/적극매도)였으나
+// generate-chart-analysis.js 프롬프트 규칙 1이 "매수"/"매도"/"관망" 3단계로 고정한 지 오래됐다.
+// 이 맵의 키가 옛 5단계 그대로라 실제로는 한 번도 매칭되지 않고 매번 '관망'(회색) 폴백만
+// 타고 있었다 — 매수/매도 배지가 색 구분 없이 전부 회색으로 뜨던 원인.
 const ACTION_COLORS = {
-  '적극매수': { bg: 'rgba(26,127,55,0.12)',    text: 'var(--ez-green)',  border: 'rgba(26,127,55,0.3)' },
-  '분할매수': { bg: 'rgba(0,113,227,0.10)',    text: 'var(--ez-blue)',   border: 'rgba(0,113,227,0.25)' },
-  '관망':     { bg: 'rgba(110,110,115,0.10)', text: IS_DARK ? 'var(--ez-text3)' : 'var(--ez-text2)',  border: 'rgba(110,110,115,0.2)' },
-  '분할매도': { bg: 'rgba(180,83,9,0.10)',     text: IS_DARK ? 'var(--ez-amber)' : '#92400E',  border: 'rgba(180,83,9,0.25)' },
-  '적극매도': { bg: 'rgba(217,42,42,0.12)',    text: 'var(--ez-red)',    border: 'rgba(217,42,42,0.3)' },
+  '매수': { bg: 'rgba(26,127,55,0.12)',    text: 'var(--ez-green)',  border: 'rgba(26,127,55,0.3)' },
+  '관망': { bg: 'rgba(110,110,115,0.10)', text: IS_DARK ? 'var(--ez-text3)' : 'var(--ez-text2)',  border: 'rgba(110,110,115,0.2)' },
+  '매도': { bg: 'rgba(217,42,42,0.12)',    text: 'var(--ez-red)',    border: 'rgba(217,42,42,0.3)' },
 };
+// 배지에 "매수"/"매도" 단독 표시 시 "지금 사라/팔아라"는 명령으로 오독된다는 지적(2026-07-09,
+// 유저 피드백)에 따라 우위/열세를 나타내는 진단 표현으로 통일. action 데이터값은 바꾸지 않는다.
+function actionDisplayLabel(action) {
+  if (action === '매수') return '매수 우위';
+  if (action === '매도') return '매도 우위';
+  return action || '관망';
+}
 const TREND_COLORS = {
   '강세': IS_DARK ? '#30D158' : '#1A7F37',
   '약세': IS_DARK ? '#FF453A' : '#D92A2A',
@@ -875,8 +884,7 @@ const RSI_COLORS = {
   '과매도': IS_DARK ? '#30D158' : '#1A7F37',
 };
 const ACTION_DOTS = {
-  '적극매수': '#1A7F37', '분할매수': '#0071E3',
-  '관망': '#6E6E73', '분할매도': '#B45309', '적극매도': '#D92A2A',
+  '매수': '#1A7F37', '관망': '#6E6E73', '매도': '#D92A2A',
 };
 const SMA_COLORS = {
   sma20:  getComputedStyle(document.documentElement).getPropertyValue('--chart-sma20').trim()  || '#0071E3',
@@ -1509,7 +1517,7 @@ function renderAnalysisPanel(analysis, currency) {
       </span>
       <div class="ca-strength">${strengthDots}</div>
       <span class="ca-badge ca-badge-lg" style="background:${actionC.bg};color:${actionC.text};border-color:${actionC.border}">
-        ${ai.action || '관망'}
+        ${actionDisplayLabel(ai.action)}
       </span>
       <span class="ca-badge" style="background:${stageC};color:#fff;border-color:${stageC}">
         ${ai.stage || '—'}
