@@ -587,6 +587,37 @@ function pivotPoints(highs, lows, closes) {
   };
 }
 
+// Gemini가 entry/stop/target/invalidation을 0으로 반환하는 간헐적 프롬프트 미준수 방어.
+// 2026-07-09 확인: TSLA/VOO/DIA에서 action="관망"일 때 4개 필드가 전부 0으로 반환되어
+// atmr-dashboard.html 트레이드 플랜 카드에 "$0.00"로 노출됨(QQQ/NVDA/IWM은 같은 관망인데도
+// 정상 반환 — action별 규칙성 없는 LLM 확률적 결함). 프롬프트 규칙 8 강화와 별개로,
+// 이미 계산된 피벗/스윙 레벨로 0값을 결정적으로 대체해 근본 차단한다.
+// 절대 손대지 말 것: 값이 정상(0이 아닌 유한수)이면 그대로 통과 — Gemini 판단을 덮어쓰지 않는다.
+function sanitizeTradeLevels(result, price, swing, pivot, symbol) {
+  if (!result) return result;
+  const bad = v => v == null || v === 0 || !isFinite(v);
+  if (!bad(result.entry) && !bad(result.stop) && !bad(result.target) && !bad(result.invalidation)) {
+    return result;
+  }
+  const supportLv    = swing.support    ?? pivot.s1 ?? price;
+  const resistanceLv = swing.resistance ?? pivot.r1 ?? price;
+  let entry, stop, target, invalidation;
+  if (result.action === '매수') {
+    entry = price; stop = supportLv; target = resistanceLv; invalidation = supportLv;
+  } else if (result.action === '매도') {
+    entry = price; stop = resistanceLv; target = supportLv; invalidation = resistanceLv;
+  } else {
+    entry = pivot.pp ?? price; stop = supportLv; target = resistanceLv; invalidation = supportLv;
+  }
+  const fixed = { ...result };
+  if (bad(result.entry))        fixed.entry        = round(entry, 2);
+  if (bad(result.stop))         fixed.stop          = round(stop, 2);
+  if (bad(result.target))       fixed.target        = round(target, 2);
+  if (bad(result.invalidation)) fixed.invalidation  = round(invalidation, 2);
+  console.warn(`  ⚠ ${symbol}: 트레이드 레벨 0값 감지(action=${result.action}) — 피벗/스윙 레벨로 대체`);
+  return fixed;
+}
+
 // ── Gemini AI 분석 ────────────────────────────────────────────────────────
 
 async function callGemini(meta, ind, swing, pivot, price, weeklyInd, historyLines, quantBaseline) {
@@ -743,7 +774,10 @@ ${weeklySection}${adxSection}${quantSection}
 
 7. 주봉-일봉 충돌 시: 결론은 일봉 기준. weeklyConflict에 충돌 내용 명시.
 
-8. entry/stop/target/invalidation 4개는 반드시 숫자 (기술적 지지/저항 기반).
+8. entry/stop/target/invalidation 4개는 반드시 0이 아닌 실제 가격 숫자여야 한다 (절대 0 반환 금지 —
+   0은 "레벨 없음"이 아니라 화면에 "$0.00"로 그대로 노출된다). action="관망"이라 확신이 낮아도
+   위에 주어진 스윙 지지/저항, 피벗(PP/R1/R2/S1/S2) 중 현재가에 가장 가까운 값을 그대로 가져다
+   채워라 — 새로 추정하지 말고 이미 계산된 레벨을 재사용하면 된다.
 
 9. ADX가 20 미만인데 며칠 새 급락/급등이 있었다면, keyPoints나 riskNote 중 하나에
    반드시 "ADX ${ind.adx?.adx != null ? ind.adx.adx.toFixed(1) : 'N/A'}로 추세 미형성 — 충격성 변동 가능성"
@@ -1017,7 +1051,8 @@ async function processTicker(meta) {
   const ledger       = loadLedger();
   const historyLines = ledgerContextLines(ledger, symbol);
   const quantBaseline = quantBaselineFor(symbol);
-  const aiResult = await callGemini(meta, indicators, swing, pivot, price, weeklyInd, historyLines, quantBaseline);
+  let aiResult = await callGemini(meta, indicators, swing, pivot, price, weeklyInd, historyLines, quantBaseline);
+  aiResult = sanitizeTradeLevels(aiResult, price, swing, pivot, symbol);
 
   // 판단 원장 기록 — Gemini 신규 판단 성공 시에만 (실패 시 기존 분석 보존 경로는 기록하지 않음)
   if (aiResult && aiResult.action) {
