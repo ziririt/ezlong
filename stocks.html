@@ -1612,6 +1612,32 @@ function renderTVChart(symbol, period) {
   var opts  = period === 'YTD' ? getYTDOpts() : (TV_PERIOD_MAP[period] || { interval: 'D' });
   var tvSym = getTVSym(symbol);
 
+  // 2026-07-10: Baseline(style:10) → Area(style:3) 단색 전환.
+  // 배경: Baseline 차트의 초록/빨강 분리 기준선은 TradingView 기본값이 "화면에 보이는
+  // 가격 범위의 50%"(baseLevelPercentage, 퍼센트 기반)라 전일 종가·금일 시가 같은 특정
+  // 가격값에 고정되지 않는다(웹 검색으로 확인 — 절대 가격 앵커는 Lightweight Charts라는
+  // 별개 라이브러리에만 있고, 우리가 쓰는 임베드 위젯엔 없음). 그 결과 SOXL처럼 갭업 후
+  // 완만히 밀린 날, 하루 전체가 크게 플러스(+10.08%)인데도 차트 후반부가 빨갛게 칠해져
+  // "마이너스 마감처럼 보인다"는 유저 제보(실측 확인). 대신 그날 실제 등락 부호 하나로
+  // 전체를 단색 칠하는 방식(야후 파이낸스와 동일)으로 전환 — 오해 소지 원천 차단.
+  var _isUp = true;
+  if (['SPX', 'NDX', 'DJI'].indexOf(symbol) >= 0) {
+    // 지수 3개: findItem/calcChangePct 경로에 실데이터가 없어 allData.indices(일봉) 사용
+    var _idxEntry = allData && allData.indices ? allData.indices.find(function(x) { return x.symbol === symbol; }) : null;
+    _isUp = !_idxEntry || _idxEntry.changePct == null || _idxEntry.changePct >= 0;
+  } else {
+    var _item  = findItem(symbol);
+    var _live  = (pricesData && pricesData.prices && pricesData.prices[symbol]) || null;
+    var _price = isUSMarketOpen()
+      ? ((_live && _live.price > 0) ? _live.price : (_item ? _item.price : null))
+      : ((_item && _item.price > 0) ? _item.price : (_live && _live.price > 0 ? _live.price : null));
+    var _chg   = calcChangePct(_price, _item ? _item.sparkline : null, _live, _item ? _item.changePct : null);
+    _isUp = _chg == null || _chg >= 0;
+  }
+  var upColor   = isDark() ? '#28A745' : '#1A7F37';  // ez-design.css --ez-green과 동일
+  var dnColor   = isDark() ? '#FF453A' : '#D92A2A';  // ez-design.css --ez-red와 동일
+  var lineColor = _isUp ? upColor : dnColor;
+
   var cfg = {
     container_id:      'tv_chart_div',
     symbol:            tvSym,
@@ -1619,7 +1645,7 @@ function renderTVChart(symbol, period) {
     theme:             isDark() ? 'dark' : 'light',
     locale:            'kr',
     timezone:          'Asia/Seoul',
-    style:             '10',  // Baseline 차트 — 기간 시작가 기준 등락 시각화
+    style:             '3',  // Area 차트 — 그날 전체 등락 부호 하나로 단색 표시 (2026-07-10, 22-B/24항 참조)
     hide_side_toolbar: false,
     hide_top_toolbar:  false,
     hide_legend:       true,
@@ -1628,6 +1654,13 @@ function renderTVChart(symbol, period) {
     withdateranges:    false,
     prePostMarketData: true,
     studies:           getStudies(period),
+    overrides: {
+      'mainSeriesProperties.areaStyle.color1':     lineColor,
+      'mainSeriesProperties.areaStyle.color2':     lineColor,
+      'mainSeriesProperties.areaStyle.linecolor':  lineColor,
+      'mainSeriesProperties.areaStyle.linewidth':  2,
+      'mainSeriesProperties.areaStyle.transparency': 75,
+    },
   };
   // range만 지정 — interval 제거 (TradingView 자동봉 선택)
   // CLAUDE.md 규칙 13: interval + range 동시 사용 절대 금지
