@@ -359,6 +359,68 @@ async function fetchYFChart(symbol) {
   return result;
 }
 
+// ── 4시간봉(합성) 데이터 (2026-07-09 신설) ────────────────────────────────
+// 일봉/주봉 사이의 단기 확인 시간대. Yahoo Finance는 '4h' interval을 직접
+// 제공하지 않아 60분봉을 4개씩 순서대로 묶어 합성한다. 정규장 캘린더
+// 경계(예: 9:30 시가 기준)에 정렬된 "진짜" 4H 봉이 아니라 롤링 묶음 근사치
+// 임을 분명히 인지할 것 — RSI/MACD 궤적 같은 짧은 lookback 참고용으로는
+// 충분하지만, 이 값을 저장해 차트로 그리거나 장기 백테스트에 쓰지 마라.
+// 실패해도(네트워크 오류, 데이터 부족 등) null을 반환해 나머지 파이프라인은
+// 정상 진행되도록 fail-safe로 설계.
+async function fetchYFIntraday(symbol) {
+  const { cookie, crumb } = await getYFCrumb();
+  const period2 = Math.floor(Date.now() / 1000);
+  const period1 = period2 - 30 * 24 * 3600; // 최근 30일
+  const encodedCrumb = encodeURIComponent(crumb);
+  const reqPath = `/v8/finance/chart/${encodeURIComponent(symbol)}` +
+    `?period1=${period1}&period2=${period2}&interval=60m&includePrePost=false&crumb=${encodedCrumb}`;
+
+  const data = await new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'query1.finance.yahoo.com',
+      path: reqPath,
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept': 'application/json',
+        'Cookie': cookie,
+      },
+      timeout: 25000,
+    }, res => {
+      const chunks = [];
+      res.on('data', c => { chunks.push(c); });
+      res.on('end', () => {
+        try { resolve(JSON.parse(Buffer.concat(chunks).toString('utf8'))); }
+        catch (e) { reject(new Error(`JSON 파싱 오류(인트라데이): ${e.message}`)); }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(new Error('Yahoo Finance 인트라데이 타임아웃')); });
+    req.end();
+  });
+
+  const result = data?.chart?.result?.[0];
+  if (!result || !result.timestamp || result.timestamp.length === 0) return null;
+  return result;
+}
+
+function aggregate4H(raw) {
+  // 60분봉 4개를 시간 순서대로 묶어 하나의 4H 합성봉 생성 (캘린더 정렬 아님)
+  const out = [];
+  for (let i = 0; i + 4 <= raw.length; i += 4) {
+    const chunk = raw.slice(i, i + 4);
+    out.push({
+      t: chunk[0].t,
+      o: chunk[0].o,
+      h: Math.max(...chunk.map(d => d.h)),
+      l: Math.min(...chunk.map(d => d.l)),
+      c: chunk[chunk.length - 1].c,
+      v: chunk.reduce((s, d) => s + (d.v || 0), 0),
+    });
+  }
+  return out;
+}
+
 // ── 기술적 지표 계산 ──────────────────────────────────────────────────────
 
 function sma(closes, period) {
@@ -526,6 +588,47 @@ function classifyADX(v) {
   return '과열된 추세(소멸 경계)';
 }
 
+// ── CCI(20) — Commodity Channel Index (2026-07-09 신설) ──────────────────
+// 배경: 유저가 외부 TradingView 분석 리포트를 근거로 요청. 그 리포트는 SOXX
+// 반등의 핵심 근거로 "CCI -180 → -30 급격한 정상화 = 기관 매수 유입"을 들었다.
+// RSI/스토캐스틱과 다른 계산식(전형 가격의 이동평균 대비 편차)이라 같은
+// 과매도 국면에서도 다른 타이밍에 신호를 준다 — 상호 보완용으로 추가.
+// 절대 손대지 말 것: calc_buy_score/calc_sell_score(fetch-market-data.py)는
+// 건드리지 않는다 — 이 파일(Engine B, LLM 판단)에만 참고 컨텍스트로 주입한다.
+function cci(highs, lows, closes, period = 20) {
+  const n = closes.length;
+  const tp = closes.map((c, i) => (highs[i] + lows[i] + c) / 3);
+  const tpSma = sma(tp, period);
+  const result = new Array(n).fill(null);
+  for (let i = period - 1; i < n; i++) {
+    if (tpSma[i] == null) continue;
+    const slice = tp.slice(i - period + 1, i + 1);
+    const meanDev = slice.reduce((s, v) => s + Math.abs(v - tpSma[i]), 0) / period;
+    result[i] = meanDev === 0 ? 0 : (tp[i] - tpSma[i]) / (0.015 * meanDev);
+  }
+  return result.map(v => v != null ? round(v, 2) : null);
+}
+
+// ── 스토캐스틱(14,3) — %K/%D (2026-07-09 신설) ────────────────────────────
+function stochastic(highs, lows, closes, kPeriod = 14, dPeriod = 3) {
+  const n = closes.length;
+  const kArr = new Array(n).fill(null);
+  for (let i = kPeriod - 1; i < n; i++) {
+    const hh = Math.max(...highs.slice(i - kPeriod + 1, i + 1));
+    const ll = Math.min(...lows.slice(i - kPeriod + 1, i + 1));
+    kArr[i] = hh === ll ? 50 : (closes[i] - ll) / (hh - ll) * 100;
+  }
+  const dArr = new Array(n).fill(null);
+  for (let i = kPeriod - 1 + dPeriod - 1; i < n; i++) {
+    const slice = kArr.slice(i - dPeriod + 1, i + 1);
+    dArr[i] = slice.reduce((a, b) => a + b, 0) / dPeriod;
+  }
+  return closes.map((_, i) => ({
+    k: kArr[i] != null ? round(kArr[i], 2) : null,
+    d: dArr[i] != null ? round(dArr[i], 2) : null,
+  }));
+}
+
 // ── 주봉 집계 ─────────────────────────────────────────────────────────────
 
 function aggregateWeekly(raw) {
@@ -620,7 +723,7 @@ function sanitizeTradeLevels(result, price, swing, pivot, symbol) {
 
 // ── Gemini AI 분석 ────────────────────────────────────────────────────────
 
-async function callGemini(meta, ind, swing, pivot, price, weeklyInd, historyLines, quantBaseline) {
+async function callGemini(meta, ind, swing, pivot, price, weeklyInd, historyLines, quantBaseline, fourHInd) {
   if (!GEMINI_API_KEY) {
     console.warn('  GEMINI_API_KEY 없음 — AI 분석 건너뜀');
     return null;
@@ -660,6 +763,25 @@ ADX: ${ind.adx.adx.toFixed(1)} (${ind.adx.status}) | 5일 전 ADX: ${ind.adx5dAg
 - ADX 20~25: 추세가 막 형성되는 초기 단계. 방향 확정은 아직 이르다.
 - ADX 25 이상 + DI 방향과 가격 방향 일치: 진짜 추세로 판단해도 된다.
 - ADX 50 이상: 과열 — 추세 소멸(반전) 경계 구간임을 함께 언급하라.
+` : '';
+
+  // CCI(20)/스토캐스틱(14,3) 섹션 (2026-07-09 신설) — 유저가 공유한 외부 TradingView
+  // 분석 리포트가 SOXX 반등의 핵심 근거로 사용한 지표. RSI와 다른 계산식이라
+  // 같은 과매도 국면에서도 다른 타이밍에 신호를 준다.
+  const cciStochSection = (ind.cci != null || ind.stoch?.k != null) ? `
+[CCI(20) / 스토캐스틱(14,3) — 과매도·과매수 극단 및 되돌림 포착]
+CCI: ${ind.cci != null ? ind.cci.toFixed(1) : 'N/A'} (5일 전: ${ind.cci5dAgo != null ? ind.cci5dAgo.toFixed(1) : 'N/A'})
+스토캐스틱 %K: ${ind.stoch?.k != null ? ind.stoch.k.toFixed(1) : 'N/A'} (5일 전: ${ind.stochK5dAgo != null ? ind.stochK5dAgo.toFixed(1) : 'N/A'}) | %D: ${ind.stoch?.d != null ? ind.stoch.d.toFixed(1) : 'N/A'}
+해석 참고: CCI가 -100 이하 극단에서 빠르게 회복 중이면(예: -180→-30) 기관 매수 유입 가능성. CCI +100 이상에서 급락 중이면 반대로 기관 매도 가능성. 스토캐스틱 %K가 20 미만에서 %D를 상향 돌파하면 단기 반등 신호, %K가 50을 넘으면 중립 구간 안착으로 본다.
+` : '';
+
+  // 4시간봉 섹션 (2026-07-09 신설) — Yahoo 60분봉 4개 롤링 집계 합성치.
+  // 실패 시(fourHInd === null) 섹션 자체가 생략되며 나머지 판단에는 영향 없음.
+  const fourHSection = fourHInd ? `
+[4시간봉(합성) 지표 — 일봉과 주봉 사이의 단기 확인 시간대. 60분봉 4개 롤링 집계]
+4H RSI(14): ${fourHInd.rsi != null ? fourHInd.rsi.toFixed(1) : 'N/A'} (5봉 전: ${fourHInd.rsi5BarsAgo != null ? fourHInd.rsi5BarsAgo.toFixed(1) : 'N/A'})
+4H MACD 히스토그램: ${fourHInd.macdHist != null ? fourHInd.macdHist.toFixed(4) : 'N/A'} (5봉 전: ${fourHInd.macdHist5BarsAgo != null ? fourHInd.macdHist5BarsAgo.toFixed(4) : 'N/A'})
+활용: 일봉·주봉과 이 4시간봉이 같은 방향(매수 우위 또는 매도 우위)으로 정렬되면 "다중 시간대 정렬"로 판단 신뢰도가 높아진다. 정렬 여부는 규칙 12(위장반등 체크리스트)의 higherTimeframeAligned에서 명시적으로 판정하라.
 ` : '';
 
   // 정량 엔진 기준선 (2026-07-09 신설) — calc_buy_score/calc_sell_score(계산식)가 이미 계산한
@@ -742,7 +864,7 @@ MACD: ${ind.macd.macd != null ? ind.macd.macd.toFixed(4) : 'N/A'} / 시그널: $
 [지지/저항]
 스윙 저항: ${fmt(swing.resistance)} | 스윙 지지: ${fmt(swing.support)}
 피벗(PP): ${fmt(pivot.pp)} | R1: ${fmt(pivot.r1)} | R2: ${fmt(pivot.r2)} | S1: ${fmt(pivot.s1)} | S2: ${fmt(pivot.s2)}
-${weeklySection}${adxSection}${quantSection}
+${weeklySection}${adxSection}${cciStochSection}${fourHSection}${quantSection}
 [판단 규칙 — 반드시 지켜라]
 
 1. action은 "매수" / "매도" / "관망" 중 하나만. "매수 우위지만 관망" 같은 혼합 금지.
@@ -798,6 +920,23 @@ ${weeklySection}${adxSection}${quantSection}
       (ADX 무추세, 주봉 충돌, 거래량 부재 등 정량 엔진이 못 보는 근거를 대라).
       같은 화면(스윙 전략 탭)에 정량 점수와 네 판단이 나란히 노출된다는 걸 명심하라.
 
+12. [위장반등 vs 진짜반등 체크리스트 — 2026-07-09 신설] 유저가 공유한 외부 TradingView
+    분석 리포트에서 실전 검증된 판별 프레임을 이식한 것이다. confluenceChecklist에
+    아래 5개 조건을 각각 true/false로 판정하고 몇 개 충족했는지 세라:
+    - volumeConfirmed: 거래량비(vol_ratio)가 1.2 이상인가
+    - resistanceReclaimed: 상승 국면이면 현재가가 피벗 R1 또는 스윙 저항을 상회/안착했는가,
+      하락 국면이면 반대로 지지선(피벗 S1 또는 스윙 지지) 붕괴 여부로 판정
+    - adxLowRisk: ADX가 50 미만인가 (과열된 추세·소멸 경계에 아직 도달 안 함)
+    - higherTimeframeAligned: 주봉과 4시간봉(주어졌다면)이 일봉과 같은 방향(매수 우위 또는
+      매도 우위)으로 정렬됐는가. 4시간봉 데이터가 없으면 주봉 정렬 여부만으로 판정하라.
+    - oversoldExtremeOrigin: CCI가 최근 -100 이하(상승 국면 판정 시) 또는 +100 이상(하락
+      국면 판정 시)의 극단을 찍었다가 되돌아오는 중이거나, 스토캐스틱 %K가 20 미만에서 %D를
+      상향 돌파(또는 80 초과에서 하향 돌파)했는가
+    5개 중 4개 이상 충족 = "진짜 반등/추세 가능성 높음", 2~3개 = "초기 단계 — 확인 관문 남음",
+    0~1개 = "위장 가능성 — 신중 필요". verdict 필드에 이 셋 중 하나를 그대로 써라. score
+    필드에는 "N/5" 형태로 충족 개수를 명시하라. 이 체크리스트는 방향(매수/매도) 판단 자체를
+    바꾸지 않는다 — 이미 내린 action의 "신뢰도"를 보여주는 보조 지표다.
+
 다음 JSON만 반환하라. 다른 텍스트는 절대 붙이지 마라:
 {
   "trend": "강세" | "약세" | "횡보",
@@ -829,7 +968,16 @@ ${weeklySection}${adxSection}${quantSection}
   "patternNote": "차트 패턴 또는 추세 채널 1~2문장",
   "keyPoints": ["핵심 포인트 1", "핵심 포인트 2", "핵심 포인트 3"],
   "riskNote": "기술적 리스크 한 문장",
-  "continuity": "${historyLines ? "직전 판단 기록 대비 오늘의 흐름 1~2문장. 판단 유지면 'N일 연속 ~' 형태, 판단 전환이면 전환 이유(지표 변화)를 숫자와 함께 명시" : "기록 없음 — 첫 판단"}"
+  "continuity": "${historyLines ? "직전 판단 기록 대비 오늘의 흐름 1~2문장. 판단 유지면 'N일 연속 ~' 형태, 판단 전환이면 전환 이유(지표 변화)를 숫자와 함께 명시" : "기록 없음 — 첫 판단"}",
+  "confluenceChecklist": {
+    "volumeConfirmed": true 또는 false,
+    "resistanceReclaimed": true 또는 false,
+    "adxLowRisk": true 또는 false,
+    "higherTimeframeAligned": true 또는 false,
+    "oversoldExtremeOrigin": true 또는 false,
+    "score": "N/5 형태 문자열",
+    "verdict": "진짜 반등/추세 가능성 높음" | "초기 단계 — 확인 관문 남음" | "위장 가능성 — 신중 필요"
+  }
 }`;
 
   // 단일 모델 호출 (최대 4회 재시도, 지수 백오프: 5s → 15s → 45s)
@@ -928,6 +1076,8 @@ async function processTicker(meta) {
   const macdA   = macd(closes, 12, 26, 9);
   const bbA     = bollingerBands(closes, 20, 2);
   const adxA    = adx(highs, lows, closes, 14);
+  const cciA    = cci(highs, lows, closes, 20);
+  const stochA  = stochastic(highs, lows, closes, 14, 3);
   const volumes  = raw.map(d => d.v);
 
   // regularMarketPrice = Yahoo Finance 실시간 현재가 (정확)
@@ -963,6 +1113,8 @@ async function processTicker(meta) {
   const vol5dAvg    = volumes.slice(Math.max(0, n - 6), n - 1).reduce((a, b) => a + (b || 0), 0) / 5;
   const volRatio    = vol5dAvg > 0 ? round(volumes[n - 1] / vol5dAvg, 2) : null;
   const adx5dAgo    = n > 5 ? (adxA[n - 6]?.adx ?? null) : null;
+  const cci5dAgo    = n > 5 ? (cciA[n - 6] ?? null) : null;
+  const stochK5dAgo = n > 5 ? (stochA[n - 6]?.k ?? null) : null;
 
   const indicators = {
     sma5:  sma5A[n - 1],
@@ -977,6 +1129,8 @@ async function processTicker(meta) {
     bb:     bbA[n - 1],
     adx:    { ...adxA[n - 1], status: classifyADX(adxA[n - 1]?.adx) },
     adx5dAgo,
+    cci: cciA[n - 1], cci5dAgo,
+    stoch: stochA[n - 1], stochK5dAgo,
     high52, low52,
     high5d, low5d, high20d, low20d,
     volRatio,
@@ -1047,11 +1201,42 @@ async function processTicker(meta) {
     );
   }
 
+  // 4-b. 4시간봉(합성) — 실패해도 무시하고 계속 진행 (fail-safe, 2026-07-09 신설)
+  let fourHInd = null;
+  try {
+    const intraday = await fetchYFIntraday(symbol);
+    if (intraday) {
+      const iQuote = intraday.indicators.quote[0];
+      const iAdj   = intraday.indicators.adjclose?.[0]?.adjclose;
+      const rawHourly = intraday.timestamp.map((t, i) => ({
+        t,
+        o: iQuote.open[i], h: iQuote.high[i], l: iQuote.low[i],
+        c: iAdj?.[i] ?? iQuote.close[i], v: iQuote.volume[i] ?? 0,
+      })).filter(d => d.o != null && d.h != null && d.l != null && d.c != null);
+      const raw4H = aggregate4H(rawHourly);
+      if (raw4H.length >= 20) {
+        const c4  = raw4H.map(d => d.c);
+        const n4  = c4.length;
+        const rsi4  = rsi(c4, 14);
+        const macd4 = macd(c4, 12, 26, 9);
+        fourHInd = {
+          rsi:            rsi4[n4 - 1],
+          rsi5BarsAgo:    n4 > 5 ? (rsi4[n4 - 6] ?? null) : null,
+          macdHist:       macd4[n4 - 1]?.histogram ?? null,
+          macdHist5BarsAgo: n4 > 5 ? (macd4[n4 - 6]?.histogram ?? null) : null,
+          barsUsed: n4,
+        };
+      }
+    }
+  } catch (e) {
+    console.warn(`  4시간봉 조회 실패(${symbol}, 무시하고 계속): ${e.message}`);
+  }
+
   // 5. Gemini AI 분석 — 판단 원장에서 직전 3영업일 기록을 읽어 연속성 컨텍스트로 주입
   const ledger       = loadLedger();
   const historyLines = ledgerContextLines(ledger, symbol);
   const quantBaseline = quantBaselineFor(symbol);
-  let aiResult = await callGemini(meta, indicators, swing, pivot, price, weeklyInd, historyLines, quantBaseline);
+  let aiResult = await callGemini(meta, indicators, swing, pivot, price, weeklyInd, historyLines, quantBaseline, fourHInd);
   aiResult = sanitizeTradeLevels(aiResult, price, swing, pivot, symbol);
 
   // 판단 원장 기록 — Gemini 신규 판단 성공 시에만 (실패 시 기존 분석 보존 경로는 기록하지 않음)
