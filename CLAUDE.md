@@ -656,9 +656,17 @@ python3 -c "import json; d=json.load(open('data/stocks-data.json')); print(d.get
   (22항 참조). 이후 프록시를 QQQ→ONEQ(나스닥 종합지수 추종 ETF)로 교체해 NDX도 SPX/DJI와
   동일한 수준의 근사 정확도로 이 브릿지를 다시 사용한다.
 
+**2026-07-10 확장 — 장중에도 지수 가격이 어제 종가에 멈춰있던 문제:** 위 근사식(`idxEntry.price
+× (1+pct/100)`)이 원래 `bridgeOK`(공백구간) 상황에만 쓰였는데, 장중(정규장 진행 중)엔
+liveIdx.price가 항상 null이라 가격이 하루 종일 idxEntry.price(직전 종가)에 고정되는
+별개 버그가 있었다(등락률만 실시간, 가격은 고정 — 유저가 야후 파이낸스와 대조해서 발견).
+`pctIsLive` 플래그를 추가해 "장중 ETF 프록시" 경로에서도 동일 근사식을 쓰도록 확장 —
+idxEntry.price는 장 진행 중엔 항상 "직전 완결 세션 종가"를 가리키므로(오늘 세션은 일봉
+파일에 아직 미반영) 이 근사식이 하루 종일 유효하다는 게 핵심 근거.
+
 **규칙:**
-- `isDailyStale()`/`bridgeOK` 로직을 건드릴 땐 rowHTML·renderIndexCards·renderSemiEtfCards
-  3곳 전부 동시에 확인한다 (8항 공유 함수 동기화 원칙과 동일 적용).
+- `isDailyStale()`/`bridgeOK`/`pctIsLive` 로직을 건드릴 땐 rowHTML·renderIndexCards·
+  renderSemiEtfCards 3곳 전부 동시에 확인한다 (8항 공유 함수 동기화 원칙과 동일 적용).
 - 지수 가격 근사식을 "더 정확하게" 바꾸고 싶어도, Massive가 SPX/NDX/DJI 실제 가격을
   직접 주지 않는 한(v3 indices 엔드포인트 미지원 상태, 17항 참조) 완전 정확한 값은
   얻을 수 없다는 걸 전제로 판단할 것.
