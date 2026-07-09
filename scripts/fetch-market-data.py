@@ -112,6 +112,69 @@ def r4(v):
     return round(v, 4) if v is not None else None
 
 
+# ─── ADX(추세강도) — Wilder 스무딩. scripts/generate-chart-analysis.js의 adx()를
+# Python으로 그대로 포팅한 것 (2026-07-09, 실데이터 독립 재현 검증 완료). 로직 변경 금지 —
+# 두 언어 버전이 어긋나면 calcBuyScore/calcSellScore 두 엔진 간 판단 불일치가 재발한다.
+def calc_adx(highs, lows, closes, period=14):
+    n = len(closes)
+    if n <= period * 2:
+        return None
+
+    tr = [0.0] * n
+    plus_dm  = [0.0] * n
+    minus_dm = [0.0] * n
+    for i in range(1, n):
+        hl = highs[i] - lows[i]
+        hc = abs(highs[i] - closes[i - 1])
+        lc = abs(lows[i]  - closes[i - 1])
+        tr[i] = max(hl, hc, lc)
+
+        up_move   = highs[i] - highs[i - 1]
+        down_move = lows[i - 1] - lows[i]
+        plus_dm[i]  = up_move   if (up_move > down_move and up_move > 0)   else 0.0
+        minus_dm[i] = down_move if (down_move > up_move and down_move > 0) else 0.0
+
+    def wilder_smooth(arr):
+        out = [None] * n
+        seed = sum(arr[1:period + 1])
+        out[period] = seed
+        for i in range(period + 1, n):
+            out[i] = out[i - 1] - (out[i - 1] / period) + arr[i]
+        return out
+
+    tr_s      = wilder_smooth(tr)
+    plus_dm_s = wilder_smooth(plus_dm)
+    minus_dm_s = wilder_smooth(minus_dm)
+
+    plus_di  = [None] * n
+    minus_di = [None] * n
+    dx       = [None] * n
+    for i in range(period, n):
+        if tr_s[i]:
+            plus_di[i]  = 100 * plus_dm_s[i]  / tr_s[i]
+            minus_di[i] = 100 * minus_dm_s[i] / tr_s[i]
+        else:
+            plus_di[i] = 0.0
+            minus_di[i] = 0.0
+        s = plus_di[i] + minus_di[i]
+        dx[i] = 100 * abs(plus_di[i] - minus_di[i]) / s if s else 0.0
+
+    start = period * 2  # ADX 첫 값 = 그 이전 period개 DX의 단순평균
+    if n <= start:
+        return None
+    adx_val = sum(dx[period:start]) / period
+    for i in range(start, n):
+        adx_val = (adx_val * (period - 1) + dx[i]) / period
+    return adx_val
+
+def classify_adx(v):
+    if v is None: return None
+    if v < 20: return '무추세(충격 가능)'
+    if v < 25: return '추세 형성 초기'
+    if v < 50: return '뚜렷한 추세'
+    return '과열된 추세(소멸 경계)'
+
+
 # ─── 점수 계산 (JS calcBuyScore / calcSellScore 와 완전 동기화) ─────────────
 # 2026-06-16: calc_buy_score 전면 재작성 — JS 버전과 동기화
 # 팩터 추가: rsi5d_ago, hist5d_ago, high5d/low5d 패턴, vol_ratio, up_days5
@@ -119,7 +182,7 @@ def r4(v):
 def calc_buy_score(price, sma5, sma50, sma200, rsi, macd, high52, low52, vix=18,
                    rsi5d_ago=None, hist5d_ago=None,
                    high5d=None, low5d=None, high20d_excl=None, low20d_excl=None,
-                   vol_ratio=None, up_days5=None):
+                   vol_ratio=None, up_days5=None, adx=None):
     if not price or not sma200 or not rsi:
         return 50
     score = 0
@@ -244,12 +307,21 @@ def calc_buy_score(price, sma5, sma50, sma200, rsi, macd, high52, low52, vix=18,
         elif up_days5 == 0:     score -= 3
         # up_days5 == 2: 중립
 
+    # 10. 추세 강도 보정 (ADX) [2026-07-09 신규] — 200일선 위/눌림목 팩터가 만점을 줘도,
+    # ADX가 낮으면(무추세) 그건 추세가 아니라 충격성 변동일 수 있다. AI 차트분석 엔진(Gemini)이
+    # 이미 이 판단을 하고 있는데 계산식 엔진엔 없어서 두 엔진이 어긋나는 문제(2026-07-09 발견)를 막는다.
+    if adx is not None:
+        if adx < 20:      score -= 8   # 무추세(충격 가능) — 추세로 확정하기 이르다
+        elif adx < 25:    score -= 3   # 추세 형성 초기 — 부분 감점
+        # adx >= 25: 보정 없음 (뚜렷한 추세로 인정)
+
     return min(100, max(0, round(score)))
 
 
 def calc_sell_score(price, sma5, sma200, rsi, macd, high52, low52, vix=18,
                     rsi5d_ago=None, hist5d_ago=None,
-                    high5d=None, low5d=None, high20d_excl=None, low20d_excl=None):
+                    high5d=None, low5d=None, high20d_excl=None, low20d_excl=None,
+                    adx=None):
     if not price or not sma200 or not rsi:
         return 50
     score = 0
@@ -309,31 +381,41 @@ def calc_sell_score(price, sma5, sma200, rsi, macd, high52, low52, vix=18,
         if high5d < high20d_excl * 0.995:      score += 3   # Lower High
         elif low5d > low20d_excl * 1.005:      score -= 3   # Higher Low
 
+    # 추세 강도 보정 (ADX) [2026-07-09 신규] — calc_buy_score와 대칭 적용.
+    # 무추세 구간에서는 매도 쪽 확신도 같이 낮춘다 (한쪽만 낮추면 반대쪽으로 왜곡되어 재발한다).
+    if adx is not None:
+        if adx < 20:      score -= 8
+        elif adx < 25:    score -= 3
+
     return min(100, max(0, round(score)))
 
 
 # ─── yfinance 데이터 수집 ───────────────────────────────────────────────────
 
 def download_history(symbol, period='2y'):
-    """종목 종가 + 거래량 리스트 반환 (날짜 오름차순)
-    Close NaN 행 제거 후 Volume도 동일 행만 유지 → closes/volumes 항상 동일 길이·동일 날짜
+    """종목 종가·거래량·고가·저가 리스트 반환 (날짜 오름차순)
+    Close NaN 행 제거 후 나머지 컬럼도 동일 행만 유지 → 모두 동일 길이·동일 날짜.
+    High/Low는 2026-07-09 ADX(추세강도) 계산용으로 추가 — 기존 closes/volumes 순서는 그대로 유지해
+    기존 호출부(download_closes 등) 하위호환 깨지지 않게 한다.
     """
     ticker = yf.Ticker(symbol)
     hist = ticker.history(period=period, interval='1d', auto_adjust=True)
     if hist.empty:
         raise ValueError("빈 응답")
-    df = hist[['Close', 'Volume']].copy()
+    df = hist[['Close', 'Volume', 'High', 'Low']].copy()
     df = df.dropna(subset=['Close'])        # Close NaN 행 제거
     df['Volume'] = df['Volume'].fillna(0)   # Volume NaN → 0 (날짜 유지)
     closes  = [float(v) for v in df['Close'].tolist()]
     volumes = [float(v) for v in df['Volume'].tolist()]
+    highs   = [float(v) for v in df['High'].tolist()]
+    lows    = [float(v) for v in df['Low'].tolist()]
     if len(closes) < 2:
         raise ValueError(f"데이터 부족: {len(closes)}개")
-    return closes, volumes
+    return closes, volumes, highs, lows
 
 def download_closes(symbol, period='2y'):
     """종목 종가 리스트만 반환 (VIX·매크로·지수 전용)"""
-    closes, _ = download_history(symbol, period)
+    closes, _, _, _ = download_history(symbol, period)
     return closes
 
 def download_price(symbol):
@@ -354,7 +436,7 @@ def download_price(symbol):
 
 # ─── 종목 처리 ─────────────────────────────────────────────────────────────
 
-def process_symbol(closes, volumes, symbol, vix_price):
+def process_symbol(closes, volumes, highs, lows, symbol, vix_price):
     price = closes[-1]
     prev  = closes[-2]
     change  = price - prev
@@ -398,6 +480,9 @@ def process_symbol(closes, volumes, symbol, vix_price):
         if vol20_avg > 1000:
             vol_ratio = latest_vol / vol20_avg
 
+    # ADX(추세강도) [2026-07-09 신규]
+    adx_val = calc_adx(highs, lows, closes, 14) if highs and lows else None
+
     return {
         'symbol':       symbol,
         'price':        r4(price),
@@ -425,15 +510,18 @@ def process_symbol(closes, volumes, symbol, vix_price):
         'low20dExcl':   r4(low20d_excl),
         'volRatio':     r4(vol_ratio),
         'upDays5':      up_days5,
+        'adx':          r4(adx_val),
+        'adxStatus':    classify_adx(adx_val),
         # 점수
         'buyScore':  calc_buy_score(
             price, sma5, sma50, sma200, rsi, macd, high52, low52, vix,
             rsi5d_ago, hist5d_ago, high5d, low5d, high20d_excl, low20d_excl,
-            vol_ratio, up_days5
+            vol_ratio, up_days5, adx_val
         ),
         'sellScore': calc_sell_score(
             price, sma5, sma200, rsi, macd, high52, low52, vix,
-            rsi5d_ago, hist5d_ago, high5d, low5d, high20d_excl, low20d_excl
+            rsi5d_ago, hist5d_ago, high5d, low5d, high20d_excl, low20d_excl,
+            adx_val
         ),
         'extPrice':      None,
         'extChange':     None,
@@ -629,10 +717,12 @@ def main():
     for i, sym in enumerate(SYMBOLS):
         try:
             print(f"[{i+1}/{len(SYMBOLS)}] {sym} 수집 중...")
-            closes, volumes = download_history(sym, period='2y')
+            closes, volumes, highs, lows = download_history(sym, period='2y')
             closes  = closes[-504:]   # 최근 2년치
             volumes = volumes[-504:]
-            processed[sym] = process_symbol(closes, volumes, sym, vix_price)
+            highs   = highs[-504:]
+            lows    = lows[-504:]
+            processed[sym] = process_symbol(closes, volumes, highs, lows, sym, vix_price)
             d = processed[sym]
             rsi_str    = f"{d['rsi']:.1f}"    if d['rsi']    is not None else '-'
             sma200_str = f"{d['sma200']:.2f}" if d['sma200'] is not None else '-'

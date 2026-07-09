@@ -213,6 +213,20 @@ function saveLedger(ledger) {
   catch (e) { console.warn(`  판단 원장 저장 실패: ${e.message}`); }
 }
 
+// ─── 정량 엔진 기준선 (2026-07-09 신설) ────────────────────────────────────
+// fetch-market-data.py의 calc_buy_score/calc_sell_score 결과(market-signals.json)를 읽어
+// Gemini 프롬프트의 가드레일로 넘긴다. 두 엔진이 같은 화면(스윙 전략)에서 정면 모순되는
+// 문제(2026-07-09 발견)를 막기 위한 최소 연결 고리. 파일이 없거나 깨져도 무중단 폴백
+// (quantBaseline이 null이면 프롬프트에서 해당 섹션·규칙이 자동으로 빠질 뿐, 기존처럼 동작한다).
+function quantBaselineFor(symbol) {
+  try {
+    const data = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'market-signals.json'), 'utf8'));
+    const s = data?.symbols?.[symbol];
+    if (!s || s.buyScore == null || s.sellScore == null) return null;
+    return { buyScore: s.buyScore, sellScore: s.sellScore, gear: s.gear };
+  } catch { return null; }
+}
+
 function kstDateStr(d = new Date()) {
   return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul' }).format(d); // YYYY-MM-DD
 }
@@ -575,7 +589,7 @@ function pivotPoints(highs, lows, closes) {
 
 // ── Gemini AI 분석 ────────────────────────────────────────────────────────
 
-async function callGemini(meta, ind, swing, pivot, price, weeklyInd, historyLines) {
+async function callGemini(meta, ind, swing, pivot, price, weeklyInd, historyLines, quantBaseline) {
   if (!GEMINI_API_KEY) {
     console.warn('  GEMINI_API_KEY 없음 — AI 분석 건너뜀');
     return null;
@@ -615,6 +629,16 @@ ADX: ${ind.adx.adx.toFixed(1)} (${ind.adx.status}) | 5일 전 ADX: ${ind.adx5dAg
 - ADX 20~25: 추세가 막 형성되는 초기 단계. 방향 확정은 아직 이르다.
 - ADX 25 이상 + DI 방향과 가격 방향 일치: 진짜 추세로 판단해도 된다.
 - ADX 50 이상: 과열 — 추세 소멸(반전) 경계 구간임을 함께 언급하라.
+` : '';
+
+  // 정량 엔진 기준선 (2026-07-09 신설) — calc_buy_score/calc_sell_score(계산식)가 이미 계산한
+  // 매수 매력도/매도 압력. "스윙 시그널·스윙 전략" 탭이 보여주는 숫자와 이 AI 판단이 정면으로
+  // 모순되는 걸 막기 위한 최소 가드레일이다. QQQ/VOO/TSLA/NVDA/DIA/IWM/SOXX만 존재(계산식 엔진이
+  // 이 종목들만 다룸) — 그 외 티커는 quantBaseline이 null이라 이 섹션 자체가 생략된다.
+  const quantSection = quantBaseline ? `
+[정량 엔진 기준선 — 계산식 기반 매수 매력도/매도 압력. 반드시 참고하라]
+정량 매수 매력도: ${quantBaseline.buyScore}/100 | 정량 매도 압력: ${quantBaseline.sellScore}/100 | Gear: ${quantBaseline.gear}
+(스윙 시그널·스윙 전략 탭에 표시되는 것과 동일한 숫자다. 같은 화면에 다른 결론이 뜨면 사용자가 혼란스러워한다.)
 ` : '';
 
   // RSI/MACD 궤적 라벨 (프롬프트 가독성용)
@@ -687,7 +711,7 @@ MACD: ${ind.macd.macd != null ? ind.macd.macd.toFixed(4) : 'N/A'} / 시그널: $
 [지지/저항]
 스윙 저항: ${fmt(swing.resistance)} | 스윙 지지: ${fmt(swing.support)}
 피벗(PP): ${fmt(pivot.pp)} | R1: ${fmt(pivot.r1)} | R2: ${fmt(pivot.r2)} | S1: ${fmt(pivot.s1)} | S2: ${fmt(pivot.s2)}
-${weeklySection}${adxSection}
+${weeklySection}${adxSection}${quantSection}
 [판단 규칙 — 반드시 지켜라]
 
 1. action은 "매수" / "매도" / "관망" 중 하나만. "매수 우위지만 관망" 같은 혼합 금지.
@@ -731,6 +755,14 @@ ${weeklySection}${adxSection}
     action="매수"면 buyScore는 6 이상, action="매도"면 buyScore는 4 이하, action="관망"이면
     4~6 사이여야 한다. action과 buyScore가 서로 모순되면(예: action="매도"인데 buyScore=8)
     절대 안 된다.
+
+11. [정량 엔진 기준선]이 위에 주어졌다면 (없으면 이 규칙은 무시하라):
+    - 정량 매수 매력도가 70 이상이면 action을 "매도"로 결론내지 마라 ("매수" 또는 "관망"만 가능).
+    - 정량 매도 압력이 70 이상이면 action을 "매수"로 결론내지 마라 ("매도" 또는 "관망"만 가능).
+    - 그 외 구간에서는 정량 점수와 다른 action을 내려도 된다. 단, reason 맨 앞에 반드시
+      "정량 매수 {N}점과 달리 관망/매도로 보는 이유:" 형태로 왜 다르게 판단했는지 명시하라
+      (ADX 무추세, 주봉 충돌, 거래량 부재 등 정량 엔진이 못 보는 근거를 대라).
+      같은 화면(스윙 전략 탭)에 정량 점수와 네 판단이 나란히 노출된다는 걸 명심하라.
 
 다음 JSON만 반환하라. 다른 텍스트는 절대 붙이지 마라:
 {
@@ -984,7 +1016,8 @@ async function processTicker(meta) {
   // 5. Gemini AI 분석 — 판단 원장에서 직전 3영업일 기록을 읽어 연속성 컨텍스트로 주입
   const ledger       = loadLedger();
   const historyLines = ledgerContextLines(ledger, symbol);
-  const aiResult = await callGemini(meta, indicators, swing, pivot, price, weeklyInd, historyLines);
+  const quantBaseline = quantBaselineFor(symbol);
+  const aiResult = await callGemini(meta, indicators, swing, pivot, price, weeklyInd, historyLines, quantBaseline);
 
   // 판단 원장 기록 — Gemini 신규 판단 성공 시에만 (실패 시 기존 분석 보존 경로는 기록하지 않음)
   if (aiResult && aiResult.action) {
