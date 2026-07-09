@@ -25,6 +25,14 @@ const scenes = {
   }
 };
 
+// 2026-07-09 버그 수정: 각 장면(scene)의 로컬 폴백 사진 목록 끝에 다른
+// 장면의 사진이 몇 장씩 섞여 들어가 있었다(예: night 목록 끝에
+// golden-hour/morning 사진, golden-hour 목록 끝에 night/morning/midday
+// 사진). 실제 아카이브에 야간·새벽 사진이 워낙 적어서(수집 자동화가
+// 05~23시에만 도는 구조라 그 시간대 사진이 거의 안 쌓임) night 장면은
+// 이 로컬 폴백 목록을 쓰는 비중이 매우 높은데, 그 목록 자체에 golden-hour
+// 사진이 섞여 있어 "밤인데 노을/낮 사진이 나온다"는 증상으로 이어졌다.
+// 각 장면 목록을 그 장면 고유 사진만 남도록 정리한다.
 const scenePhotos = {
   morning: [
     "assets/bg-morning.jpg",
@@ -37,8 +45,7 @@ const scenePhotos = {
     "assets/backgrounds/morning/09.jpg",
     "assets/backgrounds/morning/10.jpg",
     "assets/backgrounds/morning/11.jpg",
-    "assets/backgrounds/morning/12.jpg",
-    "assets/bg-midday.jpg"
+    "assets/backgrounds/morning/12.jpg"
   ],
   midday: [
     "assets/bg-midday.jpg",
@@ -50,9 +57,7 @@ const scenePhotos = {
     "assets/backgrounds/midday/06.jpg",
     "assets/backgrounds/midday/07.jpg",
     "assets/backgrounds/midday/08.jpg",
-    "assets/backgrounds/midday/11.jpg",
-    "assets/bg-morning.jpg",
-    "assets/bg-golden-hour.jpg"
+    "assets/backgrounds/midday/11.jpg"
   ],
   "golden-hour": [
     "assets/bg-golden-hour.jpg",
@@ -61,12 +66,7 @@ const scenePhotos = {
     "assets/backgrounds/golden-hour/04.jpg",
     "assets/backgrounds/golden-hour/08.jpg",
     "assets/backgrounds/golden-hour/09.jpg",
-    "assets/backgrounds/golden-hour/10.jpg",
-    "assets/backgrounds/golden-hour/12.jpg",
-    "assets/backgrounds/night/06.jpg",
-    "assets/backgrounds/morning/04.jpg",
-    "assets/bg-midday.jpg",
-    "assets/bg-morning.jpg"
+    "assets/backgrounds/golden-hour/10.jpg"
   ],
   night: [
     "assets/bg-night.jpg",
@@ -77,10 +77,7 @@ const scenePhotos = {
     "assets/backgrounds/night/07.jpg",
     "assets/backgrounds/night/08.jpg",
     "assets/backgrounds/night/10.jpg",
-    "assets/backgrounds/night/12.jpg",
-    "assets/backgrounds/golden-hour/02.jpg",
-    "assets/backgrounds/golden-hour/04.jpg",
-    "assets/backgrounds/morning/04.jpg"
+    "assets/backgrounds/night/12.jpg"
   ]
 };
 
@@ -1016,6 +1013,18 @@ function loadMusicResume() {
   return null;
 }
 
+// 2026-07-09: "이어듣기"가 날짜 구분 없이 무한정 유지되면서, 앱을 대기화면처럼
+// 하루 종일 켜두는 유저에게 "다음날 다시 켜도 항상 어제 그 곡부터 시작"하는
+// 지루함을 만들었다 — 유저 피드백: "앱을 실행할 때마다 같은 음악이 나와서
+// 지루하다"는 착각이 아니라 이 코드의 실제 동작이었다. 저장 시점의 "기기
+// 로컬 날짜"를 함께 남겨서, 되살릴 때 같은 날짜인 경우에만 이어듣기를
+// 적용하고, 날짜가 바뀌었으면 새 곡을 고르게 한다(아래 prefetchFirstTrack
+// 참조). 같은 날 안에서 앱을 잠깐 껐다 켜는 정상적인 이어듣기 경험은 그대로
+// 유지된다.
+function localDateStamp(date = new Date()) {
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
 function saveMusicResume() {
   try {
     const player = activePlayer();
@@ -1025,6 +1034,7 @@ function saveMusicResume() {
     localStorage.setItem(musicResumeStorageKey, JSON.stringify({
       file: track.file,
       time: player.currentTime || 0,
+      savedOn: localDateStamp(),
     }));
   } catch (error) {
     // localStorage를 못 쓰는 환경이어도 재생 자체는 지장이 없어야 한다.
@@ -1890,7 +1900,12 @@ window.setInterval(sendNativeHeartbeat, 2000); // 백그라운드 그림자 재�
   // 이어듣기만 남기고 초 단위 탐색은 완전히 제거한다.)
   const resume = loadMusicResume();
   let resumeIndex = -1;
-  if (resume && Array.isArray(musicPlaylist)) {
+  // 2026-07-09: 저장된 날짜(savedOn)가 "오늘"과 같을 때만 이어듣기를 적용한다.
+  // savedOn이 아예 없는 예전 저장값(이 수정 이전에 저장된 것)은 날짜를 알 수
+  // 없으므로 안전하게 "오늘 아님"으로 취급해 새 곡을 고르게 한다 — 유저
+  // 입장에선 이 업데이트 이후 첫 실행 한 번만 새 곡으로 시작하고, 그 다음부터는
+  // 정상적으로 하루 단위 이어듣기가 자리잡는다.
+  if (resume && Array.isArray(musicPlaylist) && resume.savedOn === localDateStamp()) {
     const idx = musicPlaylist.findIndex((track) => track && track.file === resume.file);
     if (idx >= 0) resumeIndex = idx;
   }
