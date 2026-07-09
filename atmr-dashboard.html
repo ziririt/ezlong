@@ -351,7 +351,9 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 680px) {
   .tab-bar { grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .tab-btn { padding: 18px 8px; font-size: 16px; gap: 5px; min-height: 76px; }
-  .tab-btn-sub { display: block; font-size: 16px; letter-spacing: 0; line-height: 1.4; word-break: keep-all; }
+  /* 2026-07-10: 좁은 3단 탭 컬럼에서 설명구가 2~3줄로 줄바꿈되어 어색해
+     보인다는 피드백 — .bi-hint와 동일한 예외 패턴으로 축소 */
+  .tab-btn-sub { display: block; font-size: 13px; letter-spacing: 0; line-height: 1.35; word-break: keep-all; }
 }
 .tab-pane { display: none; }
 .tab-pane.active { display: block; }
@@ -1609,7 +1611,7 @@ li.gear-other-sep { display: none !important; }
       </button>
       <button class="tab-btn" onclick="switchTab('kings')">
         TSLA·NVDA
-        <span class="tab-btn-sub">TSLA · NVDA 집중 분석</span>
+        <span class="tab-btn-sub">집중 분석</span>
       </button>
     </div>
 
@@ -5699,11 +5701,10 @@ function renderRecentContext(symbols) {
     <div style="
       background:${IS_DARK ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'};
       border:1px solid ${IS_DARK ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'};
-      border-radius:10px;padding:10px 14px;margin-bottom:12px;
+      border-radius:10px;padding:10px 14px 12px;margin-bottom:12px;
       font-size:16px;line-height:1.8;
-      display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px 12px;
     ">
-      <span style="color:var(--ez-text3);font-size:16px;font-weight:600;letter-spacing:.05em;white-space:nowrap;padding-top:2px;">최근 흐름</span>
+      <div style="color:var(--ez-text3);font-size:16px;font-weight:600;letter-spacing:.05em;margin-bottom:6px;">최근 흐름</div>
       <div class="recent-flow-grid">${chips.join('')}</div>
     </div>`;
 }
