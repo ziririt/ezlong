@@ -770,8 +770,12 @@ function renderETF() {
 function rowHTML(item, noRank) {
   var sym  = item.symbol;
   var live      = (pricesData && pricesData.prices && pricesData.prices[sym]) || null;
-  // 장마감~일봉갱신 공백 구간 브릿지 (2026-07-08): live.dayClose = 확정된 정규장 종가
-  var bridgeOK  = isDailyStale() && live && live.extSession === 'post' && live.dayClose > 0;
+  // 장마감~일봉갱신 공백 구간 브릿지 (2026-07-08, 2026-07-10 확장): live.dayClose = 확정된 정규장 종가.
+  // extSession==='post' 단독 조건은 Massive가 포스트마켓 거래를 아직 확인 못했을 때(장마감 직후
+  // 수분~수십분) 브릿지가 안 켜지는 공백을 남긴다 — !isUSMarketOpen()(시간 기준) + dayClose가
+  // prevClose와 실제로 다름(비거래일 오염 스냅샷 방어)을 대체 조건으로 추가한다(24항 참조).
+  var bridgeOK  = isDailyStale() && live && live.dayClose > 0 &&
+    (live.extSession === 'post' || (!isUSMarketOpen() && live.dayClose !== live.prevClose));
   // 장 마감 후: yfinance 정규장 종가 우선 (포스트마켓 가격 오염 방지) — 단, 일봉이 아직
   // 오늘 걸로 안 바뀐 공백 구간엔 위 브릿지(live.dayClose)가 우선한다.
   var price     = isUSMarketOpen()
@@ -897,7 +901,8 @@ function calcChangePct(price, sparkline, live, itemChangePct) {
     // 장마감~일봉갱신 공백 구간 브릿지 (2026-07-08): 일봉 파일이 아직 오늘 걸로 안 바뀌었는데
     // Massive가 포스트마켓 세션(정규장 종료 확정)이면, day.c/prevDay.c 기준 등락률(포스트마켓
     // 잡음 없음)을 임시로 우선 사용 — 일봉 갱신되면 자동으로 꺼짐.
-    if (isDailyStale() && live && live.extSession === 'post' && live.changePct != null) {
+    if (isDailyStale() && live && live.changePct != null &&
+        (live.extSession === 'post' || (live.dayClose > 0 && live.dayClose !== live.prevClose))) {
       return live.changePct;
     }
     if (itemChangePct != null) return itemChangePct;   // ① yfinance 종가 기준
@@ -1064,7 +1069,9 @@ function renderIndexCards() {
     // day.c/prevDay.c 기준 등락률(포스트마켓 잡음 없음)로 오늘 등락률을 브릿지하고,
     // 가격은 어제 종가(idxEntry.price) × (1+오늘 등락률) 근사치로 임시 보정한다.
     // 일봉 파일이 오늘 걸로 갱신되면 이 브릿지는 자동으로 꺼진다.
-    var bridgeOK = isDailyStale() && etfLive && etfLive.extSession === 'post' && etfLive.changePct != null;
+    // extSession==='post' 단독 조건의 장마감 직후 공백을 !isUSMarketOpen()+실변동 체크로 보강(2026-07-10, 24항)
+    var bridgeOK = isDailyStale() && etfLive && etfLive.changePct != null && etfLive.dayClose > 0 &&
+      (etfLive.extSession === 'post' || (!isUSMarketOpen() && etfLive.dayClose !== etfLive.prevClose));
 
     // ── 인덱스 changePct 소스 선택 ──────────────────────────────────────
     // Massive v3 직접 수집(price!=null): 항상 신뢰
@@ -1145,8 +1152,9 @@ function renderSemiEtfCards() {
   SEMI_ETFS.forEach(function(c) {
     var item   = findItem(c.sym);
     var live   = (pricesData && pricesData.prices && pricesData.prices[c.sym]) || null;
-    // 장마감~일봉갱신 공백 구간 브릿지 (2026-07-08)
-    var bridgeOK = isDailyStale() && live && live.extSession === 'post';
+    // 장마감~일봉갱신 공백 구간 브릿지 (2026-07-08, 2026-07-10 확장 — 24항 참조)
+    var bridgeOK = isDailyStale() && live && live.dayClose > 0 &&
+      (live.extSession === 'post' || (!isUSMarketOpen() && live.dayClose !== live.prevClose));
     var price  = isUSMarketOpen()
       ? ((live && live.price > 0) ? live.price : (item ? item.price : null))
       : (bridgeOK && live.dayClose > 0 ? live.dayClose : ((item && item.price > 0) ? item.price : (live && live.price > 0 ? live.price : null)));

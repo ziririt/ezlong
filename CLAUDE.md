@@ -747,4 +747,45 @@ ONEQ는 실제로 나스닥 종합지수(^IXIC)를 추종하는 ETF(2,000+ 종�
 
 ---
 
+## 24. bridgeOK "extSession==='post' 단독 조건"의 장마감 직후 공백 — 시간기준 보강 (2026-07-10 확정)
+
+**배경:** 21항 브릿지(`isDailyStale() && live.extSession==='post'`)는 "일봉 파일이 아직
+오늘 걸로 안 바뀐 공백 구간"을 감지하는 데는 성공했지만, 조건을 **Massive의 extSession
+분류**(포스트마켓 거래가 실제로 찍혀야 `'post'`로 바뀜)에만 의존했다. 정규장 마감
+직후(05:00 KST 전후) extSession이 아직 `null`인 짧은 구간이 실재해서, 그 사이엔 브릿지가
+전혀 안 켜지고 **전날(또는 그 이전) 일봉 파일 값을 그대로** 보여줬다. 2026-07-10 05:05
+KST 유저 제보 — 나스닥 카드가 +1.30%(실제)가 아니라 +0.20%(7/9 데이터, 부호까지 다름)로
+표시. S&P500·다우도 동시에 같은 증상(부호 반전 포함)이었다 — 나스닥만의 문제가 아니라
+**전 지수·전 종목 카드 공용 `bridgeOK` 로직의 구조적 공백**이었다.
+
+**조치:** `bridgeOK` 조건에 시간 기준(`!isUSMarketOpen()`)과 "실제 변동 여부"
+(`dayClose !== prevClose`) 조합을 `extSession==='post'`의 **대체 경로**로 추가했다:
+
+```javascript
+var bridgeOK = isDailyStale() && live && live.dayClose > 0 &&
+  (live.extSession === 'post' || (!isUSMarketOpen() && live.dayClose !== live.prevClose));
+```
+
+`dayClose !== prevClose` 조건은 2026-07-04 사고(`resolveSparkBaseline` 주석 참조 —
+"비거래일 Massive 스냅샷은 day.c와 prevDay.c가 같은 값으로 내려온다")에서 확인된 특성을
+방어 조건으로 재사용한 것 — 주말·공휴일에 `!isUSMarketOpen()`만으로 브릿지가 잘못 켜지는
+걸 막는다. 실제 거래일엔 dayClose가 prevClose와 다르므로 정상 발동.
+
+**적용 범위:** `rowHTML()`(개별 종목·ETF), `calcChangePct()`(등락률 폴백), `renderIndexCards()`
+(지수 3장), `renderSemiEtfCards()`(SOXX/SOXL) — 4곳 전부 동일 패턴으로 동시 수정
+(8항 공유 함수 동기화 원칙과 동일 적용).
+
+**검증(2026-07-10, 실측 데이터 대조):** origin/main 라이브 데이터로 시뮬레이션 —
+SPX 근사가 7,540.33(유저 참조 스크린샷 실측 7,536.61, 오차 0.05%), NDX 26,173.34(실측
+26,206.89, 오차 0.13%), DJI 52,432.15(실측 52,462.35, 오차 0.06%) — 기존 부호 반전
+오류 대비 대폭 개선.
+
+**규칙:**
+- `bridgeOK` 관련 코드를 또 건드릴 땐 위 4곳을 모두 grep으로 확인
+  (`grep -n "bridgeOK" stocks.html`).
+- extSession 단독 조건으로 되돌리지 않는다 — 장마감 직후 공백이 재발한다.
+- `dayClose !== prevClose` 방어 조건을 제거하지 않는다 — 비거래일 오염 스냅샷 재발 방지용.
+
+---
+
 전체 규칙·CSS 변수·배포 체크리스트·Git 워크플로우 → **EZLONG_GUIDE.md** 참조

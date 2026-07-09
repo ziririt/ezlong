@@ -5,6 +5,54 @@
 
 ---
 
+## [2026-07-10] 세션 (4차) — bridgeOK "extSession==='post' 단독 조건" 공백 수정
+
+### 배경
+
+(3차) 가격 고정 버그 수정 + ONEQ 교체가 실제로 origin/main에 반영됐는지 확인하는 과정에서,
+**(3차)에서 만든 로컬 커밋(`75aebc224` pctIsLive 수정)이 origin에 push되지 않고 로컬에만
+남아있던 것**을 발견 — `git show origin/main:stocks.html | grep -c pctIsLive` = 0으로 확인.
+동시에 유저가 새 스크린샷(2026-07-10 05:05 KST)으로 재차 불일치 제보: S&P500·나스닥·다우
+전부 부호까지 반전된 7/9 데이터(전날 이전 값)를 보여주고 있었다.
+
+### 진짜 원인 — 전날과 다른, 더 근본적인 구조적 공백
+
+`git fetch` + `git show origin/main:...`로 라이브 데이터 직접 대조한 결과:
+- ONEQ 프록시 자체는 이미 정상 반영돼 있었다 (`ONEQ: {price: 103.18, changePct: 1.17, ...}`).
+- 문제는 `bridgeOK` 조건 `extSession==='post'`가 **정규장 마감 직후 아직 `null`인 짧은
+  구간**에 전혀 발동하지 않는 것. 05:05 KST는 정규장이 막 끝난(05:00 KST 마감) 직후라
+  Massive가 포스트마켓 거래를 아직 확인 못해 `extSession: None` — 그 결과 브릿지 미발동,
+  일봉 파일(2026-07-09 08:17 KST 생성, 아직도 안 갱신됨)의 하루 전 등락률(부호까지 다름)이
+  그대로 노출됐다. **나스닥만의 문제가 아니라 지수 3개·개별종목·SOXX/SOXL 카드 전부에
+  걸친 `bridgeOK` 공용 로직의 구조적 공백**이었다.
+
+### 조치
+
+`bridgeOK` 조건에 시간 기준(`!isUSMarketOpen()`) + 실변동 체크(`dayClose !== prevClose`,
+2026-07-04 비거래일 오염 스냅샷 방어 재사용)를 `extSession==='post'`의 대체 경로로 추가.
+`rowHTML()`·`calcChangePct()`·`renderIndexCards()`·`renderSemiEtfCards()` 4곳 동시 수정.
+상세: CLAUDE.md 24항.
+
+### 검증
+
+origin/main 라이브 데이터로 재계산 시뮬레이션 — SPX 7,540.33(실측 7,536.61, 오차 0.05%),
+NDX 26,173.34(실측 26,206.89, 오차 0.13%), DJI 52,432.15(실측 52,462.35, 오차 0.06%).
+기존 부호 반전 오류 대비 대폭 개선. `node --check`로 인라인 JS 문법 검증 통과.
+
+### 배포 시 주의 — 로컬 미푸시 커밋 존재
+
+이번 배포엔 (3차)에서 만든 `pctIsLive` 커밋도 **아직 origin에 없으므로 함께** 올라간다.
+`git log --oneline -5`로 로컬이 origin보다 몇 커밋 앞서 있는지 먼저 확인 권장.
+
+### 복구 명령어 (문제 발생 시)
+
+```bash
+git log --oneline -10 -- stocks.html
+git checkout <직전 안정 커밋 해시> -- stocks.html
+```
+
+---
+
 ## [2026-07-10] 세션 (3차) — 지수 카드 "장중 가격 고정" 버그 수정
 
 ### 배경
