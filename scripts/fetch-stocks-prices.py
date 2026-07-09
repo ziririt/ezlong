@@ -97,7 +97,9 @@ SP500_TOP100 = [
 ]
 
 ETF_LIST = [
-    'QQQ',  'SPY',  'DIA',  'IVV',  'VOO',  'VTI',  'IWM',  'SOXX', 'SMH',  'XLK',
+    # ONEQ: 나스닥 "종합"지수(^IXIC) 추종 ETF — NDX 카드의 실시간 프록시로 사용(2026-07-10).
+    # QQQ는 나스닥"100"(대형 기술주 100개)만 추종해 종합지수와 다른 값이라 프록시 부적합(22항 참조).
+    'QQQ',  'SPY',  'DIA',  'ONEQ', 'IVV',  'VOO',  'VTI',  'IWM',  'SOXX', 'SMH',  'XLK',
     'XLF',  'XLE',  'XLV',  'XLY',  'XLI',  'ARKK', 'TQQQ', 'QLD',  'SQQQ', 'SOXL', 'SOXS',
     'UPRO', 'GLD',  'SLV',  'TLT',  'HYG',  'LQD',  'VNQ',  'XBI',  'IBB',  'ICLN', 'BOTZ',
 ]
@@ -620,9 +622,11 @@ def main():
         if sym not in prices or not bar_pairs:
             continue
 
-        # ── 스파클라인용 종가 배열 (어제 전체 세션, 기존 구조 유지)
-        closes = [c for _, c in bar_pairs]
-        prices[sym]['intraday'] = closes
+        # ── 스파클라인용 종가 배열 — 정규장 시작(09:30 ET)부터만 포함 (2026-07-10)
+        # 프리마켓(4AM~9:30AM ET) 포함 시 스파클라인이 실제 하루 흐름과 헷갈린다는 피드백 반영.
+        # 포스트마켓(장 마감 후)은 계속 포함 — 21항 "장마감~일봉갱신 공백 브릿지"가 이 구간에 의존함.
+        reg_start_closes = [c for t, c in bar_pairs if t >= market_open_ms]
+        prices[sym]['intraday'] = reg_start_closes
 
         # 이미 ext 있으면 건너뜀
         if prices[sym].get('extPct') is not None:
@@ -685,8 +689,9 @@ def main():
     live_indices = fetch_index_snapshot(MASSIVE_API_KEY)
 
     if not live_indices:
-        # SPY→SPX, QQQ→NDX, DIA→DJI 프록시 (등락률만; 가격은 UI에서 stocks-data 폴백)
-        proxy_map = [('SPX', 'SPY'), ('NDX', 'QQQ'), ('DJI', 'DIA')]
+        # SPY→SPX, ONEQ→NDX(나스닥 종합지수 추종, 2026-07-10 QQQ에서 교체), DIA→DJI
+        # 등락률만 프록시; 가격은 UI에서 stocks-data 폴백
+        proxy_map = [('SPX', 'SPY'), ('NDX', 'ONEQ'), ('DJI', 'DIA')]
         for idx_sym, etf_sym in proxy_map:
             etf = prices.get(etf_sym, {})
             if etf.get('changePct') is not None:
@@ -696,7 +701,7 @@ def main():
                     'change':    etf.get('change'),
                     'changePct': etf['changePct'],
                 })
-        src = 'ETF 프록시(SPY/QQQ/DIA)' if live_indices else '없음(stocks-data 폴백)'
+        src = 'ETF 프록시(SPY/ONEQ/DIA)' if live_indices else '없음(stocks-data 폴백)'
         print('  [Index] Massive v3 미지원 — %s 사용: %d개' % (src, len(live_indices)))
     else:
         idx_parts = []

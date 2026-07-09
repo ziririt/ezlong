@@ -5,6 +5,58 @@
 
 ---
 
+## [2026-07-10] 세션 (후속) — NDX 프록시 QQQ→ONEQ 교체 + 스파클라인 프리마켓 제외
+
+### 배경
+
+같은 날 앞선 세션에서 NDX 카드를 "장중엔 idxEntry(일봉)만 신뢰"하도록 고쳤는데, 유저가
+배포 전에 강하게 반대함: "이렇게 하지 마라. QQQ도 안된다. 스파클라인을 QQQ로 하는 것도
+반대다." — 실시간성을 희생하는 절충안 자체를 거부. 대신 "S&P500은 실시간 되는데 나스닥
+종합지수(26,187p)는 왜 안 되냐, 실시간으로 불러올 방안을 강구하라"와 "모든 스파클라인은
+프리마켓 반영할 필요 없이 정규장 시작(09:30 ET)부터 그려라"는 두 가지 구체적 요구를 받음.
+
+### 조치 1 — NDX 프록시를 QQQ에서 ONEQ로 교체
+
+QQQ가 아니라 애초에 나스닥 종합지수(^IXIC)를 추종하는 ETF가 필요했다. 리서치 결과
+**ONEQ**(Fidelity Nasdaq Composite Index ETF)가 정확히 이 역할 — 2,000여 종목을 담아
+종합지수를 그대로 추종한다. `scripts/fetch-stocks-prices.py`의 `ETF_LIST`에 ONEQ 추가,
+`proxy_map`을 `('NDX','QQQ')`→`('NDX','ONEQ')`로 교체. `stocks.html`의 `ETF_MAP`도 동일
+교체. 오전에 추가했던 `isCompositeIdx` 특수 예외 코드는 전부 제거 — SPX/DJI와 완전히
+동일한 로직으로 NDX도 실시간 추적 가능해졌다. 상세 CLAUDE.md 22항(최종 조치 섹션).
+
+### 조치 2 — 스파클라인 프리마켓 제외
+
+`fetch_intraday_bars()`가 이미 각 5분봉 타임스탬프를 갖고 있어서, 최종 `intraday` 배열에
+담기 전 `t >= market_open_ms`(09:30 ET, EDT/EST 자동판단)로 필터링. 포스트마켓은
+21항 공백 브릿지가 의존하므로 유지, 시작점(프리마켓)만 제거. CLAUDE.md 23항 신설.
+
+### 검증
+
+- 파이썬 `py_compile` 통과, 인라인 JS `node --check` 통과
+- ONEQ가 실제로 ^IXIC를 추종하는 정식 ETF임을 웹 검색으로 확인 (일평균거래량 ~29만주)
+- Massive/Polygon 문서 확인: `I:NDX` 티커는 나스닥100 의미 — "NDX" 카드(종합지수 취지)에
+  혼용하면 안 된다는 기존 우려가 사실로 재확인됨
+
+### 배포 중 발생한 사고 — git lock 연쇄
+
+이 세션 배포 과정에서 `.git/refs/*.lock`, `packed-refs.lock` 에러가 반복 발생. 원인은
+Claude 샌드박스의 읽기 전용 git 명령(fetch/status)이 유저 터미널 git 작업과 겹친 것
+([[feedback_sandbox_git_lock_root_cause]] 재확인) + 이 저장소를 동시에 건드리는 다른
+세션/프로세스가 있었던 것으로 추정(예전 stash가 튀어나와 `.gitignore`/`package.json`
+충돌 유발). 최종적으로는 다른 세션이 이미 NDX 수정을 커밋·푸시해서 origin에 반영 완료된
+상태였음을 `git show origin/main`으로 확인 후 마무리. **교훈: 배포 트러블슈팅 중 상태가
+예상과 다르면(특히 로그에 낯선 커밋 메시지가 보이면) git 명령을 계속 재시도하기보다
+`git show origin/main:<파일>`로 진짜 상태부터 확인할 것.**
+
+### 복구 명령어 (문제 발생 시)
+
+```bash
+git log --oneline -- scripts/fetch-stocks-prices.py stocks.html | head -5
+git revert <이번 커밋 해시>
+```
+
+---
+
 ## [2026-07-10] 세션 — 나스닥(NDX) 카드 QQQ≠나스닥종합지수 오류 수정
 
 ### 배경
