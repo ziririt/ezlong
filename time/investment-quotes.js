@@ -533,5 +533,19 @@ window.investmentQuotes = [
     "title": "주식 투자자의 회상",
     "author": "제시 리버모어",
     "category": "patience"
+  },
+  {
+    "english": "If the job has been correctly done when a common stock is purchased, the time to sell it is — almost never.",
+    "text": "주식을 매수할 때 해야 할 일을 올바르게 해냈다면, 그 주식을 팔아야 할 시점은 — 거의 영원히 오지 않는다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "patience"
+  },
+  {
+    "english": "Speculation is a game so fascinating that most people who play it never quit while they have the price of a meal left. But it is not a game for the stupid, the mentally lazy, the person of inferior emotional balance, or the get-rich-quick adventurer. They will die poor.",
+    "text": "투기라는 게임은 세상에서 가장 한결같이 매혹적인 게임이다. 하지만 이것은 어리석은 자, 정신적으로 게으른 자, 감정적 균형이 부족한 자, 혹은 빨리 부자가 되려는 모험가를 위한 게임이 아니다. 그런 사람들은 결국 가난하게 죽는다.",
+    "title": "주식 투자자의 회상",
+    "author": "제시 리버모어",
+    "category": "mindset"
   }
 ];
