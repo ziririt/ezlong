@@ -1599,6 +1599,28 @@ function getTodayPremarketUnix() {
   return Math.floor(premarket4am.getTime() / 1000);
 }
 
+// ── TradingView Baseline 기준선 위치(%) 근사 계산 (2026-07-10 3차, 25항 참조) ──
+// live: pricesData.prices[sym] 형태 객체(intraday/dayOpen/dayClose/prevClose/price 보유).
+// TradingView baseLevelPercentage는 "현재 화면에 보이는 가격 범위 중 몇 %" 위치에 기준선을
+// 두는 퍼센트 값이라, 우리가 가진 실제 인트라데이 데이터로 전일 종가가 그 범위 중 대략
+// 몇 %에 해당하는지 역산한다. 프리마켓은 23항에 따라 intraday에서 이미 빠져 있어 근사치.
+function calcBaseLevelPct(live) {
+  if (!live || live.prevClose == null) return 50;
+  var vals = [];
+  if (live.intraday && live.intraday.length) vals = vals.concat(live.intraday);
+  if (live.dayOpen  != null) vals.push(live.dayOpen);
+  if (live.dayClose != null) vals.push(live.dayClose);
+  if (live.price    != null) vals.push(live.price);
+  vals.push(live.prevClose);  // 기준선 자체도 범위에 포함 — 0%/100% 밖으로 벗어나는 것 방지
+  if (vals.length < 2) return 50;
+  var mn = Math.min.apply(null, vals);
+  var mx = Math.max.apply(null, vals);
+  var rg = mx - mn;
+  if (rg <= 0) return 50;
+  var pct = (live.prevClose - mn) / rg * 100;
+  return Math.max(0, Math.min(100, Math.round(pct * 10) / 10));
+}
+
 function renderTVChart(symbol, period) {
   clearTVCache();
   destroyTVWidget();
@@ -1612,31 +1634,28 @@ function renderTVChart(symbol, period) {
   var opts  = period === 'YTD' ? getYTDOpts() : (TV_PERIOD_MAP[period] || { interval: 'D' });
   var tvSym = getTVSym(symbol);
 
-  // 2026-07-10: Baseline(style:10) → Area(style:3) 단색 전환.
-  // 배경: Baseline 차트의 초록/빨강 분리 기준선은 TradingView 기본값이 "화면에 보이는
-  // 가격 범위의 50%"(baseLevelPercentage, 퍼센트 기반)라 전일 종가·금일 시가 같은 특정
-  // 가격값에 고정되지 않는다(웹 검색으로 확인 — 절대 가격 앵커는 Lightweight Charts라는
-  // 별개 라이브러리에만 있고, 우리가 쓰는 임베드 위젯엔 없음). 그 결과 SOXL처럼 갭업 후
-  // 완만히 밀린 날, 하루 전체가 크게 플러스(+10.08%)인데도 차트 후반부가 빨갛게 칠해져
-  // "마이너스 마감처럼 보인다"는 유저 제보(실측 확인). 대신 그날 실제 등락 부호 하나로
-  // 전체를 단색 칠하는 방식(야후 파이낸스와 동일)으로 전환 — 오해 소지 원천 차단.
-  var _isUp = true;
+  // 2026-07-10 3차 수정: Area 단색(style:3) → Baseline(style:10) 복귀 + 기준선을
+  // 전일 종가 근사 위치로 이동.
+  // 경위: 1차(Baseline 기본 50% 기준선)는 SOXL처럼 갭업 후 밀린 날 착시 발생 → 2차
+  // (Area 단색, 그날 전체 등락 부호 하나로 칠함)로 바꿨으나, NVDA처럼 하루 중 큰 폭
+  // 반등했지만 최종 등락이 근소한 마이너스(-0.66%)인 날엔 "차트는 뚜렷한 상승 모양인데
+  // 색은 온통 빨강"이라는 정반대 착시가 발생(유저 스크린샷 확인) — 실채 채우기도 과하게
+  // 진하게 나옴(투명도 오버라이드 실패 추정). 유저 요청대로 "전일 종가보다 위/아래일 때만
+  // 실시간으로 색이 바뀌는" 원래 Baseline 방식으로 복귀하되, 기준선 위치를 우리가 가진
+  // 실제 인트라데이 데이터로 근사 계산해 전일 종가 부근에 두도록 수정.
+  // 검증 한계: baseLevelPercentage는 "현재 화면에 보이는 가격 범위" 기준 퍼센트이고,
+  // TradingView의 실제 표시 범위(프리마켓 포함)를 우리가 정확히 알 수 없어 근사치다.
+  // 우리 쪽 intraday 필드는 23항에 따라 프리마켓이 이미 빠져 있어, 프리마켓 변동이 크게
+  // 벌어진 날은 오차가 커질 수 있다 — 배포 후 재확인 필요.
+  var _basePct = 50;
   if (['SPX', 'NDX', 'DJI'].indexOf(symbol) >= 0) {
-    // 지수 3개: findItem/calcChangePct 경로에 실데이터가 없어 allData.indices(일봉) 사용
-    var _idxEntry = allData && allData.indices ? allData.indices.find(function(x) { return x.symbol === symbol; }) : null;
-    _isUp = !_idxEntry || _idxEntry.changePct == null || _idxEntry.changePct >= 0;
+    var _idxEtfMap = { 'SPX': 'SPY', 'NDX': 'ONEQ', 'DJI': 'DIA' };
+    var _idxLive = pricesData && pricesData.prices ? pricesData.prices[_idxEtfMap[symbol]] : null;
+    _basePct = calcBaseLevelPct(_idxLive);
   } else {
-    var _item  = findItem(symbol);
-    var _live  = (pricesData && pricesData.prices && pricesData.prices[symbol]) || null;
-    var _price = isUSMarketOpen()
-      ? ((_live && _live.price > 0) ? _live.price : (_item ? _item.price : null))
-      : ((_item && _item.price > 0) ? _item.price : (_live && _live.price > 0 ? _live.price : null));
-    var _chg   = calcChangePct(_price, _item ? _item.sparkline : null, _live, _item ? _item.changePct : null);
-    _isUp = _chg == null || _chg >= 0;
+    var _live = (pricesData && pricesData.prices && pricesData.prices[symbol]) || null;
+    _basePct = calcBaseLevelPct(_live);
   }
-  var upColor   = isDark() ? '#28A745' : '#1A7F37';  // ez-design.css --ez-green과 동일
-  var dnColor   = isDark() ? '#FF453A' : '#D92A2A';  // ez-design.css --ez-red와 동일
-  var lineColor = _isUp ? upColor : dnColor;
 
   var cfg = {
     container_id:      'tv_chart_div',
@@ -1645,7 +1664,7 @@ function renderTVChart(symbol, period) {
     theme:             isDark() ? 'dark' : 'light',
     locale:            'kr',
     timezone:          'Asia/Seoul',
-    style:             '3',  // Area 차트 — 그날 전체 등락 부호 하나로 단색 표시 (2026-07-10, 22-B/24항 참조)
+    style:             '10',  // Baseline 차트 — 기준선을 전일 종가 근사 위치로 이동 (2026-07-10 3차, 25항 참조)
     hide_side_toolbar: false,
     hide_top_toolbar:  false,
     hide_legend:       true,
@@ -1655,11 +1674,7 @@ function renderTVChart(symbol, period) {
     prePostMarketData: true,
     studies:           getStudies(period),
     overrides: {
-      'mainSeriesProperties.areaStyle.color1':     lineColor,
-      'mainSeriesProperties.areaStyle.color2':     lineColor,
-      'mainSeriesProperties.areaStyle.linecolor':  lineColor,
-      'mainSeriesProperties.areaStyle.linewidth':  2,
-      'mainSeriesProperties.areaStyle.transparency': 75,
+      'mainSeriesProperties.baselineStyle.baseLevelPercentage': _basePct,
     },
   };
   // range만 지정 — interval 제거 (TradingView 자동봉 선택)
