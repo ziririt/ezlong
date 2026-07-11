@@ -1180,7 +1180,13 @@ function resetActiveWatchState() {
 function resolveTrackUrl(track) {
   const base = typeof musicSourceBaseUrl === "string" ? musicSourceBaseUrl.trim() : "";
   const fileName = track.file.replace(/^assets\/music\//, "");
-  return base ? `${base.replace(/\/$/, "")}/${fileName}` : track.file;
+  if (!base) return track.file;
+  // 2026-07-11: R2로 옮긴 새 트랙들은 폴더/파일명에 공백·괄호가 그대로 들어있다
+  // (예: "My Workspace/A Pocketful of Noon.m4a"). 세그먼트별로 encodeURIComponent를
+  // 적용해 "/" 구분자는 유지하면서 나머지는 안전하게 퍼센트 인코딩한다 — 브라우저의
+  // 자동 인코딩에 기대지 않고 명시적으로 처리해 WKWebView에서도 안정적으로 동작하게 함.
+  const encodedFileName = fileName.split("/").map(encodeURIComponent).join("/");
+  return `${base.replace(/\/$/, "")}/${encodedFileName}`;
 }
 
 // 네이티브 쪽(별도 프로세스)은 페이지의 상대경로 개념이 없으므로, 반드시
