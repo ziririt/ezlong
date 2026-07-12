@@ -433,6 +433,15 @@ button { font: inherit; }
 .settings-panel {
   position: fixed;
   inset: 0;
+  /* 2026-07-13 버그 수정: <main>에 perspective가 걸려있어 position:fixed 자식의
+     containing block이 진짜 뷰포트가 아니라 <main>이 된다(perspective/transform이
+     새 containing block을 만드는 CSS 규칙). <main>은 시계 화면 + 하단 ezlong 웹뷰
+     섹션까지 합쳐 뷰포트보다 훨씬 키가 크기 때문에, inset:0만으로는 이 패널이
+     그 전체 높이 기준으로 배치돼 실제 화면 밖(스크롤해야 보이는 위치)에 시트가
+     깔리는 문제가 있었다. height를 뷰포트 단위로 명시해 이 문제를 근본 해결한다.
+     vh/dvh 단위는 containing block과 무관하게 항상 실제 뷰포트 기준이다. */
+  height: 100vh;
+  height: 100dvh;
   z-index: 20;
   display: grid;
   align-items: end;
