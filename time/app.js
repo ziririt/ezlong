@@ -180,6 +180,9 @@ const musicSkip = document.getElementById("musicSkip");
 const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
 const musicPlaylistOptionsEl = document.getElementById("musicPlaylistOptions");
 const musicHistoryList = document.getElementById("musicHistoryList");
+const musicHistoryBody = document.getElementById("musicHistoryBody");
+const musicIncludeRockEl = document.getElementById("musicIncludeRock");
+const musicIncludeVocalEl = document.getElementById("musicIncludeVocal");
 const musicQCPanel = document.getElementById("musicQCPanel");
 const musicQCDeleteButton = document.getElementById("musicQCDeleteButton");
 const musicQCRemovalList = document.getElementById("musicQCRemovalList");
@@ -1175,6 +1178,38 @@ function musicCategoryLabel(key) {
   return MUSIC_CATEGORY_LABELS[key] || key;
 }
 
+// 2026-07-13: "Rock 포함" / "Vocal 포함" 체크박스 — 기본값 켜짐(포함), 끄면
+// 해당 장르 트랙을 후보에서 제외한다. 카테고리명 문자열 기반으로 판정한다
+// (예: "vocal- girls rock"은 vocal이면서 동시에 rock이기도 하다 — 둘 다에
+// 걸린다). 새 카테고리가 추가돼도 이름에 "vocal"/"rock"이 들어가면 자동으로
+// 인식되므로 이 함수만으로 충분하다.
+function isVocalCategory(key) {
+  return typeof key === "string" && key.toLowerCase().includes("vocal");
+}
+function isRockCategory(key) {
+  return typeof key === "string" && key.toLowerCase().includes("rock");
+}
+
+const musicIncludeRockStorageKey = "ezlong:musicIncludeRock";
+const musicIncludeVocalStorageKey = "ezlong:musicIncludeVocal";
+
+function loadMusicGenreToggle(storageKey) {
+  try {
+    const raw = localStorage.getItem(storageKey);
+    return raw === null ? true : raw === "1"; // 저장된 값이 없으면 기본값 켜짐
+  } catch (error) {
+    return true;
+  }
+}
+
+function saveMusicGenreToggle(storageKey, value) {
+  try {
+    localStorage.setItem(storageKey, value ? "1" : "0");
+  } catch (error) {
+    // localStorage를 못 쓰는 환경이어도 재생 자체에는 지장이 없어야 한다.
+  }
+}
+
 function loadMusicPlaylistFilter() {
   try {
     const raw = localStorage.getItem(musicPlaylistFilterStorageKey);
@@ -1226,10 +1261,18 @@ function pickNextTrackIndex() {
     return Boolean(track && track.file && disliked.has(track.file));
   };
   const matchesFilter = (i) => filterKey === "all" || trackCategoryKey(musicPlaylist[i]) === filterKey;
+  const includeRock = loadMusicGenreToggle(musicIncludeRockStorageKey);
+  const includeVocal = loadMusicGenreToggle(musicIncludeVocalStorageKey);
+  const matchesGenreToggle = (i) => {
+    const key = trackCategoryKey(musicPlaylist[i]);
+    if (!includeRock && isRockCategory(key)) return false;
+    if (!includeVocal && isVocalCategory(key)) return false;
+    return true;
+  };
 
   const baseIndices = [];
   for (let i = 0; i < total; i += 1) {
-    if (matchesFilter(i) && !isDisliked(i)) baseIndices.push(i);
+    if (matchesFilter(i) && matchesGenreToggle(i) && !isDisliked(i)) baseIndices.push(i);
   }
   // 필터 결과가 통째로 비면(이론상 거의 없음) 안전하게 전체에서 고른다.
   const searchBase = baseIndices.length > 0
@@ -1864,6 +1907,17 @@ function applyMusicPlaylistFilter(newKey) {
   }
 }
 
+// Rock/Vocal 포함 체크박스를 바꾼 직후 — 플레이리스트 필터를 바꿀 때와 동일한
+// 방식으로 즉시 반영한다(라운드로빈 순서 리셋 + 재생 중이면 바로 전환).
+function applyMusicGenreToggle() {
+  categoryRotationQueue = [];
+  if (musicPlaying) {
+    playTrackAtIndex(pickNextTrackIndex());
+  } else {
+    renderMusicPlaylistInfo();
+  }
+}
+
 // 2026-07-08: "지금 재생 중" 표시만으로는 방금 지나간 곡을 다시 찾아 듣기
 // 어렵다는 요청 — 실제로 재생 대상이 된 곡을 최신순으로 기록해두고, 음악
 // 설정 패널에 목록으로 보여주며 곡마다 "바로 듣기" 버튼을 붙인다.
@@ -1899,23 +1953,25 @@ function recordPlayLog(index) {
 }
 
 function renderMusicHistoryList() {
-  if (!musicHistoryList) return;
+  const target = musicHistoryBody || musicHistoryList;
+  if (!target) return;
   const log = loadMusicPlayLog();
   if (log.length === 0) {
-    musicHistoryList.innerHTML = '<li class="settings-desc settings-desc-muted">아직 재생 기록이 없습니다.</li>';
+    target.innerHTML = '<tr><td colspan="2" class="settings-desc settings-desc-muted">아직 재생 기록이 없습니다.</td></tr>';
     return;
   }
   const currentTrack = Array.isArray(musicPlaylist) && musicPlaylist.length > 0
     ? musicPlaylist[musicIndex % musicPlaylist.length]
     : null;
-  musicHistoryList.innerHTML = log.map((entry) => {
+  target.innerHTML = log.map((entry) => {
     const isCurrent = Boolean(currentTrack && currentTrack.file === entry.file);
     const variant = entry.playlist && entry.playlist !== "SINGLE" ? ` (${entry.playlist})` : "";
-    const buttonLabel = isCurrent && musicPlaying ? "재생 중" : "바로 듣기";
-    return `<li class="music-history-item${isCurrent ? " is-current" : ""}">`
-      + `<span class="music-history-title">${entry.title}${variant}</span>`
-      + `<button type="button" class="music-history-play" data-history-file="${entry.file}">${buttonLabel}</button>`
-      + `</li>`;
+    const isPlayingNow = isCurrent && musicPlaying;
+    const ariaLabel = isPlayingNow ? "지금 재생 중" : "재생";
+    return `<tr class="music-history-row${isCurrent ? " is-current" : ""}">`
+      + `<td class="music-history-title">${entry.title}${variant}</td>`
+      + `<td class="music-history-play-cell"><button type="button" class="music-history-play-btn${isPlayingNow ? " is-playing" : ""}" data-history-file="${entry.file}" aria-label="${ariaLabel}"></button></td>`
+      + `</tr>`;
   }).join("");
 }
 
@@ -2058,6 +2114,8 @@ renderCategoryOptions();
 loadSavedCategories();
 renderMusicPlaylistInfo();
 renderMusicPlaylistFilterOptions();
+if (musicIncludeRockEl) musicIncludeRockEl.checked = loadMusicGenreToggle(musicIncludeRockStorageKey);
+if (musicIncludeVocalEl) musicIncludeVocalEl.checked = loadMusicGenreToggle(musicIncludeVocalStorageKey);
 renderMusicQCPanel();
 renderMusicToggle();
 settingsOpen.addEventListener("click", openSettings);
@@ -2151,6 +2209,18 @@ if (musicPlaylistOptionsEl) {
     if (event.target.matches('input[name="musicPlaylistFilter"]') && event.target.checked) {
       applyMusicPlaylistFilter(event.target.value);
     }
+  });
+}
+if (musicIncludeRockEl) {
+  musicIncludeRockEl.addEventListener("change", () => {
+    saveMusicGenreToggle(musicIncludeRockStorageKey, musicIncludeRockEl.checked);
+    applyMusicGenreToggle();
+  });
+}
+if (musicIncludeVocalEl) {
+  musicIncludeVocalEl.addEventListener("change", () => {
+    saveMusicGenreToggle(musicIncludeVocalStorageKey, musicIncludeVocalEl.checked);
+    applyMusicGenreToggle();
   });
 }
 if (musicQCDeleteButton) {
