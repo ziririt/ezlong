@@ -178,7 +178,12 @@ const musicSettingsOpen = document.getElementById("musicSettingsOpen");
 const musicToggle = document.getElementById("musicToggle");
 const musicSkip = document.getElementById("musicSkip");
 const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
+const musicPlaylistOptionsEl = document.getElementById("musicPlaylistOptions");
 const musicHistoryList = document.getElementById("musicHistoryList");
+const musicQCPanel = document.getElementById("musicQCPanel");
+const musicQCDeleteButton = document.getElementById("musicQCDeleteButton");
+const musicQCRemovalList = document.getElementById("musicQCRemovalList");
+const musicQCCopyButton = document.getElementById("musicQCCopyButton");
 const bgAudio = document.getElementById("bgAudio");
 const bgAudioB = document.getElementById("bgAudioB");
 const digitElements = [
@@ -998,6 +1003,96 @@ function recordDislikeIfWarranted(player, index) {
   }
 }
 
+// 2026-07-12: 원음 자체에 문제가 있는 곡(끊김·클리핑 등)을 골라내기 위한 임시
+// QC 전용 도구. URL 끝에 ?musicqc=1 을 한 번 붙여서 열면 이 기기에 플래그가
+// 저장되고, 그 이후로는 이 기기에서만 계속 버튼이 보인다 — 일반 방문자에게는
+// 노출되지 않는다. "영구 제외" 버튼은 기존 싫어요(disliked) 목록에 즉시
+// 추가해 이 기기에서 다시는 안 나오게 하고, 동시에 별도의 "삭제 요청" 목록에도
+// 남겨서 나중에 music-playlist.js 원본에서 실제로 빼고 배포할 때 참고한다 —
+// 클라이언트 코드만으로는 서버(R2/저장소)의 원본 파일을 직접 지울 수 없기
+// 때문에 이 목록을 사람이 확인해서 반영하는 구조다.
+const musicQCModeStorageKey = "ezlong:musicQCMode";
+const musicRemovalRequestsStorageKey = "ezlong:musicRemovalRequests";
+
+function isMusicQCMode() {
+  try {
+    if (new URLSearchParams(window.location.search).get("musicqc") === "1") {
+      localStorage.setItem(musicQCModeStorageKey, "1");
+    }
+    return localStorage.getItem(musicQCModeStorageKey) === "1";
+  } catch (error) {
+    return false;
+  }
+}
+
+function loadMusicRemovalRequests() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(musicRemovalRequestsStorageKey) || "[]");
+    return Array.isArray(raw) ? raw : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveMusicRemovalRequests(list) {
+  try {
+    localStorage.setItem(musicRemovalRequestsStorageKey, JSON.stringify(list));
+  } catch (error) {
+    // localStorage를 못 쓰는 환경이어도 재생 자체는 지장이 없어야 한다.
+  }
+}
+
+function renderMusicQCPanel() {
+  if (!musicQCPanel) return;
+  musicQCPanel.hidden = !isMusicQCMode();
+  if (!musicQCRemovalList) return;
+  const requests = loadMusicRemovalRequests();
+  if (requests.length === 0) {
+    musicQCRemovalList.innerHTML = '<li class="settings-desc settings-desc-muted">삭제 요청한 곡이 없습니다.</li>';
+    return;
+  }
+  musicQCRemovalList.innerHTML = requests.map((entry) => `<li>${entry.title}</li>`).join("");
+}
+
+// 지금 재생 중인 곡을 (1) 기존 싫어요 목록에 즉시 넣어 이 기기에서 다시는
+// 안 나오게 하고, (2) 삭제 요청 목록에 남긴 다음, (3) 바로 다음 곡으로 넘어간다.
+function permanentlyExcludeCurrentTrack() {
+  if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  const track = musicPlaylist[musicIndex % musicPlaylist.length];
+  if (!track || !track.file) return;
+  const label = track.title || track.file;
+  if (!window.confirm(`"${label}" 곡을 이 기기에서 영구 제외할까요?`)) return;
+
+  const disliked = loadDislikedTracks();
+  if (!disliked.includes(track.file)) {
+    disliked.push(track.file);
+    saveDislikedTracks(disliked);
+  }
+
+  const requests = loadMusicRemovalRequests();
+  if (!requests.some((entry) => entry.file === track.file)) {
+    requests.push({
+      file: track.file,
+      title: track.title || track.file,
+      category: track.category || null,
+      removedAt: Date.now(),
+    });
+    saveMusicRemovalRequests(requests);
+  }
+
+  renderMusicQCPanel();
+  playNextTrack();
+}
+
+function copyMusicRemovalRequests() {
+  const requests = loadMusicRemovalRequests();
+  if (requests.length === 0) return;
+  const text = requests.map((entry) => `${entry.title} :: ${entry.file}`).join("\n");
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(() => {});
+  }
+}
+
 // 2026-07-08: 로그인 없이 "마지막 재생 곡/위치"를 기억해서 앱을 다시 켰을 때
 // 이어들을 수 있게 한다. 이것도 파일명 기준으로 저장한다.
 const musicResumeStorageKey = "ezlong:musicResume";
@@ -1051,29 +1146,146 @@ function maybeSaveMusicResume(force = false) {
   saveMusicResume();
 }
 
+// 2026-07-12: "여러 장르가 골고루, 질리지 않게, 같은 제목(파트1/2/3...)은
+// 연달아 나오지 않게" 요청 반영 — 아래 세 가지를 추가한다.
+// (1) 플레이리스트(장르) 선택 — localStorage에 저장, "all"이면 전체 랜덤.
+// (2) "all" 모드에서는 카테고리(장르)를 라운드로빈으로 순환해 특정 장르가
+//     몰아서 나오는 것을 막는다(장르 내부 곡 선택 자체는 무작위 유지).
+// (3) 같은 "그룹"(제목이 같은 part1/2/3... 변주)은 최근 재생분과 최소 간격을
+//     두기 전까지 후보에서 제외한다 — 플레이리스트 필터와 무관하게 항상 적용.
+const musicPlaylistFilterStorageKey = "ezlong:musicPlaylistFilter";
+const ORIGINAL_CATEGORY_KEY = "__original__";
+const musicRecentGroupSpacing = 8; // 같은 그룹은 최소 이만큼 곡이 지나야 다시 후보가 됨
+
+const MUSIC_CATEGORY_LABELS = {
+  [ORIGINAL_CATEGORY_KEY]: "오리지널",
+  "My Workspace": "My Workspace 어쿠스틱",
+  "piano chello": "피아노 · 첼로",
+  "BGM": "BGM 시네마틱",
+  "vocal - CITY POP": "보컬 · 시티팝",
+  "vocal - workspace 20260711 1400": "보컬 · 워크스페이스",
+  "vocal- girls rock": "보컬 · 걸스록",
+};
+
+function trackCategoryKey(track) {
+  return track && track.category ? track.category : ORIGINAL_CATEGORY_KEY;
+}
+
+function musicCategoryLabel(key) {
+  return MUSIC_CATEGORY_LABELS[key] || key;
+}
+
+function loadMusicPlaylistFilter() {
+  try {
+    const raw = localStorage.getItem(musicPlaylistFilterStorageKey);
+    return typeof raw === "string" && raw ? raw : "all";
+  } catch (error) {
+    return "all";
+  }
+}
+
+function saveMusicPlaylistFilter(value) {
+  try {
+    localStorage.setItem(musicPlaylistFilterStorageKey, value);
+  } catch (error) {
+    // localStorage를 못 쓰는 환경이어도 재생 자체는 지장이 없어야 한다.
+  }
+}
+
+function shuffleArray(items) {
+  const shuffled = [...items];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
+}
+
+// "all" 모드 전용 — 매 사이클(존재하는 카테고리 수만큼)마다 순서를 새로 섞어
+// 순환한다. 새로고침하면 초기화되는 가벼운 런타임 상태일 뿐, 하루 단위
+// 이어듣기(musicResume)와는 무관하다.
+let categoryRotationQueue = [];
+
+function nextRotatedCategory(eligibleKeys) {
+  if (eligibleKeys.length === 0) return null;
+  categoryRotationQueue = categoryRotationQueue.filter((key) => eligibleKeys.includes(key));
+  if (categoryRotationQueue.length === 0) {
+    categoryRotationQueue = shuffleArray(eligibleKeys);
+  }
+  return categoryRotationQueue.shift();
+}
+
 function pickNextTrackIndex() {
   const total = Array.isArray(musicPlaylist) ? musicPlaylist.length : 0;
   if (total === 0) return 0;
-  const heard = new Set(loadMusicHistory());
+
+  const filterKey = loadMusicPlaylistFilter();
   const disliked = new Set(loadDislikedTracks());
   const isDisliked = (i) => {
     const track = musicPlaylist[i];
     return Boolean(track && track.file && disliked.has(track.file));
   };
-  const unheard = [];
+  const matchesFilter = (i) => filterKey === "all" || trackCategoryKey(musicPlaylist[i]) === filterKey;
+
+  const baseIndices = [];
   for (let i = 0; i < total; i += 1) {
-    if (!heard.has(i) && !isDisliked(i)) unheard.push(i);
+    if (matchesFilter(i) && !isDisliked(i)) baseIndices.push(i);
   }
-  let pool = unheard;
-  if (pool.length === 0) {
-    // 안 들은 곡 중 싫어요 아닌 게 없으면, 싫어요만 제외하고 전체에서 고른다.
-    pool = Array.from({ length: total }, (_, i) => i).filter((i) => !isDisliked(i));
+  // 필터 결과가 통째로 비면(이론상 거의 없음) 안전하게 전체에서 고른다.
+  const searchBase = baseIndices.length > 0
+    ? baseIndices
+    : Array.from({ length: total }, (_, i) => i);
+
+  const recentHistory = loadMusicHistory();
+  const heard = new Set(recentHistory);
+
+  // 최근 재생한 "그룹"(같은 제목의 다른 파트)은 간격이 찰 때까지 제외한다 —
+  // 필터 종류와 무관하게 항상 적용.
+  const recentGroups = new Set(
+    recentHistory.slice(-musicRecentGroupSpacing)
+      .map((i) => musicPlaylist[i] && musicPlaylist[i].group)
+      .filter((g) => g !== undefined)
+  );
+  const isGroupSafe = (i) => {
+    const g = musicPlaylist[i] && musicPlaylist[i].group;
+    return g === undefined || !recentGroups.has(g);
+  };
+
+  if (filterKey !== "all") {
+    // 특정 장르만 고르는 중 — 그 장르 안에서만 "한 바퀴 다 돌면 새 사이클"을
+    // 적용한다(전체 카탈로그 상태와 무관하게 이 장르 자체가 독립적으로 순환).
+    let pool = searchBase.filter((i) => !heard.has(i));
+    if (pool.length === 0) pool = searchBase;
+    let groupSafe = pool.filter(isGroupSafe);
+    if (groupSafe.length === 0) groupSafe = pool; // 후보가 다 걸러지면 간격 제약을 완화
+    return groupSafe[Math.floor(Math.random() * groupSafe.length)];
   }
-  if (pool.length === 0) {
-    // 모든 곡이 싫어요 처리된 극단적 경우 — 그래도 뭔가는 재생돼야 한다.
-    pool = Array.from({ length: total }, (_, i) => i);
-  }
-  return pool[Math.floor(Math.random() * pool.length)];
+
+  // 기본(전체) 모드 — 카테고리를 라운드로빈으로 순환해 장르가 골고루 섞이게
+  // 한다. 2026-07-12 수정: 처음엔 "아직 안 들은 곡"만 후보로 삼았는데, 카테고리
+  // 크기가 8배 이상 차이나다 보니(My Workspace 199곡 vs BGM 17곡) 작은
+  // 카테고리가 먼저 다 "들은 곡"이 되어 로테이션에서 통째로 빠지고, 그 뒤로는
+  // 가장 큰 카테고리만 연달아 나오는 문제가 실측 시뮬레이션(2000회)에서
+  // 확인됐다(같은 카테고리 최대 연속 140회). 그래서 "안 들은 곡" 여부는
+  // 카테고리를 고른 *다음에* 그 카테고리 안에서만 따지도록 바꿨다 — 각
+  // 카테고리가 자기 곡을 다 들으면 그 카테고리만 독립적으로 새 사이클을
+  // 시작하고, 로테이션 순서 자체에는 전혀 영향을 주지 않는다.
+  const byCategoryAll = new Map();
+  searchBase.forEach((i) => {
+    const key = trackCategoryKey(musicPlaylist[i]);
+    if (!byCategoryAll.has(key)) byCategoryAll.set(key, []);
+    byCategoryAll.get(key).push(i);
+  });
+  const eligibleKeys = Array.from(byCategoryAll.keys());
+  const chosenCategory = nextRotatedCategory(eligibleKeys);
+  const categoryPool = chosenCategory ? byCategoryAll.get(chosenCategory) : searchBase;
+
+  let candidates = (categoryPool || searchBase).filter(isGroupSafe);
+  if (candidates.length === 0) candidates = categoryPool || searchBase;
+  let unheardCandidates = candidates.filter((i) => !heard.has(i));
+  if (unheardCandidates.length === 0) unheardCandidates = candidates; // 이 카테고리만 새 사이클 시작
+
+  return unheardCandidates[Math.floor(Math.random() * unheardCandidates.length)];
 }
 
 let musicErrorRetryCount = 0;
@@ -1108,6 +1320,16 @@ const musicPrebufferLeadSeconds = 18;
 // 다른 하나(standbyPlayer)가 이미 다음 곡을 재생 중이어야 겹치는 소리가
 // 난다. 곡이 끝나면 역할만 서로 바꾼다(swap), 새로 로드하지 않는다.
 const musicPlayers = [bgAudio, bgAudioB].filter(Boolean);
+// 2026-07-12 버그 수정: R2(pub-xxxx.r2.dev)로 옮긴 뒤 "재생은 되는데(진행률은
+// 움직이는데) 소리가 전혀 안 남" 증상 — ensureAudioGraph()가 이 <audio>들을
+// createMediaElementSource로 Web Audio API(GainNode)에 물려서 재생하는데,
+// R2 버킷에 CORS 정책이 없으면 loadMusicTrack의 fetch(url)이 조용히 실패해
+// player.src = url(원격 URL 직결) 폴백으로 떨어지고, 이 상태에서 다른 출처
+// 미디어를 Web Audio 그래프에 연결하면 브라우저가 보안상 출력을 무음으로
+// 만든다(오디오 자체는 정상 재생되는 것처럼 보여도). crossOrigin="anonymous"를
+// 미리 지정해두면 fetch가 CORS 모드로 명확히 요청하고, R2 쪽 CORS 정책만
+// 맞으면(버킷 Settings > CORS Policy) 이 경로가 정상 작동한다.
+musicPlayers.forEach((player) => { player.crossOrigin = "anonymous"; });
 let activePlayerIndex = 0;
 let crossfadeTriggered = false;
 let pendingNextIndex = -1;
@@ -1600,6 +1822,48 @@ function renderMusicPlaylistInfo() {
   }
 }
 
+// 2026-07-12: "몇 가지 플레이리스트로 나눌 수 있나" 요청 — 실제 존재하는
+// category 값(오리지널 포함 7종)을 기준으로 자동으로 옵션을 만든다. 트랙이
+// 나중에 더 늘어나거나 카테고리가 추가돼도 이 목록·라디오 버튼은 코드 수정
+// 없이 자동으로 따라간다.
+function buildMusicPlaylistOptions() {
+  const counts = new Map();
+  if (Array.isArray(musicPlaylist)) {
+    musicPlaylist.forEach((track) => {
+      const key = trackCategoryKey(track);
+      counts.set(key, (counts.get(key) || 0) + 1);
+    });
+  }
+  const options = [{ key: "all", label: "전체(랜덤·장르 골고루)", count: musicPlaylist.length }];
+  Array.from(counts.keys()).forEach((key) => {
+    options.push({ key, label: musicCategoryLabel(key), count: counts.get(key) });
+  });
+  return options;
+}
+
+function renderMusicPlaylistFilterOptions() {
+  if (!musicPlaylistOptionsEl) return;
+  const options = buildMusicPlaylistOptions();
+  const current = loadMusicPlaylistFilter();
+  musicPlaylistOptionsEl.innerHTML = options.map((option) => {
+    const checked = option.key === current ? " checked" : "";
+    return `<label class="field-option"><input type="radio" name="musicPlaylistFilter" value="${option.key}"${checked}><span>${option.label} (${option.count}곡)</span></label>`;
+  }).join("");
+}
+
+// 필터를 바꾸는 순간 라운드로빈 순서를 새로 시작하고, 지금 재생 중이면
+// 곧바로 새 필터에 맞는 곡으로 전환한다(라디오를 누르는 즉시 "장르가
+// 바뀌는" 체감을 주기 위함). 재생 중이 아니면 다음 재생 때부터 적용된다.
+function applyMusicPlaylistFilter(newKey) {
+  saveMusicPlaylistFilter(newKey);
+  categoryRotationQueue = [];
+  if (musicPlaying) {
+    playTrackAtIndex(pickNextTrackIndex());
+  } else {
+    renderMusicPlaylistInfo();
+  }
+}
+
 // 2026-07-08: "지금 재생 중" 표시만으로는 방금 지나간 곡을 다시 찾아 듣기
 // 어렵다는 요청 — 실제로 재생 대상이 된 곡을 최신순으로 기록해두고, 음악
 // 설정 패널에 목록으로 보여주며 곡마다 "바로 듣기" 버튼을 붙인다.
@@ -1660,10 +1924,13 @@ function renderMusicHistoryList() {
 // 로직은 같고, 다음 곡을 무작위로 고르는 대신 지정된 파일을 찾아 튼다는
 // 점만 다르다 — 기존 playNextTrack은 그대로 두고 별도 함수로 추가해서
 // (현재 실기기 검증 대기 중인) 기존 재생 전환 로직에 영향을 주지 않는다.
-function playTrackFromHistory(file) {
+// 2026-07-12: 원래 playTrackFromHistory(file) 하나뿐이었는데, 플레이리스트
+// (장르) 필터를 바꿨을 때도 같은 "즉시 전환" 동작이 필요해져서 인덱스 기반
+// 공통 로직을 playTrackAtIndex로 분리했다. 동작은 기존과 완전히 동일하다 —
+// playTrackFromHistory는 파일명으로 인덱스만 찾아 그대로 위임한다.
+function playTrackAtIndex(index) {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
-  const index = musicPlaylist.findIndex((track) => track && track.file === file);
-  if (index < 0) return;
+  if (index < 0 || index >= musicPlaylist.length) return;
   musicActionToken += 1; // 진행 중이던 이전 재생 시도(있었다면)를 무효화한다.
   crossfadeTriggered = false;
   pendingNextIndex = -1;
@@ -1691,6 +1958,13 @@ function playTrackFromHistory(file) {
   player.play().catch(() => {});
   renderMusicToggle();
   notifyNativeAudioKeepAlive(true);
+}
+
+function playTrackFromHistory(file) {
+  if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  const index = musicPlaylist.findIndex((track) => track && track.file === file);
+  if (index < 0) return;
+  playTrackAtIndex(index);
 }
 
 if (musicHistoryList) {
@@ -1783,6 +2057,8 @@ if (appBrand && skyRoom && ezlongSection) {
 renderCategoryOptions();
 loadSavedCategories();
 renderMusicPlaylistInfo();
+renderMusicPlaylistFilterOptions();
+renderMusicQCPanel();
 renderMusicToggle();
 settingsOpen.addEventListener("click", openSettings);
 settingsSave.addEventListener("click", () => {
@@ -1870,6 +2146,19 @@ categoryOptions.addEventListener("change", (event) => {
     applyCategorySelection();
   }
 });
+if (musicPlaylistOptionsEl) {
+  musicPlaylistOptionsEl.addEventListener("change", (event) => {
+    if (event.target.matches('input[name="musicPlaylistFilter"]') && event.target.checked) {
+      applyMusicPlaylistFilter(event.target.value);
+    }
+  });
+}
+if (musicQCDeleteButton) {
+  musicQCDeleteButton.addEventListener("click", permanentlyExcludeCurrentTrack);
+}
+if (musicQCCopyButton) {
+  musicQCCopyButton.addEventListener("click", copyMusicRemovalRequests);
+}
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeSettings();
 });
