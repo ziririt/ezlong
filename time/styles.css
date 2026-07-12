@@ -733,15 +733,19 @@ button { font: inherit; }
 }
 
 .music-history-play-btn {
+  /* 2026-07-13: play.png/pause.png는 흰색 단색 아이콘이라, 이전처럼 버튼
+     배경을 거의 불투명한 흰색(0.86)으로 채우면 "흰 세모 위에 흰 배경"이
+     되어 아이콘이 거의 안 보였다(재지적 반영). 메인 재생 버튼(.music-toggle)과
+     같은 원리로 어두운 유리질 톤으로 낮춰 흰 세모가 뚜렷하게 보이게 한다. */
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(255,255,255,0.26);
+  border: 1px solid rgba(255,255,255,0.3);
   border-radius: 50%;
-  background-color: rgba(255,255,255,0.86);
+  background-color: rgba(255,255,255,0.14);
   background-image: url("assets/icons/music/play.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 40%;
+  background-size: 42%;
   cursor: pointer;
 }
 

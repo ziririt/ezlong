@@ -1162,12 +1162,12 @@ const musicRecentGroupSpacing = 8; // 같은 그룹은 최소 이만큼 곡이 �
 
 const MUSIC_CATEGORY_LABELS = {
   [ORIGINAL_CATEGORY_KEY]: "오리지널",
-  "My Workspace": "My Workspace 어쿠스틱",
+  "My Workspace": "어쿠스틱",
   "piano chello": "피아노 · 첼로",
   "BGM": "BGM 시네마틱",
   "vocal - CITY POP": "보컬 · 시티팝",
-  "vocal - workspace 20260711 1400": "보컬 · 워크스페이스",
-  "vocal- girls rock": "보컬 · 걸스록",
+  "vocal - workspace 20260711 1400": "보컬",
+  "vocal- girls rock": "걸스록",
 };
 
 function trackCategoryKey(track) {
@@ -2023,11 +2023,32 @@ function playTrackFromHistory(file) {
   playTrackAtIndex(index);
 }
 
+// 2026-07-13: 히스토리 목록의 재생 버튼이 "지금 재생 중인 곡"을 다시 누르면
+// 무조건 playTrackAtIndex(트랙 재로드 + 목록 맨 위로 재정렬)를 호출해버려서,
+// 유저가 일시정지하려고 눌러도 곡이 처음부터 다시 로드되며 잠깐 끊겼다가
+// 그대로 계속 재생되는 증상이 있었다(재정렬도 불필요하게 같이 일어남).
+// 지금 재생 중인 곡이면 메인 재생/일시정지 버튼과 동일한 toggleMusic()을
+// 그대로 재사용한다 — 이미 실기기에서 검증된 pause/resume 경로라 트랙을
+// 다시 로드하지 않고 그 자리에서 멈추고/이어서 재생되며, recordPlayLog를
+// 거치지 않으므로 목록 순서도 그대로 유지된다. 아직 재생된 적 없는 다른
+// 곡을 누르는 경우에만 기존처럼 새로 재생을 시작한다(이때는 "최근 재생"
+// 관례대로 맨 위로 오는 게 맞다).
+function toggleTrackFromHistory(file) {
+  if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  const currentTrack = musicPlaylist[musicIndex % musicPlaylist.length];
+  const isCurrent = Boolean(currentTrack && currentTrack.file === file);
+  if (isCurrent) {
+    toggleMusic();
+    return;
+  }
+  playTrackFromHistory(file);
+}
+
 if (musicHistoryList) {
   musicHistoryList.addEventListener("click", (event) => {
     const button = event.target.closest("[data-history-file]");
     if (!button) return;
-    playTrackFromHistory(button.dataset.historyFile);
+    toggleTrackFromHistory(button.dataset.historyFile);
   });
 }
 
