@@ -1118,16 +1118,21 @@ button { font: inherit; }
   box-sizing: border-box;
   display: flex;
   align-items: flex-end;
-  gap: 6px;
+  gap: 3px;
   /* .music-track-row와 같은 좌우 10px 인셋을 줘서 이 줄이 화면 끝까지
-     삐져나가지 않고 아래 제목바 폭에 정확히 맞도록 고정. */
+     삐져나가지 않고 아래 제목바 폭에 정확히 맞도록 고정.
+     2026-07-13 8차: 성동님이 첨부한 참고 영상(맥OS 스타일 스펙트럼 —
+     아주 가는 막대 다수, 조용할 땐 점처럼 수축)에 맞춰 gap도 좁혔다. */
 }
 
 .viz-bar {
   flex: 1 1 0;
   min-width: 0;
   height: 3px; /* app.js가 매 프레임 style.height로 갱신 */
-  border-radius: 8px;
+  /* 2026-07-13 8차: 참고 영상처럼 막대 끝을 완전히 둥근 캡슐(알약) 모양으로
+     — 999px을 주면 브라우저가 실제 폭의 절반으로 자동 clamp해서 가는
+     막대에서도 항상 반원 캡을 만든다. */
+  border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.32);
   /* 2026-07-13 6차: "완전 투명해야 한다 — 플립시계 숫자판을 막대 하나라고
      생각하면 된다"는 요청. 플립카드는 큰 면적 덕에 옅은 틴트만으로도 유리

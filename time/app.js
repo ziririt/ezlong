@@ -1565,7 +1565,10 @@ function standbyPlayer() {
 // same-origin(R2 fetch 후 blob URL로 재생, resolveTrackUrl/loadMusicTrack
 // 참조)이라 CORS로 분석 데이터가 막힐 일이 거의 없다 — 그래도 AnalyserNode
 // 자체를 못 만드는 예외적 환경(구형 브라우저 등) 대비로 조용한 폴백만 둔다.
-const MUSIC_VIZ_BAR_COUNT = 14;
+// 2026-07-13 8차: 성동님이 첨부한 macOS 스펙트럼 스타일 참고 영상 — 가는
+// 막대 다수, 조용할 땐 점처럼 수축, 활성 구간만 봉긋 솟는 모양. 7차의
+// "14개, 넓은 폭"이 오히려 어색하다는 피드백으로 다시 늘렸다.
+const MUSIC_VIZ_BAR_COUNT = 34;
 let musicVizBars = new Array(MUSIC_VIZ_BAR_COUNT).fill(0);
 let musicVizBandRanges = null;
 let musicVizAnimId = null;
