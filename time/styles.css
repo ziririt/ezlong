@@ -118,10 +118,33 @@ button { font: inherit; }
 }
 
 .sky-photo,
-.hero-shade {
+.hero-shade,
+.sky-photo-blur {
   position: absolute;
   inset: 0;
   pointer-events: none;
+}
+
+/* 2026-07-13 신설: 세로로 긴 사진을 contain으로 보여줄 때(위 .sky-photo
+   background-size: contain 분기, app.js setScene 참조) 생기는 좌우 여백을
+   같은 사진을 확대+블러 처리해 채우는 배경 레이어. .sky-photo보다 한 단
+   더 뒤(z-index -4)에 깔린다. 가로/정방형 사진(contain 안 쓰는 경우)은
+   .sky-photo가 자기 박스를 cover로 꽉 채우므로 이 레이어는 거의 가려져
+   안 보인다 — 안전하게 항상 켜둬도 된다. */
+.sky-photo-blur {
+  z-index: -4;
+  overflow: hidden;
+  background: var(--photo);
+  background-position: center center;
+  background-size: cover;
+  filter: blur(46px) saturate(1.12) brightness(0.9);
+  transform: scale(1.2);
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+.clock-app.is-photo-ready .sky-photo-blur {
+  opacity: 1;
 }
 
 .sky-photo {

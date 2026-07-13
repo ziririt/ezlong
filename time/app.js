@@ -755,7 +755,14 @@ function setScene(sceneId, options = {}) {
   if (photoUrl) {
     app.style.setProperty("--photo", `url("${photoUrl}")`);
     app.style.setProperty("--photo-position", photo?.photoPosition || "center center");
-    app.style.setProperty("--photo-size", photo?.photoSize || "cover");
+    // 2026-07-13: 세로로 긴(portrait) 사진을 cover로 꽉 채우면 좌우가
+    // 크게 잘려나가 "가운데만 확대된 것처럼" 보인다는 유저 리포트로 추가.
+    // width/height가 있고 세로가 가로보다 긴 사진만 contain으로 전환해
+    // 원본 프레임 전체를 보여주고(잘림 없음), 빈 여백은 .sky-photo-blur
+    // 레이어(확대+블러된 동일 사진)가 뒤에서 채운다. 가로/정방형 사진은
+    // 기존처럼 cover 그대로 — 이미 잘 채워지고 있어 손대지 않는다.
+    const isPortraitPhoto = Boolean(photo?.width && photo?.height && photo.height > photo.width);
+    app.style.setProperty("--photo-size", photo?.photoSize || (isPortraitPhoto ? "contain" : "cover"));
   }
   renderPhotoCredit(photo);
   syncPhotoDots();
