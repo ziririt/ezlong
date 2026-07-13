@@ -568,5 +568,344 @@ window.investmentQuotes = [
     "title": "투자에서 가장 중요한 것",
     "author": "하워드 막스",
     "category": "mindset"
+  },
+  {
+    "english": "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
+    "text": "재산이 상당한 독신 남자는 반드시 아내를 원하게 마련이라는 것은 누구나 인정하는 진리이다.",
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "genre": "literature"
+  },
+  {
+    "english": "Vanity and pride are different things, though the words are often used synonymously.",
+    "text": "허영과 오만은 다른 것이다. 비록 두 단어가 자주 동의어처럼 쓰이긴 하지만.",
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "genre": "literature"
+  },
+  {
+    "english": "Happiness in marriage is entirely a matter of chance.",
+    "text": "결혼에서의 행복은 전적으로 운에 달려 있다.",
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "genre": "literature"
+  },
+  {
+    "english": "I could easily forgive his pride, if he had not mortified mine.",
+    "text": "그의 오만은 쉽게 용서할 수 있었을 것이다. 단, 그가 내 오만을 상처 입히지만 않았다면.",
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "genre": "literature"
+  },
+  {
+    "english": "Nothing is more deceitful than the appearance of humility.",
+    "text": "겸손한 태도만큼 기만적인 것은 없다.",
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "genre": "literature"
+  },
+  {
+    "english": "Conventionality is not morality. Self-righteousness is not religion.",
+    "text": "관습은 도덕이 아니다. 자기 의는 종교가 아니다.",
+    "title": "Jane Eyre",
+    "author": "Charlotte Bronte",
+    "genre": "literature"
+  },
+  {
+    "english": "Women are supposed to be very calm generally; but women feel just as men feel.",
+    "text": "여성은 일반적으로 매우 침착해야 한다고 여겨지지만, 여성도 남성과 똑같이 느낀다.",
+    "title": "Jane Eyre",
+    "author": "Charlotte Bronte",
+    "genre": "literature"
+  },
+  {
+    "english": "If all the world hated you, and believed you wicked, while your own conscience approved you, you would not be without friends.",
+    "text": "온 세상이 당신을 미워하고 사악하다고 믿더라도, 당신 자신의 양심이 당신을 인정한다면 친구가 없는 것이 아니다.",
+    "title": "Jane Eyre",
+    "author": "Charlotte Bronte",
+    "genre": "literature"
+  },
+  {
+    "english": "Whatever our souls are made of, his and mine are the same.",
+    "text": "우리의 영혼이 무엇으로 만들어졌든, 그의 영혼과 내 영혼은 같다.",
+    "title": "Wuthering Heights",
+    "author": "Emily Bronte",
+    "genre": "literature"
+  },
+  {
+    "english": "I am Heathcliff, he's always, always in my mind, not as a pleasure, but as my own being.",
+    "text": "나는 히스클리프다. 그는 언제나 내 마음속에 있다. 즐거움이 아니라 나 자신처럼.",
+    "title": "Wuthering Heights",
+    "author": "Emily Bronte",
+    "genre": "literature"
+  },
+  {
+    "english": "Be with me always, take any form, drive me mad! Only do not leave me in this abyss.",
+    "text": "언제나 내 곁에 있어줘. 어떤 모습이든, 나를 미치게 만들어도 좋아! 단, 이 심연에 나를 남겨두지 마.",
+    "title": "Wuthering Heights",
+    "author": "Emily Bronte",
+    "genre": "literature"
+  },
+  {
+    "english": "A man's mind may be likened to a garden, which may be intelligently cultivated or allowed to run wild.",
+    "text": "사람의 마음은 정원에 비유할 수 있다. 지혜롭게 가꾸거나 그냥 내버려둘 수 있다.",
+    "title": "As a Man Thinketh",
+    "author": "James Allen",
+    "genre": "literature"
+  },
+  {
+    "english": "A man is literally what he thinks, his character being the complete sum of all his thoughts.",
+    "text": "사람은 글자 그대로 자신이 생각하는 그대로다. 그의 성격은 모든 생각의 완전한 합이다.",
+    "title": "As a Man Thinketh",
+    "author": "James Allen",
+    "genre": "literature"
+  },
+  {
+    "english": "Self-control is strength. Right thought is mastery. Calmness is power.",
+    "text": "자기 통제는 힘이다. 올바른 생각은 지배력이다. 평온은 힘이다.",
+    "title": "As a Man Thinketh",
+    "author": "James Allen",
+    "genre": "literature"
+  },
+  {
+    "english": "If you want to help the poor, demonstrate to them that they can become rich.",
+    "text": "가난한 사람들을 돕고 싶다면, 그들에게 그들도 부자가 될 수 있음을 보여줘라.",
+    "title": "The Science of Getting Rich",
+    "author": "Wallace D. Wattles",
+    "genre": "literature"
+  },
+  {
+    "english": "The grateful mind is constantly fixated upon the best. Therefore it tends to become the best.",
+    "text": "감사하는 마음은 항상 최고에 집중한다. 따라서 그것은 최고가 되는 경향이 있다.",
+    "title": "The Science of Getting Rich",
+    "author": "Wallace D. Wattles",
+    "genre": "literature"
+  },
+  {
+    "english": "Whenever you feel like criticizing any one, just remember that all the people in this world haven't had the advantages that you've had.",
+    "text": "누군가를 비판하고 싶을 때마다, 이 세상의 모든 사람들이 당신이 가진 장점을 갖지 못했다는 것을 기억하라.",
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "genre": "literature"
+  },
+  {
+    "english": "That's the best thing a girl can be in this world, a beautiful little fool.",
+    "text": "이 세상에서 여자가 될 수 있는 가장 좋은 것은, 아름다운 작은 바보가 되는 것이다.",
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "genre": "literature"
+  },
+  {
+    "english": "Her voice is full of money.",
+    "text": "그녀의 목소리는 돈으로 가득 차 있다.",
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "genre": "literature"
+  },
+  {
+    "english": "You can't repeat the past. Can't repeat the past? Why of course you can!",
+    "text": "과거를 되돌릴 수는 없어. 과거를 되돌릴 수 없다고? 물론 할 수 있지!",
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "genre": "literature"
+  },
+  {
+    "english": "So we beat on, boats against the current, borne back ceaselessly into the past.",
+    "text": "그래서 우리는 앞으로 나아간다. 조류를 거스르는 배처럼, 끊임없이 과거로 떠밀려 가면서.",
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "genre": "literature"
+  },
+  {
+    "english": "Curiouser and curiouser!",
+    "text": "더욱더 이상하고 이상해!",
+    "title": "Alice's Adventures in Wonderland",
+    "author": "Lewis Carroll",
+    "genre": "literature"
+  },
+  {
+    "english": "We're all mad here. I'm mad. You're mad.",
+    "text": "여기 있는 우리 모두는 미쳤어. 나도 미쳤고, 너도 미쳤지.",
+    "title": "Alice's Adventures in Wonderland",
+    "author": "Lewis Carroll",
+    "genre": "literature"
+  },
+  {
+    "english": "Begin at the beginning, and go on till you come to the end: then stop.",
+    "text": "처음부터 시작해. 그리고 끝에 이를 때까지 계속해. 그런 다음 멈춰.",
+    "title": "Alice's Adventures in Wonderland",
+    "author": "Lewis Carroll",
+    "genre": "literature"
+  },
+  {
+    "english": "The only way to get rid of a temptation is to yield to it.",
+    "text": "유혹을 없애는 유일한 방법은 그것에 굴복하는 것이다.",
+    "title": "The Picture of Dorian Gray",
+    "author": "Oscar Wilde",
+    "genre": "literature"
+  },
+  {
+    "english": "Nowadays people know the price of everything and the value of nothing.",
+    "text": "요즘 사람들은 모든 것의 가격은 알지만, 아무것도 그 가치를 모른다.",
+    "title": "The Picture of Dorian Gray",
+    "author": "Oscar Wilde",
+    "genre": "literature"
+  },
+  {
+    "english": "Youth! Youth! There is absolutely nothing in the world but youth!",
+    "text": "청춘! 청춘! 이 세상에 청춘 말고는 아무것도 없다!",
+    "title": "The Picture of Dorian Gray",
+    "author": "Oscar Wilde",
+    "genre": "literature"
+  },
+  {
+    "english": "The mass of men lead lives of quiet desperation.",
+    "text": "대다수의 사람들은 조용한 절망 속에서 살아간다.",
+    "title": "Walden",
+    "author": "Henry David Thoreau",
+    "genre": "literature"
+  },
+  {
+    "english": "I went to the woods because I wished to live deliberately.",
+    "text": "나는 숲으로 간 이유는 삶을 의도적으로 살아보기 위해서였다.",
+    "title": "Walden",
+    "author": "Henry David Thoreau",
+    "genre": "literature"
+  },
+  {
+    "english": "Simplify, simplify.",
+    "text": "단순하게, 단순하게.",
+    "title": "Walden",
+    "author": "Henry David Thoreau",
+    "genre": "literature"
+  },
+  {
+    "english": "If one advances confidently in the direction of his dreams, he will meet with a success unexpected in common hours.",
+    "text": "자신의 꿈을 향해 자신 있게 나아가면, 평범한 시간에는 예상치 못한 성공을 만나게 될 것이다.",
+    "title": "Walden",
+    "author": "Henry David Thoreau",
+    "genre": "literature"
+  },
+  {
+    "english": "When you love you should not say, 'God is in my heart,' but rather, 'I am in the heart of God.'",
+    "text": "사랑할 때 '하나님이 내 마음속에 계시다'고 말하지 말고, '내가 하나님의 마음속에 있다'고 말해야 한다.",
+    "title": "The Prophet",
+    "author": "Kahlil Gibran",
+    "genre": "literature"
+  },
+  {
+    "english": "Your children are not your children. They are the sons and daughters of Life's longing for itself.",
+    "text": "너희 아이들은 너희 아이들이 아니다. 그들은 삶이 자신을 갈망하는 아들과 딸들이다.",
+    "title": "The Prophet",
+    "author": "Kahlil Gibran",
+    "genre": "literature"
+  },
+  {
+    "english": "The deeper sorrow carves into your being, the more joy you can contain.",
+    "text": "슬픔이 너의 존재에 더 깊이 새겨질수록, 너는 더 많은 기쁨을 담을 수 있다.",
+    "title": "The Prophet",
+    "author": "Kahlil Gibran",
+    "genre": "literature"
+  },
+  {
+    "english": "Your joy is your sorrow unmasked.",
+    "text": "너의 기쁨은 가면을 벗은 너의 슬픔이다.",
+    "title": "The Prophet",
+    "author": "Kahlil Gibran",
+    "genre": "literature"
+  },
+  {
+    "english": "Call me Ishmael.",
+    "text": "나를 이스마엘이라고 불러라.",
+    "title": "Moby-Dick",
+    "author": "Herman Melville",
+    "genre": "literature"
+  },
+  {
+    "english": "All visible objects, man, are but as pasteboard masks.",
+    "text": "모든 눈에 보이는 사물은, 인간이여, 판지 가면에 불과하다.",
+    "title": "Moby-Dick",
+    "author": "Herman Melville",
+    "genre": "literature"
+  },
+  {
+    "english": "So long as ignorance and misery remain on earth, books like this cannot be useless.",
+    "text": "지구상에 무지와 비참이 남아 있는 한, 이런 책은 쓸모없을 수 없다.",
+    "title": "Les Miserables",
+    "author": "Victor Hugo",
+    "genre": "literature"
+  },
+  {
+    "english": "The supreme happiness of life is the conviction that we are loved.",
+    "text": "인생의 가장 큰 행복은 우리가 사랑받고 있다는 확신이다.",
+    "title": "Les Miserables",
+    "author": "Victor Hugo",
+    "genre": "literature"
+  },
+  {
+    "english": "If the soul is left in darkness, sins will be committed.",
+    "text": "영혼이 어둠 속에 방치되면 죄가 저질러진다.",
+    "title": "Les Miserables",
+    "author": "Victor Hugo",
+    "genre": "literature"
+  },
+  {
+    "english": "A part of all I earn is mine to keep.",
+    "text": "내가 버는 모든 것의 일부는 내가 간직할 몫이다.",
+    "title": "The Richest Man in Babylon",
+    "author": "George S. Clason",
+    "genre": "literature"
+  },
+  {
+    "english": "Advice is one thing that is freely given away, but watch that you only take what is worth having.",
+    "text": "조언은 공짜로 주어지는 것이지만, 가치 있는 것만 받아들이도록 주의하라.",
+    "title": "The Richest Man in Babylon",
+    "author": "George S. Clason",
+    "genre": "literature"
+  },
+  {
+    "text": "이 벌이가 나쁘지 않다고 생각하면서도, 마음 한구석은 왜 이리 불안한지 그는 알 수 없었다.",
+    "title": "운수 좋은 날",
+    "author": "현진건",
+    "genre": "literature"
+  },
+  {
+    "english": "You have power over your mind, not outside events. Realize this, and you will find strength.",
+    "text": "그대는 외부에서 일어나는 일이 아니라 그 일에 대한 그대의 생각을 다스릴 힘이 있다. 이것을 깨달으면 그대는 힘을 찾을 것이다.",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "english": "As Gregor Samsa awoke one morning from uneasy dreams he found himself transformed in his bed into a gigantic insect.",
+    "text": "어느 날 아침 그레고르 잠자가 불안한 꿈에서 깨어났을 때, 그는 자신이 침대 속에서 한 마리 거대한 벌레로 변해 있는 것을 발견했다.",
+    "title": "변신",
+    "author": "프란츠 카프카",
+    "genre": "literature"
+  },
+  {
+    "english": "Pain and suffering are always inevitable for a large intelligence and a deep heart.",
+    "text": "크고 지적인 사람에게, 그리고 깊은 마음을 가진 사람에게 고통과 괴로움은 언제나 피할 수 없는 것이다.",
+    "title": "죄와 벌",
+    "author": "표도르 도스토옙스키",
+    "genre": "literature"
+  },
+  {
+    "text": "죽는 날까지 하늘을 우러러 한 점 부끄럼이 없기를, 잎새에 이는 바람에도 나는 괴로워했다.",
+    "title": "서시",
+    "author": "윤동주",
+    "genre": "literature"
+  },
+  {
+    "text": "나 보기가 역겨워 가실 때에는 말없이 고이 보내드리우리다.",
+    "title": "진달래꽃",
+    "author": "김소월",
+    "genre": "literature"
+  },
+  {
+    "text": "박제가 되어버린 천재를 아시오?",
+    "title": "날개",
+    "author": "이상",
+    "genre": "literature"
   }
 ];

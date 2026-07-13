@@ -143,6 +143,26 @@
 
         <div class="settings-divider" aria-hidden="true"></div>
 
+        <!-- 2026-07-13: 문장 도서 분야 필터 신설. 기본값은 투자서만(기존 동작
+             그대로 유지) — 문학·교양서를 켜면 아래 카테고리(투자 멘탈 등)
+             필터와 무관하게 함께 노출된다. -->
+        <section class="settings-block" aria-label="문장 도서 분야">
+          <h3 class="settings-subtitle">도서 분야</h3>
+          <p class="settings-desc settings-desc-muted">기본은 투자서 문장만 나옵니다. 문학·교양서도 함께 보려면 켜주세요.</p>
+          <div class="field-grid" id="genreOptions">
+            <label class="field-option">
+              <input type="checkbox" value="investment" data-genre-option checked>
+              <span>투자서</span>
+            </label>
+            <label class="field-option">
+              <input type="checkbox" value="literature" data-genre-option>
+              <span>문학·교양서</span>
+            </label>
+          </div>
+        </section>
+
+        <div class="settings-divider" aria-hidden="true"></div>
+
         <label class="field-option field-option-all">
           <input type="checkbox" id="allCategories" checked>
           <span>모든 분야</span>

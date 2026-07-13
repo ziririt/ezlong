@@ -155,10 +155,26 @@ const categoryLabels = {
   retirement: "은퇴 준비"
 };
 
-const quotes = baseQuotes.map((quote) => ({
-  ...quote,
-  category: getQuoteCategory(quote)
-}));
+const genreLabels = {
+  investment: "투자서",
+  literature: "문학·교양서"
+};
+
+function getQuoteGenre(quote) {
+  return quote.genre === "literature" ? "literature" : "investment";
+}
+
+const quotes = baseQuotes.map((quote) => {
+  const genre = getQuoteGenre(quote);
+  return {
+    ...quote,
+    genre,
+    // category는 투자서 문장에만 의미 있는 하위 분류다. 문학 문장까지 "mindset"
+    // 같은 투자 카테고리로 강제 분류하면 카테고리 필터를 켰을 때 엉뚱하게
+    // 섞여 나오므로, 문학 문장은 category를 건드리지 않는다.
+    category: genre === "investment" ? getQuoteCategory(quote) : quote.category
+  };
+});
 
 const app = document.querySelector(".clock-app");
 const dots = document.querySelectorAll("[data-scene-button]");
@@ -171,6 +187,7 @@ const settingsOpen = document.getElementById("settingsOpen");
 const settingsSave = document.getElementById("settingsSave");
 const allCategories = document.getElementById("allCategories");
 const categoryOptions = document.getElementById("categoryOptions");
+const genreOptions = document.getElementById("genreOptions");
 const webviewScale = document.getElementById("ezlongWebviewScale");
 const ezlongSection = document.querySelector(".ezlong-webview");
 const appBrand = document.querySelector(".app-brand");
@@ -201,6 +218,7 @@ let activeQuoteMinute = "";
 let lastQuoteTitle = "";
 let quoteDeck = [];
 let selectedCategories = new Set();
+let selectedGenres = new Set(["investment"]);
 let lastScenePhoto = {};
 let lastDigits = ["", "", "", ""];
 let timeHasRendered = false;
@@ -214,6 +232,7 @@ let activePhotoSlot = "";
 let manualPhotoUntil = 0;
 let swipeStart = null;
 const categoryStorageKey = "ezlong:selectedCategories";
+const genreStorageKey = "ezlong:selectedGenres";
 let weatherState = {
   location: "위치 확인 중",
   temp: "--°",
@@ -910,8 +929,13 @@ function getNextQuote() {
 }
 
 function getEligibleQuotes() {
-  if (selectedCategories.size === 0) return quotes;
-  return quotes.filter((quote) => selectedCategories.has(quote.category));
+  const genreFiltered = quotes.filter((quote) => selectedGenres.has(quote.genre));
+  if (selectedCategories.size === 0) return genreFiltered;
+  // category(투자 멘탈/복리/변동성 등)는 투자서 문장에만 있는 하위 분류다.
+  // 문학·교양서 문장은 이 필터와 무관하게 항상 통과시킨다.
+  return genreFiltered.filter(
+    (quote) => quote.genre !== "investment" || selectedCategories.has(quote.category)
+  );
 }
 
 function renderCategoryOptions() {
@@ -948,6 +972,32 @@ function loadSavedCategories() {
 
 function saveSelectedCategories() {
   localStorage.setItem(categoryStorageKey, JSON.stringify([...selectedCategories]));
+}
+
+function syncGenreControls() {
+  document.querySelectorAll("[data-genre-option]").forEach((input) => {
+    input.checked = selectedGenres.has(input.value);
+  });
+}
+
+function loadSavedGenres() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(genreStorageKey) || "[\"investment\"]");
+    if (Array.isArray(saved) && saved.length > 0) {
+      const filtered = saved.filter((value) => Object.prototype.hasOwnProperty.call(genreLabels, value));
+      selectedGenres = new Set(filtered.length > 0 ? filtered : ["investment"]);
+    }
+  } catch (error) {
+    selectedGenres = new Set(["investment"]);
+  }
+  syncGenreControls();
+  quoteDeck = [];
+}
+
+function saveSelectedGenres() {
+  // 최소 하나는 항상 켜져 있어야 한다 (전부 끄면 문장이 안 나옴).
+  if (selectedGenres.size === 0) selectedGenres = new Set(["investment"]);
+  localStorage.setItem(genreStorageKey, JSON.stringify([...selectedGenres]));
 }
 
 function openSettings() {
@@ -2099,6 +2149,17 @@ function applyCategorySelection() {
   renderQuote(getNextQuote());
 }
 
+function applyGenreSelection() {
+  const checked = [...document.querySelectorAll("[data-genre-option]:checked")].map((input) => input.value);
+  // 전부 끄는 걸 막는다 — 최소 하나는 항상 켜져 있어야 문장이 계속 나온다.
+  selectedGenres = new Set(checked.length > 0 ? checked : ["investment"]);
+  syncGenreControls();
+  saveSelectedGenres();
+  quoteDeck = [];
+  lastQuoteTitle = "";
+  renderQuote(getNextQuote());
+}
+
 function rotateQuote(now = new Date()) {
   const minuteKey = Math.floor(now.getTime() / 60000);
   if (minuteKey === activeQuoteMinute) return;
@@ -2170,6 +2231,7 @@ if (appBrand && skyRoom && ezlongSection) {
 
 renderCategoryOptions();
 loadSavedCategories();
+loadSavedGenres();
 renderMusicPlaylistInfo();
 renderMusicPlaylistFilterOptions();
 if (musicIncludeRockEl) musicIncludeRockEl.checked = loadMusicGenreToggle(musicIncludeRockStorageKey);
@@ -2262,6 +2324,13 @@ categoryOptions.addEventListener("change", (event) => {
     applyCategorySelection();
   }
 });
+if (genreOptions) {
+  genreOptions.addEventListener("change", (event) => {
+    if (event.target.matches("[data-genre-option]")) {
+      applyGenreSelection();
+    }
+  });
+}
 if (musicPlaylistOptionsEl) {
   musicPlaylistOptionsEl.addEventListener("change", (event) => {
     if (event.target.matches('input[name="musicPlaylistFilter"]') && event.target.checked) {
