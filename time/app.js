@@ -1565,7 +1565,7 @@ function standbyPlayer() {
 // same-origin(R2 fetch 후 blob URL로 재생, resolveTrackUrl/loadMusicTrack
 // 참조)이라 CORS로 분석 데이터가 막힐 일이 거의 없다 — 그래도 AnalyserNode
 // 자체를 못 만드는 예외적 환경(구형 브라우저 등) 대비로 조용한 폴백만 둔다.
-const MUSIC_VIZ_BAR_COUNT = 26;
+const MUSIC_VIZ_BAR_COUNT = 14;
 let musicVizBars = new Array(MUSIC_VIZ_BAR_COUNT).fill(0);
 let musicVizBandRanges = null;
 let musicVizAnimId = null;
@@ -1616,11 +1616,12 @@ function ensureMusicVizGraph() {
 // 오디오 그래프를 못 쓰는 예외적 환경을 위한 잔잔한 폴백 웨이브. 실제
 // 소리는 대부분 정상 분석되므로 이 분기는 안전장치 성격이 강하다.
 function drawMusicVizIdle(h) {
-  musicVizIdlePhase += 0.02;
+  musicVizIdlePhase += 0.045;
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
-    const wave = Math.sin(musicVizIdlePhase + i * 0.35) * 0.5 + 0.5;
-    const target = 4 + wave * (h * 0.3);
-    musicVizBars[i] += (target - musicVizBars[i]) * 0.1;
+    const wave = Math.sin(musicVizIdlePhase + i * 0.7) * 0.5 + 0.5;
+    const target = 4 + wave * (h * 0.4);
+    const factor = target > musicVizBars[i] ? 0.4 : 0.12;
+    musicVizBars[i] += (target - musicVizBars[i]) * factor;
     musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
   }
 }
@@ -1652,8 +1653,18 @@ function drawMusicViz() {
     let sum = 0;
     for (let j = start; j < end; j++) sum += data[j];
     const avg = sum / (end - start);
-    const target = Math.max(3, (avg / 255) * h);
-    musicVizBars[i] += (target - musicVizBars[i]) * 0.22;
+    // 2026-07-13 5차: 정확한 주파수 스펙트럼 재현이 목표가 아니라 "음악을
+    // 드라마틱하게 보여주는 무드"가 목표라는 피드백 반영. (avg/255)를 그대로
+    // 쓰면 조용한 구간은 밋밋하게 깔려있기만 해서 재미가 없다 — 0.6제곱
+    // 압축으로 약한 소리도 확 튀어 보이게 과장한다. 오른쪽(고음역) 막대엔
+    // 완만한 게인을 얹어 "왼쪽에만 쏠려 보인다"는 지적도 함께 완화.
+    const norm = avg / 255;
+    const gain = 1 + (i / (MUSIC_VIZ_BAR_COUNT - 1)) * 0.6;
+    const target = Math.max(4, Math.min(h, Math.pow(norm, 0.6) * gain * h));
+    // 어택은 빠르게(비트에 팍 반응), 릴리즈는 느리게(잔향처럼 천천히 가라앉음)
+    // — 고전 VU미터의 비대칭 스무딩이라 훨씬 다이나믹하게 느껴진다.
+    const factor = target > musicVizBars[i] ? 0.5 : 0.12;
+    musicVizBars[i] += (target - musicVizBars[i]) * factor;
     musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
   }
 }

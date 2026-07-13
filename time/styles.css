@@ -1108,39 +1108,34 @@ button { font: inherit; }
   position: relative;
   height: 52px;
   margin: 0 0 6px;
+  padding: 0 10px;
+  box-sizing: border-box;
   display: flex;
   align-items: flex-end;
-  gap: 3px;
-  /* 2026-07-13 3차: backdrop-filter 블러 방식을 걷어내고, 플립시계
-     (.flip-card)와 완전히 같은 유리 레시피를 막대 하나하나(.viz-bar)에
-     그대로 재사용한다 — "플립시계 디자인과 같은 스타일" 요청 반영.
-     래퍼 자체엔 배경/블러를 전혀 주지 않아 막대 사이사이로 배경사진이
-     그대로 드러난다. */
+  gap: 6px;
+  /* 2026-07-13 5차: (1) .music-track-row와 같은 좌우 10px 인셋을 줘서 이
+     줄이 화면 끝까지 삐져나가지 않고 아래 제목바 폭에 정확히 맞도록 고정.
+     (2) 막대 개수를 줄이고(14개) 그 대신 폭을 넓혀 존재감을 준다 —
+     좁고 많은 막대는 오른쪽 낮은 에너지 대역이 죄다 실선처럼 얇아져
+     "왼쪽으로 쏠려 보인다"는 지적의 원인이기도 했다. */
 }
 
 .viz-bar {
   flex: 1 1 0;
   min-width: 0;
   height: 3px; /* app.js가 매 프레임 style.height로 갱신 */
-  border-radius: 4px;
-  border: 1px solid rgba(255,255,255,0.42);
-  /* 2026-07-13 4차: 3차(플립카드 그라디언트+그림자 그대로 축소)를 실기기에
-     띄워보니 막대가 10~15px 폭/높이로 작아서 그라디언트·1px inset shadow가
-     눈에 거의 안 보였고, 다크 네이비 베이스 톤(13,20,31)이 이미 어두운
-     배경사진과 겹쳐 "아예 투명(=안 보임)"해졌다 — 플립카드 레시피는 카드처럼
-     큰 면적에서만 읽히는 디자인이었다. 실제 "유리에 배경이 굴절되어 보이는"
-     효과는 backdrop-filter(그 자리만 블러+채도+밝기를 살짝 올림)가 훨씬
-     크기에 무관하게 확실히 보인다 — 이 앱이 .settings-backdrop에서 이미
-     쓰던 검증된 기법. 막대 하나하나가 그 아래 배경사진을 살짝 렌즈처럼
-     번지게 보여주는 게 핵심이라 여기로 되돌리되, 테두리/하이라이트는
-     플립카드 톤을 유지해 같은 계열로 보이게 한다. */
-  backdrop-filter: blur(4px) saturate(180%) brightness(1.18);
-  -webkit-backdrop-filter: blur(4px) saturate(180%) brightness(1.18);
-  background: linear-gradient(180deg, rgba(255,255,255,0.30), rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03));
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.3);
+  /* 2026-07-13 5차: 4차보다 훨씬 더 투명하게 — 흰색 그라디언트 알파를
+     대폭 낮춰서 배경사진을 두껍게 덮지 않고 살짝 렌즈처럼만 굴절되어
+     보이게 한다. backdrop-filter(실제 굴절 역할)는 그대로 유지. */
+  backdrop-filter: blur(5px) saturate(160%) brightness(1.08);
+  -webkit-backdrop-filter: blur(5px) saturate(160%) brightness(1.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03) 55%, rgba(255,255,255,0.01));
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.5),
-    inset 0 -1px 0 rgba(0,0,0,0.2),
-    0 2px 6px rgba(0,0,0,0.18);
+    inset 0 1px 0 rgba(255,255,255,0.30),
+    inset 0 -1px 0 rgba(0,0,0,0.12),
+    0 1px 4px rgba(0,0,0,0.12);
 }
 
 .music-track-row {
