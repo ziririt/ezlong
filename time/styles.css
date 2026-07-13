@@ -1098,10 +1098,9 @@ button { font: inherit; }
 }
 
 .music-info-panel.is-open {
-  /* 2026-07-13 6차: 막대 높이(.music-viz-wrap)를 크게 키우면서 패널
-     전체 최대높이도 함께 늘려야 잘려 보이지 않는다 — clamp로 뷰포트에
-     맞춰 유동적으로. */
-  max-height: clamp(170px, 32vh, 250px);
+  /* 2026-07-13 9차: 막대 높이를 절반으로 줄이면서 패널 최대높이도 같이
+     줄인다 — "지금은 height가 너무 커서 어색하다"는 피드백 반영. */
+  max-height: clamp(120px, 22vh, 160px);
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
@@ -1109,10 +1108,10 @@ button { font: inherit; }
 
 .music-viz-wrap {
   position: relative;
-  /* 2026-07-13 6차: "높이가 짧아서 비주얼라이저 맛이 안 난다"는 지적 —
-     52px 고정에서 뷰포트 비례로 최대한 키운다. 플립카드처럼 세로로 긴
-     실루엣이 되어야 막대 하나하나가 "판"처럼 보인다. */
-  height: clamp(96px, 20vh, 170px);
+  /* 2026-07-13 9차: 6차에서 "비주얼라이저 맛이 안 난다"며 키웠던 높이가
+     막상 실기기에서는 너무 커서 어색하다는 재지적 — 딱 절반 수준으로
+     되돌린다(96~170px → 48~85px). */
+  height: clamp(48px, 10vh, 85px);
   margin: 0 0 8px;
   padding: 0 10px;
   box-sizing: border-box;
@@ -1120,32 +1119,46 @@ button { font: inherit; }
   align-items: flex-end;
   gap: 3px;
   /* .music-track-row와 같은 좌우 10px 인셋을 줘서 이 줄이 화면 끝까지
-     삐져나가지 않고 아래 제목바 폭에 정확히 맞도록 고정.
-     2026-07-13 8차: 성동님이 첨부한 참고 영상(맥OS 스타일 스펙트럼 —
-     아주 가는 막대 다수, 조용할 땐 점처럼 수축)에 맞춰 gap도 좁혔다. */
+     삐져나가지 않고 아래 제목바 폭에 정확히 맞도록 고정. */
+}
+
+.music-viz-wrap::after {
+  /* 2026-07-13 9차: "분수 물줄기가 바닥에 탁 튀는 느낌"을 무리하지 않는
+     선에서 — 막대별 실시간 스플래시 애니메이션까지는 과할 것 같아, 막대들이
+     만나는 바닥선에 은은한 물빛 광만 정적으로 깔았다. 막대 사이 틈으로
+     살짝 비쳐서 "물이 고인 바닥"처럼 보이는 정도. */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: rgba(255,255,255,0.32);
+  box-shadow: 0 0 8px 2px rgba(255,255,255,0.28);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .viz-bar {
   flex: 1 1 0;
   min-width: 0;
   height: 3px; /* app.js가 매 프레임 style.height로 갱신 */
-  /* 2026-07-13 8차: 참고 영상처럼 막대 끝을 완전히 둥근 캡슐(알약) 모양으로
-     — 999px을 주면 브라우저가 실제 폭의 절반으로 자동 clamp해서 가는
-     막대에서도 항상 반원 캡을 만든다. */
+  /* 참고 영상처럼 막대 끝을 완전히 둥근 캡슐(알약) 모양으로 — 999px을 주면
+     브라우저가 실제 폭의 절반으로 자동 clamp해서 가는 막대에서도 항상
+     반원 캡을 만든다. */
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.32);
-  /* 2026-07-13 6차: "완전 투명해야 한다 — 플립시계 숫자판을 막대 하나라고
-     생각하면 된다"는 요청. 플립카드는 큰 면적 덕에 옅은 틴트만으로도 유리
-     느낌이 났지만, 막대는 폭이 좁아 같은 틴트를 넣으면 다시 뿌옇게 막힌
-     것처럼 보인다 — 그래서 배경 채움 자체를 사실상 없애고(0.02) 테두리 +
-     backdrop-filter(굴절)만으로 형태를 잡는다. */
-  backdrop-filter: blur(6px) saturate(150%) brightness(1.05);
-  -webkit-backdrop-filter: blur(6px) saturate(150%) brightness(1.05);
-  background: rgba(255,255,255,0.02);
+  /* 2026-07-13 9차: "더 투명하게 — 분수 물줄기 느낌"이라는 요청으로 테두리·
+     내부 채움·그림자 알파를 한 단계 더 낮췄다. backdrop-filter도 밝기/채도
+     부스트를 줄여서 뿌연 흰빛보다 맑은 물처럼 보이게 조정. */
+  border: 1px solid rgba(255,255,255,0.22);
+  backdrop-filter: blur(5px) saturate(140%) brightness(1.02);
+  -webkit-backdrop-filter: blur(5px) saturate(140%) brightness(1.02);
+  background: rgba(255,255,255,0.01);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.22),
-    inset 0 -1px 0 rgba(0,0,0,0.10),
-    0 1px 3px rgba(0,0,0,0.10);
+    inset 0 1px 0 rgba(255,255,255,0.16),
+    inset 0 -1px 0 rgba(0,0,0,0.08),
+    0 1px 2px rgba(0,0,0,0.08);
 }
 
 .music-track-row {
