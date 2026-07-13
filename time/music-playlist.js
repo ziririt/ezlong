@@ -310,7 +310,6 @@ const musicPlaylist = [
   { group: 194, title: "Morning Glow", playlist: "3", duration: "4:00", file: "BGM/Morning Glow_3.mp3", category: "BGM", vocal: false },
   { group: 194, title: "Morning Glow", playlist: "SINGLE", duration: "2:22", file: "BGM/Morning Glow.mp3", category: "BGM", vocal: false },
   { group: 195, title: "Natures Majesty", playlist: "1", duration: "4:00", file: "BGM/Natures Majesty_1.mp3", category: "BGM", vocal: false },
-  { group: 195, title: "Natures Majesty", playlist: "2", duration: "3:29", file: "BGM/Natures Majesty_2.mp3", category: "BGM", vocal: false },
   { group: 195, title: "Natures Majesty", playlist: "SINGLE", duration: "2:37", file: "BGM/Natures Majesty.mp3", category: "BGM", vocal: false },
   { group: 196, title: "Natures Odyssey", playlist: "1", duration: "1:44", file: "BGM/Natures Odyssey_1.mp3", category: "BGM", vocal: false },
   { group: 196, title: "Natures Odyssey", playlist: "SINGLE", duration: "2:29", file: "BGM/Natures Odyssey.mp3", category: "BGM", vocal: false },
