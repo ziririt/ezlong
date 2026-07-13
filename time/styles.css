@@ -608,6 +608,198 @@ button { font: inherit; }
   font-weight: 560;
 }
 
+/* ── 2026-07-14: 날씨 상세 화면 — 애플 비전OS풍 글래스모피즘 ─────────
+   열기/닫기 메커니즘(.settings-panel, .settings-backdrop, .settings-head,
+   .settings-close, .settings-divider)은 기존 설정 패널과 공유해서
+   내비게이션 일관성을 지킨다. 시트 자체(.weather-detail-sheet)와 카드류만
+   더 밝고 투명한 유리질감으로 새로 설계했다 — 기존 settings-sheet(불투명도
+   0.78)보다 더 얇고 빛이 통과하는 느낌을 준다. */
+.weather-detail-sheet {
+  position: relative;
+  width: min(100%, 760px);
+  max-height: min(86svh, 680px);
+  margin: 0 auto;
+  overflow: auto;
+  padding: 24px clamp(20px, 5vw, 34px) max(28px, env(safe-area-inset-bottom));
+  border: 1px solid rgba(255,255,255,0.34);
+  border-radius: 32px 32px 0 0;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.02) 42%, rgba(0,0,0,0.12)),
+    rgba(16, 24, 38, 0.50);
+  backdrop-filter: blur(36px) saturate(1.5);
+  -webkit-backdrop-filter: blur(36px) saturate(1.5);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    0 -24px 90px rgba(0,0,0,0.30);
+  transform: translateY(28px);
+  transition: transform 260ms ease;
+}
+
+.weather-detail-panel.is-open .weather-detail-sheet {
+  transform: translateY(0);
+}
+
+.weather-card {
+  margin: 0;
+}
+
+.weather-current-card {
+  text-align: center;
+  padding: 18px 16px 20px;
+  border: 1px solid rgba(255,255,255,0.24);
+  border-radius: clamp(18px, 4vw, 26px);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.03) 45%, rgba(0,0,0,0.10)),
+    rgba(255,255,255,0.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    inset 0 -1px 0 rgba(0,0,0,0.18);
+}
+
+.weather-current-hero {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.weather-current-temp {
+  font-size: clamp(44px, 14vw, 64px);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.weather-current-feels {
+  font-size: 16px;
+  font-weight: 640;
+  color: rgba(255,255,255,0.72);
+}
+
+.weather-current-sub {
+  margin: 10px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.82);
+}
+
+.weather-rain-windows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.weather-rain-window {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.06);
+}
+
+.weather-rain-window-time {
+  font-size: 15px;
+  font-weight: 680;
+}
+
+.weather-rain-window-detail {
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 560;
+  color: rgba(255,255,255,0.68);
+}
+
+.weather-badge {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 720;
+  color: #fff;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22);
+}
+
+.weather-badge[data-grade="NONE"] { background: rgba(255,255,255,0.20); }
+.weather-badge[data-grade="DRIZZLE"] { background: #4a90d9; }
+.weather-badge[data-grade="RAIN"] { background: #2f6fd1; }
+.weather-badge[data-grade="HEAVY"] { background: #e07b1f; }
+.weather-badge[data-grade="VERY_HEAVY"] { background: #d9432f; }
+.weather-badge[data-grade="OK"] { background: rgba(34,197,94,0.85); }
+.weather-badge[data-grade="WARN"] { background: #e07b1f; }
+
+.weather-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.weather-stat-tile {
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.05);
+}
+
+.weather-stat-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 620;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 4px;
+}
+
+.weather-stat-value {
+  font-size: 20px;
+  font-weight: 760;
+  font-variant-numeric: tabular-nums;
+}
+
+.weather-tropical-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.weather-comment {
+  margin: 10px 0 0;
+  font-size: 15px;
+  font-weight: 580;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.86);
+}
+
+.weather-compare-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.weather-compare-row {
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.05);
+  font-size: 15px;
+  font-weight: 580;
+  line-height: 1.5;
+}
+
+.weather-empty {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 560;
+  color: rgba(255,255,255,0.56);
+}
+
 /* 2026-07-08: "들은 음악 히스토리" — 최근 재생 목록 + 곡별 바로 듣기 버튼.
    settings-block과 같은 톤(다크 글래스 패널 위 rgba(255,255,255,alpha))을 그대로 따른다. */
 .music-history-list {
@@ -972,6 +1164,14 @@ button { font: inherit; }
   text-align: left;
   white-space: nowrap;
   text-shadow: 0 2px 18px rgba(0,0,0,0.28);
+  /* 2026-07-14: 날씨 칩을 탭 가능한 <button>으로 전환 — 상세 화면 진입점. */
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 140ms ease;
+}
+
+.clock-meta .weather-chip:active {
+  opacity: 0.62;
 }
 
 .music-controls {

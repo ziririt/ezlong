@@ -212,6 +212,20 @@ const musicQCRemovalList = document.getElementById("musicQCRemovalList");
 const musicQCCopyButton = document.getElementById("musicQCCopyButton");
 const bgAudio = document.getElementById("bgAudio");
 const bgAudioB = document.getElementById("bgAudioB");
+
+// 2026-07-14: 날씨 상세 화면 (flipgen_weather_detail_screen_handoff.md 연동)
+const weatherChipOpen = document.getElementById("weatherChipOpen");
+const weatherDetailPanel = document.getElementById("weatherDetailPanel");
+const wdCurrentTemp = document.getElementById("wdCurrentTemp");
+const wdCurrentFeels = document.getElementById("wdCurrentFeels");
+const wdCurrentSub = document.getElementById("wdCurrentSub");
+const wdRainWindows = document.getElementById("wdRainWindows");
+const wdYesterday = document.getElementById("wdYesterday");
+const wdTropicalBadges = document.getElementById("wdTropicalBadges");
+const wdTropicalComment = document.getElementById("wdTropicalComment");
+const wdAccuracyMessage = document.getElementById("wdAccuracyMessage");
+const wdDayOverDay = document.getElementById("wdDayOverDay");
+
 const digitElements = [
   document.getElementById("hourTens"),
   document.getElementById("hourOnes"),
@@ -246,6 +260,17 @@ let weatherState = {
   icon: "sun-icon",
   tag: "clear"
 };
+
+// 2026-07-14: 날씨 상세 화면 상태.
+// WEATHER_API_BASE는 weather-backend/README.md의 배포 절차대로
+// `npm run deploy` 실행 후 출력되는 실제 워커 URL로 반드시 교체해야 한다
+// (배포 전까지는 상세 화면을 열어도 각 섹션이 "불러올 수 없어요"로 표시됨 —
+// 정상이다, 백엔드가 아직 인터넷에 없다는 뜻이다).
+const WEATHER_API_BASE = "https://flipgen-weather-backend.ezlong.workers.dev";
+// 위치 권한을 못 받았을 때 쓰는 기본 좌표(인천) — 인수인계서 예시와 동일.
+const DEFAULT_WEATHER_COORDS = { lat: 37.4563, lng: 126.7052 };
+let userCoords = null;
+let weatherDetailFetching = false;
 
 function setText(id, value) {
   document.getElementById(id).textContent = value;
@@ -817,6 +842,7 @@ function weatherCodeToSummary(code, current = {}) {
 
 function requestCurrentWeather() {
   if (!navigator.geolocation) {
+    userCoords = DEFAULT_WEATHER_COORDS;
     weatherState = { location: "Seoul", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
     weatherResolved = true;
     renderWeather();
@@ -828,6 +854,7 @@ function requestCurrentWeather() {
     async ({ coords }) => {
       try {
         const { latitude, longitude } = coords;
+        userCoords = { lat: latitude, lng: longitude };
         const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,is_day,precipitation,rain,showers&timezone=auto`;
         const weatherResponse = await fetch(weatherUrl);
         const weather = await weatherResponse.json();
@@ -850,6 +877,7 @@ function requestCurrentWeather() {
       if (activeScene) setScene(activeScene, { syncDots: true, force: true });
     },
     () => {
+      userCoords = DEFAULT_WEATHER_COORDS;
       weatherState = { location: "Seoul", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
       weatherResolved = true;
       renderWeather();
@@ -1024,6 +1052,148 @@ function closeSettings() {
   settingsPanel.setAttribute("aria-hidden", "true");
   settingsOpen.setAttribute("aria-expanded", "false");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "false");
+}
+
+// 2026-07-14: 날씨 상세 화면 열기/닫기 — 기존 설정 패널과 동일한 메커니즘
+// (is-open 클래스 토글 + aria-hidden)을 그대로 따른다.
+function openWeatherDetail() {
+  if (!weatherDetailPanel) return;
+  weatherDetailPanel.classList.add("is-open");
+  weatherDetailPanel.setAttribute("aria-hidden", "false");
+  if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "true");
+  fetchWeatherDetail();
+}
+
+function closeWeatherDetail() {
+  if (!weatherDetailPanel) return;
+  weatherDetailPanel.classList.remove("is-open");
+  weatherDetailPanel.setAttribute("aria-hidden", "true");
+  if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "false");
+}
+
+function weatherDetailCoords() {
+  return userCoords || DEFAULT_WEATHER_COORDS;
+}
+
+async function fetchWeatherJson(path) {
+  const { lat, lng } = weatherDetailCoords();
+  const url = `${WEATHER_API_BASE}${path}?lat=${lat}&lng=${lng}`;
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return response.json();
+}
+
+function weatherBadgeHtml(grade, label) {
+  return `<span class="weather-badge" data-grade="${grade}">${label}</span>`;
+}
+
+function renderWeatherCurrent(current, tropical) {
+  if (!wdCurrentTemp) return;
+  if (!current || !current.current) {
+    wdCurrentTemp.textContent = "--°";
+    wdCurrentFeels.textContent = "";
+    wdCurrentSub.textContent = "날씨 데이터를 불러올 수 없어요. 백엔드 배포 후 다시 시도해주세요.";
+    return;
+  }
+  const c = current.current;
+  wdCurrentTemp.textContent = `${Math.round(c.temp)}°`;
+  wdCurrentFeels.textContent = `체감 ${Math.round(c.feelslike)}°`;
+  const advice = tropical?.currentRain?.umbrellaAdvice || "";
+  wdCurrentSub.textContent = `습도 ${Math.round(c.humidity)}%${advice ? " · " + advice : ""}`;
+}
+
+function renderWeatherRainWindows(data) {
+  if (!wdRainWindows) return;
+  if (!data) {
+    wdRainWindows.innerHTML = `<p class="weather-empty">강수 예보를 불러올 수 없어요.</p>`;
+    return;
+  }
+  if (!data.windows || data.windows.length === 0) {
+    wdRainWindows.innerHTML = `<p class="weather-empty">이번 주에는 큰 비 예보가 없어요.</p>`;
+    return;
+  }
+  wdRainWindows.innerHTML = data.windows
+    .map(
+      (w) => `
+    <div class="weather-rain-window">
+      <div>
+        <div class="weather-rain-window-time">${w.startLabel} ~ ${w.endLabel}</div>
+        <div class="weather-rain-window-detail">최고 강수확률 ${w.maxPrecipProb}% · 누적 ${w.totalPrecipMm}mm</div>
+      </div>
+      ${weatherBadgeHtml(w.intensity.grade, w.intensity.label)}
+    </div>`
+    )
+    .join("");
+}
+
+function renderWeatherYesterday(data) {
+  if (!wdYesterday) return;
+  if (!data || !data.summary) {
+    wdYesterday.innerHTML = `<p class="weather-empty">어제 요약을 불러올 수 없어요.</p>`;
+    return;
+  }
+  const s = data.summary;
+  wdYesterday.innerHTML = `
+    <div class="weather-stat-tile"><span class="weather-stat-label">최저기온</span><span class="weather-stat-value">${Math.round(s.tempMin)}°</span></div>
+    <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${Math.round(s.tempMax)}°</span></div>
+    <div class="weather-stat-tile"><span class="weather-stat-label">평균습도</span><span class="weather-stat-value">${Math.round(s.humidityAvg)}%</span></div>
+    <div class="weather-stat-tile"><span class="weather-stat-label">누적강수</span><span class="weather-stat-value">${s.precipTotalMm}mm</span></div>`;
+}
+
+function renderWeatherTropical(data) {
+  if (!wdTropicalBadges) return;
+  if (!data) {
+    wdTropicalBadges.innerHTML = `<p class="weather-empty">열대야 정보를 불러올 수 없어요.</p>`;
+    if (wdTropicalComment) wdTropicalComment.textContent = "";
+    return;
+  }
+  const officialLabel = data.official.isTropicalNight ? "공식 열대야" : "공식 기준 정상";
+  const officialGrade = data.official.isTropicalNight ? "VERY_HEAVY" : "OK";
+  const sleepLabel = data.sleepWindow.isFeelsLikeTropicalNight ? "체감 열대야" : "체감상 괜찮음";
+  const sleepGrade = data.sleepWindow.isFeelsLikeTropicalNight ? "VERY_HEAVY" : "OK";
+  wdTropicalBadges.innerHTML =
+    weatherBadgeHtml(officialGrade, officialLabel) + weatherBadgeHtml(sleepGrade, sleepLabel);
+  if (wdTropicalComment) wdTropicalComment.textContent = data.sleepWindow.comment || "";
+}
+
+function renderWeatherAccuracy(data) {
+  if (!wdAccuracyMessage) return;
+  wdAccuracyMessage.textContent = data?.message || "예보 정확도 정보를 불러올 수 없어요.";
+}
+
+function renderWeatherDayOverDay(data) {
+  if (!wdDayOverDay) return;
+  if (!data || !data.today || !data.tomorrow) {
+    wdDayOverDay.innerHTML = `<p class="weather-empty">비교 정보를 불러올 수 없어요.</p>`;
+    return;
+  }
+  wdDayOverDay.innerHTML = [data.today, data.tomorrow]
+    .map((entry) => `<div class="weather-compare-row">${entry.message}</div>`)
+    .join("");
+}
+
+async function fetchWeatherDetail() {
+  if (weatherDetailFetching) return;
+  weatherDetailFetching = true;
+
+  const [currentR, rainR, yesterdayR, tropicalR, accuracyR, dayOverDayR] = await Promise.allSettled([
+    fetchWeatherJson("/api/weather/current"),
+    fetchWeatherJson("/api/weather/rain-windows"),
+    fetchWeatherJson("/api/weather/yesterday"),
+    fetchWeatherJson("/api/weather/tropical-night"),
+    fetchWeatherJson("/api/weather/forecast-accuracy"),
+    fetchWeatherJson("/api/weather/day-over-day")
+  ]);
+
+  const tropicalData = tropicalR.status === "fulfilled" ? tropicalR.value : null;
+  renderWeatherCurrent(currentR.status === "fulfilled" ? currentR.value : null, tropicalData);
+  renderWeatherRainWindows(rainR.status === "fulfilled" ? rainR.value : null);
+  renderWeatherYesterday(yesterdayR.status === "fulfilled" ? yesterdayR.value : null);
+  renderWeatherTropical(tropicalData);
+  renderWeatherAccuracy(accuracyR.status === "fulfilled" ? accuracyR.value : null);
+  renderWeatherDayOverDay(dayOverDayR.status === "fulfilled" ? dayOverDayR.value : null);
+
+  weatherDetailFetching = false;
 }
 
 let musicIndex = 0;
@@ -2481,6 +2651,10 @@ settingsSave.addEventListener("click", () => {
 document.querySelectorAll("[data-settings-close]").forEach((element) => {
   element.addEventListener("click", closeSettings);
 });
+if (weatherChipOpen) weatherChipOpen.addEventListener("click", openWeatherDetail);
+document.querySelectorAll("[data-weather-detail-close]").forEach((element) => {
+  element.addEventListener("click", closeWeatherDetail);
+});
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", handleMusicIconTap);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", () => {
@@ -2624,7 +2798,10 @@ if (musicQCCopyButton) {
   musicQCCopyButton.addEventListener("click", copyMusicRemovalRequests);
 }
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closeSettings();
+  if (event.key === "Escape") {
+    closeSettings();
+    closeWeatherDetail();
+  }
 });
 window.addEventListener("resize", () => {
   syncFirstScreenHeight();
