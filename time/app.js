@@ -576,6 +576,43 @@ function preloadPhotoSet(photos) {
   });
 }
 
+// 2026-07-13: "Cool Summer" 사진 풀 — 매년 7/1~8/30, 07~19시(주간), 비/눈/안개가
+// 아닌 날씨(맑음/구름조금/흐림)일 때 4장 중 최소 2장을 이 풀(collection ===
+// "cool-summer")에서 보장한다. 사무실·도서관에서 여름 더위에 지친 사람들에게
+// 청량한 여름 사진(바다/휴가)을 보여주기 위한 유저 요청. 일반 매칭 로직
+// (matchingArchivePhotos)은 건드리지 않고, 이 조건일 때만 4장 구성 방식을 바꾼다
+// — 다른 계절·시간대·날씨에서는 기존 동작과 완전히 동일하다.
+function isCoolSummerWindow(date = new Date()) {
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return month === 7 || (month === 8 && day <= 30);
+}
+
+function isCoolSummerActive() {
+  const now = new Date();
+  if (!isCoolSummerWindow(now)) return false;
+  const hour = now.getHours();
+  if (hour < 7 || hour >= 19) return false;
+  return ["clear", "partly-cloudy", "cloudy"].includes(weatherState.tag);
+}
+
+const coolSummerMinCount = 2;
+
+function pickPhotoSetWithCoolSummer(photos) {
+  if (!isCoolSummerActive()) return pickNonRepeatingPhotos(photos, 4);
+
+  const coolPool = photos.filter((image) => image && image.collection === "cool-summer");
+  if (coolPool.length === 0) return pickNonRepeatingPhotos(photos, 4);
+
+  const coolCount = Math.min(coolSummerMinCount, coolPool.length);
+  const regularPool = photos.filter((image) => !(image && image.collection === "cool-summer"));
+  const regularCount = 4 - coolCount;
+
+  const coolPicks = pickNonRepeatingPhotos(coolPool, coolCount);
+  const regularPicks = regularPool.length > 0 ? pickNonRepeatingPhotos(regularPool, regularCount) : [];
+  return shuffledPhotos([...coolPicks, ...regularPicks]);
+}
+
 function ensurePhotoSet(sceneId) {
   const nextKey = photoSetKey(sceneId);
   if (activePhotoSetKey === nextKey && activePhotoSet.length > 0) return;
@@ -588,7 +625,7 @@ function ensurePhotoSet(sceneId) {
   const photos = candidates.length >= 4
     ? candidates
     : [...candidates, ...fallbackCandidates.filter((image) => !seenUrls.has(imageUrl(image)))];
-  activePhotoSet = pickNonRepeatingPhotos(photos, 4);
+  activePhotoSet = pickPhotoSetWithCoolSummer(photos);
   activePhotoSetKey = nextKey;
   activePhotoIndex = activePhotoSet.length > 0 ? Math.floor(Date.now() / (15 * 60 * 1000)) % activePhotoSet.length : 0;
   activePhotoSlot = "";
