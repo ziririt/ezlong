@@ -841,6 +841,9 @@ ${meta.context}
 [이동평균선]
 SMA5: ${fmt(ind.sma5)} | SMA20: ${fmt(ind.sma20)} | SMA50: ${fmt(ind.sma50)} | SMA100: ${fmt(ind.sma100)} | SMA200: ${fmt(ind.sma200)}
 현재가/SMA200: ${ind.sma200 ? ((price / ind.sma200 - 1) * 100).toFixed(2) + '%' : 'N/A'}
+EMA50: ${fmt(ind.ema50)} | EMA200: ${fmt(ind.ema200)}
+현재가/EMA50: ${ind.ema50 ? ((price / ind.ema50 - 1) * 100).toFixed(2) + '%' : 'N/A'} | 현재가/EMA200: ${ind.ema200 ? ((price / ind.ema200 - 1) * 100).toFixed(2) + '%' : 'N/A'}
+(EMA는 SMA보다 최근 가격에 민감하게 반응한다 — SMA200 대비 EMA200 괴리가 크면 최근 추세 전환 가능성을 시사한다)
 
 [RSI 궤적 — 숫자 하나로 말하지 마라, 방향을 봐라]
 RSI(14) 현재: ${rsiNow}
@@ -1072,6 +1075,12 @@ async function processTicker(meta) {
   const sma50A  = sma(closes, 50);
   const sma100A = sma(closes, 100);
   const sma200A = sma(closes, 200);
+  // 2026-07-13: EMA50/EMA200 추가 — SMA와 달리 최근 가격에 더 민감하게
+  // 반응하는 지수이동평균. 외부 TradingView 리포트가 "vs EMA50/EMA200"을
+  // 표준 트렌드 판정 지표로 쓰길래 동일 어휘로 맞춘다. ema() 헬퍼는 기존에
+  // MACD 내부 계산용으로만 쓰이던 것을 재사용(신규 함수 추가 없음).
+  const ema50A  = ema(closes, 50);
+  const ema200A = ema(closes, 200);
   const rsiA    = rsi(closes, 14);
   const macdA   = macd(closes, 12, 26, 9);
   const bbA     = bollingerBands(closes, 20, 2);
@@ -1122,6 +1131,8 @@ async function processTicker(meta) {
     sma50:  sma50A[n - 1],
     sma100: sma100A[n - 1],
     sma200: sma200A[n - 1],
+    ema50:  ema50A[n - 1],
+    ema200: ema200A[n - 1],
     rsi:    rsiA[n - 1],
     rsi5dAgo, rsi14dLow, rsi14dHigh,
     macd:   macdA[n - 1],
