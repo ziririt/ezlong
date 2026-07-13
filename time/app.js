@@ -1601,21 +1601,22 @@ function ensureMusicVizGraph() {
   resizeMusicViz();
 }
 
-// 2026-07-13: 성동님이 준 참고 영상(클래식 LED 이퀄라이저 — 막대 하나가
-// 통짜가 아니라 작은 세그먼트를 쌓은 모양 + 좌→우 무지개색 + 맨 위 세그먼트
-// glow)과 같은 느낌을 내기 위한 렌더링. 오디오 분석/로그 스케일 매핑 로직은
-// 그대로 두고, "어떻게 그리는지"만 바꾼다.
+// 2026-07-13 1차: 참고 영상(클래식 LED 이퀄라이저 — 무지개색)을 그대로
+// 구현했었으나, 성동님의 전체 UI가 애플 비전프로 스타일 그래스모피즘
+// (반투명 유리 + 배경이 비치는 느낌)이라 무지개색은 톤이 맞지 않는다는
+// 피드백으로 색상만 다시 바꾼다. 세그먼트를 쌓아 그리는 모양(로그 스케일
+// 매핑 포함)은 그대로 두고, 색만 "투명한 흰색 유리"로 교체 — 실제 유리
+// 느낌은 CSS의 .music-viz-wrap에 준 backdrop-filter가 배경사진을 그대로
+// 프로스티드 글래스처럼 비쳐 보이게 해주는 역할이고, 캔버스는 그 위에
+// 무채색 반투명 막대만 얹는다.
 const MUSIC_VIZ_SEGMENT_H = 3;
 const MUSIC_VIZ_SEGMENT_GAP = 2;
 
-function musicVizHueForIndex(i) {
-  // 주황(왼쪽) → 노랑 → 초록 → 청록 → 파랑 → 보라(오른쪽)
-  return 20 + (i / Math.max(1, MUSIC_VIZ_BAR_COUNT - 1)) * 270;
-}
-
 // 막대 하나를 통짜 사각형이 아니라 LED 미터처럼 작은 세그먼트를 쌓아 그린다.
-// 맨 위 세그먼트만 더 밝게 + shadowBlur로 glow를 줘서 "불이 켜진" 느낌을 낸다.
-function drawMusicVizSegmentedBar(ctx, x, barWidth, barHeight, h, hue) {
+// 맨 위 세그먼트만 더 밝게 + shadowBlur로 은은한 흰 glow를 줘서 유리 가장자리에
+// 빛이 맺힌 느낌을 낸다. 색상에 hue를 넣지 않는다 — 배경사진의 색이 그대로
+// 드러나야 하므로 흰색 반투명(무채색)만 사용.
+function drawMusicVizSegmentedBar(ctx, x, barWidth, barHeight, h) {
   const pitch = MUSIC_VIZ_SEGMENT_H + MUSIC_VIZ_SEGMENT_GAP;
   const segCount = Math.max(1, Math.ceil(barHeight / pitch));
   for (let s = 0; s < segCount; s++) {
@@ -1623,12 +1624,12 @@ function drawMusicVizSegmentedBar(ctx, x, barWidth, barHeight, h, hue) {
     if (y + MUSIC_VIZ_SEGMENT_H < 0) break;
     const isTop = s === segCount - 1;
     if (isTop) {
-      ctx.shadowColor = `hsla(${hue}, 95%, 62%, 0.9)`;
-      ctx.shadowBlur = 5;
-      ctx.fillStyle = `hsla(${hue}, 95%, 72%, 0.95)`;
+      ctx.shadowColor = "rgba(255,255,255,0.85)";
+      ctx.shadowBlur = 6;
+      ctx.fillStyle = "rgba(255,255,255,0.92)";
     } else {
       ctx.shadowBlur = 0;
-      ctx.fillStyle = `hsla(${hue}, 88%, 52%, 0.88)`;
+      ctx.fillStyle = "rgba(255,255,255,0.30)";
     }
     ctx.fillRect(x, Math.max(0, y), barWidth, MUSIC_VIZ_SEGMENT_H);
   }
@@ -1646,7 +1647,7 @@ function drawMusicVizIdle(ctx, w, h) {
     const target = 4 + wave * (h * 0.3);
     musicVizBars[i] += (target - musicVizBars[i]) * 0.1;
     const x = i * (barWidth + gap);
-    drawMusicVizSegmentedBar(ctx, x, barWidth, musicVizBars[i], h, musicVizHueForIndex(i));
+    drawMusicVizSegmentedBar(ctx, x, barWidth, musicVizBars[i], h);
   }
 }
 
@@ -1686,7 +1687,7 @@ function drawMusicViz() {
     const target = Math.max(3, (avg / 255) * h);
     musicVizBars[i] += (target - musicVizBars[i]) * 0.22;
     const x = i * (barWidth + gap);
-    drawMusicVizSegmentedBar(ctx, x, barWidth, musicVizBars[i], h, musicVizHueForIndex(i));
+    drawMusicVizSegmentedBar(ctx, x, barWidth, musicVizBars[i], h);
   }
 }
 

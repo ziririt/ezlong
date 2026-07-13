@@ -1108,6 +1108,17 @@ button { font: inherit; }
   position: relative;
   height: 52px;
   margin: 0 0 6px;
+  border-radius: 12px;
+  overflow: hidden;
+  /* 2026-07-13: 비전프로 스타일 그래스모피즘으로 전환 — 무지개색 대신
+     투명한 유리 느낌. backdrop-filter가 이 패널 뒤 배경사진을 그대로
+     프로스티드 글래스처럼 살짝 흐리게 비쳐 보이게 하고, 그 위에 캔버스가
+     흰색 반투명 막대만 그린다(색상 자체는 안 넣음 — 배경사진 색이
+     그대로 드러나야 해서). 이 앱이 이미 .settings-backdrop에서 쓰던
+     backdrop-filter와 같은 검증된 기법이다. */
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  background: rgba(255,255,255,0.05);
 }
 
 #musicViz {
