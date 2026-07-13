@@ -907,5 +907,19 @@ window.investmentQuotes = [
     "title": "날개",
     "author": "이상",
     "genre": "literature"
+  },
+  {
+    "english": "Time is your friend, impulse is your enemy.",
+    "text": "시간은 당신의 편이고, 충동은 당신의 적이다. 복리가 오래 쌓이도록 내버려두는 인내심이야말로, 시세에 일희일비하는 조급함보다 훨씬 강력한 투자 무기다.",
+    "title": "상식이 이기는 투자",
+    "author": "존 보글",
+    "category": "compound"
+  },
+  {
+    "english": "The investor's chief problem—and even his worst enemy—is likely to be himself. In the end, how your investments behave is much less important than how you behave.",
+    "text": "투자자의 가장 큰 문제, 어쩌면 최악의 적은 바로 자기 자신일 가능성이 크다. 결국 당신이 고른 종목이 어떻게 움직이는가보다, 당신이 그 앞에서 어떻게 행동하는가가 훨씬 더 중요하다.",
+    "title": "현명한 투자자",
+    "author": "벤저민 그레이엄",
+    "category": "behavior"
   }
 ];
