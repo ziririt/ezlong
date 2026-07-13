@@ -316,7 +316,6 @@ const musicPlaylist = [
   { group: 196, title: "Natures Odyssey", playlist: "SINGLE", duration: "2:29", file: "BGM/Natures Odyssey.mp3", category: "BGM", vocal: false },
   { group: 197, title: "Whisper of the Earth", playlist: "1", duration: "1:54", file: "BGM/Whisper of the Earth_1.mp3", category: "BGM", vocal: false },
   { group: 197, title: "Whisper of the Earth", playlist: "SINGLE", duration: "3:07", file: "BGM/Whisper of the Earth.mp3", category: "BGM", vocal: false },
-  { group: 198, title: "Chapter One", playlist: "SINGLE", duration: "3:32", file: "vocal - CITY POP/Chapter One_vocal.mp3", category: "vocal - CITY POP", vocal: true },
   { group: 199, title: "Echoes of Yesterday Remastered", playlist: "SINGLE", duration: "3:23", file: "vocal - CITY POP/Echoes of Yesterday Remastered_vocal.mp3", category: "vocal - CITY POP", vocal: true },
   { group: 200, title: "Electric Allure", playlist: "SINGLE", duration: "2:45", file: "vocal - CITY POP/Electric Allure_vocal.mp3", category: "vocal - CITY POP", vocal: true },
   { group: 201, title: "Electric Smile", playlist: "2", duration: "3:08", file: "vocal - CITY POP/Electric Smile_part2_vocal.mp3", category: "vocal - CITY POP", vocal: true },
