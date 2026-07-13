@@ -194,6 +194,12 @@ const appBrand = document.querySelector(".app-brand");
 const musicSettingsOpen = document.getElementById("musicSettingsOpen");
 const musicToggle = document.getElementById("musicToggle");
 const musicSkip = document.getElementById("musicSkip");
+const musicInfoPanel = document.getElementById("musicInfoPanel");
+const musicViz = document.getElementById("musicViz");
+const musicTrackTitle = document.getElementById("musicTrackTitle");
+const musicLikeButton = document.getElementById("musicLikeButton");
+const musicDislikeButton = document.getElementById("musicDislikeButton");
+const musicGearOpen = document.getElementById("musicGearOpen");
 const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
 const musicPlaylistOptionsEl = document.getElementById("musicPlaylistOptions");
 const musicHistoryList = document.getElementById("musicHistoryList");
@@ -1085,6 +1091,82 @@ function saveDislikedTracks(list) {
   }
 }
 
+// 2026-07-13: 음악 아이콘 탭 시 곧바로 음악설정으로 가지 않고, 지금 재생
+// 중인 곡 정보(비주얼라이저+곡명+좋아요/싫어요)를 먼저 보여주는 패널로
+// 바꾼다. 톱니바퀴를 눌러야만 음악설정으로 이동한다. 문제가 생기면 이 값만
+// false로 바꾸면 아래 새 코드를 지우지 않고도 예전 동작(음악 아이콘 탭 →
+// 바로 음악설정 오픈)으로 즉시 돌아간다.
+const MUSIC_PANEL_V2_ENABLED = true;
+
+// "좋아요"는 기존에 없던 개념이라 새 키로 저장한다(회전 로직에는 아직
+// 영향을 주지 않음 — 우선 로컬 기록만). "싫어요"는 이미 있던
+// musicDislikedStorageKey/loadDislikedTracks/saveDislikedTracks를 그대로
+// 재사용한다 — 수동 스킵으로 추론되는 기존 싫어요와 같은 목록이라야
+// pickNextTrackIndex()의 제외 로직이 곧바로 적용된다.
+const musicLikedStorageKey = "ezlong:musicLiked";
+
+function loadLikedTracks() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(musicLikedStorageKey) || "[]");
+    return Array.isArray(raw) ? raw.filter((value) => typeof value === "string") : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveLikedTracks(list) {
+  try {
+    localStorage.setItem(musicLikedStorageKey, JSON.stringify(list));
+  } catch (error) {
+    // localStorage를 못 쓰는 환경이어도 재생 자체는 지장이 없어야 한다.
+  }
+}
+
+function currentMusicTrack() {
+  if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return null;
+  return musicPlaylist[musicIndex % musicPlaylist.length] || null;
+}
+
+// 패널의 좋아요/싫어요 버튼 상태를 "지금 재생 중인 곡" 기준으로 갱신한다.
+function renderMusicReactionButtons() {
+  const track = currentMusicTrack();
+  const file = track && track.file;
+  const liked = file ? loadLikedTracks().includes(file) : false;
+  const disliked = file ? loadDislikedTracks().includes(file) : false;
+  if (musicLikeButton) musicLikeButton.setAttribute("aria-pressed", String(liked));
+  if (musicDislikeButton) musicDislikeButton.setAttribute("aria-pressed", String(disliked));
+}
+
+function isMusicPanelOpen() {
+  return Boolean(musicInfoPanel && musicInfoPanel.classList.contains("is-open"));
+}
+
+function setMusicPanelOpen(open) {
+  if (!musicInfoPanel) return;
+  musicInfoPanel.classList.toggle("is-open", open);
+  musicInfoPanel.setAttribute("aria-hidden", String(!open));
+  if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", String(open));
+  if (open) {
+    renderMusicReactionButtons();
+    ensureMusicVizGraph();
+    if (musicVizAnimId) cancelAnimationFrame(musicVizAnimId);
+    musicVizAnimId = null;
+    drawMusicViz();
+  } else if (musicVizAnimId) {
+    cancelAnimationFrame(musicVizAnimId);
+    musicVizAnimId = null;
+  }
+}
+
+// 음악 아이콘 탭 동작 — 플래그에 따라 분기(3번 위 주석 참조).
+function handleMusicIconTap() {
+  if (!MUSIC_PANEL_V2_ENABLED) {
+    openSettings(); // 롤백 모드: 예전 그대로 바로 음악설정 오픈
+    return;
+  }
+  setMusicPanelOpen(!isMusicPanelOpen());
+}
+
 // 스킵 버튼(수동)을 누른 시점에만 호출한다 — 자동 크로스페이드/종료 전환은
 // "싫어요" 신호로 보지 않는다(유저가 직접 넘긴 게 아니므로).
 function recordDislikeIfWarranted(player, index) {
@@ -1479,6 +1561,139 @@ function standbyPlayer() {
   return musicPlayers[1 - activePlayerIndex];
 }
 
+// 2026-07-13: 음악 정보 패널의 오디오 비주얼라이저. 실제 트랙 파일이
+// same-origin(R2 fetch 후 blob URL로 재생, resolveTrackUrl/loadMusicTrack
+// 참조)이라 CORS로 분석 데이터가 막힐 일이 거의 없다 — 그래도 AnalyserNode
+// 자체를 못 만드는 예외적 환경(구형 브라우저 등) 대비로 조용한 폴백만 둔다.
+const MUSIC_VIZ_BAR_COUNT = 26;
+let musicVizBars = new Array(MUSIC_VIZ_BAR_COUNT).fill(0);
+let musicVizBandRanges = null;
+let musicVizAnimId = null;
+let musicVizIdlePhase = 0;
+
+function buildMusicVizBands(binCount, barCount) {
+  // 저음역은 좁게, 고음역은 넓게 묶는 로그 스케일 경계 — 균등 step으로 뽑으면
+  // 에너지가 저음역 몇 개 bin에 쏠려 왼쪽 몇 바만 크게 움직이고 나머지는
+  // 밋밋해 보인다.
+  const bounds = [];
+  const minLog = Math.log10(1);
+  const maxLog = Math.log10(binCount);
+  for (let i = 0; i <= barCount; i++) {
+    const t = i / barCount;
+    const idx = Math.round(Math.pow(10, minLog + t * (maxLog - minLog)));
+    bounds.push(Math.min(Math.max(idx, 1), binCount));
+  }
+  return bounds;
+}
+
+function resizeMusicViz() {
+  if (!musicViz) return;
+  const dpr = window.devicePixelRatio || 1;
+  const rect = musicViz.getBoundingClientRect();
+  musicViz.width = Math.max(1, Math.round(rect.width * dpr));
+  musicViz.height = Math.max(1, Math.round(rect.height * dpr));
+  const ctx = musicViz.getContext("2d");
+  if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function ensureMusicVizGraph() {
+  ensureAudioGraph();
+  resizeMusicViz();
+}
+
+// 2026-07-13: 성동님이 준 참고 영상(클래식 LED 이퀄라이저 — 막대 하나가
+// 통짜가 아니라 작은 세그먼트를 쌓은 모양 + 좌→우 무지개색 + 맨 위 세그먼트
+// glow)과 같은 느낌을 내기 위한 렌더링. 오디오 분석/로그 스케일 매핑 로직은
+// 그대로 두고, "어떻게 그리는지"만 바꾼다.
+const MUSIC_VIZ_SEGMENT_H = 3;
+const MUSIC_VIZ_SEGMENT_GAP = 2;
+
+function musicVizHueForIndex(i) {
+  // 주황(왼쪽) → 노랑 → 초록 → 청록 → 파랑 → 보라(오른쪽)
+  return 20 + (i / Math.max(1, MUSIC_VIZ_BAR_COUNT - 1)) * 270;
+}
+
+// 막대 하나를 통짜 사각형이 아니라 LED 미터처럼 작은 세그먼트를 쌓아 그린다.
+// 맨 위 세그먼트만 더 밝게 + shadowBlur로 glow를 줘서 "불이 켜진" 느낌을 낸다.
+function drawMusicVizSegmentedBar(ctx, x, barWidth, barHeight, h, hue) {
+  const pitch = MUSIC_VIZ_SEGMENT_H + MUSIC_VIZ_SEGMENT_GAP;
+  const segCount = Math.max(1, Math.ceil(barHeight / pitch));
+  for (let s = 0; s < segCount; s++) {
+    const y = h - (s + 1) * pitch + MUSIC_VIZ_SEGMENT_GAP;
+    if (y + MUSIC_VIZ_SEGMENT_H < 0) break;
+    const isTop = s === segCount - 1;
+    if (isTop) {
+      ctx.shadowColor = `hsla(${hue}, 95%, 62%, 0.9)`;
+      ctx.shadowBlur = 5;
+      ctx.fillStyle = `hsla(${hue}, 95%, 72%, 0.95)`;
+    } else {
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = `hsla(${hue}, 88%, 52%, 0.88)`;
+    }
+    ctx.fillRect(x, Math.max(0, y), barWidth, MUSIC_VIZ_SEGMENT_H);
+  }
+  ctx.shadowBlur = 0; // 다음 막대에 glow가 새지 않도록 매 막대 후 리셋
+}
+
+// 오디오 그래프를 못 쓰는 예외적 환경을 위한 잔잔한 폴백 웨이브. 실제
+// 소리는 대부분 정상 분석되므로 이 분기는 안전장치 성격이 강하다.
+function drawMusicVizIdle(ctx, w, h) {
+  musicVizIdlePhase += 0.02;
+  const gap = 3;
+  const barWidth = (w - gap * (MUSIC_VIZ_BAR_COUNT - 1)) / MUSIC_VIZ_BAR_COUNT;
+  for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
+    const wave = Math.sin(musicVizIdlePhase + i * 0.35) * 0.5 + 0.5;
+    const target = 4 + wave * (h * 0.3);
+    musicVizBars[i] += (target - musicVizBars[i]) * 0.1;
+    const x = i * (barWidth + gap);
+    drawMusicVizSegmentedBar(ctx, x, barWidth, musicVizBars[i], h, musicVizHueForIndex(i));
+  }
+}
+
+function drawMusicViz() {
+  if (!isMusicPanelOpen() || !musicViz) {
+    musicVizAnimId = null; // 패널이 닫히면 다음 프레임을 예약하지 않고 루프 종료
+    return;
+  }
+  musicVizAnimId = requestAnimationFrame(drawMusicViz);
+
+  const ctx = musicViz.getContext("2d");
+  if (!ctx) return;
+  const w = musicViz.clientWidth;
+  const h = musicViz.clientHeight;
+  ctx.clearRect(0, 0, w, h);
+
+  const analyser = activeMusicAnalyser();
+  if (!analyser) {
+    drawMusicVizIdle(ctx, w, h);
+    return;
+  }
+
+  if (!musicVizBandRanges) {
+    musicVizBandRanges = buildMusicVizBands(analyser.frequencyBinCount, MUSIC_VIZ_BAR_COUNT);
+  }
+  const data = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(data);
+
+  const gap = 3;
+  const barWidth = (w - gap * (MUSIC_VIZ_BAR_COUNT - 1)) / MUSIC_VIZ_BAR_COUNT;
+  for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
+    const start = musicVizBandRanges[i];
+    const end = Math.max(musicVizBandRanges[i + 1], start + 1);
+    let sum = 0;
+    for (let j = start; j < end; j++) sum += data[j];
+    const avg = sum / (end - start);
+    const target = Math.max(3, (avg / 255) * h);
+    musicVizBars[i] += (target - musicVizBars[i]) * 0.22;
+    const x = i * (barWidth + gap);
+    drawMusicVizSegmentedBar(ctx, x, barWidth, musicVizBars[i], h, musicVizHueForIndex(i));
+  }
+}
+
+window.addEventListener("resize", () => {
+  if (isMusicPanelOpen()) resizeMusicViz();
+});
+
 // 2026-07-07: "크로스페이드가 볼륨이 줄어드는 느낌이 전혀 없이 뚝 끊긴다"는
 // 반복된 재지적의 진짜 원인 — iOS Safari/WKWebView는 HTMLMediaElement의
 // .volume 프로퍼티를 조용히 무시한다(하드웨어 볼륨 버튼만 존중하도록 iOS 5
@@ -1489,6 +1704,11 @@ function standbyPlayer() {
 // 표준 우회법이라, 볼륨 제어를 전부 여기로 옮긴다.
 let audioContext = null;
 let playerGainNodes = null; // musicPlayers와 같은 순서의 GainNode 배열
+// 2026-07-13: 음악 정보 패널의 오디오 비주얼라이저용 AnalyserNode.
+// musicPlayers/playerGainNodes와 같은 순서로 둔다. 기존 gain → destination
+// 출력 경로는 그대로 두고, gain에서 분석용으로만 하나 더 분기(fan-out)한다 —
+// 소리 출력 경로 자체에는 영향이 없다.
+let playerAnalysers = null;
 
 function ensureAudioGraph() {
   if (audioContext) return;
@@ -1496,17 +1716,33 @@ function ensureAudioGraph() {
   if (!AudioContextClass) return; // 극히 예외적으로 없는 환경 — setPlayerVolume이 .volume으로 폴백
   try {
     audioContext = new AudioContextClass();
+    playerAnalysers = [];
     playerGainNodes = musicPlayers.map((player) => {
       const source = audioContext.createMediaElementSource(player);
       const gain = audioContext.createGain();
+      const analyser = audioContext.createAnalyser();
+      analyser.fftSize = 128;
+      analyser.smoothingTimeConstant = 0.85;
       source.connect(gain);
       gain.connect(audioContext.destination);
+      gain.connect(analyser);
+      playerAnalysers.push(analyser);
       return gain;
     });
   } catch (error) {
     audioContext = null;
     playerGainNodes = null;
+    playerAnalysers = null;
   }
+}
+
+// 지금 소리가 나오고 있는 쪽(activePlayer)의 AnalyserNode를 돌려준다.
+// 크로스페이드 중 잠깐은 standby 쪽도 같이 들리지만, 비주얼라이저는
+// "화려할 필요 없이 가벼운" 용도라 근사치로 충분하다.
+function activeMusicAnalyser() {
+  if (!playerAnalysers) return null;
+  const index = musicPlayers.indexOf(activePlayer());
+  return playerAnalysers[index] || null;
 }
 
 function setPlayerVolume(player, value) {
@@ -1956,6 +2192,13 @@ function renderMusicPlaylistInfo() {
   } else {
     musicPlaylistInfo.textContent = `기본 플레이리스트 · 총 ${total}곡`;
   }
+  // 2026-07-13: 음악 정보 패널의 곡명 표시 + 좋아요/싫어요 버튼 상태도
+  // 트랙이 바뀔 때마다 여기서 함께 갱신한다(호출 지점이 이미 여러 곳이라
+  // 이 한 함수에만 붙여두면 전부 자동으로 따라온다).
+  if (musicTrackTitle) {
+    musicTrackTitle.textContent = track && track.title ? track.title : "재생 대기 중";
+  }
+  renderMusicReactionButtons();
 }
 
 // 2026-07-12: "몇 가지 플레이리스트로 나눌 수 있나" 요청 — 실제 존재하는
@@ -2252,7 +2495,7 @@ settingsSave.addEventListener("click", () => {
 document.querySelectorAll("[data-settings-close]").forEach((element) => {
   element.addEventListener("click", closeSettings);
 });
-if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", openSettings);
+if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", handleMusicIconTap);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", () => {
   // playNextTrack()이 musicIndex/activePlayer를 바꿔버리기 전에, "지금 듣던
@@ -2260,6 +2503,38 @@ if (musicSkip) musicSkip.addEventListener("click", () => {
   recordDislikeIfWarranted(activePlayer(), musicIndex);
   playNextTrack();
 });
+
+// 2026-07-13: 음악 정보 패널 — 톱니바퀴만 음악설정으로 이동, 좋아요/싫어요는
+// 로컬 기록(1단계). 패널 토글과 겹치지 않도록 전부 stopPropagation.
+if (musicGearOpen) musicGearOpen.addEventListener("click", (event) => {
+  event.stopPropagation();
+  openSettings();
+});
+if (musicLikeButton) musicLikeButton.addEventListener("click", (event) => {
+  event.stopPropagation();
+  const track = currentMusicTrack();
+  if (!track || !track.file) return;
+  const liked = loadLikedTracks();
+  const idx = liked.indexOf(track.file);
+  if (idx >= 0) liked.splice(idx, 1); else liked.push(track.file);
+  saveLikedTracks(liked);
+  renderMusicReactionButtons();
+});
+if (musicDislikeButton) musicDislikeButton.addEventListener("click", (event) => {
+  event.stopPropagation();
+  const track = currentMusicTrack();
+  if (!track || !track.file) return;
+  const disliked = loadDislikedTracks();
+  if (!disliked.includes(track.file)) {
+    disliked.push(track.file);
+    saveDislikedTracks(disliked);
+  }
+  renderMusicReactionButtons();
+  // 명시적으로 싫어요를 누른 것이므로, 스킵과 마찬가지로 바로 다음 곡으로
+  // 넘어간다(이미 disliked에 들어갔으니 다시 뽑히지 않는다).
+  playNextTrack();
+});
+if (musicInfoPanel) musicInfoPanel.addEventListener("click", (event) => event.stopPropagation());
 // 2026-07-07: "곡이 중간에 뚝 끊긴다"는 신고는 ffmpeg 완전디코드로 확인한
 // 결과 버그가 아니었다(파일이 정말 그 지점에서 끝남) — 대신 크로스페이드로
 // 무음 구간 자체를 없앴다(위 musicFadeOutSeconds 설명 참조). 두 <audio>

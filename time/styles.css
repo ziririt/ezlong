@@ -1085,6 +1085,86 @@ button { font: inherit; }
 .music-toggle.is-playing { background-image: url("assets/icons/music/pause.png"); }
 .music-skip { background-image: url("assets/icons/music/skip.png"); }
 
+/* 2026-07-13: 음악 정보 패널 — 기본은 닫힘(높이 0)이라 평소 레이아웃에는
+   영향이 없다. 열리면 clock-meta(날씨/음악 버튼 줄) 바로 위에 비주얼라이저 +
+   곡명 + 좋아요/싫어요/설정 버튼이 나타난다. */
+.music-info-panel {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: max-height 0.25s ease, opacity 0.2s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+.music-info-panel.is-open {
+  max-height: 120px;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.music-viz-wrap {
+  position: relative;
+  height: 52px;
+  margin: 0 0 6px;
+}
+
+#musicViz {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.music-track-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.22);
+  border-radius: 10px;
+  margin: 0 0 8px;
+  box-sizing: border-box;
+}
+
+.music-track-title {
+  font-size: clamp(12px, 3vw, 15px);
+  font-weight: 600;
+  color: rgba(255,255,255,0.88);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55%;
+}
+
+.music-track-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.music-track-actions.icon-button,
+.music-track-actions .icon-button {
+  width: 30px;
+  height: 30px;
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.8;
+}
+
+.music-like-button { background-image: url("assets/icons/music/thumb_up.svg"); }
+.music-dislike-button { background-image: url("assets/icons/music/thumb_down.svg"); }
+.music-gear-button { background-image: url("assets/icons/music/gear.svg"); }
+
+.music-like-button[aria-pressed="true"],
+.music-dislike-button[aria-pressed="true"] {
+  opacity: 1;
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.55));
+}
+
 .quote-panel {
   width: min(100%, 820px);
   margin: 0 auto;
