@@ -547,5 +547,26 @@ window.investmentQuotes = [
     "title": "주식 투자자의 회상",
     "author": "제시 리버모어",
     "category": "mindset"
+  },
+  {
+    "english": "Value investing is at its core the marriage of a contrarian streak and a calculator.",
+    "text": "가치투자는 본질적으로 반골 기질과 계산기의 결합이다. 남들과 반대로 갈 배짱과, 그 판단을 숫자로 검증하는 냉철함이 함께 있어야 한다는 뜻이다.",
+    "title": "마진 오브 세이프티",
+    "author": "세스 클라만",
+    "category": "mindset"
+  },
+  {
+    "english": "Pain + Reflection = Progress. This formula holds true no matter what type of pain you are suffering — physical or emotional.",
+    "text": "고통에 성찰을 더하면 진전이 된다. 이 공식은 육체적 고통이든 감정적 고통이든 어떤 종류의 고통에도 똑같이 적용된다. 손실 앞에서 괴로워하는 것 자체보다, 그 원인을 정직하게 파고드는 태도가 다음 판단을 더 나은 것으로 만든다.",
+    "title": "원칙",
+    "author": "레이 달리오",
+    "category": "mindset"
+  },
+  {
+    "english": "Rule number one: most things will prove to be cyclical. Rule number two: some of the greatest opportunities for gain and loss come when other people forget rule number one.",
+    "text": "제1원칙: 대부분의 것들은 결국 순환한다는 사실이 증명될 것이다. 제2원칙: 사람들이 이 제1원칙을 잊어버릴 때, 바로 그 순간 가장 큰 이익과 가장 큰 손실의 기회가 함께 찾아온다.",
+    "title": "투자에서 가장 중요한 것",
+    "author": "하워드 막스",
+    "category": "mindset"
   }
 ];
