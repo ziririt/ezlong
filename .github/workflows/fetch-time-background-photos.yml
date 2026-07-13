@@ -1,0 +1,85 @@
+name: FlipZen 배경사진 자동 수집
+
+# ─── 배경 ───────────────────────────────────────────────────────────────────
+# 2026-07-13 신설. 기존에는 Cowork 예약 스케줄(flipzen-hourly-photo-quote-collect)이
+# 매시간 위키미디어 커먼즈에서 사진을 다운로드했는데, Cowork 샌드박스에서
+# JSON API·이미지 바이너리 요청이 구조적으로 막혀 있다는 게 실측으로 확인됐다
+# (WebFetch는 HTML 페이지만 파싱, JSON·바이너리는 빈 값 반환. bash 안 curl도
+# network egress 정책으로 차단). GitHub Actions 러너는 이런 제약이 없어 사진
+# 수집만 이쪽으로 이전한다. 투자 명언 큐레이션은 인터넷이 필요 없어 계속
+# Cowork 스케줄 쪽에 남는다 — 역할 분리.
+#
+# 매시간 5분에 실행(하루 24회) — 기존 Cowork 스케줄(정시)과 겹치지 않게 5분 오프셋.
+# ─────────────────────────────────────────────────────────────────────────────
+on:
+  schedule:
+    - cron: '5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  collect-photos:
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: flipzen-background-photos
+      cancel-in-progress: false
+
+    steps:
+      # ── 1. 저장소 체크아웃 ─────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 2. Node.js 설치 ────────────────────────────────────────────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # ── 3. Python + Pillow 설치 (컬러감 검수용) ────────────────────────
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Pillow
+        run: pip install Pillow --quiet
+
+      # ── 4. 배경사진 수집 (위키미디어 검색 → 다운로드 → 컬러감 검수 → 매니페스트 반영) ──
+      - name: Collect background photos
+        run: node scripts/collect-time-background-photos.js
+
+      # ── 5. 변경사항 커밋 및 푸시 ──────────────────────────────────────
+      # 주의: git reset --hard / git add -A / git pull --rebase 절대 금지 (CLAUDE.md 규칙)
+      - name: Commit and push data
+        run: |
+          git config user.name  "FlipZen Photo Bot"
+          git config user.email "flipzen-photo-bot@ezlong.com"
+
+          git add time/data/background-manifest.json time/assets/background-archive/
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 건너뜀."
+            exit 0
+          fi
+          KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
+          git commit -m "data: FlipZen 배경사진 자동수집 ${KST}"
+          git push origin main || (git fetch origin main && git merge origin/main -X ours --no-edit && git push origin main)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 6. Firebase Hosting 배포 ──────────────────────────────────────
+      # GITHUB_TOKEN으로 push된 커밋은 firebase-hosting.yml을 트리거하지 않으므로
+      # (GitHub 정책) 이 워크플로에서 직접 배포한다 (fetch-today-chart.yml과 동일 패턴).
+      - name: Deploy to Firebase Hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          npm install -g firebase-tools --quiet
+          firebase deploy --only hosting --project ezlong-541a8 --token "$FIREBASE_TOKEN" || true
+
+      # ── 7. 실패 시 알림 ───────────────────────────────────────────────
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "::error::FlipZen 배경사진 자동수집 실패. 위키미디어 커먼즈 API 응답 문제 또는 컬러감 검수(Pillow) 오류일 수 있습니다."
