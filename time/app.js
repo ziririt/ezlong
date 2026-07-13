@@ -1647,20 +1647,28 @@ function drawMusicViz() {
   const data = new Uint8Array(analyser.frequencyBinCount);
   analyser.getByteFrequencyData(data);
 
+  // 2026-07-13 7차: "막대쇼처럼 다 같이 움직여야 한다"는 피드백 — 5차는
+  // 절대 에너지(avg/255)에 압축을 걸었더니 베이스/미드 대역이 거의 항상
+  // 천장 근처에 붙어버려서(실사용 음악은 저음이 절대값 자체가 크다) 왼쪽
+  // 대부분이 "가만히 서 있는" 것처럼 보이고, 원래도 에너지가 작은 오른쪽
+  // 1~2개 고음역 막대만 눈에 띄게 움직였다. 절대값 기준을 버리고 이번
+  // 프레임에서 가장 센 대역을 100%로 놓고 나머지를 그에 비례해 정규화한다
+  // — 그 순간 제일 큰 소리가 꼭대기까지 닿고, 어느 막대가 그 "1등"이 될지는
+  // 매 프레임 계속 바뀌므로 전체가 다 같이 들썩이는 막대쇼 느낌이 난다.
+  const avgs = new Array(MUSIC_VIZ_BAR_COUNT);
+  let maxAvg = 24; // 무음에 가까운 순간에 0으로 나누는 걸 막는 바닥값
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     const start = musicVizBandRanges[i];
     const end = Math.max(musicVizBandRanges[i + 1], start + 1);
     let sum = 0;
     for (let j = start; j < end; j++) sum += data[j];
     const avg = sum / (end - start);
-    // 2026-07-13 5차: 정확한 주파수 스펙트럼 재현이 목표가 아니라 "음악을
-    // 드라마틱하게 보여주는 무드"가 목표라는 피드백 반영. (avg/255)를 그대로
-    // 쓰면 조용한 구간은 밋밋하게 깔려있기만 해서 재미가 없다 — 0.6제곱
-    // 압축으로 약한 소리도 확 튀어 보이게 과장한다. 오른쪽(고음역) 막대엔
-    // 완만한 게인을 얹어 "왼쪽에만 쏠려 보인다"는 지적도 함께 완화.
-    const norm = avg / 255;
-    const gain = 1 + (i / (MUSIC_VIZ_BAR_COUNT - 1)) * 0.6;
-    const target = Math.max(4, Math.min(h, Math.pow(norm, 0.6) * gain * h));
+    avgs[i] = avg;
+    if (avg > maxAvg) maxAvg = avg;
+  }
+
+  for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
+    const target = Math.max(4, (avgs[i] / maxAvg) * h);
     // 어택은 빠르게(비트에 팍 반응), 릴리즈는 느리게(잔향처럼 천천히 가라앉음)
     // — 고전 VU미터의 비대칭 스무딩이라 훨씬 다이나믹하게 느껴진다.
     const factor = target > musicVizBars[i] ? 0.5 : 0.12;
