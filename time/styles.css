@@ -1098,7 +1098,10 @@ button { font: inherit; }
 }
 
 .music-info-panel.is-open {
-  max-height: 120px;
+  /* 2026-07-13 6차: 막대 높이(.music-viz-wrap)를 크게 키우면서 패널
+     전체 최대높이도 함께 늘려야 잘려 보이지 않는다 — clamp로 뷰포트에
+     맞춰 유동적으로. */
+  max-height: clamp(170px, 32vh, 250px);
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
@@ -1106,36 +1109,38 @@ button { font: inherit; }
 
 .music-viz-wrap {
   position: relative;
-  height: 52px;
-  margin: 0 0 6px;
+  /* 2026-07-13 6차: "높이가 짧아서 비주얼라이저 맛이 안 난다"는 지적 —
+     52px 고정에서 뷰포트 비례로 최대한 키운다. 플립카드처럼 세로로 긴
+     실루엣이 되어야 막대 하나하나가 "판"처럼 보인다. */
+  height: clamp(96px, 20vh, 170px);
+  margin: 0 0 8px;
   padding: 0 10px;
   box-sizing: border-box;
   display: flex;
   align-items: flex-end;
   gap: 6px;
-  /* 2026-07-13 5차: (1) .music-track-row와 같은 좌우 10px 인셋을 줘서 이
-     줄이 화면 끝까지 삐져나가지 않고 아래 제목바 폭에 정확히 맞도록 고정.
-     (2) 막대 개수를 줄이고(14개) 그 대신 폭을 넓혀 존재감을 준다 —
-     좁고 많은 막대는 오른쪽 낮은 에너지 대역이 죄다 실선처럼 얇아져
-     "왼쪽으로 쏠려 보인다"는 지적의 원인이기도 했다. */
+  /* .music-track-row와 같은 좌우 10px 인셋을 줘서 이 줄이 화면 끝까지
+     삐져나가지 않고 아래 제목바 폭에 정확히 맞도록 고정. */
 }
 
 .viz-bar {
   flex: 1 1 0;
   min-width: 0;
   height: 3px; /* app.js가 매 프레임 style.height로 갱신 */
-  border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.3);
-  /* 2026-07-13 5차: 4차보다 훨씬 더 투명하게 — 흰색 그라디언트 알파를
-     대폭 낮춰서 배경사진을 두껍게 덮지 않고 살짝 렌즈처럼만 굴절되어
-     보이게 한다. backdrop-filter(실제 굴절 역할)는 그대로 유지. */
-  backdrop-filter: blur(5px) saturate(160%) brightness(1.08);
-  -webkit-backdrop-filter: blur(5px) saturate(160%) brightness(1.08);
-  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03) 55%, rgba(255,255,255,0.01));
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.32);
+  /* 2026-07-13 6차: "완전 투명해야 한다 — 플립시계 숫자판을 막대 하나라고
+     생각하면 된다"는 요청. 플립카드는 큰 면적 덕에 옅은 틴트만으로도 유리
+     느낌이 났지만, 막대는 폭이 좁아 같은 틴트를 넣으면 다시 뿌옇게 막힌
+     것처럼 보인다 — 그래서 배경 채움 자체를 사실상 없애고(0.02) 테두리 +
+     backdrop-filter(굴절)만으로 형태를 잡는다. */
+  backdrop-filter: blur(6px) saturate(150%) brightness(1.05);
+  -webkit-backdrop-filter: blur(6px) saturate(150%) brightness(1.05);
+  background: rgba(255,255,255,0.02);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.30),
-    inset 0 -1px 0 rgba(0,0,0,0.12),
-    0 1px 4px rgba(0,0,0,0.12);
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 -1px 0 rgba(0,0,0,0.10),
+    0 1px 3px rgba(0,0,0,0.10);
 }
 
 .music-track-row {
