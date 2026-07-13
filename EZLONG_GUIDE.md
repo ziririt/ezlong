@@ -166,6 +166,7 @@ grep -rn "function calcBuyScore\|function calcSellScore" . --include="*.html" --
 | `/stocks.html` | 심플 주가 정보 | 심플 주가 |
 | `/stock-personality-quiz.html` | MBTI 투자유형 진단 | 투자유형 진단 |
 | `/auto-dca-guide.html` | 자동 적립식 매수 가이드 | 자동화 가이드 |
+| `/life-balance-game.html` | 밸런스게임: 마이 라이프 | 밸런스게임 (2026-07-13 신규, 정적 HTML/JS 자기점검 게임, 서버·LLM 호출 없음) |
 
 > 블로그형 롱테일 페이지(2026-07-02 추가, nav 미포함): tesla-monthly-dca-10years, nvda-monthly-dca-5years, aapl-vs-msft-dividend-dca, fire-retirement-4percent-rule, isa-irp-us-stock-tax-comparison
 >

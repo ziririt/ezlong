@@ -25,6 +25,7 @@
           '<a href="/risk-diagnostic.html" class="ez-footer-nav-item">투자 행동 자가진단</a>' +
           '<a href="/stock-personality-quiz.html" class="ez-footer-nav-item">MBTI로 찾는 맞춤 투자 포트폴리오</a>' +
           '<a href="/auto-dca-guide.html" class="ez-footer-nav-item">자동 적립식 매수 가이드</a>' +
+          '<a href="/life-balance-game.html" class="ez-footer-nav-item">밸런스게임: 마이 라이프</a>' +
         '</nav>' +
 
         '<div class="ez-footer-top">' +

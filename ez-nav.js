@@ -27,7 +27,8 @@
     ['/backtest.html',              '백테스트',       '몬테카를로 포트폴리오 백테스트'],
     ['/risk-diagnostic.html',       '투자성향 진단',  '투자성향 자가진단'],
     ['/stock-personality-quiz.html','투자유형 진단',  'MBTI로 찾는 맞춤 투자 포트폴리오'],
-    ['/auto-dca-guide.html',        '자동화 가이드',  '투자 자동화 가이드']
+    ['/auto-dca-guide.html',        '자동화 가이드',  '투자 자동화 가이드'],
+    ['/life-balance-game.html',     '밸런스게임:마이 라이프', "밸런스게임: 마이 라이프"]
   ];
 
   var p = window.location.pathname;
