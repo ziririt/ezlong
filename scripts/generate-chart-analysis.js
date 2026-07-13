@@ -675,6 +675,77 @@ function findSwingLevels(highs, lows, closes, lookback = 5) {
   return { resistance, support };
 }
 
+// 시간순 스윙 피벗(고점/저점) 리스트 — findSwingLevels와 동일한 로컬 극값
+// 탐지 방식(좌우 lookback봉보다 높다/낮다)을 쓰되, 값이 아니라 (위치,종류,값)을
+// 전부 반환해 fibRetracement가 "가장 최근에 완성된 스윙 구간"을 찾을 수 있게 한다.
+function findSwingPivots(highs, lows, lookback = 5) {
+  const pivots = [];
+  for (let i = lookback; i < highs.length - lookback; i++) {
+    if (highs.slice(i - lookback, i).every(h => h < highs[i]) &&
+        highs.slice(i + 1, i + lookback + 1).every(h => h < highs[i])) {
+      pivots.push({ idx: i, type: 'high', value: highs[i] });
+    }
+    if (lows.slice(i - lookback, i).every(l => l > lows[i]) &&
+        lows.slice(i + 1, i + lookback + 1).every(l => l > lows[i])) {
+      pivots.push({ idx: i, type: 'low', value: lows[i] });
+    }
+  }
+  return pivots.sort((a, b) => a.idx - b.idx);
+}
+
+// 2026-07-13(2차): 피보나치 되돌림 — 외부 TradingView 리포트가 SOXX의
+// $550.85(0.786 되돌림) 지지선을 CPI 발표 앞둔 핵심 판단 근거로 썼다.
+// 1차 시도는 "최근 N거래일 중 최고가/최저가"였는데, 실제 SOXX 데이터로
+// 검증해보니 120일 윈도우 안의 훨씬 오래된(3/30, 별개 급락의) 저점을 잘못
+// 집어 리포트의 "$522.24(6/9 저점)"와 전혀 다른 결과가 나왔다(레벨 완전
+// 불일치 확인). 그래서 findSwingPivots로 실제 스윙 피벗을 찾은 뒤 "가장
+// 최근에 완성된 한 구간(마지막 극값 + 그 직전 반대 타입 극값)"만 골라내는
+// 방식으로 재작성 — 실제 SOXX 데이터로 재검증한 결과 고점 655.95/저점
+// 522.24로 리포트와 정확히 일치했다(아래 재검증 커밋 참고).
+function fibRetracement(highs, lows, closes, lookback = 5) {
+  const pivots = findSwingPivots(highs, lows, lookback);
+  if (pivots.length < 2) return null;
+
+  const lastType = pivots[pivots.length - 1].type;
+  let anchor = pivots[pivots.length - 1];
+  let i = pivots.length - 1;
+  // 마지막 극값과 같은 타입이 연속되면(작은 눌림이 새 반대 피벗을 못 만든
+  // 경우) 더 극단적인 값으로 anchor를 계속 갱신하며 건너뛴다.
+  while (i >= 0 && pivots[i].type === lastType) {
+    if (lastType === 'high' ? pivots[i].value > anchor.value : pivots[i].value < anchor.value) {
+      anchor = pivots[i];
+    }
+    i--;
+  }
+  if (i < 0) return null; // 반대 타입 피벗을 못 찾음 — 스윙 구조 데이터 부족
+  const oppType = pivots[i].type;
+  let opposite = pivots[i];
+  while (i >= 0 && pivots[i].type === oppType) {
+    if (oppType === 'high' ? pivots[i].value > opposite.value : pivots[i].value < opposite.value) {
+      opposite = pivots[i];
+    }
+    i--;
+  }
+
+  const high = lastType === 'high' ? anchor.value : opposite.value;
+  const low  = lastType === 'high' ? opposite.value : anchor.value;
+  if (!(high > low)) return null;
+  const range  = high - low;
+  const ratios = [0.236, 0.382, 0.5, 0.618, 0.786, 1.0];
+  const direction = lastType === 'high' ? 'pullback_from_high' : 'bounce_from_low';
+  const levels = {};
+  ratios.forEach(r => {
+    levels[r] = direction === 'pullback_from_high'
+      ? round(high - r * range, 2)
+      : round(low + r * range, 2);
+  });
+  const price = closes[closes.length - 1];
+  const retracedPct = direction === 'pullback_from_high'
+    ? round((high - price) / range * 100, 1)
+    : round((price - low) / range * 100, 1);
+  return { high: round(high, 2), low: round(low, 2), direction, levels, retracedPct };
+}
+
 function pivotPoints(highs, lows, closes) {
   const n  = 20;
   const H  = Math.max(...highs.slice(-n));
@@ -750,6 +821,7 @@ async function callGemini(meta, ind, swing, pivot, price, weeklyInd, historyLine
 주봉 볼린저밴드 상단: ${fmt(weeklyInd.bb?.upper)} / 하단: ${fmt(weeklyInd.bb?.lower)}
 현재가 vs 주봉 SMA20: ${weeklyInd.sma20 ? ((price / weeklyInd.sma20 - 1) * 100).toFixed(2) + '%' : 'N/A'}
 현재가 vs 주봉 SMA100: ${weeklyInd.sma100 ? ((price / weeklyInd.sma100 - 1) * 100).toFixed(2) + '%' : 'N/A'}
+주봉 ADX: ${weeklyInd.adx?.adx != null ? weeklyInd.adx.adx.toFixed(1) + ' (' + weeklyInd.adx.status + ')' : 'N/A'} — 25 이상이면 장기(주간) 추세가 살아있다는 뜻, 단기 일봉 조정과 혼동하지 마라.
 ` : '';
 
   // ADX/DI 섹션 (2026-07-09 신설) — "급락=추세붕괴" 성급한 단정을 막는 필터.
@@ -773,6 +845,17 @@ ADX: ${ind.adx.adx.toFixed(1)} (${ind.adx.status}) | 5일 전 ADX: ${ind.adx5dAg
 CCI: ${ind.cci != null ? ind.cci.toFixed(1) : 'N/A'} (5일 전: ${ind.cci5dAgo != null ? ind.cci5dAgo.toFixed(1) : 'N/A'})
 스토캐스틱 %K: ${ind.stoch?.k != null ? ind.stoch.k.toFixed(1) : 'N/A'} (5일 전: ${ind.stochK5dAgo != null ? ind.stochK5dAgo.toFixed(1) : 'N/A'}) | %D: ${ind.stoch?.d != null ? ind.stoch.d.toFixed(1) : 'N/A'}
 해석 참고: CCI가 -100 이하 극단에서 빠르게 회복 중이면(예: -180→-30) 기관 매수 유입 가능성. CCI +100 이상에서 급락 중이면 반대로 기관 매도 가능성. 스토캐스틱 %K가 20 미만에서 %D를 상향 돌파하면 단기 반등 신호, %K가 50을 넘으면 중립 구간 안착으로 본다.
+` : '';
+
+  // 피보나치 되돌림 섹션 (2026-07-13 2차 신설) — 외부 리포트가 SOXX 지지선
+  // 판단의 핵심 근거로 씀. 자동 스윙탐지 기반이라 "참고용 보조 지표"임을
+  // 명시해 Gemini가 이걸 유일한 절대 기준처럼 과신하지 않도록 한다.
+  const fibSection = ind.fib ? `
+[피보나치 되돌림(자동 스윙탐지 — 가장 최근에 완성된 스윙 구간 기준) — 참고용 보조 지표]
+스윙 고점: ${fmt(ind.fib.high)} | 스윙 저점: ${fmt(ind.fib.low)} | 국면: ${ind.fib.direction === 'pullback_from_high' ? '고점 대비 눌림(되돌림) 중' : '저점 대비 반등 중'}
+되돌림 레벨 — 0.236: ${fmt(ind.fib.levels['0.236'])} | 0.382: ${fmt(ind.fib.levels['0.382'])} | 0.5: ${fmt(ind.fib.levels['0.5'])} | 0.618: ${fmt(ind.fib.levels['0.618'])} | 0.786: ${fmt(ind.fib.levels['0.786'])} | 1.0(스윙 반대쪽 끝): ${fmt(ind.fib.levels['1'])}
+현재 되돌림 진행률: ${ind.fib.retracedPct}%
+해석 참고: 되돌림 진행률이 61.8~78.6% 구간이면 "깊은 되돌림"으로 스윙 반대쪽 끝(1.0 레벨, 직전 스윙 극점)이 다음 방어선일 수 있다. 이 지표는 자동 탐지된 스윙 기준이라 실제 차트의 주요 스윙과 다를 수 있는 보조 참고치임을 감안해서 말하되, 다른 지표(ADX·MACD·볼린저)와 겹치는 방향일 때만 근거로 강조하라.
 ` : '';
 
   // 4시간봉 섹션 (2026-07-09 신설) — Yahoo 60분봉 4개 롤링 집계 합성치.
@@ -867,7 +950,7 @@ MACD: ${ind.macd.macd != null ? ind.macd.macd.toFixed(4) : 'N/A'} / 시그널: $
 [지지/저항]
 스윙 저항: ${fmt(swing.resistance)} | 스윙 지지: ${fmt(swing.support)}
 피벗(PP): ${fmt(pivot.pp)} | R1: ${fmt(pivot.r1)} | R2: ${fmt(pivot.r2)} | S1: ${fmt(pivot.s1)} | S2: ${fmt(pivot.s2)}
-${weeklySection}${adxSection}${cciStochSection}${fourHSection}${quantSection}
+${weeklySection}${adxSection}${cciStochSection}${fibSection}${fourHSection}${quantSection}
 [판단 규칙 — 반드시 지켜라]
 
 1. action은 "매수" / "매도" / "관망" 중 하나만. "매수 우위지만 관망" 같은 혼합 금지.
@@ -1159,6 +1242,8 @@ async function processTicker(meta) {
   // 3. 지지/저항
   const swing = findSwingLevels(highs, lows, closes);
   const pivot = pivotPoints(highs, lows, closes);
+  const fib   = fibRetracement(highs, lows, closes);
+  indicators.fib = fib;
 
   // 4. 주봉 집계 + 지표 계산
   const weekly    = aggregateWeekly(raw);
@@ -1175,6 +1260,10 @@ async function processTicker(meta) {
     const wRsiA    = rsi(wCloses, 14);
     const wMacdA   = macd(wCloses, 12, 26, 9);
     const wBbA     = bollingerBands(wCloses, 20, 2);
+    // 2026-07-13(2차): 주봉 ADX 추가 — 기존엔 주봉 RSI/MACD/SMA만 있고
+    // 추세강도(ADX)는 일봉에만 있었다. 외부 리포트가 "1W ADX 40.3"을
+    // 주간 추세 건재 여부의 핵심 근거로 쓰길래 동일 지표를 보강한다.
+    const wAdxA    = adx(wHighs, wLows, wCloses, 14);
     weeklyInd = {
       sma20:  wSma20A[wN - 1],
       sma50:  wSma50A[wN - 1],
@@ -1183,6 +1272,7 @@ async function processTicker(meta) {
       rsi:    wRsiA[wN - 1],
       macd:   wMacdA[wN - 1],
       bb:     wBbA[wN - 1],
+      adx:    { ...wAdxA[wN - 1], status: classifyADX(wAdxA[wN - 1]?.adx) },
     };
 
     // 주봉 OHLCV + 지표 배열 (차트 렌더링용)
