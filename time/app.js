@@ -266,7 +266,7 @@ let weatherState = {
 // `npm run deploy` 실행 후 출력되는 실제 워커 URL로 반드시 교체해야 한다
 // (배포 전까지는 상세 화면을 열어도 각 섹션이 "불러올 수 없어요"로 표시됨 —
 // 정상이다, 백엔드가 아직 인터넷에 없다는 뜻이다).
-const WEATHER_API_BASE = "https://flipgen-weather-backend.YOUR-SUBDOMAIN.workers.dev";
+const WEATHER_API_BASE = "https://flipgen-weather-backend.ezlong.workers.dev";
 // 위치 권한을 못 받았을 때 쓰는 기본 좌표(인천) — 인수인계서 예시와 동일.
 const DEFAULT_WEATHER_COORDS = { lat: 37.4563, lng: 126.7052 };
 let userCoords = null;
