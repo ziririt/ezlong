@@ -195,7 +195,7 @@ const musicSettingsOpen = document.getElementById("musicSettingsOpen");
 const musicToggle = document.getElementById("musicToggle");
 const musicSkip = document.getElementById("musicSkip");
 const musicInfoPanel = document.getElementById("musicInfoPanel");
-const musicViz = document.getElementById("musicViz");
+const musicVizWrap = document.getElementById("musicVizWrap");
 const musicTrackTitle = document.getElementById("musicTrackTitle");
 const musicLikeButton = document.getElementById("musicLikeButton");
 const musicDislikeButton = document.getElementById("musicDislikeButton");
@@ -1570,6 +1570,7 @@ let musicVizBars = new Array(MUSIC_VIZ_BAR_COUNT).fill(0);
 let musicVizBandRanges = null;
 let musicVizAnimId = null;
 let musicVizIdlePhase = 0;
+let musicVizBarEls = null;
 
 function buildMusicVizBands(binCount, barCount) {
   // 저음역은 좁게, 고음역은 넓게 묶는 로그 스케일 경계 — 균등 step으로 뽑으면
@@ -1586,87 +1587,56 @@ function buildMusicVizBands(binCount, barCount) {
   return bounds;
 }
 
-function resizeMusicViz() {
-  if (!musicViz) return;
-  const dpr = window.devicePixelRatio || 1;
-  const rect = musicViz.getBoundingClientRect();
-  musicViz.width = Math.max(1, Math.round(rect.width * dpr));
-  musicViz.height = Math.max(1, Math.round(rect.height * dpr));
-  const ctx = musicViz.getContext("2d");
-  if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+// 2026-07-13 3차: 1차(무지개 LED 세그먼트) → 2차(backdrop-filter 블러 유리)를
+// 거쳐, "플립시계 디자인과 같은 스타일"이라는 요청에 맞춰 캔버스 자체를
+// 걷어내고 실제 DOM 막대 26개로 교체했다. 캔버스 위에서 그라디언트+inset
+// shadow를 근사하는 대신, .viz-bar CSS 클래스가 .flip-card와 완전히 같은
+// 배경/보더/그림자 값을 그대로 쓰게 해서 "같은 스타일"을 픽셀 단위로
+// 보장한다. DOM은 한 번만 만들고, 매 프레임은 각 막대의 style.height만
+// 갱신 — 너비는 flex가 자동으로 맞춰주므로 별도 리사이즈 로직도 불필요.
+function ensureMusicVizBarsBuilt() {
+  if (musicVizBarEls || !musicVizWrap) return;
+  const frag = document.createDocumentFragment();
+  const els = [];
+  for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
+    const bar = document.createElement("span");
+    bar.className = "viz-bar";
+    els.push(bar);
+    frag.appendChild(bar);
+  }
+  musicVizWrap.appendChild(frag);
+  musicVizBarEls = els;
 }
 
 function ensureMusicVizGraph() {
   ensureAudioGraph();
-  resizeMusicViz();
-}
-
-// 2026-07-13 1차: 참고 영상(클래식 LED 이퀄라이저 — 무지개색)을 그대로
-// 구현했었으나, 성동님의 전체 UI가 애플 비전프로 스타일 그래스모피즘
-// (반투명 유리 + 배경이 비치는 느낌)이라 무지개색은 톤이 맞지 않는다는
-// 피드백으로 색상만 다시 바꾼다. 세그먼트를 쌓아 그리는 모양(로그 스케일
-// 매핑 포함)은 그대로 두고, 색만 "투명한 흰색 유리"로 교체 — 실제 유리
-// 느낌은 CSS의 .music-viz-wrap에 준 backdrop-filter가 배경사진을 그대로
-// 프로스티드 글래스처럼 비쳐 보이게 해주는 역할이고, 캔버스는 그 위에
-// 무채색 반투명 막대만 얹는다.
-const MUSIC_VIZ_SEGMENT_H = 3;
-const MUSIC_VIZ_SEGMENT_GAP = 2;
-
-// 막대 하나를 통짜 사각형이 아니라 LED 미터처럼 작은 세그먼트를 쌓아 그린다.
-// 맨 위 세그먼트만 더 밝게 + shadowBlur로 은은한 흰 glow를 줘서 유리 가장자리에
-// 빛이 맺힌 느낌을 낸다. 색상에 hue를 넣지 않는다 — 배경사진의 색이 그대로
-// 드러나야 하므로 흰색 반투명(무채색)만 사용.
-function drawMusicVizSegmentedBar(ctx, x, barWidth, barHeight, h) {
-  const pitch = MUSIC_VIZ_SEGMENT_H + MUSIC_VIZ_SEGMENT_GAP;
-  const segCount = Math.max(1, Math.ceil(barHeight / pitch));
-  for (let s = 0; s < segCount; s++) {
-    const y = h - (s + 1) * pitch + MUSIC_VIZ_SEGMENT_GAP;
-    if (y + MUSIC_VIZ_SEGMENT_H < 0) break;
-    const isTop = s === segCount - 1;
-    if (isTop) {
-      ctx.shadowColor = "rgba(255,255,255,0.85)";
-      ctx.shadowBlur = 6;
-      ctx.fillStyle = "rgba(255,255,255,0.92)";
-    } else {
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = "rgba(255,255,255,0.30)";
-    }
-    ctx.fillRect(x, Math.max(0, y), barWidth, MUSIC_VIZ_SEGMENT_H);
-  }
-  ctx.shadowBlur = 0; // 다음 막대에 glow가 새지 않도록 매 막대 후 리셋
+  ensureMusicVizBarsBuilt();
 }
 
 // 오디오 그래프를 못 쓰는 예외적 환경을 위한 잔잔한 폴백 웨이브. 실제
 // 소리는 대부분 정상 분석되므로 이 분기는 안전장치 성격이 강하다.
-function drawMusicVizIdle(ctx, w, h) {
+function drawMusicVizIdle(h) {
   musicVizIdlePhase += 0.02;
-  const gap = 3;
-  const barWidth = (w - gap * (MUSIC_VIZ_BAR_COUNT - 1)) / MUSIC_VIZ_BAR_COUNT;
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     const wave = Math.sin(musicVizIdlePhase + i * 0.35) * 0.5 + 0.5;
     const target = 4 + wave * (h * 0.3);
     musicVizBars[i] += (target - musicVizBars[i]) * 0.1;
-    const x = i * (barWidth + gap);
-    drawMusicVizSegmentedBar(ctx, x, barWidth, musicVizBars[i], h);
+    musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
   }
 }
 
 function drawMusicViz() {
-  if (!isMusicPanelOpen() || !musicViz) {
+  if (!isMusicPanelOpen() || !musicVizWrap || !musicVizBarEls) {
     musicVizAnimId = null; // 패널이 닫히면 다음 프레임을 예약하지 않고 루프 종료
     return;
   }
   musicVizAnimId = requestAnimationFrame(drawMusicViz);
 
-  const ctx = musicViz.getContext("2d");
-  if (!ctx) return;
-  const w = musicViz.clientWidth;
-  const h = musicViz.clientHeight;
-  ctx.clearRect(0, 0, w, h);
+  const h = musicVizWrap.clientHeight || 52;
 
   const analyser = activeMusicAnalyser();
   if (!analyser) {
-    drawMusicVizIdle(ctx, w, h);
+    drawMusicVizIdle(h);
     return;
   }
 
@@ -1676,8 +1646,6 @@ function drawMusicViz() {
   const data = new Uint8Array(analyser.frequencyBinCount);
   analyser.getByteFrequencyData(data);
 
-  const gap = 3;
-  const barWidth = (w - gap * (MUSIC_VIZ_BAR_COUNT - 1)) / MUSIC_VIZ_BAR_COUNT;
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     const start = musicVizBandRanges[i];
     const end = Math.max(musicVizBandRanges[i + 1], start + 1);
@@ -1686,14 +1654,9 @@ function drawMusicViz() {
     const avg = sum / (end - start);
     const target = Math.max(3, (avg / 255) * h);
     musicVizBars[i] += (target - musicVizBars[i]) * 0.22;
-    const x = i * (barWidth + gap);
-    drawMusicVizSegmentedBar(ctx, x, barWidth, musicVizBars[i], h);
+    musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
   }
 }
-
-window.addEventListener("resize", () => {
-  if (isMusicPanelOpen()) resizeMusicViz();
-});
 
 // 2026-07-07: "크로스페이드가 볼륨이 줄어드는 느낌이 전혀 없이 뚝 끊긴다"는
 // 반복된 재지적의 진짜 원인 — iOS Safari/WKWebView는 HTMLMediaElement의

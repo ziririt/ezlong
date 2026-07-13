@@ -1108,23 +1108,33 @@ button { font: inherit; }
   position: relative;
   height: 52px;
   margin: 0 0 6px;
-  border-radius: 12px;
-  overflow: hidden;
-  /* 2026-07-13: 비전프로 스타일 그래스모피즘으로 전환 — 무지개색 대신
-     투명한 유리 느낌. backdrop-filter가 이 패널 뒤 배경사진을 그대로
-     프로스티드 글래스처럼 살짝 흐리게 비쳐 보이게 하고, 그 위에 캔버스가
-     흰색 반투명 막대만 그린다(색상 자체는 안 넣음 — 배경사진 색이
-     그대로 드러나야 해서). 이 앱이 이미 .settings-backdrop에서 쓰던
-     backdrop-filter와 같은 검증된 기법이다. */
-  backdrop-filter: blur(14px) saturate(150%);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  background: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  /* 2026-07-13 3차: backdrop-filter 블러 방식을 걷어내고, 플립시계
+     (.flip-card)와 완전히 같은 유리 레시피를 막대 하나하나(.viz-bar)에
+     그대로 재사용한다 — "플립시계 디자인과 같은 스타일" 요청 반영.
+     래퍼 자체엔 배경/블러를 전혀 주지 않아 막대 사이사이로 배경사진이
+     그대로 드러난다. */
 }
 
-#musicViz {
-  width: 100%;
-  height: 100%;
-  display: block;
+.viz-bar {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 3px; /* app.js가 매 프레임 style.height로 갱신 */
+  border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.22);
+  /* .flip-card와 동일한 그라디언트(밝은 위 → 어두운 아래) + 다크 네이비
+     베이스 톤. 카드 크기만 막대 폭에 맞춰 축소했을 뿐 색상값은 동일하다. */
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04) 45%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0.10)),
+    rgba(13, 20, 31, 0.26);
+  /* .flip-card와 동일한 inset 하이라이트(위)/그림자(아래) 조합으로
+     유리 가장자리에 빛이 맺힌 느낌을 재현. */
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    inset 0 -1px 0 rgba(0,0,0,0.32),
+    0 3px 8px rgba(0,0,0,0.16);
 }
 
 .music-track-row {
