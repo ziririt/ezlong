@@ -2565,6 +2565,22 @@ function handleActivePlayerEnded(event) {
   playNextTrack();
 }
 
+// 2026-07-15: "제목에 (1), (2)가 많은데 파일명 중복 흔적이냐"는 질문 —
+// 확인해보니 파일명이 아니라 music-playlist.js의 playlist 필드였다.
+// scripts/build-music-playlist.js의 parseFileName()이 파일명 끝의
+// "_partN" 또는 "_N"에서 변주(같은 곡의 다른 버전) 번호를 뽑아내는데, 이때
+// "part"라는 단어는 버리고 숫자만 남긴다 — 그래서 파일명을 "part2"로
+// 바꿔도 결과는 여전히 순수 숫자 "2"다(유저가 파일명을 고쳐도 이 증상이
+// 그대로였던 이유). 기존 30곡(58트랙) 세트는 A/B 글자 코드라 "(A)"처럼
+// 봐줄 만했지만, 숫자만 있으면 "이게 뭔가 잘못된 흔적인가" 싶게 어색하다.
+// 데이터를 건드리는 대신(빌드 스크립트는 유저의 실제 Mac 폴더를 스캔해야
+// 해서 이 세션에서 재실행 불가) 표시 단계에서만 숫자 코드를 "파트 N"으로
+// 풀어써서 훨씬 자연스럽게 보이게 한다. 글자 코드(A/B)는 그대로 둔다.
+function formatPlaylistVariant(playlist) {
+  if (!playlist || playlist === "SINGLE") return "";
+  return /^\d+$/.test(playlist) ? ` (파트 ${playlist})` : ` (${playlist})`;
+}
+
 // 2026-07-08: "지금 재생 중인 곡이 뭔지 궁금하다"는 질문에 답할 방법이
 // 화면 어디에도 없었다(재생/스킵 버튼만 있고 곡명 표시가 없었음) — 음악
 // 설정 패널에 이미 있던 총 곡수 안내에 현재 곡 제목을 덧붙인다.
@@ -2575,7 +2591,7 @@ function renderMusicPlaylistInfo() {
     ? musicPlaylist[musicIndex % musicPlaylist.length]
     : null;
   if (track && track.title) {
-    const variant = track.playlist && track.playlist !== "SINGLE" ? ` (${track.playlist})` : "";
+    const variant = formatPlaylistVariant(track.playlist);
     musicPlaylistInfo.textContent = `지금 재생 중: ${track.title}${variant} · 전체 ${total}곡`;
   } else {
     musicPlaylistInfo.textContent = `기본 플레이리스트 · 총 ${total}곡`;
@@ -2684,20 +2700,31 @@ function renderMusicHistoryList() {
   if (!target) return;
   const log = loadMusicPlayLog();
   if (log.length === 0) {
-    target.innerHTML = '<tr><td colspan="2" class="settings-desc settings-desc-muted">아직 재생 기록이 없습니다.</td></tr>';
+    target.innerHTML = '<tr><td colspan="3" class="settings-desc settings-desc-muted">아직 재생 기록이 없습니다.</td></tr>';
     return;
   }
   const currentTrack = Array.isArray(musicPlaylist) && musicPlaylist.length > 0
     ? musicPlaylist[musicIndex % musicPlaylist.length]
     : null;
+  // 2026-07-15: 히스토리 목록에서도 좋아요/싫어요 상태를 보고 바로 고칠 수
+  // 있게 신설 — 매 렌더마다 현재 좋아요/싫어요 목록을 한 번만 불러와
+  // Set으로 만들어 행마다 반복 조회 비용을 줄인다.
+  const likedSet = new Set(loadLikedTracks());
+  const dislikedSet = new Set(loadDislikedTracks());
   target.innerHTML = log.map((entry) => {
     const isCurrent = Boolean(currentTrack && currentTrack.file === entry.file);
-    const variant = entry.playlist && entry.playlist !== "SINGLE" ? ` (${entry.playlist})` : "";
+    const variant = formatPlaylistVariant(entry.playlist);
     const isPlayingNow = isCurrent && musicPlaying;
     const ariaLabel = isPlayingNow ? "지금 재생 중" : "재생";
+    const isLiked = Boolean(entry.file && likedSet.has(entry.file));
+    const isDisliked = Boolean(entry.file && dislikedSet.has(entry.file));
     return `<tr class="music-history-row${isCurrent ? " is-current" : ""}">`
       + `<td class="music-history-title">${entry.title}${variant}</td>`
       + `<td class="music-history-play-cell"><button type="button" class="music-history-play-btn${isPlayingNow ? " is-playing" : ""}" data-history-file="${entry.file}" aria-label="${ariaLabel}"></button></td>`
+      + `<td class="music-history-reaction-cell">`
+        + `<button type="button" class="music-history-like-btn" data-history-like="${entry.file}" aria-pressed="${isLiked}" aria-label="이 곡 좋아요"></button>`
+        + `<button type="button" class="music-history-dislike-btn" data-history-dislike="${entry.file}" aria-pressed="${isDisliked}" aria-label="이 곡 싫어요"></button>`
+      + `</td>`
       + `</tr>`;
   }).join("");
 }
@@ -2771,8 +2798,48 @@ function toggleTrackFromHistory(file) {
   playTrackFromHistory(file);
 }
 
+// 2026-07-15: 히스토리 목록의 좋아요/싫어요 버튼 — 메인 패널 버튼과 같은
+// 저장 로직(loadLikedTracks/saveLikedTracks, loadDislikedTracks/
+// saveDislikedTracks)을 그대로 재사용하되, "이미 눌려있으면 취소, 아니면
+// 적용"하는 순수 토글로 만든다("한번 더 누르면 취소, 또 누르면 다시
+// 싫어요(토글)" 요청 반영). 재생 중인 곡이 아니라 목록의 임의의 과거
+// 트랙에 적용하는 것이므로, 메인 패널의 싫어요 버튼과 달리 playNextTrack()/
+// 토스트는 호출하지 않는다 — 재생 중인 곡을 건드리는 게 아니라면 굳이
+// 재생을 끊을 이유가 없다.
+function toggleLikeFromHistory(file) {
+  if (!file) return;
+  const liked = loadLikedTracks();
+  const idx = liked.indexOf(file);
+  if (idx >= 0) liked.splice(idx, 1);
+  else liked.push(file);
+  saveLikedTracks(liked);
+  renderMusicReactionButtons();
+  renderMusicHistoryList();
+}
+
+function toggleDislikeFromHistory(file) {
+  if (!file) return;
+  const disliked = loadDislikedTracks();
+  const idx = disliked.indexOf(file);
+  if (idx >= 0) disliked.splice(idx, 1);
+  else disliked.push(file);
+  saveDislikedTracks(disliked);
+  renderMusicReactionButtons();
+  renderMusicHistoryList();
+}
+
 if (musicHistoryList) {
   musicHistoryList.addEventListener("click", (event) => {
+    const likeBtn = event.target.closest("[data-history-like]");
+    if (likeBtn) {
+      toggleLikeFromHistory(likeBtn.dataset.historyLike);
+      return;
+    }
+    const dislikeBtn = event.target.closest("[data-history-dislike]");
+    if (dislikeBtn) {
+      toggleDislikeFromHistory(dislikeBtn.dataset.historyDislike);
+      return;
+    }
     const button = event.target.closest("[data-history-file]");
     if (!button) return;
     toggleTrackFromHistory(button.dataset.historyFile);
