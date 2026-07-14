@@ -1602,7 +1602,14 @@ button { font: inherit; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 55%;
+  /* 2026-07-15: 고정 max-width:55%였는데, 좋아요/싫어요/설정 버튼 3개 폭
+     (약 100px 남짓)보다 훨씬 좁게 잘려서 여유 공간이 남는데도 "..."이 먼저
+     떴다("최소 5글자는 더 올 수 있는데 왜 줄이나" 재지적). flex:1로 바꿔
+     .music-track-actions(flex-shrink:0)가 차지하는 만큼만 빼고 나머지
+     전부를 제목이 쓰게 한다 — 버튼 바로 앞까지 채우고, 그래도 넘치면 그때만
+     말줄임. */
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .music-track-actions {
