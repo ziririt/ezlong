@@ -132,8 +132,15 @@ button { font: inherit; }
     var(--photo);
   background-position: center center, var(--photo-position);
   background-size: cover, var(--photo-size);
-  transform: scale(1.015);
-  transform-origin: 46% 42%;
+  /* 2026-07-15: 기존엔 76초 동안 확대율이 1.8%→6.4%까지 계속 커지는
+     애니메이션이라, cover가 이미 최소한으로 잘라놓은 사진을 추가로 크게
+     확대해 "광활한 풍경이 가운데로 좁아진다"는 유저 리포트가 나왔다.
+     확대는 이동(드리프트)이 화면 가장자리에 빈 배경을 노출하지 않도록
+     막아주는 최소한의 여유(3% 고정)로만 남기고, 시간에 따라 커지는 확대
+     자체는 제거했다. 기준점도 46%/42%(비대칭)에서 50%/50%(정중앙)로
+     바로잡아 크롭이 좌우/상하 대칭이 되게 했다. */
+  transform: scale(1.03);
+  transform-origin: 50% 50%;
   animation: livingSky 76s ease-in-out infinite alternate;
   filter: saturate(1.04) contrast(1.03);
   opacity: 0;
@@ -1845,9 +1852,12 @@ button { font: inherit; }
 }
 
 @keyframes livingSky {
-  0% { transform: scale(1.018) translate3d(-0.5%, 0.25%, 0); }
-  45% { transform: scale(1.048) translate3d(0.95%, -0.72%, 0); }
-  100% { transform: scale(1.064) translate3d(1.55%, -1.25%, 0); }
+  /* 2026-07-15: scale을 3%로 고정 — 이동(translate)이 화면 가장자리에
+     빈 배경을 노출하지 않도록 막는 최소 여유값. 예전처럼 시간에 따라
+     커지지 않는다(상세 이유는 .sky-photo 규칙의 주석 참조). */
+  0% { transform: scale(1.03) translate3d(-0.5%, 0.25%, 0); }
+  45% { transform: scale(1.03) translate3d(0.95%, -0.72%, 0); }
+  100% { transform: scale(1.03) translate3d(1.55%, -1.25%, 0); }
 }
 
 @keyframes lightDrift {
