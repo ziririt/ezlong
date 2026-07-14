@@ -218,13 +218,14 @@ const weatherChipOpen = document.getElementById("weatherChipOpen");
 const weatherDetailPanel = document.getElementById("weatherDetailPanel");
 const wdCurrentTemp = document.getElementById("wdCurrentTemp");
 const wdCurrentFeels = document.getElementById("wdCurrentFeels");
+const wdCurrentHumidity = document.getElementById("wdCurrentHumidity");
 const wdCurrentSub = document.getElementById("wdCurrentSub");
 const wdRainWindows = document.getElementById("wdRainWindows");
+const wd24hComparison = document.getElementById("wd24hComparison");
 const wdYesterday = document.getElementById("wdYesterday");
 const wdTropicalBadges = document.getElementById("wdTropicalBadges");
 const wdTropicalComment = document.getElementById("wdTropicalComment");
 const wdAccuracyMessage = document.getElementById("wdAccuracyMessage");
-const wdDayOverDay = document.getElementById("wdDayOverDay");
 const weatherDetailTitle = document.getElementById("weatherDetailTitle");
 
 const digitElements = [
@@ -1108,16 +1109,18 @@ function renderWeatherCurrent(current) {
   if (!current || !current.current) {
     wdCurrentTemp.textContent = "--°";
     wdCurrentFeels.textContent = "";
+    if (wdCurrentHumidity) wdCurrentHumidity.textContent = "";
     wdCurrentSub.textContent = "날씨 데이터를 불러올 수 없어요. 백엔드 배포 후 다시 시도해주세요.";
     return;
   }
   const c = current.current;
   wdCurrentTemp.textContent = `${Math.round(c.temp)}°`;
   wdCurrentFeels.textContent = `체감 ${Math.round(c.feelslike)}°`;
-  // 2026-07-14: "지금 이 순간" 기준 우산 조언은 여기서 뺐다 — 아래 강수
-  // 예보 카드의 umbrellaToday가 출퇴근·등하교 시간대를 종합해서 더
-  // 정확하게 판단해준다(단일 시점 판단은 경솔한 조언이 될 수 있다는 지적 반영).
-  wdCurrentSub.textContent = `습도 ${Math.round(c.humidity)}%`;
+  // 2026-07-14: 습도를 체감온도와 같은 줄로 이동(유저 피드백: "2줄인데
+  // 습도도 윗줄에 넣어라, 한 줄 width 충분") — 하단 서브 라인은 이제
+  // 에러 메시지 전용이라 평상시엔 비워둔다.
+  if (wdCurrentHumidity) wdCurrentHumidity.textContent = `습도 ${Math.round(c.humidity)}%`;
+  wdCurrentSub.textContent = "";
 }
 
 // 2026-07-14 전면 재작성: "이번 주 강수 예보"를 오늘 포함 3일 상세 + 이후
@@ -1165,32 +1168,48 @@ function renderWeatherRainWindows(data) {
   const weekendHtml = data.weekendComment
     ? `<p class="weather-comment weather-rain-outlook-weekend">${data.weekendComment}</p>`
     : "";
-  const nextWeekHtml = data.nextWeekComment
-    ? `<p class="weather-rain-outlook-nextweek">${data.nextWeekComment}</p>`
-    : "";
 
+  // 2026-07-14: "다음 주는 예보 범위 밖이에요" 같은 무능력 고지는 넣지 않는다
+  // (유저 피드백: "예보할 수 없으면 아예 코멘트를 하지 말아야 한다") — 백엔드가
+  // 아예 nextWeekComment 필드를 내려주지 않으므로 여기서도 별도 처리 없음.
   wdRainWindows.innerHTML = `
     ${umbrellaHtml}
     ${daysHtml}
     <div class="weather-rain-outlook-extra">
       ${laterHtml}
       ${weekendHtml}
-      ${nextWeekHtml}
     </div>`;
 }
 
+// 2026-07-14 재설계: "지난 24시간" 수치 나열이 아니라 "향후 24시간이 지난
+// 24시간보다 덥다/춥다/습하다"를 한 줄 코멘트로 먼저 보여주고, 그 아래
+// 지난/향후 두 구간을 나란히 대조한다(누적강수는 뺐다 — 유저 피드백:
+// "직관적으로 비교해서 말해주려는 것이다. 누적강수는 필요 없다").
+// 예전에 따로 있던 "어제와 비교하면" 카드는 이 카드로 흡수돼 삭제됐다.
 function renderWeatherYesterday(data) {
+  if (wd24hComparison) {
+    wd24hComparison.textContent = data && data.comparison ? data.comparison : "";
+  }
   if (!wdYesterday) return;
-  if (!data || !data.summary) {
-    wdYesterday.innerHTML = `<p class="weather-empty">어제 요약을 불러올 수 없어요.</p>`;
+  if (!data || !data.past24h || !data.next24h) {
+    wdYesterday.innerHTML = `<p class="weather-empty">비교 정보를 불러올 수 없어요.</p>`;
     return;
   }
-  const s = data.summary;
+  const p = data.past24h;
+  const n = data.next24h;
   wdYesterday.innerHTML = `
-    <div class="weather-stat-tile"><span class="weather-stat-label">최저기온</span><span class="weather-stat-value">${Math.round(s.tempMin)}°</span></div>
-    <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${Math.round(s.tempMax)}°</span></div>
-    <div class="weather-stat-tile"><span class="weather-stat-label">평균습도</span><span class="weather-stat-value">${Math.round(s.humidityAvg)}%</span></div>
-    <div class="weather-stat-tile"><span class="weather-stat-label">누적강수</span><span class="weather-stat-value">${s.precipTotalMm}mm</span></div>`;
+    <div class="weather-24h-col">
+      <p class="weather-24h-col-label">지난 24시간</p>
+      <div class="weather-stat-tile"><span class="weather-stat-label">최저기온</span><span class="weather-stat-value">${Math.round(p.tempMin)}°</span></div>
+      <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${Math.round(p.tempMax)}°</span></div>
+      <div class="weather-stat-tile"><span class="weather-stat-label">평균습도</span><span class="weather-stat-value">${Math.round(p.humidityAvg)}%</span></div>
+    </div>
+    <div class="weather-24h-col">
+      <p class="weather-24h-col-label">향후 24시간</p>
+      <div class="weather-stat-tile"><span class="weather-stat-label">최저기온</span><span class="weather-stat-value">${Math.round(n.tempMin)}°</span></div>
+      <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${Math.round(n.tempMax)}°</span></div>
+      <div class="weather-stat-tile"><span class="weather-stat-label">평균습도</span><span class="weather-stat-value">${Math.round(n.humidityAvg)}%</span></div>
+    </div>`;
 }
 
 function renderWeatherTropical(data) {
@@ -1214,28 +1233,16 @@ function renderWeatherAccuracy(data) {
   wdAccuracyMessage.textContent = data?.message || "예보 정확도 정보를 불러올 수 없어요.";
 }
 
-function renderWeatherDayOverDay(data) {
-  if (!wdDayOverDay) return;
-  if (!data || !data.today || !data.tomorrow) {
-    wdDayOverDay.innerHTML = `<p class="weather-empty">비교 정보를 불러올 수 없어요.</p>`;
-    return;
-  }
-  wdDayOverDay.innerHTML = [data.today, data.tomorrow]
-    .map((entry) => `<div class="weather-compare-row">${entry.message}</div>`)
-    .join("");
-}
-
 async function fetchWeatherDetail() {
   if (weatherDetailFetching) return;
   weatherDetailFetching = true;
 
-  const [currentR, rainR, yesterdayR, tropicalR, accuracyR, dayOverDayR] = await Promise.allSettled([
+  const [currentR, rainR, yesterdayR, tropicalR, accuracyR] = await Promise.allSettled([
     fetchWeatherJson("/api/weather/current"),
     fetchWeatherJson("/api/weather/rain-windows"),
     fetchWeatherJson("/api/weather/yesterday"),
     fetchWeatherJson("/api/weather/tropical-night"),
-    fetchWeatherJson("/api/weather/forecast-accuracy"),
-    fetchWeatherJson("/api/weather/day-over-day")
+    fetchWeatherJson("/api/weather/forecast-accuracy")
   ]);
 
   const tropicalData = tropicalR.status === "fulfilled" ? tropicalR.value : null;
@@ -1244,7 +1251,6 @@ async function fetchWeatherDetail() {
   renderWeatherYesterday(yesterdayR.status === "fulfilled" ? yesterdayR.value : null);
   renderWeatherTropical(tropicalData);
   renderWeatherAccuracy(accuracyR.status === "fulfilled" ? accuracyR.value : null);
-  renderWeatherDayOverDay(dayOverDayR.status === "fulfilled" ? dayOverDayR.value : null);
 
   weatherDetailFetching = false;
 }
@@ -1827,6 +1833,13 @@ function ensureMusicVizBarsBuilt() {
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     const bar = document.createElement("span");
     bar.className = "viz-bar";
+    // 2026-07-14 12차: "밋밋하다 — 첫날처럼 컬러를 넣되 투명하게"라는 요청 —
+    // 막대 위치 기준으로 무지개 hue를 한 번만 정해서 CSS 커스텀 프로퍼티로
+    // 심어둔다. 실시간 밝기/알파는 --bar-intensity로 매 프레임 따로 갱신
+    // (drawMusicViz/drawMusicVizIdle 참조) — hue는 고정, intensity만 움직인다.
+    const hue = Math.round((i / (MUSIC_VIZ_BAR_COUNT - 1)) * 300);
+    bar.style.setProperty("--bar-hue", hue);
+    bar.style.setProperty("--bar-intensity", "0.1");
     els.push(bar);
     frag.appendChild(bar);
   }
@@ -1844,11 +1857,16 @@ function ensureMusicVizGraph() {
 function drawMusicVizIdle(h) {
   musicVizIdlePhase += 0.045;
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
+    // 2026-07-14 13차: 아래 drawMusicViz와 같은 "산 모양" 실루엣 곡선을
+    // 대기 상태에도 동일하게 적용 — 실제 음악이 안 걸려도 늘 예쁜 모양.
+    const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
+    const shapeEnvelope = 0.5 + 0.5 * Math.sin(Math.PI * t);
     const wave = Math.sin(musicVizIdlePhase + i * 0.7) * 0.5 + 0.5;
-    const target = 4 + wave * (h * 0.4);
+    const target = (4 + wave * (h * 0.4)) * shapeEnvelope;
     const factor = target > musicVizBars[i] ? 0.4 : 0.12;
     musicVizBars[i] += (target - musicVizBars[i]) * factor;
     musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
+    musicVizBarEls[i].style.setProperty("--bar-intensity", Math.min(1, musicVizBars[i] / h).toFixed(3));
   }
 }
 
@@ -1894,12 +1912,22 @@ function drawMusicViz() {
   }
 
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
-    const target = Math.max(4, (avgs[i] / maxAvg) * h);
-    // 어택은 빠르게(비트에 팍 반응), 릴리즈는 느리게(잔향처럼 천천히 가라앉음)
-    // — 고전 VU미터의 비대칭 스무딩이라 훨씬 다이나믹하게 느껴진다.
-    const factor = target > musicVizBars[i] ? 0.5 : 0.12;
+    // 2026-07-14 13차: "그래프 모양이 좌측만 높고 우측은 낮다 — 실제 신호
+    // 세기가 아니라 보기 좋은 과장된 연출이 중요하다"는 피드백. 저음역이
+    // 실제로 거의 항상 raw 에너지가 제일 커서, 프레임별 정규화(7차)를
+    // 해도 결국 왼쪽이 도드라져 보였다 — 위치 기준 고정 "산" 모양 곡선
+    // (가운데 제일 높고 양 끝으로 갈수록 낮아짐, 0.5~1.0 범위)을 실시간
+    // 에너지 비율에 곱해서 실루엣 자체를 항상 예쁜 언덕 모양으로 유도한다.
+    const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
+    const shapeEnvelope = 0.5 + 0.5 * Math.sin(Math.PI * t);
+    const target = Math.max(4, (avgs[i] / maxAvg) * shapeEnvelope * h);
+    // 어택은 더 빠르게(비트에 팍! 반응), 릴리즈는 여전히 느리게(잔향처럼
+    // 천천히 가라앉음) — "탁탁 반응하는 게 재미있다"는 피드백으로 어택
+    // 계수를 0.5 → 0.62로 한 번 더 올렸다.
+    const factor = target > musicVizBars[i] ? 0.62 : 0.12;
     musicVizBars[i] += (target - musicVizBars[i]) * factor;
     musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
+    musicVizBarEls[i].style.setProperty("--bar-intensity", Math.min(1, musicVizBars[i] / h).toFixed(3));
   }
 }
 

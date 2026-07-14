@@ -672,17 +672,25 @@ button { font: inherit; }
   font-variant-numeric: tabular-nums;
 }
 
-.weather-current-feels {
+.weather-current-feels,
+.weather-current-humidity {
   font-size: 16px;
   font-weight: 640;
   color: rgba(255,255,255,0.72);
 }
 
+/* 2026-07-14: 습도를 체감온도와 같은 줄로 옮기면서 서브 라인은 평소엔
+   비워둔다(에러 메시지 전용) — 빈 문자열일 때 줄 자체를 접어 여백이
+   남지 않도록. */
 .weather-current-sub {
   margin: 10px 0 0;
   font-size: 15px;
   font-weight: 600;
   color: rgba(255,255,255,0.82);
+}
+
+.weather-current-sub:empty {
+  display: none;
 }
 
 .weather-rain-windows {
@@ -785,13 +793,6 @@ button { font: inherit; }
   font-weight: 680;
 }
 
-.weather-rain-outlook-nextweek {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 560;
-  color: rgba(255,255,255,0.56);
-}
-
 /* 2026-07-14: 뱃지에 강수확률까지 2줄로 표시(예: "약한 비" / "68%") —
    확률 없는 호출(열대야 등)은 label 한 줄만 들어와도 레이아웃이 자연스럽게
    맞도록 column+center로 통일. */
@@ -830,10 +831,26 @@ button { font: inherit; }
 .weather-badge[data-grade="OK"] { background: rgba(34,197,94,0.85); }
 .weather-badge[data-grade="WARN"] { background: #e07b1f; }
 
-.weather-stat-grid {
+/* 2026-07-14: "지난 24시간 vs 향후 24시간" 두 구간을 나란히 대조하는
+   2열 레이아웃. 예전 "어제와 비교하면"(.weather-compare-list/-row) 카드는
+   이 카드로 흡수돼 삭제됐다. */
+.weather-24h-compare {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+}
+
+.weather-24h-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weather-24h-col-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 680;
+  color: rgba(255,255,255,0.6);
 }
 
 .weather-stat-tile {
@@ -869,22 +886,6 @@ button { font: inherit; }
   font-weight: 580;
   line-height: 1.5;
   color: rgba(255,255,255,0.86);
-}
-
-.weather-compare-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.weather-compare-row {
-  padding: 12px 14px;
-  border: 1px solid rgba(255,255,255,0.16);
-  border-radius: 16px;
-  background: rgba(255,255,255,0.05);
-  font-size: 15px;
-  font-weight: 580;
-  line-height: 1.5;
 }
 
 .weather-empty {
@@ -1449,16 +1450,24 @@ button { font: inherit; }
      브라우저가 실제 폭의 절반으로 자동 clamp해서 가는 막대에서도 항상
      반원 캡을 만든다. */
   border-radius: 999px;
-  /* 2026-07-13 10차: "선 컬러도 투명이거나 아주 얇고 투명에 가까운 컬러여야
-     물 같다"는 요청으로 테두리 알파를 한 번 더 낮췄다(0.22 → 0.12). */
-  border: 1px solid rgba(255,255,255,0.12);
+  /* 2026-07-14 12차: "밋밋하다 — 첫날 무지개색처럼 컬러를 넣되 투명하게,
+     박자에 탁탁 반응하는 다이나믹함도 같이 보이면 좋겠다"는 요청 반영.
+     막대별 고정 hue(--bar-hue, 위치 기준 무지개, app.js가 생성 시 1회
+     설정) × 실시간 에너지 비율(--bar-intensity, app.js가 매 프레임 갱신)로
+     밝기·채도·알파·글로우를 조절한다 — 조용하면 거의 투명한 무채색에
+     가깝고, 비트가 세게 튈 때만 그 막대가 화악 채도 높은 색으로 반짝인다.
+     색상과 다이나믹을 같은 값에 묶어서 "탁탁 반응"과 "컬러풀함"이 항상
+     같이 움직이게 했다. CSS transition은 일부러 안 넣었다 — JS 쪽 어택/
+     릴리즈 이징이 이미 있어서 여기 또 걸면 반응이 물러진다. */
+  border: 1px solid hsla(var(--bar-hue, 200), 85%, 70%, calc(0.14 + var(--bar-intensity, 0.1) * 0.55));
   backdrop-filter: blur(5px) saturate(140%) brightness(1.02);
   -webkit-backdrop-filter: blur(5px) saturate(140%) brightness(1.02);
-  background: rgba(255,255,255,0.01);
+  background: hsla(var(--bar-hue, 200), 90%, calc(55% + var(--bar-intensity, 0.1) * 15%), calc(0.03 + var(--bar-intensity, 0.1) * 0.32));
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.16),
     inset 0 -1px 0 rgba(0,0,0,0.08),
-    0 1px 2px rgba(0,0,0,0.08);
+    0 1px 2px rgba(0,0,0,0.08),
+    0 0 calc(var(--bar-intensity, 0.1) * 10px) hsla(var(--bar-hue, 200), 90%, 65%, calc(var(--bar-intensity, 0.1) * 0.5));
 }
 
 .music-track-row {
