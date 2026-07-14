@@ -196,6 +196,7 @@ const musicToggle = document.getElementById("musicToggle");
 const musicSkip = document.getElementById("musicSkip");
 const musicInfoPanel = document.getElementById("musicInfoPanel");
 const musicVizWrap = document.getElementById("musicVizWrap");
+const musicProgressBar = document.getElementById("musicProgressBar");
 const musicProgressFill = document.getElementById("musicProgressFill");
 const musicTrackTitle = document.getElementById("musicTrackTitle");
 const musicLikeButton = document.getElementById("musicLikeButton");
@@ -2858,6 +2859,62 @@ if (musicDislikeButton) musicDislikeButton.addEventListener("click", (event) => 
   playNextTrack();
 });
 if (musicInfoPanel) musicInfoPanel.addEventListener("click", (event) => event.stopPropagation());
+
+// 2026-07-14 19차: 진행률 바 드래그/클릭 탐색(seek) — 성동님 요청으로 재생
+// 위치를 손가락/마우스로 자유롭게 옮길 수 있게 한다. Pointer Events 하나로
+// 마우스·터치 모두 처리하고, setPointerCapture로 손가락이 바 바깥으로
+// 나가도 드래그가 끊기지 않게 한다.
+let musicProgressDragging = false;
+function seekMusicProgressToClientX(clientX) {
+  if (!musicProgressBar) return;
+  const rect = musicProgressBar.getBoundingClientRect();
+  if (!rect || rect.width <= 0) return;
+  const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+  const player = activePlayer();
+  if (!player) return;
+  const liveDuration = player.duration;
+  const duration = Number.isFinite(liveDuration) && liveDuration > 0
+    ? liveDuration
+    : parseFloat(player.dataset.cachedDuration || "NaN");
+  if (!Number.isFinite(duration) || duration <= 0) return;
+  player.currentTime = ratio * duration;
+  // timeupdate가 다음 프레임에 다시 정확한 값으로 갱신하겠지만, 드래그
+  // 중에는 그 전에도 손끝을 그대로 따라가도록 낙관적으로 먼저 채워준다.
+  if (musicProgressFill) musicProgressFill.style.width = (ratio * 100).toFixed(2) + "%";
+}
+if (musicProgressBar) {
+  musicProgressBar.setAttribute("aria-hidden", "false");
+  musicProgressBar.setAttribute("role", "slider");
+  musicProgressBar.setAttribute("aria-label", "재생 위치");
+  musicProgressBar.setAttribute("aria-valuemin", "0");
+  musicProgressBar.setAttribute("aria-valuemax", "100");
+  musicProgressBar.setAttribute("tabindex", "0");
+  musicProgressBar.addEventListener("pointerdown", (event) => {
+    event.stopPropagation();
+    musicProgressDragging = true;
+    try { musicProgressBar.setPointerCapture(event.pointerId); } catch (error) { /* 구형 브라우저 폴백 없이 그냥 진행 */ }
+    seekMusicProgressToClientX(event.clientX);
+  });
+  musicProgressBar.addEventListener("pointermove", (event) => {
+    if (!musicProgressDragging) return;
+    event.stopPropagation();
+    seekMusicProgressToClientX(event.clientX);
+  });
+  const endMusicProgressDrag = (event) => {
+    if (!musicProgressDragging) return;
+    musicProgressDragging = false;
+    try { musicProgressBar.releasePointerCapture(event.pointerId); } catch (error) { /* no-op */ }
+  };
+  musicProgressBar.addEventListener("pointerup", endMusicProgressDrag);
+  musicProgressBar.addEventListener("pointercancel", endMusicProgressDrag);
+  // 키보드로도 5초 단위 탐색 가능(접근성 보너스).
+  musicProgressBar.addEventListener("keydown", (event) => {
+    const player = activePlayer();
+    if (!player) return;
+    if (event.key === "ArrowRight") { event.preventDefault(); player.currentTime = Math.min((player.duration || 0), player.currentTime + 5); }
+    else if (event.key === "ArrowLeft") { event.preventDefault(); player.currentTime = Math.max(0, player.currentTime - 5); }
+  });
+}
 // 2026-07-07: "곡이 중간에 뚝 끊긴다"는 신고는 ffmpeg 완전디코드로 확인한
 // 결과 버그가 아니었다(파일이 정말 그 지점에서 끝남) — 대신 크로스페이드로
 // 무음 구간 자체를 없앴다(위 musicFadeOutSeconds 설명 참조). 두 <audio>
