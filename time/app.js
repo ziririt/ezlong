@@ -1282,15 +1282,24 @@ async function fetchWeatherDetail() {
 
   const tropicalData = tropicalR.status === "fulfilled" ? tropicalR.value : null;
   const rainData = rainR.status === "fulfilled" ? rainR.value : null;
-  renderWeatherCurrent(currentR.status === "fulfilled" ? currentR.value : null);
+  const currentData = currentR.status === "fulfilled" ? currentR.value : null;
+  renderWeatherCurrent(currentData);
   renderWeatherTopComment(rainData);
   renderWeatherRainWindows(rainData);
   renderWeatherYesterday(yesterdayR.status === "fulfilled" ? yesterdayR.value : null);
   renderWeatherTropical(tropicalData);
   renderWeatherAccuracy(accuracyR.status === "fulfilled" ? accuracyR.value : null);
 
-  weatherDetailLastFetchAt = Date.now();
-  weatherDetailLastCoordsKey = coordsKey;
+  // 2026-07-15: 실패한 응답까지 "캐시됨"으로 기록해버리는 버그 수정 — 최초
+  // 요청이 서버 콜드스타트 등으로 한 번 실패하면, 그 실패 상태가 1시간 동안
+  // 그대로 캐시되어 재시도가 전혀 안 됐다(유저가 앱을 강제종료·재실행해야만
+  // JS 메모리가 초기화되며 우연히 재시도됐던 것). current 데이터가 실제로
+  // 성공했을 때만 캐시 타임스탬프를 갱신해서, 실패 시 다음에 상세보기를
+  // 열면 자동으로 재시도되게 한다.
+  if (currentData && currentData.current) {
+    weatherDetailLastFetchAt = Date.now();
+    weatherDetailLastCoordsKey = coordsKey;
+  }
   weatherDetailFetching = false;
 }
 
