@@ -672,17 +672,25 @@ button { font: inherit; }
   font-variant-numeric: tabular-nums;
 }
 
-.weather-current-feels {
+.weather-current-feels,
+.weather-current-humidity {
   font-size: 16px;
   font-weight: 640;
   color: rgba(255,255,255,0.72);
 }
 
+/* 2026-07-14: 습도를 체감온도와 같은 줄로 옮기면서 서브 라인은 평소엔
+   비워둔다(에러 메시지 전용) — 빈 문자열일 때 줄 자체를 접어 여백이
+   남지 않도록. */
 .weather-current-sub {
   margin: 10px 0 0;
   font-size: 15px;
   font-weight: 600;
   color: rgba(255,255,255,0.82);
+}
+
+.weather-current-sub:empty {
+  display: none;
 }
 
 .weather-rain-windows {
@@ -785,13 +793,6 @@ button { font: inherit; }
   font-weight: 680;
 }
 
-.weather-rain-outlook-nextweek {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 560;
-  color: rgba(255,255,255,0.56);
-}
-
 /* 2026-07-14: 뱃지에 강수확률까지 2줄로 표시(예: "약한 비" / "68%") —
    확률 없는 호출(열대야 등)은 label 한 줄만 들어와도 레이아웃이 자연스럽게
    맞도록 column+center로 통일. */
@@ -830,10 +831,26 @@ button { font: inherit; }
 .weather-badge[data-grade="OK"] { background: rgba(34,197,94,0.85); }
 .weather-badge[data-grade="WARN"] { background: #e07b1f; }
 
-.weather-stat-grid {
+/* 2026-07-14: "지난 24시간 vs 향후 24시간" 두 구간을 나란히 대조하는
+   2열 레이아웃. 예전 "어제와 비교하면"(.weather-compare-list/-row) 카드는
+   이 카드로 흡수돼 삭제됐다. */
+.weather-24h-compare {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+}
+
+.weather-24h-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weather-24h-col-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 680;
+  color: rgba(255,255,255,0.6);
 }
 
 .weather-stat-tile {
@@ -869,22 +886,6 @@ button { font: inherit; }
   font-weight: 580;
   line-height: 1.5;
   color: rgba(255,255,255,0.86);
-}
-
-.weather-compare-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.weather-compare-row {
-  padding: 12px 14px;
-  border: 1px solid rgba(255,255,255,0.16);
-  border-radius: 16px;
-  background: rgba(255,255,255,0.05);
-  font-size: 15px;
-  font-weight: 580;
-  line-height: 1.5;
 }
 
 .weather-empty {

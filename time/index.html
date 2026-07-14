@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260714-weatherdetail-v76">
+  <link rel="stylesheet" href="styles.css?v=20260714-weatherdetail-v79">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -217,13 +217,15 @@
           <button class="settings-close" type="button" aria-label="날씨 상세 닫기" data-weather-detail-close>×</button>
         </header>
 
-        <!-- 1. 현재 날씨 -->
+        <!-- 1. 현재 날씨 — 2026-07-14: 체감온도 옆에 습도를 같은 줄로 이동
+             (유저 피드백: "2줄인데 습도도 윗줄에 넣어라, 한 줄 width 충분") -->
         <section class="weather-card weather-current-card" id="wdCurrent" aria-label="현재 날씨">
           <div class="weather-current-hero">
             <span class="weather-current-temp" id="wdCurrentTemp">--°</span>
             <span class="weather-current-feels" id="wdCurrentFeels">체감 --°</span>
+            <span class="weather-current-humidity" id="wdCurrentHumidity">습도 --%</span>
           </div>
-          <p class="weather-current-sub" id="wdCurrentSub">습도 --% · 정보를 불러오는 중</p>
+          <p class="weather-current-sub" id="wdCurrentSub">정보를 불러오는 중</p>
         </section>
 
         <div class="settings-divider" aria-hidden="true"></div>
@@ -238,10 +240,14 @@
 
         <div class="settings-divider" aria-hidden="true"></div>
 
-        <!-- 3. 지난 24시간 요약 -->
-        <section class="weather-card" aria-label="지난 24시간 요약">
-          <h3 class="settings-subtitle">지난 24시간</h3>
-          <div class="weather-stat-grid" id="wdYesterday">
+        <!-- 3. 지난 24시간 vs 향후 24시간 — 2026-07-14 재설계: 원본 수치
+             나열이 아니라 "향후가 지난 24시간보다 덥다/춥다/습하다"를
+             직관적으로 말해주는 게 목적. 예전 "어제와 비교하면"(6번) 카드를
+             이 카드로 흡수했다. -->
+        <section class="weather-card" aria-label="지난 24시간과 향후 24시간 비교">
+          <h3 class="settings-subtitle">지난 24시간 · 향후 24시간</h3>
+          <p class="weather-comment" id="wd24hComparison">불러오는 중…</p>
+          <div class="weather-24h-compare" id="wdYesterday">
             <p class="weather-empty">불러오는 중…</p>
           </div>
         </section>
@@ -265,21 +271,12 @@
           <p class="weather-comment" id="wdAccuracyMessage">불러오는 중…</p>
         </section>
 
-        <div class="settings-divider" aria-hidden="true"></div>
-
-        <!-- 6. 어제 대비 오늘/내일 비교 -->
-        <section class="weather-card" aria-label="어제 대비 비교">
-          <h3 class="settings-subtitle">어제와 비교하면</h3>
-          <div class="weather-compare-list" id="wdDayOverDay">
-            <p class="weather-empty">불러오는 중…</p>
-          </div>
-        </section>
       </section>
     </aside>
   </main>
 
   <script src="investment-quotes.js"></script>
   <script src="music-playlist.js?v=20260714-weatherdetail-v73"></script>
-  <script src="app.js?v=20260714-weatherdetail-v75"></script>
+  <script src="app.js?v=20260714-weatherdetail-v77"></script>
 </body>
 </html>
