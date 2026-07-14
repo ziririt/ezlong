@@ -1827,6 +1827,13 @@ function ensureMusicVizBarsBuilt() {
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     const bar = document.createElement("span");
     bar.className = "viz-bar";
+    // 2026-07-14 12차: "밋밋하다 — 첫날처럼 컬러를 넣되 투명하게"라는 요청 —
+    // 막대 위치 기준으로 무지개 hue를 한 번만 정해서 CSS 커스텀 프로퍼티로
+    // 심어둔다. 실시간 밝기/알파는 --bar-intensity로 매 프레임 따로 갱신
+    // (drawMusicViz/drawMusicVizIdle 참조) — hue는 고정, intensity만 움직인다.
+    const hue = Math.round((i / (MUSIC_VIZ_BAR_COUNT - 1)) * 300);
+    bar.style.setProperty("--bar-hue", hue);
+    bar.style.setProperty("--bar-intensity", "0.1");
     els.push(bar);
     frag.appendChild(bar);
   }
@@ -1844,11 +1851,16 @@ function ensureMusicVizGraph() {
 function drawMusicVizIdle(h) {
   musicVizIdlePhase += 0.045;
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
+    // 2026-07-14 13차: 아래 drawMusicViz와 같은 "산 모양" 실루엣 곡선을
+    // 대기 상태에도 동일하게 적용 — 실제 음악이 안 걸려도 늘 예쁜 모양.
+    const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
+    const shapeEnvelope = 0.5 + 0.5 * Math.sin(Math.PI * t);
     const wave = Math.sin(musicVizIdlePhase + i * 0.7) * 0.5 + 0.5;
-    const target = 4 + wave * (h * 0.4);
+    const target = (4 + wave * (h * 0.4)) * shapeEnvelope;
     const factor = target > musicVizBars[i] ? 0.4 : 0.12;
     musicVizBars[i] += (target - musicVizBars[i]) * factor;
     musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
+    musicVizBarEls[i].style.setProperty("--bar-intensity", Math.min(1, musicVizBars[i] / h).toFixed(3));
   }
 }
 
@@ -1894,12 +1906,22 @@ function drawMusicViz() {
   }
 
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
-    const target = Math.max(4, (avgs[i] / maxAvg) * h);
-    // 어택은 빠르게(비트에 팍 반응), 릴리즈는 느리게(잔향처럼 천천히 가라앉음)
-    // — 고전 VU미터의 비대칭 스무딩이라 훨씬 다이나믹하게 느껴진다.
-    const factor = target > musicVizBars[i] ? 0.5 : 0.12;
+    // 2026-07-14 13차: "그래프 모양이 좌측만 높고 우측은 낮다 — 실제 신호
+    // 세기가 아니라 보기 좋은 과장된 연출이 중요하다"는 피드백. 저음역이
+    // 실제로 거의 항상 raw 에너지가 제일 커서, 프레임별 정규화(7차)를
+    // 해도 결국 왼쪽이 도드라져 보였다 — 위치 기준 고정 "산" 모양 곡선
+    // (가운데 제일 높고 양 끝으로 갈수록 낮아짐, 0.5~1.0 범위)을 실시간
+    // 에너지 비율에 곱해서 실루엣 자체를 항상 예쁜 언덕 모양으로 유도한다.
+    const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
+    const shapeEnvelope = 0.5 + 0.5 * Math.sin(Math.PI * t);
+    const target = Math.max(4, (avgs[i] / maxAvg) * shapeEnvelope * h);
+    // 어택은 더 빠르게(비트에 팍! 반응), 릴리즈는 여전히 느리게(잔향처럼
+    // 천천히 가라앉음) — "탁탁 반응하는 게 재미있다"는 피드백으로 어택
+    // 계수를 0.5 → 0.62로 한 번 더 올렸다.
+    const factor = target > musicVizBars[i] ? 0.62 : 0.12;
     musicVizBars[i] += (target - musicVizBars[i]) * factor;
     musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
+    musicVizBarEls[i].style.setProperty("--bar-intensity", Math.min(1, musicVizBars[i] / h).toFixed(3));
   }
 }
 

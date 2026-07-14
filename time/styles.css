@@ -1449,16 +1449,24 @@ button { font: inherit; }
      브라우저가 실제 폭의 절반으로 자동 clamp해서 가는 막대에서도 항상
      반원 캡을 만든다. */
   border-radius: 999px;
-  /* 2026-07-13 10차: "선 컬러도 투명이거나 아주 얇고 투명에 가까운 컬러여야
-     물 같다"는 요청으로 테두리 알파를 한 번 더 낮췄다(0.22 → 0.12). */
-  border: 1px solid rgba(255,255,255,0.12);
+  /* 2026-07-14 12차: "밋밋하다 — 첫날 무지개색처럼 컬러를 넣되 투명하게,
+     박자에 탁탁 반응하는 다이나믹함도 같이 보이면 좋겠다"는 요청 반영.
+     막대별 고정 hue(--bar-hue, 위치 기준 무지개, app.js가 생성 시 1회
+     설정) × 실시간 에너지 비율(--bar-intensity, app.js가 매 프레임 갱신)로
+     밝기·채도·알파·글로우를 조절한다 — 조용하면 거의 투명한 무채색에
+     가깝고, 비트가 세게 튈 때만 그 막대가 화악 채도 높은 색으로 반짝인다.
+     색상과 다이나믹을 같은 값에 묶어서 "탁탁 반응"과 "컬러풀함"이 항상
+     같이 움직이게 했다. CSS transition은 일부러 안 넣었다 — JS 쪽 어택/
+     릴리즈 이징이 이미 있어서 여기 또 걸면 반응이 물러진다. */
+  border: 1px solid hsla(var(--bar-hue, 200), 85%, 70%, calc(0.14 + var(--bar-intensity, 0.1) * 0.55));
   backdrop-filter: blur(5px) saturate(140%) brightness(1.02);
   -webkit-backdrop-filter: blur(5px) saturate(140%) brightness(1.02);
-  background: rgba(255,255,255,0.01);
+  background: hsla(var(--bar-hue, 200), 90%, calc(55% + var(--bar-intensity, 0.1) * 15%), calc(0.03 + var(--bar-intensity, 0.1) * 0.32));
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.16),
     inset 0 -1px 0 rgba(0,0,0,0.08),
-    0 1px 2px rgba(0,0,0,0.08);
+    0 1px 2px rgba(0,0,0,0.08),
+    0 0 calc(var(--bar-intensity, 0.1) * 10px) hsla(var(--bar-hue, 200), 90%, 65%, calc(var(--bar-intensity, 0.1) * 0.5));
 }
 
 .music-track-row {
