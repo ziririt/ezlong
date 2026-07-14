@@ -921,5 +921,187 @@ window.investmentQuotes = [
     "title": "현명한 투자자",
     "author": "벤저민 그레이엄",
     "category": "behavior"
+  },
+  {
+    "english": "The single greatest edge an investor can have is a long-term orientation.",
+    "text": "투자자가 가질 수 있는 가장 큰 강점은 다름 아닌 장기적인 안목이다. 5년, 10년을 내다보고 끝까지 버틸 수 있는 사람은 극소수이기에, 그 드묾 자체가 곧 남들과 격차를 벌리는 무기가 된다.",
+    "title": "마진 오브 세이프티",
+    "author": "세스 클라만",
+    "category": "mindset"
+  },
+  {
+    "english": "It never was my thinking that made the big money for me. It always was my sitting. Got that? My sitting tight! It is no trick at all to be right on the market. You always find lots of early bulls in bull markets and early bears in bear markets. Men who can both be right and sit tight are uncommon. I found it one of the hardest things to learn.",
+    "text": "나에게 큰돈을 벌어준 건 생각이 아니었다. 언제나 가만히 앉아 버티는 것이었다. 시장에서 방향을 맞히는 것 자체는 전혀 어려운 일이 아니다. 강세장에는 일찍부터 낙관하는 사람들이, 약세장에는 일찍부터 비관하는 사람들이 늘 있게 마련이다. 하지만 옳은 판단을 내린 뒤 그 자리에 가만히 앉아 버티는 것, 그것이야말로 투기자에게 세상에서 가장 배우기 어려운 일이다.",
+    "title": "주식 투자자의 회상",
+    "author": "제시 리버모어",
+    "category": "patience"
+  },
+  {
+    "english": "If you don't look back at yourself a year ago and think of yourself as an idiot, then you must not have learned much in the last year.",
+    "text": "1년 전의 자신을 돌아봤을 때 '와, 그때 정말 어리석었구나'라는 생각이 들지 않는다면, 지난 1년간 별로 배운 게 없다는 뜻이다.",
+    "title": "원칙",
+    "author": "레이 달리오",
+    "category": "mindset"
+  },
+  {
+    "english": "In this business, if you're good, you're right six times out of ten. You're never going to be right nine times out of ten.",
+    "text": "이 바닥에서는 아무리 실력이 좋아도 열 번 중 여섯 번만 맞으면 훌륭한 겁니다. 열 번 중 아홉 번을 맞히는 일은 절대 없습니다.",
+    "title": "전설로 떠나는 월가의 영웅: 비트 더 스트리트",
+    "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
+    "english": "The big money is not in the buying and the selling, but in the waiting.",
+    "text": "큰돈은 사고파는 데서 나오는 게 아니라, 기다리는 데서 나온다.",
+    "title": "가난한 찰리의 연감",
+    "author": "찰리 멍거",
+    "category": "patience"
+  },
+  {
+    "english": "It is remarkable how much long-term advantage people like us have gotten by trying to be consistently not stupid, instead of trying to be very intelligent.",
+    "text": "우리 같은 사람들이 장기적으로 상당한 이점을 얻은 것은, 대단히 똑똑해지려 애쓰기보다 한결같이 어리석지 않으려고 노력했기 때문이라는 사실은 참으로 놀랍다.",
+    "title": "가난한 찰리의 연감",
+    "author": "찰리 멍거",
+    "category": "mindset"
+  },
+  {
+    "english": "Rule No. 1: Most things will prove to be cyclical. Rule No. 2: Some of the greatest opportunities for gain and loss come when other people forget Rule No. 1.",
+    "text": "대부분의 것들은 순환한다는 게 결국 증명될 것이다. 그리고 이익과 손실의 가장 큰 기회는, 다른 사람들이 바로 이 순환의 법칙을 잊어버릴 때 찾아온다.",
+    "title": "투자에서 가장 중요한 것",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "english": "The stock market is filled with individuals who know the price of everything, but the value of nothing.",
+    "text": "주식시장에는 모든 것의 가격은 알지만 그 가치는 전혀 모르는 사람들로 가득하다. 진짜 수익은 가격이 아니라 기업의 질과 성장 잠재력을 꿰뚫어 보는 사람의 몫이다.",
+    "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "The recipe for disaster is a combination of ignorance and leverage.",
+    "text": "재앙을 만드는 공식은 단순하다. 무지에 레버리지를 더하면 된다. 잘 모르는 자산에 빚까지 얹어 베팅하는 순간, 시장이 아니라 스스로가 가장 큰 리스크가 된다.",
+    "title": "투자의 네 기둥",
+    "author": "윌리엄 번스타인",
+    "category": "mindset"
+  },
+  {
+    "english": "It's far better to buy a wonderful company at a fair price than a fair company at a wonderful price.",
+    "text": "훌륭한 기업을 적정한 가격에 사는 것이, 그저 그런 기업을 훌륭한 가격에 사는 것보다 훨씬 낫다.",
+    "title": "버크셔 해서웨이 주주 서한 (1989년)",
+    "author": "워런 버핏",
+    "category": "mindset"
+  },
+  {
+    "english": "Be fearful when others are greedy, and be greedy when others are fearful.",
+    "text": "다른 사람들이 탐욕스러울 때는 두려워하고, 다른 사람들이 두려워할 때는 탐욕스러워져라.",
+    "title": "버크셔 해서웨이 주주 서한",
+    "author": "워런 버핏",
+    "category": "behavior"
+  },
+  {
+    "english": "Diversifying well is the most important thing you need to do in order to invest well. The Holy Grail of investing is having 15 or more good, uncorrelated return streams — that's how you can dramatically reduce your risk without reducing your expected returns.",
+    "text": "잘 분산된 투자야말로 훌륭한 투자를 하기 위해 반드시 갖춰야 할 가장 중요한 조건이다. 투자의 성배는 서로 상관관계가 낮은 좋은 수익원을 열다섯 개 이상 조합하는 데 있다 — 그렇게 하면 기대 수익을 희생하지 않고도 위험을 극적으로 줄일 수 있다.",
+    "title": "원칙 (Principles: Life and Work)",
+    "author": "레이 달리오",
+    "category": "mindset"
+  },
+  {
+    "english": "The first rule of compounding: never interrupt it unnecessarily.",
+    "text": "복리의 제1원칙은 불필요하게 그것을 중단시키지 않는 것이다. 좋은 자산을 찾았다면, 함부로 팔지 말고 오래도록 그 위에 앉아 있어야 한다.",
+    "title": "가난한 찰리의 연감",
+    "author": "찰리 멍거",
+    "category": "compound"
+  },
+  {
+    "english": "It never was my thinking that made the big money for me. It always was my sitting. It is no trick at all to be right on the market — men who can both be right and sit tight are uncommon.",
+    "text": "나에게 큰돈을 벌어준 것은 한 번도 판단력이 아니었다. 언제나 진득하게 버티는 것이었다. 시장에서 옳은 판단을 내리기는 어렵지 않다. 하지만 그 판단을 믿고 끝까지 버티는 사람은 드물다.",
+    "title": "주식 투자자의 회상",
+    "author": "제시 리버모어",
+    "category": "patience"
+  },
+  {
+    "english": "Investing is not supposed to be easy. Anyone who finds it easy is stupid.",
+    "text": "투자는 원래 쉬운 게 아니다. 그런데도 쉽다고 느끼는 사람이 있다면, 그 사람이야말로 뭔가 크게 잘못 판단하고 있다는 신호다. 어렵게 느껴지는 게 정상이라는 사실을 받아들이는 것에서부터 제대로 된 투자가 시작된다.",
+    "title": "마진 오브 세이프티",
+    "author": "세스 클라만",
+    "category": "mindset"
+  },
+  {
+    "english": "If the job has been correctly done when a common stock is purchased, the time to sell it is almost never.",
+    "text": "제대로 된 판단으로 매수한 우량주라면, 그것을 팔아야 할 때는 사실상 존재하지 않는다. 기업의 펀더멘털이 훼손되지 않았다면 일시적인 주가 하락은 매도의 이유가 되지 못한다. 좋은 기업을 오래 보유하는 인내심이야말로 진짜 수익을 만든다.",
+    "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔",
+    "category": "patience"
+  },
+  {
+    "english": "An investor who earns 16 percent annual returns over a decade, for example, will, perhaps surprisingly, end up with more money than an investor who earns 20 percent a year for nine years and then loses 15 percent the tenth year.",
+    "text": "단 한 번의 큰 손실은 수년간 쌓아온 투자 성과를 한순간에 무너뜨릴 수 있다. 그래서 변동성이 크고 화려한 수익보다, 하방 위험을 제한하며 꾸준히 좋은 수익을 내는 쪽이 결국 더 유리하다. 실제로 10년간 매년 16%씩 번 투자자는, 9년간 매년 20%씩 벌다가 열 번째 해에 15% 손실을 본 투자자보다 최종 자산이 더 많다 — 의외로 들리지만 복리의 산수가 그렇다.",
+    "title": "마진 오브 세이프티 (Margin of Safety)",
+    "author": "세스 클라만",
+    "category": "compound"
+  },
+  {
+    "english": "There is nothing new in Wall Street. There can't be because speculation is as old as the hills. Whatever happens in the stock market today has happened before and will happen again.",
+    "text": "월스트리트에는 새로운 것이 없다. 투기라는 것 자체가 태초부터 있어온 것이기에 새로울 수가 없다. 오늘 주식시장에서 벌어지는 일은 예전에도 벌어졌던 일이고, 앞으로도 다시 벌어질 일이다.",
+    "title": "주식 투자자의 회상",
+    "author": "제시 리버모어",
+    "category": "mindset"
+  },
+  {
+    "english": "In the short run, the market is a voting machine, but in the long run, it is a weighing machine.",
+    "text": "단기적으로 보면 시장은 인기투표를 하는 곳이지만, 장기적으로 보면 정확하게 무게를 재는 저울이다. 결국 실적과 진짜 가치를 가진 기업만이 버텨낸다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄",
+    "category": "patience"
+  },
+  {
+    "english": "It takes remarkable patience to hold on to a stock in a company that excites you, but which everybody else seems to ignore. You begin to think everybody else is right and you are wrong. But where the fundamentals are promising, patience is often rewarded.",
+    "text": "자신을 설레게 하는 기업의 주식을, 다른 모든 사람이 외면하는데도 계속 붙들고 있으려면 놀라운 인내심이 필요하다. 세상 사람들이 다 옳고 나만 틀린 게 아닌가 싶어지는 순간이 온다. 하지만 펀더멘털이 탄탄하다면, 그 인내심은 대개 보상받는다.",
+    "title": "월가의 영웅",
+    "author": "피터 린치",
+    "category": "patience"
+  },
+  {
+    "english": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave. And behavior is hard to teach, even to really smart people.",
+    "text": "돈을 잘 다루는 것은 당신이 얼마나 똑똑한지와는 큰 관련이 없고, 당신이 어떻게 행동하느냐와 훨씬 더 깊이 관련되어 있다. 그리고 행동은 아무리 똑똑한 사람이라도 가르치기 어렵다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절",
+    "category": "behavior"
+  },
+  {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
+    "text": "장기적으로 시장을 이길 펀드를 골라내려는 건 건초더미에서 바늘 하나를 찾는 것과 같다. 그러니 바늘을 찾으려 애쓰지 마라. 그냥 건초더미 전체를 사라.",
+    "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
+    "author": "존 보글",
+    "category": "mindset"
+  },
+  {
+    "english": "Bull markets are born on pessimism, grow on skepticism, mature on optimism, and die on euphoria. The time of maximum pessimism is the best time to buy, and the time of maximum optimism is the best time to sell.",
+    "text": "강세장은 비관 속에서 태어나, 회의 속에서 자라며, 낙관 속에서 무르익고, 도취 속에서 죽는다. 최대 비관의 순간이 최적의 매수 시점이고, 최대 낙관의 순간이 최적의 매도 시점이다.",
+    "title": "존 템플턴의 투자 격언",
+    "author": "존 템플턴",
+    "category": "behavior"
+  },
+  {
+    "english": "He who lives by the crystal ball is destined to eat shattered glass.",
+    "text": "수정구슬을 보고 사는 사람은 결국 깨진 유리를 씹어 먹게 되어 있다. 미래를 정확히 예측하려 애쓰기보다는, 어떤 상황이 닥치든 흔들리지 않을 좋은 원칙과 의사결정 체계를 갖추는 것이 훨씬 더 중요하다.",
+    "title": "원칙 (Principles: Life and Work)",
+    "author": "레이 달리오",
+    "category": "mindset"
+  },
+  {
+    "english": "The four most dangerous words in investing are: 'This time it's different.'",
+    "text": "투자에서 가장 위험한 네 단어는 '이번엔 다르다'이다.",
+    "title": "존 템플턴의 투자 격언",
+    "author": "존 템플턴",
+    "category": "mindset"
+  },
+  {
+    "english": "I don't want a lot of good investments; I want a few outstanding ones.",
+    "text": "나는 좋은 투자 종목을 여러 개 갖고 싶지 않다. 정말로 뛰어난 소수의 종목만 갖고 싶을 뿐이다. 넓게 벌리기보다 확신이 선 몇 개에 깊이 집중하는 것, 그것이 진짜 승부처다.",
+    "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔",
+    "category": "mindset"
   }
 ];
