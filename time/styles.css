@@ -1444,34 +1444,41 @@ button { font: inherit; }
     0 0 calc(10px + var(--bar-intensity, 0.15) * 18px) hsla(var(--bar-hue, 280), 95%, 55%, calc(0.28 + var(--bar-intensity, 0.15) * 0.35));
 }
 
-/* 2026-07-14 15차: 성동님이 첨부한 "Audio Spectrum - Grid" 참고 이미지 벤치마크
-   — 비주얼라이저 막대 아래에 재생 진행률을 보여주는 가로 바를 추가한다.
-   막대와 같은 좌우 10px 인셋으로 폭을 맞추고, 막대의 네온 그라디언트(주황→
-   마젠타→보라)와 톤을 맞춘 채움색을 쓴다. 채움 폭은 app.js의
-   updateMusicProgress()가 재생 위치(0~1)를 그대로 %로 환산해 매 프레임 갱신. */
+/* 2026-07-14 16차: 성동님이 다시 첨부한 "Audio Spectrum - Grid" 참고 이미지를
+   더 가깝게 벤치마크 — 15차의 "속이 꽉 찬 얇은 라인" 대신, 참고 이미지처럼
+   (1) 전체 길이를 나타내는 속이 빈 캡슐형 아웃라인 트랙 + (2) 그 위에 얹히는
+   짧고 도톰한 솔리드 진행 캡슐, 두 겹 구조로 바꾼다. 또한 곡명/버튼 줄의
+   어두운 박스(background+border-radius)를 완전히 제거해 비주얼라이저→
+   진행바→곡명줄이 하나의 이어진 콘솔처럼 보이게 한다("박싱 처리하지 말아
+   달라"는 피드백 반영). */
 .music-progress-bar {
   position: relative;
-  height: 5px;
+  height: 10px;
   margin: 0 0 8px;
 }
 
 .music-progress-bar::before {
-  /* 트랙(전체 길이) — 은은한 반투명 배경으로 항상 보이게 둔다. */
+  /* 전체 재생 길이 — 속이 빈 얇은 캡슐 아웃라인(테두리만, 채움 없음). */
   content: "";
   position: absolute;
   left: 10px;
   right: 10px;
-  top: 0;
-  bottom: 0;
+  top: 50%;
+  height: 4px;
+  transform: translateY(-50%);
   border-radius: 999px;
-  background: rgba(255,255,255,0.16);
+  border: 1.5px solid rgba(255,255,255,0.4);
+  background: transparent;
+  box-sizing: border-box;
 }
 
 .music-progress-fill {
+  /* 실제 재생 위치 — 아웃라인보다 도톰한 솔리드 캡슐을 왼쪽부터 겹쳐 그린다. */
   position: absolute;
   left: 10px;
-  top: 0;
-  bottom: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 8px;
   width: 0%;
   max-width: calc(100% - 20px);
   border-radius: 999px;
@@ -1485,10 +1492,8 @@ button { font: inherit; }
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 6px 10px;
-  background: rgba(0,0,0,0.22);
-  border-radius: 10px;
-  margin: 0 0 8px;
+  padding: 0 10px 6px;
+  margin: 0;
   box-sizing: border-box;
 }
 
