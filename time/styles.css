@@ -1433,7 +1433,11 @@ button { font: inherit; }
   padding: 12px 10px 10px;
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: clamp(18px, 4vw, 28px);
-  background: rgba(13, 20, 31, 0.16);
+  /* 2026-07-15: 아래 .quote-panel(rgba(13,20,31,0.02))보다 오히려 덜
+     투명했다("문장박스보다 투명도가 낮은 것 같다"는 재지적 — 맞았다, 0.16
+     vs 0.02였다). quote-panel보다 조금 더 투명하게 0.01로 낮춰서 뒤 배경
+     사진이 더 시원하게 비치도록 한다. */
+  background: rgba(13, 20, 31, 0.01);
   backdrop-filter: blur(3px) saturate(1.04);
 }
 
@@ -1456,7 +1460,9 @@ button { font: inherit; }
      막상 실기기에서는 너무 커서 어색하다는 재지적 — 딱 절반 수준으로
      되돌린다(96~170px → 48~85px). */
   height: clamp(48px, 10vh, 85px);
-  margin: 0 0 8px;
+  /* 2026-07-15: "진행률 바 위는 비주얼라이저인데 여백이 거의 필요 없이 딱
+     붙어도 좋다"는 요청 — 8px → 2px로 거의 밀착. */
+  margin: 0 0 2px;
   box-sizing: border-box;
   display: flex;
   align-items: flex-end;
@@ -1507,8 +1513,10 @@ button { font: inherit; }
      그대로 top:50% 중앙 정렬이라 모양은 안 바뀌고 여백만 늘어난다. */
   height: 18px;
   /* 2026-07-14 20차: "진행바와 곡명줄 간격이 너무 벌어져있다, 절반으로
-     줄여달라"는 피드백 — 8px → 4px. */
-  margin: 0 0 4px;
+     줄여달라"는 피드백 — 8px → 4px.
+     2026-07-15: "지금 간격의 반 정도만 필요하다, 좀더 붙여달라"는 재요청 —
+     4px → 2px로 한 번 더 절반. */
+  margin: 0 0 2px;
   cursor: pointer;
   touch-action: none; /* 드래그 중 페이지 스크롤/새로고침 제스처와 충돌 방지 */
 }
@@ -1607,9 +1615,14 @@ button { font: inherit; }
      떴다("최소 5글자는 더 올 수 있는데 왜 줄이나" 재지적). flex:1로 바꿔
      .music-track-actions(flex-shrink:0)가 차지하는 만큼만 빼고 나머지
      전부를 제목이 쓰게 한다 — 버튼 바로 앞까지 채우고, 그래도 넘치면 그때만
-     말줄임. */
+     말줄임.
+     2026-07-15: 조상 .clock-stage에 text-align:center가 걸려있어서
+     (플립시계 숫자를 가운데 정렬하기 위한 규칙) 이 span도 그대로 상속받아
+     짧은 제목일 때 박스 가운데로 몰려 보였다("왜 가운데 정렬이냐" 재지적).
+     명시적으로 left로 끊어서 항상 왼쪽부터 채우게 한다. */
   flex: 1 1 auto;
   min-width: 0;
+  text-align: left;
 }
 
 .music-track-actions {
