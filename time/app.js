@@ -196,6 +196,7 @@ const musicToggle = document.getElementById("musicToggle");
 const musicSkip = document.getElementById("musicSkip");
 const musicInfoPanel = document.getElementById("musicInfoPanel");
 const musicVizWrap = document.getElementById("musicVizWrap");
+const musicProgressBar = document.getElementById("musicProgressBar");
 const musicProgressFill = document.getElementById("musicProgressFill");
 const musicTrackTitle = document.getElementById("musicTrackTitle");
 const musicLikeButton = document.getElementById("musicLikeButton");
@@ -1804,6 +1805,13 @@ let musicVizBandRanges = null;
 let musicVizAnimId = null;
 let musicVizIdlePhase = 0;
 let musicVizBarEls = null;
+// 2026-07-14 18차: "고음/드럼 반응이 약하다, 더 다이나믹하게"라는 피드백 —
+// 베이스(저음) 대역의 순간 에너지가 최근 평균보다 확 튀는 순간(=드럼/킥
+// 타격)을 감지해 맨 왼쪽 1~2개 막대에 짧고 강한 펀치를 얹는다.
+// musicVizBassEnergyAvg = 최근 베이스 에너지의 느린 이동평균(기준선),
+// musicVizBassHit = 타격 감지 시 1로 튀었다가 프레임마다 빠르게 감쇠하는 값.
+let musicVizBassEnergyAvg = 0;
+let musicVizBassHit = 0;
 
 function buildMusicVizBands(binCount, barCount) {
   // 저음역은 좁게, 고음역은 넓게 묶는 로그 스케일 경계 — 균등 step으로 뽑으면
@@ -1860,8 +1868,9 @@ function drawMusicVizIdle(h) {
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     // 2026-07-14 13차: 아래 drawMusicViz와 같은 "산 모양" 실루엣 곡선을
     // 대기 상태에도 동일하게 적용 — 실제 음악이 안 걸려도 늘 예쁜 모양.
+    // 2026-07-14 18차: 실제 재생 중 곡선과 억제 폭(0.75~1.0)을 맞춰 통일.
     const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
-    const shapeEnvelope = 0.5 + 0.5 * Math.sin(Math.PI * t);
+    const shapeEnvelope = 0.75 + 0.25 * Math.sin(Math.PI * t);
     const wave = Math.sin(musicVizIdlePhase + i * 0.7) * 0.5 + 0.5;
     const target = (4 + wave * (h * 0.4)) * shapeEnvelope;
     const factor = target > musicVizBars[i] ? 0.4 : 0.12;
@@ -1907,28 +1916,59 @@ function drawMusicViz() {
     const end = Math.max(musicVizBandRanges[i + 1], start + 1);
     let sum = 0;
     for (let j = start; j < end; j++) sum += data[j];
-    const avg = sum / (end - start);
+    let avg = sum / (end - start);
+    // 2026-07-14 18차: "고음이나 저음이나 큰 차이가 없다, 고음이 더 솟구쳐야
+    // 한다"는 피드백 — 실제 음악은 raw FFT 에너지가 저음에 훨씬 쏠려있어서,
+    // 프레임별 최댓값 정규화를 해도 고음역 막대가 "이번 프레임 1등"이 될
+    // 기회 자체가 드물었다. 위치(고음역)가 높을수록 미리 이득(gain)을 줘서
+    // 하이햇/심벌 같은 고음 타격이 실제로 화면에서 튀어 보이게 보정한다.
+    const trebleBoost = 1 + (i / (MUSIC_VIZ_BAR_COUNT - 1)) * 0.7; // 저음 1.0배 → 고음 1.7배
+    avg *= trebleBoost;
     avgs[i] = avg;
     if (avg > maxAvg) maxAvg = avg;
   }
+
+  // 드럼(킥) 타격 감지 — 맨 왼쪽 2개 대역(가장 낮은 저음)의 raw 평균을
+  // 최근 이동평균과 비교해, 확 튀어오르는 순간만 "타격"으로 잡는다.
+  const bassNow = (avgs[0] + avgs[1]) / 2;
+  if (bassNow > musicVizBassEnergyAvg * 1.35 + 6) {
+    musicVizBassHit = 1;
+  } else {
+    musicVizBassHit *= 0.8; // 5~6프레임 안에 빠르게 가라앉는 "팍" 펀치감
+  }
+  musicVizBassEnergyAvg += (bassNow - musicVizBassEnergyAvg) * 0.1;
 
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     // 2026-07-14 13차: "그래프 모양이 좌측만 높고 우측은 낮다 — 실제 신호
     // 세기가 아니라 보기 좋은 과장된 연출이 중요하다"는 피드백. 저음역이
     // 실제로 거의 항상 raw 에너지가 제일 커서, 프레임별 정규화(7차)를
-    // 해도 결국 왼쪽이 도드라져 보였다 — 위치 기준 고정 "산" 모양 곡선
-    // (가운데 제일 높고 양 끝으로 갈수록 낮아짐, 0.5~1.0 범위)을 실시간
-    // 에너지 비율에 곱해서 실루엣 자체를 항상 예쁜 언덕 모양으로 유도한다.
+    // 해도 결국 왼쪽이 도드라져 보였다 — 위치 기준 고정 "산" 모양 곡선을
+    // 실시간 에너지 비율에 곱해서 실루엣 자체를 항상 예쁜 언덕 모양으로
+    // 유도한다.
+    // 2026-07-14 18차: 다만 이 고정 곡선이 너무 세게(0.5~1.0 범위) 실제
+    // 신호를 눌러버려서 "고음/저음 차이가 안 느껴진다"는 재지적 — 억제
+    // 폭을 절반으로 줄여(0.75~1.0) 실제 대역별 에너지 차이가 더 살아나게
+    // 하고, 비율 자체도 지수(1.5)를 줘서 이번 프레임 1등만 확실히 솟고
+    // 나머지는 더 가라앉는 대비를 키운다.
     const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
-    const shapeEnvelope = 0.5 + 0.5 * Math.sin(Math.PI * t);
-    const target = Math.max(4, (avgs[i] / maxAvg) * shapeEnvelope * h);
-    // 어택은 더 빠르게(비트에 팍! 반응), 릴리즈는 여전히 느리게(잔향처럼
-    // 천천히 가라앉음) — "탁탁 반응하는 게 재미있다"는 피드백으로 어택
-    // 계수를 0.5 → 0.62로 한 번 더 올렸다.
-    const factor = target > musicVizBars[i] ? 0.62 : 0.12;
+    const shapeEnvelope = 0.75 + 0.25 * Math.sin(Math.PI * t);
+    const ratio = Math.pow(Math.max(0, avgs[i] / maxAvg), 1.5);
+    let target = Math.max(4, ratio * shapeEnvelope * h);
+    if (i <= 1) {
+      // 드럼 타격 시 맨 왼쪽 1~2개 막대만 별도로 순간 펀치 — 다른 막대의
+      // 정규화 로직과 무관하게 항상 눈에 띄게 솟구친다.
+      target = Math.max(target, musicVizBassHit * h * 0.96);
+    }
+    // 어택은 더 빠르게(비트에 팍! 반응), 릴리즈도 조금 더 빠르게 — "더
+    // 다이나믹하게, 변동성이 크면 좋겠다"는 피드백으로 어택 0.62→0.72,
+    // 릴리즈 0.12→0.18로 올려 오르내림 자체를 더 선명하게 만들었다.
+    const factor = target > musicVizBars[i] ? 0.72 : 0.18;
     musicVizBars[i] += (target - musicVizBars[i]) * factor;
     musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
-    musicVizBarEls[i].style.setProperty("--bar-intensity", Math.min(1, musicVizBars[i] / h).toFixed(3));
+    const intensity = i <= 1
+      ? Math.min(1, Math.max(musicVizBars[i] / h, musicVizBassHit))
+      : Math.min(1, musicVizBars[i] / h);
+    musicVizBarEls[i].style.setProperty("--bar-intensity", intensity.toFixed(3));
   }
 }
 
@@ -2783,6 +2823,62 @@ if (musicDislikeButton) musicDislikeButton.addEventListener("click", (event) => 
   playNextTrack();
 });
 if (musicInfoPanel) musicInfoPanel.addEventListener("click", (event) => event.stopPropagation());
+
+// 2026-07-14 19차: 진행률 바 드래그/클릭 탐색(seek) — 성동님 요청으로 재생
+// 위치를 손가락/마우스로 자유롭게 옮길 수 있게 한다. Pointer Events 하나로
+// 마우스·터치 모두 처리하고, setPointerCapture로 손가락이 바 바깥으로
+// 나가도 드래그가 끊기지 않게 한다.
+let musicProgressDragging = false;
+function seekMusicProgressToClientX(clientX) {
+  if (!musicProgressBar) return;
+  const rect = musicProgressBar.getBoundingClientRect();
+  if (!rect || rect.width <= 0) return;
+  const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+  const player = activePlayer();
+  if (!player) return;
+  const liveDuration = player.duration;
+  const duration = Number.isFinite(liveDuration) && liveDuration > 0
+    ? liveDuration
+    : parseFloat(player.dataset.cachedDuration || "NaN");
+  if (!Number.isFinite(duration) || duration <= 0) return;
+  player.currentTime = ratio * duration;
+  // timeupdate가 다음 프레임에 다시 정확한 값으로 갱신하겠지만, 드래그
+  // 중에는 그 전에도 손끝을 그대로 따라가도록 낙관적으로 먼저 채워준다.
+  if (musicProgressFill) musicProgressFill.style.width = (ratio * 100).toFixed(2) + "%";
+}
+if (musicProgressBar) {
+  musicProgressBar.setAttribute("aria-hidden", "false");
+  musicProgressBar.setAttribute("role", "slider");
+  musicProgressBar.setAttribute("aria-label", "재생 위치");
+  musicProgressBar.setAttribute("aria-valuemin", "0");
+  musicProgressBar.setAttribute("aria-valuemax", "100");
+  musicProgressBar.setAttribute("tabindex", "0");
+  musicProgressBar.addEventListener("pointerdown", (event) => {
+    event.stopPropagation();
+    musicProgressDragging = true;
+    try { musicProgressBar.setPointerCapture(event.pointerId); } catch (error) { /* 구형 브라우저 폴백 없이 그냥 진행 */ }
+    seekMusicProgressToClientX(event.clientX);
+  });
+  musicProgressBar.addEventListener("pointermove", (event) => {
+    if (!musicProgressDragging) return;
+    event.stopPropagation();
+    seekMusicProgressToClientX(event.clientX);
+  });
+  const endMusicProgressDrag = (event) => {
+    if (!musicProgressDragging) return;
+    musicProgressDragging = false;
+    try { musicProgressBar.releasePointerCapture(event.pointerId); } catch (error) { /* no-op */ }
+  };
+  musicProgressBar.addEventListener("pointerup", endMusicProgressDrag);
+  musicProgressBar.addEventListener("pointercancel", endMusicProgressDrag);
+  // 키보드로도 5초 단위 탐색 가능(접근성 보너스).
+  musicProgressBar.addEventListener("keydown", (event) => {
+    const player = activePlayer();
+    if (!player) return;
+    if (event.key === "ArrowRight") { event.preventDefault(); player.currentTime = Math.min((player.duration || 0), player.currentTime + 5); }
+    else if (event.key === "ArrowLeft") { event.preventDefault(); player.currentTime = Math.max(0, player.currentTime - 5); }
+  });
+}
 // 2026-07-07: "곡이 중간에 뚝 끊긴다"는 신고는 ffmpeg 완전디코드로 확인한
 // 결과 버그가 아니었다(파일이 정말 그 지점에서 끝남) — 대신 크로스페이드로
 // 무음 구간 자체를 없앴다(위 musicFadeOutSeconds 설명 참조). 두 <audio>

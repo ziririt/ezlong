@@ -1236,8 +1236,12 @@ button { font: inherit; }
   flex-wrap: wrap;
   gap: 10px;
   /* 2026-07-07: 플립시계 폭이 줄어들면서 이 줄(날씨/음악)이 시계 위에
-     "떠 있는" 느낌이라는 재지적 — 시계와의 간격을 절반 정도로 줄임. */
-  margin: 0 0 clamp(7px, 1.3vh, 12px);
+     "떠 있는" 느낌이라는 재지적 — 시계와의 간격을 절반 정도로 줄임.
+     2026-07-14 17차: 순서가 [플립시계 → 이 줄 → 비주얼라이저]로 바뀌면서,
+     기존엔 아래쪽 간격(margin-bottom)이던 것이 이제는 위쪽(시계와의 간격)
+     역할을 겸해야 한다 — 상하 대칭으로 줘서 패널이 닫혀있을 때도(기본 상태)
+     시계-날씨줄 간격이 균형있게 보이도록 한다. */
+  margin: clamp(7px, 1.3vh, 12px) 0;
   color: rgba(255,255,255,0.84);
   font-size: clamp(13px, 3.5vw, 22px);
   font-weight: 620;
@@ -1381,8 +1385,15 @@ button { font: inherit; }
 .music-skip { background-image: url("assets/icons/music/skip.png"); }
 
 /* 2026-07-13: 음악 정보 패널 — 기본은 닫힘(높이 0)이라 평소 레이아웃에는
-   영향이 없다. 열리면 clock-meta(날씨/음악 버튼 줄) 바로 위에 비주얼라이저 +
-   곡명 + 좋아요/싫어요/설정 버튼이 나타난다. */
+   영향이 없다. 열리면 clock-meta(날씨/음악 버튼 줄) 아래에 비주얼라이저 +
+   진행률 바 + 곡명 + 좋아요/싫어요/설정 버튼이 나타난다.
+   2026-07-14 17차: "문장 박스처럼 하나의 박스화" 요청 — 아래 quote-panel과
+   같은 톤(옅은 테두리+반투명 배경+블러)의 박스로 감싸, 비주얼라이저·진행바·
+   곡명줄이 개별 조각이 아니라 하나의 카드처럼 보이게 한다. 안쪽 좌우 여백은
+   이 박스의 padding이 전담하므로, 자식 요소들(viz-wrap/progress-bar/
+   track-row)에 있던 개별 10px 인셋은 모두 제거해 이중 여백을 막는다.
+   max-height:0 + overflow:hidden 조합이라 padding이 있어도 닫힌 상태에서는
+   실제 렌더 높이가 0으로 완전히 클리핑되어 평소 레이아웃엔 영향이 없다. */
 .music-info-panel {
   overflow: hidden;
   max-height: 0;
@@ -1390,12 +1401,22 @@ button { font: inherit; }
   transform: translateY(-6px);
   transition: max-height 0.25s ease, opacity 0.2s ease, transform 0.25s ease;
   pointer-events: none;
+  box-sizing: border-box;
+  padding: 12px 10px 10px;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: clamp(18px, 4vw, 28px);
+  background: rgba(13, 20, 31, 0.16);
+  backdrop-filter: blur(3px) saturate(1.04);
 }
 
 .music-info-panel.is-open {
   /* 2026-07-13 9차: 막대 높이를 절반으로 줄이면서 패널 최대높이도 같이
-     줄인다 — "지금은 height가 너무 커서 어색하다"는 피드백 반영. */
-  max-height: clamp(120px, 22vh, 160px);
+     줄인다 — "지금은 height가 너무 커서 어색하다"는 피드백 반영.
+     2026-07-14 17차: 박스 padding(상12+하10=22px)이 늘어난 만큼 상한을
+     같이 올려 내용이 잘리지 않게 한다.
+     2026-07-14 19차: 진행률 바 터치 히트 영역이 10px→18px로 커진 만큼(+8px)
+     상한도 같이 올린다. */
+  max-height: clamp(153px, 26vh, 193px);
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
@@ -1408,7 +1429,6 @@ button { font: inherit; }
      되돌린다(96~170px → 48~85px). */
   height: clamp(48px, 10vh, 85px);
   margin: 0 0 8px;
-  padding: 0 10px;
   box-sizing: border-box;
   display: flex;
   align-items: flex-end;
@@ -1416,8 +1436,8 @@ button { font: inherit; }
      펼치기 위해 flex:1 1 0 균등분할 대신 고정폭 + space-between으로 바꿨다.
      gap 대신 justify-content가 남는 공간을 막대 사이 간격으로 나눠 쓴다. */
   justify-content: space-between;
-  /* .music-track-row와 같은 좌우 10px 인셋을 줘서 이 줄이 화면 끝까지
-     삐져나가지 않고 아래 제목바 폭에 정확히 맞도록 고정. */
+  /* 2026-07-14 17차: 좌우 인셋은 이제 .music-info-panel의 padding이 전담 —
+     여기 있던 개별 10px 좌우 padding은 제거(이중 여백 방지). */
 }
 
 .viz-bar {
@@ -1447,22 +1467,28 @@ button { font: inherit; }
 /* 2026-07-14 16차: 성동님이 다시 첨부한 "Audio Spectrum - Grid" 참고 이미지를
    더 가깝게 벤치마크 — 15차의 "속이 꽉 찬 얇은 라인" 대신, 참고 이미지처럼
    (1) 전체 길이를 나타내는 속이 빈 캡슐형 아웃라인 트랙 + (2) 그 위에 얹히는
-   짧고 도톰한 솔리드 진행 캡슐, 두 겹 구조로 바꾼다. 또한 곡명/버튼 줄의
-   어두운 박스(background+border-radius)를 완전히 제거해 비주얼라이저→
-   진행바→곡명줄이 하나의 이어진 콘솔처럼 보이게 한다("박싱 처리하지 말아
-   달라"는 피드백 반영). */
+   짧고 도톰한 솔리드 진행 캡슐, 두 겹 구조로 바꾼다.
+   2026-07-14 17차: 16차 때 제거했던 박싱을, 이번엔 곡명줄만 개별로가 아니라
+   .music-info-panel 전체를 감싸는 하나의 박스로 다시 도입했다(위
+   .music-info-panel 참조). 그에 맞춰 좌우 인셋도 박스 padding으로 옮기고
+   여기 있던 개별 10px 좌우 오프셋은 제거(이중 여백 방지). */
 .music-progress-bar {
   position: relative;
-  height: 10px;
+  /* 2026-07-14 19차: 드래그 탐색(seek) 추가 — 손가락으로 잡기 쉽도록 실제
+     터치 히트 영역을 10px→18px로 넓힌다. 시각적 트랙/캡슐 두께(4px/8px)는
+     그대로 top:50% 중앙 정렬이라 모양은 안 바뀌고 여백만 늘어난다. */
+  height: 18px;
   margin: 0 0 8px;
+  cursor: pointer;
+  touch-action: none; /* 드래그 중 페이지 스크롤/새로고침 제스처와 충돌 방지 */
 }
 
 .music-progress-bar::before {
   /* 전체 재생 길이 — 속이 빈 얇은 캡슐 아웃라인(테두리만, 채움 없음). */
   content: "";
   position: absolute;
-  left: 10px;
-  right: 10px;
+  left: 0;
+  right: 0;
   top: 50%;
   height: 4px;
   transform: translateY(-50%);
@@ -1475,12 +1501,12 @@ button { font: inherit; }
 .music-progress-fill {
   /* 실제 재생 위치 — 아웃라인보다 도톰한 솔리드 캡슐을 왼쪽부터 겹쳐 그린다. */
   position: absolute;
-  left: 10px;
+  left: 0;
   top: 50%;
   transform: translateY(-50%);
   height: 8px;
   width: 0%;
-  max-width: calc(100% - 20px);
+  max-width: 100%;
   border-radius: 999px;
   background: linear-gradient(90deg, hsl(20, 95%, 58%), hsl(320, 95%, 62%));
   box-shadow: 0 0 8px hsla(320, 90%, 60%, 0.55);
@@ -1492,7 +1518,8 @@ button { font: inherit; }
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 0 10px 6px;
+  /* 2026-07-14 17차: 좌우 인셋은 .music-info-panel 박스 padding이 전담 —
+     여기 있던 개별 padding은 제거(이중 여백 방지). */
   margin: 0;
   box-sizing: border-box;
 }
