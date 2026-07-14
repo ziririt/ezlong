@@ -511,6 +511,32 @@ function bollingerBands(closes, period = 20, mult = 2) {
 // data/ohlcv-SOXX.json(2026-07-07 종가 기준)으로 아래와 동일한 로직을
 // Python으로 별도 재구현해 대조 — ADX 16.78 / +DI 19.65 / -DI 36.80로
 // TradingView 리포트 수치(ADX 17.58, DI− 36 부근)와 일치 확인.
+// 2026-07-14(3차): ATR(14) — Wilder 평균실질변동폭. adx() 내부에도 TR
+// 스무딩이 있지만 외부로 노출되지 않아 별도 함수로 복제했다(adx() 본체는
+// 건드리지 않음 — 공유 리팩터링보다 회귀 위험이 적은 복제를 택함).
+// 외부 리포트가 "손절 버퍼 = 0.5×ATR" 식으로 변동성 기반 리스크 폭을
+// 표현하길래, sanitizeTradeLevels(결정론적 손절 계산)는 그대로 두고
+// LLM 서술용 참고 지표로만 추가한다.
+function atr(highs, lows, closes, period = 14) {
+  const n = closes.length;
+  const tr = new Array(n).fill(0);
+  for (let i = 1; i < n; i++) {
+    const hl = highs[i] - lows[i];
+    const hc = Math.abs(highs[i] - closes[i - 1]);
+    const lc = Math.abs(lows[i]  - closes[i - 1]);
+    tr[i] = Math.max(hl, hc, lc);
+  }
+  const out = new Array(n).fill(null);
+  if (n <= period) return out;
+  let seed = 0;
+  for (let i = 1; i <= period; i++) seed += tr[i];
+  out[period] = seed / period;
+  for (let i = period + 1; i < n; i++) {
+    out[i] = (out[i - 1] * (period - 1) + tr[i]) / period;
+  }
+  return out;
+}
+
 function adx(highs, lows, closes, period = 14) {
   const n = closes.length;
   const tr = new Array(n).fill(0);
@@ -924,9 +950,14 @@ ${meta.context}
 [이동평균선]
 SMA5: ${fmt(ind.sma5)} | SMA20: ${fmt(ind.sma20)} | SMA50: ${fmt(ind.sma50)} | SMA100: ${fmt(ind.sma100)} | SMA200: ${fmt(ind.sma200)}
 현재가/SMA200: ${ind.sma200 ? ((price / ind.sma200 - 1) * 100).toFixed(2) + '%' : 'N/A'}
-EMA50: ${fmt(ind.ema50)} | EMA200: ${fmt(ind.ema200)}
+EMA10: ${fmt(ind.ema10)} | EMA20: ${fmt(ind.ema20)} | EMA50: ${fmt(ind.ema50)} | EMA200: ${fmt(ind.ema200)}
 현재가/EMA50: ${ind.ema50 ? ((price / ind.ema50 - 1) * 100).toFixed(2) + '%' : 'N/A'} | 현재가/EMA200: ${ind.ema200 ? ((price / ind.ema200 - 1) * 100).toFixed(2) + '%' : 'N/A'}
 (EMA는 SMA보다 최근 가격에 민감하게 반응한다 — SMA200 대비 EMA200 괴리가 크면 최근 추세 전환 가능성을 시사한다)
+EMA 스택 정렬: 현재가 > EMA10 > EMA20 > EMA50 순으로 전부 위에 있으면 "완전 강세 정렬", 반대로 전부 아래면 "완전 약세 정렬" — 일부만 걸쳐 있으면 전환 국면으로 서술하라.
+
+[ATR(14) — 평균실질변동폭, 변동성 참고용]
+ATR: ${fmt(ind.atr)} (현재가 대비 ${ind.atr && price ? (ind.atr / price * 100).toFixed(2) + '%' : 'N/A'})
+해석 참고: 손절선을 논할 때 "현재가 대비 절대적으로 가깝다/멀다"만 말하지 말고, ATR 대비 몇 배 거리인지도 함께 언급하면 변동성 대비 리스크 폭을 더 정확히 전달할 수 있다.
 
 [RSI 궤적 — 숫자 하나로 말하지 마라, 방향을 봐라]
 RSI(14) 현재: ${rsiNow}
@@ -1164,6 +1195,11 @@ async function processTicker(meta) {
   // MACD 내부 계산용으로만 쓰이던 것을 재사용(신규 함수 추가 없음).
   const ema50A  = ema(closes, 50);
   const ema200A = ema(closes, 200);
+  // 2026-07-14(3차): EMA10/EMA20 추가 — 외부 리포트의 "EMA 스택"(10<20<50<SMA200
+  // 정렬 여부로 단기~장기 추세 강도를 한눈에 보는 서술) 재현용.
+  const ema10A  = ema(closes, 10);
+  const ema20A  = ema(closes, 20);
+  const atrA    = atr(highs, lows, closes, 14);
   const rsiA    = rsi(closes, 14);
   const macdA   = macd(closes, 12, 26, 9);
   const bbA     = bollingerBands(closes, 20, 2);
@@ -1216,6 +1252,9 @@ async function processTicker(meta) {
     sma200: sma200A[n - 1],
     ema50:  ema50A[n - 1],
     ema200: ema200A[n - 1],
+    ema10:  ema10A[n - 1],
+    ema20:  ema20A[n - 1],
+    atr:    atrA[n - 1],
     rsi:    rsiA[n - 1],
     rsi5dAgo, rsi14dLow, rsi14dHigh,
     macd:   macdA[n - 1],
