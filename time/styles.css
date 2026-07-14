@@ -155,134 +155,12 @@ button { font: inherit; }
   opacity: 1;
 }
 
-.sky-photo::before,
-.sky-photo::after {
-  content: "";
-  position: absolute;
-  inset: -14%;
-  pointer-events: none;
-}
-
-.sky-photo::before {
-  /* 2026-07-07: "뚫어지게 봐도 모를 정도로 약하다"는 지적으로 강도를 올림
-     (opacity 0.34→0.48, 그라디언트 진하기도 함께 올림). */
-  opacity: 0.48;
-  background:
-    linear-gradient(103deg, transparent 0 18%, rgba(255,255,255,0.24) 42%, transparent 70%),
-    linear-gradient(18deg, transparent 0 30%, rgba(255,255,255,0.16) 50%, transparent 76%);
-  mix-blend-mode: screen;
-  animation: lightDrift 36s ease-in-out infinite alternate;
-}
-
-.sky-photo::after {
-  opacity: 0.34;
-  background:
-    repeating-linear-gradient(178deg, transparent 0 50px, rgba(255,255,255,0.18) 82px, transparent 136px);
-  filter: blur(18px);
-  animation: mistDrift 48s linear infinite;
-}
-
-.clock-app[data-scene="night"] .sky-photo::before { opacity: 0.16; }
-.clock-app[data-scene="night"] .sky-photo::after { opacity: 0.14; }
-
-.clock-app[data-weather="clear"] .sky-photo {
-  filter: saturate(1.08) contrast(1.02) brightness(1.03);
-}
-
-.clock-app[data-weather="partly-cloudy"] .sky-photo {
-  filter: saturate(1.02) contrast(1.01) brightness(1);
-}
-
-.clock-app[data-weather="clear"] .sky-photo::before,
-.clock-app[data-weather="partly-cloudy"] .sky-photo::before {
-  /* 2026-07-07: 착시 효과가 너무 약하다는 지적으로 강도를 올림 */
-  opacity: 0.54;
-  background:
-    radial-gradient(circle at 18% 18%, rgba(255,248,214,0.46), transparent 30%),
-    linear-gradient(112deg, transparent 0 16%, rgba(255,246,204,0.26) 42%, transparent 68%),
-    linear-gradient(18deg, transparent 0 32%, rgba(255,255,255,0.16) 52%, transparent 78%);
-  mix-blend-mode: screen;
-  animation: sunlightBreathe 42s ease-in-out infinite alternate;
-}
-
-.clock-app[data-weather="clear"] .sky-photo::after,
-.clock-app[data-weather="partly-cloudy"] .sky-photo::after {
-  opacity: 0.30;
-  background:
-    radial-gradient(circle at 28% 28%, rgba(255,255,255,0.28), transparent 26%),
-    repeating-linear-gradient(178deg, transparent 0 54px, rgba(255,255,255,0.16) 84px, transparent 142px);
-  filter: blur(20px);
-  animation: warmAirDrift 58s ease-in-out infinite alternate;
-}
-
-.clock-app[data-weather="light-rain"] .sky-photo,
-.clock-app[data-weather="rain"] .sky-photo,
-.clock-app[data-weather="heavy-rain"] .sky-photo {
-  filter: saturate(1.03) contrast(1.02) brightness(1.02);
-}
-
-.clock-app[data-weather="cloudy"] .sky-photo,
-.clock-app[data-weather="mist"] .sky-photo {
-  filter: saturate(0.96) contrast(0.99) brightness(1.01);
-}
-
-.clock-app[data-weather="light-rain"] .sky-photo::before,
-.clock-app[data-weather="rain"] .sky-photo::before,
-.clock-app[data-weather="heavy-rain"] .sky-photo::before {
-  opacity: 0.36;
-  background:
-    radial-gradient(ellipse at 22% 18%, rgba(255,255,255,0.32), transparent 34%),
-    radial-gradient(ellipse at 72% 24%, rgba(188,220,238,0.22), transparent 36%),
-    linear-gradient(180deg, rgba(88,132,160,0.16), rgba(24,40,74,0.14));
-  mix-blend-mode: screen;
-  backdrop-filter: blur(0.65px) saturate(1.08);
-  animation: mistDrift 42s linear infinite;
-}
-
-.clock-app[data-weather="light-rain"] .sky-photo::after,
-.clock-app[data-weather="rain"] .sky-photo::after,
-.clock-app[data-weather="heavy-rain"] .sky-photo::after {
-  opacity: 0.30;
-  background:
-    radial-gradient(ellipse 5px 8px at 12% 18%, rgba(255,255,255,0.70) 0 10%, rgba(210,235,248,0.32) 28%, transparent 62%),
-    radial-gradient(ellipse 4px 7px at 34% 42%, rgba(255,255,255,0.52) 0 12%, rgba(205,232,246,0.27) 30%, transparent 64%),
-    radial-gradient(ellipse 6px 10px at 61% 24%, rgba(255,255,255,0.58) 0 10%, rgba(205,232,246,0.25) 32%, transparent 65%),
-    radial-gradient(ellipse 3px 5px at 82% 58%, rgba(255,255,255,0.48) 0 14%, rgba(205,232,246,0.22) 34%, transparent 66%),
-    linear-gradient(178deg, transparent 0 42%, rgba(255,255,255,0.12) 43%, transparent 46%),
-    linear-gradient(186deg, transparent 0 58%, rgba(255,255,255,0.08) 59%, transparent 62%);
-  background-size: 140px 190px, 180px 230px, 220px 260px, 160px 210px, 240px 260px, 280px 320px;
-  background-position: 0 0, 48px 24px, 88px 12px, 26px 78px, 0 0, 50px 30px;
-  filter: blur(0.15px);
-  mix-blend-mode: screen;
-  backdrop-filter: blur(0.9px);
-  animation: windowRainDrift 48s ease-in-out infinite;
-}
-
-.clock-app[data-weather="rain"] .sky-photo::after { opacity: 0.34; }
-.clock-app[data-weather="heavy-rain"] .sky-photo::after {
-  opacity: 0.44;
-  backdrop-filter: blur(1.2px);
-  animation-duration: 38s;
-}
-
-.clock-app[data-weather="cloudy"] .sky-photo::before,
-.clock-app[data-weather="mist"] .sky-photo::before {
-  opacity: 0.34;
-  background:
-    radial-gradient(ellipse at 24% 22%, rgba(255,255,255,0.30), transparent 34%),
-    radial-gradient(ellipse at 72% 18%, rgba(226,238,244,0.22), transparent 36%),
-    linear-gradient(180deg, rgba(174,194,206,0.12), rgba(255,255,255,0.06));
-  mix-blend-mode: screen;
-  animation: lightDrift 44s ease-in-out infinite alternate;
-}
-
-.clock-app[data-weather="mist"] .sky-photo::after {
-  opacity: 0.36;
-  background:
-    repeating-linear-gradient(178deg, transparent 0 38px, rgba(255,255,255,0.18) 68px, transparent 118px);
-  filter: blur(22px);
-  animation: mistDrift 38s linear infinite;
-}
+/* 2026-07-15: 날씨별 무드 레이어(sky-photo::before/::after, mix-blend-mode:screen
+   흰색 그라디언트 + blur)를 전면 제거. 7/6 도입 후 7/7에 "약하다"는 피드백으로
+   진하기를 올렸는데(투명도 0.34→0.48 등), 여러 겹이 누적되며 사진이 뿌옇고
+   해상도가 낮아 보이는 부작용으로 이어졌다(유저 리포트). 날씨별 filter(saturate/
+   contrast/brightness)도 같은 이유로 제거 — 이제 사진은 항상 위의 기본
+   filter: saturate(1.04) contrast(1.03) 하나만 적용돼 원본에 가장 가깝다. */
 
 .hero-shade {
   z-index: -2;
@@ -2027,49 +1905,6 @@ button { font: inherit; }
   0% { transform: scale(1.03) translate3d(-0.5%, 0.25%, 0); }
   45% { transform: scale(1.03) translate3d(0.95%, -0.72%, 0); }
   100% { transform: scale(1.03) translate3d(1.55%, -1.25%, 0); }
-}
-
-@keyframes lightDrift {
-  from { transform: translate3d(-7%, 0.6%, 0) rotate(0.001deg); }
-  to { transform: translate3d(7%, -3.6%, 0) rotate(0.001deg); }
-}
-
-@keyframes mistDrift {
-  from { transform: translate3d(-6%, -1.8%, 0); }
-  to { transform: translate3d(6%, 1.8%, 0); }
-}
-
-@keyframes sunlightBreathe {
-  from { transform: translate3d(-4%, 1.4%, 0) scale(1); opacity: 0.34; }
-  to { transform: translate3d(4%, -2.8%, 0) scale(1.05); opacity: 0.58; }
-}
-
-@keyframes warmAirDrift {
-  from { transform: translate3d(-3%, 1.1%, 0); }
-  to { transform: translate3d(3.5%, -1.9%, 0); }
-}
-
-@keyframes windowRainDrift {
-  0% {
-    opacity: 0.20;
-    background-position: 0 -18px, 48px -10px, 88px -26px, 26px 22px, 0 -12px, 50px -18px;
-    transform: translate3d(-0.8%, -0.4%, 0) scale(1.01);
-  }
-  42% {
-    opacity: 0.31;
-    background-position: 0 32px, 48px 46px, 88px 28px, 26px 94px, 0 42px, 50px 36px;
-    transform: translate3d(0.4%, 0.5%, 0) scale(1.018);
-  }
-  72% {
-    opacity: 0.24;
-    background-position: 0 76px, 48px 102px, 88px 84px, 26px 146px, 0 86px, 50px 90px;
-    transform: translate3d(0.9%, 1%, 0) scale(1.022);
-  }
-  100% {
-    opacity: 0.18;
-    background-position: 0 128px, 48px 154px, 88px 136px, 26px 202px, 0 138px, 50px 144px;
-    transform: translate3d(1.2%, 1.4%, 0) scale(1.025);
-  }
 }
 
 @keyframes driftA {
