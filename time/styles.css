@@ -1390,6 +1390,20 @@ button { font: inherit; }
 .music-toggle.is-playing { background-image: url("assets/icons/music/pause.png"); }
 .music-skip { background-image: url("assets/icons/music/skip.png"); }
 
+/* 2026-07-14 20차: 플립시계+날씨줄 전용 래퍼 — 이 그룹의 높이가 아래
+   .music-info-panel의 펼침/닫힘과 완전히 무관하게 고정되도록 만드는 것이
+   유일한 목적이다. display:flow-root로 새 BFC를 열어 자식(특히 clock-meta)
+   의 margin이 밖으로 collapse-through 되는 걸 막고, 그 결과 이 래퍼의
+   "auto 높이"가 flip-clock+clock-meta만으로 확정적으로 계산된다 —
+   .music-info-panel이 absolute로 빠져있어(아래 참조) 이 계산에 전혀
+   끼어들지 않는다. .clock-stage는 grid의 1fr 행 안에서 이 래퍼를
+   align-self:center로 중앙정렬하므로, 래퍼 높이가 고정되면 정렬 기준점도
+   고정되어 패널을 열어도 플립시계·날씨줄이 한 픽셀도 움직이지 않는다. */
+.clock-fixed-group {
+  position: relative;
+  display: flow-root;
+}
+
 /* 2026-07-13: 음악 정보 패널 — 기본은 닫힘(높이 0)이라 평소 레이아웃에는
    영향이 없다. 열리면 clock-meta(날씨/음악 버튼 줄) 아래에 비주얼라이저 +
    진행률 바 + 곡명 + 좋아요/싫어요/설정 버튼이 나타난다.
@@ -1399,8 +1413,16 @@ button { font: inherit; }
    이 박스의 padding이 전담하므로, 자식 요소들(viz-wrap/progress-bar/
    track-row)에 있던 개별 10px 인셋은 모두 제거해 이중 여백을 막는다.
    max-height:0 + overflow:hidden 조합이라 padding이 있어도 닫힌 상태에서는
-   실제 렌더 높이가 0으로 완전히 클리핑되어 평소 레이아웃엔 영향이 없다. */
+   실제 렌더 높이가 0으로 완전히 클리핑되어 평소 레이아웃엔 영향이 없다.
+   2026-07-14 20차: "패널을 열면 시계·날씨줄이 밀려 올라간다"는 재지적 —
+   더 이상 정상 흐름(in-flow) 요소가 아니라 .clock-fixed-group 안에서
+   position:absolute로 날씨줄 바로 아래에 겹쳐 그린다. 위 .clock-fixed-group
+   참조. */
 .music-info-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
   overflow: hidden;
   max-height: 0;
   opacity: 0;
@@ -1484,7 +1506,9 @@ button { font: inherit; }
      터치 히트 영역을 10px→18px로 넓힌다. 시각적 트랙/캡슐 두께(4px/8px)는
      그대로 top:50% 중앙 정렬이라 모양은 안 바뀌고 여백만 늘어난다. */
   height: 18px;
-  margin: 0 0 8px;
+  /* 2026-07-14 20차: "진행바와 곡명줄 간격이 너무 벌어져있다, 절반으로
+     줄여달라"는 피드백 — 8px → 4px. */
+  margin: 0 0 4px;
   cursor: pointer;
   touch-action: none; /* 드래그 중 페이지 스크롤/새로고침 제스처와 충돌 방지 */
 }
@@ -1528,6 +1552,47 @@ button { font: inherit; }
      여기 있던 개별 padding은 제거(이중 여백 방지). */
   margin: 0;
   box-sizing: border-box;
+}
+
+/* 2026-07-14: "싫어요" 클릭 시 "연기처럼" 떴다 사라지는 가벼운 피드백
+   토스트. .music-info-panel이 position:absolute라 여기서 중앙에 겹쳐
+   띄우면 별도 컨테이너 없이도 항상 패널 정중앙에 뜬다. 총 수명은
+   app.js의 타이머(약 5초)가 관리 — 여기 transition 값은 그 타이밍과
+   맞물려 있으니 둘 다 건드릴 땐 같이 확인할 것. */
+.music-toast {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  padding: 9px 16px;
+  max-width: calc(100% - 24px);
+  border-radius: 999px;
+  background: rgba(18, 22, 32, 0.84);
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px) saturate(1.1);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  filter: blur(10px);
+  pointer-events: none;
+  z-index: 30;
+  transition: opacity 0.35s ease, transform 0.35s ease, filter 0.35s ease;
+}
+.music-toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  filter: blur(0);
+}
+.music-toast.is-leaving {
+  opacity: 0;
+  transform: translate(-50%, -60%) scale(1.08);
+  filter: blur(12px);
+  transition: opacity 1.4s ease, transform 1.4s ease, filter 1.4s ease;
 }
 
 .music-track-title {

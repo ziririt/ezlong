@@ -202,6 +202,7 @@ const musicTrackTitle = document.getElementById("musicTrackTitle");
 const musicLikeButton = document.getElementById("musicLikeButton");
 const musicDislikeButton = document.getElementById("musicDislikeButton");
 const musicGearOpen = document.getElementById("musicGearOpen");
+const musicToast = document.getElementById("musicToast");
 const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
 const musicPlaylistOptionsEl = document.getElementById("musicPlaylistOptions");
 const musicHistoryList = document.getElementById("musicHistoryList");
@@ -1365,8 +1366,10 @@ function saveDislikedTracks(list) {
 // 바로 음악설정 오픈)으로 즉시 돌아간다.
 const MUSIC_PANEL_V2_ENABLED = true;
 
-// "좋아요"는 기존에 없던 개념이라 새 키로 저장한다(회전 로직에는 아직
-// 영향을 주지 않음 — 우선 로컬 기록만). "싫어요"는 이미 있던
+// "좋아요"는 기존에 없던 개념이라 새 키로 저장한다. 2026-07-14: 좋아요한
+// 곡은 pickNextTrackIndex()에서 후보 배열에 가중치(복제)를 줘서 다음 곡
+// 선정 확률을 높인다(MUSIC_LIKED_WEIGHT, 아래 참조) — "다음에 플레이될
+// 가능성을 높여달라"는 요청 반영. "싫어요"는 이미 있던
 // musicDislikedStorageKey/loadDislikedTracks/saveDislikedTracks를 그대로
 // 재사용한다 — 수동 스킵으로 추론되는 기존 싫어요와 같은 목록이라야
 // pickNextTrackIndex()의 제외 로직이 곧바로 적용된다.
@@ -1402,6 +1405,43 @@ function renderMusicReactionButtons() {
   const disliked = file ? loadDislikedTracks().includes(file) : false;
   if (musicLikeButton) musicLikeButton.setAttribute("aria-pressed", String(liked));
   if (musicDislikeButton) musicDislikeButton.setAttribute("aria-pressed", String(disliked));
+}
+
+// 2026-07-14: "싫어요" 눌렀을 때 "연기처럼" 나타났다 사라지는 가벼운 피드백
+// 토스트. 유머러스한 영어 문구를 매번 무작위로 골라서 단조롭지 않게 한다.
+// 총 수명 약 5초: 페이드인(0.35s) → 유지(~3.15s) → 페이드아웃(1.5s).
+const MUSIC_DISLIKE_TOAST_MESSAGES = [
+  "Noted. Never gonna hear this again. 💨",
+  "Poof — vanished from the rotation forever.",
+  "RIP this track. Gone but not missed.",
+  "Banished. Officially dead to us now.",
+  "Yeeted into the void. Never again.",
+  "Consider it erased from existence. 💨"
+];
+let musicToastHideTimer = null;
+let musicToastClearTimer = null;
+function showMusicToast(text) {
+  if (!musicToast) return;
+  clearTimeout(musicToastHideTimer);
+  clearTimeout(musicToastClearTimer);
+  musicToast.textContent = text;
+  musicToast.classList.remove("is-leaving");
+  musicToast.setAttribute("aria-hidden", "false");
+  // 연속 클릭 시 트랜지션이 재트리거되도록 강제 리플로우.
+  void musicToast.offsetWidth;
+  musicToast.classList.add("is-visible");
+  musicToastHideTimer = setTimeout(() => {
+    musicToast.classList.remove("is-visible");
+    musicToast.classList.add("is-leaving");
+  }, 3500);
+  musicToastClearTimer = setTimeout(() => {
+    musicToast.classList.remove("is-leaving");
+    musicToast.setAttribute("aria-hidden", "true");
+  }, 5000);
+}
+function showMusicDislikeToast() {
+  const msg = MUSIC_DISLIKE_TOAST_MESSAGES[Math.floor(Math.random() * MUSIC_DISLIKE_TOAST_MESSAGES.length)];
+  showMusicToast(msg);
 }
 
 function isMusicPanelOpen() {
@@ -1702,6 +1742,30 @@ function pickNextTrackIndex() {
     const track = musicPlaylist[i];
     return Boolean(track && track.file && disliked.has(track.file));
   };
+  // 2026-07-14: "좋아요" 누른 곡은 다음 곡 선정 시 뽑힐 확률을 높인다 —
+  // 최종 후보 배열에 넣기 직전, 좋아요 곡의 인덱스를 N번 더 복제해서
+  // Math.random() 추첨 대상 안에서 차지하는 비중을 키우는 방식(가장
+  // 단순하고, 카테고리 로테이션·그룹 간격 제외 로직은 전혀 건드리지
+  // 않는다). "내일 한번 더 듣게 해주거나"라는 요청은 완전한 예약 스케줄
+  // 대신 이 확률 가중치로 구현 — 후보 풀에 다시 들어오는 순간부터
+  // 평소보다 훨씬 잘 뽑힌다.
+  const liked = new Set(loadLikedTracks());
+  const isLiked = (i) => {
+    const track = musicPlaylist[i];
+    return Boolean(track && track.file && liked.has(track.file));
+  };
+  const MUSIC_LIKED_WEIGHT = 4;
+  const applyLikedWeight = (arr) => {
+    if (!Array.isArray(arr) || arr.length === 0) return arr;
+    const weighted = [];
+    arr.forEach((i) => {
+      weighted.push(i);
+      if (isLiked(i)) {
+        for (let extra = 1; extra < MUSIC_LIKED_WEIGHT; extra += 1) weighted.push(i);
+      }
+    });
+    return weighted;
+  };
   const matchesFilter = (i) => filterKey === "all" || trackCategoryKey(musicPlaylist[i]) === filterKey;
   const includeRock = loadMusicGenreToggle(musicIncludeRockStorageKey);
   const includeVocal = loadMusicGenreToggle(musicIncludeVocalStorageKey);
@@ -1717,6 +1781,11 @@ function pickNextTrackIndex() {
     if (matchesFilter(i) && matchesGenreToggle(i) && !isDisliked(i)) baseIndices.push(i);
   }
   // 필터 결과가 통째로 비면(이론상 거의 없음) 안전하게 전체에서 고른다.
+  // 주의: 이 최후 폴백은 disliked 필터까지 무시하고 전체 카탈로그로
+  // 되돌아간다 — 즉 "현재 필터+장르 조건에 맞는 곡을 전부 싫어요 했을
+  // 때"라는 극단적 경우에만 disliked 곡이 다시 나올 수 있다. 반대로
+  // 폴백 자체를 없애면 그 경우 재생이 아예 멈춰버리므로, 의도적으로
+  // 남겨둔 안전장치다(2026-07-14 재확인 — 평소엔 절대 발동하지 않음).
   const searchBase = baseIndices.length > 0
     ? baseIndices
     : Array.from({ length: total }, (_, i) => i);
@@ -1743,7 +1812,8 @@ function pickNextTrackIndex() {
     if (pool.length === 0) pool = searchBase;
     let groupSafe = pool.filter(isGroupSafe);
     if (groupSafe.length === 0) groupSafe = pool; // 후보가 다 걸러지면 간격 제약을 완화
-    return groupSafe[Math.floor(Math.random() * groupSafe.length)];
+    const weightedGroupSafe = applyLikedWeight(groupSafe);
+    return weightedGroupSafe[Math.floor(Math.random() * weightedGroupSafe.length)];
   }
 
   // 기본(전체) 모드 — 카테고리를 라운드로빈으로 순환해 장르가 골고루 섞이게
@@ -1770,7 +1840,8 @@ function pickNextTrackIndex() {
   let unheardCandidates = candidates.filter((i) => !heard.has(i));
   if (unheardCandidates.length === 0) unheardCandidates = candidates; // 이 카테고리만 새 사이클 시작
 
-  return unheardCandidates[Math.floor(Math.random() * unheardCandidates.length)];
+  const weightedUnheard = applyLikedWeight(unheardCandidates);
+  return weightedUnheard[Math.floor(Math.random() * weightedUnheard.length)];
 }
 
 let musicErrorRetryCount = 0;
@@ -2854,6 +2925,7 @@ if (musicDislikeButton) musicDislikeButton.addEventListener("click", (event) => 
     saveDislikedTracks(disliked);
   }
   renderMusicReactionButtons();
+  showMusicDislikeToast();
   // 명시적으로 싫어요를 누른 것이므로, 스킵과 마찬가지로 바로 다음 곡으로
   // 넘어간다(이미 disliked에 들어갔으니 다시 뽑히지 않는다).
   playNextTrack();

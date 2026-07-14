@@ -34,47 +34,55 @@
       <section class="clock-stage" aria-live="polite">
         <audio id="bgAudio" preload="auto"></audio>
         <audio id="bgAudioB" preload="auto"></audio>
-        <div class="flip-clock" aria-label="현재 시간">
-          <div class="flip-unit" data-unit="hours">
-            <span class="flip-card" id="hourTens">1</span>
-            <span class="flip-card" id="hourOnes">2</span>
-          </div>
-          <span class="clock-colon" aria-hidden="true">:</span>
-          <div class="flip-unit" data-unit="minutes">
-            <span class="flip-card" id="minuteTens">1</span>
-            <span class="flip-card" id="minuteOnes">0</span>
-          </div>
-        </div>
-        <div class="clock-meta">
-          <button type="button" class="weather-chip" id="weatherChipOpen" aria-label="날씨 상세 정보 보기" aria-haspopup="dialog" aria-controls="weatherDetailPanel" aria-expanded="false">
-            <span id="weatherIcon" class="mini-weather sun-icon" aria-hidden="true"></span>
-            <span id="weatherSummary">맑음</span>
-            <strong id="tempLabel">28°</strong>
-          </button>
-          <div class="music-controls" aria-label="배경음악">
-            <button class="icon-button music-note-button" id="musicSettingsOpen" type="button" aria-label="음악 정보 보기" aria-controls="musicInfoPanel" aria-expanded="false"></button>
-            <button class="icon-button music-toggle" id="musicToggle" type="button" aria-label="음악 재생" aria-pressed="false"></button>
-            <button class="icon-button music-skip" id="musicSkip" type="button" aria-label="다음 곡"></button>
-          </div>
-        </div>
-        <!-- 2026-07-14 17차: 성동님 요청으로 순서 재배치 — 1)플립시계 2)날씨+
-             음악버튼줄 3)비주얼라이저(펼쳐질 때만) 순으로 바뀐다. 이전엔
-             이 패널이 clock-meta보다 위에 있어서, 패널이 닫혀있는 기본
-             상태에서도 "날씨줄이 시계 위에" 보이는 배치였다. 기본은 닫힘
-             (높이 0)이라 평소 레이아웃에는 영향이 없다. app.js의
-             MUSIC_PANEL_V2_ENABLED로 즉시 롤백 가능. -->
-        <div class="music-info-panel" id="musicInfoPanel" aria-hidden="true">
-          <div class="music-viz-wrap" id="musicVizWrap" aria-hidden="true"></div>
-          <div class="music-progress-bar" id="musicProgressBar" aria-hidden="true">
-            <div class="music-progress-fill" id="musicProgressFill"></div>
-          </div>
-          <div class="music-track-row">
-            <span class="music-track-title" id="musicTrackTitle">재생 대기 중</span>
-            <div class="music-track-actions">
-              <button class="icon-button music-like-button" id="musicLikeButton" type="button" aria-label="이 곡 좋아요" aria-pressed="false"></button>
-              <button class="icon-button music-dislike-button" id="musicDislikeButton" type="button" aria-label="이 곡 싫어요" aria-pressed="false"></button>
-              <button class="icon-button music-gear-button" id="musicGearOpen" type="button" aria-label="음악설정 열기" aria-controls="quoteSettings"></button>
+        <!-- 2026-07-14 20차: 성동님 재지적 — "패널을 열면 플립시계·날씨줄이
+             위로 밀려 올라간다, 공간이 충분한데도 왜 밀어버리냐. 이 줄은
+             가만히 있고 그 아래에 비주얼라이저만 나타나야 한다." 원인은
+             .clock-stage가 grid의 1fr 행 안에서 align-self:center로
+             중앙정렬되고 있어서, 패널이 펼쳐져 내용 높이가 늘면 그 중앙정렬
+             기준점이 유지된 채 박스 전체가 위아래로 같이 커져 보였기
+             때문이다. 아래 .clock-fixed-group(position:relative + flow-root)
+             으로 플립시계+날씨줄만 감싸서 이 그룹의 높이를 패널 상태와
+             무관하게 고정시키고, 비주얼라이저 패널은 그 안에서
+             position:absolute로 아래에 겹쳐 그린다 — 그러면 .clock-stage의
+             중앙정렬 계산 자체가 패널 펼침과 완전히 무관해진다. -->
+        <div class="clock-fixed-group">
+          <div class="flip-clock" aria-label="현재 시간">
+            <div class="flip-unit" data-unit="hours">
+              <span class="flip-card" id="hourTens">1</span>
+              <span class="flip-card" id="hourOnes">2</span>
             </div>
+            <span class="clock-colon" aria-hidden="true">:</span>
+            <div class="flip-unit" data-unit="minutes">
+              <span class="flip-card" id="minuteTens">1</span>
+              <span class="flip-card" id="minuteOnes">0</span>
+            </div>
+          </div>
+          <div class="clock-meta">
+            <button type="button" class="weather-chip" id="weatherChipOpen" aria-label="날씨 상세 정보 보기" aria-haspopup="dialog" aria-controls="weatherDetailPanel" aria-expanded="false">
+              <span id="weatherIcon" class="mini-weather sun-icon" aria-hidden="true"></span>
+              <span id="weatherSummary">맑음</span>
+              <strong id="tempLabel">28°</strong>
+            </button>
+            <div class="music-controls" aria-label="배경음악">
+              <button class="icon-button music-note-button" id="musicSettingsOpen" type="button" aria-label="음악 정보 보기" aria-controls="musicInfoPanel" aria-expanded="false"></button>
+              <button class="icon-button music-toggle" id="musicToggle" type="button" aria-label="음악 재생" aria-pressed="false"></button>
+              <button class="icon-button music-skip" id="musicSkip" type="button" aria-label="다음 곡"></button>
+            </div>
+          </div>
+          <div class="music-info-panel" id="musicInfoPanel" aria-hidden="true">
+            <div class="music-viz-wrap" id="musicVizWrap" aria-hidden="true"></div>
+            <div class="music-progress-bar" id="musicProgressBar" aria-hidden="true">
+              <div class="music-progress-fill" id="musicProgressFill"></div>
+            </div>
+            <div class="music-track-row">
+              <span class="music-track-title" id="musicTrackTitle">재생 대기 중</span>
+              <div class="music-track-actions">
+                <button class="icon-button music-like-button" id="musicLikeButton" type="button" aria-label="이 곡 좋아요" aria-pressed="false"></button>
+                <button class="icon-button music-dislike-button" id="musicDislikeButton" type="button" aria-label="이 곡 싫어요" aria-pressed="false"></button>
+                <button class="icon-button music-gear-button" id="musicGearOpen" type="button" aria-label="음악설정 열기" aria-controls="quoteSettings"></button>
+              </div>
+            </div>
+            <div class="music-toast" id="musicToast" aria-hidden="true"></div>
           </div>
         </div>
       </section>
