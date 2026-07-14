@@ -1,12 +1,12 @@
 {
-  "lastRun": "2026-07-14T05:17:22.629Z",
-  "lastRunKST": "2026-07-14 14:17:22 KST",
+  "lastRun": "2026-07-14T07:17:23.734Z",
+  "lastRunKST": "2026-07-14 16:17:23 KST",
   "summary": {
-    "ok": 5,
-    "triggered": 1,
+    "ok": 4,
+    "triggered": 0,
     "alreadyRunning": 0,
     "stale": 0,
-    "skipped": 4,
+    "skipped": 6,
     "errors": 0
   },
   "results": [
@@ -14,7 +14,7 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-07-14T05:17:22.629Z",
+      "checkedAt": "2026-07-14T07:17:23.734Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -22,29 +22,26 @@
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-07-14T05:17:22.629Z",
-      "lastUpdate": "2026-07-14T03:21:32.650Z",
-      "ageHours": 1.9,
-      "maxAgeHours": 2.5,
-      "status": "OK",
-      "reason": "최신 (1.9h 전 업데이트)"
+      "checkedAt": "2026-07-14T07:17:23.734Z",
+      "status": "SKIP",
+      "reason": "비활성 시간대"
     },
     {
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-07-14T05:17:22.629Z",
-      "lastUpdate": "2026-07-14T03:17:45.822Z",
-      "ageHours": 2,
+      "checkedAt": "2026-07-14T07:17:23.734Z",
+      "lastUpdate": "2026-07-14T07:11:13.301Z",
+      "ageHours": 0.1,
       "maxAgeHours": 5,
       "status": "OK",
-      "reason": "최신 (2h 전 업데이트)"
+      "reason": "최신 (0.1h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-07-14T05:17:22.629Z",
+      "checkedAt": "2026-07-14T07:17:23.734Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -52,7 +49,7 @@
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-07-14T05:17:22.629Z",
+      "checkedAt": "2026-07-14T07:17:23.734Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -60,18 +57,18 @@
       "id": "scorecard",
       "name": "긍정vs부정 스코어카드",
       "workflow": "market-scorecard.yml",
-      "checkedAt": "2026-07-14T05:17:22.629Z",
-      "lastUpdate": "2026-07-14T02:50:58Z",
-      "ageHours": 2.4,
+      "checkedAt": "2026-07-14T07:17:23.734Z",
+      "lastUpdate": "2026-07-14T05:17:23Z",
+      "ageHours": 2,
       "maxAgeHours": 8,
       "status": "OK",
-      "reason": "최신 (2.4h 전 업데이트)"
+      "reason": "최신 (2h 전 업데이트)"
     },
     {
       "id": "stocks-prices",
       "name": "심플 주가 실시간",
       "workflow": "fetch-stocks-prices.yml",
-      "checkedAt": "2026-07-14T05:17:22.629Z",
+      "checkedAt": "2026-07-14T07:17:23.734Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -79,34 +76,31 @@
       "id": "stocks-data",
       "name": "심플 주가 일간(스파크라인)",
       "workflow": "fetch-stocks-data.yml",
-      "checkedAt": "2026-07-14T05:17:22.629Z",
+      "checkedAt": "2026-07-14T07:17:23.734Z",
       "lastUpdate": "2026-07-13T23:02:33.514486+00:00",
-      "ageHours": 6.2,
+      "ageHours": 8.2,
       "maxAgeHours": 26,
       "status": "OK",
-      "reason": "최신 (6.2h 전 업데이트)"
+      "reason": "최신 (8.2h 전 업데이트)"
     },
     {
       "id": "market-cycle",
       "name": "마켓 사이클 주봉",
       "workflow": "fetch-market-cycle.yml",
-      "checkedAt": "2026-07-14T05:17:22.629Z",
+      "checkedAt": "2026-07-14T07:17:23.734Z",
       "lastUpdate": "2026-07-13T23:04:55.866Z",
-      "ageHours": 6.2,
+      "ageHours": 8.2,
       "maxAgeHours": 30,
       "status": "OK",
-      "reason": "최신 (6.2h 전 업데이트)"
+      "reason": "최신 (8.2h 전 업데이트)"
     },
     {
       "id": "kr-prices",
       "name": "한국 주가",
       "workflow": "fetch-kr-prices.yml",
-      "checkedAt": "2026-07-14T05:17:22.629Z",
-      "lastUpdate": "2026-07-14T03:47:44Z",
-      "ageHours": 1.5,
-      "maxAgeHours": 1,
-      "status": "TRIGGERED",
-      "reason": "1.5h 지연 감지 → 자동 트리거"
+      "checkedAt": "2026-07-14T07:17:23.734Z",
+      "status": "SKIP",
+      "reason": "비활성 시간대"
     }
   ]
 }

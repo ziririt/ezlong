@@ -1036,7 +1036,12 @@ button { font: inherit; }
   /* 2026-07-13: play.png/pause.png는 흰색 단색 아이콘이라, 이전처럼 버튼
      배경을 거의 불투명한 흰색(0.86)으로 채우면 "흰 세모 위에 흰 배경"이
      되어 아이콘이 거의 안 보였다(재지적 반영). 메인 재생 버튼(.music-toggle)과
-     같은 원리로 어두운 유리질 톤으로 낮춰 흰 세모가 뚜렷하게 보이게 한다. */
+     같은 원리로 어두운 유리질 톤으로 낮춰 흰 세모가 뚜렷하게 보이게 한다.
+     2026-07-15: "재생/일시정지 도형이 너무 작다" 재지적 — Pillow로 확인해보니
+     play.png/pause.png 원본이 256x256 캔버스에서 실제 도형은 가로 기준 약
+     25%만 차지해서(투명 여백이 대부분), 기존 42%로는 실제 보이는 도형이
+     34px 버튼의 약 10%에 불과했다. 메인 .music-toggle과 같은 계산으로
+     140%까지 올려 도형 체감 크기를 버튼의 약 35%로 끌어올린다. */
   width: 34px;
   height: 34px;
   border: 1px solid rgba(255,255,255,0.3);
@@ -1045,7 +1050,7 @@ button { font: inherit; }
   background-image: url("assets/icons/music/play.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 42%;
+  background-size: 140%;
   cursor: pointer;
 }
 
@@ -1053,6 +1058,54 @@ button { font: inherit; }
   background-color: rgba(34, 197, 94, 0.85);
   background-image: url("assets/icons/music/pause.png");
   border-color: rgba(34, 197, 94, 0.85);
+}
+
+/* 2026-07-15: 히스토리 목록에서도 좋아요/싫어요를 보고 바로 고칠 수 있게
+   요청받아 신설 — "히스토리에 좋아요/싫어요 다 있어야 하고, 여기서 한번
+   더 누르면 취소, 또 누르면 다시 적용(토글)". 메인 패널의 좋아요/싫어요
+   버튼과 같은 아이콘을 재사용하되, 표 행 높이에 맞춰 더 작게(28px). */
+.music-history-reaction-th {
+  width: 78px;
+}
+
+.music-history-reaction-cell {
+  padding: 8px 14px 8px 0;
+  width: 78px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.music-history-like-btn,
+.music-history-dislike-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  background-color: rgba(255,255,255,0.14);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 52%;
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.music-history-dislike-btn {
+  margin-left: 6px;
+}
+
+.music-history-like-btn { background-image: url("assets/icons/music/thumb_up.svg"); }
+.music-history-dislike-btn { background-image: url("assets/icons/music/thumb_down.svg"); }
+
+.music-history-like-btn[aria-pressed="true"] {
+  opacity: 1;
+  background-color: rgba(34, 197, 94, 0.35);
+  border-color: rgba(34, 197, 94, 0.7);
+}
+
+.music-history-dislike-btn[aria-pressed="true"] {
+  opacity: 1;
+  background-color: rgba(239, 68, 68, 0.32);
+  border-color: rgba(239, 68, 68, 0.7);
 }
 
 .weather-chip strong {
@@ -1397,6 +1450,35 @@ button { font: inherit; }
 .music-toggle.is-playing { background-image: url("assets/icons/music/pause.png"); }
 .music-skip { background-image: url("assets/icons/music/skip.png"); }
 
+/* 2026-07-15: "재생/일시정지 도형이 너무 작아서 뭔지도 안 보인다" 재지적 —
+   원인 확인(Pillow로 실제 PNG 픽셀 분석): play.png/pause.png는 256x256
+   캔버스인데 실제 세모/막대 도형은 가로 기준 약 25%만 차지하고 나머지는
+   투명 여백이다(skip.png는 43%, note.png는 81%라 유독 이 둘만 작아 보였다).
+   .music-controls .icon-button의 공용 background-size:82%로는 도형 실제
+   크기가 82%*25%≈20%까지 줄어들어 버튼 안에서 티도 안 났다. 이 규칙은
+   .music-controls .icon-button과 클래스 2개짜리라 명시성이 같아야 이겨서,
+   선택자를 똑같이 2개 클래스로 맞추고 이 파일 뒤쪽에 둬 순서로 이긴다.
+   background-size를 82%→140%로 키워 도형의 실제 시각적 크기를 skip.png와
+   비슷한 수준(버튼 폭의 약 35%)까지 끌어올린다 — 캔버스가 버튼보다
+   커지는 부분은 버튼 박스 바깥이라 자동으로 잘려 보이지 않는다. */
+.music-controls .music-toggle {
+  background-size: 140%;
+}
+
+/* 2026-07-14 20차: 플립시계+날씨줄 전용 래퍼 — 이 그룹의 높이가 아래
+   .music-info-panel의 펼침/닫힘과 완전히 무관하게 고정되도록 만드는 것이
+   유일한 목적이다. display:flow-root로 새 BFC를 열어 자식(특히 clock-meta)
+   의 margin이 밖으로 collapse-through 되는 걸 막고, 그 결과 이 래퍼의
+   "auto 높이"가 flip-clock+clock-meta만으로 확정적으로 계산된다 —
+   .music-info-panel이 absolute로 빠져있어(아래 참조) 이 계산에 전혀
+   끼어들지 않는다. .clock-stage는 grid의 1fr 행 안에서 이 래퍼를
+   align-self:center로 중앙정렬하므로, 래퍼 높이가 고정되면 정렬 기준점도
+   고정되어 패널을 열어도 플립시계·날씨줄이 한 픽셀도 움직이지 않는다. */
+.clock-fixed-group {
+  position: relative;
+  display: flow-root;
+}
+
 /* 2026-07-13: 음악 정보 패널 — 기본은 닫힘(높이 0)이라 평소 레이아웃에는
    영향이 없다. 열리면 clock-meta(날씨/음악 버튼 줄) 아래에 비주얼라이저 +
    진행률 바 + 곡명 + 좋아요/싫어요/설정 버튼이 나타난다.
@@ -1406,8 +1488,16 @@ button { font: inherit; }
    이 박스의 padding이 전담하므로, 자식 요소들(viz-wrap/progress-bar/
    track-row)에 있던 개별 10px 인셋은 모두 제거해 이중 여백을 막는다.
    max-height:0 + overflow:hidden 조합이라 padding이 있어도 닫힌 상태에서는
-   실제 렌더 높이가 0으로 완전히 클리핑되어 평소 레이아웃엔 영향이 없다. */
+   실제 렌더 높이가 0으로 완전히 클리핑되어 평소 레이아웃엔 영향이 없다.
+   2026-07-14 20차: "패널을 열면 시계·날씨줄이 밀려 올라간다"는 재지적 —
+   더 이상 정상 흐름(in-flow) 요소가 아니라 .clock-fixed-group 안에서
+   position:absolute로 날씨줄 바로 아래에 겹쳐 그린다. 위 .clock-fixed-group
+   참조. */
 .music-info-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
   overflow: hidden;
   max-height: 0;
   opacity: 0;
@@ -1418,7 +1508,11 @@ button { font: inherit; }
   padding: 12px 10px 10px;
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: clamp(18px, 4vw, 28px);
-  background: rgba(13, 20, 31, 0.16);
+  /* 2026-07-15: 아래 .quote-panel(rgba(13,20,31,0.02))보다 오히려 덜
+     투명했다("문장박스보다 투명도가 낮은 것 같다"는 재지적 — 맞았다, 0.16
+     vs 0.02였다). quote-panel보다 조금 더 투명하게 0.01로 낮춰서 뒤 배경
+     사진이 더 시원하게 비치도록 한다. */
+  background: rgba(13, 20, 31, 0.01);
   backdrop-filter: blur(3px) saturate(1.04);
 }
 
@@ -1428,8 +1522,11 @@ button { font: inherit; }
      2026-07-14 17차: 박스 padding(상12+하10=22px)이 늘어난 만큼 상한을
      같이 올려 내용이 잘리지 않게 한다.
      2026-07-14 19차: 진행률 바 터치 히트 영역이 10px→18px로 커진 만큼(+8px)
-     상한도 같이 올린다. */
-  max-height: clamp(153px, 26vh, 193px);
+     상한도 같이 올린다.
+     2026-07-15: 곡제목을 말줄임 대신 줄바꿈하도록 바꾸면서(아래
+     .music-track-title 참조) 긴 제목은 가끔 2줄이 될 수 있다 — 그만큼(~20px)
+     상한을 더 올려서 2줄일 때도 패널 안에서 잘리지 않게 한다. */
+  max-height: clamp(175px, 28vh, 215px);
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
@@ -1441,7 +1538,9 @@ button { font: inherit; }
      막상 실기기에서는 너무 커서 어색하다는 재지적 — 딱 절반 수준으로
      되돌린다(96~170px → 48~85px). */
   height: clamp(48px, 10vh, 85px);
-  margin: 0 0 8px;
+  /* 2026-07-15: "진행률 바 위는 비주얼라이저인데 여백이 거의 필요 없이 딱
+     붙어도 좋다"는 요청 — 8px → 2px로 거의 밀착. */
+  margin: 0 0 2px;
   box-sizing: border-box;
   display: flex;
   align-items: flex-end;
@@ -1491,7 +1590,11 @@ button { font: inherit; }
      터치 히트 영역을 10px→18px로 넓힌다. 시각적 트랙/캡슐 두께(4px/8px)는
      그대로 top:50% 중앙 정렬이라 모양은 안 바뀌고 여백만 늘어난다. */
   height: 18px;
-  margin: 0 0 8px;
+  /* 2026-07-14 20차: "진행바와 곡명줄 간격이 너무 벌어져있다, 절반으로
+     줄여달라"는 피드백 — 8px → 4px.
+     2026-07-15: "지금 간격의 반 정도만 필요하다, 좀더 붙여달라"는 재요청 —
+     4px → 2px로 한 번 더 절반. */
+  margin: 0 0 2px;
   cursor: pointer;
   touch-action: none; /* 드래그 중 페이지 스크롤/새로고침 제스처와 충돌 방지 */
 }
@@ -1527,31 +1630,97 @@ button { font: inherit; }
 }
 
 .music-track-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  /* 2026-07-15: flex+justify-content:space-between이었는데, 제목이 너무
+     길면 "..."으로 잘리는 구조였다. "좋아요 버튼을 침범하지 말고 아슬아슬
+     하게 끝까지 가다가 줄바꿈되게" 하려면 flex 한 줄 레이아웃으로는
+     불가능하다(flex는 자식마다 한 줄씩 차지) — 대신 옛날 CSS 방식인
+     float를 쓴다: 버튼 묶음(.music-track-actions)을 float:right로 오른쪽에
+     고정하고, 제목은 일반 텍스트 흐름으로 두면 첫 줄은 버튼 폭만큼 피해서
+     흐르다가, 버튼 높이를 넘어선 다음 줄부터는 폭 전체를 쓴다 — 정확히
+     요청한 동작. flow-root로 새 BFC를 만들어야 float 자식의 높이가 부모에
+     반영된다(.clock-fixed-group과 같은 원리, 20차 참조 — float만 쓰고
+     flow-root를 빼먹으면 부모 높이가 0으로 붕괴되는 고전적 버그가 난다). */
+  display: flow-root;
   /* 2026-07-14 17차: 좌우 인셋은 .music-info-panel 박스 padding이 전담 —
      여기 있던 개별 padding은 제거(이중 여백 방지). */
   margin: 0;
   box-sizing: border-box;
 }
 
+/* 2026-07-14: "싫어요" 클릭 시 "연기처럼" 떴다 사라지는 가벼운 피드백
+   토스트. .music-info-panel이 position:absolute라 여기서 중앙에 겹쳐
+   띄우면 별도 컨테이너 없이도 항상 패널 정중앙에 뜬다. 총 수명은
+   app.js의 타이머(약 5초)가 관리 — 여기 transition 값은 그 타이밍과
+   맞물려 있으니 둘 다 건드릴 땐 같이 확인할 것. */
+.music-toast {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  padding: 9px 16px;
+  max-width: calc(100% - 24px);
+  border-radius: 999px;
+  background: rgba(18, 22, 32, 0.84);
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px) saturate(1.1);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  filter: blur(10px);
+  pointer-events: none;
+  z-index: 30;
+  transition: opacity 0.35s ease, transform 0.35s ease, filter 0.35s ease;
+}
+.music-toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  filter: blur(0);
+}
+.music-toast.is-leaving {
+  opacity: 0;
+  transform: translate(-50%, -60%) scale(1.08);
+  filter: blur(12px);
+  transition: opacity 1.4s ease, transform 1.4s ease, filter 1.4s ease;
+}
+
 .music-track-title {
   font-size: clamp(12px, 3vw, 15px);
   font-weight: 600;
   color: rgba(255,255,255,0.88);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 55%;
+  /* 2026-07-15 재요청: "제목이 길면 좋아요 버튼을 침범하지 말고, 아슬아슬
+     하게 끝까지 가다가 결국 줄바꿈되게 해달라 — '...' 말줄임은 최대한
+     쓰지 말아달라." nowrap+ellipsis를 완전히 걷어내고 일반 텍스트 줄바꿈
+     으로 바꾼다. 위 .music-track-row가 float 기반으로 바뀌면서(같은 날짜
+     주석 참조) 이 span은 그냥 일반 흐름 텍스트다 — 첫 줄은 float:right된
+     .music-track-actions 옆을 자동으로 피해서 흐르고, 그 높이를 넘어서면
+     다음 줄부터 폭 전체를 쓴다. 그래도 한 "단어"(예: 공백 없는 영문
+     타이틀)가 버튼 폭보다 넓어 줄바꿈 지점을 못 찾는 극단적 경우에
+     대비해 word-break을 넣어 강제로라도 줄바꿈되게 한다(말줄임 대신
+     줄바꿈이 낫다는 게 이번 요청의 핵심이었다). */
+  display: block;
+  text-align: left;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  /* 버튼(30px 높이)과 첫 줄 텍스트의 위아래 중심을 눈대중으로 맞추기 위한
+     보정값 — 실기기에서 어긋나 보이면 이 값만 조정하면 된다. */
+  padding-top: 6px;
 }
 
 .music-track-actions {
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-shrink: 0;
+  /* 2026-07-15: 제목을 flex row 형제 대신 float로 감싸 흐르게 하려면 이
+     블록 자체가 float:right여야 한다(위 .music-track-row 주석 참조).
+     float 요소는 자동으로 in-flow에서 빠지므로 flex-shrink는 더 이상
+     의미가 없어 제거하고, 텍스트와의 최소 간격만 margin-left로 준다. */
+  float: right;
+  margin-left: 10px;
 }
 
 .music-track-actions.icon-button,
