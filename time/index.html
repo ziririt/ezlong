@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260714-weatherdetail-v77">
+  <link rel="stylesheet" href="styles.css?v=20260715-weatherdetail-v83">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -32,20 +32,17 @@
       </header>
 
       <section class="clock-stage" aria-live="polite">
-        <!-- 2026-07-13: 음악 아이콘 탭 시 바로 음악설정으로 가지 않고, 지금
-             재생 중인 곡 정보(비주얼라이저+곡명+좋아요/싫어요)를 먼저 보여주는
-             패널. 톱니바퀴를 눌러야만 음악설정으로 이동한다. 기본은 닫힘
-             상태(높이 0)라 평소 레이아웃에는 영향이 없다. app.js의
-             MUSIC_PANEL_V2_ENABLED로 즉시 롤백 가능. -->
-        <div class="music-info-panel" id="musicInfoPanel" aria-hidden="true">
-          <div class="music-viz-wrap" id="musicVizWrap" aria-hidden="true"></div>
-          <div class="music-track-row">
-            <span class="music-track-title" id="musicTrackTitle">재생 대기 중</span>
-            <div class="music-track-actions">
-              <button class="icon-button music-like-button" id="musicLikeButton" type="button" aria-label="이 곡 좋아요" aria-pressed="false"></button>
-              <button class="icon-button music-dislike-button" id="musicDislikeButton" type="button" aria-label="이 곡 싫어요" aria-pressed="false"></button>
-              <button class="icon-button music-gear-button" id="musicGearOpen" type="button" aria-label="음악설정 열기" aria-controls="quoteSettings"></button>
-            </div>
+        <audio id="bgAudio" preload="auto"></audio>
+        <audio id="bgAudioB" preload="auto"></audio>
+        <div class="flip-clock" aria-label="현재 시간">
+          <div class="flip-unit" data-unit="hours">
+            <span class="flip-card" id="hourTens">1</span>
+            <span class="flip-card" id="hourOnes">2</span>
+          </div>
+          <span class="clock-colon" aria-hidden="true">:</span>
+          <div class="flip-unit" data-unit="minutes">
+            <span class="flip-card" id="minuteTens">1</span>
+            <span class="flip-card" id="minuteOnes">0</span>
           </div>
         </div>
         <div class="clock-meta">
@@ -60,17 +57,24 @@
             <button class="icon-button music-skip" id="musicSkip" type="button" aria-label="다음 곡"></button>
           </div>
         </div>
-        <audio id="bgAudio" preload="auto"></audio>
-        <audio id="bgAudioB" preload="auto"></audio>
-        <div class="flip-clock" aria-label="현재 시간">
-          <div class="flip-unit" data-unit="hours">
-            <span class="flip-card" id="hourTens">1</span>
-            <span class="flip-card" id="hourOnes">2</span>
+        <!-- 2026-07-14 17차: 성동님 요청으로 순서 재배치 — 1)플립시계 2)날씨+
+             음악버튼줄 3)비주얼라이저(펼쳐질 때만) 순으로 바뀐다. 이전엔
+             이 패널이 clock-meta보다 위에 있어서, 패널이 닫혀있는 기본
+             상태에서도 "날씨줄이 시계 위에" 보이는 배치였다. 기본은 닫힘
+             (높이 0)이라 평소 레이아웃에는 영향이 없다. app.js의
+             MUSIC_PANEL_V2_ENABLED로 즉시 롤백 가능. -->
+        <div class="music-info-panel" id="musicInfoPanel" aria-hidden="true">
+          <div class="music-viz-wrap" id="musicVizWrap" aria-hidden="true"></div>
+          <div class="music-progress-bar" id="musicProgressBar" aria-hidden="true">
+            <div class="music-progress-fill" id="musicProgressFill"></div>
           </div>
-          <span class="clock-colon" aria-hidden="true">:</span>
-          <div class="flip-unit" data-unit="minutes">
-            <span class="flip-card" id="minuteTens">1</span>
-            <span class="flip-card" id="minuteOnes">0</span>
+          <div class="music-track-row">
+            <span class="music-track-title" id="musicTrackTitle">재생 대기 중</span>
+            <div class="music-track-actions">
+              <button class="icon-button music-like-button" id="musicLikeButton" type="button" aria-label="이 곡 좋아요" aria-pressed="false"></button>
+              <button class="icon-button music-dislike-button" id="musicDislikeButton" type="button" aria-label="이 곡 싫어요" aria-pressed="false"></button>
+              <button class="icon-button music-gear-button" id="musicGearOpen" type="button" aria-label="음악설정 열기" aria-controls="quoteSettings"></button>
+            </div>
           </div>
         </div>
       </section>
@@ -85,7 +89,7 @@
       </section>
 
       <div class="scene-dots" aria-label="배경 사진 선택">
-        <span class="app-version" aria-hidden="true">ver.0.9.15</span>
+        <span class="app-version" aria-hidden="true">ver.0.9.16</span>
         <span class="dot-group">
           <button class="dot active" type="button" data-scene-button="0" aria-label="배경 사진 1"></button>
           <button class="dot" type="button" data-scene-button="1" aria-label="배경 사진 2"></button>
@@ -230,6 +234,14 @@
 
         <div class="settings-divider" aria-hidden="true"></div>
 
+        <!-- 2026-07-15: 우산조언 코멘트를 맨 위로 — 유저 피드백: "코멘트
+             2~3줄은 상단으로, '이번 주 강수 예보'는 그 아래로". 강수예보
+             카드 안에 있던 문구를 그대로 재사용(내용 변경 없음), 위치만
+             옮긴다 — renderWeatherRainWindows()가 이 element도 함께 채운다. -->
+        <p class="weather-rain-umbrella" id="wdTopComment" aria-label="오늘의 날씨 코멘트"></p>
+
+        <div class="settings-divider" aria-hidden="true"></div>
+
         <!-- 2. 이번 주 강수 예보 -->
         <section class="weather-card" aria-label="이번 주 강수 예보">
           <h3 class="settings-subtitle">이번 주 강수 예보</h3>
@@ -277,6 +289,6 @@
 
   <script src="investment-quotes.js"></script>
   <script src="music-playlist.js?v=20260714-weatherdetail-v73"></script>
-  <script src="app.js?v=20260714-weatherdetail-v77"></script>
+  <script src="app.js?v=20260715-weatherdetail-v80"></script>
 </body>
 </html>
