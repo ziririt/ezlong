@@ -1444,6 +1444,42 @@ button { font: inherit; }
     0 0 calc(10px + var(--bar-intensity, 0.15) * 18px) hsla(var(--bar-hue, 280), 95%, 55%, calc(0.28 + var(--bar-intensity, 0.15) * 0.35));
 }
 
+/* 2026-07-14 15차: 성동님이 첨부한 "Audio Spectrum - Grid" 참고 이미지 벤치마크
+   — 비주얼라이저 막대 아래에 재생 진행률을 보여주는 가로 바를 추가한다.
+   막대와 같은 좌우 10px 인셋으로 폭을 맞추고, 막대의 네온 그라디언트(주황→
+   마젠타→보라)와 톤을 맞춘 채움색을 쓴다. 채움 폭은 app.js의
+   updateMusicProgress()가 재생 위치(0~1)를 그대로 %로 환산해 매 프레임 갱신. */
+.music-progress-bar {
+  position: relative;
+  height: 5px;
+  margin: 0 0 8px;
+}
+
+.music-progress-bar::before {
+  /* 트랙(전체 길이) — 은은한 반투명 배경으로 항상 보이게 둔다. */
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.16);
+}
+
+.music-progress-fill {
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  max-width: calc(100% - 20px);
+  border-radius: 999px;
+  background: linear-gradient(90deg, hsl(20, 95%, 58%), hsl(320, 95%, 62%));
+  box-shadow: 0 0 8px hsla(320, 90%, 60%, 0.55);
+  transition: width 0.15s linear;
+}
+
 .music-track-row {
   display: flex;
   align-items: center;

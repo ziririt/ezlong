@@ -196,6 +196,7 @@ const musicToggle = document.getElementById("musicToggle");
 const musicSkip = document.getElementById("musicSkip");
 const musicInfoPanel = document.getElementById("musicInfoPanel");
 const musicVizWrap = document.getElementById("musicVizWrap");
+const musicProgressFill = document.getElementById("musicProgressFill");
 const musicTrackTitle = document.getElementById("musicTrackTitle");
 const musicLikeButton = document.getElementById("musicLikeButton");
 const musicDislikeButton = document.getElementById("musicDislikeButton");
@@ -2087,6 +2088,9 @@ async function updateMusicProgress(event) {
   // 링에 흔히 쓰는 conic-gradient 채움 방식으로 교체(styles.css 참조).
   // 여긴 0~1 진행률 숫자만 넘기면 된다.
   musicToggle.style.setProperty("--progress", String(progress));
+  // 2026-07-14 15차: 음악 패널 진행률 가로 바 — 위 링 진행률과 같은 값을
+  // 그대로 재사용해 폭(%)만 매 프레임 갱신한다(새 계산 없음, 8항 원칙과 동일).
+  if (musicProgressFill) musicProgressFill.style.width = (progress * 100).toFixed(2) + "%";
 
   if (!hasDuration) return;
   const remaining = duration - player.currentTime;
@@ -2435,6 +2439,9 @@ function renderMusicPlaylistInfo() {
   if (musicTrackTitle) {
     musicTrackTitle.textContent = track && track.title ? track.title : "재생 대기 중";
   }
+  // 트랙이 바뀌는 시점에 이전 곡의 진행률이 잠깐 남아 보이지 않도록 즉시 리셋
+  // — 새 값은 곧이어 updateMusicProgress()의 timeupdate가 다시 채운다.
+  if (musicProgressFill) musicProgressFill.style.width = "0%";
   renderMusicReactionButtons();
 }
 
