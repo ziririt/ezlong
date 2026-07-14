@@ -225,6 +225,7 @@ const wdTropicalBadges = document.getElementById("wdTropicalBadges");
 const wdTropicalComment = document.getElementById("wdTropicalComment");
 const wdAccuracyMessage = document.getElementById("wdAccuracyMessage");
 const wdDayOverDay = document.getElementById("wdDayOverDay");
+const weatherDetailTitle = document.getElementById("weatherDetailTitle");
 
 const digitElements = [
   document.getElementById("hourTens"),
@@ -843,7 +844,7 @@ function weatherCodeToSummary(code, current = {}) {
 function requestCurrentWeather() {
   if (!navigator.geolocation) {
     userCoords = DEFAULT_WEATHER_COORDS;
-    weatherState = { location: "Seoul", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
+    weatherState = { location: "서울", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
     weatherResolved = true;
     renderWeather();
     if (activeScene) setScene(activeScene, { syncDots: true, force: true });
@@ -878,7 +879,7 @@ function requestCurrentWeather() {
     },
     () => {
       userCoords = DEFAULT_WEATHER_COORDS;
-      weatherState = { location: "Seoul", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
+      weatherState = { location: "서울", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
       weatherResolved = true;
       renderWeather();
       if (activeScene) setScene(activeScene, { syncDots: true, force: true });
@@ -1083,12 +1084,27 @@ async function fetchWeatherJson(path) {
   return response.json();
 }
 
-function weatherBadgeHtml(grade, label) {
-  return `<span class="weather-badge" data-grade="${grade}">${label}</span>`;
+// 2026-07-14: prob(강수확률)을 함께 넘기면 뱃지 안에 라벨+확률을 2줄로 쌓는다
+// (유저 피드백: "'약한 비' 딱지에 강수확률도 같이 표시해주자"). 열대야
+// 뱃지처럼 확률 개념이 없는 호출은 prob을 생략하면 기존처럼 라벨만 나온다.
+function weatherBadgeHtml(grade, label, prob) {
+  const probHtml = typeof prob === "number" ? `<span class="weather-badge-prob">${prob}%</span>` : "";
+  return `<span class="weather-badge" data-grade="${grade}"><span class="weather-badge-label">${label}</span>${probHtml}</span>`;
 }
 
-function renderWeatherCurrent(current, tropical) {
+// 2026-07-14: 헤더의 "지금 날씨"를 "서울 지금 날씨"처럼 지역명을 붙여 표시.
+// weatherState.location은 requestCurrentWeather()의 역지오코딩(accept-language=ko)
+// 결과라 이미 한글 지명이다 — 별도 API 호출 없이 재사용한다.
+function updateWeatherDetailTitle() {
+  if (!weatherDetailTitle) return;
+  const loc = weatherState.location;
+  const isPlaceholder = !loc || loc === "위치 확인 중" || loc === "현재 위치";
+  weatherDetailTitle.textContent = isPlaceholder ? "지금 날씨" : `${loc} 지금 날씨`;
+}
+
+function renderWeatherCurrent(current) {
   if (!wdCurrentTemp) return;
+  updateWeatherDetailTitle();
   if (!current || !current.current) {
     wdCurrentTemp.textContent = "--°";
     wdCurrentFeels.textContent = "";
@@ -1098,32 +1114,69 @@ function renderWeatherCurrent(current, tropical) {
   const c = current.current;
   wdCurrentTemp.textContent = `${Math.round(c.temp)}°`;
   wdCurrentFeels.textContent = `체감 ${Math.round(c.feelslike)}°`;
-  const advice = tropical?.currentRain?.umbrellaAdvice || "";
-  wdCurrentSub.textContent = `습도 ${Math.round(c.humidity)}%${advice ? " · " + advice : ""}`;
+  // 2026-07-14: "지금 이 순간" 기준 우산 조언은 여기서 뺐다 — 아래 강수
+  // 예보 카드의 umbrellaToday가 출퇴근·등하교 시간대를 종합해서 더
+  // 정확하게 판단해준다(단일 시점 판단은 경솔한 조언이 될 수 있다는 지적 반영).
+  wdCurrentSub.textContent = `습도 ${Math.round(c.humidity)}%`;
+}
+
+// 2026-07-14 전면 재작성: "이번 주 강수 예보"를 오늘 포함 3일 상세 + 이후
+// 4일 요약 + 이번 주말 코멘트 + 다음주 한 줄로 재구성. 백엔드
+// buildWeeklyRainOutlook()의 응답 구조를 그대로 렌더링한다.
+function renderRainDayCard(day) {
+  const todayTag = day.isToday ? `<span class="weather-rain-day-tag">오늘</span>` : "";
+  const weekendTag = day.isWeekend
+    ? `<span class="weather-rain-day-tag weather-rain-day-tag-weekend">주말</span>`
+    : "";
+  const windowsHtml =
+    day.windows && day.windows.length > 0
+      ? day.windows
+          .map(
+            (w) => `
+      <div class="weather-rain-window">
+        <div>
+          <div class="weather-rain-window-time">${w.timeLabel}</div>
+          <div class="weather-rain-window-detail">누적 ${w.totalPrecipMm}mm</div>
+        </div>
+        ${weatherBadgeHtml(w.intensity.grade, w.intensity.label, w.maxPrecipProb)}
+      </div>`
+          )
+          .join("")
+      : `<p class="weather-empty">비 소식 없어요.</p>`;
+  return `
+    <div class="weather-rain-day">
+      <p class="weather-rain-day-label">${day.dateLabel}${todayTag}${weekendTag}</p>
+      ${windowsHtml}
+    </div>`;
 }
 
 function renderWeatherRainWindows(data) {
   if (!wdRainWindows) return;
-  if (!data) {
+  if (!data || !Array.isArray(data.detailedDays)) {
     wdRainWindows.innerHTML = `<p class="weather-empty">강수 예보를 불러올 수 없어요.</p>`;
     return;
   }
-  if (!data.windows || data.windows.length === 0) {
-    wdRainWindows.innerHTML = `<p class="weather-empty">이번 주에는 큰 비 예보가 없어요.</p>`;
-    return;
-  }
-  wdRainWindows.innerHTML = data.windows
-    .map(
-      (w) => `
-    <div class="weather-rain-window">
-      <div>
-        <div class="weather-rain-window-time">${w.startLabel} ~ ${w.endLabel}</div>
-        <div class="weather-rain-window-detail">최고 강수확률 ${w.maxPrecipProb}% · 누적 ${w.totalPrecipMm}mm</div>
-      </div>
-      ${weatherBadgeHtml(w.intensity.grade, w.intensity.label)}
-    </div>`
-    )
-    .join("");
+
+  const umbrellaHtml = data.umbrellaToday
+    ? `<p class="weather-rain-umbrella" data-needed="${data.umbrellaToday.needed}">${data.umbrellaToday.message}</p>`
+    : "";
+  const daysHtml = data.detailedDays.map(renderRainDayCard).join("");
+  const laterHtml = data.laterSummary ? `<p class="weather-comment">${data.laterSummary.comment}</p>` : "";
+  const weekendHtml = data.weekendComment
+    ? `<p class="weather-comment weather-rain-outlook-weekend">${data.weekendComment}</p>`
+    : "";
+  const nextWeekHtml = data.nextWeekComment
+    ? `<p class="weather-rain-outlook-nextweek">${data.nextWeekComment}</p>`
+    : "";
+
+  wdRainWindows.innerHTML = `
+    ${umbrellaHtml}
+    ${daysHtml}
+    <div class="weather-rain-outlook-extra">
+      ${laterHtml}
+      ${weekendHtml}
+      ${nextWeekHtml}
+    </div>`;
 }
 
 function renderWeatherYesterday(data) {
@@ -1186,7 +1239,7 @@ async function fetchWeatherDetail() {
   ]);
 
   const tropicalData = tropicalR.status === "fulfilled" ? tropicalR.value : null;
-  renderWeatherCurrent(currentR.status === "fulfilled" ? currentR.value : null, tropicalData);
+  renderWeatherCurrent(currentR.status === "fulfilled" ? currentR.value : null);
   renderWeatherRainWindows(rainR.status === "fulfilled" ? rainR.value : null);
   renderWeatherYesterday(yesterdayR.status === "fulfilled" ? yesterdayR.value : null);
   renderWeatherTropical(tropicalData);
