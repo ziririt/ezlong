@@ -570,94 +570,6 @@ window.investmentQuotes = [
     "category": "mindset"
   },
   {
-    "english": "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
-    "text": "재산이 상당한 독신 남자는 반드시 아내를 원하게 마련이라는 것은 누구나 인정하는 진리이다.",
-    "title": "Pride and Prejudice",
-    "author": "Jane Austen",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Vanity and pride are different things, though the words are often used synonymously.",
-    "text": "허영과 오만은 다른 것이다. 비록 두 단어가 자주 동의어처럼 쓰이긴 하지만.",
-    "title": "Pride and Prejudice",
-    "author": "Jane Austen",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Happiness in marriage is entirely a matter of chance.",
-    "text": "결혼에서의 행복은 전적으로 운에 달려 있다.",
-    "title": "Pride and Prejudice",
-    "author": "Jane Austen",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I could easily forgive his pride, if he had not mortified mine.",
-    "text": "그의 오만은 쉽게 용서할 수 있었을 것이다. 단, 그가 내 오만을 상처 입히지만 않았다면.",
-    "title": "Pride and Prejudice",
-    "author": "Jane Austen",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Nothing is more deceitful than the appearance of humility.",
-    "text": "겸손한 태도만큼 기만적인 것은 없다.",
-    "title": "Pride and Prejudice",
-    "author": "Jane Austen",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Conventionality is not morality. Self-righteousness is not religion.",
-    "text": "관습은 도덕이 아니다. 자기 의는 종교가 아니다.",
-    "title": "Jane Eyre",
-    "author": "Charlotte Bronte",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Women are supposed to be very calm generally; but women feel just as men feel.",
-    "text": "여성은 일반적으로 매우 침착해야 한다고 여겨지지만, 여성도 남성과 똑같이 느낀다.",
-    "title": "Jane Eyre",
-    "author": "Charlotte Bronte",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "If all the world hated you, and believed you wicked, while your own conscience approved you, you would not be without friends.",
-    "text": "온 세상이 당신을 미워하고 사악하다고 믿더라도, 당신 자신의 양심이 당신을 인정한다면 친구가 없는 것이 아니다.",
-    "title": "Jane Eyre",
-    "author": "Charlotte Bronte",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Whatever our souls are made of, his and mine are the same.",
-    "text": "우리의 영혼이 무엇으로 만들어졌든, 그의 영혼과 내 영혼은 같다.",
-    "title": "Wuthering Heights",
-    "author": "Emily Bronte",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I am Heathcliff, he's always, always in my mind, not as a pleasure, but as my own being.",
-    "text": "나는 히스클리프다. 그는 언제나 내 마음속에 있다. 즐거움이 아니라 나 자신처럼.",
-    "title": "Wuthering Heights",
-    "author": "Emily Bronte",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Be with me always, take any form, drive me mad! Only do not leave me in this abyss.",
-    "text": "언제나 내 곁에 있어줘. 어떤 모습이든, 나를 미치게 만들어도 좋아! 단, 이 심연에 나를 남겨두지 마.",
-    "title": "Wuthering Heights",
-    "author": "Emily Bronte",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
     "english": "A man's mind may be likened to a garden, which may be intelligently cultivated or allowed to run wild.",
     "text": "사람의 마음은 정원에 비유할 수 있다. 지혜롭게 가꾸거나 그냥 내버려둘 수 있다.",
     "title": "As a Man Thinketh",
@@ -738,54 +650,6 @@ window.investmentQuotes = [
     "genre": "literature"
   },
   {
-    "english": "Curiouser and curiouser!",
-    "text": "더욱더 이상하고 이상해!",
-    "title": "Alice's Adventures in Wonderland",
-    "author": "Lewis Carroll",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "We're all mad here. I'm mad. You're mad.",
-    "text": "여기 있는 우리 모두는 미쳤어. 나도 미쳤고, 너도 미쳤지.",
-    "title": "Alice's Adventures in Wonderland",
-    "author": "Lewis Carroll",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Begin at the beginning, and go on till you come to the end: then stop.",
-    "text": "처음부터 시작해. 그리고 끝에 이를 때까지 계속해. 그런 다음 멈춰.",
-    "title": "Alice's Adventures in Wonderland",
-    "author": "Lewis Carroll",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "The only way to get rid of a temptation is to yield to it.",
-    "text": "유혹을 없애는 유일한 방법은 그것에 굴복하는 것이다.",
-    "title": "The Picture of Dorian Gray",
-    "author": "Oscar Wilde",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Nowadays people know the price of everything and the value of nothing.",
-    "text": "요즘 사람들은 모든 것의 가격은 알지만, 아무것도 그 가치를 모른다.",
-    "title": "The Picture of Dorian Gray",
-    "author": "Oscar Wilde",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Youth! Youth! There is absolutely nothing in the world but youth!",
-    "text": "청춘! 청춘! 이 세상에 청춘 말고는 아무것도 없다!",
-    "title": "The Picture of Dorian Gray",
-    "author": "Oscar Wilde",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
     "english": "The mass of men lead lives of quiet desperation.",
     "text": "대다수의 사람들은 조용한 절망 속에서 살아간다.",
     "title": "Walden",
@@ -850,46 +714,6 @@ window.investmentQuotes = [
     "genre": "literature"
   },
   {
-    "english": "Call me Ishmael.",
-    "text": "나를 이스마엘이라고 불러라.",
-    "title": "Moby-Dick",
-    "author": "Herman Melville",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "All visible objects, man, are but as pasteboard masks.",
-    "text": "모든 눈에 보이는 사물은, 인간이여, 판지 가면에 불과하다.",
-    "title": "Moby-Dick",
-    "author": "Herman Melville",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "So long as ignorance and misery remain on earth, books like this cannot be useless.",
-    "text": "지구상에 무지와 비참이 남아 있는 한, 이런 책은 쓸모없을 수 없다.",
-    "title": "Les Miserables",
-    "author": "Victor Hugo",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "The supreme happiness of life is the conviction that we are loved.",
-    "text": "인생의 가장 큰 행복은 우리가 사랑받고 있다는 확신이다.",
-    "title": "Les Miserables",
-    "author": "Victor Hugo",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "If the soul is left in darkness, sins will be committed.",
-    "text": "영혼이 어둠 속에 방치되면 죄가 저질러진다.",
-    "title": "Les Miserables",
-    "author": "Victor Hugo",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
     "english": "A part of all I earn is mine to keep.",
     "text": "내가 버는 모든 것의 일부는 내가 간직할 몫이다.",
     "title": "The Richest Man in Babylon",
@@ -918,14 +742,6 @@ window.investmentQuotes = [
     "text": "어느 날 아침 그레고르 잠자가 불안한 꿈에서 깨어났을 때, 그는 자신이 침대 속에서 한 마리 거대한 벌레로 변해 있는 것을 발견했다.",
     "title": "변신",
     "author": "프란츠 카프카",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Pain and suffering are always inevitable for a large intelligence and a deep heart.",
-    "text": "크고 지적인 사람에게, 그리고 깊은 마음을 가진 사람에게 고통과 괴로움은 언제나 피할 수 없는 것이다.",
-    "title": "죄와 벌",
-    "author": "표도르 도스토옙스키",
     "category": "문학",
     "genre": "literature"
   },
@@ -1416,62 +1232,6 @@ window.investmentQuotes = [
     "genre": "literature"
   },
   {
-    "english": "I will honour Christmas in my heart, and try to keep it all the year.",
-    "text": "나는 마음속에 크리스마스를 간직하고, 일 년 내내 그 정신을 지키며 살아가겠다.",
-    "title": "크리스마스 캐럴",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Christmas time... a kind, forgiving, charitable, pleasant time; the only time when men and women seem to open their shut-up hearts freely.",
-    "text": "크리스마스는 일 년 중 사람들이 굳게 닫았던 마음을 활짝 열고 서로를 너그럽게 품어주는, 가장 다정한 시간이다.",
-    "title": "크리스마스 캐럴",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I am as light as a feather, I am as happy as an angel, I am as merry as a schoolboy.",
-    "text": "나는 깃털처럼 가볍고, 천사처럼 행복하며, 소년처럼 즐겁구나.",
-    "title": "크리스마스 캐럴",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "God bless us, every one!",
-    "text": "신이시여, 우리 모두를 축복해 주소서!",
-    "title": "크리스마스 캐럴",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I want to do something splendid before I go into my castle... I think I shall write books, and get rich and famous, that would suit me.",
-    "text": "죽기 전에 근사한 일을 하고 싶어. 책을 써서 유명해지는 것, 그게 내가 가장 좋아하는 꿈이야.",
-    "title": "작은 아씨들",
-    "author": "루이자 메이 올콧",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I am not afraid of storms, for I am learning how to sail my ship.",
-    "text": "나는 폭풍이 두렵지 않아요, 내 배를 다루는 법을 배우고 있으니까요.",
-    "title": "작은 아씨들",
-    "author": "루이자 메이 올콧",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Don't you feel that it is pleasanter to help one another, to bear and forbear, that home may be comfortable and lovely to us all?",
-    "text": "서로 도우며 함께 견디고 서로를 품어주면, 우리 집은 모두에게 더 사랑스러운 곳이 되지 않을까요?",
-    "title": "작은 아씨들",
-    "author": "루이자 메이 올콧",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
     "english": "Isn't it nice to think that tomorrow is a new day with no mistakes in it yet?",
     "text": "내일은 아직 실수를 하나도 하지 않은 새로운 날이라고 생각하면 참 멋지지 않나요?",
     "title": "빨간 머리 앤",
@@ -1548,30 +1308,6 @@ window.investmentQuotes = [
     "text": "머리가 좋다고 행복해지는 건 아니에요. 그리고 행복이야말로 세상에서 가장 좋은 것이죠.",
     "title": "오즈의 마법사",
     "author": "라이먼 프랭크 바움",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Work consists of whatever a body is obliged to do, and Play consists of whatever a body is not obliged to do.",
-    "text": "일이란 억지로 해야 하는 것이고, 놀이란 하고 싶어서 하는 것일 뿐이다.",
-    "title": "톰 소여의 모험",
-    "author": "마크 트웨인",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Saturday morning was come, and all the summer world was bright and fresh, and brimming with life. There was a song in every heart.",
-    "text": "토요일 아침이 밝았다. 여름 세상은 눈부시고 싱그럽게 생기가 넘쳤고, 모두의 마음속엔 노래가 흘렀다.",
-    "title": "톰 소여의 모험",
-    "author": "마크 트웨인",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "He had had a nice, good, idle time all the while—plenty of company—and the fence had three coats of whitewash on it!",
-    "text": "그는 그저 신나게 놀았을 뿐인데, 곁엔 친구들이 가득했고 담장엔 어느새 하얀 칠이 세 겹이나 입혀져 있었다.",
-    "title": "톰 소여의 모험",
-    "author": "마크 트웨인",
     "category": "문학",
     "genre": "literature"
   },
@@ -1792,30 +1528,6 @@ window.investmentQuotes = [
     "title": "아직도 가야 할 길",
     "author": "M. 스콧 펙",
     "category": "경제자기계발",
-    "genre": "literature"
-  },
-  {
-    "english": "Es irrt der Mensch, solang er strebt.",
-    "text": "인간은 노력하는 한 방황한다.",
-    "title": "파우스트",
-    "author": "요한 볼프강 폰 괴테",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Wer immer strebend sich bemüht, den können wir erlösen.",
-    "text": "끊임없이 노력하는 자, 우리는 그를 구원할 수 있다.",
-    "title": "파우스트",
-    "author": "요한 볼프강 폰 괴테",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Das Ewig-Weibliche zieht uns hinan.",
-    "text": "영원히 여성적인 것이 우리를 이끌어 올린다.",
-    "title": "파우스트",
-    "author": "요한 볼프강 폰 괴테",
-    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2170,158 +1882,6 @@ window.investmentQuotes = [
     "genre": "literature"
   },
   {
-    "english": "It doesn't matter if you're born in a duck yard, so long as you are hatched from a swan's egg!",
-    "text": "오리 마당에서 태어났다 해도 상관없어요, 백조의 알에서 나왔다면 말이에요!",
-    "title": "미운 오리 새끼",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "He now felt glad at having suffered sorrow and trouble, because it enabled him to enjoy so much better all the pleasure and happiness around him.",
-    "text": "그는 이제 슬픔과 시련을 겪었던 것이 오히려 기뻤어요. 덕분에 주위의 기쁨과 행복을 더 깊이 누릴 수 있었으니까요.",
-    "title": "미운 오리 새끼",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I never dreamed of such happiness as this, while I was an ugly duckling.",
-    "text": "내가 미운 오리 새끼였을 때는, 이런 행복은 꿈도 꾸지 못했어.",
-    "title": "미운 오리 새끼",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "His own image; no longer a dark, gray bird, ugly and disagreeable to look at, but a graceful and beautiful swan.",
-    "text": "물에 비친 자신의 모습은 더 이상 볼품없는 잿빛 새가 아니라, 우아하고 아름다운 한 마리 백조였어요.",
-    "title": "미운 오리 새끼",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Oh, that is not a turkey. How well he uses his legs, and how upright he holds himself! He is my own child, and he is not so very ugly after all if you look at him properly.",
-    "text": "저건 칠면조가 아니야. 다리를 얼마나 잘 쓰는지, 얼마나 꼿꼿이 서 있는지 좀 봐! 저 아이는 내 자식이고, 제대로 보면 그리 밉지도 않구나.",
-    "title": "미운 오리 새끼",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I think I will sit on it a little while longer, as I have sat so long already, a few days will be nothing.",
-    "text": "조금만 더 품고 있을게요. 이미 이렇게 오래 품었으니, 며칠 더는 아무것도 아니에요.",
-    "title": "미운 오리 새끼",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "She cannot receive from me any power greater than she now has, which consists in her own purity and innocence of heart.",
-    "text": "나는 저 아이에게 지금 가진 것보다 더 큰 힘을 줄 수 없단다. 그 힘은 다름 아닌 저 아이의 순수하고 때 묻지 않은 마음에서 나오는 것이니까.",
-    "title": "눈의 여왕",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Her breath became thicker and thicker, and took the form of little angels who grew larger and larger as soon as they touched the ground... little Gerda went forward safely and cheerfully.",
-    "text": "게르다의 숨결이 점점 짙어지더니 작은 천사들의 모습이 되어갔어요. 그렇게 게르다는 안전하고 씩씩하게 앞으로 나아갔답니다.",
-    "title": "눈의 여왕",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "And they both sat there, grown up, yet children at heart; and it was summer, - warm, beautiful summer.",
-    "text": "두 사람은 어느새 어른이 되었지만 마음만은 여전히 아이였어요. 계절은 여름, 따뜻하고 아름다운 여름이었답니다.",
-    "title": "눈의 여왕",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "When we get to the end of the story, you will know more than you do now...",
-    "text": "이야기가 끝날 때쯤이면, 지금보다 훨씬 많은 것을 알게 될 거예요.",
-    "title": "눈의 여왕",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "You're a fine one for tramping around... I'd like to know – do you really deserve to have someone run to the end of the world just for your sake?",
-    "text": "너를 위해 누군가 세상 끝까지 달려올 만큼, 넌 정말 그럴 자격이 있는 아이니?",
-    "title": "눈의 여왕",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Men, on the other hand, have a soul which lives for ever, lives after the body has become dust; it rises through the clear air, up to the shining stars!",
-    "text": "인간에게는 영원히 사는 영혼이 있단다. 몸이 흙으로 돌아간 뒤에도 맑은 하늘을 뚫고 올라가, 빛나는 별들에게로 향하지.",
-    "title": "인어공주",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "A mermaid has not an immortal soul, nor can she obtain one unless she wins the love of a human being.",
-    "text": "인어에게는 영원한 영혼이 없단다. 오직 인간의 사랑을 얻어야만 그것을 가질 수 있어.",
-    "title": "인어공주",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "After we have striven for three hundred years to do all the good in our power, we receive an immortal soul and take part in the happiness of mankind.",
-    "text": "우리가 삼백 년 동안 있는 힘을 다해 선한 일을 하고 나면, 마침내 불멸의 영혼을 얻어 인간의 행복에 함께하게 된단다.",
-    "title": "인어공주",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "You, poor little mermaid, have tried with your whole heart to do as we are doing; you have suffered and endured and raised yourself to the spirit-world by your good deeds.",
-    "text": "가엾은 인어야, 너는 온 마음을 다해 우리처럼 애썼구나. 견디고 참아내어 선한 행실로 스스로를 정령의 세계로 끌어올렸어.",
-    "title": "인어공주",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I will dare everything to win him and an immortal soul.",
-    "text": "그의 사랑과 불멸의 영혼을 얻기 위해서라면, 나는 무엇이든 해내겠어요.",
-    "title": "인어공주",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "But he hasn't got anything on, a little child said.",
-    "text": "그런데 임금님은 아무것도 안 입으셨잖아요. 한 어린아이가 말했어요.",
-    "title": "벌거벗은 임금님",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "But he hasn't got anything on! the whole town cried out at last.",
-    "text": "임금님은 아무것도 안 입으셨어요! 마침내 온 도시 사람들이 함께 외쳤답니다.",
-    "title": "벌거벗은 임금님",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "He hasn't anything on. A child says he hasn't anything on.",
-    "text": "저 아이가 그러는데, 임금님이 아무것도 안 입으셨대요.",
-    "title": "벌거벗은 임금님",
-    "author": "한스 크리스티안 안데르센",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
     "english": "Having eyes, but not seeing beauty; having ears, but not hearing music; having minds, but not perceiving truth; having hearts that are never moved and therefore never set on fire. These are the things to fear, said the headmaster.",
     "text": "눈이 있어도 아름다움을 보지 못하고, 귀가 있어도 음악을 듣지 못하고, 마음이 있어도 진실을 깨닫지 못하고, 가슴이 있어도 결코 뜨거워지지 않는 것. 그것이 우리가 정말 두려워해야 할 일이라고 교장 선생님은 말씀하셨다.",
     "title": "창가의 토토",
@@ -2658,414 +2218,6 @@ window.investmentQuotes = [
     "genre": "literature"
   },
   {
-    "english": "I wish, as well as everybody else, to be perfectly happy; but, like everybody else, it must be in my own way.",
-    "text": "나도 다른 사람들처럼 완벽하게 행복하고 싶다. 다만 모두가 그렇듯, 내 방식대로 행복하고 싶을 뿐이다.",
-    "title": "이성과 감성",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Know your own happiness. You want nothing but patience—or give it a more fascinating name, call it hope.",
-    "text": "네 행복이 무엇인지 알아야 해. 너에게 필요한 건 인내심뿐이야. 좀 더 근사한 이름을 붙이자면, 희망이라고 불러도 좋겠지.",
-    "title": "이성과 감성",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "It is not time or opportunity that is to determine intimacy;—it is disposition alone. Seven years would be insufficient to make some people acquainted with each other, and seven days are more than enough for others.",
-    "text": "친밀함을 결정하는 건 시간이나 기회가 아니라 오직 마음의 성향이다. 어떤 사람들은 칠 년을 함께해도 서로를 알기에 부족하지만, 어떤 사람들은 칠 일이면 충분하다.",
-    "title": "이성과 감성",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I could not be happy with a man whose taste did not in every point coincide with my own. He must enter into all my feelings; the same books, the same music must charm us both.",
-    "text": "취향이 나와 완전히 통하지 않는 남자와는 행복할 수 없어. 그는 나의 모든 감정에 함께해야 해. 같은 책, 같은 음악이 우리 둘을 똑같이 설레게 해야 하니까.",
-    "title": "이성과 감성",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Shyness is only the effect of a sense of inferiority in some way or other. If I could persuade myself that my manners were perfectly easy and graceful, I should not be shy.",
-    "text": "수줍음이란 결국 어떤 형태로든 열등감이 만들어낸 것일 뿐이다. 내 태도가 완벽하게 편안하고 우아하다고 스스로 믿을 수만 있다면, 나는 결코 수줍어하지 않을 것이다.",
-    "title": "이성과 감성",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Money can only give happiness where there is nothing else to give it.",
-    "text": "돈은 다른 무엇도 행복을 줄 수 없을 때에야 비로소 행복을 준다.",
-    "title": "이성과 감성",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "She was sensible and clever; but eager in everything: her sorrows, her joys, could have no moderation.",
-    "text": "그녀는 분별 있고 영리했지만 모든 일에 열렬했다. 슬픔도 기쁨도 결코 적당히 느끼는 법이 없었다.",
-    "title": "이성과 감성",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "If I loved you less, I might be able to talk about it more.",
-    "text": "당신을 덜 사랑했다면, 아마 이 마음을 더 쉽게 말할 수 있었을 거예요.",
-    "title": "에마",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "My dearest Emma, for dearest you will always be, whatever the event of this hour's conversation, my dearest, most beloved Emma.",
-    "text": "사랑하는 에마, 이 순간의 대화가 어떤 결말을 맞든, 당신은 언제까지나 나의 가장 사랑스럽고 소중한 사람일 거예요.",
-    "title": "에마",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I may have lost my heart, but not my self-control.",
-    "text": "마음은 빼앗겼을지 몰라도, 나 자신을 다스리는 힘까지 잃지는 않았다.",
-    "title": "에마",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Silly things do cease to be silly if they are done by sensible people in an impudent way.",
-    "text": "아무리 어리석어 보이는 일도, 분별 있는 사람이 당당하게 해내면 더 이상 어리석지 않게 된다.",
-    "title": "에마",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Seldom, very seldom, does complete truth belong to any human disclosure; seldom can it happen that something is not a little disguised or a little mistaken.",
-    "text": "완전한 진실이 사람의 고백 속에 온전히 담기는 일은 드물다. 조금은 감춰지거나 조금은 어긋난 채로 전해지기 마련이다.",
-    "title": "에마",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I lay it down as a general rule, Harriet, that if a woman doubts as to whether she should accept a man or not, she certainly ought to refuse him.",
-    "text": "해리엇, 내가 일반적인 법칙으로 삼는 게 있어. 여자가 어떤 남자의 청혼을 받아들여야 할지 망설여진다면, 그건 분명 거절해야 한다는 뜻이야.",
-    "title": "에마",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "You pierce my soul. I am half agony, half hope... I have loved none but you.",
-    "text": "당신은 내 영혼을 꿰뚫습니다. 나는 반은 고통이고 반은 희망입니다... 나는 오직 당신만을 사랑해왔습니다.",
-    "title": "설득",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "There could have been no two hearts so open, no tastes so similar, no feelings so in unison.",
-    "text": "그토록 활짝 열린 두 마음도, 그토록 닮은 취향도, 그토록 하나가 된 감정도 다시없었다.",
-    "title": "설득",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "All the privilege I claim for my own sex... is that of loving longest, when existence or when hope is gone!",
-    "text": "내가 여자로서 자랑스레 내세울 수 있는 유일한 특권은, 존재도 희망도 사라진 뒤에도 가장 오래 사랑할 수 있다는 것이다.",
-    "title": "설득",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "A man does not recover from such devotion of the heart to such a woman! He ought not; he does not.",
-    "text": "그런 여인에게 바친 그런 마음은 결코 회복되지 않는 법이다. 회복되어서도 안 되고, 실제로도 그렇다.",
-    "title": "설득",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "...when pain is over, the remembrance of it often becomes a pleasure.",
-    "text": "고통이 지나가고 나면, 그 기억은 종종 기쁨이 된다.",
-    "title": "설득",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "My idea of good company...is the company of clever, well-informed people. 'You are mistaken,' said he gently, 'that is not good company, that is the best.'",
-    "text": "내가 생각하는 좋은 사람들이란 영리하고 아는 것이 많은 사람들이에요. 그가 부드럽게 말했다. '그건 좋은 사람들이 아니라, 최고의 사람들이지요.'",
-    "title": "설득",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Anne hoped she had outlived the age of blushing; but the age of emotion she certainly had not.",
-    "text": "앤은 얼굴 붉히는 나이는 지났으리라 여겼지만, 설렘의 나이는 결코 지나지 않았음을 깨달았다.",
-    "title": "설득",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Dare not say that man forgets sooner than woman, that his love has an earlier death.",
-    "text": "남자가 여자보다 더 빨리 잊는다고, 그의 사랑이 더 일찍 죽는다고 감히 말하지 마세요.",
-    "title": "설득",
-    "author": "제인 오스틴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "My bounty is as boundless as the sea, My love as deep; the more I give to thee, The more I have, for both are infinite.",
-    "text": "내 자비로움은 바다처럼 끝이 없고, 내 사랑도 그만큼 깊어요. 당신에게 줄수록 나는 더 많이 갖게 되죠, 둘 다 무한하니까요.",
-    "title": "로미오와 줄리엣",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Did my heart love till now? forswear it, sight! For I ne'er saw true beauty till this night.",
-    "text": "내 마음이 지금껏 사랑한 적이 있었던가? 눈이여, 부인하라. 오늘 밤 전에는 진정한 아름다움을 본 적이 없었으니.",
-    "title": "로미오와 줄리엣",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "What's in a name? that which we call a rose By any other name would smell as sweet.",
-    "text": "이름이 다 무엇이란 말인가? 우리가 장미라 부르는 꽃은 다른 이름으로 불려도 여전히 향기로울 텐데.",
-    "title": "로미오와 줄리엣",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Good night, good night! parting is such sweet sorrow, That I shall say good night till it be morrow.",
-    "text": "안녕히, 안녕히. 이별은 이렇게 달콤한 슬픔이라, 나는 아침이 올 때까지 계속 안녕이라 말하고 싶어요.",
-    "title": "로미오와 줄리엣",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "My lips, two blushing pilgrims, ready stand to smooth that rough touch with a tender kiss... You kiss by the book.",
-    "text": "제 입술은 수줍어하는 두 순례자, 거친 손길을 다정한 입맞춤으로 달래려 해요... 당신은 정말 책에 쓰인 대로 입 맞추는군요.",
-    "title": "로미오와 줄리엣",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "See how she leans her cheek upon her hand. O, that I were a glove upon that hand That I might touch that cheek!",
-    "text": "저것 봐, 손 위에 뺨을 기대고 있어. 아, 내가 저 손의 장갑이라면, 저 뺨에 닿을 수 있을 텐데!",
-    "title": "로미오와 줄리엣",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Come, gentle night; come, loving, black-browed night; Give me my Romeo.",
-    "text": "오라, 다정한 밤이여, 사랑스럽고 짙은 눈썹의 밤이여. 내게 나의 로미오를 다오.",
-    "title": "로미오와 줄리엣",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Love looks not with the eyes, but with the mind; And therefore is wing'd Cupid painted blind.",
-    "text": "사랑은 눈이 아니라 마음으로 보는 것. 그래서 날개 달린 큐피드는 눈먼 모습으로 그려진다.",
-    "title": "한여름 밤의 꿈",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "The course of true love never did run smooth.",
-    "text": "진실한 사랑의 길은 결코 순탄하게 흘러간 적이 없다.",
-    "title": "한여름 밤의 꿈",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "So we grew together, Like to a double cherry, seeming parted, But yet an union in partition, Two lovely berries moulded on one stem.",
-    "text": "우리는 그렇게 함께 자랐어. 마치 겹벚나무 열매처럼, 갈라진 듯 보여도 실은 하나로 이어진, 한 줄기에 맺힌 사랑스러운 두 열매처럼.",
-    "title": "한여름 밤의 꿈",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "It is not night when I do see your face... For you in my respect are all the world.",
-    "text": "당신의 얼굴을 보고 있으면 밤이 아니에요... 내게는 당신이 곧 온 세상이니까요.",
-    "title": "한여름 밤의 꿈",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Lord, what fools these mortals be!",
-    "text": "오, 인간이란 얼마나 어리석은 존재인가!",
-    "title": "한여름 밤의 꿈",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Though she be but little, she is fierce!",
-    "text": "비록 작아도, 그녀는 강인하다!",
-    "title": "한여름 밤의 꿈",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Be not afraid of greatness. Some are born great, some achieve greatness, and others have greatness thrust upon them.",
-    "text": "위대함을 두려워하지 마세요. 어떤 이는 위대하게 태어나고, 어떤 이는 위대함을 스스로 이루며, 또 어떤 이는 위대함을 떠맡게 되니까요.",
-    "title": "십이야",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "If music be the food of love, play on; Give me excess of it, that, surfeiting, The appetite may sicken, and so die.",
-    "text": "음악이 사랑의 양식이라면, 계속 연주하라. 넘치도록 들려다오, 물릴 만큼 먹여 이 갈망이 잦아들 때까지.",
-    "title": "십이야",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Journeys end in lovers meeting, Every wise man's son doth know.",
-    "text": "여정의 끝엔 연인들의 만남이 있다는 걸, 현명한 이의 자식이라면 누구나 안다.",
-    "title": "십이야",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Love sought is good, but giv'n unsought is better.",
-    "text": "구애하여 얻은 사랑도 좋지만, 청하지 않았는데 주어진 사랑이 더욱 아름답다.",
-    "title": "십이야",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "How does he love me? With adoration, with fertile tears, With groans that thunder love, with sighs of fire.",
-    "text": "그가 나를 어떻게 사랑하냐고요? 흠모로, 넘치는 눈물로, 천둥처럼 사랑을 외치는 신음으로, 불처럼 뜨거운 한숨으로요.",
-    "title": "십이야",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Better a witty fool, than a foolish wit.",
-    "text": "어리석은 재사가 되느니, 차라리 재치 있는 바보가 되는 편이 낫다.",
-    "title": "십이야",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I like this place and could willingly waste my time in it.",
-    "text": "나는 이곳이 좋아. 여기서라면 기꺼이 시간을 흘려보내도 좋겠어.",
-    "title": "뜻대로 하세요",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Now tell me how long you would have her after you have possessed her. Orlando: Forever and a day.",
-    "text": "그녀를 얻은 뒤엔 얼마나 오래 사랑하겠어요? 올란도: 영원히, 그리고 하루 더.",
-    "title": "뜻대로 하세요",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Under the greenwood tree, Who loves to lie with me, And tune his merry note, Unto the sweet bird's throat.",
-    "text": "푸른 숲 나무 아래, 나와 함께 눕기를 좋아하는 이여, 새의 고운 목청에 맞춰 즐거운 노래를 부르자.",
-    "title": "뜻대로 하세요",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "All the world's a stage, And all the men and women merely players; They have their exits and their entrances.",
-    "text": "세상은 하나의 무대이고, 모든 남녀는 그저 배우일 뿐. 저마다 퇴장할 때가 있고 등장할 때가 있다.",
-    "title": "뜻대로 하세요",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "The fool doth think he is wise, but the wise man knows himself to be a fool.",
-    "text": "어리석은 자는 자신이 지혜롭다 여기지만, 지혜로운 자는 스스로 어리석음을 안다.",
-    "title": "뜻대로 하세요",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "...wheresoe'er we went, like Juno's swans, Still we went coupled and inseparable.",
-    "text": "우리가 어디를 가든, 유노 여신의 백조들처럼 언제나 짝을 지어 떼어놓을 수 없었다.",
-    "title": "뜻대로 하세요",
-    "author": "윌리엄 셰익스피어",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Shall I compare thee to a summer's day? Thou art more lovely and more temperate.",
-    "text": "그대를 여름날에 비할까요? 그대는 여름보다 더 사랑스럽고 더 온화한데.",
-    "title": "셰익스피어 소네트",
-    "author": "윌리엄 셰익스피어",
-    "category": "시",
-    "genre": "literature"
-  },
-  {
-    "english": "Rough winds do shake the darling buds of May, And summer's lease hath all too short a date.",
-    "text": "거친 바람은 오월의 사랑스러운 꽃봉오리를 흔들고, 여름은 너무나 짧게 머물다 가지요.",
-    "title": "셰익스피어 소네트",
-    "author": "윌리엄 셰익스피어",
-    "category": "시",
-    "genre": "literature"
-  },
-  {
-    "english": "So long as men can breathe or eyes can see, So long lives this, and this gives life to thee.",
-    "text": "사람이 숨 쉬고 눈이 볼 수 있는 한, 이 시는 살아남아 그대에게 생명을 줄 것입니다.",
-    "title": "셰익스피어 소네트",
-    "author": "윌리엄 셰익스피어",
-    "category": "시",
-    "genre": "literature"
-  },
-  {
-    "english": "Let me not to the marriage of true minds Admit impediments. Love is not love Which alters when it alteration finds.",
-    "text": "진실한 마음들의 결합에 나는 방해를 허락하지 않으리. 변화를 만나 변하는 사랑은 사랑이 아니다.",
-    "title": "셰익스피어 소네트",
-    "author": "윌리엄 셰익스피어",
-    "category": "시",
-    "genre": "literature"
-  },
-  {
-    "english": "It is the star to every wandering bark, Whose worth's unknown, although his height be taken.",
-    "text": "그것은 길 잃은 모든 배를 이끄는 별과 같아서, 그 높이는 잴 수 있어도 참된 가치는 헤아릴 수 없다.",
-    "title": "셰익스피어 소네트",
-    "author": "윌리엄 셰익스피어",
-    "category": "시",
-    "genre": "literature"
-  },
-  {
     "english": "You can't live your life for other people. You've got to do what's right for you, even if it hurts some people you love.",
     "text": "다른 사람을 위해 인생을 살 수는 없어요. 사랑하는 이들이 조금 아파하더라도, 나 자신에게 옳은 선택을 해야 해요.",
     "title": "노트북",
@@ -3231,70 +2383,6 @@ window.investmentQuotes = [
     "title": "사랑의 기술",
     "author": "에리히 프롬",
     "category": "가족관계",
-    "genre": "literature"
-  },
-  {
-    "english": "Well, now that we have seen each other,\" said the Unicorn, \"if you'll believe in me, I'll believe in you.",
-    "text": "이제 우리 서로 만났으니, 네가 나를 믿어준다면 나도 너를 믿을게.",
-    "title": "거울 나라의 앨리스",
-    "author": "루이스 캐럴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Why, sometimes I've believed as many as six impossible things before breakfast.",
-    "text": "가끔은 아침 먹기 전에 불가능한 일을 여섯 가지나 믿어버리기도 하는걸.",
-    "title": "거울 나라의 앨리스",
-    "author": "루이스 캐럴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I wonder if the snow loves the trees and fields, that it kisses them so gently?",
-    "text": "눈이 나무와 들판을 사랑하는 걸까, 이렇게 부드럽게 입 맞추는 걸 보면?",
-    "title": "거울 나라의 앨리스",
-    "author": "루이스 캐럴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Now, here, you see, it takes all the running you can do, to keep in the same place.",
-    "text": "여기서는 있는 힘껏 달려야만 겨우 제자리에 있을 수 있어.",
-    "title": "거울 나라의 앨리스",
-    "author": "루이스 캐럴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "It's as large as life and twice as natural.",
-    "text": "실물만큼 크고, 두 배는 더 자연스러워.",
-    "title": "거울 나라의 앨리스",
-    "author": "루이스 캐럴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Thy loving smile will surely hail The love-gift of a fairy tale.",
-    "text": "그대의 다정한 미소는 분명 이 동화라는 사랑의 선물을 반겨줄 거예요.",
-    "title": "거울 나라의 앨리스",
-    "author": "루이스 캐럴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "In a Wonderland they lie, Dreaming as the days go by, Dreaming as the summers die.",
-    "text": "이상한 나라에 누워, 하루하루 흘러가는 날들을 꿈꾸고, 여름이 저물어가는 것을 꿈꾸네.",
-    "title": "거울 나라의 앨리스",
-    "author": "루이스 캐럴",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I wish I could manage to be glad!\" the Queen said. \"...You must be very happy, living in this wood, and being glad whenever you like!",
-    "text": "나도 기쁨을 마음대로 다룰 수 있으면 좋겠어! 네가 원할 때마다 기뻐할 수 있다니, 정말 행복하겠구나.",
-    "title": "거울 나라의 앨리스",
-    "author": "루이스 캐럴",
-    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4472,166 +3560,6 @@ window.investmentQuotes = [
     "genre": "literature"
   },
   {
-    "english": "I have been bent and broken, but - I hope - into a better shape.",
-    "text": "나는 구부러지고 부서졌지만, 그로 인해 더 나은 모습이 되었기를 바란다.",
-    "title": "위대한 유산",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Heaven knows we need never be ashamed of our tears, for they are rain upon the blinding dust of earth. I was better after I had cried, than before—more gentle.",
-    "text": "눈물은 부끄러워할 것이 아니다. 그것은 우리의 굳은 마음을 덮은 먼지 위에 내리는 비와 같으니까. 나는 울고 난 뒤 더 다정한 사람이 되어 있었다.",
-    "title": "위대한 유산",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Pause you who read this, and think for a moment of the long chain of iron or gold, of thorns or flowers, that would never have bound you, but for the formation of the first link on one memorable day.",
-    "text": "이 글을 읽는 그대여, 잠시 멈춰 생각해보라. 쇠사슬이든 꽃사슬이든, 그 첫 고리는 언제나 어느 기억할 만한 하루에서 시작된다는 것을.",
-    "title": "위대한 유산",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "In the little world in which children have their existence... there is nothing so finely perceived and so finely felt as injustice.",
-    "text": "아이들이 살아가는 작은 세상에서는, 그 무엇도 불의만큼 예민하게 느껴지는 것이 없다.",
-    "title": "위대한 유산",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Which dear old Pip, old chap, you and me was ever friends. And when you're well enough to go out for a ride—what larks!",
-    "text": "사랑하는 핍, 오랜 친구여, 우리는 언제나 벗이었지. 네가 다 나아서 함께 마차를 타러 나갈 수 있게 되면, 그때 얼마나 신날까!",
-    "title": "위대한 유산",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "God knows as I forgive you, if I have anythink to forgive!",
-    "text": "하느님도 아시겠지만, 내가 너를 용서할 게 있다면 이미 다 용서했단다!",
-    "title": "위대한 유산",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "It is a far, far better thing that I do, than I have ever done; it is a far, far better rest that I go to than I have ever known.",
-    "text": "지금 내가 하는 일은, 내가 지금까지 해온 그 어떤 일보다 훨씬 더 훌륭한 일이다. 내가 향하는 안식도 훨씬 더 평온할 것이다.",
-    "title": "두 도시 이야기",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "For you, and for any dear to you, I would do anything. If my career were of that better kind that there was any opportunity or capacity of sacrifice in it, I would embrace any sacrifice for you and for those dear to you.",
-    "text": "당신을 위해서라면, 그리고 당신이 사랑하는 사람들을 위해서라면 나는 무엇이든 할 것입니다. 기꺼이 어떤 희생도 받아들일 거예요.",
-    "title": "두 도시 이야기",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I see the lives for which I lay down my life, peaceful, useful, prosperous and happy.",
-    "text": "내가 목숨을 바쳐 지켜낸 그 삶들이, 평화롭고 보람차고 풍요롭고 행복하게 살아가는 모습이 보인다.",
-    "title": "두 도시 이야기",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Jerry, say that my answer was, 'RECALLED TO LIFE.'",
-    "text": "제리, 내 대답은 이렇게 전해다오. '삶으로 다시 불려 나왔다'고.",
-    "title": "두 도시 이야기",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I see that I hold a sanctuary in their hearts, and in the hearts of their descendants, generations hence.",
-    "text": "나는 그들의 마음속에, 그리고 그 후손들의 마음속에 몇 세대가 지나도록 하나의 안식처로 남아 있을 것이다.",
-    "title": "두 도시 이야기",
-    "author": "찰스 디킨스",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "For the strength of the Pack is the Wolf, and the strength of the Wolf is the Pack.",
-    "text": "무리의 힘은 늑대에게서 나오고, 늑대의 힘은 무리에게서 나온다.",
-    "title": "정글북",
-    "author": "러디어드 키플링",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Now, don't be angry after you've been afraid. That's the worst kind of cowardice.",
-    "text": "무서웠다고 해서 화를 내지는 마라. 그것이야말로 가장 비겁한 짓이니까.",
-    "title": "정글북",
-    "author": "러디어드 키플링",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Thou art of the Jungle and not of the Jungle. And I am only a black panther. But I love thee, Little Brother.",
-    "text": "너는 정글의 존재이면서도 정글의 존재가 아니구나. 나는 그저 검은 표범일 뿐이지만, 그래도 너를 사랑한다, 꼬마 동생아.",
-    "title": "정글북",
-    "author": "러디어드 키플링",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "We be of one blood, ye and I.",
-    "text": "우리는 한 핏줄이다, 너와 나는.",
-    "title": "정글북",
-    "author": "러디어드 키플링",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "The man's cub is mine, Lungri—mine to me! He shall not be killed. He shall live to run with the Pack and to hunt with the Pack.",
-    "text": "그 인간의 새끼는 내 것이다, 룽그리, 내 것이란다! 그 아이는 죽지 않을 것이다. 무리와 함께 뛰고 사냥하며 살아갈 것이다.",
-    "title": "정글북",
-    "author": "러디어드 키플링",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "There warn't no home like a raft, after all. Other places do seem so cramped up and smothery, but a raft don't. You feel mighty free and easy and comfortable on a raft.",
-    "text": "뗏목만 한 집은 없더라. 다른 곳들은 어쩐지 답답하고 숨 막히는데, 뗏목은 그렇지 않았다. 정말이지 자유롭고 편안한 기분이 들었다.",
-    "title": "허클베리 핀의 모험",
-    "author": "마크 트웨인",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "It's lovely to live on a raft. We had the sky, up there, all speckled with stars, and we used to lay on our backs and look up at them.",
-    "text": "뗏목에서 사는 건 정말 근사했다. 하늘엔 온통 별들이 촘촘히 박혀 있었고, 우리는 등을 대고 누워 그 별들을 올려다보곤 했다.",
-    "title": "허클베리 핀의 모험",
-    "author": "마크 트웨인",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Jim won't ever forgit you, Huck; you's de bes' fren' Jim's ever had; en you's de ONLY fren' ole Jim's got now.",
-    "text": "짐은 널 절대 잊지 못할 거야, 헉. 넌 짐이 가져본 가장 좋은 친구였고, 지금 짐에게 남은 유일한 친구니까.",
-    "title": "허클베리 핀의 모험",
-    "author": "마크 트웨인",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I'd see him standing my watch on top of his'n, 'stead of calling me, so I could go on sleeping; and see him how glad he was when I come back out of the fog.",
-    "text": "짐은 내가 더 잘 수 있도록 자기 당번 위에 내 당번까지 대신 서주곤 했다. 그리고 내가 안개 속에서 돌아왔을 때 그가 얼마나 기뻐했는지 모른다.",
-    "title": "허클베리 핀의 모험",
-    "author": "마크 트웨인",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
     "english": "Would you like an adventure now, or shall we have our tea first?",
     "text": "지금 모험을 떠나고 싶니, 아니면 차부터 마실까?",
     "title": "피터팬",
@@ -4684,166 +3612,6 @@ window.investmentQuotes = [
     "text": "웃음에는 시간이 없고, 상상력에는 나이가 없으며, 꿈은 영원하다.",
     "title": "피터팬",
     "author": "제임스 매튜 배리",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I learned to look more upon the bright side of my condition, and less upon the dark side, and to consider what I enjoyed, rather than what I wanted.",
-    "text": "나는 내 처지의 어두운 면보다 밝은 면을 더 바라보는 법을 배웠다. 부족한 것보다 내가 누리고 있는 것을 헤아리게 되었다.",
-    "title": "로빈슨 크루소",
-    "author": "다니엘 디포",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "All our discontents about what we want appeared to me to spring from the want of thankfulness for what we have.",
-    "text": "우리가 원하는 것에 대한 모든 불만은, 결국 이미 가진 것에 감사할 줄 모르는 데서 비롯된다는 것을 깨달았다.",
-    "title": "로빈슨 크루소",
-    "author": "다니엘 디포",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Thus fear of danger is ten thousand times more terrifying than danger itself.",
-    "text": "위험에 대한 두려움은 위험 그 자체보다 만 배는 더 무섭다.",
-    "title": "로빈슨 크루소",
-    "author": "다니엘 디포",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "We never see the true state of our condition till it is illustrated to us by its contraries, nor know how to value what we enjoy, but by the want of it.",
-    "text": "우리는 반대되는 상황을 겪어보기 전까지는 우리 처지의 진짜 모습을 알지 못하고, 무언가를 잃어보기 전까지는 그 소중함을 깨닫지 못한다.",
-    "title": "로빈슨 크루소",
-    "author": "다니엘 디포",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "These reflections made me very sensible of the goodness of Providence to me, and very thankful for my present condition, with all its hardships and misfortunes.",
-    "text": "이런 생각들은 내게 섭리의 은혜로움을 깊이 느끼게 했고, 온갖 고난 속에서도 지금의 처지에 진심으로 감사하게 만들었다.",
-    "title": "로빈슨 크루소",
-    "author": "다니엘 디포",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Whoever could make two ears of corn, or two blades of grass, to grow upon a spot of ground where only one grew before, would deserve better of mankind than the whole race of politicians put together.",
-    "text": "한 포기만 자라던 땅에서 옥수수 두 이삭을 자라게 할 수 있는 사람이야말로, 그 어떤 정치가들을 다 합친 것보다 인류에 더 큰 도움이 되는 사람이다.",
-    "title": "걸리버 여행기",
-    "author": "조너선 스위프트",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Undoubtedly, philosophers are in the right when they tell us that nothing is great or little otherwise than by comparison.",
-    "text": "철학자들의 말이 옳다. 크고 작음이란 오직 비교를 통해서만 존재하는 것이다.",
-    "title": "걸리버 여행기",
-    "author": "조너선 스위프트",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "My insatiable desire of seeing foreign countries would suffer me to continue no longer.",
-    "text": "낯선 나라들을 보고 싶다는 끝없는 열망이 나를 가만히 머물러 있지 못하게 했다.",
-    "title": "걸리버 여행기",
-    "author": "조너선 스위프트",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I could not sufficiently wonder at the intrepidity of these diminutive mortals.",
-    "text": "이 자그마한 사람들의 대담함에 나는 그저 놀라울 따름이었다.",
-    "title": "걸리버 여행기",
-    "author": "조너선 스위프트",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "When I am king they shall not have bread and shelter only, but also teachings out of books, for a full belly is little worth where the mind is starved.",
-    "text": "내가 왕이 되면 사람들에게 빵과 잠자리만이 아니라 책의 가르침도 주리라. 배는 불러도 마음이 굶주려 있다면 아무 소용이 없으니까.",
-    "title": "왕자와 거지",
-    "author": "마크 트웨인",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "Learning softeneth the heart and breedeth gentleness and charity.",
-    "text": "배움은 마음을 부드럽게 하고, 온화함과 자비를 길러낸다.",
-    "title": "왕자와 거지",
-    "author": "마크 트웨인",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "The quality of mercy... It blesseth him that gives and him that takes; 'tis mightiest in the mightiest, it becomes the thronèd monarch better than his crown.",
-    "text": "자비로움이란 베푸는 이와 받는 이 모두를 축복하는 것. 가장 강한 자에게 가장 잘 어울리는 것은 왕관보다도 바로 그 자비로움이다.",
-    "title": "왕자와 거지",
-    "author": "마크 트웨인",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "The world is made wrong; kings should go to school to their own laws, at times, and so learn mercy.",
-    "text": "세상은 잘못되어 있다. 왕이라면 때때로 자신이 만든 법 아래서 배워야 한다. 그래야 비로소 자비를 알게 될 테니.",
-    "title": "왕자와 거지",
-    "author": "마크 트웨인",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "What God wills, will happen; thou canst not hurry it, thou canst not alter it; therefore wait, and be patient.",
-    "text": "신께서 뜻하신 일은 반드시 일어난다. 서두를 수도 바꿀 수도 없으니, 그저 기다리며 인내하라.",
-    "title": "왕자와 거지",
-    "author": "마크 트웨인",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "But only be good, dear, only be brave, only be kind and true always... and the big world may be better because my little child was born.",
-    "text": "그저 착하게, 용감하게, 늘 친절하고 진실하게만 살아가렴. 네가 태어났기에 이 넓은 세상이 조금은 더 나아질 테니까.",
-    "title": "소공자",
-    "author": "프랜시스 호지슨 버넷",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "He knew nothing of earls and castles... but he was always lovable because he was simple and loving. To be so is like being born a king.",
-    "text": "그는 백작이나 성 같은 것은 아무것도 몰랐지만, 소박하고 다정한 마음씨 덕분에 늘 사랑받았다. 그렇게 사는 것이야말로 왕으로 태어난 것과 같다.",
-    "title": "소공자",
-    "author": "프랜시스 호지슨 버넷",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "But if I have to be an earl, there's one thing I can do: I can try to be a good one.",
-    "text": "내가 백작이 되어야만 한다면, 할 수 있는 일이 하나 있어요. 좋은 백작이 되려고 노력하는 거예요.",
-    "title": "소공자",
-    "author": "프랜시스 호지슨 버넷",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "It is the best kind of goodness; not to think about yourself, but to think about other people.",
-    "text": "가장 훌륭한 선함이란, 자기 자신이 아니라 다른 사람을 먼저 생각하는 것이다.",
-    "title": "소공자",
-    "author": "프랜시스 호지슨 버넷",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "I am your friend; you are mine, and I shall always be your friend.",
-    "text": "나는 당신의 친구예요. 당신도 내 친구고요. 나는 언제까지나 당신의 친구로 남을 거예요.",
-    "title": "소공자",
-    "author": "프랜시스 호지슨 버넷",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
-    "english": "His greatest charm was this cheerful, fearless, quaint little way of making friends with people... a kind little heart that sympathized with every one.",
-    "text": "그의 가장 큰 매력은 누구와도 씩씩하고 두려움 없이 친구가 되는 방식에 있었다. 그는 모든 사람에게 공감하는 다정한 마음을 지녔다.",
-    "title": "소공자",
-    "author": "프랜시스 호지슨 버넷",
     "category": "문학",
     "genre": "literature"
   },
@@ -8762,7 +7530,7 @@ window.investmentQuotes = [
     "priority": true
   },
   {
-    "text": "그래도 어떤 오해는 나를 한 발 나아가게 한다.",
+    "text": "인간은 모일수록 좋은 것 같다. 적어도 축구공 앞에서, 특히 여자들은. 무엇보다 축구는 재미있으니까. 너무 재미있으니까. 뭐가 됐든 재미있으면 일단 된 것 아닌가. 정말이지, 이거, 기절한다.",
     "title": "우아하고 호쾌한 여자 축구",
     "author": "김혼비",
     "category": "에세이",
@@ -8778,7 +7546,7 @@ window.investmentQuotes = [
     "priority": true
   },
   {
-    "text": "다들 진심으로 내가 지금 하고 있는 대로 계속해 주길 바라고 있었다. 내 발끝에 팀원들의 기대가 실렸다.",
+    "text": "실력은 노력을 먹고 자라지만, 요행수는 우연을 주워 먹고 자라는 법이다.",
     "title": "우아하고 호쾌한 여자 축구",
     "author": "김혼비",
     "category": "에세이",
@@ -8786,7 +7554,7 @@ window.investmentQuotes = [
     "priority": true
   },
   {
-    "text": "나는 체력이 모기 같아서 망했다.",
+    "text": "한 사람에게 어떤 운동 하나가 삶의 중심 어딘가에 들어온다는 것은 생각보다 커다란 일이었다. 일상의 시간표가 달라졌고 사는 옷과 신발이 달라졌고 몸의 자세가 달라졌고 마음의 자세가 달라졌고 몸을 대하는 마음의 자세가 달라졌다.",
     "title": "우아하고 호쾌한 여자 축구",
     "author": "김혼비",
     "category": "에세이",
@@ -8802,7 +7570,7 @@ window.investmentQuotes = [
     "priority": true
   },
   {
-    "text": "다정한 패턴은 마음의 악력도 만든다.",
+    "text": "나는 갑자기 김솔통 같은 글을 쓰고 싶어졌다. ... 보는 순간, ‘세상에 이런 물건이?’라는 새로운 인식과 잊고 있던 다른 무언가에 대한 재인식을 동시에 하게 만드는 존재. 그리고 그 인식이라는 것들이 딱 김에 기름 바르는 것만큼의 중요성을 가지고 있는 존재.",
     "title": "다정소감",
     "author": "김혼비",
     "category": "에세이",
@@ -8942,5 +7710,47 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
     "author": "피터 린치",
     "category": "behavior"
+  },
+  {
+    "english": "Value investing is at its core the marriage of a contrarian streak and a calculator.",
+    "text": "가치투자는 본질적으로 반골 기질과 계산기의 결합이다.",
+    "title": "안전마진 (Margin of Safety)",
+    "author": "세스 클라만",
+    "category": "mindset"
+  },
+  {
+    "english": "A blindfolded monkey throwing darts at a newspaper's financial pages could select a portfolio that would do just as well as one carefully selected by experts.",
+    "text": "눈을 가린 원숭이가 신문 경제면에 다트를 던져 종목을 고른다 해도, 전문가들이 심사숙고해서 고른 포트폴리오 못지않은 성과를 낼 수 있다.",
+    "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
+    "author": "버턴 말킬",
+    "category": "mindset"
+  },
+  {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack. Time is your friend; impulse is your enemy.",
+    "text": "건초더미에서 바늘을 찾으려 애쓰지 마라. 그냥 건초더미 전체를 사면 된다. 시간은 투자자의 친구이고, 충동은 투자자의 적이다.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "mindset"
+  },
+  {
+    "english": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave. And behavior is hard to teach, even to really smart people.",
+    "text": "돈을 잘 다루는 일은 얼마나 똑똑하냐와는 별로 상관이 없다. 오히려 얼마나 잘 처신하느냐에 달려 있다. 그리고 그 처신은, 아무리 똑똑한 사람이라도 가르치기 어려운 것이다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절",
+    "category": "mindset"
+  },
+  {
+    "english": "If the job has been correctly done when a common stock is purchased, the time to sell it is — almost never.",
+    "text": "주식을 애초에 제대로 골라 샀다면, 그 주식을 팔아야 할 때는 사실상 거의 오지 않는다.",
+    "title": "보수적인 투자자는 마음이 편하다 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "Spend each day trying to be a little wiser than you were when you woke up. Discharge your duties faithfully and well. Slug it out one inch at a time, day by day, and in the end if you live long enough, most of us get what we deserve.",
+    "text": "매일 아침 눈을 떴을 때보다 조금 더 지혜로워지려고 애쓰며 하루를 보내라. 맡은 의무를 성실하고 충실하게 해내라. 하루하루, 한 걸음씩 묵묵히 나아가라. 그렇게 충분히 오래 버티다 보면 결국 우리 대부분은 마땅히 받아야 할 몫을 받게 된다.",
+    "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거",
+    "category": "mindset"
   }
 ];
