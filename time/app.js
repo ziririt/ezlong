@@ -2119,13 +2119,35 @@ function nativeVizBarJitter(i) {
 // 막대끼리 값 차이가 항상 완만해서 "덩어리"가 아니라 하나의 이어진 파형처럼
 // 보인다. 또 "반짝임이 너무 촐랑댄다"는 재지적도 반영 — 반짝임의 진폭·속도
 // 둘 다 절반 가까이 줄여서 밋밋함과 산만함의 중간 지점을 찾는다.
+//
+// 2026-07-16: 그런데 이번엔 반대쪽 재지적 — "전체가 너무 골고루/인위적으로
+// 평균화돼 보인다"는 것. 원인은 시그마(0.32)가 너무 넓어서 저음/중음/고음
+// 3개 값이 화면 거의 전체에서 서로 절반씩 섞였고(예: 막대 30%지점에서도
+// 저음:중음이 거의 50:50), 타격(hit)까지 이 넓은 가중치를 그대로 재사용하다
+// 보니 킥 하나가 터져도 그 반응이 화면 전반에 얇게 퍼져 "다같이 밋밋하게
+// 출렁이는 평균값 파도"처럼 보였다. 두 가지로 나눠 고친다 — ① 대역 색상용
+// bandWeights는 시그마를 0.32→0.20으로 좁혀 구역성(왼쪽=저음/가운데=중음/
+// 오른쪽=고음 느낌)을 되살리되, 여전히 연속함수라 예전의 "칼같은 3등분"
+// 사고는 재발하지 않는다. ② 타격 전용으로 훨씬 좁은 hitWeights(시그마 0.13,
+// 정규화 안 함)를 따로 둬서 킥/스네어/하이햇이 각자 구역의 몇 개 막대에만
+// 확 튀도록 국지화한다 — 이래야 "쇼"답게 개별적으로 팍팍 튀어 보인다.
 function nativeVizBandWeights(i) {
   const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
-  const bassW = Math.exp(-Math.pow((t - 0.10) / 0.32, 2));
-  const midW = Math.exp(-Math.pow((t - 0.50) / 0.32, 2));
-  const trebleW = Math.exp(-Math.pow((t - 0.90) / 0.32, 2));
+  const bassW = Math.exp(-Math.pow((t - 0.10) / 0.20, 2));
+  const midW = Math.exp(-Math.pow((t - 0.50) / 0.20, 2));
+  const trebleW = Math.exp(-Math.pow((t - 0.90) / 0.20, 2));
   const sum = bassW + midW + trebleW;
   return [bassW / sum, midW / sum, trebleW / sum];
+}
+
+// 정규화하지 않는다 — 자기 구역 한복판에선 1에 가깝고, 벗어나면 빠르게
+// 0으로 떨어져야 "몇 개 막대만 국지적으로 튄다"는 느낌이 산다.
+function nativeVizHitWeights(i) {
+  const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
+  const bassW = Math.exp(-Math.pow((t - 0.10) / 0.13, 2));
+  const midW = Math.exp(-Math.pow((t - 0.50) / 0.13, 2));
+  const trebleW = Math.exp(-Math.pow((t - 0.90) / 0.13, 2));
+  return [bassW, midW, trebleW];
 }
 
 let nativeVizShimmerPhase = 0;
@@ -2166,16 +2188,26 @@ function drawMusicVizNative(h) {
     // 값이 뚝 끊기지 않아 3~4덩어리로 나뉘어 보이던 문제가 사라진다.
     const [bassW, midW, trebleW] = nativeVizBandWeights(i);
     const band = bassW * bassNow + midW * midNow + trebleW * trebleNow;
-    const hit = bassW * nativeVizBassHit2 + midW * nativeVizMidHit2 + trebleW * nativeVizTrebleHit2;
+    // 2026-07-16: 타격은 대역 색상용 넓은 가중치가 아니라 훨씬 좁은
+    // hitWeights로 국지화한다 — 그래야 킥/스네어가 화면 전체를 얇게
+    // 출렁이지 않고 자기 구역의 몇 개 막대만 확 튄다.
+    const [bassHW, midHW, trebleHW] = nativeVizHitWeights(i);
+    const jitter = nativeVizBarJitter(i);
+    // 타격에도 막대별 고정 지터를 곱한다(제곱으로 대비를 키움) — 같은 구역
+    // 안에서도 막대마다 튀는 크기가 달라져야 "계산된 곡선"이 아니라
+    // "제각각 튀는 쇼"처럼 보인다.
+    const hitPunch = Math.pow(jitter, 2.2);
+    const hit = (bassHW * nativeVizBassHit2 + midHW * nativeVizMidHit2 + trebleHW * nativeVizTrebleHit2) * hitPunch;
     // 막대마다 다른 위상으로 아주 옅은 반짝임 — "너무 촐랑댄다"는 재지적으로
     // 진폭(0.6→0.18)과 속도(band*2.2→band*0.9) 둘 다 크게 낮춰 은은한
     // 정도로만 남긴다(밋밋함과 산만함의 중간).
     const shimmer = 0.5 + 0.5 * Math.sin(nativeVizShimmerPhase * (0.5 + band * 0.9) + i * 1.7);
     const liveliness = 0.82 + 0.18 * shimmer;
-    const ratio = Math.pow(Math.max(0, band), 1.25) * nativeVizBarJitter(i);
+    const ratio = Math.pow(Math.max(0, band), 1.25) * jitter;
     let target = Math.max(4, ratio * shapeEnvelope * h * liveliness);
-    // 대역별 타격 펀치 — 가중치가 섞여 있어 이 펀치도 경계 없이 자연스럽게 번진다.
-    target = Math.max(target, hit * h * 0.94 * shapeEnvelope);
+    // 대역별 타격 펀치 — 이제 hitWeights로 국지화된 데다 막대별 지터까지
+    // 곱해져서, 같은 킥 한 방에도 막대마다 확연히 다르게 튄다.
+    target = Math.max(target, hit * h * 1.05 * shapeEnvelope);
     // 어택은 빠르게(비트에 팍 반응), 릴리즈는 그보다 느리게 — "쇼"답게 대비를 키운다.
     const factor = target > musicVizBars[i] ? 0.8 : 0.2;
     musicVizBars[i] += (target - musicVizBars[i]) * factor;
@@ -2471,6 +2503,19 @@ async function updateMusicProgress(event) {
     pendingNextIndex = pickNextTrackIndex();
     recordTrackHeard(pendingNextIndex);
     standby._pendingLoad = loadMusicTrack(standby, pendingNextIndex, { prebuffer: true });
+    // 2026-07-16: 네이티브 모드에서는 이 시점(끝나기 18초 전)에 다음 곡
+    // URL을 네이티브에도 미리 알려줘서 TrackFileCache가 여유있게 로컬로
+    // 받아두게 한다 — 예전엔 crossfadeStart(끝나기 4초 전) 시점에야 같은
+    // URL을 다시 prefetch()했는데, 그건 이미 그 순간 막 재생을 시작한
+    // 파일과 똑같은 파일을 또 받으러 가는 셈이라 대역폭이 두 배로 들어
+    // 곡 초반이 끊기는 원인이었다(NativeRadioPlayer.swift 주석 참조). 이제
+    // 진짜로 미리(18초 여유) 받아두므로 크로스페이드 시점엔 이미 로컬 파일이다.
+    if (isNativeWrapper && Array.isArray(musicPlaylist) && musicPlaylist.length > 0) {
+      const upcoming = musicPlaylist[pendingNextIndex % musicPlaylist.length];
+      if (upcoming) {
+        postToNativeRadio({ action: "prefetchNext", url: resolveTrackAbsoluteUrl(upcoming) });
+      }
+    }
   }
 
   // 2단계 — 실제 크로스페이드 시작(끝나기 4초 전). 1단계에서 이미 준비
