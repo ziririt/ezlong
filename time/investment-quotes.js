@@ -864,12 +864,6 @@ window.investmentQuotes = [
     "genre": "literature"
   },
   {
-    "text": "이 벌이가 나쁘지 않다고 생각하면서도, 마음 한구석은 왜 이리 불안한지 그는 알 수 없었다.",
-    "title": "운수 좋은 날",
-    "author": "현진건",
-    "genre": "literature"
-  },
-  {
     "english": "You have power over your mind, not outside events. Realize this, and you will find strength.",
     "text": "그대는 외부에서 일어나는 일이 아니라 그 일에 대한 그대의 생각을 다스릴 힘이 있다. 이것을 깨달으면 그대는 힘을 찾을 것이다.",
     "title": "명상록",
@@ -888,24 +882,6 @@ window.investmentQuotes = [
     "text": "크고 지적인 사람에게, 그리고 깊은 마음을 가진 사람에게 고통과 괴로움은 언제나 피할 수 없는 것이다.",
     "title": "죄와 벌",
     "author": "표도르 도스토옙스키",
-    "genre": "literature"
-  },
-  {
-    "text": "죽는 날까지 하늘을 우러러 한 점 부끄럼이 없기를, 잎새에 이는 바람에도 나는 괴로워했다.",
-    "title": "서시",
-    "author": "윤동주",
-    "genre": "literature"
-  },
-  {
-    "text": "나 보기가 역겨워 가실 때에는 말없이 고이 보내드리우리다.",
-    "title": "진달래꽃",
-    "author": "김소월",
-    "genre": "literature"
-  },
-  {
-    "text": "박제가 되어버린 천재를 아시오?",
-    "title": "날개",
-    "author": "이상",
     "genre": "literature"
   },
   {
@@ -1748,24 +1724,6 @@ window.investmentQuotes = [
     "text": "이야기는 우리에게 무언가를 상상하는 능력뿐 아니라, 그것을 함께 상상하는 능력을 주었다.",
     "title": "사피엔스",
     "author": "유발 하라리",
-    "genre": "literature"
-  },
-  {
-    "text": "우리들이 필요에 의해서 물건을 갖게 되지만, 때로는 그 물건 때문에 적잖이 마음이 쓰이게 된다. 그러니까 무엇인가를 갖는다는 것은 다른 한편 무엇인가에 얽매인다는 것이다.",
-    "title": "무소유",
-    "author": "법정",
-    "genre": "literature"
-  },
-  {
-    "text": "무소유란 아무것도 갖지 않는다는 것이 아니라, 불필요한 것을 갖지 않는다는 뜻이다.",
-    "title": "무소유",
-    "author": "법정",
-    "genre": "literature"
-  },
-  {
-    "text": "우리가 선택한 맑은 가난은 부보다 훨씬 값지고 고귀한 것이다.",
-    "title": "무소유",
-    "author": "법정",
     "genre": "literature"
   },
   {
@@ -3506,84 +3464,6 @@ window.investmentQuotes = [
     "genre": "literature"
   },
   {
-    "text": "우리는 만날 때에 떠날 것을 염려하는 것과 같이, 떠날 때에 다시 만날 것을 믿습니다.",
-    "title": "님의 침묵",
-    "author": "한용운",
-    "genre": "literature"
-  },
-  {
-    "text": "님은 갔지마는 나는 님을 보내지 아니하였습니다.",
-    "title": "님의 침묵",
-    "author": "한용운",
-    "genre": "literature"
-  },
-  {
-    "text": "계절이 지나가는 하늘에는 가을로 가득 차 있습니다. 나는 아무 걱정도 없이 가을 속의 별들을 다 헤일 듯합니다.",
-    "title": "별 헤는 밤",
-    "author": "윤동주",
-    "genre": "literature"
-  },
-  {
-    "text": "별 하나에 추억과 별 하나에 사랑과 별 하나에 쓸쓸함과 별 하나에 동경과 별 하나에 시와 별 하나에 어머니, 어머니.",
-    "title": "별 헤는 밤",
-    "author": "윤동주",
-    "genre": "literature"
-  },
-  {
-    "text": "겨울이 지나고 나의 별에도 봄이 오면, 무덤 위에 파란 잔디가 피어나듯이, 내 이름자 묻힌 언덕 위에도 자랑처럼 풀이 무성할 거외다.",
-    "title": "별 헤는 밤",
-    "author": "윤동주",
-    "genre": "literature"
-  },
-  {
-    "text": "넓은 벌 동쪽 끝으로 옛이야기 지줄대는 실개천이 회돌아 나가고, 얼룩백이 황소가 해설피 금빛 게으른 울음을 우는 곳, 그곳이 차마 꿈엔들 잊힐 리야.",
-    "title": "향수",
-    "author": "정지용",
-    "genre": "literature"
-  },
-  {
-    "text": "질화로에 재가 식어지면 비인 밭에 밤바람 소리 말을 달리고, 엷은 졸음에 겨운 늙으신 아버지가 짚베개를 돋아 고이시는 곳, 그곳이 차마 꿈엔들 잊힐 리야.",
-    "title": "향수",
-    "author": "정지용",
-    "genre": "literature"
-  },
-  {
-    "text": "흙에서 자란 내 마음 파아란 하늘빛이 그리워, 함부로 쏜 화살을 찾으려 풀섶 이슬에 함추름 휘적시던 곳, 그곳이 차마 꿈엔들 잊힐 리야.",
-    "title": "향수",
-    "author": "정지용",
-    "genre": "literature"
-  },
-  {
-    "text": "전설바다에 춤추는 밤물결 같은 검은 귀밑머리 날리는 어린 누이와, 사철 발 벗은 아내가 따가운 햇살을 등에 지고 이삭 줍던 곳, 그곳이 차마 꿈엔들 잊힐 리야.",
-    "title": "향수",
-    "author": "정지용",
-    "genre": "literature"
-  },
-  {
-    "text": "한 송이의 국화꽃을 피우기 위해 봄부터 소쩍새는 그렇게 울었나 보다.",
-    "title": "국화 옆에서",
-    "author": "서정주",
-    "genre": "literature"
-  },
-  {
-    "text": "한 송이의 국화꽃을 피우기 위해 천둥은 먹구름 속에서 또 그렇게 울었나 보다.",
-    "title": "국화 옆에서",
-    "author": "서정주",
-    "genre": "literature"
-  },
-  {
-    "text": "그립고 아쉬움에 가슴 조이던 머언 먼 젊음의 뒤안길에서, 인제는 돌아와 거울 앞에 선 내 누님같이 생긴 꽃이여.",
-    "title": "국화 옆에서",
-    "author": "서정주",
-    "genre": "literature"
-  },
-  {
-    "text": "노오란 네 꽃잎이 피려고 간밤엔 무서리가 저리 내리고, 내게는 잠도 오지 않았나 보다.",
-    "title": "국화 옆에서",
-    "author": "서정주",
-    "genre": "literature"
-  },
-  {
     "english": "Enthusiasm is common. Endurance is rare.",
     "text": "열정은 흔하다. 그러나 그 열정을 끝까지 지켜내는 것은 드물다.",
     "title": "그릿",
@@ -3842,35 +3722,40 @@ window.investmentQuotes = [
     "text": "이 자아를 여러 가지로 부를 수 있을 것이다. 변화, 탈바꿈, 거짓, 배신. 나는 그것을 교육이라 부른다.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
-    "genre": "literature"
+    "genre": "literature",
+    "priority": true
   },
   {
     "english": "First find out what you are capable of, then decide who you are.",
     "text": "먼저 내가 무엇을 할 수 있는지 알아낸 뒤, 그다음에 내가 누구인지 결정하라.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
-    "genre": "literature"
+    "genre": "literature",
+    "priority": true
   },
   {
     "english": "The most powerful determinant of who you are is inside you. Until she believed in herself. Then it didn't matter what dress she wore.",
     "text": "당신이 누구인지를 가장 강력하게 결정하는 것은 당신 안에 있다. 스스로를 믿기 전까지는 아무것도 아니었지만, 믿는 순간부터는 어떤 옷을 입었는지는 중요하지 않았다.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
-    "genre": "literature"
+    "genre": "literature",
+    "priority": true
   },
   {
     "english": "I had come to believe that the ability to evaluate many ideas, many histories, many points of view, was at the heart of what it means to self-create.",
     "text": "여러 생각과 역사와 관점을 저울질할 수 있는 능력이야말로 자기 자신을 만들어가는 일의 핵심이라고 믿게 되었다.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
-    "genre": "literature"
+    "genre": "literature",
+    "priority": true
   },
   {
     "english": "Everything I had worked for, all my years of study, had been to purchase for myself this one privilege: to see and experience more truths than those given to me by my father, and to use those truths to construct my own mind.",
     "text": "내가 노력해온 모든 것, 그 오랜 공부의 시간은 결국 하나의 특권을 사기 위함이었다. 더 많은 진실을 보고 경험하며, 그것으로 나만의 생각을 짓는 특권.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
-    "genre": "literature"
+    "genre": "literature",
+    "priority": true
   },
   {
     "english": "The secret of happiness is very simply this: let your interests be as wide as possible, and let your reactions to the things and persons that interest you be as far as possible friendly rather than hostile.",
@@ -4461,60 +4346,6 @@ window.investmentQuotes = [
     "genre": "literature"
   },
   {
-    "text": "메뚜기가 따끔따끔 얼굴에 와 부딪친다. 쪽빛으로 한껏 갠 가을 하늘이 소년의 눈앞에서 맴을 돈다.",
-    "title": "소나기",
-    "author": "황순원",
-    "genre": "literature"
-  },
-  {
-    "text": "유난히 맑은 가을 햇살이 소녀의 갈꽃머리에서 반짝거렸다. 소녀 아닌 갈꽃이 들길을 걸어가는 것만 같았다.",
-    "title": "소나기",
-    "author": "황순원",
-    "genre": "literature"
-  },
-  {
-    "text": "개울가에 다다르기 전에, 가을 하늘이 언제 그랬는가 싶게 구름 한 점 없이 쪽빛으로 개어 있었다.",
-    "title": "소나기",
-    "author": "황순원",
-    "genre": "literature"
-  },
-  {
-    "text": "유달리 주위가 조용해진 것 같았다. 따가운 가을 햇살만이 말라가는 풀 냄새를 퍼뜨리고 있었다.",
-    "title": "소나기",
-    "author": "황순원",
-    "genre": "literature"
-  },
-  {
-    "text": "소녀가 허수아비 줄을 잡더니 흔들어 댄다. 허수아비가 자꾸 우쭐거리며 춤을 춘다. 소녀의 왼쪽 볼에 살포시 보조개가 패었다.",
-    "title": "소나기",
-    "author": "황순원",
-    "genre": "literature"
-  },
-  {
-    "text": "뒤에는 청량한 가을 햇살 아래 빛나는 갈꽃뿐. 이제 저쯤 갈밭머리로 소녀가 나타나리라.",
-    "title": "소나기",
-    "author": "황순원",
-    "genre": "literature"
-  },
-  {
-    "text": "이지러는 졌으나 보름을 갓 지난 달은 부드러운 빛을 흐뭇이 흘리고 있다.",
-    "title": "메밀꽃 필 무렵",
-    "author": "이효석",
-    "genre": "literature"
-  },
-  {
-    "text": "산허리는 온통 메밀밭이어서 피기 시작한 꽃이 소금을 뿌린 듯이 흐뭇한 달빛에 숨이 막힐 지경이다.",
-    "title": "메밀꽃 필 무렵",
-    "author": "이효석",
-    "genre": "literature"
-  },
-  {
-    "text": "밤중을 지난 무렵인지 죽은 듯이 고요한 속에서 짐승 같은 달의 숨소리가 손에 잡힐 듯이 들리며, 콩 포기와 옥수수 잎새가 한층 달에 푸르게 젖었다.",
-    "title": "메밀꽃 필 무렵",
-    "author": "이효석",
-    "genre": "literature"
-  },
-  {
     "text": "잎사귀는 꽃의 어머니야. 숨 쉬고, 비바람을 견디고, 햇빛을 간직했다가 눈부시게 하얀 꽃을 키워 내지. 잎사귀는 정말 훌륭하지.",
     "title": "마당을 나온 암탉",
     "author": "황선미",
@@ -4536,96 +4367,6 @@ window.investmentQuotes = [
     "text": "수덕사 대웅전의 저 간결미와 필요미가 연출한 정숙한 아름다움에 깊은 마음의 감동을 받을 것이다.",
     "title": "나의 문화유산답사기",
     "author": "유홍준",
-    "genre": "literature"
-  },
-  {
-    "text": "그리워하는데도 한 번 만나고는 못 만나게 되기도 하고, 일생을 못 잊으면서도 아니 만나고 살기도 한다.",
-    "title": "인연",
-    "author": "피천득",
-    "genre": "literature"
-  },
-  {
-    "text": "아사코는 스위이트 피이를 따다가 화병에 담아, 내가 쓰게 된 책상 위에 놓아 주었다. 스위이트 피이는 아사코같이 어리고 귀여운 꽃이라고 생각하였다.",
-    "title": "인연",
-    "author": "피천득",
-    "genre": "literature"
-  },
-  {
-    "text": "\"아! 이쁜 집! 우리, 이담에 이런 집에서 같이 살아요.\" 아사코의 어린 목소리가 지금도 들린다.",
-    "title": "인연",
-    "author": "피천득",
-    "genre": "literature"
-  },
-  {
-    "text": "봄이 한창인 어느 날, 민들레는 한 송이 아름다운 꽃을 피웠습니다. 향긋한 내음이 바람을 타고 퍼져나갔습니다.",
-    "title": "강아지똥",
-    "author": "권정생",
-    "genre": "literature"
-  },
-  {
-    "text": "방긋방긋 웃는 꽃송이엔 귀여운 강아지똥의 눈물겨운 사랑이 가득 어려 있었습니다.",
-    "title": "강아지똥",
-    "author": "권정생",
-    "genre": "literature"
-  },
-  {
-    "text": "아니야, 하느님은 쓸데없는 물건은 하나도 만들지 않으셨어. 너도 꼭 무엇엔가 귀하게 쓰일 거야.",
-    "title": "강아지똥",
-    "author": "권정생",
-    "genre": "literature"
-  },
-  {
-    "text": "네가 거름이 되어 별처럼 고운 꽃이 피어난다면, 온 몸을 녹여 네 살이 될게.",
-    "title": "강아지똥",
-    "author": "권정생",
-    "genre": "literature"
-  },
-  {
-    "text": "강아지똥은 눈부시게 쳐다보다가 어느 틈에 그 별들을 그리워하게 되었습니다. \"영원히 꺼지지 않는 아름다운 불빛.\"",
-    "title": "강아지똥",
-    "author": "권정생",
-    "genre": "literature"
-  },
-  {
-    "text": "어린이는 지금 내 무릎 앞에서 잠을 잔다. 더할 수 없는 참됨과 더할 수 없는 착함과 더할 수 없는 아름다움을 갖추고, 그 위에 또 위대한 창조의 힘까지 갖추어 가진 어린 하느님이 편안하게도 고요한 잠을 잔다.",
-    "title": "어린이 예찬",
-    "author": "방정환",
-    "genre": "literature"
-  },
-  {
-    "text": "나는 지금 성당에 들어간 이상의 경건한 마음으로 모든 것을 잊어버리고, 사랑스런 하느님의 자는 얼굴에 예배하고 있다.",
-    "title": "어린이 예찬",
-    "author": "방정환",
-    "genre": "literature"
-  },
-  {
-    "text": "상처 났던 바둑판은 제힘으로 제 상처를 고쳐서 본디대로 유착해 버리고, 균열진 자리에 머리카락 같은 희미한 흔적만이 남는다.",
-    "title": "특급품",
-    "author": "김소운",
-    "genre": "literature"
-  },
-  {
-    "text": "과실로 해서 더 커 가고 깊어 가는 인격이 있다. 과실로 해서 더 정화되는 굳세어지는 사랑이 있다. 생활이 있다.",
-    "title": "특급품",
-    "author": "김소운",
-    "genre": "literature"
-  },
-  {
-    "text": "청춘! 이는 듣기만 하여도 가슴이 설레는 말이다. 청춘! 너의 두 손을 가슴에 대고, 물방아 같은 심장의 고동을 들어 보라.",
-    "title": "청춘예찬",
-    "author": "민태원",
-    "genre": "literature"
-  },
-  {
-    "text": "풀밭에 속잎 나고, 가지에 싹이 트고, 꽃 피고 새 우는 봄날의 천지는 얼마나 기쁘며, 얼마나 아름다우냐?",
-    "title": "청춘예찬",
-    "author": "민태원",
-    "genre": "literature"
-  },
-  {
-    "text": "이상! 빛나는 귀중한 이상, 이것은 청춘의 누리는 바 특권이다.",
-    "title": "청춘예찬",
-    "author": "민태원",
     "genre": "literature"
   },
   {
@@ -6476,5 +6217,1734 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄",
     "category": "mindset"
+  },
+  {
+    "english": "Mild success can be explainable by skills and labor. Wild success is attributable to variance.",
+    "text": "적당한 성공은 실력과 노력으로 설명할 수 있다. 그러나 엄청난 성공은 순전히 변동성, 즉 운 덕분이다.",
+    "title": "행운에 속지 마라 (Fooled by Randomness)",
+    "author": "나심 니콜라스 탈레브",
+    "category": "mindset"
+  },
+  {
+    "english": "The elements of good trading are: (1) cutting losses, (2) cutting losses, and (3) cutting losses. If you can follow these three rules, you may have a chance.",
+    "text": "좋은 트레이딩을 이루는 요소는 이렇다. 첫째도 손절, 둘째도 손절, 셋째도 손절이다. 이 세 가지 원칙을 지킬 수 있다면 살아남을 가능성이 있다.",
+    "title": "시장의 마법사들 (Market Wizards)",
+    "author": "에드 세이코타 (잭 슈웨거 인터뷰집)",
+    "category": "behavior"
+  },
+  {
+    "text": "먼 곳에서 벗이 찾아오니, 이 또한 즐겁지 아니한가.",
+    "title": "논어",
+    "author": "공자",
+    "genre": "literature"
+  },
+  {
+    "text": "세 사람이 길을 가면, 그 중에 반드시 내 스승이 있다.",
+    "title": "논어",
+    "author": "공자",
+    "genre": "literature"
+  },
+  {
+    "text": "인자는 근심하지 않고, 지자는 미혹되지 않으며, 용자는 두려워하지 않는다.",
+    "title": "논어",
+    "author": "공자",
+    "genre": "literature"
+  },
+  {
+    "text": "옛것을 익히고 새것을 알면, 그로써 스승이 될 수 있다.",
+    "title": "논어",
+    "author": "공자",
+    "genre": "literature"
+  },
+  {
+    "text": "군자는 두루 사귀되 편을 가르지 않는다.",
+    "title": "논어",
+    "author": "공자",
+    "genre": "literature"
+  },
+  {
+    "text": "허물이 있으면 고치기를 꺼리지 말라.",
+    "title": "논어",
+    "author": "공자",
+    "genre": "literature"
+  },
+  {
+    "text": "먼저 행하고, 그 다음에 말이 따르게 하라.",
+    "title": "논어",
+    "author": "공자",
+    "genre": "literature"
+  },
+  {
+    "text": "붕새가 남쪽 바다로 날아갈 때, 물보라가 삼천 리요 회오리바람 타고 구만 리를 오른다.",
+    "title": "장자",
+    "author": "장자",
+    "genre": "literature"
+  },
+  {
+    "text": "사람들은 쓸모 있음의 쓸모는 알아도, 쓸모없음의 쓸모는 알지 못한다.",
+    "title": "장자",
+    "author": "장자",
+    "genre": "literature"
+  },
+  {
+    "text": "하늘과 땅은 나와 나란히 살고, 만물은 나와 하나가 된다.",
+    "title": "장자",
+    "author": "장자",
+    "genre": "literature"
+  },
+  {
+    "text": "때를 편안히 여기고 순리를 따르면, 슬픔도 기쁨도 끼어들지 못한다.",
+    "title": "장자",
+    "author": "장자",
+    "genre": "literature"
+  },
+  {
+    "text": "샘이 마르면 물고기들은 서로 거품을 뿜어 적셔주며 살아간다.",
+    "title": "장자",
+    "author": "장자",
+    "genre": "literature"
+  },
+  {
+    "text": "지인은 자기를 내세우지 않고, 신인은 공을 내세우지 않고, 성인은 이름을 내세우지 않는다.",
+    "title": "장자",
+    "author": "장자",
+    "genre": "literature"
+  },
+  {
+    "text": "영예와 치욕에 놀라지 않으니, 뜰 앞에 꽃이 피고 지는 것을 한가로이 바라본다.",
+    "title": "채근담",
+    "author": "홍자성",
+    "genre": "literature"
+  },
+  {
+    "text": "거취에 무심하니, 하늘 밖 구름이 모였다 흩어짐을 따라 보낸다.",
+    "title": "채근담",
+    "author": "홍자성",
+    "genre": "literature"
+  },
+  {
+    "text": "산 속에 살면 마음이 맑고 시원하여, 대하는 것마다 모두 아름다운 생각이 든다.",
+    "title": "채근담",
+    "author": "홍자성",
+    "genre": "literature"
+  },
+  {
+    "text": "한 걸음 물러서는 것은 곧 한 걸음 나아가는 밑거름이 된다.",
+    "title": "채근담",
+    "author": "홍자성",
+    "genre": "literature"
+  },
+  {
+    "text": "사나운 말도 길들이면 명마가 되고, 거친 쇠도 잘 다루면 훌륭한 그릇이 된다.",
+    "title": "채근담",
+    "author": "홍자성",
+    "genre": "literature"
+  },
+  {
+    "text": "돌 틈으로 흐르는 샘물을 만나면, 때묻은 마음이 절로 씻겨나가는 듯하다.",
+    "title": "채근담",
+    "author": "홍자성",
+    "genre": "literature"
+  },
+  {
+    "text": "최고의 선은 물과 같다. 물은 만물을 이롭게 하면서도 다투지 않는다.",
+    "title": "도덕경",
+    "author": "노자",
+    "genre": "literature"
+  },
+  {
+    "text": "천 리 길도 한 걸음에서 시작된다.",
+    "title": "도덕경",
+    "author": "노자",
+    "genre": "literature"
+  },
+  {
+    "text": "만족할 줄 아는 사람은 부유하다.",
+    "title": "도덕경",
+    "author": "노자",
+    "genre": "literature"
+  },
+  {
+    "text": "가장 부드러운 것이 가장 강한 것을 이긴다.",
+    "title": "도덕경",
+    "author": "노자",
+    "genre": "literature"
+  },
+  {
+    "text": "큰 그릇은 천천히 완성된다.",
+    "title": "도덕경",
+    "author": "노자",
+    "genre": "literature"
+  },
+  {
+    "text": "남을 아는 것은 지혜요, 자신을 아는 것은 밝음이며, 자신을 이기는 것은 강함이다.",
+    "title": "도덕경",
+    "author": "노자",
+    "genre": "literature"
+  },
+  {
+    "text": "행복이란 소중하고 궁극적인 것에 속한다.",
+    "title": "니코마코스 윤리학",
+    "author": "아리스토텔레스",
+    "genre": "literature"
+  },
+  {
+    "text": "모든 기술과 탐구, 그리고 모든 행동과 선택은 어떤 선을 추구하는 것으로 보인다.",
+    "title": "니코마코스 윤리학",
+    "author": "아리스토텔레스",
+    "genre": "literature"
+  },
+  {
+    "text": "인간의 탁월함이란 육체가 아니라 영혼의 탁월함을 말한다. 행복이란 곧 영혼의 활동이기 때문이다.",
+    "title": "니코마코스 윤리학",
+    "author": "아리스토텔레스",
+    "genre": "literature"
+  },
+  {
+    "text": "사람은 함께 소금을 나누어 먹어보기 전에는 서로를 알 수 없다.",
+    "title": "니코마코스 윤리학",
+    "author": "아리스토텔레스",
+    "genre": "literature"
+  },
+  {
+    "text": "삶의 아름다움을 마음껏 바라보라. 별들을 보고, 그 별들과 함께 나아가는 자신을 그려보라.",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "text": "아침에 눈을 뜨거든 생각하라. 숨 쉬고, 생각하고, 즐기고, 사랑할 수 있다는 것이 얼마나 소중한 특권인지를.",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "text": "선한 사람이 어떠해야 하는지 논쟁하느라 시간을 낭비하지 말라. 그냥 그런 사람이 되라.",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "text": "그대가 지닌 좋은 것들을 하나하나 헤아려보라. 그것이 없었다면 얼마나 간절히 원했을지 떠올리며 감사하라.",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "text": "세상에서 가장 위대한 일은 자기 자신에게 온전히 속할 줄 아는 것이다.",
+    "title": "몽테뉴 수상록",
+    "author": "미셸 드 몽테뉴",
+    "genre": "literature"
+  },
+  {
+    "text": "자신의 존재를 올바르게 즐길 줄 아는 것, 그것이야말로 절대적이고 신과 같은 완성이다.",
+    "title": "몽테뉴 수상록",
+    "author": "미셸 드 몽테뉴",
+    "genre": "literature"
+  },
+  {
+    "text": "만약 좋은 결혼이라는 것이 있다면, 그것은 사랑보다는 우정을 닮았기 때문이다.",
+    "title": "몽테뉴 수상록",
+    "author": "미셸 드 몽테뉴",
+    "genre": "literature"
+  },
+  {
+    "text": "그를 사랑한 이유를 굳이 말하라면, 그가 그였고 내가 나였기 때문이라고밖에 답할 수 없다.",
+    "title": "몽테뉴 수상록",
+    "author": "미셸 드 몽테뉴",
+    "genre": "literature"
+  },
+  {
+    "text": "우정의 팔은 세상의 이쪽 끝에서 저쪽 끝까지 닿을 만큼 길다.",
+    "title": "몽테뉴 수상록",
+    "author": "미셸 드 몽테뉴",
+    "genre": "literature"
+  },
+  {
+    "text": "나는 춤출 때는 춤을 추고, 잠잘 때는 잠을 잔다.",
+    "title": "몽테뉴 수상록",
+    "author": "미셸 드 몽테뉴",
+    "genre": "literature"
+  },
+  {
+    "text": "지식에 대한 욕구보다 더 자연스러운 욕구는 없다.",
+    "title": "몽테뉴 수상록",
+    "author": "미셸 드 몽테뉴",
+    "genre": "literature"
+  },
+  {
+    "text": "나는 마음에 드는 문장을 찾아 책 속을 이리저리 뒤지곤 한다.",
+    "title": "몽테뉴 수상록",
+    "author": "미셸 드 몽테뉴",
+    "genre": "literature"
+  },
+  {
+    "text": "나는 내가 누릴 수 있는 가장 작은 기쁨의 순간까지도 붙잡는다.",
+    "title": "몽테뉴 수상록",
+    "author": "미셸 드 몽테뉴",
+    "genre": "literature"
+  },
+  {
+    "english": "Nothing can bring you peace but yourself.",
+    "text": "그대에게 평화를 가져다줄 수 있는 것은 오직 그대 자신뿐이다.",
+    "title": "에세이(Essays)",
+    "author": "랠프 왈도 에머슨",
+    "genre": "literature"
+  },
+  {
+    "english": "To the poet, to the philosopher, to the saint, all things are friendly and sacred, all events profitable, all days holy, all men divine.",
+    "text": "시인에게, 철학자에게, 성자에게는 모든 것이 다정하고 신성하며, 모든 사건이 유익하고, 모든 날이 거룩하며, 모든 사람이 신성하다.",
+    "title": "에세이(Essays)",
+    "author": "랠프 왈도 에머슨",
+    "genre": "literature"
+  },
+  {
+    "english": "There is simply the rose; it is perfect in every moment of its existence.",
+    "text": "장미는 그저 장미일 뿐이다. 존재하는 모든 순간이 완전하다.",
+    "title": "에세이(Essays)",
+    "author": "랠프 왈도 에머슨",
+    "genre": "literature"
+  },
+  {
+    "english": "Rings and jewels are not gifts, but apologies for gifts. The only gift is a portion of thyself.",
+    "text": "반지와 보석은 선물이 아니라 선물에 대한 변명일 뿐이다. 진정한 선물은 자기 자신의 일부를 내어주는 것이다.",
+    "title": "에세이(Essays)",
+    "author": "랠프 왈도 에머슨",
+    "genre": "literature"
+  },
+  {
+    "english": "A friend is a person with whom I may be sincere.",
+    "text": "친구란 내가 진실할 수 있는 사람이다.",
+    "title": "에세이(Essays)",
+    "author": "랠프 왈도 에머슨",
+    "genre": "literature"
+  },
+  {
+    "english": "For every thing you have missed, you have gained something else; and for every thing you gain, you lose something.",
+    "text": "무언가를 놓쳤다면 다른 무언가를 얻은 것이고, 무언가를 얻었다면 다른 무언가를 잃은 것이다.",
+    "title": "에세이(Essays)",
+    "author": "랠프 왈도 에머슨",
+    "genre": "literature"
+  },
+  {
+    "english": "Nothing great was ever achieved without enthusiasm.",
+    "text": "열정 없이 이루어진 위대한 일은 없다.",
+    "title": "에세이(Essays)",
+    "author": "랠프 왈도 에머슨",
+    "genre": "literature"
+  },
+  {
+    "english": "The secret of fortune is joy in our hands.",
+    "text": "행운의 비밀은 우리 손안의 기쁨에 있다.",
+    "title": "에세이(Essays)",
+    "author": "랠프 왈도 에머슨",
+    "genre": "literature"
+  },
+  {
+    "english": "When we face the worst that can happen in any situation, we grow. When circumstances are at their worst, we can find our best.",
+    "text": "어떤 상황에서든 최악을 마주할 때 우리는 성장한다. 상황이 가장 나쁠 때, 오히려 우리는 가장 좋은 모습을 발견할 수 있다.",
+    "title": "인생 수업",
+    "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "genre": "literature"
+  },
+  {
+    "english": "We can only find peace and happiness in love when we release the conditions we place on our love for each other.",
+    "text": "서로에게 걸어둔 조건을 내려놓을 때, 비로소 우리는 사랑 안에서 평화와 행복을 찾을 수 있다.",
+    "title": "인생 수업",
+    "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "genre": "literature"
+  },
+  {
+    "english": "We think sometimes we're only drawn to the good, but we're actually drawn to the authentic. We like people who are real more than those who hide their true selves under layers of artificial niceties.",
+    "text": "우리는 선한 사람에게 끌린다고 생각하지만, 사실은 진실한 사람에게 끌린다. 꾸며낸 친절 뒤에 숨은 사람보다 있는 그대로인 사람이 더 좋다.",
+    "title": "인생 수업",
+    "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "genre": "literature"
+  },
+  {
+    "english": "Life will be over sooner than we think. If we have bikes to ride and people to love, now is the time.",
+    "text": "삶은 우리 생각보다 빨리 끝난다. 함께 탈 자전거와 사랑할 사람이 있다면, 지금이 바로 그때다.",
+    "title": "인생 수업",
+    "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "genre": "literature"
+  },
+  {
+    "english": "Love is really the only thing we can possess, keep with us, and take with us.",
+    "text": "사랑이야말로 우리가 진정으로 소유하고, 간직하며, 떠날 때 가지고 갈 수 있는 유일한 것이다.",
+    "title": "인생 수업",
+    "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "genre": "literature"
+  },
+  {
+    "english": "Happiness comes from seeing ourselves as being okay, just as we are, today, without comparison to others, without reference to the way we were or the way we fear we will be.",
+    "text": "행복은 오늘의 나 자신을 있는 그대로 괜찮다고 여기는 데서 온다. 남과 비교하지 않고, 과거나 두려운 미래의 나와도 비교하지 않는 것이다.",
+    "title": "인생 수업",
+    "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "genre": "literature"
+  },
+  {
+    "english": "The wholeness we seek lives here, with and within us, now, in reality.",
+    "text": "우리가 찾는 온전함은 바로 여기, 지금 이 순간의 현실 속에서 우리와 함께, 우리 안에 있다.",
+    "title": "인생 수업",
+    "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "genre": "literature"
+  },
+  {
+    "english": "To ignore what cannot be measured in precise numbers is like counting the stems in a bouquet of flowers while ignoring the indescribable perfume and beauty of each bud.",
+    "text": "숫자로 정확히 잴 수 없는 것을 무시하는 일은, 꽃다발의 줄기 수만 세면서 그 형언할 수 없는 향기와 아름다움은 놓치는 것과 같다.",
+    "title": "인생의 발견",
+    "author": "시어도어 젤딘",
+    "genre": "literature"
+  },
+  {
+    "text": "두 사람이 서로 존중하며 진심으로 귀 기울여 다른 관점을 이해하려 할 때, 단 1분만이라도 세상은 다른 곳이 된다.",
+    "title": "인생의 발견",
+    "author": "시어도어 젤딘",
+    "genre": "literature"
+  },
+  {
+    "text": "모든 답을 찾으리라는 기대 없이 끝없는 길에 나서는 것이, 정해진 목적지로 향하는 여정보다 언제나 더 큰 시야를 열어 주었다.",
+    "title": "인생의 발견",
+    "author": "시어도어 젤딘",
+    "genre": "literature"
+  },
+  {
+    "text": "재산을 어떻게 쓸지 알 때 비로소 진짜 부자다. 부자가 된다는 것은 돈뿐 아니라 삶을 어떻게 쓸지 아는 것이다.",
+    "title": "인생의 발견",
+    "author": "시어도어 젤딘",
+    "genre": "literature"
+  },
+  {
+    "text": "자유는 그저 주어지는 권리가 아니라 익혀야 할 능력이다. 자신과 다른 시선으로 세상을 보고, 아름다움과 의미와 영감을 찾아내는 능력이다.",
+    "title": "인생의 발견",
+    "author": "시어도어 젤딘",
+    "genre": "literature"
+  },
+  {
+    "text": "생각은 혼자 두면 고아처럼 외롭고 절름거린다. 하지만 서로 나누는 대화 속에서 다듬어질 때, 비로소 다른 사람에게도 의미 있는 생각이 된다.",
+    "title": "인생의 발견",
+    "author": "시어도어 젤딘",
+    "genre": "literature"
+  },
+  {
+    "english": "Treat a man as he is and he will remain as he is. Treat a man as he can and should be and he will become as he can and should be.",
+    "text": "사람을 있는 그대로 대하면 그 사람은 그대로 머문다. 될 수 있고 되어야 할 모습으로 대하면 그 사람은 그런 사람이 된다.",
+    "title": "성공하는 사람들의 7가지 습관",
+    "author": "스티븐 코비",
+    "genre": "literature"
+  },
+  {
+    "english": "To change ourselves effectively, we first had to change our perceptions.",
+    "text": "우리 자신을 효과적으로 바꾸려면 먼저 우리의 지각을 바꿔야 한다.",
+    "title": "성공하는 사람들의 7가지 습관",
+    "author": "스티븐 코비",
+    "genre": "literature"
+  },
+  {
+    "english": "If I really want to improve my situation, I can work on the one thing over which I have control - myself.",
+    "text": "내 상황을 정말로 개선하고 싶다면, 내가 통제할 수 있는 단 한 가지, 바로 나 자신에 집중하면 된다.",
+    "title": "성공하는 사람들의 7가지 습관",
+    "author": "스티븐 코비",
+    "genre": "literature"
+  },
+  {
+    "english": "Happiness, like unhappiness, is a proactive choice.",
+    "text": "행복은 불행과 마찬가지로, 우리가 능동적으로 선택하는 것이다.",
+    "title": "성공하는 사람들의 7가지 습관",
+    "author": "스티븐 코비",
+    "genre": "literature"
+  },
+  {
+    "english": "At some time in your life, you probably had someone believe in you when you didn't believe in yourself.",
+    "text": "살아가면서 누구나 한 번쯤, 스스로를 믿지 못할 때 나를 믿어준 누군가가 있었을 것이다.",
+    "title": "성공하는 사람들의 7가지 습관",
+    "author": "스티븐 코비",
+    "genre": "literature"
+  },
+  {
+    "english": "How different our lives are when we really know what is deeply important to us, and keeping that picture in mind, we manage ourselves each day to be and to do what really matters most.",
+    "text": "우리에게 진정으로 중요한 것이 무엇인지 알고, 그것을 마음에 새기며 매일을 살아갈 때 삶은 완전히 달라진다.",
+    "title": "성공하는 사람들의 7가지 습관",
+    "author": "스티븐 코비",
+    "genre": "literature"
+  },
+  {
+    "english": "Habit is the intersection of knowledge (what to do), skill (how to do), and desire (want to do).",
+    "text": "습관은 지식(무엇을 할지), 기술(어떻게 할지), 열망(하고 싶은 마음)이 만나는 지점이다.",
+    "title": "성공하는 사람들의 7가지 습관",
+    "author": "스티븐 코비",
+    "genre": "literature"
+  },
+  {
+    "english": "Ineffective people live day after day with unused potential.",
+    "text": "비효율적인 사람은 쓰이지 않은 잠재력을 안은 채 하루하루를 살아간다.",
+    "title": "성공하는 사람들의 7가지 습관",
+    "author": "스티븐 코비",
+    "genre": "literature"
+  },
+  {
+    "english": "Our behavior is a function of our decisions, not our conditions.",
+    "text": "우리의 행동은 조건이 아니라 결정에 의해 좌우된다.",
+    "title": "성공하는 사람들의 7가지 습관",
+    "author": "스티븐 코비",
+    "genre": "literature"
+  },
+  {
+    "english": "Moral improvement occurs most reliably when the heart is warmed, when we come into contact with people we admire and love and we consciously and unconsciously bend our lives to mimic theirs.",
+    "text": "도덕적 성장은 마음이 따뜻해질 때, 우리가 존경하고 사랑하는 사람을 만나 그들을 닮아가려 할 때 가장 확실하게 일어난다.",
+    "title": "인간의 품격",
+    "author": "데이비드 브룩스",
+    "genre": "literature"
+  },
+  {
+    "english": "Wisdom isn't a body of information. It's the moral quality of knowing what you don't know and figuring out a way to handle your ignorance, uncertainty, and limitation.",
+    "text": "지혜란 정보의 축적이 아니라, 자신이 모른다는 것을 알고 그 무지와 불확실함을 다루는 법을 찾아내는 도덕적 자질이다.",
+    "title": "인간의 품격",
+    "author": "데이비드 브룩스",
+    "genre": "literature"
+  },
+  {
+    "english": "The things we call character endure over the long term—courage, honesty, humility.",
+    "text": "우리가 인격이라 부르는 것들, 용기와 정직과 겸손은 오랜 시간에 걸쳐 지속된다.",
+    "title": "인간의 품격",
+    "author": "데이비드 브룩스",
+    "genre": "literature"
+  },
+  {
+    "english": "Humility is having an accurate assessment of your own nature and your own place in the cosmos.",
+    "text": "겸손이란 자신의 본성과 우주 속 자신의 자리를 정확히 아는 것이다.",
+    "title": "인간의 품격",
+    "author": "데이비드 브룩스",
+    "genre": "literature"
+  },
+  {
+    "english": "In order to fulfill yourself, you have to forget yourself. In order to find yourself, you have to lose yourself.",
+    "text": "자신을 완성하려면 자신을 잊어야 하고, 자신을 찾으려면 자신을 잃어야 한다.",
+    "title": "인간의 품격",
+    "author": "데이비드 브룩스",
+    "genre": "literature"
+  },
+  {
+    "english": "Failure leads to the greatest success, which is humility and learning.",
+    "text": "실패는 가장 위대한 성공, 즉 겸손과 배움으로 이어진다.",
+    "title": "인간의 품격",
+    "author": "데이비드 브룩스",
+    "genre": "literature"
+  },
+  {
+    "english": "Remember, there's no greatness in the future. Or clarity. Or insight. Or happiness. Or peace. There is only this moment.",
+    "text": "기억하라, 미래에는 위대함도 명료함도 통찰도 행복도 평온도 없다. 오직 지금 이 순간만이 있을 뿐이다.",
+    "title": "스틸니스",
+    "author": "라이언 홀리데이",
+    "genre": "literature"
+  },
+  {
+    "english": "This moment we are experiencing right now is a gift (that's why we call it the present).",
+    "text": "지금 이 순간은 하나의 선물이다. 그래서 우리는 그것을 '현재'라고 부르는 것이다.",
+    "title": "스틸니스",
+    "author": "라이언 홀리데이",
+    "genre": "literature"
+  },
+  {
+    "english": "Be present. And if you've had trouble with this in the past? That's okay. That's the nice thing about the present. It keeps showing up to give you a second chance.",
+    "text": "지금에 충실하라. 과거에 그러지 못했어도 괜찮다. 현재의 좋은 점은, 언제나 다시 기회를 준다는 것이다.",
+    "title": "스틸니스",
+    "author": "라이언 홀리데이",
+    "genre": "literature"
+  },
+  {
+    "english": "Stillness is what aims the archer's arrow. It inspires new ideas. It sharpens perspective and illuminates connections.",
+    "text": "고요함은 궁수의 화살을 조준하게 한다. 새로운 생각을 일깨우고, 관점을 예리하게 하며 연결을 밝혀준다.",
+    "title": "스틸니스",
+    "author": "라이언 홀리데이",
+    "genre": "literature"
+  },
+  {
+    "english": "Don't feed insecurity. Don't feed delusions of grandeur. Both are obstacles to stillness. Be confident. You've earned it.",
+    "text": "불안도 과대망상도 키우지 말라, 둘 다 고요함을 방해할 뿐이다. 자신감을 가져라. 그럴 자격이 있다.",
+    "title": "스틸니스",
+    "author": "라이언 홀리데이",
+    "genre": "literature"
+  },
+  {
+    "english": "You will never feel okay by way of external accomplishments. Enough comes from the inside. It comes from stepping off the train. From seeing what you already have, what you've always had.",
+    "text": "외적인 성취로는 결코 만족할 수 없다. 충분함은 내면에서 온다. 이미 가진 것을 알아차리는 데서 온다.",
+    "title": "스틸니스",
+    "author": "라이언 홀리데이",
+    "genre": "literature"
+  },
+  {
+    "english": "When you realize there is nothing lacking, the whole world belongs to you.",
+    "text": "노자는 말했다, '부족함이 없다는 것을 깨달을 때, 온 세상이 그대의 것이 된다.'",
+    "title": "스틸니스",
+    "author": "라이언 홀리데이",
+    "genre": "literature"
+  },
+  {
+    "english": "Routine, done for long enough and done sincerely enough, becomes more than routine. It becomes ritual—it becomes sanctified and holy.",
+    "text": "오래도록 진심으로 반복된 루틴은 단순한 루틴을 넘어선다. 그것은 의식이 되고, 신성한 것이 된다.",
+    "title": "스틸니스",
+    "author": "라이언 홀리데이",
+    "genre": "literature"
+  },
+  {
+    "english": "The best way to motivate people--at school, at work, or at home--is to support their sense of autonomy.",
+    "text": "사람들을 동기부여하는 가장 좋은 방법은, 학교에서든 직장에서든 가정에서든, 그들의 자율성을 지지해 주는 것이다.",
+    "title": "마음의 작동법",
+    "author": "에드워드 L. 데시, 리처드 플래스트",
+    "genre": "literature"
+  },
+  {
+    "english": "Authenticity necessitates behaving autonomously, for it means being the author of one's actions—acting in accord with one's true inner self.",
+    "text": "진정성은 자율적으로 행동하는 것을 필요로 한다. 그것은 자기 행동의 저자가 되어, 자신의 진짜 내면과 일치하게 사는 것이다.",
+    "title": "마음의 작동법",
+    "author": "에드워드 L. 데시, 리처드 플래스트",
+    "genre": "literature"
+  },
+  {
+    "english": "There is no way to happiness. Happiness is the way.",
+    "text": "행복으로 가는 길은 없다. 행복 그 자체가 길이다.",
+    "title": "인생의 태도",
+    "author": "웨인 다이어",
+    "genre": "literature"
+  },
+  {
+    "english": "You can't give away what you don't have. If you don't have love for yourself, then you can't be loving to others.",
+    "text": "가지지 않은 것은 나눠줄 수 없다. 스스로를 사랑하지 않으면 남을 사랑할 수도 없다.",
+    "title": "인생의 태도",
+    "author": "웨인 다이어",
+    "genre": "literature"
+  },
+  {
+    "english": "Happiness is something that we are, and it comes from the way we think. Happiness is an inner concept.",
+    "text": "행복은 얻어내는 것이 아니라 우리 자신인 상태이며, 생각하는 방식에서 비롯된다.",
+    "title": "인생의 태도",
+    "author": "웨인 다이어",
+    "genre": "literature"
+  },
+  {
+    "english": "Opinions are of very little value by themselves. It is only what we do with them that makes any difference in the world.",
+    "text": "의견은 그 자체로는 큰 가치가 없다. 그것으로 무엇을 하느냐가 세상을 바꾼다.",
+    "title": "인생의 태도",
+    "author": "웨인 다이어",
+    "genre": "literature"
+  },
+  {
+    "english": "You are the sum total of the choices that you make in your life.",
+    "text": "당신은 지금까지 살아오며 내린 선택들의 총합이다.",
+    "title": "인생의 태도",
+    "author": "웨인 다이어",
+    "genre": "literature"
+  },
+  {
+    "english": "Each one of us is part of a perfect universe. You could never be a mistake, because you are a part of the perfection of the universe.",
+    "text": "우리 모두는 완벽한 우주의 일부다. 그러니 당신은 결코 실수가 아니다.",
+    "title": "인생의 태도",
+    "author": "웨인 다이어",
+    "genre": "literature"
+  },
+  {
+    "english": "I'll get through the next five minutes. Then I'll get through the next five minutes, and so on.",
+    "text": "다음 5분만 버텨내자. 그리고 또 다음 5분을. 그렇게 하나씩 이겨내면 된다.",
+    "title": "인생의 태도",
+    "author": "웨인 다이어",
+    "genre": "literature"
+  },
+  {
+    "english": "You choose how you feel, you choose what you do, you choose who you are.",
+    "text": "어떻게 느낄지, 무엇을 할지, 어떤 사람이 될지는 모두 당신의 선택이다.",
+    "title": "인생의 태도",
+    "author": "웨인 다이어",
+    "genre": "literature"
+  },
+  {
+    "english": "Let us set our sights on giving an enlivening answer, which makes us feel that we are doing something truly worthwhile with our lives.",
+    "text": "무슨 일을 하냐는 질문에, 삶을 진정 가치 있게 살고 있다는 벅찬 대답을 할 수 있기를.",
+    "title": "인생학교: 일",
+    "author": "로먼 크르즈나릭",
+    "genre": "literature"
+  },
+  {
+    "english": "You will feel life is better than ever, since you will be luxuriating in an abundance of that most precious commodity, time.",
+    "text": "돈은 줄어도 삶은 오히려 나아진다. 가장 소중한 것, 시간이 풍요로워지기 때문이다.",
+    "title": "인생학교: 일",
+    "author": "로먼 크르즈나릭",
+    "genre": "literature"
+  },
+  {
+    "english": "From birth to death, each of us needs others who seek us out, show interest in discovering who we are and help us feel safe.",
+    "text": "태어나서 죽을 때까지, 우리에겐 나를 찾아주고 궁금해하며 안전하다고 느끼게 해주는 사람이 필요하다.",
+    "title": "인생학교: 정신",
+    "author": "필립파 페리",
+    "genre": "literature"
+  },
+  {
+    "english": "The more we learn, the more we are able, by linking our areas of knowledge together, to come up with creative ideas. Thus the more we know, the more we can create.",
+    "text": "더 많이 배울수록 서로 다른 지식을 연결해 창의적인 생각을 떠올릴 수 있다. 아는 것이 많을수록 더 많이 창조할 수 있다.",
+    "title": "인생학교: 정신",
+    "author": "필립파 페리",
+    "genre": "literature"
+  },
+  {
+    "english": "Change happens, if it needs to, when we become aware of what we are, not when we try to become what we are not.",
+    "text": "변화는 아닌 것이 되려 애쓸 때가 아니라, 있는 그대로의 나를 알아차릴 때 일어난다.",
+    "title": "인생학교: 정신",
+    "author": "필립파 페리",
+    "genre": "literature"
+  },
+  {
+    "english": "If I do not keep on testing my limits, my comfort-zone shrinks back.",
+    "text": "한계를 계속 시험하지 않으면, 편안함의 영역은 다시 좁아진다.",
+    "title": "인생학교: 정신",
+    "author": "필립파 페리",
+    "genre": "literature"
+  },
+  {
+    "english": "Practicing optimism does mean focusing more on the positive fall-out of an event than on the negative.",
+    "text": "낙관을 연습한다는 것은 어떤 일의 부정적인 면보다 긍정적인 결과에 더 집중하는 것이다.",
+    "title": "인생학교: 정신",
+    "author": "필립파 페리",
+    "genre": "literature"
+  },
+  {
+    "english": "A novel, or a book on philosophy, is going to use both sides of the brain: not only will you have feelings about what you read, but your mind will also get more of a work-out.",
+    "text": "소설이든 철학책이든, 읽으면 뇌의 양쪽을 다 쓰게 된다. 마음으로 느끼는 동시에 생각도 깊어진다.",
+    "title": "인생학교: 정신",
+    "author": "필립파 페리",
+    "genre": "literature"
+  },
+  {
+    "english": "In a growth mindset, challenges are exciting rather than threatening.",
+    "text": "성장 마인드셋을 가지면 도전은 위협이 아니라 설렘이 된다.",
+    "title": "마인드셋",
+    "author": "캐럴 드웩",
+    "genre": "literature"
+  },
+  {
+    "english": "You have to work hardest for the things you love most.",
+    "text": "가장 사랑하는 것을 위해 우리는 가장 열심히 노력하게 된다.",
+    "title": "마인드셋",
+    "author": "캐럴 드웩",
+    "genre": "literature"
+  },
+  {
+    "english": "Everyone is born with an intense drive to learn.",
+    "text": "우리는 모두 배우고자 하는 강렬한 열망을 안고 태어난다.",
+    "title": "마인드셋",
+    "author": "캐럴 드웩",
+    "genre": "literature"
+  },
+  {
+    "english": "The view you adopt for yourself profoundly affects the way you lead your life.",
+    "text": "자신을 바라보는 관점은 삶을 살아가는 방식에 깊은 영향을 미친다.",
+    "title": "마인드셋",
+    "author": "캐럴 드웩",
+    "genre": "literature"
+  },
+  {
+    "text": "작은 성공부터 시작하라. 성공에 익숙해지면 무슨 목표든지 할 수 있다는 자신감이 생긴다.",
+    "title": "세상의 통찰, 철학자들의 명언 500",
+    "author": "김태현",
+    "genre": "literature"
+  },
+  {
+    "text": "행복한 삶을 만들려고 애쓸 필요는 거의 없다. 모두 당신 안에 있다. 당신이 어떻게 생각하느냐에 달렸다.",
+    "title": "세상의 통찰, 철학자들의 명언 500",
+    "author": "김태현",
+    "genre": "literature"
+  },
+  {
+    "text": "한 해의 가장 큰 행복은 한 해의 마지막에서 그 해의 처음보다 훨씬 나아진 자신을 느낄 때이다.",
+    "title": "세상의 통찰, 철학자들의 명언 500",
+    "author": "김태현",
+    "genre": "literature"
+  },
+  {
+    "text": "다른 사람이 행복하기를 바란다면 자비를 베푸세요. 그리고 스스로 행복해지기를 바랄 때에도 자비를 베푸세요.",
+    "title": "세상의 통찰, 철학자들의 명언 500",
+    "author": "김태현",
+    "genre": "literature"
+  },
+  {
+    "text": "사랑하는 것이 인생이다. 기쁨이 있는 곳에 사람과 사람 사이의 결합이 이루어진다.",
+    "title": "세상의 통찰, 철학자들의 명언 500",
+    "author": "김태현",
+    "genre": "literature"
+  },
+  {
+    "text": "세상의 중요한 업적 중 대부분은 희망이 보이지 않는 상황에서도 끊임없이 도전한 사람들이 이룬 것이다.",
+    "title": "세상의 통찰, 철학자들의 명언 500",
+    "author": "김태현",
+    "genre": "literature"
+  },
+  {
+    "text": "행복의 조건은 결코 거창한 데 있지 않다. 맑고 향기로운 일상 속에 있음을 우리는 얼마든지 느낄 수 있다.",
+    "title": "세상의 통찰, 철학자들의 명언 500",
+    "author": "김태현",
+    "genre": "literature"
+  },
+  {
+    "text": "하찮은 것 하나라도 소중히 여기고, 그것을 소유할 수 있음에 감사하노라면 절로 맑은 기쁨이 샘솟는다. 그것이 행복이다.",
+    "title": "세상의 통찰, 철학자들의 명언 500",
+    "author": "김태현",
+    "genre": "literature"
+  },
+  {
+    "english": "The size of an investor's brain is less important than his ability to detach the brain from the emotions.",
+    "text": "투자자에게 중요한 것은 두뇌의 크기가 아니라, 감정으로부터 이성을 떼어놓을 수 있는 능력이다.",
+    "title": "워런 버핏 웨이",
+    "author": "로버트 G. 해그스트롬",
+    "category": "mindset"
+  },
+  {
+    "english": "It is just not necessary to do extraordinary things to get extraordinary results.",
+    "text": "특별한 결과를 얻기 위해 특별한 일을 할 필요는 없다.",
+    "title": "워런 버핏 웨이",
+    "author": "로버트 G. 해그스트롬",
+    "category": "mindset"
+  },
+  {
+    "english": "You are neither right or wrong because the crowd disagrees with you, you are right because your data and reasoning are right.",
+    "text": "군중이 반대한다고 틀린 것도, 동의한다고 옳은 것도 아니다. 당신이 옳은 이유는 오직 근거와 논리가 옳기 때문이다.",
+    "title": "워런 버핏 웨이",
+    "author": "로버트 G. 해그스트롬",
+    "category": "mindset"
+  },
+  {
+    "english": "The market, like the Lord, helps those who help themselves. But unlike the Lord, the market does not forgive those who know not what they do.",
+    "text": "시장은 신처럼 스스로 돕는 자를 돕는다. 하지만 신과 달리 시장은, 자신이 무엇을 하는지 모르는 이를 용서하지 않는다.",
+    "title": "워런 버핏 웨이",
+    "author": "로버트 G. 해그스트롬",
+    "category": "mindset"
+  },
+  {
+    "english": "When investing, we view ourselves as business analysts, not as market analysts, not as macroeconomic analysts, and not even as security analysts.",
+    "text": "투자할 때 우리는 시장 분석가도 거시경제 분석가도 아닌, 기업을 들여다보는 사업 분석가로 스스로를 바라본다.",
+    "title": "워런 버핏 웨이",
+    "author": "로버트 G. 해그스트롬",
+    "category": "mindset"
+  },
+  {
+    "english": "Your goal as an investor should be simply to purchase, at a rational price, a part interest in an easily understood business whose earnings are virtually certain to be materially higher, five, ten, and twenty years from now.",
+    "text": "투자자의 목표는 이해하기 쉬운 사업의 일부를 합리적인 가격에 사서, 5년 10년 뒤에도 그 이익이 지금보다 커질 것이라 믿는 것이다.",
+    "title": "워런 버핏 웨이",
+    "author": "로버트 G. 해그스트롬",
+    "category": "mindset"
+  },
+  {
+    "english": "Being too far ahead of your time is indistinguishable from being wrong.",
+    "text": "시대를 너무 앞서가는 것은 틀린 것과 구별되지 않는다.",
+    "title": "워런 버핏 웨이",
+    "author": "로버트 G. 해그스트롬",
+    "category": "mindset"
+  },
+  {
+    "english": "Do not approach the market unless you are willing to think about stocks, first and always, as part-ownership interests in businesses.",
+    "text": "주식을 언제나 기업의 부분 소유권으로 여길 준비가 되어 있지 않다면, 시장에 다가서지 마라.",
+    "title": "워런 버핏 웨이",
+    "author": "로버트 G. 해그스트롬",
+    "category": "mindset"
+  },
+  {
+    "english": "There are old investors, and there are bold investors, but there are no old bold investors.",
+    "text": "나이 든 투자자도 있고 대담한 투자자도 있지만, 나이 들도록 대담한 투자자는 없다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "english": "I like to say, 'Experience is what you got when you didn't get what you wanted.'",
+    "text": "나는 종종 이렇게 말한다. '경험이란 원하던 것을 얻지 못했을 때 대신 얻게 되는 것이다.'",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "english": "In the end, trees don't grow to the sky, and few things go to zero.",
+    "text": "결국 나무는 하늘까지 자라지 않고, 대부분의 것들은 0이 되지도 않는다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "english": "There's only one way to describe most investors: trend followers. Superior investors are the exact opposite. The proper response lies in contrarian behavior: buy when they hate 'em, and sell when they love 'em.",
+    "text": "뛰어난 투자자는 유행을 좇지 않는다. 사람들이 미워할 때 사고 사랑할 때 파는 역발상이야말로 올바른 태도다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "english": "Buying at a discount from intrinsic value and having the asset's price move toward its value doesn't require serendipity; it just requires that market participants wake up to reality. When the market's functioning properly, value exerts a magnetic pull on price.",
+    "text": "내재가치보다 싸게 사두면 나머지는 시간문제다. 시장이 제대로 작동할 때 가치는 가격을 끌어당기는 자석 같은 힘을 지닌다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "english": "Investment success doesn't come from 'buying good things,' but rather from 'buying things well.'",
+    "text": "투자의 성공은 '좋은 것을 사는 것'이 아니라 '잘 사는 것'에서 온다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "text": "돈은 뜨겁게 사랑하되 차갑게 다루어야 한다. 돈을 그냥 따라가서는 안 되며, 돈에 정면으로 부딪혀야 한다.",
+    "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
+    "author": "앙드레 코스톨라니",
+    "category": "mindset"
+  },
+  {
+    "text": "내가 생각하기에 재정적인 독립은 건강 다음으로 중요한 최고의 선이며 가장 귀한 것이다.",
+    "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
+    "author": "앙드레 코스톨라니",
+    "category": "mindset"
+  },
+  {
+    "text": "투자자가 된다는 것은 아주 멋진 일이다. 그것은 매일매일 새로운 것에 도전하는 지적 행위이며, 나처럼 나이가 들수록 점점 더 필요하게 되는 정신적 체조이기도 하다.",
+    "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
+    "author": "앙드레 코스톨라니",
+    "category": "mindset"
+  },
+  {
+    "text": "장기투자자는 언제 투자를 시작했든 장기적으로 이익을 보는 경우가 대부분이다. 장기투자는 모든 주식 거래 중 최고의 결과를 낳는 방법이다.",
+    "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
+    "author": "앙드레 코스톨라니",
+    "category": "mindset"
+  },
+  {
+    "text": "80여 년간의 증권시장 경험은 내게 이 한 가지를 분명히 가르쳐 주었는데, 그것은 다름 아닌 '투자는 과학이 아니라 예술'이라는 사실이다.",
+    "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
+    "author": "앙드레 코스톨라니",
+    "category": "mindset"
+  },
+  {
+    "text": "투자라는 건물의 기초가 튼튼하고 올바르면 모든 것은 시간 문제다. 대다수의 주식투자자에게는 사이사이의 폭풍과 악천후를 견뎌낼 수 있는 인내와 주관이 모자란다.",
+    "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
+    "author": "앙드레 코스톨라니",
+    "category": "mindset"
+  },
+  {
+    "text": "올바른 생각을 가지고 있으면 언젠가는 돈을 벌 수 있겠지만 그것이 언제인지는 아무도 모른다.",
+    "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
+    "author": "앙드레 코스톨라니",
+    "category": "mindset"
+  },
+  {
+    "text": "나는 백만장자를, 자기 자본을 가지고 자기가 원하는 바를 행하는 데 있어 그 누구의 간섭도 받지 않는 사람이라고 정의하고 싶다.",
+    "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
+    "author": "앙드레 코스톨라니",
+    "category": "mindset"
+  },
+  {
+    "text": "마흔에 가장 필요한 것은 실용적인 삶의 기술이 아니라 진실한 삶의 의미를 찾는 질문입니다.",
+    "title": "마흔에 읽는 인문학 필독서 50",
+    "author": "여르미(류지아)",
+    "genre": "literature"
+  },
+  {
+    "text": "절대로 완독하지 말아 주세요. 순서대로 읽지도 말아 주세요. 지금 내 삶에 필요한 책들을 먼저 읽어 주세요.",
+    "title": "마흔에 읽는 인문학 필독서 50",
+    "author": "여르미(류지아)",
+    "genre": "literature"
+  },
+  {
+    "text": "오늘은 일단 문학책부터 읽어보자. 그리고 짧은 소설을 써보자. 나 자신을 타인처럼 바라보고 외국어를 배워보자.",
+    "title": "마흔에 읽는 인문학 필독서 50",
+    "author": "여르미(류지아)",
+    "genre": "literature"
+  },
+  {
+    "text": "허물을 벗지 않으면 진짜 나는 허물 속에서 죽고 만다.",
+    "title": "나를 지키는 힘: 20인의 철학자가 전하는 삶의 중심 찾기",
+    "author": "임병희",
+    "genre": "literature"
+  },
+  {
+    "text": "살다보니 인생이 별게 아니다. 재미있게 사는 게 제일이다.",
+    "title": "자기 인생의 철학자들",
+    "author": "김지수",
+    "genre": "literature"
+  },
+  {
+    "text": "삶에서도 음악에서도 인내의 시간이 꼭 필요하다.",
+    "title": "자기 인생의 철학자들",
+    "author": "김지수",
+    "genre": "literature"
+  },
+  {
+    "text": "신기하게도 자기 마음속 세상을 보는 눈은 조금도 늙지 않는다.",
+    "title": "자기 인생의 철학자들",
+    "author": "김지수",
+    "genre": "literature"
+  },
+  {
+    "text": "좀 손해보고 살아야 큰 손해를 안 본다. 하나 더 먹겠다고 달려들면 갈등이 커지고 적이 생긴다.",
+    "title": "자기 인생의 철학자들",
+    "author": "김지수",
+    "genre": "literature"
+  },
+  {
+    "text": "우리와 대결하지 않지만 우리와 대결할 정도의 힘이 있는 어른 앞에서 우리는 안정감을 느낀다.",
+    "title": "자기 인생의 철학자들",
+    "author": "김지수",
+    "genre": "literature"
+  },
+  {
+    "text": "진정으로 새로운 것을 추구하고 자신만의 길을 걷는다면, 어느 정도의 오해쯤은 기꺼이 감수해야 할 몫일 것입니다.",
+    "title": "초역 자기신뢰",
+    "author": "랄프 왈도 에머슨(필로소피랩 엮음)",
+    "genre": "literature"
+  },
+  {
+    "text": "시간이 지나면 진실은 드러나기 마련이고, 진정한 가치는 결국 인정받게 될 것입니다.",
+    "title": "초역 자기신뢰",
+    "author": "랄프 왈도 에머슨(필로소피랩 엮음)",
+    "genre": "literature"
+  },
+  {
+    "text": "조금 서툴러도, 유치해 보여도 좋습니다. 당신의 목소리를 내 보세요. 오직 그것이 당신만이 할 수 있는, 세상에 없던 이야기를 열어 주는 길이니까요.",
+    "title": "초역 자기신뢰",
+    "author": "랄프 왈도 에머슨(필로소피랩 엮음)",
+    "genre": "literature"
+  },
+  {
+    "text": "과거에 한 선택이 지금의 나를 설명해 주기도 하지만, 그것이 앞으로의 모든 나까지 결정짓게 내버려두지는 마세요. 당신은 언제든 새로 시작할 수 있습니다.",
+    "title": "초역 자기신뢰",
+    "author": "랄프 왈도 에머슨(필로소피랩 엮음)",
+    "genre": "literature"
+  },
+  {
+    "text": "내가 진짜 좋아하는 것이 무엇인지 알고, 그것에 시간을 들이고, 마음을 기울이는 일은 나를 돌보고 이해하려는 시도입니다.",
+    "title": "초역 자기신뢰",
+    "author": "랄프 왈도 에머슨(필로소피랩 엮음)",
+    "genre": "literature"
+  },
+  {
+    "text": "사랑과 이별은 똑같이 중요하다. 삶에서 가장 중요한 이 두 가지 주제는 늘 함께 작용하면서 우리를 성장시키고 자기 자신이 되게 한다.",
+    "title": "왜 가족이 힘들게 할까",
+    "author": "우즈훙",
+    "genre": "literature"
+  },
+  {
+    "text": "어떤 사건이 발생했는지보다 상대방이 어떻게 느끼는지가 훨씬 중요하다.",
+    "title": "왜 가족이 힘들게 할까",
+    "author": "우즈훙",
+    "genre": "literature"
+  },
+  {
+    "text": "아이의 자기 효능감은 능력이 아니라 연습의 결과다.",
+    "title": "왜 가족이 힘들게 할까",
+    "author": "우즈훙",
+    "genre": "literature"
+  },
+  {
+    "text": "모든 사람은 자기를 위해 살 때 가장 힘이 있다.",
+    "title": "왜 가족이 힘들게 할까",
+    "author": "우즈훙",
+    "genre": "literature"
+  },
+  {
+    "text": "우리는 추악한 시대를 살면서도 매일 아름다움을 발견해내던 그 사람을 닮았으니까.",
+    "title": "시선으로부터,",
+    "author": "정세랑",
+    "genre": "literature"
+  },
+  {
+    "text": "엉망으로 실패하고 바닥까지 지쳐도 끝내는 계속해냈던 사람이 등을 밀어주었으니까.",
+    "title": "시선으로부터,",
+    "author": "정세랑",
+    "genre": "literature"
+  },
+  {
+    "text": "당장 뛰어난 것 같지는 않지만 하고 하고 또 해도 질리지 않는다면, 그것은 시도해볼 만하다.",
+    "title": "시선으로부터,",
+    "author": "정세랑",
+    "genre": "literature"
+  },
+  {
+    "text": "과거를 돌아보되 매몰되지 않고, 미래를 계획하되 틀어져도 유연한 태도, 살면서 만나는 누구와도 알맞은 거리감을 유지하는 판단력.",
+    "title": "시선으로부터,",
+    "author": "정세랑",
+    "genre": "literature"
+  },
+  {
+    "text": "그렇게 하지 않아도 삶은 지나간다. 바쁘게. 울고 실망하고 환멸하고 분노하면서, 다시 말해 사랑하면서.",
+    "title": "연년세세",
+    "author": "황정은",
+    "genre": "literature"
+  },
+  {
+    "text": "어떤 생각이 든다고 그 생각을 말이나 행동으로 행하는 것이 아니고 버텨보는 것. 말하고 싶고 하고 싶다고 바로 말하거나 하지 않고 버텨보는 것.",
+    "title": "연년세세",
+    "author": "황정은",
+    "genre": "literature"
+  },
+  {
+    "text": "네 안에 내가 들어 있지 않다면, 그 숱한 사람들과 내가 멀어졌듯 우리가 멀어져 마땅한 관계였다면, 나는 왜 네가 이렇게 자주 떠오를까?",
+    "title": "붕대 감기",
+    "author": "윤이형",
+    "genre": "literature"
+  },
+  {
+    "text": "같아지겠다는 게 아니고 상처받을 준비가 됐다는 거야. 다른 사람들이 아니고 너한테는, 나는 상처받고, 배울 준비가 됐다고!",
+    "title": "붕대 감기",
+    "author": "윤이형",
+    "genre": "literature"
+  },
+  {
+    "text": "결국 세계를 지속하게 하는 것은 폭력과 증오가 아니라 삶에 가까운 것일지도 모른다.",
+    "title": "여름의 빌라",
+    "author": "백수린",
+    "genre": "literature"
+  },
+  {
+    "text": "창밖에는 커다란 눈송이가 떨어져내리고 있었다. 깃털처럼 부드러운 눈송이가. 역청빛 어둠을 덧칠한 이웃집의 지붕 위에도, 옥상 위의 장독대와 비탈 아래쪽의 앙상한 나무초리 위에도, 고요하게.",
+    "title": "여름의 빌라",
+    "author": "백수린",
+    "genre": "literature"
+  },
+  {
+    "text": "자신 없으면 자신 없다고 말하고 가끔 넘어지면서 살고 싶다.",
+    "title": "한 사람을 위한 마음",
+    "author": "이주란",
+    "genre": "literature"
+  },
+  {
+    "text": "대개 사랑이 바래는 것은 소중한 순간들을 잊고 서로를 함부로 대하기 시작하기 때문이므로, 이제 잊히지 않는 기억들로 사랑은 유지되었다.",
+    "title": "목소리를 드릴게요",
+    "author": "정세랑",
+    "genre": "literature"
+  },
+  {
+    "text": "다 녹아버린 아이스크림이라도 냉동고에 넣으면 얼마든지 다시 우리가 누릴 수 있는 것이 된다.",
+    "title": "복자에게",
+    "author": "김금희",
+    "genre": "literature"
+  },
+  {
+    "text": "세상이 그럴 수 있지. 세상이 그렇게 보이고 그렇다고 말할 수는 있겠지. 그런데 네가 보는 것이 아주 일부에 지나지 않는다는 것을 늘 생각했으면 한다.",
+    "title": "복자에게",
+    "author": "김금희",
+    "genre": "literature"
+  },
+  {
+    "text": "삶이 계속되는 한 우리의 실패는 아프게도 계속되겠지만 그것이 삶 자체의 실패가 되게는 하지 말자.",
+    "title": "복자에게",
+    "author": "김금희",
+    "genre": "literature"
+  },
+  {
+    "text": "희망은 늘 절망보다 가차 없다. 그래서 우리를 걷게 한다.",
+    "title": "어린이라는 세계",
+    "author": "김소영",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "일의 결과가 생각만큼 좋지 않을 때 괜찮다고, 과정에서 얻은 것이 많다고 나를 달랜다.",
+    "title": "어린이라는 세계",
+    "author": "김소영",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "어린이 덕분에 나는 나를 조금 더 잘 돌보게 되었다.",
+    "title": "어린이라는 세계",
+    "author": "김소영",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "나는 어린이의 품위를 지켜 주는 품위 있는 어른이 되고 싶다.",
+    "title": "어린이라는 세계",
+    "author": "김소영",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "나는 이제 어린이에게 하는 말을 나에게도 해 준다. 반대로 어린이에게 하지 않을 말은 스스로에게도 하지 않는다.",
+    "title": "어린이라는 세계",
+    "author": "김소영",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "좋은 사람에게만 좋은 사람이면 된다는 말, 모두에게 좋은 사람이 되지 않아도 된다는 말.",
+    "title": "좋은 사람에게만 좋은 사람이면 돼",
+    "author": "김재식",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "어렵게 손을 맞잡았다가도 한쪽에서 손을 놓아버리면 쉽게 끝나는 게 사람과 사람 사이의 관계다.",
+    "title": "좋은 사람에게만 좋은 사람이면 돼",
+    "author": "김재식",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "그러니 누군가를 곁에 두려 붙잡지 말고 내게 좋은 사람에게만 좋은 사람이면 된다.",
+    "title": "좋은 사람에게만 좋은 사람이면 돼",
+    "author": "김재식",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "무엇보다 먼저 나 스스로에게 좋은 사람이 돼야 한다는 사실을 잊지 말자.",
+    "title": "좋은 사람에게만 좋은 사람이면 돼",
+    "author": "김재식",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "나를 어떻게 보든 난 나일 뿐이고 모든 사람에게 완벽하게 좋은 사람일 수 없어.",
+    "title": "좋은 사람에게만 좋은 사람이면 돼",
+    "author": "김재식",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "나를 좋아하는 사람에게만 좋은 사람이면 돼.",
+    "title": "좋은 사람에게만 좋은 사람이면 돼",
+    "author": "김재식",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "인생이 늘 행복할 순 없었지만, 불행도 있었기에 행복이 더 가치 있다고 생각해요.",
+    "title": "작은 별이지만 빛나고 있어",
+    "author": "소윤",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "별은 산산이 부서져 죽어도 또 다른 잔해들과 뭉쳐 행성이 된다는 사실, 실패하거나 무너져도 다시 빛날 수 있는 존재라는 것을.",
+    "title": "작은 별이지만 빛나고 있어",
+    "author": "소윤",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "그래, 작은 별이긴 해도 빛나고 있으니까. 누가 알아주지 않아도 스스로 만족하며 살면 되니까.",
+    "title": "작은 별이지만 빛나고 있어",
+    "author": "소윤",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "머리 싸매고 고민한다고 인생이 송두리째 바뀌는 것도 아니니까.",
+    "title": "작은 별이지만 빛나고 있어",
+    "author": "소윤",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "좋기도 하고 나쁘기도 한 날들이 모여 인생을 이루는 거니까.",
+    "title": "작은 별이지만 빛나고 있어",
+    "author": "소윤",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "사랑을 가득 품은 너처럼, 꿋꿋하게 견뎌온 너처럼, 작은 별이지만 빛나고 있어.",
+    "title": "작은 별이지만 빛나고 있어",
+    "author": "소윤",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "그렇게 우리는 각자의 우주를 만들어간다. 그렇게 어른이 된다.",
+    "title": "천문학자는 별을 보지 않는다",
+    "author": "심채경",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "연구실에 홀로 남아 연구에 집중하는 밤은 정말이지 근사하다.",
+    "title": "천문학자는 별을 보지 않는다",
+    "author": "심채경",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "누구에게나 각자 인생의 흐름이 있고, 나는 삶을 따라 흘러 다니며 살다 보니 지금 이러고 있다.",
+    "title": "천문학자는 별을 보지 않는다",
+    "author": "심채경",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "연구는 내가 인류의 대리자로서 행하는 것이고, 그 결과를 논문으로 쓰는 것이다.",
+    "title": "천문학자는 별을 보지 않는다",
+    "author": "심채경",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "당장의 현실적 대가 없이 미래를 위해 과학을 배워나가는 사람도 있다. 분명한 것은 그 모두가 과학자라는 점이다.",
+    "title": "천문학자는 별을 보지 않는다",
+    "author": "심채경",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "나는 불편한 게 좋아. 안 불편하려면 무조건 해내야 하잖아. 그것도 빨리.",
+    "title": "설레는 건 많을수록 좋아",
+    "author": "김옥선",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "나는 그래서 여행이 좋았다. 여행지가 좋은 게 아니라, 여행지에서 겪는 모든 과정이 좋았다.",
+    "title": "설레는 건 많을수록 좋아",
+    "author": "김옥선",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "복잡하게 생각하지 말자. 압박을 잠시 내려놓고 단순하게 즐기면 된다.",
+    "title": "설레는 건 많을수록 좋아",
+    "author": "김옥선",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "단순한 마음으로 떠난 길 위에서 다른 무언가를 만나 사는 게 다시 재밌어질 수도 있고, 원래의 것이 다시 좋아질 수도 있다.",
+    "title": "설레는 건 많을수록 좋아",
+    "author": "김옥선",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "나중은 없고 완벽한 준비란 없다. 그저 미완성된 오늘이 반복될 뿐이다.",
+    "title": "설레는 건 많을수록 좋아",
+    "author": "김옥선",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "혼자 하는 모든 일은 기억이지만 같이 할 때는 추억이 된다.",
+    "title": "여자 둘이 살고 있습니다",
+    "author": "김하나, 황선우",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "사람은 혼자서도 행복할 수 있지만 자신의 세계에 누군가를 들이기로 결정한 이상은, 서로의 감정과 안녕을 살피고 노력할 수밖에 없다.",
+    "title": "여자 둘이 살고 있습니다",
+    "author": "김하나, 황선우",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "우리는 계속해서 싸우고, 곧 화해하고 다시 싸운다. 반복해서 용서했다가 또 실망하지만 여전히 큰 기대를 거는 일을 포기하지 않는다.",
+    "title": "여자 둘이 살고 있습니다",
+    "author": "김하나, 황선우",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "혼자서도 충분히 즐겁게 살 수 있지만, 다른 원자와 결합해 분자가 될 수도 있는 거죠.",
+    "title": "여자 둘이 살고 있습니다",
+    "author": "김하나, 황선우",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "택시 태워 보내지 않고 정말로 집 앞에서 헤어지는 사이라니, 한 마을에 사는 옛날 사람들처럼 정다웠다.",
+    "title": "여자 둘이 살고 있습니다",
+    "author": "김하나, 황선우",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "The skill I was learning was a crucial one, the patience to read things I could not yet understand.",
+    "text": "내가 배우고 있던 것은 아직 이해할 수 없는 것들을 읽어내는 인내심, 바로 그 중요한 기술이었다.",
+    "title": "배움의 발견",
+    "author": "타라 웨스트오버",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "First find out what you are capable of, then decide who you are.",
+    "text": "먼저 내가 무엇을 할 수 있는 사람인지 알아낸 뒤에, 내가 누구인지를 정하라.",
+    "title": "배움의 발견",
+    "author": "타라 웨스트오버",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "I had come to believe that the ability to evaluate many ideas, many histories, many points of view, was at the heart of what it means to self-create.",
+    "text": "많은 생각과 많은 역사, 많은 관점을 스스로 저울질할 수 있는 능력이야말로 나 자신을 새롭게 만들어가는 일의 핵심이라고 나는 믿게 되었다.",
+    "title": "배움의 발견",
+    "author": "타라 웨스트오버",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "The most powerful determinant of who you are is inside you.",
+    "text": "당신이 누구인지를 결정짓는 가장 강력한 힘은 바로 당신 안에 있다.",
+    "title": "배움의 발견",
+    "author": "타라 웨스트오버",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "Everything I had worked for, all my years of study, had been to purchase for myself this one privilege: to see and experience more truths than those given to me by my father, and to use those truths to construct my own mind.",
+    "text": "내가 그토록 애써온 모든 것, 그 오랜 배움의 시간은 결국 단 하나의 특권을 얻기 위한 것이었다. 더 많은 진실을 보고 경험하며, 그 진실들로 나만의 생각을 지어 올리는 특권 말이다.",
+    "title": "배움의 발견",
+    "author": "타라 웨스트오버",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "아직 일어나지 않은 미래의 일을 걱정하는 것. 이미 일어나고 지나가 버린 과거의 일을 후회하는 것.",
+    "title": "기분을 관리하면 인생이 관리된다",
+    "author": "김다슬",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "그런 생각들에 사로잡혀서 제대로 대처하거나 준비하지 못한 자신을 자책하는 것. 이 모든 게 정신력을 소모하는 일이다.",
+    "title": "기분을 관리하면 인생이 관리된다",
+    "author": "김다슬",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "인생을 결정하는 건 바로 하루의 기분이다. 그날의 기분이 하루의 성과를 결정하고, 하루의 성과들이 모여 미래를 만들고 그 미래들이 곧 내 인생이 되기 때문이다.",
+    "title": "기분이 태도가 되지 말자",
+    "author": "김수현",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "좋은 기분에 자만하지 않거나 경솔한 행동을 하지 않는 것도 내 선택이고, 나쁜 기분이지만 증오와 분노를 표현하지 않는 것도 내 선택이다.",
+    "title": "기분이 태도가 되지 말자",
+    "author": "김수현",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "누군가에게 실망감을 안겨 주었을 때 내가 먼저 해야 하는 것은 기대에 못 미친 나도 나라는 것을 인정하는 것이다.",
+    "title": "내가 한 말을 내가 오해하지 않기로 함",
+    "author": "문상훈",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "잘 나온 사진만 내 얼굴이 아니듯이 기대에 부응한 나만 내가 아니라는 것을 직시해야 한다. 실수했을 때의 나를 부정하면 앞으로 실망할 일만 있다.",
+    "title": "내가 한 말을 내가 오해하지 않기로 함",
+    "author": "문상훈",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "내가 다른 사람의 행복에 영향을 줄 수 있는 가장 좋은 방법은 타인의 행복에 왈가왈부하지 않는 것이다.",
+    "title": "내가 한 말을 내가 오해하지 않기로 함",
+    "author": "문상훈",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "탁월한 재능도 재력도 없는 내가 서울에 올라와 지금껏 이런저런 일을 벌인 것도, 탈혼을 결심할 수 있었던 것도 모두 야망 덕분이다. 야망이 평범한 여자를 여기까지 오게 했다.",
+    "title": "나는 내 파이를 구할 뿐 인류를 구하러 온 게 아니라고",
+    "author": "김진아",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "큰 힘에는 큰 책임이 따르듯 큰 야망에는 큰 노력이 따라야 한다.",
+    "title": "나는 내 파이를 구할 뿐 인류를 구하러 온 게 아니라고",
+    "author": "김진아",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "그럼에도 나를 어딘가로 움직이게 하고, 다시 설 수 있도록 일으켜 주었던 말들은 언제나 나를 잡아끄는 말이 아니라 나를 안아주는 말이었다.",
+    "title": "이상하고 자유로운 할머니가 되고 싶어",
+    "author": "무루",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "그 자체로 목적이 되는 경험, 결과를 담보하지 않는 순수한 몰입, 외부의 반응을 두려워하지 않는 태도, 이것이 삽질의 조건이다.",
+    "title": "이상하고 자유로운 할머니가 되고 싶어",
+    "author": "무루",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "우리가 문학을 통해 느끼는 감동의 기저에는 언제나 하나의 질문이 있다. '나는 너를 이해할 수 있는가?'",
+    "title": "이상하고 자유로운 할머니가 되고 싶어",
+    "author": "무루",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "외롭기 때문에 자유롭고 고요하며 느슨하게 흘러가는 시간은 내가 원하는 방식으로 나를 지키고 채워준다.",
+    "title": "이상하고 자유로운 할머니가 되고 싶어",
+    "author": "무루",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "우리는 각자의 길을 걷다가 가끔은 누군가를 만나 함께 걷거나 서로의 손을 잡아줄 수 있다. 그런 시간들이 얼마나 아름다운지 나도 안다.",
+    "title": "이상하고 자유로운 할머니가 되고 싶어",
+    "author": "무루",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "우리가 먼 세계에서 떠밀려 온 저마다의 섬이라는 것을. 그리고 그 섬에 아직 내가 찾지 못한 작고 아름다운 것들이 숨어 있다는 것을.",
+    "title": "이상하고 자유로운 할머니가 되고 싶어",
+    "author": "무루",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "그러니 나에게 노년이란 상실의 의미이기보다 완성의 의미다. 부디 그랬으면 좋겠다. 그래서 마침내 내 삶이 한 줄의 아름다운 유언이고 유산이 되기를 바란다.",
+    "title": "이상하고 자유로운 할머니가 되고 싶어",
+    "author": "무루",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "너는 멋있는 사람이야. 그리고 앞으로도 계속 멋있는 사람으로 남게 될 거야.",
+    "title": "여자로 살아가는 우리들에게",
+    "author": "요조, 임경선",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "습관은 곧, 삶에 대한 태도이자 정체성이기도 하다. 행동들이 모여 일상이 구성되고 삶이 형성되는 까닭이다.",
+    "title": "습관의 말들",
+    "author": "김은경",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "그 사소한 태도와 버릇들은 삶을 대하는 그 사람의 자세를 나타내는 것이기도 하다.",
+    "title": "습관의 말들",
+    "author": "김은경",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "써본 적 없는 근육들을 움직이는 것은 가본 적 없는 삶의 다른 가능성들을 하나하나 깨워나가는 시작이 될 수 있다는 것을.",
+    "title": "근육이 튼튼한 여자가 되고 싶어",
+    "author": "이정연",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "근육을 만들고 키우고 그 안에서 힘을 더 꺼내 쓰고 싶어진다. 더 잘 뛰기 위해. 그리고 더 잘 살기 위해.",
+    "title": "근육이 튼튼한 여자가 되고 싶어",
+    "author": "이정연",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "네가 이루고 싶은 게 있거든 체력을 먼저 길러라. 게으름, 나태, 권태, 짜증, 우울, 분노, 모두 체력이 버티지 못해서, 정신이 몸의 지배를 받아 나타나는 증상이야.",
+    "title": "마녀체력",
+    "author": "이영미",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "저 같은 저질 체력에 마흔 넘은 여자도 10년간 천천히, 조금씩, 그러나 꾸준히 운동을 계속하면 강해질 수밖에 없습니다.",
+    "title": "마녀체력",
+    "author": "이영미",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "운동을 하면 노인도 청춘이 되고, 운동하지 않으면 청춘도 노인이 될 수 있어요.",
+    "title": "마녀체력",
+    "author": "이영미",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "꾸준히 노력하며 갈고 닦으면, 지팡이를 휘두르고 하늘을 날아다니는 마법 같은 일들이 일어날지도 모른다.",
+    "title": "마녀체력",
+    "author": "이영미",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "이제는 안다. 힘들어서 좋았다는 걸",
+    "title": "아무튼, 산",
+    "author": "장보영",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "정상을 향한 마음만으로는 산에 오를 수 없다. 그렇게 절박하게 오른 산에서 내려와야만 우리는 다음 삶을 살아갈 수 있다.",
+    "title": "아무튼, 산",
+    "author": "장보영",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "그래도 어떤 오해는 나를 한 발 나아가게 한다.",
+    "title": "우아하고 호쾌한 여자 축구",
+    "author": "김혼비",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "일상에서 개인이 편견에 맞서 할 수 있는 운동이라는 건 결국 편견의 가짓수를 줄여 나가는 싸움 아닐까.",
+    "title": "우아하고 호쾌한 여자 축구",
+    "author": "김혼비",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "다들 진심으로 내가 지금 하고 있는 대로 계속해 주길 바라고 있었다. 내 발끝에 팀원들의 기대가 실렸다.",
+    "title": "우아하고 호쾌한 여자 축구",
+    "author": "김혼비",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "나는 체력이 모기 같아서 망했다.",
+    "title": "우아하고 호쾌한 여자 축구",
+    "author": "김혼비",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "내 안에 새겨진 다정들이 내가 나를 사랑하는 것을 쉽게 포기하지 않게 붙들어주었다.",
+    "title": "다정소감",
+    "author": "김혼비",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "다정한 패턴은 마음의 악력도 만든다.",
+    "title": "다정소감",
+    "author": "김혼비",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "그 후로 어쩐지 점심시간마다 너를 계속 기다리게 됐어. 혹시 또 안 오나 해서.",
+    "title": "다정소감",
+    "author": "김혼비",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "화가는 상태다. 누구든 그림을 그리면 그때만큼은 화가가 된다.",
+    "title": "겁내지 않고 그림 그리는 법",
+    "author": "이연",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "많이 보고 다양하게 생각할 수 있는 이가 창의적인 사람이다.",
+    "title": "겁내지 않고 그림 그리는 법",
+    "author": "이연",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "열등감은 분명 괴로운 감정이다. 그럼에도 그 안에는 에너지원이 있다.",
+    "title": "겁내지 않고 그림 그리는 법",
+    "author": "이연",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "뭐든 그려내어 여러 종이를 낭비해 보는 것, 이것이 가장 확실한 방법이다.",
+    "title": "겁내지 않고 그림 그리는 법",
+    "author": "이연",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "잘 그리는 사람이 아니라, 잘 보는 사람이 그만의 창작을 한다.",
+    "title": "겁내지 않고 그림 그리는 법",
+    "author": "이연",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "그림이 무섭다는 건, 간단하게 말하자면 스스로에게 기대치가 높다는 의미다.",
+    "title": "겁내지 않고 그림 그리는 법",
+    "author": "이연",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "text": "인생은 시간을 돌릴 수 없지만, 그림에는 지우개가 있잖아.",
+    "title": "겁내지 않고 그림 그리는 법",
+    "author": "이연",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "Lock up your libraries if you like; but there is no gate, no lock, no bolt that you can set upon the freedom of my mind.",
+    "text": "서재의 문은 마음대로 잠가도 좋다. 하지만 내 정신의 자유에는 그 어떤 문도, 자물쇠도, 빗장도 채울 수 없다.",
+    "title": "자기만의 방",
+    "author": "버지니아 울프",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "So long as you write what you wish to write, that is all that matters.",
+    "text": "당신이 쓰고 싶은 것을 쓰는 한, 그것으로 충분하다.",
+    "title": "자기만의 방",
+    "author": "버지니아 울프",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "No need to hurry. No need to sparkle. No need to be anybody but oneself.",
+    "text": "서두를 필요 없다. 빛날 필요도 없다. 그저 자기 자신이면 충분하다.",
+    "title": "자기만의 방",
+    "author": "버지니아 울프",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "Once she knows how to read there's only one thing you can teach her to believe in and that is herself.",
+    "text": "일단 읽을 줄 알게 되면, 그녀에게 가르칠 수 있는 단 한 가지는 바로 자기 자신을 믿는 것이다.",
+    "title": "자기만의 방",
+    "author": "버지니아 울프",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "A woman must have money and a room of her own if she is to write fiction.",
+    "text": "여성이 소설을 쓰려면 돈과 자기만의 방이 있어야 한다.",
+    "title": "자기만의 방",
+    "author": "버지니아 울프",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "Therefore I would ask you to write all kinds of books, hesitating at no subject however trivial or however vast.",
+    "text": "그러니 나는 당신에게 아무리 사소하거나 아무리 거대한 주제라도 망설이지 말고 온갖 종류의 책을 써보라고 권하고 싶다.",
+    "title": "자기만의 방",
+    "author": "버지니아 울프",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "It is strange how a scrap of poetry works in the mind and makes the legs move in time to it along the road.",
+    "text": "한 조각의 시가 마음속에서 움직여, 길을 걷는 두 다리마저 그 리듬에 맞춰 걷게 한다는 것은 참으로 신기한 일이다.",
+    "title": "자기만의 방",
+    "author": "버지니아 울프",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "Owning stocks is like having children – don't get involved with more than you can handle.",
+    "text": "주식을 보유하는 것은 아이를 키우는 것과 같다. 감당할 수 있는 것보다 많이 늘리지 마라.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치",
+    "category": "behavior"
   }
 ];

@@ -964,10 +964,27 @@ function shuffleQuotes(items) {
   return shuffled;
 }
 
+// 2026-07-15: "2030 여성 독자층" 큐레이션 도서(문학·에세이·교양 장르에 한정,
+// 투자서는 절대 대상 아님) 노출 가산점 — quote.priority === true인 문장을
+// 덱을 새로 채울 때 PRIORITY_WEIGHT배만큼 더 넣어서, 같은 덱 한 바퀴 안에서
+// 더 자주 뽑히도록 한다. genre !== "literature"이면 priority 필드가 있어도
+// 무시한다(투자서는 절대 가중치 대상이 아니라는 유저 지시를 코드로도 강제).
+const PRIORITY_WEIGHT = 3;
+
+function buildWeightedDeckSource(items) {
+  const pool = [];
+  items.forEach((quote) => {
+    const isWeighted = quote.genre === "literature" && quote.priority === true;
+    const copies = isWeighted ? PRIORITY_WEIGHT : 1;
+    for (let i = 0; i < copies; i += 1) pool.push(quote);
+  });
+  return pool;
+}
+
 function getNextQuote() {
   const eligibleQuotes = getEligibleQuotes();
   if (quoteDeck.length === 0) {
-    quoteDeck = shuffleQuotes(eligibleQuotes);
+    quoteDeck = shuffleQuotes(buildWeightedDeckSource(eligibleQuotes));
   }
 
   if (quoteDeck.length > 1 && quoteDeck[0].title === lastQuoteTitle) {
