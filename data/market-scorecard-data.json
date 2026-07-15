@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-07-15-11:50",
+      "timestamp_kst": "2026-07-15(수) 11:50 KST",
+      "key_event": {
+        "name": "CPI 예상치 하회 및 AI 반도체 강세",
+        "time": "직전 정규장 및 포스트마켓",
+        "why": "금리 인상 우려 완화, 시장 불확실성 감소, 기술주 상승 견인"
+      },
+      "positive_total": 80,
+      "negative_total": 20,
+      "summary": "CPI 호재와 AI 반도체 강세로 긍정 우위 지속, 일부 기술주 하락 혼조세",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "CPI 예상치 하회",
+          "desc": "인플레이션 둔화로 연준의 금리 인상 우려 완화, 시장 전반 긍정 심리 형성"
+        },
+        {
+          "score": 25,
+          "name": "AI 반도체 섹터 강세",
+          "desc": "NVDA 등 반도체 기업 주가 상승, 기술주 시장 전반의 랠리 견인"
+        },
+        {
+          "score": 15,
+          "name": "VIX 공포지수 하락",
+          "desc": "시장 변동성 및 투자자 불안감 감소, 위험 자산 선호 심리 회복"
+        },
+        {
+          "score": 10,
+          "name": "미 10년 국채금리 하락",
+          "desc": "성장주 및 기술주 투자 매력 증가, 자금 조달 비용 부담 완화"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 10,
+          "name": "일부 대형 기술주 하락",
+          "desc": "AAPL, MSFT 등 주요 기술주 약세, 시장 전반의 상승폭 제한"
+        },
+        {
+          "score": 10,
+          "name": "미-이란 지정학적 긴장",
+          "desc": "원유 시장 불안정성 증가, 에너지 가격 상승 압력으로 인플레이션 우려 잔존"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 데이터 센터 건설 금지",
+          "desc": "뉴욕주의 AI 데이터 센터 건설 금지 조치로 일부 기술 기업에 부정적 영향 우려 vs. 단기적 영향 제한적 해석"
+        }
+      ]
+    },
+    {
       "id": "2026-07-15-08:20",
       "timestamp_kst": "2026-07-15(수) 08:20 KST",
       "key_event": {
@@ -501,60 +553,8 @@
           "desc": "AI 관련 긍정적 뉴스(Super Micro Computer 신제품, Chevron AI 데이터센터)와 부정적 뉴스(AI 붐 자금 조달 우려, Palantir CEO의 AI 산업 경고)가 혼재"
         }
       ]
-    },
-    {
-      "id": "2026-07-14-08:20",
-      "timestamp_kst": "2026-07-14(화) 08:20 KST",
-      "key_event": {
-        "name": "미-이란 지정학적 긴장 고조",
-        "time": "현재 및 단기 지속",
-        "why": "유가 급등, 인플레이션 우려, 시장 불확실성 증가"
-      },
-      "positive_total": 15,
-      "negative_total": 85,
-      "summary": "지정학적 긴장 고조와 기술주 하락으로 부정 우위 지속",
-      "positive_factors": [
-        {
-          "score": 10,
-          "name": "일부 빅테크 강세",
-          "desc": "AAPL, MSFT 등 일부 대형 기술주 포스트마켓 상승"
-        },
-        {
-          "score": 5,
-          "name": "AI 오픈소스 확산",
-          "desc": "Fortune 500 기업들의 오픈소스 AI 채택 증가 소식"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "반도체 섹터 급락",
-          "desc": "SOXX 5.61% 하락, 주요 반도체 기업 약세 지속"
-        },
-        {
-          "score": 15,
-          "name": "VIX 공포지수 급등",
-          "desc": "VIX 14.10% 상승, 시장 변동성 및 투자 심리 위축"
-        },
-        {
-          "score": 10,
-          "name": "미 국채금리 상승",
-          "desc": "미 10년 국채금리 상승, 성장주 투자 매력 감소"
-        },
-        {
-          "score": 5,
-          "name": "기술주 전반적 약세",
-          "desc": "QQQ, SPY 하락 및 TSLA, NVDA, GOOGL 등 주요 기술주 약세"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "Fed 금리 인상 가능성",
-          "desc": "Fed 월러 이사, 인플레이션 지속 시 금리 인상 필요성 언급. 시장은 긴축 우려와 경기 둔화 가능성 사이에서 혼조"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-07-14T23:21:13Z",
+  "updated_at": "2026-07-15T02:51:05Z",
   "max_entries": 10
 }
