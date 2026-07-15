@@ -1896,7 +1896,13 @@ const musicFadeOutSeconds = 4;
 // 잡힌다. musicFadeOutSeconds(4초)는 여전히 "언제부터 볼륨을 실제로 줄이기
 // 시작할지"의 타이밍으로 그대로 쓰고, 이 값은 "언제부터 다음 곡을 미리
 // 받기 시작할지"를 가리키는 별도의, 더 이른 시점이다.
-const musicPrebufferLeadSeconds = 18;
+//
+// 2026-07-16: 네이티브 크로스페이드용 prefetchNext도 이 시점에 같이 나가는데,
+// 실기기 로그로 직접 확인해보니 18초로는 여유가 부족해서 crossfadeStart
+// (끝나기 4초 전) 시점에 로컬 캐시가 아직 준비 안 된 채로 원격 스트리밍
+// 폴백으로 떨어지는 경우가 실제로 관찰됐다 — 크로스페이드가 매끄럽지 않게
+// 느껴지고 초반이 씹히는 원인. 다운로드에 더 여유를 주기 위해 28초로 늘린다.
+const musicPrebufferLeadSeconds = 28;
 
 // 두 개의 <audio>를 번갈아 쓴다 — 하나(activePlayer)가 페이드아웃되는 동안
 // 다른 하나(standbyPlayer)가 이미 다음 곡을 재생 중이어야 겹치는 소리가
@@ -2203,7 +2209,15 @@ function drawMusicVizNative(h) {
     // 정도로만 남긴다(밋밋함과 산만함의 중간).
     const shimmer = 0.5 + 0.5 * Math.sin(nativeVizShimmerPhase * (0.5 + band * 0.9) + i * 1.7);
     const liveliness = 0.82 + 0.18 * shimmer;
-    const ratio = Math.pow(Math.max(0, band), 1.25) * jitter;
+    // 2026-07-16: "곡 끝 여음(리버브 꼬리)이 아직 들리는데 비주얼라이저는
+    // 벌써 다 가라앉아 보인다"는 재지적 — AGC(피크 대비 정규화)가 최근
+    // 시끄러웠던 구간의 피크를 한동안 기억하고 있어서, 꼬리의 조용한 소리는
+    // 정규화된 band 값 자체가 매우 작다(예: 0.1 근처). 그런데 지수 1.25(>1)는
+    // 작은 값을 더욱더 작게 짓눌러서(0.1^1.25≈0.056) 거의 안 보이게
+    // 만들었다 — 지수를 0.7(<1)로 낮춰 작은 값을 오히려 부풀려서(0.1^0.7≈0.2)
+    // 조용한 여음도 막대가 눈에 띄게 살아있도록 한다. 큰 값(1 근처)은 거의
+    // 그대로라 시끄러운 구간의 다이나믹함은 그대로 유지된다.
+    const ratio = Math.pow(Math.max(0, band), 0.7) * jitter;
     let target = Math.max(4, ratio * shapeEnvelope * h * liveliness);
     // 대역별 타격 펀치 — 이제 hitWeights로 국지화된 데다 막대별 지터까지
     // 곱해져서, 같은 킥 한 방에도 막대마다 확연히 다르게 튄다.
