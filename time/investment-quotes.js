@@ -574,6 +574,7 @@ window.investmentQuotes = [
     "text": "재산이 상당한 독신 남자는 반드시 아내를 원하게 마련이라는 것은 누구나 인정하는 진리이다.",
     "title": "Pride and Prejudice",
     "author": "Jane Austen",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -581,6 +582,7 @@ window.investmentQuotes = [
     "text": "허영과 오만은 다른 것이다. 비록 두 단어가 자주 동의어처럼 쓰이긴 하지만.",
     "title": "Pride and Prejudice",
     "author": "Jane Austen",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -588,6 +590,7 @@ window.investmentQuotes = [
     "text": "결혼에서의 행복은 전적으로 운에 달려 있다.",
     "title": "Pride and Prejudice",
     "author": "Jane Austen",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -595,6 +598,7 @@ window.investmentQuotes = [
     "text": "그의 오만은 쉽게 용서할 수 있었을 것이다. 단, 그가 내 오만을 상처 입히지만 않았다면.",
     "title": "Pride and Prejudice",
     "author": "Jane Austen",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -602,6 +606,7 @@ window.investmentQuotes = [
     "text": "겸손한 태도만큼 기만적인 것은 없다.",
     "title": "Pride and Prejudice",
     "author": "Jane Austen",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -609,6 +614,7 @@ window.investmentQuotes = [
     "text": "관습은 도덕이 아니다. 자기 의는 종교가 아니다.",
     "title": "Jane Eyre",
     "author": "Charlotte Bronte",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -616,6 +622,7 @@ window.investmentQuotes = [
     "text": "여성은 일반적으로 매우 침착해야 한다고 여겨지지만, 여성도 남성과 똑같이 느낀다.",
     "title": "Jane Eyre",
     "author": "Charlotte Bronte",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -623,6 +630,7 @@ window.investmentQuotes = [
     "text": "온 세상이 당신을 미워하고 사악하다고 믿더라도, 당신 자신의 양심이 당신을 인정한다면 친구가 없는 것이 아니다.",
     "title": "Jane Eyre",
     "author": "Charlotte Bronte",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -630,6 +638,7 @@ window.investmentQuotes = [
     "text": "우리의 영혼이 무엇으로 만들어졌든, 그의 영혼과 내 영혼은 같다.",
     "title": "Wuthering Heights",
     "author": "Emily Bronte",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -637,6 +646,7 @@ window.investmentQuotes = [
     "text": "나는 히스클리프다. 그는 언제나 내 마음속에 있다. 즐거움이 아니라 나 자신처럼.",
     "title": "Wuthering Heights",
     "author": "Emily Bronte",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -644,6 +654,7 @@ window.investmentQuotes = [
     "text": "언제나 내 곁에 있어줘. 어떤 모습이든, 나를 미치게 만들어도 좋아! 단, 이 심연에 나를 남겨두지 마.",
     "title": "Wuthering Heights",
     "author": "Emily Bronte",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -651,6 +662,7 @@ window.investmentQuotes = [
     "text": "사람의 마음은 정원에 비유할 수 있다. 지혜롭게 가꾸거나 그냥 내버려둘 수 있다.",
     "title": "As a Man Thinketh",
     "author": "James Allen",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -658,6 +670,7 @@ window.investmentQuotes = [
     "text": "사람은 글자 그대로 자신이 생각하는 그대로다. 그의 성격은 모든 생각의 완전한 합이다.",
     "title": "As a Man Thinketh",
     "author": "James Allen",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -665,6 +678,7 @@ window.investmentQuotes = [
     "text": "자기 통제는 힘이다. 올바른 생각은 지배력이다. 평온은 힘이다.",
     "title": "As a Man Thinketh",
     "author": "James Allen",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -672,6 +686,7 @@ window.investmentQuotes = [
     "text": "가난한 사람들을 돕고 싶다면, 그들에게 그들도 부자가 될 수 있음을 보여줘라.",
     "title": "The Science of Getting Rich",
     "author": "Wallace D. Wattles",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -679,6 +694,7 @@ window.investmentQuotes = [
     "text": "감사하는 마음은 항상 최고에 집중한다. 따라서 그것은 최고가 되는 경향이 있다.",
     "title": "The Science of Getting Rich",
     "author": "Wallace D. Wattles",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -686,6 +702,7 @@ window.investmentQuotes = [
     "text": "누군가를 비판하고 싶을 때마다, 이 세상의 모든 사람들이 당신이 가진 장점을 갖지 못했다는 것을 기억하라.",
     "title": "The Great Gatsby",
     "author": "F. Scott Fitzgerald",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -693,6 +710,7 @@ window.investmentQuotes = [
     "text": "이 세상에서 여자가 될 수 있는 가장 좋은 것은, 아름다운 작은 바보가 되는 것이다.",
     "title": "The Great Gatsby",
     "author": "F. Scott Fitzgerald",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -700,6 +718,7 @@ window.investmentQuotes = [
     "text": "그녀의 목소리는 돈으로 가득 차 있다.",
     "title": "The Great Gatsby",
     "author": "F. Scott Fitzgerald",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -707,6 +726,7 @@ window.investmentQuotes = [
     "text": "과거를 되돌릴 수는 없어. 과거를 되돌릴 수 없다고? 물론 할 수 있지!",
     "title": "The Great Gatsby",
     "author": "F. Scott Fitzgerald",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -714,6 +734,7 @@ window.investmentQuotes = [
     "text": "그래서 우리는 앞으로 나아간다. 조류를 거스르는 배처럼, 끊임없이 과거로 떠밀려 가면서.",
     "title": "The Great Gatsby",
     "author": "F. Scott Fitzgerald",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -721,6 +742,7 @@ window.investmentQuotes = [
     "text": "더욱더 이상하고 이상해!",
     "title": "Alice's Adventures in Wonderland",
     "author": "Lewis Carroll",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -728,6 +750,7 @@ window.investmentQuotes = [
     "text": "여기 있는 우리 모두는 미쳤어. 나도 미쳤고, 너도 미쳤지.",
     "title": "Alice's Adventures in Wonderland",
     "author": "Lewis Carroll",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -735,6 +758,7 @@ window.investmentQuotes = [
     "text": "처음부터 시작해. 그리고 끝에 이를 때까지 계속해. 그런 다음 멈춰.",
     "title": "Alice's Adventures in Wonderland",
     "author": "Lewis Carroll",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -742,6 +766,7 @@ window.investmentQuotes = [
     "text": "유혹을 없애는 유일한 방법은 그것에 굴복하는 것이다.",
     "title": "The Picture of Dorian Gray",
     "author": "Oscar Wilde",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -749,6 +774,7 @@ window.investmentQuotes = [
     "text": "요즘 사람들은 모든 것의 가격은 알지만, 아무것도 그 가치를 모른다.",
     "title": "The Picture of Dorian Gray",
     "author": "Oscar Wilde",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -756,6 +782,7 @@ window.investmentQuotes = [
     "text": "청춘! 청춘! 이 세상에 청춘 말고는 아무것도 없다!",
     "title": "The Picture of Dorian Gray",
     "author": "Oscar Wilde",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -763,6 +790,7 @@ window.investmentQuotes = [
     "text": "대다수의 사람들은 조용한 절망 속에서 살아간다.",
     "title": "Walden",
     "author": "Henry David Thoreau",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -770,6 +798,7 @@ window.investmentQuotes = [
     "text": "나는 숲으로 간 이유는 삶을 의도적으로 살아보기 위해서였다.",
     "title": "Walden",
     "author": "Henry David Thoreau",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -777,6 +806,7 @@ window.investmentQuotes = [
     "text": "단순하게, 단순하게.",
     "title": "Walden",
     "author": "Henry David Thoreau",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -784,6 +814,7 @@ window.investmentQuotes = [
     "text": "자신의 꿈을 향해 자신 있게 나아가면, 평범한 시간에는 예상치 못한 성공을 만나게 될 것이다.",
     "title": "Walden",
     "author": "Henry David Thoreau",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -791,6 +822,7 @@ window.investmentQuotes = [
     "text": "사랑할 때 '하나님이 내 마음속에 계시다'고 말하지 말고, '내가 하나님의 마음속에 있다'고 말해야 한다.",
     "title": "The Prophet",
     "author": "Kahlil Gibran",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -798,6 +830,7 @@ window.investmentQuotes = [
     "text": "너희 아이들은 너희 아이들이 아니다. 그들은 삶이 자신을 갈망하는 아들과 딸들이다.",
     "title": "The Prophet",
     "author": "Kahlil Gibran",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -805,6 +838,7 @@ window.investmentQuotes = [
     "text": "슬픔이 너의 존재에 더 깊이 새겨질수록, 너는 더 많은 기쁨을 담을 수 있다.",
     "title": "The Prophet",
     "author": "Kahlil Gibran",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -812,6 +846,7 @@ window.investmentQuotes = [
     "text": "너의 기쁨은 가면을 벗은 너의 슬픔이다.",
     "title": "The Prophet",
     "author": "Kahlil Gibran",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -819,6 +854,7 @@ window.investmentQuotes = [
     "text": "나를 이스마엘이라고 불러라.",
     "title": "Moby-Dick",
     "author": "Herman Melville",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -826,6 +862,7 @@ window.investmentQuotes = [
     "text": "모든 눈에 보이는 사물은, 인간이여, 판지 가면에 불과하다.",
     "title": "Moby-Dick",
     "author": "Herman Melville",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -833,6 +870,7 @@ window.investmentQuotes = [
     "text": "지구상에 무지와 비참이 남아 있는 한, 이런 책은 쓸모없을 수 없다.",
     "title": "Les Miserables",
     "author": "Victor Hugo",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -840,6 +878,7 @@ window.investmentQuotes = [
     "text": "인생의 가장 큰 행복은 우리가 사랑받고 있다는 확신이다.",
     "title": "Les Miserables",
     "author": "Victor Hugo",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -847,6 +886,7 @@ window.investmentQuotes = [
     "text": "영혼이 어둠 속에 방치되면 죄가 저질러진다.",
     "title": "Les Miserables",
     "author": "Victor Hugo",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -854,6 +894,7 @@ window.investmentQuotes = [
     "text": "내가 버는 모든 것의 일부는 내가 간직할 몫이다.",
     "title": "The Richest Man in Babylon",
     "author": "George S. Clason",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -861,6 +902,7 @@ window.investmentQuotes = [
     "text": "조언은 공짜로 주어지는 것이지만, 가치 있는 것만 받아들이도록 주의하라.",
     "title": "The Richest Man in Babylon",
     "author": "George S. Clason",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -868,6 +910,7 @@ window.investmentQuotes = [
     "text": "그대는 외부에서 일어나는 일이 아니라 그 일에 대한 그대의 생각을 다스릴 힘이 있다. 이것을 깨달으면 그대는 힘을 찾을 것이다.",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -875,6 +918,7 @@ window.investmentQuotes = [
     "text": "어느 날 아침 그레고르 잠자가 불안한 꿈에서 깨어났을 때, 그는 자신이 침대 속에서 한 마리 거대한 벌레로 변해 있는 것을 발견했다.",
     "title": "변신",
     "author": "프란츠 카프카",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -882,6 +926,7 @@ window.investmentQuotes = [
     "text": "크고 지적인 사람에게, 그리고 깊은 마음을 가진 사람에게 고통과 괴로움은 언제나 피할 수 없는 것이다.",
     "title": "죄와 벌",
     "author": "표도르 도스토옙스키",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1183,6 +1228,7 @@ window.investmentQuotes = [
     "text": "정말 중요한 것은 눈에는 보이지 않아. 마음으로 보아야만 제대로 보이는 거야.",
     "title": "어린왕자",
     "author": "앙투안 드 생텍쥐페리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1190,6 +1236,7 @@ window.investmentQuotes = [
     "text": "너는 네가 길들인 것에 대해 영원히 책임이 있어.",
     "title": "어린왕자",
     "author": "앙투안 드 생텍쥐페리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1197,6 +1244,7 @@ window.investmentQuotes = [
     "text": "네 장미꽃이 그토록 소중해진 건, 네가 그 꽃을 위해 쏟은 시간 때문이야.",
     "title": "어린왕자",
     "author": "앙투안 드 생텍쥐페리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1204,6 +1252,7 @@ window.investmentQuotes = [
     "text": "새는 알을 깨고 나온다. 알은 세계다. 태어나려는 자는 하나의 세계를 파괴해야만 한다.",
     "title": "데미안",
     "author": "헤르만 헤세",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1211,6 +1260,7 @@ window.investmentQuotes = [
     "text": "모든 인간의 삶은 저마다 자기 자신에게로 가는 길이다.",
     "title": "데미안",
     "author": "헤르만 헤세",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1218,6 +1268,7 @@ window.investmentQuotes = [
     "text": "나는 그저 내 안에서 절로 솟아 나오려는 것을 살아 보려 했을 뿐이다. 그것이 왜 그토록 어려웠을까.",
     "title": "데미안",
     "author": "헤르만 헤세",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1225,6 +1276,7 @@ window.investmentQuotes = [
     "text": "이 세상을 사랑할 수 있는 것, 업신여기지 않는 것, 세상과 나를 미워하지 않는 것 — 오직 그것만이 중요했다.",
     "title": "싯다르타",
     "author": "헤르만 헤세",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1232,6 +1284,7 @@ window.investmentQuotes = [
     "text": "그의 미소는 점점 더 뱃사공의 미소를 닮아갔다. 그만큼 환하게 빛나고 행복으로 가득했으며, 어린아이처럼 순수했다.",
     "title": "싯다르타",
     "author": "헤르만 헤세",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1239,6 +1292,7 @@ window.investmentQuotes = [
     "text": "행복이란 이런 것이다 — 포도주 한 잔, 밤 한 알, 초라한 화덕, 파도 소리. 그뿐, 다른 건 없다.",
     "title": "그리스인 조르바",
     "author": "니코스 카잔차키스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1246,6 +1300,7 @@ window.investmentQuotes = [
     "text": "일에, 포도주에, 사랑에 온몸을 던져라. 신도 악마도 두려워하지 마라.",
     "title": "그리스인 조르바",
     "author": "니코스 카잔차키스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1253,6 +1308,7 @@ window.investmentQuotes = [
     "text": "무슨 일이든 하기로 마음먹었으면 망설이지 말고 뛰어들어라. 네 젊음을 아낌없이 풀어놓아라, 아까워하지 말고.",
     "title": "그리스인 조르바",
     "author": "니코스 카잔차키스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1260,6 +1316,7 @@ window.investmentQuotes = [
     "text": "무언가를 진심으로 원할 때, 온 우주는 네가 그 소망을 이루도록 돕는다.",
     "title": "연금술사",
     "author": "파울로 코엘료",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1267,6 +1324,7 @@ window.investmentQuotes = [
     "text": "꿈을 이룰 수 있다는 가능성, 바로 그것이 삶을 흥미롭게 만드는 것이다.",
     "title": "연금술사",
     "author": "파울로 코엘료",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1274,6 +1332,7 @@ window.investmentQuotes = [
     "text": "젊은 시절에는 누구나 자신의 개인적 신화가 무엇인지 안다. 그때는 모든 것이 선명하고, 모든 것이 가능해 보인다.",
     "title": "연금술사",
     "author": "파울로 코엘료",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1281,6 +1340,7 @@ window.investmentQuotes = [
     "text": "가장 높이 나는 갈매기가 가장 멀리 본다.",
     "title": "갈매기의 꿈",
     "author": "리처드 바크",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1288,6 +1348,7 @@ window.investmentQuotes = [
     "text": "너는 지금 여기서, 진정한 너 자신으로 살아갈 자유가 있다. 그 무엇도 널 가로막을 수 없다.",
     "title": "갈매기의 꿈",
     "author": "리처드 바크",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1295,6 +1356,7 @@ window.investmentQuotes = [
     "text": "천국은 장소도, 시간도 아니다. 천국은 완벽해지는 것이다.",
     "title": "갈매기의 꿈",
     "author": "리처드 바크",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1302,6 +1364,7 @@ window.investmentQuotes = [
     "text": "누군가를 사랑하는 건 새 집으로 이사하는 것과 같다고, 소냐는 말하곤 했다. 세월이 흐르면 그 집을 완벽해서가 아니라, 완벽하지 않은 모든 점들 때문에 사랑하게 된다.",
     "title": "오베라는 남자",
     "author": "프레드릭 배크만",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1309,6 +1372,7 @@ window.investmentQuotes = [
     "text": "그는 흑백으로 이루어진 남자였다. 그녀는 색깔이었다. 그가 가진 색깔의 전부였다.",
     "title": "오베라는 남자",
     "author": "프레드릭 배크만",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1316,6 +1380,7 @@ window.investmentQuotes = [
     "text": "백지이기 때문에 오히려 어떤 지도라도 그릴 수 있습니다. 모든 것은 당신 하기 나름이며, 가능성은 무한히 펼쳐져 있습니다.",
     "title": "나미야 잡화점의 기적",
     "author": "히가시노 게이고",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1323,6 +1388,7 @@ window.investmentQuotes = [
     "text": "부디 믿어 주세요. 지금이 아무리 힘겹더라도, 내일은 오늘보다 더 근사할 거라고.",
     "title": "나미야 잡화점의 기적",
     "author": "히가시노 게이고",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1330,6 +1396,7 @@ window.investmentQuotes = [
     "text": "그럼에도 불구하고 나는 여전히 사람들이 진심으로 선하다고 믿는다.",
     "title": "안네의 일기",
     "author": "안네 프랑크",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1337,6 +1404,7 @@ window.investmentQuotes = [
     "text": "세상을 조금씩 나아지게 만드는 데, 단 한 사람도 단 1분조차 기다릴 필요가 없다니, 이 얼마나 근사한 일인가!",
     "title": "안네의 일기",
     "author": "안네 프랑크",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1344,6 +1412,7 @@ window.investmentQuotes = [
     "text": "두려움 없이 하늘을 올려다볼 수 있는 한, 나는 내 마음이 맑다는 것을, 그리고 다시 행복해지리라는 것을 안다.",
     "title": "안네의 일기",
     "author": "안네 프랑크",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1351,6 +1420,7 @@ window.investmentQuotes = [
     "text": "나는 마음속에 크리스마스를 간직하고, 일 년 내내 그 정신을 지키며 살아가겠다.",
     "title": "크리스마스 캐럴",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1358,6 +1428,7 @@ window.investmentQuotes = [
     "text": "크리스마스는 일 년 중 사람들이 굳게 닫았던 마음을 활짝 열고 서로를 너그럽게 품어주는, 가장 다정한 시간이다.",
     "title": "크리스마스 캐럴",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1365,6 +1436,7 @@ window.investmentQuotes = [
     "text": "나는 깃털처럼 가볍고, 천사처럼 행복하며, 소년처럼 즐겁구나.",
     "title": "크리스마스 캐럴",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1372,6 +1444,7 @@ window.investmentQuotes = [
     "text": "신이시여, 우리 모두를 축복해 주소서!",
     "title": "크리스마스 캐럴",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1379,6 +1452,7 @@ window.investmentQuotes = [
     "text": "죽기 전에 근사한 일을 하고 싶어. 책을 써서 유명해지는 것, 그게 내가 가장 좋아하는 꿈이야.",
     "title": "작은 아씨들",
     "author": "루이자 메이 올콧",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1386,6 +1460,7 @@ window.investmentQuotes = [
     "text": "나는 폭풍이 두렵지 않아요, 내 배를 다루는 법을 배우고 있으니까요.",
     "title": "작은 아씨들",
     "author": "루이자 메이 올콧",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1393,6 +1468,7 @@ window.investmentQuotes = [
     "text": "서로 도우며 함께 견디고 서로를 품어주면, 우리 집은 모두에게 더 사랑스러운 곳이 되지 않을까요?",
     "title": "작은 아씨들",
     "author": "루이자 메이 올콧",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1400,6 +1476,7 @@ window.investmentQuotes = [
     "text": "내일은 아직 실수를 하나도 하지 않은 새로운 날이라고 생각하면 참 멋지지 않나요?",
     "title": "빨간 머리 앤",
     "author": "루시 모드 몽고메리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1407,6 +1484,7 @@ window.investmentQuotes = [
     "text": "마음이 통하는 사람은 생각보다 드물지 않아요. 세상에 그런 사람이 이렇게나 많다는 걸 알게 되어 참 기뻐요.",
     "title": "빨간 머리 앤",
     "author": "루시 모드 몽고메리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1414,6 +1492,7 @@ window.investmentQuotes = [
     "text": "중요한 건 세상이 나에게 무엇을 주느냐가 아니라, 내가 세상에 무엇을 가져다주느냐예요.",
     "title": "빨간 머리 앤",
     "author": "루시 모드 몽고메리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1421,6 +1500,7 @@ window.investmentQuotes = [
     "text": "길모퉁이 너머에 무엇이 있을지는 모르지만, 가장 좋은 것이 기다리고 있으리라 믿을 거예요.",
     "title": "빨간 머리 앤",
     "author": "루시 모드 몽고메리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1428,6 +1508,7 @@ window.investmentQuotes = [
     "text": "큰 시련에 맞서는 건 누구나 할 수 있어요. 하지만 하루하루의 자잘한 어려움을 웃음으로 넘기는 것, 그게 진짜 용기라고 생각해요.",
     "title": "키다리 아저씨",
     "author": "진 웹스터",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1435,6 +1516,7 @@ window.investmentQuotes = [
     "text": "사람에게 가장 필요한 자질은 상상력이에요. 상상력은 우리를 다정하고 이해심 많은 사람으로 만들어 주니까요.",
     "title": "키다리 아저씨",
     "author": "진 웹스터",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1442,6 +1524,7 @@ window.investmentQuotes = [
     "text": "가장 소중한 건 커다란 기쁨이 아니라 작은 기쁨을 크게 누리는 거예요. 그게 바로 행복의 진짜 비밀이에요.",
     "title": "키다리 아저씨",
     "author": "진 웹스터",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1449,6 +1532,7 @@ window.investmentQuotes = [
     "text": "아무리 우리 집이 초라하고 소박해도, 세상 어떤 아름다운 곳보다 그곳에서 살고 싶어요. 세상에 집만 한 곳은 없으니까요.",
     "title": "오즈의 마법사",
     "author": "라이먼 프랭크 바움",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1456,6 +1540,7 @@ window.investmentQuotes = [
     "text": "위험 앞에서 두려워하지 않는 생명은 없어요. 진짜 용기란 두려운데도 그 위험에 맞서는 거예요.",
     "title": "오즈의 마법사",
     "author": "라이먼 프랭크 바움",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1463,6 +1548,7 @@ window.investmentQuotes = [
     "text": "머리가 좋다고 행복해지는 건 아니에요. 그리고 행복이야말로 세상에서 가장 좋은 것이죠.",
     "title": "오즈의 마법사",
     "author": "라이먼 프랭크 바움",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1470,6 +1556,7 @@ window.investmentQuotes = [
     "text": "일이란 억지로 해야 하는 것이고, 놀이란 하고 싶어서 하는 것일 뿐이다.",
     "title": "톰 소여의 모험",
     "author": "마크 트웨인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1477,6 +1564,7 @@ window.investmentQuotes = [
     "text": "토요일 아침이 밝았다. 여름 세상은 눈부시고 싱그럽게 생기가 넘쳤고, 모두의 마음속엔 노래가 흘렀다.",
     "title": "톰 소여의 모험",
     "author": "마크 트웨인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1484,6 +1572,7 @@ window.investmentQuotes = [
     "text": "그는 그저 신나게 놀았을 뿐인데, 곁엔 친구들이 가득했고 담장엔 어느새 하얀 칠이 세 겹이나 입혀져 있었다.",
     "title": "톰 소여의 모험",
     "author": "마크 트웨인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1491,6 +1580,7 @@ window.investmentQuotes = [
     "text": "\"내가 제일 좋아하는 건 아무것도 안 하는 거야.\" 그건 그저 천천히 걸으며, 들리지 않는 것들에 귀 기울이고, 아무것도 신경 쓰지 않는 거란다.",
     "title": "곰돌이 푸",
     "author": "앨런 알렉산더 밀른",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1498,6 +1588,7 @@ window.investmentQuotes = [
     "text": "\"푸, 나 절대 잊지 않겠다고 약속해줘. 내가 백 살이 되어도 말이야.\" 푸는 잠시 생각했다. \"그럼 난 몇 살이지?\" \"아흔아홉 살.\" 푸는 고개를 끄덕였다. \"약속할게.\"",
     "title": "곰돌이 푸",
     "author": "앨런 알렉산더 밀른",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1505,6 +1596,7 @@ window.investmentQuotes = [
     "text": "피글렛은 자신의 마음이 아주 작아도 그 안에 꽤 커다란 감사를 담을 수 있다는 걸 알게 되었다.",
     "title": "곰돌이 푸",
     "author": "앨런 알렉산더 밀른",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1512,6 +1604,7 @@ window.investmentQuotes = [
     "text": "너 자신을 믿어라. 모든 마음은 그 하나의 진실한 울림에 함께 떨린다.",
     "title": "자기신뢰",
     "author": "랄프 왈도 에머슨",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -1519,6 +1612,7 @@ window.investmentQuotes = [
     "text": "내 마음속 깊은 곳에서 진실이라 믿는 것이 모든 이에게도 진실이라 믿는 것, 그것이 바로 천재성이다.",
     "title": "자기신뢰",
     "author": "랄프 왈도 에머슨",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -1526,6 +1620,7 @@ window.investmentQuotes = [
     "text": "자기 자신을 굳게 지켜라, 결코 남을 흉내 내지 마라. 너만의 재능은 평생 갈고닦은 힘으로 언제든 빛을 낼 수 있으니까.",
     "title": "자기신뢰",
     "author": "랄프 왈도 에머슨",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -1533,6 +1628,7 @@ window.investmentQuotes = [
     "text": "인간에게서 모든 것을 빼앗아도 단 하나만은 빼앗을 수 없다. 어떤 상황에서든 자신의 태도를 스스로 선택할 자유이다.",
     "title": "죽음의 수용소에서",
     "author": "빅터 프랭클",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -1540,6 +1636,7 @@ window.investmentQuotes = [
     "text": "살아야 할 '이유'를 가진 사람은 그 어떤 '방법'도 견뎌낼 수 있다.",
     "title": "죽음의 수용소에서",
     "author": "빅터 프랭클",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -1547,6 +1644,7 @@ window.investmentQuotes = [
     "text": "결국 우리는 삶의 의미를 물을 것이 아니라, 삶으로부터 질문받고 있는 존재임을 깨달아야 한다.",
     "title": "죽음의 수용소에서",
     "author": "빅터 프랭클",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -1554,6 +1652,7 @@ window.investmentQuotes = [
     "text": "지금 이 순간이 당신이 가진 전부임을 깊이 깨달아라. 지금 이 순간을 삶의 중심에 두어라.",
     "title": "지금 이 순간을 살아라",
     "author": "에크하르트 톨레",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -1561,6 +1660,7 @@ window.investmentQuotes = [
     "text": "지금 이 순간을 받아들이는 순간, 불행과 애씀은 사라지고 삶은 기쁨과 평온 속에 흐르기 시작한다.",
     "title": "지금 이 순간을 살아라",
     "author": "에크하르트 톨레",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -1568,6 +1668,7 @@ window.investmentQuotes = [
     "text": "당신의 삶 전체는 오직 지금 이 순간에만 일어난다. 지금 이 순간이 곧 삶 그 자체이다.",
     "title": "지금 이 순간을 살아라",
     "author": "에크하르트 톨레",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -1575,6 +1676,7 @@ window.investmentQuotes = [
     "text": "코스모스는 과거에 있었고, 지금 있으며, 앞으로도 영원히 존재할 모든 것이다.",
     "title": "코스모스",
     "author": "칼 세이건",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -1582,6 +1684,7 @@ window.investmentQuotes = [
     "text": "우주는 우리 안에 있다. 우리는 별의 물질로 이루어졌고, 우주가 스스로를 알아가는 하나의 방법이다.",
     "title": "코스모스",
     "author": "칼 세이건",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -1589,36 +1692,42 @@ window.investmentQuotes = [
     "text": "이 광활한 우주 어딘가에서, 무언가 놀라운 것이 알려지기를 우리를 기다리고 있다.",
     "title": "코스모스",
     "author": "칼 세이건",
+    "category": "과학",
     "genre": "literature"
   },
   {
     "text": "좋은지 나쁜지 누가 아는가? 삶의 여정에서 막힌 길은 어쩌면 하나의 계시일지 모른다.",
     "title": "좋은지 나쁜지 누가 아는가",
     "author": "류시화",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "축복을 셀 때 상처를 빼고 세지 말라.",
     "title": "좋은지 나쁜지 누가 아는가",
     "author": "류시화",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "우리 인생은 하나의 선이 아니라, 지금 이 순간이라는 점들이 이어진 것이다.",
     "title": "미움받을 용기",
     "author": "기시미 이치로, 고가 후미타케",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "과거에도 미래에도 얽매이지 않고, 지금 여기를 진지하게 살아가면 그것으로 충분하다.",
     "title": "미움받을 용기",
     "author": "기시미 이치로, 고가 후미타케",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "누군가에게 미움을 받는 것은 내가 자유롭게, 나의 방침에 따라 살고 있다는 증거다.",
     "title": "미움받을 용기",
     "author": "기시미 이치로, 고가 후미타케",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -1626,6 +1735,7 @@ window.investmentQuotes = [
     "text": "아픔은 피할 수 없지만, 그것을 고통으로 만들지는 스스로 선택할 수 있다.",
     "title": "달리기를 말할 때 내가 하고 싶은 이야기",
     "author": "무라카미 하루키",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -1633,6 +1743,7 @@ window.investmentQuotes = [
     "text": "적어도 끝까지 걷지는 않았다. 그것이 내가 살아온 방식이었다.",
     "title": "달리기를 말할 때 내가 하고 싶은 이야기",
     "author": "무라카미 하루키",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -1640,6 +1751,7 @@ window.investmentQuotes = [
     "text": "배우고 때때로 그것을 익히면, 이 또한 기쁘지 아니한가.",
     "title": "논어",
     "author": "공자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -1647,6 +1759,7 @@ window.investmentQuotes = [
     "text": "아는 것은 좋아하는 것만 못하고, 좋아하는 것은 즐기는 것만 못하다.",
     "title": "논어",
     "author": "공자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -1654,6 +1767,7 @@ window.investmentQuotes = [
     "text": "덕이 있는 사람은 외롭지 않다. 반드시 함께하는 이웃이 있다.",
     "title": "논어",
     "author": "공자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -1661,6 +1775,7 @@ window.investmentQuotes = [
     "text": "삶은 고해苦海다. 그러나 이 진리를 진정으로 이해하고 받아들이는 순간, 삶은 더 이상 고해가 아니다.",
     "title": "아직도 가야 할 길",
     "author": "M. 스콧 펙",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -1668,6 +1783,7 @@ window.investmentQuotes = [
     "text": "사랑이란 자기 자신이나 타인의 정신적 성장을 위해 스스로를 넓혀가려는 의지이다.",
     "title": "아직도 가야 할 길",
     "author": "M. 스콧 펙",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -1675,6 +1791,7 @@ window.investmentQuotes = [
     "text": "사랑은 의지의 행위다. 우리는 사랑해야만 하는 것이 아니라, 사랑하기를 선택하는 것이다.",
     "title": "아직도 가야 할 길",
     "author": "M. 스콧 펙",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -1682,6 +1799,7 @@ window.investmentQuotes = [
     "text": "인간은 노력하는 한 방황한다.",
     "title": "파우스트",
     "author": "요한 볼프강 폰 괴테",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1689,6 +1807,7 @@ window.investmentQuotes = [
     "text": "끊임없이 노력하는 자, 우리는 그를 구원할 수 있다.",
     "title": "파우스트",
     "author": "요한 볼프강 폰 괴테",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1696,6 +1815,7 @@ window.investmentQuotes = [
     "text": "영원히 여성적인 것이 우리를 이끌어 올린다.",
     "title": "파우스트",
     "author": "요한 볼프강 폰 괴테",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1703,6 +1823,7 @@ window.investmentQuotes = [
     "text": "정의로운 사회를 이루려면, 우리는 좋은 삶의 의미에 대해 함께 고민해야 한다.",
     "title": "정의란 무엇인가",
     "author": "마이클 샌델",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -1710,6 +1831,7 @@ window.investmentQuotes = [
     "text": "이타심과 관대함, 연대와 시민 정신은 쓸수록 닳는 것이 아니라, 쓸수록 강해지는 근육과 같다.",
     "title": "정의란 무엇인가",
     "author": "마이클 샌델",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -1717,6 +1839,7 @@ window.investmentQuotes = [
     "text": "우리가 역사를 공부하는 것은 미래를 알기 위해서가 아니라, 우리 앞에 상상보다 훨씬 많은 가능성이 있음을 깨닫기 위해서다.",
     "title": "사피엔스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -1724,108 +1847,126 @@ window.investmentQuotes = [
     "text": "이야기는 우리에게 무언가를 상상하는 능력뿐 아니라, 그것을 함께 상상하는 능력을 주었다.",
     "title": "사피엔스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "우리가 살아가는 하루하루가 기적이고, 나는 지금 내 생활에서 그것이 진정 기적이라는 것을 잘 안다.",
     "title": "살아온 기적 살아갈 기적",
     "author": "장영희",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "나쁜 운명을 깨울까봐 살금살금 걷는다면 좋은 운명도 깨우지 못할 것 아닌가. 나쁜 운명, 좋은 운명 모조리 다 깨워가며 저벅저벅 당당하게, 큰 걸음으로 걸으며 살 것이다.",
     "title": "살아온 기적 살아갈 기적",
     "author": "장영희",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "말과 글에는 나름의 온도가 있다. 따뜻함과 차가움의 정도가 저마다 다르다. 적당히 온기 있는 언어는 슬픔을 감싸 안아준다.",
     "title": "언어의 온도",
     "author": "이기주",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "흔히들 말한다. 상대가 원하는 걸 해주는 것이 사랑이고 하지만 그건 작은 사랑인지도 모른다. 상대가 싫어하는 걸 하지 않는 것이야말로 큰 사랑이 아닐까.",
     "title": "언어의 온도",
     "author": "이기주",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "한 권의 책은 수십만 개의 활자로 이루어진 숲인지도 모릅니다. 언어의 온도라는 숲을 단숨에 내달리기보다 이른 아침에 고즈넉한 공원을 산책하듯이 찬찬히 거닐었으면 합니다.",
     "title": "언어의 온도",
     "author": "이기주",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "말은 마음을 담아낸다. 말은 마음의 소리다. 말과 글에는 사람의 됨됨이가 서려 있다. 무심코 던진 말 한마디에 사람의 품성이 드러난다.",
     "title": "말의 품격",
     "author": "이기주",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "무심코 던진 말 한마디에 품격이 드러난다. 나만의 체취, 내가 지닌 고유한 인향은 내가 구사하는 말에서 뿜어져 나온다.",
     "title": "말의 품격",
     "author": "이기주",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "수준이나 등급을 의미하는 한자 품(品)의 구조가 흥미롭다. 입 구(口)가 세 개 모여 이루어졌음을 알 수 있다. 말이 쌓이고 쌓여 한 사람의 품성이 된다.",
     "title": "말의 품격",
     "author": "이기주",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "진짜 자기 자신을 대면하는 순간, 우리는 비로소 오만한 인간이 아닌, 인간적인 인간으로 살아갈 수 있다.",
     "title": "나는 나로 살기로 했다",
     "author": "김수현",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "우리는 누군가가 완벽하지 않아서 싫어하는 것이 아니라 완벽한 척하는 그 오만함을 싫어하는 거라고 한다.",
     "title": "나는 나로 살기로 했다",
     "author": "김수현",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "내 머리는 형편없었지만 내 영혼마저 타락하지 않은 건 양쪽에서 내 손을 맞잡은 두 손의 온기 덕이었다.",
     "title": "아몬드",
     "author": "손원평",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "여기는 잠들어야만 입장할 수 있는 '달러구트 꿈 백화점'입니다.",
     "title": "달러구트 꿈 백화점",
     "author": "이미예",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "그런 시간을 지나 이렇게 건재하게 살고 있다는 것이야말로 손님들께서 강하다는 증거 아니겠습니까?",
     "title": "달러구트 꿈 백화점",
     "author": "이미예",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "매일 행복하진 않지만, 행복한 일은 매일 있어.",
     "title": "곰돌이 푸, 행복한 일은 매일 있어",
     "author": "곰돌이 푸",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "열광하는 것 하나쯤 가슴에 품고 사는 것이 행복하다. 당신의 야구장은 어디인가?",
     "title": "아주 보통의 행복",
     "author": "최인철",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "실력은 알아야 할 것들을 알수록 커진다. 그러나 행복은 굳이 알 필요가 없는 것들을 모를수록 커진다.",
     "title": "아주 보통의 행복",
     "author": "최인철",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "행복은 고통의 유무가 아니라 고통에 임하는 자세에 의해 결정된다.",
     "title": "아주 보통의 행복",
     "author": "최인철",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -1833,6 +1974,7 @@ window.investmentQuotes = [
     "text": "옛날에 나무 한 그루가 있었어요. 나무는 어린 소년을 사랑했답니다.",
     "title": "아낌없이 주는 나무",
     "author": "쉘 실버스타인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1840,6 +1982,7 @@ window.investmentQuotes = [
     "text": "나무는 소년을 아주, 아주 많이 사랑했어요. 자기 자신보다도 더요.",
     "title": "아낌없이 주는 나무",
     "author": "쉘 실버스타인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1847,6 +1990,7 @@ window.investmentQuotes = [
     "text": "이리 오렴, 앉아서 좀 쉬어라. 소년은 그렇게 했고, 나무는 행복했습니다.",
     "title": "아낌없이 주는 나무",
     "author": "쉘 실버스타인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1854,6 +1998,7 @@ window.investmentQuotes = [
     "text": "그리고 소년은 나무를... 아주 많이 사랑했어요. 그래서 나무는 행복했답니다.",
     "title": "아낌없이 주는 나무",
     "author": "쉘 실버스타인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1861,6 +2006,7 @@ window.investmentQuotes = [
     "text": "낡은 그루터기라도 앉아서 쉬기엔 충분하단다. 이리 오렴, 앉아서 쉬려무나.",
     "title": "아낌없이 주는 나무",
     "author": "쉘 실버스타인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1868,6 +2014,7 @@ window.investmentQuotes = [
     "text": "한 인간의 품성이 진정 비범함을 드러내려면, 오랜 세월 그 행적을 지켜볼 수 있는 행운이 따라야 한다. 그 안에 이기심이 없고 오직 너그러움만이 자리한다면, 그것은 틀림없는 진실이다.",
     "title": "나무를 심은 사람",
     "author": "장 지오노",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1875,6 +2022,7 @@ window.investmentQuotes = [
     "text": "한 사람이 오직 몸과 마음의 힘만으로 사막에서 가나안 땅을 일구어냈다는 것을 생각하면, 인간이라는 존재는 그럼에도 참으로 경이롭다.",
     "title": "나무를 심은 사람",
     "author": "장 지오노",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1882,6 +2030,7 @@ window.investmentQuotes = [
     "text": "사람들의 기억 속에서 오래전 말라버린 개울에 다시 물이 흐르는 것을, 나는 보았다.",
     "title": "나무를 심은 사람",
     "author": "장 지오노",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1889,6 +2038,7 @@ window.investmentQuotes = [
     "text": "파괴가 아닌 다른 영역에서도 인간이 신만큼 위대한 일을 해낼 수 있음을, 나는 비로소 깨달았다.",
     "title": "나무를 심은 사람",
     "author": "장 지오노",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1896,6 +2046,7 @@ window.investmentQuotes = [
     "text": "이토록 드문 인품은, 그가 이 모든 일을 철저한 고독 속에서 이루어냈다는 사실을 기억할 때에야 비로소 온전히 이해할 수 있다.",
     "title": "나무를 심은 사람",
     "author": "장 지오노",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1903,6 +2054,7 @@ window.investmentQuotes = [
     "text": "인생에는 희망을 좇아 서둘러 나아가야 할 때도 있는 법이다.",
     "title": "나무를 심은 사람",
     "author": "장 지오노",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1910,6 +2062,7 @@ window.investmentQuotes = [
     "text": "시간은 곧 삶 그 자체이며, 삶은 인간의 마음속에 깃들어 있다.",
     "title": "모모",
     "author": "미하엘 엔데",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1917,6 +2070,7 @@ window.investmentQuotes = [
     "text": "달력과 시계는 시간을 재기 위해 있지만 그건 그리 중요하지 않다. 한 시간이 영원처럼 느껴지기도, 순식간에 지나가기도 하는 건 우리가 그 시간을 어떻게 보내느냐에 달려 있으니까.",
     "title": "모모",
     "author": "미하엘 엔데",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1924,6 +2078,7 @@ window.investmentQuotes = [
     "text": "듣는 일이 특별한 재능이 아니라 생각하는 사람이 있다면, 모모의 반만이라도 해보라고 말하고 싶다.",
     "title": "모모",
     "author": "미하엘 엔데",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1931,6 +2086,7 @@ window.investmentQuotes = [
     "text": "거리 전체를 한꺼번에 생각하면 안 돼. 오직 다음 한 걸음, 다음 숨결, 다음 빗자루질에만 마음을 두는 거야.",
     "title": "모모",
     "author": "미하엘 엔데",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1938,6 +2094,7 @@ window.investmentQuotes = [
     "text": "모모는 모든 이와 모든 것에 귀를 기울였어요. 비와 바람과 소나무들에게도요. 그러면 그들은 저마다의 방식으로 모모에게 말을 걸어왔답니다.",
     "title": "모모",
     "author": "미하엘 엔데",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1945,6 +2102,7 @@ window.investmentQuotes = [
     "text": "별들이 가득한 하늘 아래 고요히 귀 기울이던 그런 밤이면, 모모는 언제나 가장 아름다운 꿈을 꾸었어요.",
     "title": "모모",
     "author": "미하엘 엔데",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1952,6 +2110,7 @@ window.investmentQuotes = [
     "text": "어떻게 하면 나비가 될 수 있나요? 애벌레이기를 기꺼이 포기할 만큼, 나는 법을 간절히 배우고 싶어야 한단다.",
     "title": "꽃들에게 희망을",
     "author": "트리나 폴러스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1959,6 +2118,7 @@ window.investmentQuotes = [
     "text": "나비가 뭔가요? 그건 네가 마침내 되어야 할 존재란다. 아름다운 날개로 날아올라 땅과 하늘을 이어주고, 꽃에서 꽃으로 사랑의 씨앗을 실어 나르는 존재지.",
     "title": "꽃들에게 희망을",
     "author": "트리나 폴러스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1966,6 +2126,7 @@ window.investmentQuotes = [
     "text": "세상을 꽃으로 가득 채우려면 수많은 나비가 필요한 법이다.",
     "title": "꽃들에게 희망을",
     "author": "트리나 폴러스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1973,6 +2134,7 @@ window.investmentQuotes = [
     "text": "우리는 날 수 있어! 나비가 될 수 있어! 꼭대기엔 아무것도 없어도 상관없어. 정상에 오르려면 기어오르는 게 아니라 날아올라야 하는 거였어.",
     "title": "꽃들에게 희망을",
     "author": "트리나 폴러스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1980,6 +2142,7 @@ window.investmentQuotes = [
     "text": "진짜란 어떻게 만들어졌는가의 문제가 아니야. 한 아이가 오래도록, 그냥 갖고 노는 게 아니라 정말로 사랑해준다면, 그때 너는 진짜가 되는 거란다.",
     "title": "벨벳 토끼 인형",
     "author": "마저리 윌리엄스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1987,6 +2150,7 @@ window.investmentQuotes = [
     "text": "진짜가 되면 상처받는 것쯤은 아무렇지 않게 된단다.",
     "title": "벨벳 토끼 인형",
     "author": "마저리 윌리엄스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -1994,6 +2158,7 @@ window.investmentQuotes = [
     "text": "한번 진짜가 되면 다시는 가짜로 돌아갈 수 없어. 그건 영원히 계속되는 거야.",
     "title": "벨벳 토끼 인형",
     "author": "마저리 윌리엄스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2001,6 +2166,7 @@ window.investmentQuotes = [
     "text": "다른 사람 눈에 어떻게 보이든 신경 쓰지 않았어요. 요람의 마법이 그를 진짜로 만들어 주었으니까요. 진짜가 되면 낡고 초라한 것쯤은 아무 상관 없거든요.",
     "title": "벨벳 토끼 인형",
     "author": "마저리 윌리엄스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2008,6 +2174,7 @@ window.investmentQuotes = [
     "text": "오리 마당에서 태어났다 해도 상관없어요, 백조의 알에서 나왔다면 말이에요!",
     "title": "미운 오리 새끼",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2015,6 +2182,7 @@ window.investmentQuotes = [
     "text": "그는 이제 슬픔과 시련을 겪었던 것이 오히려 기뻤어요. 덕분에 주위의 기쁨과 행복을 더 깊이 누릴 수 있었으니까요.",
     "title": "미운 오리 새끼",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2022,6 +2190,7 @@ window.investmentQuotes = [
     "text": "내가 미운 오리 새끼였을 때는, 이런 행복은 꿈도 꾸지 못했어.",
     "title": "미운 오리 새끼",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2029,6 +2198,7 @@ window.investmentQuotes = [
     "text": "물에 비친 자신의 모습은 더 이상 볼품없는 잿빛 새가 아니라, 우아하고 아름다운 한 마리 백조였어요.",
     "title": "미운 오리 새끼",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2036,6 +2206,7 @@ window.investmentQuotes = [
     "text": "저건 칠면조가 아니야. 다리를 얼마나 잘 쓰는지, 얼마나 꼿꼿이 서 있는지 좀 봐! 저 아이는 내 자식이고, 제대로 보면 그리 밉지도 않구나.",
     "title": "미운 오리 새끼",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2043,6 +2214,7 @@ window.investmentQuotes = [
     "text": "조금만 더 품고 있을게요. 이미 이렇게 오래 품었으니, 며칠 더는 아무것도 아니에요.",
     "title": "미운 오리 새끼",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2050,6 +2222,7 @@ window.investmentQuotes = [
     "text": "나는 저 아이에게 지금 가진 것보다 더 큰 힘을 줄 수 없단다. 그 힘은 다름 아닌 저 아이의 순수하고 때 묻지 않은 마음에서 나오는 것이니까.",
     "title": "눈의 여왕",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2057,6 +2230,7 @@ window.investmentQuotes = [
     "text": "게르다의 숨결이 점점 짙어지더니 작은 천사들의 모습이 되어갔어요. 그렇게 게르다는 안전하고 씩씩하게 앞으로 나아갔답니다.",
     "title": "눈의 여왕",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2064,6 +2238,7 @@ window.investmentQuotes = [
     "text": "두 사람은 어느새 어른이 되었지만 마음만은 여전히 아이였어요. 계절은 여름, 따뜻하고 아름다운 여름이었답니다.",
     "title": "눈의 여왕",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2071,6 +2246,7 @@ window.investmentQuotes = [
     "text": "이야기가 끝날 때쯤이면, 지금보다 훨씬 많은 것을 알게 될 거예요.",
     "title": "눈의 여왕",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2078,6 +2254,7 @@ window.investmentQuotes = [
     "text": "너를 위해 누군가 세상 끝까지 달려올 만큼, 넌 정말 그럴 자격이 있는 아이니?",
     "title": "눈의 여왕",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2085,6 +2262,7 @@ window.investmentQuotes = [
     "text": "인간에게는 영원히 사는 영혼이 있단다. 몸이 흙으로 돌아간 뒤에도 맑은 하늘을 뚫고 올라가, 빛나는 별들에게로 향하지.",
     "title": "인어공주",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2092,6 +2270,7 @@ window.investmentQuotes = [
     "text": "인어에게는 영원한 영혼이 없단다. 오직 인간의 사랑을 얻어야만 그것을 가질 수 있어.",
     "title": "인어공주",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2099,6 +2278,7 @@ window.investmentQuotes = [
     "text": "우리가 삼백 년 동안 있는 힘을 다해 선한 일을 하고 나면, 마침내 불멸의 영혼을 얻어 인간의 행복에 함께하게 된단다.",
     "title": "인어공주",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2106,6 +2286,7 @@ window.investmentQuotes = [
     "text": "가엾은 인어야, 너는 온 마음을 다해 우리처럼 애썼구나. 견디고 참아내어 선한 행실로 스스로를 정령의 세계로 끌어올렸어.",
     "title": "인어공주",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2113,6 +2294,7 @@ window.investmentQuotes = [
     "text": "그의 사랑과 불멸의 영혼을 얻기 위해서라면, 나는 무엇이든 해내겠어요.",
     "title": "인어공주",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2120,6 +2302,7 @@ window.investmentQuotes = [
     "text": "그런데 임금님은 아무것도 안 입으셨잖아요. 한 어린아이가 말했어요.",
     "title": "벌거벗은 임금님",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2127,6 +2310,7 @@ window.investmentQuotes = [
     "text": "임금님은 아무것도 안 입으셨어요! 마침내 온 도시 사람들이 함께 외쳤답니다.",
     "title": "벌거벗은 임금님",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2134,6 +2318,7 @@ window.investmentQuotes = [
     "text": "저 아이가 그러는데, 임금님이 아무것도 안 입으셨대요.",
     "title": "벌거벗은 임금님",
     "author": "한스 크리스티안 안데르센",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2141,6 +2326,7 @@ window.investmentQuotes = [
     "text": "눈이 있어도 아름다움을 보지 못하고, 귀가 있어도 음악을 듣지 못하고, 마음이 있어도 진실을 깨닫지 못하고, 가슴이 있어도 결코 뜨거워지지 않는 것. 그것이 우리가 정말 두려워해야 할 일이라고 교장 선생님은 말씀하셨다.",
     "title": "창가의 토토",
     "author": "구로야나기 테츠코",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2148,6 +2334,7 @@ window.investmentQuotes = [
     "text": "넌 일본 사람이고 마사오는 한국이라는 나라에서 왔지만, 그 애도 너와 똑같은 아이란다. 토토야, 사람을 다르게 생각해서는 안 돼.",
     "title": "창가의 토토",
     "author": "구로야나기 테츠코",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2155,6 +2342,7 @@ window.investmentQuotes = [
     "text": "선생님은 아이들에게 모든 몸이 다 아름답다는 것을 가르쳐주고 싶어 하셨다.",
     "title": "창가의 토토",
     "author": "구로야나기 테츠코",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2162,6 +2350,7 @@ window.investmentQuotes = [
     "text": "아이들에게는 타고난 유머 감각이 있다. 아무리 어려도 진짜로 웃긴 것이 무엇인지 정확히 안다.",
     "title": "창가의 토토",
     "author": "구로야나기 테츠코",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2169,6 +2358,7 @@ window.investmentQuotes = [
     "text": "아이들이 귀로만이 아니라 마음으로 음악을 듣고 느끼도록, 지루한 과목이 아니라 살아 움직이는 것으로 느끼도록 가르쳐 아이의 감성을 깨우는 일.",
     "title": "창가의 토토",
     "author": "구로야나기 테츠코",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2176,6 +2366,7 @@ window.investmentQuotes = [
     "text": "너는 정말 착한 아이란다. 고바야시 선생님은 늘 그렇게 말씀해주셨다.",
     "title": "창가의 토토",
     "author": "구로야나기 테츠코",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2183,6 +2374,7 @@ window.investmentQuotes = [
     "text": "넌 나의 친구였어. 샬롯이 대답했다. 그것만으로도 정말 대단한 일이란다.",
     "title": "샬롯의 거미줄",
     "author": "E.B. 화이트",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2190,6 +2382,7 @@ window.investmentQuotes = [
     "text": "진정한 친구이면서 좋은 글솜씨를 가진 이는 흔치 않다. 샬롯은 그 둘 다였다.",
     "title": "샬롯의 거미줄",
     "author": "E.B. 화이트",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2197,6 +2390,7 @@ window.investmentQuotes = [
     "text": "아이들은 부모가 생각하는 것보다 훨씬 더 소중한 것을 꼭 붙들고 놓지 않는 법이다.",
     "title": "샬롯의 거미줄",
     "author": "E.B. 화이트",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2204,6 +2398,7 @@ window.investmentQuotes = [
     "text": "무언가 일어나기를, 알이 부화하기를 기다리는 시간은 언제나 풍요롭고 평온하다.",
     "title": "샬롯의 거미줄",
     "author": "E.B. 화이트",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2211,6 +2406,7 @@ window.investmentQuotes = [
     "text": "윌버가 원한 건 먹이가 아니라 사랑이었다.",
     "title": "샬롯의 거미줄",
     "author": "E.B. 화이트",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2218,6 +2414,7 @@ window.investmentQuotes = [
     "text": "하지만 거미줄 그 자체가 기적이라는 사실은, 아무도 말해주지 않았다.",
     "title": "샬롯의 거미줄",
     "author": "E.B. 화이트",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2225,6 +2422,7 @@ window.investmentQuotes = [
     "text": "날 믿어, 윌버. 사람들은 아주 잘 속아 넘어가. 글로 적힌 건 뭐든지 믿거든.",
     "title": "샬롯의 거미줄",
     "author": "E.B. 화이트",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2232,6 +2430,7 @@ window.investmentQuotes = [
     "text": "많은 사람들 앞에서 상을 받는다는 건 참으로 벅찬 기쁨이다.",
     "title": "샬롯의 거미줄",
     "author": "E.B. 화이트",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2239,6 +2438,7 @@ window.investmentQuotes = [
     "text": "모든 것에는 분명 마법이 깃들어 있어요. 다만 우리에게 그것을 붙잡아 쓸 만한 지혜가 부족할 뿐이죠.",
     "title": "비밀의 화원",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2246,6 +2446,7 @@ window.investmentQuotes = [
     "text": "세상엔 분명 마법이 가득할 거야. 다만 사람들이 그걸 어떻게 만드는지 모를 뿐이지. 시작은 아마, 좋은 일이 일어날 거라고 말하는 것부터일지 몰라. 그 말이 정말로 이루어질 때까지.",
     "title": "비밀의 화원",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2253,6 +2454,7 @@ window.investmentQuotes = [
     "text": "마법은 언제나 무언가를 밀고 당기며 무에서 유를 만들어내요. 나뭇잎도 나무도, 꽃도 새도, 오소리도 여우도 다람쥐도 사람도, 모두 마법으로 만들어진 거예요.",
     "title": "비밀의 화원",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2260,6 +2462,7 @@ window.investmentQuotes = [
     "text": "살아 있다는 것이 마법이야. 강하다는 것이 마법이야. 마법은 내 안에 있어, 마법은 내 안에 있어.",
     "title": "비밀의 화원",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2267,6 +2470,7 @@ window.investmentQuotes = [
     "text": "비밀의 화원은 피고 또 피어나, 아침마다 새로운 기적을 보여주었다.",
     "title": "비밀의 화원",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2274,6 +2478,7 @@ window.investmentQuotes = [
     "text": "말을 자꾸 되뇌고 생각하다 보면 마음에 영원히 새겨지듯이, 마법도 그렇게 되는 거라고 나는 생각해.",
     "title": "비밀의 화원",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2281,6 +2486,7 @@ window.investmentQuotes = [
     "text": "어떤 일이 닥쳐도 한 가지는 변하지 않아. 누더기를 걸친 공주라도, 마음속으로는 얼마든지 공주일 수 있으니까.",
     "title": "소공녀",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2288,6 +2494,7 @@ window.investmentQuotes = [
     "text": "나는 공주예요. 모든 소녀가 다 그래요. 낡은 다락방에 살아도, 누더기를 입어도, 예쁘지 않아도, 똑똑하지 않아도, 어리지 않아도, 여전히 공주랍니다.",
     "title": "소공녀",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2295,6 +2502,7 @@ window.investmentQuotes = [
     "text": "천성이 베푸는 사람으로 너를 빚었다면, 네 손과 마음은 늘 열려 있는 거야. 손이 텅 비어도 마음만은 가득해서, 따뜻하고 다정하고 달콤한 것들을 나누어 줄 수 있지.",
     "title": "소공녀",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2302,6 +2510,7 @@ window.investmentQuotes = [
     "text": "빨리 배우는 것이 전부는 아닐지도 몰라요. 친절하다는 건 다른 사람들에게 훨씬 값진 일이니까요. 영리한 사람들도 나쁜 짓을 하고 못되게 굴 때가 많잖아요.",
     "title": "소공녀",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2309,6 +2518,7 @@ window.investmentQuotes = [
     "text": "어쩐지 최악의 순간 바로 직전에는 늘 무슨 일이 일어나곤 해. 마치 마법이 그렇게 만드는 것처럼.",
     "title": "소공녀",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2316,6 +2526,7 @@ window.investmentQuotes = [
     "text": "우리 사라, 아빠를 외우고 있는 거니? 아니요, 저는 아빠를 이미 다 외웠는걸요. 아빠는 제 마음속에 있으니까요.",
     "title": "소공녀",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2323,6 +2534,7 @@ window.investmentQuotes = [
     "text": "사실 잘 먹고 포근히 잠든 아이는, 설령 그러려 해도 눈빛에서 반짝이는 기쁨을 감출 수가 없는 법이다.",
     "title": "소공녀",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2330,6 +2542,7 @@ window.investmentQuotes = [
     "text": "사실이에요. 저는 가끔 제가 공주라고 상상해요. 공주처럼 행동하려고, 공주인 척하는 거예요.",
     "title": "소공녀",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2337,6 +2550,7 @@ window.investmentQuotes = [
     "text": "아슬란이 나타나면 잘못된 것은 바로잡히리라. 그의 포효 앞에 슬픔은 사라지고, 겨울은 끝을 맞이하며, 다시 봄이 찾아오리라.",
     "title": "나니아 연대기: 사자, 마녀, 옷장",
     "author": "C.S. 루이스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2344,6 +2558,7 @@ window.investmentQuotes = [
     "text": "누가 안전하다고 했니? 당연히 안전하지 않지. 하지만 그는 선한 분이야. 그분은 왕이시란다.",
     "title": "나니아 연대기: 사자, 마녀, 옷장",
     "author": "C.S. 루이스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2351,6 +2566,7 @@ window.investmentQuotes = [
     "text": "아슬란이라는 이름을 듣는 순간, 아이들은 저마다 마음속에서 무언가가 뛰어오르는 것을 느꼈다.",
     "title": "나니아 연대기: 사자, 마녀, 옷장",
     "author": "C.S. 루이스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2358,6 +2574,7 @@ window.investmentQuotes = [
     "text": "한번 나니아의 왕이나 여왕이 되면, 영원히 나니아의 왕과 여왕이란다.",
     "title": "나니아 연대기: 사자, 마녀, 옷장",
     "author": "C.S. 루이스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2365,6 +2582,7 @@ window.investmentQuotes = [
     "text": "마녀가 몰랐던 더 깊은 마법이 있었다. 죄 없는 이가 스스로 반역자를 대신하면, 그 순간 죽음마저 거꾸로 흐르기 시작한다는 것을.",
     "title": "나니아 연대기: 사자, 마녀, 옷장",
     "author": "C.S. 루이스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2372,6 +2590,7 @@ window.investmentQuotes = [
     "text": "좋은 아침이길 바란다는 거요, 아니면 내가 원하든 말든 좋은 아침이라는 거요? 그 모든 뜻을 다 담아서요. 빌보가 대답했다.",
     "title": "호빗",
     "author": "J.R.R. 톨킨",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2379,6 +2598,7 @@ window.investmentQuotes = [
     "text": "무언가를 찾고 싶다면 살펴보는 것만 한 게 없지. 살펴보면 대개 무언가를 찾게 마련이지만, 그게 늘 바라던 그것은 아니라네.",
     "title": "호빗",
     "author": "J.R.R. 톨킨",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2386,6 +2606,7 @@ window.investmentQuotes = [
     "text": "땅속 어느 굴에 호빗 한 마리가 살고 있었다. 눅눅하고 지저분한 굴이 아니라, 편안함 그 자체인 호빗의 굴이었다.",
     "title": "호빗",
     "author": "J.R.R. 톨킨",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2393,6 +2614,7 @@ window.investmentQuotes = [
     "text": "너는 네가 아는 것보다 더 많은 선함을 지녔단다. 용기와 지혜가 알맞게 어우러진 존재지. 우리 모두 쌓아둔 금보다 음식과 웃음과 노래를 소중히 여긴다면, 세상은 훨씬 더 즐거운 곳이 될 텐데.",
     "title": "호빗",
     "author": "J.R.R. 톨킨",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2400,6 +2622,7 @@ window.investmentQuotes = [
     "text": "그의 안에서 툭 집안의 모험심 같은 것이 깨어났다. 큰 산을 보고, 소나무와 폭포 소리를 듣고, 동굴을 탐험하고, 지팡이 대신 칼을 차고 싶어졌다.",
     "title": "호빗",
     "author": "J.R.R. 톨킨",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2407,6 +2630,7 @@ window.investmentQuotes = [
     "text": "빌보는 바로 그 지점에서 멈춰 섰다. 그곳에서 다시 나아가는 것이야말로 그가 해낸 일 중 가장 용감한 일이었다.",
     "title": "호빗",
     "author": "J.R.R. 톨킨",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2414,6 +2638,7 @@ window.investmentQuotes = [
     "text": "그대 날개 아래 바람이, 해가 항해하고 달이 거니는 그곳까지 그대를 실어다 주기를.",
     "title": "호빗",
     "author": "J.R.R. 톨킨",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2421,6 +2646,7 @@ window.investmentQuotes = [
     "text": "길은 끝없이, 끝없이 이어진다네.",
     "title": "호빗",
     "author": "J.R.R. 톨킨",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2428,6 +2654,7 @@ window.investmentQuotes = [
     "text": "불길 뒤에는 눈이 내리듯, 용에게도 끝은 찾아오는 법이다.",
     "title": "호빗",
     "author": "J.R.R. 톨킨",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2435,6 +2662,7 @@ window.investmentQuotes = [
     "text": "나도 다른 사람들처럼 완벽하게 행복하고 싶다. 다만 모두가 그렇듯, 내 방식대로 행복하고 싶을 뿐이다.",
     "title": "이성과 감성",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2442,6 +2670,7 @@ window.investmentQuotes = [
     "text": "네 행복이 무엇인지 알아야 해. 너에게 필요한 건 인내심뿐이야. 좀 더 근사한 이름을 붙이자면, 희망이라고 불러도 좋겠지.",
     "title": "이성과 감성",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2449,6 +2678,7 @@ window.investmentQuotes = [
     "text": "친밀함을 결정하는 건 시간이나 기회가 아니라 오직 마음의 성향이다. 어떤 사람들은 칠 년을 함께해도 서로를 알기에 부족하지만, 어떤 사람들은 칠 일이면 충분하다.",
     "title": "이성과 감성",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2456,6 +2686,7 @@ window.investmentQuotes = [
     "text": "취향이 나와 완전히 통하지 않는 남자와는 행복할 수 없어. 그는 나의 모든 감정에 함께해야 해. 같은 책, 같은 음악이 우리 둘을 똑같이 설레게 해야 하니까.",
     "title": "이성과 감성",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2463,6 +2694,7 @@ window.investmentQuotes = [
     "text": "수줍음이란 결국 어떤 형태로든 열등감이 만들어낸 것일 뿐이다. 내 태도가 완벽하게 편안하고 우아하다고 스스로 믿을 수만 있다면, 나는 결코 수줍어하지 않을 것이다.",
     "title": "이성과 감성",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2470,6 +2702,7 @@ window.investmentQuotes = [
     "text": "돈은 다른 무엇도 행복을 줄 수 없을 때에야 비로소 행복을 준다.",
     "title": "이성과 감성",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2477,6 +2710,7 @@ window.investmentQuotes = [
     "text": "그녀는 분별 있고 영리했지만 모든 일에 열렬했다. 슬픔도 기쁨도 결코 적당히 느끼는 법이 없었다.",
     "title": "이성과 감성",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2484,6 +2718,7 @@ window.investmentQuotes = [
     "text": "당신을 덜 사랑했다면, 아마 이 마음을 더 쉽게 말할 수 있었을 거예요.",
     "title": "에마",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2491,6 +2726,7 @@ window.investmentQuotes = [
     "text": "사랑하는 에마, 이 순간의 대화가 어떤 결말을 맞든, 당신은 언제까지나 나의 가장 사랑스럽고 소중한 사람일 거예요.",
     "title": "에마",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2498,6 +2734,7 @@ window.investmentQuotes = [
     "text": "마음은 빼앗겼을지 몰라도, 나 자신을 다스리는 힘까지 잃지는 않았다.",
     "title": "에마",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2505,6 +2742,7 @@ window.investmentQuotes = [
     "text": "아무리 어리석어 보이는 일도, 분별 있는 사람이 당당하게 해내면 더 이상 어리석지 않게 된다.",
     "title": "에마",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2512,6 +2750,7 @@ window.investmentQuotes = [
     "text": "완전한 진실이 사람의 고백 속에 온전히 담기는 일은 드물다. 조금은 감춰지거나 조금은 어긋난 채로 전해지기 마련이다.",
     "title": "에마",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2519,6 +2758,7 @@ window.investmentQuotes = [
     "text": "해리엇, 내가 일반적인 법칙으로 삼는 게 있어. 여자가 어떤 남자의 청혼을 받아들여야 할지 망설여진다면, 그건 분명 거절해야 한다는 뜻이야.",
     "title": "에마",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2526,6 +2766,7 @@ window.investmentQuotes = [
     "text": "당신은 내 영혼을 꿰뚫습니다. 나는 반은 고통이고 반은 희망입니다... 나는 오직 당신만을 사랑해왔습니다.",
     "title": "설득",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2533,6 +2774,7 @@ window.investmentQuotes = [
     "text": "그토록 활짝 열린 두 마음도, 그토록 닮은 취향도, 그토록 하나가 된 감정도 다시없었다.",
     "title": "설득",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2540,6 +2782,7 @@ window.investmentQuotes = [
     "text": "내가 여자로서 자랑스레 내세울 수 있는 유일한 특권은, 존재도 희망도 사라진 뒤에도 가장 오래 사랑할 수 있다는 것이다.",
     "title": "설득",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2547,6 +2790,7 @@ window.investmentQuotes = [
     "text": "그런 여인에게 바친 그런 마음은 결코 회복되지 않는 법이다. 회복되어서도 안 되고, 실제로도 그렇다.",
     "title": "설득",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2554,6 +2798,7 @@ window.investmentQuotes = [
     "text": "고통이 지나가고 나면, 그 기억은 종종 기쁨이 된다.",
     "title": "설득",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2561,6 +2806,7 @@ window.investmentQuotes = [
     "text": "내가 생각하는 좋은 사람들이란 영리하고 아는 것이 많은 사람들이에요. 그가 부드럽게 말했다. '그건 좋은 사람들이 아니라, 최고의 사람들이지요.'",
     "title": "설득",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2568,6 +2814,7 @@ window.investmentQuotes = [
     "text": "앤은 얼굴 붉히는 나이는 지났으리라 여겼지만, 설렘의 나이는 결코 지나지 않았음을 깨달았다.",
     "title": "설득",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2575,6 +2822,7 @@ window.investmentQuotes = [
     "text": "남자가 여자보다 더 빨리 잊는다고, 그의 사랑이 더 일찍 죽는다고 감히 말하지 마세요.",
     "title": "설득",
     "author": "제인 오스틴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2582,6 +2830,7 @@ window.investmentQuotes = [
     "text": "내 자비로움은 바다처럼 끝이 없고, 내 사랑도 그만큼 깊어요. 당신에게 줄수록 나는 더 많이 갖게 되죠, 둘 다 무한하니까요.",
     "title": "로미오와 줄리엣",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2589,6 +2838,7 @@ window.investmentQuotes = [
     "text": "내 마음이 지금껏 사랑한 적이 있었던가? 눈이여, 부인하라. 오늘 밤 전에는 진정한 아름다움을 본 적이 없었으니.",
     "title": "로미오와 줄리엣",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2596,6 +2846,7 @@ window.investmentQuotes = [
     "text": "이름이 다 무엇이란 말인가? 우리가 장미라 부르는 꽃은 다른 이름으로 불려도 여전히 향기로울 텐데.",
     "title": "로미오와 줄리엣",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2603,6 +2854,7 @@ window.investmentQuotes = [
     "text": "안녕히, 안녕히. 이별은 이렇게 달콤한 슬픔이라, 나는 아침이 올 때까지 계속 안녕이라 말하고 싶어요.",
     "title": "로미오와 줄리엣",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2610,6 +2862,7 @@ window.investmentQuotes = [
     "text": "제 입술은 수줍어하는 두 순례자, 거친 손길을 다정한 입맞춤으로 달래려 해요... 당신은 정말 책에 쓰인 대로 입 맞추는군요.",
     "title": "로미오와 줄리엣",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2617,6 +2870,7 @@ window.investmentQuotes = [
     "text": "저것 봐, 손 위에 뺨을 기대고 있어. 아, 내가 저 손의 장갑이라면, 저 뺨에 닿을 수 있을 텐데!",
     "title": "로미오와 줄리엣",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2624,6 +2878,7 @@ window.investmentQuotes = [
     "text": "오라, 다정한 밤이여, 사랑스럽고 짙은 눈썹의 밤이여. 내게 나의 로미오를 다오.",
     "title": "로미오와 줄리엣",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2631,6 +2886,7 @@ window.investmentQuotes = [
     "text": "사랑은 눈이 아니라 마음으로 보는 것. 그래서 날개 달린 큐피드는 눈먼 모습으로 그려진다.",
     "title": "한여름 밤의 꿈",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2638,6 +2894,7 @@ window.investmentQuotes = [
     "text": "진실한 사랑의 길은 결코 순탄하게 흘러간 적이 없다.",
     "title": "한여름 밤의 꿈",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2645,6 +2902,7 @@ window.investmentQuotes = [
     "text": "우리는 그렇게 함께 자랐어. 마치 겹벚나무 열매처럼, 갈라진 듯 보여도 실은 하나로 이어진, 한 줄기에 맺힌 사랑스러운 두 열매처럼.",
     "title": "한여름 밤의 꿈",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2652,6 +2910,7 @@ window.investmentQuotes = [
     "text": "당신의 얼굴을 보고 있으면 밤이 아니에요... 내게는 당신이 곧 온 세상이니까요.",
     "title": "한여름 밤의 꿈",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2659,6 +2918,7 @@ window.investmentQuotes = [
     "text": "오, 인간이란 얼마나 어리석은 존재인가!",
     "title": "한여름 밤의 꿈",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2666,6 +2926,7 @@ window.investmentQuotes = [
     "text": "비록 작아도, 그녀는 강인하다!",
     "title": "한여름 밤의 꿈",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2673,6 +2934,7 @@ window.investmentQuotes = [
     "text": "위대함을 두려워하지 마세요. 어떤 이는 위대하게 태어나고, 어떤 이는 위대함을 스스로 이루며, 또 어떤 이는 위대함을 떠맡게 되니까요.",
     "title": "십이야",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2680,6 +2942,7 @@ window.investmentQuotes = [
     "text": "음악이 사랑의 양식이라면, 계속 연주하라. 넘치도록 들려다오, 물릴 만큼 먹여 이 갈망이 잦아들 때까지.",
     "title": "십이야",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2687,6 +2950,7 @@ window.investmentQuotes = [
     "text": "여정의 끝엔 연인들의 만남이 있다는 걸, 현명한 이의 자식이라면 누구나 안다.",
     "title": "십이야",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2694,6 +2958,7 @@ window.investmentQuotes = [
     "text": "구애하여 얻은 사랑도 좋지만, 청하지 않았는데 주어진 사랑이 더욱 아름답다.",
     "title": "십이야",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2701,6 +2966,7 @@ window.investmentQuotes = [
     "text": "그가 나를 어떻게 사랑하냐고요? 흠모로, 넘치는 눈물로, 천둥처럼 사랑을 외치는 신음으로, 불처럼 뜨거운 한숨으로요.",
     "title": "십이야",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2708,6 +2974,7 @@ window.investmentQuotes = [
     "text": "어리석은 재사가 되느니, 차라리 재치 있는 바보가 되는 편이 낫다.",
     "title": "십이야",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2715,6 +2982,7 @@ window.investmentQuotes = [
     "text": "나는 이곳이 좋아. 여기서라면 기꺼이 시간을 흘려보내도 좋겠어.",
     "title": "뜻대로 하세요",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2722,6 +2990,7 @@ window.investmentQuotes = [
     "text": "그녀를 얻은 뒤엔 얼마나 오래 사랑하겠어요? 올란도: 영원히, 그리고 하루 더.",
     "title": "뜻대로 하세요",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2729,6 +2998,7 @@ window.investmentQuotes = [
     "text": "푸른 숲 나무 아래, 나와 함께 눕기를 좋아하는 이여, 새의 고운 목청에 맞춰 즐거운 노래를 부르자.",
     "title": "뜻대로 하세요",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2736,6 +3006,7 @@ window.investmentQuotes = [
     "text": "세상은 하나의 무대이고, 모든 남녀는 그저 배우일 뿐. 저마다 퇴장할 때가 있고 등장할 때가 있다.",
     "title": "뜻대로 하세요",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2743,6 +3014,7 @@ window.investmentQuotes = [
     "text": "어리석은 자는 자신이 지혜롭다 여기지만, 지혜로운 자는 스스로 어리석음을 안다.",
     "title": "뜻대로 하세요",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2750,6 +3022,7 @@ window.investmentQuotes = [
     "text": "우리가 어디를 가든, 유노 여신의 백조들처럼 언제나 짝을 지어 떼어놓을 수 없었다.",
     "title": "뜻대로 하세요",
     "author": "윌리엄 셰익스피어",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2757,6 +3030,7 @@ window.investmentQuotes = [
     "text": "그대를 여름날에 비할까요? 그대는 여름보다 더 사랑스럽고 더 온화한데.",
     "title": "셰익스피어 소네트",
     "author": "윌리엄 셰익스피어",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -2764,6 +3038,7 @@ window.investmentQuotes = [
     "text": "거친 바람은 오월의 사랑스러운 꽃봉오리를 흔들고, 여름은 너무나 짧게 머물다 가지요.",
     "title": "셰익스피어 소네트",
     "author": "윌리엄 셰익스피어",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -2771,6 +3046,7 @@ window.investmentQuotes = [
     "text": "사람이 숨 쉬고 눈이 볼 수 있는 한, 이 시는 살아남아 그대에게 생명을 줄 것입니다.",
     "title": "셰익스피어 소네트",
     "author": "윌리엄 셰익스피어",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -2778,6 +3054,7 @@ window.investmentQuotes = [
     "text": "진실한 마음들의 결합에 나는 방해를 허락하지 않으리. 변화를 만나 변하는 사랑은 사랑이 아니다.",
     "title": "셰익스피어 소네트",
     "author": "윌리엄 셰익스피어",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -2785,6 +3062,7 @@ window.investmentQuotes = [
     "text": "그것은 길 잃은 모든 배를 이끄는 별과 같아서, 그 높이는 잴 수 있어도 참된 가치는 헤아릴 수 없다.",
     "title": "셰익스피어 소네트",
     "author": "윌리엄 셰익스피어",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -2792,6 +3070,7 @@ window.investmentQuotes = [
     "text": "다른 사람을 위해 인생을 살 수는 없어요. 사랑하는 이들이 조금 아파하더라도, 나 자신에게 옳은 선택을 해야 해요.",
     "title": "노트북",
     "author": "니콜라스 스파크스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2799,6 +3078,7 @@ window.investmentQuotes = [
     "text": "최고의 사랑이란 영혼을 깨워 더 나은 것을 향해 손을 뻗게 하고, 마음속에 불씨를 심으면서도 정신에는 평온을 가져다주는 사랑이다.",
     "title": "노트북",
     "author": "니콜라스 스파크스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2806,6 +3086,7 @@ window.investmentQuotes = [
     "text": "그들은 서로 맞는 게 거의 없었다. 하지만 그 모든 다름 속에서도 단 하나, 중요한 공통점이 있었다. 서로에게 완전히 미쳐 있다는 것.",
     "title": "노트북",
     "author": "니콜라스 스파크스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2813,6 +3094,7 @@ window.investmentQuotes = [
     "text": "나는 당신의 모든 것을 원해요. 영원히, 당신과 나, 매일매일.",
     "title": "노트북",
     "author": "니콜라스 스파크스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2820,6 +3102,7 @@ window.investmentQuotes = [
     "text": "쉽지 않을 거예요. 정말 힘들 거예요... 하지만 나는 그렇게 하고 싶어요, 당신을 원하니까요.",
     "title": "노트북",
     "author": "니콜라스 스파크스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2827,6 +3110,7 @@ window.investmentQuotes = [
     "text": "여름 하늘의 반딧불이처럼 공중에 잠시 머문 찰나의 순간, 그녀는 자신이 그를 다시 사랑하게 된 건 아닐까 생각했다.",
     "title": "노트북",
     "author": "니콜라스 스파크스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2834,6 +3118,7 @@ window.investmentQuotes = [
     "text": "말없이 함께 있을 수 있는 건, 서로가 진정 편안한 사이일 때뿐이다. 그것이야말로 큰 역설이다.",
     "title": "노트북",
     "author": "니콜라스 스파크스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2841,6 +3126,7 @@ window.investmentQuotes = [
     "text": "인생의 한 부분이 잘 풀리기 시작하면 다른 한 부분은 완전히 무너져 내린다는 건, 누구나 인정하는 진리다.",
     "title": "브리짓 존스의 일기",
     "author": "헬렌 필딩",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2848,6 +3134,7 @@ window.investmentQuotes = [
     "text": "나는 당신이 참 좋아요. 지금 그 모습 그대로.",
     "title": "브리짓 존스의 일기",
     "author": "헬렌 필딩",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2855,6 +3142,7 @@ window.investmentQuotes = [
     "text": "미스터 다아시라는 이름을 갖고서 파티에서 혼자 도도하게 서 있는 건, 생각해보면 꽤나 우스운 일이다.",
     "title": "브리짓 존스의 일기",
     "author": "헬렌 필딩",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2862,6 +3150,7 @@ window.investmentQuotes = [
     "text": "요즘 남자의 마음을 얻는 길은 미모도, 음식도, 매력적인 성격도 아니라, 그저 그에게 별 관심 없어 보이는 능력이라는 걸 이제는 확실히 알겠다.",
     "title": "브리짓 존스의 일기",
     "author": "헬렌 필딩",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2869,6 +3158,7 @@ window.investmentQuotes = [
     "text": "정말 사랑스러운 작은 오렌지나무구나! 가시가 하나도 없어. 어찌나 개성이 넘치는지 멀리서도 라임오렌지나무라는 걸 알아볼 수 있겠어.",
     "title": "나의 라임오렌지나무",
     "author": "조제 마우로 데 바스콘셀로스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2876,6 +3166,7 @@ window.investmentQuotes = [
     "text": "요정이 언젠가 내게 말해줬어. 너처럼 작은 소년이 나와 친구가 되면, 나는 말을 하게 되고 아주 행복해질 거라고.",
     "title": "나의 라임오렌지나무",
     "author": "조제 마우로 데 바스콘셀로스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2883,6 +3174,7 @@ window.investmentQuotes = [
     "text": "다정함이 없는 삶은 아무런 가치가 없으니까.",
     "title": "나의 라임오렌지나무",
     "author": "조제 마우로 데 바스콘셀로스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2890,6 +3182,7 @@ window.investmentQuotes = [
     "text": "사랑은 하나의 결정이며, 판단이며, 약속이다.",
     "title": "사랑의 기술",
     "author": "에리히 프롬",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -2897,6 +3190,7 @@ window.investmentQuotes = [
     "text": "사랑은 저절로 주어지는 것이 아니다. 오히려 훈련과 집중, 인내와 믿음, 그리고 자기중심성을 넘어서려는 노력이 필요하다.",
     "title": "사랑의 기술",
     "author": "에리히 프롬",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -2904,6 +3198,7 @@ window.investmentQuotes = [
     "text": "역설적이게도, 홀로 있을 수 있는 능력이야말로 사랑할 수 있는 능력의 전제 조건이다.",
     "title": "사랑의 기술",
     "author": "에리히 프롬",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -2911,6 +3206,7 @@ window.investmentQuotes = [
     "text": "미성숙한 사랑은 '사랑받기에 사랑한다'는 원리를 따르지만, 성숙한 사랑은 '사랑하기에 사랑받는다'는 원리를 따른다.",
     "title": "사랑의 기술",
     "author": "에리히 프롬",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -2918,6 +3214,7 @@ window.investmentQuotes = [
     "text": "한 사람이 다른 이에게 무엇을 줄 수 있을까? 그는 자기 자신을, 자신이 가진 가장 소중한 것을, 곧 자신의 삶을 나누어 준다.",
     "title": "사랑의 기술",
     "author": "에리히 프롬",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -2925,6 +3222,7 @@ window.investmentQuotes = [
     "text": "존재의 문제에 대한 성숙한 답은 바로 사랑이다.",
     "title": "사랑의 기술",
     "author": "에리히 프롬",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -2932,6 +3230,7 @@ window.investmentQuotes = [
     "text": "성숙한 사랑이란 자신의 온전함과 개성을 지키면서 이루어지는 결합이다. 사랑 안에서는 두 존재가 하나가 되면서도 여전히 둘로 남아 있는 역설이 일어난다.",
     "title": "사랑의 기술",
     "author": "에리히 프롬",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -2939,6 +3238,7 @@ window.investmentQuotes = [
     "text": "이제 우리 서로 만났으니, 네가 나를 믿어준다면 나도 너를 믿을게.",
     "title": "거울 나라의 앨리스",
     "author": "루이스 캐럴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2946,6 +3246,7 @@ window.investmentQuotes = [
     "text": "가끔은 아침 먹기 전에 불가능한 일을 여섯 가지나 믿어버리기도 하는걸.",
     "title": "거울 나라의 앨리스",
     "author": "루이스 캐럴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2953,6 +3254,7 @@ window.investmentQuotes = [
     "text": "눈이 나무와 들판을 사랑하는 걸까, 이렇게 부드럽게 입 맞추는 걸 보면?",
     "title": "거울 나라의 앨리스",
     "author": "루이스 캐럴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2960,6 +3262,7 @@ window.investmentQuotes = [
     "text": "여기서는 있는 힘껏 달려야만 겨우 제자리에 있을 수 있어.",
     "title": "거울 나라의 앨리스",
     "author": "루이스 캐럴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2967,6 +3270,7 @@ window.investmentQuotes = [
     "text": "실물만큼 크고, 두 배는 더 자연스러워.",
     "title": "거울 나라의 앨리스",
     "author": "루이스 캐럴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2974,6 +3278,7 @@ window.investmentQuotes = [
     "text": "그대의 다정한 미소는 분명 이 동화라는 사랑의 선물을 반겨줄 거예요.",
     "title": "거울 나라의 앨리스",
     "author": "루이스 캐럴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2981,6 +3286,7 @@ window.investmentQuotes = [
     "text": "이상한 나라에 누워, 하루하루 흘러가는 날들을 꿈꾸고, 여름이 저물어가는 것을 꿈꾸네.",
     "title": "거울 나라의 앨리스",
     "author": "루이스 캐럴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2988,6 +3294,7 @@ window.investmentQuotes = [
     "text": "나도 기쁨을 마음대로 다룰 수 있으면 좋겠어! 네가 원할 때마다 기뻐할 수 있다니, 정말 행복하겠구나.",
     "title": "거울 나라의 앨리스",
     "author": "루이스 캐럴",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -2995,6 +3302,7 @@ window.investmentQuotes = [
     "text": "이 위대한 연극은 계속되고, 그대도 한 편의 시구를 보탤 수 있다.",
     "title": "풀잎 - 오 나여! 오 삶이여!",
     "author": "월트 휘트먼",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3002,6 +3310,7 @@ window.investmentQuotes = [
     "text": "그대가 여기 있다는 것, 삶이 존재하고 나라는 존재가 있다는 것. 이 위대한 연극은 계속되고, 그대도 한 편의 시구를 보탤 수 있다는 것.",
     "title": "풀잎 - 오 나여! 오 삶이여!",
     "author": "월트 휘트먼",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3009,6 +3318,7 @@ window.investmentQuotes = [
     "text": "노란 숲속에 두 갈래 길이 있었다. 나는 두 길을 다 갈 수 없어 아쉬워하며, 한참을 서서 한쪽 길이 굽어 사라지는 곳까지 바라보았다.",
     "title": "가지 않은 길",
     "author": "로버트 프로스트",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3016,6 +3326,7 @@ window.investmentQuotes = [
     "text": "실은 두 길 다 지나간 흔적으로 보면 거의 같았고, 그날 아침 두 길은 아직 아무 발길도 닿지 않은 낙엽 속에 나란히 놓여 있었다.",
     "title": "가지 않은 길",
     "author": "로버트 프로스트",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3023,6 +3334,7 @@ window.investmentQuotes = [
     "text": "아, 나는 첫 번째 길을 다음을 위해 남겨두었다! 그러나 길은 길로 이어진다는 것을 알기에, 다시 돌아올 수 있을지 알 수 없었다.",
     "title": "가지 않은 길",
     "author": "로버트 프로스트",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3030,6 +3342,7 @@ window.investmentQuotes = [
     "text": "먼 훗날 나는 어디선가 한숨 지으며 이 이야기를 하고 있겠지.",
     "title": "가지 않은 길",
     "author": "로버트 프로스트",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3037,6 +3350,7 @@ window.investmentQuotes = [
     "text": "숲속에 두 갈래 길이 있었고, 나는 사람이 덜 지나간 길을 택했다고. 그리고 그것이 모든 것을 바꾸어 놓았다고.",
     "title": "가지 않은 길",
     "author": "로버트 프로스트",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3044,6 +3358,7 @@ window.investmentQuotes = [
     "text": "은밀히 사랑받아야 할 어떤 어두운 것들을 사랑하듯, 그림자와 영혼 사이에서 나는 그대를 사랑합니다.",
     "title": "백 편의 사랑 소네트 - 소네트 17",
     "author": "파블로 네루다",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3051,6 +3366,7 @@ window.investmentQuotes = [
     "text": "꽃 피우지 않아도 그 안에 숨은 꽃들의 빛을 품고 있는 식물처럼, 나는 그대를 사랑합니다.",
     "title": "백 편의 사랑 소네트 - 소네트 17",
     "author": "파블로 네루다",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3058,6 +3374,7 @@ window.investmentQuotes = [
     "text": "나는 어떻게, 언제, 어디서부터인지도 모른 채 그대를 사랑합니다. 복잡함도 자존심도 없이, 그저 곧게 그대를 사랑합니다.",
     "title": "백 편의 사랑 소네트 - 소네트 17",
     "author": "파블로 네루다",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3065,6 +3382,7 @@ window.investmentQuotes = [
     "text": "그대의 손이 내 가슴 위에 있을 때 그것이 곧 내 손이 되고, 내가 잠들 때 그대의 눈도 함께 감길 만큼, 우리는 가까이 있습니다.",
     "title": "백 편의 사랑 소네트 - 소네트 17",
     "author": "파블로 네루다",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3072,6 +3390,7 @@ window.investmentQuotes = [
     "text": "원한다면 빵을 가져가도 좋다, 공기도 가져가도 좋다, 하지만 그대의 웃음만은 가져가지 말아다오.",
     "title": "선장의 노래 - 그대의 웃음",
     "author": "파블로 네루다",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3079,6 +3398,7 @@ window.investmentQuotes = [
     "text": "내 사랑, 가장 어두운 시간에도 그대의 웃음은 피어난다.",
     "title": "선장의 노래 - 그대의 웃음",
     "author": "파블로 네루다",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3086,6 +3406,7 @@ window.investmentQuotes = [
     "text": "봄이 오면, 사랑이여, 나는 그대의 웃음을 내가 기다려온 꽃처럼 원한다. 푸른 꽃, 메아리치는 내 나라의 장미처럼.",
     "title": "선장의 노래 - 그대의 웃음",
     "author": "파블로 네루다",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3093,6 +3414,7 @@ window.investmentQuotes = [
     "text": "밤을 향해 웃어라, 낮을 향해, 달을 향해 웃어라. 섬의 구불구불한 골목을 향해, 그대를 사랑하는 이 서투른 소년을 향해서도 웃어다오.",
     "title": "선장의 노래 - 그대의 웃음",
     "author": "파블로 네루다",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3100,6 +3422,7 @@ window.investmentQuotes = [
     "text": "일이란 눈에 보이는 사랑이다.",
     "title": "예언자",
     "author": "칼릴 지브란",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3107,6 +3430,7 @@ window.investmentQuotes = [
     "text": "사랑 없이 마지못해 일한다면, 차라리 일을 내려놓고 신전 문 앞에 앉아 기쁘게 일하는 이들의 적선을 받는 편이 낫다.",
     "title": "예언자",
     "author": "칼릴 지브란",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3114,6 +3438,7 @@ window.investmentQuotes = [
     "text": "아름다움은 필요가 아니라 황홀경이다. 목마른 입도, 내밀어진 빈손도 아니라, 타오르는 가슴이며 매혹된 영혼이다.",
     "title": "예언자",
     "author": "칼릴 지브란",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3121,6 +3446,7 @@ window.investmentQuotes = [
     "text": "아름다움이란 영원이 거울 속 자신을 바라보는 것. 그런데 그대가 바로 영원이며, 그대가 바로 그 거울이다.",
     "title": "예언자",
     "author": "칼릴 지브란",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3128,6 +3454,7 @@ window.investmentQuotes = [
     "text": "자유 없는 삶은 영혼 없는 육체와 같다.",
     "title": "예언자",
     "author": "칼릴 지브란",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3135,6 +3462,7 @@ window.investmentQuotes = [
     "text": "그대의 집은 더 큰 그대의 몸이다. 그것은 태양 아래서 자라고, 고요한 밤 속에서 잠든다.",
     "title": "예언자",
     "author": "칼릴 지브란",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3142,6 +3470,7 @@ window.investmentQuotes = [
     "text": "그대의 일상이 곧 그대의 신전이며 종교다. 그 안에 들어설 때는 그대의 모든 것을 가지고 들어가라.",
     "title": "예언자",
     "author": "칼릴 지브란",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3149,6 +3478,7 @@ window.investmentQuotes = [
     "text": "그대 마음속에 아직 풀리지 않은 것들에 인내심을 갖고, 그 물음들 자체를 사랑해보라고 부탁하고 싶습니다. 지금 이 순간, 그 질문들을 살아보십시오.",
     "title": "젊은 시인에게 보내는 편지",
     "author": "라이너 마리아 릴케",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -3156,6 +3486,7 @@ window.investmentQuotes = [
     "text": "나는 매일의 삶에서 그것을 배웁니다. 감사할 만큼의 아픔과 함께 배웁니다 — 인내가 전부라는 것을.",
     "title": "젊은 시인에게 보내는 편지",
     "author": "라이너 마리아 릴케",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -3163,6 +3494,7 @@ window.investmentQuotes = [
     "text": "그 누구도 그대에게 조언하거나 도울 수 없습니다. 길은 오직 하나, 그대 자신의 안으로 들어가는 것뿐입니다.",
     "title": "젊은 시인에게 보내는 편지",
     "author": "라이너 마리아 릴케",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -3170,6 +3502,7 @@ window.investmentQuotes = [
     "text": "모든 것은 잉태이며, 그다음이 탄생입니다. 깊은 겸허함과 인내로, 새로운 밝음이 태어날 시간을 기다리십시오.",
     "title": "젊은 시인에게 보내는 편지",
     "author": "라이너 마리아 릴케",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -3177,6 +3510,7 @@ window.investmentQuotes = [
     "text": "그대의 고독을 사랑하고, 그것이 안겨주는 아픔조차 노래로 불러보십시오. 그리고 그대의 성장을 기뻐하십시오.",
     "title": "젊은 시인에게 보내는 편지",
     "author": "라이너 마리아 릴케",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -3184,6 +3518,7 @@ window.investmentQuotes = [
     "text": "살아있는 모든 것은 그것을 신뢰합니다. 자연의 모든 것은 자라나고, 온 힘을 다해 스스로를 지키며, 무슨 일이 있어도 자기 자신이 되려 합니다.",
     "title": "젊은 시인에게 보내는 편지",
     "author": "라이너 마리아 릴케",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -3191,6 +3526,7 @@ window.investmentQuotes = [
     "text": "언제나 논쟁이나 토론보다는 그대 자신과 그대의 느낌을 믿으십시오.",
     "title": "젊은 시인에게 보내는 편지",
     "author": "라이너 마리아 릴케",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -3198,6 +3534,7 @@ window.investmentQuotes = [
     "text": "그대는 착할 필요가 없습니다. 사막을 백 마일이나 무릎으로 기며 참회할 필요도 없습니다.",
     "title": "Wild Geese",
     "author": "메리 올리버",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3205,6 +3542,7 @@ window.investmentQuotes = [
     "text": "그저 그대 몸속의 부드러운 짐승이 사랑하는 것을 사랑하게 두면 됩니다.",
     "title": "Wild Geese",
     "author": "메리 올리버",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3212,6 +3550,7 @@ window.investmentQuotes = [
     "text": "그러는 동안에도 세상은 흘러갑니다. 태양과 맑은 빗방울들이 초원과 깊은 숲, 산과 강을 가로질러 나아갑니다.",
     "title": "Wild Geese",
     "author": "메리 올리버",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3219,6 +3558,7 @@ window.investmentQuotes = [
     "text": "그대가 누구든, 아무리 외롭든, 세상은 그대의 상상 앞에 스스로를 내어주며, 기러기처럼 그대를 부르고, 만물의 가족 안에서 그대의 자리를 거듭 알려줍니다.",
     "title": "Wild Geese",
     "author": "메리 올리버",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3226,6 +3566,7 @@ window.investmentQuotes = [
     "text": "누가 이 세상을 만들었을까요? 누가 백조를, 검은 곰을 만들었을까요?",
     "title": "The Summer Day",
     "author": "메리 올리버",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3233,6 +3574,7 @@ window.investmentQuotes = [
     "text": "나는 어떻게 주의를 기울이는지, 풀밭에 몸을 눕히는지, 무릎을 꿇는지, 게으르고도 축복받은 자가 되는지는 압니다.",
     "title": "The Summer Day",
     "author": "메리 올리버",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3240,6 +3582,7 @@ window.investmentQuotes = [
     "text": "모든 것은 결국, 너무 일찍 죽지 않나요? 말해보세요, 단 한 번뿐인 이 거칠고도 소중한 삶으로 그대는 무엇을 할 건가요?",
     "title": "The Summer Day",
     "author": "메리 올리버",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3247,6 +3590,7 @@ window.investmentQuotes = [
     "text": "삶을 살아가는 법 — 주의를 기울일 것. 경이로워할 것. 그리고 그것을 이야기할 것.",
     "title": "Sometimes",
     "author": "메리 올리버",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3254,6 +3598,7 @@ window.investmentQuotes = [
     "text": "'희망'이란 깃털 달린 것 — 영혼 속에 깃들어 — 가사 없는 곡조를 노래하며 — 결코 멈추지 않는 것.",
     "title": "희망은 날개 달린 것",
     "author": "에밀리 디킨슨",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3261,6 +3606,7 @@ window.investmentQuotes = [
     "text": "폭풍 속에서 가장 감미롭게 들리니, 그토록 많은 이를 따뜻하게 해준 그 작은 새를 부끄럽게 할 폭풍이라면 얼마나 매서워야 할까.",
     "title": "희망은 날개 달린 것",
     "author": "에밀리 디킨슨",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3268,6 +3614,7 @@ window.investmentQuotes = [
     "text": "가장 추운 땅에서도, 가장 낯선 바다에서도 나는 그 노래를 들었지만, 그 어떤 극한 속에서도 희망은 내게 빵 한 조각 청한 적이 없었다.",
     "title": "희망은 날개 달린 것",
     "author": "에밀리 디킨슨",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3275,6 +3622,7 @@ window.investmentQuotes = [
     "text": "나는 '가능성' 안에 산다 — 산문보다 아름다운 집, 창은 더 많고 — 문은 더더욱 훌륭한 집에.",
     "title": "나는 가능성 안에 산다",
     "author": "에밀리 디킨슨",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3282,6 +3630,7 @@ window.investmentQuotes = [
     "text": "내 좁은 두 손을 활짝 펼쳐 낙원을 그러모으는 것, 그것이 나의 일이다.",
     "title": "나는 가능성 안에 산다",
     "author": "에밀리 디킨슨",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3289,6 +3638,7 @@ window.investmentQuotes = [
     "text": "나는 빚어진 적 없는 술을 맛본다 — 진주로 떠낸 술잔으로.",
     "title": "나는 빚어진 적 없는 술을 맛본다",
     "author": "에밀리 디킨슨",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3296,6 +3646,7 @@ window.investmentQuotes = [
     "text": "나는 공기에 취한 자 — 이슬의 방탕아 — 끝없는 여름날을 비틀거리며, 녹아내린 푸른 하늘의 여관들을 지나간다.",
     "title": "나는 빚어진 적 없는 술을 맛본다",
     "author": "에밀리 디킨슨",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3303,6 +3654,7 @@ window.investmentQuotes = [
     "text": "또 다른 하늘이 있다, 언제나 고요하고 맑은. 또 다른 햇살도 있다, 이곳이 어두울지라도.",
     "title": "또 다른 하늘이 있다",
     "author": "에밀리 디킨슨",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3310,6 +3662,7 @@ window.investmentQuotes = [
     "text": "여기 더 눈부신 정원이 있다, 서리 한 번 내린 적 없는.",
     "title": "또 다른 하늘이 있다",
     "author": "에밀리 디킨슨",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3317,6 +3670,7 @@ window.investmentQuotes = [
     "text": "말은 입 밖에 나오는 순간 죽는다고 누군가는 말하지만, 나는 말한다 — 그날이야말로 말이 살아나기 시작하는 날이라고.",
     "title": "말은 죽는다",
     "author": "에밀리 디킨슨",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3324,6 +3678,7 @@ window.investmentQuotes = [
     "text": "내 삶은 수정으로 된 계단이 아니었단다. 압정도 있었고, 가시도 있었고, 판자가 뜯겨나간 자리도, 카펫 하나 없는 맨바닥도 있었지.",
     "title": "어머니가 아들에게",
     "author": "랭스턴 휴스",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3331,6 +3686,7 @@ window.investmentQuotes = [
     "text": "하지만 나는 줄곧 오르고 또 올랐단다, 층계참에 닿고, 굽이를 돌면서.",
     "title": "어머니가 아들에게",
     "author": "랭스턴 휴스",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3338,6 +3694,7 @@ window.investmentQuotes = [
     "text": "그러니 아들아, 뒤돌아서지 마라. 나는 지금도 가고 있단다, 얘야, 지금도 오르고 있단다. 내 삶은 수정 계단이 아니었지만.",
     "title": "어머니가 아들에게",
     "author": "랭스턴 휴스",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3345,6 +3702,7 @@ window.investmentQuotes = [
     "text": "꿈을 꼭 붙들어라, 꿈이 사라지면 삶은 날지 못하는 날개 꺾인 새가 되니. 꿈을 꼭 붙들어라, 꿈이 떠나면 삶은 눈에 덮여 얼어붙은 들판이 되니.",
     "title": "꿈",
     "author": "랭스턴 휴스",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3352,6 +3710,7 @@ window.investmentQuotes = [
     "text": "나 역시, 미국을 노래한다. 나는 더 검은 형제. 손님이 오면 부엌에서 먹으라 하지만, 나는 웃으며, 잘 먹고, 튼튼하게 자란다.",
     "title": "나 역시",
     "author": "랭스턴 휴스",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3359,6 +3718,7 @@ window.investmentQuotes = [
     "text": "내일, 손님이 올 때 나는 식탁에 앉아 있을 것이다. 그 누구도 감히 '부엌에서 먹어라' 말하지 못하리라.",
     "title": "나 역시",
     "author": "랭스턴 휴스",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3366,6 +3726,7 @@ window.investmentQuotes = [
     "text": "그들은 내가 얼마나 아름다운지 보고 부끄러워하리라 — 나 역시, 미국이다.",
     "title": "나 역시",
     "author": "랭스턴 휴스",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3373,6 +3734,7 @@ window.investmentQuotes = [
     "text": "나는 골짜기와 언덕 위 높이 떠도는 구름처럼 홀로 거닐다가, 문득 황금빛 수선화 무리를 보았네.",
     "title": "수선화",
     "author": "윌리엄 워즈워스",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3380,6 +3742,7 @@ window.investmentQuotes = [
     "text": "은하수에서 반짝이는 별들처럼 끊임없이, 수선화들은 만灣의 가장자리를 따라 끝없이 줄지어 뻗어 있었네.",
     "title": "수선화",
     "author": "윌리엄 워즈워스",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3387,6 +3750,7 @@ window.investmentQuotes = [
     "text": "곁의 물결도 춤을 추었지만, 수선화는 그 반짝이는 물결보다 더 즐거워 보였네. 시인이라면 이토록 유쾌한 무리 속에서 기쁘지 않을 수 없었네.",
     "title": "수선화",
     "author": "윌리엄 워즈워스",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3394,6 +3758,7 @@ window.investmentQuotes = [
     "text": "훗날 소파에 누워 멍하니 혹은 생각에 잠길 때면, 수선화는 내 마음의 눈앞에 번쩍이니, 그것이 바로 고독이 주는 축복이라네.",
     "title": "수선화",
     "author": "윌리엄 워즈워스",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3401,6 +3766,7 @@ window.investmentQuotes = [
     "text": "그러면 내 마음은 기쁨으로 가득 차, 수선화와 함께 춤을 춘다네.",
     "title": "수선화",
     "author": "윌리엄 워즈워스",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3408,6 +3774,7 @@ window.investmentQuotes = [
     "text": "꿈을 꾸되 그 꿈의 노예가 되지 않을 수 있다면, 생각하되 그 생각을 목적으로 삼지 않을 수 있다면",
     "title": "만약에",
     "author": "러디어드 키플링",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3415,6 +3782,7 @@ window.investmentQuotes = [
     "text": "승리와 패배를 만나더라도 그 둘을 똑같은 사기꾼으로 대할 수 있다면",
     "title": "만약에",
     "author": "러디어드 키플링",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3422,6 +3790,7 @@ window.investmentQuotes = [
     "text": "그대가 얻은 모든 것을 한데 모아 단 한 번의 승부에 걸 수 있다면, 지더라도 다시 처음부터 시작하며 그 손실에 대해 한마디도 하지 않을 수 있다면",
     "title": "만약에",
     "author": "러디어드 키플링",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3429,6 +3798,7 @@ window.investmentQuotes = [
     "text": "가차 없이 흘러가는 1분을 60초만큼의 값진 달림으로 채울 수 있다면, 이 땅과 그 안의 모든 것이 그대의 것이 되리라.",
     "title": "만약에",
     "author": "러디어드 키플링",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3436,6 +3806,7 @@ window.investmentQuotes = [
     "text": "주위 모든 이들이 이성을 잃고 그대를 탓할 때도 냉정을 유지할 수 있다면, 모두가 그대를 의심할 때도 스스로를 믿을 수 있다면",
     "title": "만약에",
     "author": "러디어드 키플링",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3443,24 +3814,28 @@ window.investmentQuotes = [
     "text": "기다리면서도 지치지 않을 수 있다면, 거짓을 당하고도 거짓으로 답하지 않고, 미움을 받고도 미움에 굴복하지 않으면서, 너무 선한 척, 너무 지혜로운 척하지 않을 수 있다면",
     "title": "만약에",
     "author": "러디어드 키플링",
+    "category": "시",
     "genre": "literature"
   },
   {
     "text": "자세히 보아야 예쁘다. 오래 보아야 사랑스럽다. 너도 그렇다.",
     "title": "풀꽃",
     "author": "나태주",
+    "category": "시",
     "genre": "literature"
   },
   {
     "text": "이름을 알고 나면 이웃이 되고, 색깔을 알고 나면 친구가 되고, 모양까지 알고 나면 연인이 된다. 아, 이것은 비밀.",
     "title": "풀꽃 2",
     "author": "나태주",
+    "category": "시",
     "genre": "literature"
   },
   {
     "text": "기죽지 말고 살아봐, 꽃 피워 봐, 참 좋아.",
     "title": "풀꽃 3",
     "author": "나태주",
+    "category": "시",
     "genre": "literature"
   },
   {
@@ -3468,6 +3843,7 @@ window.investmentQuotes = [
     "text": "열정은 흔하다. 그러나 그 열정을 끝까지 지켜내는 것은 드물다.",
     "title": "그릿",
     "author": "앤절라 더크워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3475,6 +3851,7 @@ window.investmentQuotes = [
     "text": "재능이 중요한 만큼, 노력은 그 두 배로 중요하다.",
     "title": "그릿",
     "author": "앤절라 더크워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3482,6 +3859,7 @@ window.investmentQuotes = [
     "text": "그릿이 있다는 것은 일곱 번 넘어져도 여덟 번 다시 일어선다는 뜻이다.",
     "title": "그릿",
     "author": "앤절라 더크워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3489,6 +3867,7 @@ window.investmentQuotes = [
     "text": "그릿이란 너무나 아끼는 일이라 끝까지 곁을 지키는 것이다. 사랑에 빠지는 것을 넘어, 그 사랑 안에 계속 머무르는 것이다.",
     "title": "그릿",
     "author": "앤절라 더크워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3496,6 +3875,7 @@ window.investmentQuotes = [
     "text": "상황을 더 나아지게 할 방법을 계속 찾다 보면 언젠가 찾아낼 가능성이 생긴다. 찾기를 포기하는 순간, 그 가능성도 함께 사라진다.",
     "title": "그릿",
     "author": "앤절라 더크워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3503,6 +3883,7 @@ window.investmentQuotes = [
     "text": "일에 대한 열정은 작은 발견에서 시작해 오랜 발전을 거쳐, 평생에 걸쳐 깊어지는 것이다.",
     "title": "그릿",
     "author": "앤절라 더크워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3510,6 +3891,7 @@ window.investmentQuotes = [
     "text": "뛰어난 성취를 이룬 사람들을 특별하게 만든 건 열정과 끈기의 조합이었다. 한마디로, 그들에게는 그릿이 있었다.",
     "title": "그릿",
     "author": "앤절라 더크워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3517,6 +3899,7 @@ window.investmentQuotes = [
     "text": "머물러 있는 것보다 되어가는 것이 낫다.",
     "title": "마인드셋",
     "author": "캐럴 드웩",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3524,6 +3907,7 @@ window.investmentQuotes = [
     "text": "능력이 어떻든, 그 능력에 불을 붙여 성취로 바꾸는 것은 결국 노력이다.",
     "title": "마인드셋",
     "author": "캐럴 드웩",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3531,6 +3915,7 @@ window.investmentQuotes = [
     "text": "잘 풀리지 않을 때조차 자신을 밀어붙이고 포기하지 않는 열정, 그것이 성장 마인드셋의 특징이다.",
     "title": "마인드셋",
     "author": "캐럴 드웩",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3538,6 +3923,7 @@ window.investmentQuotes = [
     "text": "어려움에 맞서 배워갈 때마다 뇌 속에 새로운 연결이 생겨난다고 상상해보라. 계속 나아가라.",
     "title": "마인드셋",
     "author": "캐럴 드웩",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3545,6 +3931,7 @@ window.investmentQuotes = [
     "text": "진짜 자신감이란 마음을 열 수 있는 용기다. 어디서 왔든 변화와 새로운 생각을 기꺼이 받아들이는 것이다.",
     "title": "마인드셋",
     "author": "캐럴 드웩",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3552,6 +3939,7 @@ window.investmentQuotes = [
     "text": "확실히 아는 사실이 하나 있다. 가장 사랑하는 일을 위해 가장 열심히 노력해야 한다는 것.",
     "title": "마인드셋",
     "author": "캐럴 드웩",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3559,6 +3947,7 @@ window.investmentQuotes = [
     "text": "성장 마인드셋을 가진 많은 이들은 정상에 오르려고 계획하지 않았다. 그저 좋아하는 일을 하다 보니 그곳에 다다랐을 뿐이다.",
     "title": "마인드셋",
     "author": "캐럴 드웩",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3566,6 +3955,7 @@ window.investmentQuotes = [
     "text": "나는 결과만큼이나 그 과정에서도 행복을 느낀다.",
     "title": "마인드셋",
     "author": "캐럴 드웩",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3573,6 +3963,7 @@ window.investmentQuotes = [
     "text": "무엇을 가졌는지, 누구인지, 어디에 있는지가 행복과 불행을 결정하지 않는다. 그것을 어떻게 생각하느냐가 결정한다.",
     "title": "데일 카네기 인간관계론",
     "author": "데일 카네기",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3580,6 +3971,7 @@ window.investmentQuotes = [
     "text": "다른 사람에게 관심을 갖는 것만으로 두 달이면, 남이 나에게 관심 갖게 하려 애쓰는 이 년보다 더 많은 친구를 사귈 수 있다.",
     "title": "데일 카네기 인간관계론",
     "author": "데일 카네기",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3587,6 +3979,7 @@ window.investmentQuotes = [
     "text": "세상 모든 사람이 행복을 찾고 있다. 확실한 방법은 하나, 바로 생각을 다스리는 것이다. 행복은 바깥 조건이 아니라 마음의 조건에 달려 있다.",
     "title": "데일 카네기 인간관계론",
     "author": "데일 카네기",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3594,6 +3987,7 @@ window.investmentQuotes = [
     "text": "행동은 말보다 크게 말한다. 미소는 이렇게 말한다. '당신이 좋아요. 당신 덕분에 행복해요. 만나서 반가워요.'",
     "title": "데일 카네기 인간관계론",
     "author": "데일 카네기",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3601,6 +3995,7 @@ window.investmentQuotes = [
     "text": "흥미로운 사람이 되고 싶다면, 먼저 흥미를 가져라.",
     "title": "데일 카네기 인간관계론",
     "author": "데일 카네기",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3608,6 +4003,7 @@ window.investmentQuotes = [
     "text": "비난하고 불평하고 정죄하는 건 누구나 할 수 있는 일이다. 그러나 이해하고 용서하려면 인격과 자제력이 필요하다.",
     "title": "데일 카네기 인간관계론",
     "author": "데일 카네기",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3615,6 +4011,7 @@ window.investmentQuotes = [
     "text": "친구를 얻는 일은 다정함에서 시작된다.",
     "title": "데일 카네기 인간관계론",
     "author": "데일 카네기",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3622,6 +4019,7 @@ window.investmentQuotes = [
     "text": "이름은 어떤 언어에서든 가장 달콤하고 중요한 소리다.",
     "title": "데일 카네기 인간관계론",
     "author": "데일 카네기",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3629,6 +4027,7 @@ window.investmentQuotes = [
     "text": "누군가에게 그 사람 자신에 대해 이야기해보라. 몇 시간이라도 귀 기울여 들을 것이다.",
     "title": "데일 카네기 인간관계론",
     "author": "데일 카네기",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3636,6 +4035,7 @@ window.investmentQuotes = [
     "text": "당신이 누구인지는, 기꺼이 감수할 각오가 된 어려움이 무엇인지로 정해진다.",
     "title": "신경 끄기의 기술",
     "author": "마크 맨슨",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3643,6 +4043,7 @@ window.investmentQuotes = [
     "text": "틀렸다는 것은 변화의 가능성을 열어준다. 틀렸다는 것은 성장의 기회를 가져다준다.",
     "title": "신경 끄기의 기술",
     "author": "마크 맨슨",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3650,6 +4051,7 @@ window.investmentQuotes = [
     "text": "행복하려면 풀어야 할 무언가가 필요하다. 그러니 행복은 하나의 행동이다.",
     "title": "신경 끄기의 기술",
     "author": "마크 맨슨",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3657,6 +4059,7 @@ window.investmentQuotes = [
     "text": "그냥 앉아만 있지 마라. 뭐라도 해라. 답은 그 다음에 따라온다.",
     "title": "신경 끄기의 기술",
     "author": "마크 맨슨",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3664,6 +4067,7 @@ window.investmentQuotes = [
     "text": "자신의 불안함을 솔직히 드러낼수록, 역설적으로 사람들 앞에서 더 자신감 있고 매력적으로 보인다.",
     "title": "신경 끄기의 기술",
     "author": "마크 맨슨",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3671,6 +4075,7 @@ window.investmentQuotes = [
     "text": "문제 없는 삶을 바라지 마라. 그런 건 없으니까. 대신 좋은 문제로 가득한 삶을 바라라.",
     "title": "신경 끄기의 기술",
     "author": "마크 맨슨",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3678,6 +4083,7 @@ window.investmentQuotes = [
     "text": "문제를 바라보는 시선을 바꾸고 싶다면, 무엇을 소중히 여기는지와 성공·실패를 재는 기준부터 바꿔야 한다.",
     "title": "신경 끄기의 기술",
     "author": "마크 맨슨",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -3685,36 +4091,42 @@ window.investmentQuotes = [
     "text": "모든 성장은 하나의 단순한 깨달음에서 시작된다. 바깥 상황이 어떻든 삶의 모든 것에 대한 책임은 결국 나 자신에게 있다는 것. 무슨 일이 일어나는지는 몰라도, 그것을 어떻게 해석하고 반응할지는 언제나 내 몫이다.",
     "title": "신경 끄기의 기술",
     "author": "마크 맨슨",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
     "text": "우리가 지금 괴로운 이유는 노력이 우리를 자주 배신하기 때문이다. 그렇다고 노력을 멈출 수도 없다. 다만 괴로움을 줄이는 법은 안다. 안 되는 것도 있다는 걸 인정해버리는 것이다.",
     "title": "하마터면 열심히 살 뻔했다",
     "author": "하완",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "그래 때로는 그냥 사는 것도 괜찮다. 남들이 모두 열심히 사는데 나만이라도 대충 사는 것도 나쁘지는 않을 거야.",
     "title": "하마터면 열심히 살 뻔했다",
     "author": "하완",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "사람은 저마다의 인생 스케줄과 속도가 있다.",
     "title": "하마터면 열심히 살 뻔했다",
     "author": "하완",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "새끼들도 다 독립해 제 몫을 하고, 거둬야 할 책임과 의무도 다했고 이제 나만 잘 하면 되는데, 하마터면 계속 열심히 살 뻔했잖아!",
     "title": "하마터면 열심히 살 뻔했다",
     "author": "하완",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "이제 열심히 사는 인생은 끝이다. 견디는 삶은 충분히 살았다. 지금부터의 삶은 결과를 위해 견디는 삶이어서는 안 된다. 과정 자체가 즐거움이다.",
     "title": "하마터면 열심히 살 뻔했다",
     "author": "하완",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -3722,6 +4134,7 @@ window.investmentQuotes = [
     "text": "이 자아를 여러 가지로 부를 수 있을 것이다. 변화, 탈바꿈, 거짓, 배신. 나는 그것을 교육이라 부른다.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -3730,6 +4143,7 @@ window.investmentQuotes = [
     "text": "먼저 내가 무엇을 할 수 있는지 알아낸 뒤, 그다음에 내가 누구인지 결정하라.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -3738,6 +4152,7 @@ window.investmentQuotes = [
     "text": "당신이 누구인지를 가장 강력하게 결정하는 것은 당신 안에 있다. 스스로를 믿기 전까지는 아무것도 아니었지만, 믿는 순간부터는 어떤 옷을 입었는지는 중요하지 않았다.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -3746,6 +4161,7 @@ window.investmentQuotes = [
     "text": "여러 생각과 역사와 관점을 저울질할 수 있는 능력이야말로 자기 자신을 만들어가는 일의 핵심이라고 믿게 되었다.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -3754,6 +4170,7 @@ window.investmentQuotes = [
     "text": "내가 노력해온 모든 것, 그 오랜 공부의 시간은 결국 하나의 특권을 사기 위함이었다. 더 많은 진실을 보고 경험하며, 그것으로 나만의 생각을 짓는 특권.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -3762,6 +4179,7 @@ window.investmentQuotes = [
     "text": "행복의 비결은 아주 간단하다. 관심사를 최대한 넓게 갖고, 그 관심을 끄는 것들과 사람들에게 가능한 한 다정하게 반응하는 것이다.",
     "title": "행복의 정복",
     "author": "버트런드 러셀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -3769,6 +4187,7 @@ window.investmentQuotes = [
     "text": "나는 삶을 즐긴다. 해가 갈수록 더 즐긴다고 말해도 좋을 정도다. 그건 대체로 나 자신에 대한 집착이 줄어든 덕분이다.",
     "title": "행복의 정복",
     "author": "버트런드 러셀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -3776,6 +4195,7 @@ window.investmentQuotes = [
     "text": "생기가 부족한 주된 원인 중 하나는 사랑받지 못한다는 느낌이다. 반대로 사랑받고 있다는 느낌만큼 삶의 생기를 북돋우는 것도 없다.",
     "title": "행복의 정복",
     "author": "버트런드 러셀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -3783,6 +4203,7 @@ window.investmentQuotes = [
     "text": "행복한 사람은 자유로운 애정과 폭넓은 관심을 지니고, 그 관심과 애정을 통해 행복을 얻는 사람이다.",
     "title": "행복의 정복",
     "author": "버트런드 러셀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -3790,6 +4211,7 @@ window.investmentQuotes = [
     "text": "인간의 본성은 애정을 별로 요구하지 않는 듯 보이는 사람에게 가장 쉽게 애정을 준다.",
     "title": "행복의 정복",
     "author": "버트런드 러셀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -3797,6 +4219,7 @@ window.investmentQuotes = [
     "text": "정말 행복해지고 싶은가? 그렇다면 지금의 나와 내가 가진 것에 감사하는 것부터 시작하라.",
     "title": "곰돌이 푸의 도(道)",
     "author": "벤저민 호프",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -3804,6 +4227,7 @@ window.investmentQuotes = [
     "text": "시간을 아끼려는 강박의 문제는 단순하다. 시간은 아낄 수 없다. 오직 쓸 수 있을 뿐이다. 다만 현명하게 쓸지, 어리석게 쓸지는 선택할 수 있다.",
     "title": "곰돌이 푸의 도(道)",
     "author": "벤저민 호프",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -3811,6 +4235,7 @@ window.investmentQuotes = [
     "text": "일은 그저 알맞은 때에 알맞은 방식으로 일어난다. 적어도 그렇게 되도록 놔둘 때, 상황과 함께 흘러갈 때는 그렇다.",
     "title": "곰돌이 푸의 도(道)",
     "author": "벤저민 호프",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -3818,6 +4243,7 @@ window.investmentQuotes = [
     "text": "지혜와 행복과 용기는 저 멀리 보이지 않는 곳에서 기다리고 있는 게 아니다. 그것들은 바로 지금 여기서 시작되는 순환의 일부다. 끝이자, 동시에 시작이기도 하다.",
     "title": "곰돌이 푸의 도(道)",
     "author": "벤저민 호프",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -3825,6 +4251,7 @@ window.investmentQuotes = [
     "text": "오만함과 복잡함, 그 밖에 방해가 되는 것들을 내려놓으면, 언젠가 소박하고 아이 같은 그 신비로운 비밀을 발견하게 된다. 인생은 즐거운 것이라는 비밀을.",
     "title": "곰돌이 푸의 도(道)",
     "author": "벤저민 호프",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -3832,6 +4259,7 @@ window.investmentQuotes = [
     "text": "꿀은 다 먹고 나면 그리 달지 않고, 목표도 이루고 나면 그리 크게 느껴지지 않는다. 하지만 보상과 그 사이의 시간을 모두 더하면, 우리가 보낸 모든 순간이 남는다.",
     "title": "곰돌이 푸의 도(道)",
     "author": "벤저민 호프",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -3839,48 +4267,56 @@ window.investmentQuotes = [
     "text": "우리는 거창한 존재에게 책임을 떠넘기거나 운명을 기다릴 필요가 없다. 그저 우리 안의 힘을 믿고 쓰면 된다. 그럴 때 비로소 일이 우리 편이 되어준다.",
     "title": "곰돌이 푸의 도(道)",
     "author": "벤저민 호프",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "느림, 내게는 그것이 부드럽고 우아하고 배려 깊은 삶의 방식으로 보여진다.",
     "title": "느리게 산다는 것의 의미",
     "author": "피에르 쌍소",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "나는 내가 세상에 대해 화를 내고 있다는 생각은 하지 않는다. 오히려 삶이란 내게 주어진 행운, 그것도 두 번 다시 돌아올 수 없는 단 한 번의 행운이라고 생각한다.",
     "title": "느리게 산다는 것의 의미",
     "author": "피에르 쌍소",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "우리는 타인의 말을 들어 줌으로써 그를 최고의 상태에 이르게 할 수 있다.",
     "title": "느리게 산다는 것의 의미",
     "author": "피에르 쌍소",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "내가 부러워하는 행복이란 안락함이나 성공에서 오는 것이 아니라 소박한 기쁨을 맛보고, 그 기쁨들과 조화를 이루며, 그것을 자주 만들어 내는 능력에서 오는 것이다.",
     "title": "느리게 산다는 것의 의미",
     "author": "피에르 쌍소",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "그 어떤 사건들보다 가장 나를 흥분케 하는 것은 '하루'의 탄생이다. 하루가 탄생하는 것을 바라볼 때마다 충만함을 느낀다.",
     "title": "느리게 산다는 것의 의미",
     "author": "피에르 쌍소",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "길을 걷는 것은 행복하다. 어디로 데려다 줄지 모른다는 그 예측할 수 없음이, 오히려 삶에 대한 기대를 더 부풀게 한다.",
     "title": "느리게 산다는 것의 의미",
     "author": "피에르 쌍소",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "느림이란 시간에 떠밀려가지 않겠다는 단호한 선택이며, 나 자신을 잃지 않고 세상을 기쁘게 받아들이는 능력을 키우려는 의지에서 비롯한다.",
     "title": "느리게 산다는 것의 의미",
     "author": "피에르 쌍소",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -3888,6 +4324,7 @@ window.investmentQuotes = [
     "text": "난 네가 진정한 용기가 무엇인지 알기를 바랐다. 시작하기도 전에 질 게 뻔해도, 그래도 시작해서 끝까지 해내는 것, 그것이 진짜 용기란다.",
     "title": "앵무새 죽이기",
     "author": "하퍼 리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3895,6 +4332,7 @@ window.investmentQuotes = [
     "text": "\"애티커스, 그 사람 정말 좋은 사람이었어요.\" \"대부분의 사람들이 그렇단다, 스카웃. 마침내 있는 그대로 보게 되면 말이야.\"",
     "title": "앵무새 죽이기",
     "author": "하퍼 리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3902,6 +4340,7 @@ window.investmentQuotes = [
     "text": "앵무새는 그저 우리를 위해 노래를 불러줄 뿐이란다. 그래서 앵무새를 죽이는 건 죄란다.",
     "title": "앵무새 죽이기",
     "author": "하퍼 리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3909,6 +4348,7 @@ window.investmentQuotes = [
     "text": "그 사람의 입장에서 생각해보기 전까지는, 그의 몸속에 들어가 함께 걸어보기 전까지는 그 사람을 진정으로 이해할 수 없단다.",
     "title": "앵무새 죽이기",
     "author": "하퍼 리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3916,6 +4356,7 @@ window.investmentQuotes = [
     "text": "잃을까 두려워지기 전까지는 책 읽기를 사랑한 적이 없었다. 숨쉬기를 사랑하는 사람은 없는 것처럼.",
     "title": "앵무새 죽이기",
     "author": "하퍼 리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3923,6 +4364,7 @@ window.investmentQuotes = [
     "text": "나는 사람에는 그저 한 종류밖에 없다고 생각해. 그냥 사람 말이야.",
     "title": "앵무새 죽이기",
     "author": "하퍼 리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3930,6 +4372,7 @@ window.investmentQuotes = [
     "text": "시작하기 백 년 전부터 이미 질 게 뻔했다는 사실이, 우리가 이기려고 애쓰지 말아야 할 이유는 되지 않는단다.",
     "title": "앵무새 죽이기",
     "author": "하퍼 리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3937,6 +4380,7 @@ window.investmentQuotes = [
     "text": "다른 사람들과 함께 살아가기 전에, 나는 나 자신과 함께 살아가야 한단다. 다수결을 따르지 않는 단 한 가지가 있다면, 그건 바로 한 사람의 양심이야.",
     "title": "앵무새 죽이기",
     "author": "하퍼 리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3944,6 +4388,7 @@ window.investmentQuotes = [
     "text": "나는 자꾸 넓은 호밀밭에서 아이들이 뛰노는 모습을 떠올린다. 나는 그저 호밀밭의 파수꾼이 되고 싶을 뿐이다.",
     "title": "호밀밭의 파수꾼",
     "author": "J.D. 샐린저",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3951,6 +4396,7 @@ window.investmentQuotes = [
     "text": "그 박물관에서 가장 좋았던 건, 모든 것이 언제나 있던 그 자리에 그대로 있다는 사실이었다.",
     "title": "호밀밭의 파수꾼",
     "author": "J.D. 샐린저",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3958,6 +4404,7 @@ window.investmentQuotes = [
     "text": "어떤 것들은 원래 있던 그대로 있어야 한다. 커다란 유리 상자에 넣어두고 그냥 내버려 둘 수 있다면 좋을 텐데.",
     "title": "호밀밭의 파수꾼",
     "author": "J.D. 샐린저",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3965,6 +4412,7 @@ window.investmentQuotes = [
     "text": "아이들이란 그런 거다. 황금 고리를 잡고 싶어 하면, 그냥 하도록 내버려 둬야 한다. 아무 말도 하지 않고서.",
     "title": "호밀밭의 파수꾼",
     "author": "J.D. 샐린저",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3972,6 +4420,7 @@ window.investmentQuotes = [
     "text": "동생은 빙글빙글 계속 돌고 있었다. 눈물이 날 만큼, 정말이지 행복했다. 파란 코트를 입고 빙글빙글 도는 모습이 그렇게 사랑스러울 수가 없었다.",
     "title": "호밀밭의 파수꾼",
     "author": "J.D. 샐린저",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3979,6 +4428,7 @@ window.investmentQuotes = [
     "text": "언제나 사랑할 무언가는 남아 있는 법이다.",
     "title": "백년의 고독",
     "author": "가브리엘 가르시아 마르케스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3986,6 +4436,7 @@ window.investmentQuotes = [
     "text": "지금 이 순간 당신과 내가 존재한다는 것, 그것으로 충분해요.",
     "title": "백년의 고독",
     "author": "가브리엘 가르시아 마르케스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -3993,6 +4444,7 @@ window.investmentQuotes = [
     "text": "그토록 오랜 세월이 지나서도 두 사람은 미친 듯이 사랑에 빠져, 늙어서도 어린아이처럼 피어나고 강아지처럼 뛰놀며 행복했다.",
     "title": "백년의 고독",
     "author": "가브리엘 가르시아 마르케스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4000,6 +4452,7 @@ window.investmentQuotes = [
     "text": "세상은 너무나 갓 태어난 것이어서 많은 것들에 아직 이름이 없었고, 그것을 가리키려면 손가락으로 짚어야만 했다.",
     "title": "백년의 고독",
     "author": "가브리엘 가르시아 마르케스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4007,6 +4460,7 @@ window.investmentQuotes = [
     "text": "두 사람은 서로 너무 가까워서, 헤어지느니 차라리 죽음을 택할 정도였다.",
     "title": "백년의 고독",
     "author": "가브리엘 가르시아 마르케스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4014,6 +4468,7 @@ window.investmentQuotes = [
     "text": "마치 신이 인간의 경이로움을 시험하기로 작정한 것처럼, 사람들은 늘 흥분과 실망, 의심과 깨달음 사이를 오가며 살아갔다.",
     "title": "백년의 고독",
     "author": "가브리엘 가르시아 마르케스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4021,6 +4476,7 @@ window.investmentQuotes = [
     "text": "나는 구부러지고 부서졌지만, 그로 인해 더 나은 모습이 되었기를 바란다.",
     "title": "위대한 유산",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4028,6 +4484,7 @@ window.investmentQuotes = [
     "text": "눈물은 부끄러워할 것이 아니다. 그것은 우리의 굳은 마음을 덮은 먼지 위에 내리는 비와 같으니까. 나는 울고 난 뒤 더 다정한 사람이 되어 있었다.",
     "title": "위대한 유산",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4035,6 +4492,7 @@ window.investmentQuotes = [
     "text": "이 글을 읽는 그대여, 잠시 멈춰 생각해보라. 쇠사슬이든 꽃사슬이든, 그 첫 고리는 언제나 어느 기억할 만한 하루에서 시작된다는 것을.",
     "title": "위대한 유산",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4042,6 +4500,7 @@ window.investmentQuotes = [
     "text": "아이들이 살아가는 작은 세상에서는, 그 무엇도 불의만큼 예민하게 느껴지는 것이 없다.",
     "title": "위대한 유산",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4049,6 +4508,7 @@ window.investmentQuotes = [
     "text": "사랑하는 핍, 오랜 친구여, 우리는 언제나 벗이었지. 네가 다 나아서 함께 마차를 타러 나갈 수 있게 되면, 그때 얼마나 신날까!",
     "title": "위대한 유산",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4056,6 +4516,7 @@ window.investmentQuotes = [
     "text": "하느님도 아시겠지만, 내가 너를 용서할 게 있다면 이미 다 용서했단다!",
     "title": "위대한 유산",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4063,6 +4524,7 @@ window.investmentQuotes = [
     "text": "지금 내가 하는 일은, 내가 지금까지 해온 그 어떤 일보다 훨씬 더 훌륭한 일이다. 내가 향하는 안식도 훨씬 더 평온할 것이다.",
     "title": "두 도시 이야기",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4070,6 +4532,7 @@ window.investmentQuotes = [
     "text": "당신을 위해서라면, 그리고 당신이 사랑하는 사람들을 위해서라면 나는 무엇이든 할 것입니다. 기꺼이 어떤 희생도 받아들일 거예요.",
     "title": "두 도시 이야기",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4077,6 +4540,7 @@ window.investmentQuotes = [
     "text": "내가 목숨을 바쳐 지켜낸 그 삶들이, 평화롭고 보람차고 풍요롭고 행복하게 살아가는 모습이 보인다.",
     "title": "두 도시 이야기",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4084,6 +4548,7 @@ window.investmentQuotes = [
     "text": "제리, 내 대답은 이렇게 전해다오. '삶으로 다시 불려 나왔다'고.",
     "title": "두 도시 이야기",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4091,6 +4556,7 @@ window.investmentQuotes = [
     "text": "나는 그들의 마음속에, 그리고 그 후손들의 마음속에 몇 세대가 지나도록 하나의 안식처로 남아 있을 것이다.",
     "title": "두 도시 이야기",
     "author": "찰스 디킨스",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4098,6 +4564,7 @@ window.investmentQuotes = [
     "text": "무리의 힘은 늑대에게서 나오고, 늑대의 힘은 무리에게서 나온다.",
     "title": "정글북",
     "author": "러디어드 키플링",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4105,6 +4572,7 @@ window.investmentQuotes = [
     "text": "무서웠다고 해서 화를 내지는 마라. 그것이야말로 가장 비겁한 짓이니까.",
     "title": "정글북",
     "author": "러디어드 키플링",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4112,6 +4580,7 @@ window.investmentQuotes = [
     "text": "너는 정글의 존재이면서도 정글의 존재가 아니구나. 나는 그저 검은 표범일 뿐이지만, 그래도 너를 사랑한다, 꼬마 동생아.",
     "title": "정글북",
     "author": "러디어드 키플링",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4119,6 +4588,7 @@ window.investmentQuotes = [
     "text": "우리는 한 핏줄이다, 너와 나는.",
     "title": "정글북",
     "author": "러디어드 키플링",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4126,6 +4596,7 @@ window.investmentQuotes = [
     "text": "그 인간의 새끼는 내 것이다, 룽그리, 내 것이란다! 그 아이는 죽지 않을 것이다. 무리와 함께 뛰고 사냥하며 살아갈 것이다.",
     "title": "정글북",
     "author": "러디어드 키플링",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4133,6 +4604,7 @@ window.investmentQuotes = [
     "text": "뗏목만 한 집은 없더라. 다른 곳들은 어쩐지 답답하고 숨 막히는데, 뗏목은 그렇지 않았다. 정말이지 자유롭고 편안한 기분이 들었다.",
     "title": "허클베리 핀의 모험",
     "author": "마크 트웨인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4140,6 +4612,7 @@ window.investmentQuotes = [
     "text": "뗏목에서 사는 건 정말 근사했다. 하늘엔 온통 별들이 촘촘히 박혀 있었고, 우리는 등을 대고 누워 그 별들을 올려다보곤 했다.",
     "title": "허클베리 핀의 모험",
     "author": "마크 트웨인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4147,6 +4620,7 @@ window.investmentQuotes = [
     "text": "짐은 널 절대 잊지 못할 거야, 헉. 넌 짐이 가져본 가장 좋은 친구였고, 지금 짐에게 남은 유일한 친구니까.",
     "title": "허클베리 핀의 모험",
     "author": "마크 트웨인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4154,6 +4628,7 @@ window.investmentQuotes = [
     "text": "짐은 내가 더 잘 수 있도록 자기 당번 위에 내 당번까지 대신 서주곤 했다. 그리고 내가 안개 속에서 돌아왔을 때 그가 얼마나 기뻐했는지 모른다.",
     "title": "허클베리 핀의 모험",
     "author": "마크 트웨인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4161,6 +4636,7 @@ window.investmentQuotes = [
     "text": "지금 모험을 떠나고 싶니, 아니면 차부터 마실까?",
     "title": "피터팬",
     "author": "제임스 매튜 배리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4168,6 +4644,7 @@ window.investmentQuotes = [
     "text": "세상은 믿음과 신뢰, 그리고 요정 가루로 이루어져 있단다.",
     "title": "피터팬",
     "author": "제임스 매튜 배리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4175,6 +4652,7 @@ window.investmentQuotes = [
     "text": "새들이 날 수 있고 우리는 날지 못하는 이유는 간단하다. 새들은 완전한 믿음을 가졌기 때문이다. 믿음을 갖는다는 건 곧 날개를 갖는다는 것.",
     "title": "피터팬",
     "author": "제임스 매튜 배리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4182,6 +4660,7 @@ window.investmentQuotes = [
     "text": "오른쪽으로 두 번째 별을 지나, 아침이 올 때까지 곧장 나아가라.",
     "title": "피터팬",
     "author": "제임스 매튜 배리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4189,6 +4668,7 @@ window.investmentQuotes = [
     "text": "나와 함께 가자, 꿈이 태어나고 시간이 계획되지 않는 곳으로. 행복한 것들만 생각해봐, 그러면 네 마음은 영원히 네버랜드를 날아다닐 테니까!",
     "title": "피터팬",
     "author": "제임스 매튜 배리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4196,6 +4676,7 @@ window.investmentQuotes = [
     "text": "나는 젊음이야, 나는 기쁨이야. 나는 알을 깨고 나온 작은 새란다.",
     "title": "피터팬",
     "author": "제임스 매튜 배리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4203,6 +4684,7 @@ window.investmentQuotes = [
     "text": "웃음에는 시간이 없고, 상상력에는 나이가 없으며, 꿈은 영원하다.",
     "title": "피터팬",
     "author": "제임스 매튜 배리",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4210,6 +4692,7 @@ window.investmentQuotes = [
     "text": "나는 내 처지의 어두운 면보다 밝은 면을 더 바라보는 법을 배웠다. 부족한 것보다 내가 누리고 있는 것을 헤아리게 되었다.",
     "title": "로빈슨 크루소",
     "author": "다니엘 디포",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4217,6 +4700,7 @@ window.investmentQuotes = [
     "text": "우리가 원하는 것에 대한 모든 불만은, 결국 이미 가진 것에 감사할 줄 모르는 데서 비롯된다는 것을 깨달았다.",
     "title": "로빈슨 크루소",
     "author": "다니엘 디포",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4224,6 +4708,7 @@ window.investmentQuotes = [
     "text": "위험에 대한 두려움은 위험 그 자체보다 만 배는 더 무섭다.",
     "title": "로빈슨 크루소",
     "author": "다니엘 디포",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4231,6 +4716,7 @@ window.investmentQuotes = [
     "text": "우리는 반대되는 상황을 겪어보기 전까지는 우리 처지의 진짜 모습을 알지 못하고, 무언가를 잃어보기 전까지는 그 소중함을 깨닫지 못한다.",
     "title": "로빈슨 크루소",
     "author": "다니엘 디포",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4238,6 +4724,7 @@ window.investmentQuotes = [
     "text": "이런 생각들은 내게 섭리의 은혜로움을 깊이 느끼게 했고, 온갖 고난 속에서도 지금의 처지에 진심으로 감사하게 만들었다.",
     "title": "로빈슨 크루소",
     "author": "다니엘 디포",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4245,6 +4732,7 @@ window.investmentQuotes = [
     "text": "한 포기만 자라던 땅에서 옥수수 두 이삭을 자라게 할 수 있는 사람이야말로, 그 어떤 정치가들을 다 합친 것보다 인류에 더 큰 도움이 되는 사람이다.",
     "title": "걸리버 여행기",
     "author": "조너선 스위프트",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4252,6 +4740,7 @@ window.investmentQuotes = [
     "text": "철학자들의 말이 옳다. 크고 작음이란 오직 비교를 통해서만 존재하는 것이다.",
     "title": "걸리버 여행기",
     "author": "조너선 스위프트",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4259,6 +4748,7 @@ window.investmentQuotes = [
     "text": "낯선 나라들을 보고 싶다는 끝없는 열망이 나를 가만히 머물러 있지 못하게 했다.",
     "title": "걸리버 여행기",
     "author": "조너선 스위프트",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4266,6 +4756,7 @@ window.investmentQuotes = [
     "text": "이 자그마한 사람들의 대담함에 나는 그저 놀라울 따름이었다.",
     "title": "걸리버 여행기",
     "author": "조너선 스위프트",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4273,6 +4764,7 @@ window.investmentQuotes = [
     "text": "내가 왕이 되면 사람들에게 빵과 잠자리만이 아니라 책의 가르침도 주리라. 배는 불러도 마음이 굶주려 있다면 아무 소용이 없으니까.",
     "title": "왕자와 거지",
     "author": "마크 트웨인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4280,6 +4772,7 @@ window.investmentQuotes = [
     "text": "배움은 마음을 부드럽게 하고, 온화함과 자비를 길러낸다.",
     "title": "왕자와 거지",
     "author": "마크 트웨인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4287,6 +4780,7 @@ window.investmentQuotes = [
     "text": "자비로움이란 베푸는 이와 받는 이 모두를 축복하는 것. 가장 강한 자에게 가장 잘 어울리는 것은 왕관보다도 바로 그 자비로움이다.",
     "title": "왕자와 거지",
     "author": "마크 트웨인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4294,6 +4788,7 @@ window.investmentQuotes = [
     "text": "세상은 잘못되어 있다. 왕이라면 때때로 자신이 만든 법 아래서 배워야 한다. 그래야 비로소 자비를 알게 될 테니.",
     "title": "왕자와 거지",
     "author": "마크 트웨인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4301,6 +4796,7 @@ window.investmentQuotes = [
     "text": "신께서 뜻하신 일은 반드시 일어난다. 서두를 수도 바꿀 수도 없으니, 그저 기다리며 인내하라.",
     "title": "왕자와 거지",
     "author": "마크 트웨인",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4308,6 +4804,7 @@ window.investmentQuotes = [
     "text": "그저 착하게, 용감하게, 늘 친절하고 진실하게만 살아가렴. 네가 태어났기에 이 넓은 세상이 조금은 더 나아질 테니까.",
     "title": "소공자",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4315,6 +4812,7 @@ window.investmentQuotes = [
     "text": "그는 백작이나 성 같은 것은 아무것도 몰랐지만, 소박하고 다정한 마음씨 덕분에 늘 사랑받았다. 그렇게 사는 것이야말로 왕으로 태어난 것과 같다.",
     "title": "소공자",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4322,6 +4820,7 @@ window.investmentQuotes = [
     "text": "내가 백작이 되어야만 한다면, 할 수 있는 일이 하나 있어요. 좋은 백작이 되려고 노력하는 거예요.",
     "title": "소공자",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4329,6 +4828,7 @@ window.investmentQuotes = [
     "text": "가장 훌륭한 선함이란, 자기 자신이 아니라 다른 사람을 먼저 생각하는 것이다.",
     "title": "소공자",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4336,6 +4836,7 @@ window.investmentQuotes = [
     "text": "나는 당신의 친구예요. 당신도 내 친구고요. 나는 언제까지나 당신의 친구로 남을 거예요.",
     "title": "소공자",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -4343,30 +4844,35 @@ window.investmentQuotes = [
     "text": "그의 가장 큰 매력은 누구와도 씩씩하고 두려움 없이 친구가 되는 방식에 있었다. 그는 모든 사람에게 공감하는 다정한 마음을 지녔다.",
     "title": "소공자",
     "author": "프랜시스 호지슨 버넷",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "잎사귀는 꽃의 어머니야. 숨 쉬고, 비바람을 견디고, 햇빛을 간직했다가 눈부시게 하얀 꽃을 키워 내지. 잎사귀는 정말 훌륭하지.",
     "title": "마당을 나온 암탉",
     "author": "황선미",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "우리나라는 전 국토가 박물관이다.",
     "title": "나의 문화유산답사기",
     "author": "유홍준",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "사랑하면 알게 되고 알면 보이나니 그때 보이는 것은 전과 같지 않으리라.",
     "title": "나의 문화유산답사기",
     "author": "유홍준",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "수덕사 대웅전의 저 간결미와 필요미가 연출한 정숙한 아름다움에 깊은 마음의 감동을 받을 것이다.",
     "title": "나의 문화유산답사기",
     "author": "유홍준",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4388,6 +4894,7 @@ window.investmentQuotes = [
     "text": "우리는 유전자라는 이기적인 분자를 지키도록 맹목적으로 설계된 생존 기계다. 이 사실은 지금도 나를 경이로움으로 채운다.",
     "title": "이기적 유전자",
     "author": "리처드 도킨스",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4395,6 +4902,7 @@ window.investmentQuotes = [
     "text": "세상의 문화에 기여한다면, 좋은 아이디어를 내거나 곡을 짓거나 시를 쓴다면, 그것은 당신의 유전자가 사라진 뒤에도 오랫동안 온전히 살아남을 것이다.",
     "title": "이기적 유전자",
     "author": "리처드 도킨스",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4402,6 +4910,7 @@ window.investmentQuotes = [
     "text": "우리는 유전자 기계로 태어나 밈 기계로 길러졌지만, 우리를 만든 존재에 맞설 힘이 있다. 지구상에서 오직 우리만이 이기적 복제자의 지배에 맞서 반란을 일으킬 수 있다.",
     "title": "이기적 유전자",
     "author": "리처드 도킨스",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4409,6 +4918,7 @@ window.investmentQuotes = [
     "text": "우리는 이기적으로 태어났으니 너그러움과 이타심을 가르치려 애쓰자. 우리 안의 이기적 유전자가 무엇을 꾀하는지 이해한다면, 어떤 종도 시도한 적 없는 방식으로 그 설계를 뒤엎을 기회를 얻을지도 모른다.",
     "title": "이기적 유전자",
     "author": "리처드 도킨스",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4416,6 +4926,7 @@ window.investmentQuotes = [
     "text": "그들은 당신과 내 안에 있다. 몸과 마음을 지닌 우리를 만든 것도 그들이다. 그 복제자들은 머나먼 길을 걸어와, 오늘날 유전자라 불리며 우리를 생존 기계로 삼고 있다.",
     "title": "이기적 유전자",
     "author": "리처드 도킨스",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4423,6 +4934,7 @@ window.investmentQuotes = [
     "text": "우리는 그들의 생존 기계일 뿐, 쓸모를 다하면 버려진다. 그러나 유전자는 지질학적 시간의 주민이다. 유전자는 영원하다.",
     "title": "이기적 유전자",
     "author": "리처드 도킨스",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4430,6 +4942,7 @@ window.investmentQuotes = [
     "text": "우주 어디에서든 생명이 탄생하기 위해 반드시 존재해야 하는 단 하나의 실체는, 바로 영원히 죽지 않는 복제자다.",
     "title": "이기적 유전자",
     "author": "리처드 도킨스",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4437,6 +4950,7 @@ window.investmentQuotes = [
     "text": "사과파이를 정말 처음부터 만들고 싶다면, 먼저 우주를 발명해야 한다.",
     "title": "코스모스",
     "author": "칼 세이건",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4444,6 +4958,7 @@ window.investmentQuotes = [
     "text": "우주적 관점에서 우리 각자는 소중하다. 누군가 당신과 생각이 다르더라도 그를 살려두라. 천억 개의 은하를 뒤져도 그와 똑같은 존재는 다시 찾을 수 없다.",
     "title": "코스모스",
     "author": "칼 세이건",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4451,6 +4966,7 @@ window.investmentQuotes = [
     "text": "책은 우리가 시간을 가로질러 여행하며 조상들의 지혜를 길어 올릴 수 있게 해 준다.",
     "title": "코스모스",
     "author": "칼 세이건",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4458,6 +4974,7 @@ window.investmentQuotes = [
     "text": "탐험은 우리의 본성이다. 우리는 방랑자로 시작했고, 지금도 방랑자다. 우주라는 바다의 기슭에서 충분히 머물렀으니, 이제 별을 향해 돛을 올릴 때다.",
     "title": "코스모스",
     "author": "칼 세이건",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4465,6 +4982,7 @@ window.investmentQuotes = [
     "text": "당신의 DNA 한 분자 속 원자 수는 은하 하나에 있는 별의 수만큼 많다. 우리 각자는 하나의 작은 우주다.",
     "title": "코스모스",
     "author": "칼 세이건",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4472,6 +4990,7 @@ window.investmentQuotes = [
     "text": "생명체의 아름다움은 그것을 이루는 원자 자체가 아니라, 그 원자들이 짜여진 방식에 있다.",
     "title": "코스모스",
     "author": "칼 세이건",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4479,6 +4998,7 @@ window.investmentQuotes = [
     "text": "우리는 질문의 용기와 대답의 깊이로써 우리가 사는 세상을 의미 있게 만든다.",
     "title": "코스모스",
     "author": "칼 세이건",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4486,6 +5006,7 @@ window.investmentQuotes = [
     "text": "인간은 경이로워하도록 진화했고, 이해하는 것은 기쁨이며, 지식은 생존의 전제 조건임을 그것들은 일깨워 준다.",
     "title": "코스모스",
     "author": "칼 세이건",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4493,6 +5014,7 @@ window.investmentQuotes = [
     "text": "글쓰기는 아마 인류 최고의 발명품일 것이다. 서로 만난 적 없는 먼 시대의 사람들을 하나로 이어 준다. 책은 시간의 사슬을 끊는다. 책은 인간이 마법을 부릴 수 있다는 증거다.",
     "title": "코스모스",
     "author": "칼 세이건",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4500,6 +5022,7 @@ window.investmentQuotes = [
     "text": "우리는 저마다 단 한 번의 존재할 기회를 받았다. 우리 각자는 불가능하면서도 필연적인 존재다. 무성한 나무도 처음엔 기다리는 씨앗이었다.",
     "title": "랩 걸",
     "author": "호프 자런",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4507,6 +5030,7 @@ window.investmentQuotes = [
     "text": "씨앗은 기다리는 동안에도 살아 있다. 땅에 떨어진 도토리 한 알은 그 위로 솟은 삼백 년 된 참나무만큼이나 생생하게 살아 있다.",
     "title": "랩 걸",
     "author": "호프 자런",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4514,6 +5038,7 @@ window.investmentQuotes = [
     "text": "나는 여성 과학자이기에 아무도 나를 무엇으로 규정해야 할지 모른다. 그것이 오히려 내가 나만의 길을 마음껏 만들어 갈 짜릿한 자유를 주었다.",
     "title": "랩 걸",
     "author": "호프 자런",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4521,6 +5046,7 @@ window.investmentQuotes = [
     "text": "과학은 내게 모든 것이 처음 짐작보다 훨씬 복잡하다는 것을, 그리고 발견에서 행복을 길어 올릴 줄 아는 것이야말로 아름다운 삶의 비결임을 가르쳐 주었다.",
     "title": "랩 걸",
     "author": "호프 자런",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4528,6 +5054,7 @@ window.investmentQuotes = [
     "text": "아무리 힘든 일도 작은 도움 하나면 쉬워질 수 있다. 알맞은 곳, 알맞은 조건 속에서 우리는 마침내 원래 되어야 할 모습으로 마음껏 뻗어 나갈 수 있다.",
     "title": "랩 걸",
     "author": "호프 자런",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4535,6 +5062,7 @@ window.investmentQuotes = [
     "text": "이 일을 너무 심각하게 받아들이지 마라. 다만, 정말 심각해야 할 때만은 예외다.",
     "title": "랩 걸",
     "author": "호프 자런",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4542,6 +5070,7 @@ window.investmentQuotes = [
     "text": "선인장이 사막에 사는 건 사막을 좋아해서가 아니라, 사막이 아직 그를 꺾지 못했기 때문이다.",
     "title": "랩 걸",
     "author": "호프 자런",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4549,6 +5078,7 @@ window.investmentQuotes = [
     "text": "다정함은 전혀 다른 전략이며, 대단히 강력한 전략이다.",
     "title": "다정한 것이 살아남는다",
     "author": "브라이언 헤어, 버네사 우즈",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4556,6 +5086,7 @@ window.investmentQuotes = [
     "text": "다른 인류종이 사라지는 동안 우리가 번성할 수 있었던 것은 일종의 인지적 초능력, 곧 협력적 의사소통이라는 특별한 다정함 덕분이었다. 우리는 처음 만난 사람과도 함께 일하는 데 능숙한 존재다.",
     "title": "다정한 것이 살아남는다",
     "author": "브라이언 헤어, 버네사 우즈",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4563,6 +5094,7 @@ window.investmentQuotes = [
     "text": "그 능력 덕분에 우리는 서로의 마음에 연결되어, 여러 세대에 걸쳐 쌓인 지식을 물려받을 수 있다.",
     "title": "다정한 것이 살아남는다",
     "author": "브라이언 헤어, 버네사 우즈",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4570,6 +5102,7 @@ window.investmentQuotes = [
     "text": "어른이 될 무렵이면 뇌의 신경망은 다듬어지고 전문화된다. 유연함은 줄어들지만, 우리가 실제로 맞닥뜨릴 문제를 풀어내는 사고력은 오히려 더 좋아진다.",
     "title": "다정한 것이 살아남는다",
     "author": "브라이언 헤어, 버네사 우즈",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4577,6 +5110,7 @@ window.investmentQuotes = [
     "text": "철학자든 과학자든 평범한 사람이든, 우리 모두가 왜 우리와 우주가 존재하는지에 대한 논의에 함께할 수 있을 것이다. 그 답을 찾는다면 그것이야말로 인간 이성의 궁극적 승리이며, 우리는 신의 마음을 알게 될 것이다.",
     "title": "시간의 역사",
     "author": "스티븐 호킹",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4584,6 +5118,7 @@ window.investmentQuotes = [
     "text": "문명이 시작된 이래 사람들은 세상의 사건들을 서로 무관하고 설명할 수 없는 것으로 받아들이는 데 만족한 적이 없었다. 늘 세상 속에 감춰진 질서를 이해하고 싶어 했다.",
     "title": "시간의 역사",
     "author": "스티븐 호킹",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4591,6 +5126,7 @@ window.investmentQuotes = [
     "text": "과학의 궁극적 목표는 우주 전체를 설명하는 단 하나의 이론을 찾아내는 것이다.",
     "title": "시간의 역사",
     "author": "스티븐 호킹",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4598,6 +5134,7 @@ window.investmentQuotes = [
     "text": "시간 여행이 정말 가능하다면, 미래에서 온 여행자들은 대체 다 어디에 있단 말인가?",
     "title": "시간의 역사",
     "author": "스티븐 호킹",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4605,6 +5142,7 @@ window.investmentQuotes = [
     "text": "한 저명한 과학자가 대중 천문학 강연을 마쳤을 때, 한 노부인이 말했다. '세상은 사실 거대한 거북이 등 위에 얹힌 평평한 판이랍니다.' '그럼 그 아래도, 또 그 아래도 온통 거북이란 말씀이군요!'",
     "title": "시간의 역사",
     "author": "스티븐 호킹",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4612,6 +5150,7 @@ window.investmentQuotes = [
     "text": "시간이 흐르며 무질서, 즉 엔트로피가 커지는 현상은 '시간의 화살'이라 불리는 것의 한 예다. 그것이 과거와 미래를 구분지어 시간에 방향을 부여한다.",
     "title": "시간의 역사",
     "author": "스티븐 호킹",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4619,6 +5158,7 @@ window.investmentQuotes = [
     "text": "우리라고 같은 방식으로 DNA를 풀지 못할 이유가 없었다. 분자 모형을 만들어 놓고 가지고 놀기 시작하면 그만이었다. 운이 좋다면 그 구조는 나선형일 터였다.",
     "title": "이중나선",
     "author": "제임스 왓슨",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4626,6 +5166,7 @@ window.investmentQuotes = [
     "text": "실험실에 온 첫날부터 나는 오랫동안 케임브리지를 떠나지 않으리란 걸 알았다. 프랜시스 크릭과 이야기하는 즐거움을 곧바로 발견했으니, 떠난다는 건 어리석은 일이었다.",
     "title": "이중나선",
     "author": "제임스 왓슨",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4633,6 +5174,7 @@ window.investmentQuotes = [
     "text": "그토록 아름다운 건물들은 평생 본 적이 없었다. 안전한 생물학자의 삶을 떠나는 데 대한 망설임은 그 순간 말끔히 사라졌다.",
     "title": "이중나선",
     "author": "제임스 왓슨",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4640,6 +5182,7 @@ window.investmentQuotes = [
     "text": "놀랍고 기쁘게도, 그 답은 몹시 흥미로운 것으로 드러나고 있었다. 나는 두 시간 넘게 아데닌 짝들이 감은 눈앞에서 빙빙 도는 것을 행복하게 바라보며 누워 있었다.",
     "title": "이중나선",
     "author": "제임스 왓슨",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4647,6 +5190,7 @@ window.investmentQuotes = [
     "text": "그녀도 염기쌍의 매력을 알아보았고, 그 구조가 너무나 아름다워서 진실이 아닐 수 없다는 사실을 받아들였다.",
     "title": "이중나선",
     "author": "제임스 왓슨",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4654,6 +5198,7 @@ window.investmentQuotes = [
     "text": "우리가 가정한 이 특정한 짝짓기 방식이 유전 물질의 복제 방식을 곧바로 시사한다는 사실을, 우리는 놓치지 않았다.",
     "title": "이중나선",
     "author": "제임스 왓슨",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4661,6 +5206,7 @@ window.investmentQuotes = [
     "text": "폴링의 반응은 진심 어린 전율 그 자체였고, 델브뤼크도 마찬가지였다. 스스로 짝을 이루는 DNA 분자가 지닌 압도적인 생물학적 아름다움 앞에서 그는 사실상 경쟁을 인정했다.",
     "title": "이중나선",
     "author": "제임스 왓슨",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4668,6 +5214,7 @@ window.investmentQuotes = [
     "text": "거미줄은 하나의 눈부신 수학 문제다.",
     "title": "파브르 곤충기",
     "author": "장 앙리 파브르",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4675,6 +5222,7 @@ window.investmentQuotes = [
     "text": "새알은 그 기하학적 형태의 정교한 단순함과 장식만으로도, 안목이 얕은 눈조차 매혹시킨다.",
     "title": "파브르 곤충기",
     "author": "장 앙리 파브르",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4682,6 +5230,7 @@ window.investmentQuotes = [
     "text": "나는 경이로움에 사로잡힌다, 마침내 이해했으므로!",
     "title": "파브르 곤충기",
     "author": "장 앙리 파브르",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4689,6 +5238,7 @@ window.investmentQuotes = [
     "text": "메뚜기 무리에게도 기쁨이 벅차오르는 순간이 있다. 게다가 그들은 그것을 소리로 표현할 수 있으니, 예술가의 소박한 만족감을 지닌 셈이다.",
     "title": "파브르 곤충기",
     "author": "장 앙리 파브르",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4696,6 +5246,7 @@ window.investmentQuotes = [
     "text": "반딧불이만큼 유명한 곤충도 드물다. 꽁무니에 등불을 켜서 삶의 기쁨을 노래하는 이 신기한 작은 동물을, 직접 본 적 없어도 우리는 적어도 이름으로는 안다. 마치 보름달에서 떨어진 불꽃 한 점처럼.",
     "title": "파브르 곤충기",
     "author": "장 앙리 파브르",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4703,6 +5254,7 @@ window.investmentQuotes = [
     "text": "신성한 쇠똥구리는 그토록 정교한 정확함이 필요함에도 언제나 구형만을 고집한다. 마치 처음부터 증발과 기하학의 법칙을 알고 있었던 것처럼.",
     "title": "파브르 곤충기",
     "author": "장 앙리 파브르",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4710,6 +5262,7 @@ window.investmentQuotes = [
     "text": "훈련된 정신만이 우리의 망막보다 더 예리하게, 눈의 지각 능력으로는 닿을 수 없는 것을 또렷이 본다.",
     "title": "파브르 곤충기",
     "author": "장 앙리 파브르",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4717,6 +5270,7 @@ window.investmentQuotes = [
     "text": "배움에서 중요한 것은 가르침을 받는 것이 아니라, 스스로 깨어나는 것이다.",
     "title": "파브르 곤충기",
     "author": "장 앙리 파브르",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4724,6 +5278,7 @@ window.investmentQuotes = [
     "text": "관찰자는 그 무엇도 소홀히 해서는 안 된다. 아무리 하찮아 보이는 사실도 무엇을 낳을지 알 수 없기 때문이다.",
     "title": "파브르 곤충기",
     "author": "장 앙리 파브르",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4731,6 +5286,7 @@ window.investmentQuotes = [
     "text": "우리는 소유자가 아니라 청지기다.",
     "title": "지구의 절반",
     "author": "에드워드 윌슨",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4738,6 +5294,7 @@ window.investmentQuotes = [
     "text": "지금 살아 있는 모든 종은 우리에게 소중하다. 박물학자는 그 경이로운 '발견의 순간'을 위해 살아간다. 우리는 그 경험을 모든 미래 세대를 위해 지켜내고 싶다.",
     "title": "지구의 절반",
     "author": "에드워드 윌슨",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4745,6 +5302,7 @@ window.investmentQuotes = [
     "text": "생물권은 우리의 소유가 아니다. 오히려 우리가 생물권에 속해 있다.",
     "title": "지구의 절반",
     "author": "에드워드 윌슨",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4752,6 +5310,7 @@ window.investmentQuotes = [
     "text": "그렇게 보면 모든 종의 역사는 한 편의 장대한 서사시다.",
     "title": "지구의 절반",
     "author": "에드워드 윌슨",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4759,6 +5318,7 @@ window.investmentQuotes = [
     "text": "살아 있는 지구, 그 전부가 계속 숨 쉴 수 있다.",
     "title": "지구의 절반",
     "author": "에드워드 윌슨",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4766,6 +5326,7 @@ window.investmentQuotes = [
     "text": "모든 보전 프로젝트는 저마다 특별하다. 과학자와 활동가, 지도자들이 함께 나누는 그 지역에 대한 지식과 애정이 그 바탕이 된다.",
     "title": "지구의 절반",
     "author": "에드워드 윌슨",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4773,6 +5334,7 @@ window.investmentQuotes = [
     "text": "자연이 우리에게 보여주는 수학적 구조의 단순함과 아름다움에 나는 강하게 매료된다는 것을 솔직히 인정한다. 당신도 느꼈을 것이다, 자연이 문득 우리 앞에 펼쳐 보이는 그 관계의 두려울 만큼 완전한 단순함을.",
     "title": "부분과 전체",
     "author": "베르너 하이젠베르크",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4780,6 +5342,7 @@ window.investmentQuotes = [
     "text": "전문가란 자기 분야에서 저지를 수 있는 가장 심각한 실수 몇 가지를 알기에, 그것을 피할 줄 아는 사람이다.",
     "title": "부분과 전체",
     "author": "베르너 하이젠베르크",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4787,6 +5350,7 @@ window.investmentQuotes = [
     "text": "양자론은 하나의 사실을 완전히 명료하게 이해했으면서도, 그것을 오직 비유와 이미지로만 말할 수 있다는 것을 동시에 아는 놀라운 사례다.",
     "title": "부분과 전체",
     "author": "베르너 하이젠베르크",
+    "category": "과학",
     "genre": "literature"
   },
   {
@@ -4794,6 +5358,7 @@ window.investmentQuotes = [
     "text": "역사를 공부하는 것은 미래를 알기 위해서가 아니라 우리의 시야를 넓히기 위해서다. 지금의 상황이 자연스럽거나 필연적인 것이 아니며, 우리 앞에 상상보다 훨씬 많은 가능성이 놓여 있음을 깨닫기 위해서다.",
     "title": "사피엔스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4801,6 +5366,7 @@ window.investmentQuotes = [
     "text": "화폐는 인류가 만들어낸 것 중 가장 보편적이고 효율적인 상호 신뢰의 체계다.",
     "title": "사피엔스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4808,6 +5374,7 @@ window.investmentQuotes = [
     "text": "낯선 사람들도 공통의 신화를 믿으면 대규모로 협력할 수 있다. 어떤 대규모 인간 협력도 사람들의 집단적 상상 속에만 존재하는 공통의 신화에 뿌리를 두고 있다.",
     "title": "사피엔스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4815,6 +5382,7 @@ window.investmentQuotes = [
     "text": "의미 있는 삶은 고난 속에서도 더없이 충만할 수 있지만, 의미 없는 삶은 아무리 편안해도 끔찍한 시련일 뿐이다.",
     "title": "사피엔스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4822,6 +5390,7 @@ window.investmentQuotes = [
     "text": "행복은 부나 건강, 심지어 공동체 같은 객관적 조건에 좌우되지 않는다. 오히려 객관적 조건과 주관적 기대 사이의 상관관계에 달려 있다.",
     "title": "사피엔스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4829,6 +5398,7 @@ window.investmentQuotes = [
     "text": "위계는 중요한 기능을 한다. 낯선 이들이 서로 알아가는 데 드는 시간과 에너지를 낭비하지 않고도, 서로를 어떻게 대해야 할지 알게 해주기 때문이다.",
     "title": "사피엔스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4836,6 +5406,7 @@ window.investmentQuotes = [
     "text": "기존의 상상된 질서를 바꾸려면, 먼저 대안이 되는 상상된 질서를 믿어야 한다.",
     "title": "사피엔스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4843,6 +5414,7 @@ window.investmentQuotes = [
     "text": "사치품이 필수품이 되고 새로운 의무를 낳는다는 것, 이것이 역사의 몇 안 되는 철칙 중 하나다.",
     "title": "사피엔스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4850,6 +5422,7 @@ window.investmentQuotes = [
     "text": "역사를 배우는 가장 좋은 이유는 미래를 예측하기 위해서가 아니라, 과거로부터 자유로워져 또 다른 운명을 상상하기 위해서다.",
     "title": "호모 데우스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4857,6 +5430,7 @@ window.investmentQuotes = [
     "text": "사람들은 대개 미지의 것이 두려워서 변화를 두려워한다. 하지만 역사에서 변하지 않는 단 하나의 상수는, 모든 것이 변한다는 사실이다.",
     "title": "호모 데우스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4864,6 +5438,7 @@ window.investmentQuotes = [
     "text": "가장 위대한 과학적 발견은 무지의 발견이었다. 인간이 세상에 대해 얼마나 모르는지 깨달은 순간, 비로소 새로운 지식을 추구할 좋은 이유를 갖게 되었다.",
     "title": "호모 데우스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4871,6 +5446,7 @@ window.investmentQuotes = [
     "text": "역사는 하나의 이야기가 아니라 수천 개의 대안적 이야기들이다. 우리가 하나를 선택해 들려줄 때마다, 다른 이야기들은 침묵하게 된다.",
     "title": "호모 데우스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4878,6 +5454,7 @@ window.investmentQuotes = [
     "text": "허구는 나쁜 것이 아니다. 오히려 필수적이다. 돈이나 국가, 기업에 대해 공통으로 받아들여지는 이야기 없이는, 복잡한 인간 사회는 작동할 수 없다.",
     "title": "호모 데우스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4885,6 +5462,7 @@ window.investmentQuotes = [
     "text": "우리는 평화롭고 풍요로운 삶을 산다고 해서 만족하지 않는다. 현실이 기대와 맞아떨어질 때 비로소 만족하게 된다.",
     "title": "호모 데우스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4892,6 +5470,7 @@ window.investmentQuotes = [
     "text": "진정한 행복에 이르려면, 인간은 즐거운 감각을 좇는 속도를 늦춰야지 오히려 가속해서는 안 된다.",
     "title": "호모 데우스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4899,6 +5478,7 @@ window.investmentQuotes = [
     "text": "삶의 대부분은 사람들이 서로에게 들려주는 이야기들의 그물망 속에서만 비로소 의미를 갖는다.",
     "title": "호모 데우스",
     "author": "유발 하라리",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4906,6 +5486,7 @@ window.investmentQuotes = [
     "text": "역사가 민족마다 다른 길을 걷게 한 것은 그들 사이의 생물학적 차이 때문이 아니라, 각자가 처한 환경의 차이 때문이다.",
     "title": "총, 균, 쇠",
     "author": "재레드 다이아몬드",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4913,6 +5494,7 @@ window.investmentQuotes = [
     "text": "모든 인간 사회에는 창의적인 사람들이 있다. 다만 어떤 환경은 발명을 실현할 재료와 조건을 다른 환경보다 더 풍부하게 제공할 뿐이다.",
     "title": "총, 균, 쇠",
     "author": "재레드 다이아몬드",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4920,6 +5502,7 @@ window.investmentQuotes = [
     "text": "내가 내린 결론은, 기술은 고립된 영웅적 행위가 아니라 축적을 통해 발전한다는 것과, 대개는 예견된 필요를 채우기보다 발명된 뒤에야 쓰임새를 찾는다는 것이다.",
     "title": "총, 균, 쇠",
     "author": "재레드 다이아몬드",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4927,6 +5510,7 @@ window.investmentQuotes = [
     "text": "약 7500년 전 족장사회가 출현하면서, 사람들은 역사상 처음으로 낯선 이를 만나도 죽이려 들지 않고 지내는 법을 배워야 했다.",
     "title": "총, 균, 쇠",
     "author": "재레드 다이아몬드",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4934,6 +5518,7 @@ window.investmentQuotes = [
     "text": "식량을 비축할 수 있게 되자, 정치 엘리트는 다른 이가 생산한 식량을 통제하고 세금을 걷을 권리를 주장하며, 스스로 식량을 구할 필요 없이 온전히 정치에 전념할 수 있게 되었다.",
     "title": "총, 균, 쇠",
     "author": "재레드 다이아몬드",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4941,6 +5526,7 @@ window.investmentQuotes = [
     "text": "네안데르탈인은 수많은 만화에서 유인원 같은 야만인으로 그려지지만, 사실 그들의 뇌는 우리보다 조금 더 컸다. 그들은 또한 죽은 이를 묻고 병든 이를 돌본 최초의 인류이기도 했다.",
     "title": "총, 균, 쇠",
     "author": "재레드 다이아몬드",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4948,6 +5534,7 @@ window.investmentQuotes = [
     "text": "많은 것을 사랑하는 것은 좋은 일이다. 그 안에 진정한 힘이 있기 때문이다. 많이 사랑하는 사람은 많은 것을 해내고 이룰 수 있으며, 사랑으로 한 일은 언제나 잘 된 일이다.",
     "title": "반 고흐, 영혼의 편지",
     "author": "빈센트 반 고흐",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4955,6 +5542,7 @@ window.investmentQuotes = [
     "text": "나는 내 그림을 꿈꾸고, 내 꿈을 그린다.",
     "title": "반 고흐, 영혼의 편지",
     "author": "빈센트 반 고흐",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4962,6 +5550,7 @@ window.investmentQuotes = [
     "text": "저 높은 곳의 별들과 무한함을 또렷이 의식해 보라. 그러면 삶은 결국 거의 마법처럼 느껴진다.",
     "title": "반 고흐, 영혼의 편지",
     "author": "빈센트 반 고흐",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4969,6 +5558,7 @@ window.investmentQuotes = [
     "text": "사람을 사랑하는 것보다 더 진정으로 예술적인 일은 없다.",
     "title": "반 고흐, 영혼의 편지",
     "author": "빈센트 반 고흐",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4976,6 +5566,7 @@ window.investmentQuotes = [
     "text": "자연을 진심으로 사랑한다면, 어디서든 아름다움을 발견하게 될 것이다.",
     "title": "반 고흐, 영혼의 편지",
     "author": "빈센트 반 고흐",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4983,6 +5574,7 @@ window.investmentQuotes = [
     "text": "위대한 일은 충동으로 이루어지지 않는다. 작은 것들이 하나하나 모여 이루어지는 것이다.",
     "title": "반 고흐, 영혼의 편지",
     "author": "빈센트 반 고흐",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4990,6 +5582,7 @@ window.investmentQuotes = [
     "text": "시작이 어쩌면 가장 어려운 일일지 모른다. 하지만 마음을 굳게 먹어라, 결국은 다 잘될 것이다.",
     "title": "반 고흐, 영혼의 편지",
     "author": "빈센트 반 고흐",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -4997,6 +5590,7 @@ window.investmentQuotes = [
     "text": "오랫동안 바라보는 것, 그것이 우리를 성숙하게 하고 더 깊은 의미를 갖게 한다.",
     "title": "반 고흐, 영혼의 편지",
     "author": "빈센트 반 고흐",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -5004,6 +5598,7 @@ window.investmentQuotes = [
     "text": "나는 종종 생각한다, 밤이 낮보다 훨씬 더 생기 있고 풍부한 색으로 살아 있다고.",
     "title": "반 고흐, 영혼의 편지",
     "author": "빈센트 반 고흐",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -5011,6 +5606,7 @@ window.investmentQuotes = [
     "text": "나는 아직 할 수 없는 일을 늘 하고 있다. 그렇게 함으로써 하는 법을 배우게 된다.",
     "title": "반 고흐, 영혼의 편지",
     "author": "빈센트 반 고흐",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -5018,6 +5614,7 @@ window.investmentQuotes = [
     "text": "책을 읽는 것은 그림을 보는 것과 같다. 의심 없이, 주저 없이, 확신을 갖고 아름다운 것을 찬미해야 한다.",
     "title": "반 고흐, 영혼의 편지",
     "author": "빈센트 반 고흐",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -5025,6 +5622,7 @@ window.investmentQuotes = [
     "text": "사실이 없는 역사가는 뿌리도 없고 무의미하며, 역사가가 없는 사실은 죽은 것이나 다름없다.",
     "title": "역사란 무엇인가",
     "author": "E.H. 카",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -5032,6 +5630,7 @@ window.investmentQuotes = [
     "text": "역사란 무엇인가? 그것은 역사가와 사실 사이에서 끊임없이 이어지는 상호작용의 과정이며, 현재와 과거 사이의 끝나지 않는 대화다.",
     "title": "역사란 무엇인가",
     "author": "E.H. 카",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -5039,6 +5638,7 @@ window.investmentQuotes = [
     "text": "흔히 사실이 스스로 말한다고 하지만, 이는 사실이 아니다. 사실은 역사가가 불러줄 때에야 비로소 말을 한다.",
     "title": "역사란 무엇인가",
     "author": "E.H. 카",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -5046,6 +5646,7 @@ window.investmentQuotes = [
     "text": "변화는 확실하다. 그러나 진보는 확실하지 않다.",
     "title": "역사란 무엇인가",
     "author": "E.H. 카",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -5053,6 +5654,7 @@ window.investmentQuotes = [
     "text": "사실을 연구하기에 앞서, 먼저 그 역사가를 연구하라.",
     "title": "역사란 무엇인가",
     "author": "E.H. 카",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -5060,72 +5662,84 @@ window.investmentQuotes = [
     "text": "역사가는 필연적으로 선택적일 수밖에 없다. 역사적 사실이 역사가의 해석과 무관하게 객관적으로 존재한다는 믿음은 터무니없는 오류이지만, 좀처럼 뿌리 뽑히지 않는다.",
     "title": "역사란 무엇인가",
     "author": "E.H. 카",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "서 있던 건물의 흔적이란 온데간데없고 덩그러니 석탑 하나만 서 있는 폐사지의 정취를 아시는지요.",
     "title": "나의 문화유산답사기",
     "author": "유홍준",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "우리나라는 국토 전체가 박물관이다. 산과 들과 강, 바다에 이르기까지 문화유산 아닌 곳이 없다.",
     "title": "나의 문화유산답사기",
     "author": "유홍준",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "역사는 무엇보다 사람을 만나는 인문학이다. 수천 년 동안의 사람 이야기가 역사 속에 고스란히 녹아 있다.",
     "title": "역사의 쓸모",
     "author": "최태성",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "가슴 뛰는 삶을 살았던 사람을 만나 그들의 고민과 선택, 행동의 의미를 짚다 보면, 아무리 힘들어도 자신의 삶을 걸어가는 법을 배우게 된다. 그것이 바로 역사의 힘이다.",
     "title": "역사의 쓸모",
     "author": "최태성",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "역사는 나보다 앞서 살았던 사람들의 삶을 들여다보면서, 나는 어떻게 살 것인가를 고민하고 실천할 수 있도록 도와주는 존재다.",
     "title": "역사의 쓸모",
     "author": "최태성",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "역사를 공부한다는 것은 사람들이 왜 그런 선택을 했는지 상상해보고, 그의 입장이 되어 생각해보는 일이다.",
     "title": "역사의 쓸모",
     "author": "최태성",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "역사 속 인물들에게 '왜'라고 묻고 가슴으로 대화를 해보면, 우리 삶의 고민에 대한 답을 찾을 수 있다.",
     "title": "역사의 쓸모",
     "author": "최태성",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "삶이라는 문제에 역사보다 완벽한 해설서는 없다.",
     "title": "역사의 쓸모",
     "author": "최태성",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "지성에서는 그리스인보다 못하고, 체력에서는 켈트인이나 게르만인보다 못하고, 기술력에서는 에트루리아인보다 못하고, 경제력에서는 카르타고인보다 뒤떨어지는 것이 로마인이라고, 로마인 스스로가 인정하고 있었다.",
     "title": "로마인 이야기",
     "author": "시오노 나나미",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "패자조차도 자기들에게 동화시키는 이 방식만큼, 로마의 강대화에 이바지한 것은 없었다.",
     "title": "로마인 이야기",
     "author": "시오노 나나미",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "한 나라의 역사는 한 사람의 생애와 같다. 철저하게 알고 싶으면 그 사람의 탄생부터 죽을 때까지를 알아야 하듯, 역사도 마찬가지다.",
     "title": "로마인 이야기",
     "author": "시오노 나나미",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -5133,6 +5747,7 @@ window.investmentQuotes = [
     "text": "제비 한 마리가 왔다고 여름이 오는 것은 아니듯, 하루나 잠깐의 행복만으로 한 사람 전체가 행복해지는 것은 아니다.",
     "title": "니코마코스 윤리학",
     "author": "아리스토텔레스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5140,6 +5755,7 @@ window.investmentQuotes = [
     "text": "우리가 배워서 할 수 있게 되는 일들은, 사실 그 일을 직접 해봄으로써 배우게 되는 것이다.",
     "title": "니코마코스 윤리학",
     "author": "아리스토텔레스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5147,6 +5763,7 @@ window.investmentQuotes = [
     "text": "다른 모든 좋은 것을 다 가졌다 해도, 친구가 없다면 아무도 살고 싶어 하지 않을 것이다.",
     "title": "니코마코스 윤리학",
     "author": "아리스토텔레스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5154,6 +5771,7 @@ window.investmentQuotes = [
     "text": "행복이란 그 자체로 완전하고 스스로 충분한 것이며, 우리 모든 행동이 향해 가는 궁극의 목적이다.",
     "title": "니코마코스 윤리학",
     "author": "아리스토텔레스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5161,6 +5779,7 @@ window.investmentQuotes = [
     "text": "생각하고 배우는 데서 오는 즐거움은, 우리를 더욱 생각하고 배우게 만든다.",
     "title": "니코마코스 윤리학",
     "author": "아리스토텔레스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5168,6 +5787,7 @@ window.investmentQuotes = [
     "text": "거듭되는 불운을 침착하게 견디는 사람에게서 영혼의 아름다움이 빛난다. 아픔을 못 느껴서가 아니라, 고귀하고 담대한 기품을 지녔기 때문이다.",
     "title": "니코마코스 윤리학",
     "author": "아리스토텔레스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5175,6 +5795,7 @@ window.investmentQuotes = [
     "text": "시작이란, 전체의 절반보다 더 큰 무게를 지닌다.",
     "title": "니코마코스 윤리학",
     "author": "아리스토텔레스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5182,6 +5803,7 @@ window.investmentQuotes = [
     "text": "고귀한 행동을 하면서도 기쁨을 느끼지 못하는 사람은, 결코 선한 사람이라 할 수 없다.",
     "title": "니코마코스 윤리학",
     "author": "아리스토텔레스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5189,6 +5811,7 @@ window.investmentQuotes = [
     "text": "각 주제가 허용하는 만큼의 명료함을 그 안에서 찾아내려는 것, 그것이 바로 교양 있는 사람의 태도다.",
     "title": "니코마코스 윤리학",
     "author": "아리스토텔레스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5196,6 +5819,7 @@ window.investmentQuotes = [
     "text": "사랑은 모든 인간의 마음속에서 태어난다. 사랑은 원래 하나였던 우리의 반쪽을 다시 불러 모아, 둘을 하나로 만들어 인간 본성의 상처를 치유하려 한다.",
     "title": "향연",
     "author": "플라톤",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5203,6 +5827,7 @@ window.investmentQuotes = [
     "text": "우리는 본래 온전한 하나였다. 이제 '사랑'이란, 그 온전함을 되찾으려는 갈망, 완전해지고 싶은 우리의 열망에 붙인 이름이다.",
     "title": "향연",
     "author": "플라톤",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5210,6 +5835,7 @@ window.investmentQuotes = [
     "text": "자신의 진짜 반쪽을 만나는 순간, 놀라운 일이 일어난다. 두 사람은 사랑과 서로에게 속해 있다는 감각에 사로잡혀 단 한 순간도 떨어지고 싶어 하지 않는다.",
     "title": "향연",
     "author": "플라톤",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5217,6 +5843,7 @@ window.investmentQuotes = [
     "text": "만약 서로 사랑하는 이들로만 이루어진 나라나 군대를 만들 수 있다면, 그들이야말로 가장 훌륭하게 나라를 다스릴 것이다. 사랑은 가장 겁 많은 자마저 용감한 영웅으로 만든다.",
     "title": "향연",
     "author": "플라톤",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5224,6 +5851,7 @@ window.investmentQuotes = [
     "text": "마음의 눈으로 아름다움을 바라보는 사람은, 아름다움의 그림자가 아니라 실재를 낳을 수 있다. 그렇게 참된 덕을 낳고 길러내어, 마침내 신의 벗이 되고 불멸에 이른다.",
     "title": "향연",
     "author": "플라톤",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5231,6 +5859,7 @@ window.investmentQuotes = [
     "text": "신도 지혜를 사랑하지 않고, 이미 지혜로운 자도 지혜를 사랑하지 않는다. 지혜를 사랑함은, 부족함을 알고 갈망하는 자만이 누릴 수 있는 것이다.",
     "title": "향연",
     "author": "플라톤",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5238,6 +5867,7 @@ window.investmentQuotes = [
     "text": "마음에는 이성이 알지 못하는 나름의 이유가 있다. 우리는 진리를 이성으로만이 아니라 마음으로도 안다.",
     "title": "팡세",
     "author": "블레즈 파스칼",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5245,6 +5875,7 @@ window.investmentQuotes = [
     "text": "우리는 대체로, 남이 일러준 이유보다 스스로 찾아낸 이유에 더 깊이 설득된다.",
     "title": "팡세",
     "author": "블레즈 파스칼",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5252,6 +5883,7 @@ window.investmentQuotes = [
     "text": "인간은 자연에서 가장 연약한 한 줄기 갈대에 불과하다. 그러나 그는 생각하는 갈대다. 우주가 그를 짓누른다 해도, 자신이 죽는다는 것을 아는 인간은 그를 짓누르는 우주보다 오히려 더 고귀하다.",
     "title": "팡세",
     "author": "블레즈 파스칼",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5259,6 +5891,7 @@ window.investmentQuotes = [
     "text": "철학을 가볍게 여길 줄 아는 것, 그것이야말로 진정한 철학자의 태도다.",
     "title": "팡세",
     "author": "블레즈 파스칼",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5266,6 +5899,7 @@ window.investmentQuotes = [
     "text": "모든 인간은 행복을 추구한다. 예외는 없다. 저마다 다른 길을 택할 뿐, 결국 모두가 이 하나의 목적을 향해 나아간다.",
     "title": "팡세",
     "author": "블레즈 파스칼",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5273,6 +5907,7 @@ window.investmentQuotes = [
     "text": "우리 안에는 아득한 옛날의 행복이 남긴 흔적이 여전히 남아 있다. 그것은 결코 완전히 사라지지 않았다.",
     "title": "팡세",
     "author": "블레즈 파스칼",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5280,6 +5915,7 @@ window.investmentQuotes = [
     "text": "모든 것이 불확실하다는 것, 그 사실조차도 완전히 확실한 것은 아니다.",
     "title": "팡세",
     "author": "블레즈 파스칼",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5287,6 +5923,7 @@ window.investmentQuotes = [
     "text": "지성이 클수록 사람들 안에서 더 많은 개성을 발견한다. 평범한 이들은 사람과 사람 사이에서 아무 차이도 보지 못한다.",
     "title": "팡세",
     "author": "블레즈 파스칼",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5294,6 +5931,7 @@ window.investmentQuotes = [
     "text": "아무도 아무것도 소유하지 않지만, 모두가 부유하다. 명랑함과 평온한 마음, 근심 없는 삶보다 더 큰 재산이 어디 있겠는가?",
     "title": "유토피아",
     "author": "토마스 모어",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5301,6 +5939,7 @@ window.investmentQuotes = [
     "text": "예쁜 얼굴은 사람의 마음을 사로잡기에 충분할지 몰라도, 그 마음을 붙잡아 두는 것은 결국 인품과 선한 성품이다.",
     "title": "유토피아",
     "author": "토마스 모어",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5308,6 +5947,7 @@ window.investmentQuotes = [
     "text": "친절과 선한 마음은 그 어떤 계약보다도 강하게 사람들을 하나로 묶는다. 마음으로 맺어진 약속이 말로 맺은 의무보다 훨씬 굳건하기 때문이다.",
     "title": "유토피아",
     "author": "토마스 모어",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5315,6 +5955,7 @@ window.investmentQuotes = [
     "text": "바람을 마음대로 다룰 수 없다고 해서, 폭풍 속에서 배를 버리고 떠나지는 않는 법이다.",
     "title": "유토피아",
     "author": "토마스 모어",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5322,6 +5963,7 @@ window.investmentQuotes = [
     "text": "그들이 애초에 왜 당신을 왕으로 세웠다고 생각하는가? 목자가 자신이 아니라 양들을 먹이는 것이 본분이듯, 왕의 본분도 백성을 돌보는 데 있다.",
     "title": "유토피아",
     "author": "토마스 모어",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5329,6 +5971,7 @@ window.investmentQuotes = [
     "text": "인간이 완전해지기 전까지는 세상도 결코 완전해지지 않을 것이다 — 물론 그런 날이 그리 쉽게 오리라고는 나도 기대하지 않지만.",
     "title": "유토피아",
     "author": "토마스 모어",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5336,6 +5979,7 @@ window.investmentQuotes = [
     "text": "지금 맡은 무대를 최선을 다해 성공시켜라. 더 즐거울 것 같은 다른 연극이 떠올랐다고 지금의 연극 전체를 망쳐서는 안 된다.",
     "title": "유토피아",
     "author": "토마스 모어",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5343,6 +5987,7 @@ window.investmentQuotes = [
     "text": "남을 가르치거나 즐겁게 하려고 스스로를 못살게 구는 것보다는, 마음 편히 삶을 즐기는 편이 훨씬 나을 때가 많다.",
     "title": "유토피아",
     "author": "토마스 모어",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5350,6 +5995,7 @@ window.investmentQuotes = [
     "text": "내가 가진 것이 곧 나 자신이라면, 그것을 잃었을 때 나는 대체 누구인가?",
     "title": "소유냐 존재냐",
     "author": "에리히 프롬",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5357,6 +6003,7 @@ window.investmentQuotes = [
     "text": "실제로 존재하는 것은 오직 사랑하는 행위뿐이다. 사랑한다는 것은 돌보고, 알고, 응답하고, 긍정하고, 기뻐하는 능동적인 행위이며, 그 대상에게 생명력을 더해주는 일이다.",
     "title": "소유냐 존재냐",
     "author": "에리히 프롬",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5364,6 +6011,7 @@ window.investmentQuotes = [
     "text": "사랑을 경험하는 것, 기쁨을 느끼는 것, 진리를 깨닫는 것 — 이 모든 것은 시간 속에서가 아니라 오직 지금 이 순간에 일어난다.",
     "title": "소유냐 존재냐",
     "author": "에리히 프롬",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5371,6 +6019,7 @@ window.investmentQuotes = [
     "text": "살아 있는 모든 것을 즐기고, 자신의 역량을 세상 속으로 아낌없이 쏟아붓는 것 — 소유하는 것이 아니라 존재하는 것, 그것이 인간을 풍요롭게 한다.",
     "title": "소유냐 존재냐",
     "author": "에리히 프롬",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5378,6 +6027,7 @@ window.investmentQuotes = [
     "text": "모든 새로운 걸음에는 실패의 위험이 따른다. 그것이 바로 사람들이 자유를 두려워하는 이유 중 하나다.",
     "title": "소유냐 존재냐",
     "author": "에리히 프롬",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5385,6 +6035,7 @@ window.investmentQuotes = [
     "text": "진정으로 자유라 부를 수 있는 것은, 타인의 자유를 침해하지 않는 한 자신만의 방식으로 자신의 행복을 추구하는 것이다.",
     "title": "자유론",
     "author": "존 스튜어트 밀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5392,6 +6043,7 @@ window.investmentQuotes = [
     "text": "한 사람의 개성이 발전할수록, 그는 스스로에게 더 소중한 존재가 되고, 그만큼 다른 이들에게도 더 소중한 존재가 될 수 있다.",
     "title": "자유론",
     "author": "존 스튜어트 밀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5399,6 +6051,7 @@ window.investmentQuotes = [
     "text": "천재는 언제나 소수일 수밖에 없다. 그러나 그들이 자라나려면, 그들이 뿌리내릴 토양을 지켜주어야 한다.",
     "title": "자유론",
     "author": "존 스튜어트 밀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5406,6 +6059,7 @@ window.investmentQuotes = [
     "text": "이 소수의 사람들이야말로 세상의 소금이다. 그들이 없다면 인간의 삶은 고인 물처럼 썩고 말 것이다. 그들은 새로운 좋은 것을 만들 뿐 아니라, 이미 있는 것에도 생기를 불어넣는다.",
     "title": "자유론",
     "author": "존 스튜어트 밀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5413,6 +6067,7 @@ window.investmentQuotes = [
     "text": "자신의 지성이 이끄는 결론이 어디든 그것을 따르는 것이 사상가의 첫 번째 의무임을 깨닫지 못하는 사람은 결코 위대한 사상가가 될 수 없다.",
     "title": "자유론",
     "author": "존 스튜어트 밀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5420,6 +6075,7 @@ window.investmentQuotes = [
     "text": "생각한 바를 솔직하고 온전히 말하는 사람은 그 자체로 세상에 기여하고 있는 것이다. 우리가 가장 소중히 여기는 생각을 거침없이 공격해 주는 이에게 오히려 감사해야 한다.",
     "title": "자유론",
     "author": "존 스튜어트 밀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5427,6 +6083,7 @@ window.investmentQuotes = [
     "text": "세상이 대신 자신의 삶을 결정하도록 내버려 두는 사람에게는 흉내 내는 재주 말고는 필요한 것이 없다. 그러나 스스로 자신의 삶을 선택하는 사람은 자신의 모든 능력을 온전히 발휘한다.",
     "title": "자유론",
     "author": "존 스튜어트 밀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5434,6 +6091,7 @@ window.investmentQuotes = [
     "text": "자신의 욕구와 충동이 진정 자기 자신의 것, 스스로 가꾸어 온 본성의 표현인 사람 — 그런 사람을 두고 우리는 인격을 지녔다고 말한다.",
     "title": "자유론",
     "author": "존 스튜어트 밀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5441,6 +6099,7 @@ window.investmentQuotes = [
     "text": "한 인간이 어떤 주제의 전체를 어렴풋이나마 알 수 있는 유일한 길은, 온갖 다양한 의견을 지닌 사람들의 말에 귀 기울이는 것이다. 어떤 현자도 이 방법 말고는 지혜를 얻은 적이 없다.",
     "title": "자유론",
     "author": "존 스튜어트 밀",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5448,6 +6107,7 @@ window.investmentQuotes = [
     "text": "내가 이해하는 모든 것은, 오직 사랑하기에 이해할 수 있는 것이다. 모든 것이 존재하는 것도, 오직 사랑이 있기 때문이다.",
     "title": "인생론",
     "author": "레프 톨스토이",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5455,6 +6115,7 @@ window.investmentQuotes = [
     "text": "사랑은 곧 신이다. 죽는다는 것은, 사랑의 한 조각인 내가 그 영원한 근원으로 돌아가는 것일 뿐이다.",
     "title": "인생론",
     "author": "레프 톨스토이",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5462,6 +6123,7 @@ window.investmentQuotes = [
     "text": "미래의 사랑이란 존재하지 않는다. 사랑은 오직 지금 이 순간의 행위일 뿐이다. 지금 사랑을 드러내지 않는 사람에게는 사랑이 없는 것이다.",
     "title": "인생론",
     "author": "레프 톨스토이",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5469,6 +6131,7 @@ window.investmentQuotes = [
     "text": "사랑은 억지로 할 수 없다. 그러나 지금 사랑하지 못한다고 해서 당신 안에 사랑이 없는 것은 아니다. 다만 그 사랑을 가로막는 무언가가 있을 뿐이다.",
     "title": "인생론",
     "author": "레프 톨스토이",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5476,6 +6139,7 @@ window.investmentQuotes = [
     "text": "누군가를 사랑한다는 것은, 그가 되었으면 하는 모습이 아니라 있는 그대로의 그를 사랑하는 것이다.",
     "title": "인생론",
     "author": "레프 톨스토이",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5483,6 +6147,7 @@ window.investmentQuotes = [
     "text": "사랑이야말로 참된 삶을 온전히 채우는 유일한 활동이다.",
     "title": "인생론",
     "author": "레프 톨스토이",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5490,6 +6155,7 @@ window.investmentQuotes = [
     "text": "삶이 전부다. 삶이 곧 신이다. 모든 것은 흐르고 움직이며, 그 움직임 자체가 신이다. 삶이 있는 한, 그 안에는 신성을 스스로 깨닫는 기쁨이 있다.",
     "title": "인생론",
     "author": "레프 톨스토이",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5497,6 +6163,7 @@ window.investmentQuotes = [
     "text": "행복한 삶을 만드는 데는 아주 적은 것으로도 충분하다.",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5504,6 +6171,7 @@ window.investmentQuotes = [
     "text": "무엇을 생각하느냐가 마음의 질을 결정한다. 영혼은 그 사람이 품은 생각의 빛깔로 물든다.",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5511,6 +6179,7 @@ window.investmentQuotes = [
     "text": "참된 행운이란 스스로 만들어가는 것이다. 좋은 성품, 좋은 의도, 좋은 행동 — 그것이 곧 행운이다.",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5518,6 +6187,7 @@ window.investmentQuotes = [
     "text": "네 안을 들여다보라. 그 안에는 선함의 샘이 있어, 계속 파내려 갈수록 끊임없이 솟아오를 것이다.",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5525,6 +6195,7 @@ window.investmentQuotes = [
     "text": "네게 어려운 일이라 해서 인간에게 불가능한 것은 아니다. 인간에게 가능한 일이라면, 너에게도 닿을 수 있는 일이라 여겨라.",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5532,6 +6203,7 @@ window.investmentQuotes = [
     "text": "가장 훌륭한 복수는, 너를 해친 그 사람처럼 되지 않는 것이다.",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5539,6 +6211,7 @@ window.investmentQuotes = [
     "text": "자신에게 잘못한 사람까지도 사랑하는 것, 그것이야말로 인간만이 지닌 고유한 의무다.",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5546,6 +6219,7 @@ window.investmentQuotes = [
     "text": "네가 지나온 모든 일, 견뎌낸 모든 시간을 돌이켜보라. 그동안 얼마나 많은 좋은 일들을 보아왔는가?",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5553,6 +6227,7 @@ window.investmentQuotes = [
     "text": "성가시고 어울리지 않는 생각을 훌훌 털어내고 곧바로 고요함에 이르는 것 — 그것은 참으로 쉬운 일이다.",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5560,6 +6235,7 @@ window.investmentQuotes = [
     "text": "춤추는 별 하나를 낳으려면, 사람은 자기 안에 여전히 혼돈을 지니고 있어야 한다.",
     "title": "차라투스트라는 이렇게 말했다",
     "author": "프리드리히 니체",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5567,6 +6243,7 @@ window.investmentQuotes = [
     "text": "더러운 물줄기를 받아들이고도 더럽혀지지 않으려면, 사람은 바다가 되어야 한다.",
     "title": "차라투스트라는 이렇게 말했다",
     "author": "프리드리히 니체",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5574,6 +6251,7 @@ window.investmentQuotes = [
     "text": "우리가 높이 날아오를수록, 날 줄 모르는 이들의 눈에는 우리가 더 작게 보인다.",
     "title": "차라투스트라는 이렇게 말했다",
     "author": "프리드리히 니체",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5581,6 +6259,7 @@ window.investmentQuotes = [
     "text": "네 몸 속에는 네 가장 깊은 철학보다 더 많은 지혜가 담겨 있다.",
     "title": "차라투스트라는 이렇게 말했다",
     "author": "프리드리히 니체",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5588,6 +6267,7 @@ window.investmentQuotes = [
     "text": "나는 걷는 법을 배웠고, 그 후로 달렸다. 나는 나는 법을 배웠고, 그 후로는 누가 밀어주지 않아도 움직인다. 이제 나는 가볍고, 이제 나는 날아오르며, 내 안에서 신이 춤춘다.",
     "title": "차라투스트라는 이렇게 말했다",
     "author": "프리드리히 니체",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5595,6 +6275,7 @@ window.investmentQuotes = [
     "text": "너는 스스로의 불꽃 속에서 기꺼이 타올라야 한다. 먼저 재가 되지 않고서 어찌 새롭게 다시 일어설 수 있겠는가?",
     "title": "차라투스트라는 이렇게 말했다",
     "author": "프리드리히 니체",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5602,6 +6283,7 @@ window.investmentQuotes = [
     "text": "언제까지나 그저 제자로만 머문다면, 그것은 스승에게 제대로 보답하지 못하는 것이다.",
     "title": "차라투스트라는 이렇게 말했다",
     "author": "프리드리히 니체",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5609,6 +6291,7 @@ window.investmentQuotes = [
     "text": "나는 어두운 나무들로 가득한 밤의 숲이다. 그러나 나의 어둠을 두려워하지 않는 이는, 내 편백나무 아래 장미로 가득한 언덕을 발견하리라.",
     "title": "차라투스트라는 이렇게 말했다",
     "author": "프리드리히 니체",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -5616,6 +6299,7 @@ window.investmentQuotes = [
     "text": "우리가 저녁 식사를 기대할 수 있는 건 푸줏간 주인이나 양조업자, 빵집 주인의 선의 때문이 아니라, 그들이 자기 이익을 추구하기 때문이다.",
     "title": "국부론",
     "author": "애덤 스미스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5623,6 +6307,7 @@ window.investmentQuotes = [
     "text": "구성원 대부분이 가난하고 비참한 사회라면, 그 사회는 결코 번영하고 행복하다고 할 수 없다.",
     "title": "국부론",
     "author": "애덤 스미스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5630,6 +6315,7 @@ window.investmentQuotes = [
     "text": "그는 오직 자신의 이익만을 좇지만, 보이지 않는 손에 이끌려 자신이 의도하지 않았던 결과, 즉 사회 전체의 이익까지 증진시키게 된다.",
     "title": "국부론",
     "author": "애덤 스미스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5637,6 +6323,7 @@ window.investmentQuotes = [
     "text": "소비야말로 모든 생산의 유일한 목적이자 종착점이다.",
     "title": "국부론",
     "author": "애덤 스미스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5644,6 +6331,7 @@ window.investmentQuotes = [
     "text": "'모든 것은 나를 위해, 남을 위한 건 하나도 없다'는 것은 어느 시대에나 지배층이 따르던 저열한 좌우명이었다.",
     "title": "국부론",
     "author": "애덤 스미스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5651,6 +6339,7 @@ window.investmentQuotes = [
     "text": "사람은 자신의 이익을 추구함으로써, 실제로 공익을 의도할 때보다 더 효과적으로 사회의 이익을 증진시키는 경우가 많다.",
     "title": "국부론",
     "author": "애덤 스미스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5658,6 +6347,7 @@ window.investmentQuotes = [
     "text": "인간은 흥정을 하는 동물이다. 다른 동물은 그렇지 않다. 개는 다른 개와 뼈다귀를 거래하지 않는다.",
     "title": "국부론",
     "author": "애덤 스미스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5665,6 +6355,7 @@ window.investmentQuotes = [
     "text": "모든 국가의 연간 노동이야말로, 그 나라가 해마다 소비하는 생활필수품과 편의품을 애초에 공급해주는 원천이다.",
     "title": "국부론",
     "author": "애덤 스미스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5672,6 +6363,7 @@ window.investmentQuotes = [
     "text": "노동 생산력의 가장 큰 향상, 그리고 그 노동이 발휘하는 숙련과 판단력의 상당 부분은 분업의 결과인 듯하다.",
     "title": "국부론",
     "author": "애덤 스미스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5679,6 +6371,7 @@ window.investmentQuotes = [
     "text": "모든 국가의 국민은 가능한 한 자신의 능력에 비례하여 정부 운영 비용을 부담해야 한다.",
     "title": "국부론",
     "author": "애덤 스미스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5686,6 +6379,7 @@ window.investmentQuotes = [
     "text": "만약 시장 시스템이 자연적으로 생겨나지 않았다면, 인류 역사상 가장 위대한 발명으로 칭송받았을 것이다. 시장 경쟁은 이기적인 사람이 아침에 일어나 자신이 원하는 것이 아니라 이웃이 원하는 것을 생산하게 만든다.",
     "title": "죽은 경제학자의 살아있는 아이디어",
     "author": "토드 부크홀츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5693,6 +6387,7 @@ window.investmentQuotes = [
     "text": "1776년부터 1976년까지 단 다섯 권의 책이 거의 끊임없이 경제학을 지배했다. 제목의 상상력은 부족했을지 몰라도, 그 생명력만큼은 대단했다.",
     "title": "죽은 경제학자의 살아있는 아이디어",
     "author": "토드 부크홀츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5700,6 +6395,7 @@ window.investmentQuotes = [
     "text": "경제학자와 정치철학자의 사상은, 옳을 때든 틀릴 때든, 흔히 생각하는 것보다 훨씬 강력하다. 사실 세상은 그 사상들에 의해 지배된다고 해도 과언이 아니다.",
     "title": "죽은 경제학자의 살아있는 아이디어",
     "author": "토드 부크홀츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5707,6 +6403,7 @@ window.investmentQuotes = [
     "text": "제 정보가 바뀌면 저는 결론을 바꿉니다. 당신은 어떻게 하시나요?",
     "title": "죽은 경제학자의 살아있는 아이디어",
     "author": "토드 부크홀츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5714,6 +6411,7 @@ window.investmentQuotes = [
     "text": "세상의 바퀴를 굴리는 것은 우리 안의 타고난 행동 욕구다. 우리는 이성적으로 최선을 다해 선택하려 하지만, 종종 그 동기는 기분이나 감정, 우연에서 비롯된다.",
     "title": "죽은 경제학자의 살아있는 아이디어",
     "author": "토드 부크홀츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5721,6 +6419,7 @@ window.investmentQuotes = [
     "text": "케인스는 언젠가 경제학자란 치과의사처럼 실용적으로 사고해야 한다고 말했다.",
     "title": "죽은 경제학자의 살아있는 아이디어",
     "author": "토드 부크홀츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5728,6 +6427,7 @@ window.investmentQuotes = [
     "text": "경제학이란 본질적으로 유인에 관한 학문이다. 사람들이 원하거나 필요로 하는 것을, 특히 다른 사람도 똑같이 원할 때 어떻게 얻어내는지에 관한 이야기다.",
     "title": "괴짜경제학",
     "author": "스티븐 레빗, 스티븐 더브너",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5735,6 +6435,7 @@ window.investmentQuotes = [
     "text": "도덕은 세상이 마땅히 이렇게 돌아갔으면 하는 바람을 나타내고, 경제학은 세상이 실제로 어떻게 돌아가는지를 보여준다고 할 수 있다.",
     "title": "괴짜경제학",
     "author": "스티븐 레빗, 스티븐 더브너",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5742,6 +6443,7 @@ window.investmentQuotes = [
     "text": "우리가 상식이라 믿는 통념은 생각보다 자주 틀린다.",
     "title": "괴짜경제학",
     "author": "스티븐 레빗, 스티븐 더브너",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5749,6 +6451,7 @@ window.investmentQuotes = [
     "text": "정보는 등불이 되기도, 몽둥이가 되기도, 올리브 가지가 되기도, 억제책이 되기도 한다. 누가 어떻게 쥐고 있느냐에 달려 있을 뿐이다.",
     "title": "괴짜경제학",
     "author": "스티븐 레빗, 스티븐 더브너",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5756,6 +6459,7 @@ window.investmentQuotes = [
     "text": "유인이란 총알이자 열쇠다. 작디작은 것 하나가 상황을 뒤바꾸는 놀라운 힘을 지니고 있다.",
     "title": "괴짜경제학",
     "author": "스티븐 레빗, 스티븐 더브너",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5763,6 +6467,7 @@ window.investmentQuotes = [
     "text": "사회과학자들은 종종 '정체성'이라는 개념을 이야기한다. 자신이 어떤 사람인지에 대한 나름의 상이 있고, 그 상에서 벗어난 행동을 하면 스스로 괴로워진다는 것이다.",
     "title": "괴짜경제학",
     "author": "스티븐 레빗, 스티븐 더브너",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5770,6 +6475,7 @@ window.investmentQuotes = [
     "text": "감정은 이성적으로 따지고 논증하는 데 있어 가장 큰 적이다.",
     "title": "괴짜경제학",
     "author": "스티븐 레빗, 스티븐 더브너",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5777,6 +6483,7 @@ window.investmentQuotes = [
     "text": "전문가는 자신의 소박한 이론을 세상의 통념으로 바꾸어내려면 대담해야만 한다.",
     "title": "괴짜경제학",
     "author": "스티븐 레빗, 스티븐 더브너",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5784,6 +6491,7 @@ window.investmentQuotes = [
     "text": "사람들이 정말 중요하게 여기는 것에 의문을 던지고, 그들을 놀라게 할 답을 찾아낼 수 있다면, 즉 통념을 뒤엎을 수 있다면 운이 따를지도 모른다.",
     "title": "괴짜경제학",
     "author": "스티븐 레빗, 스티븐 더브너",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5791,6 +6499,7 @@ window.investmentQuotes = [
     "text": "선택 설계자는 사람들이 결정을 내리는 맥락을 구성할 책임을 지닌 사람이다.",
     "title": "넛지",
     "author": "리처드 탈러, 캐스 선스타인",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5798,6 +6507,7 @@ window.investmentQuotes = [
     "text": "첫째, 관성의 힘을 절대 과소평가하지 말라. 둘째, 그 힘은 얼마든지 활용할 수 있다.",
     "title": "넛지",
     "author": "리처드 탈러, 캐스 선스타인",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5805,6 +6515,7 @@ window.investmentQuotes = [
     "text": "넛지란 선택지를 금지하거나 경제적 유인을 크게 바꾸지 않으면서도, 사람들의 행동을 예측 가능한 방향으로 부드럽게 바꾸는 선택 설계의 한 요소다.",
     "title": "넛지",
     "author": "리처드 탈러, 캐스 선스타인",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5812,6 +6523,7 @@ window.investmentQuotes = [
     "text": "건축 없는 건물이 없듯, 맥락 없는 선택도 없다.",
     "title": "넛지",
     "author": "리처드 탈러, 캐스 선스타인",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5819,6 +6531,7 @@ window.investmentQuotes = [
     "text": "교훈은 이것이다. 사람들은 당신이 생각하는 것보다 당신에게 훨씬 관심이 없다.",
     "title": "넛지",
     "author": "리처드 탈러, 캐스 선스타인",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5826,6 +6539,7 @@ window.investmentQuotes = [
     "text": "첫 번째 오해는 사람들의 선택에 영향을 주지 않는 것이 가능하다고 믿는 것이다.",
     "title": "넛지",
     "author": "리처드 탈러, 캐스 선스타인",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5833,6 +6547,7 @@ window.investmentQuotes = [
     "text": "경제학 교과서 속 '경제적 인간'은 아인슈타인처럼 사고하고 슈퍼컴퓨터만큼 기억하며 성인 같은 의지력을 지녔다. 하지만 우리가 아는 사람들은 호모 이코노미쿠스가 아니라 그냥 호모 사피엔스다.",
     "title": "넛지",
     "author": "리처드 탈러, 캐스 선스타인",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5840,6 +6555,7 @@ window.investmentQuotes = [
     "text": "대략적으로 말해, 무언가를 잃었을 때의 고통은 같은 것을 얻었을 때의 기쁨보다 두 배는 크다.",
     "title": "넛지",
     "author": "리처드 탈러, 캐스 선스타인",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5847,6 +6563,7 @@ window.investmentQuotes = [
     "text": "사람들이 어떤 식으로 체계적으로 실수하는지를 이해하면, 인간 행동에 대한 우리의 이해도 한층 깊어진다.",
     "title": "넛지",
     "author": "리처드 탈러, 캐스 선스타인",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5854,6 +6571,7 @@ window.investmentQuotes = [
     "text": "암스테르담 스히폴 공항의 소변기에는 작은 파리 그림이 새겨져 있다. 목표물이 보이면 사람들의 집중력과 정확도가 눈에 띄게 높아진다는 사실을 이용한 것이다.",
     "title": "넛지",
     "author": "리처드 탈러, 캐스 선스타인",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5861,6 +6579,7 @@ window.investmentQuotes = [
     "text": "여기 역설이 있다. 성장 없이 빈곤을 끝낸 나라는 없었다. 그러나 성장하면서 생태 파괴를 멈춘 나라도 없었다.",
     "title": "도넛 경제학",
     "author": "케이트 레이워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5868,6 +6587,7 @@ window.investmentQuotes = [
     "text": "경제학이야말로 공공정책이 사용하는 모국어라 할 수 있다.",
     "title": "도넛 경제학",
     "author": "케이트 레이워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5875,6 +6595,7 @@ window.investmentQuotes = [
     "text": "지금 우리 경제는 우리를 잘 살게 하든 말든 일단 성장해야만 한다. 하지만 우리에게 필요한 건, 성장하든 말든 우리를 진짜 잘 살게 해주는 경제다.",
     "title": "도넛 경제학",
     "author": "케이트 레이워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5882,6 +6603,7 @@ window.investmentQuotes = [
     "text": "알고 보면 호모 사피엔스는 지구에서 가장 협력적인 종이다. 혈연을 넘어선 존재와 함께 살아가는 능력에서는 개미나 하이에나, 벌거숭이두더지쥐마저 뛰어넘는다.",
     "title": "도넛 경제학",
     "author": "케이트 레이워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5889,6 +6611,7 @@ window.investmentQuotes = [
     "text": "알고 보면 불평등은 경제적으로 불가피한 것이 아니다. 그것은 설계의 실패다.",
     "title": "도넛 경제학",
     "author": "케이트 레이워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5896,6 +6619,7 @@ window.investmentQuotes = [
     "text": "우리가 무엇을 그리느냐가 우리가 무엇을 보고 무엇을 놓칠지를 결정하며, 그 뒤에 이어지는 모든 것을 좌우한다.",
     "title": "도넛 경제학",
     "author": "케이트 레이워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5903,6 +6627,7 @@ window.investmentQuotes = [
     "text": "경제학은 법칙을 발견하는 학문이 아니라, 본질적으로 설계의 문제다.",
     "title": "도넛 경제학",
     "author": "케이트 레이워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5910,6 +6635,7 @@ window.investmentQuotes = [
     "text": "이 두 경계선 사이에는 도넛 모양을 한 최적의 지점이 있다. 생태적으로 안전하면서도 사회적으로 정의로운, 인류를 위한 공간이다.",
     "title": "도넛 경제학",
     "author": "케이트 레이워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5917,6 +6643,7 @@ window.investmentQuotes = [
     "text": "케냐는 2007년 모바일 금융 서비스 엠페사를 출시하며 모바일 뱅킹의 개척자가 되었다. 6년 만에 케냐 성인 4명 중 3명이 이 서비스를 이용했다.",
     "title": "도넛 경제학",
     "author": "케이트 레이워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5924,6 +6651,7 @@ window.investmentQuotes = [
     "text": "우리는 사회적이고 서로 의존하며, 어림짐작으로 판단하고, 가치관은 유동적이며, 살아 있는 세계에 기대어 살아가는 존재다.",
     "title": "도넛 경제학",
     "author": "케이트 레이워스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5931,6 +6659,7 @@ window.investmentQuotes = [
     "text": "선택하는 법을 배우는 것은 어렵다. 잘 선택하는 법을 배우는 것은 더 어렵다. 그리고 무한한 가능성의 세계에서 잘 선택하는 법을 배우는 것은 훨씬, 어쩌면 너무 어렵다.",
     "title": "선택의 심리학",
     "author": "배리 슈워츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5938,6 +6667,7 @@ window.investmentQuotes = [
     "text": "나를 행복하게 만드는 것에 집중하고, 내 삶에 의미를 주는 일을 하라.",
     "title": "선택의 심리학",
     "author": "배리 슈워츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5945,6 +6675,7 @@ window.investmentQuotes = [
     "text": "최근 6개월 중 가장 후회되는 일을 물으면 사람들은 기대에 못 미친 행동을 꼽는다. 하지만 인생 전체를 돌아보며 물으면, 정작 하지 않은 일을 가장 후회한다고 답한다.",
     "title": "선택의 심리학",
     "author": "배리 슈워츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5952,6 +6683,7 @@ window.investmentQuotes = [
     "text": "행복의 비결은 의외로 간단하다. 기대치를 낮추는 것이다.",
     "title": "선택의 심리학",
     "author": "배리 슈워츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5959,6 +6691,7 @@ window.investmentQuotes = [
     "text": "최고를 좇는 대신 '충분한 만족자'가 되는 길도 있다. 더 나은 것이 있을지 걱정하지 않고, 이만하면 충분하다고 여기며 받아들이는 것이다.",
     "title": "선택의 심리학",
     "author": "배리 슈워츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5966,6 +6699,7 @@ window.investmentQuotes = [
     "text": "선택지가 있는 것이 좋다고 해서, 선택지가 많을수록 더 좋은 것은 아니다.",
     "title": "선택의 심리학",
     "author": "배리 슈워츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5973,6 +6707,7 @@ window.investmentQuotes = [
     "text": "우리는 원한다고 말한 것을 손에 넣지만, 정작 그것이 기대만큼 만족을 주지 않는다는 사실을 깨닫는다.",
     "title": "선택의 심리학",
     "author": "배리 슈워츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5980,6 +6715,7 @@ window.investmentQuotes = [
     "text": "돌이키지 않을 선택이라는 걸 알면, 끊임없이 되돌아보는 대신 지금 가진 관계를 더 좋게 만드는 데 온 힘을 쏟을 수 있다.",
     "title": "선택의 심리학",
     "author": "배리 슈워츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5987,6 +6723,7 @@ window.investmentQuotes = [
     "text": "우리는 자기 삶의 작가가 될 자유가 있지만, 정작 어떤 이야기를 쓰고 싶은지는 잘 알지 못한다.",
     "title": "선택의 심리학",
     "author": "배리 슈워츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -5994,102 +6731,119 @@ window.investmentQuotes = [
     "text": "사탕 한 봉지 같은 사소한 선물조차 의사들의 진단 속도와 정확도를 높인다. 대체로 긍정적인 감정은 우리 눈앞의 문제를 더 넓게 바라보게 해준다.",
     "title": "선택의 심리학",
     "author": "배리 슈워츠",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
     "text": "노는 동안, 놀이에 몰두하는 동안 우리는 행복합니다. 창의와 혁신, 행복은 서로 맞물려 있는 듯합니다.",
     "title": "열두 발자국",
     "author": "정재승",
+    "category": "과학",
     "genre": "literature"
   },
   {
     "text": "우리는 인생을 리셋할 능력이 있습니다. 바로 '후회하는 능력'이 있기 때문입니다.",
     "title": "열두 발자국",
     "author": "정재승",
+    "category": "과학",
     "genre": "literature"
   },
   {
     "text": "우리는 잘못된 선택 때문에 후회하기도 하지만, 자신의 선택을 성찰하며 점점 후회를 줄여나가는 과정이 적절한 태도입니다.",
     "title": "열두 발자국",
     "author": "정재승",
+    "category": "과학",
     "genre": "literature"
   },
   {
     "text": "혁명은 아직 오지 않았지만 오기를 바라는 미래를 상상하는 능력에서 시작됩니다. 상상을 현실로 만들려는 의지와 노력이 결국 혁명을 이루어 냅니다.",
     "title": "열두 발자국",
     "author": "정재승",
+    "category": "과학",
     "genre": "literature"
   },
   {
     "text": "나쁜 습관과 뻔한 일상에서 벗어나려면, 나와 다른 분야에서 다른 관심을 가진 사람들을 만나려고 의도적으로 노력해야 합니다.",
     "title": "열두 발자국",
     "author": "정재승",
+    "category": "과학",
     "genre": "literature"
   },
   {
     "text": "가장 부유한 삶은 이야기가 있는 삶이라네. 스토리텔링을 얼마나 갖고 있느냐가 그 사람의 럭셔리지.",
     "title": "이어령의 마지막 수업",
     "author": "이어령, 김지수",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "내 것인 줄 알았으나 받은 모든 것이 선물이었다.",
     "title": "이어령의 마지막 수업",
     "author": "이어령, 김지수",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "의무감으로 책을 읽지 않았네. 재미없는 데는 뛰어넘고, 눈에 띄고 재미있는 곳만 찾아 읽지. 나비가 꿀을 딸 때처럼.",
     "title": "이어령의 마지막 수업",
     "author": "이어령, 김지수",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "여기저기 비정형으로 날아다니며 매일매일 꿀을 따는 벌! 발 뻗는 순간 그게 꽃가루인 줄 아는 게 꿀벌이고, 곧 작가라네.",
     "title": "이어령의 마지막 수업",
     "author": "이어령, 김지수",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "눈 뜨면 달라진 세상, 그런 경이로움을 문학에서는 '낯설게 하기'라고 하네. 눈은 고요한데, 힘이 세.",
     "title": "이어령의 마지막 수업",
     "author": "이어령, 김지수",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "이 한 호흡 속에 얼마나 큰 은총이 있는지 나는 느낍니다.",
     "title": "이어령의 마지막 수업",
     "author": "이어령, 김지수",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "오래 살면 좋을까... 사랑 있는 고생이 기쁨이었네.",
     "title": "백년을 살아보니",
     "author": "김형석",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "사랑이 있는 마음은 아름다운 감정을 만들어 준다. 인간애는 사랑의 무거운 짐을 담당하는 과정을 통해 이루어지는 것이다.",
     "title": "백년을 살아보니",
     "author": "김형석",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "사람은 성장하는 동안은 늙지 않는다. 정신적으로 완전히 성장하는 시기는 60세부터 75세까지이며, 그때가 바로 인생의 황금기다.",
     "title": "백년을 살아보니",
     "author": "김형석",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "나는 사랑한다. 그러므로 내가 있다.",
     "title": "백년을 살아보니",
     "author": "김형석",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "나에게는 두 개의 별이 있었다. 진리를 향한 그리움과 겨레를 위하는 마음이었다. 그 짐은 무거웠으나 사랑이 있었기에 행복했다.",
     "title": "백년을 살아보니",
     "author": "김형석",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6097,6 +6851,7 @@ window.investmentQuotes = [
     "text": "우리는 이 땅의 일부이고, 땅은 우리의 일부이다. 향기로운 꽃은 우리의 자매이며, 사슴과 말과 큰 독수리는 우리의 형제다.",
     "title": "시애틀 추장의 편지",
     "author": "시애틀 추장",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -6104,6 +6859,7 @@ window.investmentQuotes = [
     "text": "어떻게 하늘을, 대지의 따뜻함을 사고팔 수 있단 말인가? 우리가 신선한 공기와 반짝이는 물을 소유하지 않았는데, 어떻게 그것을 사고팔 수 있는가?",
     "title": "시애틀 추장의 편지",
     "author": "시애틀 추장",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -6111,6 +6867,7 @@ window.investmentQuotes = [
     "text": "햇살에 반짝이는 솔잎 하나, 강가의 흰 모래밭, 숲속에 피어오르는 안개, 윙윙거리는 벌레 소리까지, 이 모든 것이 우리 삶과 기억 속에서 다 거룩하다.",
     "title": "시애틀 추장의 편지",
     "author": "시애틀 추장",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -6118,6 +6875,7 @@ window.investmentQuotes = [
     "text": "우리는 이 땅을 조상에게서 물려받은 것이 아니라, 후손에게서 잠시 빌린 것이다.",
     "title": "시애틀 추장의 편지",
     "author": "시애틀 추장",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -6125,6 +6883,7 @@ window.investmentQuotes = [
     "text": "만물은 우리 모두를 잇는 피처럼 서로 연결되어 있다. 인간이 생명의 그물을 짠 것이 아니라 그 그물 속 한 가닥일 뿐이다. 인간이 그물에 하는 일은 곧 자기 자신에게 하는 일이다.",
     "title": "시애틀 추장의 편지",
     "author": "시애틀 추장",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -6132,6 +6891,7 @@ window.investmentQuotes = [
     "text": "무언가를 하는 가치는 그 일이 쉬운가 어려운가에 있지 않다. 그 안에 담긴 비전과 계획, 결단과 인내에 있다. 삶은 소유와 축적이 아니라 열망과 노력으로 풍요로워진다.",
     "title": "조화로운 삶",
     "author": "헬렌 니어링, 스콧 니어링",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6139,6 +6899,7 @@ window.investmentQuotes = [
     "text": "무슨 일이든 하는 방법은 여러 가지다. 정성 들여 예술적으로 하는 방법이 있고, 되는대로 아무렇게나 하는 방법이 있다. 정성을 들이는 수고는 하는 사람에게 만족을, 지켜보는 이에게 기쁨을 준다.",
     "title": "조화로운 삶",
     "author": "헬렌 니어링, 스콧 니어링",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6146,6 +6907,7 @@ window.investmentQuotes = [
     "text": "생활필수품을 마련하는 일은 이제 숲과 텃밭과 부엌과 가족의 손을 떠나 공장과 대규모 기업으로 넘어갔다. 그러나 우리는 삶의 중심을 다시 땅으로 옮겼다.",
     "title": "조화로운 삶",
     "author": "헬렌 니어링, 스콧 니어링",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6153,6 +6915,7 @@ window.investmentQuotes = [
     "text": "가게에서 물건을 사서 돌아오는 손님은 돈이 시장에서 힘을 가진다는 것 말고는 아무것도 배우지 못한다. 그러나 손과 도구로 재료를 필요한 물건으로 바꾸어낸 사람은 그 과정에서 성숙해진다.",
     "title": "조화로운 삶",
     "author": "헬렌 니어링, 스콧 니어링",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6160,6 +6923,7 @@ window.investmentQuotes = [
     "text": "음식은 단순할수록 좋다. 날것에 가까울수록, 섞는 것이 적을수록 좋다. 이렇게 먹으면 소화가 쉽고 영양이 풍부해지며, 건강해지고 돈도 절약된다.",
     "title": "조화로운 삶",
     "author": "헬렌 니어링, 스콧 니어링",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6167,6 +6931,7 @@ window.investmentQuotes = [
     "text": "완전히 희거나 검은 것은 없단다. 흰색은 흔히 그 안에 검은색을 숨기고 있고, 검은색은 흰색을 포함하고 있는 거지.",
     "title": "자기 앞의 생",
     "author": "에밀 아자르(로맹 가리)",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -6174,6 +6939,7 @@ window.investmentQuotes = [
     "text": "너는 늘 나의 꼬마 신사였어. 나는 정말로 다른 누구도 이렇게 사랑해본 적이 없단다.",
     "title": "자기 앞의 생",
     "author": "에밀 아자르(로맹 가리)",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -6181,6 +6947,7 @@ window.investmentQuotes = [
     "text": "너는 착한 아이야, 모모. 우리는 언제나 함께 행복했잖니.",
     "title": "자기 앞의 생",
     "author": "에밀 아자르(로맹 가리)",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -6188,6 +6955,7 @@ window.investmentQuotes = [
     "text": "사람은 사랑할 사람 없이는 살 수 없다던 아저씨 말씀이 맞는 것 같다.",
     "title": "자기 앞의 생",
     "author": "에밀 아자르(로맹 가리)",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -6195,6 +6963,7 @@ window.investmentQuotes = [
     "text": "너는 아마 이디시어를 할 줄 아는 이 세상 유일한 아랍인일 거야.",
     "title": "자기 앞의 생",
     "author": "에밀 아자르(로맹 가리)",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -6202,6 +6971,7 @@ window.investmentQuotes = [
     "text": "모두가 그녀 같았다면 세상은 지금과는 많이 달랐을 거고, 불행도 훨씬 적었을 거다.",
     "title": "자기 앞의 생",
     "author": "에밀 아자르(로맹 가리)",
+    "category": "문학",
     "genre": "literature"
   },
   {
@@ -6236,252 +7006,294 @@ window.investmentQuotes = [
     "text": "먼 곳에서 벗이 찾아오니, 이 또한 즐겁지 아니한가.",
     "title": "논어",
     "author": "공자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "세 사람이 길을 가면, 그 중에 반드시 내 스승이 있다.",
     "title": "논어",
     "author": "공자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "인자는 근심하지 않고, 지자는 미혹되지 않으며, 용자는 두려워하지 않는다.",
     "title": "논어",
     "author": "공자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "옛것을 익히고 새것을 알면, 그로써 스승이 될 수 있다.",
     "title": "논어",
     "author": "공자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "군자는 두루 사귀되 편을 가르지 않는다.",
     "title": "논어",
     "author": "공자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "허물이 있으면 고치기를 꺼리지 말라.",
     "title": "논어",
     "author": "공자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "먼저 행하고, 그 다음에 말이 따르게 하라.",
     "title": "논어",
     "author": "공자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "붕새가 남쪽 바다로 날아갈 때, 물보라가 삼천 리요 회오리바람 타고 구만 리를 오른다.",
     "title": "장자",
     "author": "장자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "사람들은 쓸모 있음의 쓸모는 알아도, 쓸모없음의 쓸모는 알지 못한다.",
     "title": "장자",
     "author": "장자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "하늘과 땅은 나와 나란히 살고, 만물은 나와 하나가 된다.",
     "title": "장자",
     "author": "장자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "때를 편안히 여기고 순리를 따르면, 슬픔도 기쁨도 끼어들지 못한다.",
     "title": "장자",
     "author": "장자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "샘이 마르면 물고기들은 서로 거품을 뿜어 적셔주며 살아간다.",
     "title": "장자",
     "author": "장자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "지인은 자기를 내세우지 않고, 신인은 공을 내세우지 않고, 성인은 이름을 내세우지 않는다.",
     "title": "장자",
     "author": "장자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "영예와 치욕에 놀라지 않으니, 뜰 앞에 꽃이 피고 지는 것을 한가로이 바라본다.",
     "title": "채근담",
     "author": "홍자성",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "거취에 무심하니, 하늘 밖 구름이 모였다 흩어짐을 따라 보낸다.",
     "title": "채근담",
     "author": "홍자성",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "산 속에 살면 마음이 맑고 시원하여, 대하는 것마다 모두 아름다운 생각이 든다.",
     "title": "채근담",
     "author": "홍자성",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "한 걸음 물러서는 것은 곧 한 걸음 나아가는 밑거름이 된다.",
     "title": "채근담",
     "author": "홍자성",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "사나운 말도 길들이면 명마가 되고, 거친 쇠도 잘 다루면 훌륭한 그릇이 된다.",
     "title": "채근담",
     "author": "홍자성",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "돌 틈으로 흐르는 샘물을 만나면, 때묻은 마음이 절로 씻겨나가는 듯하다.",
     "title": "채근담",
     "author": "홍자성",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "최고의 선은 물과 같다. 물은 만물을 이롭게 하면서도 다투지 않는다.",
     "title": "도덕경",
     "author": "노자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "천 리 길도 한 걸음에서 시작된다.",
     "title": "도덕경",
     "author": "노자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "만족할 줄 아는 사람은 부유하다.",
     "title": "도덕경",
     "author": "노자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "가장 부드러운 것이 가장 강한 것을 이긴다.",
     "title": "도덕경",
     "author": "노자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "큰 그릇은 천천히 완성된다.",
     "title": "도덕경",
     "author": "노자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "남을 아는 것은 지혜요, 자신을 아는 것은 밝음이며, 자신을 이기는 것은 강함이다.",
     "title": "도덕경",
     "author": "노자",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "행복이란 소중하고 궁극적인 것에 속한다.",
     "title": "니코마코스 윤리학",
     "author": "아리스토텔레스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "모든 기술과 탐구, 그리고 모든 행동과 선택은 어떤 선을 추구하는 것으로 보인다.",
     "title": "니코마코스 윤리학",
     "author": "아리스토텔레스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "인간의 탁월함이란 육체가 아니라 영혼의 탁월함을 말한다. 행복이란 곧 영혼의 활동이기 때문이다.",
     "title": "니코마코스 윤리학",
     "author": "아리스토텔레스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "사람은 함께 소금을 나누어 먹어보기 전에는 서로를 알 수 없다.",
     "title": "니코마코스 윤리학",
     "author": "아리스토텔레스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "삶의 아름다움을 마음껏 바라보라. 별들을 보고, 그 별들과 함께 나아가는 자신을 그려보라.",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "아침에 눈을 뜨거든 생각하라. 숨 쉬고, 생각하고, 즐기고, 사랑할 수 있다는 것이 얼마나 소중한 특권인지를.",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "선한 사람이 어떠해야 하는지 논쟁하느라 시간을 낭비하지 말라. 그냥 그런 사람이 되라.",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "그대가 지닌 좋은 것들을 하나하나 헤아려보라. 그것이 없었다면 얼마나 간절히 원했을지 떠올리며 감사하라.",
     "title": "명상록",
     "author": "마르쿠스 아우렐리우스",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "세상에서 가장 위대한 일은 자기 자신에게 온전히 속할 줄 아는 것이다.",
     "title": "몽테뉴 수상록",
     "author": "미셸 드 몽테뉴",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "자신의 존재를 올바르게 즐길 줄 아는 것, 그것이야말로 절대적이고 신과 같은 완성이다.",
     "title": "몽테뉴 수상록",
     "author": "미셸 드 몽테뉴",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "만약 좋은 결혼이라는 것이 있다면, 그것은 사랑보다는 우정을 닮았기 때문이다.",
     "title": "몽테뉴 수상록",
     "author": "미셸 드 몽테뉴",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "그를 사랑한 이유를 굳이 말하라면, 그가 그였고 내가 나였기 때문이라고밖에 답할 수 없다.",
     "title": "몽테뉴 수상록",
     "author": "미셸 드 몽테뉴",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "우정의 팔은 세상의 이쪽 끝에서 저쪽 끝까지 닿을 만큼 길다.",
     "title": "몽테뉴 수상록",
     "author": "미셸 드 몽테뉴",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "나는 춤출 때는 춤을 추고, 잠잘 때는 잠을 잔다.",
     "title": "몽테뉴 수상록",
     "author": "미셸 드 몽테뉴",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "지식에 대한 욕구보다 더 자연스러운 욕구는 없다.",
     "title": "몽테뉴 수상록",
     "author": "미셸 드 몽테뉴",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "나는 마음에 드는 문장을 찾아 책 속을 이리저리 뒤지곤 한다.",
     "title": "몽테뉴 수상록",
     "author": "미셸 드 몽테뉴",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "나는 내가 누릴 수 있는 가장 작은 기쁨의 순간까지도 붙잡는다.",
     "title": "몽테뉴 수상록",
     "author": "미셸 드 몽테뉴",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -6489,6 +7301,7 @@ window.investmentQuotes = [
     "text": "그대에게 평화를 가져다줄 수 있는 것은 오직 그대 자신뿐이다.",
     "title": "에세이(Essays)",
     "author": "랠프 왈도 에머슨",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6496,6 +7309,7 @@ window.investmentQuotes = [
     "text": "시인에게, 철학자에게, 성자에게는 모든 것이 다정하고 신성하며, 모든 사건이 유익하고, 모든 날이 거룩하며, 모든 사람이 신성하다.",
     "title": "에세이(Essays)",
     "author": "랠프 왈도 에머슨",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6503,6 +7317,7 @@ window.investmentQuotes = [
     "text": "장미는 그저 장미일 뿐이다. 존재하는 모든 순간이 완전하다.",
     "title": "에세이(Essays)",
     "author": "랠프 왈도 에머슨",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6510,6 +7325,7 @@ window.investmentQuotes = [
     "text": "반지와 보석은 선물이 아니라 선물에 대한 변명일 뿐이다. 진정한 선물은 자기 자신의 일부를 내어주는 것이다.",
     "title": "에세이(Essays)",
     "author": "랠프 왈도 에머슨",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6517,6 +7333,7 @@ window.investmentQuotes = [
     "text": "친구란 내가 진실할 수 있는 사람이다.",
     "title": "에세이(Essays)",
     "author": "랠프 왈도 에머슨",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6524,6 +7341,7 @@ window.investmentQuotes = [
     "text": "무언가를 놓쳤다면 다른 무언가를 얻은 것이고, 무언가를 얻었다면 다른 무언가를 잃은 것이다.",
     "title": "에세이(Essays)",
     "author": "랠프 왈도 에머슨",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6531,6 +7349,7 @@ window.investmentQuotes = [
     "text": "열정 없이 이루어진 위대한 일은 없다.",
     "title": "에세이(Essays)",
     "author": "랠프 왈도 에머슨",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6538,6 +7357,7 @@ window.investmentQuotes = [
     "text": "행운의 비밀은 우리 손안의 기쁨에 있다.",
     "title": "에세이(Essays)",
     "author": "랠프 왈도 에머슨",
+    "category": "에세이",
     "genre": "literature"
   },
   {
@@ -6545,6 +7365,7 @@ window.investmentQuotes = [
     "text": "어떤 상황에서든 최악을 마주할 때 우리는 성장한다. 상황이 가장 나쁠 때, 오히려 우리는 가장 좋은 모습을 발견할 수 있다.",
     "title": "인생 수업",
     "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -6552,6 +7373,7 @@ window.investmentQuotes = [
     "text": "서로에게 걸어둔 조건을 내려놓을 때, 비로소 우리는 사랑 안에서 평화와 행복을 찾을 수 있다.",
     "title": "인생 수업",
     "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -6559,6 +7381,7 @@ window.investmentQuotes = [
     "text": "우리는 선한 사람에게 끌린다고 생각하지만, 사실은 진실한 사람에게 끌린다. 꾸며낸 친절 뒤에 숨은 사람보다 있는 그대로인 사람이 더 좋다.",
     "title": "인생 수업",
     "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -6566,6 +7389,7 @@ window.investmentQuotes = [
     "text": "삶은 우리 생각보다 빨리 끝난다. 함께 탈 자전거와 사랑할 사람이 있다면, 지금이 바로 그때다.",
     "title": "인생 수업",
     "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -6573,6 +7397,7 @@ window.investmentQuotes = [
     "text": "사랑이야말로 우리가 진정으로 소유하고, 간직하며, 떠날 때 가지고 갈 수 있는 유일한 것이다.",
     "title": "인생 수업",
     "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -6580,6 +7405,7 @@ window.investmentQuotes = [
     "text": "행복은 오늘의 나 자신을 있는 그대로 괜찮다고 여기는 데서 온다. 남과 비교하지 않고, 과거나 두려운 미래의 나와도 비교하지 않는 것이다.",
     "title": "인생 수업",
     "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -6587,6 +7413,7 @@ window.investmentQuotes = [
     "text": "우리가 찾는 온전함은 바로 여기, 지금 이 순간의 현실 속에서 우리와 함께, 우리 안에 있다.",
     "title": "인생 수업",
     "author": "엘리자베스 퀴블러 로스, 데이비드 케슬러",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
@@ -6594,36 +7421,42 @@ window.investmentQuotes = [
     "text": "숫자로 정확히 잴 수 없는 것을 무시하는 일은, 꽃다발의 줄기 수만 세면서 그 형언할 수 없는 향기와 아름다움은 놓치는 것과 같다.",
     "title": "인생의 발견",
     "author": "시어도어 젤딘",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "두 사람이 서로 존중하며 진심으로 귀 기울여 다른 관점을 이해하려 할 때, 단 1분만이라도 세상은 다른 곳이 된다.",
     "title": "인생의 발견",
     "author": "시어도어 젤딘",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "모든 답을 찾으리라는 기대 없이 끝없는 길에 나서는 것이, 정해진 목적지로 향하는 여정보다 언제나 더 큰 시야를 열어 주었다.",
     "title": "인생의 발견",
     "author": "시어도어 젤딘",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "재산을 어떻게 쓸지 알 때 비로소 진짜 부자다. 부자가 된다는 것은 돈뿐 아니라 삶을 어떻게 쓸지 아는 것이다.",
     "title": "인생의 발견",
     "author": "시어도어 젤딘",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "자유는 그저 주어지는 권리가 아니라 익혀야 할 능력이다. 자신과 다른 시선으로 세상을 보고, 아름다움과 의미와 영감을 찾아내는 능력이다.",
     "title": "인생의 발견",
     "author": "시어도어 젤딘",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "생각은 혼자 두면 고아처럼 외롭고 절름거린다. 하지만 서로 나누는 대화 속에서 다듬어질 때, 비로소 다른 사람에게도 의미 있는 생각이 된다.",
     "title": "인생의 발견",
     "author": "시어도어 젤딘",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
@@ -6631,6 +7464,7 @@ window.investmentQuotes = [
     "text": "사람을 있는 그대로 대하면 그 사람은 그대로 머문다. 될 수 있고 되어야 할 모습으로 대하면 그 사람은 그런 사람이 된다.",
     "title": "성공하는 사람들의 7가지 습관",
     "author": "스티븐 코비",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6638,6 +7472,7 @@ window.investmentQuotes = [
     "text": "우리 자신을 효과적으로 바꾸려면 먼저 우리의 지각을 바꿔야 한다.",
     "title": "성공하는 사람들의 7가지 습관",
     "author": "스티븐 코비",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6645,6 +7480,7 @@ window.investmentQuotes = [
     "text": "내 상황을 정말로 개선하고 싶다면, 내가 통제할 수 있는 단 한 가지, 바로 나 자신에 집중하면 된다.",
     "title": "성공하는 사람들의 7가지 습관",
     "author": "스티븐 코비",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6652,6 +7488,7 @@ window.investmentQuotes = [
     "text": "행복은 불행과 마찬가지로, 우리가 능동적으로 선택하는 것이다.",
     "title": "성공하는 사람들의 7가지 습관",
     "author": "스티븐 코비",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6659,6 +7496,7 @@ window.investmentQuotes = [
     "text": "살아가면서 누구나 한 번쯤, 스스로를 믿지 못할 때 나를 믿어준 누군가가 있었을 것이다.",
     "title": "성공하는 사람들의 7가지 습관",
     "author": "스티븐 코비",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6666,6 +7504,7 @@ window.investmentQuotes = [
     "text": "우리에게 진정으로 중요한 것이 무엇인지 알고, 그것을 마음에 새기며 매일을 살아갈 때 삶은 완전히 달라진다.",
     "title": "성공하는 사람들의 7가지 습관",
     "author": "스티븐 코비",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6673,6 +7512,7 @@ window.investmentQuotes = [
     "text": "습관은 지식(무엇을 할지), 기술(어떻게 할지), 열망(하고 싶은 마음)이 만나는 지점이다.",
     "title": "성공하는 사람들의 7가지 습관",
     "author": "스티븐 코비",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6680,6 +7520,7 @@ window.investmentQuotes = [
     "text": "비효율적인 사람은 쓰이지 않은 잠재력을 안은 채 하루하루를 살아간다.",
     "title": "성공하는 사람들의 7가지 습관",
     "author": "스티븐 코비",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6687,6 +7528,7 @@ window.investmentQuotes = [
     "text": "우리의 행동은 조건이 아니라 결정에 의해 좌우된다.",
     "title": "성공하는 사람들의 7가지 습관",
     "author": "스티븐 코비",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6694,6 +7536,7 @@ window.investmentQuotes = [
     "text": "도덕적 성장은 마음이 따뜻해질 때, 우리가 존경하고 사랑하는 사람을 만나 그들을 닮아가려 할 때 가장 확실하게 일어난다.",
     "title": "인간의 품격",
     "author": "데이비드 브룩스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6701,6 +7544,7 @@ window.investmentQuotes = [
     "text": "지혜란 정보의 축적이 아니라, 자신이 모른다는 것을 알고 그 무지와 불확실함을 다루는 법을 찾아내는 도덕적 자질이다.",
     "title": "인간의 품격",
     "author": "데이비드 브룩스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6708,6 +7552,7 @@ window.investmentQuotes = [
     "text": "우리가 인격이라 부르는 것들, 용기와 정직과 겸손은 오랜 시간에 걸쳐 지속된다.",
     "title": "인간의 품격",
     "author": "데이비드 브룩스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6715,6 +7560,7 @@ window.investmentQuotes = [
     "text": "겸손이란 자신의 본성과 우주 속 자신의 자리를 정확히 아는 것이다.",
     "title": "인간의 품격",
     "author": "데이비드 브룩스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6722,6 +7568,7 @@ window.investmentQuotes = [
     "text": "자신을 완성하려면 자신을 잊어야 하고, 자신을 찾으려면 자신을 잃어야 한다.",
     "title": "인간의 품격",
     "author": "데이비드 브룩스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6729,6 +7576,7 @@ window.investmentQuotes = [
     "text": "실패는 가장 위대한 성공, 즉 겸손과 배움으로 이어진다.",
     "title": "인간의 품격",
     "author": "데이비드 브룩스",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6736,6 +7584,7 @@ window.investmentQuotes = [
     "text": "기억하라, 미래에는 위대함도 명료함도 통찰도 행복도 평온도 없다. 오직 지금 이 순간만이 있을 뿐이다.",
     "title": "스틸니스",
     "author": "라이언 홀리데이",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6743,6 +7592,7 @@ window.investmentQuotes = [
     "text": "지금 이 순간은 하나의 선물이다. 그래서 우리는 그것을 '현재'라고 부르는 것이다.",
     "title": "스틸니스",
     "author": "라이언 홀리데이",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6750,6 +7600,7 @@ window.investmentQuotes = [
     "text": "지금에 충실하라. 과거에 그러지 못했어도 괜찮다. 현재의 좋은 점은, 언제나 다시 기회를 준다는 것이다.",
     "title": "스틸니스",
     "author": "라이언 홀리데이",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6757,6 +7608,7 @@ window.investmentQuotes = [
     "text": "고요함은 궁수의 화살을 조준하게 한다. 새로운 생각을 일깨우고, 관점을 예리하게 하며 연결을 밝혀준다.",
     "title": "스틸니스",
     "author": "라이언 홀리데이",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6764,6 +7616,7 @@ window.investmentQuotes = [
     "text": "불안도 과대망상도 키우지 말라, 둘 다 고요함을 방해할 뿐이다. 자신감을 가져라. 그럴 자격이 있다.",
     "title": "스틸니스",
     "author": "라이언 홀리데이",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6771,6 +7624,7 @@ window.investmentQuotes = [
     "text": "외적인 성취로는 결코 만족할 수 없다. 충분함은 내면에서 온다. 이미 가진 것을 알아차리는 데서 온다.",
     "title": "스틸니스",
     "author": "라이언 홀리데이",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6778,6 +7632,7 @@ window.investmentQuotes = [
     "text": "노자는 말했다, '부족함이 없다는 것을 깨달을 때, 온 세상이 그대의 것이 된다.'",
     "title": "스틸니스",
     "author": "라이언 홀리데이",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6785,6 +7640,7 @@ window.investmentQuotes = [
     "text": "오래도록 진심으로 반복된 루틴은 단순한 루틴을 넘어선다. 그것은 의식이 되고, 신성한 것이 된다.",
     "title": "스틸니스",
     "author": "라이언 홀리데이",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6792,6 +7648,7 @@ window.investmentQuotes = [
     "text": "사람들을 동기부여하는 가장 좋은 방법은, 학교에서든 직장에서든 가정에서든, 그들의 자율성을 지지해 주는 것이다.",
     "title": "마음의 작동법",
     "author": "에드워드 L. 데시, 리처드 플래스트",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6799,6 +7656,7 @@ window.investmentQuotes = [
     "text": "진정성은 자율적으로 행동하는 것을 필요로 한다. 그것은 자기 행동의 저자가 되어, 자신의 진짜 내면과 일치하게 사는 것이다.",
     "title": "마음의 작동법",
     "author": "에드워드 L. 데시, 리처드 플래스트",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6806,6 +7664,7 @@ window.investmentQuotes = [
     "text": "행복으로 가는 길은 없다. 행복 그 자체가 길이다.",
     "title": "인생의 태도",
     "author": "웨인 다이어",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6813,6 +7672,7 @@ window.investmentQuotes = [
     "text": "가지지 않은 것은 나눠줄 수 없다. 스스로를 사랑하지 않으면 남을 사랑할 수도 없다.",
     "title": "인생의 태도",
     "author": "웨인 다이어",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6820,6 +7680,7 @@ window.investmentQuotes = [
     "text": "행복은 얻어내는 것이 아니라 우리 자신인 상태이며, 생각하는 방식에서 비롯된다.",
     "title": "인생의 태도",
     "author": "웨인 다이어",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6827,6 +7688,7 @@ window.investmentQuotes = [
     "text": "의견은 그 자체로는 큰 가치가 없다. 그것으로 무엇을 하느냐가 세상을 바꾼다.",
     "title": "인생의 태도",
     "author": "웨인 다이어",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6834,6 +7696,7 @@ window.investmentQuotes = [
     "text": "당신은 지금까지 살아오며 내린 선택들의 총합이다.",
     "title": "인생의 태도",
     "author": "웨인 다이어",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6841,6 +7704,7 @@ window.investmentQuotes = [
     "text": "우리 모두는 완벽한 우주의 일부다. 그러니 당신은 결코 실수가 아니다.",
     "title": "인생의 태도",
     "author": "웨인 다이어",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6848,6 +7712,7 @@ window.investmentQuotes = [
     "text": "다음 5분만 버텨내자. 그리고 또 다음 5분을. 그렇게 하나씩 이겨내면 된다.",
     "title": "인생의 태도",
     "author": "웨인 다이어",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6855,6 +7720,7 @@ window.investmentQuotes = [
     "text": "어떻게 느낄지, 무엇을 할지, 어떤 사람이 될지는 모두 당신의 선택이다.",
     "title": "인생의 태도",
     "author": "웨인 다이어",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6862,6 +7728,7 @@ window.investmentQuotes = [
     "text": "무슨 일을 하냐는 질문에, 삶을 진정 가치 있게 살고 있다는 벅찬 대답을 할 수 있기를.",
     "title": "인생학교: 일",
     "author": "로먼 크르즈나릭",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6869,6 +7736,7 @@ window.investmentQuotes = [
     "text": "돈은 줄어도 삶은 오히려 나아진다. 가장 소중한 것, 시간이 풍요로워지기 때문이다.",
     "title": "인생학교: 일",
     "author": "로먼 크르즈나릭",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6876,6 +7744,7 @@ window.investmentQuotes = [
     "text": "태어나서 죽을 때까지, 우리에겐 나를 찾아주고 궁금해하며 안전하다고 느끼게 해주는 사람이 필요하다.",
     "title": "인생학교: 정신",
     "author": "필립파 페리",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6883,6 +7752,7 @@ window.investmentQuotes = [
     "text": "더 많이 배울수록 서로 다른 지식을 연결해 창의적인 생각을 떠올릴 수 있다. 아는 것이 많을수록 더 많이 창조할 수 있다.",
     "title": "인생학교: 정신",
     "author": "필립파 페리",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6890,6 +7760,7 @@ window.investmentQuotes = [
     "text": "변화는 아닌 것이 되려 애쓸 때가 아니라, 있는 그대로의 나를 알아차릴 때 일어난다.",
     "title": "인생학교: 정신",
     "author": "필립파 페리",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6897,6 +7768,7 @@ window.investmentQuotes = [
     "text": "한계를 계속 시험하지 않으면, 편안함의 영역은 다시 좁아진다.",
     "title": "인생학교: 정신",
     "author": "필립파 페리",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6904,6 +7776,7 @@ window.investmentQuotes = [
     "text": "낙관을 연습한다는 것은 어떤 일의 부정적인 면보다 긍정적인 결과에 더 집중하는 것이다.",
     "title": "인생학교: 정신",
     "author": "필립파 페리",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6911,6 +7784,7 @@ window.investmentQuotes = [
     "text": "소설이든 철학책이든, 읽으면 뇌의 양쪽을 다 쓰게 된다. 마음으로 느끼는 동시에 생각도 깊어진다.",
     "title": "인생학교: 정신",
     "author": "필립파 페리",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6918,6 +7792,7 @@ window.investmentQuotes = [
     "text": "성장 마인드셋을 가지면 도전은 위협이 아니라 설렘이 된다.",
     "title": "마인드셋",
     "author": "캐럴 드웩",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6925,6 +7800,7 @@ window.investmentQuotes = [
     "text": "가장 사랑하는 것을 위해 우리는 가장 열심히 노력하게 된다.",
     "title": "마인드셋",
     "author": "캐럴 드웩",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6932,6 +7808,7 @@ window.investmentQuotes = [
     "text": "우리는 모두 배우고자 하는 강렬한 열망을 안고 태어난다.",
     "title": "마인드셋",
     "author": "캐럴 드웩",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
@@ -6939,54 +7816,63 @@ window.investmentQuotes = [
     "text": "자신을 바라보는 관점은 삶을 살아가는 방식에 깊은 영향을 미친다.",
     "title": "마인드셋",
     "author": "캐럴 드웩",
+    "category": "경제자기계발",
     "genre": "literature"
   },
   {
     "text": "작은 성공부터 시작하라. 성공에 익숙해지면 무슨 목표든지 할 수 있다는 자신감이 생긴다.",
     "title": "세상의 통찰, 철학자들의 명언 500",
     "author": "김태현",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "행복한 삶을 만들려고 애쓸 필요는 거의 없다. 모두 당신 안에 있다. 당신이 어떻게 생각하느냐에 달렸다.",
     "title": "세상의 통찰, 철학자들의 명언 500",
     "author": "김태현",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "한 해의 가장 큰 행복은 한 해의 마지막에서 그 해의 처음보다 훨씬 나아진 자신을 느낄 때이다.",
     "title": "세상의 통찰, 철학자들의 명언 500",
     "author": "김태현",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "다른 사람이 행복하기를 바란다면 자비를 베푸세요. 그리고 스스로 행복해지기를 바랄 때에도 자비를 베푸세요.",
     "title": "세상의 통찰, 철학자들의 명언 500",
     "author": "김태현",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "사랑하는 것이 인생이다. 기쁨이 있는 곳에 사람과 사람 사이의 결합이 이루어진다.",
     "title": "세상의 통찰, 철학자들의 명언 500",
     "author": "김태현",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "세상의 중요한 업적 중 대부분은 희망이 보이지 않는 상황에서도 끊임없이 도전한 사람들이 이룬 것이다.",
     "title": "세상의 통찰, 철학자들의 명언 500",
     "author": "김태현",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "행복의 조건은 결코 거창한 데 있지 않다. 맑고 향기로운 일상 속에 있음을 우리는 얼마든지 느낄 수 있다.",
     "title": "세상의 통찰, 철학자들의 명언 500",
     "author": "김태현",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "하찮은 것 하나라도 소중히 여기고, 그것을 소유할 수 있음에 감사하노라면 절로 맑은 기쁨이 샘솟는다. 그것이 행복이다.",
     "title": "세상의 통찰, 철학자들의 명언 500",
     "author": "김태현",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
@@ -7139,204 +8025,238 @@ window.investmentQuotes = [
     "text": "마흔에 가장 필요한 것은 실용적인 삶의 기술이 아니라 진실한 삶의 의미를 찾는 질문입니다.",
     "title": "마흔에 읽는 인문학 필독서 50",
     "author": "여르미(류지아)",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "절대로 완독하지 말아 주세요. 순서대로 읽지도 말아 주세요. 지금 내 삶에 필요한 책들을 먼저 읽어 주세요.",
     "title": "마흔에 읽는 인문학 필독서 50",
     "author": "여르미(류지아)",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "오늘은 일단 문학책부터 읽어보자. 그리고 짧은 소설을 써보자. 나 자신을 타인처럼 바라보고 외국어를 배워보자.",
     "title": "마흔에 읽는 인문학 필독서 50",
     "author": "여르미(류지아)",
+    "category": "인문역사",
     "genre": "literature"
   },
   {
     "text": "허물을 벗지 않으면 진짜 나는 허물 속에서 죽고 만다.",
     "title": "나를 지키는 힘: 20인의 철학자가 전하는 삶의 중심 찾기",
     "author": "임병희",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "살다보니 인생이 별게 아니다. 재미있게 사는 게 제일이다.",
     "title": "자기 인생의 철학자들",
     "author": "김지수",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "삶에서도 음악에서도 인내의 시간이 꼭 필요하다.",
     "title": "자기 인생의 철학자들",
     "author": "김지수",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "신기하게도 자기 마음속 세상을 보는 눈은 조금도 늙지 않는다.",
     "title": "자기 인생의 철학자들",
     "author": "김지수",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "좀 손해보고 살아야 큰 손해를 안 본다. 하나 더 먹겠다고 달려들면 갈등이 커지고 적이 생긴다.",
     "title": "자기 인생의 철학자들",
     "author": "김지수",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "우리와 대결하지 않지만 우리와 대결할 정도의 힘이 있는 어른 앞에서 우리는 안정감을 느낀다.",
     "title": "자기 인생의 철학자들",
     "author": "김지수",
+    "category": "철학동양고전",
     "genre": "literature"
   },
   {
     "text": "진정으로 새로운 것을 추구하고 자신만의 길을 걷는다면, 어느 정도의 오해쯤은 기꺼이 감수해야 할 몫일 것입니다.",
     "title": "초역 자기신뢰",
     "author": "랄프 왈도 에머슨(필로소피랩 엮음)",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "시간이 지나면 진실은 드러나기 마련이고, 진정한 가치는 결국 인정받게 될 것입니다.",
     "title": "초역 자기신뢰",
     "author": "랄프 왈도 에머슨(필로소피랩 엮음)",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "조금 서툴러도, 유치해 보여도 좋습니다. 당신의 목소리를 내 보세요. 오직 그것이 당신만이 할 수 있는, 세상에 없던 이야기를 열어 주는 길이니까요.",
     "title": "초역 자기신뢰",
     "author": "랄프 왈도 에머슨(필로소피랩 엮음)",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "과거에 한 선택이 지금의 나를 설명해 주기도 하지만, 그것이 앞으로의 모든 나까지 결정짓게 내버려두지는 마세요. 당신은 언제든 새로 시작할 수 있습니다.",
     "title": "초역 자기신뢰",
     "author": "랄프 왈도 에머슨(필로소피랩 엮음)",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "내가 진짜 좋아하는 것이 무엇인지 알고, 그것에 시간을 들이고, 마음을 기울이는 일은 나를 돌보고 이해하려는 시도입니다.",
     "title": "초역 자기신뢰",
     "author": "랄프 왈도 에머슨(필로소피랩 엮음)",
+    "category": "에세이",
     "genre": "literature"
   },
   {
     "text": "사랑과 이별은 똑같이 중요하다. 삶에서 가장 중요한 이 두 가지 주제는 늘 함께 작용하면서 우리를 성장시키고 자기 자신이 되게 한다.",
     "title": "왜 가족이 힘들게 할까",
     "author": "우즈훙",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
     "text": "어떤 사건이 발생했는지보다 상대방이 어떻게 느끼는지가 훨씬 중요하다.",
     "title": "왜 가족이 힘들게 할까",
     "author": "우즈훙",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
     "text": "아이의 자기 효능감은 능력이 아니라 연습의 결과다.",
     "title": "왜 가족이 힘들게 할까",
     "author": "우즈훙",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
     "text": "모든 사람은 자기를 위해 살 때 가장 힘이 있다.",
     "title": "왜 가족이 힘들게 할까",
     "author": "우즈훙",
+    "category": "가족관계",
     "genre": "literature"
   },
   {
     "text": "우리는 추악한 시대를 살면서도 매일 아름다움을 발견해내던 그 사람을 닮았으니까.",
     "title": "시선으로부터,",
     "author": "정세랑",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "엉망으로 실패하고 바닥까지 지쳐도 끝내는 계속해냈던 사람이 등을 밀어주었으니까.",
     "title": "시선으로부터,",
     "author": "정세랑",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "당장 뛰어난 것 같지는 않지만 하고 하고 또 해도 질리지 않는다면, 그것은 시도해볼 만하다.",
     "title": "시선으로부터,",
     "author": "정세랑",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "과거를 돌아보되 매몰되지 않고, 미래를 계획하되 틀어져도 유연한 태도, 살면서 만나는 누구와도 알맞은 거리감을 유지하는 판단력.",
     "title": "시선으로부터,",
     "author": "정세랑",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "그렇게 하지 않아도 삶은 지나간다. 바쁘게. 울고 실망하고 환멸하고 분노하면서, 다시 말해 사랑하면서.",
     "title": "연년세세",
     "author": "황정은",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "어떤 생각이 든다고 그 생각을 말이나 행동으로 행하는 것이 아니고 버텨보는 것. 말하고 싶고 하고 싶다고 바로 말하거나 하지 않고 버텨보는 것.",
     "title": "연년세세",
     "author": "황정은",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "네 안에 내가 들어 있지 않다면, 그 숱한 사람들과 내가 멀어졌듯 우리가 멀어져 마땅한 관계였다면, 나는 왜 네가 이렇게 자주 떠오를까?",
     "title": "붕대 감기",
     "author": "윤이형",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "같아지겠다는 게 아니고 상처받을 준비가 됐다는 거야. 다른 사람들이 아니고 너한테는, 나는 상처받고, 배울 준비가 됐다고!",
     "title": "붕대 감기",
     "author": "윤이형",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "결국 세계를 지속하게 하는 것은 폭력과 증오가 아니라 삶에 가까운 것일지도 모른다.",
     "title": "여름의 빌라",
     "author": "백수린",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "창밖에는 커다란 눈송이가 떨어져내리고 있었다. 깃털처럼 부드러운 눈송이가. 역청빛 어둠을 덧칠한 이웃집의 지붕 위에도, 옥상 위의 장독대와 비탈 아래쪽의 앙상한 나무초리 위에도, 고요하게.",
     "title": "여름의 빌라",
     "author": "백수린",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "자신 없으면 자신 없다고 말하고 가끔 넘어지면서 살고 싶다.",
     "title": "한 사람을 위한 마음",
     "author": "이주란",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "대개 사랑이 바래는 것은 소중한 순간들을 잊고 서로를 함부로 대하기 시작하기 때문이므로, 이제 잊히지 않는 기억들로 사랑은 유지되었다.",
     "title": "목소리를 드릴게요",
     "author": "정세랑",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "다 녹아버린 아이스크림이라도 냉동고에 넣으면 얼마든지 다시 우리가 누릴 수 있는 것이 된다.",
     "title": "복자에게",
     "author": "김금희",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "세상이 그럴 수 있지. 세상이 그렇게 보이고 그렇다고 말할 수는 있겠지. 그런데 네가 보는 것이 아주 일부에 지나지 않는다는 것을 늘 생각했으면 한다.",
     "title": "복자에게",
     "author": "김금희",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "삶이 계속되는 한 우리의 실패는 아프게도 계속되겠지만 그것이 삶 자체의 실패가 되게는 하지 말자.",
     "title": "복자에게",
     "author": "김금희",
+    "category": "문학",
     "genre": "literature"
   },
   {
     "text": "희망은 늘 절망보다 가차 없다. 그래서 우리를 걷게 한다.",
     "title": "어린이라는 세계",
     "author": "김소영",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7344,6 +8264,7 @@ window.investmentQuotes = [
     "text": "일의 결과가 생각만큼 좋지 않을 때 괜찮다고, 과정에서 얻은 것이 많다고 나를 달랜다.",
     "title": "어린이라는 세계",
     "author": "김소영",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7351,6 +8272,7 @@ window.investmentQuotes = [
     "text": "어린이 덕분에 나는 나를 조금 더 잘 돌보게 되었다.",
     "title": "어린이라는 세계",
     "author": "김소영",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7358,6 +8280,7 @@ window.investmentQuotes = [
     "text": "나는 어린이의 품위를 지켜 주는 품위 있는 어른이 되고 싶다.",
     "title": "어린이라는 세계",
     "author": "김소영",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7365,6 +8288,7 @@ window.investmentQuotes = [
     "text": "나는 이제 어린이에게 하는 말을 나에게도 해 준다. 반대로 어린이에게 하지 않을 말은 스스로에게도 하지 않는다.",
     "title": "어린이라는 세계",
     "author": "김소영",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7372,6 +8296,7 @@ window.investmentQuotes = [
     "text": "좋은 사람에게만 좋은 사람이면 된다는 말, 모두에게 좋은 사람이 되지 않아도 된다는 말.",
     "title": "좋은 사람에게만 좋은 사람이면 돼",
     "author": "김재식",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7379,6 +8304,7 @@ window.investmentQuotes = [
     "text": "어렵게 손을 맞잡았다가도 한쪽에서 손을 놓아버리면 쉽게 끝나는 게 사람과 사람 사이의 관계다.",
     "title": "좋은 사람에게만 좋은 사람이면 돼",
     "author": "김재식",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7386,6 +8312,7 @@ window.investmentQuotes = [
     "text": "그러니 누군가를 곁에 두려 붙잡지 말고 내게 좋은 사람에게만 좋은 사람이면 된다.",
     "title": "좋은 사람에게만 좋은 사람이면 돼",
     "author": "김재식",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7393,6 +8320,7 @@ window.investmentQuotes = [
     "text": "무엇보다 먼저 나 스스로에게 좋은 사람이 돼야 한다는 사실을 잊지 말자.",
     "title": "좋은 사람에게만 좋은 사람이면 돼",
     "author": "김재식",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7400,6 +8328,7 @@ window.investmentQuotes = [
     "text": "나를 어떻게 보든 난 나일 뿐이고 모든 사람에게 완벽하게 좋은 사람일 수 없어.",
     "title": "좋은 사람에게만 좋은 사람이면 돼",
     "author": "김재식",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7407,6 +8336,7 @@ window.investmentQuotes = [
     "text": "나를 좋아하는 사람에게만 좋은 사람이면 돼.",
     "title": "좋은 사람에게만 좋은 사람이면 돼",
     "author": "김재식",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7414,6 +8344,7 @@ window.investmentQuotes = [
     "text": "인생이 늘 행복할 순 없었지만, 불행도 있었기에 행복이 더 가치 있다고 생각해요.",
     "title": "작은 별이지만 빛나고 있어",
     "author": "소윤",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7421,6 +8352,7 @@ window.investmentQuotes = [
     "text": "별은 산산이 부서져 죽어도 또 다른 잔해들과 뭉쳐 행성이 된다는 사실, 실패하거나 무너져도 다시 빛날 수 있는 존재라는 것을.",
     "title": "작은 별이지만 빛나고 있어",
     "author": "소윤",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7428,6 +8360,7 @@ window.investmentQuotes = [
     "text": "그래, 작은 별이긴 해도 빛나고 있으니까. 누가 알아주지 않아도 스스로 만족하며 살면 되니까.",
     "title": "작은 별이지만 빛나고 있어",
     "author": "소윤",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7435,6 +8368,7 @@ window.investmentQuotes = [
     "text": "머리 싸매고 고민한다고 인생이 송두리째 바뀌는 것도 아니니까.",
     "title": "작은 별이지만 빛나고 있어",
     "author": "소윤",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7442,6 +8376,7 @@ window.investmentQuotes = [
     "text": "좋기도 하고 나쁘기도 한 날들이 모여 인생을 이루는 거니까.",
     "title": "작은 별이지만 빛나고 있어",
     "author": "소윤",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7449,6 +8384,7 @@ window.investmentQuotes = [
     "text": "사랑을 가득 품은 너처럼, 꿋꿋하게 견뎌온 너처럼, 작은 별이지만 빛나고 있어.",
     "title": "작은 별이지만 빛나고 있어",
     "author": "소윤",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7456,6 +8392,7 @@ window.investmentQuotes = [
     "text": "그렇게 우리는 각자의 우주를 만들어간다. 그렇게 어른이 된다.",
     "title": "천문학자는 별을 보지 않는다",
     "author": "심채경",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7463,6 +8400,7 @@ window.investmentQuotes = [
     "text": "연구실에 홀로 남아 연구에 집중하는 밤은 정말이지 근사하다.",
     "title": "천문학자는 별을 보지 않는다",
     "author": "심채경",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7470,6 +8408,7 @@ window.investmentQuotes = [
     "text": "누구에게나 각자 인생의 흐름이 있고, 나는 삶을 따라 흘러 다니며 살다 보니 지금 이러고 있다.",
     "title": "천문학자는 별을 보지 않는다",
     "author": "심채경",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7477,6 +8416,7 @@ window.investmentQuotes = [
     "text": "연구는 내가 인류의 대리자로서 행하는 것이고, 그 결과를 논문으로 쓰는 것이다.",
     "title": "천문학자는 별을 보지 않는다",
     "author": "심채경",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7484,6 +8424,7 @@ window.investmentQuotes = [
     "text": "당장의 현실적 대가 없이 미래를 위해 과학을 배워나가는 사람도 있다. 분명한 것은 그 모두가 과학자라는 점이다.",
     "title": "천문학자는 별을 보지 않는다",
     "author": "심채경",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7491,6 +8432,7 @@ window.investmentQuotes = [
     "text": "나는 불편한 게 좋아. 안 불편하려면 무조건 해내야 하잖아. 그것도 빨리.",
     "title": "설레는 건 많을수록 좋아",
     "author": "김옥선",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7498,6 +8440,7 @@ window.investmentQuotes = [
     "text": "나는 그래서 여행이 좋았다. 여행지가 좋은 게 아니라, 여행지에서 겪는 모든 과정이 좋았다.",
     "title": "설레는 건 많을수록 좋아",
     "author": "김옥선",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7505,6 +8448,7 @@ window.investmentQuotes = [
     "text": "복잡하게 생각하지 말자. 압박을 잠시 내려놓고 단순하게 즐기면 된다.",
     "title": "설레는 건 많을수록 좋아",
     "author": "김옥선",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7512,6 +8456,7 @@ window.investmentQuotes = [
     "text": "단순한 마음으로 떠난 길 위에서 다른 무언가를 만나 사는 게 다시 재밌어질 수도 있고, 원래의 것이 다시 좋아질 수도 있다.",
     "title": "설레는 건 많을수록 좋아",
     "author": "김옥선",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7519,6 +8464,7 @@ window.investmentQuotes = [
     "text": "나중은 없고 완벽한 준비란 없다. 그저 미완성된 오늘이 반복될 뿐이다.",
     "title": "설레는 건 많을수록 좋아",
     "author": "김옥선",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7526,6 +8472,7 @@ window.investmentQuotes = [
     "text": "혼자 하는 모든 일은 기억이지만 같이 할 때는 추억이 된다.",
     "title": "여자 둘이 살고 있습니다",
     "author": "김하나, 황선우",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7533,6 +8480,7 @@ window.investmentQuotes = [
     "text": "사람은 혼자서도 행복할 수 있지만 자신의 세계에 누군가를 들이기로 결정한 이상은, 서로의 감정과 안녕을 살피고 노력할 수밖에 없다.",
     "title": "여자 둘이 살고 있습니다",
     "author": "김하나, 황선우",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7540,6 +8488,7 @@ window.investmentQuotes = [
     "text": "우리는 계속해서 싸우고, 곧 화해하고 다시 싸운다. 반복해서 용서했다가 또 실망하지만 여전히 큰 기대를 거는 일을 포기하지 않는다.",
     "title": "여자 둘이 살고 있습니다",
     "author": "김하나, 황선우",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7547,6 +8496,7 @@ window.investmentQuotes = [
     "text": "혼자서도 충분히 즐겁게 살 수 있지만, 다른 원자와 결합해 분자가 될 수도 있는 거죠.",
     "title": "여자 둘이 살고 있습니다",
     "author": "김하나, 황선우",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7554,6 +8504,7 @@ window.investmentQuotes = [
     "text": "택시 태워 보내지 않고 정말로 집 앞에서 헤어지는 사이라니, 한 마을에 사는 옛날 사람들처럼 정다웠다.",
     "title": "여자 둘이 살고 있습니다",
     "author": "김하나, 황선우",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7562,6 +8513,7 @@ window.investmentQuotes = [
     "text": "내가 배우고 있던 것은 아직 이해할 수 없는 것들을 읽어내는 인내심, 바로 그 중요한 기술이었다.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7570,6 +8522,7 @@ window.investmentQuotes = [
     "text": "먼저 내가 무엇을 할 수 있는 사람인지 알아낸 뒤에, 내가 누구인지를 정하라.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7578,6 +8531,7 @@ window.investmentQuotes = [
     "text": "많은 생각과 많은 역사, 많은 관점을 스스로 저울질할 수 있는 능력이야말로 나 자신을 새롭게 만들어가는 일의 핵심이라고 나는 믿게 되었다.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7586,6 +8540,7 @@ window.investmentQuotes = [
     "text": "당신이 누구인지를 결정짓는 가장 강력한 힘은 바로 당신 안에 있다.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7594,6 +8549,7 @@ window.investmentQuotes = [
     "text": "내가 그토록 애써온 모든 것, 그 오랜 배움의 시간은 결국 단 하나의 특권을 얻기 위한 것이었다. 더 많은 진실을 보고 경험하며, 그 진실들로 나만의 생각을 지어 올리는 특권 말이다.",
     "title": "배움의 발견",
     "author": "타라 웨스트오버",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7601,6 +8557,7 @@ window.investmentQuotes = [
     "text": "아직 일어나지 않은 미래의 일을 걱정하는 것. 이미 일어나고 지나가 버린 과거의 일을 후회하는 것.",
     "title": "기분을 관리하면 인생이 관리된다",
     "author": "김다슬",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7608,6 +8565,7 @@ window.investmentQuotes = [
     "text": "그런 생각들에 사로잡혀서 제대로 대처하거나 준비하지 못한 자신을 자책하는 것. 이 모든 게 정신력을 소모하는 일이다.",
     "title": "기분을 관리하면 인생이 관리된다",
     "author": "김다슬",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7615,6 +8573,7 @@ window.investmentQuotes = [
     "text": "인생을 결정하는 건 바로 하루의 기분이다. 그날의 기분이 하루의 성과를 결정하고, 하루의 성과들이 모여 미래를 만들고 그 미래들이 곧 내 인생이 되기 때문이다.",
     "title": "기분이 태도가 되지 말자",
     "author": "김수현",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7622,6 +8581,7 @@ window.investmentQuotes = [
     "text": "좋은 기분에 자만하지 않거나 경솔한 행동을 하지 않는 것도 내 선택이고, 나쁜 기분이지만 증오와 분노를 표현하지 않는 것도 내 선택이다.",
     "title": "기분이 태도가 되지 말자",
     "author": "김수현",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7629,6 +8589,7 @@ window.investmentQuotes = [
     "text": "누군가에게 실망감을 안겨 주었을 때 내가 먼저 해야 하는 것은 기대에 못 미친 나도 나라는 것을 인정하는 것이다.",
     "title": "내가 한 말을 내가 오해하지 않기로 함",
     "author": "문상훈",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7636,6 +8597,7 @@ window.investmentQuotes = [
     "text": "잘 나온 사진만 내 얼굴이 아니듯이 기대에 부응한 나만 내가 아니라는 것을 직시해야 한다. 실수했을 때의 나를 부정하면 앞으로 실망할 일만 있다.",
     "title": "내가 한 말을 내가 오해하지 않기로 함",
     "author": "문상훈",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7643,6 +8605,7 @@ window.investmentQuotes = [
     "text": "내가 다른 사람의 행복에 영향을 줄 수 있는 가장 좋은 방법은 타인의 행복에 왈가왈부하지 않는 것이다.",
     "title": "내가 한 말을 내가 오해하지 않기로 함",
     "author": "문상훈",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7650,6 +8613,7 @@ window.investmentQuotes = [
     "text": "탁월한 재능도 재력도 없는 내가 서울에 올라와 지금껏 이런저런 일을 벌인 것도, 탈혼을 결심할 수 있었던 것도 모두 야망 덕분이다. 야망이 평범한 여자를 여기까지 오게 했다.",
     "title": "나는 내 파이를 구할 뿐 인류를 구하러 온 게 아니라고",
     "author": "김진아",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7657,6 +8621,7 @@ window.investmentQuotes = [
     "text": "큰 힘에는 큰 책임이 따르듯 큰 야망에는 큰 노력이 따라야 한다.",
     "title": "나는 내 파이를 구할 뿐 인류를 구하러 온 게 아니라고",
     "author": "김진아",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7664,6 +8629,7 @@ window.investmentQuotes = [
     "text": "그럼에도 나를 어딘가로 움직이게 하고, 다시 설 수 있도록 일으켜 주었던 말들은 언제나 나를 잡아끄는 말이 아니라 나를 안아주는 말이었다.",
     "title": "이상하고 자유로운 할머니가 되고 싶어",
     "author": "무루",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7671,6 +8637,7 @@ window.investmentQuotes = [
     "text": "그 자체로 목적이 되는 경험, 결과를 담보하지 않는 순수한 몰입, 외부의 반응을 두려워하지 않는 태도, 이것이 삽질의 조건이다.",
     "title": "이상하고 자유로운 할머니가 되고 싶어",
     "author": "무루",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7678,6 +8645,7 @@ window.investmentQuotes = [
     "text": "우리가 문학을 통해 느끼는 감동의 기저에는 언제나 하나의 질문이 있다. '나는 너를 이해할 수 있는가?'",
     "title": "이상하고 자유로운 할머니가 되고 싶어",
     "author": "무루",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7685,6 +8653,7 @@ window.investmentQuotes = [
     "text": "외롭기 때문에 자유롭고 고요하며 느슨하게 흘러가는 시간은 내가 원하는 방식으로 나를 지키고 채워준다.",
     "title": "이상하고 자유로운 할머니가 되고 싶어",
     "author": "무루",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7692,6 +8661,7 @@ window.investmentQuotes = [
     "text": "우리는 각자의 길을 걷다가 가끔은 누군가를 만나 함께 걷거나 서로의 손을 잡아줄 수 있다. 그런 시간들이 얼마나 아름다운지 나도 안다.",
     "title": "이상하고 자유로운 할머니가 되고 싶어",
     "author": "무루",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7699,6 +8669,7 @@ window.investmentQuotes = [
     "text": "우리가 먼 세계에서 떠밀려 온 저마다의 섬이라는 것을. 그리고 그 섬에 아직 내가 찾지 못한 작고 아름다운 것들이 숨어 있다는 것을.",
     "title": "이상하고 자유로운 할머니가 되고 싶어",
     "author": "무루",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7706,6 +8677,7 @@ window.investmentQuotes = [
     "text": "그러니 나에게 노년이란 상실의 의미이기보다 완성의 의미다. 부디 그랬으면 좋겠다. 그래서 마침내 내 삶이 한 줄의 아름다운 유언이고 유산이 되기를 바란다.",
     "title": "이상하고 자유로운 할머니가 되고 싶어",
     "author": "무루",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7713,13 +8685,7 @@ window.investmentQuotes = [
     "text": "너는 멋있는 사람이야. 그리고 앞으로도 계속 멋있는 사람으로 남게 될 거야.",
     "title": "여자로 살아가는 우리들에게",
     "author": "요조, 임경선",
-    "genre": "literature",
-    "priority": true
-  },
-  {
-    "text": "습관은 곧, 삶에 대한 태도이자 정체성이기도 하다. 행동들이 모여 일상이 구성되고 삶이 형성되는 까닭이다.",
-    "title": "습관의 말들",
-    "author": "김은경",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7727,6 +8693,7 @@ window.investmentQuotes = [
     "text": "그 사소한 태도와 버릇들은 삶을 대하는 그 사람의 자세를 나타내는 것이기도 하다.",
     "title": "습관의 말들",
     "author": "김은경",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7734,6 +8701,7 @@ window.investmentQuotes = [
     "text": "써본 적 없는 근육들을 움직이는 것은 가본 적 없는 삶의 다른 가능성들을 하나하나 깨워나가는 시작이 될 수 있다는 것을.",
     "title": "근육이 튼튼한 여자가 되고 싶어",
     "author": "이정연",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7741,6 +8709,7 @@ window.investmentQuotes = [
     "text": "근육을 만들고 키우고 그 안에서 힘을 더 꺼내 쓰고 싶어진다. 더 잘 뛰기 위해. 그리고 더 잘 살기 위해.",
     "title": "근육이 튼튼한 여자가 되고 싶어",
     "author": "이정연",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7748,6 +8717,7 @@ window.investmentQuotes = [
     "text": "네가 이루고 싶은 게 있거든 체력을 먼저 길러라. 게으름, 나태, 권태, 짜증, 우울, 분노, 모두 체력이 버티지 못해서, 정신이 몸의 지배를 받아 나타나는 증상이야.",
     "title": "마녀체력",
     "author": "이영미",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7755,6 +8725,7 @@ window.investmentQuotes = [
     "text": "저 같은 저질 체력에 마흔 넘은 여자도 10년간 천천히, 조금씩, 그러나 꾸준히 운동을 계속하면 강해질 수밖에 없습니다.",
     "title": "마녀체력",
     "author": "이영미",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7762,6 +8733,7 @@ window.investmentQuotes = [
     "text": "운동을 하면 노인도 청춘이 되고, 운동하지 않으면 청춘도 노인이 될 수 있어요.",
     "title": "마녀체력",
     "author": "이영미",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7769,6 +8741,7 @@ window.investmentQuotes = [
     "text": "꾸준히 노력하며 갈고 닦으면, 지팡이를 휘두르고 하늘을 날아다니는 마법 같은 일들이 일어날지도 모른다.",
     "title": "마녀체력",
     "author": "이영미",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7776,6 +8749,7 @@ window.investmentQuotes = [
     "text": "이제는 안다. 힘들어서 좋았다는 걸",
     "title": "아무튼, 산",
     "author": "장보영",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7783,6 +8757,7 @@ window.investmentQuotes = [
     "text": "정상을 향한 마음만으로는 산에 오를 수 없다. 그렇게 절박하게 오른 산에서 내려와야만 우리는 다음 삶을 살아갈 수 있다.",
     "title": "아무튼, 산",
     "author": "장보영",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7790,6 +8765,7 @@ window.investmentQuotes = [
     "text": "그래도 어떤 오해는 나를 한 발 나아가게 한다.",
     "title": "우아하고 호쾌한 여자 축구",
     "author": "김혼비",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7797,6 +8773,7 @@ window.investmentQuotes = [
     "text": "일상에서 개인이 편견에 맞서 할 수 있는 운동이라는 건 결국 편견의 가짓수를 줄여 나가는 싸움 아닐까.",
     "title": "우아하고 호쾌한 여자 축구",
     "author": "김혼비",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7804,6 +8781,7 @@ window.investmentQuotes = [
     "text": "다들 진심으로 내가 지금 하고 있는 대로 계속해 주길 바라고 있었다. 내 발끝에 팀원들의 기대가 실렸다.",
     "title": "우아하고 호쾌한 여자 축구",
     "author": "김혼비",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7811,6 +8789,7 @@ window.investmentQuotes = [
     "text": "나는 체력이 모기 같아서 망했다.",
     "title": "우아하고 호쾌한 여자 축구",
     "author": "김혼비",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7818,6 +8797,7 @@ window.investmentQuotes = [
     "text": "내 안에 새겨진 다정들이 내가 나를 사랑하는 것을 쉽게 포기하지 않게 붙들어주었다.",
     "title": "다정소감",
     "author": "김혼비",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7825,6 +8805,7 @@ window.investmentQuotes = [
     "text": "다정한 패턴은 마음의 악력도 만든다.",
     "title": "다정소감",
     "author": "김혼비",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7832,6 +8813,7 @@ window.investmentQuotes = [
     "text": "그 후로 어쩐지 점심시간마다 너를 계속 기다리게 됐어. 혹시 또 안 오나 해서.",
     "title": "다정소감",
     "author": "김혼비",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7839,6 +8821,7 @@ window.investmentQuotes = [
     "text": "화가는 상태다. 누구든 그림을 그리면 그때만큼은 화가가 된다.",
     "title": "겁내지 않고 그림 그리는 법",
     "author": "이연",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7846,6 +8829,7 @@ window.investmentQuotes = [
     "text": "많이 보고 다양하게 생각할 수 있는 이가 창의적인 사람이다.",
     "title": "겁내지 않고 그림 그리는 법",
     "author": "이연",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7853,6 +8837,7 @@ window.investmentQuotes = [
     "text": "열등감은 분명 괴로운 감정이다. 그럼에도 그 안에는 에너지원이 있다.",
     "title": "겁내지 않고 그림 그리는 법",
     "author": "이연",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7860,6 +8845,7 @@ window.investmentQuotes = [
     "text": "뭐든 그려내어 여러 종이를 낭비해 보는 것, 이것이 가장 확실한 방법이다.",
     "title": "겁내지 않고 그림 그리는 법",
     "author": "이연",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7867,6 +8853,7 @@ window.investmentQuotes = [
     "text": "잘 그리는 사람이 아니라, 잘 보는 사람이 그만의 창작을 한다.",
     "title": "겁내지 않고 그림 그리는 법",
     "author": "이연",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7874,6 +8861,7 @@ window.investmentQuotes = [
     "text": "그림이 무섭다는 건, 간단하게 말하자면 스스로에게 기대치가 높다는 의미다.",
     "title": "겁내지 않고 그림 그리는 법",
     "author": "이연",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7881,6 +8869,7 @@ window.investmentQuotes = [
     "text": "인생은 시간을 돌릴 수 없지만, 그림에는 지우개가 있잖아.",
     "title": "겁내지 않고 그림 그리는 법",
     "author": "이연",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7889,6 +8878,7 @@ window.investmentQuotes = [
     "text": "서재의 문은 마음대로 잠가도 좋다. 하지만 내 정신의 자유에는 그 어떤 문도, 자물쇠도, 빗장도 채울 수 없다.",
     "title": "자기만의 방",
     "author": "버지니아 울프",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7897,6 +8887,7 @@ window.investmentQuotes = [
     "text": "당신이 쓰고 싶은 것을 쓰는 한, 그것으로 충분하다.",
     "title": "자기만의 방",
     "author": "버지니아 울프",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7905,6 +8896,7 @@ window.investmentQuotes = [
     "text": "서두를 필요 없다. 빛날 필요도 없다. 그저 자기 자신이면 충분하다.",
     "title": "자기만의 방",
     "author": "버지니아 울프",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7913,6 +8905,7 @@ window.investmentQuotes = [
     "text": "일단 읽을 줄 알게 되면, 그녀에게 가르칠 수 있는 단 한 가지는 바로 자기 자신을 믿는 것이다.",
     "title": "자기만의 방",
     "author": "버지니아 울프",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7921,6 +8914,7 @@ window.investmentQuotes = [
     "text": "여성이 소설을 쓰려면 돈과 자기만의 방이 있어야 한다.",
     "title": "자기만의 방",
     "author": "버지니아 울프",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7929,6 +8923,7 @@ window.investmentQuotes = [
     "text": "그러니 나는 당신에게 아무리 사소하거나 아무리 거대한 주제라도 망설이지 말고 온갖 종류의 책을 써보라고 권하고 싶다.",
     "title": "자기만의 방",
     "author": "버지니아 울프",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
@@ -7937,6 +8932,7 @@ window.investmentQuotes = [
     "text": "한 조각의 시가 마음속에서 움직여, 길을 걷는 두 다리마저 그 리듬에 맞춰 걷게 한다는 것은 참으로 신기한 일이다.",
     "title": "자기만의 방",
     "author": "버지니아 울프",
+    "category": "에세이",
     "genre": "literature",
     "priority": true
   },
