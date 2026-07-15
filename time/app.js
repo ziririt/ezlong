@@ -2891,6 +2891,25 @@ function handleActivePlayerEnded(event) {
     activePlayerIndex = 1 - activePlayerIndex;
     musicIndex = pendingNextIndex;
     pendingNextIndex = -1;
+    if (isNativeWrapper) {
+      // 2026-07-16: 크로스페이드가 끝난 이 순간, 네이티브(AVPlayer)의 새
+      // 트랙은 이미 musicFadeOutSeconds(4초)만큼 실제로 재생된 상태다 —
+      // crossfadeStart에서 볼륨 0으로 미리 재생을 시작해 fadeDuration에
+      // 걸쳐 서서히 페이드했기 때문. 그런데 JS 쪽 "가상시계" 역할을 하는
+      // 새 activePlayer(방금 전까지 standby였던 <audio>)는 네이티브
+      // 모드에서 한 번도 실제로 play()된 적이 없어(위 nativeClockTimerId
+      // 주석 참조) currentTime이 초기값 0에 그대로 멈춰있었다. 이 ~4초
+      // 차이가 (당시엔 아직 있었던) 15초 주기 syncNativeSeek()에 그대로
+      // 실려 네이티브에 "몇 초 전으로 되돌아가라"는 신호로 전달됐고,
+      // 크로스페이드 직후 다음 15초 재동기화 타이밍이 우연히 겹치는
+      // 순간마다 곡이 갑자기 되감겼다 정상 재생되는 버그로 이어졌다(유저
+      // 제보: "5초 정도에서 2초 정도 되돌림, 두세곡에 한번꼴"). 그 주기
+      // 재동기화 자체는 아래 setInterval 주석에서 설명하듯 이후 완전히
+      // 제거했지만, 가상시계를 네이티브의 실제 위치와 맞춰두는 이 교정은
+      // 진행률 표시 정확도를 위해 그대로 남겨둔다 — 네이티브의 실제 위치
+      // (약 fadeDuration초)로 맞춘다.
+      activePlayer().currentTime = musicFadeOutSeconds;
+    }
     recordPlayLog(musicIndex);
     // 2026-07-15: 네이티브 모드에서는 위 renderMusicPlaylistInfo() 주석 참조 —
     // 이 전환은 네이티브가 이미 스스로 크로스페이드로 끝낸 것이라 trackChanged를
@@ -3549,11 +3568,27 @@ tick();
 requestCurrentWeather();
 window.setInterval(tick, 1000);
 window.setInterval(musicStallWatchdog, 2000);
-// 2026-07-15: 네이티브가 처음부터 소리를 내고 있으므로 예전처럼 "곧 백그라운드로
-// 갈 수도 있으니 미리 흘려보내는" heartbeat는 더 이상 필요 없다. 다만 오랜 시간
-// 재생하다 보면 웹 쪽(브레인) 재생 위치와 네이티브(스피커) 재생 위치가 초 단위로
-// 서서히 벌어질 수 있어, 재생 중일 때만 15초마다 가볍게 재동기화해둔다.
-window.setInterval(() => { if (musicPlaying) syncNativeSeek(); }, 15000);
+// 2026-07-16: 이 15초 주기 재동기화를 폐기한다 — 유저가 겪은 "곡 중간에
+// 갑자기 몇 초 되감겼다 정상 재생됨"(5초 지점 2초 되돌림, 3~5초·65% 지점
+// 씹힘, 에어팟이 25~50% 지점에서 끊긴 것처럼 보인 사고 전부)의 공통 원인이
+// 바로 이 한 줄이었던 것으로 최종 판단했다(유저 제보 "웹앱에서는 이런 문제가
+// 한 번도 없었다"가 결정적 단서 — syncNativeSeek()은 네이티브 모드에서만
+// 존재하는 경로다). 문제는 방향이 거꾸로였다는 것: 네이티브(AVPlayer)가
+// 실제로 소리를 내는 "진짜 재생 위치"의 원본(source of truth)인데, 이 줄은
+// 거꾸로 JS의 가상시계(tickNativeVirtualClock, 250ms 주기 setInterval — 메인
+// 스레드가 잠깐이라도 밀리면 자연히 실제 위치보다 뒤처질 수 있음)의 값을
+// 네이티브에 "이 시간으로 맞춰라"라고 떠밀었다. 밀린 값과 실제 위치가 1초
+// 넘게 벌어지면(NativeRadioPlayer.seek()의 1초 허용오차) 네이티브가 강제로
+// seek()당하는데, 아직 전부 버퍼링되지 않은 스트리밍 파일이면 이 seek 자체가
+// 순간 버퍼링 정지를 유발해 "끊김"·"되감김"·"멈춰서 재생버튼 눌러야 함"처럼
+// 들렸다. 방향을 바로잡으면(네이티브→JS로 시계를 맞추는 것) 이런 부작용
+// 자체가 원천 차단된다 — 그리고 그 "네이티브→JS 동기화"는 이미
+// __flipzenNativeTimeSync(앱이 백그라운드에서 돌아올 때 호출됨)가 정확히
+// 담당하고 있으므로, 오랜 시간 재생 후에도 화면 진행률이 크게 벌어지는
+// 문제는 이미 다른 경로로 방지돼 있다. syncNativeSeek() 함수 자체는 지우지
+// 않는다 — 유저가 진행률 바를 직접 드래그하거나 화살표키로 탐색했을 때는
+// "지금 이 위치로 실제로 이동하라"는 의도가 분명한 진짜 seek 요청이라
+// 네이티브가 따라가는 게 맞다(아래 이벤트 리스너들에서 호출).
 
 // 2026-07-07: 앱을 켜고 첫 곡을 재생할 때 초반 몇 초간 짧게 끊기는 증상 —
 // 재생 버튼을 누른 그 순간에야 트랙 파일을 받기 시작해서 벌어지는 지연으로
