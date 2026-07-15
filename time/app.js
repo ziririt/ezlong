@@ -2485,7 +2485,26 @@ async function updateMusicProgress(event) {
     // nativeClockTimerId 관련 주석 참조) — 어차피 masterGainNode=0이라 유저
     // 귀에는 안 들리던 크로스페이드였다. standby는 활성으로 바뀔 때(swap)
     // currentTime 0에서 시작하는 상태 그대로 대기한다.
-    if (!isNativeWrapper) standby.play().catch(() => {});
+    if (!isNativeWrapper) {
+      standby.play().catch(() => {});
+    } else if (Array.isArray(musicPlaylist) && musicPlaylist.length > 0) {
+      // 2026-07-15: "웹앱 버전처럼 곡 끝과 다음 곡이 자연스럽게 볼륨
+      // 믹싱되면서 넘어가야 한다"는 요청 — 네이티브(NativeRadioPlayer)는
+      // v1에서 트랙 전환을 크로스페이드 없이 즉시 바꿨는데, 진짜 소리는
+      // 항상 네이티브가 내므로 그쪽에서도 실제로 볼륨을 서서히 섞어야만
+      // 유저 귀에 자연스러운 전환으로 들린다. 여기서 다음 곡 URL과 함께
+      // "이 시간 동안 서서히 믹싱해라"는 신호를 보낸다 — 실제 페이드는
+      // NativeRadioPlayer.crossfadeStart()가 두 번째 AVPlayer로 수행한다.
+      const nextTrack = musicPlaylist[pendingNextIndex % musicPlaylist.length];
+      if (nextTrack) {
+        postToNativeRadio({
+          action: "crossfadeStart",
+          url: resolveTrackAbsoluteUrl(nextTrack),
+          title: nextTrack.title || "FlipZen Radio",
+          duration: musicFadeOutSeconds,
+        });
+      }
+    }
   }
 
   if (crossfadeTriggered && standby) {
@@ -2814,7 +2833,10 @@ function handleActivePlayerEnded(event) {
     musicIndex = pendingNextIndex;
     pendingNextIndex = -1;
     recordPlayLog(musicIndex);
-    renderMusicPlaylistInfo();
+    // 2026-07-15: 네이티브 모드에서는 위 renderMusicPlaylistInfo() 주석 참조 —
+    // 이 전환은 네이티브가 이미 스스로 크로스페이드로 끝낸 것이라 trackChanged를
+    // 다시 보내지 않는다(화면 텍스트만 갱신).
+    renderMusicPlaylistInfo(isNativeWrapper ? { skipNativeSync: true } : undefined);
     renderMusicHistoryList();
     crossfadeTriggered = false;
     setPlayerVolume(activePlayer(), 1);
@@ -2852,7 +2874,7 @@ function formatPlaylistVariant(playlist) {
 // 2026-07-08: "지금 재생 중인 곡이 뭔지 궁금하다"는 질문에 답할 방법이
 // 화면 어디에도 없었다(재생/스킵 버튼만 있고 곡명 표시가 없었음) — 음악
 // 설정 패널에 이미 있던 총 곡수 안내에 현재 곡 제목을 덧붙인다.
-function renderMusicPlaylistInfo() {
+function renderMusicPlaylistInfo(options) {
   if (!musicPlaylistInfo) return;
   const total = Array.isArray(musicPlaylist) ? musicPlaylist.length : 0;
   const track = Array.isArray(musicPlaylist) && musicPlaylist.length > 0
@@ -2874,7 +2896,19 @@ function renderMusicPlaylistInfo() {
   // — 새 값은 곧이어 updateMusicProgress()의 timeupdate가 다시 채운다.
   if (musicProgressFill) musicProgressFill.style.width = "0%";
   renderMusicReactionButtons();
-  syncNativeTrackInfo(); // 이 함수가 트랙 전환 전부(수동 스킵·자동전환·필터변경 포함)의 공통 지점.
+  // 2026-07-15: 네이티브 크로스페이드 완료 시점(handleActivePlayerEnded의
+  // crossfadeTriggered 분기)에는 이 트랙 전환 소식을 네이티브에 또 보내면
+  // 안 된다 — 네이티브는 이미 자기 자신의 crossfadeStart/tickFade 타이머로
+  // 이 전환을 스스로 끝냈고(currentURLString·제목·잠금화면 정보까지 이미
+  // NativeRadioPlayer.finishCrossfade()가 갱신함), 여기서 JS가 또 trackChanged를
+  // 보내면 두 타이머가 정확히 같은 순간에 끝나지 않는 경우(수십ms 오차)
+  // "네이티브는 아직 페이드 중인데 JS는 벌써 끝났다고 판단" 하는 경쟁이
+  // 생겨 cancelActiveCrossfade()가 페이드를 도중에 끊고 새 트랙을 처음부터
+  // 다시 하드컷하는 사고로 이어질 수 있다. 네이티브가 이미 알아서 처리한
+  // 전환이므로 JS 쪽 신호는 생략하고 화면 텍스트 갱신만 한다.
+  if (!(options && options.skipNativeSync)) {
+    syncNativeTrackInfo(); // 이 함수가 트랙 전환 전부(수동 스킵·자동전환·필터변경 포함)의 공통 지점.
+  }
 }
 
 // 2026-07-12: "몇 가지 플레이리스트로 나눌 수 있나" 요청 — 실제 존재하는
