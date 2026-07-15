@@ -4641,5 +4641,1840 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄",
     "category": "behavior"
+  },
+  {
+    "english": "We are survival machines—robot vehicles blindly programmed to preserve selfish molecules known as genes. This is a truth which still fills me with astonishment.",
+    "text": "우리는 유전자라는 이기적인 분자를 지키도록 맹목적으로 설계된 생존 기계다. 이 사실은 지금도 나를 경이로움으로 채운다.",
+    "title": "이기적 유전자",
+    "author": "리처드 도킨스",
+    "genre": "literature"
+  },
+  {
+    "english": "If you contribute to the world's culture, if you have a good idea, compose a tune, invent a sparking plug, write a poem, it may live on, intact, long after your genes have dissolved in the common pool.",
+    "text": "세상의 문화에 기여한다면, 좋은 아이디어를 내거나 곡을 짓거나 시를 쓴다면, 그것은 당신의 유전자가 사라진 뒤에도 오랫동안 온전히 살아남을 것이다.",
+    "title": "이기적 유전자",
+    "author": "리처드 도킨스",
+    "genre": "literature"
+  },
+  {
+    "english": "We are built as gene machines and cultured as meme machines, but we have the power to turn against our creators. We, alone on earth, can rebel against the tyranny of the selfish replicators.",
+    "text": "우리는 유전자 기계로 태어나 밈 기계로 길러졌지만, 우리를 만든 존재에 맞설 힘이 있다. 지구상에서 오직 우리만이 이기적 복제자의 지배에 맞서 반란을 일으킬 수 있다.",
+    "title": "이기적 유전자",
+    "author": "리처드 도킨스",
+    "genre": "literature"
+  },
+  {
+    "english": "Let us try to teach generosity and altruism, because we are born selfish. Let us understand what our own selfish genes are up to, because we may then at least have the chance to upset their designs, something that no other species has ever aspired to do.",
+    "text": "우리는 이기적으로 태어났으니 너그러움과 이타심을 가르치려 애쓰자. 우리 안의 이기적 유전자가 무엇을 꾀하는지 이해한다면, 어떤 종도 시도한 적 없는 방식으로 그 설계를 뒤엎을 기회를 얻을지도 모른다.",
+    "title": "이기적 유전자",
+    "author": "리처드 도킨스",
+    "genre": "literature"
+  },
+  {
+    "english": "They are in you and in me; they created us, body and mind; and their preservation is the ultimate rationale for our existence. They have come a long way, those replicators. Now they go by the name of genes, and we are their survival machines.",
+    "text": "그들은 당신과 내 안에 있다. 몸과 마음을 지닌 우리를 만든 것도 그들이다. 그 복제자들은 머나먼 길을 걸어와, 오늘날 유전자라 불리며 우리를 생존 기계로 삼고 있다.",
+    "title": "이기적 유전자",
+    "author": "리처드 도킨스",
+    "genre": "literature"
+  },
+  {
+    "english": "They are the replicators and we are their survival machines. When we have served our purpose we are cast aside. But genes are denizens of geological time: genes are forever.",
+    "text": "우리는 그들의 생존 기계일 뿐, 쓸모를 다하면 버려진다. 그러나 유전자는 지질학적 시간의 주민이다. 유전자는 영원하다.",
+    "title": "이기적 유전자",
+    "author": "리처드 도킨스",
+    "genre": "literature"
+  },
+  {
+    "english": "The only kind of entity that has to exist in order for life to arise, anywhere in the universe, is the immortal replicator.",
+    "text": "우주 어디에서든 생명이 탄생하기 위해 반드시 존재해야 하는 단 하나의 실체는, 바로 영원히 죽지 않는 복제자다.",
+    "title": "이기적 유전자",
+    "author": "리처드 도킨스",
+    "genre": "literature"
+  },
+  {
+    "english": "If you wish to make an apple pie from scratch, you must first invent the universe.",
+    "text": "사과파이를 정말 처음부터 만들고 싶다면, 먼저 우주를 발명해야 한다.",
+    "title": "코스모스",
+    "author": "칼 세이건",
+    "genre": "literature"
+  },
+  {
+    "english": "Every one of us is, in the cosmic perspective, precious. If a human disagrees with you, let him live. In a hundred billion galaxies, you will not find another.",
+    "text": "우주적 관점에서 우리 각자는 소중하다. 누군가 당신과 생각이 다르더라도 그를 살려두라. 천억 개의 은하를 뒤져도 그와 똑같은 존재는 다시 찾을 수 없다.",
+    "title": "코스모스",
+    "author": "칼 세이건",
+    "genre": "literature"
+  },
+  {
+    "english": "Books permit us to voyage through time, to tap the wisdom of our ancestors.",
+    "text": "책은 우리가 시간을 가로질러 여행하며 조상들의 지혜를 길어 올릴 수 있게 해 준다.",
+    "title": "코스모스",
+    "author": "칼 세이건",
+    "genre": "literature"
+  },
+  {
+    "english": "Exploration is in our nature. We began as wanderers, and we are wanderers still. We have lingered long enough on the shores of the cosmic ocean. We are ready at last to set sail for the stars.",
+    "text": "탐험은 우리의 본성이다. 우리는 방랑자로 시작했고, 지금도 방랑자다. 우주라는 바다의 기슭에서 충분히 머물렀으니, 이제 별을 향해 돛을 올릴 때다.",
+    "title": "코스모스",
+    "author": "칼 세이건",
+    "genre": "literature"
+  },
+  {
+    "english": "There's as many atoms in a single molecule of your DNA as there are stars in the typical galaxy. We are, each of us, a little universe.",
+    "text": "당신의 DNA 한 분자 속 원자 수는 은하 하나에 있는 별의 수만큼 많다. 우리 각자는 하나의 작은 우주다.",
+    "title": "코스모스",
+    "author": "칼 세이건",
+    "genre": "literature"
+  },
+  {
+    "english": "The beauty of a living thing is not the atoms that go into it, but the way those atoms are put together.",
+    "text": "생명체의 아름다움은 그것을 이루는 원자 자체가 아니라, 그 원자들이 짜여진 방식에 있다.",
+    "title": "코스모스",
+    "author": "칼 세이건",
+    "genre": "literature"
+  },
+  {
+    "english": "We make our world significant by the courage of our questions and by the depth of our answers.",
+    "text": "우리는 질문의 용기와 대답의 깊이로써 우리가 사는 세상을 의미 있게 만든다.",
+    "title": "코스모스",
+    "author": "칼 세이건",
+    "genre": "literature"
+  },
+  {
+    "english": "They remind us that humans have evolved to wonder, that understanding is a joy, that knowledge is prerequisite to survival.",
+    "text": "인간은 경이로워하도록 진화했고, 이해하는 것은 기쁨이며, 지식은 생존의 전제 조건임을 그것들은 일깨워 준다.",
+    "title": "코스모스",
+    "author": "칼 세이건",
+    "genre": "literature"
+  },
+  {
+    "english": "Writing is perhaps the greatest of human inventions, binding together people who never knew each other, citizens of distant epochs. Books break the shackles of time. A book is proof that humans are capable of working magic.",
+    "text": "글쓰기는 아마 인류 최고의 발명품일 것이다. 서로 만난 적 없는 먼 시대의 사람들을 하나로 이어 준다. 책은 시간의 사슬을 끊는다. 책은 인간이 마법을 부릴 수 있다는 증거다.",
+    "title": "코스모스",
+    "author": "칼 세이건",
+    "genre": "literature"
+  },
+  {
+    "english": "We are each given exactly one chance to be. Each of us is both impossible and inevitable. Every replete tree was first a seed that waited.",
+    "text": "우리는 저마다 단 한 번의 존재할 기회를 받았다. 우리 각자는 불가능하면서도 필연적인 존재다. 무성한 나무도 처음엔 기다리는 씨앗이었다.",
+    "title": "랩 걸",
+    "author": "호프 자런",
+    "genre": "literature"
+  },
+  {
+    "english": "A seed is alive while it waits. Every acorn on the ground is just as alive as the three-hundred-year-old oak tree that towers over it.",
+    "text": "씨앗은 기다리는 동안에도 살아 있다. 땅에 떨어진 도토리 한 알은 그 위로 솟은 삼백 년 된 참나무만큼이나 생생하게 살아 있다.",
+    "title": "랩 걸",
+    "author": "호프 자런",
+    "genre": "literature"
+  },
+  {
+    "english": "Because I am a female scientist, nobody knows what the hell I am, and it has given me the delicious freedom to make it up as I go along.",
+    "text": "나는 여성 과학자이기에 아무도 나를 무엇으로 규정해야 할지 모른다. 그것이 오히려 내가 나만의 길을 마음껏 만들어 갈 짜릿한 자유를 주었다.",
+    "title": "랩 걸",
+    "author": "호프 자런",
+    "genre": "literature"
+  },
+  {
+    "english": "Science has taught me that everything is more complicated than we first assume, and that being able to derive happiness from discovery is a recipe for a beautiful life.",
+    "text": "과학은 내게 모든 것이 처음 짐작보다 훨씬 복잡하다는 것을, 그리고 발견에서 행복을 길어 올릴 줄 아는 것이야말로 아름다운 삶의 비결임을 가르쳐 주었다.",
+    "title": "랩 걸",
+    "author": "호프 자런",
+    "genre": "literature"
+  },
+  {
+    "english": "Something so hard can be so easy if you just have a little help. In the right place, under the right conditions, you can finally stretch out into what you're supposed to be.",
+    "text": "아무리 힘든 일도 작은 도움 하나면 쉬워질 수 있다. 알맞은 곳, 알맞은 조건 속에서 우리는 마침내 원래 되어야 할 모습으로 마음껏 뻗어 나갈 수 있다.",
+    "title": "랩 걸",
+    "author": "호프 자런",
+    "genre": "literature"
+  },
+  {
+    "english": "You shouldn't take this job too seriously. Except for when you should.",
+    "text": "이 일을 너무 심각하게 받아들이지 마라. 다만, 정말 심각해야 할 때만은 예외다.",
+    "title": "랩 걸",
+    "author": "호프 자런",
+    "genre": "literature"
+  },
+  {
+    "english": "A cactus doesn't live in the desert because it likes the desert; it lives there because the desert hasn't killed it yet.",
+    "text": "선인장이 사막에 사는 건 사막을 좋아해서가 아니라, 사막이 아직 그를 꺾지 못했기 때문이다.",
+    "title": "랩 걸",
+    "author": "호프 자런",
+    "genre": "literature"
+  },
+  {
+    "english": "Friendliness is a different strategy, and it is a powerful one.",
+    "text": "다정함은 전혀 다른 전략이며, 대단히 강력한 전략이다.",
+    "title": "다정한 것이 살아남는다",
+    "author": "브라이언 헤어, 버네사 우즈",
+    "genre": "literature"
+  },
+  {
+    "english": "What allowed us to thrive while other humans went extinct was a kind of cognitive superpower: a particular type of friendliness called cooperative communication. We are experts at working together with other people, even strangers.",
+    "text": "다른 인류종이 사라지는 동안 우리가 번성할 수 있었던 것은 일종의 인지적 초능력, 곧 협력적 의사소통이라는 특별한 다정함 덕분이었다. 우리는 처음 만난 사람과도 함께 일하는 데 능숙한 존재다.",
+    "title": "다정한 것이 살아남는다",
+    "author": "브라이언 헤어, 버네사 우즈",
+    "genre": "literature"
+  },
+  {
+    "english": "They allow us to plug our minds into the minds of others and inherit the knowledge of generations.",
+    "text": "그 능력 덕분에 우리는 서로의 마음에 연결되어, 여러 세대에 걸쳐 쌓인 지식을 물려받을 수 있다.",
+    "title": "다정한 것이 살아남는다",
+    "author": "브라이언 헤어, 버네사 우즈",
+    "genre": "literature"
+  },
+  {
+    "english": "By the time we are adults, our brain networks are stripped down and specialized. We lose plasticity, but our cognition becomes better at solving the problems we are most likely to face.",
+    "text": "어른이 될 무렵이면 뇌의 신경망은 다듬어지고 전문화된다. 유연함은 줄어들지만, 우리가 실제로 맞닥뜨릴 문제를 풀어내는 사고력은 오히려 더 좋아진다.",
+    "title": "다정한 것이 살아남는다",
+    "author": "브라이언 헤어, 버네사 우즈",
+    "genre": "literature"
+  },
+  {
+    "english": "Then we shall all, philosophers, scientists, and just ordinary people, be able to take part in the discussion of the question of why it is that we and the universe exist. If we find the answer to that, it would be the ultimate triumph of human reason - for then we would know the mind of God.",
+    "text": "철학자든 과학자든 평범한 사람이든, 우리 모두가 왜 우리와 우주가 존재하는지에 대한 논의에 함께할 수 있을 것이다. 그 답을 찾는다면 그것이야말로 인간 이성의 궁극적 승리이며, 우리는 신의 마음을 알게 될 것이다.",
+    "title": "시간의 역사",
+    "author": "스티븐 호킹",
+    "genre": "literature"
+  },
+  {
+    "english": "Ever since the dawn of civilization, people have not been content to see events as unconnected and inexplicable. They have craved an understanding of the underlying order in the world.",
+    "text": "문명이 시작된 이래 사람들은 세상의 사건들을 서로 무관하고 설명할 수 없는 것으로 받아들이는 데 만족한 적이 없었다. 늘 세상 속에 감춰진 질서를 이해하고 싶어 했다.",
+    "title": "시간의 역사",
+    "author": "스티븐 호킹",
+    "genre": "literature"
+  },
+  {
+    "english": "The eventual goal of science is to provide a single theory that describes the whole universe.",
+    "text": "과학의 궁극적 목표는 우주 전체를 설명하는 단 하나의 이론을 찾아내는 것이다.",
+    "title": "시간의 역사",
+    "author": "스티븐 호킹",
+    "genre": "literature"
+  },
+  {
+    "english": "If time travel is possible, where are the tourists from the future?",
+    "text": "시간 여행이 정말 가능하다면, 미래에서 온 여행자들은 대체 다 어디에 있단 말인가?",
+    "title": "시간의 역사",
+    "author": "스티븐 호킹",
+    "genre": "literature"
+  },
+  {
+    "english": "A well-known scientist once gave a public lecture on astronomy. At the end, a little old lady said: 'The world is really a flat plate supported on the back of a giant tortoise.' 'But it turtles all the way down!'",
+    "text": "한 저명한 과학자가 대중 천문학 강연을 마쳤을 때, 한 노부인이 말했다. '세상은 사실 거대한 거북이 등 위에 얹힌 평평한 판이랍니다.' '그럼 그 아래도, 또 그 아래도 온통 거북이란 말씀이군요!'",
+    "title": "시간의 역사",
+    "author": "스티븐 호킹",
+    "genre": "literature"
+  },
+  {
+    "english": "The increase of disorder or entropy with time is one example of what is called an arrow of time, something that distinguishes the past from the future, giving a direction to time.",
+    "text": "시간이 흐르며 무질서, 즉 엔트로피가 커지는 현상은 '시간의 화살'이라 불리는 것의 한 예다. 그것이 과거와 미래를 구분지어 시간에 방향을 부여한다.",
+    "title": "시간의 역사",
+    "author": "스티븐 호킹",
+    "genre": "literature"
+  },
+  {
+    "english": "We could thus see no reason why we should not solve DNA in the same way. All we had to do was to construct a set of molecular models and begin to play—with luck, the structure would be a helix.",
+    "text": "우리라고 같은 방식으로 DNA를 풀지 못할 이유가 없었다. 분자 모형을 만들어 놓고 가지고 놀기 시작하면 그만이었다. 운이 좋다면 그 구조는 나선형일 터였다.",
+    "title": "이중나선",
+    "author": "제임스 왓슨",
+    "genre": "literature"
+  },
+  {
+    "english": "From my first day in the lab I knew I would not leave Cambridge for a long time. Departing would be idiocy, for I had immediately discovered the fun of talking to Francis Crick.",
+    "text": "실험실에 온 첫날부터 나는 오랫동안 케임브리지를 떠나지 않으리란 걸 알았다. 프랜시스 크릭과 이야기하는 즐거움을 곧바로 발견했으니, 떠난다는 건 어리석은 일이었다.",
+    "title": "이중나선",
+    "author": "제임스 왓슨",
+    "genre": "literature"
+  },
+  {
+    "english": "I had never seen such beautiful buildings in all my life, and any hesitation I might have had about leaving my safe life as a biologist vanished.",
+    "text": "그토록 아름다운 건물들은 평생 본 적이 없었다. 안전한 생물학자의 삶을 떠나는 데 대한 망설임은 그 순간 말끔히 사라졌다.",
+    "title": "이중나선",
+    "author": "제임스 왓슨",
+    "genre": "literature"
+  },
+  {
+    "english": "But now, to my delight and amazement, the answer was turning out to be profoundly interesting. For over two hours I happily lay awake with pairs of adenine residues whirling in front of my closed eyes.",
+    "text": "놀랍고 기쁘게도, 그 답은 몹시 흥미로운 것으로 드러나고 있었다. 나는 두 시간 넘게 아데닌 짝들이 감은 눈앞에서 빙빙 도는 것을 행복하게 바라보며 누워 있었다.",
+    "title": "이중나선",
+    "author": "제임스 왓슨",
+    "genre": "literature"
+  },
+  {
+    "english": "She saw the appeal of the base pairs and accepted the fact that the structure was too pretty not to be true.",
+    "text": "그녀도 염기쌍의 매력을 알아보았고, 그 구조가 너무나 아름다워서 진실이 아닐 수 없다는 사실을 받아들였다.",
+    "title": "이중나선",
+    "author": "제임스 왓슨",
+    "genre": "literature"
+  },
+  {
+    "english": "It has not escaped our notice that the specific pairing we have postulated immediately suggests a possible copying mechanism for the genetic material.",
+    "text": "우리가 가정한 이 특정한 짝짓기 방식이 유전 물질의 복제 방식을 곧바로 시사한다는 사실을, 우리는 놓치지 않았다.",
+    "title": "이중나선",
+    "author": "제임스 왓슨",
+    "genre": "literature"
+  },
+  {
+    "english": "Pauling's reaction was one of genuine thrill, as was Delbrück's. The overwhelming biological merits of a self-complementary DNA molecule made him effectively concede the race.",
+    "text": "폴링의 반응은 진심 어린 전율 그 자체였고, 델브뤼크도 마찬가지였다. 스스로 짝을 이루는 DNA 분자가 지닌 압도적인 생물학적 아름다움 앞에서 그는 사실상 경쟁을 인정했다.",
+    "title": "이중나선",
+    "author": "제임스 왓슨",
+    "genre": "literature"
+  },
+  {
+    "english": "The spider's web is a glorious mathematical problem.",
+    "text": "거미줄은 하나의 눈부신 수학 문제다.",
+    "title": "파브르 곤충기",
+    "author": "장 앙리 파브르",
+    "genre": "literature"
+  },
+  {
+    "english": "With the exquisite simplicity of its geometry and its ornament, the bird's egg enchants the least cultivated eye.",
+    "text": "새알은 그 기하학적 형태의 정교한 단순함과 장식만으로도, 안목이 얕은 눈조차 매혹시킨다.",
+    "title": "파브르 곤충기",
+    "author": "장 앙리 파브르",
+    "genre": "literature"
+  },
+  {
+    "english": "I am seized with astonishment, for I understand!",
+    "text": "나는 경이로움에 사로잡힌다, 마침내 이해했으므로!",
+    "title": "파브르 곤충기",
+    "author": "장 앙리 파브르",
+    "genre": "literature"
+  },
+  {
+    "english": "The Grasshopper tribe has its bursts of gladness; it has moreover the advantage of being able to express them with a sound, the simple satisfaction of the artist.",
+    "text": "메뚜기 무리에게도 기쁨이 벅차오르는 순간이 있다. 게다가 그들은 그것을 소리로 표현할 수 있으니, 예술가의 소박한 만족감을 지닌 셈이다.",
+    "title": "파브르 곤충기",
+    "author": "장 앙리 파브르",
+    "genre": "literature"
+  },
+  {
+    "english": "Few insects enjoy more fame than the Glow-worm, the curious little animal who celebrates the joy of life by lighting a lantern at its tail-end. We all know it, at least by name, even if we have not seen it roaming through the grass, like a spark fallen from the full moon.",
+    "text": "반딧불이만큼 유명한 곤충도 드물다. 꽁무니에 등불을 켜서 삶의 기쁨을 노래하는 이 신기한 작은 동물을, 직접 본 적 없어도 우리는 적어도 이름으로는 안다. 마치 보름달에서 떨어진 불꽃 한 점처럼.",
+    "title": "파브르 곤충기",
+    "author": "장 앙리 파브르",
+    "genre": "literature"
+  },
+  {
+    "english": "The Sacred beetle never chooses any shape but the sphere, though it necessitates such scrupulous accuracy; she acts as though she knew the laws of evaporation and geometry from beginning to end.",
+    "text": "신성한 쇠똥구리는 그토록 정교한 정확함이 필요함에도 언제나 구형만을 고집한다. 마치 처음부터 증발과 기하학의 법칙을 알고 있었던 것처럼.",
+    "title": "파브르 곤충기",
+    "author": "장 앙리 파브르",
+    "genre": "literature"
+  },
+  {
+    "english": "The trained mind, alone, more discerning than our retina, sees clearly that which defies the perceptive faculties of the eye.",
+    "text": "훈련된 정신만이 우리의 망막보다 더 예리하게, 눈의 지각 능력으로는 닿을 수 없는 것을 또렷이 본다.",
+    "title": "파브르 곤충기",
+    "author": "장 앙리 파브르",
+    "genre": "literature"
+  },
+  {
+    "english": "What matters in learning is not to be taught, but to wake up.",
+    "text": "배움에서 중요한 것은 가르침을 받는 것이 아니라, 스스로 깨어나는 것이다.",
+    "title": "파브르 곤충기",
+    "author": "장 앙리 파브르",
+    "genre": "literature"
+  },
+  {
+    "english": "The observer must neglect nothing: he never knows what the humblest fact may bring forth.",
+    "text": "관찰자는 그 무엇도 소홀히 해서는 안 된다. 아무리 하찮아 보이는 사실도 무엇을 낳을지 알 수 없기 때문이다.",
+    "title": "파브르 곤충기",
+    "author": "장 앙리 파브르",
+    "genre": "literature"
+  },
+  {
+    "english": "We are the stewards, not their owners.",
+    "text": "우리는 소유자가 아니라 청지기다.",
+    "title": "지구의 절반",
+    "author": "에드워드 윌슨",
+    "genre": "literature"
+  },
+  {
+    "english": "Every species still alive is precious to us. Naturalists live for our Lord God moment. We want to save the experience for all generations to come.",
+    "text": "지금 살아 있는 모든 종은 우리에게 소중하다. 박물학자는 그 경이로운 '발견의 순간'을 위해 살아간다. 우리는 그 경험을 모든 미래 세대를 위해 지켜내고 싶다.",
+    "title": "지구의 절반",
+    "author": "에드워드 윌슨",
+    "genre": "literature"
+  },
+  {
+    "english": "The biosphere does not belong to us; we belong to it.",
+    "text": "생물권은 우리의 소유가 아니다. 오히려 우리가 생물권에 속해 있다.",
+    "title": "지구의 절반",
+    "author": "에드워드 윌슨",
+    "genre": "literature"
+  },
+  {
+    "english": "The history of species is thereby an epic.",
+    "text": "그렇게 보면 모든 종의 역사는 한 편의 장대한 서사시다.",
+    "title": "지구의 절반",
+    "author": "에드워드 윌슨",
+    "genre": "literature"
+  },
+  {
+    "english": "Living Earth, all of it, can continue to breathe.",
+    "text": "살아 있는 지구, 그 전부가 계속 숨 쉴 수 있다.",
+    "title": "지구의 절반",
+    "author": "에드워드 윌슨",
+    "genre": "literature"
+  },
+  {
+    "english": "Each project is special unto itself. Each requires knowledge and love of the local environment shared by partnerships of scientists, activists, and political and economic leaders.",
+    "text": "모든 보전 프로젝트는 저마다 특별하다. 과학자와 활동가, 지도자들이 함께 나누는 그 지역에 대한 지식과 애정이 그 바탕이 된다.",
+    "title": "지구의 절반",
+    "author": "에드워드 윌슨",
+    "genre": "literature"
+  },
+  {
+    "english": "I frankly admit that I am strongly attracted by the simplicity and beauty of the mathematical schemes which nature presents us. You must have felt this too: the almost frightening simplicity and wholeness of the relationship, which nature suddenly spreads out before us.",
+    "text": "자연이 우리에게 보여주는 수학적 구조의 단순함과 아름다움에 나는 강하게 매료된다는 것을 솔직히 인정한다. 당신도 느꼈을 것이다, 자연이 문득 우리 앞에 펼쳐 보이는 그 관계의 두려울 만큼 완전한 단순함을.",
+    "title": "부분과 전체",
+    "author": "베르너 하이젠베르크",
+    "genre": "literature"
+  },
+  {
+    "english": "An expert is someone who knows some of the worst mistakes that can be made in his particular field, and therefore knows how to avoid them.",
+    "text": "전문가란 자기 분야에서 저지를 수 있는 가장 심각한 실수 몇 가지를 알기에, 그것을 피할 줄 아는 사람이다.",
+    "title": "부분과 전체",
+    "author": "베르너 하이젠베르크",
+    "genre": "literature"
+  },
+  {
+    "english": "Quantum theory is such a wonderful example of the fact that one can have understood a matter of fact in complete clarity and yet simultaneously know that one can only speak of it in images and analogies.",
+    "text": "양자론은 하나의 사실을 완전히 명료하게 이해했으면서도, 그것을 오직 비유와 이미지로만 말할 수 있다는 것을 동시에 아는 놀라운 사례다.",
+    "title": "부분과 전체",
+    "author": "베르너 하이젠베르크",
+    "genre": "literature"
+  },
+  {
+    "english": "We study history not to know the future but to widen our horizons, to understand that our present situation is neither natural nor inevitable, and that we consequently have many more possibilities before us than we imagine.",
+    "text": "역사를 공부하는 것은 미래를 알기 위해서가 아니라 우리의 시야를 넓히기 위해서다. 지금의 상황이 자연스럽거나 필연적인 것이 아니며, 우리 앞에 상상보다 훨씬 많은 가능성이 놓여 있음을 깨닫기 위해서다.",
+    "title": "사피엔스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "Money is the most universal and most efficient system of mutual trust ever devised.",
+    "text": "화폐는 인류가 만들어낸 것 중 가장 보편적이고 효율적인 상호 신뢰의 체계다.",
+    "title": "사피엔스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "Large numbers of strangers can cooperate successfully by believing in common myths. Any large-scale human cooperation is rooted in common myths that exist only in people's collective imagination.",
+    "text": "낯선 사람들도 공통의 신화를 믿으면 대규모로 협력할 수 있다. 어떤 대규모 인간 협력도 사람들의 집단적 상상 속에만 존재하는 공통의 신화에 뿌리를 두고 있다.",
+    "title": "사피엔스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "A meaningful life can be extremely satisfying even in the midst of hardship, whereas a meaningless life is a terrible ordeal no matter how comfortable it is.",
+    "text": "의미 있는 삶은 고난 속에서도 더없이 충만할 수 있지만, 의미 없는 삶은 아무리 편안해도 끔찍한 시련일 뿐이다.",
+    "title": "사피엔스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "Happiness does not really depend on objective conditions of either wealth, health or even community. Rather, it depends on the correlation between objective conditions and subjective expectations.",
+    "text": "행복은 부나 건강, 심지어 공동체 같은 객관적 조건에 좌우되지 않는다. 오히려 객관적 조건과 주관적 기대 사이의 상관관계에 달려 있다.",
+    "title": "사피엔스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "Hierarchies serve an important function. They enable complete strangers to know how to treat one another without wasting the time and energy needed to become personally acquainted.",
+    "text": "위계는 중요한 기능을 한다. 낯선 이들이 서로 알아가는 데 드는 시간과 에너지를 낭비하지 않고도, 서로를 어떻게 대해야 할지 알게 해주기 때문이다.",
+    "title": "사피엔스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "In order to change an existing imagined order, we must first believe in an alternative imagined order.",
+    "text": "기존의 상상된 질서를 바꾸려면, 먼저 대안이 되는 상상된 질서를 믿어야 한다.",
+    "title": "사피엔스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "One of history's few iron laws is that luxuries tend to become necessities and to spawn new obligations.",
+    "text": "사치품이 필수품이 되고 새로운 의무를 낳는다는 것, 이것이 역사의 몇 안 되는 철칙 중 하나다.",
+    "title": "사피엔스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "This is the best reason to learn history: not in order to predict the future, but to free yourself of the past and imagine alternative destinies.",
+    "text": "역사를 배우는 가장 좋은 이유는 미래를 예측하기 위해서가 아니라, 과거로부터 자유로워져 또 다른 운명을 상상하기 위해서다.",
+    "title": "호모 데우스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "People are usually afraid of change because they fear the unknown. But the single greatest constant of history is that everything changes.",
+    "text": "사람들은 대개 미지의 것이 두려워서 변화를 두려워한다. 하지만 역사에서 변하지 않는 단 하나의 상수는, 모든 것이 변한다는 사실이다.",
+    "title": "호모 데우스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "The greatest scientific discovery was the discovery of ignorance. Once humans realised how little they knew about the world, they suddenly had a very good reason to seek new knowledge.",
+    "text": "가장 위대한 과학적 발견은 무지의 발견이었다. 인간이 세상에 대해 얼마나 모르는지 깨달은 순간, 비로소 새로운 지식을 추구할 좋은 이유를 갖게 되었다.",
+    "title": "호모 데우스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "History isn't a single narrative, but thousands of alternative narratives. Whenever we choose to tell one, we are also choosing to silence others.",
+    "text": "역사는 하나의 이야기가 아니라 수천 개의 대안적 이야기들이다. 우리가 하나를 선택해 들려줄 때마다, 다른 이야기들은 침묵하게 된다.",
+    "title": "호모 데우스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "Fiction isn't bad. It is vital. Without commonly accepted stories about things like money, states or corporations, no complex human society can function.",
+    "text": "허구는 나쁜 것이 아니다. 오히려 필수적이다. 돈이나 국가, 기업에 대해 공통으로 받아들여지는 이야기 없이는, 복잡한 인간 사회는 작동할 수 없다.",
+    "title": "호모 데우스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "We do not become satisfied by leading a peaceful and prosperous existence. Rather, we become satisfied when reality matches our expectations.",
+    "text": "우리는 평화롭고 풍요로운 삶을 산다고 해서 만족하지 않는다. 현실이 기대와 맞아떨어질 때 비로소 만족하게 된다.",
+    "title": "호모 데우스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "To attain real happiness, humans need to slow down the pursuit of pleasant sensations, not accelerate it.",
+    "text": "진정한 행복에 이르려면, 인간은 즐거운 감각을 좇는 속도를 늦춰야지 오히려 가속해서는 안 된다.",
+    "title": "호모 데우스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "Yet in truth the lives of most people have meaning only within the network of stories they tell one another.",
+    "text": "삶의 대부분은 사람들이 서로에게 들려주는 이야기들의 그물망 속에서만 비로소 의미를 갖는다.",
+    "title": "호모 데우스",
+    "author": "유발 하라리",
+    "genre": "literature"
+  },
+  {
+    "english": "History followed different courses for different peoples because of differences among peoples' environments, not because of biological differences among peoples themselves.",
+    "text": "역사가 민족마다 다른 길을 걷게 한 것은 그들 사이의 생물학적 차이 때문이 아니라, 각자가 처한 환경의 차이 때문이다.",
+    "title": "총, 균, 쇠",
+    "author": "재레드 다이아몬드",
+    "genre": "literature"
+  },
+  {
+    "english": "All human societies contain inventive people. It's just that some environments provide more starting materials, and more favorable conditions for utilizing inventions, than do other environments.",
+    "text": "모든 인간 사회에는 창의적인 사람들이 있다. 다만 어떤 환경은 발명을 실현할 재료와 조건을 다른 환경보다 더 풍부하게 제공할 뿐이다.",
+    "title": "총, 균, 쇠",
+    "author": "재레드 다이아몬드",
+    "genre": "literature"
+  },
+  {
+    "english": "My two main conclusions are that technology develops cumulatively, rather than in isolated heroic acts, and that it finds most of its uses after it has been invented, rather than being invented to meet a foreseen need.",
+    "text": "내가 내린 결론은, 기술은 고립된 영웅적 행위가 아니라 축적을 통해 발전한다는 것과, 대개는 예견된 필요를 채우기보다 발명된 뒤에야 쓰임새를 찾는다는 것이다.",
+    "title": "총, 균, 쇠",
+    "author": "재레드 다이아몬드",
+    "genre": "literature"
+  },
+  {
+    "english": "With the rise of chiefdoms around 7,500 years ago, people had to learn, for the first time in history, how to encounter strangers regularly without attempting to kill them.",
+    "text": "약 7500년 전 족장사회가 출현하면서, 사람들은 역사상 처음으로 낯선 이를 만나도 죽이려 들지 않고 지내는 법을 배워야 했다.",
+    "title": "총, 균, 쇠",
+    "author": "재레드 다이아몬드",
+    "genre": "literature"
+  },
+  {
+    "english": "Once food can be stockpiled, a political elite can gain control of food produced by others, assert the right of taxation, escape the need to feed itself, and engage full-time in political activities.",
+    "text": "식량을 비축할 수 있게 되자, 정치 엘리트는 다른 이가 생산한 식량을 통제하고 세금을 걷을 권리를 주장하며, 스스로 식량을 구할 필요 없이 온전히 정치에 전념할 수 있게 되었다.",
+    "title": "총, 균, 쇠",
+    "author": "재레드 다이아몬드",
+    "genre": "literature"
+  },
+  {
+    "english": "Despite being depicted in innumerable cartoons as apelike brutes living in caves, Neanderthals had brains slightly larger than our own. They were also the first humans to leave behind strong evidence of burying their dead and caring for their sick.",
+    "text": "네안데르탈인은 수많은 만화에서 유인원 같은 야만인으로 그려지지만, 사실 그들의 뇌는 우리보다 조금 더 컸다. 그들은 또한 죽은 이를 묻고 병든 이를 돌본 최초의 인류이기도 했다.",
+    "title": "총, 균, 쇠",
+    "author": "재레드 다이아몬드",
+    "genre": "literature"
+  },
+  {
+    "english": "It is good to love many things, for therein lies the true strength, and whosoever loves much performs much, and can accomplish much, and what is done in love is well done.",
+    "text": "많은 것을 사랑하는 것은 좋은 일이다. 그 안에 진정한 힘이 있기 때문이다. 많이 사랑하는 사람은 많은 것을 해내고 이룰 수 있으며, 사랑으로 한 일은 언제나 잘 된 일이다.",
+    "title": "반 고흐, 영혼의 편지",
+    "author": "빈센트 반 고흐",
+    "genre": "literature"
+  },
+  {
+    "english": "I dream my painting and I paint my dream.",
+    "text": "나는 내 그림을 꿈꾸고, 내 꿈을 그린다.",
+    "title": "반 고흐, 영혼의 편지",
+    "author": "빈센트 반 고흐",
+    "genre": "literature"
+  },
+  {
+    "english": "Be clearly aware of the stars and infinity on high. Then life seems almost enchanted after all.",
+    "text": "저 높은 곳의 별들과 무한함을 또렷이 의식해 보라. 그러면 삶은 결국 거의 마법처럼 느껴진다.",
+    "title": "반 고흐, 영혼의 편지",
+    "author": "빈센트 반 고흐",
+    "genre": "literature"
+  },
+  {
+    "english": "There is nothing more truly artistic than to love people.",
+    "text": "사람을 사랑하는 것보다 더 진정으로 예술적인 일은 없다.",
+    "title": "반 고흐, 영혼의 편지",
+    "author": "빈센트 반 고흐",
+    "genre": "literature"
+  },
+  {
+    "english": "If you truly love nature, you will find beauty everywhere.",
+    "text": "자연을 진심으로 사랑한다면, 어디서든 아름다움을 발견하게 될 것이다.",
+    "title": "반 고흐, 영혼의 편지",
+    "author": "빈센트 반 고흐",
+    "genre": "literature"
+  },
+  {
+    "english": "Great things are not done by impulse, but by a series of small things brought together.",
+    "text": "위대한 일은 충동으로 이루어지지 않는다. 작은 것들이 하나하나 모여 이루어지는 것이다.",
+    "title": "반 고흐, 영혼의 편지",
+    "author": "빈센트 반 고흐",
+    "genre": "literature"
+  },
+  {
+    "english": "The beginning is perhaps more difficult than anything else, but keep heart, it will turn out all right.",
+    "text": "시작이 어쩌면 가장 어려운 일일지 모른다. 하지만 마음을 굳게 먹어라, 결국은 다 잘될 것이다.",
+    "title": "반 고흐, 영혼의 편지",
+    "author": "빈센트 반 고흐",
+    "genre": "literature"
+  },
+  {
+    "english": "It is looking at things for a long time that ripens you and gives you a deeper meaning.",
+    "text": "오랫동안 바라보는 것, 그것이 우리를 성숙하게 하고 더 깊은 의미를 갖게 한다.",
+    "title": "반 고흐, 영혼의 편지",
+    "author": "빈센트 반 고흐",
+    "genre": "literature"
+  },
+  {
+    "english": "I often think that the night is more alive and more richly colored than the day.",
+    "text": "나는 종종 생각한다, 밤이 낮보다 훨씬 더 생기 있고 풍부한 색으로 살아 있다고.",
+    "title": "반 고흐, 영혼의 편지",
+    "author": "빈센트 반 고흐",
+    "genre": "literature"
+  },
+  {
+    "english": "I am always doing what I cannot do yet, in order to learn how to do it.",
+    "text": "나는 아직 할 수 없는 일을 늘 하고 있다. 그렇게 함으로써 하는 법을 배우게 된다.",
+    "title": "반 고흐, 영혼의 편지",
+    "author": "빈센트 반 고흐",
+    "genre": "literature"
+  },
+  {
+    "english": "It is with the reading of books the same as with looking at pictures; one must, without doubt, without hesitations, with assurance, admire what is beautiful.",
+    "text": "책을 읽는 것은 그림을 보는 것과 같다. 의심 없이, 주저 없이, 확신을 갖고 아름다운 것을 찬미해야 한다.",
+    "title": "반 고흐, 영혼의 편지",
+    "author": "빈센트 반 고흐",
+    "genre": "literature"
+  },
+  {
+    "english": "The historian without his facts is rootless and futile; the facts without their historian are dead and meaningless.",
+    "text": "사실이 없는 역사가는 뿌리도 없고 무의미하며, 역사가가 없는 사실은 죽은 것이나 다름없다.",
+    "title": "역사란 무엇인가",
+    "author": "E.H. 카",
+    "genre": "literature"
+  },
+  {
+    "english": "What is history?... it is a continuous process of interaction between the historian and his facts, an unending dialogue between the present and the past.",
+    "text": "역사란 무엇인가? 그것은 역사가와 사실 사이에서 끊임없이 이어지는 상호작용의 과정이며, 현재와 과거 사이의 끝나지 않는 대화다.",
+    "title": "역사란 무엇인가",
+    "author": "E.H. 카",
+    "genre": "literature"
+  },
+  {
+    "english": "It used to be said that facts speak for themselves. This is, of course, untrue. The facts speak only when the historian calls on them.",
+    "text": "흔히 사실이 스스로 말한다고 하지만, 이는 사실이 아니다. 사실은 역사가가 불러줄 때에야 비로소 말을 한다.",
+    "title": "역사란 무엇인가",
+    "author": "E.H. 카",
+    "genre": "literature"
+  },
+  {
+    "english": "Change is certain. Progress is not.",
+    "text": "변화는 확실하다. 그러나 진보는 확실하지 않다.",
+    "title": "역사란 무엇인가",
+    "author": "E.H. 카",
+    "genre": "literature"
+  },
+  {
+    "english": "Study the historian before you begin to study the facts.",
+    "text": "사실을 연구하기에 앞서, 먼저 그 역사가를 연구하라.",
+    "title": "역사란 무엇인가",
+    "author": "E.H. 카",
+    "genre": "literature"
+  },
+  {
+    "english": "The historian is necessarily selective. The belief in a hard core of historical facts existing objectively and independently of the interpretation of the historian is a preposterous fallacy, but one which it is very hard to eradicate.",
+    "text": "역사가는 필연적으로 선택적일 수밖에 없다. 역사적 사실이 역사가의 해석과 무관하게 객관적으로 존재한다는 믿음은 터무니없는 오류이지만, 좀처럼 뿌리 뽑히지 않는다.",
+    "title": "역사란 무엇인가",
+    "author": "E.H. 카",
+    "genre": "literature"
+  },
+  {
+    "text": "서 있던 건물의 흔적이란 온데간데없고 덩그러니 석탑 하나만 서 있는 폐사지의 정취를 아시는지요.",
+    "title": "나의 문화유산답사기",
+    "author": "유홍준",
+    "genre": "literature"
+  },
+  {
+    "text": "우리나라는 국토 전체가 박물관이다. 산과 들과 강, 바다에 이르기까지 문화유산 아닌 곳이 없다.",
+    "title": "나의 문화유산답사기",
+    "author": "유홍준",
+    "genre": "literature"
+  },
+  {
+    "text": "역사는 무엇보다 사람을 만나는 인문학이다. 수천 년 동안의 사람 이야기가 역사 속에 고스란히 녹아 있다.",
+    "title": "역사의 쓸모",
+    "author": "최태성",
+    "genre": "literature"
+  },
+  {
+    "text": "가슴 뛰는 삶을 살았던 사람을 만나 그들의 고민과 선택, 행동의 의미를 짚다 보면, 아무리 힘들어도 자신의 삶을 걸어가는 법을 배우게 된다. 그것이 바로 역사의 힘이다.",
+    "title": "역사의 쓸모",
+    "author": "최태성",
+    "genre": "literature"
+  },
+  {
+    "text": "역사는 나보다 앞서 살았던 사람들의 삶을 들여다보면서, 나는 어떻게 살 것인가를 고민하고 실천할 수 있도록 도와주는 존재다.",
+    "title": "역사의 쓸모",
+    "author": "최태성",
+    "genre": "literature"
+  },
+  {
+    "text": "역사를 공부한다는 것은 사람들이 왜 그런 선택을 했는지 상상해보고, 그의 입장이 되어 생각해보는 일이다.",
+    "title": "역사의 쓸모",
+    "author": "최태성",
+    "genre": "literature"
+  },
+  {
+    "text": "역사 속 인물들에게 '왜'라고 묻고 가슴으로 대화를 해보면, 우리 삶의 고민에 대한 답을 찾을 수 있다.",
+    "title": "역사의 쓸모",
+    "author": "최태성",
+    "genre": "literature"
+  },
+  {
+    "text": "삶이라는 문제에 역사보다 완벽한 해설서는 없다.",
+    "title": "역사의 쓸모",
+    "author": "최태성",
+    "genre": "literature"
+  },
+  {
+    "text": "지성에서는 그리스인보다 못하고, 체력에서는 켈트인이나 게르만인보다 못하고, 기술력에서는 에트루리아인보다 못하고, 경제력에서는 카르타고인보다 뒤떨어지는 것이 로마인이라고, 로마인 스스로가 인정하고 있었다.",
+    "title": "로마인 이야기",
+    "author": "시오노 나나미",
+    "genre": "literature"
+  },
+  {
+    "text": "패자조차도 자기들에게 동화시키는 이 방식만큼, 로마의 강대화에 이바지한 것은 없었다.",
+    "title": "로마인 이야기",
+    "author": "시오노 나나미",
+    "genre": "literature"
+  },
+  {
+    "text": "한 나라의 역사는 한 사람의 생애와 같다. 철저하게 알고 싶으면 그 사람의 탄생부터 죽을 때까지를 알아야 하듯, 역사도 마찬가지다.",
+    "title": "로마인 이야기",
+    "author": "시오노 나나미",
+    "genre": "literature"
+  },
+  {
+    "english": "One swallow does not make a summer, neither does one fine day; similarly one day or brief time of happiness does not make a person entirely happy.",
+    "text": "제비 한 마리가 왔다고 여름이 오는 것은 아니듯, 하루나 잠깐의 행복만으로 한 사람 전체가 행복해지는 것은 아니다.",
+    "title": "니코마코스 윤리학",
+    "author": "아리스토텔레스",
+    "genre": "literature"
+  },
+  {
+    "english": "For the things we have to learn before we can do them, we learn by doing them.",
+    "text": "우리가 배워서 할 수 있게 되는 일들은, 사실 그 일을 직접 해봄으로써 배우게 되는 것이다.",
+    "title": "니코마코스 윤리학",
+    "author": "아리스토텔레스",
+    "genre": "literature"
+  },
+  {
+    "english": "Without friends, no one would want to live, even if he had all other goods.",
+    "text": "다른 모든 좋은 것을 다 가졌다 해도, 친구가 없다면 아무도 살고 싶어 하지 않을 것이다.",
+    "title": "니코마코스 윤리학",
+    "author": "아리스토텔레스",
+    "genre": "literature"
+  },
+  {
+    "english": "Happiness, then, is found to be something perfect and self-sufficient, being the end to which our actions are directed.",
+    "text": "행복이란 그 자체로 완전하고 스스로 충분한 것이며, 우리 모든 행동이 향해 가는 궁극의 목적이다.",
+    "title": "니코마코스 윤리학",
+    "author": "아리스토텔레스",
+    "genre": "literature"
+  },
+  {
+    "english": "The pleasures arising from thinking and learning will make us think and learn all the more.",
+    "text": "생각하고 배우는 데서 오는 즐거움은, 우리를 더욱 생각하고 배우게 만든다.",
+    "title": "니코마코스 윤리학",
+    "author": "아리스토텔레스",
+    "genre": "literature"
+  },
+  {
+    "english": "The beauty of the soul shines out when a man bears with composure one heavy mischance after another, not because he does not feel them, but because he is a man of high and heroic temper.",
+    "text": "거듭되는 불운을 침착하게 견디는 사람에게서 영혼의 아름다움이 빛난다. 아픔을 못 느껴서가 아니라, 고귀하고 담대한 기품을 지녔기 때문이다.",
+    "title": "니코마코스 윤리학",
+    "author": "아리스토텔레스",
+    "genre": "literature"
+  },
+  {
+    "english": "The beginning seems to be more than half of the whole.",
+    "text": "시작이란, 전체의 절반보다 더 큰 무게를 지닌다.",
+    "title": "니코마코스 윤리학",
+    "author": "아리스토텔레스",
+    "genre": "literature"
+  },
+  {
+    "english": "The man who does not enjoy doing noble actions is not a good man at all.",
+    "text": "고귀한 행동을 하면서도 기쁨을 느끼지 못하는 사람은, 결코 선한 사람이라 할 수 없다.",
+    "title": "니코마코스 윤리학",
+    "author": "아리스토텔레스",
+    "genre": "literature"
+  },
+  {
+    "english": "It is the mark of an educated person to search for the same kind of clarity in each topic to the extent that the nature of the matter accepts it.",
+    "text": "각 주제가 허용하는 만큼의 명료함을 그 안에서 찾아내려는 것, 그것이 바로 교양 있는 사람의 태도다.",
+    "title": "니코마코스 윤리학",
+    "author": "아리스토텔레스",
+    "genre": "literature"
+  },
+  {
+    "english": "Love is born into every human being; it calls back the halves of our original nature together; it tries to make one out of two and heal the wound of human nature.",
+    "text": "사랑은 모든 인간의 마음속에서 태어난다. 사랑은 원래 하나였던 우리의 반쪽을 다시 불러 모아, 둘을 하나로 만들어 인간 본성의 상처를 치유하려 한다.",
+    "title": "향연",
+    "author": "플라톤",
+    "genre": "literature"
+  },
+  {
+    "english": "We used to be complete wholes in our original nature, and now 'love' is the name for our pursuit of wholeness, for our desire to be complete.",
+    "text": "우리는 본래 온전한 하나였다. 이제 '사랑'이란, 그 온전함을 되찾으려는 갈망, 완전해지고 싶은 우리의 열망에 붙인 이름이다.",
+    "title": "향연",
+    "author": "플라톤",
+    "genre": "literature"
+  },
+  {
+    "english": "When a person meets the half that is his very own, something wonderful happens: the two are struck from their senses by love, by a sense of belonging to one another, and by desire, and they don't want to be separated, not even for a moment.",
+    "text": "자신의 진짜 반쪽을 만나는 순간, 놀라운 일이 일어난다. 두 사람은 사랑과 서로에게 속해 있다는 감각에 사로잡혀 단 한 순간도 떨어지고 싶어 하지 않는다.",
+    "title": "향연",
+    "author": "플라톤",
+    "genre": "literature"
+  },
+  {
+    "english": "If there were only some way of contriving that a state or an army should be made up of lovers and their loves, they would be the very best governors of their own city... Love would inspire him.",
+    "text": "만약 서로 사랑하는 이들로만 이루어진 나라나 군대를 만들 수 있다면, 그들이야말로 가장 훌륭하게 나라를 다스릴 것이다. 사랑은 가장 겁 많은 자마저 용감한 영웅으로 만든다.",
+    "title": "향연",
+    "author": "플라톤",
+    "genre": "literature"
+  },
+  {
+    "english": "Beholding beauty with the eye of the mind, he will be enabled to bring forth, not images of beauty, but realities... and bringing forth and nourishing true virtue, to become the friend of God and be immortal.",
+    "text": "마음의 눈으로 아름다움을 바라보는 사람은, 아름다움의 그림자가 아니라 실재를 낳을 수 있다. 그렇게 참된 덕을 낳고 길러내어, 마침내 신의 벗이 되고 불멸에 이른다.",
+    "title": "향연",
+    "author": "플라톤",
+    "genre": "literature"
+  },
+  {
+    "english": "No god loves knowledge or desires wisdom, for they are already wise; nor does anyone who is wise love wisdom.",
+    "text": "신도 지혜를 사랑하지 않고, 이미 지혜로운 자도 지혜를 사랑하지 않는다. 지혜를 사랑함은, 부족함을 알고 갈망하는 자만이 누릴 수 있는 것이다.",
+    "title": "향연",
+    "author": "플라톤",
+    "genre": "literature"
+  },
+  {
+    "english": "The heart has its reasons which reason knows nothing of... We know the truth not only by the reason, but also by the heart.",
+    "text": "마음에는 이성이 알지 못하는 나름의 이유가 있다. 우리는 진리를 이성으로만이 아니라 마음으로도 안다.",
+    "title": "팡세",
+    "author": "블레즈 파스칼",
+    "genre": "literature"
+  },
+  {
+    "english": "We are generally the better persuaded by the reasons we discover ourselves than by those given to us by others.",
+    "text": "우리는 대체로, 남이 일러준 이유보다 스스로 찾아낸 이유에 더 깊이 설득된다.",
+    "title": "팡세",
+    "author": "블레즈 파스칼",
+    "genre": "literature"
+  },
+  {
+    "english": "Man is only a reed, the weakest in nature, but he is a thinking reed... even if the universe were to crush him, man would still be nobler than his slayer, because he knows that he is dying.",
+    "text": "인간은 자연에서 가장 연약한 한 줄기 갈대에 불과하다. 그러나 그는 생각하는 갈대다. 우주가 그를 짓누른다 해도, 자신이 죽는다는 것을 아는 인간은 그를 짓누르는 우주보다 오히려 더 고귀하다.",
+    "title": "팡세",
+    "author": "블레즈 파스칼",
+    "genre": "literature"
+  },
+  {
+    "english": "To make light of philosophy is to be a true philosopher.",
+    "text": "철학을 가볍게 여길 줄 아는 것, 그것이야말로 진정한 철학자의 태도다.",
+    "title": "팡세",
+    "author": "블레즈 파스칼",
+    "genre": "literature"
+  },
+  {
+    "english": "All men seek happiness. This is without exception. Whatever different means they employ, they all tend to this end.",
+    "text": "모든 인간은 행복을 추구한다. 예외는 없다. 저마다 다른 길을 택할 뿐, 결국 모두가 이 하나의 목적을 향해 나아간다.",
+    "title": "팡세",
+    "author": "블레즈 파스칼",
+    "genre": "literature"
+  },
+  {
+    "english": "We still have a trace of an ancient happiness that was in the hearts of Adam and Eve... but it was not utterly destroyed. Its mark is still upon us.",
+    "text": "우리 안에는 아득한 옛날의 행복이 남긴 흔적이 여전히 남아 있다. 그것은 결코 완전히 사라지지 않았다.",
+    "title": "팡세",
+    "author": "블레즈 파스칼",
+    "genre": "literature"
+  },
+  {
+    "english": "It is not certain that everything is uncertain.",
+    "text": "모든 것이 불확실하다는 것, 그 사실조차도 완전히 확실한 것은 아니다.",
+    "title": "팡세",
+    "author": "블레즈 파스칼",
+    "genre": "literature"
+  },
+  {
+    "english": "The greater intellect one has, the more originality one finds in men. Ordinary persons find no difference between men.",
+    "text": "지성이 클수록 사람들 안에서 더 많은 개성을 발견한다. 평범한 이들은 사람과 사람 사이에서 아무 차이도 보지 못한다.",
+    "title": "팡세",
+    "author": "블레즈 파스칼",
+    "genre": "literature"
+  },
+  {
+    "english": "Nobody owns anything but everyone is rich - for what greater wealth can there be than cheerfulness, peace of mind, and freedom from anxiety?",
+    "text": "아무도 아무것도 소유하지 않지만, 모두가 부유하다. 명랑함과 평온한 마음, 근심 없는 삶보다 더 큰 재산이 어디 있겠는가?",
+    "title": "유토피아",
+    "author": "토마스 모어",
+    "genre": "literature"
+  },
+  {
+    "english": "A pretty face may be enough to catch a man, but it takes character and good nature to hold him.",
+    "text": "예쁜 얼굴은 사람의 마음을 사로잡기에 충분할지 몰라도, 그 마음을 붙잡아 두는 것은 결국 인품과 선한 성품이다.",
+    "title": "유토피아",
+    "author": "토마스 모어",
+    "genre": "literature"
+  },
+  {
+    "english": "Kindness and good nature unite men more effectually and with greater strength than any agreements whatsoever, since thereby the engagements of men's hearts become stronger than the bond and obligation of words.",
+    "text": "친절과 선한 마음은 그 어떤 계약보다도 강하게 사람들을 하나로 묶는다. 마음으로 맺어진 약속이 말로 맺은 의무보다 훨씬 굳건하기 때문이다.",
+    "title": "유토피아",
+    "author": "토마스 모어",
+    "genre": "literature"
+  },
+  {
+    "english": "You wouldn't abandon ship in a storm just because you couldn't control the winds.",
+    "text": "바람을 마음대로 다룰 수 없다고 해서, 폭풍 속에서 배를 버리고 떠나지는 않는 법이다.",
+    "title": "유토피아",
+    "author": "토마스 모어",
+    "genre": "literature"
+  },
+  {
+    "english": "Why do you suppose they made you king in the first place? ...your job is to see that they're all right, not that you are - just as a shepherd's job is to feed his sheep, not himself.",
+    "text": "그들이 애초에 왜 당신을 왕으로 세웠다고 생각하는가? 목자가 자신이 아니라 양들을 먹이는 것이 본분이듯, 왕의 본분도 백성을 돌보는 데 있다.",
+    "title": "유토피아",
+    "author": "토마스 모어",
+    "genre": "literature"
+  },
+  {
+    "english": "For things will never be perfect, until human beings are perfect - which I don't expect them to be for quite a number of years!",
+    "text": "인간이 완전해지기 전까지는 세상도 결코 완전해지지 않을 것이다 — 물론 그런 날이 그리 쉽게 오리라고는 나도 기대하지 않지만.",
+    "title": "유토피아",
+    "author": "토마스 모어",
+    "genre": "literature"
+  },
+  {
+    "english": "Do the best you can to make the present production a success - don't spoil the entire play just because you happen to think of another one that you'd enjoy rather more.",
+    "text": "지금 맡은 무대를 최선을 다해 성공시켜라. 더 즐거울 것 같은 다른 연극이 떠올랐다고 지금의 연극 전체를 망쳐서는 안 된다.",
+    "title": "유토피아",
+    "author": "토마스 모어",
+    "genre": "literature"
+  },
+  {
+    "english": "One would probably do far better to relax and enjoy life than worry oneself to death trying to instruct or entertain a public which will only despise one's efforts.",
+    "text": "남을 가르치거나 즐겁게 하려고 스스로를 못살게 구는 것보다는, 마음 편히 삶을 즐기는 편이 훨씬 나을 때가 많다.",
+    "title": "유토피아",
+    "author": "토마스 모어",
+    "genre": "literature"
+  },
+  {
+    "english": "If I am what I have and if what I have is lost, who then am I?",
+    "text": "내가 가진 것이 곧 나 자신이라면, 그것을 잃었을 때 나는 대체 누구인가?",
+    "title": "소유냐 존재냐",
+    "author": "에리히 프롬",
+    "genre": "literature"
+  },
+  {
+    "english": "In reality, there exists only the act of loving. To love is a productive activity. It implies caring for, knowing, responding, affirming, enjoying... it means bringing to life, increasing its aliveness.",
+    "text": "실제로 존재하는 것은 오직 사랑하는 행위뿐이다. 사랑한다는 것은 돌보고, 알고, 응답하고, 긍정하고, 기뻐하는 능동적인 행위이며, 그 대상에게 생명력을 더해주는 일이다.",
+    "title": "소유냐 존재냐",
+    "author": "에리히 프롬",
+    "genre": "literature"
+  },
+  {
+    "english": "The experience of loving, of joy, of grasping truth does not occur in time, but in the here and now.",
+    "text": "사랑을 경험하는 것, 기쁨을 느끼는 것, 진리를 깨닫는 것 — 이 모든 것은 시간 속에서가 아니라 오직 지금 이 순간에 일어난다.",
+    "title": "소유냐 존재냐",
+    "author": "에리히 프롬",
+    "genre": "literature"
+  },
+  {
+    "english": "Man's capacity to enjoy all that is alive, to pour out his faculties into the world around him, to be rather than to have, is what overcomes greed and egomania.",
+    "text": "살아 있는 모든 것을 즐기고, 자신의 역량을 세상 속으로 아낌없이 쏟아붓는 것 — 소유하는 것이 아니라 존재하는 것, 그것이 인간을 풍요롭게 한다.",
+    "title": "소유냐 존재냐",
+    "author": "에리히 프롬",
+    "genre": "literature"
+  },
+  {
+    "english": "Every new step contains the danger of failure, and that is one of the reasons people are so afraid of freedom.",
+    "text": "모든 새로운 걸음에는 실패의 위험이 따른다. 그것이 바로 사람들이 자유를 두려워하는 이유 중 하나다.",
+    "title": "소유냐 존재냐",
+    "author": "에리히 프롬",
+    "genre": "literature"
+  },
+  {
+    "english": "The only freedom which deserves the name is that of pursuing our own good in our own way, so long as we do not attempt to deprive others of theirs, or impede their efforts to obtain it.",
+    "text": "진정으로 자유라 부를 수 있는 것은, 타인의 자유를 침해하지 않는 한 자신만의 방식으로 자신의 행복을 추구하는 것이다.",
+    "title": "자유론",
+    "author": "존 스튜어트 밀",
+    "genre": "literature"
+  },
+  {
+    "english": "In proportion to the development of his individuality, each person becomes more valuable to himself, and is therefore capable of being more valuable to others.",
+    "text": "한 사람의 개성이 발전할수록, 그는 스스로에게 더 소중한 존재가 되고, 그만큼 다른 이들에게도 더 소중한 존재가 될 수 있다.",
+    "title": "자유론",
+    "author": "존 스튜어트 밀",
+    "genre": "literature"
+  },
+  {
+    "english": "Persons of genius are, and are always likely to be, a small minority; but in order to have them, it is necessary to preserve the soil in which they grow.",
+    "text": "천재는 언제나 소수일 수밖에 없다. 그러나 그들이 자라나려면, 그들이 뿌리내릴 토양을 지켜주어야 한다.",
+    "title": "자유론",
+    "author": "존 스튜어트 밀",
+    "genre": "literature"
+  },
+  {
+    "english": "But these few are the salt of the earth; without them, human life would become a stagnant pool. Not only is it they who introduce good things which did not before exist, it is they who keep the life in those which already existed.",
+    "text": "이 소수의 사람들이야말로 세상의 소금이다. 그들이 없다면 인간의 삶은 고인 물처럼 썩고 말 것이다. 그들은 새로운 좋은 것을 만들 뿐 아니라, 이미 있는 것에도 생기를 불어넣는다.",
+    "title": "자유론",
+    "author": "존 스튜어트 밀",
+    "genre": "literature"
+  },
+  {
+    "english": "No one can be a great thinker who does not recognize that as a thinker it is his first duty to follow his intellect to whatever conclusions it may lead.",
+    "text": "자신의 지성이 이끄는 결론이 어디든 그것을 따르는 것이 사상가의 첫 번째 의무임을 깨닫지 못하는 사람은 결코 위대한 사상가가 될 수 없다.",
+    "title": "자유론",
+    "author": "존 스튜어트 밀",
+    "genre": "literature"
+  },
+  {
+    "english": "Every man who says frankly and fully what he thinks is so far doing a public service. We should be grateful to him for attacking most unsparingly our most cherished opinions.",
+    "text": "생각한 바를 솔직하고 온전히 말하는 사람은 그 자체로 세상에 기여하고 있는 것이다. 우리가 가장 소중히 여기는 생각을 거침없이 공격해 주는 이에게 오히려 감사해야 한다.",
+    "title": "자유론",
+    "author": "존 스튜어트 밀",
+    "genre": "literature"
+  },
+  {
+    "english": "He who lets the world choose his plan of life for him has no need of any other faculty than the ape-like one of imitation. He who chooses his plan for himself, employs all his faculties.",
+    "text": "세상이 대신 자신의 삶을 결정하도록 내버려 두는 사람에게는 흉내 내는 재주 말고는 필요한 것이 없다. 그러나 스스로 자신의 삶을 선택하는 사람은 자신의 모든 능력을 온전히 발휘한다.",
+    "title": "자유론",
+    "author": "존 스튜어트 밀",
+    "genre": "literature"
+  },
+  {
+    "english": "A person whose desires and impulses are his own—are the expression of his own nature, as it has been developed and modified by his own culture—is said to have a character.",
+    "text": "자신의 욕구와 충동이 진정 자기 자신의 것, 스스로 가꾸어 온 본성의 표현인 사람 — 그런 사람을 두고 우리는 인격을 지녔다고 말한다.",
+    "title": "자유론",
+    "author": "존 스튜어트 밀",
+    "genre": "literature"
+  },
+  {
+    "english": "The only way in which a human being can make some approach to knowing the whole of a subject is by hearing what can be said about it by persons of every variety of opinion. No wise man ever acquired his wisdom in any mode but this.",
+    "text": "한 인간이 어떤 주제의 전체를 어렴풋이나마 알 수 있는 유일한 길은, 온갖 다양한 의견을 지닌 사람들의 말에 귀 기울이는 것이다. 어떤 현자도 이 방법 말고는 지혜를 얻은 적이 없다.",
+    "title": "자유론",
+    "author": "존 스튜어트 밀",
+    "genre": "literature"
+  },
+  {
+    "english": "All, everything that I understand, I understand only because I love. Everything is, everything exists, only because I love.",
+    "text": "내가 이해하는 모든 것은, 오직 사랑하기에 이해할 수 있는 것이다. 모든 것이 존재하는 것도, 오직 사랑이 있기 때문이다.",
+    "title": "인생론",
+    "author": "레프 톨스토이",
+    "genre": "literature"
+  },
+  {
+    "english": "Love is God, and to die means that I, a particle of love, shall return to the general and eternal source.",
+    "text": "사랑은 곧 신이다. 죽는다는 것은, 사랑의 한 조각인 내가 그 영원한 근원으로 돌아가는 것일 뿐이다.",
+    "title": "인생론",
+    "author": "레프 톨스토이",
+    "genre": "literature"
+  },
+  {
+    "english": "Future love does not exist. Love is a present activity only. The man who does not manifest love in the present has not love.",
+    "text": "미래의 사랑이란 존재하지 않는다. 사랑은 오직 지금 이 순간의 행위일 뿐이다. 지금 사랑을 드러내지 않는 사람에게는 사랑이 없는 것이다.",
+    "title": "인생론",
+    "author": "레프 톨스토이",
+    "genre": "literature"
+  },
+  {
+    "english": "You cannot force yourself to love. But the fact that you do not love does not mean that there is no love in you, but only that there is something in you that prevents you from loving.",
+    "text": "사랑은 억지로 할 수 없다. 그러나 지금 사랑하지 못한다고 해서 당신 안에 사랑이 없는 것은 아니다. 다만 그 사랑을 가로막는 무언가가 있을 뿐이다.",
+    "title": "인생론",
+    "author": "레프 톨스토이",
+    "genre": "literature"
+  },
+  {
+    "english": "When you love someone, you love the person as they are, and not as you'd like them to be.",
+    "text": "누군가를 사랑한다는 것은, 그가 되었으면 하는 모습이 아니라 있는 그대로의 그를 사랑하는 것이다.",
+    "title": "인생론",
+    "author": "레프 톨스토이",
+    "genre": "literature"
+  },
+  {
+    "english": "Love is the only full activity of the true life.",
+    "text": "사랑이야말로 참된 삶을 온전히 채우는 유일한 활동이다.",
+    "title": "인생론",
+    "author": "레프 톨스토이",
+    "genre": "literature"
+  },
+  {
+    "english": "Life is everything. Life is God. Everything shifts and moves, and this movement is God. And while there is life, there is delight in the self-awareness of the divinity.",
+    "text": "삶이 전부다. 삶이 곧 신이다. 모든 것은 흐르고 움직이며, 그 움직임 자체가 신이다. 삶이 있는 한, 그 안에는 신성을 스스로 깨닫는 기쁨이 있다.",
+    "title": "인생론",
+    "author": "레프 톨스토이",
+    "genre": "literature"
+  },
+  {
+    "english": "Very little is needed to make a happy life.",
+    "text": "행복한 삶을 만드는 데는 아주 적은 것으로도 충분하다.",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "english": "The things you think about determine the quality of your mind. Your soul takes on the color of your thoughts.",
+    "text": "무엇을 생각하느냐가 마음의 질을 결정한다. 영혼은 그 사람이 품은 생각의 빛깔로 물든다.",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "english": "True good fortune is what you make for yourself. Good fortune: good character, good intentions, and good actions.",
+    "text": "참된 행운이란 스스로 만들어가는 것이다. 좋은 성품, 좋은 의도, 좋은 행동 — 그것이 곧 행운이다.",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "english": "Look within. Within is the fountain of the good, and it will ever bubble up, if thou wilt ever dig.",
+    "text": "네 안을 들여다보라. 그 안에는 선함의 샘이 있어, 계속 파내려 갈수록 끊임없이 솟아오를 것이다.",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "english": "Do not think that what is hard for you to master is humanly impossible; but if a thing is humanly possible, consider it to be within your reach.",
+    "text": "네게 어려운 일이라 해서 인간에게 불가능한 것은 아니다. 인간에게 가능한 일이라면, 너에게도 닿을 수 있는 일이라 여겨라.",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "english": "The best revenge is not to be like your enemy.",
+    "text": "가장 훌륭한 복수는, 너를 해친 그 사람처럼 되지 않는 것이다.",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "english": "It is man's peculiar duty to love even those who wrong him.",
+    "text": "자신에게 잘못한 사람까지도 사랑하는 것, 그것이야말로 인간만이 지닌 고유한 의무다.",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "english": "Consider all that you've gone through, all that you've survived. How many good things have you seen?",
+    "text": "네가 지나온 모든 일, 견뎌낸 모든 시간을 돌이켜보라. 그동안 얼마나 많은 좋은 일들을 보아왔는가?",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "english": "How easy it is to repel and to wipe away every impression which is troublesome or unsuitable, and immediately to be in all tranquility.",
+    "text": "성가시고 어울리지 않는 생각을 훌훌 털어내고 곧바로 고요함에 이르는 것 — 그것은 참으로 쉬운 일이다.",
+    "title": "명상록",
+    "author": "마르쿠스 아우렐리우스",
+    "genre": "literature"
+  },
+  {
+    "english": "Man muss noch Chaos in sich haben, um einen tanzenden Stern gebären zu können.",
+    "text": "춤추는 별 하나를 낳으려면, 사람은 자기 안에 여전히 혼돈을 지니고 있어야 한다.",
+    "title": "차라투스트라는 이렇게 말했다",
+    "author": "프리드리히 니체",
+    "genre": "literature"
+  },
+  {
+    "english": "One must be a sea, to receive a polluted stream without becoming impure.",
+    "text": "더러운 물줄기를 받아들이고도 더럽혀지지 않으려면, 사람은 바다가 되어야 한다.",
+    "title": "차라투스트라는 이렇게 말했다",
+    "author": "프리드리히 니체",
+    "genre": "literature"
+  },
+  {
+    "english": "The higher we soar the smaller we appear to those who cannot fly.",
+    "text": "우리가 높이 날아오를수록, 날 줄 모르는 이들의 눈에는 우리가 더 작게 보인다.",
+    "title": "차라투스트라는 이렇게 말했다",
+    "author": "프리드리히 니체",
+    "genre": "literature"
+  },
+  {
+    "english": "There is more wisdom in your body than in your deepest philosophy.",
+    "text": "네 몸 속에는 네 가장 깊은 철학보다 더 많은 지혜가 담겨 있다.",
+    "title": "차라투스트라는 이렇게 말했다",
+    "author": "프리드리히 니체",
+    "genre": "literature"
+  },
+  {
+    "english": "I have learned to walk: since then I have run. I have learned to fly: since then I do not have to be pushed in order to move. Now I am nimble, now I fly, now I see myself under myself, now a god dances within me.",
+    "text": "나는 걷는 법을 배웠고, 그 후로 달렸다. 나는 나는 법을 배웠고, 그 후로는 누가 밀어주지 않아도 움직인다. 이제 나는 가볍고, 이제 나는 날아오르며, 내 안에서 신이 춤춘다.",
+    "title": "차라투스트라는 이렇게 말했다",
+    "author": "프리드리히 니체",
+    "genre": "literature"
+  },
+  {
+    "english": "You must be ready to burn yourself in your own flame; how could you rise anew if you have not first become ashes?",
+    "text": "너는 스스로의 불꽃 속에서 기꺼이 타올라야 한다. 먼저 재가 되지 않고서 어찌 새롭게 다시 일어설 수 있겠는가?",
+    "title": "차라투스트라는 이렇게 말했다",
+    "author": "프리드리히 니체",
+    "genre": "literature"
+  },
+  {
+    "english": "One repays a teacher badly if one always remains nothing but a pupil.",
+    "text": "언제까지나 그저 제자로만 머문다면, 그것은 스승에게 제대로 보답하지 못하는 것이다.",
+    "title": "차라투스트라는 이렇게 말했다",
+    "author": "프리드리히 니체",
+    "genre": "literature"
+  },
+  {
+    "english": "I am a forest, and a night of dark trees: but he who is not afraid of my darkness, will find banks full of roses under my cypresses.",
+    "text": "나는 어두운 나무들로 가득한 밤의 숲이다. 그러나 나의 어둠을 두려워하지 않는 이는, 내 편백나무 아래 장미로 가득한 언덕을 발견하리라.",
+    "title": "차라투스트라는 이렇게 말했다",
+    "author": "프리드리히 니체",
+    "genre": "literature"
+  },
+  {
+    "english": "It is not from the benevolence of the butcher, the brewer, or the baker that we expect our dinner, but from their regard to their own interest.",
+    "text": "우리가 저녁 식사를 기대할 수 있는 건 푸줏간 주인이나 양조업자, 빵집 주인의 선의 때문이 아니라, 그들이 자기 이익을 추구하기 때문이다.",
+    "title": "국부론",
+    "author": "애덤 스미스",
+    "genre": "literature"
+  },
+  {
+    "english": "No society can surely be flourishing and happy, of which the far greater part of the members are poor and miserable.",
+    "text": "구성원 대부분이 가난하고 비참한 사회라면, 그 사회는 결코 번영하고 행복하다고 할 수 없다.",
+    "title": "국부론",
+    "author": "애덤 스미스",
+    "genre": "literature"
+  },
+  {
+    "english": "He intends only his own gain, and he is in this, as in many other cases, led by an invisible hand to promote an end which was no part of his intention.",
+    "text": "그는 오직 자신의 이익만을 좇지만, 보이지 않는 손에 이끌려 자신이 의도하지 않았던 결과, 즉 사회 전체의 이익까지 증진시키게 된다.",
+    "title": "국부론",
+    "author": "애덤 스미스",
+    "genre": "literature"
+  },
+  {
+    "english": "Consumption is the sole end and purpose of all production.",
+    "text": "소비야말로 모든 생산의 유일한 목적이자 종착점이다.",
+    "title": "국부론",
+    "author": "애덤 스미스",
+    "genre": "literature"
+  },
+  {
+    "english": "All for ourselves, and nothing for other people, seems, in every age of the world, to have been the vile maxim of the masters of mankind.",
+    "text": "'모든 것은 나를 위해, 남을 위한 건 하나도 없다'는 것은 어느 시대에나 지배층이 따르던 저열한 좌우명이었다.",
+    "title": "국부론",
+    "author": "애덤 스미스",
+    "genre": "literature"
+  },
+  {
+    "english": "By pursuing his own interest he frequently promotes that of the society more effectually than when he really intends to promote it.",
+    "text": "사람은 자신의 이익을 추구함으로써, 실제로 공익을 의도할 때보다 더 효과적으로 사회의 이익을 증진시키는 경우가 많다.",
+    "title": "국부론",
+    "author": "애덤 스미스",
+    "genre": "literature"
+  },
+  {
+    "english": "Man is an animal that makes bargains: no other animal does this – no dog exchanges bones with another.",
+    "text": "인간은 흥정을 하는 동물이다. 다른 동물은 그렇지 않다. 개는 다른 개와 뼈다귀를 거래하지 않는다.",
+    "title": "국부론",
+    "author": "애덤 스미스",
+    "genre": "literature"
+  },
+  {
+    "english": "The annual labour of every nation is the fund which originally supplies it with all the necessaries and conveniencies of life which it annually consumes.",
+    "text": "모든 국가의 연간 노동이야말로, 그 나라가 해마다 소비하는 생활필수품과 편의품을 애초에 공급해주는 원천이다.",
+    "title": "국부론",
+    "author": "애덤 스미스",
+    "genre": "literature"
+  },
+  {
+    "english": "The greatest improvement in the productive powers of labour, and the greater part of the skill, dexterity, and judgment with which it is anywhere directed, seem to have been the effects of the division of labour.",
+    "text": "노동 생산력의 가장 큰 향상, 그리고 그 노동이 발휘하는 숙련과 판단력의 상당 부분은 분업의 결과인 듯하다.",
+    "title": "국부론",
+    "author": "애덤 스미스",
+    "genre": "literature"
+  },
+  {
+    "english": "The subjects of every state ought to contribute towards the support of the government, as nearly as possible, in proportion to their respective abilities.",
+    "text": "모든 국가의 국민은 가능한 한 자신의 능력에 비례하여 정부 운영 비용을 부담해야 한다.",
+    "title": "국부론",
+    "author": "애덤 스미스",
+    "genre": "literature"
+  },
+  {
+    "english": "If the market system had not arisen naturally, it would have been proclaimed the greatest invention in human history. For market competition leads a self-interested person to wake up in the morning and produce, not what he wants, but what others want.",
+    "text": "만약 시장 시스템이 자연적으로 생겨나지 않았다면, 인류 역사상 가장 위대한 발명으로 칭송받았을 것이다. 시장 경쟁은 이기적인 사람이 아침에 일어나 자신이 원하는 것이 아니라 이웃이 원하는 것을 생산하게 만든다.",
+    "title": "죽은 경제학자의 살아있는 아이디어",
+    "author": "토드 부크홀츠",
+    "genre": "literature"
+  },
+  {
+    "english": "From 1776 to 1976 just five books reigned over economics in nearly unbroken succession... What they lack in imaginative titles, they make up in endurance.",
+    "text": "1776년부터 1976년까지 단 다섯 권의 책이 거의 끊임없이 경제학을 지배했다. 제목의 상상력은 부족했을지 몰라도, 그 생명력만큼은 대단했다.",
+    "title": "죽은 경제학자의 살아있는 아이디어",
+    "author": "토드 부크홀츠",
+    "genre": "literature"
+  },
+  {
+    "english": "The ideas of economists and political philosophers, both when they are right and when they are wrong, are more powerful than is commonly understood. Indeed the world is ruled by little else.",
+    "text": "경제학자와 정치철학자의 사상은, 옳을 때든 틀릴 때든, 흔히 생각하는 것보다 훨씬 강력하다. 사실 세상은 그 사상들에 의해 지배된다고 해도 과언이 아니다.",
+    "title": "죽은 경제학자의 살아있는 아이디어",
+    "author": "토드 부크홀츠",
+    "genre": "literature"
+  },
+  {
+    "english": "When my information changes, I alter my conclusions. What do you do, sir?",
+    "text": "제 정보가 바뀌면 저는 결론을 바꿉니다. 당신은 어떻게 하시나요?",
+    "title": "죽은 경제학자의 살아있는 아이디어",
+    "author": "토드 부크홀츠",
+    "genre": "literature"
+  },
+  {
+    "english": "It is our innate urge to activity which makes the wheels go round, our rational selves choosing between the alternatives as best we are able, calculating where we can, but often falling back for our motive on whim or sentiment or chance.",
+    "text": "세상의 바퀴를 굴리는 것은 우리 안의 타고난 행동 욕구다. 우리는 이성적으로 최선을 다해 선택하려 하지만, 종종 그 동기는 기분이나 감정, 우연에서 비롯된다.",
+    "title": "죽은 경제학자의 살아있는 아이디어",
+    "author": "토드 부크홀츠",
+    "genre": "literature"
+  },
+  {
+    "english": "Keynes once said that economists should be practically minded, like dentists.",
+    "text": "케인스는 언젠가 경제학자란 치과의사처럼 실용적으로 사고해야 한다고 말했다.",
+    "title": "죽은 경제학자의 살아있는 아이디어",
+    "author": "토드 부크홀츠",
+    "genre": "literature"
+  },
+  {
+    "english": "Economics is, at root, the study of incentives: how people get what they want, or need, especially when other people want or need the same thing.",
+    "text": "경제학이란 본질적으로 유인에 관한 학문이다. 사람들이 원하거나 필요로 하는 것을, 특히 다른 사람도 똑같이 원할 때 어떻게 얻어내는지에 관한 이야기다.",
+    "title": "괴짜경제학",
+    "author": "스티븐 레빗, 스티븐 더브너",
+    "genre": "literature"
+  },
+  {
+    "english": "Morality, it could be argued, represents the way that people would like the world to work, whereas economics represents how it actually does work.",
+    "text": "도덕은 세상이 마땅히 이렇게 돌아갔으면 하는 바람을 나타내고, 경제학은 세상이 실제로 어떻게 돌아가는지를 보여준다고 할 수 있다.",
+    "title": "괴짜경제학",
+    "author": "스티븐 레빗, 스티븐 더브너",
+    "genre": "literature"
+  },
+  {
+    "english": "The conventional wisdom is often wrong.",
+    "text": "우리가 상식이라 믿는 통념은 생각보다 자주 틀린다.",
+    "title": "괴짜경제학",
+    "author": "스티븐 레빗, 스티븐 더브너",
+    "genre": "literature"
+  },
+  {
+    "english": "Information is a beacon, a cudgel, an olive branch, a deterrent—all depending on who wields it and how.",
+    "text": "정보는 등불이 되기도, 몽둥이가 되기도, 올리브 가지가 되기도, 억제책이 되기도 한다. 누가 어떻게 쥐고 있느냐에 달려 있을 뿐이다.",
+    "title": "괴짜경제학",
+    "author": "스티븐 레빗, 스티븐 더브너",
+    "genre": "literature"
+  },
+  {
+    "english": "An incentive is a bullet, a key: an often tiny object with astonishing power to change a situation.",
+    "text": "유인이란 총알이자 열쇠다. 작디작은 것 하나가 상황을 뒤바꾸는 놀라운 힘을 지니고 있다.",
+    "title": "괴짜경제학",
+    "author": "스티븐 레빗, 스티븐 더브너",
+    "genre": "literature"
+  },
+  {
+    "english": "Social scientists sometimes talk about the concept of 'identity'. It is the idea that you have a particular vision of the kind of person you are, and you feel awful when you do things that are out of line with that vision.",
+    "text": "사회과학자들은 종종 '정체성'이라는 개념을 이야기한다. 자신이 어떤 사람인지에 대한 나름의 상이 있고, 그 상에서 벗어난 행동을 하면 스스로 괴로워진다는 것이다.",
+    "title": "괴짜경제학",
+    "author": "스티븐 레빗, 스티븐 더브너",
+    "genre": "literature"
+  },
+  {
+    "english": "For emotion is the enemy of rational argument.",
+    "text": "감정은 이성적으로 따지고 논증하는 데 있어 가장 큰 적이다.",
+    "title": "괴짜경제학",
+    "author": "스티븐 레빗, 스티븐 더브너",
+    "genre": "literature"
+  },
+  {
+    "english": "An expert must be BOLD if he hopes to alchemize his homespun theory into conventional wisdom.",
+    "text": "전문가는 자신의 소박한 이론을 세상의 통념으로 바꾸어내려면 대담해야만 한다.",
+    "title": "괴짜경제학",
+    "author": "스티븐 레빗, 스티븐 더브너",
+    "genre": "literature"
+  },
+  {
+    "english": "If you can question something that people really care about and find an answer that may surprise them—that is, if you can overturn the conventional wisdom—then you may have some luck.",
+    "text": "사람들이 정말 중요하게 여기는 것에 의문을 던지고, 그들을 놀라게 할 답을 찾아낼 수 있다면, 즉 통념을 뒤엎을 수 있다면 운이 따를지도 모른다.",
+    "title": "괴짜경제학",
+    "author": "스티븐 레빗, 스티븐 더브너",
+    "genre": "literature"
+  },
+  {
+    "english": "A choice architect has the responsibility for organizing the context in which people make decisions.",
+    "text": "선택 설계자는 사람들이 결정을 내리는 맥락을 구성할 책임을 지닌 사람이다.",
+    "title": "넛지",
+    "author": "리처드 탈러, 캐스 선스타인",
+    "genre": "literature"
+  },
+  {
+    "english": "First, never underestimate the power of inertia. Second, that power can be harnessed.",
+    "text": "첫째, 관성의 힘을 절대 과소평가하지 말라. 둘째, 그 힘은 얼마든지 활용할 수 있다.",
+    "title": "넛지",
+    "author": "리처드 탈러, 캐스 선스타인",
+    "genre": "literature"
+  },
+  {
+    "english": "A nudge is any aspect of the choice architecture that alters people's behavior in a predictable way without forbidding any options or significantly changing their economic incentives.",
+    "text": "넛지란 선택지를 금지하거나 경제적 유인을 크게 바꾸지 않으면서도, 사람들의 행동을 예측 가능한 방향으로 부드럽게 바꾸는 선택 설계의 한 요소다.",
+    "title": "넛지",
+    "author": "리처드 탈러, 캐스 선스타인",
+    "genre": "literature"
+  },
+  {
+    "english": "Just as no building lacks an architecture, so no choice lacks a context.",
+    "text": "건축 없는 건물이 없듯, 맥락 없는 선택도 없다.",
+    "title": "넛지",
+    "author": "리처드 탈러, 캐스 선스타인",
+    "genre": "literature"
+  },
+  {
+    "english": "The moral is that people are paying less attention to you than you believe.",
+    "text": "교훈은 이것이다. 사람들은 당신이 생각하는 것보다 당신에게 훨씬 관심이 없다.",
+    "title": "넛지",
+    "author": "리처드 탈러, 캐스 선스타인",
+    "genre": "literature"
+  },
+  {
+    "english": "The first misconception is that it is possible to avoid influencing people's choices.",
+    "text": "첫 번째 오해는 사람들의 선택에 영향을 주지 않는 것이 가능하다고 믿는 것이다.",
+    "title": "넛지",
+    "author": "리처드 탈러, 캐스 선스타인",
+    "genre": "literature"
+  },
+  {
+    "english": "If you look at economics textbooks, homo economicus can think like Albert Einstein... They are not homo economicus; they are homo sapiens.",
+    "text": "경제학 교과서 속 '경제적 인간'은 아인슈타인처럼 사고하고 슈퍼컴퓨터만큼 기억하며 성인 같은 의지력을 지녔다. 하지만 우리가 아는 사람들은 호모 이코노미쿠스가 아니라 그냥 호모 사피엔스다.",
+    "title": "넛지",
+    "author": "리처드 탈러, 캐스 선스타인",
+    "genre": "literature"
+  },
+  {
+    "english": "Roughly speaking, losing something makes you twice as miserable as gaining the same thing makes you happy.",
+    "text": "대략적으로 말해, 무언가를 잃었을 때의 고통은 같은 것을 얻었을 때의 기쁨보다 두 배는 크다.",
+    "title": "넛지",
+    "author": "리처드 탈러, 캐스 선스타인",
+    "genre": "literature"
+  },
+  {
+    "english": "Our understanding of human behavior can be improved by appreciating how people systematically go wrong.",
+    "text": "사람들이 어떤 식으로 체계적으로 실수하는지를 이해하면, 인간 행동에 대한 우리의 이해도 한층 깊어진다.",
+    "title": "넛지",
+    "author": "리처드 탈러, 캐스 선스타인",
+    "genre": "literature"
+  },
+  {
+    "english": "There the authorities have etched the image of a black housefly into each urinal... if they see a target, attention and therefore accuracy are much increased.",
+    "text": "암스테르담 스히폴 공항의 소변기에는 작은 파리 그림이 새겨져 있다. 목표물이 보이면 사람들의 집중력과 정확도가 눈에 띄게 높아진다는 사실을 이용한 것이다.",
+    "title": "넛지",
+    "author": "리처드 탈러, 캐스 선스타인",
+    "genre": "literature"
+  },
+  {
+    "english": "Here's the conundrum: No country has ever ended human deprivation without a growing economy. And no country has ever ended ecological degradation with one.",
+    "text": "여기 역설이 있다. 성장 없이 빈곤을 끝낸 나라는 없었다. 그러나 성장하면서 생태 파괴를 멈춘 나라도 없었다.",
+    "title": "도넛 경제학",
+    "author": "케이트 레이워스",
+    "genre": "literature"
+  },
+  {
+    "english": "Economics is the mother tongue of public policy.",
+    "text": "경제학이야말로 공공정책이 사용하는 모국어라 할 수 있다.",
+    "title": "도넛 경제학",
+    "author": "케이트 레이워스",
+    "genre": "literature"
+  },
+  {
+    "english": "We have an economy that needs to grow, whether or not it makes us thrive. We need an economy that makes us thrive, whether or not it grows.",
+    "text": "지금 우리 경제는 우리를 잘 살게 하든 말든 일단 성장해야만 한다. 하지만 우리에게 필요한 건, 성장하든 말든 우리를 진짜 잘 살게 해주는 경제다.",
+    "title": "도넛 경제학",
+    "author": "케이트 레이워스",
+    "genre": "literature"
+  },
+  {
+    "english": "Homo sapiens, it turns out, is the most cooperative species on the planet, outperforming ants, hyenas, and even the naked mole-rat when it comes to living alongside those who are beyond our next of kin.",
+    "text": "알고 보면 호모 사피엔스는 지구에서 가장 협력적인 종이다. 혈연을 넘어선 존재와 함께 살아가는 능력에서는 개미나 하이에나, 벌거숭이두더지쥐마저 뛰어넘는다.",
+    "title": "도넛 경제학",
+    "author": "케이트 레이워스",
+    "genre": "literature"
+  },
+  {
+    "english": "But inequality, it turns out, is not an economic necessity: it is a design failure.",
+    "text": "알고 보면 불평등은 경제적으로 불가피한 것이 아니다. 그것은 설계의 실패다.",
+    "title": "도넛 경제학",
+    "author": "케이트 레이워스",
+    "genre": "literature"
+  },
+  {
+    "english": "What we draw determines what we can and cannot see, what we notice and what we ignore, and so shapes all that follows.",
+    "text": "우리가 무엇을 그리느냐가 우리가 무엇을 보고 무엇을 놓칠지를 결정하며, 그 뒤에 이어지는 모든 것을 좌우한다.",
+    "title": "도넛 경제학",
+    "author": "케이트 레이워스",
+    "genre": "literature"
+  },
+  {
+    "english": "Economics is not a matter of discovering laws: it is essentially a question of design.",
+    "text": "경제학은 법칙을 발견하는 학문이 아니라, 본질적으로 설계의 문제다.",
+    "title": "도넛 경제학",
+    "author": "케이트 레이워스",
+    "genre": "literature"
+  },
+  {
+    "english": "Between these two sets of boundaries lies a sweet spot—shaped unmistakably like a doughnut—that is both an ecologically safe and socially just space for humanity.",
+    "text": "이 두 경계선 사이에는 도넛 모양을 한 최적의 지점이 있다. 생태적으로 안전하면서도 사회적으로 정의로운, 인류를 위한 공간이다.",
+    "title": "도넛 경제학",
+    "author": "케이트 레이워스",
+    "genre": "literature"
+  },
+  {
+    "english": "Kenya has been a trailblazer in mobile banking since launching its M-PESA mobile money service in 2007. Within six years, three quarters of all Kenyan adults had used the service.",
+    "text": "케냐는 2007년 모바일 금융 서비스 엠페사를 출시하며 모바일 뱅킹의 개척자가 되었다. 6년 만에 케냐 성인 4명 중 3명이 이 서비스를 이용했다.",
+    "title": "도넛 경제학",
+    "author": "케이트 레이워스",
+    "genre": "literature"
+  },
+  {
+    "english": "We are social, interdependent, approximating, fluid in values and dependent upon the living world.",
+    "text": "우리는 사회적이고 서로 의존하며, 어림짐작으로 판단하고, 가치관은 유동적이며, 살아 있는 세계에 기대어 살아가는 존재다.",
+    "title": "도넛 경제학",
+    "author": "케이트 레이워스",
+    "genre": "literature"
+  },
+  {
+    "english": "Learning to choose is hard. Learning to choose well is harder. And learning to choose well in a world of unlimited possibilities is harder still, perhaps too hard.",
+    "text": "선택하는 법을 배우는 것은 어렵다. 잘 선택하는 법을 배우는 것은 더 어렵다. 그리고 무한한 가능성의 세계에서 잘 선택하는 법을 배우는 것은 훨씬, 어쩌면 너무 어렵다.",
+    "title": "선택의 심리학",
+    "author": "배리 슈워츠",
+    "genre": "literature"
+  },
+  {
+    "english": "Focus on what makes you happy, and do what gives meaning to your life.",
+    "text": "나를 행복하게 만드는 것에 집중하고, 내 삶에 의미를 주는 일을 하라.",
+    "title": "선택의 심리학",
+    "author": "배리 슈워츠",
+    "genre": "literature"
+  },
+  {
+    "english": "When asked about what they regret most in the last six months, people tend to identify actions that didn't meet expectations. But when asked about what they regret most when they look back on their lives as a whole, people tend to identify failures to act.",
+    "text": "최근 6개월 중 가장 후회되는 일을 물으면 사람들은 기대에 못 미친 행동을 꼽는다. 하지만 인생 전체를 돌아보며 물으면, 정작 하지 않은 일을 가장 후회한다고 답한다.",
+    "title": "선택의 심리학",
+    "author": "배리 슈워츠",
+    "genre": "literature"
+  },
+  {
+    "english": "The secret to happiness is low expectations.",
+    "text": "행복의 비결은 의외로 간단하다. 기대치를 낮추는 것이다.",
+    "title": "선택의 심리학",
+    "author": "배리 슈워츠",
+    "genre": "literature"
+  },
+  {
+    "english": "The alternative to maximizing is to be a satisficer. To satisfice is to settle for something that is good enough and not worry about the possibility that there might be something better.",
+    "text": "최고를 좇는 대신 '충분한 만족자'가 되는 길도 있다. 더 나은 것이 있을지 걱정하지 않고, 이만하면 충분하다고 여기며 받아들이는 것이다.",
+    "title": "선택의 심리학",
+    "author": "배리 슈워츠",
+    "genre": "literature"
+  },
+  {
+    "english": "The fact that some choice is good doesn't necessarily mean that more choice is better.",
+    "text": "선택지가 있는 것이 좋다고 해서, 선택지가 많을수록 더 좋은 것은 아니다.",
+    "title": "선택의 심리학",
+    "author": "배리 슈워츠",
+    "genre": "literature"
+  },
+  {
+    "english": "We get what we say we want, only to discover that what we want doesn't satisfy us to the degree that we expect.",
+    "text": "우리는 원한다고 말한 것을 손에 넣지만, 정작 그것이 기대만큼 만족을 주지 않는다는 사실을 깨닫는다.",
+    "title": "선택의 심리학",
+    "author": "배리 슈워츠",
+    "genre": "literature"
+  },
+  {
+    "english": "Knowing that you've made a choice that you will not reverse allows you to pour your energy into improving the relationship that you have rather than constantly second-guessing it.",
+    "text": "돌이키지 않을 선택이라는 걸 알면, 끊임없이 되돌아보는 대신 지금 가진 관계를 더 좋게 만드는 데 온 힘을 쏟을 수 있다.",
+    "title": "선택의 심리학",
+    "author": "배리 슈워츠",
+    "genre": "literature"
+  },
+  {
+    "english": "We are free to be the authors of our own lives, but we don't know what kind of lives we want to 'write.'",
+    "text": "우리는 자기 삶의 작가가 될 자유가 있지만, 정작 어떤 이야기를 쓰고 싶은지는 잘 알지 못한다.",
+    "title": "선택의 심리학",
+    "author": "배리 슈워츠",
+    "genre": "literature"
+  },
+  {
+    "english": "Something as trivial as a little gift of candy to medical residents improves the speed and accuracy of their diagnoses. In general, positive emotion enables us to broaden our understanding of what confronts us.",
+    "text": "사탕 한 봉지 같은 사소한 선물조차 의사들의 진단 속도와 정확도를 높인다. 대체로 긍정적인 감정은 우리 눈앞의 문제를 더 넓게 바라보게 해준다.",
+    "title": "선택의 심리학",
+    "author": "배리 슈워츠",
+    "genre": "literature"
+  },
+  {
+    "text": "노는 동안, 놀이에 몰두하는 동안 우리는 행복합니다. 창의와 혁신, 행복은 서로 맞물려 있는 듯합니다.",
+    "title": "열두 발자국",
+    "author": "정재승",
+    "genre": "literature"
+  },
+  {
+    "text": "우리는 인생을 리셋할 능력이 있습니다. 바로 '후회하는 능력'이 있기 때문입니다.",
+    "title": "열두 발자국",
+    "author": "정재승",
+    "genre": "literature"
+  },
+  {
+    "text": "우리는 잘못된 선택 때문에 후회하기도 하지만, 자신의 선택을 성찰하며 점점 후회를 줄여나가는 과정이 적절한 태도입니다.",
+    "title": "열두 발자국",
+    "author": "정재승",
+    "genre": "literature"
+  },
+  {
+    "text": "혁명은 아직 오지 않았지만 오기를 바라는 미래를 상상하는 능력에서 시작됩니다. 상상을 현실로 만들려는 의지와 노력이 결국 혁명을 이루어 냅니다.",
+    "title": "열두 발자국",
+    "author": "정재승",
+    "genre": "literature"
+  },
+  {
+    "text": "나쁜 습관과 뻔한 일상에서 벗어나려면, 나와 다른 분야에서 다른 관심을 가진 사람들을 만나려고 의도적으로 노력해야 합니다.",
+    "title": "열두 발자국",
+    "author": "정재승",
+    "genre": "literature"
+  },
+  {
+    "text": "가장 부유한 삶은 이야기가 있는 삶이라네. 스토리텔링을 얼마나 갖고 있느냐가 그 사람의 럭셔리지.",
+    "title": "이어령의 마지막 수업",
+    "author": "이어령, 김지수",
+    "genre": "literature"
+  },
+  {
+    "text": "내 것인 줄 알았으나 받은 모든 것이 선물이었다.",
+    "title": "이어령의 마지막 수업",
+    "author": "이어령, 김지수",
+    "genre": "literature"
+  },
+  {
+    "text": "의무감으로 책을 읽지 않았네. 재미없는 데는 뛰어넘고, 눈에 띄고 재미있는 곳만 찾아 읽지. 나비가 꿀을 딸 때처럼.",
+    "title": "이어령의 마지막 수업",
+    "author": "이어령, 김지수",
+    "genre": "literature"
+  },
+  {
+    "text": "여기저기 비정형으로 날아다니며 매일매일 꿀을 따는 벌! 발 뻗는 순간 그게 꽃가루인 줄 아는 게 꿀벌이고, 곧 작가라네.",
+    "title": "이어령의 마지막 수업",
+    "author": "이어령, 김지수",
+    "genre": "literature"
+  },
+  {
+    "text": "눈 뜨면 달라진 세상, 그런 경이로움을 문학에서는 '낯설게 하기'라고 하네. 눈은 고요한데, 힘이 세.",
+    "title": "이어령의 마지막 수업",
+    "author": "이어령, 김지수",
+    "genre": "literature"
+  },
+  {
+    "text": "이 한 호흡 속에 얼마나 큰 은총이 있는지 나는 느낍니다.",
+    "title": "이어령의 마지막 수업",
+    "author": "이어령, 김지수",
+    "genre": "literature"
+  },
+  {
+    "text": "오래 살면 좋을까... 사랑 있는 고생이 기쁨이었네.",
+    "title": "백년을 살아보니",
+    "author": "김형석",
+    "genre": "literature"
+  },
+  {
+    "text": "사랑이 있는 마음은 아름다운 감정을 만들어 준다. 인간애는 사랑의 무거운 짐을 담당하는 과정을 통해 이루어지는 것이다.",
+    "title": "백년을 살아보니",
+    "author": "김형석",
+    "genre": "literature"
+  },
+  {
+    "text": "사람은 성장하는 동안은 늙지 않는다. 정신적으로 완전히 성장하는 시기는 60세부터 75세까지이며, 그때가 바로 인생의 황금기다.",
+    "title": "백년을 살아보니",
+    "author": "김형석",
+    "genre": "literature"
+  },
+  {
+    "text": "나는 사랑한다. 그러므로 내가 있다.",
+    "title": "백년을 살아보니",
+    "author": "김형석",
+    "genre": "literature"
+  },
+  {
+    "text": "나에게는 두 개의 별이 있었다. 진리를 향한 그리움과 겨레를 위하는 마음이었다. 그 짐은 무거웠으나 사랑이 있었기에 행복했다.",
+    "title": "백년을 살아보니",
+    "author": "김형석",
+    "genre": "literature"
+  },
+  {
+    "english": "We are part of the earth and it is part of us. The perfumes flowers are our sisters; the deer, the horse, the great eagle: these are our brothers.",
+    "text": "우리는 이 땅의 일부이고, 땅은 우리의 일부이다. 향기로운 꽃은 우리의 자매이며, 사슴과 말과 큰 독수리는 우리의 형제다.",
+    "title": "시애틀 추장의 편지",
+    "author": "시애틀 추장",
+    "genre": "literature"
+  },
+  {
+    "english": "How can you buy or sell the sky, the warmth of the land? If we do not own the freshness of the air and the sparkle of the water, how can you buy them?",
+    "text": "어떻게 하늘을, 대지의 따뜻함을 사고팔 수 있단 말인가? 우리가 신선한 공기와 반짝이는 물을 소유하지 않았는데, 어떻게 그것을 사고팔 수 있는가?",
+    "title": "시애틀 추장의 편지",
+    "author": "시애틀 추장",
+    "genre": "literature"
+  },
+  {
+    "english": "Every part of the Earth is sacred to my people, every shining pine needle, every sandy shore, every mist in the dark woods, every clear and humming insect is holy in the memory and experience of my people.",
+    "text": "햇살에 반짝이는 솔잎 하나, 강가의 흰 모래밭, 숲속에 피어오르는 안개, 윙윙거리는 벌레 소리까지, 이 모든 것이 우리 삶과 기억 속에서 다 거룩하다.",
+    "title": "시애틀 추장의 편지",
+    "author": "시애틀 추장",
+    "genre": "literature"
+  },
+  {
+    "english": "We do not inherit the earth from our ancestors; we borrow it from our children.",
+    "text": "우리는 이 땅을 조상에게서 물려받은 것이 아니라, 후손에게서 잠시 빌린 것이다.",
+    "title": "시애틀 추장의 편지",
+    "author": "시애틀 추장",
+    "genre": "literature"
+  },
+  {
+    "english": "All things are connected like the blood that unites us all. Man did not weave the web of life, he is merely a strand in it. Whatever he does to the web, he does to himself.",
+    "text": "만물은 우리 모두를 잇는 피처럼 서로 연결되어 있다. 인간이 생명의 그물을 짠 것이 아니라 그 그물 속 한 가닥일 뿐이다. 인간이 그물에 하는 일은 곧 자기 자신에게 하는 일이다.",
+    "title": "시애틀 추장의 편지",
+    "author": "시애틀 추장",
+    "genre": "literature"
+  },
+  {
+    "english": "The value of doing something does not lie in the ease or difficulty of its achievement, but in the vision, the plan, the determination and the perseverance which go into it. Life is enriched by aspiration and effort, rather than by acquisition and accumulation.",
+    "text": "무언가를 하는 가치는 그 일이 쉬운가 어려운가에 있지 않다. 그 안에 담긴 비전과 계획, 결단과 인내에 있다. 삶은 소유와 축적이 아니라 열망과 노력으로 풍요로워진다.",
+    "title": "조화로운 삶",
+    "author": "헬렌 니어링, 스콧 니어링",
+    "genre": "literature"
+  },
+  {
+    "english": "There are several ways to perform almost any act - an efficient, workable, artistic way and a careless, indifferent, sloppy way. Care and artistry are worth the trouble. They can be a satisfaction to the practitioner and a joy to all beholders.",
+    "text": "무슨 일이든 하는 방법은 여러 가지다. 정성 들여 예술적으로 하는 방법이 있고, 되는대로 아무렇게나 하는 방법이 있다. 정성을 들이는 수고는 하는 사람에게 만족을, 지켜보는 이에게 기쁨을 준다.",
+    "title": "조화로운 삶",
+    "author": "헬렌 니어링, 스콧 니어링",
+    "genre": "literature"
+  },
+  {
+    "english": "The business of procuring the necessities of life has been shifted from the wood lot, the garden, the kitchen and the family to the factory and the large-scale enterprise. In our case, we moved our center back to the land.",
+    "text": "생활필수품을 마련하는 일은 이제 숲과 텃밭과 부엌과 가족의 손을 떠나 공장과 대규모 기업으로 넘어갔다. 그러나 우리는 삶의 중심을 다시 땅으로 옮겼다.",
+    "title": "조화로운 삶",
+    "author": "헬렌 니어링, 스콧 니어링",
+    "genre": "literature"
+  },
+  {
+    "english": "The store customer, who comes home with a package under his arm has learned nothing, except that money is a source of power in the market place. The man or woman who has converted material into needed products via tools and skills has matured in the process.",
+    "text": "가게에서 물건을 사서 돌아오는 손님은 돈이 시장에서 힘을 가진다는 것 말고는 아무것도 배우지 못한다. 그러나 손과 도구로 재료를 필요한 물건으로 바꾸어낸 사람은 그 과정에서 성숙해진다.",
+    "title": "조화로운 삶",
+    "author": "헬렌 니어링, 스콧 니어링",
+    "genre": "literature"
+  },
+  {
+    "english": "The simpler the food, the better, I think; the rawer, the better; the fewer mixtures, the better. This way of eating involves less preparation, less cooking, easier digestion, more food value, better health, and more money saved.",
+    "text": "음식은 단순할수록 좋다. 날것에 가까울수록, 섞는 것이 적을수록 좋다. 이렇게 먹으면 소화가 쉽고 영양이 풍부해지며, 건강해지고 돈도 절약된다.",
+    "title": "조화로운 삶",
+    "author": "헬렌 니어링, 스콧 니어링",
+    "genre": "literature"
+  },
+  {
+    "english": "He smiled and said that nothing is black or white, that whiteness is often a blackness that hides itself and blackness is sometimes a whiteness that's been had.",
+    "text": "완전히 희거나 검은 것은 없단다. 흰색은 흔히 그 안에 검은색을 숨기고 있고, 검은색은 흰색을 포함하고 있는 거지.",
+    "title": "자기 앞의 생",
+    "author": "에밀 아자르(로맹 가리)",
+    "genre": "literature"
+  },
+  {
+    "english": "You've always been my little man. I've never really loved anybody else.",
+    "text": "너는 늘 나의 꼬마 신사였어. 나는 정말로 다른 누구도 이렇게 사랑해본 적이 없단다.",
+    "title": "자기 앞의 생",
+    "author": "에밀 아자르(로맹 가리)",
+    "genre": "literature"
+  },
+  {
+    "english": "You're a good boy, Momo. We've always been happy together.",
+    "text": "너는 착한 아이야, 모모. 우리는 언제나 함께 행복했잖니.",
+    "title": "자기 앞의 생",
+    "author": "에밀 아자르(로맹 가리)",
+    "genre": "literature"
+  },
+  {
+    "english": "I think Monsieur Hamil was right when he said it's not possible to live without someone to love.",
+    "text": "사람은 사랑할 사람 없이는 살 수 없다던 아저씨 말씀이 맞는 것 같다.",
+    "title": "자기 앞의 생",
+    "author": "에밀 아자르(로맹 가리)",
+    "genre": "literature"
+  },
+  {
+    "english": "You must be the only Arab in the whole world that speaks Yiddish.",
+    "text": "너는 아마 이디시어를 할 줄 아는 이 세상 유일한 아랍인일 거야.",
+    "title": "자기 앞의 생",
+    "author": "에밀 아자르(로맹 가리)",
+    "genre": "literature"
+  },
+  {
+    "english": "If everybody was like her, the world would be a different kettle of fish and there'd be much less misery.",
+    "text": "모두가 그녀 같았다면 세상은 지금과는 많이 달랐을 거고, 불행도 훨씬 적었을 거다.",
+    "title": "자기 앞의 생",
+    "author": "에밀 아자르(로맹 가리)",
+    "genre": "literature"
+  },
+  {
+    "english": "A blindfolded monkey throwing darts at a newspaper's financial pages could select a portfolio that would do just as well as one carefully selected by experts.",
+    "text": "눈을 가린 원숭이가 신문 경제면에 다트를 던져 종목을 고르더라도, 전문가들이 신중하게 골라낸 포트폴리오 못지않은 성과를 낼 수 있다.",
+    "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
+    "author": "버턴 말킬",
+    "category": "mindset"
+  },
+  {
+    "english": "An investment operation is one which, upon thorough analysis, promises safety of principal and a satisfactory return. Operations not meeting these requirements are speculative.",
+    "text": "철저한 분석을 거쳐 원금의 안전성과 만족스러운 수익을 약속하는 행위, 그것만이 투자다. 이 요건을 충족하지 못하는 행위는 모두 투기다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄",
+    "category": "mindset"
   }
 ];
