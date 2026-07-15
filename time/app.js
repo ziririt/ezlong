@@ -2105,24 +2105,29 @@ window.__flipzenNativeAudioLevels = function (bass, mid, treble) {
   nativeAudioLevelReceivedAt = Date.now();
 };
 
-// 막대 34개를 저음(0~11)/중음(12~23)/고음(24~33) 3구간으로 나누고, 구간
-// 안에서는 막대마다 고정된(항상 같은) 살짝의 세기 차이를 줘서 3개의 평평한
-// 블록처럼 보이지 않게 한다 — index 기반 결정적 해시라 프레임마다 흔들리지
-// 않고 항상 같은 모양을 유지한다.
+// 막대마다 고정된(항상 같은) 살짝의 세기 차이를 줘서 평평한 블록처럼
+// 보이지 않게 한다 — index 기반 결정적 해시라 프레임마다 흔들리지 않고
+// 항상 같은 모양을 유지한다.
 function nativeVizBarJitter(i) {
   return 0.82 + 0.36 * Math.abs(Math.sin(i * 12.9898));
 }
 
-// 2026-07-15 2차: "정확한 스펙트럼 분석이 아니라 박자·드럼·고음을 신나게
-// 표현하는 비주얼 쇼"라는 재지적 — 1차 버전은 대역 3개를 34개 막대에
-// 그대로 깔아서 특히 고음(우측)이 거의 안 움직이는 밋밋한 결과였다.
-// 여기서는 (1) 각 대역을 저음/중음/고음 3곳 모두에서 독립적으로 "타격"
-// 감지해 드럼(저음)·스네어(중음)·하이햇/심벌(고음) 액센트가 각자 구역에서
-// 튀게 하고, (2) 막대마다 다른 위상의 반짝임(shimmer)을 대역 에너지에 비례한
-// 진폭으로 얹어서 같은 구역 안에서도 막대들이 제각각 살아 움직이게 한다.
-// Swift 쪽(NativeRadioPlayer.processTapBuffer)이 이미 대역별 "최근 피크"
-// 대비 비율로 0...1을 정규화해서 보내주므로, 여기서는 그 값을 그대로 신뢰하고
-// 시각적 과장(지수·펀치·반짝임)에만 집중한다.
+// 2026-07-15 3차: "빨강/노랑/초록/보라 4덩어리로 뚝뚝 끊겨 보인다"는 재지적 —
+// 2차 버전은 0~11/12~23/24~33을 칼같이 3등분해서 그 경계(막대 12번, 24번)에서
+// 값이 순간적으로 바뀌었다. 이번엔 막대 위치마다 저음/중음/고음 3개 값을
+// 가우시안 형태로 겹쳐서 부드럽게 섞는다(bandWeights) — 그러면 인접한
+// 막대끼리 값 차이가 항상 완만해서 "덩어리"가 아니라 하나의 이어진 파형처럼
+// 보인다. 또 "반짝임이 너무 촐랑댄다"는 재지적도 반영 — 반짝임의 진폭·속도
+// 둘 다 절반 가까이 줄여서 밋밋함과 산만함의 중간 지점을 찾는다.
+function nativeVizBandWeights(i) {
+  const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
+  const bassW = Math.exp(-Math.pow((t - 0.10) / 0.32, 2));
+  const midW = Math.exp(-Math.pow((t - 0.50) / 0.32, 2));
+  const trebleW = Math.exp(-Math.pow((t - 0.90) / 0.32, 2));
+  const sum = bassW + midW + trebleW;
+  return [bassW / sum, midW / sum, trebleW / sum];
+}
+
 let nativeVizShimmerPhase = 0;
 let nativeVizBassHit2 = 0;
 let nativeVizMidHit2 = 0;
@@ -2138,7 +2143,7 @@ function drawMusicVizNative(h) {
     drawMusicVizIdle(h);
     return;
   }
-  nativeVizShimmerPhase += 0.22;
+  nativeVizShimmerPhase += 0.12;
 
   const bassNow = nativeAudioBass;
   const midNow = nativeAudioMid;
@@ -2157,16 +2162,19 @@ function drawMusicVizNative(h) {
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
     const shapeEnvelope = 0.75 + 0.25 * Math.sin(Math.PI * t);
-    // 34개 막대를 3분할해 저음/중음/고음 대역 값과 그 구역의 타격값을 쓴다.
-    const band = i < 12 ? bassNow : (i < 24 ? midNow : trebleNow);
-    const hit = i < 12 ? nativeVizBassHit2 : (i < 24 ? nativeVizMidHit2 : nativeVizTrebleHit2);
-    // 막대마다 다른 위상으로 반짝임 — 에너지가 클수록 진폭도 속도도 커져서
-    // 같은 구역 안에서도 막대들이 제각각 살아있는 것처럼 보인다.
-    const shimmer = 0.5 + 0.5 * Math.sin(nativeVizShimmerPhase * (0.6 + band * 2.2) + i * 1.7);
-    const liveliness = 0.4 + 0.6 * shimmer;
+    // 3개 값을 딱 자르지 않고 위치별 가중치로 부드럽게 섞는다 — 경계에서
+    // 값이 뚝 끊기지 않아 3~4덩어리로 나뉘어 보이던 문제가 사라진다.
+    const [bassW, midW, trebleW] = nativeVizBandWeights(i);
+    const band = bassW * bassNow + midW * midNow + trebleW * trebleNow;
+    const hit = bassW * nativeVizBassHit2 + midW * nativeVizMidHit2 + trebleW * nativeVizTrebleHit2;
+    // 막대마다 다른 위상으로 아주 옅은 반짝임 — "너무 촐랑댄다"는 재지적으로
+    // 진폭(0.6→0.18)과 속도(band*2.2→band*0.9) 둘 다 크게 낮춰 은은한
+    // 정도로만 남긴다(밋밋함과 산만함의 중간).
+    const shimmer = 0.5 + 0.5 * Math.sin(nativeVizShimmerPhase * (0.5 + band * 0.9) + i * 1.7);
+    const liveliness = 0.82 + 0.18 * shimmer;
     const ratio = Math.pow(Math.max(0, band), 1.25) * nativeVizBarJitter(i);
     let target = Math.max(4, ratio * shapeEnvelope * h * liveliness);
-    // 대역별 타격 펀치 — 그 구역 막대에만 순간적으로 크게 튀어오르게 한다.
+    // 대역별 타격 펀치 — 가중치가 섞여 있어 이 펀치도 경계 없이 자연스럽게 번진다.
     target = Math.max(target, hit * h * 0.94 * shapeEnvelope);
     // 어택은 빠르게(비트에 팍 반응), 릴리즈는 그보다 느리게 — "쇼"답게 대비를 키운다.
     const factor = target > musicVizBars[i] ? 0.8 : 0.2;
