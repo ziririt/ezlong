@@ -2113,6 +2113,24 @@ function nativeVizBarJitter(i) {
   return 0.82 + 0.36 * Math.abs(Math.sin(i * 12.9898));
 }
 
+// 2026-07-15 2차: "정확한 스펙트럼 분석이 아니라 박자·드럼·고음을 신나게
+// 표현하는 비주얼 쇼"라는 재지적 — 1차 버전은 대역 3개를 34개 막대에
+// 그대로 깔아서 특히 고음(우측)이 거의 안 움직이는 밋밋한 결과였다.
+// 여기서는 (1) 각 대역을 저음/중음/고음 3곳 모두에서 독립적으로 "타격"
+// 감지해 드럼(저음)·스네어(중음)·하이햇/심벌(고음) 액센트가 각자 구역에서
+// 튀게 하고, (2) 막대마다 다른 위상의 반짝임(shimmer)을 대역 에너지에 비례한
+// 진폭으로 얹어서 같은 구역 안에서도 막대들이 제각각 살아 움직이게 한다.
+// Swift 쪽(NativeRadioPlayer.processTapBuffer)이 이미 대역별 "최근 피크"
+// 대비 비율로 0...1을 정규화해서 보내주므로, 여기서는 그 값을 그대로 신뢰하고
+// 시각적 과장(지수·펀치·반짝임)에만 집중한다.
+let nativeVizShimmerPhase = 0;
+let nativeVizBassHit2 = 0;
+let nativeVizMidHit2 = 0;
+let nativeVizTrebleHit2 = 0;
+let nativeVizBassAvg2 = 0;
+let nativeVizMidAvg2 = 0;
+let nativeVizTrebleAvg2 = 0;
+
 function drawMusicVizNative(h) {
   // 네이티브 레벨이 한동안(1.2초) 안 들어오면(재생 시작 전, 또는 트랙 전환
   // 찰나) 대기 애니메이션으로 자연스럽게 폴백한다.
@@ -2120,30 +2138,41 @@ function drawMusicVizNative(h) {
     drawMusicVizIdle(h);
     return;
   }
+  nativeVizShimmerPhase += 0.22;
+
   const bassNow = nativeAudioBass;
-  if (bassNow > musicVizBassEnergyAvg * 1.35 + 0.08) {
-    musicVizBassHit = 1;
-  } else {
-    musicVizBassHit *= 0.8;
-  }
-  musicVizBassEnergyAvg += (bassNow - musicVizBassEnergyAvg) * 0.1;
+  const midNow = nativeAudioMid;
+  const trebleNow = nativeAudioTreble;
+
+  // 3개 대역 각각에서 독립적으로 "타격"(순간적으로 최근 평균보다 확 튀는
+  // 순간 = 킥/스네어/하이햇)을 감지한다 — 저음만 보던 1차 버전과 달리
+  // 중음·고음 구역도 각자 펀치를 받아 화면 전체가 신나게 반응한다.
+  if (bassNow > nativeVizBassAvg2 * 1.28 + 0.14) { nativeVizBassHit2 = 1; } else { nativeVizBassHit2 *= 0.78; }
+  nativeVizBassAvg2 += (bassNow - nativeVizBassAvg2) * 0.12;
+  if (midNow > nativeVizMidAvg2 * 1.28 + 0.14) { nativeVizMidHit2 = 1; } else { nativeVizMidHit2 *= 0.78; }
+  nativeVizMidAvg2 += (midNow - nativeVizMidAvg2) * 0.12;
+  if (trebleNow > nativeVizTrebleAvg2 * 1.22 + 0.12) { nativeVizTrebleHit2 = 1; } else { nativeVizTrebleHit2 *= 0.74; }
+  nativeVizTrebleAvg2 += (trebleNow - nativeVizTrebleAvg2) * 0.12;
 
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
     const shapeEnvelope = 0.75 + 0.25 * Math.sin(Math.PI * t);
-    // 34개 막대를 3분할해 저음/중음/고음 대역 값을 그대로 쓴다.
-    const band = i < 12 ? nativeAudioBass : (i < 24 ? nativeAudioMid : nativeAudioTreble);
-    const ratio = Math.pow(Math.max(0, band), 1.5) * nativeVizBarJitter(i);
-    let target = Math.max(4, ratio * shapeEnvelope * h);
-    if (i <= 1) {
-      target = Math.max(target, musicVizBassHit * h * 0.96);
-    }
-    const factor = target > musicVizBars[i] ? 0.72 : 0.18;
+    // 34개 막대를 3분할해 저음/중음/고음 대역 값과 그 구역의 타격값을 쓴다.
+    const band = i < 12 ? bassNow : (i < 24 ? midNow : trebleNow);
+    const hit = i < 12 ? nativeVizBassHit2 : (i < 24 ? nativeVizMidHit2 : nativeVizTrebleHit2);
+    // 막대마다 다른 위상으로 반짝임 — 에너지가 클수록 진폭도 속도도 커져서
+    // 같은 구역 안에서도 막대들이 제각각 살아있는 것처럼 보인다.
+    const shimmer = 0.5 + 0.5 * Math.sin(nativeVizShimmerPhase * (0.6 + band * 2.2) + i * 1.7);
+    const liveliness = 0.4 + 0.6 * shimmer;
+    const ratio = Math.pow(Math.max(0, band), 1.25) * nativeVizBarJitter(i);
+    let target = Math.max(4, ratio * shapeEnvelope * h * liveliness);
+    // 대역별 타격 펀치 — 그 구역 막대에만 순간적으로 크게 튀어오르게 한다.
+    target = Math.max(target, hit * h * 0.94 * shapeEnvelope);
+    // 어택은 빠르게(비트에 팍 반응), 릴리즈는 그보다 느리게 — "쇼"답게 대비를 키운다.
+    const factor = target > musicVizBars[i] ? 0.8 : 0.2;
     musicVizBars[i] += (target - musicVizBars[i]) * factor;
     musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
-    const intensity = i <= 1
-      ? Math.min(1, Math.max(musicVizBars[i] / h, musicVizBassHit))
-      : Math.min(1, musicVizBars[i] / h);
+    const intensity = Math.min(1, Math.max(musicVizBars[i] / h, hit));
     musicVizBarEls[i].style.setProperty("--bar-intensity", intensity.toFixed(3));
   }
 }
