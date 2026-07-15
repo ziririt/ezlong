@@ -3,7 +3,8 @@
 긍정 vs 부정 몇대몇 — 자동 분석 스크립트 (GitHub Actions용)
 yfinance로 시장 데이터 + 뉴스 수집 → Gemini AI 분석 → data/market-scorecard-data.json 업데이트
 
-스케줄: 하루 5회 (KST 07:00 / 12:00 / 18:30 / 22:00 / 23:30)
+스케줄: 하루 5회 (KST 07:15 / 12:00 / 18:30 / 22:00 / 23:30) — 07:00→07:15는 2026-07-15
+사용자가 기상 후 텔레그램으로 전달하는 TV 리포트(tv-inbox)를 반영할 시간을 벌기 위한 조정
 모델: gemini-2.5-flash-lite (고정)
 최대 항목 수: 10 (초과 시 오래된 것부터 삭제)
 """
@@ -44,6 +45,13 @@ LEDGER_PATH = os.path.normpath(
     os.path.join(os.path.dirname(__file__), '..', 'data', 'judgment-history-scorecard.json')
 )
 LEDGER_MAX = 20  # 하루 5회 × 4일
+
+# TV 리포트 수신함 (2026-07-15 신설) — tv-inbox.html/텔레그램 포워딩으로 들어온
+# TradingView 프리미엄 리포트. 오늘 날짜 파일만 골라 프롬프트에 참고자료로 주입한다.
+TV_INBOX_DIR = os.path.normpath(
+    os.path.join(os.path.dirname(__file__), '..', 'data', 'tv-inbox')
+)
+TV_INBOX_MAX_CHARS = 4000  # 프롬프트 비대화 방지 — 리포트가 길면 앞부분만 사용
 
 
 def load_ledger():
@@ -501,11 +509,42 @@ def fetch_fred_macro():
     return rows
 
 
+def fetch_tv_inbox(kst_now):
+    """오늘(KST) 날짜로 tv-inbox.html/텔레그램 포워딩된 TradingView 리포트를 모아 반환.
+    파일이 없거나 디렉터리 자체가 없어도 빈 문자열 반환 — 기존 동작에 영향 없음(무중단 폴백)."""
+    if not os.path.isdir(TV_INBOX_DIR):
+        return ""
+    today = kst_now.strftime('%Y%m%d')
+    try:
+        files = sorted(f for f in os.listdir(TV_INBOX_DIR) if f'-{today}-' in f and f.endswith('.md'))
+    except Exception as e:
+        print(f"  TV 리포트 수신함 조회 실패: {e}")
+        return ""
+    if not files:
+        return ""
+    chunks = []
+    for fn in files:
+        try:
+            with open(os.path.join(TV_INBOX_DIR, fn), 'r', encoding='utf-8') as f:
+                content = f.read().strip()
+            if content:
+                chunks.append(content)
+        except Exception as e:
+            print(f"  TV 리포트 읽기 실패 ({fn}): {e}")
+    if not chunks:
+        return ""
+    combined = '\n\n---\n\n'.join(chunks)
+    if len(combined) > TV_INBOX_MAX_CHARS:
+        combined = combined[:TV_INBOX_MAX_CHARS] + '\n(이하 생략 — 길이 제한)'
+    print(f"    TV 리포트 수신함: {len(files)}개 파일, {len(combined)}자")
+    return combined
+
+
 # ─── Gemini 호출 ──────────────────────────────────────────────────────────────
 
 def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
                  rss_headlines=None, av_items=None, av_summary="", fred_rows=None,
-                 history_block="", session_code="", session_label=""):
+                 history_block="", session_code="", session_label="", tv_inbox_block=""):
     schedule_label = SCHEDULE_LABELS.get(kst_now.hour, f'{kst_now.hour}:00')
 
     # ── 세션 인지 블록 (2026-07-03 신설) ─────────────────────────────────────
@@ -544,6 +583,20 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
         fred_block = "\n=== FRED 실제 발표 매크로 수치 (추정치 아닌 공식 발표값) ===\n"
         fred_block += '\n'.join(f'- {r}' for r in fred_rows) + "\n"
 
+    # TV 리포트 수신함 섹션 (2026-07-15 신설) — 사용자가 매일 아침 텔레그램/웹으로
+    # 전달한 TradingView 프리미엄 리포트. 정성적 참고자료이며, 가격·VIX 실시간 데이터가
+    # 여전히 1차 기준이라는 기존 원칙(아래 [데이터 시점 안내])은 그대로 유지한다.
+    tv_inbox_section = ""
+    if tv_inbox_block:
+        tv_inbox_section = f"""
+=== 사용자가 오늘 아침 전달한 TradingView 프리미엄 리포트 (정성적 시황 분석 — 참고용) ===
+{tv_inbox_block}
+[활용 지침] 위 리포트는 사용자가 구독 중인 TradingView 프리미엄 AI 브리핑이다. 여기 담긴 논조·강도를
+다른 데이터(가격·VIX·뉴스헤드라인·FRED)와 교차검증해서 참고하되, 이 리포트 하나만으로 결론을 뒤집지
+마라. 리포트와 실시간 데이터가 일치하면 신뢰도가 높다고 판단해도 되고, 상충하면 실시간 가격·VIX
+데이터를 우선하라.
+"""
+
     # 직전 카드 맥락 블록 구성 (일관성 유지용)
     prev_block = ""
     if prev_entries:
@@ -576,7 +629,7 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 
     return f"""당신은 미국 주식시장 시황 분석 전문가입니다.
 현재 시각(KST): {kst_now.strftime('%Y-%m-%d %H:%M')} ({schedule_label})
-{session_block}{fred_block}{av_block}
+{session_block}{fred_block}{av_block}{tv_inbox_section}
 === 데이터 시점 안내 (분석 전 반드시 숙지) ===
 - 가격 데이터의 세션 태그를 그대로 신뢰하라: [프리마켓 실시간] [정규장] [포스트마켓 실시간] [야간/시간외] [직전 거래일 종가]
 - 태그 없는 항목은 직전 미국 정규장 종가 기준
@@ -1105,6 +1158,9 @@ def main():
     for r in fred_rows:
         print(f"    {r}")
 
+    print("  [3-d] TV 리포트 수신함 확인...")
+    tv_inbox_block = fetch_tv_inbox(kst_now)
+
     # 2. 기존 데이터 로드 (직전 카드 맥락을 프롬프트에 넣기 위해 먼저 로드)
     data = load_existing()
     prev_entries = data.get("entries", [])[:2]  # 최근 2개 → 일관성 맥락용
@@ -1123,7 +1179,8 @@ def main():
                           rss_headlines=rss_headlines, av_items=av_items,
                           av_summary=av_summary, fred_rows=fred_rows,
                           history_block=history_block,
-                          session_code=session_code, session_label=session_label)
+                          session_code=session_code, session_label=session_label,
+                          tv_inbox_block=tv_inbox_block)
     result = call_gemini(prompt)
 
     if not result:
