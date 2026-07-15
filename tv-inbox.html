@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TV 리포트 수신함 | ezlong.com</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="ez-design.css">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+
+<style>
+  .ti-main{max-width:640px;margin:0 auto;padding:32px 20px 60px;}
+  .ti-brand{padding:28px 20px 8px;text-align:center;}
+  .ti-brand-title{font-size:clamp(22px,4vw,30px);font-weight:800;color:var(--ez-text);margin:0 0 8px;}
+  .ti-brand-desc{font-size:16px;color:var(--ez-text2);line-height:1.6;margin:0;}
+  .ti-card{background:var(--ez-card);border:1px solid var(--ez-border);border-radius:var(--ez-r);padding:24px;margin-top:20px;}
+  .ti-label{display:block;font-size:16px;font-weight:600;color:var(--ez-text);margin-bottom:8px;}
+  .ti-input, .ti-textarea{width:100%;box-sizing:border-box;font-size:16px;color:var(--ez-text);background:var(--ez-card2);border:1px solid var(--ez-border);border-radius:var(--ez-rs);padding:12px 14px;font-family:inherit;}
+  .ti-textarea{min-height:220px;line-height:1.6;resize:vertical;}
+  .ti-row{margin-bottom:18px;}
+  .ti-file-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .ti-file-name{font-size:14px;color:var(--ez-text3);}
+  .ti-btn{width:100%;font-size:17px;font-weight:700;color:#fff;background:var(--ez-text);border:none;border-radius:var(--ez-rs);padding:14px;cursor:pointer;}
+  .ti-btn:disabled{opacity:0.5;cursor:not-allowed;}
+  .ti-status{margin-top:14px;font-size:15px;line-height:1.6;padding:12px 14px;border-radius:var(--ez-rs);display:none;}
+  .ti-status.ok{display:block;background:rgba(26,127,55,0.12);color:var(--ez-green);}
+  .ti-status.err{display:block;background:rgba(217,42,42,0.12);color:var(--ez-red);}
+  .ti-hint{font-size:14px;color:var(--ez-text3);line-height:1.6;margin-top:16px;}
+</style>
+</head>
+<body>
+<script src="/ez-nav.js"></script>
+
+<div class="ti-brand">
+  <div class="ti-brand-title">TV 리포트 수신함</div>
+  <p class="ti-brand-desc">TradingView 차트분석·긍정vs부정 리포트를 여기 붙여넣으면<br>다음 대화에서 자동으로 참고 자료로 읽는다.</p>
+</div>
+
+<main class="ti-main">
+  <div class="ti-card">
+    <div class="ti-row">
+      <label class="ti-label" for="ti-pin">비밀번호</label>
+      <input class="ti-input" type="password" id="ti-pin" autocomplete="off" placeholder="본인만 아는 비밀번호">
+    </div>
+    <div class="ti-row">
+      <label class="ti-label" for="ti-text">리포트 내용 붙여넣기</label>
+      <textarea class="ti-textarea" id="ti-text" placeholder="텔레그램에서 복사한 차트분석/긍정vs부정 리포트를 여기에 붙여넣기"></textarea>
+    </div>
+    <div class="ti-row">
+      <label class="ti-label" for="ti-file">파일 첨부 (선택, 차트 스크린샷 등)</label>
+      <div class="ti-file-wrap">
+        <input type="file" id="ti-file" accept="image/*,.pdf">
+        <span class="ti-file-name" id="ti-file-name"></span>
+      </div>
+    </div>
+    <button class="ti-btn" id="ti-submit">전송</button>
+    <div class="ti-status" id="ti-status"></div>
+    <p class="ti-hint">비밀번호는 이 기기에 저장되어 다음부터 자동으로 채워진다. 공용 기기에서는 사용하지 않는다.</p>
+  </div>
+</main>
+
+<script src="/ez-footer.js"></script>
+
+<script>
+(function(){
+  // 배포 후 실제 워커 URL과 다르면 이 값만 바꾸면 된다.
+  var WORKER_URL = 'https://tv-inbox.ezlong.workers.dev';
+
+  var pinEl = document.getElementById('ti-pin');
+  var textEl = document.getElementById('ti-text');
+  var fileEl = document.getElementById('ti-file');
+  var fileNameEl = document.getElementById('ti-file-name');
+  var btn = document.getElementById('ti-submit');
+  var statusEl = document.getElementById('ti-status');
+
+  try {
+    var savedPin = localStorage.getItem('ezlong_tv_inbox_pin');
+    if (savedPin) pinEl.value = savedPin;
+  } catch(e) {}
+
+  fileEl.addEventListener('change', function(){
+    fileNameEl.textContent = fileEl.files[0] ? fileEl.files[0].name : '';
+  });
+
+  function showStatus(ok, msg){
+    statusEl.className = 'ti-status ' + (ok ? 'ok' : 'err');
+    statusEl.textContent = msg;
+  }
+
+  function fileToBase64(file){
+    return new Promise(function(resolve, reject){
+      var reader = new FileReader();
+      reader.onload = function(){
+        // data:image/png;base64,XXXX 형태 → 콤마 뒤 base64만 추출
+        var result = reader.result;
+        var idx = result.indexOf(',');
+        resolve(idx >= 0 ? result.slice(idx + 1) : result);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  btn.addEventListener('click', async function(){
+    var pin = pinEl.value.trim();
+    var text = textEl.value.trim();
+    var file = fileEl.files[0];
+
+    if (!pin) { showStatus(false, '비밀번호를 입력한다.'); return; }
+    if (!text && !file) { showStatus(false, '텍스트나 파일 중 하나는 있어야 한다.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = '전송 중...';
+    statusEl.className = 'ti-status';
+
+    try {
+      var payload = { pin: pin, text: text };
+      if (file) {
+        payload.fileName = file.name;
+        payload.fileBase64 = await fileToBase64(file);
+      }
+      var res = await fetch(WORKER_URL + '/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      var data = await res.json();
+      if (data.ok) {
+        try { localStorage.setItem('ezlong_tv_inbox_pin', pin); } catch(e) {}
+        showStatus(true, '전송 완료. 다음 대화에서 클로드가 읽는다.');
+        textEl.value = '';
+        fileEl.value = '';
+        fileNameEl.textContent = '';
+      } else {
+        showStatus(false, '전송 실패: ' + (data.error || '알 수 없는 오류'));
+      }
+    } catch(e) {
+      showStatus(false, '전송 실패: 네트워크 오류 — ' + e.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '전송';
+    }
+  });
+})();
+</script>
+</body>
+</html>
