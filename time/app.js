@@ -2085,6 +2085,69 @@ function drawMusicVizIdle(h) {
   }
 }
 
+// 2026-07-15: 네이티브 앱에서 실제 오디오에 반응하는 비주얼라이저.
+// NativeRadioPlayer.swift의 MTAudioProcessingTap이 15Hz로 계산해준 저음/
+// 중음/고음 3개 대역 에너지(nativeAudioBass/Mid/Treble, 0...1)를 34개 막대에
+// 매핑한다 — 실제 34-bin FFT처럼 촘촘한 스펙트럼은 아니지만(3개 대역뿐),
+// "진짜 소리에 반응한다"는 체감은 충분히 준다. 기존 drawMusicViz의 "산 모양"
+// 실루엣(shapeEnvelope)과 어택/릴리즈 감쇠, 베이스 타격 펀치 연출을 그대로
+// 재사용해 실제 FFT 경로와 시각적 언어를 통일한다.
+let nativeAudioBass = 0;
+let nativeAudioMid = 0;
+let nativeAudioTreble = 0;
+let nativeAudioLevelReceivedAt = 0;
+
+window.__flipzenNativeAudioLevels = function (bass, mid, treble) {
+  if (!isNativeWrapper) return;
+  nativeAudioBass = Number.isFinite(bass) ? bass : 0;
+  nativeAudioMid = Number.isFinite(mid) ? mid : 0;
+  nativeAudioTreble = Number.isFinite(treble) ? treble : 0;
+  nativeAudioLevelReceivedAt = Date.now();
+};
+
+// 막대 34개를 저음(0~11)/중음(12~23)/고음(24~33) 3구간으로 나누고, 구간
+// 안에서는 막대마다 고정된(항상 같은) 살짝의 세기 차이를 줘서 3개의 평평한
+// 블록처럼 보이지 않게 한다 — index 기반 결정적 해시라 프레임마다 흔들리지
+// 않고 항상 같은 모양을 유지한다.
+function nativeVizBarJitter(i) {
+  return 0.82 + 0.36 * Math.abs(Math.sin(i * 12.9898));
+}
+
+function drawMusicVizNative(h) {
+  // 네이티브 레벨이 한동안(1.2초) 안 들어오면(재생 시작 전, 또는 트랙 전환
+  // 찰나) 대기 애니메이션으로 자연스럽게 폴백한다.
+  if (Date.now() - nativeAudioLevelReceivedAt > 1200) {
+    drawMusicVizIdle(h);
+    return;
+  }
+  const bassNow = nativeAudioBass;
+  if (bassNow > musicVizBassEnergyAvg * 1.35 + 0.08) {
+    musicVizBassHit = 1;
+  } else {
+    musicVizBassHit *= 0.8;
+  }
+  musicVizBassEnergyAvg += (bassNow - musicVizBassEnergyAvg) * 0.1;
+
+  for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
+    const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
+    const shapeEnvelope = 0.75 + 0.25 * Math.sin(Math.PI * t);
+    // 34개 막대를 3분할해 저음/중음/고음 대역 값을 그대로 쓴다.
+    const band = i < 12 ? nativeAudioBass : (i < 24 ? nativeAudioMid : nativeAudioTreble);
+    const ratio = Math.pow(Math.max(0, band), 1.5) * nativeVizBarJitter(i);
+    let target = Math.max(4, ratio * shapeEnvelope * h);
+    if (i <= 1) {
+      target = Math.max(target, musicVizBassHit * h * 0.96);
+    }
+    const factor = target > musicVizBars[i] ? 0.72 : 0.18;
+    musicVizBars[i] += (target - musicVizBars[i]) * factor;
+    musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
+    const intensity = i <= 1
+      ? Math.min(1, Math.max(musicVizBars[i] / h, musicVizBassHit))
+      : Math.min(1, musicVizBars[i] / h);
+    musicVizBarEls[i].style.setProperty("--bar-intensity", intensity.toFixed(3));
+  }
+}
+
 function drawMusicViz() {
   if (!isMusicPanelOpen() || !musicVizWrap || !musicVizBarEls) {
     musicVizAnimId = null; // 패널이 닫히면 다음 프레임을 예약하지 않고 루프 종료
@@ -2093,6 +2156,11 @@ function drawMusicViz() {
   musicVizAnimId = requestAnimationFrame(drawMusicViz);
 
   const h = musicVizWrap.clientHeight || 52;
+
+  if (isNativeWrapper) {
+    drawMusicVizNative(h);
+    return;
+  }
 
   const analyser = activeMusicAnalyser();
   if (!analyser) {
@@ -2397,6 +2465,11 @@ async function updateMusicProgress(event) {
 // 먼저 load()+같은 위치 재생을 두 번까지 시도하고, 그래도 안 되면 다음
 // 곡으로 넘긴다(무한정 멈춰있는 것보단 낫다).
 function musicStallWatchdog() {
+  // 2026-07-15: 네이티브 모드에서는 이 <audio>가 애초에 실제로 play()되지
+  // 않으므로(파일 상단 nativeClockTimerId 관련 주석 참조) player.paused가
+  // 항상 true라 아래 조기 return에 자연히 걸린다 — 그래도 의도를 명확히
+  // 하기 위해 명시적으로도 막아둔다.
+  if (isNativeWrapper) return;
   const player = activePlayer();
   if (!player || !musicPlaying || player.paused) {
     stallRetryCount = 0;
