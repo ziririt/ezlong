@@ -3588,6 +3588,20 @@ window.setInterval(() => { if (musicPlaying) syncNativeSeek(); }, 15000);
   renderMusicPlaylistInfo();
   renderMusicHistoryList();
   player._pendingLoad = loadMusicTrack(player, musicIndex, { prebuffer: true });
+  // 2026-07-16: "3~5초쯤 한 번씩 씹힌다"는 재지적 — 네이티브 모드에서는
+  // 위 JS쪽 blob 프리버퍼가 아무 의미가 없다(어차피 이 <audio>를 실제로
+  // 재생하지 않으므로). 정작 소리를 내는 NativeRadioPlayer의 TrackFileCache는
+  // 지금까지 "곡이 끝나갈 때"만 다음 곡을 미리 받아뒀지, 앱을 막 열어서
+  // 재생 버튼을 처음 누르는 "첫 곡"은 미리 받아둘 기회 자체가 없어서 항상
+  // 콜드 스트리밍으로 시작했다 — 이게 초반 몇 초가 씹히는 진짜 원인이었다.
+  // 앱이 뜨자마자(재생 버튼을 누르기 전부터) 네이티브에도 첫 곡을 미리
+  // 받아두라고 알려준다.
+  if (isNativeWrapper && Array.isArray(musicPlaylist) && musicPlaylist.length > 0) {
+    const firstTrack = musicPlaylist[musicIndex % musicPlaylist.length];
+    if (firstTrack) {
+      postToNativeRadio({ action: "prefetchNext", url: resolveTrackAbsoluteUrl(firstTrack) });
+    }
+  }
 })();
 
 // 2026-07-08: 앱이 백그라운드로 가거나(다른 앱 전환) 아예 종료될 때도 마지막
