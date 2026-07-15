@@ -1895,23 +1895,16 @@ const musicPlayers = [bgAudio, bgAudioB].filter(Boolean);
 // 미리 지정해두면 fetch가 CORS 모드로 명확히 요청하고, R2 쪽 CORS 정책만
 // 맞으면(버킷 Settings > CORS Policy) 이 경로가 정상 작동한다.
 musicPlayers.forEach((player) => { player.crossOrigin = "anonymous"; });
-// 2026-07-15 2차 수정: masterGainNode(Web Audio 단)로 출력만 죽여도, iOS
-// WebKit 입장에서는 이 <audio> 엘리먼트 자체가 여전히 "소리 나는 미디어를
-// 재생 중"인 상태다(HTMLMediaElement.muted가 아니라 Web Audio 그래프 뒤에서
-// 조용히시킨 것이라 WebKit이 감지 못함). 그 결과 WKWebView가 내부적으로
-// 오디오 세션을 계속 조작하면서 NativeRadioPlayer(진짜 소리를 내야 하는
-// 네이티브 AVPlayer)와 세션/오디오 라우트를 두고 계속 충돌한다 — 포그라운드
-// 에서는 소리가 안 나다가 배경으로 전환하는 순간(WKWebView가 내부 미디어
-// 파이프라인을 멈추며 충돌이 사라짐) 소리가 나기 시작하는 증상, 재생/일시
-// 정지 버튼 상태와 실제 소리가 따로 노는 증상이 전부 이 충돌의 결과로
-// 보인다. HTMLMediaElement.muted는 (volume과 달리) iOS가 실제로 존중하는
-// 값이라, 여기서 명시적으로 음소거해두면 WebKit이 "이건 무음 미디어"로
-// 인식해 오디오 세션 관리 자체에서 손을 떼고, NativeRadioPlayer가 세션을
-// 단독으로 온전히 쓸 수 있게 된다. createMediaElementSource로 Web Audio에
-// 연결된 뒤에도 .muted는 AnalyserNode가 받는 신호 자체에는 영향을 주지
-// 않는다(브라우저가 소스 신호가 아니라 최종 출력 단계에서만 무음 처리) —
-// 그래서 비주얼라이저는 이 변경 이후에도 계속 정상 동작해야 한다.
-musicPlayers.forEach((player) => { player.muted = isNativeWrapper; });
+// 2026-07-15 2차 시도 후 롤백: masterGainNode 외에 HTMLMediaElement.muted도
+// true로 걸어서 iOS가 이 <audio>를 아예 무음 미디어로 인식하게 하려 했으나,
+// 실기기 테스트에서 비주얼라이저가 재생 5초 즈음부터 완전히 멈추는 새 증상이
+// 나타났다 — iOS WebKit은 (Chrome 등과 달리) createMediaElementSource로 이미
+// Web Audio 그래프에 연결된 엘리먼트라도 .muted=true를 걸면 일정 시간 뒤
+// AnalyserNode로 가는 실제 신호 자체를 끊어버리는 것으로 실측 확인됐다(사전
+// 예상과 다른 실기기 특성). 그런데도 배경전환 시 소리가 끊기는 핵심 증상은
+// 해결되지 않아 — 새 회귀만 만들고 실익이 없어 롤백한다. masterGainNode
+// 단독 음소거 방식으로 되돌리고, 배경 오디오 문제는 NativeRadioPlayer.swift의
+// 오디오 세션 인터럽션(.ended) 처리 쪽에서 다시 접근한다.
 let activePlayerIndex = 0;
 let crossfadeTriggered = false;
 let pendingNextIndex = -1;
