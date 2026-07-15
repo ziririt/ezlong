@@ -2098,6 +2098,13 @@ function drawMusicViz() {
 // 표준 우회법이라, 볼륨 제어를 전부 여기로 옮긴다.
 let audioContext = null;
 let playerGainNodes = null; // musicPlayers와 같은 순서의 GainNode 배열
+// 2026-07-15: 네이티브 앱(iOS)에서는 실제 스피커 출력을 AVPlayer(네이티브)가
+// 전담하고, 여기(WKWebView 내부 Web Audio 그래프)는 크로스페이드 타이밍/
+// 비주얼라이저/진행률 계산만 계속 담당한다 — 두 군데서 동시에 소리가 나면
+// 안 되므로, 개별 트랙 GainNode 뒤에 이 마스터 GainNode를 하나 더 두고
+// isNativeWrapper일 때만 0으로 죽인다. 일반 웹/PWA에서는 항상 1이라 지금까지의
+// 크로스페이드 볼륨 동작과 완전히 동일하다.
+let masterGainNode = null;
 // 2026-07-13: 음악 정보 패널의 오디오 비주얼라이저용 AnalyserNode.
 // musicPlayers/playerGainNodes와 같은 순서로 둔다. 기존 gain → destination
 // 출력 경로는 그대로 두고, gain에서 분석용으로만 하나 더 분기(fan-out)한다 —
@@ -2111,6 +2118,9 @@ function ensureAudioGraph() {
   try {
     audioContext = new AudioContextClass();
     playerAnalysers = [];
+    masterGainNode = audioContext.createGain();
+    masterGainNode.gain.value = isNativeWrapper ? 0 : 1;
+    masterGainNode.connect(audioContext.destination);
     playerGainNodes = musicPlayers.map((player) => {
       const source = audioContext.createMediaElementSource(player);
       const gain = audioContext.createGain();
@@ -2118,7 +2128,7 @@ function ensureAudioGraph() {
       analyser.fftSize = 128;
       analyser.smoothingTimeConstant = 0.85;
       source.connect(gain);
-      gain.connect(audioContext.destination);
+      gain.connect(masterGainNode);
       gain.connect(analyser);
       playerAnalysers.push(analyser);
       return gain;
@@ -2127,6 +2137,7 @@ function ensureAudioGraph() {
     audioContext = null;
     playerGainNodes = null;
     playerAnalysers = null;
+    masterGainNode = null;
   }
 }
 
@@ -2339,7 +2350,7 @@ function renderMusicToggle() {
   musicToggle.setAttribute("aria-pressed", String(musicPlaying));
   musicToggle.setAttribute("aria-label", musicPlaying ? "음악 일시정지" : "음악 재생");
   renderMusicHistoryList(); // 재생/일시정지에 따라 "바로 듣기"/"재생 중" 라벨도 같이 갱신한다.
-  sendNativeHeartbeat(); // 재생 상태가 바뀌는 즉시 네이티브 쪽 캐시도 최신으로 — 2초 주기를 기다리지 않는다.
+  syncNativePlayState(); // 재생/일시정지 상태를 네이티브(잠금화면·오디오세션)에도 즉시 반영.
 }
 
 // 에러 이벤트도, ended 이벤트도 없이 재생이 조용히 멈추는 증상이 있었다
@@ -2413,88 +2424,104 @@ function pauseMusic() {
   standbyPlayer()?.pause();
 }
 
-// 2026-07-08: iOS 네이티브 래퍼(WKWebView)에서 "다른 앱으로 전환하면 음악이
-// 멈춘다"는 문제 대응. WKWebView 내부 HTML5 <audio>는 AVAudioSession
-// 카테고리/백그라운드 모드를 앱 쪽에서 아무리 올바르게 설정해도, 앱이
-// 백그라운드로 가는 순간 오디오 자체가 조용히 정지되는 경우가 있다(WebKit이
-// 자체적으로 미디어를 서스펜드하는 알려진 동작). 이를 우회하기 위해 네이티브
-// 쪽에 무음 오디오를 계속 흘려보내 오디오 세션을 "재생 중" 상태로 유지시키는
-// 트릭을 쓴다 — 실제 음악 재생/정지 상태와 동기화해서 켜고 끈다(유저가
-// 재생을 누르지 않았는데도 앱이 오디오를 재생 중인 것처럼 보이는 걸 막기
-// 위해). 일반 브라우저(웹)에서는 window.webkit이 없으므로 아무 동작도
-// 하지 않는다 — 웹 동작에는 영향 없음.
-// 2026-07-08 긴급 비활성화: 백그라운드 지속재생 자체를 포기하기로 결정한
-// 뒤에도 이 무음 킵얼라이브 트릭(SilentAudioKeepAlive, 4회 시도 중 1차
-// 시도)이 재생을 누를 때마다 계속 native로 켜지고 있었다 — 네이티브
-// AVAudioEngine이 AVAudioSession을 독자적으로 setCategory/setActive하면서
-// WKWebView 내부 <audio>가 Web Audio API(GainNode)로 물려 쓰는 오디오
-// 세션과 충돌해, "진행률(currentTime)은 정상으로 흘러가는데 실제 소리는
-// 전혀 안 나는" 증상을 유발한 것으로 보인다(유저 리포트: 스피커로 들을 때
-// 발생, 곡을 넘겨도 동일 — 같은 오디오 세션을 계속 공유하는 native 엔진이
-// 원인이라는 정황과 일치). 백그라운드 지속재생 기능 자체를 이미 포기했으므로
-// (CHANGELOG 2026-07-08 참조) 이 트릭을 계속 켤 이유가 없다 — 호출 자체를
-// 막아 native SilentAudioKeepAlive가 다시는 시작되지 않게 한다. 네이티브
-// 코드(SilentAudioKeepAlive.swift)는 그대로 남겨두되(무해), 트리거만 끊는다.
-function notifyNativeAudioKeepAlive(isPlaying) {
-  // 의도적으로 아무 동작도 하지 않음 — 위 설명 참조.
+// 2026-07-15 재설계: 아래 SilentAudioKeepAlive/그림자 재생(heartbeat) 방식은
+// 4차 시도까지 실기기에서 안정적으로 동작하지 않는 것으로 결론 났다
+// (NATIVE_APP_STRATEGY.md 참조 — WKWebView는 백그라운드 전환 즉시 내부
+// WebContent 프로세스의 HTML5 <audio>를 서스펜드해버려서, "전환되는 그
+// 찰나에 네이티브가 바통을 받는" 방식 자체가 타이밍 경쟁을 안고 있었다).
+// 이번 방식은 그 경쟁 자체를 없앤다 — 라디오(음악) 소리는 유저가 재생
+// 버튼을 누르는 순간부터 끝까지, 포그라운드·백그라운드 구분 없이 항상
+// 네이티브 AVPlayer가 낸다. 이 안의 <audio> 엘리먼트/크로스페이드/비주얼
+// 라이저/진행률 계산 로직은 전혀 안 건드리고 그대로 "브레인" 역할을 하되,
+// 실제 스피커 출력만 masterGainNode로 죽인다(ensureAudioGraph 참조) —
+// 네이티브 쪽에 이중으로 소리가 나는 걸 막기 위해서다. 일반 웹/PWA(무료
+// 버전)에서는 window.webkit이 없으므로 postToNativeRadio가 조용히 아무
+// 일도 안 하고, masterGainNode도 항상 1로 유지된다 — 웹 동작에는 전혀
+// 영향이 없다.
+function postToNativeRadio(payload) {
+  if (!isNativeWrapper) return;
+  try {
+    window.webkit.messageHandlers.flipzenNativeRadio.postMessage(payload);
+  } catch (error) {
+    // 네이티브 브릿지가 아직 준비 전이거나 없는 환경 — 조용히 무시(웹 동작 무관).
+  }
 }
+
+// renderMusicPlaylistInfo()가 트랙이 바뀌는 모든 지점(첫 재생 시작·수동
+// 스킵·자동 크로스페이드 완료·플레이리스트/장르 필터 변경)에서 공통으로
+// 호출되므로, 여기 한 곳에만 붙여도 트랙 전환을 하나도 놓치지 않고
+// 네이티브에 전달할 수 있다.
+function syncNativeTrackInfo() {
+  if (!isNativeWrapper) return;
+  const track = Array.isArray(musicPlaylist) && musicPlaylist.length > 0
+    ? musicPlaylist[musicIndex % musicPlaylist.length]
+    : null;
+  if (!track) return;
+  const player = activePlayer();
+  postToNativeRadio({
+    action: "trackChanged",
+    url: resolveTrackAbsoluteUrl(track),
+    title: track.title || "FlipZen Radio",
+    time: player ? (player.currentTime || 0) : 0,
+    playing: musicPlaying,
+  });
+}
+
+// renderMusicToggle()이 재생/일시정지 상태가 바뀌는 유일한 공통 지점이라
+// 여기서만 네이티브에 재생 상태를 알린다(곡 자체는 안 바뀌었을 수 있으니
+// syncNativeTrackInfo와 분리해둔다).
+function syncNativePlayState() {
+  postToNativeRadio({ action: "playState", playing: musicPlaying });
+}
+
+// 진행률 바를 손가락/마우스/키보드로 옮겼을 때(seekMusicProgressToClientX,
+// 화살표키 탐색) 네이티브 재생 위치도 맞춰준다 — 안 그러면 화면 진행률과
+// 잠금화면/제어센터 쪽 실제 재생 위치가 어긋난다. 재생 중에만 15초마다도
+// 한 번씩 같은 함수로 가볍게 재동기화해서(아래 setInterval), 오랜 시간
+// 백그라운드에 있어도 위치가 크게 벌어지지 않게 한다.
+function syncNativeSeek() {
+  if (!isNativeWrapper) return;
+  const player = activePlayer();
+  if (!player) return;
+  postToNativeRadio({ action: "seek", time: player.currentTime || 0 });
+}
+
+// 네이티브(잠금화면/제어센터)에서 재생·일시정지·다음곡 버튼을 눌렀을 때
+// 호출된다(ContentView.swift → evaluateJavaScript). "네이티브 전용 로직"을
+// 새로 만들지 않고 기존 toggleMusic()/playNextTrack()을 그대로 재사용해서,
+// 화면 UI·크로스페이드·재생기록 등 모든 부수효과가 잠금화면 조작에도 똑같이
+// 따라오게 한다.
+// 앱이 백그라운드에서 돌아올 때 네이티브(ContentView.swift의 didBecomeActive
+// 관찰자)가 호출한다. WKWebView는 백그라운드 동안 내부 미디어 파이프라인
+// 자체를 멈춰두므로(이 프로젝트에서 반복 확인된 동작), 이 웹 쪽 <audio>는
+// 배경 전 마지막 위치에 그대로 멈춰있다 — 실제 소리(네이티브)는 배경 내내
+// 정확히 흘러왔으므로, 그 진짜 위치로 화면 진행률·크로스페이드 타이밍을
+// 맞춰준다. 이 보정이 없으면 복귀 직후 진행률 바가 잠깐 "거꾸로" 보이거나,
+// 15초 재동기화(syncNativeSeek)가 오히려 네이티브를 과거로 되감길 수 있다.
+window.__flipzenNativeTimeSync = function (time) {
+  if (!isNativeWrapper || !Number.isFinite(time)) return;
+  const player = activePlayer();
+  if (!player) return;
+  player.currentTime = time;
+  if (musicPlaying && player.paused) player.play().catch(() => {});
+};
+
+window.__flipzenNativeCommand = function (command) {
+  if (command === "play") {
+    if (!musicPlaying) toggleMusic();
+  } else if (command === "pause") {
+    if (musicPlaying) toggleMusic();
+  } else if (command === "next") {
+    playNextTrack();
+  }
+};
 
 function toggleMusic() {
   musicPlaying = !musicPlaying;
   musicActionToken += 1; // 이 클릭이 "가장 최신 의도"임을 표시 — 이전 재생 시도는 이 값으로 자기 차례가 지났음을 안다.
   if (musicPlaying) playMusic(musicActionToken); else pauseMusic();
   renderMusicToggle();
-  notifyNativeAudioKeepAlive(musicPlaying);
 }
-
-// 2026-07-08 재설계: 무음 킵얼라이브 트릭만으로는 실기기 테스트 결과
-// 백그라운드 음악이 계속 재생되지 않는 것으로 확인됐다 — WKWebView가 앱
-// 백그라운드 전환 시 HTML5 <audio> 자체를 정지시키는 구조적 한계로 보인다.
-// 처음엔 visibilitychange 시점에 JS가 네이티브로 "지금 곡/위치"를 보내
-// 그림자 재생(BackgroundShadowPlayer)을 그 순간에 새로 시작시키려 했는데,
-// 실기기 재테스트 결과 여전히 백그라운드 전환 즉시 소리가 끊겼다 — 앱이
-// 백그라운드로 넘어가는 순간 WKWebView의 WebContent 프로세스 자체가
-// 거의 즉시 멈춰버려서, 그 타이밍에 새로 보내는 postMessage가 네이티브에
-// 도착하기도 전에 오디오가 이미 끊긴 것으로 보인다(JS 왕복에 의존한 게
-// 원인). 그래서 트리거 방식을 바꾼다 — 재생 중인 동안 2초마다 "지금 곡
-// URL/위치"를 네이티브에 미리 흘려보내두고(heartbeat), 네이티브 쪽이 앱
-// 생명주기 알림(didEnterBackground)을 직접 감지해서 그 시점에 가장 최근
-// heartbeat 값으로 즉시 그림자 재생을 시작한다 — 이제 그 순간에 JS 왕복을
-// 기다릴 필요가 없어서 타이밍 경쟁 자체가 사라진다. 기존 크로스페이드·
-// 다음곡 선택·싫어요 학습 로직은 전혀 건드리지 않는다.
-function sendNativeHeartbeat() {
-  try {
-    if (!musicPlaying || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) {
-      window.webkit.messageHandlers.flipzenShadowPlayer.postMessage({ action: "heartbeat", playing: false });
-      return;
-    }
-    const player = activePlayer();
-    const track = musicPlaylist[musicIndex % musicPlaylist.length];
-    if (!player || !track) return;
-    window.webkit.messageHandlers.flipzenShadowPlayer.postMessage({
-      action: "heartbeat",
-      playing: true,
-      url: resolveTrackAbsoluteUrl(track),
-      time: player.currentTime || 0,
-    });
-  } catch (error) {
-    // 네이티브 래퍼가 아니면(일반 웹) 핸들러가 없어 여기로 떨어진다 — 정상.
-  }
-}
-
-// 네이티브가 그림자 재생을 끝내면서(포그라운드 복귀 시) 마지막으로 재생
-// 중이던 위치를 알려준다 — HTML5 오디오를 그 근처로 맞춰서 이어받는다.
-// 백그라운드 앰비언트 성격이라 초 단위까지 정확히 맞을 필요는 없다.
-// 2026-07-08 버그 수정: 이 콜백이 자동으로 seek+play를 실행했는데, 그림자
-// 재생이 사실상 제대로 시작도 못 한 채 바로 종료되는 경우가 대부분이라
-// finalTime 자체가 신뢰할 만한 위치가 아니었다. 게다가 유저가 포그라운드로
-// 돌아와 직접 재생 버튼을 누르는 시점과 이 콜백이 거의 동시에 실행되면서,
-// 서로 다른 위치로 seek하고 각자 play()를 부르는 두 흐름이 충돌해 소리가
-// 겹치며 씹히는 새 버그가 생겼다. 그림자 재생 기능 자체가 아직 안정적으로
-// 동작하지 않는 상태이므로, 이 콜백은 당분간 아무 것도 하지 않는다 — 재생
-// 시작은 항상 유저의 명시적 탭에서만 일어나게 한다(네이티브는 여전히 이
-// 함수를 호출하지만, 정의돼 있으니 에러 없이 조용히 무시된다).
-window.__flipzenShadowStopped = function () {};
 
 // 스킵 버튼(수동)은 크로스페이드 없이 즉시 곡을 바꾼다 — 유저가 직접 누른
 // 즉각 반응이 우선이고, 곡이 끝나기 전 자동 전환과는 성격이 다르다.
@@ -2615,6 +2642,7 @@ function renderMusicPlaylistInfo() {
   // — 새 값은 곧이어 updateMusicProgress()의 timeupdate가 다시 채운다.
   if (musicProgressFill) musicProgressFill.style.width = "0%";
   renderMusicReactionButtons();
+  syncNativeTrackInfo(); // 이 함수가 트랙 전환 전부(수동 스킵·자동전환·필터변경 포함)의 공통 지점.
 }
 
 // 2026-07-12: "몇 가지 플레이리스트로 나눌 수 있나" 요청 — 실제 존재하는
@@ -2776,7 +2804,6 @@ function playTrackAtIndex(index) {
   musicPlaying = true;
   player.play().catch(() => {});
   renderMusicToggle();
-  notifyNativeAudioKeepAlive(true);
 }
 
 function playTrackFromHistory(file) {
@@ -3052,6 +3079,7 @@ if (musicProgressBar) {
     if (!musicProgressDragging) return;
     musicProgressDragging = false;
     try { musicProgressBar.releasePointerCapture(event.pointerId); } catch (error) { /* no-op */ }
+    syncNativeSeek(); // 드래그가 끝난 최종 위치를 네이티브(잠금화면 재생 위치)에도 반영.
   };
   musicProgressBar.addEventListener("pointerup", endMusicProgressDrag);
   musicProgressBar.addEventListener("pointercancel", endMusicProgressDrag);
@@ -3059,8 +3087,8 @@ if (musicProgressBar) {
   musicProgressBar.addEventListener("keydown", (event) => {
     const player = activePlayer();
     if (!player) return;
-    if (event.key === "ArrowRight") { event.preventDefault(); player.currentTime = Math.min((player.duration || 0), player.currentTime + 5); }
-    else if (event.key === "ArrowLeft") { event.preventDefault(); player.currentTime = Math.max(0, player.currentTime - 5); }
+    if (event.key === "ArrowRight") { event.preventDefault(); player.currentTime = Math.min((player.duration || 0), player.currentTime + 5); syncNativeSeek(); }
+    else if (event.key === "ArrowLeft") { event.preventDefault(); player.currentTime = Math.max(0, player.currentTime - 5); syncNativeSeek(); }
   });
 }
 // 2026-07-07: "곡이 중간에 뚝 끊긴다"는 신고는 ffmpeg 완전디코드로 확인한
@@ -3184,7 +3212,11 @@ tick();
 requestCurrentWeather();
 window.setInterval(tick, 1000);
 window.setInterval(musicStallWatchdog, 2000);
-window.setInterval(sendNativeHeartbeat, 2000); // 백그라운드 그림자 재생용 heartbeat — 위 sendNativeHeartbeat 주석 참조.
+// 2026-07-15: 네이티브가 처음부터 소리를 내고 있으므로 예전처럼 "곧 백그라운드로
+// 갈 수도 있으니 미리 흘려보내는" heartbeat는 더 이상 필요 없다. 다만 오랜 시간
+// 재생하다 보면 웹 쪽(브레인) 재생 위치와 네이티브(스피커) 재생 위치가 초 단위로
+// 서서히 벌어질 수 있어, 재생 중일 때만 15초마다 가볍게 재동기화해둔다.
+window.setInterval(() => { if (musicPlaying) syncNativeSeek(); }, 15000);
 
 // 2026-07-07: 앱을 켜고 첫 곡을 재생할 때 초반 몇 초간 짧게 끊기는 증상 —
 // 재생 버튼을 누른 그 순간에야 트랙 파일을 받기 시작해서 벌어지는 지연으로
@@ -3227,9 +3259,9 @@ window.setInterval(sendNativeHeartbeat, 2000); // 백그라운드 그림자 재�
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") {
     maybeSaveMusicResume(true);
-    // 그림자 재생 시작은 더 이상 여기서 트리거하지 않는다 — 네이티브가
-    // 앱 생명주기 알림으로 직접 감지해서 heartbeat 캐시로 시작한다(위
-    // sendNativeHeartbeat 주석 참조). 이 시점엔 위치 저장만 하면 된다.
+    // 2026-07-15: 이제 백그라운드 전환 시점에 뭔가를 새로 트리거할 필요가
+    // 없다 — 네이티브 AVPlayer가 재생 시작부터 이미 소리를 내고 있으므로,
+    // 여기서는 예전과 같이 재생 위치 저장만 하면 된다.
   }
 });
 window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
