@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-07-16-00:51",
+      "timestamp_kst": "2026-07-16(목) 00:51 KST",
+      "key_event": {
+        "name": "CPI 예상치 하회 및 AI 반도체 강세",
+        "time": "현재 정규장 및 단기 전망",
+        "why": "금리 인상 우려 완화, AI 산업 성장 기대, 시장 심리 개선"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "CPI 호재와 AI 반도체 강세로 긍정 우위 지속, 일부 기술주 혼조세 유지",
+      "positive_factors": [
+        {
+          "score": 25,
+          "name": "CPI 예상치 하회 지속",
+          "desc": "인플레이션 우려 완화 및 금리 인상 가능성 축소로 시장 심리 개선"
+        },
+        {
+          "score": 20,
+          "name": "AI 반도체 수요 견인",
+          "desc": "ASML 실적 호조 및 Nvidia, Apple의 AI 투자 소식으로 관련주 강세"
+        },
+        {
+          "score": 15,
+          "name": "주요 기술주 강세",
+          "desc": "AAPL, MSFT, GOOGL 등 대형 기술주 상승세로 시장 전반 긍정 영향"
+        },
+        {
+          "score": 10,
+          "name": "VIX 및 국채금리 하락",
+          "desc": "시장 변동성 완화 및 성장주 투자 매력 증가"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "일부 반도체주 하락",
+          "desc": "SOXX 및 NVDA 하락으로 AI 섹터 내 일부 차익 실현 압력 발생"
+        },
+        {
+          "score": 15,
+          "name": "미-이란 지정학적 긴장",
+          "desc": "원유 공급 우려 및 중동 정세 불안정으로 시장 불확실성 증대"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "TSLA 주가 움직임",
+          "desc": "Wells Fargo의 목표가 하향 조정과 성장 질문 제기로 혼조세"
+        }
+      ]
+    },
+    {
       "id": "2026-07-15-23:20",
       "timestamp_kst": "2026-07-15(수) 23:20 KST",
       "key_event": {
@@ -523,70 +575,8 @@
           "desc": "원유 가격은 하락했으나, 뉴스 헤드라인에서 미-이란 긴장 고조 언급이 지속되며 불확실성 상존"
         }
       ]
-    },
-    {
-      "id": "2026-07-14-23:20",
-      "timestamp_kst": "2026-07-14(화) 23:20 KST",
-      "key_event": {
-        "name": "CPI 예상치 하회",
-        "time": "2026-07-14 정규장",
-        "why": "금리 인상 우려 완화, 시장 불확실성 감소"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "CPI 예상치 하회로 긍정 우위 전환 지속, AI 반도체 강세 유지",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "예상치 하회 CPI 발표",
-          "desc": "인플레이션 둔화 신호로 금리 인상 우려 완화, 시장 심리 개선"
-        },
-        {
-          "score": 20,
-          "name": "AI 반도체 강세 지속",
-          "desc": "NVDA, SOXX 등 AI 관련 주식 및 ETF 상승세 유지"
-        },
-        {
-          "score": 10,
-          "name": "VIX 공포지수 하락",
-          "desc": "시장 변동성 및 투자자 불안감 감소"
-        },
-        {
-          "score": 10,
-          "name": "미 10년 국채금리 하락",
-          "desc": "성장주 및 기술주 투자 매력 증가"
-        },
-        {
-          "score": 5,
-          "name": "달러 약세",
-          "desc": "수출 기업 실적 개선 기대 및 원자재 가격 지지"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 10,
-          "name": "주요 기술주 하락",
-          "desc": "AAPL, MSFT 등 일부 대형 기술주 하락세"
-        },
-        {
-          "score": 10,
-          "name": "IBM 실적 부진",
-          "desc": "예상치 하회하는 실적으로 급락, 기업 실적 우려"
-        },
-        {
-          "score": 5,
-          "name": "지정학적 긴장 지속",
-          "desc": "미-이란 갈등 관련 유가 상승 압력 잔존"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "은행 실적 발표",
-          "desc": "일부 은행 실적은 양호하나, 전반적인 금융 섹터의 불확실성 존재"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-07-15T14:21:15Z",
+  "updated_at": "2026-07-15T15:52:04Z",
   "max_entries": 10
 }
