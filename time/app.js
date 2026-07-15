@@ -1926,6 +1926,68 @@ let activePlayerIndex = 0;
 let crossfadeTriggered = false;
 let pendingNextIndex = -1;
 
+// 2026-07-15 구조적 재설계(4차 시도까지 실패 후): 네이티브 앱(isNativeWrapper)
+// 에서는 이 <audio> 엘리먼트를 절대로 실제 play()하지 않는다. 실기기에서
+// 확인된 결정적 단서 — 제어센터를 열어 음량을 조절하는 순간(=앱이 잠깐
+// willResignActive→didBecomeActive를 거치는 순간)에만 죽어있던 비주얼라이저가
+// 반짝 살아났다가 다시 죽었다. 이는 WKWebView 내부의 <audio>가(masterGainNode로
+// 출력만 죽여놔도) 몇 초 뒤 iOS에 의해 파이프라인 자체가 서스펜드되고,
+// 앱 활성 상태가 잠깐 바뀌는 순간(__flipzenNativeTimeSync가 예전엔 그 안에서
+// player.play()를 다시 불렀다)에만 우연히 되살아났다는 뜻이다 — 그리고 이
+// <audio>가 "재생 중" 상태를 유지하는 것 자체가 iOS 공유 AVAudioSession을
+// 놓고 네이티브 AVPlayer와 경합해 배경재생이 끊기는 진짜 원인이었다
+// (Swift 쪽 세션 재적용 타이밍 문제가 아니었다). 진짜 소리는 이미 네이티브
+// AVPlayer가 전담하고 있고, 크로스페이드도 masterGainNode=0으로 원래부터
+// 유저 귀에는 안 들렸으므로(네이티브는 trackChanged 시점에 크로스페이드 없이
+// 바로 전환한다 — NativeRadioPlayer.swift 참조), 이 <audio>가 실제로
+// "재생"될 필요 자체가 없다 — 다음 곡 전환 타이밍과 화면 진행률만 계산하면
+// 충분하다. 그래서 실제 play()를 걸지 않고, 대신 이 가상시계가 currentTime을
+// 직접 전진시켜 timeupdate를 발생시킨다(setter로 currentTime을 바꾸면 paused
+// 상태에서도 timeupdate가 발생한다) — 그러면 updateMusicProgress/크로스페이드
+// 예약 로직을 그대로 재사용할 수 있다. 트레이드오프: 실제 오디오 신호가 없어
+// 비주얼라이저는 항상 대기(idle) 애니메이션으로 폴백한다(activeMusicAnalyser
+// 참조).
+let nativeClockTimerId = null;
+let nativeClockLastTs = 0;
+
+function startNativeVirtualClock() {
+  if (!isNativeWrapper || nativeClockTimerId !== null) return;
+  nativeClockLastTs = performance.now();
+  nativeClockTimerId = window.setInterval(tickNativeVirtualClock, 250);
+}
+
+function stopNativeVirtualClock() {
+  if (nativeClockTimerId !== null) {
+    window.clearInterval(nativeClockTimerId);
+    nativeClockTimerId = null;
+  }
+}
+
+function tickNativeVirtualClock() {
+  if (!musicPlaying) return;
+  const player = activePlayer();
+  if (!player) return;
+  const now = performance.now();
+  const dt = (now - nativeClockLastTs) / 1000;
+  nativeClockLastTs = now;
+  // 탭이 백그라운드에서 돌아오는 등으로 dt가 비정상적으로 크면(브라우저가
+  // 타이머를 오래 쉬었다 몰아서 실행) 그대로 반영하지 않는다 — 이 경우
+  // __flipzenNativeTimeSync가 이미 네이티브의 진짜 위치로 currentTime을
+  // 다시 맞춰주므로, 여기서는 그냥 이번 tick만 건너뛴다.
+  if (!(dt > 0) || dt > 5) return;
+  player.currentTime = (player.currentTime || 0) + dt;
+  updateMusicProgress({ target: player }); // 진행률/프리버퍼/크로스페이드 예약 로직 재사용
+  const liveDuration = player.duration;
+  const duration = Number.isFinite(liveDuration) && liveDuration > 0
+    ? liveDuration
+    : parseFloat(player.dataset.cachedDuration || "NaN");
+  if (Number.isFinite(duration) && duration > 0 && player.currentTime >= duration - 0.05) {
+    // 실제로 play() 중이 아니므로 브라우저의 "ended" 이벤트가 오지 않는다 —
+    // 곡 끝 도달을 직접 감지해서 handleActivePlayerEnded와 동일하게 처리한다.
+    handleActivePlayerEnded({ target: player });
+  }
+}
+
 function activePlayer() {
   return musicPlayers[activePlayerIndex] || bgAudio;
 }
@@ -2172,6 +2234,12 @@ function ensureAudioGraph() {
 // 크로스페이드 중 잠깐은 standby 쪽도 같이 들리지만, 비주얼라이저는
 // "화려할 필요 없이 가벼운" 용도라 근사치로 충분하다.
 function activeMusicAnalyser() {
+  // 2026-07-15: 네이티브 앱에서는 이 <audio>를 실제로 play()하지 않으므로
+  // (위 nativeClockTimerId 관련 주석 참조) AnalyserNode에 흐를 실제 신호
+  // 자체가 없다 — 항상 null을 돌려줘서 drawMusicViz()가 매번 drawMusicVizIdle
+  // (대기 애니메이션)로 폴백하게 한다. 어설프게 무신호 막대를 보여주는 것보다
+  // 의도된 잔잔한 애니메이션이 더 낫다는 판단.
+  if (isNativeWrapper) return null;
   if (!playerAnalysers) return null;
   const index = musicPlayers.indexOf(activePlayer());
   return playerAnalysers[index] || null;
@@ -2308,7 +2376,11 @@ async function updateMusicProgress(event) {
       try { await standby._pendingLoad; } catch (error) { /* 폴백은 loadMusicTrack 내부에서 처리됨 */ }
     }
     setPlayerVolume(standby, 0);
-    standby.play().catch(() => {});
+    // 네이티브 앱에서는 이 <audio>를 절대 실제로 play()하지 않는다(파일 상단
+    // nativeClockTimerId 관련 주석 참조) — 어차피 masterGainNode=0이라 유저
+    // 귀에는 안 들리던 크로스페이드였다. standby는 활성으로 바뀔 때(swap)
+    // currentTime 0에서 시작하는 상태 그대로 대기한다.
+    if (!isNativeWrapper) standby.play().catch(() => {});
   }
 
   if (crossfadeTriggered && standby) {
@@ -2431,6 +2503,15 @@ async function playMusic(token) {
     try { await player._pendingLoad; } catch (error) { /* 폴백은 loadMusicTrack 내부에서 처리됨 */ }
   }
   if (token !== musicActionToken) return; // fetch 대기 중 다시 눌렀다면 여기서도 중단
+  if (isNativeWrapper) {
+    // 네이티브 앱에서는 이 <audio>를 절대 실제로 play()하지 않는다 — 진짜
+    // 소리는 이미 syncNativeTrackInfo/syncNativePlayState로 네이티브
+    // AVPlayer에 전달됐다(renderMusicPlaylistInfo/renderMusicToggle 호출
+    // 경로). 여기서는 화면 진행률/다음곡 전환 타이밍을 계산하는 가상시계만
+    // 시작한다(파일 상단 nativeClockTimerId 관련 주석 참조).
+    startNativeVirtualClock();
+    return;
+  }
   const resumeFrom = player.currentTime;
   player.play().catch(() => {
     if (token !== musicActionToken) return;
@@ -2447,6 +2528,7 @@ async function playMusic(token) {
 
 function pauseMusic() {
   maybeSaveMusicResume(true); // 멈추는 순간 위치를 확실히 저장해둔다.
+  stopNativeVirtualClock(); // 네이티브 모드가 아니면 애초에 실행 중이 아니므로 무해하다.
   activePlayer()?.pause();
   standbyPlayer()?.pause();
 }
@@ -2530,7 +2612,13 @@ window.__flipzenNativeTimeSync = function (time) {
   const player = activePlayer();
   if (!player) return;
   player.currentTime = time;
-  if (musicPlaying && player.paused) player.play().catch(() => {});
+  // 2026-07-15: 예전엔 여기서 player.play()를 다시 불렀는데, 이게 바로
+  // "제어센터를 열고 닫을 때만 비주얼라이저가 잠깐 살아났다 죽는" 증상의
+  // 정체였다(파일 상단 nativeClockTimerId 관련 주석 참조) — 이 <audio>는
+  // 네이티브 모드에서 절대 실제로 play()하지 않는다. 방금 갓 동기화한
+  // 시점으로 가상시계의 델타 기준을 리셋하고, 화면 진행률만 즉시 반영한다.
+  nativeClockLastTs = performance.now();
+  updateMusicProgress({ target: player });
 };
 
 window.__flipzenNativeCommand = function (command) {
@@ -2593,7 +2681,10 @@ async function playNextTrack() {
   delete player.dataset.pendingUrl;
   player._pendingLoad = null;
   loadMusicTrack(player, musicIndex, { prebuffer: false });
-  if (musicPlaying) {
+  // 네이티브 모드에서는 이 <audio>를 절대 실제로 play()하지 않는다(파일 상단
+  // nativeClockTimerId 관련 주석 참조) — syncNativeTrackInfo(renderMusicPlaylistInfo
+  // 안에서 이미 호출됨)가 네이티브 AVPlayer에 새 트랙을 즉시 전달한다.
+  if (musicPlaying && !isNativeWrapper) {
     player.play().catch(() => {});
   }
 }
@@ -2621,7 +2712,11 @@ function handleActivePlayerEnded(event) {
     // 어떤 이유로든(iOS 앱 환경 등) 실제로는 재생을 못 시작했을 경우를 대비해,
     // 역할을 바꾼 새 activePlayer가 확실히 재생 중인 상태로 만든다. 이미
     // 재생 중이면 이 호출은 사실상 아무 효과가 없어 무해하다.
-    activePlayer().play().catch(() => {});
+    // 2026-07-15: 네이티브 모드에서는 이 <audio>를 절대 실제로 play()하지
+    // 않는다(파일 상단 nativeClockTimerId 관련 주석 참조) — 새 activePlayer는
+    // currentTime 0에서 대기만 하고, 진짜 소리는 이미 syncNativeTrackInfo로
+    // 네이티브 AVPlayer에 전달됐다.
+    if (!isNativeWrapper) activePlayer().play().catch(() => {});
     resetActiveWatchState();
     return;
   }
@@ -2829,7 +2924,15 @@ function playTrackAtIndex(index) {
   player._pendingLoad = null;
   loadMusicTrack(player, musicIndex, { prebuffer: false });
   musicPlaying = true;
-  player.play().catch(() => {});
+  // 2026-07-15: 네이티브 모드에서는 이 <audio>를 절대 실제로 play()하지
+  // 않는다(파일 상단 nativeClockTimerId 관련 주석 참조) — 대신 가상시계를
+  // 시작한다. 진짜 소리는 renderMusicPlaylistInfo() 안의 syncNativeTrackInfo가
+  // 네이티브 AVPlayer에 전달한다.
+  if (isNativeWrapper) {
+    startNativeVirtualClock();
+  } else {
+    player.play().catch(() => {});
+  }
   renderMusicToggle();
 }
 
@@ -3138,7 +3241,11 @@ musicPlayers.forEach((player) => {
     if (!musicPlaying) return;
     const code = player.error ? player.error.code : 0;
     const isFatal = code === 3 || code === 4; // MEDIA_ERR_DECODE / MEDIA_ERR_SRC_NOT_SUPPORTED
-    if (isFatal || musicErrorRetryCount >= 1) {
+    // 2026-07-15: 네이티브 모드에서는 이 <audio>를 절대 실제로 play()하지
+    // 않으므로(파일 상단 nativeClockTimerId 관련 주석 참조) 재시도도 load()+
+    // play() 대신 곧바로 다음 곡으로 넘긴다 — 어차피 소리는 이 엘리먼트가
+    // 아니라 네이티브 AVPlayer가 낸다.
+    if (isFatal || musicErrorRetryCount >= 1 || isNativeWrapper) {
       playNextTrack();
       return;
     }
