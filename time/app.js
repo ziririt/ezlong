@@ -3738,11 +3738,25 @@ document.querySelectorAll(".settings-backdrop").forEach((backdrop) => {
 // 널리 쓰이던 표준 수동 기법이라 WebKit 버전 편차와 무관하게 동작한다.
 function guardSheetScrollChaining(sheet) {
   if (!sheet) return;
+  // 2026-07-17 임시 디버그: Safari 원격 인스펙터 콘솔에서 Enter 실행이
+  // 안 먹히는 환경이라, 콘솔 명령 입력 없이도 "그냥 보기만" 해서 확인할 수
+  // 있도록 자동으로 찍히는 로그를 심어둔다. 원인 확인 후 반드시 제거할 것.
+  const cs = getComputedStyle(sheet);
+  console.log(
+    "[scrollDebug][init]",
+    sheet.className,
+    "overflowY=", cs.overflowY,
+    "overscrollBehaviorY=", cs.overscrollBehaviorY,
+    "touchAction=", cs.touchAction,
+    "scrollHeight=", sheet.scrollHeight,
+    "clientHeight=", sheet.clientHeight
+  );
   let startY = 0;
   sheet.addEventListener(
     "touchstart",
     (event) => {
       startY = event.touches[0].clientY;
+      console.log("[scrollDebug][touchstart]", sheet.className, "scrollTop=", sheet.scrollTop);
     },
     { passive: true }
   );
@@ -3753,7 +3767,13 @@ function guardSheetScrollChaining(sheet) {
       const deltaY = currentY - startY; // 양수 = 손가락이 아래로(콘텐츠 위쪽 노출), 음수 = 위로(콘텐츠 아래쪽 노출)
       const atTop = sheet.scrollTop <= 0;
       const atBottom = sheet.scrollTop + sheet.clientHeight >= sheet.scrollHeight - 1;
-      if ((atTop && deltaY > 0) || (atBottom && deltaY < 0)) {
+      const willPrevent = (atTop && deltaY > 0) || (atBottom && deltaY < 0);
+      console.log(
+        "[scrollDebug][touchmove]", sheet.className,
+        "deltaY=", deltaY, "scrollTop=", sheet.scrollTop,
+        "atTop=", atTop, "atBottom=", atBottom, "prevented=", willPrevent
+      );
+      if (willPrevent) {
         event.preventDefault();
       }
     },
@@ -3763,6 +3783,15 @@ function guardSheetScrollChaining(sheet) {
 document
   .querySelectorAll(".settings-sheet, .weather-detail-sheet")
   .forEach(guardSheetScrollChaining);
+document.querySelectorAll(".settings-backdrop").forEach((backdrop, i) => {
+  backdrop.addEventListener(
+    "touchmove",
+    () => {
+      console.log("[scrollDebug][backdrop touchmove prevented]", i);
+    },
+    { passive: true }
+  );
+});
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", handleMusicIconTap);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", () => {
