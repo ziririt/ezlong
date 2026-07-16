@@ -1,5 +1,5 @@
 window.aladinLinks = {
-  "현명한 투자자|벤저민 그레이엄": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=82134282&partner=friedns327",
+  "현명한 투자자|벤저민 그레이엄": "https://www.aladin.co.kr/m/mproduct.aspx?itemid=364922786&partner=friedns327",
   "버크셔 해서웨이 주주 서한|워런 버핏": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=298436020&partner=friedns327",
   "위대한 기업에 투자하라|필립 피셔": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=368029432&partner=friedns327",
   "돈의 심리학|모건 하우절": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=329910369&partner=friedns327",
@@ -139,7 +139,9 @@ window.aladinLinks = {
   "월가의 영웅 (One Up on Wall Street)|피터 린치": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=396483089&partner=friedns327",
   "투자의 네 기둥 (The Four Pillars of Investing)|윌리엄 번스타인": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=4244397&partner=friedns327",
   "선택의 심리학|배리 슈워츠": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=589683&partner=friedns327",
-  "전설로 떠나는 월가의 영웅 (One Up on Wall Street)|피터 린치": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=112022&partner=friedns327",
+  "전설로 떠나는 월가의 영웅 (One Up on Wall Street)|피터 린치": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=396483089&partner=friedns327",
   "보수적인 투자자는 마음이 편하다 (Common Stocks and Uncommon Profits)|필립 피셔": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=367106609&partner=friedns327",
-  "워런 버핏 웨이 (The Warren Buffett Way)|워런 버핏": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=363738777&partner=friedns327"
+  "워런 버핏 웨이 (The Warren Buffett Way)|워런 버핏": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=363738777&partner=friedns327",
+  "상식이 이기는 투자|존 보글": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=372978368&partner=friedns327",
+  "전설로 떠나는 월가의 영웅: 비트 더 스트리트|피터 린치": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=396483089&partner=friedns327"
 };
