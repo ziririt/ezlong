@@ -502,6 +502,18 @@ button { font: inherit; }
   color: #fff;
 }
 
+/* 2026-07-16: 지금 선택된 장르와 모순되는 제외 필터(예: '보컬' 선택 중
+   'Vocal 제외')는 체크할 수 없게 흐리게 표시한다. app.js의
+   syncMusicExcludeFilterUi()가 이 클래스와 input:disabled를 함께 건다. */
+.exclude-chip.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.exclude-chip input:disabled {
+  cursor: not-allowed;
+}
+
 .field-option-all {
   margin-bottom: 12px;
   background: rgba(255,255,255,0.14);
@@ -1680,7 +1692,9 @@ button { font: inherit; }
   top: 50%;
   transform: translate(-50%, -50%);
   margin: 0;
-  font-size: clamp(15px, 4vw, 22px);
+  /* 2026-07-16: 문구가 "Leave Work"(10자)에서 "Clock out, live up."(19자)로
+     거의 두 배 길어져 한 줄(nowrap) 유지를 위해 폰트 크기를 살짝 낮췄다. */
+  font-size: clamp(13px, 3.6vw, 18px);
   font-weight: 800;
   letter-spacing: 0.02em;
   color: #fff;

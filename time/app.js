@@ -1537,9 +1537,8 @@ function recordTrackHeard(index) {
 // 2026-07-16: "곡 순서가 마음에 안 들 때" 다시 섞기 버튼. musicHistory(이번
 // 사이클에 이미 나온 곡 기록)를 통째로 비워서 "한 바퀴 다 돌기 전엔 같은
 // 곡이 안 나온다" 제약을 리셋하고, 그 자리에서 바로 다음 곡으로 넘어가
-// 체감이 되게 한다. 스킵 버튼과 달리 "이 곡이 싫어서"가 아니라 "순서가
-// 마음에 안 들어서" 누르는 것이므로 recordDislikeIfWarranted는 호출하지
-// 않는다 — 좋아요/싫어요 학습 데이터에 영향을 주면 안 된다.
+// 체감이 되게 한다. "이 곡이 싫어서"가 아니라 "순서가 마음에 안 들어서"
+// 누르는 것이므로 좋아요/싫어요 학습 데이터에는 영향을 주지 않는다.
 function reshuffleMusicOrder() {
   saveMusicHistory([]);
   showMusicToast("Shuffled! Fresh order incoming.");
@@ -1547,11 +1546,14 @@ function reshuffleMusicOrder() {
 }
 
 // 2026-07-08: 로그인 없이(디바이스 local storage 기준) "싫어요" 학습 —
-// 10초 이상 들은 곡을 수동 스킵하면 그 곡을 다시 안 틀어준다. 인덱스가
-// 아니라 파일명(track.file)으로 저장해야 플레이리스트 순서가 바뀌어도
-// 안전하다.
+// 인덱스가 아니라 파일명(track.file)으로 저장해야 플레이리스트 순서가
+// 바뀌어도 안전하다.
+// 2026-07-16 개정: 원래는 10초 이상 들은 곡을 수동 스킵('다음곡')하기만
+// 해도 이 목록에 자동으로 추가되는 암묵적 휴리스틱이 있었다. 유저 요청으로
+// 이 자동 추가 로직(recordDislikeIfWarranted)을 완전히 제거했다 — 지금은
+// 아래 musicDislikeButton("싫어요" 버튼)을 명시적으로 눌렀을 때만 이
+// 목록에 들어간다. '다음곡'은 순수하게 다음 곡 재생만 한다.
 const musicDislikedStorageKey = "ezlong:musicDisliked";
-const musicDislikeMinSeconds = 10;
 
 function loadDislikedTracks() {
   try {
@@ -1683,20 +1685,6 @@ function handleMusicIconTap() {
     return;
   }
   setMusicPanelOpen(!isMusicPanelOpen());
-}
-
-// 스킵 버튼(수동)을 누른 시점에만 호출한다 — 자동 크로스페이드/종료 전환은
-// "싫어요" 신호로 보지 않는다(유저가 직접 넘긴 게 아니므로).
-function recordDislikeIfWarranted(player, index) {
-  if (!player || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
-  if (!Number.isFinite(player.currentTime) || player.currentTime < musicDislikeMinSeconds) return;
-  const track = musicPlaylist[index % musicPlaylist.length];
-  if (!track || !track.file) return;
-  const disliked = loadDislikedTracks();
-  if (!disliked.includes(track.file)) {
-    disliked.push(track.file);
-    saveDislikedTracks(disliked);
-  }
 }
 
 // 2026-07-12: 원음 자체에 문제가 있는 곡(끊김·클리핑 등)을 골라내기 위한 임시
@@ -1902,6 +1890,24 @@ function isRockCategory(key) {
   return typeof key === "string" && key.toLowerCase().includes("rock");
 }
 
+// 2026-07-16 유저 요청 — 플레이리스트로 특정 장르 "하나만" 선택한 상태에서
+// 그 장르 자체를 걸러내는 제외 필터를 동시에 켜면 후보가 0개가 되는 모순이
+// 생긴다. 예: '보컬'만 선택 + 'Vocal 제외' 체크 → '보컬' 카테고리 곡은
+// 전부 vocal이므로 전부 걸러져 재생할 곡이 하나도 안 남는다. 반대로 '보컬'
+// 선택 + 'Rock 제외'는 모순이 아니다 — '보컬' 카테고리 안에 록 성향 곡이
+// 섞여 있을 수 있어(예: 걸스록과는 별개로) 실제로 걸러낼 대상이 있을 수
+// 있기 때문이다. 이 판정 함수 하나를 재생 로직(pickNextTrackIndex)과 설정
+// 화면 체크박스 활성화 여부 둘 다에서 그대로 공유해서 절대 어긋나지 않게
+// 한다(8항 공유 함수 동기화 원칙과 동일 적용 — 이 파일 안이라도 로직을
+// 중복 작성하지 않는다).
+function musicExcludeFilterContradicts(excludeKind, filterKey) {
+  if (!filterKey || filterKey === "all") return false;
+  if (excludeKind === "vocal") return isVocalCategory(filterKey);
+  if (excludeKind === "instrumental") return !isVocalCategory(filterKey);
+  if (excludeKind === "rock") return isRockCategory(filterKey);
+  return false;
+}
+
 // 2026-07-16: 저장 키를 musicInclude*에서 musicExclude*로 새로 분리했다 —
 // 기존 include 저장값(체크=포함)을 그대로 재해석하면 "체크 안 함"과 "체크함"의
 // 의미가 뒤바뀌어 예전 저장값을 가진 사용자에게 정반대 결과가 나갈 위험이
@@ -2038,9 +2044,15 @@ function pickNextTrackIndex() {
   const matchesFilter = (i) => filterKey === "all" || trackCategoryKey(musicPlaylist[i]) === filterKey;
   // 2026-07-16: 포함 체크박스(기본 true)에서 제외 체크박스(기본 false)로
   // 전환 — 체크가 "제외한다"는 뜻이 됐으니 조건도 반전.
-  const excludeRock = loadMusicGenreToggle(musicExcludeRockStorageKey, false);
-  const excludeVocal = loadMusicGenreToggle(musicExcludeVocalStorageKey, false);
-  const excludeInstrumental = loadMusicGenreToggle(musicExcludeInstrumentalStorageKey, false);
+  // 2026-07-16 2차: 선택된 장르(filterKey)와 제외 필터가 서로 모순되는
+  // 조합이면(예: '보컬'만 선택 + 'Vocal 제외') 저장값이 true여도 여기서
+  // 강제로 무시한다 — 설정 화면 체크박스는 이 경우 비활성화돼 있어(위
+  // syncMusicExcludeFilterUi) 평소엔 애초에 true로 저장될 일이 없지만,
+  // 이 재생 로직 자체도 독립적으로 같은 판정을 하게 해서 후보가 0개가
+  // 되는 사고를 이중으로 막는다.
+  const excludeRock = loadMusicGenreToggle(musicExcludeRockStorageKey, false) && !musicExcludeFilterContradicts("rock", filterKey);
+  const excludeVocal = loadMusicGenreToggle(musicExcludeVocalStorageKey, false) && !musicExcludeFilterContradicts("vocal", filterKey);
+  const excludeInstrumental = loadMusicGenreToggle(musicExcludeInstrumentalStorageKey, false) && !musicExcludeFilterContradicts("instrumental", filterKey);
   const matchesGenreToggle = (i) => {
     const key = trackCategoryKey(musicPlaylist[i]);
     if (excludeRock && isRockCategory(key)) return false;
@@ -3274,11 +3286,34 @@ function renderMusicPlaylistFilterOptions() {
 function applyMusicPlaylistFilter(newKey) {
   saveMusicPlaylistFilter(newKey);
   categoryRotationQueue = [];
+  syncMusicExcludeFilterUi();
   if (musicPlaying) {
     playTrackAtIndex(pickNextTrackIndex());
   } else {
     renderMusicPlaylistInfo();
   }
+}
+
+// 2026-07-16 유저 요청 — 플레이리스트로 선택된 장르 하나와 제외 필터가
+// 서로 모순되는 조합(위 musicExcludeFilterContradicts 참조)이면, 그 제외
+// 체크박스를 비활성화하고 화면에서도 체크 해제된 것처럼 보여준다. 저장된
+// 실제 선호값(localStorage)은 건드리지 않으므로, 나중에 '전체'나 다른
+// 장르로 돌아가면 원래 체크해뒀던 제외 설정이 그대로 복원된다.
+function syncMusicExcludeFilterUi() {
+  const filterKey = loadMusicPlaylistFilter();
+  const bindings = [
+    { el: musicExcludeVocalEl, kind: "vocal", key: musicExcludeVocalStorageKey },
+    { el: musicExcludeInstrumentalEl, kind: "instrumental", key: musicExcludeInstrumentalStorageKey },
+    { el: musicExcludeRockEl, kind: "rock", key: musicExcludeRockStorageKey },
+  ];
+  bindings.forEach(({ el, kind, key }) => {
+    if (!el) return;
+    const contradicts = musicExcludeFilterContradicts(kind, filterKey);
+    el.disabled = contradicts;
+    el.checked = contradicts ? false : loadMusicGenreToggle(key, false);
+    const chip = el.closest(".exclude-chip");
+    if (chip) chip.classList.toggle("is-disabled", contradicts);
+  });
 }
 
 // Rock/Vocal 포함 체크박스를 바꾼 직후 — 플레이리스트 필터를 바꿀 때와 동일한
@@ -3362,10 +3397,12 @@ function handleMusicCeremonyOnTrackStart() {
   const now = new Date();
   if (now.getMinutes() >= MUSIC_HOURLY_CEREMONY_WINDOW_MIN) return; // 정각+5분 지났으면 세리모니 없음
   triggerMusicHourlyCeremony();
-  // "퇴근 세리모니": 18시대에 정각 세리모니 조건까지 겹치면 추가로 텍스트
-  // 표시 — 이 곡이 끝날 때(=다음 곡의 recordPlayLog가 hideLeaveWorkCeremony를
-  // 호출할 때)까지 유지된다.
-  if (now.getHours() === 18) showLeaveWorkCeremony();
+  // "퇴근 세리모니": 18시대 또는 19시대에 정각 세리모니 조건까지 겹치면
+  // 추가로 텍스트 표시 — 이 곡이 끝날 때(=다음 곡의 recordPlayLog가
+  // hideLeaveWorkCeremony를 호출할 때)까지 유지된다.
+  // 2026-07-16: 하루 2번(18시·19시)으로 확대 — "6시에 퇴근 못하는 사람도
+  // 7시엔 퇴근하라"는 성동님 요청.
+  if (now.getHours() === 18 || now.getHours() === 19) showLeaveWorkCeremony();
 }
 
 // 같은 곡을 다시 들으면 중복으로 쌓지 않고 맨 위로 올린다(흔한 "최근 재생" UX 관례).
@@ -3633,9 +3670,7 @@ loadSavedCategories();
 loadSavedGenres();
 renderMusicPlaylistInfo();
 renderMusicPlaylistFilterOptions();
-if (musicExcludeRockEl) musicExcludeRockEl.checked = loadMusicGenreToggle(musicExcludeRockStorageKey, false);
-if (musicExcludeVocalEl) musicExcludeVocalEl.checked = loadMusicGenreToggle(musicExcludeVocalStorageKey, false);
-if (musicExcludeInstrumentalEl) musicExcludeInstrumentalEl.checked = loadMusicGenreToggle(musicExcludeInstrumentalStorageKey, false);
+syncMusicExcludeFilterUi();
 renderMusicQCPanel();
 renderMusicToggle();
 settingsOpen.addEventListener("click", openSettings);
@@ -3667,9 +3702,10 @@ document.querySelectorAll("[data-aladin-modal-close]").forEach((element) => {
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", handleMusicIconTap);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", () => {
-  // playNextTrack()이 musicIndex/activePlayer를 바꿔버리기 전에, "지금 듣던
-  // 곡"을 기준으로 싫어요 여부를 판단해야 한다.
-  recordDislikeIfWarranted(activePlayer(), musicIndex);
+  // 2026-07-16 유저 요청: 예전엔 10초 이상 들은 곡을 수동 스킵하면 "싫어요"와
+  // 똑같이 disliked 목록에 자동으로 추가됐다(암묵적 학습 휴리스틱). 이제는
+  // 명시적인 "싫어요" 버튼이 따로 있으므로, '다음곡'은 그 어떤 감산·학습
+  // 효과도 없이 순수하게 다음 곡으로만 넘어간다.
   playNextTrack();
 });
 
