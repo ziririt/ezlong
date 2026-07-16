@@ -1859,16 +1859,44 @@ function shuffleArray(items) {
   return shuffled;
 }
 
-// "all" 모드 전용 — 매 사이클(존재하는 카테고리 수만큼)마다 순서를 새로 섞어
-// 순환한다. 새로고침하면 초기화되는 가벼운 런타임 상태일 뿐, 하루 단위
-// 이어듣기(musicResume)와는 무관하다.
+// "all" 모드 전용 — 매 사이클마다 순서를 새로 섞어 순환한다. 새로고침하면
+// 초기화되는 가벼운 런타임 상태일 뿐, 하루 단위 이어듣기(musicResume)와는
+// 무관하다.
+//
+// 2026-07-16: 예전엔 카테고리마다 사이클에 정확히 1번씩만 들어갔다(완전히
+// 공평한 순번) — 그런데 실제 카테고리 곡수를 세어보니 My Workspace 199곡
+// 대 BGM/보컬 계열 16곡처럼 12배 넘게 차이가 나서, "순번은 공평"해도 "곡
+// 하나가 뽑힐 확률"로 환산하면 소규모 카테고리 곡이 큰 카테고리 곡보다
+// 12배 넘게 자주 나오는 결과가 됐다(유저 제보: "좋아요 안 누른 곡이 자주
+// 나오는 느낌" — 실제로 그럴 만했다). 그렇다고 곡수에 정확히 비례해서
+// 순번을 주면(완전 비례) My Workspace 혼자 전체 재생의 56%를 차지하게 돼,
+// 이번엔 반대로 "같은 카테고리만 계속 나온다"던 2026-07-12의 원래 문제가
+// 재발한다. 그래서 절충안으로 각 카테고리가 사이클에 들어가는 횟수를
+// 곡수의 제곱근에 비례하게 만든다 — 제곱근은 큰 수는 압축하고 작은 수는
+// 상대적으로 덜 압축하는 함수라, 곡수 차이(12배)를 확률 차이(약 3.5배)로
+// 완만하게 줄여준다. 정확히는: My Workspace(199)→14회, ORIGINAL(58)→8회,
+// piano chello(31)→6회, vocal-workspace(22)→5회, BGM·CITY POP·girls
+// rock(16)→4회씩. 한쪽 극단(완전 공평)도 반대쪽 극단(완전 비례)도 아닌
+// 중간 지점 — 소규모 카테고리가 완전히 묻히지도, 유저가 느낀 것처럼
+// 지나치게 자주 나오지도 않는 균형을 노린다.
 let categoryRotationQueue = [];
 
-function nextRotatedCategory(eligibleKeys) {
+function categoryRotationWeight(count) {
+  if (!Number.isFinite(count) || count <= 0) return 1;
+  return Math.max(1, Math.round(Math.sqrt(count)));
+}
+
+function nextRotatedCategory(eligibleKeys, sizeByKey) {
   if (eligibleKeys.length === 0) return null;
   categoryRotationQueue = categoryRotationQueue.filter((key) => eligibleKeys.includes(key));
   if (categoryRotationQueue.length === 0) {
-    categoryRotationQueue = shuffleArray(eligibleKeys);
+    const weightedKeys = [];
+    eligibleKeys.forEach((key) => {
+      const count = sizeByKey instanceof Map ? sizeByKey.get(key) : undefined;
+      const weight = categoryRotationWeight(count);
+      for (let n = 0; n < weight; n += 1) weightedKeys.push(key);
+    });
+    categoryRotationQueue = shuffleArray(weightedKeys);
   }
   return categoryRotationQueue.shift();
 }
@@ -1975,7 +2003,12 @@ function pickNextTrackIndex() {
     byCategoryAll.get(key).push(i);
   });
   const eligibleKeys = Array.from(byCategoryAll.keys());
-  const chosenCategory = nextRotatedCategory(eligibleKeys);
+  // 2026-07-16: 카테고리별 실제 곡수(제곱근 가중치 계산용) — searchBase
+  // 기준이라 현재 필터/장르 제외/싫어요 반영 후의 "실질" 곡수다.
+  const categorySizeByKey = new Map(
+    eligibleKeys.map((key) => [key, (byCategoryAll.get(key) || []).length])
+  );
+  const chosenCategory = nextRotatedCategory(eligibleKeys, categorySizeByKey);
   const categoryPool = chosenCategory ? byCategoryAll.get(chosenCategory) : searchBase;
 
   let candidates = (categoryPool || searchBase).filter(isGroupSafe);
