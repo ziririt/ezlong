@@ -249,6 +249,11 @@ const digitElements = [
 let activeScene = "";
 let activeQuoteMinute = "";
 let lastQuoteTitle = "";
+// 2026-07-16: "가끔 알라딘 아이콘이 무반응이다, 강제 종료 후 재실행하면
+// 된다"는 실기기 제보에 대응하기 위해 마지막으로 렌더링한 문장을 기억해
+// 둔다 — 앱이 포그라운드로 돌아올 때 아이콘 상태를 이 값 기준으로 다시
+// 맞춰준다(resyncAladinUiAfterForeground 참고).
+let lastRenderedQuote = null;
 let quoteDeck = [];
 let selectedCategories = new Set();
 let selectedGenres = new Set(["investment"]);
@@ -946,6 +951,7 @@ function restartQuoteProgress() {
 
 function renderQuote(index) {
   const quote = index;
+  lastRenderedQuote = quote;
   quotePanel.classList.add("is-changing");
 
   window.setTimeout(() => {
@@ -1109,17 +1115,53 @@ function closeSettings() {
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "false");
 }
 
+// 2026-07-16: 알라딘 제휴 수수료 추적용 파라미터 — aladin-links.js에 있는
+// URL은 자동 매칭 스크립트가 항상 붙여서 저장하지만, gallery-server.js
+// 수정 화면에서 사람이 알라딘 URL을 직접 복사+붙여넣기로 고칠 때는 이
+// 파라미터를 빠뜨릴 수 있다. 데이터 쪽에서 매번 붙이는 걸 믿기보다,
+// 실제로 모달/새 창으로 "나가는" 이 순간에 마지막으로 한 번 더 강제로
+// 붙여서 항상 보장한다(이미 있으면 덮어쓰기만 하고 중복 추가는 안 함).
+const ALADIN_PARTNER_ID = "friedns327";
+function withAladinPartnerParam(url) {
+  if (!url) return url;
+  try {
+    const parsed = new URL(url);
+    parsed.searchParams.set("partner", ALADIN_PARTNER_ID);
+    return parsed.toString();
+  } catch (error) {
+    // URL 파싱이 실패하는 예외적인 경우(상대경로 등)엔 원본을 그대로
+    // 쓴다 — 깨뜨리는 것보다는 파라미터 없이라도 여는 게 낫다.
+    return url;
+  }
+}
+
 // 2026-07-16: 알라딘 도서 정보 모달 열기/닫기 — 기존 설정 패널과 동일한
 // 메커니즘(is-open + aria-hidden)을 따른다. 열 때만 iframe src를 채우고
 // 닫을 때 비운다 — 안 쓸 때도 iframe이 계속 로드된 채 남아있지 않도록.
 // 알라딘 페이지가 iframe 임베드를 막아둔 경우 화면이 하얗게 나올 수 있어서,
-// "새 창에서 크게 보기" 링크를 항상 같은 URL로 채워 대안 경로를 열어둔다.
+// "브라우저 새창에서 보기" 링크를 항상 같은 URL로 채워 대안 경로를 열어둔다.
 function openAladinModal(url) {
   if (!aladinModalPanel || !url) return;
-  if (aladinModalFrame) aladinModalFrame.src = url;
-  if (aladinModalNewTab) aladinModalNewTab.href = url;
+  const finalUrl = withAladinPartnerParam(url);
+  if (aladinModalFrame) aladinModalFrame.src = finalUrl;
+  if (aladinModalNewTab) aladinModalNewTab.href = finalUrl;
   aladinModalPanel.classList.add("is-open");
   aladinModalPanel.setAttribute("aria-hidden", "false");
+}
+
+// 2026-07-16: "가끔 알라딘 아이콘을 눌러도 모달이 안 뜬다, 앱을 강제
+// 종료하고 재실행하면 된다"는 실기기 제보 — iOS WKWebView가 앱을
+// 백그라운드로 보냈다가 다시 불러올 때 JS 타이머(특히 renderQuote()의
+// 760ms 지연 콜백)가 씹혀서, quotePanel에 "is-changing" 클래스가 계속
+// 남아있거나 아이콘 상태(hidden/dataset.url)가 어중간하게 멈춘 채로 남을
+// 수 있다고 추정된다. 강제 종료는 이 JS 상태를 통째로 리셋해서 낫는
+// 것이므로, 포그라운드로 돌아올 때마다 같은 효과를 내도록 자동으로
+// 정리해준다 — 재현을 100% 확인하진 못했지만 가장 유력한 원인에 대한
+// 방어 코드다.
+function resyncAladinUiAfterForeground() {
+  if (quotePanel) quotePanel.classList.remove("is-changing");
+  if (lastRenderedQuote) updateAladinLinkButton(lastRenderedQuote);
+  closeAladinModal();
 }
 
 function closeAladinModal() {
@@ -3396,6 +3438,31 @@ if (quoteAladinLink) {
 document.querySelectorAll("[data-aladin-modal-close]").forEach((element) => {
   element.addEventListener("click", closeAladinModal);
 });
+// 2026-07-16: "새 창에서 크게 보기"를 눌러도 반응이 없다는 실기기 피드백 —
+// iOS 앱은 CLAUDE.md대로 WKWebView가 ezlong.com/time을 그대로 로드하는
+// 방식인데, 순수 WKWebView는 앱(Swift) 쪽에서 별도로 처리해주지 않는 한
+// target="_blank"/window.open으로 만드는 새 창을 그냥 무시해버리는 경우가
+// 흔하다(팝업을 띄울 "새 탭" 개념 자체가 없음). 그래서 <a target="_blank">
+// 기본 동작에만 기대지 않고, JS로 명시적으로 열어보고 안 되면 같은 화면
+// 안에서라도 알라딘 페이지로 이동시킨다 — 최소한 "눌렀는데 아예 무반응"은
+// 없게 하기 위한 안전장치. 일반 모바일 브라우저(사파리/크롬)에서는
+// window.open이 정상적으로 새 탭을 열어준다.
+if (aladinModalNewTab) {
+  aladinModalNewTab.addEventListener("click", (event) => {
+    const url = aladinModalNewTab.getAttribute("href");
+    if (!url || url === "#") return;
+    event.preventDefault();
+    let opened = null;
+    try {
+      opened = window.open(url, "_blank", "noopener");
+    } catch (error) {
+      opened = null;
+    }
+    if (!opened) {
+      window.location.href = url;
+    }
+  });
+}
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", handleMusicIconTap);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", () => {
@@ -3699,6 +3766,10 @@ document.addEventListener("visibilitychange", () => {
     // 2026-07-15: 이제 백그라운드 전환 시점에 뭔가를 새로 트리거할 필요가
     // 없다 — 네이티브 AVPlayer가 재생 시작부터 이미 소리를 내고 있으므로,
     // 여기서는 예전과 같이 재생 위치 저장만 하면 된다.
+  } else if (document.visibilityState === "visible") {
+    // 2026-07-16: 포그라운드 복귀 시 알라딘 아이콘/모달 상태 재동기화(위
+    // resyncAladinUiAfterForeground 주석 참고).
+    resyncAladinUiAfterForeground();
   }
 });
 window.addEventListener("pagehide", () => maybeSaveMusicResume(true));

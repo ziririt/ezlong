@@ -318,18 +318,12 @@
          있다. 열기/닫기 메커니즘은 기존 설정 패널과 동일(is-open + aria-hidden). -->
     <aside class="settings-panel aladin-modal-panel" id="aladinModalPanel" aria-hidden="true" aria-label="알라딘 도서 정보">
       <div class="settings-backdrop" data-aladin-modal-close></div>
-      <section class="aladin-modal-sheet" role="dialog" aria-modal="true" aria-labelledby="aladinModalTitle">
-        <header class="settings-head">
-          <div>
-            <p>오늘의 한 문장</p>
-            <h2 id="aladinModalTitle">알라딘에서 보기</h2>
-          </div>
-          <button class="settings-close" type="button" aria-label="알라딘 정보 닫기" data-aladin-modal-close>×</button>
-        </header>
+      <section class="aladin-modal-sheet" role="dialog" aria-modal="true" aria-label="알라딘 도서 정보">
+        <button class="settings-close aladin-modal-close-btn" type="button" aria-label="알라딘 정보 닫기" data-aladin-modal-close>×</button>
         <div class="aladin-modal-frame-wrap">
           <iframe id="aladinModalFrame" class="aladin-modal-frame" title="알라딘 도서 정보" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
-        <a id="aladinModalNewTab" class="settings-save aladin-modal-newtab" href="#" target="_blank" rel="noopener">새 창에서 크게 보기</a>
+        <a id="aladinModalNewTab" class="settings-save aladin-modal-newtab" href="#" target="_blank" rel="noopener">브라우저 새창에서 보기</a>
       </section>
     </aside>
   </main>
