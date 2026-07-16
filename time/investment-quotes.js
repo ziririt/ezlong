@@ -338,49 +338,49 @@ window.investmentQuotes = [
   {
     "english": "The road to long-term investment success runs through risk control more than through aggressiveness. Over a full career, most investors' results will be determined by how many losers they have, and how bad they are, than by the greatness of their winners.",
     "text": "장기 투자 성공으로 가는 길은 공격성보다 리스크 통제를 통해 이어진다. 투자 인생 전체를 놓고 보면, 대부분 투자자의 결과는 승자가 얼마나 위대했는지보다 패자가 얼마나 많고 얼마나 나빴는지에 의해 결정된다.",
-    "title": "투자에서 가장 중요한 것",
+    "title": "투자에 대한 생각",
     "author": "하워드 막스",
     "category": "volatility"
   },
   {
     "english": "There's only one way to describe most investors: trend followers. Superior investors are the exact opposite.",
     "text": "대부분의 투자자를 묘사하는 방법은 딱 하나다: 추세 추종자. 탁월한 투자자는 정확히 그 반대다.",
-    "title": "투자에서 가장 중요한 것",
+    "title": "투자에 대한 생각",
     "author": "하워드 막스",
     "category": "behavior"
   },
   {
     "english": "The ultimately most profitable investment actions are by definition contrarian: you're buying when everyone else is selling (and the price is thus low) or you're selling when everyone else is buying (and price is high).",
     "text": "궁극적으로 가장 수익성 높은 투자 행동은 정의상 역발상이다. 모두가 팔 때 사고, 모두가 살 때 파는 것이다.",
-    "title": "투자에서 가장 중요한 것",
+    "title": "투자에 대한 생각",
     "author": "하워드 막스",
     "category": "behavior"
   },
   {
     "english": "Patient opportunism — waiting for bargains — is often your best strategy.",
     "text": "인내하는 기회주의 — 저평가 기회를 기다리는 것 — 가 종종 최선의 전략이다.",
-    "title": "투자에서 가장 중요한 것",
+    "title": "투자에 대한 생각",
     "author": "하워드 막스",
     "category": "patience"
   },
   {
     "english": "You can't predict. You can prepare.",
     "text": "예측할 수는 없다. 하지만 준비할 수는 있다.",
-    "title": "투자에서 가장 중요한 것",
+    "title": "투자에 대한 생각",
     "author": "하워드 막스",
     "category": "mindset"
   },
   {
     "english": "When everyone believes something is risky, their unwillingness to buy usually reduces its price to the point where it's not risky at all.",
     "text": "모두가 어떤 것이 위험하다고 믿을 때, 사려 하지 않는 심리가 가격을 전혀 위험하지 않은 수준까지 끌어내린다.",
-    "title": "투자에서 가장 중요한 것",
+    "title": "투자에 대한 생각",
     "author": "하워드 막스",
     "category": "volatility"
   },
   {
     "english": "Investment success requires sticking with positions made uncomfortable by their variance with popular opinion.",
     "text": "투자 성공은 대중적 견해와 다르기 때문에 불편한 포지션을 견뎌내는 것을 필요로 한다.",
-    "title": "투자에서 가장 중요한 것",
+    "title": "투자에 대한 생각",
     "author": "하워드 막스",
     "category": "mindset"
   },
@@ -523,7 +523,7 @@ window.investmentQuotes = [
   {
     "english": "It never was my thinking that made the big money for me. It always was my sitting. Men who can both be right and sit tight are uncommon.",
     "text": "나에게 큰돈을 벌어준 것은 뛰어난 판단력이 아니라 버티는 힘이었다. 시장의 방향을 맞추는 것 자체는 어려운 일이 아니다. 정말 어려운 것은 옳았을 때 끝까지 그 자리를 지키는 일이다.",
-    "title": "주식 투자자의 회상",
+    "title": "제시 리버모어의 회상",
     "author": "제시 리버모어",
     "category": "patience"
   },
@@ -537,7 +537,7 @@ window.investmentQuotes = [
   {
     "english": "Speculation is a game so fascinating that most people who play it never quit while they have the price of a meal left. But it is not a game for the stupid, the mentally lazy, the person of inferior emotional balance, or the get-rich-quick adventurer. They will die poor.",
     "text": "투기라는 게임은 세상에서 가장 한결같이 매혹적인 게임이다. 하지만 이것은 어리석은 자, 정신적으로 게으른 자, 감정적 균형이 부족한 자, 혹은 빨리 부자가 되려는 모험가를 위한 게임이 아니다. 그런 사람들은 결국 가난하게 죽는다.",
-    "title": "주식 투자자의 회상",
+    "title": "제시 리버모어의 회상",
     "author": "제시 리버모어",
     "category": "mindset"
   },
@@ -558,14 +558,14 @@ window.investmentQuotes = [
   {
     "english": "Rule number one: most things will prove to be cyclical. Rule number two: some of the greatest opportunities for gain and loss come when other people forget rule number one.",
     "text": "제1원칙: 대부분의 것들은 결국 순환한다는 사실이 증명될 것이다. 제2원칙: 사람들이 이 제1원칙을 잊어버릴 때, 바로 그 순간 가장 큰 이익과 가장 큰 손실의 기회가 함께 찾아온다.",
-    "title": "투자에서 가장 중요한 것",
+    "title": "투자에 대한 생각",
     "author": "하워드 막스",
     "category": "mindset"
   },
   {
     "english": "A man's mind may be likened to a garden, which may be intelligently cultivated or allowed to run wild.",
     "text": "사람의 마음은 정원에 비유할 수 있다. 지혜롭게 가꾸거나 그냥 내버려둘 수 있다.",
-    "title": "As a Man Thinketh",
+    "title": "나를 바꾸면 모든 것이 변한다",
     "author": "James Allen",
     "category": "경제자기계발",
     "genre": "literature"
@@ -573,7 +573,7 @@ window.investmentQuotes = [
   {
     "english": "A man is literally what he thinks, his character being the complete sum of all his thoughts.",
     "text": "사람은 글자 그대로 자신이 생각하는 그대로다. 그의 성격은 모든 생각의 완전한 합이다.",
-    "title": "As a Man Thinketh",
+    "title": "나를 바꾸면 모든 것이 변한다",
     "author": "James Allen",
     "category": "경제자기계발",
     "genre": "literature"
@@ -581,7 +581,7 @@ window.investmentQuotes = [
   {
     "english": "Self-control is strength. Right thought is mastery. Calmness is power.",
     "text": "자기 통제는 힘이다. 올바른 생각은 지배력이다. 평온은 힘이다.",
-    "title": "As a Man Thinketh",
+    "title": "나를 바꾸면 모든 것이 변한다",
     "author": "James Allen",
     "category": "경제자기계발",
     "genre": "literature"
@@ -733,7 +733,7 @@ window.investmentQuotes = [
   {
     "english": "Rule No. 1: Most things will prove to be cyclical. Rule No. 2: Some of the greatest opportunities for gain and loss come when other people forget Rule No. 1.",
     "text": "대부분의 것들은 순환한다는 게 결국 증명될 것이다. 그리고 이익과 손실의 가장 큰 기회는, 다른 사람들이 바로 이 순환의 법칙을 잊어버릴 때 찾아온다.",
-    "title": "투자에서 가장 중요한 것",
+    "title": "투자에 대한 생각",
     "author": "하워드 막스",
     "category": "mindset"
   },

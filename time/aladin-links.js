@@ -143,5 +143,8 @@ window.aladinLinks = {
   "보수적인 투자자는 마음이 편하다 (Common Stocks and Uncommon Profits)|필립 피셔": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=367106609&partner=friedns327",
   "워런 버핏 웨이 (The Warren Buffett Way)|워런 버핏": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=363738777&partner=friedns327",
   "상식이 이기는 투자|존 보글": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=372978368&partner=friedns327",
-  "전설로 떠나는 월가의 영웅: 비트 더 스트리트|피터 린치": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=396483089&partner=friedns327"
+  "전설로 떠나는 월가의 영웅: 비트 더 스트리트|피터 린치": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=396483089&partner=friedns327",
+  "투자에 대한 생각|하워드 막스": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=19905832&partner=friedns327",
+  "제시 리버모어의 회상|제시 리버모어": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=7447533&partner=friedns327",
+  "나를 바꾸면 모든 것이 변한다|James Allen": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=69160031&partner=friedns327"
 };
