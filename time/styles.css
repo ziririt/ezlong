@@ -669,8 +669,14 @@ button { font: inherit; }
 
 /* 2026-07-16: 알라딘 로그인/장바구니가 iframe 안에서 유지되지 않는 문제에
    대한 안내 배너 — 서드파티 iframe 쿠키 제약(iOS ITP류 정책)을 유저에게
-   투명하게 알리고, SFSafariViewController(네이티브)/새 탭(브라우저)으로
-   빠져나갈 수 있는 버튼을 항상 노출한다. */
+   투명하게 알리고, 기본 브라우저(Safari)로 빠져나갈 수 있는 버튼을 항상
+   노출한다.
+   2026-07-16 2차: 원래 앰버(#FF9F0A) 계열을 낮은 투명도로 썼는데, 이 시트의
+   짙은 다크글래스 배경 위에서는 주황이 탁하게 죽어 "칙칙한 브라운(똥색)"
+   처럼 보인다는 지적 — 애플 시스템 블루(#0A84FF, 다크모드 systemBlue)
+   계열로 바꿔 다크 배경에서도 선명하고 산뜻하게 보이게 했다. 버튼도
+   반투명 흰색 대신 블루 단색 채움으로 바꿔 "지금 눌러야 할 버튼"이라는
+   느낌을 분명히 준다. */
 .aladin-modal-notice {
   display: flex;
   align-items: center;
@@ -680,27 +686,28 @@ button { font: inherit; }
   margin: 0 clamp(14px, 4vw, 24px) 8px;
   padding: 9px 12px;
   border-radius: 12px;
-  background: rgba(255, 159, 10, 0.14);
-  border: 1px solid rgba(255, 159, 10, 0.32);
+  background: rgba(10, 132, 255, 0.18);
+  border: 1px solid rgba(64, 156, 255, 0.45);
 }
 
 .aladin-modal-notice span {
   font-size: 14px;
   font-weight: 620;
   line-height: 1.4;
-  color: rgba(255,255,255,0.86);
+  color: rgba(255,255,255,0.92);
 }
 
 .aladin-modal-external-open {
   flex-shrink: 0;
   padding: 7px 13px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.32);
-  background: rgba(255,255,255,0.16);
+  border: none;
+  background: #0a84ff;
   color: #fff;
   font-size: 14px;
   font-weight: 740;
   white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(10, 132, 255, 0.45);
 }
 
 .aladin-modal-frame-wrap {
