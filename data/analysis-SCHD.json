@@ -3,35 +3,35 @@
   "name": "고배당 미국 주식 ETF",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-07-15T16:17:41.752Z",
+  "updatedAt": "2026-07-15T22:22:13.702Z",
   "price": {
-    "current": 32.345,
-    "change": 0.145,
-    "changePct": 0.45,
+    "current": 32.34,
+    "change": 0.14,
+    "changePct": 0.43,
     "high52": 32.92,
     "low52": 26.21,
     "pos52": 91.4,
-    "marketState": "REGULAR",
+    "marketState": "POST",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 32.0749,
-    "sma50": 31.982,
-    "sma100": 31.3175,
+    "sma20": 32.0747,
+    "sma50": 31.9819,
+    "sma100": 31.3174,
     "sma200": 29.3783,
-    "rsi": 54.45,
+    "rsi": 54.37,
     "macd": {
-      "macd": 0.127041,
-      "signal": 0.108771,
-      "histogram": 0.01827
+      "macd": 0.126642,
+      "signal": 0.108691,
+      "histogram": 0.017951
     },
     "bb": {
-      "upper": 32.6949,
-      "middle": 32.0749,
-      "lower": 31.455,
-      "bandwidth": 0.0387
+      "upper": 32.6942,
+      "middle": 32.0747,
+      "lower": 31.4552,
+      "bandwidth": 0.0386
     },
     "adx": {
       "plusDI": 23.44,
@@ -44,11 +44,11 @@
     "swingResistance": 32.79,
     "swingSupport": 31.61,
     "pivot": {
-      "pp": 32.27,
+      "pp": 32.26,
       "r1": 32.92,
-      "r2": 33.5,
+      "r2": 33.49,
       "s1": 31.69,
-      "s2": 31.04
+      "s2": 31.03
     }
   },
   "analysis": {
@@ -62,37 +62,37 @@
     "stage": "축적구간",
     "action": "관망",
     "buyScore": 5,
-    "scoreReason": "RSI 중립 + MACD 개선 + Higher Low 회복",
-    "rsiTrajectory": "56.3 → 54.5 (중립지속)",
-    "macdTrajectory": "히스토 0.0390 → 0.0183 (개선)",
-    "pricePattern": "Higher Low 회복 시도 중",
-    "volComment": "거래량비 0.43 (위축)",
+    "scoreReason": "RSI 중립, MACD 개선 미확인",
+    "rsiTrajectory": "56.3 → 54.4 (중립지속 중)",
+    "macdTrajectory": "히스토 0.0390 → 0.0180 (개선)",
+    "pricePattern": "Higher Low 회복 확인",
+    "volComment": "거래량비 0.85 (위축)",
     "bbPosition": "중단근처",
-    "reason": "5일 연속 관망 유지. RSI, MACD, 가격 패턴 모두 직전과 동일한 흐름을 보이며 방향성 부재. 거래량 위축으로 추세 전환 동력 부족.",
-    "entry": 32.27,
+    "reason": "3일 연속 관망 유지. RSI는 중립 구간에서 횡보 중이며, MACD 히스토그램은 개선되고 있으나 아직 추세 전환을 확신하기 어렵다. 거래량도 위축되어 방향성 탐색 구간이다.",
+    "entry": 32.26,
     "stop": 31.61,
     "target": 32.79,
     "invalidation": 31.61,
     "weeklyConflict": "충돌 없음",
     "profitTarget1": 32.69,
     "profitTarget2": 32.92,
-    "stopLoss": 31.45,
-    "narrative": "[추세 위치]\n· 현재가($32.34) vs SMA5/20/50($32.35/$32.07/$31.87) — 단기 하회, 중기 상회 추세 위치 진단\n· SMA100/200($31.32/$29.38) 대비 위치 — 중장기 추세 강도 판단\n· 52주 위치(91.4%) + 현 가격대 역사적 의미\n[모멘텀 지표]\n· RSI 궤적 (56.3→54.5) + 중립 판단 + 방향성 해석\n· MACD 히스토그램 궤적 (0.0390→0.0183) + 개선 진단 + 추세 전환 신호 여부\n· 볼린저밴드 현재가 위치 (중단 $32.07) + 밴드폭 수준 해석\n[지지·저항 구조]\n· 스윙 지지선 ($31.61) + 근거 (피벗/스윙저점/이동평균 기반)\n· 스윙 저항선 ($32.79) + 돌파 시 의미\n· 5일/20일 고가·저가 패턴 (Higher Low 회복 시도 중) + 추세 해석\n[거래량·결론]\n· 거래량 비율 (0.43배) + 움직임의 신뢰도 판단\n· 현 구간 진단 (축적구간) + 진입·관망 조건 명시",
-    "patternNote": "5일 연속 관망 유지하며 축적 구간 지속. Higher Low 회복 시도가 관찰되나 거래량 부재로 추세 전환 동력 부족.",
+    "stopLoss": 31.98,
+    "narrative": "[추세 위치]\n· 현재가($32.34) vs SMA5/20/50($32.35/$32.07/$31.98) — 단기 추세 약세, 중기 추세 상회\n· SMA100/200($31.32/$29.38) 대비 위치 — 중장기 추세 강도 양호\n· 52주 위치(91.4%) + 현 가격대 역사적 고점 부근\n[모멘텀 지표]\n· RSI 궤적 (56.3 → 54.4) — 중립 구간 지속 중, 약세 전환 조짐\n· MACD 히스토그램 궤적 (0.0390 → 0.0180) — 개선 중이나 추세 전환 확신 어려움\n· 볼린저밴드 현재가 위치 (중단 $32.07) — 중단 부근 횡보, 밴드폭 3.86%로 축소\n[지지·저항 구조]\n· 스윙 지지선 ($31.61) + 근거 (피벗 S1, 20일 저가)\n· 스윙 저항선 ($32.79) + 돌파 시 52주 고가 재도전 가능성\n· 5일/20일 고가·저가 패턴 (Higher Low) + 회복 신호 확인\n[거래량·결론]\n· 거래량 비율 (0.85배) — 움직임의 신뢰도 위축\n· 현 구간 진단 (축적구간) — 방향성 확인 후 진입",
+    "patternNote": "직전 저점 대비 회복세를 보이며 Higher Low 패턴을 형성하고 있으나, 거래량 부재로 추세 전환 신뢰도는 낮음.",
     "keyPoints": [
-      "5일 연속 관망 유지",
-      "RSI, MACD, 가격 패턴 동일 흐름 지속",
-      "거래량 위축으로 추세 전환 동력 부족"
+      "3일 연속 관망 유지하며 방향성 탐색 중",
+      "MACD 히스토그램 개선세는 긍정적이나 거래량 부재로 추세 전환 확신 어려움",
+      "Higher Low 패턴 형성 중이나 저항선 돌파 여부 확인 필요"
     ],
-    "riskNote": "ADX 13.7로 추세 미형성 구간, 급등락 시 추세 전환으로 단정 금지.",
-    "continuity": "4일 연속 관망 유지. RSI, MACD, 가격 패턴 모두 직전과 동일한 흐름을 보이며 방향성 부재. 거래량 위축으로 추세 전환 동력 부족.",
+    "riskNote": "ADX 13.7로 추세 미형성 구간으로, 충격성 변동 가능성에 유의해야 함.",
+    "continuity": "3일 연속 관망 유지. RSI 중립 구간 지속, MACD 개선 미확인으로 직전 판단 흐름을 이어감.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
       "adxLowRisk": true,
-      "higherTimeframeAligned": true,
+      "higherTimeframeAligned": false,
       "oversoldExtremeOrigin": false,
-      "score": "2/5",
+      "score": "1/5",
       "verdict": "위장 가능성 — 신중 필요"
     }
   }
