@@ -209,6 +209,7 @@ const musicLikeButton = document.getElementById("musicLikeButton");
 const musicDislikeButton = document.getElementById("musicDislikeButton");
 const musicGearOpen = document.getElementById("musicGearOpen");
 const musicToast = document.getElementById("musicToast");
+const musicLeaveWorkEl = document.getElementById("musicLeaveWork");
 const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
 const musicPlaylistOptionsEl = document.getElementById("musicPlaylistOptions");
 const musicHistoryList = document.getElementById("musicHistoryList");
@@ -3237,6 +3238,55 @@ function saveMusicPlayLog(log) {
   }
 }
 
+// 2026-07-16: "정각 세리모니" / "퇴근 세리모니" — 성동님 요청("어려우면
+// 리스크 감수하지 말고")에 맞춰 기존 오디오/재생 로직은 전혀 건드리지
+// 않고, "새 곡이 실제로 시작된 순간"에만 훅을 거는 방식으로 구현한다.
+// recordPlayLog(index)는 자동재생/스킵/크로스페이드전환/히스토리 바로듣기/
+// 앱 재시작 복원 등 "새 트랙 시작" 경로 전부(위 grep으로 5곳 전체 확인)에서
+// 정확히 1회씩만 호출되는 유일한 공통 지점이라, 여기 하나에만 걸어두면
+// 모든 경로가 자동으로 커버된다 — 개별 호출부를 일일이 건드릴 필요가 없어
+// 실수로 한 경로를 빠뜨릴 위험도 없다.
+// 트리거는 어디까지나 "수동적"이다: 정각마다 강제로 곡을 바꾸지 않고,
+// 그 순간 마침 새 곡이 시작됐을 때만 시계를 확인한다 — 재생 중이던 곡을
+// 세리모니를 위해 억지로 끊는 일은 절대 없다(성동님 요청 원문 "시작되는
+// 음악이 있는 경우"에 정확히 맞춘 설계).
+const MUSIC_HOURLY_CEREMONY_WINDOW_MIN = 2; // 정각~정각+2분
+const MUSIC_HOURLY_CEREMONY_DURATION_MS = 10000; // 10초간 비주얼라이저 솟구침
+let musicHourlyCeremonyTimer = null;
+
+// 비주얼라이저가 패널 박스를 뚫고 위(플립시계 쪽)로 10초간 솟구치는 연출.
+// 실제 막대 높이 계산(drawMusicViz 등 오디오 반응 로직)은 전혀 건드리지
+// 않고, 이미 그려진 결과물 전체를 CSS transform:scaleY로 시각적으로만
+// 부풀린다 — 오디오/캔버스 쪽 회귀 위험이 없는 순수 CSS 오버레이 효과.
+function triggerMusicHourlyCeremony() {
+  if (!musicInfoPanel) return;
+  clearTimeout(musicHourlyCeremonyTimer);
+  musicInfoPanel.classList.add("ceremony-breakout");
+  musicHourlyCeremonyTimer = setTimeout(() => {
+    musicInfoPanel.classList.remove("ceremony-breakout");
+  }, MUSIC_HOURLY_CEREMONY_DURATION_MS);
+}
+
+function showLeaveWorkCeremony() {
+  if (musicLeaveWorkEl) musicLeaveWorkEl.classList.add("is-visible");
+}
+
+function hideLeaveWorkCeremony() {
+  if (musicLeaveWorkEl) musicLeaveWorkEl.classList.remove("is-visible");
+}
+
+// recordPlayLog(index)가 호출될 때마다(= 새 곡이 막 시작될 때마다) 실행.
+function handleMusicCeremonyOnTrackStart() {
+  hideLeaveWorkCeremony(); // 어떤 곡으로 넘어가든 이전 곡의 "Leave Work"는 일단 끈다
+  const now = new Date();
+  if (now.getMinutes() >= MUSIC_HOURLY_CEREMONY_WINDOW_MIN) return; // 정각+2분 지났으면 세리모니 없음
+  triggerMusicHourlyCeremony();
+  // "퇴근 세리모니": 18시대에 정각 세리모니 조건까지 겹치면 추가로 텍스트
+  // 표시 — 이 곡이 끝날 때(=다음 곡의 recordPlayLog가 hideLeaveWorkCeremony를
+  // 호출할 때)까지 유지된다.
+  if (now.getHours() === 18) showLeaveWorkCeremony();
+}
+
 // 같은 곡을 다시 들으면 중복으로 쌓지 않고 맨 위로 올린다(흔한 "최근 재생" UX 관례).
 function recordPlayLog(index) {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
@@ -3246,6 +3296,7 @@ function recordPlayLog(index) {
   log.unshift({ file: track.file, title: track.title || track.file, playlist: track.playlist || "", at: Date.now() });
   if (log.length > musicPlayLogMax) log = log.slice(0, musicPlayLogMax);
   saveMusicPlayLog(log);
+  handleMusicCeremonyOnTrackStart();
 }
 
 function renderMusicHistoryList() {

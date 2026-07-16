@@ -1556,6 +1556,23 @@ button { font: inherit; }
   pointer-events: auto;
 }
 
+/* 2026-07-16: "정각 세리모니" — 정각~정각+2분 사이에 새 곡이 시작되면
+   10초간 비주얼라이저가 이 패널 박스를 뚫고 위(플립시계 쪽)로 솟구치는
+   연출(app.js의 triggerMusicHourlyCeremony 참조). 패널 자체의 높이(max-height)는
+   그대로 두고 안의 비주얼라이저만 transform:scaleY로 시각적으로 부풀려
+   위로 넘치게 하는 방식이라, 패널 열림/닫힘 애니메이션이나 오디오 로직에는
+   전혀 손대지 않는다 — overflow만 이 순간 잠깐 풀어줘서 위로 삐져나온
+   부분이 잘리지 않게 한다(패널~플립시계 사이 조상 요소 중 이 둘 말고는
+   overflow:hidden이 없어 안전하게 침범 가능, .sky-room의 overflow:hidden은
+   훨씬 바깥 경계라 영향 없음). */
+.music-info-panel.ceremony-breakout {
+  overflow: visible;
+}
+
+.music-info-panel.ceremony-breakout .music-viz-wrap {
+  transform: scaleY(2.2);
+}
+
 .music-viz-wrap {
   position: relative;
   /* 2026-07-13 9차: 6차에서 "비주얼라이저 맛이 안 난다"며 키웠던 높이가
@@ -1574,6 +1591,9 @@ button { font: inherit; }
   justify-content: space-between;
   /* 2026-07-14 17차: 좌우 인셋은 이제 .music-info-panel의 padding이 전담 —
      여기 있던 개별 10px 좌우 padding은 제거(이중 여백 방지). */
+  /* 2026-07-16: "정각 세리모니"(아래 .ceremony-breakout 참조)가 켜지고
+     꺼질 때 확 튀지 않고 부드럽게 부풀었다 가라앉도록. */
+  transition: transform 0.6s ease;
 }
 
 .viz-bar {
@@ -1598,6 +1618,33 @@ button { font: inherit; }
   box-shadow:
     0 0 calc(4px + var(--bar-intensity, 0.15) * 10px) hsla(var(--bar-hue, 280), 95%, 60%, calc(0.55 + var(--bar-intensity, 0.15) * 0.45)),
     0 0 calc(10px + var(--bar-intensity, 0.15) * 18px) hsla(var(--bar-hue, 280), 95%, 55%, calc(0.28 + var(--bar-intensity, 0.15) * 0.35));
+}
+
+/* 2026-07-16: "퇴근 세리모니" — 18시대에 정각 세리모니 조건까지 겹치면
+   비주얼라이저 웨이브 위에 흰 글씨로 뜨는 문구(app.js의
+   showLeaveWorkCeremony/hideLeaveWorkCeremony 참조). 그 곡이 끝날 때까지
+   유지되고(is-visible), 다음 곡이 시작되면 꺼진다. .music-viz-wrap이 이미
+   position:relative라 별도 포지셔닝 컨텍스트 추가 없이 바로 겹쳐 그려진다. */
+.music-leave-work {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-size: clamp(15px, 4vw, 22px);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.55), 0 0 18px rgba(0,0,0,0.35);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 2;
+}
+
+.music-leave-work.is-visible {
+  opacity: 1;
 }
 
 /* 2026-07-14 16차: 성동님이 다시 첨부한 "Audio Spectrum - Grid" 참고 이미지를
