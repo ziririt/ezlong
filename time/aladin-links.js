@@ -1,5 +1,5 @@
 window.aladinLinks = {
-  "현명한 투자자|벤저민 그레이엄": "https://www.aladin.co.kr/m/mproduct.aspx?itemid=364922786&partner=friedns327",
+  "현명한 투자자|벤저민 그레이엄": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=364922786&partner=friedns327",
   "버크셔 해서웨이 주주 서한|워런 버핏": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=298436020&partner=friedns327",
   "위대한 기업에 투자하라|필립 피셔": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=368029432&partner=friedns327",
   "돈의 심리학|모건 하우절": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=329910369&partner=friedns327",
