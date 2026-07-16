@@ -28,15 +28,26 @@ html {
   scroll-snap-type: y mandatory;
 }
 
-/* 2026-07-16 2차 개정: '날씨 상세'/'설정'/알라딘 모달 시트에 걸어둔
-   overscroll-behavior:contain(1차 개정)만으로는 유저 실기기에서 스크롤
-   충돌이 그대로 재현됐다 — WebKit이 scroll-snap 스냅 판정을
-   overscroll-behavior 체이닝 차단과 별개로 처리하는 것으로 추정된다.
-   더 확실하게, 이런 시트가 하나라도 열려 있는 동안은 상위 html의
-   scroll-snap 자체를 완전히 꺼버린다(app.js의 lockScrollSnap/
-   unlockScrollSnap이 열고 닫을 때 이 클래스를 토글). */
+/* 2026-07-16 3차 개정: '날씨 상세'/'설정'/알라딘 모달 시트에 걸어둔
+   overscroll-behavior:contain(1차)과 scroll-snap-type:none 전환(2차) 둘 다
+   유저 실기기 재확인 결과 증상이 그대로 재현됐다 — 스냅만 꺼서는 부족하다.
+   원인을 다시 보면: html이 scroll-snap-type:y mandatory가 걸린 "진짜 스크롤
+   컨테이너"이고, 모달은 그 위에 position:fixed로 떠 있는 별개 레이어다.
+   정상적인 DOM/CSS 동작이라면 모달 시트(overflow:auto) 안에서의 터치는
+   그 시트 자신만 스크롤해야 하는데, iOS WebKit이 (특히 시트 바로 아래
+   background에 해당하는 .settings-backdrop처럼 그 자체는 스크롤 불가능한
+   node를 터치했을 때) 터치 스크롤의 대상을 찾다가 어떤 경우 그 아래
+   문서 전체(html)까지 스크롤 가능 대상으로 인식해버리는 것으로 추정된다
+   (스냅을 꺼도 여전히 html 자체가 "스크롤은 가능한" 상태였으므로, 스냅만
+   없앤 채로도 그 스크롤 자체는 계속 일어날 수 있었다는 뜻). 이번엔 스냅
+   여부와 무관하게, 모달이 열려 있는 동안 html 자체를 아예 스크롤
+   불가능하게(overflow:hidden) 만들어 근본적으로 차단한다 — 배경 스크롤이
+   "일어날 수조차 없으니" 어떤 제스처가 어디로 전파되든 결과적으로 아무
+   일도 일어나지 않는다(app.js의 lockScrollSnap/unlockScrollSnap이 열고
+   닫을 때 이 클래스를 토글). */
 html.scroll-snap-locked {
   scroll-snap-type: none;
+  overflow: hidden;
 }
 
 body {
@@ -356,6 +367,11 @@ button { font: inherit; }
   inset: 0;
   background: rgba(0,0,0,0.36);
   backdrop-filter: blur(8px);
+  /* 2026-07-16: 이 배경 영역 자체는 스크롤할 내용이 없는데도, 여기서
+     시작된 터치가 그 아래 문서(html)의 스크롤로 잘못 연결되는 걸 막는
+     보강 조치 — 위 html.scroll-snap-locked(overflow:hidden)로도 이미
+     막히지만, 혹시 모를 iOS 버전차 대응까지 이중으로 방어한다. */
+  touch-action: none;
 }
 
 .settings-sheet {
@@ -370,6 +386,10 @@ button { font: inherit; }
      페이지 전체를 ezlong 웹뷰 섹션으로 강제 스냅시켜버리는 문제가 있었다.
      이 시트 내부에서 스크롤을 막아 상위로 전파되지 않게 한다. */
   overscroll-behavior: contain;
+  /* 2026-07-16: 이 시트 안에서는 세로 스크롤만 브라우저가 직접 처리하게
+     명시 — 제스처 인식 모호성을 줄여 상위 문서로 잘못 위임되는 경우를
+     방지하는 보강 조치. */
+  touch-action: pan-y;
   padding: 24px clamp(20px, 5vw, 34px) max(28px, env(safe-area-inset-bottom));
   border: 1px solid rgba(255,255,255,0.22);
   border-radius: 30px 30px 0 0;
@@ -586,6 +606,7 @@ button { font: inherit; }
      끝에 닿으면 상위 html의 scroll-snap-type:y mandatory로 새어나가 ezlong
      웹뷰 섹션으로 튕겨나가던 것을 여기서 차단한다. */
   overscroll-behavior: contain;
+  touch-action: pan-y;
   padding: 24px clamp(20px, 5vw, 34px) max(28px, env(safe-area-inset-bottom));
   border: 1px solid rgba(255,255,255,0.34);
   border-radius: 32px 32px 0 0;
@@ -1608,27 +1629,31 @@ button { font: inherit; }
   pointer-events: auto;
 }
 
-/* 2026-07-16: "정각 세리모니" — 정각~정각+2분 사이에 새 곡이 시작되면
-   10초간 비주얼라이저가 이 패널 박스를 뚫고 위(플립시계 쪽)로 솟구치는
-   연출(app.js의 triggerMusicHourlyCeremony 참조). 패널 자체의 높이(max-height)는
-   그대로 두고 안의 비주얼라이저만 transform:scaleY로 시각적으로 부풀려
-   위로 넘치게 하는 방식이라, 패널 열림/닫힘 애니메이션이나 오디오 로직에는
-   전혀 손대지 않는다 — overflow만 이 순간 잠깐 풀어줘서 위로 삐져나온
-   부분이 잘리지 않게 한다(패널~플립시계 사이 조상 요소 중 이 둘 말고는
-   overflow:hidden이 없어 안전하게 침범 가능, .sky-room의 overflow:hidden은
-   훨씬 바깥 경계라 영향 없음). */
+/* 2026-07-16: "정각 세리모니" — 정각~정각+N분 사이에 새 곡이 시작되면
+   비주얼라이저가 이 패널 박스를 뚫고 위(플립시계 쪽)로 솟구치는 연출
+   (app.js의 triggerMusicHourlyCeremony 참조). 그 곡이 끝날 때까지(=다음 곡
+   시작 전까지) 유지된다 — 10초 고정이었던 1~2차와 달리, "Leave Work"
+   문구와 동일한 생명주기로 통일했다. 패널 자체의 높이(max-height)는
+   그대로 두고 overflow만 이 순간 풀어줘서 위로 삐져나온 부분이 잘리지
+   않게 한다(패널~플립시계 사이 조상 요소 중 이 둘 말고는 overflow:hidden이
+   없어 안전하게 침범 가능, .sky-room의 overflow:hidden은 훨씬 바깥 경계라
+   영향 없음).
+   2026-07-16 3차: 이전(scaleY 6을 .music-viz-wrap 전체에 적용)은 두 가지
+   문제가 있었다 — (1) 실측 스크린샷으로 확인해보니 플립시계는 물론 상단
+   헤더까지 뚫고 나가 "괴기스러운" 모습이 됐다(배율 과다). (2) "Clock out,
+   live up." 텍스트가 .music-viz-wrap의 자식이라 부모의 scaleY(6)를 그대로
+   상속해 세로로 6배 찌그러진 거대한 글자가 됐다(텍스트가 커 보인 진짜
+   원인 — font-size 자체는 정상이었다). 그래서 대상을 .music-viz-wrap
+   전체가 아니라 막대 하나하나(.viz-bar)로 좁혔다 — 텍스트는 막대의
+   형제가 아니라 .music-viz-wrap의 자식일 뿐 .viz-bar가 아니므로 이 변환의
+   영향을 받지 않는다. 배율도 6 → 2.4로 크게 낮춰 플립시계 바로 아래
+   (날씨/음악 아이콘 줄) 정도까지만 닿도록 조정했다. */
 .music-info-panel.ceremony-breakout {
   overflow: visible;
 }
 
-.music-info-panel.ceremony-breakout .music-viz-wrap {
-  /* 2026-07-16: 1차(scaleY 2.2)는 "눈치채기 힘들다"는 재지적 — 원인 두 가지를
-     같이 고쳤다. (1) transform-origin이 기본값(center)이라 위로도 아래로도
-     반씩만 자라 실제 위쪽 도달 거리가 절반 낭비되고 있었다 — bottom으로
-     고정해 전부 위쪽으로만 자라게 함. (2) 배율 자체도 2.2배는 플립시계까지
-     닿기엔 부족해 6배로 크게 올렸다 — 이제 막대 묶음이 시계 숫자판 위까지
-     확실히 넘어와 겹친다. */
-  transform: scaleY(6);
+.music-info-panel.ceremony-breakout .viz-bar {
+  transform: scaleY(2.4);
 }
 
 .music-viz-wrap {
@@ -1649,12 +1674,6 @@ button { font: inherit; }
   justify-content: space-between;
   /* 2026-07-14 17차: 좌우 인셋은 이제 .music-info-panel의 padding이 전담 —
      여기 있던 개별 10px 좌우 padding은 제거(이중 여백 방지). */
-  /* 2026-07-16: "정각 세리모니"(아래 .ceremony-breakout 참조)가 켜지고
-     꺼질 때 확 튀지 않고 부드럽게 부풀었다 가라앉도록. transform-origin을
-     bottom으로 고정해 커질 때 아래쪽(진행률 바 방향)이 아니라 위쪽
-     (플립시계 방향)으로만 자라게 한다. */
-  transition: transform 0.6s ease;
-  transform-origin: bottom;
 }
 
 .viz-bar {
@@ -1670,6 +1689,11 @@ button { font: inherit; }
   min-width: 0;
   height: 3px; /* app.js가 매 프레임 style.height로 갱신 */
   border-radius: 999px;
+  /* 2026-07-16: "정각 세리모니"(.ceremony-breakout 참조)가 켜지고 꺼질 때
+     확 튀지 않고 부드럽게 부풀었다 가라앉도록. transform-origin을 bottom으로
+     고정해 커질 때 아래쪽이 아니라 위쪽(플립시계 방향)으로만 자라게 한다. */
+  transition: transform 0.6s ease;
+  transform-origin: bottom;
   /* 막대별 고정 hue(--bar-hue, 위치 기준 무지개, app.js가 생성 시 1회 설정)
      × 실시간 에너지 비율(--bar-intensity, app.js가 매 프레임 갱신)로
      밝기와 글로우 강도를 조절한다 — 채움 자체는 항상 불투명한 솔리드
