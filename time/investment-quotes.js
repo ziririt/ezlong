@@ -6223,5 +6223,19 @@ window.investmentQuotes = [
     "title": "시장의 마법사들 (Market Wizards)",
     "author": "폴 튜더 존스",
     "category": "mindset"
+  },
+  {
+    "english": "Choosing individual stocks without any idea of what you're looking for is like running through a dynamite factory with a burning match. You may live, but you're still an idiot.",
+    "text": "무엇을 찾아야 하는지도 모른 채 개별 종목을 고르는 것은, 불붙은 성냥을 들고 다이너마이트 공장을 뛰어다니는 것과 같다. 살아남을 수도 있겠지만, 그래도 바보인 건 마찬가지다.",
+    "title": "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)",
+    "author": "조엘 그린블라트",
+    "category": "mindset"
+  },
+  {
+    "english": "Value investing is at its core the marriage of a contrarian streak and a calculator.",
+    "text": "가치투자란 본질적으로 반골 기질과 계산기의 결합이다. 모두가 외면하고 두려워할 때 감정을 배제하고 냉정하게 숫자를 따져보는 사람만이 좋은 자산을 좋은 가격에 사들일 수 있다.",
+    "title": "안전마진 (Margin of Safety)",
+    "author": "세스 클라만",
+    "category": "mindset"
   }
 ];
