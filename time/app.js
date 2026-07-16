@@ -1196,11 +1196,15 @@ function withAladinPartnerParam(url) {
 // 오래 유지해주지 않기 때문이다(ITP류 정책 — 우리가 쿠키를 지우는 게
 // 아니다, WKWebView 데이터스토어는 기본 영구 저장소를 그대로 쓰고 있고
 // 코드 어디에도 쿠키를 지우는 로직이 없다). 이걸 근본적으로 우회하려면
-// 알라딘을 "퍼스트파티" 컨텍스트로 열어야 하는데, 3차 개정 때 없앤 것과
-// 똑같은 실수(화면 전체가 바뀌어 못 돌아옴)를 반복하지 않기 위해 이번엔
-// 네이티브에선 SFSafariViewController(자체 완료 버튼으로 앱 복귀 가능 +
-// Safari와 동일한 쿠키 정책), 브라우저에선 진짜 새 탭(window.open)을 쓰는
-// aladinModalCurrentUrl/aladinModalExternalOpenEl 버튼을 추가했다.
+// 알라딘을 "퍼스트파티" 컨텍스트로 열어야 한다. 1차로 네이티브에서
+// SFSafariViewController(앱 내부에 뜨는 Safari 스타일 시트)를 시도했으나
+// 유저 실기기 재확인 결과 그 안에서도 로그인이 유지되지 않았다 —
+// SFSafariViewController는 기본 Safari 앱과 쿠키 저장소를 항상 100%
+// 공유하는 게 아니다. 2026-07-16 5차 개정: 유저 요청대로 아예 스마트폰의
+// 기본 브라우저(Safari) 앱 자체로 내보낸다. 네이티브에선
+// ContentView.swift가 이 postMessage를 받아 UIApplication.shared.open()으로
+// 처리하고, 일반 브라우저/PWA에서는 그대로 진짜 새 탭(window.open)을 쓴다.
+// aladinModalCurrentUrl/aladinModalExternalOpenEl 버튼이 그 진입점이다.
 let aladinModalCurrentUrl = null;
 
 function openAladinModal(url) {
@@ -1542,6 +1546,14 @@ function recordTrackHeard(index) {
 function reshuffleMusicOrder() {
   saveMusicHistory([]);
   showMusicToast("Shuffled! Fresh order incoming.");
+  // 2026-07-16: 성동님 지적 — "셔플만 되어야지 왜 정각 세리모니까지 같이
+  // 뜨나?" recordPlayLog(→handleMusicCeremonyOnTrackStart)는 모든 트랙
+  // 전환 경로에 공통으로 걸려있어(8항 원칙과 동일하게 재활용), 셔플이
+  // 유발한 전환도 "새 곡 시작"으로 똑같이 인식되고 있었다. 셔플은 사용자가
+  // 명시적으로 누른 "순서 재배치" 행위지 "마침 정각에 곡이 바뀐 우연"이
+  // 아니므로, 이번 트랙 전환 1회에 한해 세리모니 판정을 건너뛰게 플래그를
+  // 세운다.
+  suppressCeremonyOnNextTrackStart = true;
   playNextTrack();
 }
 
@@ -3367,20 +3379,28 @@ function saveMusicPlayLog(log) {
 // 테스트 요청으로 임시 확대(5 → 60, 사실상 그 시간대 내내 발동) 중 —
 // 확인 끝나면 반드시 5로 되돌릴 것.
 const MUSIC_HOURLY_CEREMONY_WINDOW_MIN = 60; // TEMP TEST: 원래 값 5
-const MUSIC_HOURLY_CEREMONY_DURATION_MS = 10000; // 10초간 비주얼라이저 솟구침
-let musicHourlyCeremonyTimer = null;
 
-// 비주얼라이저가 패널 박스를 뚫고 위(플립시계 쪽)로 10초간 솟구치는 연출.
-// 실제 막대 높이 계산(drawMusicViz 등 오디오 반응 로직)은 전혀 건드리지
-// 않고, 이미 그려진 결과물 전체를 CSS transform:scaleY로 시각적으로만
-// 부풀린다 — 오디오/캔버스 쪽 회귀 위험이 없는 순수 CSS 오버레이 효과.
+// 2026-07-16: reshuffleMusicOrder()가 유발한 트랙 전환 1회만 세리모니
+// 판정에서 제외하기 위한 1회성 플래그(아래 handleMusicCeremonyOnTrackStart
+// 참조). 셔플 버튼처럼 "사용자가 명시적으로 누른 행위"로 인한 전환은
+// "마침 정각에 새 곡이 시작된 우연"이 아니므로 세리모니를 띄우면 안 된다.
+let suppressCeremonyOnNextTrackStart = false;
+
+// 비주얼라이저가 패널 박스를 뚫고 위(플립시계 쪽)로 솟구치는 연출.
+// 2026-07-16 2차: 10초 고정 타이머는 "너무 짧다"는 재지적으로 완전히
+// 제거했다 — 이제 "Leave Work" 문구와 똑같은 생명주기를 쓴다. 즉 그 곡이
+// 끝날 때(=다음 곡의 recordPlayLog가 hideMusicHourlyCeremony를 호출할 때)
+// 까지 계속 유지되고, 다음 곡이 시작되면 그 곡이 조건에 다시 해당하는지를
+// 새로 판단한다. 실제 막대 높이 계산(drawMusicViz 등 오디오 반응 로직)은
+// 전혀 건드리지 않고, 이미 그려진 막대 각각을 CSS transform:scaleY로
+// 시각적으로만 부풀린다 — 오디오/캔버스 쪽 회귀 위험이 없는 순수 CSS
+// 오버레이 효과.
 function triggerMusicHourlyCeremony() {
-  if (!musicInfoPanel) return;
-  clearTimeout(musicHourlyCeremonyTimer);
-  musicInfoPanel.classList.add("ceremony-breakout");
-  musicHourlyCeremonyTimer = setTimeout(() => {
-    musicInfoPanel.classList.remove("ceremony-breakout");
-  }, MUSIC_HOURLY_CEREMONY_DURATION_MS);
+  if (musicInfoPanel) musicInfoPanel.classList.add("ceremony-breakout");
+}
+
+function hideMusicHourlyCeremony() {
+  if (musicInfoPanel) musicInfoPanel.classList.remove("ceremony-breakout");
 }
 
 function showLeaveWorkCeremony() {
@@ -3393,13 +3413,20 @@ function hideLeaveWorkCeremony() {
 
 // recordPlayLog(index)가 호출될 때마다(= 새 곡이 막 시작될 때마다) 실행.
 function handleMusicCeremonyOnTrackStart() {
-  hideLeaveWorkCeremony(); // 어떤 곡으로 넘어가든 이전 곡의 "Leave Work"는 일단 끈다
+  // 어떤 곡으로 넘어가든 이전 곡의 세리모니는 일단 끈다 — 그 다음 이번
+  // 곡이 조건에 맞으면 아래에서 다시 켠다.
+  hideLeaveWorkCeremony();
+  hideMusicHourlyCeremony();
+  if (suppressCeremonyOnNextTrackStart) {
+    // 셔플 버튼이 유발한 전환 — 이번 1회만 건너뛰고 플래그를 바로 리셋한다.
+    suppressCeremonyOnNextTrackStart = false;
+    return;
+  }
   const now = new Date();
   if (now.getMinutes() >= MUSIC_HOURLY_CEREMONY_WINDOW_MIN) return; // 정각+5분 지났으면 세리모니 없음
   triggerMusicHourlyCeremony();
   // "퇴근 세리모니": 18시대 또는 19시대에 정각 세리모니 조건까지 겹치면
-  // 추가로 텍스트 표시 — 이 곡이 끝날 때(=다음 곡의 recordPlayLog가
-  // hideLeaveWorkCeremony를 호출할 때)까지 유지된다.
+  // 추가로 텍스트 표시 — 이 곡이 끝날 때까지 유지된다.
   // 2026-07-16: 하루 2번(18시·19시)으로 확대 — "6시에 퇴근 못하는 사람도
   // 7시엔 퇴근하라"는 성동님 요청.
   if (now.getHours() === 18 || now.getHours() === 19) showLeaveWorkCeremony();
