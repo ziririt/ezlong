@@ -217,6 +217,9 @@ const musicHistoryBody = document.getElementById("musicHistoryBody");
 // "Vocal 제외"(체크 시 제외) 방식으로 전환 — element id도 의미에 맞춰 변경.
 const musicExcludeRockEl = document.getElementById("musicExcludeRock");
 const musicExcludeVocalEl = document.getElementById("musicExcludeVocal");
+// 2026-07-16: "연주곡 제외" 추가 — 보컬이 있는 카테고리(보컬/걸스록) 외에는
+// 전부 연주곡이므로, isVocalCategory()의 반대 조건으로 그대로 재사용한다.
+const musicExcludeInstrumentalEl = document.getElementById("musicExcludeInstrumental");
 const musicQCPanel = document.getElementById("musicQCPanel");
 const musicQCDeleteButton = document.getElementById("musicQCDeleteButton");
 const musicQCRemovalList = document.getElementById("musicQCRemovalList");
@@ -1773,17 +1776,33 @@ const ORIGINAL_CATEGORY_KEY = "__original__";
 const musicRecentGroupSpacing = 8; // 같은 그룹은 최소 이만큼 곡이 지나야 다시 후보가 됨
 
 const MUSIC_CATEGORY_LABELS = {
-  [ORIGINAL_CATEGORY_KEY]: "오리지널",
-  "My Workspace": "어쿠스틱",
+  [ORIGINAL_CATEGORY_KEY]: "어쿠스틱 연주곡",
+  "My Workspace": "어쿠스틱 연주곡",
   "piano chello": "피아노 · 첼로",
   "BGM": "BGM 시네마틱",
-  "vocal - CITY POP": "보컬 · 시티팝",
+  "vocal - CITY POP": "보컬",
   "vocal - workspace 20260711 1400": "보컬",
   "vocal- girls rock": "걸스록",
 };
 
+// 2026-07-16 유저 요청 — 성격이 겹치는 카테고리를 하나로 통합한다.
+// "오리지널"(58곡, category 필드 없는 트랙)과 "My Workspace"(199곡)는 둘 다
+// 사실상 같은 성격의 연주곡이라 "어쿠스틱 연주곡"(257곡) 하나로 묶는다.
+// "vocal - CITY POP"(16곡)과 "vocal - workspace 20260711 1400"(22곡, 기존
+// 라벨 "보컬")도 보컬이 있다는 공통점으로 "보컬"(38곡) 하나로 묶는다.
+// music-playlist.js의 358개 트랙 데이터(각 트랙의 category 필드)는 건드리지
+// 않고, 그룹핑용 "대표 키(canonical key)"로만 매핑한다 — 358개 트랙을 일일이
+// 수정하는 것보다 훨씬 안전하고, 수정 범위가 좁아 되돌리기도 쉽다. 이 매핑
+// 하나만으로 카테고리 선택 UI(buildMusicPlaylistOptions), "전체" 랜덤 로테이션
+// (byCategoryAll), 곡수 집계까지 전부 통합된 것처럼 자동으로 동작한다.
+const CATEGORY_CANONICAL_KEY = {
+  [ORIGINAL_CATEGORY_KEY]: "My Workspace",
+  "vocal - CITY POP": "vocal - workspace 20260711 1400",
+};
+
 function trackCategoryKey(track) {
-  return track && track.category ? track.category : ORIGINAL_CATEGORY_KEY;
+  const rawKey = track && track.category ? track.category : ORIGINAL_CATEGORY_KEY;
+  return CATEGORY_CANONICAL_KEY[rawKey] || rawKey;
 }
 
 function musicCategoryLabel(key) {
@@ -1812,6 +1831,9 @@ function isRockCategory(key) {
 // 체크 해제)에서 깨끗하게 시작한다.
 const musicExcludeRockStorageKey = "ezlong:musicExcludeRock";
 const musicExcludeVocalStorageKey = "ezlong:musicExcludeVocal";
+// 2026-07-16: "연주곡 제외" — 보컬이 있는 카테고리(보컬/걸스록) 외에는 전부
+// 연주곡이므로 별도 판정 함수 없이 !isVocalCategory(key)로 그대로 걸러낸다.
+const musicExcludeInstrumentalStorageKey = "ezlong:musicExcludeInstrumental";
 
 // defaultValue: 저장된 값이 없을 때 쓸 기본값. "포함" 체크박스 시절엔 항상
 // true(기본 켜짐)였지만, "제외" 체크박스는 기본이 false(기본적으로 아무것도
@@ -1940,10 +1962,12 @@ function pickNextTrackIndex() {
   // 전환 — 체크가 "제외한다"는 뜻이 됐으니 조건도 반전.
   const excludeRock = loadMusicGenreToggle(musicExcludeRockStorageKey, false);
   const excludeVocal = loadMusicGenreToggle(musicExcludeVocalStorageKey, false);
+  const excludeInstrumental = loadMusicGenreToggle(musicExcludeInstrumentalStorageKey, false);
   const matchesGenreToggle = (i) => {
     const key = trackCategoryKey(musicPlaylist[i]);
     if (excludeRock && isRockCategory(key)) return false;
     if (excludeVocal && isVocalCategory(key)) return false;
+    if (excludeInstrumental && !isVocalCategory(key)) return false;
     return true;
   };
 
@@ -3479,6 +3503,7 @@ renderMusicPlaylistInfo();
 renderMusicPlaylistFilterOptions();
 if (musicExcludeRockEl) musicExcludeRockEl.checked = loadMusicGenreToggle(musicExcludeRockStorageKey, false);
 if (musicExcludeVocalEl) musicExcludeVocalEl.checked = loadMusicGenreToggle(musicExcludeVocalStorageKey, false);
+if (musicExcludeInstrumentalEl) musicExcludeInstrumentalEl.checked = loadMusicGenreToggle(musicExcludeInstrumentalStorageKey, false);
 renderMusicQCPanel();
 renderMusicToggle();
 settingsOpen.addEventListener("click", openSettings);
@@ -3702,6 +3727,12 @@ if (musicExcludeRockEl) {
 if (musicExcludeVocalEl) {
   musicExcludeVocalEl.addEventListener("change", () => {
     saveMusicGenreToggle(musicExcludeVocalStorageKey, musicExcludeVocalEl.checked);
+    applyMusicGenreToggle();
+  });
+}
+if (musicExcludeInstrumentalEl) {
+  musicExcludeInstrumentalEl.addEventListener("change", () => {
+    saveMusicGenreToggle(musicExcludeInstrumentalStorageKey, musicExcludeInstrumentalEl.checked);
     applyMusicGenreToggle();
   });
 }
