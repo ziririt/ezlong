@@ -28,6 +28,17 @@ html {
   scroll-snap-type: y mandatory;
 }
 
+/* 2026-07-16 2차 개정: '날씨 상세'/'설정'/알라딘 모달 시트에 걸어둔
+   overscroll-behavior:contain(1차 개정)만으로는 유저 실기기에서 스크롤
+   충돌이 그대로 재현됐다 — WebKit이 scroll-snap 스냅 판정을
+   overscroll-behavior 체이닝 차단과 별개로 처리하는 것으로 추정된다.
+   더 확실하게, 이런 시트가 하나라도 열려 있는 동안은 상위 html의
+   scroll-snap 자체를 완전히 꺼버린다(app.js의 lockScrollSnap/
+   unlockScrollSnap이 열고 닫을 때 이 클래스를 토글). */
+html.scroll-snap-locked {
+  scroll-snap-type: none;
+}
+
 body {
   min-height: 100%;
   margin: 0;
@@ -463,13 +474,6 @@ button { font: inherit; }
   margin-top: 12px;
   padding-top: 12px;
   border-top: 1px dashed rgba(255,255,255,0.18);
-}
-
-.music-exclude-filters-label {
-  font-size: 13px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.5);
-  margin-right: 2px;
 }
 
 .exclude-chip {

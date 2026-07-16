@@ -1125,11 +1125,34 @@ function saveSelectedGenres() {
   localStorage.setItem(genreStorageKey, JSON.stringify([...selectedGenres]));
 }
 
+// 2026-07-16 2차 개정: '날씨 상세'/'설정' 시트에 overscroll-behavior:contain을
+// 넣었는데도(1차 개정) 유저 재확인 결과 스크롤 충돌이 그대로 재현됐다 —
+// WebKit이 scroll-snap의 스냅 지점 판정을 overscroll-behavior의 체이닝
+// 차단과 별개 메커니즘으로 처리해서, 시트 안 스크롤이 끝에 닿지 않아도
+// (또는 닿는 순간의 관성이 남아있으면) 상위 html의 scroll-snap-type:y
+// mandatory가 그대로 발동해버리는 것으로 보인다. 더 확실한 방법은 시트가
+// 열려 있는 동안 상위 html의 scroll-snap 자체를 완전히 꺼버리는 것 —
+// 열고 닫을 때 html에 클래스를 토글해서 scroll-snap-type을 none으로
+// 바꾼다. 여러 시트가 동시에 열릴 가능성에 대비해 카운터로 관리한다
+// (닫을 때 카운트가 0이 될 때만 실제로 스냅을 복구).
+let scrollSnapLockCount = 0;
+function lockScrollSnap() {
+  scrollSnapLockCount += 1;
+  document.documentElement.classList.add("scroll-snap-locked");
+}
+function unlockScrollSnap() {
+  scrollSnapLockCount = Math.max(0, scrollSnapLockCount - 1);
+  if (scrollSnapLockCount === 0) {
+    document.documentElement.classList.remove("scroll-snap-locked");
+  }
+}
+
 function openSettings() {
   settingsPanel.classList.add("is-open");
   settingsPanel.setAttribute("aria-hidden", "false");
   settingsOpen.setAttribute("aria-expanded", "true");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "true");
+  lockScrollSnap();
 }
 
 function closeSettings() {
@@ -1137,6 +1160,7 @@ function closeSettings() {
   settingsPanel.setAttribute("aria-hidden", "true");
   settingsOpen.setAttribute("aria-expanded", "false");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "false");
+  unlockScrollSnap();
 }
 
 // 2026-07-16: 알라딘 제휴 수수료 추적용 파라미터 — aladin-links.js에 있는
@@ -1185,6 +1209,7 @@ function openAladinModal(url) {
   if (aladinModalFrame) aladinModalFrame.src = finalUrl;
   aladinModalPanel.classList.add("is-open");
   aladinModalPanel.setAttribute("aria-hidden", "false");
+  lockScrollSnap();
 }
 
 if (aladinModalExternalOpenEl) {
@@ -1223,9 +1248,11 @@ function resyncAladinUiAfterForeground() {
 
 function closeAladinModal() {
   if (!aladinModalPanel) return;
+  const wasOpen = aladinModalPanel.classList.contains("is-open");
   aladinModalPanel.classList.remove("is-open");
   aladinModalPanel.setAttribute("aria-hidden", "true");
   if (aladinModalFrame) aladinModalFrame.src = "about:blank";
+  if (wasOpen) unlockScrollSnap();
 }
 
 // 2026-07-14: 날씨 상세 화면 열기/닫기 — 기존 설정 패널과 동일한 메커니즘
@@ -1236,6 +1263,7 @@ function openWeatherDetail() {
   weatherDetailPanel.setAttribute("aria-hidden", "false");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "true");
   fetchWeatherDetail();
+  lockScrollSnap();
 }
 
 function closeWeatherDetail() {
@@ -1243,6 +1271,7 @@ function closeWeatherDetail() {
   weatherDetailPanel.classList.remove("is-open");
   weatherDetailPanel.setAttribute("aria-hidden", "true");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "false");
+  unlockScrollSnap();
 }
 
 function weatherDetailCoords() {
