@@ -3376,9 +3376,9 @@ function saveMusicPlayLog(log) {
 // 음악이 있는 경우"에 정확히 맞춘 설계).
 // 2026-07-16: 곡이 3분 안팎으로 길 수 있어 "정각+2분"은 너무 타이트하다는
 // 재지적 — 실제 서비스 값을 2분 → 5분으로 넓혔다.
-// 테스트 요청으로 임시 확대(5 → 60, 사실상 그 시간대 내내 발동) 중 —
-// 확인 끝나면 반드시 5로 되돌릴 것.
-const MUSIC_HOURLY_CEREMONY_WINDOW_MIN = 60; // TEMP TEST: 원래 값 5
+// 2026-07-16: 임시 테스트 확대(60분, 사실상 상시 발동)로 인해 "세리모니가
+// 항상 켜져있다"는 재지적 발생 — 테스트 목적 달성 후 원래 값 5로 원복.
+const MUSIC_HOURLY_CEREMONY_WINDOW_MIN = 5;
 
 // 2026-07-16: reshuffleMusicOrder()가 유발한 트랙 전환 1회만 세리모니
 // 판정에서 제외하기 위한 1회성 플래그(아래 handleMusicCeremonyOnTrackStart
