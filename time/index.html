@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260716-aladinlink-v95">
+  <link rel="stylesheet" href="styles.css?v=20260716-aladinlink-v96">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -323,7 +323,13 @@
         <div class="aladin-modal-frame-wrap">
           <iframe id="aladinModalFrame" class="aladin-modal-frame" title="알라딘 도서 정보" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
-        <a id="aladinModalNewTab" class="settings-save aladin-modal-newtab" href="#" target="_blank" rel="noopener">브라우저 새창에서 보기</a>
+        <!-- 2026-07-16 3차 개정: "브라우저 새창에서 보기"를 눌러도 실제로는
+             네이티브 WKWebView 안에서 같은 화면이 통째로 알라딘으로 바뀌어
+             버려서(진짜 새 탭이 아님) 앱으로 돌아올 방법이 없었다 — 유저
+             피드백대로 애초에 iframe을 풀사이즈로 보여주고, 나가는 대신
+             확실하게 닫을 수 있는 큰 "닫기" 버튼만 두는 편이 낫다. 기존
+             [data-aladin-modal-close] 바인딩을 그대로 재사용한다. -->
+        <button type="button" id="aladinModalCloseBottom" class="settings-save aladin-modal-close-bottom" data-aladin-modal-close>닫기</button>
       </section>
     </aside>
   </main>
@@ -331,6 +337,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js"></script>
   <script src="music-playlist.js?v=20260714-weatherdetail-v73"></script>
-  <script src="app.js?v=20260716-aladinlink-v15"></script>
+  <script src="app.js?v=20260716-aladinlink-v16"></script>
 </body>
 </html>

@@ -593,12 +593,22 @@ button { font: inherit; }
   display: block;
 }
 
-.aladin-modal-newtab {
+/* 2026-07-16 3차 개정: "새 창에서 보기" 링크(.aladin-modal-newtab)를 순수
+   "닫기" 버튼(.aladin-modal-close-bottom)으로 바꿨다. 예전엔 부모의
+   .settings-save { width:100% } 위에 좌우 margin까지 더해져서 실제 폭이
+   컨테이너보다 커져 오른쪽으로 살짝 넘치는 버그가 있었다(width:100% +
+   margin은 항상 더해지지 빼지지 않는다) — width를 calc()으로 margin만큼
+   빼서 확실히 안에 맞게 고쳤다. border는 없이 살짝 톤 다운된 배경으로
+   "닫기"라는 보조 동작임을 시각적으로도 구분했다. */
+.aladin-modal-close-bottom {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
+  width: calc(100% - 2 * clamp(16px, 5vw, 28px));
   margin: 10px clamp(16px, 5vw, 28px) 0;
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.26);
 }
 
 .weather-card {

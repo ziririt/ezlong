@@ -188,7 +188,6 @@ const quoteProgress = document.getElementById("quoteProgress");
 const quoteAladinLink = document.getElementById("quoteAladinLink");
 const aladinModalPanel = document.getElementById("aladinModalPanel");
 const aladinModalFrame = document.getElementById("aladinModalFrame");
-const aladinModalNewTab = document.getElementById("aladinModalNewTab");
 const settingsPanel = document.getElementById("quoteSettings");
 const settingsOpen = document.getElementById("settingsOpen");
 const settingsSave = document.getElementById("settingsSave");
@@ -949,12 +948,30 @@ function restartQuoteProgress() {
   quoteProgress.style.animation = "";
 }
 
+// 2026-07-16: "가끔 알라딘 아이콘이 무반응"이 계속 재발한다는 재확인 —
+// 기존 resyncAladinUiAfterForeground()로도 못 잡은 걸 보니, 백그라운드
+// 타이머 유실보다 더 단순한 원인이 있을 수 있다고 보고 다시 살펴봤다.
+// renderQuote()가 760ms 지연 콜백을 매번 새로 예약하는데, 만약 이 콜백이
+// 아직 안 끝난 상태에서(예: 수동으로 관심분야/장르를 바꿔서
+// applyCategorySelection·applyGenreSelection이 즉시 renderQuote를 다시
+// 부르거나, 분(rotateQuote)이 마침 같은 타이밍에 겹치는 경우) renderQuote가
+// 또 호출되면, 오래된 콜백이 나중에 실행되면서 최신 문장의 아이콘
+// 상태(dataset.url/hidden)를 옛날 문장 기준으로 덮어써버릴 수 있다 —
+// 그러면 화면엔 새 문장이 보이는데 아이콘은 그 전 문장 기준으로 멈춰있는
+// 상태가 되고, 다음 문장이 바뀌기 전까지는 이 어긋난 상태가 그대로 유지된다.
+// pendingQuoteTimeoutId로 이전 예약을 취소해서 항상 "가장 최근에 부른
+// renderQuote"만 실제로 반영되게 막는다.
+let pendingQuoteTimeoutId = null;
 function renderQuote(index) {
   const quote = index;
   lastRenderedQuote = quote;
   quotePanel.classList.add("is-changing");
+  if (pendingQuoteTimeoutId !== null) {
+    window.clearTimeout(pendingQuoteTimeoutId);
+  }
 
-  window.setTimeout(() => {
+  pendingQuoteTimeoutId = window.setTimeout(() => {
+    pendingQuoteTimeoutId = null;
     const englishText = quote.english || "";
     const textLength = quote.text.length + Math.floor(englishText.length * 0.55);
     quotePanel.classList.toggle("quote-long", textLength > 115);
@@ -1119,8 +1136,8 @@ function closeSettings() {
 // URL은 자동 매칭 스크립트가 항상 붙여서 저장하지만, gallery-server.js
 // 수정 화면에서 사람이 알라딘 URL을 직접 복사+붙여넣기로 고칠 때는 이
 // 파라미터를 빠뜨릴 수 있다. 데이터 쪽에서 매번 붙이는 걸 믿기보다,
-// 실제로 모달/새 창으로 "나가는" 이 순간에 마지막으로 한 번 더 강제로
-// 붙여서 항상 보장한다(이미 있으면 덮어쓰기만 하고 중복 추가는 안 함).
+// 실제로 iframe을 여는 이 순간에 마지막으로 한 번 더 강제로 붙여서 항상
+// 보장한다(이미 있으면 덮어쓰기만 하고 중복 추가는 안 함).
 const ALADIN_PARTNER_ID = "friedns327";
 function withAladinPartnerParam(url) {
   if (!url) return url;
@@ -1135,16 +1152,15 @@ function withAladinPartnerParam(url) {
   }
 }
 
-// 2026-07-16: 알라딘 도서 정보 모달 열기/닫기 — 기존 설정 패널과 동일한
-// 메커니즘(is-open + aria-hidden)을 따른다. 열 때만 iframe src를 채우고
-// 닫을 때 비운다 — 안 쓸 때도 iframe이 계속 로드된 채 남아있지 않도록.
-// 알라딘 페이지가 iframe 임베드를 막아둔 경우 화면이 하얗게 나올 수 있어서,
-// "브라우저 새창에서 보기" 링크를 항상 같은 URL로 채워 대안 경로를 열어둔다.
+// 2026-07-16 3차 개정: "새 창에서 보기" 버튼을 없앴다 — 네이티브
+// WKWebView에는 진짜 "새 탭"이 없어서, 그 버튼을 누르면 사실 앱 화면
+// 전체가 알라딘으로 통째로 바뀌어버리고 돌아올 방법이 없었다(유저 실측
+// 피드백). 그래서 처음부터 iframe을 풀사이즈(높이 100%)로 보여주고,
+// 하단엔 확실하게 앱으로 돌아올 수 있는 큰 "닫기" 버튼만 둔다.
 function openAladinModal(url) {
   if (!aladinModalPanel || !url) return;
   const finalUrl = withAladinPartnerParam(url);
   if (aladinModalFrame) aladinModalFrame.src = finalUrl;
-  if (aladinModalNewTab) aladinModalNewTab.href = finalUrl;
   aladinModalPanel.classList.add("is-open");
   aladinModalPanel.setAttribute("aria-hidden", "false");
 }
@@ -3435,49 +3451,14 @@ if (quoteAladinLink) {
     if (url) openAladinModal(url);
   });
 }
+// 2026-07-16 3차 개정: 하단 버튼이 이제 링크가 아니라 순수 "닫기" 버튼
+// (data-aladin-modal-close)이라, 아래 공통 바인딩에 자동으로 걸린다 —
+// 별도 클릭 핸들러가 더 필요 없다. window.open/location.href로 앱 밖으로
+// 나가려던 예전 로직은 통째로 제거했다(네이티브 WKWebView에서 진짜 "새
+// 탭"이 없어 돌아올 방법이 없었다는 유저 실측 피드백 반영).
 document.querySelectorAll("[data-aladin-modal-close]").forEach((element) => {
   element.addEventListener("click", closeAladinModal);
 });
-// 2026-07-16: "새 창에서 크게 보기"를 눌러도 반응이 없다는 실기기 피드백 —
-// iOS 앱은 CLAUDE.md대로 WKWebView가 ezlong.com/time을 그대로 로드하는
-// 방식인데, 순수 WKWebView는 앱(Swift) 쪽에서 별도로 처리해주지 않는 한
-// target="_blank"/window.open으로 만드는 새 창을 그냥 무시해버리는 경우가
-// 흔하다(팝업을 띄울 "새 탭" 개념 자체가 없음). 그래서 <a target="_blank">
-// 기본 동작에만 기대지 않고, JS로 명시적으로 열어보고 안 되면 같은 화면
-// 안에서라도 알라딘 페이지로 이동시킨다 — 최소한 "눌렀는데 아예 무반응"은
-// 없게 하기 위한 안전장치. 일반 모바일 브라우저(사파리/크롬)에서는
-// window.open이 정상적으로 새 탭을 열어준다.
-// 2026-07-16 추가 보강: ios/FlipZenClock/ContentView.swift를 직접 확인해보니
-// 이 WKWebView는 WKUIDelegate를 전혀 구현해두지 않았다(webView(_:createWebViewWith:
-// for:windowFeatures:) 없음) — Apple 문서상 이 델리게이트가 없으면 window.open()의
-// 결과가 브라우저마다 다르게 나올 수 있는데, 일부 WebKit 버전은 null이 아니라
-// "아무 동작도 안 하는 유령 window 객체"를 반환해서 위 "!opened" 폴백 분기 자체가
-// 아예 안 걸리는 경우가 있다 — 이게 "여전히 무반응"의 실제 원인일 가능성이 있다.
-// 그래서 네이티브 래퍼 안에서는 window.open() 결과를 아예 신뢰하지 않고 바로
-// location.href로 이동시킨다 — 같은 WKWebView 안에서 알라딘 페이지로 넘어가는
-// 것이지만(진짜 "새 창"은 아님), 최소한 눌렀을 때 확실히 반응은 한다. 참고로
-// ContentView.swift는 navigationDelegate도 따로 안 걸어놨기 때문에(정책 검사 없음)
-// 이 location.href 이동 자체를 native 쪽이 가로막을 일은 없다.
-if (aladinModalNewTab) {
-  aladinModalNewTab.addEventListener("click", (event) => {
-    const url = aladinModalNewTab.getAttribute("href");
-    if (!url || url === "#") return;
-    event.preventDefault();
-    if (isNativeWrapper) {
-      window.location.href = url;
-      return;
-    }
-    let opened = null;
-    try {
-      opened = window.open(url, "_blank", "noopener");
-    } catch (error) {
-      opened = null;
-    }
-    if (!opened) {
-      window.location.href = url;
-    }
-  });
-}
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", handleMusicIconTap);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", () => {
