@@ -3714,18 +3714,55 @@ document.querySelectorAll("[data-aladin-modal-close]").forEach((element) => {
 // .settings-backdrop 구조를 공유한다(각 모달의 시트는 화면 하단에만 붙어
 // 있고 그 위 배경은 스크롤할 내용이 전혀 없는 빈 공간이다). 유저의 스크롤
 // 제스처가 시트가 아니라 이 빈 배경 위에서 시작되면 붙잡아줄 스크롤 대상이
-// 없어 그대로 배경 문서(html)의 스크롤로 흘러가 버린다 — 이게 "설정 화면
-// 스크롤하려는데 ezlong.com 페이지로 튕겨나간다"는 반복 제보의 실제 누수
-// 지점이었을 가능성이 높다(html의 scroll-snap 상태를 토글하는 1~3차 시도가
-// 전부 실패하고 오히려 플립 전환까지 망가뜨렸던 이유는 애초에 html이 아니라
-// 여기가 문제였기 때문으로 추정). 배경에서 시작된 터치는 touchmove에서
-// 직접 preventDefault해서 원천 차단한다 — 시트 내부(.settings-sheet 등)는
-// 각자 overflow:auto라 자기 안에서 정상적으로 스크롤된다.
+// 없어 그대로 배경 문서(html)의 스크롤로 흘러가 버린다. 배경에서 시작된
+// 터치는 touchmove에서 직접 preventDefault해서 원천 차단한다.
 document.querySelectorAll(".settings-backdrop").forEach((backdrop) => {
   backdrop.addEventListener("touchmove", (event) => {
     event.preventDefault();
   }, { passive: false });
 });
+
+// 2026-07-17 5차 개정: 4차(배경 차단)는 "배경에서 시작된 터치"만 막았을 뿐,
+// 유저가 실제로 재현한 증상 — "시트가 살짝 움직이다가 끝에서 넘어감" —은
+// 전혀 다른 지점이었다. 이건 터치가 시트 위에서 시작돼 시트 내부는 정상
+// 스크롤되다가, 시트 스크롤이 맨 위/맨 아래 경계에 닿은 "이후"에도 유저가
+// 같은 방향으로 손가락을 계속 움직이면 그 초과분 제스처가 그대로 조상
+// 요소(html)의 scroll-snap 스크롤로 흘러넘치는 "스크롤 체이닝"이다.
+// CSS `overscroll-behavior: contain`이 이걸 막아줘야 정상이지만(1차 시도),
+// WebKit은 scroll-snap 조상 + 중첩 스크롤 컨테이너 조합에서 이 속성이
+// 스냅 포인트 재계산까지는 억제하지 못하는 알려진 사례가 있다 — rubber-band
+// 튕김은 막아도 "다음 스냅 포인트로 넘어가는 판단" 자체는 별도 로직이라
+// 새어나갈 수 있다. 그래서 CSS에 의존하지 않고 touchstart/touchmove로
+// 직접 방향과 스크롤 위치를 계산해 경계 초과 제스처를 앱 차원에서
+// preventDefault로 원천 차단한다 — overscroll-behavior가 대중화되기 전에
+// 널리 쓰이던 표준 수동 기법이라 WebKit 버전 편차와 무관하게 동작한다.
+function guardSheetScrollChaining(sheet) {
+  if (!sheet) return;
+  let startY = 0;
+  sheet.addEventListener(
+    "touchstart",
+    (event) => {
+      startY = event.touches[0].clientY;
+    },
+    { passive: true }
+  );
+  sheet.addEventListener(
+    "touchmove",
+    (event) => {
+      const currentY = event.touches[0].clientY;
+      const deltaY = currentY - startY; // 양수 = 손가락이 아래로(콘텐츠 위쪽 노출), 음수 = 위로(콘텐츠 아래쪽 노출)
+      const atTop = sheet.scrollTop <= 0;
+      const atBottom = sheet.scrollTop + sheet.clientHeight >= sheet.scrollHeight - 1;
+      if ((atTop && deltaY > 0) || (atBottom && deltaY < 0)) {
+        event.preventDefault();
+      }
+    },
+    { passive: false }
+  );
+}
+document
+  .querySelectorAll(".settings-sheet, .weather-detail-sheet")
+  .forEach(guardSheetScrollChaining);
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", handleMusicIconTap);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", () => {
