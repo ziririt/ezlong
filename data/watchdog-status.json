@@ -1,9 +1,9 @@
 {
-  "lastRun": "2026-07-16T06:35:08.473Z",
-  "lastRunKST": "2026-07-16 15:35:08 KST",
+  "lastRun": "2026-07-16T06:47:24.956Z",
+  "lastRunKST": "2026-07-16 15:47:24 KST",
   "summary": {
-    "ok": 5,
-    "triggered": 1,
+    "ok": 6,
+    "triggered": 0,
     "alreadyRunning": 0,
     "stale": 0,
     "skipped": 4,
@@ -14,7 +14,7 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-07-16T06:35:08.473Z",
+      "checkedAt": "2026-07-16T06:47:24.956Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -22,29 +22,29 @@
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-07-16T06:35:08.473Z",
+      "checkedAt": "2026-07-16T06:47:24.956Z",
       "lastUpdate": "2026-07-16T05:44:21.717Z",
-      "ageHours": 0.8,
+      "ageHours": 1.1,
       "maxAgeHours": 2.5,
       "status": "OK",
-      "reason": "최신 (0.8h 전 업데이트)"
+      "reason": "최신 (1.1h 전 업데이트)"
     },
     {
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-07-16T06:35:08.473Z",
+      "checkedAt": "2026-07-16T06:47:24.956Z",
       "lastUpdate": "2026-07-16T03:17:46.295Z",
-      "ageHours": 3.3,
+      "ageHours": 3.5,
       "maxAgeHours": 5,
       "status": "OK",
-      "reason": "최신 (3.3h 전 업데이트)"
+      "reason": "최신 (3.5h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-07-16T06:35:08.473Z",
+      "checkedAt": "2026-07-16T06:47:24.956Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -52,7 +52,7 @@
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-07-16T06:35:08.473Z",
+      "checkedAt": "2026-07-16T06:47:24.956Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -60,18 +60,18 @@
       "id": "scorecard",
       "name": "긍정vs부정 스코어카드",
       "workflow": "market-scorecard.yml",
-      "checkedAt": "2026-07-16T06:35:08.473Z",
+      "checkedAt": "2026-07-16T06:47:24.956Z",
       "lastUpdate": "2026-07-16T05:28:35Z",
-      "ageHours": 1.1,
+      "ageHours": 1.3,
       "maxAgeHours": 8,
       "status": "OK",
-      "reason": "최신 (1.1h 전 업데이트)"
+      "reason": "최신 (1.3h 전 업데이트)"
     },
     {
       "id": "stocks-prices",
       "name": "심플 주가 실시간",
       "workflow": "fetch-stocks-prices.yml",
-      "checkedAt": "2026-07-16T06:35:08.473Z",
+      "checkedAt": "2026-07-16T06:47:24.956Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -79,34 +79,34 @@
       "id": "stocks-data",
       "name": "심플 주가 일간(스파크라인)",
       "workflow": "fetch-stocks-data.yml",
-      "checkedAt": "2026-07-16T06:35:08.473Z",
+      "checkedAt": "2026-07-16T06:47:24.956Z",
       "lastUpdate": "2026-07-15T23:04:28.035160+00:00",
-      "ageHours": 7.5,
+      "ageHours": 7.7,
       "maxAgeHours": 26,
       "status": "OK",
-      "reason": "최신 (7.5h 전 업데이트)"
+      "reason": "최신 (7.7h 전 업데이트)"
     },
     {
       "id": "market-cycle",
       "name": "마켓 사이클 주봉",
       "workflow": "fetch-market-cycle.yml",
-      "checkedAt": "2026-07-16T06:35:08.473Z",
+      "checkedAt": "2026-07-16T06:47:24.956Z",
       "lastUpdate": "2026-07-15T23:07:23.962Z",
-      "ageHours": 7.5,
+      "ageHours": 7.7,
       "maxAgeHours": 30,
       "status": "OK",
-      "reason": "최신 (7.5h 전 업데이트)"
+      "reason": "최신 (7.7h 전 업데이트)"
     },
     {
       "id": "kr-prices",
       "name": "한국 주가",
       "workflow": "fetch-kr-prices.yml",
-      "checkedAt": "2026-07-16T06:35:08.473Z",
-      "lastUpdate": "2026-07-16T05:28:42Z",
-      "ageHours": 1.1,
+      "checkedAt": "2026-07-16T06:47:24.956Z",
+      "lastUpdate": "2026-07-16T06:35:34Z",
+      "ageHours": 0.2,
       "maxAgeHours": 1,
-      "status": "TRIGGERED",
-      "reason": "1.1h 지연 감지 → 자동 트리거"
+      "status": "OK",
+      "reason": "최신 (0.2h 전 업데이트)"
     }
   ]
 }
