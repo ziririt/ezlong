@@ -1126,34 +1126,23 @@ function saveSelectedGenres() {
   localStorage.setItem(genreStorageKey, JSON.stringify([...selectedGenres]));
 }
 
-// 2026-07-16 2차 개정: '날씨 상세'/'설정' 시트에 overscroll-behavior:contain을
-// 넣었는데도(1차 개정) 유저 재확인 결과 스크롤 충돌이 그대로 재현됐다 —
-// WebKit이 scroll-snap의 스냅 지점 판정을 overscroll-behavior의 체이닝
-// 차단과 별개 메커니즘으로 처리해서, 시트 안 스크롤이 끝에 닿지 않아도
-// (또는 닿는 순간의 관성이 남아있으면) 상위 html의 scroll-snap-type:y
-// mandatory가 그대로 발동해버리는 것으로 보인다. 더 확실한 방법은 시트가
-// 열려 있는 동안 상위 html의 scroll-snap 자체를 완전히 꺼버리는 것 —
-// 열고 닫을 때 html에 클래스를 토글해서 scroll-snap-type을 none으로
-// 바꾼다. 여러 시트가 동시에 열릴 가능성에 대비해 카운터로 관리한다
-// (닫을 때 카운트가 0이 될 때만 실제로 스냅을 복구).
-let scrollSnapLockCount = 0;
-function lockScrollSnap() {
-  scrollSnapLockCount += 1;
-  document.documentElement.classList.add("scroll-snap-locked");
-}
-function unlockScrollSnap() {
-  scrollSnapLockCount = Math.max(0, scrollSnapLockCount - 1);
-  if (scrollSnapLockCount === 0) {
-    document.documentElement.classList.remove("scroll-snap-locked");
-  }
-}
+// 2026-07-16 4차 개정 — 이 자리에 있던 lockScrollSnap/unlockScrollSnap(html에
+// scroll-snap-type:none, 나중엔 overflow:hidden까지 토글하던 방식, 1~3차
+// 개정)을 완전히 제거했다. 3차(overflow:hidden)까지 갔는데도 유저 실기기
+// 재확인 결과 기존 증상은 그대로였고, 오히려 멀쩡하던 "ezlong.com 텍스트 탭
+// → 플립 전환"까지 새로 멈춰버렸다 — html의 scroll-snap 상태를 프로그램적으로
+// 건드리는 접근 자체가 이 페이지의 이미 복잡한 스냅/perspective 구조와
+// 얽혀 부작용을 낳는 것으로 결론짓는다. 이번엔 html은 전혀 건드리지 않고,
+// 실제 누수 지점(스크롤할 내용이 없는 .settings-backdrop 위에서 시작된
+// 터치가 그대로 배경 문서로 흘러가는 것)을 touchmove에서 직접
+// preventDefault로 끊는다 — 아래 setupModalBackdropScrollGuard() 참조.
+// 이제 openSettings/closeSettings는 다시 순수하게 패널 열고 닫는 일만 한다.
 
 function openSettings() {
   settingsPanel.classList.add("is-open");
   settingsPanel.setAttribute("aria-hidden", "false");
   settingsOpen.setAttribute("aria-expanded", "true");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "true");
-  lockScrollSnap();
 }
 
 function closeSettings() {
@@ -1161,7 +1150,6 @@ function closeSettings() {
   settingsPanel.setAttribute("aria-hidden", "true");
   settingsOpen.setAttribute("aria-expanded", "false");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "false");
-  unlockScrollSnap();
 }
 
 // 2026-07-16: 알라딘 제휴 수수료 추적용 파라미터 — aladin-links.js에 있는
@@ -1214,7 +1202,6 @@ function openAladinModal(url) {
   if (aladinModalFrame) aladinModalFrame.src = finalUrl;
   aladinModalPanel.classList.add("is-open");
   aladinModalPanel.setAttribute("aria-hidden", "false");
-  lockScrollSnap();
 }
 
 if (aladinModalExternalOpenEl) {
@@ -1253,11 +1240,9 @@ function resyncAladinUiAfterForeground() {
 
 function closeAladinModal() {
   if (!aladinModalPanel) return;
-  const wasOpen = aladinModalPanel.classList.contains("is-open");
   aladinModalPanel.classList.remove("is-open");
   aladinModalPanel.setAttribute("aria-hidden", "true");
   if (aladinModalFrame) aladinModalFrame.src = "about:blank";
-  if (wasOpen) unlockScrollSnap();
 }
 
 // 2026-07-14: 날씨 상세 화면 열기/닫기 — 기존 설정 패널과 동일한 메커니즘
@@ -1268,7 +1253,6 @@ function openWeatherDetail() {
   weatherDetailPanel.setAttribute("aria-hidden", "false");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "true");
   fetchWeatherDetail();
-  lockScrollSnap();
 }
 
 function closeWeatherDetail() {
@@ -1276,7 +1260,6 @@ function closeWeatherDetail() {
   weatherDetailPanel.classList.remove("is-open");
   weatherDetailPanel.setAttribute("aria-hidden", "true");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "false");
-  unlockScrollSnap();
 }
 
 function weatherDetailCoords() {
@@ -3725,6 +3708,23 @@ if (quoteAladinLink) {
 // 탭"이 없어 돌아올 방법이 없었다는 유저 실측 피드백 반영).
 document.querySelectorAll("[data-aladin-modal-close]").forEach((element) => {
   element.addEventListener("click", closeAladinModal);
+});
+
+// 2026-07-16 4차 개정: '설정'/'날씨 상세'/알라딘 모달 세 곳 모두 같은
+// .settings-backdrop 구조를 공유한다(각 모달의 시트는 화면 하단에만 붙어
+// 있고 그 위 배경은 스크롤할 내용이 전혀 없는 빈 공간이다). 유저의 스크롤
+// 제스처가 시트가 아니라 이 빈 배경 위에서 시작되면 붙잡아줄 스크롤 대상이
+// 없어 그대로 배경 문서(html)의 스크롤로 흘러가 버린다 — 이게 "설정 화면
+// 스크롤하려는데 ezlong.com 페이지로 튕겨나간다"는 반복 제보의 실제 누수
+// 지점이었을 가능성이 높다(html의 scroll-snap 상태를 토글하는 1~3차 시도가
+// 전부 실패하고 오히려 플립 전환까지 망가뜨렸던 이유는 애초에 html이 아니라
+// 여기가 문제였기 때문으로 추정). 배경에서 시작된 터치는 touchmove에서
+// 직접 preventDefault해서 원천 차단한다 — 시트 내부(.settings-sheet 등)는
+// 각자 overflow:auto라 자기 안에서 정상적으로 스크롤된다.
+document.querySelectorAll(".settings-backdrop").forEach((backdrop) => {
+  backdrop.addEventListener("touchmove", (event) => {
+    event.preventDefault();
+  }, { passive: false });
 });
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", handleMusicIconTap);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);

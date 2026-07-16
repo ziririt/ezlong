@@ -28,27 +28,22 @@ html {
   scroll-snap-type: y mandatory;
 }
 
-/* 2026-07-16 3차 개정: '날씨 상세'/'설정'/알라딘 모달 시트에 걸어둔
-   overscroll-behavior:contain(1차)과 scroll-snap-type:none 전환(2차) 둘 다
-   유저 실기기 재확인 결과 증상이 그대로 재현됐다 — 스냅만 꺼서는 부족하다.
-   원인을 다시 보면: html이 scroll-snap-type:y mandatory가 걸린 "진짜 스크롤
-   컨테이너"이고, 모달은 그 위에 position:fixed로 떠 있는 별개 레이어다.
-   정상적인 DOM/CSS 동작이라면 모달 시트(overflow:auto) 안에서의 터치는
-   그 시트 자신만 스크롤해야 하는데, iOS WebKit이 (특히 시트 바로 아래
-   background에 해당하는 .settings-backdrop처럼 그 자체는 스크롤 불가능한
-   node를 터치했을 때) 터치 스크롤의 대상을 찾다가 어떤 경우 그 아래
-   문서 전체(html)까지 스크롤 가능 대상으로 인식해버리는 것으로 추정된다
-   (스냅을 꺼도 여전히 html 자체가 "스크롤은 가능한" 상태였으므로, 스냅만
-   없앤 채로도 그 스크롤 자체는 계속 일어날 수 있었다는 뜻). 이번엔 스냅
-   여부와 무관하게, 모달이 열려 있는 동안 html 자체를 아예 스크롤
-   불가능하게(overflow:hidden) 만들어 근본적으로 차단한다 — 배경 스크롤이
-   "일어날 수조차 없으니" 어떤 제스처가 어디로 전파되든 결과적으로 아무
-   일도 일어나지 않는다(app.js의 lockScrollSnap/unlockScrollSnap이 열고
-   닫을 때 이 클래스를 토글). */
-html.scroll-snap-locked {
-  scroll-snap-type: none;
-  overflow: hidden;
-}
+/* 2026-07-16 4차 개정 — 3차(overflow:hidden)가 원인 진단 자체를 다시 세운
+   계기가 됐다: 3차 적용 후 유저 재확인 결과 기존 증상(설정 내부 스크롤 실패)이
+   여전한 데다, 원래 멀쩡했던 "ezlong.com 텍스트 탭 → 플립 전환"까지 함께
+   멈췄다 — html에 scroll-snap-type/overflow를 프로그램적으로 토글하는 방식
+   자체가, 이미 복잡하게 얽힌 이 페이지의 scroll-snap 상태 머신을 건드려서
+   부작용을 낳는 것으로 결론짓는다(perspective가 걸린 <main> 때문에
+   position:fixed 모달의 containing block이 뒤틀려 있는 상태와 겹쳐 예측이
+   어렵다, .settings-panel 위쪽 주석 참조). 그래서 이번엔 html 자체를 건드리는
+   걸 완전히 그만두고, 진짜 원인이었을 가능성이 높은 지점을 직접 막는다:
+   모달 시트(.settings-sheet)는 화면 하단에만 붙어 있고 그 위 배경
+   (.settings-backdrop)은 스크롤할 내용이 전혀 없는 "빈 공간"이다 — 유저의
+   스크롤 제스처가 시트가 아니라 이 빈 배경 위에서 시작되면, 애초에 붙잡아줄
+   스크롤 대상이 없어 손가락 아래 제스처가 그대로 배경 문서(html)로 흘러가
+   버린다. app.js가 이 배경 요소에 touchmove를 직접 preventDefault해서 원천
+   차단한다(아래 .settings-backdrop 참조) — html의 scroll-snap 상태는 이제
+   전혀 건드리지 않으므로 플립 전환과 서로 간섭할 여지가 없다. */
 
 body {
   min-height: 100%;
@@ -367,10 +362,12 @@ button { font: inherit; }
   inset: 0;
   background: rgba(0,0,0,0.36);
   backdrop-filter: blur(8px);
-  /* 2026-07-16: 이 배경 영역 자체는 스크롤할 내용이 없는데도, 여기서
-     시작된 터치가 그 아래 문서(html)의 스크롤로 잘못 연결되는 걸 막는
-     보강 조치 — 위 html.scroll-snap-locked(overflow:hidden)로도 이미
-     막히지만, 혹시 모를 iOS 버전차 대응까지 이중으로 방어한다. */
+  /* 2026-07-16 4차: 이 배경 영역 자체는 스크롤할 내용이 없는데도, 여기서
+     시작된 터치가 그 아래 문서(html)의 스크롤로 잘못 연결되는 실제 누수
+     지점이었던 것으로 결론지었다(위 html 관련 주석 참조). touch-action:none은
+     CSS 차원의 1차 방어이고, app.js가 touchmove에서 직접 preventDefault하는
+     JS 차원 방어를 이중으로 건다 — CSS만으로는 이 WKWebView에서 신뢰할 수
+     없다는 게 1~3차 시도에서 반복 확인됐기 때문이다. */
   touch-action: none;
 }
 
