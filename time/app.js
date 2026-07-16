@@ -3447,11 +3447,26 @@ document.querySelectorAll("[data-aladin-modal-close]").forEach((element) => {
 // 안에서라도 알라딘 페이지로 이동시킨다 — 최소한 "눌렀는데 아예 무반응"은
 // 없게 하기 위한 안전장치. 일반 모바일 브라우저(사파리/크롬)에서는
 // window.open이 정상적으로 새 탭을 열어준다.
+// 2026-07-16 추가 보강: ios/FlipZenClock/ContentView.swift를 직접 확인해보니
+// 이 WKWebView는 WKUIDelegate를 전혀 구현해두지 않았다(webView(_:createWebViewWith:
+// for:windowFeatures:) 없음) — Apple 문서상 이 델리게이트가 없으면 window.open()의
+// 결과가 브라우저마다 다르게 나올 수 있는데, 일부 WebKit 버전은 null이 아니라
+// "아무 동작도 안 하는 유령 window 객체"를 반환해서 위 "!opened" 폴백 분기 자체가
+// 아예 안 걸리는 경우가 있다 — 이게 "여전히 무반응"의 실제 원인일 가능성이 있다.
+// 그래서 네이티브 래퍼 안에서는 window.open() 결과를 아예 신뢰하지 않고 바로
+// location.href로 이동시킨다 — 같은 WKWebView 안에서 알라딘 페이지로 넘어가는
+// 것이지만(진짜 "새 창"은 아님), 최소한 눌렀을 때 확실히 반응은 한다. 참고로
+// ContentView.swift는 navigationDelegate도 따로 안 걸어놨기 때문에(정책 검사 없음)
+// 이 location.href 이동 자체를 native 쪽이 가로막을 일은 없다.
 if (aladinModalNewTab) {
   aladinModalNewTab.addEventListener("click", (event) => {
     const url = aladinModalNewTab.getAttribute("href");
     if (!url || url === "#") return;
     event.preventDefault();
+    if (isNativeWrapper) {
+      window.location.href = url;
+      return;
+    }
     let opened = null;
     try {
       opened = window.open(url, "_blank", "noopener");
