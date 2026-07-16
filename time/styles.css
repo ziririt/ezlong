@@ -630,6 +630,42 @@ button { font: inherit; }
   transform: translateY(0);
 }
 
+/* 2026-07-16: 알라딘 로그인/장바구니가 iframe 안에서 유지되지 않는 문제에
+   대한 안내 배너 — 서드파티 iframe 쿠키 제약(iOS ITP류 정책)을 유저에게
+   투명하게 알리고, SFSafariViewController(네이티브)/새 탭(브라우저)으로
+   빠져나갈 수 있는 버튼을 항상 노출한다. */
+.aladin-modal-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+  margin: 0 clamp(14px, 4vw, 24px) 8px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: rgba(255, 159, 10, 0.14);
+  border: 1px solid rgba(255, 159, 10, 0.32);
+}
+
+.aladin-modal-notice span {
+  font-size: 14px;
+  font-weight: 620;
+  line-height: 1.4;
+  color: rgba(255,255,255,0.86);
+}
+
+.aladin-modal-external-open {
+  flex-shrink: 0;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.32);
+  background: rgba(255,255,255,0.16);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 740;
+  white-space: nowrap;
+}
+
 .aladin-modal-frame-wrap {
   flex: 1 1 auto;
   min-height: 320px;

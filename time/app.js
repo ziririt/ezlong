@@ -188,6 +188,7 @@ const quoteProgress = document.getElementById("quoteProgress");
 const quoteAladinLink = document.getElementById("quoteAladinLink");
 const aladinModalPanel = document.getElementById("aladinModalPanel");
 const aladinModalFrame = document.getElementById("aladinModalFrame");
+const aladinModalExternalOpenEl = document.getElementById("aladinModalExternalOpen");
 const settingsPanel = document.getElementById("quoteSettings");
 const settingsOpen = document.getElementById("settingsOpen");
 const settingsSave = document.getElementById("settingsSave");
@@ -1163,12 +1164,46 @@ function withAladinPartnerParam(url) {
 // 전체가 알라딘으로 통째로 바뀌어버리고 돌아올 방법이 없었다(유저 실측
 // 피드백). 그래서 처음부터 iframe을 풀사이즈(높이 100%)로 보여주고,
 // 하단엔 확실하게 앱으로 돌아올 수 있는 큰 "닫기" 버튼만 둔다.
+// 2026-07-16 4차 개정: 유저 제보 — 알라딘 로그인/장바구니가 이 iframe
+// 안에서 전혀 유지되지 않는다("담기 하면 장바구니로 넘어가는데 비어있다,
+// 로그인해도 다음에 열면 또 로그아웃돼있다"). 원인은 이 iframe이 ezlong.com
+// 기준으로 "서드파티" 컨텍스트라, iOS WebKit이 여기 심기는 알라딘 쿠키를
+// 오래 유지해주지 않기 때문이다(ITP류 정책 — 우리가 쿠키를 지우는 게
+// 아니다, WKWebView 데이터스토어는 기본 영구 저장소를 그대로 쓰고 있고
+// 코드 어디에도 쿠키를 지우는 로직이 없다). 이걸 근본적으로 우회하려면
+// 알라딘을 "퍼스트파티" 컨텍스트로 열어야 하는데, 3차 개정 때 없앤 것과
+// 똑같은 실수(화면 전체가 바뀌어 못 돌아옴)를 반복하지 않기 위해 이번엔
+// 네이티브에선 SFSafariViewController(자체 완료 버튼으로 앱 복귀 가능 +
+// Safari와 동일한 쿠키 정책), 브라우저에선 진짜 새 탭(window.open)을 쓰는
+// aladinModalCurrentUrl/aladinModalExternalOpenEl 버튼을 추가했다.
+let aladinModalCurrentUrl = null;
+
 function openAladinModal(url) {
   if (!aladinModalPanel || !url) return;
   const finalUrl = withAladinPartnerParam(url);
+  aladinModalCurrentUrl = finalUrl;
   if (aladinModalFrame) aladinModalFrame.src = finalUrl;
   aladinModalPanel.classList.add("is-open");
   aladinModalPanel.setAttribute("aria-hidden", "false");
+}
+
+if (aladinModalExternalOpenEl) {
+  aladinModalExternalOpenEl.addEventListener("click", () => {
+    if (!aladinModalCurrentUrl) return;
+    if (isNativeWrapper && window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.flipzenNativeRadio) {
+      window.webkit.messageHandlers.flipzenNativeRadio.postMessage({ action: "openExternalSafari", url: aladinModalCurrentUrl });
+      return;
+    }
+    let opened = null;
+    try {
+      opened = window.open(aladinModalCurrentUrl, "_blank", "noopener");
+    } catch (error) {
+      opened = null;
+    }
+    if (!opened) {
+      window.location.href = aladinModalCurrentUrl;
+    }
+  });
 }
 
 // 2026-07-16: "가끔 알라딘 아이콘을 눌러도 모달이 안 뜬다, 앱을 강제
@@ -3250,7 +3285,9 @@ function saveMusicPlayLog(log) {
 // 그 순간 마침 새 곡이 시작됐을 때만 시계를 확인한다 — 재생 중이던 곡을
 // 세리모니를 위해 억지로 끊는 일은 절대 없다(성동님 요청 원문 "시작되는
 // 음악이 있는 경우"에 정확히 맞춘 설계).
-const MUSIC_HOURLY_CEREMONY_WINDOW_MIN = 2; // 정각~정각+2분
+// 2026-07-16: 성동님 테스트 요청으로 임시 확대(2 → 60, 사실상 그 시간대
+// 내내 발동) — 실제 서비스 값은 2분이 맞다. 확인 끝나면 반드시 2로 되돌릴 것.
+const MUSIC_HOURLY_CEREMONY_WINDOW_MIN = 60; // TEMP TEST: 원래 값 2
 const MUSIC_HOURLY_CEREMONY_DURATION_MS = 10000; // 10초간 비주얼라이저 솟구침
 let musicHourlyCeremonyTimer = null;
 

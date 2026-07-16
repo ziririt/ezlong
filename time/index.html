@@ -329,6 +329,17 @@
     <aside class="settings-panel aladin-modal-panel" id="aladinModalPanel" aria-hidden="true" aria-label="알라딘 도서 정보">
       <div class="settings-backdrop" data-aladin-modal-close></div>
       <section class="aladin-modal-sheet" role="dialog" aria-modal="true" aria-label="알라딘 도서 정보">
+        <!-- 2026-07-16: 로그인/장바구니가 이 iframe 안에서 유지되지 않는
+             문제 — 알라딘 입장에서 이 화면은 ezlong.com의 서드파티 iframe
+             이라, iOS WebKit이 로그인 쿠키를 오래 유지해주지 않는다(앱이
+             쿠키를 지우는 게 아니다). 완전히 고칠 수는 없지만, 이 버튼으로
+             네이티브에선 SFSafariViewController(Safari와 동일한 쿠키 정책 +
+             자체 완료 버튼으로 앱 복귀), 브라우저에선 진짜 새 탭으로 열어서
+             로그인이 정상 유지되게 한다. -->
+        <div class="aladin-modal-notice">
+          <span>로그인 · 장바구니는 iOS 정책상 이 화면에서 유지되지 않습니다.</span>
+          <button type="button" id="aladinModalExternalOpen" class="aladin-modal-external-open">새 창에서 열기</button>
+        </div>
         <div class="aladin-modal-frame-wrap">
           <iframe id="aladinModalFrame" class="aladin-modal-frame" title="알라딘 도서 정보" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
@@ -346,6 +357,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js"></script>
   <script src="music-playlist.js?v=20260714-weatherdetail-v73"></script>
-  <script src="app.js?v=20260716-ceremony-v1"></script>
+  <script src="app.js?v=20260716-ceremony-v2"></script>
 </body>
 </html>
