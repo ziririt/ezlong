@@ -426,15 +426,62 @@ button { font: inherit; }
 }
 
 /* :has()로 체크박스/라디오 상태를 부모 카드에 그대로 반영해서 별도 JS
-   클래스 토글 없이 처리한다(관심분야 체크박스, 플레이리스트 라디오,
-   Rock/Vocal 체크박스 전부 공통 적용). */
+   클래스 토글 없이 처리한다(관심분야 체크박스, 플레이리스트 라디오 카드에
+   공통 적용 — 2026-07-16부터 Rock/Vocal 제외 필터는 아래 exclude-chip으로
+   분리돼 이 규칙 대상이 아니다). */
 .field-option:has(input:checked) {
   border-color: rgba(34, 197, 94, 0.85);
   background: rgba(34, 197, 94, 0.16);
 }
 
-.music-genre-toggles {
-  margin-top: 10px;
+/* 2026-07-16: "Rock 제외"/"Vocal 제외" — 위 장르 선택 카드(field-grid/
+   field-option)와 똑같이 생기면 "이것도 장르를 고르는 버튼인가" 헷갈린다는
+   지적으로 완전히 다른 모양을 준다. 카드가 아니라 작은 알약(pill) 토글을
+   가로로 늘어놓고, 앞에 "제외 필터"라는 작은 라벨을 붙여 성격이 다른
+   컨트롤임을 형태로 알려준다. 체크(=제외 켜짐) 상태는 초록(선택됨)이 아니라
+   호박색/붉은 계열로 표시해 "빼는 중"이라는 느낌을 준다 — 장르 카드의
+   "골랐다(초록)"와 반대 방향의 행동이라 색도 반대 방향으로 간다. */
+.music-exclude-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(255,255,255,0.18);
+}
+
+.music-exclude-filters-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  margin-right: 2px;
+}
+
+.exclude-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.72);
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.exclude-chip input {
+  width: 15px;
+  height: 15px;
+  accent-color: #f59e0b;
+}
+
+.exclude-chip:has(input:checked) {
+  border-color: rgba(245, 158, 11, 0.85);
+  background: rgba(245, 158, 11, 0.16);
+  color: #fff;
 }
 
 .field-option-all {

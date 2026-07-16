@@ -213,8 +213,10 @@ const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
 const musicPlaylistOptionsEl = document.getElementById("musicPlaylistOptions");
 const musicHistoryList = document.getElementById("musicHistoryList");
 const musicHistoryBody = document.getElementById("musicHistoryBody");
-const musicIncludeRockEl = document.getElementById("musicIncludeRock");
-const musicIncludeVocalEl = document.getElementById("musicIncludeVocal");
+// 2026-07-16: "Rock 포함"/"Vocal 포함"(체크 시 포함) 방식에서 "Rock 제외"/
+// "Vocal 제외"(체크 시 제외) 방식으로 전환 — element id도 의미에 맞춰 변경.
+const musicExcludeRockEl = document.getElementById("musicExcludeRock");
+const musicExcludeVocalEl = document.getElementById("musicExcludeVocal");
 const musicQCPanel = document.getElementById("musicQCPanel");
 const musicQCDeleteButton = document.getElementById("musicQCDeleteButton");
 const musicQCRemovalList = document.getElementById("musicQCRemovalList");
@@ -1788,11 +1790,14 @@ function musicCategoryLabel(key) {
   return MUSIC_CATEGORY_LABELS[key] || key;
 }
 
-// 2026-07-13: "Rock 포함" / "Vocal 포함" 체크박스 — 기본값 켜짐(포함), 끄면
-// 해당 장르 트랙을 후보에서 제외한다. 카테고리명 문자열 기반으로 판정한다
-// (예: "vocal- girls rock"은 vocal이면서 동시에 rock이기도 하다 — 둘 다에
-// 걸린다). 새 카테고리가 추가돼도 이름에 "vocal"/"rock"이 들어가면 자동으로
-// 인식되므로 이 함수만으로 충분하다.
+// 2026-07-13: "Rock 포함" / "Vocal 포함" 체크박스로 시작했었다(기본값 켜짐,
+// 끄면 제외). 2026-07-16: 유저 피드백으로 "Rock 제외" / "Vocal 제외"(체크
+// 시 제외) 방식으로 전환 — 평소엔 아무것도 제외 안 하는 게 기본이라, "끔"
+// 하나만 신경쓰면 되던 것에서 "필요할 때만 체크해서 뺀다"는 더 직관적인
+// 필터 UX로 바뀐다. 카테고리명 문자열 기반으로 판정하는 방식은 그대로다
+// (예: "vocal- girls rock"은 vocal이면서 동시에 rock이기도 하다 — 둘 중
+// 하나라도 제외 체크돼 있으면 걸러진다). 새 카테고리가 추가돼도 이름에
+// "vocal"/"rock"이 들어가면 자동으로 인식되므로 이 함수만으로 충분하다.
 function isVocalCategory(key) {
   return typeof key === "string" && key.toLowerCase().includes("vocal");
 }
@@ -1800,15 +1805,23 @@ function isRockCategory(key) {
   return typeof key === "string" && key.toLowerCase().includes("rock");
 }
 
-const musicIncludeRockStorageKey = "ezlong:musicIncludeRock";
-const musicIncludeVocalStorageKey = "ezlong:musicIncludeVocal";
+// 2026-07-16: 저장 키를 musicInclude*에서 musicExclude*로 새로 분리했다 —
+// 기존 include 저장값(체크=포함)을 그대로 재해석하면 "체크 안 함"과 "체크함"의
+// 의미가 뒤바뀌어 예전 저장값을 가진 사용자에게 정반대 결과가 나갈 위험이
+// 있었다. 새 키로 분리하면 예전 값은 그냥 무시되고, 새 기본값(제외 안 함=
+// 체크 해제)에서 깨끗하게 시작한다.
+const musicExcludeRockStorageKey = "ezlong:musicExcludeRock";
+const musicExcludeVocalStorageKey = "ezlong:musicExcludeVocal";
 
-function loadMusicGenreToggle(storageKey) {
+// defaultValue: 저장된 값이 없을 때 쓸 기본값. "포함" 체크박스 시절엔 항상
+// true(기본 켜짐)였지만, "제외" 체크박스는 기본이 false(기본적으로 아무것도
+// 제외하지 않음)여야 자연스럽다 — 그래서 두 번째 인자로 받는다.
+function loadMusicGenreToggle(storageKey, defaultValue) {
   try {
     const raw = localStorage.getItem(storageKey);
-    return raw === null ? true : raw === "1"; // 저장된 값이 없으면 기본값 켜짐
+    return raw === null ? defaultValue : raw === "1";
   } catch (error) {
-    return true;
+    return defaultValue;
   }
 }
 
@@ -1895,12 +1908,14 @@ function pickNextTrackIndex() {
     return weighted;
   };
   const matchesFilter = (i) => filterKey === "all" || trackCategoryKey(musicPlaylist[i]) === filterKey;
-  const includeRock = loadMusicGenreToggle(musicIncludeRockStorageKey);
-  const includeVocal = loadMusicGenreToggle(musicIncludeVocalStorageKey);
+  // 2026-07-16: 포함 체크박스(기본 true)에서 제외 체크박스(기본 false)로
+  // 전환 — 체크가 "제외한다"는 뜻이 됐으니 조건도 반전.
+  const excludeRock = loadMusicGenreToggle(musicExcludeRockStorageKey, false);
+  const excludeVocal = loadMusicGenreToggle(musicExcludeVocalStorageKey, false);
   const matchesGenreToggle = (i) => {
     const key = trackCategoryKey(musicPlaylist[i]);
-    if (!includeRock && isRockCategory(key)) return false;
-    if (!includeVocal && isVocalCategory(key)) return false;
+    if (excludeRock && isRockCategory(key)) return false;
+    if (excludeVocal && isVocalCategory(key)) return false;
     return true;
   };
 
@@ -3429,8 +3444,8 @@ loadSavedCategories();
 loadSavedGenres();
 renderMusicPlaylistInfo();
 renderMusicPlaylistFilterOptions();
-if (musicIncludeRockEl) musicIncludeRockEl.checked = loadMusicGenreToggle(musicIncludeRockStorageKey);
-if (musicIncludeVocalEl) musicIncludeVocalEl.checked = loadMusicGenreToggle(musicIncludeVocalStorageKey);
+if (musicExcludeRockEl) musicExcludeRockEl.checked = loadMusicGenreToggle(musicExcludeRockStorageKey, false);
+if (musicExcludeVocalEl) musicExcludeVocalEl.checked = loadMusicGenreToggle(musicExcludeVocalStorageKey, false);
 renderMusicQCPanel();
 renderMusicToggle();
 settingsOpen.addEventListener("click", openSettings);
@@ -3645,15 +3660,15 @@ if (musicPlaylistOptionsEl) {
     }
   });
 }
-if (musicIncludeRockEl) {
-  musicIncludeRockEl.addEventListener("change", () => {
-    saveMusicGenreToggle(musicIncludeRockStorageKey, musicIncludeRockEl.checked);
+if (musicExcludeRockEl) {
+  musicExcludeRockEl.addEventListener("change", () => {
+    saveMusicGenreToggle(musicExcludeRockStorageKey, musicExcludeRockEl.checked);
     applyMusicGenreToggle();
   });
 }
-if (musicIncludeVocalEl) {
-  musicIncludeVocalEl.addEventListener("change", () => {
-    saveMusicGenreToggle(musicIncludeVocalStorageKey, musicIncludeVocalEl.checked);
+if (musicExcludeVocalEl) {
+  musicExcludeVocalEl.addEventListener("change", () => {
+    saveMusicGenreToggle(musicExcludeVocalStorageKey, musicExcludeVocalEl.checked);
     applyMusicGenreToggle();
   });
 }
