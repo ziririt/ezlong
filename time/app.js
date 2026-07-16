@@ -208,6 +208,7 @@ const musicProgressFill = document.getElementById("musicProgressFill");
 const musicTrackTitle = document.getElementById("musicTrackTitle");
 const musicLikeButton = document.getElementById("musicLikeButton");
 const musicDislikeButton = document.getElementById("musicDislikeButton");
+const musicShuffleButton = document.getElementById("musicShuffleButton");
 const musicGearOpen = document.getElementById("musicGearOpen");
 const musicToast = document.getElementById("musicToast");
 const musicLeaveWorkEl = document.getElementById("musicLeaveWork");
@@ -1531,6 +1532,18 @@ function recordTrackHeard(index) {
   history.push(index);
   if (history.length >= musicPlaylist.length) history = [index];
   saveMusicHistory(history);
+}
+
+// 2026-07-16: "곡 순서가 마음에 안 들 때" 다시 섞기 버튼. musicHistory(이번
+// 사이클에 이미 나온 곡 기록)를 통째로 비워서 "한 바퀴 다 돌기 전엔 같은
+// 곡이 안 나온다" 제약을 리셋하고, 그 자리에서 바로 다음 곡으로 넘어가
+// 체감이 되게 한다. 스킵 버튼과 달리 "이 곡이 싫어서"가 아니라 "순서가
+// 마음에 안 들어서" 누르는 것이므로 recordDislikeIfWarranted는 호출하지
+// 않는다 — 좋아요/싫어요 학습 데이터에 영향을 주면 안 된다.
+function reshuffleMusicOrder() {
+  saveMusicHistory([]);
+  showMusicToast("Shuffled! Fresh order incoming.");
+  playNextTrack();
 }
 
 // 2026-07-08: 로그인 없이(디바이스 local storage 기준) "싫어요" 학습 —
@@ -3314,9 +3327,11 @@ function saveMusicPlayLog(log) {
 // 그 순간 마침 새 곡이 시작됐을 때만 시계를 확인한다 — 재생 중이던 곡을
 // 세리모니를 위해 억지로 끊는 일은 절대 없다(성동님 요청 원문 "시작되는
 // 음악이 있는 경우"에 정확히 맞춘 설계).
-// 2026-07-16: 성동님 테스트 요청으로 임시 확대(2 → 60, 사실상 그 시간대
-// 내내 발동) — 실제 서비스 값은 2분이 맞다. 확인 끝나면 반드시 2로 되돌릴 것.
-const MUSIC_HOURLY_CEREMONY_WINDOW_MIN = 60; // TEMP TEST: 원래 값 2
+// 2026-07-16: 곡이 3분 안팎으로 길 수 있어 "정각+2분"은 너무 타이트하다는
+// 재지적 — 실제 서비스 값을 2분 → 5분으로 넓혔다.
+// 테스트 요청으로 임시 확대(5 → 60, 사실상 그 시간대 내내 발동) 중 —
+// 확인 끝나면 반드시 5로 되돌릴 것.
+const MUSIC_HOURLY_CEREMONY_WINDOW_MIN = 60; // TEMP TEST: 원래 값 5
 const MUSIC_HOURLY_CEREMONY_DURATION_MS = 10000; // 10초간 비주얼라이저 솟구침
 let musicHourlyCeremonyTimer = null;
 
@@ -3345,7 +3360,7 @@ function hideLeaveWorkCeremony() {
 function handleMusicCeremonyOnTrackStart() {
   hideLeaveWorkCeremony(); // 어떤 곡으로 넘어가든 이전 곡의 "Leave Work"는 일단 끈다
   const now = new Date();
-  if (now.getMinutes() >= MUSIC_HOURLY_CEREMONY_WINDOW_MIN) return; // 정각+2분 지났으면 세리모니 없음
+  if (now.getMinutes() >= MUSIC_HOURLY_CEREMONY_WINDOW_MIN) return; // 정각+5분 지났으면 세리모니 없음
   triggerMusicHourlyCeremony();
   // "퇴근 세리모니": 18시대에 정각 세리모니 조건까지 겹치면 추가로 텍스트
   // 표시 — 이 곡이 끝날 때(=다음 곡의 recordPlayLog가 hideLeaveWorkCeremony를
@@ -3663,6 +3678,10 @@ if (musicSkip) musicSkip.addEventListener("click", () => {
 if (musicGearOpen) musicGearOpen.addEventListener("click", (event) => {
   event.stopPropagation();
   openSettings();
+});
+if (musicShuffleButton) musicShuffleButton.addEventListener("click", (event) => {
+  event.stopPropagation();
+  reshuffleMusicOrder();
 });
 if (musicLikeButton) musicLikeButton.addEventListener("click", (event) => {
   event.stopPropagation();

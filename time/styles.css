@@ -1610,7 +1610,13 @@ button { font: inherit; }
 }
 
 .music-info-panel.ceremony-breakout .music-viz-wrap {
-  transform: scaleY(2.2);
+  /* 2026-07-16: 1차(scaleY 2.2)는 "눈치채기 힘들다"는 재지적 — 원인 두 가지를
+     같이 고쳤다. (1) transform-origin이 기본값(center)이라 위로도 아래로도
+     반씩만 자라 실제 위쪽 도달 거리가 절반 낭비되고 있었다 — bottom으로
+     고정해 전부 위쪽으로만 자라게 함. (2) 배율 자체도 2.2배는 플립시계까지
+     닿기엔 부족해 6배로 크게 올렸다 — 이제 막대 묶음이 시계 숫자판 위까지
+     확실히 넘어와 겹친다. */
+  transform: scaleY(6);
 }
 
 .music-viz-wrap {
@@ -1632,8 +1638,11 @@ button { font: inherit; }
   /* 2026-07-14 17차: 좌우 인셋은 이제 .music-info-panel의 padding이 전담 —
      여기 있던 개별 10px 좌우 padding은 제거(이중 여백 방지). */
   /* 2026-07-16: "정각 세리모니"(아래 .ceremony-breakout 참조)가 켜지고
-     꺼질 때 확 튀지 않고 부드럽게 부풀었다 가라앉도록. */
+     꺼질 때 확 튀지 않고 부드럽게 부풀었다 가라앉도록. transform-origin을
+     bottom으로 고정해 커질 때 아래쪽(진행률 바 방향)이 아니라 위쪽
+     (플립시계 방향)으로만 자라게 한다. */
   transition: transform 0.6s ease;
+  transform-origin: bottom;
 }
 
 .viz-bar {
@@ -1846,6 +1855,7 @@ button { font: inherit; }
 
 .music-like-button { background-image: url("assets/icons/music/thumb_up.svg"); }
 .music-dislike-button { background-image: url("assets/icons/music/thumb_down.svg"); }
+.music-shuffle-button { background-image: url("assets/icons/music/shuffle.svg"); }
 .music-gear-button { background-image: url("assets/icons/music/gear.svg"); }
 
 .music-like-button[aria-pressed="true"],
