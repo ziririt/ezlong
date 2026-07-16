@@ -182,6 +182,13 @@ const skyRoom = document.querySelector(".sky-room");
 const photoCredit = document.getElementById("photoCredit");
 const quotePanel = document.querySelector(".quote-panel");
 const quoteProgress = document.getElementById("quoteProgress");
+// 2026-07-16: 알라딘 도서 링크 — window.aladinLinks(aladin-links.js)에 매칭된
+// 책만 아이콘이 보인다. quoteAladinLink.dataset.url에 현재 문장 책의 알라딘
+// 링크를 저장해뒀다가 클릭 시 모달을 연다.
+const quoteAladinLink = document.getElementById("quoteAladinLink");
+const aladinModalPanel = document.getElementById("aladinModalPanel");
+const aladinModalFrame = document.getElementById("aladinModalFrame");
+const aladinModalNewTab = document.getElementById("aladinModalNewTab");
 const settingsPanel = document.getElementById("quoteSettings");
 const settingsOpen = document.getElementById("settingsOpen");
 const settingsSave = document.getElementById("settingsSave");
@@ -950,9 +957,26 @@ function renderQuote(index) {
     setText("quoteEnglish", englishText);
     setText("quoteText", quote.text);
     setText("quoteSource", `<${quote.title}> ${quote.author}`);
+    updateAladinLinkButton(quote);
     quotePanel.classList.remove("is-changing");
     restartQuoteProgress();
   }, 760);
+}
+
+// 2026-07-16: 현재 문장의 책이 알라딘과 매칭됐으면 아이콘을 보여주고 링크를
+// data-url에 저장, 매칭이 안 됐으면 숨긴다. aladin-links.js 로드 실패/누락
+// 시에도(window.aladinLinks === undefined) 에러 없이 그냥 숨김 처리한다.
+function updateAladinLinkButton(quote) {
+  if (!quoteAladinLink) return;
+  const links = window.aladinLinks || {};
+  const url = links[`${quote.title}|${quote.author}`];
+  if (url) {
+    quoteAladinLink.dataset.url = url;
+    quoteAladinLink.hidden = false;
+  } else {
+    delete quoteAladinLink.dataset.url;
+    quoteAladinLink.hidden = true;
+  }
 }
 
 function shuffleQuotes(items) {
@@ -1083,6 +1107,26 @@ function closeSettings() {
   settingsPanel.setAttribute("aria-hidden", "true");
   settingsOpen.setAttribute("aria-expanded", "false");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "false");
+}
+
+// 2026-07-16: 알라딘 도서 정보 모달 열기/닫기 — 기존 설정 패널과 동일한
+// 메커니즘(is-open + aria-hidden)을 따른다. 열 때만 iframe src를 채우고
+// 닫을 때 비운다 — 안 쓸 때도 iframe이 계속 로드된 채 남아있지 않도록.
+// 알라딘 페이지가 iframe 임베드를 막아둔 경우 화면이 하얗게 나올 수 있어서,
+// "새 창에서 크게 보기" 링크를 항상 같은 URL로 채워 대안 경로를 열어둔다.
+function openAladinModal(url) {
+  if (!aladinModalPanel || !url) return;
+  if (aladinModalFrame) aladinModalFrame.src = url;
+  if (aladinModalNewTab) aladinModalNewTab.href = url;
+  aladinModalPanel.classList.add("is-open");
+  aladinModalPanel.setAttribute("aria-hidden", "false");
+}
+
+function closeAladinModal() {
+  if (!aladinModalPanel) return;
+  aladinModalPanel.classList.remove("is-open");
+  aladinModalPanel.setAttribute("aria-hidden", "true");
+  if (aladinModalFrame) aladinModalFrame.src = "about:blank";
 }
 
 // 2026-07-14: 날씨 상세 화면 열기/닫기 — 기존 설정 패널과 동일한 메커니즘
@@ -2899,15 +2943,13 @@ function handleActivePlayerEnded(event) {
       // 새 activePlayer(방금 전까지 standby였던 <audio>)는 네이티브
       // 모드에서 한 번도 실제로 play()된 적이 없어(위 nativeClockTimerId
       // 주석 참조) currentTime이 초기값 0에 그대로 멈춰있었다. 이 ~4초
-      // 차이가 (당시엔 아직 있었던) 15초 주기 syncNativeSeek()에 그대로
+      // 차이가 15초마다 도는 syncNativeSeek()(아래 setInterval)에 그대로
       // 실려 네이티브에 "몇 초 전으로 되돌아가라"는 신호로 전달됐고,
       // 크로스페이드 직후 다음 15초 재동기화 타이밍이 우연히 겹치는
       // 순간마다 곡이 갑자기 되감겼다 정상 재생되는 버그로 이어졌다(유저
-      // 제보: "5초 정도에서 2초 정도 되돌림, 두세곡에 한번꼴"). 그 주기
-      // 재동기화 자체는 아래 setInterval 주석에서 설명하듯 이후 완전히
-      // 제거했지만, 가상시계를 네이티브의 실제 위치와 맞춰두는 이 교정은
-      // 진행률 표시 정확도를 위해 그대로 남겨둔다 — 네이티브의 실제 위치
-      // (약 fadeDuration초)로 맞춘다.
+      // 제보: "5초 정도에서 2초 정도 되돌림, 두세곡에 한번꼴"). 근본
+      // 원인은 이 가상시계가 네이티브의 실제 재생 위치를 반영하지 못했던
+      // 것 — 여기서 네이티브의 실제 위치(약 fadeDuration초)로 맞춰준다.
       activePlayer().currentTime = musicFadeOutSeconds;
     }
     recordPlayLog(musicIndex);
@@ -3344,6 +3386,15 @@ document.querySelectorAll("[data-settings-close]").forEach((element) => {
 if (weatherChipOpen) weatherChipOpen.addEventListener("click", openWeatherDetail);
 document.querySelectorAll("[data-weather-detail-close]").forEach((element) => {
   element.addEventListener("click", closeWeatherDetail);
+});
+if (quoteAladinLink) {
+  quoteAladinLink.addEventListener("click", () => {
+    const url = quoteAladinLink.dataset.url;
+    if (url) openAladinModal(url);
+  });
+}
+document.querySelectorAll("[data-aladin-modal-close]").forEach((element) => {
+  element.addEventListener("click", closeAladinModal);
 });
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", handleMusicIconTap);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);

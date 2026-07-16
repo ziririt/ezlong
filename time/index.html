@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260715-moodlayer-removed-v92">
+  <link rel="stylesheet" href="styles.css?v=20260716-aladinlink-v93">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -97,13 +97,22 @@
         <p class="quote-english" id="quoteEnglish">The intelligent investor is a realist who sells to optimists and buys from pessimists.</p>
         <blockquote id="quoteText">현명한 투자자는 현실주의자다. 낙관론자에게 팔고, 비관론자에게서 산다.</blockquote>
         <div class="quote-foot">
-          <cite id="quoteSource">&lt;현명한 투자자&gt; 벤저민 그레이엄</cite>
+          <span class="quote-source-wrap">
+            <cite id="quoteSource">&lt;현명한 투자자&gt; 벤저민 그레이엄</cite>
+            <!-- 2026-07-16: 알라딘 매칭이 된 책만 이 버튼이 보인다(기본 hidden,
+                 app.js renderQuote()가 window.aladinLinks에서 찾아서 토글).
+                 눌리면 모달 웹뷰(#aladinModalPanel)로 알라딘 모바일 상품
+                 페이지를 띄운다 — 구매/책소개 열람 유도, 제휴 링크. -->
+            <button type="button" class="quote-aladin-link" id="quoteAladinLink" aria-label="알라딘에서 이 책 보기" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 13.5 L20 4 M20 4 h-6 M20 4 v6 M18 13 v6 a1 1 0 0 1 -1 1 H5 a1 1 0 0 1 -1 -1 V7 a1 1 0 0 1 1 -1 h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </span>
           <span class="quote-timer" aria-hidden="true"><span id="quoteProgress"></span></span>
         </div>
       </section>
 
       <div class="scene-dots" aria-label="배경 사진 선택">
-        <span class="app-version" aria-hidden="true">ver.1.1.2.4</span>
+        <span class="app-version" aria-hidden="true">ver.1.1.3</span>
         <span class="dot-group">
           <button class="dot active" type="button" data-scene-button="0" aria-label="배경 사진 1"></button>
           <button class="dot" type="button" data-scene-button="1" aria-label="배경 사진 2"></button>
@@ -300,10 +309,34 @@
 
       </section>
     </aside>
+
+    <!-- 2026-07-16: 알라딘 도서 정보 모달 — quote-aladin-link 버튼이 눌리면
+         열린다. 알라딘 같은 쇼핑몰은 자기 페이지가 다른 사이트 iframe 안에
+         뜨는 걸 막아두는 경우가 흔해서(클릭재킹 방지), iframe이 하얗게 나올
+         가능성을 감안해 "새 창에서 열기" 버튼을 항상 같이 둔다(유저 확정
+         사항) — iframe이 막혀도 이 버튼으로는 항상 알라딘 페이지를 열 수
+         있다. 열기/닫기 메커니즘은 기존 설정 패널과 동일(is-open + aria-hidden). -->
+    <aside class="settings-panel aladin-modal-panel" id="aladinModalPanel" aria-hidden="true" aria-label="알라딘 도서 정보">
+      <div class="settings-backdrop" data-aladin-modal-close></div>
+      <section class="aladin-modal-sheet" role="dialog" aria-modal="true" aria-labelledby="aladinModalTitle">
+        <header class="settings-head">
+          <div>
+            <p>오늘의 한 문장</p>
+            <h2 id="aladinModalTitle">알라딘에서 보기</h2>
+          </div>
+          <button class="settings-close" type="button" aria-label="알라딘 정보 닫기" data-aladin-modal-close>×</button>
+        </header>
+        <div class="aladin-modal-frame-wrap">
+          <iframe id="aladinModalFrame" class="aladin-modal-frame" title="알라딘 도서 정보" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+        <a id="aladinModalNewTab" class="settings-save aladin-modal-newtab" href="#" target="_blank" rel="noopener">새 창에서 크게 보기</a>
+      </section>
+    </aside>
   </main>
 
   <script src="investment-quotes.js"></script>
+  <script src="aladin-links.js"></script>
   <script src="music-playlist.js?v=20260714-weatherdetail-v73"></script>
-  <script src="app.js?v=20260716-nativeaudio-v12"></script>
+  <script src="app.js?v=20260716-aladinlink-v13"></script>
 </body>
 </html>
