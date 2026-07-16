@@ -1,6 +1,6 @@
 window.aladinLinks = {
   "현명한 투자자|벤저민 그레이엄": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=82134282&partner=friedns327",
-  "버크셔 해서웨이 주주 서한|워런 버핏": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=76673845&partner=friedns327",
+  "버크셔 해서웨이 주주 서한|워런 버핏": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=298436020&partner=friedns327",
   "위대한 기업에 투자하라|필립 피셔": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=368029432&partner=friedns327",
   "돈의 심리학|모건 하우절": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=329910369&partner=friedns327",
   "주식 투자자의 회상|제시 리버모어": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=292905169&partner=friedns327",
@@ -92,7 +92,7 @@ window.aladinLinks = {
   "곰돌이 푸, 행복한 일은 매일 있어|곰돌이 푸": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=135592589&partner=friedns327",
   "아주 보통의 행복|최인철": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=275405513&partner=friedns327",
   "그릿|앤절라 더크워스": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=375203618&partner=friedns327",
-  "신경 끄기의 기술|마크 맨슨": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=207122287&partner=friedns327",
+  "신경 끄기의 기술|마크 맨슨": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=120057939&partner=friedns327",
   "하마터면 열심히 살 뻔했다|하완": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=339998630&partner=friedns327",
   "마당을 나온 암탉|황선미": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=238442696&partner=friedns327",
   "랩 걸|호프 자런": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=101891199&partner=friedns327",
@@ -128,5 +128,18 @@ window.aladinLinks = {
   "마녀체력|이영미": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=255074536&partner=friedns327",
   "아무튼, 산|장보영": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=242720550&partner=friedns327",
   "우아하고 호쾌한 여자 축구|김혼비": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=149702269&partner=friedns327",
-  "다정소감|김혼비": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=310411883&partner=friedns327"
+  "다정소감|김혼비": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=310411883&partner=friedns327",
+  "워런 버핏의 주주서한 (The Essays of Warren Buffett)|워런 버핏": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=298436020&partner=friedns327",
+  "버크셔 해서웨이 주주 서한 (1989년)|워런 버핏": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=298436020&partner=friedns327",
+  "가난한 찰리의 연감 (Poor Charlie's Almanack)|찰리 멍거": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=350688115&partner=friedns327",
+  "Poor Charlie's Almanack|찰리 멍거": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=350688115&partner=friedns327",
+  "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)|필립 피셔": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=368029432&partner=friedns327",
+  "원칙 (Principles: Life and Work)|레이 달리오": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=147945799&partner=friedns327",
+  "모든 주식을 소유하라 (The Little Book of Common Sense Investing)|존 보글": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=372978368&partner=friedns327",
+  "월가의 영웅 (One Up on Wall Street)|피터 린치": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=396483089&partner=friedns327",
+  "투자의 네 기둥 (The Four Pillars of Investing)|윌리엄 번스타인": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=4244397&partner=friedns327",
+  "선택의 심리학|배리 슈워츠": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=589683&partner=friedns327",
+  "전설로 떠나는 월가의 영웅 (One Up on Wall Street)|피터 린치": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=112022&partner=friedns327",
+  "보수적인 투자자는 마음이 편하다 (Common Stocks and Uncommon Profits)|필립 피셔": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=367106609&partner=friedns327",
+  "워런 버핏 웨이 (The Warren Buffett Way)|워런 버핏": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=363738777&partner=friedns327"
 };
