@@ -271,9 +271,9 @@ const wdCurrentSub = document.getElementById("wdCurrentSub");
 const wdCurrentSun = document.getElementById("wdCurrentSun");
 // 2026-07-18 리디자인(클로드 디자인 목업 수용): 현재 날씨 카드 상단 이모지 아이콘.
 const wdCurrentIcon = document.getElementById("wdCurrentIcon");
-const wdDetailIndicators = document.getElementById("wdDetailIndicators");
-// 2026-07-18 유저 피드백: 바람·자외선 코멘트를 상세 지표 그리드 위로 이동.
-const wdDetailComment = document.getElementById("wdDetailComment");
+// 2026-07-18 2차 피드백: "상세 지표" 카드 삭제 — wdDetailIndicators/
+// wdDetailComment DOM 참조와 renderWeatherDetailIndicators() 함수를 함께
+// 제거했다(유저 요청).
 const wdHourlyStrip = document.getElementById("wdHourlyStrip");
 const wdTopComment = document.getElementById("wdTopComment");
 // 2026-07-17 2차 기획(묶음B): 다음 비 카운트다운.
@@ -1640,68 +1640,12 @@ function renderWeatherCurrent(current) {
   }
 }
 
-// 2026-07-17 벤치마크 기획(묶음1·2): "상세 지표" 카드 — 바람·자외선지수·
-// 기압·가시거리·이슬점. 기존 24h 비교 카드가 쓰는 weather-stat-tile을
-// 그대로 재사용해 시각적 일관성을 지켰다(새 카드 타입을 늘리지 않음).
-// 2026-07-18 유저 피드백: 바람·자외선 코멘트를 타일 아래가 아니라 위로
-// 옮겼다(wdDetailComment, 카드 제목 바로 아래) — 이전엔 코멘트 <p>가
-// wdDetailIndicators(그 자체가 .weather-detail-grid) 안에 타일과 나란히
-// 들어가서 그리드의 한 칸을 차지해버리는 구조적 버그가 있었다(코멘트이
-// 타일 옆 칸에 끼어들어 2열이 제대로 안 넓어짐). 이제 코멘트는 그리드
-// 바깥의 별도 엘리먼트라 타일 2열이 카드 전체 너비를 온전히 쓴다.
-function renderWeatherDetailIndicators(current) {
-  if (!wdDetailIndicators) return;
-  const detail = current && current.detail;
-  if (!detail) {
-    wdDetailIndicators.innerHTML = `<p class="weather-empty">상세 지표를 불러올 수 없어요.</p>`;
-    if (wdDetailComment) wdDetailComment.textContent = "";
-    return;
-  }
-
-  const tiles = [];
-  if (detail.wind) {
-    const gustPart = detail.wind.gustKmh != null ? ` (돌풍 ${Math.round(detail.wind.gustKmh)})` : "";
-    tiles.push(
-      `<div class="weather-stat-tile"><span class="weather-stat-label">💨 바람</span><span class="weather-stat-value">${detail.wind.directionLabel} ${Math.round(detail.wind.speedKmh)}km/h${gustPart}</span></div>`
-    );
-  }
-  if (detail.uv) {
-    // 2026-07-17 Fable 5 검토 반영: 저녁·밤엔 지금 값(거의 항상 0) 대신
-    // 오늘 최고 자외선지수를 보여준다 — basis로 라벨을 구분한다.
-    const uvLabel = detail.uv.basis === "DAILY_MAX" ? "오늘 최고 자외선지수" : "자외선지수";
-    tiles.push(
-      `<div class="weather-stat-tile"><span class="weather-stat-label">🔆 ${uvLabel}</span><span class="weather-stat-value">${detail.uv.value} · ${detail.uv.label}</span></div>`
-    );
-  }
-  if (typeof detail.pressure === "number") {
-    tiles.push(
-      `<div class="weather-stat-tile"><span class="weather-stat-label">🧭 기압</span><span class="weather-stat-value">${Math.round(detail.pressure)}hPa</span></div>`
-    );
-  }
-  if (typeof detail.visibilityKm === "number") {
-    tiles.push(
-      `<div class="weather-stat-tile"><span class="weather-stat-label">👁️ 가시거리</span><span class="weather-stat-value">${detail.visibilityKm}km</span></div>`
-    );
-  }
-  if (typeof detail.dewPoint === "number") {
-    tiles.push(
-      `<div class="weather-stat-tile"><span class="weather-stat-label">💧 이슬점</span><span class="weather-stat-value">${Math.round(detail.dewPoint)}°</span></div>`
-    );
-  }
-
-  if (tiles.length === 0) {
-    wdDetailIndicators.innerHTML = `<p class="weather-empty">상세 지표를 불러올 수 없어요.</p>`;
-    if (wdDetailComment) wdDetailComment.textContent = "";
-    return;
-  }
-
-  if (wdDetailComment) {
-    const comments = [detail.wind && detail.wind.comment, detail.uv && detail.uv.comment].filter(Boolean);
-    wdDetailComment.textContent = comments.join(" ");
-  }
-
-  wdDetailIndicators.innerHTML = tiles.join("");
-}
+// 2026-07-18 2차 피드백: "상세 지표" 카드(바람·자외선지수·기압·가시거리·
+// 이슬점)를 유저 요청으로 삭제 — renderWeatherDetailIndicators() 함수와
+// 그 호출부(fetchWeatherDetail 안)를 함께 제거했다. 백엔드는
+// current.detail 필드를 여전히 그대로 내려주므로(재배포 불필요), 나중에
+// 다시 이 카드를 붙이고 싶으면 git 이력에서 이 함수(2026-07-17 벤치마크
+// 기획 묶음1·2)를 그대로 복원하면 된다.
 
 // 2026-07-17 벤치마크 기획(묶음4): 오늘 시간대별 예보 가로 스크롤 스트립.
 // 주의 — 이 스트립은 #weatherDetailPanel(세로 스크롤 컨테이너) 안에 있는
@@ -1777,13 +1721,20 @@ function renderWeatherTopComment(data) {
 // 우산조언 코멘트 바로 아래 짧은 한 줄로 붙인다. 이번 주에 비 소식이 아예
 // 없으면(available:false) 굳이 "비 소식 없어요"를 여기서 또 말하지 않는다
 // — 우산조언 문장이 이미 그 얘기를 하고 있어 중복이기 때문.
+// 2026-07-18 2차 피드백: "지금 비가 오고 있어요"도 같은 이유로 뺀다 —
+// isRainingNow일 때 이 문구가 뜨는데, 맨 위 현재 날씨 아이콘이 이미
+// weatherEmojiFromCurrent()로 실시간 강수 여부를 반영해 비 아이콘을
+// 보여주고 있으므로(위 weatherEmojiFromCurrent 참조) 텍스트로 한 번 더
+// "지금 비가 온다"고 말하는 건 중복이다. isRainingNow가 아닐 때(몇 시간
+// 뒤 비 예보 등)는 아이콘이 알려줄 수 없는 정보라 그대로 보여준다.
 function renderWeatherNextRain(data) {
   if (!wdNextRain) return;
-  if (!data || !data.nextRainCountdown || !data.nextRainCountdown.available) {
+  const countdown = data && data.nextRainCountdown;
+  if (!countdown || !countdown.available || countdown.isRainingNow) {
     wdNextRain.textContent = "";
     return;
   }
-  wdNextRain.textContent = `⏳ ${data.nextRainCountdown.message}`;
+  wdNextRain.textContent = `⏳ ${countdown.message}`;
 }
 
 function renderWeatherRainWindows(data) {
@@ -1862,6 +1813,12 @@ function renderWeatherYesterday(data) {
   }
   const p = data.past24h;
   const n = data.next24h;
+  // 2026-07-18 2차 피드백: "좌측열 숫자는 우측 정렬, 우측열 숫자는 좌측
+  // 정렬해서 맞닿게" — 오른쪽(향후 24시간) 칼럼에 weather-24h-col--future
+  // 클래스를 추가한다. styles.css의 .weather-24h-col--future .weather-stat-tile
+  // 규칙이 이 클래스를 보고 타일 내부를 row-reverse로 뒤집어, 값이 가운데
+  // 경계 쪽(왼쪽), 라벨이 바깥쪽(오른쪽)에 오도록 만든다 — 왼쪽 칼럼과
+  // 대칭을 이루며 두 값이 가운데서 마주본다.
   wdYesterday.innerHTML = `
     <div class="weather-24h-col">
       <p class="weather-24h-col-label">🌙 지난 24시간</p>
@@ -1869,7 +1826,7 @@ function renderWeatherYesterday(data) {
       <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${Math.round(p.tempMax)}°</span></div>
       <div class="weather-stat-tile"><span class="weather-stat-label">평균습도</span><span class="weather-stat-value">${Math.round(p.humidityAvg)}%</span></div>
     </div>
-    <div class="weather-24h-col">
+    <div class="weather-24h-col weather-24h-col--future">
       <p class="weather-24h-col-label">☀️ 향후 24시간</p>
       <div class="weather-stat-tile"><span class="weather-stat-label">최저기온</span><span class="weather-stat-value">${Math.round(n.tempMin)}°</span></div>
       <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${Math.round(n.tempMax)}°</span></div>
@@ -1992,7 +1949,6 @@ async function fetchWeatherDetail() {
   const rainData = rainR.status === "fulfilled" ? rainR.value : null;
   const currentData = currentR.status === "fulfilled" ? currentR.value : null;
   renderWeatherCurrent(currentData);
-  renderWeatherDetailIndicators(currentData);
   renderWeatherTopComment(rainData);
   renderWeatherNextRain(rainData);
   renderWeatherHourlyStrip(hourlyStripR.status === "fulfilled" ? hourlyStripR.value : null);
@@ -2008,7 +1964,24 @@ async function fetchWeatherDetail() {
   // JS 메모리가 초기화되며 우연히 재시도됐던 것). current 데이터가 실제로
   // 성공했을 때만 캐시 타임스탬프를 갱신해서, 실패 시 다음에 상세보기를
   // 열면 자동으로 재시도되게 한다.
-  if (currentData && currentData.current) {
+  // 2026-07-18 2차 피드백 대응: 위 수정은 "current"만 확인했는데, 그 사이
+  // 7개 호출 중 current는 성공하고 다른 하나(예: weekly-forecast)만 그
+  // 순간 실패하는 경우가 실기기에서 발견됐다("주간 예보를 불러올 수
+  // 없어요"가 계속 떠 있음) — current만 보고 "성공"으로 캐시 타임스탬프를
+  // 갱신해버리면, 그 카드는 다음 1시간 동안 재시도 자체가 안 돼 실패
+  // 상태가 그대로 얼어붙는다. 이제 7개 호출이 전부 fulfilled일 때만
+  // 캐시를 갱신한다 — 하나라도 실패하면 다음에 열 때 전체를 다시 시도해서
+  // 일시적 실패(콜드스타트·네트워크 순단 등)가 스스로 회복될 기회를 준다.
+  const allWeatherFetchesOk = [
+    currentR,
+    rainR,
+    yesterdayR,
+    tropicalR,
+    hourlyStripR,
+    weeklyForecastR,
+    tempVsNormalR
+  ].every((r) => r.status === "fulfilled");
+  if (currentData && currentData.current && allWeatherFetchesOk) {
     weatherDetailLastFetchAt = Date.now();
     weatherDetailLastCoordsKey = coordsKey;
   }
