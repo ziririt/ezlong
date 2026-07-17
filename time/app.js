@@ -1138,11 +1138,44 @@ function saveSelectedGenres() {
 // preventDefault로 끊는다 — 아래 setupModalBackdropScrollGuard() 참조.
 // 이제 openSettings/closeSettings는 다시 순수하게 패널 열고 닫는 일만 한다.
 
+// 2026-07-17 6차 개정: 5차까지 시도(overscroll-behavior 단독 → html
+// scroll-snap 해제 → html overflow:hidden → backdrop touchmove 차단 →
+// 시트 경계 touchmove 가드)가 전부 "스크롤 체이닝 자체를 막는" 접근이었는데,
+// 실기기에서 결국 내부 스크롤이 완전히 자유롭게 되진 않았다. 유저 요청으로
+// 목표를 재정의한다 — 시트 내부 스크롤이 완벽하지 않아도 상관없고, 오직
+// "설정/날씨 상세가 열려있는 동안 화면이 ezlong.com 페이지로 플립되지만
+// 않으면" 충분하다. 그래서 원인 규명 대신 결과를 직접 봉쇄한다: 모달이
+// 열리는 순간 문서 스크롤 위치(scrollTop)를 그 값으로 고정하고, 모달이
+// 열려있는 동안 매 프레임(requestAnimationFrame) 그 값에서 벗어났는지
+// 검사해 벗어났으면 즉시 되돌린다. 시트 내부(.settings-sheet 등)는 전혀
+// 다른 요소의 별도 scrollTop이라 이 잠금과 무관하게 그대로 동작한다.
+let pageScrollLockActive = false;
+let pageScrollLockValue = 0;
+function startPageScrollLock() {
+  const scroller = document.scrollingElement || document.documentElement;
+  pageScrollLockValue = scroller.scrollTop;
+  if (pageScrollLockActive) return;
+  pageScrollLockActive = true;
+  const tick = () => {
+    if (!pageScrollLockActive) return;
+    const scrollerNow = document.scrollingElement || document.documentElement;
+    if (scrollerNow.scrollTop !== pageScrollLockValue) {
+      scrollerNow.scrollTop = pageScrollLockValue;
+    }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+function stopPageScrollLock() {
+  pageScrollLockActive = false;
+}
+
 function openSettings() {
   settingsPanel.classList.add("is-open");
   settingsPanel.setAttribute("aria-hidden", "false");
   settingsOpen.setAttribute("aria-expanded", "true");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "true");
+  startPageScrollLock();
 }
 
 function closeSettings() {
@@ -1150,6 +1183,7 @@ function closeSettings() {
   settingsPanel.setAttribute("aria-hidden", "true");
   settingsOpen.setAttribute("aria-expanded", "false");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "false");
+  stopPageScrollLock();
 }
 
 // 2026-07-16: 알라딘 제휴 수수료 추적용 파라미터 — aladin-links.js에 있는
@@ -1253,6 +1287,7 @@ function openWeatherDetail() {
   weatherDetailPanel.setAttribute("aria-hidden", "false");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "true");
   fetchWeatherDetail();
+  startPageScrollLock();
 }
 
 function closeWeatherDetail() {
@@ -1260,6 +1295,7 @@ function closeWeatherDetail() {
   weatherDetailPanel.classList.remove("is-open");
   weatherDetailPanel.setAttribute("aria-hidden", "true");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "false");
+  stopPageScrollLock();
 }
 
 function weatherDetailCoords() {
@@ -3738,25 +3774,11 @@ document.querySelectorAll(".settings-backdrop").forEach((backdrop) => {
 // 널리 쓰이던 표준 수동 기법이라 WebKit 버전 편차와 무관하게 동작한다.
 function guardSheetScrollChaining(sheet) {
   if (!sheet) return;
-  // 2026-07-17 임시 디버그: Safari 원격 인스펙터 콘솔에서 Enter 실행이
-  // 안 먹히는 환경이라, 콘솔 명령 입력 없이도 "그냥 보기만" 해서 확인할 수
-  // 있도록 자동으로 찍히는 로그를 심어둔다. 원인 확인 후 반드시 제거할 것.
-  const cs = getComputedStyle(sheet);
-  console.log(
-    "[scrollDebug][init]",
-    sheet.className,
-    "overflowY=", cs.overflowY,
-    "overscrollBehaviorY=", cs.overscrollBehaviorY,
-    "touchAction=", cs.touchAction,
-    "scrollHeight=", sheet.scrollHeight,
-    "clientHeight=", sheet.clientHeight
-  );
   let startY = 0;
   sheet.addEventListener(
     "touchstart",
     (event) => {
       startY = event.touches[0].clientY;
-      console.log("[scrollDebug][touchstart]", sheet.className, "scrollTop=", sheet.scrollTop);
     },
     { passive: true }
   );
@@ -3767,13 +3789,7 @@ function guardSheetScrollChaining(sheet) {
       const deltaY = currentY - startY; // 양수 = 손가락이 아래로(콘텐츠 위쪽 노출), 음수 = 위로(콘텐츠 아래쪽 노출)
       const atTop = sheet.scrollTop <= 0;
       const atBottom = sheet.scrollTop + sheet.clientHeight >= sheet.scrollHeight - 1;
-      const willPrevent = (atTop && deltaY > 0) || (atBottom && deltaY < 0);
-      console.log(
-        "[scrollDebug][touchmove]", sheet.className,
-        "deltaY=", deltaY, "scrollTop=", sheet.scrollTop,
-        "atTop=", atTop, "atBottom=", atBottom, "prevented=", willPrevent
-      );
-      if (willPrevent) {
+      if ((atTop && deltaY > 0) || (atBottom && deltaY < 0)) {
         event.preventDefault();
       }
     },
@@ -3783,15 +3799,6 @@ function guardSheetScrollChaining(sheet) {
 document
   .querySelectorAll(".settings-sheet, .weather-detail-sheet")
   .forEach(guardSheetScrollChaining);
-document.querySelectorAll(".settings-backdrop").forEach((backdrop, i) => {
-  backdrop.addEventListener(
-    "touchmove",
-    () => {
-      console.log("[scrollDebug][backdrop touchmove prevented]", i);
-    },
-    { passive: true }
-  );
-});
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", handleMusicIconTap);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", () => {
