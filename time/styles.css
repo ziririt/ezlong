@@ -116,12 +116,22 @@ button { font: inherit; }
    "시트" 래퍼(position:fixed 부모 + backdrop + transform 슬라이드)를 두지
    않는다. WKWebView에서 문서(html/body) 자체가 스크롤되지 않도록 만든
    지금 구조에서는, 스크롤이 이 페이지 요소 자체에서 시작·종료돼야
-   상위로 새어나갈 통로 자체가 없어진다는 게 이번 재설계의 핵심 가설이다. */
+   상위로 새어나갈 통로 자체가 없어진다는 게 이번 재설계의 핵심 가설이다.
+   2026-07-17 12차 — 실기기 Safari 원격 인스펙터로 진짜 원인을 확인했다:
+   여기 min-height만 있고 height(고정 높이)가 없었던 게 문제였다. min-height
+   만 있으면 이 박스는 내용물 길이만큼 한없이 커져버려서(overflow-y:auto가
+   있어도) scrollHeight가 항상 clientHeight와 같아진다 — 즉 "넘치는 부분"
+   자체가 절대 생기지 않는 상태였다(콘솔 실측: offsetHeight=scrollHeight=
+   clientHeight=1804, scrollTop 강제대입도 무효). 그렇게 커진 박스는 부모
+   .clock-app의 overflow:hidden에 그냥 잘려서 화면 밖으로 사라졌던 것 —
+   터치 제스처·3D 컨텍스트·팝업 구조 어느 쪽 문제도 아니었다. height를
+   고정값으로 줘서 박스 자체 크기를 뷰포트에 캡핑해야, 그보다 긴 내용물이
+   비로소 "진짜 넘치는 콘텐츠"로 인식되고 그 안에서 스크롤이 생긴다. */
 .app-page {
   position: relative;
   width: 100%;
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
   box-sizing: border-box;
   overflow-y: auto;
   overscroll-behavior: contain;
