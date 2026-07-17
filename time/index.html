@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260717-bodyscroll-v1">
+  <link rel="stylesheet" href="styles.css?v=20260717-pagesheet-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -129,7 +129,7 @@
       </section>
 
       <div class="scene-dots" aria-label="배경 사진 선택">
-        <span class="app-version" aria-hidden="true">ver.1.2.1</span>
+        <span class="app-version" aria-hidden="true">ver.1.2.2</span>
         <span class="dot-group">
           <button class="dot active" type="button" data-scene-button="0" aria-label="배경 사진 1"></button>
           <button class="dot" type="button" data-scene-button="1" aria-label="배경 사진 2"></button>
@@ -164,11 +164,18 @@
         </a>
       </footer>
     </section>
-    </div>
 
-    <aside class="settings-panel" id="quoteSettings" aria-hidden="true" aria-label="오늘의 한 문장 설정">
-      <div class="settings-backdrop" data-settings-close></div>
-      <section class="settings-sheet" role="dialog" aria-modal="true" aria-label="오늘의 한 문장 설정">
+    <!-- 2026-07-17 10차 개정: 설정/날씨상세를 fixed 오버레이 팝업이 아니라
+         #pageTrack 안의 "진짜 페이지"(3·4번째 페이지)로 바꿨다. 유저 제안
+         반영 — position:fixed + <main>의 perspective가 만든 뒤틀린 containing
+         block 위에서 겹겹이 쌓인 구조가 내부 스크롤 버그의 근본 원인이었을
+         가능성이 높아, 그 구조 자체를 없앤다. 이제 이 두 섹션은 .sky-room/
+         .ezlong-webview와 똑같이 pageTrack 안에서 평범하게 쌓인 블록이고,
+         자기 자신이 곧 스크롤 컨테이너다(overflow-y:auto가 바로 이 요소에
+         걸림, 더 이상 별도 "시트"가 필요 없다). 알라딘 모달(#aladinModalPanel)
+         은 이 문제와 무관해서(overflow:hidden, 스크롤 대상 아님) 그대로
+         fixed 팝업으로 남겨둔다. -->
+    <section class="app-page settings-page settings-sheet" id="quoteSettings" aria-label="오늘의 한 문장 설정">
         <header class="settings-head settings-head-notitle">
           <button class="settings-close" type="button" aria-label="설정 닫기" data-settings-close>×</button>
         </header>
@@ -254,18 +261,14 @@
           <ul class="music-history-list" id="musicQCRemovalList" aria-live="polite"></ul>
           <button class="settings-save" type="button" id="musicQCCopyButton">삭제 요청 목록 복사</button>
         </section>
-      </section>
-    </aside>
+    </section>
 
     <!-- 2026-07-14: 플립시계 좌측 상단 날씨 칩을 탭하면 뜨는 상세 날씨 화면.
          인수인계서(flipgen_weather_detail_screen_handoff.md)의 API 6개를
          그대로 연동하되, 비주얼은 애플 비전OS풍 글래스모피즘으로 새로
-         구성했다(.weather-detail-sheet). 열기/닫기 메커니즘(.settings-panel
-         is-open 토글, 백드롭 블러)은 기존 설정 패널과 동일하게 재사용해
-         내비게이션 일관성을 지킨다. -->
-    <aside class="settings-panel weather-detail-panel" id="weatherDetailPanel" aria-hidden="true" aria-label="날씨 상세 정보">
-      <div class="settings-backdrop" data-weather-detail-close></div>
-      <section class="weather-detail-sheet" role="dialog" aria-modal="true" aria-labelledby="weatherDetailTitle">
+         구성했다(.weather-detail-sheet). 2026-07-17 10차: 위 설정 페이지와
+         동일하게 fixed 팝업이 아니라 pageTrack 안의 진짜 페이지로 전환. -->
+    <section class="app-page weather-detail-page weather-detail-sheet" id="weatherDetailPanel" aria-label="날씨 상세 정보">
         <header class="settings-head">
           <div>
             <h2 id="weatherDetailTitle">지금 날씨</h2>
@@ -335,8 +338,8 @@
           <p class="weather-comment" id="wdAccuracyMessage">불러오는 중…</p>
         </section>
 
-      </section>
-    </aside>
+    </section>
+    </div>
 
     <!-- 2026-07-16: 알라딘 도서 정보 모달 — quote-aladin-link 버튼이 눌리면
          열린다. 알라딘 같은 쇼핑몰은 자기 페이지가 다른 사이트 iframe 안에
@@ -379,6 +382,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js"></script>
   <script src="music-playlist.js?v=20260714-weatherdetail-v73"></script>
-  <script src="app.js?v=20260717-bodyscroll-v1"></script>
+  <script src="app.js?v=20260717-pagesheet-v1"></script>
 </body>
 </html>

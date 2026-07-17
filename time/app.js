@@ -1146,11 +1146,17 @@ function saveSelectedGenres() {
 // 열려있든 아니든 상관없다. 페이지 전환은 아래 pageTrack 관련 코드가
 // 전담한다.
 
+// 2026-07-17 10차 개정: position:fixed 팝업(.is-open 클래스 + opacity 토글)
+// 방식을 걷어내고, #quoteSettings 자체가 #pageTrack 안의 2번 페이지가
+// 됐으므로 goToPage(2)/goToPage(0) 호출로 전환한다. is-open/aria-hidden
+// 토글은 접근성 트리 힌트로 남겨두되(해가 없음), 실제 화면 전환은
+// goToPage()가 전담한다.
 function openSettings() {
   settingsPanel.classList.add("is-open");
   settingsPanel.setAttribute("aria-hidden", "false");
   settingsOpen.setAttribute("aria-expanded", "true");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "true");
+  goToPage(2);
 }
 
 function closeSettings() {
@@ -1158,6 +1164,7 @@ function closeSettings() {
   settingsPanel.setAttribute("aria-hidden", "true");
   settingsOpen.setAttribute("aria-expanded", "false");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "false");
+  goToPage(0);
 }
 
 // 2026-07-16: 알라딘 제휴 수수료 추적용 파라미터 — aladin-links.js에 있는
@@ -1255,12 +1262,16 @@ function closeAladinModal() {
 
 // 2026-07-14: 날씨 상세 화면 열기/닫기 — 기존 설정 패널과 동일한 메커니즘
 // (is-open 클래스 토글 + aria-hidden)을 그대로 따른다.
+// 2026-07-17 10차 개정: #weatherDetailPanel도 #pageTrack 안의 3번 페이지로
+// 전환됐으므로 goToPage(3)/goToPage(0) 호출을 추가한다(openSettings/
+// closeSettings와 동일 패턴).
 function openWeatherDetail() {
   if (!weatherDetailPanel) return;
   weatherDetailPanel.classList.add("is-open");
   weatherDetailPanel.setAttribute("aria-hidden", "false");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "true");
   fetchWeatherDetail();
+  goToPage(3);
 }
 
 function closeWeatherDetail() {
@@ -1268,6 +1279,7 @@ function closeWeatherDetail() {
   weatherDetailPanel.classList.remove("is-open");
   weatherDetailPanel.setAttribute("aria-hidden", "true");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "false");
+  goToPage(0);
 }
 
 function weatherDetailCoords() {
@@ -3632,29 +3644,44 @@ dots.forEach((dot) => {
   dot.addEventListener("click", () => selectPhotoIndex([...dots].indexOf(dot)));
 });
 
-// 2026-07-17 8차 개정(근본 재설계): 페이지 1(.sky-room)↔2(.ezlong-webview)
-// 전환을 네이티브 scroll-snap 대신 #pageTrack의 transform으로 직접
-// 구동한다. currentPageIndex(0=시계, 1=ezlong 웹뷰)와 goToPage()가 이제
-// 유일한 페이지 전환 경로다 — 문서 자체는 styles.css에서 영구적으로
-// overflow:hidden이라 "스크롤해서 넘어가는" 개념이 없고, 오직 스와이프
-// 제스처 감지(아래) 또는 명시적 탭(appBrand/뒤로가기 버튼)으로만 페이지가
-// 바뀐다. 모달 시트 내부 스크롤과는 이벤트 계통이 완전히 분리되므로
-// (하나는 overflow:auto 진짜 스크롤, 하나는 이 JS 스와이프+transform),
-// 7번의 실패를 낳았던 "시트 스크롤이 페이지 전환으로 새는" 문제가 구조적
-// 으로 성립하지 않는다.
-let currentPageIndex = 0; // 0 = sky-room, 1 = ezlong-webview
-function goToPage(index) {
-  if (!pageTrack || !skyRoom) return;
-  currentPageIndex = index === 1 ? 1 : 0;
-  const offset = currentPageIndex === 1 ? skyRoom.offsetHeight : 0;
-  pageTrack.style.transform = `translateY(-${offset}px)`;
+// 2026-07-17 8차 개정(근본 재설계): 페이지 전환을 네이티브 scroll-snap
+// 대신 #pageTrack의 transform으로 직접 구동한다. currentPageIndex와
+// goToPage()가 유일한 페이지 전환 경로다 — 문서 자체는 styles.css에서
+// 영구적으로 overflow:hidden이라 "스크롤해서 넘어가는" 개념이 없고, 오직
+// 스와이프 제스처 감지(아래) 또는 명시적 탭(appBrand/뒤로가기 버튼/설정·
+// 날씨상세 열기버튼)으로만 페이지가 바뀐다. 모달 시트 내부 스크롤과는
+// 이벤트 계통이 완전히 분리되므로(하나는 overflow:auto 진짜 스크롤, 하나는
+// 이 JS 스와이프+transform), 7번의 실패를 낳았던 "시트 스크롤이 페이지
+// 전환으로 새는" 문제가 구조적으로 성립하지 않는다.
+//
+// 2026-07-17 10차: 설정(#quoteSettings)·날씨 상세(#weatherDetailPanel)를
+// position:fixed 팝업에서 #pageTrack 안의 진짜 페이지(인덱스 2/3)로
+// 전환하면서, 0/1 두 페이지만 다루던 하드코딩을 걷어내고 #pageTrack의
+// 실제 자식 개수만큼 일반화한다. DOM 순서 = 0:.sky-room, 1:.ezlong-webview,
+// 2:#quoteSettings, 3:#weatherDetailPanel (index.html #pageTrack 참조).
+let currentPageIndex = 0;
+function pageOffset(targetIndex) {
+  if (!pageTrack) return 0;
+  const pages = pageTrack.children;
+  let offset = 0;
+  for (let i = 0; i < targetIndex && i < pages.length; i += 1) {
+    offset += pages[i].offsetHeight;
+  }
+  return offset;
 }
-// 뷰포트 높이가 바뀌면(주소창 접힘/펼침, 회전 등) 2페이지로 가 있는 도중에도
-// 오프셋이 어긋나지 않게 다시 계산해준다. syncFirstScreenHeight()가 이미
-// resize/visualViewport resize에 물려있으므로, 그 다음에 이어서 호출한다.
+function goToPage(index) {
+  if (!pageTrack) return;
+  const lastIndex = pageTrack.children.length - 1;
+  currentPageIndex = Math.min(Math.max(index, 0), lastIndex);
+  pageTrack.style.transform = `translateY(-${pageOffset(currentPageIndex)}px)`;
+}
+// 뷰포트 높이가 바뀌면(주소창 접힘/펼침, 회전 등) 0페이지가 아닌 다른
+// 페이지로 가 있는 도중에도 오프셋이 어긋나지 않게 다시 계산해준다.
+// syncFirstScreenHeight()가 이미 resize/visualViewport resize에 물려있으므로,
+// 그 다음에 이어서 호출한다.
 function resyncPageTrackOffset() {
-  if (!pageTrack || !skyRoom || currentPageIndex !== 1) return;
-  pageTrack.style.transform = `translateY(-${skyRoom.offsetHeight}px)`;
+  if (!pageTrack || currentPageIndex === 0) return;
+  pageTrack.style.transform = `translateY(-${pageOffset(currentPageIndex)}px)`;
 }
 
 if (skyRoom) {

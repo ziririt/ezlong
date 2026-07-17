@@ -93,6 +93,26 @@ button { font: inherit; }
   transform-style: preserve-3d;
 }
 
+/* 2026-07-17 10차: 설정/날씨 상세를 position:fixed 팝업에서 #pageTrack
+   내부의 평범한 페이지로 전환하면서 공유하는 기본 틀. .sky-room/.ezlong-webview와
+   동일하게 이 요소 자신이 한 페이지의 전체 높이를 갖고, 내부 스크롤도
+   overflow-y:auto가 바로 이 요소에 걸려 처리한다 — 더 이상 그 안에 별도
+   "시트" 래퍼(position:fixed 부모 + backdrop + transform 슬라이드)를 두지
+   않는다. WKWebView에서 문서(html/body) 자체가 스크롤되지 않도록 만든
+   지금 구조에서는, 스크롤이 이 페이지 요소 자체에서 시작·종료돼야
+   상위로 새어나갈 통로 자체가 없어진다는 게 이번 재설계의 핵심 가설이다. */
+.app-page {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
 .clock-app[data-scene="midday"] {
   --glass: rgba(216, 215, 200, 0.40);
   --sky-top: #58bcfb;
@@ -397,34 +417,18 @@ button { font: inherit; }
   touch-action: none;
 }
 
+/* 2026-07-17 10차: 기존엔 이 요소가 position:fixed 부모(.settings-panel)
+   안에 떠 있는 "바닥에서 슬라이드업하는 카드"였다(max-height 제한 +
+   translateY 슬라이드 + 아래쪽만 둥근 모서리). 이제 이 요소 자체가
+   #pageTrack 안의 독립된 한 페이지이므로(.app-page 공통 규칙 참조),
+   높이 제한·슬라이드 트랜스폼·카드형 모서리를 모두 제거하고 전체
+   화면을 채우는 평범한 페이지로 전환한다. */
 .settings-sheet {
-  position: relative;
-  width: min(100%, 760px);
-  max-height: min(82svh, 620px);
+  max-width: 760px;
   margin: 0 auto;
-  overflow: auto;
-  /* 2026-07-16: 시트 안에서 스크롤이 맨 위/아래 끝에 닿으면, 상위 html에
-     걸린 scroll-snap-type:y mandatory(1페이지 시계↔2페이지 ezlong 웹뷰 전환용)
-     로 스크롤이 새어나가(scroll chaining) 시트를 스크롤하려던 제스처가
-     페이지 전체를 ezlong 웹뷰 섹션으로 강제 스냅시켜버리는 문제가 있었다.
-     이 시트 내부에서 스크롤을 막아 상위로 전파되지 않게 한다. */
-  overscroll-behavior: contain;
-  /* 2026-07-16: 이 시트 안에서는 세로 스크롤만 브라우저가 직접 처리하게
-     명시 — 제스처 인식 모호성을 줄여 상위 문서로 잘못 위임되는 경우를
-     방지하는 보강 조치. */
-  touch-action: pan-y;
-  padding: 24px clamp(20px, 5vw, 34px) max(28px, env(safe-area-inset-bottom));
-  border: 1px solid rgba(255,255,255,0.22);
-  border-radius: 30px 30px 0 0;
-  background: rgba(13, 20, 31, 0.78);
+  padding: max(28px, env(safe-area-inset-top)) clamp(20px, 5vw, 34px) max(28px, env(safe-area-inset-bottom));
+  background: rgba(13, 20, 31, 0.96);
   color: #fff;
-  box-shadow: 0 -24px 80px rgba(0,0,0,0.34);
-  transform: translateY(28px);
-  transition: transform 260ms ease;
-}
-
-.settings-panel.is-open .settings-sheet {
-  transform: translateY(0);
 }
 
 .settings-head {
@@ -619,35 +623,18 @@ button { font: inherit; }
    내비게이션 일관성을 지킨다. 시트 자체(.weather-detail-sheet)와 카드류만
    더 밝고 투명한 유리질감으로 새로 설계했다 — 기존 settings-sheet(불투명도
    0.78)보다 더 얇고 빛이 통과하는 느낌을 준다. */
+/* 2026-07-17 10차: settings-sheet와 동일한 이유로 카드형 바텀시트 스타일을
+   제거하고 전체 화면 페이지로 전환(.app-page 공통 규칙이 높이/스크롤 담당). */
 .weather-detail-sheet {
-  position: relative;
-  width: min(100%, 760px);
-  max-height: min(86svh, 680px);
+  max-width: 760px;
   margin: 0 auto;
-  overflow: auto;
-  /* 2026-07-16: settings-sheet와 동일한 scroll-chaining 문제 — 시트 안 스크롤이
-     끝에 닿으면 상위 html의 scroll-snap-type:y mandatory로 새어나가 ezlong
-     웹뷰 섹션으로 튕겨나가던 것을 여기서 차단한다. */
-  overscroll-behavior: contain;
-  touch-action: pan-y;
-  padding: 24px clamp(20px, 5vw, 34px) max(28px, env(safe-area-inset-bottom));
-  border: 1px solid rgba(255,255,255,0.34);
-  border-radius: 32px 32px 0 0;
+  padding: max(28px, env(safe-area-inset-top)) clamp(20px, 5vw, 34px) max(28px, env(safe-area-inset-bottom));
   background:
     linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.02) 42%, rgba(0,0,0,0.12)),
-    rgba(16, 24, 38, 0.50);
+    rgba(16, 24, 38, 0.92);
   backdrop-filter: blur(36px) saturate(1.5);
   -webkit-backdrop-filter: blur(36px) saturate(1.5);
   color: #fff;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.28),
-    0 -24px 90px rgba(0,0,0,0.30);
-  transform: translateY(28px);
-  transition: transform 260ms ease;
-}
-
-.weather-detail-panel.is-open .weather-detail-sheet {
-  transform: translateY(0);
 }
 
 /* ── 2026-07-16: 알라딘 도서 정보 모달 ─────────────────────────────
