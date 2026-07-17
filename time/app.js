@@ -236,7 +236,6 @@ const musicShuffleButton = document.getElementById("musicShuffleButton");
 const musicGearOpen = document.getElementById("musicGearOpen");
 const musicToast = document.getElementById("musicToast");
 const musicLeaveWorkEl = document.getElementById("musicLeaveWork");
-const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
 const musicPlaylistOptionsEl = document.getElementById("musicPlaylistOptions");
 const musicHistoryList = document.getElementById("musicHistoryList");
 const musicHistoryBody = document.getElementById("musicHistoryBody");
@@ -3696,26 +3695,16 @@ function formatPlaylistVariant(playlist) {
 // 2026-07-08: "지금 재생 중인 곡이 뭔지 궁금하다"는 질문에 답할 방법이
 // 화면 어디에도 없었다(재생/스킵 버튼만 있고 곡명 표시가 없었음) — 음악
 // 설정 패널에 이미 있던 총 곡수 안내에 현재 곡 제목을 덧붙인다.
+// 2026-07-19 4차 피드백: 설정 패널 맨 위 "NOW PLAYING" 박스는 다시
+// 완전히 없앤다(직전 라운드에 부각시켜 달라고 했다가 이번엔 아예 빼
+// 달라는 요청) — musicPlaylistInfo 관련 HTML(#musicPlaylistInfo)과
+// CSS(.now-playing 계열)도 함께 제거했다. 이 함수는 이제 그 표시를
+// 완전히 건드리지 않고, 곡 제목(musicTrackTitle)·좋아요싫어요 버튼·
+// 네이티브 동기화만 담당한다.
 function renderMusicPlaylistInfo(options) {
-  if (!musicPlaylistInfo) return;
-  const total = Array.isArray(musicPlaylist) ? musicPlaylist.length : 0;
   const track = Array.isArray(musicPlaylist) && musicPlaylist.length > 0
     ? musicPlaylist[musicIndex % musicPlaylist.length]
     : null;
-  if (track && track.title) {
-    // 2026-07-19 유저 요청: 설정 패널 맨 위 "지금 재생 중" 표시가 다른
-    // 설명문구(.settings-desc-muted)와 똑같이 밋밋해서 눈에 안 띈다는
-    // 지적 — NOW PLAYING 배지 + 굵은 곡명으로 구조화해 부각시킨다.
-    const variant = formatPlaylistVariant(track.playlist);
-    musicPlaylistInfo.classList.add("now-playing");
-    musicPlaylistInfo.innerHTML =
-      `<span class="now-playing-tag">NOW PLAYING</span>` +
-      `<span class="now-playing-title">${track.title}${variant}</span>` +
-      `<span class="now-playing-sub">전체 ${total}곡</span>`;
-  } else {
-    musicPlaylistInfo.classList.remove("now-playing");
-    musicPlaylistInfo.textContent = `기본 플레이리스트 · 총 ${total}곡`;
-  }
   // 2026-07-13: 음악 정보 패널의 곡명 표시 + 좋아요/싫어요 버튼 상태도
   // 트랙이 바뀔 때마다 여기서 함께 갱신한다(호출 지점이 이미 여러 곳이라
   // 이 한 함수에만 붙여두면 전부 자동으로 따라온다).

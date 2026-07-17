@@ -770,8 +770,10 @@ button { font: inherit; }
   display: none;
 }
 
+/* 2026-07-19 4차 피드백: 카드 사이 간격이 너무 붙어 보인다는 지적 —
+   16px → 28px로 넉넉하게 늘린다(모든 카드 쌍에 동일 적용). */
 .settings-card + .settings-card {
-  margin-top: 16px;
+  margin-top: 28px;
 }
 
 /* 2026-07-19 3차 피드백: "확인" 버튼이 스크롤에 파묻히지 않도록 시트
@@ -842,44 +844,6 @@ button { font: inherit; }
   color: rgba(255,255,255,0.5);
   font-size: 14px;
   font-weight: 560;
-}
-
-/* 2026-07-19 유저 피드백: 설정 패널 맨 위 "지금 재생 중" 표시가 다른
-   설명문구와 똑같이 밋밋해서 눈에 안 띈다는 지적 — NOW PLAYING 배지 +
-   굵은 곡명으로 눈에 띄게 만든다(app.js renderMusicPlaylistInfo 참조). */
-.settings-desc.now-playing {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  margin: 0 0 12px;
-  padding: 14px 16px;
-  border-radius: 16px;
-  background: rgba(34, 197, 94, 0.14);
-  border: 1px solid rgba(34, 197, 94, 0.35);
-}
-
-.now-playing-tag {
-  padding: 3px 9px;
-  border-radius: 999px;
-  background: #22c55e;
-  color: #06240f;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-}
-
-.now-playing-title {
-  color: #fff;
-  font-size: 18px;
-  font-weight: 820;
-  line-height: 1.35;
-}
-
-.now-playing-sub {
-  color: rgba(255,255,255,0.62);
-  font-size: 14px;
-  font-weight: 620;
 }
 
 /* ── 2026-07-14: 날씨 상세 화면 — 애플 비전OS풍 글래스모피즘 ─────────
@@ -1515,10 +1479,16 @@ button { font: inherit; }
    renderMusicHistoryList 참조). 예전(2026-07-08~07-13)의 죽은 코드였던
    .music-history-item/.music-history-title/.music-history-play 규칙을
    여기서 이 새 구조에 맞게 정리해 재사용한다. */
+/* 2026-07-19 4차 피드백: 내부 스크롤(overflow-y:auto)을 없앤다 — 기본
+   5개만 보여주고 "모두 보기"를 눌러야 늘어나는데, 320px 안에 자체
+   스크롤이 있으니 확장돼도 눈에 보이는 영역이 안 늘어나서 "버튼이 안
+   먹힌다"처럼 보였다(실제로는 DOM엔 다 그려지고 있었음). 이 리스트는
+   시트 자체의 페이지 스크롤(#quoteSettings/.app-page)에 자연스럽게
+   맡기고, 여기서는 별도 스크롤 영역을 만들지 않는다 — 중첩 스크롤
+   영역은 이 프로젝트가 스크롤 버그로 하루를 통째로 날린 근본 원인이었다
+   (CLAUDE.md 참고). */
 .music-history-table {
   width: 100%;
-  max-height: 320px;
-  overflow-y: auto;
 }
 
 .music-history-item {
