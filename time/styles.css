@@ -151,6 +151,14 @@ button { font: inherit; }
    fixed로 전환(뷰포트 기준 고정, 진단 v5에서 실측 검증된 조합 그대로).
    경고: 앞으로 어떤 스크롤 영역이든 .clock-app 안에 두면 같은 이유로 터치
    스크롤이 죽는다 — 스크롤이 필요한 UI는 반드시 body 직속으로 둘 것. */
+/* 2026-07-18 15차-b: body 이주 후 "아래로 파고드는 스크롤은 되는데 위로
+   되돌아오는 스크롤이 안 된다"(한 방향만 동작) 증상 — 유물 속성 2개 제거.
+   -webkit-overflow-scrolling:touch는 구형 iOS 유물로 fixed 스크롤러에서
+   한 방향 스크롤 고착을 일으키던 이력이 있고 iOS 13+에선 불필요,
+   touch-action:pan-y도 WebKit 구현이 불완전하다는 보고가 있어 함께 제거.
+   진단 v3~v5에서 실제로 성공했던 클린 스크롤러가 정확히 "순정
+   overflow-y:auto"만 가진 구성이었다 — 그 검증된 구성으로 맞춘다.
+   overscroll-behavior:contain은 유지(스크롤 끝에서 배경으로 새는 것 방지). */
 .app-page {
   position: fixed;
   inset: 0;
@@ -161,8 +169,6 @@ button { font: inherit; }
   box-sizing: border-box;
   overflow-y: auto;
   overscroll-behavior: contain;
-  touch-action: pan-y;
-  -webkit-overflow-scrolling: touch;
 }
 
 .app-page.is-open {
