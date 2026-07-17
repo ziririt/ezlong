@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260717-outsidetrack-v1">
+  <link rel="stylesheet" href="styles.css?v=20260718-bodyfix-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -129,7 +129,7 @@
       </section>
 
       <div class="scene-dots" aria-label="배경 사진 선택">
-        <span class="app-version" aria-hidden="true">ver.1.2.11</span>
+        <span class="app-version" aria-hidden="true">ver.1.2.12</span>
         <span class="dot-group">
           <button class="dot active" type="button" data-scene-button="0" aria-label="배경 사진 1"></button>
           <button class="dot" type="button" data-scene-button="1" aria-label="배경 사진 2"></button>
@@ -165,6 +165,21 @@
       </footer>
     </section>
     </div>
+  </main>
+
+    <!-- 2026-07-18 15차(근본 원인 확정·최종 수술): 설정/날씨상세/알라딘 모달을
+         .clock-app 밖(body 직속)으로 이동. 실기기 자동 진단 v1~v5(scroll-diag.js,
+         아이폰 사파리 5회 실측)로 확정된 근본 원인 — .clock-app은 100dvh 상자에
+         2페이지 분량(실측 숨은 overflow 829px)의 #pageTrack을 넣고 overflow:hidden
+         으로 잘라놓은 구조인데, iOS WebKit은 팬 제스처를 "가장 가까운 스크롤 가능
+         조상"에 물린다. .clock-app이 바로 그 조상이 되는데 overflow:hidden이라
+         유저 스크롤은 불가 → 제스처가 그냥 소멸했다. 그래서 .clock-app 안에서는
+         어떤 내부 스크롤 영역(새로 만든 것 포함)도 터치로 안 움직였고(진단 v3),
+         같은 패널을 body로 옮기는 순간 즉시 정상 스크롤됐다(진단 v5, 827px 완주).
+         touch-action/overscroll/-webkit-overflow-scrolling/3D transform/preventDefault
+         는 전부 무관함이 실측으로 반증됐다(진단 v2·v3). WKWebView 전용 문제도
+         아니었다 — 아이폰 사파리에서 동일 재현. 관련 CSS는 styles.css의
+         .app-page(position:fixed 전환) 참조. -->
 
     <!-- 2026-07-17 13차 개정: 실기기 Safari 원격 인스펙터로 확인된 원인 —
          #pageTrack에 상시 걸려있는 transform(+will-change:transform)이
@@ -379,7 +394,6 @@
         <button type="button" id="aladinModalCloseBottom" class="settings-save aladin-modal-close-bottom" data-aladin-modal-close>닫기</button>
       </section>
     </aside>
-  </main>
 
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js"></script>

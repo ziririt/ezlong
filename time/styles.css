@@ -143,8 +143,16 @@ button { font: inherit; }
    (display:none)이고 app.js가 이미 열고 닫을 때 토글하던 .is-open
    클래스를 그대로 재사용해 보이게 한다(팝업 시절의 토글 방식으로 복귀,
    다만 이제 fixed가 아니라 absolute + 안전한 조상 구조). */
+/* 2026-07-18 15차(근본 원인 확정) — 진단 v1~v5 실측으로 결론: 문제는 이 요소의
+   속성이 아니라 "조상"이었다. .clock-app(100dvh + overflow:hidden + 내부에
+   2페이지 분량의 숨은 overflow 829px)이 iOS WebKit의 팬 제스처를 "가장 가까운
+   스크롤 가능 조상"으로서 전부 흡수·소멸시키고 있었다. 그래서 이 패널들을
+   index.html에서 .clock-app 밖(body 직속)으로 옮겼고, 그에 맞춰 absolute →
+   fixed로 전환(뷰포트 기준 고정, 진단 v5에서 실측 검증된 조합 그대로).
+   경고: 앞으로 어떤 스크롤 영역이든 .clock-app 안에 두면 같은 이유로 터치
+   스크롤이 죽는다 — 스크롤이 필요한 UI는 반드시 body 직속으로 둘 것. */
 .app-page {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 20;
   display: none;
