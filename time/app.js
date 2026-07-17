@@ -217,6 +217,8 @@ const categoryOptions = document.getElementById("categoryOptions");
 const allLitCategories = document.getElementById("allLitCategories");
 const litCategoryOptions = document.getElementById("litCategoryOptions");
 const genreOptions = document.getElementById("genreOptions");
+// 2026-07-19: "최소 하나의 분야는 선택해야 합니다" 안내 문구.
+const genreMinWarning = document.getElementById("genreMinWarning");
 const webviewScale = document.getElementById("ezlongWebviewScale");
 const ezlongSection = document.querySelector(".ezlong-webview");
 const appBrand = document.querySelector(".app-brand");
@@ -1190,10 +1192,86 @@ function saveSelectedLitCategories() {
   localStorage.setItem(litCategoryStorageKey, JSON.stringify([...selectedLitCategories]));
 }
 
+// 2026-07-19 3차 피드백: "확인" 버튼은 원래 흰색이지만, 아직 저장 안 된
+// 카테고리 변경(투자서/문학·교양서 세부 분야 체크, 1depth 껐다 켜기 등)이
+// 있으면 하늘색으로 바뀌어 "지금 누르면 반영된다"는 걸 알려준다.
+function markSettingsDirty() {
+  if (settingsSave) settingsSave.classList.add("is-dirty");
+}
+
+function clearSettingsDirty() {
+  if (settingsSave) settingsSave.classList.remove("is-dirty");
+}
+
+// 2026-07-19 3차 피드백: 도서 분야 1depth(투자서/문학·교양서) on/off에
+// 맞춰 하위(모든 분야+세부 카테고리) 그리드를 흐리게/진하게만 바꾸는
+// 순수 시각 동기화 — selectedCategories 등 상태값은 건드리지 않는다.
+// 페이지 로드 시(syncGenreControls) 저장된 카테고리 선택을 지우지 않고
+// 화면만 맞추기 위해 setGenreSubgroupEnabled와 분리했다.
+function syncGenreSubgroupVisual(genreKey, enabled) {
+  const isInvestment = genreKey === "investment";
+  const groupOptionsEl = isInvestment ? categoryOptions : litCategoryOptions;
+  const allEl = isInvestment ? allCategories : allLitCategories;
+  if (groupOptionsEl) {
+    const subgroupEl = groupOptionsEl.closest(".genre-subgroup");
+    if (subgroupEl) subgroupEl.classList.toggle("is-disabled", !enabled);
+    groupOptionsEl.querySelectorAll("input").forEach((input) => {
+      input.disabled = !enabled;
+    });
+  }
+  if (allEl) allEl.disabled = !enabled;
+}
+
+// 유저가 실제로 1depth 토글을 조작한 순간에만 호출한다 — 하위(모든 분야+
+// 세부 카테고리)도 자동으로 선택 해제하고, 다시 켜면 "모든 분야"로
+// 리셋해 되살린다. 꺼져있던 동안의 세부 선택을 어설프게 기억하려다
+// 헷갈리는 상태를 만드느니, 항상 깨끗한 기본값으로 돌아오게 하는 편이
+// 예측 가능하다.
+function setGenreSubgroupEnabled(genreKey, enabled) {
+  const isInvestment = genreKey === "investment";
+  const groupOptionsEl = isInvestment ? categoryOptions : litCategoryOptions;
+  const allEl = isInvestment ? allCategories : allLitCategories;
+  if (groupOptionsEl) {
+    groupOptionsEl.querySelectorAll("input").forEach((input) => {
+      input.checked = false;
+    });
+  }
+  if (allEl) allEl.checked = enabled;
+  if (isInvestment) {
+    selectedCategories = new Set();
+  } else {
+    selectedLitCategories = new Set();
+  }
+  syncGenreSubgroupVisual(genreKey, enabled);
+}
+
+// 2026-07-19 3차 피드백: 투자서/문학·교양서 둘 다 끄는 건 허용하지 않는다
+// — 마지막 하나를 끄려고 하면 되돌리고 안내 문구를 잠깐 보여준다.
+let genreMinWarningTimer = null;
+let genreMinWarningHideTimer = null;
+function showGenreMinWarning() {
+  if (!genreMinWarning) return;
+  clearTimeout(genreMinWarningTimer);
+  clearTimeout(genreMinWarningHideTimer);
+  genreMinWarning.hidden = false;
+  void genreMinWarning.offsetWidth; // 연속 클릭 시 트랜지션 재트리거용 강제 리플로우.
+  genreMinWarning.classList.add("is-visible");
+  genreMinWarningTimer = setTimeout(() => {
+    genreMinWarning.classList.remove("is-visible");
+    genreMinWarningHideTimer = setTimeout(() => {
+      genreMinWarning.hidden = true;
+    }, 250);
+  }, 2600);
+}
+
 function syncGenreControls() {
   document.querySelectorAll("[data-genre-option]").forEach((input) => {
     input.checked = selectedGenres.has(input.value);
   });
+  // 2026-07-19: 페이지 로드/장르 변경 때마다 하위 그리드의 흐림 상태를
+  // 현재 selectedGenres와 맞춘다(상태값 자체는 안 건드림 — 위 주석 참고).
+  syncGenreSubgroupVisual("investment", selectedGenres.has("investment"));
+  syncGenreSubgroupVisual("literature", selectedGenres.has("literature"));
 }
 
 function loadSavedGenres() {
@@ -1257,6 +1335,9 @@ function openSettings() {
   settingsPanel.setAttribute("aria-hidden", "false");
   settingsOpen.setAttribute("aria-expanded", "true");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "true");
+  // 2026-07-19 3차 피드백: 패널을 새로 열 때마다 "확인" 버튼은 항상 깨끗한
+  // (흰색) 상태로 시작한다 — 지난번 열었을 때의 dirty 표시가 남아있지 않게.
+  clearSettingsDirty();
 }
 
 function closeSettings() {
@@ -4028,6 +4109,7 @@ function applyCategorySelection() {
     [...document.querySelectorAll("[data-category-option]:checked")].map((input) => input.value)
   );
   allCategories.checked = selectedCategories.size === 0;
+  markSettingsDirty();
   quoteDeck = [];
   lastQuoteTitle = "";
   renderQuote(getNextQuote());
@@ -4041,6 +4123,7 @@ function applyLitCategorySelection() {
     [...document.querySelectorAll("[data-lit-category-option]:checked")].map((input) => input.value)
   );
   if (allLitCategories) allLitCategories.checked = selectedLitCategories.size === 0;
+  markSettingsDirty();
   quoteDeck = [];
   lastQuoteTitle = "";
   renderQuote(getNextQuote());
@@ -4230,6 +4313,7 @@ settingsOpen.addEventListener("click", openSettings);
 settingsSave.addEventListener("click", () => {
   saveSelectedCategories();
   saveSelectedLitCategories();
+  clearSettingsDirty();
   closeSettings();
 });
 document.querySelectorAll("[data-settings-close]").forEach((element) => {
@@ -4461,6 +4545,18 @@ if (litCategoryOptions) {
 if (genreOptions) {
   genreOptions.addEventListener("change", (event) => {
     if (event.target.matches("[data-genre-option]")) {
+      // 2026-07-19 3차 피드백: 투자서/문학·교양서 둘 다 끄는 건 막는다 —
+      // 마지막 하나를 끄려는 시도면 되돌리고 안내만 보여준다.
+      const stillChecked = document.querySelectorAll("[data-genre-option]:checked").length;
+      if (stillChecked === 0) {
+        event.target.checked = true;
+        showGenreMinWarning();
+        return;
+      }
+      // 1depth를 끄면 하위(모든 분야+세부 카테고리)도 자동 선택 해제,
+      // 다시 켜면 "모든 분야"로 리셋해 되살린다.
+      setGenreSubgroupEnabled(event.target.value, event.target.checked);
+      markSettingsDirty();
       applyGenreSelection();
     }
   });

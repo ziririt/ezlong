@@ -573,10 +573,13 @@ button { font: inherit; }
   transition: border-color 160ms ease, background 160ms ease;
 }
 
+/* 2026-07-19 3차 피드백: "선택됨"을 그린이 아니라 밝고 화사한 하늘색으로 —
+   초록은 "재생 중"(NOW PLAYING 배지 등) 쪽 의미로 남겨두고, 체크/선택
+   계열은 전부 이 하늘색(#38bdf8, Tailwind sky-400)으로 통일한다. */
 .field-option input[type="radio"]:checked,
 .field-option input[type="checkbox"]:checked {
-  border-color: #22c55e;
-  background: #22c55e;
+  border-color: #38bdf8;
+  background: #38bdf8;
 }
 
 .field-option input[type="radio"]:checked::after,
@@ -594,8 +597,8 @@ button { font: inherit; }
    공통 적용 — 2026-07-16부터 Rock/Vocal 제외 필터는 아래 exclude-chip으로
    분리돼 이 규칙 대상이 아니다). */
 .field-option:has(input:checked) {
-  border-color: rgba(34, 197, 94, 0.85);
-  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(56, 189, 248, 0.85);
+  background: rgba(56, 189, 248, 0.14);
 }
 
 /* 2026-07-16: "Rock 제외"/"Vocal 제외" — 위 장르 선택 카드(field-grid/
@@ -705,6 +708,37 @@ button { font: inherit; }
   margin: 10px 0 4px 12px;
   padding-left: 14px;
   border-left: 2px solid rgba(255,255,255,0.14);
+  transition: opacity 160ms ease;
+}
+
+/* 2026-07-19 3차 피드백: 1depth(투자서/문학·교양서) 토글을 끄면 그 하위
+   "모든 분야"+세부 카테고리도 자동으로 선택 해제되고 잠긴다(app.js
+   setGenreSubgroupEnabled) — 흐리게 표시해 "지금 이 아래는 의미 없다"는
+   걸 시각으로도 알려준다. */
+.genre-subgroup.is-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* 최소 하나의 분야는 항상 선택돼 있어야 한다 — 마지막 하나를 끄려고 하면
+   되돌리고 이 안내를 잠깐 보여준다(app.js showGenreMinWarning). */
+.genre-min-warning {
+  margin: 10px 0 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.16);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fecaca;
+  font-size: 14px;
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.genre-min-warning.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* 2026-07-19 유저 피드백: 2열 박스 그리드가 답답하다는 지적 — 한 행에
@@ -740,7 +774,17 @@ button { font: inherit; }
   margin-top: 16px;
 }
 
+/* 2026-07-19 3차 피드백: "확인" 버튼이 스크롤에 파묻히지 않도록 시트
+   바닥에 고정(sticky) — #quoteSettings(.settings-sheet) 자신이 스크롤
+   컨테이너라 이 안에서 sticky bottom:0이 그대로 시트 하단에 붙는다.
+   부모가 이미 padding-bottom에 안전영역(env safe-area-inset-bottom)을
+   확보해두고 있어 버튼에 별도 safe-area 계산이 필요 없다. 수정사항이
+   생기면(dirty) 흰색→하늘색으로 바뀌어 "저장 안 된 변경이 있다"는 걸
+   알려준다(app.js markSettingsDirty/clearSettingsDirty). */
 .settings-save {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
   width: 100%;
   min-height: 50px;
   margin-top: 18px;
@@ -751,6 +795,21 @@ button { font: inherit; }
   font-size: 17px;
   font-weight: 820;
   cursor: pointer;
+  box-shadow: 0 -8px 18px rgba(8, 12, 20, 0.35);
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.settings-save.is-dirty {
+  border-color: rgba(56, 189, 248, 0.7);
+  background: #38bdf8;
+  color: #062033;
+}
+
+/* 숨김 QC 패널 안의 버튼은 위 sticky 대상이 아니다(고유 id로만 한정). */
+#musicQCDeleteButton,
+#musicQCCopyButton {
+  position: static;
+  box-shadow: none;
 }
 
 .settings-divider {
