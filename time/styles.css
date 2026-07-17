@@ -1044,11 +1044,29 @@ button { font: inherit; }
   display: none;
 }
 
+/* 2026-07-18 2차 피드백: "체감 기온과 습도는 그 아래 줄에" — 아이콘+기온을
+   윗줄(.weather-current-main), 체감·습도를 아랫줄(.weather-current-meta)로
+   분리한다. 이전엔 4개 span이 한 flex 행에 나란히 있어 화면이 좁으면
+   flex-wrap으로 어중간하게 줄바꿈됐는데, 이제 항상 2줄로 고정된다. */
 .weather-current-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.weather-current-main {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
+}
+
+.weather-current-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
@@ -1250,25 +1268,43 @@ button { font: inherit; }
   gap: 5px;
 }
 
+/* 2026-07-18 2차 피드백: "좌측열 숫자는 우측 정렬, 우측열 숫자는 좌측
+   정렬을 해서 바로 맞닿아서 한눈에 비교되게" — 타일을 위/아래로 쌓던
+   레이아웃(라벨 위, 값 아래)에서 좌우로 나란한 flex row로 바꾸고,
+   justify-content:space-between으로 라벨은 바깥쪽, 값은 안쪽(칼럼 경계
+   쪽)에 붙게 한다. 왼쪽 칼럼은 기본 순서(라벨→값)라 라벨이 왼쪽 바깥,
+   값이 오른쪽 안쪽(가운데)에 자연히 온다. */
 .weather-stat-tile {
   padding: 12px 14px;
   border: none;
   border-radius: 16px;
   background: rgba(255,255,255,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .weather-stat-label {
-  display: block;
   font-size: 12px;
   font-weight: 620;
   color: rgba(22,32,51,0.68);
-  margin-bottom: 4px;
+  white-space: nowrap;
 }
 
 .weather-stat-value {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 760;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* 오른쪽 칼럼(향후 24시간)은 row-reverse로 시각적 순서만 뒤집는다 — DOM
+   순서는 그대로 "라벨→값"이라 스크린리더 읽기 순서(예: "최저기온 12도")는
+   안 바뀌고, 화면에는 값이 왼쪽(칼럼 경계 쪽, 가운데), 라벨이 오른쪽
+   바깥으로 보여 왼쪽 칼럼과 대칭을 이루면서 두 값이 가운데서 맞닿는다. */
+.weather-24h-col--future .weather-stat-tile {
+  flex-direction: row-reverse;
 }
 
 .weather-tropical-badges {
@@ -1393,17 +1429,10 @@ button { font: inherit; }
   display: none;
 }
 
-.weather-detail-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-@media (min-width: 420px) {
-  .weather-detail-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
+/* 2026-07-18 2차 피드백: "상세 지표" 카드 삭제로 .weather-detail-grid
+   (바람·자외선·기압·가시거리·이슬점 타일 2~3열 그리드)는 더 이상 안 쓴다 —
+   죽은 CSS를 남겨두지 않고 제거. .weather-stat-tile/-label/-value는 24h
+   비교 카드가 계속 재사용하므로 그대로 둔다. */
 
 /* 2026-07-17 묶음4: 오늘 시간대별 예보 가로 스크롤 스트립.
    2026-07-17 Fable 5 검토 반영 — touch-action:pan-x와
