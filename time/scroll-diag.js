@@ -1,37 +1,27 @@
 /* =====================================================================
-   FlipZen 스크롤 버그 — 실기기 자동 진단 v3 (2026-07-18, Fable)
+   FlipZen 스크롤 버그 — 실기기 자동 진단 v4 "절단 실험" (2026-07-18, Fable)
 
-   v2 결과(아이폰 사파리 실측, 전 단계 터치 확보)로 확정된 것:
-   - touch-action / -webkit-overflow-scrolling / overscroll-behavior를
-     패널 서브트리 전체에서 제거해도 실패 → 요소 CSS 속성 계열 소거.
-   - 완전히 새로 만든 내부 래퍼 div도 실패 → 요소 구조 계열 소거.
-   - 코드 스크롤(scrollTop 대입)은 항상 완벽 동작.
-   - 우리 JS 4개 파일에는 preventDefault 터치 리스너가 없음(정적 확인).
+   확정된 사실 (v1~v3 + 격리 실험):
+   - 이 앱 페이지에서는 내부 스크롤 영역이 무엇이든(새로 만든 것 포함)
+     터치로 안 움직인다. 루트 문서 스크롤만 살아있다.
+   - preventDefault 없음, CSS 정상, 코드 스크롤 정상.
+   - 같은 기기·같은 사파리·같은 viewport의 무균실 페이지
+     (scroll-test.html)에서는 내부 스크롤이 완벽 동작.
+   → 결론: 이 페이지 안의 특정 요소가 페이지 전체의 터치 스크롤 인식을
+     오염시킨다. 유력 용의자: transform:scale이 걸린 크로스오리진 iframe
+     (.ezlong-frame, ezlong.com 전체를 2페이지에 상시 로드).
 
-   v3가 답할 3가지 질문:
-   Q1. 그래도 "누군가"(사파리 확장 등 포함) preventDefault를 하는가?
-       → 이벤트의 defaultPrevented 플래그를 직접 센다.
-   Q2. 터치 스크롤이 죽어있는 범위가 어디까지인가?
-       → 앱과 무관한 새 스크롤 영역(클린룸)을 body 직속 / .clock-app 안 /
-         설정 패널 안 3곳에 차례로 심어 이진탐색.
-   Q3. 문서(루트) 스크롤러 자체는 터치로 움직이는가?
-   + 보너스: html/body/.clock-app/pageTrack/패널의 실제 computed 스타일을
-     결과 화면에 그대로 표시(기기에서만 보이는 값 확보).
+   v4: 클린 스크롤러(대조군)를 띄워두고 페이지 덩어리를 하나씩 제거하며
+   어느 절단에서 스크롤이 살아나는지 이진탐색. 성공이 나오면 즉시 종료.
    ===================================================================== */
 (async () => {
   if (window.__fzDiagRunning) return;
   window.__fzDiagRunning = true;
 
-  const results = { v: 3, startedAt: new Date().toString(), info: {}, phases: [] };
-  const el = document.getElementById("quoteSettings");
+  const results = { v: 4, startedAt: new Date().toString(), phases: [] };
   const clockApp = document.querySelector(".clock-app");
-  if (!el || !clockApp) { alert("진단 실패: 필수 요소 없음"); return; }
-
-  if (!el.classList.contains("is-open")) {
-    const btn = document.getElementById("settingsOpen");
-    if (btn) btn.click(); else el.classList.add("is-open");
-    await new Promise(r => setTimeout(r, 700));
-  }
+  const pageTrack = document.getElementById("pageTrack") || document.querySelector(".page-track");
+  const iframe = document.querySelector(".ezlong-frame");
 
   const ov = document.createElement("div");
   ov.style.cssText =
@@ -41,171 +31,120 @@
   document.body.appendChild(ov);
   const show = t => { ov.textContent = t; };
   const sleep = ms => new Promise(r => setTimeout(r, ms));
-  show("진단 준비 중…");
 
-  // ---------- 조상 체인 computed style 채집 (결과 화면에 표시) ----------
-  const styleOf = n => {
-    if (!n) return null;
-    const cs = getComputedStyle(n);
-    return {
-      ta: cs.touchAction, ovf: cs.overflowY,
-      osb: cs.overscrollBehaviorY || cs.overscrollBehavior || "-",
-      wos: cs.webkitOverflowScrolling || "-",
-      tf: cs.transform, wc: cs.willChange, persp: cs.perspective
-    };
-  };
-  results.info.styles = {
-    html: styleOf(document.documentElement),
-    body: styleOf(document.body),
-    clockApp: styleOf(clockApp),
-    pageTrack: styleOf(document.getElementById("pageTrack") || document.querySelector(".page-track")),
-    panel: styleOf(el)
-  };
-  el.scrollTop = 150;
-  await new Promise(r => requestAnimationFrame(() => setTimeout(r, 300)));
-  results.info.programmaticScroll = el.scrollTop;
-  el.scrollTop = 0;
+  // 상시 떠 있는 클린 스크롤러 (대조군이자 측정 대상)
+  const scroller = document.createElement("div");
+  scroller.style.cssText =
+    "position:fixed;top:0;left:0;right:0;bottom:0;z-index:2147483000;" +
+    "background:#0d1f33;overflow-y:auto;";
+  const content = document.createElement("div");
+  content.style.cssText =
+    "height:4000px;color:#fff;text-align:center;padding-top:240px;font:700 18px/1.5 -apple-system;" +
+    "background:repeating-linear-gradient(#16324f, #16324f 120px, #1d436b 120px, #1d436b 240px);";
+  content.textContent = "이 파란 화면을 계속 위아래로 문지르세요";
+  scroller.appendChild(content);
+  document.body.appendChild(scroller);
 
-  // ---------- 관측 인프라 ----------
-  let moveCount = 0, dpStart = 0, dpMove = 0, maxVal = 0, curGet = () => el.scrollTop;
-  document.addEventListener("touchmove", e => {
-    moveCount++;
-    if (e.defaultPrevented) dpMove++;
-  }, { passive: true }); // 버블 단계 — 앞서 누가 preventDefault 했는지 감지
-  document.addEventListener("touchstart", e => {
-    if (e.defaultPrevented) dpStart++;
-  }, { passive: true });
+  let moveCount = 0, maxTop = 0;
+  document.addEventListener("touchmove", () => { moveCount++; }, { passive: true, capture: true });
   const sampler = setInterval(() => {
-    try { const v = curGet(); if (v > maxVal) maxVal = v; } catch (e) {}
+    if (scroller.scrollTop > maxTop) maxTop = scroller.scrollTop;
   }, 80);
 
-  const addCss = css => {
-    const s = document.createElement("style");
-    s.textContent = css;
-    document.head.appendChild(s);
-    return () => s.remove();
-  };
-
-  const makeCleanScroller = label => {
-    const d = document.createElement("div");
-    d.style.cssText =
-      "position:fixed;top:0;left:0;right:0;bottom:0;z-index:2147483000;" +
-      "background:#0d1f33;color:#fff;overflow-y:auto;";
-    const inner = document.createElement("div");
-    inner.style.cssText =
-      "height:3000px;background:repeating-linear-gradient(#16324f, #16324f 120px, #1d436b 120px, #1d436b 240px);" +
-      "padding:120px 20px 0;font:700 18px/1.5 -apple-system;text-align:center;";
-    inner.textContent = label + " — 이 파란 화면을 위아래로 문지르세요";
-    d.appendChild(inner);
-    return d;
-  };
-
-  const runPhase = async (name, getter, apply, revert) => {
-    moveCount = 0; dpStart = 0; dpMove = 0; maxVal = 0;
-    curGet = getter || (() => el.scrollTop);
-    el.scrollTop = 0;
+  const runPhase = async (name, apply, revert) => {
+    moveCount = 0; maxTop = 0; scroller.scrollTop = 0;
     let applyErr = null;
     try { if (apply) apply(); } catch (e) { applyErr = String(e); }
+    await sleep(600); // 제거가 네이티브 레이어에 반영될 시간
     const t0 = Date.now();
     while (moveCount === 0 && Date.now() - t0 < 30000) {
-      show(name + "\n\n화면에 손가락을 대고 위아래로\n문지르기 시작하면 측정이 시작됩니다");
+      show(name + "\n\n파란 화면을 위아래로\n문지르기 시작하면 측정 시작");
       await sleep(200);
     }
-    let skipped = moveCount === 0;
+    const skipped = moveCount === 0;
     if (!skipped) {
       for (let s = 7; s > 0; s--) {
-        show(name + "\n계속 위아래로 문지르세요!\n남은 " + s + "초 · 스크롤 " + Math.round(maxVal) + "px · 터치 " + moveCount + "회");
+        show(name + "\n계속 문지르세요!\n남은 " + s + "초 · 스크롤 " + Math.round(maxTop) + "px · 터치 " + moveCount + "회");
         await sleep(1000);
       }
     }
-    try { if (revert) revert(); } catch (e) {}
-    const rec = { name, max: Math.round(maxVal), touchmoves: moveCount, dpStart, dpMove, skipped, applyErr };
+    const rec = { name, max: Math.round(maxTop), touchmoves: moveCount, skipped, applyErr };
     results.phases.push(rec);
-    await sleep(400);
+    try { if (revert) revert(); } catch (e) {}
+    await sleep(300);
     return rec;
   };
 
-  // ---------- 단계 실행 ----------
+  let winner = null;
 
-  // 0) 기준선 — preventDefault 감지 겸용
-  await runPhase("0) 기준선 (설정 화면 그대로)", () => el.scrollTop, null, null);
+  // 0) 대조군 — 아무것도 안 자름 (v3에서 실패했던 그대로 재확인)
+  {
+    const rec = await runPhase("0) 대조군 (아무것도 안 자름)", null, null);
+    if (rec.max > 30) winner = "대조군부터 성공?! (재현 실패)";
+  }
 
-  // 1) 클린룸 스크롤러 — body 직속
-  { let d;
-    await runPhase("1) 파란 테스트 화면 (body 직속)", () => (d ? d.scrollTop : 0),
-      () => { d = makeCleanScroller("테스트 1"); document.body.appendChild(d); },
-      () => d && d.remove()); }
+  // 1) iframe(ezlong.com)만 제거
+  if (!winner && iframe) {
+    let parent = iframe.parentNode, next = iframe.nextSibling;
+    const rec = await runPhase("1) ezlong iframe만 제거",
+      () => iframe.remove(),
+      () => { try { parent.insertBefore(iframe, next); } catch (e) {} });
+    if (rec.max > 30) winner = rec.name;
+  }
 
-  // 2) 클린룸 스크롤러 — .clock-app 안
-  { let d;
-    await runPhase("2) 파란 테스트 화면 (clock-app 안)", () => (d ? d.scrollTop : 0),
-      () => { d = makeCleanScroller("테스트 2"); clockApp.appendChild(d); },
-      () => d && d.remove()); }
+  // 2) pageTrack(시계+웹뷰 페이지 전체) 숨김
+  if (!winner && pageTrack) {
+    const rec = await runPhase("2) pageTrack 통째로 숨김",
+      () => { pageTrack.style.display = "none"; },
+      () => { pageTrack.style.display = ""; });
+    if (rec.max > 30) winner = rec.name;
+  }
 
-  // 3) 클린룸 스크롤러 — 설정 패널 안
-  { let d;
-    await runPhase("3) 파란 테스트 화면 (설정 패널 안)", () => (d ? d.scrollTop : 0),
-      () => { d = makeCleanScroller("테스트 3"); el.appendChild(d); },
-      () => d && d.remove()); }
+  // 3) clock-app(앱 UI 전체) 숨김
+  if (!winner && clockApp) {
+    const rec = await runPhase("3) 앱 화면 전체 숨김",
+      () => { clockApp.style.display = "none"; },
+      () => { clockApp.style.display = ""; });
+    if (rec.max > 30) winner = rec.name;
+  }
 
-  // 4) 3D/컴포지팅 전면 무력화 + 원래 설정 화면
-  { let rm;
-    await runPhase("4) 3D·컴포지팅 전부 끄고 설정 화면", () => el.scrollTop,
+  // 4) body의 모든 자식 숨김 (우리 도구 제외)
+  if (!winner) {
+    const hidden = [];
+    const rec = await runPhase("4) 페이지의 모든 요소 숨김",
       () => {
-        rm = addCss(
-          ".page-track, .sky-room, .flip-clock, .clock-app { will-change: auto !important; transition: none !important; transform: none !important; perspective: none !important; transform-style: flat !important; }"
-        );
+        [...document.body.children].forEach(n => {
+          if (n === ov || n === scroller) return;
+          if (n.style && n.style.display !== "none") { hidden.push([n, n.style.display]); n.style.display = "none"; }
+        });
       },
-      () => rm && rm()); }
+      () => { hidden.forEach(([n, d]) => { n.style.display = d; }); });
+    if (rec.max > 30) winner = rec.name;
+  }
 
-  // 5) 문서(루트) 스크롤러 — 설정 닫고 body를 길게
-  { let rm, closeBtn;
-    await runPhase("5) 문서 자체 스크롤 (시계 화면을 문지르세요)",
-      () => Math.max(window.scrollY || 0, window.pageYOffset || 0, document.documentElement.scrollTop || 0, (window.visualViewport && visualViewport.pageTop) || 0),
-      () => {
-        closeBtn = el.querySelector("[data-settings-close]");
-        if (closeBtn) closeBtn.click(); else el.classList.remove("is-open");
-        rm = addCss("body { min-height: 250vh !important; } .clock-app { overflow: visible !important; }");
-      },
-      () => { if (rm) rm(); window.scrollTo(0, 0); }); }
-
-  // ---------- 판정 ----------
-  const winners = results.phases.filter(p => p.max > 30);
-  const totalDP = results.phases.reduce((a, p) => a + p.dpStart + p.dpMove, 0);
-  results.verdict = winners.length
-    ? "터치 스크롤 성공 위치: " + winners.map(p => p.name).join(" / ")
-    : "전 위치에서 터치 스크롤 사망" + (totalDP > 0 ? " (preventDefault 감지됨!)" : " (preventDefault 없음)");
+  results.verdict = winner ? "스크롤 부활 지점: " + winner : "모든 절단에도 실패";
 
   clearInterval(sampler);
   ov.remove();
+  scroller.remove();
 
-  // ---------- 결과 화면 ----------
-  const ok = winners.length > 0;
+  const ok = !!winner;
   const rep = document.createElement("div");
   rep.style.cssText =
     "position:fixed;inset:0;z-index:2147483647;background:rgba(8,12,20,0.97);color:#fff;" +
-    "padding:max(46px, env(safe-area-inset-top)) 16px 30px;overflow:auto;" +
-    "font:600 13px/1.55 -apple-system,sans-serif;";
-  const st = results.info.styles;
-  const fmt = (label, s) => s
-    ? '<div style="opacity:0.8;">' + label + ": ta=" + s.ta + " · ovf=" + s.ovf + " · osb=" + s.osb +
-      " · tf=" + (s.tf === "none" ? "none" : "있음") + " · wc=" + s.wc + " · persp=" + s.persp + "</div>"
-    : "";
+    "padding:max(50px, env(safe-area-inset-top)) 18px 30px;overflow:auto;" +
+    "font:600 14px/1.6 -apple-system,sans-serif;";
   let html =
-    '<div style="font-size:16px;font-weight:800;color:' + (ok ? "#5dff9d" : "#ff7b7b") + ';margin-bottom:8px;">진단 v3: ' + results.verdict + "</div>" +
-    '<div style="opacity:0.85;margin-bottom:8px;">코드 스크롤: 150px 지시 → ' + results.info.programmaticScroll + "px</div>";
+    '<div style="font-size:17px;font-weight:800;color:' + (ok ? "#5dff9d" : "#ff7b7b") + ';margin-bottom:10px;">진단 v4: ' + results.verdict + "</div>";
   for (const p of results.phases) {
     const good = p.max > 30;
-    html += '<div style="padding:5px 0;border-top:1px solid rgba(255,255,255,0.14);">' +
+    html += '<div style="padding:6px 0;border-top:1px solid rgba(255,255,255,0.14);">' +
       '<span style="color:' + (good ? "#5dff9d" : "#ff9d9d") + ';font-weight:800;">' + (good ? "성공 " : (p.skipped ? "건너뜀 " : "실패 ")) + "</span>" +
-      p.name + " — " + p.max + "px · 터치 " + p.touchmoves + "회 · PD(start/move) " + p.dpStart + "/" + p.dpMove +
+      p.name + " — " + p.max + "px · 터치 " + p.touchmoves + "회" +
       (p.applyErr ? '<div style="color:#ffb060;">오류: ' + p.applyErr + "</div>" : "") + "</div>";
   }
-  html += '<div style="margin-top:10px;font-weight:800;">computed 스타일 (기기 실측):</div>' +
-    fmt("html", st.html) + fmt("body", st.body) + fmt("clockApp", st.clockApp) +
-    fmt("pageTrack", st.pageTrack) + fmt("panel", st.panel) +
-    '<div style="margin-top:14px;opacity:0.75;">이 화면을 스크린샷(글자가 잘리면 위/아래 두 장)으로 찍어 Claude에게 보내주세요.</div>' +
-    '<button id="fzDiagClose" style="margin-top:12px;width:100%;padding:14px;border:0;border-radius:12px;font:800 16px -apple-system;background:#2c7be5;color:#fff;">닫기</button>';
+  html += '<div style="margin-top:16px;opacity:0.75;">이 화면을 스크린샷으로 찍어 Claude에게 보내주세요.</div>' +
+    '<button id="fzDiagClose" style="margin-top:14px;width:100%;padding:14px;border:0;border-radius:12px;font:800 16px -apple-system;background:#2c7be5;color:#fff;">닫기</button>';
   rep.innerHTML = html;
   document.body.appendChild(rep);
   document.getElementById("fzDiagClose").addEventListener("click", () => {
@@ -213,5 +152,5 @@
     window.__fzDiagRunning = false;
   });
 
-  try { console.log("[FZ-DIAG] FINAL v3", JSON.stringify(results, null, 2)); } catch (e) {}
+  try { console.log("[FZ-DIAG] FINAL v4", JSON.stringify(results, null, 2)); } catch (e) {}
 })();
