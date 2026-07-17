@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260717-settingscard-v1">
+  <link rel="stylesheet" href="styles.css?v=20260718-lightredesign-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -129,7 +129,7 @@
       </section>
 
       <div class="scene-dots" aria-label="배경 사진 선택">
-        <span class="app-version" aria-hidden="true">ver.1.3.3.1</span>
+        <span class="app-version" aria-hidden="true">ver.1.3.3.3</span>
         <span class="dot-group">
           <button class="dot active" type="button" data-scene-button="0" aria-label="배경 사진 1"></button>
           <button class="dot" type="button" data-scene-button="1" aria-label="배경 사진 2"></button>
@@ -224,50 +224,65 @@
 
         <div class="settings-divider" aria-hidden="true"></div>
 
+        <!-- 2026-07-19 리디자인: <table>에서 카드형 목록으로 전환 — 곡제목이
+             한 행을 다 쓰도록(말줄임표 없이) 하고, 재생/좋아요/싫어요
+             버튼은 그 아래 줄에 우측 정렬로 배치한다(app.js
+             renderMusicHistoryList 참조). 기본 5개만 보이고 "모두 보기"로
+             전체를 펼친다. -->
         <section class="settings-block settings-card" aria-label="들은 음악 히스토리">
           <h3 class="settings-subtitle">들은 음악 히스토리</h3>
-          <table class="music-history-table" id="musicHistoryList" aria-live="polite">
-            <thead>
-              <tr>
-                <th>곡명</th>
-                <th class="music-history-play-th" aria-hidden="true"></th>
-                <th class="music-history-reaction-th" aria-hidden="true"></th>
-              </tr>
-            </thead>
-            <tbody id="musicHistoryBody"></tbody>
-          </table>
+          <div class="music-history-table" id="musicHistoryList" aria-live="polite">
+            <div id="musicHistoryBody"></div>
+          </div>
+          <button type="button" class="music-history-viewall" id="musicHistoryViewAll" hidden>모두 보기 &gt;</button>
         </section>
 
         <div class="settings-divider" aria-hidden="true"></div>
 
         <!-- 2026-07-13: 문장 도서 분야 필터 신설. 기본값은 투자서만(기존 동작
-             그대로 유지) — 문학·교양서를 켜면 아래 카테고리(투자 멘탈 등)
-             필터와 무관하게 함께 노출된다. -->
-        <!-- 2026-07-19 리디자인: "모든 분야"+categoryOptions(세부 카테고리)를
-             이 카드 안으로 옮겼다(예전엔 별도 divider로 분리된 형제 요소).
-             참고 디자인(클로드 아티팩트)에서 도서 분야 관련 선택지가 카드
-             하나로 묶여 있던 것과 같은 구성 — id/기능은 전혀 안 바꿨으니
-             getElementById로 찾는 기존 JS는 그대로 동작한다. -->
+             그대로 유지) — 문학·교양서를 켜면 그 아래 자기만의 하위 분야
+             필터와 함께 노출된다. -->
+        <!-- 2026-07-19 2차 리디자인(유저 피드백): "투자서"/"문학·교양서"를
+             나란히 두 칸으로 보여주던 걸 버리고, 큰 분야 2개를 세로로
+             쌓아 각각 자기 토글 바로 아래에 "모든 분야"+하위 분야 목록을
+             중첩시켰다(.genre-group/.genre-subgroup, styles.css 참조).
+             문학·교양서 하위 8개 분야(가족·관계/경제·자기계발/과학/문학/시/
+             에세이/인문·역사/철학·동양고전)는 investment-quotes.js의 기존
+             category 값과 그대로 매칭된다(app.js literatureCategoryLabels).
+             genreOptions id는 이벤트 위임(app.js genreOptions.addEventListener)
+             호환을 위해 두 그룹을 감싸는 바깥 컨테이너에 그대로 유지했다. -->
         <section class="settings-block settings-card" aria-label="문장 도서 분야">
           <h3 class="settings-subtitle">도서 분야</h3>
           <p class="settings-desc settings-desc-muted">기본은 투자서 문장만 나옵니다. 문학·교양서도 함께 보려면 켜주세요.</p>
-          <div class="field-grid" id="genreOptions">
-            <label class="field-option">
-              <input type="checkbox" value="investment" data-genre-option checked>
-              <span>투자서</span>
-            </label>
-            <label class="field-option">
-              <input type="checkbox" value="literature" data-genre-option>
-              <span>문학·교양서</span>
-            </label>
+          <div id="genreOptions">
+            <div class="genre-group">
+              <label class="field-option field-option-genre">
+                <input type="checkbox" value="investment" data-genre-option checked>
+                <span>투자서</span>
+              </label>
+              <div class="genre-subgroup">
+                <label class="field-option field-option-all">
+                  <input type="checkbox" id="allCategories" checked>
+                  <span>모든 분야</span>
+                </label>
+                <div class="field-grid" id="categoryOptions"></div>
+              </div>
+            </div>
+
+            <div class="genre-group">
+              <label class="field-option field-option-genre">
+                <input type="checkbox" value="literature" data-genre-option>
+                <span>문학·교양서</span>
+              </label>
+              <div class="genre-subgroup">
+                <label class="field-option field-option-all">
+                  <input type="checkbox" id="allLitCategories" checked>
+                  <span>모든 분야</span>
+                </label>
+                <div class="field-grid" id="litCategoryOptions"></div>
+              </div>
+            </div>
           </div>
-
-          <label class="field-option field-option-all">
-            <input type="checkbox" id="allCategories" checked>
-            <span>모든 분야</span>
-          </label>
-
-          <div class="field-grid" id="categoryOptions"></div>
         </section>
 
         <button class="settings-save" type="button" id="settingsSave">확인</button>
@@ -301,6 +316,7 @@
         <!-- 1. 현재 날씨 — 2026-07-14: 체감온도 옆에 습도를 같은 줄로 이동
              (유저 피드백: "2줄인데 습도도 윗줄에 넣어라, 한 줄 width 충분") -->
         <section class="weather-card weather-current-card" id="wdCurrent" aria-label="현재 날씨">
+          <span class="weather-current-icon" id="wdCurrentIcon" aria-hidden="true"></span>
           <div class="weather-current-hero">
             <span class="weather-current-temp" id="wdCurrentTemp">--°</span>
             <span class="weather-current-feels" id="wdCurrentFeels">체감 --°</span>
@@ -464,6 +480,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js"></script>
   <script src="music-playlist.js?v=20260714-weatherdetail-v73"></script>
-  <script src="app.js?v=20260717-weatherbenchmark-v2"></script>
+  <script src="app.js?v=20260718-lightredesign-v1"></script>
 </body>
 </html>

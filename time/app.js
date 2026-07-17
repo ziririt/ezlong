@@ -160,6 +160,22 @@ const genreLabels = {
   literature: "문학·교양서"
 };
 
+// 2026-07-19 유저 요청 — 문학·교양서도 투자서처럼 하위 분야 필터가 있어야
+// 한다. investment-quotes.js에 문학 문장은 이미 이 8개 값 그대로 category가
+// 매겨져 있어서(가족관계/경제자기계발/과학/문학/시/에세이/인문역사/
+// 철학동양고전) 새로 데이터를 태깅할 필요 없이 화면 표시용 라벨(가운뎃점
+// 추가)만 매핑하면 된다.
+const literatureCategoryLabels = {
+  "가족관계": "가족·관계",
+  "경제자기계발": "경제·자기계발",
+  "과학": "과학",
+  "문학": "문학",
+  "시": "시",
+  "에세이": "에세이",
+  "인문역사": "인문·역사",
+  "철학동양고전": "철학·동양고전"
+};
+
 function getQuoteGenre(quote) {
   return quote.genre === "literature" ? "literature" : "investment";
 }
@@ -195,6 +211,11 @@ const settingsOpen = document.getElementById("settingsOpen");
 const settingsSave = document.getElementById("settingsSave");
 const allCategories = document.getElementById("allCategories");
 const categoryOptions = document.getElementById("categoryOptions");
+// 2026-07-19: 문학·교양서 하위 분야용 별도 "모든 분야"/그리드 — 투자서와
+// 완전히 분리된 자기 상태를 갖는다(하나를 "모든 분야"로 초기화해도 다른
+// 쪽엔 영향 없음).
+const allLitCategories = document.getElementById("allLitCategories");
+const litCategoryOptions = document.getElementById("litCategoryOptions");
 const genreOptions = document.getElementById("genreOptions");
 const webviewScale = document.getElementById("ezlongWebviewScale");
 const ezlongSection = document.querySelector(".ezlong-webview");
@@ -217,6 +238,7 @@ const musicPlaylistInfo = document.getElementById("musicPlaylistInfo");
 const musicPlaylistOptionsEl = document.getElementById("musicPlaylistOptions");
 const musicHistoryList = document.getElementById("musicHistoryList");
 const musicHistoryBody = document.getElementById("musicHistoryBody");
+const musicHistoryViewAll = document.getElementById("musicHistoryViewAll");
 // 2026-07-16: "Rock 포함"/"Vocal 포함"(체크 시 포함) 방식에서 "Rock 제외"/
 // "Vocal 제외"(체크 시 제외) 방식으로 전환 — element id도 의미에 맞춰 변경.
 const musicExcludeRockEl = document.getElementById("musicExcludeRock");
@@ -241,6 +263,8 @@ const wdCurrentSub = document.getElementById("wdCurrentSub");
 // 2026-07-17 벤치마크 기획(묶음1·2·3·4): 상세 지표(바람/자외선/기압/가시거리/
 // 이슬점), 일출·일몰, 시간대별 예보 스트립 DOM 참조 추가.
 const wdCurrentSun = document.getElementById("wdCurrentSun");
+// 2026-07-18 리디자인(클로드 디자인 목업 수용): 현재 날씨 카드 상단 이모지 아이콘.
+const wdCurrentIcon = document.getElementById("wdCurrentIcon");
 const wdDetailIndicators = document.getElementById("wdDetailIndicators");
 const wdHourlyStrip = document.getElementById("wdHourlyStrip");
 const wdTopComment = document.getElementById("wdTopComment");
@@ -277,6 +301,7 @@ let lastQuoteTitle = "";
 let lastRenderedQuote = null;
 let quoteDeck = [];
 let selectedCategories = new Set();
+let selectedLitCategories = new Set();
 let selectedGenres = new Set(["investment"]);
 let lastScenePhoto = {};
 let lastDigits = ["", "", "", ""];
@@ -291,7 +316,10 @@ let activePhotoSlot = "";
 let manualPhotoUntil = 0;
 let swipeStart = null;
 const categoryStorageKey = "ezlong:selectedCategories";
+const litCategoryStorageKey = "ezlong:selectedLitCategories";
 const genreStorageKey = "ezlong:selectedGenres";
+// 2026-07-19: 히스토리 목록 기본 5개만 노출, "모두 보기" 클릭 시 전체 표시.
+let musicHistoryExpanded = false;
 let weatherState = {
   location: "위치 확인 중",
   temp: "--°",
@@ -1068,14 +1096,22 @@ function getNextQuote() {
   return quote;
 }
 
+// 2026-07-19 개정: 문학·교양서도 투자서와 동일하게 자기만의 하위 분류
+// 필터(selectedLitCategories)를 갖는다 — 예전엔 문학 문장은 이 필터와
+// 무관하게 항상 통과시켰지만, 이제 8개 하위 분야(가족·관계/경제·자기계발/
+// 과학/문학/시/에세이/인문·역사/철학·동양고전) 필터가 생겨 투자서와
+// 같은 방식(비어있으면 전체 통과, 아니면 선택된 것만)으로 걸러진다.
 function getEligibleQuotes() {
   const genreFiltered = quotes.filter((quote) => selectedGenres.has(quote.genre));
-  if (selectedCategories.size === 0) return genreFiltered;
-  // category(투자 멘탈/복리/변동성 등)는 투자서 문장에만 있는 하위 분류다.
-  // 문학·교양서 문장은 이 필터와 무관하게 항상 통과시킨다.
-  return genreFiltered.filter(
-    (quote) => quote.genre !== "investment" || selectedCategories.has(quote.category)
-  );
+  return genreFiltered.filter((quote) => {
+    if (quote.genre === "investment") {
+      return selectedCategories.size === 0 || selectedCategories.has(quote.category);
+    }
+    if (quote.genre === "literature") {
+      return selectedLitCategories.size === 0 || selectedLitCategories.has(quote.category);
+    }
+    return true;
+  });
 }
 
 function renderCategoryOptions() {
@@ -1088,11 +1124,32 @@ function renderCategoryOptions() {
   });
 }
 
+// 2026-07-19: 문학·교양서 하위 분야 그리드 — investment 쪽과 완전히 같은
+// 패턴이되 별도 data-속성(data-lit-category-option)을 써서 querySelectorAll이
+// 서로 섞이지 않게 한다.
+function renderLitCategoryOptions() {
+  if (!litCategoryOptions) return;
+  litCategoryOptions.innerHTML = "";
+  Object.entries(literatureCategoryLabels).forEach(([value, label]) => {
+    const option = document.createElement("label");
+    option.className = "field-option";
+    option.innerHTML = `<input type="checkbox" value="${value}" data-lit-category-option><span>${label}</span>`;
+    litCategoryOptions.appendChild(option);
+  });
+}
+
 function syncCategoryControls() {
   document.querySelectorAll("[data-category-option]").forEach((input) => {
     input.checked = selectedCategories.has(input.value);
   });
   allCategories.checked = selectedCategories.size === 0;
+}
+
+function syncLitCategoryControls() {
+  document.querySelectorAll("[data-lit-category-option]").forEach((input) => {
+    input.checked = selectedLitCategories.has(input.value);
+  });
+  if (allLitCategories) allLitCategories.checked = selectedLitCategories.size === 0;
 }
 
 function loadSavedCategories() {
@@ -1110,8 +1167,27 @@ function loadSavedCategories() {
   quoteDeck = [];
 }
 
+function loadSavedLitCategories() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(litCategoryStorageKey) || "[]");
+    if (Array.isArray(saved)) {
+      selectedLitCategories = new Set(
+        saved.filter((value) => Object.prototype.hasOwnProperty.call(literatureCategoryLabels, value))
+      );
+    }
+  } catch (error) {
+    selectedLitCategories = new Set();
+  }
+  syncLitCategoryControls();
+  quoteDeck = [];
+}
+
 function saveSelectedCategories() {
   localStorage.setItem(categoryStorageKey, JSON.stringify([...selectedCategories]));
+}
+
+function saveSelectedLitCategories() {
+  localStorage.setItem(litCategoryStorageKey, JSON.stringify([...selectedLitCategories]));
 }
 
 function syncGenreControls() {
@@ -1338,6 +1414,54 @@ async function fetchWeatherJson(path) {
 // 2026-07-14: prob(강수확률)을 함께 넘기면 뱃지 안에 라벨+확률을 2줄로 쌓는다
 // (유저 피드백: "'약한 비' 딱지에 강수확률도 같이 표시해주자"). 열대야
 // 뱃지처럼 확률 개념이 없는 호출은 prob을 생략하면 기존처럼 라벨만 나온다.
+// 2026-07-18 리디자인(클로드 디자인 목업 수용, 유저 피드백 "너무 어둡다,
+// 밝고 경쾌하게"): 텍스트만 있던 자리에 이모지 아이콘을 붙여 스캔하기
+// 쉽게 만든다. 전부 순수 장식 판단이라 백엔드 재배포·API 변경 없이
+// 프론트에서만 결정한다 — 데이터 정확성에는 영향이 없다.
+function weatherEmojiFromEnglish(conditions) {
+  const c = (conditions || "").toLowerCase();
+  if (/thunder|storm/.test(c)) return "⛈️";
+  if (/snow/.test(c)) return "❄️";
+  if (/rain|drizzle|shower/.test(c)) return "🌧️";
+  if (/fog|mist|haze/.test(c)) return "🌫️";
+  if (/overcast/.test(c)) return "☁️";
+  if (/partially cloudy|partly cloudy/.test(c)) return "⛅";
+  if (/cloud/.test(c)) return "🌥️";
+  if (/clear/.test(c)) return "☀️";
+  return "🌤️";
+}
+
+function weatherEmojiFromKoCondition(ko) {
+  const map = {
+    "천둥번개": "⛈️",
+    "눈": "❄️",
+    "비": "🌧️",
+    "안개": "🌫️",
+    "흐림": "☁️",
+    "구름 조금": "⛅",
+    "구름 많음": "🌥️",
+    "맑음": "☀️",
+  };
+  return map[ko] || "🌤️";
+}
+
+// 시간대별 스트립엔 조건 텍스트가 안 내려오므로, 강수확률(precipprob)과
+// 대략의 시각(hourLabel 파싱, "지금"이면 기기 로컬시각)으로 갈음한다 —
+// 장식용 아이콘이라 낮/밤 추정이 다소 근사치여도 무방하다.
+function weatherEmojiFromHour(precipprob, hourLabel, isNow) {
+  let hour = null;
+  if (isNow) {
+    hour = new Date().getHours();
+  } else {
+    const m = /^(\d+)시/.exec(hourLabel || "");
+    if (m) hour = Number(m[1]);
+  }
+  const isNight = hour != null && (hour >= 20 || hour < 6);
+  if (precipprob >= 60) return "🌧️";
+  if (precipprob >= 30) return "🌦️";
+  return isNight ? "🌙" : "☀️";
+}
+
 function weatherBadgeHtml(grade, label, prob) {
   const probHtml = typeof prob === "number" ? `<span class="weather-badge-prob">${prob}%</span>` : "";
   return `<span class="weather-badge" data-grade="${grade}"><span class="weather-badge-label">${label}</span>${probHtml}</span>`;
@@ -1362,9 +1486,11 @@ function renderWeatherCurrent(current) {
     if (wdCurrentHumidity) wdCurrentHumidity.textContent = "";
     wdCurrentSub.textContent = "날씨 데이터를 불러올 수 없어요. 백엔드 배포 후 다시 시도해주세요.";
     if (wdCurrentSun) wdCurrentSun.textContent = "";
+    if (wdCurrentIcon) wdCurrentIcon.textContent = "";
     return;
   }
   const c = current.current;
+  if (wdCurrentIcon) wdCurrentIcon.textContent = weatherEmojiFromEnglish(c.conditions);
   wdCurrentTemp.textContent = `${Math.round(c.temp)}°`;
   wdCurrentFeels.textContent = `체감 ${Math.round(c.feelslike)}°`;
   // 2026-07-14: 습도를 체감온도와 같은 줄로 이동(유저 피드백: "2줄인데
@@ -1379,7 +1505,7 @@ function renderWeatherCurrent(current) {
   // 그 경우엔 줄 자체를 비워 레이아웃에 빈 여백이 남지 않게 한다.
   if (wdCurrentSun) {
     const sun = current.detail && current.detail.sun;
-    wdCurrentSun.textContent = sun ? `일출 ${sun.sunriseLabel} · 일몰 ${sun.sunsetLabel}` : "";
+    wdCurrentSun.textContent = sun ? `🌅 일출 ${sun.sunriseLabel} · 🌇 일몰 ${sun.sunsetLabel}` : "";
   }
 }
 
@@ -1398,7 +1524,7 @@ function renderWeatherDetailIndicators(current) {
   if (detail.wind) {
     const gustPart = detail.wind.gustKmh != null ? ` (돌풍 ${Math.round(detail.wind.gustKmh)})` : "";
     tiles.push(
-      `<div class="weather-stat-tile"><span class="weather-stat-label">바람</span><span class="weather-stat-value">${detail.wind.directionLabel} ${Math.round(detail.wind.speedKmh)}km/h${gustPart}</span></div>`
+      `<div class="weather-stat-tile"><span class="weather-stat-label">💨 바람</span><span class="weather-stat-value">${detail.wind.directionLabel} ${Math.round(detail.wind.speedKmh)}km/h${gustPart}</span></div>`
     );
   }
   if (detail.uv) {
@@ -1406,22 +1532,22 @@ function renderWeatherDetailIndicators(current) {
     // 오늘 최고 자외선지수를 보여준다 — basis로 라벨을 구분한다.
     const uvLabel = detail.uv.basis === "DAILY_MAX" ? "오늘 최고 자외선지수" : "자외선지수";
     tiles.push(
-      `<div class="weather-stat-tile"><span class="weather-stat-label">${uvLabel}</span><span class="weather-stat-value">${detail.uv.value} · ${detail.uv.label}</span></div>`
+      `<div class="weather-stat-tile"><span class="weather-stat-label">🔆 ${uvLabel}</span><span class="weather-stat-value">${detail.uv.value} · ${detail.uv.label}</span></div>`
     );
   }
   if (typeof detail.pressure === "number") {
     tiles.push(
-      `<div class="weather-stat-tile"><span class="weather-stat-label">기압</span><span class="weather-stat-value">${Math.round(detail.pressure)}hPa</span></div>`
+      `<div class="weather-stat-tile"><span class="weather-stat-label">🧭 기압</span><span class="weather-stat-value">${Math.round(detail.pressure)}hPa</span></div>`
     );
   }
   if (typeof detail.visibilityKm === "number") {
     tiles.push(
-      `<div class="weather-stat-tile"><span class="weather-stat-label">가시거리</span><span class="weather-stat-value">${detail.visibilityKm}km</span></div>`
+      `<div class="weather-stat-tile"><span class="weather-stat-label">👁️ 가시거리</span><span class="weather-stat-value">${detail.visibilityKm}km</span></div>`
     );
   }
   if (typeof detail.dewPoint === "number") {
     tiles.push(
-      `<div class="weather-stat-tile"><span class="weather-stat-label">이슬점</span><span class="weather-stat-value">${Math.round(detail.dewPoint)}°</span></div>`
+      `<div class="weather-stat-tile"><span class="weather-stat-label">💧 이슬점</span><span class="weather-stat-value">${Math.round(detail.dewPoint)}°</span></div>`
     );
   }
 
@@ -1458,6 +1584,7 @@ function renderWeatherHourlyStrip(data) {
       (h) => `
     <div class="weather-hourly-item" data-now="${h.isNow ? "true" : "false"}">
       <span class="weather-hourly-hour">${h.hourLabel}</span>
+      <span class="weather-hourly-icon">${weatherEmojiFromHour(h.precipprob, h.hourLabel, h.isNow)}</span>
       <span class="weather-hourly-temp">${Math.round(h.temp)}°</span>
       <span class="weather-hourly-prob">${h.precipprob}%</span>
     </div>`
@@ -1505,7 +1632,7 @@ function renderWeatherTopComment(data) {
     wdTopComment.textContent = "";
     return;
   }
-  wdTopComment.textContent = data.umbrellaToday.message;
+  wdTopComment.textContent = `☔ ${data.umbrellaToday.message}`;
   wdTopComment.setAttribute("data-needed", String(data.umbrellaToday.needed));
 }
 
@@ -1519,7 +1646,7 @@ function renderWeatherNextRain(data) {
     wdNextRain.textContent = "";
     return;
   }
-  wdNextRain.textContent = data.nextRainCountdown.message;
+  wdNextRain.textContent = `⏳ ${data.nextRainCountdown.message}`;
 }
 
 function renderWeatherRainWindows(data) {
@@ -1566,9 +1693,15 @@ function renderWeatherWeeklyForecast(data) {
         : "";
       return `
     <div class="weather-weekly-row">
-      <span class="weather-weekly-day">${d.weekdayKo}${todayTag}${weekendTag}</span>
-      <span class="weather-weekly-condition">${d.conditionsKo}</span>
-      <span class="weather-weekly-temps"><span class="weather-weekly-min">${Math.round(d.tempMin)}°</span> / <span class="weather-weekly-max">${Math.round(d.tempMax)}°</span></span>
+      <span class="weather-weekly-day"><span class="weather-weekly-icon">${weatherEmojiFromKoCondition(d.conditionsKo)}</span>${d.weekdayKo}${todayTag}${weekendTag}</span>
+      <span class="weather-weekly-mid">
+        <span class="weather-weekly-condition">${d.conditionsKo}</span>
+        <span class="weather-weekly-range">
+          <span class="weather-weekly-min">${Math.round(d.tempMin)}°</span>
+          <span class="weather-weekly-bar" aria-hidden="true"></span>
+          <span class="weather-weekly-max">${Math.round(d.tempMax)}°</span>
+        </span>
+      </span>
       <span class="weather-weekly-prob">${d.precipprob}%</span>
     </div>`;
     })
@@ -1593,13 +1726,13 @@ function renderWeatherYesterday(data) {
   const n = data.next24h;
   wdYesterday.innerHTML = `
     <div class="weather-24h-col">
-      <p class="weather-24h-col-label">지난 24시간</p>
+      <p class="weather-24h-col-label">🌙 지난 24시간</p>
       <div class="weather-stat-tile"><span class="weather-stat-label">최저기온</span><span class="weather-stat-value">${Math.round(p.tempMin)}°</span></div>
       <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${Math.round(p.tempMax)}°</span></div>
       <div class="weather-stat-tile"><span class="weather-stat-label">평균습도</span><span class="weather-stat-value">${Math.round(p.humidityAvg)}%</span></div>
     </div>
     <div class="weather-24h-col">
-      <p class="weather-24h-col-label">향후 24시간</p>
+      <p class="weather-24h-col-label">☀️ 향후 24시간</p>
       <div class="weather-stat-tile"><span class="weather-stat-label">최저기온</span><span class="weather-stat-value">${Math.round(n.tempMin)}°</span></div>
       <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${Math.round(n.tempMax)}°</span></div>
       <div class="weather-stat-tile"><span class="weather-stat-label">평균습도</span><span class="weather-stat-value">${Math.round(n.humidityAvg)}%</span></div>
@@ -1619,7 +1752,10 @@ function renderWeatherTropical(data) {
   const sleepGrade = data.sleepWindow.isFeelsLikeTropicalNight ? "VERY_HEAVY" : "OK";
   wdTropicalBadges.innerHTML =
     weatherBadgeHtml(officialGrade, officialLabel) + weatherBadgeHtml(sleepGrade, sleepLabel);
-  if (wdTropicalComment) wdTropicalComment.textContent = data.sleepWindow.comment || "";
+  if (wdTropicalComment) {
+    const icon = data.sleepWindow.isFeelsLikeTropicalNight ? "🥵" : "🌙";
+    wdTropicalComment.textContent = data.sleepWindow.comment ? `${icon} ${data.sleepWindow.comment}` : "";
+  }
 }
 
 // 2026-07-17 2차 기획(묶음C, Fable 5 우선순위 1위): 미세먼지·초미세먼지.
@@ -1668,12 +1804,18 @@ function renderWeatherTempVsNormal(data) {
     wdTempVsNormal.textContent = "평년값 비교에 필요한 데이터가 아직 부족해요.";
     return;
   }
-  wdTempVsNormal.textContent = data.message;
+  let icon = "➡️";
+  if (data.normal && typeof data.todayTempMax === "number") {
+    const diff = Math.round(data.todayTempMax) - Math.round(data.normal.avgTempMax);
+    icon = diff > 1 ? "📈" : diff < -1 ? "📉" : "➡️";
+  }
+  wdTempVsNormal.textContent = `${icon} ${data.message}`;
 }
 
 function renderWeatherAccuracy(data) {
   if (!wdAccuracyMessage) return;
-  wdAccuracyMessage.textContent = data?.message || "예보 정확도 정보를 불러올 수 없어요.";
+  const msg = data?.message || "예보 정확도 정보를 불러올 수 없어요.";
+  wdAccuracyMessage.textContent = `🎯 ${msg}`;
 }
 
 async function fetchWeatherDetail() {
@@ -3462,11 +3604,12 @@ function handleActivePlayerEnded(event) {
 // 그대로였던 이유). 기존 30곡(58트랙) 세트는 A/B 글자 코드라 "(A)"처럼
 // 봐줄 만했지만, 숫자만 있으면 "이게 뭔가 잘못된 흔적인가" 싶게 어색하다.
 // 데이터를 건드리는 대신(빌드 스크립트는 유저의 실제 Mac 폴더를 스캔해야
-// 해서 이 세션에서 재실행 불가) 표시 단계에서만 숫자 코드를 "파트 N"으로
-// 풀어써서 훨씬 자연스럽게 보이게 한다. 글자 코드(A/B)는 그대로 둔다.
+// 해서 이 세션에서 재실행 불가) 표시 단계에서만 숫자 코드를 "Part N"으로
+// 풀어써서 훨씬 자연스럽게 보이게 한다(2026-07-19: "파트"는 한국식 발음
+// 표기라 유저 요청대로 영어 표기 "Part"로 변경). 글자 코드(A/B)는 그대로 둔다.
 function formatPlaylistVariant(playlist) {
   if (!playlist || playlist === "SINGLE") return "";
-  return /^\d+$/.test(playlist) ? ` (파트 ${playlist})` : ` (${playlist})`;
+  return /^\d+$/.test(playlist) ? ` (Part ${playlist})` : ` (${playlist})`;
 }
 
 // 2026-07-08: "지금 재생 중인 곡이 뭔지 궁금하다"는 질문에 답할 방법이
@@ -3479,9 +3622,17 @@ function renderMusicPlaylistInfo(options) {
     ? musicPlaylist[musicIndex % musicPlaylist.length]
     : null;
   if (track && track.title) {
+    // 2026-07-19 유저 요청: 설정 패널 맨 위 "지금 재생 중" 표시가 다른
+    // 설명문구(.settings-desc-muted)와 똑같이 밋밋해서 눈에 안 띈다는
+    // 지적 — NOW PLAYING 배지 + 굵은 곡명으로 구조화해 부각시킨다.
     const variant = formatPlaylistVariant(track.playlist);
-    musicPlaylistInfo.textContent = `지금 재생 중: ${track.title}${variant} · 전체 ${total}곡`;
+    musicPlaylistInfo.classList.add("now-playing");
+    musicPlaylistInfo.innerHTML =
+      `<span class="now-playing-tag">NOW PLAYING</span>` +
+      `<span class="now-playing-title">${track.title}${variant}</span>` +
+      `<span class="now-playing-sub">전체 ${total}곡</span>`;
   } else {
+    musicPlaylistInfo.classList.remove("now-playing");
     musicPlaylistInfo.textContent = `기본 플레이리스트 · 총 ${total}곡`;
   }
   // 2026-07-13: 음악 정보 패널의 곡명 표시 + 좋아요/싫어요 버튼 상태도
@@ -3521,7 +3672,7 @@ function buildMusicPlaylistOptions() {
       counts.set(key, (counts.get(key) || 0) + 1);
     });
   }
-  const options = [{ key: "all", label: "전체(랜덤·장르 골고루)", count: musicPlaylist.length }];
+  const options = [{ key: "all", label: "전체 랜덤", count: musicPlaylist.length }];
   Array.from(counts.keys()).forEach((key) => {
     options.push({ key, label: musicCategoryLabel(key), count: counts.get(key) });
   });
@@ -3690,12 +3841,17 @@ function recordPlayLog(index) {
   handleMusicCeremonyOnTrackStart();
 }
 
+// 2026-07-19 리디자인: 표(<tr>/<td>) 구조를 버리고 카드형 2줄 구조로
+// 바꿨다 — 1줄: 곡제목(줄바꿈 허용, 말줄임표 없이 전부 표시), 2줄: 재생/
+// 좋아요/싫어요 버튼을 우측 정렬로 배치. 또한 기본은 최근 5개만 보여주고
+// "모두 보기" 버튼으로 전체 목록을 펼칠 수 있게 했다(musicHistoryExpanded).
 function renderMusicHistoryList() {
   const target = musicHistoryBody || musicHistoryList;
   if (!target) return;
   const log = loadMusicPlayLog();
   if (log.length === 0) {
-    target.innerHTML = '<tr><td colspan="3" class="settings-desc settings-desc-muted">아직 재생 기록이 없습니다.</td></tr>';
+    target.innerHTML = '<div class="settings-desc settings-desc-muted">아직 재생 기록이 없습니다.</div>';
+    if (musicHistoryViewAll) musicHistoryViewAll.hidden = true;
     return;
   }
   const currentTrack = Array.isArray(musicPlaylist) && musicPlaylist.length > 0
@@ -3706,22 +3862,32 @@ function renderMusicHistoryList() {
   // Set으로 만들어 행마다 반복 조회 비용을 줄인다.
   const likedSet = new Set(loadLikedTracks());
   const dislikedSet = new Set(loadDislikedTracks());
-  target.innerHTML = log.map((entry) => {
+  const HISTORY_COLLAPSED_COUNT = 5;
+  const visibleLog = musicHistoryExpanded ? log : log.slice(0, HISTORY_COLLAPSED_COUNT);
+  target.innerHTML = visibleLog.map((entry) => {
     const isCurrent = Boolean(currentTrack && currentTrack.file === entry.file);
     const variant = formatPlaylistVariant(entry.playlist);
     const isPlayingNow = isCurrent && musicPlaying;
     const ariaLabel = isPlayingNow ? "지금 재생 중" : "재생";
     const isLiked = Boolean(entry.file && likedSet.has(entry.file));
     const isDisliked = Boolean(entry.file && dislikedSet.has(entry.file));
-    return `<tr class="music-history-row${isCurrent ? " is-current" : ""}">`
-      + `<td class="music-history-title">${entry.title}${variant}</td>`
-      + `<td class="music-history-play-cell"><button type="button" class="music-history-play-btn${isPlayingNow ? " is-playing" : ""}" data-history-file="${entry.file}" aria-label="${ariaLabel}"></button></td>`
-      + `<td class="music-history-reaction-cell">`
+    return `<div class="music-history-item${isCurrent ? " is-current" : ""}">`
+      + `<div class="music-history-title-row"><span class="music-history-title">${entry.title}${variant}</span></div>`
+      + `<div class="music-history-actions-row">`
+        + `<button type="button" class="music-history-play-btn${isPlayingNow ? " is-playing" : ""}" data-history-file="${entry.file}" aria-label="${ariaLabel}"></button>`
         + `<button type="button" class="music-history-like-btn" data-history-like="${entry.file}" aria-pressed="${isLiked}" aria-label="이 곡 좋아요"></button>`
         + `<button type="button" class="music-history-dislike-btn" data-history-dislike="${entry.file}" aria-pressed="${isDisliked}" aria-label="이 곡 싫어요"></button>`
-      + `</td>`
-      + `</tr>`;
+      + `</div>`
+      + `</div>`;
   }).join("");
+  if (musicHistoryViewAll) {
+    if (log.length > HISTORY_COLLAPSED_COUNT) {
+      musicHistoryViewAll.hidden = false;
+      musicHistoryViewAll.textContent = musicHistoryExpanded ? "접기" : `모두 보기 (${log.length}) >`;
+    } else {
+      musicHistoryViewAll.hidden = true;
+    }
+  }
 }
 
 // 히스토리 목록의 "바로 듣기" 버튼 — 스킵 버튼과 같은 방식(크로스페이드 없이
@@ -3848,11 +4014,33 @@ if (musicHistoryList) {
   });
 }
 
+// 2026-07-19: "모두 보기 / 접기" 토글 — 클릭할 때마다 상태만 뒤집고
+// 렌더 함수 하나(renderMusicHistoryList)가 목록·버튼 라벨을 함께 갱신한다.
+if (musicHistoryViewAll) {
+  musicHistoryViewAll.addEventListener("click", () => {
+    musicHistoryExpanded = !musicHistoryExpanded;
+    renderMusicHistoryList();
+  });
+}
+
 function applyCategorySelection() {
   selectedCategories = new Set(
     [...document.querySelectorAll("[data-category-option]:checked")].map((input) => input.value)
   );
   allCategories.checked = selectedCategories.size === 0;
+  quoteDeck = [];
+  lastQuoteTitle = "";
+  renderQuote(getNextQuote());
+}
+
+// 2026-07-19: investment 쪽 applyCategorySelection과 동일한 패턴 — 저장은
+// (기존 관례대로) settingsSave 클릭 시에만 하고, 체크 즉시는 미리보기용으로
+// 문장만 바로 바꿔서 보여준다.
+function applyLitCategorySelection() {
+  selectedLitCategories = new Set(
+    [...document.querySelectorAll("[data-lit-category-option]:checked")].map((input) => input.value)
+  );
+  if (allLitCategories) allLitCategories.checked = selectedLitCategories.size === 0;
   quoteDeck = [];
   lastQuoteTitle = "";
   renderQuote(getNextQuote());
@@ -4029,7 +4217,9 @@ if (appBrand && skyRoom && ezlongSection) {
 }
 
 renderCategoryOptions();
+renderLitCategoryOptions();
 loadSavedCategories();
+loadSavedLitCategories();
 loadSavedGenres();
 renderMusicPlaylistInfo();
 renderMusicPlaylistFilterOptions();
@@ -4039,6 +4229,7 @@ renderMusicToggle();
 settingsOpen.addEventListener("click", openSettings);
 settingsSave.addEventListener("click", () => {
   saveSelectedCategories();
+  saveSelectedLitCategories();
   closeSettings();
 });
 document.querySelectorAll("[data-settings-close]").forEach((element) => {
@@ -4247,6 +4438,26 @@ categoryOptions.addEventListener("change", (event) => {
     applyCategorySelection();
   }
 });
+if (allLitCategories) {
+  allLitCategories.addEventListener("change", () => {
+    if (allLitCategories.checked) {
+      document.querySelectorAll("[data-lit-category-option]").forEach((input) => {
+        input.checked = false;
+      });
+      applyLitCategorySelection();
+    } else if (selectedLitCategories.size === 0) {
+      allLitCategories.checked = true;
+    }
+  });
+}
+if (litCategoryOptions) {
+  litCategoryOptions.addEventListener("change", (event) => {
+    if (event.target.matches("[data-lit-category-option]")) {
+      if (event.target.checked) allLitCategories.checked = false;
+      applyLitCategorySelection();
+    }
+  });
+}
 if (genreOptions) {
   genreOptions.addEventListener("change", (event) => {
     if (event.target.matches("[data-genre-option]")) {

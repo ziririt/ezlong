@@ -605,10 +605,13 @@ button { font: inherit; }
    컨트롤임을 형태로 알려준다. 체크(=제외 켜짐) 상태는 초록(선택됨)이 아니라
    호박색/붉은 계열로 표시해 "빼는 중"이라는 느낌을 준다 — 장르 카드의
    "골랐다(초록)"와 반대 방향의 행동이라 색도 반대 방향으로 간다. */
+/* 2026-07-19 유저 피드백: 알약을 가로로 늘어놓던 것도 한 행에 하나씩(1열)
+   으로 바꾼다 — 알약 모양(pill)과 "제외 필터" 성격은 그대로 유지하되
+   폭만 카드 너비 전체로 늘린다. */
 .music-exclude-filters {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   gap: 8px;
   margin-top: 12px;
   padding-top: 12px;
@@ -616,12 +619,12 @@ button { font: inherit; }
 }
 
 .exclude-chip {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 12px;
+  padding: 12px 14px;
   border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 999px;
+  border-radius: 16px;
   background: transparent;
   font-size: 14px;
   font-weight: 700;
@@ -684,9 +687,31 @@ button { font: inherit; }
   background: rgba(255,255,255,0.14);
 }
 
+/* 2026-07-19 2차 리디자인: "투자서"/"문학·교양서"를 나란히 2칸으로 두지
+   않고 세로로 쌓은 뒤, 각 분야 토글 바로 아래에 그 분야만의 "모든 분야"+
+   하위 목록을 중첩시킨다(유저 요청 — "문학·교양서를 투자서 하단에 배치,
+   그 아래 하위분야"). 왼쪽 세로선으로 "이건 위 토글에 속한 하위 항목"임을
+   시각적으로 드러낸다. */
+.genre-group + .genre-group {
+  margin-top: 14px;
+}
+
+.field-option-genre {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.genre-subgroup {
+  margin: 10px 0 4px 12px;
+  padding-left: 14px;
+  border-left: 2px solid rgba(255,255,255,0.14);
+}
+
+/* 2026-07-19 유저 피드백: 2열 박스 그리드가 답답하다는 지적 — 한 행에
+   하나씩(1열)으로 바꿔서 각 옵션이 라벨 전체 너비를 쓰게 한다. */
 .field-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 10px;
 }
 
@@ -760,6 +785,44 @@ button { font: inherit; }
   font-weight: 560;
 }
 
+/* 2026-07-19 유저 피드백: 설정 패널 맨 위 "지금 재생 중" 표시가 다른
+   설명문구와 똑같이 밋밋해서 눈에 안 띈다는 지적 — NOW PLAYING 배지 +
+   굵은 곡명으로 눈에 띄게 만든다(app.js renderMusicPlaylistInfo 참조). */
+.settings-desc.now-playing {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+.now-playing-tag {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #06240f;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.now-playing-title {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 820;
+  line-height: 1.35;
+}
+
+.now-playing-sub {
+  color: rgba(255,255,255,0.62);
+  font-size: 14px;
+  font-weight: 620;
+}
+
 /* ── 2026-07-14: 날씨 상세 화면 — 애플 비전OS풍 글래스모피즘 ─────────
    열기/닫기 메커니즘(.settings-panel, .settings-backdrop, .settings-head,
    .settings-close, .settings-divider)은 기존 설정 패널과 공유해서
@@ -768,16 +831,40 @@ button { font: inherit; }
    0.78)보다 더 얇고 빛이 통과하는 느낌을 준다. */
 /* 2026-07-17 10차: settings-sheet와 동일한 이유로 카드형 바텀시트 스타일을
    제거하고 전체 화면 페이지로 전환(.app-page 공통 규칙이 높이/스크롤 담당). */
+/* 2026-07-18 리디자인(클로드 디자인 목업 수용): 유저 피드백 "디자인이 너무
+   어둡다, 밝고 경쾌한 디자인으로" — 짙은 유리질감 다크 시트를 하늘색→흰색
+   그라디언트의 라이트 톤으로 전면 교체. 이 페이지는 불투명 배경이라 뒤에
+   뭐가 비칠 일이 없으므로 backdrop-filter도 함께 걷어냈다(성능상 이득).
+   .settings-head/.settings-close/.settings-divider/.settings-subtitle은
+   아직 다크인 설정 페이지와 공유하는 클래스라 여기서 직접 못 바꾸고,
+   바로 아래 .weather-detail-sheet 스코프 오버라이드로 따로 밝게 뒤집는다. */
 .weather-detail-sheet {
   max-width: 760px;
   margin: 0 auto;
   padding: max(28px, env(safe-area-inset-top)) clamp(20px, 5vw, 34px) max(28px, env(safe-area-inset-bottom));
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.02) 42%, rgba(0,0,0,0.12)),
-    rgba(16, 24, 38, 0.92);
-  backdrop-filter: blur(36px) saturate(1.5);
-  -webkit-backdrop-filter: blur(36px) saturate(1.5);
-  color: #fff;
+  background: linear-gradient(180deg, #7cc1f5 0%, #bde3fb 28%, #eef7fc 58%, #ffffff 100%);
+  color: var(--ink);
+}
+
+.weather-detail-sheet .settings-head p {
+  color: rgba(22,32,51,0.72);
+}
+
+.weather-detail-sheet .settings-head h2 {
+  color: var(--ink);
+}
+
+.weather-detail-sheet .settings-close {
+  background: rgba(22,32,51,0.08);
+  color: var(--ink);
+}
+
+.weather-detail-sheet .settings-divider {
+  background: rgba(22,32,51,0.12);
+}
+
+.weather-detail-sheet .settings-subtitle {
+  color: rgba(22,32,51,0.85);
 }
 
 /* ── 2026-07-16: 알라딘 도서 정보 모달 ─────────────────────────────
@@ -902,15 +989,22 @@ button { font: inherit; }
 
 .weather-current-card {
   text-align: center;
-  padding: 18px 16px 20px;
-  border: 1px solid rgba(255,255,255,0.24);
+  padding: 20px 16px 22px;
+  border: none;
   border-radius: clamp(18px, 4vw, 26px);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.03) 45%, rgba(0,0,0,0.10)),
-    rgba(255,255,255,0.05);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.24),
-    inset 0 -1px 0 rgba(0,0,0,0.18);
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 8px 24px rgba(31,74,120,0.10);
+}
+
+.weather-current-icon {
+  display: block;
+  font-size: 44px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.weather-current-icon:empty {
+  display: none;
 }
 
 .weather-current-hero {
@@ -932,7 +1026,7 @@ button { font: inherit; }
 .weather-current-humidity {
   font-size: 16px;
   font-weight: 640;
-  color: rgba(255,255,255,0.72);
+  color: rgba(22,32,51,0.72);
 }
 
 /* 2026-07-14: 습도를 체감온도와 같은 줄로 옮기면서 서브 라인은 평소엔
@@ -942,7 +1036,7 @@ button { font: inherit; }
   margin: 10px 0 0;
   font-size: 15px;
   font-weight: 600;
-  color: rgba(255,255,255,0.82);
+  color: rgba(22,32,51,0.82);
 }
 
 .weather-current-sub:empty {
@@ -961,18 +1055,19 @@ button { font: inherit; }
   margin: 0 0 14px;
   padding: 12px 14px;
   border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.22);
+  border: none;
   font-size: 15px;
   font-weight: 680;
   line-height: 1.5;
+  color: var(--ink);
 }
 
 .weather-rain-umbrella[data-needed="true"] {
-  background: rgba(74,144,217,0.24);
+  background: rgba(74,144,217,0.16);
 }
 
 .weather-rain-umbrella[data-needed="false"] {
-  background: rgba(34,197,94,0.18);
+  background: rgba(34,163,94,0.14);
 }
 
 /* 2026-07-15: 코멘트를 강수예보 카드 밖(화면 상단)으로 옮기면서, 데이터를
@@ -997,20 +1092,20 @@ button { font: inherit; }
   margin: 0 0 8px;
   font-size: 14px;
   font-weight: 720;
-  color: rgba(255,255,255,0.78);
+  color: rgba(22,32,51,0.82);
 }
 
 .weather-rain-day-tag {
   padding: 2px 8px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.16);
+  background: rgba(22,32,51,0.10);
   font-size: 12px;
   font-weight: 680;
-  color: rgba(255,255,255,0.9);
+  color: rgba(22,32,51,0.8);
 }
 
 .weather-rain-day-tag-weekend {
-  background: rgba(74,144,217,0.32);
+  background: rgba(74,144,217,0.22);
 }
 
 .weather-rain-window {
@@ -1020,9 +1115,9 @@ button { font: inherit; }
   gap: 12px;
   padding: 12px 14px;
   margin-bottom: 8px;
-  border: 1px solid rgba(255,255,255,0.18);
+  border: none;
   border-radius: 16px;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.8);
 }
 
 .weather-rain-window:last-child {
@@ -1038,14 +1133,14 @@ button { font: inherit; }
   margin-top: 2px;
   font-size: 13px;
   font-weight: 560;
-  color: rgba(255,255,255,0.68);
+  color: rgba(22,32,51,0.7);
 }
 
 /* 이후 4일 요약 / 이번 주말 / 다음 주 한 줄 — 3일 상세 카드 아래, 점선으로 구분 */
 .weather-rain-outlook-extra {
   margin-top: 4px;
   padding-top: 14px;
-  border-top: 1px dashed rgba(255,255,255,0.18);
+  border-top: 1px dashed rgba(22,32,51,0.14);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -1085,7 +1180,7 @@ button { font: inherit; }
   color: rgba(255,255,255,0.82);
 }
 
-.weather-badge[data-grade="NONE"] { background: rgba(255,255,255,0.20); }
+.weather-badge[data-grade="NONE"] { background: rgba(91,107,130,0.85); }
 .weather-badge[data-grade="DRIZZLE"] { background: #4a90d9; }
 .weather-badge[data-grade="RAIN"] { background: #2f6fd1; }
 .weather-badge[data-grade="HEAVY"] { background: #e07b1f; }
@@ -1112,21 +1207,24 @@ button { font: inherit; }
   margin: 0;
   font-size: 12px;
   font-weight: 680;
-  color: rgba(255,255,255,0.6);
+  color: rgba(22,32,51,0.72);
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .weather-stat-tile {
   padding: 12px 14px;
-  border: 1px solid rgba(255,255,255,0.16);
+  border: none;
   border-radius: 16px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.85);
 }
 
 .weather-stat-label {
   display: block;
   font-size: 12px;
   font-weight: 620;
-  color: rgba(255,255,255,0.6);
+  color: rgba(22,32,51,0.68);
   margin-bottom: 4px;
 }
 
@@ -1147,14 +1245,14 @@ button { font: inherit; }
   font-size: 15px;
   font-weight: 580;
   line-height: 1.5;
-  color: rgba(255,255,255,0.86);
+  color: rgba(22,32,51,0.88);
 }
 
 .weather-empty {
   margin: 0;
   font-size: 14px;
   font-weight: 560;
-  color: rgba(255,255,255,0.56);
+  color: rgba(22,32,51,0.6);
 }
 
 /* ── 2026-07-17 2차 기획(묶음A·B) — 주간 기온 예보 세로 리스트, 다음 비
@@ -1176,11 +1274,11 @@ button { font: inherit; }
 
 .weather-weekly-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.4fr) minmax(0, 1.1fr) minmax(0, 0.6fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 0.55fr);
   align-items: center;
   gap: 8px;
   padding: 10px 4px;
-  border-top: 1px solid rgba(255,255,255,0.12);
+  border-top: 1px solid rgba(22,32,51,0.08);
 }
 
 .weather-weekly-row:first-child {
@@ -1195,19 +1293,41 @@ button { font: inherit; }
   font-weight: 680;
 }
 
-.weather-weekly-condition {
-  font-size: 13px;
-  color: rgba(255,255,255,0.68);
+.weather-weekly-icon {
+  font-size: 17px;
+  line-height: 1;
 }
 
-.weather-weekly-temps {
-  font-size: 14px;
+.weather-weekly-mid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.weather-weekly-condition {
+  font-size: 13px;
+  color: rgba(22,32,51,0.72);
+}
+
+.weather-weekly-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
   font-variant-numeric: tabular-nums;
-  text-align: right;
+}
+
+.weather-weekly-bar {
+  flex: 1 1 auto;
+  height: 4px;
+  min-width: 24px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #4fa8f5, #ffb020);
 }
 
 .weather-weekly-min {
-  color: rgba(255,255,255,0.6);
+  color: rgba(22,32,51,0.68);
 }
 
 .weather-weekly-max {
@@ -1217,7 +1337,7 @@ button { font: inherit; }
 .weather-weekly-prob {
   font-size: 12px;
   font-weight: 620;
-  color: rgba(74,144,217,0.95);
+  color: #2f6fd1;
   text-align: right;
 }
 
@@ -1228,7 +1348,7 @@ button { font: inherit; }
   margin: 8px 0 0;
   font-size: 13px;
   font-weight: 560;
-  color: rgba(255,255,255,0.6);
+  color: rgba(22,32,51,0.72);
 }
 
 .weather-current-sun:empty {
@@ -1281,14 +1401,19 @@ button { font: inherit; }
   align-items: center;
   gap: 6px;
   padding: 12px 10px;
-  border: 1px solid rgba(255,255,255,0.16);
+  border: 1px solid rgba(22,32,51,0.06);
   border-radius: 16px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.85);
 }
 
 .weather-hourly-item[data-now="true"] {
-  border-color: rgba(74,144,217,0.6);
-  background: rgba(74,144,217,0.22);
+  border-color: rgba(74,144,217,0.55);
+  background: rgba(74,144,217,0.20);
+}
+
+.weather-hourly-icon {
+  font-size: 19px;
+  line-height: 1;
 }
 
 /* 2026-07-17 Fable 5 검토 반영: 12px/11px는 이 프로젝트 기준으로 너무
@@ -1297,7 +1422,7 @@ button { font: inherit; }
 .weather-hourly-hour {
   font-size: 14px;
   font-weight: 680;
-  color: rgba(255,255,255,0.7);
+  color: rgba(22,32,51,0.72);
 }
 
 .weather-hourly-temp {
@@ -1309,7 +1434,7 @@ button { font: inherit; }
 .weather-hourly-prob {
   font-size: 12px;
   font-weight: 600;
-  color: rgba(120,190,255,0.9);
+  color: #2f6fd1;
 }
 
 /* 2026-07-08: "들은 음악 히스토리" — 최근 재생 목록 + 곡별 바로 듣기 버튼.
@@ -1325,115 +1450,69 @@ button { font: inherit; }
   overflow-y: auto;
 }
 
-.music-history-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 11px 14px;
-  border: 1px solid rgba(255,255,255,0.16);
-  border-radius: 14px;
-  background: rgba(255,255,255,0.08);
-}
-
-.music-history-item.is-current {
-  border-color: rgba(255,255,255,0.32);
-  background: rgba(255,255,255,0.16);
-}
-
-.music-history-title {
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: rgba(255,255,255,0.84);
-  font-size: 14px;
-  font-weight: 620;
-}
-
-.music-history-play {
-  flex: 0 0 auto;
-  min-height: 36px;
-  padding: 0 14px;
-  border: 1px solid rgba(255,255,255,0.26);
-  border-radius: 12px;
-  background: rgba(255,255,255,0.86);
-  color: #101722;
-  font-size: 14px;
-  font-weight: 760;
-  cursor: pointer;
-}
-
-.music-history-item.is-current .music-history-play {
-  background: rgba(255,255,255,0.3);
-  color: #fff;
-  border-color: rgba(255,255,255,0.4);
-}
-
-/* 2026-07-13: "들은 음악 히스토리"를 표 형태로 — 칼럼명 "곡명" + 텍스트
-   버튼 대신 플레이 심볼 아이콘 버튼. 기존 .music-history-list(ul, QC
-   패널의 삭제 목록이 계속 씀)는 그대로 두고, 이 테이블 전용 클래스를
-   새로 추가한다. */
+/* 2026-07-19 2차 리디자인(유저 피드백): 표(<table>) 구조를 버리고 카드형
+   2줄 아이템으로 바꿨다 — 1줄: 곡제목(줄바꿈 허용, 말줄임표 없이 전부
+   노출), 2줄: 재생/좋아요/싫어요 버튼을 우측 정렬(app.js
+   renderMusicHistoryList 참조). 예전(2026-07-08~07-13)의 죽은 코드였던
+   .music-history-item/.music-history-title/.music-history-play 규칙을
+   여기서 이 새 구조에 맞게 정리해 재사용한다. */
 .music-history-table {
   width: 100%;
-  border-collapse: collapse;
-  max-height: 260px;
-  display: block;
+  max-height: 320px;
   overflow-y: auto;
 }
 
-.music-history-table thead {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
-
-.music-history-table tbody {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
-
-.music-history-table th {
-  padding: 0 14px 8px;
-  text-align: left;
-  color: rgba(255,255,255,0.5);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.music-history-play-th {
-  width: 52px;
-}
-
-.music-history-row {
+.music-history-item {
+  padding: 10px 4px;
   border-top: 1px solid rgba(255,255,255,0.10);
 }
 
-.music-history-row:first-child {
+.music-history-item:first-child {
   border-top: 0;
 }
 
-.music-history-row.is-current {
+.music-history-item.is-current {
   background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+}
+
+.music-history-title-row {
+  padding: 0 10px 6px;
 }
 
 .music-history-title {
-  padding: 11px 14px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: block;
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal;
+  word-break: keep-all;
   color: rgba(255,255,255,0.84);
   font-size: 14px;
   font-weight: 620;
+  line-height: 1.4;
 }
 
-.music-history-play-cell {
-  padding: 8px 14px 8px 0;
-  width: 52px;
-  text-align: right;
+.music-history-actions-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+}
+
+/* "모두 보기 / 접기" 토글 버튼 — 카드 폭 전체, 중앙 정렬 텍스트. */
+.music-history-viewall {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  border-top: 1px dashed rgba(255,255,255,0.14);
+  background: transparent;
+  color: rgba(255,255,255,0.62);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .music-history-play-btn {
@@ -1467,18 +1546,9 @@ button { font: inherit; }
 /* 2026-07-15: 히스토리 목록에서도 좋아요/싫어요를 보고 바로 고칠 수 있게
    요청받아 신설 — "히스토리에 좋아요/싫어요 다 있어야 하고, 여기서 한번
    더 누르면 취소, 또 누르면 다시 적용(토글)". 메인 패널의 좋아요/싫어요
-   버튼과 같은 아이콘을 재사용하되, 표 행 높이에 맞춰 더 작게(28px). */
-.music-history-reaction-th {
-  width: 78px;
-}
-
-.music-history-reaction-cell {
-  padding: 8px 14px 8px 0;
-  width: 78px;
-  text-align: right;
-  white-space: nowrap;
-}
-
+   버튼과 같은 아이콘을 재사용하되, 표 행 높이에 맞춰 더 작게(28px).
+   2026-07-19: 표 칼럼(th/td) 구조가 없어졌으므로 .music-history-actions-row의
+   flex gap이 간격을 담당한다 — 개별 margin-left는 제거. */
 .music-history-like-btn,
 .music-history-dislike-btn {
   width: 28px;
@@ -1491,10 +1561,6 @@ button { font: inherit; }
   background-size: 52%;
   cursor: pointer;
   opacity: 0.75;
-}
-
-.music-history-dislike-btn {
-  margin-left: 6px;
 }
 
 .music-history-like-btn { background-image: url("assets/icons/music/thumb_up.svg"); }
