@@ -1138,36 +1138,35 @@ function saveSelectedGenres() {
 // preventDefault로 끊는다 — 아래 setupModalBackdropScrollGuard() 참조.
 // 이제 openSettings/closeSettings는 다시 순수하게 패널 열고 닫는 일만 한다.
 
-// 2026-07-17 6차 개정: 5차까지 시도(overscroll-behavior 단독 → html
-// scroll-snap 해제 → html overflow:hidden → backdrop touchmove 차단 →
-// 시트 경계 touchmove 가드)가 전부 "스크롤 체이닝 자체를 막는" 접근이었는데,
-// 실기기에서 결국 내부 스크롤이 완전히 자유롭게 되진 않았다. 유저 요청으로
-// 목표를 재정의한다 — 시트 내부 스크롤이 완벽하지 않아도 상관없고, 오직
-// "설정/날씨 상세가 열려있는 동안 화면이 ezlong.com 페이지로 플립되지만
-// 않으면" 충분하다. 그래서 원인 규명 대신 결과를 직접 봉쇄한다: 모달이
-// 열리는 순간 문서 스크롤 위치(scrollTop)를 그 값으로 고정하고, 모달이
-// 열려있는 동안 매 프레임(requestAnimationFrame) 그 값에서 벗어났는지
-// 검사해 벗어났으면 즉시 되돌린다. 시트 내부(.settings-sheet 등)는 전혀
-// 다른 요소의 별도 scrollTop이라 이 잠금과 무관하게 그대로 동작한다.
-let pageScrollLockActive = false;
-let pageScrollLockValue = 0;
-function startPageScrollLock() {
-  const scroller = document.scrollingElement || document.documentElement;
-  pageScrollLockValue = scroller.scrollTop;
-  if (pageScrollLockActive) return;
-  pageScrollLockActive = true;
-  const tick = () => {
-    if (!pageScrollLockActive) return;
-    const scrollerNow = document.scrollingElement || document.documentElement;
-    if (scrollerNow.scrollTop !== pageScrollLockValue) {
-      scrollerNow.scrollTop = pageScrollLockValue;
-    }
-    requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
+// 2026-07-17 7차 개정: 6차(rAF로 매 프레임 scrollTop을 강제로 되돌리는
+// 방식)를 실기기에서 테스트한 결과 플립도 못 막았고, 오히려 iOS의 네이티브
+// 모멘텀 스크롤/스크롤 스냅은 컴포지터(GPU) 스레드가 화면을 먼저 그려버린
+// 뒤에야 JS의 rAF 콜백이 뒤늦게 scrollTop을 되돌리는 구조라, "컴포지터가
+// 페이지를 넘기려는 시도"와 "JS가 매 프레임 되돌리는 시도"가 서로 어긋난
+// 타이밍으로 계속 충돌하면서 화면이 지지직거리는 "고장난 TV" 증상까지
+// 새로 만들었다 — JS로 스크롤 위치를 사후에 되돌리는 방식 자체가 이 문제엔
+// 안 맞는다는 뜻이다. 그래서 이번엔 사후 교정이 아니라 애초에 html이
+// 스크롤될 수 있는 상태 자체를 CSS로 꺼버린다: 설정/날씨 상세 모달이 열려
+// 있는 동안만 html에 overflow:hidden을 건다. 참고로 2026-07-16 3차
+// 시도에서도 html에 overflow:hidden을 걸었다가 "탭해서 플립하기" 기능까지
+// 함께 망가진 적이 있는데, 그건 3개 모달(설정/날씨상세/알라딘)이 공유
+// 카운터 하나로 잠금을 관리하다가 알라딘 쪽 강제 close 로직이 카운터를
+// 잘못 건드려서 잠금이 풀려야 할 때 안 풀리고 계속 걸려있던 버그였다(당시
+// wasOpen 가드를 덧붙였던 흔적이 그 증거). 이번엔 그 버그의 재발을 원천
+// 차단하기 위해 알라딘 모달은 이 잠금에 아예 관여시키지 않고, 설정/날씨
+// 상세 두 곳만 독립된 카운터로 대칭적으로(열 때 +1, 닫을 때 -1) 관리한다 —
+// "탭해서 플립하기"는 이 두 모달이 닫혀 있을 때만 쓰는 기능이라 서로 겹칠
+// 일이 없다.
+let outerScrollLockCount = 0;
+function lockOuterScroll() {
+  outerScrollLockCount++;
+  document.documentElement.classList.add("outer-scroll-locked");
 }
-function stopPageScrollLock() {
-  pageScrollLockActive = false;
+function unlockOuterScroll() {
+  outerScrollLockCount = Math.max(0, outerScrollLockCount - 1);
+  if (outerScrollLockCount === 0) {
+    document.documentElement.classList.remove("outer-scroll-locked");
+  }
 }
 
 function openSettings() {
@@ -1175,7 +1174,7 @@ function openSettings() {
   settingsPanel.setAttribute("aria-hidden", "false");
   settingsOpen.setAttribute("aria-expanded", "true");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "true");
-  startPageScrollLock();
+  lockOuterScroll();
 }
 
 function closeSettings() {
@@ -1183,7 +1182,7 @@ function closeSettings() {
   settingsPanel.setAttribute("aria-hidden", "true");
   settingsOpen.setAttribute("aria-expanded", "false");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "false");
-  stopPageScrollLock();
+  unlockOuterScroll();
 }
 
 // 2026-07-16: 알라딘 제휴 수수료 추적용 파라미터 — aladin-links.js에 있는
@@ -1287,7 +1286,7 @@ function openWeatherDetail() {
   weatherDetailPanel.setAttribute("aria-hidden", "false");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "true");
   fetchWeatherDetail();
-  startPageScrollLock();
+  lockOuterScroll();
 }
 
 function closeWeatherDetail() {
@@ -1295,7 +1294,7 @@ function closeWeatherDetail() {
   weatherDetailPanel.classList.remove("is-open");
   weatherDetailPanel.setAttribute("aria-hidden", "true");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "false");
-  stopPageScrollLock();
+  unlockOuterScroll();
 }
 
 function weatherDetailCoords() {
