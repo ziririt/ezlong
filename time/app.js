@@ -1221,9 +1221,23 @@ function withAladinPartnerParam(url) {
 let aladinModalCurrentUrl = null;
 
 function openAladinModal(url) {
-  if (!aladinModalPanel || !url) return;
+  if (!url) return;
   const finalUrl = withAladinPartnerParam(url);
   aladinModalCurrentUrl = finalUrl;
+  // 2026-07-18: 네이티브 앱에서는 iframe 모달을 아예 띄우지 않는다. iframe은
+  // ezlong.com 기준 서드파티 컨텍스트라 ITP가 알라딘 로그인/장바구니 쿠키를
+  // 막는 게 근본 원인이었다(위 withAladinPartnerParam 주석 4차 개정 참고).
+  // 대신 ContentView.swift의 SFSafariViewController를 top-level(퍼스트파티)
+  // 페이지로 직접 띄운다 — 네이버·퍼플렉시티 앱과 동일한 방식. 이러면 로그인
+  // 자체가 진짜 aladin.co.kr 문서 컨텍스트에서 이뤄지므로 쿠키가 정상 저장된다.
+  if (isNativeWrapper && window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.flipzenNativeRadio) {
+    window.webkit.messageHandlers.flipzenNativeRadio.postMessage({ action: "openAladinInApp", url: finalUrl });
+    return;
+  }
+  // 네이티브가 아닌 일반 브라우저/PWA에서는 기존 iframe 모달을 그대로 쓴다
+  // (이 경로는 데스크톱 사파리/크롬 등 다양한 환경이 섞여있어 이번 수정
+  // 범위 밖 — 이번 문제는 네이티브 iOS 앱에 한정된 제보였다).
+  if (!aladinModalPanel) return;
   if (aladinModalFrame) aladinModalFrame.src = finalUrl;
   aladinModalPanel.classList.add("is-open");
   // 15차-c: 동일 재부착 (제거 금지)
