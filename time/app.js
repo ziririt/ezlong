@@ -1151,12 +1151,14 @@ function saveSelectedGenres() {
 // 됐으므로 goToPage(2)/goToPage(0) 호출로 전환한다. is-open/aria-hidden
 // 토글은 접근성 트리 힌트로 남겨두되(해가 없음), 실제 화면 전환은
 // goToPage()가 전담한다.
+// 2026-07-17 13차: #quoteSettings가 #pageTrack 밖으로 나가면서 goToPage()
+// 호출은 더 이상 필요 없다(그 페이지 전환 트랙과 무관해졌다) — is-open
+// 클래스 토글만으로 표시/숨김이 전부 처리된다(styles.css .app-page.is-open).
 function openSettings() {
   settingsPanel.classList.add("is-open");
   settingsPanel.setAttribute("aria-hidden", "false");
   settingsOpen.setAttribute("aria-expanded", "true");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "true");
-  goToPage(2);
 }
 
 function closeSettings() {
@@ -1164,7 +1166,6 @@ function closeSettings() {
   settingsPanel.setAttribute("aria-hidden", "true");
   settingsOpen.setAttribute("aria-expanded", "false");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "false");
-  goToPage(0);
 }
 
 // 2026-07-16: 알라딘 제휴 수수료 추적용 파라미터 — aladin-links.js에 있는
@@ -1265,13 +1266,14 @@ function closeAladinModal() {
 // 2026-07-17 10차 개정: #weatherDetailPanel도 #pageTrack 안의 3번 페이지로
 // 전환됐으므로 goToPage(3)/goToPage(0) 호출을 추가한다(openSettings/
 // closeSettings와 동일 패턴).
+// 2026-07-17 13차: #weatherDetailPanel도 #pageTrack 밖으로 나가면서
+// goToPage() 호출 제거 — 위 openSettings/closeSettings와 동일 이유.
 function openWeatherDetail() {
   if (!weatherDetailPanel) return;
   weatherDetailPanel.classList.add("is-open");
   weatherDetailPanel.setAttribute("aria-hidden", "false");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "true");
   fetchWeatherDetail();
-  goToPage(3);
 }
 
 function closeWeatherDetail() {
@@ -1279,7 +1281,6 @@ function closeWeatherDetail() {
   weatherDetailPanel.classList.remove("is-open");
   weatherDetailPanel.setAttribute("aria-hidden", "true");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "false");
-  goToPage(0);
 }
 
 function weatherDetailCoords() {

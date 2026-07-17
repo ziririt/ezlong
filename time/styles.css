@@ -68,6 +68,7 @@ a {
 button { font: inherit; }
 
 .clock-app {
+  position: relative; /* 2026-07-17 13차: 아래 .app-page(설정/날씨상세)의 position:absolute 기준점 */
   height: 100vh;
   height: 100dvh;
   overflow: hidden; /* 뷰포트 창 — 안의 #pageTrack이 창 밖으로 나가는 부분은 잘려서 안 보인다 */
@@ -126,17 +127,38 @@ button { font: inherit; }
    .clock-app의 overflow:hidden에 그냥 잘려서 화면 밖으로 사라졌던 것 —
    터치 제스처·3D 컨텍스트·팝업 구조 어느 쪽 문제도 아니었다. height를
    고정값으로 줘서 박스 자체 크기를 뷰포트에 캡핑해야, 그보다 긴 내용물이
-   비로소 "진짜 넘치는 콘텐츠"로 인식되고 그 안에서 스크롤이 생긴다. */
+   비로소 "진짜 넘치는 콘텐츠"로 인식되고 그 안에서 스크롤이 생긴다.
+   2026-07-17 13차 — height 고정 후에도 스크롤이 안 돼서 실기기 콘솔로
+   한 번 더 파봤다: touchstart/touchmove는 스와이프당 수십~백여 회씩
+   정상 발생하는데 scrollTop은 끝까지 0이었다 — 터치 디스패치는 멀쩡한데
+   네이티브 스크롤로 전환이 안 되는 상태. 남은 유력 용의자는 이 요소의
+   조상인 #pageTrack에 상시 걸려있는 transform+will-change:transform —
+   WKWebView에서 transform이 걸린 조상 안의 overflow:auto는 터치 이벤트는
+   정상 전달되면서도 네이티브 스크롤 인식 자체가 깨지는 경우가 있다.
+   그래서 이 두 페이지를 #pageTrack 밖(.clock-app 직계 자식)으로 옮기고,
+   position:absolute + inset:0으로 전체 화면을 덮게 바꿨다 — 이제 이
+   요소도, 조상 중 어느 것도 transform이 걸려있지 않다(.clock-app은 flip
+   애니메이션 900ms 동안만 조건부 perspective가 걸리는데 그 순간엔 이
+   페이지들이 열려있지 않으므로 서로 겹치지 않는다). 기본은 숨김
+   (display:none)이고 app.js가 이미 열고 닫을 때 토글하던 .is-open
+   클래스를 그대로 재사용해 보이게 한다(팝업 시절의 토글 방식으로 복귀,
+   다만 이제 fixed가 아니라 absolute + 안전한 조상 구조). */
 .app-page {
-  position: relative;
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: none;
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
+  height: 100%;
   box-sizing: border-box;
   overflow-y: auto;
   overscroll-behavior: contain;
   touch-action: pan-y;
   -webkit-overflow-scrolling: touch;
+}
+
+.app-page.is-open {
+  display: block;
 }
 
 .clock-app[data-scene="midday"] {
