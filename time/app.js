@@ -177,6 +177,7 @@ const quotes = baseQuotes.map((quote) => {
 });
 
 const app = document.querySelector(".clock-app");
+const pageTrack = document.getElementById("pageTrack"); // 2026-07-17 8차: 페이지 1/2 전환용 transform 트랙
 const dots = document.querySelectorAll("[data-scene-button]");
 const skyRoom = document.querySelector(".sky-room");
 const photoCredit = document.getElementById("photoCredit");
@@ -1138,43 +1139,18 @@ function saveSelectedGenres() {
 // preventDefault로 끊는다 — 아래 setupModalBackdropScrollGuard() 참조.
 // 이제 openSettings/closeSettings는 다시 순수하게 패널 열고 닫는 일만 한다.
 
-// 2026-07-17 7차 개정: 6차(rAF로 매 프레임 scrollTop을 강제로 되돌리는
-// 방식)를 실기기에서 테스트한 결과 플립도 못 막았고, 오히려 iOS의 네이티브
-// 모멘텀 스크롤/스크롤 스냅은 컴포지터(GPU) 스레드가 화면을 먼저 그려버린
-// 뒤에야 JS의 rAF 콜백이 뒤늦게 scrollTop을 되돌리는 구조라, "컴포지터가
-// 페이지를 넘기려는 시도"와 "JS가 매 프레임 되돌리는 시도"가 서로 어긋난
-// 타이밍으로 계속 충돌하면서 화면이 지지직거리는 "고장난 TV" 증상까지
-// 새로 만들었다 — JS로 스크롤 위치를 사후에 되돌리는 방식 자체가 이 문제엔
-// 안 맞는다는 뜻이다. 그래서 이번엔 사후 교정이 아니라 애초에 html이
-// 스크롤될 수 있는 상태 자체를 CSS로 꺼버린다: 설정/날씨 상세 모달이 열려
-// 있는 동안만 html에 overflow:hidden을 건다. 참고로 2026-07-16 3차
-// 시도에서도 html에 overflow:hidden을 걸었다가 "탭해서 플립하기" 기능까지
-// 함께 망가진 적이 있는데, 그건 3개 모달(설정/날씨상세/알라딘)이 공유
-// 카운터 하나로 잠금을 관리하다가 알라딘 쪽 강제 close 로직이 카운터를
-// 잘못 건드려서 잠금이 풀려야 할 때 안 풀리고 계속 걸려있던 버그였다(당시
-// wasOpen 가드를 덧붙였던 흔적이 그 증거). 이번엔 그 버그의 재발을 원천
-// 차단하기 위해 알라딘 모달은 이 잠금에 아예 관여시키지 않고, 설정/날씨
-// 상세 두 곳만 독립된 카운터로 대칭적으로(열 때 +1, 닫을 때 -1) 관리한다 —
-// "탭해서 플립하기"는 이 두 모달이 닫혀 있을 때만 쓰는 기능이라 서로 겹칠
-// 일이 없다.
-let outerScrollLockCount = 0;
-function lockOuterScroll() {
-  outerScrollLockCount++;
-  document.documentElement.classList.add("outer-scroll-locked");
-}
-function unlockOuterScroll() {
-  outerScrollLockCount = Math.max(0, outerScrollLockCount - 1);
-  if (outerScrollLockCount === 0) {
-    document.documentElement.classList.remove("outer-scroll-locked");
-  }
-}
+// 2026-07-17 8차 개정(근본 재설계): 6~7차까지의 lockOuterScroll/
+// unlockOuterScroll(html에 overflow:hidden을 토글하는 방식)을 완전히
+// 제거했다. 이제 html/body는 styles.css에서 영구적으로 overflow:hidden
+// 이라 토글할 대상 자체가 없다 — 문서가 애초에 스크롤되지 않으므로 모달이
+// 열려있든 아니든 상관없다. 페이지 전환은 아래 pageTrack 관련 코드가
+// 전담한다.
 
 function openSettings() {
   settingsPanel.classList.add("is-open");
   settingsPanel.setAttribute("aria-hidden", "false");
   settingsOpen.setAttribute("aria-expanded", "true");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "true");
-  lockOuterScroll();
 }
 
 function closeSettings() {
@@ -1182,7 +1158,6 @@ function closeSettings() {
   settingsPanel.setAttribute("aria-hidden", "true");
   settingsOpen.setAttribute("aria-expanded", "false");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "false");
-  unlockOuterScroll();
 }
 
 // 2026-07-16: 알라딘 제휴 수수료 추적용 파라미터 — aladin-links.js에 있는
@@ -1286,7 +1261,6 @@ function openWeatherDetail() {
   weatherDetailPanel.setAttribute("aria-hidden", "false");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "true");
   fetchWeatherDetail();
-  lockOuterScroll();
 }
 
 function closeWeatherDetail() {
@@ -1294,7 +1268,6 @@ function closeWeatherDetail() {
   weatherDetailPanel.classList.remove("is-open");
   weatherDetailPanel.setAttribute("aria-hidden", "true");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "false");
-  unlockOuterScroll();
 }
 
 function weatherDetailCoords() {
@@ -3659,6 +3632,31 @@ dots.forEach((dot) => {
   dot.addEventListener("click", () => selectPhotoIndex([...dots].indexOf(dot)));
 });
 
+// 2026-07-17 8차 개정(근본 재설계): 페이지 1(.sky-room)↔2(.ezlong-webview)
+// 전환을 네이티브 scroll-snap 대신 #pageTrack의 transform으로 직접
+// 구동한다. currentPageIndex(0=시계, 1=ezlong 웹뷰)와 goToPage()가 이제
+// 유일한 페이지 전환 경로다 — 문서 자체는 styles.css에서 영구적으로
+// overflow:hidden이라 "스크롤해서 넘어가는" 개념이 없고, 오직 스와이프
+// 제스처 감지(아래) 또는 명시적 탭(appBrand/뒤로가기 버튼)으로만 페이지가
+// 바뀐다. 모달 시트 내부 스크롤과는 이벤트 계통이 완전히 분리되므로
+// (하나는 overflow:auto 진짜 스크롤, 하나는 이 JS 스와이프+transform),
+// 7번의 실패를 낳았던 "시트 스크롤이 페이지 전환으로 새는" 문제가 구조적
+// 으로 성립하지 않는다.
+let currentPageIndex = 0; // 0 = sky-room, 1 = ezlong-webview
+function goToPage(index) {
+  if (!pageTrack || !skyRoom) return;
+  currentPageIndex = index === 1 ? 1 : 0;
+  const offset = currentPageIndex === 1 ? skyRoom.offsetHeight : 0;
+  pageTrack.style.transform = `translateY(-${offset}px)`;
+}
+// 뷰포트 높이가 바뀌면(주소창 접힘/펼침, 회전 등) 2페이지로 가 있는 도중에도
+// 오프셋이 어긋나지 않게 다시 계산해준다. syncFirstScreenHeight()가 이미
+// resize/visualViewport resize에 물려있으므로, 그 다음에 이어서 호출한다.
+function resyncPageTrackOffset() {
+  if (!pageTrack || !skyRoom || currentPageIndex !== 1) return;
+  pageTrack.style.transform = `translateY(-${skyRoom.offsetHeight}px)`;
+}
+
 if (skyRoom) {
   skyRoom.addEventListener("touchstart", (event) => {
     const touch = event.touches[0];
@@ -3668,45 +3666,65 @@ if (skyRoom) {
   skyRoom.addEventListener("touchend", (event) => {
     if (!swipeStart) return;
     const touch = event.changedTouches[0];
-    if (!touch) return;
-    const dx = touch.clientX - swipeStart.x;
-    const dy = touch.clientY - swipeStart.y;
+    const start = swipeStart;
     swipeStart = null;
-    if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.35) return;
+    if (!touch) return;
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    const verticalDominant = Math.abs(dy) > Math.abs(dx) * 1.35;
+    if (verticalDominant) {
+      // 위로 스와이프(손가락이 위로 이동, dy가 충분히 음수) → 2페이지로.
+      if (dy < -64) goToPage(1);
+      return;
+    }
+    if (Math.abs(dx) < 48) return;
     movePhoto(dx < 0 ? 1 : -1);
   }, { passive: true });
 }
 
-// 2026-07-08: 우측 상단 "ezlong.com" 글자를 탭하면, 위로 스와이프했을 때와
-// 같은 목적지(ezlong-webview 섹션)로 이동하되 플립시계 컨셉에 맞는 "위로
-// 플립" 연출을 더해서 이동한다. 실제 페이지 전환은 이미 있는 scroll-snap
-// 스크롤을 그대로 쓰고(styles.css .clock-app/.sky-room 참조), 그 위에
-// sky-room을 카드처럼 위로 젖히는 3D 회전 애니메이션만 얹는다.
+// 2페이지(ezlong-webview)에서 아래로 스와이프하면 1페이지로 복귀한다.
+// 주의: iframe 내부(ezlong.com 콘텐츠 자체)에서 시작된 터치는 브라우저
+// 구조상 이 리스너까지 버블링되지 않는다(iframe 경계는 항상 이벤트를
+// 막는다 — 동일 출처라도 마찬가지). 그래서 footer 등 iframe 바깥 영역에서
+// 시작된 스와이프만 감지되며, iframe 내부에서라도 확실히 돌아갈 수 있게
+// 아래 #webviewBackButton(뒤로가기 버튼)을 별도로 둔다.
+if (ezlongSection) {
+  let webviewSwipeStart = null;
+  ezlongSection.addEventListener("touchstart", (event) => {
+    const touch = event.touches[0];
+    webviewSwipeStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
+  }, { passive: true });
+  ezlongSection.addEventListener("touchend", (event) => {
+    if (!webviewSwipeStart) return;
+    const touch = event.changedTouches[0];
+    const start = webviewSwipeStart;
+    webviewSwipeStart = null;
+    if (!touch) return;
+    const dy = touch.clientY - start.y;
+    const dx = touch.clientX - start.x;
+    if (dy > 64 && Math.abs(dy) > Math.abs(dx) * 1.35) goToPage(0);
+  }, { passive: true });
+}
+
+const webviewBackButton = document.getElementById("webviewBackButton");
+if (webviewBackButton) {
+  webviewBackButton.addEventListener("click", () => goToPage(0));
+}
+
+// 2026-07-08: 우측 상단 "ezlong.com" 글자를 탭하면 플립시계 컨셉에 맞는
+// "위로 플립" 연출을 더해서 2페이지로 이동한다. 2026-07-17 8차 개정으로
+// scrollIntoView/scrollSnapType 토글 로직을 걷어내고 goToPage()로 교체 —
+// 회전 애니메이션과 페이지 전환 타이밍만 맞추면 되므로 훨씬 단순해졌다.
 if (appBrand && skyRoom && ezlongSection) {
   appBrand.addEventListener("click", () => {
     if (skyRoom.classList.contains("is-flipping-away")) return; // 연타 방지
     skyRoom.classList.add("is-flipping-away");
-
-    // 2026-07-08 버그 수정: "누르면 ezlong.com으로 넘어갔다가 1초 안에
-    // 다시 원래 화면으로 튕겨 돌아온다"는 재지적 — 원인은 .sky-room에 걸린
-    // scroll-snap-stop:always다. 이 값은 "진짜 유저 스와이프"만 스냅 대상
-    // 으로 신뢰하도록 설계돼 있어서, scrollIntoView()로 프로그램이 직접
-    // 스크롤을 시키면 WebKit이 이걸 신뢰하지 않고 원래 스냅 위치(sky-room)
-    // 로 되돌려버리는 경우가 있다. 스크롤이 실제로 끝날 때까지만 스냅을
-    // 잠깐 꺼서 방해받지 않게 하고, 끝나면 원래대로 복구한다(스와이프로
-    // 넘기는 기존 동작은 전혀 건드리지 않는다).
-    const html = document.documentElement;
-    html.style.scrollSnapType = "none";
-
     window.setTimeout(() => {
-      ezlongSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 260); // 회전이 절반쯤 진행됐을 때 스크롤을 시작해 자연스럽게 이어지게 한다.
+      goToPage(1);
+    }, 260); // 회전이 절반쯤 진행됐을 때 페이지 전환을 시작해 자연스럽게 이어지게 한다.
     window.setTimeout(() => {
       skyRoom.classList.remove("is-flipping-away");
     }, 900); // 화면 밖으로 충분히 벗어난 뒤 원상태로 리셋(다음에 다시 볼 때 정상 모습).
-    window.setTimeout(() => {
-      html.style.scrollSnapType = ""; // 스크롤이 완전히 끝난 뒤 스냅을 복구한다.
-    }, 1300);
   });
 }
 
@@ -3745,59 +3763,13 @@ document.querySelectorAll("[data-aladin-modal-close]").forEach((element) => {
   element.addEventListener("click", closeAladinModal);
 });
 
-// 2026-07-16 4차 개정: '설정'/'날씨 상세'/알라딘 모달 세 곳 모두 같은
-// .settings-backdrop 구조를 공유한다(각 모달의 시트는 화면 하단에만 붙어
-// 있고 그 위 배경은 스크롤할 내용이 전혀 없는 빈 공간이다). 유저의 스크롤
-// 제스처가 시트가 아니라 이 빈 배경 위에서 시작되면 붙잡아줄 스크롤 대상이
-// 없어 그대로 배경 문서(html)의 스크롤로 흘러가 버린다. 배경에서 시작된
-// 터치는 touchmove에서 직접 preventDefault해서 원천 차단한다.
-document.querySelectorAll(".settings-backdrop").forEach((backdrop) => {
-  backdrop.addEventListener("touchmove", (event) => {
-    event.preventDefault();
-  }, { passive: false });
-});
-
-// 2026-07-17 5차 개정: 4차(배경 차단)는 "배경에서 시작된 터치"만 막았을 뿐,
-// 유저가 실제로 재현한 증상 — "시트가 살짝 움직이다가 끝에서 넘어감" —은
-// 전혀 다른 지점이었다. 이건 터치가 시트 위에서 시작돼 시트 내부는 정상
-// 스크롤되다가, 시트 스크롤이 맨 위/맨 아래 경계에 닿은 "이후"에도 유저가
-// 같은 방향으로 손가락을 계속 움직이면 그 초과분 제스처가 그대로 조상
-// 요소(html)의 scroll-snap 스크롤로 흘러넘치는 "스크롤 체이닝"이다.
-// CSS `overscroll-behavior: contain`이 이걸 막아줘야 정상이지만(1차 시도),
-// WebKit은 scroll-snap 조상 + 중첩 스크롤 컨테이너 조합에서 이 속성이
-// 스냅 포인트 재계산까지는 억제하지 못하는 알려진 사례가 있다 — rubber-band
-// 튕김은 막아도 "다음 스냅 포인트로 넘어가는 판단" 자체는 별도 로직이라
-// 새어나갈 수 있다. 그래서 CSS에 의존하지 않고 touchstart/touchmove로
-// 직접 방향과 스크롤 위치를 계산해 경계 초과 제스처를 앱 차원에서
-// preventDefault로 원천 차단한다 — overscroll-behavior가 대중화되기 전에
-// 널리 쓰이던 표준 수동 기법이라 WebKit 버전 편차와 무관하게 동작한다.
-function guardSheetScrollChaining(sheet) {
-  if (!sheet) return;
-  let startY = 0;
-  sheet.addEventListener(
-    "touchstart",
-    (event) => {
-      startY = event.touches[0].clientY;
-    },
-    { passive: true }
-  );
-  sheet.addEventListener(
-    "touchmove",
-    (event) => {
-      const currentY = event.touches[0].clientY;
-      const deltaY = currentY - startY; // 양수 = 손가락이 아래로(콘텐츠 위쪽 노출), 음수 = 위로(콘텐츠 아래쪽 노출)
-      const atTop = sheet.scrollTop <= 0;
-      const atBottom = sheet.scrollTop + sheet.clientHeight >= sheet.scrollHeight - 1;
-      if ((atTop && deltaY > 0) || (atBottom && deltaY < 0)) {
-        event.preventDefault();
-      }
-    },
-    { passive: false }
-  );
-}
-document
-  .querySelectorAll(".settings-sheet, .weather-detail-sheet")
-  .forEach(guardSheetScrollChaining);
+// 2026-07-17 8차 개정(근본 재설계): 4차(배경 touchmove 차단)와 5차(시트
+// 경계 touchmove 가드)를 여기서 완전히 제거했다. 문서(html/body)가
+// styles.css에서 영구적으로 overflow:hidden이 된 지금은 "스크롤이 상위
+// 문서로 새어나간다"는 현상 자체가 성립할 수 없다 — 새어나갈 상위 스크롤
+// 대상이 아예 없다. .settings-sheet/.weather-detail-sheet의
+// overscroll-behavior:contain, touch-action:pan-y(styles.css)만으로
+// 충분하다.
 if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", handleMusicIconTap);
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", () => {
@@ -4022,8 +3994,12 @@ document.addEventListener("keydown", (event) => {
 window.addEventListener("resize", () => {
   syncFirstScreenHeight();
   resizeEzlongWebview();
+  resyncPageTrackOffset();
 });
-window.visualViewport?.addEventListener("resize", syncFirstScreenHeight);
+window.visualViewport?.addEventListener("resize", () => {
+  syncFirstScreenHeight();
+  resyncPageTrackOffset();
+});
 
 syncFirstScreenHeight();
 resizeEzlongWebview();

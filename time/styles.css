@@ -19,54 +19,26 @@
 
 * { box-sizing: border-box; }
 
-/* 2026-07-07: 1페이지(.sky-room)에서 2페이지(.ezlong-webview)로 넘어가는
-   전환이 그냥 자연 스크롤이라, 위로 스와이프하면 어중간한 위치에서 멈춰
-   두 페이지가 걸쳐 보이는 "안 멋진" 상태가 됐다. scroll-snap으로 스와이프
-   방향에 따라 정확히 한 페이지에 딱 맞춰 멈추게 한다. */
+/* 2026-07-17 8차 개정(근본 재설계) — 2026-07-07 자연 스크롤 도입부터
+   2~7차의 여러 스크롤 체이닝 방지 시도까지, 전부 "문서(html)가 스크롤된다"
+   는 전제 위에서 모달 내부 스크롤과 계속 충돌해왔다(구 히스토리는 git
+   로그 참조). 이번엔 문서 스크롤이라는 개념 자체를 없앤다: html/body는
+   영구적으로 overflow:hidden(뷰포트 고정)이고, 1페이지(.sky-room)↔2페이지
+   (.ezlong-webview) 전환은 새 wrapper `#pageTrack`(index.html에 추가)의
+   CSS transform을 app.js가 직접 움직여서 구현한다. 모달 시트(.settings-sheet
+   등)의 내부 스크롤은 여전히 평범한 overflow:auto이고, 페이지 전환은 별도
+   스와이프 제스처 감지 + transform이라 — 이 둘은 애초에 같은 이벤트 계통을
+   공유하지 않는다. 문서가 스크롤 대상이 아니게 된 순간, "시트 스크롤이
+   문서 스크롤로 새는" 현상 자체가 구조적으로 성립할 수 없다. */
 html {
-  min-height: 100%;
-  scroll-snap-type: y mandatory;
-}
-
-/* 2026-07-16 4차 개정 — 3차(overflow:hidden)가 원인 진단 자체를 다시 세운
-   계기가 됐다: 3차 적용 후 유저 재확인 결과 기존 증상(설정 내부 스크롤 실패)이
-   여전한 데다, 원래 멀쩡했던 "ezlong.com 텍스트 탭 → 플립 전환"까지 함께
-   멈췄다 — html에 scroll-snap-type/overflow를 프로그램적으로 토글하는 방식
-   자체가, 이미 복잡하게 얽힌 이 페이지의 scroll-snap 상태 머신을 건드려서
-   부작용을 낳는 것으로 결론짓는다(perspective가 걸린 <main> 때문에
-   position:fixed 모달의 containing block이 뒤틀려 있는 상태와 겹쳐 예측이
-   어렵다, .settings-panel 위쪽 주석 참조). 그래서 이번엔 html 자체를 건드리는
-   걸 완전히 그만두고, 진짜 원인이었을 가능성이 높은 지점을 직접 막는다:
-   모달 시트(.settings-sheet)는 화면 하단에만 붙어 있고 그 위 배경
-   (.settings-backdrop)은 스크롤할 내용이 전혀 없는 "빈 공간"이다 — 유저의
-   스크롤 제스처가 시트가 아니라 이 빈 배경 위에서 시작되면, 애초에 붙잡아줄
-   스크롤 대상이 없어 손가락 아래 제스처가 그대로 배경 문서(html)로 흘러가
-   버린다. app.js가 이 배경 요소에 touchmove를 직접 preventDefault해서 원천
-   차단한다(아래 .settings-backdrop 참조) — html의 scroll-snap 상태는 이제
-   전혀 건드리지 않으므로 플립 전환과 서로 간섭할 여지가 없다. */
-
-/* 2026-07-17 7차 개정 — 5차(시트 경계 touchmove 가드)도, 6차(JS rAF로 매
-   프레임 scrollTop을 강제로 되돌리는 방식)도 실기기에서 전부 실패했다.
-   6차는 오히려 iOS 네이티브 모멘텀 스크롤(컴포지터 스레드가 화면을 먼저
-   그림)과 JS의 뒤늦은 교정이 매 프레임 서로 충돌하면서 화면이 지지직거리는
-   "고장난 TV" 증상까지 새로 만들었다 — JS로 사후에 스크롤 위치를 되돌리는
-   방식 자체가 이 문제에 안 맞는다는 뜻이다. 유저 요청대로 목표를 "시트 내부
-   스크롤이 완벽하지 않아도 되니, 오직 모달이 열려있는 동안 ezlong.com으로
-   플립만 안 되면 된다"로 재정의했으므로, 사후 교정이 아니라 애초에 html이
-   스크롤될 수 있는 상태 자체를 CSS로 꺼버리는 3차(overflow:hidden) 방식으로
-   돌아간다. 3차가 "탭해서 플립하기" 기능까지 망가뜨렸던 건, 당시 설정/날씨
-   상세/알라딘 3개 모달이 공유 카운터 하나로 이 잠금을 관리하다가 알라딘의
-   강제 close 로직이 카운터를 잘못 건드려 잠금이 풀려야 할 때 안 풀리고
-   계속 걸려있던 별개의 버그였다(app.js lockOuterScroll/unlockOuterScroll
-   주석 참조). 이번엔 알라딘 모달을 이 잠금에서 완전히 제외하고 설정/날씨
-   상세 두 곳만 독립 카운터로 대칭 관리해 그 버그의 재발을 막는다. */
-html.outer-scroll-locked {
+  height: 100%;
   overflow: hidden;
 }
 
 body {
-  min-height: 100%;
+  height: 100%;
   margin: 0;
+  overflow: hidden;
   background: #101722;
   color: var(--white);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
@@ -81,9 +53,29 @@ a {
 button { font: inherit; }
 
 .clock-app {
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden; /* 뷰포트 창 — 안의 #pageTrack이 창 밖으로 나가는 부분은 잘려서 안 보인다 */
   background: #eef3f5;
   perspective: 1400px; /* 2026-07-08: 아래 .sky-room.is-flipping-away 3D 회전용 */
+}
+
+/* #pageTrack: .sky-room과 .ezlong-webview를 세로로 쌓아두는 트랙. 평소엔
+   두 블록이 그냥 위아래로 쌓인 상태(translateY(0))라 1페이지가 보이고,
+   2페이지로 넘어갈 때 app.js가 translateY(-1 * .sky-room 실측 높이px)를
+   줘서 트랙 전체를 위로 밀어 올린다 — 부모(.clock-app)가 overflow:hidden
+   이라 화면 밖으로 밀려난 부분은 안 보인다. 퍼센트가 아니라 실측 픽셀을
+   쓰는 이유는 .sky-room 높이가 --first-screen-height(안전영역 보정 포함,
+   기기별로 다름)라 고정 비율로 계산할 수 없어서다. */
+.page-track {
+  transition: transform 0.5s cubic-bezier(0.6, 0.04, 0.22, 1);
+  will-change: transform;
+  /* 2026-07-17 8차: .sky-room이 이제 .clock-app의 직계 자식이 아니라
+     이 wrapper를 거친 손자 요소가 됐다. .clock-app의 perspective가
+     .sky-room.is-flipping-away의 rotateX 3D 회전까지 그대로 전달되려면
+     이 중간 요소가 preserve-3d로 3D 공간을 이어줘야 한다 — 없으면 회전이
+     평평하게(2D처럼) 깨져 보인다. */
+  transform-style: preserve-3d;
 }
 
 .clock-app[data-scene="midday"] {
@@ -128,8 +120,8 @@ button { font: inherit; }
   height: var(--first-screen-height);
   overflow: hidden;
   isolation: isolate;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  /* 2026-07-17 8차: scroll-snap-align/stop 제거 — 이제 페이지 전환은
+     #pageTrack의 JS transform이 담당하고 문서 자체는 스크롤되지 않는다. */
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto auto;
   gap: clamp(12px, 2.2vh, 24px);
@@ -2180,8 +2172,7 @@ button { font: inherit; }
   background: #101722;
   color: #101722;
   overflow: hidden;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  /* 2026-07-17 8차: scroll-snap-align/stop 제거 — #pageTrack 참조 */
 }
 
 .webview-scale {
@@ -2205,12 +2196,16 @@ button { font: inherit; }
   width: 100%;
   min-height: 34px;
   padding: 5px 12px max(6px, env(safe-area-inset-bottom));
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
   background: #f2f3f5;
   border-top: 1px solid rgba(18, 27, 42, 0.10);
 }
 
-.webview-footer a {
+.webview-footer a,
+.webview-back {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2219,6 +2214,21 @@ button { font: inherit; }
   border-radius: 8px;
   color: #5f6670;
   text-decoration: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+/* 2026-07-17 8차: 2페이지(ezlong-webview)에서 1페이지(시계)로 돌아가는
+   버튼 — CSS만으로 그린 왼쪽 화살표(셰브론). */
+.webview-back span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  margin-left: 3px;
 }
 
 .webview-open span {

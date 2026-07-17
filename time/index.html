@@ -5,10 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260717-lockflip-v2">
+  <link rel="stylesheet" href="styles.css?v=20260717-pagetrack-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
+    <!-- 2026-07-17 8차(근본 재설계): 페이지 1(.sky-room)↔2(.ezlong-webview)
+         전환을 네이티브 scroll-snap 대신 이 wrapper의 JS transform으로
+         구동한다. 문서(html/body)는 이제 영구적으로 overflow:hidden이라
+         "스크롤 체이닝"이라는 현상 자체가 구조적으로 존재할 수 없다 —
+         모달 시트 내부 스크롤과 페이지 전환이 서로 다른 메커니즘(하나는
+         진짜 overflow:auto 스크롤, 하나는 JS 스와이프 감지+transform)이라
+         완전히 분리된다. 자세한 배경은 app.js의 pageTrack 관련 주석 참조. -->
+    <div class="page-track" id="pageTrack">
     <section class="sky-room" aria-label="플립시계">
       <div class="sky-photo" aria-hidden="true">
         <span class="sun"></span>
@@ -121,7 +129,7 @@
       </section>
 
       <div class="scene-dots" aria-label="배경 사진 선택">
-        <span class="app-version" aria-hidden="true">ver.1.1.12</span>
+        <span class="app-version" aria-hidden="true">ver.1.2.0</span>
         <span class="dot-group">
           <button class="dot active" type="button" data-scene-button="0" aria-label="배경 사진 1"></button>
           <button class="dot" type="button" data-scene-button="1" aria-label="배경 사진 2"></button>
@@ -144,11 +152,19 @@
         ></iframe>
       </div>
       <footer class="webview-footer">
+        <!-- 2026-07-17 8차: iframe 내부(ezlong.com 콘텐츠)에서 시작된
+             터치는 브라우저 구조상 상위로 버블링되지 않아 스와이프로
+             돌아가는 제스처가 항상 통하진 않는다 — 확실한 대안으로 이
+             버튼을 둔다. -->
+        <button type="button" class="webview-back" id="webviewBackButton" aria-label="시계 화면으로 돌아가기">
+          <span aria-hidden="true"></span>
+        </button>
         <a class="webview-open" href="https://ezlong.com" target="_blank" rel="noopener" aria-label="ezlong.com 새창 열기">
           <span aria-hidden="true"></span>
         </a>
       </footer>
     </section>
+    </div>
 
     <aside class="settings-panel" id="quoteSettings" aria-hidden="true" aria-label="오늘의 한 문장 설정">
       <div class="settings-backdrop" data-settings-close></div>
@@ -363,6 +379,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js"></script>
   <script src="music-playlist.js?v=20260714-weatherdetail-v73"></script>
-  <script src="app.js?v=20260717-lockflip-v2"></script>
+  <script src="app.js?v=20260717-pagetrack-v1"></script>
 </body>
 </html>
