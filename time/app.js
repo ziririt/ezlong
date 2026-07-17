@@ -242,7 +242,12 @@ const musicHistoryBody = document.getElementById("musicHistoryBody");
 const musicHistoryViewAll = document.getElementById("musicHistoryViewAll");
 // 2026-07-16: "Rock 포함"/"Vocal 포함"(체크 시 포함) 방식에서 "Rock 제외"/
 // "Vocal 제외"(체크 시 제외) 방식으로 전환 — element id도 의미에 맞춰 변경.
-const musicExcludeRockEl = document.getElementById("musicExcludeRock");
+// 2026-07-18 5차 피드백: "ROCK 제외" 토글은 삭제 — ROCK이 플레이리스트
+// 필터 자체에서 보컬과 분리된 독립 카테고리가 되어(#musicCategoryLabels
+// 아래 "vocal- girls rock" → "ROCK" 개명 참조), 굳이 별도 제외 토글 없이
+// 플레이리스트에서 다른 카테고리를 고르면 되므로 musicExcludeRockEl과
+// 그 하위 로직(isRockCategory 판정, excludeRock 변수, syncMusicExcludeFilterUi
+// 바인딩, 클릭 리스너)을 전부 제거했다.
 const musicExcludeVocalEl = document.getElementById("musicExcludeVocal");
 // 2026-07-16: "연주곡 제외" 추가 — 보컬이 있는 카테고리(보컬/걸스록) 외에는
 // 전부 연주곡이므로, isVocalCategory()의 반대 조건으로 그대로 재사용한다.
@@ -2366,6 +2371,11 @@ const musicPlaylistFilterStorageKey = "ezlong:musicPlaylistFilter";
 const ORIGINAL_CATEGORY_KEY = "__original__";
 const musicRecentGroupSpacing = 8; // 같은 그룹은 최소 이만큼 곡이 지나야 다시 후보가 됨
 
+// 2026-07-18 5차 피드백 — "걸스록"을 "ROCK"으로 라벨만 개명한다. 원래도
+// "vocal- girls rock"은 "보컬"(CITY POP/workspace 계열)과는 별도 카테고리로
+// 이미 분리돼 있었다(canonical key 매핑 대상이 아님) — 유저가 기억하는
+// "원래 ROCK이 따로 있었다"는 이 카테고리를 가리키는 것으로 판단, 실제
+// 트랙 재그룹핑 없이 표시 이름만 바꾼다.
 const MUSIC_CATEGORY_LABELS = {
   [ORIGINAL_CATEGORY_KEY]: "어쿠스틱 연주곡",
   "My Workspace": "어쿠스틱 연주곡",
@@ -2373,7 +2383,7 @@ const MUSIC_CATEGORY_LABELS = {
   "BGM": "BGM 시네마틱",
   "vocal - CITY POP": "보컬",
   "vocal - workspace 20260711 1400": "보컬",
-  "vocal- girls rock": "걸스록",
+  "vocal- girls rock": "ROCK",
 };
 
 // 2026-07-16 유저 요청 — 성격이 겹치는 카테고리를 하나로 통합한다.
@@ -2404,32 +2414,25 @@ function musicCategoryLabel(key) {
 // 끄면 제외). 2026-07-16: 유저 피드백으로 "Rock 제외" / "Vocal 제외"(체크
 // 시 제외) 방식으로 전환 — 평소엔 아무것도 제외 안 하는 게 기본이라, "끔"
 // 하나만 신경쓰면 되던 것에서 "필요할 때만 체크해서 뺀다"는 더 직관적인
-// 필터 UX로 바뀐다. 카테고리명 문자열 기반으로 판정하는 방식은 그대로다
-// (예: "vocal- girls rock"은 vocal이면서 동시에 rock이기도 하다 — 둘 중
-// 하나라도 제외 체크돼 있으면 걸러진다). 새 카테고리가 추가돼도 이름에
-// "vocal"/"rock"이 들어가면 자동으로 인식되므로 이 함수만으로 충분하다.
+// 필터 UX로 바뀐다. 카테고리명 문자열 기반으로 판정하는 방식은 그대로다.
+// 2026-07-18 5차 피드백: "ROCK 제외" 토글은 삭제했다(ROCK이 플레이리스트
+// 자체에서 독립 카테고리가 됐으니 굳이 별도 제외 토글이 필요 없다는 판단) —
+// isRockCategory()도 이 토글 전용이었으므로 함께 제거했다.
 function isVocalCategory(key) {
   return typeof key === "string" && key.toLowerCase().includes("vocal");
-}
-function isRockCategory(key) {
-  return typeof key === "string" && key.toLowerCase().includes("rock");
 }
 
 // 2026-07-16 유저 요청 — 플레이리스트로 특정 장르 "하나만" 선택한 상태에서
 // 그 장르 자체를 걸러내는 제외 필터를 동시에 켜면 후보가 0개가 되는 모순이
 // 생긴다. 예: '보컬'만 선택 + 'Vocal 제외' 체크 → '보컬' 카테고리 곡은
-// 전부 vocal이므로 전부 걸러져 재생할 곡이 하나도 안 남는다. 반대로 '보컬'
-// 선택 + 'Rock 제외'는 모순이 아니다 — '보컬' 카테고리 안에 록 성향 곡이
-// 섞여 있을 수 있어(예: 걸스록과는 별개로) 실제로 걸러낼 대상이 있을 수
-// 있기 때문이다. 이 판정 함수 하나를 재생 로직(pickNextTrackIndex)과 설정
-// 화면 체크박스 활성화 여부 둘 다에서 그대로 공유해서 절대 어긋나지 않게
-// 한다(8항 공유 함수 동기화 원칙과 동일 적용 — 이 파일 안이라도 로직을
-// 중복 작성하지 않는다).
+// 전부 vocal이므로 전부 걸러져 재생할 곡이 하나도 안 남는다. 이 판정 함수
+// 하나를 재생 로직(pickNextTrackIndex)과 설정 화면 체크박스 활성화 여부
+// 둘 다에서 그대로 공유해서 절대 어긋나지 않게 한다(8항 공유 함수 동기화
+// 원칙과 동일 적용 — 이 파일 안이라도 로직을 중복 작성하지 않는다).
 function musicExcludeFilterContradicts(excludeKind, filterKey) {
   if (!filterKey || filterKey === "all") return false;
   if (excludeKind === "vocal") return isVocalCategory(filterKey);
   if (excludeKind === "instrumental") return !isVocalCategory(filterKey);
-  if (excludeKind === "rock") return isRockCategory(filterKey);
   return false;
 }
 
@@ -2438,7 +2441,6 @@ function musicExcludeFilterContradicts(excludeKind, filterKey) {
 // 의미가 뒤바뀌어 예전 저장값을 가진 사용자에게 정반대 결과가 나갈 위험이
 // 있었다. 새 키로 분리하면 예전 값은 그냥 무시되고, 새 기본값(제외 안 함=
 // 체크 해제)에서 깨끗하게 시작한다.
-const musicExcludeRockStorageKey = "ezlong:musicExcludeRock";
 const musicExcludeVocalStorageKey = "ezlong:musicExcludeVocal";
 // 2026-07-16: "연주곡 제외" — 보컬이 있는 카테고리(보컬/걸스록) 외에는 전부
 // 연주곡이므로 별도 판정 함수 없이 !isVocalCategory(key)로 그대로 걸러낸다.
@@ -2575,12 +2577,10 @@ function pickNextTrackIndex() {
   // syncMusicExcludeFilterUi) 평소엔 애초에 true로 저장될 일이 없지만,
   // 이 재생 로직 자체도 독립적으로 같은 판정을 하게 해서 후보가 0개가
   // 되는 사고를 이중으로 막는다.
-  const excludeRock = loadMusicGenreToggle(musicExcludeRockStorageKey, false) && !musicExcludeFilterContradicts("rock", filterKey);
   const excludeVocal = loadMusicGenreToggle(musicExcludeVocalStorageKey, false) && !musicExcludeFilterContradicts("vocal", filterKey);
   const excludeInstrumental = loadMusicGenreToggle(musicExcludeInstrumentalStorageKey, false) && !musicExcludeFilterContradicts("instrumental", filterKey);
   const matchesGenreToggle = (i) => {
     const key = trackCategoryKey(musicPlaylist[i]);
-    if (excludeRock && isRockCategory(key)) return false;
     if (excludeVocal && isVocalCategory(key)) return false;
     if (excludeInstrumental && !isVocalCategory(key)) return false;
     return true;
@@ -3794,13 +3794,18 @@ function buildMusicPlaylistOptions() {
   return options;
 }
 
+// 2026-07-18 유저 요청 — "몇 곡 있는지 알지 못하게" 하기 위해 표시 텍스트에서
+// 곡수를 뺀다. buildMusicPlaylistOptions()의 option.count 자체는 그대로 두는데
+// (라운드로빈 로테이션 등 내부 로직이 곡수에 의존하지 않고 category 목록만
+// 쓰므로 지워도 무해하지만, 굳이 건드릴 이유가 없어 계산은 유지하고 화면
+// 표시에서만 뺐다), 라벨 뒤에 곡수를 붙이던 부분만 제거한다.
 function renderMusicPlaylistFilterOptions() {
   if (!musicPlaylistOptionsEl) return;
   const options = buildMusicPlaylistOptions();
   const current = loadMusicPlaylistFilter();
   musicPlaylistOptionsEl.innerHTML = options.map((option) => {
     const checked = option.key === current ? " checked" : "";
-    return `<label class="field-option"><input type="radio" name="musicPlaylistFilter" value="${option.key}"${checked}><span>${option.label} (${option.count}곡)</span></label>`;
+    return `<label class="field-option"><input type="radio" name="musicPlaylistFilter" value="${option.key}"${checked}><span>${option.label}</span></label>`;
   }).join("");
 }
 
@@ -3828,7 +3833,6 @@ function syncMusicExcludeFilterUi() {
   const bindings = [
     { el: musicExcludeVocalEl, kind: "vocal", key: musicExcludeVocalStorageKey },
     { el: musicExcludeInstrumentalEl, kind: "instrumental", key: musicExcludeInstrumentalStorageKey },
-    { el: musicExcludeRockEl, kind: "rock", key: musicExcludeRockStorageKey },
   ];
   bindings.forEach(({ el, kind, key }) => {
     if (!el) return;
@@ -3998,7 +4002,10 @@ function renderMusicHistoryList() {
   if (musicHistoryViewAll) {
     if (log.length > HISTORY_COLLAPSED_COUNT) {
       musicHistoryViewAll.hidden = false;
-      musicHistoryViewAll.textContent = musicHistoryExpanded ? "접기" : `모두 보기 (${log.length}) >`;
+      // 2026-07-18 5차 피드백: "펼치기"인데 ">"(다음/이동 느낌)를 쓰는 게
+      // 어색하다는 지적 — 아래로 펼쳐지는 동작에 맞게 "▾"(아래 방향), 접을
+      // 때는 반대로 "▴"(위 방향)로 바꾼다.
+      musicHistoryViewAll.textContent = musicHistoryExpanded ? "접기 ▴" : `모두 보기 (${log.length}) ▾`;
     } else {
       musicHistoryViewAll.hidden = true;
     }
@@ -4014,9 +4021,16 @@ function renderMusicHistoryList() {
 // (장르) 필터를 바꿨을 때도 같은 "즉시 전환" 동작이 필요해져서 인덱스 기반
 // 공통 로직을 playTrackAtIndex로 분리했다. 동작은 기존과 완전히 동일하다 —
 // playTrackFromHistory는 파일명으로 인덱스만 찾아 그대로 위임한다.
-function playTrackAtIndex(index) {
+// 2026-07-18 5차 피드백: 히스토리에서 "다른" 곡(현재 재생곡이 아닌)의
+// 재생 버튼을 누르면 recordPlayLog가 그 곡을 목록 맨 위로 재정렬해버려서
+// "위치가 실시간으로 바뀌어 헷갈린다"는 지적을 받았다. options.skipPlayLog로
+// 이 경로에서만 recordPlayLog(재정렬+세리모니 판정)를 건너뛰고, 그 자리에서
+// 곡만 바꿔 재생한다 — recordTrackHeard(반복 방지용 "들었음" 표시)는
+// 그대로 유지해 다른 재생 로직에 영향을 주지 않는다.
+function playTrackAtIndex(index, options) {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
   if (index < 0 || index >= musicPlaylist.length) return;
+  const skipPlayLog = Boolean(options && options.skipPlayLog);
   musicActionToken += 1; // 진행 중이던 이전 재생 시도(있었다면)를 무효화한다.
   crossfadeTriggered = false;
   pendingNextIndex = -1;
@@ -4029,7 +4043,7 @@ function playTrackAtIndex(index) {
   const player = activePlayer();
   musicIndex = index;
   recordTrackHeard(musicIndex);
-  recordPlayLog(musicIndex);
+  if (!skipPlayLog) recordPlayLog(musicIndex);
   renderMusicPlaylistInfo();
   resetActiveWatchState();
   if (musicToggle) musicToggle.style.setProperty("--progress", "0");
@@ -4057,7 +4071,7 @@ function playTrackFromHistory(file) {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
   const index = musicPlaylist.findIndex((track) => track && track.file === file);
   if (index < 0) return;
-  playTrackAtIndex(index);
+  playTrackAtIndex(index, { skipPlayLog: true });
 }
 
 // 2026-07-13: 히스토리 목록의 재생 버튼이 "지금 재생 중인 곡"을 다시 누르면
@@ -4600,12 +4614,6 @@ if (musicPlaylistOptionsEl) {
     if (event.target.matches('input[name="musicPlaylistFilter"]') && event.target.checked) {
       applyMusicPlaylistFilter(event.target.value);
     }
-  });
-}
-if (musicExcludeRockEl) {
-  musicExcludeRockEl.addEventListener("change", () => {
-    saveMusicGenreToggle(musicExcludeRockStorageKey, musicExcludeRockEl.checked);
-    applyMusicGenreToggle();
   });
 }
 if (musicExcludeVocalEl) {
