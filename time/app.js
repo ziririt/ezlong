@@ -1154,8 +1154,17 @@ function saveSelectedGenres() {
 // 2026-07-17 13차: #quoteSettings가 #pageTrack 밖으로 나가면서 goToPage()
 // 호출은 더 이상 필요 없다(그 페이지 전환 트랙과 무관해졌다) — is-open
 // 클래스 토글만으로 표시/숨김이 전부 처리된다(styles.css .app-page.is-open).
+// 2026-07-18 15차-c(핵심 — 제거 금지): 열 때마다 body에 appendChild로
+// "재부착"한다. 이미 body 자식이라 위치는 그대로지만, appendChild는
+// DOM에서 떼었다 다시 붙이는 동작이라 WebKit이 이 요소의 렌더 노드를
+// 새로 만든다 — 이때 터치 스크롤 영역(네이티브 스크롤러)도 새로
+// 등록된다. 이 iOS(26.5)에서는 display:none→block 토글만으로 나타난
+// 요소의 터치 스크롤 등록이 누락되는 현상이 실기기 계측으로 확인됐다
+// (진단 v6: 제스처 35회 전부 스크롤 0px vs 진단 v5: 열린 상태에서
+// appendChild로 이동시키자 즉시 827px 완주 — 유일한 차이가 재부착).
 function openSettings() {
   settingsPanel.classList.add("is-open");
+  document.body.appendChild(settingsPanel);
   settingsPanel.setAttribute("aria-hidden", "false");
   settingsOpen.setAttribute("aria-expanded", "true");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "true");
@@ -1217,6 +1226,8 @@ function openAladinModal(url) {
   aladinModalCurrentUrl = finalUrl;
   if (aladinModalFrame) aladinModalFrame.src = finalUrl;
   aladinModalPanel.classList.add("is-open");
+  // 15차-c: 동일 재부착 (제거 금지)
+  document.body.appendChild(aladinModalPanel);
   aladinModalPanel.setAttribute("aria-hidden", "false");
 }
 
@@ -1271,6 +1282,8 @@ function closeAladinModal() {
 function openWeatherDetail() {
   if (!weatherDetailPanel) return;
   weatherDetailPanel.classList.add("is-open");
+  // 15차-c: openSettings와 동일 — 재부착으로 터치 스크롤 영역 재등록 (제거 금지)
+  document.body.appendChild(weatherDetailPanel);
   weatherDetailPanel.setAttribute("aria-hidden", "false");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "true");
   fetchWeatherDetail();
