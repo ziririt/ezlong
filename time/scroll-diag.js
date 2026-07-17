@@ -1,27 +1,41 @@
 /* =====================================================================
-   FlipZen 스크롤 버그 — 실기기 자동 진단 v4 "절단 실험" (2026-07-18, Fable)
+   FlipZen 스크롤 버그 — 실기기 자동 진단 v5 "수술 검증" (2026-07-18, Fable)
 
-   확정된 사실 (v1~v3 + 격리 실험):
-   - 이 앱 페이지에서는 내부 스크롤 영역이 무엇이든(새로 만든 것 포함)
-     터치로 안 움직인다. 루트 문서 스크롤만 살아있다.
-   - preventDefault 없음, CSS 정상, 코드 스크롤 정상.
-   - 같은 기기·같은 사파리·같은 viewport의 무균실 페이지
-     (scroll-test.html)에서는 내부 스크롤이 완벽 동작.
-   → 결론: 이 페이지 안의 특정 요소가 페이지 전체의 터치 스크롤 인식을
-     오염시킨다. 유력 용의자: transform:scale이 걸린 크로스오리진 iframe
-     (.ezlong-frame, ezlong.com 전체를 2페이지에 상시 로드).
+   v3 재실행(5:11)에서 잡힌 결정적 대조:
+   - 동일한 클린 스크롤러가 body 직속이면 성공(2361px), .clock-app 안이면
+     실패(0px). 요소가 아니라 "위치"가 생사를 갈랐다.
 
-   v4: 클린 스크롤러(대조군)를 띄워두고 페이지 덩어리를 하나씩 제거하며
-   어느 절단에서 스크롤이 살아나는지 이진탐색. 성공이 나오면 즉시 종료.
+   병리 (확정 유력): .clock-app은 100dvh 상자 안에 2페이지 분량(~200svh)의
+   #pageTrack을 넣고 overflow:hidden으로 잘라놓은 구조 → iOS WebKit이
+   팬 제스처를 "가장 가까운 스크롤 가능 조상"인 .clock-app에 물리는데,
+   overflow:hidden이라 유저 스크롤 불가 → 제스처 소멸. .clock-app 내부의
+   모든 스크롤 영역(설정/날씨상세 포함)이 이래서 전멸한 것.
+
+   v5: 실제 환자(#quoteSettings)를 body로 임시 이주시켜 스크롤이 살아나는지
+   검증. 성공하면 그게 곧 본수술 설계도다.
    ===================================================================== */
 (async () => {
   if (window.__fzDiagRunning) return;
   window.__fzDiagRunning = true;
 
-  const results = { v: 4, startedAt: new Date().toString(), phases: [] };
+  const results = { v: 5, startedAt: new Date().toString(), info: {}, phases: [] };
+  const el = document.getElementById("quoteSettings");
   const clockApp = document.querySelector(".clock-app");
   const pageTrack = document.getElementById("pageTrack") || document.querySelector(".page-track");
   const iframe = document.querySelector(".ezlong-frame");
+  if (!el || !clockApp) { alert("진단 실패: 필수 요소 없음"); return; }
+
+  if (!el.classList.contains("is-open")) {
+    const btn = document.getElementById("settingsOpen");
+    if (btn) btn.click(); else el.classList.add("is-open");
+    await new Promise(r => setTimeout(r, 700));
+  }
+
+  // 병리 근거 실측: clock-app의 숨은 overflow
+  results.info.clockApp = {
+    scrollHeight: clockApp.scrollHeight, clientHeight: clockApp.clientHeight,
+    hiddenOverflow: clockApp.scrollHeight - clockApp.clientHeight
+  };
 
   const ov = document.createElement("div");
   ov.style.cssText =
@@ -32,33 +46,40 @@
   const show = t => { ov.textContent = t; };
   const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-  // 상시 떠 있는 클린 스크롤러 (대조군이자 측정 대상)
-  const scroller = document.createElement("div");
-  scroller.style.cssText =
-    "position:fixed;top:0;left:0;right:0;bottom:0;z-index:2147483000;" +
-    "background:#0d1f33;overflow-y:auto;";
-  const content = document.createElement("div");
-  content.style.cssText =
-    "height:4000px;color:#fff;text-align:center;padding-top:240px;font:700 18px/1.5 -apple-system;" +
-    "background:repeating-linear-gradient(#16324f, #16324f 120px, #1d436b 120px, #1d436b 240px);";
-  content.textContent = "이 파란 화면을 계속 위아래로 문지르세요";
-  scroller.appendChild(content);
-  document.body.appendChild(scroller);
-
   let moveCount = 0, maxTop = 0;
   document.addEventListener("touchmove", () => { moveCount++; }, { passive: true, capture: true });
   const sampler = setInterval(() => {
-    if (scroller.scrollTop > maxTop) maxTop = scroller.scrollTop;
+    if (el.scrollTop > maxTop) maxTop = el.scrollTop;
   }, 80);
 
+  // 패널을 body로 이주/원복하는 도구
+  const ph = document.createComment("fz-panel-home");
+  let moved = false;
+  const movePanelToBody = () => {
+    if (moved) return;
+    el.parentNode.insertBefore(ph, el);
+    document.body.appendChild(el);
+    el.style.position = "fixed";
+    el.style.inset = "0";
+    moved = true;
+  };
+  const movePanelBack = () => {
+    if (!moved) return;
+    ph.parentNode.insertBefore(el, ph);
+    ph.remove();
+    el.style.position = "";
+    el.style.inset = "";
+    moved = false;
+  };
+
   const runPhase = async (name, apply, revert) => {
-    moveCount = 0; maxTop = 0; scroller.scrollTop = 0;
+    moveCount = 0; maxTop = 0; el.scrollTop = 0;
     let applyErr = null;
     try { if (apply) apply(); } catch (e) { applyErr = String(e); }
-    await sleep(600); // 제거가 네이티브 레이어에 반영될 시간
+    await sleep(500);
     const t0 = Date.now();
     while (moveCount === 0 && Date.now() - t0 < 30000) {
-      show(name + "\n\n파란 화면을 위아래로\n문지르기 시작하면 측정 시작");
+      show(name + "\n\n설정 화면에 손가락을 대고 위아래로\n문지르기 시작하면 측정 시작");
       await sleep(200);
     }
     const skipped = moveCount === 0;
@@ -76,57 +97,49 @@
   };
 
   let winner = null;
+  const check = rec => { if (rec.max > 30) winner = rec.name; };
 
-  // 0) 대조군 — 아무것도 안 자름 (v3에서 실패했던 그대로 재확인)
-  {
-    const rec = await runPhase("0) 대조군 (아무것도 안 자름)", null, null);
-    if (rec.max > 30) winner = "대조군부터 성공?! (재현 실패)";
-  }
+  // 0) 기준선
+  check(await runPhase("0) 기준선 (패널 제자리)", null, null));
 
-  // 1) iframe(ezlong.com)만 제거
+  // 1) 본명 수술 후보 — 패널을 body 직속으로 이주
+  if (!winner) check(await runPhase("1) 패널을 body로 이주",
+    movePanelToBody, movePanelBack));
+
+  // 2) 이주 + ezlong iframe 제거
   if (!winner && iframe) {
     let parent = iframe.parentNode, next = iframe.nextSibling;
-    const rec = await runPhase("1) ezlong iframe만 제거",
-      () => iframe.remove(),
-      () => { try { parent.insertBefore(iframe, next); } catch (e) {} });
-    if (rec.max > 30) winner = rec.name;
+    check(await runPhase("2) 이주 + iframe 제거",
+      () => { movePanelToBody(); iframe.remove(); },
+      () => { try { parent.insertBefore(iframe, next); } catch (e) {} movePanelBack(); }));
   }
 
-  // 2) pageTrack(시계+웹뷰 페이지 전체) 숨김
+  // 3) 이주 + pageTrack 숨김
   if (!winner && pageTrack) {
-    const rec = await runPhase("2) pageTrack 통째로 숨김",
+    check(await runPhase("3) 이주 + pageTrack 숨김",
+      () => { movePanelToBody(); pageTrack.style.display = "none"; },
+      () => { pageTrack.style.display = ""; movePanelBack(); }));
+  }
+
+  // 4) 제자리 + iframe 제거만
+  if (!winner && iframe) {
+    let parent = iframe.parentNode, next = iframe.nextSibling;
+    check(await runPhase("4) 제자리 + iframe 제거만",
+      () => iframe.remove(),
+      () => { try { parent.insertBefore(iframe, next); } catch (e) {} }));
+  }
+
+  // 5) 제자리 + pageTrack 숨김만
+  if (!winner && pageTrack) {
+    check(await runPhase("5) 제자리 + pageTrack 숨김만",
       () => { pageTrack.style.display = "none"; },
-      () => { pageTrack.style.display = ""; });
-    if (rec.max > 30) winner = rec.name;
+      () => { pageTrack.style.display = ""; }));
   }
 
-  // 3) clock-app(앱 UI 전체) 숨김
-  if (!winner && clockApp) {
-    const rec = await runPhase("3) 앱 화면 전체 숨김",
-      () => { clockApp.style.display = "none"; },
-      () => { clockApp.style.display = ""; });
-    if (rec.max > 30) winner = rec.name;
-  }
-
-  // 4) body의 모든 자식 숨김 (우리 도구 제외)
-  if (!winner) {
-    const hidden = [];
-    const rec = await runPhase("4) 페이지의 모든 요소 숨김",
-      () => {
-        [...document.body.children].forEach(n => {
-          if (n === ov || n === scroller) return;
-          if (n.style && n.style.display !== "none") { hidden.push([n, n.style.display]); n.style.display = "none"; }
-        });
-      },
-      () => { hidden.forEach(([n, d]) => { n.style.display = d; }); });
-    if (rec.max > 30) winner = rec.name;
-  }
-
-  results.verdict = winner ? "스크롤 부활 지점: " + winner : "모든 절단에도 실패";
+  results.verdict = winner ? "성공: " + winner : "전 단계 실패";
 
   clearInterval(sampler);
   ov.remove();
-  scroller.remove();
 
   const ok = !!winner;
   const rep = document.createElement("div");
@@ -135,7 +148,9 @@
     "padding:max(50px, env(safe-area-inset-top)) 18px 30px;overflow:auto;" +
     "font:600 14px/1.6 -apple-system,sans-serif;";
   let html =
-    '<div style="font-size:17px;font-weight:800;color:' + (ok ? "#5dff9d" : "#ff7b7b") + ';margin-bottom:10px;">진단 v4: ' + results.verdict + "</div>";
+    '<div style="font-size:17px;font-weight:800;color:' + (ok ? "#5dff9d" : "#ff7b7b") + ';margin-bottom:10px;">진단 v5: ' + results.verdict + "</div>" +
+    '<div style="opacity:0.85;margin-bottom:12px;">clock-app 숨은 overflow: ' + results.info.clockApp.hiddenOverflow +
+    "px (전체 " + results.info.clockApp.scrollHeight + " / 보이는 " + results.info.clockApp.clientHeight + ")</div>";
   for (const p of results.phases) {
     const good = p.max > 30;
     html += '<div style="padding:6px 0;border-top:1px solid rgba(255,255,255,0.14);">' +
@@ -152,5 +167,5 @@
     window.__fzDiagRunning = false;
   });
 
-  try { console.log("[FZ-DIAG] FINAL v4", JSON.stringify(results, null, 2)); } catch (e) {}
+  try { console.log("[FZ-DIAG] FINAL v5", JSON.stringify(results, null, 2)); } catch (e) {}
 })();
