@@ -1461,6 +1461,23 @@ function closeAladinModal() {
   if (aladinModalFrame) aladinModalFrame.src = "about:blank";
 }
 
+// 2026-07-18 4차 피드백: 애플 날씨 스타일 실사 사진 배경 — 시계 화면이
+// 지금 쓰고 있는 배경사진(activePhotoSet[activePhotoIndex], pickScenePhoto
+// 참조)을 그대로 재사용해 #weatherDetailPanel의 --wd-photo 변수에 넣는다.
+// 별도의 사진 매칭 로직을 새로 만들지 않는 이유: (1) 시계 화면 사진은 이미
+// 현재 날씨(weatherState.tag)·시간대·계절까지 맞춰 골라둔 상태라 그대로
+// 재사용하는 게 가장 정확하고, (2) "내 앱의 기본이 배경사진 앱인데 날씨
+// 상세만 다른 사진/스타일이면 이상하다"는 유저 피드백의 핵심이 "같은 사진을
+// 써야 앱 전체가 일관돼 보인다"는 것이었기 때문이다.
+function applyWeatherDetailPhoto() {
+  if (!weatherDetailPanel) return;
+  const photo = activePhotoSet[activePhotoIndex];
+  const url = photo ? imageUrl(photo) : "";
+  if (url) {
+    weatherDetailPanel.style.setProperty("--wd-photo", `url("${url}")`);
+  }
+}
+
 // 2026-07-14: 날씨 상세 화면 열기/닫기 — 기존 설정 패널과 동일한 메커니즘
 // (is-open 클래스 토글 + aria-hidden)을 그대로 따른다.
 // 2026-07-17 10차 개정: #weatherDetailPanel도 #pageTrack 안의 3번 페이지로
@@ -1475,6 +1492,7 @@ function openWeatherDetail() {
   document.body.appendChild(weatherDetailPanel);
   weatherDetailPanel.setAttribute("aria-hidden", "false");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "true");
+  applyWeatherDetailPhoto();
   // 2026-07-18 유저 피드백: "뒤로가기 제스처로 닫히게" — history 항목을 하나
   // 쌓아두고 popstate에서 실제로 닫는다. 아이폰 사파리 좌측 엣지 스와이프,
   // 안드로이드 뒤로가기 버튼 모두 popstate를 발생시킨다. 다만 이 앱을
@@ -1682,10 +1700,17 @@ function renderWeatherCurrent(current) {
     wdCurrentSub.textContent = "날씨 데이터를 불러올 수 없어요. 백엔드 배포 후 다시 시도해주세요.";
     if (wdCurrentSun) wdCurrentSun.textContent = "";
     if (wdCurrentIcon) wdCurrentIcon.textContent = "";
+    if (weatherDetailPanel) weatherDetailPanel.classList.remove("weather-detail-rainy");
     return;
   }
   const c = current.current;
   if (wdCurrentIcon) wdCurrentIcon.textContent = weatherEmojiFromCurrent(c);
+  // 2026-07-18 4차 피드백: 애플 날씨처럼 비 오는 날엔 빗줄기 CSS 애니메이션을
+  // 배경에 켠다(.weather-detail-rain-fx, styles.css 참조) — 아이콘과 같은
+  // 신호(실시간 precip/precipprob, weatherEmojiFromCurrent와 동일 판정)를
+  // 써서 "아이콘은 비인데 애니메이션은 없다" 같은 모순이 생기지 않게 한다.
+  const isRainingNow = (typeof c.precip === "number" && c.precip > 0) || c.precipprob >= 50;
+  if (weatherDetailPanel) weatherDetailPanel.classList.toggle("weather-detail-rainy", isRainingNow);
   wdCurrentTemp.textContent = `${Math.round(c.temp)}°`;
   wdCurrentFeels.textContent = `체감 ${Math.round(c.feelslike)}°`;
   // 2026-07-14: 습도를 체감온도와 같은 줄로 이동(유저 피드백: "2줄인데
