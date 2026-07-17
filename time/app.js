@@ -3669,11 +3669,32 @@ function pageOffset(targetIndex) {
   }
   return offset;
 }
+// 2026-07-17 11차: #pageTrack이 하나의 긴 트랙이라, 서로 안 붙어있는
+// 페이지로 이동할 때(예: 3번 날씨상세 → 0번 시계) 중간에 있는 페이지들
+// (설정·ezlong 웹뷰)이 트랜지션 도중 슬라이드로 스치듯 지나가 보이는
+// 문제가 실기기 녹화로 확인됐다("화면이 복잡하게 전환된다, 어지럽다").
+// 시계↔ezlong 웹뷰(0↔1) 전환만 원래 의도한 부드러운 슬라이드이고, 설정·
+// 날씨상세(2·3번)가 관련된 전환은 모달을 열고 닫는 느낌이어야지 트랙을
+// 끝까지 슬라이드해서 넘어가는 느낌이면 안 된다 — 그래서 2·3번이 출발지나
+// 목적지에 걸리면 트랜지션을 잠깐 꺼서 즉시 전환한다.
 function goToPage(index) {
   if (!pageTrack) return;
   const lastIndex = pageTrack.children.length - 1;
-  currentPageIndex = Math.min(Math.max(index, 0), lastIndex);
-  pageTrack.style.transform = `translateY(-${pageOffset(currentPageIndex)}px)`;
+  const fromIndex = currentPageIndex;
+  const targetIndex = Math.min(Math.max(index, 0), lastIndex);
+  const involvesSheet = targetIndex >= 2 || fromIndex >= 2;
+  currentPageIndex = targetIndex;
+  if (involvesSheet) {
+    pageTrack.style.transition = "none";
+    pageTrack.style.transform = `translateY(-${pageOffset(currentPageIndex)}px)`;
+    void pageTrack.offsetHeight; // 강제 리플로우 — transition:none을 실제로 한 프레임 적용시킨다.
+    requestAnimationFrame(() => {
+      pageTrack.style.transition = "";
+    });
+  } else {
+    pageTrack.style.transition = "";
+    pageTrack.style.transform = `translateY(-${pageOffset(currentPageIndex)}px)`;
+  }
 }
 // 뷰포트 높이가 바뀌면(주소창 접힘/펼침, 회전 등) 0페이지가 아닌 다른
 // 페이지로 가 있는 도중에도 오프셋이 어긋나지 않게 다시 계산해준다.
@@ -3742,15 +3763,24 @@ if (webviewBackButton) {
 // "위로 플립" 연출을 더해서 2페이지로 이동한다. 2026-07-17 8차 개정으로
 // scrollIntoView/scrollSnapType 토글 로직을 걷어내고 goToPage()로 교체 —
 // 회전 애니메이션과 페이지 전환 타이밍만 맞추면 되므로 훨씬 단순해졌다.
+// 2026-07-17 11차: perspective/preserve-3d가 이제 상시 적용이 아니라
+// .is-flipping-3d 클래스로만 켜지므로(styles.css 참조), 회전이 실제로
+// 진행되는 이 900ms 구간에만 .clock-app과 #pageTrack에 그 클래스를 같이
+// 붙였다 뗀다 — 스크롤이 이 3D 컨텍스트 때문에 막혔었는지 실기기로
+// 검증하기 위한 조치다.
 if (appBrand && skyRoom && ezlongSection) {
   appBrand.addEventListener("click", () => {
     if (skyRoom.classList.contains("is-flipping-away")) return; // 연타 방지
     skyRoom.classList.add("is-flipping-away");
+    if (app) app.classList.add("is-flipping-3d");
+    if (pageTrack) pageTrack.classList.add("is-flipping-3d");
     window.setTimeout(() => {
       goToPage(1);
     }, 260); // 회전이 절반쯤 진행됐을 때 페이지 전환을 시작해 자연스럽게 이어지게 한다.
     window.setTimeout(() => {
       skyRoom.classList.remove("is-flipping-away");
+      if (app) app.classList.remove("is-flipping-3d");
+      if (pageTrack) pageTrack.classList.remove("is-flipping-3d");
     }, 900); // 화면 밖으로 충분히 벗어난 뒤 원상태로 리셋(다음에 다시 볼 때 정상 모습).
   });
 }
