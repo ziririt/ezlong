@@ -882,6 +882,18 @@ button { font: inherit; }
   color: var(--ink);
 }
 
+/* 2026-07-18 유저 피드백: 스크롤해도 닫기 버튼이 늘 화면에 떠있어야 한다 —
+   헤더 흐름 밖으로 빼서 position:fixed로 뷰포트에 고정한다. 이 페이지는
+   body 직속(15차 스크롤버그 수정 참조)이라 조상 중에 transform이 걸린
+   요소가 없어 fixed가 뷰포트 기준으로 정확히 동작한다. */
+.weather-detail-close-fixed {
+  position: fixed;
+  top: max(20px, env(safe-area-inset-top));
+  right: clamp(20px, 5vw, 34px);
+  z-index: 30;
+  box-shadow: 0 4px 14px rgba(31,74,120,0.16);
+}
+
 .weather-detail-sheet .settings-divider {
   background: rgba(22,32,51,0.12);
 }
@@ -1019,11 +1031,11 @@ button { font: inherit; }
   box-shadow: 0 8px 24px rgba(31,74,120,0.10);
 }
 
+/* 2026-07-18 유저 피드백: 아이콘을 기온 위가 아니라 왼쪽에 나란히. */
 .weather-current-icon {
-  display: block;
-  font-size: 44px;
+  display: inline-block;
+  font-size: 38px;
   line-height: 1;
-  margin-bottom: 4px;
 }
 
 .weather-current-icon:empty {
@@ -1032,7 +1044,7 @@ button { font: inherit; }
 
 .weather-current-hero {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
@@ -1295,9 +1307,12 @@ button { font: inherit; }
   gap: 4px;
 }
 
+/* 2026-07-18 유저 피드백: 칼럼 순서를 요일 → 아이콘 → 날씨텍스트(+비올확률은
+   별도 칼럼 없이 그 밑에 서브라인으로) → 기온범위, 4칸으로 재구성. 오늘/주말
+   딱지는 이 리스트에서 제거(이번 주 강수 예보 카드의 것과는 별개 함수). */
 .weather-weekly-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 0.55fr);
+  grid-template-columns: minmax(0, 0.55fr) minmax(0, 0.4fr) minmax(0, 1fr) minmax(0, 1.1fr);
   align-items: center;
   gap: 8px;
   padding: 10px 4px;
@@ -1309,22 +1324,19 @@ button { font: inherit; }
 }
 
 .weather-weekly-day {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   font-size: 14px;
   font-weight: 680;
 }
 
 .weather-weekly-icon {
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1;
 }
 
 .weather-weekly-mid {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   min-width: 0;
 }
 
@@ -1333,18 +1345,26 @@ button { font: inherit; }
   color: rgba(22,32,51,0.72);
 }
 
+.weather-weekly-prob {
+  font-size: 12px;
+  font-weight: 620;
+  color: #2f6fd1;
+}
+
 .weather-weekly-range {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 13px;
   font-variant-numeric: tabular-nums;
+  justify-content: flex-end;
 }
 
 .weather-weekly-bar {
   flex: 1 1 auto;
   height: 4px;
   min-width: 24px;
+  max-width: 60px;
   border-radius: 2px;
   background: linear-gradient(90deg, #4fa8f5, #ffb020);
 }
@@ -1355,13 +1375,6 @@ button { font: inherit; }
 
 .weather-weekly-max {
   font-weight: 700;
-}
-
-.weather-weekly-prob {
-  font-size: 12px;
-  font-weight: 620;
-  color: #2f6fd1;
-  text-align: right;
 }
 
 /* ── 2026-07-17 벤치마크 기획(묶음1·2·3·4) — 상세 지표/일출일몰/시간대별

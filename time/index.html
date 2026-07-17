@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260718-settingsfeedback3-v1">
+  <link rel="stylesheet" href="styles.css?v=20260718-weatherfeedback-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -129,7 +129,7 @@
       </section>
 
       <div class="scene-dots" aria-label="배경 사진 선택">
-        <span class="app-version" aria-hidden="true">ver.1.3.3.5</span>
+        <span class="app-version" aria-hidden="true">ver.1.3.3.6</span>
         <span class="dot-group">
           <button class="dot active" type="button" data-scene-button="0" aria-label="배경 사진 1"></button>
           <button class="dot" type="button" data-scene-button="1" aria-label="배경 사진 2"></button>
@@ -313,16 +313,21 @@
     <section class="app-page weather-detail-page weather-detail-sheet" id="weatherDetailPanel" aria-label="날씨 상세 정보">
         <header class="settings-head">
           <div>
-            <h2 id="weatherDetailTitle">지금 날씨</h2>
+            <h2 id="weatherDetailTitle">날씨</h2>
           </div>
-          <button class="settings-close" type="button" aria-label="날씨 상세 닫기" data-weather-detail-close>×</button>
         </header>
+        <!-- 2026-07-18: 닫기 버튼을 헤더 밖으로 빼서 position:fixed로 항상
+             화면에 떠있게 한다(스크롤해도 안 사라짐). 뒤로가기 제스처로도
+             닫히도록 app.js openWeatherDetail/closeWeatherDetail이
+             history.pushState/popstate를 사용한다. -->
+        <button class="settings-close weather-detail-close-fixed" type="button" aria-label="날씨 상세 닫기" data-weather-detail-close>×</button>
 
         <!-- 1. 현재 날씨 — 2026-07-14: 체감온도 옆에 습도를 같은 줄로 이동
-             (유저 피드백: "2줄인데 습도도 윗줄에 넣어라, 한 줄 width 충분") -->
+             (유저 피드백: "2줄인데 습도도 윗줄에 넣어라, 한 줄 width 충분")
+             2026-07-18: 날씨 아이콘을 기온 왼쪽에 나란히 배치(유저 피드백). -->
         <section class="weather-card weather-current-card" id="wdCurrent" aria-label="현재 날씨">
-          <span class="weather-current-icon" id="wdCurrentIcon" aria-hidden="true"></span>
           <div class="weather-current-hero">
+            <span class="weather-current-icon" id="wdCurrentIcon" aria-hidden="true"></span>
             <span class="weather-current-temp" id="wdCurrentTemp">--°</span>
             <span class="weather-current-feels" id="wdCurrentFeels">체감 --°</span>
             <span class="weather-current-humidity" id="wdCurrentHumidity">습도 --%</span>
@@ -347,6 +352,7 @@
              파라미터만 늘려서 받은 값이라 새 API 호출 증가 없음. -->
         <section class="weather-card" aria-label="상세 지표">
           <h3 class="settings-subtitle">상세 지표</h3>
+          <p class="weather-comment" id="wdDetailComment"></p>
           <div class="weather-detail-grid" id="wdDetailIndicators">
             <p class="weather-empty">불러오는 중…</p>
           </div>
@@ -393,8 +399,8 @@
         <!-- 2026-07-17 2차 기획(묶음A): 주간 기온 예보 — 강수 위주인 위
              카드와 달리 7일 최저·최고 기온을 세로 리스트로 훑어본다.
              가로 스크롤을 쓰지 않아 스크롤 축 충돌 리스크가 없다. -->
-        <section class="weather-card" aria-label="주간 기온 예보">
-          <h3 class="settings-subtitle">주간 기온 예보</h3>
+        <section class="weather-card" aria-label="주간 예보">
+          <h3 class="settings-subtitle">주간 예보</h3>
           <div class="weather-weekly-list" id="wdWeeklyForecast">
             <p class="weather-empty">불러오는 중…</p>
           </div>
@@ -433,14 +439,6 @@
             <p class="weather-empty">불러오는 중…</p>
           </div>
           <p class="weather-comment" id="wdTropicalComment"></p>
-        </section>
-
-        <div class="settings-divider" aria-hidden="true"></div>
-
-        <!-- 5. 어제 예보 정확도 -->
-        <section class="weather-card" aria-label="어제 예보 정확도">
-          <h3 class="settings-subtitle">어제 예보 정확도</h3>
-          <p class="weather-comment" id="wdAccuracyMessage">불러오는 중…</p>
         </section>
 
     </section>
@@ -485,6 +483,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js"></script>
   <script src="music-playlist.js?v=20260714-weatherdetail-v73"></script>
-  <script src="app.js?v=20260718-settingsfeedback3-v1"></script>
+  <script src="app.js?v=20260718-weatherfeedback-v1"></script>
 </body>
 </html>

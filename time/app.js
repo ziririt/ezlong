@@ -267,6 +267,8 @@ const wdCurrentSun = document.getElementById("wdCurrentSun");
 // 2026-07-18 리디자인(클로드 디자인 목업 수용): 현재 날씨 카드 상단 이모지 아이콘.
 const wdCurrentIcon = document.getElementById("wdCurrentIcon");
 const wdDetailIndicators = document.getElementById("wdDetailIndicators");
+// 2026-07-18 유저 피드백: 바람·자외선 코멘트를 상세 지표 그리드 위로 이동.
+const wdDetailComment = document.getElementById("wdDetailComment");
 const wdHourlyStrip = document.getElementById("wdHourlyStrip");
 const wdTopComment = document.getElementById("wdTopComment");
 // 2026-07-17 2차 기획(묶음B): 다음 비 카운트다운.
@@ -282,7 +284,6 @@ const wd24hComparison = document.getElementById("wd24hComparison");
 const wdYesterday = document.getElementById("wdYesterday");
 const wdTropicalBadges = document.getElementById("wdTropicalBadges");
 const wdTropicalComment = document.getElementById("wdTropicalComment");
-const wdAccuracyMessage = document.getElementById("wdAccuracyMessage");
 const weatherDetailTitle = document.getElementById("weatherDetailTitle");
 
 const digitElements = [
@@ -1469,6 +1470,13 @@ function openWeatherDetail() {
   document.body.appendChild(weatherDetailPanel);
   weatherDetailPanel.setAttribute("aria-hidden", "false");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "true");
+  // 2026-07-18 유저 피드백: "뒤로가기 제스처로 닫히게" — history 항목을 하나
+  // 쌓아두고 popstate에서 실제로 닫는다. 아이폰 사파리 좌측 엣지 스와이프,
+  // 안드로이드 뒤로가기 버튼 모두 popstate를 발생시킨다. 다만 이 앱을
+  // 감싼 네이티브 WKWebView가 자체적으로 "뒤로/앞으로 스와이프 제스처"를
+  // 꺼둔 상태라면(allowsBackForwardNavigationGestures=false) 이 웹 코드만
+  // 으로는 제스처 자체를 만들어낼 수 없다 — 그 경우는 네이티브 쪽 설정이다.
+  history.pushState({ weatherDetail: true }, "");
   fetchWeatherDetail();
 }
 
@@ -1478,6 +1486,25 @@ function closeWeatherDetail() {
   weatherDetailPanel.setAttribute("aria-hidden", "true");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "false");
 }
+
+// X 버튼 등 "명시적" 닫기는 이걸 호출한다. openWeatherDetail이 쌓아둔 history
+// 항목을 history.back()으로 되돌리면 popstate 핸들러가 실제 닫기를 수행한다 —
+// 그래야 X 버튼 경로와 뒤로가기 제스처 경로가 하나로 합쳐져 history 스택이
+// 어긋나지 않는다(항목만 쌓이고 안 지워지는 상태 방지).
+function requestCloseWeatherDetail() {
+  if (!weatherDetailPanel || !weatherDetailPanel.classList.contains("is-open")) return;
+  if (history.state && history.state.weatherDetail) {
+    history.back();
+  } else {
+    closeWeatherDetail();
+  }
+}
+
+window.addEventListener("popstate", () => {
+  if (weatherDetailPanel && weatherDetailPanel.classList.contains("is-open")) {
+    closeWeatherDetail();
+  }
+});
 
 function weatherDetailCoords() {
   return userCoords || DEFAULT_WEATHER_COORDS;
@@ -1509,6 +1536,25 @@ function weatherEmojiFromEnglish(conditions) {
   if (/cloud/.test(c)) return "🌥️";
   if (/clear/.test(c)) return "☀️";
   return "🌤️";
+}
+
+// 2026-07-18 유저 피드백(실기기 발견): Visual Crossing의 conditions 텍스트가
+// "구름 조금" 계열로 뭉뚱그려져 있는데 실제로는 그 순간 비가 오고 있는
+// 경우가 있었다(conditions는 하루 단위 요약에 가깝고, 실시간 강수 여부와
+// 어긋날 수 있음) — 화면 맨 위 상징 아이콘이 아래 "지금 비가 오고 있어요"
+// 문구와 모순되는 버그였다. 백엔드는 이미 current.precip/precipprob를
+// 내려주고 있으니(추가 배포 불필요), 아이콘 결정에서 이 실측값을
+// conditions 텍스트보다 우선한다 — "판단해서 알려준다" 철학에 맞게 실제
+// 강수 여부가 텍스트 분류보다 항상 더 신뢰할 수 있는 근거다.
+function weatherEmojiFromCurrent(c) {
+  const isRainingNow = (typeof c.precip === "number" && c.precip > 0) || c.precipprob >= 50;
+  const types = (c.preciptype || []).map((t) => String(t).toLowerCase());
+  if (isRainingNow) {
+    if (types.includes("snow")) return "❄️";
+    if (/thunder|storm/.test((c.conditions || "").toLowerCase())) return "⛈️";
+    return "🌧️";
+  }
+  return weatherEmojiFromEnglish(c.conditions);
 }
 
 function weatherEmojiFromKoCondition(ko) {
@@ -1554,7 +1600,7 @@ function updateWeatherDetailTitle() {
   if (!weatherDetailTitle) return;
   const loc = weatherState.location;
   const isPlaceholder = !loc || loc === "위치 확인 중" || loc === "현재 위치";
-  weatherDetailTitle.textContent = isPlaceholder ? "지금 날씨" : `${loc} 지금 날씨`;
+  weatherDetailTitle.textContent = isPlaceholder ? "날씨" : `${loc} 날씨`;
 }
 
 function renderWeatherCurrent(current) {
@@ -1570,7 +1616,7 @@ function renderWeatherCurrent(current) {
     return;
   }
   const c = current.current;
-  if (wdCurrentIcon) wdCurrentIcon.textContent = weatherEmojiFromEnglish(c.conditions);
+  if (wdCurrentIcon) wdCurrentIcon.textContent = weatherEmojiFromCurrent(c);
   wdCurrentTemp.textContent = `${Math.round(c.temp)}°`;
   wdCurrentFeels.textContent = `체감 ${Math.round(c.feelslike)}°`;
   // 2026-07-14: 습도를 체감온도와 같은 줄로 이동(유저 피드백: "2줄인데
@@ -1592,11 +1638,18 @@ function renderWeatherCurrent(current) {
 // 2026-07-17 벤치마크 기획(묶음1·2): "상세 지표" 카드 — 바람·자외선지수·
 // 기압·가시거리·이슬점. 기존 24h 비교 카드가 쓰는 weather-stat-tile을
 // 그대로 재사용해 시각적 일관성을 지켰다(새 카드 타입을 늘리지 않음).
+// 2026-07-18 유저 피드백: 바람·자외선 코멘트를 타일 아래가 아니라 위로
+// 옮겼다(wdDetailComment, 카드 제목 바로 아래) — 이전엔 코멘트 <p>가
+// wdDetailIndicators(그 자체가 .weather-detail-grid) 안에 타일과 나란히
+// 들어가서 그리드의 한 칸을 차지해버리는 구조적 버그가 있었다(코멘트이
+// 타일 옆 칸에 끼어들어 2열이 제대로 안 넓어짐). 이제 코멘트는 그리드
+// 바깥의 별도 엘리먼트라 타일 2열이 카드 전체 너비를 온전히 쓴다.
 function renderWeatherDetailIndicators(current) {
   if (!wdDetailIndicators) return;
   const detail = current && current.detail;
   if (!detail) {
     wdDetailIndicators.innerHTML = `<p class="weather-empty">상세 지표를 불러올 수 없어요.</p>`;
+    if (wdDetailComment) wdDetailComment.textContent = "";
     return;
   }
 
@@ -1633,17 +1686,16 @@ function renderWeatherDetailIndicators(current) {
 
   if (tiles.length === 0) {
     wdDetailIndicators.innerHTML = `<p class="weather-empty">상세 지표를 불러올 수 없어요.</p>`;
+    if (wdDetailComment) wdDetailComment.textContent = "";
     return;
   }
 
-  // 바람·자외선 코멘트가 있으면 타일 아래 문장으로 덧붙인다(우산조언·
-  // 열대야 코멘트와 같은 톤 — 숫자 나열이 아니라 문장으로 판단해서 알려준다).
-  const comments = [detail.wind && detail.wind.comment, detail.uv && detail.uv.comment].filter(Boolean);
-  const commentsHtml = comments.length
-    ? `<p class="weather-comment">${comments.join(" ")}</p>`
-    : "";
+  if (wdDetailComment) {
+    const comments = [detail.wind && detail.wind.comment, detail.uv && detail.uv.comment].filter(Boolean);
+    wdDetailComment.textContent = comments.join(" ");
+  }
 
-  wdDetailIndicators.innerHTML = `<div class="weather-detail-grid">${tiles.join("")}</div>${commentsHtml}`;
+  wdDetailIndicators.innerHTML = tiles.join("");
 }
 
 // 2026-07-17 벤치마크 기획(묶음4): 오늘 시간대별 예보 가로 스크롤 스트립.
@@ -1765,24 +1817,25 @@ function renderWeatherWeeklyForecast(data) {
     return;
   }
 
+  // 2026-07-18 유저 피드백: 오늘/주말 딱지 제거, 칼럼 순서를 요일→아이콘→
+  // 날씨텍스트→기온범위로 바꾸고, 비 올 확률은 별도 칼럼 없이 "비"로
+  // 표기된 날에만 그 텍스트 바로 밑에 서브라인으로 붙인다.
   wdWeeklyForecast.innerHTML = data.days
     .map((d) => {
-      const todayTag = d.isToday ? `<span class="weather-rain-day-tag">오늘</span>` : "";
-      const weekendTag = d.isWeekend
-        ? `<span class="weather-rain-day-tag weather-rain-day-tag-weekend">주말</span>`
-        : "";
+      const probHtml = d.conditionsKo === "비" ? `<span class="weather-weekly-prob">${d.precipprob}%</span>` : "";
       return `
     <div class="weather-weekly-row">
-      <span class="weather-weekly-day"><span class="weather-weekly-icon">${weatherEmojiFromKoCondition(d.conditionsKo)}</span>${d.weekdayKo}${todayTag}${weekendTag}</span>
+      <span class="weather-weekly-day">${d.weekdayKo}</span>
+      <span class="weather-weekly-icon">${weatherEmojiFromKoCondition(d.conditionsKo)}</span>
       <span class="weather-weekly-mid">
         <span class="weather-weekly-condition">${d.conditionsKo}</span>
-        <span class="weather-weekly-range">
-          <span class="weather-weekly-min">${Math.round(d.tempMin)}°</span>
-          <span class="weather-weekly-bar" aria-hidden="true"></span>
-          <span class="weather-weekly-max">${Math.round(d.tempMax)}°</span>
-        </span>
+        ${probHtml}
       </span>
-      <span class="weather-weekly-prob">${d.precipprob}%</span>
+      <span class="weather-weekly-range">
+        <span class="weather-weekly-min">${Math.round(d.tempMin)}°</span>
+        <span class="weather-weekly-bar" aria-hidden="true"></span>
+        <span class="weather-weekly-max">${Math.round(d.tempMax)}°</span>
+      </span>
     </div>`;
     })
     .join("");
@@ -1892,12 +1945,6 @@ function renderWeatherTempVsNormal(data) {
   wdTempVsNormal.textContent = `${icon} ${data.message}`;
 }
 
-function renderWeatherAccuracy(data) {
-  if (!wdAccuracyMessage) return;
-  const msg = data?.message || "예보 정확도 정보를 불러올 수 없어요.";
-  wdAccuracyMessage.textContent = `🎯 ${msg}`;
-}
-
 async function fetchWeatherDetail() {
   if (weatherDetailFetching) return;
 
@@ -1922,13 +1969,12 @@ async function fetchWeatherDetail() {
   // 호출 자체를 넣지 않는다(카드가 안 보이는데 네트워크 요청만 날리는
   // 낭비를 피한다). renderWeatherAirQuality 함수는 다음에 재개할 때
   // 바로 쓸 수 있도록 그대로 남겨뒀다.
-  const [currentR, rainR, yesterdayR, tropicalR, accuracyR, hourlyStripR, weeklyForecastR, tempVsNormalR] =
+  const [currentR, rainR, yesterdayR, tropicalR, hourlyStripR, weeklyForecastR, tempVsNormalR] =
     await Promise.allSettled([
       fetchWeatherJson("/api/weather/current"),
       fetchWeatherJson("/api/weather/rain-windows"),
       fetchWeatherJson("/api/weather/yesterday"),
       fetchWeatherJson("/api/weather/tropical-night"),
-      fetchWeatherJson("/api/weather/forecast-accuracy"),
       fetchWeatherJson("/api/weather/hourly-strip"),
       fetchWeatherJson("/api/weather/weekly-forecast"),
       // 2026-07-17 2차 기획(묶음D): 평년값 비교. 그 달력일이 처음
@@ -1950,7 +1996,6 @@ async function fetchWeatherDetail() {
   renderWeatherRainWindows(rainData);
   renderWeatherYesterday(yesterdayR.status === "fulfilled" ? yesterdayR.value : null);
   renderWeatherTropical(tropicalData);
-  renderWeatherAccuracy(accuracyR.status === "fulfilled" ? accuracyR.value : null);
 
   // 2026-07-15: 실패한 응답까지 "캐시됨"으로 기록해버리는 버그 수정 — 최초
   // 요청이 서버 콜드스타트 등으로 한 번 실패하면, 그 실패 상태가 1시간 동안
@@ -4310,7 +4355,7 @@ document.querySelectorAll("[data-settings-close]").forEach((element) => {
 });
 if (weatherChipOpen) weatherChipOpen.addEventListener("click", openWeatherDetail);
 document.querySelectorAll("[data-weather-detail-close]").forEach((element) => {
-  element.addEventListener("click", closeWeatherDetail);
+  element.addEventListener("click", requestCloseWeatherDetail);
 });
 if (quoteAladinLink) {
   quoteAladinLink.addEventListener("click", () => {
@@ -4584,7 +4629,7 @@ if (musicQCCopyButton) {
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closeSettings();
-    closeWeatherDetail();
+    requestCloseWeatherDetail();
   }
 });
 window.addEventListener("resize", () => {
