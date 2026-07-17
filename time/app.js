@@ -1511,6 +1511,70 @@ window.addEventListener("popstate", () => {
   }
 });
 
+// 2026-07-18 3차 피드백: "뒤로가기 제스처로 닫힌다더니 안 닫힌다" — 위
+// history.pushState/popstate 방식은 브라우저 표준 스와이프-뒤로가기가
+// 실제로 발생해야만 작동하는데, 이 앱을 감싼 네이티브 WKWebView가
+// "뒤로/앞으로 스와이프 제스처" 자체를 꺼둔 상태(allowsBackForwardNavigationGestures
+// =false)라면 제스처 자체가 애초에 발생하지 않아 popstate도 못 받는다 —
+// 이건 웹 코드가 통제할 수 없는 네이티브 설정이라 신뢰할 수 없었다.
+// 그래서 네이티브 뒤로가기 제스처에 의존하지 않는, 순수 터치 이벤트 기반
+// 좌측 엣지 스와이프를 직접 구현한다 — Safari든 WKWebView든 터치 이벤트
+// 자체는 항상 정상 발생하므로 네이티브 설정과 무관하게 항상 동작한다.
+// 화면 왼쪽 가장자리(EDGE_ZONE_PX 이내)에서 시작한 터치만 추적하고,
+// 오른쪽으로 CLOSE_THRESHOLD_PX 이상 + 세로 이동보다 가로 이동이 뚜렷할
+// 때만 닫는다 — 그 외 지점(세로 스크롤, 가로 스크롤 시간대별 스트립 등)
+// 에서 시작한 터치는 전혀 건드리지 않고, preventDefault도 전혀 안 써서
+// (passive:true) 기존 스크롤 동작에 영향이 없다(CLAUDE.md 스크롤 절대
+// 규칙과 무관 — 이 코드는 터치를 "가로채지" 않고 "관찰"만 한다).
+function setupWeatherDetailEdgeSwipe() {
+  if (!weatherDetailPanel) return;
+  const EDGE_ZONE_PX = 24;
+  const CLOSE_THRESHOLD_PX = 80;
+  let startX = null;
+  let startY = null;
+  let tracking = false;
+
+  weatherDetailPanel.addEventListener(
+    "touchstart",
+    (event) => {
+      if (!weatherDetailPanel.classList.contains("is-open")) {
+        tracking = false;
+        return;
+      }
+      const touch = event.touches[0];
+      if (!touch || touch.clientX > EDGE_ZONE_PX) {
+        tracking = false;
+        return;
+      }
+      startX = touch.clientX;
+      startY = touch.clientY;
+      tracking = true;
+    },
+    { passive: true }
+  );
+
+  weatherDetailPanel.addEventListener(
+    "touchend",
+    (event) => {
+      if (!tracking || startX == null) {
+        tracking = false;
+        return;
+      }
+      tracking = false;
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+      const dx = touch.clientX - startX;
+      const dy = Math.abs(touch.clientY - (startY ?? touch.clientY));
+      if (dx > CLOSE_THRESHOLD_PX && dy < dx * 0.6) {
+        requestCloseWeatherDetail();
+      }
+      startX = null;
+      startY = null;
+    },
+    { passive: true }
+  );
+}
+
 function weatherDetailCoords() {
   return userCoords || DEFAULT_WEATHER_COORDS;
 }
@@ -1676,11 +1740,11 @@ function renderWeatherHourlyStrip(data) {
 // 2026-07-14 전면 재작성: "이번 주 강수 예보"를 오늘 포함 3일 상세 + 이후
 // 4일 요약 + 이번 주말 코멘트 + 다음주 한 줄로 재구성. 백엔드
 // buildWeeklyRainOutlook()의 응답 구조를 그대로 렌더링한다.
+// 2026-07-18 3차 피드백: "이번 주 강수 예보" 카드의 '주말' 딱지 제거 —
+// dateLabel(예: "07/19(일)")에 이미 요일이 괄호로 표기돼 있어 중복이라는
+// 유저 피드백. '오늘' 딱지는 요일 표기만으로는 알 수 없는 정보라 유지한다.
 function renderRainDayCard(day) {
   const todayTag = day.isToday ? `<span class="weather-rain-day-tag">오늘</span>` : "";
-  const weekendTag = day.isWeekend
-    ? `<span class="weather-rain-day-tag weather-rain-day-tag-weekend">주말</span>`
-    : "";
   const windowsHtml =
     day.windows && day.windows.length > 0
       ? day.windows
@@ -1698,7 +1762,7 @@ function renderRainDayCard(day) {
       : `<p class="weather-empty">비 소식 없어요.</p>`;
   return `
     <div class="weather-rain-day">
-      <p class="weather-rain-day-label">${day.dateLabel}${todayTag}${weekendTag}</p>
+      <p class="weather-rain-day-label">${day.dateLabel}${todayTag}</p>
       ${windowsHtml}
     </div>`;
 }
@@ -4344,6 +4408,9 @@ if (weatherChipOpen) weatherChipOpen.addEventListener("click", openWeatherDetail
 document.querySelectorAll("[data-weather-detail-close]").forEach((element) => {
   element.addEventListener("click", requestCloseWeatherDetail);
 });
+// 2026-07-18 3차 피드백: 네이티브 뒤로가기 제스처에 기대지 않는 좌측 엣지
+// 스와이프 직접 구현 — 위 setupWeatherDetailEdgeSwipe() 정의부 주석 참조.
+setupWeatherDetailEdgeSwipe();
 if (quoteAladinLink) {
   quoteAladinLink.addEventListener("click", () => {
     const url = quoteAladinLink.dataset.url;
