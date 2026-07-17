@@ -238,8 +238,21 @@ const wdCurrentTemp = document.getElementById("wdCurrentTemp");
 const wdCurrentFeels = document.getElementById("wdCurrentFeels");
 const wdCurrentHumidity = document.getElementById("wdCurrentHumidity");
 const wdCurrentSub = document.getElementById("wdCurrentSub");
+// 2026-07-17 벤치마크 기획(묶음1·2·3·4): 상세 지표(바람/자외선/기압/가시거리/
+// 이슬점), 일출·일몰, 시간대별 예보 스트립 DOM 참조 추가.
+const wdCurrentSun = document.getElementById("wdCurrentSun");
+const wdDetailIndicators = document.getElementById("wdDetailIndicators");
+const wdHourlyStrip = document.getElementById("wdHourlyStrip");
 const wdTopComment = document.getElementById("wdTopComment");
+// 2026-07-17 2차 기획(묶음B): 다음 비 카운트다운.
+const wdNextRain = document.getElementById("wdNextRain");
 const wdRainWindows = document.getElementById("wdRainWindows");
+// 2026-07-17 2차 기획(묶음A): 주간 기온 예보.
+const wdWeeklyForecast = document.getElementById("wdWeeklyForecast");
+// 2026-07-17 2차 기획(묶음C): 미세먼지·초미세먼지.
+const wdAirQuality = document.getElementById("wdAirQuality");
+// 2026-07-17 2차 기획(묶음D): 일평균 대비 기온차(평년값).
+const wdTempVsNormal = document.getElementById("wdTempVsNormal");
 const wd24hComparison = document.getElementById("wd24hComparison");
 const wdYesterday = document.getElementById("wdYesterday");
 const wdTropicalBadges = document.getElementById("wdTropicalBadges");
@@ -1348,6 +1361,7 @@ function renderWeatherCurrent(current) {
     wdCurrentFeels.textContent = "";
     if (wdCurrentHumidity) wdCurrentHumidity.textContent = "";
     wdCurrentSub.textContent = "날씨 데이터를 불러올 수 없어요. 백엔드 배포 후 다시 시도해주세요.";
+    if (wdCurrentSun) wdCurrentSun.textContent = "";
     return;
   }
   const c = current.current;
@@ -1358,6 +1372,97 @@ function renderWeatherCurrent(current) {
   // 에러 메시지 전용이라 평상시엔 비워둔다.
   if (wdCurrentHumidity) wdCurrentHumidity.textContent = `습도 ${Math.round(c.humidity)}%`;
   wdCurrentSub.textContent = "";
+
+  // 2026-07-17 벤치마크 기획(묶음3): 일출·일몰 한 줄 — 현재 날씨 카드의
+  // 부가 정보로. 백엔드가 오늘자 day에 sunrise/sunset이 없으면(과거 캐시가
+  // 아직 안 갱신됐거나 응답에 값이 비어있는 경우) sun이 null로 내려오므로
+  // 그 경우엔 줄 자체를 비워 레이아웃에 빈 여백이 남지 않게 한다.
+  if (wdCurrentSun) {
+    const sun = current.detail && current.detail.sun;
+    wdCurrentSun.textContent = sun ? `일출 ${sun.sunriseLabel} · 일몰 ${sun.sunsetLabel}` : "";
+  }
+}
+
+// 2026-07-17 벤치마크 기획(묶음1·2): "상세 지표" 카드 — 바람·자외선지수·
+// 기압·가시거리·이슬점. 기존 24h 비교 카드가 쓰는 weather-stat-tile을
+// 그대로 재사용해 시각적 일관성을 지켰다(새 카드 타입을 늘리지 않음).
+function renderWeatherDetailIndicators(current) {
+  if (!wdDetailIndicators) return;
+  const detail = current && current.detail;
+  if (!detail) {
+    wdDetailIndicators.innerHTML = `<p class="weather-empty">상세 지표를 불러올 수 없어요.</p>`;
+    return;
+  }
+
+  const tiles = [];
+  if (detail.wind) {
+    const gustPart = detail.wind.gustKmh != null ? ` (돌풍 ${Math.round(detail.wind.gustKmh)})` : "";
+    tiles.push(
+      `<div class="weather-stat-tile"><span class="weather-stat-label">바람</span><span class="weather-stat-value">${detail.wind.directionLabel} ${Math.round(detail.wind.speedKmh)}km/h${gustPart}</span></div>`
+    );
+  }
+  if (detail.uv) {
+    // 2026-07-17 Fable 5 검토 반영: 저녁·밤엔 지금 값(거의 항상 0) 대신
+    // 오늘 최고 자외선지수를 보여준다 — basis로 라벨을 구분한다.
+    const uvLabel = detail.uv.basis === "DAILY_MAX" ? "오늘 최고 자외선지수" : "자외선지수";
+    tiles.push(
+      `<div class="weather-stat-tile"><span class="weather-stat-label">${uvLabel}</span><span class="weather-stat-value">${detail.uv.value} · ${detail.uv.label}</span></div>`
+    );
+  }
+  if (typeof detail.pressure === "number") {
+    tiles.push(
+      `<div class="weather-stat-tile"><span class="weather-stat-label">기압</span><span class="weather-stat-value">${Math.round(detail.pressure)}hPa</span></div>`
+    );
+  }
+  if (typeof detail.visibilityKm === "number") {
+    tiles.push(
+      `<div class="weather-stat-tile"><span class="weather-stat-label">가시거리</span><span class="weather-stat-value">${detail.visibilityKm}km</span></div>`
+    );
+  }
+  if (typeof detail.dewPoint === "number") {
+    tiles.push(
+      `<div class="weather-stat-tile"><span class="weather-stat-label">이슬점</span><span class="weather-stat-value">${Math.round(detail.dewPoint)}°</span></div>`
+    );
+  }
+
+  if (tiles.length === 0) {
+    wdDetailIndicators.innerHTML = `<p class="weather-empty">상세 지표를 불러올 수 없어요.</p>`;
+    return;
+  }
+
+  // 바람·자외선 코멘트가 있으면 타일 아래 문장으로 덧붙인다(우산조언·
+  // 열대야 코멘트와 같은 톤 — 숫자 나열이 아니라 문장으로 판단해서 알려준다).
+  const comments = [detail.wind && detail.wind.comment, detail.uv && detail.uv.comment].filter(Boolean);
+  const commentsHtml = comments.length
+    ? `<p class="weather-comment">${comments.join(" ")}</p>`
+    : "";
+
+  wdDetailIndicators.innerHTML = `<div class="weather-detail-grid">${tiles.join("")}</div>${commentsHtml}`;
+}
+
+// 2026-07-17 벤치마크 기획(묶음4): 오늘 시간대별 예보 가로 스크롤 스트립.
+// 주의 — 이 스트립은 #weatherDetailPanel(세로 스크롤 컨테이너) 안에 있는
+// 가로 스크롤 영역이다. CLAUDE.md의 스크롤 절대 규칙(스크롤 필요한 UI는
+// body 직속에)은 패널 자체에는 이미 적용돼 있어 안전하지만, "세로 스크롤
+// 컨테이너 안의 가로 스크롤"이라는 이 조합은 아직 실기기 검증 전이다 —
+// 배포 전 아이폰 사파리에서 좌우 스와이프가 실제로 움직이는지 반드시 확인.
+function renderWeatherHourlyStrip(data) {
+  if (!wdHourlyStrip) return;
+  if (!data || !Array.isArray(data.hours) || data.hours.length === 0) {
+    wdHourlyStrip.innerHTML = `<p class="weather-empty">시간대별 예보를 불러올 수 없어요.</p>`;
+    return;
+  }
+
+  wdHourlyStrip.innerHTML = data.hours
+    .map(
+      (h) => `
+    <div class="weather-hourly-item" data-now="${h.isNow ? "true" : "false"}">
+      <span class="weather-hourly-hour">${h.hourLabel}</span>
+      <span class="weather-hourly-temp">${Math.round(h.temp)}°</span>
+      <span class="weather-hourly-prob">${h.precipprob}%</span>
+    </div>`
+    )
+    .join("");
 }
 
 // 2026-07-14 전면 재작성: "이번 주 강수 예보"를 오늘 포함 3일 상세 + 이후
@@ -1404,6 +1509,19 @@ function renderWeatherTopComment(data) {
   wdTopComment.setAttribute("data-needed", String(data.umbrellaToday.needed));
 }
 
+// 2026-07-17 2차 기획(묶음B, Fable 5 우선순위 3위): "3시간 뒤 비가 와요" —
+// 우산조언 코멘트 바로 아래 짧은 한 줄로 붙인다. 이번 주에 비 소식이 아예
+// 없으면(available:false) 굳이 "비 소식 없어요"를 여기서 또 말하지 않는다
+// — 우산조언 문장이 이미 그 얘기를 하고 있어 중복이기 때문.
+function renderWeatherNextRain(data) {
+  if (!wdNextRain) return;
+  if (!data || !data.nextRainCountdown || !data.nextRainCountdown.available) {
+    wdNextRain.textContent = "";
+    return;
+  }
+  wdNextRain.textContent = data.nextRainCountdown.message;
+}
+
 function renderWeatherRainWindows(data) {
   if (!wdRainWindows) return;
   if (!data || !Array.isArray(data.detailedDays)) {
@@ -1426,6 +1544,35 @@ function renderWeatherRainWindows(data) {
       ${laterHtml}
       ${weekendHtml}
     </div>`;
+}
+
+// 2026-07-17 2차 기획(묶음A, Fable 5 우선순위 2위): 주간 기온 예보 —
+// 강수 위주인 위 카드와 달리 7일 최저·최고 기온을 세로 리스트로 훑어본다.
+// 가로 스크롤이 아니라 세로 리스트로 만든 이유: Fable 5 검토에서 지적된
+// "세로 스크롤 컨테이너 안의 가로 스크롤" 리스크를 새 카드에서 또 만들지
+// 않기 위해서다 — 이 카드는 세로로만 쌓이므로 스크롤 축 충돌 자체가 없다.
+function renderWeatherWeeklyForecast(data) {
+  if (!wdWeeklyForecast) return;
+  if (!data || !Array.isArray(data.days) || data.days.length === 0) {
+    wdWeeklyForecast.innerHTML = `<p class="weather-empty">주간 예보를 불러올 수 없어요.</p>`;
+    return;
+  }
+
+  wdWeeklyForecast.innerHTML = data.days
+    .map((d) => {
+      const todayTag = d.isToday ? `<span class="weather-rain-day-tag">오늘</span>` : "";
+      const weekendTag = d.isWeekend
+        ? `<span class="weather-rain-day-tag weather-rain-day-tag-weekend">주말</span>`
+        : "";
+      return `
+    <div class="weather-weekly-row">
+      <span class="weather-weekly-day">${d.weekdayKo}${todayTag}${weekendTag}</span>
+      <span class="weather-weekly-condition">${d.conditionsKo}</span>
+      <span class="weather-weekly-temps"><span class="weather-weekly-min">${Math.round(d.tempMin)}°</span> / <span class="weather-weekly-max">${Math.round(d.tempMax)}°</span></span>
+      <span class="weather-weekly-prob">${d.precipprob}%</span>
+    </div>`;
+    })
+    .join("");
 }
 
 // 2026-07-14 재설계: "지난 24시간" 수치 나열이 아니라 "향후 24시간이 지난
@@ -1475,6 +1622,55 @@ function renderWeatherTropical(data) {
   if (wdTropicalComment) wdTropicalComment.textContent = data.sleepWindow.comment || "";
 }
 
+// 2026-07-17 2차 기획(묶음C, Fable 5 우선순위 1위): 미세먼지·초미세먼지.
+// 서비스키 미설정(configured:false)과 일시 조회 실패(available:false)를
+// 구분해서 다르게 안내한다 — 전자는 "설정이 필요하다"는 안내(운영자용),
+// 후자는 다른 카드들과 같은 "불러올 수 없어요" 톤(유저용)이다.
+function renderWeatherAirQuality(data) {
+  if (!wdAirQuality) return;
+  if (!data || !data.configured) {
+    wdAirQuality.innerHTML = `<p class="weather-empty">${
+      data && data.message ? data.message : "미세먼지 정보를 불러올 수 없어요."
+    }</p>`;
+    return;
+  }
+  if (!data.available) {
+    wdAirQuality.innerHTML = `<p class="weather-empty">미세먼지 정보를 불러올 수 없어요.</p>`;
+    return;
+  }
+
+  const gradeLabelKo = { GOOD: "좋음", MODERATE: "보통", BAD: "나쁨", VERY_BAD: "매우 나쁨" };
+  const tiles = [];
+  if (typeof data.pm10Value === "number") {
+    tiles.push(
+      `<div class="weather-stat-tile"><span class="weather-stat-label">미세먼지(PM10)</span><span class="weather-stat-value">${data.pm10Value} · ${gradeLabelKo[data.pm10Grade] || ""}</span></div>`
+    );
+  }
+  if (typeof data.pm25Value === "number") {
+    tiles.push(
+      `<div class="weather-stat-tile"><span class="weather-stat-label">초미세먼지(PM2.5)</span><span class="weather-stat-value">${data.pm25Value} · ${gradeLabelKo[data.pm25Grade] || ""}</span></div>`
+    );
+  }
+  const tilesHtml = tiles.length
+    ? `<div class="weather-detail-grid">${tiles.join("")}</div>`
+    : "";
+  const commentHtml = data.message ? `<p class="weather-comment">${data.message}</p>` : "";
+  wdAirQuality.innerHTML = tilesHtml + commentHtml || `<p class="weather-empty">미세먼지 정보를 불러올 수 없어요.</p>`;
+}
+
+// 2026-07-17 2차 기획(묶음D, Fable 5 우선순위 4위): 일평균 대비 기온차.
+// 이 카드는 그 달력일이 처음 조회될 때 백엔드가 과거 10년치를 계산하느라
+// 응답이 살짝 느릴 수 있다(캐시된 뒤로는 즉시) — 실패해도 다른 카드에
+// 영향 없이 이 카드만 조용히 "불러올 수 없어요"로 접힌다.
+function renderWeatherTempVsNormal(data) {
+  if (!wdTempVsNormal) return;
+  if (!data || !data.available) {
+    wdTempVsNormal.textContent = "평년값 비교에 필요한 데이터가 아직 부족해요.";
+    return;
+  }
+  wdTempVsNormal.textContent = data.message;
+}
+
 function renderWeatherAccuracy(data) {
   if (!wdAccuracyMessage) return;
   wdAccuracyMessage.textContent = data?.message || "예보 정확도 정보를 불러올 수 없어요.";
@@ -1497,19 +1693,38 @@ async function fetchWeatherDetail() {
 
   weatherDetailFetching = true;
 
-  const [currentR, rainR, yesterdayR, tropicalR, accuracyR] = await Promise.allSettled([
-    fetchWeatherJson("/api/weather/current"),
-    fetchWeatherJson("/api/weather/rain-windows"),
-    fetchWeatherJson("/api/weather/yesterday"),
-    fetchWeatherJson("/api/weather/tropical-night"),
-    fetchWeatherJson("/api/weather/forecast-accuracy")
-  ]);
+  // 2026-07-17: 벤치마크 기획 묶음4(시간대별 예보 스트립)용 호출 추가.
+  // 2026-07-17 2차 기획: 주간 기온 예보(묶음A) 호출 추가. 다음 비
+  // 카운트다운(묶음B)은 새 호출 없이 rain-windows 응답에 이미 포함돼 있다.
+  // 미세먼지(묶음C)는 유저 요청으로 이번 배포에서 보류("다음에 하자") —
+  // 호출 자체를 넣지 않는다(카드가 안 보이는데 네트워크 요청만 날리는
+  // 낭비를 피한다). renderWeatherAirQuality 함수는 다음에 재개할 때
+  // 바로 쓸 수 있도록 그대로 남겨뒀다.
+  const [currentR, rainR, yesterdayR, tropicalR, accuracyR, hourlyStripR, weeklyForecastR, tempVsNormalR] =
+    await Promise.allSettled([
+      fetchWeatherJson("/api/weather/current"),
+      fetchWeatherJson("/api/weather/rain-windows"),
+      fetchWeatherJson("/api/weather/yesterday"),
+      fetchWeatherJson("/api/weather/tropical-night"),
+      fetchWeatherJson("/api/weather/forecast-accuracy"),
+      fetchWeatherJson("/api/weather/hourly-strip"),
+      fetchWeatherJson("/api/weather/weekly-forecast"),
+      // 2026-07-17 2차 기획(묶음D): 평년값 비교. 그 달력일이 처음
+      // 조회되는 날엔 백엔드가 과거 10년치를 계산하느라 이 호출만 살짝
+      // 느릴 수 있다 — Promise.allSettled라 다른 카드 렌더링을 막지 않는다.
+      fetchWeatherJson("/api/weather/temp-vs-normal")
+    ]);
 
   const tropicalData = tropicalR.status === "fulfilled" ? tropicalR.value : null;
   const rainData = rainR.status === "fulfilled" ? rainR.value : null;
   const currentData = currentR.status === "fulfilled" ? currentR.value : null;
   renderWeatherCurrent(currentData);
+  renderWeatherDetailIndicators(currentData);
   renderWeatherTopComment(rainData);
+  renderWeatherNextRain(rainData);
+  renderWeatherHourlyStrip(hourlyStripR.status === "fulfilled" ? hourlyStripR.value : null);
+  renderWeatherWeeklyForecast(weeklyForecastR.status === "fulfilled" ? weeklyForecastR.value : null);
+  renderWeatherTempVsNormal(tempVsNormalR.status === "fulfilled" ? tempVsNormalR.value : null);
   renderWeatherRainWindows(rainData);
   renderWeatherYesterday(yesterdayR.status === "fulfilled" ? yesterdayR.value : null);
   renderWeatherTropical(tropicalData);
