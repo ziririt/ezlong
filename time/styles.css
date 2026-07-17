@@ -22,23 +22,38 @@
 /* 2026-07-17 8차 개정(근본 재설계) — 2026-07-07 자연 스크롤 도입부터
    2~7차의 여러 스크롤 체이닝 방지 시도까지, 전부 "문서(html)가 스크롤된다"
    는 전제 위에서 모달 내부 스크롤과 계속 충돌해왔다(구 히스토리는 git
-   로그 참조). 이번엔 문서 스크롤이라는 개념 자체를 없앤다: html/body는
-   영구적으로 overflow:hidden(뷰포트 고정)이고, 1페이지(.sky-room)↔2페이지
-   (.ezlong-webview) 전환은 새 wrapper `#pageTrack`(index.html에 추가)의
-   CSS transform을 app.js가 직접 움직여서 구현한다. 모달 시트(.settings-sheet
-   등)의 내부 스크롤은 여전히 평범한 overflow:auto이고, 페이지 전환은 별도
-   스와이프 제스처 감지 + transform이라 — 이 둘은 애초에 같은 이벤트 계통을
-   공유하지 않는다. 문서가 스크롤 대상이 아니게 된 순간, "시트 스크롤이
-   문서 스크롤로 새는" 현상 자체가 구조적으로 성립할 수 없다. */
+   로그 참조). 1페이지(.sky-room)↔2페이지(.ezlong-webview) 전환은 새
+   wrapper `#pageTrack`(index.html에 추가)의 CSS transform을 app.js가
+   직접 움직여서 구현한다. 모달 시트(.settings-sheet 등)의 내부 스크롤은
+   여전히 평범한 overflow:auto이고, 페이지 전환은 별도 스와이프 제스처
+   감지 + transform이라 — 이 둘은 애초에 같은 이벤트 계통을 공유하지
+   않는다.
+
+   2026-07-17 9차 개정: 8차에서 html/body에 overflow:hidden을 걸었더니
+   유저 실기기 재확인 결과 페이지 전환뿐 아니라 시트 내부 스크롤까지
+   통째로 "요지부동, 전혀 안 움직임" 상태가 됐다 — 이는 3차/7차에서도
+   반복 관찰된 패턴과 정확히 일치한다: 이 WKWebView는 html 또는 body
+   자체에 overflow:hidden이 걸리면, 그 안에 중첩된 다른 요소의 자체
+   overflow:auto 터치 스크롤까지 함께 죽어버리는 것으로 보인다(WKWebView가
+   문서 전체를 감싸는 하나의 네이티브 스크롤뷰를 기반으로 터치를 처리하고,
+   이 스크롤뷰의 스크롤 가능 여부가 꺼지면 그 안의 모든 중첩 터치 스크롤
+   인식 자체가 함께 비활성화되는 구조적 제약으로 추정된다). 그래서 이제
+   html/body의 overflow:hidden을 제거한다 — 대신 `.clock-app`(아래) 하나
+   에만 명시적 height(100vh/100dvh) + overflow:hidden을 걸어 `#pageTrack`의
+   넘치는 높이를 거기서만 잘라낸다. `.clock-app`이 정확히 뷰포트 높이만큼만
+   차지하고 그 초과분은 overflow:hidden으로 레이아웃 계산에서도 제외되므로,
+   body/html 입장에서는 스크롤할 여분의 높이가 애초에 존재하지 않는다 —
+   즉 html/body에 별도로 overflow:hidden을 걸지 않아도 "문서 자체가 페이지
+   2만큼 스크롤되는" 상황은 여전히 일어날 수 없다. 대신 이번엔 그 문서
+   레벨 잠금을 걷어냄으로써 시트 내부 터치 스크롤이 다시 살아나는지가
+   핵심 가설이다. */
 html {
   height: 100%;
-  overflow: hidden;
 }
 
 body {
   height: 100%;
   margin: 0;
-  overflow: hidden;
   background: #101722;
   color: var(--white);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
