@@ -930,6 +930,27 @@ button { font: inherit; }
   opacity: 0.9;
 }
 
+/* 2026-07-18 8차 피드백(Fable 5 검토 반영): 카드 "위"에 얹는 맺힘(응결)
+   레이어 — 낙하 캔버스와 달리 z-index를 양수로 둬서 카드 콘텐츠 위에
+   그려지되, 닫기 버튼(.weather-detail-close-fixed, z-index:30)보다는
+   낮게 둬서 버튼을 가리지 않는다. pointer-events:none이라 터치는 그대로
+   카드 콘텐츠로 전달된다(app.js의 wdCond* 함수 참조). */
+.weather-detail-condensation {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 900ms ease;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#weatherDetailPanel.weather-detail-rainy .weather-detail-condensation {
+  opacity: 1;
+}
+
 /* 2026-07-18 유저 피드백: 스크롤해도 닫기 버튼이 늘 화면에 떠있어야 한다 —
    헤더 흐름 밖으로 빼서 position:fixed로 뷰포트에 고정한다. 이 페이지는
    body 직속(15차 스크롤버그 수정 참조)이라 조상 중에 transform이 걸린

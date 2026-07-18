@@ -361,17 +361,22 @@ const DEBUG_FORCE_RAIN = new URLSearchParams(location.search).get("forceRain") =
 // weatherEmojiFromEnglish가 분기하는 모든 경우(뇌우/눈/비/안개/흐림/
 // 구름조금/맑음)를 이 맵으로 전부 커버한다. 일반 방문자 URL엔 이 파라미터가
 // 없으므로 평소 동작에는 전혀 영향 없다.
+// 2026-07-18 8차 피드백(Fable 5 검토 반영): 각 시나리오에 바람(windSpeedKmh/
+// gustKmh)·강수강도 등급(rainIntensityGrade)까지 목업으로 채워서, 비 애니메이션의
+// 바람 기울기·강도별 밀도/굵기까지 실제 날씨와 무관하게 결정론적으로 테스트할
+// 수 있게 했다(rainIntensityGrade는 백엔드 classifyRainIntensity와 동일한
+// grade 문자열 — NONE/DRIZZLE/RAIN/HEAVY/VERY_HEAVY).
 const WEATHER_TEST_SCENARIOS = {
-  clear: { temp: 27, feelslike: 28, humidity: 45, precip: 0, precipprob: 0, preciptype: null, conditions: "Clear" },
-  "partly-cloudy": { temp: 25, feelslike: 25, humidity: 55, precip: 0, precipprob: 10, preciptype: null, conditions: "Partially cloudy" },
-  cloudy: { temp: 23, feelslike: 23, humidity: 60, precip: 0, precipprob: 15, preciptype: null, conditions: "Cloudy" },
-  overcast: { temp: 21, feelslike: 21, humidity: 72, precip: 0, precipprob: 25, preciptype: null, conditions: "Overcast" },
-  fog: { temp: 18, feelslike: 18, humidity: 96, precip: 0, precipprob: 10, preciptype: null, conditions: "Fog" },
-  drizzle: { temp: 20, feelslike: 20, humidity: 90, precip: 0.4, precipprob: 80, preciptype: ["rain"], conditions: "Rain, Overcast" },
-  rain: { temp: 19, feelslike: 19, humidity: 92, precip: 4, precipprob: 95, preciptype: ["rain"], conditions: "Rain, Overcast" },
-  heavyrain: { temp: 18, feelslike: 18, humidity: 95, precip: 18, precipprob: 100, preciptype: ["rain"], conditions: "Rain, Overcast" },
-  storm: { temp: 20, feelslike: 20, humidity: 90, precip: 12, precipprob: 100, preciptype: ["rain"], conditions: "Thunderstorm, Rain" },
-  snow: { temp: -2, feelslike: -5, humidity: 80, precip: 3, precipprob: 90, preciptype: ["snow"], conditions: "Snow" }
+  clear: { temp: 27, feelslike: 28, humidity: 45, precip: 0, precipprob: 0, preciptype: null, conditions: "Clear", windSpeedKmh: 8, gustKmh: 10, rainIntensityGrade: "NONE" },
+  "partly-cloudy": { temp: 25, feelslike: 25, humidity: 55, precip: 0, precipprob: 10, preciptype: null, conditions: "Partially cloudy", windSpeedKmh: 12, gustKmh: 15, rainIntensityGrade: "NONE" },
+  cloudy: { temp: 23, feelslike: 23, humidity: 60, precip: 0, precipprob: 15, preciptype: null, conditions: "Cloudy", windSpeedKmh: 15, gustKmh: 19, rainIntensityGrade: "NONE" },
+  overcast: { temp: 21, feelslike: 21, humidity: 72, precip: 0, precipprob: 25, preciptype: null, conditions: "Overcast", windSpeedKmh: 20, gustKmh: 26, rainIntensityGrade: "NONE" },
+  fog: { temp: 18, feelslike: 18, humidity: 96, precip: 0, precipprob: 10, preciptype: null, conditions: "Fog", windSpeedKmh: 3, gustKmh: 3, rainIntensityGrade: "NONE" },
+  drizzle: { temp: 20, feelslike: 20, humidity: 90, precip: 0.4, precipprob: 80, preciptype: ["rain"], conditions: "Rain, Overcast", windSpeedKmh: 10, gustKmh: 13, rainIntensityGrade: "DRIZZLE" },
+  rain: { temp: 19, feelslike: 19, humidity: 92, precip: 4, precipprob: 95, preciptype: ["rain"], conditions: "Rain, Overcast", windSpeedKmh: 22, gustKmh: 30, rainIntensityGrade: "RAIN" },
+  heavyrain: { temp: 18, feelslike: 18, humidity: 95, precip: 18, precipprob: 100, preciptype: ["rain"], conditions: "Rain, Overcast", windSpeedKmh: 35, gustKmh: 55, rainIntensityGrade: "HEAVY" },
+  storm: { temp: 20, feelslike: 20, humidity: 90, precip: 28, precipprob: 100, preciptype: ["rain"], conditions: "Thunderstorm, Rain", windSpeedKmh: 55, gustKmh: 88, rainIntensityGrade: "VERY_HEAVY" },
+  snow: { temp: -2, feelslike: -5, humidity: 80, precip: 3, precipprob: 90, preciptype: ["snow"], conditions: "Snow", windSpeedKmh: 18, gustKmh: 24, rainIntensityGrade: "NONE" }
 };
 const WEATHER_TEST_SCENARIO_KEY = new URLSearchParams(location.search).get("forceWeather");
 const WEATHER_TEST_SCENARIO =
@@ -1517,34 +1522,130 @@ function applyWeatherDetailPhoto() {
 }
 
 // 2026-07-18 6차 피드백: "비 내리는 애니메이션이 옛날 TV 노이즈 같다, 애플처럼
-// 고급스럽게 못 하면 포기하자" — 원인은 순수 CSS repeating-linear-gradient를
-// background-position 애니메이션으로 움직이던 방식 자체였다. 일정한 간격·
-// 일정한 각도의 줄무늬가 화면 전체를 균일하게 덮으면서 무아레(moiré)/스캔라인
-// 패턴으로 보였다(실측: 유저가 보내온 화면녹화·스크린샷에서 확인). 완전한
-// "영상 속에 있는 듯한" 수준은 실사 비디오 없이는 불가능하지만, CSS 반복
-// 그라디언트보다는 훨씬 자연스러운 절차적(procedural) 빗줄기를 canvas 2D로
-// 그린다 — 빗줄기마다 길이·굵기·속도·기울기·투명도를 랜덤화해 규칙적인
-// 패턴이 보이지 않게 한다. canvas는 position:fixed + pointer-events:none이라
-// 터치를 전혀 가로채지 않으므로(이벤트 자체가 이 요소에 안 옴) 이 프로젝트의
-// 스크롤 절대 규칙과 무관하게 안전하다. 배터리 배려를 위해 실제로 비가 올
-// 때(.weather-detail-rainy)만 requestAnimationFrame 루프를 돌리고, 패널을
-// 닫거나 비가 그치면 즉시 멈춘다.
+// 고급스럽게 못 하면 포기하자" — CSS repeating-linear-gradient의 균일한
+// 줄무늬가 무아레/스캔라인처럼 보인 게 원인이라 canvas 2D 절차적 빗줄기로
+// 교체했다(1차). 2026-07-18 7차 피드백에서 "많이 좋아졌지만 서비스급은
+// 아니다"며 바람 각도·강수강도별 굵기/빈도·카드 표면 물리감 3가지를
+// 요청했고, Fable 5 검토(FABLE5_검토회신_비애니메이션_2026-07-18.md) 결과를
+// 반영해 아래처럼 전면 재작성한다.
+//
+// Fable 5 핵심 조언 요약과 반영 지점:
+//  1) 바람 세기 4단계(무풍/약~보통/강함/매우강함, describeWind와 동일 임계값
+//     5/25/50km/h)로 기울기 세기만 반영하고 풍향(화면 좌우)은 반영하지 않는다
+//     — 폰의 실제 방위를 모르는 상태에서 풍향을 매핑하면 "그럴듯한 오정보"가
+//     된다는 판단. 기울기 방향은 항상 왼쪽 고정(세션마다 랜덤 금지 — QA
+//     혼란 방지).
+//  2) "돌풍 변조"(wdWindFactor) — 전역 바람 계수를 5~15초 주기 사인파+노이즈로
+//     출렁이게 해서 "바람이 훅 불었다 잦아드는" 살아있는 느낌을 준다. 이게
+//     정적 반복(=TV노이즈로 보였던 원인)을 깨는 가장 효율 높은 한 수라는 조언.
+//  3) 강수강도 5단계(classifyRainIntensity와 동일 grade)별로 밀도·굵기·속도·
+//     투명도·대기 톤을 전부 다르게 — 이슬비는 "오는 듯 마는 듯"하게 아주
+//     소심하게, 강한 비 이상은 화면 전체에 옅은 대기 톤(atmosphere tint)까지.
+//     밀도는 절대 개수가 아니라 화면 면적 비례로 정규화(기준 390×844).
+//  4) 성능: devicePixelRatio는 2로 캡(이미 적용), 낙하 레이어는 ~40fps로
+//     캡(ProMotion 120Hz 기기 배려), 맺힘 레이어는 10~15fps 별도 저속 루프.
+//     document.visibilitychange에서 완전 정지, prefers-reduced-motion이면
+//     낙하 애니메이션 자체를 끄고 맺힘은 정적 한 프레임만 그린다.
+//  5) 카드 표면 "충돌"보다 "맺힘(응결)"이 진짜 핵심 — 캔버스가 이미
+//     z-index:-1로 카드 뒤에 있어 "카드를 뚫고 지나가는 비" 문제는 애초에
+//     없었다(글래스 카드의 backdrop-filter가 뒤의 비를 뿌옇게 비춰 "젖은
+//     유리 너머"까지 공짜로 나온다). 대신 카드 "위"(pointer-events:none,
+//     z-index 양수지만 닫기 버튼보다는 낮게)에 별도 저속 캔버스를 얹어
+//     작은 물방울이 맺혔다 가끔 흘러내리는 효과를 낸다.
+//  6) 깊이감(원경/중경/근경 레이어)을 빗줄기마다 부여해 같은 개수로도
+//     "공간"이 생기게 한다. 빗줄기 길이(len)는 항상 속도에 비례시킨다
+//     (빠른 줄기=긴 모션블러 — 강풍에서 속도만 오르고 길이가 그대로면 어색).
+
+// ── 강수강도(classifyRainIntensity와 동일 5등급)별 파라미터 테이블 ──────
+// density: 기준 화면(390×844, iPhone 표준 뷰포트)에서의 빗줄기 개수.
+// condCount: 맺힘(응결) 방울 목표 개수. atmosphereAlpha: 대기 톤 오버레이 농도.
+const WD_RAIN_INTENSITY_PARAMS = {
+  NONE: { density: 0, alphaMin: 0, alphaMax: 0, speedMul: 1, widthHeavyRatio: 0, atmosphereAlpha: 0, condCount: 0 },
+  // Fable 5: "이슬비는 화면에 몇 가닥 안 보일 정도로 희박하고 가늘어야 한다 —
+  // 40개도 많다. 고급스러움은 '오는 듯 마는 듯'에서 나온다."
+  DRIZZLE: { density: 26, alphaMin: 0.06, alphaMax: 0.12, speedMul: 0.72, widthHeavyRatio: 0.02, atmosphereAlpha: 0, condCount: 10 },
+  RAIN: { density: 110, alphaMin: 0.10, alphaMax: 0.24, speedMul: 1, widthHeavyRatio: 0.12, atmosphereAlpha: 0.04, condCount: 30 },
+  HEAVY: { density: 170, alphaMin: 0.15, alphaMax: 0.32, speedMul: 1.15, widthHeavyRatio: 0.30, atmosphereAlpha: 0.10, condCount: 45 },
+  VERY_HEAVY: { density: 220, alphaMin: 0.18, alphaMax: 0.36, speedMul: 1.25, widthHeavyRatio: 0.42, atmosphereAlpha: 0.16, condCount: 60 }
+};
+
+function wdRainIntensityParams() {
+  return WD_RAIN_INTENSITY_PARAMS[wdRainIntensityGrade] || WD_RAIN_INTENSITY_PARAMS.RAIN;
+}
+
+// 면적 비례 정규화 — iPhone SE와 Pro Max는 화면 면적이 1.6배 차이 나므로
+// 절대 개수를 그대로 쓰면 작은 기기에서 과밀해 보인다(Fable 5 지적).
+function wdRainComputeDensity(baseDensity, w, h) {
+  if (!baseDensity) return 0;
+  const normalized = Math.round((baseDensity * (w * h)) / (390 * 844));
+  return Math.max(8, Math.min(220, normalized));
+}
+
+// 바람 4단계(describeWind와 동일 임계값 5/25/50km/h) → 빗줄기 기울기 세기.
+// 풍향은 반영하지 않는다(위 주석 참조) — 기울기 방향은 항상 왼쪽 고정.
+function wdRainDriftForWind(speedKmh) {
+  const s = typeof speedKmh === "number" ? speedKmh : 0;
+  if (s < 5) return 0.04 + Math.random() * 0.06; // 무풍 — 거의 수직
+  if (s < 25) return 0.3 + Math.random() * 0.3; // 약~보통 — 살짝 사선
+  if (s < 50) return 0.8 + Math.random() * 0.5; // 강함 — 꽤 사선
+  return 1.6 + Math.random() * 0.8; // 매우강함(강풍주의보 수준) — 아주 사선
+}
+
+// 접근성(prefers-reduced-motion)과 디버그(?fxoff=1) — 둘 다 모듈 로드 시
+// 한 번만 계산한다. fxoff는 "혹시 애니메이션 때문에 느린가?"를 1초 만에
+// 판별하는 디버그 스위치(Fable 5 제안), 일반 방문자 URL엔 없으므로 평소엔
+// 영향 없다.
+const wdReducedMotion =
+  typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const WD_FX_OFF = new URLSearchParams(location.search).get("fxoff") === "1";
+
 let wdRainCanvasEl = null;
 let wdRainCtx = null;
 let wdRainDrops = [];
 let wdRainRunning = false;
 let wdRainAnimHandle = null;
-let wdRainDpr = 1;
+let wdRainWindSpeedKmh = 0;
+let wdRainGustKmh = 0;
+let wdRainIntensityGrade = "RAIN";
+let wdWindFactor = 1;
+let wdRainLastFallFrameTime = 0;
+let wdRainWasRunningBeforeHidden = false;
+const WD_RAIN_FALL_FRAME_MS = 1000 / 40; // ~40fps 캡(ProMotion 120Hz 기기 배려, Fable 5 권고)
 
-function wdRainMakeDrop(w, h, randomizeY) {
+// 렌더 시점(renderWeatherCurrent)마다 실측(또는 ?forceWeather 목업) 바람·
+// 강수강도 값을 여기에 반영한다 — 이미 돌고 있으면 밀도만 다시 계산한다.
+function setWeatherRainParams(windSpeedKmh, gustKmh, intensityGrade) {
+  wdRainWindSpeedKmh = typeof windSpeedKmh === "number" ? windSpeedKmh : 0;
+  wdRainGustKmh = typeof gustKmh === "number" ? gustKmh : wdRainWindSpeedKmh;
+  wdRainIntensityGrade = intensityGrade || "RAIN";
+  if (wdRainRunning) wdRainResize();
+}
+
+// "돌풍 변조" — 전역 바람 계수를 느린 이중 사인파로 출렁이게 한다. 진폭은
+// (돌풍-평균풍속) 차이가 클수록(=바람이 들쭉날쭉할수록) 커진다. 이게 정적
+// 반복(=예전 TV노이즈 혹평의 원인)을 깨는 핵심이라는 게 Fable 5 조언.
+function wdUpdateWindFactor(tSeconds) {
+  const gustAmp = Math.min(1, Math.max(0, (wdRainGustKmh - wdRainWindSpeedKmh) / 40));
+  wdWindFactor = 1 + gustAmp * (0.45 * Math.sin(tSeconds * 0.7) + 0.25 * Math.sin(tSeconds * 1.9 + 1.3));
+}
+
+// 깊이감(원경/중경/근경) — 같은 개수라도 레이어를 나누면 "공간"이 생긴다.
+// len(빗줄기 길이)은 항상 speed에 비례시킨다(빠를수록 긴 모션블러).
+function wdRainMakeDrop(w, h, randomizeY, params) {
+  const roll = Math.random();
+  const layer = roll < 0.55 ? 0 : roll < 0.82 ? 1 : 2; // 0=원경(다수) 1=중경 2=근경(소수)
+  const layerSpeedMul = layer === 0 ? 0.65 : layer === 1 ? 1 : 1.4;
+  const layerAlphaMul = layer === 0 ? 0.65 : layer === 1 ? 1 : 1.15;
+  const layerWidthMul = layer === 0 ? 0.85 : layer === 1 ? 1 : 1.25;
+  const speed = (6 + Math.random() * 7) * (params.speedMul || 1) * layerSpeedMul;
   return {
     x: Math.random() * w,
     y: randomizeY ? Math.random() * h : -30 - Math.random() * h * 0.3,
-    len: 14 + Math.random() * 22,
-    speed: 6 + Math.random() * 7,
-    drift: 0.9 + Math.random() * 0.7,
-    alpha: 0.10 + Math.random() * 0.24,
-    width: Math.random() < 0.12 ? 1.6 : 1
+    speed,
+    len: speed * (1.7 + Math.random() * 0.9),
+    drift: wdRainDriftForWind(wdRainWindSpeedKmh),
+    alpha: (params.alphaMin + Math.random() * (params.alphaMax - params.alphaMin)) * layerAlphaMul,
+    width: (Math.random() < (params.widthHeavyRatio || 0) ? 1.6 : 1) * layerWidthMul
   };
 }
 
@@ -1552,22 +1653,36 @@ function wdRainResize() {
   if (!wdRainCanvasEl) return;
   const w = window.innerWidth;
   const h = window.innerHeight;
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2); // Fable 5: dpr 캡이 어떤 파티클 튜닝보다 성능에 크게 기여
   wdRainCanvasEl.width = Math.round(w * dpr);
   wdRainCanvasEl.height = Math.round(h * dpr);
-  wdRainDpr = dpr;
   if (wdRainCtx) wdRainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  // 화면 면적에 비례한 빗줄기 개수(너무 많으면 저사양 기기에서 버벅일 수
-  // 있어 상한을 둔다) — 폰 화면 기준 대략 130~170개.
-  const density = Math.max(70, Math.min(180, Math.round((w * h) / 9500)));
-  wdRainDrops = new Array(density).fill(null).map(() => wdRainMakeDrop(w, h, true));
+  const params = wdRainIntensityParams();
+  const density = wdRainComputeDensity(params.density, w, h);
+  wdRainDrops = new Array(density).fill(null).map(() => wdRainMakeDrop(w, h, true, params));
 }
 
-function wdRainStep() {
-  if (!wdRainCtx || !wdRainCanvasEl) return;
+function wdRainStep(timestamp) {
+  if (!wdRainCtx || !wdRainCanvasEl || !wdRainRunning) return;
+  if (wdRainLastFallFrameTime && timestamp - wdRainLastFallFrameTime < WD_RAIN_FALL_FRAME_MS) {
+    wdRainAnimHandle = requestAnimationFrame(wdRainStep);
+    return;
+  }
+  wdRainLastFallFrameTime = timestamp;
+  wdUpdateWindFactor(timestamp / 1000);
+
   const w = window.innerWidth;
   const h = window.innerHeight;
+  const params = wdRainIntensityParams();
+
   wdRainCtx.clearRect(0, 0, w, h);
+  // 강도별 대기 톤(atmosphere tint) — Fable 5: "애플 연출의 절반은 파티클이
+  // 아니라 이 대기 톤이다." 강한 비 이상에서만 옅게 깐다.
+  if (params.atmosphereAlpha > 0) {
+    wdRainCtx.fillStyle = `rgba(6,10,18,${params.atmosphereAlpha})`;
+    wdRainCtx.fillRect(0, 0, w, h);
+  }
+
   wdRainCtx.lineCap = "round";
   for (let i = 0; i < wdRainDrops.length; i++) {
     const d = wdRainDrops[i];
@@ -1577,22 +1692,24 @@ function wdRainStep() {
     wdRainCtx.moveTo(d.x, d.y);
     wdRainCtx.lineTo(d.x - d.drift * d.len * 0.42, d.y + d.len);
     wdRainCtx.stroke();
-    d.x -= d.drift * 1.6;
+    d.x -= d.drift * 1.6 * wdWindFactor; // 돌풍 변조는 기울기(가로 이동)에만 곱한다(Fable 5 스펙 그대로)
     d.y += d.speed;
     if (d.y > h + 30 || d.x < -30) {
-      wdRainDrops[i] = wdRainMakeDrop(w, h, false);
+      wdRainDrops[i] = wdRainMakeDrop(w, h, false, params);
     }
   }
-  if (wdRainRunning) wdRainAnimHandle = requestAnimationFrame(wdRainStep);
+  wdRainAnimHandle = requestAnimationFrame(wdRainStep);
 }
 
 function startWeatherRainFx() {
+  if (WD_FX_OFF || wdReducedMotion) return; // reduced-motion은 낙하 애니메이션 자체를 끈다(맺힘은 정적으로 별도 표시)
   if (wdRainRunning) return;
   if (!wdRainCanvasEl) wdRainCanvasEl = document.querySelector(".weather-detail-rain-fx");
   if (!wdRainCanvasEl || typeof wdRainCanvasEl.getContext !== "function") return;
   if (!wdRainCtx) wdRainCtx = wdRainCanvasEl.getContext("2d");
   wdRainResize();
   wdRainRunning = true;
+  wdRainLastFallFrameTime = 0;
   wdRainAnimHandle = requestAnimationFrame(wdRainStep);
 }
 
@@ -1605,8 +1722,207 @@ function stopWeatherRainFx() {
   }
 }
 
+// ── 카드 표면 "맺힘(응결)" 레이어 ────────────────────────────────────
+// Fable 5 검토: 낙하 캔버스가 이미 z-index:-1로 카드 뒤에 있어 "비가 카드를
+// 뚫고 지나가는" 문제는 원래부터 없었다(backdrop-filter가 뒤의 비를 뿌옇게
+// 비춰 "젖은 유리 너머" 효과가 이미 공짜로 나옴). 카드가 진짜 "물리적
+// 실체"로 느껴지게 하는 건 충돌이 아니라 유리 표면에 맺힌 물방울(응결)이라,
+// 카드 "위"(pointer-events:none)에 별도 저속(10~15fps) 캔버스를 얹어 작은
+// 물방울을 흩뿌리고 가끔 흘러내리게 한다. 카드 rect는 스크롤 리스너로
+// 캐싱하지 않고 저속 루프의 매 틱마다 그냥 다시 읽는다(Fable 5: "카드 10개
+// × 15fps는 비용이 무시 가능한 수준이고, 캐시 무효화 버그를 원천 차단한다"
+// — 이 프로젝트가 제일 잘 아는 부류의 버그).
+const WD_COND_SELECTORS = ".weather-current-card, .weather-stat-tile, .weather-hourly-item, .weather-weekly-row";
+const WD_COND_FRAME_MS = 1000 / 13; // 10~15fps 저속 루프
+
+let wdCondCanvasEl = null;
+let wdCondCtx = null;
+let wdCondDrops = [];
+let wdCondRunning = false;
+let wdCondAnimHandle = null;
+let wdCondLastFrameTime = 0;
+let wdCondWasRunningBeforeHidden = false;
+
+function wdCondEligibleCardEls() {
+  const vh = window.innerHeight;
+  return Array.from(document.querySelectorAll(WD_COND_SELECTORS)).filter((el) => {
+    const r = el.getBoundingClientRect();
+    return r.width > 24 && r.height > 24 && r.bottom > 0 && r.top < vh;
+  });
+}
+
+function wdCondMakeDropOn(el) {
+  return {
+    el,
+    relX: Math.random(),
+    relY: Math.random(),
+    r: 1.5 + Math.random() * 3.5,
+    born: performance.now(),
+    life: 8000 + Math.random() * 14000, // 8~22초 뒤 자연 소멸
+    sliding: false,
+    slideAmount: 0,
+    slideTarget: 10 + Math.random() * 22
+  };
+}
+
+function wdCondDrawFrame(now) {
+  if (!wdCondCtx) return;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  wdCondCtx.clearRect(0, 0, w, h);
+  for (const d of wdCondDrops) {
+    if (!d.el || !d.el.isConnected) continue;
+    const rect = d.el.getBoundingClientRect();
+    if (rect.width < 10 || rect.height < 10) continue;
+    const age = now - d.born;
+    let alphaMul = 1;
+    if (age < d.life * 0.15) alphaMul = age / (d.life * 0.15);
+    else if (age > d.life * 0.8) alphaMul = Math.max(0, (d.life - age) / (d.life * 0.2));
+    if (d.sliding && d.slideAmount < d.slideTarget) d.slideAmount += 0.6;
+
+    const x = rect.left + d.relX * rect.width;
+    const y = rect.top + d.relY * rect.height + d.slideAmount;
+    const alpha = 0.32 * Math.max(0, Math.min(1, alphaMul));
+    if (alpha <= 0.01) continue;
+
+    // 작은 물방울 하나 = 원형 radial-gradient(가장자리 어둡게, 중심 밝게) +
+    // 좌상단 쪽에 살짝 치우친 하이라이트 — 셰이더 없이 2D에서 "물방울"로
+    // 읽히는 조합(Fable 5 제안).
+    const grad = wdCondCtx.createRadialGradient(x - d.r * 0.3, y - d.r * 0.3, 0, x, y, d.r);
+    grad.addColorStop(0, `rgba(255,255,255,${alpha * 0.9})`);
+    grad.addColorStop(0.55, `rgba(200,222,242,${alpha * 0.5})`);
+    grad.addColorStop(1, `rgba(70,92,124,${alpha * 0.22})`);
+    wdCondCtx.fillStyle = grad;
+    wdCondCtx.beginPath();
+    wdCondCtx.arc(x, y, d.r, 0, Math.PI * 2);
+    wdCondCtx.fill();
+
+    if (d.sliding) {
+      wdCondCtx.strokeStyle = `rgba(200,222,242,${alpha * 0.3})`;
+      wdCondCtx.lineWidth = Math.max(0.6, d.r * 0.22);
+      wdCondCtx.beginPath();
+      wdCondCtx.moveTo(x, y - d.slideAmount);
+      wdCondCtx.lineTo(x, y);
+      wdCondCtx.stroke();
+    }
+  }
+}
+
+function wdCondStep(timestamp) {
+  if (!wdCondCtx || !wdCondCanvasEl || !wdCondRunning) return;
+  if (wdCondLastFrameTime && timestamp - wdCondLastFrameTime < WD_COND_FRAME_MS) {
+    wdCondAnimHandle = requestAnimationFrame(wdCondStep);
+    return;
+  }
+  wdCondLastFrameTime = timestamp;
+
+  wdCondDrops = wdCondDrops.filter((d) => timestamp - d.born < d.life && d.el && d.el.isConnected);
+
+  const params = wdRainIntensityParams();
+  const targetCount = params.condCount || 0;
+  if (wdCondDrops.length < targetCount) {
+    const cards = wdCondEligibleCardEls();
+    if (cards.length > 0) {
+      const need = Math.min(targetCount - wdCondDrops.length, 3); // 한 틱에 과하게 몰아 추가하지 않음
+      for (let i = 0; i < need; i++) {
+        wdCondDrops.push(wdCondMakeDropOn(cards[Math.floor(Math.random() * cards.length)]));
+      }
+    }
+  }
+  wdCondDrops.forEach((d) => {
+    if (!d.sliding && Math.random() < 0.0015) d.sliding = true; // "가끔 흘러내림"(Fable 5: 화룡점정)
+  });
+
+  wdCondDrawFrame(timestamp);
+  if (wdCondRunning) wdCondAnimHandle = requestAnimationFrame(wdCondStep);
+}
+
+function wdCondResizeCanvas() {
+  if (!wdCondCanvasEl) return;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  wdCondCanvasEl.width = Math.round(w * dpr);
+  wdCondCanvasEl.height = Math.round(h * dpr);
+  if (wdCondCtx) wdCondCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function startWeatherCondensationFx() {
+  if (WD_FX_OFF) return;
+  if (wdCondRunning) return;
+  if (!wdCondCanvasEl) wdCondCanvasEl = document.querySelector(".weather-detail-condensation");
+  if (!wdCondCanvasEl || typeof wdCondCanvasEl.getContext !== "function") return;
+  if (!wdCondCtx) wdCondCtx = wdCondCanvasEl.getContext("2d");
+  wdCondResizeCanvas();
+  wdCondDrops = [];
+  wdCondRunning = true;
+  wdCondLastFrameTime = 0;
+
+  if (wdReducedMotion) {
+    // 접근성 배려(Fable 5 권고): 움직임 없이 정적 맺힘 한 프레임만 그리고
+    // 루프는 돌리지 않는다 — "비가 온다"는 단서는 남기되 모션은 없앤다.
+    const cards = wdCondEligibleCardEls();
+    const params = wdRainIntensityParams();
+    const count = Math.round((params.condCount || 0) * 0.6);
+    const now = performance.now();
+    for (let i = 0; i < count && cards.length > 0; i++) {
+      const d = wdCondMakeDropOn(cards[Math.floor(Math.random() * cards.length)]);
+      d.born = now - d.life * 0.4; // 이미 맺혀 정착된 상태로 즉시 보이게
+      wdCondDrops.push(d);
+    }
+    wdCondDrawFrame(now);
+    return;
+  }
+  wdCondAnimHandle = requestAnimationFrame(wdCondStep);
+}
+
+function stopWeatherCondensationFx() {
+  wdCondRunning = false;
+  if (wdCondAnimHandle) cancelAnimationFrame(wdCondAnimHandle);
+  wdCondAnimHandle = null;
+  if (wdCondCtx && wdCondCanvasEl) wdCondCtx.clearRect(0, 0, wdCondCanvasEl.width, wdCondCanvasEl.height);
+  wdCondDrops = [];
+}
+
+// 낙하 레이어 + 맺힘 레이어를 하나로 묶어 호출하는 래퍼 — 열기/닫기/렌더
+// 시점에서 항상 둘을 같이 켜고 끈다.
+function startWeatherRainFxAll() {
+  startWeatherRainFx();
+  startWeatherCondensationFx();
+}
+function stopWeatherRainFxAll() {
+  stopWeatherRainFx();
+  stopWeatherCondensationFx();
+}
+
 window.addEventListener("resize", () => {
   if (wdRainRunning) wdRainResize();
+  if (wdCondRunning) wdCondResizeCanvas();
+});
+
+// 배터리 배려(Fable 5 권고) — 앱이 백그라운드로 가면(다른 앱 전환, 화면
+// 잠금 등) 두 루프 모두 완전히 멈추고, 다시 보일 때 비가 계속 오는 중이면
+// 자동 재시작한다.
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    if (wdRainRunning) {
+      wdRainWasRunningBeforeHidden = true;
+      stopWeatherRainFx();
+    }
+    if (wdCondRunning) {
+      wdCondWasRunningBeforeHidden = true;
+      stopWeatherCondensationFx();
+    }
+  } else {
+    if (wdRainWasRunningBeforeHidden) {
+      wdRainWasRunningBeforeHidden = false;
+      startWeatherRainFx();
+    }
+    if (wdCondWasRunningBeforeHidden) {
+      wdCondWasRunningBeforeHidden = false;
+      startWeatherCondensationFx();
+    }
+  }
 });
 
 // 2026-07-14: 날씨 상세 화면 열기/닫기 — 기존 설정 패널과 동일한 메커니즘
@@ -1628,7 +1944,7 @@ function openWeatherDetail() {
   // 수 있으므로(코드 위쪽 캐시 로직 참조), 이전에 이미 .weather-detail-rainy가
   // 켜져 있었다면(비가 계속 오는 중) 캔버스 루프를 여기서 다시 시작해야
   // 한다 — closeWeatherDetail에서 배터리 절약을 위해 매번 멈춰두기 때문.
-  if (weatherDetailPanel.classList.contains("weather-detail-rainy")) startWeatherRainFx();
+  if (weatherDetailPanel.classList.contains("weather-detail-rainy")) startWeatherRainFxAll();
   // 2026-07-18 유저 피드백: "뒤로가기 제스처로 닫히게" — history 항목을 하나
   // 쌓아두고 popstate에서 실제로 닫는다. 아이폰 사파리 좌측 엣지 스와이프,
   // 안드로이드 뒤로가기 버튼 모두 popstate를 발생시킨다. 다만 이 앱을
@@ -1647,7 +1963,7 @@ function closeWeatherDetail() {
   // 패널이 닫혀 안 보이는 동안엔 캔버스 애니메이션 루프를 완전히 멈춘다
   // (배터리 배려) — .weather-detail-rainy 클래스 자체는 그대로 둬서, 다시
   // 열 때 openWeatherDetail이 그 값을 보고 루프 재시작 여부를 판단한다.
-  stopWeatherRainFx();
+  stopWeatherRainFxAll();
 }
 
 // X 버튼 등 "명시적" 닫기는 이걸 호출한다. openWeatherDetail이 쌓아둔 history
@@ -1854,7 +2170,7 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     if (wdCurrentSun) wdCurrentSun.textContent = "";
     if (wdCurrentIcon) wdCurrentIcon.textContent = "";
     if (weatherDetailPanel) weatherDetailPanel.classList.remove("weather-detail-rainy");
-    stopWeatherRainFx();
+    stopWeatherRainFxAll();
     return;
   }
   // 2026-07-18 7차 피드백: ?forceWeather=<시나리오>가 있으면 실제 관측치
@@ -1869,19 +2185,48 @@ function renderWeatherCurrent(current, hourlyNowItem) {
       ? hourlyNowItem.precipprob
       : null;
   if (wdCurrentIcon) wdCurrentIcon.textContent = weatherEmojiFromCurrent(c, hourlyNowProb);
-  // 2026-07-18 4차 피드백: 애플 날씨처럼 비 오는 날엔 빗줄기 CSS 애니메이션을
-  // 배경에 켠다(.weather-detail-rain-fx, styles.css 참조) — 아이콘과 같은
-  // 신호(실시간 precip/precipprob + hourly-strip "지금" 예보, 5차 피드백
-  // 반영)를 써서 "아이콘은 비인데 애니메이션은 없다" 같은 모순이 생기지
-  // 않게 한다. DEBUG_FORCE_RAIN(?forceRain=1)이면 무조건 켠다.
+  // 2026-07-18 4차 피드백: 애플 날씨처럼 비 오는 날엔 빗줄기 애니메이션을
+  // 배경에 켠다(.weather-detail-rain-fx/-condensation, styles.css 참조) —
+  // 아이콘과 같은 신호(실시간 precip/precipprob + hourly-strip "지금" 예보,
+  // 5차 피드백 반영)를 써서 "아이콘은 비인데 애니메이션은 없다" 같은 모순이
+  // 생기지 않게 한다. DEBUG_FORCE_RAIN(?forceRain=1)이면 무조건 켠다.
+  // 2026-07-18 8차 피드백(Fable 5 검토 반영): preciptype이 눈뿐이면 비
+  // 애니메이션을 켜지 않는다 — 예전엔 강수량/확률만 보고 판정해서 눈
+  // 오는 날에도 빗줄기가 내리는 모순이 있었다(사소하지만 쉬운 교정).
+  const precipTypes = (c.preciptype || []).map((t) => String(t).toLowerCase());
+  const isSnowOnly = precipTypes.length > 0 && precipTypes.every((t) => t === "snow");
   const isRainingNow =
-    DEBUG_FORCE_RAIN ||
-    (typeof c.precip === "number" && c.precip > 0) ||
-    c.precipprob >= 50 ||
-    (hourlyNowProb != null && hourlyNowProb >= 50);
+    !isSnowOnly &&
+    (DEBUG_FORCE_RAIN ||
+      (typeof c.precip === "number" && c.precip > 0) ||
+      c.precipprob >= 50 ||
+      (hourlyNowProb != null && hourlyNowProb >= 50));
   if (weatherDetailPanel) weatherDetailPanel.classList.toggle("weather-detail-rainy", isRainingNow);
-  if (isRainingNow) startWeatherRainFx();
-  else stopWeatherRainFx();
+
+  // 2026-07-18 8차 피드백(Fable 5 검토 반영): 바람 세기·강수강도를 비
+  // 애니메이션에 반영한다. ?forceWeather 테스트 시나리오가 켜져 있으면
+  // 그 시나리오의 목업 바람/강도값을 쓰고(실제 API 바람 데이터와 섞이지
+  // 않게), 아니면 실제 API 값(current.detail.wind, c.rainIntensity)을
+  // 쓴다. c.rainIntensity는 백엔드가 classifyRainIntensity()로 이미
+  // 계산해 내려주는 등급(경로 A, Fable 5 권고) — 프론트에서 임계값을
+  // 복제하지 않아 로직이 한 곳에만 존재한다.
+  const windInfoReal = current.detail && current.detail.wind;
+  const windSpeedKmh = WEATHER_TEST_SCENARIO
+    ? WEATHER_TEST_SCENARIO.windSpeedKmh || 0
+    : windInfoReal
+      ? windInfoReal.speedKmh
+      : 0;
+  const gustKmh = WEATHER_TEST_SCENARIO
+    ? WEATHER_TEST_SCENARIO.gustKmh || windSpeedKmh
+    : windInfoReal
+      ? (windInfoReal.gustKmh ?? windInfoReal.speedKmh)
+      : windSpeedKmh;
+  const intensityGrade = WEATHER_TEST_SCENARIO
+    ? WEATHER_TEST_SCENARIO.rainIntensityGrade || (isRainingNow ? "RAIN" : "NONE")
+    : (c.rainIntensity && c.rainIntensity.grade) || (isRainingNow ? "RAIN" : "NONE");
+  setWeatherRainParams(windSpeedKmh, gustKmh, intensityGrade);
+  if (isRainingNow) startWeatherRainFxAll();
+  else stopWeatherRainFxAll();
   wdCurrentTemp.textContent = `${Math.round(c.temp)}°`;
   wdCurrentFeels.textContent = `체감 ${Math.round(c.feelslike)}°`;
   // 2026-07-14: 습도를 체감온도와 같은 줄로 이동(유저 피드백: "2줄인데
