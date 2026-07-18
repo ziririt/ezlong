@@ -351,6 +351,34 @@ const WEATHER_API_BASE = "https://flipgen-weather-backend.ezlong.workers.dev";
 // 위해 URL에 ?forceRain=1을 붙이면 강제로 "비 오는 중"으로 취급한다.
 // 일반 방문자 URL엔 이 파라미터가 없으므로 평소엔 전혀 영향 없다.
 const DEBUG_FORCE_RAIN = new URLSearchParams(location.search).get("forceRain") === "1";
+
+// 2026-07-18 7차 피드백: "비 오는 날 말고 다른 날씨(맑음/흐림 등) 애니메이션도
+// 전반적으로 확인할 테스트 방법을 강구해달라" — forceRain=1은 "비냐 아니냐"
+// 하나만 강제할 수 있어서, 실제 그 순간 날씨가 우연히 맞아떨어져야만 특정
+// 상태(예: 흐림, 옅은 안개, 폭설)를 볼 수 있었다. 이 맵은 current.current
+// 필드 전체를 시나리오별로 통째로 흉내내서, 실제 날씨와 무관하게 원하는
+// 상태를 URL 하나로 결정론적으로 재현한다 — weatherEmojiFromCurrent/
+// weatherEmojiFromEnglish가 분기하는 모든 경우(뇌우/눈/비/안개/흐림/
+// 구름조금/맑음)를 이 맵으로 전부 커버한다. 일반 방문자 URL엔 이 파라미터가
+// 없으므로 평소 동작에는 전혀 영향 없다.
+const WEATHER_TEST_SCENARIOS = {
+  clear: { temp: 27, feelslike: 28, humidity: 45, precip: 0, precipprob: 0, preciptype: null, conditions: "Clear" },
+  "partly-cloudy": { temp: 25, feelslike: 25, humidity: 55, precip: 0, precipprob: 10, preciptype: null, conditions: "Partially cloudy" },
+  cloudy: { temp: 23, feelslike: 23, humidity: 60, precip: 0, precipprob: 15, preciptype: null, conditions: "Cloudy" },
+  overcast: { temp: 21, feelslike: 21, humidity: 72, precip: 0, precipprob: 25, preciptype: null, conditions: "Overcast" },
+  fog: { temp: 18, feelslike: 18, humidity: 96, precip: 0, precipprob: 10, preciptype: null, conditions: "Fog" },
+  drizzle: { temp: 20, feelslike: 20, humidity: 90, precip: 0.4, precipprob: 80, preciptype: ["rain"], conditions: "Rain, Overcast" },
+  rain: { temp: 19, feelslike: 19, humidity: 92, precip: 4, precipprob: 95, preciptype: ["rain"], conditions: "Rain, Overcast" },
+  heavyrain: { temp: 18, feelslike: 18, humidity: 95, precip: 18, precipprob: 100, preciptype: ["rain"], conditions: "Rain, Overcast" },
+  storm: { temp: 20, feelslike: 20, humidity: 90, precip: 12, precipprob: 100, preciptype: ["rain"], conditions: "Thunderstorm, Rain" },
+  snow: { temp: -2, feelslike: -5, humidity: 80, precip: 3, precipprob: 90, preciptype: ["snow"], conditions: "Snow" }
+};
+const WEATHER_TEST_SCENARIO_KEY = new URLSearchParams(location.search).get("forceWeather");
+const WEATHER_TEST_SCENARIO =
+  WEATHER_TEST_SCENARIO_KEY && WEATHER_TEST_SCENARIOS[WEATHER_TEST_SCENARIO_KEY]
+    ? WEATHER_TEST_SCENARIOS[WEATHER_TEST_SCENARIO_KEY]
+    : null;
+
 // 위치 권한을 못 받았을 때 쓰는 기본 좌표(인천) — 인수인계서 예시와 동일.
 const DEFAULT_WEATHER_COORDS = { lat: 37.4563, lng: 126.7052 };
 let userCoords = null;
@@ -1829,9 +1857,17 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     stopWeatherRainFx();
     return;
   }
-  const c = current.current;
-  const hourlyNowProb =
-    hourlyNowItem && typeof hourlyNowItem.precipprob === "number" ? hourlyNowItem.precipprob : null;
+  // 2026-07-18 7차 피드백: ?forceWeather=<시나리오>가 있으면 실제 관측치
+  // 대신 WEATHER_TEST_SCENARIOS의 가짜 값을 써서 원하는 날씨 상태를
+  // 결정론적으로 재현한다. 이때는 hourlyNowProb(실제 예보값)도 함께
+  // 무시해야 "맑음" 테스트 중에 실제로 비가 오고 있어서 강수 판정이
+  // 섞여드는 일이 없다.
+  const c = WEATHER_TEST_SCENARIO ? WEATHER_TEST_SCENARIO : current.current;
+  const hourlyNowProb = WEATHER_TEST_SCENARIO
+    ? null
+    : hourlyNowItem && typeof hourlyNowItem.precipprob === "number"
+      ? hourlyNowItem.precipprob
+      : null;
   if (wdCurrentIcon) wdCurrentIcon.textContent = weatherEmojiFromCurrent(c, hourlyNowProb);
   // 2026-07-18 4차 피드백: 애플 날씨처럼 비 오는 날엔 빗줄기 CSS 애니메이션을
   // 배경에 켠다(.weather-detail-rain-fx, styles.css 참조) — 아이콘과 같은
