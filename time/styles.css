@@ -951,6 +951,50 @@ button { font: inherit; }
   opacity: 1;
 }
 
+/* 2026-07-18 9차 피드백: ?fxtest=1일 때만 뜨는 디버그 전용 날씨 시나리오
+   스위처. 실제 방문자 URL엔 이 쿼리 파라미터가 없으므로 wdRenderFxTestBar()
+   자체가 아무 것도 만들지 않는다(app.js WD_FX_TEST 가드 참조). 화면 하단에
+   가로 스크롤 가능한 칩 바로 띄워 탭 한 번으로 모든 날씨 애니메이션을
+   확인할 수 있게 한다. */
+.wd-fxtest-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  z-index: 50;
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  pointer-events: auto;
+}
+
+.wd-fxtest-chip {
+  flex: 0 0 auto;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.28);
+  background: rgba(10,14,24,0.72);
+  color: #fff;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wd-fxtest-chip.wd-fxtest-reset {
+  border-color: rgba(255,214,10,0.55);
+  color: #FFD60A;
+}
+
+.wd-fxtest-chip.is-active {
+  background: #2A62B0;
+  border-color: #2A62B0;
+  color: #fff;
+}
+
 /* 2026-07-18 유저 피드백: 스크롤해도 닫기 버튼이 늘 화면에 떠있어야 한다 —
    헤더 흐름 밖으로 빼서 position:fixed로 뷰포트에 고정한다. 이 페이지는
    body 직속(15차 스크롤버그 수정 참조)이라 조상 중에 transform이 걸린
@@ -2670,8 +2714,18 @@ button { font: inherit; }
   outline-offset: 3px;
 }
 
+/* 2026-07-18 유저 제보 대응 — min-height만 있고 고정 height가 없으면 이
+   박스가 내용물(iframe 100svh + footer 실제 높이)만큼 뷰포트보다 더 커져서,
+   부모 .clock-app의 overflow:hidden에 초과분(footer/뒤로가기 버튼 영역)이
+   그대로 잘려 화면 밖으로 사라진다 — 이건 날씨상세 화면에서 이미 한 번
+   실측으로 확정됐던 "12차" 버그와 동일한 패턴이다(CLAUDE.md/styles.css
+   .app-page 관련 주석 참조). height를 뷰포트에 고정해서 이 박스 자체가
+   절대 한 화면 높이를 넘지 않게 하고, 안쪽 grid의 1fr 행(webview-scale)이
+   그 안에서 footer 높이를 뺀 나머지만 차지하도록 바꿨다 — 이제 footer(뒤로
+   가기 버튼)가 항상 화면 안에 들어온다. */
 .ezlong-webview {
-  min-height: 100svh;
+  height: 100vh;
+  height: 100dvh;
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
   justify-items: center;
@@ -2683,19 +2737,26 @@ button { font: inherit; }
 
 .webview-scale {
   width: 100%;
-  height: 100svh;
+  height: 100%;
   overflow: hidden;
   background: #fff;
 }
 
+/* 2026-07-18 유저 제보 대응 — 이 iframe이 항상 390px짜리 화면인 것처럼
+   렌더한 뒤 transform:scale()로 실제 폭에 맞춰 시각적으로만 늘리던 트릭을
+   제거했다. iOS WebKit에서 transform이 걸린 iframe은 내부 터치 히트테스트
+   좌표가 어긋나 스크롤·탭 인식이 깨지는 것으로 알려진 문제가 있고, 이
+   프로젝트가 겪어온 다른 스크롤 사건들도 전부 "조상에 transform이 있으면
+   그 하위 스크롤 인식이 깨진다"는 동일 계열 증상이었다(app.js
+   resizeEzlongWebview 제거 주석 참조). 이제 컨테이너 폭 그대로(기기 실제
+   너비) 렌더한다 — ezlong.com 자체가 반응형이므로 시각적 일관성 손해는
+   크지 않을 것으로 판단했다. */
 .ezlong-frame {
   display: block;
-  width: 390px;
-  height: var(--webview-frame-height, 100svh);
+  width: 100%;
+  height: 100%;
   border: 0;
   background: #fff;
-  transform: scale(var(--webview-scale, 1));
-  transform-origin: top left;
 }
 
 .webview-footer {

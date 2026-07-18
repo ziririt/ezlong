@@ -219,7 +219,6 @@ const litCategoryOptions = document.getElementById("litCategoryOptions");
 const genreOptions = document.getElementById("genreOptions");
 // 2026-07-19: "최소 하나의 분야는 선택해야 합니다" 안내 문구.
 const genreMinWarning = document.getElementById("genreMinWarning");
-const webviewScale = document.getElementById("ezlongWebviewScale");
 const ezlongSection = document.querySelector(".ezlong-webview");
 const appBrand = document.querySelector(".app-brand");
 const musicSettingsOpen = document.getElementById("musicSettingsOpen");
@@ -378,11 +377,68 @@ const WEATHER_TEST_SCENARIOS = {
   storm: { temp: 20, feelslike: 20, humidity: 90, precip: 28, precipprob: 100, preciptype: ["rain"], conditions: "Thunderstorm, Rain", windSpeedKmh: 55, gustKmh: 88, rainIntensityGrade: "VERY_HEAVY" },
   snow: { temp: -2, feelslike: -5, humidity: 80, precip: 3, precipprob: 90, preciptype: ["snow"], conditions: "Snow", windSpeedKmh: 18, gustKmh: 24, rainIntensityGrade: "NONE" }
 };
-const WEATHER_TEST_SCENARIO_KEY = new URLSearchParams(location.search).get("forceWeather");
-const WEATHER_TEST_SCENARIO =
-  WEATHER_TEST_SCENARIO_KEY && WEATHER_TEST_SCENARIOS[WEATHER_TEST_SCENARIO_KEY]
-    ? WEATHER_TEST_SCENARIOS[WEATHER_TEST_SCENARIO_KEY]
+// 2026-07-18 9차 피드백: "지금 비가 안 오니 날씨별 애니메이션을 쉽게 보여
+// 달라" — ?forceWeather=X는 URL을 매번 다시 입력해야 하는 불편이 있어서,
+// 화면 안에서 탭 한 번으로 시나리오를 바로 바꿔볼 수 있는 스위처를
+// ?fxtest=1일 때만 띄운다(일반 방문자 URL엔 없으므로 평소엔 존재 자체가
+// 없음). wdActiveScenarioKey를 mutable로 바꿔서 초기값은 ?forceWeather의
+// 값을 그대로 쓰고, 이후 스위처 탭으로 언제든 바뀔 수 있게 했다.
+const WD_FX_TEST = new URLSearchParams(location.search).get("fxtest") === "1";
+const WD_FX_TEST_LABELS = {
+  clear: "맑음",
+  "partly-cloudy": "구름조금",
+  cloudy: "흐림",
+  overcast: "잔뜩흐림",
+  fog: "안개",
+  drizzle: "이슬비",
+  rain: "보통비",
+  heavyrain: "강한비",
+  storm: "뇌우",
+  snow: "눈"
+};
+let wdActiveScenarioKey = new URLSearchParams(location.search).get("forceWeather");
+let wdLastCurrentData = null;
+let wdLastHourlyNowItem = null;
+let wdFxTestBarEl = null;
+
+function wdActiveScenario() {
+  return wdActiveScenarioKey && WEATHER_TEST_SCENARIOS[wdActiveScenarioKey]
+    ? WEATHER_TEST_SCENARIOS[wdActiveScenarioKey]
     : null;
+}
+
+// 스위처에서 칩을 탭했을 때 호출 — 새 네트워크 요청 없이, 마지막으로
+// 성공한 fetch 결과(wdLastCurrentData/wdLastHourlyNowItem, fetchWeatherDetail
+// 참조)를 그대로 재사용해 즉시 다시 그린다. key가 null/빈 문자열이면 실제
+// 데이터로 복귀한다.
+function wdApplyTestScenario(key) {
+  wdActiveScenarioKey = key || null;
+  renderWeatherCurrent(wdLastCurrentData, wdLastHourlyNowItem);
+  wdRenderFxTestBar();
+}
+
+// ?fxtest=1일 때만 하단에 뜨는 디버그 전용 시나리오 칩 바 — 실제 방문자
+// URL엔 이 쿼리 파라미터가 없으므로 함수 자체는 로드돼도 아무 것도
+// 만들지 않는다(WD_FX_TEST 가드).
+function wdRenderFxTestBar() {
+  if (!WD_FX_TEST) return;
+  if (!wdFxTestBarEl) {
+    wdFxTestBarEl = document.createElement("div");
+    wdFxTestBarEl.className = "wd-fxtest-bar";
+    document.body.appendChild(wdFxTestBarEl);
+  }
+  const resetActive = !wdActiveScenarioKey ? " is-active" : "";
+  const chips = Object.keys(WEATHER_TEST_SCENARIOS)
+    .map((key) => {
+      const active = wdActiveScenarioKey === key ? " is-active" : "";
+      return `<button type="button" class="wd-fxtest-chip${active}" data-scenario="${key}">${WD_FX_TEST_LABELS[key] || key}</button>`;
+    })
+    .join("");
+  wdFxTestBarEl.innerHTML = `<button type="button" class="wd-fxtest-chip wd-fxtest-reset${resetActive}" data-scenario="">실제날씨</button>${chips}`;
+  wdFxTestBarEl.querySelectorAll("[data-scenario]").forEach((btn) => {
+    btn.addEventListener("click", () => wdApplyTestScenario(btn.getAttribute("data-scenario")));
+  });
+}
 
 // 위치 권한을 못 받았을 때 쓰는 기본 좌표(인천) — 인수인계서 예시와 동일.
 const DEFAULT_WEATHER_COORDS = { lat: 37.4563, lng: 126.7052 };
@@ -401,15 +457,25 @@ function setText(id, value) {
   document.getElementById(id).textContent = value;
 }
 
-function resizeEzlongWebview() {
-  if (!webviewScale) return;
-  const mobileViewportWidth = 390;
-  const width = webviewScale.clientWidth || mobileViewportWidth;
-  const height = webviewScale.clientHeight || window.innerHeight;
-  const scale = Math.max(1, width / mobileViewportWidth);
-  webviewScale.style.setProperty("--webview-scale", String(scale));
-  webviewScale.style.setProperty("--webview-frame-height", `${Math.ceil(height / scale)}px`);
-}
+// 2026-07-18 유저 제보 — page2(.ezlong-webview) 안에서 세로 스크롤이 전혀
+// 안 되고, 위로 스와이프해 되돌아가는 제스처도 안 먹힌다는 진단 요청.
+// 이 함수는 원래 ezlong.com을 "항상 390 CSS px 너비의 아이폰에서 보는 것"
+// 처럼 렌더한 뒤 transform:scale()로 실제 컨테이너 너비에 맞춰 시각적으로만
+// 늘리고/줄이는 트릭이었다. iOS Safari/WebKit에는 transform이 걸린 iframe이
+// 내부 터치 히트테스트 좌표가 실제 렌더 좌표와 어긋나 스크롤·탭 인식이
+// 깨지는 것으로 널리 알려진 문제가 있고, 이 프로젝트가 겪은 다른 스크롤
+// 사건들(CLAUDE.md 15차 등)도 전부 "조상에 transform이 있으면 그 하위
+// 스크롤 인식이 깨진다"는 동일 계열 증상이었다 — iframe 자기 자신에게 걸린
+// transform:scale()이 유력한 원인 후보라고 판단해, 이 스케일 트릭 자체를
+// 제거하고 iframe이 컨테이너 폭 그대로(실제 기기 너비)로 렌더되게 한다
+// (styles.css .ezlong-frame이 이제 width:100%/height:100%로 단순화됨).
+// ezlong.com 자체가 반응형이라 실제 기기 너비로 렌더돼도 무리 없을 것으로
+// 판단했다 — "항상 390px처럼 보이게 하는 시각적 일관성"보다 "스크롤이
+// 되는 것"이 우선이라는 트레이드오프. 이 조치로도 스크롤이 안 되면
+// #pageTrack(will-change:transform 상시 적용)이나 .clock-app(overflow:hidden)
+// 같은 조상 요소가 진짜 원인일 가능성이 남아있고, 그 경우엔 설정/날씨상세
+// 때처럼 이 페이지를 #pageTrack 밖으로 빼는 더 큰 구조 변경이 필요하다 —
+// 실기기 검증 없이는 확정할 수 없는 영역이라 이번 라운드에서 시도하지 않음.
 
 let lastAppliedScreenHeight = 0;
 
@@ -1945,6 +2011,8 @@ function openWeatherDetail() {
   // 켜져 있었다면(비가 계속 오는 중) 캔버스 루프를 여기서 다시 시작해야
   // 한다 — closeWeatherDetail에서 배터리 절약을 위해 매번 멈춰두기 때문.
   if (weatherDetailPanel.classList.contains("weather-detail-rainy")) startWeatherRainFxAll();
+  // ?fxtest=1일 때만 하단 시나리오 스위처를 띄운다 (일반 방문자에겐 안 보임)
+  wdRenderFxTestBar();
   // 2026-07-18 유저 피드백: "뒤로가기 제스처로 닫히게" — history 항목을 하나
   // 쌓아두고 popstate에서 실제로 닫는다. 아이폰 사파리 좌측 엣지 스와이프,
   // 안드로이드 뒤로가기 버튼 모두 popstate를 발생시킨다. 다만 이 앱을
@@ -2162,7 +2230,13 @@ function updateWeatherDetailTitle() {
 function renderWeatherCurrent(current, hourlyNowItem) {
   if (!wdCurrentTemp) return;
   updateWeatherDetailTitle();
-  if (!current || !current.current) {
+  // 2026-07-18 9차 피드백: "지금 비가 안 오니 날씨별 애니메이션을 쉽게
+  // 보여달라" — ?fxtest=1 스위처(아래 wdApplyTestScenario 참조)로 실제
+  // 데이터가 아직 안 왔거나 실패했어도 시나리오를 바로 볼 수 있어야 하므로,
+  // activeScenario가 있으면 current(실제 API 응답)가 null이어도 에러
+  // 화면으로 빠지지 않는다.
+  const activeScenario = wdActiveScenario();
+  if (!activeScenario && (!current || !current.current)) {
     wdCurrentTemp.textContent = "--°";
     wdCurrentFeels.textContent = "";
     if (wdCurrentHumidity) wdCurrentHumidity.textContent = "";
@@ -2173,13 +2247,14 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     stopWeatherRainFxAll();
     return;
   }
-  // 2026-07-18 7차 피드백: ?forceWeather=<시나리오>가 있으면 실제 관측치
+  // 2026-07-18 7차 피드백: ?forceWeather=<시나리오>(또는 9차 피드백의
+  // ?fxtest=1 스위처로 화면에서 직접 고른 시나리오)가 있으면 실제 관측치
   // 대신 WEATHER_TEST_SCENARIOS의 가짜 값을 써서 원하는 날씨 상태를
   // 결정론적으로 재현한다. 이때는 hourlyNowProb(실제 예보값)도 함께
   // 무시해야 "맑음" 테스트 중에 실제로 비가 오고 있어서 강수 판정이
   // 섞여드는 일이 없다.
-  const c = WEATHER_TEST_SCENARIO ? WEATHER_TEST_SCENARIO : current.current;
-  const hourlyNowProb = WEATHER_TEST_SCENARIO
+  const c = activeScenario ? activeScenario : current.current;
+  const hourlyNowProb = activeScenario
     ? null
     : hourlyNowItem && typeof hourlyNowItem.precipprob === "number"
       ? hourlyNowItem.precipprob
@@ -2210,19 +2285,19 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   // 쓴다. c.rainIntensity는 백엔드가 classifyRainIntensity()로 이미
   // 계산해 내려주는 등급(경로 A, Fable 5 권고) — 프론트에서 임계값을
   // 복제하지 않아 로직이 한 곳에만 존재한다.
-  const windInfoReal = current.detail && current.detail.wind;
-  const windSpeedKmh = WEATHER_TEST_SCENARIO
-    ? WEATHER_TEST_SCENARIO.windSpeedKmh || 0
+  const windInfoReal = current && current.detail && current.detail.wind;
+  const windSpeedKmh = activeScenario
+    ? activeScenario.windSpeedKmh || 0
     : windInfoReal
       ? windInfoReal.speedKmh
       : 0;
-  const gustKmh = WEATHER_TEST_SCENARIO
-    ? WEATHER_TEST_SCENARIO.gustKmh || windSpeedKmh
+  const gustKmh = activeScenario
+    ? activeScenario.gustKmh || windSpeedKmh
     : windInfoReal
       ? (windInfoReal.gustKmh ?? windInfoReal.speedKmh)
       : windSpeedKmh;
-  const intensityGrade = WEATHER_TEST_SCENARIO
-    ? WEATHER_TEST_SCENARIO.rainIntensityGrade || (isRainingNow ? "RAIN" : "NONE")
+  const intensityGrade = activeScenario
+    ? activeScenario.rainIntensityGrade || (isRainingNow ? "RAIN" : "NONE")
     : (c.rainIntensity && c.rainIntensity.grade) || (isRainingNow ? "RAIN" : "NONE");
   setWeatherRainParams(windSpeedKmh, gustKmh, intensityGrade);
   if (isRainingNow) startWeatherRainFxAll();
@@ -2240,7 +2315,7 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   // 아직 안 갱신됐거나 응답에 값이 비어있는 경우) sun이 null로 내려오므로
   // 그 경우엔 줄 자체를 비워 레이아웃에 빈 여백이 남지 않게 한다.
   if (wdCurrentSun) {
-    const sun = current.detail && current.detail.sun;
+    const sun = current && current.detail && current.detail.sun;
     wdCurrentSun.textContent = sun ? `🌅 일출 ${sun.sunriseLabel} · 🌇 일몰 ${sun.sunsetLabel}` : "";
   }
 }
@@ -2562,6 +2637,10 @@ async function fetchWeatherDetail() {
     hourlyStripData && Array.isArray(hourlyStripData.hours)
       ? hourlyStripData.hours.find((h) => h.isNow)
       : null;
+  // ?fxtest=1 스위처(wdApplyTestScenario)가 네트워크 재요청 없이 즉시
+  // 재렌더링할 수 있도록 마지막 fetch 결과를 캐싱해둔다.
+  wdLastCurrentData = currentData;
+  wdLastHourlyNowItem = hourlyNowItem;
   renderWeatherCurrent(currentData, hourlyNowItem);
   renderWeatherTopComment(rainData);
   renderWeatherNextRain(rainData);
@@ -5239,7 +5318,6 @@ document.addEventListener("keydown", (event) => {
 });
 window.addEventListener("resize", () => {
   syncFirstScreenHeight();
-  resizeEzlongWebview();
   resyncPageTrackOffset();
 });
 window.visualViewport?.addEventListener("resize", () => {
@@ -5248,7 +5326,6 @@ window.visualViewport?.addEventListener("resize", () => {
 });
 
 syncFirstScreenHeight();
-resizeEzlongWebview();
 loadBackgroundArchive();
 tick();
 requestCurrentWeather();
