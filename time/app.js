@@ -341,6 +341,16 @@ let weatherState = {
 // (배포 전까지는 상세 화면을 열어도 각 섹션이 "불러올 수 없어요"로 표시됨 —
 // 정상이다, 백엔드가 아직 인터넷에 없다는 뜻이다).
 const WEATHER_API_BASE = "https://flipgen-weather-backend.ezlong.workers.dev";
+// 2026-07-18 5차 피드백: "지금 이슬비가 오는데 왜 구름이냐, 비 애니메이션
+// 테스트를 하려면 강제로라도 비 오게 해놔라" — Visual Crossing의
+// currentConditions(관측소 실측치)는 옅은 이슬비처럼 약한 강수를 정확히
+// 못 잡을 때가 있어(관측 샘플링 특성), 이미 100%로 정확히 잡고 있는
+// hourly-strip의 "지금" 예보값과 어긋날 수 있다(아래 weatherEmojiFromCurrent
+// 주석 참조 — 근본 수정은 그쪽에서 함). 그것과 별개로, 실기기에서 실제
+// 강수 여부와 무관하게 언제든 즉시 비 애니메이션을 켜서 확인하고 싶을 때를
+// 위해 URL에 ?forceRain=1을 붙이면 강제로 "비 오는 중"으로 취급한다.
+// 일반 방문자 URL엔 이 파라미터가 없으므로 평소엔 전혀 영향 없다.
+const DEBUG_FORCE_RAIN = new URLSearchParams(location.search).get("forceRain") === "1";
 // 위치 권한을 못 받았을 때 쓰는 기본 좌표(인천) — 인수인계서 예시와 동일.
 const DEFAULT_WEATHER_COORDS = { lat: 37.4563, lng: 126.7052 };
 let userCoords = null;
@@ -1633,8 +1643,21 @@ function weatherEmojiFromEnglish(conditions) {
 // 내려주고 있으니(추가 배포 불필요), 아이콘 결정에서 이 실측값을
 // conditions 텍스트보다 우선한다 — "판단해서 알려준다" 철학에 맞게 실제
 // 강수 여부가 텍스트 분류보다 항상 더 신뢰할 수 있는 근거다.
-function weatherEmojiFromCurrent(c) {
-  const isRainingNow = (typeof c.precip === "number" && c.precip > 0) || c.precipprob >= 50;
+// 2026-07-18 5차 피드백(재발): 그런데도 여전히 실기기에서 "지금 이슬비가
+// 오는데 아이콘은 구름"인 경우가 있었다. 원인은 c(=current.current)가
+// Visual Crossing의 "currentConditions"(관측소 실측 스냅샷)라서, 옅은
+// 이슬비처럼 약한 강수를 그 관측 순간에 정확히 못 잡을 수 있다는 것 —
+// 반면 오늘 시간대별 예보 스트립의 "지금" 항목은 같은 응답의 hours[]
+// (모델 예보값)에서 나오는데, 이쪽은 100%로 정확히 비를 잡고 있었다.
+// 두 값 다 이미 클라이언트가 들고 있으므로 새 API 호출 없이, hourly-strip의
+// "지금" 강수확률(hourlyNowProb)도 OR 조건으로 반영해 두 표시가 서로
+// 모순되지 않게 한다.
+function weatherEmojiFromCurrent(c, hourlyNowProb) {
+  const isRainingNow =
+    DEBUG_FORCE_RAIN ||
+    (typeof c.precip === "number" && c.precip > 0) ||
+    c.precipprob >= 50 ||
+    (typeof hourlyNowProb === "number" && hourlyNowProb >= 50);
   const types = (c.preciptype || []).map((t) => String(t).toLowerCase());
   if (isRainingNow) {
     if (types.includes("snow")) return "❄️";
@@ -1690,7 +1713,7 @@ function updateWeatherDetailTitle() {
   weatherDetailTitle.textContent = isPlaceholder ? "날씨" : `${loc} 날씨`;
 }
 
-function renderWeatherCurrent(current) {
+function renderWeatherCurrent(current, hourlyNowItem) {
   if (!wdCurrentTemp) return;
   updateWeatherDetailTitle();
   if (!current || !current.current) {
@@ -1704,12 +1727,19 @@ function renderWeatherCurrent(current) {
     return;
   }
   const c = current.current;
-  if (wdCurrentIcon) wdCurrentIcon.textContent = weatherEmojiFromCurrent(c);
+  const hourlyNowProb =
+    hourlyNowItem && typeof hourlyNowItem.precipprob === "number" ? hourlyNowItem.precipprob : null;
+  if (wdCurrentIcon) wdCurrentIcon.textContent = weatherEmojiFromCurrent(c, hourlyNowProb);
   // 2026-07-18 4차 피드백: 애플 날씨처럼 비 오는 날엔 빗줄기 CSS 애니메이션을
   // 배경에 켠다(.weather-detail-rain-fx, styles.css 참조) — 아이콘과 같은
-  // 신호(실시간 precip/precipprob, weatherEmojiFromCurrent와 동일 판정)를
-  // 써서 "아이콘은 비인데 애니메이션은 없다" 같은 모순이 생기지 않게 한다.
-  const isRainingNow = (typeof c.precip === "number" && c.precip > 0) || c.precipprob >= 50;
+  // 신호(실시간 precip/precipprob + hourly-strip "지금" 예보, 5차 피드백
+  // 반영)를 써서 "아이콘은 비인데 애니메이션은 없다" 같은 모순이 생기지
+  // 않게 한다. DEBUG_FORCE_RAIN(?forceRain=1)이면 무조건 켠다.
+  const isRainingNow =
+    DEBUG_FORCE_RAIN ||
+    (typeof c.precip === "number" && c.precip > 0) ||
+    c.precipprob >= 50 ||
+    (hourlyNowProb != null && hourlyNowProb >= 50);
   if (weatherDetailPanel) weatherDetailPanel.classList.toggle("weather-detail-rainy", isRainingNow);
   wdCurrentTemp.textContent = `${Math.round(c.temp)}°`;
   wdCurrentFeels.textContent = `체감 ${Math.round(c.feelslike)}°`;
@@ -2037,10 +2067,19 @@ async function fetchWeatherDetail() {
   const tropicalData = tropicalR.status === "fulfilled" ? tropicalR.value : null;
   const rainData = rainR.status === "fulfilled" ? rainR.value : null;
   const currentData = currentR.status === "fulfilled" ? currentR.value : null;
-  renderWeatherCurrent(currentData);
+  const hourlyStripData = hourlyStripR.status === "fulfilled" ? hourlyStripR.value : null;
+  // 2026-07-18 5차 피드백: 현재 날씨 아이콘/비 애니메이션이 hourly-strip의
+  // "지금" 예보(이미 fetch된 데이터, 새 호출 불필요)도 참고하도록
+  // renderWeatherCurrent에 그 항목을 같이 넘긴다 — weatherEmojiFromCurrent
+  // 주석 참조.
+  const hourlyNowItem =
+    hourlyStripData && Array.isArray(hourlyStripData.hours)
+      ? hourlyStripData.hours.find((h) => h.isNow)
+      : null;
+  renderWeatherCurrent(currentData, hourlyNowItem);
   renderWeatherTopComment(rainData);
   renderWeatherNextRain(rainData);
-  renderWeatherHourlyStrip(hourlyStripR.status === "fulfilled" ? hourlyStripR.value : null);
+  renderWeatherHourlyStrip(hourlyStripData);
   renderWeatherWeeklyForecast(weeklyForecastR.status === "fulfilled" ? weeklyForecastR.value : null);
   renderWeatherTempVsNormal(tempVsNormalR.status === "fulfilled" ? tempVsNormalR.value : null);
   renderWeatherRainWindows(rainData);
