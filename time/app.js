@@ -1488,6 +1488,99 @@ function applyWeatherDetailPhoto() {
   }
 }
 
+// 2026-07-18 6차 피드백: "비 내리는 애니메이션이 옛날 TV 노이즈 같다, 애플처럼
+// 고급스럽게 못 하면 포기하자" — 원인은 순수 CSS repeating-linear-gradient를
+// background-position 애니메이션으로 움직이던 방식 자체였다. 일정한 간격·
+// 일정한 각도의 줄무늬가 화면 전체를 균일하게 덮으면서 무아레(moiré)/스캔라인
+// 패턴으로 보였다(실측: 유저가 보내온 화면녹화·스크린샷에서 확인). 완전한
+// "영상 속에 있는 듯한" 수준은 실사 비디오 없이는 불가능하지만, CSS 반복
+// 그라디언트보다는 훨씬 자연스러운 절차적(procedural) 빗줄기를 canvas 2D로
+// 그린다 — 빗줄기마다 길이·굵기·속도·기울기·투명도를 랜덤화해 규칙적인
+// 패턴이 보이지 않게 한다. canvas는 position:fixed + pointer-events:none이라
+// 터치를 전혀 가로채지 않으므로(이벤트 자체가 이 요소에 안 옴) 이 프로젝트의
+// 스크롤 절대 규칙과 무관하게 안전하다. 배터리 배려를 위해 실제로 비가 올
+// 때(.weather-detail-rainy)만 requestAnimationFrame 루프를 돌리고, 패널을
+// 닫거나 비가 그치면 즉시 멈춘다.
+let wdRainCanvasEl = null;
+let wdRainCtx = null;
+let wdRainDrops = [];
+let wdRainRunning = false;
+let wdRainAnimHandle = null;
+let wdRainDpr = 1;
+
+function wdRainMakeDrop(w, h, randomizeY) {
+  return {
+    x: Math.random() * w,
+    y: randomizeY ? Math.random() * h : -30 - Math.random() * h * 0.3,
+    len: 14 + Math.random() * 22,
+    speed: 6 + Math.random() * 7,
+    drift: 0.9 + Math.random() * 0.7,
+    alpha: 0.10 + Math.random() * 0.24,
+    width: Math.random() < 0.12 ? 1.6 : 1
+  };
+}
+
+function wdRainResize() {
+  if (!wdRainCanvasEl) return;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  wdRainCanvasEl.width = Math.round(w * dpr);
+  wdRainCanvasEl.height = Math.round(h * dpr);
+  wdRainDpr = dpr;
+  if (wdRainCtx) wdRainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // 화면 면적에 비례한 빗줄기 개수(너무 많으면 저사양 기기에서 버벅일 수
+  // 있어 상한을 둔다) — 폰 화면 기준 대략 130~170개.
+  const density = Math.max(70, Math.min(180, Math.round((w * h) / 9500)));
+  wdRainDrops = new Array(density).fill(null).map(() => wdRainMakeDrop(w, h, true));
+}
+
+function wdRainStep() {
+  if (!wdRainCtx || !wdRainCanvasEl) return;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  wdRainCtx.clearRect(0, 0, w, h);
+  wdRainCtx.lineCap = "round";
+  for (let i = 0; i < wdRainDrops.length; i++) {
+    const d = wdRainDrops[i];
+    wdRainCtx.strokeStyle = `rgba(214,232,255,${d.alpha})`;
+    wdRainCtx.lineWidth = d.width;
+    wdRainCtx.beginPath();
+    wdRainCtx.moveTo(d.x, d.y);
+    wdRainCtx.lineTo(d.x - d.drift * d.len * 0.42, d.y + d.len);
+    wdRainCtx.stroke();
+    d.x -= d.drift * 1.6;
+    d.y += d.speed;
+    if (d.y > h + 30 || d.x < -30) {
+      wdRainDrops[i] = wdRainMakeDrop(w, h, false);
+    }
+  }
+  if (wdRainRunning) wdRainAnimHandle = requestAnimationFrame(wdRainStep);
+}
+
+function startWeatherRainFx() {
+  if (wdRainRunning) return;
+  if (!wdRainCanvasEl) wdRainCanvasEl = document.querySelector(".weather-detail-rain-fx");
+  if (!wdRainCanvasEl || typeof wdRainCanvasEl.getContext !== "function") return;
+  if (!wdRainCtx) wdRainCtx = wdRainCanvasEl.getContext("2d");
+  wdRainResize();
+  wdRainRunning = true;
+  wdRainAnimHandle = requestAnimationFrame(wdRainStep);
+}
+
+function stopWeatherRainFx() {
+  wdRainRunning = false;
+  if (wdRainAnimHandle) cancelAnimationFrame(wdRainAnimHandle);
+  wdRainAnimHandle = null;
+  if (wdRainCtx && wdRainCanvasEl) {
+    wdRainCtx.clearRect(0, 0, wdRainCanvasEl.width, wdRainCanvasEl.height);
+  }
+}
+
+window.addEventListener("resize", () => {
+  if (wdRainRunning) wdRainResize();
+});
+
 // 2026-07-14: 날씨 상세 화면 열기/닫기 — 기존 설정 패널과 동일한 메커니즘
 // (is-open 클래스 토글 + aria-hidden)을 그대로 따른다.
 // 2026-07-17 10차 개정: #weatherDetailPanel도 #pageTrack 안의 3번 페이지로
@@ -1503,6 +1596,11 @@ function openWeatherDetail() {
   weatherDetailPanel.setAttribute("aria-hidden", "false");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "true");
   applyWeatherDetailPhoto();
+  // fetchWeatherDetail()이 1시간 캐시로 renderWeatherCurrent 재호출을 건너뛸
+  // 수 있으므로(코드 위쪽 캐시 로직 참조), 이전에 이미 .weather-detail-rainy가
+  // 켜져 있었다면(비가 계속 오는 중) 캔버스 루프를 여기서 다시 시작해야
+  // 한다 — closeWeatherDetail에서 배터리 절약을 위해 매번 멈춰두기 때문.
+  if (weatherDetailPanel.classList.contains("weather-detail-rainy")) startWeatherRainFx();
   // 2026-07-18 유저 피드백: "뒤로가기 제스처로 닫히게" — history 항목을 하나
   // 쌓아두고 popstate에서 실제로 닫는다. 아이폰 사파리 좌측 엣지 스와이프,
   // 안드로이드 뒤로가기 버튼 모두 popstate를 발생시킨다. 다만 이 앱을
@@ -1518,6 +1616,10 @@ function closeWeatherDetail() {
   weatherDetailPanel.classList.remove("is-open");
   weatherDetailPanel.setAttribute("aria-hidden", "true");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "false");
+  // 패널이 닫혀 안 보이는 동안엔 캔버스 애니메이션 루프를 완전히 멈춘다
+  // (배터리 배려) — .weather-detail-rainy 클래스 자체는 그대로 둬서, 다시
+  // 열 때 openWeatherDetail이 그 값을 보고 루프 재시작 여부를 판단한다.
+  stopWeatherRainFx();
 }
 
 // X 버튼 등 "명시적" 닫기는 이걸 호출한다. openWeatherDetail이 쌓아둔 history
@@ -1724,6 +1826,7 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     if (wdCurrentSun) wdCurrentSun.textContent = "";
     if (wdCurrentIcon) wdCurrentIcon.textContent = "";
     if (weatherDetailPanel) weatherDetailPanel.classList.remove("weather-detail-rainy");
+    stopWeatherRainFx();
     return;
   }
   const c = current.current;
@@ -1741,6 +1844,8 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     c.precipprob >= 50 ||
     (hourlyNowProb != null && hourlyNowProb >= 50);
   if (weatherDetailPanel) weatherDetailPanel.classList.toggle("weather-detail-rainy", isRainingNow);
+  if (isRainingNow) startWeatherRainFx();
+  else stopWeatherRainFx();
   wdCurrentTemp.textContent = `${Math.round(c.temp)}°`;
   wdCurrentFeels.textContent = `체감 ${Math.round(c.feelslike)}°`;
   // 2026-07-14: 습도를 체감온도와 같은 줄로 이동(유저 피드백: "2줄인데
@@ -2477,11 +2582,18 @@ const musicRecentGroupSpacing = 8; // 같은 그룹은 최소 이만큼 곡이 �
 // 이미 분리돼 있었다(canonical key 매핑 대상이 아님) — 유저가 기억하는
 // "원래 ROCK이 따로 있었다"는 이 카테고리를 가리키는 것으로 판단, 실제
 // 트랙 재그룹핑 없이 표시 이름만 바꾼다.
+// 2026-07-18 유저 요청 — "BGM 시네마틱" 카테고리 완전 삭제. 곡 수가 15곡
+// 정도로 적고 앞으로 추가될 가능성도 낮아, music-playlist.js에서 이 곡들
+// 자체를 지우고(원본 트랙 데이터 삭제) 라벨 매핑에서도 뺐다. trackCategoryKey()가
+// 더 이상 "BGM"이라는 키를 만들어낼 트랙 자체가 없으므로, 플레이리스트 선택
+// 목록(buildMusicPlaylistOptions)과 "전체 랜덤" 로테이션(byCategoryAll) 양쪽
+// 모두에서 자동으로 사라진다 — 이 라벨 엔트리를 지우는 것 자체는 사실 없어도
+// 무방하지만(더 이상 매칭될 키가 없으니), 죽은 매핑을 남겨두지 않기 위해
+// 함께 정리했다.
 const MUSIC_CATEGORY_LABELS = {
   [ORIGINAL_CATEGORY_KEY]: "어쿠스틱 연주곡",
   "My Workspace": "어쿠스틱 연주곡",
   "piano chello": "피아노 · 첼로",
-  "BGM": "BGM 시네마틱",
   "vocal - CITY POP": "보컬",
   "vocal - workspace 20260711 1400": "보컬",
   "vocal- girls rock": "ROCK",
