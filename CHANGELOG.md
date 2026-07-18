@@ -5,6 +5,61 @@
 
 ---
 
+## [2026-07-18] 세션 — 스코어카드 "결과를 요인으로 포장" 구조적 오류 수정 + 개별기업 트리비아 차단
+
+### 배경
+
+유저가 스코어카드에서 두 가지를 지적했다. ① mixed_factors에 "애플·엔비디아 시총 1위 경쟁"이
+등장 — 시장 전체를 흔드는 재료가 아닌 단순 트리비아인데 왜 이슈로 선정됐는지 문제 제기,
+과거 이력 전체 삭제 요구. ② 더 근본적으로, "반도체 섹터 약세 심화"/"VIX 공포지수 급등"/
+"주요 기술주 전반 하락" 같은 요인명이 전부 가격이 움직인 **결과**이지, 왜 움직였는지
+**원인**이 아니라는 지적 — "요인과 결과를 명확하게 구분하라"는 기존 원칙(key_event 한정)이
+positive_factors/negative_factors 개별 항목에는 적용되지 않고 있었음. 유저가 대안으로
+Kimi K3(중국 문샷AI 오픈소스 모델) 출시발 AI 밸류에이션 패닉, 케빈 워시 연준의장 매파 기조,
+미-이란 충돌·유가 급등, IBM 사상 최대 낙폭을 실제 원인으로 제시.
+
+### 검증
+
+웹 검색으로 유저가 제시한 4개 팩트 전부 실제 사실로 확인: Moonshot AI의 Kimi K3(2.8조
+파라미터, 7/16~17 공개)가 딥시크 쇼크 재현 우려로 반도체·AI주 셀오프 촉발(Bloomberg,
+CNBC, VentureBeat), 케빈 워시가 2026-05-22 제17대 연준 의장 취임 후 7/14 "인플레 파이터"
+매파 기조 천명(Fed 공식 발표, CNBC), 미-이란 충돌 재점화로 브렌트유 한달 최고치(Al
+Jazeera), IBM 7/14 실적경고로 25.2% 폭락·시총 670억달러 증발, 창사 115년 최대 낙폭
+(Forbes, CNBC, CNN, Bloomberg).
+
+### 조치
+
+1. `scripts/fetch-market-scorecard.py` 프롬프트에 "원인 아닌 결과 서술 금지" 원칙을
+   key_event 전용에서 positive_factors/negative_factors 개별 항목까지 확장. 금지 예시
+   구체 명시("반도체 섹터 약세 심화", "VIX 공포지수 급등" 등).
+2. "개별 기업 시가총액 순위 다툼"을 절대 금지 목록에 명시 추가. 반대로 "역대급 규모의
+   개별기업 쇼크"(IBM 사례처럼)는 원인이 desc에 명시된다는 조건 하에 시장 전체 재료로
+   인정 가능하도록 예외 조항 추가.
+3. `validate_content()`에 체크 7 신설 — positive/negative/mixed factor의 name이 결과-only
+   패턴(공포지수 급등/하락, 약세·강세 심화, 전반 하락/상승, 시총 경쟁 등)을 포함하면
+   오류로 잡아 기존 재시도 파이프라인(1회 재생성)을 트리거하도록 연결.
+4. 현재 라이브 카드(2026-07-18 08:20)를 검증된 실제 원인으로 수동 재작성 — key_event/
+   positive_factors/negative_factors를 Kimi K3 패닉·미이란 충돌·워시 매파·IBM 폭락 중심으로
+   교체(점수 합계 100 정합성 재확인 완료). 직전 두 카드(00:41, 07:00)의 "애플·엔비디아
+   시총 경쟁" mixed_factor 제거(오라클 관련 항목은 유지).
+
+### 검증
+
+`py_compile` 통과. validate_content 체크7 로직을 별도 스크립트로 독립 재구현해 11개
+케이스(실제 위반 사례 5개 + 정상 원인기반 이름 6개) 전수 테스트 — 전부 기대대로 동작.
+data.json 점수 합계(15+85=100, positive_factors/negative_factors 개별 합계 일치) 재확인.
+"시총 경쟁/시총 1위" 문자열이 data.json에서 완전히 제거됐음을 grep으로 재확인 (judgment
+history ledger는 사후정리 대상이 아니므로 의도적으로 보존 — [[feedback_scorecard_mixed_factor_staleness]] 참조).
+
+### 복구 명령어 (문제 발생 시)
+
+```bash
+git log --oneline -- scripts/fetch-market-scorecard.py data/market-scorecard-data.json | head -5
+git revert <이번 커밋 해시>
+```
+
+---
+
 ## [2026-07-13] 세션 — 플레이리스트 8종 확장 + 배경사진 1,170장 반영 + 음악 설정 UI 개선
 
 ### 배경
