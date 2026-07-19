@@ -5054,9 +5054,27 @@ let currentPageIndex = 0;
 // 전환은 시계(.clock-app z-index:2)가 .ezlong-open 클래스로 translateY(-100%)
 // 비켜주는 방식으로 역전했다. goToPage(index) 시그니처는 기존 호출부(스와이프/
 // 뒤로가기 버튼/브랜드 탭 플립) 호환을 위해 유지한다 — index>=1이면 열림.
+// 2026-07-20 16차-b(최종 확정): 정적 body 직속 배치만으로는 부족했다 —
+// iPhone 미러링으로 Fable이 직접 실기기 계측한 결과, 기준선(정적 배치)에선
+// 휠 25틱에도 0px, 진단 3단계(런타임 appendChild 재부착) 후에는 동일 입력에
+// 정상 스크롤. 즉 iframe도 설정 패널(15차-c)과 동일하게 iOS 26.5에서는
+// "재부착으로 새로 생성된 렌더 노드"여야만 네이티브 스크롤 영역이 등록된다.
+// 그래서 첫 열림 때 1회 재부착하고, iframe은 data-src로 비워뒀다가 재부착
+// "후"에 src를 주입한다(진단 3단계의 성공 순서 그대로: 재부착 → 로드).
+// 재로드 비용 0(어차피 첫 로드), 앱 시작 시 ezlong 선로딩도 없어져 부팅이
+// 가벼워지는 부수효과. 이 재부착·주입 코드는 제거 금지.
+let ezlongInitialized = false;
 function goToPage(index) {
   const open = index >= 1;
   currentPageIndex = open ? 1 : 0;
+  if (open && !ezlongInitialized && ezlongSection) {
+    ezlongInitialized = true;
+    document.body.appendChild(ezlongSection); // 재부착 → 네이티브 스크롤 영역 등록
+    const fr = ezlongSection.querySelector(".ezlong-frame");
+    if (fr && !fr.getAttribute("src") && fr.dataset && fr.dataset.src) {
+      fr.src = fr.dataset.src; // 재부착 이후에 로드 시작 (실증된 순서)
+    }
+  }
   if (app) app.classList.toggle("ezlong-open", open);
 }
 // 16차: 트랙 오프셋 개념이 사라져 재계산할 것이 없다 — 호출부(뷰포트 리사이즈)
