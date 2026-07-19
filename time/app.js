@@ -270,8 +270,6 @@ const wdCurrentSub = document.getElementById("wdCurrentSub");
 const wdCurrentSun = document.getElementById("wdCurrentSun");
 // 2026-07-18 리디자인(클로드 디자인 목업 수용): 현재 날씨 카드 상단 이모지 아이콘.
 const wdCurrentIcon = document.getElementById("wdCurrentIcon");
-// 2026-07-20 9차 피드백: 강수확률·예상 강수량(mm/h) 상시 표시 줄.
-const wdCurrentRain = document.getElementById("wdCurrentRain");
 // 2026-07-19 5차 리디자인: 애플 날씨 스타일 상단 요약(날씨 상태 텍스트,
 // 최고/최저) — renderWeatherCurrentToday()가 채운다.
 const wdCurrentCondition = document.getElementById("wdCurrentCondition");
@@ -406,6 +404,17 @@ let wdActiveScenarioKey = new URLSearchParams(location.search).get("forceWeather
 let wdLastCurrentData = null;
 let wdLastHourlyNowItem = null;
 let wdFxTestBarEl = null;
+// 2026-07-20 11차 피드백: renderWeatherCurrent()가 계산한 "지금 비가
+// 오는가"(VC/백엔드 기준, 시간대별 스트립과 같은 소스)와 조건텍스트 뒤에
+// 붙일 강수확률/mm 접미사를 renderWeatherCurrentToday()가 그대로 이어받아
+// 쓴다(항상 renderWeatherCurrent가 먼저 실행되므로 순서상 안전 —
+// fetchWeatherDetail 참조). wdCurrentConditionBase는 renderWeatherCurrent가
+// "Open-Meteo 문구를 그대로 써도 되는지" 판단한 결과 — null이면
+// renderWeatherCurrentToday가 today.conditionsKo(백엔드 기준, 스트립과 같은
+// 소스)로 폴백해야 한다는 신호다.
+let wdCurrentIsRainingNow = false;
+let wdCurrentRainSuffix = "";
+let wdCurrentConditionBase = null;
 
 function wdActiveScenario() {
   return wdActiveScenarioKey && WEATHER_TEST_SCENARIOS[wdActiveScenarioKey]
@@ -2265,7 +2274,9 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     wdCurrentSub.textContent = "날씨 데이터를 불러올 수 없어요. 백엔드 배포 후 다시 시도해주세요.";
     if (wdCurrentSun) wdCurrentSun.textContent = "";
     if (wdCurrentIcon) wdCurrentIcon.textContent = "";
-    if (wdCurrentRain) wdCurrentRain.textContent = "";
+    wdCurrentIsRainingNow = false;
+    wdCurrentRainSuffix = "";
+    wdCurrentConditionBase = null;
     if (weatherDetailPanel) weatherDetailPanel.classList.remove("weather-detail-rainy");
     stopWeatherRainFxAll();
     return;
@@ -2326,10 +2337,9 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   if (isRainingNow) startWeatherRainFxAll();
   else stopWeatherRainFxAll();
   wdCurrentTemp.textContent = `${Math.round(c.temp)}°`;
-  // 2026-07-20 8차 피드백(유저 요청): 체감기온 제거, 습도는 날씨 상태텍스트
-  // (wdCurrentCondition, renderWeatherCurrentToday가 채움) 바로 옆으로 이동
-  // — 가운뎃점 접두사를 텍스트에 직접 넣어서 "흐림 · 습도 82%"처럼 보이게
-  // 하고, 빈 문자열이면 CSS :empty가 display:none으로 접어 gap도 안 생긴다.
+  // 2026-07-20 11차 피드백(유저 요청): 습도를 조건텍스트 옆에서 기온
+  // (wdCurrentTemp) 옆으로 이동 — 가운뎃점 접두사는 그대로 유지, 빈
+  // 문자열이면 CSS :empty가 display:none으로 접어 gap도 안 생긴다.
   if (wdCurrentHumidity) wdCurrentHumidity.textContent = `· 습도 ${Math.round(c.humidity)}%`;
   wdCurrentSub.textContent = "";
 
@@ -2342,30 +2352,46 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     wdCurrentSun.textContent = sun ? `🌅 일출 ${sun.sunriseLabel} · 🌇 일몰 ${sun.sunsetLabel}` : "";
   }
 
-  // 2026-07-20 9차 피드백(유저 요청): "실제로 비가 안 와도 강수확률과
-  // 시간당 mm을 항상 표시해줘" — 시간대별 스트립(임계값 넘을 때만 표시)과
-  // 달리 이 줄은 조건 없이 항상 보인다. c.precipprob/c.precip은 이미
-  // renderWeatherCurrent 상단에서 c로 받아온 값(실제 API 또는 fxtest 시나리오)을
-  // 그대로 재사용 — 새 데이터 소스 불필요.
-  // 2026-07-20 10차 피드백(유저 요청):
-  //   1) "'옅은 이슬비'인데 확률 0%·강수량 0mm/h로 나온다, 모순이다" —
-  //      조건 텍스트(weatherState.summary)는 Open-Meteo, 확률/강수량(c)은
-  //      백엔드(Visual Crossing) 기준으로 서로 다른 소스라 완전히 일치하진
-  //      않는다(round 9 조건텍스트 통일과 같은 계열의 원인). 두 소스를
-  //      억지로 하나로 합치는 대신, summary가 이미 강수를 나타내는데 확률이
-  //      반올림돼 0%가 되는 "비인데 0%"라는 명백한 자기모순만 최소값 5%로
-  //      막는다.
-  //   2) 강수량은 0.1mm/h 미만이면 아예 표기하지 않는다(0mm/h 표기 금지,
-  //      hourly-strip/weekly와 동일 임계값 통일).
-  //   3) "예상"이라는 단어 삭제 — 이 페이지 수치는 다 예보값인데 이 줄만
-  //      "예상"을 붙일 이유가 없다는 유저 지적 반영.
-  if (wdCurrentRain) {
+  // 2026-07-20 11차 피드백(유저 요청): "강수확률·강수량은 비가 오는
+  // 경우에만 조건텍스트 옆에 바로 붙여줘(예: '옅은 이슬비 강수확률 90%
+  // 1mm/h')" — 9~10차의 상시표시 줄(wdCurrentRain)을 없애고, 이 카드의
+  // isRainingNow(백엔드/시간대별 스트립과 같은 소스)로 게이트한다.
+  //
+  // 같은 요청의 두 번째 절반 — "옅은 이슬비인데 그 아래 시간대별 상세
+  // 예보는 맑다고 한다, 모순이다"(유저 스크린샷 확인) — 는 조건 문구
+  // 자체의 소스 불일치가 원인이다: 문구(weatherState.summary)는
+  // Open-Meteo, 이 isRainingNow와 시간대별 스트립은 전부 백엔드(Visual
+  // Crossing) 기준이라 실시간 판정이 서로 어긋날 수 있다. 두 프로바이더를
+  // 억지로 합치는 대신 "같은 화면 안에서" 모순이 없도록: Open-Meteo
+  // 문구가 강수를 말하는데 이 페이지의 isRainingNow가 아니라고 하면(=
+  // 아래 시간대별 스트립도 "지금"에 비 아이콘이 없다는 뜻), 그 문구를
+  // 버리고 renderWeatherCurrentToday가 today.conditionsKo(스트립과 같은
+  // 백엔드 소스)로 대신 채우도록 wdCurrentConditionBase를 null로 넘긴다.
+  // 두 소스가 일치하는 절대다수의 경우엔 그대로 Open-Meteo의 더 세밀한
+  // 표현(예: "옅은 이슬비")을 쓴다.
+  wdCurrentIsRainingNow = isRainingNow;
+  const liveSummaryForCondition =
+    typeof weatherState.summary === "string" && !WEATHER_SUMMARY_PLACEHOLDERS.includes(weatherState.summary)
+      ? weatherState.summary
+      : null;
+  const summaryIndicatesPrecip = liveSummaryForCondition ? /비|눈|뇌우/.test(liveSummaryForCondition) : false;
+  if (isRainingNow) {
+    // Open-Meteo 문구가 이미 강수를 말하면 더 세밀한 그 표현을 그대로
+    // 쓰고, 드물게 Open-Meteo만 "맑음" 등으로 어긋나면 백엔드
+    // rainIntensity 등급 라벨(약한 비/보통비/강한 비 등)로 대체한다.
+    wdCurrentConditionBase = summaryIndicatesPrecip
+      ? liveSummaryForCondition
+      : (c.rainIntensity && c.rainIntensity.label) || "비";
     let prob = typeof c.precipprob === "number" ? Math.round(c.precipprob) : 0;
     const mm = typeof c.precip === "number" ? Math.round(c.precip * 10) / 10 : 0;
-    const summaryIndicatesPrecip = typeof weatherState.summary === "string" && /비|눈|뇌우/.test(weatherState.summary);
-    if (prob === 0 && summaryIndicatesPrecip) prob = 5;
+    if (prob === 0) prob = 5; // 비가 이미 확인됐는데 반올림으로 0%면 자기모순이니 최소 5%
     const showMm = mm >= 0.1;
-    wdCurrentRain.textContent = `강수확률 ${prob}%${showMm ? ` · 강수량 ${mm}mm/h` : ""}`;
+    wdCurrentRainSuffix = ` 강수확률 ${prob}%${showMm ? ` ${mm}mm/h` : ""}`;
+  } else {
+    // 비가 아닌 상태 — Open-Meteo 문구가 강수를 말하면(모순) 버리고
+    // null로 넘겨 today.conditionsKo 폴백을 쓰게 한다.
+    wdCurrentConditionBase = summaryIndicatesPrecip ? null : liveSummaryForCondition;
+    wdCurrentRainSuffix = "";
   }
 }
 
@@ -2576,15 +2602,20 @@ function renderWeatherWeeklyForecast(data) {
 // 위치 권한 대기 등으로 플레이스홀더("위치 권한 필요"/"날씨 오류")인
 // 경우에만 예전처럼 conditionsKo로 폴백한다.
 const WEATHER_SUMMARY_PLACEHOLDERS = ["위치 권한 필요", "날씨 오류"];
+// 2026-07-20 11차 피드백(유저 지적): "옅은 이슬비 강수확률 5%"인데 바로
+// 아래 시간대별 상세 예보(백엔드/Visual Crossing 기준)는 "지금" 시간에
+// 맑음 아이콘을 보여주는 모순이 스크린샷으로 실측됐다. wdCurrentConditionBase/
+// wdCurrentRainSuffix는 renderWeatherCurrent()(항상 이 함수보다 먼저
+// 실행됨, fetchWeatherDetail 참조)가 이미 "두 소스가 일치하는지" 판단해
+// 넘겨주는 값이다 — null이면 불일치 상태라는 뜻이므로 today.conditionsKo
+// (백엔드 기준, 시간대별 스트립과 같은 소스)로 폴백해 이 화면 안에서는
+// 항상 서로 맞는 말을 하게 한다.
 function renderWeatherCurrentToday(data) {
   if (!wdCurrentCondition && !wdCurrentHiLo) return;
   const today = data && Array.isArray(data.days) ? data.days[0] : null;
   if (wdCurrentCondition) {
-    const liveSummary =
-      typeof weatherState.summary === "string" && !WEATHER_SUMMARY_PLACEHOLDERS.includes(weatherState.summary)
-        ? weatherState.summary
-        : null;
-    wdCurrentCondition.textContent = liveSummary || (today ? today.conditionsKo || "" : "");
+    const baseText = wdCurrentConditionBase != null ? wdCurrentConditionBase : today ? today.conditionsKo || "" : "";
+    wdCurrentCondition.textContent = baseText ? `${baseText}${wdCurrentRainSuffix}` : "";
   }
   if (wdCurrentHiLo) {
     const hasRange = today && typeof today.tempMax === "number" && typeof today.tempMin === "number";
