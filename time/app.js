@@ -2351,11 +2351,17 @@ function renderWeatherHourlyStrip(data) {
   // buildHourlyStrip()이 새로 내려주는 필드(구버전 캐시 대비 숫자가 아니면
   // 0으로 방어). 빈 문자열이어도 슬롯 자체는 유지(.weather-hourly-prob:empty
   // 가 visibility:hidden으로 높이를 보존해 카드 높이가 들쭉날쭉해지지 않게).
+  // 2026-07-19 7차 피드백: "0mm인데도 비오는 걸로 치나, 0mm가 너무 많다" —
+  // 강수확률(precipprob)만으로 비 아이콘/퍼센트 표시 여부를 정하다 보니,
+  // 확률은 30% 넘어도 실제 강수량은 반올림하면 0.0mm인 시간대(안개비 수준
+  // 이하)가 흔했다. mm 자체는 0.1mm 미만이면 아예 붙이지 않는다 — 그
+  // 시간대엔 "N%"만 남고, 0.1mm 이상일 때만 "N% · X mm"로 같이 보여준다.
   wdHourlyStrip.innerHTML = data.hours
     .map((h) => {
       const isRainHour = h.precipprob >= 30;
       const precipMm = typeof h.precipMm === "number" ? h.precipMm : 0;
-      const probHtml = isRainHour ? `${h.precipprob}% · ${precipMm}mm` : "";
+      const showMm = precipMm >= 0.1;
+      const probHtml = isRainHour ? `${h.precipprob}%${showMm ? ` · ${precipMm}mm` : ""}` : "";
       return `
     <div class="weather-hourly-item" data-now="${h.isNow ? "true" : "false"}">
       <span class="weather-hourly-hour">${h.hourLabel}</span>
