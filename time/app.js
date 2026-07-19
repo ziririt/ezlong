@@ -262,7 +262,7 @@ const bgAudioB = document.getElementById("bgAudioB");
 const weatherChipOpen = document.getElementById("weatherChipOpen");
 const weatherDetailPanel = document.getElementById("weatherDetailPanel");
 const wdCurrentTemp = document.getElementById("wdCurrentTemp");
-const wdCurrentFeels = document.getElementById("wdCurrentFeels");
+// 2026-07-20 8차 피드백(유저 요청): 체감기온 DOM 제거 — wdCurrentFeels const 삭제.
 const wdCurrentHumidity = document.getElementById("wdCurrentHumidity");
 const wdCurrentSub = document.getElementById("wdCurrentSub");
 // 2026-07-17 벤치마크 기획(묶음1·2·3·4): 상세 지표(바람/자외선/기압/가시거리/
@@ -2242,7 +2242,6 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   const activeScenario = wdActiveScenario();
   if (!activeScenario && (!current || !current.current)) {
     wdCurrentTemp.textContent = "--°";
-    wdCurrentFeels.textContent = "";
     if (wdCurrentHumidity) wdCurrentHumidity.textContent = "";
     wdCurrentSub.textContent = "날씨 데이터를 불러올 수 없어요. 백엔드 배포 후 다시 시도해주세요.";
     if (wdCurrentSun) wdCurrentSun.textContent = "";
@@ -2307,11 +2306,11 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   if (isRainingNow) startWeatherRainFxAll();
   else stopWeatherRainFxAll();
   wdCurrentTemp.textContent = `${Math.round(c.temp)}°`;
-  wdCurrentFeels.textContent = `체감 ${Math.round(c.feelslike)}°`;
-  // 2026-07-14: 습도를 체감온도와 같은 줄로 이동(유저 피드백: "2줄인데
-  // 습도도 윗줄에 넣어라, 한 줄 width 충분") — 하단 서브 라인은 이제
-  // 에러 메시지 전용이라 평상시엔 비워둔다.
-  if (wdCurrentHumidity) wdCurrentHumidity.textContent = `습도 ${Math.round(c.humidity)}%`;
+  // 2026-07-20 8차 피드백(유저 요청): 체감기온 제거, 습도는 날씨 상태텍스트
+  // (wdCurrentCondition, renderWeatherCurrentToday가 채움) 바로 옆으로 이동
+  // — 가운뎃점 접두사를 텍스트에 직접 넣어서 "흐림 · 습도 82%"처럼 보이게
+  // 하고, 빈 문자열이면 CSS :empty가 display:none으로 접어 gap도 안 생긴다.
+  if (wdCurrentHumidity) wdCurrentHumidity.textContent = `· 습도 ${Math.round(c.humidity)}%`;
   wdCurrentSub.textContent = "";
 
   // 2026-07-17 벤치마크 기획(묶음3): 일출·일몰 한 줄 — 현재 날씨 카드의
@@ -2478,9 +2477,15 @@ function renderWeatherWeeklyForecast(data) {
   // 2026-07-18 유저 피드백: 오늘/주말 딱지 제거, 칼럼 순서를 요일→아이콘→
   // 날씨텍스트→기온범위로 바꾸고, 비 올 확률은 별도 칼럼 없이 "비"로
   // 표기된 날에만 그 텍스트 바로 밑에 서브라인으로 붙인다.
+  // 2026-07-20 8차 피드백(유저 요청): "비 오는 날, 시간당 최대 몇 mm인지"
+  // — 백엔드 buildWeeklyForecastCard()가 새로 내려주는 maxHourlyPrecipMm을
+  // 확률 옆에 같이 붙인다. 0.1mm 미만(7차 피드백과 동일 기준)이면 mm는
+  // 생략하고 확률만 남긴다 — 구름·안개비 수준까지 "0mm"로 노출되는 걸 막기 위함.
   wdWeeklyForecast.innerHTML = data.days
     .map((d) => {
-      const probHtml = d.conditionsKo === "비" ? `<span class="weather-weekly-prob">${d.precipprob}%</span>` : "";
+      const maxMm = typeof d.maxHourlyPrecipMm === "number" ? d.maxHourlyPrecipMm : 0;
+      const mmHtml = maxMm >= 0.1 ? ` · 최대 ${maxMm}mm/h` : "";
+      const probHtml = d.conditionsKo === "비" ? `<span class="weather-weekly-prob">${d.precipprob}%${mmHtml}</span>` : "";
       return `
     <div class="weather-weekly-row">
       <span class="weather-weekly-day">${d.weekdayKo}</span>
