@@ -1197,6 +1197,18 @@ button { font: inherit; }
   display: none;
 }
 
+/* 2026-07-20 9차 피드백: 강수확률·예상 강수량(mm/h) 상시 표시 줄. */
+.weather-current-rain {
+  margin: 6px 0 0;
+  font-size: 14px;
+  font-weight: 560;
+  color: rgba(255,255,255,0.72);
+}
+
+.weather-current-rain:empty {
+  display: none;
+}
+
 /* 2026-07-18 유저 피드백: 아이콘을 기온 위가 아니라 왼쪽에 나란히. */
 .weather-current-icon {
   display: inline-block;
@@ -2854,7 +2866,8 @@ button { font: inherit; }
 }
 
 .webview-footer a,
-.webview-back {
+.webview-back,
+.webview-open {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2880,38 +2893,11 @@ button { font: inherit; }
   margin-left: 3px;
 }
 
-.webview-open span {
-  position: relative;
+/* 2026-07-20 9차 피드백(유저 요청): CSS 손그림 아이콘 대신 알라딘 링크
+   버튼(quote-aladin-link)과 동일한 "새창 열기" SVG로 통일. */
+.webview-open svg {
   width: 14px;
   height: 14px;
-  border: 1.8px solid currentColor;
-  border-radius: 3px;
-}
-
-.webview-open span::before,
-.webview-open span::after {
-  content: "";
-  position: absolute;
-  background: currentColor;
-}
-
-.webview-open span::before {
-  width: 8px;
-  height: 1.8px;
-  right: -2px;
-  top: 2px;
-  transform: rotate(-45deg);
-  transform-origin: right center;
-}
-
-.webview-open span::after {
-  width: 6px;
-  height: 6px;
-  right: -2px;
-  top: -2px;
-  border-top: 1.8px solid currentColor;
-  border-right: 1.8px solid currentColor;
-  background: transparent;
 }
 
 @keyframes livingSky {

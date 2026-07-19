@@ -270,6 +270,8 @@ const wdCurrentSub = document.getElementById("wdCurrentSub");
 const wdCurrentSun = document.getElementById("wdCurrentSun");
 // 2026-07-18 리디자인(클로드 디자인 목업 수용): 현재 날씨 카드 상단 이모지 아이콘.
 const wdCurrentIcon = document.getElementById("wdCurrentIcon");
+// 2026-07-20 9차 피드백: 강수확률·예상 강수량(mm/h) 상시 표시 줄.
+const wdCurrentRain = document.getElementById("wdCurrentRain");
 // 2026-07-19 5차 리디자인: 애플 날씨 스타일 상단 요약(날씨 상태 텍스트,
 // 최고/최저) — renderWeatherCurrentToday()가 채운다.
 const wdCurrentCondition = document.getElementById("wdCurrentCondition");
@@ -1035,12 +1037,27 @@ function weatherCodeToSummary(code, current = {}) {
   return "날씨";
 }
 
+// 2026-07-20 9차 피드백(유저 질문+요청): "날씨 상세 페이지가 열 때마다
+// '불러오는 중'으로 3초 걸리는데, 미리 불러와 둘 수 없나?" — 답은 "가능하고
+// 안전하다"이다. fetchWeatherDetail()은 좌표+시간 기준 1시간 캐시가 이미
+// 있어서(weatherDetailLastCoordsKey/weatherDetailLastFetchAt), 여기서 미리
+// 한 번 불러두면 실제로 패널을 열 때는 그 캐시를 그대로 재사용해 API 호출이
+// 또 나가지 않는다 — "미리 불러오기"가 "이중 호출"이 되지 않는다는 뜻.
+// 비용 측면도 안전하다: weather-backend는 Visual Crossing 원본 호출 자체를
+// D1에 4시간(CACHE_TTL_HOURS) 캐시해두므로, 이 프리페치가 늘리는 건 Cloudflare
+// Worker 요청 수·D1 읽기(둘 다 사실상 무료 수준)뿐이고, 유료 API인 Visual
+// Crossing 쪽 호출 빈도는 전혀 늘지 않는다 — 사용자가 몇 명이든 같은 4시간
+// 캐시를 공유한다. 좌표가 아직 확정 안 된 시점(geolocation 대기 중)에
+// 프리페치하면 기본 좌표로 한 번 낭비될 수 있으므로, userCoords가 실제로
+// 정해지는 이 세 지점(권한없음/성공/거부) 각각에서 renderWeather() 직후에만
+// 부른다 — 항상 그 시점 기준 "확정된" 좌표로 정확히 한 번만 프리페치된다.
 function requestCurrentWeather() {
   if (!navigator.geolocation) {
     userCoords = DEFAULT_WEATHER_COORDS;
     weatherState = { location: "서울", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
     weatherResolved = true;
     renderWeather();
+    fetchWeatherDetail();
     if (activeScene) setScene(activeScene, { syncDots: true, force: true });
     return;
   }
@@ -1069,6 +1086,7 @@ function requestCurrentWeather() {
       }
       weatherResolved = true;
       renderWeather();
+      fetchWeatherDetail();
       if (activeScene) setScene(activeScene, { syncDots: true, force: true });
     },
     () => {
@@ -1076,6 +1094,7 @@ function requestCurrentWeather() {
       weatherState = { location: "서울", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
       weatherResolved = true;
       renderWeather();
+      fetchWeatherDetail();
       if (activeScene) setScene(activeScene, { syncDots: true, force: true });
     },
     { enableHighAccuracy: false, timeout: 9000, maximumAge: 10 * 60 * 1000 }
@@ -2246,6 +2265,7 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     wdCurrentSub.textContent = "날씨 데이터를 불러올 수 없어요. 백엔드 배포 후 다시 시도해주세요.";
     if (wdCurrentSun) wdCurrentSun.textContent = "";
     if (wdCurrentIcon) wdCurrentIcon.textContent = "";
+    if (wdCurrentRain) wdCurrentRain.textContent = "";
     if (weatherDetailPanel) weatherDetailPanel.classList.remove("weather-detail-rainy");
     stopWeatherRainFxAll();
     return;
@@ -2320,6 +2340,17 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   if (wdCurrentSun) {
     const sun = current && current.detail && current.detail.sun;
     wdCurrentSun.textContent = sun ? `🌅 일출 ${sun.sunriseLabel} · 🌇 일몰 ${sun.sunsetLabel}` : "";
+  }
+
+  // 2026-07-20 9차 피드백(유저 요청): "실제로 비가 안 와도 강수확률과
+  // 시간당 mm을 항상 표시해줘" — 시간대별 스트립(임계값 넘을 때만 표시)과
+  // 달리 이 줄은 조건 없이 항상 보인다. c.precipprob/c.precip은 이미
+  // renderWeatherCurrent 상단에서 c로 받아온 값(실제 API 또는 fxtest 시나리오)을
+  // 그대로 재사용 — 새 데이터 소스 불필요.
+  if (wdCurrentRain) {
+    const prob = typeof c.precipprob === "number" ? Math.round(c.precipprob) : 0;
+    const mm = typeof c.precip === "number" ? Math.round(c.precip * 10) / 10 : 0;
+    wdCurrentRain.textContent = `강수확률 ${prob}% · 예상 강수량 ${mm}mm/h`;
   }
 }
 
@@ -2483,8 +2514,10 @@ function renderWeatherWeeklyForecast(data) {
   // 생략하고 확률만 남긴다 — 구름·안개비 수준까지 "0mm"로 노출되는 걸 막기 위함.
   wdWeeklyForecast.innerHTML = data.days
     .map((d) => {
+      // 2026-07-20 9차 피드백(유저 요청): "'최대'라는 말은 삭제, 퍼센트
+      // 뒤의 가운뎃점도 빼줘" — "70% 3.2mm/h"처럼 공백만 남긴다.
       const maxMm = typeof d.maxHourlyPrecipMm === "number" ? d.maxHourlyPrecipMm : 0;
-      const mmHtml = maxMm >= 0.1 ? ` · 최대 ${maxMm}mm/h` : "";
+      const mmHtml = maxMm >= 0.1 ? ` ${maxMm}mm/h` : "";
       const probHtml = d.conditionsKo === "비" ? `<span class="weather-weekly-prob">${d.precipprob}%${mmHtml}</span>` : "";
       return `
     <div class="weather-weekly-row">
@@ -2515,17 +2548,31 @@ function renderWeatherWeeklyForecast(data) {
 // — fxtest 시나리오 스위처(wdApplyTestScenario)는 이 값을 건드리지 않고
 // 항상 실제 API값을 유지한다(아이콘/비연출만 테스트용으로 바뀌는 것과
 // 의도적으로 분리 — 오늘 실제 최고/최저까지 가짜로 바뀌면 오해 소지가 큼).
+// 2026-07-20 9차 피드백(유저 지적): "메인페이지는 '옅은 이슬비'처럼 세밀한데
+// 날씨상세는 '비'로 대충 나온다, 왜 상세페이지가 더 대충이냐?" — 원인은
+// 두 화면이 서로 다른 날씨 소스를 쓰고 있었기 때문이다. 메인페이지 브리핑
+// (weatherState.summary)은 Open-Meteo WMO 코드 기반 weatherCodeToSummary()가
+// 옅은 이슬비/이슬비/짙은 이슬비 등 10여 단계로 세밀하게 분류하는데, 날씨상세
+// 히어로는 Visual Crossing 기반 weekly-forecast의 conditionsKo(맑음/구름
+// 조금/구름 많음/흐림/비/눈/천둥번개 7단계뿐)를 썼다. 새 분류기를 또 만드는
+// 대신, 이미 메인페이지에서 쓰고 있는 weatherState.summary를 그대로 재사용
+// 한다 — 두 화면이 "같은 계산의 다른 표현"이 아니라 "같은 값"을 보게 되어
+// 앞으로도 어긋날 일이 구조적으로 없다. weatherState.summary가 아직
+// 위치 권한 대기 등으로 플레이스홀더("위치 권한 필요"/"날씨 오류")인
+// 경우에만 예전처럼 conditionsKo로 폴백한다.
+const WEATHER_SUMMARY_PLACEHOLDERS = ["위치 권한 필요", "날씨 오류"];
 function renderWeatherCurrentToday(data) {
   if (!wdCurrentCondition && !wdCurrentHiLo) return;
   const today = data && Array.isArray(data.days) ? data.days[0] : null;
-  if (!today) {
-    if (wdCurrentCondition) wdCurrentCondition.textContent = "";
-    if (wdCurrentHiLo) wdCurrentHiLo.textContent = "";
-    return;
+  if (wdCurrentCondition) {
+    const liveSummary =
+      typeof weatherState.summary === "string" && !WEATHER_SUMMARY_PLACEHOLDERS.includes(weatherState.summary)
+        ? weatherState.summary
+        : null;
+    wdCurrentCondition.textContent = liveSummary || (today ? today.conditionsKo || "" : "");
   }
-  if (wdCurrentCondition) wdCurrentCondition.textContent = today.conditionsKo || "";
   if (wdCurrentHiLo) {
-    const hasRange = typeof today.tempMax === "number" && typeof today.tempMin === "number";
+    const hasRange = today && typeof today.tempMax === "number" && typeof today.tempMin === "number";
     wdCurrentHiLo.textContent = hasRange ? `최고:${Math.round(today.tempMax)}° 최저:${Math.round(today.tempMin)}°` : "";
   }
 }
@@ -5049,6 +5096,33 @@ if (ezlongSection) {
 const webviewBackButton = document.getElementById("webviewBackButton");
 if (webviewBackButton) {
   webviewBackButton.addEventListener("click", () => goToPage(0));
+}
+
+// 2026-07-20 9차 피드백(유저 제보: "브라우저에서 보기 버튼 눌러도 무반응") —
+// 예전엔 <a href target="_blank">였는데, WKWebView는 target="_blank" 새 창
+// 열기를 기본적으로 무시한다(별도 WKUIDelegate 처리가 있어야 동작). 알라딘
+// 모달의 aladinModalExternalOpenEl과 완전히 같은 증상·같은 해법 — 이미 있는
+// openExternalSafari 네이티브 브릿지(ContentView.swift, 알라딘 때 이미 구현
+// 완료)를 그대로 재사용한다. 새 네이티브 액션이 아니라서 Xcode 재빌드 없이
+// 웹 배포만으로 반영된다.
+const webviewOpenButton = document.getElementById("webviewOpenButton");
+if (webviewOpenButton) {
+  webviewOpenButton.addEventListener("click", () => {
+    const url = "https://ezlong.com";
+    if (isNativeWrapper && window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.flipzenNativeRadio) {
+      window.webkit.messageHandlers.flipzenNativeRadio.postMessage({ action: "openExternalSafari", url });
+      return;
+    }
+    let opened = null;
+    try {
+      opened = window.open(url, "_blank", "noopener");
+    } catch (error) {
+      opened = null;
+    }
+    if (!opened) {
+      window.location.href = url;
+    }
+  });
 }
 
 // 2026-07-08: 우측 상단 "ezlong.com" 글자를 탭하면 플립시계 컨셉에 맞는
