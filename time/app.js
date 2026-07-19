@@ -2338,9 +2338,10 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   else stopWeatherRainFxAll();
   wdCurrentTemp.textContent = `${Math.round(c.temp)}°`;
   // 2026-07-20 11차 피드백(유저 요청): 습도를 조건텍스트 옆에서 기온
-  // (wdCurrentTemp) 옆으로 이동 — 가운뎃점 접두사는 그대로 유지, 빈
+  // (wdCurrentTemp) 옆으로 이동.
+  // 2026-07-20 12차 피드백(유저 요청): 가운뎃점(·) 접두사 삭제 — 빈
   // 문자열이면 CSS :empty가 display:none으로 접어 gap도 안 생긴다.
-  if (wdCurrentHumidity) wdCurrentHumidity.textContent = `· 습도 ${Math.round(c.humidity)}%`;
+  if (wdCurrentHumidity) wdCurrentHumidity.textContent = `습도 ${Math.round(c.humidity)}%`;
   wdCurrentSub.textContent = "";
 
   // 2026-07-17 벤치마크 기획(묶음3): 일출·일몰 한 줄 — 현재 날씨 카드의
