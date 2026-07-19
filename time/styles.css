@@ -73,6 +73,11 @@ button { font: inherit; }
   height: 100dvh;
   overflow: hidden; /* 뷰포트 창 — 안의 #pageTrack이 창 밖으로 나가는 부분은 잘려서 안 보인다 */
   background: #eef3f5;
+  /* 2026-07-20 16차: 페이지 전환 역전 — ezlong 섹션(body 직속, z-index:1)은
+     로드 후 절대 움직이지 않고, 이 시계 화면이 위로 비켜주며(.ezlong-open)
+     아래에 대기 중인 ezlong을 드러낸다. 상세 경위는 index.html 16차 주석. */
+  z-index: 2;
+  transition: transform 0.5s cubic-bezier(0.6, 0.04, 0.22, 1);
   /* 2026-07-17 11차: perspective를 상시 적용에서 .is-flipping-3d 토글로 전환.
      10차까지 position:fixed를 완전히 제거했는데도 설정/날씨상세 내부 스크롤이
      똑같이 얼어있는 게 실기기 녹화로 재확인됐다 — "팝업 구조가 원인"이라는
@@ -88,6 +93,13 @@ button { font: inherit; }
   perspective: 1400px;
 }
 
+/* 2026-07-20 16차: 2페이지(ezlong) 열림 상태 — 시계 화면이 위로 완전히
+   비켜난다. transform은 이 시계 쪽에만 걸리고 ezlong 섹션에는 절대 걸지
+   않는다(iframe 네이티브 스크롤 보호). */
+.clock-app.ezlong-open {
+  transform: translateY(-100%);
+}
+
 /* #pageTrack: .sky-room과 .ezlong-webview를 세로로 쌓아두는 트랙. 평소엔
    두 블록이 그냥 위아래로 쌓인 상태(translateY(0))라 1페이지가 보이고,
    2페이지로 넘어갈 때 app.js가 translateY(-1 * .sky-room 실측 높이px)를
@@ -96,8 +108,10 @@ button { font: inherit; }
    쓰는 이유는 .sky-room 높이가 --first-screen-height(안전영역 보정 포함,
    기기별로 다름)라 고정 비율로 계산할 수 없어서다. */
 .page-track {
-  transition: transform 0.5s cubic-bezier(0.6, 0.04, 0.22, 1);
-  will-change: transform;
+  /* 2026-07-20 16차: 트랙 슬라이드 메커니즘 폐기(전환은 .clock-app이 담당) —
+     transition/will-change: transform 제거. 특히 will-change:transform은
+     스크롤 사건(15차)의 용의자였던 속성이라 상시 적용을 완전히 걷어낸다.
+     이제 이 요소는 .sky-room 하나를 감싸는 단순 래퍼다. */
 }
 
 /* 2026-07-17 11차: preserve-3d도 위 perspective와 동일한 이유로 상시 적용
@@ -1220,26 +1234,32 @@ button { font: inherit; }
   gap: 6px;
 }
 
-/* 2026-07-20 11차 피드백(유저 요청): 습도를 조건텍스트 옆에서 기온 옆으로
-   이동 — align-items를 center→baseline으로 바꿔 거대한 숫자 옆에서도
-   작은 습도 텍스트가 숫자 밑단에 자연스럽게 붙도록 했다. */
+/* 2026-07-20 12차 피드백(유저 요청): "습도까지 포함해서 가운데 정렬하니
+   제일 큰 폰트인 기온이 좌측으로 쏠려 보인다" — 3열 grid(1fr auto 1fr)로
+   바꿔서 가운데 열(기온, auto=콘텐츠 너비)이 항상 카드 정중앙에 오도록
+   고정한다. 좌우 1fr 두 트랙은 서로 같은 비율로 남는 공간을 나눠 가지므로
+   습도가 있든 없든(:empty로 숨겨져도) 기온의 중앙 위치는 흔들리지 않는다.
+   습도는 3번째 열에 justify-self:start로 놓여 기온 바로 오른쪽에 붙는다. */
 .weather-current-main {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: baseline;
-  justify-content: center;
-  gap: 8px;
 }
 
 .weather-current-temp {
+  grid-column: 2;
   font-size: clamp(44px, 14vw, 64px);
   font-weight: 800;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 
-/* 2026-07-20 11차 피드백(유저 요청): 습도가 .weather-current-main(기온 옆)으로
-   이동 — 데이터 없을 땐 :empty로 완전히 접혀 gap도 안 남는다. */
+/* 2026-07-20 12차 피드백: 접두사 가운뎃점(·)은 유저 요청으로 제거(app.js). */
 .weather-current-humidity {
+  grid-column: 3;
+  justify-self: start;
+  margin-left: 6px;
+  white-space: nowrap;
   font-size: 15px;
   font-weight: 560;
   color: rgba(255,255,255,0.7);
@@ -2808,15 +2828,44 @@ button { font: inherit; }
    그 안에서 footer 높이를 뺀 나머지만 차지하도록 바꿨다 — 이제 footer(뒤로
    가기 버튼)가 항상 화면 안에 들어온다. */
 .ezlong-webview {
-  height: 100vh;
-  height: 100dvh;
+  /* 2026-07-20 16차: body 직속 fixed 정착 — 로드 순간부터 최종 위치.
+     transform·재부착·display 토글 절대 금지(iframe 네이티브 스크롤 등록
+     보호 — page-diag 실측 근거는 index.html 16차 주석 참조).
+     z-index:1이라 평소엔 시계(.clock-app z-index:2) 아래에 숨어 대기한다. */
+  position: fixed;
+  inset: 0;
+  z-index: 1;
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
   justify-items: center;
   background: #101722;
   color: #101722;
   overflow: hidden;
-  /* 2026-07-17 8차: scroll-snap-align/stop 제거 — #pageTrack 참조 */
+}
+
+/* 2026-07-20 16차: 복귀 손잡이 띠 — iframe 위에 부모 DOM이 소유하는 유일한
+   터치 표면. 아래로 쓸어내리면 기존 ezlongSection 스와이프 리스너가 감지해
+   시계로 복귀한다. */
+.webview-grabber {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: max(34px, calc(env(safe-area-inset-top) + 16px));
+  z-index: 5;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 5px;
+  background: linear-gradient(rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0));
+}
+
+.webview-grabber span {
+  width: 64px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
 }
 
 .webview-scale {

@@ -5045,50 +5045,22 @@ dots.forEach((dot) => {
 // 실제 자식 개수만큼 일반화한다. DOM 순서 = 0:.sky-room, 1:.ezlong-webview,
 // 2:#quoteSettings, 3:#weatherDetailPanel (index.html #pageTrack 참조).
 let currentPageIndex = 0;
-function pageOffset(targetIndex) {
-  if (!pageTrack) return 0;
-  const pages = pageTrack.children;
-  let offset = 0;
-  for (let i = 0; i < targetIndex && i < pages.length; i += 1) {
-    offset += pages[i].offsetHeight;
-  }
-  return offset;
-}
-// 2026-07-17 11차: #pageTrack이 하나의 긴 트랙이라, 서로 안 붙어있는
-// 페이지로 이동할 때(예: 3번 날씨상세 → 0번 시계) 중간에 있는 페이지들
-// (설정·ezlong 웹뷰)이 트랜지션 도중 슬라이드로 스치듯 지나가 보이는
-// 문제가 실기기 녹화로 확인됐다("화면이 복잡하게 전환된다, 어지럽다").
-// 시계↔ezlong 웹뷰(0↔1) 전환만 원래 의도한 부드러운 슬라이드이고, 설정·
-// 날씨상세(2·3번)가 관련된 전환은 모달을 열고 닫는 느낌이어야지 트랙을
-// 끝까지 슬라이드해서 넘어가는 느낌이면 안 된다 — 그래서 2·3번이 출발지나
-// 목적지에 걸리면 트랜지션을 잠깐 꺼서 즉시 전환한다.
+// 2026-07-20 16차(페이지2 스크롤 근본 수술): 트랙 슬라이드(pageOffset/
+// pageTrack.transform) 메커니즘 폐기. 실기기 자가보고 진단(page-diag.js)으로
+// "ezlong 섹션이 body 직속 + transform 없는 상태여야만 iframe 내부 스크롤이
+// 산다"가 확정됐다(경위는 index.html 16차 주석). 그래서 ezlong 섹션은 로드
+// 순간부터 body 직속 fixed(z-index:1)에 정착해 영원히 움직이지 않고, 페이지
+// 전환은 시계(.clock-app z-index:2)가 .ezlong-open 클래스로 translateY(-100%)
+// 비켜주는 방식으로 역전했다. goToPage(index) 시그니처는 기존 호출부(스와이프/
+// 뒤로가기 버튼/브랜드 탭 플립) 호환을 위해 유지한다 — index>=1이면 열림.
 function goToPage(index) {
-  if (!pageTrack) return;
-  const lastIndex = pageTrack.children.length - 1;
-  const fromIndex = currentPageIndex;
-  const targetIndex = Math.min(Math.max(index, 0), lastIndex);
-  const involvesSheet = targetIndex >= 2 || fromIndex >= 2;
-  currentPageIndex = targetIndex;
-  if (involvesSheet) {
-    pageTrack.style.transition = "none";
-    pageTrack.style.transform = `translateY(-${pageOffset(currentPageIndex)}px)`;
-    void pageTrack.offsetHeight; // 강제 리플로우 — transition:none을 실제로 한 프레임 적용시킨다.
-    requestAnimationFrame(() => {
-      pageTrack.style.transition = "";
-    });
-  } else {
-    pageTrack.style.transition = "";
-    pageTrack.style.transform = `translateY(-${pageOffset(currentPageIndex)}px)`;
-  }
+  const open = index >= 1;
+  currentPageIndex = open ? 1 : 0;
+  if (app) app.classList.toggle("ezlong-open", open);
 }
-// 뷰포트 높이가 바뀌면(주소창 접힘/펼침, 회전 등) 0페이지가 아닌 다른
-// 페이지로 가 있는 도중에도 오프셋이 어긋나지 않게 다시 계산해준다.
-// syncFirstScreenHeight()가 이미 resize/visualViewport resize에 물려있으므로,
-// 그 다음에 이어서 호출한다.
-function resyncPageTrackOffset() {
-  if (!pageTrack || currentPageIndex === 0) return;
-  pageTrack.style.transform = `translateY(-${pageOffset(currentPageIndex)}px)`;
-}
+// 16차: 트랙 오프셋 개념이 사라져 재계산할 것이 없다 — 호출부(뷰포트 리사이즈)
+// 호환을 위해 빈 함수로 유지.
+function resyncPageTrackOffset() {}
 
 if (skyRoom) {
   skyRoom.addEventListener("touchstart", (event) => {
