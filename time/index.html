@@ -129,7 +129,7 @@
       </section>
 
       <div class="scene-dots" aria-label="배경 사진 선택">
-        <span class="app-version" aria-hidden="true">ver.1.3.4.14</span>
+        <span class="app-version" aria-hidden="true">ver.1.3.4.15</span>
         <span class="dot-group">
           <button class="dot active" type="button" data-scene-button="0" aria-label="배경 사진 1"></button>
           <button class="dot" type="button" data-scene-button="1" aria-label="배경 사진 2"></button>
@@ -575,5 +575,21 @@
   <script src="aladin-links.js"></script>
   <script src="music-playlist.js?v=20260718-bgmremoved-v1"></script>
   <script src="app.js?v=20260720-weathertweaks10-v1"></script>
+  <!-- 2026-07-20 페이지2(ezlong iframe) 스크롤 진단 로더: 평소엔 아무것도
+       하지 않는다. 주소 끝에 ?pagediag=1 을 붙여 열 때만 page-diag.js를
+       불러와 자가보고식 진단을 실행한다(일반 방문자 노출 없음). 원인 확정
+       후 이 로더와 page-diag.js는 제거 예정. -->
+  <script>
+  (function () {
+    if (!/[?&]pagediag=1/.test(location.search)) return;
+    window.addEventListener("load", function () {
+      setTimeout(function () {
+        var s = document.createElement("script");
+        s.src = "page-diag.js?v=20260720-pagediag-v1";
+        document.head.appendChild(s);
+      }, 800);
+    });
+  })();
+  </script>
 </body>
 </html>
