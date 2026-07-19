@@ -2846,26 +2846,30 @@ button { font: inherit; }
 /* 2026-07-20 16차: 복귀 손잡이 띠 — iframe 위에 부모 DOM이 소유하는 유일한
    터치 표면. 아래로 쓸어내리면 기존 ezlongSection 스와이프 리스너가 감지해
    시계로 복귀한다. */
+/* 2026-07-20 16차-e(유저 실사용 피드백): 띠가 얇아 손가락이 iframe 영역에서
+   스와이프를 시작하게 되고, 그러면 터치가 iframe에 삼켜져 복귀가 안 된다 —
+   터치 표면을 크게 키우고 손잡이도 또렷하게. (실기기 미러링으로 제스처
+   자체는 정상 동작 확인 완료 — 문제는 크기/발견성이었다) */
 .webview-grabber {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: max(34px, calc(env(safe-area-inset-top) + 16px));
+  height: max(64px, calc(env(safe-area-inset-top) + 36px));
   z-index: 5;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding-bottom: 5px;
-  background: linear-gradient(rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0));
+  padding-bottom: 7px;
+  background: linear-gradient(rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0));
 }
 
 .webview-grabber span {
-  width: 64px;
-  height: 5px;
+  width: 84px;
+  height: 6px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
 }
 
 .webview-scale {
