@@ -1170,7 +1170,17 @@ function renderQuote(index) {
 
   pendingQuoteTimeoutId = window.setTimeout(() => {
     pendingQuoteTimeoutId = null;
-    const englishText = quote.english || "";
+    // 2026-07-20 유저 요청: 영어 원문은 원래 "한글만 있으면 짧아서 허전해
+    // 보이는 문장"에 멋을 더하려고 넣은 부가 요소였는데, 원문이 길면 오히려
+    // 총 글자수가 늘어나 quote-long/quote-dense 폰트 축소가 세게 걸려서 한글
+    // 본문까지 잘 안 보이게 되는 역효과가 났다. 원문이 120자(공백 포함)를
+    // 넘으면 아예 보여주지 않는다(지시가 30자→60자→110자→120자로 재조정
+    // 됨) — JS의 .length는 원래 공백도 포함해서 세므로 별도 처리 불필요.
+    // has-english 클래스가 꺼지며 CSS(.quote-panel .quote-english
+    // { display:none })가 박스 자체를 접어주고, 길이 계산(textLength)에서도
+    // 빠지므로 폰트 축소 판정에 영향을 주지 않는다.
+    const rawEnglish = quote.english || "";
+    const englishText = rawEnglish.length > 120 ? "" : rawEnglish;
     const textLength = quote.text.length + Math.floor(englishText.length * 0.55);
     quotePanel.classList.toggle("quote-long", textLength > 115);
     quotePanel.classList.toggle("quote-dense", textLength > 190);
