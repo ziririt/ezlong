@@ -6408,5 +6408,12 @@ window.investmentQuotes = [
     "title": "리스크 (Against the Gods: The Remarkable Story of Risk)",
     "author": "피터 번스타인",
     "category": "mindset"
+  },
+  {
+    "english": "You don't have to be brilliant, only a little bit wiser than the other guys, on average, for a long, long time.",
+    "text": "천재일 필요는 없다. 그저 남들보다 평균적으로 아주 조금 더 현명하기만 하면 된다. 아주 오랫동안 꾸준히.",
+    "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거",
+    "category": "patience"
   }
 ];

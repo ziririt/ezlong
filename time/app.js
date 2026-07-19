@@ -5069,22 +5069,41 @@ let currentPageIndex = 0;
 // 때 시계 전환(500ms)이 끝나 섹션이 화면에 드러난 "후"(620ms)에 재부착하고,
 // iframe 로드는 그보다도 뒤에 시작시킨다. 이 지연·순서는 전부 실측 근거 —
 // 임의로 줄이거나 t=0으로 되돌리지 말 것.
+// 16차-d(최종 실측): 노출 후 재부착(16차-c)만으로도 부족했다 — 성공했던 진단
+// 3단계와의 마지막 차이는 z-순서였다. 진단에선 섹션이 z40(시계보다 위)이었고,
+// 실패한 정적 구조에선 z1(시계 아래)이었다. iOS 26.5의 네이티브 히트테스트가
+// transform으로 비켜난 시계(.clock-app)를 여전히 "화면을 덮은 상태"로 취급해
+// 제스처를 시계(overflow:hidden — 제스처 소멸 지점)에 넘겨버리는 것으로 추정.
+// 그래서 열림이 완료되는 시점(620ms)에 섹션 z를 40으로 올리고 시계를
+// visibility:hidden으로 완전히 치우며, 첫 열림이면 그 상태에서 재부착+로드까지
+// 한다(진단 3단계 성공 조건의 완전 재현). 닫을 때는 t=0에 즉시 원복해 슬라이드
+// 복귀 애니메이션을 유지한다. 전부 실측 근거 — 임의 변경 금지.
 let ezlongInitialized = false;
-function initEzlongOnFirstOpen() {
-  if (ezlongInitialized || !ezlongSection) return;
-  ezlongInitialized = true;
-  document.body.appendChild(ezlongSection); // 노출 상태에서 재부착 → 네이티브 스크롤 등록
-  const fr = ezlongSection.querySelector(".ezlong-frame");
-  if (fr && !fr.getAttribute("src") && fr.dataset && fr.dataset.src) {
-    fr.src = fr.dataset.src; // 재부착 이후에 로드 시작
+let ezlongSettleTimer = null;
+function settleEzlongOpen() {
+  if (!ezlongSection) return;
+  if (!ezlongInitialized) {
+    ezlongInitialized = true;
+    document.body.appendChild(ezlongSection); // 노출+z40 상태에서 재부착
+    const fr = ezlongSection.querySelector(".ezlong-frame");
+    if (fr && !fr.getAttribute("src") && fr.dataset && fr.dataset.src) {
+      fr.src = fr.dataset.src;
+    }
   }
+  ezlongSection.style.zIndex = "40";      // 시계보다 위 — 네이티브 제스처 라우팅 확보
+  if (app) app.style.visibility = "hidden"; // 비켜난 시계를 히트테스트에서 완전 제거
 }
 function goToPage(index) {
   const open = index >= 1;
   currentPageIndex = open ? 1 : 0;
-  if (app) app.classList.toggle("ezlong-open", open);
-  if (open && !ezlongInitialized) {
-    window.setTimeout(initEzlongOnFirstOpen, 620); // 시계 전환 완료 후
+  if (ezlongSettleTimer) { window.clearTimeout(ezlongSettleTimer); ezlongSettleTimer = null; }
+  if (open) {
+    if (app) app.classList.add("ezlong-open");
+    ezlongSettleTimer = window.setTimeout(settleEzlongOpen, 620); // 슬라이드 완료 후 정착
+  } else {
+    // 닫기: 원복을 먼저(t=0) — 시계가 다시 보이며 z2>z1로 위에서 슬라이드 복귀
+    if (ezlongSection) ezlongSection.style.zIndex = "";
+    if (app) { app.style.visibility = ""; app.classList.remove("ezlong-open"); }
   }
 }
 // 16차: 트랙 오프셋 개념이 사라져 재계산할 것이 없다 — 호출부(뷰포트 리사이즈)
