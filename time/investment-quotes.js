@@ -6261,5 +6261,152 @@ window.investmentQuotes = [
     "title": "절대 실패하지 않는 미국 주식 ETF 투자",
     "author": "김성동",
     "category": "compound"
+  },
+  {
+    "english": "The first rule of compounding: Never interrupt it unnecessarily.",
+    "text": "복리의 첫 번째 원칙은, 불필요하게 그 흐름을 방해하지 않는 것이다.",
+    "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거",
+    "category": "compound"
+  },
+  {
+    "english": "Everyone has the brainpower to make money in stocks. Not everyone has the stomach. If you are susceptible to selling everything in a fit of panic, you ought to avoid stocks and mutual funds altogether.",
+    "text": "누구나 주식으로 돈을 벌 두뇌는 가지고 있다. 그러나 그것을 견뎌낼 배짱을 가진 사람은 많지 않다. 시장이 흔들릴 때 원칙 없이 겁을 먹는 투자자라면, 아무리 좋은 종목을 골라도 결국 손해를 본다.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
+    "english": "Heads, I win; tails, I don't lose much.",
+    "text": "앞면이 나오면 내가 이기고, 뒷면이 나와도 크게 잃지 않는다. 하방은 최대한 틀어막고 상방은 열어두는 비대칭적 베팅을 찾는 것, 그것이 투자의 본질이다.",
+    "title": "다안도 투자자 (The Dhandho Investor)",
+    "author": "모니시 파브라이",
+    "category": "mindset"
+  },
+  {
+    "english": "He who lives by the crystal ball will eat shattered glass.",
+    "text": "수정구슬에 의지해 사는 자는 결국 깨진 유리 조각을 삼키게 된다. 시장을 정확히 예측하려는 시도보다, 어떤 국면에서도 무너지지 않을 원칙을 세워두는 것이 훨씬 중요하다.",
+    "title": "원칙 (Principles: Life and Work)",
+    "author": "레이 달리오",
+    "category": "mindset"
+  },
+  {
+    "english": "Risk no more than you can afford to lose, and also risk enough so that a win is meaningful.",
+    "text": "감당할 수 없는 만큼의 위험은 절대 감수하지 마라. 그리고 동시에, 이겼을 때 그 승리가 의미 있다고 느껴질 만큼은 위험을 감수하라.",
+    "title": "시장의 마법사들 (Market Wizards)",
+    "author": "에드 세이코타 (잭 슈웨거 인터뷰집)",
+    "category": "mindset"
+  },
+  {
+    "english": "A blindfolded monkey throwing darts at a newspaper's financial pages could select a portfolio that would do just as well as one carefully selected by experts.",
+    "text": "눈을 가린 원숭이가 신문 경제면에 다트를 던져 종목을 골라도, 전문가가 신중하게 고른 포트폴리오 못지않은 성과를 낼 수 있다.",
+    "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
+    "author": "버턴 말킬",
+    "category": "mindset"
+  },
+  {
+    "english": "If the job has been correctly done when a common stock is purchased, the time to sell it is — almost never.",
+    "text": "제대로 된 판단으로 주식을 매수했다면, 그 주식을 팔아야 할 때는 사실상 결코 오지 않는다.",
+    "title": "보통주로 큰 돈 벌기 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
+    "text": "건초더미에서 바늘 하나를 찾으려 애쓰지 마라. 그냥 건초더미 전체를 사라. 개별 종목을 골라내려는 시도는 대개 시간과 비용만 낭비할 뿐, 시장 전체를 낮은 비용으로 그대로 보유하는 것이 장기적으로 훨씬 우월한 결과를 낸다.",
+    "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
+    "author": "존 보글",
+    "category": "mindset"
+  },
+  {
+    "english": "Rule number one: most things will prove to be cyclical. Rule number two: some of the greatest opportunities for gain and loss come when other people forget rule number one.",
+    "text": "첫째, 대부분의 것들은 순환한다. 둘째, 다른 사람들이 이 사실을 잊어버릴 때 가장 큰 수익과 손실의 기회가 찾아온다.",
+    "title": "투자에 대한 생각 (The Most Important Thing)",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "english": "The most important rule of trading is to play great defense, not great offense. Every day I assume every position I have is wrong.",
+    "text": "트레이딩에서 가장 중요한 원칙은 화려한 공격이 아니라 철저한 수비를 하는 것이다. 나는 매일 아침 지금 갖고 있는 모든 포지션이 틀렸다고 가정하는 것부터 시작한다.",
+    "title": "시장의 마법사들 (Market Wizards)",
+    "author": "폴 튜더 존스",
+    "category": "mindset"
+  },
+  {
+    "english": "The word risk derives from the early Italian word risicare, which means 'to dare.' In this sense, risk is a choice rather than a fate.",
+    "text": "'리스크(risk)'라는 단어는 '감히 하다'라는 뜻의 옛 이탈리아어 'risicare'에서 유래했다. 이런 의미에서 위험이란 어쩔 수 없이 맞닥뜨리는 운명이 아니라, 스스로 선택하는 것이다. 시장의 변동성 앞에서 몸을 사리기보다, 감수할 위험의 크기를 내 손으로 정하는 태도가 진짜 투자자를 만든다.",
+    "title": "리스크 (Against the Gods: The Remarkable Story of Risk)",
+    "author": "피터 번스타인",
+    "category": "mindset"
+  },
+  {
+    "english": "Value investing is at its core the marriage of a contrarian streak and a calculator. If a stock is cheap, the value investor buys some; if it gets cheaper, the value investor buys more. There's no rule that says because you've already bought a stock, you can't buy more if the price drops.",
+    "text": "가치투자는 본질적으로 반골 기질과 계산기의 결합이다. 주식이 싸면 가치투자자는 조금 사고, 더 싸지면 더 산다. 이미 그 주식을 샀다고 해서 가격이 떨어졌을 때 더 살 수 없다는 법칙 같은 건 없다.",
+    "title": "마진 오브 세이프티 (Margin of Safety)",
+    "author": "세스 클라만",
+    "category": "mindset"
+  },
+  {
+    "english": "Rule number one: most things will prove to be cyclical. Rule number two: some of the greatest opportunities for gain and loss come when other people forget rule number one.",
+    "text": "첫 번째 원칙, 세상 대부분의 일은 결국 순환한다. 두 번째 원칙, 가장 큰 수익과 가장 큰 손실의 기회는 사람들이 이 첫 번째 원칙을 잊어버릴 때 찾아온다.",
+    "title": "하워드 막스 투자와 마켓 사이클의 법칙 (Mastering the Market Cycle)",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "english": "The hard part is discipline, patience, and judgment. More specifically, the hard part is discipline to avoid the many unattractive pitches, patience to wait for the right pitch and judgment to know when to swing.",
+    "text": "어려운 부분은 규율, 인내, 그리고 판단력이다. 더 정확히 말하면, 매력 없는 수많은 공을 그냥 흘려보내는 규율, 제대로 된 공이 올 때까지 기다리는 인내, 그리고 배트를 휘둘러야 할 순간을 아는 판단력, 이 세 가지가 진짜 어려운 것이다.",
+    "title": "마진 오브 세이프티 (Margin of Safety)",
+    "author": "세스 클라만",
+    "category": "patience"
+  },
+  {
+    "english": "It never was my thinking that made the big money for me. It always was my sitting. Got that? My sitting tight! Men who can both be right and sit tight are uncommon.",
+    "text": "큰돈을 벌어준 건 나의 판단력이 아니라 언제나 나의 '버티기'였다. 알겠는가? 진득하게 버티는 것 말이다! 시장에서 한때 옳은 판단을 내리는 사람은 흔하지만, 옳으면서 동시에 진득하게 버틸 줄 아는 사람은 드물다.",
+    "title": "주식 투자자의 회상 (Reminiscences of a Stock Operator)",
+    "author": "제시 리버모어",
+    "category": "patience"
+  },
+  {
+    "english": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave. And behavior is hard to teach, even to really smart people.",
+    "text": "돈을 잘 다루는 일은 당신이 얼마나 똑똑한가와는 거의 관계가 없고, 당신이 어떻게 행동하는가와 훨씬 깊은 관계가 있다. 그리고 행동은, 아무리 똑똑한 사람이라도 가르치기 어려운 것이다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "mindset"
+  },
+  {
+    "english": "Buying good companies at bargain prices really is the secret to making lots of money — it's just that simple, and yes, it's just that difficult.",
+    "text": "좋은 기업을 헐값에 사는 것, 그것이야말로 큰돈을 버는 비결이다. 원리 자체는 그만큼 단순하다. 하지만 실제로 해내는 일은 그만큼 어렵다.",
+    "title": "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)",
+    "author": "조엘 그린블라트",
+    "category": "mindset"
+  },
+  {
+    "english": "Invert, always invert: Turn a situation or problem upside down. Look at it backward. It is in the nature of things that many hard problems are best solved when they are addressed backward.",
+    "text": "거꾸로 뒤집어 생각하라. 항상 거꾸로 생각하라. 어떤 문제든 정면으로만 보지 말고, 뒤집어서 반대 방향에서 바라보라. 무엇을 하면 성공할지보다, 무엇을 하면 반드시 실패하는지부터 파악하고 그것을 피하는 편이 훨씬 쉽다.",
+    "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거",
+    "category": "mindset"
+  },
+  {
+    "english": "The revolutionary idea that defines the boundary between modern times and the past is the mastery of risk: the notion that the future is more than a whim of the gods and that men and women are not passive before nature.",
+    "text": "현대와 과거를 가르는 혁명적인 발상은 바로 리스크의 정복이다. 미래가 신들의 변덕에 달린 것이 아니며, 인간은 자연 앞에서 결코 수동적인 존재가 아니라는 생각이다.",
+    "title": "리스크 (Against the Gods: The Remarkable Story of Risk)",
+    "author": "피터 번스타인",
+    "category": "mindset"
+  },
+  {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
+    "text": "건초더미에서 바늘을 찾으려 하지 마라. 그냥 건초더미 전체를 사라.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "mindset"
+  },
+  {
+    "english": "The essence of risk management lies in maximizing the areas where we have some control over the outcome while minimizing the areas where we have absolutely no control over the outcome.",
+    "text": "리스크 관리의 본질은, 우리가 어느 정도 통제할 수 있는 영역은 최대화하고 전혀 통제할 수 없는 영역은 최소화하는 데 있다.",
+    "title": "리스크 (Against the Gods: The Remarkable Story of Risk)",
+    "author": "피터 번스타인",
+    "category": "mindset"
   }
 ];
