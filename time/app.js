@@ -5063,19 +5063,29 @@ let currentPageIndex = 0;
 // "후"에 src를 주입한다(진단 3단계의 성공 순서 그대로: 재부착 → 로드).
 // 재로드 비용 0(어차피 첫 로드), 앱 시작 시 ezlong 선로딩도 없어져 부팅이
 // 가벼워지는 부수효과. 이 재부착·주입 코드는 제거 금지.
+// 16차-c(추가 실측): t=0(시계가 아직 덮고 있는 시점) 재부착은 실패했다 —
+// Fable 미러링 재계측 결과, 섹션이 "노출된 상태"에서 재부착해야만 등록된다
+// (진단 3단계의 성공 조건에는 "노출"까지 포함돼 있었던 것). 그래서 첫 열림
+// 때 시계 전환(500ms)이 끝나 섹션이 화면에 드러난 "후"(620ms)에 재부착하고,
+// iframe 로드는 그보다도 뒤에 시작시킨다. 이 지연·순서는 전부 실측 근거 —
+// 임의로 줄이거나 t=0으로 되돌리지 말 것.
 let ezlongInitialized = false;
+function initEzlongOnFirstOpen() {
+  if (ezlongInitialized || !ezlongSection) return;
+  ezlongInitialized = true;
+  document.body.appendChild(ezlongSection); // 노출 상태에서 재부착 → 네이티브 스크롤 등록
+  const fr = ezlongSection.querySelector(".ezlong-frame");
+  if (fr && !fr.getAttribute("src") && fr.dataset && fr.dataset.src) {
+    fr.src = fr.dataset.src; // 재부착 이후에 로드 시작
+  }
+}
 function goToPage(index) {
   const open = index >= 1;
   currentPageIndex = open ? 1 : 0;
-  if (open && !ezlongInitialized && ezlongSection) {
-    ezlongInitialized = true;
-    document.body.appendChild(ezlongSection); // 재부착 → 네이티브 스크롤 영역 등록
-    const fr = ezlongSection.querySelector(".ezlong-frame");
-    if (fr && !fr.getAttribute("src") && fr.dataset && fr.dataset.src) {
-      fr.src = fr.dataset.src; // 재부착 이후에 로드 시작 (실증된 순서)
-    }
-  }
   if (app) app.classList.toggle("ezlong-open", open);
+  if (open && !ezlongInitialized) {
+    window.setTimeout(initEzlongOnFirstOpen, 620); // 시계 전환 완료 후
+  }
 }
 // 16차: 트랙 오프셋 개념이 사라져 재계산할 것이 없다 — 호출부(뷰포트 리사이즈)
 // 호환을 위해 빈 함수로 유지.
