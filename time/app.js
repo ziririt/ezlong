@@ -2347,10 +2347,25 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   // 달리 이 줄은 조건 없이 항상 보인다. c.precipprob/c.precip은 이미
   // renderWeatherCurrent 상단에서 c로 받아온 값(실제 API 또는 fxtest 시나리오)을
   // 그대로 재사용 — 새 데이터 소스 불필요.
+  // 2026-07-20 10차 피드백(유저 요청):
+  //   1) "'옅은 이슬비'인데 확률 0%·강수량 0mm/h로 나온다, 모순이다" —
+  //      조건 텍스트(weatherState.summary)는 Open-Meteo, 확률/강수량(c)은
+  //      백엔드(Visual Crossing) 기준으로 서로 다른 소스라 완전히 일치하진
+  //      않는다(round 9 조건텍스트 통일과 같은 계열의 원인). 두 소스를
+  //      억지로 하나로 합치는 대신, summary가 이미 강수를 나타내는데 확률이
+  //      반올림돼 0%가 되는 "비인데 0%"라는 명백한 자기모순만 최소값 5%로
+  //      막는다.
+  //   2) 강수량은 0.1mm/h 미만이면 아예 표기하지 않는다(0mm/h 표기 금지,
+  //      hourly-strip/weekly와 동일 임계값 통일).
+  //   3) "예상"이라는 단어 삭제 — 이 페이지 수치는 다 예보값인데 이 줄만
+  //      "예상"을 붙일 이유가 없다는 유저 지적 반영.
   if (wdCurrentRain) {
-    const prob = typeof c.precipprob === "number" ? Math.round(c.precipprob) : 0;
+    let prob = typeof c.precipprob === "number" ? Math.round(c.precipprob) : 0;
     const mm = typeof c.precip === "number" ? Math.round(c.precip * 10) / 10 : 0;
-    wdCurrentRain.textContent = `강수확률 ${prob}% · 예상 강수량 ${mm}mm/h`;
+    const summaryIndicatesPrecip = typeof weatherState.summary === "string" && /비|눈|뇌우/.test(weatherState.summary);
+    if (prob === 0 && summaryIndicatesPrecip) prob = 5;
+    const showMm = mm >= 0.1;
+    wdCurrentRain.textContent = `강수확률 ${prob}%${showMm ? ` · 강수량 ${mm}mm/h` : ""}`;
   }
 }
 
