@@ -1150,6 +1150,11 @@ button { font: inherit; }
 .weather-current-card {
   text-align: center;
   padding: 20px 16px 22px;
+  /* 2026-07-19 6차 피드백(유저 요청): "투명도를 더 투명하게" — .wd-glass
+     기본값(0.02)보다도 더 낮춰서 사실상 배경 없이 테두리·블러·그림자로만
+     박스 형태를 유지한다. 주간예보 박스는 이번 요청 대상이 아니라 그대로
+     .wd-glass 기본값을 쓴다. */
+  background: rgba(10,16,26,0.006);
 }
 
 /* 2026-07-19 5차 리디자인: 애플 날씨 앱 상단 요약 스타일 — 온도 바로
@@ -1261,6 +1266,8 @@ button { font: inherit; }
    타이포그래피 규칙만 남긴다. */
 .weather-comment-box {
   padding: 16px 18px;
+  /* 2026-07-19 6차 피드백: 위 .weather-current-card와 같은 이유로 더 투명하게. */
+  background: rgba(10,16,26,0.006);
 }
 
 /* 안의 두 문장(wdTopComment/wdNextRain)이 모두 :empty인 극히 드문 상황
@@ -1613,7 +1620,9 @@ button { font: inherit; }
    다시 만든다. */
 .weather-hourly-strip {
   display: flex;
-  gap: 10px;
+  /* 2026-07-19 6차 피드백(유저 요청): "시간과 시간 사이 공백이 너무 멀다,
+     반으로 줄여달라" — 10px → 5px. */
+  gap: 5px;
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: 2px;
@@ -1670,6 +1679,14 @@ button { font: inherit; }
   font-size: 12px;
   font-weight: 600;
   color: #64d2ff;
+}
+
+/* 2026-07-19 6차 피드백(유저 요청): 비 아이콘이 없는(precipprob<30) 시간대는
+   확률·강수량 줄 자체를 비운다(app.js renderWeatherHourlyStrip 참조).
+   display:none이 아니라 visibility:hidden을 써서 그 줄의 공간은 그대로
+   유지 — 카드마다 높이가 들쭉날쭉해지는 걸 막는다. */
+.weather-hourly-prob:empty {
+  visibility: hidden;
 }
 
 /* 2026-07-08: "들은 음악 히스토리" — 최근 재생 목록 + 곡별 바로 듣기 버튼.

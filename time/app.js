@@ -2344,16 +2344,26 @@ function renderWeatherHourlyStrip(data) {
     return;
   }
 
+  // 2026-07-19 6차 피드백: "퍼센트가 비올 확률인데, 비 아이콘이 없는
+  // 시간대에도 항상 떠서 헷갈린다" — weatherEmojiFromHour()가 비 아이콘을
+  // 고르는 기준(precipprob>=30)과 정확히 같은 조건으로 맞춰서, 비 아이콘이
+  // 뜨는 시간대에만 확률·강수량(mm)을 같이 보여준다. precipMm은 백엔드
+  // buildHourlyStrip()이 새로 내려주는 필드(구버전 캐시 대비 숫자가 아니면
+  // 0으로 방어). 빈 문자열이어도 슬롯 자체는 유지(.weather-hourly-prob:empty
+  // 가 visibility:hidden으로 높이를 보존해 카드 높이가 들쭉날쭉해지지 않게).
   wdHourlyStrip.innerHTML = data.hours
-    .map(
-      (h) => `
+    .map((h) => {
+      const isRainHour = h.precipprob >= 30;
+      const precipMm = typeof h.precipMm === "number" ? h.precipMm : 0;
+      const probHtml = isRainHour ? `${h.precipprob}% · ${precipMm}mm` : "";
+      return `
     <div class="weather-hourly-item" data-now="${h.isNow ? "true" : "false"}">
       <span class="weather-hourly-hour">${h.hourLabel}</span>
       <span class="weather-hourly-icon">${weatherEmojiFromHour(h.precipprob, h.hourLabel, h.isNow)}</span>
       <span class="weather-hourly-temp">${Math.round(h.temp)}°</span>
-      <span class="weather-hourly-prob">${h.precipprob}%</span>
-    </div>`
-    )
+      <span class="weather-hourly-prob">${probHtml}</span>
+    </div>`;
+    })
     .join("");
 }
 
@@ -2397,7 +2407,8 @@ function renderWeatherTopComment(data) {
     wdTopComment.textContent = "";
     return;
   }
-  wdTopComment.textContent = `☔ ${data.umbrellaToday.message}`;
+  // 2026-07-19 6차 피드백: 이모티콘 접두사(☔) 제거 — 유저 요청.
+  wdTopComment.textContent = data.umbrellaToday.message;
   wdTopComment.setAttribute("data-needed", String(data.umbrellaToday.needed));
 }
 
@@ -2418,7 +2429,8 @@ function renderWeatherNextRain(data) {
     wdNextRain.textContent = "";
     return;
   }
-  wdNextRain.textContent = `⏳ ${countdown.message}`;
+  // 2026-07-19 6차 피드백: 이모티콘 접두사(⏳) 제거 — 유저 요청.
+  wdNextRain.textContent = countdown.message;
 }
 
 function renderWeatherRainWindows(data) {
