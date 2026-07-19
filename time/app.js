@@ -270,6 +270,10 @@ const wdCurrentSub = document.getElementById("wdCurrentSub");
 const wdCurrentSun = document.getElementById("wdCurrentSun");
 // 2026-07-18 리디자인(클로드 디자인 목업 수용): 현재 날씨 카드 상단 이모지 아이콘.
 const wdCurrentIcon = document.getElementById("wdCurrentIcon");
+// 2026-07-19 5차 리디자인: 애플 날씨 스타일 상단 요약(날씨 상태 텍스트,
+// 최고/최저) — renderWeatherCurrentToday()가 채운다.
+const wdCurrentCondition = document.getElementById("wdCurrentCondition");
+const wdCurrentHiLo = document.getElementById("wdCurrentHiLo");
 // 2026-07-18 2차 피드백: "상세 지표" 카드 삭제 — wdDetailIndicators/
 // wdDetailComment DOM 참조와 renderWeatherDetailIndicators() 함수를 함께
 // 제거했다(유저 요청).
@@ -2477,6 +2481,32 @@ function renderWeatherWeeklyForecast(data) {
     .join("");
 }
 
+// 2026-07-19 5차 리디자인(유저 요청: "상단 날씨 요약 부분은 애플 아이폰
+// 기본 날씨 앱 스타일로 가자, 똑같이 해보자"): 애플 날씨는 큰 온도 아래에
+// "흐림" 같은 날씨 상태 텍스트, 그 아래 "최고:28° 최저:23°" 한 줄이 온다.
+// 이 정보(오늘의 날씨텍스트·최고·최저)는 새 API 호출을 만들지 않고 이미
+// fetchWeatherDetail()이 받아오는 weekly-forecast 응답의 오늘자
+// (data.days[0])를 재사용한다 — 주간예보 리스트의 "일" 첫 행과 정확히
+// 같은 값이라 화면 두 군데의 수치가 어긋날 일도 없다. renderWeatherCurrent
+// (현재 온도·아이콘·체감·습도)와는 데이터 출처가 달라 별도 함수로 분리했다
+// — fxtest 시나리오 스위처(wdApplyTestScenario)는 이 값을 건드리지 않고
+// 항상 실제 API값을 유지한다(아이콘/비연출만 테스트용으로 바뀌는 것과
+// 의도적으로 분리 — 오늘 실제 최고/최저까지 가짜로 바뀌면 오해 소지가 큼).
+function renderWeatherCurrentToday(data) {
+  if (!wdCurrentCondition && !wdCurrentHiLo) return;
+  const today = data && Array.isArray(data.days) ? data.days[0] : null;
+  if (!today) {
+    if (wdCurrentCondition) wdCurrentCondition.textContent = "";
+    if (wdCurrentHiLo) wdCurrentHiLo.textContent = "";
+    return;
+  }
+  if (wdCurrentCondition) wdCurrentCondition.textContent = today.conditionsKo || "";
+  if (wdCurrentHiLo) {
+    const hasRange = typeof today.tempMax === "number" && typeof today.tempMin === "number";
+    wdCurrentHiLo.textContent = hasRange ? `최고:${Math.round(today.tempMax)}° 최저:${Math.round(today.tempMin)}°` : "";
+  }
+}
+
 // 2026-07-14 재설계: "지난 24시간" 수치 나열이 아니라 "향후 24시간이 지난
 // 24시간보다 덥다/춥다/습하다"를 한 줄 코멘트로 먼저 보여주고, 그 아래
 // 지난/향후 두 구간을 나란히 대조한다(누적강수는 뺐다 — 유저 피드백:
@@ -2645,7 +2675,11 @@ async function fetchWeatherDetail() {
   renderWeatherTopComment(rainData);
   renderWeatherNextRain(rainData);
   renderWeatherHourlyStrip(hourlyStripData);
-  renderWeatherWeeklyForecast(weeklyForecastR.status === "fulfilled" ? weeklyForecastR.value : null);
+  const weeklyForecastData = weeklyForecastR.status === "fulfilled" ? weeklyForecastR.value : null;
+  renderWeatherWeeklyForecast(weeklyForecastData);
+  // 2026-07-19 5차 리디자인: 애플 스타일 상단 요약(날씨텍스트·최고/최저) —
+  // 같은 weekly-forecast 응답을 재사용(위 renderWeatherCurrentToday 주석 참조).
+  renderWeatherCurrentToday(weeklyForecastData);
   renderWeatherTempVsNormal(tempVsNormalR.status === "fulfilled" ? tempVsNormalR.value : null);
   renderWeatherRainWindows(rainData);
   renderWeatherYesterday(yesterdayR.status === "fulfilled" ? yesterdayR.value : null);

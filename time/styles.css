@@ -1128,15 +1128,54 @@ button { font: inherit; }
   margin: 0;
 }
 
+/* 2026-07-19 5차 리디자인(유저 요청): "상세 날씨 페이지의 디자인 컨셉은
+   시계 화면과 같은 플립시계의 투명 박스 스타일로 가자" — 시계 화면의
+   .quote-panel이 쓰는 정확한 레시피(거의 투명한 배경 + 얇은 테두리 + 큰
+   라운드 + 옅은 블러 + 강한 text-shadow로 가독성 보완)를 그대로 재사용한다.
+   기존 날씨 카드들은 짙은 다크글래스(rgba(10,14,24,0.68) + blur14px)를
+   썼는데, 이번 요청으로 hero/코멘트박스/주간예보 3곳만 이 톤으로 바꾼다
+   (시간대별 예보의 개별 카드·나머지 h3 전용 섹션은 대상 아님 — 유저가
+   지목한 범위만 변경). text-shadow는 상속 속성이라 이 클래스가 걸린
+   요소의 모든 자손 텍스트에 자동으로 적용된다. */
+.wd-glass {
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: clamp(24px, 6vw, 38px);
+  background: rgba(13,20,31,0.02);
+  -webkit-backdrop-filter: blur(3px) saturate(1.04);
+  backdrop-filter: blur(3px) saturate(1.04);
+  box-shadow: 0 22px 70px rgba(0,0,0,0.08);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.55), 0 2px 20px rgba(0,0,0,0.35);
+}
+
 .weather-current-card {
   text-align: center;
   padding: 20px 16px 22px;
-  border: 1px solid rgba(255,255,255,0.16);
-  border-radius: clamp(18px, 4vw, 26px);
-  background: rgba(10,14,24,0.68);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+}
+
+/* 2026-07-19 5차 리디자인: 애플 날씨 앱 상단 요약 스타일 — 온도 바로
+   아래에 날씨 상태 텍스트, 그 아래 최고/최저 한 줄. 데이터는
+   renderWeatherCurrentToday()(app.js)가 주간예보 응답의 오늘자로 채운다. */
+.weather-current-condition {
+  margin: 4px 0 0;
+  font-size: 19px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.94);
+}
+
+.weather-current-condition:empty {
+  display: none;
+}
+
+.weather-current-hilo {
+  margin: 6px 0 0;
+  font-size: 15px;
+  font-weight: 640;
+  color: rgba(255,255,255,0.82);
+  font-variant-numeric: tabular-nums;
+}
+
+.weather-current-hilo:empty {
+  display: none;
 }
 
 /* 2026-07-18 유저 피드백: 아이콘을 기온 위가 아니라 왼쪽에 나란히. */
@@ -1168,12 +1207,17 @@ button { font: inherit; }
   gap: 12px;
 }
 
+/* 2026-07-19 5차 리디자인: 체감·습도는 hero 안(윗줄 flex)에서 빠져나와
+   hero 아래 독립된 2차 정보 줄이 됐다 — 애플 날씨 상단 요약엔 없는
+   항목이지만 정보 자체는 지우지 않고 강조만 낮춘다(margin-top으로 hero와
+   간격, 폰트/색을 작고 옅게). */
 .weather-current-meta {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 14px;
   flex-wrap: wrap;
+  margin-top: 14px;
 }
 
 .weather-current-temp {
@@ -1185,9 +1229,9 @@ button { font: inherit; }
 
 .weather-current-feels,
 .weather-current-humidity {
-  font-size: 16px;
-  font-weight: 640;
-  color: rgba(255,255,255,0.78);
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.62);
 }
 
 /* 2026-07-14: 습도를 체감온도와 같은 줄로 옮기면서 서브 라인은 평소엔
@@ -1210,25 +1254,28 @@ button { font: inherit; }
   gap: 10px;
 }
 
-/* 2026-07-14: 출퇴근·등하교 시간대를 종합한 오늘의 우산 조언 — 강수 예보
-   카드 맨 위에서 한두 줄로 눈에 띄게. needed=true/false로 톤을 구분한다. */
+/* 2026-07-19 5차 리디자인(유저 요청): 우산조언·다음비 코멘트를 하나의
+   .wd-glass 박스로 묶으면서, 이 박스를 감싸는 부모(.weather-comment-box)가
+   테두리/배경/패딩을 전담하게 됐다 — 예전에 여기 있던 초록/파랑
+   data-needed 배경, 자체 padding/border-radius를 모두 제거하고 순수
+   타이포그래피 규칙만 남긴다. */
+.weather-comment-box {
+  padding: 16px 18px;
+}
+
+/* 안의 두 문장(wdTopComment/wdNextRain)이 모두 :empty인 극히 드문 상황
+   (강수 API 응답 실패)엔, 내용 없는 투명 박스만 덩그러니 뜨는 걸 막는다 —
+   :has()로 "비어있지 않은 자식이 하나도 없을 때"만 박스 자체를 접는다. */
+.weather-comment-box:not(:has(:not(:empty))) {
+  display: none;
+}
+
 .weather-rain-umbrella {
-  margin: 0 0 14px;
-  padding: 12px 14px;
-  border-radius: 16px;
-  border: none;
+  margin: 0 0 8px;
   font-size: 15px;
   font-weight: 680;
   line-height: 1.5;
   color: #fff;
-}
-
-.weather-rain-umbrella[data-needed="true"] {
-  background: rgba(40,90,160,0.60);
-}
-
-.weather-rain-umbrella[data-needed="false"] {
-  background: rgba(22,120,70,0.55);
 }
 
 /* 2026-07-15: 코멘트를 강수예보 카드 밖(화면 상단)으로 옮기면서, 데이터를
@@ -1446,6 +1493,13 @@ button { font: inherit; }
   margin: 0;
 }
 
+/* 2026-07-19 5차 리디자인(유저 요청): 리스트 전체를 큰 박스 하나로 감싼다
+   — .weather-weekly-box(section에 붙는 클래스)가 패딩을 담당하고, h3
+   제목·행 목록은 그 안에서 기존 스타일 그대로 흐른다. */
+.weather-weekly-box {
+  padding: 18px 16px;
+}
+
 .weather-weekly-list {
   display: flex;
   flex-direction: column;
@@ -1583,9 +1637,12 @@ button { font: inherit; }
   background: rgba(10,14,24,0.60);
 }
 
+/* 2026-07-19 5차 리디자인(유저 요청): "지금" 칸의 파란 배경을 없앤다 —
+   배경 대신 테두리만 밝은 톤으로 두껍게 줘서 강조를 유지한다(배경색이
+   있는 카드 하나가 시간대별 스트립 전체 톤과 이질적이라는 지적 반영). */
 .weather-hourly-item[data-now="true"] {
-  border-color: rgba(120,180,255,0.75);
-  background: rgba(42,98,176,0.62);
+  border-color: rgba(120,180,255,0.85);
+  border-width: 1.5px;
 }
 
 .weather-hourly-icon {
