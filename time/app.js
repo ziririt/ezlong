@@ -1328,23 +1328,19 @@ function ensureQuoteWindow() {
   activeQuoteIndex = 0;
 }
 
-// index가 창(0~3) 범위를 벗어나면: 앞으로 넘어갈 때(미리 불러온 다음
-// 문장들을 다 보여줬을 때)는 덱에서 새 4개를 다시 뽑아 채운다 — "다음>
-// 다음>다음까지 미리 불러와서 하나씩 밀려나게" 요청 그대로 매번 새로운
-// 4개가 이어진다. 뒤로 넘어갈 때는 이미 불러온 4개 안에서 그냥 순환한다
-// (사진 점의 movePhoto와 동일한 동작 — "이전"엔 별도 히스토리가 없다).
+// 2026-07-21 유저 재지적으로 수정: 예전엔 오른쪽으로 index가 창(0~3)을
+// 벗어나는 순간 곧바로 새 4개를 뽑아버려서, 스와이프를 연달아 하면
+// "문장이 수만 가지"인 것처럼 계속 새로 나오고, 왼쪽으로 한 번 갔다가
+// 다시 오른쪽으로 가도 방금 본 문장으로 못 돌아왔다("아껴서 보여줄
+// 필요가 있다"는 유저 지적 그대로 재발). 이제 수동 이동(스와이프/점탭)은
+// 사진 점(selectPhotoIndex)과 완전히 동일하게 "이미 불러온 4개 안에서만"
+// 양방향 순환한다 — 새 4개를 뽑는 건 아래 advanceQuoteAuto()(1분마다
+// 자동 전진, 4개를 다 지나면 그때만 새로 리필)에서만 일어난다.
 function selectQuoteIndex(index) {
   ensureQuoteWindow();
   const length = quoteWindow.length;
   if (length === 0) return;
-  let nextIndex = index;
-  if (nextIndex >= length) {
-    quoteWindow = [getNextQuote(), getNextQuote(), getNextQuote(), getNextQuote()];
-    nextIndex = 0;
-  } else if (nextIndex < 0) {
-    nextIndex = ((nextIndex % length) + length) % length;
-  }
-  activeQuoteIndex = nextIndex;
+  activeQuoteIndex = ((index % length) + length) % length;
   // 같은 분(minute) 안에서 자동 전환(rotateQuote)이 곧바로 또 겹쳐
   // 발동하지 않도록, 수동 이동 시점도 "이번 분은 이미 처리됐다"로 표시.
   activeQuoteMinute = Math.floor(Date.now() / 60000);
@@ -1353,6 +1349,24 @@ function selectQuoteIndex(index) {
 
 function moveQuote(direction) {
   selectQuoteIndex(activeQuoteIndex + direction);
+}
+
+// 2026-07-21 신설: 1분마다 도는 자동 전진(rotateQuote) 전용 — 수동 스와이프와
+// 달리 이쪽은 "시간이 지나면 결국 새 문장으로" 요청이 살아있어야 하므로,
+// 창을 한 바퀴(4개) 다 보여준 뒤에는 새 4개로 리필하는 예전 동작을
+// 그대로 유지한다. 유저가 손대지 않고 놔뒀을 때만 이 경로가 쓰인다.
+function advanceQuoteAuto() {
+  ensureQuoteWindow();
+  const length = quoteWindow.length;
+  if (length === 0) return;
+  let nextIndex = activeQuoteIndex + 1;
+  if (nextIndex >= length) {
+    quoteWindow = [getNextQuote(), getNextQuote(), getNextQuote(), getNextQuote()];
+    nextIndex = 0;
+  }
+  activeQuoteIndex = nextIndex;
+  activeQuoteMinute = Math.floor(Date.now() / 60000);
+  renderQuote(quoteWindow[activeQuoteIndex]);
 }
 
 // 카테고리/장르 설정을 바꿔 즉시 미리보기할 때 쓰던 기존
@@ -5431,16 +5445,19 @@ function rotateQuote(now = new Date()) {
   if (minuteKey === activeQuoteMinute) return;
   // 2026-07-20 유저 요청: 문장 4개 미리로드 창 도입 — 최초 1회(부팅 직후)는
   // 창의 0번(첫 문장)을 그대로 보여주고, 그 이후 매분마다 창을 한 칸씩
-  // 자동으로 전진시킨다(4번째까지 다 보여주면 selectQuoteIndex가 새 4개로
+  // 자동으로 전진시킨다(4번째까지 다 보여주면 advanceQuoteAuto가 새 4개로
   // 자동 리필). "문장은 1분에 하나씩 밀려나게" 요청 그대로 자동 전환
   // 주기는 그대로 1분이다.
+  // 2026-07-21: 여기서 selectQuoteIndex 대신 advanceQuoteAuto를 쓰는 게
+  // 핵심 — 자동 전진만 4개를 다 돈 뒤 새로 리필하고, 유저가 손으로 하는
+  // 스와이프/점탭(selectQuoteIndex)은 이제 절대 새로 리필하지 않는다.
   const isFirstRun = activeQuoteMinute === "";
   activeQuoteMinute = minuteKey;
   if (isFirstRun) {
     ensureQuoteWindow();
     renderQuote(quoteWindow[activeQuoteIndex]);
   } else {
-    selectQuoteIndex(activeQuoteIndex + 1);
+    advanceQuoteAuto();
   }
 }
 
