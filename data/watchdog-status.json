@@ -1,9 +1,9 @@
 {
-  "lastRun": "2026-07-20T20:43:56.610Z",
-  "lastRunKST": "2026-07-21 05:43:56 KST",
+  "lastRun": "2026-07-20T20:47:31.110Z",
+  "lastRunKST": "2026-07-21 05:47:31 KST",
   "summary": {
-    "ok": 7,
-    "triggered": 1,
+    "ok": 8,
+    "triggered": 0,
     "alreadyRunning": 0,
     "stale": 0,
     "skipped": 2,
@@ -14,18 +14,18 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-07-20T20:43:56.610Z",
+      "checkedAt": "2026-07-20T20:47:31.110Z",
       "lastUpdate": "2026-07-20T18:17:57.444Z",
-      "ageHours": 2.4,
+      "ageHours": 2.5,
       "maxAgeHours": 2.5,
       "status": "OK",
-      "reason": "최신 (2.4h 전 업데이트)"
+      "reason": "최신 (2.5h 전 업데이트)"
     },
     {
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-07-20T20:43:56.610Z",
+      "checkedAt": "2026-07-20T20:47:31.110Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -33,40 +33,40 @@
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-07-20T20:43:56.610Z",
-      "lastUpdate": "2026-07-20T15:19:02.204Z",
-      "ageHours": 5.4,
+      "checkedAt": "2026-07-20T20:47:31.110Z",
+      "lastUpdate": "2026-07-20T20:44:23.686Z",
+      "ageHours": 0.1,
       "maxAgeHours": 5,
-      "status": "TRIGGERED",
-      "reason": "5.4h 지연 감지 → 자동 트리거"
+      "status": "OK",
+      "reason": "최신 (0.1h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-07-20T20:43:56.610Z",
+      "checkedAt": "2026-07-20T20:47:31.110Z",
       "lastUpdate": "2026-07-20T20:37:38.237304+00:00",
-      "ageHours": 0.1,
+      "ageHours": 0.2,
       "maxAgeHours": 1.5,
       "status": "OK",
-      "reason": "최신 (0.1h 전 업데이트)"
+      "reason": "최신 (0.2h 전 업데이트)"
     },
     {
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-07-20T20:43:56.610Z",
+      "checkedAt": "2026-07-20T20:47:31.110Z",
       "lastUpdate": "2026-07-20T20:17:25.594Z",
-      "ageHours": 0.4,
+      "ageHours": 0.5,
       "maxAgeHours": 6,
       "status": "OK",
-      "reason": "최신 (0.4h 전 업데이트)"
+      "reason": "최신 (0.5h 전 업데이트)"
     },
     {
       "id": "scorecard",
       "name": "긍정vs부정 스코어카드",
       "workflow": "market-scorecard.yml",
-      "checkedAt": "2026-07-20T20:43:56.610Z",
+      "checkedAt": "2026-07-20T20:47:31.110Z",
       "lastUpdate": "2026-07-20T16:02:42Z",
       "ageHours": 4.7,
       "maxAgeHours": 8,
@@ -77,7 +77,7 @@
       "id": "stocks-prices",
       "name": "심플 주가 실시간",
       "workflow": "fetch-stocks-prices.yml",
-      "checkedAt": "2026-07-20T20:43:56.610Z",
+      "checkedAt": "2026-07-20T20:47:31.110Z",
       "lastUpdate": "2026-07-20T20:10:09.058988+00:00",
       "ageHours": 0.6,
       "maxAgeHours": 0.75,
@@ -88,18 +88,18 @@
       "id": "stocks-data",
       "name": "심플 주가 일간(스파크라인)",
       "workflow": "fetch-stocks-data.yml",
-      "checkedAt": "2026-07-20T20:43:56.610Z",
+      "checkedAt": "2026-07-20T20:47:31.110Z",
       "lastUpdate": "2026-07-19T22:30:51.823673+00:00",
-      "ageHours": 22.2,
+      "ageHours": 22.3,
       "maxAgeHours": 26,
       "status": "OK",
-      "reason": "최신 (22.2h 전 업데이트)"
+      "reason": "최신 (22.3h 전 업데이트)"
     },
     {
       "id": "market-cycle",
       "name": "마켓 사이클 주봉",
       "workflow": "fetch-market-cycle.yml",
-      "checkedAt": "2026-07-20T20:43:56.610Z",
+      "checkedAt": "2026-07-20T20:47:31.110Z",
       "lastUpdate": "2026-07-20T00:16:08.202Z",
       "ageHours": 20.5,
       "maxAgeHours": 30,
@@ -110,7 +110,7 @@
       "id": "kr-prices",
       "name": "한국 주가",
       "workflow": "fetch-kr-prices.yml",
-      "checkedAt": "2026-07-20T20:43:56.610Z",
+      "checkedAt": "2026-07-20T20:47:31.110Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     }
