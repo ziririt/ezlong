@@ -38,31 +38,31 @@
           '</div>' +
           '<div class="ez-footer-books">' +
             '<div class="ez-footer-book">' +
-              '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-cover" target="_blank" rel="noopener">' +
+              '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friends327" class="ez-footer-book-cover" target="_blank" rel="noopener">' +
                 '<img src="/book01.png" alt="절대 실패하지 않는 미국 주식 ETF 투자">' +
               '</a>' +
               '<div class="ez-footer-book-info">' +
                 '<span class="ez-footer-book-title">절대 실패하지 않는<br>미국 주식 ETF 투자</span>' +
                 '<span class="ez-footer-book-label">종이책</span>' +
                 '<div class="ez-footer-book-btns">' +
-                  '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
+                  '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=385645494&partner=friends327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
                   '<a href="https://www.yes24.com/product/goods/177260453" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>' +
                   '<a href="https://product.kyobobook.co.kr/detail/S000219205812" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>' +
                 '</div>' +
                 '<span class="ez-footer-book-label">전자책</span>' +
                 '<div class="ez-footer-book-btns">' +
-                  '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=387049914&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
+                  '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=387049914&partner=friends327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
                   '<a href="https://www.yes24.com/product/goods/180332209" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>' +
                   '<a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012611429" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>' +
                   '<a href="https://ridibooks.com/books/3844000153" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>' +
                 '</div>' +
                 '<span class="ez-footer-book-label">오디오북</span>' +
                 '<div class="ez-footer-book-btns">' +
-                  '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=388954868&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
+                  '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=388954868&partner=friends327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
                 '</div>' +
                 '<span class="ez-footer-book-label">구독</span>' +
                 '<div class="ez-footer-book-btns">' +
-                  '<a href="https://max.aladin.co.kr/product/387049914?&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
+                  '<a href="https://max.aladin.co.kr/product/387049914?&partner=friends327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
                   '<a href="https://www.millie.co.kr/v4/book/52e27a74508a4c93" class="ez-footer-book-btn" target="_blank" rel="noopener">밀리</a>' +
                   '<a href="https://cremaclub.yes24.com/BookClub/Detail/180332209" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>' +
                   '<a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012611429" class="ez-footer-book-btn" target="_blank" rel="noopener">교보</a>' +
@@ -70,25 +70,25 @@
               '</div>' +
             '</div>' +
             '<div class="ez-footer-book">' +
-              '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-cover" target="_blank" rel="noopener">' +
+              '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friends327" class="ez-footer-book-cover" target="_blank" rel="noopener">' +
                 '<img src="/book02_1.png" alt="월급쟁이 투자 자동화">' +
               '</a>' +
               '<div class="ez-footer-book-info">' +
                 '<span class="ez-footer-book-title">월급쟁이<br>투자 자동화</span>' +
                 '<span class="ez-footer-book-label">전자책</span>' +
                 '<div class="ez-footer-book-btns">' +
-                  '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
+                  '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=389499456&partner=friends327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
                   '<a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>' +
                   '<a href="https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보문고</a>' +
                   '<a href="https://ridibooks.com/books/6121000386" class="ez-footer-book-btn" target="_blank" rel="noopener">리디</a>' +
                 '</div>' +
                 '<span class="ez-footer-book-label">오디오북</span>' +
                 '<div class="ez-footer-book-btns">' +
-                  '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=391653601&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
+                  '<a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=391653601&partner=friends327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
                 '</div>' +
                 '<span class="ez-footer-book-label">구독</span>' +
                 '<div class="ez-footer-book-btns">' +
-                  '<a href="https://max.aladin.co.kr/product/389499456?&partner=friedns327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
+                  '<a href="https://max.aladin.co.kr/product/389499456?&partner=friends327" class="ez-footer-book-btn" target="_blank" rel="noopener">알라딘</a>' +
                   '<a href="https://www.millie.co.kr/v4/book/e7fbd96e137b4ae1" class="ez-footer-book-btn" target="_blank" rel="noopener">밀리</a>' +
                   '<a href="https://www.yes24.com/product/goods/185275759" class="ez-footer-book-btn" target="_blank" rel="noopener">예스24</a>' +
                   '<a href="https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000012810587" class="ez-footer-book-btn" target="_blank" rel="noopener">교보</a>' +
