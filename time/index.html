@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260720-ezlongfix-v3">
+  <link rel="stylesheet" href="styles.css?v=20260720-ezlongfix-v4">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -129,7 +129,7 @@
       </section>
 
       <div class="scene-dots" aria-label="배경 사진 선택">
-        <span class="app-version" aria-hidden="true">ver.1.3.5.4</span>
+        <span class="app-version" aria-hidden="true">ver.1.3.5.5</span>
         <span class="dot-group">
           <button class="dot active" type="button" data-scene-button="0" aria-label="배경 사진 1"></button>
           <button class="dot" type="button" data-scene-button="1" aria-label="배경 사진 2"></button>
@@ -435,7 +435,11 @@
           <p class="weather-current-sub" id="wdCurrentSub">정보를 불러오는 중</p>
         </section>
 
-        <div class="settings-divider" aria-hidden="true"></div>
+        <!-- 2026-07-20 유저 요청: 박스(.weather-card) 스타일을 가진 카드끼리는
+             카드 자체의 여백·테두리로 구분이 충분해서 구분선이 중복이라는
+             지적 — 이 구분선 삭제. 유일하게 남기는 구분선은 아래 "평년과
+             비교하면"↔"오늘 밤 열대야" 사이 것 하나뿐이다(둘 다 박스 스타일이
+             아니라 구분선이 없으면 시각적으로 붙어 보이기 때문). -->
 
         <!-- 2026-07-17: 미세먼지(묶음C) 카드는 유저 요청으로 이번 배포에서
              보류 — "다음에 하자". 백엔드(airQuality.ts, /api/weather/
@@ -470,8 +474,6 @@
           <p class="weather-comment weather-next-rain" id="wdNextRain"></p>
         </div>
 
-        <div class="settings-divider" aria-hidden="true"></div>
-
         <!-- 2026-07-17 벤치마크 기획(묶음4): 시간대별 상세 예보 가로 스크롤
              스트립. 주의 — #weatherDetailPanel(세로 스크롤) 안의 가로 스크롤
              조합은 아직 실기기 검증 전. 배포 전 아이폰 사파리에서 좌우
@@ -484,8 +486,6 @@
             <p class="weather-empty">불러오는 중…</p>
           </div>
         </section>
-
-        <div class="settings-divider" aria-hidden="true"></div>
 
         <!-- 2026-07-18 8차 피드백: "시간대별 상세 예보" 바로 아래에 "주간
              예보"가 오도록 순서 변경(유저 요청 — 아래 "이번 주 강수 예보"를
@@ -502,8 +502,6 @@
             <p class="weather-empty">불러오는 중…</p>
           </div>
         </section>
-
-        <div class="settings-divider" aria-hidden="true"></div>
 
         <!-- 2026-07-18 8차 피드백: "디자인이 별로고 위 시간대별/우산조언과
              중복 정보라 고민스럽다" — 개선은 나중으로 미루고 일단 주석처리로
@@ -532,8 +530,6 @@
             <p class="weather-empty">불러오는 중…</p>
           </div>
         </section>
-
-        <div class="settings-divider" aria-hidden="true"></div>
 
         <!-- 2026-07-17 2차 기획(묶음D): 일평균 대비 기온차(평년값).
              그 달력일이 처음 조회될 때만 백엔드가 과거 10년치를 계산하고,

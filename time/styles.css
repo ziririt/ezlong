@@ -2850,18 +2850,26 @@ button { font: inherit; }
    스와이프를 시작하게 되고, 그러면 터치가 iframe에 삼켜져 복귀가 안 된다 —
    터치 표면을 크게 키우고 손잡이도 또렷하게. (실기기 미러링으로 제스처
    자체는 정상 동작 확인 완료 — 문제는 크기/발견성이었다) */
+/* 2026-07-20 16차-f(유저 제보): 전폭 띠가 ezlong 헤더의 우상단 메뉴('투자
+   AI 도구')와 좌상단 로고 탭까지 가로채는 사이드이펙트 — 띠를 가운데
+   160px 폭으로 좁혀서 좌우 터치는 iframe으로 통과시키고, 가운데 손잡이만
+   복귀 제스처를 받는다. (가운데 상단은 ezlong 헤더에서 빈 영역이라 충돌
+   없음. transform 대신 auto-margin 센터링 — iframe 조상 체인 불변.) */
 .webview-grabber {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
+  width: 160px;
+  margin: 0 auto;
   height: max(64px, calc(env(safe-area-inset-top) + 36px));
   z-index: 5;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   padding-bottom: 7px;
-  background: linear-gradient(rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0));
+  background: linear-gradient(rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0));
+  border-radius: 0 0 14px 14px;
 }
 
 .webview-grabber span {
