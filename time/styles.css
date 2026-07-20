@@ -523,6 +523,17 @@ button { font: inherit; }
   margin-bottom: 10px;
 }
 
+/* 2026-07-21 유저 요청: 설정 페이지 닫기 버튼도 스크롤해도 늘 화면에
+   떠있어야 한다 — weather-detail-close-fixed와 동일 패턴(이 페이지도
+   body 직속이라 fixed가 뷰포트 기준으로 정확히 동작한다). */
+.settings-close-fixed {
+  position: fixed;
+  top: max(20px, env(safe-area-inset-top));
+  right: clamp(20px, 5vw, 34px);
+  z-index: 30;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+}
+
 .settings-head p,
 .settings-head h2 {
   margin: 0;
