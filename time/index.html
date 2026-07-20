@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260720-quotewindow-v1">
+  <link rel="stylesheet" href="styles.css?v=20260720-basecamplabel-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -149,7 +149,7 @@
            (app.js sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이
            있었다"는 공간감을 위함. -->
       <div class="scene-dots" aria-label="ezlong.com 이동">
-        <span class="app-version" aria-hidden="true">ver.1.3.5.11</span>
+        <span class="app-version" aria-hidden="true">ver.1.3.5.12</span>
         <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
@@ -190,8 +190,13 @@
         <!-- 2026-07-20 유저 요청: 아이콘을 "<" 셰브론에서 "위로 돌아간다"는
              느낌의 이젝트(⏏) 심볼로 교체 — 삼각형+가로줄, webview-open과
              동일한 stroke 스타일 SVG. 위치도 가운데(그리드 2번째 칸)로. -->
+        <!-- 2026-07-20 유저 요청: 아이콘만으로는 의미가 모호해서 "Basecamp"
+             텍스트를 아이콘 옆에 병기 — 영어 표기는 고유명사 스타일로 첫
+             글자만 대문자(Basecamp), 이 화면의 이름("ezlong 베이스캠프")을
+             그대로 영문 라벨로 옮긴 것. -->
         <button type="button" class="webview-back" id="webviewBackButton" aria-label="ezlong 베이스캠프로 돌아가기">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 13 L12 7 L17 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 18 H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="webview-back-label" aria-hidden="true">Basecamp</span>
         </button>
         <!-- 2026-07-20 9차 피드백(유저 제보): "이 버튼 눌러도 무반응" —
              WKWebView는 target="_blank" 앵커의 새 창 열기를 기본적으로

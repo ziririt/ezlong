@@ -3036,6 +3036,21 @@ button { font: inherit; }
 .webview-back {
   grid-column: 2;
   justify-self: center;
+  /* 2026-07-20 유저 요청: "Basecamp" 텍스트 라벨을 아이콘 옆에 병기하면서
+     기존 26px 정사각형(아이콘 전용) 크기로는 텍스트가 안 들어가 auto 너비 +
+     좌우 여백 + 아이콘-텍스트 간격으로 확장. */
+  width: auto;
+  height: 30px;
+  gap: 5px;
+  padding: 0 10px;
+}
+
+.webview-back-label {
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .webview-open {
