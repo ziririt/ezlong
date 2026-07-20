@@ -2627,7 +2627,11 @@ button { font: inherit; }
 .quote-panel {
   width: min(100%, 820px);
   margin: 0 auto;
-  padding: clamp(22px, 5vw, 34px);
+  padding: clamp(22px, 5vw, 34px) clamp(22px, 5vw, 34px) clamp(11px, 2.5vw, 17px);
+  /* 2026-07-20 유저 지적: 점4개(dot-group)가 문장박스 안으로 들어온 뒤
+     점 아래~박스 하단 여백이 위쪽 여백과 대칭이라 유독 넉넉해 보였다
+     ("위는 텍스트가 많을 때 빡빡한데 이 여백만 넓다") — 하단 패딩만
+     절반으로 줄여 비대칭으로 만든다(좌우/상단은 기존 값 유지). */
   /* 문장이 바뀔 때마다(1분마다) 길이에 따라 폰트 크기가 달라지고, 영어 원문
      유무에 따라 줄 수도 달라져서 이 박스의 실제 높이가 매번 조금씩
      바뀌었다. 이 박스는 플립시계와 같은 grid(.sky-room)의 flexible한 행
@@ -2707,7 +2711,7 @@ button { font: inherit; }
 
 .quote-panel.quote-dense {
   padding-top: clamp(18px, 4.2vw, 28px);
-  padding-bottom: clamp(18px, 4.2vw, 28px);
+  padding-bottom: clamp(9px, 2.1vw, 14px);
 }
 
 .quote-panel.quote-dense blockquote {
@@ -3182,7 +3186,7 @@ button { font: inherit; }
 
   .quote-panel {
     padding-top: 18px;
-    padding-bottom: 18px;
+    padding-bottom: 9px;
   }
 
   .quote-panel blockquote {

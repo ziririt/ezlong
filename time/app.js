@@ -324,6 +324,10 @@ let lastQuoteTitle = "";
 // 맞춰준다(resyncAladinUiAfterForeground 참고).
 let lastRenderedQuote = null;
 let quoteDeck = [];
+// 2026-07-20 유저 요청: 문장 4개 미리로드 창 — activePhotoSet/activePhotoIndex와
+// 동일한 역할(아래 ensureQuoteWindow/selectQuoteIndex 참조).
+let quoteWindow = [];
+let activeQuoteIndex = 0;
 let selectedCategories = new Set();
 let selectedLitCategories = new Set();
 let selectedGenres = new Set(["investment"]);
@@ -1266,6 +1270,59 @@ function getNextQuote() {
   const quote = quoteDeck.shift();
   lastQuoteTitle = quote.title;
   return quote;
+}
+
+// 2026-07-20 유저 요청: 배경 사진(점 4개)과 똑같은 방식으로 문장도 4개를
+// 미리 불러와 스와이프/점탭으로 수동 이동할 수 있게 한다. quoteWindow가
+// activePhotoSet과 동격, activeQuoteIndex가 activePhotoIndex와 동격이다.
+// 다른 점은 자동 전환 주기 — 사진은 15분마다, 문장은 1분마다(rotateQuote)
+// 자동으로 한 칸씩 전진하므로 두 인덱스는 각자의 시계로 따로 움직이고,
+// 스와이프나 점탭처럼 "수동 조작이 실제로 일어나는 그 순간"에만 두
+// 인덱스를 같은 방향으로 함께 옮겨 짝을 맞춘다.
+function ensureQuoteWindow() {
+  if (quoteWindow.length === 4) return;
+  quoteWindow = [getNextQuote(), getNextQuote(), getNextQuote(), getNextQuote()];
+  activeQuoteIndex = 0;
+}
+
+// index가 창(0~3) 범위를 벗어나면: 앞으로 넘어갈 때(미리 불러온 다음
+// 문장들을 다 보여줬을 때)는 덱에서 새 4개를 다시 뽑아 채운다 — "다음>
+// 다음>다음까지 미리 불러와서 하나씩 밀려나게" 요청 그대로 매번 새로운
+// 4개가 이어진다. 뒤로 넘어갈 때는 이미 불러온 4개 안에서 그냥 순환한다
+// (사진 점의 movePhoto와 동일한 동작 — "이전"엔 별도 히스토리가 없다).
+function selectQuoteIndex(index) {
+  ensureQuoteWindow();
+  const length = quoteWindow.length;
+  if (length === 0) return;
+  let nextIndex = index;
+  if (nextIndex >= length) {
+    quoteWindow = [getNextQuote(), getNextQuote(), getNextQuote(), getNextQuote()];
+    nextIndex = 0;
+  } else if (nextIndex < 0) {
+    nextIndex = ((nextIndex % length) + length) % length;
+  }
+  activeQuoteIndex = nextIndex;
+  // 같은 분(minute) 안에서 자동 전환(rotateQuote)이 곧바로 또 겹쳐
+  // 발동하지 않도록, 수동 이동 시점도 "이번 분은 이미 처리됐다"로 표시.
+  activeQuoteMinute = Math.floor(Date.now() / 60000);
+  renderQuote(quoteWindow[activeQuoteIndex]);
+}
+
+function moveQuote(direction) {
+  selectQuoteIndex(activeQuoteIndex + direction);
+}
+
+// 카테고리/장르 설정을 바꿔 즉시 미리보기할 때 쓰던 기존
+// "quoteDeck=[]; lastQuoteTitle=''; renderQuote(getNextQuote());" 3줄
+// 패턴을 창 모델에 맞게 대체 — 덱과 창을 모두 비우고 새로 4개를 채운
+// 뒤 첫 번째를 보여준다.
+function resetQuoteWindow() {
+  quoteDeck = [];
+  lastQuoteTitle = "";
+  quoteWindow = [];
+  ensureQuoteWindow();
+  activeQuoteMinute = Math.floor(Date.now() / 60000);
+  renderQuote(quoteWindow[activeQuoteIndex]);
 }
 
 // 2026-07-19 개정: 문학·교양서도 투자서와 동일하게 자기만의 하위 분류
@@ -5062,9 +5119,7 @@ function applyCategorySelection() {
   );
   allCategories.checked = selectedCategories.size === 0;
   markSettingsDirty();
-  quoteDeck = [];
-  lastQuoteTitle = "";
-  renderQuote(getNextQuote());
+  resetQuoteWindow();
 }
 
 // 2026-07-19: investment 쪽 applyCategorySelection과 동일한 패턴 — 저장은
@@ -5076,9 +5131,7 @@ function applyLitCategorySelection() {
   );
   if (allLitCategories) allLitCategories.checked = selectedLitCategories.size === 0;
   markSettingsDirty();
-  quoteDeck = [];
-  lastQuoteTitle = "";
-  renderQuote(getNextQuote());
+  resetQuoteWindow();
 }
 
 function applyGenreSelection() {
@@ -5087,17 +5140,25 @@ function applyGenreSelection() {
   selectedGenres = new Set(checked.length > 0 ? checked : ["investment"]);
   syncGenreControls();
   saveSelectedGenres();
-  quoteDeck = [];
-  lastQuoteTitle = "";
-  renderQuote(getNextQuote());
+  resetQuoteWindow();
 }
 
 function rotateQuote(now = new Date()) {
   const minuteKey = Math.floor(now.getTime() / 60000);
   if (minuteKey === activeQuoteMinute) return;
-
+  // 2026-07-20 유저 요청: 문장 4개 미리로드 창 도입 — 최초 1회(부팅 직후)는
+  // 창의 0번(첫 문장)을 그대로 보여주고, 그 이후 매분마다 창을 한 칸씩
+  // 자동으로 전진시킨다(4번째까지 다 보여주면 selectQuoteIndex가 새 4개로
+  // 자동 리필). "문장은 1분에 하나씩 밀려나게" 요청 그대로 자동 전환
+  // 주기는 그대로 1분이다.
+  const isFirstRun = activeQuoteMinute === "";
   activeQuoteMinute = minuteKey;
-  renderQuote(getNextQuote());
+  if (isFirstRun) {
+    ensureQuoteWindow();
+    renderQuote(quoteWindow[activeQuoteIndex]);
+  } else {
+    selectQuoteIndex(activeQuoteIndex + 1);
+  }
 }
 
 function tick() {
@@ -5111,7 +5172,11 @@ function tick() {
 }
 
 dots.forEach((dot) => {
-  dot.addEventListener("click", () => selectPhotoIndex([...dots].indexOf(dot)));
+  dot.addEventListener("click", () => {
+    const index = [...dots].indexOf(dot);
+    selectPhotoIndex(index);
+    selectQuoteIndex(index);
+  });
 });
 
 // 2026-07-17 8차 개정(근본 재설계): 페이지 전환을 네이티브 scroll-snap
@@ -5227,7 +5292,9 @@ if (skyRoom) {
       return;
     }
     if (Math.abs(dx) < 48) return;
-    movePhoto(dx < 0 ? 1 : -1);
+    const direction = dx < 0 ? 1 : -1;
+    movePhoto(direction);
+    moveQuote(direction);
   }, { passive: true });
 }
 
