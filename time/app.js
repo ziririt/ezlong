@@ -3554,15 +3554,27 @@ function pickNextTrackIndex() {
   for (let i = 0; i < total; i += 1) {
     if (matchesFilter(i) && matchesGenreToggle(i) && !isDisliked(i)) baseIndices.push(i);
   }
-  // 필터 결과가 통째로 비면(이론상 거의 없음) 안전하게 전체에서 고른다.
-  // 주의: 이 최후 폴백은 disliked 필터까지 무시하고 전체 카탈로그로
-  // 되돌아간다 — 즉 "현재 필터+장르 조건에 맞는 곡을 전부 싫어요 했을
-  // 때"라는 극단적 경우에만 disliked 곡이 다시 나올 수 있다. 반대로
-  // 폴백 자체를 없애면 그 경우 재생이 아예 멈춰버리므로, 의도적으로
-  // 남겨둔 안전장치다(2026-07-14 재확인 — 평소엔 절대 발동하지 않음).
-  const searchBase = baseIndices.length > 0
-    ? baseIndices
-    : Array.from({ length: total }, (_, i) => i);
+  // 2026-07-20 유저 긴급 제보로 발견·수정: "ROCK을 선택했는데 명상 곡이
+  // 나온다." 원인은 이 폴백이었다 — baseIndices가 어떤 이유로든(예: 제외
+  // 필터+싫어요 조합이 그 카테고리를 통째로 비웠을 때) 비면, 카테고리
+  // 필터 자체를 무시하고 곧장 전체 658곡 카탈로그로 되돌아갔다. "전체
+  // 랜덤"이 아니라 특정 카테고리를 명시적으로 골랐는데 완전히 다른
+  // 카테고리 곡이 나올 수 있는 구조였던 것 — 데이터(music-playlist.js)
+  // 자체는 검증 결과 문제없었고 이 폴백 순서가 진짜 원인이다.
+  // 이제 2단계로 완화한다: 먼저 "카테고리 필터만은 지키고" 장르 제외/
+  // 싫어요 조건만 무시한 풀로 폴백하고, 그 풀조차 비어야만(사실상 있을 수
+  // 없음 — 실제 존재하는 카테고리는 항상 트랙이 있음) 최후의 수단으로
+  // 전체 카탈로그를 쓴다.
+  let searchBase = baseIndices;
+  if (searchBase.length === 0) {
+    const filterOnlyIndices = [];
+    for (let i = 0; i < total; i += 1) {
+      if (matchesFilter(i)) filterOnlyIndices.push(i);
+    }
+    searchBase = filterOnlyIndices.length > 0
+      ? filterOnlyIndices
+      : Array.from({ length: total }, (_, i) => i);
+  }
 
   const recentHistory = loadMusicHistory();
   const heard = new Set(recentHistory);
