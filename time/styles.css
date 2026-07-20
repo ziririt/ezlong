@@ -2814,20 +2814,70 @@ button { font: inherit; }
   gap: 10px;
 }
 
+/* 2026-07-20 유저 요청(수정): 점 4개가 하단 scene-dots에서 문장 박스
+   안(1분 진행바 바로 아래)으로 이동 — 정중앙 정렬 + 위쪽에 진행바와의
+   간격을 살짝 준다. 크기/간격도 더 작게(공간을 덜 차지하게). */
 .dot-group {
-  grid-column: 2;
   display: flex;
-  gap: 16px;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 8px;
 }
 
 .dot {
-  width: 14px;
-  height: 14px;
+  width: 8px;
+  height: 8px;
   padding: 0;
   border-radius: 50%;
   background: rgba(255,255,255,0.34);
 }
 .dot.active { background: #fff; }
+
+/* 2026-07-20 유저 요청: 하단 우측 — 기존 사진 저작권 표기 자리에 대신
+   "ezlong.com" 링크를 배치. 우상단 앱브랜드와 별개의 진입점이지만,
+   여기서는 3D 회전 없이 곧장 위로 슬라이드하는 전환을 쓴다(app.js
+   sceneEzlongLink 클릭 핸들러 참조) — "이 자리 아래에 원래 ezlong.com이
+   있었다"는 공간감을 주기 위함. */
+.scene-ezlong-link {
+  /* 2026-07-20 유저 요청(수정): 점4개가 문장박스로 옮겨가면서 이 줄의
+     옛 점4개 자리(정중앙)를 그대로 물려받는다 — ezlong.com 자체 하단바의
+     ⏏ 아이콘도 정중앙이라 두 화면을 오갈 때 자리가 대칭으로 느껴진다.
+     2026-07-20 2차 요청: 텍스트 아래에 아래방향 화살표(⌄)를 살짝 얹어서
+     "이 아래에 뭔가 더 있다"는 방향성을 암시한다 — 플렉스 세로배치로
+     텍스트와 화살표를 쌓는다. */
+  grid-column: 2;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(238,242,246,0.58);
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.18);
+  cursor: pointer;
+}
+.scene-ezlong-link:active {
+  opacity: 0.65;
+}
+
+.scene-ezlong-hint {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1;
+  color: rgba(238,242,246,0.5);
+  animation: sceneEzlongHintBounce 1.8s ease-in-out infinite;
+}
+
+@keyframes sceneEzlongHintBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(3px); opacity: 0.85; }
+}
 
 /* 2026-07-08: 유저-Claude 간 "이 업데이트가 실제로 반영됐는지" 확인용 버전
    표시. 배포마다 바뀌는 캐시버스팅 버전(index.html의 ?v=)과는 별개 —
@@ -2845,31 +2895,14 @@ button { font: inherit; }
   white-space: nowrap;
 }
 
-.photo-credit {
-  grid-column: 3;
-  /* 2026-07-07: 점4개 바로 옆이 아니라 페이지 맨 우측 끝으로 정렬 */
-  justify-self: end;
-  text-align: right;
-  max-width: min(32vw, 180px);
-  overflow: hidden;
-  color: rgba(238,242,246,0.38);
-  font-size: 9px;
-  font-weight: 400;
-  line-height: 1;
-  text-decoration: none;
-  text-overflow: ellipsis;
-  text-shadow: 0 1px 8px rgba(0,0,0,0.18);
-  white-space: nowrap;
-}
-
-.photo-credit[href="#"] {
-  pointer-events: none;
-}
-
-.photo-credit:focus-visible {
-  outline: 1px solid rgba(255,255,255,0.36);
-  outline-offset: 3px;
-}
+/* 2026-07-20 유저 요청(수정): 사진 저작권 표기(photoCredit)를 이번엔
+   완전히 삭제한다(HTML 요소 자체 제거) — 이전 라운드의 "시각적으로만
+   숨기고 DOM엔 유지" 절충안을 유저가 재확인 후 명시적으로 뒤집었다.
+   대부분의 배경 사진이 CC BY 라이선스라 출처 표기 의무가 남을 수 있다는
+   점은 응답에서 별도로 안내했다 — 필요해지면 설정 화면 등 다른 자리에
+   최소 형태로 다시 넣을 수 있다. app.js의 renderPhotoCredit류 로직은
+   `if (!photoCredit) return;` 가드가 이미 있어(getElementById가 null을
+   반환해도 안전) 별도 수정 없이 조용히 no-op된다. */
 
 /* 2026-07-18 유저 제보 대응 — min-height만 있고 고정 height가 없으면 이
    박스가 내용물(iframe 100svh + footer 실제 높이)만큼 뷰포트보다 더 커져서,
@@ -2961,14 +2994,21 @@ button { font: inherit; }
   background: #fff;
 }
 
+/* 2026-07-20 유저 요청("2층 높이다, 1층으로") — 기존엔 min-height:34px +
+   상하 padding(특히 하단 safe-area-inset-bottom, 노치 기기에서 30px 안팎)이
+   더해져 아이콘 줄 위아래로 여백이 두툼하게 남아 "두 층"처럼 보였다.
+   min-height를 없애 내용물(26px 아이콘) 기준으로 줄이고, 상하좌우 패딩도
+   좁혀서 한 줄짜리 얇은 바가 되게 했다 — 하단 safe-area는 필수라 그대로
+   유지(홈 인디케이터 위에 아이콘이 겹치지 않게). 배치는 .scene-dots와
+   동일한 3열 그리드(빈칸/가운데/끝) 패턴으로 바꿔서, 뒤로가기 버튼은
+   정중앙, 나가기 버튼은 우측 끝에 각각 독립적으로 배치한다(유저 요청:
+   "브라우저로 나가기는 가운데 두지 말고 우측 정렬"). */
 .webview-footer {
   width: 100%;
-  min-height: 34px;
-  padding: 5px 12px max(6px, env(safe-area-inset-bottom));
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: center;
-  gap: 16px;
+  padding: 8px 16px calc(8px + env(safe-area-inset-bottom));
   background: #f2f3f5;
   border-top: 1px solid rgba(18, 27, 42, 0.10);
 }
@@ -2989,16 +3029,37 @@ button { font: inherit; }
   padding: 0;
 }
 
-/* 2026-07-17 8차: 2페이지(ezlong-webview)에서 1페이지(시계)로 돌아가는
-   버튼 — CSS만으로 그린 왼쪽 화살표(셰브론). */
-.webview-back span {
-  display: block;
-  width: 8px;
-  height: 8px;
-  border-left: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(45deg);
-  margin-left: 3px;
+.webview-back {
+  grid-column: 2;
+  justify-self: center;
+}
+
+.webview-open {
+  grid-column: 3;
+  justify-self: end;
+}
+
+/* 2026-07-20 유저 요청: "<" 셰브론 대신 "위로 돌아간다"는 느낌의 이젝트(⏏)
+   심볼로 교체(index.html의 SVG 참조) — 알라딘/나가기 버튼과 동일한 stroke
+   스타일로 통일. */
+.webview-back svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* 2026-07-20 유저 요청: "⏏를 누르면 위로 올라간다"는 걸 잠깐이라도
+   암시하고 싶다 — 페이지2(ezlong.com)에 들어올 때마다 아이콘이 위로
+   살짝 두 번 튀었다 가라앉는 짧은 힌트를 준다(무한 반복 아님, 산만함
+   방지). app.js goToPage()가 열릴 때마다 .hint-play 클래스를 뗐다 다시
+   붙여 재생시킨다(강제 리플로우로 애니메이션 재시작). */
+.webview-back.hint-play svg {
+  animation: webviewBackHint 1.1s ease-in-out 2;
+  animation-delay: 0.6s;
+}
+
+@keyframes webviewBackHint {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
 }
 
 /* 2026-07-20 9차 피드백(유저 요청): CSS 손그림 아이콘 대신 알라딘 링크

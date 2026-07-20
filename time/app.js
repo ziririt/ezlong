@@ -221,6 +221,10 @@ const genreOptions = document.getElementById("genreOptions");
 const genreMinWarning = document.getElementById("genreMinWarning");
 const ezlongSection = document.querySelector(".ezlong-webview");
 const appBrand = document.querySelector(".app-brand");
+// 2026-07-20 유저 요청: 하단 우측 "ezlong.com" 링크 — appBrand와는 별개
+// 진입점이지만 goToPage(1)만 곧장 호출해 회전 없이 "위로 슬라이드"만
+// 되게 한다(아래 sceneEzlongLink 클릭 핸들러 참조).
+const sceneEzlongLink = document.getElementById("sceneEzlongLink");
 const musicSettingsOpen = document.getElementById("musicSettingsOpen");
 const musicToggle = document.getElementById("musicToggle");
 const musicSkip = document.getElementById("musicSkip");
@@ -5180,6 +5184,18 @@ function goToPage(index) {
   if (open) {
     if (app) app.classList.add("ezlong-open");
     ezlongSettleTimer = window.setTimeout(settleEzlongOpen, 620); // 슬라이드 완료 후 정착
+    // 2026-07-20 유저 요청: 페이지2에 들어올 때마다 ⏏ 아이콘이 위로 살짝
+    // 튀는 짧은 힌트를 재생 — "이걸 누르면 위로 올라간다"는 암시. 클래스를
+    // 뗐다 붙여(강제 리플로우) 두 번째 이후 진입에서도 매번 재생되게 한다.
+    // getElementById로 직접 참조하는 이유: webviewBackButton const가 이
+    // 함수보다 뒤에서 선언돼 있어(temporal dead zone) 여기서 그 변수를
+    // 직접 쓰면 초기 실행 순서에 따라 깨질 수 있다 — 안전하게 우회.
+    const backBtnForHint = document.getElementById("webviewBackButton");
+    if (backBtnForHint) {
+      backBtnForHint.classList.remove("hint-play");
+      void backBtnForHint.offsetWidth; // 강제 리플로우로 애니메이션 재시작
+      backBtnForHint.classList.add("hint-play");
+    }
   } else {
     // 닫기: 원복을 먼저(t=0) — 시계가 다시 보이며 z2>z1로 위에서 슬라이드 복귀
     if (ezlongSection) ezlongSection.style.zIndex = "";
@@ -5295,6 +5311,15 @@ if (appBrand && skyRoom && ezlongSection) {
       if (pageTrack) pageTrack.classList.remove("is-flipping-3d");
     }, 900); // 화면 밖으로 충분히 벗어난 뒤 원상태로 리셋(다음에 다시 볼 때 정상 모습).
   });
+}
+
+// 2026-07-20 유저 요청: 하단 우측 "ezlong.com" 링크 — appBrand와 달리
+// 회전 애니메이션(is-flipping-away/is-flipping-3d) 없이 goToPage(1)만
+// 곧장 호출한다. .clock-app.ezlong-open은 순수 translateY(-100%) 슬라이드라
+// (styles.css 참조), "이 자리 아래에 원래 ezlong.com이 있었다"는 느낌으로
+// 화면이 위로 걷힌다 — appBrand의 회전 플립과 의도적으로 다른 연출.
+if (sceneEzlongLink) {
+  sceneEzlongLink.addEventListener("click", () => goToPage(1));
 }
 
 renderCategoryOptions();
