@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260720-basecamplabel-v1">
+  <link rel="stylesheet" href="styles.css?v=20260720-musicspecial-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -149,7 +149,7 @@
            (app.js sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이
            있었다"는 공간감을 위함. -->
       <div class="scene-dots" aria-label="ezlong.com 이동">
-        <span class="app-version" aria-hidden="true">ver.1.3.5.12</span>
+        <span class="app-version" aria-hidden="true">ver.1.3.5.13</span>
         <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
@@ -337,6 +337,26 @@
                (app.js genreOptions change 핸들러) 마지막 하나는 되돌리고
                이 문구를 잠깐 보여준다. -->
           <p class="genre-min-warning" id="genreMinWarning" role="status" aria-live="polite" hidden>최소한 하나의 분야는 선택해야 합니다.</p>
+        </section>
+
+        <!-- 2026-07-20: 위 카드(.settings-card) 바로 뒤에 divider 없이 이
+             카드를 바로 이어 붙인다 — .settings-card + .settings-card
+             (styles.css)가 28px 여백을 자동으로 준다. 사이에 divider
+             엘리먼트를 끼우면 display:none이어도 DOM상 "바로 다음 형제"
+             관계가 깨져 이 마진 규칙이 적용되지 않는다(인접 셀렉터는
+             display:none 여부와 무관하게 DOM 인접성만 본다). -->
+        <!-- 2026-07-20 유저 요청: 스트레스 해소/수면유도/명상은 "특수한
+             환경/조건에서 들을 수 있는 음악"이라 기본 전체 랜덤과 섞이면
+             안 된다 — 완전히 독립된 대카테고리로 하단에 별도 박스 분리.
+             radiogroup의 name="musicPlaylistFilter"는 위 일반 플레이리스트
+             박스와 동일해서(app.js renderMusicSpecialFilterOptions 참조)
+             셋 중 하나만 고를 수 있고, 고르는 순간 위 일반 선택은 자동
+             해제된다(반대도 마찬가지) — 재생 필터는 앱 전체에서 항상
+             하나뿐이라는 원칙 유지. -->
+        <section class="settings-block settings-card settings-card-special" aria-label="Special — 특수 상황별 음악">
+          <h3 class="settings-subtitle">Special</h3>
+          <p class="settings-desc settings-desc-muted">특수한 상황에서 듣는 음악입니다. 전체 랜덤에는 섞이지 않고, 아래 중 하나를 선택했을 때만 재생됩니다.</p>
+          <div class="field-grid" id="musicSpecialOptions" role="radiogroup" aria-label="Special 플레이리스트 선택"></div>
         </section>
 
         <button class="settings-save" type="button" id="settingsSave">확인</button>
@@ -618,7 +638,7 @@
 
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
-  <script src="music-playlist.js?v=20260718-bgmremoved-v1"></script>
-  <script src="app.js?v=20260720-quotewindow-v1"></script>
+  <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
+  <script src="app.js?v=20260720-musicspecial-v1"></script>
 </body>
 </html>

@@ -240,6 +240,7 @@ const musicGearOpen = document.getElementById("musicGearOpen");
 const musicToast = document.getElementById("musicToast");
 const musicLeaveWorkEl = document.getElementById("musicLeaveWork");
 const musicPlaylistOptionsEl = document.getElementById("musicPlaylistOptions");
+const musicSpecialOptionsEl = document.getElementById("musicSpecialOptions");
 const musicHistoryList = document.getElementById("musicHistoryList");
 const musicHistoryBody = document.getElementById("musicHistoryBody");
 const musicHistoryViewAll = document.getElementById("musicHistoryViewAll");
@@ -3293,13 +3294,24 @@ const musicRecentGroupSpacing = 8; // 같은 그룹은 최소 이만큼 곡이 �
 // 모두에서 자동으로 사라진다 — 이 라벨 엔트리를 지우는 것 자체는 사실 없어도
 // 무방하지만(더 이상 매칭될 키가 없으니), 죽은 매핑을 남겨두지 않기 위해
 // 함께 정리했다.
+// 2026-07-20 유저 요청: 새로 다운로드한 5개 폴더(classic 20260718/
+// Rock-20260720/Calm Circles.../sleep/명상)를 반영 — "classic 20260718"은
+// 기존 "피아노 · 첼로" 라벨을 "클래식"으로 바꿔 그 카테고리에 통합하고,
+// "Rock-20260720"은 기존 ROCK에 통합한다(둘 다 아래 CATEGORY_CANONICAL_KEY
+// 참조). 나머지 3개(스트레스 해소/수면유도/명상)는 통합하지 않고 독립
+// 카테고리로 두되, 아래 SPECIAL_CATEGORY_KEYS에 등록해 "전체 랜덤" 풀과
+// 일반 플레이리스트 라디오 목록에서는 빠지고 별도 "Special" 박스에서만
+// 선택 가능하게 한다.
 const MUSIC_CATEGORY_LABELS = {
   [ORIGINAL_CATEGORY_KEY]: "어쿠스틱 연주곡",
   "My Workspace": "어쿠스틱 연주곡",
-  "piano chello": "피아노 · 첼로",
+  "piano chello": "클래식",
   "vocal - CITY POP": "보컬",
   "vocal - workspace 20260711 1400": "보컬",
   "vocal- girls rock": "ROCK",
+  "Calm Circles For A Busy Brain-스트레스해소": "스트레스 해소",
+  "sleep": "수면유도",
+  "명상": "명상",
 };
 
 // 2026-07-16 유저 요청 — 성격이 겹치는 카테고리를 하나로 통합한다.
@@ -3315,6 +3327,10 @@ const MUSIC_CATEGORY_LABELS = {
 const CATEGORY_CANONICAL_KEY = {
   [ORIGINAL_CATEGORY_KEY]: "My Workspace",
   "vocal - CITY POP": "vocal - workspace 20260711 1400",
+  // 2026-07-20: classic 20260718(96곡)→piano chello(기존 31곡, 라벨 "클래식")
+  // 통합, Rock-20260720(96곡)→vocal- girls rock(기존 16곡, 라벨 "ROCK") 통합.
+  "classic 20260718": "piano chello",
+  "Rock-20260720": "vocal- girls rock",
 };
 
 function trackCategoryKey(track) {
@@ -3324,6 +3340,22 @@ function trackCategoryKey(track) {
 
 function musicCategoryLabel(key) {
   return MUSIC_CATEGORY_LABELS[key] || key;
+}
+
+// 2026-07-20 유저 요청 — "Special"(스트레스 해소/수면유도/명상)은 특수한
+// 상황에서만 듣는 음악이라 기본 "전체 랜덤"에 섞이면 안 된다. 이 Set에
+// 속한 카테고리 키는 (1) buildMusicPlaylistOptions()의 일반 목록에서 빠지고
+// buildMusicSpecialOptions()의 별도 목록에만 나타나며, (2) pickNextTrackIndex()가
+// filterKey==="all"일 때 후보 풀에서 제외한다 — 유저가 Special 중 하나를
+// 명시적으로 선택했을 때만(filterKey가 그 키 자체일 때) 재생 대상이 된다.
+const SPECIAL_CATEGORY_KEYS = new Set([
+  "Calm Circles For A Busy Brain-스트레스해소",
+  "sleep",
+  "명상",
+]);
+
+function isSpecialCategory(key) {
+  return SPECIAL_CATEGORY_KEYS.has(key);
 }
 
 // 2026-07-13: "Rock 포함" / "Vocal 포함" 체크박스로 시작했었다(기본값 켜짐,
@@ -3484,7 +3516,15 @@ function pickNextTrackIndex() {
     });
     return weighted;
   };
-  const matchesFilter = (i) => filterKey === "all" || trackCategoryKey(musicPlaylist[i]) === filterKey;
+  // 2026-07-20: "전체 랜덤"(filterKey==="all")일 땐 Special 카테고리(스트레스
+  // 해소/수면유도/명상)를 항상 후보에서 뺀다 — 유저가 Special 박스에서 그
+  // 카테고리를 직접 선택했을 때(filterKey가 그 키와 정확히 일치할 때)만
+  // 재생 대상이 된다.
+  const matchesFilter = (i) => {
+    const key = trackCategoryKey(musicPlaylist[i]);
+    if (filterKey === "all") return !isSpecialCategory(key);
+    return key === filterKey;
+  };
   // 2026-07-16: 포함 체크박스(기본 true)에서 제외 체크박스(기본 false)로
   // 전환 — 체크가 "제외한다"는 뜻이 됐으니 조건도 반전.
   // 2026-07-16 2차: 선택된 장르(filterKey)와 제외 필터가 서로 모순되는
@@ -4695,19 +4735,42 @@ function renderMusicPlaylistInfo(options) {
 // category 값(오리지널 포함 7종)을 기준으로 자동으로 옵션을 만든다. 트랙이
 // 나중에 더 늘어나거나 카테고리가 추가돼도 이 목록·라디오 버튼은 코드 수정
 // 없이 자동으로 따라간다.
+// 2026-07-20 수정: Special 카테고리(스트레스 해소/수면유도/명상)는 이 일반
+// 목록에서 뺀다 — buildMusicSpecialOptions()가 별도로 만든다. "전체 랜덤"의
+// count도 Special 트랙 수를 뺀 실질 곡수로 맞춘다(그 풀에 실제로 안 섞이니).
 function buildMusicPlaylistOptions() {
   const counts = new Map();
+  let allCount = 0;
   if (Array.isArray(musicPlaylist)) {
     musicPlaylist.forEach((track) => {
       const key = trackCategoryKey(track);
+      if (isSpecialCategory(key)) return;
       counts.set(key, (counts.get(key) || 0) + 1);
+      allCount += 1;
     });
   }
-  const options = [{ key: "all", label: "전체 랜덤", count: musicPlaylist.length }];
+  const options = [{ key: "all", label: "전체 랜덤", count: allCount }];
   Array.from(counts.keys()).forEach((key) => {
     options.push({ key, label: musicCategoryLabel(key), count: counts.get(key) });
   });
   return options;
+}
+
+// 2026-07-20 신설 — Special 전용 목록. "전체" 항목 없이 3개 카테고리만.
+function buildMusicSpecialOptions() {
+  const counts = new Map();
+  if (Array.isArray(musicPlaylist)) {
+    musicPlaylist.forEach((track) => {
+      const key = trackCategoryKey(track);
+      if (!isSpecialCategory(key)) return;
+      counts.set(key, (counts.get(key) || 0) + 1);
+    });
+  }
+  return Array.from(counts.keys()).map((key) => ({
+    key,
+    label: musicCategoryLabel(key),
+    count: counts.get(key),
+  }));
 }
 
 // 2026-07-18 유저 요청 — "몇 곡 있는지 알지 못하게" 하기 위해 표시 텍스트에서
@@ -4720,6 +4783,21 @@ function renderMusicPlaylistFilterOptions() {
   const options = buildMusicPlaylistOptions();
   const current = loadMusicPlaylistFilter();
   musicPlaylistOptionsEl.innerHTML = options.map((option) => {
+    const checked = option.key === current ? " checked" : "";
+    return `<label class="field-option"><input type="radio" name="musicPlaylistFilter" value="${option.key}"${checked}><span>${option.label}</span></label>`;
+  }).join("");
+  renderMusicSpecialFilterOptions();
+}
+
+// 2026-07-20 신설 — Special 박스 렌더링. name="musicPlaylistFilter"를 위
+// 일반 목록과 동일하게 써서 브라우저 라디오 그룹이 자동으로 하나만
+// 남기도록 한다(Special에서 하나 고르면 위 일반 선택은 자동 해제되고,
+// 반대로 일반 쪽에서 고르면 Special 선택도 자동 해제된다).
+function renderMusicSpecialFilterOptions() {
+  if (!musicSpecialOptionsEl) return;
+  const options = buildMusicSpecialOptions();
+  const current = loadMusicPlaylistFilter();
+  musicSpecialOptionsEl.innerHTML = options.map((option) => {
     const checked = option.key === current ? " checked" : "";
     return `<label class="field-option"><input type="radio" name="musicPlaylistFilter" value="${option.key}"${checked}><span>${option.label}</span></label>`;
   }).join("");
@@ -5671,6 +5749,13 @@ if (genreOptions) {
 }
 if (musicPlaylistOptionsEl) {
   musicPlaylistOptionsEl.addEventListener("change", (event) => {
+    if (event.target.matches('input[name="musicPlaylistFilter"]') && event.target.checked) {
+      applyMusicPlaylistFilter(event.target.value);
+    }
+  });
+}
+if (musicSpecialOptionsEl) {
+  musicSpecialOptionsEl.addEventListener("change", (event) => {
     if (event.target.matches('input[name="musicPlaylistFilter"]') && event.target.checked) {
       applyMusicPlaylistFilter(event.target.value);
     }
