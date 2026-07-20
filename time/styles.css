@@ -787,9 +787,14 @@ button { font: inherit; }
 }
 
 /* 2026-07-19 4차 피드백: 카드 사이 간격이 너무 붙어 보인다는 지적 —
-   16px → 28px로 넉넉하게 늘린다(모든 카드 쌍에 동일 적용). */
-.settings-card + .settings-card {
-  margin-top: 28px;
+   16px → 28px로 넉넉하게 늘린다(모든 카드 쌍에 동일 적용).
+   2026-07-20 수정: 인접 형제 결합자(+)는 두 .settings-card 사이에 숨겨진
+   .settings-divider(display:none)가 끼어있으면 "바로 다음 형제"가 아니게
+   돼 매칭이 안 됐다(display:none이어도 DOM 인접성 자체는 유지되므로) —
+   일반 형제 결합자(~)로 바꿔 사이에 뭐가 있든 항상 적용되게 하고, 유저
+   요청대로 간격도 28px→36px로 더 넉넉하게 늘렸다. */
+.settings-card ~ .settings-card {
+  margin-top: 36px;
 }
 
 /* 2026-07-20 유저 요청: "Special"(스트레스 해소/수면유도/명상) 박스는
@@ -866,6 +871,24 @@ button { font: inherit; }
   font-size: 14px;
   font-weight: 620;
   line-height: 1.5;
+}
+
+/* 2026-07-20 신설 — 플레이리스트 라디오를 탭한 즉시 뜨는 "OO 선택됨"
+   확인 문구(app.js flashMusicFilterNotice). 트랙 전환이 끝나길 기다리지
+   않고 선택 그 자체를 바로 확인시켜주기 위한 것이라, opacity 트랜지션도
+   아주 짧게(120ms) 잡아 "느리다"는 인상을 주지 않는다. */
+.settings-inline-notice {
+  margin: 10px 0 0;
+  min-height: 1em;
+  font-size: 13px;
+  font-weight: 650;
+  color: #7dd3fc;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.settings-inline-notice.is-visible {
+  opacity: 1;
 }
 
 .settings-desc-muted {

@@ -241,6 +241,7 @@ const musicToast = document.getElementById("musicToast");
 const musicLeaveWorkEl = document.getElementById("musicLeaveWork");
 const musicPlaylistOptionsEl = document.getElementById("musicPlaylistOptions");
 const musicSpecialOptionsEl = document.getElementById("musicSpecialOptions");
+const musicFilterNoticeEl = document.getElementById("musicFilterNotice");
 const musicHistoryList = document.getElementById("musicHistoryList");
 const musicHistoryBody = document.getElementById("musicHistoryBody");
 const musicHistoryViewAll = document.getElementById("musicHistoryViewAll");
@@ -3342,6 +3343,13 @@ function musicCategoryLabel(key) {
   return MUSIC_CATEGORY_LABELS[key] || key;
 }
 
+// 2026-07-20 신설 — "all"까지 포함해 필터 키를 사람이 읽을 라벨로 바꾼다
+// (musicCategoryLabel은 "all"을 모르므로 이 래퍼가 필요). 설정 화면 즉시
+// 피드백 토스트와 첫 재생 안내 토스트가 공유한다.
+function musicPlaylistFilterAnnounceLabel(key) {
+  return key === "all" ? "전체 랜덤" : musicCategoryLabel(key);
+}
+
 // 2026-07-20 유저 요청 — "Special"(스트레스 해소/수면유도/명상)은 특수한
 // 상황에서만 듣는 음악이라 기본 "전체 랜덤"에 섞이면 안 된다. 이 Set에
 // 속한 카테고리 키는 (1) buildMusicPlaylistOptions()의 일반 목록에서 빠지고
@@ -4567,8 +4575,37 @@ window.__flipzenNativeCommand = function (command) {
 function toggleMusic() {
   musicPlaying = !musicPlaying;
   musicActionToken += 1; // 이 클릭이 "가장 최신 의도"임을 표시 — 이전 재생 시도는 이 값으로 자기 차례가 지났음을 안다.
-  if (musicPlaying) playMusic(musicActionToken); else pauseMusic();
+  if (musicPlaying) {
+    playMusic(musicActionToken);
+    announceActiveFilterOnFirstPlay();
+  } else {
+    pauseMusic();
+  }
   renderMusicToggle();
+}
+
+// 2026-07-20 유저 요청 — 기본값(전체 랜덤 + 제외 필터 없음)이 아닌 상태로
+// 재생을 시작하면, 앱을 켤 때마다(세션당 1회) 지금 어떤 필터가 걸려있는지
+// 토스트로 알려준다. 배경: 유저가 예전에 골라둔 카테고리/제외 필터를
+// 잊어버리고 "왜 특정 곡만 계속 나오지?"라고 오인하는 걸 막기 위함 —
+// 재생 버튼(toggleMusic)이 유일한 재생 시작 경로라 여기 한 곳만 걸면 된다.
+// musicToast는 시계 화면(#musicToast)에 있어 설정 화면이 아니라 재생을
+// 시작하는 시점(=시계 화면으로 돌아온 상태)에만 자연스럽게 보인다.
+let firstPlayFilterAnnounced = false;
+function announceActiveFilterOnFirstPlay() {
+  if (firstPlayFilterAnnounced) return;
+  firstPlayFilterAnnounced = true;
+  const filterKey = loadMusicPlaylistFilter();
+  const excludeVocal = loadMusicGenreToggle(musicExcludeVocalStorageKey, false);
+  const excludeInstrumental = loadMusicGenreToggle(musicExcludeInstrumentalStorageKey, false);
+  const parts = [];
+  if (filterKey && filterKey !== "all") {
+    parts.push(`'${musicPlaylistFilterAnnounceLabel(filterKey)}'만`);
+  }
+  if (excludeVocal) parts.push("Vocal 제외");
+  if (excludeInstrumental) parts.push("연주곡 제외");
+  if (parts.length === 0) return; // 기본값 그대로면 알려줄 게 없음
+  showMusicToast(`지금 ${parts.join(" · ")} 상태로 재생 중이에요`);
 }
 
 // 스킵 버튼(수동)은 크로스페이드 없이 즉시 곡을 바꾼다 — 유저가 직접 누른
@@ -4803,18 +4840,42 @@ function renderMusicSpecialFilterOptions() {
   }).join("");
 }
 
-// 필터를 바꾸는 순간 라운드로빈 순서를 새로 시작하고, 지금 재생 중이면
-// 곧바로 새 필터에 맞는 곡으로 전환한다(라디오를 누르는 즉시 "장르가
-// 바뀌는" 체감을 주기 위함). 재생 중이 아니면 다음 재생 때부터 적용된다.
+// 2026-07-20 유저 제보 — "설정에서 값을 선택하면 선택되는데 2초 정도
+// 걸린다." 라디오 자체는 브라우저 네이티브 :checked라 탭 즉시 반영되지만,
+// 재생 중일 때 이 함수가 곧바로 playTrackAtIndex(트랙 전환+네트워크 로드)
+// 까지 같은 틱에서 처리하다 보니, 유저가 "선택됐다"는 확신을 얻는 시점이
+// (구분이 옅은 카드 강조색만 보고 판단하기보다는) 실제 곡이 바뀌어
+// 들리는 시점과 뒤섞여 "선택 자체가 느리다"고 느껴진 것으로 판단했다.
+// 대응 두 가지: (1) 탭한 즉시 "OO 선택됨" 문구를 카드 바로 아래 인라인으로
+// 띄워 트랙 전환 완료 여부와 무관하게 선택 자체를 명확히 확인시킨다.
+// (2) 실제 트랙 전환(무거울 수 있는 부분)은 requestAnimationFrame으로 한
+// 프레임 미뤄, 브라우저가 방금 찍힌 :checked 페인트를 확실히 먼저 그리고
+// 나서 처리하도록 순서를 보장한다.
 function applyMusicPlaylistFilter(newKey) {
   saveMusicPlaylistFilter(newKey);
   categoryRotationQueue = [];
   syncMusicExcludeFilterUi();
-  if (musicPlaying) {
-    playTrackAtIndex(pickNextTrackIndex());
-  } else {
-    renderMusicPlaylistInfo();
-  }
+  flashMusicFilterNotice(`${musicPlaylistFilterAnnounceLabel(newKey)} 선택됨`);
+  requestAnimationFrame(() => {
+    if (musicPlaying) {
+      playTrackAtIndex(pickNextTrackIndex());
+    } else {
+      renderMusicPlaylistInfo();
+    }
+  });
+}
+
+let musicFilterNoticeTimer = null;
+function flashMusicFilterNotice(text) {
+  if (!musicFilterNoticeEl) return;
+  clearTimeout(musicFilterNoticeTimer);
+  musicFilterNoticeEl.textContent = text;
+  musicFilterNoticeEl.classList.remove("is-visible");
+  void musicFilterNoticeEl.offsetWidth; // 연속 선택 시 트랜지션 재트리거
+  musicFilterNoticeEl.classList.add("is-visible");
+  musicFilterNoticeTimer = setTimeout(() => {
+    musicFilterNoticeEl.classList.remove("is-visible");
+  }, 1600);
 }
 
 // 2026-07-16 유저 요청 — 플레이리스트로 선택된 장르 하나와 제외 필터가
