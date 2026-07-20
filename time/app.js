@@ -364,6 +364,47 @@ let weatherState = {
 // (배포 전까지는 상세 화면을 열어도 각 섹션이 "불러올 수 없어요"로 표시됨 —
 // 정상이다, 백엔드가 아직 인터넷에 없다는 뜻이다).
 const WEATHER_API_BASE = "https://flipgen-weather-backend.ezlong.workers.dev";
+
+// 2026-07-20 유저 피드백("절대 한 번도 실패해서는 안 된다"): 타임아웃+자동
+// 재시도(위 fetchWeatherJson 참조)로도 못 살리는 진짜 장애(백엔드 다운,
+// Visual Crossing 쿼터 소진 등)가 오면, 예전엔 화면이 완전히 비어버렸다.
+// 마지막으로 성공한 현재 날씨 응답을 기기에 저장해뒀다가, 새 요청이 계속
+// 실패해도 "n분 전 정보"라고 명확히 표시하면서 그 데이터를 그대로 보여준다
+// — 에러 화면 대신 살짝 오래된 진짜 숫자를 보여주는 쪽이 훨씬 유용하다.
+const WD_LAST_GOOD_KEY = "flipzenWeatherLastGoodCurrent_v1";
+
+function wdSaveLastGoodCurrent(currentData, hourlyNowItem) {
+  try {
+    localStorage.setItem(
+      WD_LAST_GOOD_KEY,
+      JSON.stringify({ currentData, hourlyNowItem, savedAt: Date.now() })
+    );
+  } catch (e) {
+    // 프라이빗 모드 등 localStorage를 못 쓰는 환경 — 조용히 무시(안전망일
+    // 뿐이라 실패해도 앱 동작엔 지장 없음).
+  }
+}
+
+function wdLoadLastGoodCurrent() {
+  try {
+    const raw = localStorage.getItem(WD_LAST_GOOD_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || !parsed.currentData || !parsed.currentData.current) return null;
+    return parsed;
+  } catch (e) {
+    return null;
+  }
+}
+
+function wdMinutesAgoLabel(savedAt) {
+  const mins = Math.max(0, Math.round((Date.now() - savedAt) / 60000));
+  if (mins < 1) return "방금 전";
+  if (mins < 60) return `${mins}분 전`;
+  const hours = Math.round(mins / 60);
+  if (hours < 24) return `${hours}시간 전`;
+  return `${Math.round(hours / 24)}일 전`;
+}
 // 2026-07-18 5차 피드백: "지금 이슬비가 오는데 왜 구름이냐, 비 애니메이션
 // 테스트를 하려면 강제로라도 비 오게 해놔라" — Visual Crossing의
 // currentConditions(관측소 실측치)는 옅은 이슬비처럼 약한 강수를 정확히
@@ -2236,12 +2277,38 @@ function weatherDetailCoords() {
   return userCoords || DEFAULT_WEATHER_COORDS;
 }
 
-async function fetchWeatherJson(path) {
+// 2026-07-20 유저 피드백("절대 한 번도 실패해서는 안 된다"): 예전엔 이
+// fetch()에 타임아웃이 전혀 없었다. 응답이 없이 그냥 멈춰버리는 요청이
+// 하나라도 생기면(약한 전파, 네트워크 전환 중 끊긴 연결 등) fetchWeatherDetail()
+// 안의 Promise.allSettled 전체가 영원히 안 끝나고, weatherDetailFetching
+// 플래그가 영구히 true로 막혀서 재시도 버튼을 눌러도 그 즉시 아무 일도 안
+// 일어나는 상태가 됐다("다시 시도"가 계속 "다시 시도" 텍스트만 반복). 이제
+// WEATHER_FETCH_TIMEOUT_MS 안에 반드시 실패로 확정하고, 실패하면 자동으로
+// 한 번 더 시도한다 — 대부분의 일시적 순단은 유저가 아무것도 안 눌러도
+// 이 안에서 스스로 회복된다.
+const WEATHER_FETCH_TIMEOUT_MS = 10000;
+
+async function fetchWeatherJsonOnce(path) {
   const { lat, lng } = weatherDetailCoords();
   const url = `${WEATHER_API_BASE}${path}?lat=${lat}&lng=${lng}`;
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return response.json();
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), WEATHER_FETCH_TIMEOUT_MS);
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function fetchWeatherJson(path) {
+  try {
+    return await fetchWeatherJsonOnce(path);
+  } catch (e) {
+    // 첫 시도 실패 — 콜드스타트/순단이면 두 번째 시도에서 대개 회복된다.
+    return await fetchWeatherJsonOnce(path);
+  }
 }
 
 // 2026-07-14: prob(강수확률)을 함께 넘기면 뱃지 안에 라벨+확률을 2줄로 쌓는다
@@ -2352,6 +2419,19 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   // 화면으로 빠지지 않는다.
   const activeScenario = wdActiveScenario();
   if (!activeScenario && (!current || !current.current)) {
+    // 2026-07-20 유저 피드백("절대 한 번도 실패해서는 안 된다"): 타임아웃+
+    // 자동재시도(fetchWeatherJson)로도 못 살린 진짜 실패라면, 화면을 비우는
+    // 대신 마지막으로 성공했던 데이터를 "n분 전 정보"라고 밝히고 그대로
+    // 보여준다. cached.currentData.current가 이미 확인된 값이라 아래
+    // 재귀호출은 이 early-return 분기를 다시 타지 않고 정상 렌더 경로로
+    // 간다(무한재귀 아님).
+    const cached = wdLoadLastGoodCurrent();
+    if (cached) {
+      renderWeatherCurrent(cached.currentData, cached.hourlyNowItem);
+      wdCurrentSub.textContent = `${wdMinutesAgoLabel(cached.savedAt)} 정보예요 · 새로고침에 실패했어요`;
+      if (wdCurrentRetryBtn) wdCurrentRetryBtn.hidden = false;
+      return;
+    }
     wdCurrentTemp.textContent = "--°";
     if (wdCurrentHumidity) wdCurrentHumidity.textContent = "";
     wdCurrentSub.textContent = "날씨 정보를 불러오지 못했어요. 아래 버튼으로 다시 시도해보세요.";
@@ -2844,86 +2924,100 @@ async function fetchWeatherDetail() {
   }
 
   weatherDetailFetching = true;
+  // 2026-07-20 유저 피드백("절대 한 번도 실패해서는 안 된다"): 아래 블록
+  // 전체를 try/finally로 감싼다 — 렌더 함수 중 하나가 예상치 못한 예외를
+  // 던지는 경우까지 포함해서, 무슨 일이 있어도 weatherDetailFetching이
+  // 반드시 false로 돌아오게 보장한다. 예전엔 이 보장이 없어서, 뭔가
+  // 하나라도 어긋나면 이 플래그가 true로 영구히 막혀 재시도 버튼을 눌러도
+  // 맨 위 가드에서 그냥 조용히 리턴돼버리는(그래서 "다시 시도" 문구만
+  // 반복되는 것처럼 보이는) 구조적 결함이 있었다.
+  try {
+    // 2026-07-17: 벤치마크 기획 묶음4(시간대별 예보 스트립)용 호출 추가.
+    // 2026-07-17 2차 기획: 주간 기온 예보(묶음A) 호출 추가. 다음 비
+    // 카운트다운(묶음B)은 새 호출 없이 rain-windows 응답에 이미 포함돼 있다.
+    // 미세먼지(묶음C)는 유저 요청으로 이번 배포에서 보류("다음에 하자") —
+    // 호출 자체를 넣지 않는다(카드가 안 보이는데 네트워크 요청만 날리는
+    // 낭비를 피한다). renderWeatherAirQuality 함수는 다음에 재개할 때
+    // 바로 쓸 수 있도록 그대로 남겨뒀다.
+    const [currentR, rainR, yesterdayR, tropicalR, hourlyStripR, weeklyForecastR, tempVsNormalR] =
+      await Promise.allSettled([
+        fetchWeatherJson("/api/weather/current"),
+        fetchWeatherJson("/api/weather/rain-windows"),
+        fetchWeatherJson("/api/weather/yesterday"),
+        fetchWeatherJson("/api/weather/tropical-night"),
+        fetchWeatherJson("/api/weather/hourly-strip"),
+        fetchWeatherJson("/api/weather/weekly-forecast"),
+        // 2026-07-17 2차 기획(묶음D): 평년값 비교. 그 달력일이 처음
+        // 조회되는 날엔 백엔드가 과거 10년치를 계산하느라 이 호출만 살짝
+        // 느릴 수 있다 — Promise.allSettled라 다른 카드 렌더링을 막지 않는다.
+        fetchWeatherJson("/api/weather/temp-vs-normal")
+      ]);
 
-  // 2026-07-17: 벤치마크 기획 묶음4(시간대별 예보 스트립)용 호출 추가.
-  // 2026-07-17 2차 기획: 주간 기온 예보(묶음A) 호출 추가. 다음 비
-  // 카운트다운(묶음B)은 새 호출 없이 rain-windows 응답에 이미 포함돼 있다.
-  // 미세먼지(묶음C)는 유저 요청으로 이번 배포에서 보류("다음에 하자") —
-  // 호출 자체를 넣지 않는다(카드가 안 보이는데 네트워크 요청만 날리는
-  // 낭비를 피한다). renderWeatherAirQuality 함수는 다음에 재개할 때
-  // 바로 쓸 수 있도록 그대로 남겨뒀다.
-  const [currentR, rainR, yesterdayR, tropicalR, hourlyStripR, weeklyForecastR, tempVsNormalR] =
-    await Promise.allSettled([
-      fetchWeatherJson("/api/weather/current"),
-      fetchWeatherJson("/api/weather/rain-windows"),
-      fetchWeatherJson("/api/weather/yesterday"),
-      fetchWeatherJson("/api/weather/tropical-night"),
-      fetchWeatherJson("/api/weather/hourly-strip"),
-      fetchWeatherJson("/api/weather/weekly-forecast"),
-      // 2026-07-17 2차 기획(묶음D): 평년값 비교. 그 달력일이 처음
-      // 조회되는 날엔 백엔드가 과거 10년치를 계산하느라 이 호출만 살짝
-      // 느릴 수 있다 — Promise.allSettled라 다른 카드 렌더링을 막지 않는다.
-      fetchWeatherJson("/api/weather/temp-vs-normal")
-    ]);
+    const tropicalData = tropicalR.status === "fulfilled" ? tropicalR.value : null;
+    const rainData = rainR.status === "fulfilled" ? rainR.value : null;
+    const currentData = currentR.status === "fulfilled" ? currentR.value : null;
+    const hourlyStripData = hourlyStripR.status === "fulfilled" ? hourlyStripR.value : null;
+    // 2026-07-18 5차 피드백: 현재 날씨 아이콘/비 애니메이션이 hourly-strip의
+    // "지금" 예보(이미 fetch된 데이터, 새 호출 불필요)도 참고하도록
+    // renderWeatherCurrent에 그 항목을 같이 넘긴다 — weatherEmojiFromCurrent
+    // 주석 참조.
+    const hourlyNowItem =
+      hourlyStripData && Array.isArray(hourlyStripData.hours)
+        ? hourlyStripData.hours.find((h) => h.isNow)
+        : null;
+    // ?fxtest=1 스위처(wdApplyTestScenario)가 네트워크 재요청 없이 즉시
+    // 재렌더링할 수 있도록 마지막 fetch 결과를 캐싱해둔다.
+    wdLastCurrentData = currentData;
+    wdLastHourlyNowItem = hourlyNowItem;
+    // 2026-07-20 유저 피드백: 이번 요청이 성공했으면 다음 실패 때 보여줄
+    // "n분 전 정보" 안전망으로 기기에 저장해둔다.
+    if (currentData && currentData.current) {
+      wdSaveLastGoodCurrent(currentData, hourlyNowItem);
+    }
+    renderWeatherCurrent(currentData, hourlyNowItem);
+    renderWeatherTopComment(rainData);
+    renderWeatherNextRain(rainData);
+    renderWeatherHourlyStrip(hourlyStripData);
+    const weeklyForecastData = weeklyForecastR.status === "fulfilled" ? weeklyForecastR.value : null;
+    renderWeatherWeeklyForecast(weeklyForecastData);
+    // 2026-07-19 5차 리디자인: 애플 스타일 상단 요약(날씨텍스트·최고/최저) —
+    // 같은 weekly-forecast 응답을 재사용(위 renderWeatherCurrentToday 주석 참조).
+    renderWeatherCurrentToday(weeklyForecastData);
+    renderWeatherTempVsNormal(tempVsNormalR.status === "fulfilled" ? tempVsNormalR.value : null);
+    renderWeatherRainWindows(rainData);
+    renderWeatherYesterday(yesterdayR.status === "fulfilled" ? yesterdayR.value : null);
+    renderWeatherTropical(tropicalData);
 
-  const tropicalData = tropicalR.status === "fulfilled" ? tropicalR.value : null;
-  const rainData = rainR.status === "fulfilled" ? rainR.value : null;
-  const currentData = currentR.status === "fulfilled" ? currentR.value : null;
-  const hourlyStripData = hourlyStripR.status === "fulfilled" ? hourlyStripR.value : null;
-  // 2026-07-18 5차 피드백: 현재 날씨 아이콘/비 애니메이션이 hourly-strip의
-  // "지금" 예보(이미 fetch된 데이터, 새 호출 불필요)도 참고하도록
-  // renderWeatherCurrent에 그 항목을 같이 넘긴다 — weatherEmojiFromCurrent
-  // 주석 참조.
-  const hourlyNowItem =
-    hourlyStripData && Array.isArray(hourlyStripData.hours)
-      ? hourlyStripData.hours.find((h) => h.isNow)
-      : null;
-  // ?fxtest=1 스위처(wdApplyTestScenario)가 네트워크 재요청 없이 즉시
-  // 재렌더링할 수 있도록 마지막 fetch 결과를 캐싱해둔다.
-  wdLastCurrentData = currentData;
-  wdLastHourlyNowItem = hourlyNowItem;
-  renderWeatherCurrent(currentData, hourlyNowItem);
-  renderWeatherTopComment(rainData);
-  renderWeatherNextRain(rainData);
-  renderWeatherHourlyStrip(hourlyStripData);
-  const weeklyForecastData = weeklyForecastR.status === "fulfilled" ? weeklyForecastR.value : null;
-  renderWeatherWeeklyForecast(weeklyForecastData);
-  // 2026-07-19 5차 리디자인: 애플 스타일 상단 요약(날씨텍스트·최고/최저) —
-  // 같은 weekly-forecast 응답을 재사용(위 renderWeatherCurrentToday 주석 참조).
-  renderWeatherCurrentToday(weeklyForecastData);
-  renderWeatherTempVsNormal(tempVsNormalR.status === "fulfilled" ? tempVsNormalR.value : null);
-  renderWeatherRainWindows(rainData);
-  renderWeatherYesterday(yesterdayR.status === "fulfilled" ? yesterdayR.value : null);
-  renderWeatherTropical(tropicalData);
-
-  // 2026-07-15: 실패한 응답까지 "캐시됨"으로 기록해버리는 버그 수정 — 최초
-  // 요청이 서버 콜드스타트 등으로 한 번 실패하면, 그 실패 상태가 1시간 동안
-  // 그대로 캐시되어 재시도가 전혀 안 됐다(유저가 앱을 강제종료·재실행해야만
-  // JS 메모리가 초기화되며 우연히 재시도됐던 것). current 데이터가 실제로
-  // 성공했을 때만 캐시 타임스탬프를 갱신해서, 실패 시 다음에 상세보기를
-  // 열면 자동으로 재시도되게 한다.
-  // 2026-07-18 2차 피드백 대응: 위 수정은 "current"만 확인했는데, 그 사이
-  // 7개 호출 중 current는 성공하고 다른 하나(예: weekly-forecast)만 그
-  // 순간 실패하는 경우가 실기기에서 발견됐다("주간 예보를 불러올 수
-  // 없어요"가 계속 떠 있음) — current만 보고 "성공"으로 캐시 타임스탬프를
-  // 갱신해버리면, 그 카드는 다음 1시간 동안 재시도 자체가 안 돼 실패
-  // 상태가 그대로 얼어붙는다. 이제 7개 호출이 전부 fulfilled일 때만
-  // 캐시를 갱신한다 — 하나라도 실패하면 다음에 열 때 전체를 다시 시도해서
-  // 일시적 실패(콜드스타트·네트워크 순단 등)가 스스로 회복될 기회를 준다.
-  const allWeatherFetchesOk = [
-    currentR,
-    rainR,
-    yesterdayR,
-    tropicalR,
-    hourlyStripR,
-    weeklyForecastR,
-    tempVsNormalR
-  ].every((r) => r.status === "fulfilled");
-  if (currentData && currentData.current && allWeatherFetchesOk) {
-    weatherDetailLastFetchAt = Date.now();
-    weatherDetailLastCoordsKey = coordsKey;
+    // 2026-07-15: 실패한 응답까지 "캐시됨"으로 기록해버리는 버그 수정 — 최초
+    // 요청이 서버 콜드스타트 등으로 한 번 실패하면, 그 실패 상태가 1시간 동안
+    // 그대로 캐시되어 재시도가 전혀 안 됐다(유저가 앱을 강제종료·재실행해야만
+    // JS 메모리가 초기화되며 우연히 재시도됐던 것). current 데이터가 실제로
+    // 성공했을 때만 캐시 타임스탬프를 갱신해서, 실패 시 다음에 상세보기를
+    // 열면 자동으로 재시도되게 한다.
+    // 2026-07-18 2차 피드백 대응: 위 수정은 "current"만 확인했는데, 그 사이
+    // 7개 호출 중 current는 성공하고 다른 하나(예: weekly-forecast)만 그
+    // 순간 실패하는 경우가 실기기에서 발견됐다("주간 예보를 불러올 수
+    // 없어요"가 계속 떠 있음) — current만 보고 "성공"으로 캐시 타임스탬프를
+    // 갱신해버리면, 그 카드는 다음 1시간 동안 재시도 자체가 안 돼 실패
+    // 상태가 그대로 얼어붙는다. 이제 7개 호출이 전부 fulfilled일 때만
+    // 캐시를 갱신한다 — 하나라도 실패하면 다음에 열 때 전체를 다시 시도해서
+    // 일시적 실패(콜드스타트·네트워크 순단 등)가 스스로 회복될 기회를 준다.
+    const allWeatherFetchesOk = [
+      currentR,
+      rainR,
+      yesterdayR,
+      tropicalR,
+      hourlyStripR,
+      weeklyForecastR,
+      tempVsNormalR
+    ].every((r) => r.status === "fulfilled");
+    if (currentData && currentData.current && allWeatherFetchesOk) {
+      weatherDetailLastFetchAt = Date.now();
+      weatherDetailLastCoordsKey = coordsKey;
+    }
+  } finally {
+    weatherDetailFetching = false;
   }
-  weatherDetailFetching = false;
 }
 
 let musicIndex = 0;
