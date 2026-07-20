@@ -6452,6 +6452,13 @@ window.investmentQuotes = [
     "category": "mindset"
   },
   {
+    "english": "Everyone has the brainpower to make money in stocks. Not everyone has the stomach. If you're susceptible to selling everything in a panic, you ought to avoid stocks and mutual funds altogether.",
+    "text": "누구나 주식으로 돈을 벌 수 있는 두뇌는 가지고 있다. 하지만 그것을 견뎌낼 배짱을 가진 사람은 많지 않다. 만약 공황 상태에서 전부 팔아치우는 성향이라면, 애초에 주식이든 주식형 펀드든 손대지 않는 편이 낫다.",
+    "title": "월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
     "english": "To achieve satisfactory investment results is easier than most people realize; to achieve superior results is harder than it looks.",
     "text": "만족할 만한 투자 성과를 거두는 일은 대부분의 사람들이 생각하는 것보다 쉽다. 그러나 탁월한 성과를 거두는 일은 겉보기보다 어렵다.",
     "title": "현명한 투자자",
@@ -6947,5 +6954,1069 @@ window.investmentQuotes = [
     "title": "경제적 해자",
     "author": "팻 도시",
     "category": "mindset"
+  },
+  {
+    "english": "To build wealth it didn’t matter when you bought U.S. stocks, just that you bought them and kept buying them.",
+    "text": "부를 쌓는 데 중요한 것은 미국 주식을 언제 샀느냐가 아니라, 사고 또 계속 샀느냐였다.",
+    "title": "저스트.킵.바잉",
+    "author": "닉 매기울리",
+    "category": "patience"
+  },
+  {
+    "english": "So, in order to know when you can retire, you need to figure out what you will retire to.",
+    "text": "언제 은퇴할 수 있는지 알려면, 은퇴 후 무엇을 하며 살 것인지부터 정해야 한다.",
+    "title": "저스트.킵.바잉",
+    "author": "닉 매기울리",
+    "category": "retirement"
+  },
+  {
+    "english": "We begin our lives as growth stocks, but end our lives as value stocks.",
+    "text": "우리는 성장주로 인생을 시작하지만 가치주로 인생을 마친다.",
+    "title": "저스트.킵.바잉",
+    "author": "닉 매기울리",
+    "category": "mindset"
+  },
+  {
+    "english": "Wealth isn’t about the money you’ve accumulated, but the life you’ve built with it.",
+    "text": "부는 축적한 돈이 아니라 그 돈으로 만들어낸 삶에 관한 것이다.",
+    "title": "부의 사다리에 올라타라",
+    "author": "닉 매기울리",
+    "category": "retirement"
+  },
+  {
+    "english": "As you gain more wealth, money solves fewer and fewer of your problems.",
+    "text": "부가 늘어날수록 돈으로 해결할 수 있는 문제는 점점 줄어든다.",
+    "title": "부의 사다리에 올라타라",
+    "author": "닉 매기울리",
+    "category": "mindset"
+  },
+  {
+    "english": "If you have difficulty spending according to your Wealth Level, then the most expensive thing that you own is your ego.",
+    "text": "자신의 부의 단계에 맞춰 소비하기 어렵다면, 당신이 가진 가장 비싼 것은 자존심이다.",
+    "title": "부의 사다리에 올라타라",
+    "author": "닉 매기울리",
+    "category": "behavior"
+  },
+  {
+    "english": "The hard, cold reality of trading is that every trade has an uncertain outcome.",
+    "text": "트레이딩의 냉혹한 현실은 모든 거래의 결과가 불확실하다는 것이다.",
+    "title": "심리투자 불변의 법칙",
+    "author": "마크 더글러스",
+    "category": "volatility"
+  },
+  {
+    "english": "Learning to accept the risk is a trading skill—the most important skill you can learn.",
+    "text": "위험을 받아들이는 법은 트레이딩 기술이며, 배울 수 있는 가장 중요한 기술이다.",
+    "title": "심리투자 불변의 법칙",
+    "author": "마크 더글러스",
+    "category": "volatility"
+  },
+  {
+    "english": "Anything can happen.",
+    "text": "무슨 일이든 일어날 수 있다.",
+    "title": "심리투자 불변의 법칙",
+    "author": "마크 더글러스",
+    "category": "volatility"
+  },
+  {
+    "english": "Every moment in the market is unique.",
+    "text": "시장의 모든 순간은 유일하다.",
+    "title": "심리투자 불변의 법칙",
+    "author": "마크 더글러스",
+    "category": "volatility"
+  },
+  {
+    "english": "However, market analysis is not the path to consistent results.",
+    "text": "시장 분석만으로는 일관된 성과에 이를 수 없다.",
+    "title": "심리투자 불변의 법칙",
+    "author": "마크 더글러스",
+    "category": "behavior"
+  },
+  {
+    "english": "Money’s greatest intrinsic value is its ability to give you control over your time.",
+    "text": "돈의 가장 큰 내재적 가치는 자신의 시간을 통제할 수 있게 해준다는 데 있다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "retirement"
+  },
+  {
+    "english": "Spending money to show people how much money you have is the fastest way to have less money.",
+    "text": "자신이 얼마나 부자인지 보여주기 위해 돈을 쓰는 것은 돈을 줄이는 가장 빠른 길이다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "behavior"
+  },
+  {
+    "english": "There are many things money can buy, but the most valuable of all is freedom.",
+    "text": "돈으로 살 수 있는 것은 많지만, 그중 가장 가치 있는 것은 자유다.",
+    "title": "부에 이르는 가장 단순한 길",
+    "author": "JL 콜린스",
+    "category": "retirement"
+  },
+  {
+    "english": "You own the things you own and they in turn own you.",
+    "text": "당신이 물건을 소유하지만, 그 물건 또한 당신을 소유한다.",
+    "title": "부에 이르는 가장 단순한 길",
+    "author": "JL 콜린스",
+    "category": "behavior"
+  },
+  {
+    "english": "Simple is good. Simple is easier. Simple is more profitable.",
+    "text": "단순함은 좋다. 단순함은 쉽다. 단순함은 더 수익성이 높다.",
+    "title": "부에 이르는 가장 단순한 길",
+    "author": "JL 콜린스",
+    "category": "mindset"
+  },
+  {
+    "english": "Spend less than you earn—invest the surplus—avoid debt.",
+    "text": "버는 것보다 적게 쓰고, 남는 돈을 투자하며, 빚을 피하라.",
+    "title": "부에 이르는 가장 단순한 길",
+    "author": "JL 콜린스",
+    "category": "mindset"
+  },
+  {
+    "english": "Your goal as an investor should be to purchase, at a rational price, a part interest in an easily understood business.",
+    "text": "투자자의 목표는 이해하기 쉬운 기업의 일부를 합리적인 가격에 사는 것이어야 한다.",
+    "title": "워런 버핏 웨이",
+    "author": "로버트 해그스트롬",
+    "category": "mindset"
+  },
+  {
+    "english": "It never was my thinking that made the big money for me. It always was my sitting.",
+    "text": "내게 큰돈을 벌어준 것은 생각이 아니라 기다림이었다.",
+    "title": "제시 리버모어의 주식투자 바이블",
+    "author": "제시 리버모어",
+    "category": "patience"
+  },
+  {
+    "english": "A stock operator has to fight a lot of expensive enemies within himself.",
+    "text": "주식투자자는 자기 안의 값비싼 적들과 싸워야 한다.",
+    "title": "제시 리버모어의 주식투자 바이블",
+    "author": "제시 리버모어",
+    "category": "behavior"
+  },
+  {
+    "english": "There is nothing new in Wall Street.",
+    "text": "월스트리트에는 새로운 것이 없다.",
+    "title": "제시 리버모어의 주식투자 바이블",
+    "author": "제시 리버모어",
+    "category": "mindset"
+  },
+  {
+    "english": "No man can always have adequate reasons for buying or selling stocks daily.",
+    "text": "누구도 매일 주식을 사고팔 충분한 이유를 늘 가질 수는 없다.",
+    "title": "제시 리버모어의 주식투자 바이블",
+    "author": "제시 리버모어",
+    "category": "behavior"
+  },
+  {
+    "english": "Even in earlier times, finding outstanding companies and staying with them proved more profitable than trying to buy cheap and sell dear.",
+    "text": "예전에도 탁월한 기업을 찾아 계속 보유하는 편이 싸게 사서 비싸게 파는 것보다 더 수익성이 높았다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "patience"
+  },
+  {
+    "english": "The need for patience if big profits are to be made from investment.",
+    "text": "투자에서 큰 수익을 내려면 인내가 필요하다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "patience"
+  },
+  {
+    "english": "Doing what everybody else is doing at the moment is often the wrong thing to do.",
+    "text": "그 순간 모두가 하는 일을 따라 하는 것은 종종 잘못된 행동이다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "behavior"
+  },
+  {
+    "english": "The only true test of whether a stock is cheap or high is whether fundamentals differ from the market appraisal.",
+    "text": "주식이 싼지 비싼지는 펀더멘털과 시장 평가의 차이로 판단해야 한다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "Never argue with the market. Your health and peace of mind are always more important than any stock.",
+    "text": "시장과 논쟁하지 마라. 건강과 마음의 평안은 어떤 주식보다 중요하다.",
+    "title": "최고의 주식 최적의 타이밍",
+    "author": "윌리엄 J. 오닐",
+    "category": "behavior"
+  },
+  {
+    "english": "The fastest way to take a bath is to try to prove that you are right and the market is wrong.",
+    "text": "손실을 보는 가장 빠른 길은 자신이 옳고 시장이 틀렸음을 증명하려는 것이다.",
+    "title": "최고의 주식 최적의 타이밍",
+    "author": "윌리엄 J. 오닐",
+    "category": "behavior"
+  },
+  {
+    "english": "Growth comes at the expense of comfort.",
+    "text": "성장은 편안함을 대가로 한다.",
+    "title": "초수익 성장주 투자",
+    "author": "마크 미너비니",
+    "category": "mindset"
+  },
+  {
+    "english": "It’s more important to make money than it is to be right.",
+    "text": "옳다는 것을 증명하는 것보다 돈을 버는 것이 더 중요하다.",
+    "title": "초수익 성장주 투자",
+    "author": "마크 미너비니",
+    "category": "behavior"
+  },
+  {
+    "english": "Losers average losers.",
+    "text": "패자는 손실 종목에 물타기한다.",
+    "title": "챔피언처럼 생각하고 거래하라",
+    "author": "마크 미너비니",
+    "category": "behavior"
+  },
+  {
+    "english": "It’s better to lose correctly than to win incorrectly.",
+    "text": "잘못된 방식으로 이기느니 올바른 방식으로 지는 편이 낫다.",
+    "title": "챔피언처럼 생각하고 거래하라",
+    "author": "마크 미너비니",
+    "category": "behavior"
+  },
+  {
+    "english": "Winning teaches you nothing. Losing can be the greatest teacher of all.",
+    "text": "승리는 아무것도 가르치지 않는다. 패배는 가장 위대한 스승이 될 수 있다.",
+    "title": "주식투자 최적의 타이밍을 잡는 법",
+    "author": "스탠 와인스타인",
+    "category": "behavior"
+  },
+  {
+    "english": "The bigger the top, the bigger the drop.",
+    "text": "천장이 클수록 하락도 커진다.",
+    "title": "주식투자 최적의 타이밍을 잡는 법",
+    "author": "스탠 와인스타인",
+    "category": "volatility"
+  },
+  {
+    "english": "The aim is to make money, not to be right.",
+    "text": "목표는 옳아지는 것이 아니라 돈을 버는 것이다.",
+    "title": "터틀 트레이딩",
+    "author": "마이클 코벨",
+    "category": "behavior"
+  },
+  {
+    "english": "If you must play, decide the rules, the stakes, and quitting time.",
+    "text": "게임을 해야 한다면 규칙과 판돈, 그만둘 시점을 먼저 정하라.",
+    "title": "터틀 트레이딩",
+    "author": "마이클 코벨",
+    "category": "mindset"
+  },
+  {
+    "english": "A fit body, a calm mind, a house full of love.",
+    "text": "건강한 몸, 평온한 마음, 사랑이 가득한 집.",
+    "title": "나발 라비칸트의 부와 행복의 원칙",
+    "author": "나발 라비칸트",
+    "category": "retirement"
+  },
+  {
+    "english": "Desire is a contract you make with yourself to be unhappy.",
+    "text": "욕망은 원하는 것을 얻을 때까지 불행하겠다고 자신과 맺는 계약이다.",
+    "title": "나발 라비칸트의 부와 행복의 원칙",
+    "author": "나발 라비칸트",
+    "category": "mindset"
+  },
+  {
+    "english": "Interest reads a book; commitment applies the book fifty times.",
+    "text": "관심은 책을 읽고, 헌신은 그 책을 쉰 번 실천한다.",
+    "title": "부의 추월차선",
+    "author": "엠제이 드마코",
+    "category": "behavior"
+  },
+  {
+    "english": "Without process, there is no event.",
+    "text": "과정 없이는 결과도 없다.",
+    "title": "부의 추월차선",
+    "author": "엠제이 드마코",
+    "category": "mindset"
+  },
+  {
+    "english": "In investing, the crowd is wrong much more often than right.",
+    "text": "투자에서 군중은 옳을 때보다 틀릴 때가 훨씬 많다.",
+    "title": "켄 피셔 역발상 주식 투자",
+    "author": "켄 피셔",
+    "category": "behavior"
+  },
+  {
+    "english": "Investing is two-thirds avoiding mistakes, one-third doing something right.",
+    "text": "투자는 3분의 2가 실수 회피이고, 3분의 1이 올바른 행동이다.",
+    "title": "주식시장의 17가지 미신",
+    "author": "켄 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "Question everything, especially what everyone knows.",
+    "text": "모든 것을 의심하라. 특히 모두가 안다고 믿는 것을 의심하라.",
+    "title": "3개의 질문으로 주식시장을 이기다",
+    "author": "켄 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "The only way to beat markets is to know something others don’t.",
+    "text": "시장을 이기는 유일한 길은 남들이 모르는 것을 아는 것이다.",
+    "title": "3개의 질문으로 주식시장을 이기다",
+    "author": "켄 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "Buy straw hats in winter and sell them in summer.",
+    "text": "아무도 원하지 않는 겨울에 밀짚모자를 사고, 모두가 찾는 여름에 팔아라.",
+    "title": "시장을 뒤흔든 100명의 거인들",
+    "author": "켄 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "Capital markets are resilient because humanity is resilient.",
+    "text": "인간이 회복력이 있기에 자본시장도 회복력이 있다.",
+    "title": "주식시장의 17가지 미신",
+    "author": "켄 피셔",
+    "category": "patience"
+  },
+  {
+    "english": "A 100-bagger is a stock that returns $100 for every $1 invested.",
+    "text": "100배 주식은 1달러를 투자해 100달러로 돌려주는 주식이다.",
+    "title": "100배 주식",
+    "author": "크리스토퍼 마이어",
+    "category": "mindset"
+  },
+  {
+    "english": "The emphasis is always on the practical.",
+    "text": "핵심은 언제나 실제 적용에 있다.",
+    "title": "100배 주식",
+    "author": "크리스토퍼 마이어",
+    "category": "mindset"
+  },
+  {
+    "english": "The market went down, I went down.",
+    "text": "시장이 내려가면 나도 함께 내려갔다.",
+    "title": "피터 린치의 투자 이야기",
+    "author": "피터 린치",
+    "category": "behavior"
+  },
+  {
+    "english": "Luck and risk are both the reality that every outcome in life is guided by forces other than individual effort.",
+    "text": "행운과 위험은 삶의 모든 결과가 개인의 노력 이외의 힘에도 좌우된다는 현실이다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "mindset"
+  },
+  {
+    "english": "A plan is only useful if it can survive reality.",
+    "text": "계획은 현실을 견뎌낼 수 있을 때만 유용하다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "mindset"
+  },
+  {
+    "english": "Save. Just save. You don’t need a specific reason to save.",
+    "text": "저축하라. 그냥 저축하라. 반드시 특별한 이유가 있어야 하는 것은 아니다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "behavior"
+  },
+  {
+    "english": "The highest form of wealth is the ability to wake up every morning and say, I can do whatever I want today.",
+    "text": "부의 최고 형태는 매일 아침 일어나 오늘 내가 원하는 일을 할 수 있다고 말하는 능력이다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "retirement"
+  },
+  {
+    "english": "Enough is realizing that an insatiable appetite for more will push you to the point of regret.",
+    "text": "충분함이란 더 많이 가지려는 끝없는 욕망이 결국 후회로 이어진다는 사실을 깨닫는 것이다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "mindset"
+  },
+  {
+    "english": "One of the most powerful ways to increase your savings isn’t to raise your income. It’s to raise your humility.",
+    "text": "저축을 늘리는 가장 강력한 방법 중 하나는 소득을 높이는 것이 아니라 겸손을 높이는 것이다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "behavior"
+  },
+  {
+    "english": "People don’t want accuracy. They want certainty.",
+    "text": "사람들은 정확성을 원하는 것이 아니라 확실성을 원한다.",
+    "title": "불변의 법칙",
+    "author": "모건 하우절",
+    "category": "behavior"
+  },
+  {
+    "english": "The best financial plan is to save like a pessimist and invest like an optimist.",
+    "text": "최고의 재무계획은 비관론자처럼 저축하고 낙관론자처럼 투자하는 것이다.",
+    "title": "불변의 법칙",
+    "author": "모건 하우절",
+    "category": "mindset"
+  },
+  {
+    "english": "We are very good at predicting the future, except for the surprises—which tend to be all that matter.",
+    "text": "우리는 미래를 잘 예측한다. 다만 가장 중요한 놀라운 사건들은 예측하지 못한다.",
+    "title": "불변의 법칙",
+    "author": "모건 하우절",
+    "category": "volatility"
+  },
+  {
+    "english": "The first rule of happiness is low expectations.",
+    "text": "행복의 첫 번째 원칙은 기대를 낮추는 것이다.",
+    "title": "불변의 법칙",
+    "author": "모건 하우절",
+    "category": "mindset"
+  },
+  {
+    "english": "The more perfect you try to become, the more vulnerable you generally are.",
+    "text": "완벽해지려고 할수록 대체로 더 취약해진다.",
+    "title": "불변의 법칙",
+    "author": "모건 하우절",
+    "category": "mindset"
+  },
+  {
+    "english": "Cash is an inefficient drag during bull markets and as valuable as oxygen during bear markets.",
+    "text": "현금은 강세장에서는 비효율적인 짐이지만 약세장에서는 산소만큼 귀중하다.",
+    "title": "불변의 법칙",
+    "author": "모건 하우절",
+    "category": "volatility"
+  },
+  {
+    "english": "The trick is being able to survive short-run problems so you can enjoy long-term growth.",
+    "text": "핵심은 단기 문제를 견뎌 장기 성장을 누릴 때까지 살아남는 것이다.",
+    "title": "불변의 법칙",
+    "author": "모건 하우절",
+    "category": "patience"
+  },
+  {
+    "english": "In finance, spending less than you make, saving the difference, and being patient is perhaps 90 percent of what you need to know.",
+    "text": "재정에서는 버는 것보다 적게 쓰고 차액을 저축하며 인내하는 것이 알아야 할 것의 90퍼센트다.",
+    "title": "불변의 법칙",
+    "author": "모건 하우절",
+    "category": "patience"
+  },
+  {
+    "english": "What are the best returns I can sustain for the longest period of time?",
+    "text": "가장 오랫동안 지속할 수 있는 최선의 수익률은 무엇인가?",
+    "title": "불변의 법칙",
+    "author": "모건 하우절",
+    "category": "patience"
+  },
+  {
+    "english": "Invest in preparedness, not in prediction.",
+    "text": "예측이 아니라 대비에 투자하라.",
+    "title": "불변의 법칙",
+    "author": "모건 하우절",
+    "category": "volatility"
+  },
+  {
+    "english": "It is better to buy quickly and wait than to wait to buy.",
+    "text": "매수를 기다리기보다 먼저 사고 기다리는 편이 낫다.",
+    "title": "저스트.킵.바잉",
+    "author": "닉 매기울리",
+    "category": "patience"
+  },
+  {
+    "english": "You should save what you can and invest the rest.",
+    "text": "할 수 있는 만큼 저축하고 나머지는 투자해야 한다.",
+    "title": "저스트.킵.바잉",
+    "author": "닉 매기울리",
+    "category": "mindset"
+  },
+  {
+    "english": "Income is the most important factor when it comes to building wealth.",
+    "text": "부를 쌓는 데 가장 중요한 요인은 소득이다.",
+    "title": "저스트.킵.바잉",
+    "author": "닉 매기울리",
+    "category": "mindset"
+  },
+  {
+    "english": "Buying the dip is usually inferior to buying as soon as you can.",
+    "text": "하락을 기다려 매수하는 전략은 대개 가능한 즉시 매수하는 전략보다 못하다.",
+    "title": "저스트.킵.바잉",
+    "author": "닉 매기울리",
+    "category": "behavior"
+  },
+  {
+    "english": "The right time to sell is when you need to rebalance, diversify, or fund your lifestyle.",
+    "text": "매도할 때는 리밸런싱, 분산, 생활비 마련이 필요할 때다.",
+    "title": "저스트.킵.바잉",
+    "author": "닉 매기울리",
+    "category": "mindset"
+  },
+  {
+    "english": "If you have money but no friends, family, health, time, or purpose, what’s the point?",
+    "text": "돈은 있지만 친구, 가족, 건강, 시간, 목적이 없다면 무슨 의미가 있는가?",
+    "title": "부의 사다리에 올라타라",
+    "author": "닉 매기울리",
+    "category": "retirement"
+  },
+  {
+    "english": "Wealth is the absence of financial anxiety.",
+    "text": "부란 재정적 불안이 없는 상태다.",
+    "title": "부의 사다리에 올라타라",
+    "author": "닉 매기울리",
+    "category": "retirement"
+  },
+  {
+    "english": "Every level of wealth requires a different strategy.",
+    "text": "부의 각 단계에는 서로 다른 전략이 필요하다.",
+    "title": "부의 사다리에 올라타라",
+    "author": "닉 매기울리",
+    "category": "mindset"
+  },
+  {
+    "english": "As wealth rises, time and purpose become more valuable than additional money.",
+    "text": "부가 늘어날수록 추가적인 돈보다 시간과 목적이 더 중요해진다.",
+    "title": "부의 사다리에 올라타라",
+    "author": "닉 매기울리",
+    "category": "retirement"
+  },
+  {
+    "english": "The point of wealth is not to win a comparison but to improve your life.",
+    "text": "부의 목적은 비교에서 이기는 것이 아니라 자신의 삶을 개선하는 것이다.",
+    "title": "부의 사다리에 올라타라",
+    "author": "닉 매기울리",
+    "category": "retirement"
+  },
+  {
+    "english": "You don’t need to know what is going to happen next in order to make money.",
+    "text": "돈을 벌기 위해 다음에 무슨 일이 일어날지 알 필요는 없다.",
+    "title": "심리투자 불변의 법칙",
+    "author": "마크 더글러스",
+    "category": "mindset"
+  },
+  {
+    "english": "An edge is nothing more than an indication of a higher probability of one thing happening over another.",
+    "text": "우위란 한 일이 다른 일보다 일어날 확률이 높다는 표시일 뿐이다.",
+    "title": "심리투자 불변의 법칙",
+    "author": "마크 더글러스",
+    "category": "mindset"
+  },
+  {
+    "english": "There is a random distribution between wins and losses for any given set of variables that define an edge.",
+    "text": "어떤 우위를 정의하는 변수에서도 승리와 패배는 무작위로 분포한다.",
+    "title": "심리투자 불변의 법칙",
+    "author": "마크 더글러스",
+    "category": "volatility"
+  },
+  {
+    "english": "Consistency is a state of mind.",
+    "text": "일관성은 마음의 상태다.",
+    "title": "심리투자 불변의 법칙",
+    "author": "마크 더글러스",
+    "category": "behavior"
+  },
+  {
+    "english": "The best traders aren’t afraid.",
+    "text": "최고의 트레이더들은 두려워하지 않는다.",
+    "title": "심리투자 불변의 법칙",
+    "author": "마크 더글러스",
+    "category": "behavior"
+  },
+  {
+    "english": "The market is simply offering information about possibilities.",
+    "text": "시장은 가능성에 관한 정보를 제공할 뿐이다.",
+    "title": "심리투자 불변의 법칙",
+    "author": "마크 더글러스",
+    "category": "mindset"
+  },
+  {
+    "english": "Predefine the risk of every trade.",
+    "text": "모든 거래의 위험을 미리 정하라.",
+    "title": "심리투자 불변의 법칙",
+    "author": "마크 더글러스",
+    "category": "volatility"
+  },
+  {
+    "english": "Act on your edges without reservation or hesitation.",
+    "text": "주저하거나 망설이지 말고 자신의 우위에 따라 행동하라.",
+    "title": "심리투자 불변의 법칙",
+    "author": "마크 더글러스",
+    "category": "behavior"
+  },
+  {
+    "english": "Debt should not be considered normal.",
+    "text": "빚을 정상적인 것으로 여겨서는 안 된다.",
+    "title": "부에 이르는 가장 단순한 길",
+    "author": "JL 콜린스",
+    "category": "mindset"
+  },
+  {
+    "english": "Waste no time. Debt is a crisis that needs immediate attention.",
+    "text": "시간을 낭비하지 마라. 빚은 즉각 처리해야 하는 위기다.",
+    "title": "부에 이르는 가장 단순한 길",
+    "author": "JL 콜린스",
+    "category": "behavior"
+  },
+  {
+    "english": "Avoid fiscally irresponsible people and certainly don’t marry one.",
+    "text": "재정적으로 무책임한 사람을 피하고 절대로 그런 사람과 결혼하지 마라.",
+    "title": "부에 이르는 가장 단순한 길",
+    "author": "JL 콜린스",
+    "category": "behavior"
+  },
+  {
+    "english": "You weren’t born to be a slave.",
+    "text": "당신은 노예로 살기 위해 태어난 것이 아니다.",
+    "title": "부에 이르는 가장 단순한 길",
+    "author": "JL 콜린스",
+    "category": "retirement"
+  },
+  {
+    "english": "The market and the value of your shares will sometimes drop dramatically. This is normal.",
+    "text": "시장과 보유 주식의 가치는 때때로 크게 하락한다. 이는 정상이다.",
+    "title": "부에 이르는 가장 단순한 길",
+    "author": "JL 콜린스",
+    "category": "volatility"
+  },
+  {
+    "english": "When the market drops, ignore the panic and buy more shares.",
+    "text": "시장이 하락할 때 공포를 무시하고 주식을 더 사라.",
+    "title": "부에 이르는 가장 단순한 길",
+    "author": "JL 콜린스",
+    "category": "patience"
+  },
+  {
+    "english": "No one will care for your money better than you.",
+    "text": "당신의 돈을 당신보다 더 잘 돌볼 사람은 없다.",
+    "title": "부에 이르는 가장 단순한 길",
+    "author": "JL 콜린스",
+    "category": "mindset"
+  },
+  {
+    "english": "Financial independence means having the freedom to choose.",
+    "text": "경제적 독립은 선택할 자유를 갖는다는 뜻이다.",
+    "title": "부에 이르는 가장 단순한 길",
+    "author": "JL 콜린스",
+    "category": "retirement"
+  },
+  {
+    "english": "The greatest investment reward comes from finding companies that can grow sales and profits far more than their industry.",
+    "text": "가장 큰 투자 보상은 업계보다 매출과 이익을 훨씬 빠르게 성장시킬 기업을 찾는 데서 나온다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "When we find an outstanding company, we had better stick with it for a long period of time.",
+    "text": "탁월한 기업을 찾았다면 오랫동안 보유하는 편이 낫다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "patience"
+  },
+  {
+    "english": "Postponing an attractive purchase because of fear of the general market can prove very costly.",
+    "text": "시장 전체에 대한 두려움 때문에 매력적인 매수를 미루면 큰 대가를 치를 수 있다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "behavior"
+  },
+  {
+    "english": "It is often easier to tell what will happen to a stock than when it will happen.",
+    "text": "주식에 어떤 일이 일어날지는 그 일이 언제 일어날지보다 알기 쉽다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "When industry margins rise only because of repeated price increases, it is not a good sign for long-term investors.",
+    "text": "업계 마진이 반복적인 가격 인상만으로 높아진다면 장기 투자자에게 좋은 신호가 아니다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "A company must understand the changing needs and desires of its customers.",
+    "text": "기업은 고객의 변화하는 필요와 욕구를 이해해야 한다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "Never promote someone who hasn’t made some bad mistakes.",
+    "text": "큰 실수를 한 번도 하지 않은 사람을 승진시키지 마라.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "Diversification is not a substitute for knowledge.",
+    "text": "분산투자는 지식을 대신할 수 없다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "The whole secret to winning big is to lose the least amount possible when you’re wrong.",
+    "text": "큰 성공의 비결은 틀렸을 때 가능한 한 적게 잃는 것이다.",
+    "title": "최고의 주식 최적의 타이밍",
+    "author": "윌리엄 J. 오닐",
+    "category": "volatility"
+  },
+  {
+    "english": "Sell your mistakes while the loss is still small.",
+    "text": "손실이 아직 작을 때 실수를 매도하라.",
+    "title": "최고의 주식 최적의 타이밍",
+    "author": "윌리엄 J. 오닐",
+    "category": "behavior"
+  },
+  {
+    "english": "Keep your best stocks a little longer.",
+    "text": "가장 좋은 주식은 조금 더 오래 보유하라.",
+    "title": "최고의 주식 최적의 타이밍",
+    "author": "윌리엄 J. 오닐",
+    "category": "patience"
+  },
+  {
+    "english": "Charts plus earnings help identify the best stocks and markets.",
+    "text": "차트와 이익을 함께 보면 최고의 주식과 시장을 가려낼 수 있다.",
+    "title": "최고의 주식 최적의 타이밍",
+    "author": "윌리엄 J. 오닐",
+    "category": "mindset"
+  },
+  {
+    "english": "Look for genuine leaders and avoid laggards.",
+    "text": "진정한 선도주를 찾고 후발주는 피하라.",
+    "title": "최고의 주식 최적의 타이밍",
+    "author": "윌리엄 J. 오닐",
+    "category": "mindset"
+  },
+  {
+    "english": "Humility and common sense provide essential balance.",
+    "text": "겸손과 상식은 필수적인 균형을 제공한다.",
+    "title": "최고의 주식 최적의 타이밍",
+    "author": "윌리엄 J. 오닐",
+    "category": "mindset"
+  },
+  {
+    "english": "Examine past market leaders to recognize future winners.",
+    "text": "과거의 선도주를 연구해 미래의 승자를 알아보라.",
+    "title": "최고의 주식 최적의 타이밍",
+    "author": "윌리엄 J. 오닐",
+    "category": "mindset"
+  },
+  {
+    "english": "The difference between interest and commitment is the will not to give up.",
+    "text": "관심과 헌신의 차이는 포기하지 않으려는 의지다.",
+    "title": "초수익 성장주 투자",
+    "author": "마크 미너비니",
+    "category": "behavior"
+  },
+  {
+    "english": "Your first loss is your best loss.",
+    "text": "첫 번째 손실이 가장 좋은 손실이다.",
+    "title": "초수익 성장주 투자",
+    "author": "마크 미너비니",
+    "category": "behavior"
+  },
+  {
+    "english": "My goal is not to buy at the lowest price but at the right price.",
+    "text": "내 목표는 최저가가 아니라 적절한 가격에 사는 것이다.",
+    "title": "초수익 성장주 투자",
+    "author": "마크 미너비니",
+    "category": "mindset"
+  },
+  {
+    "english": "Trying to pick a bottom is unnecessary and a waste of time.",
+    "text": "바닥을 맞히려는 시도는 불필요하며 시간 낭비다.",
+    "title": "초수익 성장주 투자",
+    "author": "마크 미너비니",
+    "category": "behavior"
+  },
+  {
+    "english": "Winning traders share key traits required for success.",
+    "text": "성공한 트레이더들은 성공에 필요한 핵심 특성을 공유한다.",
+    "title": "초수익 성장주 투자",
+    "author": "마크 미너비니",
+    "category": "mindset"
+  },
+  {
+    "english": "You want institutional money pouring into a stock.",
+    "text": "기관 자금이 주식으로 유입되는 시점에 올라타야 한다.",
+    "title": "초수익 성장주 투자",
+    "author": "마크 미너비니",
+    "category": "mindset"
+  },
+  {
+    "english": "Repeated stop-outs usually mean flawed selection or a hostile market.",
+    "text": "반복적인 손절은 종목선정 오류나 적대적인 시장을 뜻한다.",
+    "title": "초수익 성장주 투자",
+    "author": "마크 미너비니",
+    "category": "mindset"
+  },
+  {
+    "english": "Separate trading from your ego.",
+    "text": "트레이딩과 자존심을 분리하라.",
+    "title": "초수익 성장주 투자",
+    "author": "마크 미너비니",
+    "category": "behavior"
+  },
+  {
+    "english": "When there are multiple solutions, choose the simplest one.",
+    "text": "해결책이 여러 개라면 가장 단순한 것을 선택하라.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "mindset"
+  },
+  {
+    "english": "The two greatest enemies of the equity investor are expenses and emotions.",
+    "text": "주식 투자자의 가장 큰 두 적은 비용과 감정이다.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "behavior"
+  },
+  {
+    "english": "Owning the market over the long term is a winner’s game.",
+    "text": "장기간 시장 전체를 소유하는 것은 승자의 게임이다.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "patience"
+  },
+  {
+    "english": "Attempting to beat the market is a loser’s game.",
+    "text": "시장을 이기려는 시도는 패자의 게임이다.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "mindset"
+  },
+  {
+    "english": "For investors as a whole, returns decrease as motion increases.",
+    "text": "투자자 전체로 보면 움직임이 늘수록 수익률은 줄어든다.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "behavior"
+  },
+  {
+    "english": "Buy and hold a diversified, low-cost portfolio.",
+    "text": "분산된 저비용 포트폴리오를 매수해 보유하라.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "patience"
+  },
+  {
+    "english": "Reality rules in the long run.",
+    "text": "장기적으로는 현실이 지배한다.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "mindset"
+  },
+  {
+    "english": "Whatever your income, always live below your means.",
+    "text": "소득이 얼마든 항상 수입보다 적게 쓰라.",
+    "title": "이웃집 백만장자",
+    "author": "토머스 J. 스탠리",
+    "category": "mindset"
+  },
+  {
+    "english": "Wealth is more often the result of hard work, perseverance, planning, and self-discipline.",
+    "text": "부는 대개 노력, 끈기, 계획, 자기통제의 결과다.",
+    "title": "이웃집 백만장자",
+    "author": "토머스 J. 스탠리",
+    "category": "mindset"
+  },
+  {
+    "english": "The foundation of wealth accumulation is defense, anchored by budgeting and planning.",
+    "text": "부 축적의 기초는 방어이며 예산과 계획에 기반해야 한다.",
+    "title": "이웃집 백만장자",
+    "author": "토머스 J. 스탠리",
+    "category": "mindset"
+  },
+  {
+    "english": "Wealth is what you accumulate, not what you spend.",
+    "text": "부는 소비한 것이 아니라 축적한 것이다.",
+    "title": "이웃집 백만장자",
+    "author": "토머스 J. 스탠리",
+    "category": "mindset"
+  },
+  {
+    "english": "A high income does not automatically translate into financial independence.",
+    "text": "높은 소득이 자동으로 경제적 독립으로 이어지는 것은 아니다.",
+    "title": "이웃집 백만장자",
+    "author": "토머스 J. 스탠리",
+    "category": "mindset"
+  },
+  {
+    "english": "Don’t chase money. If you are the best in your field, money will find you.",
+    "text": "돈을 쫓지 마라. 분야에서 최고가 되면 돈이 찾아온다.",
+    "title": "이웃집 백만장자",
+    "author": "토머스 J. 스탠리",
+    "category": "mindset"
+  },
+  {
+    "english": "Great offense and poor defense translate into underaccumulation of wealth.",
+    "text": "공격은 뛰어나도 방어가 약하면 부를 충분히 축적하지 못한다.",
+    "title": "이웃집 백만장자",
+    "author": "토머스 J. 스탠리",
+    "category": "mindset"
+  },
+  {
+    "english": "Financially independent people are happier than financially insecure peers.",
+    "text": "경제적으로 독립한 사람은 불안정한 동년배보다 더 행복하다.",
+    "title": "이웃집 백만장자",
+    "author": "토머스 J. 스탠리",
+    "category": "retirement"
+  },
+  {
+    "english": "Expand your mind until you no longer fit into your current environment.",
+    "text": "현재 환경에 더 이상 맞지 않을 때까지 사고를 확장하라.",
+    "title": "부자의 언어",
+    "author": "존 소포릭",
+    "category": "mindset"
+  },
+  {
+    "english": "Choose sacrifices over excuses.",
+    "text": "핑계보다 희생을 선택하라.",
+    "title": "부자의 언어",
+    "author": "존 소포릭",
+    "category": "behavior"
+  },
+  {
+    "english": "Sit in solitude every day and listen to your inner voice.",
+    "text": "매일 홀로 조용히 앉아 내면의 목소리에 귀 기울여라.",
+    "title": "부자의 언어",
+    "author": "존 소포릭",
+    "category": "mindset"
+  },
+  {
+    "english": "If you cannot narrow your focus, you will dissipate your potential.",
+    "text": "집중 범위를 좁히지 못하면 잠재력을 흩어버리게 된다.",
+    "title": "부자의 언어",
+    "author": "존 소포릭",
+    "category": "mindset"
+  },
+  {
+    "english": "Comfort is often the enemy of fulfilled potential.",
+    "text": "편안함은 잠재력을 실현하는 데 종종 적이 된다.",
+    "title": "부자의 언어",
+    "author": "존 소포릭",
+    "category": "behavior"
+  },
+  {
+    "english": "Wealth is the absence of economic anxiety.",
+    "text": "부는 경제적 불안이 없는 상태다.",
+    "title": "부의 공식",
+    "author": "스콧 갤러웨이",
+    "category": "retirement"
+  },
+  {
+    "english": "Freed of the pressure to earn, we can choose how we live.",
+    "text": "돈을 벌어야 한다는 압박에서 벗어나면 삶의 방식을 선택할 수 있다.",
+    "title": "부의 공식",
+    "author": "스콧 갤러웨이",
+    "category": "retirement"
+  },
+  {
+    "english": "Focus is the ability to say no to almost everything.",
+    "text": "집중은 거의 모든 것에 아니오라고 말하는 능력이다.",
+    "title": "부의 공식",
+    "author": "스콧 갤러웨이",
+    "category": "mindset"
+  },
+  {
+    "english": "Diversification is your protection against bad luck.",
+    "text": "분산은 불운으로부터 자신을 지키는 보호막이다.",
+    "title": "부의 공식",
+    "author": "스콧 갤러웨이",
+    "category": "volatility"
+  },
+  {
+    "english": "Time is the most important asset in compounding.",
+    "text": "시간은 복리에서 가장 중요한 자산이다.",
+    "title": "부의 공식",
+    "author": "스콧 갤러웨이",
+    "category": "compound"
+  },
+  {
+    "english": "If millions seek you, you will be paid millions.",
+    "text": "수백만 명이 당신을 찾는다면 수백만 달러를 받게 된다.",
+    "title": "부의 추월차선",
+    "author": "엠제이 드마코",
+    "category": "mindset"
+  },
+  {
+    "english": "The owner of an idea is not the one who imagines it, but the one who executes it.",
+    "text": "아이디어의 주인은 상상한 사람이 아니라 실행한 사람이다.",
+    "title": "부의 추월차선",
+    "author": "엠제이 드마코",
+    "category": "mindset"
+  },
+  {
+    "english": "If you have to think about affordability, you cannot afford it.",
+    "text": "감당할 수 있는지 고민해야 한다면 감당할 수 없는 것이다.",
+    "title": "부의 추월차선",
+    "author": "엠제이 드마코",
+    "category": "behavior"
+  },
+  {
+    "english": "Majority thinking yields mediocrity.",
+    "text": "다수의 사고방식은 평범함을 낳는다.",
+    "title": "부의 추월차선",
+    "author": "엠제이 드마코",
+    "category": "mindset"
+  },
+  {
+    "english": "Time is an asset that is often undervalued and squandered.",
+    "text": "시간은 흔히 과소평가되고 낭비되는 자산이다.",
+    "title": "부의 추월차선",
+    "author": "엠제이 드마코",
+    "category": "retirement"
+  },
+  {
+    "english": "Make an impact on millions and you can earn millions.",
+    "text": "수백만 명에게 영향을 주면 수백만 달러를 벌 수 있다.",
+    "title": "부의 추월차선",
+    "author": "엠제이 드마코",
+    "category": "mindset"
+  },
+  {
+    "english": "Seek wealth, not money or status.",
+    "text": "돈이나 지위가 아니라 부를 추구하라.",
+    "title": "나발 라비칸트의 부와 행복의 원칙",
+    "author": "나발 라비칸트",
+    "category": "mindset"
+  },
+  {
+    "english": "You will get rich by giving society what it wants but does not yet know how to get.",
+    "text": "사회가 원하지만 아직 얻는 방법을 모르는 것을 제공하면 부자가 된다.",
+    "title": "나발 라비칸트의 부와 행복의 원칙",
+    "author": "나발 라비칸트",
+    "category": "mindset"
+  },
+  {
+    "english": "Specific knowledge cannot be trained. If society can train you, it can train someone else.",
+    "text": "특정 지식은 훈련으로 얻기 어렵다. 사회가 당신을 훈련할 수 있다면 다른 사람도 훈련할 수 있다.",
+    "title": "나발 라비칸트의 부와 행복의 원칙",
+    "author": "나발 라비칸트",
+    "category": "mindset"
+  },
+  {
+    "english": "Play long-term games with long-term people.",
+    "text": "장기적으로 함께할 사람들과 장기 게임을 하라.",
+    "title": "나발 라비칸트의 부와 행복의 원칙",
+    "author": "나발 라비칸트",
+    "category": "patience"
+  },
+  {
+    "english": "Learn to sell. Learn to build. If you can do both, you will be unstoppable.",
+    "text": "파는 법과 만드는 법을 배워라. 둘 다 할 수 있다면 누구도 막을 수 없다.",
+    "title": "나발 라비칸트의 부와 행복의 원칙",
+    "author": "나발 라비칸트",
+    "category": "mindset"
+  },
+  {
+    "english": "Reading is faster than listening. Doing is faster than watching.",
+    "text": "읽기는 듣기보다 빠르고, 실행은 보기보다 빠르다.",
+    "title": "나발 라비칸트의 부와 행복의 원칙",
+    "author": "나발 라비칸트",
+    "category": "mindset"
+  },
+  {
+    "english": "Happiness is a choice and a skill.",
+    "text": "행복은 선택이며 기술이다.",
+    "title": "나발 라비칸트의 부와 행복의 원칙",
+    "author": "나발 라비칸트",
+    "category": "retirement"
   }
 ];
