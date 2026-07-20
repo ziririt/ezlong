@@ -4863,6 +4863,41 @@ function renderMusicSpecialFilterOptions() {
 // (2) 실제 트랙 전환(무거울 수 있는 부분)은 requestAnimationFrame으로 한
 // 프레임 미뤄, 브라우저가 방금 찍힌 :checked 페인트를 확실히 먼저 그리고
 // 나서 처리하도록 순서를 보장한다.
+// 2026-07-21 유저 재점검("baseIndices가 빌 이유가 없는데?")으로 찾아낸 진짜
+// 근본 원인. 음악이 "일시정지"(재생 전 포함) 상태에서 필터를 바꾸면, 아래
+// else 분기는 renderMusicPlaylistInfo()만 부르고 실제 <audio>에 이미 실려
+// 있던 트랙(앱을 켤 때 prefetchFirstTrack()이 미리 받아두었거나, 오늘
+// 이어듣기로 복원된, 새 필터와 무관한 곡)은 그대로 방치했다. 그 상태에서
+// 재생 버튼을 누르면 playMusic()은 "player.src가 이미 있으면 새로 고르지
+// 않는다"는 최적화(초반 끊김 방지용) 때문에 이 필터-불일치 곡을 그대로
+// 틀어버린다 — 이게 "ROCK을 선택했는데 명상 곡이 나온다"의 실제 트리거였다
+// (직전에 고쳤던 baseIndices 폴백 문제와는 별개의, 더 근본적인 원인).
+function preloadTrackForFilterChange() {
+  if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  const player = activePlayer();
+  if (!player) return;
+  const standby = standbyPlayer();
+  if (standby) {
+    standby.pause();
+    standby.removeAttribute("src");
+    delete standby.dataset.pendingUrl;
+  }
+  crossfadeTriggered = false;
+  pendingNextIndex = -1;
+  if (player.dataset.blobUrl) {
+    URL.revokeObjectURL(player.dataset.blobUrl);
+    delete player.dataset.blobUrl;
+  }
+  delete player.dataset.pendingUrl;
+  player._pendingLoad = null;
+  musicIndex = pickNextTrackIndex();
+  recordTrackHeard(musicIndex);
+  recordPlayLog(musicIndex);
+  renderMusicPlaylistInfo();
+  renderMusicHistoryList();
+  player._pendingLoad = loadMusicTrack(player, musicIndex, { prebuffer: true });
+}
+
 function applyMusicPlaylistFilter(newKey) {
   saveMusicPlaylistFilter(newKey);
   categoryRotationQueue = [];
@@ -4872,7 +4907,10 @@ function applyMusicPlaylistFilter(newKey) {
     if (musicPlaying) {
       playTrackAtIndex(pickNextTrackIndex());
     } else {
-      renderMusicPlaylistInfo();
+      // 일시정지 상태여도 필터에 맞는 곡을 곧바로 다시 골라 미리
+      // 로드해둔다(재생은 시작하지 않음) — 위 preloadTrackForFilterChange
+      // 주석 참조. 이걸 빼면 다음 재생 버튼 클릭 때 옛 필터의 곡이 나간다.
+      preloadTrackForFilterChange();
     }
   });
 }
