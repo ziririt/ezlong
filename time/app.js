@@ -521,11 +521,21 @@ const DEFAULT_WEATHER_COORDS = { lat: 37.4563, lng: 126.7052 };
 let userCoords = null;
 let weatherDetailFetching = false;
 // 2026-07-15: 상세보기를 열 때마다 매번 재요청하지 않고, 마지막 요청 후
-// 1시간은 캐시를 재사용한다(유저 요청: "로딩될 때 실시간 업데이트, 이후
-// 1시간은 업데이트 안 해도 된다" — 사용자 지역별로 미리 다 갱신해두기는
-// 어려우니 상세보기를 누를 때 갱신하는 절충안). 좌표가 바뀌면(위치 갱신 등)
-// 캐시를 무시하고 즉시 새로 받는다.
-const WEATHER_DETAIL_CACHE_MS = 60 * 60 * 1000;
+// 일정 시간은 캐시를 재사용한다(좌표가 바뀌면(위치 갱신 등) 캐시를 무시하고
+// 즉시 새로 받는다).
+// 2026-07-21 유저 피드백(재조정): 원래는 1시간이었다("로딩될 때 실시간
+// 업데이트, 이후 1시간은 업데이트 안 해도 된다"는 당시 요청 반영). 그런데
+// 이 앱은 "대기화면"이라 유저가 화면을 계속 켜놓고 음악만 듣는 용도로 오래
+// 쓴다는 게 실사용으로 확인됐다 — 그 상태로 1시간 넘게 두면 실제로는 폭우가
+// 쏟아지는데 메인 화면·상세 화면 둘 다 예전 "옅은 이슬비"에 그대로 멈춰
+// 있는 문제가 실측됐다. 15분으로 줄인다 — 백엔드 자체가 Visual Crossing
+// 원본 호출을 4시간(CACHE_TTL_HOURS) D1 캐시로 이미 막아주므로, 프론트가
+// 더 자주 물어봐도 실제 유료 API 호출 빈도는 늘지 않고(Cloudflare Worker
+// 요청·D1 읽기만 늘어남, 둘 다 사실상 무료), 그날그날 발생한 429 사태와도
+// 무관하다. 아래 WEATHER_REFRESH_INTERVAL_MS(10분 주기 자동 재요청)와 짝을
+// 이뤄야 실제로 효과가 있다 — 자동 재요청 주기가 이 캐시 시간보다 길면
+// 캐시에 막혀 매번 그냥 no-op된다.
+const WEATHER_DETAIL_CACHE_MS = 15 * 60 * 1000;
 let weatherDetailLastFetchAt = 0;
 let weatherDetailLastCoordsKey = "";
 
@@ -6020,6 +6030,21 @@ syncFirstScreenHeight();
 loadBackgroundArchive();
 tick();
 requestCurrentWeather();
+// 2026-07-21 유저 피드백: "대기화면으로 계속 열어두고 있는데, 실제로는
+// 폭우가 쏟아지는데 메인 화면 한 줄 요약도 상세 화면도 계속 '옅은
+// 이슬비'로 멈춰 있다 — 재실행 안 해도 알아서 바뀌어야 한다." 예전엔
+// requestCurrentWeather()가 앱 로드 시 딱 한 번만 불렸다(위치 확정 시점
+// 3곳에서 한 번씩) — 그 뒤로는 아무 타이머도 없어서 화면을 계속 켜두면
+// 날씨가 영원히 그 시점에 멈춰 있었다. 10분마다 자동으로 다시 불러서
+// 메인 화면 칩(weatherState, Open-Meteo)과 상세 화면(fetchWeatherDetail,
+// 위 WEATHER_DETAIL_CACHE_MS 15분 캐시) 둘 다 스스로 갱신되게 한다.
+// 화면이 백그라운드(다른 앱 전환·화면 꺼짐)일 때는 건너뛴다 — 안 보이는
+// 동안 갱신해봐야 배터리만 쓰고, 화면이 다시 보일 때(아래 visibilitychange
+// "visible" 분기)와 다음 이 틱 중 더 빠른 쪽이 어차피 최신화해준다.
+const WEATHER_REFRESH_INTERVAL_MS = 10 * 60 * 1000;
+window.setInterval(() => {
+  if (document.visibilityState === "visible") requestCurrentWeather();
+}, WEATHER_REFRESH_INTERVAL_MS);
 window.setInterval(tick, 1000);
 window.setInterval(musicStallWatchdog, 2000);
 // 2026-07-16: 이 15초 주기 재동기화를 폐기한다 — 유저가 겪은 "곡 중간에
@@ -6106,6 +6131,13 @@ document.addEventListener("visibilitychange", () => {
     // 2026-07-16: 포그라운드 복귀 시 알라딘 아이콘/모달 상태 재동기화(위
     // resyncAladinUiAfterForeground 주석 참고).
     resyncAladinUiAfterForeground();
+    // 2026-07-21 유저 피드백: 화면이 꺼져있거나 다른 앱으로 전환돼 있던
+    // 동안엔 위 10분 주기 타이머(WEATHER_REFRESH_INTERVAL_MS)도 사실상
+    // 멈춰있었을 시간이 길 수 있다(iOS는 백그라운드 탭의 JS 타이머를 강하게
+    // 억제한다) — 그래서 몇 시간 만에 화면을 다시 켰을 때도 날씨가 그새
+    // 완전히 바뀌었을 수 있다. 돌아오는 즉시 한 번 더 갱신해서 "다시 켰는데
+    // 아직도 예전 날씨"가 안 생기게 한다.
+    requestCurrentWeather();
   }
 });
 window.addEventListener("pagehide", () => maybeSaveMusicResume(true));

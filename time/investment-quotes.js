@@ -8018,5 +8018,12 @@ window.investmentQuotes = [
     "title": "나발 라비칸트의 부와 행복의 원칙",
     "author": "나발 라비칸트",
     "category": "retirement"
+  },
+  {
+    "english": "It never was my thinking that made the big money for me. It always was my sitting. Got that? My sitting tight! ... Men who can both be right and sit tight are uncommon.",
+    "text": "내게 큰돈을 벌어준 건 생각이 아니라 언제나 '가만히 앉아있는 것'이었다. 시장을 옳게 판단하는 건 사실 그리 어려운 일이 아니다. 옳게 판단하면서도 끝까지 진득하게 버티는 사람, 그런 사람은 드물다.",
+    "title": "주식 투자자의 회상",
+    "author": "에드윈 르페브르",
+    "category": "patience"
   }
 ];
