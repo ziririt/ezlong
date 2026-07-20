@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260720-musicspecial-v1">
+  <link rel="stylesheet" href="styles.css?v=20260720-musicsettings2-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -149,7 +149,7 @@
            (app.js sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이
            있었다"는 공간감을 위함. -->
       <div class="scene-dots" aria-label="ezlong.com 이동">
-        <span class="app-version" aria-hidden="true">ver.1.3.5.13</span>
+        <span class="app-version" aria-hidden="true">ver.1.3.5.14</span>
         <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
@@ -252,6 +252,11 @@
         <section class="settings-block settings-card" aria-label="음악 · 플레이리스트">
           <h3 class="settings-subtitle">음악 · 플레이리스트</h3>
           <div class="field-grid" id="musicPlaylistOptions" role="radiogroup" aria-label="플레이리스트(장르) 선택"></div>
+          <!-- 2026-07-20 유저 제보: 선택이 반영되는 데 시간이 걸리는 것처럼
+               느껴진다는 피드백 — 탭한 즉시(트랙 전환 완료를 기다리지 않고)
+               "OO 선택됨"을 짧게 띄워 선택 자체가 확실히 됐다는 걸 바로
+               확인시켜준다(app.js flashMusicFilterNotice 참조). -->
+          <p class="settings-inline-notice" id="musicFilterNotice" aria-live="polite"></p>
           <!-- 2026-07-16: 장르 선택(위 field-grid)과 시각적으로 구분되는
                "제외 필터" — 카드형 선택 버튼이 아니라 작은 알약형 토글로,
                체크하면 그 장르를 뺀다는 의미를 형태로도 드러낸다. -->
@@ -272,15 +277,33 @@
           </div>
         </section>
 
-        <div class="settings-divider" aria-hidden="true"></div>
+        <!-- 2026-07-20 유저 요청(위치 이동): "Special도 음악의 일종"이라
+             일반 플레이리스트 바로 아래, 들은 음악 히스토리 바로 위로 옮긴다.
+             divider 없이 카드끼리 직접 이어붙인다 — 카드 사이 간격은
+             styles.css의 .settings-card ~ .settings-card(일반 형제 결합자)가
+             처리한다(2026-07-20: 인접 형제(+)에서 일반 형제(~)로 바꿔서,
+             사이에 숨겨진 divider가 있어도 항상 간격이 적용되도록 함).
+             스트레스 해소/수면유도/명상은 "특수한 환경/조건에서 들을 수
+             있는 음악"이라 기본 전체 랜덤과 섞이면 안 된다 — 완전히 독립된
+             대카테고리로 별도 박스 분리. radiogroup의 name="musicPlaylistFilter"는
+             위 일반 플레이리스트 박스와 동일해서(app.js
+             renderMusicSpecialFilterOptions 참조) 셋 중 하나만 고를 수 있고,
+             고르는 순간 위 일반 선택은 자동 해제된다(반대도 마찬가지) —
+             재생 필터는 앱 전체에서 항상 하나뿐이라는 원칙 유지. -->
+        <section class="settings-block settings-card settings-card-special" aria-label="Special — 특수 상황별 음악">
+          <h3 class="settings-subtitle">Special</h3>
+          <p class="settings-desc settings-desc-muted">특수한 상황에서 듣는 음악입니다. 전체 랜덤에는 섞이지 않고, 아래 중 하나를 선택했을 때만 재생됩니다.</p>
+          <div class="field-grid" id="musicSpecialOptions" role="radiogroup" aria-label="Special 플레이리스트 선택"></div>
+        </section>
 
         <!-- 2026-07-19 리디자인: <table>에서 카드형 목록으로 전환 — 곡제목이
              한 행을 다 쓰도록(말줄임표 없이) 하고, 재생/좋아요/싫어요
              버튼은 그 아래 줄에 우측 정렬로 배치한다(app.js
              renderMusicHistoryList 참조). 기본 5개만 보이고 "모두 보기"로
-             전체를 펼친다. -->
-        <section class="settings-block settings-card" aria-label="들은 음악 히스토리">
-          <h3 class="settings-subtitle">들은 음악 히스토리</h3>
+             전체를 펼친다. 2026-07-20: 소제목 "들은 음악 히스토리"→
+             "들은 음악"으로 축약(유저 요청). -->
+        <section class="settings-block settings-card" aria-label="들은 음악">
+          <h3 class="settings-subtitle">들은 음악</h3>
           <div class="music-history-table" id="musicHistoryList" aria-live="polite">
             <div id="musicHistoryBody"></div>
           </div>
@@ -337,26 +360,6 @@
                (app.js genreOptions change 핸들러) 마지막 하나는 되돌리고
                이 문구를 잠깐 보여준다. -->
           <p class="genre-min-warning" id="genreMinWarning" role="status" aria-live="polite" hidden>최소한 하나의 분야는 선택해야 합니다.</p>
-        </section>
-
-        <!-- 2026-07-20: 위 카드(.settings-card) 바로 뒤에 divider 없이 이
-             카드를 바로 이어 붙인다 — .settings-card + .settings-card
-             (styles.css)가 28px 여백을 자동으로 준다. 사이에 divider
-             엘리먼트를 끼우면 display:none이어도 DOM상 "바로 다음 형제"
-             관계가 깨져 이 마진 규칙이 적용되지 않는다(인접 셀렉터는
-             display:none 여부와 무관하게 DOM 인접성만 본다). -->
-        <!-- 2026-07-20 유저 요청: 스트레스 해소/수면유도/명상은 "특수한
-             환경/조건에서 들을 수 있는 음악"이라 기본 전체 랜덤과 섞이면
-             안 된다 — 완전히 독립된 대카테고리로 하단에 별도 박스 분리.
-             radiogroup의 name="musicPlaylistFilter"는 위 일반 플레이리스트
-             박스와 동일해서(app.js renderMusicSpecialFilterOptions 참조)
-             셋 중 하나만 고를 수 있고, 고르는 순간 위 일반 선택은 자동
-             해제된다(반대도 마찬가지) — 재생 필터는 앱 전체에서 항상
-             하나뿐이라는 원칙 유지. -->
-        <section class="settings-block settings-card settings-card-special" aria-label="Special — 특수 상황별 음악">
-          <h3 class="settings-subtitle">Special</h3>
-          <p class="settings-desc settings-desc-muted">특수한 상황에서 듣는 음악입니다. 전체 랜덤에는 섞이지 않고, 아래 중 하나를 선택했을 때만 재생됩니다.</p>
-          <div class="field-grid" id="musicSpecialOptions" role="radiogroup" aria-label="Special 플레이리스트 선택"></div>
         </section>
 
         <button class="settings-save" type="button" id="settingsSave">확인</button>
@@ -639,6 +642,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260720-musicspecial-v1"></script>
+  <script src="app.js?v=20260720-musicsettings2-v1"></script>
 </body>
 </html>
