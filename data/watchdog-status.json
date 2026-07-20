@@ -1,9 +1,9 @@
 {
-  "lastRun": "2026-07-20T04:47:24.667Z",
-  "lastRunKST": "2026-07-20 13:47:24 KST",
+  "lastRun": "2026-07-20T05:17:25.103Z",
+  "lastRunKST": "2026-07-20 14:17:25 KST",
   "summary": {
-    "ok": 5,
-    "triggered": 1,
+    "ok": 6,
+    "triggered": 0,
     "alreadyRunning": 0,
     "stale": 0,
     "skipped": 4,
@@ -14,7 +14,7 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-07-20T04:47:24.667Z",
+      "checkedAt": "2026-07-20T05:17:25.103Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -22,29 +22,29 @@
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-07-20T04:47:24.667Z",
+      "checkedAt": "2026-07-20T05:17:25.103Z",
       "lastUpdate": "2026-07-20T03:54:38.452Z",
-      "ageHours": 0.9,
+      "ageHours": 1.4,
       "maxAgeHours": 2.5,
       "status": "OK",
-      "reason": "최신 (0.9h 전 업데이트)"
+      "reason": "최신 (1.4h 전 업데이트)"
     },
     {
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-07-20T04:47:24.667Z",
+      "checkedAt": "2026-07-20T05:17:25.103Z",
       "lastUpdate": "2026-07-20T03:17:50.924Z",
-      "ageHours": 1.5,
+      "ageHours": 2,
       "maxAgeHours": 5,
       "status": "OK",
-      "reason": "최신 (1.5h 전 업데이트)"
+      "reason": "최신 (2h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-07-20T04:47:24.667Z",
+      "checkedAt": "2026-07-20T05:17:25.103Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -52,7 +52,7 @@
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-07-20T04:47:24.667Z",
+      "checkedAt": "2026-07-20T05:17:25.103Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -60,18 +60,18 @@
       "id": "scorecard",
       "name": "긍정vs부정 스코어카드",
       "workflow": "market-scorecard.yml",
-      "checkedAt": "2026-07-20T04:47:24.667Z",
+      "checkedAt": "2026-07-20T05:17:25.103Z",
       "lastUpdate": "2026-07-20T02:50:58Z",
-      "ageHours": 1.9,
+      "ageHours": 2.4,
       "maxAgeHours": 8,
       "status": "OK",
-      "reason": "최신 (1.9h 전 업데이트)"
+      "reason": "최신 (2.4h 전 업데이트)"
     },
     {
       "id": "stocks-prices",
       "name": "심플 주가 실시간",
       "workflow": "fetch-stocks-prices.yml",
-      "checkedAt": "2026-07-20T04:47:24.667Z",
+      "checkedAt": "2026-07-20T05:17:25.103Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -79,34 +79,34 @@
       "id": "stocks-data",
       "name": "심플 주가 일간(스파크라인)",
       "workflow": "fetch-stocks-data.yml",
-      "checkedAt": "2026-07-20T04:47:24.667Z",
+      "checkedAt": "2026-07-20T05:17:25.103Z",
       "lastUpdate": "2026-07-19T22:30:51.823673+00:00",
-      "ageHours": 6.3,
+      "ageHours": 6.8,
       "maxAgeHours": 26,
       "status": "OK",
-      "reason": "최신 (6.3h 전 업데이트)"
+      "reason": "최신 (6.8h 전 업데이트)"
     },
     {
       "id": "market-cycle",
       "name": "마켓 사이클 주봉",
       "workflow": "fetch-market-cycle.yml",
-      "checkedAt": "2026-07-20T04:47:24.667Z",
+      "checkedAt": "2026-07-20T05:17:25.103Z",
       "lastUpdate": "2026-07-20T00:16:08.202Z",
-      "ageHours": 4.5,
+      "ageHours": 5,
       "maxAgeHours": 30,
       "status": "OK",
-      "reason": "최신 (4.5h 전 업데이트)"
+      "reason": "최신 (5h 전 업데이트)"
     },
     {
       "id": "kr-prices",
       "name": "한국 주가",
       "workflow": "fetch-kr-prices.yml",
-      "checkedAt": "2026-07-20T04:47:24.667Z",
-      "lastUpdate": "2026-07-20T03:26:03Z",
-      "ageHours": 1.4,
+      "checkedAt": "2026-07-20T05:17:25.103Z",
+      "lastUpdate": "2026-07-20T04:47:50Z",
+      "ageHours": 0.5,
       "maxAgeHours": 1,
-      "status": "TRIGGERED",
-      "reason": "1.4h 지연 감지 → 자동 트리거"
+      "status": "OK",
+      "reason": "최신 (0.5h 전 업데이트)"
     }
   ]
 }
