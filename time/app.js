@@ -265,6 +265,13 @@ const wdCurrentTemp = document.getElementById("wdCurrentTemp");
 // 2026-07-20 8차 피드백(유저 요청): 체감기온 DOM 제거 — wdCurrentFeels const 삭제.
 const wdCurrentHumidity = document.getElementById("wdCurrentHumidity");
 const wdCurrentSub = document.getElementById("wdCurrentSub");
+// 2026-07-20 유저 피드백: "가끔 상세페이지에서 날씨 정보가 안 나온다" —
+// /api/weather/current 호출이 일시적으로 실패하면(콜드스타트·네트워크 순단
+// 등) 상세 화면이 "날씨 데이터를 불러올 수 없어요" 문구만 보여주고 멈춰
+//있었다. 사실 실패는 캐시되지 않아 패널을 껐다 켜면 자동 재시도되지만,
+// 유저가 그걸 알 방법이 없었다 — 바로 그 자리에서 누를 수 있는 재시도
+// 버튼을 추가한다. renderWeatherCurrent()의 실패 분기에서만 보이게 한다.
+const wdCurrentRetryBtn = document.getElementById("wdCurrentRetryBtn");
 // 2026-07-17 벤치마크 기획(묶음1·2·3·4): 상세 지표(바람/자외선/기압/가시거리/
 // 이슬점), 일출·일몰, 시간대별 예보 스트립 DOM 참조 추가.
 const wdCurrentSun = document.getElementById("wdCurrentSun");
@@ -2284,7 +2291,8 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   if (!activeScenario && (!current || !current.current)) {
     wdCurrentTemp.textContent = "--°";
     if (wdCurrentHumidity) wdCurrentHumidity.textContent = "";
-    wdCurrentSub.textContent = "날씨 데이터를 불러올 수 없어요. 백엔드 배포 후 다시 시도해주세요.";
+    wdCurrentSub.textContent = "날씨 정보를 불러오지 못했어요. 아래 버튼으로 다시 시도해보세요.";
+    if (wdCurrentRetryBtn) wdCurrentRetryBtn.hidden = false;
     if (wdCurrentSun) wdCurrentSun.textContent = "";
     if (wdCurrentIcon) wdCurrentIcon.textContent = "";
     wdCurrentIsRainingNow = false;
@@ -2294,6 +2302,9 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     stopWeatherRainFxAll();
     return;
   }
+  // 정상적으로 데이터가 들어온 경우엔(혹은 fxtest 시나리오가 켜진 경우엔)
+  // 이전에 떠 있었을 수 있는 재시도 버튼을 다시 숨긴다.
+  if (wdCurrentRetryBtn) wdCurrentRetryBtn.hidden = true;
   // 2026-07-18 7차 피드백: ?forceWeather=<시나리오>(또는 9차 피드백의
   // ?fxtest=1 스위처로 화면에서 직접 고른 시나리오)가 있으면 실제 관측치
   // 대신 WEATHER_TEST_SCENARIOS의 가짜 값을 써서 원하는 날씨 상태를
@@ -4740,6 +4751,30 @@ function saveMusicPlayLog(log) {
 // 항상 켜져있다"는 재지적 발생 — 테스트 목적 달성 후 원래 값 5로 원복.
 const MUSIC_HOURLY_CEREMONY_WINDOW_MIN = 5;
 
+// 2026-07-20 유저 제보 2건 대응:
+// (1) "정각+5분 창 안에 곡이 2번 바뀌면 세리모니가 2번 뜬다" — 원래
+//     handleMusicCeremonyOnTrackStart는 "그 순간 시계"만 보고 매번 새로
+//     판정했다. 짧은 곡이 연달아 나오면(예: 정각+1분에 한 곡 끝나고 정각+3분에
+//     다음 곡 시작) 둘 다 "아직 5분 안"이라 똑같이 트리거됐던 것 — 원인
+//     확인. lastCeremonyHourKey로 "이 시간대(연/월/일/시)엔 이미 한 번
+//     띄웠다"를 기억해서, 같은 시간대 안에서는 두 번째 트랙 전환부터는
+//     건너뛴다.
+// (2) "6시·7시에 곡이 재생 중인데도 퇴근 세리모니가 안 뜬 것 같다" — 기존
+//     설계는 "정각+5분 사이에 마침 새 곡이 시작되는 경우"에만 수동적으로
+//     발동해서, 그 좁은 창 안에 우연히 곡 전환이 없으면(곡 길이가 3~4분대라
+//     실제로 이 확률이 낮다) 그 시간대는 그냥 조용히 넘어갔다 — 버그라기보다
+//     "우연에 의존하는 설계"의 한계였다. 이제 tick()(매초 실행) 안에서도
+//     checkHourlyCeremonyTick()으로 같은 조건을 확인해서, 곡이 재생 중이기만
+//     하면(트랙이 마침 그 순간 시작됐는지와 무관하게) 정각+5분 창에 진입하는
+//     순간 자동으로 세리모니를 띄운다 — "재생 중이던 곡을 억지로 끊지 않는다"
+//     는 원래 제약은 그대로 지킨다(트랙 전환을 일으키지 않고 오버레이만
+//     얹는다). 두 경로(트랙 시작 훅 / 매초 틱) 모두 같은 lastCeremonyHourKey
+//     가드를 공유하므로 (1)의 중복 방지도 자동으로 함께 적용된다.
+let lastCeremonyHourKey = null;
+function ceremonyHourKey(date) {
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}-${date.getHours()}`;
+}
+
 // 2026-07-16: reshuffleMusicOrder()가 유발한 트랙 전환 1회만 세리모니
 // 판정에서 제외하기 위한 1회성 플래그(아래 handleMusicCeremonyOnTrackStart
 // 참조). 셔플 버튼처럼 "사용자가 명시적으로 누른 행위"로 인한 전환은
@@ -4784,11 +4819,32 @@ function handleMusicCeremonyOnTrackStart() {
   }
   const now = new Date();
   if (now.getMinutes() >= MUSIC_HOURLY_CEREMONY_WINDOW_MIN) return; // 정각+5분 지났으면 세리모니 없음
+  // 2026-07-20: 같은 시간대(연/월/일/시)에 이미 한 번 띄웠으면 두 번째
+  // 트랙 전환부터는 건너뛴다 — "곡 2개가 연달아 튀는" 중복 방지.
+  const hourKey = ceremonyHourKey(now);
+  if (hourKey === lastCeremonyHourKey) return;
+  lastCeremonyHourKey = hourKey;
   triggerMusicHourlyCeremony();
   // "퇴근 세리모니": 18시대 또는 19시대에 정각 세리모니 조건까지 겹치면
   // 추가로 텍스트 표시 — 이 곡이 끝날 때까지 유지된다.
   // 2026-07-16: 하루 2번(18시·19시)으로 확대 — "6시에 퇴근 못하는 사람도
   // 7시엔 퇴근하라"는 성동님 요청.
+  if (now.getHours() === 18 || now.getHours() === 19) showLeaveWorkCeremony();
+}
+
+// 2026-07-20: tick()(매초)에서 호출 — "정각+5분 창에 마침 새 곡이 시작되는
+// 우연"에 기대지 않고, 곡이 재생 중이기만 하면 이 창에 진입하는 순간
+// 자동으로 세리모니를 띄운다. 트랙 전환을 일으키지 않으므로(재생 중인
+// 곡은 그대로 유지) "재생 중이던 곡을 억지로 끊지 않는다"는 기존 설계
+// 제약을 그대로 지킨다. handleMusicCeremonyOnTrackStart와 lastCeremonyHourKey
+// 가드를 공유해서 두 경로가 같은 시간대에 중복으로 띄우지 않는다.
+function checkHourlyCeremonyTick(now) {
+  if (!musicPlaying) return; // 재생 중이 아니면 대상 아님
+  if (now.getMinutes() >= MUSIC_HOURLY_CEREMONY_WINDOW_MIN) return;
+  const hourKey = ceremonyHourKey(now);
+  if (hourKey === lastCeremonyHourKey) return;
+  lastCeremonyHourKey = hourKey;
+  triggerMusicHourlyCeremony();
   if (now.getHours() === 18 || now.getHours() === 19) showLeaveWorkCeremony();
 }
 
@@ -5044,6 +5100,10 @@ function tick() {
   const now = new Date();
   renderTime(now);
   rotateQuote(now);
+  // 2026-07-20: 정각 세리모니/퇴근 세리모니가 트랙 전환 우연에만 기대지
+  // 않도록 매초 별도로도 확인한다(handleMusicCeremonyOnTrackStart 위
+  // 주석 참조).
+  checkHourlyCeremonyTick(now);
 }
 
 dots.forEach((dot) => {
@@ -5258,6 +5318,21 @@ document.querySelectorAll("[data-settings-close]").forEach((element) => {
   element.addEventListener("click", closeSettings);
 });
 if (weatherChipOpen) weatherChipOpen.addEventListener("click", openWeatherDetail);
+// 2026-07-20 유저 피드백: 현재 날씨 조회 실패 시 뜨는 "다시 시도" 버튼.
+// fetchWeatherDetail()은 실패한 요청을 캐시하지 않으므로(위 wdCurrentRetryBtn
+// 선언부 주석 참조) 그냥 다시 호출하면 된다 — 별도의 강제 플래그 불필요.
+if (wdCurrentRetryBtn) {
+  wdCurrentRetryBtn.addEventListener("click", async () => {
+    wdCurrentRetryBtn.disabled = true;
+    wdCurrentRetryBtn.textContent = "다시 불러오는 중…";
+    try {
+      await fetchWeatherDetail();
+    } finally {
+      wdCurrentRetryBtn.disabled = false;
+      wdCurrentRetryBtn.textContent = "다시 시도";
+    }
+  });
+}
 document.querySelectorAll("[data-weather-detail-close]").forEach((element) => {
   element.addEventListener("click", requestCloseWeatherDetail);
 });

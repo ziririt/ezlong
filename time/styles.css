@@ -1142,6 +1142,22 @@ button { font: inherit; }
   margin: 0;
 }
 
+/* 2026-07-20 유저 피드백: 카드 사이 구분선 5개를 지웠더니(위 index.html
+   주석 참조) 정보가 서로 딱 붙어 구분이 안 된다는 지적 — 구분선 대신
+   카드 사이 세로 간격을 1줄(약 22px) 띄운다. 각 규칙은 형제결합자(+)로
+   "특정 카드 쌍 사이"만 정확히 겨냥한다 — .weather-card{margin:0} 기본값을
+   깨지 않고, HTML을 건드리지 않아도 된다(클래스 조합이 각 쌍마다
+   고유하기 때문). 순서: 현재날씨→우산조언 / 우산조언→시간대별상세예보 /
+   시간대별상세예보→주간예보 / 주간예보→지난24시간 / 지난24시간→평년비교.
+   (평년비교→오늘밤열대야 사이는 원래 구분선을 유지 중이라 대상 아님.) */
+.weather-current-card + .weather-comment-box,
+.weather-comment-box + .weather-card,
+.weather-card + .weather-weekly-box,
+.weather-weekly-box + .weather-card,
+.weather-card + .weather-card {
+  margin-top: 22px;
+}
+
 /* 2026-07-19 5차 리디자인(유저 요청): "상세 날씨 페이지의 디자인 컨셉은
    시계 화면과 같은 플립시계의 투명 박스 스타일로 가자" — 시계 화면의
    .quote-panel이 쓰는 정확한 레시피(거의 투명한 배경 + 얇은 테두리 + 큰
@@ -1295,6 +1311,24 @@ button { font: inherit; }
 
 .weather-current-sub:empty {
   display: none;
+}
+
+/* 2026-07-20 유저 피드백: 현재 날씨 조회 실패 시에만 뜨는 재시도 버튼.
+   평소엔 index.html의 hidden 속성으로 안 보인다. */
+.weather-current-retry {
+  margin-top: 12px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: #2A62B0;
+  border: none;
+  border-radius: 999px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.weather-current-retry:disabled {
+  opacity: 0.6;
 }
 
 .weather-rain-windows {
