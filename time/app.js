@@ -273,6 +273,9 @@ const wdCurrentIcon = document.getElementById("wdCurrentIcon");
 // 2026-07-19 5차 리디자인: 애플 날씨 스타일 상단 요약(날씨 상태 텍스트,
 // 최고/최저) — renderWeatherCurrentToday()가 채운다.
 const wdCurrentCondition = document.getElementById("wdCurrentCondition");
+// 2026-07-20 유저 피드백: 강수확률/mm 보조정보를 조건 단어와 분리된 작은
+// 폰트로 표기하기 위한 별도 span(wdCurrentHiLo와 같은 스타일).
+const wdCurrentConditionRain = document.getElementById("wdCurrentConditionRain");
 const wdCurrentHiLo = document.getElementById("wdCurrentHiLo");
 // 2026-07-18 2차 피드백: "상세 지표" 카드 삭제 — wdDetailIndicators/
 // wdDetailComment DOM 참조와 renderWeatherDetailIndicators() 함수를 함께
@@ -2397,7 +2400,9 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     const mm = typeof c.precip === "number" ? Math.round(c.precip * 10) / 10 : 0;
     if (prob === 0) prob = 5; // 비가 이미 확인됐는데 반올림으로 0%면 자기모순이니 최소 5%
     const showMm = mm >= 0.1;
-    wdCurrentRainSuffix = ` 강수확률 ${prob}%${showMm ? ` ${mm}mm/h` : ""}`;
+    // 2026-07-20: 이제 별도 span(wdCurrentConditionRain)에 독립적으로
+    // 넣으므로 조건 단어와 이어붙일 때 쓰던 선행 공백을 제거한다.
+    wdCurrentRainSuffix = `강수확률 ${prob}%${showMm ? ` ${mm}mm/h` : ""}`;
   } else {
     // 비가 아닌 상태 — Open-Meteo 문구가 강수를 말하면(모순) 버리고
     // null로 넘겨 today.conditionsKo 폴백을 쓰게 한다.
@@ -2626,7 +2631,12 @@ function renderWeatherCurrentToday(data) {
   const today = data && Array.isArray(data.days) ? data.days[0] : null;
   if (wdCurrentCondition) {
     const baseText = wdCurrentConditionBase != null ? wdCurrentConditionBase : today ? today.conditionsKo || "" : "";
-    wdCurrentCondition.textContent = baseText ? `${baseText}${wdCurrentRainSuffix}` : "";
+    // 2026-07-20 유저 피드백: 조건 단어(큰 폰트)와 강수확률/mm 보조정보
+    // (작은 폰트, wdCurrentHiLo와 같은 크기)를 별개 span으로 분리한다.
+    wdCurrentCondition.textContent = baseText;
+    if (wdCurrentConditionRain) {
+      wdCurrentConditionRain.textContent = baseText ? wdCurrentRainSuffix : "";
+    }
   }
   if (wdCurrentHiLo) {
     const hasRange = today && typeof today.tempMax === "number" && typeof today.tempMin === "number";

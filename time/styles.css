@@ -1200,6 +1200,20 @@ button { font: inherit; }
   display: none;
 }
 
+/* 2026-07-20 유저 피드백: "약한 비 강수확률 94% 0.7mm/h"에서 강수확률/mm
+   부분은 조건 단어(약한 비)의 보조 정보이므로, 최고/최저 기온과 같은
+   .weather-current-hilo 폰트 사이즈로 맞춰 작게 표기한다. */
+.weather-current-condition-rain {
+  font-size: 15px;
+  font-weight: 640;
+  color: rgba(255,255,255,0.82);
+  font-variant-numeric: tabular-nums;
+}
+
+.weather-current-condition-rain:empty {
+  display: none;
+}
+
 .weather-current-hilo {
   margin: 6px 0 0;
   font-size: 15px;
@@ -1437,6 +1451,11 @@ button { font: inherit; }
    2열 레이아웃. 예전 "어제와 비교하면"(.weather-compare-list/-row) 카드는
    이 카드로 흡수돼 삭제됐다. */
 .weather-24h-compare {
+  /* 2026-07-20 유저 피드백: 바로 위 wd24hComparison 문장과 딱 붙어있어서
+     0.5줄(약 11px, .weather-comment의 font-size:15px×line-height:1.5의
+     절반) 정도 간격을 띄운다. .weather-comment 공통 클래스는 다른 여러
+     요소가 같이 쓰므로 건드리지 않고, 이 카드에만 scoped로 적용. */
+  margin-top: 11px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
@@ -2860,21 +2879,25 @@ button { font: inherit; }
   top: 0;
   left: 0;
   right: 0;
-  width: 160px;
+  /* 2026-07-20 16차-g(유저 피드백): 폭 30% 축소(160→112px), 높이는 ezlong
+     헤더 안에서 끝나도록 축소 — 로고·파란 메뉴 버튼은 물론, 메뉴가 펼쳐졌을
+     때 첫 항목('스윙 시그널')도 가리지 않는다. 손잡이는 상태바 바로 아래
+     얇은 띠로만 존재한다. */
+  width: 112px;
   margin: 0 auto;
-  height: max(64px, calc(env(safe-area-inset-top) + 36px));
+  height: max(40px, calc(env(safe-area-inset-top) + 15px));
   z-index: 5;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding-bottom: 7px;
-  background: linear-gradient(rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0));
-  border-radius: 0 0 14px 14px;
+  padding-bottom: 4px;
+  background: linear-gradient(rgba(0, 0, 0, 0.26), rgba(0, 0, 0, 0));
+  border-radius: 0 0 12px 12px;
 }
 
 .webview-grabber span {
-  width: 84px;
-  height: 6px;
+  width: 64px;
+  height: 5px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.85);
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
