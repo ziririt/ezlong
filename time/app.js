@@ -1509,7 +1509,7 @@ function closeSettings() {
 // 파라미터를 빠뜨릴 수 있다. 데이터 쪽에서 매번 붙이는 걸 믿기보다,
 // 실제로 iframe을 여는 이 순간에 마지막으로 한 번 더 강제로 붙여서 항상
 // 보장한다(이미 있으면 덮어쓰기만 하고 중복 추가는 안 함).
-const ALADIN_PARTNER_ID = "friedns327";
+const ALADIN_PARTNER_ID = "friends327";
 function withAladinPartnerParam(url) {
   if (!url) return url;
   try {
