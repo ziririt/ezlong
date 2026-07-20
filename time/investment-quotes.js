@@ -6415,5 +6415,537 @@ window.investmentQuotes = [
     "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
     "author": "찰리 멍거",
     "category": "patience"
+  },
+  {
+    "english": "Truth—or, more precisely, an accurate understanding of reality—is the essential foundation for any good outcome.",
+    "text": "진실은, 더 정확히 말하면 현실을 있는 그대로 파악하는 것은, 좋은 결과를 만들어내는 데 반드시 필요한 토대다.",
+    "title": "원칙 (Principles: Life and Work)",
+    "author": "레이 달리오",
+    "category": "mindset"
+  },
+  {
+    "english": "If the job has been correctly done when a common stock is purchased, the time to sell it is - almost never.",
+    "text": "주식을 매수하는 시점에 제대로 된 판단을 내렸다면, 그 주식을 팔아야 할 때는 사실상 찾아오지 않는다. 기업이 계속해서 훌륭하게 사업을 운영하고 있다면, 단기 주가 흐름을 이유로 자리를 뜨는 것은 대개 실수다.",
+    "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "Know what you own, and know why you own it. \"This baby's a cinch to go up!\" doesn't count.",
+    "text": "자신이 무엇을 소유하고 있는지, 그리고 왜 그것을 소유하고 있는지 알아야 한다. \"이 주식은 무조건 오른다\"는 말만으로는 충분하지 않다.",
+    "title": "월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
+    "english": "The desire to get rich fast is pretty dangerous. There are already too many people trying to do that. Getting rich slowly is not that hard.",
+    "text": "빨리 부자가 되고 싶다는 욕망은 상당히 위험하다. 그렇게 서두르는 사람은 이미 너무 많다. 반면 천천히 부자가 되는 것은 그리 어려운 일이 아니다.",
+    "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거",
+    "category": "patience"
+  },
+  {
+    "english": "The elements of good trading are: (1) cutting losses, (2) cutting losses, and (3) cutting losses. If you can follow these three rules, you may have a chance.",
+    "text": "좋은 트레이딩의 요소는 이렇다. 첫째도 손절, 둘째도 손절, 셋째도 손절이다. 시장이 내 판단과 다르게 흘러갈 때 재빨리 손을 떼는 능력, 그것 하나가 오래 살아남는 트레이더와 그렇지 못한 트레이더를 가른다.",
+    "title": "시장의 마법사들 (Market Wizards)",
+    "author": "에드 세이코타",
+    "category": "mindset"
+  },
+  {
+    "english": "To achieve satisfactory investment results is easier than most people realize; to achieve superior results is harder than it looks.",
+    "text": "만족할 만한 투자 성과를 거두는 일은 대부분의 사람들이 생각하는 것보다 쉽다. 그러나 탁월한 성과를 거두는 일은 겉보기보다 어렵다.",
+    "title": "현명한 투자자",
+    "author": "벤저민 그레이엄",
+    "category": "mindset"
+  },
+  {
+    "english": "The function of the margin of safety is, in essence, that of rendering unnecessary an accurate estimate of the future.",
+    "text": "안전마진의 본질적 기능은 미래를 정확하게 추정할 필요를 없애는 데 있다.",
+    "title": "현명한 투자자",
+    "author": "벤저민 그레이엄",
+    "category": "mindset"
+  },
+  {
+    "english": "Obvious prospects for physical growth in a business do not translate into obvious profits for investors.",
+    "text": "기업의 뚜렷한 외형 성장 전망이 투자자의 확실한 이익으로 이어지는 것은 아니다.",
+    "title": "현명한 투자자",
+    "author": "벤저민 그레이엄",
+    "category": "mindset"
+  },
+  {
+    "english": "The defensive investor must confine himself to the shares of important companies with a long record of profitable operations and in strong financial condition.",
+    "text": "방어적 투자자는 오랫동안 이익을 내왔고 재무상태가 튼튼한 주요 기업의 주식으로 투자 대상을 제한해야 한다.",
+    "title": "현명한 투자자",
+    "author": "벤저민 그레이엄",
+    "category": "mindset"
+  },
+  {
+    "english": "Investment is most intelligent when it is most businesslike.",
+    "text": "투자는 사업처럼 접근할 때 가장 현명해진다.",
+    "title": "현명한 투자자",
+    "author": "벤저민 그레이엄",
+    "category": "mindset"
+  },
+  {
+    "english": "An investment operation is one which, upon thorough analysis, promises safety of principal and an adequate return.",
+    "text": "투자란 철저한 분석을 거쳐 원금의 안전성과 적정한 수익을 기대할 수 있는 행위다.",
+    "title": "증권분석",
+    "author": "벤저민 그레이엄·데이비드 도드",
+    "category": "mindset"
+  },
+  {
+    "english": "Operations not meeting these requirements are speculative.",
+    "text": "이러한 요건을 충족하지 못하는 행위는 투기다.",
+    "title": "증권분석",
+    "author": "벤저민 그레이엄·데이비드 도드",
+    "category": "mindset"
+  },
+  {
+    "english": "The essence of investment management is the management of risks, not the management of returns.",
+    "text": "투자관리의 본질은 수익률 관리가 아니라 위험 관리다.",
+    "title": "증권분석",
+    "author": "벤저민 그레이엄·데이비드 도드",
+    "category": "volatility"
+  },
+  {
+    "english": "Analysis connotes the careful study of available facts with the attempt to draw conclusions therefrom based on established principles and sound logic.",
+    "text": "분석이란 이용 가능한 사실을 면밀히 검토하고 확립된 원칙과 건전한 논리에 따라 결론을 도출하려는 작업이다.",
+    "title": "증권분석",
+    "author": "벤저민 그레이엄·데이비드 도드",
+    "category": "mindset"
+  },
+  {
+    "english": "Invest in what you know.",
+    "text": "당신이 잘 아는 것에 투자하라.",
+    "title": "월가의 영웅",
+    "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
+    "english": "Selling your winners and holding your losers is like cutting the flowers and watering the weeds.",
+    "text": "오르는 종목을 팔고 실패한 종목을 계속 보유하는 것은 꽃을 자르고 잡초에 물을 주는 것과 같다.",
+    "title": "월가의 영웅",
+    "author": "피터 린치",
+    "category": "behavior"
+  },
+  {
+    "english": "Behind every stock is a company. Find out what it's doing.",
+    "text": "모든 주식 뒤에는 기업이 있다. 그 기업이 무엇을 하는지 알아내라.",
+    "title": "월가의 영웅",
+    "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
+    "english": "The worst thing you can do is invest in companies you know nothing about.",
+    "text": "가장 나쁜 행동은 아무것도 모르는 기업에 투자하는 것이다.",
+    "title": "월가의 영웅",
+    "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
+    "english": "You have to keep your priorities straight if you plan to do well in stocks.",
+    "text": "주식투자에서 좋은 성과를 내려면 우선순위를 제대로 세워야 한다.",
+    "title": "월가의 영웅",
+    "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
+    "english": "In my business a fourbagger is nice, but a tenbagger is the fiscal equivalent of two home runs and a double.",
+    "text": "내 업계에서 네 배 수익도 좋지만, 열 배 수익은 재무적으로 홈런 두 번과 2루타 한 번에 해당한다.",
+    "title": "월가의 영웅",
+    "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
+    "english": "The key to making money in stocks is not to get scared out of them.",
+    "text": "주식으로 돈을 버는 핵심은 겁에 질려 주식에서 쫓겨나지 않는 것이다.",
+    "title": "월가의 영웅",
+    "author": "피터 린치",
+    "category": "patience"
+  },
+  {
+    "english": "The best stock to buy may be the one you already own.",
+    "text": "가장 좋은 매수 대상은 이미 보유하고 있는 주식일 수 있다.",
+    "title": "피터 린치의 이기는 투자",
+    "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
+    "english": "The simpler it is, the better I like it.",
+    "text": "단순할수록 나는 더 좋아한다.",
+    "title": "피터 린치의 이기는 투자",
+    "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
+    "english": "A stock does not know that you own it.",
+    "text": "주식은 당신이 자신을 보유하고 있다는 사실을 알지 못한다.",
+    "title": "피터 린치의 이기는 투자",
+    "author": "피터 린치",
+    "category": "behavior"
+  },
+  {
+    "english": "There is always something to worry about.",
+    "text": "시장은 언제나 걱정거리를 만들어낸다.",
+    "title": "피터 린치의 이기는 투자",
+    "author": "피터 린치",
+    "category": "patience"
+  },
+  {
+    "english": "The successful investor is usually an individual who is inherently interested in business problems.",
+    "text": "성공한 투자자는 대개 기업의 문제 자체에 본래부터 관심이 많은 사람이다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "Buying a company without having sufficient knowledge of it may be even more dangerous than having inadequate diversification.",
+    "text": "충분히 알지 못한 회사를 사는 것은 분산이 부족한 것보다도 더 위험할 수 있다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "volatility"
+  },
+  {
+    "english": "There are fads and styles in the stock market just as there are in women's clothes.",
+    "text": "주식시장에도 여성 의류처럼 유행과 스타일이 있다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "behavior"
+  },
+  {
+    "english": "More money has probably been lost by investors holding a stock they really did not want until they could at least come out even than from any other single reason.",
+    "text": "투자자가 원하지 않는 주식을 본전이 올 때까지 붙들고 있어서 잃은 돈이 다른 어떤 단일 이유보다 많을 것이다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "behavior"
+  },
+  {
+    "english": "Conservatism in investing is not a matter of taking the easy way out.",
+    "text": "투자에서 보수적이라는 것은 쉬운 길을 택한다는 뜻이 아니다.",
+    "title": "보수적인 투자자는 마음이 편하다 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "A conservative investment is one most likely to conserve purchasing power at a minimum of risk.",
+    "text": "보수적인 투자란 최소한의 위험으로 구매력을 보전할 가능성이 가장 높은 투자다.",
+    "title": "보수적인 투자자는 마음이 편하다 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "The greatest investment rewards come to those who can identify a truly outstanding company before it has become fully recognized.",
+    "text": "가장 큰 투자 보상은 진정 탁월한 기업이 시장에서 완전히 인정받기 전에 알아보는 사람에게 돌아간다.",
+    "title": "보수적인 투자자는 마음이 편하다 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "Superior investing consists largely of taking advantage of errors in the prices of securities.",
+    "text": "탁월한 투자는 대체로 증권 가격의 오류를 이용하는 데서 나온다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "english": "Risk means more things can happen than will happen.",
+    "text": "위험이란 실제로 일어날 일보다 더 많은 일이 일어날 수 있다는 뜻이다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "volatility"
+  },
+  {
+    "english": "The possibility of permanent loss is the risk I worry about.",
+    "text": "내가 걱정하는 위험은 영구적 손실의 가능성이다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "volatility"
+  },
+  {
+    "english": "If we avoid the losers, the winners will take care of themselves.",
+    "text": "패자를 피하면 승자는 스스로 알아서 해줄 것이다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "english": "The most important thing is not being right, but making money when you're right.",
+    "text": "가장 중요한 것은 맞히는 것이 아니라, 맞았을 때 돈을 버는 것이다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "english": "Most things will prove to be cyclical.",
+    "text": "대부분의 일은 결국 순환적이라는 사실이 드러난다.",
+    "title": "하워드 막스 투자와 마켓 사이클의 법칙 (Mastering the Market Cycle)",
+    "author": "하워드 막스",
+    "category": "volatility"
+  },
+  {
+    "english": "Cycles' potential for havoc is heightened by the inability of investors to remember the past.",
+    "text": "투자자들이 과거를 기억하지 못할수록 사이클이 초래할 혼란은 더 커진다.",
+    "title": "하워드 막스 투자와 마켓 사이클의 법칙 (Mastering the Market Cycle)",
+    "author": "하워드 막스",
+    "category": "behavior"
+  },
+  {
+    "english": "The greatest source of investment risk is the belief that there is no risk.",
+    "text": "투자 위험의 가장 큰 원천은 위험이 없다는 믿음이다.",
+    "title": "하워드 막스 투자와 마켓 사이클의 법칙 (Mastering the Market Cycle)",
+    "author": "하워드 막스",
+    "category": "volatility"
+  },
+  {
+    "english": "The odds change as our position in the cycle changes.",
+    "text": "사이클에서 우리의 위치가 달라지면 확률도 달라진다.",
+    "title": "하워드 막스 투자와 마켓 사이클의 법칙 (Mastering the Market Cycle)",
+    "author": "하워드 막스",
+    "category": "volatility"
+  },
+  {
+    "english": "We may never know where we're going, but we had better have a good idea where we are.",
+    "text": "어디로 가는지는 몰라도 현재 어디에 있는지는 잘 알아야 한다.",
+    "title": "하워드 막스 투자와 마켓 사이클의 법칙 (Mastering the Market Cycle)",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "english": "In investing, you get what you don't pay for.",
+    "text": "투자에서는 지불하지 않은 만큼 얻게 된다.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "mindset"
+  },
+  {
+    "english": "The miracle of compounding returns is overwhelmed by the tyranny of compounding costs.",
+    "text": "수익의 복리라는 기적은 비용의 복리라는 폭정에 압도될 수 있다.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "compound"
+  },
+  {
+    "english": "The winning formula for success in investing is owning the entire stock market through an index fund, and then doing nothing.",
+    "text": "투자 성공의 공식은 인덱스펀드를 통해 주식시장 전체를 소유한 뒤 아무것도 하지 않는 것이다.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "patience"
+  },
+  {
+    "english": "Stay the course.",
+    "text": "항로를 지켜라.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "patience"
+  },
+  {
+    "english": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave.",
+    "text": "돈을 잘 다루는 능력은 지능과는 조금 관련이 있고 행동과는 매우 깊은 관련이 있다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "behavior"
+  },
+  {
+    "english": "Financial success is not a hard science. It's a soft skill, where how you behave is more important than what you know.",
+    "text": "재정적 성공은 엄밀한 과학이 아니라, 무엇을 아느냐보다 어떻게 행동하느냐가 중요한 소프트 스킬이다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "behavior"
+  },
+  {
+    "english": "No one is crazy.",
+    "text": "아무도 미친 것이 아니다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "behavior"
+  },
+  {
+    "english": "Controlling your time is the highest dividend money pays.",
+    "text": "시간을 통제할 수 있다는 것은 돈이 주는 가장 높은 배당이다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "retirement"
+  },
+  {
+    "english": "Wealth is what you don't see.",
+    "text": "부는 눈에 보이지 않는 것이다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "mindset"
+  },
+  {
+    "english": "The ability to do what you want, when you want, with who you want, for as long as you want, is priceless.",
+    "text": "원하는 일을 원하는 때에 원하는 사람과 원하는 만큼 오래 할 수 있는 능력은 값을 매길 수 없다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "retirement"
+  },
+  {
+    "english": "Getting money is one thing. Keeping it is another.",
+    "text": "돈을 버는 것과 지키는 것은 전혀 다른 일이다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "behavior"
+  },
+  {
+    "english": "Room for error lets you endure a range of potential outcomes.",
+    "text": "오차의 여지는 다양한 잠재적 결과를 견딜 수 있게 한다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "volatility"
+  },
+  {
+    "english": "We favor the visible, the embedded, the personal, the narrated, and the tangible; we scorn the abstract.",
+    "text": "우리는 보이고, 내재되어 있고, 개인적이며, 이야기로 설명되고, 손에 잡히는 것을 선호하고 추상적인 것을 경시한다.",
+    "title": "행운에 속지 마라 (Fooled by Randomness)",
+    "author": "나심 니콜라스 탈레브",
+    "category": "behavior"
+  },
+  {
+    "english": "A mistake is not something to be determined after the fact, but in the light of the information until that point.",
+    "text": "실수는 결과를 본 뒤 판단할 것이 아니라, 그 시점까지 이용할 수 있었던 정보에 비추어 판단해야 한다.",
+    "title": "행운에 속지 마라 (Fooled by Randomness)",
+    "author": "나심 니콜라스 탈레브",
+    "category": "behavior"
+  },
+  {
+    "english": "It is easier to buy and sell than to fry an egg.",
+    "text": "사고파는 일은 달걀을 부치는 것보다 쉽다.",
+    "title": "행운에 속지 마라 (Fooled by Randomness)",
+    "author": "나심 니콜라스 탈레브",
+    "category": "behavior"
+  },
+  {
+    "english": "The problem with experts is that they do not know what they do not know.",
+    "text": "전문가의 문제는 자신이 무엇을 모르는지 모른다는 데 있다.",
+    "title": "블랙 스완",
+    "author": "나심 니콜라스 탈레브",
+    "category": "mindset"
+  },
+  {
+    "english": "We are very confident that we know more than we actually do.",
+    "text": "우리는 실제로 아는 것보다 훨씬 더 많이 안다고 확신한다.",
+    "title": "블랙 스완",
+    "author": "나심 니콜라스 탈레브",
+    "category": "behavior"
+  },
+  {
+    "english": "The inability to predict outliers implies the inability to predict the course of history.",
+    "text": "극단적 사건을 예측할 수 없다는 것은 역사의 흐름도 예측할 수 없다는 뜻이다.",
+    "title": "블랙 스완",
+    "author": "나심 니콜라스 탈레브",
+    "category": "volatility"
+  },
+  {
+    "english": "Missing a train is only painful if you run after it.",
+    "text": "기차를 놓친 일이 고통스러운 것은 그 기차를 뒤쫓을 때뿐이다.",
+    "title": "블랙 스완",
+    "author": "나심 니콜라스 탈레브",
+    "category": "behavior"
+  },
+  {
+    "english": "Buying good companies at bargain prices makes sense.",
+    "text": "좋은 기업을 싼 가격에 사는 것은 합리적이다.",
+    "title": "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)",
+    "author": "조엘 그린블라트",
+    "category": "mindset"
+  },
+  {
+    "english": "The magic formula works because it buys good companies at bargain prices.",
+    "text": "마법공식이 작동하는 이유는 좋은 기업을 싼 가격에 사기 때문이다.",
+    "title": "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)",
+    "author": "조엘 그린블라트",
+    "category": "mindset"
+  },
+  {
+    "english": "The secret to investing is to figure out the value of something—and then pay a lot less.",
+    "text": "투자의 비밀은 어떤 것의 가치를 알아낸 뒤 그보다 훨씬 적게 지불하는 것이다.",
+    "title": "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)",
+    "author": "조엘 그린블라트",
+    "category": "mindset"
+  },
+  {
+    "english": "The market is emotional but over time it gets it right.",
+    "text": "시장은 감정적이지만 시간이 지나면 결국 올바른 가격을 찾아간다.",
+    "title": "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)",
+    "author": "조엘 그린블라트",
+    "category": "patience"
+  },
+  {
+    "english": "If your strategy makes sense, stick with it.",
+    "text": "전략이 합리적이라면 끝까지 지켜라.",
+    "title": "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)",
+    "author": "조엘 그린블라트",
+    "category": "patience"
+  },
+  {
+    "english": "Investing is a probabilistic exercise.",
+    "text": "투자는 확률의 문제다.",
+    "title": "기대수익",
+    "author": "마이클 모부신",
+    "category": "mindset"
+  },
+  {
+    "english": "A good decision can lead to a bad outcome, and a bad decision can lead to a good outcome.",
+    "text": "좋은 결정이 나쁜 결과를 낳을 수도 있고, 나쁜 결정이 좋은 결과를 낳을 수도 있다.",
+    "title": "기대수익",
+    "author": "마이클 모부신",
+    "category": "mindset"
+  },
+  {
+    "english": "The key is to focus on the process and not solely on the outcome.",
+    "text": "핵심은 결과만이 아니라 의사결정 과정에 집중하는 것이다.",
+    "title": "기대수익",
+    "author": "마이클 모부신",
+    "category": "mindset"
+  },
+  {
+    "english": "Expectations are embedded in stock prices.",
+    "text": "주가에는 시장의 기대가 내재되어 있다.",
+    "title": "기대수익",
+    "author": "마이클 모부신",
+    "category": "mindset"
+  },
+  {
+    "english": "Investment success requires understanding the gap between expectations and fundamentals.",
+    "text": "투자 성공에는 시장의 기대와 기업의 펀더멘털 사이의 간극을 이해하는 일이 필요하다.",
+    "title": "기대수익",
+    "author": "마이클 모부신",
+    "category": "mindset"
+  },
+  {
+    "english": "In nearly every case, an economic moat is based on some kind of structural advantage.",
+    "text": "거의 모든 경우 경제적 해자는 어떤 형태의 구조적 우위에 기반한다.",
+    "title": "경제적 해자",
+    "author": "팻 도시",
+    "category": "mindset"
+  },
+  {
+    "english": "Great products, a large size, great execution, and strong management do not create long-term competitive advantages.",
+    "text": "훌륭한 제품, 큰 규모, 뛰어난 실행력, 유능한 경영진만으로는 장기 경쟁우위가 만들어지지 않는다.",
+    "title": "경제적 해자",
+    "author": "팻 도시",
+    "category": "mindset"
+  },
+  {
+    "english": "The goal of the moat framework is to identify companies with durable competitive advantages.",
+    "text": "해자 분석의 목표는 지속 가능한 경쟁우위를 가진 기업을 찾아내는 것이다.",
+    "title": "경제적 해자",
+    "author": "팻 도시",
+    "category": "mindset"
+  },
+  {
+    "english": "A company that can raise prices without losing customers has a powerful competitive advantage.",
+    "text": "고객을 잃지 않고 가격을 올릴 수 있는 기업은 강력한 경쟁우위를 가진다.",
+    "title": "경제적 해자",
+    "author": "팻 도시",
+    "category": "mindset"
+  },
+  {
+    "english": "Capital allocation is the most important job of management.",
+    "text": "자본배분은 경영진의 가장 중요한 업무다.",
+    "title": "경제적 해자",
+    "author": "팻 도시",
+    "category": "mindset"
   }
 ];
