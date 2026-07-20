@@ -632,30 +632,72 @@ function getTimeBucketForHour(hour) {
   return "pre-dawn";
 }
 
-function currentPrecipitation(current = {}) {
-  const values = [current.precipitation, current.rain, current.showers].map(Number).filter(Number.isFinite);
-  return values.length > 0 ? Math.max(...values) : 0;
+// 2026-07-21 유저 지시("지금 하자, 시간이 걸려도 충분히"): 대기화면 메인
+// 한줄 요약이 그동안 클라이언트에서 Open-Meteo를 직접 호출해 왔다(WMO
+// weather_code 기반 weatherCodeToTag/weatherCodeToSummary). 문제 2가지 —
+// (1) Open-Meteo 무료 티어는 "비영리 전용" 약관이라 이 서비스를 유료
+// 전환하려는 목표와 근본적으로 상충한다. (2) 날씨상세 패널은 이미 이
+// 백엔드(Visual Crossing 경유)를 쓰고 있어서, 메인 한줄과 상세가 서로 다른
+// 프로바이더의 순간 스냅샷을 따로 불러오다 보니 "메인은 옅은 이슬비인데
+// 상세는 맑음" 같은 모순이 반복 발생했다(2026-07-20 9차 피드백 등). 이제
+// 메인 한줄도 /api/weather/current(백엔드) 응답 하나로 통일해서 두 문제를
+// 한 번에 없앤다 — weatherCodeToTag/weatherCodeToSummary/currentPrecipitation
+// (Open-Meteo 전용 로직)은 더 이상 쓰이지 않아 삭제했다. 백엔드가 이미
+// classifyRainIntensity()로 강수강도를, mapConditionsToKo()로 조건 한글
+// 라벨을 계산해 내려주므로(둘 다 날씨상세가 이미 신뢰하는 값), 여기서
+// 임계값을 새로 복제하지 않고 그 값을 그대로 재사용한다.
+function vcCurrentTag(c) {
+  const conditions = (c.conditions || "").toLowerCase();
+  const precipTypes = (c.preciptype || []).map((t) => String(t).toLowerCase());
+  const isSnow = precipTypes.includes("snow") || /snow/.test(conditions);
+  const grade = (c.rainIntensity && c.rainIntensity.grade) || "NONE";
+
+  if (isSnow) return "snow";
+  if (grade === "DRIZZLE") return "light-rain";
+  if (grade === "RAIN") return "rain";
+  if (grade === "HEAVY" || grade === "VERY_HEAVY") return "heavy-rain";
+
+  // 비/눈이 아닌 경우 — 백엔드가 이미 계산해 내려주는 conditionsKo(한글
+  // 라벨, mapConditionsToKo 결과)로 판정한다. 응답에 아직 conditionsKo가
+  // 없는(배포 전환 과도기) 경우를 대비해 conditions 원문도 보조로 살핀다.
+  const ko = c.conditionsKo || "";
+  if (ko === "안개" || /fog|mist|haze/.test(conditions)) return "mist";
+  if (ko === "흐림" || /overcast/.test(conditions)) return "cloudy";
+  if (ko === "구름 조금" || /partially cloudy|partly cloudy/.test(conditions)) return "partly-cloudy";
+  if (ko === "구름 많음" || /cloudy/.test(conditions)) return "cloudy";
+  if (ko === "맑음" || /clear/.test(conditions)) return "clear";
+  // conditionsKo가 "비"/"눈"/"천둥번개"처럼 강수 계열인데 rainIntensity가
+  // NONE으로 판정한 드문 불일치 상황 — 비/눈 아이콘을 잘못 켜는 것보다
+  // 구름으로 안전하게 대체한다.
+  if (ko === "비" || ko === "눈" || ko === "천둥번개") return "cloudy";
+  return "clear";
 }
 
-function weatherCodeToTag(code, current = {}) {
-  const precipitation = currentPrecipitation(current);
-  if ([45, 48].includes(code)) return "mist";
-  if ([51, 55, 56, 57, 61, 80].includes(code)) return "light-rain";
-  if ([53].includes(code)) return "light-rain";
-  if ([63, 81].includes(code) && precipitation < 0.5) return "light-rain";
-  if ([63, 81].includes(code)) return "rain";
-  if ([65, 66, 67, 82].includes(code)) return "heavy-rain";
-  if ([95, 96, 99].includes(code)) return "heavy-rain";
-  if ([71, 73, 75, 77, 85, 86].includes(code)) return "snow";
-  // Open-Meteo의 weather_code는 격자모델 기반 종합판정이라 국지성 장마비를
-  // 놓칠 때가 있다. code가 맑음/약간흐림/흐림이어도 실측 강수량이 있으면 비로 덮어쓴다.
-  if ([0, 1, 2, 3].includes(code)) {
-    if (precipitation >= 0.5) return "rain";
-    if (precipitation > 0) return "light-rain";
+function vcCurrentSummary(c) {
+  const conditions = (c.conditions || "").toLowerCase();
+  const precipTypes = (c.preciptype || []).map((t) => String(t).toLowerCase());
+  const isSnow = precipTypes.includes("snow") || /snow/.test(conditions);
+  const grade = (c.rainIntensity && c.rainIntensity.grade) || "NONE";
+  const isThunder = /thunder|storm/.test(conditions);
+
+  if (isSnow) return "눈";
+  if (grade !== "NONE") {
+    // rainIntensity.label은 백엔드가 이미 "약한 비/보통비/강한 비/매우 강한
+    // 비"로 계산해 내려주는 문구 — 날씨상세 패널(wdCurrentConditionBase)도
+    // 같은 값을 쓰므로 재사용하면 두 화면이 항상 같은 말을 하게 된다.
+    if (isThunder) return "뇌우";
+    return (c.rainIntensity && c.rainIntensity.label) || "비";
   }
-  if ([3].includes(code)) return "cloudy";
-  if ([1, 2].includes(code)) return "partly-cloudy";
-  return "clear";
+
+  // 드문 경우지만, 백엔드 conditions 원문이 "Rain" 계열인데 실측
+  // precip/precipprob 기준(classifyRainIntensity)으로는 NONE 등급인 상충
+  // 상황이 있을 수 있다(하루 단위 conditions 텍스트와 순간 실측치가 다른
+  // 소스로 계산되기 때문) — 이때 conditionsKo를 그대로 보여주면 "비 없음"
+  // 등급인데 텍스트는 "비"라고 말하는 자기모순이 생긴다. vcCurrentTag도
+  // 같은 상황에서 아이콘을 cloudy로 안전하게 대체하므로, 텍스트도 같은
+  // 기준으로 안전한 값으로 대체해 아이콘·문구가 항상 같은 판정을 말하게 한다.
+  if (c.conditionsKo && /비|눈|천둥번개/.test(c.conditionsKo)) return "흐림";
+  return c.conditionsKo || "맑음";
 }
 
 function weatherTagGroup(tag) {
@@ -1090,33 +1132,6 @@ function renderWeather() {
   icon.className = `mini-weather ${weatherState.icon}`;
 }
 
-function weatherCodeToSummary(code, current = {}) {
-  const precipitation = currentPrecipitation(current);
-  if ([45, 48].includes(code)) return "안개";
-  if ([51].includes(code)) return "옅은 이슬비";
-  if ([53].includes(code)) return "이슬비";
-  if ([55].includes(code)) return "짙은 이슬비";
-  if ([56].includes(code)) return "살짝 어는 이슬비";
-  if ([57].includes(code)) return "어는 이슬비";
-  if ([61, 80].includes(code)) return "약한 비";
-  if ([63, 81].includes(code) && precipitation <= 0) return "간간이 약한 비";
-  if ([63, 81].includes(code) && precipitation < 0.5) return "약한 비";
-  if ([63, 81].includes(code)) return "비";
-  if ([65, 66, 67, 82].includes(code)) return "강한 비";
-  if ([71, 73, 75, 77, 85, 86].includes(code)) return "눈";
-  if ([95, 96, 99].includes(code)) return "뇌우";
-  // weatherCodeToTag와 동일한 실측 강수량 덮어쓰기: code가 맑음/흐림 계열이어도
-  // 실제 내리는 비가 감지되면 텍스트도 비로 보여준다.
-  if ([0, 1, 2, 3].includes(code)) {
-    if (precipitation >= 0.5) return "비";
-    if (precipitation > 0) return "약한 비";
-  }
-  if ([0].includes(code)) return "맑음";
-  if ([1, 2].includes(code)) return "구름 약간";
-  if ([3].includes(code)) return "흐림";
-  return "날씨";
-}
-
 // 2026-07-20 9차 피드백(유저 질문+요청): "날씨 상세 페이지가 열 때마다
 // '불러오는 중'으로 3초 걸리는데, 미리 불러와 둘 수 없나?" — 답은 "가능하고
 // 안전하다"이다. fetchWeatherDetail()은 좌표+시간 기준 1시간 캐시가 이미
@@ -1147,18 +1162,29 @@ function requestCurrentWeather() {
       try {
         const { latitude, longitude } = coords;
         userCoords = { lat: latitude, lng: longitude };
-        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,is_day,precipitation,rain,showers&timezone=auto`;
-        const weatherResponse = await fetch(weatherUrl);
-        const weather = await weatherResponse.json();
-        const current = weather.current || {};
         const location = await reverseGeocode(latitude, longitude);
+        // 2026-07-21: 이 fetchWeatherJson 호출은 fetchWeatherDetail()이 바로
+        // 뒤이어 다시 부르는 /api/weather/current와 같은 엔드포인트다 —
+        // 중복 호출처럼 보이지만 비용상 문제 없다: 백엔드가 좌표를 1~2km
+        // 격자로 반올림해 4시간 D1 캐시를 공유하므로, 바로 뒤따르는
+        // fetchWeatherDetail()의 같은 호출은 이 요청이 방금 만들어둔 캐시를
+        // 그대로 읽어 즉시 응답한다(Visual Crossing 쪽 실제 API 호출은
+        // 늘지 않음). 대신 메인 한줄이 날씨상세 7종 호출 전체가 끝나기를
+        // 기다리지 않고 훨씬 먼저(가장 가벼운 호출 하나만으로) 갱신된다.
+        const weatherData = await fetchWeatherJson("/api/weather/current");
+        const current = weatherData && weatherData.current;
+        if (!current) throw new Error("현재 날씨 데이터 없음");
 
-        const tag = weatherCodeToTag(current.weather_code, current);
+        const tag = vcCurrentTag(current);
+        const isDay =
+          typeof current.sunriseEpoch === "number" && typeof current.sunsetEpoch === "number"
+            ? current.datetimeEpoch >= current.sunriseEpoch && current.datetimeEpoch < current.sunsetEpoch
+            : true;
         weatherState = {
           location,
-          temp: Number.isFinite(current.temperature_2m) ? `${Math.round(current.temperature_2m)}°` : "--°",
-          summary: weatherCodeToSummary(current.weather_code, current),
-          icon: weatherIconFor(tag, current.is_day !== 0),
+          temp: Number.isFinite(current.temp) ? `${Math.round(current.temp)}°` : "--°",
+          summary: vcCurrentSummary(current),
+          icon: weatherIconFor(tag, isDay),
           tag
         };
       } catch (error) {
@@ -2550,17 +2576,21 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   // isRainingNow(백엔드/시간대별 스트립과 같은 소스)로 게이트한다.
   //
   // 같은 요청의 두 번째 절반 — "옅은 이슬비인데 그 아래 시간대별 상세
-  // 예보는 맑다고 한다, 모순이다"(유저 스크린샷 확인) — 는 조건 문구
-  // 자체의 소스 불일치가 원인이다: 문구(weatherState.summary)는
-  // Open-Meteo, 이 isRainingNow와 시간대별 스트립은 전부 백엔드(Visual
-  // Crossing) 기준이라 실시간 판정이 서로 어긋날 수 있다. 두 프로바이더를
-  // 억지로 합치는 대신 "같은 화면 안에서" 모순이 없도록: Open-Meteo
-  // 문구가 강수를 말하는데 이 페이지의 isRainingNow가 아니라고 하면(=
-  // 아래 시간대별 스트립도 "지금"에 비 아이콘이 없다는 뜻), 그 문구를
-  // 버리고 renderWeatherCurrentToday가 today.conditionsKo(스트립과 같은
-  // 백엔드 소스)로 대신 채우도록 wdCurrentConditionBase를 null로 넘긴다.
-  // 두 소스가 일치하는 절대다수의 경우엔 그대로 Open-Meteo의 더 세밀한
-  // 표현(예: "옅은 이슬비")을 쓴다.
+  // 예보는 맑다고 한다, 모순이다"(유저 스크린샷 확인) — 당시엔 문구
+  // (weatherState.summary)가 Open-Meteo, isRainingNow/시간대별 스트립은
+  // 백엔드(Visual Crossing) 기준이라 서로 다른 프로바이더의 순간값이라
+  // 어긋날 수 있었다. 2026-07-21 메인 한줄도 이 백엔드 하나로 통일한
+  // 뒤로는(vcCurrentTag/vcCurrentSummary 참조) 두 값이 원리적으로 같은
+  // 소스지만, weatherState는 requestCurrentWeather()의 독립된 10분 주기
+  // 갱신이고 이 c는 fetchWeatherDetail()의 별도 호출 결과라 아주 짧은
+  // 시차(둘 다 같은 4시간 D1 캐시를 보므로 보통은 완전히 같은 값) 안에서
+  // 드물게 어긋날 여지는 남아있다 — 그 잔여 위험에 대한 안전망으로 이
+  // 로직은 그대로 둔다. weatherState.summary가 강수를 말하는데 이 페이지의
+  // isRainingNow가 아니라고 하면(= 아래 시간대별 스트립도 "지금"에 비
+  // 아이콘이 없다는 뜻), 그 문구를 버리고 renderWeatherCurrentToday가
+  // today.conditionsKo(스트립과 같은 백엔드 소스)로 대신 채우도록
+  // wdCurrentConditionBase를 null로 넘긴다. 두 소스가 일치하는 절대다수의
+  // 경우엔 그대로 weatherState.summary의 더 세밀한 표현을 쓴다.
   wdCurrentIsRainingNow = isRainingNow;
   const liveSummaryForCondition =
     typeof weatherState.summary === "string" && !WEATHER_SUMMARY_PLACEHOLDERS.includes(weatherState.summary)
@@ -2568,9 +2598,9 @@ function renderWeatherCurrent(current, hourlyNowItem) {
       : null;
   const summaryIndicatesPrecip = liveSummaryForCondition ? /비|눈|뇌우/.test(liveSummaryForCondition) : false;
   if (isRainingNow) {
-    // Open-Meteo 문구가 이미 강수를 말하면 더 세밀한 그 표현을 그대로
-    // 쓰고, 드물게 Open-Meteo만 "맑음" 등으로 어긋나면 백엔드
-    // rainIntensity 등급 라벨(약한 비/보통비/강한 비 등)로 대체한다.
+    // weatherState.summary가 이미 강수를 말하면 그 표현을 그대로 쓰고,
+    // 드물게 어긋나 있으면 백엔드 rainIntensity 등급 라벨(약한 비/보통비/
+    // 강한 비 등)로 대체한다.
     wdCurrentConditionBase = summaryIndicatesPrecip
       ? liveSummaryForCondition
       : (c.rainIntensity && c.rainIntensity.label) || "비";
@@ -2582,7 +2612,7 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     // 넣으므로 조건 단어와 이어붙일 때 쓰던 선행 공백을 제거한다.
     wdCurrentRainSuffix = `강수확률 ${prob}%${showMm ? ` ${mm}mm/h` : ""}`;
   } else {
-    // 비가 아닌 상태 — Open-Meteo 문구가 강수를 말하면(모순) 버리고
+    // 비가 아닌 상태 — weatherState.summary가 강수를 말하면(모순) 버리고
     // null로 넘겨 today.conditionsKo 폴백을 쓰게 한다.
     wdCurrentConditionBase = summaryIndicatesPrecip ? null : liveSummaryForCondition;
     wdCurrentRainSuffix = "";
@@ -2784,7 +2814,7 @@ function renderWeatherWeeklyForecast(data) {
 // 항상 실제 API값을 유지한다(아이콘/비연출만 테스트용으로 바뀌는 것과
 // 의도적으로 분리 — 오늘 실제 최고/최저까지 가짜로 바뀌면 오해 소지가 큼).
 // 2026-07-20 9차 피드백(유저 지적): "메인페이지는 '옅은 이슬비'처럼 세밀한데
-// 날씨상세는 '비'로 대충 나온다, 왜 상세페이지가 더 대충이냐?" — 원인은
+// 날씨상세는 '비'로 대충 나온다, 왜 상세페이지가 더 대충이냐?" — 당시 원인은
 // 두 화면이 서로 다른 날씨 소스를 쓰고 있었기 때문이다. 메인페이지 브리핑
 // (weatherState.summary)은 Open-Meteo WMO 코드 기반 weatherCodeToSummary()가
 // 옅은 이슬비/이슬비/짙은 이슬비 등 10여 단계로 세밀하게 분류하는데, 날씨상세
@@ -2792,7 +2822,14 @@ function renderWeatherWeeklyForecast(data) {
 // 조금/구름 많음/흐림/비/눈/천둥번개 7단계뿐)를 썼다. 새 분류기를 또 만드는
 // 대신, 이미 메인페이지에서 쓰고 있는 weatherState.summary를 그대로 재사용
 // 한다 — 두 화면이 "같은 계산의 다른 표현"이 아니라 "같은 값"을 보게 되어
-// 앞으로도 어긋날 일이 구조적으로 없다. weatherState.summary가 아직
+// 앞으로도 어긋날 일이 구조적으로 없다.
+// 2026-07-21 갱신: 그 뒤로 메인페이지 브리핑 자체도 Open-Meteo를 완전히
+// 걷어내고 이 백엔드(Visual Crossing) 기반 vcCurrentSummary()로 바뀌었다
+// (requestCurrentWeather() 참조 — 비영리 전용 ToS 리스크 제거 + 두 화면
+// 소스 통일이 목적). 이 함수가 weatherState.summary를 재사용하는 설계는
+// 그대로 유효하고 오히려 더 튼튼해졌다 — 이제는 "같은 프로바이더의 다른
+// 표현"이 아니라 "같은 프로바이더의 같은 계산"을 재사용하는 것이기 때문이다.
+// weatherState.summary가 아직
 // 위치 권한 대기 등으로 플레이스홀더("위치 권한 필요"/"날씨 오류")인
 // 경우에만 예전처럼 conditionsKo로 폴백한다.
 const WEATHER_SUMMARY_PLACEHOLDERS = ["위치 권한 필요", "날씨 오류"];
