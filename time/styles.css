@@ -1205,8 +1205,15 @@ button { font: inherit; }
    깨지 않고, HTML을 건드리지 않아도 된다(클래스 조합이 각 쌍마다
    고유하기 때문). 순서: 현재날씨→우산조언 / 우산조언→시간대별상세예보 /
    시간대별상세예보→주간예보 / 주간예보→지난24시간 / 지난24시간→평년비교.
-   (평년비교→오늘밤열대야 사이는 원래 구분선을 유지 중이라 대상 아님.) */
-.weather-current-card + .weather-comment-box,
+   (평년비교→오늘밤열대야 사이는 원래 구분선을 유지 중이라 대상 아님.)
+   2026-07-21 4차 피드백: 현재날씨→우산조언 쌍은 이제 형제결합자로 못
+   잡는다 — 그 사이에 #wdAdvisoryBanner가 끼어들었기 때문(특보가 없어
+   display:none이어도 DOM상 존재하는 한 인접 형제 관계 자체가 깨진다).
+   그래서 이 목록에서 뺐고, 대신 아래 별도 규칙
+   (.weather-advisory-banner:not(.is-active) + .weather-comment-box)으로
+   "배너가 꺼져있을 때만" 22px를 되살린다 — 배너가 켜져있을 때는 배너
+   자신의 위아래 margin(10px, 실기기 2차 피드백)이 이미 적절한 간격을
+   만들고 있으므로 여기서 추가로 더할 필요가 없다. */
 .weather-comment-box + .weather-card,
 .weather-card + .weather-weekly-box,
 .weather-weekly-box + .weather-card,
@@ -1447,6 +1454,15 @@ button { font: inherit; }
 
 .weather-advisory-banner.is-active {
   display: flex;
+}
+
+/* 2026-07-21 4차 피드백: 특보가 없어 배너가 display:none인 상태에서도
+   #wdAdvisoryBanner는 여전히 DOM에 존재해 현재날씨 카드와 우산조언
+   박스 사이의 형제결합자 간격 규칙을 깨뜨린다 — 그 결과 특보가 없을
+   때 두 박스가 딱 붙어버렸다(유저 제보). 배너가 비활성일 때만 그
+   자리를 대신해 22px를 되살린다. */
+.weather-advisory-banner:not(.is-active) + .weather-comment-box {
+  margin-top: 22px;
 }
 
 .weather-advisory-banner-head {
