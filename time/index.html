@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260721-calendar-v3">
+  <link rel="stylesheet" href="styles.css?v=20260721-calendar-v4">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -55,16 +55,22 @@
              중앙정렬 계산 자체가 패널 펼침과 완전히 무관해진다. -->
         <div class="clock-fixed-group">
           <!-- 2026-07-21 3차 피드백 — "달력의 위치는 지금의 플립시계 위치부터다.
-               그 위에 여백미를 살려야한다. 플립시계 자리를 달력이 대신 차지"
-               요청으로 위치를 top-bar 바로 아래(1차 구현)에서 이 자리로
-               옮겼다. 여기 두면 header~clock-stage 사이의 기존 여백(위
-               .clock-stage 주석의 translateY(clamp(-54px,-5.4vh,-28px))
-               +align-self:center 조합)을 그대로 물려받아 "달력이 지금
-               플립시계가 있던 자리에서 시작"하는 효과가 별도 CSS 없이
-               나온다. 달력이 열리면 flip-clock을 숨기고(app.js
-               toggleCalendarPanel의 calendar-open 클래스) 이 자리를 그대로
-               이어받는다 — clock-meta(날씨/음악 버튼 줄)·비주얼라이저는
-               건드리지 않고 그 아래로 자연스럽게 이어진다.
+               그 위에 여백미를 살려야한다"는 요청으로 위치를 top-bar 바로
+               아래(1차 구현)에서 이 자리(flip-clock 바로 앞)로 옮겼다. 여기
+               두면 header~clock-stage 사이의 기존 여백(위 .clock-stage
+               주석의 translateY(clamp(-54px,-5.4vh,-28px))+align-self:center
+               조합)을 그대로 물려받아 "달력이 지금 플립시계가 있던 자리에서
+               시작"하는 효과가 별도 CSS 없이 나온다.
+               2026-07-21 4차 피드백(중요 정정) — 처음엔 달력이 열리면
+               flip-clock을 숨기는 방식으로 구현했으나 "플립시계는 빠지면
+               안 된다, 음악 부분과 함께 아래로 밀려나는 것이다 — 빠지는
+               것은 문장박스뿐"이라는 재지적으로 그 숨김 처리(styles.css의
+               `.calendar-open .flip-clock{display:none}`)를 제거했다.
+               calendar-panel이 flip-clock의 정확히 앞 형제이므로, 숨김
+               규칙 없이도 calendar-panel이 커지면 flip-clock·clock-meta·
+               music-info-panel이 통째로 자연스럽게 아래로 밀려난다(일반
+               문서 흐름 그대로) — 위치(달력 시작=플립시계 옛 자리)는 그대로
+               유지하면서 "밀려나는 대상"만 정정됐다.
                연/월 표기("2026년 7월") 생략, 좌우 스와이프로 전후달 이동
                (-12~+12개월, 총 25개월) — app.js shiftCalendarMonth 참조. -->
           <div class="calendar-panel" id="calendarPanel" aria-hidden="true">
@@ -168,7 +174,7 @@
            (app.js sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이
            있었다"는 공간감을 위함. -->
       <div class="scene-dots" aria-label="ezlong.com 이동">
-        <span class="app-version" aria-hidden="true">ver.1.3.6.2</span>
+        <span class="app-version" aria-hidden="true">ver.1.3.6.3</span>
         <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>

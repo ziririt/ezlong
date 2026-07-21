@@ -488,12 +488,6 @@ button { font: inherit; }
   transition: max-height 300ms ease, opacity 220ms ease;
 }
 
-/* 2026-07-21 3차 피드백 — 달력이 열리면 그 자리를 대신 차지하는 flip-clock은
-   숨긴다(clock-meta의 날씨/음악 버튼 줄과 비주얼라이저는 그대로 유지). */
-.clock-app.calendar-open .flip-clock {
-  display: none;
-}
-
 .calendar-panel.is-open {
   opacity: 1;
 }
