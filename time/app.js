@@ -212,6 +212,7 @@ const settingsSave = document.getElementById("settingsSave");
 // 2026-07-21 유저 요청 — 날짜 탭 → 이번달 달력 아코디언.
 const dateLabelEl = document.getElementById("dateLabel");
 const calendarPanelEl = document.getElementById("calendarPanel");
+const calendarMonthLabelEl = document.getElementById("calendarMonthLabel");
 const calendarGridEl = document.getElementById("calendarGrid");
 const allCategories = document.getElementById("allCategories");
 const categoryOptions = document.getElementById("categoryOptions");
@@ -1132,6 +1133,14 @@ function calendarMonthDiffFromToday(year, month) {
   return (year - now.getFullYear()) * 12 + (month - now.getMonth());
 }
 
+// 2026-07-21 7차 피드백 — 매달 1일 칸에 "7/1"로 월을 끼워 표기하던 방식(5·6차)
+// 대신, 음악박스~달력 사이의 넉넉한 여백에 월 표기 한 줄("7 JULY")을 따로
+// 두는 것으로 교체(유저 요청). 1일 칸은 다시 순수 숫자로 되돌린다.
+const CALENDAR_MONTH_NAMES_EN = [
+  "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
+  "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
+];
+
 function buildCalendarGrid() {
   if (!calendarGridEl || calendarViewYear === null) return;
   const year = calendarViewYear;
@@ -1141,22 +1150,17 @@ function buildCalendarGrid() {
   const todayDate = now.getDate();
   const startWeekday = new Date(year, month, 1).getDay(); // 0=일요일
   const daysInMonth = new Date(year, month + 1, 0).getDate();
+  if (calendarMonthLabelEl) {
+    calendarMonthLabelEl.textContent = `${month + 1} ${CALENDAR_MONTH_NAMES_EN[month]}`;
+  }
   let html = "";
   for (let i = 0; i < startWeekday; i += 1) {
     html += '<span class="calendar-day is-empty"></span>';
   }
   for (let d = 1; d <= daysInMonth; d += 1) {
     const isToday = isCurrentMonth && d === todayDate;
-    // 2026-07-21 5차 피드백 — 월 표기 라벨을 따로 두는 대신, 매달 1일 칸에만
-    // "월/일"(예: 7/1, 8/1)로 표기해 스와이프로 다른 달로 넘어가도 몇 월인지
-    // 알 수 있게 한다.
-    const isMonthStart = d === 1;
-    // 2026-07-21 6차 피드백: 월 숫자만 더 크고(1.2배) 굵게 — "/1"은 그대로
-    // 두고 월 숫자만 .cal-month-num으로 감싼다(styles.css 참조).
-    const label = isMonthStart ? `<span class="cal-month-num">${month + 1}</span>/1` : String(d);
-    const cls = ["calendar-day", isToday ? "is-today" : "", isMonthStart ? "is-month-start" : ""]
-      .filter(Boolean).join(" ");
-    html += `<span class="${cls}">${label}</span>`;
+    const cls = ["calendar-day", isToday ? "is-today" : ""].filter(Boolean).join(" ");
+    html += `<span class="${cls}">${d}</span>`;
   }
   calendarGridEl.innerHTML = html;
 }

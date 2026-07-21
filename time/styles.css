@@ -560,20 +560,19 @@ button { font: inherit; }
   visibility: hidden;
 }
 
-/* 2026-07-21 5차 피드백 — 스와이프로 다른 달을 봐도 몇 월인지 알 수 있게,
-   매달 1일 칸만 "7/1" 형태(월/일)로 표기한다. 자릿수가 늘어난 만큼 폰트를
-   살짝 줄여 칸 안에 여유있게 들어가게 한다. */
-.calendar-day.is-month-start {
-  font-size: 10px;
+/* 2026-07-21 7차 피드백 — "매달 1일 칸에 월 표기"(5·6차) 방식을 폐기하고,
+   달력 위(음악박스와의 여백)에 월 표기 한 줄("7 JULY")을 따로 두는 것으로
+   교체 — 1일 칸은 다시 순수 숫자로 돌아간다(app.js buildCalendarGrid()
+   참조). 숫자는 크고 굵게, 영문 월명은 살짝 작고 자간을 넓혀 라벨처럼
+   보이게 — 둘 다 같은 줄에 나란히. */
+.calendar-month-label {
+  text-align: center;
+  margin-bottom: 10px;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.35);
+  font-size: 15px;
   font-weight: 800;
-}
-
-/* 2026-07-21 6차 피드백 — "월/일" 표기에서 스와이프로 넘어온 달을 더
-   직관적으로 알아보도록 월 숫자만 더 크고(1.2배) 굵게. app.js
-   buildCalendarGrid()가 월 숫자만 이 클래스로 감싼다("/1"은 그대로 둠). */
-.calendar-day.is-month-start .cal-month-num {
-  font-size: 1.2em;
-  font-weight: 900;
+  letter-spacing: 0.06em;
 }
 
 /* 2026-07-21 6차 피드백(재수정) — 달력이 .clock-fixed-group에서 나와
