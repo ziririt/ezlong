@@ -2786,12 +2786,16 @@ function renderWeatherAdvisory(data) {
     collapseWeatherAdvisoryDetail();
     return;
   }
-  // title(t1, 가장 최근 발표문 제목)이 있으면 그대로 쓰고, 없으면
-  // statusText(t6) 첫 줄로 대체한다 — 둘 다 없는 경우는 사실상 없지만
-  // 방어적으로 "기상특보 발효 중"을 최후 폴백으로 둔다.
-  const firstLine = (text) => (text ? text.split("\n")[0].trim() : "");
+  // 2026-07-21 3차 피드백으로 우선순위 반전: title(t1)은 "가장 최근에
+  // 발표된 개별 통보문의 제목"이라, 그게 하필 어떤 특보의 "해제"일 때
+  // 다른 특보가 여전히 활성 상태여도 배너에 "OO 해제"라고만 떠서 오해를
+  // 줄 수 있다(실측 사례: 호우주의보 해제 통보문이 최신이지만 이 자체는
+  // active 판정과 무관 — statusText가 진짜 "지금 유효한 것 전체"다).
+  // statusText(t6, 특보발효현황내용)의 첫 줄을 배너 대표 문구로 우선
+  // 쓰고, 혹시 비어있으면 title로, 그마저 없으면 최후 폴백 문구.
+  const firstLine = (text) => (text ? text.split(/\r?\n/)[0].trim() : "");
   wdAdvisoryBannerText.textContent =
-    wdLastAdvisoryData.title || firstLine(wdLastAdvisoryData.statusText) || "기상특보 발효 중";
+    firstLine(wdLastAdvisoryData.statusText) || wdLastAdvisoryData.title || "기상특보 발효 중";
   wdAdvisoryBanner.classList.add("is-active");
   wdAdvisoryBanner.setAttribute("aria-hidden", "false");
   renderWeatherAdvisoryDetailContent(wdLastAdvisoryData);
@@ -2799,10 +2803,14 @@ function renderWeatherAdvisory(data) {
 
 function advisoryRow(label, value) {
   if (!value) return "";
+  // 기상청 응답이 줄바꿈에 \r\n을 섞어 보내는 경우가 있어(예: note 필드
+  // "o 없음\r\n\r\n"), pre-line이 \r을 지저분하게 남기지 않도록 정리한다.
+  const cleaned = value.replace(/\r\n/g, "\n").trim();
+  if (!cleaned) return "";
   return `
     <div class="weather-advisory-detail-row">
       <p class="weather-advisory-detail-label">${label}</p>
-      <p class="weather-advisory-detail-value">${value}</p>
+      <p class="weather-advisory-detail-value">${cleaned}</p>
     </div>`;
 }
 
@@ -5180,12 +5188,28 @@ function preloadTrackForFilterChange() {
   player._pendingLoad = loadMusicTrack(player, musicIndex, { prebuffer: true });
 }
 
+// 2026-07-21 유저 재제보 — "설정에서 버튼을 누르면 5초 정도 걸린다. 터치
+// 반응은 바로 오고 뒷단 처리는 나중에 해달라." 코드를 다시 정독한 결과,
+// 이 함수 자체(저장→토스트 표시)는 이미 동기로 즉시 실행되고, 무거운
+// 트랙 전환(playTrackAtIndex/preloadTrackForFilterChange)은 이미
+// requestAnimationFrame으로 한 프레임 미뤄져 있다 — 즉 "선택됨" 토스트와
+// 라디오 체크(:checked→:has() CSS, 별도 JS 없이 즉시 반영)는 이론상으로도
+// 이미 즉시 반응해야 한다. 그런데도 체감 지연이 남아있다는 재제보이므로,
+// 두 가지를 추가한다: (1) 어떤 백엔드 지연이 있든 무관하게 "손가락이 닿는
+// 순간" 그 자체에서 시각 반응이 나오도록 pointerdown 시점에 눌림 효과를
+// 별도로 건다(아래 bindInstantTapFeedback, change 이벤트를 기다리지 않음).
+// (2) 실제 어디서 시간이 소요되는지 다음에도 재현되면 Safari 원격 디버깅
+// (맥 Safari > 개발자용 메뉴 > 아이폰 > 웹뷰)으로 바로 확인할 수 있도록
+// 최소한의 타이밍 로그를 남긴다(성능에 영향 없는 console.log 수준).
 function applyMusicPlaylistFilter(newKey) {
+  const __t0 = (window.__fzFilterTapT0 || performance.now());
   saveMusicPlaylistFilter(newKey);
   categoryRotationQueue = [];
   syncMusicExcludeFilterUi();
   flashMusicFilterNotice(`${musicPlaylistFilterAnnounceLabel(newKey)} 선택됨`);
+  console.log(`[FZ-FILTER] tap→토스트 표시 ${(performance.now() - __t0).toFixed(0)}ms`);
   requestAnimationFrame(() => {
+    console.log(`[FZ-FILTER] tap→rAF 진입 ${(performance.now() - __t0).toFixed(0)}ms`);
     if (musicPlaying) {
       playTrackAtIndex(pickNextTrackIndex());
     } else {
@@ -5194,6 +5218,7 @@ function applyMusicPlaylistFilter(newKey) {
       // 주석 참조. 이걸 빼면 다음 재생 버튼 클릭 때 옛 필터의 곡이 나간다.
       preloadTrackForFilterChange();
     }
+    console.log(`[FZ-FILTER] tap→트랙전환 동기 구간 완료 ${(performance.now() - __t0).toFixed(0)}ms`);
   });
 }
 
@@ -6157,6 +6182,30 @@ if (genreOptions) {
     }
   });
 }
+// 2026-07-21 — "터치 반응은 바로, 처리는 뒷단에서" 요청 대응. change
+// 이벤트(브라우저가 라디오 체크를 확정한 뒤 발생)를 기다리지 않고, 손가락이
+// 닿는 그 즉시(pointerdown) 눌린 카드에 즉각적인 시각 효과를 준다 — 이후
+// applyMusicPlaylistFilter가 무엇을 하든(트랙 전환 등) 이 시각 반응 자체는
+// 전혀 영향받지 않는다. 동시에 pointerdown 시각을 기록해 applyMusicPlaylistFilter
+// 쪽 타이밍 로그의 기준점(t0)으로 재사용한다 — "손가락이 닿은 순간부터"
+// 실제로 몇 ms 걸리는지 재현 시 콘솔에서 바로 확인 가능하다.
+function bindInstantTapFeedback(container) {
+  if (!container) return;
+  const onDown = (event) => {
+    window.__fzFilterTapT0 = performance.now();
+    const card = event.target.closest(".field-option");
+    if (card) card.classList.add("is-pressed");
+  };
+  const clearPressed = () => {
+    container.querySelectorAll(".field-option.is-pressed").forEach((el) => el.classList.remove("is-pressed"));
+  };
+  container.addEventListener("pointerdown", onDown, { passive: true });
+  container.addEventListener("pointerup", clearPressed, { passive: true });
+  container.addEventListener("pointercancel", clearPressed, { passive: true });
+}
+bindInstantTapFeedback(musicPlaylistOptionsEl);
+bindInstantTapFeedback(musicSpecialOptionsEl);
+
 if (musicPlaylistOptionsEl) {
   musicPlaylistOptionsEl.addEventListener("change", (event) => {
     if (event.target.matches('input[name="musicPlaylistFilter"]') && event.target.checked) {

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260721-kmaadvisory-v2">
+  <link rel="stylesheet" href="styles.css?v=20260721-kmaadvisory-v3">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -149,7 +149,7 @@
            (app.js sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이
            있었다"는 공간감을 위함. -->
       <div class="scene-dots" aria-label="ezlong.com 이동">
-        <span class="app-version" aria-hidden="true">ver.1.3.5.28</span>
+        <span class="app-version" aria-hidden="true">ver.1.3.5.30</span>
         <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
@@ -533,18 +533,19 @@
              좋겠다". 특보가 없으면 app.js가 is-active 클래스를 빼서
              숨긴다(기본 숨김, CSS 참고).
              2026-07-21 2차 피드백: 레이어팝업(더보기 버튼)이 실제로는
-             열리지 않는 문제 + 유저가 팝업보다 배너 바로 아래로 펼쳐지는
-             방식을 선호 — 별도 오버레이 패널을 없애고 배너 바로 아래
-             #wdAdvisoryDetail을 토글하는 아코디언 방식으로 전환했다.
-             이 방식은 새 스크롤 영역/오버레이가 아니라 이미 스크롤되는
-             #weatherDetailPanel 안의 콘텐츠 일부라, 이 프로젝트가 반복
-             겪은 "모달 오버레이 z-index/스크롤 재부착" 문제 자체가
-             구조적으로 발생하지 않는다. -->
+             열리지 않는 문제 + 팝업보다 배너 바로 아래로 펼쳐지는 방식을
+             선호 — 별도 오버레이 패널을 없애고 아코디언으로 전환.
+             2026-07-21 3차 피드백: "별도 박스가 아니라 이 박스 자체가
+             커지면서 나와야 한다" — #wdAdvisoryDetail을 배너 바깥이
+             아니라 안쪽으로 옮겨, 펼칠 때 배너 박스 하나가 그대로
+             늘어나는 구조로 바꿨다(테두리·배경을 배너와 공유). -->
         <div class="weather-advisory-banner" id="wdAdvisoryBanner" aria-hidden="true">
-          <span class="weather-advisory-banner-text" id="wdAdvisoryBannerText"></span>
-          <button type="button" class="weather-advisory-banner-more" id="wdAdvisoryMoreBtn" aria-expanded="false" aria-controls="wdAdvisoryDetail" aria-label="기상특보 상세 펼치기">▾</button>
+          <div class="weather-advisory-banner-head">
+            <span class="weather-advisory-banner-text" id="wdAdvisoryBannerText"></span>
+            <button type="button" class="weather-advisory-banner-more" id="wdAdvisoryMoreBtn" aria-expanded="false" aria-controls="wdAdvisoryDetail" aria-label="기상특보 상세 펼치기">▾</button>
+          </div>
+          <div class="weather-advisory-detail" id="wdAdvisoryDetail" hidden></div>
         </div>
-        <div class="weather-advisory-detail" id="wdAdvisoryDetail" hidden></div>
 
         <div class="weather-comment-box wd-glass">
           <p class="weather-rain-umbrella" id="wdTopComment" aria-label="오늘의 날씨 코멘트"></p>
@@ -673,6 +674,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260721-kmaadvisory-v2"></script>
+  <script src="app.js?v=20260721-kmaadvisory-v3"></script>
 </body>
 </html>

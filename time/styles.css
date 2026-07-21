@@ -626,6 +626,15 @@ button { font: inherit; }
   background: rgba(56, 189, 248, 0.14);
 }
 
+/* 2026-07-21 — 손가락이 닿는 즉시(pointerdown, change 이벤트보다 먼저) 붙는
+   눌림 효과. transition을 0으로 둬서 뒷단 처리(트랙 전환 등)가 얼마나
+   걸리든 이 시각 반응만큼은 프레임 지연 없이 그 자리에서 바로 보이게 한다. */
+.field-option.is-pressed {
+  transition: none;
+  border-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.30);
+}
+
 /* 2026-07-16: "Rock 제외"/"Vocal 제외" — 위 장르 선택 카드(field-grid/
    field-option)와 똑같이 생기면 "이것도 장르를 고르는 버튼인가" 헷갈린다는
    지적으로 완전히 다른 모양을 준다. 카드가 아니라 작은 알약(pill) 토글을
@@ -1420,11 +1429,15 @@ button { font: inherit; }
    margin-top에도 줘서 위아래 여백을 대칭으로 맞춘다. (2) 색상을
    주황(weather-badge HEAVY와 동일)에서 빨강(weather-badge VERY_HEAVY와
    동일한 #d9432f)으로 교체 — 특보 배너는 이 앱에서 가장 강한 경고
-   신호라 VERY_HEAVY 등급 색을 재사용하는 게 맞다는 피드백. */
+   신호라 VERY_HEAVY 등급 색을 재사용하는 게 맞다는 피드백.
+   2026-07-21 3차 피드백: "펼칠 때 별도 박스가 아니라 이 박스 자체가
+   커져야 한다" — .weather-advisory-banner를 세로 flex 컨테이너로 바꿔
+   .weather-advisory-banner-head(기존 한 줄)와 .weather-advisory-detail을
+   같은 배경/테두리 안에 세로로 쌓는다. 배경·테두리·둥근모서리는 이제
+   바깥 배너 하나만 갖고, 안쪽 detail은 구분선만 넣는다. */
 .weather-advisory-banner {
   display: none;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
   margin: 10px 0;
   padding: 11px 14px;
   border-radius: 14px;
@@ -1436,6 +1449,12 @@ button { font: inherit; }
   display: flex;
 }
 
+.weather-advisory-banner-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .weather-advisory-banner-text {
   flex: 1 1 auto;
   font-size: 15px;
@@ -1445,7 +1464,7 @@ button { font: inherit; }
 }
 
 /* 2026-07-21 2차 피드백: "더보기" 눌러도 반응이 없던 레이어팝업을
-   없애고, 배너 바로 아래로 펼쳐지는 아코디언 토글 버튼으로 바꿨다.
+   없애고, 배너 안에서 펼쳐지는 아코디언 토글 버튼으로 바꿨다.
    원형 아이콘 버튼 하나로 충분 — app.js가 펼침(▾)/오므리기(▴) 글자를
    토글하고 aria-expanded도 함께 갱신한다. */
 .weather-advisory-banner-more {
@@ -1463,16 +1482,15 @@ button { font: inherit; }
   line-height: 1;
 }
 
-/* 배너 바로 아래 펼쳐지는 상세 내용 — 새 오버레이/모달이 아니라
+/* 배너 헤드 바로 아래, 같은 박스 안에서 펼쳐지는 상세 내용 — 별도
+   배경/테두리 없이 구분선만 그어 "박스 자체가 커지는" 느낌을 준다.
    #weatherDetailPanel 안에 이미 있는 스크롤 영역의 일부라, 이 프로젝트가
    반복 겪은 모달 z-index/스크롤 재부착 문제와 무관하다. app.js가 hidden
-   속성으로 토글한다(:not([hidden])으로 보일 때만 스타일 적용). */
+   속성으로 토글한다. */
 .weather-advisory-detail {
-  margin: 0 0 10px;
-  padding: 14px 16px;
-  border-radius: 14px;
-  background: rgba(217, 67, 47, 0.10);
-  border: 1px solid rgba(217, 67, 47, 0.28);
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.22);
 }
 
 .weather-advisory-detail[hidden] {
