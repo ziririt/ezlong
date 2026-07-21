@@ -311,13 +311,14 @@ const wdYesterday = document.getElementById("wdYesterday");
 const wdTropicalBadges = document.getElementById("wdTropicalBadges");
 const wdTropicalComment = document.getElementById("wdTropicalComment");
 const weatherDetailTitle = document.getElementById("weatherDetailTitle");
-// 2026-07-21 3차 기획: 기상특보(KMA) 배너 + 더보기 팝업.
+// 2026-07-21 3차 기획: 기상특보(KMA) 배너 + 인라인 아코디언 상세.
+// 2026-07-21 2차 피드백: 레이어팝업(weatherAdvisoryPanel)이 실제로는 열리지
+// 않는 문제가 있어 별도 오버레이 패널 자체를 없앴다 — 배너 바로 아래
+// #wdAdvisoryDetail을 펼치고 접는 방식으로 대체.
 const wdAdvisoryBanner = document.getElementById("wdAdvisoryBanner");
 const wdAdvisoryBannerText = document.getElementById("wdAdvisoryBannerText");
 const wdAdvisoryMoreBtn = document.getElementById("wdAdvisoryMoreBtn");
-const weatherAdvisoryPanel = document.getElementById("weatherAdvisoryPanel");
-const wdAdvisoryModalBody = document.getElementById("wdAdvisoryModalBody");
-const wdAdvisoryModalTitle = document.getElementById("wdAdvisoryModalTitle");
+const wdAdvisoryDetail = document.getElementById("wdAdvisoryDetail");
 let wdLastAdvisoryData = null;
 
 const digitElements = [
@@ -2765,17 +2766,24 @@ function renderWeatherNextRain(data) {
 }
 
 // 2026-07-21 3차 기획: 기상특보(KMA). 유저 요청 "맨 위 날씨 코멘트에
-// 기상특보가 있다면 표현되면 좋겠다. '더보기'하면 레이어팝업으로 상세".
+// 기상특보가 있다면 표현되면 좋겠다".
 // data.active가 false인 경우(특보 없음/서비스키 미설정/한국 영역 밖/API
 // 실패 전부 포함)는 배너 자체를 숨긴다 — 어떤 이유로 못 보여주는지를
 // 유저에게 굳이 알릴 필요는 없다(날씨 조회 실패와 달리 이건 "정보가
 // 없다"는 상태이지 에러 상태가 아니다).
+// 2026-07-21 2차 피드백: 별도 레이어팝업이 열리지 않는 문제가 있어(원인
+// 추정: weatherDetailPanel과 같은 z-index:20이라 DOM 순서만으론 항상
+// 위로 뜬다는 보장이 없었던 것으로 보임 — .app-page도 .settings-panel도
+// 전부 z-index:20 동일값), 배너 바로 아래로 펼쳐지는 인라인 아코디언으로
+// 전환했다. 이미 스크롤되는 #weatherDetailPanel 안의 콘텐츠 일부라 별도
+// 오버레이 스택킹/재부착 문제 자체가 생기지 않는다.
 function renderWeatherAdvisory(data) {
   wdLastAdvisoryData = data && data.active ? data : null;
   if (!wdAdvisoryBanner || !wdAdvisoryBannerText) return;
   if (!wdLastAdvisoryData) {
     wdAdvisoryBanner.classList.remove("is-active");
     wdAdvisoryBanner.setAttribute("aria-hidden", "true");
+    collapseWeatherAdvisoryDetail();
     return;
   }
   // title(t1, 가장 최근 발표문 제목)이 있으면 그대로 쓰고, 없으면
@@ -2786,14 +2794,15 @@ function renderWeatherAdvisory(data) {
     wdLastAdvisoryData.title || firstLine(wdLastAdvisoryData.statusText) || "기상특보 발효 중";
   wdAdvisoryBanner.classList.add("is-active");
   wdAdvisoryBanner.setAttribute("aria-hidden", "false");
+  renderWeatherAdvisoryDetailContent(wdLastAdvisoryData);
 }
 
 function advisoryRow(label, value) {
   if (!value) return "";
   return `
-    <div class="weather-advisory-sheet-row">
-      <p class="weather-advisory-sheet-label">${label}</p>
-      <p class="weather-advisory-sheet-value">${value}</p>
+    <div class="weather-advisory-detail-row">
+      <p class="weather-advisory-detail-label">${label}</p>
+      <p class="weather-advisory-detail-value">${value}</p>
     </div>`;
 }
 
@@ -2810,12 +2819,8 @@ function formatAdvisoryTmFc(tmFc) {
   return `${y}.${mo}.${d} ${h}:${mi}`;
 }
 
-function renderWeatherAdvisoryModal(data) {
-  if (!wdAdvisoryModalBody) return;
-  if (!data) {
-    wdAdvisoryModalBody.innerHTML = `<p class="weather-empty">기상특보 정보를 불러올 수 없어요.</p>`;
-    return;
-  }
+function renderWeatherAdvisoryDetailContent(data) {
+  if (!wdAdvisoryDetail) return;
   const rows =
     advisoryRow("현재 발효 현황", data.statusText) +
     advisoryRow("해당구역", data.areaText) +
@@ -2823,36 +2828,33 @@ function renderWeatherAdvisoryModal(data) {
     advisoryRow("예비특보 발효현황", data.preAdvisoryText) +
     advisoryRow("참고사항", data.note) +
     advisoryRow("발표시각", formatAdvisoryTmFc(data.tmFc));
-  wdAdvisoryModalBody.innerHTML = rows || `<p class="weather-empty">표시할 특보 상세가 없어요.</p>`;
-  if (wdAdvisoryModalTitle) {
-    wdAdvisoryModalTitle.textContent = data.title || "기상특보";
+  wdAdvisoryDetail.innerHTML = rows || `<p class="weather-empty">표시할 특보 상세가 없어요.</p>`;
+}
+
+// 펼침(▾)/오므리기(▴) 아이콘과 aria-expanded를 함께 토글한다 — 유저 요청:
+// "'더보기'가 아니라 '펼침'을 상징하는 기호로, 토글로 반대로 '오므리기'를
+// 상징하는 기호로".
+function collapseWeatherAdvisoryDetail() {
+  if (wdAdvisoryDetail) wdAdvisoryDetail.hidden = true;
+  if (wdAdvisoryMoreBtn) {
+    wdAdvisoryMoreBtn.textContent = "▾";
+    wdAdvisoryMoreBtn.setAttribute("aria-expanded", "false");
+    wdAdvisoryMoreBtn.setAttribute("aria-label", "기상특보 상세 펼치기");
   }
 }
 
-// 2026-07-21: 다른 레이어팝업(openSettings/openAladinModal/openWeatherDetail)과
-// 동일한 "15차-c" 재부착 규칙 — 열 때마다 body.appendChild로 스크롤 영역을
-// 새로 등록한다(이 프로젝트 CLAUDE.md 스크롤 절대규칙 2번, 제거 금지).
-function openWeatherAdvisoryModal() {
-  if (!weatherAdvisoryPanel) return;
-  renderWeatherAdvisoryModal(wdLastAdvisoryData);
-  weatherAdvisoryPanel.classList.add("is-open");
-  document.body.appendChild(weatherAdvisoryPanel);
-  weatherAdvisoryPanel.setAttribute("aria-hidden", "false");
-}
-
-function closeWeatherAdvisoryModal() {
-  if (!weatherAdvisoryPanel) return;
-  weatherAdvisoryPanel.classList.remove("is-open");
-  weatherAdvisoryPanel.setAttribute("aria-hidden", "true");
+function toggleWeatherAdvisoryDetail() {
+  if (!wdAdvisoryDetail || !wdAdvisoryMoreBtn) return;
+  const willExpand = wdAdvisoryDetail.hidden;
+  wdAdvisoryDetail.hidden = !willExpand;
+  wdAdvisoryMoreBtn.textContent = willExpand ? "▴" : "▾";
+  wdAdvisoryMoreBtn.setAttribute("aria-expanded", String(willExpand));
+  wdAdvisoryMoreBtn.setAttribute("aria-label", willExpand ? "기상특보 상세 접기" : "기상특보 상세 펼치기");
 }
 
 if (wdAdvisoryMoreBtn) {
-  wdAdvisoryMoreBtn.addEventListener("click", openWeatherAdvisoryModal);
+  wdAdvisoryMoreBtn.addEventListener("click", toggleWeatherAdvisoryDetail);
 }
-
-document.querySelectorAll("[data-advisory-modal-close]").forEach((element) => {
-  element.addEventListener("click", closeWeatherAdvisoryModal);
-});
 
 function renderWeatherRainWindows(data) {
   if (!wdRainWindows) return;

@@ -1185,80 +1185,6 @@ button { font: inherit; }
   border: 1px solid rgba(255,255,255,0.26);
 }
 
-/* 2026-07-21 3차 기획: 기상특보 상세 레이어팝업. aladin-modal-sheet와
-   달리 iframe이 없는 순수 텍스트 카드라 화면을 꽉 채우지 않고, 내용
-   길이에 맞춰 아래쪽에서 뜨는 적당한 크기의 시트로 둔다 — max-height로
-   상한만 잡고, 내용이 길면 .weather-advisory-sheet-body 내부만 스크롤.
-   열기/닫기 메커니즘(.settings-panel/.settings-backdrop, body 재부착)은
-   aladin-modal-panel과 완전히 동일 — 이 프로젝트 CLAUDE.md 스크롤 규칙
-   (15차-c) 적용 대상이다. */
-.weather-advisory-sheet {
-  position: relative;
-  width: min(100%, 640px);
-  max-height: min(80svh, 80dvh);
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  padding: max(16px, env(safe-area-inset-top)) clamp(18px, 5vw, 28px) max(20px, env(safe-area-inset-bottom));
-  border: 1px solid rgba(255,255,255,0.22);
-  border-radius: 24px 24px 0 0;
-  background: rgba(13, 20, 31, 0.96);
-  color: #fff;
-  box-shadow: 0 -24px 80px rgba(0,0,0,0.34);
-  transform: translateY(28px);
-  transition: transform 260ms ease;
-}
-
-.weather-advisory-modal.is-open .weather-advisory-sheet {
-  transform: translateY(0);
-}
-
-.weather-advisory-sheet-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  flex-shrink: 0;
-  margin-bottom: 12px;
-}
-
-.weather-advisory-sheet-head h2 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 780;
-}
-
-.weather-advisory-sheet-body {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.weather-advisory-sheet-row {
-  margin: 0 0 14px;
-}
-
-.weather-advisory-sheet-row:last-child {
-  margin-bottom: 0;
-}
-
-.weather-advisory-sheet-label {
-  margin: 0 0 4px;
-  font-size: 14px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.58);
-}
-
-.weather-advisory-sheet-value {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 560;
-  line-height: 1.6;
-  color: rgba(255,255,255,0.94);
-  white-space: pre-line;
-}
-
 .weather-card {
   margin: 0;
 }
@@ -1486,20 +1412,24 @@ button { font: inherit; }
    타이포그래피 규칙만 남긴다. */
 /* 2026-07-21 3차 기획: 기상특보 배너 — 유저 요청 "맨 위 날씨 코멘트에
    기상특보가 있다면 표현되면 좋겠다". :empty 기반 자동 접힘 방식(위
-   .weather-comment-box와 동일 패턴)을 쓰지 않는다 — 버튼이 항상 텍스트를
+   .weather-comment-box와 동일 패턴)을 쓰지 않는다 — 버튼이 항상 글자를
    갖고 있어 :empty로 판정되지 않기 때문에, app.js가 명시적으로
-   is-active 클래스를 넣고 뺀다(기본 상태는 숨김). 경고색은 이미
-   weather-badge[data-grade="HEAVY"]에 쓰던 주황(#e07b1f)을 그대로
-   재사용 — 이 앱에 이미 있는 "경고" 색상 규칙과 통일한다. */
+   is-active 클래스를 넣고 뺀다(기본 상태는 숨김).
+   2026-07-21 2차 실기기 피드백: (1) 위쪽 카드와 배너가 딱 붙어 보인다 —
+   아래(.weather-comment-box와의 간격, margin-bottom)와 같은 값을
+   margin-top에도 줘서 위아래 여백을 대칭으로 맞춘다. (2) 색상을
+   주황(weather-badge HEAVY와 동일)에서 빨강(weather-badge VERY_HEAVY와
+   동일한 #d9432f)으로 교체 — 특보 배너는 이 앱에서 가장 강한 경고
+   신호라 VERY_HEAVY 등급 색을 재사용하는 게 맞다는 피드백. */
 .weather-advisory-banner {
   display: none;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin: 10px 0;
   padding: 11px 14px;
   border-radius: 14px;
-  background: rgba(224, 123, 31, 0.24);
-  border: 1px solid rgba(224, 123, 31, 0.55);
+  background: rgba(217, 67, 47, 0.24);
+  border: 1px solid rgba(217, 67, 47, 0.55);
 }
 
 .weather-advisory-banner.is-active {
@@ -1514,16 +1444,63 @@ button { font: inherit; }
   color: #fff;
 }
 
+/* 2026-07-21 2차 피드백: "더보기" 눌러도 반응이 없던 레이어팝업을
+   없애고, 배너 바로 아래로 펼쳐지는 아코디언 토글 버튼으로 바꿨다.
+   원형 아이콘 버튼 하나로 충분 — app.js가 펼침(▾)/오므리기(▴) 글자를
+   토글하고 aria-expanded도 함께 갱신한다. */
 .weather-advisory-banner-more {
   flex: 0 0 auto;
-  padding: 6px 12px;
-  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   border: none;
-  background: #e07b1f;
+  background: #d9432f;
   color: #fff;
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* 배너 바로 아래 펼쳐지는 상세 내용 — 새 오버레이/모달이 아니라
+   #weatherDetailPanel 안에 이미 있는 스크롤 영역의 일부라, 이 프로젝트가
+   반복 겪은 모달 z-index/스크롤 재부착 문제와 무관하다. app.js가 hidden
+   속성으로 토글한다(:not([hidden])으로 보일 때만 스타일 적용). */
+.weather-advisory-detail {
+  margin: 0 0 10px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(217, 67, 47, 0.10);
+  border: 1px solid rgba(217, 67, 47, 0.28);
+}
+
+.weather-advisory-detail[hidden] {
+  display: none;
+}
+
+.weather-advisory-detail-row {
+  margin: 0 0 12px;
+}
+
+.weather-advisory-detail-row:last-child {
+  margin-bottom: 0;
+}
+
+.weather-advisory-detail-label {
+  margin: 0 0 4px;
   font-size: 14px;
-  font-weight: 720;
-  white-space: nowrap;
+  font-weight: 700;
+  color: rgba(255,255,255,0.62);
+}
+
+.weather-advisory-detail-value {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 560;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.94);
+  white-space: pre-line;
 }
 
 .weather-comment-box {
