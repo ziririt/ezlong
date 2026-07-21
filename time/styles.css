@@ -485,12 +485,17 @@ button { font: inherit; }
    완전히 꺼내 .sky-room의 직계 자식으로 옮겼다(index.html 참조) — 이제
    quote-panel과 정확히 같은 grid 행(row3)을 공유한다(아래 .quote-panel,
    .calendar-panel 규칙 참조). max-height 트랜지션으로 여닫는 방식은 그대로
-   (실제 px 값은 app.js가 scrollHeight로 잰다). 너비도 quote-panel과 동일하게
-   맞춘다(아래 width/margin). */
+   (실제 px 값은 app.js가 scrollHeight로 잰다).
+   2026-07-21 6차 추가 피드백: "달력 너비는 문장박스(더 넓다) 말고 플립시계·
+   음악박스 너비를 따라가라" — quote-panel은 .sky-room의 얕은 padding(7px대)
+   만 적용돼 더 넓고, flip-clock/clock-meta/music-info-panel은 그 안쪽에서
+   .clock-stage의 padding-inline(clamp(18px,5vw,36px), top-bar와 동일한
+   여백선)만큼 더 좁다. margin-inline을 그 값과 똑같이 줘서 calendar-panel의
+   박스 너비를 flip-clock/음악박스와 정확히 일치시킨다(quote-panel의
+   width/margin auto 방식은 쓰지 않는다). */
 .calendar-panel {
   box-sizing: border-box;
-  width: min(100%, 820px);
-  margin: 0 auto;
+  margin-inline: clamp(18px, 5vw, 36px);
   max-height: 0;
   overflow: hidden;
   opacity: 0;
