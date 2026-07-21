@@ -234,14 +234,23 @@ button { font: inherit; }
   /* 2026-07-17 8차: scroll-snap-align/stop 제거 — 이제 페이지 전환은
      #pageTrack의 JS transform이 담당하고 문서 자체는 스크롤되지 않는다. */
   display: grid;
-  /* 2026-07-21 6차 피드백 — "달력을 위에 두지 말고 문장박스 자리를 그대로
-     대체해라. 플립시계·음악박스는 위치 불변, 문장박스만 빠지고 그 자리에
-     달력이 온다." row3(문장박스/달력 공용 칸)을 quote-panel의 기존
-     min-height와 똑같은 고정값으로 박아뒀다 — auto였다면 문장박스(길다)↔
-     달력(짧다) 전환 때마다 이 행의 실제 높이가 달라지고, 그 차액만큼
-     row2(clock-stage, 1fr)가 늘거나 줄어 플립시계가 미세하게 움직였을
-     것이다. 고정값이면 어느 쪽이 보이든 row3 크기가 항상 같아서 row2도
-     절대 안 바뀐다 — 플립시계·음악박스가 한 픽셀도 안 움직이는 걸 보장. */
+  /* 2026-07-21 6차 피드백(재수정, 헤드리스 브라우저로 실측 확정) — 배포
+     직후 실기기에서 플립시계·음악줄이 화면 우상단에 극소 크기로 뭉개지는
+     심각한 레이아웃 오류가 발견됐다. 처음엔 "row2(clock-stage)가
+     minmax(0,1fr)라 공간이 부족하면 짜부라진다"는 가설을 세웠으나,
+     샌드박스에 헤드리스 브라우저를 억지로 띄워(libXdamage 스텁 라이브러리로
+     의존성 우회) 실제 렌더 좌표를 찍어보니 진짜 원인은 전혀 달랐다 — 이
+     grid에 `grid-template-columns`를 한 번도 선언한 적이 없어서, quote-panel과
+     calendar-panel처럼 "행(grid-row)만 정하고 열은 안 정한" 아이템이 둘 이상
+     같은 행에 있으면 브라우저가 "그 행의 1번째로 비어있는 열"을 각자 찾아
+     서로 다른 열에 나란히 배치해버렸다(같은 셀에 겹쳐지길 기대했지만
+     실제로는 암묵적 2번째 열이 새로 생겨 옆으로 갈라짐) — top-bar/clock-stage
+     같은 완전 자동배치 아이템들도 그 2번째 열의 존재를 이어받아 나란히
+     배치되면서 화면이 좌/우 2단으로 쪼개졌다. 해결: 열을 1개로 명시
+     고정(`grid-template-columns`)해서 애초에 2번째 열이 생길 수 없게 한다 —
+     quote-panel/calendar-panel의 grid-row:3 공유(아래 규칙)는 그대로 두되,
+     이제는 열이 하나뿐이라 진짜로 같은 셀에 겹쳐진다. */
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr) clamp(210px, 46vw, 300px) auto;
   gap: clamp(12px, 2.2vh, 24px);
   padding: max(28px, env(safe-area-inset-top)) clamp(8px, 2.4vw, 26px) calc(max(24px, env(safe-area-inset-bottom)) + var(--browser-bottom-lift));
@@ -562,16 +571,17 @@ button { font: inherit; }
   font-weight: 900;
 }
 
-/* 2026-07-21 6차 피드백(구조 재설계) — 달력이 .clock-fixed-group에서 나와
-   .sky-room의 직계 자식이 되면서, quote-panel과 정확히 같은 grid 행(row3,
-   위 .sky-room grid-template-rows 참조)을 명시적으로 공유하게 한다. 명시하지
-   않으면 grid가 문서 순서대로 새 암묵 행을 만들어 scene-dots를 밀어낸다.
-   align-self:center는 row3이 고정폭(clamp)이라 내용(문장/달력)이 그보다
-   작을 때 위아래 여백을 균등하게 배분한다(기존 clock-stage가 하던 방식과
-   동일). */
+/* 2026-07-21 6차 피드백(재수정) — 달력이 .clock-fixed-group에서 나와
+   .sky-room의 직계 자식이 되면서, quote-panel과 정확히 같은 grid 셀
+   (row3 × col1, 위 .sky-room grid-template-rows/columns 참조)을 공유하게
+   한다. grid-column:1을 명시한 이유는 위 .sky-room 주석 참조 — 열을 명시
+   안 하면 quote-panel과 calendar-panel이 서로 다른 열로 갈라져버린다(실측
+   확정된 버그). align-self:center는 row3이 고정폭(clamp)이라 내용(문장/
+   달력)이 그보다 작을 때 위아래 여백을 균등하게 배분한다. */
 .quote-panel,
 .calendar-panel {
   grid-row: 3;
+  grid-column: 1;
   align-self: center;
 }
 

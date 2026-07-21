@@ -8032,5 +8032,19 @@ window.investmentQuotes = [
     "title": "다안도 투자자 (The Dhandho Investor)",
     "author": "모니시 파브라이",
     "category": "patience"
+  },
+  {
+    "english": "Diversification is a protection against ignorance. It makes little sense if you know what you are doing.",
+    "text": "분산투자는 무지에 대한 보호막이다. 자신이 지금 무엇을 하고 있는지 정확히 알고 있다면, 과도한 분산은 오히려 큰 의미가 없다.",
+    "title": "워런 버핏 웨이",
+    "author": "로버트 G. 해그스트롬",
+    "category": "mindset"
+  },
+  {
+    "english": "Someone is sitting in the shade today because someone planted a tree a long time ago.",
+    "text": "오늘 누군가가 나무 그늘 아래에서 편안히 쉬고 있다면, 그건 아주 오래전 누군가가 그 나무를 심어두었기 때문이다. 지금 당장 성과가 눈에 보이지 않아도, 꾸준히 심어놓은 투자는 시간이 흐르면 반드시 그늘을 만들어준다.",
+    "title": "버크셔 해서웨이 주주 서한",
+    "author": "워런 버핏",
+    "category": "patience"
   }
 ];
