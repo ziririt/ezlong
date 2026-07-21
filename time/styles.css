@@ -2386,6 +2386,65 @@ button { font: inherit; }
   gap: clamp(2px, 0.8vw, 8px);
   width: 100%;
   perspective: 1700px;
+  /* 2026-07-22: "정각 세리모니" 마법가루 오버레이(.flip-clock-sparkle)가
+     position:absolute; inset:0;으로 정확히 이 박스 크기에 맞춰지려면
+     이 요소 자신이 positioned ancestor여야 한다(안 그러면 더 바깥의
+     .clock-fixed-group 기준으로 튕겨 음악 패널까지 덮어버린다). */
+  position: relative;
+}
+
+/* 2026-07-22 유저 요청 — 정각(hh:00:00)~정각+1분 사이엔 플립시계 전체가
+   까불까불 흔들린다(app.js checkFlipClockHourlyCeremony 참조). 완전히
+   한 바퀴 도는 스핀은 숫자를 읽기 힘들어질 위험이 있어 배제하고, 좌우로
+   살짝 기울었다 돌아오는 바운스형 흔들림으로 안정적으로만 구현했다. */
+.flip-clock.hour-ceremony {
+  animation: flipClockWiggle 2.6s ease-in-out infinite;
+}
+
+@keyframes flipClockWiggle {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  15% { transform: rotate(-3deg) translateY(-3px); }
+  35% { transform: rotate(2.5deg) translateY(1px); }
+  55% { transform: rotate(-2deg) translateY(-2px); }
+  75% { transform: rotate(2deg) translateY(0); }
+}
+
+/* 2026-07-22: 정각~정각+1분 동안 플립시계 숫자판 4개 위에 뿌려지는 마법가루.
+   날짜칩 반짝임(.date-chip-sparkle)은 "한 번 반짝 튀고 사라지는" 1회성
+   연출이지만, 이건 60초 내내 켜져 있어야 해서 각 입자를 infinite 트윙클로
+   두고 음수 delay(app.js buildFlipClockSparkleParticles 참조)로 시작
+   타이밍을 흩어 자연스럽게 만든다. */
+.flip-clock-sparkle {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.flip-clock-sparkle.is-active {
+  opacity: 1;
+}
+
+.flip-clock-sparkle .spark {
+  position: absolute;
+  top: var(--sy, 50%);
+  left: var(--sx, 50%);
+  width: var(--ssize, 4px);
+  height: var(--ssize, 4px);
+  border-radius: 50%;
+  background: #fff8dd;
+  box-shadow: 0 0 6px 1px rgba(255,246,214,0.95), 0 0 14px 2px rgba(255,214,10,0.55);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.3);
+  animation: flipSparkTwinkle var(--sdur, 1.6s) ease-in-out infinite;
+  animation-delay: var(--sdelay, 0s);
+}
+
+@keyframes flipSparkTwinkle {
+  0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
 .flip-unit {

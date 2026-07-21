@@ -336,6 +336,11 @@ const digitElements = [
   document.getElementById("minuteOnes")
 ];
 
+// 2026-07-22 유저 요청 — "정각 세리모니"를 플립시계 숫자판 4개까지 확장.
+// checkFlipClockHourlyCeremony(아래) 참조.
+const flipClockEl = document.querySelector(".flip-clock");
+const flipClockSparkleEl = document.getElementById("flipClockSparkle");
+
 let activeScene = "";
 let activeQuoteMinute = "";
 let lastQuoteTitle = "";
@@ -1246,16 +1251,19 @@ function cancelCalendarOnboardingHint() {
 
 function sparkleDateChip() {
   if (!dateChipSparkleEl || !dateLabelEl) return;
-  // 2026-07-21 2차 피드백 — 3초는 너무 짧다는 지적으로 5초로 연장. 입자
-  // 개수도 20개로 늘려 늘어난 시간 동안 화면이 비어보이지 않게 했다.
-  const SPARK_COUNT = 20;
-  const EFFECT_MS = 5000;
+  // 2026-07-22 3차 피드백 — "5초도 너무 짧아서 인지를 못 한다"는 재지적으로
+  // 15초까지 연장. 단순히 EFFECT_MS만 늘리면 기존 delay 분포(0~3.4초)가
+  // 그대로라 파티클이 초반 5초 안에 다 등장·소멸해버리고 나머지 10초는
+  // 아무것도 없는 빈 화면이 된다 — delay 범위를 13초까지 넓히고 개수도
+  // 20→72로 늘려 15초 내내 고르게 반짝이도록 재조정했다.
+  const SPARK_COUNT = 72;
+  const EFFECT_MS = 15000;
   let html = "";
   for (let i = 0; i < SPARK_COUNT; i += 1) {
     const sx = (Math.random() * 130 - 15).toFixed(1); // -15%~115% — 칩 테두리 살짝 밖까지
     const sy = (Math.random() * 130 - 15).toFixed(1);
     const size = (3 + Math.random() * 3).toFixed(1);
-    const delay = (Math.random() * 3.4).toFixed(2); // 5초 동안 물결치듯 등장
+    const delay = (Math.random() * 13).toFixed(2); // 15초 동안 물결치듯 등장
     const dur = (1.0 + Math.random() * 0.6).toFixed(2);
     html += `<span class="spark" style="--sx:${sx}%;--sy:${sy}%;--ssize:${size}px;--sdelay:${delay}s;--sdur:${dur}s;"></span>`;
   }
@@ -5630,6 +5638,68 @@ function checkHourlyCeremonyTick(now) {
   if (now.getHours() === 18 || now.getHours() === 19) showLeaveWorkCeremony();
 }
 
+// 2026-07-22 유저 요청 — "비주얼라이저가 정각에 솟구치면 그 곡이 끝날 때까지
+// (=1곡 재생시간 내내) 계속 뻗어있는 게 너무 길다. 재생 시작 시점과 무관하게
+// 무조건 정각(hh:00:00)~정각+1분(hh:00:59) 사이에만 나오면 좋겠다."
+// 위 checkHourlyCeremonyTick/handleMusicCeremonyOnTrackStart(트랙 전환 훅)는
+// "퇴근 세리모니" 문구(showLeaveWorkCeremony)와 생명주기를 공유하고 있어
+// 그대로 둔다 — 대신 이 함수는 오직 "ceremony-breakout" 클래스 하나만,
+// 매초 "지금이 정각대(0분)이고 음악이 재생 중인가"로 다시 계산해서 그
+// 결과로 덮어쓴다. tick()에서 위 함수 다음에 호출되므로 매초 마지막에
+// 실행되는 이 함수가 사실상 최종 상태를 결정한다 — 트랙 전환이 정각+1~4분
+// 사이에 우연히 일어나 위 함수가 클래스를 켜더라도, 바로 다음 초에 이
+// 함수가 "이미 0분이 아니다"를 확인하고 다시 꺼버린다. 매초 처음부터 다시
+// 판단하는 방식이라 타이머 드리프트나 별도 상태 관리가 필요 없어 안정적이다.
+function enforceVisualizerCeremonyWindow(now) {
+  if (!musicInfoPanel) return;
+  const shouldShow = musicPlaying && now.getMinutes() === 0;
+  musicInfoPanel.classList.toggle("ceremony-breakout", shouldShow);
+}
+
+// 2026-07-22 유저 요청 — "진정한 정각 세리모니": 음악 재생 여부와 무관하게
+// 정각~정각+1분 사이엔 플립시계 숫자판 4개 위에 마법가루를 뿌리고, 시계
+// 전체가 까불까불 흔들린다(styles.css의 .flip-clock.hour-ceremony 참조).
+// 완전히 한 바퀴 도는 스핀은 가독성이 깨질 위험이 있어 배제했다 — 좌우로
+// 살짝 기울었다 돌아오는 바운스형 흔들림으로 안정적으로 구현했다.
+// 위 enforceVisualizerCeremonyWindow와 동일한 이유로 매초 "지금이 정각대인가"
+// 만 다시 계산해서 클래스를 켜고 끈다(별도 타이머 없음 — 드리프트 걱정 없음).
+function checkFlipClockHourlyCeremony(now) {
+  if (!flipClockEl) return;
+  const active = now.getMinutes() === 0;
+  const wasActive = flipClockEl.classList.contains("hour-ceremony");
+  if (active && !wasActive) {
+    buildFlipClockSparkleParticles();
+    if (flipClockSparkleEl) flipClockSparkleEl.classList.add("is-active");
+  } else if (!active && wasActive) {
+    if (flipClockSparkleEl) {
+      flipClockSparkleEl.classList.remove("is-active");
+      flipClockSparkleEl.innerHTML = "";
+    }
+  }
+  flipClockEl.classList.toggle("hour-ceremony", active);
+}
+
+// 정각 1분 동안 플립시계 위에서 반짝일 마법가루 입자를 새로 만든다. 날짜칩
+// 반짝임(sparkleDateChip)과 달리 "한 번 반짝 튀고 사라지는" 연출이 아니라
+// 60초 내내 은은하게 계속 반짝여야 해서, 각 입자는 무한 반복(infinite)
+// 트윙클 애니메이션을 쓰고 음수 delay로 시작 타이밍을 흩어둔다(styles.css
+// flipSparkTwinkle 참조) — 그래야 60개가 동시에 딱 맞춰 반짝이는 부자연스러운
+// 느낌 없이 제각각 반짝인다.
+function buildFlipClockSparkleParticles() {
+  if (!flipClockSparkleEl) return;
+  const SPARK_COUNT = 26;
+  let html = "";
+  for (let i = 0; i < SPARK_COUNT; i += 1) {
+    const sx = (Math.random() * 100).toFixed(1);
+    const sy = (Math.random() * 100).toFixed(1);
+    const size = (3 + Math.random() * 3).toFixed(1);
+    const dur = (1.3 + Math.random() * 1.1).toFixed(2);
+    const delay = (-(Math.random() * 2.4)).toFixed(2);
+    html += `<span class="spark" style="--sx:${sx}%;--sy:${sy}%;--ssize:${size}px;--sdur:${dur}s;--sdelay:${delay}s;"></span>`;
+  }
+  flipClockSparkleEl.innerHTML = html;
+}
+
 // 같은 곡을 다시 들으면 중복으로 쌓지 않고 맨 위로 올린다(흔한 "최근 재생" UX 관례).
 function recordPlayLog(index) {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
@@ -5893,6 +5963,11 @@ function tick() {
   // 않도록 매초 별도로도 확인한다(handleMusicCeremonyOnTrackStart 위
   // 주석 참조).
   checkHourlyCeremonyTick(now);
+  // 2026-07-22: 비주얼라이저 정각 세리모니를 "곡 재생시간 내내"가 아니라
+  // "정각~정각+1분" 벽시계 창으로 강제한다 + 플립시계 마법가루/흔들림도
+  // 같은 창으로 켠다(둘 다 위 주석 참조).
+  enforceVisualizerCeremonyWindow(now);
+  checkFlipClockHourlyCeremony(now);
 }
 
 dots.forEach((dot) => {
