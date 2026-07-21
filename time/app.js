@@ -1233,11 +1233,10 @@ if (dateLabelEl) {
 // 2026-07-21 8차 피드백 — "날짜를 누르면 달력이 열린다"는 걸 아무도 모를
 // 것 같다는 지적. 앱을 처음 켰을 때 한 번, 달력을 자동으로 5초간 열었다
 // 닫으면서 "여기 누르는 거구나"를 몸으로 보여주고, 닫히는 순간 상단
-// 날짜칩에 3초짜리 마법가루 반짝임을 얹어 "방금 그 반짝인 자리를 눌러보면
-// 되겠네"라는 직관적 유도를 만든다. 매번 켤 때마다 재생하면 하루에도 몇 번씩
-// 여는 시계 앱 특성상 금방 성가셔질 것이라 판단해 localStorage로 기기당
-// 최초 1회만 재생한다.
-const CALENDAR_ONBOARDING_HINT_KEY = "flipzen_calendar_hint_shown_v1";
+// 날짜칩에 5초짜리 마법가루 반짝임을 얹어 "방금 그 반짝인 자리를 눌러보면
+// 되겠네"라는 직관적 유도를 만든다.
+// 2026-07-21 피드백 — 최초엔 "하루에 한 번은 아쉽다"는 유저 지적으로
+// localStorage 1회 제한을 완전히 제거, 앱을 실행할 때마다 매번 재생한다.
 let calendarOnboardingTimers = [];
 
 function cancelCalendarOnboardingHint() {
@@ -1247,15 +1246,17 @@ function cancelCalendarOnboardingHint() {
 
 function sparkleDateChip() {
   if (!dateChipSparkleEl || !dateLabelEl) return;
-  const SPARK_COUNT = 16;
-  const EFFECT_MS = 3000;
+  // 2026-07-21 2차 피드백 — 3초는 너무 짧다는 지적으로 5초로 연장. 입자
+  // 개수도 20개로 늘려 늘어난 시간 동안 화면이 비어보이지 않게 했다.
+  const SPARK_COUNT = 20;
+  const EFFECT_MS = 5000;
   let html = "";
   for (let i = 0; i < SPARK_COUNT; i += 1) {
     const sx = (Math.random() * 130 - 15).toFixed(1); // -15%~115% — 칩 테두리 살짝 밖까지
     const sy = (Math.random() * 130 - 15).toFixed(1);
     const size = (3 + Math.random() * 3).toFixed(1);
-    const delay = (Math.random() * 1.9).toFixed(2); // 3초 동안 물결치듯 등장
-    const dur = (0.9 + Math.random() * 0.5).toFixed(2);
+    const delay = (Math.random() * 3.4).toFixed(2); // 5초 동안 물결치듯 등장
+    const dur = (1.0 + Math.random() * 0.6).toFixed(2);
     html += `<span class="spark" style="--sx:${sx}%;--sy:${sy}%;--ssize:${size}px;--sdelay:${delay}s;--sdur:${dur}s;"></span>`;
   }
   dateChipSparkleEl.innerHTML = html;
@@ -1270,13 +1271,8 @@ function sparkleDateChip() {
 
 function runCalendarOnboardingHint() {
   if (!calendarPanelEl || !dateLabelEl) return;
-  try {
-    if (localStorage.getItem(CALENDAR_ONBOARDING_HINT_KEY)) return;
-    localStorage.setItem(CALENDAR_ONBOARDING_HINT_KEY, "1");
-  } catch (e) {
-    // localStorage 접근 불가(사파리 시크릿모드 등) — 매번 재생되더라도
-    // 힌트 자체는 계속 보여주는 게 안전하므로 조용히 통과.
-  }
+  // 2026-07-21 2차 피드백 — "5초는 나왔다 바로 사라지는 느낌"이라 10초로
+  // 연장. localStorage 1회 제한은 완전히 제거해 앱을 켤 때마다 매번 재생.
   const openTimer = window.setTimeout(() => {
     if (calendarPanelOpen) return; // 이미 유저가 직접 열어둔 상태면 건드리지 않음
     toggleCalendarPanel();
@@ -1284,7 +1280,7 @@ function runCalendarOnboardingHint() {
       if (!calendarPanelOpen) return; // 유저가 이미 직접 닫은 경우 중복 토글 방지
       toggleCalendarPanel();
       sparkleDateChip();
-    }, 5000);
+    }, 10000);
     calendarOnboardingTimers.push(closeTimer);
   }, 1200);
   calendarOnboardingTimers.push(openTimer);
