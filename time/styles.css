@@ -2393,21 +2393,10 @@ button { font: inherit; }
   position: relative;
 }
 
-/* 2026-07-22 유저 요청 — 정각(hh:00:00)~정각+1분 사이엔 플립시계 전체가
-   까불까불 흔들린다(app.js checkFlipClockHourlyCeremony 참조). 완전히
-   한 바퀴 도는 스핀은 숫자를 읽기 힘들어질 위험이 있어 배제하고, 좌우로
-   살짝 기울었다 돌아오는 바운스형 흔들림으로 안정적으로만 구현했다. */
-.flip-clock.hour-ceremony {
-  animation: flipClockWiggle 2.6s ease-in-out infinite;
-}
-
-@keyframes flipClockWiggle {
-  0%, 100% { transform: rotate(0deg) translateY(0); }
-  15% { transform: rotate(-3deg) translateY(-3px); }
-  35% { transform: rotate(2.5deg) translateY(1px); }
-  55% { transform: rotate(-2deg) translateY(-2px); }
-  75% { transform: rotate(2deg) translateY(0); }
-}
+/* 2026-07-22 1차: 정각(hh:00:00)~정각+1분 사이 플립시계 전체를 까불까불
+   흔드는 연출(flipClockWiggle)을 추가했었으나, 같은 날 밤 유저 재지적
+   ("움직이는 것도 이상하다, 과하다, 하지 말자")으로 완전히 제거했다.
+   흔들림 없이 아래 마법가루 반짝임만 세리모니로 유지한다. */
 
 /* 2026-07-22: 정각~정각+1분 동안 플립시계 숫자판 4개 위에 뿌려지는 마법가루.
    날짜칩 반짝임(.date-chip-sparkle)은 "한 번 반짝 튀고 사라지는" 1회성
@@ -2822,7 +2811,12 @@ button { font: inherit; }
    전체가 아니라 막대 하나하나(.viz-bar)로 좁혔다 — 텍스트는 막대의
    형제가 아니라 .music-viz-wrap의 자식일 뿐 .viz-bar가 아니므로 이 변환의
    영향을 받지 않는다. 배율도 6 → 2.4로 크게 낮춰 플립시계 바로 아래
-   (날씨/음악 아이콘 줄) 정도까지만 닿도록 조정했다. */
+   (날씨/음악 아이콘 줄) 정도까지만 닿도록 조정했다.
+   2026-07-22 폐기: "괴기하다/안 이쁘다"는 재지적으로 이 연출 자체를
+   포기했다. app.js의 enforceVisualizerCeremonyWindow()가 이제 매초
+   ceremony-breakout 클래스를 무조건 제거하므로 아래 두 규칙은 사실상
+   절대 발동하지 않는 죽은 코드다 — 다른 곳에서 이 클래스를 재활용할
+   계획이 없다면 그대로 둬도 무해하다(제거 대상 후보로 남겨둠). */
 .music-info-panel.ceremony-breakout {
   overflow: visible;
 }

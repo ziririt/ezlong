@@ -3593,14 +3593,17 @@ function showMusicToast(text) {
   // 연속 클릭 시 트랜지션이 재트리거되도록 강제 리플로우.
   void musicToast.offsetWidth;
   musicToast.classList.add("is-visible");
+  // 2026-07-22 유저 제보 — "너무 짧게 나타났다 사라진다"는 컴플레인으로
+  // 5초 더 연장(3500ms→8500ms, 5000ms→10000ms). 숨김 시작~완전 사라짐
+  // 사이 페이드아웃 간격(1500ms)은 그대로 유지.
   musicToastHideTimer = setTimeout(() => {
     musicToast.classList.remove("is-visible");
     musicToast.classList.add("is-leaving");
-  }, 3500);
+  }, 8500);
   musicToastClearTimer = setTimeout(() => {
     musicToast.classList.remove("is-leaving");
     musicToast.setAttribute("aria-hidden", "true");
-  }, 5000);
+  }, 10000);
 }
 function showMusicDislikeToast() {
   const msg = MUSIC_DISLIKE_TOAST_MESSAGES[Math.floor(Math.random() * MUSIC_DISLIKE_TOAST_MESSAGES.length)];
@@ -5119,14 +5122,24 @@ function announceActiveFilterOnFirstPlay() {
   const filterKey = loadMusicPlaylistFilter();
   const excludeVocal = loadMusicGenreToggle(musicExcludeVocalStorageKey, false);
   const excludeInstrumental = loadMusicGenreToggle(musicExcludeInstrumentalStorageKey, false);
-  const parts = [];
-  if (filterKey && filterKey !== "all") {
-    parts.push(`'${musicPlaylistFilterAnnounceLabel(filterKey)}'만`);
+  const hasFilter = Boolean(filterKey && filterKey !== "all");
+  const excludeParts = [];
+  if (excludeVocal) excludeParts.push("Vocal 제외");
+  if (excludeInstrumental) excludeParts.push("연주곡 제외");
+  if (!hasFilter && excludeParts.length === 0) return; // 기본값 그대로면 알려줄 게 없음
+  // 2026-07-22 유저 지적 — "'수면유도'만 상태로"라는 표현이 어색하다는
+  // 피드백으로, 카테고리 필터가 있을 땐 "'xxxx' 플레이리스트를 재생 중"으로
+  // 자연스럽게 바꿨다. 제외 필터(Vocal/연주곡)는 괄호로 덧붙여 정보는
+  // 그대로 유지. 카테고리 필터 없이 제외만 걸려있는 경우(부를 플레이리스트
+  // 이름이 없음)엔 기존 "OO 상태로 재생 중" 문구를 그대로 쓴다.
+  let message;
+  if (hasFilter) {
+    message = `지금 '${musicPlaylistFilterAnnounceLabel(filterKey)}' 플레이리스트를 재생 중이에요`;
+    if (excludeParts.length > 0) message += ` (${excludeParts.join(" · ")})`;
+  } else {
+    message = `지금 ${excludeParts.join(" · ")} 상태로 재생 중이에요`;
   }
-  if (excludeVocal) parts.push("Vocal 제외");
-  if (excludeInstrumental) parts.push("연주곡 제외");
-  if (parts.length === 0) return; // 기본값 그대로면 알려줄 게 없음
-  showMusicToast(`지금 ${parts.join(" · ")} 상태로 재생 중이에요`);
+  showMusicToast(message);
 }
 
 // 스킵 버튼(수동)은 크로스페이드 없이 즉시 곡을 바꾼다 — 유저가 직접 누른
@@ -5638,35 +5651,33 @@ function checkHourlyCeremonyTick(now) {
   if (now.getHours() === 18 || now.getHours() === 19) showLeaveWorkCeremony();
 }
 
-// 2026-07-22 유저 요청 — "비주얼라이저가 정각에 솟구치면 그 곡이 끝날 때까지
-// (=1곡 재생시간 내내) 계속 뻗어있는 게 너무 길다. 재생 시작 시점과 무관하게
-// 무조건 정각(hh:00:00)~정각+1분(hh:00:59) 사이에만 나오면 좋겠다."
-// 위 checkHourlyCeremonyTick/handleMusicCeremonyOnTrackStart(트랙 전환 훅)는
-// "퇴근 세리모니" 문구(showLeaveWorkCeremony)와 생명주기를 공유하고 있어
-// 그대로 둔다 — 대신 이 함수는 오직 "ceremony-breakout" 클래스 하나만,
-// 매초 "지금이 정각대(0분)이고 음악이 재생 중인가"로 다시 계산해서 그
-// 결과로 덮어쓴다. tick()에서 위 함수 다음에 호출되므로 매초 마지막에
-// 실행되는 이 함수가 사실상 최종 상태를 결정한다 — 트랙 전환이 정각+1~4분
-// 사이에 우연히 일어나 위 함수가 클래스를 켜더라도, 바로 다음 초에 이
-// 함수가 "이미 0분이 아니다"를 확인하고 다시 꺼버린다. 매초 처음부터 다시
-// 판단하는 방식이라 타이머 드리프트나 별도 상태 관리가 필요 없어 안정적이다.
+// 2026-07-22 1차: "비주얼라이저가 정각에 솟구치는" 연출을 곡 생명주기 대신
+// 시계 1분 창(정각~정각+1분)에 묶어 재설계했었으나, 같은 날 밤 유저
+// 재지적("과도하게 위로 솟구치는 것은 괴기하다, 안 이쁘다 — 그럼 포기")으로
+// 완전히 폐기한다. 이 함수는 이제 그 재설계 로직을 실행하는 대신 매초
+// "ceremony-breakout" 클래스를 무조건 제거만 한다 — triggerMusicHourlyCeremony()
+// (handleMusicCeremonyOnTrackStart/checkHourlyCeremonyTick가 호출, "퇴근
+// 세리모니" 문구와 생명주기를 공유하므로 그대로 둠)가 여전히 그 클래스를
+// 걸려고 시도해도, tick()에서 이 함수가 그 다음에 매초 호출되어 항상
+// 강제로 꺼버리므로 실질적으로 완전 무력화된다 — 저 함수들 자체를 건드리지
+// 않는 최소 변경(surgical) 방식.
 function enforceVisualizerCeremonyWindow(now) {
   if (!musicInfoPanel) return;
-  const shouldShow = musicPlaying && now.getMinutes() === 0;
-  musicInfoPanel.classList.toggle("ceremony-breakout", shouldShow);
+  musicInfoPanel.classList.remove("ceremony-breakout");
 }
 
-// 2026-07-22 유저 요청 — "진정한 정각 세리모니": 음악 재생 여부와 무관하게
+// 2026-07-22 1차: "진정한 정각 세리모니" — 음악 재생 여부와 무관하게
 // 정각~정각+1분 사이엔 플립시계 숫자판 4개 위에 마법가루를 뿌리고, 시계
-// 전체가 까불까불 흔들린다(styles.css의 .flip-clock.hour-ceremony 참조).
-// 완전히 한 바퀴 도는 스핀은 가독성이 깨질 위험이 있어 배제했다 — 좌우로
-// 살짝 기울었다 돌아오는 바운스형 흔들림으로 안정적으로 구현했다.
-// 위 enforceVisualizerCeremonyWindow와 동일한 이유로 매초 "지금이 정각대인가"
-// 만 다시 계산해서 클래스를 켜고 끈다(별도 타이머 없음 — 드리프트 걱정 없음).
+// 전체가 까불까불 흔들리는 연출(hour-ceremony 클래스 + styles.css
+// flipClockWiggle)을 함께 추가했었으나, 같은 날 밤 유저 재지적("움직이는
+// 것도 이상하다, 과하다, 하지 말자")으로 흔들림만 완전히 제거했다. 마법
+// 가루 반짝임만 세리모니로 유지 — 판정 로직(정각~정각+1분)과 트리거/해제
+// 타이밍은 이전과 동일하되, "was active" 판단 기준을 (제거된) flipClockEl의
+// hour-ceremony 클래스 대신 flipClockSparkleEl의 is-active 클래스로 옮겼다.
 function checkFlipClockHourlyCeremony(now) {
   if (!flipClockEl) return;
   const active = now.getMinutes() === 0;
-  const wasActive = flipClockEl.classList.contains("hour-ceremony");
+  const wasActive = Boolean(flipClockSparkleEl && flipClockSparkleEl.classList.contains("is-active"));
   if (active && !wasActive) {
     buildFlipClockSparkleParticles();
     if (flipClockSparkleEl) flipClockSparkleEl.classList.add("is-active");
@@ -5676,7 +5687,6 @@ function checkFlipClockHourlyCeremony(now) {
       flipClockSparkleEl.innerHTML = "";
     }
   }
-  flipClockEl.classList.toggle("hour-ceremony", active);
 }
 
 // 정각 1분 동안 플립시계 위에서 반짝일 마법가루 입자를 새로 만든다. 날짜칩
