@@ -1185,6 +1185,80 @@ button { font: inherit; }
   border: 1px solid rgba(255,255,255,0.26);
 }
 
+/* 2026-07-21 3차 기획: 기상특보 상세 레이어팝업. aladin-modal-sheet와
+   달리 iframe이 없는 순수 텍스트 카드라 화면을 꽉 채우지 않고, 내용
+   길이에 맞춰 아래쪽에서 뜨는 적당한 크기의 시트로 둔다 — max-height로
+   상한만 잡고, 내용이 길면 .weather-advisory-sheet-body 내부만 스크롤.
+   열기/닫기 메커니즘(.settings-panel/.settings-backdrop, body 재부착)은
+   aladin-modal-panel과 완전히 동일 — 이 프로젝트 CLAUDE.md 스크롤 규칙
+   (15차-c) 적용 대상이다. */
+.weather-advisory-sheet {
+  position: relative;
+  width: min(100%, 640px);
+  max-height: min(80svh, 80dvh);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: max(16px, env(safe-area-inset-top)) clamp(18px, 5vw, 28px) max(20px, env(safe-area-inset-bottom));
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 24px 24px 0 0;
+  background: rgba(13, 20, 31, 0.96);
+  color: #fff;
+  box-shadow: 0 -24px 80px rgba(0,0,0,0.34);
+  transform: translateY(28px);
+  transition: transform 260ms ease;
+}
+
+.weather-advisory-modal.is-open .weather-advisory-sheet {
+  transform: translateY(0);
+}
+
+.weather-advisory-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-shrink: 0;
+  margin-bottom: 12px;
+}
+
+.weather-advisory-sheet-head h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 780;
+}
+
+.weather-advisory-sheet-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.weather-advisory-sheet-row {
+  margin: 0 0 14px;
+}
+
+.weather-advisory-sheet-row:last-child {
+  margin-bottom: 0;
+}
+
+.weather-advisory-sheet-label {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.58);
+}
+
+.weather-advisory-sheet-value {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 560;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.94);
+  white-space: pre-line;
+}
+
 .weather-card {
   margin: 0;
 }
@@ -1410,6 +1484,48 @@ button { font: inherit; }
    테두리/배경/패딩을 전담하게 됐다 — 예전에 여기 있던 초록/파랑
    data-needed 배경, 자체 padding/border-radius를 모두 제거하고 순수
    타이포그래피 규칙만 남긴다. */
+/* 2026-07-21 3차 기획: 기상특보 배너 — 유저 요청 "맨 위 날씨 코멘트에
+   기상특보가 있다면 표현되면 좋겠다". :empty 기반 자동 접힘 방식(위
+   .weather-comment-box와 동일 패턴)을 쓰지 않는다 — 버튼이 항상 텍스트를
+   갖고 있어 :empty로 판정되지 않기 때문에, app.js가 명시적으로
+   is-active 클래스를 넣고 뺀다(기본 상태는 숨김). 경고색은 이미
+   weather-badge[data-grade="HEAVY"]에 쓰던 주황(#e07b1f)을 그대로
+   재사용 — 이 앱에 이미 있는 "경고" 색상 규칙과 통일한다. */
+.weather-advisory-banner {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 11px 14px;
+  border-radius: 14px;
+  background: rgba(224, 123, 31, 0.24);
+  border: 1px solid rgba(224, 123, 31, 0.55);
+}
+
+.weather-advisory-banner.is-active {
+  display: flex;
+}
+
+.weather-advisory-banner-text {
+  flex: 1 1 auto;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #fff;
+}
+
+.weather-advisory-banner-more {
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: none;
+  background: #e07b1f;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 720;
+  white-space: nowrap;
+}
+
 .weather-comment-box {
   padding: 16px 18px;
   /* 2026-07-19 6차 → 2026-07-20 8차: 위 .weather-current-card와 같은 이유로 더 투명하게. */
