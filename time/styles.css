@@ -452,6 +452,83 @@ button { font: inherit; }
   text-shadow: 0 2px 16px rgba(0,0,0,0.46);
   text-overflow: ellipsis;
   white-space: nowrap;
+  /* 2026-07-21 유저 요청 — 날짜를 눌러 달력을 열고 닫을 수 있게 됨. */
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background 140ms ease;
+}
+
+.date-chip:active {
+  background: rgba(255,255,255,0.12);
+}
+
+/* 2026-07-21 신설 — 날짜 탭 → 이번달 달력 아코디언. .top-bar와 한 wrapper로
+   묶여 .sky-room 그리드의 row1(auto) 안에서만 높이가 늘어난다(index.html
+   주석 참조) — clock-stage(row2, minmax(0,1fr))가 남는 공간만큼 줄어들며
+   자연스럽게 "한 단계씩 아래로" 밀리는 효과를 grid 재설계 없이 얻는다.
+   max-height 트랜지션으로 여닫는다(grid-template-rows 애니메이션은 iOS
+   WebKit 지원이 들쭉날쭉해 피함) — 실제 px 값은 app.js가 scrollHeight로 잰다. */
+.top-bar-group {
+  width: 100%;
+}
+
+.calendar-panel {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 300ms ease, opacity 220ms ease;
+}
+
+.calendar-panel.is-open {
+  opacity: 1;
+}
+
+.calendar-month-label {
+  margin: 10px 0 8px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 750;
+  color: rgba(255,255,255,0.88);
+  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+.calendar-weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-weekdays {
+  margin-bottom: 4px;
+}
+
+.calendar-weekdays span {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+}
+
+.calendar-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1px 0;
+  height: 26px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.82);
+  border-radius: 8px;
+}
+
+.calendar-day.is-today {
+  background: #38bdf8;
+  color: #04101c;
+  font-weight: 800;
+}
+
+.calendar-day.is-empty {
+  visibility: hidden;
 }
 
 .settings-panel {

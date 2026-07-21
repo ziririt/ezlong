@@ -209,6 +209,11 @@ const aladinModalExternalOpenEl = document.getElementById("aladinModalExternalOp
 const settingsPanel = document.getElementById("quoteSettings");
 const settingsOpen = document.getElementById("settingsOpen");
 const settingsSave = document.getElementById("settingsSave");
+// 2026-07-21 유저 요청 — 날짜 탭 → 이번달 달력 아코디언.
+const dateLabelEl = document.getElementById("dateLabel");
+const calendarPanelEl = document.getElementById("calendarPanel");
+const calendarMonthLabelEl = document.getElementById("calendarMonthLabel");
+const calendarGridEl = document.getElementById("calendarGrid");
 const allCategories = document.getElementById("allCategories");
 const categoryOptions = document.getElementById("categoryOptions");
 // 2026-07-19: 문학·교양서 하위 분야용 별도 "모든 분야"/그리드 — 투자서와
@@ -1102,6 +1107,68 @@ function renderDate(now) {
     weekday: "short"
   }).format(now).replace("요일", "");
   setText("dateLabel", `${monthDay} (${weekday})`);
+}
+
+// 2026-07-21 유저 요청 — 상단 날짜를 누르면 문장박스/플립시계/음악버튼/
+// 비주얼라이저를 아래로 밀어내며 이번달 달력이 내려온다(일요일 시작,
+// 오늘 강조, 심플하게 — 월 이동 없이 이번 달만). 다시 누르면 접힌다.
+// 레이아웃 원리는 index.html의 top-bar-group 주석 참조 — .sky-room 그리드를
+// 건드리지 않고 row1(auto)의 콘텐츠 높이만 늘려서 아래 요소들이 밀리게 한다.
+let calendarPanelOpen = false;
+
+function buildCalendarGrid() {
+  if (!calendarGridEl) return;
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth(); // 0-indexed
+  const todayDate = now.getDate();
+  if (calendarMonthLabelEl) calendarMonthLabelEl.textContent = `${year}년 ${month + 1}월`;
+  const startWeekday = new Date(year, month, 1).getDay(); // 0=일요일
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  let html = "";
+  for (let i = 0; i < startWeekday; i += 1) {
+    html += '<span class="calendar-day is-empty"></span>';
+  }
+  for (let d = 1; d <= daysInMonth; d += 1) {
+    html += `<span class="calendar-day${d === todayDate ? " is-today" : ""}">${d}</span>`;
+  }
+  calendarGridEl.innerHTML = html;
+}
+
+function toggleCalendarPanel() {
+  if (!calendarPanelEl) return;
+  calendarPanelOpen = !calendarPanelOpen;
+  if (dateLabelEl) dateLabelEl.setAttribute("aria-expanded", String(calendarPanelOpen));
+  if (calendarPanelOpen) {
+    buildCalendarGrid();
+    calendarPanelEl.setAttribute("aria-hidden", "false");
+    // 다음 프레임에 실제 콘텐츠 높이(scrollHeight)로 max-height를 지정해야
+    // "0 → 실제 높이"로 트랜지션된다(0 → auto는 애니메이션되지 않음).
+    requestAnimationFrame(() => {
+      calendarPanelEl.classList.add("is-open");
+      calendarPanelEl.style.maxHeight = `${calendarPanelEl.scrollHeight}px`;
+    });
+  } else {
+    // 닫을 때도 먼저 현재 실측 높이를 명시적으로 찍어준 뒤(이미 열려있어
+    // scrollHeight와 같음) 다음 프레임에 0으로 낮춰야 "auto/이미 찍힌 값 →
+    // 0"으로 트랜지션이 정상 재생된다.
+    calendarPanelEl.style.maxHeight = `${calendarPanelEl.scrollHeight}px`;
+    requestAnimationFrame(() => {
+      calendarPanelEl.style.maxHeight = "0px";
+      calendarPanelEl.classList.remove("is-open");
+    });
+    calendarPanelEl.setAttribute("aria-hidden", "true");
+  }
+}
+
+if (dateLabelEl) {
+  dateLabelEl.addEventListener("click", toggleCalendarPanel);
+  dateLabelEl.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggleCalendarPanel();
+    }
+  });
 }
 
 function setScene(sceneId, options = {}) {
