@@ -1143,7 +1143,14 @@ function buildCalendarGrid() {
   }
   for (let d = 1; d <= daysInMonth; d += 1) {
     const isToday = isCurrentMonth && d === todayDate;
-    html += `<span class="calendar-day${isToday ? " is-today" : ""}">${d}</span>`;
+    // 2026-07-21 5차 피드백 — 월 표기 라벨을 따로 두는 대신, 매달 1일 칸에만
+    // "월/일"(예: 7/1, 8/1)로 표기해 스와이프로 다른 달로 넘어가도 몇 월인지
+    // 알 수 있게 한다.
+    const isMonthStart = d === 1;
+    const label = isMonthStart ? `${month + 1}/1` : String(d);
+    const cls = ["calendar-day", isToday ? "is-today" : "", isMonthStart ? "is-month-start" : ""]
+      .filter(Boolean).join(" ");
+    html += `<span class="${cls}">${label}</span>`;
   }
   calendarGridEl.innerHTML = html;
 }

@@ -483,13 +483,19 @@ button { font: inherit; }
   padding: 12px 10px 10px;
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: clamp(18px, 4vw, 28px);
-  background: rgba(13, 20, 31, 0.01);
+  /* 2026-07-21 5차 피드백: "가독성을 위해 불투명도를 5%p 더" — 0.01→0.06. */
+  background: rgba(13, 20, 31, 0.06);
   backdrop-filter: saturate(1.04);
-  transition: max-height 300ms ease, opacity 220ms ease;
+  transition: max-height 300ms ease, opacity 220ms ease, margin-bottom 300ms ease;
 }
 
 .calendar-panel.is-open {
   opacity: 1;
+  /* 2026-07-21 5차 피드백: "달력과 플립시계가 너무 딱 붙는다 — 플립시계와
+     음악 버튼 사이 간격만큼 벌려달라" — .clock-meta의 margin(위 2397번째 줄
+     부근 clamp(7px,1.3vh,12px))과 동일한 값을 재사용해 두 간격의 체감을
+     맞춘다. is-open일 때만 적용해 닫혀있을 때(높이 0)는 여백이 안 생긴다. */
+  margin-bottom: clamp(7px, 1.3vh, 12px);
 }
 
 .calendar-weekdays,
@@ -533,6 +539,14 @@ button { font: inherit; }
 
 .calendar-day.is-empty {
   visibility: hidden;
+}
+
+/* 2026-07-21 5차 피드백 — 스와이프로 다른 달을 봐도 몇 월인지 알 수 있게,
+   매달 1일 칸만 "7/1" 형태(월/일)로 표기한다. 자릿수가 늘어난 만큼 폰트를
+   살짝 줄여 칸 안에 여유있게 들어가게 한다. */
+.calendar-day.is-month-start {
+  font-size: 10px;
+  font-weight: 800;
 }
 
 .settings-panel {
@@ -2251,6 +2265,19 @@ button { font: inherit; }
      없다 — 유저 요구("플립시계 여백 = 페이지 여백")를 손계산 없이
      수학적으로 보장한다. */
   padding-inline: clamp(18px, 5vw, 36px);
+}
+
+/* 2026-07-21 5차 피드백 — "달력 위 여백을 지금의 3분의 1 정도로 줄여서
+   달력 위치를 위로 올려달라." 평소엔 .clock-stage가 align-self:center로
+   row2 안에서 중앙정렬되는데, 달력이 열려 콘텐츠가 길어지면 이 중앙정렬
+   때문에 header~달력 사이에 큰 여백이 생겼다(정렬 기준점이 유지된 채 위아래로
+   같이 벌어짐). 달력이 열린 동안만 top 정렬로 바꾸고 기존 translateY(위로
+   당기는 값, 원래 중앙정렬 기준으로 튜닝된 값이라 top 정렬에선 과할 수 있어
+   0으로 리셋)도 끈다 — header 바로 아래(sky-room의 grid gap만큼)에서
+   시작하게 된다. 평소(닫힘) 상태는 전혀 건드리지 않는다. */
+.clock-app.calendar-open .clock-stage {
+  align-self: start;
+  transform: translateY(0);
 }
 
 .flip-clock {

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260721-calendar-v4">
+  <link rel="stylesheet" href="styles.css?v=20260721-calendar-v5">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -74,8 +74,9 @@
                연/월 표기("2026년 7월") 생략, 좌우 스와이프로 전후달 이동
                (-12~+12개월, 총 25개월) — app.js shiftCalendarMonth 참조. -->
           <div class="calendar-panel" id="calendarPanel" aria-hidden="true">
+            <!-- 2026-07-21 5차 피드백: 요일 표기를 한글→영어 약자로. -->
             <div class="calendar-weekdays" aria-hidden="true">
-              <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+              <span>sun</span><span>mon</span><span>tue</span><span>wed</span><span>thu</span><span>fri</span><span>sat</span>
             </div>
             <div class="calendar-grid" id="calendarGrid"></div>
           </div>
@@ -174,7 +175,7 @@
            (app.js sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이
            있었다"는 공간감을 위함. -->
       <div class="scene-dots" aria-label="ezlong.com 이동">
-        <span class="app-version" aria-hidden="true">ver.1.3.6.3</span>
+        <span class="app-version" aria-hidden="true">ver.1.3.6.4</span>
         <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
@@ -699,6 +700,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260721-calendar-v3"></script>
+  <script src="app.js?v=20260721-calendar-v5"></script>
 </body>
 </html>
