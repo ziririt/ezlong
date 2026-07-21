@@ -214,6 +214,9 @@ const dateLabelEl = document.getElementById("dateLabel");
 const calendarPanelEl = document.getElementById("calendarPanel");
 const calendarMonthLabelEl = document.getElementById("calendarMonthLabel");
 const calendarGridEl = document.getElementById("calendarGrid");
+// 2026-07-21 8차 피드백 — 달력을 눌러야 열린다는 걸 모르는 사용자를 위한
+// 온보딩 힌트(자동 시연 + 반짝임)에 쓰는 sparkle 오버레이.
+const dateChipSparkleEl = document.getElementById("dateChipSparkle");
 const allCategories = document.getElementById("allCategories");
 const categoryOptions = document.getElementById("categoryOptions");
 // 2026-07-19: 문학·교양서 하위 분야용 별도 "모든 분야"/그리드 — 투자서와
@@ -1211,14 +1214,83 @@ function toggleCalendarPanel() {
 }
 
 if (dateLabelEl) {
-  dateLabelEl.addEventListener("click", toggleCalendarPanel);
+  dateLabelEl.addEventListener("click", () => {
+    // 2026-07-21 8차 — 온보딩 자동시연 도중 유저가 직접 탭하면, 예약돼 있던
+    // 자동 열기/닫기/반짝임 타이머와 절대 충돌해선 안 된다(유저 조작이 항상
+    // 우선). 탭이 들어온 순간 남은 타이머를 전부 취소한다.
+    cancelCalendarOnboardingHint();
+    toggleCalendarPanel();
+  });
   dateLabelEl.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
+      cancelCalendarOnboardingHint();
       toggleCalendarPanel();
     }
   });
 }
+
+// 2026-07-21 8차 피드백 — "날짜를 누르면 달력이 열린다"는 걸 아무도 모를
+// 것 같다는 지적. 앱을 처음 켰을 때 한 번, 달력을 자동으로 5초간 열었다
+// 닫으면서 "여기 누르는 거구나"를 몸으로 보여주고, 닫히는 순간 상단
+// 날짜칩에 3초짜리 마법가루 반짝임을 얹어 "방금 그 반짝인 자리를 눌러보면
+// 되겠네"라는 직관적 유도를 만든다. 매번 켤 때마다 재생하면 하루에도 몇 번씩
+// 여는 시계 앱 특성상 금방 성가셔질 것이라 판단해 localStorage로 기기당
+// 최초 1회만 재생한다.
+const CALENDAR_ONBOARDING_HINT_KEY = "flipzen_calendar_hint_shown_v1";
+let calendarOnboardingTimers = [];
+
+function cancelCalendarOnboardingHint() {
+  calendarOnboardingTimers.forEach((id) => window.clearTimeout(id));
+  calendarOnboardingTimers = [];
+}
+
+function sparkleDateChip() {
+  if (!dateChipSparkleEl || !dateLabelEl) return;
+  const SPARK_COUNT = 16;
+  const EFFECT_MS = 3000;
+  let html = "";
+  for (let i = 0; i < SPARK_COUNT; i += 1) {
+    const sx = (Math.random() * 130 - 15).toFixed(1); // -15%~115% — 칩 테두리 살짝 밖까지
+    const sy = (Math.random() * 130 - 15).toFixed(1);
+    const size = (3 + Math.random() * 3).toFixed(1);
+    const delay = (Math.random() * 1.9).toFixed(2); // 3초 동안 물결치듯 등장
+    const dur = (0.9 + Math.random() * 0.5).toFixed(2);
+    html += `<span class="spark" style="--sx:${sx}%;--sy:${sy}%;--ssize:${size}px;--sdelay:${delay}s;--sdur:${dur}s;"></span>`;
+  }
+  dateChipSparkleEl.innerHTML = html;
+  dateChipSparkleEl.classList.add("is-active");
+  dateLabelEl.classList.add("is-sparkling");
+  window.setTimeout(() => {
+    dateChipSparkleEl.classList.remove("is-active");
+    dateLabelEl.classList.remove("is-sparkling");
+    dateChipSparkleEl.innerHTML = "";
+  }, EFFECT_MS + 100);
+}
+
+function runCalendarOnboardingHint() {
+  if (!calendarPanelEl || !dateLabelEl) return;
+  try {
+    if (localStorage.getItem(CALENDAR_ONBOARDING_HINT_KEY)) return;
+    localStorage.setItem(CALENDAR_ONBOARDING_HINT_KEY, "1");
+  } catch (e) {
+    // localStorage 접근 불가(사파리 시크릿모드 등) — 매번 재생되더라도
+    // 힌트 자체는 계속 보여주는 게 안전하므로 조용히 통과.
+  }
+  const openTimer = window.setTimeout(() => {
+    if (calendarPanelOpen) return; // 이미 유저가 직접 열어둔 상태면 건드리지 않음
+    toggleCalendarPanel();
+    const closeTimer = window.setTimeout(() => {
+      if (!calendarPanelOpen) return; // 유저가 이미 직접 닫은 경우 중복 토글 방지
+      toggleCalendarPanel();
+      sparkleDateChip();
+    }, 5000);
+    calendarOnboardingTimers.push(closeTimer);
+  }, 1200);
+  calendarOnboardingTimers.push(openTimer);
+}
+
+runCalendarOnboardingHint();
 
 // 2026-07-21 2차 피드백 — 달력 위에서 좌우로 스와이프하면 전후달로 이동.
 // .sky-room 전체에 이미 걸린 사진/문장 스와이프 리스너(위 skyRoom
