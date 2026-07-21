@@ -212,7 +212,6 @@ const settingsSave = document.getElementById("settingsSave");
 // 2026-07-21 유저 요청 — 날짜 탭 → 이번달 달력 아코디언.
 const dateLabelEl = document.getElementById("dateLabel");
 const calendarPanelEl = document.getElementById("calendarPanel");
-const calendarMonthLabelEl = document.getElementById("calendarMonthLabel");
 const calendarGridEl = document.getElementById("calendarGrid");
 const allCategories = document.getElementById("allCategories");
 const categoryOptions = document.getElementById("categoryOptions");
@@ -1109,20 +1108,33 @@ function renderDate(now) {
   setText("dateLabel", `${monthDay} (${weekday})`);
 }
 
-// 2026-07-21 유저 요청 — 상단 날짜를 누르면 문장박스/플립시계/음악버튼/
-// 비주얼라이저를 아래로 밀어내며 이번달 달력이 내려온다(일요일 시작,
-// 오늘 강조, 심플하게 — 월 이동 없이 이번 달만). 다시 누르면 접힌다.
-// 레이아웃 원리는 index.html의 top-bar-group 주석 참조 — .sky-room 그리드를
-// 건드리지 않고 row1(auto)의 콘텐츠 높이만 늘려서 아래 요소들이 밀리게 한다.
+// 2026-07-21 유저 요청 — 상단 날짜를 누르면 문장박스가 완전히 사라지고
+// 이번달 달력이 내려온다(일요일 시작, 오늘 강조, 심플하게 — 연/월 텍스트도
+// 생략). 다시 누르면 접히고 문장박스가 되돌아온다. 레이아웃 원리는
+// index.html의 top-bar-group 주석 참조 — .sky-room 그리드를 건드리지 않고
+// row1(calendar-panel, auto)의 콘텐츠 높이만 늘리는 동시에 row3(quote-panel)
+// 는 0으로 접어서, row2(clock-stage, minmax(0,1fr))가 그 차액만큼 자동으로
+// 커지며 비주얼라이저 쪽이 문장박스 자리까지 내려오게 한다(별도 JS 계산 불필요).
+// 2026-07-21 2차 피드백 — 좌우 스와이프로 전후달 이동(-12~+12개월, 총
+// 25개월 범위)을 추가한다. "오늘이 속한 달"을 기준(diff=0)으로 매번 range를
+// 계산해서, 자정을 넘겨 오늘 날짜가 바뀌어도 항상 실제 오늘 기준으로
+// 재계산된다(달력을 열 때마다 이번 달로 리셋하므로 날짜 경계 문제 없음).
 let calendarPanelOpen = false;
+let calendarViewYear = null;
+let calendarViewMonth = null; // 0-indexed
+
+function calendarMonthDiffFromToday(year, month) {
+  const now = new Date();
+  return (year - now.getFullYear()) * 12 + (month - now.getMonth());
+}
 
 function buildCalendarGrid() {
-  if (!calendarGridEl) return;
+  if (!calendarGridEl || calendarViewYear === null) return;
+  const year = calendarViewYear;
+  const month = calendarViewMonth;
   const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth(); // 0-indexed
+  const isCurrentMonth = year === now.getFullYear() && month === now.getMonth();
   const todayDate = now.getDate();
-  if (calendarMonthLabelEl) calendarMonthLabelEl.textContent = `${year}년 ${month + 1}월`;
   const startWeekday = new Date(year, month, 1).getDay(); // 0=일요일
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   let html = "";
@@ -1130,16 +1142,36 @@ function buildCalendarGrid() {
     html += '<span class="calendar-day is-empty"></span>';
   }
   for (let d = 1; d <= daysInMonth; d += 1) {
-    html += `<span class="calendar-day${d === todayDate ? " is-today" : ""}">${d}</span>`;
+    const isToday = isCurrentMonth && d === todayDate;
+    html += `<span class="calendar-day${isToday ? " is-today" : ""}">${d}</span>`;
   }
   calendarGridEl.innerHTML = html;
+}
+
+// 스와이프로 전후달 이동. range는 "오늘이 속한 달"로부터 ±12개월(총 25개월).
+function shiftCalendarMonth(delta) {
+  if (calendarViewYear === null) return;
+  let newMonth = calendarViewMonth + delta;
+  let newYear = calendarViewYear;
+  while (newMonth < 0) { newMonth += 12; newYear -= 1; }
+  while (newMonth > 11) { newMonth -= 12; newYear += 1; }
+  const diff = calendarMonthDiffFromToday(newYear, newMonth);
+  if (diff < -12 || diff > 12) return; // 범위 밖 — 무시(맨 끝에서 더 스와이프해도 그대로 유지)
+  calendarViewYear = newYear;
+  calendarViewMonth = newMonth;
+  buildCalendarGrid();
 }
 
 function toggleCalendarPanel() {
   if (!calendarPanelEl) return;
   calendarPanelOpen = !calendarPanelOpen;
   if (dateLabelEl) dateLabelEl.setAttribute("aria-expanded", String(calendarPanelOpen));
+  if (app) app.classList.toggle("calendar-open", calendarPanelOpen);
+  if (quotePanel) quotePanel.classList.toggle("is-calendar-hidden", calendarPanelOpen);
   if (calendarPanelOpen) {
+    const now = new Date();
+    calendarViewYear = now.getFullYear();
+    calendarViewMonth = now.getMonth();
     buildCalendarGrid();
     calendarPanelEl.setAttribute("aria-hidden", "false");
     // 다음 프레임에 실제 콘텐츠 높이(scrollHeight)로 max-height를 지정해야
@@ -1169,6 +1201,33 @@ if (dateLabelEl) {
       toggleCalendarPanel();
     }
   });
+}
+
+// 2026-07-21 2차 피드백 — 달력 위에서 좌우로 스와이프하면 전후달로 이동.
+// .sky-room 전체에 이미 걸린 사진/문장 스와이프 리스너(위 skyRoom
+// touchstart/touchend, movePhoto/moveQuote 호출)가 이 터치도 그대로 받아서
+// 같이 동작해버리면 안 되므로, 확실한 가로 스와이프로 판정된 순간에만
+// stopPropagation으로 그쪽 리스너 도달을 막는다 — 짧은 탭이나 세로 스와이프
+// (페이지 전환 제스처)는 그대로 통과시켜 기존 동작을 건드리지 않는다.
+if (calendarPanelEl) {
+  let calendarSwipeStart = null;
+  calendarPanelEl.addEventListener("touchstart", (event) => {
+    const touch = event.touches[0];
+    calendarSwipeStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
+  }, { passive: true });
+  calendarPanelEl.addEventListener("touchend", (event) => {
+    if (!calendarSwipeStart) return;
+    const touch = event.changedTouches[0];
+    const start = calendarSwipeStart;
+    calendarSwipeStart = null;
+    if (!touch) return;
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    const horizontalDominant = Math.abs(dx) > Math.abs(dy) * 1.2 && Math.abs(dx) > 40;
+    if (!horizontalDominant) return;
+    event.stopPropagation();
+    shiftCalendarMonth(dx < 0 ? 1 : -1);
+  }, { passive: true });
 }
 
 function setScene(sceneId, options = {}) {
