@@ -311,6 +311,14 @@ const wdYesterday = document.getElementById("wdYesterday");
 const wdTropicalBadges = document.getElementById("wdTropicalBadges");
 const wdTropicalComment = document.getElementById("wdTropicalComment");
 const weatherDetailTitle = document.getElementById("weatherDetailTitle");
+// 2026-07-21 3차 기획: 기상특보(KMA) 배너 + 더보기 팝업.
+const wdAdvisoryBanner = document.getElementById("wdAdvisoryBanner");
+const wdAdvisoryBannerText = document.getElementById("wdAdvisoryBannerText");
+const wdAdvisoryMoreBtn = document.getElementById("wdAdvisoryMoreBtn");
+const weatherAdvisoryPanel = document.getElementById("weatherAdvisoryPanel");
+const wdAdvisoryModalBody = document.getElementById("wdAdvisoryModalBody");
+const wdAdvisoryModalTitle = document.getElementById("wdAdvisoryModalTitle");
+let wdLastAdvisoryData = null;
 
 const digitElements = [
   document.getElementById("hourTens"),
@@ -2756,6 +2764,96 @@ function renderWeatherNextRain(data) {
   wdNextRain.textContent = countdown.message;
 }
 
+// 2026-07-21 3차 기획: 기상특보(KMA). 유저 요청 "맨 위 날씨 코멘트에
+// 기상특보가 있다면 표현되면 좋겠다. '더보기'하면 레이어팝업으로 상세".
+// data.active가 false인 경우(특보 없음/서비스키 미설정/한국 영역 밖/API
+// 실패 전부 포함)는 배너 자체를 숨긴다 — 어떤 이유로 못 보여주는지를
+// 유저에게 굳이 알릴 필요는 없다(날씨 조회 실패와 달리 이건 "정보가
+// 없다"는 상태이지 에러 상태가 아니다).
+function renderWeatherAdvisory(data) {
+  wdLastAdvisoryData = data && data.active ? data : null;
+  if (!wdAdvisoryBanner || !wdAdvisoryBannerText) return;
+  if (!wdLastAdvisoryData) {
+    wdAdvisoryBanner.classList.remove("is-active");
+    wdAdvisoryBanner.setAttribute("aria-hidden", "true");
+    return;
+  }
+  // title(t1, 가장 최근 발표문 제목)이 있으면 그대로 쓰고, 없으면
+  // statusText(t6) 첫 줄로 대체한다 — 둘 다 없는 경우는 사실상 없지만
+  // 방어적으로 "기상특보 발효 중"을 최후 폴백으로 둔다.
+  const firstLine = (text) => (text ? text.split("\n")[0].trim() : "");
+  wdAdvisoryBannerText.textContent =
+    wdLastAdvisoryData.title || firstLine(wdLastAdvisoryData.statusText) || "기상특보 발효 중";
+  wdAdvisoryBanner.classList.add("is-active");
+  wdAdvisoryBanner.setAttribute("aria-hidden", "false");
+}
+
+function advisoryRow(label, value) {
+  if (!value) return "";
+  return `
+    <div class="weather-advisory-sheet-row">
+      <p class="weather-advisory-sheet-label">${label}</p>
+      <p class="weather-advisory-sheet-value">${value}</p>
+    </div>`;
+}
+
+// tmFc는 "YYYYMMDDHHmm" 형식 — 백엔드에 별도 포맷터를 두지 않고 여기서만
+// 가볍게 가공한다(화면 표시 전용, 판단 로직이 아니라 새로 만들어도
+// "로직은 한 곳에만" 원칙과 무관).
+function formatAdvisoryTmFc(tmFc) {
+  if (!tmFc || tmFc.length < 12) return tmFc || "";
+  const y = tmFc.slice(0, 4);
+  const mo = tmFc.slice(4, 6);
+  const d = tmFc.slice(6, 8);
+  const h = tmFc.slice(8, 10);
+  const mi = tmFc.slice(10, 12);
+  return `${y}.${mo}.${d} ${h}:${mi}`;
+}
+
+function renderWeatherAdvisoryModal(data) {
+  if (!wdAdvisoryModalBody) return;
+  if (!data) {
+    wdAdvisoryModalBody.innerHTML = `<p class="weather-empty">기상특보 정보를 불러올 수 없어요.</p>`;
+    return;
+  }
+  const rows =
+    advisoryRow("현재 발효 현황", data.statusText) +
+    advisoryRow("해당구역", data.areaText) +
+    advisoryRow("내용", data.content) +
+    advisoryRow("예비특보 발효현황", data.preAdvisoryText) +
+    advisoryRow("참고사항", data.note) +
+    advisoryRow("발표시각", formatAdvisoryTmFc(data.tmFc));
+  wdAdvisoryModalBody.innerHTML = rows || `<p class="weather-empty">표시할 특보 상세가 없어요.</p>`;
+  if (wdAdvisoryModalTitle) {
+    wdAdvisoryModalTitle.textContent = data.title || "기상특보";
+  }
+}
+
+// 2026-07-21: 다른 레이어팝업(openSettings/openAladinModal/openWeatherDetail)과
+// 동일한 "15차-c" 재부착 규칙 — 열 때마다 body.appendChild로 스크롤 영역을
+// 새로 등록한다(이 프로젝트 CLAUDE.md 스크롤 절대규칙 2번, 제거 금지).
+function openWeatherAdvisoryModal() {
+  if (!weatherAdvisoryPanel) return;
+  renderWeatherAdvisoryModal(wdLastAdvisoryData);
+  weatherAdvisoryPanel.classList.add("is-open");
+  document.body.appendChild(weatherAdvisoryPanel);
+  weatherAdvisoryPanel.setAttribute("aria-hidden", "false");
+}
+
+function closeWeatherAdvisoryModal() {
+  if (!weatherAdvisoryPanel) return;
+  weatherAdvisoryPanel.classList.remove("is-open");
+  weatherAdvisoryPanel.setAttribute("aria-hidden", "true");
+}
+
+if (wdAdvisoryMoreBtn) {
+  wdAdvisoryMoreBtn.addEventListener("click", openWeatherAdvisoryModal);
+}
+
+document.querySelectorAll("[data-advisory-modal-close]").forEach((element) => {
+  element.addEventListener("click", closeWeatherAdvisoryModal);
+});
+
 function renderWeatherRainWindows(data) {
   if (!wdRainWindows) return;
   if (!data || !Array.isArray(data.detailedDays)) {
@@ -3022,7 +3120,7 @@ async function fetchWeatherDetail() {
     // 호출 자체를 넣지 않는다(카드가 안 보이는데 네트워크 요청만 날리는
     // 낭비를 피한다). renderWeatherAirQuality 함수는 다음에 재개할 때
     // 바로 쓸 수 있도록 그대로 남겨뒀다.
-    const [currentR, rainR, yesterdayR, tropicalR, hourlyStripR, weeklyForecastR, tempVsNormalR] =
+    const [currentR, rainR, yesterdayR, tropicalR, hourlyStripR, weeklyForecastR, tempVsNormalR, advisoryR] =
       await Promise.allSettled([
         fetchWeatherJson("/api/weather/current"),
         fetchWeatherJson("/api/weather/rain-windows"),
@@ -3033,7 +3131,11 @@ async function fetchWeatherDetail() {
         // 2026-07-17 2차 기획(묶음D): 평년값 비교. 그 달력일이 처음
         // 조회되는 날엔 백엔드가 과거 10년치를 계산하느라 이 호출만 살짝
         // 느릴 수 있다 — Promise.allSettled라 다른 카드 렌더링을 막지 않는다.
-        fetchWeatherJson("/api/weather/temp-vs-normal")
+        fetchWeatherJson("/api/weather/temp-vs-normal"),
+        // 2026-07-21 3차 기획: 기상특보. 서비스키 미등록/API 실패 시에도
+        // configured:false 또는 available:false로 안전하게 응답하므로
+        // Promise.allSettled에서 reject되는 경우는 네트워크 자체 장애뿐이다.
+        fetchWeatherJson("/api/weather/advisory")
       ]);
 
     const tropicalData = tropicalR.status === "fulfilled" ? tropicalR.value : null;
@@ -3070,6 +3172,7 @@ async function fetchWeatherDetail() {
     renderWeatherRainWindows(rainData);
     renderWeatherYesterday(yesterdayR.status === "fulfilled" ? yesterdayR.value : null);
     renderWeatherTropical(tropicalData);
+    renderWeatherAdvisory(advisoryR.status === "fulfilled" ? advisoryR.value : null);
 
     // 2026-07-15: 실패한 응답까지 "캐시됨"으로 기록해버리는 버그 수정 — 최초
     // 요청이 서버 콜드스타트 등으로 한 번 실패하면, 그 실패 상태가 1시간 동안

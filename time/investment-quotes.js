@@ -8025,5 +8025,12 @@ window.investmentQuotes = [
     "title": "주식 투자자의 회상",
     "author": "에드윈 르페브르",
     "category": "patience"
+  },
+  {
+    "english": "Few bets, big bets, infrequent bets.",
+    "text": "적게 베팅하고, 크게 베팅하고, 드물게 베팅하라.",
+    "title": "다안도 투자자 (The Dhandho Investor)",
+    "author": "모니시 파브라이",
+    "category": "patience"
   }
 ];
