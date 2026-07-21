@@ -1110,11 +1110,15 @@ function renderDate(now) {
 
 // 2026-07-21 유저 요청 — 상단 날짜를 누르면 문장박스가 완전히 사라지고
 // 이번달 달력이 내려온다(일요일 시작, 오늘 강조, 심플하게 — 연/월 텍스트도
-// 생략). 다시 누르면 접히고 문장박스가 되돌아온다. 레이아웃 원리는
-// index.html의 top-bar-group 주석 참조 — .sky-room 그리드를 건드리지 않고
-// row1(calendar-panel, auto)의 콘텐츠 높이만 늘리는 동시에 row3(quote-panel)
-// 는 0으로 접어서, row2(clock-stage, minmax(0,1fr))가 그 차액만큼 자동으로
-// 커지며 비주얼라이저 쪽이 문장박스 자리까지 내려오게 한다(별도 JS 계산 불필요).
+// 생략). 다시 누르면 접히고 문장박스가 되돌아온다.
+// 2026-07-21 6차 피드백(구조 재설계) — "달력을 위에 두지 말고 문장박스
+// 자리를 그대로 대체해라. 플립시계·음악박스는 위치가 같고, 문장박스만
+// 밀려나고 그 자리에 달력이 온다." calendar-panel을 index.html에서
+// .clock-fixed-group 밖으로 꺼내 quote-panel의 바로 앞 형제로 옮기고,
+// styles.css에서 둘 다 .sky-room의 같은 grid 행(row3, 고정 크기)을
+// 명시적으로 공유하게 했다 — row3이 고정 크기라 문장박스↔달력 전환 때
+// clock-stage(플립시계·음악박스)는 전혀 영향받지 않는다(styles.css
+// .sky-room/.quote-panel,.calendar-panel 규칙 참조).
 // 2026-07-21 2차 피드백 — 좌우 스와이프로 전후달 이동(-12~+12개월, 총
 // 25개월 범위)을 추가한다. "오늘이 속한 달"을 기준(diff=0)으로 매번 range를
 // 계산해서, 자정을 넘겨 오늘 날짜가 바뀌어도 항상 실제 오늘 기준으로
@@ -1147,7 +1151,9 @@ function buildCalendarGrid() {
     // "월/일"(예: 7/1, 8/1)로 표기해 스와이프로 다른 달로 넘어가도 몇 월인지
     // 알 수 있게 한다.
     const isMonthStart = d === 1;
-    const label = isMonthStart ? `${month + 1}/1` : String(d);
+    // 2026-07-21 6차 피드백: 월 숫자만 더 크고(1.2배) 굵게 — "/1"은 그대로
+    // 두고 월 숫자만 .cal-month-num으로 감싼다(styles.css 참조).
+    const label = isMonthStart ? `<span class="cal-month-num">${month + 1}</span>/1` : String(d);
     const cls = ["calendar-day", isToday ? "is-today" : "", isMonthStart ? "is-month-start" : ""]
       .filter(Boolean).join(" ");
     html += `<span class="${cls}">${label}</span>`;

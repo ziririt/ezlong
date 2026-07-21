@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260721-calendar-v5">
+  <link rel="stylesheet" href="styles.css?v=20260721-calendar-v6">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -54,32 +54,6 @@
              position:absolute로 아래에 겹쳐 그린다 — 그러면 .clock-stage의
              중앙정렬 계산 자체가 패널 펼침과 완전히 무관해진다. -->
         <div class="clock-fixed-group">
-          <!-- 2026-07-21 3차 피드백 — "달력의 위치는 지금의 플립시계 위치부터다.
-               그 위에 여백미를 살려야한다"는 요청으로 위치를 top-bar 바로
-               아래(1차 구현)에서 이 자리(flip-clock 바로 앞)로 옮겼다. 여기
-               두면 header~clock-stage 사이의 기존 여백(위 .clock-stage
-               주석의 translateY(clamp(-54px,-5.4vh,-28px))+align-self:center
-               조합)을 그대로 물려받아 "달력이 지금 플립시계가 있던 자리에서
-               시작"하는 효과가 별도 CSS 없이 나온다.
-               2026-07-21 4차 피드백(중요 정정) — 처음엔 달력이 열리면
-               flip-clock을 숨기는 방식으로 구현했으나 "플립시계는 빠지면
-               안 된다, 음악 부분과 함께 아래로 밀려나는 것이다 — 빠지는
-               것은 문장박스뿐"이라는 재지적으로 그 숨김 처리(styles.css의
-               `.calendar-open .flip-clock{display:none}`)를 제거했다.
-               calendar-panel이 flip-clock의 정확히 앞 형제이므로, 숨김
-               규칙 없이도 calendar-panel이 커지면 flip-clock·clock-meta·
-               music-info-panel이 통째로 자연스럽게 아래로 밀려난다(일반
-               문서 흐름 그대로) — 위치(달력 시작=플립시계 옛 자리)는 그대로
-               유지하면서 "밀려나는 대상"만 정정됐다.
-               연/월 표기("2026년 7월") 생략, 좌우 스와이프로 전후달 이동
-               (-12~+12개월, 총 25개월) — app.js shiftCalendarMonth 참조. -->
-          <div class="calendar-panel" id="calendarPanel" aria-hidden="true">
-            <!-- 2026-07-21 5차 피드백: 요일 표기를 한글→영어 약자로. -->
-            <div class="calendar-weekdays" aria-hidden="true">
-              <span>sun</span><span>mon</span><span>tue</span><span>wed</span><span>thu</span><span>fri</span><span>sat</span>
-            </div>
-            <div class="calendar-grid" id="calendarGrid"></div>
-          </div>
           <div class="flip-clock" aria-label="현재 시간">
             <div class="flip-unit" data-unit="hours">
               <span class="flip-card" id="hourTens">1</span>
@@ -136,6 +110,24 @@
         </div>
       </section>
 
+      <!-- 2026-07-21 6차 피드백(구조 재설계) — "달력을 위에 두지 말고, 그냥
+           문장박스를 대체해라. 플립시계·음악 박스는 위치가 같고, 문장박스만
+           밀려나고 그 자리에 달력이 온다." 그래서 .clock-fixed-group(flip-clock
+           앞자리, 1~5차 위치)에서 완전히 꺼내 이 자리(quote-panel 바로 앞
+           형제, .sky-room 직계 자식)로 옮겼다. styles.css에서 .quote-panel과
+           calendar-panel이 같은 grid 행(row3, 고정 크기)을 명시적으로
+           공유하도록 grid-row:3을 지정해뒀다 — 문장박스가 접히면(is-calendar-
+           hidden) 정확히 그 자리에 달력이 나타나고, row3 자체가 고정 크기라
+           clock-stage(플립시계·음악 박스)는 전혀 영향받지 않는다.
+           연/월 표기("2026년 7월") 생략, 좌우 스와이프로 전후달 이동
+           (-12~+12개월, 총 25개월) — app.js shiftCalendarMonth 참조. -->
+      <div class="calendar-panel" id="calendarPanel" aria-hidden="true">
+        <div class="calendar-weekdays" aria-hidden="true">
+          <span>sun</span><span>mon</span><span>tue</span><span>wed</span><span>thu</span><span>fri</span><span>sat</span>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+
       <section class="quote-panel" aria-label="오늘의 한 문장">
         <p class="quote-english" id="quoteEnglish">The intelligent investor is a realist who sells to optimists and buys from pessimists.</p>
         <blockquote id="quoteText">현명한 투자자는 현실주의자다. 낙관론자에게 팔고, 비관론자에게서 산다.</blockquote>
@@ -175,7 +167,7 @@
            (app.js sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이
            있었다"는 공간감을 위함. -->
       <div class="scene-dots" aria-label="ezlong.com 이동">
-        <span class="app-version" aria-hidden="true">ver.1.3.6.4</span>
+        <span class="app-version" aria-hidden="true">ver.1.3.6.5</span>
         <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
@@ -700,6 +692,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260721-calendar-v5"></script>
+  <script src="app.js?v=20260721-calendar-v6"></script>
 </body>
 </html>
