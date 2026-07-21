@@ -3069,7 +3069,13 @@ button { font: inherit; }
 .music-like-button { background-image: url("assets/icons/music/thumb_up.svg"); }
 .music-dislike-button { background-image: url("assets/icons/music/thumb_down.svg"); }
 .music-shuffle-button { background-image: url("assets/icons/music/shuffle.svg"); }
-.music-gear-button { background-image: url("assets/icons/music/gear.svg"); }
+/* 2026-07-22: 톱니바퀴가 다른 버튼보다 작아 보인다는 지적으로 한 차례
+   background-size를 66%로 키웠었으나(gear.svg), 유저가 "조정/튜닝"을 더
+   직관적으로 나타내는 이퀄라이저 슬라이더 아이콘(sliders.svg)으로 최종
+   교체했다 — 이 아이콘은 다른 3개(좋아요/싫어요/셔플)처럼 24x24 뷰박스
+   테두리 끝까지 꽉 차게 그려져 있어 별도 확대 없이 공용 60%로도 크기가
+   맞는다. */
+.music-gear-button { background-image: url("assets/icons/music/sliders.svg"); }
 
 .music-like-button[aria-pressed="true"],
 .music-dislike-button[aria-pressed="true"] {
