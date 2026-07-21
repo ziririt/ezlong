@@ -2584,7 +2584,7 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     if (windInfoReal && typeof windInfoReal.speedKmh === "number") {
       const mps = Math.round(windInfoReal.speedKmh / 3.6);
       wdCurrentWind.innerHTML =
-        `${windInfoReal.strengthLabel} ` +
+        `바람 ${windInfoReal.strengthLabel} ` +
         `<span class="weather-current-wind-value">${mps}m/s</span>`;
     } else {
       wdCurrentWind.textContent = "";
