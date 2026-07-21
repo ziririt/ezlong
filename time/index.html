@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260721-calendar-v1">
+  <link rel="stylesheet" href="styles.css?v=20260721-calendar-v3">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -29,33 +29,15 @@
       </div>
       <div class="hero-shade" aria-hidden="true"></div>
 
-      <!-- 2026-07-21 유저 요청 — 날짜를 누르면 이번달 달력이 내려오면서
-           아래(플립시계/음악버튼/비주얼라이저/문장박스)가 한 단계씩 밀린다.
-           .sky-room의 grid-template-rows(auto minmax(0,1fr) auto auto)는
-           직계 자식 4개(top-bar-group/clock-stage/quote-panel/scene-dots)
-           수에 그대로 대응하고 있어서, 이 구조 자체는 건드리지 않기 위해
-           header를 이 wrapper로 감싸고 calendar-panel을 그 안에 같이 넣는다
-           — row1(auto)의 콘텐츠 높이만 늘어나고, row2(clock-stage,
-           minmax(0,1fr))가 남은 공간만큼 자동으로 줄어들며 아래로 밀려나는
-           식으로 동작한다(별도 grid 재설계 불필요). -->
-      <div class="top-bar-group" id="topBarGroup">
-        <header class="top-bar">
-          <button class="icon-button" id="settingsOpen" type="button" aria-label="오늘의 한 문장 설정 열기" aria-controls="quoteSettings" aria-expanded="false">
-            <span></span><span></span><span></span>
-          </button>
-          <div class="date-chip" id="dateLabel" role="button" tabindex="0" aria-haspopup="true" aria-controls="calendarPanel" aria-expanded="false" aria-label="이번달 달력 보기">7월 6일 월요일</div>
-          <div class="app-brand" aria-label="ezlong.com">
-            ezlong.com
-          </div>
-        </header>
-        <div class="calendar-panel" id="calendarPanel" aria-hidden="true">
-          <div class="calendar-month-label" id="calendarMonthLabel"></div>
-          <div class="calendar-weekdays" aria-hidden="true">
-            <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
-          </div>
-          <div class="calendar-grid" id="calendarGrid"></div>
+      <header class="top-bar">
+        <button class="icon-button" id="settingsOpen" type="button" aria-label="오늘의 한 문장 설정 열기" aria-controls="quoteSettings" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="date-chip" id="dateLabel" role="button" tabindex="0" aria-haspopup="true" aria-controls="calendarPanel" aria-expanded="false" aria-label="이번달 달력 보기">7월 6일 월요일</div>
+        <div class="app-brand" aria-label="ezlong.com">
+          ezlong.com
         </div>
-      </div>
+      </header>
 
       <section class="clock-stage" aria-live="polite">
         <audio id="bgAudio" preload="auto"></audio>
@@ -72,6 +54,25 @@
              position:absolute로 아래에 겹쳐 그린다 — 그러면 .clock-stage의
              중앙정렬 계산 자체가 패널 펼침과 완전히 무관해진다. -->
         <div class="clock-fixed-group">
+          <!-- 2026-07-21 3차 피드백 — "달력의 위치는 지금의 플립시계 위치부터다.
+               그 위에 여백미를 살려야한다. 플립시계 자리를 달력이 대신 차지"
+               요청으로 위치를 top-bar 바로 아래(1차 구현)에서 이 자리로
+               옮겼다. 여기 두면 header~clock-stage 사이의 기존 여백(위
+               .clock-stage 주석의 translateY(clamp(-54px,-5.4vh,-28px))
+               +align-self:center 조합)을 그대로 물려받아 "달력이 지금
+               플립시계가 있던 자리에서 시작"하는 효과가 별도 CSS 없이
+               나온다. 달력이 열리면 flip-clock을 숨기고(app.js
+               toggleCalendarPanel의 calendar-open 클래스) 이 자리를 그대로
+               이어받는다 — clock-meta(날씨/음악 버튼 줄)·비주얼라이저는
+               건드리지 않고 그 아래로 자연스럽게 이어진다.
+               연/월 표기("2026년 7월") 생략, 좌우 스와이프로 전후달 이동
+               (-12~+12개월, 총 25개월) — app.js shiftCalendarMonth 참조. -->
+          <div class="calendar-panel" id="calendarPanel" aria-hidden="true">
+            <div class="calendar-weekdays" aria-hidden="true">
+              <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+          </div>
           <div class="flip-clock" aria-label="현재 시간">
             <div class="flip-unit" data-unit="hours">
               <span class="flip-card" id="hourTens">1</span>
@@ -167,7 +168,7 @@
            (app.js sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이
            있었다"는 공간감을 위함. -->
       <div class="scene-dots" aria-label="ezlong.com 이동">
-        <span class="app-version" aria-hidden="true">ver.1.3.6.0</span>
+        <span class="app-version" aria-hidden="true">ver.1.3.6.2</span>
         <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
@@ -692,6 +693,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260721-calendar-v1"></script>
+  <script src="app.js?v=20260721-calendar-v3"></script>
 </body>
 </html>
