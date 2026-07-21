@@ -281,6 +281,8 @@ const wdCurrentRetryBtn = document.getElementById("wdCurrentRetryBtn");
 // 2026-07-17 벤치마크 기획(묶음1·2·3·4): 상세 지표(바람/자외선/기압/가시거리/
 // 이슬점), 일출·일몰, 시간대별 예보 스트립 DOM 참조 추가.
 const wdCurrentSun = document.getElementById("wdCurrentSun");
+// 2026-07-21 유저 요청: 최고/최저 기온 아래 바람 표시.
+const wdCurrentWind = document.getElementById("wdCurrentWind");
 // 2026-07-18 리디자인(클로드 디자인 목업 수용): 현재 날씨 카드 상단 이모지 아이콘.
 const wdCurrentIcon = document.getElementById("wdCurrentIcon");
 // 2026-07-19 5차 리디자인: 애플 날씨 스타일 상단 요약(날씨 상태 텍스트,
@@ -456,7 +458,7 @@ const WD_FX_TEST_LABELS = {
   overcast: "잔뜩흐림",
   fog: "안개",
   drizzle: "이슬비",
-  rain: "보통비",
+  rain: "비",
   heavyrain: "강한비",
   storm: "뇌우",
   snow: "눈"
@@ -682,7 +684,7 @@ function vcCurrentSummary(c) {
 
   if (isSnow) return "눈";
   if (grade !== "NONE") {
-    // rainIntensity.label은 백엔드가 이미 "약한 비/보통비/강한 비/매우 강한
+    // rainIntensity.label은 백엔드가 이미 "약한 비/비/강한 비/매우 강한
     // 비"로 계산해 내려주는 문구 — 날씨상세 패널(wdCurrentConditionBase)도
     // 같은 값을 쓰므로 재사용하면 두 화면이 항상 같은 말을 하게 된다.
     if (isThunder) return "뇌우";
@@ -2487,6 +2489,7 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     wdCurrentSub.textContent = "날씨 정보를 불러오지 못했어요. 아래 버튼으로 다시 시도해보세요.";
     if (wdCurrentRetryBtn) wdCurrentRetryBtn.hidden = false;
     if (wdCurrentSun) wdCurrentSun.textContent = "";
+    if (wdCurrentWind) wdCurrentWind.textContent = "";
     if (wdCurrentIcon) wdCurrentIcon.textContent = "";
     wdCurrentIsRainingNow = false;
     wdCurrentRainSuffix = "";
@@ -2570,6 +2573,24 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     wdCurrentSun.textContent = sun ? `🌅 일출 ${sun.sunriseLabel} · 🌇 일몰 ${sun.sunsetLabel}` : "";
   }
 
+  // 2026-07-21 유저 요청: 최고/최저 기온 아래 바람 — 숫자(km/h)보다 "약함/
+  // 강함" 체감 등급을 먼저 보여주고, 정확한 수치는 기상청 관례대로 m/s로
+  // 환산해 작게 붙인다. fxtest 시나리오와 무관하게 항상 실제 API 값만
+  // 쓴다(renderWeatherCurrentToday의 최고/최저와 같은 원칙 — 바람까지
+  // 가짜로 바뀌면 오해 소지가 크다).
+  // 2026-07-21 2차 피드백(유저 요청): 풍향("남남동풍" 등)은 복잡해 보이기만
+  // 한다 — 빼고 강도라벨+수치만 남긴다.
+  if (wdCurrentWind) {
+    if (windInfoReal && typeof windInfoReal.speedKmh === "number") {
+      const mps = Math.round(windInfoReal.speedKmh / 3.6);
+      wdCurrentWind.innerHTML =
+        `${windInfoReal.strengthLabel} ` +
+        `<span class="weather-current-wind-value">${mps}m/s</span>`;
+    } else {
+      wdCurrentWind.textContent = "";
+    }
+  }
+
   // 2026-07-20 11차 피드백(유저 요청): "강수확률·강수량은 비가 오는
   // 경우에만 조건텍스트 옆에 바로 붙여줘(예: '옅은 이슬비 강수확률 90%
   // 1mm/h')" — 9~10차의 상시표시 줄(wdCurrentRain)을 없애고, 이 카드의
@@ -2599,7 +2620,7 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   const summaryIndicatesPrecip = liveSummaryForCondition ? /비|눈|뇌우/.test(liveSummaryForCondition) : false;
   if (isRainingNow) {
     // weatherState.summary가 이미 강수를 말하면 그 표현을 그대로 쓰고,
-    // 드물게 어긋나 있으면 백엔드 rainIntensity 등급 라벨(약한 비/보통비/
+    // 드물게 어긋나 있으면 백엔드 rainIntensity 등급 라벨(약한 비/비/
     // 강한 비 등)로 대체한다.
     wdCurrentConditionBase = summaryIndicatesPrecip
       ? liveSummaryForCondition
@@ -2610,7 +2631,8 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     const showMm = mm >= 0.1;
     // 2026-07-20: 이제 별도 span(wdCurrentConditionRain)에 독립적으로
     // 넣으므로 조건 단어와 이어붙일 때 쓰던 선행 공백을 제거한다.
-    wdCurrentRainSuffix = `강수확률 ${prob}%${showMm ? ` ${mm}mm/h` : ""}`;
+    // 2026-07-21 유저 요청: "강수확률"이라는 말을 빼고 퍼센티지만 바로 보이게.
+    wdCurrentRainSuffix = `${prob}%${showMm ? ` ${mm}mm/h` : ""}`;
   } else {
     // 비가 아닌 상태 — weatherState.summary가 강수를 말하면(모순) 버리고
     // null로 넘겨 today.conditionsKo 폴백을 쓰게 한다.
@@ -5212,20 +5234,34 @@ function hideLeaveWorkCeremony() {
 }
 
 // recordPlayLog(index)가 호출될 때마다(= 새 곡이 막 시작될 때마다) 실행.
+// 2026-07-21 유저 제보("9시1분에 시작한 곡인데 정각 세리모니가 안 떴다")로
+// 발견된 버그 수정: 예전엔 이 함수 맨 위에서 무조건 hideMusicHourlyCeremony()를
+// 불러 이전 세리모니를 껐다. checkHourlyCeremonyTick()(매초 실행)이 이미 그
+// 시간대의 세리모니를 "먼저" 띄워둔 상태(예: 정각에 마침 재생 중이던, 유저가
+// 못 본 곡에 얹힌 경우)라면, 그 직후 새 곡이 시작될 때 이 함수가 무조건
+// 꺼버리고 lastCeremonyHourKey가 이미 이 시간대로 채워져 있어(중복 방지 로직)
+// 다시 켜지도 않았다 — 결과적으로 유저가 실제로 알아챈 그 곡(9시1분 곡)에는
+// 세리모니가 한 번도 안 뜬 것처럼 보였다. 이제 "이미 이 시간대에 띄운 적
+// 있으면 끄지 않고 그대로 둔다"로 바꿔서, tick과 트랙전환 중 무엇이 먼저
+// 트리거했든 상관없이 그 시간대 안에서는 계속 떠 있게 한다 — "시간당 1번"
+// 이라는 기존 중복 방지 원칙은 그대로 유지된다.
 function handleMusicCeremonyOnTrackStart() {
-  // 어떤 곡으로 넘어가든 이전 곡의 세리모니는 일단 끈다 — 그 다음 이번
-  // 곡이 조건에 맞으면 아래에서 다시 켠다.
   hideLeaveWorkCeremony();
-  hideMusicHourlyCeremony();
   if (suppressCeremonyOnNextTrackStart) {
     // 셔플 버튼이 유발한 전환 — 이번 1회만 건너뛰고 플래그를 바로 리셋한다.
     suppressCeremonyOnNextTrackStart = false;
+    hideMusicHourlyCeremony();
     return;
   }
   const now = new Date();
-  if (now.getMinutes() >= MUSIC_HOURLY_CEREMONY_WINDOW_MIN) return; // 정각+5분 지났으면 세리모니 없음
+  if (now.getMinutes() >= MUSIC_HOURLY_CEREMONY_WINDOW_MIN) {
+    hideMusicHourlyCeremony(); // 정각+5분 지났으면 세리모니 없음
+    return;
+  }
   // 2026-07-20: 같은 시간대(연/월/일/시)에 이미 한 번 띄웠으면 두 번째
-  // 트랙 전환부터는 건너뛴다 — "곡 2개가 연달아 튀는" 중복 방지.
+  // 트랙 전환부터는 새로 트리거하지 않는다 — "곡 2개가 연달아 튀는" 중복
+  // 방지. 단 2026-07-21부터는 끄지도 않는다(위 설명 참조) — 이미 떠 있는
+  // 세리모니를 이번 트랙에도 그대로 이어서 보여준다.
   const hourKey = ceremonyHourKey(now);
   if (hourKey === lastCeremonyHourKey) return;
   lastCeremonyHourKey = hourKey;

@@ -1289,6 +1289,27 @@ button { font: inherit; }
   display: none;
 }
 
+/* 2026-07-21 유저 요청: 최고/최저 기온 아래 바람 표시 — "약함/강함" 등급이
+   먼저 보이고, 정확한 수치(m/s)는 뒤에 작게(색만 옅게, 폰트는 14px 최소
+   규칙 준수) 붙는다. */
+.weather-current-wind {
+  margin: 6px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.82);
+}
+
+.weather-current-wind:empty {
+  display: none;
+}
+
+.weather-current-wind-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.62);
+  font-variant-numeric: tabular-nums;
+}
+
 /* 2026-07-18 유저 피드백: 아이콘을 기온 위가 아니라 왼쪽에 나란히. */
 .weather-current-icon {
   display: inline-block;
