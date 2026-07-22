@@ -1529,16 +1529,21 @@ function restartQuoteProgress() {
 // pendingQuoteTimeoutId로 이전 예약을 취소해서 항상 "가장 최근에 부른
 // renderQuote"만 실제로 반영되게 막는다.
 let pendingQuoteTimeoutId = null;
-function renderQuote(index) {
+// 2026-07-22 유저 요청: 배경사진(점 탭/스와이프)은 즉시 바뀌는데 문장박스만
+// 페이드아웃(760ms)→텍스트교체→페이드인으로 총 2초 넘게 걸려 "왜 문장만
+// 느리냐"는 지적. 가만히 뒀을 때 1분마다 자동으로 넘어가는 경우엔 이 서서히
+// 나타나는 느낌이 오히려 편안해서 그대로 두되, 유저가 직접 스와이프/점탭으로
+// 넘길 때만(selectQuoteIndex) immediate=true를 넘겨 지연/페이드를 건너뛰고
+// 배경사진처럼 즉시 반영한다.
+function renderQuote(index, immediate = false) {
   const quote = index;
   lastRenderedQuote = quote;
-  quotePanel.classList.add("is-changing");
   if (pendingQuoteTimeoutId !== null) {
     window.clearTimeout(pendingQuoteTimeoutId);
+    pendingQuoteTimeoutId = null;
   }
 
-  pendingQuoteTimeoutId = window.setTimeout(() => {
-    pendingQuoteTimeoutId = null;
+  const applyQuote = () => {
     // 2026-07-20 유저 요청: 영어 원문은 원래 "한글만 있으면 짧아서 허전해
     // 보이는 문장"에 멋을 더하려고 넣은 부가 요소였는데, 원문이 길면 오히려
     // 총 글자수가 늘어나 quote-long/quote-dense 폰트 축소가 세게 걸려서 한글
@@ -1560,6 +1565,18 @@ function renderQuote(index) {
     updateAladinLinkButton(quote);
     quotePanel.classList.remove("is-changing");
     restartQuoteProgress();
+  };
+
+  if (immediate) {
+    // 배경사진 점탭/스와이프와 동일하게 페이드 없이 바로 반영.
+    applyQuote();
+    return;
+  }
+
+  quotePanel.classList.add("is-changing");
+  pendingQuoteTimeoutId = window.setTimeout(() => {
+    pendingQuoteTimeoutId = null;
+    applyQuote();
   }, 760);
 }
 
@@ -1648,11 +1665,12 @@ function selectQuoteIndex(index) {
   ensureQuoteWindow();
   const length = quoteWindow.length;
   if (length === 0) return;
+  postToNativeHaptic("selection");
   activeQuoteIndex = ((index % length) + length) % length;
   // 같은 분(minute) 안에서 자동 전환(rotateQuote)이 곧바로 또 겹쳐
   // 발동하지 않도록, 수동 이동 시점도 "이번 분은 이미 처리됐다"로 표시.
   activeQuoteMinute = Math.floor(Date.now() / 60000);
-  renderQuote(quoteWindow[activeQuoteIndex]);
+  renderQuote(quoteWindow[activeQuoteIndex], true);
 }
 
 function moveQuote(direction) {
@@ -4863,6 +4881,7 @@ function checkMusicAutoPauseWatchdog() {
   musicActionToken += 1;
   pauseMusic();
   renderMusicToggle();
+  postToNativeHaptic("soft");
   showMusicToast("귀의 휴식을 위해 자동 일시정지됐어요.");
 }
 
@@ -4998,6 +5017,23 @@ function postToNativeRadio(payload) {
   }
 }
 
+// 2026-07-22 유저 요청 — "버튼 누르는 감성까지 좋았으면 좋겠다"에 대응해
+// 신설한 햅틱 브릿지. postToNativeRadio와 완전히 같은 안전 패턴(네이티브
+// 래퍼가 아니면 조용히 무시, 브릿지 미준비 시 에러 삼킴)을 그대로 재사용
+// 하되, 채널 이름은 완전히 분리(flipzenHaptic)해 라디오 로직과 절대 섞이지
+// 않는다. style은 iOS UIImpactFeedbackGenerator/UINotificationFeedbackGenerator
+// 스타일 문자열 그대로 전달한다: "light"(일반 탭) / "soft"(좋아요처럼 부드러운
+// 긍정) / "rigid"(싫어요처럼 또렷한 부정) / "success"(설정 저장 등 완결) /
+// "selection"(문장 넘기기처럼 연속 스크럽 느낌).
+function postToNativeHaptic(style) {
+  if (!isNativeWrapper) return;
+  try {
+    window.webkit.messageHandlers.flipzenHaptic.postMessage({ style: style || "light" });
+  } catch (error) {
+    // 네이티브 브릿지가 아직 준비 전이거나(구버전 앱) 없는 환경 — 조용히 무시.
+  }
+}
+
 // renderMusicPlaylistInfo()가 트랙이 바뀌는 모든 지점(첫 재생 시작·수동
 // 스킵·자동 크로스페이드 완료·플레이리스트/장르 필터 변경)에서 공통으로
 // 호출되므로, 여기 한 곳에만 붙여도 트랙 전환을 하나도 놓치지 않고
@@ -5074,6 +5110,7 @@ window.__flipzenNativeCommand = function (command) {
 };
 
 function toggleMusic() {
+  postToNativeHaptic("light");
   musicPlaying = !musicPlaying;
   musicActionToken += 1; // 이 클릭이 "가장 최신 의도"임을 표시 — 이전 재생 시도는 이 값으로 자기 차례가 지났음을 안다.
   if (musicPlaying) {
@@ -5898,6 +5935,7 @@ if (musicHistoryList) {
 // 렌더 함수 하나(renderMusicHistoryList)가 목록·버튼 라벨을 함께 갱신한다.
 if (musicHistoryViewAll) {
   musicHistoryViewAll.addEventListener("click", () => {
+    postToNativeHaptic("light");
     musicHistoryExpanded = !musicHistoryExpanded;
     renderMusicHistoryList();
   });
@@ -6129,6 +6167,7 @@ if (webviewBackButton) {
 const webviewGrabber = document.querySelector(".webview-grabber");
 if (webviewGrabber && ezlongSection) {
   webviewGrabber.addEventListener("click", () => {
+    postToNativeHaptic("light");
     const frame = ezlongSection.querySelector(".ezlong-frame");
     if (!frame || !frame.contentWindow) return;
     try {
@@ -6208,8 +6247,12 @@ renderMusicPlaylistFilterOptions();
 syncMusicExcludeFilterUi();
 renderMusicQCPanel();
 renderMusicToggle();
-settingsOpen.addEventListener("click", openSettings);
+settingsOpen.addEventListener("click", () => {
+  postToNativeHaptic("light");
+  openSettings();
+});
 settingsSave.addEventListener("click", () => {
+  postToNativeHaptic("success");
   saveSelectedFlatGenres();
   clearSettingsDirty();
   closeSettings();
@@ -6217,7 +6260,10 @@ settingsSave.addEventListener("click", () => {
 document.querySelectorAll("[data-settings-close]").forEach((element) => {
   element.addEventListener("click", closeSettings);
 });
-if (weatherChipOpen) weatherChipOpen.addEventListener("click", openWeatherDetail);
+if (weatherChipOpen) weatherChipOpen.addEventListener("click", () => {
+  postToNativeHaptic("light");
+  openWeatherDetail();
+});
 // 2026-07-20 유저 피드백: 현재 날씨 조회 실패 시 뜨는 "다시 시도" 버튼.
 // fetchWeatherDetail()은 실패한 요청을 캐시하지 않으므로(위 wdCurrentRetryBtn
 // 선언부 주석 참조) 그냥 다시 호출하면 된다 — 별도의 강제 플래그 불필요.
@@ -6261,9 +6307,13 @@ document.querySelectorAll("[data-aladin-modal-close]").forEach((element) => {
 // 대상이 아예 없다. .settings-sheet/.weather-detail-sheet의
 // overscroll-behavior:contain, touch-action:pan-y(styles.css)만으로
 // 충분하다.
-if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", handleMusicIconTap);
+if (musicSettingsOpen) musicSettingsOpen.addEventListener("click", () => {
+  postToNativeHaptic("light");
+  handleMusicIconTap();
+});
 if (musicToggle) musicToggle.addEventListener("click", toggleMusic);
 if (musicSkip) musicSkip.addEventListener("click", () => {
+  postToNativeHaptic("light");
   // 2026-07-16 유저 요청: 예전엔 10초 이상 들은 곡을 수동 스킵하면 "싫어요"와
   // 똑같이 disliked 목록에 자동으로 추가됐다(암묵적 학습 휴리스틱). 이제는
   // 명시적인 "싫어요" 버튼이 따로 있으므로, '다음곡'은 그 어떤 감산·학습
@@ -6275,14 +6325,17 @@ if (musicSkip) musicSkip.addEventListener("click", () => {
 // 로컬 기록(1단계). 패널 토글과 겹치지 않도록 전부 stopPropagation.
 if (musicGearOpen) musicGearOpen.addEventListener("click", (event) => {
   event.stopPropagation();
+  postToNativeHaptic("light");
   openSettings();
 });
 if (musicShuffleButton) musicShuffleButton.addEventListener("click", (event) => {
   event.stopPropagation();
+  postToNativeHaptic("light");
   reshuffleMusicOrder();
 });
 if (musicLikeButton) musicLikeButton.addEventListener("click", (event) => {
   event.stopPropagation();
+  postToNativeHaptic("soft");
   const track = currentMusicTrack();
   if (!track || !track.file) return;
   const liked = loadLikedTracks();
@@ -6293,6 +6346,7 @@ if (musicLikeButton) musicLikeButton.addEventListener("click", (event) => {
 });
 if (musicDislikeButton) musicDislikeButton.addEventListener("click", (event) => {
   event.stopPropagation();
+  postToNativeHaptic("rigid");
   const track = currentMusicTrack();
   if (!track || !track.file) return;
   const disliked = loadDislikedTracks();

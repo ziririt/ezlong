@@ -444,6 +444,53 @@ button { font: inherit; }
   box-shadow: 0 1px 8px rgba(0,0,0,0.18);
 }
 
+/* 2026-07-22 유저 요청 — 버튼 눌림 감각 통일: date-chip/weather-chip/
+   quote-aladin-link/scene-ezlong-link 등 일부만 :active 피드백이 있었고,
+   정작 가장 자주 누르는 음악 컨트롤·설정·히스토리 버튼들은 눌러도 아무
+   반응이 없었다. transform(scale)+opacity만 쓰는 애니메이션이라 레이아웃에
+   전혀 영향을 주지 않아 안전하다 — 새 버튼을 추가할 때도 이 선택자 목록에
+   클래스만 얹으면 된다(webview-back/webview-grabber/calendar-day 등 실제
+   클릭 동작이 없는 요소는 제외). */
+.icon-button,
+.settings-save,
+.music-history-play-btn,
+.music-history-like-btn,
+.music-history-dislike-btn,
+.music-history-viewall {
+  transition: transform 120ms cubic-bezier(.34,1.56,.64,1), opacity 120ms ease,
+    background 160ms ease, color 160ms ease;
+}
+
+.icon-button:active,
+.settings-save:active,
+.music-history-play-btn:active,
+.music-history-like-btn:active,
+.music-history-dislike-btn:active,
+.music-history-viewall:active {
+  transform: scale(0.9);
+  opacity: 0.75;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-button,
+  .settings-save,
+  .music-history-play-btn,
+  .music-history-like-btn,
+  .music-history-dislike-btn,
+  .music-history-viewall {
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .icon-button:active,
+  .settings-save:active,
+  .music-history-play-btn:active,
+  .music-history-like-btn:active,
+  .music-history-dislike-btn:active,
+  .music-history-viewall:active {
+    transform: none;
+    opacity: 0.6;
+  }
+}
+
 .app-brand {
   justify-self: end;
   color: rgba(255,255,255,0.92);
@@ -2510,8 +2557,15 @@ button { font: inherit; }
   font-size: clamp(80px, 21vw, 148px);
   font-weight: 700;
   line-height: 1;
-  transform: translateY(-0.06em);
-  animation: colonPulse 1s ease-in-out infinite;
+  /* 2026-07-22 유저 요청 — 힐링/멘탈 강화 컨셉에 맞춰 화면이 가만히 있어도
+     "살아있다"는 느낌을 주는 아주 미세한 숨쉬기 펄스를 추가. 기존
+     colonPulse(1초, 초침처럼 깜빡이는 opacity)는 그대로 두고, 4초 주기의
+     느린 scale 펄스(clockBreathe)를 함께 건다 — 두 애니메이션이 서로 다른
+     속성(opacity vs transform)만 건드려 충돌하지 않는다. translateY(-0.06em)
+     베이스라인은 clockBreathe 키프레임 안에 포함시켰다(기존 static
+     transform 값을 대체). prefers-reduced-motion은 아래 전역 규칙
+     (animation-duration:1ms 등)이 이미 자동으로 무력화한다. */
+  animation: colonPulse 1s ease-in-out infinite, clockBreathe 4s ease-in-out infinite;
 }
 
 .clock-meta {
@@ -3597,6 +3651,14 @@ button { font: inherit; }
 @keyframes colonPulse {
   0%, 100% { opacity: 0.42; }
   50% { opacity: 1; }
+}
+
+/* 2026-07-22: 콜론의 느린 숨쉬기 펄스 — translateY(-0.06em) 베이스라인은
+   유지한 채 scale만 1↔1.05로 아주 미세하게 오간다. 4초 주기(들숨 2초·
+   날숨 2초)로 사람이 편안하게 느끼는 호흡 속도에 맞췄다. */
+@keyframes clockBreathe {
+  0%, 100% { transform: translateY(-0.06em) scale(1); }
+  50% { transform: translateY(-0.06em) scale(1.05); }
 }
 
 @keyframes quoteProgress {
