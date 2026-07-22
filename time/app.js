@@ -656,6 +656,36 @@ function getTimeBucketForHour(hour) {
   return "pre-dawn";
 }
 
+// 2026-07-22 유저 요청 — "강수확률 30~40%대인데도 비 아이콘/문구가 뜬다,
+// 애플 날씨와 비교하면 우리만 유독 많이 틀린 것 같다"는 피드백으로, 비로
+// 표시하는 문턱을 30%→50%로 올렸다. 배경: classifyRainIntensity()(백엔드,
+// weather-backend/src/logic.ts)는 precipProb>=30 && mm<1이면 이미 DRIZZLE
+// ("약한 비") 등급을 매기는데, 이 mm<1 조건은 "아직 실제로 비가 거의/전혀
+// 안 왔다"는 뜻이라 확률이 40%대만 돼도 "약한 비"라고 단정해버리는 게
+// 체감 오탐의 근본 원인이었다. 백엔드 재배포 없이(그건 유저가 별도로
+// wrangler deploy해야 해서 즉시 반영이 안 됨) 프런트 한 곳에서 표시 여부만
+// 다시 판정하도록, 이 함수 하나를 current/hourly-strip/weekly 3곳이 전부
+// 공유한다(8항 공유 함수 동기화 원칙 — 절대 복제하지 말 것).
+// 규칙: 확률>=50%면 비로 취급(기존 mm 기반 4단계 라벨 그대로 재사용).
+// 확률<50%인데 실제 강수량이 이미 1mm를 넘는(=진짜 비가 관측/예보된) 애매한
+// 경우엔 "비"라고 단정하지 않되 정보를 숨기지도 않고 "흐림(약한 비 가능성
+// NN%)"으로 절충 표기한다. 확률<50%이고 강수량도 1mm 미만이면 확률 자체를
+// 표시에 반영하지 않는다(기존 흐림/맑음 판정에 맡김).
+const RAIN_DISPLAY_PROB_THRESHOLD = 50;
+const RAIN_DISPLAY_MM_THRESHOLD = 1;
+
+function deriveRainDisplay(precipProb, precipMm) {
+  const prob = Math.max(0, Math.min(100, Number(precipProb) || 0));
+  const mm = Math.max(0, Number(precipMm) || 0);
+  if (prob >= RAIN_DISPLAY_PROB_THRESHOLD) {
+    return { showAsRain: true, cloudyProbLabel: null };
+  }
+  if (mm >= RAIN_DISPLAY_MM_THRESHOLD) {
+    return { showAsRain: false, cloudyProbLabel: `약한 비 가능성 ${Math.round(prob)}%` };
+  }
+  return { showAsRain: false, cloudyProbLabel: null };
+}
+
 // 2026-07-21 유저 지시("지금 하자, 시간이 걸려도 충분히"): 대기화면 메인
 // 한줄 요약이 그동안 클라이언트에서 Open-Meteo를 직접 호출해 왔다(WMO
 // weather_code 기반 weatherCodeToTag/weatherCodeToSummary). 문제 2가지 —
@@ -675,11 +705,16 @@ function vcCurrentTag(c) {
   const precipTypes = (c.preciptype || []).map((t) => String(t).toLowerCase());
   const isSnow = precipTypes.includes("snow") || /snow/.test(conditions);
   const grade = (c.rainIntensity && c.rainIntensity.grade) || "NONE";
+  const rainDisplay = deriveRainDisplay(c.precipprob, c.precip);
 
   if (isSnow) return "snow";
-  if (grade === "DRIZZLE") return "light-rain";
-  if (grade === "RAIN") return "rain";
-  if (grade === "HEAVY" || grade === "VERY_HEAVY") return "heavy-rain";
+  // 2026-07-22: 50% 미만이면 백엔드 grade가 DRIZZLE 등이어도 비 아이콘으로
+  // 취급하지 않고 아래 흐림/맑음 판정으로 내려간다.
+  if (rainDisplay.showAsRain) {
+    if (grade === "DRIZZLE") return "light-rain";
+    if (grade === "RAIN") return "rain";
+    if (grade === "HEAVY" || grade === "VERY_HEAVY") return "heavy-rain";
+  }
 
   // 비/눈이 아닌 경우 — 백엔드가 이미 계산해 내려주는 conditionsKo(한글
   // 라벨, mapConditionsToKo 결과)로 판정한다. 응답에 아직 conditionsKo가
@@ -690,6 +725,7 @@ function vcCurrentTag(c) {
   if (ko === "구름 조금" || /partially cloudy|partly cloudy/.test(conditions)) return "partly-cloudy";
   if (ko === "구름 많음" || /cloudy/.test(conditions)) return "cloudy";
   if (ko === "맑음" || /clear/.test(conditions)) return "clear";
+  if (rainDisplay.cloudyProbLabel) return "cloudy";
   // conditionsKo가 "비"/"눈"/"천둥번개"처럼 강수 계열인데 rainIntensity가
   // NONE으로 판정한 드문 불일치 상황 — 비/눈 아이콘을 잘못 켜는 것보다
   // 구름으로 안전하게 대체한다.
@@ -703,15 +739,20 @@ function vcCurrentSummary(c) {
   const isSnow = precipTypes.includes("snow") || /snow/.test(conditions);
   const grade = (c.rainIntensity && c.rainIntensity.grade) || "NONE";
   const isThunder = /thunder|storm/.test(conditions);
+  const rainDisplay = deriveRainDisplay(c.precipprob, c.precip);
 
   if (isSnow) return "눈";
-  if (grade !== "NONE") {
+  if (rainDisplay.showAsRain && grade !== "NONE") {
     // rainIntensity.label은 백엔드가 이미 "약한 비/비/강한 비/매우 강한
     // 비"로 계산해 내려주는 문구 — 날씨상세 패널(wdCurrentConditionBase)도
     // 같은 값을 쓰므로 재사용하면 두 화면이 항상 같은 말을 하게 된다.
     if (isThunder) return "뇌우";
     return (c.rainIntensity && c.rainIntensity.label) || "비";
   }
+
+  // 2026-07-22: 확률<50%인데 강수량이 이미 1mm를 넘는 애매한 경우 —
+  // "비"라고 단정하지 않되 확률 정보는 숨기지 않는 절충 표기.
+  if (rainDisplay.cloudyProbLabel) return `흐림(${rainDisplay.cloudyProbLabel})`;
 
   // 드문 경우지만, 백엔드 conditions 원문이 "Rain" 계열인데 실측
   // precip/precipprob 기준(classifyRainIntensity)으로는 NONE 등급인 상충
@@ -2660,7 +2701,9 @@ function weatherEmojiFromKoCondition(ko) {
 // 시간대별 스트립엔 조건 텍스트가 안 내려오므로, 강수확률(precipprob)과
 // 대략의 시각(hourLabel 파싱, "지금"이면 기기 로컬시각)으로 갈음한다 —
 // 장식용 아이콘이라 낮/밤 추정이 다소 근사치여도 무방하다.
-function weatherEmojiFromHour(precipprob, hourLabel, isNow) {
+// 2026-07-22: 비 아이콘 진입 문턱을 deriveRainDisplay()(30%→50%)와 통일 —
+// renderWeatherHourlyStrip의 isRainHour 판정과 반드시 같은 기준이어야 한다.
+function weatherEmojiFromHour(precipprob, precipMm, hourLabel, isNow) {
   let hour = null;
   if (isNow) {
     hour = new Date().getHours();
@@ -2669,8 +2712,10 @@ function weatherEmojiFromHour(precipprob, hourLabel, isNow) {
     if (m) hour = Number(m[1]);
   }
   const isNight = hour != null && (hour >= 20 || hour < 6);
-  if (precipprob >= 60) return "🌧️";
-  if (precipprob >= 30) return "🌦️";
+  const rainDisplay = deriveRainDisplay(precipprob, precipMm);
+  if (rainDisplay.showAsRain) {
+    return precipprob >= 60 ? "🌧️" : "🌦️";
+  }
   return isNight ? "🌙" : "☀️";
 }
 
@@ -2891,26 +2936,32 @@ function renderWeatherHourlyStrip(data) {
 
   // 2026-07-19 6차 피드백: "퍼센트가 비올 확률인데, 비 아이콘이 없는
   // 시간대에도 항상 떠서 헷갈린다" — weatherEmojiFromHour()가 비 아이콘을
-  // 고르는 기준(precipprob>=30)과 정확히 같은 조건으로 맞춰서, 비 아이콘이
-  // 뜨는 시간대에만 확률·강수량(mm)을 같이 보여준다. precipMm은 백엔드
-  // buildHourlyStrip()이 새로 내려주는 필드(구버전 캐시 대비 숫자가 아니면
-  // 0으로 방어). 빈 문자열이어도 슬롯 자체는 유지(.weather-hourly-prob:empty
-  // 가 visibility:hidden으로 높이를 보존해 카드 높이가 들쭉날쭉해지지 않게).
+  // 고르는 기준과 정확히 같은 조건으로 맞춰서, 비 아이콘이 뜨는 시간대에만
+  // 확률·강수량(mm)을 같이 보여준다. precipMm은 백엔드 buildHourlyStrip()이
+  // 새로 내려주는 필드(구버전 캐시 대비 숫자가 아니면 0으로 방어). 빈
+  // 문자열이어도 슬롯 자체는 유지(.weather-hourly-prob:empty가
+  // visibility:hidden으로 높이를 보존해 카드 높이가 들쭉날쭉해지지 않게).
   // 2026-07-19 7차 피드백: "0mm인데도 비오는 걸로 치나, 0mm가 너무 많다" —
   // 강수확률(precipprob)만으로 비 아이콘/퍼센트 표시 여부를 정하다 보니,
   // 확률은 30% 넘어도 실제 강수량은 반올림하면 0.0mm인 시간대(안개비 수준
   // 이하)가 흔했다. mm 자체는 0.1mm 미만이면 아예 붙이지 않는다 — 그
   // 시간대엔 "N%"만 남고, 0.1mm 이상일 때만 "N% · X mm"로 같이 보여준다.
+  // 2026-07-22 유저 요청: 문턱을 30%→50%로 올렸다(deriveRainDisplay 공유
+  // 함수, vcCurrentTag/vcCurrentSummary와 동일 기준). 다만 이 카드는 폭이
+  // 좁아 "흐림(약한 비 가능성 47%)" 같은 긴 문구를 넣을 자리가 없다 — 그래서
+  // 확률<50%여도 실제 강수량이 1mm를 넘는 시간대엔 아이콘은 해/달 그대로
+  // 두되 숫자(%)만 조용히 보여주는 절충으로 맞췄다(문구 없이 숫자만).
   wdHourlyStrip.innerHTML = data.hours
     .map((h) => {
-      const isRainHour = h.precipprob >= 30;
       const precipMm = typeof h.precipMm === "number" ? h.precipMm : 0;
+      const rainDisplay = deriveRainDisplay(h.precipprob, precipMm);
+      const showProb = rainDisplay.showAsRain || precipMm >= RAIN_DISPLAY_MM_THRESHOLD;
       const showMm = precipMm >= 0.1;
-      const probHtml = isRainHour ? `${h.precipprob}%${showMm ? ` · ${precipMm}mm` : ""}` : "";
+      const probHtml = showProb ? `${h.precipprob}%${showMm ? ` · ${precipMm}mm` : ""}` : "";
       return `
     <div class="weather-hourly-item" data-now="${h.isNow ? "true" : "false"}">
       <span class="weather-hourly-hour">${h.hourLabel}</span>
-      <span class="weather-hourly-icon">${weatherEmojiFromHour(h.precipprob, h.hourLabel, h.isNow)}</span>
+      <span class="weather-hourly-icon">${weatherEmojiFromHour(h.precipprob, precipMm, h.hourLabel, h.isNow)}</span>
       <span class="weather-hourly-temp">${Math.round(h.temp)}°</span>
       <span class="weather-hourly-prob">${probHtml}</span>
     </div>`;
@@ -3132,13 +3183,26 @@ function renderWeatherWeeklyForecast(data) {
       // 뒤의 가운뎃점도 빼줘" — "70% 3.2mm/h"처럼 공백만 남긴다.
       const maxMm = typeof d.maxHourlyPrecipMm === "number" ? d.maxHourlyPrecipMm : 0;
       const mmHtml = maxMm >= 0.1 ? ` ${maxMm}mm/h` : "";
-      const probHtml = d.conditionsKo === "비" ? `<span class="weather-weekly-prob">${d.precipprob}%${mmHtml}</span>` : "";
+      // 2026-07-22 유저 요청: current/hourly와 같은 deriveRainDisplay() 공유 —
+      // 확률<50%면 "비"라고 단정하지 않는다. 백엔드 mapConditionsToKo()가
+      // "비"로 내려준 날이라도 확률이 50% 미만이면 여기서 "흐림"으로 강등
+      // 표시하고, 그중 강수량(mm)이 1mm를 넘는 애매한 날만 "흐림(약한 비
+      // 가능성 NN%)"로 확률을 같이 보여준다.
+      const rainDisplay = deriveRainDisplay(d.precipprob, maxMm);
+      const isRainDay = d.conditionsKo === "비" && rainDisplay.showAsRain;
+      let displayConditionBase = d.conditionsKo;
+      let displayConditionText = d.conditionsKo;
+      if (d.conditionsKo === "비" && !rainDisplay.showAsRain) {
+        displayConditionBase = "흐림";
+        displayConditionText = rainDisplay.cloudyProbLabel ? `흐림(${rainDisplay.cloudyProbLabel})` : "흐림";
+      }
+      const probHtml = isRainDay ? `<span class="weather-weekly-prob">${d.precipprob}%${mmHtml}</span>` : "";
       return `
     <div class="weather-weekly-row">
       <span class="weather-weekly-day">${d.weekdayKo}</span>
-      <span class="weather-weekly-icon">${weatherEmojiFromKoCondition(d.conditionsKo)}</span>
+      <span class="weather-weekly-icon">${weatherEmojiFromKoCondition(displayConditionBase)}</span>
       <span class="weather-weekly-mid">
-        <span class="weather-weekly-condition">${d.conditionsKo}</span>
+        <span class="weather-weekly-condition">${displayConditionText}</span>
         ${probHtml}
       </span>
       <span class="weather-weekly-range">
@@ -6113,9 +6177,18 @@ if (skyRoom) {
 // 막는다 — 동일 출처라도 마찬가지). 그래서 footer 등 iframe 바깥 영역에서
 // 시작된 스와이프만 감지되며, iframe 내부에서라도 확실히 돌아갈 수 있게
 // 아래 #webviewBackButton(뒤로가기 버튼)을 별도로 둔다.
+// 2026-07-22 유저 요청: 맨 위 그래버(.webview-grabber)의 "아래로 쓸어내려
+// 복귀" 제스처를 없앤다 — 하단 Basecamp 버튼이 이미 같은 역할을 하므로
+// 중복이라는 판단. 대신 그래버는 "탭하면 ezlong.com 콘텐츠 맨 위로 스크롤"
+// 로 용도를 바꾼다(아래 참조). 그래서 이 스와이프 판정은 그래버에서 시작된
+// 터치를 제외하고, footer 등 그 외 영역에서 시작된 스와이프만 계속 감지한다.
 if (ezlongSection) {
   let webviewSwipeStart = null;
   ezlongSection.addEventListener("touchstart", (event) => {
+    if (event.target && event.target.closest(".webview-grabber")) {
+      webviewSwipeStart = null;
+      return;
+    }
     const touch = event.touches[0];
     webviewSwipeStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
   }, { passive: true });
@@ -6134,6 +6207,28 @@ if (ezlongSection) {
 const webviewBackButton = document.getElementById("webviewBackButton");
 if (webviewBackButton) {
   webviewBackButton.addEventListener("click", () => goToPage(0));
+}
+
+// 2026-07-22 유저 요청: "스크롤 한참 내려간 뒤 위로 올라가기 힘들다,
+// 최상단 바를 터치하면 맨 위로 올라가면 좋겠다" — 그래버(.webview-grabber)
+// 탭 시 iframe 안(ezlong.com 콘텐츠)을 맨 위로 스크롤시킨다. iframe이
+// 크로스오리진처럼 터치를 삼키는 경계라(위 주석 참조) 부모가 iframe
+// 내부 스크롤 위치를 직접 조작하지 않고, postMessage로 요청만 보낸다 —
+// 수신측 리스너는 ezlong.com 저장소의 ez-nav.js에 추가했다(모든
+// ezlong.com 페이지가 <body> 직후 이 스크립트를 로드하므로 페이지
+// 종류와 무관하게 동작). 이 메시지를 받을 준비가 안 된 옛 배포본이
+// 떠 있어도 그냥 무시될 뿐 에러는 안 난다(안전한 점진적 배포).
+const webviewGrabber = document.querySelector(".webview-grabber");
+if (webviewGrabber && ezlongSection) {
+  webviewGrabber.addEventListener("click", () => {
+    const frame = ezlongSection.querySelector(".ezlong-frame");
+    if (!frame || !frame.contentWindow) return;
+    try {
+      frame.contentWindow.postMessage({ source: "flipzen-app", action: "scrollToTop" }, "https://ezlong.com");
+    } catch (error) {
+      // 크로스오리진 등으로 postMessage 자체가 막혀도 앱 동작에는 영향 없음.
+    }
+  });
 }
 
 // 2026-07-20 9차 피드백(유저 제보: "브라우저에서 보기 버튼 눌러도 무반응") —

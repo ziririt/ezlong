@@ -132,4 +132,18 @@
     btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
     document.body.style.overflow = opening ? 'hidden' : '';
   };
+
+  /* ── 6. FlipZen 앱(ezlong.com/time)이 iframe으로 이 페이지를 감싸고 있을 때,
+     최상단 그래버 탭 제스처로 이 페이지를 맨 위로 스크롤시키기 위한 메시지
+     수신기. [2026-07-22 신설] postMessage는 parent가 진짜 크로스오리진이어도
+     항상 안전하게 동작하는 방식이라, 부모(FlipZen)가 iframe.contentWindow에
+     직접 접근하지 않고 이 메시지만 보낸다 — 이 페이지 쪽에서 스크롤을
+     실행하는 구조라 SOP(동일출처 정책) 우려가 없다. 이 리스너는 FlipZen
+     앱 밖(일반 브라우저로 ezlong.com 직접 방문)에서는 그냥 아무 메시지도
+     안 와서 조용히 미사용 상태로 남는다 — 부작용 없음. */
+  window.addEventListener('message', function (event) {
+    if (!event || !event.data || event.data.source !== 'flipzen-app') return;
+    if (event.data.action !== 'scrollToTop') return;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 })();
