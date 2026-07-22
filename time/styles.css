@@ -1048,9 +1048,12 @@ button { font: inherit; }
 }
 
 .music-viz-wrap.viz-preview {
-  height: 56px;
+  /* 2026-07-22 유저 요청 — "미리보기 박스 높이가 본화면 비주얼라이저와
+     같아야 한다." height를 따로 정하지 않고 기본 .music-viz-wrap의
+     height: clamp(48px, 10vh, 85px)를 그대로 물려받게 한다(위/아래 padding도
+     빼서 실제 막대가 그려지는 세로 공간 자체가 본화면과 똑같아진다). */
   margin: 0;
-  padding: 10px 14px;
+  padding: 0 14px;
   border-radius: 16px;
   background: rgba(0,0,0,0.28);
   border: 1px solid rgba(255,255,255,0.08);
