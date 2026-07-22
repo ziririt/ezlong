@@ -1,9 +1,9 @@
 {
-  "lastRun": "2026-07-22T00:10:48.893Z",
-  "lastRunKST": "2026-07-22 09:10:48 KST",
+  "lastRun": "2026-07-22T00:17:23.591Z",
+  "lastRunKST": "2026-07-22 09:17:23 KST",
   "summary": {
-    "ok": 4,
-    "triggered": 2,
+    "ok": 6,
+    "triggered": 0,
     "alreadyRunning": 0,
     "stale": 0,
     "skipped": 4,
@@ -14,7 +14,7 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-07-22T00:10:48.893Z",
+      "checkedAt": "2026-07-22T00:17:23.591Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -22,29 +22,29 @@
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-07-22T00:10:48.893Z",
-      "lastUpdate": "2026-07-21T09:12:31.061Z",
-      "ageHours": 15,
+      "checkedAt": "2026-07-22T00:17:23.591Z",
+      "lastUpdate": "2026-07-22T00:11:17.770Z",
+      "ageHours": 0.1,
       "maxAgeHours": 2.5,
-      "status": "TRIGGERED",
-      "reason": "15h 지연 감지 → 자동 트리거"
+      "status": "OK",
+      "reason": "최신 (0.1h 전 업데이트)"
     },
     {
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-07-22T00:10:48.893Z",
+      "checkedAt": "2026-07-22T00:17:23.591Z",
       "lastUpdate": "2026-07-21T22:09:27.448Z",
-      "ageHours": 2,
+      "ageHours": 2.1,
       "maxAgeHours": 5,
       "status": "OK",
-      "reason": "최신 (2h 전 업데이트)"
+      "reason": "최신 (2.1h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-07-22T00:10:48.893Z",
+      "checkedAt": "2026-07-22T00:17:23.591Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -52,7 +52,7 @@
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-07-22T00:10:48.893Z",
+      "checkedAt": "2026-07-22T00:17:23.591Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -60,18 +60,18 @@
       "id": "scorecard",
       "name": "긍정vs부정 스코어카드",
       "workflow": "market-scorecard.yml",
-      "checkedAt": "2026-07-22T00:10:48.893Z",
+      "checkedAt": "2026-07-22T00:17:23.591Z",
       "lastUpdate": "2026-07-21T23:20:47Z",
-      "ageHours": 0.8,
+      "ageHours": 0.9,
       "maxAgeHours": 8,
       "status": "OK",
-      "reason": "최신 (0.8h 전 업데이트)"
+      "reason": "최신 (0.9h 전 업데이트)"
     },
     {
       "id": "stocks-prices",
       "name": "심플 주가 실시간",
       "workflow": "fetch-stocks-prices.yml",
-      "checkedAt": "2026-07-22T00:10:48.893Z",
+      "checkedAt": "2026-07-22T00:17:23.591Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -79,34 +79,34 @@
       "id": "stocks-data",
       "name": "심플 주가 일간(스파크라인)",
       "workflow": "fetch-stocks-data.yml",
-      "checkedAt": "2026-07-22T00:10:48.893Z",
+      "checkedAt": "2026-07-22T00:17:23.591Z",
       "lastUpdate": "2026-07-21T23:04:37.179233+00:00",
-      "ageHours": 1.1,
+      "ageHours": 1.2,
       "maxAgeHours": 26,
       "status": "OK",
-      "reason": "최신 (1.1h 전 업데이트)"
+      "reason": "최신 (1.2h 전 업데이트)"
     },
     {
       "id": "market-cycle",
       "name": "마켓 사이클 주봉",
       "workflow": "fetch-market-cycle.yml",
-      "checkedAt": "2026-07-22T00:10:48.893Z",
+      "checkedAt": "2026-07-22T00:17:23.591Z",
       "lastUpdate": "2026-07-21T23:05:36.041Z",
-      "ageHours": 1.1,
+      "ageHours": 1.2,
       "maxAgeHours": 30,
       "status": "OK",
-      "reason": "최신 (1.1h 전 업데이트)"
+      "reason": "최신 (1.2h 전 업데이트)"
     },
     {
       "id": "kr-prices",
       "name": "한국 주가",
       "workflow": "fetch-kr-prices.yml",
-      "checkedAt": "2026-07-22T00:10:48.893Z",
-      "lastUpdate": "2026-07-21T08:33:24Z",
-      "ageHours": 15.6,
+      "checkedAt": "2026-07-22T00:17:23.591Z",
+      "lastUpdate": "2026-07-22T00:11:21Z",
+      "ageHours": 0.1,
       "maxAgeHours": 1,
-      "status": "TRIGGERED",
-      "reason": "15.6h 지연 감지 → 자동 트리거"
+      "status": "OK",
+      "reason": "최신 (0.1h 전 업데이트)"
     }
   ]
 }
