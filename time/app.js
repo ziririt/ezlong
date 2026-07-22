@@ -4863,7 +4863,7 @@ function checkMusicAutoPauseWatchdog() {
   musicActionToken += 1;
   pauseMusic();
   renderMusicToggle();
-  showMusicToast("너무 오래 재생돼서 음악이 자동으로 일시정지됐어요");
+  showMusicToast("귀의 휴식을 위해 자동 일시정지됐어요.");
 }
 
 // renderMusicToggle()이 재생/일시정지가 바뀔 수 있는 모든 경로(토글 클릭/
