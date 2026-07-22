@@ -2873,7 +2873,19 @@ button { font: inherit; }
   transition: max-height 0.25s ease, opacity 0.2s ease, transform 0.25s ease;
   pointer-events: none;
   box-sizing: border-box;
-  padding: 12px 10px 10px;
+  /* 2026-07-22 유저 지적 — "감도 격렬에서 박스 height를 넘어서서 가려진다."
+     실제 원인은 막대 자체가 아니라 막대의 네온 글로우(box-shadow, 최대
+     28px까지 번짐, .viz-bar 참조)였다 — 격렬 모드에서 막대가 .music-viz-wrap
+     꼭대기까지 꽉 차오르면(target이 h=wrap 높이에 닿음, app.js Math.min
+     클램프 자체는 정상 동작 중) 글로우가 wrap 위로 번지는데, 이 패널이
+     overflow:hidden이라 예전 padding-top 12px만큼만 여유가 있어 글로우
+     윗부분이 뭉텅 잘려 보였다. 유저 제안대로 "박스 하단~문장박스 사이 여유
+     공간"(.sky-room의 grid-template-rows 2번째 행이 1fr이라 clock-stage가
+     그 안에서 여유를 두고 중앙정렬돼 있음)을 써서 top padding을 12px→24px로
+     늘려 글로우가 잘리지 않을 headroom을 확보한다. 늘어난 12px만큼 아래
+     .music-info-panel.is-open의 max-height도 같이 올려서 진행바/곡명줄이
+     밀려 잘리지 않게 한다(둘 다 항상 같이 조정할 것). */
+  padding: 24px 10px 10px;
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: clamp(18px, 4vw, 28px);
   /* 2026-07-15: 아래 .quote-panel(rgba(13,20,31,0.02))보다 오히려 덜
@@ -2902,7 +2914,10 @@ button { font: inherit; }
      2026-07-15: 곡제목을 말줄임 대신 줄바꿈하도록 바꾸면서(아래
      .music-track-title 참조) 긴 제목은 가끔 2줄이 될 수 있다 — 그만큼(~20px)
      상한을 더 올려서 2줄일 때도 패널 안에서 잘리지 않게 한다. */
-  max-height: clamp(175px, 28vh, 215px);
+  /* 2026-07-22 — 위 .music-info-panel padding-top 12px→24px(+12px) 증가에
+     맞춰 상한도 +12px 올렸다(둘 중 하나만 바꾸면 진행바/곡명줄이 눌리거나
+     잘린다). */
+  max-height: clamp(187px, 29vh, 227px);
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
@@ -2998,9 +3013,18 @@ button { font: inherit; }
 
 /* 2026-07-22 유저 요청 — 막대 모양 옵션 3종. 기본(캡슐)은 위 .viz-bar
    그대로라 별도 규칙이 필요 없고, block/line만 폭·둥근 정도를 덮어쓴다
-   (app.js applyMusicVizShapeClass가 .music-viz-wrap에 클래스를 토글). */
+   (app.js applyMusicVizShapeClass가 .music-viz-wrap에 클래스를 토글).
+   2026-07-22 2차 — "캡슐과 블록이 구분이 안 된다"는 재지적. 원래 block은
+   기본 5px 폭을 그대로 두고 radius만 999px→3px로 줄였는데, 막대 자체가
+   워낙 얇아서(5px) 둥근 정도 차이가 육안으로 거의 안 보였다. 폭을 큰 폭으로
+   넓히고(5px→10px, 막대 개수가 줄어드는 건 아니고 각 막대가 더 굵어짐)
+   글로우(box-shadow)도 꺼서 "가늘고 빛나는 네온 캡슐" vs "두껍고 납작한
+   불투명 블록"으로 형태 자체가 뚜렷이 갈리게 했다. */
 .viz-shape-block .viz-bar {
-  border-radius: 3px;
+  flex: 0 0 10px;
+  width: 10px;
+  border-radius: 2px;
+  box-shadow: none;
 }
 
 .viz-shape-line .viz-bar {

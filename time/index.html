@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260722-vizfix-v2">
+  <link rel="stylesheet" href="styles.css?v=20260722-vizfix-v3">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -183,7 +183,7 @@
            (app.js sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이
            있었다"는 공간감을 위함. -->
       <div class="scene-dots" aria-label="ezlong.com 이동">
-        <span class="app-version" aria-hidden="true">ver.1.6.2</span>
+        <span class="app-version" aria-hidden="true">ver.1.6.4</span>
         <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
@@ -341,8 +341,10 @@
         </section>
 
         <!-- 2026-07-22 유저 요청 — "지겨워질 때 바꿀 수 있는" 비주얼라이저
-             커스터마이징 옵션 7종. 각 그룹은 app.js renderMusicVizSettingsUI()가
-             chip 버튼을 렌더링하고 is-active 클래스로 현재 값을 표시한다.
+             커스터마이징 옵션 6종(원래 7종에서 "대기 모양"을 뺐다 — 일시정지
+             중에만 보이는 옵션이라 재생 중엔 체감이 안 된다는 재지적으로 제거,
+             아래 참조). 각 그룹은 app.js renderMusicVizSettingsUI()가 chip
+             버튼을 렌더링하고 is-active 클래스로 현재 값을 표시한다.
              data-viz-group/data-viz-value는 클릭 위임 핸들러(app.js)가 읽는다. -->
         <section class="settings-block settings-card" aria-label="비주얼라이저">
           <h3 class="settings-subtitle">비주얼라이저</h3>
@@ -362,9 +364,9 @@
             <div class="viz-option-group">
               <p class="viz-option-label">감도</p>
               <div class="viz-option-row" data-viz-group="sensitivity">
-                <button type="button" class="viz-chip" data-viz-value="calm">차분</button>
+                <button type="button" class="viz-chip" data-viz-value="calm">둔감</button>
                 <button type="button" class="viz-chip" data-viz-value="normal">기본</button>
-                <button type="button" class="viz-chip" data-viz-value="intense">격렬</button>
+                <button type="button" class="viz-chip" data-viz-value="intense">예민</button>
               </div>
             </div>
             <div class="viz-option-group">
@@ -403,22 +405,13 @@
                 <button type="button" class="viz-chip" data-viz-value="mirror">미러</button>
               </div>
             </div>
-            <div class="viz-option-group">
-              <!-- 2026-07-22 유저 지적 — "숨쉬기/반짝임/미니멀이 구별이 안
-                   된다"는 재지적. 사실 이 옵션은 음악이 재생 중일 때가
-                   아니라 "일시정지했을 때"의 잔잔한 대기 모양을 고르는
-                   것이라, 곡이 흘러나오는 동안 눌러보면 셋 다 똑같아 보이는
-                   게 정상이다(재생 중엔 실제 오디오 반응이 우선). 이 오해를
-                   막기 위해 라벨과 짧은 안내를 추가했다. -->
-              <p class="viz-option-label">대기 모양(일시정지 중에만 보임)</p>
-              <p class="settings-desc settings-desc-muted viz-option-hint">음악이 재생 중일 땐 실제 소리에 반응하느라 이 설정이 안 보여요. 일시정지 후 1초 정도 있으면 이 대기 모양으로 바뀌어요.</p>
-              <div class="viz-option-row" data-viz-group="idle">
-                <button type="button" class="viz-chip" data-viz-value="breathe">숨쉬기</button>
-                <button type="button" class="viz-chip" data-viz-value="sparkle">반짝임</button>
-                <button type="button" class="viz-chip" data-viz-value="minimal">미니멀</button>
-              </div>
-            </div>
           </div>
+          <!-- 2026-07-22 유저 지적 — 원래 여기 있던 "대기 모양(숨쉬기/반짝임/
+               미니멀)" 옵션 제거. 일시정지 중에만 보이는 옵션이라 음악이
+               흐르는 동안엔 셋 다 똑같아 보여 "의미 없다"는 재지적으로 설정
+               항목에서 뺐다 — app.js의 idle 스타일 로직 자체는 남겨두고
+               항상 기본값(breathe)만 쓰도록 둔다(MUSIC_VIZ_SETTINGS_DEFAULT.idle
+               참조, 제거하지 않음 — UI만 뺀 것). -->
           <!-- 2026-07-22 유저 요청 — "본화면 나갔다 들어왔다 하지 않고 바로
                확인하고 싶다." 지금 재생 중인 실제 오디오에 그대로 반응하는
                미리보기 — 본화면과 동일한 .viz-bar를 재사용해 색상/모양이
@@ -769,6 +762,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260722-vizfix-v1"></script>
+  <script src="app.js?v=20260722-advisoryfix-v1"></script>
 </body>
 </html>
