@@ -8046,5 +8046,54 @@ window.investmentQuotes = [
     "title": "버크셔 해서웨이 주주 서한",
     "author": "워런 버핏",
     "category": "patience"
+  },
+  {
+    "english": "In the short run, the market is a voting machine, but in the long run it is a weighing machine.",
+    "text": "단기적으로 시장은 인기투표를 하는 곳이지만, 장기적으로는 진짜 가치를 정확히 재는 저울이다. 오늘의 주가 등락에 일희일비하기보다, 시간이 지나면 결국 기업의 본질적 가치가 그대로 드러난다는 사실을 믿고 기다리는 것이 투자자의 태도다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄",
+    "category": "patience"
+  },
+  {
+    "english": "We have to practice defensive investing, since many of the outcomes are likely to go against us. It's more important to ensure survival under negative outcomes than it is to guarantee maximum returns under favorable ones.",
+    "text": "우리는 방어적으로 투자해야 한다. 많은 결과가 우리에게 불리하게 돌아올 가능성이 크기 때문이다. 유리한 상황에서 최대 수익을 보장받는 것보다, 불리한 상황에서도 살아남는 것이 훨씬 더 중요하다.",
+    "title": "투자에 대한 생각 (The Most Important Thing)",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
+    "english": "In this business if you're good, you're right six times out of ten. You're never going to be right nine times out of ten. But if you're right six times out of ten, you're going to do very well in the stock market.",
+    "text": "이 업계에서는 아무리 실력이 좋아도 열 번 중 여섯 번만 맞히면 잘하는 것이다. 아홉 번 맞히는 일은 결코 없다. 하지만 열 번 중 여섯 번만 맞혀도, 주식시장에서 충분히 좋은 성과를 낼 수 있다.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
+    "english": "The stock market is filled with individuals who know the price of everything, but the value of nothing.",
+    "text": "주식시장에는 모든 것의 가격은 알면서도 그 무엇의 가치도 모르는 사람들로 가득하다. 정작 중요한 건 시세창의 숫자가 아니라 그 회사가 실제로 얼마나 좋은 사업인지를 꿰뚫어 보는 안목이다.",
+    "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "His skill is investing, but his secret is time. That's how compounding works.",
+    "text": "워런 버핏의 순자산 대부분은 65세를 넘긴 뒤에 쌓였다. 그의 재능은 투자이지만, 진짜 비결은 시간이다. 복리는 바로 그렇게 작동한다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절 (Morgan Housel)",
+    "category": "compound"
+  },
+  {
+    "english": "Intellectual freedom depends upon material things. Poetry depends upon intellectual freedom. A woman must have money and a room of her own if she is to write fiction.",
+    "text": "지적 자유는 물질적인 것에 달려 있다. 시는 지적 자유에 달려 있어야 한다. 여자가 픽션을 쓰려면, 돈과 자기만의 방을 가져야 한다.",
+    "title": "자기만의 방",
+    "author": "버지니아 울프",
+    "genre": "literature"
+  },
+  {
+    "english": "Vulnerability is not weakness; it's our greatest measure of courage.",
+    "text": "취약함은 약점이 아니다. 그것은 우리가 가진 용기의 가장 정확한 척도다.",
+    "title": "마음가면",
+    "author": "브레네 브라운",
+    "genre": "literature"
   }
 ];
