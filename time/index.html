@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260722-advisory-dot-v1">
+  <link rel="stylesheet" href="styles.css?v=20260722-vizoptions-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -183,7 +183,7 @@
            (app.js sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이
            있었다"는 공간감을 위함. -->
       <div class="scene-dots" aria-label="ezlong.com 이동">
-        <span class="app-version" aria-hidden="true">ver.1.4.3</span>
+        <span class="app-version" aria-hidden="true">ver.1.5.0</span>
         <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
@@ -338,6 +338,74 @@
           <h3 class="settings-subtitle">Special</h3>
           <p class="settings-desc settings-desc-muted">전체 랜덤에는 섞이지 않고, 아래 중 하나를 선택했을 때만 재생됩니다.</p>
           <div class="field-grid" id="musicSpecialOptions" role="radiogroup" aria-label="Special 플레이리스트 선택"></div>
+        </section>
+
+        <!-- 2026-07-22 유저 요청 — "지겨워질 때 바꿀 수 있는" 비주얼라이저
+             커스터마이징 옵션 7종. 각 그룹은 app.js renderMusicVizSettingsUI()가
+             chip 버튼을 렌더링하고 is-active 클래스로 현재 값을 표시한다.
+             data-viz-group/data-viz-value는 클릭 위임 핸들러(app.js)가 읽는다. -->
+        <section class="settings-block settings-card" aria-label="비주얼라이저">
+          <h3 class="settings-subtitle">비주얼라이저</h3>
+          <p class="settings-desc settings-desc-muted">색상과 반응 스타일을 취향대로 바꿔보세요.</p>
+          <div id="musicVizOptions">
+            <div class="viz-option-group">
+              <p class="viz-option-label">색상</p>
+              <div class="viz-option-row" data-viz-group="color">
+                <button type="button" class="viz-chip" data-viz-value="rainbow">무지개</button>
+                <button type="button" class="viz-chip" data-viz-value="ocean">오션</button>
+                <button type="button" class="viz-chip" data-viz-value="sunset">선셋</button>
+                <button type="button" class="viz-chip" data-viz-value="neonpurple">네온퍼플</button>
+                <button type="button" class="viz-chip" data-viz-value="mono">모노화이트</button>
+              </div>
+            </div>
+            <div class="viz-option-group">
+              <p class="viz-option-label">감도</p>
+              <div class="viz-option-row" data-viz-group="sensitivity">
+                <button type="button" class="viz-chip" data-viz-value="calm">차분</button>
+                <button type="button" class="viz-chip" data-viz-value="normal">기본</button>
+                <button type="button" class="viz-chip" data-viz-value="intense">격렬</button>
+              </div>
+            </div>
+            <div class="viz-option-group">
+              <p class="viz-option-label">베이스 펀치</p>
+              <div class="viz-option-row" data-viz-group="bassPunch">
+                <button type="button" class="viz-chip" data-viz-value="off">끄기</button>
+                <button type="button" class="viz-chip" data-viz-value="normal">기본</button>
+                <button type="button" class="viz-chip" data-viz-value="strong">강하게</button>
+              </div>
+            </div>
+            <div class="viz-option-group">
+              <p class="viz-option-label">막대 모양</p>
+              <div class="viz-option-row" data-viz-group="shape">
+                <button type="button" class="viz-chip" data-viz-value="capsule">캡슐</button>
+                <button type="button" class="viz-chip" data-viz-value="block">블록</button>
+                <button type="button" class="viz-chip" data-viz-value="line">라인</button>
+              </div>
+            </div>
+            <div class="viz-option-group">
+              <p class="viz-option-label">밀도</p>
+              <div class="viz-option-row" data-viz-group="density">
+                <button type="button" class="viz-chip" data-viz-value="dense">촘촘히</button>
+                <button type="button" class="viz-chip" data-viz-value="normal">기본</button>
+                <button type="button" class="viz-chip" data-viz-value="wide">넉넉히</button>
+              </div>
+            </div>
+            <div class="viz-option-group">
+              <p class="viz-option-label">좌우 배치</p>
+              <div class="viz-option-row" data-viz-group="layout">
+                <button type="button" class="viz-chip" data-viz-value="sweep">스윕</button>
+                <button type="button" class="viz-chip" data-viz-value="mirror">미러</button>
+              </div>
+            </div>
+            <div class="viz-option-group">
+              <p class="viz-option-label">유휴 애니메이션</p>
+              <div class="viz-option-row" data-viz-group="idle">
+                <button type="button" class="viz-chip" data-viz-value="breathe">숨쉬기</button>
+                <button type="button" class="viz-chip" data-viz-value="sparkle">반짝임</button>
+                <button type="button" class="viz-chip" data-viz-value="minimal">미니멀</button>
+              </div>
+            </div>
+          </div>
         </section>
 
         <!-- 2026-07-19 리디자인: <table>에서 카드형 목록으로 전환 — 곡제목이
@@ -679,6 +747,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260722-advisory-dot-v1"></script>
+  <script src="app.js?v=20260722-vizoptions-v1"></script>
 </body>
 </html>

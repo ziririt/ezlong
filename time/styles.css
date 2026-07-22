@@ -981,6 +981,55 @@ button { font: inherit; }
   gap: 10px;
 }
 
+/* 2026-07-22 유저 요청 — 비주얼라이저 커스터마이징 옵션 7종(색상/감도/
+   베이스펀치/모양/밀도/좌우배치/유휴애니메이션). 위 .field-grid(한 행에
+   옵션 하나, 큰 라디오 카드)는 7개 그룹을 나열하기엔 세로로 너무 길어져서,
+   훨씬 작은 알약형 칩을 가로로 여러 개 나열하는 전용 컴포넌트를 새로 만든다
+   (app.js renderMusicVizSettingsUI 참조). */
+.viz-option-group {
+  margin-top: 14px;
+}
+
+.viz-option-group:first-of-type {
+  margin-top: 4px;
+}
+
+.viz-option-label {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.viz-option-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.viz-chip {
+  flex: 0 0 auto;
+  padding: 9px 14px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.78);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  line-height: 1.2;
+}
+
+/* 선택된 칩 — .field-option:has(input:checked)와 같은 accent(#38bdf8)를
+   써서 이 설정 페이지 전체의 "선택됨" 색 언어를 그대로 따른다. */
+.viz-chip.is-active {
+  border-color: rgba(56, 189, 248, 0.85);
+  background: rgba(56, 189, 248, 0.16);
+  color: #fff;
+}
+
 /* 2026-07-19 설정 화면 리디자인: 유저가 참고로 준 "Apple Vision OS design
    system research" 아티팩트(클로드 디자인 결과물)에서, 각 설정 그룹이
    구분선(divider) 하나로만 나뉜 평면적 목록이 아니라 각자 테두리·배경을
@@ -2904,10 +2953,27 @@ button { font: inherit; }
      밝기와 글로우 강도를 조절한다 — 채움 자체는 항상 불투명한 솔리드
      컬러라 "밋밋함" 없이 늘 선명하고, 비트가 세게 튈 때는 글로우가
      확 커지고 밝아져 "탁탁 반응"하는 네온사인 느낌을 낸다. */
-  background: hsl(var(--bar-hue, 280), 92%, calc(52% + var(--bar-intensity, 0.15) * 14%));
+  /* 2026-07-22 유저 요청 — 색상 프리셋(모노화이트 등)이 채도를 낮출 수
+     있도록 92%를 var(--bar-sat, 92%)로 바꿨다(app.js getVizBarColorProps
+     참조). 기본값(무지개/오션/선셋/네온퍼플)은 여전히 92%라 시각적으로
+     달라지지 않는다. */
+  background: hsl(var(--bar-hue, 280), var(--bar-sat, 92%), calc(52% + var(--bar-intensity, 0.15) * 14%));
   box-shadow:
-    0 0 calc(4px + var(--bar-intensity, 0.15) * 10px) hsla(var(--bar-hue, 280), 95%, 60%, calc(0.55 + var(--bar-intensity, 0.15) * 0.45)),
-    0 0 calc(10px + var(--bar-intensity, 0.15) * 18px) hsla(var(--bar-hue, 280), 95%, 55%, calc(0.28 + var(--bar-intensity, 0.15) * 0.35));
+    0 0 calc(4px + var(--bar-intensity, 0.15) * 10px) hsla(var(--bar-hue, 280), var(--bar-sat, 92%), 60%, calc(0.55 + var(--bar-intensity, 0.15) * 0.45)),
+    0 0 calc(10px + var(--bar-intensity, 0.15) * 18px) hsla(var(--bar-hue, 280), var(--bar-sat, 92%), 55%, calc(0.28 + var(--bar-intensity, 0.15) * 0.35));
+}
+
+/* 2026-07-22 유저 요청 — 막대 모양 옵션 3종. 기본(캡슐)은 위 .viz-bar
+   그대로라 별도 규칙이 필요 없고, block/line만 폭·둥근 정도를 덮어쓴다
+   (app.js applyMusicVizShapeClass가 .music-viz-wrap에 클래스를 토글). */
+.viz-shape-block .viz-bar {
+  border-radius: 3px;
+}
+
+.viz-shape-line .viz-bar {
+  flex-basis: 2px;
+  width: 2px;
+  border-radius: 1px;
 }
 
 /* 2026-07-16: "퇴근 세리모니" — 18시대에 정각 세리모니 조건까지 겹치면

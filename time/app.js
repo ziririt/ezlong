@@ -245,6 +245,7 @@ const musicLikeButton = document.getElementById("musicLikeButton");
 const musicDislikeButton = document.getElementById("musicDislikeButton");
 const musicShuffleButton = document.getElementById("musicShuffleButton");
 const musicGearOpen = document.getElementById("musicGearOpen");
+const musicVizOptionsEl = document.getElementById("musicVizOptions");
 const musicToast = document.getElementById("musicToast");
 const musicLeaveWorkEl = document.getElementById("musicLeaveWork");
 const musicPlaylistOptionsEl = document.getElementById("musicPlaylistOptions");
@@ -4279,12 +4280,133 @@ function standbyPlayer() {
 // 2026-07-13 8차: 성동님이 첨부한 macOS 스펙트럼 스타일 참고 영상 — 가는
 // 막대 다수, 조용할 땐 점처럼 수축, 활성 구간만 봉긋 솟는 모양. 7차의
 // "14개, 넓은 폭"이 오히려 어색하다는 피드백으로 다시 늘렸다.
-const MUSIC_VIZ_BAR_COUNT = 34;
+// 2026-07-22 유저 요청 — "지겨워질 때 바꿀 수 있는" 비주얼라이저 커스터마이징
+// 옵션 7종(색상/감도/베이스펀치/모양/밀도/좌우배치/유휴애니메이션). 설정은
+// localStorage에 저장되고, 설정 페이지 "비주얼라이저" 카드(index.html,
+// Special과 들은 음악 사이)에서 바꾼 즉시 반영된다. 각 옵션의 실제 적용
+// 지점은 아래 각 draw 함수/헬퍼 참조.
+const MUSIC_VIZ_COLOR_PRESETS = {
+  // rainbow/mono은 공식이 달라 아래 getVizBarColorProps()에서 별도 분기 —
+  // 여기엔 "단일색 그라데이션" 3종만 base(중심 hue)/spread(폭)로 정의.
+  ocean: { base: 195, spread: 50 },
+  sunset: { base: 335, spread: 55 },
+  neonpurple: { base: 262, spread: 55 }
+};
+const MUSIC_VIZ_SENSITIVITY_PRESETS = {
+  calm: { heightMul: 0.68, attackMul: 0.6 },
+  normal: { heightMul: 1, attackMul: 1 },
+  intense: { heightMul: 1.32, attackMul: 1.2 }
+};
+const MUSIC_VIZ_BASS_PUNCH_PRESETS = { off: 0, normal: 1, strong: 1.6 };
+const MUSIC_VIZ_DENSITY_PRESETS = { dense: 48, normal: 34, wide: 20 };
+const MUSIC_VIZ_SETTINGS_DEFAULT = {
+  color: "rainbow",       // rainbow | ocean | sunset | neonpurple | mono
+  sensitivity: "normal",  // calm | normal | intense
+  bassPunch: "normal",    // off | normal | strong
+  shape: "capsule",       // capsule | block | line
+  density: "normal",      // dense | normal | wide
+  layout: "sweep",        // sweep | mirror
+  idle: "breathe"         // breathe | sparkle | minimal
+};
+const musicVizSettingsStorageKey = "ezlong:musicVizSettings";
+let musicVizSettings = { ...MUSIC_VIZ_SETTINGS_DEFAULT };
+function loadMusicVizSettings() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(musicVizSettingsStorageKey) || "null");
+    if (raw && typeof raw === "object") musicVizSettings = { ...MUSIC_VIZ_SETTINGS_DEFAULT, ...raw };
+  } catch (e) {}
+}
+function saveMusicVizSettings() {
+  try { localStorage.setItem(musicVizSettingsStorageKey, JSON.stringify(musicVizSettings)); } catch (e) {}
+}
+loadMusicVizSettings();
+
+// 막대 위치(i)별 hue/saturation을 현재 색상 설정에 맞춰 계산한다. rainbow는
+// 기존 공식(0~300도, 왼쪽에서 오른쪽으로 쫙 펼침)을 그대로 유지해 기본값
+// 사용자는 시각적으로 전혀 달라지지 않는다. ocean/sunset/neonpurple은 중심
+// hue ± spread/2 범위의 좁은 폭으로 "단일색 그라데이션" 느낌을 낸다. mono는
+// hue 자체를 쓰지 않고 채도(sat)를 낮춰 흰색~은색 계열로 보이게 한다.
+function getVizBarColorProps(i, count) {
+  const t = count > 1 ? i / (count - 1) : 0;
+  if (musicVizSettings.color === "mono") return { hue: 0, sat: 6 };
+  if (musicVizSettings.color === "rainbow") return { hue: Math.round(t * 300), sat: 92 };
+  const preset = MUSIC_VIZ_COLOR_PRESETS[musicVizSettings.color] || MUSIC_VIZ_COLOR_PRESETS.ocean;
+  const hue = Math.round((((preset.base + (t - 0.5) * preset.spread) % 360) + 360) % 360);
+  return { hue, sat: 92 };
+}
+// 이미 만들어진 막대들에 색상 설정만 다시 입힌다(모양/밀도와 달리 DOM을
+// 새로 만들 필요 없이 --bar-hue/--bar-sat만 갱신하면 되는 가벼운 변경).
+function applyMusicVizColorToBars() {
+  if (!musicVizBarEls) return;
+  const n = musicVizBarEls.length;
+  for (let i = 0; i < n; i++) {
+    const props = getVizBarColorProps(i, n);
+    musicVizBarEls[i].style.setProperty("--bar-hue", props.hue);
+    musicVizBarEls[i].style.setProperty("--bar-sat", props.sat + "%");
+  }
+}
+// 막대 모양(캡슐/블록/라인) — styles.css의 .viz-shape-* 클래스가 실제 CSS를
+// 담당하고, 여기선 그 클래스만 wrap에 토글한다.
+function applyMusicVizShapeClass() {
+  if (!musicVizWrap) return;
+  musicVizWrap.classList.remove("viz-shape-capsule", "viz-shape-block", "viz-shape-line");
+  musicVizWrap.classList.add("viz-shape-" + (musicVizSettings.shape || "capsule"));
+}
+// "좌우 배치" 미러 모드용 — 물리적 화면상 j번째 막대가 어느 논리 채널(저음
+// 0~고음 n-1) 값을 보여줄지 결정한다. sweep(기본)은 항등함수(j 그대로).
+// mirror는 중앙을 저음(0)으로 두고 양 끝으로 갈수록 고음 쪽 채널을 보여줘
+// 중앙에서 좌우 대칭으로 뻗어나가는 VU미터 느낌을 낸다 — 실제 오디오 분석/
+// 대역 매핑 로직(nativeVizBandWeights 등)은 전혀 건드리지 않고, 이미 계산된
+// 채널별 값을 어느 막대에 "그릴지"만 재배치하는 순수 시각 효과라 회귀 위험이
+// 낮다.
+function vizMirrorSourceIndex(j, n) {
+  if (musicVizSettings.layout !== "mirror" || n <= 1) return j;
+  const center = (n - 1) / 2;
+  return Math.min(n - 1, Math.round(Math.abs(j - center)));
+}
+// 3개 draw 함수(idle/native/analyser)가 공통으로 쓰는 최종 DOM 반영 단계.
+// 각 draw 함수는 musicVizBars[i](막대 높이)와 musicVizIntensity[i](밝기
+// 0~1)만 채우고, 실제 style.height/--bar-intensity 대입과 미러 재배치는
+// 전부 여기서 한 곳으로 모아 처리한다.
+function writeVizBarsToDom() {
+  const n = MUSIC_VIZ_BAR_COUNT;
+  for (let j = 0; j < n; j++) {
+    const src = vizMirrorSourceIndex(j, n);
+    musicVizBarEls[j].style.height = Math.round(musicVizBars[src]) + "px";
+    musicVizBarEls[j].style.setProperty("--bar-intensity", (musicVizIntensity[src] || 0).toFixed(3));
+  }
+}
+function getVizSensitivity() {
+  return MUSIC_VIZ_SENSITIVITY_PRESETS[musicVizSettings.sensitivity] || MUSIC_VIZ_SENSITIVITY_PRESETS.normal;
+}
+function getVizBassPunchMul() {
+  const v = MUSIC_VIZ_BASS_PUNCH_PRESETS[musicVizSettings.bassPunch];
+  return typeof v === "number" ? v : 1;
+}
+
+let MUSIC_VIZ_BAR_COUNT = MUSIC_VIZ_DENSITY_PRESETS[musicVizSettings.density] || 34;
 let musicVizBars = new Array(MUSIC_VIZ_BAR_COUNT).fill(0);
+let musicVizIntensity = new Array(MUSIC_VIZ_BAR_COUNT).fill(0.1);
+let musicVizSparklePhase = new Array(MUSIC_VIZ_BAR_COUNT).fill(0);
 let musicVizBandRanges = null;
 let musicVizAnimId = null;
 let musicVizIdlePhase = 0;
 let musicVizBarEls = null;
+// "밀도(개수)" 설정 변경 시 막대 DOM을 통째로 다시 만든다. ensureMusicVizBarsBuilt는
+// appendChild만 하고 innerHTML을 지우지 않으므로, .viz-bar만 골라 제거해야
+// 그 형제인 "퇴근 세리모니" 문구(#musicLeaveWork)가 함께 지워지지 않는다.
+function rebuildMusicVizBars() {
+  if (!musicVizWrap) return;
+  const wasBuilt = !!musicVizBarEls;
+  if (wasBuilt) musicVizWrap.querySelectorAll(".viz-bar").forEach((el) => el.remove());
+  musicVizBarEls = null;
+  musicVizBandRanges = null;
+  MUSIC_VIZ_BAR_COUNT = MUSIC_VIZ_DENSITY_PRESETS[musicVizSettings.density] || 34;
+  musicVizBars = new Array(MUSIC_VIZ_BAR_COUNT).fill(0);
+  musicVizIntensity = new Array(MUSIC_VIZ_BAR_COUNT).fill(0.1);
+  musicVizSparklePhase = new Array(MUSIC_VIZ_BAR_COUNT).fill(0);
+  if (wasBuilt) ensureMusicVizBarsBuilt(); // 패널이 열려있던 중이면 즉시 다시 그려서 반영
+}
 // 2026-07-14 18차: "고음/드럼 반응이 약하다, 더 다이나믹하게"라는 피드백 —
 // 베이스(저음) 대역의 순간 에너지가 최근 평균보다 확 튀는 순간(=드럼/킥
 // 타격)을 감지해 맨 왼쪽 1~2개 막대에 짧고 강한 펀치를 얹는다.
@@ -4326,14 +4448,16 @@ function ensureMusicVizBarsBuilt() {
     // 막대 위치 기준으로 무지개 hue를 한 번만 정해서 CSS 커스텀 프로퍼티로
     // 심어둔다. 실시간 밝기/알파는 --bar-intensity로 매 프레임 따로 갱신
     // (drawMusicViz/drawMusicVizIdle 참조) — hue는 고정, intensity만 움직인다.
-    const hue = Math.round((i / (MUSIC_VIZ_BAR_COUNT - 1)) * 300);
-    bar.style.setProperty("--bar-hue", hue);
+    const props = getVizBarColorProps(i, MUSIC_VIZ_BAR_COUNT);
+    bar.style.setProperty("--bar-hue", props.hue);
+    bar.style.setProperty("--bar-sat", props.sat + "%");
     bar.style.setProperty("--bar-intensity", "0.1");
     els.push(bar);
     frag.appendChild(bar);
   }
   musicVizWrap.appendChild(frag);
   musicVizBarEls = els;
+  applyMusicVizShapeClass();
 }
 
 function ensureMusicVizGraph() {
@@ -4345,19 +4469,36 @@ function ensureMusicVizGraph() {
 // 소리는 대부분 정상 분석되므로 이 분기는 안전장치 성격이 강하다.
 function drawMusicVizIdle(h) {
   musicVizIdlePhase += 0.045;
+  // 2026-07-22 유저 요청 — 유휴(대기) 애니메이션 스타일 3종. 실제 오디오
+  // 신호가 없을 때(패널만 열려있거나 네이티브 레벨이 잠깐 끊겼을 때) 보여주는
+  // 이 "숨쉬기" 패턴 자체를 취향껏 고를 수 있게 했다.
+  const idleStyle = musicVizSettings.idle || "breathe";
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     // 2026-07-14 13차: 아래 drawMusicViz와 같은 "산 모양" 실루엣 곡선을
     // 대기 상태에도 동일하게 적용 — 실제 음악이 안 걸려도 늘 예쁜 모양.
     // 2026-07-14 18차: 실제 재생 중 곡선과 억제 폭(0.75~1.0)을 맞춰 통일.
     const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
     const shapeEnvelope = 0.75 + 0.25 * Math.sin(Math.PI * t);
-    const wave = Math.sin(musicVizIdlePhase + i * 0.7) * 0.5 + 0.5;
-    const target = (4 + wave * (h * 0.4)) * shapeEnvelope;
+    let target;
+    if (idleStyle === "minimal") {
+      // 거의 안 움직이는 미니멀형 — 진폭을 기본(0.4)의 약 1/3로 낮춤.
+      const wave = Math.sin(musicVizIdlePhase * 0.6 + i * 0.7) * 0.5 + 0.5;
+      target = (4 + wave * (h * 0.14)) * shapeEnvelope;
+    } else if (idleStyle === "sparkle") {
+      // 반짝임형 — 매 프레임 낮은 확률로 막대 하나가 확 튀었다가 빠르게 가라앉는다.
+      const flicker = Math.random() < 0.05 ? 1 : 0;
+      musicVizSparklePhase[i] = Math.max(musicVizSparklePhase[i] * 0.86, flicker);
+      target = (4 + musicVizSparklePhase[i] * (h * 0.55)) * shapeEnvelope;
+    } else {
+      // breathe(기본) — 기존 완만한 사인파 숨쉬기 그대로.
+      const wave = Math.sin(musicVizIdlePhase + i * 0.7) * 0.5 + 0.5;
+      target = (4 + wave * (h * 0.4)) * shapeEnvelope;
+    }
     const factor = target > musicVizBars[i] ? 0.4 : 0.12;
     musicVizBars[i] += (target - musicVizBars[i]) * factor;
-    musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
-    musicVizBarEls[i].style.setProperty("--bar-intensity", Math.min(1, musicVizBars[i] / h).toFixed(3));
+    musicVizIntensity[i] = Math.min(1, musicVizBars[i] / h);
   }
+  writeVizBarsToDom();
 }
 
 // 2026-07-15: 네이티브 앱에서 실제 오디오에 반응하는 비주얼라이저.
@@ -4456,6 +4597,10 @@ function drawMusicVizNative(h) {
   if (trebleNow > nativeVizTrebleAvg2 * 1.22 + 0.12) { nativeVizTrebleHit2 = 1; } else { nativeVizTrebleHit2 *= 0.74; }
   nativeVizTrebleAvg2 += (trebleNow - nativeVizTrebleAvg2) * 0.12;
 
+  // 2026-07-22 유저 요청 — 감도(sensitivity)/베이스펀치(bassPunch) 설정을
+  // 기존 공식은 그대로 두고 배율로만 곱해서 반영한다(회귀 위험 최소화).
+  const sens = getVizSensitivity();
+  const bassPunchMul = getVizBassPunchMul();
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
     const shapeEnvelope = 0.75 + 0.25 * Math.sin(Math.PI * t);
@@ -4472,7 +4617,8 @@ function drawMusicVizNative(h) {
     // 안에서도 막대마다 튀는 크기가 달라져야 "계산된 곡선"이 아니라
     // "제각각 튀는 쇼"처럼 보인다.
     const hitPunch = Math.pow(jitter, 2.2);
-    const hit = (bassHW * nativeVizBassHit2 + midHW * nativeVizMidHit2 + trebleHW * nativeVizTrebleHit2) * hitPunch;
+    let hit = (bassHW * nativeVizBassHit2 + midHW * nativeVizMidHit2 + trebleHW * nativeVizTrebleHit2) * hitPunch;
+    hit *= bassPunchMul;
     // 막대마다 다른 위상으로 아주 옅은 반짝임 — "너무 촐랑댄다"는 재지적으로
     // 진폭(0.6→0.18)과 속도(band*2.2→band*0.9) 둘 다 크게 낮춰 은은한
     // 정도로만 남긴다(밋밋함과 산만함의 중간).
@@ -4491,13 +4637,15 @@ function drawMusicVizNative(h) {
     // 대역별 타격 펀치 — 이제 hitWeights로 국지화된 데다 막대별 지터까지
     // 곱해져서, 같은 킥 한 방에도 막대마다 확연히 다르게 튄다.
     target = Math.max(target, hit * h * 1.05 * shapeEnvelope);
+    target *= sens.heightMul;
     // 어택은 빠르게(비트에 팍 반응), 릴리즈는 그보다 느리게 — "쇼"답게 대비를 키운다.
-    const factor = target > musicVizBars[i] ? 0.8 : 0.2;
+    // 감도 설정의 attackMul은 어택 쪽에만 곱해 "격렬"일수록 더 스냅 있게,
+    // "차분"일수록 더 느긋하게 반응하도록 한다(0.95 상한으로 발산 방지).
+    const factor = target > musicVizBars[i] ? Math.min(0.95, 0.8 * sens.attackMul) : 0.2;
     musicVizBars[i] += (target - musicVizBars[i]) * factor;
-    musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
-    const intensity = Math.min(1, Math.max(musicVizBars[i] / h, hit));
-    musicVizBarEls[i].style.setProperty("--bar-intensity", intensity.toFixed(3));
+    musicVizIntensity[i] = Math.min(1, Math.max(musicVizBars[i] / h, hit));
   }
+  writeVizBarsToDom();
 }
 
 function drawMusicViz() {
@@ -4563,6 +4711,12 @@ function drawMusicViz() {
   }
   musicVizBassEnergyAvg += (bassNow - musicVizBassEnergyAvg) * 0.1;
 
+  // 2026-07-22 유저 요청 — 네이티브 경로와 동일하게 감도/베이스펀치 배율만
+  // 곱해서 반영(기존 공식은 그대로 유지).
+  const sens = getVizSensitivity();
+  const bassPunchMul = getVizBassPunchMul();
+  const bassHitForViz = musicVizBassHit * bassPunchMul;
+
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     // 2026-07-14 13차: "그래프 모양이 좌측만 높고 우측은 낮다 — 실제 신호
     // 세기가 아니라 보기 좋은 과장된 연출이 중요하다"는 피드백. 저음역이
@@ -4582,19 +4736,20 @@ function drawMusicViz() {
     if (i <= 1) {
       // 드럼 타격 시 맨 왼쪽 1~2개 막대만 별도로 순간 펀치 — 다른 막대의
       // 정규화 로직과 무관하게 항상 눈에 띄게 솟구친다.
-      target = Math.max(target, musicVizBassHit * h * 0.96);
+      target = Math.max(target, bassHitForViz * h * 0.96);
     }
+    target *= sens.heightMul;
     // 어택은 더 빠르게(비트에 팍! 반응), 릴리즈도 조금 더 빠르게 — "더
     // 다이나믹하게, 변동성이 크면 좋겠다"는 피드백으로 어택 0.62→0.72,
     // 릴리즈 0.12→0.18로 올려 오르내림 자체를 더 선명하게 만들었다.
-    const factor = target > musicVizBars[i] ? 0.72 : 0.18;
+    // 감도 설정의 attackMul은 어택 쪽에만 곱한다(0.95 상한으로 발산 방지).
+    const factor = target > musicVizBars[i] ? Math.min(0.95, 0.72 * sens.attackMul) : 0.18;
     musicVizBars[i] += (target - musicVizBars[i]) * factor;
-    musicVizBarEls[i].style.height = Math.round(musicVizBars[i]) + "px";
-    const intensity = i <= 1
-      ? Math.min(1, Math.max(musicVizBars[i] / h, musicVizBassHit))
+    musicVizIntensity[i] = i <= 1
+      ? Math.min(1, Math.max(musicVizBars[i] / h, bassHitForViz))
       : Math.min(1, musicVizBars[i] / h);
-    musicVizBarEls[i].style.setProperty("--bar-intensity", intensity.toFixed(3));
   }
+  writeVizBarsToDom();
 }
 
 // 2026-07-07: "크로스페이드가 볼륨이 줄어드는 느낌이 전혀 없이 뚝 끊긴다"는
@@ -5434,6 +5589,47 @@ function renderMusicSpecialFilterOptions() {
     const checked = option.key === current ? " checked" : "";
     return `<label class="field-option"><input type="radio" name="musicPlaylistFilter" value="${option.key}"${checked}><span>${option.label}</span></label>`;
   }).join("");
+}
+
+// 2026-07-22 유저 요청 — 비주얼라이저 커스터마이징 옵션 7종의 "현재 선택됨"
+// 표시를 실제 musicVizSettings 값과 맞춘다. HTML(index.html #musicVizOptions)은
+// 이미 정적으로 존재하므로 여기선 innerHTML을 새로 만들지 않고 is-active
+// 클래스만 토글한다 — 클릭 즉시 반응이 필요한 UI라 매번 DOM을 새로 그리는
+// 것보다 가볍다.
+function renderMusicVizSettingsUI() {
+  if (!musicVizOptionsEl) return;
+  musicVizOptionsEl.querySelectorAll("[data-viz-group]").forEach((row) => {
+    const group = row.dataset.vizGroup;
+    const current = musicVizSettings[group];
+    row.querySelectorAll(".viz-chip").forEach((chip) => {
+      chip.classList.toggle("is-active", chip.dataset.vizValue === current);
+    });
+  });
+}
+
+// 옵션 하나가 바뀔 때 실제로 반영해야 할 후속 작업을 분기한다 — 색상/모양은
+// 이미 그려진 막대에 즉시 다시 입히면 되고, 밀도는 막대 DOM 자체를 다시
+// 만들어야 한다(rebuildMusicVizBars 참조). 감도/베이스펀치/좌우배치/유휴
+// 애니메이션은 매 프레임 musicVizSettings를 직접 참조하므로 별도 반영
+// 코드가 필요 없다 — 값 저장만으로 다음 프레임부터 자동 적용된다.
+function setMusicVizOption(group, value) {
+  if (!(group in MUSIC_VIZ_SETTINGS_DEFAULT) || musicVizSettings[group] === value) return;
+  musicVizSettings[group] = value;
+  saveMusicVizSettings();
+  if (group === "color") applyMusicVizColorToBars();
+  else if (group === "shape") applyMusicVizShapeClass();
+  else if (group === "density") rebuildMusicVizBars();
+  renderMusicVizSettingsUI();
+}
+if (musicVizOptionsEl) {
+  musicVizOptionsEl.addEventListener("click", (event) => {
+    const chip = event.target.closest(".viz-chip");
+    if (!chip) return;
+    const row = chip.closest("[data-viz-group]");
+    if (!row) return;
+    postToNativeHaptic("light");
+    setMusicVizOption(row.dataset.vizGroup, chip.dataset.vizValue);
+  });
 }
 
 // 2026-07-20 유저 제보 — "설정에서 값을 선택하면 선택되는데 2초 정도
@@ -6295,6 +6491,7 @@ renderMusicPlaylistFilterOptions();
 syncMusicExcludeFilterUi();
 renderMusicQCPanel();
 renderMusicToggle();
+renderMusicVizSettingsUI();
 settingsOpen.addEventListener("click", () => {
   postToNativeHaptic("light");
   openSettings();
