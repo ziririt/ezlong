@@ -183,7 +183,7 @@
            (app.js sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이
            있었다"는 공간감을 위함. -->
       <div class="scene-dots" aria-label="ezlong.com 이동">
-        <span class="app-version" aria-hidden="true">ver.1.6.5</span>
+        <span class="app-version" aria-hidden="true">ver.1.6.6</span>
         <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
@@ -341,10 +341,11 @@
         </section>
 
         <!-- 2026-07-22 유저 요청 — "지겨워질 때 바꿀 수 있는" 비주얼라이저
-             커스터마이징 옵션 6종(원래 7종에서 "대기 모양"을 뺐다 — 일시정지
-             중에만 보이는 옵션이라 재생 중엔 체감이 안 된다는 재지적으로 제거,
-             아래 참조). 각 그룹은 app.js renderMusicVizSettingsUI()가 chip
-             버튼을 렌더링하고 is-active 클래스로 현재 값을 표시한다.
+             커스터마이징 옵션 8종(원래 7종에서 "대기 모양"을 빼고(일시정지
+             중에만 보이는 옵션이라 재생 중엔 체감이 안 된다는 재지적), "대비"·
+             "포인트 막대" 2종을 추가했다). 각 그룹은 app.js
+             renderMusicVizSettingsUI()가 chip 버튼을 렌더링하고 is-active
+             클래스로 현재 값을 표시한다.
              data-viz-group/data-viz-value는 클릭 위임 핸들러(app.js)가 읽는다. -->
         <section class="settings-block settings-card" aria-label="비주얼라이저">
           <h3 class="settings-subtitle">비주얼라이저</h3>
@@ -403,6 +404,27 @@
               <div class="viz-option-row" data-viz-group="layout">
                 <button type="button" class="viz-chip" data-viz-value="sweep">스윕</button>
                 <button type="button" class="viz-chip" data-viz-value="mirror">미러</button>
+              </div>
+            </div>
+            <!-- 2026-07-22 3차 유저 요청 — "고음/저음 차이를 더 크게" +
+                 "특정 고음역에만 유독 예민한 막대 두어개". 감도(전체 크기)와는
+                 별개 축이라 두 옵션 다 감도와 조합해서 쓸 수 있다(app.js
+                 getVizContrastAmount/isVizPointBarsOn 참조). -->
+            <div class="viz-option-group">
+              <p class="viz-option-label">대비</p>
+              <p class="settings-desc settings-desc-muted viz-option-hint">고음과 저음의 높낮이 차이를 더 크게 벌려요.</p>
+              <div class="viz-option-row" data-viz-group="contrast">
+                <button type="button" class="viz-chip" data-viz-value="normal">기본</button>
+                <button type="button" class="viz-chip" data-viz-value="boost">강조</button>
+                <button type="button" class="viz-chip" data-viz-value="strong">강하게</button>
+              </div>
+            </div>
+            <div class="viz-option-group">
+              <p class="viz-option-label">포인트 막대</p>
+              <p class="settings-desc settings-desc-muted viz-option-hint">맨 끝 막대 2개만 하이햇·보컬 고음 같은 순간에 유독 반짝여요.</p>
+              <div class="viz-option-row" data-viz-group="pointBars">
+                <button type="button" class="viz-chip" data-viz-value="off">끄기</button>
+                <button type="button" class="viz-chip" data-viz-value="on">켜기</button>
               </div>
             </div>
           </div>
@@ -762,6 +784,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260722-vizfix-v2"></script>
+  <script src="app.js?v=20260722-vizfix-v3"></script>
 </body>
 </html>

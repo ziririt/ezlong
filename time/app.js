@@ -4373,6 +4373,13 @@ const MUSIC_VIZ_SENSITIVITY_PRESETS = {
 // 있다(설정 자체 결함이 아니라 오디오 콘텐츠 특성).
 const MUSIC_VIZ_BASS_PUNCH_PRESETS = { off: 0, normal: 1, strong: 2.2 };
 const MUSIC_VIZ_DENSITY_PRESETS = { dense: 48, normal: 34, wide: 20 };
+// 2026-07-22 유저 요청 — "고음/저음 차이를 더 크게" 하는 대비(contrast) 옵션.
+// 값은 "얼마나 더 벌릴지"를 나타내는 순수 배율 스칼라 하나뿐이고, 실제 공식은
+// 경로(네이티브/애널라이저)마다 다르게 적용한다(아래 drawMusicVizNative/
+// drawMusicViz 참조) — 기존에 이미 존재하던 위치 기반 저음↔고음 곡선(가중치,
+// trebleBoost 등)은 그대로 두고 그 위에 배율만 하나 더 곱하는 방식이라
+// 회귀 위험이 낮다. normal(0)은 기존 동작과 완전히 동일.
+const MUSIC_VIZ_CONTRAST_PRESETS = { normal: 0, boost: 0.5, strong: 1.0 };
 const MUSIC_VIZ_SETTINGS_DEFAULT = {
   color: "rainbow",       // rainbow | rainbow2 | ocean | sunset | neonpurple | mono
   sensitivity: "normal",  // calm | normal | intense
@@ -4380,7 +4387,9 @@ const MUSIC_VIZ_SETTINGS_DEFAULT = {
   shape: "capsule",       // capsule | block | line
   density: "normal",      // dense | normal | wide
   layout: "sweep",        // sweep | mirror
-  idle: "breathe"         // breathe | sparkle | minimal
+  idle: "breathe",        // breathe | sparkle | minimal
+  contrast: "normal",     // normal | boost | strong — 고음/저음 차이 강조 정도
+  pointBars: "off"        // off | on — 맨 끝 2개 막대만 고음 트랜지언트에 유독 예민하게
 };
 const musicVizSettingsStorageKey = "ezlong:musicVizSettings";
 let musicVizSettings = { ...MUSIC_VIZ_SETTINGS_DEFAULT };
@@ -4498,6 +4507,13 @@ function writeVizBarsToDom() {
 function getVizSensitivity() {
   return MUSIC_VIZ_SENSITIVITY_PRESETS[musicVizSettings.sensitivity] || MUSIC_VIZ_SENSITIVITY_PRESETS.normal;
 }
+function getVizContrastAmount() {
+  const v = MUSIC_VIZ_CONTRAST_PRESETS[musicVizSettings.contrast];
+  return typeof v === "number" ? v : 0;
+}
+function isVizPointBarsOn() {
+  return musicVizSettings.pointBars === "on";
+}
 function getVizBassPunchMul() {
   const v = MUSIC_VIZ_BASS_PUNCH_PRESETS[musicVizSettings.bassPunch];
   return typeof v === "number" ? v : 1;
@@ -4539,6 +4555,11 @@ function rebuildMusicVizBars() {
 // musicVizBassHit = 타격 감지 시 1로 튀었다가 프레임마다 빠르게 감쇠하는 값.
 let musicVizBassEnergyAvg = 0;
 let musicVizBassHit = 0;
+// 2026-07-22 2차 유저 요청 — "포인트 막대"(맨 끝 2개, 고음 전용 예민 반응)용
+// 트레블 타격 감지. 위 베이스 타격 감지(musicVizBassEnergyAvg/musicVizBassHit)와
+// 똑같은 패턴을 고음역에 그대로 복제한 것 — 이미 검증된 방식이라 회귀 위험이 낮다.
+let musicVizTrebleEnergyAvg = 0;
+let musicVizTrebleHit = 0;
 
 function buildMusicVizBands(binCount, barCount) {
   // 저음역은 좁게, 고음역은 넓게 묶는 로그 스케일 경계 — 균등 step으로 뽑으면
@@ -4732,6 +4753,11 @@ function drawMusicVizNative(h) {
   // 기존 공식은 그대로 두고 배율로만 곱해서 반영한다(회귀 위험 최소화).
   const sens = getVizSensitivity();
   const bassPunchMul = getVizBassPunchMul();
+  // 2026-07-22 2차 유저 요청 — 대비(고음/저음 차이 강조)와 포인트 막대(맨 끝
+  // 2개만 고음 트랜지언트에 유독 예민)도 같은 방식(기존 공식 유지 + 배율만
+  // 추가)으로 반영한다.
+  const contrastAmount = getVizContrastAmount();
+  const pointBarsOn = isVizPointBarsOn();
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
     const shapeEnvelope = 0.75 + 0.25 * Math.sin(Math.PI * t);
@@ -4768,6 +4794,18 @@ function drawMusicVizNative(h) {
     // 대역별 타격 펀치 — 이제 hitWeights로 국지화된 데다 막대별 지터까지
     // 곱해져서, 같은 킥 한 방에도 막대마다 확연히 다르게 튄다.
     target = Math.max(target, hit * h * 1.05 * shapeEnvelope);
+    // 2026-07-22 2차 — 대비: t=0(저음)에서 살짝 줄고 t=1(고음)에서 살짝 커지는
+    // 중앙 대칭 기울기. normal(contrastAmount=0)은 배율이 항상 1이라 기존
+    // 동작과 완전히 동일(회귀 없음).
+    target *= 1 + contrastAmount * 0.5 * (t - 0.5) * 2;
+    const isPointBar = pointBarsOn && i >= MUSIC_VIZ_BAR_COUNT - 2;
+    if (isPointBar) {
+      // 포인트 막대 — 맨 끝 2개만 고음 트랜지언트(하이햇/보컬 고음 등)에
+      // 유독 예민하게. 기존 트레블 히트 신호를 더 큰 배율로 다시 밀어넣어
+      // "이 두 막대만 유독 반짝인다"는 느낌을 낸다(다른 막대 계산엔 영향 없음).
+      target = Math.max(target, nativeVizTrebleHit2 * h * 1.35);
+      target = Math.max(target, Math.pow(Math.max(0, trebleNow), 0.55) * h * 0.7);
+    }
     target *= sens.heightMul;
     // 2026-07-22 유저 지적 — "격렬" 감도(heightMul 1.32)가 박스 높이(h)를
     // 넘어서 막대가 비주얼라이저 박스 테두리를 뚫고 나가버렸다. 예전에
@@ -4779,7 +4817,12 @@ function drawMusicVizNative(h) {
     // 어택은 빠르게(비트에 팍 반응), 릴리즈는 그보다 느리게 — "쇼"답게 대비를 키운다.
     // 감도 설정의 attackMul은 어택 쪽에만 곱해 "격렬"일수록 더 스냅 있게,
     // "차분"일수록 더 느긋하게 반응하도록 한다(0.95 상한으로 발산 방지).
-    const factor = target > musicVizBars[i] ? Math.min(0.95, 0.8 * sens.attackMul) : 0.2;
+    // 2026-07-22 2차 — 포인트 막대는 어택/릴리즈 둘 다 더 빠르게 줘서 부드럽게
+    // 따라가지 않고 "팟" 하고 튀었다 가라앉는 트위치한 느낌을 낸다.
+    const attackBase = isPointBar ? 0.92 : 0.8;
+    const factor = target > musicVizBars[i]
+      ? Math.min(0.97, attackBase * sens.attackMul)
+      : (isPointBar ? 0.3 : 0.2);
     musicVizBars[i] += (target - musicVizBars[i]) * factor;
     musicVizIntensity[i] = Math.min(1, Math.max(musicVizBars[i] / h, hit));
   }
@@ -4823,6 +4866,9 @@ function drawMusicViz() {
   // 프레임에서 가장 센 대역을 100%로 놓고 나머지를 그에 비례해 정규화한다
   // — 그 순간 제일 큰 소리가 꼭대기까지 닿고, 어느 막대가 그 "1등"이 될지는
   // 매 프레임 계속 바뀌므로 전체가 다 같이 들썩이는 막대쇼 느낌이 난다.
+  // 2026-07-22 2차 — 대비(contrast) 설정만큼 기존 trebleBoost 기울기(0.7)에
+  // 더 얹는다. normal(0)은 0.7 그대로라 기존 동작과 완전히 동일.
+  const contrastAmount = getVizContrastAmount();
   const avgs = new Array(MUSIC_VIZ_BAR_COUNT);
   let maxAvg = 24; // 무음에 가까운 순간에 0으로 나누는 걸 막는 바닥값
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
@@ -4836,7 +4882,7 @@ function drawMusicViz() {
     // 프레임별 최댓값 정규화를 해도 고음역 막대가 "이번 프레임 1등"이 될
     // 기회 자체가 드물었다. 위치(고음역)가 높을수록 미리 이득(gain)을 줘서
     // 하이햇/심벌 같은 고음 타격이 실제로 화면에서 튀어 보이게 보정한다.
-    const trebleBoost = 1 + (i / (MUSIC_VIZ_BAR_COUNT - 1)) * 0.7; // 저음 1.0배 → 고음 1.7배
+    const trebleBoost = 1 + (i / (MUSIC_VIZ_BAR_COUNT - 1)) * (0.7 + contrastAmount); // 저음 1.0배 → 고음 1.7~2.7배
     avg *= trebleBoost;
     avgs[i] = avg;
     if (avg > maxAvg) maxAvg = avg;
@@ -4851,6 +4897,17 @@ function drawMusicViz() {
     musicVizBassHit *= 0.8; // 5~6프레임 안에 빠르게 가라앉는 "팍" 펀치감
   }
   musicVizBassEnergyAvg += (bassNow - musicVizBassEnergyAvg) * 0.1;
+
+  // 2026-07-22 2차 — "포인트 막대"용 트레블 타격 감지. 위 베이스 타격 감지와
+  // 완전히 같은 패턴을 맨 오른쪽 2개 대역(가장 높은 고음)에 적용한다.
+  const pointBarsOn = isVizPointBarsOn();
+  const trebleAvgNow = (avgs[MUSIC_VIZ_BAR_COUNT - 1] + avgs[MUSIC_VIZ_BAR_COUNT - 2]) / 2;
+  if (trebleAvgNow > musicVizTrebleEnergyAvg * 1.3 + 5) {
+    musicVizTrebleHit = 1;
+  } else {
+    musicVizTrebleHit *= 0.76;
+  }
+  musicVizTrebleEnergyAvg += (trebleAvgNow - musicVizTrebleEnergyAvg) * 0.1;
 
   // 2026-07-22 유저 요청 — 네이티브 경로와 동일하게 감도/베이스펀치 배율만
   // 곱해서 반영(기존 공식은 그대로 유지).
@@ -4879,6 +4936,12 @@ function drawMusicViz() {
       // 정규화 로직과 무관하게 항상 눈에 띄게 솟구친다.
       target = Math.max(target, bassHitForViz * h * 0.96);
     }
+    // 2026-07-22 2차 — 포인트 막대: 맨 오른쪽 2개만 트레블 타격에 별도로
+    // 순간 펀치(위 베이스 펀치와 대칭 구조).
+    const isPointBar = pointBarsOn && i >= MUSIC_VIZ_BAR_COUNT - 2;
+    if (isPointBar) {
+      target = Math.max(target, musicVizTrebleHit * h * 0.96);
+    }
     target *= sens.heightMul;
     // 2026-07-22 유저 지적 — 네이티브 경로와 동일하게 "격렬"이 박스 높이(h)를
     // 뚫고 나가지 않도록 상한을 건다.
@@ -4887,10 +4950,14 @@ function drawMusicViz() {
     // 다이나믹하게, 변동성이 크면 좋겠다"는 피드백으로 어택 0.62→0.72,
     // 릴리즈 0.12→0.18로 올려 오르내림 자체를 더 선명하게 만들었다.
     // 감도 설정의 attackMul은 어택 쪽에만 곱한다(0.95 상한으로 발산 방지).
-    const factor = target > musicVizBars[i] ? Math.min(0.95, 0.72 * sens.attackMul) : 0.18;
+    // 2026-07-22 2차 — 포인트 막대는 어택/릴리즈 둘 다 더 빠르게(트위치한 느낌).
+    const attackBase = isPointBar ? 0.88 : 0.72;
+    const factor = target > musicVizBars[i]
+      ? Math.min(0.97, attackBase * sens.attackMul)
+      : (isPointBar ? 0.28 : 0.18);
     musicVizBars[i] += (target - musicVizBars[i]) * factor;
-    musicVizIntensity[i] = i <= 1
-      ? Math.min(1, Math.max(musicVizBars[i] / h, bassHitForViz))
+    musicVizIntensity[i] = (i <= 1 || isPointBar)
+      ? Math.min(1, Math.max(musicVizBars[i] / h, bassHitForViz, isPointBar ? musicVizTrebleHit : 0))
       : Math.min(1, musicVizBars[i] / h);
   }
   writeVizBarsToDom();
