@@ -1003,6 +1003,14 @@ button { font: inherit; }
   letter-spacing: 0.04em;
 }
 
+/* 2026-07-22 유저 지적 — "베이스 펀치"/"유휴 애니메이션"이 뭔지 몰라서
+   추가한 짧은 설명 문구. 라벨(위)과 칩 목록(아래) 사이에 살짝 여백을 둬서
+   라벨의 일부처럼 보이게 한다. */
+.viz-option-group .viz-option-hint.settings-desc-muted {
+  margin: -4px 0 10px;
+  font-size: 12px;
+}
+
 .viz-option-row {
   display: flex;
   flex-wrap: wrap;

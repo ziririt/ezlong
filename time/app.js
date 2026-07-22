@@ -4357,10 +4357,15 @@ const MUSIC_VIZ_SENSITIVITY_PRESETS = {
   normal: { heightMul: 1, attackMul: 1 },
   intense: { heightMul: 1.32, attackMul: 1.2 }
 };
-const MUSIC_VIZ_BASS_PUNCH_PRESETS = { off: 0, normal: 1, strong: 1.6 };
+// 2026-07-22 유저 지적 — "바꿔도 뭐가 바뀐지 잘 모르겠다"는 재지적으로
+// strong 배율을 1.6 → 2.2로 키워 체감 차이를 키웠다. 다만 이 효과는 곡에
+// 실제로 뚜렷한 킥 드럼/베이스 타격이 있을 때만 발동한다 — 잔잔한 배경음악
+// 구간에서는 강하게로 바꿔도 원래 타격 자체가 감지 안 돼 차이가 없을 수
+// 있다(설정 자체 결함이 아니라 오디오 콘텐츠 특성).
+const MUSIC_VIZ_BASS_PUNCH_PRESETS = { off: 0, normal: 1, strong: 2.2 };
 const MUSIC_VIZ_DENSITY_PRESETS = { dense: 48, normal: 34, wide: 20 };
 const MUSIC_VIZ_SETTINGS_DEFAULT = {
-  color: "rainbow",       // rainbow | ocean | sunset | neonpurple | mono
+  color: "rainbow",       // rainbow | rainbow2 | ocean | sunset | neonpurple | mono
   sensitivity: "normal",  // calm | normal | intense
   bassPunch: "normal",    // off | normal | strong
   shape: "capsule",       // capsule | block | line
@@ -4395,6 +4400,9 @@ function getVizBarColorProps(i, count) {
   // CSS 변수 기본값과 동일해 시각적으로 안 바뀐다).
   if (musicVizSettings.color === "mono") return { hue: 0, sat: 0, lightBase: 88, lightRange: 10 };
   if (musicVizSettings.color === "rainbow") return { hue: Math.round(t * 300), sat: 92, lightBase: 52, lightRange: 14 };
+  // 2026-07-22 유저 요청 — "반무지개": 빨강(0)→보라(300)이 아니라 보라(300)
+  // →빨강(0)으로, 방향만 뒤집은 무지개.
+  if (musicVizSettings.color === "rainbow2") return { hue: Math.round(300 - t * 300), sat: 92, lightBase: 52, lightRange: 14 };
   const preset = MUSIC_VIZ_COLOR_PRESETS[musicVizSettings.color] || MUSIC_VIZ_COLOR_PRESETS.ocean;
   const hue = Math.round((((preset.base + (t - 0.5) * preset.spread) % 360) + 360) % 360);
   return { hue, sat: 92, lightBase: 52, lightRange: 14 };
@@ -4734,6 +4742,13 @@ function drawMusicVizNative(h) {
     // 곱해져서, 같은 킥 한 방에도 막대마다 확연히 다르게 튄다.
     target = Math.max(target, hit * h * 1.05 * shapeEnvelope);
     target *= sens.heightMul;
+    // 2026-07-22 유저 지적 — "격렬" 감도(heightMul 1.32)가 박스 높이(h)를
+    // 넘어서 막대가 비주얼라이저 박스 테두리를 뚫고 나가버렸다. 예전에
+    // 그만두기로 한 "정각 세리모니" 돌출 연출과 똑같은 문제라 반드시
+    // 박스 안에서만 움직여야 한다 — 배율을 곱한 뒤 박스 높이로 다시
+    // 잘라낸다. "격렬"의 반응감은 이 상한에 더 자주/빨리 닿는 것과 아래
+    // attackMul(더 빠른 어택)로 표현되고, 절대 높이 자체는 넘지 않는다.
+    target = Math.min(target, h);
     // 어택은 빠르게(비트에 팍 반응), 릴리즈는 그보다 느리게 — "쇼"답게 대비를 키운다.
     // 감도 설정의 attackMul은 어택 쪽에만 곱해 "격렬"일수록 더 스냅 있게,
     // "차분"일수록 더 느긋하게 반응하도록 한다(0.95 상한으로 발산 방지).
@@ -4838,6 +4853,9 @@ function drawMusicViz() {
       target = Math.max(target, bassHitForViz * h * 0.96);
     }
     target *= sens.heightMul;
+    // 2026-07-22 유저 지적 — 네이티브 경로와 동일하게 "격렬"이 박스 높이(h)를
+    // 뚫고 나가지 않도록 상한을 건다.
+    target = Math.min(target, h);
     // 어택은 더 빠르게(비트에 팍! 반응), 릴리즈도 조금 더 빠르게 — "더
     // 다이나믹하게, 변동성이 크면 좋겠다"는 피드백으로 어택 0.62→0.72,
     // 릴리즈 0.12→0.18로 올려 오르내림 자체를 더 선명하게 만들었다.

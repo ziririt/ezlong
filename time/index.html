@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260722-vizpreview-v1">
+  <link rel="stylesheet" href="styles.css?v=20260722-vizfix-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -183,7 +183,7 @@
            (app.js sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이
            있었다"는 공간감을 위함. -->
       <div class="scene-dots" aria-label="ezlong.com 이동">
-        <span class="app-version" aria-hidden="true">ver.1.6.0</span>
+        <span class="app-version" aria-hidden="true">ver.1.6.1</span>
         <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
@@ -352,6 +352,7 @@
               <p class="viz-option-label">색상</p>
               <div class="viz-option-row" data-viz-group="color">
                 <button type="button" class="viz-chip" data-viz-value="rainbow">무지개</button>
+                <button type="button" class="viz-chip" data-viz-value="rainbow2">반무지개</button>
                 <button type="button" class="viz-chip" data-viz-value="ocean">오션</button>
                 <button type="button" class="viz-chip" data-viz-value="sunset">선셋</button>
                 <button type="button" class="viz-chip" data-viz-value="neonpurple">퍼플</button>
@@ -367,7 +368,12 @@
               </div>
             </div>
             <div class="viz-option-group">
-              <p class="viz-option-label">베이스 펀치</p>
+              <!-- 2026-07-22 유저 지적 — "베이스 펀치가 뭔지 모르겠다"는
+                   재지적으로 쉬운 말로 변경. 곡에 실제 킥/베이스 타격이
+                   있을 때만 반응하는 옵션이라 잔잔한 곡에서는 강하게로
+                   바꿔도 차이가 잘 안 느껴질 수 있다는 걸 짧게 안내. -->
+              <p class="viz-option-label">쿵쿵 효과(킥 반응)</p>
+              <p class="settings-desc settings-desc-muted viz-option-hint">곡에 쿵쿵거리는 저음이 있을 때만 반응해요.</p>
               <div class="viz-option-row" data-viz-group="bassPunch">
                 <button type="button" class="viz-chip" data-viz-value="off">끄기</button>
                 <button type="button" class="viz-chip" data-viz-value="normal">기본</button>
@@ -398,7 +404,14 @@
               </div>
             </div>
             <div class="viz-option-group">
-              <p class="viz-option-label">유휴 애니메이션</p>
+              <!-- 2026-07-22 유저 지적 — "숨쉬기/반짝임/미니멀이 구별이 안
+                   된다"는 재지적. 사실 이 옵션은 음악이 재생 중일 때가
+                   아니라 "일시정지했을 때"의 잔잔한 대기 모양을 고르는
+                   것이라, 곡이 흘러나오는 동안 눌러보면 셋 다 똑같아 보이는
+                   게 정상이다(재생 중엔 실제 오디오 반응이 우선). 이 오해를
+                   막기 위해 라벨과 짧은 안내를 추가했다. -->
+              <p class="viz-option-label">대기 모양(일시정지 중에만 보임)</p>
+              <p class="settings-desc settings-desc-muted viz-option-hint">음악이 재생 중일 땐 실제 소리에 반응하느라 이 설정이 안 보여요. 일시정지 후 1초 정도 있으면 이 대기 모양으로 바뀌어요.</p>
               <div class="viz-option-row" data-viz-group="idle">
                 <button type="button" class="viz-chip" data-viz-value="breathe">숨쉬기</button>
                 <button type="button" class="viz-chip" data-viz-value="sparkle">반짝임</button>
@@ -756,6 +769,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260722-vizpreview-v1"></script>
+  <script src="app.js?v=20260722-vizfix-v1"></script>
 </body>
 </html>
