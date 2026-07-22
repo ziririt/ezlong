@@ -2612,6 +2612,22 @@ button { font: inherit; }
   opacity: 0.62;
 }
 
+/* 2026-07-22 유저 요청: 긴급 기상특보가 있을 때 날씨 칩 옆에 작은 빨간
+   점 배지 — 종모양 알림 배지와 같은 개념. 날씨 상세를 한 번 열람하면
+   사라진다(app.js updateWeatherAdvisoryDot 참조). */
+.weather-advisory-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #FF3B30;
+  box-shadow: 0 0 0 1.5px rgba(255,255,255,0.6);
+  flex-shrink: 0;
+}
+
+.weather-advisory-dot[hidden] {
+  display: none;
+}
+
 .music-controls {
   box-sizing: border-box;
   display: inline-flex;

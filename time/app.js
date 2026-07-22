@@ -329,6 +329,14 @@ const wdAdvisoryMoreBtn = document.getElementById("wdAdvisoryMoreBtn");
 const wdAdvisoryDetail = document.getElementById("wdAdvisoryDetail");
 let wdLastAdvisoryData = null;
 
+// 2026-07-22 유저 요청: "긴급 주의보가 있을 때 이지롱 베이스캠프의 간략한
+// 날씨 정보 옆에 빨간 점 배지를 찍어달라 — 알림 배지처럼. 날씨 상세에
+// 갔다 나오면 사라져야 한다." tmFc(발표시각) 단위로 "이미 본 특보"를
+// localStorage에 기억해서, 같은 특보를 다시 볼 땐 안 뜨고 새 특보(tmFc가
+// 바뀜)가 뜨면 다시 배지가 켜지게 한다.
+const weatherAdvisoryDot = document.getElementById("weatherAdvisoryDot");
+const WEATHER_ADVISORY_ACK_KEY = "flipzenWeatherAdvisoryAckTmFc_v1";
+
 const digitElements = [
   document.getElementById("hourTens"),
   document.getElementById("hourOnes"),
@@ -2378,6 +2386,21 @@ function openWeatherDetail() {
   // 으로는 제스처 자체를 만들어낼 수 없다 — 그 경우는 네이티브 쪽 설정이다.
   history.pushState({ weatherDetail: true }, "");
   fetchWeatherDetail();
+
+  // 2026-07-22: 날씨 상세를 열람하면(=확인함) 그 시점 기준 활성 특보의
+  // tmFc를 "확인함"으로 기록해 베이스캠프 빨간 점 배지를 끈다. 아직 데이터를
+  // 못 받아온 첫 오픈 순간엔 wdLastAdvisoryData가 비어있을 수 있는데, 그때는
+  // fetchWeatherDetail() 완료 후 renderWeatherAdvisory()가 다시 배지를
+  // 갱신하므로(같은 함수가 매번 최신 데이터로 재판정) 문제없다.
+  if (wdLastAdvisoryData && wdLastAdvisoryData.tmFc) {
+    try {
+      localStorage.setItem(WEATHER_ADVISORY_ACK_KEY, String(wdLastAdvisoryData.tmFc));
+    } catch (e) {
+      // localStorage 접근 실패(사파리 프라이빗 모드 등)해도 배지 기능만 계속
+      // 켜져 있는 정도의 부작용이라 무시하고 진행한다.
+    }
+    updateWeatherAdvisoryDot(wdLastAdvisoryData);
+  }
 }
 
 function closeWeatherDetail() {
@@ -2495,7 +2518,14 @@ async function fetchWeatherJsonOnce(path) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), WEATHER_FETCH_TIMEOUT_MS);
   try {
-    const response = await fetch(url, { signal: controller.signal });
+    // 2026-07-22 근본 원인 수정: 기상특보 상세("펼침")가 매번 비어보인다는
+    // 반복 제보의 진짜 원인이 여기 있었다 — 백엔드(D1 20분 캐시)는 이미
+    // 정상 작동 중이었는데(cache-bust 파라미터로 직접 검증 완료), 이
+    // fetch()에 cache 옵션을 안 줘서 iOS WKWebView/사파리가 동일 URL(같은
+    // lat/lng, 쿼리 그대로)의 예전 HTTP 응답을 자체적으로 재사용해버릴 수
+    // 있었다. 서버 쪽 캐시(D1, 20분~4시간 TTL)만으로 신선도를 통제하고
+    // 있으므로, 브라우저 자체 HTTP 캐시는 완전히 꺼서 이중 캐싱을 없앤다.
+    const response = await fetch(url, { signal: controller.signal, cache: "no-store" });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return await response.json();
   } finally {
@@ -2927,8 +2957,26 @@ function renderWeatherNextRain(data) {
 // 전부 z-index:20 동일값), 배너 바로 아래로 펼쳐지는 인라인 아코디언으로
 // 전환했다. 이미 스크롤되는 #weatherDetailPanel 안의 콘텐츠 일부라 별도
 // 오버레이 스택킹/재부착 문제 자체가 생기지 않는다.
+// 활성 특보의 tmFc가 "이미 확인함" 기록과 다르면 배지를 켠다. 특보가
+// 없거나(활성 아님) 이미 확인한 tmFc와 같으면(=같은 특보를 이미 봤음) 끈다.
+function updateWeatherAdvisoryDot(activeData) {
+  if (!weatherAdvisoryDot) return;
+  if (!activeData || !activeData.tmFc) {
+    weatherAdvisoryDot.hidden = true;
+    return;
+  }
+  let acked = null;
+  try {
+    acked = localStorage.getItem(WEATHER_ADVISORY_ACK_KEY);
+  } catch (e) {
+    acked = null;
+  }
+  weatherAdvisoryDot.hidden = String(activeData.tmFc) === acked;
+}
+
 function renderWeatherAdvisory(data) {
   wdLastAdvisoryData = data && data.active ? data : null;
+  updateWeatherAdvisoryDot(wdLastAdvisoryData);
   if (!wdAdvisoryBanner || !wdAdvisoryBannerText) return;
   if (!wdLastAdvisoryData) {
     wdAdvisoryBanner.classList.remove("is-active");
