@@ -155,27 +155,6 @@ const categoryLabels = {
   retirement: "은퇴 준비"
 };
 
-const genreLabels = {
-  investment: "투자서",
-  literature: "문학·교양서"
-};
-
-// 2026-07-19 유저 요청 — 문학·교양서도 투자서처럼 하위 분야 필터가 있어야
-// 한다. investment-quotes.js에 문학 문장은 이미 이 8개 값 그대로 category가
-// 매겨져 있어서(가족관계/경제자기계발/과학/문학/시/에세이/인문역사/
-// 철학동양고전) 새로 데이터를 태깅할 필요 없이 화면 표시용 라벨(가운뎃점
-// 추가)만 매핑하면 된다.
-const literatureCategoryLabels = {
-  "가족관계": "가족·관계",
-  "경제자기계발": "경제·자기계발",
-  "과학": "과학",
-  "문학": "문학",
-  "시": "시",
-  "에세이": "에세이",
-  "인문역사": "인문·역사",
-  "철학동양고전": "철학·동양고전"
-};
-
 function getQuoteGenre(quote) {
   return quote.genre === "literature" ? "literature" : "investment";
 }
@@ -191,6 +170,31 @@ const quotes = baseQuotes.map((quote) => {
     category: genre === "investment" ? getQuoteCategory(quote) : quote.category
   };
 });
+
+// 2026-07-22 유저 요청 — "문장의 분야" 설정을 투자서/문학·교양서 1depth +
+// 각자의 하위 분야 2단 구조에서, 완전히 평평한 단일 목록으로 재편한다.
+// 투자서는 더 이상 하위 분류(mindset/compound/volatility/patience/behavior/
+// retirement)를 UI에 노출하지 않고 "투자" 하나로 통째로 묶는다(quote.category
+// 데이터 자체는 안 건드림 — getQuoteFlatGenreKey가 investment면 그 값을
+// 무시하고 항상 "investment" 키 하나로 합친다). 문학 쪽 8개는 investment-quotes.js에
+// 이미 태깅된 quote.category 값(가족관계/경제자기계발/과학/문학/시/에세이/
+// 인문역사/철학동양고전)을 그대로 재사용(데이터 변경 없음, 표시 라벨만 매핑),
+// "철학·동양고전"이었던 표시 라벨만 유저 요청대로 "철학·고전"으로 축약.
+const flatGenreLabels = {
+  investment: "투자",
+  "문학": "문학",
+  "시": "시",
+  "에세이": "에세이",
+  "가족관계": "가족·관계",
+  "경제자기계발": "경제·자기계발",
+  "과학": "과학",
+  "인문역사": "인문·역사",
+  "철학동양고전": "철학·고전"
+};
+
+function getQuoteFlatGenreKey(quote) {
+  return quote.genre === "investment" ? "investment" : quote.category;
+}
 
 const app = document.querySelector(".clock-app");
 const pageTrack = document.getElementById("pageTrack"); // 2026-07-17 8차: 페이지 1/2 전환용 transform 트랙
@@ -217,16 +221,12 @@ const calendarGridEl = document.getElementById("calendarGrid");
 // 2026-07-21 8차 피드백 — 달력을 눌러야 열린다는 걸 모르는 사용자를 위한
 // 온보딩 힌트(자동 시연 + 반짝임)에 쓰는 sparkle 오버레이.
 const dateChipSparkleEl = document.getElementById("dateChipSparkle");
-const allCategories = document.getElementById("allCategories");
-const categoryOptions = document.getElementById("categoryOptions");
-// 2026-07-19: 문학·교양서 하위 분야용 별도 "모든 분야"/그리드 — 투자서와
-// 완전히 분리된 자기 상태를 갖는다(하나를 "모든 분야"로 초기화해도 다른
-// 쪽엔 영향 없음).
-const allLitCategories = document.getElementById("allLitCategories");
-const litCategoryOptions = document.getElementById("litCategoryOptions");
-const genreOptions = document.getElementById("genreOptions");
-// 2026-07-19: "최소 하나의 분야는 선택해야 합니다" 안내 문구.
-const genreMinWarning = document.getElementById("genreMinWarning");
+// 2026-07-22: 투자서/문학·교양서 1depth + 각자의 세부 카테고리(2단 구조)를
+// 없애고 평평한 단일 그리드 하나로 재편 — allCategories/categoryOptions/
+// allLitCategories/litCategoryOptions/genreOptions/genreMinWarning 6개
+// 엘리먼트 참조를 아래 2개로 대체한다.
+const allFlatGenresEl = document.getElementById("allFlatGenres");
+const flatGenreOptionsEl = document.getElementById("flatGenreOptions");
 const ezlongSection = document.querySelector(".ezlong-webview");
 const appBrand = document.querySelector(".app-brand");
 // 2026-07-20 유저 요청: 하단 우측 "ezlong.com" 링크 — appBrand와는 별개
@@ -354,9 +354,9 @@ let quoteDeck = [];
 // 동일한 역할(아래 ensureQuoteWindow/selectQuoteIndex 참조).
 let quoteWindow = [];
 let activeQuoteIndex = 0;
-let selectedCategories = new Set();
-let selectedLitCategories = new Set();
-let selectedGenres = new Set(["investment"]);
+// 2026-07-22: 위 3개 상태(투자 세부 카테고리/문학 세부 카테고리/1depth
+// 장르)를 평평한 단일 선택 집합 하나로 대체했다 — flatGenreLabels 참조.
+let selectedFlatGenres = new Set(["investment"]);
 let lastScenePhoto = {};
 let lastDigits = ["", "", "", ""];
 let timeHasRendered = false;
@@ -369,9 +369,10 @@ let activePhotoIndex = 0;
 let activePhotoSlot = "";
 let manualPhotoUntil = 0;
 let swipeStart = null;
-const categoryStorageKey = "ezlong:selectedCategories";
-const litCategoryStorageKey = "ezlong:selectedLitCategories";
-const genreStorageKey = "ezlong:selectedGenres";
+// 2026-07-22: 스키마가 바뀌어(1depth+세부 2단 → 평평한 단일 목록) 옛 3개
+// 키를 그대로 읽으면 값 형식이 안 맞을 수 있어 새 키를 쓴다 — 옛 키에
+// 남아있던 값은 이제 아무도 읽지 않아 자동으로 무해해진다.
+const flatGenreStorageKey = "ezlong:selectedFlatGenres";
 // 2026-07-19: 히스토리 목록 기본 5개만 노출, "모두 보기" 클릭 시 전체 표시.
 let musicHistoryExpanded = false;
 let weatherState = {
@@ -1519,7 +1520,7 @@ function restartQuoteProgress() {
 // 타이머 유실보다 더 단순한 원인이 있을 수 있다고 보고 다시 살펴봤다.
 // renderQuote()가 760ms 지연 콜백을 매번 새로 예약하는데, 만약 이 콜백이
 // 아직 안 끝난 상태에서(예: 수동으로 관심분야/장르를 바꿔서
-// applyCategorySelection·applyGenreSelection이 즉시 renderQuote를 다시
+// applyFlatGenreSelection이 즉시 renderQuote를 다시
 // 부르거나, 분(rotateQuote)이 마침 같은 타이밍에 겹치는 경우) renderQuote가
 // 또 호출되면, 오래된 콜백이 나중에 실행되면서 최신 문장의 아이콘
 // 상태(dataset.url/hidden)를 옛날 문장 기준으로 덮어써버릴 수 있다 —
@@ -1689,200 +1690,61 @@ function resetQuoteWindow() {
   renderQuote(quoteWindow[activeQuoteIndex]);
 }
 
-// 2026-07-19 개정: 문학·교양서도 투자서와 동일하게 자기만의 하위 분류
-// 필터(selectedLitCategories)를 갖는다 — 예전엔 문학 문장은 이 필터와
-// 무관하게 항상 통과시켰지만, 이제 8개 하위 분야(가족·관계/경제·자기계발/
-// 과학/문학/시/에세이/인문·역사/철학·동양고전) 필터가 생겨 투자서와
-// 같은 방식(비어있으면 전체 통과, 아니면 선택된 것만)으로 걸러진다.
+// 2026-07-22 재설계: 투자서/문학·교양서 1depth + 각자의 세부 카테고리
+// 2단 구조를 없애고, 평평한 단일 목록(flatGenreLabels) 하나로 필터링한다.
+// "비어있으면 전체 통과, 아니면 선택된 것만" 규칙은 기존과 동일하게 유지.
 function getEligibleQuotes() {
-  const genreFiltered = quotes.filter((quote) => selectedGenres.has(quote.genre));
-  return genreFiltered.filter((quote) => {
-    if (quote.genre === "investment") {
-      return selectedCategories.size === 0 || selectedCategories.has(quote.category);
-    }
-    if (quote.genre === "literature") {
-      return selectedLitCategories.size === 0 || selectedLitCategories.has(quote.category);
-    }
-    return true;
+  return quotes.filter((quote) => {
+    const key = getQuoteFlatGenreKey(quote);
+    return selectedFlatGenres.size === 0 || selectedFlatGenres.has(key);
   });
 }
 
-function renderCategoryOptions() {
-  categoryOptions.innerHTML = "";
-  Object.entries(categoryLabels).forEach(([value, label]) => {
+function renderFlatGenreOptions() {
+  if (!flatGenreOptionsEl) return;
+  flatGenreOptionsEl.innerHTML = "";
+  Object.entries(flatGenreLabels).forEach(([value, label]) => {
     const option = document.createElement("label");
     option.className = "field-option";
-    option.innerHTML = `<input type="checkbox" value="${value}" data-category-option><span>${label}</span>`;
-    categoryOptions.appendChild(option);
+    option.innerHTML = `<input type="checkbox" value="${value}" data-flat-genre-option><span>${label}</span>`;
+    flatGenreOptionsEl.appendChild(option);
   });
 }
 
-// 2026-07-19: 문학·교양서 하위 분야 그리드 — investment 쪽과 완전히 같은
-// 패턴이되 별도 data-속성(data-lit-category-option)을 써서 querySelectorAll이
-// 서로 섞이지 않게 한다.
-function renderLitCategoryOptions() {
-  if (!litCategoryOptions) return;
-  litCategoryOptions.innerHTML = "";
-  Object.entries(literatureCategoryLabels).forEach(([value, label]) => {
-    const option = document.createElement("label");
-    option.className = "field-option";
-    option.innerHTML = `<input type="checkbox" value="${value}" data-lit-category-option><span>${label}</span>`;
-    litCategoryOptions.appendChild(option);
+function syncFlatGenreControls() {
+  document.querySelectorAll("[data-flat-genre-option]").forEach((input) => {
+    input.checked = selectedFlatGenres.has(input.value);
   });
+  if (allFlatGenresEl) allFlatGenresEl.checked = selectedFlatGenres.size === 0;
 }
 
-function syncCategoryControls() {
-  document.querySelectorAll("[data-category-option]").forEach((input) => {
-    input.checked = selectedCategories.has(input.value);
-  });
-  allCategories.checked = selectedCategories.size === 0;
-}
-
-function syncLitCategoryControls() {
-  document.querySelectorAll("[data-lit-category-option]").forEach((input) => {
-    input.checked = selectedLitCategories.has(input.value);
-  });
-  if (allLitCategories) allLitCategories.checked = selectedLitCategories.size === 0;
-}
-
-function loadSavedCategories() {
+function loadSavedFlatGenres() {
   try {
-    const saved = JSON.parse(localStorage.getItem(categoryStorageKey) || "[]");
+    const saved = JSON.parse(localStorage.getItem(flatGenreStorageKey) || "[\"investment\"]");
     if (Array.isArray(saved)) {
-      selectedCategories = new Set(
-        saved.filter((value) => Object.prototype.hasOwnProperty.call(categoryLabels, value))
+      selectedFlatGenres = new Set(
+        saved.filter((value) => Object.prototype.hasOwnProperty.call(flatGenreLabels, value))
       );
     }
   } catch (error) {
-    selectedCategories = new Set();
+    selectedFlatGenres = new Set(["investment"]);
   }
-  syncCategoryControls();
+  syncFlatGenreControls();
   quoteDeck = [];
 }
 
-function loadSavedLitCategories() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(litCategoryStorageKey) || "[]");
-    if (Array.isArray(saved)) {
-      selectedLitCategories = new Set(
-        saved.filter((value) => Object.prototype.hasOwnProperty.call(literatureCategoryLabels, value))
-      );
-    }
-  } catch (error) {
-    selectedLitCategories = new Set();
-  }
-  syncLitCategoryControls();
-  quoteDeck = [];
-}
-
-function saveSelectedCategories() {
-  localStorage.setItem(categoryStorageKey, JSON.stringify([...selectedCategories]));
-}
-
-function saveSelectedLitCategories() {
-  localStorage.setItem(litCategoryStorageKey, JSON.stringify([...selectedLitCategories]));
+function saveSelectedFlatGenres() {
+  localStorage.setItem(flatGenreStorageKey, JSON.stringify([...selectedFlatGenres]));
 }
 
 // 2026-07-19 3차 피드백: "확인" 버튼은 원래 흰색이지만, 아직 저장 안 된
-// 카테고리 변경(투자서/문학·교양서 세부 분야 체크, 1depth 껐다 켜기 등)이
-// 있으면 하늘색으로 바뀌어 "지금 누르면 반영된다"는 걸 알려준다.
+// 분야 선택 변경이 있으면 하늘색으로 바뀌어 "지금 누르면 반영된다"는 걸 알려준다.
 function markSettingsDirty() {
   if (settingsSave) settingsSave.classList.add("is-dirty");
 }
 
 function clearSettingsDirty() {
   if (settingsSave) settingsSave.classList.remove("is-dirty");
-}
-
-// 2026-07-19 3차 피드백: 도서 분야 1depth(투자서/문학·교양서) on/off에
-// 맞춰 하위(모든 분야+세부 카테고리) 그리드를 흐리게/진하게만 바꾸는
-// 순수 시각 동기화 — selectedCategories 등 상태값은 건드리지 않는다.
-// 페이지 로드 시(syncGenreControls) 저장된 카테고리 선택을 지우지 않고
-// 화면만 맞추기 위해 setGenreSubgroupEnabled와 분리했다.
-function syncGenreSubgroupVisual(genreKey, enabled) {
-  const isInvestment = genreKey === "investment";
-  const groupOptionsEl = isInvestment ? categoryOptions : litCategoryOptions;
-  const allEl = isInvestment ? allCategories : allLitCategories;
-  if (groupOptionsEl) {
-    const subgroupEl = groupOptionsEl.closest(".genre-subgroup");
-    if (subgroupEl) subgroupEl.classList.toggle("is-disabled", !enabled);
-    groupOptionsEl.querySelectorAll("input").forEach((input) => {
-      input.disabled = !enabled;
-    });
-  }
-  if (allEl) allEl.disabled = !enabled;
-}
-
-// 유저가 실제로 1depth 토글을 조작한 순간에만 호출한다 — 하위(모든 분야+
-// 세부 카테고리)도 자동으로 선택 해제하고, 다시 켜면 "모든 분야"로
-// 리셋해 되살린다. 꺼져있던 동안의 세부 선택을 어설프게 기억하려다
-// 헷갈리는 상태를 만드느니, 항상 깨끗한 기본값으로 돌아오게 하는 편이
-// 예측 가능하다.
-function setGenreSubgroupEnabled(genreKey, enabled) {
-  const isInvestment = genreKey === "investment";
-  const groupOptionsEl = isInvestment ? categoryOptions : litCategoryOptions;
-  const allEl = isInvestment ? allCategories : allLitCategories;
-  if (groupOptionsEl) {
-    groupOptionsEl.querySelectorAll("input").forEach((input) => {
-      input.checked = false;
-    });
-  }
-  if (allEl) allEl.checked = enabled;
-  if (isInvestment) {
-    selectedCategories = new Set();
-  } else {
-    selectedLitCategories = new Set();
-  }
-  syncGenreSubgroupVisual(genreKey, enabled);
-}
-
-// 2026-07-19 3차 피드백: 투자서/문학·교양서 둘 다 끄는 건 허용하지 않는다
-// — 마지막 하나를 끄려고 하면 되돌리고 안내 문구를 잠깐 보여준다.
-let genreMinWarningTimer = null;
-let genreMinWarningHideTimer = null;
-function showGenreMinWarning() {
-  if (!genreMinWarning) return;
-  clearTimeout(genreMinWarningTimer);
-  clearTimeout(genreMinWarningHideTimer);
-  genreMinWarning.hidden = false;
-  void genreMinWarning.offsetWidth; // 연속 클릭 시 트랜지션 재트리거용 강제 리플로우.
-  genreMinWarning.classList.add("is-visible");
-  genreMinWarningTimer = setTimeout(() => {
-    genreMinWarning.classList.remove("is-visible");
-    genreMinWarningHideTimer = setTimeout(() => {
-      genreMinWarning.hidden = true;
-    }, 250);
-  }, 2600);
-}
-
-function syncGenreControls() {
-  document.querySelectorAll("[data-genre-option]").forEach((input) => {
-    input.checked = selectedGenres.has(input.value);
-  });
-  // 2026-07-19: 페이지 로드/장르 변경 때마다 하위 그리드의 흐림 상태를
-  // 현재 selectedGenres와 맞춘다(상태값 자체는 안 건드림 — 위 주석 참고).
-  syncGenreSubgroupVisual("investment", selectedGenres.has("investment"));
-  syncGenreSubgroupVisual("literature", selectedGenres.has("literature"));
-}
-
-function loadSavedGenres() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(genreStorageKey) || "[\"investment\"]");
-    if (Array.isArray(saved) && saved.length > 0) {
-      const filtered = saved.filter((value) => Object.prototype.hasOwnProperty.call(genreLabels, value));
-      selectedGenres = new Set(filtered.length > 0 ? filtered : ["investment"]);
-    }
-  } catch (error) {
-    selectedGenres = new Set(["investment"]);
-  }
-  syncGenreControls();
-  quoteDeck = [];
-}
-
-function saveSelectedGenres() {
-  // 최소 하나는 항상 켜져 있어야 한다 (전부 끄면 문장이 안 나옴).
-  if (selectedGenres.size === 0) selectedGenres = new Set(["investment"]);
-  localStorage.setItem(genreStorageKey, JSON.stringify([...selectedGenres]));
 }
 
 // 2026-07-16 4차 개정 — 이 자리에 있던 lockScrollSnap/unlockScrollSnap(html에
@@ -4972,7 +4834,58 @@ function scheduleMusicStateSync() {
   }, 120);
 }
 
+// 2026-07-22 유저 요청 — 서버 트래픽/스트리밍 비용 우려 대응: 유저가 끄는
+// 걸 잊고 장시간 켜두는 상황에 상한을 둔다. Special(스트레스 해소/수면유도/
+// 명상)은 연속 1시간, 그 외 일반 플레이리스트는 연속 2시간이 지나면 자동
+// 일시정지한다. 트랙이 바뀌어도(크로스페이드 등) 계속 재생 중이면 타이머는
+// 리셋하지 않는다 — "연속 재생 시간"이 기준이지 "한 곡 길이"가 아니다.
+const MUSIC_AUTOPAUSE_LIMIT_SPECIAL_MS = 60 * 60 * 1000; // 1시간
+const MUSIC_AUTOPAUSE_LIMIT_NORMAL_MS = 2 * 60 * 60 * 1000; // 2시간
+const MUSIC_AUTOPAUSE_CHECK_INTERVAL_MS = 60 * 1000; // 1분마다 점검
+let continuousPlaybackStartedAt = null;
+let continuousPlaybackWatchdogId = null;
+
+function musicAutoPauseLimitMs() {
+  return isSpecialCategory(loadMusicPlaylistFilter())
+    ? MUSIC_AUTOPAUSE_LIMIT_SPECIAL_MS
+    : MUSIC_AUTOPAUSE_LIMIT_NORMAL_MS;
+}
+
+// setInterval 콜백 — musicPlaying이 계속 true인 동안 1분마다 불려서 누적
+// 연속 재생 시간을 확인한다. 상한을 넘기면 toggleMusic의 "끄기" 경로와
+// 동일한 방식(musicPlaying=false + pauseMusic + renderMusicToggle)으로
+// 정지시키고, 갑자기 조용해진 이유를 토스트로 안내한다.
+function checkMusicAutoPauseWatchdog() {
+  if (!musicPlaying || continuousPlaybackStartedAt === null) return;
+  const elapsed = Date.now() - continuousPlaybackStartedAt;
+  if (elapsed < musicAutoPauseLimitMs()) return;
+  musicPlaying = false;
+  musicActionToken += 1;
+  pauseMusic();
+  renderMusicToggle();
+  showMusicToast("너무 오래 재생돼서 음악이 자동으로 일시정지됐어요");
+}
+
+// renderMusicToggle()이 재생/일시정지가 바뀔 수 있는 모든 경로(토글 클릭/
+// 트랙 전환/실제 <audio> 이벤트 동기화 등)에서 공통으로 호출되는 지점이라
+// 여기 하나에만 걸면 위 감시 타이머의 시작·정지가 전부 자동으로 커버된다.
+function syncContinuousPlaybackWatchdog() {
+  if (musicPlaying) {
+    if (continuousPlaybackStartedAt === null) continuousPlaybackStartedAt = Date.now();
+    if (continuousPlaybackWatchdogId === null) {
+      continuousPlaybackWatchdogId = window.setInterval(checkMusicAutoPauseWatchdog, MUSIC_AUTOPAUSE_CHECK_INTERVAL_MS);
+    }
+  } else {
+    continuousPlaybackStartedAt = null;
+    if (continuousPlaybackWatchdogId !== null) {
+      window.clearInterval(continuousPlaybackWatchdogId);
+      continuousPlaybackWatchdogId = null;
+    }
+  }
+}
+
 function renderMusicToggle() {
+  syncContinuousPlaybackWatchdog();
   if (!musicToggle) return;
   musicToggle.classList.toggle("is-playing", musicPlaying);
   musicToggle.setAttribute("aria-pressed", String(musicPlaying));
@@ -5780,7 +5693,12 @@ function recordPlayLog(index) {
   const track = musicPlaylist[index % musicPlaylist.length];
   if (!track || !track.file) return;
   let log = loadMusicPlayLog().filter((entry) => entry.file !== track.file);
-  log.unshift({ file: track.file, title: track.title || track.file, playlist: track.playlist || "", at: Date.now() });
+  // 2026-07-22 유저 요청: "들은 음악" 목록에서 이 곡이 어느 플레이리스트
+  // (카테고리)에 속했는지 보이게 해달라 — trackCategoryKey로 캐노니컬
+  // 키를 구해 저장해두고, 렌더 시 musicCategoryLabel로 사람이 읽을 라벨로
+  // 바꾼다. 이 필드가 없는 과거 기록(이 수정 이전에 쌓인 localStorage
+  // 데이터)은 렌더 쪽에서 빈 문자열로 안전하게 처리한다.
+  log.unshift({ file: track.file, title: track.title || track.file, playlist: track.playlist || "", category: trackCategoryKey(track), at: Date.now() });
   if (log.length > musicPlayLogMax) log = log.slice(0, musicPlayLogMax);
   saveMusicPlayLog(log);
   handleMusicCeremonyOnTrackStart();
@@ -5816,8 +5734,15 @@ function renderMusicHistoryList() {
     const ariaLabel = isPlayingNow ? "지금 재생 중" : "재생";
     const isLiked = Boolean(entry.file && likedSet.has(entry.file));
     const isDisliked = Boolean(entry.file && dislikedSet.has(entry.file));
+    // 2026-07-22: 곡 제목 아래에 이 곡이 속한 플레이리스트(카테고리)명을
+    // "- 라벨" 형태로 표기. entry.category가 없는 과거 기록(이 수정 전
+    // localStorage에 이미 쌓여있던 항목)은 라벨 줄 자체를 만들지 않는다.
+    const playlistLabel = entry.category ? musicCategoryLabel(entry.category) : "";
+    const playlistLabelHtml = playlistLabel
+      ? `<span class="music-history-playlist-label">- ${playlistLabel}</span>`
+      : "";
     return `<div class="music-history-item${isCurrent ? " is-current" : ""}">`
-      + `<div class="music-history-title-row"><span class="music-history-title">${entry.title}${variant}</span></div>`
+      + `<div class="music-history-title-row"><span class="music-history-title">${entry.title}${variant}</span>${playlistLabelHtml}</div>`
       + `<div class="music-history-actions-row">`
         + `<button type="button" class="music-history-play-btn${isPlayingNow ? " is-playing" : ""}" data-history-file="${entry.file}" aria-label="${ariaLabel}"></button>`
         + `<button type="button" class="music-history-like-btn" data-history-like="${entry.file}" aria-pressed="${isLiked}" aria-label="이 곡 좋아요"></button>`
@@ -5978,33 +5903,16 @@ if (musicHistoryViewAll) {
   });
 }
 
-function applyCategorySelection() {
-  selectedCategories = new Set(
-    [...document.querySelectorAll("[data-category-option]:checked")].map((input) => input.value)
+// 2026-07-22: 투자서/문학·교양서 세부 3개 apply 함수(applyCategorySelection/
+// applyLitCategorySelection/applyGenreSelection)를 평평한 단일 목록용
+// 하나로 통합 — 체크 즉시 미리보기(resetQuoteWindow)만 하고, 저장은
+// 기존 관례대로 "확인"(settingsSave) 클릭 시에만 한다.
+function applyFlatGenreSelection() {
+  selectedFlatGenres = new Set(
+    [...document.querySelectorAll("[data-flat-genre-option]:checked")].map((input) => input.value)
   );
-  allCategories.checked = selectedCategories.size === 0;
+  if (allFlatGenresEl) allFlatGenresEl.checked = selectedFlatGenres.size === 0;
   markSettingsDirty();
-  resetQuoteWindow();
-}
-
-// 2026-07-19: investment 쪽 applyCategorySelection과 동일한 패턴 — 저장은
-// (기존 관례대로) settingsSave 클릭 시에만 하고, 체크 즉시는 미리보기용으로
-// 문장만 바로 바꿔서 보여준다.
-function applyLitCategorySelection() {
-  selectedLitCategories = new Set(
-    [...document.querySelectorAll("[data-lit-category-option]:checked")].map((input) => input.value)
-  );
-  if (allLitCategories) allLitCategories.checked = selectedLitCategories.size === 0;
-  markSettingsDirty();
-  resetQuoteWindow();
-}
-
-function applyGenreSelection() {
-  const checked = [...document.querySelectorAll("[data-genre-option]:checked")].map((input) => input.value);
-  // 전부 끄는 걸 막는다 — 최소 하나는 항상 켜져 있어야 문장이 계속 나온다.
-  selectedGenres = new Set(checked.length > 0 ? checked : ["investment"]);
-  syncGenreControls();
-  saveSelectedGenres();
   resetQuoteWindow();
 }
 
@@ -6293,11 +6201,8 @@ if (sceneEzlongLink) {
   sceneEzlongLink.addEventListener("click", () => goToPage(1));
 }
 
-renderCategoryOptions();
-renderLitCategoryOptions();
-loadSavedCategories();
-loadSavedLitCategories();
-loadSavedGenres();
+renderFlatGenreOptions();
+loadSavedFlatGenres();
 renderMusicPlaylistInfo();
 renderMusicPlaylistFilterOptions();
 syncMusicExcludeFilterUi();
@@ -6305,8 +6210,7 @@ renderMusicQCPanel();
 renderMusicToggle();
 settingsOpen.addEventListener("click", openSettings);
 settingsSave.addEventListener("click", () => {
-  saveSelectedCategories();
-  saveSelectedLitCategories();
+  saveSelectedFlatGenres();
   clearSettingsDirty();
   closeSettings();
 });
@@ -6518,58 +6422,29 @@ musicPlayers.forEach((player) => {
     scheduleMusicStateSync();
   });
 });
-allCategories.addEventListener("change", () => {
-  if (allCategories.checked) {
-    document.querySelectorAll("[data-category-option]").forEach((input) => {
-      input.checked = false;
-    });
-    applyCategorySelection();
-  } else if (selectedCategories.size === 0) {
-    allCategories.checked = true;
-  }
-});
-categoryOptions.addEventListener("change", (event) => {
-  if (event.target.matches("[data-category-option]")) {
-    if (event.target.checked) allCategories.checked = false;
-    applyCategorySelection();
-  }
-});
-if (allLitCategories) {
-  allLitCategories.addEventListener("change", () => {
-    if (allLitCategories.checked) {
-      document.querySelectorAll("[data-lit-category-option]").forEach((input) => {
+// 2026-07-22: 투자서/문학·교양서 1depth + 각자의 세부 카테고리 이벤트
+// 리스너 5개를 평평한 단일 그리드용 2개로 통합. "모든 분야"는 개별
+// 선택을 전부 지우고, 개별 항목을 하나라도 체크하면 "모든 분야"가 꺼진다
+// — 기존 categoryOptions 패턴과 동일(둘 다 꺼지는 걸 막을 필요가 없다,
+// selectedFlatGenres가 비면 자동으로 "전체 통과"이므로 0개 상태가 곧
+// "모든 분야"와 같다).
+if (allFlatGenresEl) {
+  allFlatGenresEl.addEventListener("change", () => {
+    if (allFlatGenresEl.checked) {
+      document.querySelectorAll("[data-flat-genre-option]").forEach((input) => {
         input.checked = false;
       });
-      applyLitCategorySelection();
-    } else if (selectedLitCategories.size === 0) {
-      allLitCategories.checked = true;
+      applyFlatGenreSelection();
+    } else if (selectedFlatGenres.size === 0) {
+      allFlatGenresEl.checked = true;
     }
   });
 }
-if (litCategoryOptions) {
-  litCategoryOptions.addEventListener("change", (event) => {
-    if (event.target.matches("[data-lit-category-option]")) {
-      if (event.target.checked) allLitCategories.checked = false;
-      applyLitCategorySelection();
-    }
-  });
-}
-if (genreOptions) {
-  genreOptions.addEventListener("change", (event) => {
-    if (event.target.matches("[data-genre-option]")) {
-      // 2026-07-19 3차 피드백: 투자서/문학·교양서 둘 다 끄는 건 막는다 —
-      // 마지막 하나를 끄려는 시도면 되돌리고 안내만 보여준다.
-      const stillChecked = document.querySelectorAll("[data-genre-option]:checked").length;
-      if (stillChecked === 0) {
-        event.target.checked = true;
-        showGenreMinWarning();
-        return;
-      }
-      // 1depth를 끄면 하위(모든 분야+세부 카테고리)도 자동 선택 해제,
-      // 다시 켜면 "모든 분야"로 리셋해 되살린다.
-      setGenreSubgroupEnabled(event.target.value, event.target.checked);
-      markSettingsDirty();
-      applyGenreSelection();
+if (flatGenreOptionsEl) {
+  flatGenreOptionsEl.addEventListener("change", (event) => {
+    if (event.target.matches("[data-flat-genre-option]")) {
+      if (event.target.checked && allFlatGenresEl) allFlatGenresEl.checked = false;
+      applyFlatGenreSelection();
     }
   });
 }

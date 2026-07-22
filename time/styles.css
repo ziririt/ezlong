@@ -920,56 +920,11 @@ button { font: inherit; }
   background: rgba(255,255,255,0.14);
 }
 
-/* 2026-07-19 2차 리디자인: "투자서"/"문학·교양서"를 나란히 2칸으로 두지
-   않고 세로로 쌓은 뒤, 각 분야 토글 바로 아래에 그 분야만의 "모든 분야"+
-   하위 목록을 중첩시킨다(유저 요청 — "문학·교양서를 투자서 하단에 배치,
-   그 아래 하위분야"). 왼쪽 세로선으로 "이건 위 토글에 속한 하위 항목"임을
-   시각적으로 드러낸다. */
-.genre-group + .genre-group {
-  margin-top: 14px;
-}
-
-.field-option-genre {
-  font-size: 16px;
-  font-weight: 800;
-}
-
-.genre-subgroup {
-  margin: 10px 0 4px 12px;
-  padding-left: 14px;
-  border-left: 2px solid rgba(255,255,255,0.14);
-  transition: opacity 160ms ease;
-}
-
-/* 2026-07-19 3차 피드백: 1depth(투자서/문학·교양서) 토글을 끄면 그 하위
-   "모든 분야"+세부 카테고리도 자동으로 선택 해제되고 잠긴다(app.js
-   setGenreSubgroupEnabled) — 흐리게 표시해 "지금 이 아래는 의미 없다"는
-   걸 시각으로도 알려준다. */
-.genre-subgroup.is-disabled {
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-/* 최소 하나의 분야는 항상 선택돼 있어야 한다 — 마지막 하나를 끄려고 하면
-   되돌리고 이 안내를 잠깐 보여준다(app.js showGenreMinWarning). */
-.genre-min-warning {
-  margin: 10px 0 0;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: rgba(239, 68, 68, 0.16);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #fecaca;
-  font-size: 14px;
-  font-weight: 700;
-  opacity: 0;
-  transform: translateY(-4px);
-  transition: opacity 220ms ease, transform 220ms ease;
-}
-
-.genre-min-warning.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* 2026-07-22: 투자서/문학·교양서 1depth + 각자의 하위 분야(2단 구조)를
+   없애고 평평한 단일 목록으로 재편하면서, 그 구조 전용이던 CSS
+   (.genre-group/.field-option-genre/.genre-subgroup/.genre-min-warning)는
+   더 이상 대응하는 HTML이 없어 함께 제거했다. .field-option-all과
+   .field-grid는 새 구조에서도 그대로 쓰인다. */
 
 /* 2026-07-19 유저 피드백: 2열 박스 그리드가 답답하다는 지적 — 한 행에
    하나씩(1열)으로 바꿔서 각 옵션이 라벨 전체 너비를 쓰게 한다. */
@@ -2220,6 +2175,17 @@ button { font: inherit; }
   font-size: 14px;
   font-weight: 620;
   line-height: 1.4;
+}
+
+/* 2026-07-22 신설: 곡 제목 아래 "- 플레이리스트명" 표기 (music-history-title-row
+   안에서 title 다음 줄로 자연스럽게 떨어지도록 block + 살짝 흐린 색). */
+.music-history-playlist-label {
+  display: block;
+  color: rgba(255,255,255,0.52);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-top: 2px;
 }
 
 .music-history-actions-row {
