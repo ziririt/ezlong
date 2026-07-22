@@ -3050,10 +3050,11 @@ function renderWeatherAdvisory(data) {
 }
 
 function advisoryRow(label, value) {
-  if (!value) return "";
+  if (value === null || value === undefined || value === "") return "";
   // 기상청 응답이 줄바꿈에 \r\n을 섞어 보내는 경우가 있어(예: note 필드
   // "o 없음\r\n\r\n"), pre-line이 \r을 지저분하게 남기지 않도록 정리한다.
-  const cleaned = value.replace(/\r\n/g, "\n").trim();
+  // 2026-07-22 Fable: 값이 문자열이 아닐 수 있어(숫자 tmFc 등) String() 강제.
+  const cleaned = String(value).replace(/\r\n/g, "\n").trim();
   if (!cleaned) return "";
   return `
     <div class="weather-advisory-detail-row">
@@ -3066,6 +3067,14 @@ function advisoryRow(label, value) {
 // 가볍게 가공한다(화면 표시 전용, 판단 로직이 아니라 새로 만들어도
 // "로직은 한 곳에만" 원칙과 무관).
 function formatAdvisoryTmFc(tmFc) {
+  // 2026-07-22 Fable — "펼침 눌러도 빈 화면" 사건의 진범: KMA 응답의 tmFc는
+  // 따옴표 없는 숫자(예: 202607221610)로 내려온다(weatherAdvisory.ts 주석에도
+  // 명시). 숫자에는 .length가 없어 아래 가드가 undefined<12=false로 뚫리고,
+  // 곧바로 tmFc.slice에서 TypeError가 터졌다. 이 예외가 rows 문자열 조립
+  // 도중에 발생해 wdAdvisoryDetail.innerHTML 대입까지 도달하지 못했고 —
+  // 그래서 상세도, "표시할 특보 상세가 없어요" 폴백조차도 영영 안 그려졌다.
+  // 문자열로 강제 변환해 근본 차단한다.
+  tmFc = tmFc === null || tmFc === undefined ? "" : String(tmFc);
   if (!tmFc || tmFc.length < 12) return tmFc || "";
   const y = tmFc.slice(0, 4);
   const mo = tmFc.slice(4, 6);
