@@ -4444,6 +4444,23 @@ function applyMusicVizShapeClass() {
     wrap.classList.add(shapeClass);
   });
 }
+// 2026-07-22 유저 지적 — "예민에서 막대가 박스 높이에 다 닿아서 다 똑같아
+// 보인다. 무조건 위에서 자르지 말고, 예민일 때만 박스 자체의 height를
+// 키워달라." drawMusicViz/drawMusicVizNative의 `target = Math.min(target, h)`
+// 클램프는 그대로 두되(막대가 박스를 뚫고 나가는 건 여전히 막아야 함),
+// h(=musicVizWrap.clientHeight)는 매 프레임 실측값이라 CSS로 박스 자체를
+// 키우면 클램프 상한도 자동으로 같이 올라간다 — JS 쪽은 전혀 건드릴 필요
+// 없다. .viz-sens-intense 클래스를 wrap 2개(본화면/미리보기) + 본화면
+// 패널(.music-info-panel, max-height도 같이 커져야 늘어난 wrap이 패널
+// 경계에서 잘리지 않는다)에 토글하고, 실제 height 값은 styles.css의
+// .viz-sens-intense 규칙이 담당한다.
+function applyMusicVizSensitivityClass() {
+  const isIntense = musicVizSettings.sensitivity === "intense";
+  [musicVizWrap, musicVizPreviewWrap].forEach((wrap) => {
+    if (wrap) wrap.classList.toggle("viz-sens-intense", isIntense);
+  });
+  if (musicInfoPanel) musicInfoPanel.classList.toggle("viz-sens-intense", isIntense);
+}
 // "좌우 배치" 미러 모드용 — 물리적 화면상 j번째 막대가 어느 논리 채널(저음
 // 0~고음 n-1) 값을 보여줄지 결정한다. sweep(기본)은 항등함수(j 그대로).
 // mirror는 중앙을 저음(0)으로 두고 양 끝으로 갈수록 고음 쪽 채널을 보여줘
@@ -4571,6 +4588,7 @@ function ensureMusicVizBarsBuilt() {
   if (musicVizWrap && !musicVizBarEls) musicVizBarEls = buildVizBarsInto(musicVizWrap);
   if (musicVizPreviewWrap && !musicVizPreviewBarEls) musicVizPreviewBarEls = buildVizBarsInto(musicVizPreviewWrap);
   applyMusicVizShapeClass();
+  applyMusicVizSensitivityClass();
 }
 
 function ensureMusicVizGraph() {
@@ -5735,9 +5753,11 @@ function renderMusicVizSettingsUI() {
 
 // 옵션 하나가 바뀔 때 실제로 반영해야 할 후속 작업을 분기한다 — 색상/모양은
 // 이미 그려진 막대에 즉시 다시 입히면 되고, 밀도는 막대 DOM 자체를 다시
-// 만들어야 한다(rebuildMusicVizBars 참조). 감도/베이스펀치/좌우배치/유휴
-// 애니메이션은 매 프레임 musicVizSettings를 직접 참조하므로 별도 반영
-// 코드가 필요 없다 — 값 저장만으로 다음 프레임부터 자동 적용된다.
+// 만들어야 한다(rebuildMusicVizBars 참조). 베이스펀치/좌우배치/유휴 애니메이션은
+// 매 프레임 musicVizSettings를 직접 참조하므로 별도 반영 코드가 필요 없다 —
+// 값 저장만으로 다음 프레임부터 자동 적용된다.
+// 2026-07-22 추가 — 감도는 예외: "예민"일 때 박스 자체의 height를 키워야
+// 해서(아래 applyMusicVizSensitivityClass 참조) DOM 클래스 토글이 필요하다.
 function setMusicVizOption(group, value) {
   if (!(group in MUSIC_VIZ_SETTINGS_DEFAULT) || musicVizSettings[group] === value) return;
   musicVizSettings[group] = value;
@@ -5745,6 +5765,7 @@ function setMusicVizOption(group, value) {
   if (group === "color") applyMusicVizColorToBars();
   else if (group === "shape") applyMusicVizShapeClass();
   else if (group === "density") rebuildMusicVizBars();
+  else if (group === "sensitivity") applyMusicVizSensitivityClass();
   renderMusicVizSettingsUI();
 }
 if (musicVizOptionsEl) {
