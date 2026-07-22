@@ -238,6 +238,10 @@ const musicToggle = document.getElementById("musicToggle");
 const musicSkip = document.getElementById("musicSkip");
 const musicInfoPanel = document.getElementById("musicInfoPanel");
 const musicVizWrap = document.getElementById("musicVizWrap");
+// 2026-07-22 유저 요청 — 설정 페이지 안에서 바로 결과를 볼 수 있는 실시간
+// 미리보기용 두 번째 비주얼라이저 wrap(같은 .music-viz-wrap/.viz-bar 클래스를
+// 재사용해 색상/모양 CSS가 자동으로 동일하게 적용된다).
+const musicVizPreviewWrap = document.getElementById("musicVizPreviewWrap");
 const musicProgressBar = document.getElementById("musicProgressBar");
 const musicProgressFill = document.getElementById("musicProgressFill");
 const musicTrackTitle = document.getElementById("musicTrackTitle");
@@ -337,6 +341,40 @@ let wdLastAdvisoryData = null;
 // 바뀜)가 뜨면 다시 배지가 켜지게 한다.
 const weatherAdvisoryDot = document.getElementById("weatherAdvisoryDot");
 const WEATHER_ADVISORY_ACK_KEY = "flipzenWeatherAdvisoryAckTmFc_v1";
+
+// 2026-07-22 임시 원격 진단 도구(PLAYBOOK 표준 패턴 — ?진단플래그=1로만
+// 발동, 일반 방문자에겐 노출 안 됨). "펼침을 눌러도 아무것도 안 보인다"는
+// 제보가 사파리 직접 접속에서도 재현됐고, 백엔드는 cache-bust로 직접
+// 검증해 정상임을 이미 확인했다 — 남은 건 브라우저 안에서 데이터가 실제로
+// 어디까지 도달하는지(fetch 성공 여부 / DOM에 실제로 쓰였는지 / 쓰였는데
+// 안 보이는지)를 화면 위 텍스트 리포트 한 장으로 확정하는 것뿐이다.
+// 확인 끝나면 반드시 제거한다 — 지우지 않고 남겨두지 말 것.
+const WX_ADVISORY_DIAG = new URLSearchParams(location.search).get("wxdiag") === "1";
+let wxDiagBannerEl = null;
+function wxDiagReport(status, valueOrReason) {
+  if (!WX_ADVISORY_DIAG) return;
+  if (!wxDiagBannerEl) {
+    wxDiagBannerEl = document.createElement("div");
+    wxDiagBannerEl.id = "wxDiagBanner";
+    wxDiagBannerEl.style.cssText =
+      "position:fixed;top:0;left:0;right:0;z-index:999999;background:#000;color:#0f0;" +
+      "font-size:11px;line-height:1.5;padding:8px;white-space:pre-wrap;word-break:break-all;" +
+      "max-height:50vh;overflow:auto;font-family:monospace;pointer-events:none;";
+    document.body.appendChild(wxDiagBannerEl);
+  }
+  const detailEl = document.getElementById("wdAdvisoryDetail");
+  const html = detailEl ? detailEl.innerHTML : null;
+  const lines = [
+    "[wxdiag v1] " + new Date().toISOString(),
+    "advisoryR.status=" + status,
+    "value=" + JSON.stringify(valueOrReason && valueOrReason.message ? String(valueOrReason.message) : valueOrReason).slice(0, 600),
+    "wdAdvisoryDetail found=" + Boolean(detailEl),
+    "wdAdvisoryDetail.hidden=" + (detailEl ? detailEl.hidden : "N/A"),
+    "wdAdvisoryDetail.innerHTML.length=" + (html ? html.length : "N/A"),
+    "wdAdvisoryDetail.innerHTML(앞 300자)=" + (html ? html.slice(0, 300) : "N/A")
+  ];
+  wxDiagBannerEl.textContent = lines.join("\n");
+}
 
 const digitElements = [
   document.getElementById("hourTens"),
@@ -1818,6 +1856,12 @@ function openSettings() {
   // 2026-07-19 3차 피드백: 패널을 새로 열 때마다 "확인" 버튼은 항상 깨끗한
   // (흰색) 상태로 시작한다 — 지난번 열었을 때의 dirty 표시가 남아있지 않게.
   clearSettingsDirty();
+  // 2026-07-22 유저 요청 — 설정을 열 때마다 비주얼라이저 미리보기 막대를
+  // 준비하고(이미 만들어져 있으면 no-op) 애니메이션 루프를 켠다. 본화면
+  // 음악패널을 한 번도 안 열어봤어도 여기서 바로 재생 중인 오디오에 반응하는
+  // 미리보기를 볼 수 있다.
+  ensureMusicVizGraph();
+  if (!musicVizAnimId) drawMusicViz();
 }
 
 function closeSettings() {
@@ -1825,6 +1869,11 @@ function closeSettings() {
   settingsPanel.setAttribute("aria-hidden", "true");
   settingsOpen.setAttribute("aria-expanded", "false");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "false");
+  // 본화면 음악패널도 닫혀있는 경우에만 루프를 완전히 멈춘다(배터리 배려).
+  if (musicVizAnimId && !isMusicVizActiveContext()) {
+    cancelAnimationFrame(musicVizAnimId);
+    musicVizAnimId = null;
+  }
 }
 
 // 2026-07-16: 알라딘 제휴 수수료 추적용 파라미터 — aladin-links.js에 있는
@@ -3057,6 +3106,7 @@ function toggleWeatherAdvisoryDetail() {
   wdAdvisoryMoreBtn.textContent = willExpand ? "▴" : "▾";
   wdAdvisoryMoreBtn.setAttribute("aria-expanded", String(willExpand));
   wdAdvisoryMoreBtn.setAttribute("aria-label", willExpand ? "기상특보 상세 접기" : "기상특보 상세 펼치기");
+  wxDiagReport("toggle(펼침탭 순간)", wdLastAdvisoryData);
 }
 
 if (wdAdvisoryMoreBtn) {
@@ -3395,6 +3445,7 @@ async function fetchWeatherDetail() {
     renderWeatherYesterday(yesterdayR.status === "fulfilled" ? yesterdayR.value : null);
     renderWeatherTropical(tropicalData);
     renderWeatherAdvisory(advisoryR.status === "fulfilled" ? advisoryR.value : null);
+    wxDiagReport(advisoryR.status, advisoryR.status === "fulfilled" ? advisoryR.value : advisoryR.reason);
 
     // 2026-07-15: 실패한 응답까지 "캐시됨"으로 기록해버리는 버그 수정 — 최초
     // 요청이 서버 콜드스타트 등으로 한 번 실패하면, 그 실패 상태가 1시간 동안
@@ -3607,6 +3658,14 @@ function isMusicPanelOpen() {
   return Boolean(musicInfoPanel && musicInfoPanel.classList.contains("is-open"));
 }
 
+// 2026-07-22 유저 요청 — 설정 페이지 "비주얼라이저" 카드의 실시간 미리보기.
+// 본화면 음악패널이 열려있거나, 설정 시트(그 안에 미리보기가 들어있는 곳)가
+// 열려있으면 애니메이션 루프를 계속 돌린다. 어느 쪽이든 닫히면 나머지
+// 하나가 열려있는지 다시 확인해 그때만 완전히 멈춘다.
+function isMusicVizActiveContext() {
+  return isMusicPanelOpen() || Boolean(settingsPanel && settingsPanel.classList.contains("is-open"));
+}
+
 function setMusicPanelOpen(open) {
   if (!musicInfoPanel) return;
   musicInfoPanel.classList.toggle("is-open", open);
@@ -3618,7 +3677,8 @@ function setMusicPanelOpen(open) {
     if (musicVizAnimId) cancelAnimationFrame(musicVizAnimId);
     musicVizAnimId = null;
     drawMusicViz();
-  } else if (musicVizAnimId) {
+  } else if (musicVizAnimId && !isMusicVizActiveContext()) {
+    // 설정 시트가 아직 열려있으면(미리보기가 보이는 중) 루프를 끄지 않는다.
     cancelAnimationFrame(musicVizAnimId);
     musicVizAnimId = null;
   }
@@ -4328,29 +4388,44 @@ loadMusicVizSettings();
 // hue 자체를 쓰지 않고 채도(sat)를 낮춰 흰색~은색 계열로 보이게 한다.
 function getVizBarColorProps(i, count) {
   const t = count > 1 ? i / (count - 1) : 0;
-  if (musicVizSettings.color === "mono") return { hue: 0, sat: 6 };
-  if (musicVizSettings.color === "rainbow") return { hue: Math.round(t * 300), sat: 92 };
+  // 2026-07-22 유저 재지적 — "화이트"가 실제로는 채도만 낮춘 회색이라 흰색처럼
+  // 안 보였다. hsl 명도(lightness) 자체를 훨씬 높은 구간(88~98%)으로 끌어올려
+  // 실제로 흰빛에 가깝게 보이도록 lightBase/lightRange를 별도로 준다(다른
+  // 색상 프리셋은 기존 52~66% 그대로 — --bar-light-base/--bar-light-range
+  // CSS 변수 기본값과 동일해 시각적으로 안 바뀐다).
+  if (musicVizSettings.color === "mono") return { hue: 0, sat: 0, lightBase: 88, lightRange: 10 };
+  if (musicVizSettings.color === "rainbow") return { hue: Math.round(t * 300), sat: 92, lightBase: 52, lightRange: 14 };
   const preset = MUSIC_VIZ_COLOR_PRESETS[musicVizSettings.color] || MUSIC_VIZ_COLOR_PRESETS.ocean;
   const hue = Math.round((((preset.base + (t - 0.5) * preset.spread) % 360) + 360) % 360);
-  return { hue, sat: 92 };
+  return { hue, sat: 92, lightBase: 52, lightRange: 14 };
+}
+// 막대 하나에 색상 관련 CSS 변수 4종을 한 번에 적용한다(초기 생성/설정 변경
+// 시 공용으로 재사용).
+function applyVizBarColorVars(barEl, i, count) {
+  const props = getVizBarColorProps(i, count);
+  barEl.style.setProperty("--bar-hue", props.hue);
+  barEl.style.setProperty("--bar-sat", props.sat + "%");
+  barEl.style.setProperty("--bar-light-base", props.lightBase + "%");
+  barEl.style.setProperty("--bar-light-range", props.lightRange + "%");
 }
 // 이미 만들어진 막대들에 색상 설정만 다시 입힌다(모양/밀도와 달리 DOM을
-// 새로 만들 필요 없이 --bar-hue/--bar-sat만 갱신하면 되는 가벼운 변경).
+// 새로 만들 필요 없이 CSS 변수만 갱신하면 되는 가벼운 변경). 본화면 막대와
+// 설정 페이지 미리보기 막대 둘 다 대상으로 한다.
 function applyMusicVizColorToBars() {
-  if (!musicVizBarEls) return;
-  const n = musicVizBarEls.length;
-  for (let i = 0; i < n; i++) {
-    const props = getVizBarColorProps(i, n);
-    musicVizBarEls[i].style.setProperty("--bar-hue", props.hue);
-    musicVizBarEls[i].style.setProperty("--bar-sat", props.sat + "%");
-  }
+  [musicVizBarEls, musicVizPreviewBarEls].forEach((arr) => {
+    if (!arr) return;
+    for (let i = 0; i < arr.length; i++) applyVizBarColorVars(arr[i], i, arr.length);
+  });
 }
 // 막대 모양(캡슐/블록/라인) — styles.css의 .viz-shape-* 클래스가 실제 CSS를
 // 담당하고, 여기선 그 클래스만 wrap에 토글한다.
 function applyMusicVizShapeClass() {
-  if (!musicVizWrap) return;
-  musicVizWrap.classList.remove("viz-shape-capsule", "viz-shape-block", "viz-shape-line");
-  musicVizWrap.classList.add("viz-shape-" + (musicVizSettings.shape || "capsule"));
+  const shapeClass = "viz-shape-" + (musicVizSettings.shape || "capsule");
+  [musicVizWrap, musicVizPreviewWrap].forEach((wrap) => {
+    if (!wrap) return;
+    wrap.classList.remove("viz-shape-capsule", "viz-shape-block", "viz-shape-line");
+    wrap.classList.add(shapeClass);
+  });
 }
 // "좌우 배치" 미러 모드용 — 물리적 화면상 j번째 막대가 어느 논리 채널(저음
 // 0~고음 n-1) 값을 보여줄지 결정한다. sweep(기본)은 항등함수(j 그대로).
@@ -4372,8 +4447,18 @@ function writeVizBarsToDom() {
   const n = MUSIC_VIZ_BAR_COUNT;
   for (let j = 0; j < n; j++) {
     const src = vizMirrorSourceIndex(j, n);
-    musicVizBarEls[j].style.height = Math.round(musicVizBars[src]) + "px";
-    musicVizBarEls[j].style.setProperty("--bar-intensity", (musicVizIntensity[src] || 0).toFixed(3));
+    const height = Math.round(musicVizBars[src]) + "px";
+    const intensity = (musicVizIntensity[src] || 0).toFixed(3);
+    if (musicVizBarEls) {
+      musicVizBarEls[j].style.height = height;
+      musicVizBarEls[j].style.setProperty("--bar-intensity", intensity);
+    }
+    // 2026-07-22 유저 요청 — 설정 페이지 미리보기 막대도 같은 값으로 동시에
+    // 갱신한다(본화면과 완전히 동일한 오디오 반응, 별도 계산 없음).
+    if (musicVizPreviewBarEls) {
+      musicVizPreviewBarEls[j].style.height = height;
+      musicVizPreviewBarEls[j].style.setProperty("--bar-intensity", intensity);
+    }
   }
 }
 function getVizSensitivity() {
@@ -4392,20 +4477,26 @@ let musicVizBandRanges = null;
 let musicVizAnimId = null;
 let musicVizIdlePhase = 0;
 let musicVizBarEls = null;
-// "밀도(개수)" 설정 변경 시 막대 DOM을 통째로 다시 만든다. ensureMusicVizBarsBuilt는
-// appendChild만 하고 innerHTML을 지우지 않으므로, .viz-bar만 골라 제거해야
-// 그 형제인 "퇴근 세리모니" 문구(#musicLeaveWork)가 함께 지워지지 않는다.
+let musicVizPreviewBarEls = null;
+// "밀도(개수)" 설정 변경 시 막대 DOM을 통째로 다시 만든다(본화면 + 미리보기
+// 둘 다). ensureMusicVizBarsBuilt는 appendChild만 하고 innerHTML을 지우지
+// 않으므로, .viz-bar만 골라 제거해야 그 형제인 "퇴근 세리모니" 문구
+// (#musicLeaveWork, 본화면 wrap 전용)가 함께 지워지지 않는다.
 function rebuildMusicVizBars() {
-  if (!musicVizWrap) return;
   const wasBuilt = !!musicVizBarEls;
-  if (wasBuilt) musicVizWrap.querySelectorAll(".viz-bar").forEach((el) => el.remove());
+  const previewWasBuilt = !!musicVizPreviewBarEls;
+  if (wasBuilt && musicVizWrap) musicVizWrap.querySelectorAll(".viz-bar").forEach((el) => el.remove());
+  if (previewWasBuilt && musicVizPreviewWrap) musicVizPreviewWrap.querySelectorAll(".viz-bar").forEach((el) => el.remove());
   musicVizBarEls = null;
+  musicVizPreviewBarEls = null;
   musicVizBandRanges = null;
   MUSIC_VIZ_BAR_COUNT = MUSIC_VIZ_DENSITY_PRESETS[musicVizSettings.density] || 34;
   musicVizBars = new Array(MUSIC_VIZ_BAR_COUNT).fill(0);
   musicVizIntensity = new Array(MUSIC_VIZ_BAR_COUNT).fill(0.1);
   musicVizSparklePhase = new Array(MUSIC_VIZ_BAR_COUNT).fill(0);
-  if (wasBuilt) ensureMusicVizBarsBuilt(); // 패널이 열려있던 중이면 즉시 다시 그려서 반영
+  // 열려있던 쪽만 즉시 다시 그려서 반영 — 둘 다 닫혀 있었다면 다음에 열릴
+  // 때 ensureMusicVizBarsBuilt가 새 개수로 알아서 만든다.
+  if (wasBuilt || previewWasBuilt) ensureMusicVizBarsBuilt();
 }
 // 2026-07-14 18차: "고음/드럼 반응이 약하다, 더 다이나믹하게"라는 피드백 —
 // 베이스(저음) 대역의 순간 에너지가 최근 평균보다 확 튀는 순간(=드럼/킥
@@ -4437,8 +4528,10 @@ function buildMusicVizBands(binCount, barCount) {
 // 배경/보더/그림자 값을 그대로 쓰게 해서 "같은 스타일"을 픽셀 단위로
 // 보장한다. DOM은 한 번만 만들고, 매 프레임은 각 막대의 style.height만
 // 갱신 — 너비는 flex가 자동으로 맞춰주므로 별도 리사이즈 로직도 불필요.
-function ensureMusicVizBarsBuilt() {
-  if (musicVizBarEls || !musicVizWrap) return;
+// 막대 N개를 만들어 wrap에 붙이고 엘리먼트 배열을 돌려준다. 본화면/미리보기
+// 둘 다 이 함수 하나로 만든다 — 완전히 같은 모양·색상 로직을 보장하기 위해.
+function buildVizBarsInto(wrap) {
+  if (!wrap) return null;
   const frag = document.createDocumentFragment();
   const els = [];
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
@@ -4448,15 +4541,18 @@ function ensureMusicVizBarsBuilt() {
     // 막대 위치 기준으로 무지개 hue를 한 번만 정해서 CSS 커스텀 프로퍼티로
     // 심어둔다. 실시간 밝기/알파는 --bar-intensity로 매 프레임 따로 갱신
     // (drawMusicViz/drawMusicVizIdle 참조) — hue는 고정, intensity만 움직인다.
-    const props = getVizBarColorProps(i, MUSIC_VIZ_BAR_COUNT);
-    bar.style.setProperty("--bar-hue", props.hue);
-    bar.style.setProperty("--bar-sat", props.sat + "%");
+    applyVizBarColorVars(bar, i, MUSIC_VIZ_BAR_COUNT);
     bar.style.setProperty("--bar-intensity", "0.1");
     els.push(bar);
     frag.appendChild(bar);
   }
-  musicVizWrap.appendChild(frag);
-  musicVizBarEls = els;
+  wrap.appendChild(frag);
+  return els;
+}
+
+function ensureMusicVizBarsBuilt() {
+  if (musicVizWrap && !musicVizBarEls) musicVizBarEls = buildVizBarsInto(musicVizWrap);
+  if (musicVizPreviewWrap && !musicVizPreviewBarEls) musicVizPreviewBarEls = buildVizBarsInto(musicVizPreviewWrap);
   applyMusicVizShapeClass();
 }
 
@@ -4649,13 +4745,16 @@ function drawMusicVizNative(h) {
 }
 
 function drawMusicViz() {
-  if (!isMusicPanelOpen() || !musicVizWrap || !musicVizBarEls) {
-    musicVizAnimId = null; // 패널이 닫히면 다음 프레임을 예약하지 않고 루프 종료
+  // 2026-07-22 유저 요청 — 설정 페이지의 실시간 미리보기도 같은 루프로
+  // 그린다. 본화면 패널이 닫혀 있어도 설정 시트가 열려있으면(비주얼라이저
+  // 카드의 미리보기가 보이는 동안) 계속 돈다 — isMusicVizActiveContext 참조.
+  if (!isMusicVizActiveContext() || (!musicVizBarEls && !musicVizPreviewBarEls)) {
+    musicVizAnimId = null; // 둘 다 닫히면 다음 프레임을 예약하지 않고 루프 종료
     return;
   }
   musicVizAnimId = requestAnimationFrame(drawMusicViz);
 
-  const h = musicVizWrap.clientHeight || 52;
+  const h = (musicVizWrap && musicVizWrap.clientHeight) || (musicVizPreviewWrap && musicVizPreviewWrap.clientHeight) || 52;
 
   if (isNativeWrapper) {
     drawMusicVizNative(h);
