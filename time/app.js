@@ -330,6 +330,12 @@ const weatherDetailTitle = document.getElementById("weatherDetailTitle");
 // #wdAdvisoryDetail을 펼치고 접는 방식으로 대체.
 const wdAdvisoryBanner = document.getElementById("wdAdvisoryBanner");
 const wdAdvisoryBannerText = document.getElementById("wdAdvisoryBannerText");
+// 2026-07-22 유저 요청: "펼침 아이콘만 말고 특보 부분 전체가 눌리면 좋겠다".
+// 예전엔 <button id="wdAdvisoryMoreBtn">가 유일한 탭 표적이었다 — 이제
+// 탭 가능한 실제 컨트롤은 head 전체(#wdAdvisoryBannerHead, role="button")로
+// 옮기고, wdAdvisoryMoreBtn은 ▾/▴만 표시하는 장식용 아이콘(<span>,
+// aria-hidden)으로 남긴다.
+const wdAdvisoryBannerHead = document.getElementById("wdAdvisoryBannerHead");
 const wdAdvisoryMoreBtn = document.getElementById("wdAdvisoryMoreBtn");
 const wdAdvisoryDetail = document.getElementById("wdAdvisoryDetail");
 let wdLastAdvisoryData = null;
@@ -3101,25 +3107,38 @@ function renderWeatherAdvisoryDetailContent(data) {
 // 상징하는 기호로".
 function collapseWeatherAdvisoryDetail() {
   if (wdAdvisoryDetail) wdAdvisoryDetail.hidden = true;
-  if (wdAdvisoryMoreBtn) {
-    wdAdvisoryMoreBtn.textContent = "▾";
-    wdAdvisoryMoreBtn.setAttribute("aria-expanded", "false");
-    wdAdvisoryMoreBtn.setAttribute("aria-label", "기상특보 상세 펼치기");
+  if (wdAdvisoryMoreBtn) wdAdvisoryMoreBtn.textContent = "▾";
+  if (wdAdvisoryBannerHead) {
+    wdAdvisoryBannerHead.setAttribute("aria-expanded", "false");
+    wdAdvisoryBannerHead.setAttribute("aria-label", "기상특보 상세 펼치기");
   }
 }
 
 function toggleWeatherAdvisoryDetail() {
-  if (!wdAdvisoryDetail || !wdAdvisoryMoreBtn) return;
+  if (!wdAdvisoryDetail) return;
   const willExpand = wdAdvisoryDetail.hidden;
   wdAdvisoryDetail.hidden = !willExpand;
-  wdAdvisoryMoreBtn.textContent = willExpand ? "▴" : "▾";
-  wdAdvisoryMoreBtn.setAttribute("aria-expanded", String(willExpand));
-  wdAdvisoryMoreBtn.setAttribute("aria-label", willExpand ? "기상특보 상세 접기" : "기상특보 상세 펼치기");
+  if (wdAdvisoryMoreBtn) wdAdvisoryMoreBtn.textContent = willExpand ? "▴" : "▾";
+  if (wdAdvisoryBannerHead) {
+    wdAdvisoryBannerHead.setAttribute("aria-expanded", String(willExpand));
+    wdAdvisoryBannerHead.setAttribute("aria-label", willExpand ? "기상특보 상세 접기" : "기상특보 상세 펼치기");
+  }
   wxDiagReport("toggle(펼침탭 순간)", wdLastAdvisoryData);
 }
 
-if (wdAdvisoryMoreBtn) {
-  wdAdvisoryMoreBtn.addEventListener("click", toggleWeatherAdvisoryDetail);
+// 2026-07-22: 탭 표적을 아이콘 하나에서 배너 head 전체로 확장 — 헤드
+// 안에서 클릭이 일어나면(아이콘 위 클릭 포함, 버블링으로 자동 수신)
+// 한 번만 토글되도록 리스너는 head 하나에만 건다(아이콘엔 별도로 걸지
+// 않음 — 중복 바인딩 시 아이콘 클릭이 두 번 토글돼 원상태로 되돌아가는
+// 버그가 생긴다).
+if (wdAdvisoryBannerHead) {
+  wdAdvisoryBannerHead.addEventListener("click", toggleWeatherAdvisoryDetail);
+  wdAdvisoryBannerHead.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+      e.preventDefault();
+      toggleWeatherAdvisoryDetail();
+    }
+  });
 }
 
 function renderWeatherRainWindows(data) {

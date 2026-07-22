@@ -1740,10 +1740,24 @@ button { font: inherit; }
   margin-top: 22px;
 }
 
+/* 2026-07-22 유저 요청: "펼침 아이콘만 말고 특보 부분 전체가 눌리면
+   좋겠다" — head 전체를 탭 표적으로 확장(app.js wdAdvisoryBannerHead
+   참조). cursor/tap-highlight/margin 네거티브 확장으로 터치 영역 자체도
+   실제로 넓혔다(작은 아이콘만 누르던 예전보다 오터치 실수가 줄어듦). */
 .weather-advisory-banner-head {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin: -6px -4px;
+  padding: 6px 4px;
+  border-radius: 10px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.weather-advisory-banner-head:active {
+  background: rgba(255,255,255,0.08);
 }
 
 .weather-advisory-banner-text {
