@@ -29,6 +29,24 @@
  * 투자 명언 큐레이션은 이 스크립트의 대상이 아니다 — 인터넷 조회가 필요 없어
  * Cowork 스케줄 작업에서 계속 정상 동작하므로 역할을 그대로 남겨둔다.
  *
+ * 2026-07-22 컬러 기준 보강: 유저 피드백 — "사진 전체가 회색빛·백색톤으로
+ * 불투명하게 흐릿한 사진 말고, 초록 나무·파란 하늘·빨간 포인트처럼 채도 높은
+ * 컬러 포인트가 반드시 있어야 한다. 단, 비 오는 날은 비 오는 매력이 느껴지면
+ * 통과. 불투명한 느낌이거나 보고 나서 기분이 안 좋아지는 사진은 제외."
+ * 기존엔 이미지 전체 평균 컬러풀니스(cf) 한 지표만 봐서 "전체는 흐릿한데
+ * 평균만 어쩌다 넘긴" 사진이나 "전체 채도는 낮지만 실제로 칙칙한" 사진을
+ * 걸러내지 못했다. photoColorMetrics()로 3개 지표를 함께 계산한다:
+ *   - cf: 기존 Hasler-Süsstrunk 평균 컬러풀니스 (전체적인 컬러감)
+ *   - peakSat: 채도 상위 5% 지점 값 (사진 안에 확실한 컬러 포인트가
+ *     있는지 — 평균이 낮아도 이게 높으면 "포인트 컬러가 있는 사진")
+ *   - contrast: 명도(V) 표준편차 (낮으면 안개·헤이즈처럼 뿌옇고
+ *     불투명한 사진 — 원인 문제였던 부분)
+ * 비 오는 날(rain/light-rain/heavy-rain 태그)은 하늘이 원래 흐려 평균이
+ * 낮게 나오는 게 정상이라 cf·peakSat 기준을 낮춰주되, contrast 하한은
+ * 여전히 둬서 "완전히 뿌연 무채색" 사진은 비 오는 날에도 계속 걸러낸다.
+ * "기분이 안 좋아지는 사진"은 수치로 재기 어려워 isUsableNatureImage()의
+ * 부정 키워드 목록에 재난·황폐·음울 계열 단어를 추가하는 방식으로 보강했다.
+ *
  * 실행: node scripts/collect-time-background-photos.js
  * (저장소 루트에서 실행. Node 18+ 내장 fetch만 쓰고 외부 npm 의존성 없음.
  *  컬러감 검수만 python3 + Pillow가 PATH에 있어야 한다.)
@@ -47,7 +65,40 @@ const manifestPath = path.join(root, "data", "background-manifest.json");
 const archiveRoot = path.join(root, "assets", "background-archive");
 
 const WEAK_THRESHOLD = 30;
-const COLORFULNESS_PASS = 20;
+
+// 2026-07-22: 1회 실행당 최소 수집 목표. 자정~새벽4시 예외(1장) 폐지 후
+// 전 시간대 공통 적용. 워크플로 실행 주기도 1시간→30분(하루 24회→48회)으로
+// 함께 조정해, 컬러 기준이 깐깐해져도 하루 누적량이 급감하지 않게 했다.
+const MIN_PHOTOS_PER_RUN = 5;
+
+// 2026-07-22: 단일 COLORFULNESS_PASS(20)를 3지표 기준으로 교체.
+//   cfMin       — 전체 평균 컬러풀니스 하한 (Hasler-Süsstrunk)
+//   peakSatMin  — 채도 상위 5% 지점 하한 (컬러 포인트 존재 여부, 0~255)
+//   contrastMin — 명도(V) 표준편차 하한 (뿌옇고 불투명한 사진 차단, 0~255)
+// 비 오는 날은 하늘·전체 톤이 원래 어둡고 채도가 낮아지므로 cf·peakSat만
+// 완화하고, "불투명함" 방지선인 contrastMin은 거의 그대로 유지한다.
+// 2026-07-22 합성 이미지 7종(안개회색/화창한초록+파랑+빨강점/비오는날+젖은초록/
+// 완전백색톤/비오는날+무채색/무채색배경+작은포인트7%/2%)으로 실측 검증한 값.
+// contrastMin은 명도(V) 표준편차 — 실제 안개·백색톤 사진은 0.6~1.7 수준으로
+// 바닥을 기는 반면, "배경은 밋밋해도 포인트 컬러가 있는" 정상 사진도 8~9는
+// 나오므로 28처럼 높게 잡으면 후자까지 오탈락한다. 6(base)/5(rain)이면 진짜
+// 안개·백색 사진과는 4배 이상 여유를 두면서 정상 사진은 통과시킨다.
+// (참고: satStd(채도 자체의 표준편차)는 검토했으나 "전체가 고르게 컬러풀한"
+// 사진에서 오히려 낮게 나와 — 예: 하늘+잔디 2톤 사진이 satStd=10.9로 낮음 —
+// 기준으로 쓰기에 부적합해 채택하지 않았다.)
+// 2026-07-22 2차 조정: 유저가 "컬러감 검수는 깐깐하게" 요청 — 1차 값 대비
+// 20~40% 상향(hazy/white/flat 케이스 대비 여전히 4배 이상 여유 유지 확인,
+// 다만 "배경은 밋밋해도 작은 컬러 포인트만 있는" 경계 사례는 이제 탈락시킴
+// — 더 엄격하게 걸러달라는 요청과 일치).
+const COLOR_CRITERIA = {
+  base: { cfMin: 30, peakSatMin: 110, contrastMin: 10 },
+  rain: { cfMin: 20, peakSatMin: 85, contrastMin: 8 },
+};
+const RAIN_WEATHER_TAGS = ["rain", "light-rain", "heavy-rain"];
+// 명도(V)가 이 값을 넘도록 하얗게 날아간 사진은, 컬러 포인트(peakSat)가
+// 기준보다도 한참 더 높지 않으면 "온통 백색톤" 사진으로 간주해 추가 차단.
+const OVEREXPOSED_V = 238;
+const OVEREXPOSED_PEAK_SAT_MARGIN = 20;
 
 // SKILL.md 2단계와 동일한 동률 우선순위(앞쪽이 우선).
 const TIME_BUCKET_PRIORITY = [
@@ -257,6 +308,12 @@ function isUsableNatureImage(info) {
     "trail bridge", "road", "car", "railway", "train", "weapon", "war", "ruin",
     "black and white", "black-and-white", "monochrome", "monochromatic",
     "grayscale", "greyscale", "b&w photography", "sepia", "desaturated",
+    // 2026-07-22 추가 — 채도가 높아도 보고 나서 기분이 안 좋아질 수 있는 소재
+    // (수치 검사로는 못 걸러내는 "무드" 차단, 텍스트 메타데이터 기반).
+    "disaster", "wildfire", "forest fire", "smoke haze", "drought", "barren",
+    "flood damage", "storm damage", "hurricane damage", "pollution haze",
+    "smog", "bleak", "gloomy", "abandoned building", "decay", "decayed",
+    "dead tree", "dying", "toxic", "landfill", "garbage dump", "accident",
   ];
   if (negative.some((word) => text.includes(word))) return false;
 
@@ -320,8 +377,11 @@ function pickTargetBucket(manifest) {
   return weak[0].bucket;
 }
 
-// SKILL.md 4단계 포팅 — python3 + Pillow 서브프로세스로 원래 스니펫 그대로 계산.
-function colorfulnessScore(imagePath) {
+// SKILL.md 4단계 포팅 — python3 + Pillow 서브프로세스.
+// 2026-07-22: 기존엔 cf(전체 평균 컬러풀니스) 하나만 계산했는데, 3개 지표로
+// 확장했다 — cf(전체 컬러감), peakSat(채도 상위 10% = 컬러 포인트 존재
+// 여부), contrast(명도 표준편차 = 뿌옇고 불투명한 사진 여부).
+function photoColorMetrics(imagePath) {
   const snippet = `
 import math
 from PIL import Image
@@ -334,10 +394,39 @@ def stats(vals):
     return m, v**0.5
 rgm, rgs = stats(rg); ybm, ybs = stats(yb)
 cf = math.sqrt(rgs**2+ybs**2) + 0.3*math.sqrt(rgm**2+ybm**2)
-print(round(cf, 2))
+
+hsv_px = list(im.convert("HSV").getdata())
+sat_vals = sorted(s for (h, s, v) in hsv_px)
+val_vals = [v for (h, s, v) in hsv_px]
+n = len(sat_vals)
+peak_sat = sat_vals[int(n * 0.95)]  # 상위 5% 지점 = "포인트 컬러" 민감도 확보
+avg_v = sum(val_vals) / len(val_vals)
+contrast = (sum((v - avg_v) ** 2 for v in val_vals) / len(val_vals)) ** 0.5
+
+print(f"{round(cf,2)},{peak_sat},{round(contrast,2)},{round(avg_v,2)}")
 `;
   const output = execFileSync("python3", ["-c", snippet], { encoding: "utf8" });
-  return Number(output.trim());
+  const [cf, peakSat, contrast, avgV] = output.trim().split(",").map(Number);
+  return { cf, peakSat, contrast, avgV };
+}
+
+// 2026-07-22 신설 — 3지표 + 비 오는 날 완화 기준으로 통과 여부를 판정한다.
+function passesColorCriteria(metrics, weatherTag) {
+  const rule = RAIN_WEATHER_TAGS.includes(weatherTag) ? COLOR_CRITERIA.rain : COLOR_CRITERIA.base;
+
+  if (metrics.contrast < rule.contrastMin) {
+    return { pass: false, reason: `contrast=${metrics.contrast}<${rule.contrastMin}(뿌옇고 불투명함)` };
+  }
+  if (metrics.peakSat < rule.peakSatMin) {
+    return { pass: false, reason: `peakSat=${metrics.peakSat}<${rule.peakSatMin}(선명한 컬러 포인트 없음)` };
+  }
+  if (metrics.cf < rule.cfMin) {
+    return { pass: false, reason: `cf=${metrics.cf}<${rule.cfMin}(전체 컬러감 부족)` };
+  }
+  if (metrics.avgV > OVEREXPOSED_V && metrics.peakSat < rule.peakSatMin + OVEREXPOSED_PEAK_SAT_MARGIN) {
+    return { pass: false, reason: `avgV=${metrics.avgV}(하얗게 날아간 백색톤)` };
+  }
+  return { pass: true, reason: "" };
 }
 
 async function main() {
@@ -348,8 +437,9 @@ async function main() {
   const manifest = await readManifest();
   const targetBucket = pickTargetBucket(manifest);
   const plan = targetBucket ? timePlans.find((p) => p.bucket === targetBucket) : getTargetPlan(0);
-  const quietNight = ["midnight", "pre-dawn"].includes(plan.bucket);
-  const count = quietNight ? 1 : 3;
+  // 2026-07-22: 자정~새벽4시(midnight/pre-dawn)만 1장으로 줄이던 예외를
+  // 유저 요청으로 제거 — 전 시간대 동일하게 MIN_PHOTOS_PER_RUN을 목표로 한다.
+  const count = MIN_PHOTOS_PER_RUN;
 
   console.log(
     `weather="${weatherHint || "(조회 실패)"}" weatherTag=${weatherTag} season=${season} ` +
@@ -362,7 +452,9 @@ async function main() {
 
   const existing = new Set((manifest.images || []).map((image) => image.src));
   const existingSourceUrls = new Set((manifest.images || []).map((image) => image.sourceUrl).filter(Boolean));
-  const candidateLimit = Math.max(count * 3, count + 6);
+  // 2026-07-22: 컬러 기준이 깐깐해져 통과율이 떨어질 걸 감안해 후보군을
+  // 넉넉히 확보(3배·+6 → 8배·+20). count=5 기준 후보 최대 40장까지 탐색.
+  const candidateLimit = Math.max(count * 8, count + 20);
   let results = [];
   for (const query of buildSearchQueries(plan, weatherTag, season)) {
     if (results.length >= candidateLimit) break;
@@ -399,16 +491,17 @@ async function main() {
       continue;
     }
 
-    let cf;
+    let metrics;
     try {
-      cf = colorfulnessScore(outputPath);
+      metrics = photoColorMetrics(outputPath);
     } catch (error) {
       console.warn(`skip(컬러감 검수 실패) ${filename}: ${error.message}`);
       await fs.unlink(outputPath).catch(() => {});
       continue;
     }
-    if (cf < COLORFULNESS_PASS) {
-      console.log(`reject(colorfulness=${cf}, 기준 ${COLORFULNESS_PASS} 미만) ${filename}`);
+    const verdict = passesColorCriteria(metrics, weatherTag);
+    if (!verdict.pass) {
+      console.log(`reject(${verdict.reason}) ${filename}`);
       await fs.unlink(outputPath).catch(() => {});
       continue;
     }
@@ -423,9 +516,11 @@ async function main() {
       license: commonsLicense(info),
       sourceUrl: info.descriptionurl || info.url || "",
       collectedAtKST: new Date().toLocaleString("sv-SE", { timeZone: "Asia/Seoul" }).replace(" ", "T") + "+09:00",
-      colorfulness: cf,
+      colorfulness: metrics.cf,
+      peakSaturation: metrics.peakSat,
+      contrast: metrics.contrast,
     });
-    console.log(`accept(colorfulness=${cf}) ${filename}`);
+    console.log(`accept(cf=${metrics.cf}, peakSat=${metrics.peakSat}, contrast=${metrics.contrast}) ${filename}`);
   }
 
   if (added.length > 0) {
