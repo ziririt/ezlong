@@ -1030,6 +1030,25 @@ button { font: inherit; }
   color: #fff;
 }
 
+/* 2026-07-22 유저 요청 — 설정 카드 맨 아래 실시간 미리보기. 어두운 트레이
+   배경을 따로 둬서 settings-card의 옅은 배경 위에서도 네온 막대가 또렷하게
+   보이게 한다. .music-viz-wrap을 그대로 재사용하되(막대 생성/색상/모양 로직
+   전부 공유), 세로 높이만 카드 안에 맞게 고정값으로 좁힌다(원래는
+   clamp(48px,10vh,85px)로 뷰포트에 비례). */
+.viz-preview-block {
+  margin-top: 14px;
+}
+
+.music-viz-wrap.viz-preview {
+  height: 56px;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.28);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-sizing: border-box;
+}
+
 /* 2026-07-19 설정 화면 리디자인: 유저가 참고로 준 "Apple Vision OS design
    system research" 아티팩트(클로드 디자인 결과물)에서, 각 설정 그룹이
    구분선(divider) 하나로만 나뉜 평면적 목록이 아니라 각자 테두리·배경을
@@ -2953,14 +2972,17 @@ button { font: inherit; }
      밝기와 글로우 강도를 조절한다 — 채움 자체는 항상 불투명한 솔리드
      컬러라 "밋밋함" 없이 늘 선명하고, 비트가 세게 튈 때는 글로우가
      확 커지고 밝아져 "탁탁 반응"하는 네온사인 느낌을 낸다. */
-  /* 2026-07-22 유저 요청 — 색상 프리셋(모노화이트 등)이 채도를 낮출 수
-     있도록 92%를 var(--bar-sat, 92%)로 바꿨다(app.js getVizBarColorProps
-     참조). 기본값(무지개/오션/선셋/네온퍼플)은 여전히 92%라 시각적으로
-     달라지지 않는다. */
-  background: hsl(var(--bar-hue, 280), var(--bar-sat, 92%), calc(52% + var(--bar-intensity, 0.15) * 14%));
+  /* 2026-07-22 유저 요청 — 색상 프리셋(화이트 등)이 채도를 낮출 수 있도록
+     92%를 var(--bar-sat, 92%)로 바꿨다(app.js getVizBarColorProps 참조).
+     기본값(무지개/오션/선셋/퍼플)은 여전히 92%라 시각적으로 달라지지 않는다.
+     2026-07-22 2차: "화이트가 실제로는 회색이다"는 재지적 — 명도(lightness)도
+     고정 52%/14%에서 --bar-light-base/--bar-light-range 변수로 바꿔, 화이트
+     모드는 훨씬 높은 명도(88~98%)를 넣어 진짜 흰빛에 가깝게 보이게 한다.
+     기본 프리셋은 여전히 52%/14%라 시각적으로 달라지지 않는다. */
+  background: hsl(var(--bar-hue, 280), var(--bar-sat, 92%), calc(var(--bar-light-base, 52%) + var(--bar-intensity, 0.15) * var(--bar-light-range, 14%)));
   box-shadow:
-    0 0 calc(4px + var(--bar-intensity, 0.15) * 10px) hsla(var(--bar-hue, 280), var(--bar-sat, 92%), 60%, calc(0.55 + var(--bar-intensity, 0.15) * 0.45)),
-    0 0 calc(10px + var(--bar-intensity, 0.15) * 18px) hsla(var(--bar-hue, 280), var(--bar-sat, 92%), 55%, calc(0.28 + var(--bar-intensity, 0.15) * 0.35));
+    0 0 calc(4px + var(--bar-intensity, 0.15) * 10px) hsla(var(--bar-hue, 280), var(--bar-sat, 92%), calc(var(--bar-light-base, 52%) + 8%), calc(0.55 + var(--bar-intensity, 0.15) * 0.45)),
+    0 0 calc(10px + var(--bar-intensity, 0.15) * 18px) hsla(var(--bar-hue, 280), var(--bar-sat, 92%), calc(var(--bar-light-base, 52%) + 3%), calc(0.28 + var(--bar-intensity, 0.15) * 0.35));
 }
 
 /* 2026-07-22 유저 요청 — 막대 모양 옵션 3종. 기본(캡슐)은 위 .viz-bar
