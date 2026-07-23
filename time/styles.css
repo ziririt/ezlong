@@ -3057,28 +3057,9 @@ button { font: inherit; }
      패널 바닥이 문장 박스에서 확실히 떨어진다. */
   .music-viz-wrap { height: clamp(42px, 7.4vh, 70px); }
   .music-info-panel { padding: 16px 10px 8px; }
-
-  /* 2026-07-24 유저 요청 — "문장 폰트가 아이폰보다 한 단계 크다. 줄여달라."
-     짧은 화면(=이 안드로이드 기기처럼 CSS 뷰포트가 작은 화면)에서만 문장
-     폰트를 기존 사다리의 정확히 한 단계 아래 값으로 내린다:
-     기본→quote-long 값, quote-long→quote-dense 값. 아이폰 일반 기종
-     (높이 780px 초과)은 변화 없음. */
-  .quote-panel blockquote {
-    font-size: clamp(14px, 3.35vw, 21px);
-    line-height: 1.36;
-  }
-  .quote-panel.quote-long blockquote {
-    font-size: clamp(12px, 3vw, 18px);
-    line-height: 1.32;
-  }
-  .quote-english {
-    font-size: clamp(12px, 2.75vw, 16px);
-    line-height: 1.34;
-  }
-  .quote-panel.quote-long .quote-english {
-    font-size: clamp(11px, 2.5vw, 14px);
-  }
 }
+/* (문장 폰트 축소 규칙은 파일 맨 끝의 @media 블록 참조 — 여기 두면 뒤에
+   선언된 기본 .quote-panel 규칙에 순서로 밀려 무효가 된다. 2026-07-24 실증.) */
 
 /* 2026-07-22 유저 요청 — "감도 예민에서 막대가 박스 높이에 다 닿아서 다
    똑같아 보인다. 무조건 위에서 자르지 말고, 예민일 때만 박스 자체의 height를
@@ -3998,5 +3979,29 @@ button { font: inherit; }
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* 2026-07-24 (재수술, ver.1.6.7.9) — 짧은 화면(높이 780px 이하 = 안드로이드
+   747px 실측 기기 등)에서 문장 폰트를 기존 사다리의 정확히 한 단계 아래로.
+   첫 시도(1.6.7.8)가 무효였던 이유: 규칙을 파일 앞쪽에 넣어서, 뒤에 선언된
+   기본 .quote-panel 규칙이 같은 특이도의 "나중 선언 우선"으로 이겼다 —
+   @media는 특이도를 올려주지 않는다. 그래서 이 블록은 반드시 파일 맨 끝에
+   있어야 한다. 위로 옮기지 말 것. 아이폰 일반 기종(780px 초과)은 영향 없음. */
+@media (max-height: 780px) {
+  .quote-panel blockquote {
+    font-size: clamp(14px, 3.35vw, 21px);
+    line-height: 1.36;
+  }
+  .quote-panel.quote-long blockquote {
+    font-size: clamp(12px, 3vw, 18px);
+    line-height: 1.32;
+  }
+  .quote-english {
+    font-size: clamp(12px, 2.75vw, 16px);
+    line-height: 1.34;
+  }
+  .quote-panel.quote-long .quote-english {
+    font-size: clamp(11px, 2.5vw, 14px);
   }
 }
