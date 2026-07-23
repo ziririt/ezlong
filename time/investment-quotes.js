@@ -8095,5 +8095,39 @@ window.investmentQuotes = [
     "title": "마음가면",
     "author": "브레네 브라운",
     "genre": "literature"
+  },
+  {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
+    "text": "건초더미에서 바늘 하나를 찾으려 애쓰지 마라. 그냥 건초더미 전체를 사버려라.",
+    "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
+    "author": "존 보글 (John C. Bogle)",
+    "category": "mindset"
+  },
+  {
+    "english": "You can't ever reach perfection, but you can believe in an asymptote toward which you are ceaselessly striving.",
+    "text": "완벽함에는 결코 다다를 수 없지만, 끊임없이 다가가려 애쓰는 점근선 같은 것은 믿을 수 있다.",
+    "title": "숨결이 바람 될 때",
+    "author": "폴 칼라니티",
+    "genre": "literature"
+  },
+  {
+    "english": "Time is your friend; impulse is your enemy. Take advantage of the magic of compounding interest, and don't be captivated by the siren song of the market that says you can outsmart it.",
+    "text": "시간은 당신의 편이고, 충동은 당신의 적이다. 복리의 힘을 이용하라. 그리고 당신에게 투자를 이리저리 바꾸라고 유혹하는 시장의 사이렌 노래에 홀리지 마라.",
+    "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
+    "author": "버턴 말킬 (Burton G. Malkiel)",
+    "category": "patience"
+  },
+  {
+    "english": "Wind extinguishes a candle and energizes fire. Likewise with randomness, uncertainty, chaos: you want to use them, not hide from them. You want to be the fire and wish for the wind.",
+    "text": "바람은 촛불을 꺼뜨리지만, 불길은 오히려 키운다. 무작위성과 불확실성, 혼돈도 마찬가지다 — 거기서 숨을 게 아니라 그것을 이용해야 한다. 촛불이 아니라 불길이 되어, 바람이 불어오길 바라라.",
+    "title": "안티프래질 (Antifragile: Things That Gain from Disorder)",
+    "author": "나심 니콜라스 탈레브 (Nassim Nicholas Taleb)",
+    "category": "mindset"
+  },
+  {
+    "text": "무소유란 아무것도 갖지 않는다는 것이 아니라 불필요한 것을 갖지 않는다는 뜻이다. 우리가 선택한 맑은 가난은 부보다 훨씬 값지고 고귀한 것이다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
   }
 ];
