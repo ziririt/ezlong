@@ -4781,8 +4781,24 @@ function drawMusicVizNative(h) {
   nativeVizBassAvg2 += (bassNow - nativeVizBassAvg2) * 0.12;
   if (midNow > nativeVizMidAvg2 * 1.28 + 0.14) { nativeVizMidHit2 = 1; } else { nativeVizMidHit2 *= 0.78; }
   nativeVizMidAvg2 += (midNow - nativeVizMidAvg2) * 0.12;
-  if (trebleNow > nativeVizTrebleAvg2 * 1.22 + 0.12) { nativeVizTrebleHit2 = 1; } else { nativeVizTrebleHit2 *= 0.74; }
+  // 2026-07-24 — 고음(하이햇/보컬 고역) 타격을 더 예민하고(문턱 1.22→1.15)
+  // 더 날카롭게(감쇠 0.74→0.68 = 더 짧게 번쩍) — "높은 보이스에 엣지" 요청.
+  if (trebleNow > nativeVizTrebleAvg2 * 1.15 + 0.10) { nativeVizTrebleHit2 = 1; } else { nativeVizTrebleHit2 *= 0.68; }
   nativeVizTrebleAvg2 += (trebleNow - nativeVizTrebleAvg2) * 0.12;
+
+  // 2026-07-24 유저 요청 "고저가 드라마틱하게" — 대역별 편차 증폭.
+  // 각 대역 값이 자기 "최근 평균"에서 벗어난 정도를 위로는 2.1배, 아래로는
+  // 1.6배로 부풀린다: 평균 근처(잔잔한 구간)는 거의 그대로, 평균보다 큰
+  // 순간(드럼·강세)은 확 치솟고, 평균보다 작은 순간(비트 사이 골짜기)은
+  // 더 깊게 파인다. AGC가 이미 "곡 나름의 0..1"로 정규화해준 값 위에서
+  // 편차만 키우는 것이라, 조용한 곡이든 시끄러운 곡이든 똑같이 동작한다.
+  function nativeVizExpand(now, avg) {
+    const dev = now - avg;
+    return Math.min(1, Math.max(0, avg + dev * (dev > 0 ? 2.1 : 1.6)));
+  }
+  const bassDyn = nativeVizExpand(bassNow, nativeVizBassAvg2);
+  const midDyn = nativeVizExpand(midNow, nativeVizMidAvg2);
+  const trebleDyn = nativeVizExpand(trebleNow, nativeVizTrebleAvg2);
 
   // 2026-07-22 유저 요청 — 감도(sensitivity)/베이스펀치(bassPunch) 설정을
   // 기존 공식은 그대로 두고 배율로만 곱해서 반영한다(회귀 위험 최소화).
@@ -4799,7 +4815,9 @@ function drawMusicVizNative(h) {
     // 3개 값을 딱 자르지 않고 위치별 가중치로 부드럽게 섞는다 — 경계에서
     // 값이 뚝 끊기지 않아 3~4덩어리로 나뉘어 보이던 문제가 사라진다.
     const [bassW, midW, trebleW] = nativeVizBandWeights(i);
-    const band = bassW * bassNow + midW * midNow + trebleW * trebleNow;
+    // 2026-07-24 — 막대 높이는 편차 증폭된 값(bassDyn 등)으로 그린다. 타격
+    // 감지는 위에서 원본 값으로 이미 끝났으므로 이중 증폭은 없다.
+    const band = bassW * bassDyn + midW * midDyn + trebleW * trebleDyn;
     // 2026-07-16: 타격은 대역 색상용 넓은 가중치가 아니라 훨씬 좁은
     // hitWeights로 국지화한다 — 그래야 킥/스네어가 화면 전체를 얇게
     // 출렁이지 않고 자기 구역의 몇 개 막대만 확 튄다.
@@ -4828,7 +4846,7 @@ function drawMusicVizNative(h) {
     let target = Math.max(4, ratio * shapeEnvelope * h * liveliness);
     // 대역별 타격 펀치 — 이제 hitWeights로 국지화된 데다 막대별 지터까지
     // 곱해져서, 같은 킥 한 방에도 막대마다 확연히 다르게 튄다.
-    target = Math.max(target, hit * h * 1.05 * shapeEnvelope);
+    target = Math.max(target, hit * h * 1.18 * shapeEnvelope);
     // 2026-07-22 2차 — 대비: t=0(저음)에서 살짝 줄고 t=1(고음)에서 살짝 커지는
     // 중앙 대칭 기울기. normal(contrastAmount=0)은 배율이 항상 1이라 기존
     // 동작과 완전히 동일(회귀 없음).
