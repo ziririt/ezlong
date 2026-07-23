@@ -213,6 +213,8 @@ const aladinModalExternalOpenEl = document.getElementById("aladinModalExternalOp
 const settingsPanel = document.getElementById("quoteSettings");
 const settingsOpen = document.getElementById("settingsOpen");
 const settingsSave = document.getElementById("settingsSave");
+// 2026-07-23 신설 — "광고 없이 이용" 프리미엄 카드의 업그레이드 버튼.
+const premiumUpgradeButton = document.getElementById("premiumUpgradeButton");
 // 2026-07-21 유저 요청 — 날짜 탭 → 이번달 달력 아코디언.
 const dateLabelEl = document.getElementById("dateLabel");
 const calendarPanelEl = document.getElementById("calendarPanel");
@@ -5467,6 +5469,25 @@ function postToNativeHaptic(style) {
   }
 }
 
+// 2026-07-23 신설 — 광고/구매 브릿지(flipzenAd). postToNativeRadio/
+// postToNativeHaptic과 완전히 동일한 안전 패턴(네이티브 래퍼 아니면 조용히
+// 무시, 브릿지 미준비 시 에러 삼킴)을 그대로 재사용한다. 두 가지 용도:
+//   - { action: "screenTransition" } — goToPage() 등 자연스러운 화면 전환
+//     시점마다 호출. 네이티브가 그날 아직 리워드 전면 광고를 안 보여줬으면
+//     이 신호를 계기로 광고를 제시한다(하루 1회 상한은 네이티브
+//     AdTimerManager가 관리 — 웹은 그냥 "지금이 자연스러운 타이밍"이라는
+//     신호만 보낸다).
+//   - { action: "openPaywall" } — 설정 페이지 '프리미엄으로 업그레이드'
+//     버튼에서 호출. 네이티브가 구매 시트(PaywallView)를 띄운다.
+function postToNativeAd(payload) {
+  if (!isNativeWrapper) return;
+  try {
+    window.webkit.messageHandlers.flipzenAd.postMessage(payload);
+  } catch (error) {
+    // 네이티브 브릿지가 아직 준비 전이거나(구버전 앱) 없는 환경 — 조용히 무시.
+  }
+}
+
 // renderMusicPlaylistInfo()가 트랙이 바뀌는 모든 지점(첫 재생 시작·수동
 // 스킵·자동 크로스페이드 완료·플레이리스트/장르 필터 변경)에서 공통으로
 // 호출되므로, 여기 한 곳에만 붙여도 트랙 전환을 하나도 놓치지 않고
@@ -6541,6 +6562,10 @@ function settleEzlongOpen() {
 function goToPage(index) {
   const open = index >= 1;
   currentPageIndex = open ? 1 : 0;
+  // 2026-07-23 신설 — 페이지 전환은 "자연스러운 중단 지점"이라 하루 1회
+  // 리워드 전면 광고를 제안하기 적합한 타이밍이다. 실제 노출 여부/1일 상한은
+  // 네이티브 AdTimerManager가 판단한다 — 여기서는 그냥 신호만 보낸다.
+  postToNativeAd({ action: "screenTransition" });
   if (ezlongSettleTimer) { window.clearTimeout(ezlongSettleTimer); ezlongSettleTimer = null; }
   if (open) {
     if (app) app.classList.add("ezlong-open");
@@ -6738,6 +6763,15 @@ settingsSave.addEventListener("click", () => {
 document.querySelectorAll("[data-settings-close]").forEach((element) => {
   element.addEventListener("click", closeSettings);
 });
+// 2026-07-23 신설 — 네이티브 앱(iOS)에서만 실제로 동작한다. 웹/PWA에서는
+// postToNativeAd가 조용히 무시되므로(isNativeWrapper === false) 버튼은
+// 보이되 아무 일도 일어나지 않는다 — 그 환경엔 애초에 광고 자체가 없다.
+if (premiumUpgradeButton) {
+  premiumUpgradeButton.addEventListener("click", () => {
+    postToNativeHaptic("light");
+    postToNativeAd({ action: "openPaywall" });
+  });
+}
 if (weatherChipOpen) weatherChipOpen.addEventListener("click", () => {
   postToNativeHaptic("light");
   openWeatherDetail();

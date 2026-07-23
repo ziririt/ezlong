@@ -453,6 +453,7 @@ button { font: inherit; }
    클릭 동작이 없는 요소는 제외). */
 .icon-button,
 .settings-save,
+.premium-upgrade-button,
 .music-history-play-btn,
 .music-history-like-btn,
 .music-history-dislike-btn,
@@ -463,6 +464,7 @@ button { font: inherit; }
 
 .icon-button:active,
 .settings-save:active,
+.premium-upgrade-button:active,
 .music-history-play-btn:active,
 .music-history-like-btn:active,
 .music-history-dislike-btn:active,
@@ -474,6 +476,7 @@ button { font: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .icon-button,
   .settings-save,
+  .premium-upgrade-button,
   .music-history-play-btn,
   .music-history-like-btn,
   .music-history-dislike-btn,
@@ -482,6 +485,7 @@ button { font: inherit; }
   }
   .icon-button:active,
   .settings-save:active,
+  .premium-upgrade-button:active,
   .music-history-play-btn:active,
   .music-history-like-btn:active,
   .music-history-dislike-btn:active,
@@ -1134,6 +1138,24 @@ button { font: inherit; }
   border-color: rgba(56, 189, 248, 0.7);
   background: #38bdf8;
   color: #062033;
+}
+
+/* 2026-07-23 신설 — 프리미엄 카드의 "업그레이드" 버튼. .settings-save와
+   생김새는 맞추되(흰 배경 필/카드 버튼 톤) position:sticky는 절대 그대로
+   가져오지 않는다 — .settings-save는 시트 하단에 고정되는 페이지 전체의
+   "확인" 버튼 전용이라, 카드 안쪽에서 재사용하면 이 버튼이 카드를 벗어나
+   화면 바닥에 따로 떠버리는 버그가 생긴다. */
+.premium-upgrade-button {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 14px;
+  border: 1px solid rgba(255,255,255,0.26);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.86);
+  color: #101722;
+  font-size: 16px;
+  font-weight: 780;
+  cursor: pointer;
 }
 
 /* 숨김 QC 패널 안의 버튼은 위 sticky 대상이 아니다(고유 id로만 한정). */
