@@ -6717,9 +6717,23 @@ if (webviewBackButton) {
 // ezlong.com 페이지가 <body> 직후 이 스크립트를 로드하므로 페이지
 // 종류와 무관하게 동작). 이 메시지를 받을 준비가 안 된 옛 배포본이
 // 떠 있어도 그냥 무시될 뿐 에러는 안 난다(안전한 점진적 배포).
+// 2026-07-24 유저 재요청: 단일 탭 → 더블탭(사파리 상태바 탭처럼)으로 변경 +
+// 터치존을 가운데 112px에서 전폭(100%)으로 확장. 시각적 손잡이(핏 이미지)도
+// 완전히 제거(styles.css 참조) — 이제 눈에 보이는 흔적 없이 "상단 어딘가를
+// 빠르게 두 번 탭"하면 스크롤톱이 실행된다. dblclick 네이티브 이벤트는
+// WKWebView·안드로이드 WebView에서 터치 더블탭에 항상 신뢰성 있게 매핑된다는
+// 보장이 없어(이 프로젝트에서 반복 확인된 터치 이벤트 불일치 전례 참고),
+// touchend 타임스탬프+좌표 차이를 직접 재는 수동 더블탭 판정을 쓴다. 전폭
+// 확장의 트레이드오프(로고·헤더 메뉴 탭이 이 구역에서는 반응 안 함)는
+// styles.css .webview-grabber 주석 참조 — 유저 확인 후 진행.
 const webviewGrabber = document.querySelector(".webview-grabber");
 if (webviewGrabber && ezlongSection) {
-  webviewGrabber.addEventListener("click", () => {
+  let lastTapAt = 0;
+  let lastTapX = null;
+  let lastTapY = null;
+  const DOUBLE_TAP_MS = 350;
+  const DOUBLE_TAP_DIST_PX = 40;
+  function scrollEzlongToTop() {
     postToNativeHaptic("light");
     const frame = ezlongSection.querySelector(".ezlong-frame");
     if (!frame || !frame.contentWindow) return;
@@ -6728,7 +6742,28 @@ if (webviewGrabber && ezlongSection) {
     } catch (error) {
       // 크로스오리진 등으로 postMessage 자체가 막혀도 앱 동작에는 영향 없음.
     }
-  });
+  }
+  webviewGrabber.addEventListener("touchend", (event) => {
+    const touch = event.changedTouches && event.changedTouches[0];
+    if (!touch) return;
+    const now = Date.now();
+    const dx = lastTapX === null ? Infinity : Math.abs(touch.clientX - lastTapX);
+    const dy = lastTapY === null ? Infinity : Math.abs(touch.clientY - lastTapY);
+    const isDoubleTap = (now - lastTapAt) <= DOUBLE_TAP_MS && dx <= DOUBLE_TAP_DIST_PX && dy <= DOUBLE_TAP_DIST_PX;
+    if (isDoubleTap) {
+      lastTapAt = 0;
+      lastTapX = null;
+      lastTapY = null;
+      event.preventDefault();
+      scrollEzlongToTop();
+    } else {
+      lastTapAt = now;
+      lastTapX = touch.clientX;
+      lastTapY = touch.clientY;
+    }
+  }, { passive: false });
+  // 터치가 없는 일반 브라우저(PC 등) 폴백 — 네이티브 더블클릭.
+  webviewGrabber.addEventListener("dblclick", scrollEzlongToTop);
 }
 
 // 2026-07-20 9차 피드백(유저 제보: "브라우저에서 보기 버튼 눌러도 무반응") —

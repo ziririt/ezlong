@@ -3685,33 +3685,29 @@ button { font: inherit; }
    160px 폭으로 좁혀서 좌우 터치는 iframe으로 통과시키고, 가운데 손잡이만
    복귀 제스처를 받는다. (가운데 상단은 ezlong 헤더에서 빈 영역이라 충돌
    없음. transform 대신 auto-margin 센터링 — iframe 조상 체인 불변.) */
+/* 2026-07-24 유저 재요청: 가운데 손잡이(핏 이미지)를 완전히 없애고, 상단
+   전체 폭을 "사파리처럼 더블탭하면 맨 위로 스크롤"하는 터치존으로 바꿔
+   달라는 요청 — 바로 위 16차-f에서 지적됐던 부작용(로고·우상단 메뉴 탭이
+   반응 안 함)이 그대로 재발한다는 걸 유저에게 명시적으로 확인받은 뒤
+   진행한 결정이다. 전폭 터치존을 두면 그 아래 깔린 iframe 내부 요소(로고,
+   '스윙 시그널' 드롭다운 등)는 이 자리에서는 탭해도 반응하지 않는다 —
+   크로스오리진 iframe 특성상 "감지는 하되 탭을 iframe으로 통과"시키는 게
+   기술적으로 불가능하기 때문이다(감지하려면 터치를 가로채야 하고, 가로채는
+   순간 iframe에는 안 넘어간다). 유저가 이 트레이드오프를 알고도 전폭 쪽을
+   선택했다 — 되돌릴 땐 이 코멘트와 16차-f를 함께 참고할 것. */
 .webview-grabber {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  /* 2026-07-20 16차-g(유저 피드백): 폭 30% 축소(160→112px), 높이는 ezlong
-     헤더 안에서 끝나도록 축소 — 로고·파란 메뉴 버튼은 물론, 메뉴가 펼쳐졌을
-     때 첫 항목('스윙 시그널')도 가리지 않는다. 손잡이는 상태바 바로 아래
-     얇은 띠로만 존재한다. */
-  width: 112px;
-  margin: 0 auto;
+  width: 100%;
   height: max(40px, calc(env(safe-area-inset-top) + 15px));
   z-index: 5;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 4px;
-  background: linear-gradient(rgba(0, 0, 0, 0.26), rgba(0, 0, 0, 0));
-  border-radius: 0 0 12px 12px;
+  background: transparent;
 }
 
 .webview-grabber span {
-  width: 64px;
-  height: 5px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+  display: none;
 }
 
 .webview-scale {
