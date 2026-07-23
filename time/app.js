@@ -657,7 +657,11 @@ let lastAppliedScreenHeight = 0;
 // scene-dots·quote-panel 하단이 화면 밖으로 밀려났다. iOS 앱(ContentView.swift)이
 // URL 뒤에 붙여주는 ?native=ios 쿼리스트링으로 "이건 chrome 없는 네이티브
 // 래퍼다"를 구분해서 이 보정을 건너뛴다.
-const isNativeWrapper = new URLSearchParams(window.location.search).get("native") === "ios";
+// 2026-07-24 신설 — 안드로이드 앱(MainActivity.kt)은 동일한 목적으로
+// ?native=android를 붙인다. 두 값 모두 "네이티브 풀스크린 웹뷰"로 취급.
+const isNativeWrapper = ["ios", "android"].includes(
+  new URLSearchParams(window.location.search).get("native")
+);
 
 function syncFirstScreenHeight() {
   if (!app) return;
@@ -1941,6 +1945,11 @@ function openAladinModal(url) {
     window.webkit.messageHandlers.flipzenNativeRadio.postMessage({ action: "openAladinInApp", url: finalUrl });
     return;
   }
+  // 2026-07-24 신설 — 안드로이드 분기(iOS 분기는 그대로 두고 추가만 함).
+  if (isNativeWrapper && window.AndroidNativeBridge) {
+    window.AndroidNativeBridge.postMessage("flipzenNativeRadio", JSON.stringify({ action: "openAladinInApp", url: finalUrl }));
+    return;
+  }
   // 네이티브가 아닌 일반 브라우저/PWA에서는 기존 iframe 모달을 그대로 쓴다
   // (이 경로는 데스크톱 사파리/크롬 등 다양한 환경이 섞여있어 이번 수정
   // 범위 밖 — 이번 문제는 네이티브 iOS 앱에 한정된 제보였다).
@@ -1957,6 +1966,11 @@ if (aladinModalExternalOpenEl) {
     if (!aladinModalCurrentUrl) return;
     if (isNativeWrapper && window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.flipzenNativeRadio) {
       window.webkit.messageHandlers.flipzenNativeRadio.postMessage({ action: "openExternalSafari", url: aladinModalCurrentUrl });
+      return;
+    }
+    // 2026-07-24 신설 — 안드로이드 분기.
+    if (isNativeWrapper && window.AndroidNativeBridge) {
+      window.AndroidNativeBridge.postMessage("flipzenNativeRadio", JSON.stringify({ action: "openExternalSafari", url: aladinModalCurrentUrl }));
       return;
     }
     let opened = null;
@@ -5446,7 +5460,16 @@ function pauseMusic() {
 function postToNativeRadio(payload) {
   if (!isNativeWrapper) return;
   try {
-    window.webkit.messageHandlers.flipzenNativeRadio.postMessage(payload);
+    // 2026-07-24 신설 — 안드로이드 네이티브 브릿지(AndroidNativeBridge)는
+    // JavascriptInterface 특성상 객체를 직접 못 받고 문자열만 받는다.
+    // JSON.stringify로 감싸 채널명과 함께 넘긴다(Kotlin NativeBridge.postMessage
+    // 참조). iOS 분기는 그대로 두고 안드로이드 분기만 추가한 형태라 기존
+    // iOS 동작에는 전혀 영향이 없다.
+    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.flipzenNativeRadio) {
+      window.webkit.messageHandlers.flipzenNativeRadio.postMessage(payload);
+    } else if (window.AndroidNativeBridge) {
+      window.AndroidNativeBridge.postMessage("flipzenNativeRadio", JSON.stringify(payload));
+    }
   } catch (error) {
     // 네이티브 브릿지가 아직 준비 전이거나 없는 환경 — 조용히 무시(웹 동작 무관).
   }
@@ -5463,7 +5486,12 @@ function postToNativeRadio(payload) {
 function postToNativeHaptic(style) {
   if (!isNativeWrapper) return;
   try {
-    window.webkit.messageHandlers.flipzenHaptic.postMessage({ style: style || "light" });
+    // 2026-07-24 신설 — 안드로이드 분기 추가(위 postToNativeRadio와 동일 패턴).
+    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.flipzenHaptic) {
+      window.webkit.messageHandlers.flipzenHaptic.postMessage({ style: style || "light" });
+    } else if (window.AndroidNativeBridge) {
+      window.AndroidNativeBridge.postMessage("flipzenHaptic", JSON.stringify({ style: style || "light" }));
+    }
   } catch (error) {
     // 네이티브 브릿지가 아직 준비 전이거나(구버전 앱) 없는 환경 — 조용히 무시.
   }
@@ -5482,7 +5510,12 @@ function postToNativeHaptic(style) {
 function postToNativeAd(payload) {
   if (!isNativeWrapper) return;
   try {
-    window.webkit.messageHandlers.flipzenAd.postMessage(payload);
+    // 2026-07-24 신설 — 안드로이드 분기 추가(위 postToNativeRadio와 동일 패턴).
+    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.flipzenAd) {
+      window.webkit.messageHandlers.flipzenAd.postMessage(payload);
+    } else if (window.AndroidNativeBridge) {
+      window.AndroidNativeBridge.postMessage("flipzenAd", JSON.stringify(payload));
+    }
   } catch (error) {
     // 네이티브 브릿지가 아직 준비 전이거나(구버전 앱) 없는 환경 — 조용히 무시.
   }
@@ -6695,6 +6728,11 @@ if (webviewOpenButton) {
       window.webkit.messageHandlers.flipzenNativeRadio.postMessage({ action: "openExternalSafari", url });
       return;
     }
+    // 2026-07-24 신설 — 안드로이드 분기.
+    if (isNativeWrapper && window.AndroidNativeBridge) {
+      window.AndroidNativeBridge.postMessage("flipzenNativeRadio", JSON.stringify({ action: "openExternalSafari", url }));
+      return;
+    }
     let opened = null;
     try {
       opened = window.open(url, "_blank", "noopener");
@@ -7200,3 +7238,54 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
+
+
+// ===== 2026-07-24 안드로이드 실측 진단 오버레이 (Fable, 임시 — 확인 후 제거) =====
+// ?native=android일 때만 자동 표시. 하단 클리핑(뷰포트/높이 계산)과
+// 비주얼라이저(네이티브 오디오 레벨 도달 여부)를 한 화면에서 실측한다.
+// adb exec-out screencap 한 장으로 전부 판독 가능하게 설계.
+(function () {
+  if (!/[?&]native=android/.test(location.search)) return;
+  var box = document.createElement("div");
+  box.style.cssText =
+    "position:fixed;top:64px;left:8px;right:8px;z-index:2147480000;pointer-events:none;" +
+    "background:rgba(0,0,0,0.80);color:#7CFC9A;font:600 13px/1.55 monospace;" +
+    "padding:9px 11px;border-radius:8px;white-space:pre;";
+  document.body.appendChild(box);
+  var probe = document.createElement("div");
+  probe.style.cssText = "position:fixed;left:-9999px;padding-bottom:env(safe-area-inset-bottom);";
+  document.body.appendChild(probe);
+  var cnt = 0, lastB = 0, lastM = 0, lastT = 0, lastAt = 0;
+  var orig = window.__flipzenNativeAudioLevels;
+  window.__flipzenNativeAudioLevels = function (b, m, t) {
+    cnt++; lastB = +b || 0; lastM = +m || 0; lastT = +t || 0; lastAt = Date.now();
+    if (orig) orig(b, m, t);
+  };
+  setInterval(function () {
+    try {
+      var appEl = document.querySelector(".clock-app");
+      var sky = document.querySelector(".sky-room");
+      var dots = document.querySelector(".scene-dots");
+      var cs = appEl ? getComputedStyle(appEl) : null;
+      var dr = dots ? dots.getBoundingClientRect() : null;
+      box.textContent = [
+        "[AND-DIAG v1] " + new Date().toTimeString().slice(0, 8),
+        "ih=" + window.innerHeight +
+          " vv=" + Math.round((window.visualViewport && visualViewport.height) || 0) +
+          " scrH=" + screen.height + " dpr=" + (window.devicePixelRatio || 1).toFixed(2),
+        "fsh=" + (cs ? cs.getPropertyValue("--first-screen-height").trim() : "?") +
+          " tail=" + (cs ? cs.getPropertyValue("--first-screen-tail").trim() : "?") +
+          " lift=" + (cs ? cs.getPropertyValue("--browser-bottom-lift").trim() : "?"),
+        "skyH=" + (sky ? sky.offsetHeight : "?") +
+          " dots=" + (dr ? Math.round(dr.top) + ".." + Math.round(dr.bottom) : "없음") +
+          " over=" + (dr ? Math.round(dr.bottom - window.innerHeight) + "px" : "?"),
+        "envB=" + getComputedStyle(probe).paddingBottom,
+        "audio cnt=" + cnt + " b/m/t=" + lastB.toFixed(2) + "/" + lastM.toFixed(2) + "/" + lastT.toFixed(2) +
+          " age=" + (lastAt ? (Date.now() - lastAt) + "ms" : "수신없음")
+      ].join("\n");
+    } catch (e) { box.textContent = "DIAG ERR: " + e.message; }
+  }, 500);
+  window.addEventListener("error", function (e) {
+    box.textContent += "\nJS ERROR: " + e.message;
+  });
+})();
