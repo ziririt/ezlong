@@ -3205,21 +3205,59 @@ function renderWeatherWeeklyForecast(data) {
       // 2026-07-20 9차 피드백(유저 요청): "'최대'라는 말은 삭제, 퍼센트
       // 뒤의 가운뎃점도 빼줘" — "70% 3.2mm/h"처럼 공백만 남긴다.
       const maxMm = typeof d.maxHourlyPrecipMm === "number" ? d.maxHourlyPrecipMm : 0;
-      const mmHtml = maxMm >= 0.1 ? ` ${maxMm}mm/h` : "";
       // 2026-07-22 유저 요청: current/hourly와 같은 deriveRainDisplay() 공유 —
       // 확률<50%면 "비"라고 단정하지 않는다. 백엔드 mapConditionsToKo()가
       // "비"로 내려준 날이라도 확률이 50% 미만이면 여기서 "흐림"으로 강등
       // 표시하고, 그중 강수량(mm)이 1mm를 넘는 애매한 날만 "흐림(약한 비
       // 가능성 NN%)"로 확률을 같이 보여준다.
-      const rainDisplay = deriveRainDisplay(d.precipprob, maxMm);
-      const isRainDay = d.conditionsKo === "비" && rainDisplay.showAsRain;
+      let rainDisplay = deriveRainDisplay(d.precipprob, maxMm);
+      let probForDisplay = d.precipprob;
+      let mmForDisplay = maxMm;
+      let isRainStopped = false;
+
+      // 2026-07-24 유저 제보 반영: "오늘" 행만 하루 전체(자정~24시) 확률로
+      // 판단하면, 이미 새벽에 그친 비가 마치 "이제부터 올 비"처럼 보여
+      // 시간대별 스트립·우산 조언(둘 다 지금 이후만 봄)과 모순된다. 백엔드가
+      // isToday일 때만 내려주는 past/future 분리값이 있으면: 남은 시간에
+      // 비가 남아있으면 그 값으로 "비"를 표시(가장 실용적)하고, 남은 시간엔
+      // 없고 이미 지난 시간에만 비가 있었다면 "비(그침)"으로 구분해 확률·mm
+      // 자체를 더 이상 보여주지 않는다(지나간 일에 "확률"은 의미가 없다).
+      // 과거·미래 모두 비가 아니면 future 값으로 재판정 — 하루 전체보다
+      // "지금부터 남은 확률"이 더 실용적인 정보라서다.
+      const hasSplit =
+        d.isToday &&
+        typeof d.futurePrecipProb === "number" &&
+        typeof d.futureMaxHourlyPrecipMm === "number" &&
+        typeof d.pastPrecipProb === "number" &&
+        typeof d.pastMaxHourlyPrecipMm === "number";
+      if (hasSplit) {
+        const futureRain = deriveRainDisplay(d.futurePrecipProb, d.futureMaxHourlyPrecipMm);
+        const pastRain = deriveRainDisplay(d.pastPrecipProb, d.pastMaxHourlyPrecipMm);
+        if (futureRain.showAsRain) {
+          rainDisplay = futureRain;
+          probForDisplay = d.futurePrecipProb;
+          mmForDisplay = d.futureMaxHourlyPrecipMm;
+        } else if (pastRain.showAsRain) {
+          isRainStopped = true;
+        } else {
+          rainDisplay = futureRain;
+          probForDisplay = d.futurePrecipProb;
+          mmForDisplay = d.futureMaxHourlyPrecipMm;
+        }
+      }
+
+      const mmHtml = mmForDisplay >= 0.1 ? ` ${mmForDisplay}mm/h` : "";
+      const isRainDay = !isRainStopped && d.conditionsKo === "비" && rainDisplay.showAsRain;
       let displayConditionBase = d.conditionsKo;
       let displayConditionText = d.conditionsKo;
-      if (d.conditionsKo === "비" && !rainDisplay.showAsRain) {
+      if (isRainStopped) {
+        displayConditionBase = "비";
+        displayConditionText = "비(그침)";
+      } else if (d.conditionsKo === "비" && !rainDisplay.showAsRain) {
         displayConditionBase = "흐림";
         displayConditionText = rainDisplay.cloudyProbLabel ? `흐림(${rainDisplay.cloudyProbLabel})` : "흐림";
       }
-      const probHtml = isRainDay ? `<span class="weather-weekly-prob">${d.precipprob}%${mmHtml}</span>` : "";
+      const probHtml = isRainDay ? `<span class="weather-weekly-prob">${probForDisplay}%${mmHtml}</span>` : "";
       return `
     <div class="weather-weekly-row">
       <span class="weather-weekly-day">${d.weekdayKo}</span>
