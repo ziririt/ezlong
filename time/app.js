@@ -759,24 +759,69 @@ function isSummerShowerSeason(date = new Date()) {
   return month >= 6 && month <= 8;
 }
 
+// 2026-07-24 Fable 5 검토회신 반영(FABLE5_검토회신_비표시일관성_2026-07-24.md):
+// 히어로·시간대별 스트립·주간예보가 각자 이 함수의 showAsRain/cloudyProbLabel
+// 만 보고 "그럼 아이콘은?/숫자는 보여줘?"를 스스로 다시 판단하다가, 오늘
+// 새로 생긴 ②(절충) 상태를 못 받아주는 소비처(스트립 아이콘)가 조용히
+// ③(신호 없음)과 똑같이 그려버렸다 — 세 화면이 서로 다른 말을 하게 된
+// 근본 원인. JS는 컴파일러가 새 상태 추가를 강제해주지 않으니, 규칙을
+// 문서가 아니라 "반환값의 모양"으로 못박는다: 이 함수가 상태별 최종
+// 표현(아이콘/숫자 노출 여부)까지 전부 계산해서 내려주고, 소비처는 그
+// 값을 사전 찾듯 그대로 쓰기만 한다(직접 재판정 금지).
+//
+// 헌법: "②는 어떤 화면에서도 ③과 똑같이 보여선 안 된다 — ②의 최소 표현은
+// 흐림 계열 아이콘 + 확률 숫자."
+//
+// state: "rain"(①확정) | "maybe"(②절충) | "none"(③없음).
+// iconDay/iconNight: 그 상태에서 써야 할 아이콘. null이면 "비와 무관한
+// 아이콘"이라는 뜻이라 소비처가 기존 맑음/밤 로직을 그대로 쓰면 된다.
+// showProb/probText: 확률 숫자를 보여줘야 하는지와 그 텍스트.
+// showAsRain/cloudyProbLabel은 기존 소비처(히어로 등) 호환을 위해 그대로 둔다.
 function deriveRainDisplay(precipProb, precipMm) {
   const prob = Math.max(0, Math.min(100, Number(precipProb) || 0));
   const mm = Math.max(0, Number(precipMm) || 0);
+  const probText = `${Math.round(prob)}%`;
+
   if (prob >= RAIN_DISPLAY_PROB_THRESHOLD && mm >= RAIN_CONFIRM_MM_THRESHOLD) {
-    return { showAsRain: true, cloudyProbLabel: null };
+    // ① 비 확정
+    return {
+      state: "rain",
+      showAsRain: true,
+      cloudyProbLabel: null,
+      iconDay: prob >= 60 ? "🌧️" : "🌦️",
+      iconNight: "🌧️",
+      showProb: true,
+      probText,
+    };
   }
   // 확률은 문턱을 넘었지만 강수량이 아직 0.2mm/h에 못 미치는 경우(오늘
   // 사건의 정확한 패턴)도, mm이 이미 1mm를 넘어 "확률은 낮아도 실제로 비가
   // 잡힌" 경우도 — 둘 다 "비"라고 단정하진 않되 신호 자체는 숨기지 않고
   // 절충 표기한다. 6~8월엔 "약한 소나기 가능성", 그 외 계절엔 "약한 비
-  // 가능성"으로 단어만 바꾼다 — 이 절충 표기는 애초에 "확정은 아니지만
-  // 낮은 확률로 스쳐 지나갈 수 있다"는 뜻이라 여름철엔 소나기 쪽이 어감이
-  // 더 정확하다는 유저 판단.
+  // 가능성"으로 단어만 바꾼다.
   if (prob >= RAIN_DISPLAY_PROB_THRESHOLD || mm >= RAIN_DISPLAY_MM_THRESHOLD) {
+    // ② 절충 신호
     const noun = isSummerShowerSeason() ? "약한 소나기 가능성" : "약한 비 가능성";
-    return { showAsRain: false, cloudyProbLabel: `${noun} ${Math.round(prob)}%` };
+    return {
+      state: "maybe",
+      showAsRain: false,
+      cloudyProbLabel: `${noun} ${probText}`,
+      iconDay: "⛅",
+      iconNight: "☁️", // 밤엔 해가 든 ⛅가 어색해 구름만
+      showProb: true,
+      probText,
+    };
   }
-  return { showAsRain: false, cloudyProbLabel: null };
+  // ③ 신호 없음
+  return {
+    state: "none",
+    showAsRain: false,
+    cloudyProbLabel: null,
+    iconDay: null,
+    iconNight: null,
+    showProb: false,
+    probText: "",
+  };
 }
 
 // 2026-07-21 유저 지시("지금 하자, 시간이 걸려도 충분히"): 대기화면 메인
@@ -2735,10 +2780,15 @@ function weatherEmojiFromHour(precipprob, precipMm, hourLabel, isNow) {
     if (m) hour = Number(m[1]);
   }
   const isNight = hour != null && (hour >= 20 || hour < 6);
+  // 2026-07-24 Fable 5 검토회신 반영: 이 함수가 "비냐 아니냐"만 보던
+  // 이분법이 오늘 사건의 원인 중 하나였다 — deriveRainDisplay()가 새로
+  // 반환하는 ②(절충) 상태를 받을 자리가 없어 조용히 ③(맑음)과 똑같이
+  // 그려버렸다. 이제 직접 판정하지 않고 deriveRainDisplay()가 계산해준
+  // iconDay/iconNight를 그대로 쓴다 — null이면(=③, 비와 무관) 기존
+  // 맑음/밤 아이콘으로 폴백한다.
   const rainDisplay = deriveRainDisplay(precipprob, precipMm);
-  if (rainDisplay.showAsRain) {
-    return precipprob >= 60 ? "🌧️" : "🌦️";
-  }
+  const icon = isNight ? rainDisplay.iconNight : rainDisplay.iconDay;
+  if (icon) return icon;
   return isNight ? "🌙" : "☀️";
 }
 
@@ -3000,7 +3050,10 @@ function renderWeatherHourlyStrip(data) {
     .map((h) => {
       const precipMm = typeof h.precipMm === "number" ? h.precipMm : 0;
       const rainDisplay = deriveRainDisplay(h.precipprob, precipMm);
-      const showProb = rainDisplay.showAsRain || precipMm >= RAIN_DISPLAY_MM_THRESHOLD;
+      // 2026-07-24 Fable 5 검토회신 반영: mm>=1 직접 판정을 여기서 중복하지
+      // 않는다 — 그 문턱은 이미 deriveRainDisplay() 안에 있으므로 showProb를
+      // 그대로 받아쓴다(①②는 true, ③은 false).
+      const showProb = rainDisplay.showProb;
       const showMm = precipMm >= 0.1;
       const probHtml = showProb ? `${h.precipprob}%${showMm ? ` · ${precipMm}mm` : ""}` : "";
       return `
@@ -3278,15 +3331,16 @@ function renderWeatherWeeklyForecast(data) {
       let mmForDisplay = maxMm;
       let isRainStopped = false;
 
-      // 2026-07-24 유저 제보 반영: "오늘" 행만 하루 전체(자정~24시) 확률로
-      // 판단하면, 이미 새벽에 그친 비가 마치 "이제부터 올 비"처럼 보여
-      // 시간대별 스트립·우산 조언(둘 다 지금 이후만 봄)과 모순된다. 백엔드가
-      // isToday일 때만 내려주는 past/future 분리값이 있으면: 남은 시간에
-      // 비가 남아있으면 그 값으로 "비"를 표시(가장 실용적)하고, 남은 시간엔
-      // 없고 이미 지난 시간에만 비가 있었다면 "비(그침)"으로 구분해 확률·mm
-      // 자체를 더 이상 보여주지 않는다(지나간 일에 "확률"은 의미가 없다).
-      // 과거·미래 모두 비가 아니면 future 값으로 재판정 — 하루 전체보다
-      // "지금부터 남은 확률"이 더 실용적인 정보라서다.
+      // 2026-07-24 유저 제보 반영, 같은 날 Fable 5 검토회신으로 사다리 재정렬
+      // (FABLE5_검토회신_비표시일관성_2026-07-24.md): "오늘" 행만 하루 전체
+      // (자정~24시) 확률로 판단하면, 이미 새벽에 그친 비가 마치 "이제부터
+      // 올 비"처럼 보여 시간대별 스트립·우산 조언(둘 다 지금 이후만 봄)과
+      // 모순된다. 원칙 — "미래가 항상 과거를 이긴다": 미래에 조금이라도
+      // 신호가 있으면(확정 비 "rain"이든 절충 신호 "maybe"든) 과거 확정
+      // 여부와 무관하게 항상 미래 쪽 문구를 쓴다("maybe"면 히어로와 정확히
+      // 같은 "약한 소나기 가능성 NN%" 문구가 되어 모순이 구조적으로
+      // 불가능해진다). "비(그침)"은 미래가 완전히 조용(state "none")하고
+      // 과거에 확정된 비가 있었을 때만 말한다.
       const hasSplit =
         d.isToday &&
         typeof d.futurePrecipProb === "number" &&
@@ -3296,11 +3350,7 @@ function renderWeatherWeeklyForecast(data) {
       if (hasSplit) {
         const futureRain = deriveRainDisplay(d.futurePrecipProb, d.futureMaxHourlyPrecipMm);
         const pastRain = deriveRainDisplay(d.pastPrecipProb, d.pastMaxHourlyPrecipMm);
-        if (futureRain.showAsRain) {
-          rainDisplay = futureRain;
-          probForDisplay = d.futurePrecipProb;
-          mmForDisplay = d.futureMaxHourlyPrecipMm;
-        } else if (pastRain.showAsRain) {
+        if (futureRain.state === "none" && pastRain.state === "rain") {
           isRainStopped = true;
         } else {
           rainDisplay = futureRain;
