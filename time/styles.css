@@ -3364,6 +3364,14 @@ button { font: inherit; }
      흔들린다"). 최대치 기준으로 min-height를 고정해서 내용 길이와 무관하게
      박스 자체 높이가 항상 같도록 만든다. */
   min-height: clamp(210px, 46vw, 300px);
+  /* 2026-07-24 유저 제보 — "문장이 짧으면 제목/저자/진행바/점4개가 위로
+     딸려 올라온다(들쑥날쑥)". 원인: 박스는 min-height로 고정인데 내용은
+     위에서부터 쌓이는 일반 흐름이라, 내용이 짧으면 바닥이 비었다(길면
+     자연히 바닥까지 차서 증상이 안 보임 — 들쑥날쑥의 정체). flex 세로
+     배치 + .quote-foot의 margin-top:auto로 발 부분(제목·저자·진행바·점)을
+     내용 길이와 무관하게 항상 바닥에 고정한다. iOS·안드로이드 공통. */
+  display: flex;
+  flex-direction: column;
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: clamp(24px, 6vw, 38px);
   /* 2026-07-07: "통크게 투명도를 높여달라"는 재지적 — 배경 진하기를
@@ -3472,7 +3480,10 @@ button { font: inherit; }
   grid-template-columns: minmax(0, 1fr) minmax(92px, 152px);
   gap: 16px;
   align-items: center;
-  margin-top: 20px;
+  /* 2026-07-24 — 바닥 고정(위 .quote-panel flex 주석 참조). 내용이 길어
+     박스가 꽉 차면 auto는 0이 되고 padding-top이 최소 간격을 보장한다. */
+  margin-top: auto;
+  padding-top: 20px;
 }
 
 .quote-foot cite {
@@ -4013,7 +4024,12 @@ button { font: inherit; }
     grid-template-rows: auto minmax(0, 1fr) clamp(196px, 43vw, 285px) auto;
   }
   .quote-foot {
-    margin-top: 12px;
+    padding-top: 12px;
+  }
+  /* 문장 칸(row3)을 196px로 줄인 것과 박스 최소높이를 일치시킨다 —
+     아침에 칸만 줄이고 박스(210px)를 안 줄여 14px 넘침이 있었다. */
+  .quote-panel {
+    min-height: clamp(196px, 43vw, 285px);
   }
   .quote-foot cite {
     font-size: clamp(13.5px, 2vw, 15px);
