@@ -47,6 +47,23 @@
  * "기분이 안 좋아지는 사진"은 수치로 재기 어려워 isUsableNatureImage()의
  * 부정 키워드 목록에 재난·황폐·음울 계열 단어를 추가하는 방식으로 보강했다.
  *
+ * 2026-07-25 소재·지역 배제 확대: 유저가 갤러리 관리툴(localhost:8787)에서
+ * 실제 수집된 사진 중 "별로인 사진"을 체크로 직접 골라 보여줬다 — 공통점은
+ * 황야·불모지·황무지처럼 초록초록하지 않은 느낌, 비비드하지 않은 컬러,
+ * 배경화면으로 쓰기엔 조잡하고 번잡한 피사체(북적이는 항공뷰 도심, 사람이
+ * 있는 강가, 어수선한 갈대숲 클로즈업 등). 반대로 "좋아하는 예시"로는 색이
+ * 곱고 선명하며 초록초록한 자연, 벚꽃길·이끼 낀 계곡·잔잔한 호수처럼
+ * 낭만적인 느낌의 사진을 보여줬다. 유저가 명시적으로 아프리카·중동·
+ * 서남아시아·사바나 지역도 지양해달라고 요청 — isUsableNatureImage()
+ * 부정 키워드에 사바나/황무지/사막·건조지대 계열 단어와 해당 권역 국가명을
+ * 추가하고, 번잡한 도심 항공뷰를 유발하던 "cityscape"/"skyline"을 통과
+ * 키워드에서 제외했다. 이 필터는 Wikimedia Commons 메타데이터(카테고리·
+ * 설명) 텍스트 매칭이라 완벽하지 않다 — 이미지 내용 자체의 "초록/낭만적
+ * 느낌"은 컬러 수치(cf/peakSat/contrast)만으로는 판정 불가능한 영역이라,
+ * 검색어(moodQuery) 쪽에도 "lush green romantic dreamy" 를 추가해 애초에
+ * 그런 사진이 더 많이 검색되도록 보강했다. 실제 수집 결과를 갤러리에서
+ * 계속 확인하며 기준을 더 조정할 것.
+ *
  * 실행: node scripts/collect-time-background-photos.js
  * (저장소 루트에서 실행. Node 18+ 내장 fetch만 쓰고 외부 npm 의존성 없음.
  *  컬러감 검수만 python3 + Pillow가 PATH에 있어야 한다.)
@@ -109,7 +126,9 @@ const TIME_BUCKET_PRIORITY = [
 // 2026-07-08: "힐링/젠" 컨셉 앱이라 흐리거나 비가 오는 날씨에도 사진 자체는
 // 컬러감 있고 생기있어야 한다는 유저 피드백 반영 — 검색어 단계에서부터
 // vibrant/colorful 계열 키워드를 넣어 무채색·톤다운 사진이 애초에 덜 걸리게 한다.
-const moodQuery = "beautiful atmospheric vibrant colorful wallpaper sky field trees park cafe window view no people";
+// 2026-07-25: "lush green romantic dreamy" 추가 — 유저가 좋아하는 예시(색이
+// 곱고 선명한, 초록초록한, 낭만적인 느낌)에 맞춰 검색 단계부터 편향시킨다.
+const moodQuery = "beautiful atmospheric vibrant colorful lush green romantic dreamy wallpaper sky field trees park cafe window view no people";
 
 const timePlans = [
   { bucket: "dawn", hours: [5], query: "dawn nature landscape" },
@@ -352,6 +371,19 @@ function isUsableNatureImage(info) {
     "flood damage", "storm damage", "hurricane damage", "pollution haze",
     "smog", "bleak", "gloomy", "abandoned building", "decay", "decayed",
     "dead tree", "dying", "toxic", "landfill", "garbage dump", "accident",
+    // 2026-07-25 추가 — 황야/불모지/황무지/사막·건조지대 계열(초록초록하지
+    // 않고 배경화면으로 쓰기엔 삭막한 소재).
+    "wasteland", "desolate", "desolation", "arid", "aridity", "outback",
+    "scrubland", "shrubland", "steppe", "savanna", "savannah", "sand dune",
+    "dune", "dust bowl", "badlands", "rocky plain", "gravel plain",
+    // 2026-07-25 추가 — 아프리카·중동·서남아시아·사바나 권역(유저 명시 요청).
+    "africa", "african", "sahara", "kalahari", "serengeti", "sahel", "sub-saharan",
+    "kenya", "tanzania", "ethiopia", "sudan", "somalia", "nigeria", "namibia",
+    "botswana", "zimbabwe", "morocco", "algeria", "tunisia", "libya", "egypt",
+    "middle east", "arabia", "arabian peninsula", "gulf state",
+    "saudi arabia", "united arab emirates", "dubai", "abu dhabi", "qatar",
+    "bahrain", "kuwait", "oman", "yemen", "iran", "iraq", "jordan", "syria",
+    "afghanistan", "southwest asia", "south-west asia",
   ];
   if (negative.some((word) => text.includes(word))) return false;
 
@@ -359,9 +391,11 @@ function isUsableNatureImage(info) {
     "forest", "rainforest", "tree", "trees", "plant", "plants", "flower", "flowers",
     "woods", "landscape", "mountain", "valley", "field", "meadow", "grass",
     "countryside", "rural", "village", "park", "garden", "sky", "cloud", "overcast", "rain", "raindrop",
-    "mist", "fog", "river", "lake", "waterfall", "sea", "coast", "aerial", "skyline",
-    "cityscape", "cafe", "coffee", "coffee shop", "reading", "bookshelf", "book",
+    "mist", "fog", "river", "lake", "waterfall", "sea", "coast", "aerial",
+    "cafe", "coffee", "coffee shop", "reading", "bookshelf", "book",
     "library", "window", "view", "cozy", "peaceful", "atmospheric", "healing", "quiet",
+    // 2026-07-25: "cityscape"/"skyline"은 번잡한 항공뷰 도심 사진(유저가
+    // 조잡하다고 지적한 예시)을 통과시키는 원인이라 통과 키워드에서 제거.
   ];
   return positive.some((word) => text.includes(word));
 }
