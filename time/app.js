@@ -733,15 +733,48 @@ function getTimeBucketForHour(hour) {
 // 표시에 반영하지 않는다(기존 흐림/맑음 판정에 맡김).
 const RAIN_DISPLAY_PROB_THRESHOLD = 50;
 const RAIN_DISPLAY_MM_THRESHOLD = 1;
+// 2026-07-24 유저 제보: "약한 비 74%"처럼 확률만 높고 실제 예보 강수량은
+// 0mm에 가까운 순간에도 "비"로 확정 표시되는 오탐이 있었다(여름 소나기
+// 모델이 흔히 만드는 패턴). 원인은 이 함수가 확률>=50%만 보고 바로
+// showAsRain을 확정해버려서였다 — 정작 이 화면 하단의 "다음 비 소식"
+// 문구(백엔드 buildNextRainCountdown 등)는 강수량이 실제로 잡혀야만 비로
+// 인정하므로, 같은 화면 안에서 "비 74%"와 "이번 주는 비 소식 없음"이
+// 동시에 뜨는 자기모순이 났다. 유저 지시: "비"로 확정하려면 확률 50%
+// 이상"이고" 강수량도 0.2mm/h 이상이어야 한다(AND 조건) — 확률만으론
+// 부족하다.
+const RAIN_CONFIRM_MM_THRESHOLD = 0.2;
+
+// 2026-07-24 유저 제안: "6~8월 여름철엔 하루 종일 오는 비가 아니라 1~3시간
+// 정도 스쳐 지나가는 낮은 확률의 비가 대부분이니, 그 경우 '약한 비 가능성'
+// 대신 '약한 소나기 가능성'이라고 하면 사람들 체감(여름 소나기는 잠깐
+// 왔다 갈 수도, 안 올 수도 있다는 인식)과 더 잘 맞는다"는 의견 반영.
+// isCoolSummerWindow()(사진 풀 전용, 7/1~8/30)와는 별개로 이 문구는
+// 유저가 명시한 6~8월 전체를 그대로 쓴다 — 기존 isCoolSummerActive()의
+// month===7 || (month===8&&day<=30) 판정을 재사용하지 않는다.
+// 실기기(WebView)는 항상 한국에서 KST로 구동되므로 new Date()를 그대로
+// 쓰면 되고, 백엔드처럼 별도 KST 변환 헬퍼가 필요 없다(dateUtil.ts와 다른
+// 부분 — 프론트는 항상 클라이언트 로컬 타임존 기준).
+function isSummerShowerSeason(date = new Date()) {
+  const month = date.getMonth() + 1;
+  return month >= 6 && month <= 8;
+}
 
 function deriveRainDisplay(precipProb, precipMm) {
   const prob = Math.max(0, Math.min(100, Number(precipProb) || 0));
   const mm = Math.max(0, Number(precipMm) || 0);
-  if (prob >= RAIN_DISPLAY_PROB_THRESHOLD) {
+  if (prob >= RAIN_DISPLAY_PROB_THRESHOLD && mm >= RAIN_CONFIRM_MM_THRESHOLD) {
     return { showAsRain: true, cloudyProbLabel: null };
   }
-  if (mm >= RAIN_DISPLAY_MM_THRESHOLD) {
-    return { showAsRain: false, cloudyProbLabel: `약한 비 가능성 ${Math.round(prob)}%` };
+  // 확률은 문턱을 넘었지만 강수량이 아직 0.2mm/h에 못 미치는 경우(오늘
+  // 사건의 정확한 패턴)도, mm이 이미 1mm를 넘어 "확률은 낮아도 실제로 비가
+  // 잡힌" 경우도 — 둘 다 "비"라고 단정하진 않되 신호 자체는 숨기지 않고
+  // 절충 표기한다. 6~8월엔 "약한 소나기 가능성", 그 외 계절엔 "약한 비
+  // 가능성"으로 단어만 바꾼다 — 이 절충 표기는 애초에 "확정은 아니지만
+  // 낮은 확률로 스쳐 지나갈 수 있다"는 뜻이라 여름철엔 소나기 쪽이 어감이
+  // 더 정확하다는 유저 판단.
+  if (prob >= RAIN_DISPLAY_PROB_THRESHOLD || mm >= RAIN_DISPLAY_MM_THRESHOLD) {
+    const noun = isSummerShowerSeason() ? "약한 소나기 가능성" : "약한 비 가능성";
+    return { showAsRain: false, cloudyProbLabel: `${noun} ${Math.round(prob)}%` };
   }
   return { showAsRain: false, cloudyProbLabel: null };
 }
@@ -2651,12 +2684,20 @@ function weatherEmojiFromEnglish(conditions) {
 // 두 값 다 이미 클라이언트가 들고 있으므로 새 API 호출 없이, hourly-strip의
 // "지금" 강수확률(hourlyNowProb)도 OR 조건으로 반영해 두 표시가 서로
 // 모순되지 않게 한다.
-function weatherEmojiFromCurrent(c, hourlyNowProb) {
-  const isRainingNow =
-    DEBUG_FORCE_RAIN ||
-    (typeof c.precip === "number" && c.precip > 0) ||
-    c.precipprob >= 50 ||
-    (typeof hourlyNowProb === "number" && hourlyNowProb >= 50);
+function weatherEmojiFromCurrent(c, hourlyNowProb, hourlyNowMm) {
+  // 2026-07-24 유저 제보 반영: 확률만 보고 비를 확정하던 예전 OR 조건을
+  // 버리고, current/hourly-strip/weekly가 전부 공유하는 deriveRainDisplay()
+  // (확률>=50% && 강수량>=0.2mm/h AND 조건)로 통일한다 — 아이콘·비
+  // 애니메이션·히어로 텍스트가 항상 같은 판정을 말하게 하기 위함.
+  const effProb = Math.max(
+    typeof c.precipprob === "number" ? c.precipprob : 0,
+    typeof hourlyNowProb === "number" ? hourlyNowProb : 0
+  );
+  const effMm = Math.max(
+    typeof c.precip === "number" ? c.precip : 0,
+    typeof hourlyNowMm === "number" ? hourlyNowMm : 0
+  );
+  const isRainingNow = DEBUG_FORCE_RAIN || deriveRainDisplay(effProb, effMm).showAsRain;
   const types = (c.preciptype || []).map((t) => String(t).toLowerCase());
   if (isRainingNow) {
     if (types.includes("snow")) return "❄️";
@@ -2768,7 +2809,15 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     : hourlyNowItem && typeof hourlyNowItem.precipprob === "number"
       ? hourlyNowItem.precipprob
       : null;
-  if (wdCurrentIcon) wdCurrentIcon.textContent = weatherEmojiFromCurrent(c, hourlyNowProb);
+  // 2026-07-24 유저 제보 반영: hourly-strip "지금" 항목의 강수량(precipMm)도
+  // 함께 넘겨서 deriveRainDisplay()의 AND 조건(확률>=50% && 강수량>=0.2mm/h)이
+  // 아이콘·애니메이션·히어로 텍스트 전부에서 같은 기준으로 판정되게 한다.
+  const hourlyNowMm = activeScenario
+    ? null
+    : hourlyNowItem && typeof hourlyNowItem.precipMm === "number"
+      ? hourlyNowItem.precipMm
+      : null;
+  if (wdCurrentIcon) wdCurrentIcon.textContent = weatherEmojiFromCurrent(c, hourlyNowProb, hourlyNowMm);
   // 2026-07-18 4차 피드백: 애플 날씨처럼 비 오는 날엔 빗줄기 애니메이션을
   // 배경에 켠다(.weather-detail-rain-fx/-condensation, styles.css 참조) —
   // 아이콘과 같은 신호(실시간 precip/precipprob + hourly-strip "지금" 예보,
@@ -2779,12 +2828,22 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   // 오는 날에도 빗줄기가 내리는 모순이 있었다(사소하지만 쉬운 교정).
   const precipTypes = (c.preciptype || []).map((t) => String(t).toLowerCase());
   const isSnowOnly = precipTypes.length > 0 && precipTypes.every((t) => t === "snow");
-  const isRainingNow =
-    !isSnowOnly &&
-    (DEBUG_FORCE_RAIN ||
-      (typeof c.precip === "number" && c.precip > 0) ||
-      c.precipprob >= 50 ||
-      (hourlyNowProb != null && hourlyNowProb >= 50));
+  // 2026-07-24 유저 제보 반영: "확률>=50%거나 강수량>0" OR 조건이던 예전
+  // 판정을 버리고, deriveRainDisplay()(확률>=50% && 강수량>=0.2mm/h AND
+  // 조건)로 통일한다 — c(순간 관측)와 hourly-strip "지금" 예보 중 더 강한
+  // 쪽을 각각 취해(effProb/effMm) 하나의 판정 근거로 쓰고, 이 값을 아래
+  // 히어로 텍스트(NN%/mm 표시)에도 그대로 재사용해 판정과 표시가 항상
+  // 같은 숫자를 말하게 한다.
+  const effCurrentProb = Math.max(
+    typeof c.precipprob === "number" ? c.precipprob : 0,
+    typeof hourlyNowProb === "number" ? hourlyNowProb : 0
+  );
+  const effCurrentMm = Math.max(
+    typeof c.precip === "number" ? c.precip : 0,
+    typeof hourlyNowMm === "number" ? hourlyNowMm : 0
+  );
+  const currentRainDisplay = deriveRainDisplay(effCurrentProb, effCurrentMm);
+  const isRainingNow = !isSnowOnly && (DEBUG_FORCE_RAIN || currentRainDisplay.showAsRain);
   if (weatherDetailPanel) weatherDetailPanel.classList.toggle("weather-detail-rainy", isRainingNow);
 
   // 2026-07-18 8차 피드백(Fable 5 검토 반영): 바람 세기·강수강도를 비
@@ -2880,8 +2939,12 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     wdCurrentConditionBase = summaryIndicatesPrecip
       ? liveSummaryForCondition
       : (c.rainIntensity && c.rainIntensity.label) || "비";
-    let prob = typeof c.precipprob === "number" ? Math.round(c.precipprob) : 0;
-    const mm = typeof c.precip === "number" ? Math.round(c.precip * 10) / 10 : 0;
+    // 2026-07-24: 판정에 실제로 쓰인 값(effCurrentProb/effCurrentMm)을 그대로
+    // 표시한다 — 판정은 effProb/effMm로 해놓고 화면엔 c.precipprob(더 낮을
+    // 수 있는 순간 관측치)를 보여주면 "비라며 정작 숫자는 낮다"는 또 다른
+    // 모순이 생긴다.
+    let prob = Math.round(effCurrentProb);
+    const mm = Math.round(effCurrentMm * 10) / 10;
     if (prob === 0) prob = 5; // 비가 이미 확인됐는데 반올림으로 0%면 자기모순이니 최소 5%
     const showMm = mm >= 0.1;
     // 2026-07-20: 이제 별도 span(wdCurrentConditionRain)에 독립적으로
