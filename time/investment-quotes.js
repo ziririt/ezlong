@@ -8163,5 +8163,12 @@ window.investmentQuotes = [
     "title": "상실의 시대",
     "author": "무라카미 하루키",
     "genre": "literature"
+  },
+  {
+    "english": "In the short run, the market is a voting machine, but in the long run, it is a weighing machine.",
+    "text": "단기적으로 시장은 표를 세는 투표소와 같지만, 장기적으로는 실제 가치를 정직하게 재는 저울과 같다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄",
+    "category": "mindset"
   }
 ];
