@@ -4019,3 +4019,31 @@ button { font: inherit; }
     font-size: clamp(11px, 2.5vw, 14px);
   }
 }
+
+/* 2026-07-24 (ver.1.6.8.1) — 첫 로딩 때 음악 버튼(음표/재생/다음곡)이 왼쪽
+   아랫줄로 밀렸다가 1~2초 뒤 제자리(우측)로 돌아가는 문제 수정. 원인:
+   로딩 문구("날씨 불러오는 중 --°")가 실제 날씨 문구보다 길어서, 뷰포트가
+   좁은 기기(안드로이드 375px)에서 .clock-meta의 flex-wrap:wrap이 음악
+   버튼을 다음 줄로 넘겼던 것 — 아이폰(393px)은 몇 px 차이로 통과해서
+   안드로이드에서만 보였다. 줄바꿈 자체를 금지하고, 대신 날씨 문구가 길면
+   말줄임 처리한다 — 버튼 위치는 어떤 문구가 와도 흔들리지 않는다. */
+.clock-meta {
+  flex-wrap: nowrap;
+}
+
+.clock-meta .weather-chip {
+  min-width: 0;
+  flex: 0 1 auto;
+  overflow: hidden;
+}
+
+#weatherSummary {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clock-meta .music-controls {
+  flex: 0 0 auto;
+}
