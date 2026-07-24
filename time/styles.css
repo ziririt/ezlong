@@ -3055,7 +3055,10 @@ button { font: inherit; }
   /* 2026-07-24 2차 보강 — 1차(8.6vh)로는 간격이 안 생겨서(유저 재확인) 더
      줄인다: 비주얼라이저 세로 축소 + 패널 위/아래 padding 축소. 합계로
      패널 바닥이 문장 박스에서 확실히 떨어진다. */
-  .music-viz-wrap { height: clamp(42px, 7.4vh, 70px); }
+  /* 2026-07-24 5차 — "비주얼라이저가 짜리몽땅하다": 문장 칸 축소(파일 끝
+     블록의 .sky-room 참조)로 확보한 공간을 비주얼라이저에 돌려준다
+     (7.4vh→9.8vh, 747px 화면 기준 55→73px). */
+  .music-viz-wrap { height: clamp(48px, 9.8vh, 80px); }
   .music-info-panel { padding: 16px 10px 8px; }
 }
 /* (문장 폰트 축소 규칙은 파일 맨 끝의 @media 블록 참조 — 여기 두면 뒤에
@@ -3985,8 +3988,23 @@ button { font: inherit; }
    @media는 특이도를 올려주지 않는다. 그래서 이 블록은 반드시 파일 맨 끝에
    있어야 한다. 위로 옮기지 말 것. 아이폰 일반 기종(780px 초과)은 영향 없음. */
 @media (max-height: 780px) {
+  /* 2026-07-24 5차 — "짜리몽땅한 비주얼라이저" 해소를 위한 십시일반:
+     문장 표시 칸(grid row3)을 210→196px로 줄여 그만큼을 비주얼라이저
+     세로에 돌려준다(위 .music-viz-wrap 9.8vh와 한 쌍). 문장 폰트·출처
+     폰트·출처 위 여백도 함께 한 눈금씩 줄여 좁아진 칸 안에서 여유를
+     유지한다. 플립시계·버튼 크기는 건드리지 않았다(리스크 대비 이득이
+     작다는 판단 — 유저 합의). */
+  .sky-room {
+    grid-template-rows: auto minmax(0, 1fr) clamp(196px, 43vw, 285px) auto;
+  }
+  .quote-foot {
+    margin-top: 12px;
+  }
+  .quote-foot cite {
+    font-size: clamp(13.5px, 2vw, 15px);
+  }
   .quote-panel blockquote {
-    font-size: clamp(14px, 3.35vw, 21px);
+    font-size: clamp(13px, 3.2vw, 20px);
     line-height: 1.36;
   }
   .quote-panel.quote-long blockquote {
