@@ -8129,5 +8129,39 @@ window.investmentQuotes = [
     "title": "무소유",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "Life is like a snowball. The important thing is finding wet snow and a really long hill.",
+    "text": "인생은 눈덩이와 같다. 중요한 것은 젖은 눈과 아주 긴 언덕을 찾는 것이다.",
+    "title": "스노볼 (The Snowball)",
+    "author": "앨리스 슈뢰더 (Alice Schroeder)",
+    "category": "compound"
+  },
+  {
+    "english": "The word 'risk' derives from the early Italian risicare, which means 'to dare'. In this sense, risk is a choice rather than a fate. The actions we dare to take, which depend on how free we are to make choices, are what the story of risk is all about.",
+    "text": "'리스크'라는 단어는 초기 이탈리아어 리시카레(risicare)에서 유래했으며, 이는 '감히 하다'라는 뜻이다. 이런 의미에서 리스크는 운명이 아니라 선택이다. 우리가 감히 취하는 행동들 — 이는 우리가 얼마나 자유롭게 선택할 수 있는지에 달려 있다 — 이것이 바로 리스크 이야기의 전부다.",
+    "title": "신을 거역한 사람들 (Against the Gods: The Remarkable Story of Risk)",
+    "author": "피터 번스타인 (Peter L. Bernstein)",
+    "category": "mindset"
+  },
+  {
+    "english": "Win or lose, everybody gets what they want out of the market. Some people seem to like to lose, so they win by losing money.",
+    "text": "이기든 지든, 누구나 시장에서 자신이 원하는 것을 얻는다. 어떤 사람들은 손실을 좋아하는 것처럼 보이는데, 그런 사람들은 돈을 잃음으로써 이기는 셈이다.",
+    "title": "시장의 마법사들 (Market Wizards)",
+    "author": "에드 세이코타 (잭 슈웨거 인터뷰집)",
+    "category": "mindset"
+  },
+  {
+    "english": "Happy families are all alike; every unhappy family is unhappy in its own way.",
+    "text": "행복한 가정은 모두 서로 닮았지만, 불행한 가정은 저마다의 이유로 불행하다.",
+    "title": "안나 카레니나",
+    "author": "레프 톨스토이",
+    "genre": "literature"
+  },
+  {
+    "text": "완벽한 문장 같은 건 존재하지 않아. 완벽한 절망이 존재하지 않는 것처럼.",
+    "title": "상실의 시대",
+    "author": "무라카미 하루키",
+    "genre": "literature"
   }
 ];
