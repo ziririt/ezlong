@@ -3597,16 +3597,19 @@ button { font: inherit; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px;
+  gap: 2px;
   padding: 0;
   border: 0;
   background: transparent;
-  color: rgba(238,242,246,0.58);
-  font-size: 11px;
-  font-weight: 650;
+  /* 2026-07-24 유저 요청 — "눈에 밟히진 않되 존재감은 있어야 한다":
+     11px/58% → 13px/72%로 상향(+20%). ezlong.com 하단바의 Basecamp와
+     대칭 위치라는 점을 감안해, 크기감도 그쪽과 어울리는 수준으로. */
+  color: rgba(238,242,246,0.72);
+  font-size: 13px;
+  font-weight: 680;
   line-height: 1;
-  letter-spacing: 0.01em;
-  text-shadow: 0 1px 8px rgba(0,0,0,0.18);
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.22);
   cursor: pointer;
 }
 .scene-ezlong-link:active {
@@ -3614,16 +3617,28 @@ button { font: inherit; }
 }
 
 .scene-ezlong-hint {
-  font-size: 10px;
-  font-weight: 400;
+  /* 2026-07-24 유저 요청 — "⌄를 30% 키우고 눌러보고 싶게": 10px→13px.
+     호흡(바운스)에 은은한 글로우를 함께 실어 '살아있는 초대장' 느낌 —
+     내려앉는 순간 가장 밝고 가장 빛난다. 과하지 않게 최고 밝기 0.95,
+     글로우는 부드러운 흰 번짐만. */
+  font-size: 13px;
+  font-weight: 500;
   line-height: 1;
-  color: rgba(238,242,246,0.5);
-  animation: sceneEzlongHintBounce 1.8s ease-in-out infinite;
+  color: rgba(238,242,246,0.55);
+  animation: sceneEzlongHintBounce 2.2s ease-in-out infinite;
 }
 
 @keyframes sceneEzlongHintBounce {
-  0%, 100% { transform: translateY(0); opacity: 0.4; }
-  50% { transform: translateY(3px); opacity: 0.85; }
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+    text-shadow: 0 0 0 rgba(255,255,255,0);
+  }
+  50% {
+    transform: translateY(4px);
+    opacity: 0.95;
+    text-shadow: 0 0 8px rgba(255,255,255,0.55), 0 1px 10px rgba(0,0,0,0.25);
+  }
 }
 
 /* 2026-07-08: 유저-Claude 간 "이 업데이트가 실제로 반영됐는지" 확인용 버전
