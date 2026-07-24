@@ -8170,5 +8170,18 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄",
     "category": "mindset"
+  },
+  {
+    "text": "새는 알에서 나오려고 투쟁한다. 알은 세계다. 태어나려는 자는 하나의 세계를 깨뜨려야만 한다.",
+    "title": "데미안",
+    "author": "헤르만 헤세",
+    "genre": "literature"
+  },
+  {
+    "english": "The whole secret to winning and losing in the stock market is to lose the least amount possible when you're not right.",
+    "text": "주식시장에서 이기고 지는 것을 가르는 비밀은 단 하나, 내 판단이 틀렸을 때 손실을 최소한으로 줄이는 것이다.",
+    "title": "How to Make Money in Stocks",
+    "author": "윌리엄 오닐 (William J. O'Neil)",
+    "category": "mindset"
   }
 ];
