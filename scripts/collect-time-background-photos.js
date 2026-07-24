@@ -144,6 +144,44 @@ function seasonFromKst(date = kstNow()) {
   return "winter";
 }
 
+// 2026-07-24 유저 확정 — 새 사진의 seasonTags 부여 규칙(수집 "날짜" 기준 +
+// 내용 분석 예외). 위 seasonFromKst()는 "무엇을 검색할지"(검색어의 계절감)에
+// 계속 쓰이고, 이 함수는 "어느 계절에 보여줄지"(seasonTags)만 담당한다 —
+// 앱은 seasonTags로 현재 계절 사진을 고르므로(app.js seasonMatches) 이 값이
+// 실사용 데이터다.
+//   1) 내용상 계절감이 확실하면 그 계절만: 수영장/바캉스류 → summer 단독,
+//      눈/설경 → winter, 단풍 → autumn, 벚꽃 → spring.
+//   2) 그 외에는 수집 날짜로: 5/1~8/31 → 봄·여름·가을 겸용(초록 풍경은
+//      세 계절 다 어울린다는 유저 판단), 9/1~11/30 → 가을, 12/1~2/15 → 겨울,
+//      2/16~4/30 → 봄.
+// (유저 원문은 "8월 30일까지"였으나 9/1과의 사이에 8/31 하루가 비어
+// 8/31까지로 붙였다 — 하루 공백으로 태그 없는 사진이 생기는 것 방지.)
+function seasonTagsForNewPhoto({ info, filename, weatherTag, date = kstNow() }) {
+  const text = [
+    filename || "",
+    info?.canonicaltitle || "",
+    info?.descriptionurl || "",
+  ].join(" ");
+  if (/pool|swimming|bikini|surf|tropical|palm|vacation|vacanc|waterpark|snorkel|barbecue|beach volleyball/i.test(text)) {
+    return ["summer"];
+  }
+  if (weatherTag === "snow" || /snow|winter|frost|icicle|blizzard/i.test(text)) {
+    return ["winter"];
+  }
+  if (/autumn|foliage|maple|fall color|fall foliage|red leaves/i.test(text)) {
+    return ["autumn"];
+  }
+  if (/cherry blossom|sakura|blossom|spring flower/i.test(text)) {
+    return ["spring"];
+  }
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  if (month >= 5 && month <= 8) return ["autumn", "spring", "summer"];
+  if (month >= 9 && month <= 11) return ["autumn"];
+  if (month === 12 || month === 1 || (month === 2 && day <= 15)) return ["winter"];
+  return ["spring"]; // 2/16 ~ 4/30
+}
+
 function seasonQuery(season) {
   return {
     spring: "spring fresh green flowers",
@@ -510,7 +548,7 @@ async function main() {
       src: relativePath,
       timeBuckets: [plan.bucket],
       weatherTags: [weatherTag],
-      seasonTags: [season],
+      seasonTags: seasonTagsForNewPhoto({ info, filename, weatherTag }),
       source: "wikimedia-commons",
       attribution: commonsAttribution(info),
       license: commonsLicense(info),
