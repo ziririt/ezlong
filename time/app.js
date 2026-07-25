@@ -1960,7 +1960,14 @@ function saveSelectedFlatGenres() {
 }
 
 // 2026-07-19 3차 피드백: "확인" 버튼은 원래 흰색이지만, 아직 저장 안 된
-// 분야 선택 변경이 있으면 하늘색으로 바뀌어 "지금 누르면 반영된다"는 걸 알려준다.
+// 분야 선택 변경이 있으면 하늘색(파란색)으로 바뀌어 "지금 누르면 반영된다"는
+// 걸 알려준다. 2026-07-25 유저 요청으로 범위 확장 — 문장의 분야뿐 아니라
+// 설정 패널 안의 다른 변경(배경사진 토글, 음악 제외 토글, 플레이리스트/
+// Special 선택, 비주얼라이저 옵션)도 즉시 저장되긴 하지만, 똑같이 이
+// 버튼을 파란색으로 바꿔 "방금 뭔가 바꿨다"는 걸 일관되게 알려준다
+// (각 change 리스너에서 markSettingsDirty() 호출 — 아래 grep 참조:
+// applyFlatGenreSelection/applyMusicPlaylistFilter/setMusicVizOption/
+// MUSIC_EXCLUDABLE_CATEGORIES 리스너/bgFilterWeatherEl·bgFilterTimeEl 리스너).
 function markSettingsDirty() {
   if (settingsSave) settingsSave.classList.add("is-dirty");
 }
@@ -6186,6 +6193,7 @@ function renderMusicVizSettingsUI() {
 function setMusicVizOption(group, value) {
   if (!(group in MUSIC_VIZ_SETTINGS_DEFAULT) || musicVizSettings[group] === value) return;
   musicVizSettings[group] = value;
+  markSettingsDirty();
   saveMusicVizSettings();
   if (group === "color") applyMusicVizColorToBars();
   else if (group === "shape") applyMusicVizShapeClass();
@@ -6276,6 +6284,7 @@ function resetMusicExcludeFilters() {
 
 function applyMusicPlaylistFilter(newKey) {
   const __t0 = (window.__fzFilterTapT0 || performance.now());
+  markSettingsDirty();
   saveMusicPlaylistFilter(newKey);
   categoryRotationQueue = [];
   resetMusicExcludeFilters();
@@ -7452,6 +7461,7 @@ MUSIC_EXCLUDABLE_CATEGORIES.forEach(({ storageKey, elId }) => {
         return;
       }
     }
+    markSettingsDirty();
     saveMusicGenreToggle(storageKey, el.checked);
     applyMusicGenreToggle();
   });
@@ -7462,6 +7472,7 @@ MUSIC_EXCLUDABLE_CATEGORIES.forEach(({ storageKey, elId }) => {
 // 리스너 자체가 필요 없다.
 if (bgFilterWeatherEl) {
   bgFilterWeatherEl.addEventListener("change", () => {
+    markSettingsDirty();
     saveBgFilterToggle(bgFilterWeatherStorageKey, bgFilterWeatherEl.checked);
     syncBgFilterUi();
     if (activeScene) setScene(activeScene, { syncDots: true, force: true });
@@ -7469,6 +7480,7 @@ if (bgFilterWeatherEl) {
 }
 if (bgFilterTimeEl) {
   bgFilterTimeEl.addEventListener("change", () => {
+    markSettingsDirty();
     saveBgFilterToggle(bgFilterTimeStorageKey, bgFilterTimeEl.checked);
     syncBgFilterUi();
     if (activeScene) setScene(activeScene, { syncDots: true, force: true });
