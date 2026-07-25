@@ -8210,5 +8210,11 @@ window.investmentQuotes = [
     "title": "성공의 방정식 (The Success Equation)",
     "author": "마이클 모부신 (Michael J. Mauboussin)",
     "category": "mindset"
+  },
+  {
+    "text": "저녁때 돌아갈 집이 있다는 것, 힘들 때 마음속으로 생각할 사람 있다는 것, 외로울 때 혼자서 부를 노래 있다는 것.",
+    "title": "행복",
+    "author": "나태주",
+    "genre": "literature"
   }
 ];
