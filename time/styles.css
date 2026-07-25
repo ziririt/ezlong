@@ -915,6 +915,18 @@ button { font: inherit; }
   border-top: 1px dashed rgba(255,255,255,0.18);
 }
 
+/* 2026-07-25 신설 — 배경사진 매칭 기준 토글(계절/날씨/시간대) 3개는 위
+   .music-exclude-filters의 알약 칩 스타일을 그대로 재사용하되, 항목이
+   4개가 아니라 3개라 2열 대신 3열로 나란히 배치한다. 이 섹션은 위쪽
+   border-top/margin-top(장르 그리드와 제외 필터 사이 구분선 용도)이
+   필요 없어 0으로 되돌린다 — 소제목/설명 바로 아래 첫 요소이기 때문. */
+.bg-filter-toggles {
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 10px;
+  padding-top: 0;
+  border-top: 0;
+}
+
 .exclude-chip {
   display: flex;
   align-items: center;

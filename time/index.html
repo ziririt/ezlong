@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260725-musicexclude-v2">
+  <link rel="stylesheet" href="styles.css?v=20260725-bgfilter-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -290,7 +290,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2>설정<span class="settings-version" aria-hidden="true">ver.1.6.12.3</span></h2>
+            <h2>설정<span class="settings-version" aria-hidden="true">ver.1.6.13</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -308,6 +308,35 @@
           <h3 class="settings-subtitle">프리미엄</h3>
           <p class="settings-desc settings-desc-muted">광고를 제거하고 더 쾌적하게 이용하세요.</p>
           <button type="button" class="premium-upgrade-button" id="premiumUpgradeButton">프리미엄으로 업그레이드</button>
+        </section>
+
+        <!-- 2026-07-25 신설 — 배경사진 매칭 기준(계절/날씨/시간대) 3종을
+             유저가 직접 켜고 끌 수 있게 한다. app.js matchingArchivePhotos가
+             각 토글 저장값(bgFilter*StorageKey)을 읽어, 꺼진 기준은 매칭
+             조건에서 완전히 빼고 그 기준과 무관하게 랜덤으로 고른다. "계절"은
+             현재 여름 사진밖에 없어(CLAUDE.md 30항 계절 사진 수집 일정 참조)
+             항상 켜짐 고정 + 비활성화 표시(.exclude-chip.is-disabled 재사용,
+             체크박스 자체에도 disabled)로 둔다. 라이선스 표기와 하단 상태
+             문구(bgFilterStatus)는 app.js syncBgFilterUi가 토글 상태에 맞춰
+             매번 다시 그린다. -->
+        <section class="settings-block settings-card" aria-label="배경 사진">
+          <h3 class="settings-subtitle">배경 사진</h3>
+          <p class="settings-desc settings-desc-muted">This app uses some background images in accordance with the Pexels license.</p>
+          <div class="music-exclude-filters bg-filter-toggles" id="bgFilterToggles" aria-label="배경사진 매칭 기준">
+            <label class="exclude-chip is-disabled">
+              <input type="checkbox" id="bgFilterSeason" checked disabled>
+              <span>계절</span>
+            </label>
+            <label class="exclude-chip">
+              <input type="checkbox" id="bgFilterWeather" checked>
+              <span>날씨</span>
+            </label>
+            <label class="exclude-chip">
+              <input type="checkbox" id="bgFilterTimeOfDay" checked>
+              <span>시간대</span>
+            </label>
+          </div>
+          <p class="settings-desc settings-desc-muted" id="bgFilterStatus">현재 ☑ 계절 ☑ 날씨 ☑ 시간대 에 맞는 배경 사진만 나옵니다.</p>
         </section>
 
         <!-- 2026-07-19 4차 피드백: "NOW PLAYING" 박스(#musicPlaylistInfo)를
@@ -820,6 +849,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260725-musicexclude-v4"></script>
+  <script src="app.js?v=20260725-bgfilter-v1"></script>
 </body>
 </html>

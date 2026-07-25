@@ -272,6 +272,13 @@ const musicQCPanel = document.getElementById("musicQCPanel");
 const musicQCDeleteButton = document.getElementById("musicQCDeleteButton");
 const musicQCRemovalList = document.getElementById("musicQCRemovalList");
 const musicQCCopyButton = document.getElementById("musicQCCopyButton");
+// 2026-07-25 신설 — 설정 화면 "배경 사진" 섹션의 계절/날씨/시간대 매칭
+// 기준 토글. bgFilterSeasonEl은 항상 checked+disabled라 change 리스너를
+// 달지 않는다(값 읽기도 하지 않음 — matchingArchivePhotos에서 계절은
+// 항상 매칭시킨다).
+const bgFilterWeatherEl = document.getElementById("bgFilterWeather");
+const bgFilterTimeEl = document.getElementById("bgFilterTimeOfDay");
+const bgFilterStatusEl = document.getElementById("bgFilterStatus");
 const bgAudio = document.getElementById("bgAudio");
 const bgAudioB = document.getElementById("bgAudioB");
 
@@ -1021,11 +1028,64 @@ function renderPhotoCredit(image) {
   photoCredit.toggleAttribute("aria-hidden", !url || url === "#");
 }
 
+// 2026-07-25 유저 요청 — 설정 화면 "배경 사진" 섹션에 계절/날씨/시간대 3개
+// 매칭 기준을 각각 켜고 끌 수 있는 토글을 신설했다. 꺼진 기준은 아래
+// matchingArchivePhotos의 필터 조건에서 완전히 빠져서, 그 기준과 무관하게
+// 랜덤으로 사진이 뽑힌다. "계절"은 현재 여름 사진밖에 없어(CLAUDE.md 30항
+// 계절 사진 수집 일정 참조 — 겨울 35장뿐 등 계절별 물량이 아직 안 갖춰짐)
+// 설정 화면에서 체크박스 자체를 disabled로 막아뒀고, 여기 로직도 항상
+// true로 취급한다(loadBgFilterToggle을 아예 부르지 않음).
+const bgFilterWeatherStorageKey = "ezlong:bgFilterWeather";
+const bgFilterTimeStorageKey = "ezlong:bgFilterTimeOfDay";
+
+function loadBgFilterToggle(storageKey) {
+  try {
+    const raw = localStorage.getItem(storageKey);
+    return raw === null ? true : raw === "1"; // 기본값: 켜짐(그 기준으로 매칭)
+  } catch (error) {
+    return true;
+  }
+}
+
+function saveBgFilterToggle(storageKey, value) {
+  try {
+    localStorage.setItem(storageKey, value ? "1" : "0");
+  } catch (error) {
+    // localStorage를 못 쓰는 환경이어도 배경사진 표시 자체에는 지장이 없어야 한다.
+  }
+}
+
+// 체크됨/해제됨을 문자 기호로 보여주는 상태 문구용 — 컬러 이모지 대신
+// 단순 텍스트 기호(☑/☐)를 쓴다(유저가 준 원문 문구의 취지를 살리되
+// 앱 전체에서 이모지를 안 쓰는 기존 톤과 맞춘다).
+function bgFilterCheckSymbol(on) {
+  return on ? "☑" : "☐";
+}
+
+// 설정 화면을 열 때(그리고 토글을 바꿀 때마다) 체크박스 체크 상태와
+// 하단 상태 문구를 저장값에 맞춰 다시 그린다. "계절"은 함수 진입 시점에
+// 이미 HTML에 checked+disabled로 고정돼 있어 여기서 건드리지 않는다.
+function syncBgFilterUi() {
+  const weatherOn = loadBgFilterToggle(bgFilterWeatherStorageKey);
+  const timeOn = loadBgFilterToggle(bgFilterTimeStorageKey);
+  if (bgFilterWeatherEl) bgFilterWeatherEl.checked = weatherOn;
+  if (bgFilterTimeEl) bgFilterTimeEl.checked = timeOn;
+  if (bgFilterStatusEl) {
+    bgFilterStatusEl.textContent = `현재 ${bgFilterCheckSymbol(true)} 계절 ${bgFilterCheckSymbol(weatherOn)} 날씨 ${bgFilterCheckSymbol(timeOn)} 시간대 에 맞는 배경 사진만 나옵니다.`;
+  }
+}
+
 function photoSetKey(sceneId) {
   const timeBuckets = getSceneTimeBuckets(sceneId);
   const currentTag = weatherState.tag;
   const currentSeason = getCurrentSeason();
-  return [currentSeason, currentTag, timeBuckets.join("-"), photoBatchSlot()].join("|");
+  // 토글 상태도 키에 포함시켜서, 설정 화면에서 날씨/시간대를 껐다 켰다 할
+  // 때마다 캐시된 4장 세트(activePhotoSetKey)가 즉시 무효화되고 다시
+  // 계산되게 한다 — 안 그러면 토글을 바꿔도 다음 자연 순환 전까지 화면이
+  // 그대로다.
+  const weatherOn = loadBgFilterToggle(bgFilterWeatherStorageKey) ? "1" : "0";
+  const timeOn = loadBgFilterToggle(bgFilterTimeStorageKey) ? "1" : "0";
+  return [currentSeason, currentTag, timeBuckets.join("-"), photoBatchSlot(), weatherOn, timeOn].join("|");
 }
 
 function matchingArchivePhotos(sceneId) {
@@ -1033,7 +1093,12 @@ function matchingArchivePhotos(sceneId) {
   const currentTag = weatherState.tag;
   const groupedTag = weatherTagGroup(currentTag);
   const currentSeason = getCurrentSeason();
+  const weatherFilterOn = loadBgFilterToggle(bgFilterWeatherStorageKey);
+  const timeFilterOn = loadBgFilterToggle(bgFilterTimeStorageKey);
   const seasonMatches = (image) => image.seasonTags?.includes(currentSeason);
+  const timeMatches = (image) => !timeFilterOn || image.timeBuckets?.some((bucket) => timeBuckets.includes(bucket));
+  const exactWeatherMatches = (image) => !weatherFilterOn || image.weatherTags?.includes(currentTag);
+  const groupedWeatherMatches = (image) => !weatherFilterOn || image.weatherTags?.includes(groupedTag);
   // 2026-07-07 재발 방지: 예전엔 currentTag === "light-rain"일 때만 heavy-rain/
   // 폭풍 이미지를 걸러냈다 — 그런데 "흐림(cloudy)"인데 번개 치는 사진이 나온
   // 실제 사고가 있었다. 원인은 사진 데이터(background-manifest.json)에서
@@ -1065,8 +1130,8 @@ function matchingArchivePhotos(sceneId) {
   const archivePhotos = backgroundArchive
     .filter((image) => {
       const seasonMatch = seasonMatches(image);
-      const timeMatch = image.timeBuckets?.some((bucket) => timeBuckets.includes(bucket));
-      const exactWeatherMatch = image.weatherTags?.includes(currentTag);
+      const timeMatch = timeMatches(image);
+      const exactWeatherMatch = exactWeatherMatches(image);
       return seasonMatch && timeMatch && exactWeatherMatch && moodSafe(image) && imageUrl(image);
     })
     .map((image) => image);
@@ -1080,8 +1145,8 @@ function matchingArchivePhotos(sceneId) {
   const groupedArchivePhotos = backgroundArchive
     .filter((image) => {
       const seasonMatch = seasonMatches(image);
-      const timeMatch = image.timeBuckets?.some((bucket) => timeBuckets.includes(bucket));
-      const weatherMatch = image.weatherTags?.includes(groupedTag);
+      const timeMatch = timeMatches(image);
+      const weatherMatch = groupedWeatherMatches(image);
       return seasonMatch && timeMatch && weatherMatch && moodSafe(image) && imageUrl(image);
     })
     .map((image) => image);
@@ -1094,7 +1159,7 @@ function matchingArchivePhotos(sceneId) {
   const weatherOnlyPhotos = backgroundArchive
     .filter((image) => {
       const seasonMatch = seasonMatches(image);
-      const weatherMatch = image.weatherTags?.includes(groupedTag);
+      const weatherMatch = groupedWeatherMatches(image);
       return seasonMatch && weatherMatch && moodSafe(image) && imageUrl(image);
     })
     .map((image) => image);
@@ -1107,13 +1172,13 @@ function matchingArchivePhotos(sceneId) {
   // 계절 정확도보다 우선한다. 이 단계는 아직 실제 아카이브 사진(태그 있음)이라
   // 완전 무관 사진(로컬 제네릭 폴백)보다는 훨씬 낫다.
   const weatherAnySeasonPhotos = backgroundArchive
-    .filter((image) => image.weatherTags?.includes(groupedTag) && moodSafe(image) && imageUrl(image))
+    .filter((image) => groupedWeatherMatches(image) && moodSafe(image) && imageUrl(image))
     .map((image) => image);
   const weatherOverSeasonPhotos = uniquePhotos([...weatherPriorityPhotos, ...weatherAnySeasonPhotos]);
   if (weatherOverSeasonPhotos.length >= 4) return weatherOverSeasonPhotos;
 
   const fallbackArchivePhotos = backgroundArchive
-    .filter((image) => seasonMatches(image) && image.timeBuckets?.some((bucket) => timeBuckets.includes(bucket)) && moodSafe(image) && imageUrl(image))
+    .filter((image) => seasonMatches(image) && timeMatches(image) && moodSafe(image) && imageUrl(image))
     .map((image) => image);
 
   return uniquePhotos([...weatherOverSeasonPhotos, ...fallbackArchivePhotos]);
@@ -7054,6 +7119,7 @@ loadSavedFlatGenres();
 renderMusicPlaylistInfo();
 renderMusicPlaylistFilterOptions();
 syncMusicExcludeFilterUi();
+syncBgFilterUi();
 renderMusicQCPanel();
 renderMusicToggle();
 renderMusicVizSettingsUI();
@@ -7384,6 +7450,24 @@ MUSIC_EXCLUDABLE_CATEGORIES.forEach(({ storageKey, elId }) => {
     applyMusicGenreToggle();
   });
 });
+// 2026-07-25 신설 — 배경사진 날씨/시간대 매칭 토글. 바뀌는 즉시 화면에
+// 반영되도록 activeScene을 force 재렌더한다(다른 설정 변경들과 동일한
+// "즉시 반영" 패턴 — setScene 호출부 주석 참조). 계절 토글은 disabled라
+// 리스너 자체가 필요 없다.
+if (bgFilterWeatherEl) {
+  bgFilterWeatherEl.addEventListener("change", () => {
+    saveBgFilterToggle(bgFilterWeatherStorageKey, bgFilterWeatherEl.checked);
+    syncBgFilterUi();
+    if (activeScene) setScene(activeScene, { syncDots: true, force: true });
+  });
+}
+if (bgFilterTimeEl) {
+  bgFilterTimeEl.addEventListener("change", () => {
+    saveBgFilterToggle(bgFilterTimeStorageKey, bgFilterTimeEl.checked);
+    syncBgFilterUi();
+    if (activeScene) setScene(activeScene, { syncDots: true, force: true });
+  });
+}
 if (musicQCDeleteButton) {
   musicQCDeleteButton.addEventListener("click", permanentlyExcludeCurrentTrack);
 }
