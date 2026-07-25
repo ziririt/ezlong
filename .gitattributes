@@ -1,0 +1,6 @@
+# 2026-07-25: 배경사진 매니페스트는 30분마다 도는 수집 봇과 갤러리 관리툴이
+# 동시에 건드리는 핫스팟 파일이라, 기본 텍스트 3-way 병합 대신 JSON 구조를
+# 이해하는 전용 드라이버로 병합한다. 드라이버 실행 파일: scripts/merge-background-manifest.mjs
+# 로컬 등록(멱등, gallery-server.js "반영하기" 스크립트가 매번 자동 포함):
+#   git config merge.flipzen-manifest.driver "node scripts/merge-background-manifest.mjs %O %A %B"
+time/data/background-manifest.json merge=flipzen-manifest

@@ -955,4 +955,17 @@ NDX가 다시 나스닥100 CFD를 가리키게 되어(22항의 "정의 일치" �
 
 ---
 
+## 27. time/data/background-manifest.json 전용 git 병합 드라이버 (2026-07-25 신설)
+
+`scripts/merge-background-manifest.mjs` + `.gitattributes`(`merge=flipzen-manifest`)로
+이 파일 전용 JSON 구조 기반 병합을 등록해뒀다. 이 파일은 30분마다 도는
+수집 봇과 `투자서 날씨 앱 2` 저장소의 갤러리 관리툴(gallery-server.js)이
+동시에 건드리는 핫스팟이라, 기본 텍스트 3-way 병합이 두 번 실측으로
+신뢰 불가능함이 확인됐다(한 번은 conflict 마커 없이 34장을 조용히
+유실시킬 뻔함). 상세 배경·검증 내역은 `투자서 날씨 앱 2/CLAUDE.md` 33항
+참조. 이 드라이버 파일과 `.gitattributes` 등록을 지우거나 우회하지 말 것 —
+지우면 33항에 기록된 사고가 그대로 재발한다.
+
+---
+
 전체 규칙·CSS 변수·배포 체크리스트·Git 워크플로우 → **EZLONG_GUIDE.md** 참조
