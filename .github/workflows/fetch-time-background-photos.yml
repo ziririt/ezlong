@@ -49,8 +49,16 @@ jobs:
       - name: Install Pillow
         run: pip install Pillow --quiet
 
-      # ── 4. 배경사진 수집 (위키미디어 검색 → 다운로드 → 컬러감 검수 → 매니페스트 반영) ──
+      # ── 4. 배경사진 수집 (위키미디어 검색 → 다운로드 → 컬러감 검수 → 자동 태그 분류 → 매니페스트 반영) ──
+      # GEMINI_API_KEY: 2026-07-25 추가. 사진을 실제로 보고 시간대/날씨/계절을
+      # 판정하는 분류기(scripts/photo-tag-classifier.mjs)가 쓴다. 키가 없으면
+      # 분류기가 실패하고 예전 방식(검색 의도 + 서울 날씨)으로 폴백하는데,
+      # 그 방식은 실측 정확도가 시간 45%/날씨 20%였으므로 키를 반드시 넣을 것.
+      # CLASSIFY_PASSES: 장당 판정 횟수(다수결). 정확도 우선이라 3회.
       - name: Collect background photos
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CLASSIFY_PASSES: '3'
         run: node scripts/collect-time-background-photos.js
 
       # ── 5. 변경사항 커밋 및 푸시 ──────────────────────────────────────

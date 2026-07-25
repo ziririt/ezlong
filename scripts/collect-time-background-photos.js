@@ -73,6 +73,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { classifyPhoto } from "./photo-tag-classifier.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -80,6 +81,11 @@ const repoRoot = path.resolve(__dirname, "..");
 const root = path.join(repoRoot, "time"); // ezlong.com/time 배포 대상
 const manifestPath = path.join(root, "data", "background-manifest.json");
 const archiveRoot = path.join(root, "assets", "background-archive");
+
+// 사진 한 장을 몇 번 판정해 다수결로 합칠지(자기일관성).
+// 유저 확정(2026-07-25): 속도보다 정확도 우선 → 기본 3회.
+// 30분마다 최대 5장이므로 회당 최대 15회 호출, flash-lite 기준 비용은 미미하다.
+const CLASSIFY_PASSES = Number(process.env.CLASSIFY_PASSES || 3);
 
 const WEAK_THRESHOLD = 30;
 
@@ -578,11 +584,69 @@ async function main() {
       continue;
     }
 
+    // ── 자동 태그 분류 (2026-07-25 신설) ────────────────────────────────────
+    // 예전엔 timeBuckets에 plan.bucket("우리가 채우려던 시간대"), weatherTags에
+    // 수집 시점 서울 날씨를 그대로 박아 넣었다. 사진을 보지 않고 붙인 라벨이라
+    // 실측 정확도가 시간 45%/날씨 20%였고, 비로 태그된 12장 중 실제 비 사진은
+    // 0장이었다(2026-07-25 봇 수집분 20장 전수 육안 대조). 이제 사진 자체를
+    // 보고 판정한다. 상세 배경은 photo-tag-classifier.mjs 헤더 참조.
+    const classified = await classifyPhoto(outputPath, {
+      apiKey: process.env.GEMINI_API_KEY,
+      passes: CLASSIFY_PASSES,
+    });
+
+    let timeBuckets;
+    let weatherTags;
+    let seasonTags;
+    let classifyMeta = {};
+
+    if (classified.ok) {
+      // 배경화면으로 부적합하다고 과반이 판정하면 여기서 버린다
+      // (사람 얼굴 클로즈업, 실내 인물사진, 문서·로고 등).
+      if (classified.unusable) {
+        console.log(`reject(분류기 부적합 판정: ${classified.unusableReason}) ${filename}`);
+        await fs.unlink(outputPath).catch(() => {});
+        continue;
+      }
+      timeBuckets = classified.timeBuckets;
+      weatherTags = classified.weatherTags;
+      seasonTags = classified.seasonTags;
+      classifyMeta = {
+        tagSource: "vision-classifier",
+        tagAgreement: classified.agreement,
+        needsReview: classified.needsReview,
+        ...(classified.needsReview ? { reviewReasons: classified.reviewReasons } : {}),
+      };
+      // 검색 의도와 실제 판정이 얼마나 어긋나는지 로그로 남긴다.
+      // 이 불일치가 잦으면 timePlans의 검색어가 그 시간대를 제대로 못 물어오고
+      // 있다는 뜻이므로, 취약 버킷이 안 채워지는 원인을 여기서 알 수 있다.
+      const intended = plan.bucket;
+      const matched = timeBuckets.includes(intended);
+      console.log(
+        `accept(cf=${metrics.cf}, peakSat=${metrics.peakSat}, contrast=${metrics.contrast}) ${filename}\n` +
+        `   분류: time=[${timeBuckets.join(",")}] weather=[${weatherTags.join(",")}] season=[${seasonTags.join(",")}] ` +
+        `일치도=${classified.agreement}${classified.needsReview ? " ※검토필요" : ""}\n` +
+        `   검색의도=${intended} → ${matched ? "일치" : "불일치(검색어가 이 시간대를 못 물어옴)"}`
+      );
+      if (classified.needsReview) {
+        console.log(`   ::warning::검토 필요 — ${classified.reviewReasons.join("; ")}`);
+      }
+    } else {
+      // 분류 실패 시 예전 방식으로 폴백하되 반드시 눈에 띄게 남긴다.
+      // 조용히 넘어가면 예전처럼 엉뚱한 태그가 다시 쌓이기 시작한다.
+      timeBuckets = [plan.bucket];
+      weatherTags = [weatherTag];
+      seasonTags = seasonTagsForNewPhoto({ info, filename, weatherTag });
+      classifyMeta = { tagSource: "fallback-intent", needsReview: true,
+        reviewReasons: [`분류기 실패: ${classified.error}`] };
+      console.log(`::warning::분류기 실패 → 구방식 폴백 ${filename}: ${classified.error}`);
+    }
+
     added.push({
       src: relativePath,
-      timeBuckets: [plan.bucket],
-      weatherTags: [weatherTag],
-      seasonTags: seasonTagsForNewPhoto({ info, filename, weatherTag }),
+      timeBuckets,
+      weatherTags,
+      seasonTags,
       source: "wikimedia-commons",
       attribution: commonsAttribution(info),
       license: commonsLicense(info),
@@ -591,8 +655,8 @@ async function main() {
       colorfulness: metrics.cf,
       peakSaturation: metrics.peakSat,
       contrast: metrics.contrast,
+      ...classifyMeta,
     });
-    console.log(`accept(cf=${metrics.cf}, peakSat=${metrics.peakSat}, contrast=${metrics.contrast}) ${filename}`);
   }
 
   if (added.length > 0) {
