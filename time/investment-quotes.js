@@ -8216,5 +8216,12 @@ window.investmentQuotes = [
     "title": "행복",
     "author": "나태주",
     "genre": "literature"
+  },
+  {
+    "english": "I have lived a life of much shame. I simply cannot understand what a human life really is.",
+    "text": "부끄럼 많은 생애를 보냈습니다. 저는 인간의 삶이라는 것을, 도무지 알 수가 없습니다.",
+    "title": "인간 실격",
+    "author": "다자이 오사무",
+    "genre": "literature"
   }
 ];
