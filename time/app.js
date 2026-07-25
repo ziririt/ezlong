@@ -1071,7 +1071,13 @@ function syncBgFilterUi() {
   if (bgFilterWeatherEl) bgFilterWeatherEl.checked = weatherOn;
   if (bgFilterTimeEl) bgFilterTimeEl.checked = timeOn;
   if (bgFilterStatusEl) {
-    bgFilterStatusEl.textContent = `현재 ${bgFilterCheckSymbol(true)} 계절 ${bgFilterCheckSymbol(weatherOn)} 날씨 ${bgFilterCheckSymbol(timeOn)} 시간대 에 맞는 배경 사진만 나옵니다.`;
+    // 2026-07-25 2차 피드백 — 계절/날씨/시간대 각 라벨(체크기호 포함)을
+    // .bg-filter-status-tag로 감싸서 굵게+오렌지로 강조한다. 이 문구는
+    // innerHTML로 그리는 유일한 곳이라, 라벨 3개가 전부 고정 문자열(사용자
+    // 입력이 섞이지 않음)이라는 걸 유지해야 한다 — 나중에 라벨을 동적
+    // 값으로 바꾸게 되면 반드시 이스케이프 처리를 추가할 것.
+    const tag = (on, label) => `<span class="bg-filter-status-tag">${bgFilterCheckSymbol(on)} ${label}</span>`;
+    bgFilterStatusEl.innerHTML = `현재 ${tag(true, "계절")} ${tag(weatherOn, "날씨")} ${tag(timeOn, "시간대")} 에 맞는 배경 사진만 나옵니다.`;
   }
 }
 
