@@ -260,18 +260,14 @@ const musicFilterNoticeEl = document.getElementById("musicFilterNotice");
 const musicHistoryList = document.getElementById("musicHistoryList");
 const musicHistoryBody = document.getElementById("musicHistoryBody");
 const musicHistoryViewAll = document.getElementById("musicHistoryViewAll");
-// 2026-07-16: "Rock 포함"/"Vocal 포함"(체크 시 포함) 방식에서 "Rock 제외"/
-// "Vocal 제외"(체크 시 제외) 방식으로 전환 — element id도 의미에 맞춰 변경.
-// 2026-07-18 5차 피드백: "ROCK 제외" 토글은 삭제 — ROCK이 플레이리스트
-// 필터 자체에서 보컬과 분리된 독립 카테고리가 되어(#musicCategoryLabels
-// 아래 "vocal- girls rock" → "ROCK" 개명 참조), 굳이 별도 제외 토글 없이
-// 플레이리스트에서 다른 카테고리를 고르면 되므로 musicExcludeRockEl과
-// 그 하위 로직(isRockCategory 판정, excludeRock 변수, syncMusicExcludeFilterUi
-// 바인딩, 클릭 리스너)을 전부 제거했다.
-const musicExcludeVocalEl = document.getElementById("musicExcludeVocal");
-// 2026-07-16: "연주곡 제외" 추가 — 보컬이 있는 카테고리(보컬/걸스록) 외에는
-// 전부 연주곡이므로, isVocalCategory()의 반대 조건으로 그대로 재사용한다.
-const musicExcludeInstrumentalEl = document.getElementById("musicExcludeInstrumental");
+// 2026-07-25 재설계 — "Vocal 제외"/"연주곡 제외" 2개짜리 이분법에서 4개
+// 플레이리스트(어쿠스틱/클래식/보컬/ROCK) 각각을 독립적으로 켜고 끄는
+// 방식으로 전환했다. 배경: "클래식" 폴더 안에 보컬이 섞인 곡이 있어도
+// 이분법 방식(카테고리명에 "vocal"이라는 단어가 있는지만 봄)으로는 걸러낼
+// 방법이 없었다 — 상세 설계는 아래 MUSIC_EXCLUDABLE_CATEGORIES 주석 참조.
+// element 참조는 이제 그 배열을 순회하며 id로 직접 찾으므로(아래
+// syncMusicExcludeFilterUi/이벤트 리스너 등록부 참조), 여기서 개별 const로
+// 미리 선언해두지 않는다.
 const musicQCPanel = document.getElementById("musicQCPanel");
 const musicQCDeleteButton = document.getElementById("musicQCDeleteButton");
 const musicQCRemovalList = document.getElementById("musicQCRemovalList");
@@ -2771,7 +2767,26 @@ function weatherEmojiFromKoCondition(ko) {
 // 장식용 아이콘이라 낮/밤 추정이 다소 근사치여도 무방하다.
 // 2026-07-22: 비 아이콘 진입 문턱을 deriveRainDisplay()(30%→50%)와 통일 —
 // renderWeatherHourlyStrip의 isRainHour 판정과 반드시 같은 기준이어야 한다.
-function weatherEmojiFromHour(precipprob, precipMm, hourLabel, isNow) {
+// 2026-07-24 유저 제보: 강수 신호가 없는 시간이 전부 "맑음" 아이콘으로
+// 떨어져, 실제로는 흐리거나 구름 많은 시간에도 스트립엔 계속 해가 떠
+// 있었다 — deriveRainDisplay()의 iconDay/iconNight가 null인(=③, 비와
+// 무관) 경우의 폴백이 무조건 ☀️/🌙였던 게 원인. 이제 백엔드가 시간별로
+// 내려주는 conditionsKo(구름량 텍스트, buildHourlyStrip() 참조)를 반영해
+// 밤엔 "맑음이면 달, 그 외엔 구름"으로 단순화(⛅류 아이콘은 해가 들어있어
+// 밤엔 어색함 — Fable 5 회신의 iconNight:"☁️" 선택과 같은 원칙), 낮엔
+// weatherEmojiFromKoCondition()을 그대로 재사용해 흐림/구름조금/구름많음을
+// 구분해서 보여준다.
+function weatherEmojiFromHourCondition(conditionsKo, isNight) {
+  if (!isNight) return weatherEmojiFromKoCondition(conditionsKo);
+  if (conditionsKo === "맑음") return "🌙";
+  if (conditionsKo === "안개") return "🌫️";
+  if (conditionsKo === "천둥번개") return "⛈️";
+  if (conditionsKo === "눈") return "❄️";
+  if (conditionsKo === "비") return "🌧️";
+  return "☁️"; // 구름 조금/구름 많음/흐림/기타 — 밤에는 뭉뚱그려 구름 하나로
+}
+
+function weatherEmojiFromHour(precipprob, precipMm, hourLabel, isNow, conditionsKo) {
   let hour = null;
   if (isNow) {
     hour = new Date().getHours();
@@ -2784,11 +2799,13 @@ function weatherEmojiFromHour(precipprob, precipMm, hourLabel, isNow) {
   // 이분법이 오늘 사건의 원인 중 하나였다 — deriveRainDisplay()가 새로
   // 반환하는 ②(절충) 상태를 받을 자리가 없어 조용히 ③(맑음)과 똑같이
   // 그려버렸다. 이제 직접 판정하지 않고 deriveRainDisplay()가 계산해준
-  // iconDay/iconNight를 그대로 쓴다 — null이면(=③, 비와 무관) 기존
-  // 맑음/밤 아이콘으로 폴백한다.
+  // iconDay/iconNight를 그대로 쓴다 — null이면(=③, 비와 무관) 실제 구름량
+  // 기반 아이콘으로 폴백한다(conditionsKo가 구버전 캐시 등으로 없으면
+  // 안전하게 예전처럼 맑음/밤 아이콘).
   const rainDisplay = deriveRainDisplay(precipprob, precipMm);
   const icon = isNight ? rainDisplay.iconNight : rainDisplay.iconDay;
   if (icon) return icon;
+  if (conditionsKo) return weatherEmojiFromHourCondition(conditionsKo, isNight);
   return isNight ? "🌙" : "☀️";
 }
 
@@ -3059,7 +3076,7 @@ function renderWeatherHourlyStrip(data) {
       return `
     <div class="weather-hourly-item" data-now="${h.isNow ? "true" : "false"}">
       <span class="weather-hourly-hour">${h.hourLabel}</span>
-      <span class="weather-hourly-icon">${weatherEmojiFromHour(h.precipprob, precipMm, h.hourLabel, h.isNow)}</span>
+      <span class="weather-hourly-icon">${weatherEmojiFromHour(h.precipprob, precipMm, h.hourLabel, h.isNow, h.conditionsKo)}</span>
       <span class="weather-hourly-temp">${Math.round(h.temp)}°</span>
       <span class="weather-hourly-prob">${probHtml}</span>
     </div>`;
@@ -4126,41 +4143,45 @@ function isSpecialCategory(key) {
   return SPECIAL_CATEGORY_KEYS.has(key);
 }
 
-// 2026-07-13: "Rock 포함" / "Vocal 포함" 체크박스로 시작했었다(기본값 켜짐,
-// 끄면 제외). 2026-07-16: 유저 피드백으로 "Rock 제외" / "Vocal 제외"(체크
-// 시 제외) 방식으로 전환 — 평소엔 아무것도 제외 안 하는 게 기본이라, "끔"
-// 하나만 신경쓰면 되던 것에서 "필요할 때만 체크해서 뺀다"는 더 직관적인
-// 필터 UX로 바뀐다. 카테고리명 문자열 기반으로 판정하는 방식은 그대로다.
-// 2026-07-18 5차 피드백: "ROCK 제외" 토글은 삭제했다(ROCK이 플레이리스트
-// 자체에서 독립 카테고리가 됐으니 굳이 별도 제외 토글이 필요 없다는 판단) —
-// isRockCategory()도 이 토글 전용이었으므로 함께 제거했다.
-function isVocalCategory(key) {
-  return typeof key === "string" && key.toLowerCase().includes("vocal");
-}
+// 2026-07-25 재설계 (유저 요청) — "Vocal 제외"/"연주곡 제외" 2개짜리
+// 이분법을 걷어내고, 4개 플레이리스트(어쿠스틱 연주곡/클래식/보컬/ROCK)를
+// 각각 독립적으로 제외할 수 있게 한다. elId는 index.html의 체크박스 id와
+// 정확히 일치해야 한다(#musicExcludeFilters 참조).
+//
+// **"보컬" 항목만 특별하다**: 카테고리 단위 제외에 더해, 아래
+// matchesGenreToggle()에서 track.vocal===true인 개별 트랙까지 카테고리와
+// 무관하게 함께 걸러낸다. 이유: "클래식"("piano chello"+"classic 20260718"
+// 96곡) 폴더 안에 실제로는 보컬이 섞인 트랙이 있어도, 그 트랙들은 폴더
+// 단위로 일괄 vocal:false가 매겨져 있었다(scripts/build-music-playlist.js
+// 작성 당시 "제목만 보고 인스트루멘탈일 것"이라 추정한 것 — 실제로 들어본
+// 게 아니다, 2026-07-25 조사로 확인). 카테고리 이름만으로 판정하던 예전
+// isVocalCategory() 방식은 이런 "폴더 오분류"를 절대 못 잡았다 — 지금은
+// track.vocal 필드를 실제로 읽으므로, 갤러리 관리툴(scripts/gallery-server.js
+// 음악 탭)에서 개별 트랙의 vocal 값을 true로 바로잡아두면 이 필터가 그
+// 즉시 반영한다. 자동 음성 감지(오디오 내용 분석)는 하지 않는다 — 제목
+// 문자열만으로는 보컬 유무를 판단할 근거가 없다는 게 확인됐다(658곡 전체를
+// 훑어도 "Aria"/"Chorus" 같은 보컬 단서 제목이 하나도 없었다).
+const MUSIC_EXCLUDABLE_CATEGORIES = [
+  { key: "My Workspace", label: "어쿠스틱", storageKey: "ezlong:musicExcludeAcoustic", elId: "musicExcludeAcoustic" },
+  { key: "piano chello", label: "클래식", storageKey: "ezlong:musicExcludeClassical", elId: "musicExcludeClassical" },
+  { key: "vocal - workspace 20260711 1400", label: "보컬", storageKey: "ezlong:musicExcludeVocal", elId: "musicExcludeVocal" },
+  { key: "vocal- girls rock", label: "ROCK", storageKey: "ezlong:musicExcludeRock", elId: "musicExcludeRock" },
+];
+const MUSIC_VOCAL_CATEGORY_KEY = "vocal - workspace 20260711 1400";
+// 기존 "보컬" 토글 저장 키를 그대로 재사용 — 예전에 "Vocal 제외"를 켜뒀던
+// 유저라면 이번 업데이트 이후에도 그 설정이 그대로 이어진다.
+const musicExcludeVocalStorageKey = MUSIC_EXCLUDABLE_CATEGORIES.find((c) => c.key === MUSIC_VOCAL_CATEGORY_KEY).storageKey;
 
 // 2026-07-16 유저 요청 — 플레이리스트로 특정 장르 "하나만" 선택한 상태에서
 // 그 장르 자체를 걸러내는 제외 필터를 동시에 켜면 후보가 0개가 되는 모순이
-// 생긴다. 예: '보컬'만 선택 + 'Vocal 제외' 체크 → '보컬' 카테고리 곡은
-// 전부 vocal이므로 전부 걸러져 재생할 곡이 하나도 안 남는다. 이 판정 함수
-// 하나를 재생 로직(pickNextTrackIndex)과 설정 화면 체크박스 활성화 여부
-// 둘 다에서 그대로 공유해서 절대 어긋나지 않게 한다(8항 공유 함수 동기화
-// 원칙과 동일 적용 — 이 파일 안이라도 로직을 중복 작성하지 않는다).
-function musicExcludeFilterContradicts(excludeKind, filterKey) {
+// 생긴다. 예: '클래식'만 선택 + '클래식 제외' 체크 → 재생할 곡이 하나도
+// 안 남는다. 이 판정 함수 하나를 재생 로직(pickNextTrackIndex)과 설정
+// 화면 체크박스 활성화 여부 둘 다에서 그대로 공유해서 절대 어긋나지 않게
+// 한다(8항 공유 함수 동기화 원칙과 동일 적용).
+function musicExcludeFilterContradicts(categoryKey, filterKey) {
   if (!filterKey || filterKey === "all") return false;
-  if (excludeKind === "vocal") return isVocalCategory(filterKey);
-  if (excludeKind === "instrumental") return !isVocalCategory(filterKey);
-  return false;
+  return filterKey === categoryKey;
 }
-
-// 2026-07-16: 저장 키를 musicInclude*에서 musicExclude*로 새로 분리했다 —
-// 기존 include 저장값(체크=포함)을 그대로 재해석하면 "체크 안 함"과 "체크함"의
-// 의미가 뒤바뀌어 예전 저장값을 가진 사용자에게 정반대 결과가 나갈 위험이
-// 있었다. 새 키로 분리하면 예전 값은 그냥 무시되고, 새 기본값(제외 안 함=
-// 체크 해제)에서 깨끗하게 시작한다.
-const musicExcludeVocalStorageKey = "ezlong:musicExcludeVocal";
-// 2026-07-16: "연주곡 제외" — 보컬이 있는 카테고리(보컬/걸스록) 외에는 전부
-// 연주곡이므로 별도 판정 함수 없이 !isVocalCategory(key)로 그대로 걸러낸다.
-const musicExcludeInstrumentalStorageKey = "ezlong:musicExcludeInstrumental";
 
 // defaultValue: 저장된 값이 없을 때 쓸 기본값. "포함" 체크박스 시절엔 항상
 // true(기본 켜짐)였지만, "제외" 체크박스는 기본이 false(기본적으로 아무것도
@@ -4293,20 +4314,28 @@ function pickNextTrackIndex() {
     if (filterKey === "all") return !isSpecialCategory(key);
     return key === filterKey;
   };
-  // 2026-07-16: 포함 체크박스(기본 true)에서 제외 체크박스(기본 false)로
-  // 전환 — 체크가 "제외한다"는 뜻이 됐으니 조건도 반전.
-  // 2026-07-16 2차: 선택된 장르(filterKey)와 제외 필터가 서로 모순되는
-  // 조합이면(예: '보컬'만 선택 + 'Vocal 제외') 저장값이 true여도 여기서
-  // 강제로 무시한다 — 설정 화면 체크박스는 이 경우 비활성화돼 있어(위
-  // syncMusicExcludeFilterUi) 평소엔 애초에 true로 저장될 일이 없지만,
-  // 이 재생 로직 자체도 독립적으로 같은 판정을 하게 해서 후보가 0개가
-  // 되는 사고를 이중으로 막는다.
-  const excludeVocal = loadMusicGenreToggle(musicExcludeVocalStorageKey, false) && !musicExcludeFilterContradicts("vocal", filterKey);
-  const excludeInstrumental = loadMusicGenreToggle(musicExcludeInstrumentalStorageKey, false) && !musicExcludeFilterContradicts("instrumental", filterKey);
+  // 2026-07-25 재설계: 4개 카테고리(어쿠스틱/클래식/보컬/ROCK) 각각의 제외
+  // 토글을 독립적으로 확인한다. 선택된 장르(filterKey)와 제외 필터가 서로
+  // 모순되는 조합이면(예: '클래식'만 선택 + '클래식 제외') 저장값이
+  // true여도 여기서 강제로 무시한다 — 설정 화면 체크박스는 이 경우
+  // 비활성화돼 있어(아래 syncMusicExcludeFilterUi) 평소엔 애초에 true로
+  // 저장될 일이 없지만, 이 재생 로직 자체도 독립적으로 같은 판정을 하게
+  // 해서 후보가 0개가 되는 사고를 이중으로 막는다.
   const matchesGenreToggle = (i) => {
-    const key = trackCategoryKey(musicPlaylist[i]);
-    if (excludeVocal && isVocalCategory(key)) return false;
-    if (excludeInstrumental && !isVocalCategory(key)) return false;
+    const track = musicPlaylist[i];
+    const key = trackCategoryKey(track);
+    for (let c = 0; c < MUSIC_EXCLUDABLE_CATEGORIES.length; c += 1) {
+      const cat = MUSIC_EXCLUDABLE_CATEGORIES[c];
+      if (key !== cat.key) continue;
+      const excluded = loadMusicGenreToggle(cat.storageKey, false) && !musicExcludeFilterContradicts(cat.key, filterKey);
+      if (excluded) return false;
+    }
+    // '보컬 제외'가 켜져 있으면, 카테고리와 무관하게 트랙 자체가
+    // vocal:true로 표시된 경우(예: '클래식'/'ROCK' 폴더 안에 잘못 섞인
+    // 보컬 곡)도 함께 걸러낸다 — 위 카테고리 단위 제외만으로는 폴더
+    // 오분류를 못 잡기 때문에 필요한 보완 조건이다.
+    const excludeVocalTracks = loadMusicGenreToggle(musicExcludeVocalStorageKey, false) && !musicExcludeFilterContradicts(MUSIC_VOCAL_CATEGORY_KEY, filterKey);
+    if (excludeVocalTracks && track && track.vocal === true) return false;
     return true;
   };
 
@@ -5790,18 +5819,20 @@ function announceActiveFilterOnFirstPlay() {
   if (firstPlayFilterAnnounced) return;
   firstPlayFilterAnnounced = true;
   const filterKey = loadMusicPlaylistFilter();
-  const excludeVocal = loadMusicGenreToggle(musicExcludeVocalStorageKey, false);
-  const excludeInstrumental = loadMusicGenreToggle(musicExcludeInstrumentalStorageKey, false);
   const hasFilter = Boolean(filterKey && filterKey !== "all");
+  // 2026-07-25: 이분법(Vocal/연주곡) 대신 4개 카테고리 제외 토글을 순회해
+  // 켜진 것만 라벨로 모은다.
   const excludeParts = [];
-  if (excludeVocal) excludeParts.push("Vocal 제외");
-  if (excludeInstrumental) excludeParts.push("연주곡 제외");
+  MUSIC_EXCLUDABLE_CATEGORIES.forEach((cat) => {
+    const excluded = loadMusicGenreToggle(cat.storageKey, false) && !musicExcludeFilterContradicts(cat.key, filterKey);
+    if (excluded) excludeParts.push(`${cat.label} 제외`);
+  });
   if (!hasFilter && excludeParts.length === 0) return; // 기본값 그대로면 알려줄 게 없음
   // 2026-07-22 유저 지적 — "'수면유도'만 상태로"라는 표현이 어색하다는
   // 피드백으로, 카테고리 필터가 있을 땐 "'xxxx' 플레이리스트를 재생 중"으로
-  // 자연스럽게 바꿨다. 제외 필터(Vocal/연주곡)는 괄호로 덧붙여 정보는
-  // 그대로 유지. 카테고리 필터 없이 제외만 걸려있는 경우(부를 플레이리스트
-  // 이름이 없음)엔 기존 "OO 상태로 재생 중" 문구를 그대로 쓴다.
+  // 자연스럽게 바꿨다. 제외 필터는 괄호로 덧붙여 정보는 그대로 유지.
+  // 카테고리 필터 없이 제외만 걸려있는 경우(부를 플레이리스트 이름이
+  // 없음)엔 기존 "OO 상태로 재생 중" 문구를 그대로 쓴다.
   let message;
   if (hasFilter) {
     message = `지금 '${musicPlaylistFilterAnnounceLabel(filterKey)}' 플레이리스트를 재생 중이에요`;
@@ -6188,15 +6219,12 @@ function flashMusicFilterNotice(text) {
 // 장르로 돌아가면 원래 체크해뒀던 제외 설정이 그대로 복원된다.
 function syncMusicExcludeFilterUi() {
   const filterKey = loadMusicPlaylistFilter();
-  const bindings = [
-    { el: musicExcludeVocalEl, kind: "vocal", key: musicExcludeVocalStorageKey },
-    { el: musicExcludeInstrumentalEl, kind: "instrumental", key: musicExcludeInstrumentalStorageKey },
-  ];
-  bindings.forEach(({ el, kind, key }) => {
+  MUSIC_EXCLUDABLE_CATEGORIES.forEach(({ key, storageKey, elId }) => {
+    const el = document.getElementById(elId);
     if (!el) return;
-    const contradicts = musicExcludeFilterContradicts(kind, filterKey);
+    const contradicts = musicExcludeFilterContradicts(key, filterKey);
     el.disabled = contradicts;
-    el.checked = contradicts ? false : loadMusicGenreToggle(key, false);
+    el.checked = contradicts ? false : loadMusicGenreToggle(storageKey, false);
     const chip = el.closest(".exclude-chip");
     if (chip) chip.classList.toggle("is-disabled", contradicts);
   });
@@ -7294,18 +7322,17 @@ if (musicSpecialOptionsEl) {
     }
   });
 }
-if (musicExcludeVocalEl) {
-  musicExcludeVocalEl.addEventListener("change", () => {
-    saveMusicGenreToggle(musicExcludeVocalStorageKey, musicExcludeVocalEl.checked);
+// 2026-07-25: 4개 카테고리 제외 체크박스를 배열 순회로 한 번에 바인딩한다
+// (MUSIC_EXCLUDABLE_CATEGORIES 참조) — 카테고리를 추가/삭제할 때 이
+// 리스너 등록부를 따로 손댈 필요가 없다.
+MUSIC_EXCLUDABLE_CATEGORIES.forEach(({ storageKey, elId }) => {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.addEventListener("change", () => {
+    saveMusicGenreToggle(storageKey, el.checked);
     applyMusicGenreToggle();
   });
-}
-if (musicExcludeInstrumentalEl) {
-  musicExcludeInstrumentalEl.addEventListener("change", () => {
-    saveMusicGenreToggle(musicExcludeInstrumentalStorageKey, musicExcludeInstrumentalEl.checked);
-    applyMusicGenreToggle();
-  });
-}
+});
 if (musicQCDeleteButton) {
   musicQCDeleteButton.addEventListener("click", permanentlyExcludeCurrentTrack);
 }

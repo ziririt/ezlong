@@ -893,6 +893,8 @@ button { font: inherit; }
 /* 2026-07-18 5차 피드백: "ROCK 제외" 필터가 없어지면서 2개(Vocal/연주곡)만
    남았다 — 1열로 세로로 쌓으면 아래쪽이 허전해 보여, 다시 한 행(2열)에
    나란히 배치한다. */
+/* 2026-07-25 재설계: 4개(어쿠스틱/클래식/보컬/ROCK) 독립 토글로 늘어나서
+   2열 그리드가 자연스럽게 2x2로 채워진다 — 레이아웃 자체는 그대로 유지. */
 .music-exclude-filters {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1180,6 +1182,19 @@ button { font: inherit; }
   color: rgba(255,255,255,0.94);
   font-size: 17px;
   font-weight: 780;
+}
+
+/* 2026-07-25 신설 — "음악 · 플레이리스트" 소제목 아래 작은 영문 태그라인.
+   본문 설명(.settings-desc)보다 한 단계 더 조용하게: 이탤릭 + 살짝 벌어진
+   자간으로 "장식적인 한 줄"이라는 느낌을 주고, 소제목과의 간격을 좁혀
+   한 덩어리처럼 보이게 한다(margin-top을 음수로 당김). */
+.settings-subtitle-tagline {
+  margin: -6px 0 12px;
+  color: rgba(255,255,255,0.5);
+  font-size: 12px;
+  font-weight: 560;
+  font-style: italic;
+  letter-spacing: 0.02em;
 }
 
 .settings-desc {
