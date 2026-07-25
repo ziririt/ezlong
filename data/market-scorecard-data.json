@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "2026-07-25-11:50",
+      "timestamp_kst": "2026-07-25(토) 11:50 KST",
+      "key_event": {
+        "name": "기술주 및 반도체 섹터 약세 지속",
+        "time": "직전 정규장 및 포스트마켓",
+        "why": "AI 투자 우려, 실적 부진, 시장 전반 하방 압력"
+      },
+      "positive_total": 20,
+      "negative_total": 80,
+      "summary": "기술주 및 반도체 섹터 약세 지속 속 부정 우위 유지",
+      "positive_factors": [
+        {
+          "score": 10,
+          "name": "일부 대형 기술주 선방",
+          "desc": "AAPL (+3.96%) 등 일부 대형 기술주가 시장 하락 속 선방"
+        },
+        {
+          "score": 10,
+          "name": "WTI 유가 하락",
+          "desc": "WTI 원유 가격 하락(-1.61%)으로 인플레이션 압력 완화 기대"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "반도체 섹터 급락",
+          "desc": "SOXX (-4.93%) 급락하며 AI 투자 우려 및 매도 압력 심화"
+        },
+        {
+          "score": 20,
+          "name": "기술주 전반 하락",
+          "desc": "QQQ (-1.38%) 하락, Tech Hits a Wall 뉴스 등 기술주 약세 지속"
+        },
+        {
+          "score": 15,
+          "name": "테슬라 주가 하락",
+          "desc": "TSLA (-3.90%) 300달러 초반대 지지선 테스트, 추가 하락 우려"
+        },
+        {
+          "score": 15,
+          "name": "AI 투자 관련 우려 지속",
+          "desc": "Alphabet CapEx 우려, AI Selloff 지속 등 투자심리 위축"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-07-25-08:20",
       "timestamp_kst": "2026-07-25(토) 08:20 KST",
       "key_event": {
@@ -488,60 +535,8 @@
           "desc": "미 10년 국채금리 +0.99% 상승. 인플레이션 우려를 반영하나, 안전자산 선호와 맞물려 해석이 엇갈림."
         }
       ]
-    },
-    {
-      "id": "2026-07-24-08:20",
-      "timestamp_kst": "2026-07-24(금) 08:20 KST",
-      "key_event": {
-        "name": "빅테크 실적 및 AI 투자 우려",
-        "time": "최근 6시간 및 향후 12시간",
-        "why": "TSLA, GOOGL 실적 쇼크, AI Capex 우려, 시장 전반 하방 압력"
-      },
-      "positive_total": 5,
-      "negative_total": 95,
-      "summary": "빅테크 실적 부진과 AI 투자 비용 우려로 6일 연속 부정 우위가 심화되는 중.",
-      "positive_factors": [
-        {
-          "score": 5,
-          "name": "일부 반도체 섹터 상대적 선방",
-          "desc": "SOXX -0.77%로 시장 대비 양호, 한국 반도체 강세 소식"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "TSLA 실적 쇼크 및 하락 지속",
-          "desc": "TSLA -9.67% 하락, RSI 29 과매도 구간 진입, 300선 이탈 우려"
-        },
-        {
-          "score": 25,
-          "name": "AI 투자 비용 우려 확산",
-          "desc": "GOOGL -3.37% 하락, 2000억 달러 Capex 발표 후 비용 부담 우려"
-        },
-        {
-          "score": 15,
-          "name": "유가 급등 및 인플레이션 압력",
-          "desc": "WTI 원유 +4.18%, $92.19 기록, 인플레이션 우려 재점화"
-        },
-        {
-          "score": 10,
-          "name": "시장 전반의 하락 압력",
-          "desc": "QQQ -1.52%, SPY -1.05% 하락, 매그니피센트 7 시총 $797B 증발"
-        },
-        {
-          "score": 10,
-          "name": "VIX 공포지수 급등",
-          "desc": "VIX +11.98% 상승, 시장 변동성 및 투자 심리 위축"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미국 10년 국채금리 상승",
-          "desc": "국채금리 +0.99% 상승, 인플레이션 우려 반영 vs 안전자산 선호 심리"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-07-24T23:21:02Z",
+  "updated_at": "2026-07-25T02:51:00Z",
   "max_entries": 10
 }
