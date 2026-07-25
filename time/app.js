@@ -4701,7 +4701,21 @@ function vizMirrorSourceIndex(j, n) {
 // 각 draw 함수는 musicVizBars[i](막대 높이)와 musicVizIntensity[i](밝기
 // 0~1)만 채우고, 실제 style.height/--bar-intensity 대입과 미러 재배치는
 // 전부 여기서 한 곳으로 모아 처리한다.
+// 2026-07-25 유저 제보(배터리 급소모) — drawMusicViz는 requestAnimationFrame으로
+// 화면 주사율만큼(ProMotion 기기면 최대 120회/초) 계속 돌아가는데, 실제
+// 오디오 반응 값(nativeAudioBass/Mid/Treble)은 네이티브에서 15Hz로만 갱신된다
+// (ios CLAUDE.md 28항 "15Hz 스냅샷 방출" 규격). 즉 대부분의 rAF 틱은 같은
+// 값으로 최대 34개 막대 × 2곳(본화면+미리보기) 스타일을 다시 쓰는 낭비였다.
+// 오디오 반응 계산(EMA/타격감지 등, 위 draw 함수들)은 튜닝된 타이밍이 깨질까
+// 봐 손대지 않고, 실제로 비용이 큰 이 DOM 쓰기 단계만 30fps로 캡을 씌운다 —
+// 사람 눈에는 30fps도 충분히 매끄럽고, 15Hz 오디오 갱신 주기보다는 여전히
+// 2배 빠르므로 반응성 체감도 그대로다.
+let vizBarsLastWriteTs = 0;
+const VIZ_BAR_WRITE_MIN_INTERVAL_MS = 1000 / 30;
 function writeVizBarsToDom() {
+  const nowTs = performance.now();
+  if (nowTs - vizBarsLastWriteTs < VIZ_BAR_WRITE_MIN_INTERVAL_MS) return;
+  vizBarsLastWriteTs = nowTs;
   const n = MUSIC_VIZ_BAR_COUNT;
   for (let j = 0; j < n; j++) {
     const src = vizMirrorSourceIndex(j, n);
@@ -6178,10 +6192,22 @@ function preloadTrackForFilterChange() {
 // (2) 실제 어디서 시간이 소요되는지 다음에도 재현되면 Safari 원격 디버깅
 // (맥 Safari > 개발자용 메뉴 > 아이폰 > 웹뷰)으로 바로 확인할 수 있도록
 // 최소한의 타이밍 로그를 남긴다(성능에 영향 없는 console.log 수준).
+// 2026-07-25 유저 요청 — 위쪽 플레이리스트(장르) 선택이 바뀌면 4개 제외
+// 토글을 전부 0(미선택)으로 되돌린다. 예전 카테고리에서 골라둔 제외
+// 설정이 다른 카테고리/전체 랜덤으로 넘어갈 때도 조용히 이어지는 걸
+// 막기 위함 — 제외 토글은 항상 "지금 이 플레이리스트 기준으로 새로
+// 정하는 것"이 되게 한다.
+function resetMusicExcludeFilters() {
+  MUSIC_EXCLUDABLE_CATEGORIES.forEach(({ storageKey }) => {
+    saveMusicGenreToggle(storageKey, false);
+  });
+}
+
 function applyMusicPlaylistFilter(newKey) {
   const __t0 = (window.__fzFilterTapT0 || performance.now());
   saveMusicPlaylistFilter(newKey);
   categoryRotationQueue = [];
+  resetMusicExcludeFilters();
   syncMusicExcludeFilterUi();
   flashMusicFilterNotice(`${musicPlaylistFilterAnnounceLabel(newKey)} 선택됨`);
   console.log(`[FZ-FILTER] tap→토스트 표시 ${(performance.now() - __t0).toFixed(0)}ms`);
@@ -6232,13 +6258,24 @@ function syncMusicExcludeFilterUi() {
 
 // Rock/Vocal 포함 체크박스를 바꾼 직후 — 플레이리스트 필터를 바꿀 때와 동일한
 // 방식으로 즉시 반영한다(라운드로빈 순서 리셋 + 재생 중이면 바로 전환).
+// 2026-07-25 유저 제보 — 제외 토글 체크박스가 눌러도 3초 가까이 체크
+// 표시가 안 뜨는 것처럼 보인다는 버그. 원인은 위 플레이리스트 라디오
+// 버튼에서 2026-07-20에 이미 한 번 고쳤던 것과 동일하다(FZ-FILTER 로그
+// 주석 참조) — playTrackAtIndex(트랙 전환, 크로스페이드 준비 등 무거운
+// 동기 작업)를 change 이벤트와 같은 틱에서 바로 부르면, 체크박스 자체는
+// 네이티브로 즉시 체크되지만 브라우저가 그 화면을 실제로 그릴 틈도 없이
+// 이어서 무거운 작업이 메인 스레드를 막아버려 "체크 표시가 늦게 뜨는"
+// 것처럼 보인다. requestAnimationFrame으로 한 프레임 미뤄서, 체크 표시가
+// 먼저 그려지고 난 뒤에 트랙 전환이 시작되게 한다.
 function applyMusicGenreToggle() {
   categoryRotationQueue = [];
-  if (musicPlaying) {
-    playTrackAtIndex(pickNextTrackIndex());
-  } else {
-    renderMusicPlaylistInfo();
-  }
+  requestAnimationFrame(() => {
+    if (musicPlaying) {
+      playTrackAtIndex(pickNextTrackIndex());
+    } else {
+      renderMusicPlaylistInfo();
+    }
+  });
 }
 
 // 2026-07-08: "지금 재생 중" 표시만으로는 방금 지나간 곡을 다시 찾아 듣기
@@ -7325,10 +7362,24 @@ if (musicSpecialOptionsEl) {
 // 2026-07-25: 4개 카테고리 제외 체크박스를 배열 순회로 한 번에 바인딩한다
 // (MUSIC_EXCLUDABLE_CATEGORIES 참조) — 카테고리를 추가/삭제할 때 이
 // 리스너 등록부를 따로 손댈 필요가 없다.
+// 2026-07-25 유저 요청 — 4개를 전부 체크하면 "전체 랜덤"에 재생할 곡이
+// 하나도 안 남는 모순이 생긴다. 최소 1개 플레이리스트는 항상 남아야
+// 하므로, 4번째 체크는 그 자리에서 되돌리고 안내만 띄운다(최대 3개).
 MUSIC_EXCLUDABLE_CATEGORIES.forEach(({ storageKey, elId }) => {
   const el = document.getElementById(elId);
   if (!el) return;
   el.addEventListener("change", () => {
+    if (el.checked) {
+      const checkedCount = MUSIC_EXCLUDABLE_CATEGORIES.filter((cat) => {
+        const box = document.getElementById(cat.elId);
+        return box && box.checked;
+      }).length;
+      if (checkedCount >= MUSIC_EXCLUDABLE_CATEGORIES.length) {
+        el.checked = false;
+        flashMusicFilterNotice("최소 1개 플레이리스트는 남겨두세요");
+        return;
+      }
+    }
     saveMusicGenreToggle(storageKey, el.checked);
     applyMusicGenreToggle();
   });

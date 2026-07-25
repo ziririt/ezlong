@@ -796,6 +796,17 @@ button { font: inherit; }
   line-height: 1.1;
 }
 
+/* 2026-07-25 유저 요청 — 버전 라벨을 메인 화면 최하단(옛 .app-version)에서
+   설정 페이지 제목 "설정" 옆으로 옮겼다. 제목 폰트(28px)보다 훨씬 작게,
+   같은 줄에 자연스럽게 붙도록 baseline 정렬 + 왼쪽 여백만 살짝. */
+.settings-version {
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.4);
+  vertical-align: middle;
+}
+
 .settings-close {
   width: 42px;
   height: 42px;
@@ -3668,20 +3679,10 @@ button { font: inherit; }
 }
 
 /* 2026-07-08: 유저-Claude 간 "이 업데이트가 실제로 반영됐는지" 확인용 버전
-   표시. 배포마다 바뀌는 캐시버스팅 버전(index.html의 ?v=)과는 별개 —
-   이건 제품 완성도 기준 수동 버전(ver.0.8 등)이라 기능이 쌓일 때만 사람이
-   직접 올린다. */
-.app-version {
-  grid-column: 1;
-  justify-self: start;
-  margin-left: 4px; /* 2026-07-08: 화면 가장자리에 바짝 붙어 보인다는 재지적 */
-  color: rgba(238,242,246,0.38);
-  font-size: 11px; /* 2026-07-17: 9px가 잘 안 보인다는 유저 피드백으로 1단계 상향 */
-  font-weight: 400;
-  line-height: 1;
-  text-shadow: 0 1px 8px rgba(0,0,0,0.18);
-  white-space: nowrap;
-}
+   표시로 신설됐던 자리. 2026-07-25 유저 요청으로 이 자리(메인 화면 최하단)
+   에서는 완전히 빼고 설정 페이지 제목 옆으로 옮겼다 — 새 스타일은 위
+   .settings-version 참조. .app-version 클래스 자체는 index.html에서
+   더 이상 쓰이지 않아 규칙을 제거했다. */
 
 /* 2026-07-20 유저 요청(수정): 사진 저작권 표기(photoCredit)를 이번엔
    완전히 삭제한다(HTML 요소 자체 제거) — 이전 라운드의 "시각적으로만

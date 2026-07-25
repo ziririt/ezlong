@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260725-musicexclude-v1">
+  <link rel="stylesheet" href="styles.css?v=20260725-musicexclude-v2">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -175,15 +175,19 @@
       </section>
 
       <!-- 2026-07-20 유저 요청(수정): 점 4개가 위 문장 박스 안으로 옮겨가면서
-           이 줄엔 app-version(좌)과 "ezlong.com" 링크(중앙, 옛 점4개 자리)만
-           남는다. 사진 저작권 표기(photoCredit)는 이번에 완전히 삭제 —
-           대부분 CC BY 라이선스라 표기 의무가 남을 수 있다는 점은 유의할
-           것(응답에서 별도 안내). 링크는 appBrand와 별개 진입점이지만 회전
-           애니메이션 없이 goToPage(1)만 호출해 "위로 슬라이드"만 되게 한다
-           (app.js sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이
-           있었다"는 공간감을 위함. -->
+           이 줄엔 "ezlong.com" 링크(중앙, 옛 점4개 자리)만 남는다. 사진
+           저작권 표기(photoCredit)는 이번에 완전히 삭제 — 대부분 CC BY
+           라이선스라 표기 의무가 남을 수 있다는 점은 유의할 것(응답에서
+           별도 안내). 링크는 appBrand와 별개 진입점이지만 회전 애니메이션
+           없이 goToPage(1)만 호출해 "위로 슬라이드"만 되게 한다(app.js
+           sceneEzlongLink 참조) — "이 자리 아래에 원래 ezlong.com이 있었다"는
+           공간감을 위함.
+           2026-07-25 유저 요청 — app-version(버전 라벨)은 여기(메인 화면
+           최하단)에서 완전히 빼고 설정 화면 헤더로 옮겼다(아래 settings-head
+           .settings-version 참조). .scene-ezlong-link가 이미 grid-column:2로
+           고정 배치돼 있어서, 왼쪽 span을 지워도 가운데 정렬은 그대로
+           유지된다. -->
       <div class="scene-dots" aria-label="ezlong.com 이동">
-        <span class="app-version" aria-hidden="true">ver.1.6.12</span>
         <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
@@ -280,9 +284,13 @@
          플립 애니메이션 900ms 동안만 조건부로 perspective가 걸리므로,
          설정/날씨상세가 열려있는 동안은 그 순간과 겹치지 않아 안전하다). -->
     <section class="app-page settings-page settings-sheet" id="quoteSettings" aria-label="오늘의 한 문장 설정">
+        <!-- 2026-07-25 유저 요청 — 메인 화면 최하단에 있던 버전 라벨을
+             여기 설정 페이지 제목 옆으로 옮겼다. 값은 이제 여기 한 곳에서만
+             관리하면 된다(더 이상 메인 화면 index.html에 별도 app-version
+             span 없음). -->
         <header class="settings-head">
           <div>
-            <h2>설정</h2>
+            <h2>설정<span class="settings-version" aria-hidden="true">ver.1.6.12.3</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -324,6 +332,11 @@
                토글로 제외할 수 있게 했다(app.js MUSIC_EXCLUDABLE_CATEGORIES
                참조, id는 여기와 그 배열의 elId가 정확히 일치해야 한다).
                2열 그리드(styles.css .music-exclude-filters)라 2x2로 배치된다. -->
+          <!-- 2026-07-25 유저 요청 — 이 제외 토글들은 "전체 랜덤" 재생에만
+               적용된다는 걸 안내(위에서 특정 플레이리스트를 콕 집어 고르면
+               제외 설정 자체가 무의미해짐 — musicExcludeFilterContradicts
+               참조). -->
+          <p class="settings-desc settings-desc-muted">전체 랜덤 재생 시, 제외 플레이 리스트 설정</p>
           <div class="music-exclude-filters" id="musicExcludeFilters" aria-label="장르 제외 필터">
             <label class="exclude-chip">
               <input type="checkbox" id="musicExcludeAcoustic">
@@ -807,6 +820,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260725-musicexclude-v1"></script>
+  <script src="app.js?v=20260725-musicexclude-v4"></script>
 </body>
 </html>
