@@ -8183,5 +8183,32 @@ window.investmentQuotes = [
     "title": "How to Make Money in Stocks",
     "author": "윌리엄 오닐 (William J. O'Neil)",
     "category": "mindset"
+  },
+  {
+    "english": "The strategy of putting all your eggs in one basket and watching that basket is less risky than you might think.",
+    "text": "계란을 전부 한 바구니에 담고 그 바구니를 지켜보는 전략은, 생각만큼 위험하지 않다.",
+    "title": "당신도 주식시장의 천재가 될 수 있다 (You Can Be a Stock Market Genius)",
+    "author": "조엘 그린블라트",
+    "category": "mindset"
+  },
+  {
+    "text": "그리 대단한 사람은 없다. 그렇다고 그냥 사는 사람도 없다.",
+    "title": "다가오는 말들",
+    "author": "은유",
+    "genre": "literature"
+  },
+  {
+    "english": "One is not born, but rather becomes, a woman.",
+    "text": "여자는 태어나는 것이 아니라, 만들어지는 것이다.",
+    "title": "제2의 성",
+    "author": "시몬 드 보부아르",
+    "genre": "literature"
+  },
+  {
+    "english": "There's a quick and easy way to test whether an activity involves skill: ask whether you can lose on purpose.",
+    "text": "어떤 활동에 실력이 관여하는지 빠르고 쉽게 확인하는 방법이 있다. 일부러 질 수 있는지 물어보면 된다.",
+    "title": "성공의 방정식 (The Success Equation)",
+    "author": "마이클 모부신 (Michael J. Mauboussin)",
+    "category": "mindset"
   }
 ];
