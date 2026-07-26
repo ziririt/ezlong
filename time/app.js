@@ -279,12 +279,6 @@ const musicQCCopyButton = document.getElementById("musicQCCopyButton");
 const bgFilterWeatherEl = document.getElementById("bgFilterWeather");
 const bgFilterTimeEl = document.getElementById("bgFilterTimeOfDay");
 const bgFilterStatusEl = document.getElementById("bgFilterStatus");
-// 2026-07-26 신설 — 안드로이드 전용 "백그라운드 재생 안정화" 섹션(설정
-// 페이지). isAndroidWrapper가 아니면 이 섹션 자체를 숨긴다(아래 초기화
-// 코드 참조).
-const androidBatterySection = document.getElementById("androidBatterySection");
-const batteryExemptionStatusEl = document.getElementById("batteryExemptionStatus");
-const batteryExemptionRequestBtn = document.getElementById("batteryExemptionRequestBtn");
 const bgAudio = document.getElementById("bgAudio");
 const bgAudioB = document.getElementById("bgAudioB");
 
@@ -677,9 +671,6 @@ let lastAppliedScreenHeight = 0;
 const isNativeWrapper = ["ios", "android"].includes(
   new URLSearchParams(window.location.search).get("native")
 );
-// 2026-07-26 신설 — 배터리 최적화 제외 요청은 안드로이드 전용 개념(iOS엔
-// 대응하는 앱별 토글이 없다)이라 isNativeWrapper와 별도로 구분한다.
-const isAndroidWrapper = new URLSearchParams(window.location.search).get("native") === "android";
 
 function syncFirstScreenHeight() {
   if (!app) return;
@@ -2057,13 +2048,6 @@ function openSettings() {
   // 미리보기를 볼 수 있다.
   ensureMusicVizGraph();
   if (!musicVizAnimId) drawMusicViz();
-  // 2026-07-26: 안드로이드에서만 "백그라운드 재생 안정화" 섹션을 보여주고,
-  // 열 때마다 최신 배터리 최적화 제외 상태를 다시 물어본다(유저가 방금
-  // 시스템 설정에서 직접 바꿨을 수도 있으므로 열 때마다 새로 확인).
-  if (androidBatterySection) {
-    androidBatterySection.hidden = !isAndroidWrapper;
-    if (isAndroidWrapper) postToNativeSystem({ action: "checkBatteryExemption" });
-  }
 }
 
 function closeSettings() {
@@ -5847,48 +5831,6 @@ function postToNativeAd(payload) {
   } catch (error) {
     // 네이티브 브릿지가 아직 준비 전이거나(구버전 앱) 없는 환경 — 조용히 무시.
   }
-}
-
-// 2026-07-26 신설 — 안드로이드 전용 시스템 브릿지(flipzenSystem). 유저가
-// 실기기에서 "설정 → 배터리 → 앱별 배터리 사용량 → 제한 없음"으로 직접
-// 바꾸니 백그라운드 음악 30~60% 지점 정지가 해소됨을 확인했다(Doze/앱 대기
-// 모드가 원인). 이용자 전원에게 이 메뉴를 수동으로 안내할 수 없으므로,
-// 설정 페이지의 버튼(batteryExemptionRequestBtn)이 이 함수로 시스템
-// "배터리 최적화 제외" 다이얼로그를 직접 띄운다. iOS는 이런 개념 자체가
-// 없어 isAndroidWrapper로 게이트한다(다른 postToNative* 함수와 달리
-// isNativeWrapper 전체가 아니라 안드로이드만).
-function postToNativeSystem(payload) {
-  if (!isAndroidWrapper || !window.AndroidNativeBridge) return;
-  try {
-    window.AndroidNativeBridge.postMessage("flipzenSystem", JSON.stringify(payload));
-  } catch (error) {
-    // 브릿지가 아직 준비 전이거나(구버전 앱) 없는 환경 — 조용히 무시.
-  }
-}
-
-// 2026-07-26: MainActivity.reportBatteryExemptionStatus()가 부르는 훅.
-// isExempt가 true면(이미 "제한 없음") 안내 문구로 바꾸고 버튼을 숨긴다 —
-// 이미 해결된 상태에서 계속 버튼을 들이밀 필요가 없다. false면 왜
-// 필요한지와 함께 버튼을 그대로 둔다.
-// 2026-07-26 2차 수정 — 유저 피드백: "배터리 최적화 제외"라는 추상적 표현
-// 대신, 실기기 배터리 설정 화면에 실제로 쓰여있는 그대로("배터리 절약"/
-// "제한 없음")를 그대로 인용해야 유저가 헷갈리지 않는다.
-window.__flipzenBatteryStatus = function (isExempt) {
-  if (!batteryExemptionStatusEl) return;
-  if (isExempt) {
-    batteryExemptionStatusEl.textContent = "배터리 설정이 이미 '제한 없음'으로 되어 있어요. 백그라운드 재생이 안정적으로 이어집니다.";
-    if (batteryExemptionRequestBtn) batteryExemptionRequestBtn.hidden = true;
-  } else {
-    batteryExemptionStatusEl.textContent = "화면이 꺼진 채 오래 들으면 일부 기기에서는 배터리 절약 기능 때문에 음악이 멈출 수 있어요. 배터리 설정을 '제한 없음'으로 바꾸면 백그라운드 재생이 끊기지 않습니다.";
-    if (batteryExemptionRequestBtn) batteryExemptionRequestBtn.hidden = false;
-  }
-};
-
-if (batteryExemptionRequestBtn) {
-  batteryExemptionRequestBtn.addEventListener("click", () => {
-    postToNativeHaptic("light");
-    postToNativeSystem({ action: "requestBatteryExemption" });
-  });
 }
 
 // renderMusicPlaylistInfo()가 트랙이 바뀌는 모든 지점(첫 재생 시작·수동

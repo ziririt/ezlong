@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260726-autoadvance-v1">
+  <link rel="stylesheet" href="styles.css?v=20260727-batteryrm-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -294,7 +294,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2>설정<span class="settings-version" aria-hidden="true">ver.1.6.13.5</span></h2>
+            <h2>설정<span class="settings-version" aria-hidden="true">ver.1.6.13.6</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -346,20 +346,6 @@
             </label>
           </div>
           <p class="settings-desc settings-desc-muted bg-filter-license">This app uses some background images in accordance with the Pexels license.</p>
-        </section>
-
-        <!-- 2026-07-26 신설 — 안드로이드 전용. 백그라운드 음악이 30~60%
-             지점에서 멈추는 문제가 "설정 → 배터리 → 앱별 배터리 사용량 →
-             제한 없음"으로 해결됨을 확인했다(Doze/앱 대기 모드가 원인).
-             이걸 이용자 전원에게 수동으로 안내할 수 없어, 앱이 직접 시스템
-             "배터리 최적화 제외" 다이얼로그를 띄우는 버튼을 둔다. iOS/PWA는
-             이 개념 자체가 없어 섹션을 숨긴다(app.js DOMContentLoaded 근처
-             isAndroidWrapper 분기 참조). 상태 문구는 app.js
-             renderBatteryExemptionStatus가 매번 다시 그린다. -->
-        <section class="settings-block settings-card" id="androidBatterySection" aria-label="백그라운드 재생 안정화" hidden>
-          <h3 class="settings-subtitle">백그라운드 재생 안정화</h3>
-          <p class="settings-desc settings-desc-muted" id="batteryExemptionStatus">확인 중…</p>
-          <button type="button" class="battery-exemption-button" id="batteryExemptionRequestBtn">배터리 설정 '제한 없음'으로 바꾸기</button>
         </section>
 
         <!-- 2026-07-19 4차 피드백: "NOW PLAYING" 박스(#musicPlaylistInfo)를
@@ -872,6 +858,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260726-autoadvance-v1"></script>
+  <script src="app.js?v=20260727-batteryrm-v1"></script>
 </body>
 </html>
