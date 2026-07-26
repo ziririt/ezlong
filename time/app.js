@@ -296,6 +296,12 @@ const wdCurrentSub = document.getElementById("wdCurrentSub");
 // 유저가 그걸 알 방법이 없었다 — 바로 그 자리에서 누를 수 있는 재시도
 // 버튼을 추가한다. renderWeatherCurrent()의 실패 분기에서만 보이게 한다.
 const wdCurrentRetryBtn = document.getElementById("wdCurrentRetryBtn");
+// 2026-07-26 유저 피드백: 안드로이드에서 앱을 막 열었을 때 위치 조회가
+// 실패하면(GPS/네트워크 위치 공급자가 아직 준비 안 된 콜드스타트 등) 메인
+// 화면의 날씨 칩이 "위치 권한 필요"에 멈춘 채 보였다. 아래 renderWeather()가
+// 이 버튼을 그 상태에서만 노출한다 — 위 wdCurrentRetryBtn과 같은 개념을
+// 메인 화면 칩에도 적용한 것.
+const mainWeatherRetryBtn = document.getElementById("mainWeatherRetryBtn");
 // 2026-07-17 벤치마크 기획(묶음1·2·3·4): 상세 지표(바람/자외선/기압/가시거리/
 // 이슬점), 일출·일몰, 시간대별 예보 스트립 DOM 참조 추가.
 const wdCurrentSun = document.getElementById("wdCurrentSun");
@@ -1606,6 +1612,14 @@ function renderWeather() {
 
   const icon = document.getElementById("weatherIcon");
   icon.className = `mini-weather ${weatherState.icon}`;
+
+  // 2026-07-26: 위치 조회가 플레이스홀더 상태("위치 권한 필요"/"날씨 오류")일
+  // 때만 메인 화면 재시도 버튼을 보여준다. WEATHER_SUMMARY_PLACEHOLDERS는
+  // 이 함수보다 아래에서 선언되지만, 이 함수는 requestCurrentWeather()를 통해
+  // 스크립트 파싱이 전부 끝난 뒤에만 호출되므로 참조 시점엔 문제 없다.
+  if (mainWeatherRetryBtn) {
+    mainWeatherRetryBtn.hidden = !WEATHER_SUMMARY_PLACEHOLDERS.includes(weatherState.summary);
+  }
 }
 
 // 2026-07-20 9차 피드백(유저 질문+요청): "날씨 상세 페이지가 열 때마다
@@ -1622,6 +1636,10 @@ function renderWeather() {
 // 프리페치하면 기본 좌표로 한 번 낭비될 수 있으므로, userCoords가 실제로
 // 정해지는 이 세 지점(권한없음/성공/거부) 각각에서 renderWeather() 직후에만
 // 부른다 — 항상 그 시점 기준 "확정된" 좌표로 정확히 한 번만 프리페치된다.
+// 2026-07-26: 메인 화면 재시도 버튼(mainWeatherRetryBtn)이 "지금 다시 시도해서
+// 끝날 때까지" 버튼을 비활성화해둘 수 있도록 Promise를 반환하게 바꿨다 — 기존
+// 세 호출부(앱 로드 시/10분 주기 타이머/포그라운드 복귀 시)는 반환값을 그냥
+// 무시하므로 동작에 변화가 없다. 내부 로직(위치 확정 3분기)은 그대로다.
 function requestCurrentWeather() {
   if (!navigator.geolocation) {
     userCoords = DEFAULT_WEATHER_COORDS;
@@ -1630,57 +1648,61 @@ function requestCurrentWeather() {
     renderWeather();
     fetchWeatherDetail();
     if (activeScene) setScene(activeScene, { syncDots: true, force: true });
-    return;
+    return Promise.resolve();
   }
 
-  navigator.geolocation.getCurrentPosition(
-    async ({ coords }) => {
-      try {
-        const { latitude, longitude } = coords;
-        userCoords = { lat: latitude, lng: longitude };
-        const location = await reverseGeocode(latitude, longitude);
-        // 2026-07-21: 이 fetchWeatherJson 호출은 fetchWeatherDetail()이 바로
-        // 뒤이어 다시 부르는 /api/weather/current와 같은 엔드포인트다 —
-        // 중복 호출처럼 보이지만 비용상 문제 없다: 백엔드가 좌표를 1~2km
-        // 격자로 반올림해 4시간 D1 캐시를 공유하므로, 바로 뒤따르는
-        // fetchWeatherDetail()의 같은 호출은 이 요청이 방금 만들어둔 캐시를
-        // 그대로 읽어 즉시 응답한다(Visual Crossing 쪽 실제 API 호출은
-        // 늘지 않음). 대신 메인 한줄이 날씨상세 7종 호출 전체가 끝나기를
-        // 기다리지 않고 훨씬 먼저(가장 가벼운 호출 하나만으로) 갱신된다.
-        const weatherData = await fetchWeatherJson("/api/weather/current");
-        const current = weatherData && weatherData.current;
-        if (!current) throw new Error("현재 날씨 데이터 없음");
+  return new Promise((resolve) => {
+    navigator.geolocation.getCurrentPosition(
+      async ({ coords }) => {
+        try {
+          const { latitude, longitude } = coords;
+          userCoords = { lat: latitude, lng: longitude };
+          const location = await reverseGeocode(latitude, longitude);
+          // 2026-07-21: 이 fetchWeatherJson 호출은 fetchWeatherDetail()이 바로
+          // 뒤이어 다시 부르는 /api/weather/current와 같은 엔드포인트다 —
+          // 중복 호출처럼 보이지만 비용상 문제 없다: 백엔드가 좌표를 1~2km
+          // 격자로 반올림해 4시간 D1 캐시를 공유하므로, 바로 뒤따르는
+          // fetchWeatherDetail()의 같은 호출은 이 요청이 방금 만들어둔 캐시를
+          // 그대로 읽어 즉시 응답한다(Visual Crossing 쪽 실제 API 호출은
+          // 늘지 않음). 대신 메인 한줄이 날씨상세 7종 호출 전체가 끝나기를
+          // 기다리지 않고 훨씬 먼저(가장 가벼운 호출 하나만으로) 갱신된다.
+          const weatherData = await fetchWeatherJson("/api/weather/current");
+          const current = weatherData && weatherData.current;
+          if (!current) throw new Error("현재 날씨 데이터 없음");
 
-        const tag = vcCurrentTag(current);
-        const isDay =
-          typeof current.sunriseEpoch === "number" && typeof current.sunsetEpoch === "number"
-            ? current.datetimeEpoch >= current.sunriseEpoch && current.datetimeEpoch < current.sunsetEpoch
-            : true;
-        weatherState = {
-          location,
-          temp: Number.isFinite(current.temp) ? `${Math.round(current.temp)}°` : "--°",
-          summary: vcCurrentSummary(current),
-          icon: weatherIconFor(tag, isDay),
-          tag
-        };
-      } catch (error) {
-        weatherState = { location: "현재 위치", temp: "--°", summary: "날씨 오류", icon: "sun-icon", tag: "clear" };
-      }
-      weatherResolved = true;
-      renderWeather();
-      fetchWeatherDetail();
-      if (activeScene) setScene(activeScene, { syncDots: true, force: true });
-    },
-    () => {
-      userCoords = DEFAULT_WEATHER_COORDS;
-      weatherState = { location: "서울", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
-      weatherResolved = true;
-      renderWeather();
-      fetchWeatherDetail();
-      if (activeScene) setScene(activeScene, { syncDots: true, force: true });
-    },
-    { enableHighAccuracy: false, timeout: 9000, maximumAge: 10 * 60 * 1000 }
-  );
+          const tag = vcCurrentTag(current);
+          const isDay =
+            typeof current.sunriseEpoch === "number" && typeof current.sunsetEpoch === "number"
+              ? current.datetimeEpoch >= current.sunriseEpoch && current.datetimeEpoch < current.sunsetEpoch
+              : true;
+          weatherState = {
+            location,
+            temp: Number.isFinite(current.temp) ? `${Math.round(current.temp)}°` : "--°",
+            summary: vcCurrentSummary(current),
+            icon: weatherIconFor(tag, isDay),
+            tag
+          };
+        } catch (error) {
+          weatherState = { location: "현재 위치", temp: "--°", summary: "날씨 오류", icon: "sun-icon", tag: "clear" };
+        }
+        weatherResolved = true;
+        renderWeather();
+        fetchWeatherDetail();
+        if (activeScene) setScene(activeScene, { syncDots: true, force: true });
+        resolve();
+      },
+      () => {
+        userCoords = DEFAULT_WEATHER_COORDS;
+        weatherState = { location: "서울", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
+        weatherResolved = true;
+        renderWeather();
+        fetchWeatherDetail();
+        if (activeScene) setScene(activeScene, { syncDots: true, force: true });
+        resolve();
+      },
+      { enableHighAccuracy: false, timeout: 9000, maximumAge: 10 * 60 * 1000 }
+    );
+  });
 }
 
 async function loadBackgroundArchive() {
@@ -7164,6 +7186,23 @@ if (weatherChipOpen) weatherChipOpen.addEventListener("click", () => {
   postToNativeHaptic("light");
   openWeatherDetail();
 });
+// 2026-07-26 유저 피드백: "안드로이드 메인에서 위치 정보를 못 가져왔다면서
+// 안 된다. 10분 정도 후엔 다시 잘 나오는데, 그냥 기다리는 수밖에 없나?
+// 재시도 버튼을 주면 어떤가" — mainWeatherRetryBtn은 renderWeather()가
+// weatherState.summary가 플레이스홀더("위치 권한 필요"/"날씨 오류")일 때만
+// 보여준다. 클릭 시 requestCurrentWeather()를 다시 호출해 위치 조회부터
+// 새로 시도한다(10분 주기 자동 재시도·포그라운드 복귀 재시도와 완전히
+// 같은 경로 — 별도의 새 로직을 만들지 않고 기존 함수를 그대로 재사용).
+if (mainWeatherRetryBtn) {
+  mainWeatherRetryBtn.addEventListener("click", async () => {
+    postToNativeHaptic("light");
+    mainWeatherRetryBtn.disabled = true;
+    mainWeatherRetryBtn.textContent = "다시 불러오는 중…";
+    await requestCurrentWeather();
+    mainWeatherRetryBtn.disabled = false;
+    mainWeatherRetryBtn.textContent = "다시";
+  });
+}
 // 2026-07-20 유저 피드백: 현재 날씨 조회 실패 시 뜨는 "다시 시도" 버튼.
 // fetchWeatherDetail()은 실패한 요청을 캐시하지 않으므로(위 wdCurrentRetryBtn
 // 선언부 주석 참조) 그냥 다시 호출하면 된다 — 별도의 강제 플래그 불필요.

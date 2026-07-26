@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260725-dirtybtn-v1">
+  <link rel="stylesheet" href="styles.css?v=20260726-retrybtn-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -82,6 +82,10 @@
                    (app.js updateWeatherAdvisoryDot 참조). -->
               <span id="weatherAdvisoryDot" class="weather-advisory-dot" aria-hidden="true" hidden></span>
             </button>
+            <!-- 2026-07-26 유저 피드백: 위치 조회 실패("위치 권한 필요") 시
+                 10분 자동재시도만 믿고 기다리게 하지 않고, 그 자리에서 바로
+                 다시 시도할 수 있는 버튼(app.js renderWeather 참조). -->
+            <button type="button" class="weather-retry-mini" id="mainWeatherRetryBtn" hidden aria-label="날씨 정보 다시 불러오기">다시</button>
             <div class="music-controls" aria-label="배경음악">
               <button class="icon-button music-note-button" id="musicSettingsOpen" type="button" aria-label="음악 정보 보기" aria-controls="musicInfoPanel" aria-expanded="false"></button>
               <button class="icon-button music-toggle" id="musicToggle" type="button" aria-label="음악 재생" aria-pressed="false"></button>
@@ -290,7 +294,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2>설정<span class="settings-version" aria-hidden="true">ver.1.6.13.2</span></h2>
+            <h2>설정<span class="settings-version" aria-hidden="true">ver.1.6.13.3</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -854,6 +858,6 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260725-dirtybtn-v1"></script>
+  <script src="app.js?v=20260726-retrybtn-v1"></script>
 </body>
 </html>
