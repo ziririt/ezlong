@@ -8223,5 +8223,19 @@ window.investmentQuotes = [
     "title": "인간 실격",
     "author": "다자이 오사무",
     "genre": "literature"
+  },
+  {
+    "english": "The secret to investing is to figure out the value of something – and then pay a lot less.",
+    "text": "투자의 비밀은 이것이다. 어떤 대상의 진짜 가치를 파악한 다음, 그보다 훨씬 싼 값에 사는 것.",
+    "title": "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)",
+    "author": "조엘 그린블라트 (Joel Greenblatt)",
+    "category": "mindset"
+  },
+  {
+    "english": "Once, in the dear dead days beyond recall, an out-of-town visitor was being shown the wonders of the New York financial district. When the party arrived at the Battery, one of his guides indicated some handsome ships riding at anchor. He said, 'Look, those are the bankers' and brokers' yachts.' 'Where are the customers' yachts?' asked the naive visitor.",
+    "text": "언젠가, 다시 오지 않을 옛 시절 이야기다. 지방에서 온 방문객에게 뉴욕 금융가의 명소들을 구경시켜 주고 있었다. 일행이 배터리 공원에 다다르자, 안내인 중 한 명이 정박해 있는 근사한 배들을 가리키며 말했다. '보십시오, 저것들이 은행가와 브로커들의 요트입니다.' 순진한 방문객이 물었다. '그럼 고객들의 요트는 어디에 있습니까?'",
+    "title": "고객의 요트는 어디에 있는가 (Where Are the Customers' Yachts?)",
+    "author": "프레드 슈웨드 (Fred Schwed Jr.)",
+    "category": "mindset"
   }
 ];
