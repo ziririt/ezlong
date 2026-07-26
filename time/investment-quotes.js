@@ -8237,5 +8237,19 @@ window.investmentQuotes = [
     "title": "고객의 요트는 어디에 있는가 (Where Are the Customers' Yachts?)",
     "author": "프레드 슈웨드 (Fred Schwed Jr.)",
     "category": "mindset"
+  },
+  {
+    "english": "Do you think, because I am poor, obscure, plain, and little, I am soulless and heartless? You think wrong! — I have as much soul as you — and full as much heart!",
+    "text": "제가 가난하고, 미천하고, 못생기고, 몸집이 작다고 해서 영혼도 없고 감정도 없다고 생각하시나요? 그렇다면 오해십니다. 저에게도 당신만큼의 영혼이 있고, 당신만큼의 마음이 있어요.",
+    "title": "제인 에어",
+    "author": "샬럿 브론테 (Charlotte Brontë)",
+    "genre": "literature"
+  },
+  {
+    "english": "The struggle itself toward the heights is enough to fill a man's heart. One must imagine Sisyphus happy.",
+    "text": "정상을 향한 투쟁, 그 자체만으로도 한 인간의 마음을 채우기에 충분하다. 우리는 시지프가 행복하다고 상상해야 한다.",
+    "title": "시지프 신화",
+    "author": "알베르 카뮈",
+    "genre": "literature"
   }
 ];
