@@ -1203,6 +1203,27 @@ button { font: inherit; }
   cursor: pointer;
 }
 
+/* 2026-07-26 신설 — 배터리 최적화 제외 요청 버튼(안드로이드 전용 섹션).
+   .premium-upgrade-button과 같은 카드형 필 톤이되, 별도 클래스로 분리해
+   "프리미엄" 의미와 섞이지 않게 한다. */
+.battery-exemption-button {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 10px;
+  border: 1px solid rgba(255,255,255,0.26);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.86);
+  color: #101722;
+  font-size: 16px;
+  font-weight: 780;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.battery-exemption-button:disabled {
+  opacity: 0.6;
+}
+
 /* 숨김 QC 패널 안의 버튼은 위 sticky 대상이 아니다(고유 id로만 한정). */
 #musicQCDeleteButton,
 #musicQCCopyButton {
