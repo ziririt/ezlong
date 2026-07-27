@@ -2922,7 +2922,18 @@ function weatherEmojiFromHour(precipprob, precipMm, hourLabel, isNow, conditions
   const rainDisplay = deriveRainDisplay(precipprob, precipMm);
   const icon = isNight ? rainDisplay.iconNight : rainDisplay.iconDay;
   if (icon) return icon;
-  if (conditionsKo) return weatherEmojiFromHourCondition(conditionsKo, isNight);
+  if (conditionsKo) {
+    // 2026-07-27 헌법(36항) 뒷문 봉쇄: 비 계열 아이콘은 deriveRainDisplay의
+    // ①/②에서만 나올 수 있다. Visual Crossing은 강수량 0인 시간에도
+    // conditions 라벨을 "Rain"으로 붙여 내려주는 일이 흔한데(하루 확률을
+    // 전 시간에 뭉개는 특성과 같은 뿌리), 여기서 그 텍스트("비")를 그대로
+    // 아이콘화하면 위에서 ③으로 억제한 비 신호가 폴백 경로로 되살아난다 —
+    // 실제 사고: ver.1.6.13.7 배포 직후 스트립 전 시간이 🌧️로 도배
+    // (2026-07-27 13:2x 유저 제보). "비"는 구름량 정보로 강등해 "흐림"으로
+    // 그린다. 천둥번개(⛈️)·눈(❄️)은 우산과 별개의 고유 신호라 유지.
+    const sanitizedKo = conditionsKo === "비" ? "흐림" : conditionsKo;
+    return weatherEmojiFromHourCondition(sanitizedKo, isNight);
+  }
   return isNight ? "🌙" : "☀️";
 }
 
