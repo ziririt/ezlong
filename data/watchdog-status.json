@@ -1,12 +1,12 @@
 {
-  "lastRun": "2026-07-26T23:47:26.593Z",
-  "lastRunKST": "2026-07-27 08:47:26 KST",
+  "lastRun": "2026-07-27T00:16:15.549Z",
+  "lastRunKST": "2026-07-27 09:16:15 KST",
   "summary": {
-    "ok": 2,
-    "triggered": 0,
+    "ok": 3,
+    "triggered": 3,
     "alreadyRunning": 0,
     "stale": 0,
-    "skipped": 8,
+    "skipped": 4,
     "errors": 0
   },
   "results": [
@@ -14,7 +14,7 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-07-26T23:47:26.593Z",
+      "checkedAt": "2026-07-27T00:16:15.549Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -22,26 +22,29 @@
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-07-26T23:47:26.593Z",
-      "status": "SKIP",
-      "reason": "비활성 시간대"
+      "checkedAt": "2026-07-27T00:16:15.549Z",
+      "lastUpdate": "2026-07-24T09:04:58.787Z",
+      "ageHours": 63.2,
+      "maxAgeHours": 2.5,
+      "status": "TRIGGERED",
+      "reason": "63.2h 지연 감지 → 자동 트리거"
     },
     {
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-07-26T23:47:26.593Z",
+      "checkedAt": "2026-07-27T00:16:15.549Z",
       "lastUpdate": "2026-07-26T22:07:10.730Z",
-      "ageHours": 1.7,
+      "ageHours": 2.2,
       "maxAgeHours": 5,
       "status": "OK",
-      "reason": "최신 (1.7h 전 업데이트)"
+      "reason": "최신 (2.2h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-07-26T23:47:26.593Z",
+      "checkedAt": "2026-07-27T00:16:15.549Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -49,7 +52,7 @@
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-07-26T23:47:26.593Z",
+      "checkedAt": "2026-07-27T00:16:15.549Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -57,18 +60,18 @@
       "id": "scorecard",
       "name": "긍정vs부정 스코어카드",
       "workflow": "market-scorecard.yml",
-      "checkedAt": "2026-07-26T23:47:26.593Z",
+      "checkedAt": "2026-07-27T00:16:15.549Z",
       "lastUpdate": "2026-07-26T23:20:52Z",
-      "ageHours": 0.4,
+      "ageHours": 0.9,
       "maxAgeHours": 8,
       "status": "OK",
-      "reason": "최신 (0.4h 전 업데이트)"
+      "reason": "최신 (0.9h 전 업데이트)"
     },
     {
       "id": "stocks-prices",
       "name": "심플 주가 실시간",
       "workflow": "fetch-stocks-prices.yml",
-      "checkedAt": "2026-07-26T23:47:26.593Z",
+      "checkedAt": "2026-07-27T00:16:15.549Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -76,25 +79,34 @@
       "id": "stocks-data",
       "name": "심플 주가 일간(스파크라인)",
       "workflow": "fetch-stocks-data.yml",
-      "checkedAt": "2026-07-26T23:47:26.593Z",
-      "status": "SKIP",
-      "reason": "비활성 시간대"
+      "checkedAt": "2026-07-27T00:16:15.549Z",
+      "lastUpdate": "2026-07-26T22:30:59.833479+00:00",
+      "ageHours": 1.8,
+      "maxAgeHours": 26,
+      "status": "OK",
+      "reason": "최신 (1.8h 전 업데이트)"
     },
     {
       "id": "market-cycle",
       "name": "마켓 사이클 주봉",
       "workflow": "fetch-market-cycle.yml",
-      "checkedAt": "2026-07-26T23:47:26.593Z",
-      "status": "SKIP",
-      "reason": "비활성 시간대"
+      "checkedAt": "2026-07-27T00:16:15.549Z",
+      "lastUpdate": "2026-07-24T23:11:17.368Z",
+      "ageHours": 49.1,
+      "maxAgeHours": 30,
+      "status": "TRIGGERED",
+      "reason": "49.1h 지연 감지 → 자동 트리거"
     },
     {
       "id": "kr-prices",
       "name": "한국 주가",
       "workflow": "fetch-kr-prices.yml",
-      "checkedAt": "2026-07-26T23:47:26.593Z",
-      "status": "SKIP",
-      "reason": "비활성 시간대"
+      "checkedAt": "2026-07-27T00:16:15.549Z",
+      "lastUpdate": "2026-07-24T08:31:09Z",
+      "ageHours": 63.8,
+      "maxAgeHours": 1,
+      "status": "TRIGGERED",
+      "reason": "63.8h 지연 감지 → 자동 트리거"
     }
   ]
 }
