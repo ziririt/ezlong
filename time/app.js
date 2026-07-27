@@ -671,6 +671,10 @@ let lastAppliedScreenHeight = 0;
 const isNativeWrapper = ["ios", "android"].includes(
   new URLSearchParams(window.location.search).get("native")
 );
+// 2026-07-27 신설 — 팝업배너/강제업데이트 브릿지가 iOS/안드로이드 분기를
+// 매번 새로 판별할 필요 없이 재사용하는 값. isNativeWrapper와 같은 쿼리를
+// 다시 읽을 뿐 기존 로직에는 영향 없음.
+const nativePlatformKey = new URLSearchParams(window.location.search).get("native");
 
 function syncFirstScreenHeight() {
   if (!app) return;
@@ -5861,6 +5865,288 @@ function postToNativeAd(payload) {
   }
 }
 
+// ============================================================
+// 2026-07-27 신설 — 원격 설정(app-config.json) 기반 "실행 시 팝업 배너" +
+// "강제 업데이트". 설계 문서: DESIGN_앱푸시_팝업배너_강제업데이트_2026-07-27.md
+// 핵심 원칙: 이 기능 전체(fetch 실패·JSON 파싱 실패·브릿지 미준비·구버전 앱
+// 등 어떤 이유로도) 절대 앱의 나머지 기능을 막아선 안 된다 — 모든 단계가
+// 실패하면 조용히 무시하고 "아무 것도 표시 안 함"으로 폴백한다. 일반 웹/PWA
+// (isNativeWrapper === false)에서는 강제업데이트 자체가 대상이 아니므로
+// 팝업 배너만 동작한다.
+// ============================================================
+const APP_CONFIG_URL = "https://ezlong.com/time/app-config.json";
+
+// postToNativeRadio/postToNativeHaptic/postToNativeAd와 완전히 동일한 안전
+// 패턴(네이티브 래퍼 아니면 조용히 무시, 브릿지 미준비 시 에러 삼킴)의
+// 새 채널(flipzenApp) — NativeBridge.kt/ContentView.swift와 이름을 맞췄다.
+function postToNativeApp(payload) {
+  if (!isNativeWrapper) return;
+  try {
+    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.flipzenApp) {
+      window.webkit.messageHandlers.flipzenApp.postMessage(payload);
+    } else if (window.AndroidNativeBridge) {
+      window.AndroidNativeBridge.postMessage("flipzenApp", JSON.stringify(payload));
+    }
+  } catch (error) {
+    // 브릿지가 아직 준비 전이거나(구버전 앱) 없는 환경 — 조용히 무시.
+  }
+}
+
+// 안드로이드는 JavascriptInterface가 문자열을 동기 반환할 수 있어 즉시
+// 콜백한다. iOS는 WKScriptMessageHandler가 동기 반환을 지원하지 않는
+// 구조적 제약이 있어(ContentView.swift 주석 참조) postMessage로 요청만
+// 보내고 네이티브가 window.__flipzenAppVersionResult를 evaluateJavaScript로
+// 직접 호출해주길 기다리는 1회성 콜백으로 우회한다. 브릿지 자체가 없는
+// 일반 웹/PWA·구버전 앱에서는 callback(null)로 즉시 종료 — 호출부
+// (checkForceUpdate)가 "버전을 모르면 아무 것도 안 함"으로 자연 폴백한다.
+function getNativeAppVersion(callback) {
+  if (!isNativeWrapper) {
+    callback(null);
+    return;
+  }
+  if (nativePlatformKey === "android" && window.AndroidNativeBridge && typeof window.AndroidNativeBridge.getAppVersion === "function") {
+    try {
+      callback(JSON.parse(window.AndroidNativeBridge.getAppVersion()));
+    } catch (error) {
+      callback(null);
+    }
+    return;
+  }
+  if (nativePlatformKey === "ios" && window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.flipzenApp) {
+    let settled = false;
+    window.__flipzenAppVersionResult = (result) => {
+      if (settled) return;
+      settled = true;
+      callback(result || null);
+    };
+    // 네이티브가 응답을 못 보내는 예외 상황(구버전 앱 등) 대비 타임아웃.
+    setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      callback(null);
+    }, 3000);
+    postToNativeApp({ action: "getAppVersion" });
+    return;
+  }
+  callback(null);
+}
+
+function openNativeAppStore() {
+  postToNativeApp({ action: "openAppStore" });
+}
+
+// 알라딘 모달과 동일한 "iOS는 기본 브라우저로, 안드로이드는 Custom Tabs로"
+// 외부 링크 열기 패턴을 그대로 재사용한다(openAladinModal/withAladinPartnerParam
+// 근처 참조) — 새 로직을 만들지 않는다.
+function openPopupLink(url) {
+  if (!url) return;
+  if (isNativeWrapper) {
+    if (nativePlatformKey === "ios" && window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.flipzenNativeRadio) {
+      window.webkit.messageHandlers.flipzenNativeRadio.postMessage({ action: "openExternalSafari", url });
+      return;
+    }
+    if (nativePlatformKey === "android" && window.AndroidNativeBridge) {
+      window.AndroidNativeBridge.postMessage("flipzenNativeRadio", JSON.stringify({ action: "openExternalSafari", url }));
+      return;
+    }
+  }
+  window.open(url, "_blank", "noopener");
+}
+
+function checkAppConfig() {
+  fetch(APP_CONFIG_URL, { cache: "no-cache" })
+    .then((res) => (res.ok ? res.json() : null))
+    .then((config) => {
+      if (!config) return;
+      maybeShowPopupBanner(config.popup);
+      checkForceUpdate(config.update);
+    })
+    .catch(() => {
+      // 원격 설정 파일이 아직 없거나(최초 배포 전) 네트워크 실패한 경우 —
+      // 앱은 평소대로 계속 동작해야 하므로 조용히 무시.
+    });
+}
+
+function popupDismissKey(id) {
+  return `dismissedPopup_${id}`;
+}
+
+// enabled && 기간 안 && "다시 보지 않기" 기록 없음 — 세 조건 모두 통과할
+// 때만 노출한다. 캠페인마다 id가 다르므로 새 이벤트가 뜨면 이전 캠페인의
+// 다시보지않기 기록과 무관하게 자동으로 다시 노출된다(설계문서 3번).
+function maybeShowPopupBanner(popup) {
+  if (!popup || !popup.enabled || !popup.id || !popup.imageUrl) return;
+  const now = Date.now();
+  if (popup.startAt && now < Date.parse(popup.startAt)) return;
+  if (popup.endAt && now > Date.parse(popup.endAt)) return;
+  try {
+    if (localStorage.getItem(popupDismissKey(popup.id)) === "1") return;
+  } catch (e) {
+    // localStorage 접근 실패(프라이빗 모드 등) — 매번 뜨는 정도의 부작용만
+    // 있고 기능은 계속 동작해야 하므로 무시하고 진행.
+  }
+  renderPopupBanner(popup);
+}
+
+function renderPopupBanner(popup) {
+  if (document.getElementById("appPromoOverlay")) return; // 중복 방지.
+  const overlay = document.createElement("div");
+  overlay.id = "appPromoOverlay";
+  overlay.setAttribute(
+    "style",
+    "position:fixed;inset:0;z-index:999997;background:rgba(0,0,0,0.6);" +
+      "display:flex;align-items:center;justify-content:center;padding:24px;"
+  );
+
+  const card = document.createElement("div");
+  card.setAttribute(
+    "style",
+    "position:relative;max-width:360px;width:100%;background:#161616;border-radius:20px;" +
+      "overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5);"
+  );
+
+  const closeBtn = document.createElement("button");
+  closeBtn.setAttribute("aria-label", "닫기");
+  closeBtn.textContent = "✕";
+  closeBtn.setAttribute(
+    "style",
+    "position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:16px;" +
+      "border:none;background:rgba(0,0,0,0.45);color:#fff;font-size:16px;line-height:1;" +
+      "cursor:pointer;z-index:2;"
+  );
+
+  const img = document.createElement("img");
+  img.src = popup.imageUrl;
+  img.alt = "";
+  img.setAttribute("style", "display:block;width:100%;height:auto;");
+  if (popup.linkUrl) {
+    img.style.cursor = "pointer";
+    img.addEventListener("click", () => {
+      postToNativeHaptic("light");
+      openPopupLink(popup.linkUrl);
+    });
+  }
+
+  const footer = document.createElement("div");
+  footer.setAttribute(
+    "style",
+    "padding:14px 16px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;"
+  );
+
+  const label = document.createElement("label");
+  label.setAttribute("style", "display:flex;align-items:center;gap:6px;color:#c7c7c7;font-size:14px;");
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  label.appendChild(checkbox);
+  label.appendChild(document.createTextNode("다시 보지 않기"));
+
+  const closeText = document.createElement("button");
+  closeText.textContent = "닫기";
+  closeText.setAttribute(
+    "style",
+    "background:transparent;border:none;color:#8ab4ff;font-size:14px;font-weight:600;cursor:pointer;padding:6px 4px;"
+  );
+
+  footer.appendChild(label);
+  footer.appendChild(closeText);
+
+  card.appendChild(img);
+  card.appendChild(closeBtn);
+  card.appendChild(footer);
+  overlay.appendChild(card);
+  document.body.appendChild(overlay);
+
+  function dismiss() {
+    if (checkbox.checked) {
+      try {
+        localStorage.setItem(popupDismissKey(popup.id), "1");
+      } catch (e) {
+        // 무시 — 다음에 또 뜨는 정도의 부작용.
+      }
+    }
+    overlay.remove();
+  }
+
+  closeBtn.addEventListener("click", dismiss);
+  closeText.addEventListener("click", dismiss);
+}
+
+// nativePlatformKey("ios"/"android")별로 update.ios/update.android 규칙을
+// 골라 현재 설치된 빌드와 비교한다. 버전을 못 받아오면(구버전 브릿지 등)
+// 판단 자체를 하지 않는다 — 잘못된 정보로 정상 버전 유저를 막는 사고보다
+// "이번엔 그냥 넘어감"이 항상 안전하다.
+function checkForceUpdate(update) {
+  if (!update || !nativePlatformKey) return; // 일반 웹/PWA는 대상 아님.
+  const rule = update[nativePlatformKey];
+  if (!rule) return;
+  getNativeAppVersion((info) => {
+    if (!info) return;
+    const currentBuild = parseInt(info.versionCode, 10);
+    const minBuild = nativePlatformKey === "ios" ? rule.minBuild : rule.minVersionCode;
+    if (!Number.isFinite(currentBuild) || !Number.isFinite(minBuild)) return;
+    if (currentBuild >= minBuild) return; // 이미 최신 이상 — 표시 안 함.
+    renderUpdateGate(rule);
+  });
+}
+
+function renderUpdateGate(rule) {
+  if (document.getElementById("appUpdateGateOverlay")) return; // 중복 방지.
+  const dismissible = !rule.forceUpdate;
+  const overlay = document.createElement("div");
+  overlay.id = "appUpdateGateOverlay";
+  overlay.setAttribute(
+    "style",
+    "position:fixed;inset:0;z-index:999998;background:rgba(0,0,0,0.85);" +
+      "display:flex;align-items:center;justify-content:center;padding:28px;"
+  );
+
+  const card = document.createElement("div");
+  card.setAttribute(
+    "style",
+    "max-width:340px;width:100%;background:#1c1c1e;border-radius:20px;padding:28px 24px;" +
+      "text-align:center;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,0.6);"
+  );
+
+  const title = document.createElement("div");
+  title.textContent = dismissible ? "새 버전이 있어요" : "업데이트가 필요합니다";
+  title.setAttribute("style", "font-size:18px;font-weight:700;margin-bottom:10px;");
+
+  const message = document.createElement("div");
+  message.textContent = rule.message || "새로운 버전으로 업데이트해 주세요.";
+  message.setAttribute("style", "font-size:15px;color:#c7c7c7;line-height:1.5;margin-bottom:22px;");
+
+  const updateBtn = document.createElement("button");
+  updateBtn.textContent = "지금 업데이트";
+  updateBtn.setAttribute(
+    "style",
+    "width:100%;padding:14px;border-radius:14px;border:none;background:#0a84ff;color:#fff;" +
+      "font-size:16px;font-weight:700;cursor:pointer;"
+  );
+  updateBtn.addEventListener("click", () => {
+    postToNativeHaptic("light");
+    openNativeAppStore();
+  });
+
+  card.appendChild(title);
+  card.appendChild(message);
+  card.appendChild(updateBtn);
+
+  if (dismissible) {
+    const laterBtn = document.createElement("button");
+    laterBtn.textContent = "나중에";
+    laterBtn.setAttribute(
+      "style",
+      "width:100%;padding:12px;margin-top:10px;border-radius:14px;border:none;" +
+        "background:transparent;color:#8e8e93;font-size:15px;cursor:pointer;"
+    );
+    laterBtn.addEventListener("click", () => overlay.remove());
+    card.appendChild(laterBtn);
+  }
+
+  overlay.appendChild(card);
+  document.body.appendChild(overlay);
+}
+
 // renderMusicPlaylistInfo()가 트랙이 바뀌는 모든 지점(첫 재생 시작·수동
 // 스킵·자동 크로스페이드 완료·플레이리스트/장르 필터 변경)에서 공통으로
 // 호출되므로, 여기 한 곳에만 붙여도 트랙 전환을 하나도 놓치지 않고
@@ -7639,6 +7925,10 @@ syncFirstScreenHeight();
 loadBackgroundArchive();
 tick();
 requestCurrentWeather();
+// 2026-07-27 신설 — 팝업배너/강제업데이트 원격 설정 확인. 다른 부팅 로직과
+// 완전히 독립적인 fetch라 실패해도(파일 없음/네트워크 오류) 나머지 앱
+// 동작에 영향이 없다(checkAppConfig 내부 catch 참조).
+checkAppConfig();
 // 2026-07-21 유저 피드백: "대기화면으로 계속 열어두고 있는데, 실제로는
 // 폭우가 쏟아지는데 메인 화면 한 줄 요약도 상세 화면도 계속 '옅은
 // 이슬비'로 멈춰 있다 — 재실행 안 해도 알아서 바뀌어야 한다." 예전엔
@@ -7750,3 +8040,54 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
+
+// ============================================================================
+// 2026-07-27 신설 — 광고 레이아웃 브릿지 (네이티브 앱 전용, 웹/PWA에서는
+// isNativeWrapper === false라 통째로 비활성).
+// 확정 스펙(수익화_기획서 + 2026-07-27 유저 확정): 배너는 "책속 문장 박스
+// 사이즈만한" 크기로 문장박스 자리에 얹는다. 그 좌표의 유일한 소스가 이
+// 브릿지다. 기존 함수(toggleCalendarPanel 등)를 일절 수정하지 않는 관찰
+// 전용 코드 — 2초 주기로 문장박스 좌표와 달력 열림 상태를 읽어 "값이
+// 바뀌었을 때만" 네이티브로 보낸다(이 웹뷰의 레이아웃 버그 전력 때문에
+// 기존 코드 개입을 최소화하는 게 이 프로젝트의 원칙, CLAUDE.md 참조).
+// 구버전 앱(빌드 8 이하)은 flipzenAd 핸들러의 default: break로 이 메시지를
+// 조용히 무시하므로 역호환도 안전하다.
+(function initAdLayoutBridge() {
+  if (!isNativeWrapper) return;
+  let lastSent = "";
+  function reportAdLayout() {
+    try {
+      if (!quotePanel) return;
+      const r = quotePanel.getBoundingClientRect();
+      const payload = {
+        action: "adLayout",
+        x: Math.round(r.left),
+        y: Math.round(r.top),
+        w: Math.round(r.width),
+        h: Math.round(r.height),
+        calendarOpen: !!calendarPanelOpen,
+      };
+      const key = [payload.x, payload.y, payload.w, payload.h, payload.calendarOpen].join(",");
+      if (key === lastSent) return;
+      lastSent = key;
+      postToNativeAd(payload);
+    } catch (error) {
+      // 브릿지/DOM 미준비 — 조용히 무시(다음 주기에 재시도).
+    }
+  }
+  window.setInterval(reportAdLayout, 2000);
+  window.addEventListener("resize", () => window.setTimeout(reportAdLayout, 300));
+  window.setTimeout(reportAdLayout, 1500);
+
+  // 네이티브가 배너(문장박스 크기 오버레이)를 띄우는 90초 동안 문장박스
+  // 내용을 숨긴다 — 광고가 콘텐츠를 "가리는" 게 아니라 "빈 자리에 놓이는"
+  // 구조로 만들어 AdMob 가림 정책 문제를 원천 차단한다(기획서 6번).
+  // visibility만 바꾸므로 레이아웃(자리)은 그대로 유지된다.
+  window.__flipzenBannerVisible = function (visible) {
+    try {
+      if (quotePanel) quotePanel.style.visibility = visible ? "hidden" : "";
+    } catch (error) {
+      // 무시 — 다음 호출에서 복구.
+    }
+  };
+})();
