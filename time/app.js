@@ -1076,7 +1076,9 @@ function deriveRainDisplay(precipProb, precipMm) {
     mm >= RAIN_DISPLAY_MM_THRESHOLD
   ) {
     // ② 절충 신호
-    const noun = isSummerShowerSeason() ? "약한 소나기 가능성" : "약한 비 가능성";
+    const noun = isSummerShowerSeason()
+      ? t("weather.lightShowerPossible", null, "약한 소나기 가능성")
+      : t("weather.lightRainPossible", null, "약한 비 가능성");
     return {
       state: "maybe",
       showAsRain: false,
@@ -1605,7 +1607,12 @@ function syncPhotoDots() {
     const hasPhoto = index < activePhotoSet.length;
     dot.classList.toggle("active", index === activePhotoIndex && hasPhoto);
     dot.disabled = !hasPhoto;
-    dot.setAttribute("aria-label", hasPhoto ? `배경 사진 ${index + 1}` : `배경 사진 ${index + 1} 없음`);
+    dot.setAttribute(
+      "aria-label",
+      hasPhoto
+        ? t("settings.background.photoAria", { index: index + 1 }, `배경 사진 ${index + 1}`)
+        : t("settings.background.photoMissingAria", { index: index + 1 }, `배경 사진 ${index + 1} 없음`)
+    );
   });
 }
 
@@ -1949,7 +1956,7 @@ function renderWeather() {
   // 이 함수보다 아래에서 선언되지만, 이 함수는 requestCurrentWeather()를 통해
   // 스크립트 파싱이 전부 끝난 뒤에만 호출되므로 참조 시점엔 문제 없다.
   if (mainWeatherRetryBtn) {
-    mainWeatherRetryBtn.hidden = !WEATHER_SUMMARY_PLACEHOLDERS.includes(weatherState.summary);
+    mainWeatherRetryBtn.hidden = !weatherSummaryPlaceholders().includes(weatherState.summary);
   }
 }
 
@@ -3598,7 +3605,11 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   // (wdCurrentTemp) 옆으로 이동.
   // 2026-07-20 12차 피드백(유저 요청): 가운뎃점(·) 접두사 삭제 — 빈
   // 문자열이면 CSS :empty가 display:none으로 접어 gap도 안 생긴다.
-  if (wdCurrentHumidity) wdCurrentHumidity.textContent = `습도 ${Math.round(c.humidity)}%`;
+  if (wdCurrentHumidity) wdCurrentHumidity.textContent = t(
+    "weather.detail.humidity",
+    { value: Math.round(c.humidity) },
+    `습도 ${Math.round(c.humidity)}%`
+  );
   wdCurrentSub.textContent = "";
 
   // 2026-07-17 벤치마크 기획(묶음3): 일출·일몰 한 줄 — 현재 날씨 카드의
@@ -3607,7 +3618,13 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   // 그 경우엔 줄 자체를 비워 레이아웃에 빈 여백이 남지 않게 한다.
   if (wdCurrentSun) {
     const sun = current && current.detail && current.detail.sun;
-    wdCurrentSun.textContent = sun ? `🌅 일출 ${sun.sunriseLabel} · 🌇 일몰 ${sun.sunsetLabel}` : "";
+    wdCurrentSun.textContent = sun
+      ? t(
+          "weather.detail.sunriseSunset",
+          { sunrise: sun.sunriseLabel, sunset: sun.sunsetLabel },
+          `🌅 일출 ${sun.sunriseLabel} · 🌇 일몰 ${sun.sunsetLabel}`
+        )
+      : "";
   }
 
   // 2026-07-21 유저 요청: 최고/최저 기온 아래 바람 — 숫자(km/h)보다 "약함/
@@ -3621,7 +3638,8 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     if (windInfoReal && typeof windInfoReal.speedKmh === "number") {
       const mps = Math.round(windInfoReal.speedKmh / 3.6);
       wdCurrentWind.innerHTML =
-        `바람 ${windInfoReal.strengthLabel} ` +
+        t("weather.detail.wind", { label: windInfoReal.strengthLabel },
+          `바람 ${windInfoReal.strengthLabel}`) + " " +
         `<span class="weather-current-wind-value">${mps}m/s</span>`;
     } else {
       wdCurrentWind.textContent = "";
@@ -3651,7 +3669,7 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   // 경우엔 그대로 weatherState.summary의 더 세밀한 표현을 쓴다.
   wdCurrentIsRainingNow = isRainingNow;
   const liveSummaryForCondition =
-    typeof weatherState.summary === "string" && !WEATHER_SUMMARY_PLACEHOLDERS.includes(weatherState.summary)
+    typeof weatherState.summary === "string" && !weatherSummaryPlaceholders().includes(weatherState.summary)
       ? weatherState.summary
       : null;
   const summaryIndicatesPrecip = liveSummaryForCondition ? /비|눈|뇌우/.test(liveSummaryForCondition) : false;
@@ -3698,7 +3716,7 @@ function renderWeatherCurrent(current, hourlyNowItem) {
 function renderWeatherHourlyStrip(data) {
   if (!wdHourlyStrip) return;
   if (!data || !Array.isArray(data.hours) || data.hours.length === 0) {
-    wdHourlyStrip.innerHTML = `<p class="weather-empty">시간대별 예보를 불러올 수 없어요.</p>`;
+    wdHourlyStrip.innerHTML = `<p class="weather-empty">${t("weather.hourly.unavailable", null, "시간대별 예보를 불러올 수 없어요.")}</p>`;
     return;
   }
 
@@ -3747,7 +3765,9 @@ function renderWeatherHourlyStrip(data) {
 // dateLabel(예: "07/19(일)")에 이미 요일이 괄호로 표기돼 있어 중복이라는
 // 유저 피드백. '오늘' 딱지는 요일 표기만으로는 알 수 없는 정보라 유지한다.
 function renderRainDayCard(day) {
-  const todayTag = day.isToday ? `<span class="weather-rain-day-tag">오늘</span>` : "";
+  const todayTag = day.isToday
+    ? `<span class="weather-rain-day-tag">${t("weather.weekly.today", null, "오늘")}</span>`
+    : "";
   const windowsHtml =
     day.windows && day.windows.length > 0
       ? day.windows
@@ -3762,7 +3782,7 @@ function renderRainDayCard(day) {
       </div>`
           )
           .join("")
-      : `<p class="weather-empty">비 소식 없어요.</p>`;
+      : `<p class="weather-empty">${t("weather.rain.none", null, "비 소식 없어요.")}</p>`;
   return `
     <div class="weather-rain-day">
       <p class="weather-rain-day-label">${day.dateLabel}${todayTag}</p>
@@ -3949,7 +3969,7 @@ if (wdAdvisoryBannerHead) {
 function renderWeatherRainWindows(data) {
   if (!wdRainWindows) return;
   if (!data || !Array.isArray(data.detailedDays)) {
-    wdRainWindows.innerHTML = `<p class="weather-empty">강수 예보를 불러올 수 없어요.</p>`;
+    wdRainWindows.innerHTML = `<p class="weather-empty">${t("weather.rain.unavailable", null, "강수 예보를 불러올 수 없어요.")}</p>`;
     return;
   }
 
@@ -3978,7 +3998,7 @@ function renderWeatherRainWindows(data) {
 function renderWeatherWeeklyForecast(data) {
   if (!wdWeeklyForecast) return;
   if (!data || !Array.isArray(data.days) || data.days.length === 0) {
-    wdWeeklyForecast.innerHTML = `<p class="weather-empty">주간 예보를 불러올 수 없어요.</p>`;
+    wdWeeklyForecast.innerHTML = `<p class="weather-empty">${t("weather.weekly.unavailable", null, "주간 예보를 불러올 수 없어요.")}</p>`;
     return;
   }
 
@@ -4081,7 +4101,18 @@ function renderWeatherWeeklyForecast(data) {
 // weatherState.summary가 아직
 // 위치 권한 대기 등으로 플레이스홀더("위치 권한 필요"/"날씨 오류")인
 // 경우에만 예전처럼 conditionsKo로 폴백한다.
-const WEATHER_SUMMARY_PLACEHOLDERS = ["위치 권한 필요", "날씨 오류"];
+// 2026-07-28 W9-4 — ★ 이 목록은 반드시 weatherState.summary 를 만드는
+// 코드와 **같은 카탈로그 키**를 써야 한다 ★. W9-1 에서 summary 를
+// 로케일화했는데 여기가 한국어 리터럴로 남아 있어, 영어 화면에서는
+// 어떤 값과도 일치하지 않아 "다시 시도" 버튼이 영영 안 뜨는 회귀가
+// 생겼다(스캐너가 잡아냄). 상수 대신 함수로 둬서 로케일이 바뀌어도
+// 항상 현재 언어 기준으로 비교되게 한다.
+function weatherSummaryPlaceholders() {
+  return [
+    t("weather.permissionNeeded", null, "위치 권한 필요"),
+    t("weather.error", null, "날씨 오류"),
+  ];
+}
 // 2026-07-20 11차 피드백(유저 지적): "옅은 이슬비 강수확률 5%"인데 바로
 // 아래 시간대별 상세 예보(백엔드/Visual Crossing 기준)는 "지금" 시간에
 // 맑음 아이콘을 보여주는 모순이 스크린샷으로 실측됐다. wdCurrentConditionBase/
@@ -4127,7 +4158,7 @@ function renderWeatherYesterday(data) {
   }
   if (!wdYesterday) return;
   if (!data || !data.past24h || !data.next24h) {
-    wdYesterday.innerHTML = `<p class="weather-empty">비교 정보를 불러올 수 없어요.</p>`;
+    wdYesterday.innerHTML = `<p class="weather-empty">${t("weather.compare.unavailable", null, "비교 정보를 불러올 수 없어요.")}</p>`;
     return;
   }
   const p = data.past24h;
@@ -4156,13 +4187,17 @@ function renderWeatherYesterday(data) {
 function renderWeatherTropical(data) {
   if (!wdTropicalBadges) return;
   if (!data) {
-    wdTropicalBadges.innerHTML = `<p class="weather-empty">열대야 정보를 불러올 수 없어요.</p>`;
+    wdTropicalBadges.innerHTML = `<p class="weather-empty">${t("weather.tropicalNight.unavailable", null, "열대야 정보를 불러올 수 없어요.")}</p>`;
     if (wdTropicalComment) wdTropicalComment.textContent = "";
     return;
   }
-  const officialLabel = data.official.isTropicalNight ? "공식 열대야" : "공식 기준 정상";
+  const officialLabel = data.official.isTropicalNight
+    ? t("weather.tropicalNight.official", null, "공식 열대야")
+    : t("weather.tropicalNight.officialNormal", null, "공식 기준 정상");
   const officialGrade = data.official.isTropicalNight ? "VERY_HEAVY" : "OK";
-  const sleepLabel = data.sleepWindow.isFeelsLikeTropicalNight ? "체감 열대야" : "체감상 괜찮음";
+  const sleepLabel = data.sleepWindow.isFeelsLikeTropicalNight
+    ? t("weather.tropicalNight.feels", null, "체감 열대야")
+    : t("weather.tropicalNight.feelsOk", null, "체감상 괜찮음");
   const sleepGrade = data.sleepWindow.isFeelsLikeTropicalNight ? "VERY_HEAVY" : "OK";
   wdTropicalBadges.innerHTML =
     weatherBadgeHtml(officialGrade, officialLabel) + weatherBadgeHtml(sleepGrade, sleepLabel);
@@ -4215,7 +4250,7 @@ function renderWeatherAirQuality(data) {
 function renderWeatherTempVsNormal(data) {
   if (!wdTempVsNormal) return;
   if (!data || !data.available) {
-    wdTempVsNormal.textContent = "평년값 비교에 필요한 데이터가 아직 부족해요.";
+    wdTempVsNormal.textContent = t("weather.normal.unavailable", null, "평년값 비교에 필요한 데이터가 아직 부족해요.");
     return;
   }
   let icon = "➡️";
@@ -6142,7 +6177,7 @@ function checkMusicAutoPauseWatchdog() {
   pauseMusic();
   renderMusicToggle();
   postToNativeHaptic("soft");
-  showMusicToast("귀의 휴식을 위해 자동 일시정지됐어요.");
+  showMusicToast(t("music.autoPaused", null, "귀의 휴식을 위해 자동 일시정지됐어요."));
 }
 
 // renderMusicToggle()이 재생/일시정지가 바뀔 수 있는 모든 경로(토글 클릭/
@@ -6168,7 +6203,10 @@ function renderMusicToggle() {
   if (!musicToggle) return;
   musicToggle.classList.toggle("is-playing", musicPlaying);
   musicToggle.setAttribute("aria-pressed", String(musicPlaying));
-  musicToggle.setAttribute("aria-label", musicPlaying ? "음악 일시정지" : "음악 재생");
+  musicToggle.setAttribute(
+    "aria-label",
+    musicPlaying ? t("music.pause", null, "음악 일시정지") : t("music.play", null, "음악 재생")
+  );
   renderMusicHistoryList(); // 재생/일시정지에 따라 "바로 듣기"/"재생 중" 라벨도 같이 갱신한다.
   syncNativePlayState(); // 재생/일시정지 상태를 네이티브(잠금화면·오디오세션)에도 즉시 반영.
 }
@@ -6484,7 +6522,7 @@ function renderPopupBanner(popup) {
   );
 
   const closeBtn = document.createElement("button");
-  closeBtn.setAttribute("aria-label", "닫기");
+  closeBtn.setAttribute("aria-label", t("common.close", null, "닫기"));
   closeBtn.textContent = "✕";
   closeBtn.setAttribute(
     "style",
@@ -6516,10 +6554,10 @@ function renderPopupBanner(popup) {
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   label.appendChild(checkbox);
-  label.appendChild(document.createTextNode("다시 보지 않기"));
+  label.appendChild(document.createTextNode(t("common.dontShowAgain", null, "다시 보지 않기")));
 
   const closeText = document.createElement("button");
-  closeText.textContent = "닫기";
+  closeText.textContent = t("common.close", null, "닫기");
   closeText.setAttribute(
     "style",
     "background:transparent;border:none;color:#8ab4ff;font-size:14px;font-weight:600;cursor:pointer;padding:6px 4px;"
@@ -6586,15 +6624,17 @@ function renderUpdateGate(rule) {
   );
 
   const title = document.createElement("div");
-  title.textContent = dismissible ? "새 버전이 있어요" : "업데이트가 필요합니다";
+  title.textContent = dismissible
+    ? t("update.availableTitle", null, "새 버전이 있어요")
+    : t("update.requiredTitle", null, "업데이트가 필요합니다");
   title.setAttribute("style", "font-size:18px;font-weight:700;margin-bottom:10px;");
 
   const message = document.createElement("div");
-  message.textContent = rule.message || "새로운 버전으로 업데이트해 주세요.";
+  message.textContent = rule.message || t("update.body", null, "새로운 버전으로 업데이트해 주세요.");
   message.setAttribute("style", "font-size:15px;color:#c7c7c7;line-height:1.5;margin-bottom:22px;");
 
   const updateBtn = document.createElement("button");
-  updateBtn.textContent = "지금 업데이트";
+  updateBtn.textContent = t("update.now", null, "지금 업데이트");
   updateBtn.setAttribute(
     "style",
     "width:100%;padding:14px;border-radius:14px;border:none;background:#0a84ff;color:#fff;" +
@@ -6611,7 +6651,7 @@ function renderUpdateGate(rule) {
 
   if (dismissible) {
     const laterBtn = document.createElement("button");
-    laterBtn.textContent = "나중에";
+    laterBtn.textContent = t("update.later", null, "나중에");
     laterBtn.setAttribute(
       "style",
       "width:100%;padding:12px;margin-top:10px;border-radius:14px;border:none;" +
@@ -6949,7 +6989,9 @@ function renderMusicPlaylistInfo(options) {
   // 트랙이 바뀔 때마다 여기서 함께 갱신한다(호출 지점이 이미 여러 곳이라
   // 이 한 함수에만 붙여두면 전부 자동으로 따라온다).
   if (musicTrackTitle) {
-    musicTrackTitle.textContent = track && track.title ? track.title : "재생 대기 중";
+    musicTrackTitle.textContent = track && track.title
+      ? track.title
+      : t("music.waiting", null, "재생 대기 중");
   }
   // 트랙이 바뀌는 시점에 이전 곡의 진행률이 잠깐 남아 보이지 않도록 즉시 리셋
   // — 새 값은 곧이어 updateMusicProgress()의 timeupdate가 다시 채운다.
@@ -8053,7 +8095,7 @@ if (mainWeatherRetryBtn) {
   mainWeatherRetryBtn.addEventListener("click", async () => {
     postToNativeHaptic("light");
     mainWeatherRetryBtn.disabled = true;
-    mainWeatherRetryBtn.textContent = "다시 불러오는 중…";
+    mainWeatherRetryBtn.textContent = t("weather.reloading", null, "다시 불러오는 중…");
     await requestCurrentWeather();
     mainWeatherRetryBtn.disabled = false;
     mainWeatherRetryBtn.textContent = "다시";
@@ -8065,12 +8107,12 @@ if (mainWeatherRetryBtn) {
 if (wdCurrentRetryBtn) {
   wdCurrentRetryBtn.addEventListener("click", async () => {
     wdCurrentRetryBtn.disabled = true;
-    wdCurrentRetryBtn.textContent = "다시 불러오는 중…";
+    wdCurrentRetryBtn.textContent = t("weather.reloading", null, "다시 불러오는 중…");
     try {
       await fetchWeatherDetail();
     } finally {
       wdCurrentRetryBtn.disabled = false;
-      wdCurrentRetryBtn.textContent = "다시 시도";
+      wdCurrentRetryBtn.textContent = t("common.retry", null, "다시 시도");
     }
   });
 }
@@ -8182,7 +8224,7 @@ function seekMusicProgressToClientX(clientX) {
 if (musicProgressBar) {
   musicProgressBar.setAttribute("aria-hidden", "false");
   musicProgressBar.setAttribute("role", "slider");
-  musicProgressBar.setAttribute("aria-label", "재생 위치");
+  musicProgressBar.setAttribute("aria-label", t("music.position", null, "재생 위치"));
   musicProgressBar.setAttribute("aria-valuemin", "0");
   musicProgressBar.setAttribute("aria-valuemax", "100");
   musicProgressBar.setAttribute("tabindex", "0");
@@ -8352,7 +8394,7 @@ MUSIC_EXCLUDABLE_CATEGORIES.forEach(({ storageKey, elId }) => {
       }).length;
       if (checkedCount >= MUSIC_EXCLUDABLE_CATEGORIES.length) {
         el.checked = false;
-        flashMusicFilterNotice("최소 1개 플레이리스트는 남겨두세요");
+        flashMusicFilterNotice(t("settings.music.keepOne", null, "최소 1개 플레이리스트는 남겨두세요"));
         return;
       }
     }
