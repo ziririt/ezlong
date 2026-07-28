@@ -8251,5 +8251,26 @@ window.investmentQuotes = [
     "title": "시지프 신화",
     "author": "알베르 카뮈",
     "genre": "literature"
+  },
+  {
+    "english": "A strange melancholy pervades me to which I hesitate to give the grave and beautiful name of sadness.",
+    "text": "나를 줄곧 떠나지 않는 갑갑함과 아릿함, 이 낯선 감정에 나는 망설이다가 슬픔이라는 아름답고도 묵직한 이름을 붙인다.",
+    "title": "슬픔이여 안녕",
+    "author": "프랑수아즈 사강",
+    "genre": "literature"
+  },
+  {
+    "english": "A part of all I earn is mine to keep. I said it in the beginning with no more thought than a jest, but as truth attends upon repetition, I now know it is a truth.",
+    "text": "번 돈의 일부는 반드시 내 몫으로 남겨두어라. 처음엔 그저 농담처럼 가벼이 뱉은 말이었지만, 되풀이할수록 그것이 진리임을 깨달았다.",
+    "title": "바빌론 부자들의 돈 버는 지혜 (The Richest Man in Babylon)",
+    "author": "조지 S. 클레이슨 (George S. Clason)",
+    "category": "behavior"
+  },
+  {
+    "english": "Here is my secret. It is very simple: One sees clearly only with the heart. What is essential is invisible to the eye.",
+    "text": "이제 내 비밀을 말해줄게. 아주 간단한 거야. 마음으로 보아야 잘 보인다는 거야. 가장 중요한 것은 눈에 보이지 않는 법이거든.",
+    "title": "어린 왕자",
+    "author": "앙투안 드 생텍쥐페리",
+    "genre": "literature"
   }
 ];

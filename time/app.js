@@ -1,3 +1,110 @@
+// ─────────────────────────────────────────────────────────────────────
+// 2026-07-28 글로벌화(i18n) 부트스트랩
+// ─────────────────────────────────────────────────────────────────────
+// index.html 이 app.js 보다 먼저 i18n/*.js 를 로드한다(전역 5개).
+// 여기서는 로케일을 확정만 하고 **아무 동작도 바꾸지 않는다** — 배선은
+// 이후 단계에서 한 곳씩, 매번 npm run verify:i18n 을 통과시키며 진행한다.
+//
+// ★ 절대 규칙 (scripts/golden/rule-code-map.json 의 GLOBAL-locale-default) ★
+// 로케일 판정에 실패하거나 i18n 스크립트가 아예 로드되지 않았어도
+// 앱은 **지금까지와 똑같이** 동작해야 한다. 그래서 전역이 없을 때 쓰는
+// 무해한 스텁을 둔다 — i18n 때문에 앱이 죽는 일은 없어야 한다.
+const FZ_I18N = (typeof window !== "undefined" && window.FlipZenI18n) || {
+  init: () => "ko",
+  getLocale: () => "ko",
+  isKorean: () => true,
+  t: (key) => key,
+  has: () => false,
+};
+const FZ_SEASON = (typeof window !== "undefined" && window.FlipZenSeason) || null;
+const FZ_REGION = (typeof window !== "undefined" && window.FlipZenRegion) || null;
+const FZ_CODES = (typeof window !== "undefined" && window.FlipZenWeatherCodes) || null;
+const FZ_QUOTE_SRC = (typeof window !== "undefined" && window.FlipZenQuoteSource) || null;
+
+// 네이티브 래퍼(iOS/Android)가 OS 언어를 주입해두면 그 값이 우선한다.
+// 주입 전이면 navigator.language 로 판정하고, 그것도 실패하면 한국어다.
+const FZ_LOCALE = FZ_I18N.init ? FZ_I18N.init({}) : "ko";
+
+/** 이 화면이 한국어인가 — 로케일 분기가 필요한 모든 곳의 단일 판정처 */
+function isKoreanLocale() {
+  return FZ_LOCALE === "ko";
+}
+
+/** 번역 조회. i18n 로드 실패 시 fallback(현행 한국어 문자열)을 그대로 쓴다. */
+function t(key, params, fallback) {
+  if (!FZ_I18N.has || !FZ_I18N.has(key)) return fallback !== undefined ? fallback : key;
+  return FZ_I18N.t(key, params);
+}
+
+/**
+ * index.html 의 data-i18n / data-i18n-aria / data-i18n-title 속성을 읽어
+ * 현재 로케일 문자열로 덮어쓴다.
+ *
+ * ─────────────────────────────────────────────────────────────
+ * ★ 한국어에서는 아무것도 바뀌지 않는다 ★
+ * ─────────────────────────────────────────────────────────────
+ * HTML 에는 한국어 원문이 그대로 남아 있고(scripts/apply-i18n-attrs.mjs 가
+ * 텍스트를 지우지 않는다), 카탈로그의 ko 값은 그 원문을 실측해 만든 것이라
+ * 같은 값을 같은 자리에 덮는다. 즉 한국어 사용자에게 이 함수는 무동작이다.
+ *
+ * 이 구조를 택한 이유:
+ *   1. i18n 스크립트가 로드 실패해도 화면에 한국어가 이미 있다(빈 화면 방지)
+ *   2. 첫 페인트가 즉시 한국어 — 번역을 기다리는 깜빡임이 없다
+ *   3. audit-strings.mjs 가 계속 HTML 실측 대조를 할 수 있다
+ *
+ * 속성이 가리키는 키가 카탈로그에 없으면 **건드리지 않는다** — t() 가
+ * fallback 으로 현재 화면 텍스트를 그대로 돌려주기 때문에,
+ * 잘못된 키가 달려 있어도 최악의 결과는 "번역이 안 됨"이지 "빈칸"이 아니다.
+ */
+function applyStaticTranslations(root) {
+  const scope = root || (typeof document !== "undefined" ? document : null);
+  if (!scope || !scope.querySelectorAll) return 0;
+
+  let applied = 0;
+  const put = (sel, attr, setter) => {
+    scope.querySelectorAll(sel).forEach((el) => {
+      const key = el.getAttribute(attr);
+      if (!key) return;
+      const current = setter.get(el);
+      const next = t(key, null, current);
+      if (next !== current) { setter.set(el, next); applied++; }
+    });
+  };
+
+  put("[data-i18n]", "data-i18n", {
+    get: (el) => el.textContent,
+    set: (el, v) => { el.textContent = v; },
+  });
+  put("[data-i18n-aria]", "data-i18n-aria", {
+    get: (el) => el.getAttribute("aria-label"),
+    set: (el, v) => el.setAttribute("aria-label", v),
+  });
+  put("[data-i18n-title]", "data-i18n-title", {
+    get: (el) => el.getAttribute("title"),
+    set: (el, v) => el.setAttribute("title", v),
+  });
+  put("[data-i18n-placeholder]", "data-i18n-placeholder", {
+    get: (el) => el.getAttribute("placeholder"),
+    set: (el, v) => el.setAttribute("placeholder", v),
+  });
+
+  // 문서 언어 표시 — 스크린리더 발음과 CSS :lang() 선택자에 쓰인다
+  try {
+    if (scope.documentElement) scope.documentElement.setAttribute("lang", FZ_LOCALE);
+  } catch (e) { /* 무시 */ }
+
+  return applied;
+}
+
+// 부팅 시 1회 적용. DOM 이 이미 준비됐으면 즉시, 아니면 준비 후.
+// ★ try 로 감싼다 ★ 번역 적용이 실패해도 앱 나머지는 살아야 한다.
+(function bootstrapStaticTranslations() {
+  const run = () => { try { applyStaticTranslations(); } catch (e) { /* 무시 */ } };
+  if (typeof document === "undefined") return;
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run, { once: true });
+  else run();
+})();
+
 const scenes = {
   morning: {
     location: "Seoul",
@@ -5952,6 +6059,17 @@ function openPopupLink(url) {
   }
   window.open(url, "_blank", "noopener");
 }
+
+// 2026-07-27 신설 — 앱푸시(FCM) 알림을 탭했을 때 네이티브(Android
+// MainActivity.kt의 flushPendingDeepLink / iOS ContentView.swift Coordinator의
+// webView(_:didFinish:))가 evaluateJavaScript로 직접 호출하는 훅. 새 열기
+// 로직을 만들지 않고 기존 openPopupLink()(iOS 기본 브라우저/안드로이드 Custom
+// Tabs 분기)를 그대로 재사용한다 — 팝업 배너 이미지 탭과 동일한 방식으로
+// 링크가 열린다.
+window.__flipzenOpenDeepLink = function (url) {
+  if (!url) return;
+  openPopupLink(url);
+};
 
 function checkAppConfig() {
   fetch(APP_CONFIG_URL, { cache: "no-cache" })

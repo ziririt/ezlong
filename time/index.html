@@ -17,7 +17,7 @@
          진짜 overflow:auto 스크롤, 하나는 JS 스와이프 감지+transform)이라
          완전히 분리된다. 자세한 배경은 app.js의 pageTrack 관련 주석 참조. -->
     <div class="page-track" id="pageTrack">
-    <section class="sky-room" aria-label="플립시계">
+    <section class="sky-room" data-i18n-aria="clock.aria" aria-label="플립시계">
       <div class="sky-photo" aria-hidden="true">
         <span class="sun"></span>
         <span class="moon"></span>
@@ -30,11 +30,11 @@
       <div class="hero-shade" aria-hidden="true"></div>
 
       <header class="top-bar">
-        <button class="icon-button" id="settingsOpen" type="button" aria-label="오늘의 한 문장 설정 열기" aria-controls="quoteSettings" aria-expanded="false">
+        <button class="icon-button" id="settingsOpen" type="button" data-i18n-aria="quote.settingsOpenAria" aria-label="오늘의 한 문장 설정 열기" aria-controls="quoteSettings" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
         <div class="date-chip-wrap">
-          <div class="date-chip" id="dateLabel" role="button" tabindex="0" aria-haspopup="true" aria-controls="calendarPanel" aria-expanded="false" aria-label="이번달 달력 보기">7월 6일 월요일</div>
+          <div class="date-chip" id="dateLabel" role="button" tabindex="0" aria-haspopup="true" aria-controls="calendarPanel" aria-expanded="false" data-i18n-aria="clock.calendarAria" aria-label="이번달 달력 보기">7월 6일 월요일</div>
           <div class="date-chip-sparkle" id="dateChipSparkle" aria-hidden="true"></div>
         </div>
         <div class="app-brand" aria-label="ezlong.com">
@@ -57,7 +57,7 @@
              position:absolute로 아래에 겹쳐 그린다 — 그러면 .clock-stage의
              중앙정렬 계산 자체가 패널 펼침과 완전히 무관해진다. -->
         <div class="clock-fixed-group">
-          <div class="flip-clock" aria-label="현재 시간">
+          <div class="flip-clock" data-i18n-aria="clock.currentTimeAria" aria-label="현재 시간">
             <div class="flip-unit" data-unit="hours">
               <span class="flip-card" id="hourTens">1</span>
               <span class="flip-card" id="hourOnes">2</span>
@@ -73,9 +73,9 @@
             <div class="flip-clock-sparkle" id="flipClockSparkle" aria-hidden="true"></div>
           </div>
           <div class="clock-meta">
-            <button type="button" class="weather-chip" id="weatherChipOpen" aria-label="날씨 상세 정보 보기" aria-haspopup="dialog" aria-controls="weatherDetailPanel" aria-expanded="false">
+            <button type="button" class="weather-chip" id="weatherChipOpen" data-i18n-aria="weather.detailOpenAria" aria-label="날씨 상세 정보 보기" aria-haspopup="dialog" aria-controls="weatherDetailPanel" aria-expanded="false">
               <span id="weatherIcon" class="mini-weather sun-icon" aria-hidden="true"></span>
-              <span id="weatherSummary">맑음</span>
+              <span id="weatherSummary" data-i18n="weather.conditions.CLEAR">맑음</span>
               <strong id="tempLabel">28°</strong>
               <!-- 2026-07-22 유저 요청: 긴급 기상특보가 있을 때만 보이는
                    빨간 점 배지. 날씨 상세를 한 번 열람하면 사라진다
@@ -85,11 +85,11 @@
             <!-- 2026-07-26 유저 피드백: 위치 조회 실패("위치 권한 필요") 시
                  10분 자동재시도만 믿고 기다리게 하지 않고, 그 자리에서 바로
                  다시 시도할 수 있는 버튼(app.js renderWeather 참조). -->
-            <button type="button" class="weather-retry-mini" id="mainWeatherRetryBtn" hidden aria-label="날씨 정보 다시 불러오기">다시</button>
-            <div class="music-controls" aria-label="배경음악">
-              <button class="icon-button music-note-button" id="musicSettingsOpen" type="button" aria-label="음악 정보 보기" aria-controls="musicInfoPanel" aria-expanded="false"></button>
-              <button class="icon-button music-toggle" id="musicToggle" type="button" aria-label="음악 재생" aria-pressed="false"></button>
-              <button class="icon-button music-skip" id="musicSkip" type="button" aria-label="다음 곡"></button>
+            <button type="button" class="weather-retry-mini" id="mainWeatherRetryBtn" hidden data-i18n-aria="weather.reloadAria" aria-label="날씨 정보 다시 불러오기" data-i18n="weather.retry">다시</button>
+            <div class="music-controls" data-i18n-aria="music.bgm" aria-label="배경음악">
+              <button class="icon-button music-note-button" id="musicSettingsOpen" type="button" data-i18n-aria="music.info" aria-label="음악 정보 보기" aria-controls="musicInfoPanel" aria-expanded="false"></button>
+              <button class="icon-button music-toggle" id="musicToggle" type="button" data-i18n-aria="music.play" aria-label="음악 재생" aria-pressed="false"></button>
+              <button class="icon-button music-skip" id="musicSkip" type="button" data-i18n-aria="music.next" aria-label="다음 곡"></button>
             </div>
           </div>
           <div class="music-info-panel" id="musicInfoPanel" aria-hidden="true">
@@ -111,14 +111,14 @@
                    actions→title로 바꿨다. 시각적으로는 buttons가 여전히
                    오른쪽에 뜨니 화면상 순서는 그대로다. -->
               <div class="music-track-actions">
-                <button class="icon-button music-like-button" id="musicLikeButton" type="button" aria-label="이 곡 좋아요" aria-pressed="false"></button>
-                <button class="icon-button music-dislike-button" id="musicDislikeButton" type="button" aria-label="이 곡 싫어요" aria-pressed="false"></button>
+                <button class="icon-button music-like-button" id="musicLikeButton" type="button" data-i18n-aria="music.like" aria-label="이 곡 좋아요" aria-pressed="false"></button>
+                <button class="icon-button music-dislike-button" id="musicDislikeButton" type="button" data-i18n-aria="music.dislike" aria-label="이 곡 싫어요" aria-pressed="false"></button>
                 <!-- 2026-07-16: "곡 순서가 마음에 안 들 때" 다시 섞기 버튼.
                      app.js의 reshuffleMusicOrder() 참조. -->
-                <button class="icon-button music-shuffle-button" id="musicShuffleButton" type="button" aria-label="재생 순서 다시 섞기"></button>
-                <button class="icon-button music-gear-button" id="musicGearOpen" type="button" aria-label="음악설정 열기" aria-controls="quoteSettings"></button>
+                <button class="icon-button music-shuffle-button" id="musicShuffleButton" type="button" data-i18n-aria="music.shuffle" aria-label="재생 순서 다시 섞기"></button>
+                <button class="icon-button music-gear-button" id="musicGearOpen" type="button" data-i18n-aria="music.openSettings" aria-label="음악설정 열기" aria-controls="quoteSettings"></button>
               </div>
-              <span class="music-track-title" id="musicTrackTitle">재생 대기 중</span>
+              <span class="music-track-title" id="musicTrackTitle" data-i18n="music.waiting">재생 대기 중</span>
             </div>
             <div class="music-toast" id="musicToast" aria-hidden="true"></div>
           </div>
@@ -148,7 +148,7 @@
         <div class="calendar-grid" id="calendarGrid"></div>
       </div>
 
-      <section class="quote-panel" aria-label="오늘의 한 문장">
+      <section class="quote-panel" data-i18n-aria="quote.aria" aria-label="오늘의 한 문장">
         <p class="quote-english" id="quoteEnglish">The intelligent investor is a realist who sells to optimists and buys from pessimists.</p>
         <blockquote id="quoteText">현명한 투자자는 현실주의자다. 낙관론자에게 팔고, 비관론자에게서 산다.</blockquote>
         <div class="quote-foot">
@@ -158,7 +158,7 @@
                  app.js renderQuote()가 window.aladinLinks에서 찾아서 토글).
                  눌리면 모달 웹뷰(#aladinModalPanel)로 알라딘 모바일 상품
                  페이지를 띄운다 — 구매/책소개 열람 유도, 제휴 링크. -->
-            <button type="button" class="quote-aladin-link" id="quoteAladinLink" aria-label="알라딘에서 이 책 보기" hidden>
+            <button type="button" class="quote-aladin-link" id="quoteAladinLink" data-i18n-aria="quote.buyOnAladin" aria-label="알라딘에서 이 책 보기" hidden>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 13.5 L20 4 M20 4 h-6 M20 4 v6 M18 13 v6 a1 1 0 0 1 -1 1 H5 a1 1 0 0 1 -1 -1 V7 a1 1 0 0 1 1 -1 h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
           </span>
@@ -191,8 +191,8 @@
            .settings-version 참조). .scene-ezlong-link가 이미 grid-column:2로
            고정 배치돼 있어서, 왼쪽 span을 지워도 가운데 정렬은 그대로
            유지된다. -->
-      <div class="scene-dots" aria-label="ezlong.com 이동">
-        <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
+      <div class="scene-dots" data-i18n-aria="webview.goAria" aria-label="ezlong.com 이동">
+        <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" data-i18n-aria="webview.goFromBasecampAria" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
         </div>
@@ -208,7 +208,7 @@
          페이지 전환은 반대로 시계(.clock-app z-index:2)가 translateY(-100%)로
          비켜주는 방식으로 역전했다(app.js goToPage 참조). iframe은 어떤 순간에도
          이동·재부착·display 토글되지 않는다 — 재로드도, 재등록 문제도 없다. -->
-    <section class="ezlong-webview" aria-label="ezlong.com 웹뷰">
+    <section class="ezlong-webview" data-i18n-aria="webview.frameAria" aria-label="ezlong.com 웹뷰">
       <!-- 2026-07-20 16차: 복귀 손잡이 — iframe은 터치를 삼켜서(크로스오리진
            경계) 그 위에서 시작한 스와이프를 부모가 볼 수 없다. 부모 DOM 소유의
            이 얇은 띠가 터치 표면이 된다.
@@ -217,7 +217,7 @@
            중복이라 제거하고, 대신 "탭하면 ezlong.com 콘텐츠 맨 위로 스크롤"
            로 바꿨다(app.js webviewGrabber 클릭 핸들러 참조, postMessage로
            ez-nav.js에 요청). -->
-      <div class="webview-grabber" aria-label="탭하면 맨 위로 스크롤됩니다"><span></span></div>
+      <div class="webview-grabber" data-i18n-aria="webview.scrollTopHintAria" aria-label="탭하면 맨 위로 스크롤됩니다"><span></span></div>
       <div class="webview-scale" id="ezlongWebviewScale">
         <iframe
           class="ezlong-frame"
@@ -240,7 +240,7 @@
              텍스트를 아이콘 옆에 병기 — 영어 표기는 고유명사 스타일로 첫
              글자만 대문자(Basecamp), 이 화면의 이름("ezlong 베이스캠프")을
              그대로 영문 라벨로 옮긴 것. -->
-        <button type="button" class="webview-back" id="webviewBackButton" aria-label="ezlong 베이스캠프로 돌아가기">
+        <button type="button" class="webview-back" id="webviewBackButton" data-i18n-aria="webview.backToBasecampAria" aria-label="ezlong 베이스캠프로 돌아가기">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 13 L12 7 L17 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 18 H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           <span class="webview-back-label" aria-hidden="true">Basecamp</span>
         </button>
@@ -255,7 +255,7 @@
              메시지가 아니라 기존에 이미 있는 액션이라 Xcode 재빌드 불필요.
              아이콘도 유저 요청대로 알라딘 링크 버튼(quote-aladin-link)과
              동일한 "새창 열기" SVG로 교체. -->
-        <button type="button" class="webview-open" id="webviewOpenButton" aria-label="ezlong.com 새창 열기">
+        <button type="button" class="webview-open" id="webviewOpenButton" data-i18n-aria="webview.openNewWindowAria" aria-label="ezlong.com 새창 열기">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 13.5 L20 4 M20 4 h-6 M20 4 v6 M18 13 v6 a1 1 0 0 1 -1 1 H5 a1 1 0 0 1 -1 -1 V7 a1 1 0 0 1 1 -1 h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </footer>
@@ -287,20 +287,20 @@
          position:absolute + inset:0으로 뷰포트를 덮는다(.clock-app 자체는
          플립 애니메이션 900ms 동안만 조건부로 perspective가 걸리므로,
          설정/날씨상세가 열려있는 동안은 그 순간과 겹치지 않아 안전하다). -->
-    <section class="app-page settings-page settings-sheet" id="quoteSettings" aria-label="오늘의 한 문장 설정">
+    <section class="app-page settings-page settings-sheet" id="quoteSettings" data-i18n-aria="quote.settingsAria" aria-label="오늘의 한 문장 설정">
         <!-- 2026-07-25 유저 요청 — 메인 화면 최하단에 있던 버전 라벨을
              여기 설정 페이지 제목 옆으로 옮겼다. 값은 이제 여기 한 곳에서만
              관리하면 된다(더 이상 메인 화면 index.html에 별도 app-version
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2>설정<span class="settings-version" aria-hidden="true">ver.1.7</span></h2>
+            <h2>설정<span class="settings-version" aria-hidden="true">ver.1.8.2</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
              밖으로 빼서 position:fixed로 고정한다(weather-detail-close-fixed와
              동일 패턴). -->
-        <button class="settings-close settings-close-fixed" type="button" aria-label="설정 닫기" data-settings-close>×</button>
+        <button class="settings-close settings-close-fixed" type="button" data-i18n-aria="settings.closeAria" aria-label="설정 닫기" data-settings-close>×</button>
 
         <!-- 2026-07-23 신설 — "광고 없이 이용" 프리미엄 안내 카드. 기능을
              잠그는 페이월이 아니라 광고 제거 단일 구매(연간/월간 구독 +
@@ -308,10 +308,10 @@
              구매 시트(PaywallView)를 띄운다 — 웹/PWA(네이티브 래퍼 아님)
              환경에서는 postToNativeAd가 조용히 무시되므로 버튼은 존재하되
              동작하지 않는다(그 환경엔 애초에 광고 자체가 없다). -->
-        <section class="settings-block settings-card" aria-label="프리미엄">
-          <h3 class="settings-subtitle">프리미엄</h3>
-          <p class="settings-desc settings-desc-muted">광고를 제거하고 더 쾌적하게 이용하세요.</p>
-          <button type="button" class="premium-upgrade-button" id="premiumUpgradeButton">프리미엄으로 업그레이드</button>
+        <section class="settings-block settings-card" data-i18n-aria="settings.premium.heading" aria-label="프리미엄">
+          <h3 class="settings-subtitle" data-i18n="settings.premium.heading">프리미엄</h3>
+          <p class="settings-desc settings-desc-muted" data-i18n="settings.premium.desc">광고를 제거하고 더 쾌적하게 이용하세요.</p>
+          <button type="button" class="premium-upgrade-button" id="premiumUpgradeButton" data-i18n="settings.premium.cta">프리미엄으로 업그레이드</button>
         </section>
 
         <!-- 2026-07-25 신설 — 배경사진 매칭 기준(계절/날씨/시간대) 3종을
@@ -323,26 +323,26 @@
              체크박스 자체에도 disabled)로 둔다. 라이선스 표기와 하단 상태
              문구(bgFilterStatus)는 app.js syncBgFilterUi가 토글 상태에 맞춰
              매번 다시 그린다. -->
-        <section class="settings-block settings-card" aria-label="배경 사진">
-          <h3 class="settings-subtitle">배경 사진</h3>
+        <section class="settings-block settings-card" data-i18n-aria="settings.background.heading" aria-label="배경 사진">
+          <h3 class="settings-subtitle" data-i18n="settings.background.heading">배경 사진</h3>
           <!-- 2026-07-25 2차 피드백 — 라이선스 문구가 더 이상 "주인공"이
                아니게, 상태 문구(bgFilterStatus)와 자리를 맞바꿨다. 상태
                문구는 폰트를 키우고(.bg-filter-status), 그 안의 계절/날씨/
                시간대 라벨은 굵게+오렌지(.bg-filter-status-tag)로 강조한다 —
                마크업 자체는 app.js syncBgFilterUi가 매번 다시 그린다. -->
           <p class="settings-desc bg-filter-status" id="bgFilterStatus">현재 ☑ 계절 ☑ 날씨 ☑ 시간대 에 맞는 배경 사진만 나옵니다.</p>
-          <div class="music-exclude-filters bg-filter-toggles" id="bgFilterToggles" aria-label="배경사진 매칭 기준">
+          <div class="music-exclude-filters bg-filter-toggles" id="bgFilterToggles" data-i18n-aria="settings.background.matchCriteriaAria" aria-label="배경사진 매칭 기준">
             <label class="exclude-chip is-disabled">
               <input type="checkbox" id="bgFilterSeason" checked disabled>
-              <span>계절</span>
+              <span data-i18n="settings.background.season">계절</span>
             </label>
             <label class="exclude-chip">
               <input type="checkbox" id="bgFilterWeather" checked>
-              <span>날씨</span>
+              <span data-i18n="settings.background.weather">날씨</span>
             </label>
             <label class="exclude-chip">
               <input type="checkbox" id="bgFilterTimeOfDay" checked>
-              <span>시간대</span>
+              <span data-i18n="settings.background.timeOfDay">시간대</span>
             </label>
           </div>
           <p class="settings-desc settings-desc-muted bg-filter-license">This app uses some background images in accordance with the Pexels license.</p>
@@ -351,12 +351,12 @@
         <!-- 2026-07-19 4차 피드백: "NOW PLAYING" 박스(#musicPlaylistInfo)를
              완전히 제거했다 — 곡 제목은 상단 클록 화면의 음악 정보 패널
              (#musicTrackTitle)에서 이미 보여주고 있어 여기선 중복이었다. -->
-        <section class="settings-block settings-card" aria-label="음악 · 플레이리스트">
-          <h3 class="settings-subtitle">음악 · 플레이리스트</h3>
+        <section class="settings-block settings-card" data-i18n-aria="settings.music.heading" aria-label="음악 · 플레이리스트">
+          <h3 class="settings-subtitle" data-i18n="settings.music.heading">음악 · 플레이리스트</h3>
           <!-- 2026-07-25 유저 요청 — 소제목 아래 작은 영문 태그라인. 폰트는
                .settings-subtitle-tagline(styles.css)에서 작게·은은하게. -->
           <p class="settings-subtitle-tagline">Curated for focus — great for work &amp; study.</p>
-          <div class="field-grid" id="musicPlaylistOptions" role="radiogroup" aria-label="플레이리스트(장르) 선택"></div>
+          <div class="field-grid" id="musicPlaylistOptions" role="radiogroup" data-i18n-aria="settings.music.playlistSelectAria" aria-label="플레이리스트(장르) 선택"></div>
           <!-- 2026-07-20 유저 제보: 선택이 반영되는 데 시간이 걸리는 것처럼
                느껴진다는 피드백 — 탭한 즉시(트랙 전환 완료를 기다리지 않고)
                "OO 선택됨"을 짧게 띄워 선택 자체가 확실히 됐다는 걸 바로
@@ -374,23 +374,23 @@
                적용된다는 걸 안내(위에서 특정 플레이리스트를 콕 집어 고르면
                제외 설정 자체가 무의미해짐 — musicExcludeFilterContradicts
                참조). -->
-          <p class="settings-desc settings-desc-muted">전체 랜덤 재생 시, 제외 플레이 리스트 설정</p>
-          <div class="music-exclude-filters" id="musicExcludeFilters" aria-label="장르 제외 필터">
+          <p class="settings-desc settings-desc-muted" data-i18n="settings.music.excludeHeading">전체 랜덤 재생 시, 제외 플레이 리스트 설정</p>
+          <div class="music-exclude-filters" id="musicExcludeFilters" data-i18n-aria="settings.music.excludeFilterAria" aria-label="장르 제외 필터">
             <label class="exclude-chip">
               <input type="checkbox" id="musicExcludeAcoustic">
-              <span>어쿠스틱 제외</span>
+              <span data-i18n="settings.music.excludeAcoustic">어쿠스틱 제외</span>
             </label>
             <label class="exclude-chip">
               <input type="checkbox" id="musicExcludeClassical">
-              <span>클래식 제외</span>
+              <span data-i18n="settings.music.excludeClassical">클래식 제외</span>
             </label>
             <label class="exclude-chip">
               <input type="checkbox" id="musicExcludeVocal">
-              <span>보컬 제외</span>
+              <span data-i18n="settings.music.excludeVocal">보컬 제외</span>
             </label>
             <label class="exclude-chip">
               <input type="checkbox" id="musicExcludeRock">
-              <span>ROCK 제외</span>
+              <span data-i18n="settings.music.excludeRock">ROCK 제외</span>
             </label>
           </div>
         </section>
@@ -408,10 +408,10 @@
              renderMusicSpecialFilterOptions 참조) 셋 중 하나만 고를 수 있고,
              고르는 순간 위 일반 선택은 자동 해제된다(반대도 마찬가지) —
              재생 필터는 앱 전체에서 항상 하나뿐이라는 원칙 유지. -->
-        <section class="settings-block settings-card settings-card-special" aria-label="Special — 특수 상황별 음악">
+        <section class="settings-block settings-card settings-card-special" data-i18n-aria="settings.music.specialAria" aria-label="Special — 특수 상황별 음악">
           <h3 class="settings-subtitle">Special</h3>
-          <p class="settings-desc settings-desc-muted">전체 랜덤에는 섞이지 않고, 아래 중 하나를 선택했을 때만 재생됩니다.</p>
-          <div class="field-grid" id="musicSpecialOptions" role="radiogroup" aria-label="Special 플레이리스트 선택"></div>
+          <p class="settings-desc settings-desc-muted" data-i18n="settings.music.specialNotice">전체 랜덤에는 섞이지 않고, 아래 중 하나를 선택했을 때만 재생됩니다.</p>
+          <div class="field-grid" id="musicSpecialOptions" role="radiogroup" data-i18n-aria="settings.music.specialSelectAria" aria-label="Special 플레이리스트 선택"></div>
         </section>
 
         <!-- 2026-07-22 유저 요청 — "지겨워질 때 바꿀 수 있는" 비주얼라이저
@@ -421,27 +421,27 @@
              renderMusicVizSettingsUI()가 chip 버튼을 렌더링하고 is-active
              클래스로 현재 값을 표시한다.
              data-viz-group/data-viz-value는 클릭 위임 핸들러(app.js)가 읽는다. -->
-        <section class="settings-block settings-card" aria-label="비주얼라이저">
-          <h3 class="settings-subtitle">비주얼라이저</h3>
-          <p class="settings-desc settings-desc-muted">색상과 반응 스타일을 취향대로 바꿔보세요.</p>
+        <section class="settings-block settings-card" data-i18n-aria="settings.visualizer.heading" aria-label="비주얼라이저">
+          <h3 class="settings-subtitle" data-i18n="settings.visualizer.heading">비주얼라이저</h3>
+          <p class="settings-desc settings-desc-muted" data-i18n="settings.visualizer.desc">색상과 반응 스타일을 취향대로 바꿔보세요.</p>
           <div id="musicVizOptions">
             <div class="viz-option-group">
-              <p class="viz-option-label">색상</p>
+              <p class="viz-option-label" data-i18n="settings.visualizer.color">색상</p>
               <div class="viz-option-row" data-viz-group="color">
-                <button type="button" class="viz-chip" data-viz-value="rainbow">무지개</button>
-                <button type="button" class="viz-chip" data-viz-value="rainbow2">반무지개</button>
-                <button type="button" class="viz-chip" data-viz-value="ocean">오션</button>
-                <button type="button" class="viz-chip" data-viz-value="sunset">선셋</button>
-                <button type="button" class="viz-chip" data-viz-value="neonpurple">퍼플</button>
-                <button type="button" class="viz-chip" data-viz-value="mono">화이트</button>
+                <button type="button" class="viz-chip" data-viz-value="rainbow" data-i18n="settings.visualizer.colors.rainbow">무지개</button>
+                <button type="button" class="viz-chip" data-viz-value="rainbow2" data-i18n="settings.visualizer.colors.halfRainbow">반무지개</button>
+                <button type="button" class="viz-chip" data-viz-value="ocean" data-i18n="settings.visualizer.colors.ocean">오션</button>
+                <button type="button" class="viz-chip" data-viz-value="sunset" data-i18n="settings.visualizer.colors.sunset">선셋</button>
+                <button type="button" class="viz-chip" data-viz-value="neonpurple" data-i18n="settings.visualizer.colors.purple">퍼플</button>
+                <button type="button" class="viz-chip" data-viz-value="mono" data-i18n="settings.visualizer.colors.white">화이트</button>
               </div>
             </div>
             <div class="viz-option-group">
-              <p class="viz-option-label">감도</p>
+              <p class="viz-option-label" data-i18n="settings.visualizer.sensitivity">감도</p>
               <div class="viz-option-row" data-viz-group="sensitivity">
-                <button type="button" class="viz-chip" data-viz-value="calm">둔감</button>
-                <button type="button" class="viz-chip" data-viz-value="normal">기본</button>
-                <button type="button" class="viz-chip" data-viz-value="intense">예민</button>
+                <button type="button" class="viz-chip" data-viz-value="calm" data-i18n="settings.visualizer.levels.low">둔감</button>
+                <button type="button" class="viz-chip" data-viz-value="normal" data-i18n="settings.visualizer.levels.default">기본</button>
+                <button type="button" class="viz-chip" data-viz-value="intense" data-i18n="settings.visualizer.levels.high">예민</button>
               </div>
             </div>
             <div class="viz-option-group">
@@ -449,35 +449,35 @@
                    재지적으로 쉬운 말로 변경. 곡에 실제 킥/베이스 타격이
                    있을 때만 반응하는 옵션이라 잔잔한 곡에서는 강하게로
                    바꿔도 차이가 잘 안 느껴질 수 있다는 걸 짧게 안내. -->
-              <p class="viz-option-label">쿵쿵 효과(킥 반응)</p>
-              <p class="settings-desc settings-desc-muted viz-option-hint">곡에 쿵쿵거리는 저음이 있을 때만 반응해요.</p>
+              <p class="viz-option-label" data-i18n="settings.visualizer.kick">쿵쿵 효과(킥 반응)</p>
+              <p class="settings-desc settings-desc-muted viz-option-hint" data-i18n="settings.visualizer.kickDesc">곡에 쿵쿵거리는 저음이 있을 때만 반응해요.</p>
               <div class="viz-option-row" data-viz-group="bassPunch">
-                <button type="button" class="viz-chip" data-viz-value="off">끄기</button>
-                <button type="button" class="viz-chip" data-viz-value="normal">기본</button>
-                <button type="button" class="viz-chip" data-viz-value="strong">강하게</button>
+                <button type="button" class="viz-chip" data-viz-value="off" data-i18n="settings.visualizer.kickLevels.off">끄기</button>
+                <button type="button" class="viz-chip" data-viz-value="normal" data-i18n="settings.visualizer.kickLevels.default">기본</button>
+                <button type="button" class="viz-chip" data-viz-value="strong" data-i18n="settings.visualizer.kickLevels.strong">강하게</button>
               </div>
             </div>
             <div class="viz-option-group">
-              <p class="viz-option-label">막대 모양</p>
+              <p class="viz-option-label" data-i18n="settings.visualizer.barShape">막대 모양</p>
               <div class="viz-option-row" data-viz-group="shape">
-                <button type="button" class="viz-chip" data-viz-value="capsule">캡슐</button>
-                <button type="button" class="viz-chip" data-viz-value="block">블록</button>
-                <button type="button" class="viz-chip" data-viz-value="line">라인</button>
+                <button type="button" class="viz-chip" data-viz-value="capsule" data-i18n="settings.visualizer.shapes.capsule">캡슐</button>
+                <button type="button" class="viz-chip" data-viz-value="block" data-i18n="settings.visualizer.shapes.block">블록</button>
+                <button type="button" class="viz-chip" data-viz-value="line" data-i18n="settings.visualizer.shapes.line">라인</button>
               </div>
             </div>
             <div class="viz-option-group">
-              <p class="viz-option-label">밀도</p>
+              <p class="viz-option-label" data-i18n="settings.visualizer.density">밀도</p>
               <div class="viz-option-row" data-viz-group="density">
-                <button type="button" class="viz-chip" data-viz-value="dense">촘촘히</button>
-                <button type="button" class="viz-chip" data-viz-value="normal">기본</button>
-                <button type="button" class="viz-chip" data-viz-value="wide">넉넉히</button>
+                <button type="button" class="viz-chip" data-viz-value="dense" data-i18n="settings.visualizer.densities.tight">촘촘히</button>
+                <button type="button" class="viz-chip" data-viz-value="normal" data-i18n="settings.visualizer.densities.default">기본</button>
+                <button type="button" class="viz-chip" data-viz-value="wide" data-i18n="settings.visualizer.densities.loose">넉넉히</button>
               </div>
             </div>
             <div class="viz-option-group">
-              <p class="viz-option-label">좌우 배치</p>
+              <p class="viz-option-label" data-i18n="settings.visualizer.layout">좌우 배치</p>
               <div class="viz-option-row" data-viz-group="layout">
-                <button type="button" class="viz-chip" data-viz-value="sweep">스윕</button>
-                <button type="button" class="viz-chip" data-viz-value="mirror">미러</button>
+                <button type="button" class="viz-chip" data-viz-value="sweep" data-i18n="settings.visualizer.layouts.sweep">스윕</button>
+                <button type="button" class="viz-chip" data-viz-value="mirror" data-i18n="settings.visualizer.layouts.mirror">미러</button>
               </div>
             </div>
             <!-- 2026-07-22 3차 유저 요청 — "고음/저음 차이를 더 크게" +
@@ -485,20 +485,20 @@
                  별개 축이라 두 옵션 다 감도와 조합해서 쓸 수 있다(app.js
                  getVizContrastAmount/isVizPointBarsOn 참조). -->
             <div class="viz-option-group">
-              <p class="viz-option-label">대비</p>
-              <p class="settings-desc settings-desc-muted viz-option-hint">고음과 저음의 높낮이 차이를 더 크게 벌려요.</p>
+              <p class="viz-option-label" data-i18n="settings.visualizer.contrast">대비</p>
+              <p class="settings-desc settings-desc-muted viz-option-hint" data-i18n="settings.visualizer.contrastDesc">고음과 저음의 높낮이 차이를 더 크게 벌려요.</p>
               <div class="viz-option-row" data-viz-group="contrast">
-                <button type="button" class="viz-chip" data-viz-value="normal">기본</button>
-                <button type="button" class="viz-chip" data-viz-value="boost">강조</button>
-                <button type="button" class="viz-chip" data-viz-value="strong">강하게</button>
+                <button type="button" class="viz-chip" data-viz-value="normal" data-i18n="settings.visualizer.contrasts.default">기본</button>
+                <button type="button" class="viz-chip" data-viz-value="boost" data-i18n="settings.visualizer.contrasts.boosted">강조</button>
+                <button type="button" class="viz-chip" data-viz-value="strong" data-i18n="settings.visualizer.contrasts.strong">강하게</button>
               </div>
             </div>
             <div class="viz-option-group">
-              <p class="viz-option-label">포인트 막대</p>
-              <p class="settings-desc settings-desc-muted viz-option-hint">맨 끝 막대 2개만 하이햇·보컬 고음 같은 순간에 유독 반짝여요.</p>
+              <p class="viz-option-label" data-i18n="settings.visualizer.accentBars">포인트 막대</p>
+              <p class="settings-desc settings-desc-muted viz-option-hint" data-i18n="settings.visualizer.accentDesc">맨 끝 막대 2개만 하이햇·보컬 고음 같은 순간에 유독 반짝여요.</p>
               <div class="viz-option-row" data-viz-group="pointBars">
-                <button type="button" class="viz-chip" data-viz-value="off">끄기</button>
-                <button type="button" class="viz-chip" data-viz-value="on">켜기</button>
+                <button type="button" class="viz-chip" data-viz-value="off" data-i18n="settings.visualizer.toggle.off">끄기</button>
+                <button type="button" class="viz-chip" data-viz-value="on" data-i18n="settings.visualizer.toggle.on">켜기</button>
               </div>
             </div>
           </div>
@@ -514,7 +514,7 @@
                자동으로 같이 적용된다(app.js buildVizBarsInto/writeVizBarsToDom
                참조). 설정 시트가 열려있는 동안 애니메이션 루프가 돌아간다. -->
           <div class="viz-preview-block">
-            <p class="viz-option-label">미리보기</p>
+            <p class="viz-option-label" data-i18n="settings.visualizer.preview">미리보기</p>
             <div class="music-viz-wrap viz-preview" id="musicVizPreviewWrap" aria-hidden="true"></div>
           </div>
         </section>
@@ -525,8 +525,8 @@
              renderMusicHistoryList 참조). 기본 5개만 보이고 "모두 보기"로
              전체를 펼친다. 2026-07-20: 소제목 "들은 음악 히스토리"→
              "들은 음악"으로 축약(유저 요청). -->
-        <section class="settings-block settings-card" aria-label="들은 음악">
-          <h3 class="settings-subtitle">들은 음악</h3>
+        <section class="settings-block settings-card" data-i18n-aria="settings.music.history" aria-label="들은 음악">
+          <h3 class="settings-subtitle" data-i18n="settings.music.history">들은 음악</h3>
           <div class="music-history-table" id="musicHistoryList" aria-live="polite">
             <div id="musicHistoryBody"></div>
           </div>
@@ -542,17 +542,17 @@
              과학/문학/시/에세이/인문·역사/철학·고전)는 investment-quotes.js의
              기존 category 값과 그대로 매칭된다(app.js flatGenreLabels).
              기본값은 "투자"만 선택된 상태. -->
-        <section class="settings-block settings-card" aria-label="문장의 분야">
-          <h3 class="settings-subtitle">문장의 분야</h3>
-          <p class="settings-desc settings-desc-muted">기본은 투자 문장만 나옵니다. 여러 분야를 함께 고를 수 있어요.</p>
+        <section class="settings-block settings-card" data-i18n-aria="settings.quotes.heading" aria-label="문장의 분야">
+          <h3 class="settings-subtitle" data-i18n="settings.quotes.heading">문장의 분야</h3>
+          <p class="settings-desc settings-desc-muted" data-i18n="settings.quotes.desc">기본은 투자 문장만 나옵니다. 여러 분야를 함께 고를 수 있어요.</p>
           <label class="field-option field-option-all">
             <input type="checkbox" id="allFlatGenres">
-            <span>모든 분야</span>
+            <span data-i18n="settings.quotes.all">모든 분야</span>
           </label>
           <div class="field-grid" id="flatGenreOptions"></div>
         </section>
 
-        <button class="settings-save" type="button" id="settingsSave">확인</button>
+        <button class="settings-save" type="button" id="settingsSave" data-i18n="settings.quotes.confirm">확인</button>
 
         <div class="settings-divider" aria-hidden="true"></div>
 
@@ -572,7 +572,7 @@
          그대로 연동하되, 비주얼은 애플 비전OS풍 글래스모피즘으로 새로
          구성했다(.weather-detail-sheet). 2026-07-17 10차: 위 설정 페이지와
          동일하게 fixed 팝업이 아니라 pageTrack 안의 진짜 페이지로 전환. -->
-    <section class="app-page weather-detail-page weather-detail-sheet" id="weatherDetailPanel" aria-label="날씨 상세 정보">
+    <section class="app-page weather-detail-page weather-detail-sheet" id="weatherDetailPanel" data-i18n-aria="weather.detailAria" aria-label="날씨 상세 정보">
         <!-- 2026-07-18 4차 피드백: 애플 날씨 스타일 실사 사진 배경 — 이 앱의
              정체성인 "배경사진 앱"과 일관되도록, 시계 화면이 지금 쓰고 있는
              바로 그 배경사진(현재 날씨·시간대에 이미 맞춰 선택됨)을 그대로
@@ -609,7 +609,7 @@
              화면에 떠있게 한다(스크롤해도 안 사라짐). 뒤로가기 제스처로도
              닫히도록 app.js openWeatherDetail/closeWeatherDetail이
              history.pushState/popstate를 사용한다. -->
-        <button class="settings-close weather-detail-close-fixed" type="button" aria-label="날씨 상세 닫기" data-weather-detail-close>×</button>
+        <button class="settings-close weather-detail-close-fixed" type="button" data-i18n-aria="weather.detailCloseAria" aria-label="날씨 상세 닫기" data-weather-detail-close>×</button>
 
         <!-- 1. 현재 날씨 — 2026-07-14: 체감온도 옆에 습도를 같은 줄로 이동
              (유저 피드백: "2줄인데 습도도 윗줄에 넣어라, 한 줄 width 충분")
@@ -656,7 +656,7 @@
              형제로 두고 styles.css에서 grid(1fr auto 1fr)로 가운데 열에 기온을
              고정한다 — 습도 유무와 무관하게 기온은 항상 카드 정중앙, 습도는
              기온 바로 오른쪽에 따라붙는다. -->
-        <section class="weather-card weather-current-card wd-glass" id="wdCurrent" aria-label="현재 날씨">
+        <section class="weather-card weather-current-card wd-glass" id="wdCurrent" data-i18n-aria="weather.currentAria" aria-label="현재 날씨">
           <div class="weather-current-hero">
             <div class="weather-current-main">
               <span class="weather-current-temp" id="wdCurrentTemp">--°</span>
@@ -674,11 +674,11 @@
                  새 API 호출 없음). -->
             <p class="weather-current-wind" id="wdCurrentWind"></p>
           </div>
-          <p class="weather-current-sub" id="wdCurrentSub">정보를 불러오는 중</p>
+          <p class="weather-current-sub" id="wdCurrentSub" data-i18n="common.loadingInfo">정보를 불러오는 중</p>
           <!-- 2026-07-20 유저 피드백: 현재 날씨 조회가 실패했을 때만
                app.js renderWeatherCurrent()가 hidden을 풀어서 보여준다.
                평소엔 hidden 상태로 화면에 없다. -->
-          <button type="button" class="weather-current-retry" id="wdCurrentRetryBtn" hidden>다시 시도</button>
+          <button type="button" class="weather-current-retry" id="wdCurrentRetryBtn" hidden data-i18n="common.retry">다시 시도</button>
         </section>
 
         <!-- 2026-07-20 유저 요청: 박스(.weather-card) 스타일을 가진 카드끼리는
@@ -724,7 +724,7 @@
              아니라 안쪽으로 옮겨, 펼칠 때 배너 박스 하나가 그대로
              늘어나는 구조로 바꿨다(테두리·배경을 배너와 공유). -->
         <div class="weather-advisory-banner" id="wdAdvisoryBanner" aria-hidden="true">
-          <div class="weather-advisory-banner-head" id="wdAdvisoryBannerHead" role="button" tabindex="0" aria-expanded="false" aria-controls="wdAdvisoryDetail" aria-label="기상특보 상세 펼치기">
+          <div class="weather-advisory-banner-head" id="wdAdvisoryBannerHead" role="button" tabindex="0" aria-expanded="false" aria-controls="wdAdvisoryDetail" data-i18n-aria="weather.advisory.expandAria" aria-label="기상특보 상세 펼치기">
             <span class="weather-advisory-banner-text" id="wdAdvisoryBannerText"></span>
             <span class="weather-advisory-banner-more" id="wdAdvisoryMoreBtn" aria-hidden="true">▾</span>
           </div>
@@ -732,7 +732,7 @@
         </div>
 
         <div class="weather-comment-box wd-glass">
-          <p class="weather-rain-umbrella" id="wdTopComment" aria-label="오늘의 날씨 코멘트"></p>
+          <p class="weather-rain-umbrella" id="wdTopComment" data-i18n-aria="weather.commentAria" aria-label="오늘의 날씨 코멘트"></p>
 
           <!-- 2026-07-17 2차 기획(묶음B): 다음 비 카운트다운. 이번 주에 비
                소식이 없으면 빈 문자열이라 :empty로 자연스럽게 접힌다. -->
@@ -745,10 +745,10 @@
              스와이프 확인 필수(app.js renderWeatherHourlyStrip 주석 참조).
              2026-07-18 8차 피드백: 제목에서 "오늘"을 빼고 "시간대별 상세
              예보"로 단순화(유저 요청). -->
-        <section class="weather-card" aria-label="시간대별 상세 예보">
-          <h3 class="settings-subtitle">시간대별 상세 예보</h3>
+        <section class="weather-card" data-i18n-aria="weather.hourly.heading" aria-label="시간대별 상세 예보">
+          <h3 class="settings-subtitle" data-i18n="weather.hourly.heading">시간대별 상세 예보</h3>
           <div class="weather-hourly-strip" id="wdHourlyStrip">
-            <p class="weather-empty">불러오는 중…</p>
+            <p class="weather-empty" data-i18n="common.loading">불러오는 중…</p>
           </div>
         </section>
 
@@ -761,10 +761,10 @@
         <!-- 2026-07-19 5차 리디자인: 리스트를 감싸는 큰 박스 하나로(유저
              요청) — 내부 행(.weather-weekly-row 등) 스타일은 그대로 두고
              바깥 섹션에만 .wd-glass 톤을 입힌다. -->
-        <section class="weather-card weather-weekly-box wd-glass" aria-label="주간 예보">
-          <h3 class="settings-subtitle">주간 예보</h3>
+        <section class="weather-card weather-weekly-box wd-glass" data-i18n-aria="weather.weekly.heading" aria-label="주간 예보">
+          <h3 class="settings-subtitle" data-i18n="weather.weekly.heading">주간 예보</h3>
           <div class="weather-weekly-list" id="wdWeeklyForecast">
-            <p class="weather-empty">불러오는 중…</p>
+            <p class="weather-empty" data-i18n="common.loading">불러오는 중…</p>
           </div>
         </section>
 
@@ -774,10 +774,10 @@
              복원하면 된다). app.js의 renderWeatherRainWindows()는
              document.getElementById("wdRainWindows")가 null이면 그냥
              return하도록 이미 방어돼 있어 이 요소가 없어도 에러 없음.
-        <section class="weather-card" aria-label="이번 주 강수 예보">
-          <h3 class="settings-subtitle">이번 주 강수 예보</h3>
+        <section class="weather-card" data-i18n-aria="weather.rain.heading" aria-label="이번 주 강수 예보">
+          <h3 class="settings-subtitle" data-i18n="weather.rain.heading">이번 주 강수 예보</h3>
           <div class="weather-rain-windows" id="wdRainWindows">
-            <p class="weather-empty">불러오는 중…</p>
+            <p class="weather-empty" data-i18n="common.loading">불러오는 중…</p>
           </div>
         </section>
 
@@ -788,29 +788,29 @@
              나열이 아니라 "향후가 지난 24시간보다 덥다/춥다/습하다"를
              직관적으로 말해주는 게 목적. 예전 "어제와 비교하면"(6번) 카드를
              이 카드로 흡수했다. -->
-        <section class="weather-card" aria-label="지난 24시간과 향후 24시간 비교">
-          <h3 class="settings-subtitle">지난 24시간 · 향후 24시간</h3>
-          <p class="weather-comment" id="wd24hComparison">불러오는 중…</p>
+        <section class="weather-card" data-i18n-aria="weather.compare.aria" aria-label="지난 24시간과 향후 24시간 비교">
+          <h3 class="settings-subtitle" data-i18n="weather.compare.heading">지난 24시간 · 향후 24시간</h3>
+          <p class="weather-comment" id="wd24hComparison" data-i18n="common.loading">불러오는 중…</p>
           <div class="weather-24h-compare" id="wdYesterday">
-            <p class="weather-empty">불러오는 중…</p>
+            <p class="weather-empty" data-i18n="common.loading">불러오는 중…</p>
           </div>
         </section>
 
         <!-- 2026-07-17 2차 기획(묶음D): 일평균 대비 기온차(평년값).
              그 달력일이 처음 조회될 때만 백엔드가 과거 10년치를 계산하고,
              그 뒤로는 D1 영구 캐시라 즉시 응답한다. -->
-        <section class="weather-card" aria-label="일평균 대비 기온차">
-          <h3 class="settings-subtitle">평년과 비교하면</h3>
-          <p class="weather-comment" id="wdTempVsNormal">불러오는 중…</p>
+        <section class="weather-card" data-i18n-aria="weather.normal.aria" aria-label="일평균 대비 기온차">
+          <h3 class="settings-subtitle" data-i18n="weather.normal.heading">평년과 비교하면</h3>
+          <p class="weather-comment" id="wdTempVsNormal" data-i18n="common.loading">불러오는 중…</p>
         </section>
 
         <div class="settings-divider" aria-hidden="true"></div>
 
         <!-- 4. 오늘 밤 열대야 -->
-        <section class="weather-card" aria-label="오늘 밤 열대야">
-          <h3 class="settings-subtitle">오늘 밤 열대야</h3>
+        <section class="weather-card" data-i18n-aria="weather.tropicalNight.heading" aria-label="오늘 밤 열대야">
+          <h3 class="settings-subtitle" data-i18n="weather.tropicalNight.heading">오늘 밤 열대야</h3>
           <div class="weather-tropical-badges" id="wdTropicalBadges">
-            <p class="weather-empty">불러오는 중…</p>
+            <p class="weather-empty" data-i18n="common.loading">불러오는 중…</p>
           </div>
           <p class="weather-comment" id="wdTropicalComment"></p>
         </section>
@@ -823,9 +823,9 @@
          가능성을 감안해 "새 창에서 열기" 버튼을 항상 같이 둔다(유저 확정
          사항) — iframe이 막혀도 이 버튼으로는 항상 알라딘 페이지를 열 수
          있다. 열기/닫기 메커니즘은 기존 설정 패널과 동일(is-open + aria-hidden). -->
-    <aside class="settings-panel aladin-modal-panel" id="aladinModalPanel" aria-hidden="true" aria-label="알라딘 도서 정보">
+    <aside class="settings-panel aladin-modal-panel" id="aladinModalPanel" aria-hidden="true" data-i18n-aria="quote.sourceAria" aria-label="알라딘 도서 정보">
       <div class="settings-backdrop" data-aladin-modal-close></div>
-      <section class="aladin-modal-sheet" role="dialog" aria-modal="true" aria-label="알라딘 도서 정보">
+      <section class="aladin-modal-sheet" role="dialog" aria-modal="true" data-i18n-aria="quote.sourceAria" aria-label="알라딘 도서 정보">
         <!-- 2026-07-16 2차 개정: 로그인/장바구니가 이 iframe 안에서 유지되지
              않는 문제 — 알라딘 입장에서 이 화면은 ezlong.com의 서드파티
              iframe이라, iOS WebKit이 로그인 쿠키를 오래 유지해주지 않는다
@@ -838,11 +838,11 @@
              쓰던 브라우저와 똑같이 유지된다. 대신 앱으로 돌아오려면
              앱 스위처나 홈 화면에서 다시 열어야 한다. -->
         <div class="aladin-modal-notice">
-          <span>로그인 · 장바구니 유지를 위해 아래 버튼으로 기본 브라우저에서 열어주세요.</span>
-          <button type="button" id="aladinModalExternalOpen" class="aladin-modal-external-open">기본 브라우저에서 열기</button>
+          <span data-i18n="common.browserNotice">로그인 · 장바구니 유지를 위해 아래 버튼으로 기본 브라우저에서 열어주세요.</span>
+          <button type="button" id="aladinModalExternalOpen" class="aladin-modal-external-open" data-i18n="common.openInBrowser">기본 브라우저에서 열기</button>
         </div>
         <div class="aladin-modal-frame-wrap">
-          <iframe id="aladinModalFrame" class="aladin-modal-frame" title="알라딘 도서 정보" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          <iframe id="aladinModalFrame" class="aladin-modal-frame" data-i18n-title="quote.sourceAria" title="알라딘 도서 정보" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
         <!-- 2026-07-16 3차 개정: "브라우저 새창에서 보기"를 눌러도 실제로는
              네이티브 WKWebView 안에서 같은 화면이 통째로 알라딘으로 바뀌어
@@ -850,7 +850,7 @@
              피드백대로 애초에 iframe을 풀사이즈로 보여주고, 나가는 대신
              확실하게 닫을 수 있는 큰 "닫기" 버튼만 두는 편이 낫다. 기존
              [data-aladin-modal-close] 바인딩을 그대로 재사용한다. -->
-        <button type="button" id="aladinModalCloseBottom" class="settings-save aladin-modal-close-bottom" data-aladin-modal-close>닫기</button>
+        <button type="button" id="aladinModalCloseBottom" class="settings-save aladin-modal-close-bottom" data-aladin-modal-close data-i18n="common.close">닫기</button>
       </section>
     </aside>
 
@@ -858,6 +858,26 @@
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
   <script src="music-playlist.js?v=20260720-musicspecial-v1"></script>
-  <script src="app.js?v=20260727-appconfig"></script>
+
+  <!-- ── 2026-07-28 글로벌화(i18n) ─────────────────────────────────────
+       ★ 반드시 app.js 보다 먼저 로드할 것 ★
+       app.js 는 전역 FlipZenI18n / FlipZenSeason / FlipZenRegion /
+       FlipZenWeatherCodes / FlipZenQuoteSource 를 부팅 시점에 참조한다.
+       순서가 뒤바뀌면 undefined 접근으로 앱이 통째로 멎는다.
+
+       전부 클래식 스크립트다(type="module" 아님) — 이 파일이 모듈 방식을
+       쓰지 않기 때문이며, i18n/*.js 상단 주석에 그 이유가 적혀 있다.
+
+       locale-bundle.js 는 자동 생성 파일이다:
+         node scripts/build-locales.mjs
+       직접 수정하면 다음 빌드에 덮어써진다. -->
+  <script src="i18n/weather-codes.js?v=20260728-i18n-v1"></script>
+  <script src="i18n/season.js?v=20260728-i18n-v1"></script>
+  <script src="i18n/region.js?v=20260728-i18n-v1"></script>
+  <script src="i18n/quote-source.js?v=20260728-i18n-v1"></script>
+  <script src="i18n/locale-bundle.js?v=20260728-i18n-v1"></script>
+  <script src="i18n/index.js?v=20260728-i18n-v1"></script>
+
+  <script src="app.js?v=20260728-i18n"></script>
 </body>
 </html>
