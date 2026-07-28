@@ -59,18 +59,52 @@
   var DEFAULT_LOCALE = "ko";
 
   /**
-   * 지원 로케일. 여기 없는 언어는 전부 baseLocale 로 접힌다.
-   * 성동님 결정(2026-07-28): "영어 하나로 시작"한다.
-   * 새 언어를 추가할 때는 이 목록 + locales/<code>.json + parity 테스트 통과가 세트다.
+   * 지원 로케일. 여기 없는 언어는 3.5단계에서 en 으로 접힌다.
+   *
+   * 2026-07-28 착수 시엔 "영어 하나로 시작"이었고, 2026-07-29 에 성동님
+   * 결정으로 ja/zh/es/pt 를 추가했다 — ezlong.com 이 이미 번역 페이지를
+   * 갖고 있는 5개 언어와 정렬시킨 것이다(앱 UI 와 사이트 언어가 어긋나면
+   * "일본어로 소개받고 열었더니 영어" 같은 어긋남이 생긴다).
+   *
+   * ★ 새 언어를 추가할 때 반드시 세트로 할 것 ★
+   *   1) 이 목록에 코드 추가
+   *   2) locales/<code>.json 작성 (ko 와 키 1:1)
+   *   3) 아래 FALLBACK_CHAIN 에 사슬 추가
+   *   4) i18n/region.js 의 geocodeLanguage 에 추가 (역지오코딩 지명 언어)
+   *   5) 네이티브 리소스 — ios/FlipZenClock/<code>.lproj/InfoPlist.strings,
+   *      android/app/src/main/res/values-<code>/strings.xml
+   *      (+ iOS 는 Info.plist CFBundleLocalizations 와 project.pbxproj 3곳 등록.
+   *       간체 중국어 폴더명은 zh 가 아니라 zh-Hans — CLAUDE.md 41-3 참조)
+   *   6) npm run i18n:build 로 locale-bundle.js 재생성
+   *      ★ 이걸 빼먹으면 카탈로그를 만들어도 화면이 그대로다 ★
+   *   7) npm run verify:i18n 전체 통과
+   * (2)~(7) 중 하나만 빠져도 test-i18n.mjs 또는 test-native-strings.mjs 가
+   * 잡아낸다 — 2026-07-29 에 전 로케일 자동 순회로 일반화해뒀다.
+   *
+   * ★ 그리고 이 파일 밖에서 하나 더 ★
+   * weather-backend/src/i18n.ts 의 resolveLang() 이 같은 판정을 독립적으로
+   * 한 벌 더 갖고 있다. 여기만 늘리면 프론트는 ?lang=ja 를 보내는데 백엔드가
+   * 그걸 ko 로 떨어뜨려서, 일본어 화면 안에 한국어 우산 조언이 섞인다.
+   * 두 파일은 항상 같이 본다 (CLAUDE.md 41-4).
    */
-  var SUPPORTED = ["ko", "en"];
+  var SUPPORTED = ["ko", "en", "ja", "zh", "es", "pt"];
 
   /**
    * 폴백 사슬. 어떤 키를 못 찾으면 순서대로 뒤진다.
-   * en 조차 없으면 ko 로 — 즉 최악의 경우에도 화면에 한국어가 뜨지
-   * 빈칸이나 키 문자열(settings.title 같은)이 뜨지는 않는다.
+   *
+   * 비한국어는 전부 "자기 언어 → en → ko" 다. en 을 중간에 두는 이유는,
+   * 새 키가 추가됐는데 그 언어 번역이 아직 없을 때 **한국어보다 영어가
+   * 읽힐 확률이 훨씬 높기** 때문이다. 마지막 ko 는 최후의 보루 —
+   * 최악의 경우에도 빈칸이나 키 문자열(settings.title 같은)이 뜨지 않는다.
    */
-  var FALLBACK_CHAIN = { en: ["en", "ko"], ko: ["ko"] };
+  var FALLBACK_CHAIN = {
+    ko: ["ko"],
+    en: ["en", "ko"],
+    ja: ["ja", "en", "ko"],
+    zh: ["zh", "en", "ko"],
+    es: ["es", "en", "ko"],
+    pt: ["pt", "en", "ko"]
+  };
 
   var catalogs = Object.create(null);   // { ko: {...}, en: {...} }
   var current = DEFAULT_LOCALE;

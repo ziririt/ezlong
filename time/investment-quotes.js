@@ -8306,5 +8306,18 @@ window.investmentQuotes = [
     "title": "여행의 이유",
     "author": "김영하",
     "genre": "literature"
+  },
+  {
+    "english": "The rich acquire assets. The poor and the middle class acquire liabilities that they think are assets.",
+    "text": "부자는 자산을 취득한다. 가난한 사람과 중산층은 자산이라고 착각하는 부채를 떠안는다.",
+    "title": "부자 아빠 가난한 아빠",
+    "author": "로버트 기요사키",
+    "category": "mindset"
+  },
+  {
+    "text": "무소유란 아무 것도 갖지 않는다는 것이 아니라, 불필요한 것을 갖지 않는다는 것이다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
   }
 ];

@@ -62,12 +62,23 @@
   }
 
   /**
-   * 역지오코딩(Nominatim) 언어.
-   * 현행 app.js:1749 는 accept-language=ko 로 고정돼 있다.
+   * 역지오코딩(Nominatim) 언어 — 화면 상단에 뜨는 지명("서울"/"Tokyo"/"東京")을
+   * 어느 언어로 받을지 정한다.
+   *
+   * 현행 app.js:1749 는 accept-language=ko 로 고정돼 있었다.
    * ko 일 때 정확히 같은 값을 돌려주므로 한국어 사용자에게는 변화가 없다.
+   *
+   * 2026-07-29 확장: SUPPORTED 가 6개로 늘면서 여기도 함께 늘렸다.
+   * ★ 이 함수를 빠뜨리면 일본어 화면에 "도쿄"가 한국어로 뜬다 ★ —
+   * 카탈로그(locales/*.json)에는 지명이 없어서 test-i18n 이 못 잡는
+   * 사각지대라, i18n/index.js 의 SUPPORTED 주석에 체크리스트로 박아뒀다.
+   *
+   * Nominatim 은 BCP-47 을 그대로 받으므로 코드를 그대로 넘기면 된다.
+   * 목록에 없는 값이 들어오면 ko 로 떨어진다(현행 동작 보존).
    */
+  var GEOCODE_LANGS = ["ko", "en", "ja", "zh", "es", "pt"];
   function geocodeLanguage(locale) {
-    return locale === "en" ? "en" : "ko";
+    return GEOCODE_LANGS.indexOf(locale) >= 0 ? locale : "ko";
   }
 
   /**
