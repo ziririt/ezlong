@@ -647,6 +647,36 @@ python3 -c "import json; d=json.load(open('data/stocks-data.json')); print(d.get
 - 새 AI 판단 기능을 만들 때도 원장 연동을 기본 포함한다.
 - 워크플로 yml에서 `git add data/`가 아닌 파일 명시 방식이면 원장 파일을 add 목록에 반드시 포함한다 (market-scorecard.yml에 반영됨).
 
+**2026-07-28 추가 — 스코어카드 혼조 재료 판별에 category 태그 도입 (difflib 유사도 대체):**
+`scripts/fetch-market-scorecard.py`의 혼조 재료(mixed_factors) "같은 주제인지" 판별이
+기존엔 `_mixed_factor_similar()`(difflib 문자열 유사도, threshold 0.55)에만 의존했다.
+이게 `feedback_scorecard_mixed_factor_staleness.md`에 기록된 반복 사고의 근본 원인 —
+리워딩이 조금만 달라도 다른 주제로 오인하거나(재활용 탐지 실패), 우연히 어휘가 겹치면
+다른 주제를 같은 주제로 오인했다(오탐).
+
+해결: positive_factors·negative_factors·mixed_factors 각 항목에 `category` 필드를
+추가했다. Gemini가 자유 서술하는 `name`과 달리, `category`는 `FACTOR_CATEGORIES`
+고정 목록(fed_policy/geopolitics/trade_tariff/macro_data/earnings_bellwether/
+vix_risk_sentiment/oil_energy/dollar_fx/rates_treasury/ai_tech_valuation/
+supply_chain/company_specific/other) 중 하나만 골라야 하는 폐쇄형 값이라, 표현이
+바뀌어도 흔들리지 않는 정확 일치 판별이 가능하다. `_mixed_factor_same_topic()`이
+새 1차 기준(category 정확 일치)이고, 정보가 없는 구버전 데이터(2026-07-28 이전 원장·
+data.json 항목)는 자동으로 기존 difflib 함수(`_mixed_factor_similar`)로 폴백한다 —
+점진 전환, 하위 호환 유지.
+
+판단 원장(`judgment-history-scorecard.json`)에도 `mixed_tags`(name+category 구조화
+목록) 필드가 추가됐다. 기존 `k` 압축 텍스트 라인은 그대로 유지(프롬프트 주입용).
+
+**규칙:**
+- `category`는 반드시 `FACTOR_CATEGORIES` 고정 목록 값만 허용한다. 새 카테고리가
+  필요해 보여도 목록에 추가하려면 먼저 신중히 검토할 것 — 목록이 너무 세분화되면
+  같은 주제가 여러 category로 흩어져 정확 일치 판별 자체가 무력화된다.
+- `clean_category()` 방어 로직(목록 밖 값 → 'other' 강등)을 제거하지 않는다 — Gemini가
+  프롬프트 지시를 어기고 임의 값을 낼 가능성에 대한 안전장치다.
+- 이 category 태그 방식은 판단 원장에 한정된 "관계형 구조 부분 도입"이다(18항
+  프레임 정합성 메모에서 예고된 범위) — 사이트 전체에 지식그래프·임베딩 인프라를
+  놓는 확장은 여전히 보류 상태다.
+
 ---
 
 ## 21. 심플 주가 "장마감~일봉갱신" 공백 구간 브릿지 (2026-07-08 구축)

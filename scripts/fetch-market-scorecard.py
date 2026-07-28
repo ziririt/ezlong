@@ -72,13 +72,25 @@ def save_ledger(ledger):
 
 
 def append_ledger(ledger, kst_now, entry):
-    """생성된 카드의 핵심을 한 줄로 원장에 기록 (결정적 조합 — Gemini 의존 없음)"""
+    """생성된 카드의 핵심을 한 줄로 원장에 기록 (결정적 조합 — Gemini 의존 없음).
+
+    2026-07-28 추가: 'k' 압축 텍스트 라인(사람이 읽고 프롬프트에 주입되는 용도)과 별개로,
+    혼조 재료 전체의 name+category를 'mixed_tags'에 구조화된 형태로 저장한다. 기존엔
+    mixed_factors[0]의 name만 텍스트에 묻혀 있어 difflib로 되짚어야 했는데, 이제 category
+    정확 일치로 판별할 수 있게 원본 데이터를 함께 남긴다."""
     line = f"긍정 {entry['positive_total']} : 부정 {entry['negative_total']} — {entry['key_event']['name']}"
     if entry.get('summary'):
         line += f" | {entry['summary']}"
     if entry.get('mixed_factors'):
         line += f" | 혼조: {entry['mixed_factors'][0].get('name', '')}"
-    ledger.append({'d': kst_now.strftime('%Y-%m-%d'), 't': kst_now.strftime('%H:%M'), 'k': line[:160]})
+    ledger_entry = {'d': kst_now.strftime('%Y-%m-%d'), 't': kst_now.strftime('%H:%M'), 'k': line[:160]}
+    mixed_tags = [
+        {'n': (m.get('name') or '').strip()[:40], 'c': m.get('category') or 'other'}
+        for m in (entry.get('mixed_factors') or []) if (m.get('name') or '').strip()
+    ]
+    if mixed_tags:
+        ledger_entry['mixed_tags'] = mixed_tags
+    ledger.append(ledger_entry)
     return ledger[-LEDGER_MAX:]
 
 
@@ -667,6 +679,17 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - summary: 단기 시장 구도 총평 (한국어, 50자 이내)
 - 모든 문자열 값은 한국어, 분석/진단형 문체 ("~하세요" 금지)
 - name 필드: 20자 이내, desc 필드: 30자 이내
+- category 필드 (positive_factors·negative_factors·mixed_factors 각 항목 필수, 2026-07-28 추가):
+  아래 목록에서 정확히 하나만 골라 그대로 쓸 것 (목록에 없는 값·번역·창작 금지):
+  fed_policy, geopolitics, trade_tariff, macro_data, earnings_bellwether,
+  vix_risk_sentiment, oil_energy, dollar_fx, rates_treasury, ai_tech_valuation,
+  supply_chain, company_specific, other
+  이 값은 화면에 표시되지 않고 내부적으로 "이게 어제·그제와 같은 주제인가"를 판별하는 데
+  쓰인다. name은 매번 다르게 표현해도 되지만(자연스러운 서술 유지), 실제로 같은 근본
+  이슈(예: 같은 지정학 사건, 같은 Fed 발언 국면)라면 category는 반드시 같은 값을 써야
+  한다 — name의 표현이 바뀌어도 category까지 바뀌면 이 필드의 목적이 무력화된다.
+  해당 사항이 애매하면 'other'를 쓰되, 'other' 남발은 이 필드의 효용을 떨어뜨리니
+  가능한 한 위 12개 구체 카테고리 중 하나로 분류할 것.
 
 === 매크로 인과관계 절대 규칙 (위반 시 신뢰도 훼손) ===
 - 원유/유가 하락 → 에너지 비용 감소, 인플레이션 완화 → 긍정(positive) 분류
@@ -811,13 +834,13 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
   "negative_total": 0,
   "summary": "",
   "positive_factors": [
-    {{"score": 0, "name": "", "desc": ""}}
+    {{"score": 0, "name": "", "desc": "", "category": ""}}
   ],
   "negative_factors": [
-    {{"score": 0, "name": "", "desc": ""}}
+    {{"score": 0, "name": "", "desc": "", "category": ""}}
   ],
   "mixed_factors": [
-    {{"name": "", "desc": ""}}
+    {{"name": "", "desc": "", "category": ""}}
   ]
 }}
 """
@@ -924,6 +947,19 @@ def save_data(data):
     print(f"저장 완료: {OUTPUT_PATH}")
 
 
+def _with_clean_category(factors):
+    """각 요인 dict에 category를 고정 목록 값으로 정제해서 채워넣는다 (2026-07-28).
+    Gemini가 category를 빠뜨리거나 목록 밖 값을 내도 크래시 없이 'other'로 강등."""
+    out = []
+    for f in (factors or []):
+        if not isinstance(f, dict):
+            continue
+        f = dict(f)
+        f['category'] = clean_category(f.get('category'))
+        out.append(f)
+    return out
+
+
 def build_entry(kst_now, result):
     """Gemini 결과 + 타임스탬프 → 항목 dict"""
     return {
@@ -937,9 +973,10 @@ def build_entry(kst_now, result):
         "positive_total":   int(result.get("positive_total", 50)),
         "negative_total":   int(result.get("negative_total", 50)),
         "summary":          result.get("summary", ""),
-        "positive_factors": result.get("positive_factors", []),
-        "negative_factors": result.get("negative_factors", []),
-        "mixed_factors":    (result.get("mixed_factors") or [])[:3]  # 혼조·양면 (2026-07-03)
+        "positive_factors": _with_clean_category(result.get("positive_factors", [])),
+        "negative_factors": _with_clean_category(result.get("negative_factors", [])),
+        # 혼조·양면 (2026-07-03), category 태그 추가 (2026-07-28)
+        "mixed_factors":    _with_clean_category((result.get("mixed_factors") or [])[:3])
     }
 
 
@@ -954,13 +991,60 @@ MIXED_FACTOR_GENERIC_WORDS = {
     '요인', '가능성', '불확실성', '지수', '재료',
 }
 
+# ─── 요인 카테고리 태그 — difflib 문자열 유사도 대체 (2026-07-28 신설) ────────────
+# 배경: 혼조 재료 재활용 사고(feedback_scorecard_mixed_factor_staleness.md)의 근본 원인은
+# "같은 주제인지"를 name의 difflib 문자열 유사도로만 판정한 것 — 리워딩이 조금만 달라도
+# (예: '고용 둔화 해석 논쟁' vs '고용 데이터 해석 논쟁') 다른 주제로 오인하거나, 반대로
+# 우연히 어휘가 겹치면 다른 주제를 같은 주제로 오인했다. 이번 개선은 Gemini가 매번 자유
+# 서술하는 name과 별개로, 고정 목록에서 고르는 category 태그를 추가로 받아 — 문자열이
+# 아니라 정확한 값 일치로 같은 주제를 판별한다. name은 그대로 화면 표시용 자연어를 유지.
+FACTOR_CATEGORIES = [
+    'fed_policy',           # Fed·중앙은행 금리 결정, FOMC, 파월 발언
+    'geopolitics',          # 전쟁·제재·지정학 리스크
+    'trade_tariff',         # 관세·무역협상
+    'macro_data',           # CPI·고용·GDP·PMI 등 경제지표
+    'earnings_bellwether',  # 벨웨더 기업 실적(NVDA/MU/JPM 등 섹터 신호)
+    'vix_risk_sentiment',   # VIX·안전자산 선호·리스크온오프
+    'oil_energy',           # 유가·에너지·원자재
+    'dollar_fx',            # 달러인덱스·환율
+    'rates_treasury',       # 국채금리·수익률곡선
+    'ai_tech_valuation',    # AI·반도체 밸류에이션 재평가
+    'supply_chain',         # 공급망·반도체 공급·항구파업
+    'company_specific',     # 개별 기업 이슈(프롬프트 예외 규정에 따라 인정된 경우)
+    'other',                # 위 어디에도 안 맞는 경우 — 남용 금지, 최소화
+]
+
+
+def clean_category(cat):
+    """고정 목록 밖 값이 오면 안전하게 'other'로 강등 (Gemini가 목록을 벗어난 값을
+    낼 가능성에 대한 방어 — 크래시 방지 및 하위 로직 오염 방지)."""
+    return cat if cat in FACTOR_CATEGORIES else 'other'
+
 
 def _mixed_factor_similar(a, b, threshold=0.55):
-    """혼조 재료 이름 두 개가 리워딩만 다른 같은 주제인지 판정.
-    예: '고용 둔화 해석 논쟁' vs '고용 데이터 해석 논쟁' → 대부분 겹침, 같은 주제로 판정."""
+    """혼조 재료 이름 두 개가 리워딩만 다른 같은 주제인지 판정 (구버전 폴백 전용).
+    예: '고용 둔화 해석 논쟁' vs '고용 데이터 해석 논쟁' → 대부분 겹침, 같은 주제로 판정.
+    2026-07-28부터는 category가 있으면 이 함수 대신 정확 일치를 우선 사용한다 —
+    이 함수는 category 정보가 없는 구버전 원장 항목과 비교할 때만 폴백으로 쓰인다."""
     if not a or not b:
         return False
     return difflib.SequenceMatcher(None, a, b).ratio() >= threshold
+
+
+def _mixed_factor_same_topic(name, category, hist_name, hist_category):
+    """두 혼조 재료가 같은 주제인지 판정. category 정확 일치(둘 다 있고 'other'가
+    아닐 때)를 리워딩에 흔들리지 않는 최우선 신호로 삼아 즉시 같은 주제로 인정한다.
+    다만 category가 불일치하거나 정보가 없어도 곧바로 '다른 주제'로 확정하지 않고,
+    항상 difflib 이름 유사도를 추가로 확인한다 — category 하나만으로 최종 판정하면
+    Gemini가 같은 이슈에 category를 날마다 다르게 배정했을 때(예: 같은 금리 이슈를
+    하루는 'rates_treasury', 다음날은 'fed_policy'로) 안전망이 완전히 사라지는 회귀가
+    생긴다(2026-07-28 1차 구현 후 블라인드 감사에서 지적됨). category 불일치인데
+    이름까지 우연히 비슷해 과잉 매칭되는 부작용은, 뒤따르는 grounding 체크(오늘
+    데이터에 실제로 등장하는 재료인지)가 최종 관문 역할을 하므로 위험이 낮다."""
+    if category and hist_category and category != 'other' and hist_category != 'other' \
+            and category == hist_category:
+        return True
+    return _mixed_factor_similar(name, hist_name)
 
 
 def _grounding_tokens(name):
@@ -973,8 +1057,13 @@ def _grounding_tokens(name):
 
 
 def _ledger_mixed_history(ledger):
-    """판단 원장(ledger)의 압축된 'k' 라인에서 '혼조: <이름>' 부분만 뽑아
-    (datetime, name) 목록으로 복원한다.
+    """판단 원장(ledger)에서 혼조 재료 (datetime, name, category) 목록을 복원한다.
+
+    2026-07-28부터 append_ledger()가 'mixed_tags'(구조화된 name+category 목록)를
+    별도로 저장하므로 그걸 우선 사용한다. 그 필드가 없는 구버전 원장 항목(2026-07-28
+    이전 기록, 최대 4일치 남아있을 수 있음)은 압축 'k' 라인의 '혼조: <이름>' 텍스트만
+    복원하고 category는 None으로 둔다 — _mixed_factor_same_topic()이 이 경우 자동으로
+    difflib 폴백으로 넘어간다.
 
     data.json(entries, 최근 10개=~2일치)과 달리 원장은 사후 수동 정리로 지워지지 않는다
     (2026-07-09 정리 때도 원장 원본은 그대로 남아 있었음). 그래서 며칠 전 반복되다 잠깐
@@ -983,23 +1072,35 @@ def _ledger_mixed_history(ledger):
     for e in (ledger or []):
         if not isinstance(e, dict):
             continue
-        k = e.get('k') or ''
-        if '혼조: ' not in k:
-            continue
-        name = k.split('혼조: ', 1)[1].strip()
-        if not name:
-            continue
         try:
             dt = datetime.strptime(f"{e.get('d','')} {e.get('t','')}", '%Y-%m-%d %H:%M')
         except Exception:
             continue
-        out.append((dt, name))
+
+        tags = e.get('mixed_tags')
+        if tags:
+            for tag in tags:
+                if not isinstance(tag, dict):
+                    continue
+                name = (tag.get('n') or '').strip()
+                if name:
+                    out.append((dt, name, tag.get('c') or None))
+            continue
+
+        # 구버전 폴백 — mixed_tags 없는 2026-07-28 이전 원장 기록
+        k = e.get('k') or ''
+        if '혼조: ' not in k:
+            continue
+        name = k.split('혼조: ', 1)[1].strip()
+        if name:
+            out.append((dt, name, None))
     return out
 
 
 def _collect_mixed_history(existing_entries, ledger):
     """data.json(최근 10개, 정확한 구조)과 판단 원장(최근 20개, ~4일, 사후정리로도
-    안 지워짐)을 합쳐 (datetime, name) 후보 목록을 만든다."""
+    안 지워짐)을 합쳐 (datetime, name, category) 후보 목록을 만든다.
+    category는 2026-07-28 이전 데이터엔 없을 수 있음(None) — 호출부에서 폴백 처리."""
     candidates = []
     for e in (existing_entries or []):
         if not isinstance(e, dict):
@@ -1014,7 +1115,7 @@ def _collect_mixed_history(existing_entries, ledger):
             except Exception:
                 continue
             if nm:
-                candidates.append((dt, nm))
+                candidates.append((dt, nm, m.get('category') or None))
     candidates.extend(_ledger_mixed_history(ledger))
     return candidates
 
@@ -1055,8 +1156,11 @@ def prune_stale_mixed_factors(entry, existing_entries, headlines, rss_headlines,
         name = (mf.get('name') or '').strip()
         if not name:
             continue
+        category = mf.get('category')
 
-        matches = [dt for dt, hname in history if _mixed_factor_similar(name, hname)]
+        # 2026-07-28: category 정확 일치를 1차 기준으로, 정보가 없으면 difflib 폴백
+        matches = [dt for dt, hname, hcat in history
+                   if _mixed_factor_same_topic(name, category, hname, hcat)]
         first_seen_dt = min(matches) if matches else now_naive
         age_hours = (now_naive - first_seen_dt).total_seconds() / 3600
 
