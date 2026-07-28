@@ -85,11 +85,12 @@
       --bg: #F5F5F7; --surface: #FFFFFF; --text: #1D1D1F;
       --text2: #424245; --text3: #6E6E73; --border: #D2D2D7;
       --blue: #0071E3; --blue-lt: #0064CC; --green: #1A7F37;
+      --orange: #C2410C; --purple: #7C3AED; --red: #D70015; --field-bg: #F5F5F7;
       --r: 12px; --max-w: 860px;
-      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', 'Hiragino Sans', 'Yu Gothic', sans-serif;
     }
     @media (prefers-color-scheme: dark) {
-      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158; }
+      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158; --orange:#FF9F0A; --purple:#BF5AF2; --red:#FF453A; --field-bg:#2C2C2E; }
     }
     html { scroll-behavior: smooth; }
     body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.65; }
@@ -150,6 +151,62 @@
     .en-footer a { color:var(--blue); text-decoration:none; }
     .en-footer a:hover { text-decoration:underline; }
     @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+
+    /* ── Interactive calculator (cc-*) ── */
+    .cc-section { margin-bottom:56px; }
+    .cc-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:24px; margin-bottom:16px; border-left:4px solid var(--blue); }
+    .cc-card-b { border-left-color:var(--orange); }
+    .cc-card-c { border-left-color:var(--purple); }
+    .cc-card-title { font-size:15px; font-weight:700; color:var(--text); margin-bottom:16px; letter-spacing:-0.01em; }
+    .cc-field { margin-bottom:14px; }
+    .cc-field:last-child { margin-bottom:0; }
+    .cc-label { display:block; font-size:14px; font-weight:600; color:var(--text2); margin-bottom:6px; }
+    .cc-input-row { display:flex; align-items:center; background:var(--field-bg); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+    .cc-prefix, .cc-suffix { font-size:15px; font-weight:600; color:var(--text3); padding:0 12px; flex-shrink:0; }
+    .cc-input { flex:1; min-width:0; border:none; background:transparent; font-size:16px; font-weight:600; color:var(--text); padding:12px 10px; font-family:var(--font); }
+    .cc-input:focus { outline:2px solid var(--blue); outline-offset:-2px; }
+    .cc-disp { font-size:14px; color:var(--text3); margin-top:5px; min-height:18px; }
+    .cc-unit-toggle { display:flex; gap:6px; margin-top:8px; }
+    .cc-unit-btn { flex:1; font-size:14px; font-weight:600; color:var(--text2); background:var(--field-bg); border:1px solid var(--border); border-radius:8px; padding:8px 6px; cursor:pointer; font-family:var(--font); }
+    .cc-unit-btn.active { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .cc-toggle-row { display:flex; align-items:center; gap:8px; font-size:15px; font-weight:600; color:var(--text2); margin:4px 0 12px; cursor:pointer; }
+    .cc-toggle-row input { width:17px; height:17px; accent-color:var(--blue); cursor:pointer; }
+    .cc-btn-row { display:flex; gap:10px; margin-top:20px; }
+    .cc-btn-calc { flex:1; background:var(--blue); color:#fff; border:none; border-radius:10px; padding:15px; font-size:16px; font-weight:700; cursor:pointer; font-family:var(--font); transition:background .15s; }
+    .cc-btn-calc:hover { background:var(--blue-lt); }
+    .cc-btn-reset { background:transparent; color:var(--text2); border:1.5px solid var(--border); border-radius:10px; padding:15px 20px; font-size:15px; font-weight:600; cursor:pointer; font-family:var(--font); }
+    .cc-btn-reset:hover { border-color:var(--text3); }
+    .cc-results { margin-top:28px; }
+    .cc-results-title { font-size:19px; font-weight:700; color:var(--text); margin-bottom:14px; }
+    .cc-results-subtitle { font-size:16px; font-weight:700; color:var(--text); margin:26px 0 12px; }
+    .cc-summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+    .cc-summary-cell { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 10px; text-align:center; }
+    .cc-summary-label { font-size:14px; color:var(--text3); margin-bottom:6px; }
+    .cc-summary-value { font-size:18px; font-weight:700; color:var(--text); letter-spacing:-0.01em; }
+    .cc-summary-value.cc-green { color:var(--green); }
+    .cc-chart-wrap { position:relative; height:280px; margin-top:22px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:16px; }
+    .cc-table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:var(--r); }
+    .cc-table { width:100%; border-collapse:collapse; font-size:14px; min-width:520px; }
+    .cc-table th { background:var(--field-bg); color:var(--text2); font-weight:700; text-align:right; padding:10px 12px; border-bottom:1px solid var(--border); white-space:nowrap; }
+    .cc-table th:first-child { text-align:left; }
+    .cc-table td { text-align:right; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text); white-space:nowrap; }
+    .cc-table td:first-child { text-align:left; color:var(--text2); }
+    .cc-table td.cc-green { color:var(--green); }
+    .cc-table tr:last-child td { border-bottom:none; }
+    .cc-note { font-size:14px; color:var(--text3); margin-top:10px; }
+    .cc-error-card { background:var(--surface); border:1.5px solid var(--red); border-radius:var(--r); padding:18px 20px; }
+    .cc-error-card strong { display:block; font-size:15px; color:var(--red); margin-bottom:6px; }
+    .cc-error-card p { font-size:15px; color:var(--text2); }
+    .cc-winner-banner { background:var(--surface); border:1.5px solid var(--green); border-radius:10px; padding:14px 18px; font-size:15px; font-weight:600; color:var(--text); margin-bottom:20px; }
+    .cc-compare-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-bottom:20px; }
+    .cc-compare-col { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:16px; }
+    .cc-compare-label { font-size:15px; font-weight:700; color:var(--text); margin-bottom:12px; }
+    .cc-compare-col .cc-summary-grid { grid-template-columns:repeat(2,1fr); }
+    .cc-compare-col .cc-table-wrap { margin-top:14px; }
+    @media (max-width:600px) {
+      .cc-summary-grid { grid-template-columns:repeat(2,1fr); }
+      .cc-btn-row { flex-direction:column; }
+    }
   </style>
 </head>
 <body>
@@ -169,11 +226,10 @@
     <h1>複利計算機</h1>
     <p class="hero-sub">一括投資が複利によって年々どのように成長していくかを正確に計算します</p>
     <div class="cta-group">
-      <a class="btn-primary" href="https://ezlong.com/compound-calculator.html" target="_blank" rel="noopener">ツールを開く &rarr;</a>
+      <a class="btn-primary" href="#calculator">今すぐ試す &darr;</a>
       <a class="btn-secondary" href="https://ezlong.com/ja/">すべてのツールを見る</a>
     </div>
-    <p class="auto-translate-note">ツールUIは韓国語です &mdash; Chrome、Edge、Safariが自動的に翻訳します。</p>
-    <p class="translate-proxy-note">自動翻訳が表示されない場合は <a href="https://ezlong-com.translate.goog/compound-calculator.html?_x_tr_sl=ko&amp;_x_tr_tl=ja&amp;_x_tr_hl=ja&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Google翻訳で開く &rarr;</a></p>
+    <p class="auto-translate-note">完全日本語対応 &mdash; ログイン・ダウンロード不要、すぐに結果が出ます。</p>
   </section>
   <div class="stats-row" role="region" aria-label="Key statistics">
     <div class="stat-item"><div class="stat-value">17倍成長</div><div class="stat-label">$10,000 &rarr; $174,000(年利10%・30年)</div></div>
@@ -181,6 +237,99 @@
     <div class="stat-item"><div class="stat-value">完全無料</div><div class="stat-label">アカウント不要</div></div>
   </div>
   <main class="main" id="main-content">
+    <section class="section cc-section" id="calculator">
+      <h2 class="section-title">今すぐ試す</h2>
+      <div class="cc-card" id="cc-card-a">
+        <div class="cc-card-title">設定A</div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-a-principal">元本(初期投資額)</label>
+          <div class="cc-input-row"><span class="cc-prefix">$</span><input class="cc-input" id="cc-a-principal" inputmode="numeric" value="10,000" oninput="ccFmtMoney(this,'cc-a-principal-disp')"></div>
+          <div class="cc-disp" id="cc-a-principal-disp"></div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-a-payment">積立額(毎期)</label>
+          <div class="cc-input-row"><span class="cc-prefix">$</span><input class="cc-input" id="cc-a-payment" inputmode="numeric" value="0" oninput="ccFmtMoney(this,'cc-a-payment-disp')"></div>
+          <div class="cc-disp" id="cc-a-payment-disp"></div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-a-periods">投資期間</label>
+          <div class="cc-input-row"><input class="cc-input" id="cc-a-periods" inputmode="numeric" value="20"><span class="cc-suffix" id="cc-a-unit-label">年</span></div>
+          <div class="cc-unit-toggle" role="group" aria-label="設定Aの期間単位">
+            <button type="button" class="cc-unit-btn active" onclick="ccSetUnit('a','year',this)">年</button>
+            <button type="button" class="cc-unit-btn" onclick="ccSetUnit('a','month',this)">月</button>
+            <button type="button" class="cc-unit-btn" onclick="ccSetUnit('a','day',this)">日</button>
+          </div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-a-rate">年利(年率)</label>
+          <div class="cc-input-row"><input class="cc-input" id="cc-a-rate" inputmode="decimal" value="10"><span class="cc-suffix">%</span></div>
+        </div>
+      </div>
+
+      <label class="cc-toggle-row"><input type="checkbox" id="cc-toggle-b" onchange="ccToggleB()"> 比較Bを追加</label>
+      <div class="cc-card cc-card-b" id="cc-card-b" style="display:none">
+        <div class="cc-card-title">設定B</div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-b-principal">元本(初期投資額)</label>
+          <div class="cc-input-row"><span class="cc-prefix">$</span><input class="cc-input" id="cc-b-principal" inputmode="numeric" value="10,000" oninput="ccFmtMoney(this,'cc-b-principal-disp')"></div>
+          <div class="cc-disp" id="cc-b-principal-disp"></div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-b-payment">積立額(毎期)</label>
+          <div class="cc-input-row"><span class="cc-prefix">$</span><input class="cc-input" id="cc-b-payment" inputmode="numeric" value="0" oninput="ccFmtMoney(this,'cc-b-payment-disp')"></div>
+          <div class="cc-disp" id="cc-b-payment-disp"></div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-b-periods">投資期間</label>
+          <div class="cc-input-row"><input class="cc-input" id="cc-b-periods" inputmode="numeric" value="20"><span class="cc-suffix" id="cc-b-unit-label">年</span></div>
+          <div class="cc-unit-toggle" role="group" aria-label="設定Bの期間単位">
+            <button type="button" class="cc-unit-btn active" onclick="ccSetUnit('b','year',this)">年</button>
+            <button type="button" class="cc-unit-btn" onclick="ccSetUnit('b','month',this)">月</button>
+            <button type="button" class="cc-unit-btn" onclick="ccSetUnit('b','day',this)">日</button>
+          </div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-b-rate">年利(年率)</label>
+          <div class="cc-input-row"><input class="cc-input" id="cc-b-rate" inputmode="decimal" value="7"><span class="cc-suffix">%</span></div>
+        </div>
+      </div>
+
+      <label class="cc-toggle-row"><input type="checkbox" id="cc-toggle-c" onchange="ccToggleC()"> 比較Cを追加</label>
+      <div class="cc-card cc-card-c" id="cc-card-c" style="display:none">
+        <div class="cc-card-title">設定C</div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-c-principal">元本(初期投資額)</label>
+          <div class="cc-input-row"><span class="cc-prefix">$</span><input class="cc-input" id="cc-c-principal" inputmode="numeric" value="10,000" oninput="ccFmtMoney(this,'cc-c-principal-disp')"></div>
+          <div class="cc-disp" id="cc-c-principal-disp"></div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-c-payment">積立額(毎期)</label>
+          <div class="cc-input-row"><span class="cc-prefix">$</span><input class="cc-input" id="cc-c-payment" inputmode="numeric" value="0" oninput="ccFmtMoney(this,'cc-c-payment-disp')"></div>
+          <div class="cc-disp" id="cc-c-payment-disp"></div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-c-periods">投資期間</label>
+          <div class="cc-input-row"><input class="cc-input" id="cc-c-periods" inputmode="numeric" value="20"><span class="cc-suffix" id="cc-c-unit-label">年</span></div>
+          <div class="cc-unit-toggle" role="group" aria-label="設定Cの期間単位">
+            <button type="button" class="cc-unit-btn active" onclick="ccSetUnit('c','year',this)">年</button>
+            <button type="button" class="cc-unit-btn" onclick="ccSetUnit('c','month',this)">月</button>
+            <button type="button" class="cc-unit-btn" onclick="ccSetUnit('c','day',this)">日</button>
+          </div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-c-rate">年利(年率)</label>
+          <div class="cc-input-row"><input class="cc-input" id="cc-c-rate" inputmode="decimal" value="14"><span class="cc-suffix">%</span></div>
+        </div>
+      </div>
+
+      <div class="cc-btn-row">
+        <button type="button" class="cc-btn-calc" id="cc-btn-calc" onclick="ccCalculate()">計算する</button>
+        <button type="button" class="cc-btn-reset" onclick="ccResetAll()">リセット</button>
+      </div>
+
+      <div class="cc-results" id="cc-results"></div>
+    </section>
+
     <section class="section">
       <h2 class="section-title">複利計算機とは?</h2>
       <p class="section-body">複利計算機は、あらゆる長期投資家にとって最もシンプルかつ基本的なツールです。初期投資額・期待年利・年数を入力するだけで、複利によってお金が年々どのように成長していくかを正確に示してくれます。</p>
@@ -285,9 +434,8 @@
     </section>
     <div class="cta-card">
       <h2>今すぐ複利計算機を試す</h2>
-      <p>無料・登録不要、ブラウザですぐに使えます。Chromeが韓国語を自動で日本語に翻訳します。</p>
-      <a class="btn-white" href="https://ezlong.com/compound-calculator.html" target="_blank" rel="noopener">複利計算機を開く &rarr;</a>
-      <p class="translate-proxy-note">自動翻訳が表示されない場合は <a href="https://ezlong-com.translate.goog/compound-calculator.html?_x_tr_sl=ko&amp;_x_tr_tl=ja&amp;_x_tr_hl=ja&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Google翻訳で開く &rarr;</a></p>
+      <p>無料・登録不要、ブラウザですぐに使えます — 完全日本語対応。</p>
+      <a class="btn-white" href="#calculator">上の計算機まで戻る &uarr;</a>
     </div>
   </main>
   <footer class="en-footer" role="contentinfo">
@@ -295,6 +443,329 @@
     &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
     <small>本サイトは教育目的のツールです。投資助言ではありません。すべての投資にはリスクが伴います。過去の実績は将来の成果を保証するものではありません。</small></p>
   </footer>
+
+<!-- ── Interactive compound interest calculator (2026-07-28) ── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  // ── Core math engine — DO NOT change formula logic. Ported byte-for-byte
+  //    from the Korean original (compound-calculator.html); only the unit
+  //    discriminator strings changed from '연'/'월'/'일' to 'year'/'month'/'day'.
+  function calcCompound(principal, payment, periods, annualRate, unit) {
+    var rp;
+    if      (unit === 'year')  rp = annualRate / 100;
+    else if (unit === 'month') rp = annualRate / 100 / 12;
+    else                       rp = annualRate / 100 / 365;
+    var rows = [];
+    for (var t = 1; t <= periods; t++) {
+      var invested = principal + payment * t;
+      var total;
+      if (rp === 0) {
+        total = invested;
+      } else {
+        var f = Math.pow(1 + rp, t);
+        total = principal * f + (payment > 0 ? payment * (f - 1) / rp : 0);
+      }
+      total = Math.max(total, 0);
+      var profit = total - invested;
+      var returnRate = invested > 0 ? (total / invested - 1) * 100 : 0;
+      rows.push({ t: t, invested: Math.round(invested), profit: Math.round(profit), total: Math.round(total), returnRate: returnRate });
+    }
+    return rows;
+  }
+  window.calcCompound = calcCompound; // exposed for independent numeric-fidelity testing
+
+  var ccUnits = { a: 'year', b: 'year', c: 'year' };
+
+  function ccTrimDecimals(s) {
+    if (s.indexOf('.') === -1) return s;
+    return s.replace(/0+$/, '').replace(/\.$/, '');
+  }
+
+  function ccFmtMoney(input, dispId) {
+    var v = input.value.replace(/[^0-9]/g, '');
+    input.value = v === '' ? '' : Number(v).toLocaleString('en-US');
+    if (dispId) {
+      var d = document.getElementById(dispId);
+      if (d) d.textContent = (v === '' || Number(v) === 0) ? '' : ('= ' + ccFmtShort(Number(v)));
+    }
+  }
+  function ccGetMoney(id) {
+    var el = document.getElementById(id);
+    if (!el) return 0;
+    return Number(el.value.replace(/[^0-9]/g, '')) || 0;
+  }
+  function ccFmtRate(r) {
+    return (r >= 0 ? '+' : '') + r.toFixed(2) + '%';
+  }
+  // 4桁区切り(万/億/兆) — 中国語圏と同じ「境界を丸めてから桁を判定」方式。
+  // 例: 99,999,999.6 が四捨五入で1億に達する場合、億ではなく次の桁へ繰り上げる。
+  function ccFmtShort(n) {
+    var sign = n < 0 ? '-' : '';
+    var abs = Math.abs(n);
+    if (abs >= 1e12 || Math.round((abs / 1e8) * 100) / 100 >= 10000) {
+      return sign + '$' + ccTrimDecimals((abs / 1e12).toFixed(2)) + '兆';
+    }
+    if (abs >= 1e8 || Math.round((abs / 1e4) * 100) / 100 >= 10000) {
+      return sign + '$' + ccTrimDecimals((abs / 1e8).toFixed(2)) + '億';
+    }
+    if (abs >= 1e4) {
+      return sign + '$' + ccTrimDecimals((abs / 1e4).toFixed(2)) + '万';
+    }
+    return sign + '$' + Math.round(abs).toLocaleString('en-US');
+  }
+  function ccYTickFmt(v) {
+    var sign = v < 0 ? '-' : '';
+    var abs = Math.abs(v);
+    if (abs >= 1e12 || Math.round((abs / 1e8) * 10) / 10 >= 10000) return sign + '$' + ccTrimDecimals((abs / 1e12).toFixed(1)) + '兆';
+    if (abs >= 1e8 || Math.round((abs / 1e4) * 10) / 10 >= 10000) return sign + '$' + ccTrimDecimals((abs / 1e8).toFixed(1)) + '億';
+    if (abs >= 1e4) return sign + '$' + ccTrimDecimals((abs / 1e4).toFixed(1)) + '万';
+    return sign + '$' + Math.round(abs);
+  }
+  function ccSampleRows(rows, max) {
+    max = max || 100;
+    if (rows.length <= max) return rows;
+    var step = Math.ceil(rows.length / max);
+    var out = [];
+    for (var i = 0; i < rows.length; i += step) out.push(rows[i]);
+    if (out[out.length - 1].t !== rows[rows.length - 1].t) out.push(rows[rows.length - 1]);
+    return out;
+  }
+  function ccIsDark() {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function ccChartTheme() {
+    var dark = ccIsDark();
+    return {
+      grid: dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+      text: dark ? '#98989D' : '#6E6E73',
+      invested: dark ? '#0A84FF' : '#0071E3',
+      profit: dark ? '#30D158' : '#1A7F37'
+    };
+  }
+  function ccCssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function ccReadInputs(w) {
+    return {
+      principal: ccGetMoney('cc-' + w + '-principal'),
+      payment: ccGetMoney('cc-' + w + '-payment'),
+      periods: Number(document.getElementById('cc-' + w + '-periods').value) || 0,
+      rate: Number(document.getElementById('cc-' + w + '-rate').value) || 0,
+      unit: ccUnits[w]
+    };
+  }
+
+  function ccShowError(msg) {
+    document.getElementById('cc-results').innerHTML =
+      '<div class="cc-error-card"><strong>入力エラー</strong><p>' + msg + '</p></div>';
+  }
+
+  function ccBuildSummary(last) {
+    return '<div class="cc-summary-grid">' +
+      '<div class="cc-summary-cell"><div class="cc-summary-label">最終収益率</div><div class="cc-summary-value cc-green">' + ccFmtRate(last.returnRate) + '</div></div>' +
+      '<div class="cc-summary-cell"><div class="cc-summary-label">最終評価額</div><div class="cc-summary-value">' + ccFmtShort(last.total) + '</div></div>' +
+      '<div class="cc-summary-cell"><div class="cc-summary-label">総利益</div><div class="cc-summary-value cc-green">' + ccFmtShort(last.profit) + '</div></div>' +
+      '<div class="cc-summary-cell"><div class="cc-summary-label">総投資額</div><div class="cc-summary-value">' + ccFmtShort(last.invested) + '</div></div>' +
+    '</div>';
+  }
+
+  function ccBuildTable(rows, unit) {
+    var sampled = ccSampleRows(rows, 100);
+    var unitLabel = unit === 'year' ? '年' : (unit === 'month' ? 'ヶ月' : '日');
+    var rowsHtml = sampled.map(function (r) {
+      return '<tr><td>' + r.t + unitLabel + '</td>' +
+        '<td>$' + r.invested.toLocaleString('en-US') + '</td>' +
+        '<td class="cc-green">$' + r.profit.toLocaleString('en-US') + '</td>' +
+        '<td>$' + r.total.toLocaleString('en-US') + '</td>' +
+        '<td>' + ccFmtRate(r.returnRate) + '</td></tr>';
+    }).join('');
+    var note = sampled.length < rows.length
+      ? '<p class="cc-note">全' + rows.length + '期間中' + sampled.length + '件を表示しています。</p>'
+      : '';
+    return '<div class="cc-table-wrap"><table class="cc-table"><thead><tr>' +
+      '<th>期間</th><th>元本(累計)</th><th>利益</th><th>最終評価額</th><th>収益率</th>' +
+      '</tr></thead><tbody>' + rowsHtml + '</tbody></table></div>' + note;
+  }
+
+  function ccRenderBar(canvasId, rows, unit) {
+    var th = ccChartTheme();
+    var sampled = ccSampleRows(rows, 60);
+    var ctx = document.getElementById(canvasId);
+    if (!ctx || typeof Chart === 'undefined') return;
+    if (ctx._ccChart) ctx._ccChart.destroy();
+    ctx._ccChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: sampled.map(function (r) { return String(r.t); }),
+        datasets: [
+          { label: '総投資額', data: sampled.map(function (r) { return r.invested; }), backgroundColor: th.invested, stack: 's' },
+          { label: '利益', data: sampled.map(function (r) { return r.profit; }), backgroundColor: th.profit, stack: 's' }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { color: th.text } },
+          y: { stacked: true, grid: { color: th.grid }, ticks: { color: th.text, callback: function (v) { return ccYTickFmt(v); } } }
+        },
+        plugins: {
+          legend: { labels: { color: th.text } },
+          tooltip: { callbacks: { label: function (c) { return c.dataset.label + ': ' + ccFmtShort(c.parsed.y); } } }
+        }
+      }
+    });
+  }
+
+  function ccRenderLine(canvasId, datasets, labels) {
+    var th = ccChartTheme();
+    var ctx = document.getElementById(canvasId);
+    if (!ctx || typeof Chart === 'undefined') return;
+    if (ctx._ccChart) ctx._ccChart.destroy();
+    ctx._ccChart = new Chart(ctx, {
+      type: 'line',
+      data: { labels: labels, datasets: datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          x: { grid: { display: false }, ticks: { color: th.text } },
+          y: { grid: { color: th.grid }, ticks: { color: th.text, callback: function (v) { return ccYTickFmt(v); } } }
+        },
+        plugins: {
+          legend: { labels: { color: th.text } },
+          tooltip: { callbacks: { label: function (c) { return c.dataset.label + ': ' + ccFmtShort(c.parsed.y); } } }
+        }
+      }
+    });
+  }
+
+  function ccCalculateSingle() {
+    var inp = ccReadInputs('a');
+    if (inp.principal < 1 && inp.payment < 1) { ccShowError('元本または積立額のいずれかは1ドル以上を入力してください。'); return; }
+    if (inp.periods < 1) { ccShowError('投資期間は1以上を入力してください。'); return; }
+    var rows = calcCompound(inp.principal, inp.payment, inp.periods, inp.rate, inp.unit);
+    var last = rows[rows.length - 1];
+    var html = '<h3 class="cc-results-title">計算結果</h3>';
+    html += ccBuildSummary(last);
+    html += '<div class="cc-chart-wrap"><canvas id="cc-chart"></canvas></div>';
+    html += '<h4 class="cc-results-subtitle">年別の内訳</h4>';
+    html += ccBuildTable(rows, inp.unit);
+    document.getElementById('cc-results').innerHTML = html;
+    ccRenderBar('cc-chart', rows, inp.unit);
+  }
+
+  function ccCalculateCompare() {
+    var configs = [{ key: 'a', label: '設定A' }];
+    if (document.getElementById('cc-toggle-b').checked) configs.push({ key: 'b', label: '設定B' });
+    if (document.getElementById('cc-toggle-c').checked) configs.push({ key: 'c', label: '設定C' });
+
+    var results = [];
+    for (var i = 0; i < configs.length; i++) {
+      var cfg = configs[i];
+      var inp = ccReadInputs(cfg.key);
+      if (inp.principal < 1 && inp.payment < 1) { ccShowError(cfg.label + ': 元本または積立額のいずれかは1ドル以上を入力してください。'); return; }
+      if (inp.periods < 1) { ccShowError(cfg.label + ': 投資期間は1以上を入力してください。'); return; }
+      var rows = calcCompound(inp.principal, inp.payment, inp.periods, inp.rate, inp.unit);
+      results.push({ cfg: cfg, rows: rows, last: rows[rows.length - 1] });
+    }
+
+    var winner = results[0];
+    var minTotal = results[0].last.total;
+    for (var j = 0; j < results.length; j++) {
+      if (results[j].last.total > winner.last.total) winner = results[j];
+      if (results[j].last.total < minTotal) minTotal = results[j].last.total;
+    }
+    var diff = winner.last.total - minTotal;
+
+    var html = '<h3 class="cc-results-title">比較結果</h3>';
+    html += '<div class="cc-winner-banner">' + winner.cfg.label + 'が最も高い最終評価額です(差額 ' + ccFmtShort(diff) + ')。</div>';
+    html += '<div class="cc-compare-grid">';
+    results.forEach(function (r) {
+      html += '<div class="cc-compare-col"><div class="cc-compare-label">' + r.cfg.label + '</div>' +
+        ccBuildSummary(r.last) + ccBuildTable(r.rows, ccUnits[r.cfg.key]) + '</div>';
+    });
+    html += '</div>';
+    html += '<div class="cc-chart-wrap"><canvas id="cc-chart"></canvas></div>';
+    document.getElementById('cc-results').innerHTML = html;
+
+    var longest = results[0];
+    for (var k = 0; k < results.length; k++) { if (results[k].rows.length > longest.rows.length) longest = results[k]; }
+    var labelRows = ccSampleRows(longest.rows, 60);
+    var labels = labelRows.map(function (r) { return String(r.t); });
+    var colorMap = { a: ccChartTheme().invested, b: ccCssVar('--orange'), c: ccCssVar('--purple') };
+    var datasets = results.map(function (r) {
+      var sampled = ccSampleRows(r.rows, 60);
+      return { label: r.cfg.label + ' 最終評価額', data: sampled.map(function (x) { return x.total; }), borderColor: colorMap[r.cfg.key], backgroundColor: colorMap[r.cfg.key], fill: false, tension: 0.15 };
+    });
+    ccRenderLine('cc-chart', datasets, labels);
+  }
+
+  window.ccCalculate = function () {
+    var bOn = document.getElementById('cc-toggle-b').checked;
+    var cOn = document.getElementById('cc-toggle-c').checked;
+    if (bOn || cOn) { ccCalculateCompare(); } else { ccCalculateSingle(); }
+  };
+
+  window.ccFmtMoney = ccFmtMoney;
+
+  window.ccSetUnit = function (w, val, btn) {
+    ccUnits[w] = val;
+    var group = btn.parentElement;
+    var buttons = group.querySelectorAll('.cc-unit-btn');
+    for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove('active');
+    btn.classList.add('active');
+    document.getElementById('cc-' + w + '-unit-label').textContent = val === 'year' ? '年' : (val === 'month' ? '月' : '日');
+  };
+
+  window.ccToggleB = function () {
+    document.getElementById('cc-card-b').style.display = document.getElementById('cc-toggle-b').checked ? 'block' : 'none';
+  };
+  window.ccToggleC = function () {
+    document.getElementById('cc-card-c').style.display = document.getElementById('cc-toggle-c').checked ? 'block' : 'none';
+  };
+
+  function ccResetDefaults(w, principal, payment, periods, rate) {
+    document.getElementById('cc-' + w + '-principal').value = principal.toLocaleString('en-US');
+    document.getElementById('cc-' + w + '-payment').value = payment.toLocaleString('en-US');
+    document.getElementById('cc-' + w + '-periods').value = periods;
+    document.getElementById('cc-' + w + '-rate').value = rate;
+    var pd = document.getElementById('cc-' + w + '-principal-disp');
+    if (pd) pd.textContent = principal > 0 ? ('= ' + ccFmtShort(principal)) : '';
+    var yd = document.getElementById('cc-' + w + '-payment-disp');
+    if (yd) yd.textContent = payment > 0 ? ('= ' + ccFmtShort(payment)) : '';
+  }
+  window.ccResetAll = function () {
+    ccResetDefaults('a', 10000, 0, 20, 10);
+    ccResetDefaults('b', 10000, 0, 20, 7);
+    ccResetDefaults('c', 10000, 0, 20, 14);
+    document.getElementById('cc-toggle-b').checked = false;
+    document.getElementById('cc-toggle-c').checked = false;
+    document.getElementById('cc-card-b').style.display = 'none';
+    document.getElementById('cc-card-c').style.display = 'none';
+    document.getElementById('cc-results').innerHTML = '';
+    window.ccCalculate();
+  };
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter') return;
+    var active = document.activeElement;
+    if (active && active.closest && active.closest('#calculator') && active.tagName === 'INPUT') {
+      e.preventDefault();
+      window.ccCalculate();
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    ccResetDefaults('a', 10000, 0, 20, 10);
+    ccResetDefaults('b', 10000, 0, 20, 7);
+    ccResetDefaults('c', 10000, 0, 20, 14);
+    window.ccCalculate();
+  });
+})();
+</script>
 
 <!-- ── 네이티브 앱 웹뷰 감지: ?embed=app 신호 처리 (2026-07-28) ── -->
 <script>

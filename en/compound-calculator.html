@@ -85,11 +85,12 @@
       --bg: #F5F5F7; --surface: #FFFFFF; --text: #1D1D1F;
       --text2: #424245; --text3: #6E6E73; --border: #D2D2D7;
       --blue: #0071E3; --blue-lt: #0064CC; --green: #1A7F37;
+      --orange: #C2410C; --purple: #7C3AED; --red: #D70015; --field-bg: #F5F5F7;
       --r: 12px; --max-w: 860px;
       --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     }
     @media (prefers-color-scheme: dark) {
-      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158; }
+      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158; --orange:#FF9F0A; --purple:#BF5AF2; --red:#FF453A; --field-bg:#2C2C2E; }
     }
     html { scroll-behavior: smooth; }
     body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.65; }
@@ -99,12 +100,12 @@
     .en-nav-right { display:flex; gap:20px; align-items:center; }
     .en-nav-link { font-size:14px; color:var(--blue); text-decoration:none; font-weight:500; }
     .en-nav-link:hover { text-decoration:underline; }
-    .breadcrumb { max-width:var(--max-w); margin:0 auto; padding:14px 24px 0; font-size:13px; color:var(--text3); }
+    .breadcrumb { max-width:var(--max-w); margin:0 auto; padding:14px 24px 0; font-size:14px; color:var(--text3); }
     .breadcrumb a { color:var(--blue); text-decoration:none; }
     .breadcrumb a:hover { text-decoration:underline; }
     .breadcrumb span { margin:0 6px; }
     .hero { background:var(--surface); border-bottom:1px solid var(--border); padding:64px 24px 52px; text-align:center; }
-    .hero-badge { display:inline-block; background:#E8F5E9; color:var(--green); font-size:11px; font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:18px; }
+    .hero-badge { display:inline-block; background:#E8F5E9; color:var(--green); font-size:14px; font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:18px; }
     @media (prefers-color-scheme: dark) { .hero-badge { background:#0A3D1C; color:#30D158; } }
     .hero h1 { font-size:clamp(26px,5vw,44px); font-weight:700; letter-spacing:-0.03em; line-height:1.1; margin-bottom:14px; color:var(--text); }
     .hero-sub { font-size:clamp(15px,2.2vw,18px); color:var(--text3); margin-bottom:30px; max-width:620px; margin-left:auto; margin-right:auto; }
@@ -121,7 +122,7 @@
     .stats-row { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; background:var(--surface); border-bottom:1px solid var(--border); padding:24px; }
     .stat-item { text-align:center; }
     .stat-value { font-size:22px; font-weight:700; color:var(--blue); letter-spacing:-0.02em; }
-    .stat-label { font-size:12px; color:var(--text3); margin-top:2px; }
+    .stat-label { font-size:14px; color:var(--text3); margin-top:2px; }
     .main { max-width:var(--max-w); margin:0 auto; padding:56px 24px; }
     .section { margin-bottom:56px; }
     .section-title { font-size:22px; font-weight:700; letter-spacing:-0.02em; margin-bottom:16px; color:var(--text); }
@@ -150,6 +151,61 @@
     .en-footer a { color:var(--blue); text-decoration:none; }
     .en-footer a:hover { text-decoration:underline; }
     @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+
+    /* ── Interactive calculator (cc-*) ── */
+    .cc-section { margin-bottom:56px; }
+    .cc-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:24px; margin-bottom:16px; border-left:4px solid var(--blue); }
+    .cc-card-b { border-left-color:var(--orange); }
+    .cc-card-c { border-left-color:var(--purple); }
+    .cc-card-title { font-size:15px; font-weight:700; color:var(--text); margin-bottom:16px; letter-spacing:-0.01em; }
+    .cc-field { margin-bottom:14px; }
+    .cc-field:last-child { margin-bottom:0; }
+    .cc-label { display:block; font-size:14px; font-weight:600; color:var(--text2); margin-bottom:6px; }
+    .cc-input-row { display:flex; align-items:center; background:var(--field-bg); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+    .cc-prefix, .cc-suffix { font-size:15px; font-weight:600; color:var(--text3); padding:0 12px; flex-shrink:0; }
+    .cc-input { flex:1; min-width:0; border:none; background:transparent; font-size:16px; font-weight:600; color:var(--text); padding:12px 10px; font-family:var(--font); }
+    .cc-input:focus { outline:2px solid var(--blue); outline-offset:-2px; }
+    .cc-unit-toggle { display:flex; gap:6px; margin-top:8px; }
+    .cc-unit-btn { flex:1; font-size:14px; font-weight:600; color:var(--text2); background:var(--field-bg); border:1px solid var(--border); border-radius:8px; padding:8px 6px; cursor:pointer; font-family:var(--font); }
+    .cc-unit-btn.active { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .cc-toggle-row { display:flex; align-items:center; gap:8px; font-size:15px; font-weight:600; color:var(--text2); margin:4px 0 12px; cursor:pointer; }
+    .cc-toggle-row input { width:17px; height:17px; accent-color:var(--blue); cursor:pointer; }
+    .cc-btn-row { display:flex; gap:10px; margin-top:20px; }
+    .cc-btn-calc { flex:1; background:var(--blue); color:#fff; border:none; border-radius:10px; padding:15px; font-size:16px; font-weight:700; cursor:pointer; font-family:var(--font); transition:background .15s; }
+    .cc-btn-calc:hover { background:var(--blue-lt); }
+    .cc-btn-reset { background:transparent; color:var(--text2); border:1.5px solid var(--border); border-radius:10px; padding:15px 20px; font-size:15px; font-weight:600; cursor:pointer; font-family:var(--font); }
+    .cc-btn-reset:hover { border-color:var(--text3); }
+    .cc-results { margin-top:28px; }
+    .cc-results-title { font-size:19px; font-weight:700; color:var(--text); margin-bottom:14px; }
+    .cc-results-subtitle { font-size:16px; font-weight:700; color:var(--text); margin:26px 0 12px; }
+    .cc-summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+    .cc-summary-cell { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 10px; text-align:center; }
+    .cc-summary-label { font-size:14px; color:var(--text3); margin-bottom:6px; }
+    .cc-summary-value { font-size:18px; font-weight:700; color:var(--text); letter-spacing:-0.01em; }
+    .cc-summary-value.cc-green { color:var(--green); }
+    .cc-chart-wrap { position:relative; height:280px; margin-top:22px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:16px; }
+    .cc-table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:var(--r); }
+    .cc-table { width:100%; border-collapse:collapse; font-size:14px; min-width:520px; }
+    .cc-table th { background:var(--field-bg); color:var(--text2); font-weight:700; text-align:right; padding:10px 12px; border-bottom:1px solid var(--border); white-space:nowrap; }
+    .cc-table th:first-child { text-align:left; }
+    .cc-table td { text-align:right; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text); white-space:nowrap; }
+    .cc-table td:first-child { text-align:left; color:var(--text2); }
+    .cc-table td.cc-green { color:var(--green); }
+    .cc-table tr:last-child td { border-bottom:none; }
+    .cc-note { font-size:14px; color:var(--text3); margin-top:10px; }
+    .cc-error-card { background:var(--surface); border:1.5px solid var(--red); border-radius:var(--r); padding:18px 20px; }
+    .cc-error-card strong { display:block; font-size:15px; color:var(--red); margin-bottom:6px; }
+    .cc-error-card p { font-size:15px; color:var(--text2); }
+    .cc-winner-banner { background:var(--surface); border:1.5px solid var(--green); border-radius:10px; padding:14px 18px; font-size:15px; font-weight:600; color:var(--text); margin-bottom:20px; }
+    .cc-compare-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-bottom:20px; }
+    .cc-compare-col { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:16px; }
+    .cc-compare-label { font-size:15px; font-weight:700; color:var(--text); margin-bottom:12px; }
+    .cc-compare-col .cc-summary-grid { grid-template-columns:repeat(2,1fr); }
+    .cc-compare-col .cc-table-wrap { margin-top:14px; }
+    @media (max-width:600px) {
+      .cc-summary-grid { grid-template-columns:repeat(2,1fr); }
+      .cc-btn-row { flex-direction:column; }
+    }
   </style>
 </head>
 <body>
@@ -168,11 +224,10 @@
     <h1>Compound Interest Calculator</h1>
     <p class="hero-sub">Calculate exactly how a lump-sum investment grows year by year with compound returns</p>
     <div class="cta-group">
-      <a class="btn-primary" href="https://ezlong.com/compound-calculator.html" target="_blank" rel="noopener">Open Tool &rarr;</a>
+      <a class="btn-primary" href="#calculator">Try It Free &darr;</a>
       <a class="btn-secondary" href="https://ezlong.com/en/">Browse All Tools</a>
     </div>
-    <p class="auto-translate-note">Tool UI is in Korean &mdash; Chrome, Edge &amp; Safari auto-translate automatically.</p>
-    <p class="translate-proxy-note">Translation not showing automatically? <a href="https://ezlong-com.translate.goog/compound-calculator.html?_x_tr_sl=ko&amp;_x_tr_tl=en&amp;_x_tr_hl=en&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Open with Google Translate &rarr;</a></p>
+    <p class="auto-translate-note">Fully in English &mdash; no login, no download, results in seconds.</p>
   </section>
   <div class="stats-row" role="region" aria-label="Key statistics">
     <div class="stat-item"><div class="stat-value">17x growth</div><div class="stat-label">$10K to $174K at 10% / 30yr</div></div>
@@ -180,6 +235,93 @@
     <div class="stat-item"><div class="stat-value">100% free</div><div class="stat-label">no account needed</div></div>
   </div>
   <main class="main" id="main-content">
+    <section class="section cc-section" id="calculator">
+      <h2 class="section-title">Try It Now</h2>
+      <div class="cc-card" id="cc-card-a">
+        <div class="cc-card-title">Setting A</div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-a-principal">Initial Investment</label>
+          <div class="cc-input-row"><span class="cc-prefix">$</span><input class="cc-input" id="cc-a-principal" inputmode="numeric" value="10,000" oninput="ccFmtMoney(this)"></div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-a-payment">Recurring Contribution</label>
+          <div class="cc-input-row"><span class="cc-prefix">$</span><input class="cc-input" id="cc-a-payment" inputmode="numeric" value="0" oninput="ccFmtMoney(this)"></div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-a-periods">Time Period</label>
+          <div class="cc-input-row"><input class="cc-input" id="cc-a-periods" inputmode="numeric" value="20"><span class="cc-suffix" id="cc-a-unit-label">Years</span></div>
+          <div class="cc-unit-toggle" role="group" aria-label="Period unit for Setting A">
+            <button type="button" class="cc-unit-btn active" onclick="ccSetUnit('a','year',this)">Years</button>
+            <button type="button" class="cc-unit-btn" onclick="ccSetUnit('a','month',this)">Months</button>
+            <button type="button" class="cc-unit-btn" onclick="ccSetUnit('a','day',this)">Days</button>
+          </div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-a-rate">Annual Return Rate</label>
+          <div class="cc-input-row"><input class="cc-input" id="cc-a-rate" inputmode="decimal" value="10"><span class="cc-suffix">%</span></div>
+        </div>
+      </div>
+
+      <label class="cc-toggle-row"><input type="checkbox" id="cc-toggle-b" onchange="ccToggleB()"> Add Comparison B</label>
+      <div class="cc-card cc-card-b" id="cc-card-b" style="display:none">
+        <div class="cc-card-title">Setting B</div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-b-principal">Initial Investment</label>
+          <div class="cc-input-row"><span class="cc-prefix">$</span><input class="cc-input" id="cc-b-principal" inputmode="numeric" value="10,000" oninput="ccFmtMoney(this)"></div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-b-payment">Recurring Contribution</label>
+          <div class="cc-input-row"><span class="cc-prefix">$</span><input class="cc-input" id="cc-b-payment" inputmode="numeric" value="0" oninput="ccFmtMoney(this)"></div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-b-periods">Time Period</label>
+          <div class="cc-input-row"><input class="cc-input" id="cc-b-periods" inputmode="numeric" value="20"><span class="cc-suffix" id="cc-b-unit-label">Years</span></div>
+          <div class="cc-unit-toggle" role="group" aria-label="Period unit for Setting B">
+            <button type="button" class="cc-unit-btn active" onclick="ccSetUnit('b','year',this)">Years</button>
+            <button type="button" class="cc-unit-btn" onclick="ccSetUnit('b','month',this)">Months</button>
+            <button type="button" class="cc-unit-btn" onclick="ccSetUnit('b','day',this)">Days</button>
+          </div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-b-rate">Annual Return Rate</label>
+          <div class="cc-input-row"><input class="cc-input" id="cc-b-rate" inputmode="decimal" value="7"><span class="cc-suffix">%</span></div>
+        </div>
+      </div>
+
+      <label class="cc-toggle-row"><input type="checkbox" id="cc-toggle-c" onchange="ccToggleC()"> Add Comparison C</label>
+      <div class="cc-card cc-card-c" id="cc-card-c" style="display:none">
+        <div class="cc-card-title">Setting C</div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-c-principal">Initial Investment</label>
+          <div class="cc-input-row"><span class="cc-prefix">$</span><input class="cc-input" id="cc-c-principal" inputmode="numeric" value="10,000" oninput="ccFmtMoney(this)"></div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-c-payment">Recurring Contribution</label>
+          <div class="cc-input-row"><span class="cc-prefix">$</span><input class="cc-input" id="cc-c-payment" inputmode="numeric" value="0" oninput="ccFmtMoney(this)"></div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-c-periods">Time Period</label>
+          <div class="cc-input-row"><input class="cc-input" id="cc-c-periods" inputmode="numeric" value="20"><span class="cc-suffix" id="cc-c-unit-label">Years</span></div>
+          <div class="cc-unit-toggle" role="group" aria-label="Period unit for Setting C">
+            <button type="button" class="cc-unit-btn active" onclick="ccSetUnit('c','year',this)">Years</button>
+            <button type="button" class="cc-unit-btn" onclick="ccSetUnit('c','month',this)">Months</button>
+            <button type="button" class="cc-unit-btn" onclick="ccSetUnit('c','day',this)">Days</button>
+          </div>
+        </div>
+        <div class="cc-field">
+          <label class="cc-label" for="cc-c-rate">Annual Return Rate</label>
+          <div class="cc-input-row"><input class="cc-input" id="cc-c-rate" inputmode="decimal" value="14"><span class="cc-suffix">%</span></div>
+        </div>
+      </div>
+
+      <div class="cc-btn-row">
+        <button type="button" class="cc-btn-calc" id="cc-btn-calc" onclick="ccCalculate()">Calculate</button>
+        <button type="button" class="cc-btn-reset" onclick="ccResetAll()">Reset</button>
+      </div>
+
+      <div class="cc-results" id="cc-results"></div>
+    </section>
+
     <section class="section">
       <h2 class="section-title">What is Compound Interest Calculator?</h2>
       <p class="section-body">The Compound Interest Calculator is the simplest and most fundamental tool for any long-term investor. Enter your initial investment, the expected annual return rate, and the number of years — and the calculator shows you exactly how your money grows year by year through compound returns.</p>
@@ -284,9 +426,8 @@
     </section>
     <div class="cta-card">
       <h2>Try Compound Interest Calculator Now</h2>
-      <p>Free, no sign-up, runs instantly in your browser. Chrome auto-translates Korean to English.</p>
-      <a class="btn-white" href="https://ezlong.com/compound-calculator.html" target="_blank" rel="noopener">Open Compound Interest Calculator &rarr;</a>
-      <p class="translate-proxy-note">Translation not showing automatically? <a href="https://ezlong-com.translate.goog/compound-calculator.html?_x_tr_sl=ko&amp;_x_tr_tl=en&amp;_x_tr_hl=en&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Open with Google Translate &rarr;</a></p>
+      <p>Free, no sign-up, runs instantly in your browser — fully in English.</p>
+      <a class="btn-white" href="#calculator">Scroll Up to the Calculator &uarr;</a>
     </div>
   </main>
   <footer class="en-footer" role="contentinfo">
@@ -294,6 +435,312 @@
     &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
     <small>Educational tools only. Not financial advice. All investments carry risk. Past performance does not guarantee future results.</small></p>
   </footer>
+
+<!-- ── Interactive compound interest calculator (2026-07-28) ── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  // ── Core math engine — DO NOT change formula logic. Ported byte-for-byte
+  //    from the Korean original (compound-calculator.html); only the unit
+  //    discriminator strings changed from '연'/'월'/'일' to 'year'/'month'/'day'.
+  function calcCompound(principal, payment, periods, annualRate, unit) {
+    var rp;
+    if      (unit === 'year')  rp = annualRate / 100;
+    else if (unit === 'month') rp = annualRate / 100 / 12;
+    else                       rp = annualRate / 100 / 365;
+    var rows = [];
+    for (var t = 1; t <= periods; t++) {
+      var invested = principal + payment * t;
+      var total;
+      if (rp === 0) {
+        total = invested;
+      } else {
+        var f = Math.pow(1 + rp, t);
+        total = principal * f + (payment > 0 ? payment * (f - 1) / rp : 0);
+      }
+      total = Math.max(total, 0);
+      var profit = total - invested;
+      var returnRate = invested > 0 ? (total / invested - 1) * 100 : 0;
+      rows.push({ t: t, invested: Math.round(invested), profit: Math.round(profit), total: Math.round(total), returnRate: returnRate });
+    }
+    return rows;
+  }
+  window.calcCompound = calcCompound; // exposed for independent numeric-fidelity testing
+
+  var ccUnits = { a: 'year', b: 'year', c: 'year' };
+
+  function ccFmtMoney(input) {
+    var v = input.value.replace(/[^0-9]/g, '');
+    input.value = v === '' ? '' : Number(v).toLocaleString('en-US');
+  }
+  function ccGetMoney(id) {
+    var el = document.getElementById(id);
+    if (!el) return 0;
+    return Number(el.value.replace(/[^0-9]/g, '')) || 0;
+  }
+  function ccFmtRate(r) {
+    return (r >= 0 ? '+' : '') + r.toFixed(2) + '%';
+  }
+  function ccFmtShort(n) {
+    // Rounding-aware tier boundary: a raw value just under 1e9 (e.g. 999,999,999)
+    // must not render as "$1000.00M" — check the ROUNDED M-display, not the raw value.
+    var sign = n < 0 ? '-' : '';
+    var abs = Math.abs(n);
+    var asM = abs / 1e6;
+    var asB = abs / 1e9;
+    if (abs >= 1e9 || Math.round(asM * 100) / 100 >= 1000) return sign + '$' + asB.toFixed(2) + 'B';
+    if (abs >= 1e6) return sign + '$' + asM.toFixed(2) + 'M';
+    return sign + '$' + Math.round(abs).toLocaleString('en-US');
+  }
+  function ccYTickFmt(v) {
+    // Same rounding-aware boundary fix applied to the chart axis formatter,
+    // now with all three tiers (K→M→B) — the earlier fix only covered K→M
+    // and left large values (>=1e9) stuck at "M", e.g. "1000.0M" instead of "1.00B".
+    var sign = v < 0 ? '-' : '';
+    var abs = Math.abs(v);
+    var asK = abs / 1e3;
+    var asM = abs / 1e6;
+    var asB = abs / 1e9;
+    if (abs >= 1e9 || Math.round(asM * 10) / 10 >= 1000) return sign + '$' + asB.toFixed(1) + 'B';
+    if (abs >= 1e6 || Math.round(asK) >= 1000) return sign + '$' + asM.toFixed(1) + 'M';
+    if (abs >= 1e3) return sign + '$' + asK.toFixed(0) + 'K';
+    return sign + '$' + Math.round(abs);
+  }
+  function ccSampleRows(rows, max) {
+    max = max || 100;
+    if (rows.length <= max) return rows;
+    var step = Math.ceil(rows.length / max);
+    var out = [];
+    for (var i = 0; i < rows.length; i += step) out.push(rows[i]);
+    if (out[out.length - 1].t !== rows[rows.length - 1].t) out.push(rows[rows.length - 1]);
+    return out;
+  }
+  function ccIsDark() {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function ccChartTheme() {
+    var dark = ccIsDark();
+    return {
+      grid: dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+      text: dark ? '#98989D' : '#6E6E73',
+      invested: dark ? '#0A84FF' : '#0071E3',
+      profit: dark ? '#30D158' : '#1A7F37'
+    };
+  }
+  function ccCssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function ccReadInputs(w) {
+    return {
+      principal: ccGetMoney('cc-' + w + '-principal'),
+      payment: ccGetMoney('cc-' + w + '-payment'),
+      periods: Number(document.getElementById('cc-' + w + '-periods').value) || 0,
+      rate: Number(document.getElementById('cc-' + w + '-rate').value) || 0,
+      unit: ccUnits[w]
+    };
+  }
+
+  function ccShowError(msg) {
+    document.getElementById('cc-results').innerHTML =
+      '<div class="cc-error-card"><strong>Input Error</strong><p>' + msg + '</p></div>';
+  }
+
+  function ccBuildSummary(last) {
+    return '<div class="cc-summary-grid">' +
+      '<div class="cc-summary-cell"><div class="cc-summary-label">Final Return</div><div class="cc-summary-value cc-green">' + ccFmtRate(last.returnRate) + '</div></div>' +
+      '<div class="cc-summary-cell"><div class="cc-summary-label">Final Value</div><div class="cc-summary-value">' + ccFmtShort(last.total) + '</div></div>' +
+      '<div class="cc-summary-cell"><div class="cc-summary-label">Total Profit</div><div class="cc-summary-value cc-green">' + ccFmtShort(last.profit) + '</div></div>' +
+      '<div class="cc-summary-cell"><div class="cc-summary-label">Total Invested</div><div class="cc-summary-value">' + ccFmtShort(last.invested) + '</div></div>' +
+    '</div>';
+  }
+
+  function ccBuildTable(rows, unit) {
+    var sampled = ccSampleRows(rows, 100);
+    var unitLabel = unit === 'year' ? 'Yr' : (unit === 'month' ? 'Mo' : 'Day');
+    var rowsHtml = sampled.map(function (r) {
+      return '<tr><td>' + r.t + ' ' + unitLabel + '</td>' +
+        '<td>$' + r.invested.toLocaleString('en-US') + '</td>' +
+        '<td class="cc-green">$' + r.profit.toLocaleString('en-US') + '</td>' +
+        '<td>$' + r.total.toLocaleString('en-US') + '</td>' +
+        '<td>' + ccFmtRate(r.returnRate) + '</td></tr>';
+    }).join('');
+    var note = sampled.length < rows.length
+      ? '<p class="cc-note">Showing ' + sampled.length + ' of ' + rows.length + ' periods.</p>'
+      : '';
+    return '<div class="cc-table-wrap"><table class="cc-table"><thead><tr>' +
+      '<th>Period</th><th>Invested (Cumulative)</th><th>Profit</th><th>Final Value</th><th>Return</th>' +
+      '</tr></thead><tbody>' + rowsHtml + '</tbody></table></div>' + note;
+  }
+
+  function ccRenderBar(canvasId, rows, unit) {
+    var th = ccChartTheme();
+    var sampled = ccSampleRows(rows, 60);
+    var ctx = document.getElementById(canvasId);
+    if (!ctx || typeof Chart === 'undefined') return;
+    if (ctx._ccChart) ctx._ccChart.destroy();
+    ctx._ccChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: sampled.map(function (r) { return String(r.t); }),
+        datasets: [
+          { label: 'Total Invested', data: sampled.map(function (r) { return r.invested; }), backgroundColor: th.invested, stack: 's' },
+          { label: 'Profit', data: sampled.map(function (r) { return r.profit; }), backgroundColor: th.profit, stack: 's' }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { color: th.text } },
+          y: { stacked: true, grid: { color: th.grid }, ticks: { color: th.text, callback: function (v) { return ccYTickFmt(v); } } }
+        },
+        plugins: {
+          legend: { labels: { color: th.text } },
+          tooltip: { callbacks: { label: function (c) { return c.dataset.label + ': $' + c.parsed.y.toLocaleString('en-US'); } } }
+        }
+      }
+    });
+  }
+
+  function ccRenderLine(canvasId, datasets, labels) {
+    var th = ccChartTheme();
+    var ctx = document.getElementById(canvasId);
+    if (!ctx || typeof Chart === 'undefined') return;
+    if (ctx._ccChart) ctx._ccChart.destroy();
+    ctx._ccChart = new Chart(ctx, {
+      type: 'line',
+      data: { labels: labels, datasets: datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          x: { grid: { display: false }, ticks: { color: th.text } },
+          y: { grid: { color: th.grid }, ticks: { color: th.text, callback: function (v) { return ccYTickFmt(v); } } }
+        },
+        plugins: {
+          legend: { labels: { color: th.text } },
+          tooltip: { callbacks: { label: function (c) { return c.dataset.label + ': $' + c.parsed.y.toLocaleString('en-US'); } } }
+        }
+      }
+    });
+  }
+
+  function ccCalculateSingle() {
+    var inp = ccReadInputs('a');
+    if (inp.principal < 1 && inp.payment < 1) { ccShowError('Either the initial investment or the recurring contribution must be at least $1.'); return; }
+    if (inp.periods < 1) { ccShowError('Time period must be at least 1.'); return; }
+    var rows = calcCompound(inp.principal, inp.payment, inp.periods, inp.rate, inp.unit);
+    var last = rows[rows.length - 1];
+    var html = '<h3 class="cc-results-title">Results</h3>';
+    html += ccBuildSummary(last);
+    html += '<div class="cc-chart-wrap"><canvas id="cc-chart"></canvas></div>';
+    html += '<h4 class="cc-results-subtitle">Year-by-Year Breakdown</h4>';
+    html += ccBuildTable(rows, inp.unit);
+    document.getElementById('cc-results').innerHTML = html;
+    ccRenderBar('cc-chart', rows, inp.unit);
+  }
+
+  function ccCalculateCompare() {
+    var configs = [{ key: 'a', label: 'Setting A' }];
+    if (document.getElementById('cc-toggle-b').checked) configs.push({ key: 'b', label: 'Setting B' });
+    if (document.getElementById('cc-toggle-c').checked) configs.push({ key: 'c', label: 'Setting C' });
+
+    var results = [];
+    for (var i = 0; i < configs.length; i++) {
+      var cfg = configs[i];
+      var inp = ccReadInputs(cfg.key);
+      if (inp.principal < 1 && inp.payment < 1) { ccShowError(cfg.label + ': either the initial investment or the recurring contribution must be at least $1.'); return; }
+      if (inp.periods < 1) { ccShowError(cfg.label + ': time period must be at least 1.'); return; }
+      var rows = calcCompound(inp.principal, inp.payment, inp.periods, inp.rate, inp.unit);
+      results.push({ cfg: cfg, rows: rows, last: rows[rows.length - 1] });
+    }
+
+    var winner = results[0];
+    var minTotal = results[0].last.total;
+    for (var j = 0; j < results.length; j++) {
+      if (results[j].last.total > winner.last.total) winner = results[j];
+      if (results[j].last.total < minTotal) minTotal = results[j].last.total;
+    }
+    var diff = winner.last.total - minTotal;
+
+    var html = '<h3 class="cc-results-title">Comparison Results</h3>';
+    html += '<div class="cc-winner-banner">' + winner.cfg.label + ' has the highest final value, by ' + ccFmtShort(diff) + '.</div>';
+    html += '<div class="cc-compare-grid">';
+    results.forEach(function (r) {
+      html += '<div class="cc-compare-col"><div class="cc-compare-label">' + r.cfg.label + '</div>' +
+        ccBuildSummary(r.last) + ccBuildTable(r.rows, r.cfg.key ? ccUnits[r.cfg.key] : 'year') + '</div>';
+    });
+    html += '</div>';
+    html += '<div class="cc-chart-wrap"><canvas id="cc-chart"></canvas></div>';
+    document.getElementById('cc-results').innerHTML = html;
+
+    var longest = results[0];
+    for (var k = 0; k < results.length; k++) { if (results[k].rows.length > longest.rows.length) longest = results[k]; }
+    var labelRows = ccSampleRows(longest.rows, 60);
+    var labels = labelRows.map(function (r) { return String(r.t); });
+    var colorMap = { a: ccChartTheme().invested, b: ccCssVar('--orange'), c: ccCssVar('--purple') };
+    var datasets = results.map(function (r) {
+      var sampled = ccSampleRows(r.rows, 60);
+      return { label: r.cfg.label + ' Final Value', data: sampled.map(function (x) { return x.total; }), borderColor: colorMap[r.cfg.key], backgroundColor: colorMap[r.cfg.key], fill: false, tension: 0.15 };
+    });
+    ccRenderLine('cc-chart', datasets, labels);
+  }
+
+  window.ccCalculate = function () {
+    var bOn = document.getElementById('cc-toggle-b').checked;
+    var cOn = document.getElementById('cc-toggle-c').checked;
+    if (bOn || cOn) { ccCalculateCompare(); } else { ccCalculateSingle(); }
+  };
+
+  window.ccFmtMoney = ccFmtMoney;
+
+  window.ccSetUnit = function (w, val, btn) {
+    ccUnits[w] = val;
+    var group = btn.parentElement;
+    var buttons = group.querySelectorAll('.cc-unit-btn');
+    for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove('active');
+    btn.classList.add('active');
+    document.getElementById('cc-' + w + '-unit-label').textContent = val === 'year' ? 'Years' : (val === 'month' ? 'Months' : 'Days');
+  };
+
+  window.ccToggleB = function () {
+    document.getElementById('cc-card-b').style.display = document.getElementById('cc-toggle-b').checked ? 'block' : 'none';
+  };
+  window.ccToggleC = function () {
+    document.getElementById('cc-card-c').style.display = document.getElementById('cc-toggle-c').checked ? 'block' : 'none';
+  };
+
+  function ccResetDefaults(w, principal, payment, periods, rate) {
+    document.getElementById('cc-' + w + '-principal').value = principal.toLocaleString('en-US');
+    document.getElementById('cc-' + w + '-payment').value = payment.toLocaleString('en-US');
+    document.getElementById('cc-' + w + '-periods').value = periods;
+    document.getElementById('cc-' + w + '-rate').value = rate;
+  }
+  window.ccResetAll = function () {
+    ccResetDefaults('a', 10000, 0, 20, 10);
+    ccResetDefaults('b', 10000, 0, 20, 7);
+    ccResetDefaults('c', 10000, 0, 20, 14);
+    document.getElementById('cc-toggle-b').checked = false;
+    document.getElementById('cc-toggle-c').checked = false;
+    document.getElementById('cc-card-b').style.display = 'none';
+    document.getElementById('cc-card-c').style.display = 'none';
+    document.getElementById('cc-results').innerHTML = '';
+    window.ccCalculate();
+  };
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter') return;
+    var active = document.activeElement;
+    if (active && active.closest && active.closest('#calculator') && active.tagName === 'INPUT') {
+      e.preventDefault();
+      window.ccCalculate();
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function () { window.ccCalculate(); });
+})();
+</script>
 
 <!-- ── 네이티브 앱 웹뷰 감지: ?embed=app 신호 처리 (2026-07-28) ── -->
 <script>
