@@ -265,5 +265,23 @@
     &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
     <small>Apenas ferramentas educacionais. Não é aconselhamento financeiro. Todo investimento envolve risco. Desempenho passado não garante resultados futuros.</small></p>
   </footer>
+
+<!-- ── 네이티브 앱 웹뷰 감지: ?embed=app 신호 처리 (2026-07-28) ── -->
+<script>
+(function(){
+  try {
+    var qp = new URLSearchParams(location.search).get('embed') === 'app';
+    if (qp) { try { sessionStorage.setItem('ezlong_embed', '1'); } catch(e) {} }
+    var embedded = qp || (function(){ try { return sessionStorage.getItem('ezlong_embed') === '1'; } catch(e) { return false; } })();
+    if (!embedded) return;
+    var proxyLink = document.querySelector('.translate-proxy-note a');
+    if (!proxyLink) return;
+    var proxyHref = proxyLink.getAttribute('href');
+    document.querySelectorAll('a.btn-primary, a.btn-white').forEach(function(a){
+      a.setAttribute('href', proxyHref);
+    });
+  } catch(e) {}
+})();
+</script>
 </body>
 </html>
