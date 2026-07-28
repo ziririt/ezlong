@@ -2289,11 +2289,37 @@ function resetQuoteWindow() {
 // 2026-07-22 재설계: 투자서/문학·교양서 1depth + 각자의 세부 카테고리
 // 2단 구조를 없애고, 평평한 단일 목록(flatGenreLabels) 하나로 필터링한다.
 // "비어있으면 전체 통과, 아니면 선택된 것만" 규칙은 기존과 동일하게 유지.
+// 2026-07-28 글로벌화 W8-b — 영어 화면의 문장 "풀" 자체를 거른다.
+//
+// W8 에서 렌더 단계는 이미 고쳤다: 영어 화면이면 english 원문을 본문
+// 자리로 올리고, 없으면 quote.text(한국어)로 떨어진다. 그런데 그 폴백은
+// 영어 사용자에게 **읽을 수 없는 한국어 한 판**이다 — 1,109개 중 202개
+// (18%)가 여기 해당한다(류시화·이기주·장영희 등 한국 저자, 일본서의
+// 한국어 번역본 등 애초에 영문 원문이 존재하지 않는 책들).
+//
+// 그래서 뽑기 단계에서 아예 제외한다. 남는 907개는 그레이엄·버핏·멍거
+// 같은 영문 원전이라 영어권 사용자에게 오히려 더 잘 맞는다.
+//
+// ★ 한국어 화면은 이 게이트를 통과하지 않는다 ★ — koMode 일 때는 예전
+// 필터식 그대로라, 성동님이 보시는 화면의 문장 풀은 1,109개 전부 유지된다.
 function getEligibleQuotes() {
-  return quotes.filter((quote) => {
+  const koMode = isKoreanLocale();
+  const filtered = quotes.filter((quote) => {
     const key = getQuoteFlatGenreKey(quote);
-    return selectedFlatGenres.size === 0 || selectedFlatGenres.has(key);
+    if (selectedFlatGenres.size > 0 && !selectedFlatGenres.has(key)) return false;
+    if (!koMode && !(quote.english && String(quote.english).trim())) return false;
+    return true;
   });
+  // 안전망: 장르 조합에 영문 원문 있는 문장이 하나도 없는 경우에도 문장
+  // 박스가 비어버리면 안 된다 — 그때는 영문 게이트만 풀어서 한국어라도
+  // 보여준다(빈 화면보다 낫다).
+  if (!koMode && filtered.length === 0) {
+    return quotes.filter((quote) => {
+      const key = getQuoteFlatGenreKey(quote);
+      return selectedFlatGenres.size === 0 || selectedFlatGenres.has(key);
+    });
+  }
+  return filtered;
 }
 
 function renderFlatGenreOptions() {
