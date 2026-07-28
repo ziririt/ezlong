@@ -145,6 +145,199 @@
     .en-footer a { color:var(--blue); text-decoration:none; }
     .en-footer a:hover { text-decoration:underline; }
     @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+
+    #spq-root {
+      --spq-bg:#F5F5F7; --spq-surface:#FFFFFF; --spq-card:#FFFFFF; --spq-card2:rgba(0,0,0,0.04);
+      --spq-border:rgba(0,0,0,0.08);
+      --spq-t1:#1D1D1F; --spq-t2:#3C3C3E; --spq-t3:#6E6E73;
+      --spq-bl:#0071E3; --spq-gr:#1A7F37; --spq-rd:#D92A2A; --spq-am:#FF9F0A;
+      --spq-bl-s: rgba(0,113,227,0.08); --spq-bl-m: rgba(0,113,227,0.16);
+      --spq-r:16px;
+      --spq-shadow:0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.07);
+    }
+    @media (prefers-color-scheme: dark) {
+      #spq-root {
+        --spq-bg:#000000; --spq-surface:#0A0A0A; --spq-card:#111111; --spq-card2:rgba(255,255,255,0.05);
+        --spq-border:rgba(255,255,255,0.14);
+        --spq-t1:#FFFFFF; --spq-t2:#C8C8CC; --spq-t3:#888888;
+        --spq-bl:#0A84FF; --spq-gr:#28A745; --spq-rd:#FF453A; --spq-am:#FFD60A;
+        --spq-bl-s: rgba(10,132,255,0.14); --spq-bl-m: rgba(10,132,255,0.24);
+        --spq-shadow:0 1px 4px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.4);
+      }
+    }
+    #spq-root #quiz-container { max-width: 680px; margin: 0 auto; padding: 32px 20px 80px; }
+    #spq-root #quiz-progress { margin-bottom: 28px; }
+    #spq-root .progress-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    #spq-root .progress-label { font-size: 16px; color: var(--spq-t2); font-weight: 600; }
+    #spq-root .progress-bar-track { height: 4px; background: var(--spq-border); border-radius: 2px; }
+    #spq-root .progress-bar-fill { height: 100%; background: var(--spq-bl); border-radius: 2px; transition: width 0.35s ease; }
+    #spq-root .quiz-step { display: none; animation: spqFadeIn 0.25s ease; }
+    #spq-root .quiz-step.active { display: block; }
+    @keyframes spqFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    #spq-root .step-title { font-size: 20px; font-weight: 800; color: var(--spq-t1); margin-bottom: 8px; letter-spacing: -.02em; }
+    #spq-root .step-desc { font-size: 16px; color: var(--spq-t2); margin-bottom: 20px; line-height: 1.6; }
+    #spq-root .choice-grid { display: grid; gap: 12px; margin-bottom: 16px; }
+    #spq-root .choice-grid-2 { grid-template-columns: 1fr 1fr; }
+    #spq-root .choice-grid-4 { grid-template-columns: 1fr 1fr; }
+    #spq-root .choice-grid-5 { grid-template-columns: 1fr; }
+    #spq-root .choice-card {
+      cursor: pointer; padding: 16px 20px; border: 2px solid var(--spq-border); border-radius: var(--spq-r);
+      background: var(--spq-surface); font-size: 16px; font-weight: 600; color: var(--spq-t1);
+      text-align: center; transition: border-color 0.15s, background 0.15s, transform 0.1s; line-height: 1.5; user-select: none;
+    }
+    #spq-root .choice-card:hover { border-color: var(--spq-bl); transform: translateY(-1px); }
+    #spq-root .choice-card.selected { border-color: var(--spq-bl); background: rgba(59,130,246,0.08); color: var(--spq-bl); }
+    #spq-root .choice-card .card-sub { font-size: 16px; font-weight: 400; color: var(--spq-t2); margin-top: 4px; }
+    #spq-root .choice-card.selected .card-sub { color: var(--spq-bl); opacity: 0.8; }
+    #spq-root .mbti-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+    #spq-root .mbti-btn {
+      cursor: pointer; padding: 12px 6px; border: 2px solid var(--spq-border); border-radius: var(--spq-r);
+      background: var(--spq-surface); font-size: 16px; font-weight: 700; color: var(--spq-t1);
+      text-align: center; transition: border-color 0.15s, background 0.15s;
+    }
+    #spq-root .mbti-btn:hover { border-color: var(--spq-bl); }
+    #spq-root .mbti-btn.selected { border-color: var(--spq-bl); background: rgba(59,130,246,0.08); color: var(--spq-bl); }
+    #spq-root .mbti-group-label { font-size: 16px; color: var(--spq-t2); font-weight: 600; margin-bottom: 6px; margin-top: 14px; }
+    #spq-root .company-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 16px; }
+    #spq-root .company-btn {
+      cursor: pointer; padding: 12px 4px; border: 2px solid var(--spq-border); border-radius: var(--spq-r);
+      background: var(--spq-surface); font-size: 16px; font-weight: 700; color: var(--spq-t1);
+      text-align: center; transition: border-color 0.15s, background 0.15s;
+    }
+    #spq-root .company-btn:hover:not(:disabled) { border-color: var(--spq-bl); }
+    #spq-root .company-btn.selected { border-color: var(--spq-bl); background: rgba(59,130,246,0.08); color: var(--spq-bl); }
+    #spq-root .company-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    #spq-root .company-unknown { grid-column: 1 / -1; font-size: 16px; font-weight: 600; }
+    #spq-root .next-btn {
+      display: block; width: 100%; padding: 15px; background: var(--spq-bl); color: #fff; border: none;
+      border-radius: var(--spq-r); font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 8px; transition: opacity 0.2s;
+    }
+    #spq-root .next-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    #spq-root #quiz-back { background: none; border: none; color: var(--spq-t2); font-size: 16px; cursor: pointer; padding: 0; display: none; flex-shrink: 0; }
+    #spq-root #quiz-back:hover { color: var(--spq-t1); }
+    #spq-root .result-card { background: var(--spq-surface); border: 1px solid var(--spq-border); border-radius: var(--spq-r); padding: 20px 24px; box-shadow: var(--spq-shadow); margin-bottom: 16px; }
+    #spq-root .result-section-title { font-size: 16px; font-weight: 700; color: var(--spq-t1); margin-bottom: 12px; letter-spacing: -.01em; }
+    #spq-root .result-type-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+    #spq-root .type-code-badge { flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: var(--spq-bl); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; }
+    #spq-root .type-name { font-size: 20px; font-weight: 800; color: var(--spq-t1); margin-bottom: 4px; }
+    #spq-root .type-meta { font-size: 16px; color: var(--spq-t2); }
+    #spq-root .inline-badge { display: inline-block; padding: 3px 9px; border-radius: 4px; font-size: 16px; font-weight: 700; color: #fff; margin: 0 3px 4px 0; }
+    #spq-root .badge-blue { background: var(--spq-bl); }
+    #spq-root .badge-green { background: var(--spq-gr); }
+    #spq-root .badge-red { background: var(--spq-rd); }
+    #spq-root .badge-purple { background: #8b5cf6; }
+    #spq-root .badge-warn { background: #B87900; }
+    @media (prefers-color-scheme: dark) { #spq-root .badge-warn { background: #d97706; } }
+    #spq-root .dna-text { font-size: 16px; color: var(--spq-t1); line-height: 1.75; }
+    #spq-root .trait-list { list-style: none; padding: 0; margin: 0; }
+    #spq-root .trait-list li { padding: 10px 0; border-bottom: 1px solid var(--spq-border); font-size: 16px; color: var(--spq-t1); line-height: 1.6; display: flex; gap: 8px; }
+    #spq-root .trait-list li:last-child { border-bottom: none; }
+    #spq-root .trait-icon { flex-shrink: 0; font-weight: 700; width: 18px; }
+    #spq-root .gender-box { border-radius: var(--spq-r); padding: 14px 16px; font-size: 16px; color: var(--spq-t1); line-height: 1.7; }
+    #spq-root .gender-box-male { background: rgba(239,68,68,0.08); border-left: 3px solid var(--spq-rd); }
+    #spq-root .gender-box-female { background: rgba(139,92,246,0.08); border-left: 3px solid #8b5cf6; }
+    #spq-root .exp-box { background: var(--spq-card, var(--spq-surface)); border-radius: var(--spq-r); padding: 14px 16px; font-size: 16px; color: var(--spq-t1); line-height: 1.7; border: 1px solid var(--spq-border); }
+    #spq-root .compat-box { border-radius: var(--spq-r); padding: 14px 16px; font-size: 16px; color: var(--spq-t1); line-height: 1.7; }
+    #spq-root .compat-best { background: rgba(16,185,129,0.08); border-left: 3px solid var(--spq-gr); }
+    #spq-root .compat-ok { background: rgba(59,130,246,0.08); border-left: 3px solid var(--spq-bl); }
+    #spq-root .compat-warn { background: rgba(184,121,0,0.08); border-left: 3px solid #B87900; }
+    #spq-root .compat-caution { background: rgba(239,68,68,0.08); border-left: 3px solid var(--spq-rd); }
+    #spq-root .growth-redirect-box { background: rgba(59,130,246,0.07); border: 1px solid var(--spq-bl); border-radius: var(--spq-r); padding: 16px; margin-bottom: 16px; font-size: 16px; color: var(--spq-t1); line-height: 1.75; }
+    #spq-root .company-text-item { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--spq-border); }
+    #spq-root .company-text-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    #spq-root .company-text-ticker { font-size: 16px; font-weight: 700; color: var(--spq-bl); margin-bottom: 6px; }
+    #spq-root .company-text-body { font-size: 16px; color: var(--spq-t1); line-height: 1.75; }
+    #spq-root .port-bar { display: flex; height: 28px; border-radius: 6px; overflow: hidden; margin: 14px 0; }
+    #spq-root .port-bar-seg { transition: width 0.5s ease; }
+    #spq-root .port-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 12px; }
+    #spq-root .port-legend-item { display: flex; align-items: center; gap: 8px; }
+    #spq-root .port-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    #spq-root .port-ticker { font-size: 16px; font-weight: 700; color: var(--spq-t1); min-width: 54px; }
+    #spq-root .port-desc { font-size: 16px; color: var(--spq-t2); flex: 1; }
+    #spq-root .port-pct { font-size: 16px; font-weight: 700; color: var(--spq-bl); }
+    #spq-root .port-summary { font-size: 16px; color: var(--spq-t2); margin-top: 10px; }
+    #spq-root .advice-box { background: var(--spq-bl); color: #fff; border-radius: var(--spq-r); padding: 18px 20px; font-size: 17px; font-weight: 700; line-height: 1.6; margin-bottom: 16px; text-align: center; }
+    #spq-root .backtest-btn { display: block; width: 100%; padding: 17px; background: var(--spq-gr); color: #fff; border: none; border-radius: var(--spq-r); font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; margin-top: 8px; transition: opacity 0.2s; }
+    #spq-root .backtest-btn:hover { opacity: 0.88; }
+    #spq-root .retry-btn { display: block; width: 100%; padding: 13px; background: none; color: var(--spq-t2); border: 1px solid var(--spq-border); border-radius: var(--spq-r); font-size: 16px; font-weight: 600; cursor: pointer; text-align: center; margin-top: 10px; }
+    #spq-root .retry-btn:hover { border-color: var(--spq-bl); color: var(--spq-bl); }
+    @media (max-width: 520px) {
+      #spq-root .choice-grid-4 { grid-template-columns: 1fr 1fr; }
+      #spq-root .mbti-grid { grid-template-columns: repeat(4, 1fr); }
+      #spq-root .company-grid { grid-template-columns: repeat(3, 1fr); }
+      #spq-root .port-legend { grid-template-columns: 1fr; }
+      #spq-root .result-type-header { flex-direction: column; gap: 10px; }
+    }
+    @media (max-width: 360px) { #spq-root .mbti-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    #spq-root .result-header-block { text-align:center; padding:1.5rem 0; }
+    #spq-root .result-badge { display:inline-block; padding:.3rem .9rem; border-radius:999px; font-size:16px; font-weight:600; margin-bottom:.8rem; }
+    #spq-root .result-typename { font-size:22px; font-weight:800; color:var(--spq-t1); margin:.5rem 0; line-height:1.3; }
+    #spq-root .result-tags { display:flex; flex-wrap:wrap; justify-content:center; gap:.4rem; margin-top:.6rem; }
+    #spq-root .result-tag { background:var(--spq-surface); border:1px solid var(--spq-border); border-radius:999px; padding:.2rem .7rem; font-size:16px; color:var(--spq-t2); }
+    #spq-root .result-section { background:var(--spq-surface); border:1px solid var(--spq-border); border-radius:var(--spq-r); padding:1.2rem; margin-bottom:1rem; }
+    #spq-root .result-section-title { font-size:16px; font-weight:700; color:var(--spq-t2); text-transform:uppercase; letter-spacing:.03em; margin-bottom:.7rem; }
+    #spq-root .result-dna-text { font-size:16px; color:var(--spq-t1); line-height:1.7; margin:0; }
+    #spq-root .result-gender-note { margin-top:.8rem; padding:.7rem .9rem; background:var(--spq-bl-s); border-left:3px solid var(--spq-bl); border-radius:0 var(--spq-r) var(--spq-r) 0; font-size:16px; color:var(--spq-t1); line-height:1.6; }
+    #spq-root .port-bar-wrap { margin-bottom:.7rem; }
+    #spq-root .port-bar { display:flex; height:28px; border-radius:6px; overflow:hidden; }
+    #spq-root .port-bar-seg { height:100%; transition:width .3s; }
+    #spq-root .port-legend { display:flex; flex-wrap:wrap; gap:.4rem .8rem; margin-bottom:1rem; }
+    #spq-root .port-legend-item { display:flex; align-items:center; gap:.3rem; }
+    #spq-root .port-legend-dot { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+    #spq-root .port-legend-ticker { font-size:16px; font-weight:700; color:var(--spq-t1); }
+    #spq-root .port-legend-pct { font-size:16px; color:var(--spq-t2); }
+    #spq-root .btn-backtest {
+      display: block; width: 100%; margin-top: 1rem; padding: .9rem 1.4rem;
+      background: linear-gradient(135deg, #1a3fc8 0%, #2563eb 55%, #5b5ff2 100%); color: #fff; border-radius: 12px;
+      font-size: 16px; font-weight: 800; text-decoration: none; text-align: center;
+      box-shadow: 0 4px 18px rgba(37,99,235,.38), inset 0 1px 0 rgba(255,255,255,.18);
+      transition: transform .15s ease, box-shadow .15s ease; letter-spacing: -.01em;
+    }
+    #spq-root .btn-backtest:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,99,235,.55), inset 0 1px 0 rgba(255,255,255,.18); color: #fff; text-decoration: none; opacity: 1; }
+    #spq-root .btn-backtest:active { transform: translateY(0); }
+    #spq-root .btn-backtest-mid {
+      display: block; width: 100%; margin: 1.4rem 0 0; padding: 1.05rem 1.5rem;
+      background: linear-gradient(135deg, #1a3fc8 0%, #2563eb 55%, #5b5ff2 100%); color: #fff; border-radius: 14px;
+      font-size: 18px; font-weight: 800; text-decoration: none; text-align: center;
+      box-shadow: 0 6px 24px rgba(37,99,235,.42), inset 0 1px 0 rgba(255,255,255,.18);
+      transition: transform .16s ease, box-shadow .16s ease; letter-spacing: -.02em;
+    }
+    #spq-root .btn-backtest-mid:hover { transform: translateY(-3px); box-shadow: 0 12px 38px rgba(37,99,235,.58), inset 0 1px 0 rgba(255,255,255,.18); color: #fff; text-decoration: none; }
+    #spq-root .btn-backtest-mid:active { transform: translateY(0); }
+    #spq-root .beginner-note { margin-top:.6rem; font-size:16px; color:var(--spq-t2); }
+    #spq-root .result-two-col { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    @media(max-width:600px){ #spq-root .result-two-col { grid-template-columns:1fr; } }
+    #spq-root .result-list { margin:0; padding-left:1.2rem; }
+    #spq-root .result-list li { font-size:16px; color:var(--spq-t1); line-height:1.6; margin-bottom:.3rem; }
+    #spq-root .strengths-list li::marker { color:var(--spq-gr); }
+    #spq-root .cautions-list li::marker { color:var(--spq-am); }
+    #spq-root .result-compat-text, #spq-root .result-exp-text { font-size:16px; color:var(--spq-t1); line-height:1.7; margin:0; }
+    #spq-root .company-card { padding:.7rem 0; border-bottom:1px solid var(--spq-border); }
+    #spq-root .company-card:last-child { border-bottom:none; padding-bottom:0; }
+    #spq-root .company-ticker { font-size:16px; font-weight:800; color:var(--spq-t1); margin-bottom:.3rem; }
+    #spq-root .company-desc { font-size:16px; color:var(--spq-t2); line-height:1.6; }
+    #spq-root .result-advice-block { background:linear-gradient(135deg,var(--spq-bl-m),var(--spq-surface)); border-color:var(--spq-bl-m); }
+    #spq-root .result-advice-label { font-size:16px; font-weight:700; color:var(--spq-bl); text-transform:uppercase; letter-spacing:.05em; margin-bottom:.5rem; }
+    #spq-root .result-advice-text { font-size:18px; font-weight:700; color:var(--spq-t1); line-height:1.5; margin:0; }
+    #spq-root .result-action-row { display:flex; gap:.7rem; margin-top:1.2rem; flex-wrap:wrap; }
+    #spq-root .btn-retry { flex:1; min-width:120px; padding:.7rem; background:var(--spq-surface); border:1px solid var(--spq-border); border-radius:var(--spq-r); font-size:16px; font-weight:600; color:var(--spq-t1); cursor:pointer; }
+    #spq-root .btn-retry:hover { background:var(--spq-border); }
+    #spq-root .btn-backtest-main {
+      flex: 2; min-width: 160px; padding: .85rem 1.1rem;
+      background: linear-gradient(135deg, #1a3fc8 0%, #2563eb 55%, #5b5ff2 100%); color: #fff; border-radius: 12px;
+      font-size: 16px; font-weight: 800; text-decoration: none; text-align: center;
+      box-shadow: 0 4px 16px rgba(37,99,235,.38), inset 0 1px 0 rgba(255,255,255,.18);
+      transition: transform .15s ease, box-shadow .15s ease; letter-spacing: -.01em;
+    }
+    #spq-root .btn-backtest-main:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,.55), inset 0 1px 0 rgba(255,255,255,.18); color: #fff; opacity: 1; }
+    #spq-root .btn-backtest-main:active { transform: translateY(0); }
+    #spq-root #derived-mbti-display { display:inline-block; margin-top:.5rem; font-size:18px; font-weight:700; color:var(--spq-bl); }
+    #spq-root .ai-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--spq-bl); animation: spq-ai-bounce 1.2s ease-in-out infinite; }
+    #spq-root .ai-dot:nth-child(1) { animation-delay: 0s; }
+    #spq-root .ai-dot:nth-child(2) { animation-delay: .2s; }
+    #spq-root .ai-dot:nth-child(3) { animation-delay: .4s; }
+    @keyframes spq-ai-bounce { 0%,80%,100% { transform: scale(0.6); opacity:.4; } 40% { transform: scale(1.0); opacity:1; } }
   </style>
 </head>
 <body>
@@ -164,18 +357,210 @@
     <h1>投資性格診断クイズ</h1>
     <p class="hero-sub">いくつかの質問に答えるだけで、QQQ・SPY・SCHDで構成された40種類の米国株ポートフォリオタイプのいずれかにマッチングします</p>
     <div class="cta-group">
-      <a class="btn-primary" href="https://ezlong.com/stock-personality-quiz.html" target="_blank" rel="noopener">ツールを開く &rarr;</a>
+      <a class="btn-primary" href="#calculator">クイズを受ける &darr;</a>
       <a class="btn-secondary" href="https://ezlong.com/ja/">すべてのツールを見る</a>
     </div>
-    <p class="auto-translate-note">ツールUIは韓国語です。Chrome、Edge、Safariが自動的に翻訳します。</p>
-    <p class="translate-proxy-note">自動翻訳が表示されない場合は <a href="https://ezlong-com.translate.goog/stock-personality-quiz.html?_x_tr_sl=ko&amp;_x_tr_tl=ja&amp;_x_tr_hl=ja&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Google翻訳で開く &rarr;</a></p>
+    <p class="auto-translate-note">完全に日本語で提供されます — ログイン不要、ダウンロード不要、約3分で結果が分かります。</p>
   </section>
   <div class="stats-row" role="region" aria-label="主要な数値">
     <div class="stat-item"><div class="stat-value">3分</div><div class="stat-label">で完了</div></div>
     <div class="stat-item"><div class="stat-value">40タイプ</div><div class="stat-label">のマッチング候補</div></div>
     <div class="stat-item"><div class="stat-value">完全無料</div><div class="stat-label">アカウント不要</div></div>
   </div>
-  <main class="main" id="main-content">
+  <main class="main" id="main-content" style="max-width:1180px;">
+    <section class="section" id="calculator" style="max-width:100%;">
+      <div id="spq-root">
+      <div id="quiz-container">
+
+        <!-- Progress indicator -->
+        <div id="quiz-progress">
+          <div class="progress-top-row">
+            <button id="quiz-back">&lsaquo; 戻る</button>
+            <div class="progress-label" id="progress-label">質問 1 / 5</div>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progress-fill" style="width:16.7%"></div>
+          </div>
+        </div>
+
+        <!-- Q1: Gender -->
+        <div class="quiz-step active" id="step-q1">
+          <h2 class="step-title">性別を選択してください</h2>
+          <div class="choice-grid choice-grid-2">
+            <div class="choice-card" data-q="gender" data-val="male">男性</div>
+            <div class="choice-card" data-q="gender" data-val="female">女性</div>
+          </div>
+        </div>
+
+        <!-- Q2: Age -->
+        <div class="quiz-step" id="step-q2">
+          <h2 class="step-title">年齢層を選択してください</h2>
+          <div class="choice-grid choice-grid-2">
+            <div class="choice-card" data-q="age" data-val="20s">20代</div>
+            <div class="choice-card" data-q="age" data-val="30s">30代</div>
+            <div class="choice-card" data-q="age" data-val="40s">40代</div>
+            <div class="choice-card" data-q="age" data-val="50s">50代</div>
+            <div class="choice-card" data-q="age" data-val="60s">60代以上</div>
+          </div>
+        </div>
+
+        <!-- Q3: Do you know your MBTI? -->
+        <div class="quiz-step" id="step-q3">
+          <h2 class="step-title">あなたのMBTIタイプを知っていますか？</h2>
+          <div class="choice-grid choice-grid-2">
+            <div class="choice-card" data-q="mbti-know" data-val="yes">はい、知っています</div>
+            <div class="choice-card" data-q="mbti-know" data-val="no">わからない<div class="card-sub">4つの簡単な質問で診断します</div></div>
+          </div>
+        </div>
+
+        <!-- Q3-Grid: 16 MBTI types -->
+        <div class="quiz-step" id="step-q3-grid">
+          <h2 class="step-title">あなたのMBTIタイプを選択してください</h2>
+          <div class="choice-cards" style="margin-bottom:1.2rem;">
+            <div class="choice-card" data-q="mbti-know" data-val="no" style="color:var(--spq-t2);font-size:16px;">MBTIタイプが分からない — 4つの質問で診断する</div>
+          </div>
+          <div class="mbti-group-label">分析家（NT）</div>
+          <div class="mbti-grid">
+            <div class="mbti-btn" data-mbti="INTJ">INTJ</div>
+            <div class="mbti-btn" data-mbti="INTP">INTP</div>
+            <div class="mbti-btn" data-mbti="ENTJ">ENTJ</div>
+            <div class="mbti-btn" data-mbti="ENTP">ENTP</div>
+          </div>
+          <div class="mbti-group-label">外交官（NF）</div>
+          <div class="mbti-grid">
+            <div class="mbti-btn" data-mbti="INFJ">INFJ</div>
+            <div class="mbti-btn" data-mbti="INFP">INFP</div>
+            <div class="mbti-btn" data-mbti="ENFJ">ENFJ</div>
+            <div class="mbti-btn" data-mbti="ENFP">ENFP</div>
+          </div>
+          <div class="mbti-group-label">管理者（SJ）</div>
+          <div class="mbti-grid">
+            <div class="mbti-btn" data-mbti="ISTJ">ISTJ</div>
+            <div class="mbti-btn" data-mbti="ISFJ">ISFJ</div>
+            <div class="mbti-btn" data-mbti="ESTJ">ESTJ</div>
+            <div class="mbti-btn" data-mbti="ESFJ">ESFJ</div>
+          </div>
+          <div class="mbti-group-label">探検家（SP）</div>
+          <div class="mbti-grid">
+            <div class="mbti-btn" data-mbti="ISTP">ISTP</div>
+            <div class="mbti-btn" data-mbti="ISFP">ISFP</div>
+            <div class="mbti-btn" data-mbti="ESTP">ESTP</div>
+            <div class="mbti-btn" data-mbti="ESFP">ESFP</div>
+          </div>
+        </div>
+
+        <!-- Q3-Sub: 4 questions when MBTI is unknown -->
+        <div class="quiz-step" id="step-q3-sub">
+          <div class="sub-step active" id="sub-qa">
+            <h2 class="step-title">投資判断をするとき、私は&hellip;</h2>
+            <div class="choice-grid choice-grid-2" style="margin-top:8px">
+              <div class="choice-card" data-subq="qa" data-val="T">数字・データ・論理で<br>判断する<div class="card-sub">分析型</div></div>
+              <div class="choice-card" data-subq="qa" data-val="F">直感に従う &mdash;<br>「この会社は良さそうだ」<div class="card-sub">直感型</div></div>
+            </div>
+          </div>
+          <div class="sub-step" id="sub-qb">
+            <h2 class="step-title">市場が20%急落したとき、私は&hellip;</h2>
+            <div class="choice-grid choice-grid-2" style="margin-top:8px">
+              <div class="choice-card" data-subq="qb" data-val="J">計画通りに動く &mdash;<br>すでに計画があるので<div class="card-sub">計画型</div></div>
+              <div class="choice-card" data-subq="qb" data-val="P">状況に応じて<br>柔軟に対応する<div class="card-sub">柔軟型</div></div>
+            </div>
+          </div>
+          <div class="sub-step" id="sub-qc">
+            <h2 class="step-title">新しい投資アイデアに出会ったとき？</h2>
+            <div class="choice-grid choice-grid-2" style="margin-top:8px">
+              <div class="choice-card" data-subq="qc" data-val="N">まず全体像と<br>将来の可能性を見る<div class="card-sub">未来志向型</div></div>
+              <div class="choice-card" data-subq="qc" data-val="S">まず現在の数字と<br>実際の実績を見る<div class="card-sub">現実主義型</div></div>
+            </div>
+          </div>
+          <div class="sub-step" id="sub-qd">
+            <h2 class="step-title">あなたの投資スタイルは？</h2>
+            <p class="step-desc">まだ迷う場合は、最も近いと感じるものを選んでください</p>
+            <div class="choice-grid" style="margin-top:8px">
+              <div class="choice-card" data-subq="qd" data-val="NT">戦略を練り、分析してから、慎重に実行する<div class="card-sub">分析家（NT）</div></div>
+              <div class="choice-card" data-subq="qd" data-val="NF">意味と目的を重視し、良い企業を応援する<div class="card-sub">外交官（NF）</div></div>
+              <div class="choice-card" data-subq="qd" data-val="SJ">計画を立て、それを厳格に守る<div class="card-sub">管理者（SJ）</div></div>
+              <div class="choice-card" data-subq="qd" data-val="SP">魅力的な機会を見つけたら即座に飛びつく<div class="card-sub">探検家（SP）</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q4: Investing experience -->
+        <div class="quiz-step" id="step-q4">
+          <h2 class="step-title">投資経験はどれくらいありますか？</h2>
+          <div class="choice-grid choice-grid-5">
+            <div class="choice-card" data-q="exp" data-val="beginner">まだ始めていない、または6ヶ月未満</div>
+            <div class="choice-card" data-q="exp" data-val="early">6ヶ月〜3年</div>
+            <div class="choice-card" data-q="exp" data-val="mid">3〜7年</div>
+            <div class="choice-card" data-q="exp" data-val="advanced">7〜10年</div>
+            <div class="choice-card" data-q="exp" data-val="veteran">10年以上</div>
+          </div>
+        </div>
+
+        <!-- Q5: Investing style -->
+        <div class="quiz-step" id="step-q5">
+          <h2 class="step-title">投資スタイルを選択してください</h2>
+          <div class="choice-grid choice-grid-5">
+            <div class="choice-card" data-q="style" data-val="risk">リスクテイカー<div class="card-sub">集中投資、ボラティリティを受け入れる</div></div>
+            <div class="choice-card" data-q="style" data-val="stable">安定志向<div class="card-sub">分散重視、ディフェンシブ</div></div>
+            <div class="choice-card" data-q="style" data-val="daytrading">短期トレーダー<div class="card-sub">短期的な利益を重視</div></div>
+            <div class="choice-card" data-q="style" data-val="swing">スイングトレーダー<div class="card-sub">数日〜数週間保有</div></div>
+            <div class="choice-card" data-q="style" data-val="longterm">長期保有派<div class="card-sub">1年以上保有</div></div>
+          </div>
+        </div>
+
+        <!-- Q6: Companies of interest -->
+        <div class="quiz-step" id="step-q6">
+          <h2 class="step-title">興味のある企業を選択してください</h2>
+          <p class="step-desc">最大3つまで選択できます</p>
+          <div class="company-grid" id="company-grid">
+            <div class="company-btn" data-company="NVDA">NVDA</div>
+            <div class="company-btn" data-company="AAPL">AAPL</div>
+            <div class="company-btn" data-company="MSFT">MSFT</div>
+            <div class="company-btn" data-company="GOOGL">GOOGL</div>
+            <div class="company-btn" data-company="AMZN">AMZN</div>
+            <div class="company-btn" data-company="META">META</div>
+            <div class="company-btn" data-company="TSLA">TSLA</div>
+            <div class="company-btn" data-company="BRK.B">BRK.B</div>
+            <div class="company-btn" data-company="AVGO">AVGO</div>
+            <div class="company-btn" data-company="TSM">TSM</div>
+            <div class="company-btn" data-company="V">V</div>
+            <div class="company-btn" data-company="JPM">JPM</div>
+            <div class="company-btn" data-company="LLY">LLY</div>
+            <div class="company-btn" data-company="WMT">WMT</div>
+            <div class="company-btn" data-company="COST">COST</div>
+            <div class="company-btn" data-company="NFLX">NFLX</div>
+            <div class="company-btn" data-company="ORCL">ORCL</div>
+            <div class="company-btn" data-company="XOM">XOM</div>
+            <div class="company-btn" data-company="MA">MA</div>
+            <div class="company-btn" data-company="UNH">UNH</div>
+            <div class="company-btn company-unknown" data-company="unknown">まだ分からない</div>
+          </div>
+          <button class="next-btn" id="q6-next-btn">結果を見る</button>
+        </div>
+
+        <!-- Result -->
+        <!-- AI loading overlay -->
+        <div id="ai-loading-overlay" style="
+          display:none; position:fixed; inset:0; z-index:9999;
+          background:var(--spq-bg); display:none;
+          flex-direction:column; align-items:center; justify-content:center; gap:2rem;">
+          <div id="ai-loading-inner" style="text-align:center;">
+            <div id="ai-dots" style="display:flex;gap:10px;justify-content:center;margin-bottom:1.6rem;">
+              <span class="ai-dot"></span><span class="ai-dot"></span><span class="ai-dot"></span>
+            </div>
+            <p id="ai-loading-msg" style="font-size:17px;font-weight:600;color:var(--spq-t1);letter-spacing:-.01em;">AIがあなたのポートフォリオを分析しています</p>
+            <p id="ai-loading-sub" style="font-size:16px;color:var(--spq-t2);margin-top:.5rem;">少々お待ちください&hellip;</p>
+          </div>
+        </div>
+
+        <div class="quiz-step" id="step-result">
+          <div id="result-content"></div>
+        </div>
+
+      </div><!-- /#quiz-container -->
+      </div><!-- /#spq-root -->
+    </section>
+    <div style="max-width:var(--max-w);margin:0 auto;">
     <section class="section">
       <h2 class="section-title">投資性格診断クイズとは？</h2>
       <p class="section-body">株式ポートフォリオの配分を決めることは、単なる計算問題ではなく行動の問題でもあります。同じ収入の2人の投資家でも、ボラティリティに実際どう反応するか、時間軸が本当はどれくらいなのか、プレッシャー下でどんな意思決定スタイルを取るかによって、まったく異なるポートフォリオが必要になることがあります。投資性格診断クイズは、年齢層、リスク許容度、性格スタイルの好みについて質問することで、MBTI的なカテゴリー分けの趣旨に近い形でこれを捉えます。</p>
@@ -256,9 +641,9 @@
     </section>
     <div class="cta-card">
       <h2>今すぐあなたの投資家タイプを診断</h2>
-      <p>無料・登録不要、約3分で完了します。Chromeなら韓国語から自動翻訳されます。</p>
-      <a class="btn-white" href="https://ezlong.com/stock-personality-quiz.html" target="_blank" rel="noopener">クイズを受ける &rarr;</a>
-      <p class="translate-proxy-note">自動翻訳が表示されない場合は <a href="https://ezlong-com.translate.goog/stock-personality-quiz.html?_x_tr_sl=ko&amp;_x_tr_tl=ja&amp;_x_tr_hl=ja&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Google翻訳で開く &rarr;</a></p>
+      <p>無料・登録不要、約3分で完了します。完全に日本語で提供されます。</p>
+      <a class="btn-white" href="#calculator">クイズを受ける &uarr;</a>
+    </div>
     </div>
   </main>
   <footer class="en-footer" role="contentinfo">
@@ -267,6 +652,1037 @@
     <small>本サイトは情報提供のみを目的とした教育的ツールです。投資助言ではありません。すべての投資にはリスクが伴います。過去の実績は将来の成果を保証するものではありません。</small></p>
   </footer>
 
+<script>
+
+// ════════════════════════════════════════════════════════
+// stock-personality-quiz.js — DATA & LOGIC (Japanese)
+// ════════════════════════════════════════════════════════
+
+// ════════════════════════════════════════════════════════
+// MBTI → Group mapping
+// ════════════════════════════════════════════════════════
+const MBTI_TO_GROUP = {
+  INTJ:'NT',INTP:'NT',ENTJ:'NT',ENTP:'NT',
+  INFJ:'NF',INFP:'NF',ENFJ:'NF',ENFP:'NF',
+  ISTJ:'SJ',ISFJ:'SJ',ESTJ:'SJ',ESFJ:'SJ',
+  ISTP:'SP',ISFP:'SP',ESTP:'SP',ESFP:'SP'
+};
+
+// ════════════════════════════════════════════════════════
+// Asset map (44 tickers)
+// ════════════════════════════════════════════════════════
+const ASSET_MAP = {
+  1:'SPY',2:'QQQ',3:'XLK',4:'SOXX',5:'XLV',
+  6:'XLE',7:'VNQ',8:'SCHD',9:'VWO',10:'ARKK',
+  11:'VTI',12:'VEA',13:'EEM',14:'XLF',15:'XLI',
+  16:'GDX',17:'HYG',18:'VIG',19:'ICLN',20:'IVV',
+  21:'TLT',22:'IEF',23:'GLD',24:'BND',
+  25:'NVDA',26:'GOOGL',27:'AAPL',28:'MSFT',29:'AMZN',
+  30:'META',31:'TSLA',32:'AVGO',33:'JPM',34:'LLY',
+  35:'BRK.B',36:'V',37:'NFLX',38:'AMD',39:'TSM',
+  40:'CRM',41:'COST',42:'WMT',43:'ORCL',44:'INTC'
+};
+const TICKER_TO_ID = Object.fromEntries(
+  Object.entries(ASSET_MAP).map(([id,t]) => [t, Number(id)])
+);
+
+const TICKER_DESC = {
+  QQQ:'ナスダック100 ETF',IVV:'S&P500 ETF',SPY:'S&P500 ETF',VTI:'全米株式市場ETF',
+  NVDA:'エヌビディア',GOOGL:'アルファベット（Google）',AAPL:'アップル',MSFT:'マイクロソフト',
+  AMZN:'アマゾン',META:'メタ',TSLA:'テスラ',AVGO:'ブロードコム',
+  NFLX:'ネットフリックス',AMD:'AMD',TSM:'TSMC',JPM:'JPモルガン',
+  V:'ビザ',COST:'コストコ',WMT:'ウォルマート',LLY:'イーライリリー',
+  'BRK.B':'バークシャー・ハサウェイ',SOXX:'半導体ETF',XLK:'テクノロジーセクターETF',
+  SCHD:'配当成長ETF',ORCL:'オラクル',CRM:'セールスフォース',
+  XOM:'エクソンモービル',MA:'マスターカード',UNH:'ユナイテッドヘルス'
+};
+
+const BAR_COLORS = ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#f97316','#84cc16','#ec4899','#6366f1'];
+
+// ════════════════════════════════════════════════════════
+// Compatibility text (MBTI group × investing style)
+// ════════════════════════════════════════════════════════
+const COMPAT_TEXTS = {
+'NT_risk':'分析家タイプを短期売買の道具として使うべきではありません。NTの論理は、チャートを前に10分で判断する場面より、数ヶ月分のデータを読み解く場面でこそ輝きます。',
+'NT_stable':'これは完璧な組み合わせです。ETFの分散にNTの緻密な分析力を加えれば、リバランスにも一貫した原則が生まれます。結果として、感情に左右されないポートフォリオが出来上がります。',
+'NT_daytrading':'配当成長株はNTによく合います。配当を出す企業のファンダメンタルズを分析する力が、ここでこそ生かされます。ただし利回りの数字にこだわりすぎて、成長ストーリーを見逃さないように。',
+'NT_swing':'バリュー投資こそ、NTが最も力を発揮できる分野です。本質的価値の計算、競合比較、安全余裕率の確認 — このプロセスはむしろ楽しく感じられるはずです。唯一の落とし穴は、分析しすぎて実際のエントリータイミングを何度も逃してしまうことです。',
+'NT_longterm':'クオンツ・モメンタム戦略は、NTにとって最高の相性です。ルールが感情を完全に排除してくれるからです。シグナルが出たら実行する — それが仕事のすべてです。',
+'NF_risk':'短期売買を選びましたね。正直に言うと、NF気質が愛する企業は売りづらいものです。「この会社はいずれきっと報われる」というストーリーが、損切りラインをどんどん先送りにしてしまいます。短期のつもりが、いつの間にか長期保有になっていた経験もあるはずです。これは欠点ではなく、あなたの気質そのものです。短期売買はポートフォリオの15%以下に抑え、残りは気質の赴くまま長期保有に任せましょう。',
+'NF_stable':'「良い企業」というフィルターでETFコアを満たす — これは堅実な戦略です。NFの共感力は、企業選定の質を高めてくれます。まずコアETFを固め、その上でお気に入りの個別銘柄をポートフォリオの20%以内に加えましょう。',
+'NF_daytrading':'配当成長株はNFに自然にフィットします。愛着のある企業が安定的に配当を出し続けてくれれば、売る理由がありません。感情ではなく配当の実績が、長期保有を裏付けてくれます。',
+'NF_swing':'バリュー投資を選びましたね。注意点が一つ。「良い企業」と「割安な企業」は同じではありませんが、NFはこの二つを同一視しがちです。ストーリーではなく、数字で価値を確認しましょう。',
+'NF_longterm':'クオンツ戦略を選びましたね。正直なところ、これはNF気質と最も相性が悪いアプローチです。ルールが直感を完全に排除してしまうからです。シグナルを信じ、感情をオフにする練習が必要です。',
+'SJ_risk':'短期売買を選びましたね — SJ気質と最も相性が悪いアプローチです。計画を立てて → 原則通りに実行して → 長期保有する、これがSJ本来のリズムです。短期売買は、そのたびに新しい計画を要求してきます。',
+'SJ_stable':'SJとETF分散投資。このツールが提供する組み合わせの中で最も理想的です。毎月の自動積立 → 年1回のリバランス → 10年以上の保有。このリズムは、SJ気質にぴったりと重なります。',
+'SJ_daytrading':'配当成長株は、安定を求めるSJのニーズによく合います。安定して配当を出す企業の信頼性が、SJに安心感を与えます。ただし配当への固執が、成長株の比率を下げすぎないよう注意しましょう。',
+'SJ_swing':'バリュー投資の規律は、SJ気質にぴったり合致します。チェックリストに基づく銘柄選定、ルール通りの保有 — ここでSJの強みが最もはっきりと表れます。',
+'SJ_longterm':'クオンツ戦略は、ルールに従うSJの性質によく合います。シグナルが出たら実行し、出なければ待つ。ただし、ルールを本当に変えるべき局面で「今までのやり方」に固執してしまうと、対応が遅れがちになるので注意しましょう。',
+'SP_risk':'短期売買はSPの行動力に合っているように見えますが、実は最も危険な組み合わせです。行動が速いほど、損切りルールも同じ速さで必要になります。ルールなき行動は、アクセルしかない車のようなものです。',
+'SP_stable':'ETF分散投資を選びましたね。正直に言うと、SPにとってこれは「退屈」に感じられるかもしれません。コアETF70%＋直感で選んだ個別株30%という構成が、SPにとって最も現実的なフィットです。',
+'SP_daytrading':'配当成長株を選びましたね。待つことが最も難しい部分です。配当が積み上がっていく間にも、他の銘柄があなたの気を引き続けます。自分が介入する余地をなくすために自動再投資を設定しましょう — システムに待たせることで、あなたも待てるようになります。',
+'SP_swing':'バリュー投資は、SPにとって最も難しい戦略です。割安な企業を見つけること自体は可能です。問題は「いつ上がるか分からないまま持ち続ける」忍耐力です。買いの基準とターゲット価格を、はっきりした数字で固定しましょう。',
+'SP_longterm':'クオンツ・モメンタム戦略は、SPの素早い直感によく合います — シグナルに即座に反応できることは本物の強みです。ただし、実際のシグナルではなく衝動でポジションを追加しないよう、明確なルールを設定しておきましょう。'
+};
+
+const EXP_TEXTS = {
+'beginner':'あなたは実質的にスタートラインに立っています。正直に言うと、今の時点で完璧なポートフォリオは必要ありません。それよりも、今日一つ自動積立を設定することの方が重要です。まずはQQQのような単一銘柄から始め、完璧な比率は後で調整すればいいのです。市場に居続ける時間は、常にタイミングを狙うことに勝ります。',
+'early':'ETFから始め、個別株にも興味が湧いてきた段階ですね。良い傾向です。ETFコアを60%維持しつつ、よく知っている大型テック株を一つ加えましょう。この段階では「よく知らないけど上がりそう」という企業は見送ってください。',
+'mid':'個別株とETFを並行して運用している段階です。正直に言うと、この段階で最もよくある失敗は保有銘柄数がじわじわ増えていくことです。10銘柄を超えると、実質的には割高なインデックスを買っているのと変わりません。整理して、焦点を絞り直しましょう。',
+'advanced':'7年以上、市場を見てきましたね。2020年のコロナショック、2022年の金利ショック、2024年のAI相場をおそらく経験しているはずです。今最も注意すべきは「今回は自分が正しい」という自信です。その自信は経験とともに大きくなり、上級投資家が最も陥りやすい罠でもあります。',
+'veteran':'市場が見せるあらゆる局面をすでに経験してきました。巧妙な戦略よりも実証済みの原則の方が勝ることを、もう知っているはずです。この段階で最も難しいのは「今回は違う」という誘惑に抗うことです。原則は、例外を一切許さないときにのみ原則たり得ます。'
+};
+
+const COMPANY_TEXTS = {
+'AAPL':'スマートフォンの中にエコシステムを築いた企業。iPhoneを使う人はMacBookを買い、AirPodsを着け、iCloudを利用します。ただし成長は鈍化しており、その分を補っているのがサービス部門の収益です。',
+'MSFT':'企業内で使われるソフトウェアの多くはマイクロソフト製で、一度導入した法人顧客はほとんど乗り換えません。Azure＋Copilot＋Officeのサブスクリプションが、不況時でもほとんど揺るがない収益基盤を形成しています。',
+'GOOGL':'検索広告での圧倒的シェアが現金を積み上げ、その資金がAIとクラウドへの投資を支えています。DeepMind、YouTube、GCP — このうちどれか一つでも当たれば会社全体が変わります。AI戦争で最も多くの武器を持つ企業です。',
+'AMZN':'Eコマースは薄利、AWSは厚利 — そして利益の大部分はAWSが生み出しています。その上、広告事業も急成長中です。クラウドの首位＋AIインフラ＋広告、三つのエンジンが同時に稼働しています。',
+'META':'世界30億人が毎日使うソーシャルプラットフォームを保有しています。AIによる広告最適化が広告単価を押し上げ、オープンソースのLlamaモデルはAIエコシステムの主導権を狙う一手です。今のところ、このAIへの賭けはうまく機能しています。',
+'NVDA':'AIの学習にはGPUが必要で、NVDAはほぼ独占的な地位にあります。H100、B200、そしてその次の世代 — 需要は常に供給を上回っています。ただしバリュエーションは高く、将来の成長がすでに大きく織り込まれています。',
+'TSLA':'EV＋エネルギー貯蔵＋FSD＋ロボティクス＋ロボタクシー。このうちどれか一つでもブレイクスルーすれば、株価は一変します。ただしどれもまだ確実ではないため、ポートフォリオ全体を揺るがさない範囲のポジションにとどめましょう。',
+'AVGO':'NVDAがGPUを売るなら、AVGOはそれらをつなぐネットワークを売っています。カスタムAI半導体＋ネットワーキング＋VMware買収 — 静かにAIインフラ構築の二番目の受益者になりつつあります。',
+'V':'お金を貸すことなく決済手数料で稼ぐビジネスモデル — 与信リスクなしにグローバルな取引成長を享受できます。地味ですが強い。景気が悪化しても、ここにデフォルトリスクはありません。',
+'COST':'年会費を払った会員は、めったに離れません。更新率は90%を超えます。インフレが進むと、節約を求めてむしろ会員が増える — 不況にも強い構造を持っています。',
+'LLY':'GLP-1系の肥満・糖尿病治療薬のリーダー企業。MounjaroとZepboundの需要は供給を上回り続けています。肥満治療は医療分野全体を作り変えつつあります。ただしバリュエーションは高く、将来的な特許切れリスクもあります。',
+'NFLX':'ストリーミング業界で首位の座を確立しました。広告付きプランで収益源を多様化しています。AIによるコンテンツ推薦が視聴時間を伸ばし、それが解約率の低下にますます貢献しています。',
+'AMD':'CPUとAIアクセラレーターの両方でNVDAに挑戦しています。MI300シリーズは徐々にデータセンター顧客を引き寄せつつあります。AMDはNVDAに対して価格競争力を持ちますが、CUDAというソフトウェアの堀は依然として高い壁です。',
+'PLTR':'政府機関や企業向けに、AIプラットフォームとしてデータ分析ソフトウェアを提供しています。米国政府が中核顧客であることは、安定の錨であると同時に成長の天井でもあります。AIPが企業市場にどこまで広がるかが、次の成長ドライバーです。',
+'SPY':'S&P500指数そのもの。米国最大手500社を一度に保有できます。長期的にはほとんどのアクティブファンドを上回る成績を残しており、ウォーレン・バフェットが最も頻繁に推奨する手法でもあります。',
+'QQQ':'ナスダック100ETF — ビッグテックに集中したポートフォリオです。NVDA、AAPL、MSFT、AMZN、METAが最大の比重を占めます。S&P500より成長余地もボラティリティも大きく、AIサイクルに集中投資する手段です。',
+'IVV':'ブラックロックが提供するS&P500ETF。SPYと同じ指数に連動しますが、経費率は0.03%と割安です。この差は保有期間が長くなるほど積み重なります。コアポジションとして最も効率的な選択肢です。',
+'TLT':'米国20年国債ETF。金利が下がると債券価格は上がります。景気後退で株価が下落する局面ではヘッジとして機能します。ただし金利上昇局面では株式以上に下落することもあるため、ポートフォリオの一部としてのヘッジにとどめましょう。',
+'GLD':'金ETF。ドル安やインフレの局面で強くなる傾向があり、地政学リスクが高まる局面でも上昇しやすい資産です。その役割はリターンの追求ではなくリスクの分散であり、ポートフォリオの5〜10%程度のヘッジとして妥当です。',
+'SOXX':'半導体セクターETF。NVDA、AVGO、AMD、インテル、TSMCなど、半導体業界全体にエクスポージャーを分散します。NVDA一社に賭けるのではなく、セクター全体でAIの追い風を捉える手段です。'
+};
+
+const STYLE_LABELS = {
+'risk':'短期トレーダー','stable':'ETF分散投資家','daytrading':'配当成長投資家','swing':'バリュー投資家','longterm':'クオンツ・モメンタム投資家'
+};
+
+
+// ════════════════════════════════════════════════════════
+// Section A: NT Analysts (8)
+// ════════════════════════════════════════════════════════
+const BASE_PROFILES = {
+
+'male_20s_NT':{typeCode:'A-1',typeName:'データ主導で未来に賭ける戦略家',
+dna:'投資の話になると表情が変わるタイプです。周りが「NVDAが上がる」と言っている間に、あなたはすでに頭の中で四半期決算と競合のマージンを比較しています。確信を持てば強く踏み込みます。まだ固まっていないのは、その確信が外れたときにどこで止めるかという明確なルールです。当たっていますか？',
+strengths:['判断がデータに基づく → パニック売りや欲張った高値掴みのリスクが低い','強い長期的確信が複利効果を最大化しうる','20代で強い確信を持ってスタート＝数十年分の複利の滑走路'],
+cautions:['「完璧な」分析を待ち続けることで、何度もエントリーのタイミングを逃す','バーバー＆オディーン（2001）：男性は女性より45%多く売買し、その結果として年間約2.65%ポイントのリターンを失う','特定銘柄への過度な集中 — 確信が強いほどポートフォリオが偏る'],
+genderNote:{male:'自信を持ち分析力に長けたNT男性は、「自分で選んだ銘柄」に過度に集中しがちです。ポートフォリオのリバランスは年2回までに抑えましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','GOOGL','MSFT','META','AMZN','AAPL','IVV'],pcts:[30,15,15,12,10,8,5,5]},
+  beginner:{tickers:['QQQ','SOXX','IVV','MSFT','NVDA','GOOGL','AAPL','META'],pcts:[28,10,10,16,14,10,7,5]}},
+advice:'完璧な分析のタイミングは永遠に訪れません。今すでに知っていることで十分です。'},
+
+'female_20s_NT':{typeCode:'A-2',typeName:'内に秘めた戦略家',
+dna:'一目見ればわかるタイプです。「もう少し確認しよう」と言い続けているうちにエントリーを逃し、株価が上がった後に「やっぱり良い企業だった」とつぶやく。当たっていますか？<br><br>あなたの分析力はすでに十分すぎるほどです。あとは投資額がそれに追いつけば、このツールが生み出す中で最も強力なタイプになります。',
+strengths:['過剰売買がない → 取引コストが最小限に抑えられ、複利エンジンがフル稼働する','一度決めた確信は揺るがない','このツールの32タイプの中でおそらく最も取引頻度が低い'],
+cautions:['フィデリティ：投資について「よく知っている」と自己評価する女性はわずか14% → 投資額が過小になりがち','完璧な分析を待つことで、成長局面のかなりの部分を逃してしまう','Z世代は資産の平均33.88%を現金で保有 → インフレによって年々目減りする'],
+genderNote:{male:'該当なし',female:'女性投資家にとって本当の問題は自信の欠如です。あなたの分析はすでに十分です。次の課題は投資額を増やすことです。'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','GOOGL','MSFT','AAPL','META','AMZN','IVV'],pcts:[30,15,15,13,10,8,5,4]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','NVDA','GOOGL','AAPL','META'],pcts:[25,12,8,16,14,12,8,5]}},
+advice:'すでに十分な分析ができています。次の課題は投資額を増やすことです。'},
+
+'male_30s_NT':{typeCode:'A-3',typeName:'確信を集中させるポートフォリオビルダー',
+dna:'もう目に浮かびますよね。PER、PBR、フリーキャッシュフローが会話に自然と出てきます。ポートフォリオが一方向に偏っているとわかっていても、「今回は違う」と思ってしまう。当たっていますか？<br><br>分析力は資産です。しかし、間違っていたときのルールがなければ、その確信はむしろ毒になります。',
+strengths:['ファンダメンタル分析力が成熟段階にある','30代の資産形成期＋分析力＝複利を最大化する絶好の時期','パニック局面でも買い向かえるだけの確信がある'],
+cautions:['「自分で分析した企業」への執着 → 単一銘柄が30%を超えるリスク','男性特有の過剰売買：新しい分析結果が出るたびにポートフォリオを調整したくなる衝動','結婚・住宅購入・子育ての時期に投資を止めたくなる衝動 — まさに複利の核心となる時期に'],
+genderNote:{male:'分析力が高いほど、過剰売買のリスクも高まります。リバランスは年2回まで、というルールを決めましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','MSFT','GOOGL','AMZN','META','AVGO','AAPL','IVV'],pcts:[20,15,13,12,10,10,8,7,5]},
+  beginner:{tickers:['QQQ','SOXX','IVV','MSFT','NVDA','GOOGL','AAPL','AVGO'],pcts:[22,10,8,18,16,12,8,6]}},
+advice:'リバランスは年2回までに抑えましょう。分析すればするほど、売買したくなるものです。'},
+
+'female_30s_NT':{typeCode:'A-4',typeName:'体系的な成長の設計者',
+dna:'一目見ればわかるタイプです。丁寧に設計し、売買は最小限、ルール通りに動きます。「もうこれで十分では」という思いが、投資額を控えめにしています。当たっていますか？<br><br>ここにいる女性投資家タイプの中で、あなたのリターン可能性は最も高いものです。必要なのは投資額を増やすことだけです。',
+strengths:['低い取引頻度＋高い分析力＝女性投資家タイプの中で最も高いポテンシャル','30代の中で最も忠実にドルコスト平均法を実行するタイプ','暴落時でも計画を守り抜く精神力'],
+cautions:['30代前半〜半ばで、収入に対して投資額が過小になりがちな傾向','「完璧な」ポートフォリオを丁寧に設計しすぎて、実際のスタートが遅れるという逆説','成長株は「今は割高に見える」と言ってインデックスファンドだけに固執する傾向'],
+genderNote:{male:'該当なし',female:'30代でNT気質を持つ女性は、このツールが生み出す中で最も期待リターンの高いタイプの一つです。低い取引頻度＋ルール遵守＝複利にとって完璧な条件です。投資額を増やしましょう。'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','GOOGL','NVDA','AAPL','META','AMZN','IVV'],pcts:[28,14,13,12,12,10,7,4]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','NVDA','GOOGL','AAPL','META'],pcts:[24,10,8,18,14,13,8,5]}},
+advice:'あなたの分析はすでに優れています。今こそ投資額を増やすときです。'},
+
+'male_40s_NT':{typeCode:'A-5',typeName:'ポートフォリオ・アーキテクト',
+dna:'もう目に浮かびますよね。ドットコムバブル崩壊、2008年の金融危機、コロナショックを生き抜いてきました。その経験が分析力を磨いた一方で、ポートフォリオを複雑にしてしまってもいます。保有銘柄はすでに10を超えていませんか、それともセクター配分のスプレッドシートはまだ増え続けていますか？当たっていますか？<br><br>シンプルは複雑に勝ります。',
+strengths:['ここにいるタイプの中で最も優れた市場サイクルの直感','大きく勝つことより負けないことの方が重要だと身をもって学んでいる','資産配分戦略の設計に長けている'],
+cautions:['複雑なポートフォリオ＝高い取引コスト＋低いリターン','40代で芽生える「そろそろ守りに入るべき」という本能 → 成長株比率を早く削りすぎる','AIや新技術セクターへの参入が遅くなる（分析しすぎて時間を消費してしまう）'],
+genderNote:{male:'バーバー＆オディーン：最も活発に売買する層は市場を年7%以上下回る成績になります。保有銘柄は5銘柄以下に絞りましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','GOOGL','NVDA','AAPL','AMZN','META'],pcts:[19,15,14,12,11,10,10,9]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','NVDA','GOOGL','AAPL','AMZN'],pcts:[17,15,10,15,13,11,10,9]}},
+advice:'保有銘柄は5つ以下に絞りましょう。シンプルは複雑に勝ります。'},
+
+'female_40s_NT':{typeCode:'A-6',typeName:'慎重なバランス戦略家',
+dna:'一目見ればわかるタイプです。あなたのすべての投資判断には理由があります。衝動買いも感情的な売却もありません。「これを守らなければ」という気持ちが強くなるにつれて、成長株の比率が静かに縮小していませんか？当たっていますか？<br><br>40代で守りに転じるのは、まだ10年早いです。',
+strengths:['数十年かけて積み上げた分析の習慣','過剰売買がなく、原則を堅持している','生活費と老後資金を明確に分けるのが得意'],
+cautions:['40代の「今は慎重に」という心理 → 守りへの転換が10年早すぎる','現金を持ちすぎる傾向','90歳までの寿命を想定すると、まだ50年の投資期間が残っている — 株式比率は65%以上を維持すべき'],
+genderNote:{male:'該当なし',female:'フィデリティ：女性は平均して男性を0.4%ポイント上回るリターンを上げています。あなたの慎重な意思決定は、すでに強みです。40代でも成長株比率を60%は維持しましょう。'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','GOOGL','NVDA','AAPL','AMZN'],pcts:[23,17,14,12,11,12,11]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','NVDA','GOOGL','AAPL','AMZN'],pcts:[18,14,10,15,12,11,10,10]}},
+advice:'60代になるまでは、株式比率を最低65%は維持しましょう。'},
+
+'male_50s_NT':{typeCode:'A-7',typeName:'20年先を見据えて設計する戦略家',
+dna:'もう目に浮かびますよね。AIサイクル、半導体のスーパーサイクル、ビッグテックの寡占構造を、会話の中で自然に説明できます。周りからは「本当に投資をわかっている人」と言われています。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ38年残っています。知識が深いほど守りに傾きやすくなりますが、まだその理由はありません。',
+strengths:['企業価値を見極めるトップクラスの能力','市場サイクルへの完全な理解','感情的な売却をしない — これが複利の核心条件'],
+cautions:['分析のしすぎ → 不要なリバランスのリスク','男性特有の取引パターンは、50代になっても過剰売買を誘惑し続ける','AI・半導体への確信が集中リスクに変わらないよう、分散の規律を保つ'],
+genderNote:{male:'50代のNT男性にとって最大のリスクは、「この機会は違う」という確信です。確信はポジションサイズに反映されるべきものですが、過信はリスクに変わります。あらかじめ銘柄ごとの上限比率を決めておきましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','NVDA','GOOGL','AMZN','AAPL','META','AVGO'],pcts:[24,16,14,13,11,10,8,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','MSFT','NVDA','GOOGL','AAPL','AVGO'],pcts:[22,10,8,18,15,12,8,7]}},
+advice:'AIサイクルの最盛期に、データを武器に賭けましょう。50代の知識と38年の滑走路は、強力な組み合わせです。'},
+
+'female_50s_NT':{typeCode:'A-8',typeName:'データで30年を設計する戦略家',
+dna:'一目見ればわかるタイプです。流行を追いかけたこともなければ、パニックで売ったこともありません。すべての判断に理由があります。新しい変数が出るたびに再検証し、それが不要なリバランスにつながっていませんか？当たっていますか？<br><br>90歳までの寿命を想定すると、まだ39年残っています。リバランスの頻度を減らすだけで十分です。',
+strengths:['過剰売買なし＋ルール遵守＝複利を最大化する完全なレシピ','データに基づく判断が市場のノイズを完全に遮断する','39年の滑走路 — 成長志向のポートフォリオを正当化するのに十分な時間'],
+cautions:['分析依存：新しい変数が出るたびに再検証 → 不要なリバランス','早すぎる守りへの転換本能 — 株式比率を急いで削ると10年後に後悔する','現金を持ちすぎる傾向（女性は平均して現金比率が高い）'],
+genderNote:{male:'該当なし',female:'分析力＋女性らしい規律は、このツールが生み出す中で最も強力な組み合わせの一つです。完璧に設計されたポートフォリオを追い求めるあまり、成長を諦めないでください。'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','GOOGL','NVDA','AAPL','AMZN','META','AVGO'],pcts:[22,16,15,12,12,11,8,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','MSFT','NVDA','GOOGL','AAPL','META'],pcts:[20,10,10,18,14,12,10,6]}},
+advice:'分析力＋39年の滑走路が、あなたの最強の武器です。完璧な設計を待つあまり、成長を諦めないでください。'},
+
+// ════════════════════════════════════════════════════════
+// Section B: NF Diplomats (8)
+// ════════════════════════════════════════════════════════
+
+'male_20s_NF':{typeCode:'B-1',typeName:'ストーリーに投資する共感型投資家',
+dna:'もう目に浮かびますよね。「この会社は世界を変える」という確信で買います。それが外れても、「ストーリーはまだ生きている」と保有を続けます。当たっていますか？<br><br>直感が当たったときのリターンは驚異的です。しかしストーリーが揺らいだときの基準は、感情ではなく数字であるべきです。',
+strengths:['企業のビジョンとストーリーへの強い確信 → 長期保有できる','トレンドの変化に敏感 → 成長セクターへの早期参入','20代で長期的な視点を持ってスタート＝複利エンジンにとって理想的な条件'],
+cautions:['「この会社はいずれ良くなる」というナラティブが、必要な損切りを妨げる','ストーリーが揺らいだときに、非合理的なナンピン買いをしがちな傾向','感情主導の過度な集中 → 分散不足'],
+genderNote:{male:'NF男性は、確信が強くなるほどポジションサイズを増やす傾向があります。投資額は感情ではなくルールで決めましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['QQQ','META','TSLA','NVDA','AMZN','GOOGL','MSFT','IVV'],pcts:[28,15,13,12,11,10,7,4]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','META','TSLA','GOOGL','AMZN'],pcts:[28,12,6,14,13,10,10,7]}},
+advice:'ストーリーが揺らいでも、数字が問題なければ保有を続けましょう。基準は感情ではなく業績です。'},
+
+'female_20s_NF':{typeCode:'B-2',typeName:'共感で選び、原則で保有する投資家',
+dna:'一目見ればわかるタイプです。毎日使うアプリ、周りのみんなが使っているサービス — これらが自然と投資アイデアになります。良い企業を選んでも、ポジションが小さすぎて利益を実感できなかった経験があるはずです。当たっていますか？<br><br>あなたの銘柄選定の勘はすでに優れています。今こそ投資額を増やすときです。',
+strengths:['直感的な銘柄選定＋長期保有＝自然とGARP投資を実践している','過剰売買がない → 取引コストが最小限に抑えられる','共感に基づく選定が、良い企業を見分けるフィルターとして機能する'],
+cautions:['フィデリティ：投資について「よく知っている」と自己評価する女性はわずか14% → ポジションが小さくなりがち','愛着のある企業が期待外れの結果を出したときの反応が遅れる','魅力的なストーリーを持つIPOへの過度な投資リスク'],
+genderNote:{male:'該当なし',female:'あなたの直感的な銘柄選定は、想像以上に良い結果を生んでいます。問題はポジションが小さすぎることです。収入の20%以上を投資に回すことが最初の課題です。'},
+portfolio:{
+  default:{tickers:['QQQ','AAPL','META','GOOGL','MSFT','AMZN','NVDA','IVV'],pcts:[28,14,13,12,11,10,8,4]},
+  beginner:{tickers:['QQQ','IVV','SOXX','AAPL','MSFT','GOOGL','META','AMZN'],pcts:[25,12,6,15,12,11,10,9]}},
+advice:'良い企業を見抜く直感を信じましょう。次の課題は投資額を増やすことです。'},
+
+'male_30s_NF':{typeCode:'B-3',typeName:'ビジョンを現実に変える投資家',
+dna:'もう目に浮かびますよね。愛着のある企業が期待外れの決算を出しても、「一時的なもの」だと買い増しします。その愛着が分析を上回ってしまう。当たっていますか？<br><br>30代になって実際の数字を確認し始めたのは良い変化です。愛着が強いほど、損切りルールは具体的な数字で厳格に決めておく必要があります。',
+strengths:['ビジョンと業績確認を組み合わせることで、銘柄選定の質が向上する','感情的な売却をしない → パニック局面でも保有を続けられる','30代の資産形成期＋長期的確信＝複利を最大化する絶好の時期'],
+cautions:['「この会社をよく知っている」という馴染みが、損切りの妨げになる','ビジョンのある企業が期待外れのとき、「一時的」と言い聞かせて買い増しする','NF男性：確信が強いほど、単一銘柄への集中度が高まる'],
+genderNote:{male:'30代のNF男性が最も注意すべきなのは、「好きな企業」と「良い投資先」を混同することです。愛着が強いほど、損切りラインは曖昧になります。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','META','GOOGL','NVDA','AMZN','AAPL','IVV'],pcts:[22,15,13,12,11,10,9,8]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','META','GOOGL','AMZN','NVDA'],pcts:[22,10,6,16,14,12,10,10]}},
+advice:'愛着が強いほど、損切りルールは具体的な数字で厳格に決めておきましょう。'},
+
+'female_30s_NF':{typeCode:'B-4',typeName:'意味ある企業への長期投資を設計する人',
+dna:'一目見ればわかるタイプです。自分が実際に体験し、本当に共感できる企業だけを保有しています。周りがFOMOで買っても動じず、パニック売りもしません。「もうこれで十分では」という思いが、投資額を控えめにしています。当たっていますか？<br><br>弱点は投資額です。原則はすでに強みなので、あとは金額を増やすだけです。',
+strengths:['実績のある企業を中心に構築されたポートフォリオは、スキャンダルに巻き込まれやすい乱高下銘柄を自然と避けている','低い取引頻度＋ルール遵守＝複利エンジン','フィデリティ：女性は10年累計で男性を0.4%ポイント上回るリターンを上げている'],
+cautions:['30代の女性は現金を持ちすぎる傾向がある','良い企業でも「今は割高に見える」という理由で参入を先延ばしにする','愛着のある企業が期待外れのとき、感情的な損切り、あるいはその逆の保有し続けすぎ'],
+genderNote:{male:'該当なし',female:'あなたの企業選定の基準はすでに十分です。今欠けているのは銘柄選びではなく投資額です。「この金額くらいたいした違いはない」という考えが、最大の敵です。'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','META','AMZN','NVDA','IVV'],pcts:[25,15,13,12,11,10,9,5]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','META','AMZN'],pcts:[23,10,5,15,13,12,11,11]}},
+advice:'あなたはすでに良い企業を選べています。今こそ投資額を増やすときです。'},
+
+'male_40s_NF':{typeCode:'B-5',typeName:'哲学を持つ投資家',
+dna:'もう目に浮かびますよね。「良い企業に投資する」という原則があります。株価が揺れても、企業が良ければ売りません。当たっていますか？<br><br>哲学は銘柄選定のフィルターです。戦略ではありません。投資額は哲学ではなく数字で決めるべきです。',
+strengths:['明確な投資原則が、パニック局面でも冷静さを保たせる','長期保有の気質 → 複利を最大化する','40代の資産基盤＋ビジョン主導の投資＝長期成績の核心となる時期'],
+cautions:['価値観に基づくポートフォリオは、特定セクターへの過度な集中に陥りやすい','「世界にとって良い企業」が自動的に「良い投資先」になるとは限らない（成績の振るわないESGファンドの教訓を参照）','哲学的な愛着が、お気に入りの企業が苦戦したときの必要な損切り判断を遅らせることがある'],
+genderNote:{male:'40代のNF男性が哲学をポートフォリオに過度に反映させると、分散が崩れます。哲学は銘柄選定のフィルターとしてのみ使い、投資額は数字で決めましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','GOOGL','AAPL','AMZN','META'],pcts:[23,17,14,13,12,11,10]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','GOOGL','AAPL','META','AMZN'],pcts:[17,14,8,14,13,12,11,11]}},
+advice:'投資哲学は銘柄選定のフィルターとしてのみ使いましょう。投資額は数字が決めます。'},
+
+'female_40s_NF':{typeCode:'B-6',typeName:'価値観を中心に据えたポートフォリオ設計者',
+dna:'一目見ればわかるタイプです。「もう少し様子を見てから買おう」が半年になり、一年になります。その慎重さは強みですが、同時にエントリーの機会を逃し続けてもいます。当たっていますか？<br><br>様子見の期間に数字の基準を設けましょう。「決算を2四半期確認してから買う」というルールが、待つことを戦略に変えます。',
+strengths:['日常生活で確かめた企業を選ぶ → 自分が本当に理解しているポートフォリオ','低い取引頻度、揺るがない原則','90歳までの寿命を想定すると、まだ50年の投資期間が残っている'],
+cautions:['「見すぎてタイミングを逃す」というパターンの繰り返し','40代の女性：現金を持ちすぎる傾向','企業への個人的な愛着が、必要なポートフォリオのリバランスを妨げることがある'],
+genderNote:{male:'該当なし',female:'40代で「今は慎重に」と感じるのは自然なことです。しかし90歳までの寿命を想定すると、まだ50年の投資期間が残っています。成長株比率は60%以上を維持しましょう。'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','META','AMZN'],pcts:[24,17,14,13,13,11,8]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','META','AMZN'],pcts:[18,13,8,13,12,12,11,13]}},
+advice:'40代でも成長株比率60%は正当化できます。時間がリスクを相殺します。'},
+
+'male_50s_NF':{typeCode:'B-7',typeName:'ビジョンを軸に30年を設計する投資家',
+dna:'もう目に浮かびますよね。夕食の席で投資の話になると、「テスラは絶対にいずれ実現する」と自然に口から出てきます。周りからは「あの人は株をよく分かっている」と言われます。愛着のある企業を10年間、一度も売らずに保有できます。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ38年残っています。愛着のある企業をそれだけ長く保有することこそ、複利の本質です。',
+strengths:['長期保有が複利効果を最大化する','企業サイクルへの完全な理解','感情的な売却をしない — 暴落時にも一線を守り抜く'],
+cautions:['守りへの転換本能が早く発動しすぎる → 配当株と債券への過剰な偏りのリスク','LLYのようなヘルスケアの革新企業を単なるディフェンシブ銘柄として分類してしまわないこと','深い愛着のある企業でも、業績が悪化した場合に備えてあらかじめ損切りラインを決めておく'],
+genderNote:{male:'50代のNF男性にとって最善の一手は、愛着のある成長企業を守り抜くことです。守りへの転換は60代まで先送りしましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','GOOGL','AAPL','META','AMZN','NVDA'],pcts:[24,16,14,13,12,11,10]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','GOOGL','AAPL','META','AMZN'],pcts:[21,10,7,14,13,11,10,14]}},
+advice:'愛着のある企業をあと38年保有し続ける — それこそが最良の投資です。'},
+
+'female_50s_NF':{typeCode:'B-8',typeName:'応援しながら30年保有する投資家',
+dna:'一目見ればわかるタイプです。実際に使っているアプリ、よく訪れるブランド — これらが保有銘柄になります。「この会社に頑張ってほしい」という気持ちで株を持ち続けます。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ40年残っています。その愛着があるからこそ長期保有ができ、長期保有こそが複利を可能にします。まだ急いで守りに転じるときではありません。',
+strengths:['企業への本当の理解に基づく長期保有 → 不必要な売買がない','女性投資家に典型的な規律 → 暴落時にもパニック売りをしない','分析よりも観察に基づく選定 → 日常生活に本当に関わりのある企業のポートフォリオ'],
+cautions:['「今は保守的に」という本能に注意 — 成長株比率を急いで削らない','愛着のある企業でも、業績が悪化した場合に備えてあらかじめ損切りラインを決めておく','LLYのようなヘルスケアの革新企業は、ディフェンシブではなく成長株として分類する'],
+genderNote:{male:'該当なし',female:'フィデリティ：女性が男性を0.4%ポイント上回る秘訣は、売る回数が少ないことです。50代でもその強みを保ちましょう。成長株比率を65%以上に保つことが鍵です。'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','META','AMZN','NVDA'],pcts:[22,16,15,13,12,11,11]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','META','AMZN'],pcts:[19,10,7,14,13,12,11,14]}},
+advice:'直感＋規律＋40年の滑走路は、複利にとって最強の組み合わせです。成長を諦めないでください。'},
+
+// ════════════════════════════════════════════════════════
+// Section C: SJ Sentinels (8)
+// ════════════════════════════════════════════════════════
+
+'male_20s_SJ':{typeCode:'C-1',typeName:'計画で資産を築く設計者',
+dna:'一目見ればわかるタイプです。すでに毎月の投資計画を立てて実行しています。SNSで「今すぐこの銘柄を買うべき」と騒がれても、「自分の計画を守る」と言います。当たっていますか？<br><br>20代でこの習慣を持っているだけで、すでに上位5%に入っています。唯一の本当のリスクは、「最適な」計画を待つあまりスタートが遅れることです。',
+strengths:['最高クラスの計画実行力 — 実際にドルコスト平均法の自動積立を守り抜くタイプ','流行や短期売買の誘惑に左右されない','20代からのスタート＋ドルコスト平均法＝複利エンジンが早期に始動する'],
+cautions:['「最適な」計画を設計するあまりスタートが遅れるという逆説','20代のSJ男性：友人の短期売買での儲け話を見て、計画を放棄したくなる衝動','安定志向のポートフォリオが、20代にしては保守的すぎる設計になってしまうことがある'],
+genderNote:{male:'計画を立てて守るのは良いことです。ただし、その計画が20代にしては保守的すぎないか確認しましょう。20代における「安定」とは、債券や配当ではなく長期保有を意味します。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','NVDA','AMZN','META','IVV'],pcts:[30,14,13,12,11,10,7,3]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA'],pcts:[25,15,6,16,14,12,8,4]}},
+advice:'完璧な計画を待たないでください。今始めることこそ、最良の計画です。'},
+
+'female_20s_SJ':{typeCode:'C-2',typeName:'規律あるドルコスト平均法の実行者',
+dna:'一目見ればわかるタイプです。やることリストに載せたことは必ずやり遂げます。「この銘柄が上がるらしい」と言われても、「自分の計画を守る」と答えます。市場が10%下落した日でも、予定していた自動積立には手をつけません。当たっていますか？<br><br>このツールが生み出すタイプの中で、おそらく最も取引頻度が低くなります。それは強みです。',
+strengths:['ルールに基づくドルコスト平均法の実行 — 感情が介入しない','低い取引頻度＋20代という長い滑走路＝複利にとって理想的な組み合わせ','フィデリティ：女性の10年リターンは男性より0.4%ポイント高い'],
+cautions:['投資額が収入の10%未満にとどまりがち','「よくわからないから」という理由で成長株を完全に除外してしまう','Z世代は資産の平均33.88%を現金で保有 → インフレによって年々目減りする'],
+genderNote:{male:'該当なし',female:'あなたはすでに良い投資家です。今必要なのは、もっと投資することです。収入の20〜30%を投資資金に回すことが、20代でできる最良の財務判断です。'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','NVDA','AMZN','META','AVGO','IVV'],pcts:[27,13,12,10,9,7,8,8,6]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA'],pcts:[24,16,5,16,14,12,9,4]}},
+advice:'すでに良い習慣は身についています。今こそ金額を増やすときです。'},
+
+'male_30s_SJ':{typeCode:'C-3',typeName:'仕組みで資産を築く投資家',
+dna:'もう目に浮かびますよね。リバランスの日程、損切りルール、毎月の積立額 — すべて決まっていて、それに従っています。しかし、最初に決めてから一度でもそのルールを見直したことはありますか？当たっていますか？<br><br>その仕組みは強みです。ただ、今の市場に合っているか、3年に一度は点検が必要です。',
+strengths:['最高クラスのシステマティックな投資実行 → 感情が入り込まない','結婚や子育ての最中でも投資を自動操縦のまま続ける','ポートフォリオをシンプルに保つ → 取引コストを最小化する'],
+cautions:['ルールへの過度な執着 → 市場が本当に変化したときの対応が遅れる','30代のSJ男性：安全な企業を好むあまり、成長株の比重が不足しがち','固定化されたシステムが、市場の変化に合わせて更新されないリスク'],
+genderNote:{male:'仕組みを作り、それを守り続けることは本物の強みです。ただ、その仕組みが「今も通用するか」を3年に一度は確認しましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','AVGO','IVV'],pcts:[22,14,13,12,11,10,8,10]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN'],pcts:[24,14,8,18,14,12,10]}},
+advice:'仕組みを作りましょう。そして3年に一度、点検しましょう。'},
+
+'female_30s_SJ':{typeCode:'C-4',typeName:'安定した資産を築く投資家',
+dna:'一目見ればわかるタイプです。毎月の自動積立、年1回のリバランス、長期保有の計画 — すべて設定して実行しています。「安定を保ちたい」という本能が強く働いています。当たっていますか？<br><br>この習慣を持つ人は、投資家の上位10%に入ります。ただ一つ、成長株を完全に排除してしまうと複利エンジンの速度が落ちます。',
+strengths:['ドルコスト平均法＋長期保有＝時間が証明した最良の戦略','衝動的な売買がない → 取引コストが最小限に抑えられる','低い取引頻度＋ルール遵守＝複利エンジン'],
+cautions:['30代の資産形成期に投資額が過小になりがちな傾向','「安定を保とう」という心理が、成長株をポートフォリオから完全に排除してしまう','成長機会を単なる「リスク」としてしか見ないパターン'],
+genderNote:{male:'該当なし',female:'30代は複利エンジンが最も力強く回る時期です。安定を求めるなら、債券ではなく長期保有できる大型成長株を選びましょう。時間がリスクを相殺します。'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','META','IVV'],pcts:[24,14,13,12,11,9,7,10]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA'],pcts:[23,13,5,17,13,12,10,7]}},
+advice:'安定の答えは債券ではなく、長期保有です。'},
+
+'male_40s_SJ':{typeCode:'C-5',typeName:'資産を守りながら育てる投資家',
+dna:'もう目に浮かびますよね。10年以上、毎月の自動積立とリバランスを続けてきました。資産が積み上がるにつれ、「それを守りたい」という本能も強くなっています。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ50年の投資期間が残っています。40代での守りへの転換は、20年早すぎます。',
+strengths:['資産配分の原則への厳格な遵守','衝動的な売買がない → 取引コストが最小限に抑えられる','最高水準のリバランスの規律'],
+cautions:['40代のSJ男性：「今守らなければ」という本能が成長株比率を早く削りすぎる','ディフェンシブ資産（債券・配当株）への過剰な偏りのリスク','90歳までの寿命を想定すると、50年の滑走路がある — 株式比率は65%以上を維持すべき'],
+genderNote:{male:'40代で「今は保守的に」というのは、10〜15年早すぎる判断です。守りへの転換は55歳以降に計画しましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[23,13,12,11,10,9,7,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[19,11,5,13,12,10,9,6,15]}},
+advice:'守りへの転換は55歳以降に先送りしましょう。40代はまだ成長の局面です。'},
+
+'female_40s_SJ':{typeCode:'C-6',typeName:'原則でセーフティネットを築く投資家',
+dna:'一目見ればわかるタイプです。暴落しても売らず、急騰しても飛び乗りません。計画通りにきっちり動きます。「今は安全第一で」という思いから、現金比率がじわじわ上がっていませんか？当たっていますか？<br><br>その規律こそが複利の核心です。現金比率を上げることは、エンジンの速度を落とすことになります。',
+strengths:['市場のノイズを完全に遮断 — ルールだけに従う','フィデリティによれば、これこそが女性の10年リターン優位の理由そのもの','90歳までの寿命を想定すると、50年の投資滑走路がある'],
+cautions:['40代の「今は安全第一で」という心理が、現金の持ちすぎにつながる','成長機会を早々に諦めてしまう傾向','硬直しすぎたルールは、市場が本当に変化したときに適応できない'],
+genderNote:{male:'該当なし',female:'あなたの規律とルール遵守は、最強の投資の武器です。40代でも成長株比率は60%以上を維持しましょう。時間はあなたの味方です。'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[26,12,11,10,10,9,7,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[20,10,5,13,12,10,9,6,15]}},
+advice:'規律こそが複利の最強の武器です。60代になるまで成長株比率を維持しましょう。'},
+
+'male_50s_SJ':{typeCode:'C-7',typeName:'原則で資産を完成させる投資家',
+dna:'もう目に浮かびますよね。20年以上、毎月の自動積立を続けてきました。過去の暴落でも売らずに保有し続けました。その規律が今のポートフォリオを築いてきました。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ38年残っています。原則は保ちつつも、今守りに転じるとAIサイクルを逃してしまいます。',
+strengths:['数十年にわたって実証された規律 → 感情的な売却をしない','リバランスの規律が完全に成熟している','Vのようなディフェンシブな優良銘柄を組み入れ、下落を和らげている'],
+cautions:['債券・配当株への過剰な偏りに注意 — 期待リターンが大きく下がりうる','「今守らなければ」という本能が、成長エンジンを早く止めすぎることがある','NVDAのような成長セクターの比重を低く抑えすぎると、AIサイクルを逃すリスクがある'],
+genderNote:{male:'シンプルに保ちましょう。QQQ＋MSFT＋AAPL＋V。4〜7銘柄、年1回のリバランス。それがすでに最良のポートフォリオです。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[22,17,14,13,12,7,15]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[16,13,5,14,12,10,5,10,15]}},
+advice:'30年間守り続けた原則が、今のポートフォリオを築きました。シンプルに、長く保有しましょう。'},
+
+'female_50s_SJ':{typeCode:'C-8',typeName:'原則の実りを育てる投資家',
+dna:'一目見ればわかるタイプです。毎月の自動積立を一度も欠かしたことがありません。リバランスの日をあらかじめカレンダーに書き込んでいます。その規律が今のポートフォリオを築いてきました。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ40年の滑走路が残っています。今はその実りをさらに育てる時期です。',
+strengths:['ルール遵守＋低い取引頻度＝複利の最大化','女性投資家に典型的な規律 → 暴落時にもパニック売りをしない','40年の滑走路 — 成長志向を保つのに十分すぎるほどの時間'],
+cautions:['50代で現金を持ちすぎる傾向','「今は慎重に」という本能が成長株比率を急いで削らないよう注意','VやCOSTへの過剰な偏りは、成長を鈍らせすぎるリスクがある'],
+genderNote:{male:'該当なし',female:'数十年間、原則を守り続けてきたこと自体がすでに優れた成果です。50代でも株式比率は65%以上を維持しましょう — まだ40年先があります。'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','META','SCHD'],pcts:[20,16,14,12,8,9,6,15]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[15,13,5,14,13,10,5,10,15]}},
+advice:'原則の実りを収穫しつつも、あと40年成長し続けられるポートフォリオを保ちましょう。'},
+
+// ════════════════════════════════════════════════════════
+// Section D: SP Explorers (8)
+// ════════════════════════════════════════════════════════
+
+'male_20s_SP':{typeCode:'D-1',typeName:'誰よりも早く機会をつかむ情熱的投資家',
+dna:'良い銘柄の話を聞くと、分析より先に指が動きます。「今買わないと逃してしまう」と一日に二、三回は思っています。そして実際にその思いのまま行動し、少し後悔したこともあるはずです。当たっていますか？行動力は強みです。ただし、損切りルールを先に作っておきましょう。',
+strengths:['トレンドを早期に察知する能力 — ほとんどの人が気づく前に参入している','行動力 — 判断と実行の間にタイムラグがない','20代＋SPの直感＝成長サイクルの最前線に乗ることができる'],
+cautions:['損切りルールがない → 損失が「待てば戻る」に変わってしまう','短期利確の繰り返し → 長期的な複利を逃す','バーバー＆オディーン：最も活発に売買する層が最も低いリターンを得る'],
+genderNote:{male:'行動力は強みです。ただし、あらかじめ具体的な数字で損切りルールを決めておかなければ、その行動力は毒になります。ポートフォリオの30%は絶対に手をつけないコアとして固定しましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','META','TSLA','AMZN','GOOGL','MSFT','AVGO','IVV'],pcts:[22,15,12,12,11,10,8,6,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','META','TSLA','MSFT','GOOGL'],pcts:[24,10,7,18,12,11,10,8]}},
+advice:'「30%はコアとして絶対に手をつけない」というルールを今すぐ作りましょう。'},
+
+'female_20s_SP':{typeCode:'D-2',typeName:'直感で機会をつかむ投資家',
+dna:'一目見ればわかるタイプです。「最近みんなこのアプリを使っている」が自然と投資アイデアになります。その直感は思っている以上に正確です。ただ、正誤を見分ける基準がないため、結果にばらつきが出てしまいます。当たっていますか？<br><br>投資額は感情ではなくルールで決めましょう。',
+strengths:['早期のトレンド察知 — 日常生活で実際に体験する製品やサービスから','決断力 — 確信を持てば即座に行動する','フィデリティ：女性のリターン優位＋SPの直感＝潜在的に強力な組み合わせ'],
+cautions:['直感が当たっているか外れているかを見分ける明確な基準がない','損切りの判断が感情的になりがち','面白そうな機会が多すぎて、ポートフォリオが分散しすぎることがある'],
+genderNote:{male:'該当なし',female:'直感は信じつつ、投資額は数字で決めましょう。あなたに最も合うルールは、興奮しているときほどポジションを小さくすることです。'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','META','AAPL','GOOGL','AMZN','TSLA','IVV'],pcts:[25,15,13,12,11,10,10,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','META','TSLA','MSFT','GOOGL'],pcts:[22,10,7,16,13,10,10,12]}},
+advice:'直感は信じつつ、投資額はルールに決めさせましょう。'},
+
+'male_30s_SP':{typeCode:'D-3',typeName:'相場観で動く投資家',
+dna:'もう目に浮かびますよね。どのセクターに資金が流れているか、次にどの銘柄が動くか、ほとんどの人より先に感じ取ります。その直感で利益を上げてきました。当たっていますか？<br><br>仕組みがなければ、一度の大きな損失が何十回もの小さな勝ちを帳消しにします。ポートフォリオの50%をETFコアにして、セーフティネットにする必要があります。',
+strengths:['市場サイクルの早期察知 — セクターローテーションを捉える','行動力 — 分析が終わる前にポジションを構築する','30代の資産形成期＋SPの直感＝成長サイクルの最前線に乗ることができる'],
+cautions:['損切りがない → 短期ポジションが静かに長期保有に変わってしまう','バーバー＆オディーン：男性の過剰売買は平均して年2.65%ポイントのコストになる — 特にSP男性にとって最大のリスク','結婚や子育ての最中に投資への集中力が分散するリスク'],
+genderNote:{male:'30代のSP男性に最も必要なのは、直感を規律で裏打ちすることです。ポートフォリオの50%は自動積立のETFコアとして固定し、残りの50%だけを戦術的な取引に使いましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','META','AMZN','GOOGL','MSFT','TSLA','AVGO','IVV'],pcts:[20,15,12,12,11,10,9,7,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','META','TSLA','MSFT','AVGO','GOOGL'],pcts:[22,10,6,18,12,11,10,7,4]}},
+advice:'50%を自動積立のETFコアとして固定しましょう。残りだけを戦術的に取引します。'},
+
+'female_30s_SP':{typeCode:'D-4',typeName:'トレンドを早く読む投資家',
+dna:'一目見ればわかるタイプです。新しくオープンしたカフェ、友人みんなが使うアプリ、SNSで話題の商品 — これらが自然と投資アイデアになります。その直感は分析より速く動きます。当たっていますか？<br><br>トレンドが過ぎ去った後もポジションを持ち続けた経験があるはずです。出口のルールは、入口のルールと同じくらい重要です。',
+strengths:['消費トレンドを通じた企業選定 — 日常生活で検証済み','決断力＋女性らしい規律＝バランスの取れた行動','フィデリティ：女性のリターン優位'],
+cautions:['トレンドが過ぎ去った後もポジションを持ち続けてしまう傾向','話題のIPOへの過度な投資リスク','面白そうな機会を追いかけすぎてポートフォリオが分散しすぎる'],
+genderNote:{male:'該当なし',female:'トレンドを読む直感は強みです。ただし、そのトレンドが終わったときに退出する明確なルールをあらかじめ作っておきましょう。出口戦略は入口戦略と同じくらい重要です。'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','META','AAPL','AMZN','GOOGL','MSFT','NFLX','IVV'],pcts:[22,14,12,12,11,10,9,6,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','META','AAPL','MSFT','GOOGL'],pcts:[20,10,7,16,15,11,10,11]}},
+advice:'入口のルールに合わせて、明確な出口のルールも作りましょう。どんなトレンドもいつか終わります。'},
+
+'male_40s_SP':{typeCode:'D-5',typeName:'経験に裏打ちされたベテランの機会主義者',
+dna:'もう目に浮かびますよね。コロナショックでも売らず、むしろ買い増ししました。その経験が、今のあなたの直感を築きました。当たっていますか？<br><br>ただし、この段階で過去の成功が過信に変わらないよう注意しましょう。ポートフォリオの40%はコアとして固定してください。',
+strengths:['暴落を経験している → パニック局面でも動じずに買える能力','トップクラスのセクターローテーション察知力','40代の資産基盤＋SPの直感＝リターン最大化の可能性'],
+cautions:['40代のSP男性：過去の成功が過信を生みやすい時期','短期の戦術的ポジションが静かに「意図しない」長期保有に変わるリスクの高まり','老後準備を始めるべき時期に、同じ攻めの強度を維持し続けるリスク'],
+genderNote:{male:'経験は資産です。40代では、ポートフォリオの40%を長期コアとして固定しておきましょう。戦術的な取引は残りの60%にとどめます。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','NVDA','MSFT','GOOGL','AMZN','META','TSLA'],pcts:[18,16,14,13,12,11,10,6]},
+  beginner:{tickers:['IVV','QQQ','SOXX','NVDA','MSFT','GOOGL','META','TSLA'],pcts:[15,13,10,16,13,12,11,10]}},
+advice:'40%をコアとして固定しましょう。残りだけを戦術的に取引します。'},
+
+'female_40s_SP':{typeCode:'D-6',typeName:'相場に柔軟に適応する投資家',
+dna:'一目見ればわかるタイプです。相場の流れを肌で感じ取ります。そして今では、動く前に一度立ち止まる習慣も身についています。当たっていますか？<br><br>過去に大きな損失を経験したことがあると、この年代では過度に保守的になる傾向があります。直感と規律のバランスこそが、今のあなたの最強の武器です。',
+strengths:['直感＋規律＝SPタイプの中で最も安定した成果','フィデリティ：女性のリターン優位','90歳までの寿命を想定すると、50年の投資滑走路がある'],
+cautions:['40代のSP女性：過去に大きな損失があると、過度に保守的になることに注意','自分の直感を疑いすぎると、判断そのものができなくなる','新しい面白い機会を追いかけることと既存ポートフォリオの管理の間でエネルギーが分散する'],
+genderNote:{male:'該当なし',female:'直感は信じましょう。ただし、それが本当の相場観なのか、過去の傷から残った恐怖なのかを見分けてください。恐怖に基づく判断は、たいてい間違っています。'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','NVDA','MSFT','GOOGL','META','AMZN','AAPL'],pcts:[20,15,13,13,12,11,10,6]},
+  beginner:{tickers:['IVV','QQQ','SOXX','NVDA','MSFT','GOOGL','META','AAPL'],pcts:[15,13,9,16,12,12,13,10]}},
+advice:'直感と規律のバランスこそが、あなたの最強の武器です。'},
+
+'male_50s_SP':{typeCode:'D-7',typeName:'完全に熟成した相場勘を持つベテランの機会主義者',
+dna:'もう目に浮かびますよね。ドットコムバブル崩壊、金融危機、コロナショック、AI相場 — これらすべてのサイクルを実際に経験してきました。パニックの中での精神的な安定は、完全に熟成しています。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ38年残っています。直感は保ちつつ、分散投資で一度の大きな失敗から身を守りましょう。',
+strengths:['数十年の経験が、市場のパニックの中でも冷静さを保たせる','セクターローテーションとトレンドを察知する能力のピーク','経験に基づく損切り → 不必要な保有をしない'],
+cautions:['「今回は違う」という確信が集中リスクに変わらないよう、分散の規律を保つ','TSLAのような値動きの激しい銘柄は、ポートフォリオの15%未満に抑える','レバレッジとデリバティブは完全に除外する'],
+genderNote:{male:'50代のSP男性が持つ直感は、今でも資産です。ただし、集中リスクを抑えるためにあらかじめ銘柄ごとの上限を決めておきましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','MSFT','GOOGL','META','AMZN','TSLA','AVGO'],pcts:[22,16,14,13,12,11,8,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','MSFT','GOOGL','META','TSLA'],pcts:[20,10,8,18,14,12,10,8]}},
+advice:'相場勘は、38年の滑走路と組み合わさることで最も輝きます。機会を捉え続けつつ、分散投資で守りましょう。'},
+
+'female_50s_SP':{typeCode:'D-8',typeName:'直感と経験が出会う投資家',
+dna:'一目見ればわかるタイプです。20代は直感で動いていましたが、50代になった今、その直感は経験によって磨かれています。行動する前に一度立ち止まる習慣も身についています。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ40年残っています。直感と規律の組み合わせこそが、今のあなたの最強の武器です。',
+strengths:['直感＋経験＋女性らしい規律＝SPタイプの中で最も安定したリターン','フィデリティ：女性のリターン優位','トレンド察知力とリスク認識力が並行して発達している'],
+cautions:['急に保守的になり、成長機会を手放しすぎないよう注意','自分の直感への自信喪失 → 判断が遅くなる','TSLAのような値動きの激しい銘柄は、ポートフォリオの15%未満に抑える'],
+genderNote:{male:'該当なし',female:'50代のSP女性の本当の強みは、直感と規律の組み合わせです。それを信じましょう。50代でも成長株比率65%以上は正当化できます。'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','MSFT','GOOGL','META','AMZN','AAPL','TSLA'],pcts:[20,15,14,13,12,11,9,6]},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','MSFT','GOOGL','META','AAPL'],pcts:[18,10,8,16,14,12,12,10]}},
+advice:'直感と規律の組み合わせこそが、あなたの最強の武器です。50代でも成長を諦めないでください。'}
+
+,
+// ════════════════════════════════════════════════════════
+// Section A-60s: NT Analysts (60 and older)
+// ════════════════════════════════════════════════════════
+'male_60s_NT':{typeCode:'A-9',typeName:'知識で資産を守る戦略家',
+dna:'もう目に浮かびますよね。指標を読み解く能力はピークに達し、どんな相場環境でも動じません。感情ではなくデータで判断します。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ28年残っています。株式を完全に手放すと、インフレに目減りさせられてしまいます。IVVをコアとして維持しましょう。',
+strengths:['数十年の経験が市場のノイズを遮断する','IVVコアが市場全体を確保しつつ下落を防ぐ','分析に基づく銘柄選定が市場平均を上回るリターンを追求する'],
+cautions:['過去の経験から来る過信が、新しい技術トレンドへの参入を妨げることがある','資産承継の計画とポートフォリオ戦略を混同しない','AI・半導体への投資比重が低すぎると、インフレに追いつけないリスクがある'],
+genderNote:{male:'60代のNT男性にとって最も重要な課題は資産承継の計画です。ポートフォリオの簡素化と税務効率化を並行して進めましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','GOOGL','AAPL','AMZN','NVDA','SCHD'],pcts:[24,14,12,10,10,8,7,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','GOOGL','AAPL','AMZN','NVDA','SCHD'],pcts:[21,12,6,12,10,10,8,6,15]}},
+advice:'資産を守りながら育てる — その両方が可能です。ただし、資産承継の計画も今から始めましょう。'},
+
+'female_60s_NT':{typeCode:'A-10',typeName:'資産を精密に保全する戦略家',
+dna:'一目見ればわかるタイプです。分析力と規律の両方を備えています。感情で売ったことも、流行で買ったこともありません。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ30年残っています。純粋に守りに徹するだけでは、インフレにさえ勝てません。現金と債券に偏りすぎないことが、今の最重要課題です。',
+strengths:['高い分析力が不要なリスクをろ過する','IVVコア＋ディフェンシブな優良株が、荒れる相場の心理的な揺れを和らげる','30年の滑走路が、成長志向を維持することを正当化する'],
+cautions:['守りすぎると、インフレにさえ追いつけないリスクがある','現金を持ちすぎる傾向 — 株式比率を最低55%は維持することを推奨','新しい技術セクターへの参入をためらう傾向 — わずかでもNVDAを保有することを推奨'],
+genderNote:{male:'該当なし',female:'60代の女性にとって最大の財務リスクはインフレです。債券と現金への過剰な偏りは、購買力を目減りさせます。株式比率は55%以上を維持しましょう。'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','SCHD'],pcts:[28,14,12,11,11,9,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[22,11,5,12,11,10,8,6,15]}},
+advice:'完璧な資産保全というものは存在しません。成長のない保全は、インフレに少しずつ食われていきます。株式比率は55%以上を維持しましょう。'},
+
+// ════════════════════════════════════════════════════════
+// Section B-60s: NF Diplomats (60 and older)
+// ════════════════════════════════════════════════════════
+'male_60s_NF':{typeCode:'B-9',typeName:'資産の哲学を完成させた投資家',
+dna:'もう目に浮かびますよね。生涯を通じて「この会社は世界をどう変えるか」を見つめてきました。その原則は、60代になった今も揺らいでいません。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ28年残っています。愛着のある企業を長く保有し続けることは、この年代でも有効な戦略です。',
+strengths:['生涯にわたる投資哲学が、感情的な判断への盾になる','ビジョンのある企業を選び続けたことで、長期的な成長を確保してきた','IVVコアが市場全体のリターンを確保しつつ安定性を加える'],
+cautions:['お気に入りの企業への感情的な愛着が、客観的な判断を曇らせることがある','哲学主導の投資が過度な集中に変わらないよう、分散を保つ','愛着があると出口を決めにくくなるため、あらかじめ数字で損切りラインを決めておく'],
+genderNote:{male:'60代のNF男性の課題は、「良い企業」と「今良い投資先」を見分けることです。哲学はフィルターとして使い、投資額は数字で決めましょう。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','GOOGL','AAPL','META','AMZN','SCHD'],pcts:[24,13,11,10,10,9,8,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','META','AMZN','SCHD'],pcts:[19,11,4,11,11,10,8,11,15]}},
+advice:'哲学に基づいて築かれたポートフォリオは、暴落時にも強さを発揮します。ただし、哲学もまた数字で検証されなければなりません。'},
+
+'female_60s_NF':{typeCode:'B-10',typeName:'信頼する企業と長く共に歩む投資家',
+dna:'一目見ればわかるタイプです。長年使ってきたブランド、信頼を築いてきた企業だけをポートフォリオに入れています。その信頼こそが、長期保有を可能にしてきました。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ30年残っています。ここから成長株比率を削ると、インフレに後れを取ることになります。',
+strengths:['信頼に基づく長期保有 — 複利の核心的な条件','感情的な売却をしない — パニック局面でも保有を続ける','企業への実生活での観察 → 実践的な投資の洞察'],
+cautions:['信頼する企業が自動的に良い投資先になるとは限らない','現金を持ちすぎる傾向 — インフレ対策として株式比率を維持することが重要','変化する技術トレンドの中の企業を除外してしまうリスク'],
+genderNote:{male:'該当なし',female:'60代のNF女性の強みは長期保有です。30年の滑走路の中でインフレに追いつくためには、成長株比率を削らないことが重要です。'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','META','AMZN','SCHD'],pcts:[25,12,11,10,10,9,8,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','META','AMZN','SCHD'],pcts:[20,10,4,10,11,10,9,11,15]}},
+advice:'信頼する企業を長く保有し続ける — それが複利です。ただし、それがインフレに勝てる企業であることを確認しましょう。'},
+
+// ════════════════════════════════════════════════════════
+// Section C-60s: SJ Sentinels (60 and older)
+// ════════════════════════════════════════════════════════
+'male_60s_SJ':{typeCode:'C-9',typeName:'原則で築いた安定のポートフォリオ',
+dna:'もう目に浮かびますよね。何十年も厳密にルール通りに動いてきました。毎月の自動積立、リバランス、長期保有。感情を挟まずそれを繰り返してきました。当たっていますか？<br><br>その仕組みが今のポートフォリオを築いてきました。ただ一つ、AI・テック株の比重が低すぎると、インフレに追いつけません。',
+strengths:['ルールに基づくシステマティックな投資 → 感情的な誤りを最小化する','IVV＋QQQ＋優良株という構成が安定と成長のバランスを取る','VやCOSTのようなディフェンシブな優良株が下落を防ぐ'],
+cautions:['ルールへの過度な執着が、変化する市場への対応を遅らせるリスクがある','AI・テック株への投資比重が低すぎると、インフレに追いつけないリスクがある','守りへの転換が急すぎると、実質リターンがインフレを下回ることがある'],
+genderNote:{male:'60代のSJ男性に必要なのは、リバランスのルールを簡素化することです。仕組みが複雑になるほど、実行上のミスが忍び込みます。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','SCHD'],pcts:[30,15,14,12,10,4,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[23,12,5,13,10,9,5,8,15]}},
+advice:'原則に基づいて築かれたポートフォリオは揺らぎません。しかし、その原則もインフレに耐えられるものでなければなりません。'},
+
+'female_60s_SJ':{typeCode:'C-10',typeName:'実証済みの設計で資産を完成させた投資家',
+dna:'一目見ればわかるタイプです。何十年もドルコスト平均法を続けてきました。毎月の積立を一度も欠かさず、今その成果が表れています。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ30年残っています。資産を守りながらもインフレに勝つことが、今の目標です。',
+strengths:['数十年にわたるドルコスト平均法の成果 — 複利が最大化されている','ルールに基づく保有 — パニック売りをしない','ディフェンシブな優良株（V、COST）が下落局面での安定性を加える'],
+cautions:['現金を持ちすぎる傾向 — 株式比率を50%以上に維持することを推奨','VやCOSTへの過剰な偏りは、成長を鈍らせすぎるリスクがある','新しい技術トレンドを逃すリスク — QQQの比重を最低14%は維持する'],
+genderNote:{male:'該当なし',female:'60代の女性は、男性より平均寿命が長い傾向にあります。ポートフォリオが30年持たなければならないことを常に念頭に置きましょう。成長株比率を守りましょう。'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','SCHD'],pcts:[32,14,13,12,10,4,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[24,11,4,13,10,9,4,10,15]}},
+advice:'原則の成果を収穫しつつも、あと30年持ちこたえられるポートフォリオを保ちましょう。'},
+
+// ════════════════════════════════════════════════════════
+// Section D-60s: SP Explorers (60 and older)
+// ════════════════════════════════════════════════════════
+'male_60s_SP':{typeCode:'D-9',typeName:'経験で相場を読むベテラン投資家',
+dna:'もう目に浮かびますよね。何十回もの市場サイクルを実際に経験してきました。機会が現れた瞬間に動くその直感は、今も健在です。当たっていますか？<br><br>今、その直感はIVVコアの上に乗せる必要があります。レバレッジとデリバティブは対象外です — 大きな失敗から回復する時間はもう残されていません。',
+strengths:['数十年の市場経験によって鍛えられた直感','機会察知力を保ちつつ、IVVコアが下落を防ぐ','NVDAやMETAのような成長株が、今も市場平均を上回るリターンを加えることができる'],
+cautions:['直感と経験への過信が過度な集中を招くリスク — 銘柄ごとの上限を設定する','健康リスクや予期せぬ出費に備えて現金の緩衝材を確保する','レバレッジとデリバティブは完全に除外する — 回復する時間はもう残されていない'],
+genderNote:{male:'60代のSP男性が持つ直感は、今でも資産です。ただし、IVVという土台がなければ、その直感もリスクに変わることを忘れないでください。',female:'該当なし'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','NVDA','MSFT','GOOGL','AMZN','META','SCHD'],pcts:[22,14,11,11,10,9,8,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','NVDA','MSFT','GOOGL','META','AMZN','SCHD'],pcts:[19,12,8,13,11,10,9,3,15]}},
+advice:'直感は今でも資産です。IVVという土台がなければ、その直感もリスクに変わります。'},
+
+'female_60s_SP':{typeCode:'D-10',typeName:'直感と経験でバランスを見出した投資家',
+dna:'一目見ればわかるタイプです。生涯を通じて直感で投資してきました。そして今、その直感には「まず確認しよう」という習慣が伴っています。当たっていますか？<br><br>90歳までの寿命を想定すると、まだ30年残っています。一度の失敗ですべてを失わないよう、直感はコアETFの上に乗せる必要があります。',
+strengths:['直感と経験を組み合わせた銘柄選定力','IVVコアが安定を確保しつつ成長への投資を加える','感情ではなく経験に根ざした判断 → 衝動的な決定が少ない'],
+cautions:['直感への過度な依存が、検証されていないセクターへの参入リスクを生む','現金を持ちすぎる傾向 — 株式比率を50%以上に維持する','社会的トレンドに過剰反応した投資判断に注意する'],
+genderNote:{male:'該当なし',female:'60代の女性の直感は、消費者としての数十年の経験から来ています。その直感をデータで検証する習慣を保ちましょう。30年の滑走路にわたって、成長株比率を守りましょう。'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','GOOGL','NVDA','AMZN','AAPL','SCHD'],pcts:[24,13,11,10,10,9,8,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','NVDA','MSFT','GOOGL','META','AAPL','SCHD'],pcts:[20,12,7,11,11,10,9,5,15]}},
+advice:'直感は今でも資産です。IVVを土台にして、その上に直感でアルファを積み上げる構造を保ちましょう。'}
+}; // END BASE_PROFILES
+
+
+// ════════════════════════════════════════════════════════
+// Quiz state management
+// ════════════════════════════════════════════════════════
+const state = {
+  gender: null, ageGroup: null, mbtiKnow: null,
+  mbtiDirect: null, mbtiDerived: null,
+  expLevel: null, styleLevel: null, companies: []
+};
+const subAnswers = { qa: null, qb: null, qc: null, qd: null };
+const panelHistory = [];
+
+function getMbtiGroup() {
+  const m = state.mbtiDirect || state.mbtiDerived;
+  return m ? (MBTI_TO_GROUP[m] || m) : null;
+}
+function getProfileKey() {
+  const g = state.gender, a = state.ageGroup, mbti = getMbtiGroup();
+  if (!g || !a || !mbti) return null;
+  return g + '_' + a + '_' + mbti;
+}
+
+// ════════════════════════════════════════════════════════
+// Panel navigation (class: quiz-step)
+// ════════════════════════════════════════════════════════
+function showPanel(id) {
+  const current = document.querySelector('.quiz-step.active');
+  if (current) panelHistory.push(current.id);
+  document.querySelectorAll('.quiz-step').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if (panel) { panel.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+  const stepMap = {
+    'step-q1':1,'step-q2':2,'step-q3':3,'step-q3-grid':3,'step-q3-sub':3,
+    'step-q4':4,'step-q5':5
+  };
+  const total = 5;
+  const num = stepMap[id] || null;
+  const labelEl = document.getElementById('progress-label');
+  const fillEl  = document.getElementById('progress-fill');
+  const progEl  = document.getElementById('quiz-progress');
+  if (num && labelEl && fillEl) {
+    if (progEl) progEl.style.display = '';
+    labelEl.textContent = '質問 ' + num + ' / ' + total;
+    fillEl.style.width = (num / total * 100).toFixed(1) + '%';
+  } else if (progEl) {
+    progEl.style.display = 'none';
+  }
+  const bBtn = document.getElementById('quiz-back');
+  if (bBtn) bBtn.style.display = (panelHistory.length > 0 && id !== 'step-result') ? '' : 'none';
+}
+function showSubStep(id) {
+  document.querySelectorAll('.sub-step').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+}
+
+const backBtn = document.getElementById('quiz-back');
+if (backBtn) {
+  backBtn.addEventListener('click', function() {
+    if (panelHistory.length) {
+      const prev = panelHistory.pop();
+      document.querySelectorAll('.quiz-step').forEach(p => p.classList.remove('active'));
+      const panel = document.getElementById(prev);
+      if (panel) { panel.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+      const stepMap = {'step-q1':1,'step-q2':2,'step-q3':3,'step-q3-grid':3,'step-q3-sub':3,'step-q4':4,'step-q5':5};
+      const num = stepMap[prev];
+      if (num) {
+        const lbl = document.getElementById('progress-label');
+        const fill = document.getElementById('progress-fill');
+        if (lbl) lbl.textContent = '質問 ' + num + ' / 5';
+        if (fill) fill.style.width = (num / 5 * 100).toFixed(1) + '%';
+      }
+      backBtn.style.display = panelHistory.length > 0 ? '' : 'none';
+    }
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// choice-card click delegation (Q1/Q2/Q3/Q4/Q5 combined)
+// ════════════════════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  const card = e.target.closest('.choice-card');
+  if (!card) return;
+
+  const q    = card.dataset.q;
+  const subq = card.dataset.subq;
+  const val  = card.dataset.val;
+
+  if (q === 'gender') {
+    state.gender = val;
+    document.querySelectorAll('.choice-card[data-q="gender"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    setTimeout(() => showPanel('step-q2'), 280);
+    return;
+  }
+
+  if (q === 'age') {
+    state.ageGroup = val;
+    document.querySelectorAll('.choice-card[data-q="age"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    setTimeout(() => showPanel('step-q3-grid'), 280);
+    return;
+  }
+
+  if (q === 'mbti-know') {
+    state.mbtiKnow = val;
+    document.querySelectorAll('.choice-card[data-q="mbti-know"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    if (val === 'yes') setTimeout(() => showPanel('step-q3-grid'), 280);
+    else { setTimeout(() => { showPanel('step-q3-sub'); showSubStep('sub-qa'); }, 280); }
+    return;
+  }
+
+  if (subq) {
+    subAnswers[subq] = val;
+    document.querySelectorAll(`.choice-card[data-subq="${subq}"]`).forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+
+    const order = ['qa','qb','qc','qd'];
+    const idx = order.indexOf(subq);
+    if (idx < order.length - 1) {
+      setTimeout(() => showSubStep('sub-' + order[idx+1]), 280);
+    } else {
+      if (['NT','NF','SJ','SP'].includes(subAnswers.qd)) {
+        state.mbtiDerived = subAnswers.qd;
+      } else {
+        const tf = subAnswers.qa;
+        const jp = subAnswers.qb;
+        const ns = subAnswers.qc;
+        const mbti4 = (tf==='T'&&ns==='N')?'NT':(tf==='F'&&ns==='N')?'NF':(ns==='S'&&jp==='J')?'SJ':'SP';
+        state.mbtiDerived = mbti4;
+      }
+      const dispEl = document.getElementById('derived-mbti-display');
+      if (dispEl) dispEl.textContent = state.mbtiDerived;
+      setTimeout(() => showPanel('step-q4'), 350);
+    }
+    return;
+  }
+
+  if (q === 'exp') {
+    state.expLevel = val;
+    document.querySelectorAll('.choice-card[data-q="exp"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    setTimeout(() => showPanel('step-q5'), 280);
+    return;
+  }
+
+  if (q === 'style') {
+    state.styleLevel = val;
+    document.querySelectorAll('.choice-card[data-q="style"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    setTimeout(() => showPanel('step-q6'), 280);
+    return;
+  }
+});
+
+// ════════════════════════════════════════════════════════
+// Q3-grid — direct MBTI selection
+// ════════════════════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.mbti-btn');
+  if (!btn) return;
+  state.mbtiDirect = btn.dataset.mbti;
+  document.querySelectorAll('.mbti-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  setTimeout(() => showPanel('step-q4'), 280);
+});
+
+// ════════════════════════════════════════════════════════
+// Q6 — preferred companies (up to 3)
+// ════════════════════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.company-btn');
+  if (!btn) return;
+  const val = btn.dataset.company;
+  if (!val || val === 'unknown') {
+    showAiLoading();
+    return;
+  }
+  const idx = state.companies.indexOf(val);
+  if (idx >= 0) {
+    state.companies.splice(idx, 1);
+    btn.classList.remove('selected');
+  } else if (state.companies.length < 3) {
+    state.companies.push(val);
+    btn.classList.add('selected');
+  }
+});
+
+const q6NextBtn = document.getElementById('q6-next-btn');
+if (q6NextBtn) {
+  q6NextBtn.addEventListener('click', function() {
+    showAiLoading();
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// AI loading animation (3 seconds)
+// ════════════════════════════════════════════════════════
+function showAiLoading() {
+  const overlay = document.getElementById('ai-loading-overlay');
+  const msgs = [
+    'AIがあなたのポートフォリオを分析しています',
+    'あなたの投資プロファイルを計算しています',
+    '最適なポートフォリオを構築しています'
+  ];
+  const subMsgs = [
+    'MBTI × 年齢 × 性別の組み合わせを分析中',
+    '40タイプの中から最適な一致を検索中',
+    '配分比率を最終調整中'
+  ];
+  const msgEl = document.getElementById('ai-loading-msg');
+  const subEl = document.getElementById('ai-loading-sub');
+  if (!overlay) { buildResult(); showPanel('step-result'); return; }
+
+  overlay.style.display = 'flex';
+  let step = 0;
+  if (msgEl) msgEl.textContent = msgs[0];
+  if (subEl) subEl.textContent = subMsgs[0];
+
+  const interval = setInterval(function() {
+    step++;
+    if (step < msgs.length) {
+      if (msgEl) msgEl.textContent = msgs[step];
+      if (subEl) subEl.textContent = subMsgs[step];
+    }
+  }, 1000);
+
+  setTimeout(function() {
+    clearInterval(interval);
+    overlay.style.display = 'none';
+    buildResult();
+    showPanel('step-result');
+  }, 3000);
+}
+
+// ════════════════════════════════════════════════════════
+// Portfolio rationale generator
+// ════════════════════════════════════════════════════════
+function buildRationale(porto, mbtiGroup, ageGroup, mbtiDisplayFull) {
+  const ETFs    = ['QQQ','IVV','VTI','VOO','SOXX'];
+  const ANCHORS = ['SCHD','VIG','BRK.B'];
+
+  const tickers = porto.tickers;
+  const pcts    = porto.pcts;
+
+  const coreTicker = tickers[0];
+  const corePct    = pcts[0];
+  const isQQQ = coreTicker === 'QQQ';
+  const coreDesc = isQQQ
+    ? `<b>${coreTicker} ${corePct}%</b> — ナスダック100ETFがコアです。個別株が多少揺れても、QQQを保有するだけで米国トップ100のテック企業を一度に保有していることになります。${ageGroup === '20s' || ageGroup === '30s' ? '20代・30代の成長期には、テック株中心のコアが正当化されます。' : ''}`
+    : `<b>${coreTicker} ${corePct}%</b> — S&P500 ETFがコアです。米国トップ500社を一度に保有する、最も広範なセーフティネットです。${ageGroup === '60s' ? '60代以上にとって、幅広い分散こそが下落防御の鍵です。' : ''}`;
+
+  const satellites = tickers.filter((t,i) => i > 0 && !ETFs.includes(t) && !ANCHORS.includes(t));
+  const satPcts    = satellites.map(t => pcts[tickers.indexOf(t)]);
+
+  const _disp = mbtiDisplayFull || mbtiGroup;
+  const mbtiSatDesc = {
+    NT: `あなたの${_disp}タイプは、AI・半導体インフラへのデータ主導の確信を反映しています — NVDAやAVGOのようなチップ設計企業が大きな比重を占める理由です。`,
+    NF: `あなたの${_disp}タイプは、「世界を変える企業」に投資するという原則を反映しています — METAやTSLAのようなビジョン主導の企業、そしてヘルスケア革新企業（LLY）が組み入れられている理由です。`,
+    SJ: `あなたの${_disp}タイプは、数十年の実績を持つ企業を好みます — MSFTやAAPLのような低ボラティリティで安定したキャッシュフローを持つ企業が大きな比重を占める理由です。`,
+    SP: `あなたの${_disp}タイプは、勢いと成長スピードに反応します — 各セクターで最も勢いのある企業、NVDA・META・TSLAなどがポートフォリオに含まれる理由です。`
+  };
+
+  let satHtml = '';
+  if (satellites.length > 0) {
+    const satList = satellites.map((t,i) => `<b>${t} ${satPcts[i]}%</b>`).join(' · ');
+    satHtml = `${satList} — ${mbtiSatDesc[mbtiGroup] || 'ETFを上回るリターンを狙う個別ビッグテック銘柄。'}`;
+  }
+
+  const anchorTickers = tickers.filter(t => ANCHORS.includes(t));
+  const anchorPcts    = anchorTickers.map(t => pcts[tickers.indexOf(t)]);
+  let anchorHtml = '';
+  if (anchorTickers.length > 0) {
+    const anchorDescs = {
+      V:    'V（ビザ） — 不況時でもカード処理手数料を稼ぎ続けるディフェンシブな優良株。市場暴落時の下落幅が小さく、待機資金として有用です。',
+      COST: 'COST（コストコ） — 不況時にむしろ会員数が増える、ディフェンシブかつ成長志向の企業。成長株と比べて下落幅が明確に限定的です。',
+      LLY:  'LLY（イーライリリー） — GLP-1と肥満治療のイノベーションをリードするヘルスケア成長株。テックセクターとの相関が低く、実質的な分散効果を加えます。',
+      'BRK.B': 'BRK.B（バークシャー・ハサウェイ） — 分散されたコングロマリット型の優良株。',
+      VIG:  'VIG — キャッシュフローの安定化に役立つ配当成長ETF。',
+      SCHD: 'SCHD — 高配当の優良株ETF。成長株との相関が低く、暴落時の下落幅も小さめです。SPYやQQQが大きく下落したとき、これを売却して割安になった成長株を買う戦略的待機資金としての役割を果たします。'
+    };
+    const anchorList = anchorTickers.map((t,i) => {
+      const d = anchorDescs[t] || t;
+      return `<li style="margin-bottom:.5rem;"><b>${t} ${anchorPcts[i]}%</b> — ${d}</li>`;
+    }).join('');
+    const anchorTotal = anchorPcts.reduce((a,b) => a+b, 0);
+    anchorHtml = `<ul style="margin:.5rem 0 .8rem;padding-left:1.2rem;list-style:disc;">${anchorList}</ul>
+<div style="background:var(--spq-card2);border-radius:var(--spq-r);padding:.8rem 1rem;font-size:16px;line-height:1.7;color:var(--spq-t2);">
+  <b>アンカーを保有する理由 — ${anchorTotal}%の戦略的待機資金</b><br>
+  リターンは成長株より低くなりますが、市場が大きく暴落して成長株が急落した場合、このアンカーポジションを売却して割安な成長株を買うことができます — これが待機資金としての役割です。逆に成長株が上昇して比重が大きくなりすぎたときは、一部を売却してアンカーを${anchorTotal}%に戻すのが推奨されるリバランス方法です。
+</div>`;
+  }
+
+  let html = `<div class="result-section" style="border-left:3px solid var(--spq-bl);padding-left:1.2rem;">
+    <div class="result-section-title">なぜこのポートフォリオなのか</div>
+    <div style="display:flex;flex-direction:column;gap:1rem;font-size:16px;line-height:1.7;color:var(--spq-t1);">
+      <div>
+        <span style="font-size:16px;font-weight:700;color:var(--spq-bl);letter-spacing:.05em;">レイヤー1 — コア（市場ベータ）</span><br>
+        ${coreDesc}
+      </div>`;
+
+  if (satHtml) {
+    html += `
+      <div>
+        <span style="font-size:16px;font-weight:700;color:var(--spq-bl);letter-spacing:.05em;">レイヤー2 — サテライト（アルファ追求）</span><br>
+        ${satHtml}
+      </div>`;
+  }
+
+  if (anchorHtml) {
+    html += `
+      <div>
+        <span style="font-size:16px;font-weight:700;color:var(--spq-bl);letter-spacing:.05em;">レイヤー3 — アンカー（戦略的待機資金）</span><br>${anchorHtml}
+      </div>`;
+  }
+
+  html += `
+    </div>
+  </div>`;
+
+  return html;
+}
+
+// ════════════════════════════════════════════════════════
+// Build result
+// ════════════════════════════════════════════════════════
+function buildResult() {
+  const key = getProfileKey();
+  const profile = BASE_PROFILES[key];
+  if (!profile) {
+    document.getElementById('result-content').innerHTML =
+      '<p style="color:var(--spq-rd);padding:2rem;font-size:16px;">一致するプロファイルが見つかりませんでした。（key: ' + key + '）<br>もう一度クイズを受けてください。</p>';
+    return;
+  }
+
+  const isBeginnerExp = (state.expLevel === 'beginner' || state.expLevel === 'early');
+  const basePorto = isBeginnerExp && profile.portfolio.beginner ? profile.portfolio.beginner : profile.portfolio.default;
+
+  const portoTickers = [...basePorto.tickers];
+  const portoPcts   = [...basePorto.pcts];
+  const companiesToAdd = (state.companies || []).filter(t => t !== 'unknown' && !portoTickers.includes(t) && TICKER_TO_ID[t]);
+
+  companiesToAdd.forEach(t => {
+    if (portoTickers.length >= 10) {
+      let minIdx = 0;
+      for (let i = 1; i < portoPcts.length; i++) {
+        if (portoPcts[i] < portoPcts[minIdx]) minIdx = i;
+      }
+      portoTickers.splice(minIdx, 1);
+      portoPcts.splice(minIdx, 1);
+    }
+    const addPct = 8;
+    const total  = portoPcts.reduce((a, b) => a + b, 0);
+    for (let i = 0; i < portoPcts.length; i++) {
+      portoPcts[i] = Math.round(portoPcts[i] * (100 - addPct) / total * 10) / 10;
+    }
+    portoTickers.push(t);
+    portoPcts.push(addPct);
+  });
+
+  const pctTotal = portoPcts.reduce((a, b) => a + b, 0);
+  const roundedPcts = portoPcts.map(p => Math.round(p * 100 / pctTotal));
+  const diff = 100 - roundedPcts.reduce((a, b) => a + b, 0);
+  roundedPcts[0] += diff;
+
+  const porto = { tickers: portoTickers, pcts: roundedPcts };
+  const mbtiGroup = getMbtiGroup();
+  const styleKey = mbtiGroup + '_' + state.styleLevel;
+  const compatText = COMPAT_TEXTS[styleKey] || '';
+  const expText = EXP_TEXTS[state.expLevel] || '';
+  const genderTextKey = state.gender === 'male' ? 'male' : 'female';
+  const genderNote = (profile.genderNote && profile.genderNote[genderTextKey] && profile.genderNote[genderTextKey] !== '該当なし') ? profile.genderNote[genderTextKey] : null;
+
+  const ids = porto.tickers.map(t => TICKER_TO_ID[t]).filter(Boolean);
+  const btUrl = 'https://ezlong.com/ja/backtest.html?a=' + ids.join(',');
+
+  const groupColors = { NT:'#3b82f6', NF:'#10b981', SJ:'#f59e0b', SP:'#ef4444' };
+  const groupColor = groupColors[mbtiGroup] || '#6366f1';
+
+  let barHtml = '', legendHtml = '';
+  porto.tickers.forEach((ticker, i) => {
+    const pct = porto.pcts[i];
+    const clr = BAR_COLORS[i % BAR_COLORS.length];
+    barHtml += `<div class="port-bar-seg" style="width:${pct}%;background:${clr};" title="${ticker} ${pct}%"></div>`;
+    legendHtml += `<div class="port-legend-item"><span class="port-legend-dot" style="background:${clr};"></span><span class="port-legend-ticker">${ticker}</span><span class="port-legend-pct">${pct}%</span></div>`;
+  });
+
+  const GROUP_MEMBERS = {
+    NT: 'INTJ · INTP · ENTJ · ENTP',
+    NF: 'INFJ · INFP · ENFJ · ENFP',
+    SJ: 'ISTJ · ISFJ · ESTJ · ESFJ',
+    SP: 'ISTP · ISFP · ESTP · ESFP'
+  };
+  const mbtiDisplayFull = state.mbtiDirect
+    ? state.mbtiDirect
+    : (GROUP_MEMBERS[mbtiGroup] || mbtiGroup);
+
+  function replaceMbtiAbbr(text) {
+    if (!text) return text;
+    return text.replace(/\b(NT|NF|SJ|SP)\b/g, (match) => {
+      if (match === mbtiGroup) return mbtiDisplayFull;
+      return match;
+    });
+  }
+
+  const dnaText     = replaceMbtiAbbr(profile.dna);
+  const genderNoteText = genderNote ? replaceMbtiAbbr(genderNote) : null;
+  const strengthsHtml = profile.strengths.map(s => `<li>${replaceMbtiAbbr(s)}</li>`).join('');
+  const cautionsHtml  = profile.cautions.map(c  => `<li>${replaceMbtiAbbr(c)}</li>`).join('');
+
+  let companyHtml = '';
+  if (state.companies.length > 0) {
+    const compItems = state.companies.map(t => {
+      const desc = COMPANY_TEXTS[t] || TICKER_DESC[t] || '';
+      return `<div class="company-card"><div class="company-ticker">${t}</div><div class="company-desc">${desc}</div></div>`;
+    }).join('');
+    companyHtml = `<div class="result-section"><div class="result-section-title">興味のある企業についてのインサイト</div>${compItems}</div>`;
+  }
+
+  const styleLabel = STYLE_LABELS[state.styleLevel] || state.styleLevel;
+  const expLabels = {beginner:'初心者',early:'投資初期',mid:'中級者',advanced:'上級者',veteran:'ベテラン'};
+  const expLabel = expLabels[state.expLevel] || '';
+  const ageLabels = {'20s':'20代','30s':'30代','40s':'40代','50s':'50代','60s':'60代以上'};
+  const ageLabel = ageLabels[state.ageGroup] || '';
+  const genderLabel = state.gender === 'male' ? '男性' : '女性';
+  const mbtiDisplay = state.mbtiDirect ? state.mbtiDirect : (state.mbtiDerived ? state.mbtiDerived + '（推定）' : '');
+
+  document.getElementById('result-content').innerHTML = `
+    <div class="result-header-block">
+      <div class="result-badge" style="background:${groupColor}20;color:${groupColor};border:1px solid ${groupColor}40;">${mbtiGroup} · ${profile.typeCode}</div>
+      <h2 class="result-typename">${profile.typeName}</h2>
+      <div class="result-tags">
+        <span class="result-tag">${genderLabel}</span>
+        <span class="result-tag">${ageLabel}</span>
+        <span class="result-tag">${mbtiDisplayFull}</span>
+        <span class="result-tag">${expLabel}</span>
+        <span class="result-tag">${styleLabel}</span>
+      </div>
+    </div>
+    <div class="result-section">
+      <div class="result-section-title">あなたの投資DNA</div>
+      <p class="result-dna-text">${dnaText}</p>
+      ${genderNoteText ? `<div class="result-gender-note">${genderNoteText}</div>` : ''}
+    </div>
+    <div class="result-section">
+      <div class="result-section-title">推奨ポートフォリオ${isBeginnerExp ? '（初心者版）' : ''}</div>
+      <div class="port-bar-wrap"><div class="port-bar">${barHtml}</div></div>
+      <div class="port-legend">${legendHtml}</div>
+      <a href="${btUrl}" class="btn-backtest" target="_blank" rel="noopener">AIで最適なポートフォリオ比率を分析する →</a>
+      ${isBeginnerExp ? '<p class="beginner-note">経験を積んだら、標準版ポートフォリオへの切り替えを検討してください。</p>' : ''}
+    </div>
+
+    ${buildRationale(porto, mbtiGroup, state.ageGroup, mbtiDisplayFull)}
+    <a href="${btUrl}" class="btn-backtest-mid" target="_blank" rel="noopener">AIで最適なポートフォリオ比率を分析する →</a>
+    <div class="result-section result-two-col">
+      <div>
+        <div class="result-section-title">強み</div>
+        <ul class="result-list strengths-list">${strengthsHtml}</ul>
+      </div>
+      <div>
+        <div class="result-section-title">注意点</div>
+        <ul class="result-list cautions-list">${cautionsHtml}</ul>
+      </div>
+    </div>
+    <div class="result-section">
+      <div class="result-section-title">投資スタイル診断 — ${styleLabel}</div>
+      <p class="result-compat-text">${compatText}</p>
+    </div>
+    <div class="result-section">
+      <div class="result-section-title">経験レベル別アドバイス — ${expLabel}</div>
+      <p class="result-exp-text">${expText}</p>
+    </div>
+    ${companyHtml}
+    <div class="result-section result-advice-block">
+      <div class="result-advice-label">最も重要なアドバイス</div>
+      <p class="result-advice-text">${profile.advice}</p>
+    </div>
+    <div class="result-action-row">
+      <button class="btn-retry" onclick="location.reload()">クイズをやり直す</button>
+      <a href="${btUrl}" class="btn-backtest-main" target="_blank" rel="noopener">AIで最適なポートフォリオ比率を分析する →</a>
+    </div>
+  `;
+}
+
+// ════════════════════════════════════════════════════════
+// Init
+// ════════════════════════════════════════════════════════
+showPanel('step-q1');
+
+</script>
 <!-- ── 네이티브 앱 웹뷰 감지: ?embed=app 신호 처리 (2026-07-28) ── -->
 <script>
 (function(){

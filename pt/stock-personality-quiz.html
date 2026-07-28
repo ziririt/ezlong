@@ -145,6 +145,199 @@
     .en-footer a { color:var(--blue); text-decoration:none; }
     .en-footer a:hover { text-decoration:underline; }
     @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+
+    #spq-root {
+      --spq-bg:#F5F5F7; --spq-surface:#FFFFFF; --spq-card:#FFFFFF; --spq-card2:rgba(0,0,0,0.04);
+      --spq-border:rgba(0,0,0,0.08);
+      --spq-t1:#1D1D1F; --spq-t2:#3C3C3E; --spq-t3:#6E6E73;
+      --spq-bl:#0071E3; --spq-gr:#1A7F37; --spq-rd:#D92A2A; --spq-am:#FF9F0A;
+      --spq-bl-s: rgba(0,113,227,0.08); --spq-bl-m: rgba(0,113,227,0.16);
+      --spq-r:16px;
+      --spq-shadow:0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.07);
+    }
+    @media (prefers-color-scheme: dark) {
+      #spq-root {
+        --spq-bg:#000000; --spq-surface:#0A0A0A; --spq-card:#111111; --spq-card2:rgba(255,255,255,0.05);
+        --spq-border:rgba(255,255,255,0.14);
+        --spq-t1:#FFFFFF; --spq-t2:#C8C8CC; --spq-t3:#888888;
+        --spq-bl:#0A84FF; --spq-gr:#28A745; --spq-rd:#FF453A; --spq-am:#FFD60A;
+        --spq-bl-s: rgba(10,132,255,0.14); --spq-bl-m: rgba(10,132,255,0.24);
+        --spq-shadow:0 1px 4px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.4);
+      }
+    }
+    #spq-root #quiz-container { max-width: 680px; margin: 0 auto; padding: 32px 20px 80px; }
+    #spq-root #quiz-progress { margin-bottom: 28px; }
+    #spq-root .progress-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    #spq-root .progress-label { font-size: 16px; color: var(--spq-t2); font-weight: 600; }
+    #spq-root .progress-bar-track { height: 4px; background: var(--spq-border); border-radius: 2px; }
+    #spq-root .progress-bar-fill { height: 100%; background: var(--spq-bl); border-radius: 2px; transition: width 0.35s ease; }
+    #spq-root .quiz-step { display: none; animation: spqFadeIn 0.25s ease; }
+    #spq-root .quiz-step.active { display: block; }
+    @keyframes spqFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    #spq-root .step-title { font-size: 20px; font-weight: 800; color: var(--spq-t1); margin-bottom: 8px; letter-spacing: -.02em; }
+    #spq-root .step-desc { font-size: 16px; color: var(--spq-t2); margin-bottom: 20px; line-height: 1.6; }
+    #spq-root .choice-grid { display: grid; gap: 12px; margin-bottom: 16px; }
+    #spq-root .choice-grid-2 { grid-template-columns: 1fr 1fr; }
+    #spq-root .choice-grid-4 { grid-template-columns: 1fr 1fr; }
+    #spq-root .choice-grid-5 { grid-template-columns: 1fr; }
+    #spq-root .choice-card {
+      cursor: pointer; padding: 16px 20px; border: 2px solid var(--spq-border); border-radius: var(--spq-r);
+      background: var(--spq-surface); font-size: 16px; font-weight: 600; color: var(--spq-t1);
+      text-align: center; transition: border-color 0.15s, background 0.15s, transform 0.1s; line-height: 1.5; user-select: none;
+    }
+    #spq-root .choice-card:hover { border-color: var(--spq-bl); transform: translateY(-1px); }
+    #spq-root .choice-card.selected { border-color: var(--spq-bl); background: rgba(59,130,246,0.08); color: var(--spq-bl); }
+    #spq-root .choice-card .card-sub { font-size: 16px; font-weight: 400; color: var(--spq-t2); margin-top: 4px; }
+    #spq-root .choice-card.selected .card-sub { color: var(--spq-bl); opacity: 0.8; }
+    #spq-root .mbti-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+    #spq-root .mbti-btn {
+      cursor: pointer; padding: 12px 6px; border: 2px solid var(--spq-border); border-radius: var(--spq-r);
+      background: var(--spq-surface); font-size: 16px; font-weight: 700; color: var(--spq-t1);
+      text-align: center; transition: border-color 0.15s, background 0.15s;
+    }
+    #spq-root .mbti-btn:hover { border-color: var(--spq-bl); }
+    #spq-root .mbti-btn.selected { border-color: var(--spq-bl); background: rgba(59,130,246,0.08); color: var(--spq-bl); }
+    #spq-root .mbti-group-label { font-size: 16px; color: var(--spq-t2); font-weight: 600; margin-bottom: 6px; margin-top: 14px; }
+    #spq-root .company-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 16px; }
+    #spq-root .company-btn {
+      cursor: pointer; padding: 12px 4px; border: 2px solid var(--spq-border); border-radius: var(--spq-r);
+      background: var(--spq-surface); font-size: 16px; font-weight: 700; color: var(--spq-t1);
+      text-align: center; transition: border-color 0.15s, background 0.15s;
+    }
+    #spq-root .company-btn:hover:not(:disabled) { border-color: var(--spq-bl); }
+    #spq-root .company-btn.selected { border-color: var(--spq-bl); background: rgba(59,130,246,0.08); color: var(--spq-bl); }
+    #spq-root .company-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    #spq-root .company-unknown { grid-column: 1 / -1; font-size: 16px; font-weight: 600; }
+    #spq-root .next-btn {
+      display: block; width: 100%; padding: 15px; background: var(--spq-bl); color: #fff; border: none;
+      border-radius: var(--spq-r); font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 8px; transition: opacity 0.2s;
+    }
+    #spq-root .next-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    #spq-root #quiz-back { background: none; border: none; color: var(--spq-t2); font-size: 16px; cursor: pointer; padding: 0; display: none; flex-shrink: 0; }
+    #spq-root #quiz-back:hover { color: var(--spq-t1); }
+    #spq-root .result-card { background: var(--spq-surface); border: 1px solid var(--spq-border); border-radius: var(--spq-r); padding: 20px 24px; box-shadow: var(--spq-shadow); margin-bottom: 16px; }
+    #spq-root .result-section-title { font-size: 16px; font-weight: 700; color: var(--spq-t1); margin-bottom: 12px; letter-spacing: -.01em; }
+    #spq-root .result-type-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+    #spq-root .type-code-badge { flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: var(--spq-bl); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; }
+    #spq-root .type-name { font-size: 20px; font-weight: 800; color: var(--spq-t1); margin-bottom: 4px; }
+    #spq-root .type-meta { font-size: 16px; color: var(--spq-t2); }
+    #spq-root .inline-badge { display: inline-block; padding: 3px 9px; border-radius: 4px; font-size: 16px; font-weight: 700; color: #fff; margin: 0 3px 4px 0; }
+    #spq-root .badge-blue { background: var(--spq-bl); }
+    #spq-root .badge-green { background: var(--spq-gr); }
+    #spq-root .badge-red { background: var(--spq-rd); }
+    #spq-root .badge-purple { background: #8b5cf6; }
+    #spq-root .badge-warn { background: #B87900; }
+    @media (prefers-color-scheme: dark) { #spq-root .badge-warn { background: #d97706; } }
+    #spq-root .dna-text { font-size: 16px; color: var(--spq-t1); line-height: 1.75; }
+    #spq-root .trait-list { list-style: none; padding: 0; margin: 0; }
+    #spq-root .trait-list li { padding: 10px 0; border-bottom: 1px solid var(--spq-border); font-size: 16px; color: var(--spq-t1); line-height: 1.6; display: flex; gap: 8px; }
+    #spq-root .trait-list li:last-child { border-bottom: none; }
+    #spq-root .trait-icon { flex-shrink: 0; font-weight: 700; width: 18px; }
+    #spq-root .gender-box { border-radius: var(--spq-r); padding: 14px 16px; font-size: 16px; color: var(--spq-t1); line-height: 1.7; }
+    #spq-root .gender-box-male { background: rgba(239,68,68,0.08); border-left: 3px solid var(--spq-rd); }
+    #spq-root .gender-box-female { background: rgba(139,92,246,0.08); border-left: 3px solid #8b5cf6; }
+    #spq-root .exp-box { background: var(--spq-card, var(--spq-surface)); border-radius: var(--spq-r); padding: 14px 16px; font-size: 16px; color: var(--spq-t1); line-height: 1.7; border: 1px solid var(--spq-border); }
+    #spq-root .compat-box { border-radius: var(--spq-r); padding: 14px 16px; font-size: 16px; color: var(--spq-t1); line-height: 1.7; }
+    #spq-root .compat-best { background: rgba(16,185,129,0.08); border-left: 3px solid var(--spq-gr); }
+    #spq-root .compat-ok { background: rgba(59,130,246,0.08); border-left: 3px solid var(--spq-bl); }
+    #spq-root .compat-warn { background: rgba(184,121,0,0.08); border-left: 3px solid #B87900; }
+    #spq-root .compat-caution { background: rgba(239,68,68,0.08); border-left: 3px solid var(--spq-rd); }
+    #spq-root .growth-redirect-box { background: rgba(59,130,246,0.07); border: 1px solid var(--spq-bl); border-radius: var(--spq-r); padding: 16px; margin-bottom: 16px; font-size: 16px; color: var(--spq-t1); line-height: 1.75; }
+    #spq-root .company-text-item { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--spq-border); }
+    #spq-root .company-text-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    #spq-root .company-text-ticker { font-size: 16px; font-weight: 700; color: var(--spq-bl); margin-bottom: 6px; }
+    #spq-root .company-text-body { font-size: 16px; color: var(--spq-t1); line-height: 1.75; }
+    #spq-root .port-bar { display: flex; height: 28px; border-radius: 6px; overflow: hidden; margin: 14px 0; }
+    #spq-root .port-bar-seg { transition: width 0.5s ease; }
+    #spq-root .port-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 12px; }
+    #spq-root .port-legend-item { display: flex; align-items: center; gap: 8px; }
+    #spq-root .port-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    #spq-root .port-ticker { font-size: 16px; font-weight: 700; color: var(--spq-t1); min-width: 54px; }
+    #spq-root .port-desc { font-size: 16px; color: var(--spq-t2); flex: 1; }
+    #spq-root .port-pct { font-size: 16px; font-weight: 700; color: var(--spq-bl); }
+    #spq-root .port-summary { font-size: 16px; color: var(--spq-t2); margin-top: 10px; }
+    #spq-root .advice-box { background: var(--spq-bl); color: #fff; border-radius: var(--spq-r); padding: 18px 20px; font-size: 17px; font-weight: 700; line-height: 1.6; margin-bottom: 16px; text-align: center; }
+    #spq-root .backtest-btn { display: block; width: 100%; padding: 17px; background: var(--spq-gr); color: #fff; border: none; border-radius: var(--spq-r); font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; margin-top: 8px; transition: opacity 0.2s; }
+    #spq-root .backtest-btn:hover { opacity: 0.88; }
+    #spq-root .retry-btn { display: block; width: 100%; padding: 13px; background: none; color: var(--spq-t2); border: 1px solid var(--spq-border); border-radius: var(--spq-r); font-size: 16px; font-weight: 600; cursor: pointer; text-align: center; margin-top: 10px; }
+    #spq-root .retry-btn:hover { border-color: var(--spq-bl); color: var(--spq-bl); }
+    @media (max-width: 520px) {
+      #spq-root .choice-grid-4 { grid-template-columns: 1fr 1fr; }
+      #spq-root .mbti-grid { grid-template-columns: repeat(4, 1fr); }
+      #spq-root .company-grid { grid-template-columns: repeat(3, 1fr); }
+      #spq-root .port-legend { grid-template-columns: 1fr; }
+      #spq-root .result-type-header { flex-direction: column; gap: 10px; }
+    }
+    @media (max-width: 360px) { #spq-root .mbti-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    #spq-root .result-header-block { text-align:center; padding:1.5rem 0; }
+    #spq-root .result-badge { display:inline-block; padding:.3rem .9rem; border-radius:999px; font-size:16px; font-weight:600; margin-bottom:.8rem; }
+    #spq-root .result-typename { font-size:22px; font-weight:800; color:var(--spq-t1); margin:.5rem 0; line-height:1.3; }
+    #spq-root .result-tags { display:flex; flex-wrap:wrap; justify-content:center; gap:.4rem; margin-top:.6rem; }
+    #spq-root .result-tag { background:var(--spq-surface); border:1px solid var(--spq-border); border-radius:999px; padding:.2rem .7rem; font-size:16px; color:var(--spq-t2); }
+    #spq-root .result-section { background:var(--spq-surface); border:1px solid var(--spq-border); border-radius:var(--spq-r); padding:1.2rem; margin-bottom:1rem; }
+    #spq-root .result-section-title { font-size:16px; font-weight:700; color:var(--spq-t2); text-transform:uppercase; letter-spacing:.03em; margin-bottom:.7rem; }
+    #spq-root .result-dna-text { font-size:16px; color:var(--spq-t1); line-height:1.7; margin:0; }
+    #spq-root .result-gender-note { margin-top:.8rem; padding:.7rem .9rem; background:var(--spq-bl-s); border-left:3px solid var(--spq-bl); border-radius:0 var(--spq-r) var(--spq-r) 0; font-size:16px; color:var(--spq-t1); line-height:1.6; }
+    #spq-root .port-bar-wrap { margin-bottom:.7rem; }
+    #spq-root .port-bar { display:flex; height:28px; border-radius:6px; overflow:hidden; }
+    #spq-root .port-bar-seg { height:100%; transition:width .3s; }
+    #spq-root .port-legend { display:flex; flex-wrap:wrap; gap:.4rem .8rem; margin-bottom:1rem; }
+    #spq-root .port-legend-item { display:flex; align-items:center; gap:.3rem; }
+    #spq-root .port-legend-dot { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+    #spq-root .port-legend-ticker { font-size:16px; font-weight:700; color:var(--spq-t1); }
+    #spq-root .port-legend-pct { font-size:16px; color:var(--spq-t2); }
+    #spq-root .btn-backtest {
+      display: block; width: 100%; margin-top: 1rem; padding: .9rem 1.4rem;
+      background: linear-gradient(135deg, #1a3fc8 0%, #2563eb 55%, #5b5ff2 100%); color: #fff; border-radius: 12px;
+      font-size: 16px; font-weight: 800; text-decoration: none; text-align: center;
+      box-shadow: 0 4px 18px rgba(37,99,235,.38), inset 0 1px 0 rgba(255,255,255,.18);
+      transition: transform .15s ease, box-shadow .15s ease; letter-spacing: -.01em;
+    }
+    #spq-root .btn-backtest:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,99,235,.55), inset 0 1px 0 rgba(255,255,255,.18); color: #fff; text-decoration: none; opacity: 1; }
+    #spq-root .btn-backtest:active { transform: translateY(0); }
+    #spq-root .btn-backtest-mid {
+      display: block; width: 100%; margin: 1.4rem 0 0; padding: 1.05rem 1.5rem;
+      background: linear-gradient(135deg, #1a3fc8 0%, #2563eb 55%, #5b5ff2 100%); color: #fff; border-radius: 14px;
+      font-size: 18px; font-weight: 800; text-decoration: none; text-align: center;
+      box-shadow: 0 6px 24px rgba(37,99,235,.42), inset 0 1px 0 rgba(255,255,255,.18);
+      transition: transform .16s ease, box-shadow .16s ease; letter-spacing: -.02em;
+    }
+    #spq-root .btn-backtest-mid:hover { transform: translateY(-3px); box-shadow: 0 12px 38px rgba(37,99,235,.58), inset 0 1px 0 rgba(255,255,255,.18); color: #fff; text-decoration: none; }
+    #spq-root .btn-backtest-mid:active { transform: translateY(0); }
+    #spq-root .beginner-note { margin-top:.6rem; font-size:16px; color:var(--spq-t2); }
+    #spq-root .result-two-col { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    @media(max-width:600px){ #spq-root .result-two-col { grid-template-columns:1fr; } }
+    #spq-root .result-list { margin:0; padding-left:1.2rem; }
+    #spq-root .result-list li { font-size:16px; color:var(--spq-t1); line-height:1.6; margin-bottom:.3rem; }
+    #spq-root .strengths-list li::marker { color:var(--spq-gr); }
+    #spq-root .cautions-list li::marker { color:var(--spq-am); }
+    #spq-root .result-compat-text, #spq-root .result-exp-text { font-size:16px; color:var(--spq-t1); line-height:1.7; margin:0; }
+    #spq-root .company-card { padding:.7rem 0; border-bottom:1px solid var(--spq-border); }
+    #spq-root .company-card:last-child { border-bottom:none; padding-bottom:0; }
+    #spq-root .company-ticker { font-size:16px; font-weight:800; color:var(--spq-t1); margin-bottom:.3rem; }
+    #spq-root .company-desc { font-size:16px; color:var(--spq-t2); line-height:1.6; }
+    #spq-root .result-advice-block { background:linear-gradient(135deg,var(--spq-bl-m),var(--spq-surface)); border-color:var(--spq-bl-m); }
+    #spq-root .result-advice-label { font-size:16px; font-weight:700; color:var(--spq-bl); text-transform:uppercase; letter-spacing:.05em; margin-bottom:.5rem; }
+    #spq-root .result-advice-text { font-size:18px; font-weight:700; color:var(--spq-t1); line-height:1.5; margin:0; }
+    #spq-root .result-action-row { display:flex; gap:.7rem; margin-top:1.2rem; flex-wrap:wrap; }
+    #spq-root .btn-retry { flex:1; min-width:120px; padding:.7rem; background:var(--spq-surface); border:1px solid var(--spq-border); border-radius:var(--spq-r); font-size:16px; font-weight:600; color:var(--spq-t1); cursor:pointer; }
+    #spq-root .btn-retry:hover { background:var(--spq-border); }
+    #spq-root .btn-backtest-main {
+      flex: 2; min-width: 160px; padding: .85rem 1.1rem;
+      background: linear-gradient(135deg, #1a3fc8 0%, #2563eb 55%, #5b5ff2 100%); color: #fff; border-radius: 12px;
+      font-size: 16px; font-weight: 800; text-decoration: none; text-align: center;
+      box-shadow: 0 4px 16px rgba(37,99,235,.38), inset 0 1px 0 rgba(255,255,255,.18);
+      transition: transform .15s ease, box-shadow .15s ease; letter-spacing: -.01em;
+    }
+    #spq-root .btn-backtest-main:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,.55), inset 0 1px 0 rgba(255,255,255,.18); color: #fff; opacity: 1; }
+    #spq-root .btn-backtest-main:active { transform: translateY(0); }
+    #spq-root #derived-mbti-display { display:inline-block; margin-top:.5rem; font-size:18px; font-weight:700; color:var(--spq-bl); }
+    #spq-root .ai-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--spq-bl); animation: spq-ai-bounce 1.2s ease-in-out infinite; }
+    #spq-root .ai-dot:nth-child(1) { animation-delay: 0s; }
+    #spq-root .ai-dot:nth-child(2) { animation-delay: .2s; }
+    #spq-root .ai-dot:nth-child(3) { animation-delay: .4s; }
+    @keyframes spq-ai-bounce { 0%,80%,100% { transform: scale(0.6); opacity:.4; } 40% { transform: scale(1.0); opacity:1; } }
   </style>
 </head>
 <body>
@@ -163,18 +356,210 @@
     <h1>Quiz de Personalidade do Investidor</h1>
     <p class="hero-sub">Responda algumas perguntas rápidas e descubra um entre 40 tipos de carteira de ações dos EUA, montada com QQQ, SPY e SCHD</p>
     <div class="cta-group">
-      <a class="btn-primary" href="https://ezlong.com/stock-personality-quiz.html" target="_blank" rel="noopener">Abrir Ferramenta &rarr;</a>
+      <a class="btn-primary" href="#calculator">Fazer o Quiz &darr;</a>
       <a class="btn-secondary" href="https://ezlong.com/pt/">Ver Todas as Ferramentas</a>
     </div>
-    <p class="auto-translate-note">A interface da ferramenta está em coreano &mdash; Chrome, Edge e Safari traduzem automaticamente.</p>
-    <p class="translate-proxy-note">A tradução não aparece automaticamente? <a href="https://ezlong-com.translate.goog/stock-personality-quiz.html?_x_tr_sl=ko&amp;_x_tr_tl=pt&amp;_x_tr_hl=pt&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Abrir com o Google Tradutor &rarr;</a></p>
+    <p class="auto-translate-note">Totalmente em português &mdash; sem login, sem download, resultado em cerca de 3 minutos.</p>
   </section>
   <div class="stats-row" role="region" aria-label="Estatísticas principais">
     <div class="stat-item"><div class="stat-value">3 minutos</div><div class="stat-label">para concluir</div></div>
     <div class="stat-item"><div class="stat-value">40 tipos</div><div class="stat-label">de carteiras compatíveis</div></div>
     <div class="stat-item"><div class="stat-value">100% grátis</div><div class="stat-label">sem necessidade de conta</div></div>
   </div>
-  <main class="main" id="main-content">
+  <main class="main" id="main-content" style="max-width:1180px;">
+    <section class="section" id="calculator" style="max-width:100%;">
+      <div id="spq-root">
+      <div id="quiz-container">
+
+        <!-- Indicador de progresso -->
+        <div id="quiz-progress">
+          <div class="progress-top-row">
+            <button id="quiz-back">&lsaquo; Voltar</button>
+            <div class="progress-label" id="progress-label">Pergunta 1 / 5</div>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progress-fill" style="width:16.7%"></div>
+          </div>
+        </div>
+
+        <!-- Q1: Gênero -->
+        <div class="quiz-step active" id="step-q1">
+          <h2 class="step-title">Selecione seu gênero</h2>
+          <div class="choice-grid choice-grid-2">
+            <div class="choice-card" data-q="gender" data-val="male">Masculino</div>
+            <div class="choice-card" data-q="gender" data-val="female">Feminino</div>
+          </div>
+        </div>
+
+        <!-- Q2: Idade -->
+        <div class="quiz-step" id="step-q2">
+          <h2 class="step-title">Selecione sua faixa etária</h2>
+          <div class="choice-grid choice-grid-2">
+            <div class="choice-card" data-q="age" data-val="20s">20 e poucos anos</div>
+            <div class="choice-card" data-q="age" data-val="30s">30 e poucos anos</div>
+            <div class="choice-card" data-q="age" data-val="40s">40 e poucos anos</div>
+            <div class="choice-card" data-q="age" data-val="50s">50 e poucos anos</div>
+            <div class="choice-card" data-q="age" data-val="60s">60 anos ou mais</div>
+          </div>
+        </div>
+
+        <!-- Q3: Você sabe seu MBTI? -->
+        <div class="quiz-step" id="step-q3">
+          <h2 class="step-title">Você sabe qual é o seu tipo de MBTI?</h2>
+          <div class="choice-grid choice-grid-2">
+            <div class="choice-card" data-q="mbti-know" data-val="yes">Sim, eu sei</div>
+            <div class="choice-card" data-q="mbti-know" data-val="no">Não tenho certeza<div class="card-sub">Vamos descobrir com 4 perguntas rápidas</div></div>
+          </div>
+        </div>
+
+        <!-- Q3-Grid: 16 tipos de MBTI -->
+        <div class="quiz-step" id="step-q3-grid">
+          <h2 class="step-title">Selecione seu tipo de MBTI</h2>
+          <div class="choice-cards" style="margin-bottom:1.2rem;">
+            <div class="choice-card" data-q="mbti-know" data-val="no" style="color:var(--spq-t2);font-size:16px;">Não sei meu MBTI — vamos descobrir com 4 perguntas</div>
+          </div>
+          <div class="mbti-group-label">Analistas (NT)</div>
+          <div class="mbti-grid">
+            <div class="mbti-btn" data-mbti="INTJ">INTJ</div>
+            <div class="mbti-btn" data-mbti="INTP">INTP</div>
+            <div class="mbti-btn" data-mbti="ENTJ">ENTJ</div>
+            <div class="mbti-btn" data-mbti="ENTP">ENTP</div>
+          </div>
+          <div class="mbti-group-label">Diplomatas (NF)</div>
+          <div class="mbti-grid">
+            <div class="mbti-btn" data-mbti="INFJ">INFJ</div>
+            <div class="mbti-btn" data-mbti="INFP">INFP</div>
+            <div class="mbti-btn" data-mbti="ENFJ">ENFJ</div>
+            <div class="mbti-btn" data-mbti="ENFP">ENFP</div>
+          </div>
+          <div class="mbti-group-label">Sentinelas (SJ)</div>
+          <div class="mbti-grid">
+            <div class="mbti-btn" data-mbti="ISTJ">ISTJ</div>
+            <div class="mbti-btn" data-mbti="ISFJ">ISFJ</div>
+            <div class="mbti-btn" data-mbti="ESTJ">ESTJ</div>
+            <div class="mbti-btn" data-mbti="ESFJ">ESFJ</div>
+          </div>
+          <div class="mbti-group-label">Exploradores (SP)</div>
+          <div class="mbti-grid">
+            <div class="mbti-btn" data-mbti="ISTP">ISTP</div>
+            <div class="mbti-btn" data-mbti="ISFP">ISFP</div>
+            <div class="mbti-btn" data-mbti="ESTP">ESTP</div>
+            <div class="mbti-btn" data-mbti="ESFP">ESFP</div>
+          </div>
+        </div>
+
+        <!-- Q3-Sub: 4 perguntas quando o MBTI é desconhecido -->
+        <div class="quiz-step" id="step-q3-sub">
+          <div class="sub-step active" id="sub-qa">
+            <h2 class="step-title">Ao tomar uma decisão de investimento, eu&hellip;</h2>
+            <div class="choice-grid choice-grid-2" style="margin-top:8px">
+              <div class="choice-card" data-subq="qa" data-val="T">Julgo por números,<br>dados e lógica<div class="card-sub">Analítico</div></div>
+              <div class="choice-card" data-subq="qa" data-val="F">Sigo o instinto &mdash;<br>"essa empresa parece certa"<div class="card-sub">Intuitivo</div></div>
+            </div>
+          </div>
+          <div class="sub-step" id="sub-qb">
+            <h2 class="step-title">Quando o mercado despenca 20%, eu&hellip;</h2>
+            <div class="choice-grid choice-grid-2" style="margin-top:8px">
+              <div class="choice-card" data-subq="qb" data-val="J">Sigo meu plano &mdash;<br>já tenho um pronto<div class="card-sub">Planejador</div></div>
+              <div class="choice-card" data-subq="qb" data-val="P">Me adapto de forma flexível<br>à situação<div class="card-sub">Flexível</div></div>
+            </div>
+          </div>
+          <div class="sub-step" id="sub-qc">
+            <h2 class="step-title">Quando encontro uma nova ideia de investimento?</h2>
+            <div class="choice-grid choice-grid-2" style="margin-top:8px">
+              <div class="choice-card" data-subq="qc" data-val="N">Olho primeiro o panorama geral<br>e o potencial futuro<div class="card-sub">Visionário</div></div>
+              <div class="choice-card" data-subq="qc" data-val="S">Olho primeiro os números atuais<br>e os resultados reais<div class="card-sub">Realista</div></div>
+            </div>
+          </div>
+          <div class="sub-step" id="sub-qd">
+            <h2 class="step-title">Qual é o seu estilo de investimento?</h2>
+            <p class="step-desc">Se ainda não tiver certeza, escolha o que mais se aproxima</p>
+            <div class="choice-grid" style="margin-top:8px">
+              <div class="choice-card" data-subq="qd" data-val="NT">Elaboro estratégia, analiso e depois executo com calma<div class="card-sub">Analista (NT)</div></div>
+              <div class="choice-card" data-subq="qd" data-val="NF">Valorizo significado e propósito, torço por boas empresas<div class="card-sub">Diplomata (NF)</div></div>
+              <div class="choice-card" data-subq="qd" data-val="SJ">Faço um plano e sigo ele rigorosamente<div class="card-sub">Sentinela (SJ)</div></div>
+              <div class="choice-card" data-subq="qd" data-val="SP">Aproveito uma oportunidade empolgante assim que a vejo<div class="card-sub">Explorador (SP)</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q4: Experiência com investimentos -->
+        <div class="quiz-step" id="step-q4">
+          <h2 class="step-title">Quanta experiência você tem com investimentos?</h2>
+          <div class="choice-grid choice-grid-5">
+            <div class="choice-card" data-q="exp" data-val="beginner">Ainda não comecei, ou menos de 6 meses</div>
+            <div class="choice-card" data-q="exp" data-val="early">De 6 meses a 3 anos</div>
+            <div class="choice-card" data-q="exp" data-val="mid">De 3 a 7 anos</div>
+            <div class="choice-card" data-q="exp" data-val="advanced">De 7 a 10 anos</div>
+            <div class="choice-card" data-q="exp" data-val="veteran">Mais de 10 anos</div>
+          </div>
+        </div>
+
+        <!-- Q5: Estilo de investimento -->
+        <div class="quiz-step" id="step-q5">
+          <h2 class="step-title">Selecione seu estilo de investimento</h2>
+          <div class="choice-grid choice-grid-5">
+            <div class="choice-card" data-q="style" data-val="risk">Arrojado<div class="card-sub">Posições concentradas, aceita a volatilidade</div></div>
+            <div class="choice-card" data-q="style" data-val="stable">Focado em Estabilidade<div class="card-sub">Diversificado, defensivo</div></div>
+            <div class="choice-card" data-q="style" data-val="daytrading">Operador de Curto Prazo<div class="card-sub">Focado em ganhos rápidos</div></div>
+            <div class="choice-card" data-q="style" data-val="swing">Swing Trader<div class="card-sub">Mantém posições por dias ou semanas</div></div>
+            <div class="choice-card" data-q="style" data-val="longterm">Investidor de Longo Prazo<div class="card-sub">Mantém posições por 1+ anos</div></div>
+          </div>
+        </div>
+
+        <!-- Q6: Empresas de interesse -->
+        <div class="quiz-step" id="step-q6">
+          <h2 class="step-title">Selecione as empresas que despertam seu interesse</h2>
+          <p class="step-desc">Você pode selecionar até 3</p>
+          <div class="company-grid" id="company-grid">
+            <div class="company-btn" data-company="NVDA">NVDA</div>
+            <div class="company-btn" data-company="AAPL">AAPL</div>
+            <div class="company-btn" data-company="MSFT">MSFT</div>
+            <div class="company-btn" data-company="GOOGL">GOOGL</div>
+            <div class="company-btn" data-company="AMZN">AMZN</div>
+            <div class="company-btn" data-company="META">META</div>
+            <div class="company-btn" data-company="TSLA">TSLA</div>
+            <div class="company-btn" data-company="BRK.B">BRK.B</div>
+            <div class="company-btn" data-company="AVGO">AVGO</div>
+            <div class="company-btn" data-company="TSM">TSM</div>
+            <div class="company-btn" data-company="V">V</div>
+            <div class="company-btn" data-company="JPM">JPM</div>
+            <div class="company-btn" data-company="LLY">LLY</div>
+            <div class="company-btn" data-company="WMT">WMT</div>
+            <div class="company-btn" data-company="COST">COST</div>
+            <div class="company-btn" data-company="NFLX">NFLX</div>
+            <div class="company-btn" data-company="ORCL">ORCL</div>
+            <div class="company-btn" data-company="XOM">XOM</div>
+            <div class="company-btn" data-company="MA">MA</div>
+            <div class="company-btn" data-company="UNH">UNH</div>
+            <div class="company-btn company-unknown" data-company="unknown">Ainda não sei</div>
+          </div>
+          <button class="next-btn" id="q6-next-btn">Ver Meu Resultado</button>
+        </div>
+
+        <!-- Resultado -->
+        <!-- Overlay de carregamento da IA -->
+        <div id="ai-loading-overlay" style="
+          display:none; position:fixed; inset:0; z-index:9999;
+          background:var(--spq-bg); display:none;
+          flex-direction:column; align-items:center; justify-content:center; gap:2rem;">
+          <div id="ai-loading-inner" style="text-align:center;">
+            <div id="ai-dots" style="display:flex;gap:10px;justify-content:center;margin-bottom:1.6rem;">
+              <span class="ai-dot"></span><span class="ai-dot"></span><span class="ai-dot"></span>
+            </div>
+            <p id="ai-loading-msg" style="font-size:17px;font-weight:600;color:var(--spq-t1);letter-spacing:-.01em;">A IA está analisando sua carteira</p>
+            <p id="ai-loading-sub" style="font-size:16px;color:var(--spq-t2);margin-top:.5rem;">Só um momento&hellip;</p>
+          </div>
+        </div>
+
+        <div class="quiz-step" id="step-result">
+          <div id="result-content"></div>
+        </div>
+
+      </div><!-- /#quiz-container -->
+      </div><!-- /#spq-root -->
+    </section>
+    <div style="max-width:var(--max-w);margin:0 auto;">
     <section class="section">
       <h2 class="section-title">O Que é o Quiz de Personalidade do Investidor?</h2>
       <p class="section-body">Escolher a alocação de uma carteira de ações não é apenas um problema matemático — é também um problema comportamental. Dois investidores com rendas idênticas podem precisar de carteiras muito diferentes, dependendo de como realmente reagem à volatilidade, de qual é o seu horizonte de tempo real, e de que tipo de estilo de tomada de decisão adotam sob pressão. O Quiz de Personalidade do Investidor capta isso perguntando sobre sua faixa etária, tolerância a risco e preferências de estilo de personalidade, em espírito semelhante à categorização de estilo MBTI.</p>
@@ -255,9 +640,9 @@
     </section>
     <div class="cta-card">
       <h2>Descubra Seu Tipo de Investidor Agora</h2>
-      <p>Grátis, sem cadastro, leva cerca de 3 minutos. O Chrome traduz automaticamente do coreano para o português.</p>
-      <a class="btn-white" href="https://ezlong.com/stock-personality-quiz.html" target="_blank" rel="noopener">Fazer o Quiz &rarr;</a>
-      <p class="translate-proxy-note">A tradução não aparece automaticamente? <a href="https://ezlong-com.translate.goog/stock-personality-quiz.html?_x_tr_sl=ko&amp;_x_tr_tl=pt&amp;_x_tr_hl=pt&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Abrir com o Google Tradutor &rarr;</a></p>
+      <p>Grátis, sem cadastro, leva cerca de 3 minutos. Totalmente em português.</p>
+      <a class="btn-white" href="#calculator">Voltar ao Topo do Quiz &uarr;</a>
+    </div>
     </div>
   </main>
   <footer class="en-footer" role="contentinfo">
@@ -266,6 +651,1037 @@
     <small>Apenas ferramentas educacionais. Não constitui aconselhamento financeiro. Todo investimento envolve risco. Resultados passados não garantem resultados futuros.</small></p>
   </footer>
 
+<script>
+
+// ════════════════════════════════════════════════════════
+// stock-personality-quiz.js — DADOS E LÓGICA (Português)
+// ════════════════════════════════════════════════════════
+
+// ════════════════════════════════════════════════════════
+// Mapeamento MBTI → Grupo
+// ════════════════════════════════════════════════════════
+const MBTI_TO_GROUP = {
+  INTJ:'NT',INTP:'NT',ENTJ:'NT',ENTP:'NT',
+  INFJ:'NF',INFP:'NF',ENFJ:'NF',ENFP:'NF',
+  ISTJ:'SJ',ISFJ:'SJ',ESTJ:'SJ',ESFJ:'SJ',
+  ISTP:'SP',ISFP:'SP',ESTP:'SP',ESFP:'SP'
+};
+
+// ════════════════════════════════════════════════════════
+// Mapa de ativos (44 tickers)
+// ════════════════════════════════════════════════════════
+const ASSET_MAP = {
+  1:'SPY',2:'QQQ',3:'XLK',4:'SOXX',5:'XLV',
+  6:'XLE',7:'VNQ',8:'SCHD',9:'VWO',10:'ARKK',
+  11:'VTI',12:'VEA',13:'EEM',14:'XLF',15:'XLI',
+  16:'GDX',17:'HYG',18:'VIG',19:'ICLN',20:'IVV',
+  21:'TLT',22:'IEF',23:'GLD',24:'BND',
+  25:'NVDA',26:'GOOGL',27:'AAPL',28:'MSFT',29:'AMZN',
+  30:'META',31:'TSLA',32:'AVGO',33:'JPM',34:'LLY',
+  35:'BRK.B',36:'V',37:'NFLX',38:'AMD',39:'TSM',
+  40:'CRM',41:'COST',42:'WMT',43:'ORCL',44:'INTC'
+};
+const TICKER_TO_ID = Object.fromEntries(
+  Object.entries(ASSET_MAP).map(([id,t]) => [t, Number(id)])
+);
+
+const TICKER_DESC = {
+  QQQ:'ETF Nasdaq 100',IVV:'ETF S&P 500',SPY:'ETF S&P 500',VTI:'ETF Mercado Total dos EUA',
+  NVDA:'Nvidia',GOOGL:'Alphabet (Google)',AAPL:'Apple',MSFT:'Microsoft',
+  AMZN:'Amazon',META:'Meta',TSLA:'Tesla',AVGO:'Broadcom',
+  NFLX:'Netflix',AMD:'AMD',TSM:'TSMC',JPM:'JPMorgan',
+  V:'Visa',COST:'Costco',WMT:'Walmart',LLY:'Eli Lilly',
+  'BRK.B':'Berkshire Hathaway',SOXX:'ETF de Semicondutores',XLK:'ETF do Setor de Tecnologia',
+  SCHD:'ETF de Crescimento de Dividendos',ORCL:'Oracle',CRM:'Salesforce',
+  XOM:'ExxonMobil',MA:'Mastercard',UNH:'UnitedHealth'
+};
+
+const BAR_COLORS = ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#f97316','#84cc16','#ec4899','#6366f1'];
+
+// ════════════════════════════════════════════════════════
+// Texto de compatibilidade (grupo MBTI × estilo de investimento)
+// ════════════════════════════════════════════════════════
+const COMPAT_TEXTS = {
+'NT_risk':'Você não deveria usar um Analista como terminal de trading de curtíssimo prazo. A lógica do NT brilha quando lê meses de dados — não quando decide em dez minutos na frente de um gráfico.',
+'NT_stable':'Esta é uma combinação perfeita. Adicionar o rigor analítico do NT à diversificação em ETFs faz até o rebalanceamento ganhar um conjunto de princípios por trás. O resultado é uma carteira que funciona sem emoção.',
+'NT_daytrading':'Ações de crescimento de dividendos combinam bem com o NT. A capacidade de analisar os fundamentos de uma pagadora de dividendos é aproveitada de verdade aqui. Só não fixe no número do yield e perca a história de crescimento.',
+'NT_swing':'O value investing é onde o NT pode se destacar mais. Calcular o valor intrínseco, comparar concorrentes, checar a margem de segurança — esse processo pode parecer diversão. A armadilha é analisar demais e acabar passando do ponto de entrada real, repetidamente.',
+'NT_longterm':'Estratégias quantitativas e de momentum são o encaixe perfeito para o NT, porque as regras removem a emoção por completo. Executar quando o sinal disparar — esse é todo o trabalho.',
+'NF_risk':'Você escolheu trading de curto prazo. Sejamos honestos: as empresas que o temperamento NF ama são difíceis de vender. Uma história como "essa empresa vai chegar lá eventualmente" empurra seu stop-loss cada vez mais para longe. Você provavelmente já teve a experiência de pretender uma operação rápida que de alguma forma virou uma posição de longo prazo. Isso não é um defeito — é só a sua natureza. Limite o trading de curto prazo a 15% ou menos da carteira, e deixe o resto ser mantido a longo prazo do jeito que seu temperamento pede.',
+'NF_stable':'Preencher um núcleo de ETF com um filtro de "boa empresa" — essa é uma estratégia sólida. A empatia do NF eleva a qualidade da seleção de empresas. Preencha primeiro o núcleo em ETF, depois adicione ações individuais favoritas dentro de uma fatia de 20%.',
+'NF_daytrading':'Ações de crescimento de dividendos combinam naturalmente com o NF. Quando uma empresa que você ama continua pagando dividendos consistentes, não há motivo para vender. O histórico de dividendos — não a emoção — passa a sustentar sua posição de longo prazo.',
+'NF_swing':'Você escolheu value investing. Um ponto de atenção: "uma boa empresa" e "uma empresa subvalorizada" não são a mesma coisa, e o NF tende fortemente a enxergá-las como idênticas. Confirme o valor com números, não com a história.',
+'NF_longterm':'Você escolheu uma estratégia quantitativa. Sinceramente, essa é a abordagem que mais choca com o temperamento NF, porque as regras removem a intuição por completo. Você vai precisar praticar confiar no sinal e desligar a emoção.',
+'SJ_risk':'Você escolheu trading de curto prazo — a abordagem que mais choca com o temperamento SJ. Planejar → executar por princípio → manter a longo prazo é o ritmo natural do SJ. O trading de curto prazo exige um plano totalmente novo a cada vez.',
+'SJ_stable':'SJ e diversificação em ETF. Essa é a combinação mais ideal que esta ferramenta oferece. Investimento automático mensal → rebalanceamento anual → manter por 10+ anos. Esse ritmo se encaixa exatamente com o temperamento SJ.',
+'SJ_daytrading':'Ações de crescimento de dividendos combinam bem com a necessidade de estabilidade do SJ. A confiabilidade de uma empresa que paga de forma consistente traz tranquilidade ao SJ. Só cuide para que a fixação em dividendos não deixe a fatia de crescimento baixa demais.',
+'SJ_swing':'A disciplina do value investing combina exatamente com o temperamento SJ. Seleção de ações baseada em checklist, manutenção por regras — é aqui que a força do SJ aparece mais claramente.',
+'SJ_longterm':'Estratégias quantitativas combinam bem com a natureza de seguir regras do SJ. Executar quando o sinal disparar, esperar quando não disparar. Só cuide para não se apegar ao "sempre fizemos assim" quando as regras realmente precisam mudar — é aí que a resposta fica lenta.',
+'SP_risk':'O trading de curto prazo parece um encaixe para a inclinação à ação do SP, mas na verdade é a combinação mais perigosa. Quanto mais rápido você age, mais rápido também precisa de uma regra de stop-loss. Ação sem regras é um carro só com pedal de acelerador.',
+'SP_stable':'Você escolheu diversificação em ETF. Sinceramente, isso pode parecer "entediante" para um SP. Uma estrutura de 70% de núcleo em ETF mais 30% de ações escolhidas individualmente por intuição é o encaixe mais realista para o SP.',
+'SP_daytrading':'Você escolheu ações de crescimento de dividendos. Esperar é a parte mais difícil. Enquanto os dividendos se acumulam, outros tickers continuam chamando sua atenção. Configure reinvestimento automático para não sobrar espaço para você intervir — o sistema precisa fazer a espera para que você também consiga.',
+'SP_swing':'O value investing é a estratégia mais difícil para o SP. Encontrar uma empresa subvalorizada é possível. O problema é a paciência de "manter sem saber quando vai subir." Fixe seus critérios de compra e o preço-alvo como números concretos.',
+'SP_longterm':'Estratégias quantitativas e de momentum combinam bem com os instintos rápidos do SP — reagir a um sinal imediatamente é uma força real. Só estabeleça regras claras para não estar aumentando uma posição por impulso em vez de um sinal de fato.'
+};
+
+const EXP_TEXTS = {
+'beginner':'Você está basicamente na linha de partida. Sejamos honestos: você não precisa de uma carteira perfeita agora. Uma transferência automática configurada hoje importa mais do que isso. Comece com um único ticker como QQQ e ajuste a proporção perfeita depois. Tempo de mercado sempre vence timing de mercado.',
+'early':'Você começou com ETFs e ações individuais estão começando a chamar sua atenção. Ótimo. Mantenha 60% em um núcleo de ETF e adicione um nome de big tech que você já conhece bem. Deixe de lado qualquer empresa que você "não conhece muito bem, mas acha que vai subir" nesta fase.',
+'mid':'Você opera ações individuais e ETFs ao mesmo tempo. Sinceramente, o erro mais comum nesta fase é deixar o número de posições crescer demais. Passando de 10 posições, você está efetivamente comprando um índice com ágio. Reduza e refoque.',
+'advanced':'Você observa o mercado há mais de 7 anos. Provavelmente viveu a queda da COVID em 2020, o choque de juros de 2022 e o rali de IA de 2024. O que mais merece atenção agora é a confiança de "dessa vez eu estou certo." Essa confiança cresce com a experiência, e é a armadilha mais comum para investidores experientes.',
+'veteran':'Você já viveu todas as fases que o mercado tem a oferecer. Você já sabe que um princípio comprovado vence uma estratégia inteligente. A coisa mais difícil nesta fase é resistir à tentação do "dessa vez é diferente." Um princípio só é princípio quando não admite exceções.'
+};
+
+const COMPANY_TEXTS = {
+'AAPL':'Uma empresa que construiu um ecossistema dentro de um smartphone. Quem usa um iPhone compra um MacBook, usa AirPods e roda o iCloud. O crescimento desacelerou, porém — a receita de serviços é o que está segurando as pontas.',
+'MSFT':'A maior parte do software usado dentro das empresas é da Microsoft — clientes corporativos raramente trocam depois de começar. Azure + Copilot + assinaturas do Office formam uma base de receita que quase não balança nem em uma retração.',
+'GOOGL':'O domínio da publicidade em buscas acumula caixa, e esse caixa financia investimento em IA e nuvem. DeepMind, YouTube, GCP — se qualquer um deles decolar, a empresa toda muda. Esta é a empresa com mais armas na guerra da IA.',
+'AMZN':'O e-commerce roda em margens finas, a AWS roda em margens gordas — juntos, a maior parte do lucro vem da AWS. O negócio de publicidade cresce rápido em cima disso. Liderança em nuvem + infraestrutura de IA + publicidade, três motores rodando ao mesmo tempo.',
+'META':'Detém as plataformas sociais que 3 bilhões de pessoas no mundo usam todos os dias. A otimização de anúncios via IA está elevando os preços dos anúncios, e os modelos Llama de código aberto são uma aposta pela liderança no ecossistema de IA. Essa aposta em IA está dando certo até agora.',
+'NVDA':'Treinar IA exige GPUs, e a NVDA está perto de um monopólio nelas. H100, B200, e a próxima geração depois dessa — a demanda continua superando a oferta. A valuation é alta, porém; boa parte do crescimento futuro já está precificada.',
+'TSLA':'Veículos elétricos + armazenamento de energia + FSD + robótica + robotaxis. Se qualquer um desses decolar, a ação muda completamente. Nenhum deles é certo ainda, porém — mantenha apenas um tamanho de posição que não abale toda a sua carteira.',
+'AVGO':'Se a NVDA vende as GPUs, a AVGO vende a rede que as conecta. Silício de IA sob medida + redes + a aquisição da VMware — silenciosamente se tornando a segunda maior beneficiária da construção de infraestrutura de IA.',
+'V':'Ganha taxas sobre pagamentos sem nunca emprestar o dinheiro — crescimento global de transações sem o risco de crédito. Chata, mas forte. Mesmo em uma economia ruim, não há risco de inadimplência aqui.',
+'COST':'Uma empresa cujos associados, uma vez que pagam a taxa anual, raramente saem. As taxas de renovação ficam acima de 90%. Quando a inflação sobe, mais associados aparecem tentando economizar, não menos — uma estrutura que se sustenta bem em uma retração.',
+'LLY':'A líder em tratamentos de obesidade e diabetes com GLP-1. A demanda por Mounjaro e Zepbound continua superando a oferta. O tratamento da obesidade está remodelando uma área inteira da medicina. A valuation é alta, porém, e há risco de expiração de patentes no futuro.',
+'NFLX':'Garantiu o posto de #1 em streaming. Diversificando a receita com um plano com anúncios. As recomendações de conteúdo via IA estão aumentando o tempo de exibição, o que ajuda cada vez mais a reduzir a evasão de assinantes.',
+'AMD':'Desafia a NVDA tanto em CPUs quanto em aceleradores de IA. A linha MI300 vem gradualmente atraindo clientes de data centers. A AMD oferece competitividade de preço frente à NVDA, mas o fosso de software CUDA ainda é uma barreira alta.',
+'PLTR':'Vende software de análise de dados para clientes governamentais e corporativos como plataforma de IA. O governo dos EUA ser um cliente central é tanto uma âncora de estabilidade quanto um teto de crescimento. Até onde a AIP expande no mercado corporativo é o próximo motor de crescimento.',
+'SPY':'O próprio índice S&P 500. Detém de uma vez as 500 maiores empresas dos EUA. No longo prazo, supera quase todos os fundos de gestão ativa — a abordagem que Warren Buffett mais recomenda.',
+'QQQ':'O ETF Nasdaq 100 — uma carteira concentrada em big techs. NVDA, AAPL, MSFT, AMZN e META formam os maiores pesos. Mais potencial de crescimento e mais volatilidade que o S&P 500 — uma forma concentrada de surfar o ciclo de IA.',
+'IVV':'O ETF S&P 500 da BlackRock. Segue o mesmo índice que o SPY, mas com uma taxa de administração mais barata de 0,03%. Essa diferença se acumula quanto mais tempo você mantém. A escolha mais eficiente para uma posição central.',
+'TLT':'Um ETF de Treasuries dos EUA de 20 anos. Os preços dos títulos sobem quando os juros caem. Funciona como proteção quando as ações caem em uma recessão. Mas quando os juros sobem, pode perder mais que as ações — use apenas como proteção parcial dentro da carteira.',
+'GLD':'Um ETF de ouro. Tende a se fortalecer quando o dólar enfraquece ou a inflação sobe, e também tende a subir quando o risco geopolítico aumenta. Seu papel é diversificar risco, não gerar retorno — uma proteção razoável em 5–10% da carteira.',
+'SOXX':'Um ETF do setor de semicondutores. Espalha a exposição por toda a indústria de chips — NVDA, AVGO, AMD, Intel, TSMC e mais. Uma forma de capturar o vento favorável da IA em todo o setor em vez de apostar só na NVDA.'
+};
+
+const STYLE_LABELS = {
+'risk':'Operador de Curto Prazo','stable':'Diversificador em ETF','daytrading':'Investidor em Crescimento de Dividendos','swing':'Value Investor','longterm':'Investidor Quant / Momentum'
+};
+
+
+// ════════════════════════════════════════════════════════
+// Seção A: Analistas NT (8)
+// ════════════════════════════════════════════════════════
+const BASE_PROFILES = {
+
+'male_20s_NT':{typeCode:'A-1',typeName:'O Estrategista que Aposta em Futuros Orientados por Dados',
+dna:'Seu rosto muda no momento em que se fala de investimentos. Enquanto todo mundo diz "a NVDA vai subir," você já está comparando resultados trimestrais e margens de concorrentes na cabeça. Quando a convicção bate, você entra com força. A única coisa que você ainda não definiu: uma regra clara de quando parar, caso essa convicção esteja errada. Faz sentido?',
+strengths:['Decisões guiadas por dados, não por emoção → baixo risco de venda em pânico ou compra por ganância','Convicção forte de longo prazo pode maximizar o efeito dos juros compostos','Começar aos 20 e poucos anos com convicção forte = décadas de pista para os juros compostos'],
+cautions:['Esperar por uma análise "perfeita" repetidamente custa o timing de entrada','Barber & Odean (2001): homens operam 45% mais que mulheres e perdem cerca de 2,65 pontos percentuais de retorno por ano por conta disso','Concentração excessiva em ações específicas — quanto mais forte a convicção, mais a carteira se inclina'],
+genderNote:{male:'Homens NT confiantes e analíticos tendem a se concentrar demais nas "ações que eu mesmo escolhi." Limite o rebalanceamento da carteira a duas vezes por ano.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','GOOGL','MSFT','META','AMZN','AAPL','IVV'],pcts:[30,15,15,12,10,8,5,5]},
+  beginner:{tickers:['QQQ','SOXX','IVV','MSFT','NVDA','GOOGL','AAPL','META'],pcts:[28,10,10,16,14,10,7,5]}},
+advice:'O momento perfeito para analisar nunca chega. O que você já sabe agora já é suficiente.'},
+
+'female_20s_NT':{typeCode:'A-2',typeName:'A Estrategista Sob a Superfície',
+dna:'Fica evidente assim que você entra. Você fica repetindo "devo checar mais um pouco" e acaba perdendo a entrada — depois, quando já subiu, você murmura "é, realmente era uma boa empresa." Faz sentido?<br><br>Sua capacidade analítica já é mais do que suficiente. Uma vez que o tamanho da sua posição acompanhe, este é o tipo mais forte que esta ferramenta produz.',
+strengths:['Sem overtrading → custos de transação ficam mínimos, o motor dos juros compostos roda a todo vapor','Convicção forte e inabalável uma vez tomada a decisão','Provavelmente a menor frequência de operações entre os 32 tipos desta ferramenta'],
+cautions:['Fidelity: apenas 14% das mulheres se avaliam como "sabendo muito sobre investimentos" → tendência a subinvestir','Esperar por uma análise perfeita faz perder uma parte relevante da fase de crescimento','A Geração Z mantém em média 33,88% dos ativos em caixa → corroídos pela inflação ano após ano'],
+genderNote:{male:'Não aplicável',female:'O problema real para investidoras mulheres é a falta de confiança. Sua análise já é boa o suficiente. Aumentar o tamanho das posições é a segunda tarefa.'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','GOOGL','MSFT','AAPL','META','AMZN','IVV'],pcts:[30,15,15,13,10,8,5,4]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','NVDA','GOOGL','AAPL','META'],pcts:[25,12,8,16,14,12,8,5]}},
+advice:'A análise que você já tem é suficiente. Aumentar o tamanho é a segunda tarefa.'},
+
+'male_30s_NT':{typeCode:'A-3',typeName:'O Construtor de Carteira com Convicção Concentrada',
+dna:'Você já consegue visualizar. PER, PBR e fluxo de caixa livre aparecem naturalmente na conversa. Você sabe que a carteira está inclinada para um lado, mas pensa "dessa vez é diferente." Faz sentido?<br><br>A habilidade analítica é um ativo. Sem uma regra para quando você está errado, essa convicção vira veneno em vez disso.',
+strengths:['Capacidade de análise fundamentalista em estágio maduro','Anos de acumulação de patrimônio nos 30 e poucos anos + habilidade analítica = a janela de pico para maximizar os juros compostos','Convicção suficiente para comprar durante um pânico'],
+cautions:['Apego à "empresa que eu mesmo analisei" → risco de uma única posição ultrapassar 30%','Overtrading masculino: o impulso de ajustar a carteira depois de cada nova análise','O impulso de pausar os investimentos por causa de casamento, compra de imóvel ou criação dos filhos — exatamente a fase central para os juros compostos'],
+genderNote:{male:'Quanto maior sua habilidade analítica, maior o risco de overtrading. Faça uma regra: rebalancear duas vezes por ano, no máximo.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','MSFT','GOOGL','AMZN','META','AVGO','AAPL','IVV'],pcts:[20,15,13,12,10,10,8,7,5]},
+  beginner:{tickers:['QQQ','SOXX','IVV','MSFT','NVDA','GOOGL','AAPL','AVGO'],pcts:[22,10,8,18,16,12,8,6]}},
+advice:'Limite o rebalanceamento a duas vezes por ano. Quanto mais você analisa, mais vai querer operar.'},
+
+'female_30s_NT':{typeCode:'A-4',typeName:'A Arquiteta de Crescimento Sistemático',
+dna:'Fica evidente assim que você entra. Você planeja com cuidado, opera pouco e se move pelas regras. "Isso já não é suficiente?" mantém o valor investido conservador. Soa familiar?<br><br>Você tem o maior potencial de retorno entre qualquer tipo de investidora mulher aqui. Tudo que você precisa é aumentar o tamanho.',
+strengths:['Baixa frequência de operações + alta habilidade analítica = o potencial mais forte entre os tipos de investidora mulher','A executora de DCA mais fiel do grupo dos 30 e poucos anos','Força mental para manter o plano mesmo em uma queda'],
+cautions:['Uma tendência no início/meio dos 30 anos de investir muito menos do que deveria em relação à renda','O paradoxo de projetar com tanto cuidado a carteira "perfeita" que o início real acaba atrasado','Uma tendência a ficar só com fundos de índice, dizendo que as ações de crescimento "parecem caras demais agora"'],
+genderNote:{male:'Não aplicável',female:'Mulheres nos 30 e poucos anos com temperamento NT estão entre os tipos de maior retorno esperado que esta ferramenta produz. Baixa frequência de operações + seguir regras = as condições perfeitas para os juros compostos. Aumente o tamanho.'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','GOOGL','NVDA','AAPL','META','AMZN','IVV'],pcts:[28,14,13,12,12,10,7,4]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','NVDA','GOOGL','AAPL','META'],pcts:[24,10,8,18,14,13,8,5]}},
+advice:'Sua análise já é boa. É hora de aumentar o tamanho.'},
+
+'male_40s_NT':{typeCode:'A-5',typeName:'O Arquiteto de Carteira',
+dna:'Você já consegue visualizar. Você viveu a bolha das pontocom, a crise financeira de 2008 e a queda da COVID. Essa experiência afiou sua análise, mas também tornou sua carteira mais complicada. Sua lista de posições passou de dez nomes, ou aquela planilha de alocação setorial ainda está crescendo? Faz sentido?<br><br>Simples vence complicado.',
+strengths:['A melhor intuição de ciclo de mercado entre os tipos aqui','Aprendeu na prática por que não perder importa mais do que ganhar muito','Habilidoso em elaborar estratégia de alocação de ativos'],
+cautions:['Uma carteira complicada = custos de operação mais altos + retornos mais baixos','O instinto de "devo ficar defensivo agora" que bate nos 40 anos → cortar exposição a crescimento cedo demais','Uma entrada mais lenta em IA e novos setores de tecnologia (o tempo é consumido pela análise excessiva)'],
+genderNote:{male:'Barber & Odean: os traders mais ativos rendem menos que o mercado em 7%+ ao ano. Reduza suas posições para 5 nomes ou menos.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','GOOGL','NVDA','AAPL','AMZN','META'],pcts:[19,15,14,12,11,10,10,9]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','NVDA','GOOGL','AAPL','AMZN'],pcts:[17,15,10,15,13,11,10,9]}},
+advice:'Reduza suas posições para 5 nomes ou menos. Simples vence complicado.'},
+
+'female_40s_NT':{typeCode:'A-6',typeName:'A Estrategista do Equilíbrio Cuidadoso',
+dna:'Fica evidente assim que você entra. Toda decisão de investimento que você toma tem um motivo por trás. Sem compras por impulso, sem vendas emocionais. Sua fatia de crescimento tem encolhido silenciosamente conforme cresce a sensação de "preciso proteger isso"? Faz sentido?<br><br>Seus 40 anos ainda são uma década cedo demais para virar defensiva.',
+strengths:['Décadas de hábitos analíticos acumulados','Sem overtrading, princípios mantidos com firmeza','Habilidosa em separar despesas de vida de poupança para aposentadoria'],
+cautions:['A mentalidade dos 40 anos de "preciso ter cuidado agora" → virar defensiva uma década cedo demais','Uma tendência a manter caixa demais','Com expectativa de vida de 90 anos, são mais 50 anos de investimento — a exposição a ações precisa ficar acima de 65%'],
+genderNote:{male:'Não aplicável',female:'Fidelity: mulheres superam homens em 0,4 pontos percentuais em média. Sua tomada de decisão mais lenta já é uma força. Mantenha 60% de exposição a crescimento mesmo nos 40 anos.'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','GOOGL','NVDA','AAPL','AMZN'],pcts:[23,17,14,12,11,12,11]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','NVDA','GOOGL','AAPL','AMZN'],pcts:[18,14,10,15,12,11,10,10]}},
+advice:'Mantenha pelo menos 65% em ações até os 60 anos.'},
+
+'male_50s_NT':{typeCode:'A-7',typeName:'O Estrategista Projetando para um Horizonte de 20 Anos',
+dna:'Você já consegue visualizar. Você explica o ciclo de IA, o superciclo de semicondutores e a estrutura de oligopólio das big techs naturalmente na conversa. As pessoas ao seu redor dizem "esse é o cara que realmente entende de investimento." Faz sentido?<br><br>Com expectativa de vida de 90 anos, ainda restam 38 anos. Quanto mais você sabe, mais fácil fica pender para o defensivo — ainda não há motivo para isso.',
+strengths:['Capacidade de ponta para julgar o valor de uma empresa','Compreensão completa dos ciclos de mercado','Sem vendas emocionais — a condição central para os juros compostos'],
+cautions:['Excesso de análise → risco de rebalanceamento desnecessário','Padrões de operação masculinos ainda podem tentar o overtrading mesmo nos 50 anos','Mantenha a disciplina de diversificação para que a convicção em IA/semicondutores não vire risco de concentração'],
+genderNote:{male:'O maior risco para homens NT nos 50 anos é a convicção de que "essa oportunidade é diferente." A convicção deve escalar em tamanho de posição; o excesso de confiança vira risco. Estabeleça um teto de peso por ticker com antecedência.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','NVDA','GOOGL','AMZN','AAPL','META','AVGO'],pcts:[24,16,14,13,11,10,8,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','MSFT','NVDA','GOOGL','AAPL','AVGO'],pcts:[22,10,8,18,15,12,8,7]}},
+advice:'Aposte com dados no pico do ciclo de IA. Seu conhecimento aos 50 anos e 38 anos de pista são uma combinação poderosa.'},
+
+'female_50s_NT':{typeCode:'A-8',typeName:'A Estrategista Projetando 30 Anos com Dados',
+dna:'Fica evidente assim que você entra. Você nunca correu atrás de tendência, nunca vendeu em pânico. Toda decisão tem um motivo por trás. Reconferir cada nova variável levou a rebalanceamentos desnecessários? Soa familiar?<br><br>Com expectativa de vida de 90 anos, você tem 39 anos pela frente. Só reduza a frequência com que rebalanceia.',
+strengths:['Sem overtrading + seguir regras = a receita completa para maximizar os juros compostos','Decisões guiadas por dados bloqueiam totalmente o ruído do mercado','39 anos de pista — tempo de sobra para justificar uma carteira orientada a crescimento'],
+cautions:['Vício em análise: reconferir cada nova variável → rebalanceamento desnecessário','O instinto de virar defensiva cedo demais — cortar a exposição a ações rápido demais significa arrependimento uma década depois','Uma tendência a manter caixa demais (mulheres em média mantêm uma fatia maior de caixa)'],
+genderNote:{male:'Não aplicável',female:'Habilidade analítica + a disciplina de uma mulher é uma das combinações mais fortes que esta ferramenta produz. Não abra mão do crescimento perseguindo a carteira perfeitamente projetada.'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','GOOGL','NVDA','AAPL','AMZN','META','AVGO'],pcts:[22,16,15,12,12,11,8,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','MSFT','NVDA','GOOGL','AAPL','META'],pcts:[20,10,10,18,14,12,10,6]}},
+advice:'Habilidade analítica + 39 anos de pista é sua arma mais forte. Não abra mão do crescimento esperando pelo projeto perfeito.'},
+
+// ════════════════════════════════════════════════════════
+// Seção B: Diplomatas NF (8)
+// ════════════════════════════════════════════════════════
+
+'male_20s_NF':{typeCode:'B-1',typeName:'O Investidor Empático que Investe na História',
+dna:'Você já consegue visualizar. Você compra na convicção de que "essa empresa vai mudar o mundo." Quando dá errado, você continua segurando porque "a história ainda está viva." Faz sentido?<br><br>Quando sua intuição está certa, os retornos podem ser surpreendentes. Quando a história vacila, os números — não o sentimento — precisam ser o critério.',
+strengths:['Convicção forte na visão e na história da empresa → capaz de manter a longo prazo','Sensível a mudanças de tendência → entrada antecipada em setores de crescimento','Começar aos 20 e poucos anos com visão de longo prazo = a condição ideal para um motor de juros compostos'],
+cautions:['A narrativa de "essa empresa vai dar certo eventualmente" bloqueia um stop-loss necessário','Uma tendência à compra irracional na baixa quando a história vacila','Concentração excessiva guiada pela emoção → diversificação insuficiente'],
+genderNote:{male:'Homens NF tendem a aumentar o tamanho da posição quanto mais forte fica a convicção. Decida o tamanho da posição por regra, não por sentimento.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['QQQ','META','TSLA','NVDA','AMZN','GOOGL','MSFT','IVV'],pcts:[28,15,13,12,11,10,7,4]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','META','TSLA','GOOGL','AMZN'],pcts:[28,12,6,14,13,10,10,7]}},
+advice:'Mantenha mesmo quando a história vacilar, desde que os números ainda estejam bons. O critério é o resultado, não um sentimento.'},
+
+'female_20s_NF':{typeCode:'B-2',typeName:'A Investidora Que Escolhe por Empatia, Mantém por Princípio',
+dna:'Fica evidente assim que você entra. O app que você usa todo dia, um serviço que todos ao seu redor usam — viram ideias de ações naturalmente. Você já teve a experiência de escolher uma ótima empresa, mas a posição era pequena demais para sentir de verdade os ganhos. Soa familiar?<br><br>Seu instinto para escolher ações já é bom. É hora de aumentar o tamanho.',
+strengths:['Seleção intuitiva de ações + manutenção longa = faz GARP investing naturalmente','Sem overtrading → custos de transação ficam mínimos','A seleção baseada em empatia funciona como um bom filtro de empresas'],
+cautions:['Fidelity: apenas 14% das mulheres se avaliam como "sabendo muito sobre investimentos" → posições acabam pequenas demais','Lenta para reagir quando uma empresa com a qual você se conecta decepciona','Risco de exposição excessiva a um IPO com uma história atraente'],
+genderNote:{male:'Não aplicável',female:'Sua seleção intuitiva de ações produz resultados muito melhores do que você imagina. O problema é que o tamanho das suas posições é pequeno demais. Chegar a 20%+ da renda investida é a primeira tarefa.'},
+portfolio:{
+  default:{tickers:['QQQ','AAPL','META','GOOGL','MSFT','AMZN','NVDA','IVV'],pcts:[28,14,13,12,11,10,8,4]},
+  beginner:{tickers:['QQQ','IVV','SOXX','AAPL','MSFT','GOOGL','META','AMZN'],pcts:[25,12,6,15,12,11,10,9]}},
+advice:'Confie na sua intuição para escolher boas empresas. Aumentar o tamanho é a segunda tarefa.'},
+
+'male_30s_NF':{typeCode:'B-3',typeName:'O Investidor Que Transforma Visão em Realidade',
+dna:'Você já consegue visualizar. Quando uma empresa que você ama reporta um trimestre decepcionante, você compra mais porque é "temporário." Esse apego se sobrepõe à análise. Faz sentido?<br><br>Começar a checar os números reais aos 30 anos é uma boa mudança. Quanto mais forte o apego, mais rigorosa precisa ser sua regra de stop-loss, em números concretos.',
+strengths:['Combinar visão com verificação de resultados melhora a qualidade da seleção de ações','Sem vendas emocionais → continua segurando durante um pânico','Anos de acumulação de patrimônio nos 30 e poucos anos + convicção de longo prazo = a janela de pico para maximizar os juros compostos'],
+cautions:['A familiaridade de "eu conheço bem essa empresa" atrapalha um stop-loss','Comprar mais de uma empresa visionária quando ela decepciona, dizendo a si mesmo que é "temporário"','Homens NF: quanto mais forte a convicção, maior a concentração em um único nome'],
+genderNote:{male:'O que homens NF mais precisam observar nos 30 anos é confundir "uma empresa que gosto" com "um bom investimento." Quanto mais forte o apego, mais turva fica a linha do stop-loss.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','META','GOOGL','NVDA','AMZN','AAPL','IVV'],pcts:[22,15,13,12,11,10,9,8]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','META','GOOGL','AMZN','NVDA'],pcts:[22,10,6,16,14,12,10,10]}},
+advice:'Quanto mais forte o apego, mais rigorosa precisa ser sua regra de stop-loss, em números concretos.'},
+
+'female_30s_NF':{typeCode:'B-4',typeName:'A Arquiteta do Investimento de Longo Prazo em Empresas Significativas',
+dna:'Fica evidente assim que você entra. Você só mantém empresas que vivenciou pessoalmente e com as quais realmente se conecta. Você não se abala quando outros compram por FOMO, e também não vende em pânico. "Isso já não é suficiente?" mantém o valor investido conservador. Soa familiar?<br><br>O tamanho da posição é sua fraqueza. O princípio já é sua força — só aumente o valor.',
+strengths:['Uma carteira construída em torno de empresas comprovadas naturalmente evita nomes propensos a escândalos e muito voláteis','Baixa frequência de operações + seguir regras = um motor de juros compostos','Fidelity: mulheres superam homens em 0,4 pontos percentuais acumulados em 10 anos'],
+cautions:['Uma tendência a caixa demais entre mulheres nos 30 anos','Atrasar a entrada em uma boa empresa porque "parece cara demais agora"','Stop-losses emocionais, ou o oposto — manter demais — quando uma empresa com a qual você se conecta decepciona'],
+genderNote:{male:'Não aplicável',female:'Seu critério de seleção de empresas já é bom o suficiente. O que falta agora não são as escolhas, é o tamanho da posição. O pensamento de que "esse valor não faz tanta diferença" é seu maior inimigo.'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','META','AMZN','NVDA','IVV'],pcts:[25,15,13,12,11,10,9,5]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','META','AMZN'],pcts:[23,10,5,15,13,12,11,11]}},
+advice:'Você já escolhe empresas bem. Agora é hora de aumentar o tamanho.'},
+
+'male_40s_NF':{typeCode:'B-5',typeName:'O Investidor Com uma Filosofia',
+dna:'Você já consegue visualizar. Você tem um princípio: "invisto em boas empresas." Mesmo quando o preço balança, você não vende enquanto a empresa for boa. Faz sentido?<br><br>Filosofia é um filtro de seleção de ações. Não é uma estratégia. O tamanho da posição deve ser decidido por números, não por filosofia.',
+strengths:['Princípios de investimento claros mantêm você firme durante um pânico','Um temperamento de manutenção longa → maximiza os juros compostos','Base patrimonial dos 40 anos + investimento guiado por visão = a janela central para performance de longo prazo'],
+cautions:['Uma carteira baseada em valores pode acabar concentrada demais em um setor específico','"Uma empresa boa para o mundo" não é automaticamente um bom investimento (veja a lição dos fundos ESG com desempenho abaixo do mercado)','O apego filosófico pode atrasar uma decisão de stop-loss necessária quando uma empresa favorita passa por dificuldades'],
+genderNote:{male:'Homens NF nos 40 anos que carregam demais sua filosofia na carteira quebram a diversificação. Use a filosofia só como filtro de seleção de ações, e deixe os números decidirem o tamanho da posição.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','GOOGL','AAPL','AMZN','META'],pcts:[23,17,14,13,12,11,10]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','GOOGL','AAPL','META','AMZN'],pcts:[17,14,8,14,13,12,11,11]}},
+advice:'Use a filosofia de investimento só como filtro de seleção de ações. Os números decidem o tamanho da posição.'},
+
+'female_40s_NF':{typeCode:'B-6',typeName:'A Projetista de Carteira Centrada em Valor',
+dna:'Fica evidente assim que você entra. "Vou observar um pouco mais antes de comprar" vira seis meses, depois um ano. Essa cautela é uma força, mas também continua custando a entrada. Soa familiar?<br><br>Coloque um número no período de observação. Uma regra como "comprar depois de confirmar dois trimestres de resultados" transforma a espera em estratégia.',
+strengths:['Escolher empresas verificadas no dia a dia → uma carteira que você realmente entende','Baixa frequência de operações, princípios mantidos com firmeza','Com expectativa de vida de 90 anos, ainda restam 50 anos de pista de investimento'],
+cautions:['Um padrão repetido de "observei demais, perdi o timing"','Mulheres nos 40 anos: uma tendência a manter caixa demais','O apego pessoal a uma empresa pode atrapalhar um rebalanceamento necessário da carteira'],
+genderNote:{male:'Não aplicável',female:'É natural sentir "preciso ter cuidado agora" nos 40 anos. Mas com expectativa de vida de 90 anos, ainda restam 50 anos de investimento. Mantenha a exposição a crescimento acima de 60%.'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','META','AMZN'],pcts:[24,17,14,13,13,11,8]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','META','AMZN'],pcts:[18,13,8,13,12,12,11,13]}},
+advice:'60% de exposição a crescimento ainda é justificável nos 40 anos. O tempo compensa o risco.'},
+
+'male_50s_NF':{typeCode:'B-7',typeName:'O Investidor Projetando 30 Anos em Torno de uma Visão',
+dna:'Você já consegue visualizar. No jantar, quando o assunto é investimento, "eu realmente acho que a Tesla vai chegar lá" sai naturalmente da sua boca. As pessoas dizem "esse cara realmente entende de ações." Você consegue manter uma empresa que ama por dez anos e nunca vender. Faz sentido?<br><br>Com expectativa de vida de 90 anos, você tem 38 anos pela frente. Manter uma empresa que ama por tanto tempo é a essência dos juros compostos.',
+strengths:['Longos períodos de manutenção maximizam o efeito dos juros compostos','Compreensão completa dos ciclos das empresas','Sem vendas emocionais — segura a linha mesmo em uma queda'],
+cautions:['O instinto de virar defensivo bate cedo demais → risco de sobrecarregar ações de dividendos e títulos','Não classifique inovadoras da saúde como a LLY como meras jogadas defensivas','Estabeleça um limite de stop-loss com antecedência para empresas às quais você é profundamente apegado, caso os resultados enfraqueçam'],
+genderNote:{male:'Para homens NF nos 50 anos, a melhor jogada é proteger as empresas de crescimento que você ama. Empurre a virada defensiva para os 60 anos.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','GOOGL','AAPL','META','AMZN','NVDA'],pcts:[24,16,14,13,12,11,10]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','GOOGL','AAPL','META','AMZN'],pcts:[21,10,7,14,13,11,10,14]}},
+advice:'Manter uma empresa que você ama por mais 38 anos — isso já é o melhor investimento possível.'},
+
+'female_50s_NF':{typeCode:'B-8',typeName:'A Investidora Que Torce e Mantém por 30 Anos',
+dna:'Fica evidente assim que você entra. O app que você realmente usa, a marca que você visita com frequência — viram suas posições. Você mantém as ações com a sensação de "quero que essa empresa dê certo." Faz sentido?<br><br>Com expectativa de vida de 90 anos, você tem 40 anos pela frente. Esse carinho é o que torna possível a manutenção longa, e a manutenção longa é o que torna possíveis os juros compostos. Ainda não é hora de apressar uma virada defensiva.',
+strengths:['Manutenção longa construída sobre compreensão real das empresas → sem operações desnecessárias','A disciplina típica das investidoras mulheres → sem vendas em pânico numa queda','Seleção baseada em observação em vez de análise → uma carteira de empresas com relevância real no dia a dia'],
+cautions:['Observe o instinto de "devo ficar conservadora agora" — não corte a exposição a crescimento rápido demais','Estabeleça um limite de stop-loss com antecedência para empresas que você ama, caso os resultados enfraqueçam','Classifique inovadoras da saúde como a LLY como crescimento, não como defensivas'],
+genderNote:{male:'Não aplicável',female:'Fidelity: o segredo por trás de mulheres superando homens em 0,4 pontos percentuais é vender menos. Mantenha essa força nos 50 anos. Manter a exposição a crescimento acima de 65% é a chave.'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','META','AMZN','NVDA'],pcts:[22,16,15,13,12,11,11]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','META','AMZN'],pcts:[19,10,7,14,13,12,11,14]}},
+advice:'Intuição + disciplina + 40 anos de pista é a combinação mais forte possível para os juros compostos. Não abra mão do crescimento.'},
+
+// ════════════════════════════════════════════════════════
+// Seção C: Sentinelas SJ (8)
+// ════════════════════════════════════════════════════════
+
+'male_20s_SJ':{typeCode:'C-1',typeName:'O Arquiteto Que Constrói Patrimônio Segundo um Plano',
+dna:'Fica evidente assim que você entra. Você já tem um plano de investimento mensal configurado e rodando. Quando as redes sociais dizem "você precisa comprar esse ticker agora," você diz "eu sigo meu plano." Faz sentido?<br><br>Ter esse hábito nos 20 anos já coloca você nos 5% do topo. O risco real: se esperar pelo plano "ideal" atrasou seu início, esse é o maior risco de todos.',
+strengths:['Execução de plano de primeira linha — o tipo mais propenso a realmente seguir o investimento automático (DCA)','Não se deixa levar por modismos ou pela tentação de operar rápido','Começar aos 20 anos + DCA = o motor dos juros compostos liga cedo'],
+cautions:['O paradoxo do início atrasar enquanto se projeta o plano "ideal"','Homens SJ nos 20 anos: ver amigos lucrando com operações rápidas pode criar o impulso de abandonar o plano','Uma carteira orientada à estabilidade pode acabar projetada de forma conservadora demais para os seus 20 anos'],
+genderNote:{male:'Fazer um plano e segui-lo é bom. Só verifique se o plano não está conservador demais para seus 20 anos. Estabilidade nos 20 anos significa manutenção longa, não títulos e dividendos.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','NVDA','AMZN','META','IVV'],pcts:[30,14,13,12,11,10,7,3]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA'],pcts:[25,15,6,16,14,12,8,4]}},
+advice:'Não espere pelo plano perfeito. Começar agora é o melhor plano que existe.'},
+
+'female_20s_SJ':{typeCode:'C-2',typeName:'A Executora Disciplinada de DCA',
+dna:'Fica evidente assim que você entra. Assim que algo entra na sua lista de tarefas, você termina. Se as pessoas dizem "ouvi que essa ação vai subir," você diz "eu sigo meu plano." Mesmo em um dia em que o mercado cai 10%, você não mexe na transferência automática programada. Faz sentido?<br><br>Você provavelmente vai acabar com a menor frequência de operações entre qualquer tipo que esta ferramenta produz. Isso é uma força.',
+strengths:['Execução de DCA baseada em regras — sem emoção envolvida','Baixa frequência de operações + uma pista longa nos 20 anos = a combinação ideal para os juros compostos','Fidelity: os retornos de 10 anos das mulheres ficam 0,4 pontos percentuais acima dos dos homens'],
+cautions:['O valor investido costuma ficar abaixo de 10% da renda','Excluir totalmente ações de crescimento porque "eu não entendo muito bem delas"','A Geração Z mantém em média 33,88% dos ativos em caixa → corroídos pela inflação ano após ano'],
+genderNote:{male:'Não aplicável',female:'Você já é uma boa investidora. O que você precisa agora é investir mais. Converter 20–30% da sua renda em capital de investimento é a melhor decisão financeira que você pode tomar nos 20 anos.'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','NVDA','AMZN','META','AVGO','IVV'],pcts:[27,13,12,10,9,7,8,8,6]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA'],pcts:[24,16,5,16,14,12,9,4]}},
+advice:'Você já tem os bons hábitos. Agora é hora de aumentar o valor.'},
+
+'male_30s_SJ':{typeCode:'C-3',typeName:'O Investidor Que Constrói Patrimônio Através de um Sistema',
+dna:'Você já consegue visualizar. Suas datas de rebalanceamento, regras de stop-loss e valor de contribuição mensal estão todos definidos e sendo seguidos. Mas você realmente revisou essas regras desde que as configurou pela primeira vez? Soa familiar?<br><br>O sistema é uma força. Ele só precisa de uma revisão a cada três anos para garantir que ainda se encaixa no mercado de hoje.',
+strengths:['Execução de primeira linha do investimento sistemático → mantém a emoção fora disso','Continua investindo no piloto automático mesmo durante casamento e criação dos filhos','Mantém a carteira simples → minimiza os custos de operação'],
+cautions:['Apego excessivo às regras → resposta lenta quando o mercado realmente muda','Homens SJ nos 30 anos: uma preferência por empresas seguras pode deixar a fatia de crescimento abaixo do ideal','Risco de um sistema fixo nunca ser atualizado conforme o mercado muda'],
+genderNote:{male:'Construir um sistema e segui-lo é uma força real. Só verifique a cada três anos se esse sistema "ainda se sustenta."',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','AVGO','IVV'],pcts:[22,14,13,12,11,10,8,10]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN'],pcts:[24,14,8,18,14,12,10]}},
+advice:'Construa um sistema. Depois verifique a cada três anos.'},
+
+'female_30s_SJ':{typeCode:'C-4',typeName:'A Investidora Que Constrói Patrimônio Estável',
+dna:'Fica evidente assim que você entra. Investimento automático mensal, rebalanceamento anual, um plano de manutenção de longo prazo — tudo configurado e rodando. O instinto de "manter a estabilidade" é forte. Faz sentido?<br><br>Pessoas com esse hábito acabam entre os 10% melhores investidores. A única coisa: excluir totalmente ações de crescimento desacelera o motor dos juros compostos.',
+strengths:['DCA + manutenção longa = a melhor estratégia que o tempo já comprovou','Sem operações por impulso → custos de transação ficam mínimos','Baixa frequência de operações + seguir regras = um motor de juros compostos'],
+cautions:['Uma tendência nos anos de acumulação de patrimônio dos 30 anos de investir bem menos do que deveria','Uma mentalidade de "vamos manter a estabilidade" que exclui totalmente ações de crescimento da carteira','Um padrão de ver oportunidades de crescimento puramente como "risco"'],
+genderNote:{male:'Não aplicável',female:'Seus 30 anos são quando o motor dos juros compostos roda mais forte. Se você quer estabilidade, escolha ações de crescimento de grande capitalização que possa manter por muito tempo, não títulos. O tempo compensa o risco.'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','META','IVV'],pcts:[24,14,13,12,11,9,7,10]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA'],pcts:[23,13,5,17,13,12,10,7]}},
+advice:'A resposta para a estabilidade não são os títulos — é manter por muito tempo.'},
+
+'male_40s_SJ':{typeCode:'C-5',typeName:'O Investidor Que Protege e Faz Crescer o Patrimônio',
+dna:'Você já consegue visualizar. Você mantém investimento automático mensal e rebalanceamento há 10+ anos. Conforme os ativos se acumularam, o instinto de "proteger isso" também cresceu. Faz sentido?<br><br>Com expectativa de vida de 90 anos, ainda restam 50 anos de pista de investimento. Uma virada defensiva nos 40 anos está 20 anos adiantada demais.',
+strengths:['Adesão rigorosa aos princípios de alocação de ativos','Sem operações por impulso → custos de transação ficam mínimos','A melhor disciplina de rebalanceamento'],
+cautions:['Homens SJ nos 40 anos: o instinto de "preciso proteger isso agora" corta a exposição a crescimento cedo demais','Risco de sobrecarregar ativos defensivos (títulos e dividendos)','Com expectativa de vida de 90 anos, são 50 anos de pista — a exposição a ações precisa ficar acima de 65%'],
+genderNote:{male:'"Ficar conservador agora" nos 40 anos é uma decisão 10–15 anos adiantada demais. Planeje sua virada defensiva para depois dos 55 anos.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[23,13,12,11,10,9,7,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[19,11,5,13,12,10,9,6,15]}},
+advice:'Empurre a virada defensiva para depois dos 55 anos. Seus 40 anos ainda são uma fase de crescimento.'},
+
+'female_40s_SJ':{typeCode:'C-6',typeName:'A Investidora Que Constrói uma Rede de Segurança Baseada em Princípio',
+dna:'Fica evidente assim que você entra. Você não vende em uma queda. Também não persegue um rali. Você se move exatamente pelo plano. Sua alocação em caixa tem crescido com o pensamento de "devo jogar seguro agora"? Faz sentido?<br><br>Essa disciplina é o núcleo dos juros compostos. Aumentar a alocação em caixa desacelera o motor.',
+strengths:['Filtragem completa do ruído do mercado — segue as regras e nada mais','É precisamente essa a razão da vantagem de retorno das mulheres em 10 anos, segundo a Fidelity','Com expectativa de vida de 90 anos, 50 anos de pista de investimento'],
+cautions:['A mentalidade dos 40 anos de "devo jogar seguro agora" leva a manter caixa demais','Uma tendência a abrir mão de oportunidades de crescimento rápido demais','Regras rígidas demais que não se adaptam quando o mercado realmente muda'],
+genderNote:{male:'Não aplicável',female:'Sua disciplina e adesão a regras são sua arma de investimento mais poderosa. Mantenha a exposição a crescimento acima de 60% mesmo nos 40 anos. O tempo está do seu lado.'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[26,12,11,10,10,9,7,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[20,10,5,13,12,10,9,6,15]}},
+advice:'Disciplina é a ferramenta mais poderosa dos juros compostos. Segure sua exposição a crescimento até os 60 anos.'},
+
+'male_50s_SJ':{typeCode:'C-7',typeName:'O Investidor Que Completa o Patrimônio Através do Princípio',
+dna:'Você já consegue visualizar. Você mantém investimento automático mensal há mais de 20 anos. Você já segurou uma queda antes sem vender. Essa disciplina é o que construiu sua carteira atual. Faz sentido?<br><br>Com expectativa de vida de 90 anos, ainda restam 38 anos pela frente. Mantenha os princípios, mas virar defensivo agora significa perder o ciclo de IA.',
+strengths:['Décadas de disciplina comprovada → sem vendas emocionais','Disciplina de rebalanceamento totalmente amadurecida','Inclui nomes defensivos de qualidade como a V para amortecer as quedas'],
+cautions:['Cuidado com sobrecarregar títulos e dividendos — os retornos esperados podem cair bastante','O instinto de "preciso proteger isso agora" pode desligar o motor de crescimento cedo demais','Manter pesos de setores de crescimento como a NVDA baixos demais arrisca perder o ciclo de IA'],
+genderNote:{male:'Mantenha simples. QQQ + MSFT + AAPL + V. De 4 a 7 posições, rebalanceie uma vez por ano. Isso já é a melhor carteira que existe.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[22,17,14,13,12,7,15]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[16,13,5,14,12,10,5,10,15]}},
+advice:'30 anos de princípios mantidos construíram sua carteira. Mantenha-a simples, mantenha-a longa.'},
+
+'female_50s_SJ':{typeCode:'C-8',typeName:'A Investidora Que Colhe os Frutos do Princípio',
+dna:'Fica evidente assim que você entra. Você nunca perdeu uma transferência automática mensal. Você marca as datas de rebalanceamento no calendário com antecedência. Essa disciplina construiu sua carteira atual. Soa familiar?<br><br>Com expectativa de vida de 90 anos, você tem 40 anos de pista pela frente. Esta é a hora de fazer a colheita crescer ainda mais.',
+strengths:['Seguir regras + baixa frequência de operações = juros compostos maximizados','A disciplina típica das investidoras mulheres → sem vendas em pânico numa queda','40 anos de pista — mais que suficiente para justificar continuar orientada a crescimento'],
+cautions:['Uma tendência nos 50 anos a manter caixa demais','Observe o instinto de "preciso ter cuidado agora" cortando a exposição a crescimento rápido demais','Sobrecarregar V e COST arrisca desacelerar demais o crescimento'],
+genderNote:{male:'Não aplicável',female:'Décadas seguindo seus princípios já é um resultado excepcional. Mantenha a exposição a ações acima de 65% mesmo nos 50 anos — você ainda tem 40 anos pela frente.'},
+portfolio:{
+  default:{tickers:['QQQ','MSFT','AAPL','GOOGL','AMZN','NVDA','META','SCHD'],pcts:[20,16,14,12,8,9,6,15]},
+  beginner:{tickers:['QQQ','IVV','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[15,13,5,14,13,10,5,10,15]}},
+advice:'Colha os frutos dos seus princípios, mas mantenha uma carteira que ainda possa crescer por mais 40 anos.'},
+
+// ════════════════════════════════════════════════════════
+// Seção D: Exploradores SP (8)
+// ════════════════════════════════════════════════════════
+
+'male_20s_SP':{typeCode:'D-1',typeName:'O Investidor Apaixonado Que Aproveita a Oportunidade Primeiro',
+dna:'Quando você ouve falar de uma boa ação, seu dedo se move antes da análise. Você pensa "se eu não comprar isso agora, vou perder" duas ou três vezes por dia. E você já agiu por causa desse pensamento algumas vezes e se arrependeu um pouco. Faz sentido? Sua inclinação à ação é uma força. Só construa a regra de stop-loss primeiro.',
+strengths:['Capacidade de identificar tendências cedo — antes da maioria das pessoas nem saber','Inclinação à ação — sem atraso entre decisão e execução','20 anos + intuição SP = capaz de surfar na frente de um ciclo de crescimento'],
+cautions:['Sem regra de stop-loss → uma perda vira "espera só que ela recupera"','Realização repetida de lucros de curto prazo → perde os juros compostos de longo prazo','Barber & Odean: os traders mais ativos têm os retornos mais baixos'],
+genderNote:{male:'A inclinação à ação é uma força. Sem uma regra de stop-loss definida como número concreto com antecedência, essa inclinação à ação vira veneno. Construa um núcleo de 30% da carteira que você nunca toca.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','META','TSLA','AMZN','GOOGL','MSFT','AVGO','IVV'],pcts:[22,15,12,12,11,10,8,6,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','META','TSLA','MSFT','GOOGL'],pcts:[24,10,7,18,12,11,10,8]}},
+advice:'Construa a regra de "30% de núcleo, nunca tocar" agora mesmo.'},
+
+'female_20s_SP':{typeCode:'D-2',typeName:'A Investidora Que Aproveita a Oportunidade por Intuição',
+dna:'Fica evidente assim que você entra. "Todo mundo está usando esse app ultimamente" vira uma ideia de investimento naturalmente. Esse instinto é mais preciso do que você imagina. Quando não há um critério para distinguir certo de errado, os resultados ficam inconsistentes. Faz sentido?<br><br>Decida o tamanho da posição por regra, não por sentimento.',
+strengths:['Detecção antecipada de tendências — a partir de produtos e serviços que você realmente vivencia no dia a dia','Decisão rápida — age imediatamente assim que a convicção se firma','Fidelity: a vantagem de retorno das mulheres + intuição SP = uma combinação potencialmente poderosa'],
+cautions:['Sem critério claro para distinguir quando a intuição está certa ou errada','Decisões de stop-loss tendem a acontecer de forma emocional','Oportunidades interessantes demais podem deixar a carteira sub-concentrada'],
+genderNote:{male:'Não aplicável',female:'Confie na sua intuição, mas decida o tamanho da posição com números. A regra que mais combina com você: quanto mais empolgada você estiver, menor deve ser a posição.'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','META','AAPL','GOOGL','AMZN','TSLA','IVV'],pcts:[25,15,13,12,11,10,10,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','META','TSLA','MSFT','GOOGL'],pcts:[22,10,7,16,13,10,10,12]}},
+advice:'Confie na sua intuição, mas deixe uma regra decidir o tamanho da posição.'},
+
+'male_30s_SP':{typeCode:'D-3',typeName:'O Investidor Que Se Move pelo Sentimento de Mercado',
+dna:'Você já consegue visualizar. Você sente para onde o dinheiro está fluindo, qual ação vai se mover em seguida, antes da maioria das pessoas. Esse instinto já te rendeu dinheiro. Faz sentido?<br><br>Sem um sistema, uma grande perda pode apagar dezenas de pequenos ganhos. Um núcleo de 50% em ETF precisa se tornar sua rede de segurança.',
+strengths:['Detecção antecipada dos ciclos de mercado — captando a rotação setorial','Inclinação à ação — monta uma posição antes mesmo de a análise terminar','Anos de acumulação de patrimônio nos 30 anos + intuição SP = capaz de surfar na frente de um ciclo de crescimento'],
+cautions:['Sem stop-loss → uma posição de curto prazo silenciosamente vira uma de longo prazo','Barber & Odean: o overtrading masculino custa 2,65 pontos percentuais ao ano em média — o maior risco especificamente para homens SP','Risco de dispersão do foco de investimento durante casamento e criação dos filhos'],
+genderNote:{male:'O que homens SP nos 30 anos mais precisam é reforçar o instinto com disciplina. Fixe 50% da carteira em um núcleo automático de ETF, e use só os 50% restantes para movimentos táticos.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','META','AMZN','GOOGL','MSFT','TSLA','AVGO','IVV'],pcts:[20,15,12,12,11,10,9,7,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','META','TSLA','MSFT','AVGO','GOOGL'],pcts:[22,10,6,18,12,11,10,7,4]}},
+advice:'Fixe 50% em um núcleo automático de ETF. Só opere taticamente com o resto.'},
+
+'female_30s_SP':{typeCode:'D-4',typeName:'A Investidora Que Lê Tendências Cedo',
+dna:'Fica evidente assim que você entra. Um café recém-inaugurado, um app que todos os seus amigos usam, um produto em alta nas redes sociais — viram ideias de investimento naturalmente. Essa intuição se move mais rápido que a análise. Soa familiar?<br><br>Você provavelmente já teve a experiência de ainda manter uma posição depois que a tendência passou. Uma regra de saída importa tanto quanto uma regra de entrada.',
+strengths:['Escolher empresas através de tendências de consumo — verificadas no dia a dia','Decisão rápida + a disciplina de uma mulher = ação equilibrada','Fidelity: a vantagem de retorno das mulheres'],
+cautions:['Uma tendência a continuar mantendo uma posição depois que a tendência passou','Risco de exposição excessiva a um IPO novo e empolgante','Uma carteira que fica dispersa demais perseguindo cada oportunidade interessante'],
+genderNote:{male:'Não aplicável',female:'Seu instinto para ler tendências é uma força. Só construa com antecedência uma regra clara para sair assim que aquela tendência acabar. Uma estratégia de saída importa tanto quanto uma estratégia de entrada.'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','META','AAPL','AMZN','GOOGL','MSFT','NFLX','IVV'],pcts:[22,14,12,12,11,10,9,6,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','META','AAPL','MSFT','GOOGL'],pcts:[20,10,7,16,15,11,10,11]}},
+advice:'Construa uma regra de saída clara para combinar com sua regra de entrada. Toda tendência eventualmente termina.'},
+
+'male_40s_SP':{typeCode:'D-5',typeName:'O Oportunista Veterano Guiado pela Experiência',
+dna:'Você já consegue visualizar. Você não vendeu durante a queda da COVID. Na verdade, comprou mais. Essa experiência construiu o instinto que você tem agora. Faz sentido?<br><br>Só cuide para que o sucesso passado não vire excesso de confiança nesta fase. Fixe 40% da sua carteira em um núcleo.',
+strengths:['Experiência de crise → a capacidade de comprar sem hesitar em um pânico','Detecção de rotação setorial de primeira linha','Base patrimonial dos 40 anos + intuição SP = potencial para maximizar retornos'],
+cautions:['Homens SP nos 40 anos: uma fase em que o sucesso passado pode gerar excesso de confiança','Risco crescente de posições táticas de curto prazo silenciosamente virarem posições de longo prazo "por engano"','O risco de manter a mesma intensidade agressiva bem quando o preparo para a aposentadoria deveria estar começando'],
+genderNote:{male:'Experiência é um ativo. Só garanta que 40% da carteira esteja fixado como um núcleo de longo prazo nos seus 40 anos. Mantenha o trading tático limitado aos 60% restantes.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','NVDA','MSFT','GOOGL','AMZN','META','TSLA'],pcts:[18,16,14,13,12,11,10,6]},
+  beginner:{tickers:['IVV','QQQ','SOXX','NVDA','MSFT','GOOGL','META','TSLA'],pcts:[15,13,10,16,13,12,11,10]}},
+advice:'Fixe 40% como núcleo. Só opere taticamente com o resto.'},
+
+'female_40s_SP':{typeCode:'D-6',typeName:'A Investidora Que Se Adapta com Flexibilidade ao Mercado',
+dna:'Fica evidente assim que você entra. Você sente o fluxo do mercado no seu instinto. E agora já construiu o hábito de pausar uma vez antes de se mover. Faz sentido?<br><br>Se você teve uma grande perda no passado, existe uma tendência a ficar conservadora demais nesta idade. Equilibrar intuição e disciplina é sua arma mais poderosa agora.',
+strengths:['Intuição + disciplina = o resultado mais estável entre qualquer tipo SP','Fidelity: a vantagem de retorno das mulheres','Com expectativa de vida de 90 anos, 50 anos de pista de investimento'],
+cautions:['Mulheres SP nos 40 anos: se você teve uma grande perda antes, cuidado para não ficar conservadora demais','Duvidar da própria intuição pode travar as decisões e impedir que sejam tomadas','Energia dispersa entre perseguir novas oportunidades interessantes e gerenciar a carteira existente'],
+genderNote:{male:'Não aplicável',female:'Confie na sua intuição, mas distinga se é uma leitura real do mercado ou medo remanescente de um trauma passado. Decisões baseadas em medo costumam estar erradas.'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','NVDA','MSFT','GOOGL','META','AMZN','AAPL'],pcts:[20,15,13,13,12,11,10,6]},
+  beginner:{tickers:['IVV','QQQ','SOXX','NVDA','MSFT','GOOGL','META','AAPL'],pcts:[15,13,9,16,12,12,13,10]}},
+advice:'Equilibrar intuição e disciplina é sua arma mais poderosa.'},
+
+'male_50s_SP':{typeCode:'D-7',typeName:'O Oportunista Veterano Com Instinto de Mercado Totalmente Amadurecido',
+dna:'Você já consegue visualizar. A bolha das pontocom, a crise financeira, a COVID, o rali de IA — você viveu cada um desses ciclos em primeira mão. Sua estabilidade mental durante o pânico está totalmente amadurecida. Faz sentido?<br><br>Com expectativa de vida de 90 anos, você tem 38 anos pela frente. Mantenha o instinto, mas use a diversificação para se defender de um grande erro.',
+strengths:['Décadas de experiência mantêm você firme durante o pânico do mercado','Capacidade máxima de detectar rotação setorial e tendências','Stop-losses guiados pela experiência → sem manutenção desnecessária'],
+cautions:['Mantenha a disciplina de diversificação para que a convicção de "dessa vez é diferente" não vire risco de concentração','Mantenha qualquer nome volátil isolado como a TSLA abaixo de 15% da carteira','Descarte totalmente alavancagem e derivativos'],
+genderNote:{male:'O instinto que homens SP têm nos 50 anos ainda é um ativo. Só estabeleça um teto por ticker com antecedência para controlar o risco de concentração.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','MSFT','GOOGL','META','AMZN','TSLA','AVGO'],pcts:[22,16,14,13,12,11,8,4]},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','MSFT','GOOGL','META','TSLA'],pcts:[20,10,8,18,14,12,10,8]}},
+advice:'O instinto de mercado brilha mais forte ao lado de 38 anos de pista. Continue aproveitando oportunidades, mas as proteja com diversificação.'},
+
+'female_50s_SP':{typeCode:'D-8',typeName:'A Investidora Onde Intuição Encontra Experiência',
+dna:'Fica evidente assim que você entra. Você se movia por instinto nos 20 anos, e agora, nos 50, esse instinto foi afiado pela experiência. Você também construiu o hábito de pausar uma vez antes de agir. Soa familiar?<br><br>Com expectativa de vida de 90 anos, você tem 40 anos pela frente. A combinação de intuição e disciplina é sua arma mais poderosa agora.',
+strengths:['Intuição + experiência + a disciplina de uma mulher = os retornos mais estáveis entre qualquer tipo SP','Fidelity: a vantagem de retorno das mulheres','Detecção de tendências e consciência de risco desenvolvidas lado a lado'],
+cautions:['Cuidado para não ficar conservadora de repente e abrir mão de oportunidades de crescimento demais','Perda de confiança na própria intuição → as decisões desaceleram','Mantenha qualquer nome volátil isolado como a TSLA abaixo de 15% da carteira'],
+genderNote:{male:'Não aplicável',female:'A verdadeira força das mulheres SP nos 50 anos é a combinação de intuição e disciplina. Confie nela. Uma exposição a crescimento acima de 65% ainda é justificável nos 50 anos.'},
+portfolio:{
+  default:{tickers:['QQQ','NVDA','MSFT','GOOGL','META','AMZN','AAPL','TSLA'],pcts:[20,15,14,13,12,11,9,6]},
+  beginner:{tickers:['QQQ','SOXX','IVV','NVDA','MSFT','GOOGL','META','AAPL'],pcts:[18,10,8,16,14,12,12,10]}},
+advice:'A combinação de intuição e disciplina é sua arma mais poderosa. Não abra mão do crescimento nos 50 anos.'}
+
+,
+// ════════════════════════════════════════════════════════
+// Seção A-60: Analistas NT (60 anos ou mais)
+// ════════════════════════════════════════════════════════
+'male_60s_NT':{typeCode:'A-9',typeName:'O Estrategista Que Protege o Patrimônio Através do Conhecimento',
+dna:'Você já consegue visualizar. Sua capacidade de ler indicadores atingiu o ápice, e você não se abala em nenhum ambiente de mercado. Você julga por dados, não por emoção. Faz sentido?<br><br>Com expectativa de vida de 90 anos, você tem 28 anos pela frente. Cortar totalmente as ações deixa você corroído pela inflação. Mantenha um núcleo em IVV.',
+strengths:['Décadas de experiência filtrando o ruído do mercado','Um núcleo em IVV garante todo o mercado enquanto defende as quedas','A seleção de ações guiada por análise busca retornos acima do mercado'],
+cautions:['O excesso de confiança da experiência passada pode bloquear a entrada em novas tendências de tecnologia','Não confunda planejamento de transferência patrimonial com estratégia de carteira','Exposição insuficiente a IA/semicondutores arrisca não acompanhar a inflação'],
+genderNote:{male:'A tarefa mais importante para homens NT nos 60 anos é o planejamento de transferência patrimonial. Combine a simplificação da carteira com eficiência tributária.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','GOOGL','AAPL','AMZN','NVDA','SCHD'],pcts:[24,14,12,10,10,8,7,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','GOOGL','AAPL','AMZN','NVDA','SCHD'],pcts:[21,12,6,12,10,10,8,6,15]}},
+advice:'Proteger e fazer crescer o patrimônio — você pode fazer os dois. Só comece também o planejamento de transferência patrimonial agora.'},
+
+'female_60s_NT':{typeCode:'A-10',typeName:'A Estrategista Que Preserva o Patrimônio com Precisão',
+dna:'Fica evidente assim que você entra. Você tem tanto análise quanto disciplina. Nunca vendeu por emoção, nunca comprou por modismo. Soa familiar?<br><br>Com expectativa de vida de 90 anos, você tem 30 anos pela frente. Ficar puramente defensiva nem vai bater a inflação. Não sobrecarregar caixa e títulos é a tarefa-chave agora.',
+strengths:['Alta habilidade analítica filtra riscos desnecessários','Núcleo em IVV + blue-chips defensivos aliviam a oscilação psicológica de mercados voláteis','30 anos de pista justificam continuar orientada a crescimento'],
+cautions:['Ficar defensiva demais arrisca nem acompanhar a inflação','Uma tendência a manter caixa demais — mantendo a exposição a ações em pelo menos 55% é recomendado','Hesitação em entrar em novos setores de tecnologia — manter mesmo uma pequena posição em NVDA é recomendado'],
+genderNote:{male:'Não aplicável',female:'O maior risco financeiro para mulheres nos 60 anos é a inflação. Sobrecarregar títulos e caixa corrói o poder de compra. Mantenha a exposição a ações acima de 55%.'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','SCHD'],pcts:[28,14,12,11,11,9,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[22,11,5,12,11,10,8,6,15]}},
+advice:'Não existe preservação perfeita. Preservação sem crescimento é lentamente devorada pela inflação. Mantenha a exposição a ações acima de 55%.'},
+
+// ════════════════════════════════════════════════════════
+// Seção B-60: Diplomatas NF (60 anos ou mais)
+// ════════════════════════════════════════════════════════
+'male_60s_NF':{typeCode:'B-9',typeName:'O Investidor Que Completou uma Filosofia de Patrimônio',
+dna:'Você já consegue visualizar. Você passou a vida observando "como essa empresa vai mudar o mundo." Esse princípio não vacilou nem agora nos 60 anos. Faz sentido?<br><br>Com expectativa de vida de 90 anos, você tem 28 anos pela frente. Manter empresas que você ama a longo prazo ainda é uma estratégia válida nesta idade.',
+strengths:['Uma filosofia de investimento vitalícia funciona como um escudo contra decisões emocionais','Escolher empresas visionárias garantiu crescimento de longo prazo','Um núcleo em IVV garante retornos amplos de mercado enquanto adiciona estabilidade'],
+cautions:['O apego emocional a uma empresa favorita pode turvar o julgamento objetivo','Mantenha a diversificação para que o investimento guiado por filosofia não vire concentração excessiva','Estabeleça níveis de stop-loss como números com antecedência, já que o apego dificulta definir uma saída'],
+genderNote:{male:'A tarefa para homens NF nos 60 anos é distinguir "uma boa empresa" de "um bom investimento agora." Use a filosofia como filtro, e deixe os números decidirem o tamanho da posição.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','GOOGL','AAPL','META','AMZN','SCHD'],pcts:[24,13,11,10,10,9,8,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','META','AMZN','SCHD'],pcts:[19,11,4,11,11,10,8,11,15]}},
+advice:'Uma carteira construída sobre filosofia se sustenta mais forte em uma queda. Mas até a filosofia precisa ser verificada com dados.'},
+
+'female_60s_NF':{typeCode:'B-10',typeName:'A Investidora Que Permanece Longa Com Empresas em Que Confia',
+dna:'Fica evidente assim que você entra. Você só colocou na carteira marcas que usa há muito tempo, empresas nas quais construiu confiança. Essa confiança é o que tornou possível a manutenção longa. Soa familiar?<br><br>Com expectativa de vida de 90 anos, você tem 30 anos pela frente. Cortar a exposição a crescimento a partir daqui significa ficar atrás da inflação.',
+strengths:['Manutenção longa baseada em confiança — o requisito central para os juros compostos','Sem vendas emocionais — continua segurando durante um pânico','Observação do mundo real das empresas → insight prático de investimento'],
+cautions:['Uma empresa em que você confia não é automaticamente um bom investimento','Uma tendência a manter caixa demais — manter exposição a ações para proteção contra inflação importa','Risco de excluir empresas em tendências de tecnologia em mudança'],
+genderNote:{male:'Não aplicável',female:'A força das mulheres NF nos 60 anos é a manutenção longa. Para acompanhar a inflação ao longo de uma pista de 30 anos, importa que você não corte a exposição a crescimento.'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','META','AMZN','SCHD'],pcts:[25,12,11,10,10,9,8,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','META','AMZN','SCHD'],pcts:[20,10,4,10,11,10,9,11,15]}},
+advice:'Manter empresas em que você confia a longo prazo — isso são os juros compostos. Só garanta que sejam empresas capazes de superar a inflação.'},
+
+// ════════════════════════════════════════════════════════
+// Seção C-60: Sentinelas SJ (60 anos ou mais)
+// ════════════════════════════════════════════════════════
+'male_60s_SJ':{typeCode:'C-9',typeName:'A Carteira Estável Construída Sobre Princípio',
+dna:'Você já consegue visualizar. Você se moveu estritamente pelas regras por décadas. Investimento automático mensal, rebalanceamento, manutenção longa. Você repetiu isso sem emoção. Faz sentido?<br><br>Esse sistema construiu sua carteira atual. Só uma coisa: se o peso em IA/tecnologia estiver baixo demais, você não vai acompanhar a inflação.',
+strengths:['Investimento sistemático baseado em regras → minimiza erro emocional','Uma estrutura de IVV + QQQ + blue-chips equilibra estabilidade e crescimento','Blue-chips defensivos como V e COST protegem as quedas'],
+cautions:['O apego excessivo às regras arrisca uma resposta lenta a um mercado em mudança','Exposição insuficiente a IA/tecnologia arrisca não acompanhar a inflação','Uma virada defensiva agressiva demais pode empurrar os retornos reais abaixo da inflação'],
+genderNote:{male:'O que homens SJ precisam nos 60 anos é simplificar as regras de rebalanceamento. Quanto mais complicado o sistema, mais erros de execução se infiltram.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','SCHD'],pcts:[30,15,14,12,10,4,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[23,12,5,13,10,9,5,8,15]}},
+advice:'Uma carteira construída sobre princípio não vacila. Mas até o princípio precisa se sustentar contra a inflação.'},
+
+'female_60s_SJ':{typeCode:'C-10',typeName:'A Investidora Que Completou o Patrimônio Através de um Projeto Comprovado',
+dna:'Fica evidente assim que você entra. Você mantém DCA há décadas. Nem uma única transferência mensal perdida, e agora está vendo os resultados. Soa familiar?<br><br>Com expectativa de vida de 90 anos, você tem 30 anos pela frente. Proteger seu patrimônio ao mesmo tempo em que vence a inflação é o objetivo agora.',
+strengths:['Décadas de resultados de DCA — juros compostos maximizados','Manutenção baseada em regras — sem vendas em pânico','Blue-chips defensivos (V, COST) adicionam estabilidade nas quedas'],
+cautions:['Uma tendência a manter caixa demais — manter a exposição a ações acima de 50% é recomendado','Sobrecarregar V e COST arrisca desacelerar demais o crescimento','Risco de perder novas tendências de tecnologia — mantenha o peso do QQQ em pelo menos 14%'],
+genderNote:{male:'Não aplicável',female:'Mulheres nos 60 anos tendem a ter expectativa de vida maior que os homens. Sempre tenha em mente que sua carteira precisa durar 30 anos. Proteja sua exposição a crescimento.'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','AAPL','GOOGL','AMZN','SCHD'],pcts:[32,14,13,12,10,4,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','MSFT','AAPL','GOOGL','AMZN','NVDA','SCHD'],pcts:[24,11,4,13,10,9,4,10,15]}},
+advice:'Colha os resultados dos seus princípios, mas mantenha uma carteira que possa se sustentar por mais 30 anos.'},
+
+// ════════════════════════════════════════════════════════
+// Seção D-60: Exploradores SP (60 anos ou mais)
+// ════════════════════════════════════════════════════════
+'male_60s_SP':{typeCode:'D-9',typeName:'O Investidor Experiente Que Lê o Mercado Através da Experiência',
+dna:'Você já consegue visualizar. Você viveu dezenas de ciclos de mercado em primeira mão. O instinto de se mover no momento em que uma oportunidade aparece ainda está vivo. Faz sentido?<br><br>Agora esse instinto precisa se apoiar em um núcleo de IVV. Alavancagem e derivativos estão fora de cogitação porque não sobra tempo para se recuperar de um grande erro.',
+strengths:['Instinto temperado por décadas de experiência de mercado','A detecção de oportunidades permanece intacta enquanto um núcleo de IVV protege as quedas','Nomes de crescimento como NVDA e META ainda podem adicionar retornos acima do mercado'],
+cautions:['Excesso de confiança em instinto e experiência arrisca concentração excessiva — estabeleça tetos por ticker','Mantenha uma reserva de caixa para riscos de saúde e despesas inesperadas','Descarte totalmente alavancagem e derivativos — não sobra tempo para se recuperar'],
+genderNote:{male:'O instinto que homens SP têm nos 60 anos ainda é um ativo. Só lembre: se o IVV não estiver por baixo dele, esse instinto também vira risco.',female:'Não aplicável'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','NVDA','MSFT','GOOGL','AMZN','META','SCHD'],pcts:[22,14,11,11,10,9,8,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','NVDA','MSFT','GOOGL','META','AMZN','SCHD'],pcts:[19,12,8,13,11,10,9,3,15]}},
+advice:'O instinto ainda é um ativo. Se o IVV não estiver por baixo dele, esse instinto também vira risco.'},
+
+'female_60s_SP':{typeCode:'D-10',typeName:'A Investidora Que Encontrou Equilíbrio Através de Intuição e Experiência',
+dna:'Fica evidente assim que você entra. Você investiu por intuição a vida toda. Agora essa intuição vem acompanhada do hábito de "vamos confirmar isso primeiro." Soa familiar?<br><br>Com expectativa de vida de 90 anos, você tem 30 anos pela frente. A intuição precisa se apoiar em um núcleo de ETF, para que um erro não custe tudo.',
+strengths:['Capacidade de escolher ações combinando intuição e experiência','Um núcleo de IVV garante estabilidade enquanto adiciona exposição a crescimento','Decisões baseadas em experiência em vez de emoção → menos decisões por impulso'],
+cautions:['Depender demais da intuição arrisca entrar em setores não verificados','Uma tendência a manter caixa demais — manter a exposição a ações acima de 50%','Cuidado com decisões de investimento que reagem exageradamente a tendências sociais'],
+genderNote:{male:'Não aplicável',female:'A intuição de uma mulher nos 60 anos vem de décadas de experiência como consumidora. Mantenha o hábito de verificar essa intuição com dados. Proteja sua exposição a crescimento ao longo de uma pista de 30 anos.'},
+portfolio:{
+  default:{tickers:['IVV','QQQ','MSFT','GOOGL','NVDA','AMZN','AAPL','SCHD'],pcts:[24,13,11,10,10,9,8,15]},
+  beginner:{tickers:['IVV','QQQ','SOXX','NVDA','MSFT','GOOGL','META','AAPL','SCHD'],pcts:[20,12,7,11,11,10,9,5,15]}},
+advice:'O instinto ainda é um ativo. Mantenha uma estrutura onde o IVV é a base e o instinto adiciona o alfa por cima.'}
+}; // FIM DE BASE_PROFILES
+
+
+// ════════════════════════════════════════════════════════
+// Gerenciamento de estado do quiz
+// ════════════════════════════════════════════════════════
+const state = {
+  gender: null, ageGroup: null, mbtiKnow: null,
+  mbtiDirect: null, mbtiDerived: null,
+  expLevel: null, styleLevel: null, companies: []
+};
+const subAnswers = { qa: null, qb: null, qc: null, qd: null };
+const panelHistory = [];
+
+function getMbtiGroup() {
+  const m = state.mbtiDirect || state.mbtiDerived;
+  return m ? (MBTI_TO_GROUP[m] || m) : null;
+}
+function getProfileKey() {
+  const g = state.gender, a = state.ageGroup, mbti = getMbtiGroup();
+  if (!g || !a || !mbti) return null;
+  return g + '_' + a + '_' + mbti;
+}
+
+// ════════════════════════════════════════════════════════
+// Navegação de painéis (classe: quiz-step)
+// ════════════════════════════════════════════════════════
+function showPanel(id) {
+  const current = document.querySelector('.quiz-step.active');
+  if (current) panelHistory.push(current.id);
+  document.querySelectorAll('.quiz-step').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if (panel) { panel.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+  const stepMap = {
+    'step-q1':1,'step-q2':2,'step-q3':3,'step-q3-grid':3,'step-q3-sub':3,
+    'step-q4':4,'step-q5':5
+  };
+  const total = 5;
+  const num = stepMap[id] || null;
+  const labelEl = document.getElementById('progress-label');
+  const fillEl  = document.getElementById('progress-fill');
+  const progEl  = document.getElementById('quiz-progress');
+  if (num && labelEl && fillEl) {
+    if (progEl) progEl.style.display = '';
+    labelEl.textContent = 'Pergunta ' + num + ' / ' + total;
+    fillEl.style.width = (num / total * 100).toFixed(1) + '%';
+  } else if (progEl) {
+    progEl.style.display = 'none';
+  }
+  const bBtn = document.getElementById('quiz-back');
+  if (bBtn) bBtn.style.display = (panelHistory.length > 0 && id !== 'step-result') ? '' : 'none';
+}
+function showSubStep(id) {
+  document.querySelectorAll('.sub-step').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+}
+
+const backBtn = document.getElementById('quiz-back');
+if (backBtn) {
+  backBtn.addEventListener('click', function() {
+    if (panelHistory.length) {
+      const prev = panelHistory.pop();
+      document.querySelectorAll('.quiz-step').forEach(p => p.classList.remove('active'));
+      const panel = document.getElementById(prev);
+      if (panel) { panel.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+      const stepMap = {'step-q1':1,'step-q2':2,'step-q3':3,'step-q3-grid':3,'step-q3-sub':3,'step-q4':4,'step-q5':5};
+      const num = stepMap[prev];
+      if (num) {
+        const lbl = document.getElementById('progress-label');
+        const fill = document.getElementById('progress-fill');
+        if (lbl) lbl.textContent = 'Pergunta ' + num + ' / 5';
+        if (fill) fill.style.width = (num / 5 * 100).toFixed(1) + '%';
+      }
+      backBtn.style.display = panelHistory.length > 0 ? '' : 'none';
+    }
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// Delegação de clique em choice-card (Q1/Q2/Q3/Q4/Q5 combinados)
+// ════════════════════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  const card = e.target.closest('.choice-card');
+  if (!card) return;
+
+  const q    = card.dataset.q;
+  const subq = card.dataset.subq;
+  const val  = card.dataset.val;
+
+  if (q === 'gender') {
+    state.gender = val;
+    document.querySelectorAll('.choice-card[data-q="gender"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    setTimeout(() => showPanel('step-q2'), 280);
+    return;
+  }
+
+  if (q === 'age') {
+    state.ageGroup = val;
+    document.querySelectorAll('.choice-card[data-q="age"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    setTimeout(() => showPanel('step-q3-grid'), 280);
+    return;
+  }
+
+  if (q === 'mbti-know') {
+    state.mbtiKnow = val;
+    document.querySelectorAll('.choice-card[data-q="mbti-know"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    if (val === 'yes') setTimeout(() => showPanel('step-q3-grid'), 280);
+    else { setTimeout(() => { showPanel('step-q3-sub'); showSubStep('sub-qa'); }, 280); }
+    return;
+  }
+
+  if (subq) {
+    subAnswers[subq] = val;
+    document.querySelectorAll(`.choice-card[data-subq="${subq}"]`).forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+
+    const order = ['qa','qb','qc','qd'];
+    const idx = order.indexOf(subq);
+    if (idx < order.length - 1) {
+      setTimeout(() => showSubStep('sub-' + order[idx+1]), 280);
+    } else {
+      if (['NT','NF','SJ','SP'].includes(subAnswers.qd)) {
+        state.mbtiDerived = subAnswers.qd;
+      } else {
+        const tf = subAnswers.qa;
+        const jp = subAnswers.qb;
+        const ns = subAnswers.qc;
+        const mbti4 = (tf==='T'&&ns==='N')?'NT':(tf==='F'&&ns==='N')?'NF':(ns==='S'&&jp==='J')?'SJ':'SP';
+        state.mbtiDerived = mbti4;
+      }
+      const dispEl = document.getElementById('derived-mbti-display');
+      if (dispEl) dispEl.textContent = state.mbtiDerived;
+      setTimeout(() => showPanel('step-q4'), 350);
+    }
+    return;
+  }
+
+  if (q === 'exp') {
+    state.expLevel = val;
+    document.querySelectorAll('.choice-card[data-q="exp"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    setTimeout(() => showPanel('step-q5'), 280);
+    return;
+  }
+
+  if (q === 'style') {
+    state.styleLevel = val;
+    document.querySelectorAll('.choice-card[data-q="style"]').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    setTimeout(() => showPanel('step-q6'), 280);
+    return;
+  }
+});
+
+// ════════════════════════════════════════════════════════
+// Q3-grid — seleção direta de MBTI
+// ════════════════════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.mbti-btn');
+  if (!btn) return;
+  state.mbtiDirect = btn.dataset.mbti;
+  document.querySelectorAll('.mbti-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  setTimeout(() => showPanel('step-q4'), 280);
+});
+
+// ════════════════════════════════════════════════════════
+// Q6 — empresas preferidas (até 3)
+// ════════════════════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.company-btn');
+  if (!btn) return;
+  const val = btn.dataset.company;
+  if (!val || val === 'unknown') {
+    showAiLoading();
+    return;
+  }
+  const idx = state.companies.indexOf(val);
+  if (idx >= 0) {
+    state.companies.splice(idx, 1);
+    btn.classList.remove('selected');
+  } else if (state.companies.length < 3) {
+    state.companies.push(val);
+    btn.classList.add('selected');
+  }
+});
+
+const q6NextBtn = document.getElementById('q6-next-btn');
+if (q6NextBtn) {
+  q6NextBtn.addEventListener('click', function() {
+    showAiLoading();
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// Animação de carregamento da IA (3 segundos)
+// ════════════════════════════════════════════════════════
+function showAiLoading() {
+  const overlay = document.getElementById('ai-loading-overlay');
+  const msgs = [
+    'A IA está analisando sua carteira',
+    'Calculando seu perfil de investidor',
+    'Montando sua carteira ideal'
+  ];
+  const subMsgs = [
+    'Analisando a combinação de MBTI × idade × gênero',
+    'Encontrando o melhor encaixe entre 40 tipos',
+    'Finalizando os pesos de alocação'
+  ];
+  const msgEl = document.getElementById('ai-loading-msg');
+  const subEl = document.getElementById('ai-loading-sub');
+  if (!overlay) { buildResult(); showPanel('step-result'); return; }
+
+  overlay.style.display = 'flex';
+  let step = 0;
+  if (msgEl) msgEl.textContent = msgs[0];
+  if (subEl) subEl.textContent = subMsgs[0];
+
+  const interval = setInterval(function() {
+    step++;
+    if (step < msgs.length) {
+      if (msgEl) msgEl.textContent = msgs[step];
+      if (subEl) subEl.textContent = subMsgs[step];
+    }
+  }, 1000);
+
+  setTimeout(function() {
+    clearInterval(interval);
+    overlay.style.display = 'none';
+    buildResult();
+    showPanel('step-result');
+  }, 3000);
+}
+
+// ════════════════════════════════════════════════════════
+// Gerador de justificativa da carteira
+// ════════════════════════════════════════════════════════
+function buildRationale(porto, mbtiGroup, ageGroup, mbtiDisplayFull) {
+  const ETFs    = ['QQQ','IVV','VTI','VOO','SOXX'];
+  const ANCHORS = ['SCHD','VIG','BRK.B'];
+
+  const tickers = porto.tickers;
+  const pcts    = porto.pcts;
+
+  const coreTicker = tickers[0];
+  const corePct    = pcts[0];
+  const isQQQ = coreTicker === 'QQQ';
+  const coreDesc = isQQQ
+    ? `<b>${coreTicker} ${corePct}%</b> — o ETF Nasdaq 100 é o seu núcleo. Mesmo que cada ação individual balance, manter só o QQQ significa possuir de uma vez as 100 maiores empresas de tecnologia dos EUA. ${ageGroup === '20s' || ageGroup === '30s' ? 'Um núcleo com peso em tecnologia se justifica durante os anos de crescimento dos seus 20 e 30 anos.' : ''}`
+    : `<b>${coreTicker} ${corePct}%</b> — o ETF S&P 500 é o seu núcleo, a rede de segurança mais ampla que existe, detendo de uma vez as 500 maiores empresas dos EUA. ${ageGroup === '60s' ? 'Para 60+, a ampla diversificação é a chave para a proteção contra quedas.' : ''}`;
+
+  const satellites = tickers.filter((t,i) => i > 0 && !ETFs.includes(t) && !ANCHORS.includes(t));
+  const satPcts    = satellites.map(t => pcts[tickers.indexOf(t)]);
+
+  const _disp = mbtiDisplayFull || mbtiGroup;
+  const mbtiSatDesc = {
+    NT: `Seu tipo ${_disp} reflete convicção guiada por dados em infraestrutura de IA e semicondutores — o motivo pelo qual nomes de design de chips como NVDA e AVGO têm peso relevante.`,
+    NF: `Seu tipo ${_disp} reflete um princípio de investir em "empresas que mudam o mundo" — o motivo pelo qual nomes guiados por visão como META e TSLA, além de inovação em saúde (LLY), são incluídos.`,
+    SJ: `Seu tipo ${_disp} favorece empresas com décadas de histórico comprovado — o motivo pelo qual nomes de baixa volatilidade e fluxo de caixa estável como MSFT e AAPL têm peso relevante.`,
+    SP: `Seu tipo ${_disp} responde a momentum e velocidade de crescimento — o motivo pelo qual os nomes que se movem mais rápido em cada setor, como NVDA, META e TSLA, estão na carteira.`
+  };
+
+  let satHtml = '';
+  if (satellites.length > 0) {
+    const satList = satellites.map((t,i) => `<b>${t} ${satPcts[i]}%</b>`).join(' · ');
+    satHtml = `${satList} — ${mbtiSatDesc[mbtiGroup] || 'nomes individuais de big tech buscando retorno acima do ETF.'}`;
+  }
+
+  const anchorTickers = tickers.filter(t => ANCHORS.includes(t));
+  const anchorPcts    = anchorTickers.map(t => pcts[tickers.indexOf(t)]);
+  let anchorHtml = '';
+  if (anchorTickers.length > 0) {
+    const anchorDescs = {
+      V:    'V (Visa) — um blue-chip defensivo que continua ganhando taxas de processamento de cartões mesmo em uma retração. Suas quedas menores durante uma crise de mercado a tornam útil como munição de reserva.',
+      COST: 'COST (Costco) — uma empresa defensivamente orientada a crescimento cujas associações na verdade aumentam em uma retração. Sua queda é notavelmente limitada em comparação com ações de crescimento.',
+      LLY:  'LLY (Eli Lilly) — um nome de crescimento em saúde liderando a inovação em GLP-1 e tratamento da obesidade. A baixa correlação com o setor de tecnologia adiciona um benefício real de diversificação.',
+      'BRK.B': 'BRK.B (Berkshire Hathaway) — um blue-chip conglomerado diversificado.',
+      VIG:  'VIG — um ETF de crescimento de dividendos que ajuda a estabilizar o fluxo de caixa.',
+      SCHD: 'SCHD — um ETF blue-chip de alto dividendo. Baixa correlação com ações de crescimento e quedas menores em uma crise. Quando SPY ou QQQ sofrem uma queda forte, isso se sustenta relativamente bem e pode ser vendido para comprar ações de crescimento com desconto — seu papel como munição de reserva estratégica.'
+    };
+    const anchorList = anchorTickers.map((t,i) => {
+      const d = anchorDescs[t] || t;
+      return `<li style="margin-bottom:.5rem;"><b>${t} ${anchorPcts[i]}%</b> — ${d}</li>`;
+    }).join('');
+    const anchorTotal = anchorPcts.reduce((a,b) => a+b, 0);
+    anchorHtml = `<ul style="margin:.5rem 0 .8rem;padding-left:1.2rem;list-style:disc;">${anchorList}</ul>
+<div style="background:var(--spq-card2);border-radius:var(--spq-r);padding:.8rem 1rem;font-size:16px;line-height:1.7;color:var(--spq-t2);">
+  <b>Por que manter uma âncora — ${anchorTotal}% de munição de reserva estratégica</b><br>
+  Os retornos são menores que os das ações de crescimento, mas se o mercado cair forte e as ações de crescimento despencarem, essa posição âncora pode ser vendida para comprar ações de crescimento com desconto — esse é o papel de munição de reserva. Por outro lado, quando as ações de crescimento sobem e seu peso fica grande demais, vender parte delas para reconstruir a âncora de volta a ${anchorTotal}% é a abordagem de rebalanceamento recomendada.
+</div>`;
+  }
+
+  let html = `<div class="result-section" style="border-left:3px solid var(--spq-bl);padding-left:1.2rem;">
+    <div class="result-section-title">Por Que Esta Carteira Foi Montada Assim</div>
+    <div style="display:flex;flex-direction:column;gap:1rem;font-size:16px;line-height:1.7;color:var(--spq-t1);">
+      <div>
+        <span style="font-size:16px;font-weight:700;color:var(--spq-bl);letter-spacing:.05em;">Camada 1 — Núcleo (Beta de Mercado)</span><br>
+        ${coreDesc}
+      </div>`;
+
+  if (satHtml) {
+    html += `
+      <div>
+        <span style="font-size:16px;font-weight:700;color:var(--spq-bl);letter-spacing:.05em;">Camada 2 — Satélites (Buscando Alfa)</span><br>
+        ${satHtml}
+      </div>`;
+  }
+
+  if (anchorHtml) {
+    html += `
+      <div>
+        <span style="font-size:16px;font-weight:700;color:var(--spq-bl);letter-spacing:.05em;">Camada 3 — Âncora (Munição de Reserva Estratégica)</span><br>${anchorHtml}
+      </div>`;
+  }
+
+  html += `
+    </div>
+  </div>`;
+
+  return html;
+}
+
+// ════════════════════════════════════════════════════════
+// Montar resultado
+// ════════════════════════════════════════════════════════
+function buildResult() {
+  const key = getProfileKey();
+  const profile = BASE_PROFILES[key];
+  if (!profile) {
+    document.getElementById('result-content').innerHTML =
+      '<p style="color:var(--spq-rd);padding:2rem;font-size:16px;">Não foi possível encontrar um perfil correspondente. (chave: ' + key + ')<br>Por favor, refaça o quiz.</p>';
+    return;
+  }
+
+  const isBeginnerExp = (state.expLevel === 'beginner' || state.expLevel === 'early');
+  const basePorto = isBeginnerExp && profile.portfolio.beginner ? profile.portfolio.beginner : profile.portfolio.default;
+
+  const portoTickers = [...basePorto.tickers];
+  const portoPcts   = [...basePorto.pcts];
+  const companiesToAdd = (state.companies || []).filter(t => t !== 'unknown' && !portoTickers.includes(t) && TICKER_TO_ID[t]);
+
+  companiesToAdd.forEach(t => {
+    if (portoTickers.length >= 10) {
+      let minIdx = 0;
+      for (let i = 1; i < portoPcts.length; i++) {
+        if (portoPcts[i] < portoPcts[minIdx]) minIdx = i;
+      }
+      portoTickers.splice(minIdx, 1);
+      portoPcts.splice(minIdx, 1);
+    }
+    const addPct = 8;
+    const total  = portoPcts.reduce((a, b) => a + b, 0);
+    for (let i = 0; i < portoPcts.length; i++) {
+      portoPcts[i] = Math.round(portoPcts[i] * (100 - addPct) / total * 10) / 10;
+    }
+    portoTickers.push(t);
+    portoPcts.push(addPct);
+  });
+
+  const pctTotal = portoPcts.reduce((a, b) => a + b, 0);
+  const roundedPcts = portoPcts.map(p => Math.round(p * 100 / pctTotal));
+  const diff = 100 - roundedPcts.reduce((a, b) => a + b, 0);
+  roundedPcts[0] += diff;
+
+  const porto = { tickers: portoTickers, pcts: roundedPcts };
+  const mbtiGroup = getMbtiGroup();
+  const styleKey = mbtiGroup + '_' + state.styleLevel;
+  const compatText = COMPAT_TEXTS[styleKey] || '';
+  const expText = EXP_TEXTS[state.expLevel] || '';
+  const genderTextKey = state.gender === 'male' ? 'male' : 'female';
+  const genderNote = (profile.genderNote && profile.genderNote[genderTextKey] && profile.genderNote[genderTextKey] !== 'Não aplicável') ? profile.genderNote[genderTextKey] : null;
+
+  const ids = porto.tickers.map(t => TICKER_TO_ID[t]).filter(Boolean);
+  const btUrl = 'https://ezlong.com/pt/backtest.html?a=' + ids.join(',');
+
+  const groupColors = { NT:'#3b82f6', NF:'#10b981', SJ:'#f59e0b', SP:'#ef4444' };
+  const groupColor = groupColors[mbtiGroup] || '#6366f1';
+
+  let barHtml = '', legendHtml = '';
+  porto.tickers.forEach((ticker, i) => {
+    const pct = porto.pcts[i];
+    const clr = BAR_COLORS[i % BAR_COLORS.length];
+    barHtml += `<div class="port-bar-seg" style="width:${pct}%;background:${clr};" title="${ticker} ${pct}%"></div>`;
+    legendHtml += `<div class="port-legend-item"><span class="port-legend-dot" style="background:${clr};"></span><span class="port-legend-ticker">${ticker}</span><span class="port-legend-pct">${pct}%</span></div>`;
+  });
+
+  const GROUP_MEMBERS = {
+    NT: 'INTJ · INTP · ENTJ · ENTP',
+    NF: 'INFJ · INFP · ENFJ · ENFP',
+    SJ: 'ISTJ · ISFJ · ESTJ · ESFJ',
+    SP: 'ISTP · ISFP · ESTP · ESFP'
+  };
+  const mbtiDisplayFull = state.mbtiDirect
+    ? state.mbtiDirect
+    : (GROUP_MEMBERS[mbtiGroup] || mbtiGroup);
+
+  function replaceMbtiAbbr(text) {
+    if (!text) return text;
+    return text.replace(/\b(NT|NF|SJ|SP)\b/g, (match) => {
+      if (match === mbtiGroup) return mbtiDisplayFull;
+      return match;
+    });
+  }
+
+  const dnaText     = replaceMbtiAbbr(profile.dna);
+  const genderNoteText = genderNote ? replaceMbtiAbbr(genderNote) : null;
+  const strengthsHtml = profile.strengths.map(s => `<li>${replaceMbtiAbbr(s)}</li>`).join('');
+  const cautionsHtml  = profile.cautions.map(c  => `<li>${replaceMbtiAbbr(c)}</li>`).join('');
+
+  let companyHtml = '';
+  if (state.companies.length > 0) {
+    const compItems = state.companies.map(t => {
+      const desc = COMPANY_TEXTS[t] || TICKER_DESC[t] || '';
+      return `<div class="company-card"><div class="company-ticker">${t}</div><div class="company-desc">${desc}</div></div>`;
+    }).join('');
+    companyHtml = `<div class="result-section"><div class="result-section-title">Insights Sobre Suas Empresas de Interesse</div>${compItems}</div>`;
+  }
+
+  const styleLabel = STYLE_LABELS[state.styleLevel] || state.styleLevel;
+  const expLabels = {beginner:'Iniciante',early:'Investidor Iniciante',mid:'Intermediário',advanced:'Avançado',veteran:'Veterano'};
+  const expLabel = expLabels[state.expLevel] || '';
+  const ageLabels = {'20s':'20 e poucos anos','30s':'30 e poucos anos','40s':'40 e poucos anos','50s':'50 e poucos anos','60s':'60+'};
+  const ageLabel = ageLabels[state.ageGroup] || '';
+  const genderLabel = state.gender === 'male' ? 'Masculino' : 'Feminino';
+  const mbtiDisplay = state.mbtiDirect ? state.mbtiDirect : (state.mbtiDerived ? state.mbtiDerived + ' (estimado)' : '');
+
+  document.getElementById('result-content').innerHTML = `
+    <div class="result-header-block">
+      <div class="result-badge" style="background:${groupColor}20;color:${groupColor};border:1px solid ${groupColor}40;">${mbtiGroup} · ${profile.typeCode}</div>
+      <h2 class="result-typename">${profile.typeName}</h2>
+      <div class="result-tags">
+        <span class="result-tag">${genderLabel}</span>
+        <span class="result-tag">${ageLabel}</span>
+        <span class="result-tag">${mbtiDisplayFull}</span>
+        <span class="result-tag">${expLabel}</span>
+        <span class="result-tag">${styleLabel}</span>
+      </div>
+    </div>
+    <div class="result-section">
+      <div class="result-section-title">Seu DNA de Investidor</div>
+      <p class="result-dna-text">${dnaText}</p>
+      ${genderNoteText ? `<div class="result-gender-note">${genderNoteText}</div>` : ''}
+    </div>
+    <div class="result-section">
+      <div class="result-section-title">Carteira Recomendada${isBeginnerExp ? ' (Versão para Iniciantes)' : ''}</div>
+      <div class="port-bar-wrap"><div class="port-bar">${barHtml}</div></div>
+      <div class="port-legend">${legendHtml}</div>
+      <a href="${btUrl}" class="btn-backtest" target="_blank" rel="noopener">Analisar com IA a Proporção Ideal da Carteira →</a>
+      ${isBeginnerExp ? '<p class="beginner-note">Conforme ganhar experiência, considere mudar para a carteira padrão.</p>' : ''}
+    </div>
+
+    ${buildRationale(porto, mbtiGroup, state.ageGroup, mbtiDisplayFull)}
+    <a href="${btUrl}" class="btn-backtest-mid" target="_blank" rel="noopener">Analisar com IA a Proporção Ideal da Carteira →</a>
+    <div class="result-section result-two-col">
+      <div>
+        <div class="result-section-title">Pontos Fortes</div>
+        <ul class="result-list strengths-list">${strengthsHtml}</ul>
+      </div>
+      <div>
+        <div class="result-section-title">Pontos de Atenção</div>
+        <ul class="result-list cautions-list">${cautionsHtml}</ul>
+      </div>
+    </div>
+    <div class="result-section">
+      <div class="result-section-title">Diagnóstico de Estilo de Investimento — ${styleLabel}</div>
+      <p class="result-compat-text">${compatText}</p>
+    </div>
+    <div class="result-section">
+      <div class="result-section-title">Conselho por Nível de Experiência — ${expLabel}</div>
+      <p class="result-exp-text">${expText}</p>
+    </div>
+    ${companyHtml}
+    <div class="result-section result-advice-block">
+      <div class="result-advice-label">Conselho Principal</div>
+      <p class="result-advice-text">${profile.advice}</p>
+    </div>
+    <div class="result-action-row">
+      <button class="btn-retry" onclick="location.reload()">Refazer o Quiz</button>
+      <a href="${btUrl}" class="btn-backtest-main" target="_blank" rel="noopener">Analisar com IA a Proporção Ideal da Carteira →</a>
+    </div>
+  `;
+}
+
+// ════════════════════════════════════════════════════════
+// Inicialização
+// ════════════════════════════════════════════════════════
+showPanel('step-q1');
+
+</script>
 <!-- ── 네이티브 앱 웹뷰 감지: ?embed=app 신호 처리 (2026-07-28) ── -->
 <script>
 (function(){
