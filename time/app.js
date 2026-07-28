@@ -494,10 +494,6 @@ const musicHistoryViewAll = document.getElementById("musicHistoryViewAll");
 // element 참조는 이제 그 배열을 순회하며 id로 직접 찾으므로(아래
 // syncMusicExcludeFilterUi/이벤트 리스너 등록부 참조), 여기서 개별 const로
 // 미리 선언해두지 않는다.
-const musicQCPanel = document.getElementById("musicQCPanel");
-const musicQCDeleteButton = document.getElementById("musicQCDeleteButton");
-const musicQCRemovalList = document.getElementById("musicQCRemovalList");
-const musicQCCopyButton = document.getElementById("musicQCCopyButton");
 // 2026-07-25 신설 — 설정 화면 "배경 사진" 섹션의 계절/날씨/시간대 매칭
 // 기준 토글. bgFilterSeasonEl은 항상 checked+disabled라 change 리스너를
 // 달지 않는다(값 읽기도 하지 않음 — matchingArchivePhotos에서 계절은
@@ -665,10 +661,12 @@ let swipeStart = null;
 const flatGenreStorageKey = "ezlong:selectedFlatGenres";
 // 2026-07-19: 히스토리 목록 기본 5개만 노출, "모두 보기" 클릭 시 전체 표시.
 let musicHistoryExpanded = false;
+// 2026-07-28 W9 — 초기 표시값도 로케일을 탄다. 카탈로그 키는 W8 때 이미
+// 만들어져 있었는데 호출부가 한국어 리터럴 그대로였다(스캐너로 확인).
 let weatherState = {
-  location: "위치 확인 중",
+  location: t("weather.locating", null, "위치 확인 중"),
   temp: "--°",
-  summary: "날씨 불러오는 중",
+  summary: t("weather.loadingWeather", null, "날씨 불러오는 중"),
   icon: "sun-icon",
   tag: "clear"
 };
@@ -714,11 +712,14 @@ function wdLoadLastGoodCurrent() {
 
 function wdMinutesAgoLabel(savedAt) {
   const mins = Math.max(0, Math.round((Date.now() - savedAt) / 60000));
-  if (mins < 1) return "방금 전";
-  if (mins < 60) return `${mins}분 전`;
+  // 2026-07-28 W9 — 영어는 단/복수가 갈리므로(1 minute / 2 minutes) 카탈로그의
+  // plural 규칙을 태운다. 한국어는 규칙상 other 하나뿐이라 결과가 예전과 같다.
+  if (mins < 1) return t("time.justNow", null, "방금 전");
+  if (mins < 60) return t("time.minutesAgo", { count: mins }, `${mins}분 전`);
   const hours = Math.round(mins / 60);
-  if (hours < 24) return `${hours}시간 전`;
-  return `${Math.round(hours / 24)}일 전`;
+  if (hours < 24) return t("time.hoursAgo", { count: hours }, `${hours}시간 전`);
+  const days = Math.round(hours / 24);
+  return t("time.daysAgo", { count: days }, `${days}일 전`);
 }
 // 2026-07-18 5차 피드백: "지금 이슬비가 오는데 왜 구름이냐, 비 애니메이션
 // 테스트를 하려면 강제로라도 비 오게 해놔라" — Visual Crossing의
@@ -1943,7 +1944,13 @@ function renderWeather() {
 function requestCurrentWeather() {
   if (!navigator.geolocation) {
     userCoords = DEFAULT_WEATHER_COORDS;
-    weatherState = { location: "서울", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
+    weatherState = {
+      location: t("weather.defaultLocation", null, "서울"),
+      temp: "--°",
+      summary: t("weather.permissionNeeded", null, "위치 권한 필요"),
+      icon: "sun-icon",
+      tag: "clear"
+    };
     weatherResolved = true;
     renderWeather();
     fetchWeatherDetail();
@@ -1983,7 +1990,13 @@ function requestCurrentWeather() {
             tag
           };
         } catch (error) {
-          weatherState = { location: "현재 위치", temp: "--°", summary: "날씨 오류", icon: "sun-icon", tag: "clear" };
+          weatherState = {
+            location: t("weather.currentLocation", null, "현재 위치"),
+            temp: "--°",
+            summary: t("weather.error", null, "날씨 오류"),
+            icon: "sun-icon",
+            tag: "clear"
+          };
         }
         weatherResolved = true;
         renderWeather();
@@ -1993,7 +2006,13 @@ function requestCurrentWeather() {
       },
       () => {
         userCoords = DEFAULT_WEATHER_COORDS;
-        weatherState = { location: "서울", temp: "--°", summary: "위치 권한 필요", icon: "sun-icon", tag: "clear" };
+        weatherState = {
+      location: t("weather.defaultLocation", null, "서울"),
+      temp: "--°",
+      summary: t("weather.permissionNeeded", null, "위치 권한 필요"),
+      icon: "sun-icon",
+      tag: "clear"
+    };
         weatherResolved = true;
         renderWeather();
         fetchWeatherDetail();
@@ -3409,8 +3428,18 @@ function weatherBadgeHtml(grade, label, prob) {
 function updateWeatherDetailTitle() {
   if (!weatherDetailTitle) return;
   const loc = weatherState.location;
-  const isPlaceholder = !loc || loc === "위치 확인 중" || loc === "현재 위치";
-  weatherDetailTitle.textContent = isPlaceholder ? "날씨" : `${loc} 날씨`;
+  // 2026-07-28 W9 — 자리표시자 비교도 카탈로그를 거친 값과 해야 한다.
+  // 예전 코드는 한국어 리터럴과 비교했는데, 이제 weatherState.location 이
+  // 영어일 수 있으므로 그냥 두면 영어 화면에서 "Finding your location weather"
+  // 같은 문장이 제목에 박힌다.
+  const placeholders = [
+    t("weather.locating", null, "위치 확인 중"),
+    t("weather.currentLocation", null, "현재 위치"),
+  ];
+  const isPlaceholder = !loc || placeholders.indexOf(loc) !== -1;
+  weatherDetailTitle.textContent = isPlaceholder
+    ? t("weather.title", null, "날씨")
+    : t("weather.titleWithLocation", { location: loc }, `${loc} 날씨`);
 }
 
 function renderWeatherCurrent(current, hourlyNowItem) {
@@ -3432,13 +3461,20 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     const cached = wdLoadLastGoodCurrent();
     if (cached) {
       renderWeatherCurrent(cached.currentData, cached.hourlyNowItem);
-      wdCurrentSub.textContent = `${wdMinutesAgoLabel(cached.savedAt)} 정보예요 · 새로고침에 실패했어요`;
+      wdCurrentSub.textContent = t(
+        "weather.staleNotice",
+        { relative: wdMinutesAgoLabel(cached.savedAt) },
+        `${wdMinutesAgoLabel(cached.savedAt)} 정보예요 · 새로고침에 실패했어요`
+      );
       if (wdCurrentRetryBtn) wdCurrentRetryBtn.hidden = false;
       return;
     }
     wdCurrentTemp.textContent = "--°";
     if (wdCurrentHumidity) wdCurrentHumidity.textContent = "";
-    wdCurrentSub.textContent = "날씨 정보를 불러오지 못했어요. 아래 버튼으로 다시 시도해보세요.";
+    wdCurrentSub.textContent = t(
+      "weather.failed", null,
+      "날씨 정보를 불러오지 못했어요. 아래 버튼으로 다시 시도해보세요."
+    );
     if (wdCurrentRetryBtn) wdCurrentRetryBtn.hidden = false;
     if (wdCurrentSun) wdCurrentSun.textContent = "";
     if (wdCurrentWind) wdCurrentWind.textContent = "";
@@ -4503,96 +4539,12 @@ function handleMusicIconTap() {
   setMusicPanelOpen(!isMusicPanelOpen());
 }
 
-// 2026-07-12: 원음 자체에 문제가 있는 곡(끊김·클리핑 등)을 골라내기 위한 임시
-// QC 전용 도구. URL 끝에 ?musicqc=1 을 한 번 붙여서 열면 이 기기에 플래그가
-// 저장되고, 그 이후로는 이 기기에서만 계속 버튼이 보인다 — 일반 방문자에게는
-// 노출되지 않는다. "영구 제외" 버튼은 기존 싫어요(disliked) 목록에 즉시
-// 추가해 이 기기에서 다시는 안 나오게 하고, 동시에 별도의 "삭제 요청" 목록에도
-// 남겨서 나중에 music-playlist.js 원본에서 실제로 빼고 배포할 때 참고한다 —
-// 클라이언트 코드만으로는 서버(R2/저장소)의 원본 파일을 직접 지울 수 없기
-// 때문에 이 목록을 사람이 확인해서 반영하는 구조다.
-const musicQCModeStorageKey = "ezlong:musicQCMode";
-const musicRemovalRequestsStorageKey = "ezlong:musicRemovalRequests";
-
-function isMusicQCMode() {
-  try {
-    if (new URLSearchParams(window.location.search).get("musicqc") === "1") {
-      localStorage.setItem(musicQCModeStorageKey, "1");
-    }
-    return localStorage.getItem(musicQCModeStorageKey) === "1";
-  } catch (error) {
-    return false;
-  }
-}
-
-function loadMusicRemovalRequests() {
-  try {
-    const raw = JSON.parse(localStorage.getItem(musicRemovalRequestsStorageKey) || "[]");
-    return Array.isArray(raw) ? raw : [];
-  } catch (error) {
-    return [];
-  }
-}
-
-function saveMusicRemovalRequests(list) {
-  try {
-    localStorage.setItem(musicRemovalRequestsStorageKey, JSON.stringify(list));
-  } catch (error) {
-    // localStorage를 못 쓰는 환경이어도 재생 자체는 지장이 없어야 한다.
-  }
-}
-
-function renderMusicQCPanel() {
-  if (!musicQCPanel) return;
-  musicQCPanel.hidden = !isMusicQCMode();
-  if (!musicQCRemovalList) return;
-  const requests = loadMusicRemovalRequests();
-  if (requests.length === 0) {
-    musicQCRemovalList.innerHTML = '<li class="settings-desc settings-desc-muted">삭제 요청한 곡이 없습니다.</li>';
-    return;
-  }
-  musicQCRemovalList.innerHTML = requests.map((entry) => `<li>${entry.title}</li>`).join("");
-}
-
-// 지금 재생 중인 곡을 (1) 기존 싫어요 목록에 즉시 넣어 이 기기에서 다시는
-// 안 나오게 하고, (2) 삭제 요청 목록에 남긴 다음, (3) 바로 다음 곡으로 넘어간다.
-function permanentlyExcludeCurrentTrack() {
-  if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
-  const track = musicPlaylist[musicIndex % musicPlaylist.length];
-  if (!track || !track.file) return;
-  const label = track.title || track.file;
-  if (!window.confirm(`"${label}" 곡을 이 기기에서 영구 제외할까요?`)) return;
-
-  const disliked = loadDislikedTracks();
-  if (!disliked.includes(track.file)) {
-    disliked.push(track.file);
-    saveDislikedTracks(disliked);
-  }
-
-  const requests = loadMusicRemovalRequests();
-  if (!requests.some((entry) => entry.file === track.file)) {
-    requests.push({
-      file: track.file,
-      title: track.title || track.file,
-      category: track.category || null,
-      removedAt: Date.now(),
-    });
-    saveMusicRemovalRequests(requests);
-  }
-
-  renderMusicQCPanel();
-  playNextTrack();
-}
-
-function copyMusicRemovalRequests() {
-  const requests = loadMusicRemovalRequests();
-  if (requests.length === 0) return;
-  const text = requests.map((entry) => `${entry.title} :: ${entry.file}`).join("\n");
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).catch(() => {});
-  }
-}
-
+// 2026-07-28 W9 — QC 전용 "곡 삭제" 도구를 제거했다.
+//   원음 품질 점검용 임시 도구였는데(?musicqc=1 로만 노출), 글로벌 출시
+//   준비 중 설정 화면 전수 점검에서 발견돼 성동님 판단으로 삭제했다.
+//   개발자용 문구가 사용자 화면에 남아있을 이유가 없고, 번역 대상도 아니다.
+//   기기에 남은 ezlong:musicQCMode / ezlong:musicRemovalRequests 키는
+//   이제 아무도 읽지 않아 자동으로 무해해진다(정리 코드 불필요).
 // 2026-07-08: 로그인 없이 "마지막 재생 곡/위치"를 기억해서 앱을 다시 켰을 때
 // 이어들을 수 있게 한다. 이것도 파일명 기준으로 저장한다.
 const musicResumeStorageKey = "ezlong:musicResume";
@@ -8009,7 +7961,6 @@ renderMusicPlaylistInfo();
 renderMusicPlaylistFilterOptions();
 syncMusicExcludeFilterUi();
 syncBgFilterUi();
-renderMusicQCPanel();
 renderMusicToggle();
 renderMusicVizSettingsUI();
 settingsOpen.addEventListener("click", () => {
@@ -8376,12 +8327,6 @@ if (bgFilterTimeEl) {
     syncBgFilterUi();
     if (activeScene) setScene(activeScene, { syncDots: true, force: true });
   });
-}
-if (musicQCDeleteButton) {
-  musicQCDeleteButton.addEventListener("click", permanentlyExcludeCurrentTrack);
-}
-if (musicQCCopyButton) {
-  musicQCCopyButton.addEventListener("click", copyMusicRemovalRequests);
 }
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {

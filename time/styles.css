@@ -1203,12 +1203,7 @@ button { font: inherit; }
   cursor: pointer;
 }
 
-/* 숨김 QC 패널 안의 버튼은 위 sticky 대상이 아니다(고유 id로만 한정). */
-#musicQCDeleteButton,
-#musicQCCopyButton {
-  position: static;
-  box-shadow: none;
-}
+/* 2026-07-28 W9 — QC 패널 버튼 예외 규칙 제거(패널 자체를 삭제했다). */
 
 .settings-divider {
   height: 1px;
