@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "2026-07-28-23:20",
+      "timestamp_kst": "2026-07-28(화) 23:20 KST",
+      "key_event": {
+        "name": "반도체 섹터 약세 심화",
+        "time": "정규장 진행 중",
+        "why": "NVDA 급락, AI 밸류에이션 논란, 기술주 전반 하방 압력"
+      },
+      "positive_total": 25,
+      "negative_total": 75,
+      "summary": "반도체 섹터 약세 심화로 부정 우위 지속, 기술주 전반 하락 압력 심화",
+      "positive_factors": [
+        {
+          "score": 10,
+          "name": "일부 빅테크 실적 기대감",
+          "desc": "알파벳, 아마존 등 일부 빅테크 기업의 긍정적 실적 전망으로 매수세 유입",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 15,
+          "name": "미국 10년물 국채금리 하락",
+          "desc": "국채금리 하락으로 성장주 할인율 부담 완화, 기술주에 긍정적 영향",
+          "category": "rates_treasury"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "반도체 섹터 급락 지속",
+          "desc": "SOXX 5.93% 급락, NVDA 1.50% 하락 등 AI 칩 매도 심화로 기술주 전반 압박",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "테슬라 실적 우려 지속",
+          "desc": "2분기 순이익 감소, 잉여현금흐름 적자 전환 등 실적 부진 우려로 TSLA 2.07% 하락",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 15,
+          "name": "AI 투자 피로감 확산",
+          "desc": "빅테크 기업들의 대규모 CAPEX 부담과 AI 밸류에이션 논란으로 투자 심리 위축",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "VIX 공포지수 상승",
+          "desc": "VIX 1.61% 상승하며 시장 불확실성 및 투자자 불안 심리 증가",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "애플 시가총액 5조 달러 돌파",
+          "desc": "애플의 시총 기록 경신은 긍정적이나, '매도 시점'이라는 상반된 분석도 존재",
+          "category": "company_specific"
+        }
+      ]
+    },
+    {
       "id": "2026-07-28-21:50",
       "timestamp_kst": "2026-07-28(화) 21:50 KST",
       "key_event": {
@@ -536,55 +595,8 @@
           "desc": "AI 혁명 지속 기대와 일부 반도체 기업의 고평가 우려가 공존"
         }
       ]
-    },
-    {
-      "id": "2026-07-27-21:38",
-      "timestamp_kst": "2026-07-27(월) 21:38 KST",
-      "key_event": {
-        "name": "미-이란 휴전 및 Fed 회의",
-        "time": "오늘 정규장 및 향후 12시간",
-        "why": "지정학적 긴장 완화, 유가 하락, 금리 정책 불확실성 해소 기대"
-      },
-      "positive_total": 80,
-      "negative_total": 20,
-      "summary": "지정학적 긴장 완화 및 유가 하락으로 긍정 우위 지속, 기술주 강세 전환",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "미-이란 전술적 휴전",
-          "desc": "지정학적 긴장 완화 및 유가 급락으로 시장 전반 위험 선호 심리 회복"
-        },
-        {
-          "score": 25,
-          "name": "기술주 및 반도체 강세",
-          "desc": "QQQ 1.39%, SPY 0.89%, SOXX 2.13% 상승 등 기술주 전반 프리마켓 강세"
-        },
-        {
-          "score": 15,
-          "name": "AI 투자 기대감 지속",
-          "desc": "Nvidia의 OpenAI 데이터 센터 프로젝트 지원 소식에 관련주 강세"
-        },
-        {
-          "score": 10,
-          "name": "유가 하락",
-          "desc": "WTI 원유 1.38% 하락, 인플레이션 우려 완화 및 소비 심리 개선 기대"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "Fed 정책 불확실성",
-          "desc": "이번 주 예정된 Fed 정책 결정 및 인플레이션 보고서 관망 심리"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미국 10년 국채금리 하락",
-          "desc": "미 10년 국채금리 0.64% 하락은 성장주에 긍정적이나, Fed 회의를 앞둔 관망세로 해석될 수 있음"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-07-28T12:50:50Z",
+  "updated_at": "2026-07-28T14:20:58Z",
   "max_entries": 10
 }
