@@ -8300,5 +8300,11 @@ window.investmentQuotes = [
     "title": "다안도 투자자 (The Dhandho Investor)",
     "author": "모니시 파브라이 (Mohnish Pabrai)",
     "category": "mindset"
+  },
+  {
+    "text": "풀리지 않는 삶의 난제들과 맞서기도 해야겠지만, 가끔은 달아나는 것도 필요하다. 여행은 우리를 오직 현재에만 머물게 하고, 일상의 근심과 후회, 미련으로부터 해방시킨다.",
+    "title": "여행의 이유",
+    "author": "김영하",
+    "genre": "literature"
   }
 ];
