@@ -39,6 +39,9 @@
   <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/retirement-calculator.html">
   <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/retirement-calculator.html">
   <link rel="canonical" href="https://ezlong.com/ja/retirement-calculator.html">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -150,6 +153,74 @@
     .en-footer a { color:var(--blue); text-decoration:none; }
     .en-footer a:hover { text-decoration:underline; }
     @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+
+    #rc-root {
+      --card:#FFFFFF; --bg2:#FFFFFF; --inp-bg:#EBEBF0; --inp-bg2:#E2E2E8; --bd:rgba(0,0,0,0.10); --t1:#1D1D1F; --t2:#3A3A3C; --t3:#6E6E73;
+      --bl:#0071E3; --bl-dk:#003A99; --bl-s:rgba(0,113,227,0.10); --bl-m:rgba(0,113,227,0.26);
+      --gr:#34C759; --gr-dk:#0D5C27; --gr-s:#E6F4EC; --gr-m:#7EC89A;
+      --rd:#CC2200; --rd-s:rgba(204,34,0,0.10);
+      --yl:#78350F; --yl-s:#FEF3C7; --yl-m:#F59E0B;
+      --info-bg:#EBF3FF; --info-text:#003A99; --info-bd:#93C5FD;
+      --tip-bg:#F0F0F5; --tip-text:#3A3A3C; --tip-bd:#C7C7CC;
+      --r-sm:8px; --chart-grid:#E5E5EA; --chart-xax:#C7C7CC;
+      --shadow:0 1px 6px rgba(0,0,0,.08); --shadow-lg:0 4px 20px rgba(0,0,0,.14);
+    }
+    @media (prefers-color-scheme: dark) {
+      #rc-root {
+        --card:#1C1C1E; --bg2:#1C1C1E; --inp-bg:#2C2C2E; --inp-bg2:#3A3A3C; --bd:rgba(255,255,255,0.14); --t1:#F5F5F7; --t2:#D1D1D6; --t3:#AEAEB2;
+        --bl:#409CFF; --bl-dk:#90CAFF; --bl-s:rgba(64,156,255,0.18); --bl-m:rgba(64,156,255,0.40);
+        --gr:#30D158; --gr-dk:#4CD964; --gr-s:rgba(48,209,88,0.16); --gr-m:rgba(48,209,88,0.45);
+        --rd:#FF6B6B; --rd-s:rgba(255,107,107,0.20);
+        --yl:#FFD60A; --yl-s:rgba(255,179,0,0.16); --yl-m:rgba(255,179,0,0.45);
+        --info-bg:rgba(64,156,255,0.16); --info-text:#90CAFF; --info-bd:rgba(64,156,255,0.45);
+        --tip-bg:#2C2C2E; --tip-text:#D1D1D6; --tip-bd:rgba(255,255,255,0.14);
+        --chart-grid:#2C2C2E; --chart-xax:#48484A;
+        --shadow:0 1px 6px rgba(0,0,0,.3); --shadow-lg:0 4px 20px rgba(0,0,0,.4);
+      }
+    }
+    #rc-root { font-size:15px; }
+    #rc-root input, #rc-root select { font-size:16px; }
+    #rc-root svg { max-width:100%; display:block; }
+    @keyframes rcFadeUp { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+    #rc-root .rc-fadeUp { animation:rcFadeUp .3s ease forwards; }
+    @keyframes rcSpin { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+    #rc-root .rc-spin { animation:rcSpin .75s linear infinite; display:inline-block; }
+    #rc-root .rc-card { background:var(--card); border-radius:12px; box-shadow:var(--shadow); border:1px solid var(--bd); }
+    #rc-root .rc-layout { display:grid; grid-template-columns:340px 1fr; gap:20px; align-items:start; }
+    #rc-root .rc-sticky { position:sticky; top:16px; }
+    #rc-root .rc-input-label { font-size:14px; font-weight:600; color:var(--t2); margin-bottom:8px; }
+    #rc-root .rc-input-hint { font-size:14px; color:var(--t3); margin-bottom:8px; line-height:1.5; }
+    #rc-root .rc-num-input { width:100%; padding:11px 14px; background:var(--inp-bg); border:1.5px solid var(--bd); border-radius:var(--r-sm); color:var(--t1); outline:none; transition:border-color .15s,box-shadow .15s; }
+    #rc-root .rc-num-input:focus { border-color:var(--bl); box-shadow:0 0 0 3px var(--bl-s); }
+    #rc-root .rc-badge { font-size:14px; font-weight:700; padding:3px 10px; border-radius:6px; color:#fff; display:inline-block; white-space:nowrap; }
+    #rc-root .rc-btn-calc { display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:15px; border-radius:var(--r-sm); font-size:16px; font-weight:700; border:none; cursor:pointer; color:#fff; transition:background .2s,box-shadow .2s; }
+    #rc-root .rc-empty { padding:64px 32px; text-align:center; }
+    #rc-root .rc-return-tabs { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:14px; }
+    #rc-root .rc-return-tab { padding:14px 6px 12px; border-radius:var(--r-sm); cursor:pointer; text-align:center; transition:all .18s; border:1.5px solid var(--bd); background:var(--card); }
+    #rc-root .rc-return-tab.active { border:2.5px solid var(--bl); background:var(--bl); box-shadow:0 4px 18px var(--bl-m); }
+    #rc-root .rc-legend-row { display:flex; gap:12px; flex-wrap:wrap; }
+    #rc-root .rc-legend-item { display:flex; align-items:center; gap:5px; font-size:14px; color:var(--t2); }
+    #rc-root .rc-legend-dot { width:10px; height:10px; border-radius:2px; display:inline-block; flex-shrink:0; }
+    #rc-root .rc-stat-mini { padding:12px; background:var(--inp-bg); border-radius:var(--r-sm); text-align:center; }
+    #rc-root .rc-grid-hcol { display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr; }
+    #rc-root .rc-grid-col { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; }
+    #rc-root .rc-grid-header-btn { text-align:center; cursor:pointer; background:none; border:none; outline:none; padding:0; }
+    #rc-root .rc-scenario-row { display:flex; align-items:center; gap:14px; padding:16px 20px; cursor:pointer; transition:background .15s; }
+    #rc-root .rc-scenario-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; transition:background .15s; }
+    #rc-root .rc-wd-rate-btn { padding:12px 6px; border-radius:var(--r-sm); cursor:pointer; text-align:center; transition:all .15s; outline:none; background:var(--card); }
+    #rc-root .rc-wd-rate-btn.active { border:2px solid var(--bl); background:var(--bl-s); }
+    #rc-root .rc-wd-rate-btn:not(.active) { border:1.5px solid var(--bd); }
+    #rc-root .rc-insight-row { padding:14px 16px; border-radius:var(--r-sm); }
+    #rc-root .rc-edu-card { padding:20px 22px; background:var(--card); border:1px solid var(--bd); border-radius:12px; box-shadow:0 1px 4px rgba(0,0,0,.06); }
+    #rc-root .rc-edu-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    #rc-root .rc-72-card { padding:20px 22px; background:linear-gradient(135deg,#1a3a6b 0%,#0d2248 100%); border:1px solid rgba(100,150,255,0.25); border-radius:12px; box-shadow:0 4px 20px rgba(0,50,150,.3); color:#E8F0FF; }
+    #rc-root .rc-chart-tooltip { position:absolute; background:var(--card); border-radius:10px; padding:10px 14px; box-shadow:var(--shadow-lg); border:1px solid var(--bd); font-size:14px; line-height:1.7; pointer-events:none; z-index:10; min-width:168px; }
+    @media (max-width:767px) {
+      #rc-root .rc-layout { grid-template-columns:1fr; }
+      #rc-root .rc-sticky { position:static; }
+      #rc-root .rc-edu-grid { grid-template-columns:1fr; }
+      #rc-root .rc-return-tabs { gap:6px; }
+    }
   </style>
 </head>
 <body>
@@ -169,18 +240,21 @@
     <h1>老後資金逆算計算機</h1>
     <p class="hero-sub">老後資金の目標を入力するだけで、達成に必要な毎月の積立額が正確に分かります</p>
     <div class="cta-group">
-      <a class="btn-primary" href="https://ezlong.com/retirement-calculator.html" target="_blank" rel="noopener">ツールを開く &rarr;</a>
+      <a class="btn-primary" href="#calculator">無料で試す &darr;</a>
       <a class="btn-secondary" href="https://ezlong.com/ja/">すべてのツールを見る</a>
     </div>
-    <p class="auto-translate-note">ツールUIは韓国語です。Chrome、Edge、Safariが自動的に翻訳します。</p>
-    <p class="translate-proxy-note">自動翻訳が表示されない場合は <a href="https://ezlong-com.translate.goog/retirement-calculator.html?_x_tr_sl=ko&amp;_x_tr_tl=ja&amp;_x_tr_hl=ja&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Google翻訳で開く &rarr;</a></p>
+    <p class="auto-translate-note">完全日本語対応 — ログイン不要、ダウンロード不要、数秒で結果が出ます。</p>
   </section>
   <div class="stats-row" role="region" aria-label="主要な数値">
     <div class="stat-item"><div class="stat-value">25倍ルール</div><div class="stat-label">年間支出×25＝FIRE目標額</div></div>
     <div class="stat-item"><div class="stat-value">FIRE対応</div><div class="stat-label">早期リタイアに最適化</div></div>
     <div class="stat-item"><div class="stat-value">完全無料</div><div class="stat-label">アカウント不要</div></div>
   </div>
-  <main class="main" id="main-content">
+  <main class="main" id="main-content" style="max-width:1180px;">
+    <section class="section" id="calculator" style="max-width:100%;">
+      <div id="rc-root"></div>
+    </section>
+    <div style="max-width:var(--max-w);margin:0 auto;">
     <section class="section">
       <h2 class="section-title">老後資金逆算計算機とは？</h2>
       <p class="section-body">老後資金逆算計算機は、一般的な老後資金プランニングの発想を逆転させます。現在の貯蓄額から将来を予測して「足りるといいな」と願う代わりに、この計算機は目標から出発して逆算し、達成のために毎月いくら投資すべきかを正確に教えてくれます。</p>
@@ -284,9 +358,9 @@
     </section>
     <div class="cta-card">
       <h2>今すぐ老後資金逆算計算機を試す</h2>
-      <p>無料・登録不要、ブラウザ上ですぐに利用できます。Chromeなら韓国語から自動翻訳されます。</p>
-      <a class="btn-white" href="https://ezlong.com/retirement-calculator.html" target="_blank" rel="noopener">老後資金逆算計算機を開く &rarr;</a>
-      <p class="translate-proxy-note">自動翻訳が表示されない場合は <a href="https://ezlong-com.translate.goog/retirement-calculator.html?_x_tr_sl=ko&amp;_x_tr_tl=ja&amp;_x_tr_hl=ja&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Google翻訳で開く &rarr;</a></p>
+      <p>無料・登録不要、ブラウザ上ですぐに利用できます。</p>
+      <a class="btn-white" href="#calculator">計算機に戻る &uarr;</a>
+    </div>
     </div>
   </main>
   <footer class="en-footer" role="contentinfo">
@@ -294,6 +368,953 @@
     &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
     <small>本サイトは情報提供のみを目的とした教育的ツールです。投資助言ではありません。すべての投資にはリスクが伴います。過去の実績は将来の成果を保証するものではありません。</small></p>
   </footer>
+
+<script type="text/babel">
+const { useState, useCallback, useRef, useEffect, memo } = React;
+
+/* ═══════════════════════════════════════════
+   CONSTANTS
+═══════════════════════════════════════════ */
+const SCENARIOS = [
+  { label:'保守的', rate:7,  badgeBg:'#0052CC', desc:'S&P 500の長期平均に近い水準（株式・債券混合を想定）' },
+  { label:'標準', rate:14, badgeBg:'#1A7030', desc:'ナスダック100（QQQ）の長期平均', recommended:true },
+  { label:'積極的', rate:21, badgeBg:'#92400E', desc:'ナスダック100の好調期に近い楽観シナリオ' },
+];
+
+const WITHDRAWAL_SCENARIOS = [
+  { rate:4,  color:'#FF9500', label:'年4%リターン（債券並み）' },
+  { rate:7,  color:'#34AADC', label:'年7%リターン（高配当株並み）' },
+  { rate:14, color:'#30D158', label:'年14%リターン（S&P 500並み）' },
+  { rate:21, color:'#BF5AF2', label:'年21%リターン（ナスダック100並み）' },
+];
+
+const WD_RATES = [
+  { pct:4,  label:'年4%',  sub:'トリニティ・ルール',       safe:true  },
+  { pct:8,  label:'年8%',  sub:'標準的な取り崩し', safe:false },
+  { pct:10, label:'年10%', sub:'積極的な取り崩し', safe:false },
+  { pct:15, label:'年15%', sub:'非常に積極的',     safe:false },
+];
+
+/* ═══════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════ */
+function sN(v, fb=0){ const n=Number(v); return isNaN(n)||!isFinite(n)?fb:n; }
+
+// Tiered USD formatter (万/億/兆) — used for both card values and chart axes,
+// matching the ja/portfolio-manager.html pmFmtUSD/pmYTick precedent.
+function rcTrim(s){
+  if(s.indexOf('.')===-1) return s;
+  return s.replace(/0+$/,'').replace(/\.$/,'');
+}
+function rcFmtUSD(n){
+  const num=Number(n); if(isNaN(num)||!isFinite(num)) return '$0';
+  const sign=num<0?'-':''; const abs=Math.abs(num);
+  if(abs>=1e12||Math.round((abs/1e8)*100)/100>=10000){
+    return sign+'$'+rcTrim((abs/1e12).toFixed(2))+'兆';
+  }
+  if(abs>=1e8||Math.round((abs/1e4)*100)/100>=10000){
+    return sign+'$'+rcTrim((abs/1e8).toFixed(2))+'億';
+  }
+  if(abs>=1e4){
+    return sign+'$'+rcTrim((abs/1e4).toFixed(2))+'万';
+  }
+  return sign+'$'+Math.round(abs).toLocaleString('en-US');
+}
+function rcYTick(v){
+  const num=Number(v); if(isNaN(num)||!isFinite(num)) return '$0';
+  const sign=num<0?'-':''; const abs=Math.abs(num);
+  if(abs>=1e12||Math.round((abs/1e8)*10)/10>=10000) return sign+'$'+rcTrim((abs/1e12).toFixed(1))+'兆';
+  if(abs>=1e8||Math.round((abs/1e4)*10)/10>=10000) return sign+'$'+rcTrim((abs/1e8).toFixed(1))+'億';
+  if(abs>=1e4) return sign+'$'+rcTrim((abs/1e4).toFixed(1))+'万';
+  return sign+'$'+Math.round(abs);
+}
+
+/* ═══════════════════════════════════════════
+   ALGORITHMS — all USD-native, no currency conversion
+═══════════════════════════════════════════ */
+function calcWithdrawalMonthly(asset, wdPct=4){ return Math.round(sN(asset) * (wdPct/100) / 12); }
+
+// Forward calc: current asset + monthly investment -> asset at retirement (USD)
+// Uses the exact same deposit-then-grow monthly loop as calcAccumulation below,
+// so the two never diverge for the same inputs (verified 2026-07-29: the closed-form
+// annuity formula used here previously assumed end-of-month deposits while
+// calcAccumulation deposits at the start of each month, causing ~1% drift over
+// long horizons — replaced with the identical loop to guarantee consistency).
+function calcForwardAsset(currentAsset, monthlyBudget, yearsLeft, cagr){
+  if(yearsLeft <= 0) return sN(currentAsset);
+  const mr = sN(cagr)/100/12;
+  const n = yearsLeft * 12;
+  const m = Math.max(0, sN(monthlyBudget));
+  let val = sN(currentAsset);
+  for(let i=0; i<n; i++){ val = (val+m)*(1+mr); }
+  return Math.round(val);
+}
+
+function calcAccumulation(currentAge, retireAge, currentAsset, monthly, annualRate){
+  const years = retireAge - currentAge; if(years<=0) return [];
+  const mr = sN(annualRate)/100/12;
+  const start = sN(currentAsset);
+  const m = Math.max(0, sN(monthly));
+  let val=start, inv=start;
+  const rows=[];
+  for(let mo=1; mo<=years*12; mo++){
+    val=(val+m)*(1+mr); inv+=m;
+    if(mo%12===0){
+      const tv=Math.max(0,Math.round(val));
+      const ti=Math.round(inv);
+      const ii=Math.round(start);
+      const di=Math.round(inv-start);
+      rows.push({ age:currentAge+mo/12, year:mo/12,
+        totalValue:tv, totalInvested:ti,
+        initialInvested:ii, dcaInvested:di, profit:Math.max(0,tv-ti) });
+    }
+  }
+  return rows;
+}
+
+function calcWithdrawalSim(asset, monthlyWd, annualRate, totalYears=30){
+  if(sN(asset) <= 0) return { rows:[{ year:0, asset:0 }], exhaustedYear:null };
+  const mr=sN(annualRate)/100/12;
+  let val=sN(asset);
+  const mWd=sN(monthlyWd);
+  const rows=[{ year:0, asset:sN(asset) }];
+  let exhaustedYear=null;
+  for(let m=1; m<=totalYears*12; m++){
+    val=(val-mWd)*(1+mr);
+    if(mWd>0 && val<=0 && exhaustedYear===null){ exhaustedYear=parseFloat((m/12).toFixed(1)); val=0; }
+    if(m%12===0) rows.push({ year:m/12, asset:Math.max(0,Math.round(val)) });
+  }
+  return { rows, exhaustedYear };
+}
+
+/* ═══════════════════════════════════════════
+   PRIMITIVE UI
+═══════════════════════════════════════════ */
+function Card({children, style, className}){
+  return <div className={`rc-card ${className||''}`} style={style}>{children}</div>;
+}
+
+function Badge({ children, bg='#1A7030' }){
+  return <span className="rc-badge" style={{background:bg}}>{children}</span>;
+}
+
+const NumInput = memo(function NumInput({ value, onChange, style }){
+  const [f, setF] = useState(false);
+  const [raw, setRaw] = useState('');
+  return <input type="number" inputMode="numeric" min="0" placeholder="0" className="rc-num-input"
+    value={f ? raw : (value>0 ? String(value) : '')}
+    onChange={e=>{ const v=e.target.value.replace(/[^0-9]/g,''); setRaw(v); onChange(v===''?0:Number(v)); }}
+    onFocus={()=>{ setF(true); setRaw(''); }}
+    onBlur={()=>{ setF(false); }}
+    style={style}/>;
+});
+
+/* ═══════════════════════════════════════════
+   SVG ACCUMULATION BAR CHART
+═══════════════════════════════════════════ */
+function AccumChart({ data }){
+  const wrapRef=useRef(null);
+  const [W, setW]=useState(0);
+  const [tip, setTip]=useState(null);
+  const [mxy, setMxy]=useState({x:0,y:0});
+  useEffect(()=>{
+    const el=wrapRef.current; if(!el) return;
+    const obs=new ResizeObserver(([e])=>setW(e.contentRect.width||e.target.offsetWidth));
+    obs.observe(el);
+    const init=el.getBoundingClientRect().width||el.offsetWidth||el.clientWidth;
+    if(init>0) setW(init);
+    return ()=>obs.disconnect();
+  },[]);
+  const n=data.length;
+  const H=W<500?270:390;
+  const mg=W<500?{t:30,r:8,b:36,l:54}:{t:38,r:14,b:42,l:70};
+  const cW=W-mg.l-mg.r, cH=H-mg.t-mg.b;
+  if(!W||!n) return <div ref={wrapRef} style={{width:'100%',height:H,background:'var(--inp-bg)',borderRadius:8}}/>;
+  const maxV=Math.max(...data.map(d=>d.totalValue),1);
+  const mag=Math.pow(10,Math.floor(Math.log10(maxV/5)));
+  const step=Math.ceil((maxV/5)/mag)*mag;
+  const nMax=Math.ceil(maxV/step)*step;
+  const ticks=[]; for(let i=0;i<=5;i++) ticks.push(step*i);
+  const yPx=v=>cH-(v/nMax)*cH;
+  const hPx=v=>(v/nMax)*cH;
+  const grpW=cW/n, bW=Math.max(4,grpW*0.65), skip=Math.ceil(n/15);
+  const onMove=e=>{ const r=wrapRef.current.getBoundingClientRect(); setMxy({x:e.clientX-r.left,y:e.clientY-r.top}); };
+  return (
+    <div ref={wrapRef} style={{position:'relative',width:'100%',height:H,overflow:'hidden'}}
+      onMouseMove={onMove} onMouseLeave={()=>setTip(null)}>
+      <svg width={W} height={H} style={{display:'block',maxWidth:'100%'}}>
+        <g transform={`translate(${mg.l},${mg.t})`}>
+          {ticks.map((t,i)=>(
+            <g key={i}>
+              <line x1={0} y1={yPx(t)} x2={cW} y2={yPx(t)} stroke="var(--chart-grid)" strokeWidth={1}/>
+              <text x={-7} y={yPx(t)+4} textAnchor="end" fontSize={14} fill="var(--t3)">{rcYTick(t)}</text>
+            </g>
+          ))}
+          {data.map((d,i)=>{
+            const hi=hPx(d.initialInvested||0), hd=hPx(d.dcaInvested||0), hp=hPx(d.profit||0);
+            const tot=hi+hd+hp, grpX=i*grpW, x=grpX+(grpW-bW)/2, showLbl=i%skip===0||i===n-1;
+            return (
+              <g key={d.age} onMouseEnter={()=>setTip(d)} onMouseLeave={()=>setTip(null)}>
+                {hi>0&&<rect x={x} y={cH-hi} width={bW} height={hi} fill="#FF6B6B"/>}
+                {hd>0&&<rect x={x} y={cH-hi-hd} width={bW} height={hd} fill="#FFB347"/>}
+                {hp>0&&<rect x={x} y={cH-tot} width={bW} height={hp} fill="#30D158" rx={2} ry={2}/>}
+                {showLbl&&d.totalValue>0&&tot>14&&(
+                  <text x={x+bW/2} y={cH-tot-6} textAnchor="end" dominantBaseline="middle"
+                    transform={`rotate(90,${x+bW/2},${cH-tot-6})`}
+                    fontSize={14} fontWeight={700} fill="var(--t1)">{rcYTick(d.totalValue)}</text>
+                )}
+                {showLbl&&<text x={grpX+grpW/2} y={cH+14} textAnchor="middle" fontSize={14} fill="var(--t3)">{d.age}</text>}
+              </g>
+            );
+          })}
+          <line x1={0} y1={cH} x2={cW} y2={cH} stroke="var(--chart-xax)" strokeWidth={1}/>
+          <text x={cW/2} y={cH+32} textAnchor="middle" fontSize={14} fill="var(--t3)">年齢</text>
+        </g>
+      </svg>
+      {tip&&(
+        <div className="rc-chart-tooltip" style={{left:Math.min(mxy.x+14,W-185),top:Math.max(mxy.y-100,4)}}>
+          <div style={{fontWeight:700,marginBottom:4,color:'var(--t1)'}}>{tip.age}歳時点</div>
+          <div style={{color:'var(--t2)'}}>資産合計: <strong style={{color:'var(--bl-dk)'}}>{rcFmtUSD(tip.totalValue)}</strong></div>
+          <div style={{color:'var(--t2)'}}>複利による増加分: <strong style={{color:'var(--bl-dk)'}}>{rcFmtUSD(tip.profit)}</strong></div>
+          <div style={{color:'var(--t2)'}}>累計投資額: {rcFmtUSD(tip.dcaInvested)}</div>
+          <div style={{color:'var(--t2)'}}>初期投資額: {rcFmtUSD(tip.initialInvested)}</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   SVG WITHDRAWAL LONGEVITY LINE CHART
+═══════════════════════════════════════════ */
+function WithdrawalLineChart({ asset, monthlyWd, retireAge }){
+  const wrapRef=useRef(null);
+  const [W, setW]=useState(0);
+  useEffect(()=>{
+    const el=wrapRef.current; if(!el) return;
+    const obs=new ResizeObserver(([e])=>setW(e.contentRect.width||e.target.offsetWidth));
+    obs.observe(el);
+    const init=el.getBoundingClientRect().width||el.offsetWidth||el.clientWidth;
+    if(init>0) setW(init);
+    return ()=>obs.disconnect();
+  },[]);
+
+  const rAge = sN(retireAge, 60);
+  const totalYears = Math.max(5, 80 - rAge);
+
+  const simData=WITHDRAWAL_SCENARIOS.map(s=>({...s,...calcWithdrawalSim(asset,monthlyWd,s.rate,totalYears)}));
+
+  const H=W<500?440:560;
+  const mg=W<500?{t:14,r:56,b:52,l:58}:{t:14,r:76,b:60,l:76};
+  const cW=W-mg.l-mg.r, cH=H-mg.t-mg.b;
+  if(!W) return <div ref={wrapRef} style={{width:'100%',height:H,background:'var(--inp-bg)',borderRadius:8}}/>;
+
+  const maxV=Math.max(...simData.flatMap(d=>d.rows.map(r=>r.asset)),1);
+  const mag=Math.pow(10,Math.floor(Math.log10(maxV/4)));
+  const step=Math.ceil((maxV/4)/mag)*mag;
+  const nMax=Math.ceil(maxV/step)*step;
+  const ticks=[]; for(let i=0;i<=4;i++) ticks.push(step*i);
+  const yPx=v=>cH-(v/nMax)*cH;
+  const xPx=yr=>(yr/totalYears)*cW;
+  const toPath=rows=>rows.map((r,i)=>`${i===0?'M':'L'}${xPx(r.year).toFixed(1)},${yPx(r.asset).toFixed(1)}`).join(' ');
+
+  const xStep = W < 420 ? 10 : 5;
+  const xLabels=[];
+  for(let yr=0; yr<=totalYears; yr+=xStep) xLabels.push(yr);
+  if(xLabels[xLabels.length-1]!==totalYears) xLabels.push(totalYears);
+
+  return (
+    <div>
+      <div ref={wrapRef} style={{width:'100%',height:H,overflow:'visible'}}>
+        <svg width={W} height={H} style={{display:'block',maxWidth:'100%',overflow:'visible'}}>
+          <g transform={`translate(${mg.l},${mg.t})`}>
+            {ticks.map((t,i)=>(
+              <g key={i}>
+                <line x1={0} y1={yPx(t)} x2={cW} y2={yPx(t)} stroke="var(--chart-grid)" strokeWidth={1}/>
+                <text x={-7} y={yPx(t)+4} textAnchor="end" fontSize={14} fill="var(--t3)">{rcYTick(t)}</text>
+              </g>
+            ))}
+            {simData.map((s,i)=>(
+              <path key={i} d={toPath(s.rows)} fill="none" stroke={s.color} strokeWidth={2.5} strokeLinejoin="round"/>
+            ))}
+            {simData.map((s,i)=>{
+              const lastRow = s.rows[s.rows.length-1];
+              if(!lastRow || lastRow.asset <= 0) return null;
+              const x = xPx(lastRow.year);
+              const y = yPx(lastRow.asset);
+              return (
+                <g key={`lbl-${i}`}>
+                  <circle cx={x} cy={y} r={4} fill={s.color}/>
+                  <text x={x+8} y={y+4} fontSize={14} fontWeight={700} fill={s.color}>
+                    {rcYTick(lastRow.asset)}
+                  </text>
+                </g>
+              );
+            })}
+            <line x1={0} y1={cH} x2={cW} y2={cH} stroke="var(--chart-xax)" strokeWidth={1}/>
+            {xLabels.map(yr=>(
+              <g key={yr}>
+                <text x={xPx(yr)} y={cH+16} textAnchor="middle" fontSize={14} fill="var(--t3)">{yr}年目</text>
+                <text x={xPx(yr)} y={cH+32} textAnchor="middle" fontSize={14} fill="var(--t3)" opacity={0.75}>
+                  {rAge+yr}歳
+                </text>
+              </g>
+            ))}
+            <text x={cW/2} y={cH+50} textAnchor="middle" fontSize={14} fill="var(--t3)">退職後の経過年数／年齢</text>
+          </g>
+        </svg>
+      </div>
+      <div className="rc-legend-row" style={{justifyContent:'center',marginTop:12}}>
+        {simData.map((s,i)=>{
+          const lastRow = s.rows[s.rows.length-1];
+          const finalAmt = lastRow ? lastRow.asset : 0;
+          return (
+            <div key={i} className="rc-legend-item">
+              <span className="rc-legend-dot" style={{background:s.color}}/>
+              <span>
+                {s.label}
+                {s.exhaustedYear
+                  ? <span style={{color:'#FF3B30',fontWeight:700}}> — {s.exhaustedYear}年で資産枯渇</span>
+                  : <span style={{color:'var(--bl-dk)',fontWeight:700}}> — {totalYears}年後も{rcYTick(finalAmt)}残存</span>
+                }
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   RESULTS GRID — CAGR x withdrawal rate
+═══════════════════════════════════════════ */
+const WD_TABLE_RATES_DISPLAY = [15, 10, 8, 4];
+const WD_RATE_LABELS = { 15:'非常に積極的', 10:'積極的', 8:'標準的', 4:'トリニティ・ルール' };
+
+function ResultsGrid({ gridData, withdrawalRate, onRateChange, selectedScenario, onScenarioSelect }){
+  return (
+    <Card style={{overflow:'hidden', marginBottom:20}} className="rc-fadeUp">
+      <div style={{padding:'18px 20px 14px', borderBottom:'1px solid var(--bd)'}}>
+        <div style={{fontSize:18, fontWeight:800, lineHeight:1.45, marginBottom:12, letterSpacing:'-.01em', color:'var(--bl-dk)'}}>
+          「株式ポートフォリオを減らさずに<br/>
+          <span style={{color:'var(--bl-dk)'}}>老後は毎月いくら取り崩せるのか？」</span>
+        </div>
+        <div style={{marginBottom:0, padding:'10px 14px', background:'var(--gr-s)', border:'1px solid var(--gr-m)',
+          borderRadius:'var(--r-sm)', fontSize:14, color:'var(--gr-dk)', lineHeight:1.75, fontWeight:500}}>
+          ポートフォリオの年間リターン以下で取り崩せば、元本は減りません。
+          下の<strong>列（リターン率）</strong>をクリックしてシナリオを選び、
+          <strong>行（取り崩し率）</strong>をクリックすると30年間の資産持続シミュレーションが確認できます。
+        </div>
+      </div>
+      <div className="rc-grid-hcol" style={{padding:'6px 20px 2px', background:'var(--inp-bg)'}}>
+        <div/>
+        <div style={{gridColumn:'span 3', fontSize:14, fontWeight:700, color:'var(--bl-dk)', textAlign:'center', letterSpacing:'.02em'}}>
+          &#9660; 退職前の年間リターン（CAGR）— クリックしてシナリオをシミュレート
+        </div>
+      </div>
+      <div className="rc-grid-hcol" style={{padding:'8px 20px 10px', background:'var(--inp-bg)', borderBottom:'2px solid var(--bd)'}}>
+        <div style={{fontSize:14,color:'var(--t3)',fontWeight:600}}>
+          退職後の取り崩し率<br/>
+          <span style={{fontSize:14,color:'var(--t3)',fontWeight:400}}>&#9660; クリックしてシミュレート</span>
+        </div>
+        {gridData.map((col, i)=>(
+          <button key={col.cagr} type="button" className="rc-grid-header-btn" onClick={()=>onScenarioSelect(i)}>
+            <div style={{fontSize:15, fontWeight:800, color: i===selectedScenario ? 'var(--bl-dk)' : 'var(--t2)'}}>{col.cagr}%</div>
+            <div style={{fontSize:14, color: i===selectedScenario ? 'var(--bl-dk)' : 'var(--t3)', marginTop:1}}>{col.label}</div>
+          </button>
+        ))}
+      </div>
+      <div className="rc-grid-hcol" style={{padding:'12px 20px', background:'var(--inp-bg2)', borderBottom:'1px solid var(--bd)'}}>
+        <div style={{fontSize:14,color:'var(--t2)',fontWeight:600,display:'flex',alignItems:'center'}}>退職時点の想定資産</div>
+        {gridData.map((col, i)=>{
+          const isSel = i===selectedScenario;
+          return (
+            <div key={col.cagr} style={{textAlign:'center', background: isSel ? 'var(--rd-s)' : 'transparent', borderRadius:6, padding:'4px 2px'}}>
+              <div style={{fontSize:14,fontWeight:800, color:isSel?'var(--t1)':'var(--t3)',lineHeight:1.15}}>{rcFmtUSD(col.retirementAsset)}</div>
+            </div>
+          );
+        })}
+      </div>
+      {WD_TABLE_RATES_DISPLAY.map((rate, ri)=>{
+        const isSelected = rate === withdrawalRate;
+        const isLast = ri === WD_TABLE_RATES_DISPLAY.length - 1;
+        return (
+          <div key={rate} onClick={()=>onRateChange(rate)} className="rc-grid-hcol"
+            style={{padding:'15px 20px', cursor:'pointer', background: isSelected ? 'var(--bl-s)' : 'transparent',
+              borderBottom: !isLast ? '1px solid var(--bd)' : 'none', transition:'background .15s', alignItems:'center'}}>
+            <div>
+              <div style={{fontSize:15,fontWeight:700,color:isSelected?'var(--bl-dk)':'var(--t1)'}}>年{rate}%取り崩し</div>
+              <div style={{fontSize:14,color:'var(--t3)',marginTop:2}}>{WD_RATE_LABELS[rate]}</div>
+              {isSelected&&<div style={{fontSize:14,color:'var(--bl-dk)',fontWeight:600,marginTop:3}}>&#9654; シミュレーション中</div>}
+            </div>
+            {gridData.map((col, i)=>{
+              const inc = col.incomes.find(x=>x.rate===rate);
+              const monthly = inc ? inc.monthly : 0;
+              const isFocus = i===selectedScenario;
+              const cellBg = isFocus ? (isSelected ? 'rgba(255,59,48,0.13)' : 'var(--rd-s)') : 'transparent';
+              const txtColor = isSelected&&isFocus ? 'var(--bl-dk)' : isFocus ? 'var(--t1)' : 'var(--t3)';
+              return (
+                <div key={col.cagr} style={{textAlign:'center', background: cellBg, borderRadius:6, padding:'4px 2px'}}>
+                  <div style={{fontSize: isFocus ? 18 : 15, fontWeight:800, color: txtColor, lineHeight:1.2}}>{rcFmtUSD(monthly)}</div>
+                  <div style={{fontSize:14,color:'var(--t3)',marginTop:1,lineHeight:1.3}}>/月</div>
+                  {isFocus&&isSelected&&(
+                    <div style={{fontSize:14,color:'var(--t3)',marginTop:2}}>{rcFmtUSD(monthly*12)}/年</div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+    </Card>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   ANNUAL WITHDRAWAL RATE SELECTOR
+═══════════════════════════════════════════ */
+function WdRateSelector({ value, onChange }){
+  return (
+    <Card style={{padding:'18px 20px', marginBottom:16}} className="rc-fadeUp">
+      <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:12}}>
+        年間取り崩し率
+        <span style={{marginLeft:10, fontSize:14, fontWeight:500, color:'var(--t3)', verticalAlign:'middle'}}>結果に即座に反映されます</span>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8}}>
+        {WD_RATES.map(r=>{
+          const isSelected = r.pct===value;
+          return (
+            <button key={r.pct} onClick={()=>onChange(r.pct)} type="button"
+              className={`rc-wd-rate-btn ${isSelected?'active':''}`}>
+              <div style={{fontSize:17, fontWeight:800, color: isSelected ? 'var(--bl-dk)' : 'var(--t1)', lineHeight:1.2}}>{r.label}</div>
+              <div style={{fontSize:14,color:'var(--t3)',marginTop:4,lineHeight:1.3}}>{r.sub}</div>
+              {isSelected && r.safe && (<div style={{marginTop:4,fontSize:14,color:'var(--bl-dk)',fontWeight:600}}>デフォルト</div>)}
+            </button>
+          );
+        })}
+      </div>
+      {value !== 4 && (
+        <div style={{marginTop:12, padding:'11px 14px', background:'var(--yl-s)', border:'1.5px solid var(--yl-m)',
+          borderRadius:'var(--r-sm)', fontSize:14, color:'var(--yl)', lineHeight:1.65, fontWeight:500}}>
+          年{value}%の取り崩しはトリニティ4%ルールを上回っています。リターン次第では、想定より早く資産が尽きる可能性があります。
+        </div>
+      )}
+    </Card>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   SCENARIO TABLE
+═══════════════════════════════════════════ */
+function ScenarioTable({ scenarios, selectedIdx, onSelect, withdrawalMonthly, effectiveTarget, wdPct }){
+  return (
+    <Card style={{overflow:'hidden',marginBottom:20}} className="rc-fadeUp">
+      <div style={{padding:'18px 20px 14px',borderBottom:'1px solid var(--bd)'}}>
+        <div style={{fontSize:17,fontWeight:700,color:'var(--t1)',marginBottom:3}}>リターンシナリオ別の必要毎月投資額</div>
+        <div style={{fontSize:14,color:'var(--t2)'}}>行をクリックすると、成長チャートがそのシナリオに切り替わります</div>
+      </div>
+      {scenarios.map((s,i)=>{
+        const sel=i===selectedIdx, m=s.monthly;
+        const impossible=m===null, done=m!==null&&m<=0;
+        return (
+          <div key={i} onClick={()=>!impossible&&onSelect(i)}
+            style={{display:'flex',alignItems:'center',gap:14,padding:'16px 20px',
+              cursor:impossible?'default':'pointer', background:sel?'var(--bl-s)':'transparent',
+              borderBottom:i<scenarios.length-1?'1px solid var(--bd)':'none', transition:'background .15s'}}>
+            <div className="rc-scenario-dot" style={{background:sel?'var(--bl)':'var(--bd)'}}/>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:5,flexWrap:'wrap'}}>
+                <Badge bg={s.badgeBg}>{s.label} {s.rate}%</Badge>
+                {s.recommended&&<Badge bg="#1A5276">おすすめ</Badge>}
+              </div>
+              <div style={{fontSize:14,color:'var(--t2)'}}>{s.desc}</div>
+            </div>
+            <div style={{textAlign:'right',flexShrink:0}}>
+              {impossible ? <div style={{fontSize:14,color:'var(--t3)'}}>算出不可</div>
+              : done ? <div style={{fontSize:14,fontWeight:700,color:'var(--bl-dk)'}}>すでに達成可能</div>
+              : (
+                <div>
+                  <div style={{fontSize:22,fontWeight:800,color:'var(--t1)',lineHeight:1.1}}>{rcFmtUSD(m)}</div>
+                  <div style={{fontSize:14,color:'var(--t2)',marginTop:3}}>毎月必要な金額</div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',borderTop:'2px solid var(--bd)'}}>
+        <div style={{padding:'16px 20px',borderRight:'1px solid var(--bd)'}}>
+          <div style={{fontSize:14,color:'var(--t2)',marginBottom:5}}>目標退職資産（年{wdPct}%で逆算）</div>
+          <div style={{fontSize:18,fontWeight:800,color:'var(--t1)'}}>{rcFmtUSD(effectiveTarget)}</div>
+        </div>
+        <div style={{padding:'16px 20px',background:'var(--info-bg)'}}>
+          <div style={{fontSize:14,color:'var(--t2)',marginBottom:5}}>退職後に取り崩せる毎月の金額</div>
+          <div style={{fontSize:18,fontWeight:800,color:'var(--info-text)'}}>{rcFmtUSD(withdrawalMonthly)}<span style={{fontSize:14,fontWeight:400,color:'var(--t3)',marginLeft:3}}>/月</span></div>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   INSIGHT CARD — cost of delaying
+═══════════════════════════════════════════ */
+function InsightCard({ currentAge, retireAge, currentAsset, monthlyBudget }){
+  const assetNow  = calcForwardAsset(currentAsset, monthlyBudget, retireAge-currentAge,    14);
+  const asset5    = calcForwardAsset(currentAsset, monthlyBudget, retireAge-(currentAge+5), 14);
+  const asset10   = calcForwardAsset(currentAsset, monthlyBudget, retireAge-(currentAge+10),14);
+
+  const cases = [
+    { label:'今すぐ始める', asset:assetNow, diff:null, highlight:true },
+    { label:'5年後に始める', asset:asset5,   diff:assetNow-asset5 },
+    { label:'10年後に始める', asset:asset10,  diff:assetNow-asset10 },
+  ];
+
+  return (
+    <Card style={{padding:'20px'}} className="rc-fadeUp">
+      <div style={{fontSize:17,fontWeight:700,color:'var(--t1)',marginBottom:4}}>
+        始めるのを先延ばしにすると、実際どれだけ損をするのか？
+      </div>
+      <div style={{fontSize:14,color:'var(--t2)',marginBottom:16,lineHeight:1.6}}>
+        S&P 500への投資（年率14%）を想定 — 先延ばしにするほど、複利効果を永久に取り戻せなくなります
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:10}}>
+        {cases.map((c,i)=>(
+          <div key={i} className="rc-insight-row" style={{background: c.highlight ? 'var(--gr-s)' : 'var(--inp-bg)', border: c.highlight ? '1.5px solid var(--gr-m)' : '1.5px solid transparent'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+              <div style={{fontSize:14,fontWeight:c.highlight?700:500,color:c.highlight?'var(--gr-dk)':'var(--t2)'}}>{c.label}</div>
+              <div style={{textAlign:'right'}}>
+                <div style={{fontSize:17,fontWeight:800, color:c.highlight?'var(--gr-dk)':'var(--t1)'}}>{rcFmtUSD(c.asset)}</div>
+                <div style={{fontSize:14,color:'var(--t3)',marginTop:2}}>退職時点の想定資産</div>
+              </div>
+            </div>
+            {c.diff!==null&&c.diff>0&&(
+              <div style={{marginTop:8,padding:'7px 10px', background:'var(--yl-s)',border:'1px solid var(--yl-m)',
+                borderRadius:7,fontSize:14,color:'var(--yl)',fontWeight:600}}>
+                <strong>今すぐ始める場合より{rcFmtUSD(c.diff)}少ない</strong>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <div style={{marginTop:14,padding:'13px 15px', background:'var(--yl-s)',border:'1px solid var(--yl-m)',
+        borderRadius:'var(--r-sm)',fontSize:14,color:'var(--yl)',lineHeight:1.75,fontWeight:500}}>
+        5年の先延ばしは、単に5年分のリターンを失うだけではありません。初期の投資分が得るはずだった約20年分の複利効果を、永久に失うことになります。今この瞬間が、あなたの投資人生において残された最も早いスタート地点です。
+      </div>
+    </Card>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   MAIN APP
+═══════════════════════════════════════════ */
+function App(){
+  const [currentAge,      setCurrentAge]      = useState(40);
+  const [retireAge,       setRetireAge]       = useState(60);
+  const [currentAsset,    setCurrentAsset]    = useState(0);
+  const [monthlyBudget,   setMonthlyBudget]   = useState(0);
+  const [withdrawalRate,  setWithdrawalRate]  = useState(4);
+  const [selectedScenario, setSelectedScenario] = useState(1);
+  const [chartReturnRate, setChartReturnRate] = useState(14);
+  const [result,          setResult]          = useState(null);
+  const [dirty,           setDirty]           = useState(false);
+  const [btnState,        setBtnState]        = useState('idle');
+
+  const yearsLeft = retireAge - currentAge;
+  const canCalc = yearsLeft > 0;
+
+  let residualInfo = null;
+  if(result && result.effectiveTarget > 0){
+    const totalYears = Math.max(5, 80 - retireAge);
+    const finalAge = retireAge + totalYears;
+    const col = result.gridData[selectedScenario];
+    const sim = calcWithdrawalSim(result.effectiveTarget, result.withdrawalMonthly, col.cagr, totalYears);
+    const lastRow = sim.rows[sim.rows.length-1];
+    residualInfo = {
+      finalAge, cagr: col.cagr,
+      finalAmt: lastRow ? lastRow.asset : 0,
+      exhausted: sim.exhaustedYear !== null,
+      exhaustedYear: sim.exhaustedYear,
+    };
+  }
+
+  const WD_TABLE_RATES = [15, 10, 8, 4];
+
+  const buildForwardGrid = useCallback((budget) => {
+    const yl = retireAge - currentAge;
+    return SCENARIOS.map(s => {
+      const retirementAsset = calcForwardAsset(currentAsset, budget, yl, s.rate);
+      const incomes = WD_TABLE_RATES.map(rate => ({ rate, monthly: Math.round(retirementAsset * rate / 100 / 12) }));
+      return { cagr: s.rate, label: s.label, retirementAsset, incomes };
+    });
+  }, [currentAge, retireAge, currentAsset]);
+
+  const handleWdRateChange = useCallback((rate) => {
+    setWithdrawalRate(rate);
+    if(result){
+      const col = result.gridData[selectedScenario];
+      const inc = col.incomes.find(i => i.rate === rate) || col.incomes[3];
+      setResult(prev => ({ ...prev, withdrawalMonthly: inc.monthly, effectiveTarget: col.retirementAsset, withdrawalRate: rate }));
+    }
+  }, [result, selectedScenario]);
+
+  const handleScenarioSelect = useCallback((idx) => {
+    setSelectedScenario(idx);
+    if(result){
+      const col = result.gridData[idx];
+      const inc = col.incomes.find(i => i.rate === withdrawalRate) || col.incomes[3];
+      const newChart = calcAccumulation(currentAge, retireAge, currentAsset, sN(monthlyBudget), col.cagr);
+      setResult(prev => ({ ...prev, chartData: newChart, effectiveTarget: col.retirementAsset, withdrawalMonthly: inc.monthly, chartReturnRate: col.cagr }));
+    }
+  }, [result, withdrawalRate, monthlyBudget, currentAge, retireAge, currentAsset]);
+
+  const handleChartRateChange = useCallback((rate) => {
+    setChartReturnRate(rate);
+    if(result){
+      const newChart = calcAccumulation(currentAge, retireAge, currentAsset, sN(monthlyBudget), rate);
+      setResult(prev => ({...prev, chartData: newChart, chartReturnRate: rate}));
+    }
+  }, [result, monthlyBudget, currentAge, retireAge, currentAsset]);
+
+  const handleCalc = useCallback(() => {
+    if(btnState === 'loading') return;
+    setBtnState('loading');
+    setTimeout(() => {
+      const gridData = buildForwardGrid(monthlyBudget);
+      const col = gridData[selectedScenario];
+      const inc = col.incomes.find(i => i.rate === withdrawalRate) || col.incomes[3];
+      const safeRate = [7,14,21].includes(chartReturnRate) ? chartReturnRate : 14;
+      const chartData = calcAccumulation(currentAge, retireAge, currentAsset, sN(monthlyBudget), safeRate);
+      setResult({ gridData, chartData, withdrawalMonthly: inc.monthly, effectiveTarget: col.retirementAsset, withdrawalRate, chartReturnRate: safeRate });
+      setDirty(false);
+      setBtnState('done');
+      setTimeout(() => setBtnState('idle'), 1000);
+    }, 1500);
+  }, [currentAge, retireAge, currentAsset, monthlyBudget, selectedScenario, withdrawalRate, chartReturnRate, buildForwardGrid, btnState]);
+
+  return (
+    <div style={{maxWidth:1180,margin:'0 auto'}}>
+      <div style={{marginBottom:18}}>
+        <h2 style={{fontSize:20,fontWeight:800,color:'var(--t1)',letterSpacing:'-.01em',lineHeight:1.3,marginBottom:6}}>
+          老後資金逆算計算機
+        </h2>
+        <div style={{fontSize:14,color:'var(--t2)'}}>
+          年齢・現在の資産・毎月の投資額を入力すると、退職時点の想定資産と取り崩し率別の毎月引き出し可能額が分かります。
+        </div>
+      </div>
+
+      <div className="rc-layout">
+        <div className="rc-sticky">
+          <Card style={{padding:'22px'}}>
+            <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:18,paddingBottom:14,borderBottom:'1px solid var(--bd)'}}>
+              投資条件の入力
+            </div>
+            <div style={{marginBottom:20}}>
+              <div className="rc-input-label">年齢</div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+                <div>
+                  <div style={{fontSize:14,color:'var(--t3)',marginBottom:6}}>現在の年齢</div>
+                  <div style={{display:'flex',alignItems:'center',gap:6}}>
+                    <NumInput value={currentAge} onChange={v=>{setCurrentAge(v); if(result) setDirty(true);}} style={{flex:1}}/>
+                  </div>
+                </div>
+                <div>
+                  <div style={{fontSize:14,color:'var(--t3)',marginBottom:6}}>目標退職年齢</div>
+                  <div style={{display:'flex',alignItems:'center',gap:6}}>
+                    <NumInput value={retireAge} onChange={v=>{setRetireAge(v); if(result) setDirty(true);}} style={{flex:1}}/>
+                  </div>
+                </div>
+              </div>
+              <div style={{marginTop:10, padding:'10px 14px', background: yearsLeft>0 ? 'var(--bl-s)' : 'var(--rd-s)',
+                border: yearsLeft>0 ? '1.5px solid var(--bl-m)' : '1.5px solid rgba(204,34,0,.3)', borderRadius:'var(--r-sm)',
+                fontSize:14, fontWeight:600, color: yearsLeft>0 ? 'var(--bl-dk)' : 'var(--rd)'}}>
+                {yearsLeft>0 ? `投資期間：${yearsLeft}年（${yearsLeft*12}ヶ月）` : '目標退職年齢は現在の年齢より大きくしてください'}
+              </div>
+            </div>
+            <div style={{marginBottom:20}}>
+              <div className="rc-input-label">現在の資産</div>
+              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                <span style={{fontSize:16,color:'var(--t2)',fontWeight:600}}>$</span>
+                <NumInput value={currentAsset} onChange={v=>{setCurrentAsset(v); if(result) setDirty(true);}} style={{flex:1}}/>
+              </div>
+              {currentAsset>0&&<div style={{fontSize:14,color:'var(--t3)',marginTop:6}}>{rcFmtUSD(currentAsset)}</div>}
+            </div>
+            <div style={{marginBottom:20}}>
+              <div className="rc-input-label" style={{marginBottom:4}}>投資可能な毎月の金額</div>
+              <div className="rc-input-hint">入力すると、結果テーブルで十分かどうかが即座に分かります</div>
+              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                <span style={{fontSize:16,color:'var(--t2)',fontWeight:600}}>$</span>
+                <NumInput value={monthlyBudget} onChange={v=>{ setMonthlyBudget(v); if(result) setDirty(true); }} style={{flex:1}}/>
+                <span style={{fontSize:14,color:'var(--t2)',flexShrink:0,fontWeight:500}}>/月</span>
+              </div>
+              {monthlyBudget>0&&(<div style={{marginTop:6,fontSize:14,color:'var(--bl-dk)',fontWeight:500}}>年間{rcFmtUSD(monthlyBudget*12)}投資可能</div>)}
+            </div>
+            {dirty&&(
+              <div style={{marginBottom:14,padding:'10px 14px', background:'var(--yl-s)',border:'1.5px solid var(--yl-m)',
+                borderRadius:'var(--r-sm)',fontSize:14,color:'var(--yl)',fontWeight:500}}>
+                入力内容が変更されました。再計算してください。
+              </div>
+            )}
+            <button type="button" onClick={handleCalc} disabled={!canCalc || btnState==='loading'} className="rc-btn-calc"
+              style={{
+                cursor: (!canCalc||btnState==='loading') ? 'not-allowed' : 'pointer',
+                opacity: !canCalc ? 0.45 : 1,
+                background: btnState==='done' ? '#1A7030' : btnState==='loading' ? '#40D870' : 'var(--bl)',
+                boxShadow: btnState==='loading' ? '0 2px 16px rgba(52,199,89,.55)' : '0 2px 10px rgba(52,199,89,.35)',
+              }}>
+              {btnState==='loading' && (<span className="rc-spin" style={{width:18, height:18, flexShrink:0, border:'2.5px solid rgba(255,255,255,0.35)', borderTop:'2.5px solid white', borderRadius:'50%'}}/>)}
+              {btnState==='done' && <span style={{fontSize:18}}>&#10003;</span>}
+              {btnState==='loading' ? '計算中...' : btnState==='done' ? '完了' : '逆算する'}
+            </button>
+          </Card>
+        </div>
+
+        <div>
+          {!result ? (
+            <Card style={{padding:'64px 40px',textAlign:'center'}}>
+              <svg width="56" height="56" viewBox="0 0 56 56" fill="none" style={{margin:'0 auto 20px'}}>
+                <rect width="56" height="56" rx="16" fill="var(--bl-s)"/>
+                <path d="M14 42L22 30L30 36L40 20" stroke="var(--bl)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="40" cy="16" r="5" fill="var(--bl)" opacity=".3"/>
+                <path d="M14 42h28" stroke="var(--t3)" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+              <div style={{fontSize:18,fontWeight:700,color:'var(--t1)',marginBottom:10}}>条件を入力して「逆算する」をクリックしてください</div>
+              <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.8,maxWidth:340,margin:'0 auto'}}>
+                年齢と現在の資産を入力し、リターン率と取り崩し率を選ぶと、<br/>
+                目標収入額ごとに必要な毎月投資額を一目で比較できます。
+              </div>
+            </Card>
+          ) : (
+            <>
+              <Card style={{padding:'18px 20px',marginBottom:20}} className="rc-fadeUp">
+                <div style={{marginBottom:14}}>
+                  <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:4}}>資産形成期のリターン率シミュレーション</div>
+                  <div style={{fontSize:16,fontWeight:700,color:'var(--bl-dk)',marginBottom:12}}>今後{yearsLeft}年間、どこに投資しますか？</div>
+                  {(()=>{
+                    const cur = [7,14,21].includes(result.chartReturnRate||chartReturnRate) ? (result.chartReturnRate||chartReturnRate) : 14;
+                    const tabs = [
+                      {r:7,  label:'保守的', desc:'S&P 500平均'},
+                      {r:14, label:'標準',     desc:'ナスダック100平均'},
+                      {r:21, label:'積極的',   desc:'好調期の水準'},
+                    ];
+                    return (
+                      <div className="rc-return-tabs">
+                        {tabs.map(t=>{
+                          const sel = t.r===cur;
+                          return (
+                            <button key={t.r} type="button" onClick={()=>handleChartRateChange(t.r)}
+                              className={`rc-return-tab ${sel?'active':''}`}>
+                              <div style={{fontSize:26, fontWeight:900, lineHeight:1.1, color: sel ? '#FFFFFF' : 'var(--t1)'}}>{t.r}%</div>
+                              <div style={{fontSize:14, fontWeight:700, marginTop:4, color: sel ? 'rgba(255,255,255,0.95)' : 'var(--t2)'}}>{t.label}</div>
+                              <div style={{fontSize:14, marginTop:3, color: sel ? 'rgba(255,255,255,0.7)' : 'var(--t3)'}}>{t.desc}</div>
+                              {!sel && (<div style={{marginTop:8, fontSize:14, fontWeight:700, color:'var(--bl-dk)', background:'var(--bl-s)', border:'1px solid var(--bl-m)', borderRadius:20, padding:'3px 8px', display:'inline-block', lineHeight:1.4}}>タップして選択</div>)}
+                              {sel && (<div style={{marginTop:8, fontSize:14, fontWeight:800, color:'rgba(255,255,255,0.9)'}}>&#10003; 選択中</div>)}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    );
+                  })()}
+                  <div className="rc-legend-row">
+                    {[['#FF6B6B','初期投資額'],['#FFB347','累計毎月投資額'],['#30D158','複利による増加分']].map(([c,l])=>(
+                      <span key={l} className="rc-legend-item"><span className="rc-legend-dot" style={{background:c}}/>{l}</span>
+                    ))}
+                  </div>
+                </div>
+                <AccumChart data={result.chartData}/>
+                {result.chartData.length>0&&(
+                  <div style={{marginTop:14,display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10}}>
+                    {[
+                      {label:'投資開始時', val:result.chartData[0]?.totalValue, sub:'1年目'},
+                      {label:'中間地点', val:result.chartData[Math.floor(result.chartData.length/2)]?.totalValue, sub:`${Math.floor(result.chartData.length/2)+1}年目`},
+                      {label:'退職時点', val:result.chartData[result.chartData.length-1]?.totalValue, sub:`${result.chartData.length}年目`},
+                    ].map((item,i)=>(
+                      <div key={i} className="rc-stat-mini">
+                        <div style={{fontSize:14,color:'var(--t3)',marginBottom:3}}>{item.label}（{item.sub}）</div>
+                        <div style={{fontSize:14,fontWeight:700,color:'var(--t1)'}}>{rcFmtUSD(item.val)}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Card>
+
+              <ResultsGrid gridData={result.gridData} withdrawalRate={result.withdrawalRate || withdrawalRate}
+                onRateChange={handleWdRateChange} selectedScenario={selectedScenario} onScenarioSelect={handleScenarioSelect}/>
+
+              {residualInfo && (
+                <div style={{marginBottom:20, padding:'20px 22px', borderRadius:12,
+                  border: residualInfo.exhausted ? '2px solid var(--rd)' : '2px solid var(--bl)',
+                  background: residualInfo.exhausted ? 'var(--rd-s)' : 'var(--bl-s)'}} className="rc-fadeUp">
+                  <div style={{fontSize:14,color:'var(--t2)',marginBottom:6}}>
+                    選択中のシナリオ（CAGR {residualInfo.cagr}%）— 年{result.withdrawalRate||4}%の取り崩し率
+                  </div>
+                  {residualInfo.exhausted ? (
+                    <>
+                      <div style={{fontSize:22,fontWeight:900,color:'var(--rd)',marginBottom:4}}>{residualInfo.exhaustedYear}年で資産が枯渇します</div>
+                      <div style={{fontSize:14,color:'var(--rd)',fontWeight:600}}>
+                        資産は{retireAge + (residualInfo.exhaustedYear||0)}歳でゼロになります。取り崩し率を下げるか、よりリターンの高いポートフォリオが必要です。
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div style={{fontSize:14,color:'var(--t2)',marginBottom:2}}>{residualInfo.finalAge}歳時点の想定残存資産</div>
+                      <div style={{fontSize:32,fontWeight:900,color:'var(--bl-dk)',lineHeight:1.1,marginBottom:4}}>{rcFmtUSD(residualInfo.finalAmt)}</div>
+                      <div style={{fontSize:14,color:'var(--gr-dk)',fontWeight:600}}>資産は生涯持続し、むしろ増え続ける可能性もあります。</div>
+                    </>
+                  )}
+                </div>
+              )}
+
+              <Card style={{padding:'18px 20px',marginBottom:20}} className="rc-fadeUp">
+                <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:4}}>
+                  取り崩し期間シミュレーション（年{result.withdrawalRate||4}%）
+                </div>
+                <div style={{fontSize:14,color:'var(--t2)',marginBottom:18,lineHeight:1.6}}>
+                  年{result.withdrawalRate||4}%を取り崩した場合、ポートフォリオのリターン率別に30年間で退職資産がどれだけ持続するかを示します。
+                </div>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:20}}>
+                  <div style={{padding:'18px',background:'var(--gr-s)',borderRadius:'var(--r-sm)',textAlign:'center',border:'1.5px solid var(--gr-m)'}}>
+                    <div style={{fontSize:14,color:'var(--t2)',marginBottom:6}}>目標退職資産</div>
+                    <div style={{fontSize:21,fontWeight:800,color:'var(--t1)',lineHeight:1}}>{rcFmtUSD(result.effectiveTarget)}</div>
+                  </div>
+                  <div style={{padding:'18px',background:'var(--info-bg)',borderRadius:'var(--r-sm)',textAlign:'center',border:'1.5px solid var(--info-bd)'}}>
+                    <div style={{fontSize:14,color:'var(--t2)',marginBottom:6}}>毎月の取り崩し額（年{result.withdrawalRate||4}%）</div>
+                    <div style={{fontSize:21,fontWeight:800,color:'var(--info-text)',lineHeight:1}}>{rcFmtUSD(result.withdrawalMonthly)}</div>
+                    <div style={{fontSize:14,color:'var(--t3)',marginTop:4}}>年間{rcFmtUSD(result.withdrawalMonthly*12)}</div>
+                  </div>
+                </div>
+                <div style={{fontSize:14,fontWeight:600,color:'var(--t2)',marginBottom:12}}>ポートフォリオのリターン率別・30年間の資産持続</div>
+                {result.effectiveTarget > 0 ? (
+                  <WithdrawalLineChart asset={result.effectiveTarget} monthlyWd={result.withdrawalMonthly} retireAge={retireAge}/>
+                ) : (
+                  <div style={{padding:'32px 20px',textAlign:'center',color:'var(--t3)',fontSize:14,background:'var(--inp-bg)',borderRadius:'var(--r-sm)'}}>
+                    資産または毎月の投資額を入力するとシミュレーションが表示されます
+                  </div>
+                )}
+                <div style={{marginTop:16,padding:'14px 16px', background:'var(--tip-bg)',border:'1px solid var(--tip-bd)',
+                  borderRadius:'var(--r-sm)',fontSize:14,color:'var(--tip-text)',lineHeight:1.8}}>
+                  <strong style={{color:'var(--t1)',fontWeight:700}}>このチャートの見方：</strong> 退職初日の資産残高から取り崩しを始めた場合、ポートフォリオの年間リターン率に応じて30年後にどれだけ残るかを示しています。<br/>
+                  リターンが高いほど、資産はまったく減らない、あるいはむしろ増え続ける可能性があります。数値は名目値で、インフレ調整は行っていません。
+                </div>
+              </Card>
+
+              <InsightCard currentAge={currentAge} retireAge={retireAge} currentAsset={currentAsset} monthlyBudget={monthlyBudget}/>
+            </>
+          )}
+        </div>
+      </div>
+
+      <div style={{marginTop:20}}>
+        <div className="rc-card" style={{padding:'18px 22px'}}>
+          <div style={{fontSize:14,fontWeight:700,color:'var(--t1)',marginBottom:10}}>リターン率の前提</div>
+          <div style={{display:'flex',flexDirection:'column',gap:6,fontSize:14,color:'var(--t2)',lineHeight:1.7}}>
+            <div><strong style={{color:'var(--bl-dk)'}}>7% 保守的</strong> — S&P 500の長期平均（約10%）に近い保守的なシナリオ。株式・債券混合ポートフォリオに近い水準です。</div>
+            <div><strong style={{color:'var(--bl-dk)'}}>14% 標準</strong> — 特定の期間（2010〜2024年）に実現した、ナスダック100（QQQ）の長期平均です。</div>
+            <div><strong style={{color:'#92400E'}}>21% 積極的</strong> — 一部の歴史的期間にのみ達成された、ナスダック100の好調期に近い楽観シナリオです。</div>
+          </div>
+          <div style={{marginTop:12,paddingTop:10,borderTop:'1px solid var(--bd)',fontSize:14,color:'var(--t3)',lineHeight:1.7}}>
+            複利計算そのものは正確ですが、将来のリターンは保証されておらず、実際の結果は大きく異なる場合があります。
+            投資判断の責任はすべて投資家自身に帰属します &middot; &copy; 2025&ndash;2026 EZLONG
+          </div>
+        </div>
+      </div>
+
+      <div style={{marginTop:24}}>
+        <div style={{marginBottom:20,paddingTop:8,borderTop:'1px solid var(--bd)'}}>
+          <div style={{fontSize:14,fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase', color:'var(--bl)',background:'var(--bl-s)',display:'inline-block', padding:'4px 12px',borderRadius:100,marginBottom:12}}>
+            複利の基礎知識
+          </div>
+          <div style={{fontSize:24,fontWeight:800,color:'var(--t1)',lineHeight:1.3,letterSpacing:'-.02em',marginBottom:8}}>
+            複利の「魔法」？<br/>数字は間違っていない
+          </div>
+          <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.8,maxWidth:680}}>
+            複利計算機を初めて使う人の反応は、たいてい同じです。
+            「これ、計算間違ってるんじゃないか？」「こんな数字、本当にあり得るのか？」
+            計算にも数字にも間違いはありません。複利は単なる算数です。
+            信じる・信じないの話ではなく、計算の話なのです。
+          </div>
+        </div>
+
+        <div className="rc-edu-grid">
+          <div className="rc-edu-card">
+            <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:10}}>なぜ私たちの脳は複利を理解しづらいのか</div>
+            <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.85}}>
+              人間の脳は<strong style={{color:'var(--t1)'}}>直線的に考えるように作られています</strong> — 1、2、3、4というように。
+              一方、複利は1、2、4、8、16と増えていきます。
+              この二つの成長パターンは最初こそほとんど差がありませんが、
+              時間が経つにつれてまったく異なる世界へと分岐していきます。<br/><br/>
+              私たちの脳がこの違いを直感的に理解できないのも無理はありません —
+              数十万年に及ぶ進化の過程で、誰も複利を計算する必要などなかったのですから。
+            </div>
+          </div>
+          <div className="rc-edu-card">
+            <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:10}}>複利の公式を一行で表すと</div>
+            <div style={{padding:'12px 16px', background:'var(--inp-bg)', borderRadius:'var(--r-sm)', fontSize:14, color:'var(--bl-dk)', fontWeight:700, marginBottom:12, lineHeight:1.6}}>
+              将来価値 = 元本 &times; (1 + 年間リターン)^経過年数
+            </div>
+            <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.85}}>
+              $10,000を年10%で運用すると：<br/>
+              &middot; 10年後: <strong style={{color:'var(--t1)'}}>$25,937</strong><br/>
+              &middot; 20年後: <strong style={{color:'var(--t1)'}}>$67,275</strong><br/>
+              &middot; 30年後: <strong style={{color:'var(--t1)'}}>$174,494</strong><br/>
+              一度きり$10,000を投じただけで、30年後には<strong style={{color:'var(--bl-dk)'}}>17倍以上</strong>に成長します。
+            </div>
+          </div>
+          <div className="rc-edu-card">
+            <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:10}}>なぜ最初の8〜10年はこれほど遅く感じるのか</div>
+            <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.85}}>
+              $10,000を年10%で運用した場合：<br/>
+              1年目の増加額は$1,000 &rarr; 2年目は$1,100 &rarr; 3年目は$1,210。<br/>
+              毎年少しずつ増えてはいますが、ほとんど実感がありません。<br/><br/>
+              しかし10年目には<strong style={{color:'var(--t1)'}}>その年だけで約$2,594</strong>、
+              20年目には<strong style={{color:'var(--t1)'}}>約$6,728</strong>、
+              30年目には<strong style={{color:'var(--bl-dk)'}}>約$17,449</strong>増加します。
+              1年間の増加額だけで、実に17倍近くに膨らんでいるのです。<br/><br/>
+              <strong style={{color:'var(--rd)'}}>この時点の直前でやめてしまうと、最も重要な区間をまさに逃すことになります。</strong>
+              まだ芽が出ていないからといって、植えた種を掘り返すようなものです。
+            </div>
+          </div>
+          <div className="rc-72-card">
+            <div style={{display:'inline-block', fontSize:14,fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',
+              background:'rgba(100,180,255,0.18)', border:'1px solid rgba(100,180,255,0.35)', borderRadius:100,padding:'3px 10px', color:'#90CAFF',marginBottom:10}}>
+              TIP — 72の法則
+            </div>
+            <div style={{fontSize:15,fontWeight:800,color:'#FFFFFF',marginBottom:10}}>30秒で複利をざっくり見積もる</div>
+            <div style={{padding:'12px 16px', background:'rgba(255,255,255,0.08)', borderRadius:'var(--r-sm)', fontSize:14,fontWeight:800, color:'#FFD60A', marginBottom:12, textAlign:'center'}}>
+              72 &divide; 年間リターン（%） = 元本が2倍になるまでの年数
+            </div>
+            <div style={{fontSize:14,color:'#C8DEFF',lineHeight:1.85}}>
+              &middot; 年7%の場合 &rarr; 72 &divide; 7 = <strong style={{color:'#FFFFFF'}}>約10.3年</strong>で2倍<br/>
+              &middot; 年10%の場合 &rarr; 72 &divide; 10 = <strong style={{color:'#FFFFFF'}}>7.2年</strong>で2倍<br/>
+              &middot; 年12%の場合 &rarr; 72 &divide; 12 = <strong style={{color:'#FFFFFF'}}>6年</strong>で2倍<br/><br/>
+              これは金融の世界で長く使われてきた近似計算法で、通常は正確な計算値と比べても
+              <strong style={{color:'#FFD60A'}}>誤差1%以内</strong>の精度があります。
+              同じ$10,000が年7%なら約21年、
+              年10%ならわずか14年で約$40,000に成長します。
+              <strong style={{color:'#90CAFF'}}>この7年の差が、結果をまったく変えてしまうのです。</strong>
+            </div>
+          </div>
+        </div>
+
+        <div className="rc-edu-card" style={{marginTop:16}}>
+          <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:10}}>老後資金には実際いくら必要なのか</div>
+          <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.85}}>
+            4%ルールのような老後資金目標の算出方法の考え方や限界について気になる方は、下記の記事をご覧ください。<br/>
+          </div>
+        </div>
+
+        <div style={{marginTop:20,fontSize:14,color:'var(--t3)',lineHeight:1.7,textAlign:'center',paddingBottom:20}}>
+          このシミュレーターは情報提供のみを目的としています。実際のリターンは異なる場合があります。投資判断の責任はすべて投資家自身に帰属します。 &copy; 2025&ndash;2026 EZLONG
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('rc-root')).render(<App/>);
+</script>
+
 
 <!-- ── 네이티브 앱 웹뷰 감지: ?embed=app 신호 처리 (2026-07-28) ── -->
 <script>

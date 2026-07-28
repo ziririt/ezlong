@@ -39,6 +39,9 @@
   <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/portfolio-manager.html">
   <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/portfolio-manager.html">
   <link rel="canonical" href="https://ezlong.com/zh/portfolio-manager.html">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -150,6 +153,149 @@
     .en-footer a { color:var(--blue); text-decoration:none; }
     .en-footer a:hover { text-decoration:underline; }
     @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+
+    #pm-root {
+      --card:#FFFFFF; --bg2:#FFFFFF; --bd:rgba(0,0,0,0.08); --t1:#1D1D1F; --t2:#6E6E73; --t3:#AEAEB2;
+      --bl:#0071E3; --bl-dk:#0040DD; --bl-s:rgba(0,113,227,0.10); --bl-m:rgba(0,113,227,0.18);
+      --gr:#34C759; --gr-dk:#248A3D; --gr-s:rgba(52,199,89,0.10); --gr-m:rgba(52,199,89,0.22);
+      --rd:#FF3B30; --rd-s:rgba(255,59,48,0.10);
+      --yl:#FF9F0A; --yl-s:rgba(255,159,10,0.12);
+      --pu:#BF5AF2; --pu-s:rgba(191,90,242,0.10);
+      --or:#FF6B35; --or-s:rgba(255,107,53,0.10);
+      --r-sm:8px;
+      --shadow:0 1px 4px rgba(0,0,0,.07); --shadow-lg:0 8px 30px rgba(0,0,0,.12);
+    }
+    @media (prefers-color-scheme: dark) {
+      #pm-root {
+        --card:#1C1C1E; --bg2:#1C1C1E; --bd:rgba(255,255,255,0.10); --t1:#F5F5F7; --t2:#EBEBF5; --t3:#8E8E93;
+        --bl:#0A84FF; --bl-dk:#409CFF; --bl-s:rgba(10,132,255,0.14); --bl-m:rgba(10,132,255,0.24);
+        --gr:#30D158; --gr-dk:#5FE377; --gr-s:rgba(48,209,88,0.14); --gr-m:rgba(48,209,88,0.26);
+        --rd:#FF453A; --rd-s:rgba(255,69,58,0.14);
+        --yl:#FF9F0A; --yl-s:rgba(255,159,10,0.16);
+        --pu:#BF5AF2; --pu-s:rgba(191,90,242,0.14);
+        --or:#FF7A47; --or-s:rgba(255,122,71,0.14);
+        --shadow:0 1px 4px rgba(0,0,0,.3); --shadow-lg:0 8px 30px rgba(0,0,0,.4);
+      }
+    }
+    #pm-root .pm-wrap { max-width:920px; margin:0 auto; }
+    #pm-root .step-bar { display:flex; align-items:center; justify-content:center; gap:0; margin-bottom:32px; flex-wrap:wrap; }
+    #pm-root .step-item { display:flex; align-items:center; gap:8px; }
+    #pm-root .step-dot { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0; transition:all .2s; }
+    #pm-root .step-dot.pending { background:var(--bd); color:var(--t3); }
+    #pm-root .step-dot.active { background:var(--bl); color:#fff; }
+    #pm-root .step-dot.done { background:var(--gr); color:#fff; }
+    #pm-root .step-label { font-size:14px; font-weight:600; color:var(--t3); white-space:nowrap; }
+    #pm-root .step-label.active { color:var(--t1); }
+    #pm-root .step-label.done { color:var(--gr); }
+    #pm-root .step-sep { width:32px; height:2px; background:var(--bd); margin:0 8px; }
+    #pm-root .step-content { animation:pmFadeIn .25s ease; }
+    @keyframes pmFadeIn { from{opacity:0;transform:translateY(6px);} to{opacity:1;transform:translateY(0);} }
+    #pm-root .page-title { font-size:24px; font-weight:800; letter-spacing:-0.02em; color:var(--t1); margin-bottom:8px; }
+    #pm-root .page-sub { font-size:14px; color:var(--t2); margin-bottom:24px; line-height:1.6; }
+    #pm-root .style-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
+    #pm-root .style-card { position:relative; background:var(--card); border:2px solid var(--bd); border-radius:var(--r-sm); padding:18px; cursor:pointer; transition:all .15s; }
+    #pm-root .style-card:hover { border-color:var(--bl-m); transform:translateY(-1px); box-shadow:var(--shadow); }
+    #pm-root .style-card.active { box-shadow:var(--shadow-lg); }
+    #pm-root .style-card-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; }
+    #pm-root .style-card-icon svg { width:20px; height:20px; }
+    #pm-root .style-card-name { font-size:14px; font-weight:800; color:var(--t1); margin-bottom:6px; }
+    #pm-root .style-card-desc { font-size:14px; color:var(--t2); line-height:1.55; }
+    #pm-root .style-card-check { position:absolute; top:14px; right:14px; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; }
+    #pm-root .leverage-row { margin-top:12px; display:flex; align-items:center; gap:8px; padding-top:10px; border-top:1px solid var(--bd); }
+    #pm-root .leverage-row input[type=checkbox] { width:16px; height:16px; accent-color:var(--rd); }
+    #pm-root .leverage-label { font-size:14px; color:var(--t2); }
+    #pm-root .custom-row { margin-top:12px; display:flex; flex-direction:column; gap:8px; }
+    #pm-root .custom-input { width:100%; padding:9px 12px; background:var(--bg2); border:1px solid var(--bd); border-radius:8px; font-size:14px; color:var(--t1); outline:none; }
+    #pm-root .pm-btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; border-radius:980px; padding:12px 22px; font-size:14px; font-weight:700; cursor:pointer; border:none; transition:all .15s; }
+    #pm-root .pm-btn-primary { background:var(--bl); color:#fff; }
+    #pm-root .pm-btn-primary:hover:not(:disabled) { background:var(--bl-dk); }
+    #pm-root .pm-btn-primary:disabled { opacity:.4; cursor:not-allowed; }
+    #pm-root .pm-btn-secondary { background:var(--bg2); color:var(--t1); border:1.5px solid var(--bd); }
+    #pm-root .pm-btn-secondary:hover { background:var(--bd); }
+    #pm-root .pm-btn-ghost { background:transparent; color:var(--t3); }
+    #pm-root .pm-btn-ghost:hover { color:var(--t1); }
+    #pm-root .etf-list { display:flex; flex-direction:column; gap:10px; }
+    #pm-root .etf-row { background:var(--card); border:1px solid var(--bd); border-radius:var(--r-sm); padding:14px 16px; }
+    #pm-root .etf-row-top { display:flex; align-items:flex-start; gap:12px; }
+    #pm-root .etf-cat-badge { flex-shrink:0; font-size:14px; font-weight:700; padding:3px 9px; border-radius:6px; margin-top:2px; }
+    #pm-root .etf-info { flex:1; min-width:0; }
+    #pm-root .etf-name { font-size:14px; font-weight:700; color:var(--t1); }
+    #pm-root .etf-ticker { font-size:14px; color:var(--t3); margin-top:2px; }
+    #pm-root .etf-return { font-size:14px; color:var(--bl); margin-top:2px; }
+    #pm-root .etf-controls { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+    #pm-root .etf-weight-input { width:56px; padding:7px 8px; text-align:right; background:var(--bg2); border:1px solid var(--bd); border-radius:6px; font-size:14px; color:var(--t1); outline:none; }
+    #pm-root .etf-pct { font-size:14px; color:var(--t3); }
+    #pm-root .etf-del { width:28px; height:28px; border-radius:6px; border:none; background:transparent; color:var(--rd); cursor:pointer; display:flex; align-items:center; justify-content:center; }
+    #pm-root .etf-del:hover { background:var(--rd-s); }
+    #pm-root .etf-slider-row { margin-top:10px; }
+    #pm-root .etf-slider { width:100%; accent-color:var(--bl); }
+    #pm-root .weight-total-label { font-size:14px; font-weight:700; color:var(--t2); }
+    #pm-root .weight-total-value { font-size:16px; font-weight:800; }
+    #pm-root .btn-add-etf { width:100%; margin-top:12px; padding:12px; border-radius:var(--r-sm); border:1.5px dashed var(--bd); background:transparent; color:var(--bl); font-size:14px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; }
+    #pm-root .btn-add-etf:hover { background:var(--bl-s); border-color:var(--bl-m); }
+    #pm-root .btn-nav-row { display:flex; justify-content:space-between; gap:10px; }
+    #pm-root .sim-return-badge { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:20px; font-size:14px; font-weight:700; margin-bottom:20px; }
+    #pm-root .sim-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+    #pm-root .sim-input-card { background:var(--card); border:1px solid var(--bd); border-radius:var(--r-sm); padding:16px; }
+    #pm-root .sim-input-label { font-size:14px; font-weight:700; color:var(--t2); margin-bottom:6px; }
+    #pm-root .sim-input-value { font-size:22px; font-weight:800; color:var(--t1); letter-spacing:-0.02em; margin-bottom:10px; }
+    #pm-root .sim-input-unit { font-size:14px; color:var(--t3); margin-left:4px; font-weight:600; }
+    #pm-root .sim-input-range { width:100%; accent-color:var(--bl); }
+    #pm-root .sim-input-range.green { accent-color:var(--gr); }
+    #pm-root .sim-input-minmax { display:flex; justify-content:space-between; font-size:14px; color:var(--t3); margin-top:4px; }
+    #pm-root .pie-wrap { display:flex; align-items:center; gap:20px; background:var(--card); border:1px solid var(--bd); border-radius:var(--r-sm); padding:16px; margin-bottom:20px; flex-wrap:wrap; }
+    #pm-root .pie-legend { display:flex; flex-direction:column; gap:6px; flex:1; min-width:160px; }
+    #pm-root .pie-legend-item { display:flex; align-items:center; gap:8px; font-size:14px; }
+    #pm-root .pie-legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+    #pm-root .pie-legend-pct { margin-left:auto; font-weight:700; }
+    #pm-root .result-metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:24px; }
+    #pm-root .metric-card { background:var(--card); border:1px solid var(--bd); border-radius:var(--r-sm); padding:16px; }
+    #pm-root .metric-label { font-size:14px; font-weight:700; color:var(--t2); margin-bottom:6px; }
+    #pm-root .metric-value { font-size:20px; font-weight:800; letter-spacing:-0.02em; }
+    #pm-root .metric-sub { font-size:14px; color:var(--t3); margin-top:3px; }
+    #pm-root .chart-wrap { background:var(--card); border:1px solid var(--bd); border-radius:var(--r-sm); padding:16px; margin-bottom:24px; position:relative; }
+    #pm-root .chart-legend { display:flex; gap:16px; margin-bottom:8px; }
+    #pm-root .legend-item { display:flex; align-items:center; gap:6px; font-size:14px; color:var(--t2); }
+    #pm-root .legend-dot { width:9px; height:9px; border-radius:2px; }
+    #pm-root .chart-tooltip { position:absolute; background:var(--card); border:1px solid var(--bd); border-radius:8px; padding:10px 12px; box-shadow:var(--shadow-lg); pointer-events:none; z-index:10; min-width:150px; }
+    #pm-root .chart-tooltip-year { font-size:14px; font-weight:700; color:var(--t1); margin-bottom:6px; }
+    #pm-root .chart-tooltip-row { display:flex; justify-content:space-between; gap:12px; font-size:14px; margin-top:3px; }
+    #pm-root .chart-tooltip-label { color:var(--t3); }
+    #pm-root .chart-tooltip-val { font-weight:700; }
+    #pm-root .portfolio-summary { background:var(--card); border:1px solid var(--bd); border-radius:var(--r-sm); padding:16px; margin-bottom:20px; }
+    #pm-root .portfolio-summary-title { font-size:14px; font-weight:700; color:var(--t2); margin-bottom:10px; }
+    #pm-root .portfolio-pills { display:flex; flex-wrap:wrap; gap:8px; }
+    #pm-root .portfolio-pill { font-size:14px; font-weight:700; padding:5px 12px; border-radius:20px; }
+    #pm-root .table-wrap { background:var(--card); border:1px solid var(--bd); border-radius:var(--r-sm); padding:16px; margin-bottom:20px; }
+    #pm-root .table-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+    #pm-root .table-title { font-size:14px; font-weight:700; color:var(--t2); }
+    #pm-root .table-toggle { background:transparent; border:none; color:var(--bl); font-size:14px; font-weight:700; cursor:pointer; }
+    #pm-root table { width:100%; border-collapse:collapse; }
+    #pm-root thead th { text-align:right; font-size:14px; font-weight:700; color:var(--t3); padding:8px 6px; border-bottom:1px solid var(--bd); }
+    #pm-root tbody td { text-align:right; font-size:14px; padding:9px 6px; border-bottom:1px solid var(--bd); color:var(--t2); }
+    #pm-root tbody tr:last-child td { border-bottom:none; }
+    #pm-root .td-profit { color:var(--gr); font-weight:700; }
+    #pm-root .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:1000; padding:20px; }
+    #pm-root .modal { background:var(--card); border-radius:16px; width:100%; max-width:480px; max-height:80vh; display:flex; flex-direction:column; box-shadow:var(--shadow-lg); }
+    #pm-root .modal-header { display:flex; justify-content:space-between; align-items:center; padding:16px 18px; border-bottom:1px solid var(--bd); }
+    #pm-root .modal-title { font-size:16px; font-weight:800; color:var(--t1); }
+    #pm-root .modal-close { width:28px; height:28px; border-radius:50%; border:none; background:var(--bg2); color:var(--t2); cursor:pointer; display:flex; align-items:center; justify-content:center; }
+    #pm-root .modal-search { padding:12px 18px; }
+    #pm-root .modal-search-input { width:100%; padding:10px 14px; background:var(--bg2); border:1px solid var(--bd); border-radius:10px; font-size:14px; color:var(--t1); outline:none; }
+    #pm-root .modal-body { overflow-y:auto; padding:0 10px 10px; flex:1; }
+    #pm-root .modal-etf-item { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 8px; border-radius:8px; cursor:pointer; }
+    #pm-root .modal-etf-item:hover { background:var(--bg2); }
+    #pm-root .modal-etf-info { flex:1; min-width:0; }
+    #pm-root .modal-etf-name { font-size:14px; font-weight:700; color:var(--t1); }
+    #pm-root .modal-etf-meta { font-size:14px; color:var(--t3); margin-top:2px; display:flex; gap:8px; }
+    #pm-root .modal-etf-add { width:26px; height:26px; border-radius:50%; border:none; background:var(--bl-s); color:var(--bl); cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    #pm-root .modal-manual { display:flex; gap:8px; padding:12px 18px; border-top:1px solid var(--bd); }
+    #pm-root .modal-manual-input { flex:1; padding:9px 12px; background:var(--bg2); border:1px solid var(--bd); border-radius:8px; font-size:14px; color:var(--t1); outline:none; }
+    @media (max-width:600px) {
+      #pm-root .sim-grid { grid-template-columns:1fr; }
+      #pm-root .step-label { display:none; }
+      #pm-root .step-sep { width:16px; }
+    }
   </style>
 </head>
 <body>
@@ -168,11 +314,10 @@
     <h1>投资组合复利模拟器</h1>
     <p class="hero-sub">按自定义配置比例，预测你整个多股票美股投资组合的复利增长</p>
     <div class="cta-group">
-      <a class="btn-primary" href="https://ezlong.com/portfolio-manager.html" target="_blank" rel="noopener">打开工具 &rarr;</a>
+      <a class="btn-primary" href="#calculator">免费试用 &darr;</a>
       <a class="btn-secondary" href="https://ezlong.com/zh/">浏览全部工具</a>
     </div>
-    <p class="auto-translate-note">工具界面为韩语 &mdash; Chrome、Edge 和 Safari 会自动翻译。</p>
-    <p class="translate-proxy-note">没有自动翻译？<a href="https://ezlong-com.translate.goog/portfolio-manager.html?_x_tr_sl=ko&amp;_x_tr_tl=zh-CN&amp;_x_tr_hl=zh-CN&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">用谷歌翻译打开 &rarr;</a></p>
+    <p class="auto-translate-note">完全中文界面 &mdash; 无需登录，无需下载，几秒钟即可看到结果。</p>
   </section>
   <div class="stats-row" role="region" aria-label="核心数据">
     <div class="stat-item"><div class="stat-value">多资产支持</div><div class="stat-label">每笔持仓自定义配置</div></div>
@@ -180,6 +325,9 @@
     <div class="stat-item"><div class="stat-value">100% 免费</div><div class="stat-label">无需注册</div></div>
   </div>
   <main class="main" id="main-content">
+    <section class="section" id="calculator">
+      <div id="pm-root"></div>
+    </section>
     <section class="section">
       <h2 class="section-title">什么是投资组合复利模拟器？</h2>
       <p class="section-body">投资组合复利模拟器让你可以对你实际的多股票投资组合的长期复利增长进行建模。与只能处理单一资产的简单复利计算器不同，这款工具让你可以定义一个由多只美股和ETF组成的完整投资组合——每一项都拥有各自的配置权重和预期年化收益率——并计算整体随时间产生的合并复利增长。</p>
@@ -283,9 +431,8 @@
     </section>
     <div class="cta-card">
       <h2>立即体验投资组合复利模拟器</h2>
-      <p>免费、无需注册，浏览器中即刻运行。Chrome会自动将韩语翻译成中文。</p>
-      <a class="btn-white" href="https://ezlong.com/portfolio-manager.html" target="_blank" rel="noopener">打开投资组合复利模拟器 &rarr;</a>
-      <p class="translate-proxy-note">没有自动翻译？<a href="https://ezlong-com.translate.goog/portfolio-manager.html?_x_tr_sl=ko&amp;_x_tr_tl=zh-CN&amp;_x_tr_hl=zh-CN&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">用谷歌翻译打开 &rarr;</a></p>
+      <p>免费、无需注册，浏览器中即刻运行。</p>
+      <a class="btn-white" href="#calculator">返回模拟器 &uarr;</a>
     </div>
   </main>
   <footer class="en-footer" role="contentinfo">
@@ -293,6 +440,966 @@
     &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
     <small>仅供教育参考，不构成投资建议。所有投资均有风险，过往业绩不代表未来表现。</small></p>
   </footer>
+
+<script type="text/babel">
+const { useState, useMemo, useRef, useEffect, useCallback } = React;
+
+/* ═══════════════════════════════════════════════
+   数据 — 全球可交易的真实美股ETF
+═══════════════════════════════════════════════ */
+const ETFS = {
+  XLK: { ticker:'XLK', name:'Technology Select Sector SPDR Fund', category:'Core', description:'涵盖苹果、微软、英伟达等美国大型科技龙头', annualReturn:21 },
+  QQQ: { ticker:'QQQ', name:'Invesco QQQ Trust', category:'Core', description:'跟踪纳斯达克100指数——经典的科技成长指数基金', annualReturn:21 },
+  QQQM: { ticker:'QQQM', name:'Invesco NASDAQ 100 ETF', category:'Core', description:'QQQ的低费率版本，跟踪同一纳斯达克100指数', annualReturn:21 },
+  SPY: { ticker:'SPY', name:'SPDR S&P 500 ETF Trust', category:'Core', description:'分散配置于美国市值最大的500家公司', annualReturn:14 },
+  QLD: { ticker:'QLD', name:'ProShares Ultra QQQ（2倍杠杆）', category:'Core', description:'追求纳斯达克100指数每日收益的2倍', annualReturn:29 },
+  TQQQ: { ticker:'TQQQ', name:'ProShares UltraPro QQQ（3倍杠杆）', category:'Core', description:'追求纳斯达克100指数每日收益的3倍', annualReturn:34 },
+  SMH: { ticker:'SMH', name:'VanEck Semiconductor ETF', category:'Infrastructure', description:'支撑AI基础设施的全球核心半导体硬件', annualReturn:27 },
+  USD: { ticker:'USD', name:'ProShares Ultra Semiconductors（2倍杠杆）', category:'Infrastructure', description:'追求半导体板块每日收益的2倍', annualReturn:52.5 },
+  SOXL: { ticker:'SOXL', name:'Direxion Daily Semiconductor Bull 3X', category:'Infrastructure', description:'追求半导体板块每日收益的3倍', annualReturn:31 },
+  BOTZ: { ticker:'BOTZ', name:'Global X Robotics & Artificial Intelligence ETF', category:'Satellite', description:'覆盖硬件与软件全产业链的AI与机器人主题', annualReturn:20 },
+  QTUM: { ticker:'QTUM', name:'Defiance Quantum ETF', category:'Satellite', description:'对量子计算这一新兴技术的小仓位战略布局', annualReturn:20 },
+  JEPQ: { ticker:'JEPQ', name:'JPMorgan Nasdaq Equity Premium Income ETF', category:'Satellite', description:'基于纳斯达克100的备兑看涨期权收益基金，追求高收益', annualReturn:16 },
+  ITA: { ticker:'ITA', name:'iShares U.S. Aerospace & Defense ETF', category:'Buffer', description:'押注美国国防周期与全球安全支出', annualReturn:12 },
+  XLV: { ticker:'XLV', name:'Health Care Select Sector SPDR Fund', category:'Buffer', description:'受益于人口老龄化的大型制药、生物科技和医疗器械股', annualReturn:11 },
+  XLU: { ticker:'XLU', name:'Utilities Select Sector SPDR Fund', category:'Buffer', description:'直接受益于AI数据中心用电需求增长的传统基础设施板块', annualReturn:10 },
+  SCHD: { ticker:'SCHD', name:'Schwab U.S. Dividend Equity ETF', category:'Defensive', description:'来自优质派息股的稳定收益与股息增长', annualReturn:11.5 },
+  JEPI: { ticker:'JEPI', name:'JPMorgan Equity Premium Income ETF', category:'Defensive', description:'基于标普500的备兑看涨期权收益基金，追求稳定收益', annualReturn:8.5 },
+  GLD: { ticker:'GLD', name:'SPDR Gold Shares', category:'Defensive', description:'配置实物黄金，对冲美元走弱与地缘政治风险', annualReturn:7.5 },
+  XLP: { ticker:'XLP', name:'Consumer Staples Select Sector SPDR Fund', category:'Defensive', description:'纯防御性缓冲——在下跌行情中依然坚挺的日常消费品股', annualReturn:7.5 },
+  TLT: { ticker:'TLT', name:'iShares 20+ Year Treasury Bond ETF', category:'Defensive', description:'久期20年以上的美国长期国债', annualReturn:1 },
+  CASH: { ticker:'CASH', name:'战略现金储备', category:'Cash', description:'预留流动性，用于在市场下跌时加仓', annualReturn:3 },
+};
+
+const STYLES = {
+  RECOMMENDED_2026: {
+    label:'2026年AI大变革生存模型',
+    desc:'50%核心配置、20%卫星配置、20%缓冲配置、10%现金——为应对2026年AI行业震荡而设计',
+    color:'#0071E3', bgColor:'var(--bl-s)',
+    weights: [
+      { ticker:'XLK', weight:25 }, { ticker:'QQQ', weight:15 },
+      { ticker:'SMH', weight:10 }, { ticker:'BOTZ', weight:10 },
+      { ticker:'QTUM', weight:8 }, { ticker:'JEPQ', weight:8 },
+      { ticker:'ITA', weight:8 }, { ticker:'XLV', weight:7 },
+      { ticker:'XLU', weight:5 }, { ticker:'CASH', weight:4 }
+    ]
+  },
+  AGGRESSIVE_AI: {
+    label:'AI／半导体激进增长型',
+    desc:'超过70%集中于核心基础设施与平台，追求最大化上涨潜力',
+    color:'#FF3B30', bgColor:'var(--rd-s)',
+    weights: [
+      { ticker:'SMH', weight:30 }, { ticker:'XLK', weight:25 },
+      { ticker:'BOTZ', weight:20 }, { ticker:'QTUM', weight:15 },
+      { ticker:'JEPQ', weight:10 }
+    ],
+    leverage: [
+      { ticker:'SMH', weight:20 }, { ticker:'XLK', weight:18 },
+      { ticker:'BOTZ', weight:15 }, { ticker:'QTUM', weight:7 },
+      { ticker:'TQQQ', weight:15 }, { ticker:'SOXL', weight:15 },
+      { ticker:'USD', weight:10 }
+    ]
+  },
+  MODERATE_AI: {
+    label:'AI／半导体稳健增长型',
+    desc:'追求AI增长的同时，加入防御性公用事业与医疗健康股以提升稳定性',
+    color:'#FF9F0A', bgColor:'var(--yl-s)',
+    weights: [
+      { ticker:'XLK', weight:40 }, { ticker:'SMH', weight:20 },
+      { ticker:'XLU', weight:15 }, { ticker:'XLV', weight:15 },
+      { ticker:'CASH', weight:10 }
+    ]
+  },
+  STABLE_AI: {
+    label:'AI／半导体稳定型',
+    desc:'大型科技核心配置结合股息增长与医疗健康股，以管理波动性',
+    color:'#34C759', bgColor:'var(--gr-s)',
+    weights: [
+      { ticker:'QQQM', weight:35 }, { ticker:'SMH', weight:5 },
+      { ticker:'SCHD', weight:20 }, { ticker:'XLV', weight:20 },
+      { ticker:'XLU', weight:10 }, { ticker:'GLD', weight:10 }
+    ]
+  },
+  MAX_STABLE_AI: {
+    label:'AI最大稳定型',
+    desc:'保留AI主题的同时，将黄金、现金和日常消费品的配置比例最大化',
+    color:'#BF5AF2', bgColor:'var(--pu-s)',
+    weights: [
+      { ticker:'QQQM', weight:20 }, { ticker:'SCHD', weight:20 },
+      { ticker:'XLP', weight:20 }, { ticker:'GLD', weight:20 },
+      { ticker:'CASH', weight:20 }
+    ]
+  },
+  NON_AI_STABLE: {
+    label:'非AI主题稳定／低波动型',
+    desc:'通过传统资产配置实现最大稳定性，完全独立于AI板块',
+    color:'#636366', bgColor:'rgba(99,99,102,0.10)',
+    weights: [
+      { ticker:'SCHD', weight:30 }, { ticker:'XLP', weight:30 },
+      { ticker:'GLD', weight:20 }, { ticker:'CASH', weight:20 }
+    ]
+  },
+  BASIC_NON_AI: {
+    label:'非AI基础型',
+    desc:'最常见的基础组合，将美国旗舰指数与股息股相结合',
+    color:'#8E8E93', bgColor:'rgba(142,142,147,0.10)',
+    weights: [
+      { ticker:'QQQ', weight:50 }, { ticker:'SPY', weight:30 },
+      { ticker:'SCHD', weight:20 }
+    ]
+  },
+  CUSTOM: {
+    label:'完全自定义',
+    desc:'按你自己设定的配置比例，构建专属投资组合',
+    color:'#FF6B35', bgColor:'var(--or-s)',
+    weights: [
+      { ticker:'XLK', weight:25 }, { ticker:'SMH', weight:17 },
+      { ticker:'BOTZ', weight:8 }, { ticker:'XLU', weight:25 },
+      { ticker:'SCHD', weight:25 }
+    ]
+  }
+};
+
+const CATEGORY_COLORS = {
+  Core:'#0071E3', Infrastructure:'#FF9F0A',
+  Satellite:'#BF5AF2', Defensive:'#34C759',
+  Buffer:'#FF6B35', Cash:'#8E8E93',
+};
+
+const STYLE_ICONS = {
+  RECOMMENDED_2026: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M10 2l2.09 4.26L17 7.27l-3.5 3.41.83 4.82L10 13.27l-4.33 2.23.83-4.82L3 7.27l4.91-.71z"/>
+    </svg>
+  ),
+  AGGRESSIVE_AI: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M10 2v4M6.5 6.5l-2.8-2.8M13.5 6.5l2.8-2.8M2 10h4M18 10h-4M4.9 15.1l2.8-2.8M15.1 15.1l-2.8-2.8M10 18v-4"/>
+      <circle cx="10" cy="10" r="3"/>
+    </svg>
+  ),
+  MODERATE_AI: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M4 15l4-8 4 6 2-3 3 5"/>
+    </svg>
+  ),
+  STABLE_AI: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M10 2l6 3v5c0 3.87-2.56 7.5-6 9-3.44-1.5-6-5.13-6-9V5z"/>
+    </svg>
+  ),
+  MAX_STABLE_AI: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M10 2l5 2.5v4.5c0 3.2-2.1 6.2-5 7.5-2.9-1.3-5-4.3-5-7.5V4.5z"/>
+      <path d="M10 5l3.5 1.75v3.25c0 2.2-1.5 4.25-3.5 5.25"/>
+    </svg>
+  ),
+  NON_AI_STABLE: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M10 4a4 4 0 100 8 4 4 0 000-8z"/>
+      <path d="M6 16h8M10 12v4"/>
+      <path d="M3 16c0-2.76 3.13-5 7-5s7 2.24 7 5"/>
+    </svg>
+  ),
+  BASIC_NON_AI: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M3 9l7-6 7 6v9H3z"/>
+      <path d="M8 18v-6h4v6"/>
+    </svg>
+  ),
+  CUSTOM: (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <circle cx="10" cy="10" r="3"/>
+      <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42"/>
+    </svg>
+  ),
+};
+
+/* ═══════════════════════════════════════════════
+   工具函数 — 万/亿/万亿（与 zh/dca-simulator 完全一致）
+═══════════════════════════════════════════════ */
+function pmTrim(s){
+  if(s.indexOf('.')===-1) return s;
+  return s.replace(/0+$/,'').replace(/\.$/,'');
+}
+function pmFmtUSD(n){
+  const num=Number(n); if(isNaN(num)||!isFinite(num)) return '$0';
+  const sign=num<0?'-':''; const abs=Math.abs(num);
+  if(abs>=1e12||Math.round((abs/1e8)*100)/100>=10000){
+    return sign+'$'+pmTrim((abs/1e12).toFixed(2))+'万亿';
+  }
+  if(abs>=1e8||Math.round((abs/1e4)*100)/100>=10000){
+    return sign+'$'+pmTrim((abs/1e8).toFixed(2))+'亿';
+  }
+  if(abs>=1e4){
+    return sign+'$'+pmTrim((abs/1e4).toFixed(2))+'万';
+  }
+  return sign+'$'+Math.round(abs).toLocaleString('en-US');
+}
+function pmYTick(v){
+  const num=Number(v); if(isNaN(num)||!isFinite(num)) return '$0';
+  const sign=num<0?'-':''; const abs=Math.abs(num);
+  if(abs>=1e12||Math.round((abs/1e8)*10)/10>=10000) return sign+'$'+pmTrim((abs/1e12).toFixed(1))+'万亿';
+  if(abs>=1e8||Math.round((abs/1e4)*10)/10>=10000) return sign+'$'+pmTrim((abs/1e8).toFixed(1))+'亿';
+  if(abs>=1e4) return sign+'$'+pmTrim((abs/1e4).toFixed(1))+'万';
+  return sign+'$'+Math.round(abs);
+}
+
+function calculatePortfolioReturn(items) {
+  const total = items.reduce((s, it) => s + it.weight, 0);
+  if (total === 0) return 0;
+  return items.reduce((s, it) => {
+    const r = it.annualReturn ?? it.etf.annualReturn;
+    return s + r * (it.weight / total);
+  }, 0);
+}
+
+function runSimulation(portfolio, init, monthly, duration) {
+  const wr = calculatePortfolioReturn(portfolio);
+  const monthlyRate = Math.pow(1 + wr / 100, 1 / 12) - 1;
+  let bal = init;
+  const results = [];
+  for (let yr = 0; yr <= duration; yr++) {
+    results.push({
+      year: yr,
+      balance: Math.round(bal),
+      contribution: Math.round(init + monthly * 12 * yr),
+    });
+    if (yr < duration) {
+      for (let m = 0; m < 12; m++) {
+        bal = (bal + monthly) * (1 + monthlyRate);
+      }
+    }
+  }
+  return results;
+}
+
+/* ═══════════════════════════════════════════════
+   面积图（基于ResizeObserver，确保文字始终以真实14px渲染）
+═══════════════════════════════════════════════ */
+function SimChart({ data }) {
+  const wrapRef = useRef(null);
+  const [tooltip, setTooltip] = useState(null);
+  const [W, setW] = useState(0);
+
+  useEffect(() => {
+    const el = wrapRef.current; if (!el) return;
+    const obs = new ResizeObserver(([e]) => setW(e.contentRect.width || e.target.offsetWidth));
+    obs.observe(el);
+    const initial = el.getBoundingClientRect().width || el.offsetWidth;
+    if (initial > 0) setW(initial);
+    return () => obs.disconnect();
+  }, []);
+
+  const H = W < 500 ? 260 : 300;
+  const pad = { top: 16, right: 20, bottom: 36, left: 76 };
+  const cw = Math.max(1, W - pad.left - pad.right);
+  const ch = H - pad.top - pad.bottom;
+
+  const maxV = Math.max(...data.map(d => d.balance), 1);
+  const xS = i => (i / Math.max(data.length - 1, 1)) * cw;
+  const yS = v => ch - Math.max(0, (v / maxV)) * ch;
+
+  const pts = (key) => data.map((d, i) => `${xS(i)},${yS(d[key])}`).join(' ');
+  const areaPath = (key) => {
+    const ps = data.map((d, i) => `${xS(i)},${yS(d[key])}`);
+    return `M 0,${ch} L ${ps.join(' L ')} L ${xS(data.length-1)},${ch} Z`;
+  };
+
+  const yTickCount = 5;
+  const yTicks = Array.from({length: yTickCount + 1}, (_, i) => ({
+    v: Math.round((maxV * i) / yTickCount / 100) * 100,
+    y: yS(Math.round((maxV * i) / yTickCount / 100) * 100)
+  }));
+
+  const xStep = data.length <= 11 ? 1 : data.length <= 21 ? 2 : 5;
+  const xTicks = data.filter((d, i) => i % xStep === 0 || i === data.length - 1);
+
+  const handleMouseMove = (e) => {
+    if (!wrapRef.current) return;
+    const rect = wrapRef.current.getBoundingClientRect();
+    const rawX = e.clientX - rect.left - pad.left;
+    const pct = rawX / cw;
+    const idx = Math.min(data.length - 1, Math.max(0, Math.round(pct * (data.length - 1))));
+    if (idx >= 0 && idx < data.length) setTooltip({ idx });
+  };
+
+  const td = tooltip && data[tooltip.idx];
+  if (!W) return <div ref={wrapRef} style={{width:'100%',height:260}}/>;
+
+  return (
+    <div ref={wrapRef} style={{position:'relative'}}>
+      <svg width={W} height={H} style={{width:'100%',height:'auto',display:'block'}}
+        onMouseMove={handleMouseMove} onMouseLeave={() => setTooltip(null)}>
+        <defs>
+          <linearGradient id="pmGBal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#0071E3" stopOpacity="0.25"/>
+            <stop offset="100%" stopColor="#0071E3" stopOpacity="0.03"/>
+          </linearGradient>
+          <linearGradient id="pmGCon" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#8E8E93" stopOpacity="0.22"/>
+            <stop offset="100%" stopColor="#8E8E93" stopOpacity="0.02"/>
+          </linearGradient>
+        </defs>
+        <g transform={`translate(${pad.left},${pad.top})`}>
+          {yTicks.map((t, i) => (
+            <g key={i}>
+              <line x1="0" y1={t.y} x2={cw} y2={t.y} stroke="rgba(0,0,0,0.06)" strokeWidth="1"/>
+              <text x="-8" y={t.y + 4} textAnchor="end" fontSize="14" fill="var(--t3)">{pmYTick(t.v)}</text>
+            </g>
+          ))}
+          <path d={areaPath('balance')} fill="url(#pmGBal)"/>
+          <path d={areaPath('contribution')} fill="url(#pmGCon)"/>
+          <polyline points={pts('balance')} fill="none" stroke="#0071E3" strokeWidth="2.2" strokeLinejoin="round"/>
+          <polyline points={pts('contribution')} fill="none" stroke="#8E8E93" strokeWidth="1.5"
+            strokeLinejoin="round" strokeDasharray="5 3"/>
+          {tooltip && (
+            <>
+              <line x1={xS(tooltip.idx)} y1={0} x2={xS(tooltip.idx)} y2={ch}
+                stroke="#AEAEB2" strokeWidth="1" strokeDasharray="3 2"/>
+              <circle cx={xS(tooltip.idx)} cy={yS(data[tooltip.idx].balance)} r={4.5}
+                fill="#0071E3" stroke="white" strokeWidth="2"/>
+              <circle cx={xS(tooltip.idx)} cy={yS(data[tooltip.idx].contribution)} r={3.5}
+                fill="#8E8E93" stroke="white" strokeWidth="1.5"/>
+            </>
+          )}
+          {xTicks.map((d, i) => (
+            <text key={i} x={xS(data.indexOf(d))} y={ch + 22} textAnchor="middle" fontSize="14" fill="var(--t3)">
+              第{d.year}年
+            </text>
+          ))}
+          <rect x={0} y={0} width={cw} height={ch} fill="transparent" style={{cursor:'crosshair'}}/>
+        </g>
+      </svg>
+      {tooltip && td && (
+        <div className="chart-tooltip" style={{
+          top: 20, left: `calc(${(xS(tooltip.idx) + pad.left) / W * 100}% + 12px)`,
+          transform: tooltip.idx > data.length * 0.7 ? 'translateX(calc(-100% - 24px))' : 'none'
+        }}>
+          <div className="chart-tooltip-year">第{td.year}年</div>
+          <div className="chart-tooltip-row">
+            <span className="chart-tooltip-label" style={{color:'#0071E3'}}>预测价值</span>
+            <span className="chart-tooltip-val" style={{color:'#0071E3'}}>{pmFmtUSD(td.balance)}</span>
+          </div>
+          <div className="chart-tooltip-row">
+            <span className="chart-tooltip-label">累计投入</span>
+            <span className="chart-tooltip-val">{pmFmtUSD(td.contribution)}</span>
+          </div>
+          {td.contribution > 0 && (
+            <div className="chart-tooltip-row">
+              <span className="chart-tooltip-label">收益倍数</span>
+              <span className="chart-tooltip-val" style={{color:'#34C759'}}>
+                {(td.balance / td.contribution).toFixed(2)}x
+              </span>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   环形图（投资组合构成）
+═══════════════════════════════════════════════ */
+function DonutChart({ portfolio }) {
+  const grouped = {};
+  portfolio.forEach(it => {
+    const cat = it.etf.category;
+    grouped[cat] = (grouped[cat] || 0) + it.weight;
+  });
+  const entries = Object.entries(grouped).filter(([,w]) => w > 0);
+  const total = entries.reduce((s, [,w]) => s + w, 0);
+
+  let cumAngle = -90;
+  const R = 42, cx = 50, cy = 50;
+  const slices = entries.map(([cat, w]) => {
+    const angle = (w / total) * 360;
+    const startAngle = cumAngle * Math.PI / 180;
+    const endAngle = (cumAngle + angle) * Math.PI / 180;
+    cumAngle += angle;
+    const x1 = cx + R * Math.cos(startAngle);
+    const y1 = cy + R * Math.sin(startAngle);
+    const x2 = cx + R * Math.cos(endAngle);
+    const y2 = cy + R * Math.sin(endAngle);
+    const large = angle > 180 ? 1 : 0;
+    const color = CATEGORY_COLORS[cat] || '#8E8E93';
+    return { cat, w, color, d: `M ${cx} ${cy} L ${x1} ${y1} A ${R} ${R} 0 ${large} 1 ${x2} ${y2} Z` };
+  });
+
+  return (
+    <div className="pie-wrap">
+      <svg viewBox="0 0 100 100" style={{width:100,height:100,flexShrink:0}}>
+        {slices.map(s => (
+          <path key={s.cat} d={s.d} fill={s.color} opacity="0.9"/>
+        ))}
+        <circle cx={cx} cy={cy} r={24} fill="var(--bg)"/>
+        <text x={cx} y={cy - 4} textAnchor="middle" fontSize="14" fill="var(--t3)">ETF</text>
+        <text x={cx} y={cy + 12} textAnchor="middle" fontSize="14" fontWeight="700" fill="var(--t1)">配置</text>
+      </svg>
+      <div className="pie-legend">
+        {slices.map(s => (
+          <div key={s.cat} className="pie-legend-item">
+            <div className="pie-legend-dot" style={{background:s.color}}/>
+            <span style={{color:'var(--t2)',fontSize:14}}>{s.cat}</span>
+            <span className="pie-legend-pct" style={{color:s.color}}>{s.w}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   ETF搜索弹窗
+═══════════════════════════════════════════════ */
+function ETFModal({ onClose, onAdd, existingTickers }) {
+  const [q, setQ] = useState('');
+  const [manual, setManual] = useState('');
+
+  const filtered = useMemo(() =>
+    Object.values(ETFS).filter(e =>
+      !existingTickers.includes(e.ticker) &&
+      (e.name.toLowerCase().includes(q.toLowerCase()) || e.ticker.toLowerCase().includes(q.toLowerCase()))
+    ), [q, existingTickers]);
+
+  const handleManualAdd = () => {
+    const t = manual.trim().toUpperCase();
+    if (!t) return;
+    const existing = Object.values(ETFS).find(e => e.ticker === t);
+    if (existing) { onAdd(existing); return; }
+    onAdd({ ticker: t, name: t, category: 'Core', description: '手动添加的代码', annualReturn: 10 });
+    setManual('');
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <span className="modal-title">添加ETF或股票</span>
+          <button className="modal-close" onClick={onClose}>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M4 4l8 8M12 4l-8 8"/>
+            </svg>
+          </button>
+        </div>
+        <div className="modal-search">
+          <input className="modal-search-input" placeholder="按名称或代码搜索..." value={q}
+            onChange={e => setQ(e.target.value)} autoFocus/>
+        </div>
+        <div className="modal-body">
+          {filtered.length === 0 && (
+            <div style={{padding:'24px',textAlign:'center',color:'var(--t3)',fontSize:14}}>
+              未找到结果。请在下方手动输入代码。
+            </div>
+          )}
+          {filtered.map(etf => (
+            <div key={etf.ticker} className="modal-etf-item" onClick={() => onAdd(etf)}>
+              <div className="modal-etf-info">
+                <div className="modal-etf-name">{etf.name}</div>
+                <div className="modal-etf-meta">
+                  <span style={{color:'var(--t3)'}}>{etf.ticker}</span>
+                  <span style={{color:CATEGORY_COLORS[etf.category]||'#8E8E93'}}>{etf.category}</span>
+                  <span style={{color:'var(--bl)'}}>{etf.annualReturn}%/年</span>
+                </div>
+              </div>
+              <button className="modal-etf-add" onClick={e => { e.stopPropagation(); onAdd(etf); }}>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M8 3v10M3 8h10"/>
+                </svg>
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="modal-manual">
+          <input className="modal-manual-input" placeholder="输入代码（如：NVDA）" value={manual}
+            onChange={e => setManual(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleManualAdd()}/>
+          <button className="pm-btn pm-btn-primary btn-sm" onClick={handleManualAdd}
+            style={{borderRadius:8,fontSize:14,padding:'8px 14px'}}>添加</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   步骤条
+═══════════════════════════════════════════════ */
+function StepBar({ step }) {
+  const steps = ['选择风格', '设置配置比例', '模拟参数设置', '查看结果'];
+  return (
+    <div className="step-bar">
+      {steps.map((label, i) => {
+        const n = i + 1;
+        const st = step > n ? 'done' : step === n ? 'active' : 'pending';
+        return (
+          <React.Fragment key={n}>
+            {i > 0 && <div className="step-sep" style={st === 'done' || step > i ? {background:'var(--gr)'} : {}}/>}
+            <div className="step-item">
+              <div className={`step-dot ${st}`}>
+                {st === 'done' ? (
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M2 6l3 3 5-5"/>
+                  </svg>
+                ) : n}
+              </div>
+              <span className={`step-label ${st}`}>{label}</span>
+            </div>
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   主应用
+═══════════════════════════════════════════════ */
+function App() {
+  const [step, setStep] = useState(1);
+  const [selectedStyle, setSelectedStyle] = useState(null);
+  const [customText, setCustomText] = useState('');
+  const [isLeveraged, setIsLeveraged] = useState(false);
+  const [portfolio, setPortfolio] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+
+  const [initInvest, setInitInvest] = useState(10000);
+  const [monthlyAmt, setMonthlyAmt] = useState(500);
+  const [duration, setDuration] = useState(20);
+
+  const totalWeight = useMemo(() => portfolio.reduce((s, it) => s + it.weight, 0), [portfolio]);
+  const weightedReturn = useMemo(() => calculatePortfolioReturn(portfolio), [portfolio]);
+  const simData = useMemo(() => {
+    if (portfolio.length === 0) return [];
+    return runSimulation(portfolio, initInvest, monthlyAmt, duration);
+  }, [portfolio, initInvest, monthlyAmt, duration]);
+
+  const finalBalance = simData.length > 0 ? simData[simData.length - 1].balance : 0;
+  const totalContrib = simData.length > 0 ? simData[simData.length - 1].contribution : 0;
+  const totalProfit = finalBalance - totalContrib;
+  const multiplier = totalContrib > 0 ? finalBalance / totalContrib : 0;
+
+  const returnColor = weightedReturn >= 20 ? 'var(--rd)' : weightedReturn >= 12 ? 'var(--bl)' : weightedReturn >= 7 ? 'var(--gr)' : 'var(--t3)';
+  const returnBg = weightedReturn >= 20 ? 'var(--rd-s)' : weightedReturn >= 12 ? 'var(--bl-s)' : weightedReturn >= 7 ? 'var(--gr-s)' : 'rgba(0,0,0,0.05)';
+
+  function handleStyleSelect(styleKey, lev) {
+    setSelectedStyle(styleKey);
+    const s = STYLES[styleKey];
+    const weights = (lev && s.leverage) ? s.leverage : s.weights;
+    setPortfolio(weights.map(w => ({
+      etf: ETFS[w.ticker] || { ticker: w.ticker, name: w.ticker, category: 'Core', description: '用户添加', annualReturn: 10 },
+      weight: w.weight
+    })));
+    if (styleKey !== 'CUSTOM') setStep(2);
+  }
+
+  function handleWeightChange(ticker, val) {
+    setPortfolio(prev => prev.map(it => it.etf.ticker === ticker ? { ...it, weight: Math.max(0, Math.min(100, val)) } : it));
+  }
+
+  function removeETF(ticker) {
+    setPortfolio(prev => prev.filter(it => it.etf.ticker !== ticker));
+  }
+
+  function addETF(etf) {
+    if (portfolio.some(p => p.etf.ticker === etf.ticker)) { setShowModal(false); return; }
+    setPortfolio(prev => [...prev, { etf, weight: 0 }]);
+    setShowModal(false);
+  }
+
+  function autoBalance() {
+    const n = portfolio.length;
+    if (n === 0) return;
+    const base = Math.floor(100 / n);
+    const rem = 100 - base * n;
+    setPortfolio(prev => prev.map((it, i) => ({ ...it, weight: base + (i < rem ? 1 : 0) })));
+  }
+
+  function resetAll() {
+    setStep(1); setSelectedStyle(null); setCustomText(''); setIsLeveraged(false);
+    setPortfolio([]); setInitInvest(10000); setMonthlyAmt(500); setDuration(20);
+  }
+
+  const renderStep1 = () => (
+    <div key="s1" className="step-content">
+      <div className="page-title">选择你的投资风格</div>
+      <p className="page-sub">从8种为应对2026年AI行业变革而设计的模型中，选出最适合你的策略。</p>
+      <div className="style-grid">
+        {Object.entries(STYLES).map(([key, s]) => {
+          const isActive = selectedStyle === key;
+          const isCustom = key === 'CUSTOM';
+          const isAgg = key === 'AGGRESSIVE_AI';
+          return (
+            <div key={key} className={`style-card ${isActive ? 'active' : ''}`}
+              style={isActive ? { borderColor: s.color, background: s.bgColor } : {}}
+              onClick={() => {
+                if (isCustom) { setSelectedStyle('CUSTOM'); return; }
+                handleStyleSelect(key, isAgg ? isLeveraged : false);
+              }}>
+              <div className="style-card-icon" style={{ background: s.bgColor, color: s.color }}>
+                {STYLE_ICONS[key]}
+              </div>
+              <div className="style-card-name">{s.label}</div>
+              <div className="style-card-desc">{s.desc}</div>
+
+              {isAgg && (
+                <div className="leverage-row" onClick={e => e.stopPropagation()}>
+                  <input type="checkbox" checked={isLeveraged} id="lev-chk"
+                    onChange={e => setIsLeveraged(e.target.checked)}/>
+                  <label htmlFor="lev-chk" className="leverage-label" style={{cursor:'pointer'}}>
+                    添加2倍／3倍杠杆（QLD、TQQQ、SOXL、USD）
+                  </label>
+                </div>
+              )}
+
+              {isCustom && isActive && (
+                <div className="custom-row" onClick={e => e.stopPropagation()}>
+                  <input className="custom-input" maxLength={50} placeholder="描述你的投资目标（最多50字）"
+                    value={customText} onChange={e => setCustomText(e.target.value)}/>
+                  <button className="pm-btn pm-btn-primary btn-sm"
+                    style={{background: s.color, borderRadius:8, fontSize:14, padding:'8px 14px', width:'100%'}}
+                    disabled={!customText.trim()}
+                    onClick={() => handleStyleSelect('CUSTOM', false)}>
+                    以自定义风格开始
+                  </button>
+                </div>
+              )}
+
+              {isActive && !isCustom && (
+                <div className="style-card-check" style={{background: s.color}}>
+                  <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M2 6l3 3 5-5"/>
+                  </svg>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  const renderStep2 = () => {
+    const sInfo = STYLES[selectedStyle];
+    const isValid = totalWeight === 100;
+    return (
+      <div key="s2" className="step-content">
+        <div className="page-title">设置投资组合配置比例</div>
+        <p className="page-sub">调整每个ETF的配置比例，使总和等于100%。</p>
+
+        <div style={{
+          display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderRadius:'var(--r)',
+          background: sInfo?.bgColor || 'var(--bl-s)',marginBottom:20,border:'1px solid var(--bd)'
+        }}>
+          <div style={{color: sInfo?.color || 'var(--bl)',flexShrink:0}}>
+            {STYLE_ICONS[selectedStyle]}
+          </div>
+          <div>
+            <div style={{fontSize:14,fontWeight:800,color:'var(--t1)'}}>{sInfo?.label}</div>
+            <div style={{fontSize:14,color:'var(--t2)',marginTop:2}}>{sInfo?.desc}</div>
+          </div>
+        </div>
+
+        <div style={{display:'flex',justifyContent:'flex-end',marginBottom:14}}>
+          <button className="pm-btn pm-btn-primary" disabled={!isValid} onClick={() => setStep(3)}>
+            继续设置模拟参数
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M6 4l4 4-4 4"/>
+            </svg>
+          </button>
+        </div>
+
+        <div style={{
+          background:'var(--bg2)',borderRadius:'var(--r-sm)',border:'1.5px solid var(--bd)',
+          padding:'14px 16px',marginBottom:12
+        }}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
+            <span className="weight-total-label">配置比例总和</span>
+            <span className="weight-total-value" style={{
+              color: isValid ? 'var(--gr)' : totalWeight > 100 ? 'var(--rd)' : 'var(--bl)'
+            }}>{totalWeight}%</span>
+          </div>
+          <div style={{height:8,borderRadius:4,background:'var(--bd)',overflow:'hidden',display:'flex',justifyContent:'center'}}>
+            <div style={{width:'100%',height:'100%',position:'relative',borderRadius:4,overflow:'hidden'}}>
+              <div style={{
+                position:'absolute',left:'50%',top:0,height:'100%',borderRadius:4,
+                transform:'translateX(-50%)',
+                width: `${Math.min(100, totalWeight)}%`,
+                background: isValid ? 'var(--gr)' : totalWeight > 100 ? 'var(--rd)' : 'var(--bl)',
+                transition:'width .3s,background .3s'
+              }}/>
+            </div>
+          </div>
+          {!isValid && (
+            <div style={{fontSize:14,color: totalWeight > 100 ? 'var(--rd)' : 'var(--t3)',marginTop:5,textAlign:'center'}}>
+              {totalWeight > 100 ? `超出${totalWeight - 100}% —— 请降低部分配置比例` : `还差${100 - totalWeight}% —— 请调整总和至100%`}
+            </div>
+          )}
+        </div>
+
+        <div className="etf-list">
+          {portfolio.map(it => {
+            const cat = it.etf.category;
+            const catColor = CATEGORY_COLORS[cat] || '#8E8E93';
+            const retVal = it.annualReturn ?? it.etf.annualReturn;
+            return (
+              <div key={it.etf.ticker} className="etf-row">
+                <div className="etf-row-top">
+                  <div className="etf-cat-badge" style={{ background: `${catColor}18`, color: catColor }}>{cat}</div>
+                  <div className="etf-info">
+                    <div className="etf-name">{it.etf.name}</div>
+                    <div className="etf-ticker">{it.etf.ticker}</div>
+                    <div className="etf-return">预期收益率 {retVal.toFixed(1)}%/年</div>
+                  </div>
+                  <div className="etf-controls">
+                    <input type="number" className="etf-weight-input" min={0} max={100} inputMode="decimal"
+                      value={it.weight} onChange={e => handleWeightChange(it.etf.ticker, Number(e.target.value))}/>
+                    <span className="etf-pct">%</span>
+                    <button className="etf-del" onClick={() => removeETF(it.etf.ticker)}>
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M3 5h10M8 5V3M7 3h2M6 5v8M10 5v8M4 5l.5 8h7l.5-8"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div className="etf-slider-row">
+                  <input type="range" className="etf-slider" min={0} max={100}
+                    value={it.weight} onChange={e => handleWeightChange(it.etf.ticker, Number(e.target.value))}/>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <button className="btn-add-etf" onClick={() => setShowModal(true)}>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <path d="M8 3v10M3 8h10"/>
+          </svg>
+          添加ETF或股票
+        </button>
+
+        <div style={{marginTop:14,display:'flex',gap:8,flexWrap:'wrap'}}>
+          <button className="pm-btn pm-btn-secondary btn-sm" style={{fontSize:14,padding:'8px 14px',borderRadius:8}}
+            onClick={autoBalance}>平均分配</button>
+          <button className="pm-btn pm-btn-secondary btn-sm" style={{fontSize:14,padding:'8px 14px',borderRadius:8}}
+            onClick={() => handleStyleSelect(selectedStyle, isLeveraged)}>重置</button>
+        </div>
+
+        <div className="btn-nav-row" style={{marginTop:20}}>
+          <button className="pm-btn pm-btn-secondary" onClick={() => setStep(1)}>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 12l-4-4 4-4"/></svg>
+            上一步
+          </button>
+          <button className="pm-btn pm-btn-primary" disabled={!isValid} onClick={() => setStep(3)}>
+            继续设置模拟参数
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 4l4 4-4 4"/></svg>
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  const renderStep3 = () => {
+    const returnText = `预期年化收益率 ${weightedReturn.toFixed(2)}%`;
+    return (
+      <div key="s3" className="step-content">
+        <div className="page-title">模拟参数设置</div>
+        <p className="page-sub">输入初始投资金额、每月定投金额和投资年限，即可预测复利增长。</p>
+
+        <div className="sim-return-badge" style={{background: returnBg, color: returnColor}}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M7 2v10M3 6l4-4 4 4"/>
+          </svg>
+          {returnText}
+        </div>
+
+        {portfolio.length > 0 && <DonutChart portfolio={portfolio}/>}
+
+        <div className="sim-grid">
+          <div className="sim-input-card">
+            <div className="sim-input-label">初始投资金额</div>
+            <div className="sim-input-value">${initInvest.toLocaleString()}</div>
+            <input type="range" min={0} max={500000} step={5000} value={initInvest}
+              onChange={e => setInitInvest(Number(e.target.value))} className="sim-input-range"/>
+            <div className="sim-input-minmax"><span>$0</span><span>$500K</span></div>
+          </div>
+          <div className="sim-input-card">
+            <div className="sim-input-label">每月定投金额</div>
+            <div className="sim-input-value">${monthlyAmt.toLocaleString()}</div>
+            <input type="range" min={0} max={5000} step={50} value={monthlyAmt}
+              onChange={e => setMonthlyAmt(Number(e.target.value))} className="sim-input-range green"/>
+            <div className="sim-input-minmax"><span>$0</span><span>$5,000</span></div>
+          </div>
+          <div className="sim-input-card" style={{gridColumn:'1 / -1'}}>
+            <div className="sim-input-label">投资期限</div>
+            <div className="sim-input-value">{duration}<span className="sim-input-unit">年</span></div>
+            <input type="range" min={1} max={40} step={1} value={duration}
+              onChange={e => setDuration(Number(e.target.value))} className="sim-input-range"/>
+            <div className="sim-input-minmax"><span>1年</span><span>40年</span></div>
+          </div>
+        </div>
+
+        {simData.length > 0 && (
+          <div style={{background:'var(--bl-s)',borderRadius:'var(--r)',padding:'14px 18px',border:'1px solid var(--bl-m)',marginBottom:8}}>
+            <div style={{fontSize:14,fontWeight:700,color:'var(--bl)',marginBottom:8}}>预览</div>
+            <div style={{fontSize:20,fontWeight:800,color:'var(--t1)',letterSpacing:'-.03em'}}>
+              {pmFmtUSD(finalBalance)}
+            </div>
+            <div style={{fontSize:14,color:'var(--t2)',marginTop:4}}>
+              相当于你已投入的{pmFmtUSD(totalContrib)}的<strong style={{color:'var(--gr)'}}>{multiplier.toFixed(2)}倍</strong>
+              &nbsp;/ 收益{pmFmtUSD(totalProfit)}
+            </div>
+          </div>
+        )}
+
+        <div className="btn-nav-row" style={{marginTop:16}}>
+          <button className="pm-btn pm-btn-secondary" onClick={() => setStep(2)}>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 12l-4-4 4-4"/></svg>
+            上一步
+          </button>
+          <button className="pm-btn pm-btn-primary" onClick={() => setStep(4)}>
+            查看结果
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 4l4 4-4 4"/></svg>
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  const [showFullTable, setShowFullTable] = useState(false);
+  const tableRows = showFullTable ? simData : simData.filter((d, i) => i % Math.max(1, Math.floor(duration / 8)) === 0 || i === simData.length - 1);
+
+  const renderStep4 = () => (
+    <div key="s4" className="step-content">
+      <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',flexWrap:'wrap',gap:8,marginBottom:20}}>
+        <div>
+          <div className="page-title">{duration}年后的预测价值</div>
+          <div style={{fontSize:32,fontWeight:900,letterSpacing:'-.04em',color:'var(--t1)',marginTop:4}}>
+            {pmFmtUSD(finalBalance)}
+          </div>
+          <div style={{fontSize:14,color:'var(--gr)',fontWeight:700,marginTop:4}}>
+            相当于投入本金的{multiplier.toFixed(2)}倍 &middot; 收益{pmFmtUSD(totalProfit)}
+          </div>
+        </div>
+        <div style={{flexShrink:0}}>
+          <div className="sim-return-badge" style={{background: returnBg, color: returnColor, marginBottom:0}}>
+            预期年化收益率 {weightedReturn.toFixed(2)}%
+          </div>
+        </div>
+      </div>
+
+      <div className="result-metrics">
+        {[
+          { label: '预测最终价值', val: pmFmtUSD(finalBalance), sub: `${duration}年后`, color: 'var(--bl)' },
+          { label: '累计投入', val: pmFmtUSD(totalContrib), sub: `初始投资＋每月定投`, color: 'var(--t1)' },
+          { label: '总收益', val: pmFmtUSD(totalProfit), sub: `税前估算值`, color: 'var(--gr)' },
+          { label: '收益倍数', val: `${multiplier.toFixed(2)}x`, sub: `相对于投入本金`, color: 'var(--yl)' },
+        ].map((m, i) => (
+          <div key={i} className="metric-card">
+            <div className="metric-label">{m.label}</div>
+            <div className="metric-value" style={{color: m.color}}>{m.val}</div>
+            <div className="metric-sub">{m.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="chart-wrap">
+        <div className="chart-legend">
+          <div className="legend-item"><div className="legend-dot" style={{background:'#0071E3'}}/><span>预测价值</span></div>
+          <div className="legend-item"><div className="legend-dot" style={{background:'#8E8E93'}}/><span>累计投入</span></div>
+        </div>
+        <SimChart data={simData}/>
+      </div>
+
+      <div className="portfolio-summary">
+        <div className="portfolio-summary-title">投资组合构成（{STYLES[selectedStyle]?.label || '自定义'}）</div>
+        <div className="portfolio-pills">
+          {portfolio.filter(it => it.weight > 0).map(it => (
+            <div key={it.etf.ticker} className="portfolio-pill"
+              style={{background: `${CATEGORY_COLORS[it.etf.category]||'#8E8E93'}18`, color: CATEGORY_COLORS[it.etf.category]||'#8E8E93'}}>
+              {it.etf.ticker} <span style={{opacity:.7}}>{it.weight}%</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="table-wrap">
+        <div className="table-header">
+          <span className="table-title">逐年增长明细</span>
+          <button className="table-toggle" onClick={() => setShowFullTable(v => !v)}>
+            {showFullTable ? '收起' : '查看全部'}
+          </button>
+        </div>
+        <div style={{overflowX:'auto'}}>
+          <table>
+            <thead>
+              <tr>
+                <th style={{textAlign:'left'}}>年份</th>
+                <th>累计投入</th>
+                <th>预测价值</th>
+                <th>收益</th>
+                <th>倍数</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tableRows.map(d => {
+                const profit = d.balance - d.contribution;
+                const mult = d.contribution > 0 ? (d.balance / d.contribution).toFixed(2) : '-';
+                return (
+                  <tr key={d.year}>
+                    <td>第{d.year}年</td>
+                    <td>{pmFmtUSD(d.contribution)}</td>
+                    <td style={{color:'var(--bl)',fontWeight:700}}>{pmFmtUSD(d.balance)}</td>
+                    <td className="td-profit">+{pmFmtUSD(profit)}</td>
+                    <td style={{color:'var(--yl)',fontWeight:700}}>{mult}x</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
+        <button className="pm-btn pm-btn-secondary" onClick={() => setStep(3)}>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 12l-4-4 4-4"/></svg>
+          修改参数
+        </button>
+        <button className="pm-btn pm-btn-secondary" onClick={() => setStep(2)}>编辑投资组合</button>
+        <button className="pm-btn pm-btn-ghost" onClick={resetAll}>重新开始</button>
+      </div>
+
+      <div style={{marginTop:24,padding:'14px 16px',borderRadius:'var(--r-sm)',background:'var(--yl-s)',border:'1px solid rgba(255,159,10,0.2)'}}>
+        <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.7}}>
+          <strong style={{color:'var(--yl)'}}>投资提示</strong> —— 本模拟器为参考工具，基于历史数据假设进行计算。实际收益可能因市场状况而大幅波动，杠杆ETF可能因波动率损耗而产生与预期差异很大的长期结果。所有投资决策均由用户自行承担责任。
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderStep = () => {
+    if (step === 1) return renderStep1();
+    if (step === 2) return renderStep2();
+    if (step === 3) return renderStep3();
+    if (step === 4) return renderStep4();
+  };
+
+  return (
+    <>
+      <div className="pm-wrap">
+        <StepBar step={step}/>
+        {renderStep()}
+      </div>
+      {showModal && (
+        <ETFModal onClose={() => setShowModal(false)} onAdd={addETF} existingTickers={portfolio.map(p => p.etf.ticker)}/>
+      )}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('pm-root')).render(<App/>);
+</script>
 
 <!-- ── 네이티브 앱 웹뷰 감지: ?embed=app 신호 처리 (2026-07-28) ── -->
 <script>

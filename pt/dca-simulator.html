@@ -39,6 +39,10 @@
   <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/dca-simulator.html">
   <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/dca-simulator.html">
   <link rel="canonical" href="https://ezlong.com/pt/dca-simulator.html">
+  <!-- React 18 + Babel — powers the live DCA simulator widget below -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -87,9 +91,22 @@
       --blue: #0071E3; --blue-lt: #0064CC; --green: #1A7F37;
       --r: 12px; --max-w: 860px;
       --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --card: var(--surface); --bd: var(--border); --t1: var(--text); --t2: var(--text2); --t3: var(--text3);
+      --gr: #34C759; --gr-dk: #248A3D; --gr-s: rgba(52,199,89,0.10); --gr-m: rgba(52,199,89,0.22);
+      --bl: var(--blue); --bl-dk: var(--blue-lt); --bl-s: rgba(0,113,227,0.10); --bl-m: rgba(0,113,227,0.20);
+      --rd: #D70015; --rd-s: rgba(215,0,21,0.08); --yl-s: rgba(255,159,10,0.14);
+      --r-sm: 8px; --inp-bg: #F5F5F7; --inp-bg2: #FAFAFA; --row-bg: #FFFFFF; --row-post: #FAFAFA; --row-ret: #FFF5F5;
+      --tip-bg: #FFFFFF; --chk-border: #C7C7CC; --range-bg: #E5E5EA;
     }
     @media (prefers-color-scheme: dark) {
-      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158; }
+      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158;
+        --card: var(--surface); --bd: var(--border); --t1: var(--text); --t2: var(--text2); --t3: var(--text3);
+        --gr: #30D158; --gr-dk: #30D158; --gr-s: rgba(52,199,89,0.16); --gr-m: rgba(52,199,89,0.28);
+        --bl: var(--blue); --bl-dk: var(--blue-lt); --bl-s: rgba(10,132,255,0.20); --bl-m: rgba(10,132,255,0.32);
+        --rd: #FF453A; --rd-s: rgba(255,69,58,0.18); --yl-s: rgba(255,214,10,0.16);
+        --inp-bg: #2C2C2E; --inp-bg2: #252527; --row-bg: #1C1C1E; --row-post: #232325; --row-ret: #2A1818;
+        --tip-bg: #2C2C2E; --chk-border: #48484A; --range-bg: #3A3A3C;
+      }
     }
     html { scroll-behavior: smooth; }
     body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.65; }
@@ -113,7 +130,7 @@
     .btn-primary:hover { background:var(--blue-lt); }
     .btn-secondary { display:inline-flex; align-items:center; gap:6px; background:transparent; color:var(--blue); border:1.5px solid var(--blue); border-radius:980px; padding:12px 24px; font-size:15px; font-weight:600; text-decoration:none; transition:all .15s; }
     .btn-secondary:hover { background:var(--blue); color:#fff; }
-    .auto-translate-note { font-size:12.5px; color:var(--text3); }
+    .auto-translate-note { font-size:14px; color:var(--text3); }
     .translate-proxy-note { font-size:14px; color:var(--text2); margin-top:10px; }
     .translate-proxy-note a { color:var(--blue); font-weight:600; text-decoration:underline; }
     .cta-card .translate-proxy-note { color:#fff; opacity:.9; margin-top:14px; }
@@ -146,10 +163,46 @@
     .cta-card p { font-size:16px; opacity:.85; margin-bottom:24px; }
     .btn-white { display:inline-block; background:#fff; color:var(--blue); border-radius:980px; padding:13px 28px; font-size:15px; font-weight:700; text-decoration:none; transition:opacity .15s; }
     .btn-white:hover { opacity:.88; }
-    .en-footer { background:var(--surface); border-top:1px solid var(--border); padding:36px 24px; text-align:center; color:var(--text3); font-size:12.5px; line-height:1.9; }
+    .en-footer { background:var(--surface); border-top:1px solid var(--border); padding:36px 24px; text-align:center; color:var(--text3); font-size:14px; line-height:1.9; }
     .en-footer a { color:var(--blue); text-decoration:none; }
     .en-footer a:hover { text-decoration:underline; }
     @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+
+    /* ══════ DCA SIMULATOR WIDGET ══════ */
+    #ds-root { font-family: var(--font); }
+    #ds-root table { border-collapse: collapse; width: 100%; }
+    #ds-root * { box-sizing: border-box; min-width: 0; }
+    #ds-root input[type=range] { -webkit-appearance: none; width: 100%; height: 4px; border-radius: 2px; background: var(--range-bg); outline: none; cursor: pointer; }
+    #ds-root input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--gr); box-shadow: 0 2px 8px rgba(52,199,89,.40); cursor: pointer; }
+    #ds-root input[type=range].blue::-webkit-slider-thumb { background: var(--bl); box-shadow: 0 2px 8px rgba(0,113,227,.40); }
+    #ds-root input[type=checkbox] { -webkit-appearance: none; width: 18px; height: 18px; min-width: 18px; border: 1.5px solid var(--chk-border); border-radius: 5px; background: var(--inp-bg); cursor: pointer; position: relative; transition: all .15s; }
+    #ds-root input[type=checkbox]:checked { background: var(--gr); border-color: var(--gr); }
+    #ds-root input[type=checkbox].blue:checked { background: var(--bl); border-color: var(--bl); }
+    #ds-root input[type=checkbox]:checked::after { content: ''; position: absolute; left: 4px; top: 1px; width: 8px; height: 11px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg) scaleX(.9); }
+    #ds-root select { -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236E6E73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; padding-right: 34px !important; }
+    #ds-root input[type=number]::-webkit-inner-spin-button, #ds-root input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+    @keyframes ds-spin   { to { transform: rotate(360deg); } }
+    @keyframes ds-fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes ds-popIn  { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
+    @keyframes ds-bob    { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-7px); } }
+    .ds-spin   { animation: ds-spin .9s linear infinite; }
+    .ds-fadeUp { animation: ds-fadeUp .4s ease forwards; }
+    .ds-popIn  { animation: ds-popIn .22s ease forwards; }
+    .ds-bob0   { animation: ds-bob .7s ease infinite; }
+    .ds-bob1   { animation: ds-bob .7s .15s ease infinite; }
+    .ds-bob2   { animation: ds-bob .7s .30s ease infinite; }
+    .ds-layout > *, .ds-layout > * > * { min-width: 0; }
+    @media(max-width:767px){
+      .ds-layout   { grid-template-columns:1fr !important; gap:14px !important; }
+      .ds-sticky   { position:static !important; top:auto !important; }
+      .ds-2col     { grid-template-columns:1fr !important; }
+      .ds-3col     { grid-template-columns:1fr 1fr !important; gap:14px !important; }
+      .ds-cpad     { padding:44px 20px !important; }
+      .ds-table th, .ds-table td { padding:9px 10px !important; }
+      .ds-chart-legend { flex-wrap:wrap; gap:8px !important; }
+      .ds-footrow  { flex-direction:column; gap:6px !important; text-align:center; }
+      .ds-card-hdr { flex-direction:column; align-items:flex-start !important; gap:10px !important; }
+    }
   </style>
 </head>
 <body>
@@ -168,11 +221,10 @@
     <h1>Simulador de Juros Compostos DCA</h1>
     <p class="hero-sub">Veja exatamente como seus aportes mensais em ações americanas se transformam em patrimônio ao longo de 10, 20 ou 30 anos</p>
     <div class="cta-group">
-      <a class="btn-primary" href="https://ezlong.com/dca-simulator.html" target="_blank" rel="noopener">Abrir Ferramenta &rarr;</a>
+      <a class="btn-primary" href="#calculator">Experimente Grátis &darr;</a>
       <a class="btn-secondary" href="https://ezlong.com/pt/">Ver Todas as Ferramentas</a>
     </div>
-    <p class="auto-translate-note">A interface da ferramenta está em coreano &mdash; Chrome, Edge e Safari traduzem automaticamente.</p>
-    <p class="translate-proxy-note">A tradução não aparece automaticamente? <a href="https://ezlong-com.translate.goog/dca-simulator.html?_x_tr_sl=ko&amp;_x_tr_tl=pt&amp;_x_tr_hl=pt&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Abrir com o Google Tradutor &rarr;</a></p>
+    <p class="auto-translate-note">Totalmente em português &mdash; sem login, sem download, resultados em segundos.</p>
   </section>
   <div class="stats-row" role="region" aria-label="Estatísticas principais">
     <div class="stat-item"><div class="stat-value">$915 mil</div><div class="stat-label">$500/mês x 30 anos a 9%</div></div>
@@ -180,6 +232,9 @@
     <div class="stat-item"><div class="stat-value">100% grátis</div><div class="stat-label">sem necessidade de conta</div></div>
   </div>
   <main class="main" id="main-content">
+    <section class="section" id="calculator">
+      <div id="ds-root"></div>
+    </section>
     <section class="section">
       <h2 class="section-title">O que é o Simulador de Juros Compostos DCA?</h2>
       <p class="section-body">O Simulador de Juros Compostos DCA calcula exatamente como seus aportes mensais regulares se acumulam ao longo do tempo pelo poder dos retornos compostos. DCA — custo médio (dollar-cost averaging) — é a estratégia de investir um valor fixo em intervalos regulares, independentemente do preço do mercado. É a estratégia de construção de patrimônio de longo prazo mais consistentemente bem-sucedida para investidores individuais.</p>
@@ -285,8 +340,7 @@
     <div class="cta-card">
       <h2>Experimente o Simulador de Juros Compostos DCA Agora</h2>
       <p>Grátis, sem cadastro, funciona instantaneamente no seu navegador. O Chrome traduz automaticamente do coreano para o português.</p>
-      <a class="btn-white" href="https://ezlong.com/dca-simulator.html" target="_blank" rel="noopener">Abrir Simulador de Juros Compostos DCA &rarr;</a>
-      <p class="translate-proxy-note">A tradução não aparece automaticamente? <a href="https://ezlong-com.translate.goog/dca-simulator.html?_x_tr_sl=ko&amp;_x_tr_tl=pt&amp;_x_tr_hl=pt&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Abrir com o Google Tradutor &rarr;</a></p>
+      <a class="btn-white" href="#calculator">Voltar à Calculadora &uarr;</a>
     </div>
   </main>
   <footer class="en-footer" role="contentinfo">
@@ -294,6 +348,899 @@
     &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
     <small>Apenas ferramentas educacionais. Não é aconselhamento financeiro. Todo investimento envolve risco. Resultados passados não garantem resultados futuros.</small></p>
   </footer>
+
+<script type="text/babel">
+const { useState, useCallback, useRef, useEffect, memo } = React;
+
+const CAGR = {
+  QQQ:21,XLK:21,SOXX:29.5,SPY:14,SCHD:11.5,XLV:10.5,XLP:7.5,GLD:8.5,
+  NVDA:70,AAPL:27.5,MSFT:24.5,GOOG:20,GOOGL:20,AMZN:22.5,META:19.5,
+  TSLA:40,AVGO:34,AMD:46.5,PLTR:27.5,NFLX:22,TSM:25,
+  "BRK-B":13.5,COST:23,V:19,JPM:15,LLY:33,KO:9.5,PG:9.5
+};
+const DESC = {
+  QQQ:"ETF do Nasdaq-100. Uma cesta de ações de crescimento voltadas a IA e big techs, com retorno médio anual de cerca de 21% nos últimos 10 anos.",
+  SPY:"ETF do S&P 500. A escolha clássica para exposição diversificada de longo prazo às 500 maiores empresas dos EUA. Retorno médio anual de cerca de 14%.",
+  NVDA:"Potência dos chips de IA. Domina o mercado de GPUs para data centers e cresceu de forma explosiva nos últimos 5 anos.",
+  TSLA:"Empresa de veículos elétricos, energia e robótica com IA. Muito volátil, mas com uma poderosa história de crescimento de longo prazo.",
+  AAPL:"A maior big tech do mundo em valor de mercado. Retornos estáveis impulsionados pelo efeito de fidelização do ecossistema e pelo crescimento da receita de serviços.",
+  MSFT:"Líder em nuvem (Azure) e IA. Domina de forma excepcional o mercado de software corporativo.",
+  GOOG:"Alphabet, que abrange busca, publicidade, nuvem e IA. Múltiplas linhas de negócio impulsionam um crescimento constante.",
+  AMZN:"Líder número um em e-commerce e na nuvem com a AWS. O crescimento estrutural continua.",
+  META:"Dona do Facebook, Instagram e WhatsApp. A rentabilidade melhorou drasticamente graças à otimização de anúncios com IA.",
+  AVGO:"Broadcom. Crescimento rápido no mercado de data centers com chips de IA personalizados e semicondutores de rede.",
+  AMD:"Principal rival da NVDA. Vem ampliando de forma constante sua participação nos mercados de GPU para IA e CPU para servidores.",
+  SOXX:"ETF do setor de semicondutores, reunindo as principais empresas de chips beneficiadas pela expansão da infraestrutura de IA.",
+  SCHD:"ETF de crescimento de dividendos. Busca fluxo de caixa estável e crescimento de capital ao mesmo tempo.",
+  GLD:"ETF de ouro físico. Uma ferramenta de proteção de carteira e defesa contra a inflação.",
+  "BRK-B":"Berkshire Hathaway, de Warren Buffett. Um conglomerado baseado em value investing, conhecido por sua grande estabilidade de longo prazo.",
+  JPM:"O maior banco dos EUA, JPMorgan. Crescimento constante impulsionado por uma forte operação de varejo bancário.",
+  V:"A rede de pagamentos Visa. Ocupa uma posição quase monopolista na infraestrutura de pagamentos global.",
+  COST:"Costco. Um modelo de negócio baseado em associação que fideliza clientes e impulsiona crescimento constante de receita.",
+};
+
+function sN(v, fb=0){ const n=Number(v); return isNaN(n)||!isFinite(n)?fb:n; }
+
+function calcDCA(startUSD, monthlyUSD, annualRate, accumYears, totalYears, exRate, ret){
+  const mr=sN(annualRate)/100/12, ex=sN(exRate,1);
+  let val=sN(startUSD), inv=sN(startUSD), prev=sN(startUSD), first=0, nextX=2, wdAcc=0;
+  const rows=[];
+  for(let m=1;m<=sN(totalYears)*12;m++){
+    const yr=m/12;
+    const mInv=yr<=sN(accumYears)?sN(monthlyUSD):0;
+    const mWd=ret?.isEnabled&&yr>sN(ret.year)?Math.min(val+mInv,sN(ret.withdrawalUSD)):0;
+    wdAcc+=mWd;
+    val=(val+mInv-mWd)*(1+mr);
+    inv+=mInv;
+    if(m%12===0){
+      const year=m/12;
+      const tv=Math.max(0,Math.round(sN(val)*ex));
+      const ti=Math.round(sN(inv)*ex);
+      const ii=Math.round(sN(startUSD)*ex);
+      const di=Math.round(sN(inv-startUSD)*ex);
+      const pr=Math.max(0,tv-ti);
+      const yw=Math.round(sN(wdAcc)*ex);
+      const mw=Math.round(sN(wdAcc/12)*ex);
+      const dUSD=sN(val)-prev;
+      const base=prev>0?prev:(sN(inv)>0?sN(inv):1);
+      const gPct=base>0?(dUSD/base)*100:0;
+      if(year===1)first=sN(val);
+      let dp; if(year>1&&first>0&&sN(val)>=first*nextX){dp=nextX;nextX*=2;}
+      rows.push({year,totalValue:tv,totalInvested:ti,initialInvested:ii,
+        dcaInvested:di,profit:pr,yearlyIncrease:Math.round(dUSD*ex),
+        yearlyGrowthRate:sN(gPct),doublePoint:dp,yearlyWithdrawal:yw,monthlyWithdrawal:mw});
+      prev=sN(val);wdAcc=0;
+    }
+  }
+  return rows;
+}
+
+/* Concordância de número: "1.00 milhão"/"1.00 bilhão" (singular) vs plural. Português brasileiro: bilhão = 10^9 (short scale, igual ao inglês). */
+function dsFmtUSD(n){
+  const num=Number(n); if(isNaN(num)||!isFinite(num)) return '$0';
+  const sign=num<0?'-':''; const abs=Math.abs(num);
+  const asM=abs/1e6, asB=abs/1e9;
+  if(abs>=1e9||Math.round(asM*100)/100>=1000){
+    const bR=asB.toFixed(2);
+    return sign+'$'+bR+(bR==='1.00'?' bilhão':' bilhões');
+  }
+  if(abs>=1e6){
+    const mR=asM.toFixed(2);
+    return sign+'$'+mR+(mR==='1.00'?' milhão':' milhões');
+  }
+  return sign+'$'+Math.round(abs).toLocaleString('en-US');
+}
+function dsYTick(v){
+  const num=Number(v); if(isNaN(num)||!isFinite(num)) return '$0';
+  const sign=num<0?'-':''; const abs=Math.abs(num);
+  const asK=abs/1e3, asM=abs/1e6, asB=abs/1e9;
+  if(abs>=1e9||Math.round(asM*10)/10>=1000) return sign+'$'+asB.toFixed(1)+'bi';
+  if(abs>=1e6||Math.round(asK)>=1000) return sign+'$'+asM.toFixed(1)+'M';
+  if(abs>=1e3) return sign+'$'+asK.toFixed(0)+'K';
+  return sign+'$'+Math.round(abs);
+}
+function dsRaw(v){ const n=Math.round(Number(v)||0); return n===0?'$0':'$'+n.toLocaleString('en-US'); }
+const f1=(v,d=1)=>{const n=Number(v);return isNaN(n)||!isFinite(n)?(0).toFixed(d):n.toFixed(d);};
+
+function Card({children,style,className}){
+  return <div className={className} style={{background:'var(--card)',borderRadius:'var(--r)',
+    boxShadow:'0 1px 4px rgba(0,0,0,.07)',border:'1px solid var(--bd)',...style}}>{children}</div>;
+}
+const INP={width:'100%',padding:'10px 13px',background:'var(--inp-bg)',
+  border:'1px solid var(--bd)',borderRadius:'var(--r-sm)',fontSize:14,
+  color:'var(--t1)',outline:'none',transition:'border-color .15s,box-shadow .15s'};
+const NumInput=memo(function NumInput({value,onChange,color='blue',style}){
+  const [f,setF]=useState(false);
+  const [raw,setRaw]=useState('');
+  const a=color==='blue'?'var(--bl)':'var(--gr)', s=color==='blue'?'var(--bl-s)':'var(--gr-s)';
+  return <input type="number" min="0" placeholder="0"
+    value={f ? raw : (value>0 ? String(value) : '')}
+    onChange={e=>{
+      const v=e.target.value.replace(/[^0-9]/g,'');
+      setRaw(v);
+      onChange(v===''?0:Number(v));
+    }}
+    onFocus={()=>{setF(true);setRaw(value>0?String(value):'');}}
+    onBlur={()=>setF(false)}
+    style={{...INP,...(f?{borderColor:a,boxShadow:`0 0 0 3px ${s}`}:{}),...style}}/>;
+});
+const SelInput=memo(function SelInput({value,onChange,color='blue',children}){
+  const [f,setF]=useState(false);
+  const a=color==='blue'?'var(--bl)':'var(--gr)', s=color==='blue'?'var(--bl-s)':'var(--gr-s)';
+  return <select value={value} onChange={e=>onChange(e.target.value)}
+    onFocus={()=>setF(true)} onBlur={()=>setF(false)}
+    style={{...INP,cursor:'pointer',...(f?{borderColor:a,boxShadow:`0 0 0 3px ${s}`}:{})}}>{children}</select>;
+});
+function TkOpts(){return <>
+  <optgroup label="Principais ETFs">
+    <option value="QQQ">QQQ — Nasdaq 100</option>
+    <option value="SPY">SPY — S&amp;P 500</option>
+    <option value="XLK">XLK — Setor de Tecnologia</option>
+    <option value="SOXX">SOXX — Semicondutores</option>
+    <option value="SCHD">SCHD — Crescimento de Dividendos</option>
+    <option value="XLV">XLV — Saúde</option>
+    <option value="GLD">GLD — Ouro</option>
+  </optgroup>
+  <optgroup label="Big Techs e IA">
+    <option value="NVDA">NVDA — Nvidia</option>
+    <option value="AAPL">AAPL — Apple</option>
+    <option value="MSFT">MSFT — Microsoft</option>
+    <option value="GOOG">GOOG — Google</option>
+    <option value="AMZN">AMZN — Amazon</option>
+    <option value="META">META — Meta</option>
+    <option value="TSLA">TSLA — Tesla</option>
+    <option value="AVGO">AVGO — Broadcom</option>
+    <option value="AMD">AMD — AMD</option>
+  </optgroup>
+  <optgroup label="Ações de Primeira Linha">
+    <option value="BRK-B">BRK-B — Berkshire</option>
+    <option value="COST">COST — Costco</option>
+    <option value="V">V — Visa</option>
+    <option value="JPM">JPM — JPMorgan</option>
+    <option value="LLY">LLY — Eli Lilly</option>
+  </optgroup>
+</>;}
+function Btn({children,onClick,disabled,variant='primary',type='button',style}){
+  const [h,setH]=useState(false);
+  const V={
+    primary:   {bg:h&&!disabled?'var(--bl-dk)':'var(--bl)',c:'white',sh:'0 2px 8px rgba(0,113,227,.30)',br:'none'},
+    secondary: {bg:h&&!disabled?'var(--gr-dk)':'var(--gr)',c:'white',sh:'0 2px 8px rgba(52,199,89,.30)',br:'none'},
+    ghost:     {bg:h&&!disabled?'var(--bl-s)':'transparent',c:'var(--bl-dk)',sh:'none',br:'1px solid var(--bl-m)'},
+    outline:   {bg:h&&!disabled?'var(--inp-bg)':'var(--row-bg)',c:'var(--t2)',sh:'none',br:'1px solid var(--bd)'},
+  }[variant]||{};
+  return <button type={type} onClick={onClick} disabled={disabled}
+    onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
+    style={{display:'inline-flex',alignItems:'center',justifyContent:'center',gap:7,
+      padding:'11px 18px',borderRadius:'var(--r-sm)',fontSize:14,fontWeight:600,
+      cursor:disabled?'not-allowed':'pointer',border:V.br,fontFamily:'var(--font)',
+      background:V.bg,color:V.c,boxShadow:V.sh,opacity:disabled?.45:1,
+      transition:'all .15s',...style}}>{children}</button>;
+}
+function Badge({children,color='blue'}){
+  const C={
+    green:{bg:'var(--gr-s)',c:'var(--gr-dk)',bd:'1px solid var(--gr-m)'},
+    blue: {bg:'var(--bl-s)',c:'var(--bl-dk)',bd:'1px solid var(--bl-m)'},
+    red:  {bg:'var(--rd-s)',c:'var(--rd)',   bd:'1px solid rgba(215,0,21,.2)'},
+    yellow:{bg:'var(--yl-s)',c:'#8A5A00',    bd:'1px solid rgba(255,159,10,.3)'},
+  }[color]||{bg:'#f0f0f0',c:'#333',bd:'1px solid #ddd'};
+  return <span style={{fontSize:14,fontWeight:700,padding:'2px 8px',borderRadius:6,
+    background:C.bg,color:C.c,border:C.bd,display:'inline-block',letterSpacing:'.01em'}}>{children}</span>;
+}
+
+function SVGBarChart({data, isCmp}){
+  const wrapRef=useRef(null);
+  const [W,setW]=useState(0);
+  const [tip,setTip]=useState(null);
+  const [mxy,setMxy]=useState({x:0,y:0});
+  useEffect(()=>{
+    const el=wrapRef.current; if(!el)return;
+    const obs=new ResizeObserver(([e])=>setW(e.contentRect.width||e.target.offsetWidth));
+    obs.observe(el);
+    const initial=el.getBoundingClientRect().width||el.offsetWidth||el.clientWidth;
+    if(initial>0)setW(initial);
+    return ()=>obs.disconnect();
+  },[]);
+  const H=W<500?390:720, mg=W<500?{t:36,r:8,b:34,l:60}:{t:55,r:18,b:40,l:76};
+  const cW=W-mg.l-mg.r, cH=H-mg.t-mg.b;
+  const n=data.length;
+  const maxV=Math.max(...data.map(d=>Math.max(d.totalValue||0,isCmp?(d.totalValue2||0):0)),1);
+  const rawStep=maxV/5;
+  const mag=Math.pow(10,Math.floor(Math.log10(rawStep)));
+  const niceStep=Math.ceil(rawStep/mag)*mag;
+  const niceMax=Math.ceil(maxV/niceStep)*niceStep;
+  const ticks=[]; for(let i=0;i<=5;i++) ticks.push(niceStep*i);
+  const yPx=v=>cH-(v/niceMax)*cH;
+  const hPx=v=>(v/niceMax)*cH;
+  const grpW=cW/n;
+  const bW=isCmp?Math.max(3,grpW*0.35):Math.max(4,grpW*0.65);
+  const gap=isCmp?Math.max(1,grpW*0.04):0;
+  const skip=Math.ceil(n/25);
+  const onMove=e=>{
+    const r=wrapRef.current.getBoundingClientRect();
+    setMxy({x:e.clientX-r.left,y:e.clientY-r.top});
+  };
+  if(!W) return <div ref={wrapRef} style={{width:'100%',height:300,background:'var(--inp-bg2)',borderRadius:8}}/>;
+  return (
+    <div ref={wrapRef} style={{position:'relative',width:'100%',height:H,touchAction:'none',overflow:'hidden'}} onMouseMove={onMove} onMouseLeave={()=>setTip(null)}>
+      <svg width={W} height={H} style={{display:'block',maxWidth:'100%'}}>
+        <g transform={`translate(${mg.l},${mg.t})`}>
+          {ticks.map((t,i)=>(
+            <g key={i}>
+              <line x1={0} y1={yPx(t)} x2={cW} y2={yPx(t)} stroke="var(--chart-grid,#F0F0F5)" strokeWidth={1}/>
+              <text x={-8} y={yPx(t)+4} textAnchor="end" fontSize={14} fill="var(--t3)">{dsYTick(t)}</text>
+            </g>
+          ))}
+          {data.map((d,i)=>{
+            const grpX=i*grpW;
+            const totalGrpW=isCmp?bW*2+gap:bW;
+            const x1=grpX+(grpW-totalGrpW)/2;
+            const x2=x1+bW+gap;
+            const h1i=hPx(d.initialInvested||0), h1d=hPx(d.dcaInvested||0), h1p=hPx(d.profit||0);
+            const tot1=h1i+h1d+h1p;
+            const h2i=hPx(d.initialInvested2||0), h2d=hPx(d.dcaInvested2||0), h2p=hPx(d.profit2||0);
+            const tot2=h2i+h2d+h2p;
+            const showXLbl=i%skip===0||i===n-1;
+            const showLbl1=i%skip===0||i===n-1;
+            const showLbl2=i%skip===0||i===n-1;
+            return (
+              <g key={d.year} style={{cursor:'default'}} onMouseEnter={()=>setTip(d)} onMouseLeave={()=>setTip(null)}>
+                {h1i>0&&<rect x={x1} y={cH-h1i} width={bW} height={h1i} fill="#FF6B6B"/>}
+                {h1d>0&&<rect x={x1} y={cH-h1i-h1d} width={bW} height={h1d} fill="#FFB347"/>}
+                {h1p>0&&<rect x={x1} y={cH-tot1} width={bW} height={h1p} fill="#34C759" rx={2} ry={2}/>}
+                {showLbl1&&d.totalValue>0&&tot1>10&&(
+                  <text x={x1+bW/2} y={cH-tot1-6} textAnchor="end" dominantBaseline="middle"
+                    transform={`rotate(90,${x1+bW/2},${cH-tot1-6})`} fontSize={14} fontWeight={700} fill="var(--t1)">
+                    {dsYTick(d.totalValue)}
+                  </text>
+                )}
+                {isCmp&&<>
+                  {h2i>0&&<rect x={x2} y={cH-h2i} width={bW} height={h2i} fill="#93C5FD"/>}
+                  {h2d>0&&<rect x={x2} y={cH-h2i-h2d} width={bW} height={h2d} fill="#60A5FA"/>}
+                  {h2p>0&&<rect x={x2} y={cH-tot2} width={bW} height={h2p} fill="#007AFF" rx={2} ry={2}/>}
+                  {showLbl2&&(d.totalValue2||0)>0&&tot2>10&&(
+                    <text x={x2+bW/2} y={cH-tot2-6} textAnchor="end" dominantBaseline="middle"
+                      transform={`rotate(90,${x2+bW/2},${cH-tot2-6})`} fontSize={14} fontWeight={700} fill="var(--t1)">
+                      {dsYTick(d.totalValue2||0)}
+                    </text>
+                  )}
+                </>}
+                {showXLbl&&(
+                  <text x={grpX+grpW/2} y={cH+16} textAnchor="middle" fontSize={14} fill="var(--t3)">{d.year}</text>
+                )}
+              </g>
+            );
+          })}
+          <line x1={0} y1={cH} x2={cW} y2={cH} stroke="var(--chart-xax,#E5E5EA)" strokeWidth={1}/>
+          <text x={cW/2} y={cH+32} textAnchor="middle" fontSize={14} fill="var(--t3)">Anos Decorridos</text>
+        </g>
+      </svg>
+      {tip&&(
+        <div style={{position:'absolute',left:Math.min(mxy.x+14,W-280),top:Math.max(mxy.y-140,8),pointerEvents:'none',zIndex:20}}>
+          <ChartTooltip d={tip} isCmp={isCmp}/>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ChartTooltip({d,isCmp}){
+  const Row=({lbl,col,val})=>(
+    <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--t2)',padding:'1px 0 1px 10px'}}>
+      <span style={{display:'flex',alignItems:'center',gap:5}}>
+        <span style={{width:7,height:7,borderRadius:'50%',background:col,display:'inline-block'}}/>
+        {lbl}
+      </span>
+      <span style={{fontWeight:600}}>{dsFmtUSD(val)}</span>
+    </div>
+  );
+  return (
+    <div style={{background:'var(--tip-bg)',borderRadius:14,boxShadow:'0 8px 32px rgba(0,0,0,.20)',
+      border:'1px solid var(--bd)',padding:'14px 16px',minWidth:260,fontFamily:'var(--font)'}}>
+      <div style={{fontWeight:700,fontSize:14,marginBottom:10,paddingBottom:8,borderBottom:'1px solid var(--bd)',display:'flex',justifyContent:'space-between'}}>
+        <span>Ano {d.year}</span>
+        <span style={{fontSize:14,fontWeight:500,color:'var(--t3)'}}>Valor Acumulado</span>
+      </div>
+      <div style={{marginBottom:isCmp?10:0}}>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+          <span style={{fontSize:14,fontWeight:700,color:'var(--gr-dk)'}}>Simulação 1</span>
+          <span style={{fontSize:14,fontWeight:800,color:'var(--gr-dk)'}}>{dsFmtUSD(d.totalValue)}</span>
+        </div>
+        <Row lbl="Investimento Inicial" col="#FF6B6B" val={d.initialInvested}/>
+        <Row lbl="DCA Mensal Acumulado" col="#FFB347" val={d.dcaInvested}/>
+        <Row lbl="Ganhos Compostos"  col="#34C759" val={d.profit}/>
+        {d.yearlyWithdrawal>0&&(
+          <div style={{marginTop:7,padding:'7px 9px',background:'var(--rd-s)',borderRadius:7,borderLeft:'3px solid var(--rd)'}}>
+            <div style={{fontSize:14,fontWeight:700,color:'var(--rd)',marginBottom:2}}>Retirada na Aposentadoria</div>
+            <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--rd)'}}>
+              <span>Anual</span><span>-{dsFmtUSD(d.yearlyWithdrawal)}</span>
+            </div>
+            <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--rd)',opacity:.75}}>
+              <span>Mensal</span><span>-{dsFmtUSD(d.monthlyWithdrawal)}</span>
+            </div>
+          </div>
+        )}
+      </div>
+      {isCmp&&d.totalValue2!=null&&(
+        <div style={{paddingTop:10,borderTop:'1px solid var(--bd)'}}>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+            <span style={{fontSize:14,fontWeight:700,color:'var(--bl-dk)'}}>Simulação 2</span>
+            <span style={{fontSize:14,fontWeight:800,color:'var(--bl-dk)'}}>{dsFmtUSD(d.totalValue2)}</span>
+          </div>
+          <Row lbl="Investimento Inicial" col="#93C5FD" val={d.initialInvested2||0}/>
+          <Row lbl="DCA Mensal Acumulado" col="#60A5FA" val={d.dcaInvested2||0}/>
+          <Row lbl="Ganhos Compostos"  col="#007AFF" val={d.profit2||0}/>
+          {(d.yearlyWithdrawal2||0)>0&&(
+            <div style={{marginTop:7,padding:'7px 9px',background:'var(--rd-s)',borderRadius:7,borderLeft:'3px solid var(--rd)'}}>
+              <div style={{fontSize:14,fontWeight:700,color:'var(--rd)',marginBottom:2}}>Retirada na Aposentadoria (2)</div>
+              <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--rd)'}}>
+                <span>Anual</span><span>-{dsFmtUSD(d.yearlyWithdrawal2)}</span>
+              </div>
+              <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--rd)',opacity:.75}}>
+                <span>Mensal</span><span>-{dsFmtUSD(d.monthlyWithdrawal2)}</span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+const SimInputSection=memo(function SimInputSection({
+  simNum,isCmpMode,
+  ticker,setTicker,monthlyMan,setMonthlyMan,years,setYears,initMan,setInitMan,
+  isRet,setIsRet,wdMan,setWdMan
+}){
+  const bl=simNum===2;
+  const col=bl?'green':'blue';
+  const acBg=bl?'var(--gr-s)':'var(--bl-s)';
+  const acBd=bl?'var(--gr-m)':'var(--bl-m)';
+  const acC =bl?'var(--gr-dk)':'var(--bl-dk)';
+  return (
+    <div style={{background:acBg,borderRadius:'var(--r-sm)',padding:16,border:`1px solid ${acBd}`}}>
+      {isCmpMode&&<div style={{fontSize:14,fontWeight:800,color:acC,textTransform:'uppercase',letterSpacing:'.08em',marginBottom:14}}>Simulação {simNum}</div>}
+      <div style={{marginBottom:14}}>
+        <label style={{fontSize:14,fontWeight:600,display:'block',marginBottom:6}}>Selecionar Ticker</label>
+        <SelInput value={ticker} onChange={setTicker} color={col}><TkOpts/></SelInput>
+        {CAGR[ticker]&&(
+          <div style={{marginTop:6,display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
+            <Badge color={col}>CAGR de Referência {CAGR[ticker]}%</Badge>
+            {DESC[ticker]&&<span style={{fontSize:14,color:'var(--t2)',lineHeight:1.5}}>{DESC[ticker].split('.')[0]}.</span>}
+          </div>
+        )}
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:14}}>
+        <div>
+          <label style={{fontSize:14,fontWeight:600,display:'block',marginBottom:5}}>
+            DCA Mensal <span style={{float:'right',color:acC,fontWeight:700}}>{dsRaw(monthlyMan)}</span>
+          </label>
+          <NumInput value={monthlyMan} onChange={setMonthlyMan} color={col}/>
+        </div>
+        <div>
+          <label style={{fontSize:14,fontWeight:600,display:'block',marginBottom:5}}>
+            Investimento Inicial <span style={{float:'right',color:acC,fontWeight:700}}>{initMan>0?dsRaw(initMan):'Nenhum'}</span>
+          </label>
+          <NumInput value={initMan} onChange={setInitMan} color={col}/>
+        </div>
+      </div>
+      <div style={{marginBottom:14}}>
+        <label style={{fontSize:14,fontWeight:600,display:'flex',justifyContent:'space-between',marginBottom:8}}>
+          <span>Período de Investimento</span>
+          <span style={{fontSize:20,fontWeight:800,color:acC}}>{years} anos</span>
+        </label>
+        <input type="range" min={1} max={50} value={years} onChange={e=>setYears(Number(e.target.value))} className={bl?'':'blue'}/>
+      </div>
+      <div style={{paddingTop:12,borderTop:`1px solid ${acBd}`}}>
+        <label style={{display:'flex',alignItems:'center',gap:10,cursor:'pointer',userSelect:'none'}}>
+          <input type="checkbox" className={col} checked={isRet} onChange={e=>setIsRet(e.target.checked)}/>
+          <span style={{fontSize:14,fontWeight:700,color:acC}}>Configuração de Retirada na Aposentadoria</span>
+        </label>
+        {isRet&&(
+          <div style={{marginTop:12}} className="ds-popIn">
+            <label style={{fontSize:14,fontWeight:600,display:'block',marginBottom:5}}>
+              Retirada Mensal <span style={{float:'right',color:acC,fontWeight:700}}>{dsRaw(wdMan)}</span>
+            </label>
+            <NumInput value={wdMan} onChange={setWdMan} color={col}/>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+});
+
+function App(){
+  const [ticker,setTicker]=useState('QQQ');
+  const [mm,setMm]=useState(500);
+  const [yrs,setYrs]=useState(10);
+  const [init,setInit]=useState(0);
+  const [isRet,setIsRet]=useState(false);
+  const [wd,setWd]=useState(1500);
+  const [isCmp,setIsCmp]=useState(false);
+  const [ticker2,setTicker2]=useState('SPY');
+  const [mm2,setMm2]=useState(500);
+  const [yrs2,setYrs2]=useState(10);
+  const [init2,setInit2]=useState(0);
+  const [isRet2,setIsRet2]=useState(false);
+  const [wd2,setWd2]=useState(1500);
+  const [results,setResults]=useState([]);
+  const [r1,setR1]=useState(null);
+  const [r2,setR2]=useState(null);
+  const [loading,setLoading]=useState(false);
+  const [showD1,setShowD1]=useState(false);
+  const [showD2,setShowD2]=useState(false);
+  const [verTxt,setVerTxt]=useState('');
+  const [showVer,setShowVer]=useState(false);
+  const resRef=useRef(null);
+  const autoCalcRef=useRef(null);
+
+  useEffect(()=>{
+    if(!results.length)return;
+    clearTimeout(autoCalcRef.current);
+    autoCalcRef.current=setTimeout(()=>{
+      const a1=CAGR[ticker.toUpperCase()]||10;
+      const a2=isCmp?CAGR[ticker2.toUpperCase()]||10:0;
+      setR1(a1);setR2(a2);
+      const maxY=isCmp?Math.max(yrs,yrs2):yrs;
+      const totY=maxY+30;
+      const s1=calcDCA(init,mm,a1,yrs,totY,1,{isEnabled:isRet,year:yrs,withdrawalUSD:wd});
+      let merged=s1;
+      if(isCmp){
+        const s2=calcDCA(init2,mm2,a2,yrs2,totY,1,{isEnabled:isRet2,year:yrs2,withdrawalUSD:wd2});
+        merged=s1.map((row,i)=>({...row,
+          totalValue2:sN(s2[i]?.totalValue),totalInvested2:sN(s2[i]?.totalInvested),
+          initialInvested2:sN(s2[i]?.initialInvested),dcaInvested2:sN(s2[i]?.dcaInvested),
+          profit2:sN(s2[i]?.profit),yearlyIncrease2:sN(s2[i]?.yearlyIncrease),
+          yearlyGrowthRate2:sN(s2[i]?.yearlyGrowthRate),doublePoint2:s2[i]?.doublePoint,
+          yearlyWithdrawal2:sN(s2[i]?.yearlyWithdrawal),monthlyWithdrawal2:sN(s2[i]?.monthlyWithdrawal),
+        }));
+      }
+      setResults(merged);
+    },300);
+    return ()=>clearTimeout(autoCalcRef.current);
+  },[mm,init,wd,mm2,init2,wd2]);
+
+  const maxYrs=isCmp?Math.max(yrs,yrs2):yrs;
+  const totYrs=maxYrs+30;
+  const chartData=results.slice(0,maxYrs);
+  const finalRow=results.length>0?results[Math.min(results.length-1,maxYrs-1)]:null;
+  const lastRow=results.length>0?results[results.length-1]:null;
+
+  const handleSim=useCallback((e)=>{
+    if(e)e.preventDefault(); if(loading)return;
+    setLoading(true);setResults([]);setShowVer(false);
+    setTimeout(()=>{
+      const a1=CAGR[ticker.toUpperCase()]||10;
+      const a2=isCmp?CAGR[ticker2.toUpperCase()]||10:0;
+      setR1(a1);setR2(a2);
+      const s1=calcDCA(init,mm,a1,yrs,totYrs,1,{isEnabled:isRet,year:yrs,withdrawalUSD:wd});
+      let merged=s1;
+      if(isCmp){
+        const s2=calcDCA(init2,mm2,a2,yrs2,totYrs,1,{isEnabled:isRet2,year:yrs2,withdrawalUSD:wd2});
+        merged=s1.map((row,i)=>({...row,
+          totalValue2:sN(s2[i]?.totalValue),totalInvested2:sN(s2[i]?.totalInvested),
+          initialInvested2:sN(s2[i]?.initialInvested),dcaInvested2:sN(s2[i]?.dcaInvested),
+          profit2:sN(s2[i]?.profit),yearlyIncrease2:sN(s2[i]?.yearlyIncrease),
+          yearlyGrowthRate2:sN(s2[i]?.yearlyGrowthRate),doublePoint2:s2[i]?.doublePoint,
+          yearlyWithdrawal2:sN(s2[i]?.yearlyWithdrawal),monthlyWithdrawal2:sN(s2[i]?.monthlyWithdrawal),
+        }));
+      }
+      setResults(merged);setLoading(false);
+      setTimeout(()=>resRef.current?.scrollIntoView({behavior:'smooth',block:'start'}),80);
+    },550);
+  },[loading,ticker,ticker2,mm,mm2,yrs,yrs2,init,init2,isRet,isRet2,wd,wd2,isCmp,totYrs]);
+
+  const handleCSV=()=>{
+    if(!results.length)return;
+    let c='﻿Ano,Valor1,Capital1,Ganho1,Retirada1';
+    if(isCmp)c+=',Valor2,Capital2,Ganho2,Retirada2';
+    c+='\n';
+    results.forEach(r=>{
+      c+=`${r.year},${r.totalValue},${r.totalInvested},${r.profit},${r.yearlyWithdrawal||0}`;
+      if(isCmp)c+=`,${r.totalValue2||0},${r.totalInvested2||0},${r.profit2||0},${r.yearlyWithdrawal2||0}`;
+      c+='\n';
+    });
+    const a=document.createElement('a');
+    a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(c);
+    a.download=`DCA_${ticker}_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+  };
+
+  const handleVerify=()=>{
+    if(!finalRow||!r1)return;
+    const mult=(finalRow.totalValue/(finalRow.totalInvested||1)).toFixed(1);
+    setVerTxt([
+      `Resultados da Verificação Matemática`,``,
+      `Esta simulação investe $${mm}/mês em ${ticker} (${r1}%/ano) por ${yrs} anos.`,``,
+      `Números-Chave`,
+      `· Retorno mensal aplicado: ${(r1/12).toFixed(3)}% (anual ${r1}% ÷ 12)`,
+      `· Total de aportes: ${dsFmtUSD(finalRow.totalInvested)}`,
+      `· Valor final da carteira: ${dsFmtUSD(finalRow.totalValue)}`,
+      `· Múltiplo do capital: ${mult}x`,``,
+      `Por que cresce tanto assim?`,
+      `Juros compostos significam "juros sobre juros". O crescimento é lento no início e acelera exponencialmente nos anos finais. Em particular, os últimos 10 anos do período de investimento costumam representar de 60% a 70% do retorno total.`,
+      ...(isRet&&finalRow.yearlyWithdrawal>0
+        ?[``,`Análise de Retirada na Aposentadoria`,`Mesmo retirando $${wd}/mês, se o retorno composto sobre o saldo restante superar o valor retirado, o capital continua crescendo. Esse é um fenômeno matematicamente normal.`]
+        :[]),
+      ``,`*Retornos passados não garantem resultados futuros. Investir na vida real envolve impostos, taxas e outros custos.*`
+    ].join('\n'));
+    setShowVer(true);
+  };
+
+  const mkdn=(txt)=>txt.split('\n').map((line,i)=>{
+    if(!line)return <div key={i} style={{height:4}}/>;
+    if(line.startsWith('*')&&line.endsWith('*'))return <div key={i} style={{fontStyle:'italic',color:'var(--t3)',fontSize:14,marginTop:10}}>{line.slice(1,-1)}</div>;
+    if(line.startsWith('·'))return <div key={i} style={{paddingLeft:12,lineHeight:1.65,color:'var(--t2)',marginTop:2}}>{line}</div>;
+    const isBold=i===0||['Números-Chave','Por que cresce tanto assim?','Análise de Retirada na Aposentadoria'].includes(line);
+    return <div key={i} style={{lineHeight:1.65,marginTop:isBold?6:2,fontWeight:isBold?700:400}}>{line}</div>;
+  });
+
+  return (
+    <div style={{fontFamily:'var(--font)'}}>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10,marginBottom:18}}>
+        <div style={{display:'flex',alignItems:'center',gap:10}}>
+          <div style={{width:32,height:32,borderRadius:9,background:'linear-gradient(135deg,var(--bl),var(--bl-dk))',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 8px rgba(0,113,227,.35)'}}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+            </svg>
+          </div>
+          <div>
+            <div style={{fontSize:16,fontWeight:800,letterSpacing:'-.02em',color:'var(--t1)'}}>Simulador de Juros Compostos DCA</div>
+            <a href="#dca-guide" onClick={e=>{e.preventDefault();document.getElementById('dca-guide').scrollIntoView({behavior:'smooth'});}}
+              style={{fontSize:14,color:'var(--bl)',marginTop:2,display:'inline-flex',alignItems:'center',gap:3,textDecoration:'none',fontWeight:600,cursor:'pointer'}}>
+              O que é o DCA? &darr;
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div style={{display:'flex',flexDirection:'column',gap:16}}>
+        <Card style={{padding:22}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:18}}>
+            <span style={{fontSize:15,fontWeight:700}}>Configuração do Investimento</span>
+            <label style={{display:'flex',alignItems:'center',gap:8,cursor:'pointer',userSelect:'none'}}>
+              <input type="checkbox" className="blue" checked={isCmp} onChange={e=>{const c=e.target.checked;if(c){setTicker2(ticker);setMm2(mm);setYrs2(yrs);setInit2(init);setIsRet2(isRet);setWd2(wd);}setIsCmp(c);}}/>
+              <span style={{fontSize:14,fontWeight:600,color:'var(--t2)'}}>Comparar 2</span>
+            </label>
+          </div>
+          <form onSubmit={handleSim} style={{display:'flex',flexDirection:'column',gap:14}}>
+            <SimInputSection simNum={1} isCmpMode={isCmp}
+              ticker={ticker} setTicker={setTicker} monthlyMan={mm} setMonthlyMan={setMm}
+              years={yrs} setYears={setYrs} initMan={init} setInitMan={setInit}
+              isRet={isRet} setIsRet={setIsRet} wdMan={wd} setWdMan={setWd}/>
+            {isCmp&&(
+              <div className="ds-fadeUp">
+                <SimInputSection simNum={2} isCmpMode={isCmp}
+                  ticker={ticker2} setTicker={setTicker2} monthlyMan={mm2} setMonthlyMan={setMm2}
+                  years={yrs2} setYears={setYrs2} initMan={init2} setInitMan={setInit2}
+                  isRet={isRet2} setIsRet={setIsRet2} wdMan={wd2} setWdMan={setWd2}/>
+              </div>
+            )}
+            <div style={{height:1,background:'var(--bd)'}}/>
+            <Btn type="submit" disabled={loading} variant="primary" style={{width:'100%',padding:'13px',fontSize:15}}>
+              {loading
+                ?<><svg className="ds-spin" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M21 12a9 9 0 1 1-9-9"/></svg>{' '}Calculando...</>
+                :<>Iniciar Simulação{' '}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></>
+              }
+            </Btn>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+              <Btn variant="ghost" disabled={!results.length} onClick={handleVerify} style={{fontSize:14,padding:'10px 14px'}}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4"/><path d="M12 2l2 2h4l2 2v4l2 2v4l-2 2v4l-2 2h-4l-2 2-2-2H6l-2-2v-4l-2-2v-4l2-2V6l2-2h4z"/></svg>
+                Verificar
+              </Btn>
+              <Btn variant="outline" disabled={!results.length} onClick={handleCSV} style={{fontSize:14,padding:'10px 14px'}}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Salvar CSV
+              </Btn>
+            </div>
+          </form>
+        </Card>
+        <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.7,textAlign:'center',padding:'0 4px'}}>
+          Retornos passados não garantem resultados futuros.<br/>Todo investimento envolve risco de perda do principal.
+        </div>
+
+        <div ref={resRef} style={{display:'flex',flexDirection:'column',gap:22}}>
+          {loading&&(
+            <Card className="ds-fadeUp ds-cpad" style={{padding:'72px 40px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',gap:22}}>
+              <div style={{position:'relative',width:76,height:76}}>
+                <div style={{position:'absolute',inset:0,borderRadius:'50%',border:'4px solid var(--gr-s)'}}/>
+                <div style={{position:'absolute',inset:0,borderRadius:'50%',border:'4px solid var(--gr)',borderTopColor:'transparent',animation:'ds-spin .85s linear infinite'}}/>
+                <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <div style={{fontSize:19,fontWeight:700,marginBottom:8}}>Calculando a mágica dos juros compostos...</div>
+                <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.65}}>Simulado com precisão mês a mês</div>
+              </div>
+              <div style={{display:'flex',gap:8}}>
+                {[0,1,2].map(i=><div key={i} className={`ds-bob${i}`} style={{width:8,height:8,borderRadius:'50%',background:'var(--gr)'}}/>)}
+              </div>
+            </Card>
+          )}
+          {!loading&&!results.length&&(
+            <Card className="ds-cpad" style={{padding:'72px 40px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',gap:18}}>
+              <div style={{width:68,height:68,borderRadius:'50%',background:'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center',border:'2px dashed var(--bd)'}}>
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+              </div>
+              <div>
+                <div style={{fontSize:17,fontWeight:700,marginBottom:8}}>Seus resultados da simulação aparecerão aqui</div>
+                <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.7}}>
+                  Configure o ticker e as condições de investimento acima,<br/>depois clique em <strong>Iniciar Simulação</strong>
+                </div>
+              </div>
+              <div style={{fontSize:14,color:'var(--t3)',padding:'10px 18px',background:'var(--bg)',borderRadius:9,border:'1px solid var(--bd)'}}>
+                Todos os cálculos são feitos em USD
+              </div>
+            </Card>
+          )}
+          {!loading&&results.length>0&&(
+            <div style={{display:'flex',flexDirection:'column',gap:22}} className="ds-fadeUp">
+              {finalRow&&(
+                <Card style={{padding:22}}>
+                  <div style={{fontSize:15,fontWeight:700,marginBottom:18,display:'flex',alignItems:'center',gap:8}}>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    Resumo da Simulação{isCmp?' (Comparação)':''}
+                  </div>
+                  <div className="ds-2col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:18}}>
+                    {[
+                      [`Valor da Carteira no Ano ${maxYrs}`,dsFmtUSD(finalRow.totalValue),dsFmtUSD(finalRow.totalValue2||0),true,true],
+                      ['Total de Aportes',dsFmtUSD(finalRow.totalInvested),dsFmtUSD(finalRow.totalInvested2||0),false,false],
+                      ['Múltiplo do Capital Aportado',`${f1(finalRow.totalValue/(finalRow.totalInvested||1),1)}x`,`${f1((finalRow.totalValue2||0)/((finalRow.totalInvested2||1)),1)}x`,false,false],
+                      [`30 Anos Depois (Ano ${totYrs})`,lastRow?dsFmtUSD(lastRow.totalValue):'-',lastRow?dsFmtUSD(lastRow.totalValue2||0):'-',false,false],
+                    ].map(([lbl,v1,v2,hl,big])=>(
+                      <div key={lbl} style={{background:hl?'var(--gr-s)':'var(--inp-bg2)',borderRadius:'var(--r-sm)',padding:'13px 15px',border:hl?'1px solid var(--gr-m)':'1px solid var(--bd)'}}>
+                        <div style={{fontSize:14,color:'var(--t2)',fontWeight:600,marginBottom:7}}>{lbl}</div>
+                        <div style={{display:'flex',gap:14,flexWrap:'wrap',alignItems:'baseline'}}>
+                          <span style={{fontSize:big?20:15,fontWeight:800,color:'var(--gr-dk)',lineHeight:1.2}}>{v1}</span>
+                          {isCmp&&<span style={{fontSize:big?20:15,fontWeight:800,color:'var(--bl-dk)',lineHeight:1.2}}>{v2}</span>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="ds-2col" style={{display:'grid',gridTemplateColumns:isCmp?'1fr 1fr':'1fr',gap:12}}>
+                    {[[ticker,r1,yrs,mm,'green'],...(isCmp?[[ticker2,r2,yrs2,mm2,'blue']]:[])].map(([tk,rt,yr,m,col],idx)=>(
+                      <div key={idx} style={{padding:'11px 13px',borderRadius:'var(--r-sm)',background:col==='blue'?'var(--bl-s)':'var(--gr-s)',border:col==='blue'?'1px solid var(--bl-m)':'1px solid var(--gr-m)'}}>
+                        <div style={{fontSize:14,color:'var(--t3)',marginBottom:4}}>Simulação {idx+1}</div>
+                        <div style={{fontSize:17,fontWeight:800}}>{tk}</div>
+                        <div style={{display:'flex',gap:7,marginTop:5,flexWrap:'wrap',alignItems:'center'}}>
+                          <Badge color={col}>{rt}% CAGR ao ano</Badge>
+                          <span style={{fontSize:14,color:'var(--t2)'}}>{yr} anos &middot; ${m}/mês</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {[[ticker,showD1,()=>setShowD1(v=>!v),'green'],...(isCmp?[[ticker2,showD2,()=>setShowD2(v=>!v),'blue']]:[])]
+                    .filter(([tk])=>DESC[tk]).map(([tk,show,tog,col],i)=>(
+                    <div key={i} style={{marginTop:12}}>
+                      <button onClick={tog} style={{background:'none',border:'none',cursor:'pointer',fontSize:14,color:col==='blue'?'var(--bl)':'var(--gr)',fontWeight:600,display:'flex',alignItems:'center',gap:5,fontFamily:'var(--font)'}}>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{transform:show?'rotate(180deg)':'none',transition:'transform .2s'}}>
+                          <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                        {show?`Ocultar descrição de ${tk}`:`Mostrar descrição de ${tk}`}
+                      </button>
+                      {show&&<div className="ds-popIn" style={{marginTop:7,padding:'11px 13px',background:'var(--inp-bg2)',borderRadius:'var(--r-sm)',fontSize:14,color:'var(--t2)',lineHeight:1.7,border:'1px solid var(--bd)'}}>
+                        {DESC[tk]}
+                      </div>}
+                    </div>
+                  ))}
+                  {showVer&&verTxt&&(
+                    <div className="ds-popIn" style={{marginTop:16,padding:16,background:'var(--bl-s)',borderRadius:12,border:'1px solid var(--bl-m)'}}>
+                      <div style={{fontSize:14,fontWeight:700,color:'var(--bl)',marginBottom:10,display:'flex',alignItems:'center',gap:6}}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4"/><path d="M12 2l2 2h4l2 2v4l2 2v4l-2 2v4l-2 2h-4l-2 2-2-2H6l-2-2v-4l-2-2v-4l2-2V6l2-2h4z"/></svg>
+                        Verificação Matemática
+                        <button onClick={()=>setShowVer(false)} style={{marginLeft:'auto',background:'none',border:'none',cursor:'pointer',color:'var(--t3)',fontSize:16,lineHeight:1}}>&times;</button>
+                      </div>
+                      <div style={{fontSize:14,color:'var(--t1)'}}>{mkdn(verTxt)}</div>
+                    </div>
+                  )}
+                </Card>
+              )}
+              <Card style={{padding:22}}>
+                <div className="ds-card-hdr" style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:18,flexWrap:'wrap',gap:10}}>
+                  <div>
+                    <div style={{fontSize:15,fontWeight:700}}>Crescimento do Patrimônio ao Longo do Tempo</div>
+                    <div style={{fontSize:14,color:'var(--t3)',marginTop:2}}>Baseado em um período de investimento de {maxYrs} anos &middot; exclui a fase de retirada</div>
+                  </div>
+                  <div className="ds-chart-legend" style={{display:'flex',gap:14,fontSize:14,color:'var(--t2)',flexWrap:'wrap'}}>
+                    {[['#FF6B6B','Investimento Inicial'],['#FFB347','DCA Acumulado'],['#34C759','Ganhos Compostos']].map(([c,l])=>(
+                      <span key={l} style={{display:'flex',alignItems:'center',gap:5}}><span style={{width:9,height:9,borderRadius:3,background:c,display:'inline-block'}}/>{l}</span>
+                    ))}
+                    {isCmp&&[['#93C5FD','Inicial (2)'],['#60A5FA','DCA (2)'],['#007AFF','Ganhos (2)']].map(([c,l])=>(
+                      <span key={l} style={{display:'flex',alignItems:'center',gap:5}}><span style={{width:9,height:9,borderRadius:3,background:c,display:'inline-block'}}/>{l}</span>
+                    ))}
+                  </div>
+                </div>
+                <SVGBarChart data={chartData} isCmp={isCmp}/>
+              </Card>
+              <Card style={{padding:22}}>
+                <div style={{fontSize:14,fontWeight:700,marginBottom:18,display:'flex',alignItems:'center',gap:7}}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M5.34 18.66l-1.41 1.41M22 12h-2M4 12H2M19.07 19.07l-1.41-1.41M5.34 5.34L3.93 3.93"/></svg>
+                  Ajuste Rápido <span style={{fontSize:14,fontWeight:400,color:'var(--t3)'}}>&mdash; atualiza instantaneamente ao mover o controle</span>
+                </div>
+                <div className="ds-3col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:22}}>
+                  {[
+                    ['Período de Investimento',yrs,v=>{setYrs(v);if(isCmp)setYrs2(v);},1,50,1,'blue',v=>`${v} anos`,false],
+                    ['Valor Mensal de DCA',mm,v=>{setMm(v);if(isCmp)setMm2(v);},0,5000,50,'green',v=>v===0?'Nenhum':dsFmtUSD(v),false],
+                    ['Investimento Inicial',init,v=>{setInit(v);if(isCmp)setInit2(v);},0,500000,5000,'green',v=>v===0?'Nenhum':dsFmtUSD(v),true],
+                  ].map(([lbl,val,setter,min,max,step,col,fmt,full])=>(
+                    <div key={lbl} style={full?{gridColumn:'1 / -1'}:{}}>
+                      <div style={{display:'flex',justifyContent:'space-between',marginBottom:9}}>
+                        <span style={{fontSize:14,fontWeight:600,color:'var(--t2)'}}>{lbl}</span>
+                        <span style={{fontSize:16,fontWeight:800,color:col==='blue'?'var(--bl)':'var(--gr)'}}>{fmt(val)}</span>
+                      </div>
+                      <input type="range" min={min} max={max} step={step} value={val} onChange={e=>setter(Number(e.target.value))} className={col}/>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+              <Card style={{overflow:'hidden'}}>
+                <div style={{padding:'18px 22px',borderBottom:'1px solid var(--bd)',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10}}>
+                  <div>
+                    <div style={{fontSize:15,fontWeight:700}}>Detalhamento Ano a Ano</div>
+                    <div style={{fontSize:14,color:'var(--t3)',marginTop:2}}>Período de investimento completo + 30 anos após a aposentadoria</div>
+                  </div>
+                  <div style={{fontSize:14,color:'#7D5900',padding:'5px 11px',borderRadius:7,background:'var(--yl-s)',border:'1px solid rgba(255,159,10,.3)'}}>
+                    Acompanhe marcos de 2x / 4x
+                  </div>
+                </div>
+                <div style={{overflowX:'auto'}}>
+                  <table className="ds-table" style={{fontSize:14}}>
+                    <thead>
+                      <tr style={{background:'var(--inp-bg2)'}}>
+                        <th style={{padding:'11px 18px',fontWeight:700,whiteSpace:'nowrap',color:'var(--t2)'}}>Ano</th>
+                        <th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--gr-dk)'}}>Valor 1 (var. anual)</th>
+                        {isCmp&&<th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--bl-dk)'}}>Valor 2 (var. anual)</th>}
+                        <th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--t2)',textAlign:'center'}}>Retorno 1</th>
+                        {isCmp&&<th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--t2)',textAlign:'center'}}>Retorno 2</th>}
+                        {(isRet||isRet2)&&<th style={{padding:'11px 18px',fontWeight:700,whiteSpace:'nowrap',color:'var(--rd)',textAlign:'right'}}>Retirada Anual</th>}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {results.map(row=>{
+                        const isPost=row.year>maxYrs;
+                        const isRetActive=isRet||isRet2;
+                        const isRetRow=isPost&&isRetActive;
+                        const isHL=row.doublePoint||row.doublePoint2;
+                        return (
+                          <tr key={row.year}
+                            style={{background:isRetRow?'var(--row-ret)':isPost?'var(--row-post)':isHL?'var(--yl-s)':'var(--row-bg)',borderTop:'1px solid var(--bd)'}}
+                            onMouseEnter={e=>e.currentTarget.style.background='var(--inp-bg)'}
+                            onMouseLeave={e=>e.currentTarget.style.background=isRetRow?'var(--row-ret)':isPost?'var(--row-post)':isHL?'var(--yl-s)':'var(--row-bg)'}>
+                            <td style={{padding:'11px 18px',whiteSpace:'nowrap'}}>
+                              <div style={{display:'flex',alignItems:'center',flexWrap:'wrap',gap:6}}>
+                                <span style={{fontWeight:700,fontSize:14}}>Ano {row.year}</span>
+                                {isRetRow&&<Badge color="red">Fase de Retirada</Badge>}
+                                {row.doublePoint&&<Badge color="yellow">{row.doublePoint}x!</Badge>}
+                                {isCmp&&row.doublePoint2&&!row.doublePoint&&<Badge color="blue">(2) {row.doublePoint2}x!</Badge>}
+                              </div>
+                            </td>
+                            <td style={{padding:'11px 16px',whiteSpace:'nowrap'}}>
+                              <div style={{fontWeight:800,color:'var(--gr-dk)',fontSize:14}}>{dsFmtUSD(row.totalValue)}</div>
+                              <div style={{fontSize:14,color:row.yearlyIncrease>=0?'var(--gr)':'var(--rd)',marginTop:2,fontWeight:600}}>
+                                {row.yearlyIncrease>0?'+':''}{dsFmtUSD(row.yearlyIncrease)} ({row.yearlyIncrease>0?'+':''}{f1(row.yearlyGrowthRate,1)}%)
+                              </div>
+                            </td>
+                            {isCmp&&(
+                              <td style={{padding:'11px 16px',whiteSpace:'nowrap'}}>
+                                <div style={{fontWeight:800,color:'var(--bl-dk)',fontSize:14}}>{dsFmtUSD(row.totalValue2||0)}</div>
+                                <div style={{fontSize:14,color:(row.yearlyIncrease2||0)>=0?'var(--bl)':'var(--rd)',marginTop:2,fontWeight:600}}>
+                                  {(row.yearlyIncrease2||0)>0?'+':''}{dsFmtUSD(row.yearlyIncrease2||0)} ({(row.yearlyIncrease2||0)>0?'+':''}{f1(row.yearlyGrowthRate2||0,1)}%)
+                                </div>
+                              </td>
+                            )}
+                            <td style={{padding:'11px 16px',textAlign:'center',whiteSpace:'nowrap'}}>
+                              <span style={{background:'var(--gr-s)',color:'var(--gr-dk)',border:'1px solid var(--gr-m)',fontSize:14,fontWeight:700,padding:'2px 8px',borderRadius:6,display:'inline-block'}}>
+                                {f1(((row.profit||0)/(row.totalInvested||1))*100,1)}%
+                              </span>
+                            </td>
+                            {isCmp&&(
+                              <td style={{padding:'11px 16px',textAlign:'center',whiteSpace:'nowrap'}}>
+                                <span style={{background:'var(--bl-s)',color:'var(--bl-dk)',border:'1px solid var(--bl-m)',fontSize:14,fontWeight:700,padding:'2px 8px',borderRadius:6,display:'inline-block'}}>
+                                  {f1(((row.profit2||0)/((row.totalInvested2||1)))*100,1)}%
+                                </span>
+                              </td>
+                            )}
+                            {(isRet||isRet2)&&(
+                            <td style={{padding:'11px 18px',textAlign:'right',whiteSpace:'nowrap'}}>
+                              {(row.yearlyWithdrawal||0)>0?(
+                                <div>
+                                  <div style={{fontWeight:700,color:'var(--rd)',fontSize:14}}>-{dsFmtUSD(row.yearlyWithdrawal)}</div>
+                                  <div style={{fontSize:14,color:'rgba(215,0,21,.65)',marginTop:1}}>Mensal {dsFmtUSD(row.monthlyWithdrawal)}</div>
+                                  {isCmp&&(row.yearlyWithdrawal2||0)>0&&(
+                                    <div style={{marginTop:4,paddingTop:4,borderTop:'1px solid rgba(215,0,21,.12)'}}>
+                                      <div style={{fontSize:14,color:'var(--rd)',opacity:.7}}>-{dsFmtUSD(row.yearlyWithdrawal2)} (2)</div>
+                                    </div>
+                                  )}
+                                </div>
+                              ):<span style={{color:'var(--t3)'}}>&mdash;</span>}
+                            </td>
+                            )}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <section id="dca-guide" style={{margin:'32px 0 0',padding:0}}>
+        <div style={{background:'var(--card)',border:'1px solid var(--bd)',borderRadius:'var(--r)',overflow:'hidden'}}>
+          <div style={{background:'var(--bl-s)',padding:'20px 24px',borderBottom:'1px solid var(--bd)',display:'flex',alignItems:'center',gap:14}}>
+            <div style={{flexShrink:0,width:40,height:40,borderRadius:12,background:'var(--bl)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 4px 12px rgba(0,113,227,.35)'}}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </div>
+            <div>
+              <h2 style={{fontSize:17,fontWeight:800,color:'var(--t1)',margin:'0 0 4px',letterSpacing:'-0.3px'}}>O que é o DCA?</h2>
+              <p style={{fontSize:14,color:'var(--t2)',margin:0,lineHeight:1.5}}>Custo Médio (Dollar-Cost Averaging) &mdash; o princípio e os benefícios de investir um valor fixo em intervalos regulares</p>
+            </div>
+          </div>
+          <div style={{padding:'22px 24px 0',display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))',gap:24}}>
+            <div>
+              <h3 style={{fontSize:14,fontWeight:700,color:'var(--t1)',margin:'0 0 11px',display:'flex',alignItems:'center',gap:8}}>
+                <span style={{width:3,height:16,background:'var(--bl)',borderRadius:2,display:'inline-block',flexShrink:0}}></span>O que é o DCA?
+              </h3>
+              <p style={{fontSize:14.5,color:'var(--t2)',lineHeight:1.85,margin:0}}>
+                DCA é a sigla de <strong style={{color:'var(--t1)'}}>Dollar-Cost Averaging</strong> (custo médio). Parece técnico, mas na verdade é bem simples: comprar o mesmo valor, no mesmo dia, todo mês, sem falhar. Isso é tudo.
+              </p>
+              <p style={{fontSize:14.5,color:'var(--t2)',lineHeight:1.85,margin:'11px 0 0'}}>
+                Seja quando o mercado sobe, seja quando cai. Seja quando as manchetes gritam pânico, seja quando todo mundo está comemorando. Você simplesmente compra &mdash; sem pensar demais. Aliás, não pensar demais talvez seja a maior vantagem.
+              </p>
+            </div>
+            <div>
+              <h3 style={{fontSize:14,fontWeight:700,color:'var(--t1)',margin:'0 0 11px',display:'flex',alignItems:'center',gap:8}}>
+                <span style={{width:3,height:16,background:'var(--bl)',borderRadius:2,display:'inline-block',flexShrink:0}}></span>Por que DCA?
+              </h3>
+              <p style={{fontSize:14.5,color:'var(--t2)',lineHeight:1.85,margin:0}}>
+                O que torna investir em ações difícil é a pergunta de <strong style={{color:'var(--t1)'}}>"quando comprar."</strong> Décadas de dados repetem sempre a mesma coisa: quanto mais você tenta acertar o momento do mercado, piores tendem a ser seus resultados.
+              </p>
+              <p style={{fontSize:14.5,color:'var(--t2)',lineHeight:1.85,margin:'11px 0 0'}}>
+                O DCA elimina essa pergunta por completo. Você acaba comprando pouco quando os preços estão caros, e muito quando estão baratos &mdash; naturalmente, sem nem precisar planejar. Um custo médio por cota mais baixo acontece <strong style={{color:'var(--t1)'}}>automaticamente, como uma questão matemática</strong>.
+              </p>
+            </div>
+          </div>
+          <div style={{padding:'18px 24px 24px'}}>
+            <div style={{borderTop:'1px solid var(--bd)',paddingTop:16,display:'flex',flexDirection:'column',gap:13}}>
+              <blockquote style={{margin:0,padding:'14px 18px',background:'var(--tip-bg)',borderLeft:'3px solid var(--bl)',borderRadius:'0 10px 10px 0'}}>
+                <p style={{fontSize:14,color:'var(--t1)',lineHeight:1.88,margin:0,fontStyle:'italic'}}>
+                  "O DCA disciplinado é uma rotina que esvazia a emoção. Seja quando o mercado está eufórico, seja quando está em pânico, aportar mecanicamente o mesmo valor todas as vezes não é uma afirmação de que você 'sabe' o mercado &mdash; é uma postura de que você 'acredita' que ele vai crescer no longo prazo. E acreditar exige uma paciência muito mais resistente do que o conhecimento."
+                </p>
+                <cite style={{display:'block',marginTop:9,fontSize:14,color:'var(--bl)',fontWeight:700,fontStyle:'normal'}}>&mdash; de <em>Investindo em ETFs de Ações Americanas que Nunca Falham</em></cite>
+              </blockquote>
+              <blockquote style={{margin:0,padding:'14px 18px',background:'var(--tip-bg)',borderLeft:'3px solid var(--bl)',borderRadius:'0 10px 10px 0'}}>
+                <p style={{fontSize:14,color:'var(--t1)',lineHeight:1.88,margin:0,fontStyle:'italic'}}>
+                  "Isso é simplicidade radical em sua forma mais pura &mdash; não uma renúncia ao conhecimento, mas uma rejeição da complexidade desnecessária. Em vez de nos esforçarmos para sermos espertos, escolhemos nos apoiar no poder de um sistema."
+                </p>
+                <cite style={{display:'block',marginTop:9,fontSize:14,color:'var(--bl)',fontWeight:700,fontStyle:'normal'}}>&mdash; de <em>Investindo em ETFs de Ações Americanas que Nunca Falham</em></cite>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="ds-footrow" style={{borderTop:'1px solid var(--bd)',padding:'20px 4px 0',marginTop:24,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:12}}>
+        <span style={{fontSize:14,fontWeight:600,color:'var(--t2)',display:'flex',alignItems:'center',gap:6}}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          Simulador de Juros Compostos DCA &mdash; ezlong.com
+        </span>
+        <div style={{fontSize:14,color:'var(--t2)',display:'flex',gap:20,flexWrap:'wrap'}}>
+          <span>Retornos passados não garantem resultados futuros</span>
+          <span>Todo investimento envolve risco de perda do principal</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('ds-root')).render(React.createElement(App));
+</script>
 
 <!-- ── 네이티브 앱 웹뷰 감지: ?embed=app 신호 처리 (2026-07-28) ── -->
 <script>

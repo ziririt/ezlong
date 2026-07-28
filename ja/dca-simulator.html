@@ -39,6 +39,10 @@
   <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/dca-simulator.html">
   <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/dca-simulator.html">
   <link rel="canonical" href="https://ezlong.com/ja/dca-simulator.html">
+  <!-- React 18 + Babel — powers the live DCA simulator widget below -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -87,9 +91,22 @@
       --blue: #0071E3; --blue-lt: #0064CC; --green: #1A7F37;
       --r: 12px; --max-w: 860px;
       --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --card: var(--surface); --bd: var(--border); --t1: var(--text); --t2: var(--text2); --t3: var(--text3);
+      --gr: #34C759; --gr-dk: #248A3D; --gr-s: rgba(52,199,89,0.10); --gr-m: rgba(52,199,89,0.22);
+      --bl: var(--blue); --bl-dk: var(--blue-lt); --bl-s: rgba(0,113,227,0.10); --bl-m: rgba(0,113,227,0.20);
+      --rd: #D70015; --rd-s: rgba(215,0,21,0.08); --yl-s: rgba(255,159,10,0.14);
+      --r-sm: 8px; --inp-bg: #F5F5F7; --inp-bg2: #FAFAFA; --row-bg: #FFFFFF; --row-post: #FAFAFA; --row-ret: #FFF5F5;
+      --tip-bg: #FFFFFF; --chk-border: #C7C7CC; --range-bg: #E5E5EA;
     }
     @media (prefers-color-scheme: dark) {
-      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158; }
+      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158;
+        --card: var(--surface); --bd: var(--border); --t1: var(--text); --t2: var(--text2); --t3: var(--text3);
+        --gr: #30D158; --gr-dk: #30D158; --gr-s: rgba(52,199,89,0.16); --gr-m: rgba(52,199,89,0.28);
+        --bl: var(--blue); --bl-dk: var(--blue-lt); --bl-s: rgba(10,132,255,0.20); --bl-m: rgba(10,132,255,0.32);
+        --rd: #FF453A; --rd-s: rgba(255,69,58,0.18); --yl-s: rgba(255,214,10,0.16);
+        --inp-bg: #2C2C2E; --inp-bg2: #252527; --row-bg: #1C1C1E; --row-post: #232325; --row-ret: #2A1818;
+        --tip-bg: #2C2C2E; --chk-border: #48484A; --range-bg: #3A3A3C;
+      }
     }
     html { scroll-behavior: smooth; }
     body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.65; }
@@ -150,6 +167,42 @@
     .en-footer a { color:var(--blue); text-decoration:none; }
     .en-footer a:hover { text-decoration:underline; }
     @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+
+    /* ══════ DCA SIMULATOR WIDGET ══════ */
+    #ds-root { font-family: var(--font); }
+    #ds-root table { border-collapse: collapse; width: 100%; }
+    #ds-root * { box-sizing: border-box; min-width: 0; }
+    #ds-root input[type=range] { -webkit-appearance: none; width: 100%; height: 4px; border-radius: 2px; background: var(--range-bg); outline: none; cursor: pointer; }
+    #ds-root input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--gr); box-shadow: 0 2px 8px rgba(52,199,89,.40); cursor: pointer; }
+    #ds-root input[type=range].blue::-webkit-slider-thumb { background: var(--bl); box-shadow: 0 2px 8px rgba(0,113,227,.40); }
+    #ds-root input[type=checkbox] { -webkit-appearance: none; width: 18px; height: 18px; min-width: 18px; border: 1.5px solid var(--chk-border); border-radius: 5px; background: var(--inp-bg); cursor: pointer; position: relative; transition: all .15s; }
+    #ds-root input[type=checkbox]:checked { background: var(--gr); border-color: var(--gr); }
+    #ds-root input[type=checkbox].blue:checked { background: var(--bl); border-color: var(--bl); }
+    #ds-root input[type=checkbox]:checked::after { content: ''; position: absolute; left: 4px; top: 1px; width: 8px; height: 11px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg) scaleX(.9); }
+    #ds-root select { -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236E6E73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; padding-right: 34px !important; }
+    #ds-root input[type=number]::-webkit-inner-spin-button, #ds-root input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+    @keyframes ds-spin   { to { transform: rotate(360deg); } }
+    @keyframes ds-fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes ds-popIn  { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
+    @keyframes ds-bob    { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-7px); } }
+    .ds-spin   { animation: ds-spin .9s linear infinite; }
+    .ds-fadeUp { animation: ds-fadeUp .4s ease forwards; }
+    .ds-popIn  { animation: ds-popIn .22s ease forwards; }
+    .ds-bob0   { animation: ds-bob .7s ease infinite; }
+    .ds-bob1   { animation: ds-bob .7s .15s ease infinite; }
+    .ds-bob2   { animation: ds-bob .7s .30s ease infinite; }
+    .ds-layout > *, .ds-layout > * > * { min-width: 0; }
+    @media(max-width:767px){
+      .ds-layout   { grid-template-columns:1fr !important; gap:14px !important; }
+      .ds-sticky   { position:static !important; top:auto !important; }
+      .ds-2col     { grid-template-columns:1fr !important; }
+      .ds-3col     { grid-template-columns:1fr 1fr !important; gap:14px !important; }
+      .ds-cpad     { padding:44px 20px !important; }
+      .ds-table th, .ds-table td { padding:9px 10px !important; }
+      .ds-chart-legend { flex-wrap:wrap; gap:8px !important; }
+      .ds-footrow  { flex-direction:column; gap:6px !important; text-align:center; }
+      .ds-card-hdr { flex-direction:column; align-items:flex-start !important; gap:10px !important; }
+    }
   </style>
 </head>
 <body>
@@ -169,11 +222,10 @@
     <h1>DCA複利シミュレーター</h1>
     <p class="hero-sub">毎月の米国株積立投資が10年・20年・30年で複利によってどのように成長するかを正確に確認できます</p>
     <div class="cta-group">
-      <a class="btn-primary" href="https://ezlong.com/dca-simulator.html" target="_blank" rel="noopener">ツールを開く &rarr;</a>
+      <a class="btn-primary" href="#calculator">無料で試す &darr;</a>
       <a class="btn-secondary" href="https://ezlong.com/ja/">すべてのツールを見る</a>
     </div>
-    <p class="auto-translate-note">ツールUIは韓国語です &mdash; Chrome、Edge、Safariが自動的に翻訳します。</p>
-    <p class="translate-proxy-note">自動翻訳が表示されない場合は <a href="https://ezlong-com.translate.goog/dca-simulator.html?_x_tr_sl=ko&amp;_x_tr_tl=ja&amp;_x_tr_hl=ja&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Google翻訳で開く &rarr;</a></p>
+    <p class="auto-translate-note">完全日本語対応 &mdash; ログイン不要・ダウンロード不要・数秒で結果が出ます。</p>
   </section>
   <div class="stats-row" role="region" aria-label="Key statistics">
     <div class="stat-item"><div class="stat-value">$915,000</div><div class="stat-label">月500ドル×30年・年利9%</div></div>
@@ -181,6 +233,9 @@
     <div class="stat-item"><div class="stat-value">完全無料</div><div class="stat-label">アカウント不要</div></div>
   </div>
   <main class="main" id="main-content">
+    <section class="section" id="calculator">
+      <div id="ds-root"></div>
+    </section>
     <section class="section">
       <h2 class="section-title">DCA複利シミュレーターとは?</h2>
       <p class="section-body">DCA複利シミュレーターは、あなたの定期的な毎月の投資が複利の力によって時間とともにどのように積み上がっていくかを正確に計算します。DCA(ドルコスト平均法)とは、市場価格に関係なく一定の間隔で決まった金額を投資する戦略です。個人投資家にとって、最も一貫して成功する長期資産形成戦略と言えます。</p>
@@ -286,8 +341,7 @@
     <div class="cta-card">
       <h2>今すぐDCA複利シミュレーターを試す</h2>
       <p>無料・登録不要、ブラウザですぐに使えます。Chromeが韓国語を自動で日本語に翻訳します。</p>
-      <a class="btn-white" href="https://ezlong.com/dca-simulator.html" target="_blank" rel="noopener">DCA複利シミュレーターを開く &rarr;</a>
-      <p class="translate-proxy-note">自動翻訳が表示されない場合は <a href="https://ezlong-com.translate.goog/dca-simulator.html?_x_tr_sl=ko&amp;_x_tr_tl=ja&amp;_x_tr_hl=ja&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Google翻訳で開く &rarr;</a></p>
+      <a class="btn-white" href="#calculator">計算機まで戻る &uarr;</a>
     </div>
   </main>
   <footer class="en-footer" role="contentinfo">
@@ -295,6 +349,893 @@
     &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
     <small>本サイトは教育目的のツールです。投資助言ではありません。すべての投資にはリスクが伴います。過去の実績は将来の成果を保証するものではありません。</small></p>
   </footer>
+
+<script type="text/babel">
+const { useState, useCallback, useRef, useEffect, memo } = React;
+
+const CAGR = {
+  QQQ:21,XLK:21,SOXX:29.5,SPY:14,SCHD:11.5,XLV:10.5,XLP:7.5,GLD:8.5,
+  NVDA:70,AAPL:27.5,MSFT:24.5,GOOG:20,GOOGL:20,AMZN:22.5,META:19.5,
+  TSLA:40,AVGO:34,AMD:46.5,PLTR:27.5,NFLX:22,TSM:25,
+  "BRK-B":13.5,COST:23,V:19,JPM:15,LLY:33,KO:9.5,PG:9.5
+};
+const DESC = {
+  QQQ:"ナスダック100指数に連動するETF。AI・ビッグテック中心の成長株バスケットで、過去10年の年平均リターンは約21%。",
+  SPY:"S&P500指数に連動するETF。米国大型株500銘柄への長期分散投資の定番。年平均リターンは約14%。",
+  NVDA:"AI半導体で圧倒的な地位を持つ企業。データセンター向けGPU市場を事実上支配し、直近5年間で爆発的な成長を遂げた。",
+  TSLA:"EV・エネルギー・AIロボティクス企業。値動きは大きいが、長期的な成長ストーリーは強力。",
+  AAPL:"時価総額世界最大のビッグテック企業。エコシステムのロックイン効果とサービス売上の成長により安定したリターン。",
+  MSFT:"クラウド(Azure)とAIの分野を牽引する企業。エンタープライズソフトウェア市場での支配力は圧倒的。",
+  GOOG:"検索・広告・クラウド・AIを手がけるアルファベット。複数の事業を持つことで安定した成長を実現。",
+  AMZN:"eコマースとAWSクラウドで首位を走る企業。構造的な成長が続いている。",
+  META:"Facebook・Instagram・WhatsAppを保有。AIによる広告最適化で収益性が急速に改善した。",
+  AVGO:"ブロードコム。カスタムAIチップとネットワーキング半導体でデータセンター市場で急成長中。",
+  AMD:"NVDAの最大のライバル。AI向けGPUとサーバー向けCPU市場でシェアを着実に拡大している。",
+  SOXX:"半導体セクターETF。AIインフラ拡大の恩恵を受ける中核的な半導体企業を組み入れている。",
+  SCHD:"配当成長ETF。安定したキャッシュフローと資本成長の両方を追求する。",
+  GLD:"金の現物価格に連動するETF。ポートフォリオのヘッジおよびインフレ対策手段。",
+  "BRK-B":"ウォーレン・バフェット率いるバークシャー・ハサウェイ。バリュー投資に基づく複合企業で、長期的な安定性が高い。",
+  JPM:"米国最大の銀行、JPモルガン。強力なリテールバンキング事業により安定した成長を続ける。",
+  V:"ビザの決済ネットワーク。世界の決済インフラでほぼ独占に近い地位を持つ。",
+  COST:"コストコ。会員制ビジネスモデルで顧客ロイヤルティを築き、安定した売上成長を実現。",
+};
+
+function sN(v, fb=0){ const n=Number(v); return isNaN(n)||!isFinite(n)?fb:n; }
+
+function calcDCA(startUSD, monthlyUSD, annualRate, accumYears, totalYears, exRate, ret){
+  const mr=sN(annualRate)/100/12, ex=sN(exRate,1);
+  let val=sN(startUSD), inv=sN(startUSD), prev=sN(startUSD), first=0, nextX=2, wdAcc=0;
+  const rows=[];
+  for(let m=1;m<=sN(totalYears)*12;m++){
+    const yr=m/12;
+    const mInv=yr<=sN(accumYears)?sN(monthlyUSD):0;
+    const mWd=ret?.isEnabled&&yr>sN(ret.year)?Math.min(val+mInv,sN(ret.withdrawalUSD)):0;
+    wdAcc+=mWd;
+    val=(val+mInv-mWd)*(1+mr);
+    inv+=mInv;
+    if(m%12===0){
+      const year=m/12;
+      const tv=Math.max(0,Math.round(sN(val)*ex));
+      const ti=Math.round(sN(inv)*ex);
+      const ii=Math.round(sN(startUSD)*ex);
+      const di=Math.round(sN(inv-startUSD)*ex);
+      const pr=Math.max(0,tv-ti);
+      const yw=Math.round(sN(wdAcc)*ex);
+      const mw=Math.round(sN(wdAcc/12)*ex);
+      const dUSD=sN(val)-prev;
+      const base=prev>0?prev:(sN(inv)>0?sN(inv):1);
+      const gPct=base>0?(dUSD/base)*100:0;
+      if(year===1)first=sN(val);
+      let dp; if(year>1&&first>0&&sN(val)>=first*nextX){dp=nextX;nextX*=2;}
+      rows.push({year,totalValue:tv,totalInvested:ti,initialInvested:ii,
+        dcaInvested:di,profit:pr,yearlyIncrease:Math.round(dUSD*ex),
+        yearlyGrowthRate:sN(gPct),doublePoint:dp,yearlyWithdrawal:yw,monthlyWithdrawal:mw});
+      prev=sN(val);wdAcc=0;
+    }
+  }
+  return rows;
+}
+
+/* 4桁区切り(万/億/兆) — compound-calculator.html の ja 版と同一ロジックを再利用 */
+function dsTrim(s){ if(s.indexOf('.')===-1) return s; return s.replace(/0+$/,'').replace(/\.$/,''); }
+function dsFmtUSD(n){
+  const num=Number(n); if(isNaN(num)||!isFinite(num)) return '$0';
+  const sign=num<0?'-':''; const abs=Math.abs(num);
+  if(abs>=1e12||Math.round((abs/1e8)*100)/100>=10000) return sign+'$'+dsTrim((abs/1e12).toFixed(2))+'兆';
+  if(abs>=1e8||Math.round((abs/1e4)*100)/100>=10000) return sign+'$'+dsTrim((abs/1e8).toFixed(2))+'億';
+  if(abs>=1e4) return sign+'$'+dsTrim((abs/1e4).toFixed(2))+'万';
+  return sign+'$'+Math.round(abs).toLocaleString('en-US');
+}
+function dsYTick(v){
+  const num=Number(v); if(isNaN(num)||!isFinite(num)) return '$0';
+  const sign=num<0?'-':''; const abs=Math.abs(num);
+  if(abs>=1e12||Math.round((abs/1e8)*10)/10>=10000) return sign+'$'+dsTrim((abs/1e12).toFixed(1))+'兆';
+  if(abs>=1e8||Math.round((abs/1e4)*10)/10>=10000) return sign+'$'+dsTrim((abs/1e8).toFixed(1))+'億';
+  if(abs>=1e4) return sign+'$'+dsTrim((abs/1e4).toFixed(1))+'万';
+  return sign+'$'+Math.round(abs);
+}
+function dsRaw(v){ const n=Math.round(Number(v)||0); return n===0?'$0':'$'+n.toLocaleString('en-US'); }
+const f1=(v,d=1)=>{const n=Number(v);return isNaN(n)||!isFinite(n)?(0).toFixed(d):n.toFixed(d);};
+
+function Card({children,style,className}){
+  return <div className={className} style={{background:'var(--card)',borderRadius:'var(--r)',
+    boxShadow:'0 1px 4px rgba(0,0,0,.07)',border:'1px solid var(--bd)',...style}}>{children}</div>;
+}
+const INP={width:'100%',padding:'10px 13px',background:'var(--inp-bg)',
+  border:'1px solid var(--bd)',borderRadius:'var(--r-sm)',fontSize:14,
+  color:'var(--t1)',outline:'none',transition:'border-color .15s,box-shadow .15s'};
+const NumInput=memo(function NumInput({value,onChange,color='blue',style}){
+  const [f,setF]=useState(false);
+  const [raw,setRaw]=useState('');
+  const a=color==='blue'?'var(--bl)':'var(--gr)', s=color==='blue'?'var(--bl-s)':'var(--gr-s)';
+  return <input type="number" min="0" placeholder="0"
+    value={f ? raw : (value>0 ? String(value) : '')}
+    onChange={e=>{
+      const v=e.target.value.replace(/[^0-9]/g,'');
+      setRaw(v);
+      onChange(v===''?0:Number(v));
+    }}
+    onFocus={()=>{setF(true);setRaw(value>0?String(value):'');}}
+    onBlur={()=>setF(false)}
+    style={{...INP,...(f?{borderColor:a,boxShadow:`0 0 0 3px ${s}`}:{}),...style}}/>;
+});
+const SelInput=memo(function SelInput({value,onChange,color='blue',children}){
+  const [f,setF]=useState(false);
+  const a=color==='blue'?'var(--bl)':'var(--gr)', s=color==='blue'?'var(--bl-s)':'var(--gr-s)';
+  return <select value={value} onChange={e=>onChange(e.target.value)}
+    onFocus={()=>setF(true)} onBlur={()=>setF(false)}
+    style={{...INP,cursor:'pointer',...(f?{borderColor:a,boxShadow:`0 0 0 3px ${s}`}:{})}}>{children}</select>;
+});
+function TkOpts(){return <>
+  <optgroup label="主要ETF">
+    <option value="QQQ">QQQ — ナスダック100</option>
+    <option value="SPY">SPY — S&amp;P 500</option>
+    <option value="XLK">XLK — テクノロジーセクター</option>
+    <option value="SOXX">SOXX — 半導体</option>
+    <option value="SCHD">SCHD — 配当成長</option>
+    <option value="XLV">XLV — ヘルスケア</option>
+    <option value="GLD">GLD — 金</option>
+  </optgroup>
+  <optgroup label="ビッグテック &amp; AI">
+    <option value="NVDA">NVDA — エヌビディア</option>
+    <option value="AAPL">AAPL — アップル</option>
+    <option value="MSFT">MSFT — マイクロソフト</option>
+    <option value="GOOG">GOOG — グーグル</option>
+    <option value="AMZN">AMZN — アマゾン</option>
+    <option value="META">META — メタ</option>
+    <option value="TSLA">TSLA — テスラ</option>
+    <option value="AVGO">AVGO — ブロードコム</option>
+    <option value="AMD">AMD — AMD</option>
+  </optgroup>
+  <optgroup label="優良株">
+    <option value="BRK-B">BRK-B — バークシャー</option>
+    <option value="COST">COST — コストコ</option>
+    <option value="V">V — ビザ</option>
+    <option value="JPM">JPM — JPモルガン</option>
+    <option value="LLY">LLY — イーライリリー</option>
+  </optgroup>
+</>;}
+function Btn({children,onClick,disabled,variant='primary',type='button',style}){
+  const [h,setH]=useState(false);
+  const V={
+    primary:   {bg:h&&!disabled?'var(--bl-dk)':'var(--bl)',c:'white',sh:'0 2px 8px rgba(0,113,227,.30)',br:'none'},
+    secondary: {bg:h&&!disabled?'var(--gr-dk)':'var(--gr)',c:'white',sh:'0 2px 8px rgba(52,199,89,.30)',br:'none'},
+    ghost:     {bg:h&&!disabled?'var(--bl-s)':'transparent',c:'var(--bl-dk)',sh:'none',br:'1px solid var(--bl-m)'},
+    outline:   {bg:h&&!disabled?'var(--inp-bg)':'var(--row-bg)',c:'var(--t2)',sh:'none',br:'1px solid var(--bd)'},
+  }[variant]||{};
+  return <button type={type} onClick={onClick} disabled={disabled}
+    onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
+    style={{display:'inline-flex',alignItems:'center',justifyContent:'center',gap:7,
+      padding:'11px 18px',borderRadius:'var(--r-sm)',fontSize:14,fontWeight:600,
+      cursor:disabled?'not-allowed':'pointer',border:V.br,fontFamily:'var(--font)',
+      background:V.bg,color:V.c,boxShadow:V.sh,opacity:disabled?.45:1,
+      transition:'all .15s',...style}}>{children}</button>;
+}
+function Badge({children,color='blue'}){
+  const C={
+    green:{bg:'var(--gr-s)',c:'var(--gr-dk)',bd:'1px solid var(--gr-m)'},
+    blue: {bg:'var(--bl-s)',c:'var(--bl-dk)',bd:'1px solid var(--bl-m)'},
+    red:  {bg:'var(--rd-s)',c:'var(--rd)',   bd:'1px solid rgba(215,0,21,.2)'},
+    yellow:{bg:'var(--yl-s)',c:'#8A5A00',    bd:'1px solid rgba(255,159,10,.3)'},
+  }[color]||{bg:'#f0f0f0',c:'#333',bd:'1px solid #ddd'};
+  return <span style={{fontSize:14,fontWeight:700,padding:'2px 8px',borderRadius:6,
+    background:C.bg,color:C.c,border:C.bd,display:'inline-block',letterSpacing:'.01em'}}>{children}</span>;
+}
+
+function SVGBarChart({data, isCmp}){
+  const wrapRef=useRef(null);
+  const [W,setW]=useState(0);
+  const [tip,setTip]=useState(null);
+  const [mxy,setMxy]=useState({x:0,y:0});
+  useEffect(()=>{
+    const el=wrapRef.current; if(!el)return;
+    const obs=new ResizeObserver(([e])=>setW(e.contentRect.width||e.target.offsetWidth));
+    obs.observe(el);
+    const initial=el.getBoundingClientRect().width||el.offsetWidth||el.clientWidth;
+    if(initial>0)setW(initial);
+    return ()=>obs.disconnect();
+  },[]);
+  const H=W<500?390:720, mg=W<500?{t:36,r:8,b:34,l:60}:{t:55,r:18,b:40,l:76};
+  const cW=W-mg.l-mg.r, cH=H-mg.t-mg.b;
+  const n=data.length;
+  const maxV=Math.max(...data.map(d=>Math.max(d.totalValue||0,isCmp?(d.totalValue2||0):0)),1);
+  const rawStep=maxV/5;
+  const mag=Math.pow(10,Math.floor(Math.log10(rawStep)));
+  const niceStep=Math.ceil(rawStep/mag)*mag;
+  const niceMax=Math.ceil(maxV/niceStep)*niceStep;
+  const ticks=[]; for(let i=0;i<=5;i++) ticks.push(niceStep*i);
+  const yPx=v=>cH-(v/niceMax)*cH;
+  const hPx=v=>(v/niceMax)*cH;
+  const grpW=cW/n;
+  const bW=isCmp?Math.max(3,grpW*0.35):Math.max(4,grpW*0.65);
+  const gap=isCmp?Math.max(1,grpW*0.04):0;
+  const skip=Math.ceil(n/25);
+  const onMove=e=>{
+    const r=wrapRef.current.getBoundingClientRect();
+    setMxy({x:e.clientX-r.left,y:e.clientY-r.top});
+  };
+  if(!W) return <div ref={wrapRef} style={{width:'100%',height:300,background:'var(--inp-bg2)',borderRadius:8}}/>;
+  return (
+    <div ref={wrapRef} style={{position:'relative',width:'100%',height:H,touchAction:'none',overflow:'hidden'}} onMouseMove={onMove} onMouseLeave={()=>setTip(null)}>
+      <svg width={W} height={H} style={{display:'block',maxWidth:'100%'}}>
+        <g transform={`translate(${mg.l},${mg.t})`}>
+          {ticks.map((t,i)=>(
+            <g key={i}>
+              <line x1={0} y1={yPx(t)} x2={cW} y2={yPx(t)} stroke="var(--chart-grid,#F0F0F5)" strokeWidth={1}/>
+              <text x={-8} y={yPx(t)+4} textAnchor="end" fontSize={14} fill="var(--t3)">{dsYTick(t)}</text>
+            </g>
+          ))}
+          {data.map((d,i)=>{
+            const grpX=i*grpW;
+            const totalGrpW=isCmp?bW*2+gap:bW;
+            const x1=grpX+(grpW-totalGrpW)/2;
+            const x2=x1+bW+gap;
+            const h1i=hPx(d.initialInvested||0), h1d=hPx(d.dcaInvested||0), h1p=hPx(d.profit||0);
+            const tot1=h1i+h1d+h1p;
+            const h2i=hPx(d.initialInvested2||0), h2d=hPx(d.dcaInvested2||0), h2p=hPx(d.profit2||0);
+            const tot2=h2i+h2d+h2p;
+            const showXLbl=i%skip===0||i===n-1;
+            const showLbl1=i%skip===0||i===n-1;
+            const showLbl2=i%skip===0||i===n-1;
+            return (
+              <g key={d.year} style={{cursor:'default'}} onMouseEnter={()=>setTip(d)} onMouseLeave={()=>setTip(null)}>
+                {h1i>0&&<rect x={x1} y={cH-h1i} width={bW} height={h1i} fill="#FF6B6B"/>}
+                {h1d>0&&<rect x={x1} y={cH-h1i-h1d} width={bW} height={h1d} fill="#FFB347"/>}
+                {h1p>0&&<rect x={x1} y={cH-tot1} width={bW} height={h1p} fill="#34C759" rx={2} ry={2}/>}
+                {showLbl1&&d.totalValue>0&&tot1>10&&(
+                  <text x={x1+bW/2} y={cH-tot1-6} textAnchor="end" dominantBaseline="middle"
+                    transform={`rotate(90,${x1+bW/2},${cH-tot1-6})`} fontSize={14} fontWeight={700} fill="var(--t1)">
+                    {dsYTick(d.totalValue)}
+                  </text>
+                )}
+                {isCmp&&<>
+                  {h2i>0&&<rect x={x2} y={cH-h2i} width={bW} height={h2i} fill="#93C5FD"/>}
+                  {h2d>0&&<rect x={x2} y={cH-h2i-h2d} width={bW} height={h2d} fill="#60A5FA"/>}
+                  {h2p>0&&<rect x={x2} y={cH-tot2} width={bW} height={h2p} fill="#007AFF" rx={2} ry={2}/>}
+                  {showLbl2&&(d.totalValue2||0)>0&&tot2>10&&(
+                    <text x={x2+bW/2} y={cH-tot2-6} textAnchor="end" dominantBaseline="middle"
+                      transform={`rotate(90,${x2+bW/2},${cH-tot2-6})`} fontSize={14} fontWeight={700} fill="var(--t1)">
+                      {dsYTick(d.totalValue2||0)}
+                    </text>
+                  )}
+                </>}
+                {showXLbl&&(
+                  <text x={grpX+grpW/2} y={cH+16} textAnchor="middle" fontSize={14} fill="var(--t3)">{d.year}</text>
+                )}
+              </g>
+            );
+          })}
+          <line x1={0} y1={cH} x2={cW} y2={cH} stroke="var(--chart-xax,#E5E5EA)" strokeWidth={1}/>
+          <text x={cW/2} y={cH+32} textAnchor="middle" fontSize={14} fill="var(--t3)">経過年数</text>
+        </g>
+      </svg>
+      {tip&&(
+        <div style={{position:'absolute',left:Math.min(mxy.x+14,W-280),top:Math.max(mxy.y-140,8),pointerEvents:'none',zIndex:20}}>
+          <ChartTooltip d={tip} isCmp={isCmp}/>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ChartTooltip({d,isCmp}){
+  const Row=({lbl,col,val})=>(
+    <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--t2)',padding:'1px 0 1px 10px'}}>
+      <span style={{display:'flex',alignItems:'center',gap:5}}>
+        <span style={{width:7,height:7,borderRadius:'50%',background:col,display:'inline-block'}}/>
+        {lbl}
+      </span>
+      <span style={{fontWeight:600}}>{dsFmtUSD(val)}</span>
+    </div>
+  );
+  return (
+    <div style={{background:'var(--tip-bg)',borderRadius:14,boxShadow:'0 8px 32px rgba(0,0,0,.20)',
+      border:'1px solid var(--bd)',padding:'14px 16px',minWidth:260,fontFamily:'var(--font)'}}>
+      <div style={{fontWeight:700,fontSize:14,marginBottom:10,paddingBottom:8,borderBottom:'1px solid var(--bd)',display:'flex',justifyContent:'space-between'}}>
+        <span>{d.year}年目</span>
+        <span style={{fontSize:14,fontWeight:500,color:'var(--t3)'}}>累計評価額</span>
+      </div>
+      <div style={{marginBottom:isCmp?10:0}}>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+          <span style={{fontSize:14,fontWeight:700,color:'var(--gr-dk)'}}>シミュレーション1</span>
+          <span style={{fontSize:14,fontWeight:800,color:'var(--gr-dk)'}}>{dsFmtUSD(d.totalValue)}</span>
+        </div>
+        <Row lbl="初期投資額" col="#FF6B6B" val={d.initialInvested}/>
+        <Row lbl="月次DCA累計" col="#FFB347" val={d.dcaInvested}/>
+        <Row lbl="複利収益"  col="#34C759" val={d.profit}/>
+        {d.yearlyWithdrawal>0&&(
+          <div style={{marginTop:7,padding:'7px 9px',background:'var(--rd-s)',borderRadius:7,borderLeft:'3px solid var(--rd)'}}>
+            <div style={{fontSize:14,fontWeight:700,color:'var(--rd)',marginBottom:2}}>引退後の引き出し</div>
+            <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--rd)'}}>
+              <span>年間</span><span>-{dsFmtUSD(d.yearlyWithdrawal)}</span>
+            </div>
+            <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--rd)',opacity:.75}}>
+              <span>月間</span><span>-{dsFmtUSD(d.monthlyWithdrawal)}</span>
+            </div>
+          </div>
+        )}
+      </div>
+      {isCmp&&d.totalValue2!=null&&(
+        <div style={{paddingTop:10,borderTop:'1px solid var(--bd)'}}>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+            <span style={{fontSize:14,fontWeight:700,color:'var(--bl-dk)'}}>シミュレーション2</span>
+            <span style={{fontSize:14,fontWeight:800,color:'var(--bl-dk)'}}>{dsFmtUSD(d.totalValue2)}</span>
+          </div>
+          <Row lbl="初期投資額" col="#93C5FD" val={d.initialInvested2||0}/>
+          <Row lbl="月次DCA累計" col="#60A5FA" val={d.dcaInvested2||0}/>
+          <Row lbl="複利収益"  col="#007AFF" val={d.profit2||0}/>
+          {(d.yearlyWithdrawal2||0)>0&&(
+            <div style={{marginTop:7,padding:'7px 9px',background:'var(--rd-s)',borderRadius:7,borderLeft:'3px solid var(--rd)'}}>
+              <div style={{fontSize:14,fontWeight:700,color:'var(--rd)',marginBottom:2}}>引退後の引き出し (2)</div>
+              <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--rd)'}}>
+                <span>年間</span><span>-{dsFmtUSD(d.yearlyWithdrawal2)}</span>
+              </div>
+              <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--rd)',opacity:.75}}>
+                <span>月間</span><span>-{dsFmtUSD(d.monthlyWithdrawal2)}</span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+const SimInputSection=memo(function SimInputSection({
+  simNum,isCmpMode,
+  ticker,setTicker,monthlyMan,setMonthlyMan,years,setYears,initMan,setInitMan,
+  isRet,setIsRet,wdMan,setWdMan
+}){
+  const bl=simNum===2;
+  const col=bl?'green':'blue';
+  const acBg=bl?'var(--gr-s)':'var(--bl-s)';
+  const acBd=bl?'var(--gr-m)':'var(--bl-m)';
+  const acC =bl?'var(--gr-dk)':'var(--bl-dk)';
+  return (
+    <div style={{background:acBg,borderRadius:'var(--r-sm)',padding:16,border:`1px solid ${acBd}`}}>
+      {isCmpMode&&<div style={{fontSize:14,fontWeight:800,color:acC,textTransform:'uppercase',letterSpacing:'.08em',marginBottom:14}}>シミュレーション{simNum}</div>}
+      <div style={{marginBottom:14}}>
+        <label style={{fontSize:14,fontWeight:600,display:'block',marginBottom:6}}>ティッカーを選択</label>
+        <SelInput value={ticker} onChange={setTicker} color={col}><TkOpts/></SelInput>
+        {CAGR[ticker]&&(
+          <div style={{marginTop:6,display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
+            <Badge color={col}>参考CAGR {CAGR[ticker]}%</Badge>
+            {DESC[ticker]&&<span style={{fontSize:14,color:'var(--t2)',lineHeight:1.5}}>{DESC[ticker].split('。')[0]}。</span>}
+          </div>
+        )}
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:14}}>
+        <div>
+          <label style={{fontSize:14,fontWeight:600,display:'block',marginBottom:5}}>
+            月々のDCA <span style={{float:'right',color:acC,fontWeight:700}}>{dsRaw(monthlyMan)}</span>
+          </label>
+          <NumInput value={monthlyMan} onChange={setMonthlyMan} color={col}/>
+        </div>
+        <div>
+          <label style={{fontSize:14,fontWeight:600,display:'block',marginBottom:5}}>
+            初期投資額 <span style={{float:'right',color:acC,fontWeight:700}}>{initMan>0?dsRaw(initMan):'なし'}</span>
+          </label>
+          <NumInput value={initMan} onChange={setInitMan} color={col}/>
+        </div>
+      </div>
+      <div style={{marginBottom:14}}>
+        <label style={{fontSize:14,fontWeight:600,display:'flex',justifyContent:'space-between',marginBottom:8}}>
+          <span>投資期間</span>
+          <span style={{fontSize:20,fontWeight:800,color:acC}}>{years}年</span>
+        </label>
+        <input type="range" min={1} max={50} value={years} onChange={e=>setYears(Number(e.target.value))} className={bl?'':'blue'}/>
+      </div>
+      <div style={{paddingTop:12,borderTop:`1px solid ${acBd}`}}>
+        <label style={{display:'flex',alignItems:'center',gap:10,cursor:'pointer',userSelect:'none'}}>
+          <input type="checkbox" className={col} checked={isRet} onChange={e=>setIsRet(e.target.checked)}/>
+          <span style={{fontSize:14,fontWeight:700,color:acC}}>引退後の引き出し設定</span>
+        </label>
+        {isRet&&(
+          <div style={{marginTop:12}} className="ds-popIn">
+            <label style={{fontSize:14,fontWeight:600,display:'block',marginBottom:5}}>
+              月々の引き出し額 <span style={{float:'right',color:acC,fontWeight:700}}>{dsRaw(wdMan)}</span>
+            </label>
+            <NumInput value={wdMan} onChange={setWdMan} color={col}/>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+});
+
+function App(){
+  const [ticker,setTicker]=useState('QQQ');
+  const [mm,setMm]=useState(500);
+  const [yrs,setYrs]=useState(10);
+  const [init,setInit]=useState(0);
+  const [isRet,setIsRet]=useState(false);
+  const [wd,setWd]=useState(1500);
+  const [isCmp,setIsCmp]=useState(false);
+  const [ticker2,setTicker2]=useState('SPY');
+  const [mm2,setMm2]=useState(500);
+  const [yrs2,setYrs2]=useState(10);
+  const [init2,setInit2]=useState(0);
+  const [isRet2,setIsRet2]=useState(false);
+  const [wd2,setWd2]=useState(1500);
+  const [results,setResults]=useState([]);
+  const [r1,setR1]=useState(null);
+  const [r2,setR2]=useState(null);
+  const [loading,setLoading]=useState(false);
+  const [showD1,setShowD1]=useState(false);
+  const [showD2,setShowD2]=useState(false);
+  const [verTxt,setVerTxt]=useState('');
+  const [showVer,setShowVer]=useState(false);
+  const resRef=useRef(null);
+  const autoCalcRef=useRef(null);
+
+  useEffect(()=>{
+    if(!results.length)return;
+    clearTimeout(autoCalcRef.current);
+    autoCalcRef.current=setTimeout(()=>{
+      const a1=CAGR[ticker.toUpperCase()]||10;
+      const a2=isCmp?CAGR[ticker2.toUpperCase()]||10:0;
+      setR1(a1);setR2(a2);
+      const maxY=isCmp?Math.max(yrs,yrs2):yrs;
+      const totY=maxY+30;
+      const s1=calcDCA(init,mm,a1,yrs,totY,1,{isEnabled:isRet,year:yrs,withdrawalUSD:wd});
+      let merged=s1;
+      if(isCmp){
+        const s2=calcDCA(init2,mm2,a2,yrs2,totY,1,{isEnabled:isRet2,year:yrs2,withdrawalUSD:wd2});
+        merged=s1.map((row,i)=>({...row,
+          totalValue2:sN(s2[i]?.totalValue),totalInvested2:sN(s2[i]?.totalInvested),
+          initialInvested2:sN(s2[i]?.initialInvested),dcaInvested2:sN(s2[i]?.dcaInvested),
+          profit2:sN(s2[i]?.profit),yearlyIncrease2:sN(s2[i]?.yearlyIncrease),
+          yearlyGrowthRate2:sN(s2[i]?.yearlyGrowthRate),doublePoint2:s2[i]?.doublePoint,
+          yearlyWithdrawal2:sN(s2[i]?.yearlyWithdrawal),monthlyWithdrawal2:sN(s2[i]?.monthlyWithdrawal),
+        }));
+      }
+      setResults(merged);
+    },300);
+    return ()=>clearTimeout(autoCalcRef.current);
+  },[mm,init,wd,mm2,init2,wd2]);
+
+  const maxYrs=isCmp?Math.max(yrs,yrs2):yrs;
+  const totYrs=maxYrs+30;
+  const chartData=results.slice(0,maxYrs);
+  const finalRow=results.length>0?results[Math.min(results.length-1,maxYrs-1)]:null;
+  const lastRow=results.length>0?results[results.length-1]:null;
+
+  const handleSim=useCallback((e)=>{
+    if(e)e.preventDefault(); if(loading)return;
+    setLoading(true);setResults([]);setShowVer(false);
+    setTimeout(()=>{
+      const a1=CAGR[ticker.toUpperCase()]||10;
+      const a2=isCmp?CAGR[ticker2.toUpperCase()]||10:0;
+      setR1(a1);setR2(a2);
+      const s1=calcDCA(init,mm,a1,yrs,totYrs,1,{isEnabled:isRet,year:yrs,withdrawalUSD:wd});
+      let merged=s1;
+      if(isCmp){
+        const s2=calcDCA(init2,mm2,a2,yrs2,totYrs,1,{isEnabled:isRet2,year:yrs2,withdrawalUSD:wd2});
+        merged=s1.map((row,i)=>({...row,
+          totalValue2:sN(s2[i]?.totalValue),totalInvested2:sN(s2[i]?.totalInvested),
+          initialInvested2:sN(s2[i]?.initialInvested),dcaInvested2:sN(s2[i]?.dcaInvested),
+          profit2:sN(s2[i]?.profit),yearlyIncrease2:sN(s2[i]?.yearlyIncrease),
+          yearlyGrowthRate2:sN(s2[i]?.yearlyGrowthRate),doublePoint2:s2[i]?.doublePoint,
+          yearlyWithdrawal2:sN(s2[i]?.yearlyWithdrawal),monthlyWithdrawal2:sN(s2[i]?.monthlyWithdrawal),
+        }));
+      }
+      setResults(merged);setLoading(false);
+      setTimeout(()=>resRef.current?.scrollIntoView({behavior:'smooth',block:'start'}),80);
+    },550);
+  },[loading,ticker,ticker2,mm,mm2,yrs,yrs2,init,init2,isRet,isRet2,wd,wd2,isCmp,totYrs]);
+
+  const handleCSV=()=>{
+    if(!results.length)return;
+    let c='﻿Year,Value1,Principal1,Profit1,Withdrawal1';
+    if(isCmp)c+=',Value2,Principal2,Profit2,Withdrawal2';
+    c+='\n';
+    results.forEach(r=>{
+      c+=`${r.year},${r.totalValue},${r.totalInvested},${r.profit},${r.yearlyWithdrawal||0}`;
+      if(isCmp)c+=`,${r.totalValue2||0},${r.totalInvested2||0},${r.profit2||0},${r.yearlyWithdrawal2||0}`;
+      c+='\n';
+    });
+    const a=document.createElement('a');
+    a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(c);
+    a.download=`DCA_${ticker}_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+  };
+
+  const handleVerify=()=>{
+    if(!finalRow||!r1)return;
+    const mult=(finalRow.totalValue/(finalRow.totalInvested||1)).toFixed(1);
+    setVerTxt([
+      `数学的検証結果`,``,
+      `このシミュレーションは、${ticker}(年利${r1}%)に毎月$${mm}を${yrs}年間投資するケースです。`,``,
+      `主要な数値`,
+      `・月次適用リターン: ${(r1/12).toFixed(3)}%(年利${r1}% ÷ 12)`,
+      `・総積立元本: ${dsFmtUSD(finalRow.totalInvested)}`,
+      `・最終評価額: ${dsFmtUSD(finalRow.totalValue)}`,
+      `・元本に対する倍率: ${mult}倍`,``,
+      `なぜこんなに大きくなるのか?`,
+      `複利とは「利息が利息を生む」仕組みです。最初はゆっくりと、後半になるほど加速度的に増えていきます。特に投資期間の最後の10年間が、全体の利益の60〜70%を生み出します。`,
+      ...(isRet&&finalRow.yearlyWithdrawal>0
+        ?[``,`引退後の引き出し分析`,`毎月$${wd}を引き出しても、残りの資産が生み出す複利収益が引き出し額を上回っていれば、元本は増え続けます。これは数学的にごく自然な現象です。`]
+        :[]),
+      ``,`*過去のリターンは将来の成果を保証しません。実際の投資には税金・手数料などのコストが伴います。*`
+    ].join('\n'));
+    setShowVer(true);
+  };
+
+  const mkdn=(txt)=>txt.split('\n').map((line,i)=>{
+    if(!line)return <div key={i} style={{height:4}}/>;
+    if(line.startsWith('*')&&line.endsWith('*'))return <div key={i} style={{fontStyle:'italic',color:'var(--t3)',fontSize:14,marginTop:10}}>{line.slice(1,-1)}</div>;
+    if(line.startsWith('・'))return <div key={i} style={{paddingLeft:12,lineHeight:1.65,color:'var(--t2)',marginTop:2}}>{line}</div>;
+    const isBold=i===0||['主要な数値','なぜこんなに大きくなるのか?','引退後の引き出し分析'].includes(line);
+    return <div key={i} style={{lineHeight:1.65,marginTop:isBold?6:2,fontWeight:isBold?700:400}}>{line}</div>;
+  });
+
+  return (
+    <div style={{fontFamily:'var(--font)'}}>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10,marginBottom:18}}>
+        <div style={{display:'flex',alignItems:'center',gap:10}}>
+          <div style={{width:32,height:32,borderRadius:9,background:'linear-gradient(135deg,var(--bl),var(--bl-dk))',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 8px rgba(0,113,227,.35)'}}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+            </svg>
+          </div>
+          <div>
+            <div style={{fontSize:16,fontWeight:800,letterSpacing:'-.02em',color:'var(--t1)'}}>DCA複利シミュレーター</div>
+            <a href="#dca-guide" onClick={e=>{e.preventDefault();document.getElementById('dca-guide').scrollIntoView({behavior:'smooth'});}}
+              style={{fontSize:14,color:'var(--bl)',marginTop:2,display:'inline-flex',alignItems:'center',gap:3,textDecoration:'none',fontWeight:600,cursor:'pointer'}}>
+              DCAとは? &darr;
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div style={{display:'flex',flexDirection:'column',gap:16}}>
+        <Card style={{padding:22}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:18}}>
+            <span style={{fontSize:15,fontWeight:700}}>投資設定</span>
+            <label style={{display:'flex',alignItems:'center',gap:8,cursor:'pointer',userSelect:'none'}}>
+              <input type="checkbox" className="blue" checked={isCmp} onChange={e=>{const c=e.target.checked;if(c){setTicker2(ticker);setMm2(mm);setYrs2(yrs);setInit2(init);setIsRet2(isRet);setWd2(wd);}setIsCmp(c);}}/>
+              <span style={{fontSize:14,fontWeight:600,color:'var(--t2)'}}>2つ比較</span>
+            </label>
+          </div>
+          <form onSubmit={handleSim} style={{display:'flex',flexDirection:'column',gap:14}}>
+            <SimInputSection simNum={1} isCmpMode={isCmp}
+              ticker={ticker} setTicker={setTicker} monthlyMan={mm} setMonthlyMan={setMm}
+              years={yrs} setYears={setYrs} initMan={init} setInitMan={setInit}
+              isRet={isRet} setIsRet={setIsRet} wdMan={wd} setWdMan={setWd}/>
+            {isCmp&&(
+              <div className="ds-fadeUp">
+                <SimInputSection simNum={2} isCmpMode={isCmp}
+                  ticker={ticker2} setTicker={setTicker2} monthlyMan={mm2} setMonthlyMan={setMm2}
+                  years={yrs2} setYears={setYrs2} initMan={init2} setInitMan={setInit2}
+                  isRet={isRet2} setIsRet={setIsRet2} wdMan={wd2} setWdMan={setWd2}/>
+              </div>
+            )}
+            <div style={{height:1,background:'var(--bd)'}}/>
+            <Btn type="submit" disabled={loading} variant="primary" style={{width:'100%',padding:'13px',fontSize:15}}>
+              {loading
+                ?<><svg className="ds-spin" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M21 12a9 9 0 1 1-9-9"/></svg>{' '}計算中...</>
+                :<>シミュレーション開始{' '}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></>
+              }
+            </Btn>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+              <Btn variant="ghost" disabled={!results.length} onClick={handleVerify} style={{fontSize:14,padding:'10px 14px'}}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4"/><path d="M12 2l2 2h4l2 2v4l2 2v4l-2 2v4l-2 2h-4l-2 2-2-2H6l-2-2v-4l-2-2v-4l2-2V6l2-2h4z"/></svg>
+                検証する
+              </Btn>
+              <Btn variant="outline" disabled={!results.length} onClick={handleCSV} style={{fontSize:14,padding:'10px 14px'}}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                CSV保存
+              </Btn>
+            </div>
+          </form>
+        </Card>
+        <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.7,textAlign:'center',padding:'0 4px'}}>
+          過去のリターンは将来の成果を保証しません。<br/>すべての投資には元本割れのリスクがあります。
+        </div>
+
+        <div ref={resRef} style={{display:'flex',flexDirection:'column',gap:22}}>
+          {loading&&(
+            <Card className="ds-fadeUp ds-cpad" style={{padding:'72px 40px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',gap:22}}>
+              <div style={{position:'relative',width:76,height:76}}>
+                <div style={{position:'absolute',inset:0,borderRadius:'50%',border:'4px solid var(--gr-s)'}}/>
+                <div style={{position:'absolute',inset:0,borderRadius:'50%',border:'4px solid var(--gr)',borderTopColor:'transparent',animation:'ds-spin .85s linear infinite'}}/>
+                <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <div style={{fontSize:19,fontWeight:700,marginBottom:8}}>複利の魔法を計算中...</div>
+                <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.65}}>毎月単位のシミュレーションで精密に計算します</div>
+              </div>
+              <div style={{display:'flex',gap:8}}>
+                {[0,1,2].map(i=><div key={i} className={`ds-bob${i}`} style={{width:8,height:8,borderRadius:'50%',background:'var(--gr)'}}/>)}
+              </div>
+            </Card>
+          )}
+          {!loading&&!results.length&&(
+            <Card className="ds-cpad" style={{padding:'72px 40px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',gap:18}}>
+              <div style={{width:68,height:68,borderRadius:'50%',background:'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center',border:'2px dashed var(--bd)'}}>
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+              </div>
+              <div>
+                <div style={{fontSize:17,fontWeight:700,marginBottom:8}}>シミュレーション結果はここに表示されます</div>
+                <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.7}}>
+                  上でティッカーと投資条件を設定し、<br/><strong>シミュレーション開始</strong>を押してください
+                </div>
+              </div>
+              <div style={{fontSize:14,color:'var(--t3)',padding:'10px 18px',background:'var(--bg)',borderRadius:9,border:'1px solid var(--bd)'}}>
+                すべての計算はUSD建てで行われます
+              </div>
+            </Card>
+          )}
+          {!loading&&results.length>0&&(
+            <div style={{display:'flex',flexDirection:'column',gap:22}} className="ds-fadeUp">
+              {finalRow&&(
+                <Card style={{padding:22}}>
+                  <div style={{fontSize:15,fontWeight:700,marginBottom:18,display:'flex',alignItems:'center',gap:8}}>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    シミュレーション概要{isCmp?'(比較)':''}
+                  </div>
+                  <div className="ds-2col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:18}}>
+                    {[
+                      [`${maxYrs}年目時点の資産評価額`,dsFmtUSD(finalRow.totalValue),dsFmtUSD(finalRow.totalValue2||0),true,true],
+                      ['総積立元本',dsFmtUSD(finalRow.totalInvested),dsFmtUSD(finalRow.totalInvested2||0),false,false],
+                      ['元本に対する倍率',`${f1(finalRow.totalValue/(finalRow.totalInvested||1),1)}倍`,`${f1((finalRow.totalValue2||0)/((finalRow.totalInvested2||1)),1)}倍`,false,false],
+                      [`30年後(${totYrs}年目)`,lastRow?dsFmtUSD(lastRow.totalValue):'-',lastRow?dsFmtUSD(lastRow.totalValue2||0):'-',false,false],
+                    ].map(([lbl,v1,v2,hl,big])=>(
+                      <div key={lbl} style={{background:hl?'var(--gr-s)':'var(--inp-bg2)',borderRadius:'var(--r-sm)',padding:'13px 15px',border:hl?'1px solid var(--gr-m)':'1px solid var(--bd)'}}>
+                        <div style={{fontSize:14,color:'var(--t2)',fontWeight:600,marginBottom:7}}>{lbl}</div>
+                        <div style={{display:'flex',gap:14,flexWrap:'wrap',alignItems:'baseline'}}>
+                          <span style={{fontSize:big?20:15,fontWeight:800,color:'var(--gr-dk)',lineHeight:1.2}}>{v1}</span>
+                          {isCmp&&<span style={{fontSize:big?20:15,fontWeight:800,color:'var(--bl-dk)',lineHeight:1.2}}>{v2}</span>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="ds-2col" style={{display:'grid',gridTemplateColumns:isCmp?'1fr 1fr':'1fr',gap:12}}>
+                    {[[ticker,r1,yrs,mm,'green'],...(isCmp?[[ticker2,r2,yrs2,mm2,'blue']]:[])].map(([tk,rt,yr,m,col],idx)=>(
+                      <div key={idx} style={{padding:'11px 13px',borderRadius:'var(--r-sm)',background:col==='blue'?'var(--bl-s)':'var(--gr-s)',border:col==='blue'?'1px solid var(--bl-m)':'1px solid var(--gr-m)'}}>
+                        <div style={{fontSize:14,color:'var(--t3)',marginBottom:4}}>シミュレーション{idx+1}</div>
+                        <div style={{fontSize:17,fontWeight:800}}>{tk}</div>
+                        <div style={{display:'flex',gap:7,marginTop:5,flexWrap:'wrap',alignItems:'center'}}>
+                          <Badge color={col}>年利{rt}% CAGR</Badge>
+                          <span style={{fontSize:14,color:'var(--t2)'}}>{yr}年・月${m}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {[[ticker,showD1,()=>setShowD1(v=>!v),'green'],...(isCmp?[[ticker2,showD2,()=>setShowD2(v=>!v),'blue']]:[])]
+                    .filter(([tk])=>DESC[tk]).map(([tk,show,tog,col],i)=>(
+                    <div key={i} style={{marginTop:12}}>
+                      <button onClick={tog} style={{background:'none',border:'none',cursor:'pointer',fontSize:14,color:col==='blue'?'var(--bl)':'var(--gr)',fontWeight:600,display:'flex',alignItems:'center',gap:5,fontFamily:'var(--font)'}}>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{transform:show?'rotate(180deg)':'none',transition:'transform .2s'}}>
+                          <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                        {tk}の銘柄説明を{show?'閉じる':'表示'}
+                      </button>
+                      {show&&<div className="ds-popIn" style={{marginTop:7,padding:'11px 13px',background:'var(--inp-bg2)',borderRadius:'var(--r-sm)',fontSize:14,color:'var(--t2)',lineHeight:1.7,border:'1px solid var(--bd)'}}>
+                        {DESC[tk]}
+                      </div>}
+                    </div>
+                  ))}
+                  {showVer&&verTxt&&(
+                    <div className="ds-popIn" style={{marginTop:16,padding:16,background:'var(--bl-s)',borderRadius:12,border:'1px solid var(--bl-m)'}}>
+                      <div style={{fontSize:14,fontWeight:700,color:'var(--bl)',marginBottom:10,display:'flex',alignItems:'center',gap:6}}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4"/><path d="M12 2l2 2h4l2 2v4l2 2v4l-2 2v4l-2 2h-4l-2 2-2-2H6l-2-2v-4l-2-2v-4l2-2V6l2-2h4z"/></svg>
+                        数学的検証結果
+                        <button onClick={()=>setShowVer(false)} style={{marginLeft:'auto',background:'none',border:'none',cursor:'pointer',color:'var(--t3)',fontSize:16,lineHeight:1}}>&times;</button>
+                      </div>
+                      <div style={{fontSize:14,color:'var(--t1)'}}>{mkdn(verTxt)}</div>
+                    </div>
+                  )}
+                </Card>
+              )}
+              <Card style={{padding:22}}>
+                <div className="ds-card-hdr" style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:18,flexWrap:'wrap',gap:10}}>
+                  <div>
+                    <div style={{fontSize:15,fontWeight:700}}>資産成長の推移</div>
+                    <div style={{fontSize:14,color:'var(--t3)',marginTop:2}}>投資期間{maxYrs}年基準・引き出し期間を除く</div>
+                  </div>
+                  <div className="ds-chart-legend" style={{display:'flex',gap:14,fontSize:14,color:'var(--t2)',flexWrap:'wrap'}}>
+                    {[['#FF6B6B','初期投資額'],['#FFB347','月次DCA累計'],['#34C759','複利収益']].map(([c,l])=>(
+                      <span key={l} style={{display:'flex',alignItems:'center',gap:5}}><span style={{width:9,height:9,borderRadius:3,background:c,display:'inline-block'}}/>{l}</span>
+                    ))}
+                    {isCmp&&[['#93C5FD','初期(2)'],['#60A5FA','DCA(2)'],['#007AFF','収益(2)']].map(([c,l])=>(
+                      <span key={l} style={{display:'flex',alignItems:'center',gap:5}}><span style={{width:9,height:9,borderRadius:3,background:c,display:'inline-block'}}/>{l}</span>
+                    ))}
+                  </div>
+                </div>
+                <SVGBarChart data={chartData} isCmp={isCmp}/>
+              </Card>
+              <Card style={{padding:22}}>
+                <div style={{fontSize:14,fontWeight:700,marginBottom:18,display:'flex',alignItems:'center',gap:7}}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M5.34 18.66l-1.41 1.41M22 12h-2M4 12H2M19.07 19.07l-1.41-1.41M5.34 5.34L3.93 3.93"/></svg>
+                  クイック調整 <span style={{fontSize:14,fontWeight:400,color:'var(--t3)'}}>&mdash; スライダーを動かすと即座に反映されます</span>
+                </div>
+                <div className="ds-3col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:22}}>
+                  {[
+                    ['投資期間',yrs,v=>{setYrs(v);if(isCmp)setYrs2(v);},1,50,1,'blue',v=>`${v}年`,false],
+                    ['月々のDCA金額',mm,v=>{setMm(v);if(isCmp)setMm2(v);},0,5000,50,'green',v=>v===0?'なし':dsFmtUSD(v),false],
+                    ['初期投資額',init,v=>{setInit(v);if(isCmp)setInit2(v);},0,500000,5000,'green',v=>v===0?'なし':dsFmtUSD(v),true],
+                  ].map(([lbl,val,setter,min,max,step,col,fmt,full])=>(
+                    <div key={lbl} style={full?{gridColumn:'1 / -1'}:{}}>
+                      <div style={{display:'flex',justifyContent:'space-between',marginBottom:9}}>
+                        <span style={{fontSize:14,fontWeight:600,color:'var(--t2)'}}>{lbl}</span>
+                        <span style={{fontSize:16,fontWeight:800,color:col==='blue'?'var(--bl)':'var(--gr)'}}>{fmt(val)}</span>
+                      </div>
+                      <input type="range" min={min} max={max} step={step} value={val} onChange={e=>setter(Number(e.target.value))} className={col}/>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+              <Card style={{overflow:'hidden'}}>
+                <div style={{padding:'18px 22px',borderBottom:'1px solid var(--bd)',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10}}>
+                  <div>
+                    <div style={{fontSize:15,fontWeight:700}}>年別詳細データ</div>
+                    <div style={{fontSize:14,color:'var(--t3)',marginTop:2}}>投資期間 + 引退後30年間全体</div>
+                  </div>
+                  <div style={{fontSize:14,color:'#7D5900',padding:'5px 11px',borderRadius:7,background:'var(--yl-s)',border:'1px solid rgba(255,159,10,.3)'}}>
+                    2倍・4倍到達ポイントを確認
+                  </div>
+                </div>
+                <div style={{overflowX:'auto'}}>
+                  <table className="ds-table" style={{fontSize:14}}>
+                    <thead>
+                      <tr style={{background:'var(--inp-bg2)'}}>
+                        <th style={{padding:'11px 18px',fontWeight:700,whiteSpace:'nowrap',color:'var(--t2)'}}>経過年数</th>
+                        <th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--gr-dk)'}}>評価額1(前年比)</th>
+                        {isCmp&&<th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--bl-dk)'}}>評価額2(前年比)</th>}
+                        <th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--t2)',textAlign:'center'}}>リターン1</th>
+                        {isCmp&&<th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--t2)',textAlign:'center'}}>リターン2</th>}
+                        {(isRet||isRet2)&&<th style={{padding:'11px 18px',fontWeight:700,whiteSpace:'nowrap',color:'var(--rd)',textAlign:'right'}}>年間引き出し額</th>}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {results.map(row=>{
+                        const isPost=row.year>maxYrs;
+                        const isRetActive=isRet||isRet2;
+                        const isRetRow=isPost&&isRetActive;
+                        const isHL=row.doublePoint||row.doublePoint2;
+                        return (
+                          <tr key={row.year}
+                            style={{background:isRetRow?'var(--row-ret)':isPost?'var(--row-post)':isHL?'var(--yl-s)':'var(--row-bg)',borderTop:'1px solid var(--bd)'}}
+                            onMouseEnter={e=>e.currentTarget.style.background='var(--inp-bg)'}
+                            onMouseLeave={e=>e.currentTarget.style.background=isRetRow?'var(--row-ret)':isPost?'var(--row-post)':isHL?'var(--yl-s)':'var(--row-bg)'}>
+                            <td style={{padding:'11px 18px',whiteSpace:'nowrap'}}>
+                              <div style={{display:'flex',alignItems:'center',flexWrap:'wrap',gap:6}}>
+                                <span style={{fontWeight:700,fontSize:14}}>{row.year}年目</span>
+                                {isRetRow&&<Badge color="red">引き出し期間</Badge>}
+                                {row.doublePoint&&<Badge color="yellow">{row.doublePoint}倍!</Badge>}
+                                {isCmp&&row.doublePoint2&&!row.doublePoint&&<Badge color="blue">(2) {row.doublePoint2}倍!</Badge>}
+                              </div>
+                            </td>
+                            <td style={{padding:'11px 16px',whiteSpace:'nowrap'}}>
+                              <div style={{fontWeight:800,color:'var(--gr-dk)',fontSize:14}}>{dsFmtUSD(row.totalValue)}</div>
+                              <div style={{fontSize:14,color:row.yearlyIncrease>=0?'var(--gr)':'var(--rd)',marginTop:2,fontWeight:600}}>
+                                {row.yearlyIncrease>0?'+':''}{dsFmtUSD(row.yearlyIncrease)}({row.yearlyIncrease>0?'+':''}{f1(row.yearlyGrowthRate,1)}%)
+                              </div>
+                            </td>
+                            {isCmp&&(
+                              <td style={{padding:'11px 16px',whiteSpace:'nowrap'}}>
+                                <div style={{fontWeight:800,color:'var(--bl-dk)',fontSize:14}}>{dsFmtUSD(row.totalValue2||0)}</div>
+                                <div style={{fontSize:14,color:(row.yearlyIncrease2||0)>=0?'var(--bl)':'var(--rd)',marginTop:2,fontWeight:600}}>
+                                  {(row.yearlyIncrease2||0)>0?'+':''}{dsFmtUSD(row.yearlyIncrease2||0)}({(row.yearlyIncrease2||0)>0?'+':''}{f1(row.yearlyGrowthRate2||0,1)}%)
+                                </div>
+                              </td>
+                            )}
+                            <td style={{padding:'11px 16px',textAlign:'center',whiteSpace:'nowrap'}}>
+                              <span style={{background:'var(--gr-s)',color:'var(--gr-dk)',border:'1px solid var(--gr-m)',fontSize:14,fontWeight:700,padding:'2px 8px',borderRadius:6,display:'inline-block'}}>
+                                {f1(((row.profit||0)/(row.totalInvested||1))*100,1)}%
+                              </span>
+                            </td>
+                            {isCmp&&(
+                              <td style={{padding:'11px 16px',textAlign:'center',whiteSpace:'nowrap'}}>
+                                <span style={{background:'var(--bl-s)',color:'var(--bl-dk)',border:'1px solid var(--bl-m)',fontSize:14,fontWeight:700,padding:'2px 8px',borderRadius:6,display:'inline-block'}}>
+                                  {f1(((row.profit2||0)/((row.totalInvested2||1)))*100,1)}%
+                                </span>
+                              </td>
+                            )}
+                            {(isRet||isRet2)&&(
+                            <td style={{padding:'11px 18px',textAlign:'right',whiteSpace:'nowrap'}}>
+                              {(row.yearlyWithdrawal||0)>0?(
+                                <div>
+                                  <div style={{fontWeight:700,color:'var(--rd)',fontSize:14}}>-{dsFmtUSD(row.yearlyWithdrawal)}</div>
+                                  <div style={{fontSize:14,color:'rgba(215,0,21,.65)',marginTop:1}}>月{dsFmtUSD(row.monthlyWithdrawal)}</div>
+                                  {isCmp&&(row.yearlyWithdrawal2||0)>0&&(
+                                    <div style={{marginTop:4,paddingTop:4,borderTop:'1px solid rgba(215,0,21,.12)'}}>
+                                      <div style={{fontSize:14,color:'var(--rd)',opacity:.7}}>-{dsFmtUSD(row.yearlyWithdrawal2)}(2)</div>
+                                    </div>
+                                  )}
+                                </div>
+                              ):<span style={{color:'var(--t3)'}}>&mdash;</span>}
+                            </td>
+                            )}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <section id="dca-guide" style={{margin:'32px 0 0',padding:0}}>
+        <div style={{background:'var(--card)',border:'1px solid var(--bd)',borderRadius:'var(--r)',overflow:'hidden'}}>
+          <div style={{background:'var(--bl-s)',padding:'20px 24px',borderBottom:'1px solid var(--bd)',display:'flex',alignItems:'center',gap:14}}>
+            <div style={{flexShrink:0,width:40,height:40,borderRadius:12,background:'var(--bl)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 4px 12px rgba(0,113,227,.35)'}}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </div>
+            <div>
+              <h2 style={{fontSize:17,fontWeight:800,color:'var(--t1)',margin:'0 0 4px',letterSpacing:'-0.3px'}}>DCAとは何か?</h2>
+              <p style={{fontSize:14,color:'var(--t2)',margin:0,lineHeight:1.5}}>ドルコスト平均法 &mdash; 定額を一定間隔で投資する仕組みとそのメリットを解説します</p>
+            </div>
+          </div>
+          <div style={{padding:'22px 24px 0',display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))',gap:24}}>
+            <div>
+              <h3 style={{fontSize:14,fontWeight:700,color:'var(--t1)',margin:'0 0 11px',display:'flex',alignItems:'center',gap:8}}>
+                <span style={{width:3,height:16,background:'var(--bl)',borderRadius:2,display:'inline-block',flexShrink:0}}></span>DCAとは?
+              </h3>
+              <p style={{fontSize:14.5,color:'var(--t2)',lineHeight:1.85,margin:0}}>
+                DCAとは<strong style={{color:'var(--t1)'}}>Dollar-Cost Averaging(ドルコスト平均法)</strong>の略です。難しく聞こえますが、実はとてもシンプルです。毎月、同じ日に、同じ金額を、淡々と買い続けること。それだけです。
+              </p>
+              <p style={{fontSize:14.5,color:'var(--t2)',lineHeight:1.85,margin:'11px 0 0'}}>
+                相場が上がっているときも、下がっているときも。ニュースが恐怖を煽っているときも、みんなが浮かれているときも。ただ買う。何も考えずに。むしろ、何も考えないことこそが最大の強みかもしれません。
+              </p>
+            </div>
+            <div>
+              <h3 style={{fontSize:14,fontWeight:700,color:'var(--t1)',margin:'0 0 11px',display:'flex',alignItems:'center',gap:8}}>
+                <span style={{width:3,height:16,background:'var(--bl)',borderRadius:2,display:'inline-block',flexShrink:0}}></span>なぜDCAなのか
+              </h3>
+              <p style={{fontSize:14.5,color:'var(--t2)',lineHeight:1.85,margin:0}}>
+                株式投資を難しくしているのは<strong style={{color:'var(--t1)'}}>「いつ買うか」</strong>という問いです。何十年分ものデータが繰り返し同じことを語っています &mdash; タイミングを狙おうとするほど、リターンはむしろ低下する、と。
+              </p>
+              <p style={{fontSize:14.5,color:'var(--t2)',lineHeight:1.85,margin:'11px 0 0'}}>
+                DCAはその問い自体を消し去ります。高いときは少しだけ買い、安いときはたくさん買うことになります。自然に、意図せずとも。平均取得単価が下がるのは、<strong style={{color:'var(--t1)'}}>数学的に自動で</strong>起きることなのです。
+              </p>
+            </div>
+          </div>
+          <div style={{padding:'18px 24px 24px'}}>
+            <div style={{borderTop:'1px solid var(--bd)',paddingTop:16,display:'flex',flexDirection:'column',gap:13}}>
+              <blockquote style={{margin:0,padding:'14px 18px',background:'var(--tip-bg)',borderLeft:'3px solid var(--bl)',borderRadius:'0 10px 10px 0'}}>
+                <p style={{fontSize:14,color:'var(--t1)',lineHeight:1.88,margin:0,fontStyle:'italic'}}>
+                  「規律あるドルコスト平均法(DCA)は、感情を空っぽにするルーティンだ。市場が熱狂しているときも、パニックに陥っているときも、機械的に同じ金額を投じ続ける行為。それは市場を『知っている』という主張ではなく、市場が長期的に成長すると『信じる』という態度である。そして信念は、知識よりもずっと粘り強い忍耐を要求する。」
+                </p>
+                <cite style={{display:'block',marginTop:9,fontSize:14,color:'var(--bl)',fontWeight:700,fontStyle:'normal'}}>&mdash; 『失敗しない米国株ETF投資』より</cite>
+              </blockquote>
+              <blockquote style={{margin:0,padding:'14px 18px',background:'var(--tip-bg)',borderLeft:'3px solid var(--bl)',borderRadius:'0 10px 10px 0'}}>
+                <p style={{fontSize:14,color:'var(--t1)',lineHeight:1.88,margin:0,fontStyle:'italic'}}>
+                  「これは究極のシンプルさだ。知識の放棄ではなく、不要な複雑さの拒絶である。私たちは賢くあろうと苦心する代わりに、システムの力を借りることを選んだのだ。」
+                </p>
+                <cite style={{display:'block',marginTop:9,fontSize:14,color:'var(--bl)',fontWeight:700,fontStyle:'normal'}}>&mdash; 『失敗しない米国株ETF投資』より</cite>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="ds-footrow" style={{borderTop:'1px solid var(--bd)',padding:'20px 4px 0',marginTop:24,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:12}}>
+        <span style={{fontSize:14,fontWeight:600,color:'var(--t2)',display:'flex',alignItems:'center',gap:6}}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          DCA複利シミュレーター &mdash; ezlong.com
+        </span>
+        <div style={{fontSize:14,color:'var(--t2)',display:'flex',gap:20,flexWrap:'wrap'}}>
+          <span>過去のリターンは将来の成果を保証しません</span>
+          <span>すべての投資には元本割れのリスクがあります</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('ds-root')).render(React.createElement(App));
+</script>
 
 <!-- ── 네이티브 앱 웹뷰 감지: ?embed=app 신호 처리 (2026-07-28) ── -->
 <script>

@@ -39,6 +39,10 @@
   <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/dca-simulator.html">
   <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/dca-simulator.html">
   <link rel="canonical" href="https://ezlong.com/en/dca-simulator.html">
+  <!-- React 18 + Babel — powers the live DCA simulator widget below -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -87,9 +91,23 @@
       --blue: #0071E3; --blue-lt: #0064CC; --green: #1A7F37;
       --r: 12px; --max-w: 860px;
       --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      /* DCA simulator widget tokens */
+      --card: var(--surface); --bd: var(--border); --t1: var(--text); --t2: var(--text2); --t3: var(--text3);
+      --gr: #34C759; --gr-dk: #248A3D; --gr-s: rgba(52,199,89,0.10); --gr-m: rgba(52,199,89,0.22);
+      --bl: var(--blue); --bl-dk: var(--blue-lt); --bl-s: rgba(0,113,227,0.10); --bl-m: rgba(0,113,227,0.20);
+      --rd: #D70015; --rd-s: rgba(215,0,21,0.08); --yl-s: rgba(255,159,10,0.14);
+      --r-sm: 8px; --inp-bg: #F5F5F7; --inp-bg2: #FAFAFA; --row-bg: #FFFFFF; --row-post: #FAFAFA; --row-ret: #FFF5F5;
+      --tip-bg: #FFFFFF; --chk-border: #C7C7CC; --range-bg: #E5E5EA;
     }
     @media (prefers-color-scheme: dark) {
-      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158; }
+      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158;
+        --card: var(--surface); --bd: var(--border); --t1: var(--text); --t2: var(--text2); --t3: var(--text3);
+        --gr: #30D158; --gr-dk: #30D158; --gr-s: rgba(52,199,89,0.16); --gr-m: rgba(52,199,89,0.28);
+        --bl: var(--blue); --bl-dk: var(--blue-lt); --bl-s: rgba(10,132,255,0.20); --bl-m: rgba(10,132,255,0.32);
+        --rd: #FF453A; --rd-s: rgba(255,69,58,0.18); --yl-s: rgba(255,214,10,0.16);
+        --inp-bg: #2C2C2E; --inp-bg2: #252527; --row-bg: #1C1C1E; --row-post: #232325; --row-ret: #2A1818;
+        --tip-bg: #2C2C2E; --chk-border: #48484A; --range-bg: #3A3A3C;
+      }
     }
     html { scroll-behavior: smooth; }
     body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.65; }
@@ -99,12 +117,12 @@
     .en-nav-right { display:flex; gap:20px; align-items:center; }
     .en-nav-link { font-size:14px; color:var(--blue); text-decoration:none; font-weight:500; }
     .en-nav-link:hover { text-decoration:underline; }
-    .breadcrumb { max-width:var(--max-w); margin:0 auto; padding:14px 24px 0; font-size:13px; color:var(--text3); }
+    .breadcrumb { max-width:var(--max-w); margin:0 auto; padding:14px 24px 0; font-size:14px; color:var(--text3); }
     .breadcrumb a { color:var(--blue); text-decoration:none; }
     .breadcrumb a:hover { text-decoration:underline; }
     .breadcrumb span { margin:0 6px; }
     .hero { background:var(--surface); border-bottom:1px solid var(--border); padding:64px 24px 52px; text-align:center; }
-    .hero-badge { display:inline-block; background:#E8F5E9; color:var(--green); font-size:11px; font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:18px; }
+    .hero-badge { display:inline-block; background:#E8F5E9; color:var(--green); font-size:14px; font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:18px; }
     @media (prefers-color-scheme: dark) { .hero-badge { background:#0A3D1C; color:#30D158; } }
     .hero h1 { font-size:clamp(26px,5vw,44px); font-weight:700; letter-spacing:-0.03em; line-height:1.1; margin-bottom:14px; color:var(--text); }
     .hero-sub { font-size:clamp(15px,2.2vw,18px); color:var(--text3); margin-bottom:30px; max-width:620px; margin-left:auto; margin-right:auto; }
@@ -113,7 +131,7 @@
     .btn-primary:hover { background:var(--blue-lt); }
     .btn-secondary { display:inline-flex; align-items:center; gap:6px; background:transparent; color:var(--blue); border:1.5px solid var(--blue); border-radius:980px; padding:12px 24px; font-size:15px; font-weight:600; text-decoration:none; transition:all .15s; }
     .btn-secondary:hover { background:var(--blue); color:#fff; }
-    .auto-translate-note { font-size:12.5px; color:var(--text3); }
+    .auto-translate-note { font-size:14px; color:var(--text3); }
     .translate-proxy-note { font-size:14px; color:var(--text2); margin-top:10px; }
     .translate-proxy-note a { color:var(--blue); font-weight:600; text-decoration:underline; }
     .cta-card .translate-proxy-note { color:#fff; opacity:.9; margin-top:14px; }
@@ -121,7 +139,7 @@
     .stats-row { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; background:var(--surface); border-bottom:1px solid var(--border); padding:24px; }
     .stat-item { text-align:center; }
     .stat-value { font-size:22px; font-weight:700; color:var(--blue); letter-spacing:-0.02em; }
-    .stat-label { font-size:12px; color:var(--text3); margin-top:2px; }
+    .stat-label { font-size:14px; color:var(--text3); margin-top:2px; }
     .main { max-width:var(--max-w); margin:0 auto; padding:56px 24px; }
     .section { margin-bottom:56px; }
     .section-title { font-size:22px; font-weight:700; letter-spacing:-0.02em; margin-bottom:16px; color:var(--text); }
@@ -146,10 +164,46 @@
     .cta-card p { font-size:16px; opacity:.85; margin-bottom:24px; }
     .btn-white { display:inline-block; background:#fff; color:var(--blue); border-radius:980px; padding:13px 28px; font-size:15px; font-weight:700; text-decoration:none; transition:opacity .15s; }
     .btn-white:hover { opacity:.88; }
-    .en-footer { background:var(--surface); border-top:1px solid var(--border); padding:36px 24px; text-align:center; color:var(--text3); font-size:12.5px; line-height:1.9; }
+    .en-footer { background:var(--surface); border-top:1px solid var(--border); padding:36px 24px; text-align:center; color:var(--text3); font-size:14px; line-height:1.9; }
     .en-footer a { color:var(--blue); text-decoration:none; }
     .en-footer a:hover { text-decoration:underline; }
     @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+
+    /* ══════ DCA SIMULATOR WIDGET ══════ */
+    #ds-root { font-family: var(--font); }
+    #ds-root table { border-collapse: collapse; width: 100%; }
+    #ds-root * { box-sizing: border-box; min-width: 0; }
+    #ds-root input[type=range] { -webkit-appearance: none; width: 100%; height: 4px; border-radius: 2px; background: var(--range-bg); outline: none; cursor: pointer; }
+    #ds-root input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--gr); box-shadow: 0 2px 8px rgba(52,199,89,.40); cursor: pointer; }
+    #ds-root input[type=range].blue::-webkit-slider-thumb { background: var(--bl); box-shadow: 0 2px 8px rgba(0,113,227,.40); }
+    #ds-root input[type=checkbox] { -webkit-appearance: none; width: 18px; height: 18px; min-width: 18px; border: 1.5px solid var(--chk-border); border-radius: 5px; background: var(--inp-bg); cursor: pointer; position: relative; transition: all .15s; }
+    #ds-root input[type=checkbox]:checked { background: var(--gr); border-color: var(--gr); }
+    #ds-root input[type=checkbox].blue:checked { background: var(--bl); border-color: var(--bl); }
+    #ds-root input[type=checkbox]:checked::after { content: ''; position: absolute; left: 4px; top: 1px; width: 8px; height: 11px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg) scaleX(.9); }
+    #ds-root select { -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236E6E73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; padding-right: 34px !important; }
+    #ds-root input[type=number]::-webkit-inner-spin-button, #ds-root input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+    @keyframes ds-spin   { to { transform: rotate(360deg); } }
+    @keyframes ds-fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes ds-popIn  { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
+    @keyframes ds-bob    { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-7px); } }
+    .ds-spin   { animation: ds-spin .9s linear infinite; }
+    .ds-fadeUp { animation: ds-fadeUp .4s ease forwards; }
+    .ds-popIn  { animation: ds-popIn .22s ease forwards; }
+    .ds-bob0   { animation: ds-bob .7s ease infinite; }
+    .ds-bob1   { animation: ds-bob .7s .15s ease infinite; }
+    .ds-bob2   { animation: ds-bob .7s .30s ease infinite; }
+    .ds-layout > *, .ds-layout > * > * { min-width: 0; }
+    @media(max-width:767px){
+      .ds-layout   { grid-template-columns:1fr !important; gap:14px !important; }
+      .ds-sticky   { position:static !important; top:auto !important; }
+      .ds-2col     { grid-template-columns:1fr !important; }
+      .ds-3col     { grid-template-columns:1fr 1fr !important; gap:14px !important; }
+      .ds-cpad     { padding:44px 20px !important; }
+      .ds-table th, .ds-table td { padding:9px 10px !important; }
+      .ds-chart-legend { flex-wrap:wrap; gap:8px !important; }
+      .ds-footrow  { flex-direction:column; gap:6px !important; text-align:center; }
+      .ds-card-hdr { flex-direction:column; align-items:flex-start !important; gap:10px !important; }
+    }
   </style>
 </head>
 <body>
@@ -168,11 +222,10 @@
     <h1>DCA Compound Interest Simulator</h1>
     <p class="hero-sub">See exactly how your monthly US stock investments compound into wealth over 10, 20, or 30 years</p>
     <div class="cta-group">
-      <a class="btn-primary" href="https://ezlong.com/dca-simulator.html" target="_blank" rel="noopener">Open Tool &rarr;</a>
+      <a class="btn-primary" href="#calculator">Try It Free &darr;</a>
       <a class="btn-secondary" href="https://ezlong.com/en/">Browse All Tools</a>
     </div>
-    <p class="auto-translate-note">Tool UI is in Korean &mdash; Chrome, Edge &amp; Safari auto-translate automatically.</p>
-    <p class="translate-proxy-note">Translation not showing automatically? <a href="https://ezlong-com.translate.goog/dca-simulator.html?_x_tr_sl=ko&amp;_x_tr_tl=en&amp;_x_tr_hl=en&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Open with Google Translate &rarr;</a></p>
+    <p class="auto-translate-note">Fully in English &mdash; no login, no download, results in seconds.</p>
   </section>
   <div class="stats-row" role="region" aria-label="Key statistics">
     <div class="stat-item"><div class="stat-value">$915K</div><div class="stat-label">$500/mo x 30yr @ 9%</div></div>
@@ -180,6 +233,9 @@
     <div class="stat-item"><div class="stat-value">100% free</div><div class="stat-label">no account needed</div></div>
   </div>
   <main class="main" id="main-content">
+    <section class="section" id="calculator">
+      <div id="ds-root"></div>
+    </section>
     <section class="section">
       <h2 class="section-title">What is DCA Compound Interest Simulator?</h2>
       <p class="section-body">The DCA Compound Interest Simulator calculates exactly how your regular monthly investments accumulate over time through the power of compound returns. DCA — dollar-cost averaging — is the strategy of investing a fixed amount at regular intervals regardless of market price. It is the most consistently successful long-term wealth-building strategy for individual investors.</p>
@@ -285,8 +341,7 @@
     <div class="cta-card">
       <h2>Try DCA Compound Interest Simulator Now</h2>
       <p>Free, no sign-up, runs instantly in your browser. Chrome auto-translates Korean to English.</p>
-      <a class="btn-white" href="https://ezlong.com/dca-simulator.html" target="_blank" rel="noopener">Open DCA Compound Interest Simulator &rarr;</a>
-      <p class="translate-proxy-note">Translation not showing automatically? <a href="https://ezlong-com.translate.goog/dca-simulator.html?_x_tr_sl=ko&amp;_x_tr_tl=en&amp;_x_tr_hl=en&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Open with Google Translate &rarr;</a></p>
+      <a class="btn-white" href="#calculator">Scroll Up to the Calculator &uarr;</a>
     </div>
   </main>
   <footer class="en-footer" role="contentinfo">
@@ -294,6 +349,1041 @@
     &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
     <small>Educational tools only. Not financial advice. All investments carry risk. Past performance does not guarantee future results.</small></p>
   </footer>
+
+<script type="text/babel">
+const { useState, useCallback, useRef, useEffect, memo } = React;
+
+/* ═══════════════════════════════════════════
+   STATIC DATA — CAGR values ported unchanged from KO original
+═══════════════════════════════════════════ */
+const CAGR = {
+  QQQ:21,XLK:21,SOXX:29.5,SPY:14,SCHD:11.5,XLV:10.5,XLP:7.5,GLD:8.5,
+  NVDA:70,AAPL:27.5,MSFT:24.5,GOOG:20,GOOGL:20,AMZN:22.5,META:19.5,
+  TSLA:40,AVGO:34,AMD:46.5,PLTR:27.5,NFLX:22,TSM:25,
+  "BRK-B":13.5,COST:23,V:19,JPM:15,LLY:33,KO:9.5,PG:9.5
+};
+const DESC = {
+  QQQ:"Nasdaq-100 ETF. A basket of AI and big-tech growth stocks with roughly 21% average annual return over 10 years.",
+  SPY:"S&P 500 ETF. The textbook choice for long-term diversified exposure to America's 500 largest companies, with about 14% average annual return.",
+  NVDA:"AI chip powerhouse. Dominates the data-center GPU market and has grown explosively over the past 5 years.",
+  TSLA:"EV, energy, and AI robotics company. Highly volatile, but with a powerful long-term growth story.",
+  AAPL:"The world's largest big-tech company by market cap. Steady returns driven by ecosystem lock-in and growing services revenue.",
+  MSFT:"Cloud (Azure) and AI leader. Commands exceptional dominance in the enterprise software market.",
+  GOOG:"Alphabet, spanning search, advertising, cloud, and AI. Multiple business lines drive steady growth.",
+  AMZN:"The No.1 player in e-commerce and AWS cloud. Structural growth continues.",
+  META:"Owns Facebook, Instagram, and WhatsApp. Profitability has improved sharply thanks to AI-driven ad optimization.",
+  AVGO:"Broadcom. Rapid growth in the data-center market through custom AI chips and networking semiconductors.",
+  AMD:"NVDA's main rival. Steadily expanding share in the AI GPU and server CPU markets.",
+  SOXX:"Semiconductor sector ETF, holding the core chip companies that benefit most from AI infrastructure buildout.",
+  SCHD:"Dividend growth ETF. Pursues steady cash flow and capital growth at the same time.",
+  GLD:"Physical gold ETF. A portfolio hedge and inflation-protection tool.",
+  "BRK-B":"Warren Buffett's Berkshire Hathaway. A value-investing conglomerate known for strong long-term stability.",
+  JPM:"America's largest bank, JPMorgan. Steady growth powered by a strong retail banking franchise.",
+  V:"The Visa payments network. Holds a near-monopoly position in global payment infrastructure.",
+  COST:"Costco. A membership-based business model that builds loyal customers and drives steady revenue growth.",
+};
+
+/* ═══════════════════════════════════════════
+   CORE ALGORITHM — ported byte-for-byte unchanged from the KO original.
+   Called with exRate=1 below (USD-native, no currency conversion).
+   순서: 투자 투입 → 인출 → 복리 적용 (월 단위)
+═══════════════════════════════════════════ */
+function sN(v, fb=0){ const n=Number(v); return isNaN(n)||!isFinite(n)?fb:n; }
+
+function calcDCA(startUSD, monthlyUSD, annualRate, accumYears, totalYears, exRate, ret){
+  const mr=sN(annualRate)/100/12, ex=sN(exRate,1);
+  let val=sN(startUSD), inv=sN(startUSD), prev=sN(startUSD), first=0, nextX=2, wdAcc=0;
+  const rows=[];
+  for(let m=1;m<=sN(totalYears)*12;m++){
+    const yr=m/12;
+    const mInv=yr<=sN(accumYears)?sN(monthlyUSD):0;
+    const mWd=ret?.isEnabled&&yr>sN(ret.year)?Math.min(val+mInv,sN(ret.withdrawalUSD)):0;
+    wdAcc+=mWd;
+    val=(val+mInv-mWd)*(1+mr);
+    inv+=mInv;
+    if(m%12===0){
+      const year=m/12;
+      const tv=Math.max(0,Math.round(sN(val)*ex));
+      const ti=Math.round(sN(inv)*ex);
+      const ii=Math.round(sN(startUSD)*ex);
+      const di=Math.round(sN(inv-startUSD)*ex);
+      const pr=Math.max(0,tv-ti);
+      const yw=Math.round(sN(wdAcc)*ex);
+      const mw=Math.round(sN(wdAcc/12)*ex);
+      const dUSD=sN(val)-prev;
+      const base=prev>0?prev:(sN(inv)>0?sN(inv):1);
+      const gPct=base>0?(dUSD/base)*100:0;
+      if(year===1)first=sN(val);
+      let dp; if(year>1&&first>0&&sN(val)>=first*nextX){dp=nextX;nextX*=2;}
+      rows.push({year,totalValue:tv,totalInvested:ti,initialInvested:ii,
+        dcaInvested:di,profit:pr,yearlyIncrease:Math.round(dUSD*ex),
+        yearlyGrowthRate:sN(gPct),doublePoint:dp,yearlyWithdrawal:yw,monthlyWithdrawal:mw});
+      prev=sN(val);wdAcc=0;
+    }
+  }
+  return rows;
+}
+
+/* ═══════════════════════════════════════════
+   FORMATTERS — USD, rounding-aware K/M/B tier escalation
+   (same boundary-safe pattern verified on compound-calculator.html)
+═══════════════════════════════════════════ */
+function dsFmtUSD(n){
+  const num=Number(n); if(isNaN(num)||!isFinite(num)) return '$0';
+  const sign=num<0?'-':''; const abs=Math.abs(num);
+  const asM=abs/1e6, asB=abs/1e9;
+  if(abs>=1e9||Math.round(asM*100)/100>=1000) return sign+'$'+asB.toFixed(2)+'B';
+  if(abs>=1e6) return sign+'$'+asM.toFixed(2)+'M';
+  return sign+'$'+Math.round(abs).toLocaleString('en-US');
+}
+function dsYTick(v){
+  const num=Number(v); if(isNaN(num)||!isFinite(num)) return '$0';
+  const sign=num<0?'-':''; const abs=Math.abs(num);
+  const asK=abs/1e3, asM=abs/1e6, asB=abs/1e9;
+  if(abs>=1e9||Math.round(asM*10)/10>=1000) return sign+'$'+asB.toFixed(1)+'B';
+  if(abs>=1e6||Math.round(asK)>=1000) return sign+'$'+asM.toFixed(1)+'M';
+  if(abs>=1e3) return sign+'$'+asK.toFixed(0)+'K';
+  return sign+'$'+Math.round(abs);
+}
+function dsRaw(v){ const n=Math.round(Number(v)||0); return n===0?'$0':'$'+n.toLocaleString('en-US'); }
+const f1=(v,d=1)=>{const n=Number(v);return isNaN(n)||!isFinite(n)?(0).toFixed(d):n.toFixed(d);};
+
+/* ═══════════════════════════════════════════
+   UI PRIMITIVES
+═══════════════════════════════════════════ */
+function Card({children,style,className}){
+  return <div className={className} style={{background:'var(--card)',borderRadius:'var(--r)',
+    boxShadow:'0 1px 4px rgba(0,0,0,.07)',border:'1px solid var(--bd)',...style}}>{children}</div>;
+}
+
+const INP={width:'100%',padding:'10px 13px',background:'var(--inp-bg)',
+  border:'1px solid var(--bd)',borderRadius:'var(--r-sm)',fontSize:14,
+  color:'var(--t1)',outline:'none',transition:'border-color .15s,box-shadow .15s'};
+
+const NumInput=memo(function NumInput({value,onChange,color='blue',style}){
+  const [f,setF]=useState(false);
+  const [raw,setRaw]=useState('');
+  const a=color==='blue'?'var(--bl)':'var(--gr)', s=color==='blue'?'var(--bl-s)':'var(--gr-s)';
+  return <input type="number" min="0" placeholder="0"
+    value={f ? raw : (value>0 ? String(value) : '')}
+    onChange={e=>{
+      const v=e.target.value.replace(/[^0-9]/g,'');
+      setRaw(v);
+      onChange(v===''?0:Number(v));
+    }}
+    onFocus={()=>{setF(true);setRaw(value>0?String(value):'');}}
+    onBlur={()=>setF(false)}
+    style={{...INP,...(f?{borderColor:a,boxShadow:`0 0 0 3px ${s}`}:{}),...style}}/>;
+});
+
+const SelInput=memo(function SelInput({value,onChange,color='blue',children}){
+  const [f,setF]=useState(false);
+  const a=color==='blue'?'var(--bl)':'var(--gr)', s=color==='blue'?'var(--bl-s)':'var(--gr-s)';
+  return <select value={value} onChange={e=>onChange(e.target.value)}
+    onFocus={()=>setF(true)} onBlur={()=>setF(false)}
+    style={{...INP,cursor:'pointer',...(f?{borderColor:a,boxShadow:`0 0 0 3px ${s}`}:{})}}>{children}</select>;
+});
+
+function TkOpts(){return <>
+  <optgroup label="Major ETFs">
+    <option value="QQQ">QQQ — Nasdaq 100</option>
+    <option value="SPY">SPY — S&amp;P 500</option>
+    <option value="XLK">XLK — Technology Sector</option>
+    <option value="SOXX">SOXX — Semiconductors</option>
+    <option value="SCHD">SCHD — Dividend Growth</option>
+    <option value="XLV">XLV — Healthcare</option>
+    <option value="GLD">GLD — Gold</option>
+  </optgroup>
+  <optgroup label="Big Tech &amp; AI">
+    <option value="NVDA">NVDA — Nvidia</option>
+    <option value="AAPL">AAPL — Apple</option>
+    <option value="MSFT">MSFT — Microsoft</option>
+    <option value="GOOG">GOOG — Google</option>
+    <option value="AMZN">AMZN — Amazon</option>
+    <option value="META">META — Meta</option>
+    <option value="TSLA">TSLA — Tesla</option>
+    <option value="AVGO">AVGO — Broadcom</option>
+    <option value="AMD">AMD — AMD</option>
+  </optgroup>
+  <optgroup label="Blue Chips">
+    <option value="BRK-B">BRK-B — Berkshire</option>
+    <option value="COST">COST — Costco</option>
+    <option value="V">V — Visa</option>
+    <option value="JPM">JPM — JPMorgan</option>
+    <option value="LLY">LLY — Eli Lilly</option>
+  </optgroup>
+</>;}
+
+function Btn({children,onClick,disabled,variant='primary',type='button',style}){
+  const [h,setH]=useState(false);
+  const V={
+    primary:   {bg:h&&!disabled?'var(--bl-dk)':'var(--bl)',c:'white',sh:'0 2px 8px rgba(0,113,227,.30)',br:'none'},
+    secondary: {bg:h&&!disabled?'var(--gr-dk)':'var(--gr)',c:'white',sh:'0 2px 8px rgba(52,199,89,.30)',br:'none'},
+    ghost:     {bg:h&&!disabled?'var(--bl-s)':'transparent',c:'var(--bl-dk)',sh:'none',br:'1px solid var(--bl-m)'},
+    outline:   {bg:h&&!disabled?'var(--inp-bg)':'var(--row-bg)',c:'var(--t2)',sh:'none',br:'1px solid var(--bd)'},
+  }[variant]||{};
+  return <button type={type} onClick={onClick} disabled={disabled}
+    onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
+    style={{display:'inline-flex',alignItems:'center',justifyContent:'center',gap:7,
+      padding:'11px 18px',borderRadius:'var(--r-sm)',fontSize:14,fontWeight:600,
+      cursor:disabled?'not-allowed':'pointer',border:V.br,fontFamily:'var(--font)',
+      background:V.bg,color:V.c,boxShadow:V.sh,opacity:disabled?.45:1,
+      transition:'all .15s',...style}}>{children}</button>;
+}
+
+function Badge({children,color='blue'}){
+  const C={
+    green:{bg:'var(--gr-s)',c:'var(--gr-dk)',bd:'1px solid var(--gr-m)'},
+    blue: {bg:'var(--bl-s)',c:'var(--bl-dk)',bd:'1px solid var(--bl-m)'},
+    red:  {bg:'var(--rd-s)',c:'var(--rd)',   bd:'1px solid rgba(215,0,21,.2)'},
+    yellow:{bg:'var(--yl-s)',c:'#8A5A00',    bd:'1px solid rgba(255,159,10,.3)'},
+  }[color]||{bg:'#f0f0f0',c:'#333',bd:'1px solid #ddd'};
+  return <span style={{fontSize:14,fontWeight:700,padding:'2px 8px',borderRadius:6,
+    background:C.bg,color:C.c,border:C.bd,display:'inline-block',letterSpacing:'.01em'}}>{children}</span>;
+}
+
+/* ═══════════════════════════════════════════
+   SVG BAR CHART — pure SVG, no external library.
+   fTick/fLbl ported from KO but re-pointed at dsYTick (USD tiering) —
+   this is the 3rd of 4 numeric display paths (summary/table/chart-axis/tooltip)
+   that must each be independently formatter-correct per this project's
+   established verification discipline.
+═══════════════════════════════════════════ */
+function SVGBarChart({data, isCmp}){
+  const wrapRef=useRef(null);
+  const [W,setW]=useState(0);
+  const [tip,setTip]=useState(null);
+  const [mxy,setMxy]=useState({x:0,y:0});
+
+  useEffect(()=>{
+    const el=wrapRef.current; if(!el)return;
+    const obs=new ResizeObserver(([e])=>setW(e.contentRect.width||e.target.offsetWidth));
+    obs.observe(el);
+    const initial=el.getBoundingClientRect().width||el.offsetWidth||el.clientWidth;
+    if(initial>0)setW(initial);
+    return ()=>obs.disconnect();
+  },[]);
+
+  const H=W<500?390:720, mg=W<500?{t:36,r:8,b:34,l:60}:{t:55,r:18,b:40,l:76};
+  const cW=W-mg.l-mg.r, cH=H-mg.t-mg.b;
+  const n=data.length;
+  const maxV=Math.max(...data.map(d=>Math.max(d.totalValue||0,isCmp?(d.totalValue2||0):0)),1);
+
+  const rawStep=maxV/5;
+  const mag=Math.pow(10,Math.floor(Math.log10(rawStep)));
+  const niceStep=Math.ceil(rawStep/mag)*mag;
+  const niceMax=Math.ceil(maxV/niceStep)*niceStep;
+  const ticks=[]; for(let i=0;i<=5;i++) ticks.push(niceStep*i);
+
+  const yPx=v=>cH-(v/niceMax)*cH;
+  const hPx=v=>(v/niceMax)*cH;
+
+  const grpW=cW/n;
+  const bW=isCmp?Math.max(3,grpW*0.35):Math.max(4,grpW*0.65);
+  const gap=isCmp?Math.max(1,grpW*0.04):0;
+
+  const skip=Math.ceil(n/25);
+
+  const onMove=e=>{
+    const r=wrapRef.current.getBoundingClientRect();
+    setMxy({x:e.clientX-r.left,y:e.clientY-r.top});
+  };
+
+  if(!W) return <div ref={wrapRef} style={{width:'100%',height:300,background:'var(--inp-bg2)',borderRadius:8}}/>;
+
+  return (
+    <div ref={wrapRef} style={{position:'relative',width:'100%',height:H,touchAction:'none',overflow:'hidden'}} onMouseMove={onMove} onMouseLeave={()=>setTip(null)}>
+      <svg width={W} height={H} style={{display:'block',maxWidth:'100%'}}>
+        <g transform={`translate(${mg.l},${mg.t})`}>
+          {ticks.map((t,i)=>(
+            <g key={i}>
+              <line x1={0} y1={yPx(t)} x2={cW} y2={yPx(t)} stroke="var(--chart-grid,#F0F0F5)" strokeWidth={1}/>
+              <text x={-8} y={yPx(t)+4} textAnchor="end" fontSize={14} fill="var(--t3)">{dsYTick(t)}</text>
+            </g>
+          ))}
+
+          {data.map((d,i)=>{
+            const grpX=i*grpW;
+            const totalGrpW=isCmp?bW*2+gap:bW;
+            const x1=grpX+(grpW-totalGrpW)/2;
+            const x2=x1+bW+gap;
+
+            const h1i=hPx(d.initialInvested||0), h1d=hPx(d.dcaInvested||0), h1p=hPx(d.profit||0);
+            const tot1=h1i+h1d+h1p;
+            const h2i=hPx(d.initialInvested2||0), h2d=hPx(d.dcaInvested2||0), h2p=hPx(d.profit2||0);
+            const tot2=h2i+h2d+h2p;
+
+            const showXLbl=i%skip===0||i===n-1;
+            const showLbl1=i%skip===0||i===n-1;
+            const showLbl2=i%skip===0||i===n-1;
+
+            return (
+              <g key={d.year} style={{cursor:'default'}}
+                onMouseEnter={()=>setTip(d)}
+                onMouseLeave={()=>setTip(null)}>
+
+                {h1i>0&&<rect x={x1} y={cH-h1i} width={bW} height={h1i} fill="#FF6B6B"/>}
+                {h1d>0&&<rect x={x1} y={cH-h1i-h1d} width={bW} height={h1d} fill="#FFB347"/>}
+                {h1p>0&&<rect x={x1} y={cH-tot1} width={bW} height={h1p} fill="#34C759" rx={2} ry={2}/>}
+
+                {showLbl1&&d.totalValue>0&&tot1>10&&(
+                  <text x={x1+bW/2} y={cH-tot1-6}
+                    textAnchor="end" dominantBaseline="middle"
+                    transform={`rotate(90,${x1+bW/2},${cH-tot1-6})`}
+                    fontSize={14} fontWeight={700} fill="var(--t1)">
+                    {dsYTick(d.totalValue)}
+                  </text>
+                )}
+
+                {isCmp&&<>
+                  {h2i>0&&<rect x={x2} y={cH-h2i} width={bW} height={h2i} fill="#93C5FD"/>}
+                  {h2d>0&&<rect x={x2} y={cH-h2i-h2d} width={bW} height={h2d} fill="#60A5FA"/>}
+                  {h2p>0&&<rect x={x2} y={cH-tot2} width={bW} height={h2p} fill="#007AFF" rx={2} ry={2}/>}
+                  {showLbl2&&(d.totalValue2||0)>0&&tot2>10&&(
+                    <text x={x2+bW/2} y={cH-tot2-6}
+                      textAnchor="end" dominantBaseline="middle"
+                      transform={`rotate(90,${x2+bW/2},${cH-tot2-6})`}
+                      fontSize={14} fontWeight={700} fill="var(--t1)">
+                      {dsYTick(d.totalValue2||0)}
+                    </text>
+                  )}
+                </>}
+
+                {showXLbl&&(
+                  <text x={grpX+grpW/2} y={cH+16} textAnchor="middle" fontSize={14} fill="var(--t3)">{d.year}</text>
+                )}
+              </g>
+            );
+          })}
+
+          <line x1={0} y1={cH} x2={cW} y2={cH} stroke="var(--chart-xax,#E5E5EA)" strokeWidth={1}/>
+          <text x={cW/2} y={cH+32} textAnchor="middle" fontSize={14} fill="var(--t3)">Years Elapsed</text>
+        </g>
+      </svg>
+
+      {tip&&(
+        <div style={{
+          position:'absolute',
+          left:Math.min(mxy.x+14,W-280),
+          top:Math.max(mxy.y-140,8),
+          pointerEvents:'none',zIndex:20
+        }}>
+          <ChartTooltip d={tip} isCmp={isCmp}/>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ChartTooltip({d,isCmp}){
+  const Row=({lbl,col,val})=>(
+    <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--t2)',padding:'1px 0 1px 10px'}}>
+      <span style={{display:'flex',alignItems:'center',gap:5}}>
+        <span style={{width:7,height:7,borderRadius:'50%',background:col,display:'inline-block'}}/>
+        {lbl}
+      </span>
+      <span style={{fontWeight:600}}>{dsFmtUSD(val)}</span>
+    </div>
+  );
+  return (
+    <div style={{background:'var(--tip-bg)',borderRadius:14,boxShadow:'0 8px 32px rgba(0,0,0,.20)',
+      border:'1px solid var(--bd)',padding:'14px 16px',minWidth:260,fontFamily:'var(--font)'}}>
+      <div style={{fontWeight:700,fontSize:14,marginBottom:10,paddingBottom:8,
+        borderBottom:'1px solid var(--bd)',display:'flex',justifyContent:'space-between'}}>
+        <span>Year {d.year}</span>
+        <span style={{fontSize:14,fontWeight:500,color:'var(--t3)'}}>Cumulative Value</span>
+      </div>
+      <div style={{marginBottom:isCmp?10:0}}>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+          <span style={{fontSize:14,fontWeight:700,color:'var(--gr-dk)'}}>Simulation 1</span>
+          <span style={{fontSize:14,fontWeight:800,color:'var(--gr-dk)'}}>{dsFmtUSD(d.totalValue)}</span>
+        </div>
+        <Row lbl="Initial Investment" col="#FF6B6B" val={d.initialInvested}/>
+        <Row lbl="Cumulative Monthly DCA" col="#FFB347" val={d.dcaInvested}/>
+        <Row lbl="Compound Gains"  col="#34C759" val={d.profit}/>
+        {d.yearlyWithdrawal>0&&(
+          <div style={{marginTop:7,padding:'7px 9px',background:'var(--rd-s)',borderRadius:7,borderLeft:'3px solid var(--rd)'}}>
+            <div style={{fontSize:14,fontWeight:700,color:'var(--rd)',marginBottom:2}}>Retirement Withdrawal</div>
+            <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--rd)'}}>
+              <span>Annual</span><span>-{dsFmtUSD(d.yearlyWithdrawal)}</span>
+            </div>
+            <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--rd)',opacity:.75}}>
+              <span>Monthly</span><span>-{dsFmtUSD(d.monthlyWithdrawal)}</span>
+            </div>
+          </div>
+        )}
+      </div>
+      {isCmp&&d.totalValue2!=null&&(
+        <div style={{paddingTop:10,borderTop:'1px solid var(--bd)'}}>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+            <span style={{fontSize:14,fontWeight:700,color:'var(--bl-dk)'}}>Simulation 2</span>
+            <span style={{fontSize:14,fontWeight:800,color:'var(--bl-dk)'}}>{dsFmtUSD(d.totalValue2)}</span>
+          </div>
+          <Row lbl="Initial Investment" col="#93C5FD" val={d.initialInvested2||0}/>
+          <Row lbl="Cumulative Monthly DCA" col="#60A5FA" val={d.dcaInvested2||0}/>
+          <Row lbl="Compound Gains"  col="#007AFF" val={d.profit2||0}/>
+          {(d.yearlyWithdrawal2||0)>0&&(
+            <div style={{marginTop:7,padding:'7px 9px',background:'var(--rd-s)',borderRadius:7,borderLeft:'3px solid var(--rd)'}}>
+              <div style={{fontSize:14,fontWeight:700,color:'var(--rd)',marginBottom:2}}>Retirement Withdrawal (2)</div>
+              <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--rd)'}}>
+                <span>Annual</span><span>-{dsFmtUSD(d.yearlyWithdrawal2)}</span>
+              </div>
+              <div style={{display:'flex',justifyContent:'space-between',fontSize:14,color:'var(--rd)',opacity:.75}}>
+                <span>Monthly</span><span>-{dsFmtUSD(d.monthlyWithdrawal2)}</span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   SimInputSection — memoized, independent of App
+═══════════════════════════════════════════ */
+const SimInputSection=memo(function SimInputSection({
+  simNum,isCmpMode,
+  ticker,setTicker,monthlyMan,setMonthlyMan,years,setYears,initMan,setInitMan,
+  isRet,setIsRet,wdMan,setWdMan
+}){
+  const bl=simNum===2;
+  const col=bl?'green':'blue';
+  const acBg=bl?'var(--gr-s)':'var(--bl-s)';
+  const acBd=bl?'var(--gr-m)':'var(--bl-m)';
+  const acC =bl?'var(--gr-dk)':'var(--bl-dk)';
+  return (
+    <div style={{background:acBg,borderRadius:'var(--r-sm)',padding:16,border:`1px solid ${acBd}`}}>
+      {isCmpMode&&<div style={{fontSize:14,fontWeight:800,color:acC,textTransform:'uppercase',letterSpacing:'.08em',marginBottom:14}}>Simulation {simNum}</div>}
+
+      <div style={{marginBottom:14}}>
+        <label style={{fontSize:14,fontWeight:600,display:'block',marginBottom:6}}>Select Ticker</label>
+        <SelInput value={ticker} onChange={setTicker} color={col}><TkOpts/></SelInput>
+        {CAGR[ticker]&&(
+          <div style={{marginTop:6,display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
+            <Badge color={col}>Reference CAGR {CAGR[ticker]}%</Badge>
+            {DESC[ticker]&&<span style={{fontSize:14,color:'var(--t2)',lineHeight:1.5}}>{DESC[ticker].split('.')[0]}</span>}
+          </div>
+        )}
+      </div>
+
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:14}}>
+        <div>
+          <label style={{fontSize:14,fontWeight:600,display:'block',marginBottom:5}}>
+            Monthly DCA <span style={{float:'right',color:acC,fontWeight:700}}>{dsRaw(monthlyMan)}</span>
+          </label>
+          <NumInput value={monthlyMan} onChange={setMonthlyMan} color={col}/>
+        </div>
+        <div>
+          <label style={{fontSize:14,fontWeight:600,display:'block',marginBottom:5}}>
+            Initial Investment <span style={{float:'right',color:acC,fontWeight:700}}>{initMan>0?dsRaw(initMan):'None'}</span>
+          </label>
+          <NumInput value={initMan} onChange={setInitMan} color={col}/>
+        </div>
+      </div>
+
+      <div style={{marginBottom:14}}>
+        <label style={{fontSize:14,fontWeight:600,display:'flex',justifyContent:'space-between',marginBottom:8}}>
+          <span>Investment Period</span>
+          <span style={{fontSize:20,fontWeight:800,color:acC}}>{years}yr</span>
+        </label>
+        <input type="range" min={1} max={50} value={years} onChange={e=>setYears(Number(e.target.value))} className={bl?'':'blue'}/>
+      </div>
+
+      <div style={{paddingTop:12,borderTop:`1px solid ${acBd}`}}>
+        <label style={{display:'flex',alignItems:'center',gap:10,cursor:'pointer',userSelect:'none'}}>
+          <input type="checkbox" className={col} checked={isRet} onChange={e=>setIsRet(e.target.checked)}/>
+          <span style={{fontSize:14,fontWeight:700,color:acC}}>Retirement Withdrawal Settings</span>
+        </label>
+        {isRet&&(
+          <div style={{marginTop:12}} className="ds-popIn">
+            <label style={{fontSize:14,fontWeight:600,display:'block',marginBottom:5}}>
+              Monthly Withdrawal <span style={{float:'right',color:acC,fontWeight:700}}>{dsRaw(wdMan)}</span>
+            </label>
+            <NumInput value={wdMan} onChange={setWdMan} color={col}/>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+});
+
+/* ═══════════════════════════════════════════
+   MAIN APP — USD-native. The KO original multiplies every row value by
+   a hardcoded KRW exchange rate (EX_RATE=1380) inside calcDCA's call sites.
+   Here we call calcDCA(..., 1, ...) instead — the exRate argument becomes a
+   no-op multiplier — and pass raw dollar amounts directly (no *1e4 unit
+   conversion), leaving the calcDCA function body itself 100% untouched.
+═══════════════════════════════════════════ */
+function App(){
+  // Sim 1
+  const [ticker,setTicker]=useState('QQQ');
+  const [mm,setMm]=useState(500);
+  const [yrs,setYrs]=useState(10);
+  const [init,setInit]=useState(0);
+  const [isRet,setIsRet]=useState(false);
+  const [wd,setWd]=useState(1500);
+  // Sim 2
+  const [isCmp,setIsCmp]=useState(false);
+  const [ticker2,setTicker2]=useState('SPY');
+  const [mm2,setMm2]=useState(500);
+  const [yrs2,setYrs2]=useState(10);
+  const [init2,setInit2]=useState(0);
+  const [isRet2,setIsRet2]=useState(false);
+  const [wd2,setWd2]=useState(1500);
+  // Results
+  const [results,setResults]=useState([]);
+  const [r1,setR1]=useState(null);
+  const [r2,setR2]=useState(null);
+  const [loading,setLoading]=useState(false);
+  // UI
+  const [showD1,setShowD1]=useState(false);
+  const [showD2,setShowD2]=useState(false);
+  const [verTxt,setVerTxt]=useState('');
+  const [showVer,setShowVer]=useState(false);
+  const resRef=useRef(null);
+  const autoCalcRef=useRef(null);
+
+  // Auto-recalculate on quick-slider changes (300ms debounce)
+  useEffect(()=>{
+    if(!results.length)return;
+    clearTimeout(autoCalcRef.current);
+    autoCalcRef.current=setTimeout(()=>{
+      const a1=CAGR[ticker.toUpperCase()]||10;
+      const a2=isCmp?CAGR[ticker2.toUpperCase()]||10:0;
+      setR1(a1);setR2(a2);
+      const maxY=isCmp?Math.max(yrs,yrs2):yrs;
+      const totY=maxY+30;
+      const s1=calcDCA(init,mm,a1,yrs,totY,1,
+        {isEnabled:isRet,year:yrs,withdrawalUSD:wd});
+      let merged=s1;
+      if(isCmp){
+        const s2=calcDCA(init2,mm2,a2,yrs2,totY,1,
+          {isEnabled:isRet2,year:yrs2,withdrawalUSD:wd2});
+        merged=s1.map((row,i)=>({...row,
+          totalValue2:sN(s2[i]?.totalValue),totalInvested2:sN(s2[i]?.totalInvested),
+          initialInvested2:sN(s2[i]?.initialInvested),dcaInvested2:sN(s2[i]?.dcaInvested),
+          profit2:sN(s2[i]?.profit),yearlyIncrease2:sN(s2[i]?.yearlyIncrease),
+          yearlyGrowthRate2:sN(s2[i]?.yearlyGrowthRate),doublePoint2:s2[i]?.doublePoint,
+          yearlyWithdrawal2:sN(s2[i]?.yearlyWithdrawal),monthlyWithdrawal2:sN(s2[i]?.monthlyWithdrawal),
+        }));
+      }
+      setResults(merged);
+    },300);
+    return ()=>clearTimeout(autoCalcRef.current);
+  },[mm,init,wd,mm2,init2,wd2]);
+
+  const maxYrs=isCmp?Math.max(yrs,yrs2):yrs;
+  const totYrs=maxYrs+30;
+  const chartData=results.slice(0,maxYrs);
+  const finalRow=results.length>0?results[Math.min(results.length-1,maxYrs-1)]:null;
+  const lastRow=results.length>0?results[results.length-1]:null;
+
+  const handleSim=useCallback((e)=>{
+    if(e)e.preventDefault(); if(loading)return;
+    setLoading(true);setResults([]);setShowVer(false);
+    setTimeout(()=>{
+      const a1=CAGR[ticker.toUpperCase()]||10;
+      const a2=isCmp?CAGR[ticker2.toUpperCase()]||10:0;
+      setR1(a1);setR2(a2);
+      const s1=calcDCA(init,mm,a1,yrs,totYrs,1,
+        {isEnabled:isRet,year:yrs,withdrawalUSD:wd});
+      let merged=s1;
+      if(isCmp){
+        const s2=calcDCA(init2,mm2,a2,yrs2,totYrs,1,
+          {isEnabled:isRet2,year:yrs2,withdrawalUSD:wd2});
+        merged=s1.map((row,i)=>({...row,
+          totalValue2:sN(s2[i]?.totalValue),totalInvested2:sN(s2[i]?.totalInvested),
+          initialInvested2:sN(s2[i]?.initialInvested),dcaInvested2:sN(s2[i]?.dcaInvested),
+          profit2:sN(s2[i]?.profit),yearlyIncrease2:sN(s2[i]?.yearlyIncrease),
+          yearlyGrowthRate2:sN(s2[i]?.yearlyGrowthRate),doublePoint2:s2[i]?.doublePoint,
+          yearlyWithdrawal2:sN(s2[i]?.yearlyWithdrawal),monthlyWithdrawal2:sN(s2[i]?.monthlyWithdrawal),
+        }));
+      }
+      setResults(merged);setLoading(false);
+      setTimeout(()=>resRef.current?.scrollIntoView({behavior:'smooth',block:'start'}),80);
+    },550);
+  },[loading,ticker,ticker2,mm,mm2,yrs,yrs2,init,init2,isRet,isRet2,wd,wd2,isCmp,totYrs]);
+
+  const handleCSV=()=>{
+    if(!results.length)return;
+    let c='﻿Year,Value1,Principal1,Profit1,Withdrawal1';
+    if(isCmp)c+=',Value2,Principal2,Profit2,Withdrawal2';
+    c+='\n';
+    results.forEach(r=>{
+      c+=`${r.year},${r.totalValue},${r.totalInvested},${r.profit},${r.yearlyWithdrawal||0}`;
+      if(isCmp)c+=`,${r.totalValue2||0},${r.totalInvested2||0},${r.profit2||0},${r.yearlyWithdrawal2||0}`;
+      c+='\n';
+    });
+    const a=document.createElement('a');
+    a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(c);
+    a.download=`DCA_${ticker}_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+  };
+
+  const handleVerify=()=>{
+    if(!finalRow||!r1)return;
+    const mult=(finalRow.totalValue/(finalRow.totalInvested||1)).toFixed(1);
+    setVerTxt([
+      `Mathematical Verification Results`,``,
+      `This simulation invests $${mm}/month in ${ticker} (${r1}%/yr) for ${yrs} years.`,``,
+      `Key Figures`,
+      `· Monthly applied return: ${(r1/12).toFixed(3)}% (annual ${r1}% ÷ 12)`,
+      `· Total contributions: ${dsFmtUSD(finalRow.totalInvested)}`,
+      `· Final portfolio value: ${dsFmtUSD(finalRow.totalValue)}`,
+      `· Multiple of principal: ${mult}x`,``,
+      `Why does it grow this large?`,
+      `Compounding means "interest earning interest." Growth is slow at first, then accelerates exponentially in later years. In particular, the final 10 years of the investment period typically account for 60-70% of the total return.`,
+      ...(isRet&&finalRow.yearlyWithdrawal>0
+        ?[``,`Retirement Withdrawal Analysis`,`Even withdrawing $${wd}/month, if the compound return on the remaining balance exceeds the withdrawal amount, the principal keeps growing. This is a mathematically normal phenomenon.`]
+        :[]),
+      ``,`*Past returns do not guarantee future results. Real-world investing involves taxes, fees, and other costs.*`
+    ].join('\n'));
+    setShowVer(true);
+  };
+
+  const mkdn=(txt)=>txt.split('\n').map((line,i)=>{
+    if(!line)return <div key={i} style={{height:4}}/>;
+    if(line.startsWith('*')&&line.endsWith('*'))return <div key={i} style={{fontStyle:'italic',color:'var(--t3)',fontSize:14,marginTop:10}}>{line.slice(1,-1)}</div>;
+    if(line.startsWith('·'))return <div key={i} style={{paddingLeft:12,lineHeight:1.65,color:'var(--t2)',marginTop:2}}>{line}</div>;
+    const isBold=i===0||['Key Figures','Why does it grow this large?','Retirement Withdrawal Analysis'].includes(line);
+    return <div key={i} style={{lineHeight:1.65,marginTop:isBold?6:2,fontWeight:isBold?700:400}}>{line}</div>;
+  });
+
+  /* ── RENDER ── */
+  return (
+    <div style={{fontFamily:'var(--font)'}}>
+
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10,marginBottom:18}}>
+        <div style={{display:'flex',alignItems:'center',gap:10}}>
+          <div style={{width:32,height:32,borderRadius:9,background:'linear-gradient(135deg,var(--bl),var(--bl-dk))',
+            display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 8px rgba(0,113,227,.35)'}}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+            </svg>
+          </div>
+          <div>
+            <div style={{fontSize:16,fontWeight:800,letterSpacing:'-.02em',color:'var(--t1)'}}>DCA Compound Simulator</div>
+            <a href="#dca-guide" onClick={e=>{e.preventDefault();document.getElementById('dca-guide').scrollIntoView({behavior:'smooth'});}}
+              style={{fontSize:14,color:'var(--bl)',marginTop:2,display:'inline-flex',alignItems:'center',gap:3,textDecoration:'none',fontWeight:600,cursor:'pointer'}}>
+              What is DCA? &darr;
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div style={{display:'flex',flexDirection:'column',gap:16}}>
+
+        {/* ── SETTINGS ── */}
+        <Card style={{padding:22}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:18}}>
+            <span style={{fontSize:15,fontWeight:700}}>Investment Settings</span>
+            <label style={{display:'flex',alignItems:'center',gap:8,cursor:'pointer',userSelect:'none'}}>
+              <input type="checkbox" className="blue" checked={isCmp} onChange={e=>{const c=e.target.checked;if(c){setTicker2(ticker);setMm2(mm);setYrs2(yrs);setInit2(init);setIsRet2(isRet);setWd2(wd);}setIsCmp(c);}}/>
+              <span style={{fontSize:14,fontWeight:600,color:'var(--t2)'}}>Compare 2</span>
+            </label>
+          </div>
+          <form onSubmit={handleSim} style={{display:'flex',flexDirection:'column',gap:14}}>
+            <SimInputSection simNum={1} isCmpMode={isCmp}
+              ticker={ticker} setTicker={setTicker} monthlyMan={mm} setMonthlyMan={setMm}
+              years={yrs} setYears={setYrs} initMan={init} setInitMan={setInit}
+              isRet={isRet} setIsRet={setIsRet} wdMan={wd} setWdMan={setWd}/>
+            {isCmp&&(
+              <div className="ds-fadeUp">
+                <SimInputSection simNum={2} isCmpMode={isCmp}
+                  ticker={ticker2} setTicker={setTicker2} monthlyMan={mm2} setMonthlyMan={setMm2}
+                  years={yrs2} setYears={setYrs2} initMan={init2} setInitMan={setInit2}
+                  isRet={isRet2} setIsRet={setIsRet2} wdMan={wd2} setWdMan={setWd2}/>
+              </div>
+            )}
+            <div style={{height:1,background:'var(--bd)'}}/>
+            <Btn type="submit" disabled={loading} variant="primary" style={{width:'100%',padding:'13px',fontSize:15}}>
+              {loading
+                ?<><svg className="ds-spin" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M21 12a9 9 0 1 1-9-9"/></svg>{' '}Calculating...</>
+                :<>Run Simulation{' '}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></>
+              }
+            </Btn>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+              <Btn variant="ghost" disabled={!results.length} onClick={handleVerify} style={{fontSize:14,padding:'10px 14px'}}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4"/><path d="M12 2l2 2h4l2 2v4l2 2v4l-2 2v4l-2 2h-4l-2 2-2-2H6l-2-2v-4l-2-2v-4l2-2V6l2-2h4z"/></svg>
+                Verify
+              </Btn>
+              <Btn variant="outline" disabled={!results.length} onClick={handleCSV} style={{fontSize:14,padding:'10px 14px'}}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Save CSV
+              </Btn>
+            </div>
+          </form>
+        </Card>
+        <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.7,textAlign:'center',padding:'0 4px'}}>
+          Past returns do not guarantee future results.<br/>All investments carry risk of principal loss.
+        </div>
+
+        {/* ── RESULTS AREA ── */}
+        <div ref={resRef} style={{display:'flex',flexDirection:'column',gap:22}}>
+
+          {loading&&(
+            <Card className="ds-fadeUp ds-cpad" style={{padding:'72px 40px',display:'flex',flexDirection:'column',
+              alignItems:'center',justifyContent:'center',textAlign:'center',gap:22}}>
+              <div style={{position:'relative',width:76,height:76}}>
+                <div style={{position:'absolute',inset:0,borderRadius:'50%',border:'4px solid var(--gr-s)'}}/>
+                <div style={{position:'absolute',inset:0,borderRadius:'50%',border:'4px solid var(--gr)',borderTopColor:'transparent',animation:'ds-spin .85s linear infinite'}}/>
+                <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <div style={{fontSize:19,fontWeight:700,marginBottom:8}}>Calculating compound magic...</div>
+                <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.65}}>Precisely simulated on a monthly basis</div>
+              </div>
+              <div style={{display:'flex',gap:8}}>
+                {[0,1,2].map(i=><div key={i} className={`ds-bob${i}`} style={{width:8,height:8,borderRadius:'50%',background:'var(--gr)'}}/>)}
+              </div>
+            </Card>
+          )}
+
+          {!loading&&!results.length&&(
+            <Card className="ds-cpad" style={{padding:'72px 40px',display:'flex',flexDirection:'column',
+              alignItems:'center',justifyContent:'center',textAlign:'center',gap:18}}>
+              <div style={{width:68,height:68,borderRadius:'50%',background:'var(--bg)',
+                display:'flex',alignItems:'center',justifyContent:'center',border:'2px dashed var(--bd)'}}>
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+              </div>
+              <div>
+                <div style={{fontSize:17,fontWeight:700,marginBottom:8}}>Your simulation results will appear here</div>
+                <div style={{fontSize:14,color:'var(--t2)',lineHeight:1.7}}>
+                  Set your ticker and investment conditions above,<br/>then click <strong>Run Simulation</strong>
+                </div>
+              </div>
+              <div style={{fontSize:14,color:'var(--t3)',padding:'10px 18px',background:'var(--bg)',borderRadius:9,border:'1px solid var(--bd)'}}>
+                All calculations are performed in USD
+              </div>
+            </Card>
+          )}
+
+          {!loading&&results.length>0&&(
+            <div style={{display:'flex',flexDirection:'column',gap:22}} className="ds-fadeUp">
+
+              {finalRow&&(
+                <Card style={{padding:22}}>
+                  <div style={{fontSize:15,fontWeight:700,marginBottom:18,display:'flex',alignItems:'center',gap:8}}>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    Simulation Summary{isCmp?' (Comparison)':''}
+                  </div>
+
+                  <div className="ds-2col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:18}}>
+                    {[
+                      [`Portfolio Value at Year ${maxYrs}`,dsFmtUSD(finalRow.totalValue),dsFmtUSD(finalRow.totalValue2||0),true,true],
+                      ['Total Contributions',dsFmtUSD(finalRow.totalInvested),dsFmtUSD(finalRow.totalInvested2||0),false,false],
+                      ['Multiple of Contributions',`${f1(finalRow.totalValue/(finalRow.totalInvested||1),1)}x`,`${f1((finalRow.totalValue2||0)/((finalRow.totalInvested2||1)),1)}x`,false,false],
+                      [`30 Years Later (Year ${totYrs})`,lastRow?dsFmtUSD(lastRow.totalValue):'-',lastRow?dsFmtUSD(lastRow.totalValue2||0):'-',false,false],
+                    ].map(([lbl,v1,v2,hl,big])=>(
+                      <div key={lbl} style={{background:hl?'var(--gr-s)':'var(--inp-bg2)',borderRadius:'var(--r-sm)',
+                        padding:'13px 15px',border:hl?'1px solid var(--gr-m)':'1px solid var(--bd)'}}>
+                        <div style={{fontSize:14,color:'var(--t2)',fontWeight:600,marginBottom:7}}>{lbl}</div>
+                        <div style={{display:'flex',gap:14,flexWrap:'wrap',alignItems:'baseline'}}>
+                          <span style={{fontSize:big?20:15,fontWeight:800,color:'var(--gr-dk)',lineHeight:1.2}}>{v1}</span>
+                          {isCmp&&<span style={{fontSize:big?20:15,fontWeight:800,color:'var(--bl-dk)',lineHeight:1.2}}>{v2}</span>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="ds-2col" style={{display:'grid',gridTemplateColumns:isCmp?'1fr 1fr':'1fr',gap:12}}>
+                    {[[ticker,r1,yrs,mm,'green'],
+                      ...(isCmp?[[ticker2,r2,yrs2,mm2,'blue']]:[])
+                    ].map(([tk,rt,yr,m,col],idx)=>(
+                      <div key={idx} style={{padding:'11px 13px',borderRadius:'var(--r-sm)',
+                        background:col==='blue'?'var(--bl-s)':'var(--gr-s)',
+                        border:col==='blue'?'1px solid var(--bl-m)':'1px solid var(--gr-m)'}}>
+                        <div style={{fontSize:14,color:'var(--t3)',marginBottom:4}}>Simulation {idx+1}</div>
+                        <div style={{fontSize:17,fontWeight:800}}>{tk}</div>
+                        <div style={{display:'flex',gap:7,marginTop:5,flexWrap:'wrap',alignItems:'center'}}>
+                          <Badge color={col}>{rt}% CAGR/yr</Badge>
+                          <span style={{fontSize:14,color:'var(--t2)'}}>{yr}yr &middot; ${m}/mo</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {[[ticker,showD1,()=>setShowD1(v=>!v),'green'],
+                    ...(isCmp?[[ticker2,showD2,()=>setShowD2(v=>!v),'blue']]:[])]
+                    .filter(([tk])=>DESC[tk]).map(([tk,show,tog,col],i)=>(
+                    <div key={i} style={{marginTop:12}}>
+                      <button onClick={tog} style={{background:'none',border:'none',cursor:'pointer',
+                        fontSize:14,color:col==='blue'?'var(--bl)':'var(--gr)',fontWeight:600,
+                        display:'flex',alignItems:'center',gap:5,fontFamily:'var(--font)'}}>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                          style={{transform:show?'rotate(180deg)':'none',transition:'transform .2s'}}>
+                          <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                        {show?`Hide ${tk} description`:`Show ${tk} description`}
+                      </button>
+                      {show&&<div className="ds-popIn" style={{marginTop:7,padding:'11px 13px',background:'var(--inp-bg2)',
+                        borderRadius:'var(--r-sm)',fontSize:14,color:'var(--t2)',lineHeight:1.7,border:'1px solid var(--bd)'}}>
+                        {DESC[tk]}
+                      </div>}
+                    </div>
+                  ))}
+
+                  {showVer&&verTxt&&(
+                    <div className="ds-popIn" style={{marginTop:16,padding:16,background:'var(--bl-s)',borderRadius:12,border:'1px solid var(--bl-m)'}}>
+                      <div style={{fontSize:14,fontWeight:700,color:'var(--bl)',marginBottom:10,display:'flex',alignItems:'center',gap:6}}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4"/><path d="M12 2l2 2h4l2 2v4l2 2v4l-2 2v4l-2 2h-4l-2 2-2-2H6l-2-2v-4l-2-2v-4l2-2V6l2-2h4z"/></svg>
+                        Mathematical Verification
+                        <button onClick={()=>setShowVer(false)} style={{marginLeft:'auto',background:'none',border:'none',cursor:'pointer',color:'var(--t3)',fontSize:16,lineHeight:1}}>&times;</button>
+                      </div>
+                      <div style={{fontSize:14,color:'var(--t1)'}}>{mkdn(verTxt)}</div>
+                    </div>
+                  )}
+                </Card>
+              )}
+
+              <Card style={{padding:22}}>
+                <div className="ds-card-hdr" style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:18,flexWrap:'wrap',gap:10}}>
+                  <div>
+                    <div style={{fontSize:15,fontWeight:700}}>Asset Growth Over Time</div>
+                    <div style={{fontSize:14,color:'var(--t3)',marginTop:2}}>Based on {maxYrs}-year investment period &middot; excludes withdrawal phase</div>
+                  </div>
+                  <div className="ds-chart-legend" style={{display:'flex',gap:14,fontSize:14,color:'var(--t2)',flexWrap:'wrap'}}>
+                    {[['#FF6B6B','Initial Investment'],['#FFB347','Cumulative DCA'],['#34C759','Compound Gains']].map(([c,l])=>(
+                      <span key={l} style={{display:'flex',alignItems:'center',gap:5}}>
+                        <span style={{width:9,height:9,borderRadius:3,background:c,display:'inline-block'}}/>{l}
+                      </span>
+                    ))}
+                    {isCmp&&[['#93C5FD','Initial (2)'],['#60A5FA','DCA (2)'],['#007AFF','Gains (2)']].map(([c,l])=>(
+                      <span key={l} style={{display:'flex',alignItems:'center',gap:5}}>
+                        <span style={{width:9,height:9,borderRadius:3,background:c,display:'inline-block'}}/>{l}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <SVGBarChart data={chartData} isCmp={isCmp}/>
+              </Card>
+
+              <Card style={{padding:22}}>
+                <div style={{fontSize:14,fontWeight:700,marginBottom:18,display:'flex',alignItems:'center',gap:7}}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M5.34 18.66l-1.41 1.41M22 12h-2M4 12H2M19.07 19.07l-1.41-1.41M5.34 5.34L3.93 3.93"/></svg>
+                  Quick Adjust <span style={{fontSize:14,fontWeight:400,color:'var(--t3)'}}>&mdash; updates instantly as you slide</span>
+                </div>
+                <div className="ds-3col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:22}}>
+                  {[
+                    ['Investment Period',yrs,v=>{setYrs(v);if(isCmp)setYrs2(v);},1,50,1,'blue',v=>`${v}yr`,false],
+                    ['Monthly DCA Amount',mm,v=>{setMm(v);if(isCmp)setMm2(v);},0,5000,50,'green',v=>v===0?'None':dsFmtUSD(v),false],
+                    ['Initial Investment',init,v=>{setInit(v);if(isCmp)setInit2(v);},0,500000,5000,'green',v=>v===0?'None':dsFmtUSD(v),true],
+                  ].map(([lbl,val,setter,min,max,step,col,fmt,full])=>(
+                    <div key={lbl} style={full?{gridColumn:'1 / -1'}:{}}>
+                      <div style={{display:'flex',justifyContent:'space-between',marginBottom:9}}>
+                        <span style={{fontSize:14,fontWeight:600,color:'var(--t2)'}}>{lbl}</span>
+                        <span style={{fontSize:16,fontWeight:800,color:col==='blue'?'var(--bl)':'var(--gr)'}}>{fmt(val)}</span>
+                      </div>
+                      <input type="range" min={min} max={max} step={step}
+                        value={val} onChange={e=>setter(Number(e.target.value))} className={col}/>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+
+              <Card style={{overflow:'hidden'}}>
+                <div style={{padding:'18px 22px',borderBottom:'1px solid var(--bd)',
+                  display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10}}>
+                  <div>
+                    <div style={{fontSize:15,fontWeight:700}}>Year-by-Year Detail</div>
+                    <div style={{fontSize:14,color:'var(--t3)',marginTop:2}}>Full investment period + 30 years post-retirement</div>
+                  </div>
+                  <div style={{fontSize:14,color:'#7D5900',padding:'5px 11px',borderRadius:7,background:'var(--yl-s)',border:'1px solid rgba(255,159,10,.3)'}}>
+                    Track 2x / 4x milestones
+                  </div>
+                </div>
+                <div style={{overflowX:'auto'}}>
+                  <table className="ds-table" style={{fontSize:14}}>
+                    <thead>
+                      <tr style={{background:'var(--inp-bg2)'}}>
+                        <th style={{padding:'11px 18px',fontWeight:700,whiteSpace:'nowrap',color:'var(--t2)'}}>Year</th>
+                        <th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--gr-dk)'}}>Value 1 (YoY)</th>
+                        {isCmp&&<th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--bl-dk)'}}>Value 2 (YoY)</th>}
+                        <th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--t2)',textAlign:'center'}}>Return 1</th>
+                        {isCmp&&<th style={{padding:'11px 16px',fontWeight:700,whiteSpace:'nowrap',color:'var(--t2)',textAlign:'center'}}>Return 2</th>}
+                        {(isRet||isRet2)&&<th style={{padding:'11px 18px',fontWeight:700,whiteSpace:'nowrap',color:'var(--rd)',textAlign:'right'}}>Annual Withdrawal</th>}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {results.map(row=>{
+                        const isPost=row.year>maxYrs;
+                        const isRetActive=isRet||isRet2;
+                        const isRetRow=isPost&&isRetActive;
+                        const isHL=row.doublePoint||row.doublePoint2;
+                        return (
+                          <tr key={row.year}
+                            style={{background:isRetRow?'var(--row-ret)':isPost?'var(--row-post)':isHL?'var(--yl-s)':'var(--row-bg)',borderTop:'1px solid var(--bd)'}}
+                            onMouseEnter={e=>e.currentTarget.style.background='var(--inp-bg)'}
+                            onMouseLeave={e=>e.currentTarget.style.background=isRetRow?'var(--row-ret)':isPost?'var(--row-post)':isHL?'var(--yl-s)':'var(--row-bg)'}>
+                            <td style={{padding:'11px 18px',whiteSpace:'nowrap'}}>
+                              <div style={{display:'flex',alignItems:'center',flexWrap:'wrap',gap:6}}>
+                                <span style={{fontWeight:700,fontSize:14}}>Y{row.year}</span>
+                                {isRetRow&&<Badge color="red">Withdrawal Phase</Badge>}
+                                {row.doublePoint&&<Badge color="yellow">{row.doublePoint}x!</Badge>}
+                                {isCmp&&row.doublePoint2&&!row.doublePoint&&<Badge color="blue">(2) {row.doublePoint2}x!</Badge>}
+                              </div>
+                            </td>
+                            <td style={{padding:'11px 16px',whiteSpace:'nowrap'}}>
+                              <div style={{fontWeight:800,color:'var(--gr-dk)',fontSize:14}}>{dsFmtUSD(row.totalValue)}</div>
+                              <div style={{fontSize:14,color:row.yearlyIncrease>=0?'var(--gr)':'var(--rd)',marginTop:2,fontWeight:600}}>
+                                {row.yearlyIncrease>0?'+':''}{dsFmtUSD(row.yearlyIncrease)} ({row.yearlyIncrease>0?'+':''}{f1(row.yearlyGrowthRate,1)}%)
+                              </div>
+                            </td>
+                            {isCmp&&(
+                              <td style={{padding:'11px 16px',whiteSpace:'nowrap'}}>
+                                <div style={{fontWeight:800,color:'var(--bl-dk)',fontSize:14}}>{dsFmtUSD(row.totalValue2||0)}</div>
+                                <div style={{fontSize:14,color:(row.yearlyIncrease2||0)>=0?'var(--bl)':'var(--rd)',marginTop:2,fontWeight:600}}>
+                                  {(row.yearlyIncrease2||0)>0?'+':''}{dsFmtUSD(row.yearlyIncrease2||0)} ({(row.yearlyIncrease2||0)>0?'+':''}{f1(row.yearlyGrowthRate2||0,1)}%)
+                                </div>
+                              </td>
+                            )}
+                            <td style={{padding:'11px 16px',textAlign:'center',whiteSpace:'nowrap'}}>
+                              <span style={{background:'var(--gr-s)',color:'var(--gr-dk)',border:'1px solid var(--gr-m)',fontSize:14,fontWeight:700,padding:'2px 8px',borderRadius:6,display:'inline-block'}}>
+                                {f1(((row.profit||0)/(row.totalInvested||1))*100,1)}%
+                              </span>
+                            </td>
+                            {isCmp&&(
+                              <td style={{padding:'11px 16px',textAlign:'center',whiteSpace:'nowrap'}}>
+                                <span style={{background:'var(--bl-s)',color:'var(--bl-dk)',border:'1px solid var(--bl-m)',fontSize:14,fontWeight:700,padding:'2px 8px',borderRadius:6,display:'inline-block'}}>
+                                  {f1(((row.profit2||0)/((row.totalInvested2||1)))*100,1)}%
+                                </span>
+                              </td>
+                            )}
+                            {(isRet||isRet2)&&(
+                            <td style={{padding:'11px 18px',textAlign:'right',whiteSpace:'nowrap'}}>
+                              {(row.yearlyWithdrawal||0)>0?(
+                                <div>
+                                  <div style={{fontWeight:700,color:'var(--rd)',fontSize:14}}>-{dsFmtUSD(row.yearlyWithdrawal)}</div>
+                                  <div style={{fontSize:14,color:'rgba(215,0,21,.65)',marginTop:1}}>Monthly {dsFmtUSD(row.monthlyWithdrawal)}</div>
+                                  {isCmp&&(row.yearlyWithdrawal2||0)>0&&(
+                                    <div style={{marginTop:4,paddingTop:4,borderTop:'1px solid rgba(215,0,21,.12)'}}>
+                                      <div style={{fontSize:14,color:'var(--rd)',opacity:.7}}>-{dsFmtUSD(row.yearlyWithdrawal2)} (2)</div>
+                                    </div>
+                                  )}
+                                </div>
+                              ):<span style={{color:'var(--t3)'}}>&mdash;</span>}
+                            </td>
+                            )}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* DCA GUIDE SECTION */}
+      <section id="dca-guide" style={{margin:'32px 0 0',padding:0}}>
+        <div style={{background:'var(--card)',border:'1px solid var(--bd)',borderRadius:'var(--r)',overflow:'hidden'}}>
+
+          <div style={{background:'var(--bl-s)',padding:'20px 24px',borderBottom:'1px solid var(--bd)',display:'flex',alignItems:'center',gap:14}}>
+            <div style={{flexShrink:0,width:40,height:40,borderRadius:12,background:'var(--bl)',
+              display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 4px 12px rgba(0,113,227,.35)'}}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+              </svg>
+            </div>
+            <div>
+              <h2 style={{fontSize:17,fontWeight:800,color:'var(--t1)',margin:'0 0 4px',letterSpacing:'-0.3px'}}>What Is DCA?</h2>
+              <p style={{fontSize:14,color:'var(--t2)',margin:0,lineHeight:1.5}}>
+                Dollar-Cost Averaging — the principle and benefits of investing a fixed amount at regular intervals
+              </p>
+            </div>
+          </div>
+
+          <div style={{padding:'22px 24px 0',display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))',gap:24}}>
+            <div>
+              <h3 style={{fontSize:14,fontWeight:700,color:'var(--t1)',margin:'0 0 11px',display:'flex',alignItems:'center',gap:8}}>
+                <span style={{width:3,height:16,background:'var(--bl)',borderRadius:2,display:'inline-block',flexShrink:0}}></span>
+                What Is DCA?
+              </h3>
+              <p style={{fontSize:14.5,color:'var(--t2)',lineHeight:1.85,margin:0}}>
+                DCA stands for <strong style={{color:'var(--t1)'}}>Dollar-Cost Averaging</strong>.
+                It sounds technical, but it's genuinely simple: buying the same amount on the same day,
+                every month, without fail. That's the entire idea.
+              </p>
+              <p style={{fontSize:14.5,color:'var(--t2)',lineHeight:1.85,margin:'11px 0 0'}}>
+                Whether the market is up or down. Whether headlines are screaming panic or everyone is
+                celebrating. You just buy &mdash; without overthinking it. In fact, not overthinking it
+                may be the whole point.
+              </p>
+            </div>
+            <div>
+              <h3 style={{fontSize:14,fontWeight:700,color:'var(--t1)',margin:'0 0 11px',display:'flex',alignItems:'center',gap:8}}>
+                <span style={{width:3,height:16,background:'var(--bl)',borderRadius:2,display:'inline-block',flexShrink:0}}></span>
+                Why DCA?
+              </h3>
+              <p style={{fontSize:14.5,color:'var(--t2)',lineHeight:1.85,margin:0}}>
+                What makes stock investing hard is the question of <strong style={{color:'var(--t1)'}}>"when to buy."</strong>
+                Decades of data keep saying the same thing: the harder you try to time the market,
+                the worse your returns tend to get.
+              </p>
+              <p style={{fontSize:14.5,color:'var(--t2)',lineHeight:1.85,margin:'11px 0 0'}}>
+                DCA erases that question entirely. You end up buying a little when prices are expensive,
+                and a lot when prices are cheap &mdash; naturally, without even intending to. A lower
+                average cost per share happens <strong style={{color:'var(--t1)'}}>automatically, as a matter of math</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div style={{padding:'18px 24px 24px'}}>
+            <div style={{borderTop:'1px solid var(--bd)',paddingTop:16,display:'flex',flexDirection:'column',gap:13}}>
+              <blockquote style={{margin:0,padding:'14px 18px',background:'var(--tip-bg)',borderLeft:'3px solid var(--bl)',borderRadius:'0 10px 10px 0'}}>
+                <p style={{fontSize:14,color:'var(--t1)',lineHeight:1.88,margin:0,fontStyle:'italic'}}>
+                  "Disciplined dollar-cost averaging is a routine that empties out emotion. Whether the market
+                  is euphoric or panicking, mechanically putting in the same amount every time is not a claim
+                  that you 'know' the market &mdash; it's an attitude that you 'believe' it will grow over the
+                  long run. And belief demands a far tougher patience than knowledge ever does."
+                </p>
+                <cite style={{display:'block',marginTop:9,fontSize:14,color:'var(--bl)',fontWeight:700,fontStyle:'normal'}}>
+                  &mdash; from <em>Investing in US Stock ETFs That Never Fail</em>
+                </cite>
+              </blockquote>
+              <blockquote style={{margin:0,padding:'14px 18px',background:'var(--tip-bg)',borderLeft:'3px solid var(--bl)',borderRadius:'0 10px 10px 0'}}>
+                <p style={{fontSize:14,color:'var(--t1)',lineHeight:1.88,margin:0,fontStyle:'italic'}}>
+                  "This is radical simplicity at its finest &mdash; not a surrender of knowledge, but a rejection
+                  of unnecessary complexity. Instead of straining to be clever, we choose to borrow the power of
+                  a system."
+                </p>
+                <cite style={{display:'block',marginTop:9,fontSize:14,color:'var(--bl)',fontWeight:700,fontStyle:'normal'}}>
+                  &mdash; from <em>Investing in US Stock ETFs That Never Fail</em>
+                </cite>
+              </blockquote>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <div className="ds-footrow" style={{borderTop:'1px solid var(--bd)',padding:'20px 4px 0',marginTop:24,
+        display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:12}}>
+        <span style={{fontSize:14,fontWeight:600,color:'var(--t2)',display:'flex',alignItems:'center',gap:6}}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          DCA Compound Simulator &mdash; ezlong.com
+        </span>
+        <div style={{fontSize:14,color:'var(--t2)',display:'flex',gap:20,flexWrap:'wrap'}}>
+          <span>Past returns do not guarantee future results</span>
+          <span>All investments carry risk of principal loss</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('ds-root')).render(React.createElement(App));
+</script>
 
 <!-- ── 네이티브 앱 웹뷰 감지: ?embed=app 신호 처리 (2026-07-28) ── -->
 <script>
