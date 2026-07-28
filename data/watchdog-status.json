@@ -1,12 +1,12 @@
 {
-  "lastRun": "2026-07-28T07:47:29.496Z",
-  "lastRunKST": "2026-07-28 16:47:29 KST",
+  "lastRun": "2026-07-28T08:17:29.025Z",
+  "lastRunKST": "2026-07-28 17:17:29 KST",
   "summary": {
     "ok": 4,
-    "triggered": 0,
+    "triggered": 2,
     "alreadyRunning": 0,
     "stale": 0,
-    "skipped": 6,
+    "skipped": 4,
     "errors": 0
   },
   "results": [
@@ -14,15 +14,18 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-07-28T07:47:29.496Z",
-      "status": "SKIP",
-      "reason": "비활성 시간대"
+      "checkedAt": "2026-07-28T08:17:29.025Z",
+      "lastUpdate": "2026-07-27T21:47:47.803Z",
+      "ageHours": 10.5,
+      "maxAgeHours": 2.5,
+      "status": "TRIGGERED",
+      "reason": "10.5h 지연 감지 → 자동 트리거"
     },
     {
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-07-28T07:47:29.496Z",
+      "checkedAt": "2026-07-28T08:17:29.025Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -30,18 +33,18 @@
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-07-28T07:47:29.496Z",
+      "checkedAt": "2026-07-28T08:17:29.025Z",
       "lastUpdate": "2026-07-28T07:40:27.377Z",
-      "ageHours": 0.1,
+      "ageHours": 0.6,
       "maxAgeHours": 5,
       "status": "OK",
-      "reason": "최신 (0.1h 전 업데이트)"
+      "reason": "최신 (0.6h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-07-28T07:47:29.496Z",
+      "checkedAt": "2026-07-28T08:17:29.025Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -49,7 +52,7 @@
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-07-28T07:47:29.496Z",
+      "checkedAt": "2026-07-28T08:17:29.025Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -57,48 +60,51 @@
       "id": "scorecard",
       "name": "긍정vs부정 스코어카드",
       "workflow": "market-scorecard.yml",
-      "checkedAt": "2026-07-28T07:47:29.496Z",
+      "checkedAt": "2026-07-28T08:17:29.025Z",
       "lastUpdate": "2026-07-28T05:34:45Z",
-      "ageHours": 2.2,
+      "ageHours": 2.7,
       "maxAgeHours": 8,
       "status": "OK",
-      "reason": "최신 (2.2h 전 업데이트)"
+      "reason": "최신 (2.7h 전 업데이트)"
     },
     {
       "id": "stocks-prices",
       "name": "심플 주가 실시간",
       "workflow": "fetch-stocks-prices.yml",
-      "checkedAt": "2026-07-28T07:47:29.496Z",
-      "status": "SKIP",
-      "reason": "비활성 시간대"
+      "checkedAt": "2026-07-28T08:17:29.025Z",
+      "lastUpdate": "2026-07-28T07:09:47.916993+00:00",
+      "ageHours": 1.1,
+      "maxAgeHours": 0.75,
+      "status": "TRIGGERED",
+      "reason": "1.1h 지연 감지 → 자동 트리거"
     },
     {
       "id": "stocks-data",
       "name": "심플 주가 일간(스파크라인)",
       "workflow": "fetch-stocks-data.yml",
-      "checkedAt": "2026-07-28T07:47:29.496Z",
+      "checkedAt": "2026-07-28T08:17:29.025Z",
       "lastUpdate": "2026-07-27T23:12:33.233131+00:00",
-      "ageHours": 8.6,
+      "ageHours": 9.1,
       "maxAgeHours": 26,
       "status": "OK",
-      "reason": "최신 (8.6h 전 업데이트)"
+      "reason": "최신 (9.1h 전 업데이트)"
     },
     {
       "id": "market-cycle",
       "name": "마켓 사이클 주봉",
       "workflow": "fetch-market-cycle.yml",
-      "checkedAt": "2026-07-28T07:47:29.496Z",
+      "checkedAt": "2026-07-28T08:17:29.025Z",
       "lastUpdate": "2026-07-27T23:14:15.885Z",
-      "ageHours": 8.6,
+      "ageHours": 9.1,
       "maxAgeHours": 30,
       "status": "OK",
-      "reason": "최신 (8.6h 전 업데이트)"
+      "reason": "최신 (9.1h 전 업데이트)"
     },
     {
       "id": "kr-prices",
       "name": "한국 주가",
       "workflow": "fetch-kr-prices.yml",
-      "checkedAt": "2026-07-28T07:47:29.496Z",
+      "checkedAt": "2026-07-28T08:17:29.025Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     }
