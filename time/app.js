@@ -20,6 +20,7 @@ const FZ_SEASON = (typeof window !== "undefined" && window.FlipZenSeason) || nul
 const FZ_REGION = (typeof window !== "undefined" && window.FlipZenRegion) || null;
 const FZ_CODES = (typeof window !== "undefined" && window.FlipZenWeatherCodes) || null;
 const FZ_QUOTE_SRC = (typeof window !== "undefined" && window.FlipZenQuoteSource) || null;
+const FZ_BOOK_TITLES = (typeof window !== "undefined" && window.FlipZenBookTitles) || null;
 
 /**
  * 날씨 상태 코드 계층 접근자 (2026-07-28 글로벌화 W2)
@@ -2086,15 +2087,41 @@ function renderQuote(index, immediate = false) {
     // has-english 클래스가 꺼지며 CSS(.quote-panel .quote-english
     // { display:none })가 박스 자체를 접어주고, 길이 계산(textLength)에서도
     // 빠지므로 폰트 축소 판정에 영향을 주지 않는다.
+    // ─────────────────────────────────────────────────────────
+    // 2026-07-28 글로벌화 W8 — 영어 화면에서는 영어만 보여준다
+    // ─────────────────────────────────────────────────────────
+    // 한국어 화면은 "영어 원문(작게) + 한국어 번역(크게)" 두 줄 구성이다.
+    // 이 구조를 영어 사용자에게 그대로 내보내면 읽지도 못하는 한국어가
+    // 본문 자리를 차지한다 — 실제로 시뮬레이터 촬영에서 그렇게 나왔다.
+    // 영어 화면에서는 영어 원문을 **본문 자리로 올리고** 번역 줄을 비운다.
+    //
+    // 원문이 없는 문장(한국 원서 등)은 영어 화면에 내보낼 수 없다 —
+    // 지금은 표시 단계에서만 걸러 한국어를 그대로 두지만, 애초에 그런
+    // 문장이 뽑히지 않게 하는 **문장 풀 필터링이 다음 과제**다.
     const rawEnglish = quote.english || "";
-    const englishText = rawEnglish.length > 120 ? "" : rawEnglish;
-    const textLength = quote.text.length + Math.floor(englishText.length * 0.55);
+    const koMode = isKoreanLocale();
+
+    let englishText, bodyText;
+    if (koMode) {
+      // ★ 한국어는 예전과 완전히 동일 ★ 120자 초과 원문 숨김 규칙 포함
+      englishText = rawEnglish.length > 120 ? "" : rawEnglish;
+      bodyText = quote.text;
+    } else if (rawEnglish) {
+      englishText = "";              // 위 작은 줄은 비우고
+      bodyText = rawEnglish;         // 원문을 본문 자리로 올린다
+    } else {
+      // 원문이 없는 문장 — 빈 화면보다는 한국어라도 보여준다
+      englishText = "";
+      bodyText = quote.text;
+    }
+
+    const textLength = bodyText.length + Math.floor(englishText.length * 0.55);
     quotePanel.classList.toggle("quote-long", textLength > 115);
     quotePanel.classList.toggle("quote-dense", textLength > 190);
     quotePanel.classList.toggle("has-english", Boolean(englishText));
     setText("quoteEnglish", englishText);
-    setText("quoteText", quote.text);
-    setText("quoteSource", `<${quote.title}> ${quote.author}`);
+    setText("quoteText", bodyText);
+    setText("quoteSource", formatQuoteSource(quote, koMode));
     updateAladinLinkButton(quote);
     quotePanel.classList.remove("is-changing");
     restartQuoteProgress();
@@ -2111,6 +2138,24 @@ function renderQuote(index, immediate = false) {
     pendingQuoteTimeoutId = null;
     applyQuote();
   }, 760);
+}
+
+/**
+ * 문장 아래 출처 한 줄. 2026-07-28 글로벌화 W8 신설.
+ *
+ * 한국어: `<현명한 투자자> 벤저민 그레이엄` — 예전과 글자 그대로 같다.
+ * 영어  : `<The Intelligent Investor> Benjamin Graham`
+ *
+ * 영문 서지정보는 i18n/book-titles.js(data/book-i18n-map.json 에서 구움)에서
+ * 찾는다. 없으면 한국어 표기를 그대로 쓴다 — 출처를 아예 안 보여주는 것보다
+ * 낫고, 어느 책인지 못 찾는 상황을 화면에서 드러내 보완 대상을 알려준다.
+ */
+function formatQuoteSource(quote, koMode) {
+  if (!koMode && FZ_BOOK_TITLES && FZ_BOOK_TITLES.lookup) {
+    const en = FZ_BOOK_TITLES.lookup(quote.title);
+    if (en && en.t) return `<${en.t}> ${en.a || quote.author}`;
+  }
+  return `<${quote.title}> ${quote.author}`;
 }
 
 // 2026-07-16: 현재 문장의 책이 알라딘과 매칭됐으면 아이콘을 보여주고 링크를
