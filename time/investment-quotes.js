@@ -8279,5 +8279,12 @@ window.investmentQuotes = [
     "title": "와일드",
     "author": "셰릴 스트레이드",
     "genre": "literature"
+  },
+  {
+    "english": "Losers average losers.",
+    "text": "손실 난 포지션에 물타기를 하는 건 패자들이나 하는 짓이다.",
+    "title": "시장의 마법사들",
+    "author": "폴 튜더 존스",
+    "category": "behavior"
   }
 ];
