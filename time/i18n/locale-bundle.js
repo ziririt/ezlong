@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-07-28T02:21:19.428Z
+ * 생성 시각: 2026-07-28T02:52:11.947Z
  * 포함 로케일: en, ko
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -156,7 +156,7 @@
         "humidity": "Humidity {value}%",
         "sunriseSunset": "🌅 Sunrise {sunrise} · 🌇 Sunset {sunset}",
         "wind": "Wind {label}",
-        "highLow": "H:{high}° L:{low}°"
+        "highLow": "H:{high} L:{low}"
       },
       "hourly": {
         "heading": "Hourly forecast",
@@ -500,7 +500,7 @@
         "humidity": "습도 {value}%",
         "sunriseSunset": "🌅 일출 {sunrise} · 🌇 일몰 {sunset}",
         "wind": "바람 {label}",
-        "highLow": "최고:{high}° 최저:{low}°"
+        "highLow": "최고:{high} 최저:{low}"
       },
       "hourly": {
         "heading": "시간대별 상세 예보",

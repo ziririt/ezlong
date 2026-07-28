@@ -71,6 +71,69 @@ function conditionCodeOf(src) {
   return WX.conditionCodeOf(src);
 }
 
+/**
+ * 온도 단위 — "C" 또는 "F". (2026-07-28 글로벌화 W6)
+ *
+ * ─────────────────────────────────────────────────────────────
+ * 왜 필요한가
+ * ─────────────────────────────────────────────────────────────
+ * 백엔드는 항상 섭씨를 내려준다. 미국은 일상에서 화씨를 쓰므로,
+ * 섭씨 그대로 보여주면 미국 사용자에게는 숫자가 아무 의미가 없다 —
+ * "28°"를 보고 덥다고 느끼지 못한다. 출시 직후 낮은 평점으로 돌아오는
+ * 종류의 문제라, 화면에 나가기 전 마지막 지점에서 한 번 변환한다.
+ *
+ * ★ 한국어는 무조건 섭씨다 ★
+ * temperatureUnit("ko", ...) 은 지역과 무관하게 항상 "C" 를 돌려준다
+ * (i18n/season.js). 미국에 사는 한국어 사용자도 섭씨를 본다 — 언어를
+ * 한국어로 두었다는 것 자체가 한국식 감각을 원한다는 신호이기 때문이다.
+ *
+ * 좌표를 모르면 섭씨다(세계 대부분이 섭씨). 미국 안이라는 게 확인될
+ * 때만 화씨로 바꾼다 — 확신이 없을 때 다수 쪽으로 떨어지는 편이 안전하다.
+ */
+function temperatureUnit() {
+  if (!FZ_SEASON || !FZ_SEASON.temperatureUnit) return "C";
+
+  // ★ 1순위: 기기가 스스로 밝힌 지역 ("en-CA" → CA) ★
+  // 좌표만 쓰다가 토론토가 미국 사각형에 들어가는 걸 발견했다 — 온타리오
+  // 남부는 미시간과 뉴욕 사이로 내려와 있어 사각형으로 못 가른다.
+  // 기기 로케일은 사용자가 직접 설정한 값이라 추측이 아니다.
+  // navigator 를 **명시적으로 넘긴다** — deviceRegion() 이 전역을 직접 보게
+  // 두면 브라우저에서는 되지만 테스트 샌드박스에서는 조용히 null 이 되어,
+  // "테스트는 통과하는데 실제로는 안 도는" 상태를 못 잡는다.
+  const nav = typeof navigator !== "undefined" ? navigator : null;
+  let region = FZ_REGION && FZ_REGION.deviceRegion ? FZ_REGION.deviceRegion(nav) : null;
+
+  // 2순위: 좌표. 로케일에 지역이 없는 경우("en" 처럼)의 폴백.
+  if (!region && FZ_REGION && FZ_REGION.regionFromCoordinate) {
+    const lat = userCoords && typeof userCoords.lat === "number" ? userCoords.lat : null;
+    const lng = userCoords && typeof userCoords.lng === "number" ? userCoords.lng : null;
+    region = FZ_REGION.regionFromCoordinate(lat, lng);
+  }
+  return FZ_SEASON.temperatureUnit(FZ_LOCALE, region);
+}
+
+/**
+ * 섭씨 숫자 → 화면에 쓸 온도 문자열.
+ *
+ * ★ 온도가 화면에 나가는 곳은 전부 이 함수를 거친다 ★
+ * 예전엔 `${Math.round(t)}°` 가 아홉 군데에 흩어져 있었다. 그 상태로
+ * 화씨를 넣으면 반드시 한두 곳을 빠뜨리고, 빠뜨린 자리는 "28°"와 "82°"가
+ * 한 화면에 같이 보이는 형태로 드러난다 — 그때는 이미 유저가 먼저 본다.
+ * 새로 온도를 표시할 곳이 생기면 반드시 이 함수를 쓸 것.
+ *
+ * ★ 한국어에서는 예전 표현과 글자 단위로 같다 ★
+ * ko → 단위 "C" → celsiusTo 가 값을 그대로 돌려줌 → `${Math.round(t)}°`.
+ * scripts/test-temperature.mjs 가 -60~60도 전 구간에서 이를 확인한다.
+ */
+function formatTemp(celsius) {
+  if (typeof celsius !== "number" || !isFinite(celsius)) return "--°";
+  const unit = temperatureUnit();
+  const value = FZ_SEASON && FZ_SEASON.celsiusTo
+    ? FZ_SEASON.celsiusTo(unit, celsius)
+    : celsius;
+  return `${Math.round(value)}°`;
+}
+
 /** 상태 코드 → 사람이 읽는 라벨. 한국어에서는 기존 conditionsKo 와 같은 값이다. */
 function conditionLabel(code, fallbackKo) {
   return t("weather.conditions." + code, null, fallbackKo !== undefined ? fallbackKo : "");
@@ -1913,7 +1976,7 @@ function requestCurrentWeather() {
               : true;
           weatherState = {
             location,
-            temp: Number.isFinite(current.temp) ? `${Math.round(current.temp)}°` : "--°",
+            temp: formatTemp(current.temp),
             summary: vcCurrentSummary(current),
             icon: weatherIconFor(tag, isDay),
             tag
@@ -3392,7 +3455,7 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   setWeatherRainParams(windSpeedKmh, gustKmh, intensityGrade);
   if (isRainingNow) startWeatherRainFxAll();
   else stopWeatherRainFxAll();
-  wdCurrentTemp.textContent = `${Math.round(c.temp)}°`;
+  wdCurrentTemp.textContent = formatTemp(c.temp);
   // 2026-07-20 11차 피드백(유저 요청): 습도를 조건텍스트 옆에서 기온
   // (wdCurrentTemp) 옆으로 이동.
   // 2026-07-20 12차 피드백(유저 요청): 가운뎃점(·) 접두사 삭제 — 빈
@@ -3532,7 +3595,7 @@ function renderWeatherHourlyStrip(data) {
     <div class="weather-hourly-item" data-now="${h.isNow ? "true" : "false"}">
       <span class="weather-hourly-hour">${h.hourLabel}</span>
       <span class="weather-hourly-icon">${weatherEmojiFromHour(h.precipprob, precipMm, h.hourLabel, h.isNow, h.conditionsKo)}</span>
-      <span class="weather-hourly-temp">${Math.round(h.temp)}°</span>
+      <span class="weather-hourly-temp">${formatTemp(h.temp)}</span>
       <span class="weather-hourly-prob">${probHtml}</span>
     </div>`;
     })
@@ -3841,9 +3904,9 @@ function renderWeatherWeeklyForecast(data) {
         ${wk.probHtml}
       </span>
       <span class="weather-weekly-range">
-        <span class="weather-weekly-min">${Math.round(d.tempMin)}°</span>
+        <span class="weather-weekly-min">${formatTemp(d.tempMin)}</span>
         <span class="weather-weekly-bar" aria-hidden="true"></span>
-        <span class="weather-weekly-max">${Math.round(d.tempMax)}°</span>
+        <span class="weather-weekly-max">${formatTemp(d.tempMax)}</span>
       </span>
     </div>`;
     })
@@ -3903,7 +3966,15 @@ function renderWeatherCurrentToday(data) {
   }
   if (wdCurrentHiLo) {
     const hasRange = today && typeof today.tempMax === "number" && typeof today.tempMin === "number";
-    wdCurrentHiLo.textContent = hasRange ? `최고:${Math.round(today.tempMax)}° 최저:${Math.round(today.tempMin)}°` : "";
+    // ★ ° 는 formatTemp 안에 있다 ★ 카탈로그 템플릿은 "{high} {low}" 처럼
+    // 단위 기호 없이 두고, 값이 기호를 달고 온다. 예전엔 템플릿에 °를 두고
+    // 코드에서 떼어내는(replace) 방식이었는데, 그러면 화씨·섭씨로 표기가
+    // 갈릴 때 기호를 두 곳에서 관리하게 된다.
+    wdCurrentHiLo.textContent = hasRange
+      ? t("weather.detail.highLow",
+          { high: formatTemp(today.tempMax), low: formatTemp(today.tempMin) },
+          `최고:${formatTemp(today.tempMax)} 최저:${formatTemp(today.tempMin)}`)
+      : "";
   }
 }
 
@@ -3932,14 +4003,14 @@ function renderWeatherYesterday(data) {
   wdYesterday.innerHTML = `
     <div class="weather-24h-col">
       <p class="weather-24h-col-label">🌙 지난 24시간</p>
-      <div class="weather-stat-tile"><span class="weather-stat-label">최저기온</span><span class="weather-stat-value">${Math.round(p.tempMin)}°</span></div>
-      <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${Math.round(p.tempMax)}°</span></div>
+      <div class="weather-stat-tile"><span class="weather-stat-label">최저기온</span><span class="weather-stat-value">${formatTemp(p.tempMin)}</span></div>
+      <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${formatTemp(p.tempMax)}</span></div>
       <div class="weather-stat-tile"><span class="weather-stat-label">평균습도</span><span class="weather-stat-value">${Math.round(p.humidityAvg)}%</span></div>
     </div>
     <div class="weather-24h-col weather-24h-col--future">
       <p class="weather-24h-col-label">☀️ 향후 24시간</p>
-      <div class="weather-stat-tile"><span class="weather-stat-label">최저기온</span><span class="weather-stat-value">${Math.round(n.tempMin)}°</span></div>
-      <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${Math.round(n.tempMax)}°</span></div>
+      <div class="weather-stat-tile"><span class="weather-stat-label">최저기온</span><span class="weather-stat-value">${formatTemp(n.tempMin)}</span></div>
+      <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${formatTemp(n.tempMax)}</span></div>
       <div class="weather-stat-tile"><span class="weather-stat-label">평균습도</span><span class="weather-stat-value">${Math.round(n.humidityAvg)}%</span></div>
     </div>`;
 }

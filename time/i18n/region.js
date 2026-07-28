@@ -81,7 +81,11 @@
    */
   var REGION_BOXES = [
     // 미국 본토 (알래스카·하와이 별도)
-    { code: "US", latMin: 24.5, latMax: 49.4, lngMin: -125.0, lngMax: -66.9 },
+    // 서부: 국경이 북위 49도 직선이라 사각형으로 정확히 잘린다
+    { code: "US", latMin: 24.5, latMax: 49.0, lngMin: -125.0, lngMax: -95.2 },
+    // 동부: 온타리오 남부가 미시간과 뉴욕 사이로 내려와 있어 사각형으로는
+    // 캐나다와 분리할 수 없다. 이 구간의 정확도는 deviceRegion() 이 책임진다.
+    { code: "US", latMin: 24.5, latMax: 49.4, lngMin: -95.2, lngMax: -66.9 },
     { code: "US", latMin: 51.2, latMax: 71.4, lngMin: -168.0, lngMax: -129.0 },  // 알래스카
     { code: "US", latMin: 18.9, latMax: 22.3, lngMin: -160.3, lngMax: -154.8 },  // 하와이
     { code: "KR", latMin: 33.0, latMax: 38.7, lngMin: 124.5, lngMax: 132.0 },
@@ -91,6 +95,47 @@
     { code: "NZ", latMin: -47.3, latMax: -34.0, lngMin: 166.3, lngMax: 178.6 },
     { code: "CA", latMin: 41.7, latMax: 83.1, lngMin: -141.0, lngMax: -52.6 },
   ];
+
+  /**
+   * 기기가 스스로 밝힌 지역 코드. 예: "en-CA" → "CA"
+   * 2026-07-28 신설 (글로벌화 W6)
+   *
+   * ─────────────────────────────────────────────────────────────
+   * 왜 좌표보다 이걸 먼저 보는가
+   * ─────────────────────────────────────────────────────────────
+   * 온도 단위를 좌표로만 정하려다 실제로 부딪힌 문제: **토론토가 미국
+   * 사각형 안에 들어간다.** 온타리오 남부는 미시간과 뉴욕 사이로 내려와
+   * 있어서, 사각형으로는 두 나라를 가를 방법이 없다(캐나다 최남단 41.7°N은
+   * 미네소타 최북단 49.4°N보다 한참 아래다). 캐나다는 영어권 1차 출시
+   * 대상이면서 섭씨를 쓰는 나라라, 여기서 틀리면 그대로 오답이 나간다.
+   *
+   * 기기 로케일("en-CA")은 사용자가 직접 설정한 값이라 추측이 아니다.
+   * 좌표는 그 값이 없을 때의 폴백으로만 쓴다.
+   *
+   * ★ 지역만 본다. 언어는 보지 않는다 ★
+   * 언어 판정은 i18n/index.js 의 몫이고, 여기는 "어느 나라 관습을 따를까"만
+   * 답한다 — 미국에 사는 한국어 사용자의 "ko-US" 도 지역은 US 로 읽힌다
+   * (다만 temperatureUnit 이 ko 를 무조건 섭씨로 처리하므로 결과는 섭씨다).
+   *
+   * @param {{language?: string, languages?: string[]}} [nav] 테스트용 주입
+   * @returns {string|null} 대문자 2글자 지역 코드, 모르면 null
+   */
+  function deviceRegion(nav) {
+    var n = nav || (typeof navigator !== "undefined" ? navigator : null);
+    if (!n) return null;
+
+    var tags = [];
+    if (typeof n.language === "string") tags.push(n.language);
+    if (n.languages && typeof n.languages.length === "number") {
+      for (var i = 0; i < n.languages.length; i++) tags.push(n.languages[i]);
+    }
+    for (var j = 0; j < tags.length; j++) {
+      // "en-CA" / "en_CA" / "zh-Hant-TW" 전부에서 마지막 2글자 지역만 뽑는다
+      var m = /^[A-Za-z]{2,3}(?:[-_][A-Za-z]{4})?[-_]([A-Za-z]{2})\b/.exec(String(tags[j] || ""));
+      if (m) return m[1].toUpperCase();
+    }
+    return null;
+  }
 
   function regionFromCoordinate(lat, lng) {
     if (typeof lat !== "number" || typeof lng !== "number") return null;
@@ -140,6 +185,7 @@
   return {
     KOREA_BOUNDS: KOREA_BOUNDS,
     isKoreaCoordinate: isKoreaCoordinate,
+    deviceRegion: deviceRegion,
     showKoreaOnlyFeatures: showKoreaOnlyFeatures,
     geocodeLanguage: geocodeLanguage,
     regionFromCoordinate: regionFromCoordinate,
