@@ -3318,7 +3318,7 @@ function weatherEmojiFromHourCondition(conditionsKo, isNight) {
   return WX.conditionEmoji(conditionCodeOf({ conditionsKo }), !!isNight);
 }
 
-function weatherEmojiFromHour(precipprob, precipMm, hourLabel, isNow, conditionsKo) {
+function weatherEmojiFromHour(precipprob, precipMm, hourLabel, isNow, conditionsKo, hour24) {
   // 2026-07-28 글로벌화 W2: "14시" 파싱을 WX.hourOf() 로 옮겼다.
   // 영어 모드에서는 이 라벨이 "2 PM" 같은 형태로 오므로 /^(\d+)시/ 가
   // 조용히 실패해 밤/낮 아이콘이 통째로 틀어진다. hourOf() 는 백엔드가
@@ -3326,7 +3326,9 @@ function weatherEmojiFromHour(precipprob, precipMm, hourLabel, isNow, conditions
   // ★ isNow 를 먼저 보는 순서는 그대로 유지한다 ★ hourOf() 는 라벨을
   //   isNow 보다 우선하므로, 순서를 바꾸면 "지금" 카드가 라벨 시각을
   //   따라가 버린다 — 지금 동작과 달라진다.
-  const hour = isNow ? new Date().getHours() : WX.hourOf({ hourLabel });
+  // 2026-07-28 W9-6 — hour24(백엔드 신규 숫자 필드)를 함께 넘긴다.
+  // 영어 라벨은 "6 PM" 형태라 문자열 파싱이 통하지 않는다.
+  const hour = isNow ? new Date().getHours() : WX.hourOf({ hourLabel, hour24 });
   const isNight = WX.isNightHour(hour);
   // 2026-07-24 Fable 5 검토회신 반영: 이 함수가 "비냐 아니냐"만 보던
   // 이분법이 오늘 사건의 원인 중 하나였다 — deriveRainDisplay()가 새로
@@ -3756,7 +3758,7 @@ function renderWeatherHourlyStrip(data) {
       return `
     <div class="weather-hourly-item" data-now="${h.isNow ? "true" : "false"}">
       <span class="weather-hourly-hour">${h.hourLabel}</span>
-      <span class="weather-hourly-icon">${weatherEmojiFromHour(h.precipprob, precipMm, h.hourLabel, h.isNow, h.conditionsKo)}</span>
+      <span class="weather-hourly-icon">${weatherEmojiFromHour(h.precipprob, precipMm, h.hourLabel, h.isNow, h.conditionsKo, h.hour24)}</span>
       <span class="weather-hourly-temp">${formatTemp(h.temp)}</span>
       <span class="weather-hourly-prob">${probHtml}</span>
     </div>`;

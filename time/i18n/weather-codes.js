@@ -207,8 +207,13 @@
   function hourOf(item) {
     if (!item) return null;
 
-    if (typeof item.hour === "number" && item.hour >= 0 && item.hour <= 23 && item.hour % 1 === 0) {
-      return item.hour;                                   // 1순위: 숫자 필드 (미래)
+    // 1순위: 숫자 필드. 2026-07-28 W9-6 — 백엔드가 hour24 로 내려주기 시작했다.
+    // ★ 이게 없으면 영어 라벨("6 PM")이 아래 3순위 정규식에 걸려 6시로 읽힌다 ★
+    //   → 오후 6시를 오전 6시로 오인해 밤에 낮 아이콘이 나온다(실제로 이
+    //     위험을 발견해 추가한 방어다).
+    var numeric = typeof item.hour24 === "number" ? item.hour24 : item.hour;
+    if (typeof numeric === "number" && numeric >= 0 && numeric <= 23 && numeric % 1 === 0) {
+      return numeric;
     }
     if (typeof item.datetimeEpoch === "number" && isFinite(item.datetimeEpoch)) {
       // KST 고정. 타임존 일반화는 별도 트랙(dateUtil.ts 참조).
