@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,29 +11,29 @@
     gtag('js', new Date());
     gtag('config', 'G-8DY4BGP444');
   </script>
-  <title>EZLONG — Free US Stock Investment Tools</title>
-  <meta name="description" content="EZLONG offers free, no-signup US stock investment tools — Monte Carlo portfolio simulator, DCA compound calculator, retirement goal calculator, tax-advantaged account simulator, swing signal dashboard, and more.">
-  <meta name="keywords" content="free US stock investment tools, Monte Carlo portfolio simulator, DCA compound calculator, retirement calculator, tax advantaged account simulator, swing signal dashboard, US stock analysis tools">
+  <title>EZLONG — 無料 米国株投資ツール</title>
+  <meta name="description" content="EZLONGは無料・登録不要の米国株投資ツールを提供しています。モンテカルロ・ポートフォリオシミュレーター、DCA複利計算機、老後資金逆算計算機、税制優遇口座シミュレーター、スイングシグナル・ダッシュボードなど15種類のツールが使えます。">
+  <meta name="keywords" content="米国株 投資ツール 無料, モンテカルロ シミュレーター, DCA 複利計算機, 老後資金 計算機, NISA シミュレーション, スイングシグナル, 米国株 分析ツール">
   <meta name="robots" content="index, follow">
-  <meta name="language" content="en">
+  <meta name="language" content="ja">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="EZLONG — Free US Stock Investment Tools">
-  <meta property="og:description" content="Free, no-signup tools for US stock investors: Monte Carlo simulator, DCA calculator, retirement planner, tax account simulator, behavioral assessment, and more.">
-  <meta property="og:url" content="https://ezlong.com/en/">
+  <meta property="og:title" content="EZLONG — 無料 米国株投資ツール">
+  <meta property="og:description" content="無料・登録不要の米国株投資ツール集。モンテカルロシミュレーター、DCA計算機、老後資金プランナー、税制優遇口座シミュレーターなど。">
+  <meta property="og:url" content="https://ezlong.com/ja/">
   <meta property="og:site_name" content="EZLONG">
-  <meta property="og:locale" content="en_US">
+  <meta property="og:locale" content="ja_JP">
   <meta property="og:image" content="https://ezlong.com/logo-preview.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
 
   <!-- hreflang -->
-  <link rel="alternate" hreflang="en" href="https://ezlong.com/en/">
   <link rel="alternate" hreflang="ko" href="https://ezlong.com/">
+  <link rel="alternate" hreflang="en" href="https://ezlong.com/en/">
   <link rel="alternate" hreflang="ja" href="https://ezlong.com/ja/">
   <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/">
-  <link rel="canonical" href="https://ezlong.com/en/">
+  <link rel="canonical" href="https://ezlong.com/ja/">
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -41,9 +41,9 @@
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "EZLONG",
-    "url": "https://ezlong.com/en/",
-    "description": "Free US stock investment tools for long-term investors: portfolio simulators, compound calculators, retirement planners, and market signal dashboards.",
-    "inLanguage": "en",
+    "url": "https://ezlong.com/ja/",
+    "description": "長期米国株投資家のための無料ツール群 — ポートフォリオシミュレーター、複利計算機、老後資金プランナー、マーケットシグナル・ダッシュボード。",
+    "inLanguage": "ja",
     "publisher": {
       "@type": "Organization",
       "name": "EZLONG",
@@ -68,7 +68,7 @@
       --green: #1A7F37;
       --r: 12px;
       --max-w: 1080px;
-      --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+      --font: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', 'Helvetica Neue', Arial, sans-serif;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -90,7 +90,7 @@
       font-family: var(--font);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     /* Nav */
@@ -118,6 +118,7 @@
       text-decoration: none;
       letter-spacing: -0.02em;
     }
+    .en-nav-right { display: flex; gap: 18px; align-items: center; }
     .en-nav-link {
       font-size: 14px;
       color: var(--blue);
@@ -142,21 +143,20 @@
       padding: 4px 12px;
       border-radius: 20px;
       letter-spacing: 0.04em;
-      text-transform: uppercase;
       margin-bottom: 20px;
     }
     @media (prefers-color-scheme: dark) {
       .hero-badge { background: #0A3D1C; color: #30D158; }
     }
     .hero h1 {
-      font-size: clamp(32px, 6vw, 56px);
+      font-size: clamp(28px, 6vw, 48px);
       font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.05;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
       margin-bottom: 16px;
     }
     .hero-sub {
-      font-size: clamp(17px, 2.5vw, 21px);
+      font-size: clamp(16px, 2.5vw, 19px);
       color: var(--text3);
       max-width: 640px;
       margin: 0 auto 32px;
@@ -186,9 +186,9 @@
       padding: 64px 24px;
     }
     .tools-section h2 {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 700;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
       margin-bottom: 32px;
       text-align: center;
     }
@@ -229,7 +229,7 @@
     .tool-desc {
       font-size: 14px;
       color: var(--text3);
-      line-height: 1.6;
+      line-height: 1.7;
     }
     .tool-badge {
       display: inline-block;
@@ -237,8 +237,6 @@
       font-size: 14px;
       font-weight: 600;
       color: var(--blue);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
     }
 
     /* Footer */
@@ -249,7 +247,7 @@
       text-align: center;
       color: var(--text3);
       font-size: 14px;
-      line-height: 1.8;
+      line-height: 1.9;
     }
     .en-footer a { color: var(--blue); text-decoration: none; }
     .en-footer a:hover { text-decoration: underline; }
@@ -263,125 +261,128 @@
 <body>
 
   <nav class="en-nav" role="navigation">
-    <a class="en-nav-logo" href="https://ezlong.com/en/">EZLONG</a>
-    <a class="en-nav-link" href="https://ezlong.com/">Korean Version (한국어)</a>
+    <a class="en-nav-logo" href="https://ezlong.com/ja/">EZLONG</a>
+    <div class="en-nav-right">
+      <a class="en-nav-link" href="https://ezlong.com/en/">English</a>
+      <a class="en-nav-link" href="https://ezlong.com/">한국어</a>
+    </div>
   </nav>
 
   <section class="hero">
-    <div class="hero-badge">Free · No Sign-up Required</div>
-    <h1>Free US Stock<br>Investment Tools</h1>
-    <p class="hero-sub">Powerful calculators and simulators for long-term US stock investors. Built for clarity. Powered by math. Free forever.</p>
-    <a class="btn-primary" href="#tools">Open All Tools</a>
-    <p class="hero-note">All 9 tools below are fully in English. No sign-up, no account, completely free.</p>
+    <div class="hero-badge">無料・登録不要</div>
+    <h1>無料 米国株<br>投資ツール</h1>
+    <p class="hero-sub">長期米国株投資家のための強力な計算機とシミュレーター。分かりやすさを追求し、数学の力で導く。永久無料。</p>
+    <a class="btn-primary" href="#tools">すべてのツールを見る</a>
+    <p class="hero-note">以下の15個のツールはすべて日本語対応。登録不要、アカウント作成不要、完全無料です。</p>
   </section>
 
   <section class="tools-section" id="tools">
-    <h2>15 Tools for US Stock Investors</h2>
+    <h2>米国株投資家のための15のツール</h2>
     <div class="tools-grid">
 
       <a class="tool-card" href="https://ezlong.com/en/atmr-dashboard.html">
         <span class="tool-icon">📊</span>
-        <div class="tool-name">Swing Signal Dashboard</div>
-        <p class="tool-desc">Daily-updated aggregation of ATMR, VIX, put/call ratio, and fear & greed index in one clean view.</p>
-        <span class="tool-badge">Updated Daily &rarr;</span>
+        <div class="tool-name">スイングシグナル・ダッシュボード</div>
+        <p class="tool-desc">ATMR、VIX、プット・コール・レシオ、恐怖&amp;強欲指数を毎日更新し、一つの画面でまとめて確認できます。</p>
+        <span class="tool-badge">毎日更新 &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/market-vs.html">
         <span class="tool-icon">⚖️</span>
-        <div class="tool-name">Bull vs Bear Sentiment Scorecard</div>
-        <p class="tool-desc">AI-generated bull vs bear split for the US stock market, refreshed 5 times a day.</p>
-        <span class="tool-badge">Updated 5x Daily &rarr;</span>
+        <div class="tool-name">強気 vs 弱気センチメント・スコアカード</div>
+        <p class="tool-desc">米国株市場の強気・弱気の割合をAIが分析し、1日5回更新します。</p>
+        <span class="tool-badge">1日5回更新 &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/stocks.html">
         <span class="tool-icon">💵</span>
-        <div class="tool-name">Simple Stock Prices</div>
-        <p class="tool-desc">Live prices for the top 100 US stocks by market cap, updated every 15 minutes.</p>
-        <span class="tool-badge">Live Prices &rarr;</span>
+        <div class="tool-name">シンプル株価</div>
+        <p class="tool-desc">時価総額上位100銘柄の株価を15分ごとに更新して表示します。</p>
+        <span class="tool-badge">リアルタイム株価 &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/chart-analysis.html">
         <span class="tool-icon">📉</span>
-        <div class="tool-name">AI Technical Chart Analysis</div>
-        <p class="tool-desc">AI reads MACD, RSI, and Bollinger Bands for 50 US, Korean, and crypto tickers.</p>
-        <span class="tool-badge">Analyze &rarr;</span>
+        <div class="tool-name">AIテクニカルチャート分析</div>
+        <p class="tool-desc">米国株・韓国株・暗号資産50銘柄のMACD・RSI・ボリンジャーバンドをAIが読み解きます。</p>
+        <span class="tool-badge">分析する &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/analyst-reports.html">
         <span class="tool-icon">🏛️</span>
-        <div class="tool-name">Wall Street Analyst Price Targets</div>
-        <p class="tool-desc">Average, Bull-case, and Bear-case analyst price targets for 43 major US stocks.</p>
-        <span class="tool-badge">Check Targets &rarr;</span>
+        <div class="tool-name">ウォール街アナリスト目標株価</div>
+        <p class="tool-desc">主要米国株43銘柄の平均・強気・弱気シナリオの目標株価を一覧で確認できます。</p>
+        <span class="tool-badge">目標株価を見る &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/market-cycle.html">
         <span class="tool-icon">🔄</span>
-        <div class="tool-name">Market Cycle Monitor</div>
-        <p class="tool-desc">Tracks S&amp;P 500, Nasdaq 100 &amp; SOXX for early bear-market turning point alerts.</p>
-        <span class="tool-badge">Monitor &rarr;</span>
+        <div class="tool-name">マーケットサイクル・モニター</div>
+        <p class="tool-desc">S&amp;P500・ナスダック100・SOXXを追跡し、弱気相場の転換点を早期に察知します。</p>
+        <span class="tool-badge">モニターする &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/backtest.html">
         <span class="tool-icon">🎲</span>
-        <div class="tool-name">Monte Carlo Portfolio Simulator</div>
-        <p class="tool-desc">Run 10,000 simulations to see the full distribution of your portfolio's possible future values.</p>
-        <span class="tool-badge">Explore &rarr;</span>
+        <div class="tool-name">モンテカルロ・ポートフォリオシミュレーター</div>
+        <p class="tool-desc">1万回のシミュレーションで、ポートフォリオの将来価値の分布を可視化します。</p>
+        <span class="tool-badge">シミュレーションする &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/dca-simulator.html">
         <span class="tool-icon">📈</span>
-        <div class="tool-name">DCA Compound Interest Simulator</div>
-        <p class="tool-desc">See how regular monthly investments compound into wealth over 10, 20, or 30 years.</p>
-        <span class="tool-badge">Simulate &rarr;</span>
+        <div class="tool-name">DCA複利シミュレーター</div>
+        <p class="tool-desc">毎月の積立投資が10年・20年・30年でどれだけ複利で増えるかを確認できます。</p>
+        <span class="tool-badge">シミュレーションする &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/portfolio-manager.html">
         <span class="tool-icon">💼</span>
-        <div class="tool-name">Portfolio Compound Simulator</div>
-        <p class="tool-desc">Model compound growth across your multi-stock portfolio with custom allocation weights.</p>
-        <span class="tool-badge">Simulate &rarr;</span>
+        <div class="tool-name">ポートフォリオ複利シミュレーター</div>
+        <p class="tool-desc">複数銘柄とカスタム配分比率で、ポートフォリオ全体の複利成長をモデル化します。</p>
+        <span class="tool-badge">シミュレーションする &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/tax-account-simulator.html">
         <span class="tool-icon">🏦</span>
-        <div class="tool-name">Tax-Advantaged Account Simulator</div>
-        <p class="tool-desc">Quantify the real after-tax wealth difference between IRA/401k and a taxable brokerage account.</p>
-        <span class="tool-badge">Calculate &rarr;</span>
+        <div class="tool-name">税制優遇口座シミュレーター</div>
+        <p class="tool-desc">NISAのような税制優遇口座と課税口座で、実質的な税引き後リターンがどれだけ変わるかを数値化します。</p>
+        <span class="tool-badge">計算する &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/compound-calculator.html">
         <span class="tool-icon">🔢</span>
-        <div class="tool-name">Compound Interest Calculator</div>
-        <p class="tool-desc">Calculate how a lump-sum investment grows year by year with the power of compound returns.</p>
-        <span class="tool-badge">Calculate &rarr;</span>
+        <div class="tool-name">複利計算機</div>
+        <p class="tool-desc">一括投資した資金が複利の力で年々どのように増えていくかを計算します。</p>
+        <span class="tool-badge">計算する &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/retirement-calculator.html">
         <span class="tool-icon">🎯</span>
-        <div class="tool-name">Retirement Goal Reverse Calculator</div>
-        <p class="tool-desc">Enter your retirement target amount and get the exact monthly investment needed to reach it.</p>
-        <span class="tool-badge">Plan &rarr;</span>
+        <div class="tool-name">老後資金逆算計算機</div>
+        <p class="tool-desc">目標とする老後資金額を入力すると、必要な毎月の投資額を逆算します。</p>
+        <span class="tool-badge">プランを立てる &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/risk-diagnostic.html">
         <span class="tool-icon">🧠</span>
-        <div class="tool-name">Investment Behavior Self-Assessment</div>
-        <p class="tool-desc">Diagnose your investor psychology: loss aversion, overconfidence, panic selling, and more.</p>
-        <span class="tool-badge">Take Quiz &rarr;</span>
+        <div class="tool-name">投資行動セルフ診断</div>
+        <p class="tool-desc">損失回避、過信、パニック売りなど、あなた自身の投資心理の傾向を診断します。</p>
+        <span class="tool-badge">診断を受ける &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/stock-personality-quiz.html">
         <span class="tool-icon">🧩</span>
-        <div class="tool-name">Investor Personality Quiz</div>
-        <p class="tool-desc">3-minute quiz matching your risk profile to one of 40 US stock portfolio types.</p>
-        <span class="tool-badge">Take Quiz &rarr;</span>
+        <div class="tool-name">投資性格診断クイズ</div>
+        <p class="tool-desc">3分のクイズで、あなたのリスク許容度を40種類の米国株ポートフォリオタイプにマッチングします。</p>
+        <span class="tool-badge">クイズを受ける &rarr;</span>
       </a>
 
       <a class="tool-card" href="https://ezlong.com/en/auto-dca-guide.html">
         <span class="tool-icon">⚙️</span>
-        <div class="tool-name">Automatic DCA Investment Guide</div>
-        <p class="tool-desc">Step-by-step guide to setting up automatic monthly US stock investing — no emotion, no timing.</p>
-        <span class="tool-badge">Read Guide &rarr;</span>
+        <div class="tool-name">自動積立投資ガイド</div>
+        <p class="tool-desc">感情やタイミングに左右されない米国株の自動積立投資の設定方法を、ステップごとに解説します。</p>
+        <span class="tool-badge">ガイドを読む &rarr;</span>
       </a>
 
     </div>
@@ -389,9 +390,9 @@
 
   <footer class="en-footer" role="contentinfo">
     <p>
-      <a href="https://ezlong.com/en/">EZLONG</a> &middot; Free US Stock Investment Tools<br>
+      <a href="https://ezlong.com/ja/">EZLONG</a> &middot; 無料 米国株投資ツール<br>
       &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
-      <small>This site provides educational tools for informational purposes only. Not financial advice. Invest at your own risk.</small>
+      <small>本サイトは情報提供のみを目的とした教育的ツールです。投資助言ではありません。投資判断とその結果の責任はご自身にあります。</small>
     </p>
   </footer>
 
