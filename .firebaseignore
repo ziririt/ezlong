@@ -9,3 +9,14 @@ node_modules/
 atmr-dashboard [0-9]*.html
 atmr-dashboard [0-9][0-9]*.html
 _github-setup/
+# 2026-07-28 추가 — 백업 파일. en/ ja/ 번역 폴더에 .bak 15개가 git에 추적된 채
+# 남아 있는데, 위 9~10행 패턴이 atmr-dashboard 숫자 드래프트만 막고 있어서
+# 이 파일들은 배포에 그대로 실려 왔다. 9항(드래프트 배포 차단)의 취지가
+# .bak 에도 그대로 적용돼야 한다 — 검색엔진 색인·원문 노출 방지.
+*.bak
+**/*.bak
+# 날짜 꼬리표가 붙은 변형도 있다 (time/app.js.bak-20260715-1146 등).
+# 이건 git 미추적이라 자동 배포(Actions 체크아웃)에는 안 실리지만,
+# 비상용 수동 firebase deploy 는 작업 디렉터리를 그대로 올리므로 함께 막는다.
+*.bak-*
+**/*.bak-*

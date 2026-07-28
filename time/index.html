@@ -222,6 +222,10 @@
         <iframe
           class="ezlong-frame"
           title="ezlong.com"
+          <!-- 2026-07-28: 이 주소는 "한국어 기본값 겸 최후 폴백"일 뿐이다.
+               실제 로드 주소는 app.js 의 ezlongSiteUrl() 이 로케일별로 정한다
+               (/en /ja /es /pt /zh 번역본이 라이브에 존재). 여기 값만 바꿔도
+               한국어 기기 외에는 반영되지 않으니, 고칠 일이 있으면 app.js 를 볼 것. -->
           data-src="https://ezlong.com"
           loading="lazy"
           referrerpolicy="strict-origin-when-cross-origin"
@@ -294,7 +298,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.11</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.13</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -868,14 +872,14 @@
        locale-bundle.js 는 자동 생성 파일이다:
          node scripts/build-locales.mjs
        직접 수정하면 다음 빌드에 덮어써진다. -->
-  <script src="i18n/weather-codes.js?v=20260728-i18n-v3"></script>
-  <script src="i18n/season.js?v=20260728-i18n-v3"></script>
-  <script src="i18n/region.js?v=20260728-i18n-v3"></script>
-  <script src="i18n/quote-source.js?v=20260728-i18n-v3"></script>
-  <script src="i18n/locale-bundle.js?v=20260728-i18n-v3"></script>
-  <script src="i18n/index.js?v=20260728-i18n-v3"></script>
-  <script src="i18n/book-titles.js?v=20260728-i18n-v3"></script>
+  <script src="i18n/weather-codes.js?v=20260728-i18n-v5"></script>
+  <script src="i18n/season.js?v=20260728-i18n-v5"></script>
+  <script src="i18n/region.js?v=20260728-i18n-v5"></script>
+  <script src="i18n/quote-source.js?v=20260728-i18n-v5"></script>
+  <script src="i18n/locale-bundle.js?v=20260728-i18n-v5"></script>
+  <script src="i18n/index.js?v=20260728-i18n-v5"></script>
+  <script src="i18n/book-titles.js?v=20260728-i18n-v5"></script>
 
-  <script src="app.js?v=20260728-i18n-v3"></script>
+  <script src="app.js?v=20260728-i18n-v5"></script>
 </body>
 </html>

@@ -21,6 +21,19 @@
  * 이번 글로벌화 전략 전체의 안전을 떠받치는 기둥이다. 폴백을 영어로
  * 바꾸면 그 순간 전략의 근거가 무너진다 — DEFAULT_LOCALE 을 건드리지 말 것.
  *
+ * ── 2026-07-28 오후 정밀화 (규칙 폐기가 아니라 사각지대 보완) ──
+ * 위 규칙은 아침에 "ko/en 두 개뿐"이던 시점에 쓰였고, 보호하려던 대상은
+ * **한국 사용자**였다. 그런데 그 문장을 그대로 구현하면 일본어·독일어·
+ * 프랑스어 기기까지 전부 한국어 화면을 받는다 — 보호가 아니라 사고다
+ * (실제로 App Store 일본 출시 직전에 발견됐다).
+ *
+ * 그래서 "판정 실패"를 두 가지로 쪼갠다.
+ *   (가) 기기 언어를 **아예 못 읽음**(값 없음·예외·쓰레기) → 여전히 ko.
+ *   (나) 기기 언어를 **읽었는데 지원 목록 밖**(ja/de/fr …)     → en.
+ * (가)가 원래 규칙이 지키려던 것이고, (나)는 규칙이 미처 상상하지 못한
+ * 경우다. 한국어 기기가 영어를 받는 경로는 이 변경으로도 생기지 않는다 —
+ * 그 성질이 이 규칙의 본체이고, 테스트로 계속 못박아 둔다.
+ *
  * ─────────────────────────────────────────────────────────────
  * 왜 fetch 가 아니라 번들인가
  * ─────────────────────────────────────────────────────────────
@@ -78,16 +91,34 @@
   }
 
   /**
+   * "언어를 읽기는 했다"고 인정할 수 있는 태그인가.
+   *
+   * foldTag 는 미지원 언어를 전부 null 로 뭉개기 때문에, 그것만으로는
+   * "일본어 기기"와 "언어를 못 읽은 기기"를 구분할 수 없다. 그 둘을
+   * 가르는 것이 이 함수다 — 앞의 2~3글자가 ASCII 알파벳이면(ja, de,
+   * fr, zh, xx …) 언어 서브태그로 인정한다. BCP-47 의 primary language
+   * subtag 규격이 그렇다.
+   *
+   * 반대로 "", "  ", "!!!", "-", 123, {} 같은 값은 언어가 아니다 —
+   * 이런 건 여전히 ko 로 떨어져야 한다(규칙 GLOBAL-locale-default 의 (가)).
+   */
+  var LANG_SUBTAG = /^[A-Za-z]{2,3}(?:[-_]|$)/;
+  function looksLikeLanguageTag(tag) {
+    return typeof tag === "string" && LANG_SUBTAG.test(tag);
+  }
+
+  /**
    * 이 기기에서 쓸 로케일을 정한다.
    *
    * 우선순위:
    *   1) 사용자가 설정에서 직접 고른 값 (localStorage)   ← 나중에 UI 붙일 자리
    *   2) 네이티브 래퍼가 알려준 OS 언어 (window.__FLIPZEN_OS_LOCALE__)
    *   3) navigator.languages / navigator.language
+   *   3.5) 위에서 읽힌 언어가 지원 목록 밖이면 en   ← 2026-07-28 신설
    *   4) DEFAULT_LOCALE (= ko)
    *
    * 어느 단계에서도 예외가 나면 조용히 다음으로 넘어가고,
-   * 전부 실패하면 ko 다. 절대 throw 하지 않는다 —
+   * 아무것도 못 읽으면 ko 다. 절대 throw 하지 않는다 —
    * 로케일 판정 실패가 앱 전체를 죽이면 안 된다.
    */
   function resolveLocale(opts) {
@@ -102,23 +133,37 @@
       }
     } catch (e) { /* Safari 프라이빗 모드 등 — 무시하고 진행 */ }
 
-    // 2) 네이티브 래퍼가 주입한 OS 언어
-    var fromNative = foldTag(opts.osLocale || (typeof self !== "undefined" ? self.__FLIPZEN_OS_LOCALE__ : null));
-    if (fromNative) return fromNative;
-
-    // 3) 브라우저 언어
+    // 기기가 알려준 언어 태그를 순서대로 모은다.
+    // (foldTag 이전의 원본이 있어야 3.5 단계에서 "일본어 기기"를 알아본다)
+    var tags = [];
+    var osTag = opts.osLocale || (typeof self !== "undefined" ? self.__FLIPZEN_OS_LOCALE__ : null);
+    if (osTag) tags.push(osTag);
     try {
       var nav = opts.navigator || (typeof navigator !== "undefined" ? navigator : null);
       if (nav) {
         var list = nav.languages && nav.languages.length ? nav.languages : [nav.language];
         for (var i = 0; i < list.length; i++) {
-          var f = foldTag(list[i]);
-          if (f) return f;
+          if (list[i]) tags.push(list[i]);
         }
       }
     } catch (e) { /* 무시 */ }
 
-    // 4) 최후의 보루
+    // 2~3) 지원 목록 안이면 그대로 (네이티브 주입값이 브라우저 값보다 앞선다)
+    for (var j = 0; j < tags.length; j++) {
+      var f = foldTag(tags[j]);
+      if (f) return f;
+    }
+
+    // 3.5) 2026-07-28 신설 — 언어를 읽었는데 우리가 지원하지 않는 언어다.
+    //   일본어·독일어·프랑스어 기기가 여기 온다. 예전엔 그대로 4) 로 떨어져
+    //   **한국어 화면**을 받았는데, 이건 규칙이 의도한 보호가 아니라 사고다
+    //   (App Store 일본 출시 직전 발견). 영어가 그나마 읽힐 확률이 높다.
+    //   ★ 한국어 기기는 위 2~3) 에서 이미 ko 로 확정되므로 여기 오지 않는다 ★
+    for (var k = 0; k < tags.length; k++) {
+      if (looksLikeLanguageTag(tags[k])) return "en";
+    }
+
+    // 4) 최후의 보루 — 언어를 아예 못 읽었다. 규칙대로 한국어.
     return DEFAULT_LOCALE;
   }
 

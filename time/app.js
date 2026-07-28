@@ -149,6 +149,74 @@ function isKoreanLocale() {
   return FZ_LOCALE === "ko";
 }
 
+// ─────────────────────────────────────────────────────────────
+// ezlong.com 진입 URL — 로케일별 (2026-07-28 신설)
+// ─────────────────────────────────────────────────────────────
+// ezlong.com 은 한국어 원본 외에 /en /ja /es /pt /zh 다섯 벌의 번역
+// 페이지를 이미 라이브로 갖고 있다(허브 + 도구 소개 + 블로그, 언어당
+// 19~21개). 그런데 이 앱의 웹뷰는 오랫동안 루트("https://ezlong.com")를
+// 하드코딩으로 물고 있어서, 영어 화면을 쓰는 사람도 한국어 사이트를 봤다.
+//
+// ★ 지원 언어가 앱(ko/en)보다 사이트(ko/en/ja/es/pt/zh)가 더 넓다 ★
+//   그래서 여기서는 FZ_LOCALE(앱이 실제로 그리는 언어)이 아니라 **기기
+//   언어**를 다시 본다. 일본어 아이폰은 앱 UI는 영어로 뜨더라도(일본어
+//   카탈로그가 아직 없으니) ezlong 사이트만큼은 일본어로 보여주는 것이
+//   분명한 이득이다. 앱 카탈로그에 ja 가 생기는 날 이 코드는 그대로 두고
+//   i18n/index.js 의 SUPPORTED 만 늘리면 된다.
+//
+// 매핑에 없는 언어(독일어·프랑스어 등)는 전부 /en/ 로 보낸다 — 성동님
+// 확정(2026-07-28): "이 외의 비한국 앱스토어는 영어 페이지로."
+const EZLONG_SITE_LOCALES = ["en", "ja", "es", "pt", "zh"];
+
+// ── 웹뷰 식별 신호 (2026-07-28 추가) ───────────────────────────
+// ezlong.com 의 번역 페이지들은 "Tool UI is in Korean — Chrome/Edge/Safari
+// auto-translate automatically" 라고 안내하고 한국어 원본으로 링크한다.
+// 그런데 **WKWebView·Android WebView 에는 브라우저 자동번역 UI 자체가 없다** —
+// 주소창·번역 팝업 같은 브라우저 크롬 없이 렌더링 엔진만 빌려 쓰는 컴포넌트라
+// 그렇다. 그래서 앱 안에서 그 버튼을 누르면 약속과 달리 한국어 도구가 그냥 뜬다.
+//
+// ezlong 쪽에서 이 경우에만 CTA 를 translate.goog(서버측 번역, 웹뷰에서도
+// 정상 동작) 로 바꾸려면 "지금 앱 웹뷰 안이다"를 알아야 하는데, 앱이 신호를
+// 주지 않으면 일반 모바일 브라우저 방문자와 구분할 방법이 없다. 그 신호다.
+//
+// ★ 외부 브라우저로 여는 경우엔 붙이지 않는다 ★ — 사파리·크롬에서는 진짜
+//   자동번역이 동작하므로, 굳이 번역 프록시로 우회시키면 오히려 품질이 떨어진다.
+//
+// 한계: 이 쿼리는 **첫 로드에만** 붙는다. 사용자가 iframe 안에서 허브(/ja/)→
+// 도구(/ja/xxx.html)로 이동하면 파라미터가 사라진다. 그래서 ezlong 쪽은 첫
+// 진입 때 이 값을 sessionStorage 에 넣어두고 이후 페이지에서 그걸 읽어야 한다
+// (앱 웹뷰는 ezlong.com/time/ 을 로드하고 iframe 도 ezlong.com 이라 동일
+//  오리진 — 서드파티 파티셔닝 걱정 없이 sessionStorage 가 그대로 유지된다).
+// 더 튼튼한 방법은 네이티브에서 User-Agent 에 접미사를 붙이는 것인데, 그건
+// 새 빌드가 필요해 다음 네이티브 빌드로 미뤘다.
+const EZLONG_EMBED_PARAM = "embed=app";
+
+function ezlongSiteUrl(opts) {
+  const embed = !!(opts && opts.embed);
+  const withEmbed = (url) => {
+    if (!embed) return url;
+    return url + (url.indexOf("?") >= 0 ? "&" : "?") + EZLONG_EMBED_PARAM;
+  };
+
+  // 앱이 한국어로 그려지는 중이면 한국어 원본. (한국 사용자 보호가 우선)
+  // 한국어는 번역이 필요 없지만 embed 신호는 그대로 붙인다 — ezlong 쪽이
+  // "앱에서 열렸다"를 알면 번역 외의 용도(분석 등)로도 쓸 수 있다.
+  if (isKoreanLocale()) return withEmbed("https://ezlong.com");
+
+  // 기기 언어를 다시 읽어 사이트 쪽 번역본이 있는지 본다.
+  let tag = "";
+  try {
+    tag = (typeof window !== "undefined" && window.__FLIPZEN_OS_LOCALE__) ||
+          (navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language) || "";
+  } catch (error) {
+    tag = "";
+  }
+  const base = String(tag).toLowerCase().split(/[-_]/)[0];
+  if (base === "ko") return withEmbed("https://ezlong.com");   // 방어 — 여기 올 일은 없다
+  if (EZLONG_SITE_LOCALES.indexOf(base) >= 0) return withEmbed("https://ezlong.com/" + base + "/");
+  return withEmbed("https://ezlong.com/en/");
+}
+
 /** 번역 조회. i18n 로드 실패 시 fallback(현행 한국어 문자열)을 그대로 쓴다. */
 function t(key, params, fallback) {
   if (!FZ_I18N.has || !FZ_I18N.has(key)) return fallback !== undefined ? fallback : key;
@@ -7828,8 +7896,12 @@ function settleEzlongOpen() {
     ezlongInitialized = true;
     document.body.appendChild(ezlongSection); // 노출+z40 상태에서 재부착
     const fr = ezlongSection.querySelector(".ezlong-frame");
-    if (fr && !fr.getAttribute("src") && fr.dataset && fr.dataset.src) {
-      fr.src = fr.dataset.src;
+    if (fr && !fr.getAttribute("src")) {
+      // 2026-07-28: index.html 의 data-src 는 한국어 기본값일 뿐이고,
+      // 실제 주소는 ezlongSiteUrl() 이 로케일별로 정한다. data-src 는
+      // 스크립트가 통째로 실패했을 때의 최후 폴백으로만 남겨둔다.
+      // embed:true — 이 경로만 앱 웹뷰 안이다(아래 새창 열기는 사파리로 나간다).
+      fr.src = ezlongSiteUrl({ embed: true }) || (fr.dataset && fr.dataset.src) || "https://ezlong.com";
     }
   }
   ezlongSection.style.zIndex = "40";      // 시계보다 위 — 네이티브 제스처 라우팅 확보
@@ -8001,7 +8073,11 @@ if (webviewGrabber && ezlongSection) {
 const webviewOpenButton = document.getElementById("webviewOpenButton");
 if (webviewOpenButton) {
   webviewOpenButton.addEventListener("click", () => {
-    const url = "https://ezlong.com";
+    // 2026-07-28: 웹뷰가 보고 있는 것과 같은 로케일 주소로 연다 —
+    // 안에서는 일본어를 보다가 새 창은 한국어가 뜨면 안 된다.
+    // embed 신호는 붙이지 않는다 — 여기서 열리는 건 진짜 사파리·크롬이고,
+    // 거기서는 브라우저 자동번역이 정상 동작하므로 프록시 우회가 불필요하다.
+    const url = ezlongSiteUrl();
     if (isNativeWrapper && window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.flipzenNativeRadio) {
       window.webkit.messageHandlers.flipzenNativeRadio.postMessage({ action: "openExternalSafari", url });
       return;
