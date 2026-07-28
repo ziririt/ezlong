@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8DY4BGP444');
+  </script>
+  <title>EZLONG — Ferramentas Gratuitas de Investimento em Ações dos EUA</title>
+  <meta name="description" content="A EZLONG oferece ferramentas gratuitas e sem cadastro para investir em ações dos EUA — simulador de carteira Monte Carlo, calculadora de juros compostos DCA, calculadora de meta de aposentadoria, painel de sinais swing e mais.">
+  <meta name="keywords" content="ferramentas gratuitas investimento ações EUA, simulador Monte Carlo carteira, calculadora juros compostos DCA, calculadora aposentadoria, painel sinais swing, ferramentas análise ações EUA">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="pt">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="EZLONG — Ferramentas Gratuitas de Investimento em Ações dos EUA">
+  <meta property="og:description" content="Ferramentas gratuitas e sem cadastro para investidores em ações dos EUA: simulador Monte Carlo, calculadora DCA, planejador de aposentadoria, avaliação comportamental e mais.">
+  <meta property="og:url" content="https://ezlong.com/pt/">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:image" content="https://ezlong.com/logo-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="ko" href="https://ezlong.com/">
+  <link rel="alternate" hreflang="en" href="https://ezlong.com/en/">
+  <link rel="alternate" hreflang="ja" href="https://ezlong.com/ja/">
+  <link rel="alternate" hreflang="es" href="https://ezlong.com/es/">
+  <link rel="alternate" hreflang="pt" href="https://ezlong.com/pt/">
+  <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/">
+  <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/">
+  <link rel="canonical" href="https://ezlong.com/pt/">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "EZLONG",
+    "url": "https://ezlong.com/pt/",
+    "description": "Ferramentas gratuitas de investimento em ações dos EUA para investidores de longo prazo: simuladores de carteira, calculadoras de juros compostos, planejadores de aposentadoria e painéis de sinais de mercado.",
+    "inLanguage": "pt",
+    "publisher": {
+      "@type": "Organization",
+      "name": "EZLONG",
+      "url": "https://ezlong.com",
+      "email": "easy.invest.good@gmail.com"
+    }
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F5F5F7;
+      --surface: #FFFFFF;
+      --text: #1D1D1F;
+      --text2: #424245;
+      --text3: #6E6E73;
+      --border: #D2D2D7;
+      --blue: #0071E3;
+      --blue-lt: #0064CC;
+      --green: #1A7F37;
+      --r: 12px;
+      --max-w: 1080px;
+      --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000000;
+        --surface: #1C1C1E;
+        --text: #F5F5F7;
+        --text2: #EBEBF5;
+        --text3: #98989D;
+        --border: #3A3A3C;
+        --blue: #0A84FF;
+        --blue-lt: #0077ED;
+        --green: #30D158;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* Nav */
+    .en-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    @media (prefers-color-scheme: dark) {
+      .en-nav { background: rgba(28,28,30,0.85); }
+    }
+    .en-nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .en-nav-link {
+      font-size: 14px;
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .en-nav-link:hover { text-decoration: underline; }
+
+    /* Hero */
+    .hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px 64px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: #E8F5E9;
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    @media (prefers-color-scheme: dark) {
+      .hero-badge { background: #0A3D1C; color: #30D158; }
+    }
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+    .hero-sub {
+      font-size: clamp(17px, 2.5vw, 21px);
+      color: var(--text3);
+      max-width: 640px;
+      margin: 0 auto 32px;
+    }
+    .hero-note {
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--text3);
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 980px;
+      padding: 14px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: var(--blue-lt); }
+
+    /* Tools grid */
+    .tools-section {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+    .tools-section h2 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .tool-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 28px;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.15s, transform 0.15s;
+      display: block;
+    }
+    .tool-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    @media (prefers-color-scheme: dark) {
+      .tool-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+    }
+    .tool-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .tool-name {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .tool-desc {
+      font-size: 14px;
+      color: var(--text3);
+      line-height: 1.6;
+    }
+    .tool-badge {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Footer */
+    .en-footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--text3);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .en-footer a { color: var(--blue); text-decoration: none; }
+    .en-footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 56px 20px 48px; }
+      .tools-section { padding: 48px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="en-nav" role="navigation">
+    <a class="en-nav-logo" href="https://ezlong.com/pt/">EZLONG</a>
+    <a class="en-nav-link" href="https://ezlong.com/">Versão em Coreano (한국어)</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-badge">Grátis &middot; Sem Cadastro</div>
+    <h1>Ferramentas Gratuitas de<br>Investimento em Ações dos EUA</h1>
+    <p class="hero-sub">Calculadoras e simuladores poderosos para investidores de longo prazo em ações dos EUA. Feitas para clareza. Movidas por matemática. Grátis para sempre.</p>
+    <a class="btn-primary" href="#tools">Abrir Todas as Ferramentas</a>
+    <p class="hero-note">Todas as 14 ferramentas abaixo estão totalmente em português. Sem cadastro, sem conta, totalmente grátis.</p>
+  </section>
+
+  <section class="tools-section" id="tools">
+    <h2>14 Ferramentas para Investidores em Ações dos EUA</h2>
+    <div class="tools-grid">
+
+      <a class="tool-card" href="https://ezlong.com/pt/life-balance-game.html">
+        <span class="tool-icon">🎮</span>
+        <div class="tool-name">Jogo do Equilíbrio: Minha Vida</div>
+        <p class="tool-desc">10 decisões forçadas revelam seus valores essenciais &mdash; família, dinheiro, liberdade, saúde, realização, significado &mdash; e o quanto sua vida real está alinhada com eles.</p>
+        <span class="tool-badge">Jogar Grátis &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/pt/atmr-dashboard.html">
+        <span class="tool-icon">📊</span>
+        <div class="tool-name">Painel de Sinais Swing</div>
+        <p class="tool-desc">Painel atualizado diariamente com ATMR, VIX, índice put/call e índice de medo e ganância, tudo em uma única tela.</p>
+        <span class="tool-badge">Atualizado Diariamente &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/pt/market-vs.html">
+        <span class="tool-icon">⚖️</span>
+        <div class="tool-name">Placar de Sentimento Otimista vs Pessimista</div>
+        <p class="tool-desc">Divisão otimista vs pessimista do mercado de ações dos EUA gerada por IA, atualizada 5 vezes ao dia.</p>
+        <span class="tool-badge">Atualizado 5x ao Dia &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/pt/stocks.html">
+        <span class="tool-icon">💵</span>
+        <div class="tool-name">Preços de Ações Simples</div>
+        <p class="tool-desc">Preços ao vivo das 100 principais ações americanas por valor de mercado, atualizados a cada 15 minutos.</p>
+        <span class="tool-badge">Preços ao Vivo &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/pt/chart-analysis.html">
+        <span class="tool-icon">📉</span>
+        <div class="tool-name">Análise Técnica de Gráficos com IA</div>
+        <p class="tool-desc">A IA interpreta o MACD, RSI e Bandas de Bollinger de 50 tickers dos EUA, Coreia e criptomoedas.</p>
+        <span class="tool-badge">Analisar &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/pt/analyst-reports.html">
+        <span class="tool-icon">🏛️</span>
+        <div class="tool-name">Preços-Alvo de Analistas de Wall Street</div>
+        <p class="tool-desc">Preços-alvo médio, otimista e pessimista de analistas para 43 das principais ações americanas.</p>
+        <span class="tool-badge">Ver Preços-Alvo &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/pt/market-cycle.html">
+        <span class="tool-icon">🔄</span>
+        <div class="tool-name">Monitor de Ciclo de Mercado</div>
+        <p class="tool-desc">Monitora o S&amp;P 500, Nasdaq 100 e SOXX para sinais antecipados de pontos de virada de mercado em baixa.</p>
+        <span class="tool-badge">Monitorar &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/pt/backtest.html">
+        <span class="tool-icon">🎲</span>
+        <div class="tool-name">Simulador de Carteira Monte Carlo</div>
+        <p class="tool-desc">Execute 10.000 simulações para ver a distribuição completa dos valores futuros possíveis da sua carteira.</p>
+        <span class="tool-badge">Explorar &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/pt/dca-simulator.html">
+        <span class="tool-icon">📈</span>
+        <div class="tool-name">Simulador de Juros Compostos DCA</div>
+        <p class="tool-desc">Veja como investimentos mensais regulares se transformam em patrimônio ao longo de 10, 20 ou 30 anos.</p>
+        <span class="tool-badge">Simular &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/pt/portfolio-manager.html">
+        <span class="tool-icon">💼</span>
+        <div class="tool-name">Simulador de Juros Compostos de Carteira</div>
+        <p class="tool-desc">Modele o crescimento composto da sua carteira multi-ações com pesos de alocação personalizados.</p>
+        <span class="tool-badge">Simular &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/pt/compound-calculator.html">
+        <span class="tool-icon">🔢</span>
+        <div class="tool-name">Calculadora de Juros Compostos</div>
+        <p class="tool-desc">Calcule como um investimento único cresce ano após ano com o poder dos juros compostos.</p>
+        <span class="tool-badge">Calcular &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/pt/retirement-calculator.html">
+        <span class="tool-icon">🎯</span>
+        <div class="tool-name">Calculadora Reversa de Meta de Aposentadoria</div>
+        <p class="tool-desc">Insira o valor-alvo da sua aposentadoria e obtenha o investimento mensal exato necessário para alcançá-lo.</p>
+        <span class="tool-badge">Planejar &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/pt/risk-diagnostic.html">
+        <span class="tool-icon">🧠</span>
+        <div class="tool-name">Autoavaliação de Comportamento de Investimento</div>
+        <p class="tool-desc">Diagnostique sua psicologia de investidor: aversão à perda, excesso de confiança, vendas por pânico e mais.</p>
+        <span class="tool-badge">Fazer o Teste &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/pt/stock-personality-quiz.html">
+        <span class="tool-icon">🧩</span>
+        <div class="tool-name">Questionário de Personalidade do Investidor</div>
+        <p class="tool-desc">Questionário de 3 minutos que associa seu perfil de risco a um dos 40 tipos de carteira de ações americanas.</p>
+        <span class="tool-badge">Fazer o Questionário &rarr;</span>
+      </a>
+
+    </div>
+  </section>
+
+  <footer class="en-footer" role="contentinfo">
+    <p>
+      <a href="https://ezlong.com/pt/">EZLONG</a> &middot; Ferramentas Gratuitas de Investimento em Ações dos EUA<br>
+      &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
+      <small>Este site oferece ferramentas educacionais apenas para fins informativos. Não é aconselhamento financeiro. Invista por sua conta e risco.</small>
+    </p>
+  </footer>
+
+</body>
+</html>

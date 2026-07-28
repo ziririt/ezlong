@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8DY4BGP444');
+  </script>
+  <title>EZLONG — 免费美股投资工具</title>
+  <meta name="description" content="EZLONG提供免费、无需注册的美股投资工具——蒙特卡洛投资组合模拟器、定投复利计算器、退休目标计算器、波段信号仪表盘等。">
+  <meta name="keywords" content="免费美股投资工具, 蒙特卡洛投资组合模拟器, 定投复利计算器, 退休计算器, 波段信号仪表盘, 美股分析工具">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="zh">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="EZLONG — 免费美股投资工具">
+  <meta property="og:description" content="面向美股投资者的免费、无需注册工具集：蒙特卡洛模拟器、定投计算器、退休规划器、行为评估等。">
+  <meta property="og:url" content="https://ezlong.com/zh/">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:image" content="https://ezlong.com/logo-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="ko" href="https://ezlong.com/">
+  <link rel="alternate" hreflang="en" href="https://ezlong.com/en/">
+  <link rel="alternate" hreflang="ja" href="https://ezlong.com/ja/">
+  <link rel="alternate" hreflang="es" href="https://ezlong.com/es/">
+  <link rel="alternate" hreflang="pt" href="https://ezlong.com/pt/">
+  <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/">
+  <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/">
+  <link rel="canonical" href="https://ezlong.com/zh/">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "EZLONG",
+    "url": "https://ezlong.com/zh/",
+    "description": "面向长期美股投资者的免费工具集：投资组合模拟器、复利计算器、退休规划器和市场信号仪表盘。",
+    "inLanguage": "zh",
+    "publisher": {
+      "@type": "Organization",
+      "name": "EZLONG",
+      "url": "https://ezlong.com",
+      "email": "easy.invest.good@gmail.com"
+    }
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F5F5F7;
+      --surface: #FFFFFF;
+      --text: #1D1D1F;
+      --text2: #424245;
+      --text3: #6E6E73;
+      --border: #D2D2D7;
+      --blue: #0071E3;
+      --blue-lt: #0064CC;
+      --green: #1A7F37;
+      --r: 12px;
+      --max-w: 1080px;
+      --font: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000000;
+        --surface: #1C1C1E;
+        --text: #F5F5F7;
+        --text2: #EBEBF5;
+        --text3: #98989D;
+        --border: #3A3A3C;
+        --blue: #0A84FF;
+        --blue-lt: #0077ED;
+        --green: #30D158;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* Nav */
+    .en-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    @media (prefers-color-scheme: dark) {
+      .en-nav { background: rgba(28,28,30,0.85); }
+    }
+    .en-nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .en-nav-link {
+      font-size: 14px;
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .en-nav-link:hover { text-decoration: underline; }
+
+    /* Hero */
+    .hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px 64px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: #E8F5E9;
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    @media (prefers-color-scheme: dark) {
+      .hero-badge { background: #0A3D1C; color: #30D158; }
+    }
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+    .hero-sub {
+      font-size: clamp(17px, 2.5vw, 21px);
+      color: var(--text3);
+      max-width: 640px;
+      margin: 0 auto 32px;
+    }
+    .hero-note {
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--text3);
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 980px;
+      padding: 14px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: var(--blue-lt); }
+
+    /* Tools grid */
+    .tools-section {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+    .tools-section h2 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .tool-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 28px;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.15s, transform 0.15s;
+      display: block;
+    }
+    .tool-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    @media (prefers-color-scheme: dark) {
+      .tool-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+    }
+    .tool-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .tool-name {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .tool-desc {
+      font-size: 14px;
+      color: var(--text3);
+      line-height: 1.6;
+    }
+    .tool-badge {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Footer */
+    .en-footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--text3);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .en-footer a { color: var(--blue); text-decoration: none; }
+    .en-footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 56px 20px 48px; }
+      .tools-section { padding: 48px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="en-nav" role="navigation">
+    <a class="en-nav-logo" href="https://ezlong.com/zh/">EZLONG</a>
+    <a class="en-nav-link" href="https://ezlong.com/">한국어 (韩语原版)</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-badge">免费 &middot; 无需注册</div>
+    <h1>免费美股<br>投资工具</h1>
+    <p class="hero-sub">为长期美股投资者打造的强大计算器与模拟器。追求清晰易懂，以数学驱动，永久免费。</p>
+    <a class="btn-primary" href="#tools">打开全部工具</a>
+    <p class="hero-note">以下14款工具均提供完整中文界面。无需注册，无需账号，完全免费。</p>
+  </section>
+
+  <section class="tools-section" id="tools">
+    <h2>面向美股投资者的14款工具</h2>
+    <div class="tools-grid">
+
+      <a class="tool-card" href="https://ezlong.com/zh/life-balance-game.html">
+        <span class="tool-icon">🎮</span>
+        <div class="tool-name">人生平衡游戏：我的人生</div>
+        <p class="tool-desc">10道二选一的人生抉择，揭示你真正重视的核心价值观——家庭、金钱、自由、健康、成就、意义——以及你现在的生活与之的一致程度。</p>
+        <span class="tool-badge">免费开始 &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/zh/atmr-dashboard.html">
+        <span class="tool-icon">📊</span>
+        <div class="tool-name">波段信号仪表盘</div>
+        <p class="tool-desc">每日更新的ATMR、VIX、看跌看涨比率与恐惧贪婪指数汇总，一个界面看懂全部。</p>
+        <span class="tool-badge">每日更新 &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/zh/market-vs.html">
+        <span class="tool-icon">⚖️</span>
+        <div class="tool-name">多空情绪比分卡</div>
+        <p class="tool-desc">AI生成的美股多空比例分析，每天更新5次。</p>
+        <span class="tool-badge">每日更新5次 &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/zh/stocks.html">
+        <span class="tool-icon">💵</span>
+        <div class="tool-name">简明股价</div>
+        <p class="tool-desc">按市值排名的美股前100名实时股价，每15分钟更新一次。</p>
+        <span class="tool-badge">实时股价 &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/zh/chart-analysis.html">
+        <span class="tool-icon">📉</span>
+        <div class="tool-name">AI技术图表分析</div>
+        <p class="tool-desc">AI解读50只美股、韩股及加密货币的MACD、RSI与布林带指标。</p>
+        <span class="tool-badge">开始分析 &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/zh/analyst-reports.html">
+        <span class="tool-icon">🏛️</span>
+        <div class="tool-name">华尔街分析师目标价</div>
+        <p class="tool-desc">43只美国主要股票的分析师平均、乐观与悲观目标价一览。</p>
+        <span class="tool-badge">查看目标价 &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/zh/market-cycle.html">
+        <span class="tool-icon">🔄</span>
+        <div class="tool-name">市场周期监测器</div>
+        <p class="tool-desc">追踪标普500、纳斯达克100及SOXX，及早发现熊市转折信号。</p>
+        <span class="tool-badge">开始监测 &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/zh/backtest.html">
+        <span class="tool-icon">🎲</span>
+        <div class="tool-name">蒙特卡洛投资组合模拟器</div>
+        <p class="tool-desc">运行1万次模拟，查看投资组合未来价值的完整分布区间。</p>
+        <span class="tool-badge">开始探索 &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/zh/dca-simulator.html">
+        <span class="tool-icon">📈</span>
+        <div class="tool-name">定投复利模拟器</div>
+        <p class="tool-desc">查看每月定期投资如何在10年、20年或30年内通过复利实现财富增长。</p>
+        <span class="tool-badge">开始模拟 &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/zh/portfolio-manager.html">
+        <span class="tool-icon">💼</span>
+        <div class="tool-name">投资组合复利模拟器</div>
+        <p class="tool-desc">以自定义配置比例，模拟多股票投资组合的复利增长。</p>
+        <span class="tool-badge">开始模拟 &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/zh/compound-calculator.html">
+        <span class="tool-icon">🔢</span>
+        <div class="tool-name">复利计算器</div>
+        <p class="tool-desc">计算一笔整额投资借助复利效应逐年增长的过程。</p>
+        <span class="tool-badge">开始计算 &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/zh/retirement-calculator.html">
+        <span class="tool-icon">🎯</span>
+        <div class="tool-name">退休目标反算计算器</div>
+        <p class="tool-desc">输入你的退休目标金额，反算出实现目标所需的每月精确投资额。</p>
+        <span class="tool-badge">开始规划 &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/zh/risk-diagnostic.html">
+        <span class="tool-icon">🧠</span>
+        <div class="tool-name">投资行为自我诊断</div>
+        <p class="tool-desc">诊断你的投资心理：损失厌恶、过度自信、恐慌抛售等倾向一测便知。</p>
+        <span class="tool-badge">开始测试 &rarr;</span>
+      </a>
+
+      <a class="tool-card" href="https://ezlong.com/zh/stock-personality-quiz.html">
+        <span class="tool-icon">🧩</span>
+        <div class="tool-name">投资者性格测验</div>
+        <p class="tool-desc">3分钟测验，将你的风险偏好匹配到40种美股投资组合类型之一。</p>
+        <span class="tool-badge">开始测验 &rarr;</span>
+      </a>
+
+    </div>
+  </section>
+
+  <footer class="en-footer" role="contentinfo">
+    <p>
+      <a href="https://ezlong.com/zh/">EZLONG</a> &middot; 免费美股投资工具<br>
+      &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
+      <small>本站提供的工具仅供教育与参考之用，不构成投资建议。投资决策及其后果由用户自行承担。</small>
+    </p>
+  </footer>
+
+</body>
+</html>

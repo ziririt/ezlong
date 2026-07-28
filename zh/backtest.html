@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+  <title>蒙特卡洛投资组合模拟器 — 免费1万次模拟工具 | EZLONG</title>
+  <meta name="description" content="免费的蒙特卡洛投资组合模拟器，运行1万次模拟。使用20年真实数据测试NVDA、AAPL、SPY、QQQ等投资组合，找到最大夏普比率配置。无需登录。">
+  <meta name="keywords" content="蒙特卡洛投资组合模拟器, 投资组合优化, 夏普比率计算器, ETF回测, 美股投资组合, 有效前沿, 投资组合压力测试, NVDA AAPL SPY QQQ 投资组合 免费">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="zh">
+  <meta name="author" content="EZLONG">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="蒙特卡洛投资组合模拟器 — 免费1万次模拟工具 | EZLONG">
+  <meta property="og:description" content="免费的蒙特卡洛投资组合模拟器，运行1万次模拟。使用20年真实数据测试NVDA、AAPL、SPY、QQQ等投资组合，找到最大夏普比率配置。无需登录。">
+  <meta property="og:url" content="https://ezlong.com/zh/backtest.html">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:image" content="https://ezlong.com/logo-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="蒙特卡洛投资组合模拟器 — 免费1万次模拟工具 | EZLONG">
+  <meta name="twitter:description" content="免费的蒙特卡洛投资组合模拟器，运行1万次模拟。使用20年真实数据测试NVDA、AAPL、SPY、QQQ等投资组合，找到最大夏普比率配置。无需登录。">
+  <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
+  <link rel="alternate" hreflang="ko" href="https://ezlong.com/backtest.html">
+  <link rel="alternate" hreflang="en" href="https://ezlong.com/en/backtest.html">
+  <link rel="alternate" hreflang="ja" href="https://ezlong.com/ja/backtest.html">
+  <link rel="alternate" hreflang="es" href="https://ezlong.com/es/backtest.html">
+  <link rel="alternate" hreflang="pt" href="https://ezlong.com/pt/backtest.html">
+  <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/backtest.html">
+  <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/backtest.html">
+  <link rel="canonical" href="https://ezlong.com/zh/backtest.html">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "EZLONG",
+    "url": "https://ezlong.com",
+    "logo": "https://ezlong.com/logo.png",
+    "email": "easy.invest.good@gmail.com",
+    "sameAs": ["https://ezlong.com/zh/"],
+    "description": "EZLONG为全球长期投资者提供免费、无需注册的美股投资工具。"
+  }
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"EZLONG","item":"https://ezlong.com/zh/"},{"@type":"ListItem","position":2,"name":"蒙特卡洛投资组合模拟器","item":"https://ezlong.com/zh/backtest.html"}]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"EZLONG 蒙特卡洛投资组合模拟器","description":"免费的蒙特卡洛投资组合模拟器，使用20年真实市场数据对美股投资组合运行1万次模拟，以夏普比率找到最优配置。","url":"https://ezlong.com/zh/backtest.html","inLanguage":"zh","applicationCategory":"FinanceApplication","operatingSystem":"All","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"EZLONG","url":"https://ezlong.com","logo":"https://ezlong.com/logo.png","email":"easy.invest.good@gmail.com"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"HowTo","name":"如何运行蒙特卡洛投资组合模拟","description":"免费的蒙特卡洛投资组合模拟器，运行1万次模拟。使用20年真实数据测试NVDA、AAPL、SPY、QQQ等投资组合，找到最大夏普比率配置。无需登录。","totalTime":"PT5M","tool":[{"@type":"HowToTool","name":"网页浏览器"}],"supply":[{"@type":"HowToSupply","name":"免费 — 无需账户"}],"step":[
+    {"@type":"HowToStep","position":1,"name":"打开蒙特卡洛模拟器","text":"点击下方的“打开工具”进入模拟器。它完全在你的浏览器中运行 — 无需下载或登录。"},
+    {"@type":"HowToStep","position":2,"name":"选择你的资产","text":"从44只美股和ETF列表中选择。你可以添加多项资产，包括NVDA、GOOGL、SPY、QQQ、TSLA、AAPL等。建议先从3-5项资产开始，便于分析。"},
+    {"@type":"HowToStep","position":3,"name":"设置配置比例（可选）","text":"若选择自定义投资组合，输入你想在每项资产中投入的百分比，比例总和须为100%。对于最大夏普比率和最小波动率投资组合，模拟器会自动找到最优权重。"},
+    {"@type":"HowToStep","position":4,"name":"设置投资金额和期限","text":"输入初始投资组合价值和投资期限（年）。常见输入为初始金额1万至10万美元，投资期限10至30年。"},
+    {"@type":"HowToStep","position":5,"name":"运行模拟","text":"点击计算或运行模拟。工具会运行1万种情景，并在几秒内展示结果。"},
+    {"@type":"HowToStep","position":6,"name":"解读结果","text":"扇形图展示中位数、10百分位（较差情景）与90百分位（较好情景）路径。表格展示最大夏普比率和最小波动率投资组合的最优权重，以及各自的夏普比率与年化回报率。"}
+  ]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"什么是投资中的蒙特卡洛模拟？","acceptedAnswer":{"@type":"Answer","text":"蒙特卡洛模拟利用历史收益分布运行数千次随机游走情景，展示投资组合可能结果的完整范围。你得到的不是单一的预测数字，而是一个概率分布 — 展示最好情况、最坏情况以及两者之间的一切可能。"}},
+    {"@type":"Question","name":"这个模拟器提供多少种资产？","acceptedAnswer":{"@type":"Answer","text":"EZLONG蒙特卡洛投资组合模拟器包含44只美股和ETF：NVDA、GOOGL、AAPL、MSFT、TSLA、AMZN、SPY、QQQ、VTI、SCHD、TLT等。全部基于20年真实数据（2006-2025年）。"}},
+    {"@type":"Question","name":"什么是夏普比率？为什么它很重要？","acceptedAnswer":{"@type":"Answer","text":"夏普比率衡量每单位风险（波动率）所获得的回报。夏普比率越高，代表风险调整后的效率越好。最大夏普比率投资组合能给你带来最佳的回报/风险组合 — 未必是绝对回报最高，但却是风险利用最有效率的方式。"}},
+    {"@type":"Question","name":"什么是最小波动率投资组合？","acceptedAnswer":{"@type":"Answer","text":"最小波动率投资组合是在你所选资产范围内实现最低可能投资组合波动率的配置方案。适合优先考虑资本保全而非追求最大增长的风险厌恶型投资者。"}},
+    {"@type":"Question","name":"扇形图展示的是什么？","acceptedAnswer":{"@type":"Answer","text":"扇形图在你的投资期限内展示三条路径：90百分位（模拟结果的前10% — 乐观情景）、50百分位（中位数）和10百分位（后10% — 悲观情景）。三个区间同时呈现，让你看到现实结果的完整范围。"}},
+    {"@type":"Question","name":"这与简单的复利计算器有什么不同？","acceptedAnswer":{"@type":"Answer","text":"简单的复利计算器假设每年回报恒定（例如每年10%）。蒙特卡洛模拟基于历史分布，每年使用随机回报，从而捕捉市场的真实波动性。这能更真实地呈现长期投资的不确定性。"}},
+    {"@type":"Question","name":"什么是有效前沿？","acceptedAnswer":{"@type":"Answer","text":"有效前沿是指在给定风险水平下，能提供最高预期回报的投资组合集合。位于前沿上的投资组合是有效的 — 你无法在不承担更多风险的情况下获得更多回报，也无法在不牺牲回报的情况下降低风险。模拟器会将你的投资组合绘制在这条前沿上。"}},
+    {"@type":"Question","name":"这个蒙特卡洛模拟器是免费的吗？","acceptedAnswer":{"@type":"Answer","text":"是的，完全免费。无需登录、无需邮箱、无需订阅。模拟器使用20年真实数据，在你的浏览器中免费运行1万种情景。"}}
+  ]}
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F5F5F7; --surface: #FFFFFF; --text: #1D1D1F;
+      --text2: #424245; --text3: #6E6E73; --border: #D2D2D7;
+      --blue: #0071E3; --blue-lt: #0064CC; --green: #1A7F37;
+      --r: 12px; --max-w: 860px;
+      --font: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158; }
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.65; }
+    .en-nav { position:sticky; top:0; z-index:100; background:rgba(255,255,255,0.88); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:0 24px; height:52px; display:flex; align-items:center; justify-content:space-between; }
+    @media (prefers-color-scheme: dark) { .en-nav { background:rgba(28,28,30,0.88); } }
+    .en-nav-logo { font-size:17px; font-weight:700; color:var(--text); text-decoration:none; letter-spacing:-0.02em; }
+    .en-nav-right { display:flex; gap:20px; align-items:center; }
+    .en-nav-link { font-size:14px; color:var(--blue); text-decoration:none; font-weight:500; }
+    .en-nav-link:hover { text-decoration:underline; }
+    .breadcrumb { max-width:var(--max-w); margin:0 auto; padding:14px 24px 0; font-size:14px; color:var(--text3); }
+    .breadcrumb a { color:var(--blue); text-decoration:none; }
+    .breadcrumb a:hover { text-decoration:underline; }
+    .breadcrumb span { margin:0 6px; }
+    .hero { background:var(--surface); border-bottom:1px solid var(--border); padding:64px 24px 52px; text-align:center; }
+    .hero-badge { display:inline-block; background:#E8F5E9; color:var(--green); font-size:14px; font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:18px; }
+    @media (prefers-color-scheme: dark) { .hero-badge { background:#0A3D1C; color:#30D158; } }
+    .hero h1 { font-size:clamp(26px,5vw,44px); font-weight:700; letter-spacing:-0.03em; line-height:1.2; margin-bottom:14px; color:var(--text); }
+    .hero-sub { font-size:clamp(15px,2.2vw,18px); color:var(--text3); margin-bottom:30px; max-width:620px; margin-left:auto; margin-right:auto; }
+    .cta-group { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:16px; }
+    .btn-primary { display:inline-flex; align-items:center; gap:6px; background:var(--blue); color:#fff; border-radius:980px; padding:13px 26px; font-size:15px; font-weight:600; text-decoration:none; transition:background .15s; }
+    .btn-primary:hover { background:var(--blue-lt); }
+    .btn-secondary { display:inline-flex; align-items:center; gap:6px; background:transparent; color:var(--blue); border:1.5px solid var(--blue); border-radius:980px; padding:12px 24px; font-size:15px; font-weight:600; text-decoration:none; transition:all .15s; }
+    .btn-secondary:hover { background:var(--blue); color:#fff; }
+    .auto-translate-note { font-size:14px; color:var(--text3); }
+    .translate-proxy-note { font-size:14px; color:var(--text2); margin-top:10px; }
+    .translate-proxy-note a { color:var(--blue); font-weight:600; text-decoration:underline; }
+    .cta-card .translate-proxy-note { color:#fff; opacity:.9; margin-top:14px; }
+    .cta-card .translate-proxy-note a { color:#fff; }
+    .stats-row { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; background:var(--surface); border-bottom:1px solid var(--border); padding:24px; }
+    .stat-item { text-align:center; }
+    .stat-value { font-size:22px; font-weight:700; color:var(--blue); letter-spacing:-0.02em; }
+    .stat-label { font-size:14px; color:var(--text3); margin-top:2px; }
+    .main { max-width:var(--max-w); margin:0 auto; padding:56px 24px; }
+    .section { margin-bottom:56px; }
+    .section-title { font-size:22px; font-weight:700; letter-spacing:-0.02em; margin-bottom:16px; color:var(--text); }
+    .section-body { font-size:16px; color:var(--text2); line-height:1.85; margin-bottom:12px; }
+    .step-list { list-style:none; margin-top:20px; display:grid; gap:0; }
+    .step-item { display:flex; gap:16px; padding:20px 0; border-bottom:1px solid var(--border); }
+    .step-item:first-child { border-top:1px solid var(--border); }
+    .step-num { flex-shrink:0; width:32px; height:32px; border-radius:50%; background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; margin-top:2px; }
+    .step-body { flex:1; }
+    .step-name { font-size:15px; font-weight:700; color:var(--text); display:block; margin-bottom:6px; }
+    .step-text { font-size:15px; color:var(--text2); line-height:1.75; }
+    .faq-item { border-top:1px solid var(--border); padding:22px 0; }
+    .faq-item:last-child { border-bottom:1px solid var(--border); }
+    .faq-q { font-size:16px; font-weight:600; color:var(--text); margin-bottom:8px; line-height:1.5; }
+    .faq-a { font-size:15px; color:var(--text2); line-height:1.8; }
+    .related-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:32px; }
+    .rel-grid { display:flex; flex-wrap:wrap; gap:12px; margin-top:16px; }
+    .rel-card { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:12px 18px; font-size:14px; font-weight:600; color:var(--blue); text-decoration:none; transition:all .15s; }
+    .rel-card:hover { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .cta-card { background:var(--blue); border-radius:var(--r); padding:44px 32px; text-align:center; color:#fff; margin-top:56px; }
+    .cta-card h2 { font-size:26px; font-weight:700; margin-bottom:10px; letter-spacing:-0.02em; }
+    .cta-card p { font-size:16px; opacity:.85; margin-bottom:24px; }
+    .btn-white { display:inline-block; background:#fff; color:var(--blue); border-radius:980px; padding:13px 28px; font-size:15px; font-weight:700; text-decoration:none; transition:opacity .15s; }
+    .btn-white:hover { opacity:.88; }
+    .en-footer { background:var(--surface); border-top:1px solid var(--border); padding:36px 24px; text-align:center; color:var(--text3); font-size:14px; line-height:1.9; }
+    .en-footer a { color:var(--blue); text-decoration:none; }
+    .en-footer a:hover { text-decoration:underline; }
+    @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+  </style>
+</head>
+<body>
+  <nav class="en-nav" role="navigation" aria-label="主导航">
+    <a class="en-nav-logo" href="https://ezlong.com/zh/">EZLONG</a>
+    <div class="en-nav-right">
+      <a class="en-nav-link" href="https://ezlong.com/zh/">全部工具</a>
+      <a class="en-nav-link" href="https://ezlong.com/backtest.html">한국어 &rarr;</a>
+    </div>
+  </nav>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="https://ezlong.com/zh/">EZLONG</a><span>/</span><span>蒙特卡洛投资组合模拟器</span>
+  </nav>
+  <section class="hero">
+    <div class="hero-badge">免费 &middot; 无需注册 &middot; 即刻使用</div>
+    <h1>蒙特卡洛投资组合模拟器</h1>
+    <p class="hero-sub">对你的美股投资组合运行1万次模拟，查看所有可能结果的完整范围</p>
+    <div class="cta-group">
+      <a class="btn-primary" href="https://ezlong.com/backtest.html" target="_blank" rel="noopener">打开工具 &rarr;</a>
+      <a class="btn-secondary" href="https://ezlong.com/zh/">浏览全部工具</a>
+    </div>
+    <p class="auto-translate-note">工具界面为韩语 &mdash; Chrome、Edge 和 Safari 会自动翻译。</p>
+    <p class="translate-proxy-note">没有自动翻译？<a href="https://ezlong-com.translate.goog/backtest.html?_x_tr_sl=ko&amp;_x_tr_tl=zh-CN&amp;_x_tr_hl=zh-CN&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">用谷歌翻译打开 &rarr;</a></p>
+  </section>
+  <div class="stats-row" role="region" aria-label="核心数据">
+    <div class="stat-item"><div class="stat-value">44项资产</div><div class="stat-label">美股与ETF</div></div>
+    <div class="stat-item"><div class="stat-value">1万次</div><div class="stat-label">每次模拟运行次数</div></div>
+    <div class="stat-item"><div class="stat-value">20年</div><div class="stat-label">真实市场数据</div></div>
+  </div>
+  <main class="main" id="main-content">
+    <section class="section">
+      <h2 class="section-title">什么是蒙特卡洛投资组合模拟器？</h2>
+      <p class="section-body">蒙特卡洛投资组合模拟器使用20年真实美股市场数据（2006-2025年）运行1万次随机投资组合模拟，帮你找到最优资产配置。与其猜测NVDA、SPY、QQQ各自该配置多少比例，不如让模拟器运行数千种组合，找出以夏普比率衡量的、风险调整后回报最佳的配置方案。</p>
+      <p class="section-body">你可以从44项资产中选择，包括主要美股（NVDA、GOOGL、AAPL、MSFT、TSLA、AMZN）和ETF（SPY、QQQ、VTI、SCHD、TLT）。模拟器会计算三种关键投资组合类型：最大夏普比率（最佳效率）、最小波动率（最低风险），以及你自己设计的自定义配置。</p>
+      <p class="section-body">输出结果是一张展示投资组合随时间变化概率分布的扇形图 — 中位数路径、乐观的90百分位与悲观的10百分位 — 让你不仅了解预期结果，还能理解现实中可能出现的完整结果范围。</p>
+    </section>
+    <section class="section">
+      <h2 class="section-title">为什么使用这个工具？</h2>
+      <p class="section-body">单一数字的预测 —「你的投资组合在20年后价值X美元」— 具有很强的误导性。股市并不会沿直线可预测地运行：回报是波动的，顺序（序列）非常关键，结果的范围也很广。蒙特卡洛方法明确地对这种不确定性进行建模。</p>
+      <p class="section-body">通过基于实际历史收益分布运行1万次不同的随机游走情景，模拟器向你展示现实中的最好情况、最坏情况和最可能情况分别是什么样子。这让你能提出更好的问题：「如果遇到最差的10%的结果，我能承受这个配置吗？」如果能，说明你的投资组合足够稳健；如果不能，就需要调整。</p>
+    </section>
+    <section class="section">
+      <h2 class="section-title">如何运行蒙特卡洛投资组合模拟</h2>
+      <ol class="step-list">
+        <li class="step-item">
+          <span class="step-num">1</span>
+          <div class="step-body"><strong class="step-name">打开蒙特卡洛模拟器</strong><p class="step-text">点击下方的“打开工具”进入模拟器。它完全在你的浏览器中运行 — 无需下载或登录。</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">2</span>
+          <div class="step-body"><strong class="step-name">选择你的资产</strong><p class="step-text">从44只美股和ETF列表中选择。你可以添加多项资产，包括NVDA、GOOGL、SPY、QQQ、TSLA、AAPL等。建议先从3-5项资产开始，便于分析。</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">3</span>
+          <div class="step-body"><strong class="step-name">设置配置比例（可选）</strong><p class="step-text">若选择自定义投资组合，输入你想在每项资产中投入的百分比，比例总和须为100%。对于最大夏普比率和最小波动率投资组合，模拟器会自动找到最优权重。</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">4</span>
+          <div class="step-body"><strong class="step-name">设置投资金额和期限</strong><p class="step-text">输入初始投资组合价值和投资期限（年）。常见输入为初始金额1万至10万美元，投资期限10至30年。</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">5</span>
+          <div class="step-body"><strong class="step-name">运行模拟</strong><p class="step-text">点击计算或运行模拟。工具会运行1万种情景，并在几秒内展示结果。</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">6</span>
+          <div class="step-body"><strong class="step-name">解读结果</strong><p class="step-text">扇形图展示中位数、10百分位（较差情景）与90百分位（较好情景）路径。表格展示最大夏普比率和最小波动率投资组合的最优权重，以及各自的夏普比率与年化回报率。</p></div>
+        </li>
+      </ol>
+    </section>
+    <section class="section">
+      <h2 class="section-title">常见问题</h2>
+      <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">什么是投资中的蒙特卡洛模拟？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">蒙特卡洛模拟利用历史收益分布运行数千次随机游走情景，展示投资组合可能结果的完整范围。你得到的不是单一的预测数字，而是一个概率分布 — 展示最好情况、最坏情况以及两者之间的一切可能。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">这个模拟器提供多少种资产？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">EZLONG蒙特卡洛投资组合模拟器包含44只美股和ETF：NVDA、GOOGL、AAPL、MSFT、TSLA、AMZN、SPY、QQQ、VTI、SCHD、TLT等。全部基于20年真实数据（2006-2025年）。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">什么是夏普比率？为什么它很重要？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">夏普比率衡量每单位风险（波动率）所获得的回报。夏普比率越高，代表风险调整后的效率越好。最大夏普比率投资组合能给你带来最佳的回报/风险组合 — 未必是绝对回报最高，但却是风险利用最有效率的方式。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">什么是最小波动率投资组合？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">最小波动率投资组合是在你所选资产范围内实现最低可能投资组合波动率的配置方案。适合优先考虑资本保全而非追求最大增长的风险厌恶型投资者。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">扇形图展示的是什么？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">扇形图在你的投资期限内展示三条路径：90百分位（模拟结果的前10% — 乐观情景）、50百分位（中位数）和10百分位（后10% — 悲观情景）。三个区间同时呈现，让你看到现实结果的完整范围。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">这与简单的复利计算器有什么不同？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">简单的复利计算器假设每年回报恒定（例如每年10%）。蒙特卡洛模拟基于历史分布，每年使用随机回报，从而捕捉市场的真实波动性。这能更真实地呈现长期投资的不确定性。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">什么是有效前沿？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">有效前沿是指在给定风险水平下，能提供最高预期回报的投资组合集合。位于前沿上的投资组合是有效的 — 你无法在不承担更多风险的情况下获得更多回报，也无法在不牺牲回报的情况下降低风险。模拟器会将你的投资组合绘制在这条前沿上。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">这个蒙特卡洛模拟器是免费的吗？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">是的，完全免费。无需登录、无需邮箱、无需订阅。模拟器使用20年真实数据，在你的浏览器中免费运行1万种情景。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section related-section">
+      <h2 class="section-title">相关免费工具</h2>
+      <div class="rel-grid">
+          <a class="rel-card" href="https://ezlong.com/zh/portfolio-manager.html">投资组合复利模拟器</a>
+          <a class="rel-card" href="https://ezlong.com/zh/dca-simulator.html">定投复利模拟器</a>
+          <a class="rel-card" href="https://ezlong.com/zh/atmr-dashboard.html">波段信号仪表盘</a>
+      </div>
+    </section>
+    <div class="cta-card">
+      <h2>立即体验蒙特卡洛投资组合模拟器</h2>
+      <p>免费、无需注册，浏览器中即刻运行。Chrome会自动将韩语翻译成中文。</p>
+      <a class="btn-white" href="https://ezlong.com/backtest.html" target="_blank" rel="noopener">打开蒙特卡洛投资组合模拟器 &rarr;</a>
+      <p class="translate-proxy-note">没有自动翻译？<a href="https://ezlong-com.translate.goog/backtest.html?_x_tr_sl=ko&amp;_x_tr_tl=zh-CN&amp;_x_tr_hl=zh-CN&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">用谷歌翻译打开 &rarr;</a></p>
+    </div>
+  </main>
+  <footer class="en-footer" role="contentinfo">
+    <p><a href="https://ezlong.com/zh/">EZLONG</a> &mdash; 免费美股投资工具<br>
+    &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
+    <small>仅供教育参考，不构成投资建议。所有投资均有风险，过往业绩不代表未来表现。</small></p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+  <link rel="stylesheet" href="../ez-design.css">
+<meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apple (AAPL) vs Microsoft (MSFT): 10-Year DCA Comparison, Dividends Included | EZLONG</title>
+
+  <meta name="description" content="If you had dollar-cost averaged into Apple and Microsoft separately for 10 years, how different would the results have been — including the dividend yield gap? A backtest using actual monthly closing prices.">
+  <meta name="keywords" content="Apple vs Microsoft, AAPL MSFT comparison, Apple dollar cost averaging, Microsoft dollar cost averaging, big tech dividend stocks, Apple dividend, Microsoft dividend, US stock DCA comparison">
+  <meta name="author" content="EZLONG">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="en">
+  <link rel="canonical" href="https://ezlong.com/en/aapl-vs-msft-dividend-dca.html">
+
+  <link rel="alternate" hreflang="ko" href="https://ezlong.com/aapl-vs-msft-dividend-dca.html">
+  <link rel="alternate" hreflang="en" href="https://ezlong.com/en/aapl-vs-msft-dividend-dca.html">
+  <link rel="alternate" hreflang="ja" href="https://ezlong.com/ja/aapl-vs-msft-dividend-dca.html">
+  <link rel="alternate" hreflang="es" href="https://ezlong.com/es/aapl-vs-msft-dividend-dca.html">
+  <link rel="alternate" hreflang="pt" href="https://ezlong.com/pt/aapl-vs-msft-dividend-dca.html">
+  <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/aapl-vs-msft-dividend-dca.html">
+  <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/aapl-vs-msft-dividend-dca.html">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Apple (AAPL) vs Microsoft (MSFT): 10-Year DCA Comparison, Dividends Included">
+  <meta property="og:description" content="A backtest comparing 10 years of AAPL and MSFT dollar-cost averaging using actual monthly closing prices.">
+  <meta property="og:url" content="https://ezlong.com/en/aapl-vs-msft-dividend-dca.html">
+  <meta property="og:image" content="https://ezlong.com/logo-preview.png">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="en_US">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Apple vs Microsoft: Which Wins a 10-Year Dollar-Cost-Averaging Race?">
+  <meta name="twitter:description" content="A comparison of 10 years of AAPL and MSFT dollar-cost averaging using actual monthly closing prices.">
+  <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Apple (AAPL) vs Microsoft (MSFT): 10-Year DCA Comparison, Dividends Included",
+    "description": "A backtest comparing what a $362.32 monthly investment in AAPL and in MSFT separately, from August 2016 through July 2026 (120 months), would have been worth today using actual monthly closing prices.",
+    "author": { "@type": "Organization", "name": "EZLONG", "url": "https://ezlong.com" },
+    "publisher": { "@type": "Organization", "name": "EZLONG", "url": "https://ezlong.com", "logo": { "@type": "ImageObject", "url": "https://ezlong.com/logo.png" } },
+    "datePublished": "2026-07-02",
+    "dateModified": "2026-07-02",
+    "inLanguage": "en",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://ezlong.com/en/aapl-vs-msft-dividend-dca.html" },
+    "about": [
+      { "@type": "Thing", "name": "Apple Microsoft comparison" },
+      { "@type": "Thing", "name": "DCA backtest" },
+      { "@type": "Thing", "name": "Big tech dividend investing" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"EZLONG","item":"https://ezlong.com/en/"},{"@type":"ListItem","position":2,"name":"Apple vs Microsoft DCA Comparison","item":"https://ezlong.com/en/aapl-vs-msft-dividend-dca.html"}]}
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Between Apple and Microsoft, which had the higher 10-year DCA return?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Assuming a $362.32 monthly investment from August 2016 through July 2026 (120 months), Apple (AAPL) turned a $43,478.26 principal into approximately $167,148.12 before taxes (a return of roughly +284.4%), while Microsoft (MSFT) turned the same $43,478.26 principal into approximately $107,720.14 before taxes (a return of roughly +147.8%). On a pure price-appreciation basis, Apple came out ahead." }
+      },
+      {
+        "@type": "Question",
+        "name": "Microsoft pays a higher dividend, so why was its return lower than Apple's?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Dividend yield and price appreciation are two separate things. MSFT's dividend yield (roughly 0.95% annually) is higher than AAPL's (roughly 0.37% annually), but this calculation assumes dividends are collected in cash rather than reinvested, and only compares price appreciation. Reinvesting dividends would narrow the final gap between the two stocks slightly, but the difference in price appreciation is large enough that it wouldn't change the ranking." }
+      },
+      {
+        "@type": "Question",
+        "name": "How much would the results change if dividends were reinvested?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The figures in this article are a simplified version that assumes dividends are collected separately rather than reinvested. Since both stocks' dividend yields are under 1% annually, the cumulative impact over 10 years on the final amount is relatively modest for either stock, but reinvesting dividends would make the actual final amounts somewhat larger than the figures shown here." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is splitting an investment between the two stocks also a reasonable option?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Instead of concentrating in a single stock, diversifying across several big tech names or an index ETF like QQQ can reduce single-stock risk. You can compare diversified scenarios using EZLONG's portfolio compound simulator." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .post-hero { background: var(--ez-surface); border-bottom: 1px solid var(--ez-border); padding: 36px 20px 30px; }
+    .post-hero-inner { max-width: 760px; margin: 0 auto; }
+    .post-label { display: inline-block; font-size: 16px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ez-blue); background: var(--ez-blue-dim); padding: 4px 10px; border-radius: 6px; margin-bottom: 12px; }
+    .post-title { font-size: clamp(24px, 4vw, 34px); font-weight: 800; letter-spacing: -.02em; color: var(--ez-text); line-height: 1.3; margin-bottom: 10px; }
+    .post-meta { font-size: 16px; color: var(--ez-text3); }
+    .post-main { max-width: 760px; margin: 0 auto; padding: 32px 20px 60px; }
+    .post-main h2 { font-size: 21px; font-weight: 800; color: var(--ez-text); margin: 40px 0 14px; letter-spacing: -.01em; }
+    .post-main h3 { font-size: 17px; font-weight: 700; color: var(--ez-text); margin: 24px 0 10px; }
+    .post-main p { font-size: 16px; line-height: 1.75; color: var(--ez-text2); margin-bottom: 14px; }
+    .post-main ul, .post-main ol { padding-left: 20px; margin-bottom: 14px; }
+    .post-main li { font-size: 16px; line-height: 1.75; color: var(--ez-text2); margin-bottom: 6px; }
+    .post-main strong { color: var(--ez-text); font-weight: 700; }
+    .tldr-box { background: var(--ez-blue-dim); border: 1px solid var(--ez-border); border-radius: var(--ez-r); padding: 20px 22px; margin-bottom: 28px; }
+    .tldr-box .tldr-label { font-size: 16px; font-weight: 700; color: var(--ez-blue); margin-bottom: 8px; }
+    .tldr-box p { font-size: 16px; margin-bottom: 8px; }
+    .tldr-box p:last-child { margin-bottom: 0; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0 28px; }
+    .stat-box { background: var(--ez-card); border: 1px solid var(--ez-border); border-radius: var(--ez-r); padding: 16px 14px; text-align: center; }
+    .stat-box .stat-label { font-size: 16px; color: var(--ez-text3); margin-bottom: 6px; }
+    .stat-box .stat-value { font-size: 20px; font-weight: 800; color: var(--ez-text); letter-spacing: -.02em; }
+    .stat-box .stat-value.green { color: var(--ez-green); }
+    .ez-table-wrap { overflow-x: auto; margin-bottom: 20px; }
+    table.ez-table { width: 100%; border-collapse: collapse; font-size: 16px; }
+    table.ez-table th, table.ez-table td { border: 1px solid var(--ez-border); padding: 10px 12px; text-align: left; }
+    table.ez-table th { background: var(--ez-card2); color: var(--ez-text); font-weight: 700; }
+    table.ez-table td { color: var(--ez-text2); }
+    .callout { background: var(--ez-card2); border-left: 3px solid var(--ez-amber); border-radius: var(--ez-rs); padding: 16px 18px; margin: 20px 0; font-size: 16px; color: var(--ez-text2); line-height: 1.7; }
+    .callout strong { color: var(--ez-text); }
+    .cta-card { background: var(--ez-card); border: 1px solid var(--ez-border); border-radius: var(--ez-r); padding: 24px; margin: 32px 0; text-align: center; }
+    .cta-card h3 { font-size: 18px; margin-bottom: 8px; }
+    .cta-card p { font-size: 16px; margin-bottom: 16px; }
+    .cta-btn { display: inline-block; background: var(--ez-blue); color: #fff; font-size: 16px; font-weight: 700; padding: 12px 24px; border-radius: var(--ez-rs); text-decoration: none; }
+    .faq-item { border-bottom: 1px solid var(--ez-border); padding: 16px 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-size: 16px; font-weight: 700; color: var(--ez-text); margin-bottom: 8px; }
+    .faq-a { font-size: 16px; color: var(--ez-text2); line-height: 1.7; }
+    .related-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .related-links a { font-size: 16px; color: var(--ez-blue); text-decoration: none; background: var(--ez-blue-dim); padding: 8px 14px; border-radius: 20px; }
+    .related-links a:hover { text-decoration: underline; }
+    .disclaimer { font-size: 16px; color: var(--ez-text3); line-height: 1.7; margin-top: 32px; }
+    .ez-lang-nav { position:sticky; top:0; z-index:100; background:var(--ez-surface); border-bottom:1px solid var(--ez-border); padding:0 20px; height:52px; display:flex; align-items:center; justify-content:space-between; }
+    .ez-lang-nav-logo { font-size:17px; font-weight:700; color:var(--ez-text); text-decoration:none; letter-spacing:-0.02em; }
+    .ez-lang-nav-right { display:flex; gap:16px; align-items:center; }
+    .ez-lang-nav-link { font-size:14px; color:var(--ez-blue); text-decoration:none; font-weight:500; }
+    .ez-lang-nav-link:hover { text-decoration:underline; }
+    .ez-lang-footer { background:var(--ez-surface); border-top:1px solid var(--ez-border); padding:28px 20px; text-align:center; color:var(--ez-text3); font-size:14px; line-height:1.8; }
+    .ez-lang-footer a { color:var(--ez-blue); text-decoration:none; }
+  </style>
+</head>
+<body>
+
+<nav class="ez-lang-nav">
+  <a class="ez-lang-nav-logo" href="https://ezlong.com/en/">EZLONG</a>
+  <div class="ez-lang-nav-right">
+    <a class="ez-lang-nav-link" href="https://ezlong.com/en/">All Tools</a>
+    <a class="ez-lang-nav-link" href="https://ezlong.com/aapl-vs-msft-dividend-dca.html">한국어 원문 &rarr;</a>
+  </div>
+</nav>
+
+<div class="post-hero">
+  <div class="post-hero-inner">
+    <span class="post-label">Investment Simulation</span>
+    <h1 class="post-title">Apple (AAPL) vs Microsoft (MSFT): 10-Year DCA Comparison</h1>
+    <div class="post-meta">Updated July 2, 2026 · EZLONG · Backtest based on actual monthly closing prices</div>
+  </div>
+</div>
+
+<main class="post-main">
+
+  <div class="tldr-box">
+    <div class="tldr-label">TL;DR</div>
+    <p>Investing <strong>$362.32 a month for 120 months</strong>, from August 2016 through July 2026, into each stock separately, a $43,478.26 principal in Apple grew to <strong>approximately $167,148.12</strong> (a return of roughly +284.4%), while the same principal in Microsoft grew to <strong>approximately $107,720.14</strong> (a return of roughly +147.8%).</p>
+    <p>Apple came out ahead on pure price appreciation, but Microsoft has the higher dividend yield (roughly 0.95% annually vs. Apple's roughly 0.37%).</p>
+    <p>This calculation excludes dividend reinvestment and is a simplified version — past returns cannot predict future results.</p>
+  </div>
+
+  <p>Both are flagship US big-tech names that have steadily raised their dividends over time, but they're quite different businesses. Apple is a hardware-driven consumer brand built around the iPhone, while Microsoft is centered on cloud computing (Azure) and enterprise software. We compared the two side by side over the past 10 years using actual monthly closing prices.</p>
+
+  <h2>Comparing the Results</h2>
+
+  <div class="ez-table-wrap">
+    <table class="ez-table">
+      <tr><th>Item</th><th>Apple (AAPL)</th><th>Microsoft (MSFT)</th></tr>
+      <tr><td>Calculation period</td><td colspan="2">August 2016 – July 2026 (120 months)</td></tr>
+      <tr><td>Monthly contribution</td><td colspan="2">$362.32</td></tr>
+      <tr><td>Total principal</td><td>$43,478.26</td><td>$43,478.26</td></tr>
+      <tr><td>Pre-tax final value</td><td>approx. $167,148.12</td><td>approx. $107,720.14</td></tr>
+      <tr><td>Pre-tax gain</td><td>approx. +$123,669.86</td><td>approx. +$64,241.88</td></tr>
+      <tr><td>Pre-tax cumulative return</td><td>approx. +284.4%</td><td>approx. +147.8%</td></tr>
+      <tr><td>Closing price, July 2026</td><td>$294.38</td><td>$384.28</td></tr>
+      <tr><td>Current quarterly dividend</td><td>$0.27 (approx. $1.08/yr annualized)</td><td>$0.91 (approx. $3.64/yr annualized)</td></tr>
+      <tr><td>Dividend yield at current price</td><td>approx. 0.37%</td><td>approx. 0.95%</td></tr>
+    </table>
+  </div>
+
+  <div class="callout"><strong>Calculation assumptions.</strong> We assumed a purchase of $362.32 in each stock on the same date every month, valued at the final month's (July 2026) closing price. This is a <strong>simple price-appreciation-only comparison</strong> that assumes dividends are collected in cash rather than reinvested, and does not account for trading fees, currency conversion fees, or capital gains tax.</div>
+
+  <h2>Why Did MSFT's Higher Dividend Not Translate Into a Higher Return?</h2>
+  <p>Dividend yield and price appreciation are entirely different axes. Over the past 10 years, Microsoft's stock climbed steadily on the back of Azure's rapid cloud growth, the shift to Office 365 subscriptions, and more recently AI Copilot and its OpenAI investment. Even so, it ended up behind Apple on a total-multiple basis — Apple received a steeper valuation re-rating driven by the iPhone super cycle, aggressive share buybacks, and the growing profit share of its services segment (App Store, iCloud, and so on).</p>
+  <p>That doesn't mean "Apple is always better," though. The ranking can flip depending on the starting point you pick for the calculation, and each company has its own business structure, risks, and future growth drivers.</p>
+
+  <h3>What If Dividends Had Been Reinvested?</h3>
+  <p>The figures in this article assume dividends are received in cash rather than reinvested. Since both stocks' dividend yields are under 1% annually, adding in the reinvestment effect over 10 years doesn't flip the overall ranking. Still, automatically reinvesting dividends (DRIP) compounds a bit further, so the actual final amounts would be somewhat larger than the numbers shown here.</p>
+
+  <h2>Run the Comparison With Your Own Assumptions</h2>
+  <p>If you'd like to compare other big-tech combinations beyond just these two stocks, try the tool below.</p>
+
+  <div class="cta-card">
+    <h3>Build Your Own Scenario With the Compound Growth Calculator</h3>
+    <p>Enter your ticker, monthly contribution, time horizon, and expected return to simulate your future portfolio.</p>
+    <a class="cta-btn" href="https://ezlong.com/en/compound-calculator.html">Open the Compound Growth Calculator →</a>
+  </div>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq-item">
+    <div class="faq-q">Between Apple and Microsoft, which had the higher 10-year DCA return?</div>
+    <div class="faq-a">Assuming a $362.32 monthly investment from August 2016 through July 2026 (120 months), Apple turned a $43,478.26 principal into approximately $167,148.12 before taxes (roughly +284.4%), while Microsoft turned the same principal into approximately $107,720.14 before taxes (roughly +147.8%). On price appreciation alone, Apple came out ahead.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Microsoft pays a higher dividend, so why was its return lower than Apple's?</div>
+    <div class="faq-a">Dividend yield and price appreciation are separate things. MSFT's dividend yield (roughly 0.95% annually) is higher than AAPL's (roughly 0.37% annually), but this calculation assumes dividends are collected in cash rather than reinvested, comparing price appreciation only. The gap in price appreciation is large enough that it doesn't change the ranking.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">How much would the results change if dividends were reinvested?</div>
+    <div class="faq-a">This article's figures assume dividends are collected separately rather than reinvested. Because the yields are low, the impact on the final amount isn't dramatic, but reinvesting would make the actual final amounts somewhat larger than shown here.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Is splitting an investment between the two stocks also a reasonable option?</div>
+    <div class="faq-a">Yes. Instead of concentrating in a single stock, diversifying across several big tech names or an index ETF like QQQ can reduce single-stock risk. EZLONG's portfolio compound simulator lets you compare diversified scenarios.</div>
+  </div>
+
+  <h2>Related Tools</h2>
+  <div class="related-links">
+    <a href="https://ezlong.com/en/compound-calculator.html">Compound Growth Calculator</a>
+    <a href="https://ezlong.com/en/portfolio-manager.html">Portfolio Compound Simulator</a>
+    <a href="https://ezlong.com/en/analyst-reports.html">Wall Street Price Targets</a>
+    <a href="https://ezlong.com/en/chart-analysis.html">AI Chart Analysis</a>
+  </div>
+
+  <p class="disclaimer">This article is not a solicitation to buy any specific stock. It is an educational, reference-only simulation using actual historical prices. Investment decisions and their outcomes are the sole responsibility of the investor. Data source: Yahoo Finance monthly closing prices and dividend history (adjusted). © 2026 EZLONG.</p>
+
+</main>
+
+<footer class="ez-lang-footer">
+  <p><a href="https://ezlong.com/en/">EZLONG</a> &mdash; Free US Stock Investment Tools<br>
+  &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com</p>
+</footer>
+
+</body>
+</html>

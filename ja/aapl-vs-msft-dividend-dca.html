@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+  <link rel="stylesheet" href="../ez-design.css">
+<meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>アップル(AAPL) vs マイクロソフト(MSFT) 10年積立投資比較、配当まで含めると? | EZLONG</title>
+
+  <meta name="description" content="アップルとマイクロソフトにそれぞれ10年間毎月362ドルずつ積立投資していたら実際にどれだけ差がついていたのか、配当利回りの差まで含めて実際の月次株価で比較したバックテスト。">
+  <meta name="keywords" content="アップル vs マイクロソフト, AAPL MSFT 比較, アップル 積立投資, マイクロソフト 積立投資, ビッグテック 配当株, アップル 配当, マイクロソフト 配当, 米国株 積立比較">
+  <meta name="author" content="EZLONG">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="ja">
+  <link rel="canonical" href="https://ezlong.com/ja/aapl-vs-msft-dividend-dca.html">
+
+  <link rel="alternate" hreflang="ko" href="https://ezlong.com/aapl-vs-msft-dividend-dca.html">
+  <link rel="alternate" hreflang="en" href="https://ezlong.com/en/aapl-vs-msft-dividend-dca.html">
+  <link rel="alternate" hreflang="ja" href="https://ezlong.com/ja/aapl-vs-msft-dividend-dca.html">
+  <link rel="alternate" hreflang="es" href="https://ezlong.com/es/aapl-vs-msft-dividend-dca.html">
+  <link rel="alternate" hreflang="pt" href="https://ezlong.com/pt/aapl-vs-msft-dividend-dca.html">
+  <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/aapl-vs-msft-dividend-dca.html">
+  <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/aapl-vs-msft-dividend-dca.html">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="アップル(AAPL) vs マイクロソフト(MSFT) 10年積立投資比較、配当まで含めると?">
+  <meta property="og:description" content="AAPL・MSFT 10年間の実際の月次株価で計算した積立投資比較バックテスト。">
+  <meta property="og:url" content="https://ezlong.com/ja/aapl-vs-msft-dividend-dca.html">
+  <meta property="og:image" content="https://ezlong.com/logo-preview.png">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="ja_JP">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="アップル vs マイクロソフト、10年積立投資すればどちらが有利?">
+  <meta name="twitter:description" content="AAPL・MSFT 10年間の実際の月次株価で計算した積立投資比較。">
+  <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "アップル(AAPL) vs マイクロソフト(MSFT) 10年積立投資比較、配当まで含めると?",
+    "description": "2016年8月から2026年7月まで120ヶ月間、AAPLとMSFTにそれぞれ毎月362.32ドルずつ積立投資していたら実際の月次終値基準でどれだけ差がついていたのかを計算した比較バックテスト。",
+    "author": { "@type": "Organization", "name": "EZLONG", "url": "https://ezlong.com" },
+    "publisher": { "@type": "Organization", "name": "EZLONG", "url": "https://ezlong.com", "logo": { "@type": "ImageObject", "url": "https://ezlong.com/logo.png" } },
+    "datePublished": "2026-07-02",
+    "dateModified": "2026-07-02",
+    "inLanguage": "ja",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://ezlong.com/ja/aapl-vs-msft-dividend-dca.html" },
+    "about": [
+      { "@type": "Thing", "name": "アップル マイクロソフト比較" },
+      { "@type": "Thing", "name": "DCAバックテスト" },
+      { "@type": "Thing", "name": "ビッグテック配当投資" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"EZLONG","item":"https://ezlong.com/ja/"},{"@type":"ListItem","position":2,"name":"アップル vs マイクロソフト 積立投資比較","item":"https://ezlong.com/ja/aapl-vs-msft-dividend-dca.html"}]}
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "アップルとマイクロソフト、10年積立投資の利回りが高かったのはどちらですか?",
+        "acceptedAnswer": { "@type": "Answer", "text": "2016年8月から2026年7月までの120ヶ月間、毎月362.32ドルずつ投資したと仮定すると、アップル(AAPL)は元本43,478.26ドルが税引前で約167,148.12ドル(利回り約+284.4%)になり、マイクロソフト(MSFT)は同じ元本43,478.26ドルが税引前で約107,720.14ドル(利回り約+147.8%)になりました。株価上昇率ベースではアップルの方が高い結果でした。" }
+      },
+      {
+        "@type": "Question",
+        "name": "マイクロソフトの方が配当が多いのに、なぜ利回りはアップルより低いのですか?",
+        "acceptedAnswer": { "@type": "Answer", "text": "配当利回りと株価上昇率は別の指標です。MSFTの配当利回り(年率約0.95%)はAAPL(年率約0.37%)より高いですが、この計算は配当を再投資せず別途受け取ると仮定した株価上昇分のみの比較です。配当を再投資していれば両銘柄の最終的な差はやや縮まりますが、株価上昇率自体の差の方がはるかに大きいため、順位が入れ替わることはありません。" }
+      },
+      {
+        "@type": "Question",
+        "name": "配当再投資を含めると結果はどれくらい変わりますか?",
+        "acceptedAnswer": { "@type": "Answer", "text": "この記事の計算は配当を別途受け取ると仮定した簡略化バージョンです。配当利回りが年1%未満と低めのため、10年累積でも最終金額への影響は両銘柄とも比較的小さいですが、配当を再投資すれば複利効果により実際の最終金額はこの記事の数値より多少大きくなります。" }
+      },
+      {
+        "@type": "Question",
+        "name": "2つの銘柄に分けて投資するのも一つの方法ですか?",
+        "acceptedAnswer": { "@type": "Answer", "text": "はい。単一銘柄に集中する代わりに、複数のビッグテック銘柄やQQQのような指数ETFに分散投資すれば個別銘柄リスクを減らせます。EZLONGのポートフォリオ複利シミュレーターで分散投資シナリオを比較できます。" }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .post-hero { background: var(--ez-surface); border-bottom: 1px solid var(--ez-border); padding: 36px 20px 30px; }
+    .post-hero-inner { max-width: 760px; margin: 0 auto; }
+    .post-label { display: inline-block; font-size: 16px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ez-blue); background: var(--ez-blue-dim); padding: 4px 10px; border-radius: 6px; margin-bottom: 12px; }
+    .post-title { font-size: clamp(24px, 4vw, 34px); font-weight: 800; letter-spacing: -.02em; color: var(--ez-text); line-height: 1.3; margin-bottom: 10px; }
+    .post-meta { font-size: 16px; color: var(--ez-text3); }
+    .post-main { max-width: 760px; margin: 0 auto; padding: 32px 20px 60px; }
+    .post-main h2 { font-size: 21px; font-weight: 800; color: var(--ez-text); margin: 40px 0 14px; letter-spacing: -.01em; }
+    .post-main h3 { font-size: 17px; font-weight: 700; color: var(--ez-text); margin: 24px 0 10px; }
+    .post-main p { font-size: 16px; line-height: 1.75; color: var(--ez-text2); margin-bottom: 14px; }
+    .post-main ul, .post-main ol { padding-left: 20px; margin-bottom: 14px; }
+    .post-main li { font-size: 16px; line-height: 1.75; color: var(--ez-text2); margin-bottom: 6px; }
+    .post-main strong { color: var(--ez-text); font-weight: 700; }
+    .tldr-box { background: var(--ez-blue-dim); border: 1px solid var(--ez-border); border-radius: var(--ez-r); padding: 20px 22px; margin-bottom: 28px; }
+    .tldr-box .tldr-label { font-size: 16px; font-weight: 700; color: var(--ez-blue); margin-bottom: 8px; }
+    .tldr-box p { font-size: 16px; margin-bottom: 8px; }
+    .tldr-box p:last-child { margin-bottom: 0; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0 28px; }
+    .stat-box { background: var(--ez-card); border: 1px solid var(--ez-border); border-radius: var(--ez-r); padding: 16px 14px; text-align: center; }
+    .stat-box .stat-label { font-size: 16px; color: var(--ez-text3); margin-bottom: 6px; }
+    .stat-box .stat-value { font-size: 20px; font-weight: 800; color: var(--ez-text); letter-spacing: -.02em; }
+    .stat-box .stat-value.green { color: var(--ez-green); }
+    .ez-table-wrap { overflow-x: auto; margin-bottom: 20px; }
+    table.ez-table { width: 100%; border-collapse: collapse; font-size: 16px; }
+    table.ez-table th, table.ez-table td { border: 1px solid var(--ez-border); padding: 10px 12px; text-align: left; }
+    table.ez-table th { background: var(--ez-card2); color: var(--ez-text); font-weight: 700; }
+    table.ez-table td { color: var(--ez-text2); }
+    .callout { background: var(--ez-card2); border-left: 3px solid var(--ez-amber); border-radius: var(--ez-rs); padding: 16px 18px; margin: 20px 0; font-size: 16px; color: var(--ez-text2); line-height: 1.7; }
+    .callout strong { color: var(--ez-text); }
+    .cta-card { background: var(--ez-card); border: 1px solid var(--ez-border); border-radius: var(--ez-r); padding: 24px; margin: 32px 0; text-align: center; }
+    .cta-card h3 { font-size: 18px; margin-bottom: 8px; }
+    .cta-card p { font-size: 16px; margin-bottom: 16px; }
+    .cta-btn { display: inline-block; background: var(--ez-blue); color: #fff; font-size: 16px; font-weight: 700; padding: 12px 24px; border-radius: var(--ez-rs); text-decoration: none; }
+    .faq-item { border-bottom: 1px solid var(--ez-border); padding: 16px 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-size: 16px; font-weight: 700; color: var(--ez-text); margin-bottom: 8px; }
+    .faq-a { font-size: 16px; color: var(--ez-text2); line-height: 1.7; }
+    .related-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .related-links a { font-size: 16px; color: var(--ez-blue); text-decoration: none; background: var(--ez-blue-dim); padding: 8px 14px; border-radius: 20px; }
+    .related-links a:hover { text-decoration: underline; }
+    .disclaimer { font-size: 16px; color: var(--ez-text3); line-height: 1.7; margin-top: 32px; }
+    .ez-lang-nav { position:sticky; top:0; z-index:100; background:var(--ez-surface); border-bottom:1px solid var(--ez-border); padding:0 20px; height:52px; display:flex; align-items:center; justify-content:space-between; }
+    .ez-lang-nav-logo { font-size:17px; font-weight:700; color:var(--ez-text); text-decoration:none; letter-spacing:-0.02em; }
+    .ez-lang-nav-right { display:flex; gap:16px; align-items:center; }
+    .ez-lang-nav-link { font-size:14px; color:var(--ez-blue); text-decoration:none; font-weight:500; }
+    .ez-lang-nav-link:hover { text-decoration:underline; }
+    .ez-lang-footer { background:var(--ez-surface); border-top:1px solid var(--ez-border); padding:28px 20px; text-align:center; color:var(--ez-text3); font-size:14px; line-height:1.8; }
+    .ez-lang-footer a { color:var(--ez-blue); text-decoration:none; }
+  </style>
+</head>
+<body>
+
+<nav class="ez-lang-nav">
+  <a class="ez-lang-nav-logo" href="https://ezlong.com/ja/">EZLONG</a>
+  <div class="ez-lang-nav-right">
+    <a class="ez-lang-nav-link" href="https://ezlong.com/ja/">すべてのツール</a>
+    <a class="ez-lang-nav-link" href="https://ezlong.com/en/aapl-vs-msft-dividend-dca.html">English</a>
+    <a class="ez-lang-nav-link" href="https://ezlong.com/aapl-vs-msft-dividend-dca.html">한국어 &rarr;</a>
+  </div>
+</nav>
+
+<div class="post-hero">
+  <div class="post-hero-inner">
+    <span class="post-label">投資シミュレーション</span>
+    <h1 class="post-title">アップル(AAPL) vs マイクロソフト(MSFT)、10年積立投資比較</h1>
+    <div class="post-meta">2026年7月2日更新 · EZLONG · 実際の月次株価に基づくバックテスト</div>
+  </div>
+</div>
+
+<main class="post-main">
+
+  <div class="tldr-box">
+    <div class="tldr-label">3行まとめ</div>
+    <p>2016年8月から2026年7月まで<strong>120ヶ月間、毎月362.32ドルずつ</strong>それぞれ投資していたら、アップルは元本43,478.26ドルが<strong>約167,148.12ドル</strong>(利回り約+284.4%)、マイクロソフトは元本43,478.26ドルが<strong>約107,720.14ドル</strong>(利回り約+147.8%)になりました。</p>
+    <p>株価上昇率だけで見るとアップルが上回りましたが、配当利回りはマイクロソフトの方が高い水準です(年率約0.95% vs アップル約0.37%)。</p>
+    <p>この計算は配当再投資を除いた簡略化バージョンであり、過去の利回りで将来を予測することはできません。</p>
+  </div>
+
+  <p>どちらも代表的な米国ビッグテックであり、配当を着実に増やしてきた銘柄ですが、性格はかなり異なります。アップルはiPhoneというハードウェア中心の消費者ブランドであり、マイクロソフトはクラウド(Azure)と企業向けソフトウェアが中心です。実際の月次終値で過去10年を並べて比較してみました。</p>
+
+  <h2>計算結果の比較</h2>
+
+  <div class="ez-table-wrap">
+    <table class="ez-table">
+      <tr><th>項目</th><th>アップル(AAPL)</th><th>マイクロソフト(MSFT)</th></tr>
+      <tr><td>計算期間</td><td colspan="2">2016年8月 〜 2026年7月(120ヶ月)</td></tr>
+      <tr><td>月間投資額</td><td colspan="2">$362.32</td></tr>
+      <tr><td>総投資元本</td><td>$43,478.26</td><td>$43,478.26</td></tr>
+      <tr><td>税引前最終評価額</td><td>約$167,148.12</td><td>約$107,720.14</td></tr>
+      <tr><td>税引前評価損益</td><td>約+$123,669.86</td><td>約+$64,241.88</td></tr>
+      <tr><td>税引前累積利回り</td><td>約+284.4%</td><td>約+147.8%</td></tr>
+      <tr><td>2026年7月終値</td><td>294.38ドル</td><td>384.28ドル</td></tr>
+      <tr><td>現在の四半期配当金</td><td>0.27ドル(年換算約1.08ドル)</td><td>0.91ドル(年換算約3.64ドル)</td></tr>
+      <tr><td>現在価格基準の配当利回り</td><td>約0.37%</td><td>約0.95%</td></tr>
+    </table>
+  </div>
+
+  <div class="callout"><strong>計算の前提条件。</strong>毎月同じ日に362.32ドルずつ各銘柄を購入したと仮定し、最終月(2026年7月)の終値で評価しました。配当金は再投資せず別途受け取ると仮定した<strong>株価上昇分のみの単純比較</strong>であり、売買手数料・為替手数料・譲渡所得税は反映していません。</div>
+
+  <h2>なぜ配当の多いMSFTの方が利回りは低かったのか</h2>
+  <p>配当利回りと株価上昇率はまったく別の軸です。過去10年間、マイクロソフトはAzureクラウド事業の高速成長、Office 365サブスクリプションへの転換、最近ではAI Copilot・OpenAIへの投資などにより株価が着実に右肩上がりでした。それでも最終的な倍率で見るとアップルに及ばなかった理由は、アップルがiPhoneのスーパーサイクルと自社株買い、サービス部門(App Store、iCloudなど)の利益比率拡大を通じて、より急激なバリュエーション再評価を受けたためです。</p>
+  <p>ただし、この結果は「アップルが常に優れている」という意味ではありません。計算の開始時点をいつに設定するかによって順位は入れ替わる可能性があり、各社の事業構造・リスク・今後の成長エンジンはそれぞれ異なります。</p>
+
+  <h3>配当再投資を含めると?</h3>
+  <p>この記事の数値は配当を再投資せず現金で受け取るという前提です。両銘柄とも配当利回りが年1%未満と低めのため、10年累積で再投資効果を加えても最終金額の順位が大きく逆転することはありません。ただし配当を自動的に再投資(DRIP)すれば複利効果がもう少し積み上がり、この記事の数値より最終金額はやや大きくなります。</p>
+
+  <h2>自分の条件で直接比較してみる</h2>
+  <p>この2銘柄以外にも、希望する別のビッグテックの組み合わせで比較したい場合は下記のツールをご利用ください。</p>
+
+  <div class="cta-card">
+    <h3>複利計算機で自分だけのシナリオを作る</h3>
+    <p>銘柄、月間投資額、期間、期待利回りを直接入力して将来資産をシミュレーションします。</p>
+    <a class="cta-btn" href="https://ezlong.com/ja/compound-calculator.html">複利計算機を開く →</a>
+  </div>
+
+  <h2>よくある質問</h2>
+  <div class="faq-item">
+    <div class="faq-q">アップルとマイクロソフト、10年積立投資の利回りが高かったのはどちらですか?</div>
+    <div class="faq-a">2016年8月から2026年7月までの120ヶ月間、毎月362.32ドルずつ投資したと仮定すると、アップルは元本43,478.26ドルが税引前で約167,148.12ドル(利回り約+284.4%)、マイクロソフトは元本43,478.26ドルが税引前で約107,720.14ドル(利回り約+147.8%)になりました。株価上昇率ベースではアップルの方が高い結果でした。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">マイクロソフトの方が配当が多いのに、なぜ利回りはアップルより低いのですか?</div>
+    <div class="faq-a">配当利回りと株価上昇率は別の指標です。MSFTの配当利回り(年率約0.95%)はAAPL(年率約0.37%)より高いですが、この計算は配当を再投資せず別途受け取ると仮定した株価上昇分のみの比較です。株価上昇率自体の差の方がはるかに大きいため、順位が入れ替わることはありません。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">配当再投資を含めると結果はどれくらい変わりますか?</div>
+    <div class="faq-a">この記事の計算は配当を別途受け取ると仮定した簡略化バージョンです。配当利回りが低めのため最終金額への影響は大きくありませんが、再投資すれば実際の最終金額はこの記事の数値より多少大きくなります。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">2つの銘柄に分けて投資するのも一つの方法ですか?</div>
+    <div class="faq-a">はい。単一銘柄に集中する代わりに、複数のビッグテック銘柄やQQQのような指数ETFに分散投資すれば個別銘柄リスクを減らせます。EZLONGのポートフォリオ複利シミュレーターで分散投資シナリオを比較できます。</div>
+  </div>
+
+  <h2>関連ツール</h2>
+  <div class="related-links">
+    <a href="https://ezlong.com/ja/compound-calculator.html">複利計算機</a>
+    <a href="https://ezlong.com/ja/portfolio-manager.html">ポートフォリオ複利シミュレーター</a>
+    <a href="https://ezlong.com/ja/analyst-reports.html">ウォール街目標株価</a>
+    <a href="https://ezlong.com/ja/chart-analysis.html">AIチャート分析</a>
+  </div>
+
+  <p class="disclaimer">この記事は特定銘柄への投資勧誘ではなく、過去の実際の株価を用いた教育・参考目的のシミュレーションです。投資判断とその結果に対する責任は投資家本人にあります。データ出典:Yahoo Finance月次終値・配当履歴(修正株価基準)。© 2026 EZLONG.</p>
+
+</main>
+
+<footer class="ez-lang-footer">
+  <p><a href="https://ezlong.com/ja/">EZLONG</a> &mdash; 無料 米国株投資ツール<br>
+  &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+  <link rel="stylesheet" href="../ez-design.css">
+<meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>テスラ(TSLA)に毎月217ドルずつ10年間積立投資すればいくら?実際のバックテスト | EZLONG</title>
+
+  <meta name="description" content="テスラ(TSLA)に2016年9月から2026年7月まで10年間、毎月217ドルずつ積立投資していたら実際にいくらになっていたのかを、実際の月次株価で計算したバックテスト。元本26,086ドルの実際の結果と途中の下落局面まで透明に公開します。">
+  <meta name="keywords" content="テスラ 積立投資, TSLA 毎月217ドル, テスラ DCAシミュレーション, テスラ 10年利回り, テスラ 複利計算, イーロン・マスク テスラ株">
+  <meta name="author" content="EZLONG">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="ja">
+  <link rel="canonical" href="https://ezlong.com/ja/tesla-monthly-dca-10years.html">
+
+  <link rel="alternate" hreflang="ko" href="https://ezlong.com/tesla-monthly-dca-10years.html">
+  <link rel="alternate" hreflang="en" href="https://ezlong.com/en/tesla-monthly-dca-10years.html">
+  <link rel="alternate" hreflang="ja" href="https://ezlong.com/ja/tesla-monthly-dca-10years.html">
+  <link rel="alternate" hreflang="es" href="https://ezlong.com/es/tesla-monthly-dca-10years.html">
+  <link rel="alternate" hreflang="pt" href="https://ezlong.com/pt/tesla-monthly-dca-10years.html">
+  <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/tesla-monthly-dca-10years.html">
+  <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/tesla-monthly-dca-10years.html">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="テスラ(TSLA)に毎月217ドルずつ10年間積立投資すればいくら?実際のバックテスト">
+  <meta property="og:description" content="2016年9月から2026年7月までの10年間、実際の月次株価で計算したTSLA積立投資バックテスト。">
+  <meta property="og:url" content="https://ezlong.com/ja/tesla-monthly-dca-10years.html">
+  <meta property="og:image" content="https://ezlong.com/logo-preview.png">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="ja_JP">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="テスラに毎月217ドルずつ10年間積立投資、実際いくらになった?">
+  <meta name="twitter:description" content="2016年9月〜2026年7月、実際の月次株価で計算したTSLA積立投資バックテスト。">
+  <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "テスラ(TSLA)に毎月217ドルずつ10年間積立投資すればいくら?実際のバックテスト",
+    "description": "2016年9月から2026年7月まで120ヶ月間、TSLAに毎月217ドルずつ積立投資していたら実際の月次終値基準でいくらになっていたのかを計算したバックテスト結果と方法論。",
+    "author": { "@type": "Organization", "name": "EZLONG", "url": "https://ezlong.com" },
+    "publisher": { "@type": "Organization", "name": "EZLONG", "url": "https://ezlong.com", "logo": { "@type": "ImageObject", "url": "https://ezlong.com/logo.png" } },
+    "datePublished": "2026-07-02",
+    "dateModified": "2026-07-02",
+    "inLanguage": "ja",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://ezlong.com/ja/tesla-monthly-dca-10years.html" },
+    "about": [
+      { "@type": "Thing", "name": "テスラ積立投資" },
+      { "@type": "Thing", "name": "DCAバックテスト" },
+      { "@type": "Thing", "name": "米国株長期投資" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"EZLONG","item":"https://ezlong.com/ja/"},{"@type":"ListItem","position":2,"name":"テスラ 毎月217ドル 10年積立投資","item":"https://ezlong.com/ja/tesla-monthly-dca-10years.html"}]}
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "テスラに毎月217ドルずつ10年間積立投資すると実際にいくらになりますか?",
+        "acceptedAnswer": { "@type": "Answer", "text": "2016年9月から2026年7月までの120ヶ月間、TSLAの月次実際終値で計算すると、元本26,086.96ドル(月217ドル×120ヶ月)が税引前で約243,436.34ドルになります。利回りにすると約+833.2%です。" }
+      },
+      {
+        "@type": "Question",
+        "name": "テスラの10年間の投資期間中、大きな下落はなかったのですか?",
+        "acceptedAnswer": { "@type": "Answer", "text": "ありました。2022年には高値から-70%を超える下落があり、そのほかにも-40〜50%台の調整が何度もありました。積立投資はこうした急落局面でより多くの株式を相対的に低い価格で購入できますが、心理的に耐えるのが容易ではない局面だったのも事実です。" }
+      },
+      {
+        "@type": "Question",
+        "name": "今後もテスラはこのような利回りを出せますか?",
+        "acceptedAnswer": { "@type": "Answer", "text": "わかりません。過去10年はEV市場の初期高成長期と重なっており、現在のテスラは売上規模がはるかに大きくなっているため、過去と同じ成長率を維持するのは難しい可能性があります。ロボタクシー・エネルギー・AI事業拡大といった新たな成長エンジンと、競争激化のリスクを併せて見る必要があります。" }
+      },
+      {
+        "@type": "Question",
+        "name": "他の金額や期間で自分で計算してみることはできますか?",
+        "acceptedAnswer": { "@type": "Answer", "text": "はい。EZLONGの複利計算機とポートフォリオシミュレーターを使えば、希望する銘柄、月間投資額、期間、期待利回りを直接入力して、自分だけのシナリオを計算できます。" }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .post-hero { background: var(--ez-surface); border-bottom: 1px solid var(--ez-border); padding: 36px 20px 30px; }
+    .post-hero-inner { max-width: 760px; margin: 0 auto; }
+    .post-label { display: inline-block; font-size: 16px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ez-blue); background: var(--ez-blue-dim); padding: 4px 10px; border-radius: 6px; margin-bottom: 12px; }
+    .post-title { font-size: clamp(24px, 4vw, 34px); font-weight: 800; letter-spacing: -.02em; color: var(--ez-text); line-height: 1.3; margin-bottom: 10px; }
+    .post-meta { font-size: 16px; color: var(--ez-text3); }
+    .post-main { max-width: 760px; margin: 0 auto; padding: 32px 20px 60px; }
+    .post-main h2 { font-size: 21px; font-weight: 800; color: var(--ez-text); margin: 40px 0 14px; letter-spacing: -.01em; }
+    .post-main h3 { font-size: 17px; font-weight: 700; color: var(--ez-text); margin: 24px 0 10px; }
+    .post-main p { font-size: 16px; line-height: 1.75; color: var(--ez-text2); margin-bottom: 14px; }
+    .post-main ul, .post-main ol { padding-left: 20px; margin-bottom: 14px; }
+    .post-main li { font-size: 16px; line-height: 1.75; color: var(--ez-text2); margin-bottom: 6px; }
+    .post-main strong { color: var(--ez-text); font-weight: 700; }
+    .tldr-box { background: var(--ez-blue-dim); border: 1px solid var(--ez-border); border-radius: var(--ez-r); padding: 20px 22px; margin-bottom: 28px; }
+    .tldr-box .tldr-label { font-size: 16px; font-weight: 700; color: var(--ez-blue); margin-bottom: 8px; }
+    .tldr-box p { font-size: 16px; margin-bottom: 8px; }
+    .tldr-box p:last-child { margin-bottom: 0; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0 28px; }
+    .stat-box { background: var(--ez-card); border: 1px solid var(--ez-border); border-radius: var(--ez-r); padding: 16px 14px; text-align: center; }
+    .stat-box .stat-label { font-size: 16px; color: var(--ez-text3); margin-bottom: 6px; }
+    .stat-box .stat-value { font-size: 20px; font-weight: 800; color: var(--ez-text); letter-spacing: -.02em; }
+    .stat-box .stat-value.green { color: var(--ez-green); }
+    .ez-table-wrap { overflow-x: auto; margin-bottom: 20px; }
+    table.ez-table { width: 100%; border-collapse: collapse; font-size: 16px; }
+    table.ez-table th, table.ez-table td { border: 1px solid var(--ez-border); padding: 10px 12px; text-align: left; }
+    table.ez-table th { background: var(--ez-card2); color: var(--ez-text); font-weight: 700; }
+    table.ez-table td { color: var(--ez-text2); }
+    .callout { background: var(--ez-card2); border-left: 3px solid var(--ez-amber); border-radius: var(--ez-rs); padding: 16px 18px; margin: 20px 0; font-size: 16px; color: var(--ez-text2); line-height: 1.7; }
+    .callout strong { color: var(--ez-text); }
+    .cta-card { background: var(--ez-card); border: 1px solid var(--ez-border); border-radius: var(--ez-r); padding: 24px; margin: 32px 0; text-align: center; }
+    .cta-card h3 { font-size: 18px; margin-bottom: 8px; }
+    .cta-card p { font-size: 16px; margin-bottom: 16px; }
+    .cta-btn { display: inline-block; background: var(--ez-blue); color: #fff; font-size: 16px; font-weight: 700; padding: 12px 24px; border-radius: var(--ez-rs); text-decoration: none; }
+    .faq-item { border-bottom: 1px solid var(--ez-border); padding: 16px 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-size: 16px; font-weight: 700; color: var(--ez-text); margin-bottom: 8px; }
+    .faq-a { font-size: 16px; color: var(--ez-text2); line-height: 1.7; }
+    .related-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .related-links a { font-size: 16px; color: var(--ez-blue); text-decoration: none; background: var(--ez-blue-dim); padding: 8px 14px; border-radius: 20px; }
+    .related-links a:hover { text-decoration: underline; }
+    .disclaimer { font-size: 16px; color: var(--ez-text3); line-height: 1.7; margin-top: 32px; }
+    .ez-lang-nav { position:sticky; top:0; z-index:100; background:var(--ez-surface); border-bottom:1px solid var(--ez-border); padding:0 20px; height:52px; display:flex; align-items:center; justify-content:space-between; }
+    .ez-lang-nav-logo { font-size:17px; font-weight:700; color:var(--ez-text); text-decoration:none; letter-spacing:-0.02em; }
+    .ez-lang-nav-right { display:flex; gap:16px; align-items:center; }
+    .ez-lang-nav-link { font-size:14px; color:var(--ez-blue); text-decoration:none; font-weight:500; }
+    .ez-lang-nav-link:hover { text-decoration:underline; }
+    .ez-lang-footer { background:var(--ez-surface); border-top:1px solid var(--ez-border); padding:28px 20px; text-align:center; color:var(--ez-text3); font-size:14px; line-height:1.8; }
+    .ez-lang-footer a { color:var(--ez-blue); text-decoration:none; }
+  </style>
+</head>
+<body>
+<nav class="ez-lang-nav">
+  <a class="ez-lang-nav-logo" href="https://ezlong.com/ja/">EZLONG</a>
+  <div class="ez-lang-nav-right">
+    <a class="ez-lang-nav-link" href="https://ezlong.com/ja/">すべてのツール</a>
+    <a class="ez-lang-nav-link" href="https://ezlong.com/en/tesla-monthly-dca-10years.html">English</a>
+    <a class="ez-lang-nav-link" href="https://ezlong.com/tesla-monthly-dca-10years.html">한국어 &rarr;</a>
+  </div>
+</nav>
+
+<div class="post-hero">
+  <div class="post-hero-inner">
+    <span class="post-label">投資シミュレーション</span>
+    <h1 class="post-title">テスラ(TSLA)に毎月217ドルずつ10年間積立投資すればいくら?</h1>
+    <div class="post-meta">2026年7月2日更新 · EZLONG · 実際の月次株価に基づくバックテスト</div>
+  </div>
+</div>
+
+<main class="post-main">
+
+  <div class="tldr-box">
+    <div class="tldr-label">3行まとめ</div>
+    <p>2016年9月から2026年7月まで<strong>120ヶ月(10年)間、TSLAに毎月217ドルずつ</strong>積み立てていたら、元本<strong>26,086.96ドル</strong>が税引前で<strong>約243,436.34ドル</strong>になりました。</p>
+    <p>利回りにすると<strong>約+833.2%</strong>。ただしこの10年間には-70%を超える急落局面もあり、EV(電気自動車)市場の初期高成長期という特殊性が大きく影響しました。</p>
+    <p>過去の実績であり、将来を保証するものではありません — 以下で計算方法と前提条件を明らかにします。</p>
+  </div>
+
+  <p>テスラの車に乗っている方も、イーロン・マスクの動向を見守っている方も、一度は気になったことがある問いです。「あのとき毎月少しずつ買い続けていたら、今頃いくらになっていただろう?」実際のTSLA月次終値(株式分割調整済み)をそのまま使って、過去10年を振り返ってみました。</p>
+
+  <h2>計算結果</h2>
+
+  <div class="stat-grid">
+    <div class="stat-box">
+      <div class="stat-label">投資期間</div>
+      <div class="stat-value">120ヶ月<br>(10年)</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">月間投資額</div>
+      <div class="stat-value">$217</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">総投資元本</div>
+      <div class="stat-value">$26,087</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">税引前最終評価額</div>
+      <div class="stat-value green">$243,436</div>
+    </div>
+  </div>
+
+  <div class="ez-table-wrap">
+    <table class="ez-table">
+      <tr><th>項目</th><th>数値</th></tr>
+      <tr><td>計算期間</td><td>2016年9月 〜 2026年7月(120ヶ月)</td></tr>
+      <tr><td>総投資元本</td><td>$26,086.96</td></tr>
+      <tr><td>税引前最終評価額</td><td>約$243,436.34</td></tr>
+      <tr><td>税引前評価損益</td><td>約+$217,349.38</td></tr>
+      <tr><td>税引前累積利回り</td><td>約+833.2%</td></tr>
+      <tr><td>2026年7月TSLA終値基準価格</td><td>425.30ドル</td></tr>
+    </table>
+  </div>
+  <p style="font-size:14px;color:var(--ez-text3);">※ 元の韓国語版分析は1ドル=1,380ウォンの為替レートを前提に月30万ウォンを算出しており、本稿ではその金額を海外読者向けに米ドル換算(約217ドル/月)して掲載しています。</p>
+
+  <h2>計算方法と前提条件</h2>
+  <ul>
+    <li>TSLAの2016年9月から2026年7月までの<strong>月次実際終値</strong>(株式分割調整済み)を使用しました。</li>
+    <li>毎月同じ日に217ドルを購入したと仮定しました。</li>
+    <li>購入するたびにその月の終値で購入した株数を積み上げ、最終月(2026年7月)の終値で全体の評価額を計算しました。</li>
+    <li>売買手数料、為替手数料、譲渡所得税、スリッページは反映していない<strong>税引前・簡略化した計算</strong>です。</li>
+  </ul>
+
+  <div class="callout">この計算には税金は含まれていません。海外株式投資に対するキャピタルゲイン課税の扱いは国や口座の種類によって大きく異なります。投資判断を行う前に、ご自身の国の税制を確認するか、税理士にご相談ください。</div>
+
+  <h2>10年間で実際に何が起きたか</h2>
+  <p>この10年は決して順調な右肩上がりのカーブではありませんでした。2019年上半期には生産の混乱懸念から株価がほぼ半減し、2020〜2021年にはモデル3の量産安定化とともに爆発的に上昇しました。2022年には金利引き上げ、ツイッター(現X)買収に関する不確実性、中国需要の鈍化懸念が重なり、高値から-70%を超える下落局面もありました。その後、ロボタクシー、オプティマス(ヒューマノイドロボット)、FSD(完全自動運転)への期待が再び株価を押し上げました。</p>
+  <p>こうしたジェットコースターのような局面でも毎月コツコツ買い続ける方式は、急落時により多くの株数を確保できる効果がありました。ただしこれは結果論的な解釈であり、下落局面を実際に耐え抜くことは数字で見るよりもはるかに難しいという点も忘れてはなりません。</p>
+
+  <h2>自分の条件で直接計算してみる</h2>
+  <p>月間投資額、投資期間、期待利回りを自分で調整しながらシナリオを比較したい場合は、下記の計算機をご利用ください。</p>
+
+  <div class="cta-card">
+    <h3>複利計算機で自分だけのシナリオを作る</h3>
+    <p>銘柄、月間投資額、期間、期待利回りを直接入力して将来資産をシミュレーションします。</p>
+    <a class="cta-btn" href="https://ezlong.com/ja/compound-calculator.html">複利計算機を開く →</a>
+  </div>
+
+  <h2>よくある質問</h2>
+  <div class="faq-item">
+    <div class="faq-q">テスラに毎月217ドルずつ10年間積立投資すると実際にいくらになりますか?</div>
+    <div class="faq-a">2016年9月から2026年7月までの120ヶ月間、TSLAの月次実際終値で計算すると、元本26,086.96ドル(月217ドル×120ヶ月)が税引前で約243,436.34ドルになります。利回りにすると約+833.2%です。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">テスラの10年間の投資期間中、大きな下落はなかったのですか?</div>
+    <div class="faq-a">ありました。2022年には高値から-70%を超える下落があり、そのほかにも-40〜50%台の調整が何度もありました。積立投資はこうした急落局面でより多くの株式を相対的に低い価格で購入できますが、心理的に耐えるのが容易ではない局面だったのも事実です。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">今後もテスラはこのような利回りを出せますか?</div>
+    <div class="faq-a">わかりません。過去10年はEV市場の初期高成長期と重なっており、現在のテスラは売上規模がはるかに大きくなっているため、過去と同じ成長率を維持するのは難しい可能性があります。ロボタクシー・エネルギー・AI事業拡大といった新たな成長エンジンと、競争激化のリスクを併せて見る必要があります。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">他の金額や期間で自分で計算してみることはできますか?</div>
+    <div class="faq-a">はい。EZLONGの複利計算機とポートフォリオシミュレーターを使えば、希望する銘柄、月間投資額、期間、期待利回りを直接入力して、自分だけのシナリオを計算できます。</div>
+  </div>
+
+  <h2>関連ツール</h2>
+  <div class="related-links">
+    <a href="https://ezlong.com/ja/compound-calculator.html">複利計算機</a>
+    <a href="https://ezlong.com/ja/portfolio-manager.html">ポートフォリオ複利シミュレーター</a>
+    <a href="https://ezlong.com/ja/chart-analysis.html">AIチャート分析</a>
+    <a href="https://ezlong.com/ja/analyst-reports.html">ウォール街目標株価</a>
+    <a href="https://ezlong.com/ja/atmr-dashboard.html">スイングシグナルダッシュボード</a>
+  </div>
+
+  <p class="disclaimer">この記事は特定銘柄への投資勧誘ではなく、過去の実際の株価を用いた教育・参考目的のシミュレーションです。投資判断とその結果に対する責任は投資家本人にあります。データ出典:Yahoo Finance月次終値(修正株価基準)。© 2026 EZLONG.</p>
+
+</main>
+
+<footer class="ez-lang-footer">
+  <p><a href="https://ezlong.com/ja/">EZLONG</a> &mdash; 無料 米国株投資ツール<br>
+  &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com</p>
+</footer>
+
+</body>
+</html>
