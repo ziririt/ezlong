@@ -1,6 +1,71 @@
 {
   "entries": [
     {
+      "id": "2026-07-28-14:34",
+      "timestamp_kst": "2026-07-28(화) 14:34 KST",
+      "key_event": {
+        "name": "반도체 섹터 약세 심화",
+        "time": "직전 정규장 및 야간",
+        "why": "NVDA 급락, AI 밸류에이션 논란, 기술주 하방 압력"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "반도체 섹터 약세 심화로 부정 우위 지속, 기술주 전반 하락 압력",
+      "positive_factors": [
+        {
+          "score": 15,
+          "name": "빅테크 실적 호조 및 상승",
+          "desc": "MSFT, GOOGL, AAPL 등 주요 빅테크 종목이 직전 거래일 상승 마감하며 시장 하방 압력 일부 상쇄",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 10,
+          "name": "미-이란 휴전 기대감 지속",
+          "desc": "미-이란 긴장 완화 소식이 유가 하락 및 위험자산 선호도 회복에 긍정적으로 작용",
+          "category": "geopolitics"
+        },
+        {
+          "score": 10,
+          "name": "일부 섹터 로테이션",
+          "desc": "기술주 약세 속 금융, 필수소비재 등 다른 섹터로의 자금 이동 가능성 부각",
+          "category": "other"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "엔비디아 급락 및 반도체 약세",
+          "desc": "NVDA가 5.15% 급락하며 반도체 섹터 전반에 매도 압력 심화, SOXX도 2.84% 하락",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "중국 AI 경쟁 심화 우려",
+          "desc": "중국 CXMT 상장 및 자체 DUV 장비 생산 소식에 미 반도체 경쟁 심화 우려 확산",
+          "category": "trade_tariff"
+        },
+        {
+          "score": 10,
+          "name": "테슬라 실적 및 투자 회수 우려",
+          "desc": "테슬라 영업이익 및 자유현금흐름 부진, AI 투자 회수 기간 불확실성 지속",
+          "category": "company_specific"
+        },
+        {
+          "score": 10,
+          "name": "VIX 공포지수 소폭 상승",
+          "desc": "VIX 지수가 소폭 상승하며 시장의 불확실성과 위험 회피 심리 반영",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미 10년 국채금리 하락",
+          "desc": "국채금리 하락은 일반적으로 성장주에 긍정적이나, 현재 시장의 위험 회피 심리(VIX 상승)와 맞물려 안전자산 선호 현상으로 해석될 수 있어 혼조세",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-07-28-11:50",
       "timestamp_kst": "2026-07-28(화) 11:50 KST",
       "key_event": {
@@ -490,65 +555,8 @@
           "desc": "ORCL의 OpenAI 데이터센터 투자 소식은 긍정적이나, 전반적인 AI 투자 지출 우려는 기술주 약세 요인으로 작용"
         }
       ]
-    },
-    {
-      "id": "2026-07-27-08:20",
-      "timestamp_kst": "2026-07-27(월) 08:20 KST",
-      "key_event": {
-        "name": "미-이란 협상 및 Fed 회의",
-        "time": "다음 주 개장 전까지",
-        "why": "지정학적 긴장 완화 기대, 유가 하락, 금리 정책 불확실성"
-      },
-      "positive_total": 55,
-      "negative_total": 45,
-      "summary": "지정학적 긴장 완화 기대 및 유가 하락으로 긍정 우위 전환, 기술주 약세는 지속",
-      "positive_factors": [
-        {
-          "score": 25,
-          "name": "미-이란 협상 진전 기대",
-          "desc": "미국-이란 협상 진전 기대감에 유가 급락, 지정학적 리스크 완화"
-        },
-        {
-          "score": 15,
-          "name": "WTI 원유 가격 급락",
-          "desc": "지정학적 긴장 완화 및 공급 기대감에 WTI 원유 4.74% 하락, 인플레이션 우려 완화"
-        },
-        {
-          "score": 10,
-          "name": "애플 실적 기대감",
-          "desc": "다음 주 애플 실적 발표 기대감 속 AAPL 3.96% 상승"
-        },
-        {
-          "score": 5,
-          "name": "미국 10년 국채금리 하락",
-          "desc": "미국 10년 국채금리 0.51% 하락, 성장주에 긍정적 영향"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "기술주 및 반도체 섹터 약세 지속",
-          "desc": "QQQ 1.38%, SOXX 4.93% 하락 등 기술주 및 반도체 섹터 전반 약세 지속"
-        },
-        {
-          "score": 15,
-          "name": "Fed 금리 인상 압력 지속",
-          "desc": "강한 미국 경제 지표로 Fed의 금리 인상 가능성 및 고금리 장기화 우려"
-        },
-        {
-          "score": 10,
-          "name": "테슬라 실적 부진 및 과대평가 우려",
-          "desc": "테슬라 3.90% 하락, 실적 발표 후 과대평가 논란 지속"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "빅테크 AI 투자 지출 확대",
-          "desc": "알파벳의 AI 투자 확대 소식은 장기 성장 동력이지만, 단기적으로는 수익성 압박 우려"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-07-28T02:50:52Z",
+  "updated_at": "2026-07-28T05:34:45Z",
   "max_entries": 10
 }
