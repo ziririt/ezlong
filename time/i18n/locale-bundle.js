@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-07-27T23:48:22.570Z
+ * 생성 시각: 2026-07-28T02:21:19.428Z
  * 포함 로케일: en, ko
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -151,6 +151,7 @@
       },
       "cloudyWithRainChance": "Cloudy ({label})",
       "rainStopped": "Rain (ended)",
+      "thunderShower": "Thunderstorm",
       "detail": {
         "humidity": "Humidity {value}%",
         "sunriseSunset": "🌅 Sunrise {sunrise} · 🌇 Sunset {sunset}",
@@ -494,6 +495,7 @@
       },
       "cloudyWithRainChance": "흐림({label})",
       "rainStopped": "비(그침)",
+      "thunderShower": "뇌우",
       "detail": {
         "humidity": "습도 {value}%",
         "sunriseSunset": "🌅 일출 {sunrise} · 🌇 일몰 {sunset}",

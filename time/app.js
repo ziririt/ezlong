@@ -21,6 +21,61 @@ const FZ_REGION = (typeof window !== "undefined" && window.FlipZenRegion) || nul
 const FZ_CODES = (typeof window !== "undefined" && window.FlipZenWeatherCodes) || null;
 const FZ_QUOTE_SRC = (typeof window !== "undefined" && window.FlipZenQuoteSource) || null;
 
+/**
+ * 날씨 상태 코드 계층 접근자 (2026-07-28 글로벌화 W2)
+ *
+ * ─────────────────────────────────────────────────────────────
+ * 왜 필요한가
+ * ─────────────────────────────────────────────────────────────
+ * 이 앱은 지금까지 날씨를 **한국어 문자열로 판정**해 왔다:
+ *     if (ko === "안개") return "mist";
+ *     conditionsKo === "비" ? "흐림" : conditionsKo
+ * 영어 모드에서 백엔드는 "Fog"/"Rain" 을 주므로 이 비교가 전부 false 가
+ * 되어, 에러 하나 없이 아이콘이 조용히 전부 맑음으로 떨어진다.
+ * 그래서 판정은 언어와 무관한 코드(CLEAR/RAIN/…)로 하고,
+ * 사람이 읽는 문자열은 그 코드에서 만들어낸다.
+ *
+ * ─────────────────────────────────────────────────────────────
+ * ★ 표를 여기에 다시 적지 않는다 ★
+ * ─────────────────────────────────────────────────────────────
+ * 이모지 표를 app.js 에도 복사해두고 싶은 유혹이 있지만, 오늘 이미
+ * 그 대가를 치렀다 — i18n/weather-codes.js 초안이 app.js 와 세 군데
+ * (구름 많음·알 수 없음·밤 경계) 달랐는데 자체 테스트는 전부 통과했다.
+ * 표가 두 벌이면 반드시 갈라지고, 갈라진 걸 알아채는 건 유저다.
+ * 그래서 표는 한 곳(i18n/weather-codes.js)에만 두고 여기서는 부른다.
+ *
+ * 로드 실패 시엔 아이콘이 중립값(🌤️)으로 떨어지되 앱은 죽지 않는다.
+ * 그 상황 자체를 막는 건 scripts/test-wiring.mjs(3곳 md5 대조 + 로드
+ * 순서 검사)와 scripts/sync-web.mjs 의 몫이다.
+ */
+const WX = FZ_CODES || {
+  CONDITION: { UNKNOWN: "UNKNOWN" },
+  conditionCodeOf: () => "UNKNOWN",
+  conditionEmoji: () => "🌤️",
+  applyRainDowngrade: (code) => code,
+  isRainLikeCondition: () => false,
+  isNightHour: () => false,
+  hourOf: () => null,
+};
+if (!FZ_CODES && typeof console !== "undefined" && console.error) {
+  // 조용히 넘어가면 "아이콘이 왜 다 이렇지"로만 보인다 — 원인을 남긴다.
+  console.error(
+    "[FlipZen] i18n/weather-codes.js 가 로드되지 않았습니다. " +
+    "날씨 아이콘이 기본값으로 표시됩니다. index.html 의 script 순서와 " +
+    "i18n/ 폴더 배포 여부를 확인하십시오."
+  );
+}
+
+/** 응답 객체(현재/시간별/주간 공용)에서 언어 무관 상태 코드를 얻는다. */
+function conditionCodeOf(src) {
+  return WX.conditionCodeOf(src);
+}
+
+/** 상태 코드 → 사람이 읽는 라벨. 한국어에서는 기존 conditionsKo 와 같은 값이다. */
+function conditionLabel(code, fallbackKo) {
+  return t("weather.conditions." + code, null, fallbackKo !== undefined ? fallbackKo : "");
+}
+
 // 네이티브 래퍼(iOS/Android)가 OS 언어를 주입해두면 그 값이 우선한다.
 // 주입 전이면 navigator.language 로 판정하고, 그것도 실패하면 한국어다.
 const FZ_LOCALE = FZ_I18N.init ? FZ_I18N.init({}) : "ko";
@@ -994,17 +1049,23 @@ function vcCurrentTag(c) {
   // 비/눈이 아닌 경우 — 백엔드가 이미 계산해 내려주는 conditionsKo(한글
   // 라벨, mapConditionsToKo 결과)로 판정한다. 응답에 아직 conditionsKo가
   // 없는(배포 전환 과도기) 경우를 대비해 conditions 원문도 보조로 살핀다.
-  const ko = c.conditionsKo || "";
-  if (ko === "안개" || /fog|mist|haze/.test(conditions)) return "mist";
-  if (ko === "흐림" || /overcast/.test(conditions)) return "cloudy";
-  if (ko === "구름 조금" || /partially cloudy|partly cloudy/.test(conditions)) return "partly-cloudy";
-  if (ko === "구름 많음" || /cloudy/.test(conditions)) return "cloudy";
-  if (ko === "맑음" || /clear/.test(conditions)) return "clear";
+  // 2026-07-28 글로벌화 W2: 한국어 문자열 비교 → 코드 비교.
+  // 영어 모드에서는 conditionsKo 가 "Fog"/"Overcast" 로 오므로 아래
+  // 등가비교가 전부 false 가 되어 배경 장면이 통째로 clear 로 떨어졌다.
+  // conditions 원문 정규식은 예전 그대로 보조로 남겨둔다 — 백엔드가
+  // conditionCode 를 아직 안 주는 응답(캐시 등)의 안전망이다.
+  const code = conditionCodeOf(c);
+  const C = WX.CONDITION;
+  if (code === C.FOG || /fog|mist|haze/.test(conditions)) return "mist";
+  if (code === C.CLOUDY || /overcast/.test(conditions)) return "cloudy";
+  if (code === C.PARTLY_CLOUDY || /partially cloudy|partly cloudy/.test(conditions)) return "partly-cloudy";
+  if (code === C.MOSTLY_CLOUDY || /cloudy/.test(conditions)) return "cloudy";
+  if (code === C.CLEAR || /clear/.test(conditions)) return "clear";
   if (rainDisplay.cloudyProbLabel) return "cloudy";
   // conditionsKo가 "비"/"눈"/"천둥번개"처럼 강수 계열인데 rainIntensity가
   // NONE으로 판정한 드문 불일치 상황 — 비/눈 아이콘을 잘못 켜는 것보다
   // 구름으로 안전하게 대체한다.
-  if (ko === "비" || ko === "눈" || ko === "천둥번개") return "cloudy";
+  if (code === C.RAIN || code === C.SNOW || code === C.THUNDER) return "cloudy";
   return "clear";
 }
 
@@ -1016,18 +1077,25 @@ function vcCurrentSummary(c) {
   const isThunder = /thunder|storm/.test(conditions);
   const rainDisplay = deriveRainDisplay(c.precipprob, c.precip);
 
-  if (isSnow) return "눈";
+  // 2026-07-28 글로벌화 W2: 반환 문자열을 카탈로그 경유로 바꿨다.
+  // t() 는 키가 없으면 fallback(현행 한국어)을 그대로 돌려주므로,
+  // 한국어 화면에서는 이 변경 전후가 완전히 같은 값이다.
+  if (isSnow) return conditionLabel(WX.CONDITION.SNOW, "눈");
   if (rainDisplay.showAsRain && grade !== "NONE") {
     // rainIntensity.label은 백엔드가 이미 "약한 비/비/강한 비/매우 강한
     // 비"로 계산해 내려주는 문구 — 날씨상세 패널(wdCurrentConditionBase)도
     // 같은 값을 쓰므로 재사용하면 두 화면이 항상 같은 말을 하게 된다.
-    if (isThunder) return "뇌우";
-    return (c.rainIntensity && c.rainIntensity.label) || "비";
+    if (isThunder) return t("weather.thunderShower", null, "뇌우");
+    // rainIntensity.label 은 백엔드가 로케일에 맞춰 내려준다(W1에서 처리).
+    return (c.rainIntensity && c.rainIntensity.label) || conditionLabel(WX.CONDITION.RAIN, "비");
   }
 
   // 2026-07-22: 확률<50%인데 강수량이 이미 1mm를 넘는 애매한 경우 —
   // "비"라고 단정하지 않되 확률 정보는 숨기지 않는 절충 표기.
-  if (rainDisplay.cloudyProbLabel) return `흐림(${rainDisplay.cloudyProbLabel})`;
+  if (rainDisplay.cloudyProbLabel) {
+    return t("weather.cloudyWithRainChance", { label: rainDisplay.cloudyProbLabel },
+             `흐림(${rainDisplay.cloudyProbLabel})`);
+  }
 
   // 드문 경우지만, 백엔드 conditions 원문이 "Rain" 계열인데 실측
   // precip/precipprob 기준(classifyRainIntensity)으로는 NONE 등급인 상충
@@ -1036,8 +1104,20 @@ function vcCurrentSummary(c) {
   // 등급인데 텍스트는 "비"라고 말하는 자기모순이 생긴다. vcCurrentTag도
   // 같은 상황에서 아이콘을 cloudy로 안전하게 대체하므로, 텍스트도 같은
   // 기준으로 안전한 값으로 대체해 아이콘·문구가 항상 같은 판정을 말하게 한다.
-  if (c.conditionsKo && /비|눈|천둥번개/.test(c.conditionsKo)) return "흐림";
-  return c.conditionsKo || "맑음";
+  // 2026-07-28 글로벌화 W2: 정규식 /비|눈|천둥번개/ → 코드 비교.
+  // 이 정규식은 영어 모드에서 절대 매치되지 않아 자기모순(아이콘은 구름,
+  // 문구는 Rain)이 그대로 살아났다.
+  const summaryCode = conditionCodeOf(c);
+  if (summaryCode === WX.CONDITION.RAIN || summaryCode === WX.CONDITION.SNOW ||
+      summaryCode === WX.CONDITION.THUNDER) {
+    return conditionLabel(WX.CONDITION.CLOUDY, "흐림");
+  }
+  if (summaryCode !== WX.CONDITION.UNKNOWN) {
+    return conditionLabel(summaryCode, c.conditionsKo);
+  }
+  // 사전에 없는 값(빈 문자열·미지의 라벨) — 예전처럼 원문을 그대로 쓰고,
+  // 그마저 없으면 맑음으로 떨어진다.
+  return c.conditionsKo || conditionLabel(WX.CONDITION.CLEAR, "맑음");
 }
 
 function weatherTagGroup(tag) {
@@ -1115,7 +1195,26 @@ function pickNonRepeatingPhotos(pool, count) {
   return picked;
 }
 
+/**
+ * 배경사진에 쓸 계절. 2026-07-28 글로벌화 W3 — 남반구 대응.
+ *
+ * ─────────────────────────────────────────────────────────────
+ * 왜 위도를 보는가
+ * ─────────────────────────────────────────────────────────────
+ * 지금까지는 달(month)만 봤다. 한국만 쓰던 동안엔 맞았지만, 1차 출시
+ * 대상에 **호주·뉴질랜드**가 들어있다 — 지금(7월) 한국은 여름이지만
+ * 시드니는 한겨울이다. 달만 보면 그들에게 출시 첫날부터 한여름 사진이
+ * 깔린다. 남반구는 북반구를 6개월 민 것과 같으므로 위도로 뒤집는다.
+ *
+ * ★ 한국(위도 33~39)에서는 결과가 예전과 완전히 같다 ★
+ * 위도를 모를 때(권한 거부·측위 전)도 북반구로 간주하므로 같다.
+ * 이 동등성은 scripts/test-season.mjs 가 12개월 전수로 확인한다.
+ */
 function getCurrentSeason(date = new Date()) {
+  const lat = userCoords && typeof userCoords.lat === "number" ? userCoords.lat : null;
+  if (FZ_SEASON && FZ_SEASON.resolveSeason) return FZ_SEASON.resolveSeason(date, lat);
+
+  // i18n 스크립트 미로드 시 폴백 — 예전 동작(북반구 고정) 그대로
   const month = date.getMonth() + 1;
   if (month >= 3 && month <= 5) return "spring";
   if (month >= 6 && month <= 8) return "summer";
@@ -1486,7 +1585,16 @@ function renderTime(now = new Date()) {
   }
 }
 
+// 2026-07-28 글로벌화 W3: 날짜 라벨을 로케일화.
+// 한국어는 "7월 28일 (화)" 그대로다 — FZ_REGION.formatDateLabel 의 ko 분기가
+// 아래 폴백과 글자 단위로 같은 구현이며, scripts/test-region.mjs 가 확인한다.
+// (영어는 "Jul 28 (Tue)" 형태 — "요일" 잘라내기 같은 한국어 전용 처리가
+//  영어에 그대로 적용되면 아무 일도 안 일어나 조용히 어색해진다)
 function renderDate(now) {
+  if (FZ_REGION && FZ_REGION.formatDateLabel) {
+    setText("dateLabel", FZ_REGION.formatDateLabel(now, FZ_LOCALE));
+    return;
+  }
   const monthDay = new Intl.DateTimeFormat("ko-KR", {
     month: "long",
     day: "numeric"
@@ -1851,15 +1959,23 @@ async function loadBackgroundArchive() {
   }
 }
 
+// 2026-07-28 글로벌화 W3: accept-language 를 로케일에 맞춘다.
+// ko 로 고정돼 있으면 영어 사용자에게 "런던"이 아니라 한글 지명이 뜬다 —
+// 화면 전체가 영어인데 도시명만 한글이라 특히 눈에 띈다.
+// 한국어에서는 여전히 "ko" 이므로 동작이 같다(FZ_REGION.geocodeLanguage).
 async function reverseGeocode(latitude, longitude) {
+  const lang = FZ_REGION && FZ_REGION.geocodeLanguage
+    ? FZ_REGION.geocodeLanguage(FZ_LOCALE)
+    : "ko";
+  const fallbackName = t("weather.currentLocation", null, "현재 위치");
   try {
-    const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&accept-language=ko`;
+    const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&accept-language=${lang}`;
     const response = await fetch(url);
     const data = await response.json();
     const address = data.address || {};
-    return address.city || address.town || address.county || address.borough || address.village || "현재 위치";
+    return address.city || address.town || address.county || address.borough || address.village || fallbackName;
   } catch (error) {
-    return "현재 위치";
+    return fallbackName;
   }
 }
 
@@ -2976,18 +3092,13 @@ function weatherEmojiFromCurrent(c, hourlyNowProb, hourlyNowMm) {
   return weatherEmojiFromEnglish(c.conditions);
 }
 
+// 2026-07-28 글로벌화 W2: 이모지 표를 i18n/weather-codes.js 로 옮겼다.
+// 이 함수는 이름·시그니처만 남은 얇은 어댑터다 — 호출부가 많아 한꺼번에
+// 바꾸면 검토가 어려워지므로, 표만 먼저 한 곳으로 모았다.
+// 동작이 그대로임은 scripts/test-condition-golden.mjs 가 리팩터 전에
+// 얼려둔 실행 결과와 대조해 기계로 증명한다.
 function weatherEmojiFromKoCondition(ko) {
-  const map = {
-    "천둥번개": "⛈️",
-    "눈": "❄️",
-    "비": "🌧️",
-    "안개": "🌫️",
-    "흐림": "☁️",
-    "구름 조금": "⛅",
-    "구름 많음": "🌥️",
-    "맑음": "☀️",
-  };
-  return map[ko] || "🌤️";
+  return WX.conditionEmoji(conditionCodeOf({ conditionsKo: ko }), false);
 }
 
 // 시간대별 스트립엔 조건 텍스트가 안 내려오므로, 강수확률(precipprob)과
@@ -3004,25 +3115,22 @@ function weatherEmojiFromKoCondition(ko) {
 // 밤엔 어색함 — Fable 5 회신의 iconNight:"☁️" 선택과 같은 원칙), 낮엔
 // weatherEmojiFromKoCondition()을 그대로 재사용해 흐림/구름조금/구름많음을
 // 구분해서 보여준다.
+// 2026-07-28 글로벌화 W2: 밤 분기표도 i18n/weather-codes.js 로 이동.
+// (밤에는 구름 조금/많음/흐림을 ☁️ 하나로 뭉치는 규칙 그대로)
 function weatherEmojiFromHourCondition(conditionsKo, isNight) {
-  if (!isNight) return weatherEmojiFromKoCondition(conditionsKo);
-  if (conditionsKo === "맑음") return "🌙";
-  if (conditionsKo === "안개") return "🌫️";
-  if (conditionsKo === "천둥번개") return "⛈️";
-  if (conditionsKo === "눈") return "❄️";
-  if (conditionsKo === "비") return "🌧️";
-  return "☁️"; // 구름 조금/구름 많음/흐림/기타 — 밤에는 뭉뚱그려 구름 하나로
+  return WX.conditionEmoji(conditionCodeOf({ conditionsKo }), !!isNight);
 }
 
 function weatherEmojiFromHour(precipprob, precipMm, hourLabel, isNow, conditionsKo) {
-  let hour = null;
-  if (isNow) {
-    hour = new Date().getHours();
-  } else {
-    const m = /^(\d+)시/.exec(hourLabel || "");
-    if (m) hour = Number(m[1]);
-  }
-  const isNight = hour != null && (hour >= 20 || hour < 6);
+  // 2026-07-28 글로벌화 W2: "14시" 파싱을 WX.hourOf() 로 옮겼다.
+  // 영어 모드에서는 이 라벨이 "2 PM" 같은 형태로 오므로 /^(\d+)시/ 가
+  // 조용히 실패해 밤/낮 아이콘이 통째로 틀어진다. hourOf() 는 백엔드가
+  // 주는 hour/datetimeEpoch 를 먼저 보고, 없을 때만 라벨을 파싱한다.
+  // ★ isNow 를 먼저 보는 순서는 그대로 유지한다 ★ hourOf() 는 라벨을
+  //   isNow 보다 우선하므로, 순서를 바꾸면 "지금" 카드가 라벨 시각을
+  //   따라가 버린다 — 지금 동작과 달라진다.
+  const hour = isNow ? new Date().getHours() : WX.hourOf({ hourLabel });
+  const isNight = WX.isNightHour(hour);
   // 2026-07-24 Fable 5 검토회신 반영: 이 함수가 "비냐 아니냐"만 보던
   // 이분법이 오늘 사건의 원인 중 하나였다 — deriveRainDisplay()가 새로
   // 반환하는 ②(절충) 상태를 받을 자리가 없어 조용히 ③(맑음)과 똑같이
@@ -3042,10 +3150,118 @@ function weatherEmojiFromHour(precipprob, precipMm, hourLabel, isNow, conditions
     // 실제 사고: ver.1.6.13.7 배포 직후 스트립 전 시간이 🌧️로 도배
     // (2026-07-27 13:2x 유저 제보). "비"는 구름량 정보로 강등해 "흐림"으로
     // 그린다. 천둥번개(⛈️)·눈(❄️)은 우산과 별개의 고유 신호라 유지.
-    const sanitizedKo = conditionsKo === "비" ? "흐림" : conditionsKo;
-    return weatherEmojiFromHourCondition(sanitizedKo, isNight);
+    // 2026-07-28 글로벌화 W2: 강등 규칙을 WX.applyRainDowngrade() 로 이동.
+    // 여기까지 왔다는 건 deriveRainDisplay 가 ③(비 신호 없음)을 준
+    // 상태이므로, 두 번째 인자는 항상 false 다.
+    const code = WX.applyRainDowngrade(conditionCodeOf({ conditionsKo }), false);
+    return WX.conditionEmoji(code, isNight);
   }
   return isNight ? "🌙" : "☀️";
+}
+
+/**
+ * 한국 전용 기능(평년비교·기상특보·미세먼지)의 노출을 좌표로 결정한다.
+ * 2026-07-28 글로벌화 W3 신설.
+ *
+ * ─────────────────────────────────────────────────────────────
+ * ★ 언어가 아니라 좌표로 판정한다 ★
+ * ─────────────────────────────────────────────────────────────
+ * "영어면 숨긴다"로 짜고 싶어지지만 틀린 설계다:
+ *   · 서울에 사는 영어권 사용자 → 미세먼지·기상특보가 가장 필요한 사람인데
+ *     언어로 자르면 못 본다
+ *   · 해외 거주 한국어 사용자 → 한국 기상특보를 봐야 할 이유가 없다
+ * 이 세 기능의 데이터 출처는 전부 한국 기상청·환경부다. "한국어를 쓰는가"가
+ * 아니라 "한국에 있는가"가 판정 기준이어야 한다.
+ *
+ * 좌표를 아직 모를 때(측위 전·권한 거부)는 **보여준다** — 지금까지의 동작이
+ * 그렇고, 한국 사용자가 대다수인 현재 상태에서 안전한 쪽이다.
+ * (i18n/region.js showKoreaOnlyFeatures 의 계약, scripts/test-region.mjs 확인)
+ *
+ * @returns {boolean} 한국 전용 기능을 노출할 것인가
+ */
+function applyKoreaOnlyGating() {
+  // ★ showKoreaOnlyFeatures 는 (lat, lng) 두 인자를 받는다 ★
+  // 초안에서 userCoords 객체를 통째로 넘겼더니, 첫 인자가 number 가 아니라
+  // "좌표를 모른다"로 판정되어 **어디서든 항상 true**(전부 노출)가 됐다.
+  // 에러도 경고도 없이 게이트만 조용히 무력화되는 종류의 버그였고,
+  // scripts/test-region.mjs 의 뉴욕·시드니 케이스가 잡아냈다.
+  const lat = userCoords && typeof userCoords.lat === "number" ? userCoords.lat : null;
+  const lng = userCoords && typeof userCoords.lng === "number" ? userCoords.lng : null;
+  const show = FZ_REGION && FZ_REGION.showKoreaOnlyFeatures
+    ? FZ_REGION.showKoreaOnlyFeatures(lat, lng)
+    : true;   // i18n 미로드 → 예전처럼 전부 노출
+
+  // 카드를 숨긴다. 숨기지 않으면 "불러올 수 없어요"가 남아 고장처럼 보인다.
+  const normalSection = document.getElementById("wdNormalSection");
+  const normalDivider = document.getElementById("wdNormalDivider");
+  for (const el of [normalSection, normalDivider]) {
+    if (el) el.hidden = !show;
+  }
+  if (!show && wdAdvisoryBanner) {
+    wdAdvisoryBanner.hidden = true;
+    wdAdvisoryBanner.setAttribute("aria-hidden", "true");
+  }
+  if (!show && wdAirQuality) {
+    const airCard = wdAirQuality.closest ? wdAirQuality.closest(".weather-card") : null;
+    if (airCard) airCard.hidden = true;
+  }
+  return show;
+}
+
+/**
+ * 주간예보 한 줄의 아이콘·문구·확률표시를 정한다.
+ * 2026-07-28 글로벌화 W2 — renderWeatherWeekly() 안에 인라인으로 있던
+ * 블록을 함수로 꺼냈다. 꺼낸 이유가 둘이다:
+ *   1. 인라인 상태로는 기계가 대조할 수가 없다(호출할 이름이 없다).
+ *      리팩터 전 동작을 얼려둔 golden-condition.json 과 이 함수를
+ *      scripts/test-condition-golden.mjs 가 대조한다.
+ *   2. 한국어 문자열 비교(d.conditionsKo === "비")가 여기에도 있었다.
+ *
+ * ★ CLAUDE.md 36항(우산 헌법) 뒷문 봉쇄가 적용되는 자리다 ★
+ * VC 는 강수량 0인 날에도 conditions 를 "Rain" 으로 준다. 그 라벨을
+ * 그대로 그리면 ③으로 억제한 비 신호가 되살아난다 — 그래서 비 계열은
+ * rainDisplay 가 ①/②일 때만 비로 남고, 아니면 흐림으로 강등된다.
+ *
+ * @returns {{icon: string, text: string, base: string, isRainDay: boolean, probHtml: string}}
+ */
+function deriveWeeklyConditionDisplay(d, rainDisplay, isRainStopped, probForDisplay, mmForDisplay) {
+  const C = WX.CONDITION;
+  const code = conditionCodeOf(d);
+  const mmHtml = mmForDisplay >= 0.1 ? ` ${mmForDisplay}mm/h` : "";
+
+  const isRainDay = !isRainStopped && code === C.RAIN && rainDisplay.showAsRain;
+
+  // 사전에 없는 라벨(빈 값·미지의 문자열)은 예전처럼 원문을 그대로 쓴다 —
+  // 카탈로그를 태우면 없는 키라 빈칸이 될 수 있다.
+  const rawLabel = (code === C.UNKNOWN) ? d.conditionsKo : conditionLabel(code, d.conditionsKo);
+
+  let baseCode = code;
+  let base = rawLabel;
+  let text = rawLabel;
+
+  if (isRainStopped) {
+    // "그쳤다"는 건 비가 있었다는 뜻 — 아이콘은 비, 문구만 (그침)
+    baseCode = C.RAIN;
+    base = conditionLabel(C.RAIN, "비");
+    text = t("weather.rainStopped", null, "비(그침)");
+  } else if (code === C.RAIN && !rainDisplay.showAsRain) {
+    baseCode = C.CLOUDY;
+    base = conditionLabel(C.CLOUDY, "흐림");
+    text = rainDisplay.cloudyProbLabel
+      ? t("weather.cloudyWithRainChance", { label: rainDisplay.cloudyProbLabel },
+          `흐림(${rainDisplay.cloudyProbLabel})`)
+      : base;
+  }
+
+  return {
+    icon: WX.conditionEmoji(baseCode, false),
+    text,
+    base,
+    isRainDay,
+    probHtml: isRainDay
+      ? `<span class="weather-weekly-prob">${probForDisplay}%${mmHtml}</span>`
+      : "",
+  };
 }
 
 function weatherBadgeHtml(grade, label, prob) {
@@ -3615,25 +3831,14 @@ function renderWeatherWeeklyForecast(data) {
         }
       }
 
-      const mmHtml = mmForDisplay >= 0.1 ? ` ${mmForDisplay}mm/h` : "";
-      const isRainDay = !isRainStopped && d.conditionsKo === "비" && rainDisplay.showAsRain;
-      let displayConditionBase = d.conditionsKo;
-      let displayConditionText = d.conditionsKo;
-      if (isRainStopped) {
-        displayConditionBase = "비";
-        displayConditionText = "비(그침)";
-      } else if (d.conditionsKo === "비" && !rainDisplay.showAsRain) {
-        displayConditionBase = "흐림";
-        displayConditionText = rainDisplay.cloudyProbLabel ? `흐림(${rainDisplay.cloudyProbLabel})` : "흐림";
-      }
-      const probHtml = isRainDay ? `<span class="weather-weekly-prob">${probForDisplay}%${mmHtml}</span>` : "";
+      const wk = deriveWeeklyConditionDisplay(d, rainDisplay, isRainStopped, probForDisplay, mmForDisplay);
       return `
     <div class="weather-weekly-row">
       <span class="weather-weekly-day">${d.weekdayKo}</span>
-      <span class="weather-weekly-icon">${weatherEmojiFromKoCondition(displayConditionBase)}</span>
+      <span class="weather-weekly-icon">${wk.icon}</span>
       <span class="weather-weekly-mid">
-        <span class="weather-weekly-condition">${displayConditionText}</span>
-        ${probHtml}
+        <span class="weather-weekly-condition">${wk.text}</span>
+        ${wk.probHtml}
       </span>
       <span class="weather-weekly-range">
         <span class="weather-weekly-min">${Math.round(d.tempMin)}°</span>
@@ -3843,6 +4048,14 @@ async function fetchWeatherDetail() {
     // 호출 자체를 넣지 않는다(카드가 안 보이는데 네트워크 요청만 날리는
     // 낭비를 피한다). renderWeatherAirQuality 함수는 다음에 재개할 때
     // 바로 쓸 수 있도록 그대로 남겨뒀다.
+    // 2026-07-28 글로벌화 W3: 한국 전용 기능 게이트.
+    // 평년비교(기상청 과거 관측)와 기상특보(기상청 WthrWrnInfoService)는
+    // 한국 좌표에서만 데이터가 존재한다. 한국 밖에서는 호출하지 않고
+    // 카드도 숨긴다 — 부르면 백엔드가 available:false 로 돌려주긴 하지만,
+    // 그러면 "불러올 수 없어요"라는 실패처럼 보이는 문구가 남는다.
+    // ★ 판정은 언어가 아니라 좌표로 한다 ★ 한국에 사는 영어 사용자는
+    //   이 기능들을 계속 봐야 하고, 해외의 한국어 사용자에게는 없는 게 맞다.
+    const koreaOnly = applyKoreaOnlyGating();
     const [currentR, rainR, yesterdayR, tropicalR, hourlyStripR, weeklyForecastR, tempVsNormalR, advisoryR] =
       await Promise.allSettled([
         fetchWeatherJson("/api/weather/current"),
@@ -3854,11 +4067,11 @@ async function fetchWeatherDetail() {
         // 2026-07-17 2차 기획(묶음D): 평년값 비교. 그 달력일이 처음
         // 조회되는 날엔 백엔드가 과거 10년치를 계산하느라 이 호출만 살짝
         // 느릴 수 있다 — Promise.allSettled라 다른 카드 렌더링을 막지 않는다.
-        fetchWeatherJson("/api/weather/temp-vs-normal"),
+        koreaOnly ? fetchWeatherJson("/api/weather/temp-vs-normal") : Promise.resolve(null),
         // 2026-07-21 3차 기획: 기상특보. 서비스키 미등록/API 실패 시에도
         // configured:false 또는 available:false로 안전하게 응답하므로
         // Promise.allSettled에서 reject되는 경우는 네트워크 자체 장애뿐이다.
-        fetchWeatherJson("/api/weather/advisory")
+        koreaOnly ? fetchWeatherJson("/api/weather/advisory") : Promise.resolve(null)
       ]);
 
     const tropicalData = tropicalR.status === "fulfilled" ? tropicalR.value : null;
@@ -3891,12 +4104,16 @@ async function fetchWeatherDetail() {
     // 2026-07-19 5차 리디자인: 애플 스타일 상단 요약(날씨텍스트·최고/최저) —
     // 같은 weekly-forecast 응답을 재사용(위 renderWeatherCurrentToday 주석 참조).
     renderWeatherCurrentToday(weeklyForecastData);
-    renderWeatherTempVsNormal(tempVsNormalR.status === "fulfilled" ? tempVsNormalR.value : null);
+    if (koreaOnly) {
+      renderWeatherTempVsNormal(tempVsNormalR.status === "fulfilled" ? tempVsNormalR.value : null);
+    }
     renderWeatherRainWindows(rainData);
     renderWeatherYesterday(yesterdayR.status === "fulfilled" ? yesterdayR.value : null);
     renderWeatherTropical(tropicalData);
-    renderWeatherAdvisory(advisoryR.status === "fulfilled" ? advisoryR.value : null);
-    wxDiagReport(advisoryR.status, advisoryR.status === "fulfilled" ? advisoryR.value : advisoryR.reason);
+    if (koreaOnly) {
+      renderWeatherAdvisory(advisoryR.status === "fulfilled" ? advisoryR.value : null);
+      wxDiagReport(advisoryR.status, advisoryR.status === "fulfilled" ? advisoryR.value : advisoryR.reason);
+    }
 
     // 2026-07-15: 실패한 응답까지 "캐시됨"으로 기록해버리는 버그 수정 — 최초
     // 요청이 서버 콜드스타트 등으로 한 번 실패하면, 그 실패 상태가 1시간 동안

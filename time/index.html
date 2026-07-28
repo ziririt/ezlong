@@ -294,7 +294,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2>설정<span class="settings-version" aria-hidden="true">ver.1.8.2</span></h2>
+            <h2>설정<span class="settings-version" aria-hidden="true">ver.1.8.3</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -799,12 +799,15 @@
         <!-- 2026-07-17 2차 기획(묶음D): 일평균 대비 기온차(평년값).
              그 달력일이 처음 조회될 때만 백엔드가 과거 10년치를 계산하고,
              그 뒤로는 D1 영구 캐시라 즉시 응답한다. -->
-        <section class="weather-card" data-i18n-aria="weather.normal.aria" aria-label="일평균 대비 기온차">
+        <!-- 2026-07-28 글로벌화 W3: id 부여 — 한국 밖에서는 app.js 가 이
+             섹션과 바로 아래 구분선을 통째로 숨긴다. 평년값은 기상청
+             과거 관측을 쓰므로 한국 좌표에서만 의미가 있다. -->
+        <section class="weather-card" id="wdNormalSection" data-i18n-aria="weather.normal.aria" aria-label="일평균 대비 기온차">
           <h3 class="settings-subtitle" data-i18n="weather.normal.heading">평년과 비교하면</h3>
           <p class="weather-comment" id="wdTempVsNormal" data-i18n="common.loading">불러오는 중…</p>
         </section>
 
-        <div class="settings-divider" aria-hidden="true"></div>
+        <div class="settings-divider" id="wdNormalDivider" aria-hidden="true"></div>
 
         <!-- 4. 오늘 밤 열대야 -->
         <section class="weather-card" data-i18n-aria="weather.tropicalNight.heading" aria-label="오늘 밤 열대야">
@@ -871,13 +874,13 @@
        locale-bundle.js 는 자동 생성 파일이다:
          node scripts/build-locales.mjs
        직접 수정하면 다음 빌드에 덮어써진다. -->
-  <script src="i18n/weather-codes.js?v=20260728-i18n-v1"></script>
-  <script src="i18n/season.js?v=20260728-i18n-v1"></script>
-  <script src="i18n/region.js?v=20260728-i18n-v1"></script>
-  <script src="i18n/quote-source.js?v=20260728-i18n-v1"></script>
-  <script src="i18n/locale-bundle.js?v=20260728-i18n-v1"></script>
-  <script src="i18n/index.js?v=20260728-i18n-v1"></script>
+  <script src="i18n/weather-codes.js?v=20260728-i18n-v2"></script>
+  <script src="i18n/season.js?v=20260728-i18n-v2"></script>
+  <script src="i18n/region.js?v=20260728-i18n-v2"></script>
+  <script src="i18n/quote-source.js?v=20260728-i18n-v2"></script>
+  <script src="i18n/locale-bundle.js?v=20260728-i18n-v2"></script>
+  <script src="i18n/index.js?v=20260728-i18n-v2"></script>
 
-  <script src="app.js?v=20260728-i18n"></script>
+  <script src="app.js?v=20260728-i18n-v2"></script>
 </body>
 </html>
