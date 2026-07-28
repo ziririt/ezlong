@@ -3195,7 +3195,13 @@ const WEATHER_FETCH_TIMEOUT_MS = 10000;
 
 async function fetchWeatherJsonOnce(path) {
   const { lat, lng } = weatherDetailCoords();
-  const url = `${WEATHER_API_BASE}${path}?lat=${lat}&lng=${lng}`;
+  // 2026-07-28 W9-5 — 백엔드는 W4 때부터 ?lang= 을 받고 있었는데(i18n.ts
+  // resolveLang), 정작 프론트가 한 번도 안 보내서 서버가 늘 기본값 "ko" 로
+  // 응답하고 있었다. 시뮬레이터 날씨 상세 화면에서 우산 조언 문단만 통째로
+  // 한국어로 남아 있던 게 이것 때문이다.
+  // ★ lang 미지정 = "ko" = 예전 응답과 완전히 동일 ★ 이므로, 한국어 사용자의
+  //   응답은 이 파라미터가 붙어도 글자 하나 바뀌지 않는다.
+  const url = `${WEATHER_API_BASE}${path}?lat=${lat}&lng=${lng}&lang=${encodeURIComponent(FZ_LOCALE || "ko")}`;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), WEATHER_FETCH_TIMEOUT_MS);
   try {
