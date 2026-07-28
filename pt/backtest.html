@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+  <title>Simulador de Portfólio Monte Carlo — Ferramenta Gratuita com 10.000 Simulações | EZLONG</title>
+  <meta name="description" content="Simulador de portfólio Monte Carlo gratuito com 10.000 simulações. Teste portfólios de NVDA, AAPL, SPY, QQQ usando 20 anos de dados reais. Encontre a alocação de Sharpe Ratio máximo. Sem login.">
+  <meta name="keywords" content="simulador de portfólio Monte Carlo, otimização de portfólio, calculadora de índice de Sharpe, backtest de ETF, portfólio de ações dos EUA, fronteira eficiente, teste de estresse de portfólio, portfólio NVDA AAPL SPY QQQ grátis">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="pt">
+  <meta name="author" content="EZLONG">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Simulador de Portfólio Monte Carlo — Ferramenta Gratuita com 10.000 Simulações | EZLONG">
+  <meta property="og:description" content="Simulador de portfólio Monte Carlo gratuito com 10.000 simulações. Teste portfólios de NVDA, AAPL, SPY, QQQ usando 20 anos de dados reais. Encontre a alocação de Sharpe Ratio máximo. Sem login.">
+  <meta property="og:url" content="https://ezlong.com/pt/backtest.html">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:image" content="https://ezlong.com/logo-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Simulador de Portfólio Monte Carlo — Ferramenta Gratuita com 10.000 Simulações | EZLONG">
+  <meta name="twitter:description" content="Simulador de portfólio Monte Carlo gratuito com 10.000 simulações. Teste portfólios de NVDA, AAPL, SPY, QQQ usando 20 anos de dados reais. Encontre a alocação de Sharpe Ratio máximo. Sem login.">
+  <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
+  <link rel="alternate" hreflang="ko" href="https://ezlong.com/backtest.html">
+  <link rel="alternate" hreflang="en" href="https://ezlong.com/en/backtest.html">
+  <link rel="alternate" hreflang="ja" href="https://ezlong.com/ja/backtest.html">
+  <link rel="alternate" hreflang="es" href="https://ezlong.com/es/backtest.html">
+  <link rel="alternate" hreflang="pt" href="https://ezlong.com/pt/backtest.html">
+  <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/backtest.html">
+  <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/backtest.html">
+  <link rel="canonical" href="https://ezlong.com/pt/backtest.html">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "EZLONG",
+    "url": "https://ezlong.com",
+    "logo": "https://ezlong.com/logo.png",
+    "email": "easy.invest.good@gmail.com",
+    "sameAs": ["https://ezlong.com/pt/"],
+    "description": "A EZLONG oferece ferramentas gratuitas de investimento em ações dos EUA, sem necessidade de cadastro, para investidores de longo prazo em todo o mundo."
+  }
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"EZLONG","item":"https://ezlong.com/pt/"},{"@type":"ListItem","position":2,"name":"Simulador de Portfólio Monte Carlo","item":"https://ezlong.com/pt/backtest.html"}]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"EZLONG Simulador de Portfólio Monte Carlo","description":"Simulador de portfólio Monte Carlo gratuito, executando 10.000 simulações em portfólios de ações dos EUA usando 20 anos de dados reais de mercado para encontrar a alocação ótima pelo Índice de Sharpe.","url":"https://ezlong.com/pt/backtest.html","inLanguage":"pt","applicationCategory":"FinanceApplication","operatingSystem":"All","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"EZLONG","url":"https://ezlong.com","logo":"https://ezlong.com/logo.png","email":"easy.invest.good@gmail.com"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"HowTo","name":"Como executar uma simulação de portfólio Monte Carlo","description":"Simulador de portfólio Monte Carlo gratuito com 10.000 simulações. Teste portfólios de NVDA, AAPL, SPY, QQQ usando 20 anos de dados reais. Encontre a alocação de Sharpe Ratio máximo. Sem login.","totalTime":"PT5M","tool":[{"@type":"HowToTool","name":"Navegador web"}],"supply":[{"@type":"HowToSupply","name":"Grátis — sem necessidade de conta"}],"step":[
+    {"@type":"HowToStep","position":1,"name":"Abra o Simulador Monte Carlo","text":"Clique em Abrir Ferramenta abaixo para acessar o simulador. Ele funciona inteiramente no seu navegador — sem necessidade de download ou login."},
+    {"@type":"HowToStep","position":2,"name":"Selecione seus ativos","text":"Escolha entre a lista de 44 ações e ETFs dos EUA. Você pode adicionar vários ativos, incluindo NVDA, GOOGL, SPY, QQQ, TSLA, AAPL e outros. Comece com 3 a 5 ativos para uma análise mais gerenciável."},
+    {"@type":"HowToStep","position":3,"name":"Defina sua alocação (opcional)","text":"Para a opção de Portfólio Personalizado, insira o percentual desejado em cada ativo. Os percentuais devem somar 100%. Para os portfólios de Sharpe Máximo e Volatilidade Mínima, o simulador encontra os pesos ótimos automaticamente."},
+    {"@type":"HowToStep","position":4,"name":"Defina o valor e o período de investimento","text":"Insira o valor inicial do seu portfólio e o horizonte de investimento em anos. Entradas típicas são valores iniciais de $10.000 a $100.000 e horizontes de 10 a 30 anos."},
+    {"@type":"HowToStep","position":5,"name":"Execute a simulação","text":"Clique em Calcular ou Executar Simulação. A ferramenta executa 10.000 cenários e exibe os resultados em segundos."},
+    {"@type":"HowToStep","position":6,"name":"Leia seus resultados","text":"O gráfico em leque mostra os caminhos da mediana, do percentil 10 (cenário ruim) e do percentil 90 (cenário bom). A tabela mostra os pesos ótimos para os portfólios de Sharpe Máximo e Volatilidade Mínima, além do Índice de Sharpe e do retorno anualizado de cada um."}
+  ]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"O que é uma simulação Monte Carlo para investimentos?","acceptedAnswer":{"@type":"Answer","text":"Uma simulação Monte Carlo executa milhares de cenários de caminhada aleatória usando distribuições históricas de retorno para mostrar toda a amplitude de resultados possíveis de um portfólio. Em vez de um único número projetado, você obtém uma distribuição de probabilidade — mostrando o melhor caso, o pior caso e tudo o que está entre eles."}},
+    {"@type":"Question","name":"Quantos ativos estão disponíveis neste simulador?","acceptedAnswer":{"@type":"Answer","text":"O Simulador de Portfólio Monte Carlo da EZLONG inclui 44 ações e ETFs dos EUA: NVDA, GOOGL, AAPL, MSFT, TSLA, AMZN, SPY, QQQ, VTI, SCHD, TLT e outros. Todos são baseados em 20 anos de dados reais (2006-2025)."}},
+    {"@type":"Question","name":"O que é o Índice de Sharpe e por que ele importa?","acceptedAnswer":{"@type":"Answer","text":"O Índice de Sharpe mede quanto retorno você obtém por unidade de risco (volatilidade). Um Índice de Sharpe mais alto significa melhor eficiência ajustada ao risco. O portfólio de Sharpe Máximo oferece a melhor combinação de retorno por risco — não necessariamente o maior retorno absoluto, mas o uso mais eficiente do risco."}},
+    {"@type":"Question","name":"O que é o portfólio de Volatilidade Mínima?","acceptedAnswer":{"@type":"Answer","text":"O portfólio de Volatilidade Mínima é a alocação que atinge a menor volatilidade possível de portfólio, dados os ativos escolhidos. É adequado para investidores avessos ao risco que priorizam a preservação de capital em vez do crescimento máximo."}},
+    {"@type":"Question","name":"O que o gráfico em leque mostra?","acceptedAnswer":{"@type":"Answer","text":"O gráfico em leque exibe três caminhos ao longo do seu horizonte de investimento: o percentil 90 (os 10% melhores resultados simulados — caso otimista), o percentil 50 (mediana) e o percentil 10 (os 10% piores — caso pessimista). As três faixas são mostradas simultaneamente para que você veja toda a amplitude de resultados realistas."}},
+    {"@type":"Question","name":"Como isso é diferente de uma calculadora simples de retorno composto?","acceptedAnswer":{"@type":"Answer","text":"Uma calculadora de juros compostos simples assume retornos constantes todos os anos (por exemplo, 10% todos os anos). A simulação Monte Carlo usa retornos aleatórios a cada ano com base em distribuições históricas, capturando a volatilidade real dos mercados. Isso oferece uma visão muito mais realista da incerteza do investimento de longo prazo."}},
+    {"@type":"Question","name":"O que é a fronteira eficiente?","acceptedAnswer":{"@type":"Answer","text":"A fronteira eficiente é o conjunto de portfólios que oferecem o maior retorno esperado para um determinado nível de risco. Os portfólios na fronteira são eficientes — você não pode obter mais retorno sem assumir mais risco, e não pode reduzir o risco sem sacrificar retorno. O simulador plota seu portfólio nesta fronteira."}},
+    {"@type":"Question","name":"Este simulador Monte Carlo é gratuito?","acceptedAnswer":{"@type":"Answer","text":"Sim, totalmente gratuito. Sem login, sem e-mail, sem assinatura. O simulador executa 10.000 cenários no seu navegador usando 20 anos de dados reais, sem nenhum custo."}}
+  ]}
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F5F5F7; --surface: #FFFFFF; --text: #1D1D1F;
+      --text2: #424245; --text3: #6E6E73; --border: #D2D2D7;
+      --blue: #0071E3; --blue-lt: #0064CC; --green: #1A7F37;
+      --r: 12px; --max-w: 860px;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158; }
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.65; }
+    .en-nav { position:sticky; top:0; z-index:100; background:rgba(255,255,255,0.88); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:0 24px; height:52px; display:flex; align-items:center; justify-content:space-between; }
+    @media (prefers-color-scheme: dark) { .en-nav { background:rgba(28,28,30,0.88); } }
+    .en-nav-logo { font-size:17px; font-weight:700; color:var(--text); text-decoration:none; letter-spacing:-0.02em; }
+    .en-nav-right { display:flex; gap:20px; align-items:center; }
+    .en-nav-link { font-size:14px; color:var(--blue); text-decoration:none; font-weight:500; }
+    .en-nav-link:hover { text-decoration:underline; }
+    .breadcrumb { max-width:var(--max-w); margin:0 auto; padding:14px 24px 0; font-size:14px; color:var(--text3); }
+    .breadcrumb a { color:var(--blue); text-decoration:none; }
+    .breadcrumb a:hover { text-decoration:underline; }
+    .breadcrumb span { margin:0 6px; }
+    .hero { background:var(--surface); border-bottom:1px solid var(--border); padding:64px 24px 52px; text-align:center; }
+    .hero-badge { display:inline-block; background:#E8F5E9; color:var(--green); font-size:14px; font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:18px; }
+    @media (prefers-color-scheme: dark) { .hero-badge { background:#0A3D1C; color:#30D158; } }
+    .hero h1 { font-size:clamp(26px,5vw,44px); font-weight:700; letter-spacing:-0.03em; line-height:1.1; margin-bottom:14px; color:var(--text); }
+    .hero-sub { font-size:clamp(15px,2.2vw,18px); color:var(--text3); margin-bottom:30px; max-width:620px; margin-left:auto; margin-right:auto; }
+    .cta-group { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:16px; }
+    .btn-primary { display:inline-flex; align-items:center; gap:6px; background:var(--blue); color:#fff; border-radius:980px; padding:13px 26px; font-size:15px; font-weight:600; text-decoration:none; transition:background .15s; }
+    .btn-primary:hover { background:var(--blue-lt); }
+    .btn-secondary { display:inline-flex; align-items:center; gap:6px; background:transparent; color:var(--blue); border:1.5px solid var(--blue); border-radius:980px; padding:12px 24px; font-size:15px; font-weight:600; text-decoration:none; transition:all .15s; }
+    .btn-secondary:hover { background:var(--blue); color:#fff; }
+    .auto-translate-note { font-size:12.5px; color:var(--text3); }
+    .translate-proxy-note { font-size:14px; color:var(--text2); margin-top:10px; }
+    .translate-proxy-note a { color:var(--blue); font-weight:600; text-decoration:underline; }
+    .cta-card .translate-proxy-note { color:#fff; opacity:.9; margin-top:14px; }
+    .cta-card .translate-proxy-note a { color:#fff; }
+    .stats-row { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; background:var(--surface); border-bottom:1px solid var(--border); padding:24px; }
+    .stat-item { text-align:center; }
+    .stat-value { font-size:22px; font-weight:700; color:var(--blue); letter-spacing:-0.02em; }
+    .stat-label { font-size:14px; color:var(--text3); margin-top:2px; }
+    .main { max-width:var(--max-w); margin:0 auto; padding:56px 24px; }
+    .section { margin-bottom:56px; }
+    .section-title { font-size:22px; font-weight:700; letter-spacing:-0.02em; margin-bottom:16px; color:var(--text); }
+    .section-body { font-size:16px; color:var(--text2); line-height:1.75; margin-bottom:12px; }
+    .step-list { list-style:none; margin-top:20px; display:grid; gap:0; }
+    .step-item { display:flex; gap:16px; padding:20px 0; border-bottom:1px solid var(--border); }
+    .step-item:first-child { border-top:1px solid var(--border); }
+    .step-num { flex-shrink:0; width:32px; height:32px; border-radius:50%; background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; margin-top:2px; }
+    .step-body { flex:1; }
+    .step-name { font-size:15px; font-weight:700; color:var(--text); display:block; margin-bottom:6px; }
+    .step-text { font-size:15px; color:var(--text2); line-height:1.65; }
+    .faq-item { border-top:1px solid var(--border); padding:22px 0; }
+    .faq-item:last-child { border-bottom:1px solid var(--border); }
+    .faq-q { font-size:16px; font-weight:600; color:var(--text); margin-bottom:8px; line-height:1.4; }
+    .faq-a { font-size:15px; color:var(--text2); line-height:1.72; }
+    .related-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:32px; }
+    .rel-grid { display:flex; flex-wrap:wrap; gap:12px; margin-top:16px; }
+    .rel-card { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:12px 18px; font-size:14px; font-weight:600; color:var(--blue); text-decoration:none; transition:all .15s; }
+    .rel-card:hover { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .cta-card { background:var(--blue); border-radius:var(--r); padding:44px 32px; text-align:center; color:#fff; margin-top:56px; }
+    .cta-card h2 { font-size:26px; font-weight:700; margin-bottom:10px; letter-spacing:-0.02em; }
+    .cta-card p { font-size:16px; opacity:.85; margin-bottom:24px; }
+    .btn-white { display:inline-block; background:#fff; color:var(--blue); border-radius:980px; padding:13px 28px; font-size:15px; font-weight:700; text-decoration:none; transition:opacity .15s; }
+    .btn-white:hover { opacity:.88; }
+    .en-footer { background:var(--surface); border-top:1px solid var(--border); padding:36px 24px; text-align:center; color:var(--text3); font-size:12.5px; line-height:1.9; }
+    .en-footer a { color:var(--blue); text-decoration:none; }
+    .en-footer a:hover { text-decoration:underline; }
+    @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+  </style>
+</head>
+<body>
+  <nav class="en-nav" role="navigation" aria-label="Navegação principal">
+    <a class="en-nav-logo" href="https://ezlong.com/pt/">EZLONG</a>
+    <div class="en-nav-right">
+      <a class="en-nav-link" href="https://ezlong.com/pt/">Todas as Ferramentas</a>
+      <a class="en-nav-link" href="https://ezlong.com/backtest.html">한국어 &rarr;</a>
+    </div>
+  </nav>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="https://ezlong.com/pt/">EZLONG</a><span>/</span><span>Simulador de Portfólio Monte Carlo</span>
+  </nav>
+  <section class="hero">
+    <div class="hero-badge">Grátis &middot; Sem Cadastro &middot; Acesso Instantâneo</div>
+    <h1>Simulador de Portfólio Monte Carlo</h1>
+    <p class="hero-sub">Execute 10.000 simulações no seu portfólio de ações dos EUA e veja toda a amplitude de resultados possíveis</p>
+    <div class="cta-group">
+      <a class="btn-primary" href="https://ezlong.com/backtest.html" target="_blank" rel="noopener">Abrir Ferramenta &rarr;</a>
+      <a class="btn-secondary" href="https://ezlong.com/pt/">Ver Todas as Ferramentas</a>
+    </div>
+    <p class="auto-translate-note">A interface da ferramenta está em coreano &mdash; Chrome, Edge e Safari traduzem automaticamente.</p>
+    <p class="translate-proxy-note">A tradução não aparece automaticamente? <a href="https://ezlong-com.translate.goog/backtest.html?_x_tr_sl=ko&amp;_x_tr_tl=pt&amp;_x_tr_hl=pt&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Abrir com o Google Tradutor &rarr;</a></p>
+  </section>
+  <div class="stats-row" role="region" aria-label="Key statistics">
+    <div class="stat-item"><div class="stat-value">44 ativos</div><div class="stat-label">ações e ETFs dos EUA</div></div>
+    <div class="stat-item"><div class="stat-value">10.000 simulações</div><div class="stat-label">por execução</div></div>
+    <div class="stat-item"><div class="stat-value">20 anos</div><div class="stat-label">de dados reais de mercado</div></div>
+  </div>
+  <main class="main" id="main-content">
+    <section class="section">
+      <h2 class="section-title">O que é o Simulador de Portfólio Monte Carlo?</h2>
+      <p class="section-body">O Simulador de Portfólio Monte Carlo usa 20 anos de dados reais do mercado de ações dos EUA (2006-2025) para executar 10.000 simulações aleatórias de portfólio e encontrar sua alocação ótima de ativos. Em vez de adivinhar qual percentual colocar em NVDA versus SPY versus QQQ, o simulador executa milhares de combinações e identifica a alocação com o melhor retorno ajustado ao risco — medido pelo Índice de Sharpe.</p>
+      <p class="section-body">Você pode escolher entre 44 ativos, incluindo as principais ações dos EUA (NVDA, GOOGL, AAPL, MSFT, TSLA, AMZN) e ETFs (SPY, QQQ, VTI, SCHD, TLT). O simulador calcula três tipos-chave de portfólio: Índice de Sharpe Máximo (melhor eficiência), Volatilidade Mínima (menor risco) e uma alocação Personalizada que você mesmo cria.</p>
+      <p class="section-body">O resultado é um gráfico em leque mostrando a distribuição de probabilidade do seu portfólio ao longo do tempo — o caminho mediano, o percentil 90 otimista e o percentil 10 pessimista — para que você entenda não apenas o resultado esperado, mas toda a amplitude de possibilidades realistas.</p>
+    </section>
+    <section class="section">
+      <h2 class="section-title">Por Que Usar Esta Ferramenta?</h2>
+      <p class="section-body">Projeções de número único — "seu portfólio valerá $X em 20 anos" — são perigosamente enganosas. O mercado de ações não é previsível em linha reta: os retornos são voláteis, a sequência importa, e a amplitude de resultados é ampla. O método Monte Carlo modela explicitamente essa incerteza.</p>
+      <p class="section-body">Ao executar 10.000 cenários diferentes de caminhada aleatória com base em distribuições reais de retorno histórico, o simulador mostra qual seria o melhor caso, o pior caso e o caso mais provável de forma realista. Isso permite fazer perguntas melhores: "Consigo suportar esta alocação se obtiver o pior resultado dos 10%?" Se sim, você tem um portfólio robusto. Se não, é preciso ajustar.</p>
+    </section>
+    <section class="section">
+      <h2 class="section-title">Como executar uma simulação de portfólio Monte Carlo</h2>
+      <ol class="step-list">
+        <li class="step-item">
+          <span class="step-num">1</span>
+          <div class="step-body"><strong class="step-name">Abra o Simulador Monte Carlo</strong><p class="step-text">Clique em Abrir Ferramenta abaixo para acessar o simulador. Ele funciona inteiramente no seu navegador — sem necessidade de download ou login.</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">2</span>
+          <div class="step-body"><strong class="step-name">Selecione seus ativos</strong><p class="step-text">Escolha entre a lista de 44 ações e ETFs dos EUA. Você pode adicionar vários ativos, incluindo NVDA, GOOGL, SPY, QQQ, TSLA, AAPL e outros. Comece com 3 a 5 ativos para uma análise mais gerenciável.</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">3</span>
+          <div class="step-body"><strong class="step-name">Defina sua alocação (opcional)</strong><p class="step-text">Para a opção de Portfólio Personalizado, insira o percentual desejado em cada ativo. Os percentuais devem somar 100%. Para os portfólios de Sharpe Máximo e Volatilidade Mínima, o simulador encontra os pesos ótimos automaticamente.</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">4</span>
+          <div class="step-body"><strong class="step-name">Defina o valor e o período de investimento</strong><p class="step-text">Insira o valor inicial do seu portfólio e o horizonte de investimento em anos. Entradas típicas são valores iniciais de $10.000 a $100.000 e horizontes de 10 a 30 anos.</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">5</span>
+          <div class="step-body"><strong class="step-name">Execute a simulação</strong><p class="step-text">Clique em Calcular ou Executar Simulação. A ferramenta executa 10.000 cenários e exibe os resultados em segundos.</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">6</span>
+          <div class="step-body"><strong class="step-name">Leia seus resultados</strong><p class="step-text">O gráfico em leque mostra os caminhos da mediana, do percentil 10 (cenário ruim) e do percentil 90 (cenário bom). A tabela mostra os pesos ótimos para os portfólios de Sharpe Máximo e Volatilidade Mínima, além do Índice de Sharpe e do retorno anualizado de cada um.</p></div>
+        </li>
+      </ol>
+    </section>
+    <section class="section">
+      <h2 class="section-title">Perguntas Frequentes</h2>
+      <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">O que é uma simulação Monte Carlo para investimentos?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">Uma simulação Monte Carlo executa milhares de cenários de caminhada aleatória usando distribuições históricas de retorno para mostrar toda a amplitude de resultados possíveis de um portfólio. Em vez de um único número projetado, você obtém uma distribuição de probabilidade — mostrando o melhor caso, o pior caso e tudo o que está entre eles.</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">Quantos ativos estão disponíveis neste simulador?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">O Simulador de Portfólio Monte Carlo da EZLONG inclui 44 ações e ETFs dos EUA: NVDA, GOOGL, AAPL, MSFT, TSLA, AMZN, SPY, QQQ, VTI, SCHD, TLT e outros. Todos são baseados em 20 anos de dados reais (2006-2025).</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">O que é o Índice de Sharpe e por que ele importa?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">O Índice de Sharpe mede quanto retorno você obtém por unidade de risco (volatilidade). Um Índice de Sharpe mais alto significa melhor eficiência ajustada ao risco. O portfólio de Sharpe Máximo oferece a melhor combinação de retorno por risco — não necessariamente o maior retorno absoluto, mas o uso mais eficiente do risco.</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">O que é o portfólio de Volatilidade Mínima?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">O portfólio de Volatilidade Mínima é a alocação que atinge a menor volatilidade possível de portfólio, dados os ativos escolhidos. É adequado para investidores avessos ao risco que priorizam a preservação de capital em vez do crescimento máximo.</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">O que o gráfico em leque mostra?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">O gráfico em leque exibe três caminhos ao longo do seu horizonte de investimento: o percentil 90 (os 10% melhores resultados simulados — caso otimista), o percentil 50 (mediana) e o percentil 10 (os 10% piores — caso pessimista). As três faixas são mostradas simultaneamente para que você veja toda a amplitude de resultados realistas.</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">Como isso é diferente de uma calculadora simples de retorno composto?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">Uma calculadora de juros compostos simples assume retornos constantes todos os anos (por exemplo, 10% todos os anos). A simulação Monte Carlo usa retornos aleatórios a cada ano com base em distribuições históricas, capturando a volatilidade real dos mercados. Isso oferece uma visão muito mais realista da incerteza do investimento de longo prazo.</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">O que é a fronteira eficiente?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">A fronteira eficiente é o conjunto de portfólios que oferecem o maior retorno esperado para um determinado nível de risco. Os portfólios na fronteira são eficientes — você não pode obter mais retorno sem assumir mais risco, e não pode reduzir o risco sem sacrificar retorno. O simulador plota seu portfólio nesta fronteira.</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">Este simulador Monte Carlo é gratuito?</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">Sim, totalmente gratuito. Sem login, sem e-mail, sem assinatura. O simulador executa 10.000 cenários no seu navegador usando 20 anos de dados reais, sem nenhum custo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section related-section">
+      <h2 class="section-title">Ferramentas Gratuitas Relacionadas</h2>
+      <div class="rel-grid">
+          <a class="rel-card" href="https://ezlong.com/pt/portfolio-manager.html">Simulador de Juros Compostos de Portfólio</a>
+          <a class="rel-card" href="https://ezlong.com/pt/dca-simulator.html">Simulador de Juros Compostos DCA</a>
+          <a class="rel-card" href="https://ezlong.com/pt/atmr-dashboard.html">Painel de Sinais de Swing</a>
+      </div>
+    </section>
+    <div class="cta-card">
+      <h2>Experimente o Simulador de Portfólio Monte Carlo Agora</h2>
+      <p>Grátis, sem cadastro, funciona instantaneamente no seu navegador. O Chrome traduz automaticamente do coreano para o português.</p>
+      <a class="btn-white" href="https://ezlong.com/backtest.html" target="_blank" rel="noopener">Abrir Simulador de Portfólio Monte Carlo &rarr;</a>
+      <p class="translate-proxy-note">A tradução não aparece automaticamente? <a href="https://ezlong-com.translate.goog/backtest.html?_x_tr_sl=ko&amp;_x_tr_tl=pt&amp;_x_tr_hl=pt&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Abrir com o Google Tradutor &rarr;</a></p>
+    </div>
+  </main>
+  <footer class="en-footer" role="contentinfo">
+    <p><a href="https://ezlong.com/pt/">EZLONG</a> &mdash; Ferramentas Gratuitas de Investimento em Ações dos EUA<br>
+    &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
+    <small>Apenas ferramentas educacionais. Não é aconselhamento financeiro. Todo investimento envolve risco. Desempenho passado não garante resultados futuros.</small></p>
+  </footer>
+</body>
+</html>

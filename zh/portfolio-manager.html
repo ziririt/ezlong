@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+  <title>投资组合复利模拟器 — 多股票增长计算器 | EZLONG</title>
+  <meta name="description" content="免费的多股票投资组合复利模拟器。输入每笔持仓的自定义配置比例和预期收益率，即可查看逐年预测增长。支持TSLA、AAPL、NVDA、SPY。无需登录。">
+  <meta name="keywords" content="投资组合复利模拟器, 多股票投资组合计算器, 美股投资组合增长, 复利收益投资组合, 投资组合预测工具, TSLA AAPL NVDA 投资组合计算器 免费">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="zh">
+  <meta name="author" content="EZLONG">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="投资组合复利模拟器 — 多股票增长计算器 | EZLONG">
+  <meta property="og:description" content="免费的多股票投资组合复利模拟器。输入每笔持仓的自定义配置比例和预期收益率，即可查看逐年预测增长。支持TSLA、AAPL、NVDA、SPY。无需登录。">
+  <meta property="og:url" content="https://ezlong.com/zh/portfolio-manager.html">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:image" content="https://ezlong.com/logo-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="投资组合复利模拟器 — 多股票增长计算器 | EZLONG">
+  <meta name="twitter:description" content="免费的多股票投资组合复利模拟器。输入每笔持仓的配置比例和预期收益率，即可查看逐年预测增长。">
+  <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
+  <link rel="alternate" hreflang="ko" href="https://ezlong.com/portfolio-manager.html">
+  <link rel="alternate" hreflang="en" href="https://ezlong.com/en/portfolio-manager.html">
+  <link rel="alternate" hreflang="ja" href="https://ezlong.com/ja/portfolio-manager.html">
+  <link rel="alternate" hreflang="es" href="https://ezlong.com/es/portfolio-manager.html">
+  <link rel="alternate" hreflang="pt" href="https://ezlong.com/pt/portfolio-manager.html">
+  <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/portfolio-manager.html">
+  <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/portfolio-manager.html">
+  <link rel="canonical" href="https://ezlong.com/zh/portfolio-manager.html">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "EZLONG",
+    "url": "https://ezlong.com",
+    "logo": "https://ezlong.com/logo.png",
+    "email": "easy.invest.good@gmail.com",
+    "sameAs": ["https://ezlong.com/zh/"],
+    "description": "EZLONG为全球长期投资者提供免费、无需注册的美股投资工具。"
+  }
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"EZLONG","item":"https://ezlong.com/zh/"},{"@type":"ListItem","position":2,"name":"投资组合复利模拟器","item":"https://ezlong.com/zh/portfolio-manager.html"}]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"EZLONG 投资组合复利模拟器","description":"面向美股投资者的免费多资产投资组合复利增长模拟器，支持每笔持仓自定义配置比例和预期收益率设置。","url":"https://ezlong.com/zh/portfolio-manager.html","inLanguage":"zh","applicationCategory":"FinanceApplication","operatingSystem":"All","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"EZLONG","url":"https://ezlong.com","logo":"https://ezlong.com/logo.png","email":"easy.invest.good@gmail.com"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"HowTo","name":"如何模拟你的投资组合复利增长","description":"免费的多股票投资组合复利模拟器。输入每笔持仓的自定义配置比例和预期收益率，即可查看逐年预测增长。支持TSLA、AAPL、NVDA、SPY。无需登录。","totalTime":"PT5M","tool":[{"@type":"HowToTool","name":"网页浏览器"}],"supply":[{"@type":"HowToSupply","name":"免费 — 无需账户"}],"step":[
+    {"@type":"HowToStep","position":1,"name":"打开投资组合复利模拟器","text":"点击“打开工具”，在浏览器中访问模拟器。无需登录或下载。"},
+    {"@type":"HowToStep","position":2,"name":"添加你的第一只股票或ETF","text":"输入你第一笔持仓的股票代码（TSLA、AAPL、SPY、QQQ、NVDA等），并设置其配置比例。"},
+    {"@type":"HowToStep","position":3,"name":"为每项资产设置预期年化收益率","text":"为每项资产输入你预期的年化收益率。标普500指数的历史平均值约为10%，纳斯达克100约为14%，大盘成长股则因个股而异，差异较大。使用保守估计能获得更贴近现实的预测。"},
+    {"@type":"HowToStep","position":4,"name":"添加剩余的所有持仓","text":"对投资组合中的每一笔仓位重复上述步骤。配置比例总和必须等于100%。模拟器支持你实际投资组合中持有的任意数量资产。"},
+    {"@type":"HowToStep","position":5,"name":"输入投资组合价值和投资期限","text":"输入你当前的投资组合总价值，以及预测所需的年数（1-30年）。"},
+    {"@type":"HowToStep","position":6,"name":"运行模拟并查看结果","text":"点击“计算”。模拟器会以图表和表格两种形式展示逐年预测的投资组合价值，以及总投入与复利总收益的对比明细。"}
+  ]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"这与DCA模拟器有什么不同？","acceptedAnswer":{"@type":"Answer","text":"投资组合复利模拟器针对你现有的投资组合价值，按各资产自定义配置比例来建模复利增长。DCA模拟器则针对持续的每月定投进行建模。若你已有一笔一次性投资组合，请使用投资组合模拟器；若要模拟定期每月投资，请使用DCA模拟器。"}},
+    {"@type":"Question","name":"投资组合中最多可以添加多少项资产？","acceptedAnswer":{"@type":"Answer","text":"你可以添加与实际投资组合中持有数量相同的资产。该模拟器可以处理持有5到20个以上仓位的现实多股票投资组合。"}},
+    {"@type":"Question","name":"像TSLA或NVDA这样的股票应该设置多少预期收益率？","acceptedAnswer":{"@type":"Answer","text":"个别成长股的历史收益率差异很大。建议使用一系列情景——保守（10%）、基准（15%）、乐观（20%）——而不是假设近期的超常收益会无限期持续下去。"}},
+    {"@type":"Question","name":"模拟器是否考虑再平衡？","acceptedAnswer":{"@type":"Answer","text":"该模拟器假设配置比例保持静态、随时间复利增长，不进行定期再平衡。它更适合用于理解方向性结果，而非精确预测。实际中每年进行再平衡会使收益率略微平滑化。"}},
+    {"@type":"Question","name":"可以纳入派息股票吗？","acceptedAnswer":{"@type":"Answer","text":"可以。请将预期股息收益率计入每项资产的总年化收益率中。例如，如果某只股票年增长8%，并支付你会再投资的2%股息收益率，则应输入总预期收益率10%。"}},
+    {"@type":"Question","name":"如果我想加入每月定投怎么办？","acceptedAnswer":{"@type":"Answer","text":"如果你想同时对现有投资组合和持续的每月定投进行建模，可以将本工具与DCA模拟器搭配使用，再将两者的结果结合起来。你可以分别运行这两个工具，进行不同的情景规划。"}},
+    {"@type":"Question","name":"分散化的美股投资组合，现实的长期收益率是多少？","acceptedAnswer":{"@type":"Answer","text":"追踪标普500指数的分散化美股投资组合，在30年的周期内历史年化收益约为10%（名义值）。以纳斯达克100为主的投资组合平均约为14%，但波动性明显更高。"}},
+    {"@type":"Question","name":"这款投资组合模拟器免费吗？","acceptedAnswer":{"@type":"Answer","text":"是的，完全免费，无需注册、无需邮箱、无需订阅。"}}
+  ]}
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F5F5F7; --surface: #FFFFFF; --text: #1D1D1F;
+      --text2: #424245; --text3: #6E6E73; --border: #D2D2D7;
+      --blue: #0071E3; --blue-lt: #0064CC; --green: #1A7F37;
+      --r: 12px; --max-w: 860px;
+      --font: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; --green:#30D158; }
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.65; }
+    .en-nav { position:sticky; top:0; z-index:100; background:rgba(255,255,255,0.88); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:0 24px; height:52px; display:flex; align-items:center; justify-content:space-between; }
+    @media (prefers-color-scheme: dark) { .en-nav { background:rgba(28,28,30,0.88); } }
+    .en-nav-logo { font-size:17px; font-weight:700; color:var(--text); text-decoration:none; letter-spacing:-0.02em; }
+    .en-nav-right { display:flex; gap:20px; align-items:center; }
+    .en-nav-link { font-size:14px; color:var(--blue); text-decoration:none; font-weight:500; }
+    .en-nav-link:hover { text-decoration:underline; }
+    .breadcrumb { max-width:var(--max-w); margin:0 auto; padding:14px 24px 0; font-size:14px; color:var(--text3); }
+    .breadcrumb a { color:var(--blue); text-decoration:none; }
+    .breadcrumb a:hover { text-decoration:underline; }
+    .breadcrumb span { margin:0 6px; }
+    .hero { background:var(--surface); border-bottom:1px solid var(--border); padding:64px 24px 52px; text-align:center; }
+    .hero-badge { display:inline-block; background:#E8F5E9; color:var(--green); font-size:14px; font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:18px; }
+    @media (prefers-color-scheme: dark) { .hero-badge { background:#0A3D1C; color:#30D158; } }
+    .hero h1 { font-size:clamp(26px,5vw,44px); font-weight:700; letter-spacing:-0.03em; line-height:1.2; margin-bottom:14px; color:var(--text); }
+    .hero-sub { font-size:clamp(15px,2.2vw,18px); color:var(--text3); margin-bottom:30px; max-width:620px; margin-left:auto; margin-right:auto; }
+    .cta-group { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:16px; }
+    .btn-primary { display:inline-flex; align-items:center; gap:6px; background:var(--blue); color:#fff; border-radius:980px; padding:13px 26px; font-size:15px; font-weight:600; text-decoration:none; transition:background .15s; }
+    .btn-primary:hover { background:var(--blue-lt); }
+    .btn-secondary { display:inline-flex; align-items:center; gap:6px; background:transparent; color:var(--blue); border:1.5px solid var(--blue); border-radius:980px; padding:12px 24px; font-size:15px; font-weight:600; text-decoration:none; transition:all .15s; }
+    .btn-secondary:hover { background:var(--blue); color:#fff; }
+    .auto-translate-note { font-size:14px; color:var(--text3); }
+    .translate-proxy-note { font-size:14px; color:var(--text2); margin-top:10px; }
+    .translate-proxy-note a { color:var(--blue); font-weight:600; text-decoration:underline; }
+    .cta-card .translate-proxy-note { color:#fff; opacity:.9; margin-top:14px; }
+    .cta-card .translate-proxy-note a { color:#fff; }
+    .stats-row { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; background:var(--surface); border-bottom:1px solid var(--border); padding:24px; }
+    .stat-item { text-align:center; }
+    .stat-value { font-size:22px; font-weight:700; color:var(--blue); letter-spacing:-0.02em; }
+    .stat-label { font-size:14px; color:var(--text3); margin-top:2px; }
+    .main { max-width:var(--max-w); margin:0 auto; padding:56px 24px; }
+    .section { margin-bottom:56px; }
+    .section-title { font-size:22px; font-weight:700; letter-spacing:-0.02em; margin-bottom:16px; color:var(--text); }
+    .section-body { font-size:16px; color:var(--text2); line-height:1.85; margin-bottom:12px; }
+    .step-list { list-style:none; margin-top:20px; display:grid; gap:0; }
+    .step-item { display:flex; gap:16px; padding:20px 0; border-bottom:1px solid var(--border); }
+    .step-item:first-child { border-top:1px solid var(--border); }
+    .step-num { flex-shrink:0; width:32px; height:32px; border-radius:50%; background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; margin-top:2px; }
+    .step-body { flex:1; }
+    .step-name { font-size:15px; font-weight:700; color:var(--text); display:block; margin-bottom:6px; }
+    .step-text { font-size:15px; color:var(--text2); line-height:1.75; }
+    .faq-item { border-top:1px solid var(--border); padding:22px 0; }
+    .faq-item:last-child { border-bottom:1px solid var(--border); }
+    .faq-q { font-size:16px; font-weight:600; color:var(--text); margin-bottom:8px; line-height:1.5; }
+    .faq-a { font-size:15px; color:var(--text2); line-height:1.8; }
+    .related-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:32px; }
+    .rel-grid { display:flex; flex-wrap:wrap; gap:12px; margin-top:16px; }
+    .rel-card { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:12px 18px; font-size:14px; font-weight:600; color:var(--blue); text-decoration:none; transition:all .15s; }
+    .rel-card:hover { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .cta-card { background:var(--blue); border-radius:var(--r); padding:44px 32px; text-align:center; color:#fff; margin-top:56px; }
+    .cta-card h2 { font-size:26px; font-weight:700; margin-bottom:10px; letter-spacing:-0.02em; }
+    .cta-card p { font-size:16px; opacity:.85; margin-bottom:24px; }
+    .btn-white { display:inline-block; background:#fff; color:var(--blue); border-radius:980px; padding:13px 28px; font-size:15px; font-weight:700; text-decoration:none; transition:opacity .15s; }
+    .btn-white:hover { opacity:.88; }
+    .en-footer { background:var(--surface); border-top:1px solid var(--border); padding:36px 24px; text-align:center; color:var(--text3); font-size:14px; line-height:1.9; }
+    .en-footer a { color:var(--blue); text-decoration:none; }
+    .en-footer a:hover { text-decoration:underline; }
+    @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+  </style>
+</head>
+<body>
+  <nav class="en-nav" role="navigation" aria-label="主导航">
+    <a class="en-nav-logo" href="https://ezlong.com/zh/">EZLONG</a>
+    <div class="en-nav-right">
+      <a class="en-nav-link" href="https://ezlong.com/zh/">全部工具</a>
+      <a class="en-nav-link" href="https://ezlong.com/portfolio-manager.html">한국어 &rarr;</a>
+    </div>
+  </nav>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="https://ezlong.com/zh/">EZLONG</a><span>/</span><span>投资组合复利模拟器</span>
+  </nav>
+  <section class="hero">
+    <div class="hero-badge">免费 &middot; 无需注册 &middot; 即刻使用</div>
+    <h1>投资组合复利模拟器</h1>
+    <p class="hero-sub">按自定义配置比例，预测你整个多股票美股投资组合的复利增长</p>
+    <div class="cta-group">
+      <a class="btn-primary" href="https://ezlong.com/portfolio-manager.html" target="_blank" rel="noopener">打开工具 &rarr;</a>
+      <a class="btn-secondary" href="https://ezlong.com/zh/">浏览全部工具</a>
+    </div>
+    <p class="auto-translate-note">工具界面为韩语 &mdash; Chrome、Edge 和 Safari 会自动翻译。</p>
+    <p class="translate-proxy-note">没有自动翻译？<a href="https://ezlong-com.translate.goog/portfolio-manager.html?_x_tr_sl=ko&amp;_x_tr_tl=zh-CN&amp;_x_tr_hl=zh-CN&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">用谷歌翻译打开 &rarr;</a></p>
+  </section>
+  <div class="stats-row" role="region" aria-label="核心数据">
+    <div class="stat-item"><div class="stat-value">多资产支持</div><div class="stat-label">每笔持仓自定义配置</div></div>
+    <div class="stat-item"><div class="stat-value">1-30年</div><div class="stat-label">预测期限</div></div>
+    <div class="stat-item"><div class="stat-value">100% 免费</div><div class="stat-label">无需注册</div></div>
+  </div>
+  <main class="main" id="main-content">
+    <section class="section">
+      <h2 class="section-title">什么是投资组合复利模拟器？</h2>
+      <p class="section-body">投资组合复利模拟器让你可以对你实际的多股票投资组合的长期复利增长进行建模。与只能处理单一资产的简单复利计算器不同，这款工具让你可以定义一个由多只美股和ETF组成的完整投资组合——每一项都拥有各自的配置权重和预期年化收益率——并计算整体随时间产生的合并复利增长。</p>
+      <p class="section-body">如果你同时持有TSLA或NVDA等高成长个股，以及SPY或SCHD等稳健ETF，这款模拟器能提供比任何单一资产计算器都更精确的预测。你可以准确看到当前的配置在10年、20年或30年后会有怎样的表现——并尝试不同的配置权重，找到你最愿意长期持有的组合方式。</p>
+      <p class="section-body">输出结果会按年份展示你预测的投资组合价值，以及总投入与复利总收益的对比，让你清楚看到未来的财富中有多少来自你自己的储蓄，又有多少来自市场为你创造的价值。</p>
+    </section>
+    <section class="section">
+      <h2 class="section-title">为什么使用这个工具？</h2>
+      <p class="section-body">大多数投资组合计算器要么只能处理单一资产，要么使用一个固定的混合收益率，从而丢失了所有细微差别。如果你持有20%的TSLA、30%的AAPL和50%的SPY，这三项资产的预期收益率特征差异很大——简单地把它们平均成一个数字，会忽略每个组成部分各自的复利动态。</p>
+      <p class="section-body">投资组合复利模拟器保留了每项资产各自的收益率，同时计算整个投资组合的加权复利增长。这意味着你可以看到配置决策的真实影响：如果把NVDA的配置比例从15%提高到25%会怎样？如果从个股转向SPY会怎样？这些答案都能立即在预测图表中看到。</p>
+    </section>
+    <section class="section">
+      <h2 class="section-title">如何模拟你的投资组合复利增长</h2>
+      <ol class="step-list">
+        <li class="step-item">
+          <span class="step-num">1</span>
+          <div class="step-body"><strong class="step-name">打开投资组合复利模拟器</strong><p class="step-text">点击“打开工具”，在浏览器中访问模拟器。无需登录或下载。</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">2</span>
+          <div class="step-body"><strong class="step-name">添加你的第一只股票或ETF</strong><p class="step-text">输入你第一笔持仓的股票代码（TSLA、AAPL、SPY、QQQ、NVDA等），并设置其配置比例。</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">3</span>
+          <div class="step-body"><strong class="step-name">为每项资产设置预期年化收益率</strong><p class="step-text">为每项资产输入你预期的年化收益率。标普500指数的历史平均值约为10%，纳斯达克100约为14%，大盘成长股则因个股而异，差异较大。使用保守估计能获得更贴近现实的预测。</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">4</span>
+          <div class="step-body"><strong class="step-name">添加剩余的所有持仓</strong><p class="step-text">对投资组合中的每一笔仓位重复上述步骤。配置比例总和必须等于100%。模拟器支持你实际投资组合中持有的任意数量资产。</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">5</span>
+          <div class="step-body"><strong class="step-name">输入投资组合价值和投资期限</strong><p class="step-text">输入你当前的投资组合总价值，以及预测所需的年数（1-30年）。</p></div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">6</span>
+          <div class="step-body"><strong class="step-name">运行模拟并查看结果</strong><p class="step-text">点击“计算”。模拟器会以图表和表格两种形式展示逐年预测的投资组合价值，以及总投入与复利总收益的对比明细。</p></div>
+        </li>
+      </ol>
+    </section>
+    <section class="section">
+      <h2 class="section-title">常见问题</h2>
+      <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">这与DCA模拟器有什么不同？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">投资组合复利模拟器针对你现有的投资组合价值，按各资产自定义配置比例来建模复利增长。DCA模拟器则针对持续的每月定投进行建模。若你已有一笔一次性投资组合，请使用投资组合模拟器；若要模拟定期每月投资，请使用DCA模拟器。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">投资组合中最多可以添加多少项资产？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">你可以添加与实际投资组合中持有数量相同的资产。该模拟器可以处理持有5到20个以上仓位的现实多股票投资组合。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">像TSLA或NVDA这样的股票应该设置多少预期收益率？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">个别成长股的历史收益率差异很大。建议使用一系列情景——保守（10%）、基准（15%）、乐观（20%）——而不是假设近期的超常收益会无限期持续下去。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">模拟器是否考虑再平衡？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">该模拟器假设配置比例保持静态、随时间复利增长，不进行定期再平衡。它更适合用于理解方向性结果，而非精确预测。实际中每年进行再平衡会使收益率略微平滑化。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">可以纳入派息股票吗？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">可以。请将预期股息收益率计入每项资产的总年化收益率中。例如，如果某只股票年增长8%，并支付你会再投资的2%股息收益率，则应输入总预期收益率10%。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">如果我想加入每月定投怎么办？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">如果你想同时对现有投资组合和持续的每月定投进行建模，可以将本工具与DCA模拟器搭配使用，再将两者的结果结合起来。你可以分别运行这两个工具，进行不同的情景规划。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">分散化的美股投资组合，现实的长期收益率是多少？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">追踪标普500指数的分散化美股投资组合，在30年的周期内历史年化收益约为10%（名义值）。以纳斯达克100为主的投资组合平均约为14%，但波动性明显更高。</p>
+          </div>
+        </div>
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <h3 class="faq-q" itemprop="name">这款投资组合模拟器免费吗？</h3>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <p class="faq-a" itemprop="text">是的，完全免费，无需注册、无需邮箱、无需订阅。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section related-section">
+      <h2 class="section-title">相关免费工具</h2>
+      <div class="rel-grid">
+          <a class="rel-card" href="https://ezlong.com/zh/backtest.html">蒙特卡洛模拟器</a>
+          <a class="rel-card" href="https://ezlong.com/zh/dca-simulator.html">DCA定投复利模拟器</a>
+      </div>
+    </section>
+    <div class="cta-card">
+      <h2>立即体验投资组合复利模拟器</h2>
+      <p>免费、无需注册，浏览器中即刻运行。Chrome会自动将韩语翻译成中文。</p>
+      <a class="btn-white" href="https://ezlong.com/portfolio-manager.html" target="_blank" rel="noopener">打开投资组合复利模拟器 &rarr;</a>
+      <p class="translate-proxy-note">没有自动翻译？<a href="https://ezlong-com.translate.goog/portfolio-manager.html?_x_tr_sl=ko&amp;_x_tr_tl=zh-CN&amp;_x_tr_hl=zh-CN&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">用谷歌翻译打开 &rarr;</a></p>
+    </div>
+  </main>
+  <footer class="en-footer" role="contentinfo">
+    <p><a href="https://ezlong.com/zh/">EZLONG</a> &mdash; 免费美股投资工具<br>
+    &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
+    <small>仅供教育参考，不构成投资建议。所有投资均有风险，过往业绩不代表未来表现。</small></p>
+  </footer>
+</body>
+</html>
