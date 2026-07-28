@@ -8286,5 +8286,19 @@ window.investmentQuotes = [
     "title": "시장의 마법사들",
     "author": "폴 튜더 존스",
     "category": "behavior"
+  },
+  {
+    "english": "Your story is what you have, what you will always have. It is something to own.",
+    "text": "당신의 이야기는 당신이 가진 것이며, 앞으로도 언제나 당신의 것으로 남을 것이다. 그것은 스스로 소유할 수 있는 것이다.",
+    "title": "비커밍",
+    "author": "미셸 오바마",
+    "genre": "literature"
+  },
+  {
+    "english": "Dhandho, literally translated from Gujarati, means \"endeavors that create wealth.\" At its core, Dhandho is about generating maximum wealth with minimum risk. Heads, I win; tails, I don't lose much!",
+    "text": "다안도(Dhandho)는 구자라트어로 '부를 만들어내는 노력'이라는 뜻이다. 그 핵심은 최소한의 위험으로 최대한의 부를 만들어내는 데 있다. 앞면이 나오면 내가 이기고, 뒷면이 나와도 크게 잃지 않는 베팅 — 이것이 진짜 좋은 투자다.",
+    "title": "다안도 투자자 (The Dhandho Investor)",
+    "author": "모니시 파브라이 (Mohnish Pabrai)",
+    "category": "mindset"
   }
 ];
