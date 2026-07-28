@@ -294,7 +294,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2>설정<span class="settings-version" aria-hidden="true">ver.1.8.7</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.8</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -330,7 +330,10 @@
                문구는 폰트를 키우고(.bg-filter-status), 그 안의 계절/날씨/
                시간대 라벨은 굵게+오렌지(.bg-filter-status-tag)로 강조한다 —
                마크업 자체는 app.js syncBgFilterUi가 매번 다시 그린다. -->
-          <p class="settings-desc bg-filter-status" id="bgFilterStatus">현재 ☑ 계절 ☑ 날씨 ☑ 시간대 에 맞는 배경 사진만 나옵니다.</p>
+          <!-- 이 문구는 app.js renderBackgroundFilterStatus() 가 부팅 직후 로케일에
+     맞춰 통째로 덮어쓴다(체크표시 상태가 실시간으로 바뀌므로 정적
+     data-i18n 으로는 표현할 수 없다). 아래 한국어는 그때까지의 자리표시자. -->
+          <p class="settings-desc bg-filter-status" id="bgFilterStatus"></p>
           <div class="music-exclude-filters bg-filter-toggles" id="bgFilterToggles" data-i18n-aria="settings.background.matchCriteriaAria" aria-label="배경사진 매칭 기준">
             <label class="exclude-chip is-disabled">
               <input type="checkbox" id="bgFilterSeason" checked disabled>
@@ -530,7 +533,7 @@
           <div class="music-history-table" id="musicHistoryList" aria-live="polite">
             <div id="musicHistoryBody"></div>
           </div>
-          <button type="button" class="music-history-viewall" id="musicHistoryViewAll" hidden>모두 보기 &gt;</button>
+          <button type="button" class="music-history-viewall" id="musicHistoryViewAll" data-i18n="common.showAllShort" hidden>모두 보기 ></button>
         </section>
 
         <div class="settings-divider" aria-hidden="true"></div>
@@ -593,7 +596,7 @@
         <canvas class="weather-detail-condensation" aria-hidden="true"></canvas>
         <header class="settings-head">
           <div>
-            <h2 id="weatherDetailTitle">날씨</h2>
+            <h2 id="weatherDetailTitle" data-i18n="weather.title">날씨</h2>
           </div>
         </header>
         <!-- 2026-07-18: 닫기 버튼을 헤더 밖으로 빼서 position:fixed로 항상

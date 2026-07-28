@@ -406,7 +406,22 @@ const quotes = baseQuotes.map((quote) => {
 // 이미 태깅된 quote.category 값(가족관계/경제자기계발/과학/문학/시/에세이/
 // 인문역사/철학동양고전)을 그대로 재사용(데이터 변경 없음, 표시 라벨만 매핑),
 // "철학·동양고전"이었던 표시 라벨만 유저 요청대로 "철학·고전"으로 축약.
-const flatGenreLabels = {
+// 2026-07-28 W9-2 — 키(왼쪽)는 investment-quotes.js 의 quote.category 값이라
+// 절대 건드리면 안 되는 **데이터 식별자**다. 오른쪽 표시 라벨만 카탈로그를
+// 태운다. 이 둘을 헷갈려 키까지 영어로 바꾸면 문장 필터가 통째로 죽는다.
+const flatGenreCatalogKeys = {
+  investment: "settings.quotes.topics.investment",
+  "문학": "settings.quotes.topics.literature",
+  "시": "settings.quotes.topics.poetry",
+  "에세이": "settings.quotes.topics.essay",
+  "가족관계": "settings.quotes.topics.family",
+  "경제자기계발": "settings.quotes.topics.selfhelp",
+  "과학": "settings.quotes.topics.science",
+  "인문역사": "settings.quotes.topics.history",
+  "철학동양고전": "settings.quotes.topics.philosophy"
+};
+// 한국어 폴백은 예전 값 그대로 — i18n 이 통째로 실패해도 화면이 안 바뀐다.
+const flatGenreKoLabels = {
   investment: "투자",
   "문학": "문학",
   "시": "시",
@@ -417,6 +432,9 @@ const flatGenreLabels = {
   "인문역사": "인문·역사",
   "철학동양고전": "철학·고전"
 };
+function flatGenreLabel(key) {
+  return t(flatGenreCatalogKeys[key], null, flatGenreKoLabels[key] || key);
+}
 
 function getQuoteFlatGenreKey(quote) {
   return quote.genre === "investment" ? "investment" : quote.category;
@@ -1375,7 +1393,19 @@ function syncBgFilterUi() {
     // 입력이 섞이지 않음)이라는 걸 유지해야 한다 — 나중에 라벨을 동적
     // 값으로 바꾸게 되면 반드시 이스케이프 처리를 추가할 것.
     const tag = (on, label) => `<span class="bg-filter-status-tag">${bgFilterCheckSymbol(on)} ${label}</span>`;
-    bgFilterStatusEl.innerHTML = `현재 ${tag(true, "계절")} ${tag(weatherOn, "날씨")} ${tag(timeOn, "시간대")} 에 맞는 배경 사진만 나옵니다.`;
+    // 2026-07-28 W9-2 — 문장 뼈대를 카탈로그로 옮긴다. {filters} 자리에
+    // 태그 3개를 이어붙인 HTML 이 들어가는데, 라벨은 전부 카탈로그에서 온
+    // 고정 문자열이라 여전히 사용자 입력이 섞이지 않는다(위 주석의 전제 유지).
+    const filters = [
+      tag(true, t("settings.background.season", null, "계절")),
+      tag(weatherOn, t("settings.background.weather", null, "날씨")),
+      tag(timeOn, t("settings.background.timeOfDay", null, "시간대")),
+    ].join(" ");
+    bgFilterStatusEl.innerHTML = t(
+      "settings.background.activeNotice",
+      { filters },
+      `현재 ${filters} 에 맞는 배경 사진만 나옵니다.`
+    );
   }
 }
 
@@ -2344,7 +2374,8 @@ function getEligibleQuotes() {
 function renderFlatGenreOptions() {
   if (!flatGenreOptionsEl) return;
   flatGenreOptionsEl.innerHTML = "";
-  Object.entries(flatGenreLabels).forEach(([value, label]) => {
+  Object.keys(flatGenreCatalogKeys).forEach((value) => {
+    const label = flatGenreLabel(value);
     const option = document.createElement("label");
     option.className = "field-option";
     option.innerHTML = `<input type="checkbox" value="${value}" data-flat-genre-option><span>${label}</span>`;
@@ -2364,7 +2395,7 @@ function loadSavedFlatGenres() {
     const saved = JSON.parse(localStorage.getItem(flatGenreStorageKey) || "[\"investment\"]");
     if (Array.isArray(saved)) {
       selectedFlatGenres = new Set(
-        saved.filter((value) => Object.prototype.hasOwnProperty.call(flatGenreLabels, value))
+        saved.filter((value) => Object.prototype.hasOwnProperty.call(flatGenreCatalogKeys, value))
       );
     }
   } catch (error) {
@@ -4630,6 +4661,20 @@ const musicRecentGroupSpacing = 8; // 같은 그룹은 최소 이만큼 곡이 �
 // 카테고리로 두되, 아래 SPECIAL_CATEGORY_KEYS에 등록해 "전체 랜덤" 풀과
 // 일반 플레이리스트 라디오 목록에서는 빠지고 별도 "Special" 박스에서만
 // 선택 가능하게 한다.
+// 2026-07-28 W9-2 — 왼쪽 키는 music-playlist.js 트랙의 category 원본 값이라
+// 절대 손대지 않는다(매칭용 식별자). 오른쪽만 카탈로그 키로 바꿨다.
+const MUSIC_CATEGORY_CATALOG_KEYS = {
+  [ORIGINAL_CATEGORY_KEY]: "music.categories.acoustic",
+  "My Workspace": "music.categories.acoustic",
+  "piano chello": "music.categories.classical",
+  "vocal - CITY POP": "music.categories.vocal",
+  "vocal - workspace 20260711 1400": "music.categories.vocal",
+  "vocal- girls rock": "music.categories.rock",
+  "Calm Circles For A Busy Brain-스트레스해소": "music.categories.stressRelief",
+  "sleep": "music.categories.sleep",
+  "명상": "music.categories.meditation",
+};
+// i18n 이 통째로 실패해도 한국어 화면이 예전 그대로이도록 남기는 폴백.
 const MUSIC_CATEGORY_LABELS = {
   [ORIGINAL_CATEGORY_KEY]: "어쿠스틱 연주곡",
   "My Workspace": "어쿠스틱 연주곡",
@@ -4667,14 +4712,18 @@ function trackCategoryKey(track) {
 }
 
 function musicCategoryLabel(key) {
-  return MUSIC_CATEGORY_LABELS[key] || key;
+  const catalogKey = MUSIC_CATEGORY_CATALOG_KEYS[key];
+  if (!catalogKey) return key;
+  return t(catalogKey, null, MUSIC_CATEGORY_LABELS[key] || key);
 }
 
 // 2026-07-20 신설 — "all"까지 포함해 필터 키를 사람이 읽을 라벨로 바꾼다
 // (musicCategoryLabel은 "all"을 모르므로 이 래퍼가 필요). 설정 화면 즉시
 // 피드백 토스트와 첫 재생 안내 토스트가 공유한다.
 function musicPlaylistFilterAnnounceLabel(key) {
-  return key === "all" ? "전체 랜덤" : musicCategoryLabel(key);
+  return key === "all"
+    ? t("music.allShuffle", null, "전체 랜덤")
+    : musicCategoryLabel(key);
 }
 
 // 2026-07-20 유저 요청 — "Special"(스트레스 해소/수면유도/명상)은 특수한
@@ -4712,9 +4761,9 @@ function isSpecialCategory(key) {
 // 문자열만으로는 보컬 유무를 판단할 근거가 없다는 게 확인됐다(658곡 전체를
 // 훑어도 "Aria"/"Chorus" 같은 보컬 단서 제목이 하나도 없었다).
 const MUSIC_EXCLUDABLE_CATEGORIES = [
-  { key: "My Workspace", label: "어쿠스틱", storageKey: "ezlong:musicExcludeAcoustic", elId: "musicExcludeAcoustic" },
-  { key: "piano chello", label: "클래식", storageKey: "ezlong:musicExcludeClassical", elId: "musicExcludeClassical" },
-  { key: "vocal - workspace 20260711 1400", label: "보컬", storageKey: "ezlong:musicExcludeVocal", elId: "musicExcludeVocal" },
+  { key: "My Workspace", label: t("music.categoriesShort.acoustic", null, "어쿠스틱"), storageKey: "ezlong:musicExcludeAcoustic", elId: "musicExcludeAcoustic" },
+  { key: "piano chello", label: t("music.categories.classical", null, "클래식"), storageKey: "ezlong:musicExcludeClassical", elId: "musicExcludeClassical" },
+  { key: "vocal - workspace 20260711 1400", label: t("music.categories.vocal", null, "보컬"), storageKey: "ezlong:musicExcludeVocal", elId: "musicExcludeVocal" },
   { key: "vocal- girls rock", label: "ROCK", storageKey: "ezlong:musicExcludeRock", elId: "musicExcludeRock" },
 ];
 const MUSIC_VOCAL_CATEGORY_KEY = "vocal - workspace 20260711 1400";
@@ -6939,7 +6988,7 @@ function buildMusicPlaylistOptions() {
       allCount += 1;
     });
   }
-  const options = [{ key: "all", label: "전체 랜덤", count: allCount }];
+  const options = [{ key: "all", label: t("music.allShuffle", null, "전체 랜덤"), count: allCount }];
   Array.from(counts.keys()).forEach((key) => {
     options.push({ key, label: musicCategoryLabel(key), count: counts.get(key) });
   });
@@ -7421,7 +7470,7 @@ function renderMusicHistoryList() {
   if (!target) return;
   const log = loadMusicPlayLog();
   if (log.length === 0) {
-    target.innerHTML = '<div class="settings-desc settings-desc-muted">아직 재생 기록이 없습니다.</div>';
+    target.innerHTML = `<div class="settings-desc settings-desc-muted">${t("settings.music.historyEmpty", null, "아직 재생 기록이 없습니다.")}</div>`;
     if (musicHistoryViewAll) musicHistoryViewAll.hidden = true;
     return;
   }
@@ -7439,7 +7488,9 @@ function renderMusicHistoryList() {
     const isCurrent = Boolean(currentTrack && currentTrack.file === entry.file);
     const variant = formatPlaylistVariant(entry.playlist);
     const isPlayingNow = isCurrent && musicPlaying;
-    const ariaLabel = isPlayingNow ? "지금 재생 중" : "재생";
+    const ariaLabel = isPlayingNow
+      ? t("music.nowPlaying", null, "지금 재생 중")
+      : t("music.playAction", null, "재생");
     const isLiked = Boolean(entry.file && likedSet.has(entry.file));
     const isDisliked = Boolean(entry.file && dislikedSet.has(entry.file));
     // 2026-07-22: 곡 제목 아래에 이 곡이 속한 플레이리스트(카테고리)명을
@@ -7464,7 +7515,9 @@ function renderMusicHistoryList() {
       // 2026-07-18 5차 피드백: "펼치기"인데 ">"(다음/이동 느낌)를 쓰는 게
       // 어색하다는 지적 — 아래로 펼쳐지는 동작에 맞게 "▾"(아래 방향), 접을
       // 때는 반대로 "▴"(위 방향)로 바꾼다.
-      musicHistoryViewAll.textContent = musicHistoryExpanded ? "접기 ▴" : `모두 보기 (${log.length}) ▾`;
+      musicHistoryViewAll.textContent = musicHistoryExpanded
+        ? t("common.collapse", null, "접기 ▴")
+        : t("common.showAll", { count: log.length }, `모두 보기 (${log.length}) ▾`);
     } else {
       musicHistoryViewAll.hidden = true;
     }
