@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-07-28T17:23:22.549Z
+ * 생성 시각: 2026-07-28T22:11:58.471Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -148,6 +148,13 @@
         "RAIN": "Rain",
         "SNOW": "Snow",
         "THUNDER": "Thunderstorm"
+      },
+      "rainGrades": {
+        "NONE": "No precipitation",
+        "DRIZZLE": "Light rain",
+        "RAIN": "Rain",
+        "HEAVY": "Heavy rain",
+        "VERY_HEAVY": "Very heavy rain"
       },
       "cloudyWithRainChance": "Cloudy ({label})",
       "rainStopped": "Rain (ended)",
@@ -493,6 +500,13 @@
         "SNOW": "Nieve",
         "THUNDER": "Tormenta"
       },
+      "rainGrades": {
+        "NONE": "Sin precipitación",
+        "DRIZZLE": "Lluvia ligera",
+        "RAIN": "Lluvia",
+        "HEAVY": "Lluvia fuerte",
+        "VERY_HEAVY": "Lluvia muy fuerte"
+      },
       "cloudyWithRainChance": "Nublado ({label})",
       "rainStopped": "Lluvia (ya paró)",
       "thunderShower": "Tormenta",
@@ -836,6 +850,13 @@
         "RAIN": "雨",
         "SNOW": "雪",
         "THUNDER": "雷雨"
+      },
+      "rainGrades": {
+        "NONE": "降水なし",
+        "DRIZZLE": "弱い雨",
+        "RAIN": "雨",
+        "HEAVY": "強い雨",
+        "VERY_HEAVY": "非常に強い雨"
       },
       "cloudyWithRainChance": "くもり({label})",
       "rainStopped": "雨(やみました)",
@@ -1181,6 +1202,13 @@
         "SNOW": "눈",
         "THUNDER": "천둥번개"
       },
+      "rainGrades": {
+        "NONE": "강수 없음",
+        "DRIZZLE": "약한 비",
+        "RAIN": "비",
+        "HEAVY": "강한 비",
+        "VERY_HEAVY": "매우 강한 비"
+      },
       "cloudyWithRainChance": "흐림({label})",
       "rainStopped": "비(그침)",
       "thunderShower": "뇌우",
@@ -1525,6 +1553,13 @@
         "SNOW": "Neve",
         "THUNDER": "Tempestade"
       },
+      "rainGrades": {
+        "NONE": "Sem precipitação",
+        "DRIZZLE": "Chuva fraca",
+        "RAIN": "Chuva",
+        "HEAVY": "Chuva forte",
+        "VERY_HEAVY": "Chuva muito forte"
+      },
       "cloudyWithRainChance": "Nublado ({label})",
       "rainStopped": "Chuva (já parou)",
       "thunderShower": "Tempestade",
@@ -1868,6 +1903,13 @@
         "RAIN": "雨",
         "SNOW": "雪",
         "THUNDER": "雷阵雨"
+      },
+      "rainGrades": {
+        "NONE": "无降水",
+        "DRIZZLE": "小雨",
+        "RAIN": "雨",
+        "HEAVY": "大雨",
+        "VERY_HEAVY": "暴雨"
       },
       "cloudyWithRainChance": "阴（{label}）",
       "rainStopped": "雨（已停）",

@@ -140,6 +140,55 @@ function conditionLabel(code, fallbackKo) {
   return t("weather.conditions." + code, null, fallbackKo !== undefined ? fallbackKo : "");
 }
 
+/**
+ * 강수 등급 → 사람이 읽는 라벨.
+ *
+ * 2026-07-29 시뮬레이터 실측으로 잡은 결함. 예전 코드는 백엔드가 내려주는
+ * rainIntensity.label 을 그대로 화면에 썼고, 그 옆 주석은 "백엔드가 로케일에
+ * 맞춰 내려준다"고 적혀 있었다 — **사실이 아니었다.**
+ * /api/weather/current 는 detail 만 로컬라이즈하고 rainIntensity 는
+ * classifyRainIntensity() 결과(한국어 고정)를 그대로 통과시킨다.
+ * 그래서 영어 기기 메인 화면에 "약한 비 75°" 처럼 한국어가 섞여 나왔다.
+ * 단위 테스트는 이 경로를 못 잡았다 — 백엔드 응답을 화면까지 끌고 가는
+ * 경로라서, 시뮬레이터에서 눈으로 봐야만 드러났다.
+ *
+ * grade 는 언어중립 코드("NONE"/"DRIZZLE"/"RAIN"/"HEAVY"/"VERY_HEAVY")로
+ * 이미 내려오고 있으므로, 라벨은 프론트 카탈로그에서 뽑는다 — 백엔드
+ * 재배포 없이 6개 언어가 한 번에 해결된다.
+ *
+ * ★ 한국어는 예전과 글자 단위로 같다 ★ — 카탈로그의 ko 값이 백엔드
+ * 문자열과 동일하고, 등급이 없으면 백엔드 라벨을 그대로 돌려준다.
+ */
+function rainGradeLabel(rainIntensity) {
+  const backendLabel = (rainIntensity && rainIntensity.label) || "";
+  // ★ 한국어는 백엔드 문자열을 그대로 통과시킨다 ★
+  // 카탈로그 ko 값이 백엔드와 같은 문자열이라 어느 쪽을 써도 같지만,
+  // 통과 방식이면 "예전과 같다"가 카탈로그 내용과 무관하게 성립한다 —
+  // 나중에 누가 카탈로그 ko 값을 손대도 한국어 화면은 흔들리지 않는다.
+  if (isKoreanLocale()) return backendLabel;
+  const grade = rainIntensity && rainIntensity.grade;
+  if (!grade) return backendLabel;
+  return t("weather.rainGrades." + grade, null, backendLabel);
+}
+
+/**
+ * "이 문구가 강수를 말하고 있는가"를 판정할 때 쓰는, 현재 로케일의
+ * 강수 계열 라벨 집합. 날씨상세 히어로(summaryIndicatesPrecip)가 쓴다.
+ * 한국어 경로는 이 함수를 타기 전에 기존 정규식에서 이미 걸러지므로,
+ * 여기 값이 한국어 화면 결과를 바꾸는 일은 없다.
+ */
+function precipSummaryLabels() {
+  return [
+    t("weather.rainGrades.DRIZZLE", null, "약한 비"),
+    t("weather.rainGrades.RAIN", null, "비"),
+    t("weather.rainGrades.HEAVY", null, "강한 비"),
+    t("weather.rainGrades.VERY_HEAVY", null, "매우 강한 비"),
+    conditionLabel(WX.CONDITION.SNOW, "눈"),
+    conditionLabel(WX.CONDITION.RAIN, "비"),
+    t("weather.thunderShower", null, "뇌우"),
+  ];
+}
+
 // 네이티브 래퍼(iOS/Android)가 OS 언어를 주입해두면 그 값이 우선한다.
 // 주입 전이면 navigator.language 로 판정하고, 그것도 실패하면 한국어다.
 const FZ_LOCALE = FZ_I18N.init ? FZ_I18N.init({}) : "ko";
@@ -1239,8 +1288,7 @@ function vcCurrentSummary(c) {
     // 비"로 계산해 내려주는 문구 — 날씨상세 패널(wdCurrentConditionBase)도
     // 같은 값을 쓰므로 재사용하면 두 화면이 항상 같은 말을 하게 된다.
     if (isThunder) return t("weather.thunderShower", null, "뇌우");
-    // rainIntensity.label 은 백엔드가 로케일에 맞춰 내려준다(W1에서 처리).
-    return (c.rainIntensity && c.rainIntensity.label) || conditionLabel(WX.CONDITION.RAIN, "비");
+    return rainGradeLabel(c.rainIntensity) || conditionLabel(WX.CONDITION.RAIN, "비");
   }
 
   // 2026-07-22: 확률<50%인데 강수량이 이미 1mm를 넘는 애매한 경우 —
@@ -3748,14 +3796,22 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     typeof weatherState.summary === "string" && !weatherSummaryPlaceholders().includes(weatherState.summary)
       ? weatherState.summary
       : null;
-  const summaryIndicatesPrecip = liveSummaryForCondition ? /비|눈|뇌우/.test(liveSummaryForCondition) : false;
+  // 2026-07-29: 이 판정도 한국어 전용 정규식 하나뿐이었다. 영어·일본어
+  // 화면에서는 무조건 false 가 되어 늘 아래 등급 라벨 분기로 떨어졌다.
+  // 한국어는 예전 정규식을 **먼저** 그대로 태워 결과가 1비트도 안 바뀌게
+  // 하고, 그 외 언어에서만 카탈로그가 실제로 내보내는 강수 라벨 집합과
+  // 대조한다(문자열 비교를 언어별로 새로 짜지 않기 위함).
+  const summaryIndicatesPrecip = liveSummaryForCondition
+    ? (/비|눈|뇌우/.test(liveSummaryForCondition) ||
+       precipSummaryLabels().includes(liveSummaryForCondition))
+    : false;
   if (isRainingNow) {
     // weatherState.summary가 이미 강수를 말하면 그 표현을 그대로 쓰고,
     // 드물게 어긋나 있으면 백엔드 rainIntensity 등급 라벨(약한 비/비/
     // 강한 비 등)로 대체한다.
     wdCurrentConditionBase = summaryIndicatesPrecip
       ? liveSummaryForCondition
-      : (c.rainIntensity && c.rainIntensity.label) || "비";
+      : rainGradeLabel(c.rainIntensity) || conditionLabel(WX.CONDITION.RAIN, "비");
     // 2026-07-24: 판정에 실제로 쓰인 값(effCurrentProb/effCurrentMm)을 그대로
     // 표시한다 — 판정은 effProb/effMm로 해놓고 화면엔 c.precipprob(더 낮을
     // 수 있는 순간 관측치)를 보여주면 "비라며 정작 숫자는 낮다"는 또 다른
