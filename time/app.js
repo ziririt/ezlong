@@ -4412,7 +4412,13 @@ function renderWeatherCurrentToday(data) {
 // 예전에 따로 있던 "어제와 비교하면" 카드는 이 카드로 흡수돼 삭제됐다.
 function renderWeatherYesterday(data) {
   if (wd24hComparison) {
-    wd24hComparison.textContent = data && data.comparison ? data.comparison : "";
+    // ★ comparison 은 백엔드가 만드는 한국어 서술문이다 ★
+    // 성동님 확정(2026-07-29): 날씨 상세의 서술문은 비한국어에서 아예 뺀다.
+    // 라벨은 번역하되 문장은 내보내지 않는다 — 영어 화면에 한국어 문장이
+    // 끼어드는 것보다, 아래 두 칼럼 대조표만 보여주는 편이 낫다.
+    // (백엔드 문장 템플릿이 다국어화되면 그때 이 게이트를 풀면 된다.)
+    const showSentence = isKoreanLocale();
+    wd24hComparison.textContent = showSentence && data && data.comparison ? data.comparison : "";
   }
   if (!wdYesterday) return;
   if (!data || !data.past24h || !data.next24h) {
@@ -4427,18 +4433,25 @@ function renderWeatherYesterday(data) {
   // 규칙이 이 클래스를 보고 타일 내부를 row-reverse로 뒤집어, 값이 가운데
   // 경계 쪽(왼쪽), 라벨이 바깥쪽(오른쪽)에 오도록 만든다 — 왼쪽 칼럼과
   // 대칭을 이루며 두 값이 가운데서 마주본다.
+  // 라벨은 카탈로그를 거친다. 한국어는 카탈로그 값이 예전 문자열과 글자
+  // 그대로 같아서 화면이 바뀌지 않는다(골든이 이를 보증한다).
+  const lPast = t("weather.compare.past24h", null, "🌙 지난 24시간");
+  const lNext = t("weather.compare.next24h", null, "☀️ 향후 24시간");
+  const lMin = t("weather.compare.tempMin", null, "최저기온");
+  const lMax = t("weather.compare.tempMax", null, "최고기온");
+  const lHum = t("weather.compare.humidityAvg", null, "평균습도");
   wdYesterday.innerHTML = `
     <div class="weather-24h-col">
-      <p class="weather-24h-col-label">🌙 지난 24시간</p>
-      <div class="weather-stat-tile"><span class="weather-stat-label">최저기온</span><span class="weather-stat-value">${formatTemp(p.tempMin)}</span></div>
-      <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${formatTemp(p.tempMax)}</span></div>
-      <div class="weather-stat-tile"><span class="weather-stat-label">평균습도</span><span class="weather-stat-value">${Math.round(p.humidityAvg)}%</span></div>
+      <p class="weather-24h-col-label">${lPast}</p>
+      <div class="weather-stat-tile"><span class="weather-stat-label">${lMin}</span><span class="weather-stat-value">${formatTemp(p.tempMin)}</span></div>
+      <div class="weather-stat-tile"><span class="weather-stat-label">${lMax}</span><span class="weather-stat-value">${formatTemp(p.tempMax)}</span></div>
+      <div class="weather-stat-tile"><span class="weather-stat-label">${lHum}</span><span class="weather-stat-value">${Math.round(p.humidityAvg)}%</span></div>
     </div>
     <div class="weather-24h-col weather-24h-col--future">
-      <p class="weather-24h-col-label">☀️ 향후 24시간</p>
-      <div class="weather-stat-tile"><span class="weather-stat-label">최저기온</span><span class="weather-stat-value">${formatTemp(n.tempMin)}</span></div>
-      <div class="weather-stat-tile"><span class="weather-stat-label">최고기온</span><span class="weather-stat-value">${formatTemp(n.tempMax)}</span></div>
-      <div class="weather-stat-tile"><span class="weather-stat-label">평균습도</span><span class="weather-stat-value">${Math.round(n.humidityAvg)}%</span></div>
+      <p class="weather-24h-col-label">${lNext}</p>
+      <div class="weather-stat-tile"><span class="weather-stat-label">${lMin}</span><span class="weather-stat-value">${formatTemp(n.tempMin)}</span></div>
+      <div class="weather-stat-tile"><span class="weather-stat-label">${lMax}</span><span class="weather-stat-value">${formatTemp(n.tempMax)}</span></div>
+      <div class="weather-stat-tile"><span class="weather-stat-label">${lHum}</span><span class="weather-stat-value">${Math.round(n.humidityAvg)}%</span></div>
     </div>`;
 }
 
@@ -4461,7 +4474,20 @@ function renderWeatherTropical(data) {
     weatherBadgeHtml(officialGrade, officialLabel) + weatherBadgeHtml(sleepGrade, sleepLabel);
   if (wdTropicalComment) {
     const icon = data.sleepWindow.isFeelsLikeTropicalNight ? "🥵" : "🌙";
-    wdTropicalComment.textContent = data.sleepWindow.comment ? `${icon} ${data.sleepWindow.comment}` : "";
+    if (isKoreanLocale()) {
+      wdTropicalComment.textContent = data.sleepWindow.comment ? `${icon} ${data.sleepWindow.comment}` : "";
+    } else {
+      // comment 는 백엔드가 만드는 한국어 서술문이라 내보내지 않는다.
+      // 대신 같은 정보를 라벨+숫자로만 보여준다 — 문장을 통째로 지우면
+      // 배지만 남아 "몇 도인지"가 사라지는데, 그건 정보 손실이다.
+      const s = data.sleepWindow;
+      const ok = typeof s.minFeelsLike === "number" && s.sampleHourCount > 0;
+      wdTropicalComment.textContent = ok
+        ? `${icon} ` + t("weather.tropicalNight.sleepMin",
+            { start: s.sleepStartHour, end: s.sleepEndHour, temp: formatTemp(s.minFeelsLike) },
+            `${s.sleepStartHour}시~${s.sleepEndHour}시 체감 최저 ${formatTemp(s.minFeelsLike)}`)
+        : "";
+    }
   }
 }
 
@@ -4516,7 +4542,19 @@ function renderWeatherTempVsNormal(data) {
     const diff = Math.round(data.todayTempMax) - Math.round(data.normal.avgTempMax);
     icon = diff > 1 ? "📈" : diff < -1 ? "📉" : "➡️";
   }
-  wdTempVsNormal.textContent = `${icon} ${data.message}`;
+  if (isKoreanLocale()) {
+    wdTempVsNormal.textContent = `${icon} ${data.message}`;
+    return;
+  }
+  // message 는 백엔드가 만드는 한국어 서술문 — 비한국어에서는 내보내지 않고
+  // 같은 두 숫자를 라벨과 함께 보여준다. 화살표 아이콘이 이미 "평년보다
+  // 높다/낮다"를 말해주므로, 문장이 없어도 뜻은 전달된다.
+  const hasBoth = data.normal && typeof data.todayTempMax === "number";
+  wdTempVsNormal.textContent = hasBoth
+    ? `${icon} ` + t("weather.normal.compact",
+        { today: formatTemp(data.todayTempMax), normal: formatTemp(data.normal.avgTempMax) },
+        `오늘 ${formatTemp(data.todayTempMax)} · 평년 ${formatTemp(data.normal.avgTempMax)}`)
+    : t("weather.normal.unavailable", null, "평년값 비교에 필요한 데이터가 아직 부족해요.");
 }
 
 async function fetchWeatherDetail() {

@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-07-28T22:11:58.471Z
+ * 생성 시각: 2026-07-29T06:00:45.783Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -182,12 +182,18 @@
       "compare": {
         "heading": "Past 24h · Next 24h",
         "aria": "Comparison of the past 24 hours and the next 24 hours",
-        "unavailable": "Couldn't load the comparison."
+        "unavailable": "Couldn't load the comparison.",
+        "past24h": "🌙 Past 24 hours",
+        "next24h": "☀️ Next 24 hours",
+        "tempMin": "Low",
+        "tempMax": "High",
+        "humidityAvg": "Avg humidity"
       },
       "normal": {
         "heading": "Compared with normal",
         "aria": "Difference from the daily average",
-        "unavailable": "Not enough data yet to compare with normals."
+        "unavailable": "Not enough data yet to compare with normals.",
+        "compact": "Today {today} · Normal {normal}"
       },
       "tropicalNight": {
         "heading": "Warm night tonight",
@@ -195,7 +201,8 @@
         "feels": "Feels like a warm night",
         "feelsOk": "Should feel comfortable",
         "unavailable": "Couldn't load tonight's temperature info.",
-        "official": "Officially a warm night"
+        "official": "Officially a warm night",
+        "sleepMin": "{start}:00–{end}:00 lowest feels-like {temp}"
       },
       "air": {
         "pm10": "PM10",
@@ -533,12 +540,18 @@
       "compare": {
         "heading": "Últimas 24 h · Próximas 24 h",
         "aria": "Comparación entre las últimas 24 horas y las próximas 24 horas",
-        "unavailable": "No se pudo cargar la comparación."
+        "unavailable": "No se pudo cargar la comparación.",
+        "past24h": "🌙 Últimas 24 h",
+        "next24h": "☀️ Próximas 24 h",
+        "tempMin": "Mínima",
+        "tempMax": "Máxima",
+        "humidityAvg": "Humedad media"
       },
       "normal": {
         "heading": "Comparado con lo normal",
         "aria": "Diferencia respecto a la media",
-        "unavailable": "Aún no hay datos suficientes para comparar con la media."
+        "unavailable": "Aún no hay datos suficientes para comparar con la media.",
+        "compact": "Hoy {today} · Normal {normal}"
       },
       "tropicalNight": {
         "heading": "Noche cálida esta noche",
@@ -546,7 +559,8 @@
         "feels": "Se sentirá como una noche cálida",
         "feelsOk": "La noche debería ser agradable",
         "unavailable": "No se pudo cargar la temperatura de esta noche.",
-        "official": "Oficialmente una noche cálida"
+        "official": "Oficialmente una noche cálida",
+        "sleepMin": "{start}:00–{end}:00 sensación mínima {temp}"
       },
       "air": {
         "pm10": "PM10",
@@ -884,12 +898,18 @@
       "compare": {
         "heading": "過去24時間 · 今後24時間",
         "aria": "過去24時間と今後24時間の比較",
-        "unavailable": "比較データを読み込めませんでした。"
+        "unavailable": "比較データを読み込めませんでした。",
+        "past24h": "🌙 過去24時間",
+        "next24h": "☀️ 今後24時間",
+        "tempMin": "最低気温",
+        "tempMax": "最高気温",
+        "humidityAvg": "平均湿度"
       },
       "normal": {
         "heading": "平年と比べると",
         "aria": "平年値との差",
-        "unavailable": "平年と比べるにはデータが足りません。"
+        "unavailable": "平年と比べるにはデータが足りません。",
+        "compact": "今日 {today} · 平年 {normal}"
       },
       "tropicalNight": {
         "heading": "今夜の熱帯夜",
@@ -897,7 +917,8 @@
         "feels": "熱帯夜のように感じられます",
         "feelsOk": "過ごしやすい夜になりそうです",
         "unavailable": "今夜の気温情報を読み込めませんでした。",
-        "official": "公式に熱帯夜です"
+        "official": "公式に熱帯夜です",
+        "sleepMin": "{start}時〜{end}時の体感最低 {temp}"
       },
       "air": {
         "pm10": "PM10",
@@ -1235,12 +1256,18 @@
       "compare": {
         "heading": "지난 24시간 · 향후 24시간",
         "aria": "지난 24시간과 향후 24시간 비교",
-        "unavailable": "비교 정보를 불러올 수 없어요."
+        "unavailable": "비교 정보를 불러올 수 없어요.",
+        "past24h": "🌙 지난 24시간",
+        "next24h": "☀️ 향후 24시간",
+        "tempMin": "최저기온",
+        "tempMax": "최고기온",
+        "humidityAvg": "평균습도"
       },
       "normal": {
         "heading": "평년과 비교하면",
         "aria": "일평균 대비 기온차",
-        "unavailable": "평년값 비교에 필요한 데이터가 아직 부족해요."
+        "unavailable": "평년값 비교에 필요한 데이터가 아직 부족해요.",
+        "compact": "오늘 {today} · 평년 {normal}"
       },
       "tropicalNight": {
         "heading": "오늘 밤 열대야",
@@ -1248,7 +1275,8 @@
         "feels": "체감 열대야",
         "feelsOk": "체감상 괜찮음",
         "unavailable": "열대야 정보를 불러올 수 없어요.",
-        "official": "공식 열대야"
+        "official": "공식 열대야",
+        "sleepMin": "{start}시~{end}시 체감 최저 {temp}"
       },
       "air": {
         "pm10": "미세먼지(PM10)",
@@ -1586,12 +1614,18 @@
       "compare": {
         "heading": "Últimas 24 h · Próximas 24 h",
         "aria": "Comparação entre as últimas 24 horas e as próximas 24 horas",
-        "unavailable": "Não foi possível carregar a comparação."
+        "unavailable": "Não foi possível carregar a comparação.",
+        "past24h": "🌙 Últimas 24 h",
+        "next24h": "☀️ Próximas 24 h",
+        "tempMin": "Mínima",
+        "tempMax": "Máxima",
+        "humidityAvg": "Umidade média"
       },
       "normal": {
         "heading": "Comparado com o normal",
         "aria": "Diferença em relação à média",
-        "unavailable": "Ainda não há dados suficientes para comparar com a média."
+        "unavailable": "Ainda não há dados suficientes para comparar com a média.",
+        "compact": "Hoje {today} · Normal {normal}"
       },
       "tropicalNight": {
         "heading": "Noite quente hoje",
@@ -1599,7 +1633,8 @@
         "feels": "Deve parecer uma noite quente",
         "feelsOk": "A noite deve ser agradável",
         "unavailable": "Não foi possível carregar a temperatura desta noite.",
-        "official": "Oficialmente uma noite quente"
+        "official": "Oficialmente uma noite quente",
+        "sleepMin": "{start}:00–{end}:00 sensação mínima {temp}"
       },
       "air": {
         "pm10": "PM10",
@@ -1937,12 +1972,18 @@
       "compare": {
         "heading": "过去24小时 · 未来24小时",
         "aria": "过去24小时与未来24小时的对比",
-        "unavailable": "对比数据加载失败。"
+        "unavailable": "对比数据加载失败。",
+        "past24h": "🌙 过去24小时",
+        "next24h": "☀️ 未来24小时",
+        "tempMin": "最低气温",
+        "tempMax": "最高气温",
+        "humidityAvg": "平均湿度"
       },
       "normal": {
         "heading": "与常年相比",
         "aria": "与常年平均值的差异",
-        "unavailable": "数据还不足以与常年比较。"
+        "unavailable": "数据还不足以与常年比较。",
+        "compact": "今天 {today} · 常年 {normal}"
       },
       "tropicalNight": {
         "heading": "今夜的闷热夜",
@@ -1950,7 +1991,8 @@
         "feels": "体感像闷热的夜晚",
         "feelsOk": "今晚应该比较舒适",
         "unavailable": "今夜气温信息加载失败。",
-        "official": "官方认定的闷热夜"
+        "official": "官方认定的闷热夜",
+        "sleepMin": "{start}时至{end}时体感最低 {temp}"
       },
       "air": {
         "pm10": "PM10",
