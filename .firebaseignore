@@ -20,3 +20,9 @@ _github-setup/
 # 비상용 수동 firebase deploy 는 작업 디렉터리를 그대로 올리므로 함께 막는다.
 *.bak-*
 **/*.bak-*
+# 2026-07-29 추가 — backtest 5개국어 포팅 작업 중 서브에이전트가 남긴
+# pt/backtest.html.bak_pretranslate 는 "Operation not permitted"로 삭제가
+# 안 되는 상태로 남아있다(iCloud 동기화 락 추정). *.bak 패턴은 "_pretranslate"
+# 접미사를 안 잡으므로 별도 패턴으로 방어한다.
+*.bak_*
+**/*.bak_*
