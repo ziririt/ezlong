@@ -1054,6 +1054,19 @@ ${weeklySection}${adxSection}${cciStochSection}${fibSection}${fourHSection}${qua
     필드에는 "N/5" 형태로 충족 개수를 명시하라. 이 체크리스트는 방향(매수/매도) 판단 자체를
     바꾸지 않는다 — 이미 내린 action의 "신뢰도"를 보여주는 보조 지표다.
 
+13. [영어 병기 — 2026-07-29 신설] scoreReasonEn / keyPointsEn / continuityEn / narrativeEn /
+    patternNoteEn / riskNoteEn 6개 필드에 대응하는 한국어 필드와 "같은 판단·같은 근거"를
+    영어로도 작성하라. 절대 규칙:
+    - 직역(word-for-word)이 아니라 미국 개인 투자자가 자연스럽게 읽는 관용적 영어로 다시 써라.
+    - 티커, 숫자, 달러 금액, RSI/MACD/ADX 같은 기술적 지표 약어는 그대로 유지(번역·의역 금지).
+    - 한국어판과 다른 결론·다른 숫자를 절대 넣지 마라 — 같은 판단의 영어 버전이어야 한다.
+    - trend/action/stage/rsiStatus/macdStatus/bbStatus/pricePattern/bbPosition/weeklyConflict는
+      고정된 한국어 단어 중 하나이므로 영어 버전을 만들지 않는다 (화면에서 별도 처리).
+    - narrativeEn도 narrative와 동일하게 [Trend Position]/[Momentum Indicators]/
+      [Support & Resistance]/[Volume & Conclusion] 4개 섹션, 각 항목은 "·"로 시작, 섹션당
+      2~3개 항목 구조를 유지하되 문장은 자연스러운 영어 서술형으로 써라(한국어처럼 명사형
+      종결을 강제하지 않는다 — 영어는 자연스러운 완결 문장이 더 읽기 좋다).
+
 다음 JSON만 반환하라. 다른 텍스트는 절대 붙이지 마라:
 {
   "trend": "강세" | "약세" | "횡보",
@@ -1067,6 +1080,7 @@ ${weeklySection}${adxSection}${cciStochSection}${fibSection}${fourHSection}${qua
   "action": "매수" | "매도" | "관망",
   "buyScore": 1~10 정수 (규칙 10의 5구간·action 일치 기준 준수),
   "scoreReason": "buyScore 이유 15~25자 (예: 'RSI 과매도탈출+Higher Low 회복 초입', 'MACD 악화+Lower High 하락 초입')",
+  "scoreReasonEn": "scoreReason의 자연스러운 영어 버전 (규칙 13 참조, 15~25자 제한 없음, 한 짧은 구절)",
   "rsiTrajectory": "${rsiPrev} → ${rsiNow} (과매도탈출/과매수냉각/중립지속 중 택1)",
   "macdTrajectory": "히스토 ${histPrev} → ${histNow} (개선/악화/유지 중 택1)",
   "pricePattern": "Higher Low 또는 Lower High 또는 횡보 — 설명 한 줄",
@@ -1082,10 +1096,15 @@ ${weeklySection}${adxSection}${cciStochSection}${fibSection}${fourHSection}${qua
   "profitTarget2": 2차 익절 목표가 숫자,
   "stopLoss": 손절 기준가 숫자,
   "narrative": "반드시 단일 문자열(string)로 작성하라. JSON object나 배열로 반환하면 절대 안 된다. 아래 4개 섹션을 \\n으로 구분된 하나의 string 안에 모두 담아라. 섹션 제목은 대괄호로 감싸라([추세 위치] 형태). 각 항목은 · 으로 시작. 문장 끝은 서술어 없이 명사형으로 끝맺기 (예: '~구간', '~확인', '~진단', '~수준'). '~할 수 있다', '~가능성', '~예상', '~전망' 절대 금지. 항목마다 숫자값 필수 포함. 각 항목은 충분한 해석이 담긴 한 문장 — 너무 짧아서 의미 파악이 안 될 정도로 짧게 쓰지 마라. 섹션당 2~3개 항목.\n\n[추세 위치]\n· 현재가($숫자) vs SMA5/20/50($숫자/$숫자/$숫자) — 단기·중기 추세 위치 진단 + 상회/하회 여부\n· SMA100/200($숫자/$숫자) 대비 위치 — 중장기 추세 강도 판단\n· 52주 위치(%숫자) + 현 가격대 역사적 의미\n[모멘텀 지표]\n· RSI 궤적 (이전값→현재값) + 과매수/과매도/중립 판단 + 방향성 해석\n· MACD 히스토그램 궤적 (이전값→현재값) + 개선/악화 진단 + 추세 전환 신호 여부\n· 볼린저밴드 현재가 위치 (상단/중단/하단 $숫자) + 밴드폭 수준 해석\n[지지·저항 구조]\n· 스윙 지지선 ($숫자) + 근거 (피벗/스윙저점/이동평균 기반)\n· 스윙 저항선 ($숫자) + 돌파 시 의미\n· 5일/20일 고가·저가 패턴 (Higher Low / Lower High / 횡보) + 추세 해석\n[거래량·결론]\n· 거래량 비율 (5일 평균 대비 숫자배) + 움직임의 신뢰도 판단\n· 현 구간 진단 (축적/분배/상승추세/하락추세) + 진입·관망 조건 명시",
+  "narrativeEn": "narrative의 영어 버전 (규칙 13 참조). [Trend Position]/[Momentum Indicators]/[Support & Resistance]/[Volume & Conclusion] 4개 섹션, 각 섹션 2~3개 항목, 항목은 '· '로 시작, 자연스러운 완결 문장, 숫자·달러 금액 반드시 포함, 단일 string으로 \\n 구분",
   "patternNote": "차트 패턴 또는 추세 채널 1~2문장",
+  "patternNoteEn": "patternNote의 자연스러운 영어 버전",
   "keyPoints": ["핵심 포인트 1", "핵심 포인트 2", "핵심 포인트 3"],
+  "keyPointsEn": ["keyPoints[0]의 영어 버전", "keyPoints[1]의 영어 버전", "keyPoints[2]의 영어 버전"],
   "riskNote": "기술적 리스크 한 문장",
+  "riskNoteEn": "riskNote의 자연스러운 영어 버전",
   "continuity": "${historyLines ? "직전 판단 기록 대비 오늘의 흐름 1~2문장. 판단 유지면 'N일 연속 ~' 형태, 판단 전환이면 전환 이유(지표 변화)를 숫자와 함께 명시" : "기록 없음 — 첫 판단"}",
+  "continuityEn": "continuity의 자연스러운 영어 버전 (예: 'N-day streak of ~' 또는 전환 이유 설명, 기록 없으면 'No prior record — first read')",
   "confluenceChecklist": {
     "volumeConfirmed": true 또는 false,
     "resistanceReclaimed": true 또는 false,
@@ -1110,7 +1129,11 @@ ${weeklySection}${adxSection}${cciStochSection}${fibSection}${fourHSection}${qua
           `/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`,
           {
             contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.15, maxOutputTokens: 8192, responseMimeType: 'application/json', thinkingConfig: { thinkingBudget: 0 } },
+            // 2026-07-29: 8192 → 16384 — narrative 등 6개 필드에 영어(En) 병기본이 추가되며
+            // 출력량이 늘어남. CLAUDE.md 기록상 4096→8192로 올려 JSON 잘림을 해결한 전례가
+            // 있어(narrative 단일 필드만으로도 절단 발생했었음), 이번엔 필드 수가 두 배가
+            // 되므로 여유를 넉넉히 둔다. gemini-2.5-flash-lite는 이 값을 지원한다.
+            generationConfig: { temperature: 0.15, maxOutputTokens: 16384, responseMimeType: 'application/json', thinkingConfig: { thinkingBudget: 0 } },
           }
         );
         // thinking 토큰 처리 (gemini-2.5-flash): thought:true 파트는 제외하고 실제 응답만 추출
@@ -1531,9 +1554,15 @@ async function processTicker(meta) {
         profitTarget2: null,
         stopLoss: null,
         narrative: 'AI 분석 데이터를 불러오는 중입니다.',
+        narrativeEn: 'Loading AI analysis data.',
         patternNote: null,
+        patternNoteEn: null,
         keyPoints: [],
+        keyPointsEn: [],
         riskNote: '',
+        riskNoteEn: '',
+        scoreReasonEn: null,
+        continuityEn: '',
       };
     })(),
   };

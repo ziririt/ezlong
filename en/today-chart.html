@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
@@ -11,13 +11,15 @@
 </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>오늘의 차트 | EZLONG</title>
+  <title>Today's Chart — AI Technical Analysis for SOXX, QQQ, SOXL, TQQQ, TSLA, NVDA | EZLONG</title>
 
-  <!-- SEO 기본 -->
-  <meta name="description" content="SOXX·QQQ·SOXL·TQQQ·TSLA·NVDA 6종목의 이동평균·RSI·52주 고저를 하루 2회 AI가 분석하는 오늘의 차트. 최신순 누적.">
-  <meta name="keywords" content="미국주식, 오늘의 차트, TSLA, NVDA, SOXX, QQQ, SOXL, TQQQ, 기술적분석, RSI, 이동평균선">
+  <!-- SEO basics -->
+  <meta name="description" content="Free AI-generated technical analysis for SOXX, QQQ, SOXL, TQQQ, TSLA, and NVDA — moving averages, RSI, Bollinger Bands, ADX, Stochastic, and 52-week highs/lows, refreshed multiple times a day. Latest entries first.">
+  <meta name="keywords" content="today's chart, AI stock chart analysis, SOXX chart, QQQ chart, SOXL chart, TQQQ chart, TSLA chart, NVDA chart, technical analysis, RSI, moving averages">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="en">
   <meta name="author" content="EZLONG">
-  <link rel="canonical" href="https://ezlong.com/today-chart.html">
+  <link rel="canonical" href="https://ezlong.com/en/today-chart.html">
 
   <!-- hreflang -->
   <link rel="alternate" hreflang="ko" href="https://ezlong.com/today-chart.html">
@@ -26,26 +28,55 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="오늘의 차트 | EZLONG">
-  <meta property="og:description" content="SOXX·QQQ·SOXL·TQQQ·TSLA·NVDA 6종목 기술적 분석, 하루 2회 자동 업데이트">
-  <meta property="og:url" content="https://ezlong.com/today-chart.html">
+  <meta property="og:title" content="Today's Chart — AI Technical Analysis for SOXX, QQQ, SOXL, TQQQ, TSLA, NVDA | EZLONG">
+  <meta property="og:description" content="Free AI-generated technical analysis for 6 tickers — moving averages, RSI, Bollinger Bands, and 52-week highs/lows, refreshed multiple times a day.">
+  <meta property="og:url" content="https://ezlong.com/en/today-chart.html">
   <meta property="og:image" content="https://ezlong.com/logo-preview.png">
   <meta property="og:site_name" content="EZLONG">
-  <meta property="og:locale" content="ko_KR">
+  <meta property="og:locale" content="en_US">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="오늘의 차트 | EZLONG">
-  <meta name="twitter:description" content="SOXX·QQQ·SOXL·TQQQ·TSLA·NVDA 6종목 기술적 분석, 하루 2회 자동 업데이트">
+  <meta name="twitter:title" content="Today's Chart — AI Technical Analysis for SOXX, QQQ, SOXL, TQQQ, TSLA, NVDA | EZLONG">
+  <meta name="twitter:description" content="Free AI-generated technical analysis for 6 tickers, refreshed multiple times a day.">
   <meta name="twitter:image" content="https://ezlong.com/logo-preview.png">
 
-  <!-- 파비콘 -->
+  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
 
-  <!-- 공유 디자인 시스템 -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"EZLONG Today's Chart","description":"Free AI-generated technical analysis for SOXX, QQQ, SOXL, TQQQ, TSLA, and NVDA, refreshed multiple times a day, covering moving averages, RSI, Bollinger Bands, ADX, Stochastic, and 52-week highs/lows.","url":"https://ezlong.com/en/today-chart.html","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"All","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"EZLONG","url":"https://ezlong.com","logo":"https://ezlong.com/logo.png","email":"easy.invest.good@gmail.com"}}
+  </script>
+
+  <!-- Shared design system — reuses --ez-* variables from ko/today-chart.html -->
   <link rel="stylesheet" href="ez-design.css">
 
   <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --bg: #F5F5F7; --surface: #FFFFFF; --text: #1D1D1F;
+      --text2: #424245; --text3: #6E6E73; --border: #D2D2D7;
+      --blue: #0071E3; --blue-lt: #0064CC;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#000; --surface:#1C1C1E; --text:#F5F5F7; --text2:#EBEBF5; --text3:#98989D; --border:#3A3A3C; --blue:#0A84FF; --blue-lt:#0077ED; }
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.65; margin: 0; }
+
+    /* ── en-nav / en-footer — shared convention across all en/ pages ── */
+    .en-nav { position:sticky; top:0; z-index:100; background:rgba(255,255,255,0.88); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:0 24px; height:52px; display:flex; align-items:center; justify-content:space-between; }
+    @media (prefers-color-scheme: dark) { .en-nav { background:rgba(28,28,30,0.88); } }
+    .en-nav-logo { font-size:17px; font-weight:700; color:var(--text); text-decoration:none; letter-spacing:-0.02em; }
+    .en-nav-right { display:flex; gap:20px; align-items:center; }
+    .en-nav-link { font-size:14px; color:var(--blue); text-decoration:none; font-weight:500; }
+    .en-nav-link:hover { text-decoration:underline; }
+    .en-footer { background:var(--surface); border-top:1px solid var(--border); padding:36px 24px; text-align:center; color:var(--text3); font-size:14px; line-height:1.9; }
+    .en-footer a { color:var(--blue); text-decoration:none; }
+    .en-footer a:hover { text-decoration:underline; }
+
+    /* ── Page content — ported from ko/today-chart.html, uses --ez-* variables ── */
     .page-brand {
       background: var(--ez-surface);
       border-bottom: 1px solid var(--ez-border);
@@ -65,7 +96,7 @@
 
     .page-main { max-width: var(--ez-max-w); margin: 0 auto; padding: 24px 20px 60px; }
 
-    /* 필터 칩 */
+    /* Filter chips */
     .tc-filters {
       display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;
     }
@@ -77,13 +108,13 @@
     .tc-chip:hover { border-color: var(--ez-blue); color: var(--ez-blue); }
     .tc-chip.active { background: var(--ez-blue); border-color: var(--ez-blue); color: #fff; }
 
-    /* 상단 고정 디스클레이머 */
+    /* Sticky disclaimer */
     .tc-disclaimer {
       font-size: 16px; color: var(--ez-text2); line-height: 1.6; background: var(--ez-card2);
       border: 1px solid var(--ez-border); border-radius: var(--ez-rs); padding: 14px 18px; margin-bottom: 28px;
     }
 
-    /* 카드 */
+    /* Cards */
     .tc-list { display: flex; flex-direction: column; gap: 20px; }
     .tc-card {
       background: var(--ez-surface); border: 1px solid var(--ez-border); border-radius: var(--ez-r);
@@ -133,40 +164,52 @@
 </head>
 <body>
 
-<!-- ── EZLONG 글로벌 헤더 ── -->
-<script src="/ez-nav.js"></script>
+<nav class="en-nav" role="navigation" aria-label="Main navigation">
+  <a class="en-nav-logo" href="https://ezlong.com/en/">EZLONG</a>
+  <div class="en-nav-right">
+    <a class="en-nav-link" href="https://ezlong.com/en/">All Tools</a>
+    <a class="en-nav-link" href="https://ezlong.com/today-chart.html">&#54620;&#44397;&#50612; &rarr;</a>
+  </div>
+</nav>
 
 <div class="page-brand">
   <div class="page-brand-inner">
-    <div class="page-brand-label">오늘의 차트</div>
-    <h1 class="page-brand-title">SOXX·QQQ·SOXL·TQQQ·TSLA·NVDA — 오늘의 차트</h1>
-    <p class="page-brand-desc">6종목의 이동평균(5·20·50·200일)·RSI(14)·52주 고저를 하루 2회(오전 6:30, 밤 10:35 KST) AI가 자동 분석합니다. 최신순 누적.</p>
-    <p class="page-brand-updated" id="tc-updated-at">데이터 불러오는 중...</p>
+    <div class="page-brand-label">Today's Chart</div>
+    <h1 class="page-brand-title">SOXX &middot; QQQ &middot; SOXL &middot; TQQQ &middot; TSLA &middot; NVDA — Today's Chart</h1>
+    <p class="page-brand-desc">AI automatically analyzes moving averages (5/20/50/200-day), RSI(14), and 52-week highs/lows for these 6 tickers multiple times a day. Latest entries first.</p>
+    <p class="page-brand-updated" id="tc-updated-at">Loading data...</p>
   </div>
 </div>
 
 <main class="page-main">
 
   <div class="tc-disclaimer">
-    본 콘텐츠는 공개된 시세·뉴스 데이터를 기반으로 AI가 자동 생성한 참고용 분석이며 투자 자문이 아닙니다. 매수·매도 시그널이 아니며, 실제 투자 판단과 그 책임은 투자자 본인에게 있습니다.
+    This content is AI-generated reference analysis based on publicly available price and news data. It is not investment advice and is not a buy/sell signal. Actual investment decisions, and responsibility for them, rest solely with the investor.
   </div>
 
   <div class="tc-filters" id="tc-filters"></div>
 
   <div class="tc-list" id="tc-list">
-    <div class="tc-state">차트를 불러오는 중...</div>
+    <div class="tc-state">Loading charts...</div>
   </div>
 
 </main>
 
-<!-- ── EZLONG 글로벌 푸터 ── -->
-<script src="/ez-footer.js"></script>
+<footer class="en-footer" role="contentinfo">
+  <p><a href="https://ezlong.com/en/">EZLONG</a> &mdash; Free US Stock Investment Tools<br>
+  &copy; 2025&ndash;2026 EZLONG &middot; easy.invest.good@gmail.com<br>
+  <small>Educational tools only. Not financial advice. All investments carry risk. Past performance does not guarantee future results.</small></p>
+</footer>
 
 <script>
+// 2026-07-29: EN shell for today-chart. Reads the same data/today-chart-data.json as the KO
+// page. Uses headline_en/paragraphs_en/tags_en when present (added to fetch-today-chart.py),
+// falling back to the Korean fields when an entry hasn't been regenerated with EN fields yet
+// (all cached entries at launch time) — this keeps the page from ever rendering empty/broken.
 var DATA_URL = '/data/today-chart-data.json';
 var SYMBOL_ORDER = ['SOXX', 'QQQ', 'SOXL', 'TQQQ', 'TSLA', 'NVDA'];
 var allEntries = [];
-var currentFilter = '전체';
+var currentFilter = 'All';
 
 function escHtml(s) {
   if (s == null) return '';
@@ -179,6 +222,16 @@ function fmtPct(v) {
   if (v === null || v === undefined) return 'N/A';
   var sign = v >= 0 ? '+' : '';
   return sign + v.toFixed(2) + '%';
+}
+
+// en field present and non-empty -> use it, otherwise fall back to the ko field
+function pick(en, ko) {
+  return (en && String(en).trim()) ? en : (ko || '');
+}
+
+// array-level version: use the en array only if it exists and has at least one item
+function pickArr(en, ko) {
+  return (Array.isArray(en) && en.length) ? en : (ko || []);
 }
 
 function loadData() {
@@ -197,8 +250,8 @@ function loadData() {
     })
     .catch(function (e) {
       document.getElementById('tc-list').innerHTML =
-        '<div class="tc-state">데이터를 불러오지 못했습니다.<br>' + escHtml(e.message) + '</div>';
-      document.getElementById('tc-updated-at').textContent = '불러오기 실패';
+        '<div class="tc-state">Failed to load data.<br>' + escHtml(e.message) + '</div>';
+      document.getElementById('tc-updated-at').textContent = 'Load failed';
     });
 }
 
@@ -211,14 +264,14 @@ function renderUpdatedAt(data) {
   var dd = kst.getUTCDate();
   var hh = String(kst.getUTCHours()).padStart(2, '0');
   var mi = String(kst.getUTCMinutes()).padStart(2, '0');
-  el.textContent = '최종 업데이트: ' + mm + '/' + dd + ' ' + hh + ':' + mi + ' KST · 총 ' + allEntries.length + '개';
+  el.textContent = 'Last updated: ' + mm + '/' + dd + ' ' + hh + ':' + mi + ' KST (Seoul time) · ' + allEntries.length + ' entries';
 }
 
 function renderFilters() {
   var present = {};
   allEntries.forEach(function (e) { present[e.symbol] = true; });
   var syms = SYMBOL_ORDER.filter(function (s) { return present[s]; });
-  var html = '<button class="tc-chip active" data-f="전체">전체</button>';
+  var html = '<button class="tc-chip active" data-f="All">All</button>';
   syms.forEach(function (s) {
     html += '<button class="tc-chip" data-f="' + s + '">' + s + '</button>';
   });
@@ -237,11 +290,11 @@ function renderFilters() {
 function renderList() {
   var list = document.getElementById('tc-list');
   var entries = allEntries;
-  if (currentFilter !== '전체') {
+  if (currentFilter !== 'All') {
     entries = entries.filter(function (e) { return e.symbol === currentFilter; });
   }
   if (!entries.length) {
-    list.innerHTML = '<div class="tc-state">아직 분석 데이터가 없습니다.<br>매일 2회(06:30 · 22:35 KST) 자동 업데이트됩니다.</div>';
+    list.innerHTML = '<div class="tc-state">No analysis data yet.<br>Updates automatically twice a day (06:30 &amp; 22:35 KST).</div>';
     return;
   }
   list.innerHTML = entries.map(renderCard).join('');
@@ -249,31 +302,31 @@ function renderList() {
 
 function renderCard(e) {
   var changeClass = (e.change_pct || 0) >= 0 ? 'up' : 'down';
-  var paragraphs = (e.paragraphs || []).map(function (p) {
+  var paragraphs = pickArr(e.paragraphs_en, e.paragraphs).map(function (p) {
     return '<p>' + escHtml(p) + '</p>';
   }).join('');
-  var tags = (e.tags || []).map(function (t) {
+  var tags = pickArr(e.tags_en, e.tags).map(function (t) {
     return '<span class="tc-tag">' + escHtml(t) + '</span>';
   }).join('');
 
   var indParts = [];
-  if (e.ema5 != null) indParts.push('5일선(EMA) ' + e.ema5);
-  if (e.ema20 != null) indParts.push('20일선(EMA) ' + e.ema20);
-  if (e.ema50 != null) indParts.push('50일선(EMA) ' + e.ema50);
-  if (e.ema200 != null) indParts.push('200일선(EMA) ' + e.ema200);
+  if (e.ema5 != null) indParts.push('5-day EMA ' + e.ema5);
+  if (e.ema20 != null) indParts.push('20-day EMA ' + e.ema20);
+  if (e.ema50 != null) indParts.push('50-day EMA ' + e.ema50);
+  if (e.ema200 != null) indParts.push('200-day EMA ' + e.ema200);
   if (e.rsi14 != null) indParts.push('RSI(14) ' + e.rsi14);
-  if (e.bb_upper != null) indParts.push('볼린저 ' + e.bb_lower + '~' + e.bb_upper);
+  if (e.bb_upper != null) indParts.push('Bollinger ' + e.bb_lower + '~' + e.bb_upper);
   if (e.adx14 != null) indParts.push('ADX(14) ' + e.adx14);
-  if (e.stoch_k != null) indParts.push('스토캐스틱 %K ' + e.stoch_k + (e.stoch_is_approx ? '(근사)' : ''));
-  if (e.high52 != null) indParts.push('52주 고가 ' + e.high52 + '(' + e.high52_date + ')');
-  if (e.low52 != null) indParts.push('52주 저가 ' + e.low52 + '(' + e.low52_date + ')');
+  if (e.stoch_k != null) indParts.push('Stochastic %K ' + e.stoch_k + (e.stoch_is_approx ? ' (approx.)' : ''));
+  if (e.high52 != null) indParts.push('52-week high ' + e.high52 + ' (' + e.high52_date + ')');
+  if (e.low52 != null) indParts.push('52-week low ' + e.low52 + ' (' + e.low52_date + ')');
   var r = e.returns || {};
   var retParts = [];
-  if (r['1w'] != null) retParts.push('1주 ' + fmtPct(r['1w']));
-  if (r['1m'] != null) retParts.push('1개월 ' + fmtPct(r['1m']));
-  if (r['3m'] != null) retParts.push('3개월 ' + fmtPct(r['3m']));
-  if (r['6m'] != null) retParts.push('6개월 ' + fmtPct(r['6m']));
-  if (r['ytd'] != null) retParts.push('연초대비 ' + fmtPct(r['ytd']));
+  if (r['1w'] != null) retParts.push('1w ' + fmtPct(r['1w']));
+  if (r['1m'] != null) retParts.push('1m ' + fmtPct(r['1m']));
+  if (r['3m'] != null) retParts.push('3m ' + fmtPct(r['3m']));
+  if (r['6m'] != null) retParts.push('6m ' + fmtPct(r['6m']));
+  if (r['ytd'] != null) retParts.push('YTD ' + fmtPct(r['ytd']));
 
   return (
     '<div class="tc-card">' +
@@ -282,10 +335,10 @@ function renderCard(e) {
         '<span class="tc-change-badge ' + changeClass + '">' + fmtPct(e.change_pct) + '</span>' +
         '<span class="tc-timestamp">' + escHtml(e.timestamp_kst) + '</span>' +
       '</div>' +
-      '<h2 class="tc-headline">' + escHtml(e.headline) + '</h2>' +
+      '<h2 class="tc-headline">' + escHtml(pick(e.headline_en, e.headline)) + '</h2>' +
       '<div class="tc-price-row">' + (e.price != null ? e.price.toFixed(2) : '-') + ' USD</div>' +
-      (e.chart_path ? '<div class="tc-chart-wrap"><img src="' + escHtml(e.chart_path) + '" alt="' + escHtml(e.symbol) + ' 차트 — 이동평균선·RSI" loading="lazy"></div>' : '') +
-      '<div class="tc-indicators">' + escHtml(indParts.join(' · ')) + (retParts.length ? '<br>기간 수익률 — ' + escHtml(retParts.join(' · ')) : '') + '</div>' +
+      (e.chart_path ? '<div class="tc-chart-wrap"><img src="' + escHtml(e.chart_path) + '" alt="' + escHtml(e.symbol) + ' chart — moving averages · RSI" loading="lazy"></div>' : '') +
+      '<div class="tc-indicators">' + escHtml(indParts.join(' · ')) + (retParts.length ? '<br>Period returns — ' + escHtml(retParts.join(' · ')) : '') + '</div>' +
       '<div class="tc-body">' + paragraphs + '</div>' +
       (tags ? '<div class="tc-tags">' + tags + '</div>' : '') +
     '</div>'

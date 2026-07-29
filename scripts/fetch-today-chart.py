@@ -647,6 +647,23 @@ TONE_GUIDE = """
 - 이 콘텐츠는 투자자문이 아닌 참고용 분석이라는 점을 본문 어디에도 노골적으로 광고하듯 반복하지 말 것(디스클레이머는 페이지 하단에 별도 고정 표시된다).
 """
 
+# 2026-07-29 신설 — headline_en/paragraphs_en/tags_en 전용 톤 지침.
+# 주의: 이건 TONE_GUIDE(한국어, "성동님 본인 목소리")의 번역이 아니다. "성동님 개인 구어체"라는
+# 페르소나 자체가 한국어 화자 1인칭 캐릭터라 영어로 그대로 옮기면 어색하다. 대신 미국 리테일
+# 투자자가 실제로 구독하는 금융 뉴스레터(예: Morning Brew Markets류) 톤 — confident, 간결,
+# 자연스러운 구어체 축약형 허용 — 을 별도로 정의한다. 판단·근거·숫자는 한국어판과 동일해야 하며
+# 문체만 다른 언어권 독자에 맞게 새로 쓴다.
+TONE_GUIDE_EN = """
+=== English style guide for headline_en / paragraphs_en / tags_en (follow exactly) ===
+- Write like a sharp, plain-spoken US markets newsletter (confident, direct, "I think", "this looks like"). Not corporate analyst-speak, not a literal translation of the Korean text above — a natural English rewrite of the same judgment and reasoning.
+- No emoji, no bullet symbols (•, ▶, etc), no markdown tables.
+- Minimum 3-4 paragraphs, 3+ sentences each — same depth as the Korean version.
+- Cite the exact same numbers as the Korean version (price, EMA, RSI, % returns, 52-week high/low) — do not round differently or invent new figures.
+- No command-style calls to action ("you should buy now"). Use diagnostic phrasing ("this sits in a buy-watch zone", "reads as consolidation").
+- Do not repeatedly disclaim that this isn't investment advice inside the body text (the disclaimer is already shown separately at the bottom of the page).
+- tags_en: keep the ticker hashtag as-is (e.g. "#TSLA"), translate the other keyword hashtags into natural English (e.g. "#실적발표" → "#Earnings", not a literal character-by-character translation).
+"""
+
 
 def build_prompt(symbol, ind, dates, kst_now, news_headlines, ledger_block):
     r = ind['returns']
@@ -704,13 +721,19 @@ RSI(14): {ind['rsi14']}
 === 관련 최신 뉴스 헤드라인 ===
 {news_block}
 {ledger_block}{musk_block}{TONE_GUIDE}
+{TONE_GUIDE_EN}
 
 === 출력 형식 ===
 아래 JSON 구조로만 응답하세요. JSON 외 다른 텍스트는 절대 출력하지 마세요.
+headline_en/paragraphs_en/tags_en은 headline/paragraphs/tags와 완전히 같은 판단·같은 숫자를
+위 English style guide에 따라 자연스러운 영어로 다시 쓴 것이어야 합니다(직역 금지, 결론 변경 금지).
 {{
   "headline": "종목명(티커), 한줄 요약 형식의 제목 (예: '테슬라(TSLA), 인도량 서프라이즈에도 왜 주가는 빠졌나')",
+  "headline_en": "English version of headline (natural rewrite, e.g. 'Tesla (TSLA): Deliveries Beat, So Why Did the Stock Drop?')",
   "paragraphs": ["문단1", "문단2", "문단3(선택)"],
-  "tags": ["#티커", "#핵심키워드1", "#핵심키워드2", "#핵심키워드3"]
+  "paragraphs_en": ["English paragraph 1", "English paragraph 2", "English paragraph 3 (optional)"],
+  "tags": ["#티커", "#핵심키워드1", "#핵심키워드2", "#핵심키워드3"],
+  "tags_en": ["#Ticker", "#EnglishKeyword1", "#EnglishKeyword2", "#EnglishKeyword3"]
 }}
 """
 
@@ -764,7 +787,10 @@ def call_gemini(prompt):
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
             "temperature": 0.5,
-            "maxOutputTokens": 8192,
+            # 2026-07-29: 8192 → 14336 — headline_en/paragraphs_en/tags_en 병기로 3~4문단
+            # 분량이 사실상 두 배가 됨. paragraphs는 이 스크립트에서 가장 긴 자유서술
+            # 필드라 여유를 넉넉히 둔다.
+            "maxOutputTokens": 14336,
             "responseMimeType": "application/json",
             "thinkingConfig": {"thinkingBudget": 0}
         }
@@ -920,8 +946,11 @@ def main():
             "returns": ind['returns'],
             "chart_path": f"{IMG_WEB_PREFIX}/{img_fname}",
             "headline": result['headline'],
+            "headline_en": result.get('headline_en', ''),
             "paragraphs": result['paragraphs'],
+            "paragraphs_en": result.get('paragraphs_en') or [],
             "tags": (result.get('tags') or [])[:6],
+            "tags_en": (result.get('tags_en') or [])[:6],
         }
         new_entries.append(entry)
         ok_count += 1

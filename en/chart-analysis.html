@@ -12,7 +12,7 @@
   gtag('config', 'G-8DY4BGP444');
 </script>
   <title>AI Technical Chart Analysis — TSLA, NVDA &amp; 50 US Stocks | EZLONG</title>
-  <meta name="description" content="Free AI technical analysis for TSLA, NVDA, QQQ, and 50 US, Korean, and crypto tickers. AI reads MACD, RSI, and Bollinger Bands and delivers an instant buy/sell signal report.">
+  <meta name="description" content="Free AI technical analysis for TSLA, NVDA, QQQ, and 50 US, Korean, and crypto tickers. AI reads MACD, RSI, and Bollinger Bands and delivers an instant buy/sell signal report — right on this page.">
   <meta name="keywords" content="AI stock chart analysis, TSLA technical analysis, NVDA technical analysis, MACD RSI analysis, free AI chart reading tool, buy sell signal AI">
   <meta name="robots" content="index, follow">
   <meta name="language" content="en">
@@ -59,10 +59,10 @@
   </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"HowTo","name":"How to use AI Technical Chart Analysis","description":"Free AI technical analysis for 50 tickers, reading MACD, RSI, and Bollinger Bands to produce an instant buy/sell signal report.","totalTime":"PT3M","tool":[{"@type":"HowToTool","name":"Web browser"}],"supply":[{"@type":"HowToSupply","name":"Free — no account required"}],"step":[
-    {"@type":"HowToStep","position":1,"name":"Open the tool and pick a ticker","text":"Click Open Tool below, then select any of the 50 covered tickers — including TSLA, NVDA, and QQQ — from the sidebar list."},
+    {"@type":"HowToStep","position":1,"name":"Pick a ticker","text":"Select any of the 50 covered tickers — including TSLA, NVDA, and QQQ — from the sidebar list right on this page."},
     {"@type":"HowToStep","position":2,"name":"Read the AI-generated summary","text":"AI interprets the current MACD, RSI, and Bollinger Band readings for that ticker and summarizes them in plain language, highlighting whether the setup currently favors buyers or sellers."},
     {"@type":"HowToStep","position":3,"name":"Check the underlying indicators on the chart","text":"The interactive chart displays the raw MACD, RSI, and Bollinger Band lines directly, so you can verify the AI's read against the indicators yourself."},
-    {"@type":"HowToStep","position":4,"name":"Compare across timeframes","text":"Review the analysis alongside recent price action to judge whether a signal is a short-term blip or part of a larger trend."},
+    {"@type":"HowToStep","position":4,"name":"Compare across timeframes","text":"Switch between daily and weekly candles to judge whether a signal is a short-term blip or part of a larger trend."},
     {"@type":"HowToStep","position":5,"name":"Treat it as one research input","text":"Use the AI's technical read as one piece of your own research process — not as an automatic buy or sell instruction."}
   ]}
   </script>
@@ -75,6 +75,11 @@
     {"@type":"Question","name":"Do I need an account to use it?","acceptedAnswer":{"@type":"Answer","text":"No. AI Technical Chart Analysis is completely free and requires no sign-up, no account, and no personal information of any kind."}}
   ]}
   </script>
+
+  <!-- Lightweight Charts v4 -->
+  <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+
+  <link rel="stylesheet" href="ez-design.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -99,21 +104,16 @@
     .breadcrumb a { color:var(--blue); text-decoration:none; }
     .breadcrumb a:hover { text-decoration:underline; }
     .breadcrumb span { margin:0 6px; }
-    .hero { background:var(--surface); border-bottom:1px solid var(--border); padding:64px 24px 52px; text-align:center; }
+    .hero { background:var(--surface); border-bottom:1px solid var(--border); padding:48px 24px 36px; text-align:center; }
     .hero-badge { display:inline-block; background:#E8F5E9; color:var(--green); font-size:14px; font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:18px; }
     @media (prefers-color-scheme: dark) { .hero-badge { background:#0A3D1C; color:#30D158; } }
     .hero h1 { font-size:clamp(26px,5vw,44px); font-weight:700; letter-spacing:-0.03em; line-height:1.1; margin-bottom:14px; color:var(--text); }
-    .hero-sub { font-size:clamp(15px,2.2vw,18px); color:var(--text3); margin-bottom:30px; max-width:620px; margin-left:auto; margin-right:auto; }
-    .cta-group { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:16px; }
-    .btn-primary { display:inline-flex; align-items:center; gap:6px; background:var(--blue); color:#fff; border-radius:980px; padding:13px 26px; font-size:15px; font-weight:600; text-decoration:none; transition:background .15s; }
+    .hero-sub { font-size:clamp(15px,2.2vw,18px); color:var(--text3); margin-bottom:26px; max-width:620px; margin-left:auto; margin-right:auto; }
+    .cta-group { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+    .btn-primary { display:inline-flex; align-items:center; gap:6px; background:var(--blue); color:#fff; border-radius:980px; padding:13px 26px; font-size:15px; font-weight:600; text-decoration:none; transition:background .15s; border:none; cursor:pointer; }
     .btn-primary:hover { background:var(--blue-lt); }
     .btn-secondary { display:inline-flex; align-items:center; gap:6px; background:transparent; color:var(--blue); border:1.5px solid var(--blue); border-radius:980px; padding:12px 24px; font-size:15px; font-weight:600; text-decoration:none; transition:all .15s; }
     .btn-secondary:hover { background:var(--blue); color:#fff; }
-    .auto-translate-note { font-size:14px; color:var(--text3); }
-    .translate-proxy-note { font-size:14px; color:var(--text2); margin-top:10px; }
-    .translate-proxy-note a { color:var(--blue); font-weight:600; text-decoration:underline; }
-    .cta-card .translate-proxy-note { color:#fff; opacity:.9; margin-top:14px; }
-    .cta-card .translate-proxy-note a { color:#fff; }
     .stats-row { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; background:var(--surface); border-bottom:1px solid var(--border); padding:24px; }
     .stat-item { text-align:center; }
     .stat-value { font-size:22px; font-weight:700; color:var(--blue); letter-spacing:-0.02em; }
@@ -145,7 +145,316 @@
     .en-footer { background:var(--surface); border-top:1px solid var(--border); padding:36px 24px; text-align:center; color:var(--text3); font-size:14px; line-height:1.9; }
     .en-footer a { color:var(--blue); text-decoration:none; }
     .en-footer a:hover { text-decoration:underline; }
-    @media (max-width:600px) { .hero { padding:48px 20px 40px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+    @media (max-width:600px) { .hero { padding:36px 20px 28px; } .main { padding:44px 20px; } .cta-card { padding:36px 20px; } .stats-row { gap:24px; } }
+
+    /* ══════════════════════════════════════════════════════════════
+       Live tool widget — ported from ko/chart-analysis.html (2026-07-29)
+       Uses --ez-* variables from ez-design.css. Does not collide with
+       the --bg/--text/etc namespace defined above (verified pattern,
+       see en/market-vs.html). Nav height here is 52px (en-nav), so the
+       KO original's 60px sticky offsets are adjusted to 52px throughout.
+       ══════════════════════════════════════════════════════════════ */
+    .ca-layout {
+      display: flex;
+      min-height: calc(100vh - 52px);
+      max-width: var(--ez-max-w-wide);
+      margin: 0 auto;
+    }
+    .ca-sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--ez-border);
+      display: flex;
+      flex-direction: column;
+      background: var(--ez-surface);
+      position: sticky;
+      top: 52px;
+      height: calc(100vh - 52px);
+      overflow: hidden;
+    }
+    .ca-grp-bar {
+      display: flex;
+      gap: 4px;
+      padding: 12px 12px 8px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--ez-border);
+    }
+    .ca-grp-btn {
+      padding: 4px 8px;
+      border-radius: var(--ez-rss);
+      border: 1px solid var(--ez-border2);
+      background: transparent;
+      color: var(--ez-text2);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .ca-grp-btn:hover  { background: var(--ez-blue-dim); color: var(--ez-blue); border-color: var(--ez-blue); }
+    .ca-grp-btn.active { background: var(--ez-blue); color: #fff; border-color: var(--ez-blue); }
+
+    .ca-ticker-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 0;
+    }
+    .ca-ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      cursor: pointer;
+      transition: background 0.12s;
+      border-left: 3px solid transparent;
+    }
+    .ca-ticker-item:hover  { background: var(--ez-card2); }
+    .ca-ticker-item.active { background: var(--ez-blue-dim); border-left-color: var(--ez-blue); }
+
+    .ca-ticker-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .ca-ticker-info { flex: 1; min-width: 0; }
+    .ca-ticker-sym  { font-size: 16px; font-weight: 700; color: var(--ez-text); }
+    .ca-ticker-name { font-size: 16px; color: var(--ez-text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .ca-ticker-right { text-align: right; flex-shrink: 0; }
+    .ca-ticker-price { font-size: 16px; font-weight: 600; color: var(--ez-text); }
+    .ca-ticker-chg   { font-size: 16px; }
+    .ca-ticker-chg.up   { color: var(--ez-green); }
+    .ca-ticker-chg.down { color: var(--ez-red); }
+
+    .ca-main {
+      flex: 1;
+      min-width: 0;
+      background: var(--ez-bg);
+    }
+    #empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 12px;
+      color: var(--ez-text2);
+      padding: 40px;
+    }
+    #empty-state .es-icon { font-size: 48px; opacity: 0.4; margin-bottom: 8px; }
+    #empty-state h2 { font-size: 18px; font-weight: 700; color: var(--ez-text2); }
+    #empty-state p  { font-size: 16px; text-align: center; max-width: 280px; }
+
+    .ca-price-hdr {
+      padding: 16px 20px 12px;
+      background: var(--ez-surface);
+      border-bottom: 1px solid var(--ez-border);
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .ca-ph-left { flex: 1; min-width: 0; }
+    .ca-ph-sym  { font-size: 22px; font-weight: 900; color: var(--ez-text); letter-spacing: -0.02em; }
+    .ca-ph-name { font-size: 16px; color: var(--ez-text2); margin-top: 2px; }
+    .ca-ph-price-row { display: flex; align-items: baseline; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .ca-ph-price { font-size: 28px; font-weight: 800; color: var(--ez-text); letter-spacing: -0.02em; }
+    .ca-ph-change { font-size: 16px; font-weight: 600; }
+    .ca-ph-change.up   { color: var(--ez-green); }
+    .ca-ph-change.down { color: var(--ez-red); }
+    .ca-ph-state {
+      font-size: 16px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 100px;
+      background: var(--ez-blue-dim);
+      color: var(--ez-blue);
+    }
+    .ca-ph-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 2px; }
+    .ca-ph-meta-item { font-size: 16px; color: var(--ez-text2); }
+    .ca-ph-meta-item strong { color: var(--ez-text); font-weight: 700; }
+    .ca-ph-updated { margin-left: 4px; }
+    .ca-ph-updated strong { color: var(--ez-text2) !important; font-weight: 700 !important; }
+    .ca-stale-warn {
+      font-size: 16px;
+      font-weight: 600;
+      color: #92400E;
+      margin: 4px 0 2px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(180,83,9,0.10);
+      display: inline-block;
+    }
+    @media (prefers-color-scheme: dark) {
+      .ca-stale-warn { color: #FFD60A; background: rgba(255,159,10,0.12); }
+    }
+    .ca-ph-right { text-align: right; flex-shrink: 0; }
+    .ca-ph-52 { font-size: 16px; color: var(--ez-text2); margin-bottom: 6px; }
+    .ca-ph-52-bar {
+      width: 140px; height: 6px; border-radius: 3px;
+      background: var(--ez-border2); margin: 4px 0 2px auto;
+      position: relative; overflow: hidden;
+    }
+    .ca-ph-52-fill {
+      position: absolute; top: 0; left: 0; height: 100%; border-radius: 3px;
+      background: linear-gradient(90deg, var(--ez-red), var(--ez-amber), var(--ez-green));
+    }
+    .ca-ph-52-labels { display: flex; justify-content: space-between; font-size: 16px; color: var(--ez-text2); width: 140px; margin-left: auto; }
+
+    .ca-tabs { display: flex; gap: 0; background: var(--ez-surface); border-bottom: 2px solid var(--ez-border); padding: 0 16px; }
+    .ca-tab { padding: 10px 18px; font-size: 16px; font-weight: 700; color: var(--ez-text2); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; white-space: nowrap; }
+    .ca-tab:hover { color: var(--ez-text); }
+    .ca-tab.active { color: var(--ez-blue); border-bottom-color: var(--ez-blue); }
+    .ca-tab-panel { display: none; }
+    .ca-tab-panel.active { display: block; }
+
+    .ca-ind-toggles { display: flex; gap: 6px; padding: 8px 16px; background: var(--ez-surface); border-bottom: 1px solid var(--ez-border); flex-wrap: wrap; align-items: center; }
+    .ca-ind-pill { display: flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 100px; border: 1px solid var(--ez-border2); background: transparent; cursor: pointer; font-size: 16px; font-weight: 600; color: var(--ez-text2); transition: all 0.15s; }
+    .ca-ind-pill .dot { width: 7px; height: 7px; border-radius: 50%; }
+    .ca-ind-pill.active { background: var(--ez-card2); color: var(--ez-text); border-color: var(--ez-border2); }
+    .ca-ind-pill.inactive { opacity: 0.45; }
+
+    .ca-charts { padding: 0; }
+    .ca-chart-wrap { position: relative; background: var(--ez-surface); border-bottom: 1px solid var(--ez-border); }
+    .ca-chart-label { position: absolute; top: 8px; left: 12px; font-size: 16px; font-weight: 700; color: var(--ez-text2); z-index: 10; pointer-events: none; text-transform: uppercase; letter-spacing: 0.05em; }
+    #chart-main  { height: 380px; }
+    #chart-rsi   { height: 140px; }
+    #chart-macd  { height: 140px; }
+
+    .ca-chart-ctrl-bar { position: absolute; bottom: 88px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; z-index: 15; pointer-events: auto; white-space: nowrap; }
+    .ca-ctrl-btn { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--ez-border2); background: var(--ez-surface); color: var(--ez-text2); font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.12s, color 0.12s; padding: 0; line-height: 1; opacity: 0.85; }
+    .ca-ctrl-btn:hover { background: var(--ez-card2); color: var(--ez-text); opacity: 1; }
+    #cctrl-fs { color: var(--ez-blue); border-color: var(--ez-blue); opacity: 1; width: 34px; height: 34px; }
+    #cctrl-fs:hover { background: var(--ez-blue); color: #fff; border-color: var(--ez-blue); }
+    @media (max-width: 768px) {
+      .ca-ctrl-btn { width: 38px; height: 38px; font-size: 17px; }
+      .ca-chart-ctrl-bar { gap: 6px; bottom: 80px; }
+      #cctrl-fs { width: 44px; height: 44px; }
+    }
+
+    .ca-charts.ca-fullscreen {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
+      z-index: 9999; background: var(--ez-bg, #000); overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .ca-charts.ca-fullscreen > .ca-chart-wrap { min-height: 0; }
+    .ca-charts.ca-fullscreen > .ca-chart-wrap:nth-child(1) { flex: 70; }
+    .ca-charts.ca-fullscreen > .ca-chart-wrap:nth-child(2) { flex: 15; }
+    .ca-charts.ca-fullscreen > .ca-chart-wrap:nth-child(3) { flex: 15; }
+    .ca-charts.ca-fullscreen #chart-main,
+    .ca-charts.ca-fullscreen #chart-rsi,
+    .ca-charts.ca-fullscreen #chart-macd { height: 100% !important; width: 100% !important; }
+
+    .ca-tf-bar { display: flex; gap: 4px; padding: 8px 16px; background: var(--ez-surface); border-bottom: 1px solid var(--ez-border); align-items: center; }
+    .ca-tf-label { font-size: 16px; font-weight: 700; color: var(--ez-text2); margin-right: 4px; }
+    .ca-tf-btn { padding: 3px 12px; border-radius: 100px; border: 1px solid var(--ez-border2); background: transparent; color: var(--ez-text2); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+    .ca-tf-btn:hover  { background: var(--ez-blue-dim); color: var(--ez-blue); border-color: var(--ez-blue); }
+    .ca-tf-btn.active { background: var(--ez-blue); color: #fff; border-color: var(--ez-blue); }
+
+    .ca-analysis { background: var(--ez-surface); border-top: 1px solid var(--ez-border); padding: 20px; }
+    .ca-analysis-top { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+    .ca-badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 100px; font-size: 16px; font-weight: 700; border: 1px solid transparent; }
+    .ca-badge-lg { font-size: 16px; padding: 6px 14px; }
+    .ca-strength { display: flex; gap: 3px; align-items: center; }
+    .ca-strength-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    .ca-ind-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px; }
+    .ca-ind-cell { background: var(--ez-card2); border-radius: var(--ez-rs); padding: 10px 12px; }
+    .ca-ind-cell-label { font-size: 16px; color: var(--ez-text2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+    .ca-ind-cell-val   { font-size: 16px; font-weight: 700; color: var(--ez-text); }
+    .ca-ind-cell-sub   { font-size: 16px; color: var(--ez-text2); margin-top: 2px; }
+
+    .ca-continuity { font-size: 16px; line-height: 1.7; color: var(--ez-text); margin-bottom: 16px; padding: 12px 16px; background: var(--ez-blue-dim); border-radius: var(--ez-rs); border-left: 3px solid var(--ez-blue); }
+    .ca-continuity-title { font-size: 16px; font-weight: 700; color: var(--ez-blue); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+
+    .ca-narrative { font-size: 16px; line-height: 1.75; color: var(--ez-text); margin-bottom: 16px; padding: 14px 16px; background: var(--ez-card2); border-radius: var(--ez-rs); border-left: 3px solid var(--ez-blue); }
+    .ca-narrative-section { margin-bottom: 12px; }
+    .ca-narrative-section:last-child { margin-bottom: 0; }
+    .ca-narrative-heading { font-size: 16px; font-weight: 700; color: var(--ez-text); margin-bottom: 5px; letter-spacing: 0.02em; }
+    .ca-narrative-item { display: flex; gap: 6px; align-items: flex-start; font-size: 16px; color: var(--ez-text2); line-height: 1.65; margin-bottom: 3px; }
+    .ca-narrative-dot { flex-shrink: 0; color: var(--ez-blue); font-weight: 900; margin-top: 1px; }
+
+    .ca-keypoints { margin-bottom: 14px; }
+    .ca-keypoints-title { font-size: 16px; font-weight: 700; color: var(--ez-text); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+    .ca-kp-item { display: flex; gap: 8px; align-items: flex-start; font-size: 16px; color: var(--ez-text); line-height: 1.6; margin-bottom: 5px; }
+    .ca-kp-item::before { content: '•'; color: var(--ez-blue); font-weight: 900; flex-shrink: 0; margin-top: 1px; }
+
+    .ca-risknote { display: flex; gap: 8px; align-items: flex-start; font-size: 16px; font-weight: 600; color: #FF3B30; background: rgba(255,59,48,0.07); border: 1px solid rgba(255,59,48,0.25); border-radius: var(--ez-rs); padding: 10px 14px; line-height: 1.6; }
+
+    .ca-buy-score-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding: 12px 14px; background: var(--ez-card2); border-radius: var(--ez-rs); }
+    .ca-buy-score-label { font-size: 16px; font-weight: 700; color: var(--ez-text); text-transform: uppercase; letter-spacing: 0.04em; flex-shrink: 0; }
+    .ca-buy-score-bar { flex: 1; height: 8px; border-radius: 4px; background: var(--ez-border2); overflow: hidden; position: relative; }
+    .ca-buy-score-fill { position: absolute; top: 0; left: 0; height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+    .ca-buy-score-num { font-size: 18px; font-weight: 900; flex-shrink: 0; }
+
+    .ca-score-reason { font-size: 16px; font-weight: 600; margin-top: -10px; margin-bottom: 16px; padding: 7px 14px; background: var(--ez-card2); border-radius: var(--ez-rs); letter-spacing: 0.01em; color: var(--ez-text); }
+
+    .ca-targets-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+    .ca-target-cell { padding: 10px 12px; border-radius: var(--ez-rs); text-align: center; }
+    .ca-target-cell-label { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .ca-target-cell-val   { font-size: 16px; font-weight: 800; }
+
+    .ca-pattern-note { font-size: 16px; line-height: 1.65; color: var(--ez-text); background: var(--ez-card2); border-radius: var(--ez-rs); padding: 10px 14px; margin-bottom: 14px; border-left: 3px solid var(--ez-amber); }
+
+    .ca-updated { font-size: 16px; color: var(--ez-text2); padding: 10px 20px; background: var(--ez-surface); border-top: 1px solid var(--ez-border); text-align: right; }
+
+    .ca-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 12px; color: var(--ez-text2); font-size: 16px; padding: 60px; }
+    .ca-spinner { width: 32px; height: 32px; border: 3px solid var(--ez-border2); border-top-color: var(--ez-blue); border-radius: 50%; animation: ca-spin 0.7s linear infinite; }
+    @keyframes ca-spin { to { transform: rotate(360deg); } }
+
+    .ca-market-bar { background: var(--ez-surface); border-bottom: 1px solid var(--ez-border); padding: 5px 20px; display: flex; align-items: center; gap: 6px; font-size: 16px; color: var(--ez-text2); flex-wrap: wrap; min-height: 30px; }
+    .ca-market-bar-label { font-weight: 700; color: var(--ez-text2); margin-right: 4px; flex-shrink: 0; }
+    .ca-market-chip { display: inline-flex; align-items: center; gap: 3px; padding: 2px 8px; border-radius: 20px; font-size: 16px; font-weight: 700; border: 1px solid currentColor; flex-shrink: 0; }
+    .ca-market-bar-link { margin-left: auto; font-size: 16px; font-weight: 600; color: var(--ez-blue); text-decoration: none; flex-shrink: 0; }
+    .ca-market-bar-link:hover { opacity: 1; }
+
+    .ca-demo-banner { background: rgba(0,113,227,0.08); border-bottom: 1px solid rgba(0,113,227,0.2); padding: 7px 20px; font-size: 16px; color: var(--ez-blue); font-weight: 600; text-align: center; }
+
+    @media (max-width: 768px) {
+      .ca-layout { flex-direction: column; }
+      .ca-sidebar { width: 100%; height: auto; max-height: none; position: static; border-right: none; border-bottom: 1px solid var(--ez-border); flex-shrink: 0; }
+      .ca-ticker-list { max-height: 243px; overflow-y: auto; }
+      .ca-main { height: auto; overflow-y: visible; }
+      #chart-main { height: 260px; }
+      #chart-rsi  { height: 110px; }
+      #chart-macd { height: 110px; }
+      .ca-ph-price { font-size: 22px; }
+      .ca-ph-right { display: none; }
+      .ca-ind-grid { grid-template-columns: repeat(2, 1fr); }
+      .ca-ph-52-bar, .ca-ph-52-labels { width: 100px; }
+      .ca-targets-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .ca-target-cell-val { font-size: 16px; }
+    }
+
+    /* ── Chart color variables (light/dark) ── */
+    :root {
+      --chart-bg:       #FFFFFF;
+      --chart-grid:     rgba(0,0,0,0.05);
+      --chart-text:     #6E6E73;
+      --chart-border:   rgba(0,0,0,0.06);
+      --chart-candle-u: #1A7F37;
+      --chart-candle-d: #D92A2A;
+      --chart-sma20:    #0071E3;
+      --chart-sma50:    #34C759;
+      --chart-sma100:   #FF9500;
+      --chart-sma200:   #AF52DE;
+      --chart-bb:       rgba(110,110,115,0.45);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --chart-bg:       #1C1C1E;
+        --chart-grid:     rgba(255,255,255,0.05);
+        --chart-text:     #8E8E93;
+        --chart-border:   rgba(255,255,255,0.06);
+        --chart-candle-u: #30D158;
+        --chart-candle-d: #FF453A;
+        --chart-sma20:    #0A84FF;
+        --chart-sma50:    #30D158;
+        --chart-sma100:   #FFD60A;
+        --chart-sma200:   #BF5AF2;
+        --chart-bb:       rgba(142,142,147,0.45);
+      }
+    }
   </style>
 </head>
 <body>
@@ -153,7 +462,7 @@
     <a class="en-nav-logo" href="https://ezlong.com/en/">EZLONG</a>
     <div class="en-nav-right">
       <a class="en-nav-link" href="https://ezlong.com/en/">All Tools</a>
-      <a class="en-nav-link" href="https://ezlong.com/chart-analysis.html">&#54620;&#44397;&#50612; &rarr;</a>
+      <a class="en-nav-link" href="https://ezlong.com/chart-analysis.html">한국어 &rarr;</a>
     </div>
   </nav>
   <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -162,24 +471,56 @@
   <section class="hero">
     <div class="hero-badge">Free &middot; 50 Tickers &middot; No Sign-up</div>
     <h1>AI Technical Chart Analysis</h1>
-    <p class="hero-sub">AI reads MACD, RSI, and Bollinger Bands for TSLA, NVDA, QQQ &amp; 50 tickers — and explains what they mean in plain English</p>
+    <p class="hero-sub">AI reads MACD, RSI, and Bollinger Bands for TSLA, NVDA, QQQ &amp; 50 tickers — and explains what they mean in plain English. The full interactive tool is built right into this page.</p>
     <div class="cta-group">
-      <a class="btn-primary" href="https://ezlong.com/chart-analysis.html" target="_blank" rel="noopener">Open Tool &rarr;</a>
+      <a class="btn-primary" href="#chart-tool">Jump to Chart &darr;</a>
       <a class="btn-secondary" href="https://ezlong.com/en/">Browse All Tools</a>
     </div>
-    <p class="auto-translate-note">Tool UI is in Korean &mdash; Chrome, Edge &amp; Safari auto-translate automatically. Charts and ticker symbols display the same in every language.</p>
-    <p class="translate-proxy-note">Translation not showing automatically? <a href="https://ezlong-com.translate.goog/chart-analysis.html?_x_tr_sl=ko&amp;_x_tr_tl=en&amp;_x_tr_hl=en&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Open with Google Translate &rarr;</a></p>
   </section>
   <div class="stats-row" role="region" aria-label="Key statistics">
     <div class="stat-item"><div class="stat-value">50 tickers</div><div class="stat-label">US, Korean &amp; crypto</div></div>
     <div class="stat-item"><div class="stat-value">AI-generated</div><div class="stat-label">MACD · RSI · Bollinger Bands</div></div>
     <div class="stat-item"><div class="stat-value">100% free</div><div class="stat-label">no account required</div></div>
   </div>
+
+  <!-- ── Live tool widget ── -->
+  <div id="chart-tool">
+    <div class="ca-market-bar" id="market-context-bar">
+      <span class="ca-market-bar-label">Market Context</span>
+      <span style="color:var(--ez-text2);font-size:16px;">Loading…</span>
+    </div>
+
+    <div class="ca-layout">
+      <aside class="ca-sidebar">
+        <div class="ca-grp-bar" id="grp-bar">
+          <button class="ca-grp-btn active" data-grp="etf_us">US ETFs</button>
+          <button class="ca-grp-btn" data-grp="stock_us">US Stocks</button>
+          <button class="ca-grp-btn" data-grp="kr">Korea</button>
+          <button class="ca-grp-btn" data-grp="crypto">Crypto</button>
+        </div>
+        <div class="ca-ticker-list" id="ticker-list">
+          <div style="padding:20px; text-align:center; color:var(--ez-text2); font-size:16px;">
+            Loading data…
+          </div>
+        </div>
+      </aside>
+
+      <main class="ca-main" id="ca-main">
+        <div id="empty-state">
+          <div class="es-icon">📊</div>
+          <h2>Select a ticker</h2>
+          <p>Click a ticker from the list on the left to see its candlestick chart and AI technical analysis.</p>
+        </div>
+        <div id="chart-view" style="display:none"></div>
+      </main>
+    </div>
+  </div>
+
   <main class="main" id="main-content">
     <section class="section">
       <h2 class="section-title">What is AI Technical Chart Analysis?</h2>
       <p class="section-body">Reading a stock chart properly means tracking multiple technical indicators at once — MACD for momentum, RSI for overbought or oversold conditions, and Bollinger Bands for volatility and mean reversion. Most retail investors either skip this entirely or misread the signals. AI Technical Chart Analysis has AI do this reading for you, across 50 tickers including TSLA, NVDA, QQQ, select Korean stocks, and major cryptocurrencies.</p>
-      <p class="section-body">For each ticker, the AI produces a plain-language summary of what the current indicator readings suggest, alongside the interactive chart itself so you can verify the underlying MACD, RSI, and Bollinger Band lines directly. This gives you both the AI's interpretation and the raw data behind it.</p>
+      <p class="section-body">For each ticker, the AI produces a plain-language summary of what the current indicator readings suggest, alongside the interactive chart itself so you can verify the underlying MACD, RSI, and Bollinger Band lines directly. This gives you both the AI's interpretation and the raw data behind it — all in the tool above, no separate app or sign-up required.</p>
     </section>
     <section class="section">
       <h2 class="section-title">Why Use This Tool?</h2>
@@ -191,7 +532,7 @@
       <ol class="step-list">
         <li class="step-item">
           <span class="step-num">1</span>
-          <div class="step-body"><strong class="step-name">Open the tool and pick a ticker</strong><p class="step-text">Click Open Tool below, then select any of the 50 covered tickers — including TSLA, NVDA, and QQQ — from the sidebar list.</p></div>
+          <div class="step-body"><strong class="step-name">Pick a ticker</strong><p class="step-text">Select any of the 50 covered tickers — including TSLA, NVDA, and QQQ — from the sidebar list above.</p></div>
         </li>
         <li class="step-item">
           <span class="step-num">2</span>
@@ -203,7 +544,7 @@
         </li>
         <li class="step-item">
           <span class="step-num">4</span>
-          <div class="step-body"><strong class="step-name">Compare across timeframes</strong><p class="step-text">Review the analysis alongside recent price action to judge whether a signal is a short-term blip or part of a larger trend.</p></div>
+          <div class="step-body"><strong class="step-name">Compare across timeframes</strong><p class="step-text">Switch between daily and weekly candles to judge whether a signal is a short-term blip or part of a larger trend.</p></div>
         </li>
         <li class="step-item">
           <span class="step-num">5</span>
@@ -256,9 +597,8 @@
     </section>
     <div class="cta-card">
       <h2>Get an AI Read on Any Chart</h2>
-      <p>Free, no sign-up, runs instantly in your browser. Chrome auto-translates Korean to English.</p>
-      <a class="btn-white" href="https://ezlong.com/chart-analysis.html" target="_blank" rel="noopener">Open AI Chart Analysis &rarr;</a>
-      <p class="translate-proxy-note">Translation not showing automatically? <a href="https://ezlong-com.translate.goog/chart-analysis.html?_x_tr_sl=ko&amp;_x_tr_tl=en&amp;_x_tr_hl=en&amp;_x_tr_pto=wapp" target="_blank" rel="noopener">Open with Google Translate &rarr;</a></p>
+      <p>Free, no sign-up, runs instantly right here on this page.</p>
+      <a class="btn-white" href="#chart-tool">Back to the Chart &uarr;</a>
     </div>
   </main>
   <footer class="en-footer" role="contentinfo">
@@ -267,22 +607,1147 @@
     <small>Educational tools only. Not financial advice. All investments carry risk. Past performance does not guarantee future results.</small></p>
   </footer>
 
-<!-- ── 네이티브 앱 웹뷰 감지: ?embed=app 신호 처리 (2026-07-28) ── -->
 <script>
-(function(){
+/* ══════════════════════════════════════════════════════════════
+   EZLONG AI Chart Analysis (EN) — interactive chart + AI analysis
+   Ported from ko/chart-analysis.html (2026-07-29). Same data
+   endpoints (data/analysis-{TICKER}.json, data/ohlcv-{TICKER}.json)
+   — only the rendering language changes. Uses pick(en, ko) to
+   prefer the *_En fields generated by generate-chart-analysis.js,
+   falling back silently to the Korean field for older cached JSON
+   that doesn't have the English fields yet.
+   ══════════════════════════════════════════════════════════════ */
+
+// ── Constants ─────────────────────────────────────────────────
+const DATA_BASE = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/';
+const IS_DARK   = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+// pick(): prefer the English field, fall back to the Korean field for
+// older cached analysis JSON that predates the bilingual fields.
+function pick(en, ko) {
+  if (Array.isArray(en)) return en.length ? en : (ko || []);
+  return (en != null && String(en).trim()) ? en : (ko != null ? ko : '');
+}
+
+// trend/action/stage are fixed 3–4 word Korean enums with no *_En field —
+// translated here via lookup table. rsiStatus/macdStatus/bbStatus are left
+// as-is (larger, less stable enum sets; not worth the translation risk).
+const TREND_LABELS_EN = { '강세': 'Bullish', '약세': 'Bearish', '횡보': 'Sideways' };
+const STAGE_LABELS_EN = { '상승추세': 'Uptrend', '분배구간': 'Distribution', '하락추세': 'Downtrend', '축적구간': 'Accumulation' };
+
+// action 값이 예전엔 5단계였으나 현재는 매수/매도/관망 3단계로 고정됨.
+const ACTION_COLORS = {
+  '매수': { bg: 'rgba(26,127,55,0.12)',    text: 'var(--ez-green)',  border: 'rgba(26,127,55,0.3)' },
+  '관망': { bg: 'rgba(110,110,115,0.10)', text: IS_DARK ? 'var(--ez-text3)' : 'var(--ez-text2)',  border: 'rgba(110,110,115,0.2)' },
+  '매도': { bg: 'rgba(217,42,42,0.12)',    text: 'var(--ez-red)',    border: 'rgba(217,42,42,0.3)' },
+};
+// "Buy"/"Sell" alone can read as a command ("buy now" / "sell now"). Use a
+// bias framing instead — mirrors the KO UI's "매수 우위/매도 우위" treatment.
+function actionDisplayLabel(action) {
+  if (action === '매수') return 'Buy Bias';
+  if (action === '매도') return 'Sell Bias';
+  return 'Hold';
+}
+const TREND_COLORS = {
+  '강세': IS_DARK ? '#30D158' : '#1A7F37',
+  '약세': IS_DARK ? '#FF453A' : '#D92A2A',
+  '횡보': IS_DARK ? '#8E8E93' : '#3C3C3E',
+};
+const STAGE_COLORS = {
+  '상승추세': IS_DARK ? '#30D158' : '#1A7F37',
+  '축적구간': IS_DARK ? '#0A84FF' : '#0071E3',
+  '분배구간': IS_DARK ? '#FFD60A' : '#B45309',
+  '하락추세': IS_DARK ? '#FF453A' : '#D92A2A',
+};
+const RSI_COLORS = {
+  '과매수': IS_DARK ? '#FF453A' : '#D92A2A',
+  '중립':   IS_DARK ? '#8E8E93' : '#3C3C3E',
+  '과매도': IS_DARK ? '#30D158' : '#1A7F37',
+};
+const ACTION_DOTS = {
+  '매수': '#1A7F37', '관망': '#6E6E73', '매도': '#D92A2A',
+};
+const SMA_COLORS = {
+  sma20:  getComputedStyle(document.documentElement).getPropertyValue('--chart-sma20').trim()  || '#0071E3',
+  sma50:  getComputedStyle(document.documentElement).getPropertyValue('--chart-sma50').trim()  || '#34C759',
+  sma100: getComputedStyle(document.documentElement).getPropertyValue('--chart-sma100').trim() || '#FF9500',
+  sma200: getComputedStyle(document.documentElement).getPropertyValue('--chart-sma200').trim() || '#AF52DE',
+};
+
+// ── State ─────────────────────────────────────────────────────
+let tickerIndex       = {};
+let currentSymbol     = null;
+let currentAnalysis   = null;
+let currentOhlcvDaily = null;
+let currentOhlcvWeekly = null;
+let currentTimeframe  = 'daily';   // 'daily' | 'weekly'
+let smaVisibility  = { sma20: true, sma50: true, sma100: true, sma200: true, bb: true, channel: true };
+let chartInstances = {};  // mainChart, rsiChart, macdChart
+let krPricesCache = null;   // { updatedAt, session, prices: { "069500.KS": {...} } }
+let chartSeries    = {};  // per-series refs, used by the toggle pills
+let currentTab     = 'chart';  // 'chart' | 'report'
+
+// ── narrative text → structured HTML ─────────────────────────
+// Generic by design: it just looks for "[Anything In Brackets]" as a
+// section heading, so it works unchanged for English section titles
+// (e.g. "[Trend Position]") — no separate EN parser needed.
+function buildNarrative(text) {
+  if (!text) return '';
+  // Gemini sometimes returns narrative as an object instead of a string
+  // { "[Trend Position]": ["item1","item2"], ... } → flatten to text form
+  if (typeof text === 'object') {
+    text = Object.entries(text).map(function([section, content]) {
+      var items = Array.isArray(content) ? content : (typeof content === 'string' ? [content] : [String(content)]);
+      return section + '\n' + items.map(function(i){ return '· ' + String(i).replace(/^[·•]\s*/, ''); }).join('\n');
+    }).join('\n');
+  }
+  if (typeof text !== 'string') return '';
+  var sections = [];
+  var currentSection = null;
+  var lines = text.split('\n');
+  lines.forEach(function(line) {
+    line = line.trim();
+    if (!line) return;
+    var secMatch = line.match(/^\[(.+?)\]$/);
+    if (secMatch) {
+      currentSection = { heading: secMatch[1], items: [] };
+      sections.push(currentSection);
+    } else if (line.startsWith('·') || line.startsWith('•')) {
+      var item = line.replace(/^[·•]\s*/, '');
+      if (currentSection) {
+        currentSection.items.push(item);
+      } else {
+        sections.push({ heading: null, items: [item] });
+      }
+    } else {
+      sections.push({ heading: null, items: [line], plain: true });
+    }
+  });
+  return sections.map(function(s) {
+    if (s.plain) {
+      return '<div class="ca-narrative-item" style="margin-bottom:6px;">' + s.items[0] + '</div>';
+    }
+    var h = s.heading ? '<div class="ca-narrative-heading">' + s.heading + '</div>' : '';
+    var items = s.items.map(function(it) {
+      return '<div class="ca-narrative-item"><span class="ca-narrative-dot">·</span><span>' + it + '</span></div>';
+    }).join('');
+    return '<div class="ca-narrative-section">' + h + items + '</div>';
+  }).join('');
+}
+
+// ── Utilities ─────────────────────────────────────────────────
+function fmtPrice(v, currency) {
+  if (v == null) return '—';
+  const opts = { minimumFractionDigits: 2, maximumFractionDigits: currency === 'KRW' ? 0 : 2 };
+  if (currency === 'KRW') return '₩' + Math.round(v).toLocaleString('en-US');
+  if (v >= 1000) return '$' + v.toLocaleString('en-US', opts);
+  return '$' + v.toFixed(v >= 10 ? 2 : v >= 1 ? 3 : 4);
+}
+function fmtChg(v, pct, currency) {
+  if (v == null) return '';
+  let formatted;
+  if (currency === 'KRW') {
+    formatted = (v >= 0 ? '+' : '') + Math.round(v).toLocaleString('en-US');
+  } else {
+    formatted = (v >= 0 ? '+$' : '-$') + Math.abs(v).toFixed(2);
+  }
+  const pctStr = pct != null ? ` (${v >= 0 ? '+' : ''}${pct.toFixed(2)}%)` : '';
+  return formatted + pctStr;
+}
+function fmtKST(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleString('en-US', {
+    timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit',
+  });
+}
+function getGroupKey(type, market) {
+  if (market === 'kr') return 'kr';
+  if (type === 'crypto') return 'crypto';
+  if (type === 'etf' || type === 'etf_leveraged') return 'etf_us';
+  return 'stock_us';
+}
+
+// ── Data fetch ────────────────────────────────────────────────
+async function fetchJSON(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`HTTP ${r.status}: ${url}`);
+  return r.json();
+}
+
+// ── Market context banner ───────────────────────────────────
+async function renderMarketContextBar() {
+  const bar = document.getElementById('market-context-bar');
+  if (!bar) return;
+
   try {
-    var qp = new URLSearchParams(location.search).get('embed') === 'app';
-    if (qp) { try { sessionStorage.setItem('ezlong_embed', '1'); } catch(e) {} }
-    var embedded = qp || (function(){ try { return sessionStorage.getItem('ezlong_embed') === '1'; } catch(e) { return false; } })();
-    if (!embedded) return;
-    var proxyLink = document.querySelector('.translate-proxy-note a');
-    if (!proxyLink) return;
-    var proxyHref = proxyLink.getAttribute('href');
-    document.querySelectorAll('a.btn-primary, a.btn-white').forEach(function(a){
-      a.setAttribute('href', proxyHref);
+    const ms  = await fetchJSON(DATA_BASE + 'market-signals.json');
+    const qqq = ms?.['QQQ'];
+    const vix = ms?.['_VIX']?.price ?? ms?.['VIX']?.price ?? null;
+    if (!qqq) { bar.innerHTML = ''; return; }
+
+    const gear    = qqq.gear   ?? 1;
+    const rsi     = qqq.rsi    ?? null;
+    const dev200  = qqq.dev200 ?? null;
+
+    const gearColor = gear === 3 ? (IS_DARK ? '#30D158' : '#1A7F37') : gear === 2 ? (IS_DARK ? '#FFD60A' : '#B87900') : (IS_DARK ? '#FF453A' : '#D92A2A');
+    const gearLabel = gear === 3 ? 'Uptrend' : gear === 2 ? 'Range-bound' : 'Downtrend';
+    const gearChip  = `<span class="ca-market-chip" style="color:${gearColor};border-color:${gearColor};">Gear${gear} ${gearLabel}</span>`;
+
+    const devStr  = dev200 != null
+      ? `<span class="ca-market-chip" style="color:${dev200 >= 0 ? (IS_DARK?'#30D158':'#1A7F37') : (IS_DARK?'#FF453A':'#D92A2A')};border-color:${dev200 >= 0 ? (IS_DARK?'#30D158':'#1A7F37') : (IS_DARK?'#FF453A':'#D92A2A')};">200-DMA ${dev200 >= 0 ? '+' : ''}${dev200.toFixed(1)}%</span>`
+      : '';
+
+    const neutralChipC = IS_DARK ? 'var(--ez-text2)' : '#3C3C3E';
+    const rsiColor = rsi == null ? neutralChipC
+      : rsi >= 70 ? (IS_DARK?'#FF453A':'#D92A2A') : rsi <= 30 ? (IS_DARK?'#30D158':'#1A7F37') : neutralChipC;
+    const rsiChip  = rsi != null
+      ? `<span class="ca-market-chip" style="color:${rsiColor};border-color:${rsiColor};">QQQ RSI ${rsi.toFixed(1)}</span>`
+      : '';
+
+    const vixColor = vix == null ? neutralChipC
+      : vix >= 30 ? (IS_DARK?'#FF453A':'#D92A2A') : vix >= 20 ? (IS_DARK?'#FFD60A':'#B87900') : vix <= 15 ? (IS_DARK?'#30D158':'#1A7F37') : neutralChipC;
+    const vixChip  = vix != null
+      ? `<span class="ca-market-chip" style="color:${vixColor};border-color:${vixColor};">VIX ${vix.toFixed(1)}</span>`
+      : '';
+
+    bar.innerHTML =
+      `<span class="ca-market-bar-label">Market Context</span>` +
+      gearChip + devStr + rsiChip + vixChip +
+      `<a href="/en/atmr-dashboard.html" class="ca-market-bar-link">View Swing Signal &rarr;</a>`;
+  } catch {
+    bar.innerHTML = '';
+  }
+}
+
+// ── Index load & sidebar render ──────────────────────────────
+async function initIndex() {
+  let idx = {};
+  const [idxResult, krResult] = await Promise.allSettled([
+    fetchJSON(DATA_BASE + 'chart-index.json'),
+    fetchJSON(DATA_BASE + 'kr-prices.json'),
+  ]);
+  if (idxResult.status === 'fulfilled') idx = idxResult.value;
+  if (krResult.status === 'fulfilled')  krPricesCache = krResult.value;
+  tickerIndex = idx;
+
+  const demoSymbols = Object.keys(idx);
+  if (demoSymbols.length === 0) {
+    const banner = document.createElement('div');
+    banner.className = 'ca-demo-banner';
+    banner.textContent = '⚑ No data yet — analysis data is generated after the GitHub Actions workflow runs';
+    document.querySelector('.ca-layout').before(banner);
+  }
+
+  // URL hash shortcut (#QQQ, #TSLA, #BTC-USD, etc.) — falls back to the
+  // etf_us group + QQQ default if there's no match.
+  const hashSym  = decodeURIComponent(location.hash.slice(1)).toUpperCase();
+  const hashMeta = hashSym ? idx[hashSym] : null;
+  const initialGroup = hashMeta ? getGroupKey(hashMeta.type, hashMeta.market) : 'etf_us';
+
+  document.querySelectorAll('.ca-grp-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.grp === initialGroup));
+  renderSidebar(initialGroup);
+  bindGroupButtons();
+
+  if (hashMeta) {
+    selectTicker(hashSym, hashMeta.safeSymbol);
+  } else {
+    const qqqEl = document.querySelector('.ca-ticker-item[data-sym="QQQ"]');
+    if (qqqEl) qqqEl.click();
+  }
+
+  window.addEventListener('hashchange', () => {
+    const sym  = decodeURIComponent(location.hash.slice(1)).toUpperCase();
+    const meta = tickerIndex[sym];
+    if (!meta || sym === currentSymbol) return;
+    const grp = getGroupKey(meta.type, meta.market);
+    document.querySelectorAll('.ca-grp-btn').forEach(b => b.classList.toggle('active', b.dataset.grp === grp));
+    renderSidebar(grp);
+    selectTicker(sym, meta.safeSymbol);
+  });
+}
+
+function renderSidebar(group) {
+  const list   = document.getElementById('ticker-list');
+  const entries = Object.entries(tickerIndex);
+
+  const filtered = group === 'all'
+    ? entries
+    : entries.filter(([, v]) => getGroupKey(v.type, v.market) === group);
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div style="padding:24px;text-align:center;color:var(--ez-text2);font-size:16px;">No data<br><small style="font-size:16px;">Updates after the next workflow run</small></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(([sym, meta]) => {
+    const safe  = meta.safeSymbol;
+    const grpKey = getGroupKey(meta.type, meta.market);
+    return `<div class="ca-ticker-item${sym === currentSymbol ? ' active' : ''}"
+                 data-sym="${sym}" data-safe="${safe}" data-grp="${grpKey}">
+      <div class="ca-ticker-dot" id="dot-${safe}" style="background:var(--ez-border2)"></div>
+      <div class="ca-ticker-info">
+        <div class="ca-ticker-sym">${sym}</div>
+        <div class="ca-ticker-name">${meta.name}</div>
+      </div>
+      <div class="ca-ticker-right">
+        <div class="ca-ticker-price" id="price-${safe}">—</div>
+        <div class="ca-ticker-chg"   id="chg-${safe}">—</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  list.querySelectorAll('.ca-ticker-item').forEach(el => {
+    el.addEventListener('click', () => selectTicker(el.dataset.sym, el.dataset.safe));
+  });
+
+  filtered.forEach(([sym, meta]) => {
+    fetchJSON(DATA_BASE + `analysis-${meta.safeSymbol}.json`)
+      .then(data => updateSidebarTicker(meta.safeSymbol, data))
+      .catch(() => {});
+  });
+}
+
+function updateSidebarTicker(safe, data) {
+  const priceEl = document.getElementById(`price-${safe}`);
+  const chgEl   = document.getElementById(`chg-${safe}`);
+  const dotEl   = document.getElementById(`dot-${safe}`);
+  if (!priceEl) return;
+
+  const cur  = data?.price?.current;
+  const pct  = data?.price?.changePct;
+  const curr = data?.price?.current && data.ticker?.endsWith('.KS') ? 'KRW' : 'USD';
+  const act  = data?.analysis?.action;
+
+  if (cur != null) {
+    priceEl.textContent = fmtPrice(cur, curr);
+    chgEl.textContent   = pct != null ? (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%' : '';
+    chgEl.className     = 'ca-ticker-chg ' + (pct >= 0 ? 'up' : 'down');
+  }
+  // Color the dot from buyScore(1–10) — same scale as the detail panel's
+  // buy-attractiveness bar (strength alone would color a bearish move green).
+  const buyScore = data?.analysis?.buyScore;
+  if (buyScore != null) {
+    dotEl.style.background =
+        buyScore >= 8 ? (IS_DARK ? '#30D158' : '#1A7F37')
+      : buyScore >= 6 ? (IS_DARK ? '#0A84FF' : '#0071E3')
+      : buyScore >= 4 ? (IS_DARK ? '#FFD60A' : '#B87900')
+      : buyScore >= 2 ? (IS_DARK ? '#8E8E93' : '#6E6E73')
+      :                 (IS_DARK ? '#FF453A' : '#D92A2A');
+  } else if (act && ACTION_DOTS[act]) {
+    dotEl.style.background = ACTION_DOTS[act];
+  }
+}
+
+function bindGroupButtons() {
+  document.querySelectorAll('.ca-grp-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.ca-grp-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderSidebar(btn.dataset.grp);
     });
-  } catch(e) {}
-})();
+  });
+}
+
+// ── Ticker selection ─────────────────────────────────────────
+async function selectTicker(symbol, safe) {
+  currentSymbol = symbol;
+  if (decodeURIComponent(location.hash.slice(1)).toUpperCase() !== symbol.toUpperCase()) {
+    history.replaceState(null, '', '#' + symbol);
+  }
+  document.querySelectorAll('.ca-ticker-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.sym === symbol);
+  });
+
+  document.getElementById('empty-state').style.display = 'none';
+  const cv = document.getElementById('chart-view');
+  cv.style.display = 'block';
+  cv.innerHTML = `<div class="ca-loading"><div class="ca-spinner"></div>Loading ${symbol} data…</div>`;
+
+  try {
+    const [analysis, ohlcvData, ohlcvWeekly] = await Promise.all([
+      fetchJSON(DATA_BASE + `analysis-${safe}.json`),
+      fetchJSON(DATA_BASE + `ohlcv-${safe}.json`),
+      fetchJSON(DATA_BASE + `ohlcv-${safe}-weekly.json`).catch(() => null),
+    ]);
+    currentAnalysis    = analysis;
+    currentOhlcvDaily  = ohlcvData;
+    currentOhlcvWeekly = ohlcvWeekly;
+    currentTimeframe   = 'daily';
+    renderChartView(cv, analysis, ohlcvData, ohlcvWeekly);
+  } catch(e) {
+    cv.innerHTML = `<div class="ca-loading">
+      <div style="font-size:32px;opacity:.4">⚠</div>
+      <div style="font-weight:700;color:var(--ez-text)">Couldn't load data</div>
+      <div style="font-size:16px;color:var(--ez-text2)">${e.message}</div>
+      <div style="font-size:16px;color:var(--ez-text2);margin-top:4px">Data will be generated after the next workflow run.</div>
+    </div>`;
+  }
+}
+
+// ── Full chart view render ────────────────────────────────────
+function renderChartView(container, analysis, ohlcvData, ohlcvWeekly) {
+  const currency = ohlcvData.currency || 'USD';
+
+  container.innerHTML = `
+    ${renderPriceHeader(analysis, currency)}
+
+    <!-- 1st priority: analysis report (ahead of the chart) -->
+    ${renderAnalysisPanel(analysis, currency)}
+
+    <!-- 2nd priority: chart section title -->
+    <div style="padding:12px 20px 0; background:var(--ez-surface); border-top:1px solid var(--ez-border);">
+      <div style="font-size:16px; font-weight:700; color:var(--ez-text2); text-transform:uppercase; letter-spacing:0.05em;">Technical Chart</div>
+    </div>
+
+    <!-- 3rd priority: chart controls + chart -->
+    ${renderTfBar(ohlcvWeekly)}
+    ${renderIndToggles()}
+    <div class="ca-charts">
+      <div class="ca-chart-wrap"><div class="ca-chart-label" id="chart-main-label">Daily — Candles + MA + BB + Channel</div><div id="chart-main"></div></div>
+      <div class="ca-chart-wrap"><div class="ca-chart-label">RSI (14)</div><div id="chart-rsi"></div></div>
+      <div class="ca-chart-wrap"><div class="ca-chart-label">MACD (12·26·9)</div><div id="chart-macd"></div></div>
+    </div>
+
+    <div class="ca-updated">Last updated: ${fmtKST(analysis.updatedAt)} KST</div>
+  `;
+
+  container.querySelectorAll('.ca-tf-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      container.querySelectorAll('.ca-tf-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTimeframe = btn.dataset.tf;
+      const label = document.getElementById('chart-main-label');
+      if (label) label.textContent = (currentTimeframe === 'weekly' ? 'Weekly' : 'Daily') + ' — Candles + MA + BB + Channel';
+      const src = currentTimeframe === 'weekly' ? currentOhlcvWeekly : currentOhlcvDaily;
+      if (src) {
+        setTimeout(() => {
+          initCharts(src.ohlcv, src.ind, currentAnalysis);
+          bindTogglePills();
+        }, 20);
+      }
+    });
+  });
+
+  setTimeout(() => {
+    initCharts(ohlcvData.ohlcv, ohlcvData.ind, analysis);
+    bindTogglePills();
+  }, 50);
+}
+
+// ── Daily/Weekly toggle bar ───────────────────────────────────
+function renderTfBar(ohlcvWeekly) {
+  const weeklyDisabled = !ohlcvWeekly;
+  return `<div class="ca-tf-bar">
+    <span class="ca-tf-label">Timeframe</span>
+    <button class="ca-tf-btn active" data-tf="daily">Daily</button>
+    <button class="ca-tf-btn${weeklyDisabled ? ' disabled' : ''}" data-tf="weekly"${weeklyDisabled ? ' disabled title="Weekly data not available yet — generated after the next workflow run"' : ''}>Weekly</button>
+  </div>`;
+}
+
+// ── KRX market-hours check ────────────────────────────────────
+// Yahoo Finance's v8 API doesn't reliably return marketState for Korean
+// stocks, so we compute it client-side from the browser's clock (KST).
+function getKRXMarketStateNow() {
+  const now = new Date();
+  const kst = new Date(now.getTime() + 9 * 3600 * 1000);
+  const day = kst.getUTCDay();
+  const totalMin = kst.getUTCHours() * 60 + kst.getUTCMinutes();
+  // KRX regular session: weekdays 09:00–15:30 KST
+  if (day >= 1 && day <= 5 && totalMin >= 9 * 60 && totalMin < 15 * 60 + 30) return 'REGULAR';
+  return 'CLOSED';
+}
+
+// ── Price header ──────────────────────────────────────────────
+function renderPriceHeader(analysis, currency) {
+  const p = analysis.price;
+  const isKRStock = analysis.ticker && (analysis.ticker.endsWith('.KS') || analysis.ticker.endsWith('.KQ'));
+  const isCrypto  = analysis.assetType === 'crypto';
+
+  let stateLabel;
+  if (isCrypto) {
+    stateLabel = '24/7';
+  } else if (isKRStock) {
+    const s = getKRXMarketStateNow();
+    stateLabel = { REGULAR:'In Session', CLOSED:'Closed' }[s] || s;
+  } else {
+    const s = p.marketState ?? 'CLOSED';
+    stateLabel = { REGULAR:'Regular Hours', PRE:'Pre-Market', POST:'After Hours', CLOSED:'Closed' }[s] || s;
+  }
+
+  // ── Korean stocks: overlay live price from kr-prices.json ──
+  // fetch-kr-prices.yml refreshes data/kr-prices.json every 10 min.
+  let livePrice = null;
+  let krLiveUpdatedAt = null;
+  let staleWarn = '';
+
+  if (isKRStock && krPricesCache?.prices?.[analysis.ticker]) {
+    const kpUpdated = new Date(krPricesCache.updatedAt);
+    const ageMin    = Math.round((new Date() - kpUpdated) / 60000);
+    if (ageMin <= 20) {
+      livePrice      = krPricesCache.prices[analysis.ticker];
+      krLiveUpdatedAt = krPricesCache.updatedAt;
+    }
+  }
+
+  const dispPrice     = livePrice ? livePrice.price     : p.current;
+  const dispChange    = livePrice ? livePrice.change     : p.change;
+  const dispChangePct = livePrice ? livePrice.changePct  : p.changePct;
+  const dispUp        = (dispChangePct ?? 0) >= 0;
+  const dispUpdatedAt = krLiveUpdatedAt ?? analysis.updatedAt;
+  const dispLabel     = krLiveUpdatedAt ? 'Live' : 'As of';
+
+  // No live feed and 60+ min into the KR session → stale-snapshot warning
+  if (isKRStock && !livePrice) {
+    const now = new Date();
+    const kst = new Date(now.getTime() + 9 * 3600 * 1000);
+    const dayKST = kst.getUTCDay();
+    const minKST = kst.getUTCHours() * 60 + kst.getUTCMinutes();
+    const isKRXOpen = dayKST >= 1 && dayKST <= 5 && minKST >= 540 && minKST < 930;
+    if (isKRXOpen) {
+      const ageMin = Math.round((now - new Date(analysis.updatedAt)) / 60000);
+      if (ageMin > 60) {
+        staleWarn = `<div class="ca-stale-warn">Price is a snapshot from analysis time (${ageMin} min ago) — waiting for a live feed update</div>`;
+      }
+    }
+  }
+
+  const pos52w = Math.max(0, Math.min(100, p.pos52 ?? 50));
+
+  return `<div class="ca-price-hdr">
+    <div class="ca-ph-left">
+      <div class="ca-ph-sym">${analysis.ticker}</div>
+      <div class="ca-ph-name">${analysis.name} · ${analysis.assetType.toUpperCase()} · ${analysis.market.toUpperCase()}</div>
+      <div class="ca-ph-price-row">
+        <span class="ca-ph-price">${fmtPrice(dispPrice, currency)}</span>
+        <span class="ca-ph-change ${dispUp?'up':'down'}">${fmtChg(dispChange, dispChangePct, currency)}</span>
+        <span class="ca-ph-state">${stateLabel}</span>
+      </div>
+      ${staleWarn}
+      <div class="ca-ph-meta">
+        <span class="ca-ph-meta-item">52-Week High <strong>${fmtPrice(p.high52, currency)}</strong></span>
+        <span class="ca-ph-meta-item">52-Week Low <strong>${fmtPrice(p.low52, currency)}</strong></span>
+        <span class="ca-ph-meta-item">Position <strong>${p.pos52?.toFixed(1)}%</strong></span>
+        <span class="ca-ph-meta-item ca-ph-updated">${dispLabel} <strong>${fmtKST(dispUpdatedAt)} KST</strong></span>
+      </div>
+    </div>
+    <div class="ca-ph-right">
+      <div class="ca-ph-52">52-Week Range</div>
+      <div class="ca-ph-52-bar"><div class="ca-ph-52-fill" style="width:${pos52w}%"></div></div>
+      <div class="ca-ph-52-labels"><span>${fmtPrice(p.low52, currency)}</span><span>${fmtPrice(p.high52, currency)}</span></div>
+    </div>
+  </div>`;
+}
+
+// ── Indicator toggle pills ───────────────────────────────────
+function renderIndToggles() {
+  const pills = [
+    { key:'sma20',   label:'SMA 20',   color: 'var(--chart-sma20)' },
+    { key:'sma50',   label:'SMA 50',   color: 'var(--chart-sma50)' },
+    { key:'sma100',  label:'SMA 100',  color: 'var(--chart-sma100)' },
+    { key:'sma200',  label:'SMA 200',  color: 'var(--chart-sma200)' },
+    { key:'bb',      label:'Bollinger Bands', color: IS_DARK ? 'rgba(255,159,10,0.90)' : 'rgba(180,90,0,0.85)' },
+    { key:'channel', label:'Channel',      color: IS_DARK ? '#FF9F0A' : '#B45309' },
+  ];
+  return `<div class="ca-ind-toggles">
+    ${pills.map(p => `
+      <button class="ca-ind-pill ${smaVisibility[p.key]?'active':'inactive'}" data-ind="${p.key}">
+        <span class="dot" style="background:${p.color}"></span>${p.label}
+      </button>`).join('')}
+  </div>`;
+}
+
+function bindTogglePills() {
+  document.querySelectorAll('.ca-ind-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const key = pill.dataset.ind;
+      smaVisibility[key] = !smaVisibility[key];
+      pill.classList.toggle('active', smaVisibility[key]);
+      pill.classList.toggle('inactive', !smaVisibility[key]);
+      toggleChartSeries(key, smaVisibility[key]);
+    });
+  });
+}
+
+// ── AI analysis panel ─────────────────────────────────────────
+function renderAnalysisPanel(analysis, currency) {
+  const ai  = analysis.analysis;
+  const ind = analysis.indicators;
+  const lv  = analysis.levels;
+  if (!ai) return '';
+
+  const actionC = ACTION_COLORS[ai.action] || ACTION_COLORS['관망'];
+  const trendC  = TREND_COLORS[ai.trend]  || 'var(--ez-text2)';
+  const stageC  = STAGE_COLORS[ai.stage]  || 'var(--ez-text2)';
+  const TREND_BG = { '강세':'rgba(26,127,55,0.12)', '약세':'rgba(217,42,42,0.12)', '횡보':'rgba(110,110,115,0.10)' };
+  const trendBg = TREND_BG[ai.trend] || 'rgba(110,110,115,0.10)';
+
+  const strengthDots = Array.from({length:5}, (_,i) => {
+    const filled = i < (ai.strength||0);
+    return `<div class="ca-strength-dot" style="background:${filled ? trendC : 'var(--ez-border2)'}"></div>`;
+  }).join('');
+
+  // ADX (trend strength) — computed and classified client-side. Below 20
+  // suggests "impulsive volatility" rather than a genuine trend, which
+  // helps avoid misreading a sharp move as a trend break/reversal.
+  const adxColor = ind.adx?.adx == null ? null
+    : ind.adx.adx < 20 ? (IS_DARK ? '#8E8E93' : '#6E6E73')
+    : ind.adx.adx < 25 ? (IS_DARK ? '#FFD60A' : '#B87900')
+    : (IS_DARK ? '#FF9F0A' : '#FF9F0A');
+  const cells = [
+    { label:'RSI Status',  val: ai.rsiStatus,  sub: `RSI ${ind.rsi?.toFixed(1) ?? '—'}`, color: RSI_COLORS[ai.rsiStatus] },
+    { label:'MACD Status', val: ai.macdStatus, sub: ind.macd ? `${ind.macd.histogram?.toFixed(3)}` : '—', color: null },
+    { label:'Bollinger Bands', val: ai.bbStatus,   sub: ind.bb ? `Mid ${fmtPrice(ind.bb.middle, currency)}` : '—', color: null },
+    { label:'Market Stage', val: STAGE_LABELS_EN[ai.stage] || ai.stage,      sub: null, color: stageC },
+    { label:'Key Support', val: fmtPrice(ai.support ?? lv?.swingSupport, currency), sub: 'swing support', color: IS_DARK ? '#30D158' : '#1A7F37' },
+    { label:'Key Resistance', val: fmtPrice(ai.resistance ?? lv?.swingResistance, currency), sub: 'swing resistance', color: IS_DARK ? '#FF453A' : '#D92A2A' },
+    ...(ind.adx?.adx != null ? [{ label:'Trend Strength (ADX)', val: ind.adx.status, sub: `ADX ${ind.adx.adx.toFixed(1)}`, color: adxColor }] : []),
+  ];
+
+  const gridHtml = cells.map(c => `
+    <div class="ca-ind-cell">
+      <div class="ca-ind-cell-label">${c.label}</div>
+      <div class="ca-ind-cell-val" style="${c.color ? `color:${c.color}` : ''}">${c.val || '—'}</div>
+      ${c.sub ? `<div class="ca-ind-cell-sub">${c.sub}</div>` : ''}
+    </div>`).join('');
+
+  const keyPointsArr = pick(ai.keyPointsEn, ai.keyPoints);
+  const keyPointsHtml = (keyPointsArr || []).map(kp =>
+    `<div class="ca-kp-item">${kp}</div>`).join('');
+
+  const scoreVal = ai.buyScore;
+  const scoreColor = scoreVal == null ? 'var(--ez-text2)'
+    : scoreVal >= 8 ? (IS_DARK ? '#30D158' : '#1A7F37')
+    : scoreVal >= 6 ? (IS_DARK ? '#0A84FF' : '#0071E3')
+    : scoreVal >= 4 ? (IS_DARK ? '#FFD60A' : '#B87900')
+    : (IS_DARK ? '#FF453A' : '#D92A2A');
+
+  // scoreReason: prefer the AI-generated English field, then the Korean
+  // field, then compute an English fallback from the other data fields.
+  const scoreReason = pick(ai.scoreReasonEn, ai.scoreReason) || (() => {
+    if (scoreVal == null) return null;
+    const rsi = ai.rsiStatus, bb = ai.bbStatus, macd = ai.macdStatus, stage = ai.stage;
+    if (scoreVal >= 8) {
+      if (rsi === '과매도') return 'RSI oversold — good technical entry for a bounce';
+      if (macd === '골든크로스') return 'Golden cross confirmed — trend-reversal entry zone';
+      if (stage === '축적구간') return 'Entering accumulation phase — good zone for scaling in near the lows';
+      return 'Technical buy conditions met — favorable entry timing';
+    }
+    if (scoreVal <= 6) {
+      if (rsi === '과매수' && (bb === '상단돌파' || bb === '상단접근')) return 'RSI overbought with a break above the upper band — short-term overheated zone';
+      if (rsi === '과매수') return 'RSI overbought — chasing this entry risks a short-term pullback';
+      if (bb === '상단돌파') return 'Price broke above the upper Bollinger Band — a pullback after this overheated move is possible';
+      if (macd === '데드크로스') return 'MACD dead cross confirmed — a bearish trend-reversal signal';
+      if (stage === '하락추세') return 'Downtrend still in force — wait for a confirmed bounce before entering';
+      if (stage === '분배구간') return 'Distribution phase — sellers in control, not an entry point';
+      if (ai.action === '분할매도' || ai.action === '적극매도') return 'Near a high — better time to consider taking profit than opening a new position';
+      return 'Technical setup currently lacks buy appeal';
+    }
+    return null;
+  })();
+
+  const targetsHtml = (ai.profitTarget1 || ai.profitTarget2 || ai.stopLoss) ? `
+    <div class="ca-targets-grid">
+      <div class="ca-target-cell" style="background:var(--ez-card2);border:1px solid rgba(26,127,55,0.35)">
+        <div class="ca-target-cell-label" style="color:var(--ez-text)">Target 1</div>
+        <div class="ca-target-cell-val" style="color:${IS_DARK?'#30D158':'#1A7F37'}">${ai.profitTarget1 ? fmtPrice(ai.profitTarget1, currency) : '—'}</div>
+      </div>
+      <div class="ca-target-cell" style="background:var(--ez-card2);border:1px solid rgba(26,127,55,0.25)">
+        <div class="ca-target-cell-label" style="color:var(--ez-text)">Target 2</div>
+        <div class="ca-target-cell-val" style="color:${IS_DARK?'#30D158':'#1A7F37'}">${ai.profitTarget2 ? fmtPrice(ai.profitTarget2, currency) : '—'}</div>
+      </div>
+      <div class="ca-target-cell" style="background:var(--ez-card2);border:1px solid rgba(217,42,42,0.35)">
+        <div class="ca-target-cell-label" style="color:var(--ez-text)">Stop Loss</div>
+        <div class="ca-target-cell-val" style="color:${IS_DARK?'#FF453A':'#D92A2A'}">${ai.stopLoss ? fmtPrice(ai.stopLoss, currency) : '—'}</div>
+      </div>
+    </div>` : '';
+
+  const continuityText = pick(ai.continuityEn, ai.continuity);
+  const narrativeText  = pick(ai.narrativeEn, ai.narrative);
+  const patternNoteText = pick(ai.patternNoteEn, ai.patternNote);
+  const riskNoteText   = pick(ai.riskNoteEn, ai.riskNote);
+
+  return `<div class="ca-analysis">
+    <div class="ca-analysis-top">
+      <span class="ca-badge ca-badge-lg" style="background:${trendBg};color:${trendC};border-color:${trendC}40">
+        ${TREND_LABELS_EN[ai.trend] || ai.trend || '—'} Trend
+      </span>
+      <div class="ca-strength">${strengthDots}</div>
+      <span class="ca-badge ca-badge-lg" style="background:${actionC.bg};color:${actionC.text};border-color:${actionC.border}">
+        ${actionDisplayLabel(ai.action)}
+      </span>
+      <span class="ca-badge" style="background:${stageC};color:#fff;border-color:${stageC}">
+        ${STAGE_LABELS_EN[ai.stage] || ai.stage || '—'}
+      </span>
+    </div>
+
+    ${continuityText ? `<div class="ca-continuity">
+      <div class="ca-continuity-title">Recent Analysis Trend</div>
+      ${continuityText}
+    </div>` : ''}
+
+    ${scoreVal != null ? `
+    <div class="ca-buy-score-wrap">
+      <span class="ca-buy-score-label">Buy Attractiveness</span>
+      <div class="ca-buy-score-bar">
+        <div class="ca-buy-score-fill" style="width:${scoreVal * 10}%;background:${scoreColor}"></div>
+      </div>
+      <span class="ca-buy-score-num" style="color:${scoreColor}">${scoreVal}<span style="font-size:16px;font-weight:600;color:var(--ez-text2)">/10</span></span>
+    </div>
+    ${scoreReason ? `<div class="ca-score-reason" style="color:${scoreColor}">${scoreReason}</div>` : ''}` : ''}
+
+    ${targetsHtml}
+
+    ${narrativeText ? `<div class="ca-narrative">${buildNarrative(narrativeText)}</div>` : ''}
+
+    ${patternNoteText ? `<div class="ca-pattern-note">${patternNoteText}</div>` : ''}
+
+    <div class="ca-ind-grid">${gridHtml}</div>
+
+    ${keyPointsHtml ? `<div class="ca-keypoints">
+      <div class="ca-keypoints-title">Key Points</div>
+      ${keyPointsHtml}
+    </div>` : ''}
+
+    ${riskNoteText ? `<div class="ca-risknote">⚑ ${riskNoteText}</div>` : ''}
+  </div>`;
+}
+
+// ── Lightweight Charts setup ───────────────────────────────────
+function getChartOptions(height) {
+  return {
+    height,
+    layout: {
+      background: { type: 'solid', color: IS_DARK ? '#1C1C1E' : '#FFFFFF' },
+      textColor:  IS_DARK ? '#8E8E93' : '#3C3C3E',
+      fontSize:   11,
+    },
+    grid: {
+      vertLines: { color: IS_DARK ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)' },
+      horzLines: { color: IS_DARK ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)' },
+    },
+    crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+    rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.08, bottom: 0.08 }, minimumWidth: 70 },
+    timeScale: {
+      borderVisible: false,
+      timeVisible: true,
+      secondsVisible: false,
+    },
+    handleScroll: true,
+    handleScale:  true,
+  };
+}
+
+// ── Swing channel calculation ─────────────────────────────────
+function computeChannel(ohlcv, lookback = 5) {
+  const n = ohlcv.length;
+  const swingHighs = [], swingLows = [];
+
+  for (let i = lookback; i < n - lookback; i++) {
+    const isHigh = ohlcv.slice(i - lookback, i).every(d => d.h <= ohlcv[i].h) &&
+                   ohlcv.slice(i + 1, i + lookback + 1).every(d => d.h <= ohlcv[i].h);
+    const isLow  = ohlcv.slice(i - lookback, i).every(d => d.l >= ohlcv[i].l) &&
+                   ohlcv.slice(i + 1, i + lookback + 1).every(d => d.l >= ohlcv[i].l);
+    if (isHigh) swingHighs.push({ i, t: ohlcv[i].t, val: ohlcv[i].h });
+    if (isLow)  swingLows.push({ i, t: ohlcv[i].t, val: ohlcv[i].l });
+  }
+
+  const recent = Math.max(Math.floor(n * 0.4), lookback * 6);
+  const rHighs = swingHighs.filter(p => p.i >= n - recent).slice(-3);
+  const rLows  = swingLows .filter(p => p.i >= n - recent).slice(-3);
+
+  if (rHighs.length < 2 && rLows.length < 2) return null;
+
+  function makeTrendLine(points) {
+    if (points.length < 2) return null;
+    const p1 = points[points.length - 2];
+    const p2 = points[points.length - 1];
+    const slope = (p2.val - p1.val) / (p2.i - p1.i);
+    const data  = [];
+    for (let i = p1.i; i < n; i++) {
+      data.push({ time: ohlcv[i].t, value: +(p1.val + slope * (i - p1.i)).toFixed(4) });
+    }
+    return data;
+  }
+
+  return {
+    res: rHighs.length >= 2 ? makeTrendLine(rHighs) : null,
+    sup: rLows.length  >= 2 ? makeTrendLine(rLows)  : null,
+  };
+}
+
+function initCharts(ohlcv, ind, analysis) {
+  if (chartInstances.main)  { try { chartInstances.main.remove();  } catch{} }
+  if (chartInstances.rsi)   { try { chartInstances.rsi.remove();   } catch{} }
+  if (chartInstances.macd)  { try { chartInstances.macd.remove();  } catch{} }
+  chartInstances = {};
+  chartSeries    = {};
+
+  const mainEl = document.getElementById('chart-main');
+  const rsiEl  = document.getElementById('chart-rsi');
+  const macdEl = document.getElementById('chart-macd');
+  if (!mainEl || !rsiEl || !macdEl) return;
+
+  // Limit the initial visible window by slicing the arrays themselves —
+  // avoids setVisibleRange/setVisibleLogicalRange timing issues with
+  // fitContent (proven approach, do not switch back).
+  {
+    const _mob = window.innerWidth < 768;
+    const _keep = _mob ? 40 : 120;  // 40 trading days on mobile, 120 on desktop
+    if (ohlcv.length > _keep) {
+      const _from = ohlcv.length - _keep;
+      ohlcv = ohlcv.slice(_from);
+      const _newInd = {};
+      for (const [k, v] of Object.entries(ind)) {
+        _newInd[k] = Array.isArray(v) ? v.slice(_from) : v;
+      }
+      ind = _newInd;
+    }
+  }
+
+  const currency = ohlcv[0] ? (analysis.ticker.endsWith('.KS') ? 'KRW' : 'USD') : 'USD';
+  const priceFmt = {
+    type: 'price',
+    precision: currency === 'KRW' ? 0 : (analysis.price.current >= 100 ? 2 : analysis.price.current >= 1 ? 3 : 4),
+    minMove: currency === 'KRW' ? 1 : (analysis.price.current >= 100 ? 0.01 : analysis.price.current >= 1 ? 0.001 : 0.0001),
+  };
+
+  // ── Main chart ─────────────────────────────────────────────
+  const mainChart = LightweightCharts.createChart(mainEl, {
+    ...getChartOptions(mainEl.offsetHeight || 380),
+    rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.08, bottom: 0.22 }, minimumWidth: 70 },
+  });
+  chartInstances.main = mainChart;
+
+  const candleSeries = mainChart.addCandlestickSeries({
+    upColor:      IS_DARK ? '#30D158' : '#1A7F37',
+    downColor:    IS_DARK ? '#FF453A' : '#D92A2A',
+    borderVisible: false,
+    wickUpColor:   IS_DARK ? '#30D158' : '#1A7F37',
+    wickDownColor: IS_DARK ? '#FF453A' : '#D92A2A',
+    priceFormat:   priceFmt,
+  });
+  candleSeries.setData(ohlcv.map(d => ({ time: d.t, open: d.o, high: d.h, low: d.l, close: d.c })));
+
+  // ── Volume (bottom 18% of the main chart) ───────────────────
+  const volSeries = mainChart.addHistogramSeries({
+    priceFormat: { type: 'volume' },
+    priceLineVisible: false,
+    lastValueVisible: false,
+    priceScaleId: 'vol_overlay',
+  });
+  mainChart.priceScale('vol_overlay').applyOptions({ scaleMargins: { top: 0.82, bottom: 0 } });
+  const volData = ohlcv
+    .filter(d => d.v > 0)
+    .map(d => ({
+      time: d.t,
+      value: d.v,
+      color: d.c >= d.o
+        ? (IS_DARK ? 'rgba(48,209,88,0.35)' : 'rgba(26,127,55,0.28)')
+        : (IS_DARK ? 'rgba(255,69,58,0.35)' : 'rgba(217,42,42,0.28)'),
+    }));
+  volSeries.setData(volData);
+
+  // Support/resistance lines (right-axis label hidden → left HTML overlay used instead)
+  const ai = analysis.analysis;
+  const lv = analysis.levels;
+  if (ai.support) {
+    candleSeries.createPriceLine({ price: ai.support, color: IS_DARK?'#30D158':'#1A7F37', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed, title: '', axisLabelVisible: false });
+  }
+  if (ai.resistance) {
+    candleSeries.createPriceLine({ price: ai.resistance, color: IS_DARK?'#FF453A':'#D92A2A', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed, title: '', axisLabelVisible: false });
+  }
+  if (lv?.pivot?.pp) {
+    candleSeries.createPriceLine({ price: lv.pivot.pp, color: IS_DARK?'#AEAEB2':'#8E8E93', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dotted, title: '', axisLabelVisible: false });
+  }
+
+  // Support/resistance left-side label overlay
+  const mainWrap = mainEl.parentElement;  // .ca-chart-wrap (position:relative)
+  function addLeftLabel(price, text, bgColor) {
+    if (!price) return;
+    const el = document.createElement('div');
+    el.className = 'ca-price-left-label';
+    el.textContent = text;
+    el.style.cssText = `position:absolute;left:6px;padding:1px 5px;border-radius:3px;font-size:16px;font-weight:700;color:#fff;background:${bgColor};pointer-events:none;z-index:20;white-space:nowrap;opacity:0.92;`;
+    mainWrap.appendChild(el);
+    const reposition = () => {
+      try {
+        const y = candleSeries.priceToCoordinate(price);
+        if (y !== null) el.style.top = `${Math.round(y) - 9}px`;
+      } catch {}
+    };
+    requestAnimationFrame(reposition);
+    mainChart.timeScale().subscribeVisibleTimeRangeChange(reposition);
+    mainChart.subscribeCrosshairMove(reposition);
+  }
+  if (ai.support)    addLeftLabel(ai.support,    'Support', IS_DARK ? '#30D158' : '#1A7F37');
+  if (ai.resistance) addLeftLabel(ai.resistance, 'Resistance', IS_DARK ? '#FF453A' : '#D92A2A');
+
+  // ── Control buttons (zoom out/in, fit, fullscreen) ──────────
+  {
+    const existCtrl = mainWrap.querySelector('.ca-chart-ctrl-bar');
+    if (existCtrl) existCtrl.remove();
+    const ctrlBar = document.createElement('div');
+    ctrlBar.className = 'ca-chart-ctrl-bar';
+    const _EXPAND_SVG   = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:block"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>`;
+    const _COMPRESS_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:block"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>`;
+    ctrlBar.innerHTML = `
+      <button class="ca-ctrl-btn" title="Zoom In" id="cctrl-in">+</button>
+      <button class="ca-ctrl-btn" title="Zoom Out" id="cctrl-out">−</button>
+      <button class="ca-ctrl-btn" title="Fit to Screen" id="cctrl-fit">↺</button>
+      <button class="ca-ctrl-btn" title="Fullscreen" id="cctrl-fs">${_EXPAND_SVG}</button>
+    `;
+    mainWrap.appendChild(ctrlBar);
+
+    const zoomChart = (factor) => {
+      const range = mainChart.timeScale().getVisibleLogicalRange();
+      if (!range) return;
+      const mid = (range.from + range.to) / 2;
+      const half = (range.to - range.from) / 2 * factor;
+      mainChart.timeScale().setVisibleLogicalRange({ from: mid - half, to: mid + half });
+      rsiChart .timeScale().setVisibleLogicalRange({ from: mid - half, to: mid + half });
+      macdChart.timeScale().setVisibleLogicalRange({ from: mid - half, to: mid + half });
+    };
+    mainWrap.querySelector('#cctrl-in') .addEventListener('click', () => zoomChart(0.65));
+    mainWrap.querySelector('#cctrl-out').addEventListener('click', () => zoomChart(1.45));
+    mainWrap.querySelector('#cctrl-fit').addEventListener('click', () => {
+      mainChart.timeScale().fitContent();
+      rsiChart .timeScale().fitContent();
+      macdChart.timeScale().fitContent();
+    });
+    mainWrap.querySelector('#cctrl-fs').addEventListener('click', () => {
+      const chartsEl = document.querySelector('.ca-charts');
+      const fsBtn    = mainWrap.querySelector('#cctrl-fs');
+      const entering = !chartsEl.classList.contains('ca-fullscreen');
+      if (entering) {
+        chartsEl.classList.add('ca-fullscreen');
+        document.body.style.overflow = 'hidden';
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        chartsEl.scrollTop = 0;
+        fsBtn.innerHTML = _COMPRESS_SVG;
+        fsBtn.title = 'Close';
+        // autoSize:true — LightweightCharts auto-detects the CSS flex wrap
+        // size; CSS flex 70/15/15 controls the ratio, JS doesn't compute height.
+        mainChart.applyOptions({ autoSize: true });
+        rsiChart .applyOptions({ autoSize: true });
+        macdChart.applyOptions({ autoSize: true });
+        setTimeout(() => {
+          mainChart.timeScale().fitContent();
+          rsiChart .timeScale().fitContent();
+          macdChart.timeScale().fitContent();
+        }, 100);
+      } else {
+        chartsEl.classList.remove('ca-fullscreen');
+        const _mob = window.innerWidth < 768;
+        mainChart.applyOptions({ autoSize: false, height: _mob ? 260 : 380 });
+        rsiChart .applyOptions({ autoSize: false, height: _mob ? 110 : 140 });
+        macdChart.applyOptions({ autoSize: false, height: _mob ? 110 : 140 });
+        document.body.style.overflow = '';
+        fsBtn.innerHTML = _EXPAND_SVG;
+        fsBtn.title = 'Fullscreen';
+        setTimeout(() => {
+          mainChart.timeScale().fitContent();
+          rsiChart .timeScale().fitContent();
+          macdChart.timeScale().fitContent();
+        }, 50);
+      }
+    });
+  }
+
+  // SMA series
+  const addSma = (key, width) => {
+    const s = mainChart.addLineSeries({
+      color: getComputedStyle(document.documentElement).getPropertyValue('--chart-'+key).trim(),
+      lineWidth: width,
+      priceLineVisible: false,
+      lastValueVisible: false,
+      crosshairMarkerVisible: false,
+      visible: smaVisibility[key],
+      priceFormat: priceFmt,
+    });
+    const data = ind[key]?.map((v, i) => v != null ? { time: ohlcv[i].t, value: v } : null).filter(Boolean) || [];
+    s.setData(data);
+    chartSeries[key] = s;
+    return s;
+  };
+  addSma('sma20',  1.5);
+  addSma('sma50',  1.5);
+  addSma('sma100', 1.5);
+  addSma('sma200', 2);
+
+  // Bollinger Bands — thick orange dashed (upper/lower), dotted middle
+  const bbColor = IS_DARK ? 'rgba(255,159,10,0.80)' : 'rgba(180,90,0,0.70)';
+  const bbUpper = mainChart.addLineSeries({ color: bbColor, lineWidth: 2, lineStyle: LightweightCharts.LineStyle.Dashed, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, visible: smaVisibility.bb, priceFormat: priceFmt });
+  const bbMid   = mainChart.addLineSeries({ color: bbColor, lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dotted, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, visible: smaVisibility.bb, priceFormat: priceFmt });
+  const bbLower = mainChart.addLineSeries({ color: bbColor, lineWidth: 2, lineStyle: LightweightCharts.LineStyle.Dashed, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, visible: smaVisibility.bb, priceFormat: priceFmt });
+  const bbData = ind.bb?.map((v, i) => v ? { t: ohlcv[i].t, upper: v.upper, middle: v.middle, lower: v.lower } : null).filter(Boolean) || [];
+  bbUpper.setData(bbData.map(d => ({ time: d.t, value: d.upper })));
+  bbMid  .setData(bbData.map(d => ({ time: d.t, value: d.middle })));
+  bbLower.setData(bbData.map(d => ({ time: d.t, value: d.lower })));
+  chartSeries.bb = { upper: bbUpper, mid: bbMid, lower: bbLower };
+
+  // Swing channel drawing
+  const channelColor = IS_DARK ? 'rgba(255,159,10,0.75)' : 'rgba(180,83,9,0.75)';
+  const channelOpts  = {
+    color: channelColor,
+    lineWidth: 1.5,
+    lineStyle: LightweightCharts.LineStyle.Dashed,
+    priceLineVisible: false,
+    lastValueVisible: false,
+    crosshairMarkerVisible: false,
+    visible: smaVisibility.channel,
+    priceFormat: priceFmt,
+  };
+  const channel = computeChannel(ohlcv);
+  const chRes = mainChart.addLineSeries(channelOpts);
+  const chSup = mainChart.addLineSeries(channelOpts);
+  if (channel?.res) chRes.setData(channel.res);
+  if (channel?.sup) chSup.setData(channel.sup);
+  chartSeries.channel = { res: chRes, sup: chSup };
+
+  // ── RSI chart ────────────────────────────────────────────────
+  const rsiChart = LightweightCharts.createChart(rsiEl, {
+    ...getChartOptions(rsiEl.offsetHeight || 140),
+    rightPriceScale: {
+      borderVisible: false,
+      scaleMargins: { top: 0.1, bottom: 0.1 },
+      entireTextOnly: true,
+      minimumWidth: 70,
+    },
+    timeScale: { borderVisible: false, visible: false },
+  });
+  chartInstances.rsi = rsiChart;
+
+  const rsiSeries = rsiChart.addLineSeries({
+    color: IS_DARK ? '#0A84FF' : '#0071E3',
+    lineWidth: 1.5,
+    priceLineVisible: false,
+    lastValueVisible: true,
+    priceFormat: { type: 'price', precision: 1, minMove: 0.1 },
+  });
+  const rsiData = ind.rsi?.map((v, i) => v != null ? { time: ohlcv[i].t, value: v } : null).filter(Boolean) || [];
+  rsiSeries.setData(rsiData);
+  rsiSeries.createPriceLine({ price: 70, color: IS_DARK?'rgba(255,69,58,0.5)':'rgba(217,42,42,0.5)', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed, title:'Overbought', axisLabelVisible: false });
+  rsiSeries.createPriceLine({ price: 50, color: IS_DARK?'rgba(142,142,147,0.3)':'rgba(110,110,115,0.3)', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dotted, title:'', axisLabelVisible: false });
+  rsiSeries.createPriceLine({ price: 30, color: IS_DARK?'rgba(48,209,88,0.5)':'rgba(26,127,55,0.5)', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed, title:'Oversold', axisLabelVisible: false });
+  chartSeries.rsi = rsiSeries;
+
+  // ── MACD chart ───────────────────────────────────────────────
+  const macdChart = LightweightCharts.createChart(macdEl, {
+    ...getChartOptions(macdEl.offsetHeight || 140),
+    rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.1, bottom: 0.1 }, minimumWidth: 70 },
+    timeScale: { borderVisible: false, visible: false },
+  });
+  chartInstances.macd = macdChart;
+
+  const histSeries = macdChart.addHistogramSeries({
+    priceLineVisible: false,
+    lastValueVisible: false,
+    priceFormat: { type: 'price', precision: 3, minMove: 0.001 },
+  });
+  const macdLineSeries = macdChart.addLineSeries({
+    color: IS_DARK ? '#0A84FF' : '#0071E3',
+    lineWidth: 1.5,
+    priceLineVisible: false,
+    lastValueVisible: true,
+    priceFormat: { type: 'price', precision: 3, minMove: 0.001 },
+  });
+  const sigLineSeries = macdChart.addLineSeries({
+    color: IS_DARK ? '#FFD60A' : '#B45309',
+    lineWidth: 1.5,
+    priceLineVisible: false,
+    lastValueVisible: false,
+    priceFormat: { type: 'price', precision: 3, minMove: 0.001 },
+  });
+
+  const macdRaw = ind.macd || [];
+  const histData = [], macdLineData = [], sigLineData = [];
+  macdRaw.forEach((v, i) => {
+    if (!v || ohlcv[i] == null) return;
+    const t = ohlcv[i].t;
+    if (v.histogram != null) histData.push({ time: t, value: v.histogram, color: v.histogram >= 0 ? (IS_DARK?'rgba(48,209,88,0.6)':'rgba(26,127,55,0.6)') : (IS_DARK?'rgba(255,69,58,0.6)':'rgba(217,42,42,0.6)') });
+    if (v.macd    != null) macdLineData.push({ time: t, value: v.macd });
+    if (v.signal  != null) sigLineData .push({ time: t, value: v.signal });
+  });
+  histSeries.setData(histData);
+  macdLineSeries.setData(macdLineData);
+  sigLineSeries .setData(sigLineData);
+  chartSeries.macd = { hist: histSeries, line: macdLineSeries, sig: sigLineSeries };
+
+  // ── Time-axis sync (time-based — stays aligned even with mismatched array lengths) ──
+  let syncing = false;
+  const syncRange = (src, ...targets) => {
+    src.timeScale().subscribeVisibleTimeRangeChange(range => {
+      if (syncing || range == null) return;
+      syncing = true;
+      targets.forEach(t => { try { t.timeScale().setVisibleRange(range); } catch {} });
+      syncing = false;
+    });
+  };
+  syncRange(mainChart, rsiChart, macdChart);
+  syncRange(rsiChart,  mainChart, macdChart);
+  syncRange(macdChart, mainChart, rsiChart);
+
+  mainChart.subscribeCrosshairMove(param => {
+    if (!param.time) return;
+    try {
+      if (rsiData.length > 0) rsiChart.setCrosshairPosition(rsiData[0].value, param.time, rsiSeries);
+      if (macdLineData.length > 0) macdChart.setCrosshairPosition(macdLineData[0].value, param.time, macdLineSeries);
+    } catch {}
+  });
+
+  mainChart.timeScale().fitContent();
+  rsiChart .timeScale().fitContent();
+  macdChart.timeScale().fitContent();
+
+  // Sync right-axis price-scale width across the 3 panels for a clean vertical grid
+  setTimeout(() => {
+    try {
+      const w = mainChart.priceScale('right').width();
+      if (w > 0) {
+        rsiChart .applyOptions({ rightPriceScale: { minimumWidth: w } });
+        macdChart.applyOptions({ rightPriceScale: { minimumWidth: w } });
+      }
+    } catch {}
+  }, 200);
+
+  const ro = new ResizeObserver(() => {
+    if (mainEl) mainChart.applyOptions({ width: mainEl.clientWidth });
+    if (rsiEl)  rsiChart .applyOptions({ width: rsiEl.clientWidth  });
+    if (macdEl) macdChart.applyOptions({ width: macdEl.clientWidth });
+  });
+  ro.observe(mainEl); ro.observe(rsiEl); ro.observe(macdEl);
+}
+
+// ── Series toggle ────────────────────────────────────────────
+function toggleChartSeries(key, visible) {
+  if (!chartSeries[key]) return;
+  if (key === 'bb') {
+    chartSeries.bb.upper.applyOptions({ visible });
+    chartSeries.bb.mid  .applyOptions({ visible });
+    chartSeries.bb.lower.applyOptions({ visible });
+  } else if (key === 'channel') {
+    if (chartSeries.channel?.res) chartSeries.channel.res.applyOptions({ visible });
+    if (chartSeries.channel?.sup) chartSeries.channel.sup.applyOptions({ visible });
+  } else {
+    chartSeries[key].applyOptions({ visible });
+  }
+}
+
+// ── Fullscreen exit via ESC ───────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const btn = document.getElementById('cctrl-fs');
+    if (btn && btn.title === 'Close') btn.click();
+  }
+});
+
+// ── Init ──────────────────────────────────────────────────────
+renderMarketContextBar();
+initIndex();
 </script>
 </body>
 </html>
+

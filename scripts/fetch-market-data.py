@@ -9,6 +9,7 @@ yfinance → data/market-signals.json 저장
 
 import json
 import os
+import re
 import sys
 import ssl
 import urllib.request
@@ -652,7 +653,13 @@ def generate_swing_continuity(processed, previous_signals, fg_data):
             "- \"~하세요\", \"~하십시오\" 같은 명령형 금지. \"~구간\", \"~권고\", \"~흐름\" 같은 진단형 표현만 사용.\n"
             "- 오늘 점수가 며칠 전과 비교해 개선/악화/유지 중 무엇인지 반드시 언급하라.\n"
             "- 종목 간 온도차가 있으면(예: 반도체만 유독 약세) 그 차이를 짚어라.\n"
-            "- 순수 텍스트로만 답하라. 마크다운, 따옴표, JSON 금지."
+            "- 마크다운 금지.\n\n"
+            "[영어 병기 — 2026-07-29 신설]\n"
+            "- en 필드에 ko와 완전히 같은 판단·같은 숫자를 자연스러운 영어로 다시 써라. "
+            "직역이 아니라 미국 개인 투자자가 읽는 톤으로 재작성하되 결론은 절대 다르게 쓰지 마라.\n"
+            "- 티커·숫자는 그대로 유지.\n\n"
+            "다음 JSON만 반환하라. 다른 텍스트는 절대 붙이지 마라:\n"
+            "{\"ko\": \"한국어 2~3문장\", \"en\": \"English 2-3 sentences\"}"
         )
 
         payload = {
@@ -660,6 +667,7 @@ def generate_swing_continuity(processed, previous_signals, fg_data):
             "generationConfig": {
                 "temperature": 0.3,
                 "maxOutputTokens": 1024,
+                "responseMimeType": "application/json",
                 "thinkingConfig": {"thinkingBudget": 0},
             },
         }
@@ -681,8 +689,22 @@ def generate_swing_continuity(processed, previous_signals, fg_data):
         if not text:
             print("  [swingContinuity] Gemini 빈 응답 — 건너뜀")
             return None
-        print(f"  [swingContinuity] 생성 완료 ({len(text)}자)")
-        return text
+        # 2026-07-29: 응답이 {"ko":..., "en":...} JSON으로 바뀜 — ko/en 동시 파싱.
+        # 파싱 실패(구모델이 실수로 순수 텍스트를 낸 경우 등) 시 그 텍스트를 ko로만 사용하고
+        # en은 없는 채로 진행 — 프런트엔드(한국어판)는 기존과 동일하게 동작, 영어판만 결손.
+        try:
+            m = re.search(r'\{[\s\S]*\}', text)
+            parsed = json.loads(m.group(0) if m else text)
+            ko_text = (parsed.get('ko') or '').strip()
+            en_text = (parsed.get('en') or '').strip()
+            if not ko_text:
+                print("  [swingContinuity] ko 필드 비어있음 — 건너뜀")
+                return None
+            print(f"  [swingContinuity] 생성 완료 (ko {len(ko_text)}자 / en {len(en_text)}자)")
+            return {'ko': ko_text, 'en': en_text or None}
+        except (json.JSONDecodeError, AttributeError):
+            print("  [swingContinuity] JSON 파싱 실패 — 원문을 ko로만 사용(en 없음)")
+            return {'ko': text, 'en': None}
     except Exception as e:
         print(f"  [swingContinuity] 실패(무시하고 계속 진행): {e}")
         return None
@@ -809,7 +831,13 @@ def main():
 
     # ── 6.5. 스윙 연속성 서술 (실패해도 무시하고 계속) ──────────────────
     print("\n--- 스윙 연속성 서술 생성 (Gemini) ---")
-    swing_continuity = generate_swing_continuity(processed, previous_signals, fg_data)
+    _continuity = generate_swing_continuity(processed, previous_signals, fg_data)
+    # 2026-07-29: generate_swing_continuity가 {'ko':..., 'en':...} dict 또는 None을 반환하도록
+    # 변경됨. swingContinuity(ko) 키 이름·값 형식은 기존과 완전히 동일하게 유지 —
+    # atmr-dashboard.html이 이 값을 그대로 innerHTML에 꽂는 기존 코드를 건드리지 않기 위함.
+    # swingContinuityEn은 신규 키 — en/atmr-dashboard.html 전용.
+    swing_continuity = _continuity.get('ko') if _continuity else None
+    swing_continuity_en = _continuity.get('en') if _continuity else None
 
     output = {
         'generatedAt':    now.isoformat(),
@@ -823,6 +851,7 @@ def main():
         'macro':          macro_data if macro_data else None,
         'previousSignals': previous_signals,
         'swingContinuity': swing_continuity,
+        'swingContinuityEn': swing_continuity_en,
     }
 
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)

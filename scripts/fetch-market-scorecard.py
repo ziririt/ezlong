@@ -823,24 +823,33 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 
 - 위 지시문 내용을 절대 출력값에 포함하지 마세요
 
+=== 영어 병기 (2026-07-29 신설) ===
+- name_en / desc_en / why_en / summary_en 필드에, 대응하는 한국어 필드와 "완전히 같은 판단·같은 원인·같은 숫자"를 자연스러운 영어로 다시 써라. 직역이 아니라 미국 개인 투자자가 읽는 금융 뉴스레터 톤으로 재작성하되, 결론이나 인과관계를 한국어판과 다르게 쓰면 절대 안 된다.
+- 티커·인명·기관명(Fed, CPI 등)은 번역하지 말고 그대로 유지. 숫자·%·달러 금액은 원문과 동일해야 한다.
+- category·time·score는 화면에 노출되지 않거나 언어중립적 값이므로 영어 버전이 필요 없다 (time_en 만들지 말 것).
+- 글자수 제한(name 20자, desc 30자, summary 50자, why 40자)은 한국어 기준이며 영어 버전에는 적용하지 않는다 — 다만 원문과 비슷한 분량의 짧은 구절로 유지할 것.
+
 === JSON 구조 ===
 {{
   "key_event": {{
     "name": "",
+    "name_en": "",
     "time": "",
-    "why": ""
+    "why": "",
+    "why_en": ""
   }},
   "positive_total": 0,
   "negative_total": 0,
   "summary": "",
+  "summary_en": "",
   "positive_factors": [
-    {{"score": 0, "name": "", "desc": "", "category": ""}}
+    {{"score": 0, "name": "", "name_en": "", "desc": "", "desc_en": "", "category": ""}}
   ],
   "negative_factors": [
-    {{"score": 0, "name": "", "desc": "", "category": ""}}
+    {{"score": 0, "name": "", "name_en": "", "desc": "", "desc_en": "", "category": ""}}
   ],
   "mixed_factors": [
-    {{"name": "", "desc": "", "category": ""}}
+    {{"name": "", "name_en": "", "desc": "", "desc_en": "", "category": ""}}
   ]
 }}
 """
@@ -907,7 +916,9 @@ def call_gemini(prompt):
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
             "temperature": 0.4,
-            "maxOutputTokens": 8192,
+            # 2026-07-29: 8192 → 12288 — name_en/desc_en/summary_en/why_en 병기로 출력
+            # 필드 수가 늘어난 데 대한 안전 여유 (실제 사용량이 늘지 않으면 비용 영향 없음).
+            "maxOutputTokens": 12288,
             "responseMimeType": "application/json",
             "thinkingConfig": {"thinkingBudget": 0}
         }
@@ -967,12 +978,15 @@ def build_entry(kst_now, result):
         "timestamp_kst": kst_label(kst_now),
         "key_event": {
             "name": result.get("key_event", {}).get("name", "-"),
+            "name_en": result.get("key_event", {}).get("name_en", ""),
             "time": result.get("key_event", {}).get("time", ""),
-            "why":  result.get("key_event", {}).get("why", "")
+            "why":  result.get("key_event", {}).get("why", ""),
+            "why_en": result.get("key_event", {}).get("why_en", "")
         },
         "positive_total":   int(result.get("positive_total", 50)),
         "negative_total":   int(result.get("negative_total", 50)),
         "summary":          result.get("summary", ""),
+        "summary_en":       result.get("summary_en", ""),
         "positive_factors": _with_clean_category(result.get("positive_factors", [])),
         "negative_factors": _with_clean_category(result.get("negative_factors", [])),
         # 혼조·양면 (2026-07-03), category 태그 추가 (2026-07-28)
