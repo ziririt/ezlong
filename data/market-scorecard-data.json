@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "2026-07-30-07:01",
+      "timestamp_kst": "2026-07-30(목) 07:01 KST",
+      "key_event": {
+        "name": "FOMC 매파적 동결 및 유가 급등",
+        "name_en": "FOMC Hawkish Hold & Oil Price Surge",
+        "time": "향후 12시간",
+        "why": "시장 불확실성 증폭, 금리 인하 기대 약화, 인플레이션 우려",
+        "why_en": "Increased market uncertainty, weakened rate cut expectations, inflation concerns"
+      },
+      "positive_total": 15,
+      "negative_total": 85,
+      "summary": "FOMC 매파적 동결과 유가 급등, 지정학적 긴장 고조로 부정 우위 지속.",
+      "summary_en": "Negative sentiment persists due to hawkish FOMC hold, surging oil prices, and escalating geopolitical tensions.",
+      "positive_factors": [
+        {
+          "score": 15,
+          "name": "마이크로소프트 실적 호조",
+          "name_en": "Microsoft's Strong Earnings",
+          "desc": "클라우드 및 소프트웨어 부문 강세로 시장 예상치 상회",
+          "desc_en": "Cloud and software strength surpassed market expectations.",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "FOMC 매파적 동결",
+          "name_en": "FOMC's Hawkish Hold",
+          "desc": "금리 동결에도 3명 인상 주장, 시장 인하 기대 약화 및 불확실성 증폭",
+          "desc_en": "Rates held, but 3 dissents for hike, weakening cut expectations and increasing uncertainty.",
+          "category": "fed_policy",
+          "time": "향후 12시간"
+        },
+        {
+          "score": 25,
+          "name": "지정학적 긴장 고조 및 유가 급등",
+          "name_en": "Escalating Geopolitical Tensions & Oil Surge",
+          "desc": "트럼프 이란 위협 발언에 유가 2.29% 상승, 인플레이션 압력 가중",
+          "desc_en": "Oil prices surged 2.29% on Trump's Iran threats, intensifying inflation pressures.",
+          "category": "geopolitics"
+        },
+        {
+          "score": 20,
+          "name": "반도체 섹터 약세 심화",
+          "name_en": "Deepening Semiconductor Sector Weakness",
+          "desc": "SOXX 6.83% 하락, AI 기술주 전반에 걸친 투자 심리 위축",
+          "desc_en": "SOXX fell 6.83%, reflecting dampened investor sentiment across AI tech stocks.",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "VIX 공포지수 급등",
+          "name_en": "VIX Fear Index Spike",
+          "desc": "VIX 13.52% 상승한 20.66, 시장 전반의 위험 회피 심리 강화",
+          "desc_en": "VIX rose 13.52% to 20.66, signaling heightened risk aversion across the market.",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-07-30-00:58",
       "timestamp_kst": "2026-07-30(목) 00:58 KST",
       "key_event": {
@@ -598,73 +659,8 @@
           "category": "ai_tech_valuation"
         }
       ]
-    },
-    {
-      "id": "2026-07-29-01:16",
-      "timestamp_kst": "2026-07-29(수) 01:16 KST",
-      "key_event": {
-        "name": "반도체 섹터 약세 심화",
-        "time": "정규장 진행 중",
-        "why": "AI 밸류에이션 논란, 주요 반도체 기업 주가 하락, 기술주 전반 하방 압력"
-      },
-      "positive_total": 30,
-      "negative_total": 70,
-      "summary": "반도체 섹터 약세 심화로 부정 우위 지속, 기술주 전반 하락 압력 심화",
-      "positive_factors": [
-        {
-          "score": 15,
-          "name": "주요 기술 기업 강세",
-          "desc": "MSFT (+2.18%), GOOGL (+1.91%), AAPL (+0.66%), NVDA (+0.76%) 등 일부 대형 기술주 반등",
-          "category": "company_specific"
-        },
-        {
-          "score": 10,
-          "name": "VIX 공포지수 하락",
-          "desc": "VIX 지수 17.94 (-3.91%)로 하락하며 시장 변동성 우려 완화",
-          "category": "vix_risk_sentiment"
-        },
-        {
-          "score": 5,
-          "name": "미국 10년 국채금리 하락",
-          "desc": "미국 10년 국채금리 4.59% (-1.10%)로 하락, 성장주에 긍정적 영향",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "반도체 섹터 약세 심화",
-          "desc": "SOXX (-3.69%) 급락, Micron, SK Hynix 등 AI 칩 관련주 매도세 심화",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 20,
-          "name": "나스닥 100 조정 영역 진입",
-          "desc": "Nasdaq-100 지수가 조정 영역에 진입하며 기술주 전반에 대한 투자 심리 위축",
-          "category": "vix_risk_sentiment"
-        },
-        {
-          "score": 10,
-          "name": "AI 투자 지출 우려",
-          "desc": "Meta 등 주요 기술 기업의 AI 투자 지출 증가에 대한 우려 지속",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "WTI 원유 가격 하락",
-          "desc": "WTI 원유 $78.47 (-3.79%)로 하락, 글로벌 수요 둔화 우려 반영 가능성",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미-이란 협상 불확실성",
-          "desc": "일부 뉴스에서 유가 하락의 원인으로 미-이란 협상 기대를 언급하나, 다른 뉴스에서는 유가 상승 우려도 제기되어 혼조",
-          "category": "geopolitics"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-07-29T15:59:11Z",
+  "updated_at": "2026-07-29T22:01:18Z",
   "max_entries": 10
 }
