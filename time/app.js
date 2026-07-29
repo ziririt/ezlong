@@ -7036,6 +7036,20 @@ window.__flipzenNativeCommand = function (command) {
   } else if (command === "autoAdvanced") {
     // 2026-07-26 Fable5 지시서 작업2 — 아래 handleNativeAutoAdvance() 주석 참조.
     handleNativeAutoAdvance();
+  } else if (command === "needNext") {
+    // ★ 2026-07-29 안드로이드 무음 사건의 최종 해결 ★
+    // 네이티브가 곡을 끝까지 재생했는데 이어받을 프리페치가 없어서 그 자리에
+    // 선 상태다(실측: state=ENDED, pos≥dur, vol=1.0). 원인은 백그라운드에서
+    // WebView 타이머가 스로틀돼 우리가 prefetchNext 를 못 보낸 것이다.
+    //
+    // 즉 지금 이 순간 음악은 **멈춰 있다**. 가상시계(tickNativeVirtualClock)만
+    // 계속 돌아서 진행바가 움직이니 화면으로는 재생 중처럼 보인다 —
+    // 성동님이 "무음인데 진행바는 간다"고 하신 그 상태가 이것이다.
+    //
+    // 여기서 할 일은 하나뿐이다: 즉시 다음 곡으로 넘겨 소리를 되살린다.
+    // 재생 중일 때만 반응한다 — 유저가 일시정지해둔 상태라면 곡이 끝나
+    // 멈춰 있는 게 정상이므로 건드리지 않는다.
+    if (musicPlaying) playNextTrack();
   }
 };
 

@@ -140,58 +140,65 @@ window.investmentQuotes = [
     "category": "mindset"
   },
   {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
+    "text": "건초 더미 속에서 바늘을 찾으려 하지 마라. 그냥 건초 더미 전체를 사라.",
+    "title": "상식이 이기는 투자",
+    "author": "존 보글",
+    "category": "mindset"
+  },
+  {
     "english": "Owning the stock market over the long term is a winner's game, but attempting to beat the market is a loser's game.",
     "text": "장기적으로 주식 시장을 보유하는 것은 승자의 게임이지만, 시장을 이기려는 시도는 패자의 게임이다.",
-    "title": "모든 주식을 소유하라",
+    "title": "상식이 이기는 투자",
     "author": "존 보글",
     "category": "patience"
   },
   {
     "english": "The two greatest enemies of the equity fund investor are expenses and emotions.",
     "text": "주식 펀드 투자자의 두 가지 최대 적은 비용과 감정이다.",
-    "title": "모든 주식을 소유하라",
+    "title": "상식이 이기는 투자",
     "author": "존 보글",
     "category": "behavior"
   },
   {
     "english": "The winning formula for success in investing is owning the entire stock market through an index fund, and then doing nothing. Just stay the course.",
     "text": "투자 성공의 승리 공식은 인덱스 펀드를 통해 전체 주식 시장을 보유하고, 아무것도 하지 않는 것이다. 그냥 코스를 유지하라.",
-    "title": "모든 주식을 소유하라",
+    "title": "상식이 이기는 투자",
     "author": "존 보글",
     "category": "patience"
   },
   {
     "english": "The grim irony of investing, then, is that we investors as a group not only don't get what we pay for, we get precisely what we don't pay for. So if we pay for nothing, we get everything.",
     "text": "투자의 씁쓸한 아이러니는, 우리 투자자들이 지불한 만큼 얻지 못할 뿐 아니라, 지불하지 않은 만큼을 정확히 얻는다는 것이다. 아무것도 내지 않으면, 전부를 얻는다.",
-    "title": "모든 주식을 소유하라",
+    "title": "상식이 이기는 투자",
     "author": "존 보글",
     "category": "mindset"
   },
   {
     "english": "Buying funds based purely on their past performance is one of the stupidest things an investor can do.",
     "text": "순전히 과거 성과만 보고 펀드를 사는 것은 투자자가 할 수 있는 가장 어리석은 행동 중 하나다.",
-    "title": "모든 주식을 소유하라",
+    "title": "상식이 이기는 투자",
     "author": "존 보글",
     "category": "behavior"
   },
   {
     "english": "The greatest enemy of a good plan is the dream of a perfect plan. Stick to the good plan.",
     "text": "좋은 계획의 가장 큰 적은 완벽한 계획에 대한 꿈이다. 좋은 계획을 고수하라.",
-    "title": "모든 주식을 소유하라",
+    "title": "상식이 이기는 투자",
     "author": "존 보글",
     "category": "mindset"
   },
   {
     "english": "While illusion (the momentary prices we pay for stocks) often loses touch with reality (the intrinsic values of our corporations), it is reality that rules in the long run.",
     "text": "환상(우리가 지불하는 순간의 주가)이 현실(기업의 내재 가치)과 동떨어질 때가 많지만, 장기적으로 지배하는 것은 결국 현실이다.",
-    "title": "모든 주식을 소유하라",
+    "title": "상식이 이기는 투자",
     "author": "존 보글",
     "category": "patience"
   },
   {
     "english": "Gunning for average is your best shot at finishing above average.",
     "text": "평균을 목표로 하는 것이 평균 이상을 달성하는 최선의 방법이다.",
-    "title": "모든 주식을 소유하라",
+    "title": "상식이 이기는 투자",
     "author": "존 보글",
     "category": "mindset"
   },
@@ -301,6 +308,13 @@ window.investmentQuotes = [
     "category": "mindset"
   },
   {
+    "english": "Spend each day trying to be a little wiser than you were when you woke up. Day by day, and at the end of the day — if you live long enough — like most people, you will get out of life what you deserve.",
+    "text": "매일 아침 눈을 떴을 때보다 조금 더 현명해지려 노력하라. 하루하루 쌓이고, 결국 — 오래 산다면 — 대부분의 사람들처럼 살아온 만큼 삶을 얻게 된다.",
+    "title": "가난한 찰리의 연감",
+    "author": "찰리 멍거",
+    "category": "patience"
+  },
+  {
     "english": "Mimicking the herd invites regression to the mean.",
     "text": "군중을 따라 하면 평균으로의 회귀를 초래할 뿐이다.",
     "title": "가난한 찰리의 연감",
@@ -327,6 +341,13 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각",
     "author": "하워드 막스",
     "category": "volatility"
+  },
+  {
+    "english": "There's only one way to describe most investors: trend followers. Superior investors are the exact opposite.",
+    "text": "대부분의 투자자를 묘사하는 방법은 딱 하나다: 추세 추종자. 탁월한 투자자는 정확히 그 반대다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "behavior"
   },
   {
     "english": "The ultimately most profitable investment actions are by definition contrarian: you're buying when everyone else is selling (and the price is thus low) or you're selling when everyone else is buying (and price is high).",
@@ -493,6 +514,20 @@ window.investmentQuotes = [
     "category": "volatility"
   },
   {
+    "english": "There is no avoiding pain, especially if you're going after ambitious goals. You are lucky to feel that kind of pain if you approach it correctly, because it is a signal that you need to find solutions so you can progress. Pain + Reflection = Progress.",
+    "text": "고통은 피할 수 없다. 특히 야심찬 목표를 좇고 있다면 더욱 그렇다. 그 고통을 제대로 마주한다면 오히려 운이 좋은 것이다. 문제를 찾아 해결하고 앞으로 나아가야 한다는 신호이기 때문이다. 고통과 성찰이 만나면, 그것이 곧 진보다.",
+    "title": "원칙",
+    "author": "레이 달리오",
+    "category": "mindset"
+  },
+  {
+    "english": "It never was my thinking that made the big money for me. It always was my sitting. Men who can both be right and sit tight are uncommon.",
+    "text": "나에게 큰돈을 벌어준 것은 뛰어난 판단력이 아니라 버티는 힘이었다. 시장의 방향을 맞추는 것 자체는 어려운 일이 아니다. 정말 어려운 것은 옳았을 때 끝까지 그 자리를 지키는 일이다.",
+    "title": "주식 투자자의 회상",
+    "author": "에드윈 르페브르",
+    "category": "patience"
+  },
+  {
     "english": "If the job has been correctly done when a common stock is purchased, the time to sell it is — almost never.",
     "text": "주식을 매수할 때 해야 할 일을 올바르게 해냈다면, 그 주식을 팔아야 할 시점은 — 거의 영원히 오지 않는다.",
     "title": "위대한 기업에 투자하라",
@@ -507,10 +542,24 @@ window.investmentQuotes = [
     "category": "mindset"
   },
   {
+    "english": "Value investing is at its core the marriage of a contrarian streak and a calculator.",
+    "text": "가치투자는 본질적으로 반골 기질과 계산기의 결합이다. 남들과 반대로 갈 배짱과, 그 판단을 숫자로 검증하는 냉철함이 함께 있어야 한다는 뜻이다.",
+    "title": "마진 오브 세이프티",
+    "author": "세스 클라만",
+    "category": "mindset"
+  },
+  {
     "english": "Pain + Reflection = Progress. This formula holds true no matter what type of pain you are suffering — physical or emotional.",
     "text": "고통에 성찰을 더하면 진전이 된다. 이 공식은 육체적 고통이든 감정적 고통이든 어떤 종류의 고통에도 똑같이 적용된다. 손실 앞에서 괴로워하는 것 자체보다, 그 원인을 정직하게 파고드는 태도가 다음 판단을 더 나은 것으로 만든다.",
     "title": "원칙",
     "author": "레이 달리오",
+    "category": "mindset"
+  },
+  {
+    "english": "Rule number one: most things will prove to be cyclical. Rule number two: some of the greatest opportunities for gain and loss come when other people forget rule number one.",
+    "text": "제1원칙: 대부분의 것들은 결국 순환한다는 사실이 증명될 것이다. 제2원칙: 사람들이 이 제1원칙을 잊어버릴 때, 바로 그 순간 가장 큰 이익과 가장 큰 손실의 기회가 함께 찾아온다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
     "category": "mindset"
   },
   {
@@ -610,12 +659,27 @@ window.investmentQuotes = [
     "genre": "literature"
   },
   {
+    "english": "A part of all I earn is mine to keep.",
+    "text": "내가 버는 모든 것의 일부는 내가 간직할 몫이다.",
+    "title": "바빌론 부자들의 돈 버는 지혜",
+    "author": "조지 S. 클레이슨",
+    "category": "경제자기계발",
+    "genre": "literature"
+  },
+  {
     "english": "Advice is one thing that is freely given away, but watch that you only take what is worth having.",
     "text": "조언은 공짜로 주어지는 것이지만, 가치 있는 것만 받아들이도록 주의하라.",
     "title": "바빌론 부자들의 돈 버는 지혜",
     "author": "조지 S. 클레이슨",
     "category": "경제자기계발",
     "genre": "literature"
+  },
+  {
+    "english": "Time is your friend, impulse is your enemy.",
+    "text": "시간은 당신의 편이고, 충동은 당신의 적이다. 복리가 오래 쌓이도록 내버려두는 인내심이야말로, 시세에 일희일비하는 조급함보다 훨씬 강력한 투자 무기다.",
+    "title": "상식이 이기는 투자",
+    "author": "존 보글",
+    "category": "compound"
   },
   {
     "english": "The investor's chief problem—and even his worst enemy—is likely to be himself. In the end, how your investments behave is much less important than how you behave.",
@@ -646,11 +710,25 @@ window.investmentQuotes = [
     "category": "mindset"
   },
   {
+    "english": "In this business, if you're good, you're right six times out of ten. You're never going to be right nine times out of ten.",
+    "text": "이 바닥에서는 아무리 실력이 좋아도 열 번 중 여섯 번만 맞으면 훌륭한 겁니다. 열 번 중 아홉 번을 맞히는 일은 절대 없습니다.",
+    "title": "피터 린치의 이기는 투자",
+    "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
     "english": "The big money is not in the buying and the selling, but in the waiting.",
     "text": "큰돈은 사고파는 데서 나오는 게 아니라, 기다리는 데서 나온다.",
     "title": "가난한 찰리의 연감",
     "author": "찰리 멍거",
     "category": "patience"
+  },
+  {
+    "english": "It is remarkable how much long-term advantage people like us have gotten by trying to be consistently not stupid, instead of trying to be very intelligent.",
+    "text": "우리 같은 사람들이 장기적으로 상당한 이점을 얻은 것은, 대단히 똑똑해지려 애쓰기보다 한결같이 어리석지 않으려고 노력했기 때문이라는 사실은 참으로 놀랍다.",
+    "title": "가난한 찰리의 연감",
+    "author": "찰리 멍거",
+    "category": "mindset"
   },
   {
     "english": "Rule No. 1: Most things will prove to be cyclical. Rule No. 2: Some of the greatest opportunities for gain and loss come when other people forget Rule No. 1.",
@@ -702,11 +780,25 @@ window.investmentQuotes = [
     "category": "compound"
   },
   {
+    "english": "It never was my thinking that made the big money for me. It always was my sitting. It is no trick at all to be right on the market — men who can both be right and sit tight are uncommon.",
+    "text": "나에게 큰돈을 벌어준 것은 한 번도 판단력이 아니었다. 언제나 진득하게 버티는 것이었다. 시장에서 옳은 판단을 내리기는 어렵지 않다. 하지만 그 판단을 믿고 끝까지 버티는 사람은 드물다.",
+    "title": "주식 투자자의 회상",
+    "author": "에드윈 르페브르",
+    "category": "patience"
+  },
+  {
     "english": "Investing is not supposed to be easy. Anyone who finds it easy is stupid.",
     "text": "투자는 원래 쉬운 게 아니다. 그런데도 쉽다고 느끼는 사람이 있다면, 그 사람이야말로 뭔가 크게 잘못 판단하고 있다는 신호다. 어렵게 느껴지는 게 정상이라는 사실을 받아들이는 것에서부터 제대로 된 투자가 시작된다.",
     "title": "마진 오브 세이프티",
     "author": "세스 클라만",
     "category": "mindset"
+  },
+  {
+    "english": "If the job has been correctly done when a common stock is purchased, the time to sell it is almost never.",
+    "text": "제대로 된 판단으로 매수한 우량주라면, 그것을 팔아야 할 때는 사실상 존재하지 않는다. 기업의 펀더멘털이 훼손되지 않았다면 일시적인 주가 하락은 매도의 이유가 되지 못한다. 좋은 기업을 오래 보유하는 인내심이야말로 진짜 수익을 만든다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "patience"
   },
   {
     "english": "An investor who earns 16 percent annual returns over a decade, for example, will, perhaps surprisingly, end up with more money than an investor who earns 20 percent a year for nine years and then loses 15 percent the tenth year.",
@@ -723,6 +815,13 @@ window.investmentQuotes = [
     "category": "mindset"
   },
   {
+    "english": "In the short run, the market is a voting machine, but in the long run, it is a weighing machine.",
+    "text": "단기적으로 보면 시장은 인기투표를 하는 곳이지만, 장기적으로 보면 정확하게 무게를 재는 저울이다. 결국 실적과 진짜 가치를 가진 기업만이 버텨낸다.",
+    "title": "현명한 투자자",
+    "author": "벤저민 그레이엄",
+    "category": "patience"
+  },
+  {
     "english": "It takes remarkable patience to hold on to a stock in a company that excites you, but which everybody else seems to ignore. You begin to think everybody else is right and you are wrong. But where the fundamentals are promising, patience is often rewarded.",
     "text": "자신을 설레게 하는 기업의 주식을, 다른 모든 사람이 외면하는데도 계속 붙들고 있으려면 놀라운 인내심이 필요하다. 세상 사람들이 다 옳고 나만 틀린 게 아닌가 싶어지는 순간이 온다. 하지만 펀더멘털이 탄탄하다면, 그 인내심은 대개 보상받는다.",
     "title": "전설로 떠나는 월가의 영웅",
@@ -735,6 +834,13 @@ window.investmentQuotes = [
     "title": "돈의 심리학",
     "author": "모건 하우절",
     "category": "behavior"
+  },
+  {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
+    "text": "장기적으로 시장을 이길 펀드를 골라내려는 건 건초더미에서 바늘 하나를 찾는 것과 같다. 그러니 바늘을 찾으려 애쓰지 마라. 그냥 건초더미 전체를 사라.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "mindset"
   },
   {
     "english": "Bull markets are born on pessimism, grow on skepticism, mature on optimism, and die on euphoria. The time of maximum pessimism is the best time to buy, and the time of maximum optimism is the best time to sell.",
@@ -786,6 +892,13 @@ window.investmentQuotes = [
     "category": "patience"
   },
   {
+    "english": "Rule No. 1: Most things will prove to be cyclical. Rule No. 2: Some of the greatest opportunities for gain and loss come when other people forget Rule No. 1.",
+    "text": "제1원칙: 대부분의 것들은 결국 순환한다. 제2원칙: 가장 큰 이익과 손실의 기회는 사람들이 제1원칙을 잊을 때 찾아온다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "mindset"
+  },
+  {
     "english": "Time is your friend; impulse is your enemy. Take advantage of compound interest and don't be captivated by the siren song of the market that tempts you to abandon your long-term investment program.",
     "text": "시간은 당신의 편이고, 충동은 당신의 적이다. 복리의 힘을 활용하고, 장기 투자 계획을 포기하도록 유혹하는 시장의 사이렌 노래에 넘어가지 마라.",
     "title": "모든 주식을 소유하라",
@@ -807,6 +920,20 @@ window.investmentQuotes = [
     "category": "patience"
   },
   {
+    "english": "It never was my thinking that made the big money for me. It always was my sitting. Got that? My sitting tight! ... Men who can both be right and sit tight are uncommon.",
+    "text": "내게 큰돈을 벌게 해준 것은 단 한 번도 나의 판단력이 아니었다. 언제나 진득하게 버티는 것이었다. 알겠는가? 자리를 지키고 앉아 있는 것 말이다! 옳은 판단을 내리면서 동시에 끝까지 버틸 줄 아는 사람은 흔치 않다.",
+    "title": "주식 투자자의 회상",
+    "author": "에드윈 르페브르",
+    "category": "patience"
+  },
+  {
+    "english": "The intelligent investor is a realist who sells to optimists and buys from pessimists.",
+    "text": "현명한 투자자는 낙관론자에게 팔고 비관론자로부터 사는 현실주의자다.",
+    "title": "현명한 투자자",
+    "author": "벤저민 그레이엄",
+    "category": "mindset"
+  },
+  {
     "english": "To buy when others are despondently selling and sell when others are avidly buying requires the greatest fortitude and pays the greatest reward.",
     "text": "다른 사람들이 절망 속에 팔아치울 때 사고, 다른 사람들이 열광하며 사들일 때 파는 것—이것이야말로 가장 큰 용기를 요구하지만, 그만큼 가장 큰 보상을 가져다준다.",
     "title": "존 템플턴의 투자 격언",
@@ -819,6 +946,13 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅",
     "author": "피터 린치",
     "category": "mindset"
+  },
+  {
+    "english": "Know what you own, and know why you own it.",
+    "text": "자신이 무엇을 소유하고 있는지, 그리고 왜 그것을 소유하고 있는지 알아야 한다. 이해하지 못하는 회사에 투자하는 것은 투자가 아니라 도박이다. 정말로 아는 기업에만 돈을 넣어라.",
+    "title": "전설로 떠나는 월가의 영웅",
+    "author": "피터 린치",
+    "category": "behavior"
   },
   {
     "english": "Losses never bother me after I take them. I forget them overnight. But being wrong and not taking the loss—that is what does the damage to the pocket book and to the soul.",
@@ -3357,6 +3491,14 @@ window.investmentQuotes = [
     "genre": "literature"
   },
   {
+    "english": "We study history not to know the future but to widen our horizons, to understand that our present situation is neither natural nor inevitable, and that we consequently have many more possibilities before us than we imagine.",
+    "text": "역사를 공부하는 것은 미래를 알기 위해서가 아니라 우리의 시야를 넓히기 위해서다. 지금의 상황이 자연스럽거나 필연적인 것이 아니며, 우리 앞에 상상보다 훨씬 많은 가능성이 놓여 있음을 깨닫기 위해서다.",
+    "title": "사피엔스",
+    "author": "유발 하라리",
+    "category": "인문역사",
+    "genre": "literature"
+  },
+  {
     "english": "Money is the most universal and most efficient system of mutual trust ever devised.",
     "text": "화폐는 인류가 만들어낸 것 중 가장 보편적이고 효율적인 상호 신뢰의 체계다.",
     "title": "사피엔스",
@@ -4482,7 +4624,7 @@ window.investmentQuotes = [
     "english": "The elements of good trading are: (1) cutting losses, (2) cutting losses, and (3) cutting losses. If you can follow these three rules, you may have a chance.",
     "text": "좋은 트레이딩을 이루는 요소는 이렇다. 첫째도 손절, 둘째도 손절, 셋째도 손절이다. 이 세 가지 원칙을 지킬 수 있다면 살아남을 가능성이 있다.",
     "title": "시장의 마법사들",
-    "author": "에드 세이코타",
+    "author": "에드 세이코타 (잭 슈웨거 인터뷰집)",
     "category": "behavior"
   },
   {
@@ -5038,6 +5180,13 @@ window.investmentQuotes = [
   {
     "english": "Your goal as an investor should be simply to purchase, at a rational price, a part interest in an easily understood business whose earnings are virtually certain to be materially higher, five, ten, and twenty years from now.",
     "text": "투자자의 목표는 이해하기 쉬운 사업의 일부를 합리적인 가격에 사서, 5년 10년 뒤에도 그 이익이 지금보다 커질 것이라 믿는 것이다.",
+    "title": "워런 버핏 웨이",
+    "author": "로버트 G. 해그스트롬",
+    "category": "mindset"
+  },
+  {
+    "english": "Being too far ahead of your time is indistinguishable from being wrong.",
+    "text": "시대를 너무 앞서가는 것은 틀린 것과 구별되지 않는다.",
     "title": "워런 버핏 웨이",
     "author": "로버트 G. 해그스트롬",
     "category": "mindset"
@@ -5601,6 +5750,42 @@ window.investmentQuotes = [
     "priority": true
   },
   {
+    "english": "First find out what you are capable of, then decide who you are.",
+    "text": "먼저 내가 무엇을 할 수 있는 사람인지 알아낸 뒤에, 내가 누구인지를 정하라.",
+    "title": "배움의 발견",
+    "author": "타라 웨스트오버",
+    "category": "에세이",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "I had come to believe that the ability to evaluate many ideas, many histories, many points of view, was at the heart of what it means to self-create.",
+    "text": "많은 생각과 많은 역사, 많은 관점을 스스로 저울질할 수 있는 능력이야말로 나 자신을 새롭게 만들어가는 일의 핵심이라고 나는 믿게 되었다.",
+    "title": "배움의 발견",
+    "author": "타라 웨스트오버",
+    "category": "에세이",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "The most powerful determinant of who you are is inside you.",
+    "text": "당신이 누구인지를 결정짓는 가장 강력한 힘은 바로 당신 안에 있다.",
+    "title": "배움의 발견",
+    "author": "타라 웨스트오버",
+    "category": "에세이",
+    "genre": "literature",
+    "priority": true
+  },
+  {
+    "english": "Everything I had worked for, all my years of study, had been to purchase for myself this one privilege: to see and experience more truths than those given to me by my father, and to use those truths to construct my own mind.",
+    "text": "내가 그토록 애써온 모든 것, 그 오랜 배움의 시간은 결국 단 하나의 특권을 얻기 위한 것이었다. 더 많은 진실을 보고 경험하며, 그 진실들로 나만의 생각을 지어 올리는 특권 말이다.",
+    "title": "배움의 발견",
+    "author": "타라 웨스트오버",
+    "category": "에세이",
+    "genre": "literature",
+    "priority": true
+  },
+  {
     "text": "아직 일어나지 않은 미래의 일을 걱정하는 것. 이미 일어나고 지나가 버린 과거의 일을 후회하는 것.",
     "title": "기분을 관리하면 인생이 관리된다",
     "author": "김다슬",
@@ -5928,6 +6113,20 @@ window.investmentQuotes = [
     "category": "behavior"
   },
   {
+    "english": "Value investing is at its core the marriage of a contrarian streak and a calculator.",
+    "text": "가치투자는 본질적으로 반골 기질과 계산기의 결합이다.",
+    "title": "마진 오브 세이프티",
+    "author": "세스 클라만",
+    "category": "mindset"
+  },
+  {
+    "english": "A blindfolded monkey throwing darts at a newspaper's financial pages could select a portfolio that would do just as well as one carefully selected by experts.",
+    "text": "눈을 가린 원숭이가 신문 경제면에 다트를 던져 종목을 고른다 해도, 전문가들이 심사숙고해서 고른 포트폴리오 못지않은 성과를 낼 수 있다.",
+    "title": "랜덤워크 투자수업",
+    "author": "버턴 말킬",
+    "category": "mindset"
+  },
+  {
     "english": "Don't look for the needle in the haystack. Just buy the haystack. Time is your friend; impulse is your enemy.",
     "text": "건초더미에서 바늘을 찾으려 애쓰지 마라. 그냥 건초더미 전체를 사면 된다. 시간은 투자자의 친구이고, 충동은 투자자의 적이다.",
     "title": "모든 주식을 소유하라",
@@ -5935,10 +6134,38 @@ window.investmentQuotes = [
     "category": "mindset"
   },
   {
+    "english": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave. And behavior is hard to teach, even to really smart people.",
+    "text": "돈을 잘 다루는 일은 얼마나 똑똑하냐와는 별로 상관이 없다. 오히려 얼마나 잘 처신하느냐에 달려 있다. 그리고 그 처신은, 아무리 똑똑한 사람이라도 가르치기 어려운 것이다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "mindset"
+  },
+  {
+    "english": "If the job has been correctly done when a common stock is purchased, the time to sell it is — almost never.",
+    "text": "주식을 애초에 제대로 골라 샀다면, 그 주식을 팔아야 할 때는 사실상 거의 오지 않는다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
     "english": "Spend each day trying to be a little wiser than you were when you woke up. Discharge your duties faithfully and well. Slug it out one inch at a time, day by day, and in the end if you live long enough, most of us get what we deserve.",
     "text": "매일 아침 눈을 떴을 때보다 조금 더 지혜로워지려고 애쓰며 하루를 보내라. 맡은 의무를 성실하고 충실하게 해내라. 하루하루, 한 걸음씩 묵묵히 나아가라. 그렇게 충분히 오래 버티다 보면 결국 우리 대부분은 마땅히 받아야 할 몫을 받게 된다.",
     "title": "가난한 찰리의 연감",
     "author": "찰리 멍거",
+    "category": "mindset"
+  },
+  {
+    "english": "The investor's chief problem—and even his worst enemy—is likely to be himself.",
+    "text": "투자자의 가장 큰 문제, 심지어 최악의 적은 바로 자기 자신일 가능성이 높다.",
+    "title": "현명한 투자자",
+    "author": "벤저민 그레이엄",
+    "category": "behavior"
+  },
+  {
+    "english": "It's far better to buy a wonderful company at a fair price than a fair company at a wonderful price.",
+    "text": "훌륭한 회사를 적당한 가격에 사는 것이, 그저 그런 회사를 훌륭한 가격에 사는 것보다 훨씬 낫다.",
+    "title": "버크셔 해서웨이 주주 서한",
+    "author": "워런 버핏",
     "category": "mindset"
   },
   {
@@ -5954,6 +6181,27 @@ window.investmentQuotes = [
     "title": "행운에 속지 마라 (Fooled by Randomness)",
     "author": "나심 니콜라스 탈레브",
     "category": "mindset"
+  },
+  {
+    "english": "Bull markets are born on pessimism, grow on skepticism, mature on optimism, and die on euphoria. The time of maximum pessimism is the best time to buy, and the time of maximum optimism is the best time to sell.",
+    "text": "강세장은 비관 속에서 태어나 회의 속에서 자라며, 낙관 속에서 무르익다가 도취 속에서 끝을 맞는다. 비관이 극에 달했을 때가 매수하기 가장 좋은 시점이고, 낙관이 극에 달했을 때가 매도하기 가장 좋은 시점이다.",
+    "title": "존 템플턴의 투자 격언",
+    "author": "존 템플턴",
+    "category": "mindset"
+  },
+  {
+    "english": "It's far better to buy a wonderful company at a fair price than a fair company at a wonderful price.",
+    "text": "훌륭한 기업을 적당한 가격에 사는 것이, 그저 그런 기업을 훌륭한 가격에 사는 것보다 훨씬 낫다. 싼값에 혹하지 말고, 오래 함께할 만한 기업인지부터 물어라.",
+    "title": "버크셔 해서웨이 주주 서한",
+    "author": "워런 버핏",
+    "category": "mindset"
+  },
+  {
+    "english": "Rule number one: most things will prove to be cyclical. Rule number two: some of the greatest opportunities for gain and loss come when other people forget rule number one.",
+    "text": "첫 번째 원칙, 세상 대부분의 것들은 결국 순환한다. 두 번째 원칙, 사람들이 첫 번째 원칙을 까맣게 잊어버리는 바로 그 순간에 가장 큰 손실과 가장 큰 이익의 기회가 동시에 찾아온다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "patience"
   },
   {
     "english": "Investing without research is like playing stud poker and never looking at the cards.",
@@ -5984,6 +6232,13 @@ window.investmentQuotes = [
     "category": "mindset"
   },
   {
+    "english": "Value investing is at its core the marriage of a contrarian streak and a calculator.",
+    "text": "가치투자란 본질적으로 반골 기질과 계산기의 결합이다. 모두가 외면하고 두려워할 때 감정을 배제하고 냉정하게 숫자를 따져보는 사람만이 좋은 자산을 좋은 가격에 사들일 수 있다.",
+    "title": "마진 오브 세이프티",
+    "author": "세스 클라만",
+    "category": "mindset"
+  },
+  {
     "text": "미국시가총액 TOP 10에 있는 기업이라서 투자하는 게 아니라, 이 기업들이 TOP 10에 있을 수밖에 없는 이유이기 때문에 투자하는 거다. 순위는 결과일 뿐이고 본질은 이 기업의 미래에 있다.",
     "title": "절대 실패하지 않는 미국 주식 ETF 투자",
     "author": "김성동",
@@ -6005,6 +6260,13 @@ window.investmentQuotes = [
     "text": "주식투자는 겸손해야 한다. 확신이 아니라 확률로 생각해야 한다. 미국 주식이 장기적으로 오를 확률이 높다는 것과, 반드시 오른다는 것은 다르다. 투자는 확률 게임이다. 확률이 높은 쪽에 베팅하되, 틀릴 수 있다는 걸 인정해야 한다.",
     "title": "절대 실패하지 않는 미국 주식 ETF 투자",
     "author": "김성동",
+    "category": "compound"
+  },
+  {
+    "english": "The first rule of compounding: Never interrupt it unnecessarily.",
+    "text": "복리의 첫 번째 원칙은, 불필요하게 그 흐름을 방해하지 않는 것이다.",
+    "title": "가난한 찰리의 연감",
+    "author": "찰리 멍거",
     "category": "compound"
   },
   {
@@ -6032,7 +6294,35 @@ window.investmentQuotes = [
     "english": "Risk no more than you can afford to lose, and also risk enough so that a win is meaningful.",
     "text": "감당할 수 없는 만큼의 위험은 절대 감수하지 마라. 그리고 동시에, 이겼을 때 그 승리가 의미 있다고 느껴질 만큼은 위험을 감수하라.",
     "title": "시장의 마법사들",
-    "author": "에드 세이코타",
+    "author": "에드 세이코타 (잭 슈웨거 인터뷰집)",
+    "category": "mindset"
+  },
+  {
+    "english": "A blindfolded monkey throwing darts at a newspaper's financial pages could select a portfolio that would do just as well as one carefully selected by experts.",
+    "text": "눈을 가린 원숭이가 신문 경제면에 다트를 던져 종목을 골라도, 전문가가 신중하게 고른 포트폴리오 못지않은 성과를 낼 수 있다.",
+    "title": "랜덤워크 투자수업",
+    "author": "버턴 말킬",
+    "category": "mindset"
+  },
+  {
+    "english": "If the job has been correctly done when a common stock is purchased, the time to sell it is — almost never.",
+    "text": "제대로 된 판단으로 주식을 매수했다면, 그 주식을 팔아야 할 때는 사실상 결코 오지 않는다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
+    "text": "건초더미에서 바늘 하나를 찾으려 애쓰지 마라. 그냥 건초더미 전체를 사라. 개별 종목을 골라내려는 시도는 대개 시간과 비용만 낭비할 뿐, 시장 전체를 낮은 비용으로 그대로 보유하는 것이 장기적으로 훨씬 우월한 결과를 낸다.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "mindset"
+  },
+  {
+    "english": "Rule number one: most things will prove to be cyclical. Rule number two: some of the greatest opportunities for gain and loss come when other people forget rule number one.",
+    "text": "첫째, 대부분의 것들은 순환한다. 둘째, 다른 사람들이 이 사실을 잊어버릴 때 가장 큰 수익과 손실의 기회가 찾아온다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
     "category": "mindset"
   },
   {
@@ -6071,6 +6361,20 @@ window.investmentQuotes = [
     "category": "patience"
   },
   {
+    "english": "It never was my thinking that made the big money for me. It always was my sitting. Got that? My sitting tight! Men who can both be right and sit tight are uncommon.",
+    "text": "큰돈을 벌어준 건 나의 판단력이 아니라 언제나 나의 '버티기'였다. 알겠는가? 진득하게 버티는 것 말이다! 시장에서 한때 옳은 판단을 내리는 사람은 흔하지만, 옳으면서 동시에 진득하게 버틸 줄 아는 사람은 드물다.",
+    "title": "주식 투자자의 회상",
+    "author": "에드윈 르페브르",
+    "category": "patience"
+  },
+  {
+    "english": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave. And behavior is hard to teach, even to really smart people.",
+    "text": "돈을 잘 다루는 일은 당신이 얼마나 똑똑한가와는 거의 관계가 없고, 당신이 어떻게 행동하는가와 훨씬 깊은 관계가 있다. 그리고 행동은, 아무리 똑똑한 사람이라도 가르치기 어려운 것이다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "mindset"
+  },
+  {
     "english": "Buying good companies at bargain prices really is the secret to making lots of money — it's just that simple, and yes, it's just that difficult.",
     "text": "좋은 기업을 헐값에 사는 것, 그것이야말로 큰돈을 버는 비결이다. 원리 자체는 그만큼 단순하다. 하지만 실제로 해내는 일은 그만큼 어렵다.",
     "title": "주식시장을 이기는 작은 책",
@@ -6089,6 +6393,13 @@ window.investmentQuotes = [
     "text": "현대와 과거를 가르는 혁명적인 발상은 바로 리스크의 정복이다. 미래가 신들의 변덕에 달린 것이 아니며, 인간은 자연 앞에서 결코 수동적인 존재가 아니라는 생각이다.",
     "title": "리스크",
     "author": "피터 번스타인",
+    "category": "mindset"
+  },
+  {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
+    "text": "건초더미에서 바늘을 찾으려 하지 마라. 그냥 건초더미 전체를 사라.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
     "category": "mindset"
   },
   {
@@ -6113,6 +6424,13 @@ window.investmentQuotes = [
     "category": "mindset"
   },
   {
+    "english": "If the job has been correctly done when a common stock is purchased, the time to sell it is - almost never.",
+    "text": "주식을 매수하는 시점에 제대로 된 판단을 내렸다면, 그 주식을 팔아야 할 때는 사실상 찾아오지 않는다. 기업이 계속해서 훌륭하게 사업을 운영하고 있다면, 단기 주가 흐름을 이유로 자리를 뜨는 것은 대개 실수다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
+    "category": "mindset"
+  },
+  {
     "english": "Know what you own, and know why you own it. \"This baby's a cinch to go up!\" doesn't count.",
     "text": "자신이 무엇을 소유하고 있는지, 그리고 왜 그것을 소유하고 있는지 알아야 한다. \"이 주식은 무조건 오른다\"는 말만으로는 충분하지 않다.",
     "title": "전설로 떠나는 월가의 영웅",
@@ -6125,6 +6443,20 @@ window.investmentQuotes = [
     "title": "가난한 찰리의 연감",
     "author": "찰리 멍거",
     "category": "patience"
+  },
+  {
+    "english": "The elements of good trading are: (1) cutting losses, (2) cutting losses, and (3) cutting losses. If you can follow these three rules, you may have a chance.",
+    "text": "좋은 트레이딩의 요소는 이렇다. 첫째도 손절, 둘째도 손절, 셋째도 손절이다. 시장이 내 판단과 다르게 흘러갈 때 재빨리 손을 떼는 능력, 그것 하나가 오래 살아남는 트레이더와 그렇지 못한 트레이더를 가른다.",
+    "title": "시장의 마법사들",
+    "author": "에드 세이코타",
+    "category": "mindset"
+  },
+  {
+    "english": "Everyone has the brainpower to make money in stocks. Not everyone has the stomach. If you're susceptible to selling everything in a panic, you ought to avoid stocks and mutual funds altogether.",
+    "text": "누구나 주식으로 돈을 벌 수 있는 두뇌는 가지고 있다. 하지만 그것을 견뎌낼 배짱을 가진 사람은 많지 않다. 만약 공황 상태에서 전부 팔아치우는 성향이라면, 애초에 주식이든 주식형 펀드든 손대지 않는 편이 낫다.",
+    "title": "전설로 떠나는 월가의 영웅",
+    "author": "피터 린치",
+    "category": "mindset"
   },
   {
     "english": "To achieve satisfactory investment results is easier than most people realize; to achieve superior results is harder than it looks.",
@@ -6400,11 +6732,25 @@ window.investmentQuotes = [
     "category": "compound"
   },
   {
+    "english": "The winning formula for success in investing is owning the entire stock market through an index fund, and then doing nothing.",
+    "text": "투자 성공의 공식은 인덱스펀드를 통해 주식시장 전체를 소유한 뒤 아무것도 하지 않는 것이다.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "patience"
+  },
+  {
     "english": "Stay the course.",
     "text": "항로를 지켜라.",
     "title": "모든 주식을 소유하라",
     "author": "존 보글",
     "category": "patience"
+  },
+  {
+    "english": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave.",
+    "text": "돈을 잘 다루는 능력은 지능과는 조금 관련이 있고 행동과는 매우 깊은 관련이 있다.",
+    "title": "돈의 심리학",
+    "author": "모건 하우절",
+    "category": "behavior"
   },
   {
     "english": "Financial success is not a hard science. It's a soft skill, where how you behave is more important than what you know.",
@@ -6736,6 +7082,13 @@ window.investmentQuotes = [
     "category": "mindset"
   },
   {
+    "english": "It never was my thinking that made the big money for me. It always was my sitting.",
+    "text": "내게 큰돈을 벌어준 것은 생각이 아니라 기다림이었다.",
+    "title": "제시 리버모어의 주식투자 바이블",
+    "author": "제시 리버모어",
+    "category": "patience"
+  },
+  {
     "english": "A stock operator has to fight a lot of expensive enemies within himself.",
     "text": "주식투자자는 자기 안의 값비싼 적들과 싸워야 한다.",
     "title": "제시 리버모어의 주식투자 바이블",
@@ -6809,6 +7162,13 @@ window.investmentQuotes = [
     "english": "It’s more important to make money than it is to be right.",
     "text": "옳다는 것을 증명하는 것보다 돈을 버는 것이 더 중요하다.",
     "title": "초수익 성장주 투자",
+    "author": "마크 미너비니",
+    "category": "behavior"
+  },
+  {
+    "english": "Losers average losers.",
+    "text": "패자는 손실 종목에 물타기한다.",
+    "title": "챔피언처럼 생각하고 거래하라",
     "author": "마크 미너비니",
     "category": "behavior"
   },
@@ -7660,6 +8020,13 @@ window.investmentQuotes = [
     "category": "retirement"
   },
   {
+    "english": "It never was my thinking that made the big money for me. It always was my sitting. Got that? My sitting tight! ... Men who can both be right and sit tight are uncommon.",
+    "text": "내게 큰돈을 벌어준 건 생각이 아니라 언제나 '가만히 앉아있는 것'이었다. 시장을 옳게 판단하는 건 사실 그리 어려운 일이 아니다. 옳게 판단하면서도 끝까지 진득하게 버티는 사람, 그런 사람은 드물다.",
+    "title": "주식 투자자의 회상",
+    "author": "에드윈 르페브르",
+    "category": "patience"
+  },
+  {
     "english": "Few bets, big bets, infrequent bets.",
     "text": "적게 베팅하고, 크게 베팅하고, 드물게 베팅하라.",
     "title": "다안도 투자자 (The Dhandho Investor)",
@@ -7681,6 +8048,13 @@ window.investmentQuotes = [
     "category": "patience"
   },
   {
+    "english": "In the short run, the market is a voting machine, but in the long run it is a weighing machine.",
+    "text": "단기적으로 시장은 인기투표를 하는 곳이지만, 장기적으로는 진짜 가치를 정확히 재는 저울이다. 오늘의 주가 등락에 일희일비하기보다, 시간이 지나면 결국 기업의 본질적 가치가 그대로 드러난다는 사실을 믿고 기다리는 것이 투자자의 태도다.",
+    "title": "현명한 투자자",
+    "author": "벤저민 그레이엄",
+    "category": "patience"
+  },
+  {
     "english": "We have to practice defensive investing, since many of the outcomes are likely to go against us. It's more important to ensure survival under negative outcomes than it is to guarantee maximum returns under favorable ones.",
     "text": "우리는 방어적으로 투자해야 한다. 많은 결과가 우리에게 불리하게 돌아올 가능성이 크기 때문이다. 유리한 상황에서 최대 수익을 보장받는 것보다, 불리한 상황에서도 살아남는 것이 훨씬 더 중요하다.",
     "title": "투자에 대한 생각",
@@ -7692,6 +8066,13 @@ window.investmentQuotes = [
     "text": "이 업계에서는 아무리 실력이 좋아도 열 번 중 여섯 번만 맞히면 잘하는 것이다. 아홉 번 맞히는 일은 결코 없다. 하지만 열 번 중 여섯 번만 맞혀도, 주식시장에서 충분히 좋은 성과를 낼 수 있다.",
     "title": "전설로 떠나는 월가의 영웅",
     "author": "피터 린치",
+    "category": "mindset"
+  },
+  {
+    "english": "The stock market is filled with individuals who know the price of everything, but the value of nothing.",
+    "text": "주식시장에는 모든 것의 가격은 알면서도 그 무엇의 가치도 모르는 사람들로 가득하다. 정작 중요한 건 시세창의 숫자가 아니라 그 회사가 실제로 얼마나 좋은 사업인지를 꿰뚫어 보는 안목이다.",
+    "title": "위대한 기업에 투자하라",
+    "author": "필립 피셔",
     "category": "mindset"
   },
   {
@@ -7714,6 +8095,13 @@ window.investmentQuotes = [
     "title": "마음가면",
     "author": "브레네 브라운",
     "genre": "literature"
+  },
+  {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
+    "text": "건초더미에서 바늘 하나를 찾으려 애쓰지 마라. 그냥 건초더미 전체를 사버려라.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글",
+    "category": "mindset"
   },
   {
     "english": "You can't ever reach perfection, but you can believe in an asymptote toward which you are ceaselessly striving.",
@@ -7760,7 +8148,7 @@ window.investmentQuotes = [
     "english": "Win or lose, everybody gets what they want out of the market. Some people seem to like to lose, so they win by losing money.",
     "text": "이기든 지든, 누구나 시장에서 자신이 원하는 것을 얻는다. 어떤 사람들은 손실을 좋아하는 것처럼 보이는데, 그런 사람들은 돈을 잃음으로써 이기는 셈이다.",
     "title": "시장의 마법사들",
-    "author": "에드 세이코타",
+    "author": "에드 세이코타 (잭 슈웨거 인터뷰집)",
     "category": "mindset"
   },
   {
@@ -7775,6 +8163,13 @@ window.investmentQuotes = [
     "title": "상실의 시대",
     "author": "무라카미 하루키",
     "genre": "literature"
+  },
+  {
+    "english": "In the short run, the market is a voting machine, but in the long run, it is a weighing machine.",
+    "text": "단기적으로 시장은 표를 세는 투표소와 같지만, 장기적으로는 실제 가치를 정직하게 재는 저울과 같다.",
+    "title": "현명한 투자자",
+    "author": "벤저민 그레이엄",
+    "category": "mindset"
   },
   {
     "text": "새는 알에서 나오려고 투쟁한다. 알은 세계다. 태어나려는 자는 하나의 세계를 깨뜨려야만 한다.",
@@ -7828,6 +8223,13 @@ window.investmentQuotes = [
     "title": "인간 실격",
     "author": "다자이 오사무",
     "genre": "literature"
+  },
+  {
+    "english": "The secret to investing is to figure out the value of something – and then pay a lot less.",
+    "text": "투자의 비밀은 이것이다. 어떤 대상의 진짜 가치를 파악한 다음, 그보다 훨씬 싼 값에 사는 것.",
+    "title": "주식시장을 이기는 작은 책",
+    "author": "조엘 그린블라트",
+    "category": "mindset"
   },
   {
     "english": "Once, in the dear dead days beyond recall, an out-of-town visitor was being shown the wonders of the New York financial district. When the party arrived at the Battery, one of his guides indicated some handsome ships riding at anchor. He said, 'Look, those are the bankers' and brokers' yachts.' 'Where are the customers' yachts?' asked the naive visitor.",
@@ -7896,7 +8298,7 @@ window.investmentQuotes = [
     "english": "Dhandho, literally translated from Gujarati, means \"endeavors that create wealth.\" At its core, Dhandho is about generating maximum wealth with minimum risk. Heads, I win; tails, I don't lose much!",
     "text": "다안도(Dhandho)는 구자라트어로 '부를 만들어내는 노력'이라는 뜻이다. 그 핵심은 최소한의 위험으로 최대한의 부를 만들어내는 데 있다. 앞면이 나오면 내가 이기고, 뒷면이 나와도 크게 잃지 않는 베팅 — 이것이 진짜 좋은 투자다.",
     "title": "다안도 투자자 (The Dhandho Investor)",
-    "author": "모니시 파브라이",
+    "author": "모니시 파브라이 (Mohnish Pabrai)",
     "category": "mindset"
   },
   {
@@ -7917,6 +8319,13 @@ window.investmentQuotes = [
     "title": "무소유",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "The big money is not in the buying and selling, but in the waiting.",
+    "text": "큰돈은 사고파는 데서 나오는 것이 아니라, 기다리는 데서 나온다.",
+    "title": "가난한 찰리의 연감",
+    "author": "찰리 멍거",
+    "category": "patience"
   },
   {
     "english": "I've also learned that it's easier to avoid temptation than to resist it.",
@@ -7950,6 +8359,20 @@ window.investmentQuotes = [
     "text": "삶에는 그냥 흘러가는 시간도 있고, 기다리거나 견뎌야 하는 시간도 있다. 중요한 건 그게 결코 버리는 시간이 아니라는 걸 깨닫는 일이다.",
     "title": "평일도 인생이니까",
     "author": "김신지",
+    "genre": "literature"
+  },
+  {
+    "english": "Heads, I win; tails, I don't lose much!",
+    "text": "동전을 던져 앞면이 나오면 크게 벌고, 뒷면이 나와도 별로 잃을 게 없다 — 이것이 다안도 투자의 핵심이다.",
+    "title": "다안도 투자자 (The Dhandho Investor)",
+    "author": "모니시 파브라이 (Mohnish Pabrai)",
+    "category": "mindset"
+  },
+  {
+    "english": "Most things will be okay eventually, but not everything will be. Sometimes you'll put up a good fight and lose. Sometimes you'll hold on really hard and realize there is no choice but to let go. Acceptance is a small, quiet room.",
+    "text": "대부분의 일은 결국 괜찮아지지만, 모든 일이 다 그런 것은 아니다. 때로는 온 힘을 다해 싸우고도 지는 날이 있다. 때로는 정말 필사적으로 붙잡고 있다가, 결국 놓아줄 수밖에 없다는 걸 깨닫기도 한다. 받아들임이란, 작고 조용한 방 하나다.",
+    "title": "안녕, 누구나의 인생",
+    "author": "셰릴 스트레이드",
     "genre": "literature"
   }
 ];
