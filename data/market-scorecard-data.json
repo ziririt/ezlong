@@ -1,6 +1,82 @@
 {
   "entries": [
     {
+      "id": "2026-07-30-08:20",
+      "timestamp_kst": "2026-07-30(목) 08:20 KST",
+      "key_event": {
+        "name": "FOMC 매파적 동결 및 반도체 급락",
+        "name_en": "Hawkish Fed Hold & Semiconductor Plunge",
+        "time": "정규장 마감 후, 포스트마켓 진행 중",
+        "why": "시장 불확실성 증폭, 금리 인하 기대 약화, AI 밸류에이션 우려",
+        "why_en": "Increased market uncertainty, weakened rate cut hopes, AI valuation concerns"
+      },
+      "positive_total": 15,
+      "negative_total": 85,
+      "summary": "FOMC 매파적 동결과 반도체 급락으로 부정 우위 지속, 시장 전반 하락 압력 심화.",
+      "summary_en": "Negative sentiment persists due to hawkish Fed hold and semiconductor crash, intensifying overall market downward pressure.",
+      "positive_factors": [
+        {
+          "score": 15,
+          "name": "일부 빅테크 기업 실적 호조",
+          "name_en": "Strong Earnings from Select Big Tech",
+          "desc": "MSFT Q4 실적 시장 예상치 상회, 주가 +7.41% 상승",
+          "desc_en": "Microsoft's Q4 earnings beat expectations, stock up +7.41%",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "FOMC 매파적 동결 및 금리 인상 의견",
+          "name_en": "Hawkish Fed Hold & Dissenting Rate Hike Votes",
+          "desc": "Fed 금리 동결에도 3명 인상 의견, 파월 매파적 발언으로 시장 불확실성 증폭",
+          "desc_en": "Fed held rates, but 3 members voted for a hike; Powell's hawkish tone increased market uncertainty",
+          "category": "fed_policy"
+        },
+        {
+          "score": 25,
+          "name": "반도체 섹터 급락 및 AI 밸류에이션 우려",
+          "name_en": "Semiconductor Sector Plunge & AI Valuation Concerns",
+          "desc": "SOXX -5.88% 급락, QCOM 실적 미스 및 약한 전망으로 반도체 전반 하락",
+          "desc_en": "SOXX plunged -5.88%, Qualcomm's earnings miss and weak outlook dragged down the semiconductor sector",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 15,
+          "name": "지정학적 긴장 고조 및 유가 상승",
+          "name_en": "Escalating Geopolitical Tensions & Rising Oil Prices",
+          "desc": "트럼프의 이란 위협 발언으로 유가 +1.95% 상승, 인플레이션 우려 가중",
+          "desc_en": "Trump's threats against Iran led to a +1.95% rise in oil prices, increasing inflation concerns",
+          "category": "geopolitics"
+        },
+        {
+          "score": 10,
+          "name": "주요 지수 하락 및 VIX 급등",
+          "name_en": "Major Index Decline & VIX Spike",
+          "desc": "QQQ -2.06%, SPY -1.53% 하락, VIX +13.52% 급등하며 시장 위험 회피 심리 강화",
+          "desc_en": "QQQ down -2.06%, SPY down -1.53%, VIX surged +13.52%, indicating heightened market risk aversion",
+          "category": "vix_risk_sentiment"
+        },
+        {
+          "score": 5,
+          "name": "주요 기술주 전반 약세 지속",
+          "name_en": "Continued Weakness in Major Tech Stocks",
+          "desc": "TSLA -3.00%, NVDA -3.18% 등 주요 기술주 하락세 지속",
+          "desc_en": "Major tech stocks like TSLA (-3.00%) and NVDA (-3.18%) continued their decline",
+          "category": "company_specific"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "국채금리 상승에도 달러 약세",
+          "name_en": "Dollar Weakness Amid Rising Treasury Yields",
+          "desc": "미10년 국채금리 +0.39% 상승에도 달러인덱스 -0.52% 하락. 금리 상승은 부정적이나 달러 약세는 긍정적 요인으로 해석이 엇갈림.",
+          "desc_en": "US 10-year Treasury yields rose +0.39%, but the Dollar Index fell -0.52%. Rising yields are negative, but a weaker dollar is positive, leading to mixed interpretations.",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-07-30-07:01",
       "timestamp_kst": "2026-07-30(목) 07:01 KST",
       "key_event": {
@@ -595,72 +671,8 @@
           "category": "macro_data"
         }
       ]
-    },
-    {
-      "id": "2026-07-29-07:00",
-      "timestamp_kst": "2026-07-29(수) 07:00 KST",
-      "key_event": {
-        "name": "FOMC 및 주요 기술 기업 실적 대기",
-        "time": "향후 12시간",
-        "why": "금리 정책 불확실성, AI 밸류에이션 논란, 시장 방향성 결정"
-      },
-      "positive_total": 40,
-      "negative_total": 60,
-      "summary": "반도체 섹터 약세 지속 속 FOMC 및 주요 기술주 실적 관망으로 부정 우위 유지",
-      "positive_factors": [
-        {
-          "score": 15,
-          "name": "일부 매그니피센트 7 기업 강세",
-          "desc": "MSFT, GOOGL, AAPL 등 주요 기술주 포스트마켓에서 상승하며 시장 하방 압력 완화",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 10,
-          "name": "지정학적 긴장 완화 및 유가 하락",
-          "desc": "중동 휴전 기대감으로 WTI 유가 2.98% 하락, 인플레이션 우려 완화",
-          "category": "geopolitics"
-        },
-        {
-          "score": 15,
-          "name": "VIX 공포지수 하락",
-          "desc": "VIX 지수 2.46% 하락하며 시장 변동성 및 투자 심리 개선",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "반도체 섹터 약세 심화",
-          "desc": "SOXX 지수 3.84% 하락, Navitas Semiconductor 등 개별 반도체 기업 급락하며 AI 밸류에이션 논란 지속",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 20,
-          "name": "FOMC 회의 및 금리 정책 불확실성",
-          "desc": "투자자들은 Fed의 금리 결정과 향후 정책 방향에 대한 불확실성으로 관망세 유지",
-          "category": "fed_policy"
-        },
-        {
-          "score": 15,
-          "name": "일부 기술주 약세 지속",
-          "desc": "QQQ 지수 0.65% 하락, TSLA 등 일부 기술주 포스트마켓에서 하락하며 시장 전반에 부담",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미국 10년 국채금리 하락",
-          "desc": "국채금리 0.80% 하락은 성장주에 긍정적일 수 있으나, 경기 둔화 우려와 안전자산 선호 심리 반영 가능성도 존재",
-          "category": "rates_treasury"
-        },
-        {
-          "name": "AI 밸류에이션 논란 지속",
-          "desc": "'Big Short' 투자자 등 AI 관련 위험 경고와 Nvidia 매수 추천 의견이 혼재하며 밸류에이션에 대한 시장의 해석이 엇갈림",
-          "category": "ai_tech_valuation"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-07-29T22:01:18Z",
+  "updated_at": "2026-07-29T23:20:55Z",
   "max_entries": 10
 }
