@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-07-29-23:20",
+      "timestamp_kst": "2026-07-29(수) 23:20 KST",
+      "key_event": {
+        "name": "지정학적 긴장 고조 및 FOMC 대기",
+        "name_en": "Geopolitical Tensions Rise, Awaiting FOMC",
+        "time": "현재 정규장, 향후 12시간",
+        "why": "유가 상승, 시장 불확실성 증폭, 금리 정책 관망",
+        "why_en": "Oil price surge, increased market uncertainty, Fed policy watch"
+      },
+      "positive_total": 15,
+      "negative_total": 85,
+      "summary": "지정학적 긴장 고조와 FOMC 관망 속 반도체 약세 심화로 부정 우위 지속.",
+      "summary_en": "Negative sentiment persists due to escalating geopolitical tensions, FOMC anticipation, and deepening semiconductor weakness.",
+      "positive_factors": [
+        {
+          "score": 15,
+          "name": "애플 강보합세 유지",
+          "name_en": "Apple Maintains Slight Gains",
+          "desc": "혼란스러운 시장 속 애플 주가 강보합세 유지",
+          "desc_en": "Apple stock holds slight gains amidst market turmoil",
+          "category": "company_specific"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "지정학적 긴장 고조",
+          "name_en": "Escalating Geopolitical Tensions",
+          "desc": "미-이란 갈등 재점화로 WTI 유가 2.06% 상승하며 인플레이션 우려 증폭",
+          "desc_en": "US-Iran hostilities reignite, WTI crude up 2.06%, fueling inflation concerns",
+          "category": "geopolitics"
+        },
+        {
+          "score": 25,
+          "name": "반도체 섹터 약세 심화",
+          "name_en": "Deepening Semiconductor Sector Weakness",
+          "desc": "SK하이닉스 실적 실망 및 AI 밸류에이션 우려로 SOXX 3.00%, NVDA 2.78% 하락",
+          "desc_en": "SK Hynix earnings disappointment and AI valuation concerns lead to SOXX down 3.00%, NVDA down 2.78%",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 15,
+          "name": "FOMC 금리 결정 대기",
+          "name_en": "Awaiting FOMC Rate Decision",
+          "desc": "Fed 금리 정책 불확실성으로 시장 전반 관망세 및 하락 압력 가중",
+          "desc_en": "Uncertainty over Fed's rate policy increases market caution and downward pressure",
+          "category": "fed_policy"
+        },
+        {
+          "score": 15,
+          "name": "시장 전반 하락 및 VIX 상승",
+          "name_en": "Broad Market Decline and VIX Rise",
+          "desc": "QQQ 1.45%, SPY 1.01% 하락, VIX 공포지수 4.95% 상승하며 투자 심리 위축",
+          "desc_en": "QQQ down 1.45%, SPY down 1.01%, VIX fear index up 4.95%, dampening investor sentiment",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-07-29-21:50",
       "timestamp_kst": "2026-07-29(수) 21:50 KST",
       "key_event": {
@@ -602,73 +662,8 @@
           "category": "company_specific"
         }
       ]
-    },
-    {
-      "id": "2026-07-28-21:50",
-      "timestamp_kst": "2026-07-28(화) 21:50 KST",
-      "key_event": {
-        "name": "반도체 섹터 약세 심화",
-        "time": "오늘 프리마켓 및 정규장",
-        "why": "NVDA 급락, AI 밸류에이션 논란, 기술주 전반 하방 압력"
-      },
-      "positive_total": 25,
-      "negative_total": 75,
-      "summary": "반도체 섹터 약세 심화로 부정 우위 지속, 기술주 전반 하락 압력",
-      "positive_factors": [
-        {
-          "score": 10,
-          "name": "마이크로소프트 AI 모델 출시 및 실적 기대",
-          "desc": "사이버보안 AI 모델 공개와 Q4 실적 발표 앞두고 투자자 기대감 반영",
-          "category": "company_specific"
-        },
-        {
-          "score": 8,
-          "name": "미 국채금리 하락",
-          "desc": "미 10년물 국채금리 4.63%로 하락, 성장주 할인율 부담 일부 완화",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 7,
-          "name": "애플 등 일부 빅테크 강세",
-          "desc": "AAPL, MSFT, GOOGL 프리마켓 강세로 기술주 전반의 하방 압력 일부 상쇄",
-          "category": "company_specific"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "반도체 섹터 급락 지속",
-          "desc": "SOXX 2.87% 급락, NVDA 0.31% 하락 등 AI 투자 피로감 및 경쟁 심화 우려",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 20,
-          "name": "AI 밸류에이션 우려 확산",
-          "desc": "Nvidia 하락 및 AI 지출 우려로 칩 주식 전반에 매도 압력 심화",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 15,
-          "name": "테슬라 실적 및 로보택시 우려 지속",
-          "desc": "2분기 실적 악화, 잉여현금흐름 적자 전환, 로보택시 주행거리 감소 등 투자 회수 불확실성 증대",
-          "category": "company_specific"
-        },
-        {
-          "score": 10,
-          "name": "스페이스X 시가총액 급락",
-          "desc": "스페이스X 1.2조 달러 시가총액 손실, 일론 머스크 관련 투자 심리 위축",
-          "category": "company_specific"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "유가 하락과 시장 반응 괴리",
-          "desc": "WTI 유가 하락에도 불구하고 기술주 전반의 하방 압력이 지속되며 시장 반응에 괴리 발생",
-          "category": "oil_energy"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-07-29T12:50:58Z",
+  "updated_at": "2026-07-29T14:21:00Z",
   "max_entries": 10
 }
