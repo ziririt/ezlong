@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-07-30-00:58",
+      "timestamp_kst": "2026-07-30(목) 00:58 KST",
+      "key_event": {
+        "name": "지정학적 긴장 고조 및 FOMC 대기",
+        "name_en": "Geopolitical Tensions Rise, FOMC Awaited",
+        "time": "현재 ~ 향후 12시간",
+        "why": "유가 상승, 시장 불확실성 증폭, 금리 정책 관망",
+        "why_en": "Rising oil prices, increased market uncertainty, Fed policy watch"
+      },
+      "positive_total": 10,
+      "negative_total": 90,
+      "summary": "지정학적 긴장 고조와 FOMC 관망 속 반도체 약세 심화로 부정 우위 지속.",
+      "summary_en": "Negative sentiment persists due to escalating geopolitical tensions, FOMC anticipation, and deepening semiconductor weakness.",
+      "positive_factors": [
+        {
+          "score": 10,
+          "name": "메타 실적 기대감",
+          "name_en": "Optimism for Meta Earnings",
+          "desc": "Q2 실적 발표를 앞두고 긍정적 전망이 제기됨.",
+          "desc_en": "Positive outlook for Meta's Q2 earnings ahead of its release.",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 35,
+          "name": "지정학적 긴장 고조 및 유가 급등",
+          "name_en": "Escalating Geopolitical Tensions & Oil Price Surge",
+          "desc": "트럼프의 이란 경고와 이란의 공격 재개로 WTI 원유 2.13% 상승, 시장 불안정 심화.",
+          "desc_en": "Trump's warning on Iran and renewed Iranian attacks caused WTI crude oil to surge 2.13%, intensifying market instability.",
+          "category": "geopolitics"
+        },
+        {
+          "score": 30,
+          "name": "반도체 섹터 약세 심화",
+          "name_en": "Deepening Semiconductor Sector Weakness",
+          "desc": "SOXX 5.07%, NVDA 2.96% 하락하며 AI 밸류에이션 논란 및 차익 실현 압력 가중.",
+          "desc_en": "SOXX dropped 5.07% and NVDA fell 2.96%, exacerbating AI valuation concerns and profit-taking pressures.",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 15,
+          "name": "FOMC 금리 결정 대기",
+          "name_en": "Awaiting FOMC Rate Decision",
+          "desc": "Fed 금리 결정 임박으로 시장 불확실성 증대, 관망세 확산.",
+          "desc_en": "Increased market uncertainty and widespread wait-and-see attitude ahead of the imminent Fed rate decision.",
+          "category": "fed_policy"
+        },
+        {
+          "score": 10,
+          "name": "VIX 공포지수 급등",
+          "name_en": "VIX Fear Index Surges",
+          "desc": "VIX 9.67% 상승하며 시장 전반의 공포 심리 및 변동성 확대.",
+          "desc_en": "VIX rose 9.67%, indicating increased market fear and volatility across the board.",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-07-29-23:20",
       "timestamp_kst": "2026-07-29(수) 23:20 KST",
       "key_event": {
@@ -603,67 +663,8 @@
           "category": "geopolitics"
         }
       ]
-    },
-    {
-      "id": "2026-07-28-23:20",
-      "timestamp_kst": "2026-07-28(화) 23:20 KST",
-      "key_event": {
-        "name": "반도체 섹터 약세 심화",
-        "time": "정규장 진행 중",
-        "why": "NVDA 급락, AI 밸류에이션 논란, 기술주 전반 하방 압력"
-      },
-      "positive_total": 25,
-      "negative_total": 75,
-      "summary": "반도체 섹터 약세 심화로 부정 우위 지속, 기술주 전반 하락 압력 심화",
-      "positive_factors": [
-        {
-          "score": 10,
-          "name": "일부 빅테크 실적 기대감",
-          "desc": "알파벳, 아마존 등 일부 빅테크 기업의 긍정적 실적 전망으로 매수세 유입",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 15,
-          "name": "미국 10년물 국채금리 하락",
-          "desc": "국채금리 하락으로 성장주 할인율 부담 완화, 기술주에 긍정적 영향",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "반도체 섹터 급락 지속",
-          "desc": "SOXX 5.93% 급락, NVDA 1.50% 하락 등 AI 칩 매도 심화로 기술주 전반 압박",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 20,
-          "name": "테슬라 실적 우려 지속",
-          "desc": "2분기 순이익 감소, 잉여현금흐름 적자 전환 등 실적 부진 우려로 TSLA 2.07% 하락",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 15,
-          "name": "AI 투자 피로감 확산",
-          "desc": "빅테크 기업들의 대규모 CAPEX 부담과 AI 밸류에이션 논란으로 투자 심리 위축",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "VIX 공포지수 상승",
-          "desc": "VIX 1.61% 상승하며 시장 불확실성 및 투자자 불안 심리 증가",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "애플 시가총액 5조 달러 돌파",
-          "desc": "애플의 시총 기록 경신은 긍정적이나, '매도 시점'이라는 상반된 분석도 존재",
-          "category": "company_specific"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-07-29T14:21:00Z",
+  "updated_at": "2026-07-29T15:59:11Z",
   "max_entries": 10
 }
