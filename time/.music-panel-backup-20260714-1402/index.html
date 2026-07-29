@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+  <title>ezlong.com</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=20260714-weatherdetail-v81">
+</head>
+<body>
+  <main class="clock-app" data-scene="midday">
+    <section class="sky-room" aria-label="플립시계">
+      <div class="sky-photo" aria-hidden="true">
+        <span class="sun"></span>
+        <span class="moon"></span>
+        <span class="cloud cloud-a"></span>
+        <span class="cloud cloud-b"></span>
+        <span class="leaves leaves-a"></span>
+        <span class="leaves leaves-b"></span>
+        <span class="stars"></span>
+      </div>
+      <div class="hero-shade" aria-hidden="true"></div>
+
+      <header class="top-bar">
+        <button class="icon-button" id="settingsOpen" type="button" aria-label="오늘의 한 문장 설정 열기" aria-controls="quoteSettings" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="date-chip" id="dateLabel">7월 6일 월요일</div>
+        <div class="app-brand" aria-label="ezlong.com">
+          ezlong.com
+        </div>
+      </header>
+
+      <section class="clock-stage" aria-live="polite">
+        <!-- 2026-07-13: 음악 아이콘 탭 시 바로 음악설정으로 가지 않고, 지금
+             재생 중인 곡 정보(비주얼라이저+곡명+좋아요/싫어요)를 먼저 보여주는
+             패널. 톱니바퀴를 눌러야만 음악설정으로 이동한다. 기본은 닫힘
+             상태(높이 0)라 평소 레이아웃에는 영향이 없다. app.js의
+             MUSIC_PANEL_V2_ENABLED로 즉시 롤백 가능. -->
+        <div class="music-info-panel" id="musicInfoPanel" aria-hidden="true">
+          <div class="music-viz-wrap" id="musicVizWrap" aria-hidden="true"></div>
+          <div class="music-progress-bar" id="musicProgressBar" aria-hidden="true">
+            <div class="music-progress-fill" id="musicProgressFill"></div>
+          </div>
+          <div class="music-track-row">
+            <span class="music-track-title" id="musicTrackTitle">재생 대기 중</span>
+            <div class="music-track-actions">
+              <button class="icon-button music-like-button" id="musicLikeButton" type="button" aria-label="이 곡 좋아요" aria-pressed="false"></button>
+              <button class="icon-button music-dislike-button" id="musicDislikeButton" type="button" aria-label="이 곡 싫어요" aria-pressed="false"></button>
+              <button class="icon-button music-gear-button" id="musicGearOpen" type="button" aria-label="음악설정 열기" aria-controls="quoteSettings"></button>
+            </div>
+          </div>
+        </div>
+        <div class="clock-meta">
+          <button type="button" class="weather-chip" id="weatherChipOpen" aria-label="날씨 상세 정보 보기" aria-haspopup="dialog" aria-controls="weatherDetailPanel" aria-expanded="false">
+            <span id="weatherIcon" class="mini-weather sun-icon" aria-hidden="true"></span>
+            <span id="weatherSummary">맑음</span>
+            <strong id="tempLabel">28°</strong>
+          </button>
+          <div class="music-controls" aria-label="배경음악">
+            <button class="icon-button music-note-button" id="musicSettingsOpen" type="button" aria-label="음악 정보 보기" aria-controls="musicInfoPanel" aria-expanded="false"></button>
+            <button class="icon-button music-toggle" id="musicToggle" type="button" aria-label="음악 재생" aria-pressed="false"></button>
+            <button class="icon-button music-skip" id="musicSkip" type="button" aria-label="다음 곡"></button>
+          </div>
+        </div>
+        <audio id="bgAudio" preload="auto"></audio>
+        <audio id="bgAudioB" preload="auto"></audio>
+        <div class="flip-clock" aria-label="현재 시간">
+          <div class="flip-unit" data-unit="hours">
+            <span class="flip-card" id="hourTens">1</span>
+            <span class="flip-card" id="hourOnes">2</span>
+          </div>
+          <span class="clock-colon" aria-hidden="true">:</span>
+          <div class="flip-unit" data-unit="minutes">
+            <span class="flip-card" id="minuteTens">1</span>
+            <span class="flip-card" id="minuteOnes">0</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="quote-panel" aria-label="오늘의 한 문장">
+        <p class="quote-english" id="quoteEnglish">The intelligent investor is a realist who sells to optimists and buys from pessimists.</p>
+        <blockquote id="quoteText">현명한 투자자는 현실주의자다. 낙관론자에게 팔고, 비관론자에게서 산다.</blockquote>
+        <div class="quote-foot">
+          <cite id="quoteSource">&lt;현명한 투자자&gt; 벤저민 그레이엄</cite>
+          <span class="quote-timer" aria-hidden="true"><span id="quoteProgress"></span></span>
+        </div>
+      </section>
+
+      <div class="scene-dots" aria-label="배경 사진 선택">
+        <span class="app-version" aria-hidden="true">ver.0.9.16</span>
+        <span class="dot-group">
+          <button class="dot active" type="button" data-scene-button="0" aria-label="배경 사진 1"></button>
+          <button class="dot" type="button" data-scene-button="1" aria-label="배경 사진 2"></button>
+          <button class="dot" type="button" data-scene-button="2" aria-label="배경 사진 3"></button>
+          <button class="dot" type="button" data-scene-button="3" aria-label="배경 사진 4"></button>
+        </span>
+        <a class="photo-credit" id="photoCredit" href="#" target="_blank" rel="noopener" aria-label="배경 사진 출처">Photo: ezlong archive</a>
+      </div>
+    </section>
+
+    <section class="ezlong-webview" aria-label="ezlong.com 웹뷰">
+      <div class="webview-scale" id="ezlongWebviewScale">
+        <iframe
+          class="ezlong-frame"
+          title="ezlong.com"
+          src="https://ezlong.com"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="fullscreen; clipboard-write"
+        ></iframe>
+      </div>
+      <footer class="webview-footer">
+        <a class="webview-open" href="https://ezlong.com" target="_blank" rel="noopener" aria-label="ezlong.com 새창 열기">
+          <span aria-hidden="true"></span>
+        </a>
+      </footer>
+    </section>
+
+    <aside class="settings-panel" id="quoteSettings" aria-hidden="true" aria-label="오늘의 한 문장 설정">
+      <div class="settings-backdrop" data-settings-close></div>
+      <section class="settings-sheet" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+        <header class="settings-head">
+          <div>
+            <p>오늘의 한 문장</p>
+            <h2 id="settingsTitle">관심 분야 설정</h2>
+          </div>
+          <button class="settings-close" type="button" aria-label="설정 닫기" data-settings-close>×</button>
+        </header>
+
+        <section class="settings-block" aria-label="음악 · 플레이리스트">
+          <h3 class="settings-subtitle">음악 · 플레이리스트</h3>
+          <p class="settings-desc" id="musicPlaylistInfo">기본 플레이리스트 · 총 0곡</p>
+          <div class="field-grid" id="musicPlaylistOptions" role="radiogroup" aria-label="플레이리스트(장르) 선택"></div>
+          <div class="field-grid music-genre-toggles" id="musicGenreToggles">
+            <label class="field-option">
+              <input type="checkbox" id="musicIncludeRock" checked>
+              <span>Rock 포함</span>
+            </label>
+            <label class="field-option">
+              <input type="checkbox" id="musicIncludeVocal" checked>
+              <span>Vocal 포함</span>
+            </label>
+          </div>
+          <p class="settings-desc settings-desc-muted">기본(전체)은 장르가 골고루 섞이도록 자동으로 순환하며, 같은 제목의 곡은 연달아 나오지 않습니다. 계절·날씨에 맞는 자동 선곡은 준비 중입니다.</p>
+        </section>
+
+        <div class="settings-divider" aria-hidden="true"></div>
+
+        <section class="settings-block" aria-label="들은 음악 히스토리">
+          <h3 class="settings-subtitle">들은 음악 히스토리</h3>
+          <table class="music-history-table" id="musicHistoryList" aria-live="polite">
+            <thead>
+              <tr>
+                <th>곡명</th>
+                <th class="music-history-play-th" aria-hidden="true"></th>
+              </tr>
+            </thead>
+            <tbody id="musicHistoryBody"></tbody>
+          </table>
+        </section>
+
+        <div class="settings-divider" aria-hidden="true"></div>
+
+        <!-- 2026-07-13: 문장 도서 분야 필터 신설. 기본값은 투자서만(기존 동작
+             그대로 유지) — 문학·교양서를 켜면 아래 카테고리(투자 멘탈 등)
+             필터와 무관하게 함께 노출된다. -->
+        <section class="settings-block" aria-label="문장 도서 분야">
+          <h3 class="settings-subtitle">도서 분야</h3>
+          <p class="settings-desc settings-desc-muted">기본은 투자서 문장만 나옵니다. 문학·교양서도 함께 보려면 켜주세요.</p>
+          <div class="field-grid" id="genreOptions">
+            <label class="field-option">
+              <input type="checkbox" value="investment" data-genre-option checked>
+              <span>투자서</span>
+            </label>
+            <label class="field-option">
+              <input type="checkbox" value="literature" data-genre-option>
+              <span>문학·교양서</span>
+            </label>
+          </div>
+        </section>
+
+        <div class="settings-divider" aria-hidden="true"></div>
+
+        <label class="field-option field-option-all">
+          <input type="checkbox" id="allCategories" checked>
+          <span>모든 분야</span>
+        </label>
+
+        <div class="field-grid" id="categoryOptions"></div>
+        <button class="settings-save" type="button" id="settingsSave">확인</button>
+
+        <div class="settings-divider" aria-hidden="true"></div>
+
+        <!-- 2026-07-12: 원음 품질 QC 전용, 임시 도구. 링크 끝에 ?musicqc=1 을 붙여
+             한 번 열면 이 기기에만 계속 보인다(일반 방문자에게는 노출되지 않음). -->
+        <section class="settings-block" id="musicQCPanel" aria-label="곡 삭제 QC 도구" hidden>
+          <h3 class="settings-subtitle">곡 삭제(QC 전용, 임시)</h3>
+          <p class="settings-desc settings-desc-muted">지금 재생 중인 곡을 이 기기에서 영구 제외합니다. 실제 서비스에서 완전히 빼려면 아래 목록을 복사해 전달해주세요.</p>
+          <button class="settings-save" type="button" id="musicQCDeleteButton">지금 재생 중인 곡 영구 제외</button>
+          <ul class="music-history-list" id="musicQCRemovalList" aria-live="polite"></ul>
+          <button class="settings-save" type="button" id="musicQCCopyButton">삭제 요청 목록 복사</button>
+        </section>
+      </section>
+    </aside>
+
+    <!-- 2026-07-14: 플립시계 좌측 상단 날씨 칩을 탭하면 뜨는 상세 날씨 화면.
+         인수인계서(flipgen_weather_detail_screen_handoff.md)의 API 6개를
+         그대로 연동하되, 비주얼은 애플 비전OS풍 글래스모피즘으로 새로
+         구성했다(.weather-detail-sheet). 열기/닫기 메커니즘(.settings-panel
+         is-open 토글, 백드롭 블러)은 기존 설정 패널과 동일하게 재사용해
+         내비게이션 일관성을 지킨다. -->
+    <aside class="settings-panel weather-detail-panel" id="weatherDetailPanel" aria-hidden="true" aria-label="날씨 상세 정보">
+      <div class="settings-backdrop" data-weather-detail-close></div>
+      <section class="weather-detail-sheet" role="dialog" aria-modal="true" aria-labelledby="weatherDetailTitle">
+        <header class="settings-head">
+          <div>
+            <h2 id="weatherDetailTitle">지금 날씨</h2>
+          </div>
+          <button class="settings-close" type="button" aria-label="날씨 상세 닫기" data-weather-detail-close>×</button>
+        </header>
+
+        <!-- 1. 현재 날씨 — 2026-07-14: 체감온도 옆에 습도를 같은 줄로 이동
+             (유저 피드백: "2줄인데 습도도 윗줄에 넣어라, 한 줄 width 충분") -->
+        <section class="weather-card weather-current-card" id="wdCurrent" aria-label="현재 날씨">
+          <div class="weather-current-hero">
+            <span class="weather-current-temp" id="wdCurrentTemp">--°</span>
+            <span class="weather-current-feels" id="wdCurrentFeels">체감 --°</span>
+            <span class="weather-current-humidity" id="wdCurrentHumidity">습도 --%</span>
+          </div>
+          <p class="weather-current-sub" id="wdCurrentSub">정보를 불러오는 중</p>
+        </section>
+
+        <div class="settings-divider" aria-hidden="true"></div>
+
+        <!-- 2. 이번 주 강수 예보 -->
+        <section class="weather-card" aria-label="이번 주 강수 예보">
+          <h3 class="settings-subtitle">이번 주 강수 예보</h3>
+          <div class="weather-rain-windows" id="wdRainWindows">
+            <p class="weather-empty">불러오는 중…</p>
+          </div>
+        </section>
+
+        <div class="settings-divider" aria-hidden="true"></div>
+
+        <!-- 3. 지난 24시간 vs 향후 24시간 — 2026-07-14 재설계: 원본 수치
+             나열이 아니라 "향후가 지난 24시간보다 덥다/춥다/습하다"를
+             직관적으로 말해주는 게 목적. 예전 "어제와 비교하면"(6번) 카드를
+             이 카드로 흡수했다. -->
+        <section class="weather-card" aria-label="지난 24시간과 향후 24시간 비교">
+          <h3 class="settings-subtitle">지난 24시간 · 향후 24시간</h3>
+          <p class="weather-comment" id="wd24hComparison">불러오는 중…</p>
+          <div class="weather-24h-compare" id="wdYesterday">
+            <p class="weather-empty">불러오는 중…</p>
+          </div>
+        </section>
+
+        <div class="settings-divider" aria-hidden="true"></div>
+
+        <!-- 4. 오늘 밤 열대야 -->
+        <section class="weather-card" aria-label="오늘 밤 열대야">
+          <h3 class="settings-subtitle">오늘 밤 열대야</h3>
+          <div class="weather-tropical-badges" id="wdTropicalBadges">
+            <p class="weather-empty">불러오는 중…</p>
+          </div>
+          <p class="weather-comment" id="wdTropicalComment"></p>
+        </section>
+
+        <div class="settings-divider" aria-hidden="true"></div>
+
+        <!-- 5. 어제 예보 정확도 -->
+        <section class="weather-card" aria-label="어제 예보 정확도">
+          <h3 class="settings-subtitle">어제 예보 정확도</h3>
+          <p class="weather-comment" id="wdAccuracyMessage">불러오는 중…</p>
+        </section>
+
+      </section>
+    </aside>
+  </main>
+
+  <script src="investment-quotes.js"></script>
+  <script src="music-playlist.js?v=20260714-weatherdetail-v73"></script>
+  <script src="app.js?v=20260714-weatherdetail-v78"></script>
+</body>
+</html>

@@ -1830,6 +1830,17 @@ button { font: inherit; }
   display: flex;
 }
 
+/* 2026-07-29 — 위 .is-active 규칙이 hidden 속성을 이겨버리는 문제를 막는다.
+   hidden 의 display:none 은 UA 스타일시트라 작성자 규칙에 항상 진다. 그래서
+   applyKoreaOnlyGating() 이 hidden 을 걸어둔 배너도, 특보 응답이 도착해
+   is-active 가 붙는 순간 도로 보였다 — 일본어 기기 + Cupertino 화면에
+   한국 기상특보("폭염경보 : 경기도…")가 뜬 실측 사례. 언어와 무관하게
+   해외 사용자 전원에게 일어나던 일이다.
+   ★ 이 규칙을 지우지 말 것 ★ — 지우면 게이트가 다시 조용히 무력해진다. */
+.weather-advisory-banner[hidden] {
+  display: none !important;
+}
+
 /* 2026-07-21 4차 피드백: 특보가 없어 배너가 display:none인 상태에서도
    #wdAdvisoryBanner는 여전히 DOM에 존재해 현재날씨 카드와 우산조언
    박스 사이의 형제결합자 간격 규칙을 깨뜨린다 — 그 결과 특보가 없을

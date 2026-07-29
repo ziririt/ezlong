@@ -1,0 +1,1983 @@
+:root {
+  --ink: #162033;
+  --white: #fff;
+  --glass: rgba(216, 215, 200, 0.40);
+  --glass-deep: rgba(18, 27, 42, 0.54);
+  --glass-line: rgba(255, 255, 255, 0.32);
+  --sky-top: #74c8ff;
+  --sky-mid: #bfe9ff;
+  --sky-low: #f8fbef;
+  --haze: rgba(255, 255, 255, 0.08);
+  --photo: none;
+  --photo-position: center center;
+  --photo-size: cover;
+  --first-screen-height: 100svh;
+  --first-screen-tail: 0px;
+  --browser-bottom-lift: 0px;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+/* 2026-07-07: 1페이지(.sky-room)에서 2페이지(.ezlong-webview)로 넘어가는
+   전환이 그냥 자연 스크롤이라, 위로 스와이프하면 어중간한 위치에서 멈춰
+   두 페이지가 걸쳐 보이는 "안 멋진" 상태가 됐다. scroll-snap으로 스와이프
+   방향에 따라 정확히 한 페이지에 딱 맞춰 멈추게 한다. */
+html {
+  min-height: 100%;
+  scroll-snap-type: y mandatory;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background: #101722;
+  color: var(--white);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+  letter-spacing: 0;
+  word-break: keep-all;
+}
+
+a {
+  color: inherit;
+}
+
+button { font: inherit; }
+
+.clock-app {
+  min-height: 100vh;
+  background: #eef3f5;
+  perspective: 1400px; /* 2026-07-08: 아래 .sky-room.is-flipping-away 3D 회전용 */
+}
+
+.clock-app[data-scene="midday"] {
+  --glass: rgba(216, 215, 200, 0.40);
+  --sky-top: #58bcfb;
+  --sky-mid: #bcecff;
+  --sky-low: #f8fbef;
+  --haze: rgba(255,255,255,0.10);
+  --photo-position: center center;
+}
+
+.clock-app[data-scene="golden-hour"] {
+  --glass: rgba(210, 178, 142, 0.42);
+  --sky-top: #7d91c4;
+  --sky-mid: #eeb899;
+  --sky-low: #ff9f35;
+  --haze: rgba(255, 183, 98, 0.18);
+  --photo-position: center center;
+}
+
+.clock-app[data-scene="night"] {
+  --glass: rgba(43, 68, 91, 0.36);
+  --sky-top: #08162f;
+  --sky-mid: #123d68;
+  --sky-low: #2a5d85;
+  --haze: rgba(105, 160, 228, 0.12);
+  --photo-position: center center;
+}
+
+.clock-app[data-scene="morning"] {
+  --glass: rgba(213, 211, 184, 0.42);
+  --sky-top: #91d8ff;
+  --sky-mid: #dff4ff;
+  --sky-low: #fbf7df;
+  --haze: rgba(255, 248, 202, 0.16);
+  --photo-position: center center;
+}
+
+.sky-room {
+  position: relative;
+  min-height: var(--first-screen-height);
+  height: var(--first-screen-height);
+  overflow: hidden;
+  isolation: isolate;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  gap: clamp(12px, 2.2vh, 24px);
+  padding: max(28px, env(safe-area-inset-top)) clamp(8px, 2.4vw, 26px) calc(max(24px, env(safe-area-inset-bottom)) + var(--browser-bottom-lift));
+  /* 모바일 사파리는 페이지가 뜨고 0.3~0.5초 뒤 주소창이 접히면서 실제
+     뷰포트 높이가 재계산된다(syncFirstScreenHeight가 그때 --first-screen-height를
+     다시 세팅함). 사진이 아니라 이 컨테이너의 height 자체가 그 순간 한 번
+     튀는 것이었다 — transition을 걸어서 튐을 부드러운 조정으로 바꾼다. */
+  transition: height 260ms ease, transform 0.55s cubic-bezier(0.6, 0.04, 0.22, 1);
+  transform-origin: bottom center;
+  backface-visibility: hidden;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255,255,255,0.24), transparent 36%),
+    linear-gradient(180deg, var(--sky-top), var(--sky-mid) 46%, var(--sky-low));
+}
+
+/* 2026-07-08: 우측 상단 "ezlong.com" 탭 시 플립시계 카드처럼 화면 전체가
+   위로 젖혀지며 다음 섹션(ezlong-webview)으로 넘어가는 연출. app.js가
+   이 클래스를 잠깐 붙였다 뗀다(스크롤이 시작된 뒤 원상태로 리셋). */
+.sky-room.is-flipping-away {
+  transform: rotateX(-92deg);
+}
+
+.sky-photo,
+.hero-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sky-photo {
+  z-index: -3;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(5, 10, 18, 0.10), rgba(5, 10, 18, 0.04) 44%, rgba(5, 10, 18, 0.18)),
+    var(--photo);
+  background-position: center center, var(--photo-position);
+  background-size: cover, var(--photo-size);
+  transform: scale(1.015);
+  transform-origin: 46% 42%;
+  animation: livingSky 76s ease-in-out infinite alternate;
+  filter: saturate(1.04) contrast(1.03);
+  opacity: 0;
+  /* background(=position/size 포함)는 transition에서 뺐다. 사진마다 photoPosition/
+     photoSize 값이 다르면 이 값을 900ms 동안 서서히 보간하면서 확대/축소되는
+     것처럼 보였다(2026-07-07 유저 리포트: "어떤 사진만 리사이징된다") — 사진이
+     바뀔 때 위치/크기는 즉시 적용하고, opacity/filter만 부드럽게 전환한다. */
+  transition: filter 900ms ease, opacity 900ms ease;
+}
+
+.clock-app.is-photo-ready .sky-photo {
+  opacity: 1;
+}
+
+.sky-photo::before,
+.sky-photo::after {
+  content: "";
+  position: absolute;
+  inset: -14%;
+  pointer-events: none;
+}
+
+.sky-photo::before {
+  /* 2026-07-07: "뚫어지게 봐도 모를 정도로 약하다"는 지적으로 강도를 올림
+     (opacity 0.34→0.48, 그라디언트 진하기도 함께 올림). */
+  opacity: 0.48;
+  background:
+    linear-gradient(103deg, transparent 0 18%, rgba(255,255,255,0.24) 42%, transparent 70%),
+    linear-gradient(18deg, transparent 0 30%, rgba(255,255,255,0.16) 50%, transparent 76%);
+  mix-blend-mode: screen;
+  animation: lightDrift 36s ease-in-out infinite alternate;
+}
+
+.sky-photo::after {
+  opacity: 0.34;
+  background:
+    repeating-linear-gradient(178deg, transparent 0 50px, rgba(255,255,255,0.18) 82px, transparent 136px);
+  filter: blur(18px);
+  animation: mistDrift 48s linear infinite;
+}
+
+.clock-app[data-scene="night"] .sky-photo::before { opacity: 0.16; }
+.clock-app[data-scene="night"] .sky-photo::after { opacity: 0.14; }
+
+.clock-app[data-weather="clear"] .sky-photo {
+  filter: saturate(1.08) contrast(1.02) brightness(1.03);
+}
+
+.clock-app[data-weather="partly-cloudy"] .sky-photo {
+  filter: saturate(1.02) contrast(1.01) brightness(1);
+}
+
+.clock-app[data-weather="clear"] .sky-photo::before,
+.clock-app[data-weather="partly-cloudy"] .sky-photo::before {
+  /* 2026-07-07: 착시 효과가 너무 약하다는 지적으로 강도를 올림 */
+  opacity: 0.54;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255,248,214,0.46), transparent 30%),
+    linear-gradient(112deg, transparent 0 16%, rgba(255,246,204,0.26) 42%, transparent 68%),
+    linear-gradient(18deg, transparent 0 32%, rgba(255,255,255,0.16) 52%, transparent 78%);
+  mix-blend-mode: screen;
+  animation: sunlightBreathe 42s ease-in-out infinite alternate;
+}
+
+.clock-app[data-weather="clear"] .sky-photo::after,
+.clock-app[data-weather="partly-cloudy"] .sky-photo::after {
+  opacity: 0.30;
+  background:
+    radial-gradient(circle at 28% 28%, rgba(255,255,255,0.28), transparent 26%),
+    repeating-linear-gradient(178deg, transparent 0 54px, rgba(255,255,255,0.16) 84px, transparent 142px);
+  filter: blur(20px);
+  animation: warmAirDrift 58s ease-in-out infinite alternate;
+}
+
+.clock-app[data-weather="light-rain"] .sky-photo,
+.clock-app[data-weather="rain"] .sky-photo,
+.clock-app[data-weather="heavy-rain"] .sky-photo {
+  filter: saturate(1.03) contrast(1.02) brightness(1.02);
+}
+
+.clock-app[data-weather="cloudy"] .sky-photo,
+.clock-app[data-weather="mist"] .sky-photo {
+  filter: saturate(0.96) contrast(0.99) brightness(1.01);
+}
+
+.clock-app[data-weather="light-rain"] .sky-photo::before,
+.clock-app[data-weather="rain"] .sky-photo::before,
+.clock-app[data-weather="heavy-rain"] .sky-photo::before {
+  opacity: 0.36;
+  background:
+    radial-gradient(ellipse at 22% 18%, rgba(255,255,255,0.32), transparent 34%),
+    radial-gradient(ellipse at 72% 24%, rgba(188,220,238,0.22), transparent 36%),
+    linear-gradient(180deg, rgba(88,132,160,0.16), rgba(24,40,74,0.14));
+  mix-blend-mode: screen;
+  backdrop-filter: blur(0.65px) saturate(1.08);
+  animation: mistDrift 42s linear infinite;
+}
+
+.clock-app[data-weather="light-rain"] .sky-photo::after,
+.clock-app[data-weather="rain"] .sky-photo::after,
+.clock-app[data-weather="heavy-rain"] .sky-photo::after {
+  opacity: 0.30;
+  background:
+    radial-gradient(ellipse 5px 8px at 12% 18%, rgba(255,255,255,0.70) 0 10%, rgba(210,235,248,0.32) 28%, transparent 62%),
+    radial-gradient(ellipse 4px 7px at 34% 42%, rgba(255,255,255,0.52) 0 12%, rgba(205,232,246,0.27) 30%, transparent 64%),
+    radial-gradient(ellipse 6px 10px at 61% 24%, rgba(255,255,255,0.58) 0 10%, rgba(205,232,246,0.25) 32%, transparent 65%),
+    radial-gradient(ellipse 3px 5px at 82% 58%, rgba(255,255,255,0.48) 0 14%, rgba(205,232,246,0.22) 34%, transparent 66%),
+    linear-gradient(178deg, transparent 0 42%, rgba(255,255,255,0.12) 43%, transparent 46%),
+    linear-gradient(186deg, transparent 0 58%, rgba(255,255,255,0.08) 59%, transparent 62%);
+  background-size: 140px 190px, 180px 230px, 220px 260px, 160px 210px, 240px 260px, 280px 320px;
+  background-position: 0 0, 48px 24px, 88px 12px, 26px 78px, 0 0, 50px 30px;
+  filter: blur(0.15px);
+  mix-blend-mode: screen;
+  backdrop-filter: blur(0.9px);
+  animation: windowRainDrift 48s ease-in-out infinite;
+}
+
+.clock-app[data-weather="rain"] .sky-photo::after { opacity: 0.34; }
+.clock-app[data-weather="heavy-rain"] .sky-photo::after {
+  opacity: 0.44;
+  backdrop-filter: blur(1.2px);
+  animation-duration: 38s;
+}
+
+.clock-app[data-weather="cloudy"] .sky-photo::before,
+.clock-app[data-weather="mist"] .sky-photo::before {
+  opacity: 0.34;
+  background:
+    radial-gradient(ellipse at 24% 22%, rgba(255,255,255,0.30), transparent 34%),
+    radial-gradient(ellipse at 72% 18%, rgba(226,238,244,0.22), transparent 36%),
+    linear-gradient(180deg, rgba(174,194,206,0.12), rgba(255,255,255,0.06));
+  mix-blend-mode: screen;
+  animation: lightDrift 44s ease-in-out infinite alternate;
+}
+
+.clock-app[data-weather="mist"] .sky-photo::after {
+  opacity: 0.36;
+  background:
+    repeating-linear-gradient(178deg, transparent 0 38px, rgba(255,255,255,0.18) 68px, transparent 118px);
+  filter: blur(22px);
+  animation: mistDrift 38s linear infinite;
+}
+
+.hero-shade {
+  z-index: -2;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent 20%, transparent 58%, rgba(0, 0, 0, 0.42)),
+    radial-gradient(circle at 50% 38%, var(--haze), transparent 36%),
+    radial-gradient(circle at 50% 74%, rgba(0,0,0,0.16), transparent 42%);
+}
+
+.sun {
+  position: absolute;
+  left: -80px;
+  top: 80px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.98) 0 10%, rgba(255,255,255,0.52) 25%, transparent 66%);
+  filter: blur(1px);
+  opacity: 0;
+}
+
+.clock-app[data-scene="night"] .sun { opacity: 0; }
+
+.moon {
+  position: absolute;
+  right: 20%;
+  top: 16%;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(circle at 35% 35%, #fff, #e6edf7 58%, rgba(255,255,255,0.2) 62%, transparent 70%);
+  box-shadow: 0 0 42px rgba(255,255,255,0.45);
+}
+
+.clock-app[data-scene="night"] .moon { opacity: 0; }
+
+.cloud {
+  position: absolute;
+  width: 56%;
+  height: 18%;
+  opacity: 0.08;
+  filter: blur(6px);
+  background:
+    radial-gradient(ellipse at 25% 50%, rgba(255,255,255,0.92), transparent 35%),
+    radial-gradient(ellipse at 50% 40%, rgba(255,255,255,0.78), transparent 34%),
+    radial-gradient(ellipse at 76% 58%, rgba(255,255,255,0.70), transparent 31%);
+}
+
+.cloud-a { top: 28%; left: -12%; animation: driftA 80s linear infinite; }
+.cloud-b { top: 42%; right: -20%; animation: driftB 110s linear infinite; opacity: 0.06; }
+.clock-app[data-scene="night"] .cloud { opacity: 0.04; }
+
+.stars {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 18% 14%, #fff 0 1px, transparent 2px),
+    radial-gradient(circle at 36% 20%, #fff 0 1px, transparent 2px),
+    radial-gradient(circle at 62% 16%, #fff 0 1px, transparent 2px),
+    radial-gradient(circle at 78% 34%, #fff 0 1px, transparent 2px),
+    radial-gradient(circle at 52% 46%, #fff 0 1px, transparent 2px);
+  animation: twinkle 4s ease-in-out infinite;
+}
+.clock-app[data-scene="night"] .stars { opacity: 0.08; }
+
+.leaves {
+  position: absolute;
+  bottom: -4%;
+  width: 48%;
+  height: 22%;
+  opacity: 0.08;
+  filter: blur(1.4px);
+  background:
+    radial-gradient(ellipse at 20% 70%, rgba(90,145,40,0.72), transparent 18%),
+    radial-gradient(ellipse at 44% 58%, rgba(130,185,56,0.70), transparent 16%),
+    radial-gradient(ellipse at 68% 72%, rgba(76,125,46,0.68), transparent 18%);
+}
+.leaves-a { left: -6%; }
+.leaves-b { right: -8%; transform: scaleX(-1); }
+.clock-app[data-scene="night"] .leaves { opacity: 0.04; }
+
+.top-bar {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(62px, 1fr) auto minmax(74px, 1fr);
+  align-items: center;
+  gap: 7px;
+  /* 2026-07-07 4차 수정: 1~3차 모두 "얼마나 늘렸는지"에만 집중하다 3차에서
+     플립시계 쪽을 과하게 줄여버렸다(유저 재지적: "플립시계가 너무 작아졌다").
+     이번엔 여백 자체는 1~2차보다 살짝만 더 키우는 수준으로 절제하고
+     (원래 기본값 대비 약 2배 선), 대신 .flip-clock을 grid fr 기반으로
+     바꿔서(아래 .flip-clock/.flip-card 참조) 플립시계 폭이 이 padding
+     안쪽 끝까지 정확히 — top-bar와 완전히 같은 여백선까지 — 자동으로
+     꽉 채워지도록 만들었다. 문장박스는 .sky-room padding 7px만 적용되므로
+     그대로 유지됨. */
+  padding-inline: clamp(18px, 5vw, 36px);
+}
+
+.icon-button,
+.dot {
+  border: 0;
+  color: var(--white);
+  background: transparent;
+  cursor: pointer;
+}
+
+.icon-button {
+  width: 30px;
+  height: 34px;
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  padding: 0;
+}
+
+.icon-button span {
+  display: block;
+  width: 25px;
+  height: 2.5px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.18);
+}
+
+.app-brand {
+  justify-self: end;
+  color: rgba(255,255,255,0.92);
+  font-size: clamp(16px, 3.8vw, 22px);
+  font-weight: 760;
+  line-height: 1;
+  letter-spacing: 0;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.42);
+  white-space: nowrap;
+  cursor: pointer; /* 2026-07-08: 탭하면 ezlong.com 섹션으로 플립 전환된다 */
+}
+
+.date-chip {
+  min-width: 0;
+  justify-self: center;
+  overflow: hidden;
+  max-width: 100%;
+  padding: 4px 6px;
+  color: rgba(255,255,255,0.92);
+  font-size: clamp(15px, 4.2vw, 18px);
+  font-weight: 740;
+  line-height: 1;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.46);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-panel {
+  position: fixed;
+  inset: 0;
+  /* 2026-07-13 버그 수정: <main>에 perspective가 걸려있어 position:fixed 자식의
+     containing block이 진짜 뷰포트가 아니라 <main>이 된다(perspective/transform이
+     새 containing block을 만드는 CSS 규칙). <main>은 시계 화면 + 하단 ezlong 웹뷰
+     섹션까지 합쳐 뷰포트보다 훨씬 키가 크기 때문에, inset:0만으로는 이 패널이
+     그 전체 높이 기준으로 배치돼 실제 화면 밖(스크롤해야 보이는 위치)에 시트가
+     깔리는 문제가 있었다. height를 뷰포트 단위로 명시해 이 문제를 근본 해결한다.
+     vh/dvh 단위는 containing block과 무관하게 항상 실제 뷰포트 기준이다. */
+  height: 100vh;
+  height: 100dvh;
+  z-index: 20;
+  display: grid;
+  align-items: end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 260ms ease;
+}
+
+.settings-panel.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.settings-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.36);
+  backdrop-filter: blur(8px);
+}
+
+.settings-sheet {
+  position: relative;
+  width: min(100%, 760px);
+  max-height: min(82svh, 620px);
+  margin: 0 auto;
+  overflow: auto;
+  padding: 24px clamp(20px, 5vw, 34px) max(28px, env(safe-area-inset-bottom));
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 30px 30px 0 0;
+  background: rgba(13, 20, 31, 0.78);
+  color: #fff;
+  box-shadow: 0 -24px 80px rgba(0,0,0,0.34);
+  transform: translateY(28px);
+  transition: transform 260ms ease;
+}
+
+.settings-panel.is-open .settings-sheet {
+  transform: translateY(0);
+}
+
+.settings-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.settings-head p,
+.settings-head h2 {
+  margin: 0;
+}
+
+.settings-head p {
+  color: rgba(255,255,255,0.66);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.settings-head h2 {
+  margin-top: 5px;
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+.settings-close {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.field-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.08);
+  font-size: 16px;
+  font-weight: 760;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.field-option input {
+  width: 20px;
+  height: 20px;
+  /* 2026-07-13: "선택된 것과 아닌 것 구분이 어렵다"는 지적 — 흰색 대신
+     초록색으로 뚜렷하게 표시(체크박스/라디오 공통). */
+  accent-color: #22c55e;
+}
+
+/* :has()로 체크박스/라디오 상태를 부모 카드에 그대로 반영해서 별도 JS
+   클래스 토글 없이 처리한다(관심분야 체크박스, 플레이리스트 라디오,
+   Rock/Vocal 체크박스 전부 공통 적용). */
+.field-option:has(input:checked) {
+  border-color: rgba(34, 197, 94, 0.85);
+  background: rgba(34, 197, 94, 0.16);
+}
+
+.music-genre-toggles {
+  margin-top: 10px;
+}
+
+.field-option-all {
+  margin-bottom: 12px;
+  background: rgba(255,255,255,0.14);
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.settings-save {
+  width: 100%;
+  min-height: 50px;
+  margin-top: 18px;
+  border: 1px solid rgba(255,255,255,0.26);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.86);
+  color: #101722;
+  font-size: 17px;
+  font-weight: 820;
+  cursor: pointer;
+}
+
+.settings-divider {
+  height: 1px;
+  margin: 22px 0 18px;
+  background: rgba(255,255,255,0.14);
+}
+
+.settings-block {
+  margin: 0;
+}
+
+.settings-subtitle {
+  margin: 0 0 10px;
+  color: rgba(255,255,255,0.94);
+  font-size: 17px;
+  font-weight: 780;
+}
+
+.settings-desc {
+  margin: 0 0 8px;
+  color: rgba(255,255,255,0.78);
+  font-size: 14px;
+  font-weight: 620;
+  line-height: 1.5;
+}
+
+.settings-desc-muted {
+  margin-bottom: 0;
+  color: rgba(255,255,255,0.5);
+  font-size: 14px;
+  font-weight: 560;
+}
+
+/* ── 2026-07-14: 날씨 상세 화면 — 애플 비전OS풍 글래스모피즘 ─────────
+   열기/닫기 메커니즘(.settings-panel, .settings-backdrop, .settings-head,
+   .settings-close, .settings-divider)은 기존 설정 패널과 공유해서
+   내비게이션 일관성을 지킨다. 시트 자체(.weather-detail-sheet)와 카드류만
+   더 밝고 투명한 유리질감으로 새로 설계했다 — 기존 settings-sheet(불투명도
+   0.78)보다 더 얇고 빛이 통과하는 느낌을 준다. */
+.weather-detail-sheet {
+  position: relative;
+  width: min(100%, 760px);
+  max-height: min(86svh, 680px);
+  margin: 0 auto;
+  overflow: auto;
+  padding: 24px clamp(20px, 5vw, 34px) max(28px, env(safe-area-inset-bottom));
+  border: 1px solid rgba(255,255,255,0.34);
+  border-radius: 32px 32px 0 0;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.02) 42%, rgba(0,0,0,0.12)),
+    rgba(16, 24, 38, 0.50);
+  backdrop-filter: blur(36px) saturate(1.5);
+  -webkit-backdrop-filter: blur(36px) saturate(1.5);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    0 -24px 90px rgba(0,0,0,0.30);
+  transform: translateY(28px);
+  transition: transform 260ms ease;
+}
+
+.weather-detail-panel.is-open .weather-detail-sheet {
+  transform: translateY(0);
+}
+
+.weather-card {
+  margin: 0;
+}
+
+.weather-current-card {
+  text-align: center;
+  padding: 18px 16px 20px;
+  border: 1px solid rgba(255,255,255,0.24);
+  border-radius: clamp(18px, 4vw, 26px);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.03) 45%, rgba(0,0,0,0.10)),
+    rgba(255,255,255,0.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    inset 0 -1px 0 rgba(0,0,0,0.18);
+}
+
+.weather-current-hero {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.weather-current-temp {
+  font-size: clamp(44px, 14vw, 64px);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.weather-current-feels,
+.weather-current-humidity {
+  font-size: 16px;
+  font-weight: 640;
+  color: rgba(255,255,255,0.72);
+}
+
+/* 2026-07-14: 습도를 체감온도와 같은 줄로 옮기면서 서브 라인은 평소엔
+   비워둔다(에러 메시지 전용) — 빈 문자열일 때 줄 자체를 접어 여백이
+   남지 않도록. */
+.weather-current-sub {
+  margin: 10px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.82);
+}
+
+.weather-current-sub:empty {
+  display: none;
+}
+
+.weather-rain-windows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 2026-07-14: 출퇴근·등하교 시간대를 종합한 오늘의 우산 조언 — 강수 예보
+   카드 맨 위에서 한두 줄로 눈에 띄게. needed=true/false로 톤을 구분한다. */
+.weather-rain-umbrella {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.22);
+  font-size: 15px;
+  font-weight: 680;
+  line-height: 1.5;
+}
+
+.weather-rain-umbrella[data-needed="true"] {
+  background: rgba(74,144,217,0.24);
+}
+
+.weather-rain-umbrella[data-needed="false"] {
+  background: rgba(34,197,94,0.18);
+}
+
+/* 오늘 포함 3일 상세 — 하루 한 블록 */
+.weather-rain-day {
+  margin-bottom: 14px;
+}
+
+.weather-rain-day:last-child {
+  margin-bottom: 0;
+}
+
+.weather-rain-day-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 720;
+  color: rgba(255,255,255,0.78);
+}
+
+.weather-rain-day-tag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.16);
+  font-size: 12px;
+  font-weight: 680;
+  color: rgba(255,255,255,0.9);
+}
+
+.weather-rain-day-tag-weekend {
+  background: rgba(74,144,217,0.32);
+}
+
+.weather-rain-window {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.06);
+}
+
+.weather-rain-window:last-child {
+  margin-bottom: 0;
+}
+
+.weather-rain-window-time {
+  font-size: 15px;
+  font-weight: 680;
+}
+
+.weather-rain-window-detail {
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 560;
+  color: rgba(255,255,255,0.68);
+}
+
+/* 이후 4일 요약 / 이번 주말 / 다음 주 한 줄 — 3일 상세 카드 아래, 점선으로 구분 */
+.weather-rain-outlook-extra {
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(255,255,255,0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.weather-rain-outlook-weekend {
+  font-weight: 680;
+}
+
+/* 2026-07-14: 뱃지에 강수확률까지 2줄로 표시(예: "약한 비" / "68%") —
+   확률 없는 호출(열대야 등)은 label 한 줄만 들어와도 레이아웃이 자연스럽게
+   맞도록 column+center로 통일. */
+.weather-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: 2px;
+  padding: 6px 14px;
+  border-radius: 16px;
+  color: #fff;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22);
+}
+
+.weather-badge-label {
+  font-size: 14px;
+  font-weight: 720;
+  line-height: 1.2;
+}
+
+.weather-badge-prob {
+  font-size: 12px;
+  font-weight: 640;
+  line-height: 1.2;
+  color: rgba(255,255,255,0.82);
+}
+
+.weather-badge[data-grade="NONE"] { background: rgba(255,255,255,0.20); }
+.weather-badge[data-grade="DRIZZLE"] { background: #4a90d9; }
+.weather-badge[data-grade="RAIN"] { background: #2f6fd1; }
+.weather-badge[data-grade="HEAVY"] { background: #e07b1f; }
+.weather-badge[data-grade="VERY_HEAVY"] { background: #d9432f; }
+.weather-badge[data-grade="OK"] { background: rgba(34,197,94,0.85); }
+.weather-badge[data-grade="WARN"] { background: #e07b1f; }
+
+/* 2026-07-14: "지난 24시간 vs 향후 24시간" 두 구간을 나란히 대조하는
+   2열 레이아웃. 예전 "어제와 비교하면"(.weather-compare-list/-row) 카드는
+   이 카드로 흡수돼 삭제됐다. */
+.weather-24h-compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.weather-24h-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weather-24h-col-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 680;
+  color: rgba(255,255,255,0.6);
+}
+
+.weather-stat-tile {
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.05);
+}
+
+.weather-stat-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 620;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 4px;
+}
+
+.weather-stat-value {
+  font-size: 20px;
+  font-weight: 760;
+  font-variant-numeric: tabular-nums;
+}
+
+.weather-tropical-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.weather-comment {
+  margin: 10px 0 0;
+  font-size: 15px;
+  font-weight: 580;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.86);
+}
+
+.weather-empty {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 560;
+  color: rgba(255,255,255,0.56);
+}
+
+/* 2026-07-08: "들은 음악 히스토리" — 최근 재생 목록 + 곡별 바로 듣기 버튼.
+   settings-block과 같은 톤(다크 글래스 패널 위 rgba(255,255,255,alpha))을 그대로 따른다. */
+.music-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.music-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 14px;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+}
+
+.music-history-item.is-current {
+  border-color: rgba(255,255,255,0.32);
+  background: rgba(255,255,255,0.16);
+}
+
+.music-history-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(255,255,255,0.84);
+  font-size: 14px;
+  font-weight: 620;
+}
+
+.music-history-play {
+  flex: 0 0 auto;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid rgba(255,255,255,0.26);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.86);
+  color: #101722;
+  font-size: 14px;
+  font-weight: 760;
+  cursor: pointer;
+}
+
+.music-history-item.is-current .music-history-play {
+  background: rgba(255,255,255,0.3);
+  color: #fff;
+  border-color: rgba(255,255,255,0.4);
+}
+
+/* 2026-07-13: "들은 음악 히스토리"를 표 형태로 — 칼럼명 "곡명" + 텍스트
+   버튼 대신 플레이 심볼 아이콘 버튼. 기존 .music-history-list(ul, QC
+   패널의 삭제 목록이 계속 씀)는 그대로 두고, 이 테이블 전용 클래스를
+   새로 추가한다. */
+.music-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  max-height: 260px;
+  display: block;
+  overflow-y: auto;
+}
+
+.music-history-table thead {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.music-history-table tbody {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.music-history-table th {
+  padding: 0 14px 8px;
+  text-align: left;
+  color: rgba(255,255,255,0.5);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.music-history-play-th {
+  width: 52px;
+}
+
+.music-history-row {
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+.music-history-row:first-child {
+  border-top: 0;
+}
+
+.music-history-row.is-current {
+  background: rgba(255,255,255,0.08);
+}
+
+.music-history-title {
+  padding: 11px 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(255,255,255,0.84);
+  font-size: 14px;
+  font-weight: 620;
+}
+
+.music-history-play-cell {
+  padding: 8px 14px 8px 0;
+  width: 52px;
+  text-align: right;
+}
+
+.music-history-play-btn {
+  /* 2026-07-13: play.png/pause.png는 흰색 단색 아이콘이라, 이전처럼 버튼
+     배경을 거의 불투명한 흰색(0.86)으로 채우면 "흰 세모 위에 흰 배경"이
+     되어 아이콘이 거의 안 보였다(재지적 반영). 메인 재생 버튼(.music-toggle)과
+     같은 원리로 어두운 유리질 톤으로 낮춰 흰 세모가 뚜렷하게 보이게 한다. */
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  background-color: rgba(255,255,255,0.14);
+  background-image: url("assets/icons/music/play.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 42%;
+  cursor: pointer;
+}
+
+.music-history-play-btn.is-playing {
+  background-color: rgba(34, 197, 94, 0.85);
+  background-image: url("assets/icons/music/pause.png");
+  border-color: rgba(34, 197, 94, 0.85);
+}
+
+.weather-chip strong {
+  flex: 0 0 auto;
+  font-size: clamp(15px, 4.2vw, 18px);
+  font-weight: 740;
+  line-height: 1;
+}
+
+.weather-chip > span:not(.mini-weather) {
+  color: rgba(255,255,255,0.92);
+  font-size: clamp(15px, 4.2vw, 18px);
+  font-weight: 740;
+  line-height: 1;
+}
+
+.mini-weather {
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 1.25em;
+  height: 1.25em;
+  /* 터치 대상은 아니지만(순수 표시용), 저시력 사용자 식별성을 위해
+     작은 화면에서도 최소 크기를 보장한다. */
+  min-width: 30px;
+  min-height: 30px;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 92%;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.28));
+}
+
+.mini-weather.sun-icon { background-image: url("assets/icons/weather/sun.png"); }
+.mini-weather.moon-icon { background-image: url("assets/icons/weather/moon.png"); }
+.mini-weather.sun-cloud-icon { background-image: url("assets/icons/weather/sun_cloud.png"); }
+.mini-weather.cloud-icon { background-image: url("assets/icons/weather/cloud.png"); }
+.mini-weather.rain-icon { background-image: url("assets/icons/weather/rain.png"); }
+.mini-weather.snow-icon { background-image: url("assets/icons/weather/snow.png"); }
+
+.clock-stage {
+  align-self: center;
+  width: 100%;
+  text-align: center;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.24);
+  transform: translateY(clamp(-54px, -5.4vh, -28px));
+  box-sizing: border-box;
+  /* 2026-07-07 4차 수정: 1~3차 모두 "padding을 얼마 늘렸으니 카드를 얼마
+     줄이면 딱 맞는다"를 vw 퍼센트로 손계산하는 방식이었다 — 콜론의 실제
+     렌더 폭(음수 margin과 폰트 실측 폭)을 정확히 알 수 없어서 매번 살짝
+     넘치거나(1~2차, 그래서 안 늘어나 보임) 과하게 줄이는(3차, 너무 작아짐)
+     오차가 났다. 손계산을 아예 그만두고 CSS Grid의 fr 단위로 넘긴다 —
+     4자리 카드 컬럼을 전부 1fr로 주면 브라우저가 "콜론이 쓰고 남은 공간"을
+     정확히 4등분해서 채운다. padding-inline이 얼마든 항상 정확히 그
+     안쪽 끝까지(=top-bar와 완전히 같은 여백선) 딱 채워지고 넘치는 일도
+     없다 — 유저 요구("플립시계 여백 = 페이지 여백")를 손계산 없이
+     수학적으로 보장한다. */
+  padding-inline: clamp(18px, 5vw, 36px);
+}
+
+.flip-clock {
+  display: grid;
+  /* 4차 수정에서 발견된 버그: cqi 단위는 "자기 자신"의 container-type을
+     참조하지 못한다(스펙상 자신을 제외한 가장 가까운 조상 컨테이너를
+     찾는다) — .flip-card에 container-type과 font-size(cqi)를 같이 뒀더니
+     조상 중 어떤 컨테이너도 못 찾아 뷰포트 기준으로 튕겨서 숫자가 화면을
+     뚫고 나올 만큼 커졌다. 그래서 그리드 컬럼을 "카드 4개"가 아니라
+     "숫자단위(시/분) 2개 + 콜론"으로 되돌리고, container-type은 실제
+     박스를 유지하는 .flip-unit에 둔다 — .flip-card는 그 조상을 정상적으로
+     찾을 수 있다. */
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2px, 0.8vw, 8px);
+  width: 100%;
+  perspective: 1700px;
+}
+
+.flip-unit {
+  display: flex;
+  gap: clamp(2px, 0.8vw, 8px);
+  min-width: 0;
+  /* flip-card가 cqi로 참조할 실제 컨테이너 — 카드 2개+간격 폭 기준. */
+  container-type: inline-size;
+}
+
+.flip-card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  /* grid/flex 트랙이 실제 너비를 정하므로 고정 width는 없앤다.
+     min-width:0 필수 — 없으면 내용(숫자 폰트) 크기 밑으로 트랙을 못
+     줄여서 여전히 넘칠 수 있다. 세로 비율은 원래 카드(82~166px 폭 :
+     124~244px 높이 ≈ 1:1.49)를 aspect-ratio로 유지. */
+  flex: 1 1 0;
+  min-width: 0;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: clamp(14px, 3vw, 26px);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04) 45%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0.10)),
+    rgba(13, 20, 31, 0.26);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    inset 0 -1px 0 rgba(0,0,0,0.32),
+    0 24px 66px rgba(0,0,0,0.22);
+  color: #fff;
+  /* .flip-unit(카드 2개+간격)을 기준 컨테이너로 삼으므로, 카드 1개 폭은
+     대략 유닛 폭의 절반 — 원본 비율(font/card ≈1.15~1.2)을 유닛 기준으로
+     환산하면 대략 58cqi (100*1.17/(2+간격비율)). */
+  font-size: clamp(98px, 58cqi, 190px);
+  font-weight: 760;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.28);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.flip-card::before,
+.flip-card::after {
+  position: absolute;
+  pointer-events: none;
+}
+
+.flip-card::before {
+  content: "";
+  left: 0;
+  right: 0;
+  top: calc(50% - 3px);
+  height: 6px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.12), rgba(0,0,0,0.42) 45%, rgba(0,0,0,0.64) 55%, rgba(255,255,255,0.08));
+  box-shadow:
+    0 -1px 0 rgba(255,255,255,0.14),
+    0 1px 0 rgba(0,0,0,0.54),
+    0 6px 14px rgba(0,0,0,0.18);
+  z-index: 5;
+}
+
+.flip-card::after {
+  content: attr(data-prev);
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.24), rgba(255,255,255,0.06) 58%, rgba(0,0,0,0.32)),
+    rgba(13, 20, 31, 0.54);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.32),
+    inset 0 -12px 22px rgba(0,0,0,0.34),
+    0 16px 26px rgba(0,0,0,0.20);
+  clip-path: inset(0 0 50% 0 round clamp(14px, 3vw, 26px) clamp(14px, 3vw, 26px) 0 0);
+  color: #fff;
+  font-size: inherit;
+  font-weight: inherit;
+  font-variant-numeric: inherit;
+  line-height: 1;
+  text-shadow: inherit;
+  opacity: 0;
+  transform: rotateX(0deg);
+  transform-origin: center center;
+  backface-visibility: hidden;
+  z-index: 4;
+}
+
+.flip-card.is-flipping {
+  animation: cardSettle 620ms cubic-bezier(.18,.78,.22,1);
+}
+
+.flip-card.is-flipping::after {
+  animation: foldUp 620ms cubic-bezier(.18,.78,.22,1);
+}
+
+.clock-colon {
+  margin: 0 -8px;
+  color: rgba(255,255,255,0.88);
+  /* 2026-07-07 4차: 이제 .flip-clock이 grid라 콜론 폭이 얼마든 카드 4개가
+     남은 공간을 정확히 나눠 채운다 — 콜론을 억지로 축소할 필요가 없어져
+     원래 베이스라인 크기(clamp(80px,21vw,148px))로 되돌린다. */
+  font-size: clamp(80px, 21vw, 148px);
+  font-weight: 700;
+  line-height: 1;
+  transform: translateY(-0.06em);
+  animation: colonPulse 1s ease-in-out infinite;
+}
+
+.clock-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  /* 2026-07-07: 플립시계 폭이 줄어들면서 이 줄(날씨/음악)이 시계 위에
+     "떠 있는" 느낌이라는 재지적 — 시계와의 간격을 절반 정도로 줄임. */
+  margin: 0 0 clamp(7px, 1.3vh, 12px);
+  color: rgba(255,255,255,0.84);
+  font-size: clamp(13px, 3.5vw, 22px);
+  font-weight: 620;
+}
+
+.clock-meta .weather-chip {
+  box-sizing: border-box;
+  max-width: min(48vw, 240px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  color: rgba(255,255,255,0.92);
+  font-weight: 650;
+  text-align: left;
+  white-space: nowrap;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.28);
+  /* 2026-07-14: 날씨 칩을 탭 가능한 <button>으로 전환 — 상세 화면 진입점. */
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 140ms ease;
+}
+
+.clock-meta .weather-chip:active {
+  opacity: 0.62;
+}
+
+.music-controls {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  /* 2026-07-07: 플립시계 숫자판이 작아진 뒤로 재생/스킵 버튼이 상대적으로
+     커 보인다는 재지적 — 버튼 자체를 줄인 김에(아래 참조) 같은 음악
+     그룹이라는 느낌을 유지하면서 간격도 좁힘(14px→8px, 탭 간섭 없는
+     선에서). */
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.music-controls .icon-button {
+  width: 1.7em;
+  height: 1.7em;
+  /* 2026-07-07: 48px는 iOS HIG 44pt 기준을 여유있게 넘기던 값 — 시각적
+     균형을 위해 44px(iOS HIG 최소 권장치)까지만 줄인다. 이 밑으로는
+     내리지 않는다(탭 정확도 저하 방지). */
+  min-width: 44px;
+  min-height: 44px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: rgba(255,255,255,0.92);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 82%;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.28));
+  /* 2026-07-08: 복잡한(초록 숲 등) 배경사진 위에서 아이콘 3개가 거의 안
+     보인다는 재지적 — 아이콘 뒤에 반투명 유리질 원형 배지를 깔아
+     배경이 뭐가 오든 항상 또렷이 보이게 한다. backdrop-filter로 배지
+     안쪽만 블러를 줘서 유리 재질감을 낸다(iOS WKWebView 호환 위해
+     -webkit- 접두사 병기 필수). 2026-07-08 2차 수정: 바깥 테두리(border)를
+     넣었더니 재생/스킵 버튼은 이미 있던 안쪽 진행률 링(::before, inset 4%)과
+     겹쳐 "동그라미 2겹"으로 보인다는 재지적 — 테두리 없이 유리 채움만
+     남긴다. 재생/스킵은 기존 진행률 링 하나가 유일한 라인으로 남고,
+     음표 버튼은 원래처럼 라인 없이 유리 채움만 남는다. */
+  border-radius: 50%;
+  /* 2026-07-08 6차 수정: "시선이 플립시계·배경사진이 아니라 음악버튼에
+     쏠릴 정도로 너무 강하다"는 재지적 — 5차(0.16)도 여전히 과하다는
+     피드백. 투명도를 확실히 더 낮추고(찾는 기능은 블러만으로 충분하다는
+     방향), 그림자도 거의 없앤다. "존재감"보다 "찾을 수 있음"에만
+     최소한으로 맞춘다. */
+  background-color: rgba(13, 20, 31, 0.10);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* 2026-07-07: 음표(설정 열기) 버튼은 재생/스킵과 달리 날씨 아이콘과
+   나란히 있어 크기 차이가 도드라졌다 — 날씨 아이콘(.mini-weather)과
+   동일한 치수로 맞춘다. */
+.music-note-button {
+  width: 1.25em;
+  height: 1.25em;
+  min-width: 30px;
+  min-height: 30px;
+}
+
+/* 2026-07-07 5차 수정: border-width 두께 변화 방식(2~4차 시도)이 실기기에서
+   계속 "안 보인다"는 재지적을 받았다 — 두께 변화폭(2→3.5px) 자체가 48px
+   버튼 위에서 육안으로 감지하기엔 너무 미세했을 가능성이 크다. 매커니즘을
+   통째로 교체: 두께를 조절하는 대신, 로딩스피너/프로그레스링에 흔히 쓰는
+   conic-gradient(진행률만큼 밝은 색으로 채워지는 부채꼴) + mask(가운데를
+   뚫어 고정 두께의 링만 남김) 방식으로 바꿨다. 이 방식은 "밝은 부분이
+   자라난다"는 뚜렷한 색 대비 변화라 두께 미세조정보다 훨씬 확실하게 보인다.
+   app.js의 updateMusicProgress()가 --progress에 0~1 진행률 숫자를 그대로 넣는다. */
+.music-toggle {
+  --progress: 0;
+}
+
+/* 정적 트랙 링 — 재생 진행률과 무관하게 항상 흐리게 보이는 배경 원.
+   스킵 버튼에도 같은 두께/위치로 넣어서 두 버튼 크기가 시각적으로
+   어긋나지 않게 맞춘다(원래 유저가 준 원본 이미지는 재생/일시정지 링이
+   스킵 링보다 살짝 작게 그려져 있었다 — 지금은 둘 다 CSS로 통일). */
+.music-toggle::before,
+.music-skip::before {
+  content: "";
+  position: absolute;
+  /* 2026-07-08 3차 수정: 유리질 채움(버튼 자체 background-color, 위 규칙)이
+     버튼 바깥쪽 끝(border-radius 50%)까지 꽉 채우는데, 이 링은 4% 안쪽에
+     그려져서 서로 다른 두 개의 원 테두리로 보였다("동그라미 2겹" 재지적).
+     inset을 0으로 맞춰 유리 채움의 바깥 경계와 이 링이 정확히 같은 자리에
+     겹치게 한다 — 그러면 "블러+반투명 유리 원 + 그 가장자리를 도는 가는
+     선 하나"로, 원래 좋아했던 심플한 한 줄 테두리 느낌 그대로 남는다. */
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  z-index: 1;
+}
+
+/* 진행률 표시 — border 대신 conic-gradient 부채꼴을 그린 뒤, mask로
+   가운데를 도넛 모양으로 뚫어 고정 3px 두께의 링만 남긴다. 진행률(0~1)
+   만큼 밝은 색(0.95)이 시계방향으로 채워지고 나머지는 어두운 색(0.28,
+   스킵 버튼의 정적 링과 비슷한 톤)으로 남아 뚜렷하게 대비된다. */
+.music-toggle::before {
+  border: none;
+  background: conic-gradient(
+    rgba(255,255,255,0.95) calc(var(--progress, 0) * 360deg),
+    rgba(255,255,255,0.28) 0deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+}
+
+.music-note-button { background-image: url("assets/icons/music/note.png"); background-size: 92%; }
+.music-toggle { background-image: url("assets/icons/music/play.png"); }
+.music-toggle.is-playing { background-image: url("assets/icons/music/pause.png"); }
+.music-skip { background-image: url("assets/icons/music/skip.png"); }
+
+/* 2026-07-13: 음악 정보 패널 — 기본은 닫힘(높이 0)이라 평소 레이아웃에는
+   영향이 없다. 열리면 clock-meta(날씨/음악 버튼 줄) 바로 위에 비주얼라이저 +
+   곡명 + 좋아요/싫어요/설정 버튼이 나타난다. */
+.music-info-panel {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: max-height 0.25s ease, opacity 0.2s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+.music-info-panel.is-open {
+  /* 2026-07-13 9차: 막대 높이를 절반으로 줄이면서 패널 최대높이도 같이
+     줄인다 — "지금은 height가 너무 커서 어색하다"는 피드백 반영. */
+  max-height: clamp(120px, 22vh, 160px);
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.music-viz-wrap {
+  position: relative;
+  /* 2026-07-13 9차: 6차에서 "비주얼라이저 맛이 안 난다"며 키웠던 높이가
+     막상 실기기에서는 너무 커서 어색하다는 재지적 — 딱 절반 수준으로
+     되돌린다(96~170px → 48~85px). */
+  height: clamp(48px, 10vh, 85px);
+  margin: 0 0 8px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end;
+  /* 2026-07-13 10차: 막대를 훨씬 가늘게 만들면서(70% 감소) 균등 간격으로
+     펼치기 위해 flex:1 1 0 균등분할 대신 고정폭 + space-between으로 바꿨다.
+     gap 대신 justify-content가 남는 공간을 막대 사이 간격으로 나눠 쓴다. */
+  justify-content: space-between;
+  /* .music-track-row와 같은 좌우 10px 인셋을 줘서 이 줄이 화면 끝까지
+     삐져나가지 않고 아래 제목바 폭에 정확히 맞도록 고정. */
+}
+
+.viz-bar {
+  /* 2026-07-14 14차: 성동님이 첨부한 참고 영상 — "Audio Spectrum - Grid"
+     After Effects 템플릿 스타일(빨강→주황→마젠타→보라 네온 캡슐, 강한
+     글로우, 매 순간 크게 출렁이는 다이나믹). 여태 시도한 "투명 유리/물줄기"
+     방향을 성동님이 명시적으로 포기하기로 해서, 이번엔 아예 반대로
+     불투명한 솔리드 네온 컬러 + 글로우로 완전히 갈아엎었다 — 배경사진이
+     비치는 투명감은 더 이상 이 요소의 목표가 아니다. border/backdrop-filter/
+     inset shadow(유리 질감용)는 전부 제거. */
+  flex: 0 0 5px;
+  width: 5px;
+  min-width: 0;
+  height: 3px; /* app.js가 매 프레임 style.height로 갱신 */
+  border-radius: 999px;
+  /* 막대별 고정 hue(--bar-hue, 위치 기준 무지개, app.js가 생성 시 1회 설정)
+     × 실시간 에너지 비율(--bar-intensity, app.js가 매 프레임 갱신)로
+     밝기와 글로우 강도를 조절한다 — 채움 자체는 항상 불투명한 솔리드
+     컬러라 "밋밋함" 없이 늘 선명하고, 비트가 세게 튈 때는 글로우가
+     확 커지고 밝아져 "탁탁 반응"하는 네온사인 느낌을 낸다. */
+  background: hsl(var(--bar-hue, 280), 92%, calc(52% + var(--bar-intensity, 0.15) * 14%));
+  box-shadow:
+    0 0 calc(4px + var(--bar-intensity, 0.15) * 10px) hsla(var(--bar-hue, 280), 95%, 60%, calc(0.55 + var(--bar-intensity, 0.15) * 0.45)),
+    0 0 calc(10px + var(--bar-intensity, 0.15) * 18px) hsla(var(--bar-hue, 280), 95%, 55%, calc(0.28 + var(--bar-intensity, 0.15) * 0.35));
+}
+
+/* 2026-07-14 16차: 성동님이 다시 첨부한 "Audio Spectrum - Grid" 참고 이미지를
+   더 가깝게 벤치마크 — 15차의 "속이 꽉 찬 얇은 라인" 대신, 참고 이미지처럼
+   (1) 전체 길이를 나타내는 속이 빈 캡슐형 아웃라인 트랙 + (2) 그 위에 얹히는
+   짧고 도톰한 솔리드 진행 캡슐, 두 겹 구조로 바꾼다. 또한 곡명/버튼 줄의
+   어두운 박스(background+border-radius)를 완전히 제거해 비주얼라이저→
+   진행바→곡명줄이 하나의 이어진 콘솔처럼 보이게 한다("박싱 처리하지 말아
+   달라"는 피드백 반영). */
+.music-progress-bar {
+  position: relative;
+  height: 10px;
+  margin: 0 0 8px;
+}
+
+.music-progress-bar::before {
+  /* 전체 재생 길이 — 속이 빈 얇은 캡슐 아웃라인(테두리만, 채움 없음). */
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 50%;
+  height: 4px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.music-progress-fill {
+  /* 실제 재생 위치 — 아웃라인보다 도톰한 솔리드 캡슐을 왼쪽부터 겹쳐 그린다. */
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 8px;
+  width: 0%;
+  max-width: calc(100% - 20px);
+  border-radius: 999px;
+  background: linear-gradient(90deg, hsl(20, 95%, 58%), hsl(320, 95%, 62%));
+  box-shadow: 0 0 8px hsla(320, 90%, 60%, 0.55);
+  transition: width 0.15s linear;
+}
+
+.music-track-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 10px 6px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.music-track-title {
+  font-size: clamp(12px, 3vw, 15px);
+  font-weight: 600;
+  color: rgba(255,255,255,0.88);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55%;
+}
+
+.music-track-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.music-track-actions.icon-button,
+.music-track-actions .icon-button {
+  width: 30px;
+  height: 30px;
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.8;
+}
+
+.music-like-button { background-image: url("assets/icons/music/thumb_up.svg"); }
+.music-dislike-button { background-image: url("assets/icons/music/thumb_down.svg"); }
+.music-gear-button { background-image: url("assets/icons/music/gear.svg"); }
+
+.music-like-button[aria-pressed="true"],
+.music-dislike-button[aria-pressed="true"] {
+  opacity: 1;
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.55));
+}
+
+.quote-panel {
+  width: min(100%, 820px);
+  margin: 0 auto;
+  padding: clamp(22px, 5vw, 34px);
+  /* 문장이 바뀔 때마다(1분마다) 길이에 따라 폰트 크기가 달라지고, 영어 원문
+     유무에 따라 줄 수도 달라져서 이 박스의 실제 높이가 매번 조금씩
+     바뀌었다. 이 박스는 플립시계와 같은 grid(.sky-room)의 flexible한 행
+     바로 아래에 있어서, 이 박스 높이가 바뀌면 플립시계가 위아래로 미세하게
+     밀리는 원인이 됐다(2026-07-07 재지적: "숫자판 바뀔 때마다 여전히
+     흔들린다"). 최대치 기준으로 min-height를 고정해서 내용 길이와 무관하게
+     박스 자체 높이가 항상 같도록 만든다. */
+  min-height: clamp(210px, 46vw, 300px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: clamp(24px, 6vw, 38px);
+  /* 2026-07-07: "통크게 투명도를 높여달라"는 재지적 — 배경 진하기를
+     0.10→0.05→0.02로, 블러도 12px→6px→3px로 대폭 낮춰 뒤 사진이
+     거의 그대로 비치게 함. 대신 글자 자체의 text-shadow를 진하게 키워서
+     밝은 사진 위에서도 읽히도록 보완(아래 quote-kicker/english/blockquote/
+     quote-foot 공통 text-shadow 참조). */
+  background: rgba(13, 20, 31, 0.02);
+  backdrop-filter: blur(3px) saturate(1.04);
+  box-shadow: 0 22px 70px rgba(0,0,0,0.08);
+  transition: background 900ms ease, transform 1400ms ease, opacity 1400ms ease, filter 1400ms ease;
+}
+
+.quote-panel.is-changing {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(16px) scale(0.985);
+}
+
+.quote-kicker,
+.quote-english,
+.quote-panel blockquote,
+.quote-foot,
+.scene-dots {
+  margin: 0;
+  /* 문장박스 배경을 거의 투명하게 낮춘 만큼(위 .quote-panel 참조),
+     밝은 사진 위에서도 글자가 읽히도록 그림자를 더 진하고 넓게 잡음. */
+  text-shadow: 0 1px 4px rgba(0,0,0,0.55), 0 2px 20px rgba(0,0,0,0.35);
+}
+
+.quote-kicker {
+  margin-bottom: 12px;
+  color: rgba(255,255,255,0.76);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.quote-english {
+  display: none;
+  margin: 0 0 10px;
+  color: rgba(255,255,255,0.72);
+  font-size: clamp(13px, 3vw, 17px);
+  font-weight: 360;
+  line-height: 1.42;
+}
+
+.quote-panel.has-english .quote-english {
+  display: block;
+}
+
+.quote-panel blockquote {
+  min-height: 4.2em;
+  font-size: clamp(16px, 3.65vw, 24px);
+  font-weight: 340;
+  line-height: 1.4;
+}
+
+.quote-panel.quote-long blockquote {
+  font-size: clamp(14px, 3.35vw, 21px);
+  line-height: 1.36;
+}
+
+.quote-panel.quote-long .quote-english {
+  font-size: clamp(12px, 2.75vw, 16px);
+  line-height: 1.34;
+}
+
+.quote-panel.quote-dense {
+  padding-top: clamp(18px, 4.2vw, 28px);
+  padding-bottom: clamp(18px, 4.2vw, 28px);
+}
+
+.quote-panel.quote-dense blockquote {
+  font-size: clamp(12px, 3vw, 18px);
+  line-height: 1.32;
+}
+
+.quote-panel.quote-dense .quote-english {
+  font-size: clamp(11px, 2.55vw, 14px);
+  line-height: 1.28;
+}
+
+.quote-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(92px, 152px);
+  gap: 16px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.quote-foot cite {
+  color: rgba(255,255,255,0.78);
+  font-size: clamp(15px, 2.2vw, 17px);
+  font-style: normal;
+  font-weight: 680;
+  line-height: 1.25;
+}
+
+.quote-timer {
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.24);
+}
+
+.quote-timer span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  transform: scaleX(0);
+  border-radius: inherit;
+  background: rgba(255,255,255,0.76);
+  animation: quoteProgress 60s linear infinite;
+}
+
+.scene-dots {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.dot-group {
+  grid-column: 2;
+  display: flex;
+  gap: 16px;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.34);
+}
+.dot.active { background: #fff; }
+
+/* 2026-07-08: 유저-Claude 간 "이 업데이트가 실제로 반영됐는지" 확인용 버전
+   표시. 배포마다 바뀌는 캐시버스팅 버전(index.html의 ?v=)과는 별개 —
+   이건 제품 완성도 기준 수동 버전(ver.0.8 등)이라 기능이 쌓일 때만 사람이
+   직접 올린다. */
+.app-version {
+  grid-column: 1;
+  justify-self: start;
+  margin-left: 4px; /* 2026-07-08: 화면 가장자리에 바짝 붙어 보인다는 재지적 */
+  color: rgba(238,242,246,0.38);
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.18);
+  white-space: nowrap;
+}
+
+.photo-credit {
+  grid-column: 3;
+  /* 2026-07-07: 점4개 바로 옆이 아니라 페이지 맨 우측 끝으로 정렬 */
+  justify-self: end;
+  text-align: right;
+  max-width: min(32vw, 180px);
+  overflow: hidden;
+  color: rgba(238,242,246,0.38);
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.18);
+  white-space: nowrap;
+}
+
+.photo-credit[href="#"] {
+  pointer-events: none;
+}
+
+.photo-credit:focus-visible {
+  outline: 1px solid rgba(255,255,255,0.36);
+  outline-offset: 3px;
+}
+
+.ezlong-webview {
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  justify-items: center;
+  background: #101722;
+  color: #101722;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.webview-scale {
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  background: #fff;
+}
+
+.ezlong-frame {
+  display: block;
+  width: 390px;
+  height: var(--webview-frame-height, 100svh);
+  border: 0;
+  background: #fff;
+  transform: scale(var(--webview-scale, 1));
+  transform-origin: top left;
+}
+
+.webview-footer {
+  width: 100%;
+  min-height: 34px;
+  padding: 5px 12px max(6px, env(safe-area-inset-bottom));
+  text-align: center;
+  background: #f2f3f5;
+  border-top: 1px solid rgba(18, 27, 42, 0.10);
+}
+
+.webview-footer a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  color: #5f6670;
+  text-decoration: none;
+}
+
+.webview-open span {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  border: 1.8px solid currentColor;
+  border-radius: 3px;
+}
+
+.webview-open span::before,
+.webview-open span::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+}
+
+.webview-open span::before {
+  width: 8px;
+  height: 1.8px;
+  right: -2px;
+  top: 2px;
+  transform: rotate(-45deg);
+  transform-origin: right center;
+}
+
+.webview-open span::after {
+  width: 6px;
+  height: 6px;
+  right: -2px;
+  top: -2px;
+  border-top: 1.8px solid currentColor;
+  border-right: 1.8px solid currentColor;
+  background: transparent;
+}
+
+@keyframes livingSky {
+  0% { transform: scale(1.018) translate3d(-0.5%, 0.25%, 0); }
+  45% { transform: scale(1.048) translate3d(0.95%, -0.72%, 0); }
+  100% { transform: scale(1.064) translate3d(1.55%, -1.25%, 0); }
+}
+
+@keyframes lightDrift {
+  from { transform: translate3d(-7%, 0.6%, 0) rotate(0.001deg); }
+  to { transform: translate3d(7%, -3.6%, 0) rotate(0.001deg); }
+}
+
+@keyframes mistDrift {
+  from { transform: translate3d(-6%, -1.8%, 0); }
+  to { transform: translate3d(6%, 1.8%, 0); }
+}
+
+@keyframes sunlightBreathe {
+  from { transform: translate3d(-4%, 1.4%, 0) scale(1); opacity: 0.34; }
+  to { transform: translate3d(4%, -2.8%, 0) scale(1.05); opacity: 0.58; }
+}
+
+@keyframes warmAirDrift {
+  from { transform: translate3d(-3%, 1.1%, 0); }
+  to { transform: translate3d(3.5%, -1.9%, 0); }
+}
+
+@keyframes windowRainDrift {
+  0% {
+    opacity: 0.20;
+    background-position: 0 -18px, 48px -10px, 88px -26px, 26px 22px, 0 -12px, 50px -18px;
+    transform: translate3d(-0.8%, -0.4%, 0) scale(1.01);
+  }
+  42% {
+    opacity: 0.31;
+    background-position: 0 32px, 48px 46px, 88px 28px, 26px 94px, 0 42px, 50px 36px;
+    transform: translate3d(0.4%, 0.5%, 0) scale(1.018);
+  }
+  72% {
+    opacity: 0.24;
+    background-position: 0 76px, 48px 102px, 88px 84px, 26px 146px, 0 86px, 50px 90px;
+    transform: translate3d(0.9%, 1%, 0) scale(1.022);
+  }
+  100% {
+    opacity: 0.18;
+    background-position: 0 128px, 48px 154px, 88px 136px, 26px 202px, 0 138px, 50px 144px;
+    transform: translate3d(1.2%, 1.4%, 0) scale(1.025);
+  }
+}
+
+@keyframes driftA {
+  from { transform: translateX(-18%); }
+  to { transform: translateX(42%); }
+}
+
+@keyframes driftB {
+  from { transform: translateX(20%); }
+  to { transform: translateX(-42%); }
+}
+
+@keyframes twinkle {
+  0%, 100% { filter: brightness(0.72); }
+  50% { filter: brightness(1.25); }
+}
+
+@keyframes foldUp {
+  0% {
+    opacity: 1;
+    transform: rotateX(0deg);
+    filter: brightness(1);
+  }
+  46% {
+    opacity: 1;
+    transform: rotateX(-82deg);
+    filter: brightness(0.54);
+  }
+  76% {
+    opacity: 0.7;
+    transform: rotateX(-146deg);
+    filter: brightness(0.82);
+  }
+  100% {
+    opacity: 0;
+    transform: rotateX(-180deg);
+    filter: brightness(1);
+  }
+}
+
+@keyframes cardSettle {
+  0%, 68% { filter: brightness(1); }
+  82% { filter: brightness(1.08); }
+  100% { filter: brightness(1); }
+}
+
+@keyframes colonPulse {
+  0%, 100% { opacity: 0.42; }
+  50% { opacity: 1; }
+}
+
+@keyframes quoteProgress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (min-width: 820px) {
+  body {
+    display: flex;
+    justify-content: center;
+    background: #101722;
+  }
+
+  .clock-app {
+    width: min(100vw, 760px);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 28px 90px rgba(0,0,0,0.42);
+  }
+}
+
+@media (max-width: 520px) {
+  .sky-room {
+    padding-left: 7px;
+    padding-right: 7px;
+    gap: 16px;
+  }
+
+  .date-chip {
+    gap: 5px;
+  }
+
+  .weather-chip strong {
+    font-size: 15px;
+  }
+
+  .weather-chip > span:not(.mini-weather) {
+    font-size: 15px;
+  }
+
+  .quote-foot {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-height: 720px) {
+  .clock-stage {
+    transform: translateY(-22px);
+  }
+
+  .clock-meta {
+    margin-bottom: 12px;
+    font-size: clamp(12px, 3.2vw, 18px);
+  }
+
+  .quote-panel {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  .quote-panel blockquote {
+    font-size: clamp(15px, 3.8vw, 23px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

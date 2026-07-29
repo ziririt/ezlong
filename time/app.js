@@ -341,6 +341,43 @@ function applyStaticTranslations(root) {
   else run();
 })();
 
+/* ─────────────────────────────────────────────────────────────
+ * 문장 번역 (i18n/quote-translations.js)
+ * ─────────────────────────────────────────────────────────────
+ * 한국어에서는 이 경로가 통째로 죽어 있다 — load("ko") 는 네트워크도
+ * 안 타고, lookup 은 항상 null 이다. 한국어 화면의 동작에 이 기능이
+ * 끼어들 여지를 아예 없애기 위한 것이다.
+ */
+const FZ_QUOTE_I18N =
+  (typeof window !== "undefined" && window.FlipZenQuoteTranslations) || null;
+
+function lookupQuoteTranslation(english) {
+  try {
+    if (!FZ_QUOTE_I18N || !english) return null;
+    return FZ_QUOTE_I18N.lookup(english);
+  } catch (e) {
+    return null;
+  }
+}
+
+// 번역 파일은 비동기로 온다. 도착하기 전에 이미 문장이 그려졌을 수 있으므로,
+// 도착하면 지금 떠 있는 문장을 조용히 다시 그린다(페이드 없이 즉시).
+// 실패하면 아무 일도 일어나지 않는다 — 영어 원문이 그대로 남는다.
+(function bootstrapQuoteTranslations() {
+  if (!FZ_QUOTE_I18N || typeof FZ_QUOTE_I18N.load !== "function") return;
+  try {
+    const locale =
+      (typeof window !== "undefined" && window.FlipZenI18n &&
+       window.FlipZenI18n.getLocale && window.FlipZenI18n.getLocale()) || "ko";
+    FZ_QUOTE_I18N.load(locale).then((ready) => {
+      if (!ready) return;
+      if (typeof lastRenderedQuote !== "undefined" && lastRenderedQuote) {
+        try { renderQuote(lastRenderedQuote, true); } catch (e) { /* 무시 */ }
+      }
+    });
+  } catch (e) { /* 무시 */ }
+})();
+
 const scenes = {
   morning: {
     location: "Seoul",
@@ -2272,12 +2309,22 @@ function renderQuote(index, immediate = false) {
     // 문장이 뽑히지 않게 하는 **문장 풀 필터링이 다음 과제**다.
     const rawEnglish = quote.english || "";
     const koMode = isKoreanLocale();
+    // 일본어 등 번역이 준비된 언어면 번역문을 가져온다. 없으면 null.
+    const translated = koMode ? null : lookupQuoteTranslation(rawEnglish);
 
     let englishText, bodyText;
     if (koMode) {
       // ★ 한국어는 예전과 완전히 동일 ★ 120자 초과 원문 숨김 규칙 포함
       englishText = rawEnglish.length > 120 ? "" : rawEnglish;
       bodyText = quote.text;
+    } else if (translated) {
+      // 번역이 있는 언어 — 한국어 화면과 같은 두 줄 구성으로 돌려놓는다.
+      // 위에 영어 원문(작게), 아래에 그 언어 번역(크게). 원래 이 디자인이
+      // "원문의 울림 + 읽을 수 있는 뜻"을 같이 주려던 것이었으므로, 번역이
+      // 생긴 순간 영어권 말고는 다 이 구성으로 돌아오는 것이 맞다.
+      // 120자 초과 원문을 접는 규칙도 한국어와 똑같이 적용한다.
+      englishText = rawEnglish.length > 120 ? "" : rawEnglish;
+      bodyText = translated.text;
     } else if (rawEnglish) {
       englishText = "";              // 위 작은 줄은 비우고
       bodyText = rawEnglish;         // 원문을 본문 자리로 올린다
@@ -2293,7 +2340,7 @@ function renderQuote(index, immediate = false) {
     quotePanel.classList.toggle("has-english", Boolean(englishText));
     setText("quoteEnglish", englishText);
     setText("quoteText", bodyText);
-    setText("quoteSource", formatQuoteSource(quote, koMode));
+    setText("quoteSource", formatQuoteSource(quote, koMode, translated));
     updateAladinLinkButton(quote);
     quotePanel.classList.remove("is-changing");
     restartQuoteProgress();
@@ -2322,12 +2369,35 @@ function renderQuote(index, immediate = false) {
  * 찾는다. 없으면 한국어 표기를 그대로 쓴다 — 출처를 아예 안 보여주는 것보다
  * 낫고, 어느 책인지 못 찾는 상황을 화면에서 드러내 보완 대상을 알려준다.
  */
-function formatQuoteSource(quote, koMode) {
+/**
+ * 출처 한 줄을 만든다. `<책제목> 저자` 형태.
+ *
+ * 2026-07-29 — 책이 아닌 출처를 위해 "제목 없음"을 정식으로 지원한다.
+ * 계기: 데이터에 『존 템플턴의 투자 격언』이라는 제목이 있었는데, 그런
+ * 책은 한국에도 일본에도 없다. 템플턴이 남긴 것은 칼럼("투자자를 위한
+ * 22가지 지침")과 여러 자리에서의 발언이지 단행본이 아니다.
+ *
+ * 이런 경우 억지로 책 제목을 만들어 넣으면 검색해도 안 나오는 책이 되고,
+ * 그 순간 앱이 출처를 확인하지 않았다는 사실이 독자에게 드러난다.
+ * title 이 비어 있으면 꺾쇠 없이 저자만 적는다 — 없는 책을 지어내는 것보다
+ * "누가 한 말인지만 밝히는" 편이 정직하다.
+ */
+function formatQuoteSource(quote, koMode, translated) {
+  const author = quote.author || "";
+  // 번역된 서지가 있으면 그쪽이 우선이다. 본문은 일본어인데 출처만 영어면
+  // 화면 안에서 언어가 갈린다 — 실제로 영어 서지로 먼저 붙였다가 그렇게 됐다.
+  if (!koMode && translated && (translated.title || translated.author)) {
+    const t = (translated.title || "").trim();
+    const a = translated.author || author;
+    return t ? `<${t}> ${a}` : a;
+  }
   if (!koMode && FZ_BOOK_TITLES && FZ_BOOK_TITLES.lookup) {
     const en = FZ_BOOK_TITLES.lookup(quote.title);
-    if (en && en.t) return `<${en.t}> ${en.a || quote.author}`;
+    if (en && en.t) return `<${en.t}> ${en.a || author}`;
   }
-  return `<${quote.title}> ${quote.author}`;
+  const title = (quote.title || "").trim();
+  if (!title) return author;
+  return `<${title}> ${author}`;
 }
 
 // 2026-07-16: 현재 문장의 책이 알라딘과 매칭됐으면 아이콘을 보여주고 링크를
@@ -2474,22 +2544,53 @@ function resetQuoteWindow() {
 //
 // ★ 한국어 화면은 이 게이트를 통과하지 않는다 ★ — koMode 일 때는 예전
 // 필터식 그대로라, 성동님이 보시는 화면의 문장 풀은 1,109개 전부 유지된다.
+// 2026-07-29 성동님 확정 — **비한국어 화면은 투자서 문장만 내보낸다.**
+// 문학·시·에세이·인문역사 같은 분야는 한국어 화면 전용이다. 이유가 둘이다.
+//   1. 그 분야 문장은 한국 독자를 향해 고른 것이라, 번역 없이 영문 원문만
+//      던지면 맥락이 통째로 빠진다(투자서는 애초에 영문 원전이 대부분이라
+//      원문 그대로가 오히려 정직하다).
+//   2. 투자서만 남으므로 설정의 '문장의 분야' 선택 UI 자체가 의미를 잃는다 —
+//      그래서 비한국어에서는 그 섹션을 감춘다(applyKoreaOnlyGating 아님,
+//      언어 기준이다. renderQuoteTopicsSection 참조).
+//
+// ★ selectedFlatGenres 를 비한국어에서는 아예 보지 않는다 ★
+// 예전에 한국어로 쓰다가 기기 언어를 바꾸면 저장된 선택값에 문학 분야가
+// 남아있을 수 있다. 그 값에 의존하면 "설정에서 못 고치는데 문학이 나오는"
+// 상태가 된다 — 언어로만 판정해서 그 함정을 없앤다.
+/**
+ * 설정의 '문장의 분야' 섹션을 로케일로 게이팅한다.
+ *
+ * ★ 좌표가 아니라 '언어'로 판정한다 ★ — applyKoreaOnlyGating()(기상특보·
+ * 미세먼지·평년비교)과 판정 기준이 다르다. 저쪽은 한국 기상청 데이터라
+ * "한국에 있는가"가 기준이고, 이쪽은 문장 풀 구성이라 "한국어로 읽는가"가
+ * 기준이다. 한국에 사는 일본어 사용자에게 문학 분야를 열어줄 이유가 없다.
+ *
+ * 섹션을 감추기만 하고 저장된 선택값(selectedFlatGenres)은 건드리지 않는다 —
+ * 기기 언어를 한국어로 되돌리면 예전에 고른 분야가 그대로 살아나야 한다.
+ */
+function applyQuoteTopicsLocaleGating() {
+  const section = document.getElementById("quoteTopicsSection");
+  if (!section) return;
+  section.hidden = !isKoreanLocale();
+}
+
 function getEligibleQuotes() {
   const koMode = isKoreanLocale();
   const filtered = quotes.filter((quote) => {
     const key = getQuoteFlatGenreKey(quote);
+    if (!koMode) {
+      if (key !== "investment") return false;
+      if (!(quote.english && String(quote.english).trim())) return false;
+      return true;
+    }
     if (selectedFlatGenres.size > 0 && !selectedFlatGenres.has(key)) return false;
-    if (!koMode && !(quote.english && String(quote.english).trim())) return false;
     return true;
   });
-  // 안전망: 장르 조합에 영문 원문 있는 문장이 하나도 없는 경우에도 문장
-  // 박스가 비어버리면 안 된다 — 그때는 영문 게이트만 풀어서 한국어라도
-  // 보여준다(빈 화면보다 낫다).
+  // 안전망: 뽑을 문장이 하나도 없어 문장 박스가 비어버리는 일은 없어야 한다.
+  // 비한국어에서 영문 원문 조건까지 걸었다가 0개가 되면, 투자서라는 조건만
+  // 남기고 영문 게이트를 푼다(빈 화면보다 낫다).
   if (!koMode && filtered.length === 0) {
-    return quotes.filter((quote) => {
-      const key = getQuoteFlatGenreKey(quote);
-      return selectedFlatGenres.size === 0 || selectedFlatGenres.has(key);
-    });
+    return quotes.filter((quote) => getQuoteFlatGenreKey(quote) === "investment");
   }
   return filtered;
 }
@@ -3988,6 +4089,31 @@ function updateWeatherAdvisoryDot(activeData) {
 }
 
 function renderWeatherAdvisory(data) {
+  // ★ 2026-07-29 시뮬레이터 실측으로 잡은 결함 ★
+  // 일본어 기기 + Cupertino 위치인데 화면에 한국 기상특보가 떴다
+  // ("폭염경보 : 경기도(고양, 남양주…)"). applyKoreaOnlyGating() 이
+  // wdAdvisoryBanner.hidden = true 를 이미 걸어뒀는데도 그랬다.
+  //
+  // 원인은 CSS 우선순위였다. hidden 속성의 display:none 은 **UA 스타일시트**가
+  // 주는 것이고, styles.css 의 `.weather-advisory-banner.is-active { display:flex }`
+  // 는 **작성자 스타일시트**다 — 작성자 쪽이 항상 이긴다. 그래서 게이트가
+  // hidden 을 걸어놔도, 특보 응답이 도착해 is-active 가 붙는 순간 배너가
+  // 도로 보였다. 에러도 경고도 없이 게이트만 조용히 무력화되는 종류다.
+  //
+  // 이건 언어와 무관한 버그다 — 미국의 영어 사용자도 똑같이 한국 특보를
+  // 봤다. 기상특보 데이터는 기상청 전국 자료라 좌표와 무관하게 내려온다.
+  //
+  // 수정은 두 겹이다.
+  //   1) 여기서 게이트를 다시 확인해, 꺼져 있으면 is-active 를 아예 안 붙인다
+  //   2) styles.css 에 `[hidden] { display:none !important }` 를 더해
+  //      "hidden 인데 보이는" 상태 자체가 불가능하게 만든다
+  // 한국 사용자는 게이트가 항상 켜져 있으므로 동작이 바뀌지 않는다.
+  if (wdAdvisoryBanner && wdAdvisoryBanner.hidden) {
+    wdAdvisoryBanner.classList.remove("is-active");
+    wdAdvisoryBanner.setAttribute("aria-hidden", "true");
+    collapseWeatherAdvisoryDetail();
+    return;
+  }
   wdLastAdvisoryData = data && data.active ? data : null;
   updateWeatherAdvisoryDot(wdLastAdvisoryData);
   if (!wdAdvisoryBanner || !wdAdvisoryBannerText) return;

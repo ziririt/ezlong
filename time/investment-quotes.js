@@ -8319,5 +8319,46 @@ window.investmentQuotes = [
     "title": "무소유",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "The big money is not in the buying and selling, but in the waiting.",
+    "text": "큰돈은 사고파는 데서 나오는 것이 아니라, 기다리는 데서 나온다.",
+    "title": "가난한 찰리의 연감",
+    "author": "찰리 멍거",
+    "category": "patience"
+  },
+  {
+    "english": "I've also learned that it's easier to avoid temptation than to resist it.",
+    "text": "나는 유혹에 저항하는 것보다, 애초에 유혹을 피하는 것이 훨씬 쉽다는 사실을 배웠다.",
+    "title": "존경받는 부자 (The Education of a Value Investor)",
+    "author": "가이 스파이어 (Guy Spier)",
+    "category": "mindset"
+  },
+  {
+    "english": "The resilient resists shocks and stays the same; the antifragile gets better. Wind extinguishes a candle and energizes fire. Some things benefit from shocks; they thrive and grow when exposed to volatility, randomness, disorder, and stressors.",
+    "text": "회복력이 있는 것은 충격을 견디며 그대로 남는다. 그러나 안티프래질한 것은 충격을 겪으며 오히려 더 나아진다. 바람은 촛불을 꺼뜨리지만 불씨는 오히려 타오르게 만든다. 어떤 것들은 변동성과 무작위성, 무질서와 스트레스에 노출될 때 손해를 보지 않고 오히려 번성하고 성장한다.",
+    "title": "안티프래질 (Antifragile: Things That Gain from Disorder)",
+    "author": "나심 니콜라스 탈레브 (Nassim Nicholas Taleb)",
+    "category": "mindset"
+  },
+  {
+    "english": "You don't have to understand life. You just have to live it.",
+    "text": "삶을 다 이해할 필요는 없다. 그저 살아내면 된다.",
+    "title": "미드나잇 라이브러리",
+    "author": "매트 헤이그",
+    "genre": "literature"
+  },
+  {
+    "english": "Speculation is an effort, probably unsuccessful, to turn a little money into a lot. Investment is an effort, which should be successful, to prevent a lot of money from becoming a little.",
+    "text": "투기는 적은 돈을 큰돈으로 불리려는, 대개 실패로 끝나는 시도다. 반면 투자는 큰돈이 적은 돈으로 줄어드는 것을 막으려는, 마땅히 성공해야 할 시도다.",
+    "title": "고객의 요트는 어디에 있는가 (Where Are the Customers' Yachts?)",
+    "author": "프레드 슈웨드 (Fred Schwed Jr.)",
+    "category": "mindset"
+  },
+  {
+    "text": "삶에는 그냥 흘러가는 시간도 있고, 기다리거나 견뎌야 하는 시간도 있다. 중요한 건 그게 결코 버리는 시간이 아니라는 걸 깨닫는 일이다.",
+    "title": "평일도 인생이니까",
+    "author": "김신지",
+    "genre": "literature"
   }
 ];
