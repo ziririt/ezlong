@@ -289,22 +289,92 @@ def main():
     day = et_day_of(sig.get('generatedAt'))
     buy, sell, gear = comp_scores(syms)
 
+    # 신선도 가드 — 상류 파이프라인이 죽어 있으면 낡은 점수로 원장을 전진시키지 않는다
+    stale = False
+    try:
+        gen = datetime.fromisoformat(sig['generatedAt'].replace('Z', '+00:00'))
+        stale = (datetime.now(timezone.utc) - gen) > timedelta(days=3)
+    except Exception:
+        pass
+
     ledger = load(LEDGER, {}) or {}
     comp = ledger.setdefault('comp', {})
     advanced = False
-    if comp.get('lastDay') != day:
+    if comp.get('lastDay') != day and not stale:
         action = advance(comp, day, price, buy, sell, gear, dev200)
         advanced = True
     else:
-        action = None   # 같은 거래일 재실행 — 상태 진행 없이 뷰만 갱신
+        action = None   # 같은 거래일 재실행/신선도 실패 — 상태 진행 없이 뷰만 갱신
 
     st, label = stance_of(comp, action, buy, sell, gear)
+
+    # 스탠스 스트릭 (거래일 기준) + 오늘 변경 여부
+    changed = False
+    if advanced:
+        if st == comp.get('lastStance'):
+            comp['stanceStreak'] = comp.get('stanceStreak', 0) + 1
+        else:
+            comp['stanceStreak'] = 1
+            changed = comp.get('lastStance') is not None
+        comp['lastStance'] = st
+        comp['changedDay'] = day if changed else comp.get('changedDay')
+        if comp.get('history'):
+            comp['history'][-1]['st'] = st
+    streak = comp.get('stanceStreak', 1)
+
+    # 판단 흐름 라인 — "관망 2일 → 보유(오늘, 4일째)"
+    SHORT = dict(accumulate='분할매수', accumulate_wait='매수대기', hold='보유',
+                 trim='축소', risk_off='위험관리', wait='관망')
+    flow = None
+    runs = []
+    for h in comp.get('history', [])[-15:]:
+        s2 = h.get('st')
+        if not s2:
+            continue
+        if runs and runs[-1][0] == s2:
+            runs[-1][1] += 1
+        else:
+            runs.append([s2, 1])
+    if len(runs) >= 2:
+        older = ' → '.join(f'{SHORT[s2]} {n}일' for s2, n in runs[-3:-1])
+        flow = f'{older} → {SHORT[runs[-1][0]]}(오늘, {runs[-1][1]}일째)'
+    elif runs:
+        flow = f'{SHORT[runs[-1][0]]} {runs[-1][1]}일째 유지'
+
+    # 성적 자기공개 — 방향 판단(강세/약세)만, 5거래일 후 수익률로 채점 (표본 15+부터 공개)
+    grade = None
+    hist = comp.get('history', [])
+    if len(hist) >= 21:
+        hits = n = 0
+        for i in range(len(hist) - 5):
+            s2 = hist[i].get('st')
+            if s2 not in ('accumulate', 'hold', 'trim', 'risk_off'):
+                continue
+            fwd = hist[i + 5]['price'] / hist[i]['price'] - 1
+            bull = s2 in ('accumulate', 'hold')
+            n += 1
+            if (bull and fwd > 0) or (not bull and fwd < 0):
+                hits += 1
+        if n >= 15:
+            grade = dict(n=n, hits=hits, pct=round(hits / n * 100))
     commentary = comp_commentary(comp, action, buy, sell, gear, dev200, price)
+
+    if grade:
+        commentary.append(f'성적은 숨기지 않겠습니다. 최근 {grade["n"]}번의 방향 판단 중 '
+                          f'{grade["hits"]}번이 5거래일 뒤 방향과 일치했습니다(적중률 {grade["pct"]}%). '
+                          f'이 숫자는 매일 갱신되고, 나빠져도 그대로 공개합니다.')
+    if stale:
+        commentary.insert(0, '주의 — 상류 데이터가 3일 이상 갱신되지 않아 오늘은 판단을 전진시키지 '
+                             '않았습니다. 아래 내용은 마지막 정상 데이터 기준입니다.')
 
     view = dict(
         generatedAtKST=now_kst(),
         dataDay=day,
         beta=True,
+        stanceChangedToday=changed,
+        stanceStreak=streak,
+        flow=flow,
+        stale=stale,
         comp=dict(stance=st, stanceLabel=label, commentary=commentary,
                   confidence=('상' if gear >= 3 and sell < CFG['warn_sell'] else
                               '중' if not comp.get('stopped') else '하'),
