@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-07-30-23:20",
+      "timestamp_kst": "2026-07-30(목) 23:20 KST",
+      "key_event": {
+        "name": "MSFT 실적 호조, AI 투자 효과 확인",
+        "name_en": "MSFT Earnings Beat, AI Investment Validated",
+        "time": "장 마감 직후 ~ 현재",
+        "why": "AI 섹터 투자 심리 회복, 시장 전반 상승 동력",
+        "why_en": "Boosts AI sector sentiment, drives broad market rally"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "MSFT 호실적으로 AI 투자 심리 회복, 시장 전반 상승. 금리 불확실성 상존.",
+      "summary_en": "MSFT earnings boost AI sentiment and market rally, but rate uncertainty lingers.",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "MSFT AI 투자 성과 입증",
+          "name_en": "MSFT Validates AI Investment Success",
+          "desc": "Azure 성장률 43%, Copilot 좌석 증가 등 AI 투자 결실 확인",
+          "desc_en": "Azure growth 43%, Copilot seats up, validating AI bet",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 20,
+          "name": "삼성전자 확정 실적 발표",
+          "name_en": "Samsung Electronics Confirms Strong Earnings",
+          "desc": "잠정치 수준의 역대급 실적 재확인, 펀더멘털 자신감 부여",
+          "desc_en": "Confirms record earnings near preliminary, boosts fundamentals",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 15,
+          "name": "미국 증시 전반 반등",
+          "name_en": "Broad US Market Rebounds",
+          "desc": "FOMC 후 과매도 심리 해소, 기술주 중심 회복세",
+          "desc_en": "Post-FOMC oversold sentiment fades, tech leads recovery",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "미 10년 국채 금리 상승",
+          "name_en": "US 10-Year Treasury Yields Rise",
+          "desc": "4.66% 상회, 성장주 투자 매력 감소 우려 지속",
+          "desc_en": "Above 4.66%, dampening growth stock appeal",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 10,
+          "name": "메타 플랫폼스 실적 가이던스 하향",
+          "name_en": "Meta Platforms Lowers Guidance",
+          "desc": "향후 성장 둔화 우려, AI 투자 비용 부담 부각",
+          "desc_en": "Concerns over future growth, AI cost burden",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "FOMC 금리 동결 및 점도표",
+          "name_en": "FOMC Rate Hold & Dot Plot",
+          "desc": "금리 동결은 안도감을 주나, 점도표상 금리 인하 횟수 축소 가능성 상존",
+          "desc_en": "Rate hold offers relief, but reduced rate cuts in dot plot loom",
+          "category": "fed_policy"
+        }
+      ]
+    },
+    {
       "id": "2026-07-30-21:50",
       "timestamp_kst": "2026-07-30(목) 21:50 KST",
       "key_event": {
@@ -683,68 +751,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-07-29-21:50",
-      "timestamp_kst": "2026-07-29(수) 21:50 KST",
-      "key_event": {
-        "name": "FOMC 및 주요 기술주 실적 대기",
-        "name_en": "Anticipation for FOMC and Big Tech Earnings",
-        "time": "오늘 정규장 및 향후 12시간",
-        "why": "금리 정책 불확실성, AI 밸류에이션 논란, 시장 방향성 결정",
-        "why_en": "Fed policy uncertainty, AI valuation debate, market direction"
-      },
-      "positive_total": 20,
-      "negative_total": 80,
-      "summary": "FOMC 및 주요 기술주 실적 관망 속 지정학적 긴장 고조로 부정 우위 심화.",
-      "summary_en": "Negative sentiment deepens due to escalating geopolitical tensions amid anticipation for FOMC and major tech earnings.",
-      "positive_factors": [
-        {
-          "score": 20,
-          "name": "일부 기술주 투자 심리 유지",
-          "name_en": "Maintained Investor Sentiment in Select Tech Stocks",
-          "desc": "일부 기술주에 대한 투자 아이디어 지속 제시.",
-          "desc_en": "Continued presentation of investment ideas for some tech stocks.",
-          "category": "other"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "미-이란 갈등 재점화",
-          "name_en": "US-Iran Hostilities Reignite",
-          "desc": "이란과의 적대감 재점화로 지정학적 긴장 고조, 유가 상승 압력.",
-          "desc_en": "Renewed hostilities with Iran escalate geopolitical tensions, driving oil prices higher.",
-          "category": "geopolitics"
-        },
-        {
-          "score": 25,
-          "name": "FOMC 금리 결정 불확실성",
-          "name_en": "FOMC Rate Decision Uncertainty",
-          "desc": "Fed 금리 결정 및 주요 기술주 실적 발표를 앞두고 시장 관망 심리.",
-          "desc_en": "Market cautious ahead of Fed rate decision and major tech earnings reports.",
-          "category": "fed_policy"
-        },
-        {
-          "score": 15,
-          "name": "반도체 섹터 약세 지속",
-          "name_en": "Continued Weakness in Semiconductor Sector",
-          "desc": "SK Hynix 실적 실망감 및 AI 밸류에이션 우려로 SOXX 1.23% 하락.",
-          "desc_en": "SK Hynix earnings disappointment and AI valuation concerns lead to SOXX falling 1.23%.",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "VIX 공포지수 상승",
-          "name_en": "VIX Fear Index Rises",
-          "desc": "시장 불확실성 증가로 VIX 공포지수 2.97% 상승.",
-          "desc_en": "Increased market uncertainty reflected in a 2.97% rise in the VIX fear index.",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-07-30T12:51:09Z",
+  "updated_at": "2026-07-30T14:21:00Z",
   "max_entries": 10
 }
