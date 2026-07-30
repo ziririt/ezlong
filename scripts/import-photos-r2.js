@@ -32,6 +32,18 @@
  *                     새 폴더를 처음 넣을 때 결과를 먼저 눈으로 보는 용도.
  *   --passes=<n>      장당 판정 횟수(기본 3). 정확도 우선이면 5까지 올려도 된다.
  *   --limit=<n>       앞에서 n장만 처리(테스트용)
+ *   --max-edge=<n>    긴 변 상한 픽셀(기본 2400). 기존 R2 배치와 같은 규격이다.
+ *   --quality=<n>     WEBP 품질(기본 80)
+ *   --no-resize       리사이즈·WEBP 변환 없이 원본을 그대로 올린다(권장하지 않음)
+ *
+ * ── 리사이즈를 기본으로 켜둔 이유 ─────────────────────────────────────────
+ * 이 앱의 배경사진은 휴대폰 화면에 깔리는 용도다. Pexels 원본은 장당 2~15MB에
+ * 5000px가 넘어가는 경우가 많아 그대로 올리면 R2 용량과 앱 로딩이 둘 다 나빠진다.
+ * 기존 R2 배치(upload-pixel-20260712-r2.js)도 같은 이유로 "긴 변 2400px 캡,
+ * 크롭 없이 비율 유지, WEBP quality 80"으로 통일했고, 실제 매니페스트상
+ * 1365장의 중앙값이 1600x2400 / 446KB다. 새로 들어오는 사진도 같은 규격으로
+ * 맞춘다. 크롭은 하지 않는다 — 과거에 세로 1920 고정 + 가로 강제 맞춤(크롭형)
+ * 리사이즈가 화면 잘림 문제의 원인이었던 전력이 있다.
  *
  * 중단 후 재실행해도 안전하다 — storagePath 기준으로 이미 등록된 건 건너뛰고,
  * 10장마다 매니페스트를 중간 저장한다.
@@ -95,6 +107,36 @@ async function saveManifest(manifest) {
   await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
 }
 
+/**
+ * 긴 변 maxEdge 이하로 비율 유지 축소 + WEBP 변환. 크롭하지 않는다.
+ * 원본이 이미 작으면 확대하지 않고 그대로 두되 WEBP로만 바꾼다.
+ * 결과 파일 경로를 반환한다. Pillow가 없으면 null(호출측이 원본 사용).
+ */
+function resizeToWebp(srcPath, outPath, maxEdge, quality) {
+  const snippet = `
+from PIL import Image
+im = Image.open(${JSON.stringify(srcPath)})
+im = im.convert("RGB")
+w, h = im.size
+m = ${maxEdge}
+if max(w, h) > m:
+    if w >= h:
+        im = im.resize((m, max(1, round(h * m / w))), Image.LANCZOS)
+    else:
+        im = im.resize((max(1, round(w * m / h)), m), Image.LANCZOS)
+im.save(${JSON.stringify(outPath)}, "WEBP", quality=${quality}, method=6)
+print(im.size[0], im.size[1])
+`;
+  try {
+    const out = execFileSync("python3", ["-c", snippet], {
+      encoding: "utf8", stdio: ["ignore", "pipe", "pipe"],
+    }).trim().split(/\s+/);
+    return { width: Number(out[0]) || null, height: Number(out[1]) || null };
+  } catch (error) {
+    return null;
+  }
+}
+
 /** 이미지 픽셀 크기 — python3+Pillow 또는 sips. 실패해도 등록은 진행한다. */
 function imageDimensions(filePath) {
   try {
@@ -147,6 +189,17 @@ async function main() {
   const passes = Number(optionValue("passes", "3"));
   const limit = Number(optionValue("limit", "0"));
   const prefix = optionValue("prefix", `manual-${todayKST()}`);
+  // 컬렉션 이름. 매니페스트의 collection 필드에 들어가 관리툴에서 묶어 보는 용도다.
+  // 주의: app.js가 collection === "cool-summer" 인 사진만 따로 풀을 만들어
+  // 더운 날 우선 노출하는 특수 로직을 갖고 있다(app.js 1243행). 그 이름만
+  // 특별하고 나머지 값은 일반 풀로 들어가므로, 새 컬렉션 이름은 자유롭게 써도 된다.
+  const collection = optionValue("collection", "");
+  const doResize = !hasFlag("no-resize");
+  const maxEdge = Number(optionValue("max-edge", "2400"));
+  const quality = Number(optionValue("quality", "80"));
+  // 리사이즈 결과물은 원본 폴더를 더럽히지 않게 .resized 하위에 만든다.
+  const resizeDir = path.join(dir, ".resized");
+  if (doResize) await fs.mkdir(resizeDir, { recursive: true });
 
   if (!dryRun && !fsSync.existsSync(WORK_ROOT)) {
     console.error(`wrangler가 설치된 폴더를 찾을 수 없습니다: ${WORK_ROOT}`);
@@ -175,6 +228,7 @@ async function main() {
   console.log(`대상      : ${files.length}장`);
   console.log(`R2 경로   : ${R2_BUCKET}/${prefix}/`);
   console.log(`판정 횟수 : 장당 ${passes}회 (다수결)`);
+  console.log(`리사이즈  : ${doResize ? `긴 변 ${maxEdge}px 캡, WEBP q${quality}, 크롭 없음` : "안 함 (원본 그대로)"}`);
   console.log(`모드      : ${dryRun ? "DRY RUN — 분류만, 업로드·기록 없음" : "실제 업로드 + 매니페스트 기록"}`);
   console.log("");
 
@@ -182,8 +236,10 @@ async function main() {
   const reviewList = [];
 
   for (const [index, fileName] of files.entries()) {
-    const localPath = path.join(dir, fileName);
-    const storagePath = `${prefix}/${fileName}`;
+    const originalPath = path.join(dir, fileName);
+    const base = fileName.replace(/\.[^.]+$/, "");
+    const outName = doResize ? `${base}.webp` : fileName;
+    const storagePath = `${prefix}/${outName}`;
     const label = `[${index + 1}/${files.length}] ${fileName}`;
 
     if (existingStoragePaths.has(storagePath)) {
@@ -192,7 +248,21 @@ async function main() {
       continue;
     }
 
-    const classified = await classifyPhoto(localPath, { apiKey, passes });
+    // 업로드 대상 파일을 먼저 만든다. 분류도 이 파일로 한다 —
+    // 매니페스트에 기록될 치수·용량이 실제 R2에 올라가는 것과 일치해야 한다.
+    let uploadPath = originalPath;
+    let dims = null;
+    if (doResize) {
+      const outPath = path.join(resizeDir, outName);
+      dims = resizeToWebp(originalPath, outPath, maxEdge, quality);
+      if (dims) {
+        uploadPath = outPath;
+      } else {
+        console.log(`${label} — 리사이즈 실패(Pillow 없음?), 원본으로 진행`);
+      }
+    }
+
+    const classified = await classifyPhoto(uploadPath, { apiKey, passes });
 
     if (!classified.ok) {
       console.log(`${label} — 분류 실패: ${classified.error}`);
@@ -224,15 +294,15 @@ async function main() {
     }
 
     try {
-      uploadToR2(localPath, storagePath);
+      uploadToR2(uploadPath, storagePath);
     } catch (error) {
       console.log(`   업로드 실패: ${String(error.message || error).slice(0, 200)}`);
       failed += 1;
       continue;
     }
 
-    const { width, height } = imageDimensions(localPath);
-    const stat = await fs.stat(localPath);
+    const { width, height } = dims || imageDimensions(uploadPath);
+    const stat = await fs.stat(uploadPath);
 
     manifest.images.push({
       src: `${R2_PUBLIC_BASE}/${storagePath}`,
@@ -245,6 +315,7 @@ async function main() {
       height,
       sizeKB: Math.round(stat.size / 102.4) / 10,
       source: "manual-curated",
+      ...(collection ? { collection } : {}),
       collectedAtKST: nowKST(),
       tagSource: "vision-classifier",
       tagAgreement: classified.agreement,

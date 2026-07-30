@@ -181,12 +181,45 @@ function seasonFromKst(date = kstNow()) {
 //      2/16~4/30 → 봄.
 // (유저 원문은 "8월 30일까지"였으나 9/1과의 사이에 8/31 하루가 비어
 // 8/31까지로 붙였다 — 하루 공백으로 태그 없는 사진이 생기는 것 방지.)
+// ─────────────────────────────────────────────────────────────────────
+// 2026-07-28 글로벌화 대응: SEASON_OVERRIDE 환경변수
+// ─────────────────────────────────────────────────────────────────────
+// 배경: 글로벌 출시를 준비하며 계절별 보유량을 세어보니 겨울이 39장뿐이었다
+// (봄·여름·가을은 각 2,885~2,890장). 원인은 이 봇이 "수집하는 시점의 한국
+// 계절"만 모으도록 돼 있었기 때문 — 겨울에만 겨울 사진이 쌓이는 구조다.
+//
+// 그런데 글로벌에서는 이게 즉시 문제가 된다:
+//   · 지금(7월) 남반구 — 호주·뉴질랜드·남아공·아르헨티나·칠레 — 는 한겨울이다.
+//     호주·뉴질랜드는 영어권이라 1차 출시 타깃에 바로 들어간다.
+//   · 12~2월이 되면 북반구 전체(미국·유럽·일본)가 겨울이라 같은 문제가 번진다.
+//
+// ★ 함정 ★ 검색어만 겨울로 바꾸면 안 된다.
+// 아래 월 기반 폴백이 "수집한 날짜"를 보기 때문에, 7월에 겨울 사진을 모으면
+// 파일명에 snow/winter 가 없는 한 ["autumn","spring","summer"] 가 붙어버린다.
+// 즉 겨울 사진을 모아놓고 겨울 태그를 안 다는 사태가 난다. 그래서 검색어와
+// 태그를 같은 스위치 하나로 묶는다.
+//
+// 사용법 (워크플로 수동 실행 시 season 입력, 또는 로컬에서):
+//   SEASON_OVERRIDE=winter node scripts/collect-time-background-photos.js
+// 값이 없거나 이상하면 기존 동작(현재 날짜 기준) 그대로 — 기본 동작 불변.
+const VALID_SEASONS = ["spring", "summer", "autumn", "winter"];
+const SEASON_OVERRIDE = VALID_SEASONS.includes(String(process.env.SEASON_OVERRIDE || "").trim())
+  ? String(process.env.SEASON_OVERRIDE).trim()
+  : null;
+
+if (SEASON_OVERRIDE) {
+  console.log(`::notice::계절 강제 수집 모드 — SEASON_OVERRIDE=${SEASON_OVERRIDE} (검색어·태그 모두 이 계절로 고정)`);
+}
+
 function seasonTagsForNewPhoto({ info, filename, weatherTag, date = kstNow() }) {
   const text = [
     filename || "",
     info?.canonicaltitle || "",
     info?.descriptionurl || "",
   ].join(" ");
+
+  // 내용상 계절감이 확실한 것은 오버라이드보다도 우선한다 —
+  // 겨울 수집 중에 벚꽃 사진이 딸려 들어오면 그건 봄 사진이 맞다.
   if (/pool|swimming|bikini|surf|tropical|palm|vacation|vacanc|waterpark|snorkel|barbecue|beach volleyball/i.test(text)) {
     return ["summer"];
   }
@@ -199,6 +232,11 @@ function seasonTagsForNewPhoto({ info, filename, weatherTag, date = kstNow() }) 
   if (/cherry blossom|sakura|blossom|spring flower/i.test(text)) {
     return ["spring"];
   }
+
+  // 강제 수집 모드: 내용 단서가 없으면 지정 계절 단독으로 붙인다.
+  // (월 기반 폴백을 타면 엉뚱한 계절이 붙어 수집 자체가 무의미해진다)
+  if (SEASON_OVERRIDE) return [SEASON_OVERRIDE];
+
   const month = date.getMonth() + 1;
   const day = date.getDate();
   if (month >= 5 && month <= 8) return ["autumn", "spring", "summer"];
@@ -208,12 +246,17 @@ function seasonTagsForNewPhoto({ info, filename, weatherTag, date = kstNow() }) 
 }
 
 function seasonQuery(season) {
+  const target = SEASON_OVERRIDE || season;
   return {
     spring: "spring fresh green flowers",
     summer: "summer lush green July",
     autumn: "autumn foliage clear air",
-    winter: "winter calm landscape",
-  }[season] || "summer lush green";
+    // 2026-07-28: 기존 "winter calm landscape" 는 너무 밋밋해 무채색 설원이
+    // 많이 걸렸다. CLAUDE.md 31항 취향(비비드·낭만적·초록초록)에 맞춰
+    // 색감 있는 겨울 풍경 쪽으로 검색어를 보강한다 — 눈 덮인 침엽수림,
+    // 파란 하늘의 설산, 서리 낀 숲, 겨울 호수, 따뜻한 조명의 겨울 마을.
+    winter: "winter snowy forest evergreen blue sky sunlit snow frosted trees cozy winter village lights",
+  }[target] || "summer lush green";
 }
 
 function weatherTagFromText(text = "") {
