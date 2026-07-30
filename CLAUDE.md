@@ -15,16 +15,23 @@
 파일 수정을 시작하기 **전에** 유저에게 아래 명령 실행을 요청한다:
 
 ```bash
-sh ~/Documents/Claude/Projects/미국주식투자자를\ 위한\ ezlong.com/backup-before-session.sh
+sh ~/Developer/ezlong/backup-before-session.sh
 ```
 
 백업 완료 메시지 확인 후에만 파일 수정 시작.
 
-### 2. Claude sandbox bash에서 git 쓰기 명령 금지
+### 2. git 쓰기 명령의 실행 주체 (2026-07-30 개정 — 44-2 발효)
 
-- 허용: `git log`, `git status`, `git diff` (읽기 전용)
-- **금지: `git add`, `git commit`, `git push`, `git pull`, `git rebase`, `git stash`**
-- 모두 유저가 터미널에서 직접 실행한다.
+- **Claude sandbox bash에서의 git 쓰기 명령은 여전히 금지**(add/commit/push/pull/rebase/stash).
+- 조회는 `git --no-optional-locks status` / `git --no-optional-locks diff` 로만 한다
+  (샌드박스는 락을 만들고 못 지운다 — 이사 후에도 습관 유지). `git log`는 그냥 안전.
+- **2026-07-30부터(저장소 ~/Developer 이사 완료, 성동님 확정): Claude가 osascript
+  (do shell script) 경유로 pull→add(파일 명시)→commit→push를 직접 실행한다.**
+  성동님 터미널 요청은 osascript가 불가능한 환경(클라우드 세션 등)에서만.
+- 가드레일(협상 불가): `git add -A` 금지 / `reset --hard` 금지 / force push 금지 /
+  push 전 diff 확인 / 10개+ 파일·핵심 알고리즘 변경은 push 전 성동님 승인 /
+  push 후 라이브 검증(web.app 우선, 7항 트리)까지가 배포의 완료 / push 결과 매번 채팅 보고 /
+  배포마다 앱 저장소 RELEASES.md에 한 줄 기록 + deploy 태그(44-2 버전표·롤백 체계).
 
 ### 3. pull-first 철칙 + push = 자동 배포 (2026-07-03 개정)
 
@@ -969,6 +976,14 @@ NDX가 다시 나스닥100 CFD를 가리키게 되어(22항의 "정의 일치" �
 ---
 
 ## 26. iCloud 동기화로 인한 git index.lock 반복 재발 — Wi-Fi 일시 차단 우회 (2026-07-14 확정)
+
+**★ 2026-07-30 이사 완료 — 이 항은 대부분 역사적 참고가 됐다.** 두 저장소는 iCloud 밖
+정식 위치로 이사했다: 이 저장소는 `~/Developer/ezlong`, 앱 저장소는
+`~/Developer/flipzen-weather-app`. 구 폴더(`~/Documents/Claude/Projects/...`,
+`~/Documents/투자서 날씨 앱 2`)는 `_retired_iCloud_사본` 접미사로 개명해 2주 보관 후 삭제
+예정 — 구 폴더에서 절대 작업하지 말 것. 옛 문서(EZLONG_GUIDE, SAFETY_MANUAL, HANDOVER 등)에
+남아있는 옛 경로 표기는 2026-07-30 이전 기록이다. 아래 Wi-Fi 우회 절차는 여전히 iCloud
+동기화 범위 안에 있는 다른 폴더(ezlong-backups 등)에서 같은 증상이 나면 그때만 쓴다.
 
 **배경:** 유저의 작업 폴더(`~/Documents/Claude/Projects/...`, `~/Documents/투자서 날씨 앱 2` 등)가
 전부 iCloud Drive의 "데스크탑 및 문서 폴더" 동기화 범위 안에 있다. 2026-07-14, 라이브 저장소

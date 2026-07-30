@@ -13,7 +13,7 @@
 # 로그는 항상 /tmp/classifier-job.log 에 쌓이고, 끝나면 마지막 줄에
 # "JOB_DONE <종료코드>" 가 찍힌다(호출측이 완료를 판별하는 신호).
 
-REPO="/Users/ziririt/Documents/Claude/Projects/미국주식투자자를 위한 ezlong.com"
+REPO="/Users/ziririt/Developer/ezlong"
 NODE="/opt/homebrew/bin/node"
 LOG="/tmp/classifier-job.log"
 
