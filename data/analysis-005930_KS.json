@@ -3,35 +3,35 @@
   "name": "삼성전자",
   "assetType": "stock",
   "market": "kr",
-  "updatedAt": "2026-07-30T03:17:00.964Z",
+  "updatedAt": "2026-07-30T05:46:12.603Z",
   "price": {
-    "current": 214500,
-    "change": 6000,
-    "changePct": 2.88,
+    "current": 209500,
+    "change": 1000,
+    "changePct": 0.48,
     "high52": 374500,
     "low52": 67500,
-    "pos52": 47.9,
+    "pos52": 46.3,
     "marketState": "REGULAR",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 264100,
-    "sma50": 299920,
-    "sma100": 256992.9719,
-    "sma200": 192014.8149,
-    "rsi": 35.75,
+    "sma20": 263850,
+    "sma50": 299820,
+    "sma100": 256942.9719,
+    "sma200": 191989.8146,
+    "rsi": 34.15,
     "macd": {
-      "macd": -22293.845034,
-      "signal": -16853.273083,
-      "histogram": -5440.571952
+      "macd": -22692.705433,
+      "signal": -16933.045162,
+      "histogram": -5759.660271
     },
     "bb": {
-      "upper": 320625.7463,
-      "middle": 264100,
-      "lower": 207574.2537,
-      "bandwidth": 0.4281
+      "upper": 321287.8795,
+      "middle": 263850,
+      "lower": 206412.1205,
+      "bandwidth": 0.4354
     },
     "adx": {
       "plusDI": 12.98,
@@ -44,11 +44,11 @@
     "swingResistance": 223000,
     "swingSupport": 167300,
     "pivot": {
-      "pp": 242900,
-      "r1": 296600,
-      "r2": 378700,
-      "s1": 160800,
-      "s2": 107100
+      "pp": 241233.33,
+      "r1": 293266.67,
+      "r2": 377033.33,
+      "s1": 157466.67,
+      "s2": 105433.33
     }
   },
   "analysis": {
@@ -64,43 +64,43 @@
     "buyScore": 4,
     "scoreReason": "RSI 과매도 진입, MACD 약세 수렴 유지",
     "scoreReasonEn": "RSI entering oversold, MACD maintaining bearish convergence",
-    "rsiTrajectory": "45.4 → 35.7 (과매도 진입)",
-    "rsiTrajectoryEn": "45.4 → 35.7 (entering oversold)",
-    "macdTrajectory": "히스토 -3197.6937 → -5440.5720 (악화)",
-    "macdTrajectoryEn": "histogram -3197.6937 → -5440.5720 (worsening)",
-    "pricePattern": "횡보 — 5일 저가(189,200) > 20일 저가(189,200) * 1.005 미충족, 5일 고가(266,500) < 20일 고가(325,000) * 0.995 미충족",
-    "pricePatternEn": "sideways — 5-day low (189,200) not > 20-day low (189,200) * 1.005, 5-day high (266,500) not < 20-day high (325,000) * 0.995",
-    "volComment": "거래량비 0.79 (위축)",
+    "rsiTrajectory": "45.4 → 33.8 (과매도 진입)",
+    "rsiTrajectoryEn": "45.4 → 33.8 (entering oversold)",
+    "macdTrajectory": "히스토 -3197.6937 → -5759.6603 (악화)",
+    "macdTrajectoryEn": "histogram -3197.6937 → -5759.6603 (worsening)",
+    "pricePattern": "5일 저가(189,200) < 20일 저가(189,200) * 1.005 → Lower Low → 약화 신호",
+    "pricePatternEn": "5-day low (189,200) < 20-day low (189,200) * 1.005 → Lower Low → weakening signal",
+    "volComment": "거래량비 1.09 (정상)",
     "bbPosition": "하단근처",
-    "reason": "3일 연속 관망 유지. RSI는 과매도 구간에 진입했으나, MACD 히스토그램은 악화되며 약세 수렴을 유지하고 있다. 거래량도 5일 평균 대비 0.79배로 위축되어 있어 추세 전환 신뢰도가 낮다.",
-    "reasonEn": "Maintaining 'wait and see' for 3 consecutive days. RSI has entered oversold territory, but MACD histogram is worsening and maintaining bearish convergence. Trading volume is also subdued at 0.79x the 5-day average, lowering confidence in a trend reversal.",
-    "entry": 219500,
-    "stop": 167300,
-    "target": 223000,
+    "reason": "3일 연속 RSI 과매도 진입 및 MACD 약세 수렴 유지. 5일 저가가 20일 저가 대비 하락하며 약화 신호 발생. 현재가 209,500원은 볼린저밴드 하단 206,412원에 근접하여 추가 하락 가능성 존재.",
+    "reasonEn": "RSI entering oversold and MACD maintaining bearish convergence for 3 consecutive days. 5-day low is lower than 20-day low, indicating a weakening signal. Current price of 209,500 is near the lower Bollinger Band of 206,412, suggesting potential for further decline.",
+    "entry": 206412,
+    "stop": 223000,
+    "target": 167300,
     "invalidation": 223000,
     "weeklyConflict": "충돌 없음",
     "weeklyConflictEn": "No conflict",
-    "profitTarget1": 223000,
-    "profitTarget2": 264100,
-    "stopLoss": 167300,
-    "narrative": "[추세 위치]\n· 현재가(214,500원) vs SMA5(229,300원)/SMA20(264,100원)/SMA50(299,920원) — 하회, 단기·중기 추세 약세\n· SMA100(256,993원)/SMA200(192,015원) 대비 위치 — 중장기 추세 약세 강도 유지\n· 52주 위치(47.9%) + 현 가격대 역사적 중간 수준\n[모멘텀 지표]\n· RSI 궤적 (45.4 → 35.7) — 과매도 진입, 하락 방향성 지속\n· MACD 히스토그램 궤적 (히스토 -3197.6937 → -5440.5720) — 악화, 약세 추세 강화\n· 볼린저밴드 현재가 위치 (하단 207,574원 근처) — 하단 접근, 추가 하락 가능성 시사\n[지지·저항 구조]\n· 스윙 지지선 (167,300원) — 피벗 S1(160,800원) 및 52주 저가(67,500원) 기반\n· 스윙 저항선 (223,000원) — 피벗 PP(242,900원) 및 SMA5(229,300원) 기반\n· 5일/20일 고가·저가 패턴 (Higher Low 미충족, Lower High 미충족) — 횡보 구간 진단\n[거래량·결론]\n· 거래량 비율 (0.79배) — 5일 평균 대비 위축, 움직임의 신뢰도 하락\n· 현 구간 진단 (분배구간) — 매수 진입 조건 미충족, 관망 유지",
-    "narrativeEn": "[Trend Position]\n· Current price (KRW 214,500) vs SMA5 (KRW 229,300)/SMA20 (KRW 264,100)/SMA50 (KRW 299,920) — below, indicating weak short- to mid-term trend.\n· Position relative to SMA100 (KRW 256,993)/SMA200 (KRW 192,015) — maintaining weak long-term trend strength.\n· 52-week position (47.9%) + current price level is historically mid-range.\n[Momentum Indicators]\n· RSI trajectory (45.4 → 35.7) — entering oversold, continuing downward momentum.\n· MACD histogram trajectory (hist -3197.6937 → -5440.5720) — worsening, strengthening bearish trend.\n· Bollinger Band current price position (near lower band KRW 207,574) — approaching lower band, suggesting potential for further decline.\n[Support & Resistance Structure]\n· Swing support (KRW 167,300) — based on Pivot S1 (KRW 160,800) and 52-week low (KRW 67,500).\n· Swing resistance (KRW 223,000) — based on Pivot PP (KRW 242,900) and SMA5 (KRW 229,300).\n· 5-day/20-day high/low pattern (Higher Low not met, Lower High not met) — indicating a sideways range.\n[Volume & Conclusion]\n· Volume ratio (0.79x) — subdued compared to 5-day average, reducing confidence in price movement.\n· Current phase diagnosis (Distribution phase) — buy entry conditions not met, maintaining a wait-and-see approach.",
-    "patternNote": "현재가 볼린저밴드 하단에 근접하며 하락세가 이어지고 있으나, MACD 약세 수렴과 거래량 위축으로 추세 전환 신호는 약하다.",
-    "patternNoteEn": "Price is approaching the lower Bollinger Band, and the downtrend continues, but signals for a trend reversal are weak due to MACD bearish convergence and subdued volume.",
+    "profitTarget1": 167300,
+    "profitTarget2": 157467,
+    "stopLoss": 223000,
+    "narrative": "[추세 위치]\n· 현재가(209,500원) vs SMA5(228,300원)/SMA20(263,850원)/SMA50(299,820원) — 단기·중기 추세 하회\n· SMA100(256,943원)/SMA200(191,990원) 대비 위치 — 중장기 추세 약세\n· 52주 위치(46.3%) + 현 가격대 역사적 중립 구간\n[모멘텀 지표]\n· RSI 궤적 (45.4 → 33.8) — 과매도 진입, 하락 방향성\n· MACD 히스토그램 궤적 (-3197.6937 → -5759.6603) — 악화, 약세 지속 신호\n· 볼린저밴드 현재가 위치 (하단 206,412원) — 하단 접근, 추가 하락 가능성\n[지지·저항 구조]\n· 스윙 지지선 (167,300원) — 피벗 S1(157,467원) 기반\n· 스윙 저항선 (223,000원) — 돌파 시 단기 반등 기대\n· 5일/20일 고가·저가 패턴 (Lower Low) — 약화 신호\n[거래량·결론]\n· 거래량 비율 (1.09배) — 움직임의 신뢰도 보통\n· 현 구간 진단 (분배구간) — 관망 조건",
+    "narrativeEn": "[Trend Position]\n· Current price (209,500 KRW) vs SMA5 (228,300 KRW) / SMA20 (263,850 KRW) / SMA50 (299,820 KRW) — below short/mid-term trend\n· Position relative to SMA100 (256,943 KRW) / SMA200 (191,990 KRW) — weak mid/long-term trend\n· 52-week position (46.3%) + current price range historically neutral\n[Momentum Indicators]\n· RSI trajectory (45.4 → 33.8) — entering oversold, downward momentum\n· MACD histogram trajectory (-3197.6937 → -5759.6603) — worsening, signal of continued bearishness\n· Bollinger Band current price position (Lower Band 206,412 KRW) — approaching lower band, potential for further decline\n[Support & Resistance Structure]\n· Swing support (167,300 KRW) — based on Pivot S1 (157,467 KRW)\n· Swing resistance (223,000 KRW) — short-term rebound expected on breakout\n· 5-day/20-day high/low pattern (Lower Low) — weakening signal\n[Volume & Conclusion]\n· Volume ratio (1.09x) — moderate confidence in movement\n· Current phase diagnosis (Distribution phase) — conditions for observation",
+    "patternNote": "5일 저가가 20일 저가보다 낮아지며 하락 추세 지속 가능성을 시사하는 Lower Low 패턴이 형성되었습니다.",
+    "patternNoteEn": "A Lower Low pattern is forming, with the 5-day low falling below the 20-day low, suggesting a potential continuation of the downtrend.",
     "keyPoints": [
-      "RSI 과매도 진입, 30선 하회하며 추가 하락 가능성 내포",
-      "MACD 히스토그램 악화, 약세 추세 지속 시사",
-      "거래량 0.79배로 위축, 추세 전환 신뢰도 낮음"
+      "3일 연속 RSI 과매도 진입 및 MACD 약세 수렴 유지로 하락 압력 지속.",
+      "현재가 209,500원은 볼린저밴드 하단 206,412원에 근접하여 추가 하락 가능성 존재.",
+      "5일 저가가 20일 저가 대비 하락하며 약화 신호 발생."
     ],
     "keyPointsEn": [
-      "RSI entering oversold below 30, implying potential for further downside.",
-      "MACD histogram worsening, indicating continuation of bearish trend.",
-      "Volume subdued at 0.79x, lowering confidence in trend reversal."
+      "Continued downward pressure with RSI entering oversold and MACD maintaining bearish convergence for 3 consecutive days.",
+      "Current price of 209,500 KRW is near the lower Bollinger Band of 206,412 KRW, indicating potential for further decline.",
+      "Weakening signal generated as the 5-day low falls below the 20-day low."
     ],
-    "riskNote": "ADX 28.3로 추세가 형성 중이나, -DI(38.5)가 +DI(13.0)보다 높아 하락 압력이 우세하며 추세적 붕괴 가능성을 경계해야 한다.",
-    "riskNoteEn": "ADX at 28.3 indicates a forming trend, but with -DI (38.5) significantly higher than +DI (13.0), downward pressure is dominant, warranting caution against a trend breakdown.",
-    "continuity": "3일 연속 관망 유지. 직전 판단(2026-07-29 18:24)과 동일하게 RSI 과매도 진입, MACD 약세 수렴 유지를 근거로 한다. 금일 가격은 214,500원으로 직전 종가(208,500원) 대비 상승했으나, 이는 거래량 위축 속에서 발생한 되돌림으로 판단된다.",
-    "continuityEn": "Maintaining 'wait and see' for 3 consecutive days. Similar to the previous judgment (2026-07-29 18:24), the basis is RSI entering oversold and MACD maintaining bearish convergence. Today's price of KRW 214,500 is higher than the previous close (KRW 208,500), but this is assessed as a rebound occurring amidst subdued volume.",
+    "riskNote": "ADX 28.3로 추세가 형성되는 초기 단계이므로, 급락이 추세적 붕괴로 이어지지 않고 되돌림 가능성이 있다.",
+    "riskNoteEn": "ADX at 28.3 indicates an early stage of trend formation, suggesting the sharp decline may not be a trend breakdown and could be subject to a rebound.",
+    "continuity": "3일 연속 관망 유지. RSI 과매도 진입 및 MACD 약세 수렴 유지 흐름이 이어지고 있으며, 5일 저가가 20일 저가 대비 하락하며 약화 신호가 발생하여 관망을 유지한다.",
+    "continuityEn": "Maintaining a 'watchful' stance for the 3rd consecutive day. The trend of RSI entering oversold and MACD maintaining bearish convergence continues, and a weakening signal has emerged with the 5-day low falling below the 20-day low, thus maintaining the 'watchful' action.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
@@ -108,7 +108,7 @@
       "higherTimeframeAligned": false,
       "oversoldExtremeOrigin": true,
       "score": "2/5",
-      "verdict": "초기 단계 — 확인 관문 남음"
+      "verdict": "위장 가능성 — 신중 필요"
     }
   }
 }
