@@ -28,6 +28,10 @@ sh ~/Developer/ezlong/backup-before-session.sh
 - **2026-07-30부터(저장소 ~/Developer 이사 완료, 성동님 확정): Claude가 osascript
   (do shell script) 경유로 pull→add(파일 명시)→commit→push를 직접 실행한다.**
   성동님 터미널 요청은 osascript가 불가능한 환경(클라우드 세션 등)에서만.
+- **클라우드 세션 예외 (2026-07-30 이사 패키지, 성동님 확정):** 위 sandbox git 쓰기 금지의
+  근거는 iCloud 로컬 클론의 index.lock 충돌(26항)이었다. Anthropic 클라우드 샌드박스는
+  iCloud와 무관한 깨끗한 클론이므로 이 금지의 적용 대상이 아니며, **클라우드 세션에서는
+  Claude가 샌드박스에서 직접 pull→add(파일 명시)→commit→push 한다.** 가드레일·상세는 28항.
 - 가드레일(협상 불가): `git add -A` 금지 / `reset --hard` 금지 / force push 금지 /
   push 전 diff 확인 / 10개+ 파일·핵심 알고리즘 변경은 push 전 성동님 승인 /
   push 후 라이브 검증(web.app 우선, 7항 트리)까지가 배포의 완료 / push 결과 매번 채팅 보고 /
@@ -1035,6 +1039,77 @@ NDX가 다시 나스닥100 CFD를 가리키게 되어(22항의 "정의 일치" �
 유실시킬 뻔함). 상세 배경·검증 내역은 `투자서 날씨 앱 2/CLAUDE.md` 33항
 참조. 이 드라이버 파일과 `.gitattributes` 등록을 지우거나 우회하지 말 것 —
 지우면 33항에 기록된 사고가 그대로 재발한다.
+
+---
+
+## 28. 클라우드 세션 워크플로우 — 기본 작업 무대 (2026-07-30 이사, 성동님 확정)
+
+**배경:** 2026-07-30부터 ezlong.com 작업의 기본 무대가 Anthropic 클라우드 세션(Cowork)으로
+이동했다. 클라우드 샌드박스는 iCloud와 무관한 깨끗한 클론이므로 2항의 "sandbox git 쓰기
+금지"(iCloud index.lock이 근거, 26항)의 적용 대상이 아니다.
+
+- **배포:** Claude가 샌드박스에서 `ziririt/ezlong` main에 직접 커밋/push → GitHub Actions →
+  Firebase 자동 배포. **유저 터미널 작업 없음.**
+- **로컬 맥 폴더는 읽기 전용 백업** — 더 이상 작업 공간이 아니다. 유저가 가끔 `git pull`만.
+- **안전 수칙 (협상 불가):**
+  - **pull-first:** push 전 반드시 pull/rebase — cron 봇이 수시로 data 커밋을 push하므로
+    경합이 상시 존재한다.
+  - force push 절대 금지, `git reset --hard` 금지 (tracked 파일 소멸 위험, 16항).
+  - `git add`는 파일 명시 — `git add -A` 금지 (기존 가드레일 전부 유지).
+  - 배포 후 라이브 HTTP 200 확인 (7항 진단 트리 병용).
+- **Cloudflare 캐시:** HTML은 즉시 반영, JS/CSS는 캐시 퍼지 필요. 퍼지는 유저에게
+  요청한다 (Cloudflare 로그인 필요).
+- **수동 복구 실행 순서 (파이프라인 장애 시):** 시장데이터 → 차트분석 → Firebase.
+
+---
+
+## 29. 이사 패키지 핵심 교훈 통합 (2026-07-30)
+
+기존 항에 없던 것만 추가. 이미 있는 규칙은 해당 항 참조 (Massive 배치 60=19항,
+ONEQ=22항, 스파클라인=22-B·23항, 판단원장·혼조 staleness=20항, TradingView=13·25항).
+
+### 인프라
+
+- cron-job.org가 외부에서 GitHub Actions 워크플로우를 트리거한다 (KST 스케줄).
+  **watchdog·market-cycle은 workflow_dispatch 전용 — 이 둘만 조용히 멎을 수 있다.**
+  파이프라인 점검 시 최우선 확인 대상.
+- naver-sync.yml: concurrency 그룹으로 동시 실행 방지, `reset --hard` 금지 패턴 적용됨.
+- 저장소에 무관 프로젝트 공존: `time/` 폴더(시계·날씨 앱)는 별개 — git status에 보여도
+  무시 (27항 병합 드라이버 참조). codex 등 다른 AI도 같은 저장소를 쓴다.
+
+### 디자인/콘텐츠
+
+- 폰트: `--ez-font` 시스템폰트만, **웹폰트 절대 금지** (Manrope 2회 실패 전례).
+  본문 최소 **16px** ("14px 미만 금지"보다 상위 기준). 계산기류·`en/` 페이지는
+  타이포그래피 정책 범위 제외.
+- LightweightCharts: 풀스크린은 CSS flex+autoSize, 기간 제한은 데이터 슬라이스 방식.
+
+### AI 판단/스코어카드
+
+- 스코어카드 요인 = **원인만** ("VIX 급등", "반도체 약세 심화" 등은 결과이지 원인 아님).
+  시장 전체 재료 기준, 개별 기업 금지 (벨웨더 예외).
+- 테슬라·머스크: 근거 없는 비방·정치 보도는 부정 재료로 쓰지 않는다. 실적·수치·사실만.
+- 세션 인지: `get_us_session` 사용, 세션 용어(프리/정규/포스트) 오용 금지.
+- 날짜: `env.today`가 유일 기준. JSON `generatedAtKST`로 현재 날짜를 추론하지 않는다.
+
+### 데이터 표시
+
+- 종목 현재가는 `market-signals.json`의 `symbols` 객체에서만 (Yahoo 직접 fetch는 CORS 차단).
+- 레버리지: lev3x 진입 compSell<70, 경계 70, 위험 80 — **7곳 동시 수정 필수.**
+  물타기는 배율별 compBuy+compSell+RSI 기준.
+- 한국 법정 정년 **60세** (65세 아님) — 연령 구간 콘텐츠 전반 적용.
+
+### 사이트 구조/콘텐츠
+
+- `atmr-dashboard.html`은 인라인 CSS 병용 — 공통 CSS 변경 시 인라인 중복분도 확인.
+- 알라딘 제휴 파라미터: `partner=friends327` (2026-07-30 오타 friedns327 일괄 수정 완료).
+- 카피라이트 표기: "유니아빠" (유니엄마 제거, 2026-07-20경).
+- `en/` 하위 영문판 존재. 4개 AI 동적페이지 이중언어 완료, 8개 도구×5개국어 현지화 완료.
+  브라우저 언어 배너 `/lang-banner.js` — 124개 파일에 삽입됨.
+
+### 문체 (유저 선호)
+
+- 배포·명령 안내는 만연체 금지 — 불릿+코드블록 분리. 간결·직설, 불필요한 설명 최소화.
 
 ---
 
