@@ -11,12 +11,13 @@
 </script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title id="page-title-tag">스윙 시그널(Swing Signal) — 오늘의 미국주식 매수·매도 타이밍 분석 | EZLONG</title>
+<title id="page-title-tag">스윙 시그널 v2 베타 — 수석 스윙 뷰 | EZLONG</title>
 <meta name="description" content="QQQ·VOO·TSLA·NVDA의 스윙 시그널 점수로 오늘 미국주식 매수/매도 타이밍을 분석. RSI, MACD, 200일 이동평균선 기반 Gear 변속 전략. 지금 사도 될까? 데이터로 답합니다." />
 <meta name="keywords" content="미국주식 매수 타이밍, QQQ 매수 신호, 엔비디아 매수 적기, 테슬라 매도 신호, TQQQ 매매 타이밍, SOXL 스윙 전략, 나스닥 VIX 공포탐욕지수, RSI 과매도 과매수, MACD 매매 신호, 200일 이동평균선 기어, 미국주식 스윙 전략, QQQ 40주선 매매, NVDA RSI 과매도, TSLA 200일선 지지, 스윙 시그널, Swing Signal Score, 기어 변속 매매법, 3-3-4 분할 매수, 미국주식 기술적 분석, ezlong" />
 <meta name="robots" content="index, follow" />
 <meta name="author" content="EZLONG — 미국주식투자자를 위한 데이터 툴" />
-<link rel="canonical" href="https://ezlong.com/atmr-dashboard.html" />
+<link rel="canonical" href="https://ezlong.com/atmr-dashboard_v2.html" />
+<meta name="robots" content="noindex, nofollow" />
 <!-- 국제화 SEO: hreflang (2026-07-03 추가 — en 버전과 양방향 연결) -->
 <link rel="alternate" hreflang="ko" href="https://ezlong.com/atmr-dashboard.html" />
 <link rel="alternate" hreflang="en" href="https://ezlong.com/en/atmr-dashboard.html" />
@@ -1619,12 +1620,8 @@ li.gear-other-sep { display: none !important; }
         <span class="tab-btn-sub">집중 분석</span>
       </button>
     </div>
-
-    <!-- v2 베타 입구 (탭별) — 수석 스윙 뷰 시험 버전 -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:6px 0 2px;">
-      <a href="/atmr-dashboard_v2.html" style="text-align:center;font-size:14px;font-weight:700;color:var(--ez-blue);border:1px dashed var(--ez-blue);border-radius:8px;padding:4px 0;text-decoration:none;">2.0 beta</a>
-      <a href="/atmr-dashboard_v2.html#swing-strategy" style="text-align:center;font-size:14px;font-weight:700;color:var(--ez-blue);border:1px dashed var(--ez-blue);border-radius:8px;padding:4px 0;text-decoration:none;">2.0 beta</a>
-      <a href="/atmr-dashboard_v2.html#tsla-nvda" style="text-align:center;font-size:14px;font-weight:700;color:var(--ez-blue);border:1px dashed var(--ez-blue);border-radius:8px;padding:4px 0;text-decoration:none;">2.0 beta</a>
+    <div style="text-align:center;margin:6px 0 2px;">
+      <span style="font-size:14px;color:var(--t3);">v2 베타 — 내역을 기억하는 수석 스윙 뷰 시험 버전 · <a href="/atmr-dashboard.html" style="color:var(--ez-blue);text-decoration:none;">기존 버전으로</a></span>
     </div>
 
     <!-- 실시간 현재가 전광판 -->
@@ -2166,6 +2163,48 @@ const GITHUB_JSON_URL     = 'https://raw.githubusercontent.com/ziririt/ezlong/ma
 const GITHUB_OPTIONS_URL  = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/options-latest.json';
 const GITHUB_JSON_TTL = 2 * 60 * 60 * 1000; // GitHub JSON 유효 기간: 2시간
 // 시황 브리핑 (alertLevel high/medium 시 스윙 지수 상단에 표시)
+const GITHUB_SWING_VIEW_URL = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/swing-view.json';
+window._swingView = null;
+(async function loadSwingView() {
+  try {
+    const res = await fetch(GITHUB_SWING_VIEW_URL + '?t=' + Math.floor(Date.now() / 300000));
+    if (!res.ok) return;
+    window._swingView = await res.json();
+    if (window._renderData) renderAll(window._renderData);
+  } catch (e) { console.warn('[swing-view]', e); }
+})();
+
+// [v2] 수석 카드 헬퍼 — 스윙 전략 탭 상단
+function _v2ChiefCardHtml() {
+  const sv = window._swingView;
+  if (!sv?.comp) return '';
+  const c = sv.comp;
+  const paras = (c.commentary || []).map(t => `<p style="margin:0 0 12px;line-height:1.75;color:var(--t1);font-size:16px;">${t}</p>`).join('');
+  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-left:4px solid #0a84ff;border-radius:14px;padding:18px 18px 12px;margin-bottom:14px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">수석 스윙 뷰 · v2 베타</span>
+      <span style="font-weight:800;color:var(--t1);font-size:17px;">${c.stanceLabel}</span>
+      <span style="color:var(--t2);font-size:14px;">확신도 ${c.confidence ?? '—'}</span>
+    </div>
+    ${paras}
+    <div style="color:var(--t3);font-size:14px;margin-top:2px;">${sv.generatedAtKST} 기준 · 검증된 통계만 인용 · 투자 판단의 참고 자료</div>
+  </div>`;
+}
+
+// [v2] TSLA·NVDA 수석 스탠스 카드
+function _v2KingCardHtml(sym) {
+  const sv = window._swingView;
+  const k = sym === 'TSLA' ? sv?.tsla : sv?.nvda;
+  if (!k) return '';
+  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-left:4px solid #0a84ff;border-radius:14px;padding:16px 16px 10px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">수석 뷰 · 베타</span>
+      <span style="font-weight:800;color:var(--t1);font-size:16px;">${k.stanceLabel}</span>
+    </div>
+    <p style="margin:0 0 10px;line-height:1.75;color:var(--t1);font-size:16px;">${k.commentary}</p>
+  </div>`;
+}
+
 const GITHUB_BRIEF_URL = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/swing-brief.json';
 let swingBriefData = null; // 전역 캐시
 
@@ -2675,6 +2714,14 @@ function calcMarketFearGreed(qqq, voo, soxx, dia, iwm, vix) {
 // 38~49  → 매수 자제
 // ~37    → 리스크 오프
 function getMarketVerdict(score, gear, rsi, sellP) {
+  // [v2] 수석 뷰 로드 시 — 무기억 문구 대신 스탠스 헤드라인 (탭 간 모순 제거)
+  if (window._swingView?.comp) {
+    const _st = window._swingView.comp.stance;
+    const _colors = { accumulate: 'var(--gr)', accumulate_wait: 'var(--gr)', hold: 'var(--bl)',
+                      trim: 'var(--or)', risk_off: 'var(--rd)', wait: 'var(--t2)' };
+    return { score, headline: window._swingView.comp.stanceLabel,
+             headlineColor: _colors[_st] || 'var(--bl)' };
+  }
   const g  = gear  ?? 1;
   const sp = sellP ?? 50;
   let headline, headlineColor;
@@ -2721,11 +2768,11 @@ function getMarketVerdict(score, gear, rsi, sellP) {
 }
 // S-CORE 레이블·색상 — 높을수록 매수 (calcBuyScore와 동일 방향)
 function getFearGreedLabel(score) {
-  if (score >= 80) return '최적 매수 구간';
-  if (score >= 65) return '정찰대 투입';
-  if (score >= 50) return '신호 대기';
-  if (score >= 38) return '매수 자제';
-  return '리스크 오프';
+  if (score >= 80) return '신호 강함';
+  if (score >= 65) return '신호 유효';
+  if (score >= 50) return '신호 약함';
+  if (score >= 38) return '신호 미약';
+  return '신호 없음';
 }
 
 function getFearGreedColor(score) {
@@ -3188,6 +3235,7 @@ async function loadAllData(forceRefresh = false) {
 // ─── 렌더링 함수들 ───────────────────────────────
 
 function renderAll(data) {
+  window._renderData = data;   // [v2] 수석 뷰 도착 후 재렌더용
   const vix  = data['VIX']?.price ?? 18;
   const qqq  = data['QQQ'];
   const voo  = data['VOO'];
@@ -3459,8 +3507,14 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
   // ── 야구 시그널 인디케이터 (S-CORE 방향: 높을수록 매수) ──────────────────
   // BUY 볼: 80+= 3볼(최적) / 65~79= 2볼(정찰대) / 50~64= 1볼(신호대기) / <50= 0볼
   const buyBalls  = score >= 80 ? 3 : score >= 65 ? 2 : score >= 50 ? 1 : 0;
-  // SELL 볼: <38= 3볼(리스크오프) / <50= 2볼(자제) / <65= 1볼(약한익절) / ≥65= 0볼
-  const sellBalls = score < 38 ? 3 : score < 50 ? 2 : score < 65 ? 1 : 0;
+  // [v2] SELL 볼: 실제 매도압력 점수(compSell) 기반 — 구버전은 buyScore 역매핑이라 정보가 중복이었다
+  const _svW = [4, 3, 3];
+  const _svArr = [qqq, voo, soxx].filter(Boolean);
+  const _compSell = _svArr.length
+    ? Math.round(_svArr.reduce((s, d, i) => s + (d.sellScore ?? 50) * _svW[i], 0) /
+                 _svArr.reduce((s, _, i) => s + _svW[i], 0))
+    : 50;
+  const sellBalls = _compSell >= 75 ? 3 : _compSell >= 60 ? 2 : _compSell >= 45 ? 1 : 0;
   // HOLD 하늘색불: 볼 많음 = 보유 신호 강함. 상승 추세 = 3볼, 데드크로스 = 0볼(위험)
   const _sma50     = ref?.sma50;
   const _sma200    = ref?.sma200;
@@ -3507,16 +3561,16 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
 
   const baseballHtml = `<div class="baseball-signal">
     ${biColHtml('BUY',  buyBalls,  '#FFB300', 'gy', [
-      '매수 신호 없음 — 리스크 오프 구간. 현금 비중 유지 권고.',                          // 0볼: score <50
-      '추세 확인 대기 — 신호 강화 후 소량 진입 검토.',                                  // 1볼: score 50~64
-      '1차(30%) 분할 진입 적합 구간 — 3-3-4 원칙.',                                    // 2볼: score 65~79
-      '최적 매수 구간 — 3-3-4 원칙 기반 공격적 분할 진입 타이밍.'                       // 3볼: score 80+
+      '매수 신호 없음 — 진입 근거 부족 구간.',                                          // 0볼: score <50
+      '신호 약함 — 추세·신호 강화 확인 대기 구간.',                                     // 1볼: score 50~64
+      '매수 신호 유효 — 진입 여부·차수는 수석 뷰 판단 참조.',                            // 2볼: score 65~79
+      '강한 매수 신호 — 진입 여부·차수는 수석 뷰 판단 참조.'                             // 3볼: score 80+
     ])}
     ${biColHtml('SELL', sellBalls, '#30D158', 'gg', [
-      '익절 신호 없음 — 매수 매력도 충분. 보유 유지 구간.',                               // 0볼: score ≥65
-      '약한 익절 신호 — 비중 과다 시 일부 가볍게 정리 검토.',                           // 1볼: score 50~64
-      '익절 검토 권장 — 매수 신호 약화. 레버리지 비중 점검 권고.',                       // 2볼: score 38~49
-      '적극 익절 — 리스크 오프 신호. 현금 확보 우선.'                                   // 3볼: score <38
+      '매도 압력 낮음 — 익절 신호 없음. 보유 부담 없는 구간.',                            // 0볼: compSell <45
+      '매도 압력 형성 — 신규 매수 신중, 보유는 유지 가능 구간.',                          // 1볼: compSell 45~59
+      '경고 — 매도압력 60+. 이 신호 뒤 수익률 급감 이력(검증). 부분 축소 검토 구간.',      // 2볼: compSell 60~74
+      '극단 과열 — 매도압력 75+. 계획된 축소 우선 구간.'                                 // 3볼: compSell 75+
     ])}
     ${holdColHtml(holdBalls)}
   </div>`;
@@ -3687,6 +3741,19 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
   const volatilityWarn = (briefAlert === 'high' || briefAlert === 'medium')
     ? `<div class="swing-volatility-warn">시황 변동성 주의 — 지수 수치만 보고 판단 금지. 상단 시황 브리핑 반드시 확인</div>`
     : '';
+
+  // ── [v2] 수석 뷰 오버라이드 — 무기억 문구 대신 스탠스 + 논평 ──────────
+  if (window._swingView?.comp?.commentary?.length) {
+    const _c = window._swingView.comp;
+    title = _c.stanceLabel;
+    desc  = _c.commentary.map(t => `<p style="margin:0 0 12px;line-height:1.78;">${t}</p>`).join('')
+          + `<div style="margin-top:8px;color:var(--t3);font-size:14px;">수석 스윙 뷰 ${window._swingView.generatedAtKST} 기준 · 기준일 ${window._swingView.dataDay}(미국장) · v2 베타 — 확률·통계는 백테스트 검증분만 인용</div>`;
+    pills = [
+      {text: gearText, tone: gear >= 3 ? 'negative' : gear === 2 ? 'caution' : 'neutral'},
+      {text: `매도압력 ${_compSell}`, tone: _compSell >= 60 ? 'caution' : 'neutral'},
+      {text: `확신도 ${_c.confidence ?? '—'}`, tone: 'purple'},
+    ];
+  }
 
   wrap.innerHTML = `
     <div class="action-card ${cls}">
@@ -4584,6 +4651,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
 
   // ── 지금 상황 카드 ────────────────────────────────
   wrap.innerHTML = `
+    ${_v2ChiefCardHtml()}
     ${buildStrategyContextBanner()}
     <div class="now-card" style="border-top:3px solid ${gearColor};">
 
@@ -5672,6 +5740,16 @@ function loadSignalHistory() {
 }
 
 // ─── 최근 시장 흐름 맥락 배너 ──────────────────────────────────────────────
+// [v2] renderKings 래핑 — 수석 스탠스 카드를 각 카드 상단에 삽입
+const _renderKingsOrig = renderKings;
+renderKings = function(tsla, nvda) {
+  _renderKingsOrig(tsla, nvda);
+  ['TSLA', 'NVDA'].forEach(sym => {
+    const c = document.getElementById(`king-card-${sym}`);
+    if (c && window._swingView) c.insertAdjacentHTML('afterbegin', _v2KingCardHtml(sym));
+  });
+};
+
 function renderRecentContext(symbols) {
   const wrap = document.getElementById('recent-context-wrap');
   if (!wrap) return;
