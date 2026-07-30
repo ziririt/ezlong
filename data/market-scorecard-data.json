@@ -1,6 +1,97 @@
 {
   "entries": [
     {
+      "id": "2026-07-30-21:50",
+      "timestamp_kst": "2026-07-30(목) 21:50 KST",
+      "key_event": {
+        "name": "MSFT 실적 호조 및 FOMC 여파",
+        "name_en": "Microsoft Earnings Beat & FOMC Aftermath",
+        "time": "오늘 프리마켓 및 오늘 정규장",
+        "why": "AI 투자 성과 확인, 시장 심리 회복, 금리 결정 관망",
+        "why_en": "AI investment payoff, market sentiment recovery, rate decision watch"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "MSFT 실적 호조와 AI 기대감으로 시장 심리 회복. FOMC 매파적 기조와 국채금리 상승은 상존하나, 어제 부정 우위에서 긍정 전환.",
+      "summary_en": "Market sentiment recovers on strong MSFT earnings and AI optimism. Hawkish FOMC and rising bond yields persist, but sentiment shifts from negative to positive.",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "마이크로소프트 AI 실적 호조",
+          "name_en": "Microsoft's Strong AI Earnings",
+          "desc": "Azure 클라우드 성장 및 Copilot 좌석 증가로 AI 투자 성과 입증, 기술주 전반 심리 개선.",
+          "desc_en": "Azure cloud growth and increased Copilot seats validate AI investment, boosting overall tech sentiment.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 20,
+          "name": "반도체 섹터 프리마켓 반등",
+          "name_en": "Semiconductor Sector Premarket Rebound",
+          "desc": "SOXX 4.20% 상승하며 전일 급락에 대한 기술적 반등 및 MSFT 실적 영향으로 회복세.",
+          "desc_en": "SOXX up 4.20%, showing technical rebound from previous day's sharp decline and benefiting from MSFT earnings.",
+          "category": "company_specific"
+        },
+        {
+          "score": 10,
+          "name": "주요 기술주 프리마켓 강세",
+          "name_en": "Major Tech Stocks Premarket Strength",
+          "desc": "TSLA, NVDA 등 주요 기술주가 프리마켓에서 상승하며 시장 전반의 긍정적 분위기 조성.",
+          "desc_en": "TSLA, NVDA and other major tech stocks rise in premarket, setting a positive tone for the broader market.",
+          "category": "company_specific"
+        },
+        {
+          "score": 10,
+          "name": "VIX 공포지수 하락",
+          "name_en": "VIX Fear Index Decline",
+          "desc": "VIX 7.61% 하락하며 시장의 불확실성 및 공포 심리 완화.",
+          "desc_en": "VIX down 7.61%, indicating easing market uncertainty and fear.",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "미 국채금리 상승 지속",
+          "name_en": "Continued Rise in US Treasury Yields",
+          "desc": "미 10년물 국채금리 1.15% 상승하며 성장주 투자 매력 감소 압박.",
+          "desc_en": "US 10-year Treasury yield up 1.15%, pressuring growth stock valuations.",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 10,
+          "name": "FOMC 매파적 기조 여파",
+          "name_en": "Aftermath of Hawkish FOMC Stance",
+          "desc": "Fed의 금리 동결에도 매파적 발언으로 시장에 긴축 우려 상존.",
+          "desc_en": "Despite rate hold, Fed's hawkish rhetoric maintains tightening concerns in the market.",
+          "category": "fed_policy"
+        },
+        {
+          "score": 5,
+          "name": "지정학적 긴장 고조",
+          "name_en": "Escalating Geopolitical Tensions",
+          "desc": "미-이란 긴장 고조 소식에 유가 상승하며 인플레이션 우려 자극.",
+          "desc_en": "US-Iran tensions escalate, pushing oil prices up and fueling inflation concerns.",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "메타 실적 발표 및 AI 투자 우려",
+          "name_en": "Meta Earnings & AI Investment Concerns",
+          "desc": "메타 실적 발표 후 주가 급락. AI 투자 비용 증가에 대한 우려가 시장에 혼재.",
+          "desc_en": "Meta stock plunges after earnings, with concerns over increased AI investment costs creating mixed sentiment.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "name": "삼성전자 확정 실적",
+          "name_en": "Samsung Electronics Confirmed Earnings",
+          "desc": "잠정치와 유사한 확정 실적 발표. 한국 증시에는 긍정적으로 작용했으나, 미국 시장에 미치는 추가 영향은 제한적.",
+          "desc_en": "Confirmed earnings align with preliminary figures. Positive for Korean markets, but limited additional impact on US market.",
+          "category": "earnings_bellwether"
+        }
+      ]
+    },
+    {
       "id": "2026-07-30-20:22",
       "timestamp_kst": "2026-07-30(목) 20:22 KST",
       "key_event": {
@@ -652,76 +743,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-07-29-20:35",
-      "timestamp_kst": "2026-07-29(수) 20:35 KST",
-      "key_event": {
-        "name": "FOMC 및 주요 기술주 실적 대기",
-        "name_en": "Anticipation for FOMC and Major Tech Earnings",
-        "time": "오늘 정규장 및 이번 주",
-        "why": "금리 정책 불확실성, AI 밸류에이션 논란, 시장 방향성 결정",
-        "why_en": "Fed policy uncertainty, AI valuation concerns, market direction"
-      },
-      "positive_total": 30,
-      "negative_total": 70,
-      "summary": "FOMC 및 주요 기술주 실적 관망 속 AI 밸류에이션 우려 지속으로 부정 우위 유지.",
-      "summary_en": "Negative sentiment persists due to AI valuation concerns amidst anticipation for FOMC and major tech earnings.",
-      "positive_factors": [
-        {
-          "score": 15,
-          "name": "미국 10년 국채금리 하락",
-          "name_en": "US 10-Year Treasury Yield Decline",
-          "desc": "미국 10년 국채금리가 하락하며 기술주 및 성장주에 긍정적 영향.",
-          "desc_en": "The decline in US 10-year Treasury yields positively impacts technology and growth stocks.",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 15,
-          "name": "테슬라 PPA 계약 체결",
-          "name_en": "Tesla PPA Agreement Signed",
-          "desc": "테슬라가 ContourGlobal과 1TWh/년 PPA 계약을 체결하며 긍정적 소식.",
-          "desc_en": "Tesla's signing of a 1TWh/year PPA with ContourGlobal is positive news.",
-          "category": "company_specific"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "FOMC 금리 결정 불확실성",
-          "name_en": "FOMC Rate Decision Uncertainty",
-          "desc": "투자자들이 Fed의 금리 결정과 향후 정책 방향에 대한 불확실성으로 관망세.",
-          "desc_en": "Investors are in a wait-and-see mode due to uncertainty surrounding the Fed's rate decision and future policy.",
-          "category": "fed_policy"
-        },
-        {
-          "score": 25,
-          "name": "AI 밸류에이션 우려 지속",
-          "name_en": "Persistent AI Valuation Concerns",
-          "desc": "AI 관련 주식의 밸류에이션 논란과 신용 디폴트 스왑 우려로 반도체 섹터 약세.",
-          "desc_en": "Concerns over AI stock valuations and credit default swaps lead to weakness in the semiconductor sector.",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 15,
-          "name": "주요 기술주 실적 대기",
-          "name_en": "Anticipation for Major Tech Earnings",
-          "desc": "주요 기술 기업들의 실적 발표를 앞두고 투자자들의 경계심이 높아짐.",
-          "desc_en": "Investor caution rises ahead of major technology companies' earnings reports.",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "VIX 공포지수 소폭 상승",
-          "name_en": "Slight Rise in VIX Fear Index",
-          "desc": "VIX 지수가 소폭 상승했으나, 시장 전반의 큰 불안감보다는 특정 이벤트 대기 심리 반영.",
-          "desc_en": "The VIX index saw a slight increase, reflecting anticipation for specific events rather than broad market anxiety.",
-          "category": "vix_risk_sentiment"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-07-30T11:22:34Z",
+  "updated_at": "2026-07-30T12:51:09Z",
   "max_entries": 10
 }
