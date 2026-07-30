@@ -17,3 +17,15 @@ node_modules/
 _image-archive-staging/
 firebase-service-account*.json
 *serviceAccountKey*.json
+
+# 2026-07-30 (44-1 이사 정리): 캐시·임시·백업 — git 추적 금지
+.firebase/
+__pycache__/
+_to_delete/
+*.bak
+*.bak-*
+*.bak_*
+*.BACKUP-*
+*.html.new
+.synctest.txt
+scripts/validate-photo-classifier-result*.json
