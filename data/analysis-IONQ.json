@@ -3,40 +3,40 @@
   "name": "아이온큐",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-07-28T21:20:11.793Z",
+  "updatedAt": "2026-07-29T21:50:35.483Z",
   "price": {
-    "current": 33.88,
-    "change": -2.04,
-    "changePct": -5.68,
+    "current": 31.99,
+    "change": -1.89,
+    "changePct": -5.58,
     "high52": 84.64,
     "low52": 25.89,
-    "pos52": 13.6,
+    "pos52": 10.4,
     "marketState": "POST",
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 40.371,
-    "sma50": 51.5732,
-    "sma100": 45.1188,
-    "sma200": 46.927,
-    "rsi": 32.32,
+    "sma20": 39.3075,
+    "sma50": 51.174,
+    "sma100": 45.0785,
+    "sma200": 46.6994,
+    "rsi": 29.9,
     "macd": {
-      "macd": -5.136214,
-      "signal": -5.046659,
-      "histogram": -0.089555
+      "macd": -5.134262,
+      "signal": -5.064179,
+      "histogram": -0.070082
     },
     "bb": {
-      "upper": 53.2686,
-      "middle": 40.371,
-      "lower": 27.4734,
-      "bandwidth": 0.639
+      "upper": 51.251,
+      "middle": 39.3075,
+      "lower": 27.364,
+      "bandwidth": 0.6077
     },
     "adx": {
-      "plusDI": 13.47,
-      "minusDI": 35.36,
-      "adx": 40.46,
+      "plusDI": 12.74,
+      "minusDI": 34.11,
+      "adx": 40.83,
       "status": "뚜렷한 추세"
     }
   },
@@ -44,48 +44,63 @@
     "swingResistance": 34.18,
     "swingSupport": 30.17,
     "pivot": {
-      "pp": 40.28,
-      "r1": 48.44,
-      "r2": 63,
-      "s1": 25.72,
-      "s2": 17.56
+      "pp": 39.52,
+      "r1": 47.23,
+      "r2": 62.47,
+      "s1": 24.28,
+      "s2": 16.57
     }
   },
   "analysis": {
-    "trend": "횡보",
-    "strength": 3,
+    "trend": "약세",
+    "strength": 2,
     "support": 30.17,
     "resistance": 34.18,
     "rsiStatus": "과매도",
-    "macdStatus": "중립",
+    "macdStatus": "약세수렴",
     "bbStatus": "하단접근",
     "stage": "축적구간",
     "action": "관망",
     "buyScore": 4,
-    "scoreReason": "RSI 과매도 구간 진입, MACD 개선 조짐",
-    "rsiTrajectory": "29.1 → 32.3 (과매도 탈출 중)",
-    "macdTrajectory": "히스토 -1.0711 → -0.0896 (개선 중)",
-    "pricePattern": "5일 저가 유지, 20일 저가 하회하지 않음",
-    "volComment": "거래량비 1.03 (정상)",
+    "scoreReason": "RSI 과매도 지속, 5일 저가 유지",
+    "scoreReasonEn": "RSI remains oversold, holding 5-day low",
+    "rsiTrajectory": "28.2 → 29.9 (과매도탈출 중)",
+    "rsiTrajectoryEn": "28.2 → 29.9 (exiting oversold)",
+    "macdTrajectory": "히스토 -0.8655 → -0.0701 (개선)",
+    "macdTrajectoryEn": "histo -0.8655 → -0.0701 (improving)",
+    "pricePattern": "5일 저가 유지, 20일 저가 하회하지 않음 — 회복 신호",
+    "pricePatternEn": "Holding 5-day low, not breaching 20-day low — recovery signal",
+    "volComment": "거래량비 1.14 (정상)",
     "bbPosition": "하단근처",
-    "reason": "RSI가 과매도 구간에서 탈출 중이며 MACD 히스토그램도 개선되는 조짐을 보이고 있다. 5일 저가를 유지하며 추가 하락은 제한적이나, 5일 연속 하락 후 반등 강도가 약해 관망한다.",
-    "entry": 32.12,
-    "stop": 30.17,
+    "reason": "3일 연속 관망 유지. RSI 과매도 구간(29.9)에서 벗어나지 못하고 있으며, 5일 저가($31.81)를 간신히 유지 중. 5일 평균 대비 거래량 비율 1.14로 유의미한 매수세 유입은 관찰되지 않음.",
+    "reasonEn": "Maintaining 'watch' for 3 consecutive days. RSI remains in oversold territory (29.9) and is barely holding the 5-day low ($31.81). Volume ratio (1.14 vs 5-day avg) shows no significant buying pressure.",
+    "entry": 30.17,
+    "stop": 25.89,
     "target": 34.18,
     "invalidation": 30.17,
     "weeklyConflict": "충돌 없음",
+    "weeklyConflictEn": "No conflict",
     "profitTarget1": 34.18,
     "profitTarget2": 37.17,
-    "stopLoss": 30.17,
-    "narrative": "[추세 위치]\n· 현재가($33.88) vs SMA5($34.28)/SMA20($40.37)/SMA50($51.57) — 단기 하회, 중장기 하회 추세 위치 진단\n· SMA100($45.12)/SMA200($46.93) 대비 위치 — 중장기 추세 하회, 약세 강도 판단\n· 52주 위치(13.6%) + 현 가격대 역사적 저점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (29.1 → 32.3) + 과매도 구간 탈출 중 판단 + 하락세 둔화 해석\n· MACD 히스토그램 궤적 (히스토 -1.0711 → -0.0896) + 개선 진단 + 바닥 다지기 신호 확인\n· 볼린저밴드 현재가 위치 (하단 $27.47 근처) + 밴드폭 63.90%로 높은 변동성 구간\n[지지·저항 구조]\n· 스윙 지지선 ($30.17) + 근거 (20일 저가, 피벗 S1 근접)\n· 스윙 저항선 ($34.18) + 돌파 시 단기 반등 기대\n· 5일/20일 고가·저가 패턴 (5일 저가 유지, 20일 저가 하회하지 않음) + 횡보 추세 해석\n[거래량·결론]\n· 거래량 비율 (5일 평균 대비 1.03배) + 움직임의 신뢰도 보통 수준\n· 현 구간 진단 (축적구간) + 5일 연속 하락 후 반등 시도, RSI 과매도 탈출 및 MACD 개선 조짐으로 매수점수 4점 부여하나, 추세 전환 확신 부족으로 관망 유지 조건",
-    "patternNote": "5일 연속 하락 후 5일 저가 부근에서 지지받으며 반등 시도 중인 패턴",
+    "stopLoss": 31.81,
+    "narrative": "[추세 위치]\n· 현재가($31.99) vs SMA5/20/50($33.74/$39.31/$51.17) — 단기·중기 추세 하회\n· SMA100/200($45.08/$46.70) 대비 위치 — 중장기 추세 하회\n· 52주 위치(10.4%) + 현 가격대 역사적 저점 부근\n[모멘텀 지표]\n· RSI 궤적 (28.2→29.9) + 과매도 구간 지속 + 약세 방향성\n· MACD 히스토그램 궤적 (-0.8655→-0.0701) + 개선 진단 + 추세 전환 신호 약함\n· 볼린저밴드 현재가 위치 (하단 $27.36) + 밴드폭 넓음\n[지지·저항 구조]\n· 스윙 지지선 ($30.17) + 근거 (5일 저가, 피벗 S1 근접)\n· 스윙 저항선 ($34.18) + 돌파 시 단기 반등 기대\n· 5일/20일 고가·저가 패턴 (5일 저가 유지, 20일 저가 하회 안 함) + 회복 신호\n[거래량·결론]\n· 거래량 비율 (1.14배) + 움직임의 신뢰도 보통\n· 현 구간 진단 (축적구간) + 관망 조건: RSI 30 이상 회복 및 5일 저가($31.81) 지지 확인",
+    "narrativeEn": "[Trend Position]\n· Current price ($31.99) vs SMA5/20/50 ($33.74/$39.31/$51.17) — below short/mid-term trends\n· Position vs SMA100/200 ($45.08/$46.70) — below long-term trends\n· 52-week position (10.4%) + current price near historical lows\n[Momentum Indicators]\n· RSI trajectory (28.2→29.9) + sustained oversold + bearish momentum\n· MACD histogram trajectory (-0.8655→-0.0701) + improving diagnosis + weak trend reversal signal\n· Bollinger Band current price position (near bottom $27.36) + wide band width\n[Support & Resistance Structure]\n· Swing support ($30.17) + basis (5-day low, near Pivot S1)\n· Swing resistance ($34.18) + potential for short-term bounce on breakout\n· 5-day/20-day high/low pattern (holding 5-day low, not breaching 20-day low) + recovery signal\n[Volume & Conclusion]\n· Volume ratio (1.14x) + moderate confidence in price action\n· Current phase diagnosis (Accumulation) + conditions for entry: RSI recovery above 30 and confirmation of 5-day low ($31.81) support",
+    "patternNote": "5일 저가($31.81)를 지지하며 20일 저가($31.81)를 하회하지 않는 패턴은 잠재적 회복 신호로 해석될 수 있으나, RSI가 여전히 과매도 구간에 머물러 있어 추세 전환을 확신하기는 어렵다.",
+    "patternNoteEn": "The pattern of holding the 5-day low ($31.81) without breaching the 20-day low ($31.81) suggests potential recovery, but the RSI remaining in oversold territory prevents confirmation of a trend reversal.",
     "keyPoints": [
-      "RSI 과매도 구간 탈출 및 MACD 개선 조짐",
-      "5일 저가 유지하며 추가 하락 제한적",
-      "거래량 증가 없이 반등 시도, 추세 전환 확신 부족"
+      "RSI가 29.9로 과매도 구간에 머물며 5일 저가($31.81)를 간신히 지지하고 있어 매수 진입은 이르다.",
+      "MACD 히스토그램이 개선되고 있으나, 여전히 음수 구간이며 추세 전환을 확신하기에는 약하다.",
+      "거래량 비율이 1.14로 유의미한 매수세 유입을 뒷받침하지 못하고 있어, 현재 구간은 축적 구간으로 판단하고 관망한다."
     ],
-    "riskNote": "ADX 40.5로 뚜렷한 추세가 있으나, -DI(35.4)가 +DI(13.5)보다 높아 하락 압력이 우세하며, 주봉 ADX 19.3으로 무추세 구간 진입 가능성 상존",
-    "continuity": "3일 연속 관망 유지. RSI 과매도 구간 진입(26→35.4→32.1→32.3) 및 MACD 개선 조짐(히스토 -1.0711→-0.0896) 흐름 지속. 5일 연속 하락 후 5일 저가 유지하며 추가 하락 제한적이나, 반등 강도 약해 관망 유지.",
+    "keyPointsEn": [
+      "RSI at 29.9 remains oversold, barely holding the 5-day low ($31.81), making a buy entry premature.",
+      "MACD histogram is improving but still negative, showing a weak signal for trend reversal confirmation.",
+      "Volume ratio of 1.14 does not support significant buying pressure, indicating an accumulation phase requiring observation."
+    ],
+    "riskNote": "현재가($31.99)가 5일 저가($31.81)와 스윙 지지선($30.17) 사이에 위치하여 추가 하락 시 급락 위험이 존재한다.",
+    "riskNoteEn": "The current price ($31.99) is positioned between the 5-day low ($31.81) and swing support ($30.17), posing a risk of sharp decline if support breaks.",
+    "continuity": "3일 연속 관망 유지. RSI 과매도 지속, 5일 저가 유지 흐름이 이어지고 있음.",
+    "continuityEn": "3-day streak of 'watch'. RSI remains oversold, holding the 5-day low.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
@@ -93,7 +108,7 @@
       "higherTimeframeAligned": false,
       "oversoldExtremeOrigin": true,
       "score": "2/5",
-      "verdict": "위장 가능성 — 신중 필요"
+      "verdict": "초기 단계 — 확인 관문 남음"
     }
   }
 }
