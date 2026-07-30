@@ -25,7 +25,7 @@
  * (겸용이 지나쳐 한낮 사진이 밤에 뜨는 사고를 잡기 위함).
  *
  * ── 실행 방법 ──────────────────────────────────────────────────────────────
- *   cd ~/Documents/Claude/Projects/미국주식투자자를\ 위한\ ezlong.com
+ *   cd ~/Developer/ezlong
  *   GEMINI_API_KEY=... node scripts/validate-photo-classifier.mjs
  *
  * 결과는 화면 출력 + scripts/validate-photo-classifier-result.json 에 저장된다.
