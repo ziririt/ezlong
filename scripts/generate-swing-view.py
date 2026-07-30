@@ -39,6 +39,8 @@ STATS = dict(
     tsla_extreme='TSLA 매수점수 80 이상 구간은 표본 61일, 이후 20거래일 평균 +15.3%·승률 69%였습니다',
     tsla_hot='TSLA는 매도압력 75를 넘긴 뒤에도 20거래일 평균 +7.5%로 더 오른 이력이 많았습니다 — 과열을 기계적으로 파는 문법이 이 종목에선 돈을 잃어왔습니다',
     nvda_trend='NVDA는 200일선 위(기어3)에서 20거래일 승률 69%, 아래에서는 56%로 갈립니다 — 추세 유지가 판단의 중심입니다',
+    rebound='약세 구간(RSI 45 미만)에서 나온 하루 +2.5% 이상 급반등은 지난 11년 49차례 있었고, 반등 자체만으로는 이후 5거래일 승률이 52%로 동전던지기였습니다',
+    follow='다만 진위는 이틀 안에 갈렸습니다 — 2거래일 내 반등일 종가 위에서 다시 마감하면 이후 20거래일 평균 +3.2%·승률 63%, 못 하면 −1.1%·승률 38%였습니다',
 )
 
 KST = timezone(timedelta(hours=9))
@@ -175,6 +177,131 @@ def self_review(state):
     return None
 
 
+def load_scorecard():
+    d = load(os.path.join(HERE, '..', 'data', 'market-scorecard-data.json'))
+    if not d or not d.get('entries'):
+        return None
+    try:
+        upd = datetime.fromisoformat(d['updated_at'].replace('Z', '+00:00'))
+        if (datetime.now(timezone.utc) - upd) > timedelta(hours=24):
+            return None
+    except Exception:
+        return None
+    return d['entries']
+
+
+def load_chart_engine():
+    a = load(os.path.join(HERE, '..', 'data', 'analysis-QQQ.json'))
+    if not a:
+        return None
+    try:
+        upd = datetime.fromisoformat(a['updatedAt'].replace('Z', '+00:00'))
+        if (datetime.now(timezone.utc) - upd) > timedelta(hours=36):
+            return None
+    except Exception:
+        return None
+    return a.get('analysis') or None
+
+
+def market_context(state, syms, advanced):
+    """시황 문단 — 직전 장마감 등락 + 재료(스코어카드) + 급반등 터닝포인트 관문"""
+    p = []
+    qqq = syms.get('QQQ') or {}
+    chg = qqq.get('changePct')
+    price = qqq.get('price')
+    rsi_prev = qqq.get('rsi5dAgo')   # 근사: 5일 전 RSI (약세 판단용)
+    hist = state.get('history', [])
+
+    cum5 = None
+    if len(hist) >= 6:
+        cum5 = (hist[-1]['price'] / hist[-6]['price'] - 1) * 100
+
+    sc = load_scorecard()
+    move_txt = None
+    if chg is not None:
+        if chg >= 2.0:
+            move_txt = f'직전 장에서 시장이 {chg:+.1f}% 급반등으로 마감했습니다'
+        elif chg <= -2.0:
+            move_txt = f'직전 장에서 시장이 {chg:+.1f}% 급락으로 마감했습니다'
+        elif abs(chg) >= 0.8:
+            move_txt = f'직전 장은 {chg:+.1f}%로 마감했습니다'
+    if sc:
+        cur = sc[0]
+        pos, neg = cur.get('positive_total'), cur.get('negative_total')
+        ke = (cur.get('key_event') or {}).get('name', '')
+        lows = [e for e in sc[1:6] if e.get('positive_total') is not None]
+        low = min(lows, key=lambda e: e['positive_total']) if lows else None
+        parts = []
+        if move_txt:
+            parts.append(move_txt + '.')
+        if low and pos is not None and pos - low['positive_total'] >= 25:
+            lke = (low.get('key_event') or {}).get('name', '')
+            neg_names = [f.get('name') for f in (low.get('negative_factors') or [])][:2]
+            neg_txt = '·'.join(n for n in neg_names if n)
+            parts.append(f"불과 직전까지 {neg_txt or lke}가 누르던 분위기(긍정 {low['positive_total']} 대 "
+                         f"부정 {100 - low['positive_total']})가 {ke} 등으로 짧은 시간에 뒤집혔습니다. "
+                         f'지금 재료 균형은 긍정 {pos} 대 부정 {neg}.')
+        elif pos is not None:
+            parts.append(f'재료 균형은 긍정 {pos} 대 부정 {neg} — 핵심 재료는 {ke}.')
+        if cum5 is not None and abs(cum5) >= 3:
+            parts.append(f'최근 5거래일 누적으로는 {cum5:+.1f}%입니다.')
+        if parts:
+            p.append(' '.join(parts))
+    elif move_txt:
+        p.append(move_txt + '.')
+
+    # 급반등 터닝포인트 관문 (판정 → 신규 설정 순서)
+    watch = state.get('reboundWatch')
+    if advanced and watch:
+        if price is not None and price > watch['price']:
+            p.append(f"급반등의 첫 관문 — 반등일 종가 {watch['price']:.2f} 위 재마감 — 은 "
+                     f'통과됐습니다. {STATS["follow"]}. 통계는 이 반등을 진짜 쪽에 두기 시작했습니다.')
+            state['reboundWatch'] = None
+        else:
+            watch['daysLeft'] -= 1
+            if watch['daysLeft'] <= 0:
+                p.append(f"급반등의 첫 관문(반등일 종가 {watch['price']:.2f} 위 재마감)은 기한 안에 "
+                         f'통과되지 못했습니다. {STATS["follow"]}. 이 반등을 추세 전환으로 승격하지 않습니다.')
+                state['reboundWatch'] = None
+    if advanced and chg is not None and chg >= 2.5 and (rsi_prev is None or rsi_prev < 45)             and not state.get('reboundWatch'):
+        state['reboundWatch'] = dict(day=state.get('lastDay'), price=price, daysLeft=2)
+    # 활성 관문은 (같은 날 재실행 포함) 항상 서술 — 상태 기반이라 하루 여러 번 갱신에도 유지
+    watch = state.get('reboundWatch')
+    if watch:
+        p.append(f'급반등이 추세의 터닝포인트인지는 아직 단정하지 않습니다. {STATS["rebound"]}. '
+                 f'{STATS["follow"]}. 그래서 지금 관문은 하나입니다 — 남은 {watch["daysLeft"]}거래일 '
+                 f'안에 종가가 {watch["price"]:.2f} 위에서 다시 마감하는지 확인 중입니다.')
+    return p
+
+
+def chart_engine_crosscheck(st):
+    """차트분석 엔진(AI 차트분석 코너)과의 정합/모순 한 문단"""
+    ca = load_chart_engine()
+    if not ca:
+        return None
+    act = ca.get('action') or ca.get('stage') or ''
+    trend = ca.get('trend') or ''
+    conf = (ca.get('confluenceChecklist') or {})
+    verdict = conf.get('verdict') or ''
+    bits = []
+    if act or trend:
+        bits.append(f"차트분석 엔진의 오늘 판독은 '{act or trend}'입니다")
+    if verdict:
+        bits.append(f"반등 신뢰도 체크는 '{verdict}'({conf.get('score', '')})")
+    if not bits:
+        return None
+    line = '. '.join(bits) + '.'
+    bullish_st = st in ('accumulate', 'hold')
+    cautious_ca = any(k in (str(act) + str(verdict)) for k in ('관망', '주의', '위장', '매도'))
+    if bullish_st and cautious_ca:
+        line += ' 수석 판단과 결이 다른 부분인데, 이럴 때 원칙은 보수적인 쪽입니다 — 보유는 유지하되 신규 증액은 이 모순이 풀린 뒤로 미룹니다.'
+    elif not bullish_st and not cautious_ca:
+        line += ' 차트 쪽이 더 낙관적이지만, 노출 판단은 수석 원장의 규율을 따릅니다.'
+    else:
+        line += ' 수석 판단과 같은 방향입니다.'
+    return line
+
+
 def comp_commentary(state, action, buy, sell, gear, dev200, price):
     p = []
     expo = state.get('exposure', 0)
@@ -227,6 +354,14 @@ def comp_commentary(state, action, buy, sell, gear, dev200, price):
     return p
 
 
+def _move_prefix(s):
+    chg = s.get('changePct')
+    if chg is None or abs(chg) < 0.8:
+        return ''
+    tone = '급반등' if chg >= 3 else ('급락' if chg <= -3 else '마감')
+    return f'직전 장 {chg:+.1f}% {tone}. '
+
+
 def tsla_view(s):
     buy, sell, gear = s.get('buyScore') or 50, s.get('sellScore') or 50, s.get('gear') or 2
     rsi = s.get('rsi')
@@ -249,7 +384,7 @@ def tsla_view(s):
         st, label = 'hold', '보유 유지 — 이탈 관리 중심'
         body = (f'추세 훼손 신호가 없는 구간입니다. TSLA는 예측보다 대응이 유리했던 종목입니다 — '
                 f'미리 팔거나 미리 사는 대신, 200일선 이탈 여부 하나를 기준으로 관리하는 구간입니다.')
-    return dict(stance=st, stanceLabel=label, commentary=body,
+    return dict(stance=st, stanceLabel=label, commentary=_move_prefix(s) + body,
                 nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi))
 
 
@@ -272,7 +407,7 @@ def nvda_view(s):
         body = (f'NVDA의 판단 기준은 하나, 추세입니다. {STATS["nvda_trend"]} 200일선 아래로 추세가 '
                 f'무너진 지금 같은 구간에서는 노출 축소를 검토하는 것이 데이터의 방향입니다. '
                 f'추세 복귀가 확인되면 다시 싣는 것이 원칙입니다.')
-    return dict(stance=st, stanceLabel=label, commentary=body,
+    return dict(stance=st, stanceLabel=label, commentary=_move_prefix(s) + body,
                 nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi))
 
 
@@ -307,6 +442,7 @@ def main():
         action = None   # 같은 거래일 재실행/신선도 실패 — 상태 진행 없이 뷰만 갱신
 
     st, label = stance_of(comp, action, buy, sell, gear)
+    ctx_paras = market_context(comp, syms, advanced)
 
     # 스탠스 스트릭 (거래일 기준) + 오늘 변경 여부
     changed = False
@@ -358,6 +494,10 @@ def main():
         if n >= 15:
             grade = dict(n=n, hits=hits, pct=round(hits / n * 100))
     commentary = comp_commentary(comp, action, buy, sell, gear, dev200, price)
+    commentary = ctx_paras + commentary
+    cross = chart_engine_crosscheck(st)
+    if cross:
+        commentary.append(cross)
 
     if grade:
         commentary.append(f'성적은 숨기지 않겠습니다. 최근 {grade["n"]}번의 방향 판단 중 '
