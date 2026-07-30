@@ -37,12 +37,16 @@ def daily_scores(sym, vix_close):
     vix_al = vix_close.reindex(df.index).ffill().fillna(18.0).tolist()
 
     rows = []
+    # 라이브 파이프라인은 yfinance period='2y'(약 504거래일)로 계산한다.
+    # 동일 재현을 위해 각 날짜의 지표를 '직전 504일 윈도우'로만 계산한다 (속도 부수 효과).
+    WIN = 504
     # 지표 안정화를 위해 최소 220일 이후부터 산출 (200SMA 필요)
     for i in range(220, len(df)):
-        c = closes[: i + 1]
-        h = highs[: i + 1]
-        l = lows[: i + 1]
-        v = vols[: i + 1]
+        s0 = max(0, i + 1 - WIN)
+        c = closes[s0: i + 1]
+        h = highs[s0: i + 1]
+        l = lows[s0: i + 1]
+        v = vols[s0: i + 1]
         price = c[-1]
         sma5 = fmd.calc_sma(c, 5)
         sma50 = fmd.calc_sma(c, 50)
