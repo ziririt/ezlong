@@ -1,0 +1,45 @@
+/* ── EZLONG 디자인 시스템과 동일한 CSS 변수 ── */
+:root {
+  --bg: #F2F2F7;
+  --surface: #FFFFFF;
+  --card2: #F2F2F7;
+  --border: rgba(0,0,0,.1);
+  --border2: rgba(0,0,0,.06);
+  --text: #1C1C1E;
+  --text2: #3C3C3E;
+  --text3: #8E8E93;
+  --blue: #007AFF;
+  --green: #34C759;
+  --red: #FF3B30;
+  --r: 12px;
+  --max-w: 900px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000;
+    --surface: #1C1C1E;
+    --card2: #2C2C2E;
+    --border: rgba(255,255,255,.12);
+    --border2: rgba(255,255,255,.07);
+    --text: #F5F5F7;
+    --text2: #EBEBF5CC;
+    --text3: #EBEBF599;
+    --blue: #0A84FF;
+    --green: #30D158;
+    --red: #FF453A;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+a { color: var(--blue); text-decoration: none; }

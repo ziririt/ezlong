@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KIS 포트폴리오 현황</title>
+  <style>
+    :root {
+      --bg: #F2F2F7; --surface: #fff; --card2: #F2F2F7;
+      --border: rgba(0,0,0,.1); --border2: rgba(0,0,0,.06);
+      --text: #1C1C1E; --text2: #3C3C3E; --text3: #8E8E93;
+      --blue: #007AFF; --green: #1E8A3C; --red: #C0190F;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000; --surface: #1C1C1E; --card2: #2C2C2E;
+        --border: rgba(255,255,255,.12); --border2: rgba(255,255,255,.07);
+        --text: #F5F5F7; --text2: #EBEBF5CC; --text3: #EBEBF599;
+        --blue: #0A84FF; --green: #4CD964; --red: #FF6961;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 24px 20px; }
+    .header-inner { max-width: 960px; margin: 0 auto; }
+    .header-label { font-size: 14px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; }
+    .header-title { font-size: clamp(20px, 4vw, 30px); font-weight: 800; letter-spacing: -.03em; color: var(--text); margin-bottom: 4px; }
+    .header-sub { font-size: 15px; color: var(--text2); }
+
+    .main { max-width: 960px; margin: 0 auto; padding: 20px 16px 60px; }
+
+    .pill-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+    .pill { padding: 10px 16px; border-radius: 10px; flex: 1; min-width: 110px; }
+    .pill-lbl { font-size: 14px; color: var(--text2); margin-bottom: 2px; }
+    .pill-val { font-size: 18px; font-weight: 800; }
+    .pill-gray { background: var(--card2); }
+    .pill-gray .pill-val { color: var(--text); }
+    .pill-green { background: rgba(52,199,89,.1); }
+    .pill-green .pill-val { color: var(--green); }
+    .pill-red { background: rgba(255,59,48,.08); }
+    .pill-red .pill-val { color: var(--red); }
+
+    .ctrl { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 7px 16px; border-radius: 8px; font-size: 14px; font-weight: 600;
+      cursor: pointer; border: 1px solid var(--border);
+      background: var(--card2); color: var(--text2);
+    }
+    .filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .spacer { flex: 1; }
+    .refresh-btn {
+      background: var(--blue); color: #fff; border: none; border-radius: 8px;
+      padding: 10px 20px; font-size: 15px; font-weight: 600; cursor: pointer;
+    }
+    .refresh-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0; overflow: hidden; margin-bottom: 16px; }
+    .tbl-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { font-size: 14px; font-weight: 600; color: var(--text2); padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+    td { padding: 12px 12px; border-bottom: 1px solid var(--border2); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--card2); }
+
+    .badge { display: inline-block; padding: 2px 7px; border-radius: 5px; font-size: 12px; font-weight: 700; color: #fff; margin-right: 6px; }
+    .badge-kr { background: var(--blue); }
+    .badge-us { background: #E05C00; }
+    .sym { font-weight: 700; font-size: 14px; }
+    .name { font-size: 13px; color: var(--text2); margin-top: 1px; }
+    .up { color: var(--green); }
+    .dn { color: var(--red); }
+    .neutral { color: var(--text2); }
+
+    .msg-box { padding: 14px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 14px; line-height: 1.6; }
+    .err { background: rgba(255,59,48,.08); border: 1px solid rgba(255,59,48,.25); color: var(--red); }
+    .warn { background: rgba(255,159,10,.1); border: 1px solid rgba(255,159,10,.3); color: #92400E; }
+    .empty { background: var(--card2); color: var(--text2); text-align: center; padding: 40px; border-radius: 12px; }
+
+    .loading { text-align: center; padding: 40px; color: var(--text2); display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .spinner { width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .notice { background: var(--card2); border-radius: 8px; padding: 14px 16px; font-size: 14px; color: var(--text2); line-height: 1.7; }
+    .notice strong { color: var(--text); }
+
+    .fetch-time { font-size: 13px; color: var(--text3); margin-left: 10px; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-label">한국투자증권 Open API</div>
+    <h1 class="header-title">계좌 포트폴리오 현황</h1>
+    <p class="header-sub" id="headerSub">조회 중…</p>
+  </div>
+</div>
+
+<div class="main">
+  <div id="errArea"></div>
+  <div id="warnArea"></div>
+  <div id="pillRow" class="pill-row" style="display:none;"></div>
+
+  <div class="ctrl">
+    <button class="filter-btn active" onclick="setFilter('ALL')">전체</button>
+    <button class="filter-btn" onclick="setFilter('KR')">국내</button>
+    <button class="filter-btn" onclick="setFilter('US')">해외</button>
+    <div class="spacer"></div>
+    <button class="refresh-btn" id="refreshBtn" onclick="load()">새로고침</button>
+  </div>
+
+  <div id="content"></div>
+
+  <div class="notice" style="margin-top:20px;">
+    <strong>주의사항</strong><br>
+    · 이 도구는 <strong>조회 전용</strong>입니다. 주문·매매 기능은 없습니다.<br>
+    · 해외주식 손익은 달러 기준이며 원화 환산은 별도 계산이 필요합니다.<br>
+    · 투자 판단의 책임은 투자자 본인에게 있습니다.
+  </div>
+</div>
+
+<script>
+let allPositions = [];
+let currentFilter = 'ALL';
+
+function n(v) { return v === null || v === undefined || isNaN(v) ? 0 : v; }
+
+function fmtKrw(v) {
+  const abs = Math.abs(v);
+  if (abs >= 1e8) return (v / 1e8).toFixed(1).replace(/\.0$/, '') + '억원';
+  if (abs >= 1e4) return Math.round(v / 1e4).toLocaleString('ko-KR') + '만원';
+  return v.toLocaleString('ko-KR') + '원';
+}
+function fmtUsd(v) { return '$' + Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function fmtVal(v, cur) { return cur === 'KRW' ? fmtKrw(v) : (v >= 0 ? '' : '-') + fmtUsd(v); }
+function fmtPct(v) { return (v >= 0 ? '+' : '') + n(v).toFixed(2) + '%'; }
+function pnlClass(v) { return v > 0 ? 'up' : v < 0 ? 'dn' : 'neutral'; }
+
+function toKst(iso) {
+  return new Date(iso).toLocaleString('ko-KR', {
+    timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit',
+  });
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.textContent === (f === 'ALL' ? '전체' : f === 'KR' ? '국내' : '해외')));
+  renderTable();
+}
+
+function renderPills(positions) {
+  const krItems = positions.filter(p => p.currency === 'KRW');
+  const usItems = positions.filter(p => p.currency !== 'KRW');
+  const krVal  = krItems.reduce((s, p) => s + p.marketValue, 0);
+  const krPnl  = krItems.reduce((s, p) => s + p.profitLoss, 0);
+  const usVal  = usItems.reduce((s, p) => s + p.marketValue, 0);
+  const usPnl  = usItems.reduce((s, p) => s + p.profitLoss, 0);
+
+  let html = '';
+  if (krVal > 0) {
+    html += `<div class="pill pill-gray"><div class="pill-lbl">국내 평가금액</div><div class="pill-val">${fmtKrw(krVal)}</div></div>`;
+    html += `<div class="pill ${krPnl >= 0 ? 'pill-green' : 'pill-red'}"><div class="pill-lbl">국내 평가손익</div><div class="pill-val ${pnlClass(krPnl)}">${fmtKrw(krPnl)}</div></div>`;
+  }
+  if (usVal > 0) {
+    html += `<div class="pill pill-gray"><div class="pill-lbl">해외 평가금액</div><div class="pill-val">${fmtUsd(usVal)}</div></div>`;
+    html += `<div class="pill ${usPnl >= 0 ? 'pill-green' : 'pill-red'}"><div class="pill-lbl">해외 평가손익</div><div class="pill-val ${pnlClass(usPnl)}">${(usPnl >= 0 ? '+' : '') + fmtUsd(usPnl)}</div></div>`;
+  }
+  html += `<div class="pill pill-gray"><div class="pill-lbl">총 종목 수</div><div class="pill-val">${positions.length}종목</div></div>`;
+  const row = document.getElementById('pillRow');
+  row.innerHTML = html;
+  row.style.display = 'flex';
+}
+
+function renderTable() {
+  const filtered = currentFilter === 'ALL' ? allPositions : allPositions.filter(p => p.market === currentFilter);
+  const el = document.getElementById('content');
+
+  if (!filtered.length) {
+    el.innerHTML = `<div class="empty">${currentFilter === 'ALL' ? '보유 종목이 없습니다.' : (currentFilter === 'KR' ? '국내' : '해외') + ' 보유 종목이 없습니다.'}</div>`;
+    return;
+  }
+
+  let rows = '';
+  filtered.forEach(p => {
+    const badge = p.market === 'KR'
+      ? `<span class="badge badge-kr">KR</span>`
+      : `<span class="badge badge-us">${p.exchange}</span>`;
+    const priceStr = p.currency === 'KRW'
+      ? p.currentPrice.toLocaleString('ko-KR') + '원'
+      : '$' + p.currentPrice.toFixed(2);
+    const avgStr = p.currency === 'KRW'
+      ? p.avgPrice.toLocaleString('ko-KR') + '원'
+      : '$' + p.avgPrice.toFixed(2);
+
+    rows += `
+      <tr>
+        <td>
+          <div>${badge}<span class="sym">${p.symbol}</span></div>
+          <div class="name">${p.name}</div>
+        </td>
+        <td style="text-align:right; color:var(--text2);">${p.quantity.toLocaleString('ko-KR')}</td>
+        <td style="text-align:right; color:var(--text2);">${avgStr}</td>
+        <td style="text-align:right; font-weight:600;">${priceStr}</td>
+        <td style="text-align:right; font-weight:700;">${fmtVal(p.marketValue, p.currency)}</td>
+        <td style="text-align:right; font-weight:600;" class="${pnlClass(p.profitLoss)}">${(p.profitLoss >= 0 ? '+' : '')}${fmtVal(p.profitLoss, p.currency)}</td>
+        <td style="text-align:right; font-weight:700;" class="${pnlClass(p.profitLossRate)}">${fmtPct(p.profitLossRate)}</td>
+      </tr>`;
+  });
+
+  el.innerHTML = `
+    <div class="card">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>종목</th>
+              <th style="text-align:right;">수량</th>
+              <th style="text-align:right;">평균매입가</th>
+              <th style="text-align:right;">현재가</th>
+              <th style="text-align:right;">평가금액</th>
+              <th style="text-align:right;">평가손익</th>
+              <th style="text-align:right;">수익률</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+async function load() {
+  const btn = document.getElementById('refreshBtn');
+  btn.disabled = true;
+  btn.textContent = '조회 중…';
+  document.getElementById('content').innerHTML = '<div class="loading"><div class="spinner"></div>한국투자증권 API 조회 중…</div>';
+  document.getElementById('errArea').innerHTML = '';
+  document.getElementById('warnArea').innerHTML = '';
+  document.getElementById('pillRow').style.display = 'none';
+  document.getElementById('headerSub').textContent = '조회 중…';
+
+  try {
+    const res = await fetch('/api/positions');
+    const data = await res.json();
+
+    if (!data.ok) {
+      document.getElementById('errArea').innerHTML = `<div class="msg-box err">오류: ${data.error}</div>`;
+      document.getElementById('content').innerHTML = '';
+      document.getElementById('headerSub').textContent = '조회 실패';
+      return;
+    }
+
+    if (data.warnings?.length) {
+      document.getElementById('warnArea').innerHTML =
+        data.warnings.map(w => `<div class="msg-box warn">⚠ ${w}</div>`).join('');
+    }
+
+    allPositions = data.positions || [];
+    renderPills(allPositions);
+    renderTable();
+
+    document.getElementById('headerSub').innerHTML =
+      `계좌 ${data.account}<span class="fetch-time">조회 시각: ${toKst(data.fetchedAt)}</span>`;
+  } catch (e) {
+    document.getElementById('errArea').innerHTML = `<div class="msg-box err">서버 연결 실패: ${e.message}<br>터미널에서 node server.js 가 실행 중인지 확인해주세요.</div>`;
+    document.getElementById('content').innerHTML = '';
+    document.getElementById('headerSub').textContent = '조회 실패';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '새로고침';
+  }
+}
+
+load();
+</script>
+</body>
+</html>
