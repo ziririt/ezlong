@@ -3746,13 +3746,21 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
   if (window._swingView?.comp?.commentary?.length) {
     const _c = window._swingView.comp;
     title = _c.stanceLabel;
-    desc  = _c.commentary.map(t => `<p style="margin:0 0 12px;line-height:1.78;">${t}</p>`).join('')
+    const _flowLine = window._swingView.flow
+      ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;"><b>판단 흐름</b> · ${window._swingView.flow}</div>` : '';
+    desc  = _flowLine
+          + _c.commentary.map(t => `<p style="margin:0 0 12px;line-height:1.78;">${t}</p>`).join('')
           + `<div style="margin-top:8px;color:var(--t3);font-size:14px;">수석 스윙 뷰 ${window._swingView.generatedAtKST} 기준 · 기준일 ${window._swingView.dataDay}(미국장) · v2 베타 — 확률·통계는 백테스트 검증분만 인용</div>`;
     pills = [
       {text: gearText, tone: gear >= 3 ? 'negative' : gear === 2 ? 'caution' : 'neutral'},
       {text: `매도압력 ${_compSell}`, tone: _compSell >= 60 ? 'caution' : 'neutral'},
       {text: `확신도 ${_c.confidence ?? '—'}`, tone: 'purple'},
     ];
+    if (window._swingView.stanceChangedToday) {
+      pills.unshift({text: '오늘 스탠스 변경', tone: 'caution'});
+    } else if ((window._swingView.stanceStreak ?? 1) >= 2) {
+      pills.push({text: `${window._swingView.stanceStreak}거래일째 유지`, tone: 'neutral'});
+    }
   }
 
   wrap.innerHTML = `

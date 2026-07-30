@@ -40,6 +40,8 @@
       '<span class="cs-badge">수석 스윙 뷰 · v2 베타</span>' +
       '<span class="cs-stance">' + c.stanceLabel + '</span>' +
       '</div>' +
+      (view.stanceChangedToday ? '<div style="font-weight:700;margin-bottom:4px;">오늘 스탠스가 바뀌었습니다.</div>' : '') +
+      (view.flow ? '<div style="margin-bottom:4px;">판단 흐름 · ' + view.flow + '</div>' : '') +
       '<div>' + first + '</div>' +
       '<div class="cs-meta">' + view.generatedAtKST + ' 기준 · ' +
       '<a href="/atmr-dashboard_v2.html">전체 판단 보기</a> · ' +
