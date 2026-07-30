@@ -5415,6 +5415,32 @@ musicPlayers.forEach((player) => { player.crossOrigin = "anonymous"; });
 let activePlayerIndex = 0;
 let crossfadeTriggered = false;
 let pendingNextIndex = -1;
+// 2026-07-30 신설(안드로이드 전용, CLAUDE.md 35-B (a)안) — 프리페치 2단계
+// 슬롯의 웹측 미러. pendingNextIndex(슬롯1: 네이티브 crossfadePlayer)에 더해,
+// 그 다음다음 곡(슬롯2: 네이티브 prefetchQueue)의 인덱스를 기억해둔다.
+// 배경: 백그라운드 무음의 최종 실측 — 곡 전환 시점에 웹의 prefetch/crossfade
+// 명령이 아예 도착하지 않아 매번 needNext 비상 왕복에 의존하고 있었고, 그
+// 왕복이 유실되면 그대로 무음 정지였다. 웹이 깨어있는 순간에 2곡을 미리
+// 보내두면 네이티브가 두 번의 전환을 자력으로 이어간다. iOS는 프리페치가
+// 단일 슬롯 교체 방식(NativeRadioPlayer.prefetch)이라 슬롯2를 보내면 오히려
+// 슬롯1을 덮어써 크로스페이드가 깨진다 — 반드시 안드로이드에서만 쓴다.
+let pendingSecondIndex = -1;
+function isAndroidNativeWrapper() {
+  return isNativeWrapper && !!window.AndroidNativeBridge;
+}
+// 슬롯2 채우기 — 픽·청취기록·네이티브 전송까지. 슬롯1(pendingNextIndex)이
+// 이미 예약된 상태에서만 부른다(순서 보장: 네이티브 큐는 FIFO).
+function fillSecondPrefetchSlot() {
+  if (!isAndroidNativeWrapper()) return;
+  if (pendingSecondIndex >= 0 || pendingNextIndex < 0) return;
+  if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+  pendingSecondIndex = pickNextTrackIndex();
+  recordTrackHeard(pendingSecondIndex);
+  const upcoming2 = musicPlaylist[pendingSecondIndex % musicPlaylist.length];
+  if (upcoming2) {
+    postToNativeRadio({ action: "prefetchNext", url: resolveTrackAbsoluteUrl(upcoming2) });
+  }
+}
 
 // 2026-07-15 구조적 재설계(4차 시도까지 실패 후): 네이티브 앱(isNativeWrapper)
 // 에서는 이 <audio> 엘리먼트를 절대로 실제 play()하지 않는다. 실기기에서
@@ -6344,6 +6370,14 @@ async function updateMusicProgress(event) {
     }
   }
 
+  // 1.5단계(2026-07-30, 안드로이드 전용) — 슬롯1 예약이 끝났으면 다음다음
+  // 곡(슬롯2)도 미리 보내 네이티브 큐를 채운다. 웹이 이 직후 잠들어도
+  // 네이티브가 두 번의 곡 전환을 자력으로 이어가게 하는 보험이다
+  // (CLAUDE.md 35-B (a)안, pendingSecondIndex 선언부 주석 참조).
+  if (standby && remaining <= musicPrebufferLeadSeconds) {
+    fillSecondPrefetchSlot();
+  }
+
   // 2단계 — 실제 크로스페이드 시작(끝나기 4초 전). 1단계에서 이미 준비
   // 중이던(또는 이미 완료된) standby를 그대로 쓴다.
   if (!crossfadeTriggered && standby && pendingNextIndex >= 0 && remaining <= musicFadeOutSeconds && remaining > 0.05) {
@@ -7049,7 +7083,27 @@ window.__flipzenNativeCommand = function (command) {
     // 여기서 할 일은 하나뿐이다: 즉시 다음 곡으로 넘겨 소리를 되살린다.
     // 재생 중일 때만 반응한다 — 유저가 일시정지해둔 상태라면 곡이 끝나
     // 멈춰 있는 게 정상이므로 건드리지 않는다.
-    if (musicPlaying) playNextTrack();
+    if (musicPlaying) {
+      playNextTrack();
+      // 2026-07-30 (35-B (a)안) — needNext는 네이티브 큐까지 전부 바닥났다는
+      // 뜻이다. 지금은 evaluateJavascript로 웹이 깨어난 순간이니, 새 곡을
+      // 트는 것에서 멈추지 않고 다음·다음다음 곡까지 즉시 재예약해 큐를
+      // 다시 채운다(playNextTrack이 방금 슬롯 미러를 리셋했고, 네이티브도
+      // setTrack에서 큐를 비웠다 — 여기서 새로 쌓는 것이 정합).
+      if (isAndroidNativeWrapper() && Array.isArray(musicPlaylist) && musicPlaylist.length > 0) {
+        pendingNextIndex = pickNextTrackIndex();
+        recordTrackHeard(pendingNextIndex);
+        const refillStandby = standbyPlayer();
+        if (refillStandby) {
+          refillStandby._pendingLoad = loadMusicTrack(refillStandby, pendingNextIndex, { prebuffer: true });
+        }
+        const refillUpcoming = musicPlaylist[pendingNextIndex % musicPlaylist.length];
+        if (refillUpcoming) {
+          postToNativeRadio({ action: "prefetchNext", url: resolveTrackAbsoluteUrl(refillUpcoming) });
+        }
+        fillSecondPrefetchSlot();
+      }
+    }
   }
 };
 
@@ -7121,6 +7175,7 @@ async function playNextTrack() {
   musicActionToken += 1; // 진행 중이던 이전 재생 시도(있었다면)를 무효화한다.
   crossfadeTriggered = false;
   pendingNextIndex = -1;
+  pendingSecondIndex = -1; // 수동 스킵 — 슬롯2 미러도 폐기(네이티브 setTrack이 큐를 비운다)
   const standby = standbyPlayer();
   if (standby) {
     standby.pause();
@@ -7167,6 +7222,18 @@ function handleActivePlayerEnded(event) {
     activePlayerIndex = 1 - activePlayerIndex;
     musicIndex = pendingNextIndex;
     pendingNextIndex = -1;
+    // 2026-07-30(안드로이드 전용) — 슬롯2 미러를 슬롯1로 승격한다. 네이티브도
+    // 같은 순간 큐 헤드를 새 crossfadePlayer로 준비하므로(FIFO) 양쪽 장부가
+    // 일치한다. 이미 recordTrackHeard/프리페치 전송까지 끝난 곡이라 여기서는
+    // 다시 기록하거나 다시 보내지 않는다 — standby 로드만 새로 건다.
+    if (isAndroidNativeWrapper() && pendingSecondIndex >= 0) {
+      pendingNextIndex = pendingSecondIndex;
+      pendingSecondIndex = -1;
+      const promotedStandby = standbyPlayer();
+      if (promotedStandby) {
+        promotedStandby._pendingLoad = loadMusicTrack(promotedStandby, pendingNextIndex, { prebuffer: true });
+      }
+    }
     if (isNativeWrapper) {
       // 2026-07-16: 크로스페이드가 끝난 이 순간, 네이티브(AVPlayer)의 새
       // 트랙은 이미 musicFadeOutSeconds(4초)만큼 실제로 재생된 상태다 —
@@ -7253,15 +7320,27 @@ function handleNativeAutoAdvance() {
   // 네이티브의 crossfadePlayer 슬롯이 방금 소비돼 비었다 — 이 곡이 끝날
   // 때도 같은 보험이 작동하도록, 정상적인 18초-프리버퍼 타이밍을 기다리지
   // 않고 바로 다음 순번을 새로 예약해 네이티브에 미리 알려준다.
+  // 2026-07-30 확장(35-B (a)안): 안드로이드에서는 슬롯2 미러가 있으면 그걸
+  // 슬롯1로 승격한다 — 네이티브도 같은 순간 큐 헤드를 새 crossfadePlayer로
+  // 준비했으므로(refillPrefetchFromQueue, FIFO) 양쪽 장부가 일치한다. 승격된
+  // 곡은 이미 기록·전송이 끝났으니 standby 로드만 새로 걸고, 빈 슬롯2는
+  // 지금(웹이 깨어있는 순간) 즉시 재충전한다.
   const nextStandby = standbyPlayer();
   if (nextStandby && Array.isArray(musicPlaylist) && musicPlaylist.length > 0) {
-    pendingNextIndex = pickNextTrackIndex();
-    recordTrackHeard(pendingNextIndex);
-    nextStandby._pendingLoad = loadMusicTrack(nextStandby, pendingNextIndex, { prebuffer: true });
-    const upcoming = musicPlaylist[pendingNextIndex % musicPlaylist.length];
-    if (upcoming) {
-      postToNativeRadio({ action: "prefetchNext", url: resolveTrackAbsoluteUrl(upcoming) });
+    if (isAndroidNativeWrapper() && pendingSecondIndex >= 0) {
+      pendingNextIndex = pendingSecondIndex;
+      pendingSecondIndex = -1;
+      nextStandby._pendingLoad = loadMusicTrack(nextStandby, pendingNextIndex, { prebuffer: true });
+    } else {
+      pendingNextIndex = pickNextTrackIndex();
+      recordTrackHeard(pendingNextIndex);
+      nextStandby._pendingLoad = loadMusicTrack(nextStandby, pendingNextIndex, { prebuffer: true });
+      const upcoming = musicPlaylist[pendingNextIndex % musicPlaylist.length];
+      if (upcoming) {
+        postToNativeRadio({ action: "prefetchNext", url: resolveTrackAbsoluteUrl(upcoming) });
+      }
     }
+    fillSecondPrefetchSlot();
   }
 }
 
@@ -7471,6 +7550,7 @@ function preloadTrackForFilterChange() {
   }
   crossfadeTriggered = false;
   pendingNextIndex = -1;
+  pendingSecondIndex = -1; // 슬롯2 미러도 폐기
   if (player.dataset.blobUrl) {
     URL.revokeObjectURL(player.dataset.blobUrl);
     delete player.dataset.blobUrl;
@@ -7898,6 +7978,7 @@ function playTrackAtIndex(index, options) {
   musicActionToken += 1; // 진행 중이던 이전 재생 시도(있었다면)를 무효화한다.
   crossfadeTriggered = false;
   pendingNextIndex = -1;
+  pendingSecondIndex = -1; // 수동 재생 — 슬롯2 미러도 폐기
   const standby = standbyPlayer();
   if (standby) {
     standby.pause();
@@ -8588,6 +8669,7 @@ musicPlayers.forEach((player) => {
       // 고르기)으로 자연스럽게 되돌아가게 한다.
       crossfadeTriggered = false;
       pendingNextIndex = -1;
+      pendingSecondIndex = -1; // 슬롯2 미러도 폐기
       return;
     }
     if (!musicPlaying) return;
