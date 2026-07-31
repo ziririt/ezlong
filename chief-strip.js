@@ -16,7 +16,11 @@
     '.chief-strip .cs-stance{font-weight:800;font-size:16px;}',
     '.chief-strip .cs-meta{color:#6e6e73;font-size:14px;margin-top:4px;}',
     '.chief-strip a{color:#0071E3;text-decoration:none;font-weight:700;}',
+    '.chief-strip .cs-g{color:#1A7F37;font-weight:700;}',
+    '.chief-strip .cs-r{color:#D92A2A;font-weight:700;}',
+    '.chief-strip .cs-b{color:#0071E3;font-weight:700;}',
     '@media (prefers-color-scheme: dark){',
+    '.chief-strip .cs-g{color:#30D158;}.chief-strip .cs-r{color:#FF453A;}.chief-strip .cs-b{color:#0A84FF;}',
     '.chief-strip .cs-badge,.v2-entry a{--noop:0;}',
     '.chief-strip{background:#1A1A1A;color:#F2F2F7;border-color:rgba(120,120,128,0.35);}',
     '.chief-strip .cs-meta{color:#98989F;}',
@@ -29,7 +33,13 @@
   function insert(view) {
     if (!view || !view.comp) return;
     var c = view.comp;
-    var first = (view.desked && view.desked.headline) || (c.commentary && c.commentary[0]) || '';
+    function colorize(t) {
+      return String(t || '')
+        .replace(/\[G\](.*?)\[\/G\]/g, '<strong class="cs-g">$1</strong>')
+        .replace(/\[R\](.*?)\[\/R\]/g, '<strong class="cs-r">$1</strong>')
+        .replace(/\[B\](.*?)\[\/B\]/g, '<strong class="cs-b">$1</strong>');
+    }
+    var first = colorize((view.desked && view.desked.headline) || (c.commentary && c.commentary[0]) || '');
     var style = document.createElement('style');
     style.textContent = css;
     document.head.appendChild(style);

@@ -331,13 +331,13 @@ def market_context(state, syms, advanced):
     watch = state.get('reboundWatch')
     if advanced and watch:
         if price is not None and price > watch['price']:
-            p.append(f"급반등의 첫 관문 — 반등일 종가 {watch['price']:.2f} 위 재마감 — 은 "
+            p.append(f"급반등의 첫 관문 — 반등일 종가 {int(watch['price'])}달러 위 재마감 — 은 "
                      f'통과됐습니다. {STATS["follow"]}. 통계는 이 반등을 진짜 쪽에 두기 시작했습니다.')
             state['reboundWatch'] = None
         else:
             watch['daysLeft'] -= 1
             if watch['daysLeft'] <= 0:
-                p.append(f"급반등의 첫 관문(반등일 종가 {watch['price']:.2f} 위 재마감)은 기한 안에 "
+                p.append(f"급반등의 첫 관문(반등일 종가 {int(watch['price'])}달러 위 재마감)은 기한 안에 "
                          f'통과되지 못했습니다. {STATS["follow"]}. 이 반등을 추세 전환으로 승격하지 않습니다.')
                 state['reboundWatch'] = None
     if advanced and chg is not None and chg >= 2.5 and (rsi_prev is None or rsi_prev < 45)             and not state.get('reboundWatch'):
@@ -347,7 +347,7 @@ def market_context(state, syms, advanced):
     if watch:
         p.append(f'급반등이 추세의 터닝포인트인지는 아직 단정하지 않습니다. {STATS["rebound"]}. '
                  f'{STATS["follow"]}. 그래서 지금 관문은 하나입니다 — 남은 {watch["daysLeft"]}거래일 '
-                 f'안에 종가가 {watch["price"]:.2f} 위에서 다시 마감하는지 확인 중입니다.')
+                 f'안에 종가가 {int(watch["price"])}달러 위에서 다시 마감하는지 확인 중입니다.')
     return p
 
 
@@ -541,6 +541,9 @@ def desk_with_fable(view, sc_entry, ca):
 - 앵커의 인간미: CNBC 주식 코너 앵커처럼, 독자의 감정을 아는 사람의 말로. 폭락·연속 하락·오랜만의 반등·신고가 같은 날에는 명쾌한 비유나 속시원한 표현을 한 문장 넣어라
   (예: 급락 연속 뒤 반등 — "긴 터널 끝에 처음 보인 불빛, 다만 출구인지 마주 오는 기차인지는 이틀 안에 판명" / 연속 하락 — "계좌가 두들겨 맞은 한 주, 그래도 도망칠 자리와 버틸 자리는 구분해야 하는 시점").
   조건: 비유는 문단당 하나까지, 과장·사실 왜곡 금지, 숫자와 판단은 그대로, 유치한 말장난 금지. 감정 표현이 판단을 흐리면 실격.
+- 가격 표기: 소수점은 버려라 — "$683.55"가 아니라 "683달러". 지수·종목가 공통.
+- 색 강조 태그: 중요한 단어·구만 감싸라 — 긍정·상승·통과는 [G]…[/G], 부정·하락·경고는 [R]…[/R], 핵심 조건·가격·결론 포인트는 [B]…[/B].
+  전체(core+sections 합쳐) 6~10곳 이내. 단어·구 단위만(문장 전체 금지). 알록달록 금지 — 간혹 가다 있는 약간의 색이 강조다.
 - 임팩트: headline은 결론+핵심 조건 하나. 눈에 딱 들어오게.
 - 단정 원칙: "A라면 X, B라면 Y, 확인 필요" 양다리 금지. 확인 가능한 것은 확인된 쪽으로 단정, 애매한 것만 검증 통계의 확률로.
 - 틀리지 않으려고 애매하거나 하나마나한 소리("변동성 유의", "지켜볼 필요") 금지 — 모든 항목은 수치·조건·판단 중 하나를 반드시 담을 것. 담을 게 없는 섹션은 빼라.
