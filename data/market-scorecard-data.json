@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-07-31-11:50",
+      "timestamp_kst": "2026-07-31(금) 11:50 KST",
+      "key_event": {
+        "name": "MSFT 실적 호조 및 AI 투자 기대감 지속",
+        "name_en": "Microsoft Earnings Beat & Sustained AI Hype",
+        "time": "직전 정규장 및 포스트마켓",
+        "why": "AI 섹터 투자 심리 회복, 시장 전반 상승 동력",
+        "why_en": "AI sector sentiment recovery, broad market upward momentum"
+      },
+      "positive_total": 80,
+      "negative_total": 20,
+      "summary": "MSFT 실적 호조와 AI 투자 기대감으로 시장 전반 상승 지속. 애플 실적 부진과 금리 불확실성은 상존하나, 긍정 우위 유지.",
+      "summary_en": "Market continues upward trend driven by strong MSFT earnings and AI investment optimism. Despite AAPL's weak performance and interest rate uncertainty, positive sentiment prevails.",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "MSFT 실적 호조 및 AI 투자 가속화",
+          "name_en": "Strong MSFT Earnings & Accelerated AI Investment",
+          "desc": "MSFT 실적 발표 후 주가 5.52% 상승, AI 관련 지출 확대 발언으로 반도체 섹터 전반에 긍정적 영향.",
+          "desc_en": "MSFT shares rose 5.52% post-earnings, with comments on increased AI spending positively impacting the broader semiconductor sector.",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "애플 실적 부진",
+          "name_en": "Apple's Weak Earnings",
+          "desc": "AAPL 주가 8.14% 하락, 주요 기술주 중 유일한 약세로 시장 전반의 상승세에 제동.",
+          "desc_en": "AAPL shares fell 8.14%, being the sole major tech stock to decline, dampening overall market gains.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 5,
+          "name": "연준 매파적 발언 지속",
+          "name_en": "Continued Hawkish Fed Remarks",
+          "desc": "일부 연준 위원들의 매파적 발언으로 금리 인하 기대감에 대한 불확실성 상존.",
+          "desc_en": "Hawkish comments from some Fed officials maintain uncertainty regarding interest rate cut expectations.",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "테슬라 중국 사업 매각 가능성",
+          "name_en": "Potential Sale of Tesla's China Business",
+          "desc": "WSJ 보도에 따르면 스페이스X 합병을 위한 테슬라 중국 사업 매각 검토 중. 장기 전략 변화로 해석이 엇갈림.",
+          "desc_en": "WSJ reported Tesla is considering selling its China business for a potential SpaceX merger. This long-term strategic shift is met with mixed interpretations.",
+          "category": "company_specific"
+        }
+      ]
+    },
+    {
       "id": "2026-07-31-07:07",
       "timestamp_kst": "2026-07-31(금) 07:07 KST",
       "key_event": {
@@ -722,69 +774,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-07-30-07:01",
-      "timestamp_kst": "2026-07-30(목) 07:01 KST",
-      "key_event": {
-        "name": "FOMC 매파적 동결 및 유가 급등",
-        "name_en": "FOMC Hawkish Hold & Oil Price Surge",
-        "time": "향후 12시간",
-        "why": "시장 불확실성 증폭, 금리 인하 기대 약화, 인플레이션 우려",
-        "why_en": "Increased market uncertainty, weakened rate cut expectations, inflation concerns"
-      },
-      "positive_total": 15,
-      "negative_total": 85,
-      "summary": "FOMC 매파적 동결과 유가 급등, 지정학적 긴장 고조로 부정 우위 지속.",
-      "summary_en": "Negative sentiment persists due to hawkish FOMC hold, surging oil prices, and escalating geopolitical tensions.",
-      "positive_factors": [
-        {
-          "score": 15,
-          "name": "마이크로소프트 실적 호조",
-          "name_en": "Microsoft's Strong Earnings",
-          "desc": "클라우드 및 소프트웨어 부문 강세로 시장 예상치 상회",
-          "desc_en": "Cloud and software strength surpassed market expectations.",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "FOMC 매파적 동결",
-          "name_en": "FOMC's Hawkish Hold",
-          "desc": "금리 동결에도 3명 인상 주장, 시장 인하 기대 약화 및 불확실성 증폭",
-          "desc_en": "Rates held, but 3 dissents for hike, weakening cut expectations and increasing uncertainty.",
-          "category": "fed_policy",
-          "time": "향후 12시간"
-        },
-        {
-          "score": 25,
-          "name": "지정학적 긴장 고조 및 유가 급등",
-          "name_en": "Escalating Geopolitical Tensions & Oil Surge",
-          "desc": "트럼프 이란 위협 발언에 유가 2.29% 상승, 인플레이션 압력 가중",
-          "desc_en": "Oil prices surged 2.29% on Trump's Iran threats, intensifying inflation pressures.",
-          "category": "geopolitics"
-        },
-        {
-          "score": 20,
-          "name": "반도체 섹터 약세 심화",
-          "name_en": "Deepening Semiconductor Sector Weakness",
-          "desc": "SOXX 6.83% 하락, AI 기술주 전반에 걸친 투자 심리 위축",
-          "desc_en": "SOXX fell 6.83%, reflecting dampened investor sentiment across AI tech stocks.",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "VIX 공포지수 급등",
-          "name_en": "VIX Fear Index Spike",
-          "desc": "VIX 13.52% 상승한 20.66, 시장 전반의 위험 회피 심리 강화",
-          "desc_en": "VIX rose 13.52% to 20.66, signaling heightened risk aversion across the market.",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-07-30T22:07:29Z",
+  "updated_at": "2026-07-31T02:50:59Z",
   "max_entries": 10
 }
