@@ -273,8 +273,29 @@ def postmarket_context():
             and (idx_big or ups or dns):
         idx_txt = f" 지수(QQQ) 시간외 {qqq['extPct']:+.1f}% — 다음 정규장 갭 방향의 단서."
     if body:
-        return f'포스트마켓이 다음 장을 먼저 말하고 있습니다 — {body}.' + idx_txt
+        return f'장 마감 뒤 시간외 거래에서 큰 움직임이 나왔습니다 — {body}.' + idx_txt
     return f'장마감 뒤 지수가 크게 움직였습니다.{idx_txt} 매크로급 재료 발생 가능성 — 재료 균형 갱신분 확인 대상.'
+
+
+_SESSION_DATE = None
+
+def session_date_label():
+    """직전 장 날짜 라벨 — '7월30일' (ET 기준, market-signals generatedAt에서 산출).
+    유저 확정(2026-07-31): '직전 장'은 반드시 '직전 장(7월30일)'처럼 날짜를 병기한다."""
+    global _SESSION_DATE
+    if _SESSION_DATE is None:
+        try:
+            d = et_day_of((load(SIGNALS) or {}).get('generatedAt'))
+            _SESSION_DATE = f'{int(d[5:7])}월{int(d[8:10])}일'
+        except Exception:
+            _SESSION_DATE = ''
+    return _SESSION_DATE
+
+
+def prev_session_tag():
+    """'직전 장(7월30일)' — 날짜 산출 실패 시 '직전 장'으로 폴백"""
+    lbl = session_date_label()
+    return f'직전 장({lbl})' if lbl else '직전 장'
 
 
 def market_context(state, syms, advanced):
@@ -295,11 +316,11 @@ def market_context(state, syms, advanced):
     move_txt = None
     if chg is not None:
         if chg >= 2.0:
-            move_txt = f'직전 장에서 시장이 {chg:+.1f}% 급반등으로 마감했습니다'
+            move_txt = f'{prev_session_tag()}에서 시장이 {chg:+.1f}% 급반등으로 마감했습니다'
         elif chg <= -2.0:
-            move_txt = f'직전 장에서 시장이 {chg:+.1f}% 급락으로 마감했습니다'
+            move_txt = f'{prev_session_tag()}에서 시장이 {chg:+.1f}% 급락으로 마감했습니다'
         elif abs(chg) >= 0.8:
-            move_txt = f'직전 장은 {chg:+.1f}%로 마감했습니다'
+            move_txt = f'{prev_session_tag()}은 {chg:+.1f}%로 마감했습니다'
     if sc:
         cur = sc[0]
         pos, neg = cur.get('positive_total'), cur.get('negative_total')
@@ -436,7 +457,7 @@ def _move_prefix(s):
     if chg is None or abs(chg) < 0.8:
         return ''
     tone = '급반등' if chg >= 3 else ('급락' if chg <= -3 else '마감')
-    return f'직전 장 {chg:+.1f}% {tone}. '
+    return f'{prev_session_tag()} {chg:+.1f}% {tone}. '
 
 
 def tsla_view(s):
@@ -551,7 +572,7 @@ def desk_with_fable(view, sc_entry, ca):
 - 결과 재료('VIX 하락', '지수 상승', '섹터 강세' 등)는 근거 인용 금지 — 원인 재료만.
 - "~하세요" 행동 촉구 금지. 분석/진단형.
 - 포스트마켓은 초안에 등장할 때만 언급하라(큰 이벤트가 있는 날만 초안에 실린다). 초안에 없으면 절대 언급 금지.
-- 오늘 날짜와 직전 장 정보는 초안 서술을 따를 것.
+- 오늘 날짜와 직전 장 정보는 초안 서술을 따를 것. '직전 장'을 언급할 때는 초안처럼 반드시 날짜를 병기하라 — 예: "직전 장(7월30일)".
 
 [출력 형식 — 이 JSON만 출력, 다른 텍스트 금지]
 {{"headline": "…", "core": ["…", "…", "…"], "sections": [{{"title": "…", "bullets": ["…"]}}]}}
@@ -657,11 +678,18 @@ def main():
             runs[-1][1] += 1
         else:
             runs.append([s2, 1])
+    # 의미가 생기기 전(전환 이력 없음 + 연속 3일 미만)엔 아예 숨긴다 — "보유 1일째 유지" 같은
+    # 자기 자신도 설명 못 하는 라인 금지 (2026-07-31 유저 피드백). 표시할 땐 라벨 없이 자체로
+    # 이해되는 완결 문장으로 쓴다.
     if len(runs) >= 2:
-        older = ' → '.join(f'{SHORT[s2]} {n}일' for s2, n in runs[-3:-1])
-        flow = f'{older} → {SHORT[runs[-1][0]]}(오늘, {runs[-1][1]}일째)'
-    elif runs:
-        flow = f'{SHORT[runs[-1][0]]} {runs[-1][1]}일째 유지'
+        prev_s, prev_n = runs[-2]
+        cur_s, cur_n = runs[-1]
+        if cur_n == 1:
+            flow = f"오늘 판단이 바뀌었습니다 — {SHORT[prev_s]} {prev_n}일 → 오늘부터 '{SHORT[cur_s]}'."
+        else:
+            flow = f"'{SHORT[cur_s]}' 판단은 오늘로 {cur_n}일째입니다 (직전: {SHORT[prev_s]} {prev_n}일)."
+    elif runs and runs[-1][1] >= 3:
+        flow = f"'{SHORT[runs[-1][0]]}' 판단은 오늘로 {runs[-1][1]}일째입니다."
 
     # 성적 자기공개 — 방향 판단(강세/약세)만, 5거래일 후 수익률로 채점 (표본 15+부터 공개)
     grade = None

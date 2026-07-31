@@ -50,7 +50,7 @@
       '<span class="cs-badge">오늘의 스윙 판단</span>' +
       '<span class="cs-stance">' + c.stanceLabel + '</span>' +
       '</div>' +
-      (view.stanceChangedToday ? '<div style="font-weight:700;margin-bottom:4px;">오늘 스탠스가 바뀌었습니다.</div>' : '') +
+      (view.stanceChangedToday && !view.flow ? '<div style="font-weight:700;margin-bottom:4px;">오늘 스탠스가 바뀌었습니다.</div>' : '') +
       (view.flow ? '<div style="margin-bottom:4px;">' + view.flow + '</div>' : '') +
       '<div>' + first + '</div>' +
       '<div class="cs-meta">' + view.generatedAtKST + ' 기준 · ' +
