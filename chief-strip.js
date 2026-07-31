@@ -29,7 +29,7 @@
   function insert(view) {
     if (!view || !view.comp) return;
     var c = view.comp;
-    var first = (c.commentary && c.commentary[0]) || '';
+    var first = (view.desked && view.desked.headline) || (c.commentary && c.commentary[0]) || '';
     var style = document.createElement('style');
     style.textContent = css;
     document.head.appendChild(style);

@@ -443,6 +443,92 @@ def nvda_view(s):
                 nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi))
 
 
+DESK_MODEL = 'claude-fable-5'
+
+def desk_with_fable(view, sc_entry, ca):
+    """최종 데스크 — 개조식 구조(소제목+닷블릿·명사형 종결)로 논평을 다듬는다.
+    API 키 없음/호출 실패/검증 실패 시 None 반환 → 규칙 논평 그대로 사용 (파이프라인 불사불패).
+    문체 규격: 2026-07-31 유저 확정 — 임팩트·단정 원칙·하나마나한 소리 금지."""
+    import urllib.request
+    key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
+    if not key:
+        return None
+    comp = view['comp']
+    draft = '\n\n'.join(comp['commentary'])
+    factors = ''
+    if sc_entry:
+        f = lambda k: [x.get('name') for x in (sc_entry.get(k) or [])]
+        factors = (f"긍정: {f('positive_factors')} / 부정: {f('negative_factors')} / 혼조: {f('mixed_factors')}\n"
+                   f"긍정 대 부정: {sc_entry.get('positive_total')} 대 {sc_entry.get('negative_total')} | "
+                   f"핵심 이벤트: {(sc_entry.get('key_event') or {}).get('name','')}")
+    ca_line = ''
+    if ca:
+        conf = ca.get('confluenceChecklist') or {}
+        ca_line = f"추세 {ca.get('trend')} | 판정 {ca.get('action')} | 반등 신뢰도 {conf.get('verdict')} ({conf.get('score')})"
+    stats_block = '\n'.join(f'- {v}' for v in STATS.values())
+    n = comp['nums']
+    prompt = f"""너는 미국주식 분석 사이트 ezlong.com의 최종 데스크(주식 전문 매체 편집장이자 20년 경력 스윙 트레이더)다.
+아래 초안·재료를 데스킹해 방문자용 최종 논평을 JSON으로 완성하라.
+
+[오늘의 확정 스탠스 — 절대 변경 금지]
+{comp['stanceLabel']} (매수점수 {n['buy']}, 매도압력 {n['sell']}, 기어 {n['gear']}, 200일선 {n['dev200']:+}%)
+
+[규칙 엔진 초안]
+{draft}
+
+[뉴스 재료 (결과 재료 섞여 있을 수 있음)]
+{factors}
+
+[차트 엔진 판독]
+{ca_line}
+
+[사용 가능한 검증 통계 — 이것 외의 확률·통계 절대 금지]
+{stats_block}
+
+[문체 규격 — 반드시 지켜라]
+- 개조식: 소제목으로 그룹핑, 각 항목은 닷블릿. 서술어 없이 명사형 종결. 단, 의미가 흐려질 만큼 줄이지 말 것 — 수치·조건·이유를 담아 디테일하게.
+- 임팩트: headline은 결론+핵심 조건 하나. 눈에 딱 들어오게.
+- 단정 원칙: "A라면 X, B라면 Y, 확인 필요" 양다리 금지. 확인 가능한 것은 확인된 쪽으로 단정, 애매한 것만 검증 통계의 확률로.
+- 틀리지 않으려고 애매하거나 하나마나한 소리("변동성 유의", "지켜볼 필요") 금지 — 모든 항목은 수치·조건·판단 중 하나를 반드시 담을 것. 담을 게 없는 섹션은 빼라.
+- 결과 재료('VIX 하락', '지수 상승', '섹터 강세' 등)는 근거 인용 금지 — 원인 재료만.
+- "~하세요" 행동 촉구 금지. 분석/진단형.
+- 오늘 날짜와 직전 장 정보는 초안 서술을 따를 것.
+
+[출력 형식 — 이 JSON만 출력, 다른 텍스트 금지]
+{{"headline": "…", "sections": [{{"title": "…", "bullets": ["…"]}}]}}
+sections 3~5개: 직전 장 시황 / 터닝포인트 관문 / 오늘의 판단 / 교차검증·리스크 등."""
+    try:
+        body = json.dumps({'model': DESK_MODEL, 'max_tokens': 6000,
+                           'messages': [{'role': 'user', 'content': prompt}]}).encode()
+        req = urllib.request.Request('https://api.anthropic.com/v1/messages', data=body,
+            headers={'x-api-key': key, 'anthropic-version': '2023-06-01',
+                     'content-type': 'application/json'})
+        r = json.load(urllib.request.urlopen(req, timeout=240))
+        txt = ''.join(b.get('text', '') for b in r.get('content', []) if b.get('type') == 'text')
+        d = json.loads(txt[txt.index('{'): txt.rindex('}') + 1])
+        secs = d.get('sections') or []
+        if not d.get('headline') or not secs:
+            return None
+        total = sum(len(b) for s in secs for b in (s.get('bullets') or []))
+        if not (100 <= total <= 5000):
+            return None
+        # 숫자 환각 가드 — 출력의 %수치가 입력 재료에 없으면 폐기 (2개까지 허용: 조합·반올림 여지)
+        import re as _re
+        allowed = set(_re.findall(r'\d+(?:\.\d+)?(?=%)', prompt))
+        unknown = [x for x in _re.findall(r'\d+(?:\.\d+)?(?=%)', json.dumps(d, ensure_ascii=False))
+                   if x not in allowed]
+        if len(set(unknown)) > 2:
+            print(f'::warning::[데스크] 미검증 수치 {sorted(set(unknown))} — 폐기, 규칙 논평 사용')
+            return None
+        return dict(headline=d['headline'],
+                    sections=[dict(title=s.get('title', ''), bullets=list(s.get('bullets') or []))
+                              for s in secs][:6],
+                    model=DESK_MODEL)
+    except Exception as e:
+        print(f'::warning::[데스크] 호출 실패 — 규칙 논평 사용: {e}')
+        return None
+
+
 def main():
     sig = load(SIGNALS)
     if not sig:
@@ -579,6 +665,10 @@ def main():
         tsla=tsla_view(syms.get('TSLA') or {}),
         nvda=nvda_view(syms.get('NVDA') or {}),
     )
+
+    desked = desk_with_fable(view, (load_scorecard() or [None])[0], load_chart_engine())
+    if desked:
+        view['desked'] = desked
 
     with open(LEDGER, 'w', encoding='utf-8') as f:
         json.dump(ledger, f, ensure_ascii=False, indent=1)

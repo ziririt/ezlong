@@ -15,6 +15,7 @@ import sys
 import re
 import time
 import difflib
+import urllib.request
 import requests
 from datetime import datetime, timezone, timedelta
 
@@ -973,7 +974,7 @@ def _with_clean_category(factors):
 
 def build_entry(kst_now, result):
     """Gemini 결과 + 타임스탬프 → 항목 dict"""
-    return {
+    return llm_desk_factors({
         "id":            kst_id(kst_now),
         "timestamp_kst": kst_label(kst_now),
         "key_event": {
@@ -991,7 +992,7 @@ def build_entry(kst_now, result):
         "negative_factors": desk_factors(_with_clean_category(result.get("negative_factors", [])), '부정'),
         # 혼조·양면 (2026-07-03), category 태그 추가 (2026-07-28), 결과 재료 데스크 (2026-07-31)
         "mixed_factors":    desk_factors(_with_clean_category((result.get("mixed_factors") or [])[:3]), '혼조')
-    }
+    })
 
 
 MIXED_FACTOR_STALE_HOURS = 24  # 혼조 재료 무한 반복 방지 — 이 시간 이상 연속되면 오늘 데이터 재확인 요구
@@ -1070,6 +1071,57 @@ def desk_factors(factors, kind=''):
         else:
             kept.append(f)
     return kept
+
+
+DESK_LLM_MODEL = 'claude-sonnet-5'
+
+def llm_desk_factors(entry):
+    """2차 데스크 (Sonnet 5) — 정규식이 못 잡는 변형 결과 재료를 원인/결과로 재판정.
+    API 키 없음/실패/과잉 삭제 시 무변경. 총점은 건드리지 않는다. (2026-07-31 유저 승인 편성)"""
+    key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
+    if not key:
+        return entry
+    names = []
+    for kind in ('positive_factors', 'negative_factors', 'mixed_factors'):
+        for f in entry.get(kind) or []:
+            names.append(f.get('name', ''))
+    if not names:
+        return entry
+    prompt = (
+        "미국주식 시황 재료 목록이다. 각 항목이 '원인'(뉴스 이벤트·실적·정책·협상 등 시장을 움직인 이유)인지 "
+        "'결과'(시장·지수·섹터·VIX 등의 등락 상태 서술일 뿐 이유가 아님)인지 판정하라.\n"
+        "결과 예시: 'VIX 하락', '나스닥 상승', '반도체 섹터 강세', '위험선호 회복'.\n"
+        "원인 예시: 'MSFT 실적 호조', 'FOMC 매파적 동결', '관세 합의', 'CPI 둔화'.\n"
+        "애매하면 '원인'으로 판정하라(과잉 삭제 금지).\n\n"
+        + "\n".join(f"{i}. {n}" for i, n in enumerate(names))
+        + '\n\n[출력 — 이 JSON만] {"verdicts": [{"i": 0, "result_only": false}, ...]} (목록 전체에 대해)')
+    try:
+        body = json.dumps({'model': DESK_LLM_MODEL, 'max_tokens': 2500,
+                           'messages': [{'role': 'user', 'content': prompt}]}).encode()
+        req = urllib.request.Request('https://api.anthropic.com/v1/messages', data=body,
+            headers={'x-api-key': key, 'anthropic-version': '2023-06-01',
+                     'content-type': 'application/json'})
+        r = json.loads(urllib.request.urlopen(req, timeout=90).read().decode())
+        txt = ''.join(b.get('text', '') for b in r.get('content', []) if b.get('type') == 'text')
+        v = json.loads(txt[txt.index('{'): txt.rindex('}') + 1]).get('verdicts', [])
+        drop_idx = {x['i'] for x in v if x.get('result_only')}
+        if not drop_idx or len(drop_idx) > len(names) // 2:   # 과잉 삭제 방어
+            if len(drop_idx) > len(names) // 2:
+                print(f"::warning::[LLM데스크] 과잉 삭제({len(drop_idx)}/{len(names)}) — 무시")
+            return entry
+        i = 0
+        for kind in ('positive_factors', 'negative_factors', 'mixed_factors'):
+            kept = []
+            for f in entry.get(kind) or []:
+                if i in drop_idx:
+                    print(f"::notice::[LLM데스크] 결과 재료 제외({kind}): {f.get('name')}")
+                else:
+                    kept.append(f)
+                i += 1
+            entry[kind] = kept
+    except Exception as e:
+        print(f"::warning::[LLM데스크] 실패 — 정규식 필터만 적용: {e}")
+    return entry
 
 
 def clean_category(cat):
