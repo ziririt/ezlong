@@ -2179,7 +2179,10 @@ function _v2ChiefCardHtml() {
   const sv = window._swingView;
   if (!sv?.comp) return '';
   const c = sv.comp;
-  const paras = (c.commentary || []).map(t => `<p style="margin:0 0 12px;line-height:1.75;color:var(--t1);font-size:16px;">${t}</p>`).join('');
+  const paras = sv.desked?.core?.length
+    ? `<ul style="margin:0 0 8px;padding-left:18px;">${sv.desked.core.map(b =>
+        `<li style="margin:0 0 8px;line-height:1.75;color:var(--t1);font-size:16px;">${b}</li>`).join('')}</ul>`
+    : (c.commentary || []).slice(0, 1).map(t => `<p style="margin:0 0 12px;line-height:1.75;color:var(--t1);font-size:16px;">${t}</p>`).join('');
   return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-left:4px solid #0a84ff;border-radius:14px;padding:18px 18px 12px;margin-bottom:14px;">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
       <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">v2 베타</span>
@@ -3749,14 +3752,23 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
     const _flowLine = window._swingView.flow
       ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;"><b>판단 흐름</b> · ${window._swingView.flow}</div>` : '';
     const _dk = window._swingView.desked;
-    const _bodyHtml = _dk?.sections?.length
-      ? _dk.sections.map(s =>
-          `<div style="margin:0 0 14px;">
-             <div style="font-weight:800;color:var(--t1);font-size:16px;margin-bottom:6px;">${s.title}</div>
-             <ul style="margin:0;padding-left:18px;">${(s.bullets || []).map(b =>
-               `<li style="margin:0 0 6px;line-height:1.7;color:var(--t1);">${b}</li>`).join('')}</ul>
-           </div>`).join('')
-      : _c.commentary.map(t => `<p style="margin:0 0 12px;line-height:1.78;">${t}</p>`).join('');
+    const _secHtml = (_dk?.sections || []).map(s =>
+      `<div style="margin:0 0 14px;">
+         <div style="font-weight:800;color:var(--t1);font-size:16px;margin-bottom:6px;">${s.title}</div>
+         <ul style="margin:0;padding-left:18px;">${(s.bullets || []).map(b =>
+           `<li style="margin:0 0 6px;line-height:1.7;color:var(--t1);">${b}</li>`).join('')}</ul>
+       </div>`).join('');
+    let _bodyHtml;
+    if (_dk?.core?.length) {
+      // 핵심 30% 기본 노출 + 상세 70%는 펼침
+      _bodyHtml = `<ul style="margin:0 0 10px;padding-left:18px;">${_dk.core.map(b =>
+          `<li style="margin:0 0 8px;line-height:1.75;color:var(--t1);font-size:16px;">${b}</li>`).join('')}</ul>`
+        + (_secHtml ? `<details class="sv-det"><summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:6px 0;">상세보기 — 근거·통계·교차검증</summary><div style="margin-top:10px;">${_secHtml}</div></details>` : '');
+    } else if (_secHtml) {
+      _bodyHtml = _secHtml;
+    } else {
+      _bodyHtml = _c.commentary.map(t => `<p style="margin:0 0 12px;line-height:1.78;">${t}</p>`).join('');
+    }
     if (_dk?.headline) title = _dk.headline;
     desc  = _flowLine
           + _bodyHtml
@@ -5758,13 +5770,58 @@ function loadSignalHistory() {
 }
 
 // ─── 최근 시장 흐름 맥락 배너 ──────────────────────────────────────────────
-// [v2] renderKings 래핑 — 스탠스 카드를 각 카드 상단에 삽입
+// [v2] 핵심 30% / 상세 70% — 카드 이후 레거시 콘텐츠를 <details>로 접는 공용 함수
+function _v2Collapse(container, keepCount, label) {
+  if (!container || container.childElementCount <= keepCount) return;
+  const det = document.createElement('details');
+  det.className = 'sv-det-page';
+  det.innerHTML = `<summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:10px 4px;">${label}</summary>`;
+  const inner = document.createElement('div');
+  while (container.childElementCount > keepCount) {
+    inner.appendChild(container.children[keepCount]);
+  }
+  det.appendChild(inner);
+  container.appendChild(det);
+}
+
+// [v2] renderStrategyGuide 래핑 — v2 카드(핵심)만 노출, 상세 가이드는 펼침
+const _renderStrategyOrig = renderStrategyGuide;
+renderStrategyGuide = function(...args) {
+  _renderStrategyOrig(...args);
+  const wrap = document.getElementById('strategy-ai-wrap');
+  if (wrap && window._swingView?.comp) {
+    _v2Collapse(wrap, 1, '상세보기 — 전략 가이드 전체 (배수별 행동 · 물타기 · 손절 기준)');
+  }
+};
+
+// [v2] AI 차트분석 코멘트 코너 — 전체를 상세보기로 (핵심은 상단 v2 판단이 대신함)
+const _renderChartAiOrig = renderChartAiComments;
+renderChartAiComments = function(...args) {
+  _renderChartAiOrig(...args);
+  const w = document.getElementById('chart-ai-comments-wrap');
+  if (w && window._swingView?.comp && w.childElementCount && !w.querySelector('.sv-det-page')) {
+    _v2Collapse(w, 0, '상세보기 — AI 차트분석 종목별 코멘트');
+  }
+};
+
+// [v2] renderKings 래핑 — v2 스탠스 카드를 섹션 최상단(차트 위)에, 레거시 상세는 접기
 const _renderKingsOrig = renderKings;
 renderKings = function(tsla, nvda) {
   _renderKingsOrig(tsla, nvda);
   ['TSLA', 'NVDA'].forEach(sym => {
     const c = document.getElementById(`king-card-${sym}`);
-    if (c && window._swingView) c.insertAdjacentHTML('afterbegin', _v2KingCardHtml(sym));
+    if (!c || !window._swingView) return;
+    const section = c.closest('.king-section') || c;
+    // 섹션 맨 위에 v2 카드 (중복 방지: 기존 카드 제거 후 재삽입)
+    section.querySelectorAll('.v2-king-card').forEach(el => el.remove());
+    const holder = document.createElement('div');
+    holder.className = 'v2-king-card';
+    holder.innerHTML = _v2KingCardHtml(sym);
+    section.insertBefore(holder, section.firstElementChild);
+    // 레거시 지표 카드 본문은 상세보기로
+    if (!c.querySelector('.sv-det-page')) {
+      _v2Collapse(c, 0, '상세보기 — 지표·점수·매매 기준 전체');
+    }
   });
 };
 

@@ -530,6 +530,12 @@ def desk_with_fable(view, sc_entry, ca):
 [사용 가능한 검증 통계 — 이것 외의 확률·통계 절대 금지]
 {stats_block}
 
+[구성 규격 — 핵심 30% / 상세 70%]
+- core: 닷블릿 3~4개. 방문자 대부분이 이것만 보고 오늘 판단을 전부 파악할 수 있어야 한다.
+  CNBC 앵커 멘트처럼 아주 쉽고 흥미롭게 — 전문용어는 풀어 쓰거나 괄호로 병기
+  (예: "매도압력 30" 대신 "팔려는 힘은 약한 수준(30/100)"). 숫자·조건은 유지.
+- sections: 나머지 70% 상세 — 근거·통계·교차검증. 눌러서 보는 사람용.
+
 [문체 규격 — 반드시 지켜라]
 - 개조식: 소제목으로 그룹핑, 각 항목은 닷블릿. 서술어 없이 명사형 종결. 단, 의미가 흐려질 만큼 줄이지 말 것 — 수치·조건·이유를 담아 디테일하게.
 - 임팩트: headline은 결론+핵심 조건 하나. 눈에 딱 들어오게.
@@ -541,7 +547,7 @@ def desk_with_fable(view, sc_entry, ca):
 - 오늘 날짜와 직전 장 정보는 초안 서술을 따를 것.
 
 [출력 형식 — 이 JSON만 출력, 다른 텍스트 금지]
-{{"headline": "…", "sections": [{{"title": "…", "bullets": ["…"]}}]}}
+{{"headline": "…", "core": ["…", "…", "…"], "sections": [{{"title": "…", "bullets": ["…"]}}]}}
 sections 3~5개: 직전 장 시황 / 터닝포인트 관문 / 오늘의 판단 / 교차검증·리스크 등."""
     try:
         body = json.dumps({'model': DESK_MODEL, 'max_tokens': 6000,
@@ -567,6 +573,7 @@ sections 3~5개: 직전 장 시황 / 터닝포인트 관문 / 오늘의 판단 /
             print(f'::warning::[데스크] 미검증 수치 {sorted(set(unknown))} — 폐기, 규칙 논평 사용')
             return None
         return dict(headline=d['headline'],
+                    core=list(d.get('core') or [])[:5],
                     sections=[dict(title=s.get('title', ''), bullets=list(s.get('bullets') or []))
                               for s in secs][:6],
                     model=DESK_MODEL)
