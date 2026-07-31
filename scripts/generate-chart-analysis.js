@@ -934,13 +934,35 @@ ${historyLines}
 - 단, 위 기록에 끌려가서 현재 데이터와 다른 판단을 내리지는 마라. 기록은 맥락이고, 판단 근거는 항상 오늘의 지표다.
 ` : '';
 
+  // ── 수석 스윙 뷰 컨텍스트 (2026-07-31 신설) — 미국 시장 주식/ETF에만 주입 ────
+  // 차트를 보는 이유는 스윙 트레이딩이다 — 종목 판독이 시장 전체 수석 판단의 맥락 위에서
+  // 이뤄지게 한다. 정합이면 정합을, 모순이면 모순을 명시하게 해서 코너 간 "다른 소리"를
+  // 숨기지 않고 드러낸다. KR/암호화폐는 미국 시장 수석 판단의 적용 대상이 아니라 제외.
+  const chiefSection = (() => {
+    if ((meta.market || 'us') !== 'us' || meta.type === 'crypto') return '';
+    try {
+      const sv = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'swing-view.json'), 'utf8'));
+      if (!sv || !sv.comp || !sv.comp.stanceLabel) return '';
+      const first = (sv.comp.commentary || [])[0] || '';
+      return `
+[수석 스윙 뷰 — 시장 전체 판단 맥락 (${sv.generatedAtKST} 기준)]
+오늘 시장 스탠스: ${sv.comp.stanceLabel}${sv.flow ? ` | 판단 흐름: ${sv.flow}` : ''}
+${first}
+맥락 규칙 (반드시 지켜라):
+- 위는 시장 전체(QQQ·VOO·SOXX 종합)에 대한 수석 판단이다. 이 종목의 기술적 판독이 같은 방향이면 그 정합을 한 문장으로 언급하라.
+- 어긋나면 어긋난다는 사실과 "이 종목만의" 기술적 이유를 reason에 반드시 명시하라. 모순을 숨기지 마라.
+- 단, 수석 판단에 끌려가서 이 종목의 지표와 다른 판단을 내리지는 마라. 판단 근거는 항상 이 종목의 오늘 지표다.
+`;
+    } catch (e) { return ''; }
+  })();
+
   const prompt = `너는 15년 경력의 스윙 트레이더다. 분석가처럼 "~할 수 있다", "가능성이 있다"라고 얼버무리지 마라.
 매번 하나의 방향을 정하고, 그 근거를 숫자로 대라. 확신이 없을 때는 "관망"이라고 말하고, 왜 관망인지 이유를 써라.
 
 [절대 준수 사항]
 - 오직 이동평균선, RSI, MACD, 볼린저밴드, 거래량, 가격 패턴 등 순수 기술적 지표만 사용하라.
 - 기업 펀더멘털, 실적, 금리, 연준, 거시경제, 환율, 산업 트렌드, 규제, 정치적 요인은 절대 언급하지 마라.
-${historySection}${recentReturnSection}
+${chiefSection}${historySection}${recentReturnSection}
 [종목 정보]
 ${meta.context}
 

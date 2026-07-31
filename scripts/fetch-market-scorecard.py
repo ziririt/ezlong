@@ -987,10 +987,10 @@ def build_entry(kst_now, result):
         "negative_total":   int(result.get("negative_total", 50)),
         "summary":          result.get("summary", ""),
         "summary_en":       result.get("summary_en", ""),
-        "positive_factors": _with_clean_category(result.get("positive_factors", [])),
-        "negative_factors": _with_clean_category(result.get("negative_factors", [])),
-        # 혼조·양면 (2026-07-03), category 태그 추가 (2026-07-28)
-        "mixed_factors":    _with_clean_category((result.get("mixed_factors") or [])[:3])
+        "positive_factors": desk_factors(_with_clean_category(result.get("positive_factors", [])), '긍정'),
+        "negative_factors": desk_factors(_with_clean_category(result.get("negative_factors", [])), '부정'),
+        # 혼조·양면 (2026-07-03), category 태그 추가 (2026-07-28), 결과 재료 데스크 (2026-07-31)
+        "mixed_factors":    desk_factors(_with_clean_category((result.get("mixed_factors") or [])[:3]), '혼조')
     }
 
 
@@ -1027,6 +1027,49 @@ FACTOR_CATEGORIES = [
     'company_specific',     # 개별 기업 이슈(프롬프트 예외 규정에 따라 인정된 경우)
     'other',                # 위 어디에도 안 맞는 경우 — 남용 금지, 최소화
 ]
+
+
+# ─── 결과 재료 데스크 (2026-07-31 신설) — "요인=원인" 원칙의 결정적 필터 ─────────
+# 배경: 프롬프트로 수차례 지시했음에도 Gemini가 'VIX 공포지수 하락', '나스닥 상승',
+# '반도체 섹터 강세' 같은 결과(시장 반응)를 원인 재료로 계속 출력 (유저 재지적 2026-07-31,
+# feedback_scorecard_cause_vs_effect.md). 프롬프트 지시는 확률적이라 재발한다 —
+# 데스크(결정적 후처리)로 걸러낸다. 원리: 재료 이름이 "시장 상태 명사 + 방향 서술"의
+# 조합이면서 원인 어휘(실적/결정/협상/지표 발표 등)가 하나도 없으면 결과로 판정해 제외.
+import re as _re
+
+_RESULT_SUBJECT_RE = _re.compile(
+    r'(VIX|공포\s*지수|나스닥|S&P\s*500|S&P|다우|러셀|증시|주가\s*지수|기술주|'
+    r'반도체\s*(섹터|주|업종)?|섹터|프리마켓|포스트마켓|선물|시장\s*전반)')
+_RESULT_DIRECTION_RE = _re.compile(
+    r'(상승|하락|급등|급락|강세|약세|반등|폭등|폭락|돌파|경신|랠리|마감|'
+    r'심화|확대|지속|안정|회복|하회|상회|부진|호조|우위)')
+_CAUSE_WHITELIST_RE = _re.compile(
+    r'(실적|가이던스|어닝|발표|결정|동결|인하|인상|합의|협상|타결|결렬|제재|관세|'
+    r'전쟁|휴전|공습|파업|규제|소송|판결|투자|수주|계약|출시|공개|인수|합병|'
+    r'CPI|PPI|PCE|GDP|PMI|고용|실업|소매판매|FOMC|연준|파월|의사록|'
+    r'재고|공급|감산|증산|출하|점유율|전망치|상향|하향|성장|매출|이익|적자|흑자)')
+
+
+def _is_result_only(name):
+    """이름이 결과 서술(시장 상태 + 방향)뿐이고 원인 어휘가 없으면 True"""
+    if not name:
+        return False
+    if _CAUSE_WHITELIST_RE.search(name):
+        return False
+    return bool(_RESULT_SUBJECT_RE.search(name) and _RESULT_DIRECTION_RE.search(name))
+
+
+def desk_factors(factors, kind=''):
+    """결과 전용 재료 제외 + 로그. 점수 총합(positive_total 등)은 건드리지 않는다 —
+    총점은 Gemini의 종합 판단이고, 여기서는 '표시되는 근거 목록'의 결함만 데스킹한다."""
+    kept = []
+    for f in (factors or []):
+        name = (f or {}).get('name', '')
+        if _is_result_only(name):
+            print(f"::notice::[데스크] 결과 재료 제외({kind}): {name}")
+        else:
+            kept.append(f)
+    return kept
 
 
 def clean_category(cat):
