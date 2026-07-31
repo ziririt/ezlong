@@ -238,8 +238,9 @@ def load_chart_engine():
 MEGA = ['MSFT', 'AAPL', 'GOOGL', 'AMZN', 'META', 'NVDA', 'TSLA', 'AVGO', 'NFLX']
 
 def postmarket_context():
-    """포스트마켓 급변 — 빅테크 시간외 ±2% 이상 + 지수 ETF 시간외 톤.
-    실적 시즌엔 장마감 직후 발표가 다음 장을 결정하므로 (2026-07-31 유저 지시) 필수 편입.
+    """포스트마켓 — 큰 이벤트가 있는 날에만 언급한다 (2026-07-31 유저 확정).
+    기준: 빅테크 시간외 ±2.5% 이상(실적 쇼크급) 또는 지수 ETF 시간외 ±1.0% 이상
+    (FOMC·지정학·대통령 담화급). 평소의 미미한 시간외 등락은 침묵 — 언급 자체가 노이즈.
     데이터 2시간 이상 정체 시 미표시."""
     d = load(os.path.join(HERE, '..', 'data', 'stocks-prices.json'))
     if not d or not d.get('prices'):
@@ -254,21 +255,26 @@ def postmarket_context():
     ups, dns = [], []
     for s in MEGA:
         v = p.get(s) or {}
-        if v.get('extSession') == 'post' and v.get('extPct') is not None and abs(v['extPct']) >= 2:
+        if v.get('extSession') == 'post' and v.get('extPct') is not None and abs(v['extPct']) >= 2.5:
             (ups if v['extPct'] > 0 else dns).append(f"{s} {v['extPct']:+.1f}%")
     qqq = p.get('QQQ') or {}
-    idx_txt = ''
-    if qqq.get('extSession') == 'post' and qqq.get('extPct') is not None and abs(qqq['extPct']) >= 0.5:
-        idx_txt = f" 지수(QQQ) 시간외 {qqq['extPct']:+.1f}% — 다음 정규장 갭 방향의 단서."
-    if not ups and not dns and not idx_txt:
-        return None
+    idx_big = (qqq.get('extSession') == 'post' and qqq.get('extPct') is not None
+               and abs(qqq['extPct']) >= 1.0)
+    if not ups and not dns and not idx_big:
+        return None          # 이벤트 없는 평범한 시간외 — 침묵
     parts = []
     if ups:
         parts.append('급등 ' + '·'.join(ups))
     if dns:
         parts.append('급락 ' + '·'.join(dns))
     body = ', '.join(parts)
-    return (f'포스트마켓이 다음 장을 먼저 말하고 있습니다 — {body}.' if body else '포스트마켓 동향.') + idx_txt
+    idx_txt = ''
+    if qqq.get('extSession') == 'post' and qqq.get('extPct') is not None \
+            and (idx_big or ups or dns):
+        idx_txt = f" 지수(QQQ) 시간외 {qqq['extPct']:+.1f}% — 다음 정규장 갭 방향의 단서."
+    if body:
+        return f'포스트마켓이 다음 장을 먼저 말하고 있습니다 — {body}.' + idx_txt
+    return f'장마감 뒤 지수가 크게 움직였습니다.{idx_txt} 매크로급 재료 발생 가능성 — 재료 균형 갱신분 확인 대상.'
 
 
 def market_context(state, syms, advanced):
@@ -531,6 +537,7 @@ def desk_with_fable(view, sc_entry, ca):
 - 틀리지 않으려고 애매하거나 하나마나한 소리("변동성 유의", "지켜볼 필요") 금지 — 모든 항목은 수치·조건·판단 중 하나를 반드시 담을 것. 담을 게 없는 섹션은 빼라.
 - 결과 재료('VIX 하락', '지수 상승', '섹터 강세' 등)는 근거 인용 금지 — 원인 재료만.
 - "~하세요" 행동 촉구 금지. 분석/진단형.
+- 포스트마켓은 초안에 등장할 때만 언급하라(큰 이벤트가 있는 날만 초안에 실린다). 초안에 없으면 절대 언급 금지.
 - 오늘 날짜와 직전 장 정보는 초안 서술을 따를 것.
 
 [출력 형식 — 이 JSON만 출력, 다른 텍스트 금지]
