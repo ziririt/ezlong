@@ -674,6 +674,9 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - positive_total + negative_total = 반드시 100
 - positive_factors 각 score 합계 = positive_total
 - negative_factors 각 score 합계 = negative_total
+- 점수는 오직 '원인' 재료에만 배분하라. 지수·VIX·섹터 등락 같은 결과 서술은 요인 항목
+  자체가 금지다 — 원인을 3개 못 찾으면 찾은 원인들에 점수 전액을 배분하라
+  (결과 항목에 점수를 실었다가 그 항목이 걸러지면 화면의 합계가 깨진다)
 - 요인 수: 각 3~5개
 - 실제 영향력 기반 점수 배분 (50:50 기계적 배분 금지)
 - mixed_factors: 해석이 엇갈리는 혼조·양면 재료 0~3개 (점수 없음, 아래 규칙 참조)
@@ -974,7 +977,10 @@ def _with_clean_category(factors):
 
 def build_entry(kst_now, result):
     """Gemini 결과 + 타임스탬프 → 항목 dict"""
-    return llm_desk_factors({
+    # 데스킹 전 원본 보존 (과잉 제거 시 복원용) — deep-ish copy로 원본 오염 방지
+    orig_pos = [dict(f) for f in _with_clean_category(result.get("positive_factors", []))]
+    orig_neg = [dict(f) for f in _with_clean_category(result.get("negative_factors", []))]
+    entry = llm_desk_factors({
         "id":            kst_id(kst_now),
         "timestamp_kst": kst_label(kst_now),
         "key_event": {
@@ -993,6 +999,8 @@ def build_entry(kst_now, result):
         # 혼조·양면 (2026-07-03), category 태그 추가 (2026-07-28), 결과 재료 데스크 (2026-07-31)
         "mixed_factors":    desk_factors(_with_clean_category((result.get("mixed_factors") or [])[:3]), '혼조')
     })
+    # 데스킹으로 빠진 점수를 남은 원인 재료에 재배분 — 소계=항목합 보장 (2026-08-01 사고 수정)
+    return rebalance_factor_scores(entry, orig_pos, orig_neg)
 
 
 MIXED_FACTOR_STALE_HOURS = 24  # 혼조 재료 무한 반복 방지 — 이 시간 이상 연속되면 오늘 데이터 재확인 요구
@@ -1121,6 +1129,63 @@ def llm_desk_factors(entry):
             entry[kind] = kept
     except Exception as e:
         print(f"::warning::[LLM데스크] 실패 — 정규식 필터만 적용: {e}")
+    return entry
+
+
+def _redistribute(factors, total):
+    """항목 점수를 비례 조정해 합이 정확히 total이 되게 (최대잉여법, 최소 1점)"""
+    if not factors or total <= 0:
+        return factors
+    s = sum(int(f.get('score', 0) or 0) for f in factors)
+    if s == total:
+        return factors
+    if s <= 0:
+        base = total // len(factors)
+        for f in factors:
+            f['score'] = base
+        factors[0]['score'] += total - base * len(factors)
+        return factors
+    quotas = [(f.get('score', 0) or 0) / s * total for f in factors]
+    scores = [max(1, int(q)) for q in quotas]
+    rem = total - sum(scores)
+    order = sorted(range(len(factors)), key=lambda i: quotas[i] - int(quotas[i]), reverse=True)
+    guard = 0
+    while rem != 0 and guard < 1000:
+        idx = order[guard % len(order)]
+        if rem > 0:
+            scores[idx] += 1
+            rem -= 1
+        elif scores[idx] > 1:
+            scores[idx] -= 1
+            rem += 1
+        guard += 1
+    for f, sc in zip(factors, scores):
+        f['score'] = sc
+    return factors
+
+
+def rebalance_factor_scores(entry, orig_pos=None, orig_neg=None):
+    """데스킹 후 '소계 = 항목 점수 합'을 항상 보장한다 (2026-08-01 유저 제보 사고 —
+    부정 합계 60인데 항목 합 30인 카드가 공개 노출됨. 원인: 2026-07-31 결과 재료 데스크가
+    재료를 빼면서 점수 재배분을 하지 않았다).
+    원칙: 총점(positive_total/negative_total)은 Gemini의 종합 판단이므로 유지하고,
+    빠진 결과 재료의 점수를 남은 같은 편 '원인' 재료들에 비례 재배분한다 — 결과를 만든
+    원인들이 그 무게를 나눠 지는 구조.
+    가드: 데스킹이 그 편 점수의 60% 초과를 걷어냈고 남은 재료가 2개 미만이면, 재배분이
+    소수 항목을 기형적으로 부풀리므로(단독 재료 80점 등) 데스킹 전 목록으로 되돌린 뒤
+    재배분한다 — 표시 일관성이 결과재료 순수성보다 우선 (원인 순수성 1차 방어는 Gemini
+    프롬프트 규칙)."""
+    for side, orig in (('positive', orig_pos), ('negative', orig_neg)):
+        total = int(entry.get(f'{side}_total', 0) or 0)
+        kept = entry.get(f'{side}_factors') or []
+        kept_sum = sum(int(f.get('score', 0) or 0) for f in kept)
+        if kept_sum == total:
+            continue
+        if orig and len(kept) < 2 and kept_sum * 10 < total * 4:
+            print(f"::warning::[데스크] {side} 과잉 제거(잔여 {kept_sum}/{total}) — "
+                  f"원본 목록 복원 후 재배분")
+            kept = [dict(f) for f in orig]
+        entry[f'{side}_factors'] = _redistribute(kept, total)
     return entry
 
 

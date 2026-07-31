@@ -14,7 +14,7 @@
   /* [href, 짧은 이름(PC칩), 긴 이름(모바일 오버레이)] */
   var links = [
     ['/atmr-dashboard.html',        '스윙 시그널',    "스윙 트레이더를 위한 '스윙 시그널'"],
-    ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇 — 하루 5회 시황 분석'],
+    ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇 — AI 시황 분석'],
     ['/stocks.html',                '심플 주가',      '심플 주가 정보'],
     ['/chart-analysis.html',        'AI 차트분석',    'AI 차트 분석'],
     ['/analyst-reports.html',       '월가 목표주가',  '월가 목표주가'],
@@ -93,21 +93,6 @@
   parent.insertBefore(nav, ref);
   parent.insertBefore(mobMenu, ref);  /* nav 다음에, 페이지 본문보다 앞에 */
 
-  /* ── NEW 배지 — DOM 삽입 후 직접 appendChild (CSS overflow 회피) ── */
-  var NEW_HREF  = '/market-vs.html';
-  var badgeStyle =
-    'display:inline-block;font-size:14px;font-weight:800;' +
-    'background:#C0392B;color:#fff;padding:1px 6px;border-radius:4px;' +
-    'vertical-align:middle;margin-left:5px;line-height:1.4;flex-shrink:0;';
-  var allLinks = document.querySelectorAll(
-    'a[href="' + NEW_HREF + '"],.ez-mob-item[href="' + NEW_HREF + '"]'
-  );
-  for (var b = 0; b < allLinks.length; b++) {
-    var bd = document.createElement('span');
-    bd.textContent = 'NEW';
-    bd.setAttribute('style', badgeStyle);
-    allLinks[b].appendChild(bd);
-  }
 
   /* ── 4. 모바일 메뉴 padding-top 동적 조정 ──
      각 페이지마다 nav 실제 높이가 다를 수 있으므로
