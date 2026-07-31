@@ -2110,7 +2110,7 @@ li.gear-other-sep { display: none !important; }
       <div style="display:flex;flex-direction:column;gap:16px;">
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">오늘 나스닥100(QQQ) 사도 될까요?</summary>
-          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">v2에서는 점수가 곧 행동이 아닙니다. 점수(매수 매력도·매도 압력)는 재료이고, 최종 판단은 상단의 오늘의 시그널이 내립니다 — 지금까지의 매매 판단 기록이 "이미 얼마나 진행했는지"를 기억하고, 신호의 돌파(이벤트)·급반등 관문·주봉 생명선까지 반영해 분할 매수 유리 / 보유 / 부분 익절 / 위험 관리 / 관망 중 하나로 확정합니다. 같은 점수라도 맥락에 따라 판단이 달라지는 것이 v2의 핵심입니다.</p>
+          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">점수가 곧 행동은 아닙니다. 점수(매수 매력도·매도 압력)는 재료이고, 최종 판단은 상단의 오늘의 시그널이 내립니다 — 지금까지의 매매 판단 기록이 "이미 얼마나 진행했는지"를 기억하고, 신호의 돌파(이벤트)·급반등 관문·주봉 생명선까지 반영해 분할 매수 유리 / 보유 / 부분 익절 / 위험 관리 / 관망 중 하나로 확정합니다. 같은 점수라도 맥락에 따라 판단이 달라지는 것이 이 분석의 핵심입니다.</p>
         </details>
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">엔비디아(NVDA) 지금 추격 매수해도 될까요?</summary>
@@ -2126,14 +2126,45 @@ li.gear-other-sep { display: none !important; }
         </details>
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">스윙 시그널 점수는 어떻게 계산되나요?</summary>
-          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;"><strong>매수 매력도(0~100pt) = Σ [ 팩터ᵢ × 가중치ᵢ ]</strong> &nbsp;(i = 1 ~ 8)</p>
-          <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">8개 독립 팩터를 병렬로 산출한 뒤 가중치 기반으로 합산합니다 — Gear 상태(0~25) + RSI 구간(0~20) + RSI 모멘텀 보정(±5) + 단기 추세 정렬(0~15) + 시장 환경·VIX(0~15) + MACD 종합(0~14) + 52주 저점 근접(0~5) + 가격 패턴 HL/LH(±3).</p>
-          <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">각 팩터는 단순 지표값이 아니라 <strong>시장 국면에 따라 비선형 보정</strong>됩니다. RSI는 단일 수치가 아닌 5일 슬라이딩 윈도우와 결합해 과매도 탈출·과매수 진입 여부를 별도 판별하고(±5pt), 가격 패턴은 최근 5일 고가·저가를 직전 20일 구간과 비교해 Higher Low(+3pt) / Lower High(−3pt)를 계산합니다. MACD는 라인 부호(중기 추세 방향) + 히스토그램 절대값(단기 가속도) + 5일 전 대비 방향성 변화, 세 축을 동시에 산출해 0~14pt로 압축합니다.</p>
-          <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">매도 적합도(0~100pt)는 동일한 팩터 세트를 <strong>역방향으로 재계산</strong>해 매수 점수와 내부적으로 상쇄·견제하도록 설계되어 있습니다. v2에서 두 점수는 판단의 입력값입니다 — 최종 진입·청산 판단은 점수 위에서 작동하는 노출 규율(이벤트 돌파·20%p 단계 이동·급반등 관문·주봉 생명선)이 내립니다. 데이터는 미국 장중(KST 약 22:30~06:00) 30분 단위로 수집·재산출되고, 장 외 시간에는 프리마켓·장후 각 1회 자동 업데이트됩니다.</p>
-          <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">데이터는 미국 장중(KST 약 22:30~06:00) 30분 간격으로, 장 외에는 프리마켓·장후 각 1회 자동 수집됩니다.</p>
+          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">점수는 두 층으로 만들어집니다 — <strong>1층에서 시장을 숫자로 읽고(점수 산출), 2층에서 그 숫자에 기억과 규율을 더해 판단을 내립니다.</strong></p>
+
+          <div style="font-weight:800;color:var(--t1);font-size:16px;margin:14px 0 8px;">1층 — 점수 산출: 8개 팩터의 가중 합산</div>
+          <p style="margin:0 0 8px;font-size:16px;color:var(--t2);line-height:1.7;"><strong>매수 매력도(0~100pt) = Σ [ 팩터ᵢ × 가중치ᵢ ]</strong> &nbsp;(i = 1 ~ 8)</p>
+          <ul style="margin:0;padding-left:18px;">
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">구성: 추세 Gear(0~25) · RSI 구간(0~20) · RSI 모멘텀 보정(±5) · 단기 추세 정렬(0~15) · 시장 환경 VIX(0~15) · MACD 종합(0~14) · 52주 위치(0~5) · 가격 패턴 HL/LH(±3)</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">모든 팩터는 시장 국면에 따라 비선형 보정 — 같은 RSI 65라도 골든크로스 상승장에서는 건강한 모멘텀으로 가점, 하락장에서는 반등 소진 신호로 감점</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">RSI는 5일 전 수치와의 변화량을 함께 판독 — 과매도 탈출(+), 고점에서의 급가열(−)을 별도 판별</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">가격 패턴은 최근 5일 고가·저가를 직전 20일 구간과 대조 — 저점을 높이면 Higher Low(+3), 고점을 낮추면 Lower High(−3)</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">MACD는 3축 동시 산출 — 라인 부호(중기 방향) + 히스토그램(단기 가속도) + 5일 전 대비 변화(방향 전환 감지)</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">매도 압력(0~100pt)은 동일 팩터를 역방향으로 재계산 — 매수 점수와 서로 견제하는 구조</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">ADX(추세 강도) 보정 — 무추세 구간에서는 매수·매도 양쪽 확신도를 함께 낮춰, 충격성 등락을 추세로 오인하는 실수 차단</li>
+          </ul>
+
+          <div style="font-weight:800;color:var(--t1);font-size:16px;margin:14px 0 8px;">2층 — 판단: 점수에 기억과 규율을 더함</div>
+          <ul style="margin:0;padding-left:18px;">
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">점수는 재료일 뿐 — 같은 65점이라도 "분할 매수를 이미 얼마나 진행했는지"에 따라 오늘의 판단이 달라짐</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">매매 판단 기록 보존 — 지금까지의 진행 단계·마지막 매매 조건을 기억, 매일 처음 보는 것처럼 같은 말을 반복하지 않는 구조</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">신호는 레벨이 아니라 사건 — 기준선에 "머무는 것"이 아니라 "돌파하는 순간"만 신호로 인정</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">노출은 계단식 — 한 번의 판단 변경은 최대 20%p, 조건이 충족된 날에만 이동. 과열 경고(매도압력 60 이상) 시 자동 감축</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">급반등 관문 — 급반등일 종가를 2거래일 안에 재돌파하는지로 진짜/가짜 반등 판정. 11년 실측: 통과 시 이후 20거래일 승률 63%, 실패 시 38%</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">생명선 — S&amp;P500·나스닥100·반도체 3개 지수 중 2개가 주봉 30주선 아래에서 마감하면 노출 상한 20%로 강제 축소. 2022년 1월 28일 실제 발동해 이후 추가 하락을 회피한 규칙</li>
+          </ul>
+
+          <div style="font-weight:800;color:var(--t1);font-size:16px;margin:14px 0 8px;">검증과 정직 — 이 분석의 원칙</div>
+          <ul style="margin:0;padding-left:18px;">
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">모든 확률·통계 문장은 2015~2026 11년 백테스트로 검증된 것만 인용 — 근거 없는 확률 서술 금지</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">뉴스 재료는 원인만 채택 — "지수 상승"·"VIX 하락" 같은 결과 서술은 데스크에서 자동 제외</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">판단이 빗나가면 다음 논평이 스스로 인정 — 성적을 숨기지 않는 것이 원칙</li>
+          </ul>
+
+          <div style="font-weight:800;color:var(--t1);font-size:16px;margin:14px 0 8px;">갱신 주기</div>
+          <ul style="margin:0;padding-left:18px;">
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">점수: 미국 장중(KST 약 22:30~06:00) 30분 단위 재산출, 프리마켓·장후 각 1회</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">종합 판단(오늘의 시그널): 미국 장마감 45분 후 확정, 이후 아침까지 2회 재점검(시간외 급변·차트 분석 반영)</li>
+          </ul>
         </details>
       </div>
-      <p style="margin-top:16px;font-size:16px;color:var(--t3);">v2 베타는 200일 이동평균선 Gear 추세 위에서 단계 노출 규율(한 번에 최대 20%p, 조건 충족일에만 이동)과 주봉 30주선 생명선으로 판단합니다. 모든 확률·통계 문장은 11년 백테스트로 검증된 것만 인용하며, 판단이 빗나가면 다음 논평이 스스로 인정합니다. 투자 판단의 참고 자료입니다.</p>
+      <p style="margin-top:16px;font-size:16px;color:var(--t3);">이 분석은 200일 이동평균선 추세 위에서 단계 노출 규율(한 번에 최대 20%p, 조건 충족일에만 이동)과 주봉 30주선 생명선으로 판단하며, 모든 확률·통계는 11년 백테스트 검증분만 인용합니다. 투자 판단의 참고 자료입니다.</p>
       <p style="margin-top:12px;font-size:16px;color:var(--t3);line-height:1.7;">더 좋은 진단 알고리즘 아이디어가 있으시다면 언제라도 <a href="mailto:easy.invest.good@gmail.com" style="color:var(--t2);text-decoration:underline;">easy.invest.good@gmail.com</a> 메일 환영합니다.</p>
     </section>
 
