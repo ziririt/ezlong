@@ -3793,7 +3793,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
     const _c = window._swingView.comp;
     title = _c.stanceLabel;
     const _flowLine = window._swingView.flow
-      ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;"><b>판단 흐름</b> · ${window._swingView.flow}</div>` : '';
+      ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">${window._swingView.flow}</div>` : '';
     const _dk = window._swingView.desked;
     const _secHtml = (_dk?.sections || []).map(s =>
       `<div style="margin:0 0 14px;">

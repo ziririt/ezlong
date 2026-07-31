@@ -51,7 +51,7 @@
       '<span class="cs-stance">' + c.stanceLabel + '</span>' +
       '</div>' +
       (view.stanceChangedToday ? '<div style="font-weight:700;margin-bottom:4px;">오늘 스탠스가 바뀌었습니다.</div>' : '') +
-      (view.flow ? '<div style="margin-bottom:4px;">판단 흐름 · ' + view.flow + '</div>' : '') +
+      (view.flow ? '<div style="margin-bottom:4px;">' + view.flow + '</div>' : '') +
       '<div>' + first + '</div>' +
       '<div class="cs-meta">' + view.generatedAtKST + ' 기준 · ' +
       '<a href="/atmr-dashboard.html">전체 판단 보기</a></div>';
