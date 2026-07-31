@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-07-31-23:20",
+      "timestamp_kst": "2026-07-31(금) 23:20 KST",
+      "key_event": {
+        "name": "애플 실적 부진 및 아마존 호조",
+        "name_en": "Apple's Weak Forecast vs. Amazon's Strong Earnings",
+        "time": "정규장 진행 중",
+        "why": "주요 기술주 실적에 따른 시장 방향성 혼조, 투자심리 변화",
+        "why_en": "Mixed market direction due to bellwether tech earnings, shifting sentiment"
+      },
+      "positive_total": 40,
+      "negative_total": 60,
+      "summary": "애플 실적 부진과 매파적 연준 발언으로 부정 우위 전환. 아마존 호조에도 시장 전반 하락.",
+      "summary_en": "Negative sentiment prevails due to Apple's weak earnings and hawkish Fed comments, despite Amazon's strong performance and overall market decline.",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "아마존 실적 호조",
+          "name_en": "Amazon's Strong Earnings",
+          "desc": "예상치 상회하는 실적 발표로 주가 12% 급등, AI 투자 기대감 지속",
+          "desc_en": "Better-than-expected earnings led to a 12% stock surge, sustaining AI investment optimism.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 10,
+          "name": "MSFT 실적 견인",
+          "name_en": "Microsoft Earnings Driving Market",
+          "desc": "MSFT 주가 1.31% 상승, AI 투자 지속 기대감",
+          "desc_en": "MSFT stock up 1.31%, reinforcing continued AI investment expectations.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 10,
+          "name": "구글 클라우드 성장 기대",
+          "name_en": "Google Cloud Growth Expectations",
+          "desc": "구글 클라우드가 알파벳의 주요 가치 동인으로 부각되며 주가 3.30% 상승",
+          "desc_en": "Google Cloud emerges as a primary valuation driver for Alphabet, with stock up 3.30%.",
+          "category": "company_specific"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "애플 실적 부진 및 전망 하향",
+          "name_en": "Apple's Weak Earnings & Outlook Cut",
+          "desc": "예상치 하회하는 전망으로 주가 3.12% 하락, 메모리 부족 영향 언급",
+          "desc_en": "Lower-than-expected outlook caused a 3.12% stock drop, citing memory shortage impact.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 5,
+          "name": "국채금리 상승",
+          "name_en": "Treasury Yields Rise",
+          "desc": "미10년 국채금리 1.50% 상승, 성장주 투자심리 위축",
+          "desc_en": "US 10-year Treasury yield up 1.50%, dampening growth stock sentiment.",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "테슬라 중국 사업 매각 루머 해명",
+          "name_en": "Tesla China Business Sale Rumor Dismissed",
+          "desc": "머스크, 중국 사업 매각 루머를 '가짜 뉴스'로 일축. 불확실성 해소와 루머 확산에 따른 투자심리 영향이 혼재.",
+          "desc_en": "Musk dismissed China business sale rumors as 'fake news.' This resolves uncertainty but also highlights the impact of rumor-driven sentiment.",
+          "category": "company_specific"
+        }
+      ]
+    },
+    {
       "id": "2026-07-31-21:50",
       "timestamp_kst": "2026-07-31(금) 21:50 KST",
       "key_event": {
@@ -624,92 +692,8 @@
           "category": "earnings_bellwether"
         }
       ]
-    },
-    {
-      "id": "2026-07-30-20:22",
-      "timestamp_kst": "2026-07-30(목) 20:22 KST",
-      "key_event": {
-        "name": "MSFT 실적 호조 및 FOMC 대기",
-        "name_en": "Microsoft Earnings Beat & FOMC Anticipation",
-        "time": "오늘 정규장 및 내일 새벽",
-        "why": "AI 투자 성과 확인, 시장 심리 회복, 금리 결정 관망",
-        "why_en": "AI investment payoff confirmed, market sentiment recovery, awaiting Fed decision"
-      },
-      "positive_total": 65,
-      "negative_total": 35,
-      "summary": "MSFT 실적 호조와 AI 기대감으로 시장 심리 회복. FOMC 매파적 기조와 지정학적 긴장은 상존하나, 어제 부정 우위에서 긍정 전환.",
-      "summary_en": "Market sentiment recovers on strong Microsoft earnings and AI optimism. Hawkish FOMC stance and geopolitical tensions persist, but shifted from negative to positive bias today.",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "MSFT 실적 호조 및 AI 기대감",
-          "name_en": "Microsoft Earnings Beat & AI Optimism",
-          "desc": "Azure 43% 성장, Copilot 3천만 좌석 등 AI 투자 성과 확인으로 기술주 전반 심리 회복. QQQ +0.58%, SOXX +2.32%.",
-          "desc_en": "Azure's 43% growth and 30M Copilot seats confirm AI investment payoff, boosting tech sentiment. QQQ +0.58%, SOXX +2.32%.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 15,
-          "name": "반도체 섹터 반등",
-          "name_en": "Semiconductor Sector Rebound",
-          "desc": "전일 급락 후 MSFT 실적에 힘입어 SOXX +2.32% 반등. 과매도 인식 및 기술적 반등 수요.",
-          "desc_en": "After yesterday's sharp decline, SOXX rebounds +2.32% on Microsoft earnings. Reflects oversold conditions and technical bounce demand.",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "VIX 공포지수 하락",
-          "name_en": "VIX Fear Index Decline",
-          "desc": "시장 불확실성 완화 및 투자 심리 개선. VIX -6.16% 하락.",
-          "desc_en": "Reduced market uncertainty and improved investor sentiment. VIX down -6.16%.",
-          "category": "vix_risk_sentiment"
-        },
-        {
-          "score": 10,
-          "name": "달러 약세 전환",
-          "name_en": "Dollar Weakens",
-          "desc": "달러인덱스 DXY -0.27% 하락, 미국 수출 기업 실적 개선 기대 및 신흥국 자금 유출 압력 완화.",
-          "desc_en": "DXY down -0.27%, raising hopes for improved US export earnings and easing emerging market capital outflow pressure.",
-          "category": "dollar_fx"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "Fed 금리 동결 및 매파적 기조",
-          "name_en": "Fed Holds Rates, Hawkish Stance",
-          "desc": "Fed의 금리 동결에도 불구하고 매파적 발언과 점도표는 시장에 부담. 국채금리 상승 압력 지속.",
-          "desc_en": "Despite rate hold, hawkish Fed comments and dot plot weigh on market. Sustained upward pressure on Treasury yields.",
-          "category": "fed_policy"
-        },
-        {
-          "score": 10,
-          "name": "미 10년 국채금리 상승",
-          "name_en": "US 10-Year Treasury Yield Rise",
-          "desc": "FOMC 매파적 기조와 인플레이션 우려로 국채금리 +0.39% 상승, 성장주 투자 매력 감소.",
-          "desc_en": "Hawkish FOMC and inflation concerns push 10-year yield up +0.39%, reducing appeal of growth stocks.",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 10,
-          "name": "지정학적 긴장 지속",
-          "name_en": "Persistent Geopolitical Tensions",
-          "desc": "미-이란 갈등 고조 및 중동 리스크는 여전히 시장 불확실성 요인으로 작용.",
-          "desc_en": "Escalating US-Iran conflict and Middle East risks remain a source of market uncertainty.",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "삼성전자 확정 실적",
-          "name_en": "Samsung Electronics Confirmed Earnings",
-          "desc": "잠정치와 유사한 역대급 실적 확정. 한국 증시 반등에 기여했으나, 이미 시장에 선반영된 측면이 강해 미국 시장에 추가적인 강력한 모멘텀 제공은 제한적.",
-          "desc_en": "Confirmed record earnings, similar to preliminary figures. Contributed to Korean market rebound, but largely priced in, offering limited additional strong momentum to US market.",
-          "category": "earnings_bellwether"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-07-31T12:51:14Z",
+  "updated_at": "2026-07-31T14:21:01Z",
   "max_entries": 10
 }
