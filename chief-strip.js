@@ -1,4 +1,4 @@
-/* 수석 스윙 뷰 스트립 (v2 베타 페이지 전용)
+/* v2 베타 스트립 (v2 베타 페이지 전용)
  * data/swing-view.json(swing-view.yml 파이프라인 산출)을 읽어
  * 페이지 최상단에 오늘의 스탠스 + 논평 요약을 표시한다.
  * 원본 페이지에는 삽입하지 않는다 — _v2 페이지에서만 로드할 것.
@@ -37,7 +37,7 @@
     div.className = 'chief-strip';
     div.innerHTML =
       '<div class="cs-head">' +
-      '<span class="cs-badge">수석 스윙 뷰 · v2 베타</span>' +
+      '<span class="cs-badge">v2 베타</span>' +
       '<span class="cs-stance">' + c.stanceLabel + '</span>' +
       '</div>' +
       (view.stanceChangedToday ? '<div style="font-weight:700;margin-bottom:4px;">오늘 스탠스가 바뀌었습니다.</div>' : '') +

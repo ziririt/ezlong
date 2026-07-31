@@ -23,7 +23,7 @@
     document.head.appendChild(style);
     var div = document.createElement('div');
     div.className = 'v2-entry';
-    div.innerHTML = '<a href="' + target + '">2.0 beta — 수석 스윙 뷰 시험 버전</a>';
+    div.innerHTML = '<a href="' + target + '">2.0 beta — 시험 버전</a>';
     var nav = document.getElementById('ez-nav') || document.querySelector('nav');
     if (nav && nav.parentNode) {
       nav.parentNode.insertBefore(div, nav.nextSibling);

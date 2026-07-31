@@ -41,6 +41,7 @@ STATS = dict(
     nvda_trend='NVDA는 200일선 위(기어3)에서 20거래일 승률 69%, 아래에서는 56%로 갈립니다 — 추세 유지가 판단의 중심입니다',
     rebound='약세 구간(RSI 45 미만)에서 나온 하루 +2.5% 이상 급반등은 지난 11년 49차례 있었고, 반등 자체만으로는 이후 5거래일 승률이 52%로 동전던지기였습니다',
     follow='다만 진위는 이틀 안에 갈렸습니다 — 2거래일 내 반등일 종가 위에서 다시 마감하면 이후 20거래일 평균 +3.2%·승률 63%, 못 하면 −1.1%·승률 38%였습니다',
+    lifeline='이 생명선은 백테스트에서 2022년 1월 28일 QQQ 352에 발동해 바닥(254)까지의 추가 하락을 통째로 피하게 했고, 2021~2026 구간 최대낙폭을 −20.7%에서 −16.0%로 줄였습니다. 대신 2020·2023·2025년의 휩쏘로 연 1.4%p가량을 보험료로 냈습니다 — 더 비싸게 다시 사는 비용까지가 이 규칙의 가격입니다',
 )
 
 KST = timezone(timedelta(hours=9))
@@ -96,7 +97,7 @@ def target_exposure(buy, sell, gear, stopped):
     return CFG['base_g1'], 'g1'
 
 
-def advance(state, day, price, buy, sell, gear, dev200):
+def advance(state, day, price, buy, sell, gear, dev200, cap=None):
     """원장 1일 진행. 반환: action(None|'ADD'|'TRIM'|'STOP')"""
     # 하드스톱 카운트
     if dev200 is not None and dev200 <= CFG['hard_stop_dev']:
@@ -109,6 +110,8 @@ def advance(state, day, price, buy, sell, gear, dev200):
         state['stopped'] = False
 
     target, why = target_exposure(buy, sell, gear, state.get('stopped', False))
+    if cap is not None and cap < target:
+        target, why = cap, 'lifeline'
     expo = state.get('exposure', None)
     if expo is None:                      # 첫 가동 — 현재 목표로 초기화 (가상 포지션)
         state['exposure'] = target
@@ -141,6 +144,9 @@ def advance(state, day, price, buy, sell, gear, dev200):
 
 
 def stance_of(state, action, buy, sell, gear):
+    if state.get('targetWhy') == 'lifeline' and state.get('target', 1) <= 0.2 \
+            and state.get('exposure', 0) > state.get('target', 0):
+        return 'risk_off', '생명선 발동 — 계획 축소 진행 구간'
     if action == 'STOP' or state.get('stopped'):
         return 'risk_off', '위험 관리 구간 — 노출 축소'
     if action == 'ADD':
@@ -175,6 +181,32 @@ def self_review(state):
                 f'이 시스템은 폭락 방어를 우선하는 구조라 이런 비용이 주기적으로 발생합니다 — '
                 f'그 트레이드오프까지가 판단입니다.')
     return None
+
+
+def lifeline_status():
+    """생명선 — 마켓사이클 주봉(30주선) 판정. 확정된 주봉만 사용 (진행 중인 주 제외).
+    2026-07-31 백테스트 채택: 3개 지수 중 2개 이탈 → 노출 상한 20%, 3개 전부 → 0%.
+    브레드스(RSP-SPY) 캡은 OOS 성과 저하로 보류. 데이터 14일 이상 정체 시 미적용."""
+    now_ts = datetime.now(timezone.utc).timestamp()
+    detail = []
+    newest = 0.0
+    for sym, name in (('SPY', 'S&P500'), ('QQQ', '나스닥100'), ('SOXX', '반도체')):
+        d = load(os.path.join(HERE, '..', 'data', f'mc-ohlcv-{sym}-weekly.json'))
+        if not d or not d.get('ohlcv'):
+            return None
+        try:
+            newest = max(newest, datetime.fromisoformat(
+                d['updatedAt'].replace('Z', '+00:00')).timestamp())
+        except Exception:
+            pass
+        closes = [b['c'] for b in d['ohlcv']
+                  if b.get('c') and b['t'] + 6 * 86400 <= now_ts]   # 확정 주봉만
+        if len(closes) < 31:
+            return None
+        sma30 = sum(closes[-30:]) / 30
+        detail.append((name, closes[-1] < sma30))
+    stale = bool(newest) and (now_ts - newest) > 14 * 86400
+    return dict(count=sum(1 for _, b in detail if b), detail=detail, stale=stale)
 
 
 def load_scorecard():
@@ -294,11 +326,11 @@ def chart_engine_crosscheck(st):
     bullish_st = st in ('accumulate', 'hold')
     cautious_ca = any(k in (str(act) + str(verdict)) for k in ('관망', '주의', '위장', '매도'))
     if bullish_st and cautious_ca:
-        line += ' 수석 판단과 결이 다른 부분인데, 이럴 때 원칙은 보수적인 쪽입니다 — 보유는 유지하되 신규 증액은 이 모순이 풀린 뒤로 미룹니다.'
+        line += ' 이 판단과 결이 다른 부분인데, 이럴 때 원칙은 보수적인 쪽입니다 — 보유는 유지하되 신규 증액은 이 모순이 풀린 뒤로 미룹니다.'
     elif not bullish_st and not cautious_ca:
-        line += ' 차트 쪽이 더 낙관적이지만, 노출 판단은 수석 원장의 규율을 따릅니다.'
+        line += ' 차트 쪽이 더 낙관적이지만, 노출 판단은 이 시스템의 규율을 따릅니다.'
     else:
-        line += ' 수석 판단과 같은 방향입니다.'
+        line += ' 이 판단과 같은 방향입니다.'
     return line
 
 
@@ -434,9 +466,17 @@ def main():
 
     ledger = load(LEDGER, {}) or {}
     comp = ledger.setdefault('comp', {})
+    ll = lifeline_status()
+    ll_cap = None
+    if ll and not ll.get('stale'):
+        if ll['count'] >= 3:
+            ll_cap = 0.0
+        elif ll['count'] >= 2:
+            ll_cap = 0.2
+
     advanced = False
     if comp.get('lastDay') != day and not stale:
-        action = advance(comp, day, price, buy, sell, gear, dev200)
+        action = advance(comp, day, price, buy, sell, gear, dev200, cap=ll_cap)
         advanced = True
     else:
         action = None   # 같은 거래일 재실행/신선도 실패 — 상태 진행 없이 뷰만 갱신
@@ -494,7 +534,22 @@ def main():
         if n >= 15:
             grade = dict(n=n, hits=hits, pct=round(hits / n * 100))
     commentary = comp_commentary(comp, action, buy, sell, gear, dev200, price)
-    commentary = ctx_paras + commentary
+    ll_paras = []
+    if ll and ll.get('stale'):
+        ll_paras.append('참고 — 생명선(주봉 30주선) 데이터가 2주 이상 갱신되지 않아 오늘은 생명선 '
+                        '판정을 적용하지 않았습니다. 마켓사이클 파이프라인 점검이 필요합니다.')
+    elif ll and ll['count'] >= 2:
+        broken = '·'.join(n for n, b in ll['detail'] if b)
+        ll_paras.append(f'생명선이 끊겼습니다. {broken}이 주봉 기준 30주선 아래에서 마감했습니다. '
+                        f'이 선 아래에서 강세장을 논하지 않는 것이 이 시스템의 헌법입니다. '
+                        f'{STATS["lifeline"]}. 규칙에 따라 노출 상한을 '
+                        f'{"0%" if ll["count"] >= 3 else "20%"}로 내립니다.')
+    elif ll and ll['count'] == 1:
+        first = next(n for n, b in ll['detail'] if b)
+        ll_paras.append(f'생명선 경계 — 3개 지수 중 {first}가 먼저 주봉 30주선 아래로 내려왔습니다. '
+                        f'단독 이탈은 발동 조건이 아니지만, 두 번째 지수가 무너지면 그날로 노출 상한을 '
+                        f'20%로 내리는 것이 예약된 행동입니다. 지금은 감시 단계입니다.')
+    commentary = ctx_paras + ll_paras + commentary
     cross = chart_engine_crosscheck(st)
     if cross:
         commentary.append(cross)
@@ -512,6 +567,7 @@ def main():
         dataDay=day,
         beta=True,
         stanceChangedToday=changed,
+        lifeline=(dict(count=ll['count'], broken=[n for n, b in ll['detail'] if b]) if ll else None),
         stanceStreak=streak,
         flow=flow,
         stale=stale,

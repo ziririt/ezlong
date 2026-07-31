@@ -11,7 +11,7 @@
 </script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title id="page-title-tag">스윙 시그널 v2 베타 — 수석 스윙 뷰 | EZLONG</title>
+<title id="page-title-tag">스윙 시그널 v2 베타 | EZLONG</title>
 <meta name="description" content="QQQ·VOO·TSLA·NVDA의 스윙 시그널 점수로 오늘 미국주식 매수/매도 타이밍을 분석. RSI, MACD, 200일 이동평균선 기반 Gear 변속 전략. 지금 사도 될까? 데이터로 답합니다." />
 <meta name="keywords" content="미국주식 매수 타이밍, QQQ 매수 신호, 엔비디아 매수 적기, 테슬라 매도 신호, TQQQ 매매 타이밍, SOXL 스윙 전략, 나스닥 VIX 공포탐욕지수, RSI 과매도 과매수, MACD 매매 신호, 200일 이동평균선 기어, 미국주식 스윙 전략, QQQ 40주선 매매, NVDA RSI 과매도, TSLA 200일선 지지, 스윙 시그널, Swing Signal Score, 기어 변속 매매법, 3-3-4 분할 매수, 미국주식 기술적 분석, ezlong" />
 <meta name="robots" content="index, follow" />
@@ -1621,7 +1621,7 @@ li.gear-other-sep { display: none !important; }
       </button>
     </div>
     <div style="text-align:center;margin:6px 0 2px;">
-      <span style="font-size:14px;color:var(--t3);">v2 베타 — 내역을 기억하는 수석 스윙 뷰 시험 버전 · <a href="/atmr-dashboard.html" style="color:var(--ez-blue);text-decoration:none;">기존 버전으로</a></span>
+      <span style="font-size:14px;color:var(--t3);">v2 베타 — 내역을 기억하는 스윙 분석 시험 버전 · <a href="/atmr-dashboard.html" style="color:var(--ez-blue);text-decoration:none;">기존 버전으로</a></span>
     </div>
 
     <!-- 실시간 현재가 전광판 -->
@@ -2110,7 +2110,7 @@ li.gear-other-sep { display: none !important; }
       <div style="display:flex;flex-direction:column;gap:16px;">
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">오늘 나스닥100(QQQ) 사도 될까요?</summary>
-          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">위 대시보드에서 나스닥100(QQQ)의 매수 매력도 점수를 확인하세요. 80점 이상이면 분할 매수 최적 구간, 60~79점은 소량 정찰대 투입, 40~59점은 관망 권장, 40점 미만은 매수 자제 또는 현금 보유가 적절합니다. Gear 3(200일선 +2% 이상) + RSI 45 이하 조합이 공격적 매수의 최적 구간입니다.</p>
+          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">v2에서는 점수가 곧 행동이 아닙니다. 점수(매수 매력도·매도 압력)는 재료이고, 최종 판단은 상단의 오늘의 시그널이 내립니다 — 내역을 기억하는 원장이 "이미 얼마나 진행했는지"를 알고, 신호의 돌파(이벤트)·급반등 관문·주봉 생명선까지 반영해 분할 매수 유리 / 보유 / 부분 익절 / 위험 관리 / 관망 중 하나로 확정합니다. 같은 점수라도 맥락에 따라 판단이 달라지는 것이 v2의 핵심입니다.</p>
         </details>
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">엔비디아(NVDA) 지금 추격 매수해도 될까요?</summary>
@@ -2129,11 +2129,11 @@ li.gear-other-sep { display: none !important; }
           <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;"><strong>매수 매력도(0~100pt) = Σ [ 팩터ᵢ × 가중치ᵢ ]</strong> &nbsp;(i = 1 ~ 8)</p>
           <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">8개 독립 팩터를 병렬로 산출한 뒤 가중치 기반으로 합산합니다 — Gear 상태(0~25) + RSI 구간(0~20) + RSI 모멘텀 보정(±5) + 단기 추세 정렬(0~15) + 시장 환경·VIX(0~15) + MACD 종합(0~14) + 52주 저점 근접(0~5) + 가격 패턴 HL/LH(±3).</p>
           <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">각 팩터는 단순 지표값이 아니라 <strong>시장 국면에 따라 비선형 보정</strong>됩니다. RSI는 단일 수치가 아닌 5일 슬라이딩 윈도우와 결합해 과매도 탈출·과매수 진입 여부를 별도 판별하고(±5pt), 가격 패턴은 최근 5일 고가·저가를 직전 20일 구간과 비교해 Higher Low(+3pt) / Lower High(−3pt)를 계산합니다. MACD는 라인 부호(중기 추세 방향) + 히스토그램 절대값(단기 가속도) + 5일 전 대비 방향성 변화, 세 축을 동시에 산출해 0~14pt로 압축합니다.</p>
-          <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">매도 적합도(0~100pt)는 동일한 팩터 세트를 <strong>역방향으로 재계산</strong>해 매수 점수와 내부적으로 상쇄·견제하도록 설계되어 있습니다. 두 점수의 차분과 교차 방향이 최종 진입·청산 신호의 강도를 결정합니다. 데이터는 미국 장중(KST 약 22:30~06:00) 30분 단위로 수집·재산출되고, 장 외 시간에는 프리마켓·장후 각 1회 자동 업데이트됩니다.</p>
+          <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">매도 적합도(0~100pt)는 동일한 팩터 세트를 <strong>역방향으로 재계산</strong>해 매수 점수와 내부적으로 상쇄·견제하도록 설계되어 있습니다. v2에서 두 점수는 판단의 입력값입니다 — 최종 진입·청산 판단은 점수 위에서 작동하는 노출 규율(이벤트 돌파·20%p 단계 이동·급반등 관문·주봉 생명선)이 내립니다. 데이터는 미국 장중(KST 약 22:30~06:00) 30분 단위로 수집·재산출되고, 장 외 시간에는 프리마켓·장후 각 1회 자동 업데이트됩니다.</p>
           <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">데이터는 미국 장중(KST 약 22:30~06:00) 30분 간격으로, 장 외에는 프리마켓·장후 각 1회 자동 수집됩니다.</p>
         </details>
       </div>
-      <p style="margin-top:16px;font-size:16px;color:var(--t3);">이 분석 데이터는 200일 이동평균선 Gear 변속 전략과 3-3-4 분할 매매 원칙을 기반으로 산출됩니다. 추세와 신호가 일치할 때 진입하고, 익절 기준에 도달하면 분할 매도하는 스윙 트레이더를 위한 참고 자료입니다.</p>
+      <p style="margin-top:16px;font-size:16px;color:var(--t3);">v2 베타는 200일 이동평균선 Gear 추세 위에서 단계 노출 규율(한 번에 최대 20%p, 조건 충족일에만 이동)과 주봉 30주선 생명선으로 판단합니다. 모든 확률·통계 문장은 11년 백테스트로 검증된 것만 인용하며, 판단이 빗나가면 다음 논평이 스스로 인정합니다. 투자 판단의 참고 자료입니다.</p>
       <p style="margin-top:12px;font-size:16px;color:var(--t3);line-height:1.7;">더 좋은 진단 알고리즘 아이디어가 있으시다면 언제라도 <a href="mailto:easy.invest.good@gmail.com" style="color:var(--t2);text-decoration:underline;">easy.invest.good@gmail.com</a> 메일 환영합니다.</p>
     </section>
 
@@ -2174,7 +2174,7 @@ window._swingView = null;
   } catch (e) { console.warn('[swing-view]', e); }
 })();
 
-// [v2] 수석 카드 헬퍼 — 스윙 전략 탭 상단
+// [v2] v2 판단 카드 헬퍼 — 스윙 전략 탭 상단
 function _v2ChiefCardHtml() {
   const sv = window._swingView;
   if (!sv?.comp) return '';
@@ -2182,7 +2182,7 @@ function _v2ChiefCardHtml() {
   const paras = (c.commentary || []).map(t => `<p style="margin:0 0 12px;line-height:1.75;color:var(--t1);font-size:16px;">${t}</p>`).join('');
   return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-left:4px solid #0a84ff;border-radius:14px;padding:18px 18px 12px;margin-bottom:14px;">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
-      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">수석 스윙 뷰 · v2 베타</span>
+      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">v2 베타</span>
       <span style="font-weight:800;color:var(--t1);font-size:17px;">${c.stanceLabel}</span>
       <span style="color:var(--t2);font-size:14px;">확신도 ${c.confidence ?? '—'}</span>
     </div>
@@ -2191,14 +2191,14 @@ function _v2ChiefCardHtml() {
   </div>`;
 }
 
-// [v2] TSLA·NVDA 수석 스탠스 카드
+// [v2] TSLA·NVDA 스탠스 카드
 function _v2KingCardHtml(sym) {
   const sv = window._swingView;
   const k = sym === 'TSLA' ? sv?.tsla : sv?.nvda;
   if (!k) return '';
   return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-left:4px solid #0a84ff;border-radius:14px;padding:16px 16px 10px;margin-bottom:12px;">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">수석 뷰 · 베타</span>
+      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">v2 베타</span>
       <span style="font-weight:800;color:var(--t1);font-size:16px;">${k.stanceLabel}</span>
     </div>
     <p style="margin:0 0 10px;line-height:1.75;color:var(--t1);font-size:16px;">${k.commentary}</p>
@@ -2714,7 +2714,7 @@ function calcMarketFearGreed(qqq, voo, soxx, dia, iwm, vix) {
 // 38~49  → 매수 자제
 // ~37    → 리스크 오프
 function getMarketVerdict(score, gear, rsi, sellP) {
-  // [v2] 수석 뷰 로드 시 — 무기억 문구 대신 스탠스 헤드라인 (탭 간 모순 제거)
+  // [v2] v2 뷰 로드 시 — 무기억 문구 대신 스탠스 헤드라인 (탭 간 모순 제거)
   if (window._swingView?.comp) {
     const _st = window._swingView.comp.stance;
     const _colors = { accumulate: 'var(--gr)', accumulate_wait: 'var(--gr)', hold: 'var(--bl)',
@@ -3235,7 +3235,7 @@ async function loadAllData(forceRefresh = false) {
 // ─── 렌더링 함수들 ───────────────────────────────
 
 function renderAll(data) {
-  window._renderData = data;   // [v2] 수석 뷰 도착 후 재렌더용
+  window._renderData = data;   // [v2] v2 뷰 도착 후 재렌더용
   const vix  = data['VIX']?.price ?? 18;
   const qqq  = data['QQQ'];
   const voo  = data['VOO'];
@@ -3563,8 +3563,8 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
     ${biColHtml('BUY',  buyBalls,  '#FFB300', 'gy', [
       '매수 신호 없음 — 진입 근거 부족 구간.',                                          // 0볼: score <50
       '신호 약함 — 추세·신호 강화 확인 대기 구간.',                                     // 1볼: score 50~64
-      '매수 신호 유효 — 진입 여부·차수는 수석 뷰 판단 참조.',                            // 2볼: score 65~79
-      '강한 매수 신호 — 진입 여부·차수는 수석 뷰 판단 참조.'                             // 3볼: score 80+
+      '매수 신호 유효 — 진입 여부·차수는 상단 v2 판단 참조.',                            // 2볼: score 65~79
+      '강한 매수 신호 — 진입 여부·차수는 상단 v2 판단 참조.'                             // 3볼: score 80+
     ])}
     ${biColHtml('SELL', sellBalls, '#30D158', 'gg', [
       '매도 압력 낮음 — 익절 신호 없음. 보유 부담 없는 구간.',                            // 0볼: compSell <45
@@ -3742,7 +3742,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
     ? `<div class="swing-volatility-warn">시황 변동성 주의 — 지수 수치만 보고 판단 금지. 상단 시황 브리핑 반드시 확인</div>`
     : '';
 
-  // ── [v2] 수석 뷰 오버라이드 — 무기억 문구 대신 스탠스 + 논평 ──────────
+  // ── [v2] v2 뷰 오버라이드 — 무기억 문구 대신 스탠스 + 논평 ──────────
   if (window._swingView?.comp?.commentary?.length) {
     const _c = window._swingView.comp;
     title = _c.stanceLabel;
@@ -3750,7 +3750,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
       ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;"><b>판단 흐름</b> · ${window._swingView.flow}</div>` : '';
     desc  = _flowLine
           + _c.commentary.map(t => `<p style="margin:0 0 12px;line-height:1.78;">${t}</p>`).join('')
-          + `<div style="margin-top:8px;color:var(--t3);font-size:14px;">수석 스윙 뷰 ${window._swingView.generatedAtKST} 기준 · 기준일 ${window._swingView.dataDay}(미국장) · v2 베타 — 확률·통계는 백테스트 검증분만 인용</div>`;
+          + `<div style="margin-top:8px;color:var(--t3);font-size:14px;">v2 베타 분석 ${window._swingView.generatedAtKST} 기준 · 기준일 ${window._swingView.dataDay}(미국장) · v2 베타 — 확률·통계는 백테스트 검증분만 인용</div>`;
     pills = [
       {text: gearText, tone: gear >= 3 ? 'negative' : gear === 2 ? 'caution' : 'neutral'},
       {text: `매도압력 ${_compSell}`, tone: _compSell >= 60 ? 'caution' : 'neutral'},
@@ -5748,7 +5748,7 @@ function loadSignalHistory() {
 }
 
 // ─── 최근 시장 흐름 맥락 배너 ──────────────────────────────────────────────
-// [v2] renderKings 래핑 — 수석 스탠스 카드를 각 카드 상단에 삽입
+// [v2] renderKings 래핑 — 스탠스 카드를 각 카드 상단에 삽입
 const _renderKingsOrig = renderKings;
 renderKings = function(tsla, nvda) {
   _renderKingsOrig(tsla, nvda);
