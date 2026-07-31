@@ -1050,6 +1050,10 @@ ${weeklySection}${adxSection}${cciStochSection}${fibSection}${fourHSection}${qua
     action="매수"면 buyScore는 6 이상, action="매도"면 buyScore는 4 이하, action="관망"이면
     4~6 사이여야 한다. action과 buyScore가 서로 모순되면(예: action="매도"인데 buyScore=8)
     절대 안 된다.
+    action="관망"이라도 4·5·6을 기계적으로 5로 뭉개지 마라 — 지표가 약세 쪽으로 기울어
+    있으면(예: MACD 악화 지속, -DI 우위) 4, 순수 중립이면 5, 강세 쪽으로 기울어 있으면
+    (예: RSI 회복 중, 히스토그램 개선) 6으로 차등을 매겨라. scoreReason에 적은 근거가
+    실제로 다르면 점수도 달라지는 것이 자연스럽다.
 
 11. [정량 엔진 기준선]이 위에 주어졌다면 (없으면 이 규칙은 무시하라):
     - 정량 매수 매력도가 70 이상이면 action을 "매도"로 결론내지 마라 ("매수" 또는 "관망"만 가능).
@@ -1130,8 +1134,8 @@ ${weeklySection}${adxSection}${cciStochSection}${fibSection}${fourHSection}${qua
   "keyPointsEn": ["keyPoints[0]의 영어 버전", "keyPoints[1]의 영어 버전", "keyPoints[2]의 영어 버전"],
   "riskNote": "기술적 리스크 한 문장",
   "riskNoteEn": "riskNote의 자연스러운 영어 버전",
-  "continuity": "${historyLines ? "직전 판단 기록 대비 오늘의 흐름 1~2문장. 판단 유지면 'N일 연속 ~' 형태, 판단 전환이면 전환 이유(지표 변화)를 숫자와 함께 명시" : "기록 없음 — 첫 판단"}",
-  "continuityEn": "continuity의 자연스러운 영어 버전 (예: 'N-day streak of ~' 또는 전환 이유 설명, 기록 없으면 'No prior record — first read')",
+  "continuity": "${historyLines ? "직전 판단 기록 대비 오늘의 흐름 1~2문장. 반드시 '지금까지의 상태'를 서술하는 완결 문장으로 써라 — 판단 유지면 '오늘까지 3거래일 연속 관망 판독이 이어지고 있다' 형태. 'N일 연속 관망 유지' 같은 명사형 종결 금지(앞으로 관망을 유지하라는 권고문으로 오독된다). 판단 전환이면 전환 이유(지표 변화)를 숫자와 함께 명시" : "기록 없음 — 첫 판단"}",
+  "continuityEn": "continuity의 자연스러운 영어 버전 (예: 'The wait-and-see read has now held for 3 straight sessions' — 상태 서술형, 기록 없으면 'No prior record — first read')",
   "confluenceChecklist": {
     "volumeConfirmed": true 또는 false,
     "resistanceReclaimed": true 또는 false,
