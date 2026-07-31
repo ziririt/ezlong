@@ -17,6 +17,7 @@
 <meta name="robots" content="index, follow" />
 <meta name="author" content="EZLONG — 미국주식투자자를 위한 데이터 툴" />
 <link rel="canonical" href="https://ezlong.com/atmr-dashboard.html" />
+<meta name="robots" content="noindex, nofollow" />
 <!-- 국제화 SEO: hreflang (2026-07-03 추가 — en 버전과 양방향 연결) -->
 <link rel="alternate" hreflang="ko" href="https://ezlong.com/atmr-dashboard.html" />
 <link rel="alternate" hreflang="en" href="https://ezlong.com/en/atmr-dashboard.html" />
@@ -1620,6 +1621,12 @@ li.gear-other-sep { display: none !important; }
       </button>
     </div>
 
+    <!-- v2 베타 입구 (탭별) — 수석 스윙 뷰 시험 버전 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:6px 0 2px;">
+      <a href="/atmr-dashboard_v2.html" style="text-align:center;font-size:14px;font-weight:700;color:var(--ez-blue);border:1px dashed var(--ez-blue);border-radius:8px;padding:4px 0;text-decoration:none;">2.0 beta</a>
+      <a href="/atmr-dashboard_v2.html#swing-strategy" style="text-align:center;font-size:14px;font-weight:700;color:var(--ez-blue);border:1px dashed var(--ez-blue);border-radius:8px;padding:4px 0;text-decoration:none;">2.0 beta</a>
+      <a href="/atmr-dashboard_v2.html#tsla-nvda" style="text-align:center;font-size:14px;font-weight:700;color:var(--ez-blue);border:1px dashed var(--ez-blue);border-radius:8px;padding:4px 0;text-decoration:none;">2.0 beta</a>
+    </div>
 
     <!-- 실시간 현재가 전광판 -->
     <div id="price-strip">
@@ -1750,16 +1757,14 @@ li.gear-other-sep { display: none !important; }
         <div id="chart-ai-comments-wrap"></div>
 
         <!-- ② Gear 개념 설명 — 현황 아래 참고 -->
-        <details style="margin:0 0 14px;">
-          <summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:8px 4px;">Gear란? — 이 사이트의 추세 판별 신호 (자세히보기)</summary>
-        <div class="gear-explain-card" style="margin-top:8px;">
+        <div class="gear-explain-card">
+          <div class="gear-explain-title">Gear란? — 이 사이트의 추세 판별 신호</div>
           <ul class="dot-list">
             <li><span class="ok">Gear 3 — 상승 추세.</span> QQQ가 200일 이동평균선 위에서 움직이는 구간. 레버리지 진입 가능한 유일한 시장 상태.</li>
             <li><span class="warn">Gear 2 — 횡보·중립.</span> 200일선 근처, 방향성 없음. 레버리지 신규 진입 자제, 기존 포지션 점검.</li>
             <li><span class="no">Gear 1 — 하락 추세.</span> 200일선을 하향 이탈한 구간. 레버리지 즉시 정리, 현금 비중 확대.</li>
           </ul>
         </div>
-        </details>
 
         <!-- ③ 1배수 전략 -->
         <div class="ltier-card tier1">
@@ -1991,15 +1996,11 @@ li.gear-other-sep { display: none !important; }
           <div class="leverage-alert-icon">⚠</div>
           <div class="leverage-alert-text">
             <strong>레버리지 단계적 축소 기준</strong>
-            <div id="lev-reduce-now" style="margin-top:10px;font-size:16px;line-height:1.7;color:var(--t1);">현재 판정 계산 중…</div>
-            <details style="margin-top:8px;">
-            <summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:6px 0;">기준 자세히보기</summary>
             <ul class="dot-list" style="margin-top:10px;">
               <li><strong>매도 압력 65~79점 — 신규 진입 중단, 분할 익절 시작</strong><br>아직 위험 경보는 아닙니다. 불장 한복판일 수도 있습니다. 다만 이 구간부터는 레버리지 신규 매수 중단 권고. 보유 물량은 당장 팔 필요 없습니다 — 오를 때마다 조금씩 분할 익절하면서 비중을 자연스럽게 낮추는 것이 권장됩니다. 급락이 왔을 때 대응할 여유가 생깁니다</li>
               <li><strong>매도 압력 80점 이상 또는 Gear 3→2 하락 — 레버리지 절반 이상 정리</strong><br>이 구간부터는 위험이 분명해진 상태입니다. 2배수·3배수 절반 이상 축소 권고, 남은 포지션 일반 ETF 전환 권고. 억지로 들고 버티다가 추세가 완전히 꺾이면, 레버리지 특성상 복구에 훨씬 오래 걸립니다. 이익이 남아있을 때 줄이는 것이 적절합니다</li>
               <li><strong>Gear 1 전환(200일선 아래) — 레버리지 전량 정리, 현금 확보</strong><br>이건 단기 조정이 아니라 추세 자체가 무너진 신호입니다. 레버리지 전량 정리 권고. 손실 중이어도 마찬가지입니다 — 하락 추세에서 3배수를 들고 버티면 손실이 눈덩이처럼 불어납니다. 일반 ETF도 절반 이하 축소 후 현금 확보 권고. 그 현금이 바닥에서 다시 진입할 수 있는 유일한 무기입니다</li>
             </ul>
-            </details>
           </div>
         </div>
 
@@ -2113,7 +2114,7 @@ li.gear-other-sep { display: none !important; }
       <div style="display:flex;flex-direction:column;gap:16px;">
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">오늘 나스닥100(QQQ) 사도 될까요?</summary>
-          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">점수가 곧 행동은 아닙니다. 점수(매수 매력도·매도 압력)는 재료이고, 최종 판단은 상단의 오늘의 시그널이 내립니다 — 지금까지의 매매 판단 기록이 "이미 얼마나 진행했는지"를 기억하고, 신호의 돌파(이벤트)·급반등 관문·주봉 생명선까지 반영해 분할 매수 유리 / 보유 / 부분 익절 / 위험 관리 / 관망 중 하나로 확정합니다. 같은 점수라도 맥락에 따라 판단이 달라지는 것이 이 분석의 핵심입니다.</p>
+          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">위 대시보드에서 나스닥100(QQQ)의 매수 매력도 점수를 확인하세요. 80점 이상이면 분할 매수 최적 구간, 60~79점은 소량 정찰대 투입, 40~59점은 관망 권장, 40점 미만은 매수 자제 또는 현금 보유가 적절합니다. Gear 3(200일선 +2% 이상) + RSI 45 이하 조합이 공격적 매수의 최적 구간입니다.</p>
         </details>
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">엔비디아(NVDA) 지금 추격 매수해도 될까요?</summary>
@@ -2129,45 +2130,14 @@ li.gear-other-sep { display: none !important; }
         </details>
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">스윙 시그널 점수는 어떻게 계산되나요?</summary>
-          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">점수는 두 층으로 만들어집니다 — <strong>1층에서 시장을 숫자로 읽고(점수 산출), 2층에서 그 숫자에 기억과 규율을 더해 판단을 내립니다.</strong></p>
-
-          <div style="font-weight:800;color:var(--t1);font-size:16px;margin:14px 0 8px;">1층 — 점수 산출: 8개 팩터의 가중 합산</div>
-          <p style="margin:0 0 8px;font-size:16px;color:var(--t2);line-height:1.7;"><strong>매수 매력도(0~100pt) = Σ [ 팩터ᵢ × 가중치ᵢ ]</strong> &nbsp;(i = 1 ~ 8)</p>
-          <ul style="margin:0;padding-left:18px;">
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">구성: 추세 Gear(0~25) · RSI 구간(0~20) · RSI 모멘텀 보정(±5) · 단기 추세 정렬(0~15) · 시장 환경 VIX(0~15) · MACD 종합(0~14) · 52주 위치(0~5) · 가격 패턴 HL/LH(±3)</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">모든 팩터는 시장 국면에 따라 비선형 보정 — 같은 RSI 65라도 골든크로스 상승장에서는 건강한 모멘텀으로 가점, 하락장에서는 반등 소진 신호로 감점</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">RSI는 5일 전 수치와의 변화량을 함께 판독 — 과매도 탈출(+), 고점에서의 급가열(−)을 별도 판별</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">가격 패턴은 최근 5일 고가·저가를 직전 20일 구간과 대조 — 저점을 높이면 Higher Low(+3), 고점을 낮추면 Lower High(−3)</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">MACD는 3축 동시 산출 — 라인 부호(중기 방향) + 히스토그램(단기 가속도) + 5일 전 대비 변화(방향 전환 감지)</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">매도 압력(0~100pt)은 동일 팩터를 역방향으로 재계산 — 매수 점수와 서로 견제하는 구조</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">ADX(추세 강도) 보정 — 무추세 구간에서는 매수·매도 양쪽 확신도를 함께 낮춰, 충격성 등락을 추세로 오인하는 실수 차단</li>
-          </ul>
-
-          <div style="font-weight:800;color:var(--t1);font-size:16px;margin:14px 0 8px;">2층 — 판단: 점수에 기억과 규율을 더함</div>
-          <ul style="margin:0;padding-left:18px;">
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">점수는 재료일 뿐 — 같은 65점이라도 "분할 매수를 이미 얼마나 진행했는지"에 따라 오늘의 판단이 달라짐</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">매매 판단 기록 보존 — 지금까지의 진행 단계·마지막 매매 조건을 기억, 매일 처음 보는 것처럼 같은 말을 반복하지 않는 구조</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">신호는 레벨이 아니라 사건 — 기준선에 "머무는 것"이 아니라 "돌파하는 순간"만 신호로 인정</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">노출은 계단식 — 한 번의 판단 변경은 최대 20%p, 조건이 충족된 날에만 이동. 과열 경고(매도압력 60 이상) 시 자동 감축</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">급반등 관문 — 급반등일 종가를 2거래일 안에 재돌파하는지로 진짜/가짜 반등 판정. 11년 실측: 통과 시 이후 20거래일 승률 63%, 실패 시 38%</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">생명선 — S&amp;P500·나스닥100·반도체 3개 지수 중 2개가 주봉 30주선 아래에서 마감하면 노출 상한 20%로 강제 축소. 2022년 1월 28일 실제 발동해 이후 추가 하락을 회피한 규칙</li>
-          </ul>
-
-          <div style="font-weight:800;color:var(--t1);font-size:16px;margin:14px 0 8px;">검증과 정직 — 이 분석의 원칙</div>
-          <ul style="margin:0;padding-left:18px;">
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">모든 확률·통계 문장은 2015~2026 11년 백테스트로 검증된 것만 인용 — 근거 없는 확률 서술 금지</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">뉴스 재료는 원인만 채택 — "지수 상승"·"VIX 하락" 같은 결과 서술은 데스크에서 자동 제외</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">판단이 빗나가면 다음 논평이 스스로 인정 — 성적을 숨기지 않는 것이 원칙</li>
-          </ul>
-
-          <div style="font-weight:800;color:var(--t1);font-size:16px;margin:14px 0 8px;">갱신 주기</div>
-          <ul style="margin:0;padding-left:18px;">
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">점수: 미국 장중(KST 약 22:30~06:00) 30분 단위 재산출, 프리마켓·장후 각 1회</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">종합 판단(오늘의 시그널): 미국 장마감 45분 후 확정, 이후 아침까지 2회 재점검(시간외 급변·차트 분석 반영)</li>
-          </ul>
+          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;"><strong>매수 매력도(0~100pt) = Σ [ 팩터ᵢ × 가중치ᵢ ]</strong> &nbsp;(i = 1 ~ 8)</p>
+          <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">8개 독립 팩터를 병렬로 산출한 뒤 가중치 기반으로 합산합니다 — Gear 상태(0~25) + RSI 구간(0~20) + RSI 모멘텀 보정(±5) + 단기 추세 정렬(0~15) + 시장 환경·VIX(0~15) + MACD 종합(0~14) + 52주 저점 근접(0~5) + 가격 패턴 HL/LH(±3).</p>
+          <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">각 팩터는 단순 지표값이 아니라 <strong>시장 국면에 따라 비선형 보정</strong>됩니다. RSI는 단일 수치가 아닌 5일 슬라이딩 윈도우와 결합해 과매도 탈출·과매수 진입 여부를 별도 판별하고(±5pt), 가격 패턴은 최근 5일 고가·저가를 직전 20일 구간과 비교해 Higher Low(+3pt) / Lower High(−3pt)를 계산합니다. MACD는 라인 부호(중기 추세 방향) + 히스토그램 절대값(단기 가속도) + 5일 전 대비 방향성 변화, 세 축을 동시에 산출해 0~14pt로 압축합니다.</p>
+          <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">매도 적합도(0~100pt)는 동일한 팩터 세트를 <strong>역방향으로 재계산</strong>해 매수 점수와 내부적으로 상쇄·견제하도록 설계되어 있습니다. 두 점수의 차분과 교차 방향이 최종 진입·청산 신호의 강도를 결정합니다. 데이터는 미국 장중(KST 약 22:30~06:00) 30분 단위로 수집·재산출되고, 장 외 시간에는 프리마켓·장후 각 1회 자동 업데이트됩니다.</p>
+          <p style="margin-top:8px;font-size:16px;color:var(--t2);line-height:1.7;">데이터는 미국 장중(KST 약 22:30~06:00) 30분 간격으로, 장 외에는 프리마켓·장후 각 1회 자동 수집됩니다.</p>
         </details>
       </div>
-      <p style="margin-top:16px;font-size:16px;color:var(--t3);">이 분석은 200일 이동평균선 추세 위에서 단계 노출 규율(한 번에 최대 20%p, 조건 충족일에만 이동)과 주봉 30주선 생명선으로 판단하며, 모든 확률·통계는 11년 백테스트 검증분만 인용합니다. 투자 판단의 참고 자료입니다.</p>
+      <p style="margin-top:16px;font-size:16px;color:var(--t3);">이 분석 데이터는 200일 이동평균선 Gear 변속 전략과 3-3-4 분할 매매 원칙을 기반으로 산출됩니다. 추세와 신호가 일치할 때 진입하고, 익절 기준에 도달하면 분할 매도하는 스윙 트레이더를 위한 참고 자료입니다.</p>
       <p style="margin-top:12px;font-size:16px;color:var(--t3);line-height:1.7;">더 좋은 진단 알고리즘 아이디어가 있으시다면 언제라도 <a href="mailto:easy.invest.good@gmail.com" style="color:var(--t2);text-decoration:underline;">easy.invest.good@gmail.com</a> 메일 환영합니다.</p>
     </section>
 
@@ -2197,60 +2167,6 @@ const GITHUB_JSON_URL     = 'https://raw.githubusercontent.com/ziririt/ezlong/ma
 const GITHUB_OPTIONS_URL  = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/options-latest.json';
 const GITHUB_JSON_TTL = 2 * 60 * 60 * 1000; // GitHub JSON 유효 기간: 2시간
 // 시황 브리핑 (alertLevel high/medium 시 스윙 지수 상단에 표시)
-const GITHUB_SWING_VIEW_URL = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/swing-view.json';
-window._swingView = null;
-(async function loadSwingView() {
-  try {
-    const res = await fetch(GITHUB_SWING_VIEW_URL + '?t=' + Math.floor(Date.now() / 300000));
-    if (!res.ok) return;
-    window._swingView = await res.json();
-    if (window._renderData) renderAll(window._renderData);
-  } catch (e) { console.warn('[swing-view]', e); }
-})();
-
-// [v2] 색 강조 태그 변환 — [G]긍정/[R]부정/[B]포인트 (남발은 데스킹 규격에서 제한)
-function _v2Colorize(s) {
-  if (!s) return s;
-  return String(s)
-    .replace(/\[G\](.*?)\[\/G\]/g, '<strong style="color:var(--gr);font-weight:700;">$1</strong>')
-    .replace(/\[R\](.*?)\[\/R\]/g, '<strong style="color:var(--rd);font-weight:700;">$1</strong>')
-    .replace(/\[B\](.*?)\[\/B\]/g, '<strong style="color:var(--ez-blue);font-weight:700;">$1</strong>');
-}
-
-// [v2] v2 판단 카드 헬퍼 — 스윙 전략 탭 상단
-function _v2ChiefCardHtml() {
-  const sv = window._swingView;
-  if (!sv?.comp) return '';
-  const c = sv.comp;
-  const paras = sv.desked?.core?.length
-    ? `<ul style="margin:0 0 8px;padding-left:18px;">${sv.desked.core.map(b =>
-        `<li style="margin:0 0 8px;line-height:1.75;color:var(--t1);font-size:16px;">${_v2Colorize(b)}</li>`).join('')}</ul>`
-    : (c.commentary || []).slice(0, 1).map(t => `<p style="margin:0 0 12px;line-height:1.75;color:var(--t1);font-size:16px;">${t}</p>`).join('');
-  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-left:4px solid #0a84ff;border-radius:14px;padding:18px 18px 12px;margin-bottom:14px;">
-    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
-      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">오늘의 판단</span>
-      <span style="font-weight:800;color:var(--t1);font-size:17px;">${c.stanceLabel}</span>
-      <span style="color:var(--t2);font-size:14px;">확신도 ${c.confidence ?? '—'}</span>
-    </div>
-    ${paras}
-    <div style="color:var(--t3);font-size:14px;margin-top:2px;">${sv.generatedAtKST} 기준 · 검증된 통계만 인용 · 투자 판단의 참고 자료</div>
-  </div>`;
-}
-
-// [v2] TSLA·NVDA 스탠스 카드
-function _v2KingCardHtml(sym) {
-  const sv = window._swingView;
-  const k = sym === 'TSLA' ? sv?.tsla : sv?.nvda;
-  if (!k) return '';
-  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-left:4px solid #0a84ff;border-radius:14px;padding:16px 16px 10px;margin-bottom:12px;">
-    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">오늘의 판단</span>
-      <span style="font-weight:800;color:var(--t1);font-size:16px;">${k.stanceLabel}</span>
-    </div>
-    <p style="margin:0 0 10px;line-height:1.75;color:var(--t1);font-size:16px;">${k.commentary}</p>
-  </div>`;
-}
-
 const GITHUB_BRIEF_URL = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/swing-brief.json';
 let swingBriefData = null; // 전역 캐시
 
@@ -2760,14 +2676,6 @@ function calcMarketFearGreed(qqq, voo, soxx, dia, iwm, vix) {
 // 38~49  → 매수 자제
 // ~37    → 리스크 오프
 function getMarketVerdict(score, gear, rsi, sellP) {
-  // [v2] v2 뷰 로드 시 — 무기억 문구 대신 스탠스 헤드라인 (탭 간 모순 제거)
-  if (window._swingView?.comp) {
-    const _st = window._swingView.comp.stance;
-    const _colors = { accumulate: 'var(--gr)', accumulate_wait: 'var(--gr)', hold: 'var(--bl)',
-                      trim: 'var(--or)', risk_off: 'var(--rd)', wait: 'var(--t2)' };
-    return { score, headline: window._swingView.comp.stanceLabel,
-             headlineColor: _colors[_st] || 'var(--bl)' };
-  }
   const g  = gear  ?? 1;
   const sp = sellP ?? 50;
   let headline, headlineColor;
@@ -2814,11 +2722,11 @@ function getMarketVerdict(score, gear, rsi, sellP) {
 }
 // S-CORE 레이블·색상 — 높을수록 매수 (calcBuyScore와 동일 방향)
 function getFearGreedLabel(score) {
-  if (score >= 80) return '신호 강함';
-  if (score >= 65) return '신호 유효';
-  if (score >= 50) return '신호 약함';
-  if (score >= 38) return '신호 미약';
-  return '신호 없음';
+  if (score >= 80) return '최적 매수 구간';
+  if (score >= 65) return '정찰대 투입';
+  if (score >= 50) return '신호 대기';
+  if (score >= 38) return '매수 자제';
+  return '리스크 오프';
 }
 
 function getFearGreedColor(score) {
@@ -3281,7 +3189,6 @@ async function loadAllData(forceRefresh = false) {
 // ─── 렌더링 함수들 ───────────────────────────────
 
 function renderAll(data) {
-  window._renderData = data;   // [v2] v2 뷰 도착 후 재렌더용
   const vix  = data['VIX']?.price ?? 18;
   const qqq  = data['QQQ'];
   const voo  = data['VOO'];
@@ -3553,14 +3460,8 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
   // ── 야구 시그널 인디케이터 (S-CORE 방향: 높을수록 매수) ──────────────────
   // BUY 볼: 80+= 3볼(최적) / 65~79= 2볼(정찰대) / 50~64= 1볼(신호대기) / <50= 0볼
   const buyBalls  = score >= 80 ? 3 : score >= 65 ? 2 : score >= 50 ? 1 : 0;
-  // [v2] SELL 볼: 실제 매도압력 점수(compSell) 기반 — 구버전은 buyScore 역매핑이라 정보가 중복이었다
-  const _svW = [4, 3, 3];
-  const _svArr = [qqq, voo, soxx].filter(Boolean);
-  const _compSell = _svArr.length
-    ? Math.round(_svArr.reduce((s, d, i) => s + (d.sellScore ?? 50) * _svW[i], 0) /
-                 _svArr.reduce((s, _, i) => s + _svW[i], 0))
-    : 50;
-  const sellBalls = _compSell >= 75 ? 3 : _compSell >= 60 ? 2 : _compSell >= 45 ? 1 : 0;
+  // SELL 볼: <38= 3볼(리스크오프) / <50= 2볼(자제) / <65= 1볼(약한익절) / ≥65= 0볼
+  const sellBalls = score < 38 ? 3 : score < 50 ? 2 : score < 65 ? 1 : 0;
   // HOLD 하늘색불: 볼 많음 = 보유 신호 강함. 상승 추세 = 3볼, 데드크로스 = 0볼(위험)
   const _sma50     = ref?.sma50;
   const _sma200    = ref?.sma200;
@@ -3607,16 +3508,16 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
 
   const baseballHtml = `<div class="baseball-signal">
     ${biColHtml('BUY',  buyBalls,  '#FFB300', 'gy', [
-      '매수 신호 없음 — 진입 근거 부족 구간.',                                          // 0볼: score <50
-      '신호 약함 — 추세·신호 강화 확인 대기 구간.',                                     // 1볼: score 50~64
-      '매수 신호 유효 — 진입 여부·차수는 상단 오늘의 시그널 참조.',                            // 2볼: score 65~79
-      '강한 매수 신호 — 진입 여부·차수는 상단 오늘의 시그널 참조.'                             // 3볼: score 80+
+      '매수 신호 없음 — 리스크 오프 구간. 현금 비중 유지 권고.',                          // 0볼: score <50
+      '추세 확인 대기 — 신호 강화 후 소량 진입 검토.',                                  // 1볼: score 50~64
+      '1차(30%) 분할 진입 적합 구간 — 3-3-4 원칙.',                                    // 2볼: score 65~79
+      '최적 매수 구간 — 3-3-4 원칙 기반 공격적 분할 진입 타이밍.'                       // 3볼: score 80+
     ])}
     ${biColHtml('SELL', sellBalls, '#30D158', 'gg', [
-      '매도 압력 낮음 — 익절 신호 없음. 보유 부담 없는 구간.',                            // 0볼: compSell <45
-      '매도 압력 형성 — 신규 매수 신중, 보유는 유지 가능 구간.',                          // 1볼: compSell 45~59
-      '경고 — 매도압력 60+. 이 신호 뒤 수익률 급감 이력(검증). 부분 축소 검토 구간.',      // 2볼: compSell 60~74
-      '극단 과열 — 매도압력 75+. 계획된 축소 우선 구간.'                                 // 3볼: compSell 75+
+      '익절 신호 없음 — 매수 매력도 충분. 보유 유지 구간.',                               // 0볼: score ≥65
+      '약한 익절 신호 — 비중 과다 시 일부 가볍게 정리 검토.',                           // 1볼: score 50~64
+      '익절 검토 권장 — 매수 신호 약화. 레버리지 비중 점검 권고.',                       // 2볼: score 38~49
+      '적극 익절 — 리스크 오프 신호. 현금 확보 우선.'                                   // 3볼: score <38
     ])}
     ${holdColHtml(holdBalls)}
   </div>`;
@@ -3787,46 +3688,6 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
   const volatilityWarn = (briefAlert === 'high' || briefAlert === 'medium')
     ? `<div class="swing-volatility-warn">시황 변동성 주의 — 지수 수치만 보고 판단 금지. 상단 시황 브리핑 반드시 확인</div>`
     : '';
-
-  // ── [v2] v2 뷰 오버라이드 — 무기억 문구 대신 스탠스 + 논평 ──────────
-  if (window._swingView?.comp?.commentary?.length) {
-    const _c = window._swingView.comp;
-    title = _c.stanceLabel;
-    const _flowLine = window._swingView.flow
-      ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;"><b>판단 흐름</b> · ${window._swingView.flow}</div>` : '';
-    const _dk = window._swingView.desked;
-    const _secHtml = (_dk?.sections || []).map(s =>
-      `<div style="margin:0 0 14px;">
-         <div style="font-weight:800;color:var(--t1);font-size:16px;margin-bottom:6px;">${_v2Colorize(s.title)}</div>
-         <ul style="margin:0;padding-left:18px;">${(s.bullets || []).map(b =>
-           `<li style="margin:0 0 6px;line-height:1.7;color:var(--t1);">${_v2Colorize(b)}</li>`).join('')}</ul>
-       </div>`).join('');
-    let _bodyHtml;
-    if (_dk?.core?.length) {
-      // 핵심 30% 기본 노출 + 상세 70%는 펼침
-      _bodyHtml = `<ul style="margin:0 0 10px;padding-left:18px;">${_dk.core.map(b =>
-          `<li style="margin:0 0 8px;line-height:1.75;color:var(--t1);font-size:16px;">${_v2Colorize(b)}</li>`).join('')}</ul>`
-        + (_secHtml ? `<details class="sv-det"><summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:6px 0;">상세보기 — 근거·통계·교차검증</summary><div style="margin-top:10px;">${_secHtml}</div></details>` : '');
-    } else if (_secHtml) {
-      _bodyHtml = _secHtml;
-    } else {
-      _bodyHtml = _c.commentary.map(t => `<p style="margin:0 0 12px;line-height:1.78;">${t}</p>`).join('');
-    }
-    if (_dk?.headline) title = _v2Colorize(_dk.headline);
-    desc  = _flowLine
-          + _bodyHtml
-          + `<div style="margin-top:8px;color:var(--t3);font-size:14px;">${window._swingView.generatedAtKST} 기준 · 기준일 ${window._swingView.dataDay}(미국장) — 확률·통계는 11년 백테스트 검증분만 인용</div>`;
-    pills = [
-      {text: gearText, tone: gear >= 3 ? 'negative' : gear === 2 ? 'caution' : 'neutral'},
-      {text: `매도압력 ${_compSell}`, tone: _compSell >= 60 ? 'caution' : 'neutral'},
-      {text: `확신도 ${_c.confidence ?? '—'}`, tone: 'purple'},
-    ];
-    if (window._swingView.stanceChangedToday) {
-      pills.unshift({text: '오늘 스탠스 변경', tone: 'caution'});
-    } else if ((window._swingView.stanceStreak ?? 1) >= 2) {
-      pills.push({text: `${window._swingView.stanceStreak}거래일째 유지`, tone: 'neutral'});
-    }
-  }
 
   wrap.innerHTML = `
     <div class="action-card ${cls}">
@@ -4724,7 +4585,6 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
 
   // ── 지금 상황 카드 ────────────────────────────────
   wrap.innerHTML = `
-    ${_v2ChiefCardHtml()}
     ${buildStrategyContextBanner()}
     <div class="now-card" style="border-top:3px solid ${gearColor};">
 
@@ -5813,78 +5673,6 @@ function loadSignalHistory() {
 }
 
 // ─── 최근 시장 흐름 맥락 배너 ──────────────────────────────────────────────
-// [v2] 핵심 30% / 상세 70% — 카드 이후 레거시 콘텐츠를 <details>로 접는 공용 함수
-function _v2Collapse(container, keepCount, label) {
-  if (!container || container.childElementCount <= keepCount) return;
-  const det = document.createElement('details');
-  det.className = 'sv-det-page';
-  det.innerHTML = `<summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:10px 4px;">${label}</summary>`;
-  const inner = document.createElement('div');
-  while (container.childElementCount > keepCount) {
-    inner.appendChild(container.children[keepCount]);
-  }
-  det.appendChild(inner);
-  container.appendChild(det);
-}
-
-// [v2] renderStrategyGuide 래핑 — v2 카드(핵심)만 노출, 상세 가이드는 펼침
-const _renderStrategyOrig = renderStrategyGuide;
-renderStrategyGuide = function(...args) {
-  _renderStrategyOrig(...args);
-  const wrap = document.getElementById('strategy-ai-wrap');
-  if (wrap && window._swingView?.comp) {
-    _v2Collapse(wrap, 1, '상세보기 — 전략 가이드 전체 (배수별 행동 · 물타기 · 손절 기준)');
-  }
-  // 레버리지 단계적 축소 기준 — 지금 상태 판정 (범례보다 먼저, 이것이 주인공)
-  const el = document.getElementById('lev-reduce-now');
-  const d = window._renderData;
-  if (el && d) {
-    const arr = [d['QQQ'], d['VOO'], d['SOXX']].filter(Boolean);
-    const w = [4, 3, 3];
-    const tw = arr.reduce((s, _, i) => s + w[i], 0);
-    const cs = Math.round(arr.reduce((s, x, i) => s + (x.sellScore ?? 50) * w[i], 0) / tw);
-    const cg = Math.round(arr.reduce((s, x, i) => s + (x.gear ?? 2) * w[i], 0) / tw);
-    let verdict, color;
-    if (cg <= 1)       { verdict = '레버리지 전량 정리 구간 (Gear 1 — 추세 붕괴)'; color = 'var(--rd)'; }
-    else if (cs >= 80) { verdict = '레버리지 절반 이상 정리 구간 (매도 압력 80 이상)'; color = 'var(--rd)'; }
-    else if (cs >= 65) { verdict = '신규 진입 중단 · 분할 익절 시작 구간 (매도 압력 65 이상)'; color = 'var(--or)'; }
-    else if (cg === 2) { verdict = '경계 구간 (횡보) — 신규 레버리지 자제, 기존 포지션 점검'; color = 'var(--or)'; }
-    else               { verdict = '축소 신호 없음 — 정상 보유 구간'; color = 'var(--gr)'; }
-    el.innerHTML = `지금은 — 매도 압력 <strong>${cs}점</strong> · Gear <strong>${cg}</strong> → <strong style="color:${color};">${verdict}</strong>`;
-  }
-};
-
-// [v2] AI 차트분석 코멘트 코너 — 전체를 상세보기로 (핵심은 상단 v2 판단이 대신함)
-const _renderChartAiOrig = renderChartAiComments;
-renderChartAiComments = function(...args) {
-  _renderChartAiOrig(...args);
-  const w = document.getElementById('chart-ai-comments-wrap');
-  if (w && window._swingView?.comp && w.childElementCount && !w.querySelector('.sv-det-page')) {
-    _v2Collapse(w, 0, '상세보기 — AI 차트분석 종목별 코멘트');
-  }
-};
-
-// [v2] renderKings 래핑 — v2 스탠스 카드를 섹션 최상단(차트 위)에, 레거시 상세는 접기
-const _renderKingsOrig = renderKings;
-renderKings = function(tsla, nvda) {
-  _renderKingsOrig(tsla, nvda);
-  ['TSLA', 'NVDA'].forEach(sym => {
-    const c = document.getElementById(`king-card-${sym}`);
-    if (!c || !window._swingView) return;
-    const section = c.closest('.king-section') || c;
-    // 섹션 맨 위에 v2 카드 (중복 방지: 기존 카드 제거 후 재삽입)
-    section.querySelectorAll('.v2-king-card').forEach(el => el.remove());
-    const holder = document.createElement('div');
-    holder.className = 'v2-king-card';
-    holder.innerHTML = _v2KingCardHtml(sym);
-    section.insertBefore(holder, section.firstElementChild);
-    // 레거시 지표 카드 본문은 상세보기로
-    if (!c.querySelector('.sv-det-page')) {
-      _v2Collapse(c, 0, '상세보기 — 지표·점수·매매 기준 전체');
-    }
-  });
-};
-
 function renderRecentContext(symbols) {
   const wrap = document.getElementById('recent-context-wrap');
   if (!wrap) return;

@@ -1,7 +1,7 @@
-/* v2 베타 스트립 (v2 베타 페이지 전용)
+/* 오늘의 스윙 판단 스트립 (전 페이지 공통) (v2 베타 페이지 전용)
  * data/swing-view.json(swing-view.yml 파이프라인 산출)을 읽어
  * 페이지 최상단에 오늘의 스탠스 + 논평 요약을 표시한다.
- * 원본 페이지에는 삽입하지 않는다 — _v2 페이지에서만 로드할 것.
+ * 주가·기술분석 페이지 공통 상단 띠.
  */
 (function () {
   'use strict';
@@ -47,15 +47,14 @@
     div.className = 'chief-strip';
     div.innerHTML =
       '<div class="cs-head">' +
-      '<span class="cs-badge">v2 베타</span>' +
+      '<span class="cs-badge">오늘의 스윙 판단</span>' +
       '<span class="cs-stance">' + c.stanceLabel + '</span>' +
       '</div>' +
       (view.stanceChangedToday ? '<div style="font-weight:700;margin-bottom:4px;">오늘 스탠스가 바뀌었습니다.</div>' : '') +
       (view.flow ? '<div style="margin-bottom:4px;">판단 흐름 · ' + view.flow + '</div>' : '') +
       '<div>' + first + '</div>' +
       '<div class="cs-meta">' + view.generatedAtKST + ' 기준 · ' +
-      '<a href="/atmr-dashboard_v2.html">전체 판단 보기</a> · ' +
-      '<a href="' + location.pathname.replace('_v2', '') + '">기존 버전으로</a></div>';
+      '<a href="/atmr-dashboard.html">전체 판단 보기</a></div>';
     var nav = document.getElementById('ez-nav') || document.querySelector('nav');
     if (nav && nav.parentNode) {
       nav.parentNode.insertBefore(div, nav.nextSibling);
