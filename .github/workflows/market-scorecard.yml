@@ -1,33 +1,25 @@
 name: 긍정 vs 부정 몇대몇 — 자동 분석
 
-# ─── 스케줄 설명 ────────────────────────────────────────────────────────────
-# 평일(월~금) 하루 5회 KST 기준 업데이트 (UTC = KST - 9h)
-#   KST 06:50 = UTC 전날 21:50  → 07:00에 결과 준비 (아침 프리마켓 전)
-#   KST 11:50 = UTC 02:50       → 12:00에 결과 준비
-#   KST 18:20 = UTC 09:20       → 18:30에 결과 준비
-#   KST 21:50 = UTC 12:50       → 22:00에 결과 준비
-#   KST 23:20 = UTC 14:20       → 23:30에 결과 준비
-#
-# 주말(토·일)은 하루 1회만 — KST 09:00 = UTC 00:00 (2026-07-04 변경)
-# 이유: 주말은 정규장이 없어 5회씩 돌릴 실익이 적음. 오전 한 번으로 축소.
-#
-# ⚠ cron day-of-week(dow) 요일 계산 주의 — UTC와 KST 날짜가 다를 수 있음
-#   06:50 KST 잡은 UTC 기준 "전날 21:50"에 실행되므로, KST 월~금을 걸려면
-#   UTC dow는 하루 당겨서 일~목(0,1,2,3,4)을 써야 한다.
-#   나머지 4개 잡(11:50/18:20/21:50/23:20 KST)은 UTC 실행 시각이 같은 날짜라
-#   dow가 KST 요일과 그대로 일치하므로 월~금(1-5)을 그대로 쓴다.
-#   09:00 KST 주말 잡도 UTC 00:00으로 같은 날짜라 dow가 그대로 일치, 토·일(0,6).
+# ─── 스케줄 설명 (2026-07-31 유저 확정 개편) ─────────────────────────────────
+# 하루 8회, KST 기준: 06:30(장마감+1.5h) · 09:30 · 12:00 · 15:30 · 18:00 · 21:30
+#                    · 00:00 · 05:00(장마감 직후)
+# 실행 조건: 한국 또는 미국 어느 한쪽이라도 평일이면 실행 (둘 다 주말이면 스킵)
+#   — cron 요일 계산 대신 잡 안의 "요일 게이트" 스텝이 KST/ET 요일을 직접 판정.
+#   예: 토요일 오전 KST(=미국 금요일 밤·마감 직후)는 실행, 일요일은 전부 스킵,
+#       월요일 00:00·05:00 KST(=미국 일요일)는 한국이 평일이라 실행.
+# 09:30 잡은 기상 후 텔레그램 TV 리포트(data/tv-inbox/) 반영 역할을 겸함(구 07:15 잡 대체).
+# GitHub cron은 수 분 지연될 수 있음 — 표기 시각은 목표 시각.
 # ─────────────────────────────────────────────────────────────────────────────
 on:
   schedule:
-    - cron: '15 22 * * 0,1,2,3,4'  # KST 월~금 07:15 (UTC 전날 22:15, dow는 하루 당김) → 07:15 즉시
-    # 2026-07-15: 06:50(07:00준비)→07:15로 조정. 사용자가 기상(07:00) 후 텔레그램으로
-    # 전달하는 TV 리포트(data/tv-inbox/)를 fetch_tv_inbox()가 반영할 시간을 확보하기 위함.
-    - cron: '50 2 * * 1-5'         # KST 월~금 11:50 → 12:00 준비
-    - cron: '20 9 * * 1-5'         # KST 월~금 18:20 → 18:30 준비
-    - cron: '50 12 * * 1-5'        # KST 월~금 21:50 → 22:00 준비
-    - cron: '20 14 * * 1-5'        # KST 월~금 23:20 → 23:30 준비
-    - cron: '0 0 * * 0,6'          # KST 토·일 09:00 (UTC 00:00, 같은 날짜) → 주말 하루 1회
+    - cron: '30 21 * * *'   # KST 06:30 (UTC 전날 21:30) — 장마감 후 1시간 반
+    - cron: '30 0 * * *'    # KST 09:30
+    - cron: '0 3 * * *'     # KST 12:00
+    - cron: '30 6 * * *'    # KST 15:30
+    - cron: '0 9 * * *'     # KST 18:00
+    - cron: '30 12 * * *'   # KST 21:30
+    - cron: '0 15 * * *'    # KST 00:00
+    - cron: '0 20 * * *'    # KST 05:00 — 장마감 직후
 
   # 수동 실행 허용 (GitHub Actions 탭 → Run workflow)
   workflow_dispatch:
@@ -43,23 +35,37 @@ jobs:
 
     steps:
       # ── 1. 저장소 체크아웃 ─────────────────────────────────────────────
+      - name: 요일 게이트 — 한국·미국 모두 주말이면 스킵
+        id: gate
+        run: |
+          KR=$(TZ=Asia/Seoul date +%u); US=$(TZ=America/New_York date +%u)
+          if [ "$KR" -ge 6 ] && [ "$US" -ge 6 ]; then
+            echo "run=no"  >> "$GITHUB_OUTPUT"; echo "둘 다 주말(KR=$KR US=$US) — 스킵"
+          else
+            echo "run=yes" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout repository
+        if: steps.gate.outputs.run == 'yes' || github.event_name == 'workflow_dispatch'
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       # ── 2. Python 설치 ────────────────────────────────────────────────
       - name: Setup Python
+        if: steps.gate.outputs.run == 'yes' || github.event_name == 'workflow_dispatch'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       # ── 3. 의존성 설치 ────────────────────────────────────────────────
       - name: Install dependencies
+        if: steps.gate.outputs.run == 'yes' || github.event_name == 'workflow_dispatch'
         run: pip install yfinance requests feedparser --quiet
 
       # ── 4. 분석 스크립트 실행 ─────────────────────────────────────────
       - name: Run market scorecard analysis
+        if: steps.gate.outputs.run == 'yes' || github.event_name == 'workflow_dispatch'
         run: python scripts/fetch-market-scorecard.py
         env:
           GEMINI_API_KEY:        ${{ secrets.GEMINI_API_KEY }}
@@ -70,6 +76,7 @@ jobs:
       # ── 5. 변경사항 커밋 및 푸시 ──────────────────────────────────────
       # 주의: git reset --hard / git pull --rebase 절대 금지 (CLAUDE.md 규칙 16)
       - name: Commit and push JSON
+        if: steps.gate.outputs.run == 'yes' || github.event_name == 'workflow_dispatch'
         run: |
           git config user.name  "Market Scorecard Bot"
           git config user.email "scorecard-bot@ezlong.com"
@@ -89,6 +96,7 @@ jobs:
       # GITHUB_TOKEN으로 push된 커밋은 firebase-hosting.yml을 트리거하지 않음 (GitHub 정책).
       # 토큰을 env로 전달해 GitHub 마스킹 오작동 방지.
       - name: Deploy to Firebase Hosting
+        if: steps.gate.outputs.run == 'yes' || github.event_name == 'workflow_dispatch'
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
