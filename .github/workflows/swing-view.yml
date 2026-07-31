@@ -1,0 +1,34 @@
+name: swing-view
+# 스윙 수석 뷰 (베타, atmr-dashboard_v2.html 전용) — 기존 파이프라인과 완전 분리
+on:
+  schedule:
+    - cron: '37 22 * * 1-5'   # 07:37 KST 평일 — 일봉 파이프라인(07:00~07:33 KST) 갱신 후
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['scripts/generate-swing-view.py']
+concurrency:
+  group: swing-view
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Generate swing view
+        run: python scripts/generate-swing-view.py
+      - name: Commit & push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/swing-ledger.json data/swing-view.json
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
+            git commit -m "data: swing-view ${KST}"
+            git push origin main || (git fetch origin main && git merge --ff-only origin/main && git push origin main)
+          fi
