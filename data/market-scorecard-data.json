@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-08-01-07:32",
+      "timestamp_kst": "2026-08-01(토) 07:32 KST",
+      "key_event": {
+        "name": "빅테크 실적 혼조 및 금리 인상 우려 지속",
+        "name_en": "Mixed Big Tech Earnings & Rate Hike Concerns Persist",
+        "time": "포스트마켓 및 다음 정규장",
+        "why": "주요 기술주 실적 혼조, 연준 매파적 발언, 국채금리 상승",
+        "why_en": "Mixed tech earnings, hawkish Fed comments, rising bond yields"
+      },
+      "positive_total": 45,
+      "negative_total": 55,
+      "summary": "빅테크 실적 혼조와 연준 매파적 발언, 국채금리 상승으로 부정 우위 지속. 어제 부정 우위 유지.",
+      "summary_en": "Negative sentiment persists due to mixed big tech earnings, hawkish Fed comments, and rising bond yields. Negative bias maintained from yesterday.",
+      "positive_factors": [
+        {
+          "score": 26,
+          "name": "일부 빅테크 기업 실적 호조",
+          "name_en": "Strong Earnings from Select Big Tech",
+          "desc": "MSFT(+2.86%), GOOGL(+5.17%) 등 일부 빅테크 기업의 포스트마켓 상승이 시장에 긍정적 영향을 미침.",
+          "desc_en": "Post-market gains in MSFT (+2.86%) and GOOGL (+5.17%) provide positive market sentiment.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 19,
+          "name": "AI 투자 심리 회복 기대",
+          "name_en": "Anticipation of AI Investment Sentiment Recovery",
+          "desc": "Nvidia의 상승(+1.14%)과 AI 관련 긍정적 뉴스 흐름이 AI 투자 심리 회복에 대한 기대를 높임.",
+          "desc_en": "Nvidia's gain (+1.14%) and positive AI news flow boost expectations for AI investment sentiment recovery.",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 27,
+          "name": "애플 실적 부진 우려",
+          "name_en": "Apple Earnings Weakness Concerns",
+          "desc": "AAPL이 포스트마켓에서 1.71% 하락하며 주요 기술주 실적에 대한 우려를 가중시킴.",
+          "desc_en": "AAPL's 1.71% drop in post-market trading exacerbates concerns over major tech earnings.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 14,
+          "name": "연준 매파적 발언 및 금리 인상 우려",
+          "name_en": "Hawkish Fed Remarks & Rate Hike Fears",
+          "desc": "일부 연준 위원들의 금리 인상 필요성 언급으로 매파적 기조가 강화되며 시장에 부담을 줌.",
+          "desc_en": "Hawkish comments from some Fed officials on the need for rate hikes weigh on market sentiment.",
+          "category": "fed_policy"
+        },
+        {
+          "score": 14,
+          "name": "미 국채금리 상승",
+          "name_en": "Rising US Treasury Yields",
+          "desc": "미10년 국채금리가 1.76% 상승한 4.74%를 기록하며 성장주 투자 매력을 감소시킴.",
+          "desc_en": "The 10-year US Treasury yield rose 1.76% to 4.74%, reducing the appeal of growth stocks.",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "WTI 유가 상승",
+          "name_en": "WTI Oil Price Increase",
+          "desc": "WTI 유가가 5.39% 상승했으나, 이는 중동 지정학적 리스크와 공급 우려로 인한 것으로 인플레이션 압력과 에너지 섹터 강세 기대가 혼재됨.",
+          "desc_en": "WTI oil prices rose 5.39% due to Middle East geopolitical risks and supply concerns, leading to mixed views on inflation pressure versus energy sector strength.",
+          "category": "oil_energy"
+        }
+      ]
+    },
+    {
       "id": "2026-08-01-06:12",
       "timestamp_kst": "2026-08-01(토) 06:12 KST",
       "key_event": {
@@ -607,84 +675,8 @@
           "category": "fed_policy"
         }
       ]
-    },
-    {
-      "id": "2026-07-31-01:00",
-      "timestamp_kst": "2026-07-31(금) 01:00 KST",
-      "key_event": {
-        "name": "MSFT 실적 호조 및 AI 투자 기대감",
-        "name_en": "Microsoft Earnings Beat, AI Investment Optimism",
-        "time": "정규장 진행 중",
-        "why": "AI 섹터 투자 심리 회복, 시장 전반 상승 동력",
-        "why_en": "AI sector sentiment recovery, broad market upward momentum"
-      },
-      "positive_total": 80,
-      "negative_total": 20,
-      "summary": "MSFT 실적 호조와 AI 투자 기대감으로 시장 전반 상승. 메타 실적 부진과 금리 불확실성은 상존하나, 어제 부정 우위에서 긍정 전환.",
-      "summary_en": "MSFT's strong earnings and AI investment optimism are driving a broad market rally. While Meta's weak earnings and interest rate uncertainty persist, the sentiment has shifted from negative to positive since yesterday.",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "MSFT 실적 호조 및 AI 기대감",
-          "name_en": "Microsoft's Strong Earnings and AI Optimism",
-          "desc": "MSFT (+6.01%)의 예상치 상회 실적과 AI 투자 성과 확인으로 기술주 전반 상승 견인.",
-          "desc_en": "MSFT's (+6.01%) earnings beat and confirmed AI investment success are driving a broad tech rally.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 25,
-          "name": "반도체 섹터 강세 전환",
-          "name_en": "Semiconductor Sector Rebound",
-          "desc": "TSMC의 AI 칩 개발 소식과 NVDA (+0.93%), SOXX (+7.66%) 반등으로 반도체 투자 심리 회복.",
-          "desc_en": "TSMC's AI chip development news and rebounds in NVDA (+0.93%), SOXX (+7.66%) restore semiconductor investment sentiment.",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "VIX 공포지수 하락",
-          "name_en": "VIX Fear Index Decline",
-          "desc": "VIX 공포지수 (-9.65%) 하락은 시장의 불확실성 완화 및 투자 심리 개선 반영.",
-          "desc_en": "The VIX fear index (-9.65%) decline reflects reduced market uncertainty and improved investor sentiment.",
-          "category": "vix_risk_sentiment"
-        },
-        {
-          "score": 10,
-          "name": "달러 약세 전환",
-          "name_en": "Dollar Weakens",
-          "desc": "달러인덱스 DXY (-0.95%) 약세는 미국 수출 기업에 긍정적이며 원자재 가격 지지.",
-          "desc_en": "The DXY (-0.95%) weakening is positive for US exporters and supports commodity prices.",
-          "category": "dollar_fx"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 10,
-          "name": "메타 실적 부진 및 투자 우려",
-          "name_en": "Meta's Disappointing Earnings and Investment Concerns",
-          "desc": "메타 실적 부진과 AI 투자에 대한 우려로 주가 급락, 시장에 부정적 영향.",
-          "desc_en": "Meta's weak earnings and concerns over AI investments led to a sharp stock drop, negatively impacting the market.",
-          "category": "company_specific"
-        },
-        {
-          "score": 10,
-          "name": "미 국채금리 상승 지속",
-          "name_en": "Continued Rise in US Treasury Yields",
-          "desc": "미10년 국채금리 (+0.93%) 상승은 성장주 밸류에이션에 부담을 주며 금리 불확실성 상존.",
-          "desc_en": "The rise in 10-year US Treasury yields (+0.93%) pressures growth stock valuations and maintains interest rate uncertainty.",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "PCE 데이터 및 인플레이션 우려",
-          "name_en": "PCE Data and Inflation Concerns",
-          "desc": "PCE 핵심 물가 +3.3%로 소비 및 가격 상승 확인. 인플레이션 우려가 지속되나, 시장은 AI 기대감에 더 집중하는 모습.",
-          "desc_en": "Core PCE at +3.3% confirms higher consumption and pricing. While inflation concerns persist, the market appears more focused on AI optimism.",
-          "category": "macro_data"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-07-31T21:13:14Z",
+  "updated_at": "2026-07-31T22:32:20Z",
   "max_entries": 10
 }
