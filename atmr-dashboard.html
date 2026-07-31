@@ -3541,8 +3541,9 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
   // ── pill 헬퍼 ──────────────────────────────────────────────────────────────
   function pillHtml(text, tone) {
     const styles = {
-      positive: 'background:#0a84ff;color:#fff;',   // 하늘색 — 탐욕·과매수
-      negative: 'background:#c0392b;color:#fff;',   // 빨간색 — 공포·과매도
+      positive: 'background:#0a84ff;color:#fff;',   // 블루 — 일반 강조 (2026-08-01 유저 지시)
+      good:     'background:#1A7F37;color:#fff;',   // 그린 — 긍정 상태 (상승 추세 등)
+      negative: 'background:#c0392b;color:#fff;',   // 레드 — 부정 상태 (하락 추세·매도압력 등)
       caution:  'background:#e8610a;color:#fff;',   // 밝은 오렌지
       purple:   'background:#9b59b6;color:#fff;',   // 보라 — VIX 중간
       neutral:  'background:rgba(120,120,128,0.18);color:var(--t2);',
@@ -3646,6 +3647,9 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
     ? (rsi >= 65 ? 'positive' : rsi >= 40 ? 'neutral' : 'negative')
     : 'neutral';
 
+  // 추세 딱지 색 — 의미 기반 (2026-08-01 유저 지시): 긍정 그린 / 부정 레드 / 일반 강조 블루
+  const gearTone = gear >= 3 ? 'good' : gear === 2 ? 'positive' : 'negative';
+
   // ── 상황별 시그널 텍스트 (S-CORE 방향: 높을수록 매수) ───────────────────
   let title, desc, pills;
 
@@ -3658,7 +3662,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
       ? `${buildRecentContextHtml()}<b>진입 근거</b><br>· 추세(Gear) <strong>${gearText}</strong> — 200일선 위. 기관 평균 매입단가 위에서 거래 중<br>· 매수 매력도 <strong>${score}점</strong> — 최적 구간(80점+). 복합 매수 신호 전부 충족<br>· RSI <strong>${rsi?.toFixed(1) ?? '—'}</strong> — 과매수 경고선(70) 아래, 추가 상승 여력 확보<br><br><b>3-3-4 분할 진입 원칙</b><br>· 한 번에 전량 매수 금지 — 변동성 급등 시 대응 불가 상태가 됨<br>· 나눠 사면 하락해도 평균단가가 내려가 리스크 자동 관리<br>· 1차(30%) 오늘 → 2차(30%) 신호 75점+ 유지 확인 후 → 3차(40%) 추세 안정 후<br>· TQQQ·UPRO 레버리지도 진입 가능 구간 — 단, 전체 계좌 20% 한도 엄수`
       : `${buildRecentContextHtml()}<b>진입 근거 — 신호는 강하나 추세 확인 필요</b><br>· 매수 매력도 <strong>${score}점</strong> — 복합 신호 강함<br>· QQQ·VOO <strong>${gearText}</strong> — 200일선 위/아래 방향 미확정. 이 상태에서 레버리지 신규 매수 금지<br><br><b>대응 원칙</b><br>· Gear 3 전환 확인 후 1차(30%) 진입 시작<br>· TQQQ·UPRO 레버리지 ETF는 Gear 3 복귀 확인 전까지 보류`;
     pills = [
-      {text: gearText,                            tone: gear >= 3 ? 'negative' : 'caution'},
+      {text: gearText,                            tone: gearTone},
       {text: `RSI ${rsi?.toFixed(0) ?? '—'}`,     tone: rsiTone},
       {text: gear >= 3 ? '3-3-4 분할 진입 시작' : 'Gear 3 확인 후 진입', tone: 'negative'},
     ];
@@ -3668,7 +3672,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
       title = `매수 신호 ${score}점 — 1차(30%) 분할 진입 적합 구간 (3-3-4 원칙)`;
       desc  = `${buildRecentContextHtml()}<b>진입 근거</b><br>· 추세(Gear) <strong>${gearText}</strong> — 200일선 위. 장기 상승 추세 유효<br>· 매수 매력도 <strong>${score}점</strong> — 진입 기준선(65점) 이상. 방향·모멘텀·수급 조건 충족<br>· RSI <strong>${rsi?.toFixed(1) ?? '—'}</strong> — 과매수 경고선(70) 아래, 더 오를 여지 있음<br><br><b>왜 '소량 정찰대'인가</b><br>· 신호가 완벽하지 않을 때 전량 매수하면 하락 시 대응 자금 없어짐<br>· 1차(30%) 먼저 투입 → 신호가 75점+로 강화되면 2차(30%) 추가 → 3차(40%)로 마무리<br>· 레버리지(TQQQ·UPRO)는 MACD 히스토그램 양전 추가 확인 후 진입`;
       pills = [
-        {text: gearText,                          tone: 'neutral'},
+        {text: gearText,                          tone: gearTone},
         {text: `RSI ${rsi?.toFixed(0) ?? '—'}`,   tone: rsiTone},
         {text: '1차(30%) 진입 검토',              tone: 'negative'},
       ];
@@ -3676,7 +3680,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
       title = `매수 신호 ${score}점 — Gear 3 전환 확인 후 1차(30%) 진입 준비`;
       desc  = `매수 매력도 <strong>${score}점</strong>으로 충분하나 QQQ·VOO가 <strong>${gearText}</strong>입니다. Gear 3 전환 확인 후 1차(30%) 진입 검토 가능. RSI <strong>${rsi?.toFixed(1) ?? '—'}</strong>. 레버리지 ETF는 Gear 3 복귀 후 재진입 검토 구간.`;
       pills = [
-        {text: gearText,                          tone: gear === 2 ? 'caution' : 'negative'},
+        {text: gearText,                          tone: gearTone},
         {text: 'Gear 3 전환 대기',                tone: 'caution'},
         {text: '레버리지 ETF 신중',               tone: 'caution'},
       ];
@@ -3687,7 +3691,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
       title = `Gear 3 추세 유지 — 매수 신호 ${score}점, 신호 강화 대기 후 진입`;
       desc  = `QQQ·VOO <strong>${gearText}</strong>. 상승 추세는 유지 중이나 매수 매력도 <strong>${score}점</strong>은 65점 이상 기준을 아직 충족하지 못합니다. RSI <strong>${rsi?.toFixed(1) ?? '—'}</strong>. 기존 포지션 유지 구간. 신호 65점 이상 강화 시 진입 검토 가능.`;
       pills = [
-        {text: gearText,                          tone: 'neutral'},
+        {text: gearText,                          tone: gearTone},
         {text: `RSI ${rsi?.toFixed(0) ?? '—'}`,   tone: rsiTone},
         {text: '신호 강화 대기',                  tone: 'neutral'},
         {text: '기존 포지션 유지',                tone: 'neutral'},
@@ -3696,7 +3700,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
       title = `추세 확인 대기 — 매수 신호 ${score}점, 관망 유지`;
       desc  = `매수 매력도 <strong>${score}점</strong>이나 QQQ·VOO <strong>${gearText}</strong>. 추세 전환과 신호 강화를 함께 확인해야 합니다. RSI <strong>${rsi?.toFixed(1) ?? '—'}</strong>. Gear 3 전환 + 매수 65점 이상 충족 확인 후 진입 검토 가능.`;
       pills = [
-        {text: gearText,                          tone: gear === 2 ? 'caution' : 'negative'},
+        {text: gearText,                          tone: gearTone},
         {text: `RSI ${rsi?.toFixed(0) ?? '—'}`,   tone: rsiTone},
         {text: '추세+신호 강화 동시 대기',        tone: 'neutral'},
       ];
@@ -3710,7 +3714,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
       ? `QQQ·VOO <strong>${gearText}</strong>이나 매수 매력도 <strong>${score}점</strong>으로 기준 미달. RSI <strong>${rsi?.toFixed(1) ?? '—'}</strong>. 기존 포지션 유지, 신규 진입 자제. 레버리지 ETF 신규 매수 자제 구간.`
       : `QQQ·VOO <strong>${gearText}</strong>. 매수 매력도 <strong>${score}점</strong>으로 신규 진입 기준을 충족하지 못합니다. RSI <strong>${rsi?.toFixed(1) ?? '—'}</strong>. 현금 비중 유지 후 추세·신호 회복 대기 구간.`;
     pills = [
-      {text: gearText,                            tone: gear >= 3 ? 'caution' : 'negative'},
+      {text: gearText,                            tone: gearTone},
       {text: `RSI ${rsi?.toFixed(0) ?? '—'}`,     tone: rsiTone},
       {text: '신규 진입 자제',                    tone: 'caution'},
       {text: '현금 비중 유지',                    tone: 'neutral'},
@@ -3724,7 +3728,7 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
       ? `매수 매력도 <strong>${score}점</strong>으로 매우 낮습니다. QQQ·VOO <strong>${gearText}</strong>이나 복합 신호가 리스크 오프를 가리킵니다. RSI <strong>${rsi?.toFixed(1) ?? '—'}</strong>. 레버리지 ETF 비중 점검 권고. 1배수 전환 검토 구간.`
       : `QQQ·VOO <strong>${gearText}</strong>, 매수 매력도 <strong>${score}점</strong>. RSI <strong>${rsi?.toFixed(1) ?? '—'}</strong>. 모든 신호가 리스크 오프를 가리킵니다. 현금 보유 중심 대기. Gear 2 이상 + 신호 50점 회복 시 재진입 검토 가능.`;
     pills = [
-      {text: gearText,                            tone: gear >= 3 ? 'caution' : 'negative'},
+      {text: gearText,                            tone: gearTone},
       {text: `RSI ${rsi?.toFixed(0) ?? '—'}`,     tone: rsiTone},
       {text: '레버리지 ETF 비중 즉시 점검',       tone: 'negative'},
       {text: '현금 보유 우선',                    tone: 'negative'},
@@ -3817,12 +3821,12 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
           + _bodyHtml
           + `<div style="margin-top:8px;color:var(--t3);font-size:14px;">${window._swingView.generatedAtKST} 기준 · 기준일 ${window._swingView.dataDay}(미국장) — 확률·통계는 11년 백테스트 검증분만 인용</div>`;
     pills = [
-      {text: gearText, tone: gear >= 3 ? 'negative' : gear === 2 ? 'caution' : 'neutral'},
-      {text: `매도압력 ${_compSell}`, tone: _compSell >= 60 ? 'caution' : 'neutral'},
-      {text: `확신도 ${_c.confidence ?? '—'}`, tone: 'purple'},
+      {text: gearText, tone: gear >= 3 ? 'good' : gear === 2 ? 'positive' : 'negative'},
+      {text: `매도압력 ${_compSell}`, tone: _compSell >= 60 ? 'negative' : 'neutral'},
+      {text: `확신도 ${_c.confidence ?? '—'}`, tone: 'positive'},
     ];
     if (window._swingView.stanceChangedToday) {
-      pills.unshift({text: '오늘 스탠스 변경', tone: 'caution'});
+      pills.unshift({text: '오늘 스탠스 변경', tone: 'positive'});
     } else if ((window._swingView.stanceStreak ?? 1) >= 2) {
       pills.push({text: `${window._swingView.stanceStreak}거래일째 유지`, tone: 'neutral'});
     }

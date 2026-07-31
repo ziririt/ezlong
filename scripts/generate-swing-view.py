@@ -385,7 +385,16 @@ def chart_engine_crosscheck(st):
     if act or trend:
         bits.append(f"차트분석 엔진의 오늘 판독은 '{act or trend}'입니다")
     if verdict:
-        bits.append(f"반등 신뢰도 체크는 '{verdict}'({conf.get('score', '')})")
+        # 'N/5' 분수 표기는 일반 방문자에게 낯설다 — 퍼센트로 변환 (2026-08-01 유저 지시)
+        raw = str(conf.get('score', '') or '')
+        pct = raw
+        if '/' in raw:
+            try:
+                a, b = raw.split('/')
+                pct = f'충족 {round(int(a) / int(b) * 100)}%'
+            except Exception:
+                pass
+        bits.append(f"반등 신뢰도 체크는 '{verdict}'({pct})")
     if not bits:
         return None
     line = '. '.join(bits) + '.'
