@@ -2,7 +2,9 @@ name: swing-view
 # 스윙 수석 뷰 (베타, atmr-dashboard_v2.html 전용) — 기존 파이프라인과 완전 분리
 on:
   schedule:
-    - cron: '37 22 * * 1-5'   # 07:37 KST 평일 — 일봉 파이프라인(07:00~07:33 KST) 갱신 후
+    - cron: '45 20 * * 1-5'   # 미국 장마감(EDT 16:00)+45분 = 05:45 KST — 여름 본실행 (유저 확정)
+    - cron: '45 21 * * 1-5'   # 미국 장마감(EST 16:00)+45분 = 06:45 KST — 겨울 본실행 / 여름엔 보조 갱신
+    - cron: '37 22 * * 1-5'   # 07:37 KST — 차트분석 엔진(~06:52 KST) 반영 재갱신 (상태 전진은 하루 1회뿐)
   workflow_dispatch:
   push:
     branches: [main]

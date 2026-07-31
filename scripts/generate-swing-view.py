@@ -235,6 +235,42 @@ def load_chart_engine():
     return a.get('analysis') or None
 
 
+MEGA = ['MSFT', 'AAPL', 'GOOGL', 'AMZN', 'META', 'NVDA', 'TSLA', 'AVGO', 'NFLX']
+
+def postmarket_context():
+    """포스트마켓 급변 — 빅테크 시간외 ±2% 이상 + 지수 ETF 시간외 톤.
+    실적 시즌엔 장마감 직후 발표가 다음 장을 결정하므로 (2026-07-31 유저 지시) 필수 편입.
+    데이터 2시간 이상 정체 시 미표시."""
+    d = load(os.path.join(HERE, '..', 'data', 'stocks-prices.json'))
+    if not d or not d.get('prices'):
+        return None
+    try:
+        upd = datetime.fromisoformat(d['updatedAt'])
+        if (datetime.now(timezone.utc) - upd) > timedelta(hours=2):
+            return None
+    except Exception:
+        return None
+    p = d['prices']
+    ups, dns = [], []
+    for s in MEGA:
+        v = p.get(s) or {}
+        if v.get('extSession') == 'post' and v.get('extPct') is not None and abs(v['extPct']) >= 2:
+            (ups if v['extPct'] > 0 else dns).append(f"{s} {v['extPct']:+.1f}%")
+    qqq = p.get('QQQ') or {}
+    idx_txt = ''
+    if qqq.get('extSession') == 'post' and qqq.get('extPct') is not None and abs(qqq['extPct']) >= 0.5:
+        idx_txt = f" 지수(QQQ) 시간외 {qqq['extPct']:+.1f}% — 다음 정규장 갭 방향의 단서."
+    if not ups and not dns and not idx_txt:
+        return None
+    parts = []
+    if ups:
+        parts.append('급등 ' + '·'.join(ups))
+    if dns:
+        parts.append('급락 ' + '·'.join(dns))
+    body = ', '.join(parts)
+    return (f'포스트마켓이 다음 장을 먼저 말하고 있습니다 — {body}.' if body else '포스트마켓 동향.') + idx_txt
+
+
 def market_context(state, syms, advanced):
     """시황 문단 — 직전 장마감 등락 + 재료(스코어카드) + 급반등 터닝포인트 관문"""
     p = []
@@ -248,6 +284,7 @@ def market_context(state, syms, advanced):
     if len(hist) >= 6:
         cum5 = (hist[-1]['price'] / hist[-6]['price'] - 1) * 100
 
+    pm = postmarket_context()
     sc = load_scorecard()
     move_txt = None
     if chg is not None:
@@ -281,6 +318,8 @@ def market_context(state, syms, advanced):
             p.append(' '.join(parts))
     elif move_txt:
         p.append(move_txt + '.')
+    if pm:
+        p.append(pm)
 
     # 급반등 터닝포인트 관문 (판정 → 신규 설정 순서)
     watch = state.get('reboundWatch')
