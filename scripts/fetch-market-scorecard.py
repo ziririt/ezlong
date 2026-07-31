@@ -674,6 +674,8 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - positive_total + negative_total = 반드시 100
 - positive_factors 각 score 합계 = positive_total
 - negative_factors 각 score 합계 = negative_total
+- positive_total·negative_total과 모든 score는 반드시 5의 배수(5·10·15·20…)로 매겨라 —
+  점수는 정밀 측정값이 아니라 비중 판단이다. 26·19 같은 잔점수 금지
 - 점수는 오직 '원인' 재료에만 배분하라. 지수·VIX·섹터 등락 같은 결과 서술은 요인 항목
   자체가 금지다 — 원인을 3개 못 찾으면 찾은 원인들에 점수 전액을 배분하라
   (결과 항목에 점수를 실었다가 그 항목이 걸러지면 화면의 합계가 깨진다)
@@ -1132,35 +1134,49 @@ def llm_desk_factors(entry):
     return entry
 
 
-def _redistribute(factors, total):
-    """항목 점수를 비례 조정해 합이 정확히 total이 되게 (최대잉여법, 최소 1점)"""
-    if not factors or total <= 0:
-        return factors
-    s = sum(int(f.get('score', 0) or 0) for f in factors)
-    if s == total:
-        return factors
+def _apportion(weights, units):
+    """weights 비례로 units개를 정수 배분 (최대잉여법, 각 항목 최소 1). 합 = units 보장."""
+    n = len(weights)
+    s = sum(weights)
     if s <= 0:
-        base = total // len(factors)
-        for f in factors:
-            f['score'] = base
-        factors[0]['score'] += total - base * len(factors)
-        return factors
-    quotas = [(f.get('score', 0) or 0) / s * total for f in factors]
-    scores = [max(1, int(q)) for q in quotas]
-    rem = total - sum(scores)
-    order = sorted(range(len(factors)), key=lambda i: quotas[i] - int(quotas[i]), reverse=True)
+        base = units // n
+        res = [base] * n
+        res[0] += units - base * n
+        return res
+    quotas = [w / s * units for w in weights]
+    res = [max(1, int(q)) for q in quotas]
+    rem = units - sum(res)
+    order = sorted(range(n), key=lambda i: quotas[i] - int(quotas[i]), reverse=True)
     guard = 0
     while rem != 0 and guard < 1000:
-        idx = order[guard % len(order)]
+        idx = order[guard % n]
         if rem > 0:
-            scores[idx] += 1
+            res[idx] += 1
             rem -= 1
-        elif scores[idx] > 1:
-            scores[idx] -= 1
+        elif res[idx] > 1:
+            res[idx] -= 1
             rem += 1
         guard += 1
-    for f, sc in zip(factors, scores):
-        f['score'] = sc
+    return res
+
+
+def _redistribute(factors, total, step=5):
+    """항목 점수를 비례 조정해 합이 정확히 total이 되게.
+    가급적 step(5) 단위로 배분한다 (2026-08-01 유저 요청 — 26·19·27·14 같은 잔점수가
+    조잡해 보임. 점수는 정밀 측정값이 아니라 비중 판단이므로 5·10 단위가 정직한 표현).
+    5단위 배분이 불가능한 경우(총점이 5의 배수가 아니거나 항목 수 × 5 > 총점)만 1단위 폴백."""
+    if not factors or total <= 0:
+        return factors
+    n = len(factors)
+    weights = [int(f.get('score', 0) or 0) for f in factors]
+    if step > 1 and total % step == 0 and total // step >= n:
+        units = _apportion(weights, total // step)
+        for f, u in zip(factors, units):
+            f['score'] = u * step
+    else:
+        units = _apportion(weights, total)
+        for f, u in zip(factors, units):
+            f['score'] = u
     return factors
 
 
@@ -1179,7 +1195,8 @@ def rebalance_factor_scores(entry, orig_pos=None, orig_neg=None):
         total = int(entry.get(f'{side}_total', 0) or 0)
         kept = entry.get(f'{side}_factors') or []
         kept_sum = sum(int(f.get('score', 0) or 0) for f in kept)
-        if kept_sum == total:
+        # 합이 맞고 전 항목이 5단위면 손대지 않는다. 합이 맞아도 잔점수(26·19 등)면 5단위로 재배분.
+        if kept_sum == total and all(int(f.get('score', 0) or 0) % 5 == 0 for f in kept):
             continue
         if orig and len(kept) < 2 and kept_sum * 10 < total * 4:
             print(f"::warning::[데스크] {side} 과잉 제거(잔여 {kept_sum}/{total}) — "
