@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-08-01-21:50",
+      "timestamp_kst": "2026-08-01(토) 21:50 KST",
+      "key_event": {
+        "name": "빅테크 실적 혼조 및 금리 우려 지속",
+        "name_en": "Mixed Big Tech Earnings & Persistent Rate Concerns",
+        "time": "직전 거래일 마감 및 다음 주 개장",
+        "why": "주요 기술주 실적 혼조, 연준 매파 발언, 국채금리 상승",
+        "why_en": "Mixed tech earnings, hawkish Fed rhetoric, rising Treasury yields"
+      },
+      "positive_total": 40,
+      "negative_total": 60,
+      "summary": "빅테크 실적 혼조와 연준 매파적 발언, 국채금리 상승으로 부정 우위 지속. 어제 부정 우위 유지.",
+      "summary_en": "Negative sentiment persists due to mixed big tech earnings, hawkish Fed comments, and rising Treasury yields. Negative bias maintained from yesterday.",
+      "positive_factors": [
+        {
+          "score": 25,
+          "name": "일부 빅테크 실적 호조",
+          "name_en": "Strong Performance from Select Big Tech",
+          "desc": "MSFT (+2.98%)와 GOOGL (+5.52%)의 견조한 실적은 시장에 긍정적 영향을 미침.",
+          "desc_en": "Robust earnings from MSFT (+2.98%) and GOOGL (+5.52%) positively impacted the market.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 15,
+          "name": "AI 시장 성장 기대감",
+          "name_en": "Optimism for AI Market Growth",
+          "desc": "AI 인프라 시장 및 관련 주식의 성장 잠재력에 대한 긍정적 전망이 지속됨.",
+          "desc_en": "Positive outlook for AI infrastructure market and related stocks' growth potential continues.",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "일부 빅테크 실적 부진",
+          "name_en": "Underperformance from Some Big Tech",
+          "desc": "AAPL (-1.60%)의 실적 부진과 공급망 우려가 시장 전반에 부정적 영향을 미침.",
+          "desc_en": "AAPL's (-1.60%) weak earnings and supply chain concerns negatively impacted the broader market.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 20,
+          "name": "국채금리 상승 압력 지속",
+          "name_en": "Persistent Upward Pressure on Treasury Yields",
+          "desc": "미 10년 국채금리가 1.76% 상승하며 기술주 및 성장주에 대한 부담으로 작용.",
+          "desc_en": "US 10-year Treasury yield rose 1.76%, pressuring tech and growth stocks.",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 15,
+          "name": "매파적 연준 발언 우려",
+          "name_en": "Concerns over Hawkish Fed Rhetoric",
+          "desc": "연준의 매파적 스탠스와 금리 인하에 대한 불확실성이 시장 심리를 위축시킴.",
+          "desc_en": "The Fed's hawkish stance and uncertainty over rate cuts dampened market sentiment.",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "고유가 지속",
+          "name_en": "Sustained High Oil Prices",
+          "desc": "WTI 유가가 2.80% 상승하며 에너지 기업에는 긍정적이나, 전반적인 인플레이션 압력으로 작용하여 시장에 혼조세 유발.",
+          "desc_en": "WTI oil prices rose 2.80%, positive for energy companies but creating mixed signals for the market due to inflationary pressure.",
+          "category": "oil_energy"
+        }
+      ]
+    },
+    {
       "id": "2026-08-01-18:20",
       "timestamp_kst": "2026-08-01(토) 18:20 KST",
       "key_event": {
@@ -592,75 +660,8 @@
           "category": "company_specific"
         }
       ]
-    },
-    {
-      "id": "2026-07-31-15:07",
-      "timestamp_kst": "2026-07-31(금) 15:07 KST",
-      "key_event": {
-        "name": "AI 투자 기대감 지속 및 반도체 강세",
-        "name_en": "Sustained AI Investment Hopes & Semiconductor Strength",
-        "time": "직전 정규장 마감 후 야간",
-        "why": "MSFT 실적 호조, AI CapEx 발언, 반도체 랠리",
-        "why_en": "Strong MSFT earnings, AI CapEx remarks, semiconductor rally"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "MSFT 실적 호조와 AI 투자 기대감으로 시장 전반 상승 지속. 애플 실적 부진과 금리 불확실성은 상존하나, 긍정 우위 유지.",
-      "summary_en": "Market continues to rise on strong MSFT earnings and AI investment hopes. Apple's weak earnings and interest rate uncertainty persist, but positive sentiment prevails.",
-      "positive_factors": [
-        {
-          "score": 55,
-          "name": "MSFT 실적 호조 및 AI 투자 확대",
-          "name_en": "Strong MSFT Earnings & Increased AI Investment",
-          "desc": "MSFT 실적 호조와 AI CapEx 발언으로 AI 섹터 투자 심리 회복 및 반도체 랠리 견인",
-          "desc_en": "Strong MSFT earnings and AI CapEx remarks revived AI sector sentiment, driving a semiconductor rally.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 20,
-          "name": "AMZN 실적 호조 및 클라우드 수요 증가",
-          "name_en": "Strong AMZN Earnings & Rising Cloud Demand",
-          "desc": "AWS 실적 호조로 AMZN 주가 급등, 클라우드 수요 지속 확인",
-          "desc_en": "Strong AWS performance led to a surge in AMZN stock, confirming sustained cloud demand.",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "애플 실적 부진 및 전망 하향",
-          "name_en": "Apple's Weak Earnings & Lowered Outlook",
-          "desc": "AAPL 주가 8.14% 하락, 기록적 매출에도 불구하고 실망스러운 전망 제시",
-          "desc_en": "AAPL stock fell 8.14% due to disappointing outlook despite record revenue.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 10,
-          "name": "연준 금리 인하 불확실성 지속",
-          "name_en": "Continued Fed Rate Cut Uncertainty",
-          "desc": "매파적 연준 위원 발언 및 인플레이션 전략에 대한 투자자 우려 지속",
-          "desc_en": "Hawkish Fed comments and investor concerns about inflation strategy persist.",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "테슬라 중국 사업 매각 루머 및 해명",
-          "name_en": "Tesla China Business Sale Rumors & Clarification",
-          "desc": "테슬라 중국 사업 매각 후 SpaceX 합병 루머로 주가 변동, 머스크가 '가짜 뉴스'로 해명",
-          "desc_en": "Tesla stock fluctuated on rumors of China business sale for SpaceX merger, which Musk called 'absurdly fake news'.",
-          "category": "company_specific"
-        },
-        {
-          "name": "GDP 둔화와 금리 인하 기대 상충",
-          "name_en": "Conflicting GDP Slowdown & Rate Cut Hopes",
-          "desc": "GDP 1.5% 둔화는 금리 인하 기대를 높였으나, 일부 연준 위원은 매파적 입장 유지",
-          "desc_en": "GDP slowdown to 1.5% fueled rate cut expectations, but some Fed officials maintained hawkish stance.",
-          "category": "macro_data"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-01T09:20:55Z",
+  "updated_at": "2026-08-01T12:50:57Z",
   "max_entries": 10
 }
