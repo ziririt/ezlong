@@ -66,7 +66,6 @@
     display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
     gap: 10px; margin-bottom: 14px;
   }
-  .bh-chart-title { font-size: 18px; font-weight: 700; color: var(--ez-text); letter-spacing: -.02em; }
   .bh-legend { display: flex; gap: 8px; flex-wrap: wrap; }
   .bh-legend-item {
     display: flex; align-items: center; gap: 7px; font-size: 15px; font-weight: 600; color: var(--ez-text2);
@@ -117,6 +116,15 @@
     line-height: 1; cursor: pointer;
   }
   .bh-zoom-btns button:hover { background: var(--ez-border2); }
+  /* 모바일 — 범례 5개·기간버튼 6개를 한 줄에 고정. 폰트는 사이트 14px 하한선을 유지하고
+     여백(패딩·간격)만 압축한다(2026-08-01). 티커만 남긴 라벨(SYMBOL_LABELS)과 합쳐서 작동. */
+  @media (max-width: 640px) {
+    .bh-legend { gap: 1px; }
+    .bh-legend-item { gap: 2px; font-size: 14px; padding: 2px 3px 2px 2px; }
+    .bh-legend-check { width: 10px; height: 10px; border-radius: 3px; }
+    .bh-range-btns { gap: 4px; }
+    .bh-range-btn { padding: 5px 7px; }
+  }
 
   /* ── 레이아웃: 캘린더 + 이벤트 패널 ── */
   .bh-layout { display: grid; grid-template-columns: 1fr 360px; gap: 20px; align-items: start; }
@@ -218,7 +226,6 @@
   <!-- ── 차트 ── -->
   <div class="bh-card bh-chart-card">
     <div class="bh-chart-top">
-      <div class="bh-chart-title">QQQ · SPY · SOXX · TSLA · NVDA 정규화 차트</div>
       <div class="bh-legend" id="bh-legend"></div>
     </div>
     <div class="bh-chart-outer">
@@ -287,7 +294,9 @@
     green: IS_DARK ? '#30D158' : '#1A7F37',
     red:   IS_DARK ? '#FF453A' : '#D92A2A',
   };
-  const SYMBOL_LABELS = {
+  const SYMBOL_LABELS = { QQQ: 'QQQ', SPY: 'SPY', SOXX: 'SOXX', TSLA: 'TSLA', NVDA: 'NVDA' };
+  // 화면에는 티커만 표시(공간 절약). 설명은 title/aria-label 툴팁으로만 제공.
+  const SYMBOL_FULL_LABELS = {
     QQQ: 'QQQ (나스닥100)', SPY: 'SPY (S&P500, VOO)', SOXX: 'SOXX (반도체)',
     TSLA: 'TSLA (테슬라)', NVDA: 'NVDA (엔비디아)',
   };
@@ -349,7 +358,7 @@
     document.getElementById('bh-legend').innerHTML = SYMBOLS.map(sym =>
       `<button type="button" class="bh-legend-item${seriesVisible[sym] ? ' active' : ''}" data-sym="${sym}" ` +
       `style="--sym-color:${COLORS[sym]}" role="checkbox" aria-checked="${seriesVisible[sym]}" ` +
-      `aria-label="${SYMBOL_LABELS[sym]} 표시">` +
+      `title="${SYMBOL_FULL_LABELS[sym]}" aria-label="${SYMBOL_FULL_LABELS[sym]} 표시">` +
       `<span class="bh-legend-check"></span>${SYMBOL_LABELS[sym]}</button>`
     ).join('');
     document.querySelectorAll('.bh-legend-item').forEach(btn => {
