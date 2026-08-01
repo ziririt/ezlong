@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-08-02-07:00",
+      "timestamp_kst": "2026-08-02(일) 07:00 KST",
+      "key_event": {
+        "name": "빅테크 실적 혼조 및 AI 기대감 지속",
+        "name_en": "Mixed Big Tech Earnings & Sustained AI Optimism",
+        "time": "직전 거래일 마감 및 다음 주 개장 영향",
+        "why": "주요 기술주 실적 혼조, AI 투자 심리, 금리 우려 지속",
+        "why_en": "Mixed big tech earnings, AI investment sentiment, persistent interest rate concerns"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "빅테크 실적 혼조 속 AI 기대감과 VIX 하락으로 긍정 우위 유지. 금리 우려는 지속.",
+      "summary_en": "Positive sentiment maintained due to mixed big tech earnings, AI optimism, and VIX decline. Interest rate concerns persist.",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "일부 빅테크 실적 호조",
+          "name_en": "Strong Performance from Select Big Tech",
+          "desc": "MSFT (+2.98%) 및 GOOGL (+5.52%)의 견조한 실적 발표로 시장 심리 개선",
+          "desc_en": "Strong earnings from MSFT (+2.98%) and GOOGL (+5.52%) improved market sentiment",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 25,
+          "name": "AI 관련 투자 심리 유지",
+          "name_en": "Sustained AI Investment Sentiment",
+          "desc": "NVDA (+1.07%) 상승 및 AI 인프라 투자 지속 기대감 반영",
+          "desc_en": "NVDA (+1.07%) rise and continued optimism for AI infrastructure investment",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "일부 빅테크 실적 부진",
+          "name_en": "Underperformance from Select Big Tech",
+          "desc": "AAPL (-1.60%) 하락 등 주요 기술주 실적 혼조세 지속",
+          "desc_en": "Continued mixed earnings for major tech stocks, including AAPL (-1.60%) decline",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 15,
+          "name": "연준 금리 정책 불확실성",
+          "name_en": "Fed Interest Rate Policy Uncertainty",
+          "desc": "일부 연준 인사들의 매파적 발언과 금리 인상 주장 지속",
+          "desc_en": "Continued hawkish remarks and calls for rate hikes from some Fed officials",
+          "category": "fed_policy"
+        },
+        {
+          "score": 10,
+          "name": "국채금리 상승 압력",
+          "name_en": "Upward Pressure on Treasury Yields",
+          "desc": "미10년 국채금리 4.74% (+1.76%) 상승으로 성장주에 부담",
+          "desc_en": "US 10-year Treasury yield rose to 4.74% (+1.76%), pressuring growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-01-23:20",
       "timestamp_kst": "2026-08-01(토) 23:20 KST",
       "key_event": {
@@ -608,75 +668,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-07-31-20:30",
-      "timestamp_kst": "2026-07-31(금) 20:30 KST",
-      "key_event": {
-        "name": "AI 투자 기대감 지속 및 반도체 강세",
-        "name_en": "Sustained AI Investment Hopes & Semiconductor Strength",
-        "time": "오늘 프리마켓 및 오늘 정규장",
-        "why": "MSFT 실적 호조, AI CapEx 발언, 반도체 랠리 지속",
-        "why_en": "Strong MSFT earnings, AI CapEx comments, continued semiconductor rally"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "AI 투자 기대감 지속과 반도체 강세로 긍정 우위 유지. 애플 실적 부진과 금리 불확실성 상존.",
-      "summary_en": "Positive sentiment maintained due to ongoing AI investment expectations and strong semiconductor performance. Apple's weak earnings and interest rate uncertainty persist.",
-      "positive_factors": [
-        {
-          "score": 70,
-          "name": "Morningstar NVDA 긍정 평가",
-          "name_en": "Morningstar's Positive NVDA Outlook",
-          "desc": "Morningstar, NVDA 주식 30% 저평가 언급하며 매수 의견 제시.",
-          "desc_en": "Morningstar calls NVDA stock a 'bargain,' trading 30% below fair value.",
-          "category": "company_specific"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "애플 실적 부진 우려",
-          "name_en": "Apple Earnings Concern",
-          "desc": "AAPL 프리마켓 1.59% 하락, 실적 및 AI 전략에 대한 우려 지속.",
-          "desc_en": "AAPL down 1.59% in premarket, ongoing concerns about earnings and AI strategy.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 10,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 0.89% 상승, 성장주 투자 매력 감소 압박.",
-          "desc_en": "US 10-year Treasury yield up 0.89%, pressuring growth stock appeal.",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 5,
-          "name": "유가 상승 인플레이션 압력",
-          "name_en": "Rising Oil Prices Inflationary Pressure",
-          "desc": "WTI 원유 2.99% 상승, 인플레이션 압력 재점화 우려.",
-          "desc_en": "WTI crude up 2.99%, raising concerns about rekindled inflationary pressures.",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "GDP 둔화와 금리 인하 기대 상충",
-          "name_en": "Conflicting GDP Slowdown and Rate Cut Hopes",
-          "desc": "GDP 1.5% 둔화는 경기 침체 우려와 동시에 금리 인하 기대를 높여 시장 해석이 엇갈림.",
-          "desc_en": "GDP slowdown to 1.5% sparks both recession fears and increased rate cut expectations, leading to mixed market interpretations.",
-          "category": "macro_data"
-        },
-        {
-          "name": "테슬라 중국 사업 매각 루머 해명",
-          "name_en": "Tesla China Unit Sale Rumor Clarification",
-          "desc": "테슬라 중국 사업 매각 루머가 있었으나 일론 머스크가 '가짜 뉴스'로 일축하며 혼란 가중.",
-          "desc_en": "Rumors of Tesla selling its China unit were dismissed by Elon Musk as 'fake news,' adding to market confusion.",
-          "category": "company_specific"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-01T14:21:02Z",
+  "updated_at": "2026-08-01T22:01:06Z",
   "max_entries": 10
 }
