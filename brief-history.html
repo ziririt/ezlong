@@ -67,21 +67,40 @@
     gap: 10px; margin-bottom: 14px;
   }
   .bh-chart-title { font-size: 18px; font-weight: 700; color: var(--ez-text); letter-spacing: -.02em; }
-  .bh-legend { display: flex; gap: 16px; flex-wrap: wrap; }
-  .bh-legend-item { display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; color: var(--ez-text2); }
+  .bh-legend { display: flex; gap: 8px; flex-wrap: wrap; }
+  .bh-legend-item {
+    display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; color: var(--ez-text2);
+    background: var(--ez-card2); border: 1px solid var(--ez-border); border-radius: 999px;
+    padding: 5px 12px 5px 10px; cursor: pointer; opacity: 1; transition: opacity .15s;
+  }
+  .bh-legend-item:not(.active) { opacity: .4; }
   .bh-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .bh-legend-shake { animation: bh-shake .4s; }
+  @keyframes bh-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+  }
   .bh-chart-wrap { width: 100%; height: 380px; }
   .bh-chart-sub { font-size: 14px; color: var(--ez-text3); margin: 10px 2px 4px; line-height: 1.5; }
-  .bh-range-btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .bh-range-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .bh-range-btns { display: flex; gap: 6px; flex-wrap: wrap; }
   .bh-range-btn {
     font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: 999px;
     border: 1px solid var(--ez-border); background: var(--ez-card2); color: var(--ez-text2);
     cursor: pointer;
   }
   .bh-range-btn.active { background: var(--ez-blue); color: #fff; border-color: var(--ez-blue); }
+  .bh-zoom-btns { display: flex; gap: 6px; flex: none; }
+  .bh-zoom-btns button {
+    width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--ez-border);
+    background: var(--ez-card2); color: var(--ez-text2); font-size: 18px; font-weight: 700;
+    line-height: 1; cursor: pointer;
+  }
+  .bh-zoom-btns button:hover { background: var(--ez-border2); }
 
   /* ── 레이아웃: 캘린더 + 이벤트 패널 ── */
-  .bh-layout { display: grid; grid-template-columns: 360px 1fr; gap: 20px; align-items: start; }
+  .bh-layout { display: grid; grid-template-columns: 1fr 360px; gap: 20px; align-items: start; }
   @media (max-width: 860px) { .bh-layout { grid-template-columns: 1fr; } }
 
   .bh-cal-card { padding: 18px 18px 20px; position: sticky; top: 12px; }
@@ -142,12 +161,8 @@
   .bh-event-foot { display: flex; align-items: center; justify-content: space-between; font-size: 14px; color: var(--ez-text2); }
   .bh-event-link { font-size: 14px; font-weight: 600; color: var(--ez-blue); text-decoration: none; }
   .bh-event-link:hover { text-decoration: underline; }
-  .bh-source-tag { font-style: normal; }
 
   .bh-empty { padding: 30px 10px; text-align: center; color: var(--ez-text3); font-size: 15px; }
-
-  .bh-usage-card { margin-top: 20px; padding: 18px 20px; font-size: 15px; color: var(--ez-text2); line-height: 1.7; }
-  .bh-usage-card b { color: var(--ez-text); }
 </style>
 </head>
 <body>
@@ -172,16 +187,33 @@
   <!-- ── 차트 ── -->
   <div class="bh-card bh-chart-card">
     <div class="bh-chart-top">
-      <div class="bh-chart-title">QQQ · SPY · SOXX 정규화 차트</div>
+      <div class="bh-chart-title">QQQ · SPY · SOXX · TSLA · NVDA 정규화 차트</div>
       <div class="bh-legend" id="bh-legend"></div>
     </div>
     <div class="bh-chart-wrap" id="bh-chart"></div>
-    <div class="bh-range-btns" id="bh-range-btns"></div>
-    <div class="bh-chart-sub">2020년 1월 2일 = 100 기준 정규화(%). SPY는 뱅가드 VOO로 대체. 점·화살표는 소사가 있는 날 — 클릭하면 아래에서 내용을 볼 수 있다.</div>
+    <div class="bh-range-row">
+      <div class="bh-range-btns" id="bh-range-btns"></div>
+      <div class="bh-zoom-btns">
+        <button id="bh-zoom-out" aria-label="차트 축소 — 더 넓은 기간 보기" title="축소">－</button>
+        <button id="bh-zoom-in" aria-label="차트 확대 — 더 좁은 기간 보기" title="확대">＋</button>
+      </div>
+    </div>
+    <div class="bh-chart-sub">2020년 1월 2일 = 100 기준 정규화(%). SPY는 뱅가드 VOO로 대체. 범례를 클릭하면 개별 종목을 켜고 끌 수 있다(최소 1개는 항상 유지). 점·화살표는 소사가 있는 날 — 클릭하면 아래에서 내용을 볼 수 있다.</div>
   </div>
 
-  <!-- ── 캘린더 + 이벤트 ── -->
+  <!-- ── 이벤트 + 캘린더 (이벤트가 메인 좌측/모바일 상단, 캘린더가 우측/모바일 하단) ── -->
   <div class="bh-layout">
+    <div class="bh-card bh-events-card">
+      <div class="bh-events-head">
+        <div>
+          <div class="bh-events-title" id="bh-events-title">전체 소사 (최신순)</div>
+          <div class="bh-events-count" id="bh-events-count"></div>
+        </div>
+        <button class="bh-clear-btn" id="bh-clear-btn" style="display:none">전체 보기로 돌아가기</button>
+      </div>
+      <div id="bh-events-list"></div>
+    </div>
+
     <div class="bh-card bh-cal-card">
       <div class="bh-cal-head">
         <div class="bh-cal-nav"><button id="bh-cal-prev" aria-label="이전 달">‹</button></div>
@@ -197,30 +229,12 @@
         <span style="margin-left:14px" class="bh-cal-dot-mark" style="background:var(--ez-text3)"></span>주요 소사
       </div>
       <div class="bh-filter-row">
-        <input type="checkbox" id="bh-major-only">
+        <input type="checkbox" id="bh-major-only" checked>
         <label for="bh-major-only">핵심 소사만 표시</label>
       </div>
     </div>
-
-    <div class="bh-card bh-events-card">
-      <div class="bh-events-head">
-        <div>
-          <div class="bh-events-title" id="bh-events-title">전체 소사 (최신순)</div>
-          <div class="bh-events-count" id="bh-events-count"></div>
-        </div>
-        <button class="bh-clear-btn" id="bh-clear-btn" style="display:none">전체 보기로 돌아가기</button>
-      </div>
-      <div id="bh-events-list"></div>
-    </div>
   </div>
 
-  <div class="bh-card bh-usage-card">
-    <b>이 페이지에 대해.</b> 위 차트는 QQQ·SPY(VOO 프록시)·SOXX를 2020년 1월 초를 100으로 놓고 정규화한 값이다.
-    2024년 10월 29일 이후 소사는 성동님이 실제로 그 시점에 쓴 네이버 프리미엄콘텐츠 글에서 발췌했고,
-    글 링크로 원문을 바로 확인할 수 있다. 그 이전 구간은 가격 급변일을 먼저 골라낸 뒤 무슨 일이 있었는지
-    별도로 정리해 채운 것으로, 원문 링크가 없다. 소사는 시황 판단이나 매매 추천이 아니라, 그날의 사실 관계
-    기록이다.
-  </div>
 
 </main>
 
@@ -232,19 +246,31 @@
 <script>
 (function(){
   const IS_DARK = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const IS_MOBILE = window.matchMedia('(max-width: 640px)').matches;
   const COLORS = {
     QQQ:  IS_DARK ? '#0A84FF' : '#0071E3',
     SPY:  IS_DARK ? '#BF5AF2' : '#8944AB',
     SOXX: IS_DARK ? '#FF9F0A' : '#C77700',
+    TSLA: IS_DARK ? '#5AC8C8' : '#0F8B8D',
+    NVDA: IS_DARK ? '#FF6482' : '#C2185B',
     green: IS_DARK ? '#30D158' : '#1A7F37',
     red:   IS_DARK ? '#FF453A' : '#D92A2A',
   };
+  const SYMBOL_LABELS = {
+    QQQ: 'QQQ (나스닥100)', SPY: 'SPY (S&P500, VOO)', SOXX: 'SOXX (반도체)',
+    TSLA: 'TSLA (테슬라)', NVDA: 'NVDA (엔비디아)',
+  };
+  const SYMBOLS = ['QQQ', 'SPY', 'SOXX', 'TSLA', 'NVDA'];
 
   let chartData = null, eventsData = [];
-  let chart, seriesQQQ, seriesSPY, seriesSOXX;
+  let chart;
+  const seriesRefs = {};
+  const seriesVisible = { QQQ: true, SPY: true, SOXX: true, TSLA: false, NVDA: false };
   let selectedDate = null;
   let calYear, calMonth; // 0-indexed month
-  let majorOnly = false;
+  let majorOnly = true;   // 기본값: 핵심 소사만 표시 (체크박스 checked 속성과 동기화)
+  let currentRangeMonths = null;   // 현재 적용된 기간(개월) — 줌 계산 기준. null = 전체
+  let currentCenterDate = null;    // 현재 기간의 중심 날짜 — null이면 최신일 기준
 
   const eventsByDate = {};
 
@@ -279,6 +305,8 @@
     });
     document.getElementById('bh-cal-prev').addEventListener('click', () => shiftMonth(-1));
     document.getElementById('bh-cal-next').addEventListener('click', () => shiftMonth(1));
+    document.getElementById('bh-zoom-in').addEventListener('click', () => zoomChart(0.6));
+    document.getElementById('bh-zoom-out').addEventListener('click', () => zoomChart(1 / 0.6));
   }).catch(err => {
     document.getElementById('bh-events-list').innerHTML =
       '<div class="bh-empty">데이터를 불러오지 못했습니다. 잠시 후 새로고침 해주세요.</div>';
@@ -286,14 +314,29 @@
   });
 
   function buildLegend() {
-    const items = [
-      { label: 'QQQ (나스닥100)', color: COLORS.QQQ },
-      { label: 'SPY (S&P500, VOO)', color: COLORS.SPY },
-      { label: 'SOXX (반도체)', color: COLORS.SOXX },
-    ];
-    document.getElementById('bh-legend').innerHTML = items.map(it =>
-      `<span class="bh-legend-item"><span class="bh-legend-dot" style="background:${it.color}"></span>${it.label}</span>`
+    document.getElementById('bh-legend').innerHTML = SYMBOLS.map(sym =>
+      `<button type="button" class="bh-legend-item${seriesVisible[sym] ? ' active' : ''}" data-sym="${sym}">` +
+      `<span class="bh-legend-dot" style="background:${COLORS[sym]}"></span>${SYMBOL_LABELS[sym]}</button>`
     ).join('');
+    document.querySelectorAll('.bh-legend-item').forEach(btn => {
+      btn.addEventListener('click', () => toggleSeries(btn.dataset.sym));
+    });
+  }
+
+  function toggleSeries(sym) {
+    const visibleCount = Object.values(seriesVisible).filter(Boolean).length;
+    if (seriesVisible[sym] && visibleCount <= 1) {
+      // 최소 1개는 항상 볼 수 있어야 함 — 마지막 하나는 끌 수 없음
+      const btn = document.querySelector(`.bh-legend-item[data-sym="${sym}"]`);
+      if (btn) {
+        btn.classList.add('bh-legend-shake');
+        setTimeout(() => btn.classList.remove('bh-legend-shake'), 400);
+      }
+      return;
+    }
+    seriesVisible[sym] = !seriesVisible[sym];
+    if (seriesRefs[sym]) seriesRefs[sym].applyOptions({ visible: seriesVisible[sym] });
+    buildLegend();
   }
 
   function buildChart() {
@@ -312,29 +355,31 @@
       crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
       rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.08, bottom: 0.08 } },
       timeScale: { borderVisible: false, timeVisible: false },
+      localization: {
+        // 크로스헤어 하단 날짜 표기 — 항상 YYYY-MM-DD 전체 표기
+        timeFormatter: (time) => timeToDateStr(time) || '',
+      },
       handleScroll: true,
       handleScale: true,
     });
 
-    seriesSOXX = chart.addLineSeries({ color: COLORS.SOXX, lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true });
-    seriesSPY  = chart.addLineSeries({ color: COLORS.SPY,  lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true });
-    seriesQQQ  = chart.addLineSeries({ color: COLORS.QQQ,  lineWidth: 2.5, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true });
+    seriesRefs.TSLA = chart.addLineSeries({ color: COLORS.TSLA, lineWidth: 1.6, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.TSLA });
+    seriesRefs.NVDA = chart.addLineSeries({ color: COLORS.NVDA, lineWidth: 1.6, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.NVDA });
+    seriesRefs.SOXX = chart.addLineSeries({ color: COLORS.SOXX, lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.SOXX });
+    seriesRefs.SPY  = chart.addLineSeries({ color: COLORS.SPY,  lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.SPY });
+    seriesRefs.QQQ  = chart.addLineSeries({ color: COLORS.QQQ,  lineWidth: 2.5, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.QQQ });
 
     const toPoints = (arr) => chartData.dates.map((d, i) => ({ time: d, value: arr[i] }));
-    seriesSOXX.setData(toPoints(chartData.SOXX));
-    seriesSPY.setData(toPoints(chartData.SPY));
-    seriesQQQ.setData(toPoints(chartData.QQQ));
+    SYMBOLS.forEach(sym => seriesRefs[sym].setData(toPoints(chartData[sym])));
 
     applyMarkers();
 
-    chart.timeScale().fitContent();
-
+    // 모바일에서 핀치줌·드래그 같은 터치 조작이 클릭으로 오인되어 바로 아래 소사로
+    // 스크롤 이동해버리는 문제가 있었다 — 이제 "등락 포인트(마커)"를 정확히 눌렀을
+    // 때만(hoveredObjectId로 판별) 소사를 연다. 그 외 차트 조작은 아무 반응 없음.
     chart.subscribeClick((param) => {
-      if (!param.time) return;
-      const clicked = timeToDateStr(param.time);
-      if (!clicked) return;
-      const nearest = findNearestEventDate(clicked, 3);
-      if (nearest) selectDate(nearest);
+      if (!param.hoveredObjectId) return;
+      selectDate(param.hoveredObjectId);
     });
   }
 
@@ -349,19 +394,6 @@
     return null;
   }
 
-  function findNearestEventDate(dateStr, windowDays) {
-    const pool = majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
-    const target = new Date(dateStr + 'T00:00:00Z').getTime();
-    let best = null, bestDiff = Infinity;
-    pool.forEach(e => {
-      const t = new Date(e.date + 'T00:00:00Z').getTime();
-      const diff = Math.abs(t - target);
-      if (diff < bestDiff) { bestDiff = diff; best = e.date; }
-    });
-    if (best && bestDiff <= windowDays * 86400000) return best;
-    return null;
-  }
-
   function applyMarkers() {
     const pool = majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
     const markers = pool
@@ -372,6 +404,7 @@
         const up = avg >= 0;
         return {
           time: e.date,
+          id: e.date, // subscribeClick의 hoveredObjectId 판별용 — 마커를 정확히 눌렀을 때만 반응
           position: 'aboveBar',
           color: up ? COLORS.green : COLORS.red,
           shape: e.importance === 3 ? (up ? 'arrowUp' : 'arrowDown') : 'circle',
@@ -379,42 +412,86 @@
         };
       })
       .sort((a,b) => a.time < b.time ? -1 : 1);
-    seriesQQQ.setMarkers(markers);
+    seriesRefs.QQQ.setMarkers(markers);
   }
 
   function buildRangeButtons() {
     const ranges = [
-      { label: '1개월', days: 30 },
-      { label: '6개월', days: 182 },
-      { label: '1년', days: 365 },
-      { label: '전체', days: null },
+      { label: '6개월', months: 6 },
+      { label: '1년', months: 12 },
+      { label: '2년', months: 24 },
+      { label: '3년', months: 36 },
+      { label: '4년', months: 48 },
+      { label: '전체', months: null },
     ];
+    // 모바일은 화면이 좁아 1년 기본값이면 차트가 너무 촘촘해 보인다 — 기본 6개월로 완화
+    const defaultMonths = IS_MOBILE ? 6 : 12;
     const wrap = document.getElementById('bh-range-btns');
-    wrap.innerHTML = ranges.map((r, i) =>
-      `<button class="bh-range-btn${i===3?' active':''}" data-days="${r.days || ''}">${r.label}</button>`
+    wrap.innerHTML = ranges.map((r) =>
+      `<button class="bh-range-btn${r.months === defaultMonths ? ' active' : ''}" data-months="${r.months === null ? '' : r.months}">${r.label}</button>`
     ).join('');
     wrap.querySelectorAll('.bh-range-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         wrap.querySelectorAll('.bh-range-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const days = btn.dataset.days ? parseInt(btn.dataset.days, 10) : null;
-        applyRange(days, selectedDate);
+        const months = btn.dataset.months ? parseInt(btn.dataset.months, 10) : null;
+        applyRange(months, selectedDate);
       });
     });
+    applyRange(defaultMonths, null);
   }
 
-  function applyRange(days, centerDate) {
-    if (days === null) { chart.timeScale().fitContent(); return; }
+  function monthsBetween(d1, d2) {
+    const a = new Date(d1 + 'T00:00:00Z'), b = new Date(d2 + 'T00:00:00Z');
+    return Math.max(1, (b.getUTCFullYear() - a.getUTCFullYear()) * 12 + (b.getUTCMonth() - a.getUTCMonth()));
+  }
+
+  function addMonths(dateStr, delta) {
+    const d = new Date(dateStr + 'T00:00:00Z');
+    d.setUTCMonth(d.getUTCMonth() + delta);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function findIdxForDate(targetDate) {
     const dates = chartData.dates;
-    let centerIdx = dates.length - 1;
-    if (centerDate) {
-      const idx = dates.indexOf(centerDate);
-      if (idx !== -1) centerIdx = idx;
+    if (targetDate <= dates[0]) return 0;
+    if (targetDate >= dates[dates.length - 1]) return dates.length - 1;
+    for (let i = 0; i < dates.length; i++) {
+      if (dates[i] >= targetDate) return i;
     }
-    const half = Math.round(days / 2);
-    const fromIdx = Math.max(0, centerIdx - half);
-    const toIdx = Math.min(dates.length - 1, centerIdx + half);
+    return dates.length - 1;
+  }
+
+  function applyRange(months, centerDate) {
+    currentRangeMonths = months;
+    currentCenterDate = centerDate || null;
+    const dates = chartData.dates;
+    if (months === null) {
+      chart.timeScale().setVisibleRange({ from: dates[0], to: dates[dates.length - 1] });
+      return;
+    }
+    const centerStr = centerDate || dates[dates.length - 1];
+    let fromStr, toStr;
+    if (centerDate) {
+      const half = months / 2;
+      fromStr = addMonths(centerStr, -half);
+      toStr = addMonths(centerStr, half);
+    } else {
+      fromStr = addMonths(centerStr, -months);
+      toStr = centerStr;
+    }
+    const fromIdx = Math.max(0, findIdxForDate(fromStr));
+    const toIdx = Math.min(dates.length - 1, findIdxForDate(toStr));
     chart.timeScale().setVisibleRange({ from: dates[fromIdx], to: dates[toIdx] });
+  }
+
+  function zoomChart(factor) {
+    const dates = chartData.dates;
+    const fullSpanMonths = monthsBetween(dates[0], dates[dates.length - 1]);
+    let months = currentRangeMonths === null ? fullSpanMonths : currentRangeMonths;
+    months = Math.max(1, Math.min(fullSpanMonths, Math.round(months * factor)));
+    document.querySelectorAll('.bh-range-btn').forEach(b => b.classList.remove('active'));
+    applyRange(months, currentCenterDate);
   }
 
   function shiftMonth(delta) {
@@ -465,7 +542,7 @@
     renderCalendar();
     renderEventList();
     document.getElementById('bh-clear-btn').style.display = 'inline-block';
-    applyRange(120, dateStr);
+    applyRange(6, dateStr);
     document.querySelectorAll('.bh-range-btn').forEach(b => b.classList.remove('active'));
     setTimeout(() => {
       const item = document.querySelector(`.bh-event-item[data-date="${dateStr}"]`);
@@ -494,7 +571,7 @@
       : '<span class="bh-badge notable">주요</span>';
     const sourceTag = e.link
       ? `<a class="bh-event-link" href="${e.link}" target="_blank" rel="noopener">원문 보기 →</a>`
-      : '<span class="bh-source-tag">출처: 외부 자료 참고 (원문 링크 없음)</span>';
+      : '';
     return `<div class="bh-event-item${highlight ? ' highlight' : ''}" data-date="${e.date}">
       <div class="bh-event-top">
         <span class="bh-event-date">${e.date}</span>
