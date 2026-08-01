@@ -939,12 +939,23 @@ button { font: inherit; }
 
 .bg-filter-status-tag {
   font-weight: 800;
-  color: #0a84ff;
+  color: #38bdf8; /* 2026-08-01 — 칩과 같은 선택색으로 통일(#0a84ff→#38bdf8) */
 }
 
 /* 라이선스 문구는 이제 맨 아래로 내려가 토글과 살짝 떨어지게. */
 .bg-filter-license {
   margin-top: 12px;
+}
+
+/* 2026-08-01 신설 — 설정 맨 아래 애플워치 안내 섹션의 목업 이미지.
+   결제 화면에서 쓴 합성 목업(울트라+일반 워치)을 웹용으로 줄인 것.
+   카드 폭에 꽉 차게 두고 모서리만 카드 언어에 맞춰 둥글린다. */
+.settings-watch-preview {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 10px 0 12px;
+  border-radius: 14px;
 }
 
 .exclude-chip {
@@ -979,23 +990,28 @@ button { font: inherit; }
   transition: border-color 160ms ease, background 160ms ease;
 }
 
+/* 2026-08-01 성동님 지시 2차 — 어제 체크박스만 블루로 바꿨더니 "반만
+   적용"이라는 지적: 칩의 테두리·배경이 여전히 호박색이었다. 이 설정
+   페이지의 "선택됨" 색 언어(.field-option / .viz-chip의 #38bdf8)와
+   완전히 같은 값으로 통일한다 — 체크박스도 #0a84ff가 아니라 #38bdf8로,
+   체크 표시도 field-option과 같은 흰색으로 맞춘다. */
 .exclude-chip input:checked {
-  border-color: #0a84ff;
-  background: #0a84ff;
+  border-color: #38bdf8;
+  background: #38bdf8;
 }
 
 .exclude-chip input:checked::after {
   content: "";
   width: 9px;
   height: 5px;
-  border-left: 2px solid #241a03;
-  border-bottom: 2px solid #241a03;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
   transform: rotate(-45deg) translate(1px, -1px);
 }
 
 .exclude-chip:has(input:checked) {
-  border-color: rgba(245, 158, 11, 0.85);
-  background: rgba(245, 158, 11, 0.16);
+  border-color: rgba(56, 189, 248, 0.85);
+  background: rgba(56, 189, 248, 0.16);
   color: #fff;
 }
 

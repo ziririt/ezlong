@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260801-bluechip-v1">
+  <link rel="stylesheet" href="styles.css?v=20260801-bluechip-v2">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -298,7 +298,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.23</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.24</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -570,6 +570,10 @@
              OS 사용자 설정 — 모든 워치 시계 앱의 공통 대응 패턴). -->
         <section class="settings-block settings-card" data-i18n-aria="settings.watch.heading" aria-label="애플워치">
           <h3 class="settings-subtitle" data-i18n="settings.watch.heading">애플워치</h3>
+          <!-- 2026-08-01 성동님 지시 — 결제 화면에서 쓴 워치 목업(울트라+
+               일반 워치 합성, iOS WatchAppPreview 에셋과 동일 원본)을 웹용
+               으로 축소(900x480 webp, 31KB)해 안내 섹션에도 노출한다. -->
+          <img class="settings-watch-preview" src="watch-app-preview.webp?v=20260801-watchimg-v1" alt="" role="presentation" loading="lazy" width="900" height="480">
           <p class="settings-desc" data-i18n="settings.watch.intro">프리미엄 이용자는 애플워치 전용 플립시계 앱을 쓸 수 있습니다.</p>
           <p class="settings-desc settings-desc-muted" data-i18n="settings.watch.keepGuide">워치 화면이 자꾸 기본 시계로 돌아간다면: 워치의 설정 → 일반 → 시계로 돌아가기에서 '1시간 후'를 선택하고, 아래 앱 목록에서 Long Time, Easy Life의 '앱으로 복귀'를 켜주세요. 손목을 내렸다 올려도 1시간 동안 플립시계가 유지됩니다.</p>
         </section>
