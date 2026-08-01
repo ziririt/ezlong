@@ -501,11 +501,15 @@
       handleScale: true,
     });
 
-    seriesRefs.TSLA = chart.addLineSeries({ color: COLORS.TSLA, lineWidth: 1.6, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.TSLA });
-    seriesRefs.NVDA = chart.addLineSeries({ color: COLORS.NVDA, lineWidth: 1.6, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.NVDA });
-    seriesRefs.SOXX = chart.addLineSeries({ color: COLORS.SOXX, lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.SOXX });
-    seriesRefs.SPY  = chart.addLineSeries({ color: COLORS.SPY,  lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.SPY });
-    seriesRefs.QQQ  = chart.addLineSeries({ color: COLORS.QQQ,  lineWidth: 2.5, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.QQQ });
+    // 정규화 지수값이라 소수점이 의미 없다(성동님 지적) — 우측 축·크로스헤어 라벨 모두
+    // 정수로 표시. 자릿수가 "800.00"(6자)→"800"(3자)로 줄면서 축 폭 자체도 함께 줄어든다
+    // (LightweightCharts는 축 폭을 라벨 텍스트 길이 기준으로 자동 계산 — 별도 폭 설정 불필요).
+    const IDX_PRICE_FORMAT = { type: 'price', precision: 0, minMove: 1 };
+    seriesRefs.TSLA = chart.addLineSeries({ color: COLORS.TSLA, lineWidth: 1.6, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.TSLA, priceFormat: IDX_PRICE_FORMAT });
+    seriesRefs.NVDA = chart.addLineSeries({ color: COLORS.NVDA, lineWidth: 1.6, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.NVDA, priceFormat: IDX_PRICE_FORMAT });
+    seriesRefs.SOXX = chart.addLineSeries({ color: COLORS.SOXX, lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.SOXX, priceFormat: IDX_PRICE_FORMAT });
+    seriesRefs.SPY  = chart.addLineSeries({ color: COLORS.SPY,  lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.SPY, priceFormat: IDX_PRICE_FORMAT });
+    seriesRefs.QQQ  = chart.addLineSeries({ color: COLORS.QQQ,  lineWidth: 2.5, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.QQQ, priceFormat: IDX_PRICE_FORMAT });
 
     const toPoints = (arr) => chartData.dates.map((d, i) => ({ time: d, value: arr[i] }));
     SYMBOLS.forEach(sym => seriesRefs[sym].setData(toPoints(chartData[sym])));
