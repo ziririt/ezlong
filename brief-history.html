@@ -124,8 +124,18 @@
   .bh-draw-btn.active { background: var(--ez-blue); color: #fff; border-color: var(--ez-blue); }
   .bh-draw-sep { height: 1px; background: var(--ez-border); margin: 2px 4px; }
   /* 그림 도구가 그려지는 오버레이 캔버스 — 평소엔 pointer-events:none이라 차트 조작(팬·줌·
-     소사 마커 클릭)을 그대로 통과시키고, 도구를 선택했을 때만 JS로 auto 전환해 클릭을 받는다 */
-  .bh-draw-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; }
+     소사 마커 클릭)을 그대로 통과시키고, 도구를 선택했을 때만 JS로 auto 전환해 클릭을 받는다.
+     touch-action:none은 도구 활성화(pointer-events:auto) 상태에서 손가락 드래그가 브라우저
+     기본 스크롤/팬으로 새는 걸 막는다 — 평소(none)엔 캔버스가 애초에 터치를 안 받아 무해. */
+  .bh-draw-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; touch-action: none; }
+  /* 그림 하나를 탭/클릭하면 그 위치 근처에 뜨는 개별 삭제(휴지통) 버튼 — 전체 지우기와 별개 */
+  .bh-draw-delete-btn {
+    position: absolute; z-index: 7; width: 30px; height: 30px; border-radius: 7px;
+    border: 1px solid var(--ez-red); background: var(--ez-card2); color: var(--ez-red);
+    cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+  .bh-draw-delete-btn:hover { background: var(--ez-red); color: #fff; }
   /* 모바일 — 범례 5개·기간버튼 6개를 한 줄에 고정. 폰트는 사이트 14px 하한선을 유지하고
      여백(패딩·간격)만 압축한다(2026-08-01). 티커만 남긴 라벨(SYMBOL_LABELS)과 합쳐서 작동. */
   @media (max-width: 640px) {
@@ -250,6 +260,11 @@
     <div class="bh-chart-outer">
       <div class="bh-chart-wrap" id="bh-chart"></div>
       <canvas id="bh-draw-canvas" class="bh-draw-canvas"></canvas>
+      <button type="button" id="bh-draw-delete-btn" class="bh-draw-delete-btn" style="display:none" aria-label="이 그림 지우기" title="지우기">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path>
+        </svg>
+      </button>
       <div class="bh-draw-toolbar" id="bh-draw-toolbar">
         <button type="button" class="bh-draw-btn active" id="bh-draw-cursor" aria-label="커서(그리기 해제)" title="커서">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4 2.5l16.5 7.5-6.8 2.2-2.2 6.8z"/></svg>
@@ -537,7 +552,18 @@
     // 때만(hoveredObjectId로 판별) 소사를 연다. 그 외 차트 조작은 아무 반응 없음.
     // 누른 순간엔 그 마커만 잠깐 커지고 강조색으로 바뀌어(터치 피드백) 눌렸다는 게
     // 눈에 보이고, 동시에 그 날짜의 소사로 바로 스크롤 이동한다.
+    //
+    // 커서 모드(drawMode===null)일 땐 이 클릭이 그림(추세선·가격범위) 위를 눌렀는지도
+    // 먼저 확인한다 — 그림 위 클릭이면 그 그림 옆에 개별 삭제(휴지통) 버튼을 띄우고
+    // 소사 마커 로직은 건너뛴다. 오버레이 캔버스(#bh-draw-canvas)는 커서 모드일 땐
+    // pointer-events:none이라 이 클릭이 캔버스를 거치지 않고 곧장 여기(차트 자체의
+    // subscribeClick)로 들어오므로, 별도 캔버스 클릭 리스너 없이도 그림 히트테스트가 가능하다.
     chart.subscribeClick((param) => {
+      if (drawMode === null && param.point) {
+        const hit = hitTestDrawings(param.point.x, param.point.y);
+        if (hit) { showDeleteButton(hit, param.point.x, param.point.y); return; }
+      }
+      hideDeleteButton();
       if (!param.hoveredObjectId) return;
       flashMarkerAndSelect(param.hoveredObjectId);
     });
@@ -604,15 +630,24 @@
   // timeToCoordinate/coordinateToTime)로 위임해 직접 그린다. 평소엔 이 캔버스가
   // pointer-events:none이라 팬·줌·소사 마커 클릭 등 기존 차트 조작을 그대로 통과시키고,
   // 도구를 선택한 동안만 클릭을 받도록 전환한다.
+  //
+  // (성동님 2차 피드백 반영) 가격범위도 처음엔 드래그(mousedown~mouseup) 방식이었는데
+  // PC에서 불편하고, 특히 모바일에서는 손가락 드래그가 차트 자체의 팬(스크롤) 제스처와
+  // 충돌해 그림이 전혀 안 그려지고 차트만 움직였다 — 추세선과 똑같이 "1번째 탭으로
+  // 점A 확정 → 2번째 탭으로 점B 확정" 클릭-클릭 방식으로 통일해 두 문제를 한번에 해결.
+  // 모바일 터치는 mousedown/mousemove가 신뢰성 있게 안 뜨는 경우가 있어 touchstart/
+  // touchmove를 별도로 붙이고(preventDefault로 브라우저 기본 스크롤 억제), 두 이벤트
+  // 모두 같은 handlePointDown/handlePointMove 로직을 공유한다.
   let drawMode = null;      // null(커서) | 'trendline' | 'measure'
   let drawings = [];        // {type, p1:{time,price}, p2:{time,price}}
-  let pendingP1 = null;     // 추세선 1번째 클릭 대기
-  let dragStart = null;     // 가격범위 드래그 시작점
+  let pendingP1 = null;     // 1번째 점 확정 후 2번째 점 대기 — 추세선·가격범위 공용
   let drawCanvas, drawCtx;
+  let deleteBtn, deleteTarget = null; // 그림 하나를 탭했을 때 뜨는 개별 삭제(휴지통) 버튼
 
   function initDrawTools() {
     drawCanvas = document.getElementById('bh-draw-canvas');
     drawCtx = drawCanvas.getContext('2d');
+    deleteBtn = document.getElementById('bh-draw-delete-btn');
 
     const btnCursor = document.getElementById('bh-draw-cursor');
     const btnTrend = document.getElementById('bh-draw-trendline');
@@ -623,7 +658,7 @@
     function setDrawMode(mode) {
       drawMode = mode;
       pendingP1 = null;
-      dragStart = null;
+      hideDeleteButton();
       Object.entries(toolBtns).forEach(([key, btn]) => {
         btn.classList.toggle('active', key === (mode || 'cursor'));
       });
@@ -635,51 +670,61 @@
     btnCursor.addEventListener('click', () => setDrawMode(null));
     btnTrend.addEventListener('click', () => setDrawMode(drawMode === 'trendline' ? null : 'trendline'));
     btnMeasure.addEventListener('click', () => setDrawMode(drawMode === 'measure' ? null : 'measure'));
-    btnClear.addEventListener('click', () => { drawings = []; redrawDrawings(); });
+    btnClear.addEventListener('click', () => { drawings = []; hideDeleteButton(); redrawDrawings(); });
+    // 개별 삭제 — 그림을 탭하면 뜨는 휴지통 버튼(전체 지우기와 별개, chart.subscribeClick의
+    // 히트테스트에서 표시됨). 이 버튼 자체는 일반 <button>이라 모바일 탭도 따로 처리할 필요 없음.
+    deleteBtn.addEventListener('click', () => {
+      if (deleteTarget) drawings = drawings.filter(d => d !== deleteTarget);
+      hideDeleteButton();
+      redrawDrawings();
+    });
 
     function eventXY(ev) {
       const rect = drawCanvas.getBoundingClientRect();
       return { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
     }
+    function touchXY(ev) {
+      const t = ev.touches[0] || ev.changedTouches[0];
+      const rect = drawCanvas.getBoundingClientRect();
+      return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+    }
 
-    drawCanvas.addEventListener('mousedown', (ev) => {
+    function handlePointDown(x, y) {
       if (!drawMode) return;
-      const { x, y } = eventXY(ev);
       const pt = pxToPoint(x, y);
       if (!pt) return;
-      if (drawMode === 'trendline') {
-        if (!pendingP1) {
-          pendingP1 = pt;
-        } else {
-          drawings.push({ type: 'trendline', p1: pendingP1, p2: pt });
-          setDrawMode(null);
-        }
-        redrawDrawings();
-      } else if (drawMode === 'measure') {
-        dragStart = pt;
-      }
-    });
-
-    drawCanvas.addEventListener('mousemove', (ev) => {
-      const { x, y } = eventXY(ev);
-      if (drawMode === 'trendline' && pendingP1) {
-        const from = pointToPx(pendingP1);
-        redrawDrawings({ line: [from, { x, y }], isPreview: true });
-      } else if (drawMode === 'measure' && dragStart) {
-        const pt = pxToPoint(x, y);
-        const from = pointToPx(dragStart);
-        if (pt && from) redrawDrawings({ measure: [dragStart, pt, from, { x, y }] });
-      }
-    });
-
-    drawCanvas.addEventListener('mouseup', (ev) => {
-      if (drawMode === 'measure' && dragStart) {
-        const { x, y } = eventXY(ev);
-        const pt = pxToPoint(x, y);
-        if (pt) drawings.push({ type: 'measure', p1: dragStart, p2: pt });
+      if (!pendingP1) {
+        pendingP1 = pt;
+      } else {
+        drawings.push({ type: drawMode, p1: pendingP1, p2: pt });
         setDrawMode(null);
       }
-    });
+      redrawDrawings();
+    }
+    function handlePointMove(x, y) {
+      if (!drawMode || !pendingP1) return;
+      const from = pointToPx(pendingP1);
+      if (!from) return;
+      if (drawMode === 'trendline') {
+        redrawDrawings({ line: [from, { x, y }], isPreview: true });
+      } else if (drawMode === 'measure') {
+        const pt = pxToPoint(x, y);
+        if (pt) redrawDrawings({ measure: [pendingP1, pt, from, { x, y }] });
+      }
+    }
+
+    drawCanvas.addEventListener('mousedown', (ev) => { const { x, y } = eventXY(ev); handlePointDown(x, y); });
+    drawCanvas.addEventListener('mousemove', (ev) => { const { x, y } = eventXY(ev); handlePointMove(x, y); });
+    drawCanvas.addEventListener('touchstart', (ev) => {
+      ev.preventDefault();
+      const { x, y } = touchXY(ev);
+      handlePointDown(x, y);
+    }, { passive: false });
+    drawCanvas.addEventListener('touchmove', (ev) => {
+      ev.preventDefault();
+      const { x, y } = touchXY(ev);
+      handlePointMove(x, y);
+    }, { passive: false });
 
     function resizeDrawCanvas() {
       const w = drawCanvas.clientWidth || document.getElementById('bh-chart').clientWidth;
@@ -689,12 +734,14 @@
       drawCanvas.width = Math.round(w * dpr);
       drawCanvas.height = Math.round(h * dpr);
       drawCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      hideDeleteButton();
       redrawDrawings();
     }
     resizeDrawCanvas();
     new ResizeObserver(resizeDrawCanvas).observe(document.getElementById('bh-chart'));
-    // 팬·줌(범위버튼·확대축소버튼 포함) 때마다 좌표가 바뀌므로 다시 그린다
-    chart.timeScale().subscribeVisibleLogicalRangeChange(() => redrawDrawings());
+    // 팬·줌(범위버튼·확대축소버튼 포함) 때마다 좌표가 바뀌므로 다시 그린다. 삭제 버튼은
+    // 이전 좌표 기준으로 떠 있던 것이라 범위가 바뀌면 위치가 어긋나므로 함께 숨긴다.
+    chart.timeScale().subscribeVisibleLogicalRangeChange(() => { hideDeleteButton(); redrawDrawings(); });
   }
 
   function pxToPoint(x, y) {
@@ -709,6 +756,49 @@
     const y = seriesRefs.QQQ.priceToCoordinate(pt.price);
     if (x == null || y == null) return null;
     return { x, y };
+  }
+
+  // 그림 하나를 탭/클릭했을 때 판별하는 히트테스트 — 추세선은 선분까지의 거리,
+  // 가격범위는 박스 안쪽(여유 패딩 포함) 여부로 판정. 여러 그림이 겹치면 나중에
+  // 그려진(=배열 뒤쪽) 것을 우선한다.
+  const DELETE_HIT_PADDING = 10;
+
+  function distToSegment(px, py, ax, ay, bx, by) {
+    const dx = bx - ax, dy = by - ay;
+    const lenSq = dx * dx + dy * dy;
+    let t = lenSq === 0 ? 0 : ((px - ax) * dx + (py - ay) * dy) / lenSq;
+    t = Math.max(0, Math.min(1, t));
+    const cx = ax + t * dx, cy = ay + t * dy;
+    return Math.hypot(px - cx, py - cy);
+  }
+
+  function hitTestDrawings(x, y) {
+    for (let i = drawings.length - 1; i >= 0; i--) {
+      const d = drawings[i];
+      const a = pointToPx(d.p1), b = pointToPx(d.p2);
+      if (!a || !b) continue;
+      if (d.type === 'trendline') {
+        if (distToSegment(x, y, a.x, a.y, b.x, b.y) <= DELETE_HIT_PADDING) return d;
+      } else if (d.type === 'measure') {
+        const x0 = Math.min(a.x, b.x) - DELETE_HIT_PADDING, x1 = Math.max(a.x, b.x) + DELETE_HIT_PADDING;
+        const y0 = Math.min(a.y, b.y) - DELETE_HIT_PADDING, y1 = Math.max(a.y, b.y) + DELETE_HIT_PADDING;
+        if (x >= x0 && x <= x1 && y >= y0 && y <= y1) return d;
+      }
+    }
+    return null;
+  }
+
+  function showDeleteButton(drawing, x, y) {
+    if (!deleteBtn) return;
+    deleteTarget = drawing;
+    deleteBtn.style.left = Math.round(x - 15) + 'px';
+    deleteBtn.style.top = Math.round(y - 45) + 'px'; // 누른 지점 바로 위 — 손가락에 안 가려지게
+    deleteBtn.style.display = 'flex';
+  }
+
+  function hideDeleteButton() {
+    deleteTarget = null;
+    if (deleteBtn) deleteBtn.style.display = 'none';
   }
 
   const DRAW_LINE_COLOR = IS_DARK ? '#0A84FF' : '#0071E3'; // QQQ와 동일 톤 — 새 색 추가 없이 기존 팔레트 재사용
