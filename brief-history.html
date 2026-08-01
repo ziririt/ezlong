@@ -436,11 +436,17 @@
     // 소사 마커 전용 숨은 기준선 — 5개 종목 중 어느 것을 켜고 끄든(가격 축이 서로 달라도)
     // 마커는 항상 날짜(가로축) 위치에 고정돼 보이도록, 화면에 보이지 않는 별도 오버레이
     // 가격축에 이 라인을 얹어서 마커 호스트로만 쓴다. 실제 가격값은 의미 없음(항상 0).
+    // scaleMargins를 top 크게·bottom 작게 잡아서, 이 라인(값 0, 전 구간 동일)이 차트
+    // 하단(가로축=시간축 바로 위)에 딱 붙게 만든다 — 예전엔 오버레이 스케일 기본 여백
+    // 때문에 마커가 차트 중간쯤에 붕 떠 보였음(성동님 스크린샷 지적사항).
     markerHostSeries = chart.addLineSeries({
       lineVisible: false, priceLineVisible: false, lastValueVisible: false,
       crosshairMarkerVisible: false, priceScaleId: 'bh-marker-overlay', visible: true,
     });
-    markerHostSeries.priceScale().applyOptions({ visible: false });
+    markerHostSeries.priceScale().applyOptions({
+      visible: false,
+      scaleMargins: { top: 0.9, bottom: 0.03 },
+    });
     markerHostSeries.setData(chartData.dates.map(d => ({ time: d, value: 0 })));
 
     applyMarkers();
@@ -448,9 +454,11 @@
     // 모바일에서 핀치줌·드래그 같은 터치 조작이 클릭으로 오인되어 바로 아래 소사로
     // 스크롤 이동해버리는 문제가 있었다 — 이제 "등락 포인트(마커)"를 정확히 눌렀을
     // 때만(hoveredObjectId로 판별) 소사를 연다. 그 외 차트 조작은 아무 반응 없음.
+    // 누른 순간엔 그 마커만 잠깐 커지고 강조색으로 바뀌어(터치 피드백) 눌렸다는 게
+    // 눈에 보이고, 동시에 그 날짜의 소사로 바로 스크롤 이동한다.
     chart.subscribeClick((param) => {
       if (!param.hoveredObjectId) return;
-      selectDate(param.hoveredObjectId);
+      flashMarkerAndSelect(param.hoveredObjectId);
     });
   }
 
@@ -465,9 +473,8 @@
     return null;
   }
 
-  function applyMarkers() {
-    const pool = majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
-    const markers = pool
+  function buildMarkers(pool) {
+    return pool
       .map(e => {
         const moves = e.moves || {};
         const vals = Object.values(moves).filter(v => typeof v === 'number');
@@ -483,10 +490,29 @@
         };
       })
       .sort((a,b) => a.time < b.time ? -1 : 1);
+  }
+
+  function currentPool() {
+    return majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
+  }
+
+  function applyMarkers() {
     // 소사 마커는 특정 종목의 가격(세로축)이 아니라 markerHostSeries(숨은 오버레이
     // 기준선)에 표시한다. 종목마다 가격 축이 서로 달라 마커가 종목 조합에 따라
     // 들쭉날쭉해 보이던 문제를 해결 — 5개 중 무엇을 켜고 끄든 마커는 항상 같은 자리다.
+    markerHostSeries.setMarkers(buildMarkers(currentPool()));
+  }
+
+  // 마커를 터치했을 때: 그 마커만 잠깐 커지고 강조색으로 바뀌어 "눌렸다"는 느낌을
+  // 준 뒤(약 0.25초), 원래 모양으로 되돌린다. 동시에 그 날짜의 소사로 바로 이동.
+  function flashMarkerAndSelect(dateStr) {
+    const flashColor = IS_DARK ? '#FFFFFF' : '#0A84FF';
+    const markers = buildMarkers(currentPool()).map(m =>
+      m.id === dateStr ? { ...m, size: 2.0, color: flashColor } : m
+    );
     markerHostSeries.setMarkers(markers);
+    selectDate(dateStr);
+    setTimeout(applyMarkers, 260);
   }
 
   function buildRangeButtons() {
