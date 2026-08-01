@@ -1,6 +1,81 @@
 {
   "entries": [
     {
+      "id": "2026-08-01-23:20",
+      "timestamp_kst": "2026-08-01(토) 23:20 KST",
+      "key_event": {
+        "name": "빅테크 실적 혼조 및 AI 기대감",
+        "name_en": "Mixed Big Tech Earnings & AI Optimism",
+        "time": "직전 거래일 마감 및 다음 주 개장 전",
+        "why": "주요 기술주 실적 혼조, AI 투자 심리, 금리 우려",
+        "why_en": "Mixed tech earnings, AI investment sentiment, interest rate concerns"
+      },
+      "positive_total": 55,
+      "negative_total": 45,
+      "summary": "빅테크 실적 혼조 속 AI 기대감과 VIX 하락으로 긍정 우위 전환. 금리 우려는 지속.",
+      "summary_en": "Positive sentiment prevails as mixed Big Tech earnings are offset by AI optimism and falling VIX, though rate concerns persist.",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "일부 빅테크 실적 호조 및 AI 기대감",
+          "name_en": "Strong Earnings from Select Big Tech & AI Optimism",
+          "desc": "GOOGL (+5.52%), MSFT (+2.98%) 상승 및 AI 관련 뉴스 지속으로 투자 심리 개선",
+          "desc_en": "GOOGL (+5.52%) and MSFT (+2.98%) gains, coupled with ongoing AI news, boost investor sentiment.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 15,
+          "name": "달러 약세",
+          "name_en": "Weaker Dollar",
+          "desc": "달러인덱스 DXY 99.80 (-0.38%)로 약세, 수출 기업 실적에 긍정적",
+          "desc_en": "DXY at 99.80 (-0.38%) implies a weaker dollar, favorable for export-oriented companies.",
+          "category": "dollar_fx"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "일부 빅테크 실적 부진 및 반도체 약세",
+          "name_en": "Underperformance in Some Big Tech & Semiconductor Weakness",
+          "desc": "AAPL (-1.60%), QQQ (-0.55%), SOXX (-3.57%) 하락하며 기술주 전반에 부담",
+          "desc_en": "AAPL (-1.60%), QQQ (-0.55%), and SOXX (-3.57%) declines weigh on the broader tech sector.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 15,
+          "name": "미 국채금리 상승",
+          "name_en": "Rising US Treasury Yields",
+          "desc": "미10년 국채금리 4.74% (+1.76%) 상승, 성장주에 대한 투자 매력 감소",
+          "desc_en": "US 10-year Treasury yield at 4.74% (+1.76%) rises, reducing the appeal of growth stocks.",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 10,
+          "name": "고유가 지속 및 중동 지정학적 긴장",
+          "name_en": "Persistent High Oil Prices & Middle East Geopolitical Tensions",
+          "desc": "WTI 원유 84.67 (+2.80%) 상승, 중동 분쟁 관련 뉴스 지속되며 인플레이션 우려 가중",
+          "desc_en": "WTI crude at 84.67 (+2.80%) continues to rise, with ongoing Middle East conflict news fueling inflation concerns.",
+          "category": "oil_energy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 관련 투자 비용 증가",
+          "name_en": "Rising AI Investment Costs",
+          "desc": "AI 기술 개발 및 인프라 구축 비용 증가가 수익성에 미칠 영향에 대한 우려와 기대 혼재",
+          "desc_en": "Concerns and expectations coexist regarding the impact of increasing AI development and infrastructure costs on profitability.",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "연준 금리 정책 불확실성",
+          "name_en": "Fed Interest Rate Policy Uncertainty",
+          "desc": "트럼프 대통령의 금리 인하 압박과 연준의 매파적 스탠스 유지 사이에서 시장의 해석 엇갈림",
+          "desc_en": "Market interpretations diverge between President Trump's pressure for rate cuts and the Fed's continued hawkish stance.",
+          "category": "fed_policy"
+        }
+      ]
+    },
+    {
       "id": "2026-08-01-21:50",
       "timestamp_kst": "2026-08-01(토) 21:50 KST",
       "key_event": {
@@ -600,68 +675,8 @@
           "category": "company_specific"
         }
       ]
-    },
-    {
-      "id": "2026-07-31-18:20",
-      "timestamp_kst": "2026-07-31(금) 18:20 KST",
-      "key_event": {
-        "name": "AI 투자 기대감 지속 및 반도체 강세",
-        "name_en": "Sustained AI Investment Optimism & Semiconductor Strength",
-        "time": "오늘 정규장 (ET 09:30~16:00)",
-        "why": "MSFT 실적 호조, AI CapEx 발언, 반도체 랠리",
-        "why_en": "Strong MSFT earnings, AI CapEx remarks, semiconductor rally"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "AI 투자 기대감 지속과 반도체 강세로 긍정 우위 유지. 애플 실적 부진과 금리 불확실성 상존.",
-      "summary_en": "Positive sentiment remains dominant due to sustained AI investment optimism and semiconductor strength, despite lingering Apple earnings concerns and interest rate uncertainties.",
-      "positive_factors": [
-        {
-          "score": 55,
-          "name": "빅테크 AI 투자 지속 기대감",
-          "name_en": "Sustained Big Tech AI Investment Optimism",
-          "desc": "MSFT 실적 호조 및 AI CapEx 발언으로 GOOGL 등 빅테크 전반 프리마켓 상승",
-          "desc_en": "Strong MSFT earnings and AI CapEx remarks drive premarket gains across Big Tech, including GOOGL.",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 20,
-          "name": "인플레이션 둔화 기대감",
-          "name_en": "Easing Inflation Expectations",
-          "desc": "냉각된 PCE 인플레이션 데이터로 S&P 500 선물 상승",
-          "desc_en": "Cooler PCE inflation data supports S&P 500 futures gains.",
-          "category": "macro_data"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "애플 실적 부진 및 전망 우려",
-          "name_en": "Apple's Weak Earnings & Outlook Concerns",
-          "desc": "공급망 문제로 인한 애플 전망 불확실성, 프리마켓 0.72% 하락",
-          "desc_en": "Apple's outlook clouded by supply snags, leading to a 0.72% premarket decline.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 10,
-          "name": "미 국채금리 상승",
-          "name_en": "Rising US Treasury Yields",
-          "desc": "미 10년 국채금리 0.89% 상승, 성장주에 잠재적 부담",
-          "desc_en": "US 10-year Treasury yield up 0.89%, posing potential pressure on growth stocks.",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "테슬라 중국 사업 매각 루머 해명",
-          "name_en": "Tesla China Unit Sale Rumor Dismissed",
-          "desc": "일론 머스크가 테슬라 중국 사업 매각 루머를 '가짜 뉴스'로 일축, 불확실성 해소와 추가 하락 방어",
-          "desc_en": "Elon Musk dismissed Tesla China unit sale rumors as 'fake news,' easing uncertainty and preventing further declines.",
-          "category": "company_specific"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-01T12:50:57Z",
+  "updated_at": "2026-08-01T14:21:02Z",
   "max_entries": 10
 }
