@@ -929,7 +929,7 @@ button { font: inherit; }
 
 /* 2026-07-25 2차 피드백 — 이 섹션의 "주인공"을 라이선스 문구에서 매칭
    상태 문구로 바꾼다: 폰트를 기본 .settings-desc(14px)보다 크게, 계절/
-   날씨/시간대 라벨은 굵게+오렌지(#f59e0b, 앱 전역에서 이미 쓰는 강조
+   날씨/시간대 라벨은 굵게+블루(#0a84ff, 앱 전역에서 이미 쓰는 강조
    색 — .exclude-chip input:checked 참조)로 눈에 띄게 한다. */
 .bg-filter-status {
   margin-bottom: 10px;
@@ -939,7 +939,7 @@ button { font: inherit; }
 
 .bg-filter-status-tag {
   font-weight: 800;
-  color: #f59e0b;
+  color: #0a84ff;
 }
 
 /* 라이선스 문구는 이제 맨 아래로 내려가 토글과 살짝 떨어지게. */
@@ -980,8 +980,8 @@ button { font: inherit; }
 }
 
 .exclude-chip input:checked {
-  border-color: #f59e0b;
-  background: #f59e0b;
+  border-color: #0a84ff;
+  background: #0a84ff;
 }
 
 .exclude-chip input:checked::after {
