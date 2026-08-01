@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>그날 무슨 일이 있었나 — A Brief History | EZLONG</title>
+<meta name="description" content="QQQ·SPY·SOXX 3대 지수 차트에 날짜별 주요 이벤트를 겹쳐 보여주는 소사(小史). 차트가 크게 흔들린 날, 실제로 무슨 일이 있었는지 캘린더로 바로 찾아본다.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://ezlong.com/brief-history.html">
+<!-- Open Graph -->
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://ezlong.com/brief-history.html">
+<meta property="og:title"       content="그날 무슨 일이 있었나 — A Brief History | EZLONG">
+<meta property="og:description" content="QQQ·SPY·SOXX 차트와 날짜별 주요 이벤트를 함께 보는 소사. 차트가 왜 이렇게 움직였는지 캘린더로 바로 확인.">
+<meta property="og:site_name"   content="EZLONG">
+<!-- Twitter Card -->
+<meta name="twitter:card"        content="summary">
+<meta name="twitter:title"       content="그날 무슨 일이 있었나 — A Brief History | EZLONG">
+<meta name="twitter:description" content="QQQ·SPY·SOXX 차트와 날짜별 주요 이벤트를 함께 보는 소사.">
+
+<!-- 공유 디자인 시스템 -->
+<link rel="stylesheet" href="ez-design.css">
+
+<!-- LightweightCharts -->
+<script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+
+<style>
+  .bh-brand {
+    background: var(--ez-surface);
+    border-bottom: 1px solid var(--ez-border);
+    padding: 32px 20px 28px;
+  }
+  .bh-brand-inner { max-width: var(--ez-max-w-wide); margin: 0 auto; }
+  .bh-brand-label {
+    font-size: 14px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ez-blue); margin-bottom: 8px;
+  }
+  .bh-brand-title {
+    font-size: clamp(22px, 4vw, 32px); font-weight: 800; letter-spacing: -.03em;
+    color: var(--ez-text); margin-bottom: 10px;
+  }
+  .bh-brand-desc { font-size: 16px; color: var(--ez-text2); line-height: 1.6; max-width: 760px; }
+  .bh-draft-note {
+    margin-top: 14px; font-size: 14px; color: var(--ez-text2);
+    background: var(--ez-card2); border-radius: var(--ez-rs); padding: 10px 14px; display: inline-block;
+  }
+
+  .bh-main { max-width: var(--ez-max-w-wide); margin: 0 auto; padding: 28px 20px 60px; }
+
+  .bh-card {
+    background: var(--ez-surface); border: 1px solid var(--ez-border);
+    border-radius: var(--ez-r); box-shadow: var(--ez-shadow);
+  }
+
+  /* ── 차트 카드 ── */
+  .bh-chart-card { padding: 20px 20px 12px; margin-bottom: 20px; }
+  .bh-chart-top {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 10px; margin-bottom: 14px;
+  }
+  .bh-chart-title { font-size: 18px; font-weight: 700; color: var(--ez-text); letter-spacing: -.02em; }
+  .bh-legend { display: flex; gap: 16px; flex-wrap: wrap; }
+  .bh-legend-item { display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; color: var(--ez-text2); }
+  .bh-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .bh-chart-wrap { width: 100%; height: 380px; }
+  .bh-chart-sub { font-size: 14px; color: var(--ez-text3); margin: 10px 2px 4px; line-height: 1.5; }
+  .bh-range-btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .bh-range-btn {
+    font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: 999px;
+    border: 1px solid var(--ez-border); background: var(--ez-card2); color: var(--ez-text2);
+    cursor: pointer;
+  }
+  .bh-range-btn.active { background: var(--ez-blue); color: #fff; border-color: var(--ez-blue); }
+
+  /* ── 레이아웃: 캘린더 + 이벤트 패널 ── */
+  .bh-layout { display: grid; grid-template-columns: 360px 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 860px) { .bh-layout { grid-template-columns: 1fr; } }
+
+  .bh-cal-card { padding: 18px 18px 20px; position: sticky; top: 12px; }
+  @media (max-width: 860px) { .bh-cal-card { position: static; } }
+  .bh-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .bh-cal-title { font-size: 17px; font-weight: 700; color: var(--ez-text); }
+  .bh-cal-nav { display: flex; gap: 6px; }
+  .bh-cal-nav button {
+    width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--ez-border);
+    background: var(--ez-card2); color: var(--ez-text2); font-size: 16px; font-weight: 700; cursor: pointer;
+  }
+  .bh-cal-weekdays, .bh-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .bh-cal-weekdays { margin-bottom: 4px; }
+  .bh-cal-weekdays span { text-align: center; font-size: 14px; font-weight: 700; color: var(--ez-text3); padding: 4px 0; }
+  .bh-cal-cell {
+    aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--ez-text2); cursor: default;
+    position: relative; gap: 2px;
+  }
+  .bh-cal-cell.empty { visibility: hidden; }
+  .bh-cal-cell.has-event { cursor: pointer; }
+  .bh-cal-cell.has-event:hover { background: var(--ez-card2); }
+  .bh-cal-cell.selected { background: var(--ez-blue-dim); outline: 2px solid var(--ez-blue); }
+  .bh-cal-dots { display: flex; gap: 2px; height: 6px; }
+  .bh-cal-dot-mark { width: 6px; height: 6px; border-radius: 50%; }
+  .bh-cal-today { text-decoration: underline; text-underline-offset: 3px; }
+  .bh-cal-legend { margin-top: 12px; font-size: 14px; color: var(--ez-text3); line-height: 1.7; }
+  .bh-cal-legend .bh-cal-dot-mark { display: inline-block; vertical-align: middle; margin-right: 5px; }
+
+  .bh-filter-row { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 14px; color: var(--ez-text2); }
+  .bh-filter-row input { width: 17px; height: 17px; }
+
+  /* ── 이벤트 패널 ── */
+  .bh-events-card { padding: 18px 20px 20px; }
+  .bh-events-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .bh-events-title { font-size: 17px; font-weight: 700; color: var(--ez-text); }
+  .bh-events-count { font-size: 14px; color: var(--ez-text3); }
+  .bh-clear-btn {
+    font-size: 14px; font-weight: 600; color: var(--ez-blue); background: none; border: none; cursor: pointer;
+  }
+
+  .bh-event-item {
+    padding: 16px 16px; border-radius: var(--ez-rs); border: 1px solid var(--ez-border2);
+    background: var(--ez-card2); margin-bottom: 12px; scroll-margin-top: 90px;
+  }
+  .bh-event-item.highlight { outline: 2px solid var(--ez-blue); background: var(--ez-blue-dim); }
+  .bh-event-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+  .bh-event-date { font-size: 14px; font-weight: 700; color: var(--ez-text2); }
+  .bh-badge { font-size: 14px; font-weight: 700; padding: 2px 9px; border-radius: 999px; color: #fff; }
+  .bh-badge.major { background: var(--ez-blue); }
+  .bh-badge.notable { background: var(--ez-text3); }
+  .bh-event-title { font-size: 16px; font-weight: 700; color: var(--ez-text); line-height: 1.45; margin-bottom: 6px; }
+  .bh-event-summary { font-size: 15px; color: var(--ez-text2); line-height: 1.6; margin-bottom: 10px; }
+  .bh-event-moves { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+  .bh-move-pill { font-size: 14px; font-weight: 700; padding: 3px 9px; border-radius: 6px; }
+  .bh-move-pill.up { color: var(--ez-green); background: color-mix(in srgb, var(--ez-green) 14%, transparent); }
+  .bh-move-pill.down { color: var(--ez-red); background: color-mix(in srgb, var(--ez-red) 14%, transparent); }
+  .bh-event-foot { display: flex; align-items: center; justify-content: space-between; font-size: 14px; color: var(--ez-text2); }
+  .bh-event-link { font-size: 14px; font-weight: 600; color: var(--ez-blue); text-decoration: none; }
+  .bh-event-link:hover { text-decoration: underline; }
+  .bh-source-tag { font-style: normal; }
+
+  .bh-empty { padding: 30px 10px; text-align: center; color: var(--ez-text3); font-size: 15px; }
+
+  .bh-usage-card { margin-top: 20px; padding: 18px 20px; font-size: 15px; color: var(--ez-text2); line-height: 1.7; }
+  .bh-usage-card b { color: var(--ez-text); }
+</style>
+</head>
+<body>
+
+<!-- ── EZLONG 글로벌 헤더 ── -->
+<script src="/ez-nav.js"></script>
+
+<div class="bh-brand">
+  <div class="bh-brand-inner">
+    <div class="bh-brand-label">A Brief History</div>
+    <h1 class="bh-brand-title">그날 무슨 일이 있었나 — 소사(小史)</h1>
+    <p class="bh-brand-desc">
+      QQQ·SPY·SOXX 세 지수를 한 차트에 겹쳐 놓고, 크게 흔들린 날마다 실제로 무슨 일이 있었는지를 붙여 봤다.
+      차트에서 궁금한 구간을 클릭하거나 아래 캘린더에서 날짜를 고르면, 그날의 소사가 바로 뜬다.
+    </p>
+    <div class="bh-draft-note">초안 페이지입니다 — 아직 메뉴에는 연결돼 있지 않습니다.</div>
+  </div>
+</div>
+
+<main class="bh-main">
+
+  <!-- ── 차트 ── -->
+  <div class="bh-card bh-chart-card">
+    <div class="bh-chart-top">
+      <div class="bh-chart-title">QQQ · SPY · SOXX 정규화 차트</div>
+      <div class="bh-legend" id="bh-legend"></div>
+    </div>
+    <div class="bh-chart-wrap" id="bh-chart"></div>
+    <div class="bh-range-btns" id="bh-range-btns"></div>
+    <div class="bh-chart-sub">2020년 1월 2일 = 100 기준 정규화(%). SPY는 뱅가드 VOO로 대체. 점·화살표는 소사가 있는 날 — 클릭하면 아래에서 내용을 볼 수 있다.</div>
+  </div>
+
+  <!-- ── 캘린더 + 이벤트 ── -->
+  <div class="bh-layout">
+    <div class="bh-card bh-cal-card">
+      <div class="bh-cal-head">
+        <div class="bh-cal-nav"><button id="bh-cal-prev" aria-label="이전 달">‹</button></div>
+        <div class="bh-cal-title" id="bh-cal-title"></div>
+        <div class="bh-cal-nav"><button id="bh-cal-next" aria-label="다음 달">›</button></div>
+      </div>
+      <div class="bh-cal-weekdays">
+        <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+      </div>
+      <div class="bh-cal-grid" id="bh-cal-grid"></div>
+      <div class="bh-cal-legend">
+        <span class="bh-cal-dot-mark" style="background:var(--ez-blue)"></span>핵심 소사
+        <span style="margin-left:14px" class="bh-cal-dot-mark" style="background:var(--ez-text3)"></span>주요 소사
+      </div>
+      <div class="bh-filter-row">
+        <input type="checkbox" id="bh-major-only">
+        <label for="bh-major-only">핵심 소사만 표시</label>
+      </div>
+    </div>
+
+    <div class="bh-card bh-events-card">
+      <div class="bh-events-head">
+        <div>
+          <div class="bh-events-title" id="bh-events-title">전체 소사 (최신순)</div>
+          <div class="bh-events-count" id="bh-events-count"></div>
+        </div>
+        <button class="bh-clear-btn" id="bh-clear-btn" style="display:none">전체 보기로 돌아가기</button>
+      </div>
+      <div id="bh-events-list"></div>
+    </div>
+  </div>
+
+  <div class="bh-card bh-usage-card">
+    <b>이 페이지에 대해.</b> 위 차트는 QQQ·SPY(VOO 프록시)·SOXX를 2020년 1월 초를 100으로 놓고 정규화한 값이다.
+    2024년 10월 29일 이후 소사는 성동님이 실제로 그 시점에 쓴 네이버 프리미엄콘텐츠 글에서 발췌했고,
+    글 링크로 원문을 바로 확인할 수 있다. 그 이전 구간은 가격 급변일을 먼저 골라낸 뒤 무슨 일이 있었는지
+    별도로 정리해 채운 것으로, 원문 링크가 없다. 소사는 시황 판단이나 매매 추천이 아니라, 그날의 사실 관계
+    기록이다.
+  </div>
+
+</main>
+
+<!-- ══════════════════════════════════════════════════
+     글로벌 푸터
+     ══════════════════════════════════════════════════ -->
+<script src="/ez-footer.js"></script>
+
+<script>
+(function(){
+  const IS_DARK = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const COLORS = {
+    QQQ:  IS_DARK ? '#0A84FF' : '#0071E3',
+    SPY:  IS_DARK ? '#BF5AF2' : '#8944AB',
+    SOXX: IS_DARK ? '#FF9F0A' : '#C77700',
+    green: IS_DARK ? '#30D158' : '#1A7F37',
+    red:   IS_DARK ? '#FF453A' : '#D92A2A',
+  };
+
+  let chartData = null, eventsData = [];
+  let chart, seriesQQQ, seriesSPY, seriesSOXX;
+  let selectedDate = null;
+  let calYear, calMonth; // 0-indexed month
+  let majorOnly = false;
+
+  const eventsByDate = {};
+
+  Promise.all([
+    fetch('data/brief-history-chart.json').then(r => r.json()),
+    fetch('data/brief-history.json').then(r => r.json())
+  ]).then(([chartJson, eventsJson]) => {
+    chartData = chartJson;
+    eventsData = eventsJson.slice().sort((a,b) => a.date < b.date ? 1 : -1); // 최신순
+    eventsJson.forEach(e => { eventsByDate[e.date] = e; });
+
+    const last = chartData.dates[chartData.dates.length - 1];
+    calYear = parseInt(last.slice(0,4), 10);
+    calMonth = parseInt(last.slice(5,7), 10) - 1;
+
+    buildLegend();
+    buildChart();
+    buildRangeButtons();
+    renderCalendar();
+    renderEventList();
+
+    document.getElementById('bh-major-only').addEventListener('change', (e) => {
+      majorOnly = e.target.checked;
+      renderCalendar();
+      renderEventList();
+    });
+    document.getElementById('bh-clear-btn').addEventListener('click', () => {
+      selectedDate = null;
+      document.getElementById('bh-clear-btn').style.display = 'none';
+      renderCalendar();
+      renderEventList();
+    });
+    document.getElementById('bh-cal-prev').addEventListener('click', () => shiftMonth(-1));
+    document.getElementById('bh-cal-next').addEventListener('click', () => shiftMonth(1));
+  }).catch(err => {
+    document.getElementById('bh-events-list').innerHTML =
+      '<div class="bh-empty">데이터를 불러오지 못했습니다. 잠시 후 새로고침 해주세요.</div>';
+    console.error(err);
+  });
+
+  function buildLegend() {
+    const items = [
+      { label: 'QQQ (나스닥100)', color: COLORS.QQQ },
+      { label: 'SPY (S&P500, VOO)', color: COLORS.SPY },
+      { label: 'SOXX (반도체)', color: COLORS.SOXX },
+    ];
+    document.getElementById('bh-legend').innerHTML = items.map(it =>
+      `<span class="bh-legend-item"><span class="bh-legend-dot" style="background:${it.color}"></span>${it.label}</span>`
+    ).join('');
+  }
+
+  function buildChart() {
+    const el = document.getElementById('bh-chart');
+    chart = LightweightCharts.createChart(el, {
+      autoSize: true,
+      layout: {
+        background: { type: 'solid', color: IS_DARK ? '#1C1C1E' : '#FFFFFF' },
+        textColor: IS_DARK ? '#8E8E93' : '#3C3C3E',
+        fontSize: 12,
+      },
+      grid: {
+        vertLines: { color: IS_DARK ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)' },
+        horzLines: { color: IS_DARK ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)' },
+      },
+      crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+      rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.08, bottom: 0.08 } },
+      timeScale: { borderVisible: false, timeVisible: false },
+      handleScroll: true,
+      handleScale: true,
+    });
+
+    seriesSOXX = chart.addLineSeries({ color: COLORS.SOXX, lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true });
+    seriesSPY  = chart.addLineSeries({ color: COLORS.SPY,  lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true });
+    seriesQQQ  = chart.addLineSeries({ color: COLORS.QQQ,  lineWidth: 2.5, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true });
+
+    const toPoints = (arr) => chartData.dates.map((d, i) => ({ time: d, value: arr[i] }));
+    seriesSOXX.setData(toPoints(chartData.SOXX));
+    seriesSPY.setData(toPoints(chartData.SPY));
+    seriesQQQ.setData(toPoints(chartData.QQQ));
+
+    applyMarkers();
+
+    chart.timeScale().fitContent();
+
+    chart.subscribeClick((param) => {
+      if (!param.time) return;
+      const clicked = timeToDateStr(param.time);
+      if (!clicked) return;
+      const nearest = findNearestEventDate(clicked, 3);
+      if (nearest) selectDate(nearest);
+    });
+  }
+
+  function timeToDateStr(t) {
+    if (typeof t === 'string') return t;
+    if (typeof t === 'object' && t && 'year' in t) {
+      return `${t.year}-${String(t.month).padStart(2,'0')}-${String(t.day).padStart(2,'0')}`;
+    }
+    if (typeof t === 'number') {
+      return new Date(t * 1000).toISOString().slice(0, 10);
+    }
+    return null;
+  }
+
+  function findNearestEventDate(dateStr, windowDays) {
+    const pool = majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
+    const target = new Date(dateStr + 'T00:00:00Z').getTime();
+    let best = null, bestDiff = Infinity;
+    pool.forEach(e => {
+      const t = new Date(e.date + 'T00:00:00Z').getTime();
+      const diff = Math.abs(t - target);
+      if (diff < bestDiff) { bestDiff = diff; best = e.date; }
+    });
+    if (best && bestDiff <= windowDays * 86400000) return best;
+    return null;
+  }
+
+  function applyMarkers() {
+    const pool = majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
+    const markers = pool
+      .map(e => {
+        const moves = e.moves || {};
+        const vals = Object.values(moves).filter(v => typeof v === 'number');
+        const avg = vals.length ? vals.reduce((a,b) => a+b, 0) / vals.length : 0;
+        const up = avg >= 0;
+        return {
+          time: e.date,
+          position: 'aboveBar',
+          color: up ? COLORS.green : COLORS.red,
+          shape: e.importance === 3 ? (up ? 'arrowUp' : 'arrowDown') : 'circle',
+          size: e.importance === 3 ? 1.1 : 0.6,
+        };
+      })
+      .sort((a,b) => a.time < b.time ? -1 : 1);
+    seriesQQQ.setMarkers(markers);
+  }
+
+  function buildRangeButtons() {
+    const ranges = [
+      { label: '1개월', days: 30 },
+      { label: '6개월', days: 182 },
+      { label: '1년', days: 365 },
+      { label: '전체', days: null },
+    ];
+    const wrap = document.getElementById('bh-range-btns');
+    wrap.innerHTML = ranges.map((r, i) =>
+      `<button class="bh-range-btn${i===3?' active':''}" data-days="${r.days || ''}">${r.label}</button>`
+    ).join('');
+    wrap.querySelectorAll('.bh-range-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        wrap.querySelectorAll('.bh-range-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const days = btn.dataset.days ? parseInt(btn.dataset.days, 10) : null;
+        applyRange(days, selectedDate);
+      });
+    });
+  }
+
+  function applyRange(days, centerDate) {
+    if (days === null) { chart.timeScale().fitContent(); return; }
+    const dates = chartData.dates;
+    let centerIdx = dates.length - 1;
+    if (centerDate) {
+      const idx = dates.indexOf(centerDate);
+      if (idx !== -1) centerIdx = idx;
+    }
+    const half = Math.round(days / 2);
+    const fromIdx = Math.max(0, centerIdx - half);
+    const toIdx = Math.min(dates.length - 1, centerIdx + half);
+    chart.timeScale().setVisibleRange({ from: dates[fromIdx], to: dates[toIdx] });
+  }
+
+  function shiftMonth(delta) {
+    calMonth += delta;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+  }
+
+  function renderCalendar() {
+    const monthNames = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+    document.getElementById('bh-cal-title').textContent = `${calYear}년 ${monthNames[calMonth]}`;
+
+    const first = new Date(Date.UTC(calYear, calMonth, 1));
+    const startDow = first.getUTCDay();
+    const daysInMonth = new Date(Date.UTC(calYear, calMonth + 1, 0)).getUTCDate();
+    const todayStr = new Date().toISOString().slice(0,10);
+
+    let cells = '';
+    for (let i = 0; i < startDow; i++) cells += '<div class="bh-cal-cell empty"></div>';
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const ev = eventsByDate[dateStr];
+      const show = ev && (!majorOnly || ev.importance === 3);
+      const isToday = dateStr === todayStr;
+      const isSelected = dateStr === selectedDate;
+      let dotHtml = '';
+      if (show) {
+        const color = ev.importance === 3 ? 'var(--ez-blue)' : 'var(--ez-text3)';
+        dotHtml = `<span class="bh-cal-dots"><span class="bh-cal-dot-mark" style="background:${color}"></span></span>`;
+      }
+      cells += `<div class="bh-cal-cell${show ? ' has-event' : ''}${isSelected ? ' selected' : ''}" data-date="${dateStr}">
+        <span class="${isToday ? 'bh-cal-today' : ''}">${d}</span>${dotHtml}
+      </div>`;
+    }
+    const grid = document.getElementById('bh-cal-grid');
+    grid.innerHTML = cells;
+    grid.querySelectorAll('.bh-cal-cell.has-event').forEach(cell => {
+      cell.addEventListener('click', () => selectDate(cell.dataset.date));
+    });
+  }
+
+  function selectDate(dateStr) {
+    selectedDate = dateStr;
+    const d = new Date(dateStr + 'T00:00:00Z');
+    calYear = d.getUTCFullYear();
+    calMonth = d.getUTCMonth();
+    renderCalendar();
+    renderEventList();
+    document.getElementById('bh-clear-btn').style.display = 'inline-block';
+    applyRange(120, dateStr);
+    document.querySelectorAll('.bh-range-btn').forEach(b => b.classList.remove('active'));
+    setTimeout(() => {
+      const item = document.querySelector(`.bh-event-item[data-date="${dateStr}"]`);
+      if (item) item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
+  }
+
+  function fmtPct(v) {
+    if (typeof v !== 'number') return '';
+    const sign = v >= 0 ? '+' : '';
+    return `${sign}${v.toFixed(2)}%`;
+  }
+
+  function renderMoves(moves) {
+    if (!moves) return '';
+    return Object.entries(moves).map(([sym, v]) => {
+      if (typeof v !== 'number') return '';
+      const cls = v >= 0 ? 'up' : 'down';
+      return `<span class="bh-move-pill ${cls}">${sym} ${fmtPct(v)}</span>`;
+    }).join('');
+  }
+
+  function renderEventCard(e, highlight) {
+    const badge = e.importance === 3
+      ? '<span class="bh-badge major">핵심</span>'
+      : '<span class="bh-badge notable">주요</span>';
+    const sourceTag = e.link
+      ? `<a class="bh-event-link" href="${e.link}" target="_blank" rel="noopener">원문 보기 →</a>`
+      : '<span class="bh-source-tag">출처: 외부 자료 참고 (원문 링크 없음)</span>';
+    return `<div class="bh-event-item${highlight ? ' highlight' : ''}" data-date="${e.date}">
+      <div class="bh-event-top">
+        <span class="bh-event-date">${e.date}</span>
+        ${badge}
+      </div>
+      <div class="bh-event-title">${escapeHtml(e.title)}</div>
+      <div class="bh-event-summary">${escapeHtml(e.summary)}</div>
+      <div class="bh-event-moves">${renderMoves(e.moves)}</div>
+      <div class="bh-event-foot">${sourceTag}</div>
+    </div>`;
+  }
+
+  function escapeHtml(s) {
+    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function renderEventList() {
+    const listEl = document.getElementById('bh-events-list');
+    const titleEl = document.getElementById('bh-events-title');
+    const countEl = document.getElementById('bh-events-count');
+    let pool = majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
+
+    if (selectedDate) {
+      const target = new Date(selectedDate + 'T00:00:00Z').getTime();
+      const nearby = pool.filter(e => {
+        const t = new Date(e.date + 'T00:00:00Z').getTime();
+        return Math.abs(t - target) <= 5 * 86400000;
+      }).sort((a,b) => Math.abs(new Date(a.date)-target) - Math.abs(new Date(b.date)-target));
+      titleEl.textContent = `${selectedDate} 전후 소사`;
+      countEl.textContent = `${nearby.length}건 (앞뒤 5일 이내)`;
+      listEl.innerHTML = nearby.length
+        ? nearby.map(e => renderEventCard(e, e.date === selectedDate)).join('')
+        : '<div class="bh-empty">이 날짜 근처에 기록된 소사가 없습니다.</div>';
+      return;
+    }
+
+    titleEl.textContent = '전체 소사 (최신순)';
+    countEl.textContent = `${pool.length}건`;
+    listEl.innerHTML = pool.map(e => renderEventCard(e, false)).join('');
+  }
+})();
+</script>
+
+</body>
+</html>
