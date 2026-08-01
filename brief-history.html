@@ -158,6 +158,20 @@
 
   .bh-filter-row { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 14px; color: var(--ez-text2); }
   .bh-filter-row input { width: 17px; height: 17px; }
+  /* 날짜로 이동 — 버튼을 누르면 우측에 날짜 입력칸이 나타난다(기본값 오늘) */
+  .bh-goto-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .bh-goto-btn {
+    width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--ez-border);
+    background: var(--ez-card2); color: var(--ez-text2); cursor: pointer; flex: none;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bh-goto-btn:hover { background: var(--ez-border2); }
+  .bh-goto-btn.active { background: var(--ez-blue); color: #fff; border-color: var(--ez-blue); }
+  .bh-goto-input {
+    font-size: 15px; font-weight: 600; color: var(--ez-text); background: var(--ez-surface);
+    border: 1.5px solid var(--ez-blue); border-radius: 999px; padding: 6px 14px;
+    outline: none;
+  }
 
   /* ── 이벤트 패널 ── */
   .bh-events-card { padding: 18px 20px 20px; }
@@ -235,6 +249,18 @@
       </div>
     </div>
     <div class="bh-range-btns" id="bh-range-btns"></div>
+    <div class="bh-goto-row">
+      <button type="button" id="bh-goto-btn" class="bh-goto-btn" aria-label="날짜로 이동" title="날짜로 이동">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="14" height="14" rx="2"></rect>
+          <line x1="3" y1="9.5" x2="17" y2="9.5"></line>
+          <line x1="7" y1="3" x2="7" y2="6.5"></line>
+          <line x1="13" y1="3" x2="13" y2="6.5"></line>
+          <path d="M13 14 L20 14 M20 14 L17 11 M20 14 L17 17"></path>
+        </svg>
+      </button>
+      <input type="date" id="bh-goto-input" class="bh-goto-input" style="display:none" aria-label="이동할 날짜 선택">
+    </div>
     <div class="bh-filter-row">
       <input type="checkbox" id="bh-major-only-chart" checked>
       <label for="bh-major-only-chart">핵심 소사만 표시 — 차트 포인트</label>
@@ -360,6 +386,25 @@
     document.getElementById('bh-cal-next').addEventListener('click', () => shiftMonth(1));
     document.getElementById('bh-zoom-in').addEventListener('click', () => zoomChart(0.6));
     document.getElementById('bh-zoom-out').addEventListener('click', () => zoomChart(1 / 0.6));
+
+    // 날짜로 이동 — 버튼을 누르면 우측에 날짜 입력칸이 나타난다. 기본값은 오늘 날짜.
+    const gotoBtn = document.getElementById('bh-goto-btn');
+    const gotoInput = document.getElementById('bh-goto-input');
+    gotoInput.value = new Date().toISOString().slice(0, 10);
+    gotoBtn.addEventListener('click', () => {
+      const willShow = gotoInput.style.display === 'none';
+      gotoInput.style.display = willShow ? 'inline-block' : 'none';
+      gotoBtn.classList.toggle('active', willShow);
+      if (willShow) {
+        gotoInput.focus();
+        if (typeof gotoInput.showPicker === 'function') {
+          try { gotoInput.showPicker(); } catch (e) {}
+        }
+      }
+    });
+    gotoInput.addEventListener('change', (e) => {
+      if (e.target.value) selectDate(e.target.value);
+    });
   }).catch(err => {
     document.getElementById('bh-events-list').innerHTML =
       '<div class="bh-empty">데이터를 불러오지 못했습니다. 잠시 후 새로고침 해주세요.</div>';
