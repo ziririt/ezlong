@@ -96,7 +96,6 @@
   }
   .bh-chart-outer { position: relative; }
   .bh-chart-wrap { width: 100%; height: 380px; }
-  .bh-chart-sub { font-size: 14px; color: var(--ez-text3); margin: 10px 2px 4px; line-height: 1.5; }
   .bh-range-btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
   .bh-range-btn {
     font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: 999px;
@@ -212,7 +211,7 @@
 <div class="bh-brand">
   <div class="bh-brand-inner">
     <div class="bh-brand-label">A Brief History</div>
-    <h1 class="bh-brand-title">그날 무슨 일이 있었나 — 소사(小史)</h1>
+    <h1 class="bh-brand-title">그날 무슨 일이 있었나</h1>
     <p class="bh-brand-desc">
       QQQ·SPY·SOXX 세 지수를 한 차트에 겹쳐 놓고, 크게 흔들린 날마다 실제로 무슨 일이 있었는지를 붙여 봤다.
       차트에서 궁금한 구간을 클릭하거나 아래 캘린더에서 날짜를 고르면, 그날의 소사가 바로 뜬다.
@@ -236,7 +235,10 @@
       </div>
     </div>
     <div class="bh-range-btns" id="bh-range-btns"></div>
-    <div class="bh-chart-sub">2020년 1월 2일 = 100 기준 정규화(%). SPY는 뱅가드 VOO로 대체. 범례를 클릭하면 개별 종목을 켜고 끌 수 있다(최소 1개는 항상 유지). 점·화살표는 소사가 있는 날짜에 고정 표시되며, 어떤 종목을 켜고 끄든 위치는 그대로다 — 클릭하면 아래에서 내용을 볼 수 있다.</div>
+    <div class="bh-filter-row">
+      <input type="checkbox" id="bh-major-only-chart" checked>
+      <label for="bh-major-only-chart">핵심 소사만 표시 — 차트 포인트</label>
+    </div>
   </div>
 
   <!-- ── 이벤트 + 캘린더 (이벤트가 메인 좌측/모바일 상단, 캘린더가 우측/모바일 하단) ── -->
@@ -268,7 +270,7 @@
       </div>
       <div class="bh-filter-row">
         <input type="checkbox" id="bh-major-only" checked>
-        <label for="bh-major-only">핵심 소사만 표시</label>
+        <label for="bh-major-only">핵심 소사만 표시 — 달력·목록</label>
       </div>
     </div>
   </div>
@@ -333,10 +335,20 @@
     renderCalendar();
     renderEventList();
 
-    document.getElementById('bh-major-only').addEventListener('change', (e) => {
-      majorOnly = e.target.checked;
-      renderCalendar();
-      renderEventList();
+    // "핵심 소사만 표시"는 달력쪽·차트쪽 두 군데에 있고 항상 같은 값으로 동기화된다.
+    // 어느 쪽을 누르든 majorOnly 갱신 + 캘린더·목록·차트 마커(applyMarkers)까지 전부 다시 그린다.
+    const majorOnlyCheckboxes = [
+      document.getElementById('bh-major-only'),
+      document.getElementById('bh-major-only-chart'),
+    ];
+    majorOnlyCheckboxes.forEach(cb => {
+      cb.addEventListener('change', (e) => {
+        majorOnly = e.target.checked;
+        majorOnlyCheckboxes.forEach(other => { other.checked = majorOnly; });
+        renderCalendar();
+        renderEventList();
+        applyMarkers();
+      });
     });
     document.getElementById('bh-clear-btn').addEventListener('click', () => {
       selectedDate = null;
@@ -671,13 +683,14 @@
     let pool = majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
 
     if (selectedDate) {
+      // 전후 1일씩, 총 3일치만 — 더 넓게 훑어보고 싶으면 아래 달력으로 다른 날짜를 고르면 된다.
       const target = new Date(selectedDate + 'T00:00:00Z').getTime();
       const nearby = pool.filter(e => {
         const t = new Date(e.date + 'T00:00:00Z').getTime();
-        return Math.abs(t - target) <= 5 * 86400000;
+        return Math.abs(t - target) <= 1 * 86400000;
       }).sort((a,b) => Math.abs(new Date(a.date)-target) - Math.abs(new Date(b.date)-target));
       titleEl.textContent = `${selectedDate} 전후 소사`;
-      countEl.textContent = `${nearby.length}건 (앞뒤 5일 이내)`;
+      countEl.textContent = `${nearby.length}건 (앞뒤 1일, 총 3일)`;
       listEl.innerHTML = nearby.length
         ? nearby.map(e => renderEventCard(e, e.date === selectedDate)).join('')
         : '<div class="bh-empty">이 날짜 근처에 기록된 소사가 없습니다.</div>';
