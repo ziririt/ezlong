@@ -8374,5 +8374,12 @@ window.investmentQuotes = [
     "title": "안녕, 누구나의 인생",
     "author": "셰릴 스트레이드",
     "genre": "literature"
+  },
+  {
+    "english": "Knowing what you don't know is more useful than being brilliant.",
+    "text": "무엇을 모르는지 아는 것이, 똑똑한 것보다 훨씬 더 유용하다. 사람들이 돈을 가장 빨리 잃는 길은, 자신이 실제로 아는 것보다 더 많이 안다고 착각하는 순간이다. 내가 이해할 수 있는 범위, 즉 '능력범위' 안에 머무는 것이야말로 투자에서 가장 확실한 방어선이다.",
+    "title": "가난한 찰리의 연감",
+    "author": "찰리 멍거",
+    "category": "mindset"
   }
 ];
