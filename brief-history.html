@@ -115,6 +115,22 @@
     line-height: 1; cursor: pointer;
   }
   .bh-zoom-btns button:hover { background: var(--ez-border2); }
+  /* 차트 위 그림 도구 — 좌상단 세로 아이콘 바(추세선·가격범위 측정 등 핵심 도구만) */
+  .bh-draw-toolbar {
+    position: absolute; left: 8px; top: 8px; z-index: 6;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .bh-draw-btn {
+    width: 30px; height: 30px; border-radius: 7px; border: 1px solid var(--ez-border);
+    background: var(--ez-card2); color: var(--ez-text2); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; padding: 0;
+  }
+  .bh-draw-btn:hover { background: var(--ez-border2); }
+  .bh-draw-btn.active { background: var(--ez-blue); color: #fff; border-color: var(--ez-blue); }
+  .bh-draw-sep { height: 1px; background: var(--ez-border); margin: 2px 4px; }
+  /* 그림 도구가 그려지는 오버레이 캔버스 — 평소엔 pointer-events:none이라 차트 조작(팬·줌·
+     소사 마커 클릭)을 그대로 통과시키고, 도구를 선택했을 때만 JS로 auto 전환해 클릭을 받는다 */
+  .bh-draw-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; }
   /* 모바일 — 범례 5개·기간버튼 6개를 한 줄에 고정. 폰트는 사이트 14px 하한선을 유지하고
      여백(패딩·간격)만 압축한다(2026-08-01). 티커만 남긴 라벨(SYMBOL_LABELS)과 합쳐서 작동. */
   @media (max-width: 640px) {
@@ -243,6 +259,31 @@
     </div>
     <div class="bh-chart-outer">
       <div class="bh-chart-wrap" id="bh-chart"></div>
+      <canvas id="bh-draw-canvas" class="bh-draw-canvas"></canvas>
+      <div class="bh-draw-toolbar" id="bh-draw-toolbar">
+        <button type="button" class="bh-draw-btn active" id="bh-draw-cursor" aria-label="커서(그리기 해제)" title="커서">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4 2.5l16.5 7.5-6.8 2.2-2.2 6.8z"/></svg>
+        </button>
+        <button type="button" class="bh-draw-btn" id="bh-draw-trendline" aria-label="추세선 그리기" title="추세선">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="5" cy="19" r="2"></circle><circle cx="19" cy="5" r="2"></circle>
+            <line x1="6.4" y1="17.6" x2="17.6" y2="6.4"></line>
+          </svg>
+        </button>
+        <button type="button" class="bh-draw-btn" id="bh-draw-measure" aria-label="가격 범위 측정" title="가격범위">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2.5" y="9.5" width="19" height="5" rx="1" transform="rotate(-28 12 12)"></rect>
+            <line x1="9.3" y1="8.4" x2="10.4" y2="10.6" transform="rotate(-28 12 12)"></line>
+            <line x1="12.5" y1="6.9" x2="13.6" y2="9.1" transform="rotate(-28 12 12)"></line>
+          </svg>
+        </button>
+        <div class="bh-draw-sep"></div>
+        <button type="button" class="bh-draw-btn" id="bh-draw-clear" aria-label="그림 전체 지우기" title="전체 지우기">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path>
+          </svg>
+        </button>
+      </div>
       <div class="bh-zoom-btns">
         <button id="bh-zoom-out" aria-label="차트 축소 — 더 넓은 기간 보기" title="축소">－</button>
         <button id="bh-zoom-in" aria-label="차트 확대 — 더 좁은 기간 보기" title="확대">＋</button>
@@ -357,6 +398,7 @@
 
     buildLegend();
     buildChart();
+    initDrawTools();
     buildRangeButtons();
     renderCalendar();
     renderEventList();
@@ -558,6 +600,183 @@
     markerHostSeries.setMarkers(markers);
     selectDate(dateStr);
     setTimeout(applyMarkers, 260);
+  }
+
+  // ── 차트 그림 도구(추세선·가격범위 측정) ──────────────────────────────────
+  // LightweightCharts 자체엔 TradingView 정식 위젯 같은 드로잉 툴바가 없어서(무료
+  // 임베드 위젯과 이 커스텀 라이브러리는 서로 다른 제품 — 소사 마커·정규화 비교 기능을
+  // 유지하려면 이 라이브러리를 계속 써야 함), 차트 위에 별도 <canvas> 오버레이를 얹고
+  // 좌표 변환만 라이브러리 API(priceToCoordinate/coordinateToPrice, timeScale의
+  // timeToCoordinate/coordinateToTime)로 위임해 직접 그린다. 평소엔 이 캔버스가
+  // pointer-events:none이라 팬·줌·소사 마커 클릭 등 기존 차트 조작을 그대로 통과시키고,
+  // 도구를 선택한 동안만 클릭을 받도록 전환한다.
+  let drawMode = null;      // null(커서) | 'trendline' | 'measure'
+  let drawings = [];        // {type, p1:{time,price}, p2:{time,price}}
+  let pendingP1 = null;     // 추세선 1번째 클릭 대기
+  let dragStart = null;     // 가격범위 드래그 시작점
+  let drawCanvas, drawCtx;
+
+  function initDrawTools() {
+    drawCanvas = document.getElementById('bh-draw-canvas');
+    drawCtx = drawCanvas.getContext('2d');
+
+    const btnCursor = document.getElementById('bh-draw-cursor');
+    const btnTrend = document.getElementById('bh-draw-trendline');
+    const btnMeasure = document.getElementById('bh-draw-measure');
+    const btnClear = document.getElementById('bh-draw-clear');
+    const toolBtns = { cursor: btnCursor, trendline: btnTrend, measure: btnMeasure };
+
+    function setDrawMode(mode) {
+      drawMode = mode;
+      pendingP1 = null;
+      dragStart = null;
+      Object.entries(toolBtns).forEach(([key, btn]) => {
+        btn.classList.toggle('active', key === (mode || 'cursor'));
+      });
+      drawCanvas.style.pointerEvents = mode ? 'auto' : 'none';
+      drawCanvas.style.cursor = mode ? 'crosshair' : 'default';
+      redrawDrawings();
+    }
+
+    btnCursor.addEventListener('click', () => setDrawMode(null));
+    btnTrend.addEventListener('click', () => setDrawMode(drawMode === 'trendline' ? null : 'trendline'));
+    btnMeasure.addEventListener('click', () => setDrawMode(drawMode === 'measure' ? null : 'measure'));
+    btnClear.addEventListener('click', () => { drawings = []; redrawDrawings(); });
+
+    function eventXY(ev) {
+      const rect = drawCanvas.getBoundingClientRect();
+      return { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
+    }
+
+    drawCanvas.addEventListener('mousedown', (ev) => {
+      if (!drawMode) return;
+      const { x, y } = eventXY(ev);
+      const pt = pxToPoint(x, y);
+      if (!pt) return;
+      if (drawMode === 'trendline') {
+        if (!pendingP1) {
+          pendingP1 = pt;
+        } else {
+          drawings.push({ type: 'trendline', p1: pendingP1, p2: pt });
+          setDrawMode(null);
+        }
+        redrawDrawings();
+      } else if (drawMode === 'measure') {
+        dragStart = pt;
+      }
+    });
+
+    drawCanvas.addEventListener('mousemove', (ev) => {
+      const { x, y } = eventXY(ev);
+      if (drawMode === 'trendline' && pendingP1) {
+        const from = pointToPx(pendingP1);
+        redrawDrawings({ line: [from, { x, y }], isPreview: true });
+      } else if (drawMode === 'measure' && dragStart) {
+        const pt = pxToPoint(x, y);
+        const from = pointToPx(dragStart);
+        if (pt && from) redrawDrawings({ measure: [dragStart, pt, from, { x, y }] });
+      }
+    });
+
+    drawCanvas.addEventListener('mouseup', (ev) => {
+      if (drawMode === 'measure' && dragStart) {
+        const { x, y } = eventXY(ev);
+        const pt = pxToPoint(x, y);
+        if (pt) drawings.push({ type: 'measure', p1: dragStart, p2: pt });
+        setDrawMode(null);
+      }
+    });
+
+    function resizeDrawCanvas() {
+      const w = drawCanvas.clientWidth || document.getElementById('bh-chart').clientWidth;
+      const h = drawCanvas.clientHeight || document.getElementById('bh-chart').clientHeight;
+      if (!w || !h) return;
+      const dpr = window.devicePixelRatio || 1;
+      drawCanvas.width = Math.round(w * dpr);
+      drawCanvas.height = Math.round(h * dpr);
+      drawCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      redrawDrawings();
+    }
+    resizeDrawCanvas();
+    new ResizeObserver(resizeDrawCanvas).observe(document.getElementById('bh-chart'));
+    // 팬·줌(범위버튼·확대축소버튼 포함) 때마다 좌표가 바뀌므로 다시 그린다
+    chart.timeScale().subscribeVisibleLogicalRangeChange(() => redrawDrawings());
+  }
+
+  function pxToPoint(x, y) {
+    const time = chart.timeScale().coordinateToTime(x);
+    const price = seriesRefs.QQQ.coordinateToPrice(y);
+    if (time == null || price == null) return null;
+    return { time: timeToDateStr(time) || time, price };
+  }
+
+  function pointToPx(pt) {
+    const x = chart.timeScale().timeToCoordinate(pt.time);
+    const y = seriesRefs.QQQ.priceToCoordinate(pt.price);
+    if (x == null || y == null) return null;
+    return { x, y };
+  }
+
+  const DRAW_LINE_COLOR = IS_DARK ? '#0A84FF' : '#0071E3'; // QQQ와 동일 톤 — 새 색 추가 없이 기존 팔레트 재사용
+
+  function drawTrendLine(a, b, isPreview) {
+    if (!a || !b) return;
+    drawCtx.save();
+    drawCtx.strokeStyle = DRAW_LINE_COLOR;
+    drawCtx.lineWidth = 2;
+    if (isPreview) drawCtx.setLineDash([5, 4]);
+    drawCtx.beginPath();
+    drawCtx.moveTo(a.x, a.y);
+    drawCtx.lineTo(b.x, b.y);
+    drawCtx.stroke();
+    drawCtx.setLineDash([]);
+    drawCtx.fillStyle = DRAW_LINE_COLOR;
+    [a, b].forEach(p => {
+      drawCtx.beginPath();
+      drawCtx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+      drawCtx.fill();
+    });
+    drawCtx.restore();
+  }
+
+  function drawMeasureBox(p1, p2, apx, bpx) {
+    if (!apx || !bpx) return;
+    const pctChange = p1.price !== 0 ? ((p2.price - p1.price) / Math.abs(p1.price)) * 100 : 0;
+    const d1 = new Date((typeof p1.time === 'string' ? p1.time : timeToDateStr(p1.time)) + 'T00:00:00Z');
+    const d2 = new Date((typeof p2.time === 'string' ? p2.time : timeToDateStr(p2.time)) + 'T00:00:00Z');
+    const days = Math.abs(Math.round((d2 - d1) / 86400000));
+    const up = pctChange >= 0;
+    const color = up ? COLORS.green : COLORS.red;
+    const x0 = Math.min(apx.x, bpx.x), x1 = Math.max(apx.x, bpx.x);
+    const y0 = Math.min(apx.y, bpx.y), y1 = Math.max(apx.y, bpx.y);
+    drawCtx.save();
+    drawCtx.fillStyle = color + '26';
+    drawCtx.fillRect(x0, y0, x1 - x0, y1 - y0);
+    drawCtx.strokeStyle = color;
+    drawCtx.lineWidth = 1.5;
+    drawCtx.setLineDash([4, 3]);
+    drawCtx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+    drawCtx.setLineDash([]);
+    const label = `${up ? '+' : ''}${pctChange.toFixed(2)}%  ${days}일`;
+    drawCtx.font = '700 13px -apple-system, BlinkMacSystemFont, sans-serif';
+    const tw = drawCtx.measureText(label).width;
+    const labelX = (bpx.x >= apx.x) ? Math.max(x0 + 6, x1 - tw - 6) : x0 + 6;
+    const labelY = (bpx.y <= apx.y) ? y0 + 16 : y1 - 6;
+    drawCtx.fillStyle = color;
+    drawCtx.fillText(label, labelX, labelY);
+    drawCtx.restore();
+  }
+
+  function redrawDrawings(preview) {
+    if (!drawCtx) return;
+    const w = drawCanvas.clientWidth, h = drawCanvas.clientHeight;
+    drawCtx.clearRect(0, 0, w, h);
+    drawings.forEach(d => {
+      if (d.type === 'trendline') drawTrendLine(pointToPx(d.p1), pointToPx(d.p2));
+      else if (d.type === 'measure') drawMeasureBox(d.p1, d.p2, pointToPx(d.p1), pointToPx(d.p2));
+    });
+    if (preview && preview.line) drawTrendLine(preview.line[0], preview.line[1], preview.isPreview);
+    if (preview && preview.measure) drawMeasureBox(preview.measure[0], preview.measure[1], preview.measure[2], preview.measure[3]);
   }
 
   function buildRangeButtons() {
