@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-07-29T06:00:45.783Z
+ * 생성 시각: 2026-08-01T04:36:06.813Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -119,6 +119,11 @@
           "history": "History & Humanities",
           "philosophy": "Philosophy & Classics"
         }
+      },
+      "watch": {
+        "heading": "Apple Watch",
+        "intro": "Premium users can use the dedicated flip clock app for Apple Watch.",
+        "keepGuide": "If your watch keeps returning to the default watch face: on your watch, open Settings → General → Return to Clock, choose 'After 1 Hour', then in the app list below turn on 'Return to App' for Long Time, Easy Life. The flip clock will stay on for an hour even after you lower your wrist."
       },
       "closeAria": "Close settings"
     },
@@ -478,6 +483,11 @@
           "philosophy": "Filosofía y clásicos"
         }
       },
+      "watch": {
+        "heading": "Apple Watch",
+        "intro": "Los usuarios premium pueden usar la app de reloj flip exclusiva para Apple Watch.",
+        "keepGuide": "Si tu reloj vuelve constantemente a la esfera predeterminada: en el reloj, abre Ajustes → General → Volver al reloj, elige «Después de 1 hora» y, en la lista de apps de abajo, activa «Volver a la app» para Long Time, Easy Life. El reloj flip permanecerá visible durante una hora aunque bajes la muñeca."
+      },
       "closeAria": "Cerrar los ajustes"
     },
     "weather": {
@@ -835,6 +845,11 @@
           "history": "歴史·人文",
           "philosophy": "哲学·古典"
         }
+      },
+      "watch": {
+        "heading": "Apple Watch",
+        "intro": "プレミアムをご利用の方は、Apple Watch専用のフリップ時計アプリを使えます。",
+        "keepGuide": "ウォッチの画面がすぐ標準の文字盤に戻る場合は、ウォッチの設定 → 一般 → 時計に戻るで「1時間後」を選び、下のアプリ一覧でLong Time, Easy Lifeの「アプリに戻る」をオンにしてください。手首を下げても1時間はフリップ時計が表示されたままになります。"
       },
       "closeAria": "設定を閉じる"
     },
@@ -1194,6 +1209,11 @@
           "philosophy": "철학·고전"
         }
       },
+      "watch": {
+        "heading": "애플워치",
+        "intro": "프리미엄 이용자는 애플워치 전용 플립시계 앱을 쓸 수 있습니다.",
+        "keepGuide": "워치 화면이 자꾸 기본 시계로 돌아간다면: 워치의 설정 → 일반 → 시계로 돌아가기에서 '1시간 후'를 선택하고, 아래 앱 목록에서 Long Time, Easy Life의 '앱으로 복귀'를 켜주세요. 손목을 내렸다 올려도 1시간 동안 플립시계가 유지됩니다."
+      },
       "closeAria": "설정 닫기"
     },
     "weather": {
@@ -1552,6 +1572,11 @@
           "philosophy": "Filosofia e clássicos"
         }
       },
+      "watch": {
+        "heading": "Apple Watch",
+        "intro": "Usuários premium podem usar o app de relógio flip exclusivo para Apple Watch.",
+        "keepGuide": "Se o relógio voltar sempre para o mostrador padrão: no relógio, abra Ajustes → Geral → Voltar ao Relógio, escolha 'Após 1 hora' e, na lista de apps abaixo, ative 'Voltar ao App' para Long Time, Easy Life. O relógio flip permanecerá na tela por uma hora mesmo depois de abaixar o pulso."
+      },
       "closeAria": "Fechar as configurações"
     },
     "weather": {
@@ -1909,6 +1934,11 @@
           "history": "历史·人文",
           "philosophy": "哲学·经典"
         }
+      },
+      "watch": {
+        "heading": "Apple Watch",
+        "intro": "高级版用户可以使用 Apple Watch 专用的翻页时钟 App。",
+        "keepGuide": "如果手表总是回到默认表盘：请在手表上打开 设置 → 通用 → 返回表盘，选择“1小时后”，并在下方 App 列表中为 Long Time, Easy Life 开启“返回 App”。即使放下手腕，翻页时钟也会保持显示 1 小时。"
       },
       "closeAria": "关闭设置"
     },

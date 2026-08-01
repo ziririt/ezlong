@@ -298,7 +298,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.22</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.23</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -561,6 +561,17 @@
             <span data-i18n="settings.quotes.all">모든 분야</span>
           </label>
           <div class="field-grid" id="flatGenreOptions"></div>
+        </section>
+
+        <!-- 2026-08-01 성동님 지시 — 설정 맨 아래 "애플워치" 안내 섹션.
+             워치 앱은 프리미엄 전용 혜택이고, watchOS의 "시계로 돌아가기"
+             기본값 때문에 앱이 금방 기본 페이스로 돌아가는 것을 이용자가
+             설정 두 번으로 해결할 수 있게 안내한다(앱이 코드로 바꿀 수 없는
+             OS 사용자 설정 — 모든 워치 시계 앱의 공통 대응 패턴). -->
+        <section class="settings-block settings-card" data-i18n-aria="settings.watch.heading" aria-label="애플워치">
+          <h3 class="settings-subtitle" data-i18n="settings.watch.heading">애플워치</h3>
+          <p class="settings-desc" data-i18n="settings.watch.intro">프리미엄 이용자는 애플워치 전용 플립시계 앱을 쓸 수 있습니다.</p>
+          <p class="settings-desc settings-desc-muted" data-i18n="settings.watch.keepGuide">워치 화면이 자꾸 기본 시계로 돌아간다면: 워치의 설정 → 일반 → 시계로 돌아가기에서 '1시간 후'를 선택하고, 아래 앱 목록에서 Long Time, Easy Life의 '앱으로 복귀'를 켜주세요. 손목을 내렸다 올려도 1시간 동안 플립시계가 유지됩니다.</p>
         </section>
 
         <button class="settings-save" type="button" id="settingsSave" data-i18n="settings.quotes.confirm">확인</button>
@@ -880,7 +891,7 @@
   <script src="i18n/season.js?v=20260728-i18n-v13"></script>
   <script src="i18n/region.js?v=20260728-i18n-v13"></script>
   <script src="i18n/quote-source.js?v=20260728-i18n-v13"></script>
-  <script src="i18n/locale-bundle.js?v=20260728-i18n-v13"></script>
+  <script src="i18n/locale-bundle.js?v=20260801-watch-v14"></script>
   <script src="i18n/index.js?v=20260728-i18n-v13"></script>
   <script src="i18n/book-titles.js?v=20260728-i18n-v13"></script>
   <script src="i18n/quote-translations.js?v=20260728-i18n-v13"></script>
