@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-08-02-21:50",
+      "timestamp_kst": "2026-08-02(일) 21:50 KST",
+      "key_event": {
+        "name": "AI 기대감 및 주요 기술주 실적 혼조",
+        "name_en": "AI Optimism Amid Mixed Big Tech Earnings",
+        "time": "직전 거래일 마감 및 다음 주 개장 영향",
+        "why": "AI 투자 심리 지속, 빅테크 실적 혼조, 금리 우려 상존",
+        "why_en": "Sustained AI investment sentiment, mixed Big Tech earnings, persistent interest rate concerns"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "AI 기대감과 VIX 하락으로 긍정 우위 유지. 금리 우려 및 지정학적 불확실성은 지속.",
+      "summary_en": "Positive sentiment maintained due to AI optimism and VIX decline. Rate concerns and geopolitical uncertainty persist.",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "AI 산업 성장 기대감 지속",
+          "name_en": "Continued Optimism for AI Industry Growth",
+          "desc": "엔비디아 CEO의 AI 붐 지속 발언 및 관련 투자 심리 유지",
+          "desc_en": "Nvidia CEO's remarks on sustained AI boom and ongoing investment sentiment",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "일부 빅테크 실적 호조",
+          "name_en": "Strong Earnings from Select Big Tech",
+          "desc": "GOOGL, MSFT의 견조한 실적 발표 및 클라우드 성장세",
+          "desc_en": "Solid earnings from GOOGL and MSFT, with strong cloud growth",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "일부 빅테크 실적 부진",
+          "name_en": "Weak Earnings from Some Big Tech",
+          "desc": "AAPL의 실적 부진(-1.60%)이 시장에 부담으로 작용",
+          "desc_en": "AAPL's weak earnings (-1.60%) weighed on the market",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 15,
+          "name": "연준 금리 정책 불확실성",
+          "name_en": "Fed Rate Policy Uncertainty",
+          "desc": "미국 고용 데이터 발표 앞두고 금리 인상 우려 지속",
+          "desc_en": "Ahead of US jobs data, concerns about interest rate hikes persist",
+          "category": "fed_policy"
+        },
+        {
+          "score": 10,
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미 10년물 국채금리 1.76% 상승, 성장주에 부정적 영향",
+          "desc_en": "US 10-year Treasury yield rose 1.76%, negatively impacting growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "이란 핵 협상 불확실성",
+          "name_en": "Iran Nuclear Deal Uncertainty",
+          "desc": "트럼프의 이란 폭격 위협 발언과 협상 기대감이 혼재",
+          "desc_en": "Trump's threats of bombing Iran mixed with hopes for a deal",
+          "category": "geopolitics"
+        }
+      ]
+    },
+    {
       "id": "2026-08-02-18:20",
       "timestamp_kst": "2026-08-02(일) 18:20 KST",
       "key_event": {
@@ -577,83 +645,8 @@
           "category": "oil_energy"
         }
       ]
-    },
-    {
-      "id": "2026-08-01-06:12",
-      "timestamp_kst": "2026-08-01(토) 06:12 KST",
-      "key_event": {
-        "name": "빅테크 실적 혼조 및 금리 인상 우려",
-        "name_en": "Mixed Big Tech Earnings & Rate Hike Concerns",
-        "time": "포스트마켓 마감 및 다음 정규장",
-        "why": "주요 기술주 실적, 연준 매파적 발언, 국채금리 상승",
-        "why_en": "Key tech earnings, hawkish Fed comments, rising Treasury yields"
-      },
-      "positive_total": 45,
-      "negative_total": 55,
-      "summary": "빅테크 실적 혼조와 연준 매파적 발언, 국채금리 상승으로 부정 우위 지속. 어제 부정 우위 유지.",
-      "summary_en": "Negative sentiment persists due to mixed Big Tech earnings, hawkish Fed remarks, and rising Treasury yields. Negative bias maintained from yesterday.",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "일부 빅테크 실적 호조",
-          "name_en": "Strong Performance from Select Big Tech",
-          "desc": "GOOGL (+5.76%), MSFT (+3.39%) 등 주요 기술주 실적 호조로 시장 심리 일부 개선",
-          "desc_en": "Market sentiment partially improved by strong earnings from key tech stocks like GOOGL (+5.76%) and MSFT (+3.39%).",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 15,
-          "name": "AI 투자 낙관론 지속",
-          "name_en": "Continued AI Investment Optimism",
-          "desc": "Amazon 실적 호조 및 AI 수익화 기대감으로 시장 전반의 AI 투자 심리 유지",
-          "desc_en": "Amazon's strong earnings and AI monetization expectations sustain overall market AI investment sentiment.",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "애플 실적 부진 및 공급망 우려",
-          "name_en": "Apple's Weak Earnings & Supply Chain Concerns",
-          "desc": "AAPL (-1.72%) 실적 부진과 UBS의 2027년까지 공급망 문제 지속 전망으로 하락",
-          "desc_en": "AAPL (-1.72%) declined due to weak earnings and UBS's projection of continued supply chain issues into fiscal 2027.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 20,
-          "name": "연준 매파적 발언 지속",
-          "name_en": "Persistent Hawkish Fed Remarks",
-          "desc": "연준 내 금리 인상 주장 및 인플레이션 우려로 매파적 기조 유지, 국채금리 상승 압력",
-          "desc_en": "Hawkish stance maintained due to calls for rate hikes and inflation concerns within the Fed, pressuring Treasury yields higher.",
-          "category": "fed_policy"
-        },
-        {
-          "score": 10,
-          "name": "미10년 국채금리 상승",
-          "name_en": "Rising US 10-Year Treasury Yields",
-          "desc": "미10년 국채금리 4.74% (+1.76%) 상승, 성장주 투자 매력 감소 및 시장 부담 가중",
-          "desc_en": "US 10-year Treasury yield rose to 4.74% (+1.76%), reducing growth stock appeal and increasing market burden.",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "WTI 유가 상승",
-          "name_en": "WTI Oil Price Increase",
-          "desc": "WTI 유가 86.80 (+5.39%) 상승. 에너지 섹터에는 긍정적이나, 인플레이션 압력으로 기술주에는 부정적 영향 우려.",
-          "desc_en": "WTI oil price rose to 86.80 (+5.39%). Positive for the energy sector, but raises inflation concerns, potentially negative for tech stocks.",
-          "category": "oil_energy"
-        },
-        {
-          "name": "테슬라 중국 사업 루머 해명",
-          "name_en": "Tesla China Business Rumor Clarification",
-          "desc": "일론 머스크의 중국 사업 매각 루머 해명에도 불구하고 TSLA (+0.29%)는 제한적 상승, 주가 변동성 지속.",
-          "desc_en": "Despite Elon Musk clarifying China business sale rumors, TSLA (+0.29%) saw limited gains, with continued stock volatility.",
-          "category": "company_specific"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-02T09:20:54Z",
+  "updated_at": "2026-08-02T12:50:56Z",
   "max_entries": 10
 }
