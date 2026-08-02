@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>그날 무슨 일이 있었나 — A Brief History | EZLONG</title>
+<meta name="description" content="QQQ·SPY·SOXX 3대 지수 차트에 날짜별 주요 이벤트를 겹쳐 보여주는 소사(小史). 차트가 크게 흔들린 날, 실제로 무슨 일이 있었는지 캘린더로 바로 찾아본다.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://ezlong.com/brief-history.html">
+<!-- Open Graph -->
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://ezlong.com/brief-history.html">
+<meta property="og:title"       content="그날 무슨 일이 있었나 — A Brief History | EZLONG">
+<meta property="og:description" content="QQQ·SPY·SOXX 차트와 날짜별 주요 이벤트를 함께 보는 소사. 차트가 왜 이렇게 움직였는지 캘린더로 바로 확인.">
+<meta property="og:site_name"   content="EZLONG">
+<!-- Twitter Card -->
+<meta name="twitter:card"        content="summary">
+<meta name="twitter:title"       content="그날 무슨 일이 있었나 — A Brief History | EZLONG">
+<meta name="twitter:description" content="QQQ·SPY·SOXX 차트와 날짜별 주요 이벤트를 함께 보는 소사.">
+
+<!-- 공유 디자인 시스템 -->
+<link rel="stylesheet" href="ez-design.css">
+
+<!-- LightweightCharts -->
+<script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+
+<style>
+  .bh-brand {
+    background: var(--ez-surface);
+    border-bottom: 1px solid var(--ez-border);
+    padding: 32px 20px 28px;
+  }
+  .bh-brand-inner { max-width: var(--ez-max-w-wide); margin: 0 auto; }
+  .bh-brand-label {
+    font-size: 14px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ez-blue); margin-bottom: 8px;
+  }
+  .bh-brand-title {
+    font-size: clamp(22px, 4vw, 32px); font-weight: 800; letter-spacing: -.03em;
+    color: var(--ez-text); margin-bottom: 10px;
+  }
+
+  .bh-main { max-width: var(--ez-max-w-wide); margin: 0 auto; padding: 28px 20px 60px; }
+
+  .bh-card {
+    background: var(--ez-surface); border: 1px solid var(--ez-border);
+    border-radius: var(--ez-r); box-shadow: var(--ez-shadow);
+  }
+
+  /* ── 차트 카드 ── */
+  .bh-chart-card { padding: 20px 20px 12px; margin-bottom: 20px; }
+  .bh-chart-top {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 10px; margin-bottom: 14px;
+  }
+  .bh-legend { display: flex; gap: 8px; flex-wrap: wrap; }
+  .bh-legend-item {
+    display: flex; align-items: center; gap: 7px; font-size: 15px; font-weight: 600; color: var(--ez-text2);
+    background: var(--ez-card2); border: 1px solid var(--ez-border); border-radius: 999px;
+    padding: 5px 12px 5px 8px; cursor: pointer; opacity: 1; transition: opacity .15s;
+  }
+  .bh-legend-item:not(.active) { opacity: .55; }
+  /* 체크박스형 표시 — 켜짐 상태를 색칠+체크마크로 명확히 보여줌. 테두리·채움색은 해당 종목 라인 색 그대로 사용 */
+  .bh-legend-check {
+    width: 17px; height: 17px; border-radius: 5px; flex: none; box-sizing: border-box;
+    border: 2px solid var(--sym-color, var(--ez-border2));
+    background: var(--ez-surface);
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: background .15s, border-color .15s;
+  }
+  .bh-legend-item.active .bh-legend-check { background: var(--sym-color, var(--ez-blue)); }
+  .bh-legend-check::after {
+    content: ''; width: 8px; height: 5px; margin-top: -1px;
+    border-left: 2px solid #fff; border-bottom: 2px solid #fff;
+    transform: rotate(-45deg); opacity: 0; transition: opacity .1s;
+  }
+  .bh-legend-item.active .bh-legend-check::after { opacity: 1; }
+  .bh-legend-shake { animation: bh-shake .4s; }
+  @keyframes bh-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+  }
+  .bh-chart-outer { position: relative; }
+  .bh-chart-wrap { width: 100%; height: 380px; }
+  .bh-range-btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .bh-range-btn {
+    font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: 999px;
+    border: 1px solid var(--ez-border); background: var(--ez-card2); color: var(--ez-text2);
+    cursor: pointer;
+  }
+  .bh-range-btn.active { background: var(--ez-blue); color: #fff; border-color: var(--ez-blue); }
+  /* 차트 위 오버레이 줌 버튼 — 가로 정중앙, 세로로는 상단에서 70% 지점, 살짝 반투명 */
+  .bh-zoom-btns {
+    position: absolute; left: 50%; top: 70%; transform: translate(-50%, -50%);
+    display: flex; gap: 6px; z-index: 5; opacity: .55; transition: opacity .15s;
+  }
+  .bh-zoom-btns:hover, .bh-zoom-btns:focus-within { opacity: 1; }
+  .bh-zoom-btns button {
+    width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--ez-border);
+    background: var(--ez-card2); color: var(--ez-text2); font-size: 18px; font-weight: 700;
+    line-height: 1; cursor: pointer;
+  }
+  .bh-zoom-btns button:hover { background: var(--ez-border2); }
+  /* 차트 위 그림 도구 — 좌상단 세로 아이콘 바(추세선·가격범위 측정 등 핵심 도구만) */
+  .bh-draw-toolbar {
+    position: absolute; left: 8px; top: 8px; z-index: 6;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .bh-draw-btn {
+    width: 30px; height: 30px; border-radius: 7px; border: 1px solid var(--ez-border);
+    background: var(--ez-card2); color: var(--ez-text2); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; padding: 0;
+  }
+  .bh-draw-btn:hover { background: var(--ez-border2); }
+  .bh-draw-btn.active { background: var(--ez-blue); color: #fff; border-color: var(--ez-blue); }
+  .bh-draw-sep { height: 1px; background: var(--ez-border); margin: 2px 4px; }
+  /* 그림 도구가 그려지는 오버레이 캔버스 — 평소엔 pointer-events:none이라 차트 조작(팬·줌·
+     소사 마커 클릭)을 그대로 통과시키고, 도구를 선택했을 때만 JS로 auto 전환해 클릭을 받는다.
+     touch-action:none은 도구 활성화(pointer-events:auto) 상태에서 손가락 드래그가 브라우저
+     기본 스크롤/팬으로 새는 걸 막는다 — 평소(none)엔 캔버스가 애초에 터치를 안 받아 무해. */
+  .bh-draw-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; touch-action: none; }
+  /* 그림 하나를 탭/클릭하면 그 위치 근처에 뜨는 개별 삭제(휴지통) 버튼 — 전체 지우기와 별개 */
+  .bh-draw-delete-btn {
+    position: absolute; z-index: 7; width: 30px; height: 30px; border-radius: 7px;
+    border: 1px solid var(--ez-red); background: var(--ez-card2); color: var(--ez-red);
+    cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+  .bh-draw-delete-btn:hover { background: var(--ez-red); color: #fff; }
+  /* 모바일 — 범례 5개·기간버튼 6개를 한 줄에 고정. 폰트는 사이트 14px 하한선을 유지하고
+     여백(패딩·간격)만 압축한다(2026-08-01). 티커만 남긴 라벨(SYMBOL_LABELS)과 합쳐서 작동. */
+  @media (max-width: 640px) {
+    .bh-legend { gap: 1px; }
+    .bh-legend-item { gap: 2px; font-size: 14px; padding: 2px 3px 2px 2px; }
+    .bh-legend-check { width: 10px; height: 10px; border-radius: 3px; }
+    .bh-range-btns { gap: 4px; }
+    .bh-range-btn { padding: 5px 7px; }
+  }
+
+  /* ── 레이아웃: 캘린더 + 이벤트 패널 ── */
+  .bh-layout { display: grid; grid-template-columns: 1fr 360px; gap: 20px; align-items: start; }
+  @media (max-width: 860px) { .bh-layout { grid-template-columns: 1fr; } }
+
+  .bh-cal-card { padding: 18px 18px 20px; position: sticky; top: 12px; }
+  @media (max-width: 860px) { .bh-cal-card { position: static; } }
+  .bh-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .bh-cal-title { font-size: 17px; font-weight: 700; color: var(--ez-text); }
+  .bh-cal-nav { display: flex; gap: 6px; }
+  .bh-cal-nav button {
+    width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--ez-border);
+    background: var(--ez-card2); color: var(--ez-text2); font-size: 16px; font-weight: 700; cursor: pointer;
+  }
+  .bh-cal-weekdays, .bh-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .bh-cal-weekdays { margin-bottom: 4px; }
+  .bh-cal-weekdays span { text-align: center; font-size: 14px; font-weight: 700; color: var(--ez-text3); padding: 4px 0; }
+  .bh-cal-cell {
+    aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--ez-text2); cursor: default;
+    position: relative; gap: 2px;
+  }
+  .bh-cal-cell.empty { visibility: hidden; }
+  .bh-cal-cell.has-event { cursor: pointer; }
+  .bh-cal-cell.has-event:hover { background: var(--ez-card2); }
+  .bh-cal-cell.selected { background: var(--ez-blue-dim); outline: 2px solid var(--ez-blue); }
+  .bh-cal-dots { display: flex; gap: 2px; height: 6px; }
+  .bh-cal-dot-mark { width: 6px; height: 6px; border-radius: 50%; }
+  .bh-cal-today { text-decoration: underline; text-underline-offset: 3px; }
+  .bh-cal-legend { margin-top: 12px; font-size: 14px; color: var(--ez-text3); line-height: 1.7; }
+  .bh-cal-legend .bh-cal-dot-mark { display: inline-block; vertical-align: middle; margin-right: 5px; }
+
+  .bh-filter-row { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 14px; color: var(--ez-text2); }
+  .bh-filter-row input { width: 17px; height: 17px; }
+  /* 날짜로 이동 — 버튼을 누르면 우측에 날짜 입력칸이 나타난다(기본값 오늘) */
+  .bh-goto-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .bh-goto-btn {
+    width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--ez-border);
+    background: var(--ez-card2); color: var(--ez-text2); cursor: pointer; flex: none;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bh-goto-btn:hover { background: var(--ez-border2); }
+  .bh-goto-btn.active { background: var(--ez-blue); color: #fff; border-color: var(--ez-blue); }
+  .bh-goto-input {
+    font-size: 15px; font-weight: 600; color: var(--ez-text); background: var(--ez-surface);
+    border: 1.5px solid var(--ez-blue); border-radius: 999px; padding: 6px 14px;
+    outline: none;
+  }
+
+  /* ── 이벤트 패널 ── */
+  .bh-events-card { padding: 18px 20px 20px; }
+  .bh-events-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .bh-events-title { font-size: 17px; font-weight: 700; color: var(--ez-text); }
+  .bh-events-count { font-size: 14px; color: var(--ez-text3); }
+  .bh-clear-btn {
+    font-size: 14px; font-weight: 600; color: var(--ez-blue); background: none; border: none; cursor: pointer;
+  }
+
+  .bh-event-item {
+    padding: 16px 16px; border-radius: var(--ez-rs); border: 1px solid var(--ez-border2);
+    background: var(--ez-card2); margin-bottom: 12px; scroll-margin-top: 90px;
+  }
+  .bh-event-item.highlight { outline: 2px solid var(--ez-blue); background: var(--ez-blue-dim); }
+  .bh-event-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+  .bh-event-date { font-size: 14px; font-weight: 700; color: var(--ez-text2); }
+  .bh-badge { font-size: 14px; font-weight: 700; padding: 2px 9px; border-radius: 999px; color: #fff; }
+  .bh-badge.major { background: var(--ez-blue); }
+  .bh-badge.notable { background: var(--ez-text3); }
+  .bh-event-title { font-size: 16px; font-weight: 700; color: var(--ez-text); line-height: 1.45; margin-bottom: 6px; }
+  .bh-event-summary { font-size: 15px; color: var(--ez-text2); line-height: 1.6; margin-bottom: 10px; }
+  /* 소제목 + 닷블릿 리스트 구조 요약 (2024-10-29 이후 소사) */
+  .bh-event-groups { margin-bottom: 10px; }
+  .bh-event-group { margin-bottom: 9px; }
+  .bh-event-group:last-child { margin-bottom: 0; }
+  .bh-event-group-title { font-size: 15px; font-weight: 700; color: var(--ez-text); margin: 0 0 3px; }
+  .bh-event-group-list { list-style: none; margin: 0; padding: 0; }
+  .bh-event-group-list li {
+    position: relative; padding-left: 13px; font-size: 15px; color: var(--ez-text2);
+    line-height: 1.55; margin-bottom: 2px;
+  }
+  .bh-event-group-list li:last-child { margin-bottom: 0; }
+  .bh-event-group-list li::before { content: '·'; position: absolute; left: 0; top: 0; color: var(--ez-text2); font-weight: 800; }
+  .bh-event-moves { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+  .bh-move-pill { font-size: 14px; font-weight: 700; padding: 3px 9px; border-radius: 6px; }
+  .bh-move-pill.up { color: var(--ez-green); background: color-mix(in srgb, var(--ez-green) 14%, transparent); }
+  .bh-move-pill.down { color: var(--ez-red); background: color-mix(in srgb, var(--ez-red) 14%, transparent); }
+  .bh-event-foot { display: flex; align-items: center; justify-content: space-between; font-size: 14px; color: var(--ez-text2); }
+  .bh-event-link { font-size: 14px; font-weight: 600; color: var(--ez-blue); text-decoration: none; }
+  .bh-event-link:hover { text-decoration: underline; }
+
+  .bh-empty { padding: 30px 10px; text-align: center; color: var(--ez-text3); font-size: 15px; }
+</style>
+</head>
+<body>
+
+<!-- ── EZLONG 글로벌 헤더 ── -->
+<script src="/ez-nav.js"></script>
+
+<div class="bh-brand">
+  <div class="bh-brand-inner">
+    <div class="bh-brand-label">A Brief History</div>
+    <h1 class="bh-brand-title">그날 무슨 일이 있었나</h1>
+  </div>
+</div>
+
+<main class="bh-main">
+
+  <!-- ── 차트 ── -->
+  <div class="bh-card bh-chart-card">
+    <div class="bh-chart-top">
+      <div class="bh-legend" id="bh-legend"></div>
+    </div>
+    <div class="bh-chart-outer">
+      <div class="bh-chart-wrap" id="bh-chart"></div>
+      <canvas id="bh-draw-canvas" class="bh-draw-canvas"></canvas>
+      <button type="button" id="bh-draw-delete-btn" class="bh-draw-delete-btn" style="display:none" aria-label="이 그림 지우기" title="지우기">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path>
+        </svg>
+      </button>
+      <div class="bh-draw-toolbar" id="bh-draw-toolbar">
+        <button type="button" class="bh-draw-btn active" id="bh-draw-cursor" aria-label="커서(그리기 해제)" title="커서">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4 2.5l16.5 7.5-6.8 2.2-2.2 6.8z"/></svg>
+        </button>
+        <button type="button" class="bh-draw-btn" id="bh-draw-trendline" aria-label="추세선 그리기" title="추세선">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="5" cy="19" r="2"></circle><circle cx="19" cy="5" r="2"></circle>
+            <line x1="6.4" y1="17.6" x2="17.6" y2="6.4"></line>
+          </svg>
+        </button>
+        <button type="button" class="bh-draw-btn" id="bh-draw-measure" aria-label="가격 범위 측정" title="가격범위">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2.5" y="9.5" width="19" height="5" rx="1" transform="rotate(-28 12 12)"></rect>
+            <line x1="9.3" y1="8.4" x2="10.4" y2="10.6" transform="rotate(-28 12 12)"></line>
+            <line x1="12.5" y1="6.9" x2="13.6" y2="9.1" transform="rotate(-28 12 12)"></line>
+          </svg>
+        </button>
+        <div class="bh-draw-sep"></div>
+        <button type="button" class="bh-draw-btn" id="bh-draw-clear" aria-label="그림 전체 지우기" title="전체 지우기">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="bh-zoom-btns">
+        <button id="bh-zoom-out" aria-label="차트 축소 — 더 넓은 기간 보기" title="축소">－</button>
+        <button id="bh-zoom-in" aria-label="차트 확대 — 더 좁은 기간 보기" title="확대">＋</button>
+      </div>
+    </div>
+    <div class="bh-range-btns" id="bh-range-btns"></div>
+    <div class="bh-goto-row">
+      <button type="button" id="bh-goto-btn" class="bh-goto-btn" aria-label="날짜로 이동" title="날짜로 이동">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="14" height="14" rx="2"></rect>
+          <line x1="3" y1="9.5" x2="17" y2="9.5"></line>
+          <line x1="7" y1="3" x2="7" y2="6.5"></line>
+          <line x1="13" y1="3" x2="13" y2="6.5"></line>
+          <path d="M13 14 L20 14 M20 14 L17 11 M20 14 L17 17"></path>
+        </svg>
+      </button>
+      <input type="date" id="bh-goto-input" class="bh-goto-input" style="display:none" aria-label="이동할 날짜 선택">
+    </div>
+    <div class="bh-filter-row">
+      <input type="checkbox" id="bh-major-only-chart" checked>
+      <label for="bh-major-only-chart">핵심 소사만 표시 — 차트 포인트</label>
+    </div>
+  </div>
+
+  <!-- ── 이벤트 + 캘린더 (이벤트가 메인 좌측/모바일 상단, 캘린더가 우측/모바일 하단) ── -->
+  <div class="bh-layout">
+    <div class="bh-card bh-events-card">
+      <div class="bh-events-head">
+        <div>
+          <div class="bh-events-title" id="bh-events-title">전체 소사 (최신순)</div>
+          <div class="bh-events-count" id="bh-events-count"></div>
+        </div>
+        <button class="bh-clear-btn" id="bh-clear-btn" style="display:none">전체 보기로 돌아가기</button>
+      </div>
+      <div id="bh-events-list"></div>
+    </div>
+
+    <div class="bh-card bh-cal-card">
+      <div class="bh-cal-head">
+        <div class="bh-cal-nav"><button id="bh-cal-prev" aria-label="이전 달">‹</button></div>
+        <div class="bh-cal-title" id="bh-cal-title"></div>
+        <div class="bh-cal-nav"><button id="bh-cal-next" aria-label="다음 달">›</button></div>
+      </div>
+      <div class="bh-cal-weekdays">
+        <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+      </div>
+      <div class="bh-cal-grid" id="bh-cal-grid"></div>
+      <div class="bh-cal-legend">
+        <span class="bh-cal-dot-mark" style="background:var(--ez-blue)"></span>핵심 소사
+        <span style="margin-left:14px" class="bh-cal-dot-mark" style="background:var(--ez-text3)"></span>주요 소사
+      </div>
+      <div class="bh-filter-row">
+        <input type="checkbox" id="bh-major-only" checked>
+        <label for="bh-major-only">핵심 소사만 표시 — 달력·목록</label>
+      </div>
+    </div>
+  </div>
+
+
+</main>
+
+<!-- ══════════════════════════════════════════════════
+     글로벌 푸터
+     ══════════════════════════════════════════════════ -->
+<script src="/ez-footer.js"></script>
+
+<script>
+(function(){
+  const IS_DARK = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const IS_MOBILE = window.matchMedia('(max-width: 640px)').matches;
+  const COLORS = {
+    QQQ:  IS_DARK ? '#0A84FF' : '#0071E3',
+    SPY:  IS_DARK ? '#BF5AF2' : '#8944AB',
+    SOXX: IS_DARK ? '#FF9F0A' : '#C77700',
+    TSLA: IS_DARK ? '#5AC8C8' : '#0F8B8D',
+    NVDA: IS_DARK ? '#FF6482' : '#C2185B',
+    green: IS_DARK ? '#30D158' : '#1A7F37',
+    red:   IS_DARK ? '#FF453A' : '#D92A2A',
+  };
+  const SYMBOL_LABELS = { QQQ: 'QQQ', SPY: 'SPY', SOXX: 'SOXX', TSLA: 'TSLA', NVDA: 'NVDA' };
+  // 화면에는 티커만 표시(공간 절약). 설명은 title/aria-label 툴팁으로만 제공.
+  const SYMBOL_FULL_LABELS = {
+    QQQ: 'QQQ (나스닥100)', SPY: 'SPY (S&P500, VOO)', SOXX: 'SOXX (반도체)',
+    TSLA: 'TSLA (테슬라)', NVDA: 'NVDA (엔비디아)',
+  };
+  const SYMBOLS = ['QQQ', 'SPY', 'SOXX', 'TSLA', 'NVDA'];
+
+  let chartData = null, eventsData = [];
+  let chart;
+  let markerHostSeries; // 소사 마커 전용 숨은 기준선 — 가격축과 무관하게 항상 날짜에 고정
+  const seriesRefs = {};
+  const seriesVisible = { QQQ: true, SPY: true, SOXX: true, TSLA: false, NVDA: false };
+  let selectedDate = null;
+  let calYear, calMonth; // 0-indexed month
+  let majorOnly = true;   // 기본값: 핵심 소사만 표시 (체크박스 checked 속성과 동기화)
+  let currentRangeMonths = null;   // 현재 적용된 기간(개월) — 줌 계산 기준. null = 전체
+  let currentCenterDate = null;    // 현재 기간의 중심 날짜 — null이면 최신일 기준
+
+  const eventsByDate = {};
+
+  Promise.all([
+    fetch('data/brief-history-chart.json').then(r => r.json()),
+    fetch('data/brief-history.json').then(r => r.json())
+  ]).then(([chartJson, eventsJson]) => {
+    chartData = chartJson;
+    eventsData = eventsJson.slice().sort((a,b) => a.date < b.date ? 1 : -1); // 최신순
+    eventsJson.forEach(e => { eventsByDate[e.date] = e; });
+
+    const last = chartData.dates[chartData.dates.length - 1];
+    calYear = parseInt(last.slice(0,4), 10);
+    calMonth = parseInt(last.slice(5,7), 10) - 1;
+
+    buildLegend();
+    buildChart();
+    initDrawTools();
+    buildRangeButtons();
+    renderCalendar();
+    renderEventList();
+
+    // "핵심 소사만 표시"는 달력쪽·차트쪽 두 군데에 있고 항상 같은 값으로 동기화된다.
+    // 어느 쪽을 누르든 majorOnly 갱신 + 캘린더·목록·차트 마커(applyMarkers)까지 전부 다시 그린다.
+    const majorOnlyCheckboxes = [
+      document.getElementById('bh-major-only'),
+      document.getElementById('bh-major-only-chart'),
+    ];
+    majorOnlyCheckboxes.forEach(cb => {
+      cb.addEventListener('change', (e) => {
+        majorOnly = e.target.checked;
+        majorOnlyCheckboxes.forEach(other => { other.checked = majorOnly; });
+        renderCalendar();
+        renderEventList();
+        applyMarkers();
+      });
+    });
+    document.getElementById('bh-clear-btn').addEventListener('click', () => {
+      selectedDate = null;
+      document.getElementById('bh-clear-btn').style.display = 'none';
+      renderCalendar();
+      renderEventList();
+    });
+    document.getElementById('bh-cal-prev').addEventListener('click', () => shiftMonth(-1));
+    document.getElementById('bh-cal-next').addEventListener('click', () => shiftMonth(1));
+    document.getElementById('bh-zoom-in').addEventListener('click', () => zoomChart(0.6));
+    document.getElementById('bh-zoom-out').addEventListener('click', () => zoomChart(1 / 0.6));
+
+    // 날짜로 이동 — 버튼을 누르면 우측에 날짜 입력칸이 나타난다. 기본값은 오늘 날짜.
+    const gotoBtn = document.getElementById('bh-goto-btn');
+    const gotoInput = document.getElementById('bh-goto-input');
+    gotoInput.value = new Date().toISOString().slice(0, 10);
+    gotoBtn.addEventListener('click', () => {
+      const willShow = gotoInput.style.display === 'none';
+      gotoInput.style.display = willShow ? 'inline-block' : 'none';
+      gotoBtn.classList.toggle('active', willShow);
+      if (willShow) {
+        gotoInput.focus();
+        if (typeof gotoInput.showPicker === 'function') {
+          try { gotoInput.showPicker(); } catch (e) {}
+        }
+      }
+    });
+    gotoInput.addEventListener('change', (e) => {
+      if (e.target.value) selectDate(e.target.value);
+    });
+  }).catch(err => {
+    document.getElementById('bh-events-list').innerHTML =
+      '<div class="bh-empty">데이터를 불러오지 못했습니다. 잠시 후 새로고침 해주세요.</div>';
+    console.error(err);
+  });
+
+  function buildLegend() {
+    document.getElementById('bh-legend').innerHTML = SYMBOLS.map(sym =>
+      `<button type="button" class="bh-legend-item${seriesVisible[sym] ? ' active' : ''}" data-sym="${sym}" ` +
+      `style="--sym-color:${COLORS[sym]}" role="checkbox" aria-checked="${seriesVisible[sym]}" ` +
+      `title="${SYMBOL_FULL_LABELS[sym]}" aria-label="${SYMBOL_FULL_LABELS[sym]} 표시">` +
+      `<span class="bh-legend-check"></span>${SYMBOL_LABELS[sym]}</button>`
+    ).join('');
+    document.querySelectorAll('.bh-legend-item').forEach(btn => {
+      btn.addEventListener('click', () => toggleSeries(btn.dataset.sym));
+    });
+  }
+
+  function shakeLegendBtn(sym) {
+    const btn = document.querySelector(`.bh-legend-item[data-sym="${sym}"]`);
+    if (btn) {
+      btn.classList.add('bh-legend-shake');
+      setTimeout(() => btn.classList.remove('bh-legend-shake'), 400);
+    }
+  }
+
+  function toggleSeries(sym) {
+    const visibleCount = Object.values(seriesVisible).filter(Boolean).length;
+    if (seriesVisible[sym] && visibleCount <= 1) {
+      // 최소 1개는 항상 볼 수 있어야 함 — 마지막 하나는 끌 수 없음. 5개 중 어느 것을
+      // 마지막으로 남기든 상관없음(소사 마커는 별도의 숨은 기준선에 고정돼 있어
+      // 어떤 종목을 끄고 켜도 항상 그대로 보임 — buildChart의 markerHost 참조)
+      shakeLegendBtn(sym);
+      return;
+    }
+    seriesVisible[sym] = !seriesVisible[sym];
+    if (seriesRefs[sym]) seriesRefs[sym].applyOptions({ visible: seriesVisible[sym] });
+    buildLegend();
+  }
+
+  function buildChart() {
+    const el = document.getElementById('bh-chart');
+    chart = LightweightCharts.createChart(el, {
+      autoSize: true,
+      layout: {
+        background: { type: 'solid', color: IS_DARK ? '#1C1C1E' : '#FFFFFF' },
+        textColor: IS_DARK ? '#8E8E93' : '#3C3C3E',
+        fontSize: 12,
+      },
+      grid: {
+        vertLines: { color: IS_DARK ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)' },
+        horzLines: { color: IS_DARK ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)' },
+      },
+      crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+      rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.08, bottom: 0.08 } },
+      timeScale: { borderVisible: false, timeVisible: false },
+      localization: {
+        // 크로스헤어 하단 날짜 표기 — 항상 YYYY-MM-DD 전체 표기
+        timeFormatter: (time) => timeToDateStr(time) || '',
+      },
+      handleScroll: true,
+      handleScale: true,
+    });
+
+    // 정규화 지수값이라 소수점이 의미 없다(성동님 지적) — 우측 축·크로스헤어 라벨 모두
+    // 정수로 표시. 자릿수가 "800.00"(6자)→"800"(3자)로 줄면서 축 폭 자체도 함께 줄어든다
+    // (LightweightCharts는 축 폭을 라벨 텍스트 길이 기준으로 자동 계산 — 별도 폭 설정 불필요).
+    const IDX_PRICE_FORMAT = { type: 'price', precision: 0, minMove: 1 };
+    seriesRefs.TSLA = chart.addLineSeries({ color: COLORS.TSLA, lineWidth: 1.6, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.TSLA, priceFormat: IDX_PRICE_FORMAT });
+    seriesRefs.NVDA = chart.addLineSeries({ color: COLORS.NVDA, lineWidth: 1.6, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.NVDA, priceFormat: IDX_PRICE_FORMAT });
+    seriesRefs.SOXX = chart.addLineSeries({ color: COLORS.SOXX, lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.SOXX, priceFormat: IDX_PRICE_FORMAT });
+    seriesRefs.SPY  = chart.addLineSeries({ color: COLORS.SPY,  lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.SPY, priceFormat: IDX_PRICE_FORMAT });
+    seriesRefs.QQQ  = chart.addLineSeries({ color: COLORS.QQQ,  lineWidth: 2.5, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true, visible: seriesVisible.QQQ, priceFormat: IDX_PRICE_FORMAT });
+
+    const toPoints = (arr) => chartData.dates.map((d, i) => ({ time: d, value: arr[i] }));
+    SYMBOLS.forEach(sym => seriesRefs[sym].setData(toPoints(chartData[sym])));
+
+    // 소사 마커 전용 숨은 기준선 — 5개 종목 중 어느 것을 켜고 끄든(가격 축이 서로 달라도)
+    // 마커는 항상 날짜(가로축) 위치에 고정돼 보이도록, 화면에 보이지 않는 별도 오버레이
+    // 가격축에 이 라인을 얹어서 마커 호스트로만 쓴다. 실제 가격값은 의미 없음(항상 0).
+    // scaleMargins를 top 크게·bottom 작게 잡아서, 이 라인(값 0, 전 구간 동일)이 차트
+    // 하단(가로축=시간축 바로 위)에 딱 붙게 만든다 — 예전엔 오버레이 스케일 기본 여백
+    // 때문에 마커가 차트 중간쯤에 붕 떠 보였음(성동님 스크린샷 지적사항).
+    markerHostSeries = chart.addLineSeries({
+      lineVisible: false, priceLineVisible: false, lastValueVisible: false,
+      crosshairMarkerVisible: false, priceScaleId: 'bh-marker-overlay', visible: true,
+    });
+    markerHostSeries.priceScale().applyOptions({
+      visible: false,
+      scaleMargins: { top: 0.9, bottom: 0.03 },
+    });
+    markerHostSeries.setData(chartData.dates.map(d => ({ time: d, value: 0 })));
+
+    applyMarkers();
+
+    // 모바일에서 핀치줌·드래그 같은 터치 조작이 클릭으로 오인되어 바로 아래 소사로
+    // 스크롤 이동해버리는 문제가 있었다 — 이제 "등락 포인트(마커)"를 정확히 눌렀을
+    // 때만(hoveredObjectId로 판별) 소사를 연다. 그 외 차트 조작은 아무 반응 없음.
+    // 누른 순간엔 그 마커만 잠깐 커지고 강조색으로 바뀌어(터치 피드백) 눌렸다는 게
+    // 눈에 보이고, 동시에 그 날짜의 소사로 바로 스크롤 이동한다.
+    //
+    // 커서 모드(drawMode===null)일 땐 이 클릭이 그림(추세선·가격범위) 위를 눌렀는지도
+    // 먼저 확인한다 — 그림 위 클릭이면 그 그림 옆에 개별 삭제(휴지통) 버튼을 띄우고
+    // 소사 마커 로직은 건너뛴다. 오버레이 캔버스(#bh-draw-canvas)는 커서 모드일 땐
+    // pointer-events:none이라 이 클릭이 캔버스를 거치지 않고 곧장 여기(차트 자체의
+    // subscribeClick)로 들어오므로, 별도 캔버스 클릭 리스너 없이도 그림 히트테스트가 가능하다.
+    chart.subscribeClick((param) => {
+      if (drawMode === null && param.point) {
+        const hit = hitTestDrawings(param.point.x, param.point.y);
+        if (hit) { showDeleteButton(hit, param.point.x, param.point.y); return; }
+      }
+      hideDeleteButton();
+      if (!param.hoveredObjectId) return;
+      flashMarkerAndSelect(param.hoveredObjectId);
+    });
+  }
+
+  function timeToDateStr(t) {
+    if (typeof t === 'string') return t;
+    if (typeof t === 'object' && t && 'year' in t) {
+      return `${t.year}-${String(t.month).padStart(2,'0')}-${String(t.day).padStart(2,'0')}`;
+    }
+    if (typeof t === 'number') {
+      return new Date(t * 1000).toISOString().slice(0, 10);
+    }
+    return null;
+  }
+
+  function buildMarkers(pool) {
+    return pool
+      .map(e => {
+        const moves = e.moves || {};
+        const vals = Object.values(moves).filter(v => typeof v === 'number');
+        const avg = vals.length ? vals.reduce((a,b) => a+b, 0) / vals.length : 0;
+        const up = avg >= 0;
+        return {
+          time: e.date,
+          id: e.date, // subscribeClick의 hoveredObjectId 판별용 — 마커를 정확히 눌렀을 때만 반응
+          position: 'aboveBar',
+          color: up ? COLORS.green : COLORS.red,
+          shape: e.importance === 3 ? (up ? 'arrowUp' : 'arrowDown') : 'circle',
+          size: e.importance === 3 ? 1.1 : 0.6,
+        };
+      })
+      .sort((a,b) => a.time < b.time ? -1 : 1);
+  }
+
+  function currentPool() {
+    return majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
+  }
+
+  function applyMarkers() {
+    // 소사 마커는 특정 종목의 가격(세로축)이 아니라 markerHostSeries(숨은 오버레이
+    // 기준선)에 표시한다. 종목마다 가격 축이 서로 달라 마커가 종목 조합에 따라
+    // 들쭉날쭉해 보이던 문제를 해결 — 5개 중 무엇을 켜고 끄든 마커는 항상 같은 자리다.
+    markerHostSeries.setMarkers(buildMarkers(currentPool()));
+  }
+
+  // 마커를 터치했을 때: 그 마커만 잠깐 커지고 강조색으로 바뀌어 "눌렸다"는 느낌을
+  // 준 뒤(약 0.25초), 원래 모양으로 되돌린다. 동시에 그 날짜의 소사로 바로 이동.
+  function flashMarkerAndSelect(dateStr) {
+    const flashColor = IS_DARK ? '#FFFFFF' : '#0A84FF';
+    const markers = buildMarkers(currentPool()).map(m =>
+      m.id === dateStr ? { ...m, size: 2.0, color: flashColor } : m
+    );
+    markerHostSeries.setMarkers(markers);
+    selectDate(dateStr);
+    setTimeout(applyMarkers, 260);
+  }
+
+  // ── 차트 그림 도구(추세선·가격범위 측정) ──────────────────────────────────
+  // LightweightCharts 자체엔 TradingView 정식 위젯 같은 드로잉 툴바가 없어서(무료
+  // 임베드 위젯과 이 커스텀 라이브러리는 서로 다른 제품 — 소사 마커·정규화 비교 기능을
+  // 유지하려면 이 라이브러리를 계속 써야 함), 차트 위에 별도 <canvas> 오버레이를 얹고
+  // 좌표 변환만 라이브러리 API(priceToCoordinate/coordinateToPrice, timeScale의
+  // timeToCoordinate/coordinateToTime)로 위임해 직접 그린다. 평소엔 이 캔버스가
+  // pointer-events:none이라 팬·줌·소사 마커 클릭 등 기존 차트 조작을 그대로 통과시키고,
+  // 도구를 선택한 동안만 클릭을 받도록 전환한다.
+  //
+  // (성동님 2차 피드백 반영) 가격범위도 처음엔 드래그(mousedown~mouseup) 방식이었는데
+  // PC에서 불편하고, 특히 모바일에서는 손가락 드래그가 차트 자체의 팬(스크롤) 제스처와
+  // 충돌해 그림이 전혀 안 그려지고 차트만 움직였다 — 추세선과 똑같이 "1번째 탭으로
+  // 점A 확정 → 2번째 탭으로 점B 확정" 클릭-클릭 방식으로 통일해 두 문제를 한번에 해결.
+  // 모바일 터치는 mousedown/mousemove가 신뢰성 있게 안 뜨는 경우가 있어 touchstart/
+  // touchmove를 별도로 붙이고(preventDefault로 브라우저 기본 스크롤 억제), 두 이벤트
+  // 모두 같은 handlePointDown/handlePointMove 로직을 공유한다.
+  let drawMode = null;      // null(커서) | 'trendline' | 'measure'
+  let drawings = [];        // {type, p1:{time,price}, p2:{time,price}}
+  let pendingP1 = null;     // 1번째 점 확정 후 2번째 점 대기 — 추세선·가격범위 공용
+  let drawCanvas, drawCtx;
+  let deleteBtn, deleteTarget = null; // 그림 하나를 탭했을 때 뜨는 개별 삭제(휴지통) 버튼
+
+  function initDrawTools() {
+    drawCanvas = document.getElementById('bh-draw-canvas');
+    drawCtx = drawCanvas.getContext('2d');
+    deleteBtn = document.getElementById('bh-draw-delete-btn');
+
+    const btnCursor = document.getElementById('bh-draw-cursor');
+    const btnTrend = document.getElementById('bh-draw-trendline');
+    const btnMeasure = document.getElementById('bh-draw-measure');
+    const btnClear = document.getElementById('bh-draw-clear');
+    const toolBtns = { cursor: btnCursor, trendline: btnTrend, measure: btnMeasure };
+
+    function setDrawMode(mode) {
+      drawMode = mode;
+      pendingP1 = null;
+      hideDeleteButton();
+      Object.entries(toolBtns).forEach(([key, btn]) => {
+        btn.classList.toggle('active', key === (mode || 'cursor'));
+      });
+      drawCanvas.style.pointerEvents = mode ? 'auto' : 'none';
+      drawCanvas.style.cursor = mode ? 'crosshair' : 'default';
+      redrawDrawings();
+    }
+
+    btnCursor.addEventListener('click', () => setDrawMode(null));
+    btnTrend.addEventListener('click', () => setDrawMode(drawMode === 'trendline' ? null : 'trendline'));
+    btnMeasure.addEventListener('click', () => setDrawMode(drawMode === 'measure' ? null : 'measure'));
+    btnClear.addEventListener('click', () => { drawings = []; hideDeleteButton(); redrawDrawings(); });
+    // 개별 삭제 — 그림을 탭하면 뜨는 휴지통 버튼(전체 지우기와 별개, chart.subscribeClick의
+    // 히트테스트에서 표시됨). 이 버튼 자체는 일반 <button>이라 모바일 탭도 따로 처리할 필요 없음.
+    deleteBtn.addEventListener('click', () => {
+      if (deleteTarget) drawings = drawings.filter(d => d !== deleteTarget);
+      hideDeleteButton();
+      redrawDrawings();
+    });
+
+    function eventXY(ev) {
+      const rect = drawCanvas.getBoundingClientRect();
+      return { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
+    }
+    function touchXY(ev) {
+      const t = ev.touches[0] || ev.changedTouches[0];
+      const rect = drawCanvas.getBoundingClientRect();
+      return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+    }
+
+    function handlePointDown(x, y) {
+      if (!drawMode) return;
+      const pt = pxToPoint(x, y);
+      if (!pt) return;
+      if (!pendingP1) {
+        pendingP1 = pt;
+      } else {
+        drawings.push({ type: drawMode, p1: pendingP1, p2: pt });
+        setDrawMode(null);
+      }
+      redrawDrawings();
+    }
+    function handlePointMove(x, y) {
+      if (!drawMode || !pendingP1) return;
+      const from = pointToPx(pendingP1);
+      if (!from) return;
+      if (drawMode === 'trendline') {
+        redrawDrawings({ line: [from, { x, y }], isPreview: true });
+      } else if (drawMode === 'measure') {
+        const pt = pxToPoint(x, y);
+        if (pt) redrawDrawings({ measure: [pendingP1, pt, from, { x, y }] });
+      }
+    }
+
+    drawCanvas.addEventListener('mousedown', (ev) => { const { x, y } = eventXY(ev); handlePointDown(x, y); });
+    drawCanvas.addEventListener('mousemove', (ev) => { const { x, y } = eventXY(ev); handlePointMove(x, y); });
+    drawCanvas.addEventListener('touchstart', (ev) => {
+      ev.preventDefault();
+      const { x, y } = touchXY(ev);
+      handlePointDown(x, y);
+    }, { passive: false });
+    drawCanvas.addEventListener('touchmove', (ev) => {
+      ev.preventDefault();
+      const { x, y } = touchXY(ev);
+      handlePointMove(x, y);
+    }, { passive: false });
+
+    function resizeDrawCanvas() {
+      const w = drawCanvas.clientWidth || document.getElementById('bh-chart').clientWidth;
+      const h = drawCanvas.clientHeight || document.getElementById('bh-chart').clientHeight;
+      if (!w || !h) return;
+      const dpr = window.devicePixelRatio || 1;
+      drawCanvas.width = Math.round(w * dpr);
+      drawCanvas.height = Math.round(h * dpr);
+      drawCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      hideDeleteButton();
+      redrawDrawings();
+    }
+    resizeDrawCanvas();
+    new ResizeObserver(resizeDrawCanvas).observe(document.getElementById('bh-chart'));
+    // 팬·줌(범위버튼·확대축소버튼 포함) 때마다 좌표가 바뀌므로 다시 그린다. 삭제 버튼은
+    // 이전 좌표 기준으로 떠 있던 것이라 범위가 바뀌면 위치가 어긋나므로 함께 숨긴다.
+    chart.timeScale().subscribeVisibleLogicalRangeChange(() => { hideDeleteButton(); redrawDrawings(); });
+  }
+
+  function pxToPoint(x, y) {
+    const time = chart.timeScale().coordinateToTime(x);
+    const price = seriesRefs.QQQ.coordinateToPrice(y);
+    if (time == null || price == null) return null;
+    return { time: timeToDateStr(time) || time, price };
+  }
+
+  function pointToPx(pt) {
+    const x = chart.timeScale().timeToCoordinate(pt.time);
+    const y = seriesRefs.QQQ.priceToCoordinate(pt.price);
+    if (x == null || y == null) return null;
+    return { x, y };
+  }
+
+  // 그림 하나를 탭/클릭했을 때 판별하는 히트테스트 — 추세선은 선분까지의 거리,
+  // 가격범위는 박스 안쪽(여유 패딩 포함) 여부로 판정. 여러 그림이 겹치면 나중에
+  // 그려진(=배열 뒤쪽) 것을 우선한다.
+  const DELETE_HIT_PADDING = 10;
+
+  function distToSegment(px, py, ax, ay, bx, by) {
+    const dx = bx - ax, dy = by - ay;
+    const lenSq = dx * dx + dy * dy;
+    let t = lenSq === 0 ? 0 : ((px - ax) * dx + (py - ay) * dy) / lenSq;
+    t = Math.max(0, Math.min(1, t));
+    const cx = ax + t * dx, cy = ay + t * dy;
+    return Math.hypot(px - cx, py - cy);
+  }
+
+  function hitTestDrawings(x, y) {
+    for (let i = drawings.length - 1; i >= 0; i--) {
+      const d = drawings[i];
+      const a = pointToPx(d.p1), b = pointToPx(d.p2);
+      if (!a || !b) continue;
+      if (d.type === 'trendline') {
+        if (distToSegment(x, y, a.x, a.y, b.x, b.y) <= DELETE_HIT_PADDING) return d;
+      } else if (d.type === 'measure') {
+        const x0 = Math.min(a.x, b.x) - DELETE_HIT_PADDING, x1 = Math.max(a.x, b.x) + DELETE_HIT_PADDING;
+        const y0 = Math.min(a.y, b.y) - DELETE_HIT_PADDING, y1 = Math.max(a.y, b.y) + DELETE_HIT_PADDING;
+        if (x >= x0 && x <= x1 && y >= y0 && y <= y1) return d;
+      }
+    }
+    return null;
+  }
+
+  function showDeleteButton(drawing, x, y) {
+    if (!deleteBtn) return;
+    deleteTarget = drawing;
+    deleteBtn.style.left = Math.round(x - 15) + 'px';
+    deleteBtn.style.top = Math.round(y - 45) + 'px'; // 누른 지점 바로 위 — 손가락에 안 가려지게
+    deleteBtn.style.display = 'flex';
+  }
+
+  function hideDeleteButton() {
+    deleteTarget = null;
+    if (deleteBtn) deleteBtn.style.display = 'none';
+  }
+
+  const DRAW_LINE_COLOR = IS_DARK ? '#0A84FF' : '#0071E3'; // QQQ와 동일 톤 — 새 색 추가 없이 기존 팔레트 재사용
+
+  function drawTrendLine(a, b, isPreview) {
+    if (!a || !b) return;
+    drawCtx.save();
+    drawCtx.strokeStyle = DRAW_LINE_COLOR;
+    drawCtx.lineWidth = 2;
+    if (isPreview) drawCtx.setLineDash([5, 4]);
+    drawCtx.beginPath();
+    drawCtx.moveTo(a.x, a.y);
+    drawCtx.lineTo(b.x, b.y);
+    drawCtx.stroke();
+    drawCtx.setLineDash([]);
+    drawCtx.fillStyle = DRAW_LINE_COLOR;
+    [a, b].forEach(p => {
+      drawCtx.beginPath();
+      drawCtx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+      drawCtx.fill();
+    });
+    drawCtx.restore();
+  }
+
+  function drawMeasureBox(p1, p2, apx, bpx) {
+    if (!apx || !bpx) return;
+    const pctChange = p1.price !== 0 ? ((p2.price - p1.price) / Math.abs(p1.price)) * 100 : 0;
+    const d1 = new Date((typeof p1.time === 'string' ? p1.time : timeToDateStr(p1.time)) + 'T00:00:00Z');
+    const d2 = new Date((typeof p2.time === 'string' ? p2.time : timeToDateStr(p2.time)) + 'T00:00:00Z');
+    const days = Math.abs(Math.round((d2 - d1) / 86400000));
+    const up = pctChange >= 0;
+    const color = up ? COLORS.green : COLORS.red;
+    const x0 = Math.min(apx.x, bpx.x), x1 = Math.max(apx.x, bpx.x);
+    const y0 = Math.min(apx.y, bpx.y), y1 = Math.max(apx.y, bpx.y);
+    drawCtx.save();
+    drawCtx.fillStyle = color + '26';
+    drawCtx.fillRect(x0, y0, x1 - x0, y1 - y0);
+    drawCtx.strokeStyle = color;
+    drawCtx.lineWidth = 1.5;
+    drawCtx.setLineDash([4, 3]);
+    drawCtx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+    drawCtx.setLineDash([]);
+    const label = `${up ? '+' : ''}${pctChange.toFixed(2)}%  ${days}일`;
+    drawCtx.font = '700 13px -apple-system, BlinkMacSystemFont, sans-serif';
+    const tw = drawCtx.measureText(label).width;
+    const labelX = (bpx.x >= apx.x) ? Math.max(x0 + 6, x1 - tw - 6) : x0 + 6;
+    const labelY = (bpx.y <= apx.y) ? y0 + 16 : y1 - 6;
+    drawCtx.fillStyle = color;
+    drawCtx.fillText(label, labelX, labelY);
+    drawCtx.restore();
+  }
+
+  function redrawDrawings(preview) {
+    if (!drawCtx) return;
+    const w = drawCanvas.clientWidth, h = drawCanvas.clientHeight;
+    drawCtx.clearRect(0, 0, w, h);
+    drawings.forEach(d => {
+      if (d.type === 'trendline') drawTrendLine(pointToPx(d.p1), pointToPx(d.p2));
+      else if (d.type === 'measure') drawMeasureBox(d.p1, d.p2, pointToPx(d.p1), pointToPx(d.p2));
+    });
+    if (preview && preview.line) drawTrendLine(preview.line[0], preview.line[1], preview.isPreview);
+    if (preview && preview.measure) drawMeasureBox(preview.measure[0], preview.measure[1], preview.measure[2], preview.measure[3]);
+  }
+
+  function buildRangeButtons() {
+    const ranges = [
+      { label: '6개월', months: 6 },
+      { label: '1년', months: 12 },
+      { label: '2년', months: 24 },
+      { label: '3년', months: 36 },
+      { label: '4년', months: 48 },
+      { label: '전체', months: null },
+    ];
+    // 모바일은 화면이 좁아 1년 기본값이면 차트가 너무 촘촘해 보인다 — 기본 6개월로 완화
+    const defaultMonths = IS_MOBILE ? 6 : 12;
+    const wrap = document.getElementById('bh-range-btns');
+    wrap.innerHTML = ranges.map((r) =>
+      `<button class="bh-range-btn${r.months === defaultMonths ? ' active' : ''}" data-months="${r.months === null ? '' : r.months}">${r.label}</button>`
+    ).join('');
+    wrap.querySelectorAll('.bh-range-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        wrap.querySelectorAll('.bh-range-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const months = btn.dataset.months ? parseInt(btn.dataset.months, 10) : null;
+        applyRange(months, selectedDate);
+      });
+    });
+    applyRange(defaultMonths, null);
+  }
+
+  function monthsBetween(d1, d2) {
+    const a = new Date(d1 + 'T00:00:00Z'), b = new Date(d2 + 'T00:00:00Z');
+    return Math.max(1, (b.getUTCFullYear() - a.getUTCFullYear()) * 12 + (b.getUTCMonth() - a.getUTCMonth()));
+  }
+
+  function addMonths(dateStr, delta) {
+    const d = new Date(dateStr + 'T00:00:00Z');
+    d.setUTCMonth(d.getUTCMonth() + delta);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function findIdxForDate(targetDate) {
+    const dates = chartData.dates;
+    if (targetDate <= dates[0]) return 0;
+    if (targetDate >= dates[dates.length - 1]) return dates.length - 1;
+    for (let i = 0; i < dates.length; i++) {
+      if (dates[i] >= targetDate) return i;
+    }
+    return dates.length - 1;
+  }
+
+  function applyRange(months, centerDate) {
+    currentRangeMonths = months;
+    currentCenterDate = centerDate || null;
+    const dates = chartData.dates;
+    if (months === null) {
+      chart.timeScale().setVisibleRange({ from: dates[0], to: dates[dates.length - 1] });
+      return;
+    }
+    const centerStr = centerDate || dates[dates.length - 1];
+    let fromStr, toStr;
+    if (centerDate) {
+      const half = months / 2;
+      fromStr = addMonths(centerStr, -half);
+      toStr = addMonths(centerStr, half);
+    } else {
+      fromStr = addMonths(centerStr, -months);
+      toStr = centerStr;
+    }
+    const fromIdx = Math.max(0, findIdxForDate(fromStr));
+    const toIdx = Math.min(dates.length - 1, findIdxForDate(toStr));
+    chart.timeScale().setVisibleRange({ from: dates[fromIdx], to: dates[toIdx] });
+  }
+
+  function zoomChart(factor) {
+    const dates = chartData.dates;
+    const fullSpanMonths = monthsBetween(dates[0], dates[dates.length - 1]);
+    let months = currentRangeMonths === null ? fullSpanMonths : currentRangeMonths;
+    months = Math.max(1, Math.min(fullSpanMonths, Math.round(months * factor)));
+    document.querySelectorAll('.bh-range-btn').forEach(b => b.classList.remove('active'));
+    applyRange(months, currentCenterDate);
+  }
+
+  function shiftMonth(delta) {
+    calMonth += delta;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+  }
+
+  function renderCalendar() {
+    const monthNames = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+    document.getElementById('bh-cal-title').textContent = `${calYear}년 ${monthNames[calMonth]}`;
+
+    const first = new Date(Date.UTC(calYear, calMonth, 1));
+    const startDow = first.getUTCDay();
+    const daysInMonth = new Date(Date.UTC(calYear, calMonth + 1, 0)).getUTCDate();
+    const todayStr = new Date().toISOString().slice(0,10);
+
+    let cells = '';
+    for (let i = 0; i < startDow; i++) cells += '<div class="bh-cal-cell empty"></div>';
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const ev = eventsByDate[dateStr];
+      const show = ev && (!majorOnly || ev.importance === 3);
+      const isToday = dateStr === todayStr;
+      const isSelected = dateStr === selectedDate;
+      let dotHtml = '';
+      if (show) {
+        const color = ev.importance === 3 ? 'var(--ez-blue)' : 'var(--ez-text3)';
+        dotHtml = `<span class="bh-cal-dots"><span class="bh-cal-dot-mark" style="background:${color}"></span></span>`;
+      }
+      cells += `<div class="bh-cal-cell${show ? ' has-event' : ''}${isSelected ? ' selected' : ''}" data-date="${dateStr}">
+        <span class="${isToday ? 'bh-cal-today' : ''}">${d}</span>${dotHtml}
+      </div>`;
+    }
+    const grid = document.getElementById('bh-cal-grid');
+    grid.innerHTML = cells;
+    grid.querySelectorAll('.bh-cal-cell.has-event').forEach(cell => {
+      cell.addEventListener('click', () => selectDate(cell.dataset.date));
+    });
+  }
+
+  function selectDate(dateStr) {
+    selectedDate = dateStr;
+    const d = new Date(dateStr + 'T00:00:00Z');
+    calYear = d.getUTCFullYear();
+    calMonth = d.getUTCMonth();
+    renderCalendar();
+    renderEventList();
+    document.getElementById('bh-clear-btn').style.display = 'inline-block';
+    applyRange(6, dateStr);
+    document.querySelectorAll('.bh-range-btn').forEach(b => b.classList.remove('active'));
+    setTimeout(() => {
+      const item = document.querySelector(`.bh-event-item[data-date="${dateStr}"]`);
+      if (item) item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
+  }
+
+  function fmtPct(v) {
+    if (typeof v !== 'number') return '';
+    const sign = v >= 0 ? '+' : '';
+    return `${sign}${v.toFixed(2)}%`;
+  }
+
+  function renderMoves(moves) {
+    if (!moves) return '';
+    return Object.entries(moves).map(([sym, v]) => {
+      if (typeof v !== 'number') return '';
+      const cls = v >= 0 ? 'up' : 'down';
+      return `<span class="bh-move-pill ${cls}">${sym} ${fmtPct(v)}</span>`;
+    }).join('');
+  }
+
+  function renderEventCard(e, highlight) {
+    const badge = e.importance === 3
+      ? '<span class="bh-badge major">핵심</span>'
+      : '<span class="bh-badge notable">주요</span>';
+    const sourceTag = e.link
+      ? `<a class="bh-event-link" href="${e.link}" target="_blank" rel="noopener">원문 보기 →</a>`
+      : '';
+    // 2024-10-29 이후 소사는 summaryGroups(소제목+닷블릿) 구조로 표시,
+    // 그 이전 소사는 기존 한 문장 요약(summary) 그대로 유지
+    const bodyHtml = (e.summaryGroups && e.summaryGroups.length)
+      ? renderSummaryGroups(e.summaryGroups)
+      : `<div class="bh-event-summary">${escapeHtml(e.summary)}</div>`;
+    return `<div class="bh-event-item${highlight ? ' highlight' : ''}" data-date="${e.date}">
+      <div class="bh-event-top">
+        <span class="bh-event-date">${e.date}</span>
+        ${badge}
+      </div>
+      <div class="bh-event-title">${escapeHtml(e.title)}</div>
+      ${bodyHtml}
+      <div class="bh-event-moves">${renderMoves(e.moves)}</div>
+      <div class="bh-event-foot">${sourceTag}</div>
+    </div>`;
+  }
+
+  function renderSummaryGroups(groups) {
+    const groupsHtml = groups.map(g => {
+      const titleHtml = g.heading ? `<div class="bh-event-group-title">${escapeHtml(g.heading)}</div>` : '';
+      const pointsHtml = (g.points || []).map(p => `<li>${escapeHtml(p)}</li>`).join('');
+      return `<div class="bh-event-group">${titleHtml}<ul class="bh-event-group-list">${pointsHtml}</ul></div>`;
+    }).join('');
+    return `<div class="bh-event-groups">${groupsHtml}</div>`;
+  }
+
+  function escapeHtml(s) {
+    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function renderEventList() {
+    const listEl = document.getElementById('bh-events-list');
+    const titleEl = document.getElementById('bh-events-title');
+    const countEl = document.getElementById('bh-events-count');
+    let pool = majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
+
+    if (selectedDate) {
+      // 전후 1일씩, 총 3일치만 — 더 넓게 훑어보고 싶으면 아래 달력으로 다른 날짜를 고르면 된다.
+      const target = new Date(selectedDate + 'T00:00:00Z').getTime();
+      const nearby = pool.filter(e => {
+        const t = new Date(e.date + 'T00:00:00Z').getTime();
+        return Math.abs(t - target) <= 1 * 86400000;
+      }).sort((a,b) => Math.abs(new Date(a.date)-target) - Math.abs(new Date(b.date)-target));
+      titleEl.textContent = `${selectedDate} 전후 소사`;
+      countEl.textContent = `${nearby.length}건 (앞뒤 1일, 총 3일)`;
+      listEl.innerHTML = nearby.length
+        ? nearby.map(e => renderEventCard(e, e.date === selectedDate)).join('')
+        : '<div class="bh-empty">이 날짜 근처에 기록된 소사가 없습니다.</div>';
+      return;
+    }
+
+    titleEl.textContent = '전체 소사 (최신순)';
+    countEl.textContent = `${pool.length}건`;
+    listEl.innerHTML = pool.map(e => renderEventCard(e, false)).join('');
+  }
+})();
+</script>
+
+</body>
+</html>
