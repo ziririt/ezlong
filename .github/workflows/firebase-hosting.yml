@@ -3,6 +3,13 @@ name: Firebase Hosting 자동 배포
 # main 브랜치에 push될 때마다 Firebase에 자동 배포
 # 인증 방식: firebase login:ci 토큰 (FIREBASE_TOKEN secret)
 # 서비스 계정 JSON 방식은 Google OAuth 인증 실패로 사용 중지
+#
+# 2026-08-02 개정: 기존 "deploy || true"가 변경사항 없을 때 나는 무해한 에러뿐 아니라
+# 진짜 배포 실패(토큰 만료·할당량 초과 등)까지 전부 성공으로 위장시키던 구조적 결함을
+# 수정했다. 이제 deploy 출력을 실제로 검사해서 알려진 무해 패턴일 때만 성공 처리하고,
+# 그 외 실패는 워크플로가 그대로 빨갛게 실패하도록 둔다. 추가로 firebase CLI의 종료
+# 코드를 맹신하지 않고, 라이브 사이트가 실제로 응답하는지 마지막에 직접 curl로 재확인한다
+# (성동님 2026-08-02 승인, 주간 운영 점검 후속 조치).
 
 on:
   push:
@@ -30,5 +37,42 @@ jobs:
 
       - name: Deploy to Firebase Hosting
         run: |
-          firebase deploy --only hosting --project ezlong-541a8 --token "${{ secrets.FIREBASE_TOKEN }}" || true
-        # || true: 변경 없을 때 "이미 활성 버전" 에러를 성공으로 처리
+          set +e
+          DEPLOY_LOG=$(firebase deploy --only hosting --project ezlong-541a8 --token "${{ secrets.FIREBASE_TOKEN }}" 2>&1)
+          DEPLOY_EXIT=$?
+          set -e
+
+          # 배포 로그는 성공/실패 여부와 무관하게 항상 출력한다 (침묵 처리 금지).
+          echo "$DEPLOY_LOG"
+
+          if [ "$DEPLOY_EXIT" -eq 0 ]; then
+            echo "✅ 배포 성공 (exit 0)"
+            exit 0
+          fi
+
+          # firebase CLI가 비정상 종료했더라도, 로그 내용이 "변경사항 없음" 계열의
+          # 알려진 무해 패턴일 때만 성공으로 간주한다. 그 외에는 진짜 실패로 처리해
+          # 워크플로가 빨갛게 실패하도록 둔다 (토큰 만료·할당량 초과 등을 숨기지 않기 위함).
+          if echo "$DEPLOY_LOG" | grep -qiE "already the active version|nothing to deploy|no changes (detected|to deploy)"; then
+            echo "ℹ️ 배포할 변경사항이 없어 firebase CLI가 비정상 종료(exit $DEPLOY_EXIT)했으나, 무해한 패턴으로 확인되어 성공 처리합니다."
+            exit 0
+          fi
+
+          echo "❌ 배포 실패로 판단됨 (exit $DEPLOY_EXIT, 무해 패턴 불일치) — 워크플로를 실패 처리합니다."
+          exit "$DEPLOY_EXIT"
+
+      - name: 라이브 반영 실측 확인
+        run: |
+          URL="https://ezlong-541a8.web.app/"
+          echo "라이브 사이트 재확인: $URL"
+          for i in 1 2 3 4 5; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL" || echo "000")
+            echo "시도 $i/5 — HTTP $STATUS"
+            if [ "$STATUS" = "200" ]; then
+              echo "✅ 라이브 사이트 정상 응답 확인"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "❌ 5회 재시도 후에도 라이브 사이트가 HTTP 200을 반환하지 않음 — 배포 후 반영 실패 가능성"
+          exit 1
