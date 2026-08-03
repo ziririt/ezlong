@@ -11,9 +11,14 @@
  * 파서 버그 확인. createElement + insertBefore 방식으로 교체.
  */
 (function () {
-  /* [href, 짧은 이름(PC칩), 긴 이름(모바일 오버레이)] */
+  /* [href, 짧은 이름(PC칩), 긴 이름(모바일 오버레이)]
+     2026-08-04: 첫 항목을 3개로 분리 (성동님 지시) — 스윙 시그널 대시보드의
+     3개 탭(시그널/전략/TOP9)에 해시 딥링크로 각각 직접 진입. 활성 판정은
+     아래 루프에서 pathname+hash 조합으로 처리한다. */
   var links = [
     ['/atmr-dashboard.html',        '스윙 시그널',    "스윙 트레이더를 위한 '스윙 시그널'"],
+    ['/atmr-dashboard.html#swing-strategy', '스윙 전략', '스윙 전략 — 3-3-4 원칙 · 레버리지 가이드'],
+    ['/atmr-dashboard.html#top9',   'TOP9 집중분석',  'TOP9 집중분석 — 테슬라·엔비디아 등 빅테크 9종 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
     ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇 — AI 시황 분석'],
     ['/stocks.html',                '심플 주가',      '심플 주가 정보'],
     ['/chart-analysis.html',        'AI 차트분석',    'AI 차트 분석'],
@@ -36,11 +41,30 @@
   var desktopLinksHTML = '';
   var mobileItemsHTML  = '';
 
+  /* 스윙 대시보드 탭 해시들 — 이 중 하나가 떠 있으면 '스윙 시그널' 기본 항목이
+     아니라 해당 탭 항목을 활성으로 표시 (#tsla-nvda는 #top9의 구 별칭) */
+  var swingTabHashes = ['#swing-strategy', '#top9', '#tsla-nvda', '#kings', '#tesla-nvidia'];
+  var curHash = window.location.hash || '';
+
   for (var i = 0; i < links.length; i++) {
     var href     = links[i][0];
     var shortLbl = links[i][1];
     var fullLbl  = links[i][2];
-    var active   = (p === href) || (p === href.slice(1));
+    var hashIdx  = href.indexOf('#');
+    var hrefPath = hashIdx >= 0 ? href.slice(0, hashIdx) : href;
+    var hrefHash = hashIdx >= 0 ? href.slice(hashIdx) : '';
+    var onPath   = (p === hrefPath) || (p === hrefPath.slice(1));
+    var active;
+    if (hrefHash) {
+      /* 해시 항목: 경로 + 해시가 모두 일치할 때만 (구 별칭 #tsla-nvda → #top9 취급) */
+      active = onPath && (curHash === hrefHash ||
+               (hrefHash === '#top9' && (curHash === '#tsla-nvda' || curHash === '#kings' || curHash === '#tesla-nvidia')));
+    } else if (hrefPath === '/atmr-dashboard.html') {
+      /* 기본 '스윙 시그널' 항목: 대시보드에 있되 다른 탭 해시가 아닐 때만 */
+      active = onPath && swingTabHashes.indexOf(curHash) < 0;
+    } else {
+      active = onPath;
+    }
 
     if (active) activeShort = shortLbl;
 

@@ -742,6 +742,11 @@ a { text-decoration: none; color: inherit; }
   padding-left: 2px;
 }
 .top9-sec-head span { color: #0a84ff; font-size: 18px; font-weight: 800; letter-spacing: .02em; }
+.tab-new-badge {
+  display: inline-block; background: #ff3b30; color: #fff;
+  font-size: 14px; font-weight: 800; line-height: 1.3;
+  border-radius: 6px; padding: 1px 7px; margin-left: 4px; vertical-align: middle;
+}
 
 /* ─── Two Kings ─────────────────────────────────── */
 .kings-grid {
@@ -1623,16 +1628,16 @@ li.gear-other-sep { display: none !important; }
 
     <!-- 탭 네비게이션 -->
     <div class="tab-bar">
-      <button class="tab-btn active" onclick="switchTab('market')">
+      <button class="tab-btn active" data-tab="market" onclick="switchTab('market')">
         스윙 시그널
         <span class="tab-btn-sub">나스닥100 · S&P500 · 반도체</span>
       </button>
-      <button class="tab-btn" onclick="switchTab('strategy')">
+      <button class="tab-btn" data-tab="strategy" onclick="switchTab('strategy')">
         스윙 전략
         <span class="tab-btn-sub">3-3-4 원칙 · 레버리지 가이드</span>
       </button>
-      <button class="tab-btn" onclick="switchTab('kings')">
-        TOP9
+      <button class="tab-btn" data-tab="kings" onclick="switchTab('kings')">
+        TOP9 <span class="tab-new-badge">NEW</span>
         <span class="tab-btn-sub">집중분석</span>
       </button>
     </div>
@@ -2124,9 +2129,9 @@ li.gear-other-sep { display: none !important; }
 
     <!-- 하단 탭 바 -->
     <div class="tab-bar tab-bar-bottom">
-      <button class="tab-btn" onclick="switchTab('market'); window.scrollTo({top:0,behavior:'smooth'})">스윙 시그널</button>
-      <button class="tab-btn" onclick="switchTab('strategy'); window.scrollTo({top:0,behavior:'smooth'})">스윙 전략</button>
-      <button class="tab-btn" onclick="switchTab('kings'); window.scrollTo({top:0,behavior:'smooth'})">TOP9 집중분석</button>
+      <button class="tab-btn" data-tab="market" onclick="switchTab('market'); window.scrollTo({top:0,behavior:'smooth'})">스윙 시그널</button>
+      <button class="tab-btn" data-tab="strategy" onclick="switchTab('strategy'); window.scrollTo({top:0,behavior:'smooth'})">스윙 전략</button>
+      <button class="tab-btn" data-tab="kings" onclick="switchTab('kings'); window.scrollTo({top:0,behavior:'smooth'})">TOP9 집중분석 <span class="tab-new-badge">NEW</span></button>
     </div>
 
     <!-- 면책 고지 -->
@@ -5754,10 +5759,11 @@ function setUpdateTime(ts) {
 
 function switchTab(tab) {
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(`tab-${tab}`).classList.add('active');
-  const idx = ['market','strategy','kings'].indexOf(tab);
-  document.querySelectorAll('.tab-btn')[idx]?.classList.add('active');
+  // 2026-08-04: 상단·하단 탭 바 모두 data-tab 기준으로 활성 표시 — 기존 인덱스
+  // 방식은 상단 3개만 커버해 하단 바에 선택 표시가 안 되던 문제 수정 (성동님 지적)
+  document.querySelectorAll('.tab-btn[data-tab]').forEach(b =>
+    b.classList.toggle('active', b.dataset.tab === tab));
 
   // ── 탭 딥링크 (2026-07-03): 각 탭에 공유 가능한 해시 URL 부여 ──────────
   // #swing-strategy = 스윙 전략, #tsla-nvda = TSLA·NVDA 집중 분석
