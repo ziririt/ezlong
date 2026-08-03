@@ -567,8 +567,24 @@ a { text-decoration: none; color: inherit; }
 
 .tools-grid {
   display: grid;
-  grid-template-columns: 1fr;  /* 모바일: 1열 */
-  gap: 16px;
+  /* 2026-08-04 개편(성동님 지시): 모바일도 2열 — 툴이 많아져 1열로는 메인
+     스크롤이 지나치게 길어짐. 카드 밀도를 높여 짧은 스크롤로 전체 메뉴 파악. */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* 모바일 컴팩트 카드 — 여백·간격 축소, 설명은 3줄 클램프 (폰트는 14px 이상 유지) */
+@media (max-width: 699px) {
+  .tool-card { padding: 14px 12px; gap: 8px; }
+  .tool-card-header { gap: 8px; flex-direction: column; align-items: flex-start; }
+  .tool-card-icon { width: 32px; height: 32px; border-radius: 9px; }
+  .tool-card-icon svg { width: 17px; height: 17px; }
+  .tool-card-title { font-size: 15px; }
+  .tool-card-desc {
+    font-size: 14px; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }
 
 /* PC: 4개 이하 → 2×2, 5개 이상 → 3열(3+2 / 3+3) */

@@ -5935,25 +5935,22 @@ renderKings = function(tsla, nvda) {
     const c = document.getElementById(`king-card-${sym}`);
     if (!c || !window._swingView) return;
     const section = c.closest('.king-section') || c;
-    // 섹션 상단에 v2 카드 (중복 방지: 기존 카드 제거 후 재삽입)
-    // 2026-08-04: 티커 헤더(.top9-sec-head)가 있으면 그 "바로 아래"에 — 어느 종목의
-    // 판단인지 명확하게 (성동님 지시).
-    section.querySelectorAll('.v2-king-card').forEach(el => el.remove());
+    // 2026-08-04 2차(성동님 지시 — 9종 포맷 통일): TSLA·NVDA도 mega 7종과 동일한
+    // 카드 스택(오늘의 판단 → AI 차트분석 플랜 → 맞춤 행동 진단 → 핵심 지표)을
+    // 티커 헤더 바로 아래 기본 노출. 레거시 심층 카드·AI 상담은 기존대로 '상세보기'.
+    section.querySelectorAll('.v2-king-card, .v2-aud-card').forEach(el => el.remove());
     const holder = document.createElement('div');
     holder.className = 'v2-king-card';
-    holder.innerHTML = _v2KingCardHtml(sym);
+    const view = sym === 'TSLA' ? window._swingView?.tsla : window._swingView?.nvda;
+    const ai = sym === 'TSLA' ? window._tslaAnalysis : window._nvdaAnalysis;
+    const d = window._renderData?.[sym];
+    holder.innerHTML = _v2KingCardHtml(sym)
+      + buildMegaAiHtml(ai)
+      + buildAudienceHtml(view?.audience)
+      + (d ? buildMegaMetricsHtml(d) : '');
     const head = section.querySelector('.top9-sec-head');
     if (head) head.insertAdjacentElement('afterend', holder);
     else section.insertBefore(holder, section.firstElementChild);
-    // 4분류 맞춤 행동 진단 카드 — v2 판단 카드 바로 아래 (2026-08-04)
-    section.querySelectorAll('.v2-aud-card').forEach(el => el.remove());
-    const audData = (sym === 'TSLA' ? window._swingView?.tsla : window._swingView?.nvda)?.audience;
-    if (audData) {
-      const audHolder = document.createElement('div');
-      audHolder.className = 'v2-aud-card';
-      audHolder.innerHTML = buildAudienceHtml(audData);
-      holder.insertAdjacentElement('afterend', audHolder);
-    }
     // 레거시 지표 카드 본문은 상세보기로
     if (!c.querySelector('.sv-det-page')) {
       _v2Collapse(c, 0, '상세보기 — 지표·점수·매매 기준 전체');
