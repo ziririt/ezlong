@@ -492,7 +492,8 @@ def tsla_view(s):
         body = (f'추세 훼손 신호가 없는 구간입니다. TSLA는 예측보다 대응이 유리했던 종목입니다 — '
                 f'미리 팔거나 미리 사는 대신, 200일선 이탈 여부 하나를 기준으로 관리하는 구간입니다.')
     return dict(stance=st, stanceLabel=label, commentary=_move_prefix(s) + body,
-                nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi))
+                nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi),
+                audience=_audience(st, buy, sell, gear, rsi, 'ignore', 'wait', '매수점수 80 이상 극단 과매도'))
 
 
 # ─── TOP9 확장: 빅테크 7종 종목별 문법 (2026-08-03 신설, 성동님 승인) ───────
@@ -570,6 +571,63 @@ MEGA_CFG = {
 }
 
 
+# ─── 4분류 맞춤 행동 진단 (2026-08-04 신설, 성동님 지시) ─────────────────────
+# 스윙 전략 탭의 보유자/신규 진입/물타기/불타기 분류를 종목 단위로 제공.
+# 전부 규칙 엔진 — LLM 비용 0. 문구는 진단형(행동 촉구 금지) 원칙 준수.
+def _audience(stance, buy, sell, gear, rsi, hot, down, sig_label):
+    """hot: 'ignore'|'slow'|'trim' — 과열 신호의 종목별 검증 결과
+    down: 'wait'|'insensitive'|'opportunity' — 하락 추세의 종목별 의미
+    sig_label: 이 종목의 유효 매수 신호 이름 (예: 'RSI 30 미만 극단 과매도')"""
+    overheated = sell >= 75
+    # 보유자
+    if stance == 'trim':
+        holder = '분할 익절 검토 구간 — 이 종목은 과열 신호가 통계로 검증된 드문 케이스. 1차 30% 수준 분할 전제.'
+    elif overheated and hot == 'ignore':
+        holder = '보유 유지 — 이 종목의 과열 신호는 검증력이 없음. 익절 기준은 시점이 아니라 추세 이탈.'
+    elif overheated:
+        holder = '보유 유지 가능 — 다만 과열 이후 수익률 둔화 이력이 있는 종목. 이탈 기준 재점검 권고.'
+    elif gear <= 1 and down == 'wait':
+        holder = '이탈 기준 재점검 구간 — 200일선 아래에서는 노출 축소 검토가 데이터의 방향.'
+    elif gear <= 1 and down == 'opportunity':
+        holder = '보유 유지 — 이 종목은 하락 추세 구간의 이후 성과가 오히려 좋았던 이력. 공포 매도 비권고.'
+    elif gear <= 1:
+        holder = '보유 유지 가능 — 이 종목은 추세 신호 민감도가 낮음. 이탈 기준만 관리.'
+    else:
+        holder = '보유 유지 구간 — 추세 훼손 신호 없음.'
+    # 신규 진입
+    if stance == 'accumulate':
+        newbie = f'분할 진입 검토 유효 구간 — {sig_label} 발동. 1회차는 소량(30% 이내) 전제.'
+    elif overheated:
+        newbie = '신규 진입 자제 구간 — 과열. 추격 진입은 통계적으로 불리.'
+    elif gear >= 3 and buy >= 65:
+        newbie = f'소량 분할 진입 검토 가능 — 상승 추세 + 매수점수 {buy}. 다만 이 종목의 최적 진입은 {sig_label}.'
+    elif gear <= 1:
+        newbie = f'대기 구간 — 유효 신호({sig_label}) 발동 전에는 진입의 통계적 근거 없음.'
+    else:
+        newbie = '관망 구간 — 진입 신호 대기.'
+    # 물타기 (손실 보유자의 추가 매수)
+    if stance == 'accumulate':
+        avgdown = f'1회차 물타기 검토 가능 — {sig_label} 발동 구간. 소량(30% 이내) + 출구 기준 사전 설정 전제.'
+    elif gear <= 1 and down != 'opportunity':
+        avgdown = '물타기 금지 구간 — 하락 추세 확인 상태. 바닥 확인 전 평단 낮추기는 손실 확대 이력.'
+    elif gear <= 1:
+        avgdown = f'역발상 이력이 있는 종목이나, 물타기는 {sig_label} 발동 시에만 — 현재는 대기.'
+    elif overheated:
+        avgdown = '물타기 대상 구간 아님 — 과열 상태에서 손실 중이라면 물타기가 아니라 이탈 기준 점검이 우선.'
+    else:
+        avgdown = '물타기 필요 신호 없음 — 현 포지션 유지 구간.'
+    # 불타기 (수익 보유자의 추가 매수)
+    if gear >= 3 and sell < 60 and buy >= 60 and (rsi is None or rsi < 65):
+        pyramid = '소량 불타기 검토 가능 — 추세 유지 + 과열 아님 + 매수 신호 유지(3조건 충족). 총 노출 상한 관리 전제.'
+    elif gear >= 3:
+        pyramid = '불타기 자제 구간 — 과열 접근. 추격 추가 매수는 고점 물릴 위험.'
+    elif gear == 2:
+        pyramid = '불타기 보류 — 200일선 공방으로 방향 미확정. 추세 복귀 확인 후 검토 가능.'
+    else:
+        pyramid = '불타기 금지 구간 — 하락 추세에서의 추가 매수는 원칙 밖.'
+    return dict(holder=holder, newbie=newbie, avgdown=avgdown, pyramid=pyramid)
+
+
 def mega_view(sym, s):
     """빅테크 7종 공용 뷰 — MEGA_CFG의 종목별 검증 문법으로 분기.
     tsla_view/nvda_view와 동일한 출력 형태(stance/stanceLabel/commentary/nums)."""
@@ -615,8 +673,12 @@ def mega_view(sym, s):
         st, label = 'hold', '보유 유지 — 특이 신호 없음'
         body = (f'추세 훼손도, 유효 매수 신호도 없는 구간입니다. {cfg["base_txt"]}. '
                 f'현재 매수점수 {buy}·매도압력 {sell} 수준에서는 포지션 변경의 통계적 근거가 없습니다.')
+    sig_label = ('RSI 30 미만 극단 과매도 또는 매수점수 80 이상' if cfg['buy'] == 'both'
+                 else 'RSI 30 미만 극단 과매도' if cfg['buy'] == 'rsi30'
+                 else '뚜렷한 검증 신호 없음(신호 둔감 종목)')
     return dict(stance=st, stanceLabel=label, commentary=_move_prefix(s) + body,
-                nums=dict(buy=buy, sell=sell, gear=gear, rsi=round(rsi, 1) if rsi is not None else None))
+                nums=dict(buy=buy, sell=sell, gear=gear, rsi=round(rsi, 1) if rsi is not None else None),
+                audience=_audience(st, buy, sell, gear, rsi, cfg['hot'], cfg['down'], sig_label))
 
 
 def nvda_view(s):
@@ -639,7 +701,8 @@ def nvda_view(s):
                 f'무너진 지금 같은 구간에서는 노출 축소를 검토하는 것이 데이터의 방향입니다. '
                 f'추세 복귀가 확인되면 다시 싣는 것이 원칙입니다.')
     return dict(stance=st, stanceLabel=label, commentary=_move_prefix(s) + body,
-                nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi))
+                nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi),
+                audience=_audience(st, buy, sell, gear, rsi, 'ignore', 'wait', '200일선 위 추세 복귀'))
 
 
 DESK_MODEL = 'claude-fable-5'
