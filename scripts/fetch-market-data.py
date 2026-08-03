@@ -869,6 +869,16 @@ def main():
         print("모든 종목 수집 실패. GitHub Actions 로그를 확인하세요.")
         sys.exit(1)
 
+    # 코어 심볼 가드 (2026-08-03 감사 지적 반영): TOP9 확장으로 SYMBOLS가 14개가
+    # 되면서 "전량 실패" 임계가 절반으로 느슨해졌다. 합성점수·스윙뷰·대시보드의
+    # 하드 의존인 코어 심볼이 하나라도 빠진 채 커밋되면 하류가 연쇄로 죽으므로,
+    # 코어 결손 시에는 신규 심볼이 몇 개 성공했든 실패 처리한다.
+    _CORE = ('QQQ', 'VOO', 'SOXX', 'TSLA', 'NVDA')
+    _missing_core = [s for s in _CORE if s not in processed]
+    if _missing_core:
+        print(f"코어 심볼 수집 실패: {_missing_core} — 하류 파이프라인 보호를 위해 실패 처리.")
+        sys.exit(1)
+
 
 if __name__ == '__main__':
     main()
