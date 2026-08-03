@@ -1143,7 +1143,9 @@ a { text-decoration: none; color: inherit; }
 .hero-section {
   position: relative;
   width: 100%;
-  min-height: 52vh;
+  /* 2026-08-04 (성동님 지시): 모바일 히어로 높이 30% 축소 (52vh → 36vh) —
+     부제·카피라이트 삭제와 함께 메인 첫 화면에서 도구 그리드가 더 빨리 보이도록 */
+  min-height: 36vh;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -1282,14 +1284,11 @@ a { text-decoration: none; color: inherit; }
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow-hero">Easy Simple Long-term Investment</p>
     <h1 class="hero-title-hero">
-      쉽고 단순하게,<br>
-      <em>장기투자</em>의 복리를<br>
-      데이터로 확인하세요
+      미국주식 매매 타이밍부터<br>
+      은퇴 설계까지,<br>
+      <em>AI 데이터</em>로 확인하세요
     </h1>
-    <p class="hero-sub-hero">복리계산기 · DCA 시뮬레이터 · 포트폴리오 분석<br>미국주식 장기투자자를 위한 무료 도구 모음</p>
-    <p style="margin-top:14px;font-size:14px;color:rgba(255,255,255,0.55);letter-spacing:0.3px;">© 2025–2026 유니아빠</p>
   </div>
 </section>
 
