@@ -668,11 +668,46 @@ def mega_view(sym, s):
         else:
             st, label = 'hold', '하락 추세 — 통계상 과민 반응 불필요'
         body = f'200일선 아래 하락 추세입니다. {cfg["down_txt"]}.'
-    # 4) 평상시
+    # 4) 평상시 — "특이 신호 없음" 표현 금지 (2026-08-04 성동님 지시). 극단 신호가
+    # 아니어도 AI는 좌표를 짚는다: 현재 위치, 다음 유효 신호까지의 거리, 판단이
+    # 바뀌는 트리거를 항상 명시. 단 검증 안 된 확률은 여전히 만들어내지 않는다.
     else:
-        st, label = 'hold', '보유 유지 — 특이 신호 없음'
-        body = (f'추세 훼손도, 유효 매수 신호도 없는 구간입니다. {cfg["base_txt"]}. '
-                f'현재 매수점수 {buy}·매도압력 {sell} 수준에서는 포지션 변경의 통계적 근거가 없습니다.')
+        dev = s.get('dev200')
+        rsi_txt = f'{rsi:.0f}' if rsi is not None else '측정 불가'
+        dev_txt = f'{dev:+.1f}%' if dev is not None else '—'
+        # 이 종목의 유효 신호까지 남은 거리
+        watch = []
+        if cfg['buy'] in ('rsi30', 'both') and rsi is not None:
+            watch.append(f'검증 매수 신호(RSI 30 미만)까지 {max(0.0, rsi - 30):.0f}p')
+        if cfg['buy'] == 'both':
+            watch.append(f'극단 매수점수(80)까지 {max(0, 80 - buy)}p')
+        watch.append(f'과열 경계(매도압력 75)까지 {max(0, 75 - sell)}p')
+        watch_txt = ' · '.join(watch)
+        # 판단이 바뀌는 트리거 — 종목 문법별
+        if cfg['buy'] is None:
+            trigger_txt = ('200일선 이탈(추세 훼손) 하나입니다 — 그 전까지 이 종목은 '
+                           '들고 가는 쪽이 통계적으로 유리했던 종목입니다')
+        elif cfg['buy'] == 'both':
+            trigger_txt = ('RSI 30 미만 또는 매수점수 80 이상이면 분할 매수 검토, '
+                           '200일선 이탈이면 관리 모드 전환입니다')
+        elif cfg['down'] == 'wait':
+            trigger_txt = ('RSI 30 미만이면 분할 매수 검토, 200일선 이탈이면 축소 검토로 '
+                           '전환됩니다')
+        else:
+            trigger_txt = 'RSI 30 미만 진입 하나이고, 추세 이탈은 이 종목에선 과민 반응 대상이 아닙니다'
+        # 라벨 — 현재 좌표가 어느 신호에 가까운지로 차등 (전부 다른 문구, 관찰 포인트 명시)
+        if sell >= 60 or (rsi is not None and rsi >= 62):
+            st, label = 'hold', '보유 유지 — 과열 접근 감시'
+        elif (cfg['buy'] in ('rsi30', 'both') and rsi is not None and rsi <= 38) or \
+             (cfg['buy'] == 'both' and buy >= 72):
+            st, label = 'hold', '보유 유지 — 매수 신호 접근 감시'
+        elif dev is not None and 0 <= dev <= 4:
+            st, label = 'hold', '보유 유지 — 200일선 근접 관찰'
+        else:
+            st, label = 'hold', '보유 유지 — 추세 순항 구간'
+        body = (f'{cfg["base_txt"]}. 현재 좌표 — 매수점수 {buy}·매도압력 {sell}·RSI {rsi_txt}·'
+                f'200일선 대비 {dev_txt}. 신호 거리로 보면 {watch_txt} 남은 위치입니다. '
+                f'판단이 바뀌는 트리거는 {trigger_txt}.')
     sig_label = ('RSI 30 미만 극단 과매도 또는 매수점수 80 이상' if cfg['buy'] == 'both'
                  else 'RSI 30 미만 극단 과매도' if cfg['buy'] == 'rsi30'
                  else '뚜렷한 검증 신호 없음(신호 둔감 종목)')
