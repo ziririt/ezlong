@@ -1,6 +1,82 @@
 {
   "entries": [
     {
+      "id": "2026-08-03-23:20",
+      "timestamp_kst": "2026-08-03(월) 23:20 KST",
+      "key_event": {
+        "name": "미-이란 휴전 및 유가 하락",
+        "name_en": "US-Iran Truce & Oil Price Drop",
+        "time": "향후 12시간",
+        "why": "지정학적 긴장 완화, 에너지 비용 감소, 시장 심리 개선",
+        "why_en": "Easing geopolitical tensions, reduced energy costs, improved market sentiment"
+      },
+      "positive_total": 80,
+      "negative_total": 20,
+      "summary": "미-이란 휴전 기대와 빅테크 실적 호조로 긍정 우위 지속. 반도체 경쟁 우려가 부정 요인.",
+      "summary_en": "Positive sentiment continues with US-Iran truce hopes and strong big tech earnings. Semiconductor competition concerns are a negative factor.",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "미-이란 휴전 기대",
+          "name_en": "US-Iran Truce Hopes",
+          "desc": "트럼프의 이란 공격 중단 및 휴전 협상 재개 소식에 지정학적 리스크 완화",
+          "desc_en": "Geopolitical risks ease on news of Trump halting Iran attack and resuming truce talks",
+          "category": "geopolitics"
+        },
+        {
+          "score": 25,
+          "name": "주요 빅테크 실적 호조",
+          "name_en": "Strong Big Tech Earnings",
+          "desc": "MSFT (+5.40%), GOOGL (+3.88%) 등 주요 빅테크 실적 발표 후 강세",
+          "desc_en": "Major big tech companies like MSFT (+5.40%) and GOOGL (+3.88%) show strength after earnings",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 15,
+          "name": "AI 투자 심리 지속",
+          "name_en": "Sustained AI Investment Sentiment",
+          "desc": "NVIDIA (+2.93%) 등 AI 관련 종목에 대한 긍정적 투자 심리 유지",
+          "desc_en": "Positive investment sentiment continues for AI-related stocks like NVIDIA (+2.93%)",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "유가 하락 및 국채금리 안정",
+          "name_en": "Oil Price Drop & Stable Treasury Yields",
+          "desc": "WTI 원유(-0.55%) 하락 및 미10년 국채금리(-1.12%) 하락으로 인플레이션 우려 완화",
+          "desc_en": "WTI oil (-0.55%) and 10-year Treasury yields (-1.12%) fall, easing inflation concerns",
+          "category": "oil_energy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "반도체 경쟁 심화 우려",
+          "name_en": "Increased Semiconductor Competition Concerns",
+          "desc": "중국과의 경쟁 심화 우려로 SOXX (-0.78%) 등 반도체 주식 약세",
+          "desc_en": "Semiconductor stocks like SOXX (-0.78%) weaken due to fears of increased competition from China",
+          "category": "supply_chain"
+        },
+        {
+          "score": 5,
+          "name": "일부 기술주 약세",
+          "name_en": "Weakness in Some Tech Stocks",
+          "desc": "AAPL (-0.44%) 등 일부 기술주가 시장 전반의 강세 흐름에 동참하지 못함",
+          "desc_en": "Some tech stocks like AAPL (-0.44%) fail to join the broader market rally",
+          "category": "company_specific"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "금리 인상 가능성 언급",
+          "name_en": "Mention of Potential Rate Hikes",
+          "desc": "Fed 관계자의 인플레이션 지속 시 금리 인상 가능성 언급은 시장에 불확실성을 더함",
+          "desc_en": "Comments from Fed officials about potential rate hikes if inflation persists add uncertainty to the market",
+          "category": "fed_policy"
+        }
+      ]
+    },
+    {
       "id": "2026-08-03-21:26",
       "timestamp_kst": "2026-08-03(월) 21:26 KST",
       "key_event": {
@@ -563,76 +639,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-02-21:50",
-      "timestamp_kst": "2026-08-02(일) 21:50 KST",
-      "key_event": {
-        "name": "AI 기대감 및 주요 기술주 실적 혼조",
-        "name_en": "AI Optimism Amid Mixed Big Tech Earnings",
-        "time": "직전 거래일 마감 및 다음 주 개장 영향",
-        "why": "AI 투자 심리 지속, 빅테크 실적 혼조, 금리 우려 상존",
-        "why_en": "Sustained AI investment sentiment, mixed Big Tech earnings, persistent interest rate concerns"
-      },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "AI 기대감과 VIX 하락으로 긍정 우위 유지. 금리 우려 및 지정학적 불확실성은 지속.",
-      "summary_en": "Positive sentiment maintained due to AI optimism and VIX decline. Rate concerns and geopolitical uncertainty persist.",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "AI 산업 성장 기대감 지속",
-          "name_en": "Continued Optimism for AI Industry Growth",
-          "desc": "엔비디아 CEO의 AI 붐 지속 발언 및 관련 투자 심리 유지",
-          "desc_en": "Nvidia CEO's remarks on sustained AI boom and ongoing investment sentiment",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 25,
-          "name": "일부 빅테크 실적 호조",
-          "name_en": "Strong Earnings from Select Big Tech",
-          "desc": "GOOGL, MSFT의 견조한 실적 발표 및 클라우드 성장세",
-          "desc_en": "Solid earnings from GOOGL and MSFT, with strong cloud growth",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "일부 빅테크 실적 부진",
-          "name_en": "Weak Earnings from Some Big Tech",
-          "desc": "AAPL의 실적 부진(-1.60%)이 시장에 부담으로 작용",
-          "desc_en": "AAPL's weak earnings (-1.60%) weighed on the market",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 15,
-          "name": "연준 금리 정책 불확실성",
-          "name_en": "Fed Rate Policy Uncertainty",
-          "desc": "미국 고용 데이터 발표 앞두고 금리 인상 우려 지속",
-          "desc_en": "Ahead of US jobs data, concerns about interest rate hikes persist",
-          "category": "fed_policy"
-        },
-        {
-          "score": 10,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미 10년물 국채금리 1.76% 상승, 성장주에 부정적 영향",
-          "desc_en": "US 10-year Treasury yield rose 1.76%, negatively impacting growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "이란 핵 협상 불확실성",
-          "name_en": "Iran Nuclear Deal Uncertainty",
-          "desc": "트럼프의 이란 폭격 위협 발언과 협상 기대감이 혼재",
-          "desc_en": "Trump's threats of bombing Iran mixed with hopes for a deal",
-          "category": "geopolitics"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-03T12:27:26Z",
+  "updated_at": "2026-08-03T14:20:57Z",
   "max_entries": 10
 }
