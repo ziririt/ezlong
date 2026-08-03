@@ -726,6 +726,17 @@ a { text-decoration: none; color: inherit; }
   border-radius: 100px; border: 1px solid currentColor; opacity: .7;
 }
 
+/* ─── TOP9 티커 바로가기 칩 (2026-08-03) ────────── */
+.top9-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+.top9-chip {
+  border: 1px solid rgba(120,120,128,0.28); background: var(--card); color: var(--t1);
+  border-radius: 999px; padding: 8px 14px; font-size: 15px; font-weight: 700;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 6px; line-height: 1;
+}
+.top9-chip .t9-chg { font-size: 14px; font-weight: 600; }
+.top9-chip.active { border-color: #0a84ff; background: #0a84ff; color: #fff; }
+.top9-chip.active .t9-chg { color: #fff !important; }
+
 /* ─── Two Kings ─────────────────────────────────── */
 .kings-grid {
   display: grid; grid-template-columns: 1fr 1fr;
@@ -1615,8 +1626,8 @@ li.gear-other-sep { display: none !important; }
         <span class="tab-btn-sub">3-3-4 원칙 · 레버리지 가이드</span>
       </button>
       <button class="tab-btn" onclick="switchTab('kings')">
-        TSLA·NVDA
-        <span class="tab-btn-sub">집중 분석</span>
+        TOP9
+        <span class="tab-btn-sub">집중분석</span>
       </button>
     </div>
 
@@ -1703,6 +1714,12 @@ li.gear-other-sep { display: none !important; }
     <!-- TAB 2: Two Kings (TSLA & NVDA) -->
     <!-- ────────────────────────────────────────── -->
     <div class="tab-pane" id="tab-kings">
+
+      <!-- ── TOP9 티커 바로가기 (2026-08-03 신설) ─────────────────────────
+           기본은 TSLA·NVDA 섹션 노출. 나머지 7종은 칩 선택 시 #mega-host에
+           지연 렌더(TradingView 위젯 9개 동시 로드 방지). -->
+      <div id="top9-chip-bar" class="top9-chips"></div>
+      <div id="mega-host"></div>
 
       <!-- ── TSLA 섹션 ── -->
       <div class="king-section">
@@ -2095,7 +2112,7 @@ li.gear-other-sep { display: none !important; }
     <div class="tab-bar tab-bar-bottom">
       <button class="tab-btn" onclick="switchTab('market'); window.scrollTo({top:0,behavior:'smooth'})">스윙 시그널</button>
       <button class="tab-btn" onclick="switchTab('strategy'); window.scrollTo({top:0,behavior:'smooth'})">스윙 전략</button>
-      <button class="tab-btn" onclick="switchTab('kings'); window.scrollTo({top:0,behavior:'smooth'})">TSLA·NVDA</button>
+      <button class="tab-btn" onclick="switchTab('kings'); window.scrollTo({top:0,behavior:'smooth'})">TOP9 집중분석</button>
     </div>
 
     <!-- 면책 고지 -->
@@ -5730,7 +5747,7 @@ function switchTab(tab) {
 
   // ── 탭 딥링크 (2026-07-03): 각 탭에 공유 가능한 해시 URL 부여 ──────────
   // #swing-strategy = 스윙 전략, #tsla-nvda = TSLA·NVDA 집중 분석
-  const TAB_HASH = { market: '', strategy: '#swing-strategy', kings: '#tsla-nvda' };
+  const TAB_HASH = { market: '', strategy: '#swing-strategy', kings: '#top9' };
   try {
     history.replaceState(null, '', location.pathname + location.search + (TAB_HASH[tab] ?? ''));
   } catch (e) { /* 미지원 브라우저 무시 */ }
@@ -5742,7 +5759,7 @@ function switchTab(tab) {
 function tabFromHash() {
   const h = (location.hash || '').toLowerCase();
   if (h === '#swing-strategy' || h === '#strategy')                 return 'strategy';
-  if (h === '#tsla-nvda' || h === '#kings' || h === '#tesla-nvidia') return 'kings';
+  if (h === '#tsla-nvda' || h === '#kings' || h === '#tesla-nvidia' || h === '#top9') return 'kings';
   return null;
 }
 (function initTabDeepLink() {
@@ -5907,7 +5924,105 @@ renderKings = function(tsla, nvda) {
       _v2Collapse(c, 0, '상세보기 — 지표·점수·매매 기준 전체');
     }
   });
+  // TOP9 확장 (2026-08-03): 데이터/스윙뷰 도착 시마다 칩·선택 섹션 최신화
+  try { renderTop9Chips(); renderMegaHost(); } catch (e) { console.error('[top9]', e); }
 };
+
+// ── TOP9 확장 (2026-08-03, 성동님 승인): 빅테크 7종 바로가기·선택 렌더 ──────
+// 기본 노출은 TSLA·NVDA(기존 그대로). 나머지 7종은 칩 선택 시 한 종목만
+// #mega-host에 렌더 — TradingView 위젯 9개 동시 로드를 피하는 지연 로딩.
+const MEGA9 = {
+  order: ['TSLA', 'NVDA', 'AAPL', 'GOOG', 'MSFT', 'AMZN', 'TSM', 'AVGO', 'META'],
+  name: { TSLA: '테슬라', NVDA: '엔비디아', AAPL: '애플', GOOG: '알파벳',
+          MSFT: '마이크로소프트', AMZN: '아마존', TSM: 'TSMC', AVGO: '브로드컴', META: '메타' },
+  tv:   { AAPL: 'NASDAQ:AAPL', GOOG: 'NASDAQ:GOOG', MSFT: 'NASDAQ:MSFT',
+          AMZN: 'NASDAQ:AMZN', TSM: 'NYSE:TSM', AVGO: 'NASDAQ:AVGO', META: 'NASDAQ:META' }
+};
+window._megaSel = null;
+
+function renderTop9Chips() {
+  const bar = document.getElementById('top9-chip-bar');
+  if (!bar) return;
+  bar.innerHTML = MEGA9.order.map(sym => {
+    const d = window._renderData?.[sym];
+    const pct = (d && typeof d.changePct === 'number')
+      ? `<span class="t9-chg" style="color:${d.changePct >= 0 ? 'var(--gr)' : 'var(--rd)'}">${d.changePct >= 0 ? '+' : ''}${d.changePct.toFixed(1)}%</span>`
+      : '';
+    const active = window._megaSel ? (sym === window._megaSel) : (sym === 'TSLA' || sym === 'NVDA');
+    return `<button type="button" class="top9-chip${active ? ' active' : ''}" onclick="selectTop9('${sym}')">${sym}${pct}</button>`;
+  }).join('');
+}
+
+function selectTop9(sym) {
+  if (sym === 'TSLA' || sym === 'NVDA') {
+    window._megaSel = null;
+    renderTop9Chips(); renderMegaHost();
+    document.getElementById(`king-card-${sym}`)?.closest('.king-section')
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+  window._megaSel = sym;
+  renderTop9Chips(); renderMegaHost();
+  document.getElementById('mega-host')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// 스윙뷰(megas) 기반 오늘의 판단 카드 — _v2KingCardHtml과 동일 골격
+function _megaStanceCardHtml(sym) {
+  const m = window._swingView?.megas?.[sym];
+  if (!m) return '';
+  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-left:4px solid #0a84ff;border-radius:14px;padding:16px 16px 10px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">오늘의 판단</span>
+      <span style="font-weight:800;color:var(--t1);font-size:16px;">${m.stanceLabel}</span>
+    </div>
+    <p style="margin:0 0 10px;line-height:1.75;color:var(--t1);font-size:16px;">${m.commentary}</p>
+    <div style="color:var(--t3);font-size:14px;">확률·통계는 11년 백테스트 검증분만 인용 · 투자 판단의 참고 자료</div>
+  </div>`;
+}
+
+// 핵심 지표 카드 — 서버 계산값(market-signals.json) 그대로 표시
+function buildMegaMetricsHtml(d) {
+  const buy = d.buyScore ?? 50, sell = d.sellScore ?? 50;
+  const gearTxt = d.gear === 3 ? '상승 추세 (200일선 위)' : d.gear === 2 ? '횡보 구간 (200일선 근처)' : '하락 추세 (200일선 아래)';
+  const gearColor = d.gear === 3 ? 'var(--gr)' : d.gear === 2 ? 'var(--yl)' : 'var(--rd)';
+  const chgCls = (d.changePct ?? 0) >= 0 ? 'var(--gr)' : 'var(--rd)';
+  const chgStr = d.changePct != null ? ((d.changePct >= 0 ? '+' : '') + d.changePct.toFixed(2) + '%') : '—';
+  const devStr = d.dev200 != null ? ((d.dev200 >= 0 ? '+' : '') + d.dev200.toFixed(1) + '%') : '—';
+  const rsiStr = d.rsi != null ? d.rsi.toFixed(1) : '—';
+  const rsiColor = d.rsi < 30 ? 'var(--gr)' : d.rsi > 70 ? 'var(--rd)' : 'var(--t1)';
+  const row = (l, v) => `<div style="display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid rgba(120,120,128,0.14);">
+    <span style="color:var(--t2);font-size:15px;">${l}</span><span style="font-size:15px;font-weight:700;">${v}</span></div>`;
+  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:14px 16px 6px;margin-bottom:12px;">
+    ${row('현재가', `<span style="color:var(--t1)">$${d.price != null ? d.price.toFixed(2) : '—'}</span> <span style="color:${chgCls}">${chgStr}</span>`)}
+    ${row('매수 매력도', `<span style="color:var(--t1)">${buy}점</span>`)}
+    ${row('매도 압력', `<span style="color:var(--t1)">${sell}점</span>`)}
+    ${row('추세', `<span style="color:${gearColor}">${gearTxt}</span>`)}
+    ${row('RSI(14)', `<span style="color:${rsiColor}">${rsiStr}</span>`)}
+    ${row('200일선 대비', `<span style="color:var(--t1)">${devStr}</span>`)}
+  </div>`;
+}
+
+function renderMegaHost() {
+  const host = document.getElementById('mega-host');
+  if (!host) return;
+  const sym = window._megaSel;
+  if (!sym) { host.innerHTML = ''; return; }
+  const d = window._renderData?.[sym];
+  const name = MEGA9.name[sym];
+  host.innerHTML = `<div class="king-section" style="margin-bottom:32px;">
+    <div class="tv-chart-card" style="margin-bottom:20px;">
+      <div class="tv-chart-label">${name} ${sym} <span>일봉 · TradingView</span></div>
+      <div class="tv-chart-frame" id="tv-MEGA"></div>
+    </div>
+    ${_megaStanceCardHtml(sym)}
+    ${d ? buildMegaMetricsHtml(d)
+        : '<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px;color:var(--t2);font-size:16px;">데이터 수집 대기 구간 — 다음 자동 갱신(장중 최대 30분 주기) 이후 표시됩니다.</div>'}
+  </div>`;
+  try { loadTVChart('tv-MEGA', MEGA9.tv[sym]); } catch (e) { console.error('[top9 tv]', e); }
+}
+
+// 초기 1회 즉시 렌더 — 데이터 도착 전에도 칩 바가 비어있지 않도록 (등락률은 도착 후 채워짐)
+try { renderTop9Chips(); } catch (e) {}
 
 function renderRecentContext(symbols) {
   const wrap = document.getElementById('recent-context-wrap');
