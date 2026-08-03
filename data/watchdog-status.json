@@ -1,9 +1,9 @@
 {
-  "lastRun": "2026-08-03T11:17:27.106Z",
-  "lastRunKST": "2026-08-03 20:17:27 KST",
+  "lastRun": "2026-08-03T11:47:28.840Z",
+  "lastRunKST": "2026-08-03 20:47:28 KST",
   "summary": {
-    "ok": 5,
-    "triggered": 1,
+    "ok": 6,
+    "triggered": 0,
     "alreadyRunning": 0,
     "stale": 0,
     "skipped": 4,
@@ -14,18 +14,18 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-08-03T11:17:27.106Z",
-      "lastUpdate": "2026-08-03T08:18:32.703Z",
-      "ageHours": 3,
+      "checkedAt": "2026-08-03T11:47:28.840Z",
+      "lastUpdate": "2026-08-03T11:17:56.245Z",
+      "ageHours": 0.5,
       "maxAgeHours": 2.5,
-      "status": "TRIGGERED",
-      "reason": "3h 지연 감지 → 자동 트리거"
+      "status": "OK",
+      "reason": "최신 (0.5h 전 업데이트)"
     },
     {
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-08-03T11:17:27.106Z",
+      "checkedAt": "2026-08-03T11:47:28.840Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -33,18 +33,18 @@
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-08-03T11:17:27.106Z",
+      "checkedAt": "2026-08-03T11:47:28.840Z",
       "lastUpdate": "2026-08-03T08:30:45.744Z",
-      "ageHours": 2.8,
+      "ageHours": 3.3,
       "maxAgeHours": 5,
       "status": "OK",
-      "reason": "최신 (2.8h 전 업데이트)"
+      "reason": "최신 (3.3h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-08-03T11:17:27.106Z",
+      "checkedAt": "2026-08-03T11:47:28.840Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -52,7 +52,7 @@
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-08-03T11:17:27.106Z",
+      "checkedAt": "2026-08-03T11:47:28.840Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -60,51 +60,51 @@
       "id": "scorecard",
       "name": "긍정vs부정 스코어카드",
       "workflow": "market-scorecard.yml",
-      "checkedAt": "2026-08-03T11:17:27.106Z",
+      "checkedAt": "2026-08-03T11:47:28.840Z",
       "lastUpdate": "2026-08-03T09:21:02Z",
-      "ageHours": 1.9,
+      "ageHours": 2.4,
       "maxAgeHours": 8,
       "status": "OK",
-      "reason": "최신 (1.9h 전 업데이트)"
+      "reason": "최신 (2.4h 전 업데이트)"
     },
     {
       "id": "stocks-prices",
       "name": "심플 주가 실시간",
       "workflow": "fetch-stocks-prices.yml",
-      "checkedAt": "2026-08-03T11:17:27.106Z",
+      "checkedAt": "2026-08-03T11:47:28.840Z",
       "lastUpdate": "2026-08-03T11:15:05.588270+00:00",
-      "ageHours": 0,
+      "ageHours": 0.5,
       "maxAgeHours": 0.75,
       "status": "OK",
-      "reason": "최신 (0h 전 업데이트)"
+      "reason": "최신 (0.5h 전 업데이트)"
     },
     {
       "id": "stocks-data",
       "name": "심플 주가 일간(스파크라인)",
       "workflow": "fetch-stocks-data.yml",
-      "checkedAt": "2026-08-03T11:17:27.106Z",
+      "checkedAt": "2026-08-03T11:47:28.840Z",
       "lastUpdate": "2026-08-02T22:30:52.346996+00:00",
-      "ageHours": 12.8,
+      "ageHours": 13.3,
       "maxAgeHours": 26,
       "status": "OK",
-      "reason": "최신 (12.8h 전 업데이트)"
+      "reason": "최신 (13.3h 전 업데이트)"
     },
     {
       "id": "market-cycle",
       "name": "마켓 사이클 주봉",
       "workflow": "fetch-market-cycle.yml",
-      "checkedAt": "2026-08-03T11:17:27.106Z",
+      "checkedAt": "2026-08-03T11:47:28.840Z",
       "lastUpdate": "2026-08-03T00:16:09.068Z",
-      "ageHours": 11,
+      "ageHours": 11.5,
       "maxAgeHours": 30,
       "status": "OK",
-      "reason": "최신 (11h 전 업데이트)"
+      "reason": "최신 (11.5h 전 업데이트)"
     },
     {
       "id": "kr-prices",
       "name": "한국 주가",
       "workflow": "fetch-kr-prices.yml",
-      "checkedAt": "2026-08-03T11:17:27.106Z",
+      "checkedAt": "2026-08-03T11:47:28.840Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     }
