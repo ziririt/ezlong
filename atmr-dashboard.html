@@ -736,6 +736,12 @@ a { text-decoration: none; color: inherit; }
 .top9-chip .t9-chg { font-size: 14px; font-weight: 600; }
 .top9-chip.active { border-color: #0a84ff; background: #0a84ff; color: #fff; }
 .top9-chip.active .t9-chg { color: #fff !important; }
+.top9-sec-head {
+  font-size: 22px; font-weight: 800; color: var(--t1);
+  display: flex; align-items: baseline; gap: 8px; margin: 4px 0 12px;
+  padding-left: 2px;
+}
+.top9-sec-head span { color: #0a84ff; font-size: 18px; font-weight: 800; letter-spacing: .02em; }
 
 /* ─── Two Kings ─────────────────────────────────── */
 .kings-grid {
@@ -1715,14 +1721,15 @@ li.gear-other-sep { display: none !important; }
     <!-- ────────────────────────────────────────── -->
     <div class="tab-pane" id="tab-kings">
 
-      <!-- ── TOP9 티커 바로가기 (2026-08-03 신설) ─────────────────────────
-           기본은 TSLA·NVDA 섹션 노출. 나머지 7종은 칩 선택 시 #mega-host에
-           지연 렌더(TradingView 위젯 9개 동시 로드 방지). -->
+      <!-- ── TOP9 티커 바로가기 (2026-08-04 2차 개편) ─────────────────────
+           9종 전체를 세로로 펼치고, 7종 신규 섹션은 스크롤 접근 시 지연 렌더
+           (IntersectionObserver — TradingView 위젯 동시 로드 방지).
+           칩은 해당 섹션으로 스크롤 이동. 하단에 칩 바 한 벌 더(#top9-chip-bar-bottom). -->
       <div id="top9-chip-bar" class="top9-chips"></div>
-      <div id="mega-host"></div>
 
       <!-- ── TSLA 섹션 ── -->
       <div class="king-section">
+        <div class="top9-sec-head">테슬라 <span>TSLA</span></div>
         <div class="tv-chart-card" style="margin-bottom:20px;">
           <div class="tv-chart-label">Tesla TSLA <span>일봉 · TradingView</span></div>
           <div class="tv-chart-frame" id="tv-TSLA"></div>
@@ -1736,6 +1743,7 @@ li.gear-other-sep { display: none !important; }
 
       <!-- ── NVDA 섹션 ── -->
       <div class="king-section" style="margin-top:32px;">
+        <div class="top9-sec-head">엔비디아 <span>NVDA</span></div>
         <div class="tv-chart-card" style="margin-bottom:20px;">
           <div class="tv-chart-label">NVIDIA NVDA <span>일봉 · TradingView</span></div>
           <div class="tv-chart-frame" id="tv-NVDA"></div>
@@ -1746,6 +1754,12 @@ li.gear-other-sep { display: none !important; }
         <!-- AI 상담 — NVDA -->
         <div id="chat-nvda" style="margin-top:12px;"></div>
       </div>
+
+      <!-- ── 빅테크 7종 섹션 (스크롤 지연 렌더) ── -->
+      <div id="mega-sections"></div>
+
+      <!-- ── 하단 티커 바로가기 (맨 아래에서도 다른 종목 이동) ── -->
+      <div id="top9-chip-bar-bottom" class="top9-chips" style="margin-top:28px;"></div>
 
     </div><!-- /tab-kings -->
 
@@ -5913,24 +5927,33 @@ renderKings = function(tsla, nvda) {
     const c = document.getElementById(`king-card-${sym}`);
     if (!c || !window._swingView) return;
     const section = c.closest('.king-section') || c;
-    // 섹션 맨 위에 v2 카드 (중복 방지: 기존 카드 제거 후 재삽입)
+    // 섹션 상단에 v2 카드 (중복 방지: 기존 카드 제거 후 재삽입)
+    // 2026-08-04: 티커 헤더(.top9-sec-head)가 있으면 그 "바로 아래"에 — 어느 종목의
+    // 판단인지 명확하게 (성동님 지시).
     section.querySelectorAll('.v2-king-card').forEach(el => el.remove());
     const holder = document.createElement('div');
     holder.className = 'v2-king-card';
     holder.innerHTML = _v2KingCardHtml(sym);
-    section.insertBefore(holder, section.firstElementChild);
+    const head = section.querySelector('.top9-sec-head');
+    if (head) head.insertAdjacentElement('afterend', holder);
+    else section.insertBefore(holder, section.firstElementChild);
     // 레거시 지표 카드 본문은 상세보기로
     if (!c.querySelector('.sv-det-page')) {
       _v2Collapse(c, 0, '상세보기 — 지표·점수·매매 기준 전체');
     }
   });
-  // TOP9 확장 (2026-08-03): 데이터/스윙뷰 도착 시마다 칩·선택 섹션 최신화
-  try { renderTop9Chips(); renderMegaHost(); } catch (e) { console.error('[top9]', e); }
+  // TOP9 확장 (2026-08-04 2차): 데이터/스윙뷰 도착 시마다 칩·이미 렌더된 섹션 최신화
+  try {
+    renderTop9Chips();
+    megaScaffold();
+    window._megaRendered.forEach(s => renderMegaCards(s));
+  } catch (e) { console.error('[top9]', e); }
 };
 
 // ── TOP9 확장 (2026-08-03, 성동님 승인): 빅테크 7종 바로가기·선택 렌더 ──────
-// 기본 노출은 TSLA·NVDA(기존 그대로). 나머지 7종은 칩 선택 시 한 종목만
-// #mega-host에 렌더 — TradingView 위젯 9개 동시 로드를 피하는 지연 로딩.
+// 2026-08-04 2차 개편: 9종 전체를 세로로 펼친다. 7종 신규 섹션은 스크롤 접근
+// 시 지연 렌더(IntersectionObserver, 600px 선행) — TV 위젯 9개 동시 로드 방지.
+// 칩(상·하단 두 벌)은 해당 종목 섹션으로 스크롤 이동.
 const MEGA9 = {
   order: ['TSLA', 'NVDA', 'AAPL', 'GOOG', 'MSFT', 'AMZN', 'TSM', 'AVGO', 'META'],
   name: { TSLA: '테슬라', NVDA: '엔비디아', AAPL: '애플', GOOG: '알파벳',
@@ -5941,33 +5964,38 @@ const MEGA9 = {
   ai:   { AAPL: 'AAPL', GOOG: 'GOOGL', MSFT: 'MSFT', AMZN: 'AMZN',
           TSM: 'TSM', AVGO: 'AVGO', META: 'META' }
 };
-window._megaAi = {};   // 심볼별 분석 캐시 (세션 내)
-window._megaSel = null;
+window._megaAi = {};              // 심볼별 분석 캐시 (세션 내)
+window._megaRendered = new Set(); // 이미 본문이 렌더된 mega 섹션
 
-function renderTop9Chips() {
-  const bar = document.getElementById('top9-chip-bar');
-  if (!bar) return;
-  bar.innerHTML = MEGA9.order.map(sym => {
+function _top9ChipsHtml() {
+  return MEGA9.order.map(sym => {
     const d = window._renderData?.[sym];
     const pct = (d && typeof d.changePct === 'number')
       ? `<span class="t9-chg" style="color:${d.changePct >= 0 ? 'var(--gr)' : 'var(--rd)'}">${d.changePct >= 0 ? '+' : ''}${d.changePct.toFixed(1)}%</span>`
       : '';
-    const active = window._megaSel ? (sym === window._megaSel) : (sym === 'TSLA' || sym === 'NVDA');
-    return `<button type="button" class="top9-chip${active ? ' active' : ''}" onclick="selectTop9('${sym}')">${sym}${pct}</button>`;
+    return `<button type="button" class="top9-chip" data-sym="${sym}" onclick="selectTop9('${sym}')">${sym}${pct}</button>`;
   }).join('');
 }
 
+function renderTop9Chips() {
+  const html = _top9ChipsHtml();
+  const top = document.getElementById('top9-chip-bar');
+  const bot = document.getElementById('top9-chip-bar-bottom');
+  if (top) top.innerHTML = html;
+  if (bot) bot.innerHTML = html;
+}
+
 function selectTop9(sym) {
+  document.querySelectorAll('.top9-chip').forEach(c =>
+    c.classList.toggle('active', c.dataset.sym === sym));
+  let target;
   if (sym === 'TSLA' || sym === 'NVDA') {
-    window._megaSel = null;
-    renderTop9Chips(); renderMegaHost();
-    document.getElementById(`king-card-${sym}`)?.closest('.king-section')
-      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    return;
+    target = document.getElementById(`king-card-${sym}`)?.closest('.king-section');
+  } else {
+    renderMegaSection(sym);   // 아직 지연 렌더 전이면 즉시 렌더
+    target = document.getElementById(`mega-sec-${sym}`);
   }
-  window._megaSel = sym;
-  renderTop9Chips(); renderMegaHost();
-  document.getElementById('mega-host')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // 스윙뷰(megas) 기반 오늘의 판단 카드 — _v2KingCardHtml과 동일 골격
@@ -6040,37 +6068,67 @@ function buildMegaAiHtml(ai) {
   </div>`;
 }
 
-function renderMegaHost() {
-  const host = document.getElementById('mega-host');
-  if (!host) return;
-  const sym = window._megaSel;
-  if (!sym) { host.innerHTML = ''; return; }
+// 7종 섹션 골격 생성 + 스크롤 지연 렌더 등록 (2026-08-04 2차 개편 — 9종 전체 펼침)
+function megaScaffold() {
+  const wrap = document.getElementById('mega-sections');
+  if (!wrap || wrap.childElementCount) return;
+  const extras = MEGA9.order.filter(s => s !== 'TSLA' && s !== 'NVDA');
+  wrap.innerHTML = extras.map(sym => `
+    <div class="king-section" id="mega-sec-${sym}" style="margin-top:32px;">
+      <div class="top9-sec-head">${MEGA9.name[sym]} <span>${sym}</span></div>
+      <div id="mega-cards-${sym}"><div class="skeleton skel-card" style="height:180px;"></div></div>
+      <div class="tv-chart-card" style="margin-bottom:20px;">
+        <div class="tv-chart-label">${MEGA9.name[sym]} ${sym} <span>일봉 · TradingView</span></div>
+        <div class="tv-chart-frame" id="tv-MEGA-${sym}"></div>
+      </div>
+    </div>`).join('');
+  // 뷰포트 600px 앞에서 미리 렌더 — 천천히 스크롤하면 이미 준비돼 있는 체감
+  if ('IntersectionObserver' in window) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          renderMegaSection(en.target.id.replace('mega-sec-', ''));
+          obs.unobserve(en.target);
+        }
+      });
+    }, { rootMargin: '600px 0px' });
+    extras.forEach(sym => {
+      const el = document.getElementById(`mega-sec-${sym}`);
+      if (el) obs.observe(el);
+    });
+  } else {
+    extras.forEach(renderMegaSection);   // 미지원 브라우저 폴백: 전부 즉시 렌더
+  }
+}
+
+// 판단·AI·지표 카드 부분만 렌더 — TV차트는 건드리지 않아 데이터 갱신 시 위젯 리로드 없음
+function renderMegaCards(sym) {
+  const box = document.getElementById(`mega-cards-${sym}`);
+  if (!box) return;
   const d = window._renderData?.[sym];
-  const name = MEGA9.name[sym];
   const ai = window._megaAi[sym];   // undefined=미로딩, null=없음, object=도착
-  host.innerHTML = `<div class="king-section" style="margin-bottom:32px;">
-    <div class="tv-chart-card" style="margin-bottom:20px;">
-      <div class="tv-chart-label">${name} ${sym} <span>일봉 · TradingView</span></div>
-      <div class="tv-chart-frame" id="tv-MEGA"></div>
-    </div>
-    ${_megaStanceCardHtml(sym)}
+  box.innerHTML = `${_megaStanceCardHtml(sym)}
     ${ai ? buildMegaAiHtml(ai)
-         : (ai === undefined ? '<div id="mega-ai-loading" style="color:var(--t3);font-size:14px;margin:0 0 12px;">AI 차트분석 불러오는 중…</div>' : '')}
+         : (ai === undefined ? '<div style="color:var(--t3);font-size:14px;margin:0 0 12px;">AI 차트분석 불러오는 중…</div>' : '')}
     ${d ? buildMegaMetricsHtml(d)
-        : '<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px;color:var(--t2);font-size:16px;">데이터 수집 대기 구간 — 다음 자동 갱신(장중 최대 30분 주기) 이후 표시됩니다.</div>'}
-  </div>`;
-  try { loadTVChart('tv-MEGA', MEGA9.tv[sym]); } catch (e) { console.error('[top9 tv]', e); }
-  // AI 분석 지연 로드 — 도착 시 선택이 유지된 경우에만 재렌더 (경합 방지)
+        : '<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px;color:var(--t2);font-size:16px;margin-bottom:12px;">데이터 수집 대기 구간 — 다음 자동 갱신(장중 최대 30분 주기) 이후 표시됩니다.</div>'}`;
   if (ai === undefined && MEGA9.ai[sym]) {
     fetchAnalysisJSON(MEGA9.ai[sym]).then(a => {
       window._megaAi[sym] = a || null;
-      if (window._megaSel === sym) renderMegaHost();
+      renderMegaCards(sym);
     }).catch(() => { window._megaAi[sym] = null; });
   }
 }
 
-// 초기 1회 즉시 렌더 — 데이터 도착 전에도 칩 바가 비어있지 않도록 (등락률은 도착 후 채워짐)
-try { renderTop9Chips(); } catch (e) {}
+function renderMegaSection(sym) {
+  if (window._megaRendered.has(sym)) return;
+  window._megaRendered.add(sym);
+  renderMegaCards(sym);
+  try { loadTVChart(`tv-MEGA-${sym}`, MEGA9.tv[sym]); } catch (e) { console.error('[top9 tv]', e); }
+}
+
+// 초기 1회 즉시 실행 — 데이터 도착 전에도 칩 바·섹션 골격이 보이도록
+try { renderTop9Chips(); megaScaffold(); } catch (e) {}
 
 function renderRecentContext(symbols) {
   const wrap = document.getElementById('recent-context-wrap');
