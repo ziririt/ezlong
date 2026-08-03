@@ -1020,7 +1020,9 @@ a { text-decoration: none; color: inherit; }
   border: 1px solid currentColor;
   width: fit-content;
 }
-.ltier-cat-badge.hold { color: var(--t3); border-color: var(--bd); }
+/* 2026-08-04 (성동님 지적): 보유자 배지가 회색(t3)이라 4분류 중 혼자 안 보임 —
+   블루로 교체해 신규(그린)·물타기(오렌지)·불타기(퍼플)와 동급 가시성 확보 */
+.ltier-cat-badge.hold { color: var(--bl); }
 .ltier-cat-badge.buy  { color: var(--gr); }
 .ltier-cat-badge.avg  { color: var(--or); }
 .ltier-cat-badge.fire { color: var(--pu); }
