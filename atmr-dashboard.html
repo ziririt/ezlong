@@ -747,6 +747,8 @@ a { text-decoration: none; color: inherit; }
   font-size: 14px; font-weight: 800; line-height: 1.3;
   border-radius: 6px; padding: 1px 7px; margin-left: 4px; vertical-align: middle;
 }
+/* 칩 이동 착지 시 섹션 헤더가 상단 네비에 가리지 않도록 */
+.king-section { scroll-margin-top: 64px; }
 
 /* ─── Two Kings ─────────────────────────────────── */
 .kings-grid {
@@ -5943,6 +5945,15 @@ renderKings = function(tsla, nvda) {
     const head = section.querySelector('.top9-sec-head');
     if (head) head.insertAdjacentElement('afterend', holder);
     else section.insertBefore(holder, section.firstElementChild);
+    // 4분류 맞춤 행동 진단 카드 — v2 판단 카드 바로 아래 (2026-08-04)
+    section.querySelectorAll('.v2-aud-card').forEach(el => el.remove());
+    const audData = (sym === 'TSLA' ? window._swingView?.tsla : window._swingView?.nvda)?.audience;
+    if (audData) {
+      const audHolder = document.createElement('div');
+      audHolder.className = 'v2-aud-card';
+      audHolder.innerHTML = buildAudienceHtml(audData);
+      holder.insertAdjacentElement('afterend', audHolder);
+    }
     // 레거시 지표 카드 본문은 상세보기로
     if (!c.querySelector('.sv-det-page')) {
       _v2Collapse(c, 0, '상세보기 — 지표·점수·매매 기준 전체');
@@ -5998,10 +6009,32 @@ function selectTop9(sym) {
   if (sym === 'TSLA' || sym === 'NVDA') {
     target = document.getElementById(`king-card-${sym}`)?.closest('.king-section');
   } else {
-    renderMegaSection(sym);   // 아직 지연 렌더 전이면 즉시 렌더
+    // 2026-08-04: 대상 "위쪽" 섹션까지 전부 먼저 렌더해 레이아웃을 고정한 뒤 스크롤 —
+    // 스크롤 도중 위 섹션이 지연 렌더되며 높이가 변해 엉뚱한 위치(헤더가 안 보이는
+    // 지점)에 착지하던 문제 수정 (성동님 지적)
+    const extras = MEGA9.order.filter(s => s !== 'TSLA' && s !== 'NVDA');
+    for (const s of extras) { renderMegaSection(s); if (s === sym) break; }
     target = document.getElementById(`mega-sec-${sym}`);
   }
-  target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!target) return;
+  const go = () => target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  requestAnimationFrame(go);
+  setTimeout(go, 900);   // 위쪽 콘텐츠(카드·차트) 로딩으로 밀렸을 때 보정 재스크롤
+}
+
+// 4분류 맞춤 행동 진단 카드 — 스윙 전략 탭의 보유자/신규/물타기/불타기 분류를 종목 단위로
+function buildAudienceHtml(aud) {
+  if (!aud) return '';
+  const row = (cls, label, txt) => `<div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(120,120,128,0.14);">
+    <span class="ltier-cat-badge ${cls}" style="flex-shrink:0;">${label}</span>
+    <span style="font-size:15px;line-height:1.6;color:var(--t1);">${txt}</span></div>`;
+  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:14px 16px 6px;margin-bottom:12px;">
+    <div style="font-weight:800;color:var(--t1);font-size:16px;margin-bottom:6px;">맞춤 행동 진단</div>
+    ${row('hold', '보유자', aud.holder)}
+    ${row('buy', '신규 진입', aud.newbie)}
+    ${row('avg', '물타기', aud.avgdown)}
+    ${row('fire', '불타기', aud.pyramid)}
+  </div>`;
 }
 
 // 스윙뷰(megas) 기반 오늘의 판단 카드 — _v2KingCardHtml과 동일 골격
@@ -6116,6 +6149,7 @@ function renderMegaCards(sym) {
   box.innerHTML = `${_megaStanceCardHtml(sym)}
     ${ai ? buildMegaAiHtml(ai)
          : (ai === undefined ? '<div style="color:var(--t3);font-size:14px;margin:0 0 12px;">AI 차트분석 불러오는 중…</div>' : '')}
+    ${buildAudienceHtml(window._swingView?.megas?.[sym]?.audience)}
     ${d ? buildMegaMetricsHtml(d)
         : '<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px;color:var(--t2);font-size:16px;margin-bottom:12px;">데이터 수집 대기 구간 — 다음 자동 갱신(장중 최대 30분 주기) 이후 표시됩니다.</div>'}`;
   if (ai === undefined && MEGA9.ai[sym]) {
