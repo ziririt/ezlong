@@ -495,6 +495,123 @@ def tsla_view(s):
                 nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi))
 
 
+# ─── TOP9 확장: 빅테크 7종 종목별 문법 (2026-08-03 신설, 성동님 승인) ───────
+# 통계 출처: backtest/compute_scores.py로 라이브 calc_buy_score/calc_sell_score를
+# 2015.6~2026.8 전 구간 재계산한 뒤 20거래일 선행수익 집계 (표본수 명기).
+# TSLA buy80=61일 +15.3%/69%, NVDA gear3 69%/gear1 56%가 기존 STATS와 정확 일치해
+# 엔진 검증 통과 확인 후 산출한 수치들이다. 상승장 편향 구간임을 유의 — base(전체
+# 평균)와의 '차이'가 신호의 가치이지, 절대 수익률이 아니다.
+MEGA_ORDER = ['AAPL', 'GOOG', 'MSFT', 'AMZN', 'TSM', 'AVGO', 'META']  # 시가총액순 (2026-07-29)
+
+MEGA_CFG = {
+    'AAPL': dict(
+        label='애플',
+        buy=None,  # buy80 +1.6%/62% ≈ base(+2.0%/63%) — 극단 신호에 반응 안 하는 종목
+        buy_txt=None,
+        hot='ignore',  # sell75 이후 20일 평균 +2.6%·승률 76% (n=72) — 과열 매도가 역효과
+        hot_txt='AAPL은 과열 신호(매도압력 75+) 이후에도 20거래일 평균 +2.6%·승률 76%로 오히려 더 올랐던 종목입니다(표본 72일) — 기계적 익절이 이 종목에선 수익을 깎아왔습니다',
+        down='insensitive',  # gear1 승률 59% vs gear3 64% — 추세 민감도 낮음
+        down_txt='AAPL은 200일선 아래에서도 20거래일 승률 59%로 크게 무너지지 않았던 종목입니다(위 구간 64%) — 추세 신호에 둔감한 항공모함이라, 극단 구간 분할 대응보다 보유 지속이 통계의 방향입니다',
+        base_txt='AAPL은 신호 민감도가 9종 중 가장 낮은 종목입니다 — 극단 매수점수도, 과열 매도도 통계적 우위가 없었습니다. 판단할 게 적다는 것 자체가 이 종목의 성격입니다'),
+    'GOOG': dict(
+        label='알파벳',
+        buy='rsi30',  # RSI<30 이후 +5.5%/74% (n=34) vs base +2.1%/63%
+        buy_txt='GOOG의 유효 매수 신호는 RSI 30 미만 패닉 구간 하나입니다 — 그 구간 이후 20거래일 평균 +5.5%·승률 74%였습니다(표본 34일, 전체 평균 +2.1%·63%)',
+        hot='slow',  # sell75 이후 +0.7%/48% — 둔화
+        hot_txt='GOOG은 과열(매도압력 75+) 이후 20거래일 평균 +0.7%·승률 48%로 확연히 쉬어갔습니다(표본 65일) — 여기서의 신규 매수는 통계적으로 불리합니다',
+        down='insensitive',
+        down_txt='GOOG은 하락 추세 구간 승률(59%)이 전체 평균(63%)과 큰 차이가 없었습니다 — 추세보다는 극단 패닉(RSI 30 미만) 신호를 기다리는 쪽이 이 종목의 문법입니다',
+        base_txt='주의할 것 하나 — GOOG은 매수점수 80 이상 극단 구간이 오히려 역신호였습니다(이후 20거래일 평균 −0.1%·승률 46%, 표본 71일). 이 종목에서 점수 극단은 매수 근거가 아닙니다'),
+    'MSFT': dict(
+        label='마이크로소프트',
+        buy='rsi30',  # +6.0%/77% (n=35)
+        buy_txt='MSFT의 가장 강한 매수 신호는 RSI 30 미만 극단 과매도입니다 — 이후 20거래일 평균 +6.0%·승률 77%였습니다(표본 35일, 전체 평균 +1.8%·64%)',
+        hot='trim',  # sell75 이후 −1.9%/45% (n=42) — 9종 중 유일하게 익절 유효
+        hot_txt='MSFT는 9종 중 유일하게 기계적 익절이 통계로 검증된 종목입니다 — 과열(매도압력 75+) 이후 20거래일 평균 −1.9%·승률 45%(표본 42일)로 실제로 밀렸습니다. 분할 익절 검토가 데이터의 방향입니다',
+        down='wait',  # gear3 67% vs gear1 51%
+        down_txt='MSFT는 추세를 존중해야 하는 종목입니다 — 200일선 위 20거래일 승률 67%, 아래 51%로 갈립니다. 하락 추세에서는 극단 과매도(RSI 30 미만) 신호만 기다리는 구간입니다',
+        base_txt='MSFT는 추세 위에서 꾸준하고(200일선 위 승률 67%), 과열이 켜지면 실제로 쉬는, 교과서에 가장 가까운 종목입니다'),
+    'AMZN': dict(
+        label='아마존',
+        buy='both',  # buy80 +3.8%/62% (n=56), rsi30 +4.0%/76% (n=55)
+        buy_txt='AMZN은 극단 신호 매수가 통하는 종목입니다 — RSI 30 미만 이후 20거래일 평균 +4.0%·승률 76%(표본 55일), 매수점수 80 이상 이후 +3.8%·승률 62%(표본 56일)',
+        hot='ignore',  # sell75 +1.6%/64% ≈ base
+        hot_txt='AMZN의 과열 신호는 판단 재료가 아니었습니다 — 과열 이후 성과(+1.6%·64%)가 전체 평균(+2.1%·64%)과 사실상 같습니다. 과열만으로 팔 이유도, 살 이유도 없습니다',
+        down='insensitive',  # gear1 63% = base 64%
+        down_txt='AMZN은 200일선 위든 아래든 20거래일 승률이 63~64%로 사실상 같았던, 추세 신호 무차별 종목입니다 — 추세 판단 대신 극단 과매도 분할 매수가 이 종목의 중심 문법입니다',
+        base_txt='AMZN은 추세를 따지지 않고 극단 과매도에서 나눠 사는 문법이 유일하게 검증된 종목입니다'),
+    'TSM': dict(
+        label='TSMC',
+        buy='rsi30',  # +6.7%/80% (n=66)
+        buy_txt='TSM의 매수 신호는 패닉입니다 — RSI 30 미만 이후 20거래일 평균 +6.7%·승률 80%였습니다(표본 66일, 전체 평균 +2.5%·62%)',
+        hot='slow',  # sell75 +1.0%/55%
+        hot_txt='TSM은 과열(매도압력 75+) 이후 20거래일 평균 +1.0%·승률 55%로 눈에 띄게 둔화됐습니다(표본 77일) — 과열 구간 신규 진입은 통계적으로 불리합니다',
+        down='insensitive',
+        down_txt='TSM은 오히려 200일선 공방 구간(±2%)의 이후 성과가 +3.3%·승률 72%로 가장 좋았던 종목입니다 — 추세 이탈을 공포가 아니라 관찰 구간으로 대하는 것이 데이터의 방향입니다',
+        base_txt='TSM은 반도체 사이클 종목답게 패닉 매수(RSI 30 미만, 승률 80%)의 보상이 9종 중 두 번째로 컸습니다'),
+    'AVGO': dict(
+        label='브로드컴',
+        buy='rsi30',  # +8.9%/82% (n=38) — 9종 중 최강
+        buy_txt='AVGO의 RSI 30 미만 극단 과매도는 9종 전체에서 가장 강한 매수 신호였습니다 — 이후 20거래일 평균 +8.9%·승률 82%(표본 38일, 전체 평균 +2.9%·63%)',
+        hot='slow',  # sell75 −0.5%/56%
+        hot_txt='AVGO는 과열(매도압력 75+) 이후 20거래일 평균 −0.5%·승률 56%로 쉬어갔습니다(표본 75일) — 과열 구간에서는 추격하지 않는 것이 통계의 방향입니다',
+        down='opportunity',  # gear1 +6.8%/72% vs gear3 +2.2%/61% — 역발상 종목
+        down_txt='AVGO는 역발상 종목입니다 — 200일선 아래 하락 추세 구간의 이후 20거래일이 평균 +6.8%·승률 72%로, 오히려 상승 추세 구간(+2.2%·61%)보다 좋았습니다. 낙폭이 기회였던 이력이 뚜렷하지만, 물론 분할 전제입니다',
+        base_txt='AVGO는 "빠질 때 사서 과열에 쉬는" 문법이 9종 중 가장 선명하게 검증된 종목입니다'),
+    'META': dict(
+        label='메타',
+        buy='rsi30',  # +6.3%/74% (n=78)
+        buy_txt='META의 매수 신호는 패닉 데이입니다 — RSI 30 미만 이후 20거래일 평균 +6.3%·승률 74%였습니다(표본 78일, 전체 평균 +1.9%·61%)',
+        hot='slow',  # sell75 +2.0%/50%
+        hot_txt='META는 과열(매도압력 75+) 이후 승률이 50%로 동전던지기가 됐습니다(표본 70일) — 과열 구간의 추가 매수는 근거가 없습니다',
+        down='wait',  # gear3 65% vs gear1 52%
+        down_txt='META는 추세가 갈리는 종목입니다 — 200일선 위 20거래일 승률 65%, 아래 52%. 하락 추세에서는 RSI 30 미만 패닉 신호만 기다리는 것이 데이터의 방향입니다',
+        base_txt='META는 급락이 잦지만 패닉 구간(RSI 30 미만) 반등의 통계(승률 74%)가 꾸준했던 종목입니다'),
+}
+
+
+def mega_view(sym, s):
+    """빅테크 7종 공용 뷰 — MEGA_CFG의 종목별 검증 문법으로 분기.
+    tsla_view/nvda_view와 동일한 출력 형태(stance/stanceLabel/commentary/nums)."""
+    cfg = MEGA_CFG[sym]
+    buy, sell, gear = s.get('buyScore') or 50, s.get('sellScore') or 50, s.get('gear') or 2
+    rsi = s.get('rsi')
+    rsi_panic = rsi is not None and rsi < 30
+    buy_extreme = buy >= 80
+
+    # 1) 유효 매수 신호 발동
+    if (cfg['buy'] == 'rsi30' and rsi_panic) or \
+       (cfg['buy'] == 'both' and (rsi_panic or buy_extreme)):
+        st, label = 'accumulate', '극단 과매도 — 분할 매수 검토 유효'
+        body = (f'{cfg["label"]}({sym})가 극단 과매도 구간(RSI {rsi:.0f}, 매수점수 {buy})에 '
+                f'들어왔습니다. {cfg["buy_txt"]}. 한 번에 들어가지 않고 나눠 들어가는 것이 전제입니다.')
+    # 2) 과열
+    elif sell >= 75:
+        if cfg['hot'] == 'trim':
+            st, label = 'trim', '과열 — 분할 익절 검토 구간'
+        elif cfg['hot'] == 'slow':
+            st, label = 'hold', '과열 — 신규 진입 자제 구간'
+        else:
+            st, label = 'hold', '과열이지만 기계적 익절 비권고'
+        body = f'과열 신호(매도압력 {sell})가 켜졌습니다. {cfg["hot_txt"]}.'
+    # 3) 하락 추세
+    elif gear <= 1:
+        if cfg['down'] == 'opportunity':
+            st, label = 'watch', '하락 추세 — 역발상 관찰 구간'
+        elif cfg['down'] == 'wait':
+            st, label = 'wait', '하락 추세 — 극단 신호 대기'
+        else:
+            st, label = 'hold', '하락 추세 — 통계상 과민 반응 불필요'
+        body = f'200일선 아래 하락 추세입니다. {cfg["down_txt"]}.'
+    # 4) 평상시
+    else:
+        st, label = 'hold', '보유 유지 — 특이 신호 없음'
+        body = (f'추세 훼손도, 유효 매수 신호도 없는 구간입니다. {cfg["base_txt"]}. '
+                f'현재 매수점수 {buy}·매도압력 {sell} 수준에서는 포지션 변경의 통계적 근거가 없습니다.')
+    return dict(stance=st, stanceLabel=label, commentary=_move_prefix(s) + body,
+                nums=dict(buy=buy, sell=sell, gear=gear, rsi=round(rsi, 1) if rsi is not None else None))
+
+
 def nvda_view(s):
     buy, sell, gear = s.get('buyScore') or 50, s.get('sellScore') or 50, s.get('gear') or 2
     rsi = s.get('rsi')
@@ -761,6 +878,12 @@ def main():
                             dev200=round(dev200, 2) if dev200 is not None else None)),
         tsla=tsla_view(syms.get('TSLA') or {}),
         nvda=nvda_view(syms.get('NVDA') or {}),
+        # TOP9 확장 (2026-08-03): 빅테크 7종 — 시그널 데이터가 있는 종목만 포함.
+        # 파이프라인이 아직 해당 심볼을 수집하지 않았으면 자연히 빠지고, UI는
+        # 없는 심볼을 "데이터 수집 중"으로 표시한다 (폴백 안전).
+        megaOrder=MEGA_ORDER,
+        megas={sym: mega_view(sym, syms[sym]) for sym in MEGA_ORDER
+               if syms.get(sym) and syms[sym].get('buyScore') is not None},
     )
 
     desked = desk_with_fable(view, (load_scorecard() or [None])[0], load_chart_engine())
