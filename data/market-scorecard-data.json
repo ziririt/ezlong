@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-08-03-15:16",
+      "timestamp_kst": "2026-08-03(월) 15:16 KST",
+      "key_event": {
+        "name": "빅테크 실적 및 AI 기대감 지속",
+        "name_en": "Big Tech Earnings and Sustained AI Optimism",
+        "time": "직전 정규장 및 향후 12시간",
+        "why": "주요 빅테크 실적 호조, AI 투자 심리, 시장 전반 긍정 영향",
+        "why_en": "Strong Big Tech earnings, AI investment sentiment, positive market impact"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "빅테크 실적 호조와 AI 기대감으로 긍정 우위 유지. 지정학적 불확실성과 금리 우려는 지속.",
+      "summary_en": "Positive bias maintained due to strong Big Tech earnings and AI optimism. Geopolitical uncertainty and interest rate concerns persist.",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "일부 빅테크 실적 호조",
+          "name_en": "Strong Performance from Select Big Tech",
+          "desc": "MSFT (+2.98%), GOOGL (+5.52%) 등 주요 빅테크 실적 기대감 지속",
+          "desc_en": "Continued optimism for major Big Tech earnings like MSFT (+2.98%) and GOOGL (+5.52%)",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 30,
+          "name": "AI 투자 심리 강화",
+          "name_en": "Strengthened AI Investment Sentiment",
+          "desc": "AI Boom delivers Historic Earnings Beats 등 AI 관련 긍정 뉴스 지속",
+          "desc_en": "Continued positive news on AI, such as 'AI Boom Delivers Historic Earnings Beats'",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "지정학적 리스크 완화",
+          "name_en": "Easing Geopolitical Risks",
+          "desc": "트럼프 이란 공격 보류 소식에 유가 하락, 중동 긴장 완화 기대",
+          "desc_en": "Oil prices fall on news of Trump halting Iran strike, easing Middle East tensions",
+          "category": "geopolitics"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "일부 빅테크 실적 부진",
+          "name_en": "Underperformance in Some Big Tech",
+          "desc": "AAPL (-1.60%) 하락 및 Morgan Stanley의 신중한 애플 주식 메시지",
+          "desc_en": "AAPL (-1.60%) decline and Morgan Stanley's cautious message on Apple stock",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 5,
+          "name": "미 국채금리 상승",
+          "name_en": "Rising US Treasury Yields",
+          "desc": "미10년 국채금리 4.74%(+1.76%) 상승, 성장주에 부담으로 작용",
+          "desc_en": "US 10-year Treasury yield rises to 4.74% (+1.76%), weighing on growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "고용 데이터 및 Fed 정책 기대",
+          "name_en": "Employment Data and Fed Policy Expectations",
+          "desc": "Nonfarm Payrolls 등 주요 경제 데이터 발표 예정으로 Fed의 향후 금리 정책에 대한 기대와 불확실성 공존",
+          "desc_en": "Upcoming economic data like Nonfarm Payrolls creates both anticipation and uncertainty regarding the Fed's future interest rate policy",
+          "category": "macro_data"
+        }
+      ]
+    },
+    {
       "id": "2026-08-03-13:08",
       "timestamp_kst": "2026-08-03(월) 13:08 KST",
       "key_event": {
@@ -570,68 +638,8 @@
           "category": "fed_policy"
         }
       ]
-    },
-    {
-      "id": "2026-08-02-08:20",
-      "timestamp_kst": "2026-08-02(일) 08:20 KST",
-      "key_event": {
-        "name": "빅테크 실적 혼조 및 AI 기대감 지속",
-        "name_en": "Mixed Big Tech Earnings and Sustained AI Optimism",
-        "time": "직전 거래일 마감 및 다음 주 개장",
-        "why": "주요 기술주 실적 혼조, AI 투자 심리, 금리 우려 지속",
-        "why_en": "Mixed tech earnings, AI investment sentiment, ongoing rate concerns"
-      },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "빅테크 실적 혼조 속 AI 기대감과 VIX 하락으로 긍정 우위 유지. 금리 우려는 지속.",
-      "summary_en": "Positive sentiment maintained due to mixed Big Tech earnings, AI optimism, and VIX decline, despite ongoing rate concerns.",
-      "positive_factors": [
-        {
-          "score": 60,
-          "name": "일부 빅테크 실적 호조",
-          "name_en": "Strong Performance from Select Big Tech",
-          "desc": "GOOGL (+5.52%), MSFT (+2.98%) 등 일부 빅테크의 견조한 실적은 시장 심리에 긍정적 영향을 미쳤습니다.",
-          "desc_en": "Robust earnings from select Big Tech firms like GOOGL (+5.52%) and MSFT (+2.98%) positively impacted market sentiment.",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "애플 실적 부진 및 AI 경고",
-          "name_en": "Apple's Weak Earnings and AI Warning",
-          "desc": "AAPL (-1.60%) 실적 부진과 CEO의 AI 및 제품 가격에 대한 경고가 투자 심리에 부정적으로 작용했습니다.",
-          "desc_en": "Apple's (-1.60%) weak earnings and the CEO's warning on AI and product pricing negatively affected investor sentiment.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 15,
-          "name": "반도체 섹터 약세",
-          "name_en": "Semiconductor Sector Weakness",
-          "desc": "SOXX (-3.57%)가 하락하며 반도체 섹터 전반에 대한 우려가 나타났습니다.",
-          "desc_en": "SOXX (-3.57%) declined, indicating broader concerns within the semiconductor sector.",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "미 국채금리 상승",
-          "name_en": "Rising US Treasury Yields",
-          "desc": "미10년 국채금리가 4.74% (+1.76%)로 상승하며 성장주 투자 매력을 감소시킬 수 있습니다.",
-          "desc_en": "The 10-year US Treasury yield rose to 4.74% (+1.76%), potentially reducing the attractiveness of growth stocks.",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "연준 금리 정책 불확실성",
-          "name_en": "Fed Rate Policy Uncertainty",
-          "desc": "일부 연준 인사들의 매파적 발언과 경기 둔화 신호가 혼재되어 금리 인상 지속 여부에 대한 불확실성이 상존합니다.",
-          "desc_en": "Mixed signals from hawkish Fed officials and signs of economic slowdown create ongoing uncertainty about future rate hikes.",
-          "category": "fed_policy"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-03T04:08:31Z",
+  "updated_at": "2026-08-03T06:16:59Z",
   "max_entries": 10
 }
