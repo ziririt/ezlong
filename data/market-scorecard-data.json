@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-08-03-11:50",
+      "timestamp_kst": "2026-08-03(월) 11:50 KST",
+      "key_event": {
+        "name": "빅테크 실적 및 AI 기대감 지속",
+        "name_en": "Big Tech Earnings & AI Optimism Continue",
+        "time": "다음 주 개장 전까지",
+        "why": "주요 빅테크 실적 호조, AI 투자 심리, 시장 전반 긍정 영향",
+        "why_en": "Strong Big Tech earnings, AI investment sentiment, positive market impact"
+      },
+      "positive_total": 65,
+      "negative_total": 35,
+      "summary": "빅테크 실적 호조와 AI 기대감으로 긍정 우위 유지. 지정학적 불확실성과 금리 우려는 지속.",
+      "summary_en": "Positive sentiment maintained due to strong Big Tech earnings and AI optimism. Geopolitical uncertainties and interest rate concerns persist.",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "일부 빅테크 실적 호조",
+          "name_en": "Select Big Tech Earnings Beat",
+          "desc": "MSFT, GOOGL 등 주요 빅테크 기업의 실적 호조가 시장 심리에 긍정적 영향을 미침.",
+          "desc_en": "Strong earnings from key Big Tech companies like MSFT and GOOGL positively impacted market sentiment.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 25,
+          "name": "AI 관련 투자 기대감",
+          "name_en": "AI Investment Optimism",
+          "desc": "AI 인프라 및 반도체 관련 기업에 대한 지속적인 투자 기대감이 시장을 지지.",
+          "desc_en": "Continued investment optimism in AI infrastructure and semiconductor companies supports the market.",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "Fed 금리 동결 및 완화 기대",
+          "name_en": "Fed Rate Hold & Easing Hopes",
+          "desc": "Fed의 금리 동결과 향후 정책에 대한 완화적 기대감이 시장에 긍정적으로 작용.",
+          "desc_en": "The Fed's decision to hold interest rates and expectations for future easing positively influence the market.",
+          "category": "fed_policy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "지정학적 불확실성 지속",
+          "name_en": "Persistent Geopolitical Uncertainty",
+          "desc": "중동 정세 불안정 등 지정학적 불확실성이 시장에 부담으로 작용.",
+          "desc_en": "Geopolitical uncertainties, such as instability in the Middle East, weigh on the market.",
+          "category": "geopolitics"
+        },
+        {
+          "score": 15,
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미 10년물 국채금리 상승이 성장주 투자 심리에 부정적 영향을 미침.",
+          "desc_en": "Rising US 10-year Treasury yields negatively impact growth stock investment sentiment.",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "고용 데이터 및 Fed 정책 기대",
+          "name_en": "Employment Data & Fed Policy Expectations",
+          "desc": "고용 데이터는 견조한 경제를 시사하나, 일부에서는 금리 인하 기대를 높이는 요인으로 해석.",
+          "desc_en": "Strong employment data suggests a robust economy, but some interpret it as a factor increasing expectations for interest rate cuts.",
+          "category": "macro_data"
+        }
+      ]
+    },
+    {
       "id": "2026-08-03-07:25",
       "timestamp_kst": "2026-08-03(월) 07:25 KST",
       "key_event": {
@@ -554,83 +622,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-01-23:20",
-      "timestamp_kst": "2026-08-01(토) 23:20 KST",
-      "key_event": {
-        "name": "빅테크 실적 혼조 및 AI 기대감",
-        "name_en": "Mixed Big Tech Earnings & AI Optimism",
-        "time": "직전 거래일 마감 및 다음 주 개장 전",
-        "why": "주요 기술주 실적 혼조, AI 투자 심리, 금리 우려",
-        "why_en": "Mixed tech earnings, AI investment sentiment, interest rate concerns"
-      },
-      "positive_total": 55,
-      "negative_total": 45,
-      "summary": "빅테크 실적 혼조 속 AI 기대감과 VIX 하락으로 긍정 우위 전환. 금리 우려는 지속.",
-      "summary_en": "Positive sentiment prevails as mixed Big Tech earnings are offset by AI optimism and falling VIX, though rate concerns persist.",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "일부 빅테크 실적 호조 및 AI 기대감",
-          "name_en": "Strong Earnings from Select Big Tech & AI Optimism",
-          "desc": "GOOGL (+5.52%), MSFT (+2.98%) 상승 및 AI 관련 뉴스 지속으로 투자 심리 개선",
-          "desc_en": "GOOGL (+5.52%) and MSFT (+2.98%) gains, coupled with ongoing AI news, boost investor sentiment.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 15,
-          "name": "달러 약세",
-          "name_en": "Weaker Dollar",
-          "desc": "달러인덱스 DXY 99.80 (-0.38%)로 약세, 수출 기업 실적에 긍정적",
-          "desc_en": "DXY at 99.80 (-0.38%) implies a weaker dollar, favorable for export-oriented companies.",
-          "category": "dollar_fx"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "일부 빅테크 실적 부진 및 반도체 약세",
-          "name_en": "Underperformance in Some Big Tech & Semiconductor Weakness",
-          "desc": "AAPL (-1.60%), QQQ (-0.55%), SOXX (-3.57%) 하락하며 기술주 전반에 부담",
-          "desc_en": "AAPL (-1.60%), QQQ (-0.55%), and SOXX (-3.57%) declines weigh on the broader tech sector.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 15,
-          "name": "미 국채금리 상승",
-          "name_en": "Rising US Treasury Yields",
-          "desc": "미10년 국채금리 4.74% (+1.76%) 상승, 성장주에 대한 투자 매력 감소",
-          "desc_en": "US 10-year Treasury yield at 4.74% (+1.76%) rises, reducing the appeal of growth stocks.",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 10,
-          "name": "고유가 지속 및 중동 지정학적 긴장",
-          "name_en": "Persistent High Oil Prices & Middle East Geopolitical Tensions",
-          "desc": "WTI 원유 84.67 (+2.80%) 상승, 중동 분쟁 관련 뉴스 지속되며 인플레이션 우려 가중",
-          "desc_en": "WTI crude at 84.67 (+2.80%) continues to rise, with ongoing Middle East conflict news fueling inflation concerns.",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 관련 투자 비용 증가",
-          "name_en": "Rising AI Investment Costs",
-          "desc": "AI 기술 개발 및 인프라 구축 비용 증가가 수익성에 미칠 영향에 대한 우려와 기대 혼재",
-          "desc_en": "Concerns and expectations coexist regarding the impact of increasing AI development and infrastructure costs on profitability.",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "연준 금리 정책 불확실성",
-          "name_en": "Fed Interest Rate Policy Uncertainty",
-          "desc": "트럼프 대통령의 금리 인하 압박과 연준의 매파적 스탠스 유지 사이에서 시장의 해석 엇갈림",
-          "desc_en": "Market interpretations diverge between President Trump's pressure for rate cuts and the Fed's continued hawkish stance.",
-          "category": "fed_policy"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-02T22:25:13Z",
+  "updated_at": "2026-08-03T02:50:59Z",
   "max_entries": 10
 }
