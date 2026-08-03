@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['scripts/generate-swing-view.py']
+    paths: ['scripts/generate-swing-view.py', '.github/workflows/swing-view.yml']
 concurrency:
   group: swing-view
   cancel-in-progress: false
@@ -34,5 +34,19 @@ jobs:
           else
             KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
             git commit -m "data: swing-view ${KST}"
-            git push origin main || (git fetch origin main && git merge --ff-only origin/main && git push origin main)
+            # 2026-08-04 수정: 기존 재시도(ff-only merge)는 "로컬에 방금 만든 커밋이
+            # 있는" 상태에선 원리적으로 성공 불가(브랜치 분기 → ff 불가) — 생성에
+            # ~1분 걸리는 이 워크플로는 봇 커밋 경합에 자주 걸려 3연속 실패했다.
+            # 커밋을 마친 상태이므로 unstaged 파일이 없어 rebase가 안전하다
+            # (CLAUDE.md 16항이 금지한 'pull --rebase' 실패 조건은 unstaged 파일 —
+            # 여기 해당 없음. reset --hard/force push는 여전히 사용하지 않는다).
+            # 이 워크플로만 건드리는 데이터 파일이라 rebase 충돌 가능성도 없다.
+            ok=""
+            for i in 1 2 3; do
+              if git push origin main; then ok=1; break; fi
+              git fetch origin main
+              git rebase origin/main || { git rebase --abort; echo "::error::rebase 충돌 — 수동 확인 필요"; break; }
+              sleep 3
+            done
+            if [ -z "$ok" ]; then echo "::error::push 3회 재시도 실패 (커밋 경합)"; exit 1; fi
           fi
