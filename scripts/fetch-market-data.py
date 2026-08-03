@@ -22,7 +22,11 @@ except ImportError:
     sys.exit(1)
 
 # ─── 설정 ──────────────────────────────────────────────────────────────────
-SYMBOLS = ['QQQ', 'VOO', 'TSLA', 'NVDA', 'DIA', 'IWM', 'SOXX']
+SYMBOLS = ['QQQ', 'VOO', 'TSLA', 'NVDA', 'DIA', 'IWM', 'SOXX',
+           # TOP9 집중분석 확장 (2026-08-03, 성동님 승인): 빅테크 7종 — 시가총액순.
+           # 합성점수(QQQ/VOO/SOXX 가중)나 브레드스 계산은 심볼을 명시 참조하므로
+           # 이 추가가 기존 점수에 영향을 주지 않는다 (fmt_returns도 명시 리스트).
+           'AAPL', 'GOOG', 'MSFT', 'AMZN', 'TSM', 'AVGO', 'META']
 
 MACRO_MAP = {
     '^TNX':     ('yield10y',  '미10년물 금리',  '%'),
