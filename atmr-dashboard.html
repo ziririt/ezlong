@@ -5936,8 +5936,12 @@ const MEGA9 = {
   name: { TSLA: '테슬라', NVDA: '엔비디아', AAPL: '애플', GOOG: '알파벳',
           MSFT: '마이크로소프트', AMZN: '아마존', TSM: 'TSMC', AVGO: '브로드컴', META: '메타' },
   tv:   { AAPL: 'NASDAQ:AAPL', GOOG: 'NASDAQ:GOOG', MSFT: 'NASDAQ:MSFT',
-          AMZN: 'NASDAQ:AMZN', TSM: 'NYSE:TSM', AVGO: 'NASDAQ:AVGO', META: 'NASDAQ:META' }
+          AMZN: 'NASDAQ:AMZN', TSM: 'NYSE:TSM', AVGO: 'NASDAQ:AVGO', META: 'NASDAQ:META' },
+  // Gemini 차트분석 JSON 티커 매핑 — 분석 엔진은 알파벳을 GOOGL로 다룬다
+  ai:   { AAPL: 'AAPL', GOOG: 'GOOGL', MSFT: 'MSFT', AMZN: 'AMZN',
+          TSM: 'TSM', AVGO: 'AVGO', META: 'META' }
 };
+window._megaAi = {};   // 심볼별 분석 캐시 (세션 내)
 window._megaSel = null;
 
 function renderTop9Chips() {
@@ -6002,6 +6006,40 @@ function buildMegaMetricsHtml(d) {
   </div>`;
 }
 
+// Gemini AI 차트분석 블록 — 킹 카드의 트레이딩 플랜과 동일 정보 구성 (2026-08-04 연동)
+function buildMegaAiHtml(ai) {
+  if (!ai) return '';
+  const col = ai.action === '매수' ? 'var(--gr)' : ai.action === '매도' ? 'var(--rd)' : 'var(--t2)';
+  const mark = ai.action === '매수' ? '▲ 매수 우위' : ai.action === '매도' ? '▼ 매도 우위' : '◆ 관망';
+  const reason = ai.reason ? String(ai.reason).replace(/◆/g, '').replace(/\s{2,}/g, ' ').trim() : '';
+  const conti = ai.continuity
+    ? `<div style="margin:8px 0;padding:8px 10px;background:rgba(10,132,255,0.08);border-left:3px solid var(--bl);border-radius:6px;font-size:16px;color:var(--t1);line-height:1.55;">${ai.continuity}</div>` : '';
+  let plan = '';
+  if (ai.entry && ai.stop && ai.target) {
+    const f = v => typeof v === 'number' ? v.toFixed(2) : String(v ?? '—');
+    const rr = (typeof ai.entry === 'number' && typeof ai.stop === 'number' && typeof ai.target === 'number' && ai.entry !== ai.stop)
+      ? ((ai.target - ai.entry) / Math.abs(ai.entry - ai.stop)).toFixed(1) + ':1' : '—';
+    const lv = (l, v, c) => `<div style="flex:1;min-width:70px;text-align:center;">
+      <div style="color:var(--t3);font-size:14px;">${l}</div>
+      <div style="font-size:15px;font-weight:800;color:${c};">${v}</div></div>`;
+    plan = `<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px;padding:10px 6px;background:rgba(120,120,128,0.08);border-radius:10px;">
+      ${lv('진입', '$' + f(ai.entry), 'var(--gr)')}${lv('손절', '$' + f(ai.stop), 'var(--rd)')}
+      ${lv('목표', '$' + f(ai.target), 'var(--gr)')}${lv('R:R', rr, 'var(--t1)')}</div>`;
+  }
+  const inval = ai.invalidation
+    ? `<div style="color:var(--t2);font-size:14px;margin-top:6px;">무효선: $${typeof ai.invalidation === 'number' ? ai.invalidation.toFixed(2) : ai.invalidation} 이탈 시 시나리오 폐기</div>` : '';
+  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px 16px 12px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+      <span style="font-weight:800;color:${col};font-size:16px;">${mark}</span>
+      <span style="color:var(--t3);font-size:14px;">AI 차트분석 · 스윙 트레이딩 플랜</span>
+    </div>
+    ${conti}
+    ${reason ? `<p style="margin:0 0 4px;line-height:1.7;color:var(--t1);font-size:16px;">${reason}</p>` : ''}
+    ${plan}
+    ${inval}
+  </div>`;
+}
+
 function renderMegaHost() {
   const host = document.getElementById('mega-host');
   if (!host) return;
@@ -6009,16 +6047,26 @@ function renderMegaHost() {
   if (!sym) { host.innerHTML = ''; return; }
   const d = window._renderData?.[sym];
   const name = MEGA9.name[sym];
+  const ai = window._megaAi[sym];   // undefined=미로딩, null=없음, object=도착
   host.innerHTML = `<div class="king-section" style="margin-bottom:32px;">
     <div class="tv-chart-card" style="margin-bottom:20px;">
       <div class="tv-chart-label">${name} ${sym} <span>일봉 · TradingView</span></div>
       <div class="tv-chart-frame" id="tv-MEGA"></div>
     </div>
     ${_megaStanceCardHtml(sym)}
+    ${ai ? buildMegaAiHtml(ai)
+         : (ai === undefined ? '<div id="mega-ai-loading" style="color:var(--t3);font-size:14px;margin:0 0 12px;">AI 차트분석 불러오는 중…</div>' : '')}
     ${d ? buildMegaMetricsHtml(d)
         : '<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px;color:var(--t2);font-size:16px;">데이터 수집 대기 구간 — 다음 자동 갱신(장중 최대 30분 주기) 이후 표시됩니다.</div>'}
   </div>`;
   try { loadTVChart('tv-MEGA', MEGA9.tv[sym]); } catch (e) { console.error('[top9 tv]', e); }
+  // AI 분석 지연 로드 — 도착 시 선택이 유지된 경우에만 재렌더 (경합 방지)
+  if (ai === undefined && MEGA9.ai[sym]) {
+    fetchAnalysisJSON(MEGA9.ai[sym]).then(a => {
+      window._megaAi[sym] = a || null;
+      if (window._megaSel === sym) renderMegaHost();
+    }).catch(() => { window._megaAi[sym] = null; });
+  }
 }
 
 // 초기 1회 즉시 렌더 — 데이터 도착 전에도 칩 바가 비어있지 않도록 (등락률은 도착 후 채워짐)
