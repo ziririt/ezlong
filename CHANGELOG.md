@@ -5,6 +5,56 @@
 
 ---
 
+## [2026-08-04] 세션 — TOP9 집중분석: 스윙 집중 분석을 TSLA·NVDA 2종에서 빅테크 9종으로 확장
+
+### 배경
+
+성동님 지시(2026-08-03 심야): "TSLA·NVDA 집중 분석에 9개를 더해 TOP9로. 탭 이름
+'TOP9 집중분석', 순서는 TSLA·NVDA 다음 시가총액순, 티커 바로가기 + 지연 로드."
+비용 검토 결과 데스크 LLM 호출은 종목 수와 무관하게 1회 유지, 데이터 소스는 무료
+yfinance라 운영비 증가 사실상 0으로 확인 후 착수. SPCX·SKHY는 상장 이력이 짧아
+백테스트 문법을 만들 수 없어 제외하고 9종으로 확정.
+
+### 조치 — 4단계
+
+1. **백테스트 (커밋 bfef7b026, 연구 브랜치):** feature/swing-backtest 브랜치의 기존
+   엔진(fetch_history.py + compute_scores.py — 라이브 calc_buy_score를 그대로 import해
+   재계산)에 7종 추가. TSLA buy80=61일·+15.3%·69%, NVDA gear3 69%/gear1 56%가 기존
+   STATS와 정확 일치 → 엔진 검증 통과 확인 후 7종 문법 도출:
+   - AAPL: 신호 둔감 — 과열 익절 역효과(sell75 후 +2.6%/76%), 추세 민감도 낮음
+   - GOOG: buy80이 역신호(−0.1%/46%) — RSI30 패닉만 유효(+5.5%/74%)
+   - MSFT: 9종 중 유일하게 기계적 익절 유효(sell75 후 −1.9%/45%), RSI30 +6.0%/77%
+   - AMZN: 추세 무차별 — buy80(+3.8%/62%)·RSI30(+4.0%/76%) 극단 매수 모두 유효
+   - TSM: RSI30 +6.7%/80%, 과열 뒤 둔화
+   - AVGO: 역발상 — gear1(하락추세)이 +6.8%/72%로 최고, RSI30 승률 82%
+   - META: 패닉 매수(RSI30 +6.3%/74%) + 추세 관리(65%/52%)
+2. **데이터 파이프라인 (99fabe956, 6590e6f5d):** fetch-market-data.py SYMBOLS에 7종
+   추가(합성점수·브레드스는 심볼 명시 참조라 기존 산출 불변) + 워크플로에 push-paths
+   트리거 신설(스크립트 변경 즉시 1회 실행).
+3. **스윙뷰 생성기 (06ac1c599, f85ef3cb8):** MEGA_CFG(종목별 검증 문법) + mega_view()
+   4분기 공용 뷰 + view.megas/megaOrder. 데스크 API 호출 1회 유지. 독립 서브에이전트
+   블라인드 감사에서 나온 지적 반영 — 코어 심볼 가드(QQQ/VOO/SOXX/TSLA/NVDA 결손 시
+   실패 처리), rsi None 크래시 방어, '극단 과매도' 오표기 분리, 문구 정밀화.
+4. **UI (abf887d24):** 탭 'TOP9/집중분석', 티커 칩 9종(+등락률), 기본 TSLA·NVDA 노출,
+   나머지 7종은 칩 선택 시 #mega-host에 한 종목만 지연 렌더(TV차트+오늘의 판단 카드+
+   핵심 지표 카드). 해시 #top9 별칭, 기존 #tsla-nvda 호환 유지.
+
+### 검증
+
+로컬: 문법(ast/yaml)·mega_view 8분기 스모크·Playwright(칩 9개 렌더·선택/복귀·폴백·
+JS 에러 0) / 감사: 깨끗한 서브에이전트 diff 감사(의도 비공개) — 치명 0·중간 2·사소 2
+전건 수정 / 라이브: web.app에서 TOP9 탭·칩 바·MSFT 선택 렌더(오늘의 판단+지표 카드+
+TV차트)를 브라우저로 실측 확인. 체크포인트 태그 cp-20260804-top9.
+
+### 복구 명령어 (문제 발생 시)
+
+```bash
+git checkout cp-20260802-pipeline-fix -- scripts/fetch-market-data.py scripts/generate-swing-view.py atmr-dashboard.html
+git commit -m "revert: TOP9 롤백" && git push
+```
+
+---
+
 ## [2026-08-02] 세션 — 주간 운영 점검 후속조치 1/3: 배포 파이프라인 실패 은폐 구조 수정
 
 ### 배경
