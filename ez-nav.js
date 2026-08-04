@@ -129,10 +129,11 @@
     }
   }
 
-  /* ── 4-B. PC 칩 메뉴 "우측에 더 있음" 표시기 (2026-08-04, 성동님 지시) ──
+  /* ── 4-B. PC 칩 메뉴 "우측/좌측에 더 있음" 표시기 (2026-08-04, 성동님 지시) ──
      칩이 화면보다 길면: ①우측 가장자리 그라디언트+맥동하는 ❯ 버튼 표시(클릭 시
-     한 화면만큼 스크롤), ②첫 로드 때 칩 줄을 살짝 밀었다 되돌리는 1회 힌트 모션.
-     끝까지 스크롤하면 표시기 자동 숨김. 모바일(768px 이하)은 칩 자체가 숨겨지므로 제외. */
+     한 화면만큼 스크롤), ②첫 로드 때 칩 줄을 살짝 밀었다 되돌리는 1회 힌트 모션,
+     ③오른쪽으로 스크롤한 상태에선 좌측에도 맞대응 ❮ 버튼 표시(클릭 시 왼쪽으로 복귀).
+     끝까지 스크롤하면 해당 방향 표시기 자동 숨김. 모바일(768px 이하)은 칩 자체가 숨겨지므로 제외. */
   (function navMoreHint() {
     var linksEl = nav.querySelector('.ez-nav-svc-links');
     if (!linksEl) return;
@@ -140,19 +141,27 @@
     var style = document.createElement('style');
     style.textContent =
       '.ez-nav-inner { position: relative; }' +
-      '.ez-nav-more { position: absolute; right: 0; top: 0; bottom: 0; width: 72px;' +
-        'display: none; align-items: center; justify-content: flex-end; padding-right: 10px;' +
-        'border: 0; cursor: pointer; z-index: 3; pointer-events: none;' +
+      '.ez-nav-more, .ez-nav-more-left { position: absolute; top: 0; bottom: 0; width: 72px;' +
+        'display: none; align-items: center; border: 0; cursor: pointer; z-index: 3; pointer-events: none; }' +
+      '.ez-nav-more { right: 0; justify-content: flex-end; padding-right: 10px;' +
         'background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 62%); }' +
-      '.ez-nav-more.show { display: flex; pointer-events: auto; }' +
-      '.ez-nav-more .ez-nav-more-ico { font-size: 16px; font-weight: 800; color: var(--ez-text);' +
-        'animation: ezNavNudge 1.4s ease-in-out infinite; }' +
+      '.ez-nav-more-left { left: 0; justify-content: flex-start; padding-left: 10px;' +
+        'background: linear-gradient(90deg, rgba(255,255,255,0.95) 38%, rgba(255,255,255,0) 100%); }' +
+      '.ez-nav-more.show, .ez-nav-more-left.show { display: flex; pointer-events: auto; }' +
+      '.ez-nav-more .ez-nav-more-ico, .ez-nav-more-left .ez-nav-more-ico {' +
+        'font-size: 16px; font-weight: 800; color: var(--ez-text); }' +
+      '.ez-nav-more .ez-nav-more-ico { animation: ezNavNudge 1.4s ease-in-out infinite; }' +
+      '.ez-nav-more-left .ez-nav-more-ico { animation: ezNavNudgeL 1.4s ease-in-out infinite; }' +
       '@keyframes ezNavNudge { 0%,100% { transform: translateX(0); opacity: .55; }' +
         '50% { transform: translateX(5px); opacity: 1; } }' +
-      '@media (prefers-color-scheme: dark) { .ez-nav-more {' +
-        'background: linear-gradient(90deg, rgba(10,10,10,0) 0%, rgba(10,10,10,0.95) 62%); } }' +
-      '@media (max-width: 768px) { .ez-nav-more { display: none !important; } }' +
-      '@media (prefers-reduced-motion: reduce) { .ez-nav-more .ez-nav-more-ico { animation: none; } }';
+      '@keyframes ezNavNudgeL { 0%,100% { transform: translateX(0); opacity: .55; }' +
+        '50% { transform: translateX(-5px); opacity: 1; } }' +
+      '@media (prefers-color-scheme: dark) {' +
+        '.ez-nav-more { background: linear-gradient(90deg, rgba(10,10,10,0) 0%, rgba(10,10,10,0.95) 62%); }' +
+        '.ez-nav-more-left { background: linear-gradient(90deg, rgba(10,10,10,0.95) 38%, rgba(10,10,10,0) 100%); } }' +
+      '@media (max-width: 768px) { .ez-nav-more, .ez-nav-more-left { display: none !important; } }' +
+      '@media (prefers-reduced-motion: reduce) {' +
+        '.ez-nav-more .ez-nav-more-ico, .ez-nav-more-left .ez-nav-more-ico { animation: none; } }';
     document.head.appendChild(style);
 
     var more = document.createElement('button');
@@ -163,12 +172,33 @@
     more.addEventListener('click', function () {
       linksEl.scrollBy({ left: Math.max(200, linksEl.clientWidth * 0.7), behavior: 'smooth' });
     });
+    var moreL = document.createElement('button');
+    moreL.type = 'button';
+    moreL.className = 'ez-nav-more-left';
+    moreL.setAttribute('aria-label', '왼쪽으로 스크롤하면 이전 메뉴가 있습니다');
+    moreL.innerHTML = '<span class="ez-nav-more-ico">&#10094;</span>';
+    moreL.addEventListener('click', function () {
+      linksEl.scrollBy({ left: -Math.max(200, linksEl.clientWidth * 0.7), behavior: 'smooth' });
+    });
     var inner = nav.querySelector('.ez-nav-inner');
-    if (inner) inner.appendChild(more);
+    if (inner) { inner.appendChild(more); inner.appendChild(moreL); }
+
+    /* 버튼을 칩 줄 높이에만 정렬 — nav가 로고줄+칩줄 2줄로 랩되는 레이아웃에서
+       버튼이 로고 클릭 영역까지 덮지 않도록 실측으로 top/height 지정 */
+    function alignToChips() {
+      if (!inner) return;
+      var ir = inner.getBoundingClientRect();
+      var lr = linksEl.getBoundingClientRect();
+      var t = (lr.top - ir.top) + 'px', h = lr.height + 'px';
+      more.style.top = t;  more.style.height = h;  more.style.bottom = 'auto';
+      moreL.style.top = t; moreL.style.height = h; moreL.style.bottom = 'auto';
+    }
 
     function update() {
       var remain = linksEl.scrollWidth - linksEl.clientWidth - linksEl.scrollLeft;
       more.classList.toggle('show', remain > 12);
+      moreL.classList.toggle('show', linksEl.scrollLeft > 12);
+      alignToChips();
     }
     linksEl.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
