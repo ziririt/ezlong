@@ -2733,7 +2733,10 @@ function clearSettingsDirty() {
 // 요소의 터치 스크롤 등록이 누락되는 현상이 실기기 계측으로 확인됐다
 // (진단 v6: 제스처 35회 전부 스크롤 0px vs 진단 v5: 열린 상태에서
 // appendChild로 이동시키자 즉시 827px 완주 — 유일한 차이가 재부착).
-function openSettings() {
+// 2026-08-04 성동님 요청 — 음악 플레이어의 톱니로 들어오면 설정 맨 위가
+// 아니라 음악 섹션으로 바로 데려다준다("음악 설정하려고 눌렀는데 못
+// 찾는다"). focusSection 인자가 없으면 기존과 완전히 동일하게 동작한다.
+function openSettings(focusSection) {
   settingsPanel.classList.add("is-open");
   document.body.appendChild(settingsPanel);
   settingsPanel.setAttribute("aria-hidden", "false");
@@ -2748,6 +2751,21 @@ function openSettings() {
   // 미리보기를 볼 수 있다.
   ensureMusicVizGraph();
   if (!musicVizAnimId) drawMusicViz();
+
+  // 2026-08-04 — 특정 섹션으로 바로 데려다주기(현재는 "music"만 사용).
+  // 시트가 화면에 자리를 잡은 다음 스크롤해야 위치가 정확하다.
+  if (focusSection === "music") {
+    const target = document.getElementById("musicSettingsSection");
+    if (target) {
+      window.setTimeout(() => {
+        try {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        } catch (error) {
+          target.scrollIntoView(true);
+        }
+      }, 260);
+    }
+  }
 }
 
 function closeSettings() {
@@ -8704,7 +8722,7 @@ if (musicSkip) musicSkip.addEventListener("click", () => {
 if (musicGearOpen) musicGearOpen.addEventListener("click", (event) => {
   event.stopPropagation();
   postToNativeHaptic("light");
-  openSettings();
+  openSettings("music"); // 음악 섹션으로 바로 (2026-08-04 성동님 요청)
 });
 if (musicShuffleButton) musicShuffleButton.addEventListener("click", (event) => {
   event.stopPropagation();
@@ -9213,15 +9231,16 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
       // 안드로이드 WebView는 짧은 햅틱을 지원한다 — 시각 효과와 같은
       // 프레임에 울려야 한 몸으로 느껴진다(apple-design 다감각 조화 원칙).
       // iOS WKWebView는 이 API가 없어 조용히 건너뛴다(1.3에서 네이티브 햅틱).
+      // 2026-08-04 2차(성동님 지적) — "설정 버튼은 아이폰에서도 진동이
+      // 온다"는 정확한 관찰. 이미 검증된 postToNativeHaptic() 브릿지가
+      // 있었고(iOS flipzenHaptic / 안드로이드 AndroidNativeBridge 양쪽
+      // 모두 처리), 내가 새로 만들 이유가 없었다. 그 함수를 그대로 쓴다.
+      // 일반 브라우저(PWA)에서는 navigator.vibrate로 폴백.
       try {
-        if (navigator.vibrate) {
+        if (isNativeWrapper) {
+          postToNativeHaptic("light");
+        } else if (navigator.vibrate) {
           navigator.vibrate(8);
-        } else if (window.webkit && window.webkit.messageHandlers
-                   && window.webkit.messageHandlers.flipzenNativeRadio) {
-          // 2026-08-04 성동님 지적 — 아이폰은 반응이 없었다. WKWebView에는
-          // navigator.vibrate가 아예 없기 때문. iOS는 네이티브 햅틱
-          // (UIImpactFeedbackGenerator)을 브릿지로 요청한다(ContentView 수신).
-          window.webkit.messageHandlers.flipzenNativeRadio.postMessage({ action: "haptic" });
         }
       } catch (error) {
         // 진동 실패는 무시 — 터치감의 본체는 시각 효과다.
