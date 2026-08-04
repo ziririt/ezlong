@@ -151,6 +151,15 @@ IntersectionObserver(600px 선행)로 스크롤 접근 시 지연 렌더, 하단
 - fetch-kr-crypto-analysis.yml에 push-paths 트리거 추가(swing-view 패턴) — 이 배포로
   KR 분석 즉시 재실행되어 낡은 09:18 스냅샷 자체도 교체됨.
 
+### 조치 — 17단계 (08-04 오전, 성동님 제보): '오늘의 스윙 판단' 스트립 그리드 정렬
+
+chief-strip.js가 1080px 고정폭이라 페이지 그리드와 안 맞았다(chart-analysis 1440 /
+market-cycle 1200 / stocks 680 / scorecard 430 — 4곳 전부 제각각). JS는 Cloudflare
+캐시 대상이라 각 페이지 HTML에서 `body .chief-strip { max-width: ... }` 오버라이드로
+정렬(HTML은 즉시 반영). 부수 발견: market-scorecard는 body가 flex-row(center)라
+스트립이 카드 "옆"에 끼어드는 구조 결함 — flex-direction: column으로 함께 수정.
+4개 페이지 모두 Playwright로 스트립·그리드 좌우 edge 일치 실측 확인.
+
 ### 검증
 
 로컬: 문법(ast/yaml)·mega_view 8분기 스모크·Playwright(칩 9개 렌더·선택/복귀·폴백·

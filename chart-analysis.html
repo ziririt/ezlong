@@ -69,6 +69,10 @@
 <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 
 <style>
+/* ── 오늘의 스윙 판단 스트립: 이 페이지 그리드(.ca-layout 1440px)에 정렬 ──
+   chief-strip.js 기본 1080px은 이 페이지의 와이드 레이아웃과 안 맞음 (2026-08-04) */
+body .chief-strip { max-width: var(--ez-max-w-wide); }
+
 /* ── 페이지 레이아웃 ──────────────────────────────────────── */
 .ca-layout {
   display: flex;

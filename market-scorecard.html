@@ -17,6 +17,12 @@
     padding: 0;
   }
 
+  /* 오늘의 스윙 판단 스트립: 이 페이지 그리드(430px 카드)에 정렬 (2026-08-04)
+     body가 flex-row(center)라 스트립이 카드 "옆"에 끼어드는 문제도 함께 수정 —
+     column으로 바꿔 위아래로 쌓는다 (이 페이지는 nav/footer 없는 독립 카드 페이지) */
+  body { flex-direction: column; align-items: center; }
+  body .chief-strip { max-width: 430px; width: 100%; }
+
   .card-wrap {
     width: 100%;
     max-width: 430px;
