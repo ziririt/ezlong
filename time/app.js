@@ -717,6 +717,7 @@ const wdHourlyStrip = document.getElementById("wdHourlyStrip");
 const wdTopComment = document.getElementById("wdTopComment");
 // 2026-07-17 2차 기획(묶음B): 다음 비 카운트다운.
 const wdNextRain = document.getElementById("wdNextRain");
+const wdCareComment = document.getElementById("wdCareComment");
 const wdRainWindows = document.getElementById("wdRainWindows");
 // 2026-07-17 2차 기획(묶음A): 주간 기온 예보.
 const wdWeeklyForecast = document.getElementById("wdWeeklyForecast");
@@ -4059,6 +4060,16 @@ function renderWeatherNextRain(data) {
   wdNextRain.textContent = countdown.message;
 }
 
+// 2026-08-04 성동님 지시 — 폭염(35°+)·강추위(-10°−)에는 이용자를 챙기는
+// 케어 한 줄을 덧붙인다("그늘에서 틈틈이 쉬어가세요. 건강이 먼저예요.").
+// 사람이 살가운 느낌이 드는 인간적인 앱 — 백엔드 careComment(rain-windows
+// 응답, logic.ts buildTempCareComment)를 그대로 보여주기만 한다.
+function renderWeatherCare(data) {
+  if (!wdCareComment) return;
+  const care = data && data.careComment;
+  wdCareComment.textContent = care && care.message ? care.message : "";
+}
+
 // 2026-07-21 3차 기획: 기상특보(KMA). 유저 요청 "맨 위 날씨 코멘트에
 // 기상특보가 있다면 표현되면 좋겠다".
 // data.active가 false인 경우(특보 없음/서비스키 미설정/한국 영역 밖/API
@@ -4638,6 +4649,7 @@ async function fetchWeatherDetail() {
     renderWeatherCurrent(currentData, hourlyNowItem);
     renderWeatherTopComment(rainData);
     renderWeatherNextRain(rainData);
+    renderWeatherCare(rainData);
     renderWeatherHourlyStrip(hourlyStripData);
     const weeklyForecastData = weeklyForecastR.status === "fulfilled" ? weeklyForecastR.value : null;
     renderWeatherWeeklyForecast(weeklyForecastData);
