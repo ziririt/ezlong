@@ -1605,14 +1605,22 @@ button { font: inherit; }
   /* 2026-08-04 apple-design 점검 — blur 3px는 재질감이 없었다. visionOS
      유리로 승격: 진짜 블러 + 채도 부스트 + 위쪽 모서리에 빛이 닿는
      하이라이트. 어두운 틴트는 기존 무드를 유지한다. */
-  border: 1px solid rgba(255,255,255,0.16);
-  border-top-color: rgba(255,255,255,0.28);
+  /* 2026-08-04 3차(성동님 지시) — 상세페이지 박스도 더 투명하게.
+     솔직히 이건 내가 만든 회귀다. 성동님은 7/19·7/20 두 번에 걸쳐
+     이 박스들을 0.01/blur 3px까지 내리라고 하셨는데, 8/4
+     apple-design 라운드에서 내가 0.18/blur 8px로 도로 올려놨다.
+     문장박스와 같은 원칙으로 되돌린다 — 블러는 완전 제거(뿌옇게
+     보이는 주범), 틴트는 박스의 존재만 겨우 느껴지는 0.06까지.
+     상세페이지는 글이 많아 0에 가깝게 두면 밝은 사진에서 읽기가
+     힘들어지므로, 가독성은 text-shadow를 더 진하게 키워 받친다. */
+  border: 1px solid rgba(255,255,255,0.14);
+  border-top-color: rgba(255,255,255,0.26);
   border-radius: clamp(24px, 6vw, 38px);
-  background: rgba(13,20,31,0.18);
-  -webkit-backdrop-filter: blur(8px) saturate(1.35);
-  backdrop-filter: blur(8px) saturate(1.35);
-  box-shadow: 0 18px 50px rgba(0,0,0,0.22);
-  text-shadow: 0 1px 4px rgba(0,0,0,0.55), 0 2px 20px rgba(0,0,0,0.35);
+  background: rgba(13,20,31,0.06);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.16);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.70), 0 2px 20px rgba(0,0,0,0.50);
 }
 
 .weather-current-card {
