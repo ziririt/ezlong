@@ -1533,6 +1533,9 @@ async function processTicker(meta) {
       low52:       round(low52, 4),
       pos52:       round((price - low52) / (high52 - low52) * 100, 1),
       marketState,
+      /* 야후 시세 자체의 타임스탬프(epoch초) — 장 시작 직후 야후가 전일 세션
+         스냅샷을 그대로 반환하는 경우(2026-08-04 KRX 실측)를 UI가 판별할 수 있게 동봉 */
+      quoteTime:   mta.regularMarketTime ?? null,
       extPrice:    extPrice    ? round(extPrice, 4)    : null,
       extChange:   extChange   ? round(extChange, 4)   : null,
       extChangePct: extChangePct ? round(extChangePct, 2) : null,
