@@ -1186,4 +1186,33 @@ git push origin cp-YYYYMMDD-<슬러그>
 
 ---
 
+## 32. Cloudflare Browser Cache TTL — "기존 헤더 준수"로 확정 (2026-08-04 해결)
+
+**배경:** JS/CSS를 고쳐 배포해도 어떤 방문자에겐 새 파일이, 어떤 방문자에겐 옛 파일이
+보이는 증상이 반복됐다(성동님 제보: "어떤 메뉴는 업데이트된 걸로 나오고, 어떤 것은
+예전 게 나오네"). 헤더를 실측해 원인을 확정했다 — `firebase.json`이 JS/CSS에
+`max-age=600, must-revalidate`를 붙여 보내고 web.app은 그대로 서빙하는데,
+**ezlong.com(Cloudflare 경유)만 `max-age=14400`으로 재작성**하고 있었다. Cloudflare의
+Browser Cache TTL 기본값(4시간)이 오리진 헤더를 덮어쓴 것. 캐시 Purge로는 해결되지
+않는다 — 이미 브라우저에 내려간 4시간짜리 사본은 Purge 대상이 아니기 때문.
+
+**조치 (성동님 실행, 2026-08-04 17:10경):** Cloudflare 대시보드 → Caching →
+Configuration → **Browser Cache TTL → "Respect Existing Headers"(기존 헤더 준수)**.
+
+**검증 (2026-08-04 17:14, 성동님 브라우저에서 실측):**
+- `/ez-design.css` · `/ez-nav.js` · `/ez-footer.js` → `max-age=600, must-revalidate`
+  (기존 14400 → 600, 오리진 헤더 그대로 통과)
+- `/index.html` → `no-cache, max-age=0, must-revalidate` (cf-cache-status: DYNAMIC)
+
+**규칙:**
+- 이제 캐시 정책의 단일 출처는 `firebase.json`의 headers 블록이다. 캐시 수명을 바꾸고
+  싶으면 Cloudflare 대시보드가 아니라 `firebase.json`을 고친다.
+- 7항 진단 트리에서 "둘 다 신버전인데 브라우저만 구버전" 단계에 도달했을 때, JS/CSS는
+  이제 최대 10분이면 자연 갱신된다. 10분을 넘겨도 옛 파일이 보이면 캐시가 아니라 다른
+  원인(하드코딩 사본 등)을 먼저 의심할 것 — 2026-08-04 오전에 실제로 겪은 오진 패턴이다.
+- 이 설정을 "성능 최적화"를 이유로 다시 긴 TTL로 되돌리지 않는다. 되돌리면 위 증상이
+  그대로 재발한다.
+
+---
+
 전체 규칙·CSS 변수·배포 체크리스트·Git 워크플로우 → **EZLONG_GUIDE.md** 참조
