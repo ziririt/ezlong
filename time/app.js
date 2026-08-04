@@ -2136,6 +2136,31 @@ function renderWeather() {
 // 끝날 때까지" 버튼을 비활성화해둘 수 있도록 Promise를 반환하게 바꿨다 — 기존
 // 세 호출부(앱 로드 시/10분 주기 타이머/포그라운드 복귀 시)는 반환값을 그냥
 // 무시하므로 동작에 변화가 없다. 내부 로직(위치 확정 3분기)은 그대로다.
+// 2026-08-04 성동님 제보(안드로이드 날씨 첫 로드 실패) — 늦은 위치 fix
+// 자동 수신 장치. getCurrentPosition이 타임아웃으로 실패한 뒤에도 기기가
+// 뒤늦게 위치를 잡으면(안드로이드 실기기에서 수십 초~수 분 뒤) 그 순간
+// 자동으로 날씨를 다시 불러온다 — 유저가 '다시'를 누를 필요가 없다.
+// fix 1회면 충분하므로 받자마자 watch를 해제한다.
+let lateGeoWatchId = null;
+function startLateGeoWatch() {
+  if (lateGeoWatchId !== null || !navigator.geolocation) return;
+  try {
+    lateGeoWatchId = navigator.geolocation.watchPosition(
+      () => {
+        if (lateGeoWatchId !== null) {
+          navigator.geolocation.clearWatch(lateGeoWatchId);
+          lateGeoWatchId = null;
+        }
+        requestCurrentWeather();
+      },
+      () => {},
+      { enableHighAccuracy: false, maximumAge: 5 * 60 * 1000 }
+    );
+  } catch (e) {
+    lateGeoWatchId = null;
+  }
+}
+
 function requestCurrentWeather() {
   if (!navigator.geolocation) {
     userCoords = DEFAULT_WEATHER_COORDS;
@@ -2154,11 +2179,15 @@ function requestCurrentWeather() {
   }
 
   return new Promise((resolve) => {
-    navigator.geolocation.getCurrentPosition(
-      async ({ coords }) => {
+    // 2026-08-04 — 성공 콜백을 이름 있는 함수로 분리: 아래 onGeoError의
+    // "캐시 좌표 즉시 사용" 폴백이 같은 경로를 그대로 재사용한다.
+    const onCoords = async ({ coords }) => {
         try {
           const { latitude, longitude } = coords;
           userCoords = { lat: latitude, lng: longitude };
+          // 2026-08-04 — 다음 실행에서 안드로이드 위치 타임아웃이 나도
+          // 즉시 날씨를 그릴 수 있도록 마지막 성공 좌표를 기억해둔다.
+          try { localStorage.setItem("ezlong:lastWeatherCoords", JSON.stringify(userCoords)); } catch (e) {}
           const location = await reverseGeocode(latitude, longitude);
           // 2026-07-21: 이 fetchWeatherJson 호출은 fetchWeatherDetail()이 바로
           // 뒤이어 다시 부르는 /api/weather/current와 같은 엔드포인트다 —
@@ -2198,8 +2227,19 @@ function requestCurrentWeather() {
         fetchWeatherDetail();
         if (activeScene) setScene(activeScene, { syncDots: true, force: true });
         resolve();
-      },
-      () => {
+    };
+    const onGeoError = () => {
+        // 2026-08-04 — 안드로이드 WebView는 첫 위치 fix가 느려 9초
+        // 타임아웃에 자주 걸린다(iOS는 CoreLocation 캐시로 즉시). 지난번
+        // 성공 좌표가 있으면 그걸로 즉시 그리고, 진짜 fix는 watch가
+        // 늦게라도 받아 자동 갱신한다.
+        startLateGeoWatch();
+        let cached = null;
+        try { cached = JSON.parse(localStorage.getItem("ezlong:lastWeatherCoords") || "null"); } catch (e) { cached = null; }
+        if (cached && typeof cached.lat === "number" && typeof cached.lng === "number") {
+          onCoords({ coords: { latitude: cached.lat, longitude: cached.lng } });
+          return;
+        }
         userCoords = DEFAULT_WEATHER_COORDS;
         weatherState = {
       location: t("weather.defaultLocation", null, "서울"),
@@ -2213,9 +2253,12 @@ function requestCurrentWeather() {
         fetchWeatherDetail();
         if (activeScene) setScene(activeScene, { syncDots: true, force: true });
         resolve();
-      },
-      { enableHighAccuracy: false, timeout: 9000, maximumAge: 10 * 60 * 1000 }
-    );
+    };
+    navigator.geolocation.getCurrentPosition(onCoords, onGeoError, {
+      enableHighAccuracy: false,
+      timeout: 9000,
+      maximumAge: 10 * 60 * 1000
+    });
   });
 }
 
