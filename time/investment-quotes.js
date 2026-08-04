@@ -8381,5 +8381,12 @@ window.investmentQuotes = [
     "title": "가난한 찰리의 연감",
     "author": "찰리 멍거",
     "category": "mindset"
+  },
+  {
+    "english": "When you have been in love, it is not the length of time that matters, it is everything you've felt and done coming out intensified.",
+    "text": "사랑을 할 때 중요한 것은 시간의 길이가 아니야. 느끼는 것과 하는 일이 모두 강렬해진다는 것이 중요한 거지.",
+    "title": "왜 나는 너를 사랑하는가",
+    "author": "알랭 드 보통 (Alain de Botton)",
+    "genre": "literature"
   }
 ];
