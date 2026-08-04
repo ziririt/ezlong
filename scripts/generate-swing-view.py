@@ -477,24 +477,39 @@ def tsla_view(s):
         body = (f'TSLA가 극단 과매도 구간(매수점수 {buy})에 들어왔습니다. 이 종목에서 유일하게 '
                 f'통계적으로 믿을 만한 매수 신호가 바로 이 구간입니다 — {STATS["tsla_extreme"]}. '
                 f'다만 변동성이 큰 종목이라 한 번에 들어가지 않고 나눠 들어가는 것이 전제입니다.')
+        body_en = (f'TSLA has entered extreme oversold territory (buy score {buy}). This is the one zone '
+                   f'on this stock with a statistically dependable buy signal — {STATS_EN["tsla_extreme"]}. '
+                   f'Given the volatility, scaling in rather than entering all at once is the premise.')
     elif sell >= 75:
         st, label = 'hold', '많이 올랐지만 — 서둘러 팔 필요 없는 종목'
         body = (f'과열 신호(매도압력 {sell})가 켜졌지만, 이 종목에서는 그 신호를 그대로 따르지 않습니다. '
                 f'{STATS["tsla_hot"]} 익절이 필요하다면 시점이 아니라 이탈(추세 붕괴)을 기준으로 잡는 것이 '
                 f'맞다고 봅니다.')
+        body_en = (f'The overheating signal has flagged (sell pressure {sell}), but this stock is not one to '
+                   f'follow it at face value. {STATS_EN["tsla_hot"]}. If profit-taking is needed, the right '
+                   f'trigger is a trend break, not a moment in time.')
     elif gear <= 1:
         st, label = 'wait', '내리막 — 확실한 바닥 신호 대기'
         body = (f'200일선 아래 하락 추세입니다. TSLA는 중간 점수대(50~79)의 매수 신호가 사실상 '
                 f'동전던지기였던 종목이라, 어중간한 자리에서 잡지 않고 극단 신호(매수점수 80 이상)를 '
                 f'기다리는 것이 데이터가 가리키는 방향입니다.')
+        body_en = ('A downtrend below the 200-day line. On TSLA, mid-range buy signals (scores of 50–79) have '
+                   'been effectively a coin flip, so the data points toward waiting for the extreme signal '
+                   '(a buy score above 80) rather than reaching for a half-measure entry.')
     else:
         st, label = 'hold', '들고 가는 구간 — 추세가 깨지는지만 확인'
         body = (f'추세 훼손 신호가 없는 구간입니다. TSLA는 예측보다 대응이 유리했던 종목입니다 — '
                 f'미리 팔거나 미리 사는 대신, 200일선 이탈 여부 하나를 기준으로 관리하는 구간입니다.')
+        body_en = ('No sign of trend damage here. TSLA has rewarded reacting over predicting — instead of '
+                   'selling early or buying early, this is a zone managed by one criterion: whether the '
+                   '200-day line breaks.')
     return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
                 commentary=_move_prefix(s) + body,
+                commentaryEn=_move_prefix_en(s) + body_en,
                 nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi),
-                audience=_audience(st, buy, sell, gear, rsi, 'ignore', 'wait', '매수점수 80 이상 극단 과매도'))
+                audience=_audience(st, buy, sell, gear, rsi, 'ignore', 'wait', '매수점수 80 이상 극단 과매도'),
+                audienceEn=_audience_en(st, buy, sell, gear, rsi, 'ignore', 'wait',
+                                        'extreme oversold with a buy score above 80'))
 
 
 # ─── TOP9 확장: 빅테크 7종 종목별 문법 (2026-08-03 신설, 성동님 승인) ───────
@@ -600,6 +615,119 @@ def _en(label):
     return LABEL_EN.get(label, label)
 
 
+# ─── 영문판(en/) 논평 — 규칙 엔진 영어 형제 필드 (2026-08-04 신설, 성동님 지시) ───
+# 원칙: 한국어 본문과 "같은 분기"에서 생성한다(분기 로직을 복제하지 않는다).
+# 아래 사전은 종목별 검증 문법의 영어 서술만 보관 — 통계 수치는 KR과 동일 출처.
+# LLM 호출 없음(비용 0). en/atmr-dashboard.html이 이 필드를 그대로 렌더한다.
+MEGA_EN = {
+    'AAPL': dict(
+        name='Apple',
+        buy_txt=None,
+        hot_txt='AAPL actually kept rising after overheating signals — following a sell-pressure reading of 75+, the next 20 sessions averaged +2.6% with a 76% win rate (72 samples). Mechanical profit-taking has cost money on this name',
+        down_txt='AAPL held up even below its 200-day line, with a 59% win rate over the next 20 sessions versus 64% above it — a low trend-sensitivity mega-cap where simply holding has beaten tactical trading',
+        base_txt='AAPL is the least signal-sensitive of the nine — neither extreme buy scores nor overheating readings carried a statistical edge. Having little to decide is precisely this stock\'s character'),
+    'GOOG': dict(
+        name='Alphabet',
+        buy_txt='GOOG has exactly one validated buy signal: panic readings below RSI 30. Those were followed by +5.5% over 20 sessions with a 74% win rate (34 samples, versus +2.1% and 63% overall)',
+        hot_txt='GOOG clearly stalled after overheating (sell pressure 75+) — the next 20 sessions averaged +0.7% with a 48% win rate (65 samples). Fresh buying here is statistically unfavorable',
+        down_txt='GOOG\'s win rate in downtrends (59%) barely differs from its overall average (63%) — for this name the grammar is waiting for genuine panic (RSI below 30) rather than reading the trend',
+        base_txt='One caution — for GOOG, buy scores above 80 have been a reverse signal (the next 20 sessions averaged −0.1% with a 46% win rate, 71 samples). Extreme scores are not a buy case on this stock'),
+    'MSFT': dict(
+        name='Microsoft',
+        buy_txt='MSFT\'s strongest buy signal is extreme oversold territory below RSI 30 — followed by +6.0% over 20 sessions with a 77% win rate (35 samples, versus +1.8% and 64% overall)',
+        hot_txt='MSFT is the only one of the nine where mechanical profit-taking is statistically validated — after sell pressure of 75+, the next 20 sessions averaged −1.9% with a 45% win rate (42 samples). Scaling out in parts is where the data points',
+        down_txt='MSFT is a stock that respects its trend — a 67% win rate over 20 sessions above the 200-day line versus 51% below it. In downtrends the only signal worth waiting for is extreme oversold (RSI below 30)',
+        base_txt='MSFT is the closest thing here to the textbook case: steady above its trend line (67% win rate) and genuinely cooling off when overheating flags'),
+    'AMZN': dict(
+        name='Amazon',
+        buy_txt='AMZN is a stock where extreme-signal buying works — after RSI below 30, the next 20 sessions averaged +4.0% with a 76% win rate (55 samples); after buy scores above 80, +3.8% with 62% (56 samples)',
+        hot_txt='AMZN\'s overheating signal has not been decision-grade — performance after overheating (+1.6%, 64%) is effectively identical to its overall average (+2.1%, 64%). It is neither a reason to sell nor to buy',
+        down_txt='AMZN posted a 63–64% win rate over the next 20 sessions whether above or below its 200-day line — a trend-indifferent name where scaling into extremes matters more than reading the trend',
+        base_txt='AMZN is the only one of the seven where buy scores above 80 are also validated as a buy signal — the grammar here is to ignore the trend and scale in at extremes'),
+    'TSM': dict(
+        name='TSMC',
+        buy_txt='TSM\'s buy signal is panic — after RSI below 30, the next 20 sessions averaged +6.7% with an 80% win rate (66 samples, versus +2.5% and 62% overall)',
+        hot_txt='TSM slowed markedly after overheating (sell pressure 75+), averaging +1.0% with a 55% win rate over the next 20 sessions (77 samples) — entering fresh here is statistically unfavorable',
+        down_txt='TSM actually performed best around the 200-day battleground (within ±2%), averaging +3.3% with a 72% win rate afterward — the data suggests treating a trend break as an observation zone rather than a panic',
+        base_txt='True to a semiconductor cycle name, TSM offered the second-largest payoff of the nine for panic buying (RSI below 30, 80% win rate)'),
+    'AVGO': dict(
+        name='Broadcom',
+        buy_txt='AVGO\'s extreme oversold reading below RSI 30 was the strongest buy signal among all nine by win rate (TSLA\'s buy-score-80 zone is larger by return size) — the next 20 sessions averaged +8.9% with an 82% win rate (38 samples, versus +2.9% and 63% overall)',
+        hot_txt='AVGO rested after overheating (sell pressure 75+), averaging −0.5% with a 56% win rate over the next 20 sessions (75 samples) — the data says not to chase this zone',
+        down_txt='AVGO is the contrarian of the group — the 20 sessions following a downtrend below the 200-day line averaged +6.8% with a 72% win rate, better than uptrend stretches (+2.2%, 61%). Drawdowns have clearly been opportunities here, though scaling in remains the premise',
+        base_txt='AVGO shows the "buy weakness, rest through strength" grammar more cleanly than any of the other nine'),
+    'META': dict(
+        name='Meta',
+        buy_txt='META\'s buy signal is panic days — after RSI below 30, the next 20 sessions averaged +6.3% with a 74% win rate (78 samples, versus +1.9% and 61% overall)',
+        hot_txt='META\'s win rate after overheating (sell pressure 75+) fell to a coin flip at 50% (70 samples) — there is no case for adding here',
+        down_txt='META is a stock the trend divides — a 65% win rate over 20 sessions above the 200-day line, 52% below. In downtrends the data says to wait for a panic reading below RSI 30',
+        base_txt='META drops sharply and often, but the statistics of its rebounds from panic zones (RSI below 30, 74% win rate) have been consistent'),
+}
+
+STATS_EN = dict(
+    tsla_extreme='TSLA buy scores above 80 span 61 sample days, followed by +15.3% over the next 20 sessions with a 69% win rate',
+    tsla_hot='TSLA has frequently kept climbing after crossing sell pressure 75, averaging +7.5% over the next 20 sessions — mechanically selling overheating has lost money on this name',
+    nvda_trend='NVDA splits at its trend line: a 69% win rate over 20 sessions above the 200-day (Gear 3) versus 56% below — trend maintenance is the core of the judgment',
+)
+
+
+def _move_prefix_en(s):
+    chg = s.get('changePct')
+    if chg is None or abs(chg) < 0.8:
+        return ''
+    tone = 'sharp rebound' if chg >= 3 else ('sharp drop' if chg <= -3 else 'close')
+    return f'Prior session {chg:+.1f}% {tone}. '
+
+
+def _audience_en(stance, buy, sell, gear, rsi, hot, down, sig_label_en):
+    """_audience()의 영어 형제 — 동일한 조건 분기를 그대로 미러링한다.
+    한쪽만 고치면 국문·영문이 어긋나므로 두 함수는 항상 같이 수정한다."""
+    overheated = sell >= 75
+    if stance == 'trim':
+        holder = 'Scaling out worth considering — one of the rare names where the overheating signal is statistically validated. A first tranche near 30% is the premise.'
+    elif overheated and hot == 'ignore':
+        holder = 'Holding intact — this stock\'s overheating signal has no predictive power. Exit criteria belong to a trend break, not to timing.'
+    elif overheated:
+        holder = 'Holding remains viable — but this name has a record of slowing after overheating. Reviewing exit criteria is advised.'
+    elif gear <= 1 and down == 'wait':
+        holder = 'Exit criteria worth re-checking — below the 200-day line, trimming exposure is where the data points.'
+    elif gear <= 1 and down == 'opportunity':
+        holder = 'Holding intact — this name has historically performed better after downtrend stretches. Panic selling is not advised.'
+    elif gear <= 1:
+        holder = 'Holding remains viable — this stock has low trend sensitivity. Manage exit criteria only.'
+    else:
+        holder = 'Holding zone — no sign of trend damage.'
+    if stance == 'accumulate':
+        newbie = f'Valid zone for scaling in — {sig_label_en} is active. A small first tranche (within 30%) is the premise.'
+    elif overheated:
+        newbie = 'New entries worth avoiding — overheated. Chasing here is statistically unfavorable.'
+    elif gear >= 3 and buy >= 65:
+        newbie = f'A small scaled entry is worth considering — uptrend plus a buy score of {buy}. That said, this stock\'s optimal entry is {sig_label_en}.'
+    elif gear <= 1:
+        newbie = f'Waiting zone — before the valid signal ({sig_label_en}) fires, there is no statistical basis for entry.'
+    else:
+        newbie = 'Watching zone — awaiting an entry signal.'
+    if stance == 'accumulate':
+        avgdown = f'A first averaging-down tranche is worth considering — {sig_label_en} is active. Small size (within 30%) with exit criteria set in advance.'
+    elif gear <= 1 and down != 'opportunity':
+        avgdown = 'Averaging down is off the table — downtrend confirmed. Lowering your average before a bottom is confirmed has a record of widening losses.'
+    elif gear <= 1:
+        avgdown = f'This name has a contrarian record, but averaging down applies only when {sig_label_en} fires — currently waiting.'
+    elif overheated:
+        avgdown = 'Not an averaging-down zone — if you are down while the stock is overheated, checking exit criteria comes before adding.'
+    else:
+        avgdown = 'No signal calling for averaging down — current positions stand.'
+    if gear >= 3 and sell < 60 and buy >= 60 and (rsi is None or rsi < 65):
+        pyramid = 'A small pyramid add is worth considering — trend intact, not overheated, buy signal holding (all three met). Total exposure caps still apply.'
+    elif gear >= 3:
+        pyramid = 'Pyramiding worth avoiding — approaching overheated. Chasing risks adding at the top.'
+    elif gear == 2:
+        pyramid = 'Pyramiding on hold — direction unresolved at the 200-day line. Worth revisiting once the trend is reclaimed.'
+    else:
+        pyramid = 'Pyramiding is off the table — adding into a downtrend is outside the principles.'
+    return dict(holder=holder, newbie=newbie, avgdown=avgdown, pyramid=pyramid)
+
+
 # ─── 4분류 맞춤 행동 진단 (2026-08-04 신설, 성동님 지시) ─────────────────────
 # 스윙 전략 탭의 보유자/신규 진입/물타기/불타기 분류를 종목 단위로 제공.
 # 전부 규칙 엔진 — LLM 비용 0. 문구는 진단형(행동 촉구 금지) 원칙 준수.
@@ -661,6 +789,7 @@ def mega_view(sym, s):
     """빅테크 7종 공용 뷰 — MEGA_CFG의 종목별 검증 문법으로 분기.
     tsla_view/nvda_view와 동일한 출력 형태(stance/stanceLabel/commentary/nums)."""
     cfg = MEGA_CFG[sym]
+    cfe = MEGA_EN[sym]          # 영어 형제 문법 — 같은 분기에서 함께 생성
     buy, sell, gear = s.get('buyScore') or 50, s.get('sellScore') or 50, s.get('gear') or 2
     rsi = s.get('rsi')
     rsi_panic = rsi is not None and rsi < 30
@@ -674,11 +803,15 @@ def mega_view(sym, s):
         if rsi_panic:
             st, label = 'accumulate', '많이 빠졌음 — 나눠서 사볼 만한 구간'
             trigger = f'많이 빠진 자리(RSI {rsi:.0f}, 매수점수 {buy})'
+            trigger_en = f'a deeply sold-off level (RSI {rsi:.0f}, buy score {buy})'
         else:
             st, label = 'accumulate', '강한 매수 신호 — 나눠서 사볼 만한 구간'
             trigger = f'강한 매수 신호 자리(매수점수 {buy})'
+            trigger_en = f'a strong buy-signal level (buy score {buy})'
         body = (f'{cfg["label"]}({sym})가 {trigger}까지 왔습니다. {cfg["buy_txt"]}. '
                 f'다만 한 번에 다 사지 않고 나눠서 사는 것이 전제입니다.')
+        body_en = (f'{cfe["name"]} ({sym}) has reached {trigger_en}. {cfe["buy_txt"]}. '
+                   f'The premise, though, is scaling in rather than buying all at once.')
     # 2) 과열
     elif sell >= 75:
         if cfg['hot'] == 'trim':
@@ -688,6 +821,7 @@ def mega_view(sym, s):
         else:
             st, label = 'hold', '많이 올랐지만 — 서둘러 팔 필요 없는 종목'
         body = f'단기간에 많이 오른 상태입니다(매도압력 {sell}). {cfg["hot_txt"]}.'
+        body_en = f'The stock has run up sharply in a short stretch (sell pressure {sell}). {cfe["hot_txt"]}.'
     # 3) 하락 추세
     elif gear <= 1:
         if cfg['down'] == 'opportunity':
@@ -697,6 +831,7 @@ def mega_view(sym, s):
         else:
             st, label = 'hold', '내리막이지만 — 크게 겁낼 필요 없었던 종목'
         body = f'주가가 200일선 아래로 내려간 내리막 구간입니다. {cfg["down_txt"]}.'
+        body_en = f'The price has slipped below its 200-day line into a downtrend. {cfe["down_txt"]}.'
     # 4) 평상시 — "특이 신호 없음" 표현 금지 (2026-08-04 성동님 지시). 극단 신호가
     # 아니어도 AI는 좌표를 짚는다: 현재 위치, 다음 유효 신호까지의 거리, 판단이
     # 바뀌는 트리거를 항상 명시. 단 검증 안 된 확률은 여전히 만들어내지 않는다.
@@ -705,26 +840,38 @@ def mega_view(sym, s):
         rsi_txt = f'{rsi:.0f}' if rsi is not None else '측정 불가'
         dev_txt = f'{dev:+.1f}%' if dev is not None else '—'
         # 이 종목의 유효 신호까지 남은 거리
-        watch = []
+        watch, watch_en = [], []
         if cfg['buy'] in ('rsi30', 'both') and rsi is not None:
             watch.append(f'"많이 빠졌다" 신호(RSI 30)까지 {max(0.0, rsi - 30):.0f}점')
+            watch_en.append(f'{max(0.0, rsi - 30):.0f} points to the deeply-oversold signal (RSI 30)')
         if cfg['buy'] == 'both':
             watch.append(f'강한 매수 신호(매수점수 80)까지 {max(0, 80 - buy)}점')
+            watch_en.append(f'{max(0, 80 - buy)} points to the strong buy signal (buy score 80)')
         watch.append(f'과열선(매도압력 75)까지 {max(0, 75 - sell)}점')
+        watch_en.append(f'{max(0, 75 - sell)} points to the overheating line (sell pressure 75)')
         watch_txt = ' · '.join(watch)
+        watch_txt_en = ' · '.join(watch_en)
         # 판단이 바뀌는 트리거 — 종목 문법별
         if cfg['buy'] is None:
             trigger_txt = ('주가가 200일선 아래로 내려갈 때 하나뿐입니다 — 그 전까지는 '
                            '그냥 들고 가는 쪽이 유리했던 종목입니다')
+            trigger_txt_en = ('a single one: the price slipping below its 200-day line. Until then, '
+                              'simply holding has been the favorable side on this stock')
         elif cfg['buy'] == 'both':
             trigger_txt = ('많이 빠지거나(RSI 30 아래) 매수점수가 80을 넘으면 "나눠 사볼 자리", '
                            '200일선 아래로 내려가면 "조심 모드"로 바뀝니다')
+            trigger_txt_en = ('a deep sell-off (RSI below 30) or a buy score above 80 turning this into '
+                              'a scale-in zone, or a break below the 200-day line turning it cautious')
         elif cfg['down'] == 'wait':
             trigger_txt = ('많이 빠지면(RSI 30 아래) "나눠 사볼 자리"로, 200일선 아래로 '
                            '내려가면 "줄이기 검토"로 바뀝니다')
+            trigger_txt_en = ('a deep sell-off (RSI below 30) turning this into a scale-in zone, or a break '
+                              'below the 200-day line turning it into a trim review')
         else:
             trigger_txt = ('많이 빠질 때(RSI 30 아래)뿐이고, 추세가 흔들리는 건 이 종목에선 '
                            '크게 겁낼 일이 아니었습니다')
+            trigger_txt_en = ('only a deep sell-off (RSI below 30) — a wobbling trend has not been much '
+                              'to fear on this particular stock')
         # 라벨 — 지금 어느 쪽에 가까운지로 차등 (쉬운 말, "이렇다"는 상태 서술)
         if sell >= 60 or (rsi is not None and rsi >= 62):
             st, label = 'hold', '많이 오른 상태 — 식는지 지켜보는 중'
@@ -738,13 +885,23 @@ def mega_view(sym, s):
         body = (f'{cfg["base_txt"]}. 지금 숫자로 보면 매수점수 {buy}·매도압력 {sell}·RSI {rsi_txt}, '
                 f'주가는 200일선보다 {dev_txt} 자리에 있습니다. 다음 신호까지는 {watch_txt} 남았습니다. '
                 f'이 판단이 바뀌는 조건은 {trigger_txt}.')
+        rsi_txt_en = f'{rsi:.0f}' if rsi is not None else 'n/a'
+        body_en = (f'{cfe["base_txt"]}. On today\'s numbers: buy score {buy}, sell pressure {sell}, '
+                   f'RSI {rsi_txt_en}, with the price sitting {dev_txt} versus its 200-day line. '
+                   f'Distance to the next signal: {watch_txt_en}. What would change this call is '
+                   f'{trigger_txt_en}.')
     sig_label = ('RSI 30 미만 극단 과매도 또는 매수점수 80 이상' if cfg['buy'] == 'both'
                  else 'RSI 30 미만 극단 과매도' if cfg['buy'] == 'rsi30'
                  else '뚜렷한 검증 신호 없음(신호 둔감 종목)')
+    sig_label_en = ('extreme oversold below RSI 30 or a buy score above 80' if cfg['buy'] == 'both'
+                    else 'extreme oversold below RSI 30' if cfg['buy'] == 'rsi30'
+                    else 'no clearly validated signal (a signal-insensitive stock)')
     return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
                 commentary=_move_prefix(s) + body,
+                commentaryEn=_move_prefix_en(s) + body_en,
                 nums=dict(buy=buy, sell=sell, gear=gear, rsi=round(rsi, 1) if rsi is not None else None),
-                audience=_audience(st, buy, sell, gear, rsi, cfg['hot'], cfg['down'], sig_label))
+                audience=_audience(st, buy, sell, gear, rsi, cfg['hot'], cfg['down'], sig_label),
+                audienceEn=_audience_en(st, buy, sell, gear, rsi, cfg['hot'], cfg['down'], sig_label_en))
 
 
 def nvda_view(s):
@@ -755,21 +912,34 @@ def nvda_view(s):
         body = (f'NVDA는 추세가 전부인 종목입니다. {STATS["nvda_trend"]} 지금은 200일선 위 구간이라 '
                 f'보유를 유지하는 쪽이고, 과열 신호(매도압력 {sell})는 이 종목에서 검증력이 없어 '
                 f'그 이유만으로 덜어내지는 않습니다.')
+        body_en = (f'On NVDA the trend is everything. {STATS_EN["nvda_trend"]}. The price sits above its '
+                   f'200-day line, so holding is the side of the trade, and the overheating reading '
+                   f'(sell pressure {sell}) has no predictive power here — not a reason on its own to trim.')
     elif gear == 2:
         st, label = 'hold', '갈림길 — 200일선 공방 중'
         body = (f'NVDA가 200일선 부근 공방에 들어왔습니다. 이 종목의 판단 기준은 추세 하나입니다. '
                 f'{STATS["nvda_trend"]} 아직 추세가 꺾였다고 확정할 단계는 아니라 보유를 유지하되, '
                 f'200일선을 종가 기준으로 명확히 이탈하면 그때는 축소가 판단이 됩니다. 미리 팔지도, '
                 f'무작정 버티지도 않는 구간입니다.')
+        body_en = (f'NVDA has entered a battle around its 200-day line. There is exactly one criterion on '
+                   f'this stock: the trend. {STATS_EN["nvda_trend"]}. It is too early to call the trend '
+                   f'broken, so holding stands — but a clear close below the 200-day line makes trimming '
+                   f'the call. Neither selling early nor holding blindly.')
     else:
         st, label = 'trim', '오르막 꺾임 — 줄이기 검토 구간'
         body = (f'NVDA의 판단 기준은 하나, 추세입니다. {STATS["nvda_trend"]} 200일선 아래로 추세가 '
                 f'무너진 지금 같은 구간에서는 노출 축소를 검토하는 것이 데이터의 방향입니다. '
                 f'추세 복귀가 확인되면 다시 싣는 것이 원칙입니다.')
+        body_en = (f'There is one criterion on NVDA: the trend. {STATS_EN["nvda_trend"]}. With the trend '
+                   f'broken below the 200-day line, reviewing exposure downward is where the data points. '
+                   f'Rebuilding once the trend is reclaimed is the principle.')
     return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
                 commentary=_move_prefix(s) + body,
+                commentaryEn=_move_prefix_en(s) + body_en,
                 nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi),
-                audience=_audience(st, buy, sell, gear, rsi, 'ignore', 'wait', '200일선 위 추세 복귀'))
+                audience=_audience(st, buy, sell, gear, rsi, 'ignore', 'wait', '200일선 위 추세 복귀'),
+                audienceEn=_audience_en(st, buy, sell, gear, rsi, 'ignore', 'wait',
+                                        'a trend reclaim above the 200-day line'))
 
 
 DESK_MODEL = 'claude-fable-5'
