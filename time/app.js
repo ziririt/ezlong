@@ -1464,6 +1464,34 @@ function getCurrentSeason(date = new Date()) {
   return "winter";
 }
 
+/**
+ * 시간대 버킷을 앞뒤 한 칸씩 넓힌다(하루는 원형이라 pre-dawn 다음은 dawn).
+ *
+ * 2026-08-04 성동님 승인 — 밤에 "여름 + 약한 비" 후보가 딱 4장이었다.
+ * 밤·자정·새벽은 촬영분 자체가 적은데(밤 15장, 자정 3장, 새벽 3장) 자동
+ * 모드가 버킷 하나만 보고 있어서, 16분마다 새 세트를 뽑아도 같은 4장이
+ * 순서만 바뀌어 돌았다. 저녁 사진은 58장이나 되고 밤 사진과 눈으로
+ * 구분되지 않으니, 시간대만 한 칸씩 열어주면 재고 문제가 풀린다.
+ * 날씨·계절 조건은 건드리지 않는다 — 비 오는 사진은 그대로 비 사진이다.
+ *
+ * 배열을 함수 안에 두는 이유: 이 파일 앞쪽에서 벌어진 TDZ 사고(2026-08-04
+ * lastPhotoRotateAt) 이후, 모듈 최상위 const에 의존하지 않는 쪽을 택한다.
+ */
+function widenTimeBuckets(buckets) {
+  const cycle = [
+    "dawn", "early-morning", "morning", "late-morning", "midday", "afternoon",
+    "late-afternoon", "sunset", "evening", "night", "midnight", "pre-dawn"
+  ];
+  const widened = new Set(buckets);
+  buckets.forEach((bucket) => {
+    const index = cycle.indexOf(bucket);
+    if (index < 0) return;
+    widened.add(cycle[(index - 1 + cycle.length) % cycle.length]);
+    widened.add(cycle[(index + 1) % cycle.length]);
+  });
+  return Array.from(widened);
+}
+
 function getSceneTimeBuckets(sceneId) {
   if (Date.now() >= manualSceneUntil) return [getTimeBucketForHour(new Date().getHours())];
   if (sceneId === "morning") return ["dawn", "early-morning", "morning"];
@@ -1633,6 +1661,25 @@ function matchingArchivePhotos(sceneId) {
   // 예전 코드는 매칭 수와 무관하게 그룹/폴백 티어를 항상 합쳐버려서, 비가 오는데도
   // 맑음/흐림 태그의 무관한 사진이 후보에 섞여 4장 중 1장만 비 사진으로 보이는 문제가 있었다.
   const exactPhotos = uniquePhotos(archivePhotos);
+  // 2026-08-04 성동님 승인 — 예전엔 여기서 4장만 넘으면 바로 끝냈다.
+  // 그런데 4장은 '한 세트'와 정확히 같은 수라서, 16분마다 새 세트를
+  // 뽑아도 같은 4장이 순서만 바뀌어 돌아왔다(밤+비 조건의 실제 증상).
+  // 한 바퀴 돌 때 새 얼굴이 나오려면 최소한 세트의 3배는 있어야 한다.
+  const photoPoolComfortable = 12;
+  if (exactPhotos.length >= photoPoolComfortable) return exactPhotos;
+  // 재고가 얇을 때 가장 먼저 푸는 것은 '시간대'다. 성동님이 반복해서
+  // 지적하신 건 늘 날씨가 안 맞는다는 것이었지 시간대가 아니었고,
+  // 저녁 사진과 밤 사진은 눈으로 구분되지 않는다. 계절·날씨 조건은
+  // 그대로 둔 채 앞뒤 한 칸씩만 연다.
+  const widenedBuckets = widenTimeBuckets(timeBuckets);
+  const widerTimeMatches = (image) =>
+    !timeFilterOn || image.timeBuckets?.some((bucket) => widenedBuckets.includes(bucket));
+  const widerTimePhotos = uniquePhotos(
+    backgroundArchive.filter((image) =>
+      seasonMatches(image) && widerTimeMatches(image) && exactWeatherMatches(image)
+      && moodSafe(image) && imageUrl(image))
+  );
+  if (widerTimePhotos.length >= 4) return widerTimePhotos;
   if (exactPhotos.length >= 4) return exactPhotos;
 
   const groupedArchivePhotos = backgroundArchive
@@ -1755,7 +1802,13 @@ function ensurePhotoSet(sceneId) {
   activePhotoSetKey = nextKey;
   // 2026-08-04 — 새 세트는 항상 1번 사진부터 순서대로(15분 슬롯 기반
   // 시작 인덱스는 명시 타이머 전환 후 의미가 없어졌다).
-  activePhotoIndex = 0;
+  // 3차 — 다만 웹뷰가 재로드돼 '같은 조건의 같은 세트'로 돌아온
+  // 것이라면, 보던 위치를 이어받아야 리듬이 끊기지 않는다.
+  const savedRotate = loadPhotoRotateState();
+  activePhotoIndex =
+    savedRotate && savedRotate.key === nextKey && typeof savedRotate.index === "number"
+      ? Math.min(Math.max(0, savedRotate.index), Math.max(0, activePhotoSet.length - 1))
+      : 0;
   activePhotoSlot = "";
   manualPhotoUntil = 0;
   preloadPhotoSet(activePhotoSet);
@@ -8280,9 +8333,14 @@ function tick() {
   renderTime(now);
   // 2026-08-04 2차 — 배경 자동전환(4분마다 1장, 4장 돌면 새 세트).
   // 위 photoAutoRotateTick 주석 참조 — 시계 루프에 얹어 확실하게.
+  // 2026-08-04 3차 — 예전엔 여기서 무조건 타이머를 리셋한 뒤 회전을
+  // 시도했다. 그런데 화면이 꺼져 있거나 수동 스와이프 잠금 중이면
+  // photoAutoRotateTick()은 아무것도 하지 않고 돌아온다 — 그 사이
+  // 4분이 지날 때마다 '회전 기회'만 조용히 버려졌다. 폰을 켜서 보면
+  // 카운터가 방금 리셋된 상태라 또 4분을 기다려야 하니, 짧게 보고 끄는
+  // 사용자는 전환을 영영 못 본다. 실제로 회전이 일어난 경우에만 소모한다.
   if (typeof lastPhotoRotateAt === "number" && Date.now() - lastPhotoRotateAt >= PHOTO_AUTO_ROTATE_MS) {
-    lastPhotoRotateAt = Date.now();
-    photoAutoRotateTick();
+    if (photoAutoRotateTick()) lastPhotoRotateAt = Date.now();
   }
   rotateQuote(now);
   // 2026-07-20: 정각 세리모니/퇴근 세리모니가 트랙 전환 우연에만 기대지
@@ -9044,17 +9102,59 @@ const PHOTO_AUTO_ROTATE_MS = 4 * 60 * 1000;
 // 원인을 플랫폼별로 쫓는 대신, "실기기에서 매초 도는 것이 이미 증명된"
 // tick()(플립시계 갱신 루프)에 경과시간 판정을 얹는다 — 시계가 움직이는
 // 한 배경도 반드시 바뀐다. 독립 setInterval에 기대지 않는 구조.
-var lastPhotoRotateAt = Date.now(); // var — tick()이 선언보다 먼저 호출돼도 TDZ 오류가 없도록(2026-08-04 긴급수정)
+// var — tick()이 선언보다 먼저 호출돼도 TDZ 오류가 없도록(2026-08-04 긴급수정).
+// 2026-08-04 3차 — 저장된 마지막 전환 시각이 있으면 그걸 이어받는다
+// (웹뷰 재로드로 리듬이 0으로 되돌아가던 문제).
+var lastPhotoRotateAt = (function () {
+  try {
+    const saved = loadPhotoRotateState();
+    if (saved && typeof saved.at === "number" && saved.at <= Date.now()) return saved.at;
+  } catch (error) {
+    // 무시 — 아래 기본값으로 시작한다.
+  }
+  return Date.now();
+})();
 function photoAutoRotateTick() {
-  if (document.visibilityState !== "visible") return;
-  if (!activePhotoSet.length || Date.now() < manualPhotoUntil) return;
+  // 회전이 실제로 일어났는지 돌려준다(tick이 타이머 소모 여부를 판단).
+  if (document.visibilityState !== "visible") return false;
+  if (!activePhotoSet.length || Date.now() < manualPhotoUntil) return false;
+  if (!activeScene) return false;
   const nextIndex = (activePhotoIndex + 1) % activePhotoSet.length;
   if (nextIndex === 0) {
     photoCycleGen += 1; // 한 바퀴 완료 — setScene의 ensurePhotoSet이 새 4장을 뽑는다
   } else {
     activePhotoIndex = nextIndex;
   }
-  if (activeScene) setScene(activeScene, { syncDots: true, force: true });
+  setScene(activeScene, { syncDots: true, force: true });
+  savePhotoRotateState();
+  return true;
+}
+
+/* 2026-08-04 3차 — 배경 전환 리듬을 웹뷰 재로드 너머로 잇는다.
+   iOS는 메모리가 부족하면 백그라운드의 WKWebView 내용을 버리고 앱에
+   돌아올 때 다시 로드한다. 그때마다 경과 시간이 0으로 돌아가면, 앱을
+   짧게 여러 번 보는 사람은 4분을 한 번도 채우지 못해 전환을 영영 못 본다.
+   마지막 전환 시각과 위치를 남겨두면 재로드 뒤에도 이어지고, 앱을 껐다
+   켠 사이에 4분이 지났다면 켜자마자 다음 장으로 넘어간다. */
+const photoRotateStateKey = "ezlong:photoRotateState";
+function loadPhotoRotateState() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(photoRotateStateKey) || "null");
+    return raw && typeof raw === "object" ? raw : null;
+  } catch (error) {
+    return null;
+  }
+}
+function savePhotoRotateState() {
+  try {
+    localStorage.setItem(photoRotateStateKey, JSON.stringify({
+      at: Date.now(),
+      index: activePhotoIndex,
+      key: activePhotoSetKey
+    }));
+  } catch (error) {
+    // 저장 실패해도 이번 실행의 리듬에는 영향이 없다.
+  }
 }
 // (독립 타이머는 폐기 — tick() 안에서 경과시간으로 호출한다.)
 window.setInterval(musicStallWatchdog, 2000);
