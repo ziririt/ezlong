@@ -227,6 +227,9 @@
        기본정보 선택지를 2열 유지 + 여백 압축 → 한 화면에서 스크롤 없이 응답.
        (기존엔 480px 이하에서 1열로 무너져 12개 선택지가 세로로 길게 늘어졌음) */
     @media (max-width: 480px) {
+      /* 다크 씬(인트로·프리게임): 78vh 세로 중앙 정렬이 모바일에선 위 공백만
+         키우고 '다음' 버튼을 화면 밖으로 밀어냈음 — 내용 높이만큼만 차지 */
+      .lbg-dark { min-height: auto; padding: 44px 20px 40px; justify-content: flex-start; }
       .lbg-panel { padding: 22px 14px 14px; }
       .lbg-step-title { margin-bottom: 8px; }
       .lbg-step-desc { margin-bottom: 14px; }
