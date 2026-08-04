@@ -672,6 +672,84 @@ def _rally_txt(s):
     return txt
 
 
+# ─── 두 엔진 화해 장치 (2026-08-05 신설, 성동님 지적) ────────────────────────
+# 성동님 제보: 같은 TSLA 카드 안에서 위에서는 "확실한 바닥 신호 대기 — 매수점수
+# 80 이상을 기다려라", 바로 아래 AI 차트분석에서는 "매수 전환"이 나란히 떠 있었다.
+# 원인은 명확하다 — 규칙 엔진(이 파일)과 차트 엔진(generate-chart-analysis.js)이
+# 서로를 전혀 모른 채 각자 결론만 찍어내고, 화면이 그 둘을 그냥 위아래로 붙였다.
+# 실측(2026-08-05 07:48) 9종 중 6종이 이런 식으로 어긋나 있었다.
+#
+# 화해 원칙은 "다르면 무조건 보수적으로"가 아니다. 이건 스윙 트레이딩이고,
+# 성동님 기준은 "진입은 남보다 빠르게, 익절은 남보다 확실하게"다.
+#   · 둘 다 매수 쪽  → 확신을 갖고 3-3-4 차수를 말한다 (망설이지 않는다)
+#   · 규칙 과열 + 차트 매수 → 전량 익절이 아니라 1차 30% 분할 익절. 추세는 남긴다
+#   · 규칙 보유 + 차트 매수 → '들고 있으라'로 끝내지 않고 추가 차수를 연다
+#   · 규칙 매수 + 차트 미확인 → 진입은 하되 1차를 절반으로 줄인다
+# 그리고 어느 경우든 교차검증 결과를 카드 안에 명시한다 — 두 엔진이 서로 모르는
+# 독립된 주장처럼 나란히 서는 일이 다시는 없도록.
+
+CHART_FILE_SYM = {'GOOG': 'GOOGL'}   # 차트 엔진 파일명이 다른 종목
+
+
+def _chart_of(sym):
+    """종목별 AI 차트분석 판독. 없거나 낡았으면 None(화해 생략, 기존 판단 유지)."""
+    f = CHART_FILE_SYM.get(sym, sym)
+    d = load(os.path.join(HERE, '..', 'data', f'analysis-{f}.json'))
+    if not d:
+        return None
+    try:
+        upd = datetime.fromisoformat(d['updatedAt'].replace('Z', '+00:00'))
+        if (datetime.now(timezone.utc) - upd) > timedelta(hours=36):
+            return None
+    except Exception:
+        pass
+    a = d.get('analysis') or {}
+    if not a.get('action'):
+        return None
+    return dict(action=a.get('action'), stage=a.get('stage') or '',
+                score=a.get('buyScore'), why=(a.get('scoreReason') or '').strip(),
+                trend=a.get('trend') or '')
+
+
+def _reconcile(sym, st, label, kb):
+    """규칙 엔진 판단 + 차트 엔진 판독 → 하나의 결론. (st, label, kb) 반환."""
+    ca = _chart_of(sym)
+    if not ca:
+        return st, label, kb
+    act, sc = ca['action'], (ca['score'] if isinstance(ca['score'], (int, float)) else None)
+    buy_side = act == '매수'
+    strong = buy_side and sc is not None and sc >= 7
+    line = f"차트 엔진 판독 '{act}'" + (f" {sc}/10" if sc is not None else '')
+    if ca['stage']:
+        line += f" · {ca['stage']}"
+    if ca['why']:
+        line += f" · {ca['why']}"
+
+    verdict = None
+    if buy_side and st in ('watch', 'wait'):
+        st = 'accumulate'
+        label = '규칙·차트 모두 매수 쪽 — 1차 정찰대(30%) 자리'
+        verdict = '두 엔진 방향 일치 — 망설일 자리가 아니라 1차를 넣는 자리. 3-3-4의 1차 30%.'
+    elif buy_side and st == 'trim':
+        label = '과열 신호 vs 차트 매수 — 1차 30%만 분할 익절'
+        verdict = ('규칙 엔진은 과열, 차트 엔진은 매수 — 방향이 갈린다. 전량 익절이 아니라 '
+                   '보유분의 1차 30%만 덜어내고 나머지는 추세 이탈까지 들고 간다. '
+                   '고점에서 확실히 덜어내되 추세를 통째로 버리지는 않는 자리.')
+    elif strong and st == 'hold':
+        label = '추세 양호 + 차트 매수 — 추가 1차(30%) 가능 구간'
+        verdict = (f'차트 엔진 매수 {sc}/10. 보유만 하고 끝낼 자리가 아니라 목표 비중이 '
+                   f'덜 찼다면 1차 30%를 더 채우는 자리. 과열 신호가 켜지면 그때 익절로 전환.')
+    elif st == 'accumulate' and not buy_side:
+        label = '규칙은 매수 — 차트 미확인이라 1차를 절반으로'
+        verdict = (f"규칙 엔진은 진입 자리로 보지만 차트 엔진은 아직 '{act}'. "
+                   f'두 엔진이 갈릴 때는 크기로 답한다 — 1차 30%가 아니라 15% 선에서 시작하고, '
+                   f'차트가 매수로 돌아서면 나머지를 채운다.')
+    else:
+        verdict = '규칙 엔진 판단과 같은 방향 — 별도 조정 없음.'
+
+    return st, label, kb + [_blk('AI 차트분석 교차검증', line, verdict)]
+
+
 def tsla_view(s):
     buy, sell, gear = s.get('buyScore') or 50, s.get('sellScore') or 50, s.get('gear') or 2
     rsi = s.get('rsi')
@@ -740,6 +818,7 @@ def tsla_view(s):
              f'추세 기어 {gear} — ' + ('200일선 위' if gear >= 3 else '200일선 근처' if gear == 2 else '200일선 아래')),
         _blk('판단 근거', body.strip()),
     ]
+    st, label, _kb = _reconcile('TSLA', st, label, _kb)
     return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
                 commentary=_mv + body,
                 commentaryEn=_move_prefix_en(s) + body_en,
@@ -835,6 +914,10 @@ LABEL_EN = {
     '많이 올랐음 — 일부 이익실현 검토 구간': 'Overheated — worth taking some profit',
     '많이 올랐음 — 지금 새로 사기엔 불리': 'Overheated — a poor spot to start buying',
     '많이 올랐지만 — 서둘러 팔 필요 없는 종목': 'Overheated — but quick selling has not paid off here',
+    '규칙·차트 모두 매수 쪽 — 1차 정찰대(30%) 자리': 'Both engines lean buy — a first 30% tranche',
+    '과열 신호 vs 차트 매수 — 1차 30%만 분할 익절': 'Overheated vs chart buy — trim just the first 30%',
+    '추세 양호 + 차트 매수 — 추가 1차(30%) 가능 구간': 'Trend intact plus a chart buy — room for another 30%',
+    '규칙은 매수 — 차트 미확인이라 1차를 절반으로': 'Rules say buy, chart unconfirmed — halve the first tranche',
     '내리막 — 반등 첫 신호에 정찰대': 'Downtrend — a scout position on the first rebound signal',
     '내리막이나 반등 진행 — 소량 정찰대': 'Downtrend but rebounding — a small scout position',
     '내리막이나 반등 진행 — 소량 진입 후보': 'Downtrend but rebounding — a candidate for a small entry',
@@ -1190,6 +1273,7 @@ def mega_view(sym, s):
     mv = _move_prefix(s)
     if mv:
         kb = [_move_blk(s)] + kb
+    st, label, kb = _reconcile(sym, st, label, kb)
     return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
                 commentary=mv + body,
                 commentaryEn=_move_prefix_en(s) + body_en,
@@ -1236,6 +1320,7 @@ def nvda_view(s):
              f'추세 기어 {gear} — ' + ('200일선 위' if gear >= 3 else '200일선 근처' if gear == 2 else '200일선 아래')),
         _blk('판단 근거', body.strip()),
     ]
+    st, label, _kb = _reconcile('NVDA', st, label, _kb)
     return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
                 commentary=_mv + body,
                 commentaryEn=_move_prefix_en(s) + body_en,
