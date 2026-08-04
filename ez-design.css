@@ -333,3 +333,107 @@ a { color: inherit; }
 @media (prefers-color-scheme: dark) {
   .ez-footer-bottom { border-color: rgba(255,255,255,0.07); color: #F5F5F7; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   apple-design 보강 — 2026-08-04 (성동님 지시: 전면 개편 아님)
+   기존 화면은 한 픽셀도 바꾸지 않는다. "없던 반응"만 얹는다.
+   실측 근거: 주요 17개 페이지에 :hover 106건 / :active 9건,
+   prefers-reduced-motion·transparency·contrast 0건, :focus-visible 0건.
+   즉 마우스에만 반응하고 손가락·키보드·접근성 설정에는 무반응 상태였다.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. 눌림 피드백 — 손을 뗄 때가 아니라 닿는 즉시 (apple-design §1) ──
+   대상은 실제로 클릭 가능한 요소만 골라 명시한다(측정해서 뽑은 목록).
+   "전부 다"로 잡으면 본문 링크까지 들썩여서 오히려 싸구려로 보인다. */
+button, [role="button"],
+input[type="submit"], input[type="button"],
+.book-link-btn, .pref-btn, .seg-btn, .rp-btn, .ext-btn, .tab-btn,
+.cta-btn, .btn-primary, .btn-ghost, .ca-grp-btn, .toggle-btn,
+.ez-toggle-btn, .top9-chip, .ptab, .mtab, .atab, .rtab,
+.tool-card, .yt-card, .ez-footer-nav-item, .ez-footer-book-btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;   /* 300ms 탭 지연 제거 — 지연은 그 자체로 퇴보다 */
+}
+html button:active,
+html [role="button"]:active,
+html input[type="submit"]:active,
+html input[type="button"]:active,
+html .book-link-btn:active,
+html .pref-btn:active,
+html .seg-btn:active,
+html .rp-btn:active,
+html .ext-btn:active,
+html .tab-btn:active,
+html .cta-btn:active,
+html .btn-primary:active,
+html .btn-ghost:active,
+html .ca-grp-btn:active,
+html .toggle-btn:active,
+html .ez-toggle-btn:active,
+html .top9-chip:active,
+html .ptab:active,
+html .mtab:active,
+html .atab:active,
+html .rtab:active,
+html .ez-footer-nav-item:active,
+html .ez-footer-book-btn:active {
+  transform: scale(0.97);
+  transition: transform 90ms ease-out;
+}
+
+/* 선택자 앞의 html — 페이지 인라인 CSS의 .tool-card:hover(특이도 0,2,0)가
+   ez-design.css보다 뒤에 선언돼 같은 특이도면 항상 이긴다. html 한 겹을
+   더해 0,2,1로 올려 순서와 무관하게 눌림이 우선하게 한다. !important는
+   페이지 쪽에서 다시 덮을 여지를 없애므로 쓰지 않았다. */
+/* 면적이 큰 카드는 덜 눌린다 — 큰 물체가 덜 움직이는 게 물리적으로 자연스럽다 */
+html .tool-card:active, html .yt-card:active {
+  transform: scale(0.985);
+  transition: transform 110ms ease-out;
+}
+
+/* ── 2. 키보드 포커스 링 (§16 craft·접근성) ────────────────────────
+   17개 페이지 통틀어 :focus-visible이 0건이었다. 마우스 클릭 시엔 안 뜨고
+   키보드 이동 시에만 뜬다 — 브라우저가 알아서 구분해준다. */
+a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible,
+summary:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--ez-blue);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ── 3. 움직임 저감 (§14) ──────────────────────────────────────────
+   저감은 "피드백 제거"가 아니라 "전정기관을 흔들지 않는 대체 피드백"이다.
+   이동·확대는 없애되 색·투명도 전환은 남긴다 — 그게 이해를 돕는 부분이라. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-property: opacity, color, background-color, border-color, fill, stroke !important;
+    transition-duration: 150ms !important;
+  }
+  *:active { transform: none !important; }
+}
+
+/* ── 4. 투명도 저감 (§14) ──────────────────────────────────────────
+   31항이 글라스를 권장하는 만큼 이 대응이 없으면 투명도 저감 사용자에게
+   대비가 무너진다. 블러를 끄고 불투명 배경으로 바꾼다. */
+@media (prefers-reduced-transparency: reduce) {
+  .ez-nav, .ez-mob-menu, .ez-footer, .nav, .sp-header, .ez-nav-bar,
+  [class*="glass"], [class*="-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: var(--ez-surface, Canvas) !important;
+  }
+}
+
+/* ── 5. 고대비 (§14) ───────────────────────────────────────────────
+   반투명 표면을 불투명으로 올리고 경계선을 뚜렷하게. */
+@media (prefers-contrast: more) {
+  .ez-nav, .ez-mob-menu, .ez-footer {
+    background-color: var(--ez-surface, Canvas) !important;
+    border-color: var(--ez-text2) !important;
+  }
+  .ez-mob-item, .ez-footer-nav-item { border-color: var(--ez-text2) !important; }
+}
