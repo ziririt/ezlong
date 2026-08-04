@@ -104,7 +104,7 @@
       display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;
     }
     .tc-chip {
-      font-size: 16px; font-weight: 700; padding: 7px 16px; border-radius: 100px;
+      font-size: 16px; font-weight: 700; padding: 7px 16px; border-radius: 999px;
       border: 1px solid var(--ez-border); background: var(--ez-surface); color: var(--ez-text2);
       cursor: pointer; transition: all .15s;
     }
@@ -125,10 +125,10 @@
     }
     .tc-card-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
     .tc-symbol-badge {
-      font-size: 16px; font-weight: 800; padding: 3px 12px; border-radius: 100px; background: var(--ez-blue); color: #fff;
+      font-size: 16px; font-weight: 800; padding: 3px 12px; border-radius: 999px; background: var(--ez-blue); color: #fff;
     }
     .tc-change-badge {
-      font-size: 16px; font-weight: 800; padding: 3px 12px; border-radius: 100px; color: #fff;
+      font-size: 16px; font-weight: 800; padding: 3px 12px; border-radius: 999px; color: #fff;
     }
     .tc-change-badge.up { background: var(--ez-green); }
     .tc-change-badge.down { background: var(--ez-red); }
@@ -157,7 +157,7 @@
 
     .tc-tags { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 6px; }
     .tc-tag {
-      font-size: 16px; background: var(--ez-card2); color: var(--ez-text2); padding: 4px 12px; border-radius: 100px;
+      font-size: 16px; background: var(--ez-card2); color: var(--ez-text2); padding: 4px 12px; border-radius: 999px;
     }
 
     .tc-state {
@@ -362,7 +362,7 @@ loadData();
 @media (prefers-color-scheme: dark) { #ez-mob-menu { --ez-border:#3a3a3c; --ez-surface:#1c1c1e; color:#f5f5f7; } }
 #ez-mob-menu.open { display:grid; }
 #ez-mob-menu .ez-mob-item { display:flex; align-items:center; justify-content:center; text-align:center;
-  padding:15px 8px; min-height:56px; line-height:1.35; border:1px solid var(--ez-border); border-radius:14px;
+  padding:15px 8px; min-height:56px; line-height:1.35; border:1px solid var(--ez-border); border-radius:16px;
   background:var(--ez-surface); color:inherit; text-decoration:none; font-size:16px; font-weight:600; }
 @media (min-width:769px) { #ez-mob-menu { inset:auto; top:64px; right:20px; left:auto; width:380px;
   max-height:calc(100vh - 90px); border-radius:16px; padding:16px 14px;

@@ -213,7 +213,7 @@ body .chief-strip { max-width: var(--ez-max-w-wide); }
   font-size: 16px;
   font-weight: 700;
   padding: 2px 7px;
-  border-radius: 100px;
+  border-radius: 999px;
   background: var(--ez-blue-dim);
   color: var(--ez-blue);
 }
@@ -251,7 +251,7 @@ body .chief-strip { max-width: var(--ez-max-w-wide); }
 .ca-ph-52-bar {
   width: 140px;
   height: 6px;
-  border-radius: 3px;
+  border-radius: 999px;
   background: var(--ez-border2);
   margin: 4px 0 2px auto;
   position: relative;
@@ -261,7 +261,7 @@ body .chief-strip { max-width: var(--ez-max-w-wide); }
   position: absolute;
   top: 0; left: 0;
   height: 100%;
-  border-radius: 3px;
+  border-radius: 6px;
   background: linear-gradient(90deg, var(--ez-red), var(--ez-amber), var(--ez-green));
 }
 .ca-ph-52-labels { display: flex; justify-content: space-between; font-size: 16px; color: var(--ez-text2); width: 140px; margin-left: auto; }
@@ -306,7 +306,7 @@ body .chief-strip { max-width: var(--ez-max-w-wide); }
   align-items: center;
   gap: 5px;
   padding: 3px 10px;
-  border-radius: 100px;
+  border-radius: 999px;
   border: 1px solid var(--ez-border2);
   background: transparent;
   cursor: pointer;
@@ -358,7 +358,7 @@ body .chief-strip { max-width: var(--ez-max-w-wide); }
 .ca-ctrl-btn {
   width: 30px;
   height: 30px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--ez-border2);
   background: var(--ez-surface);
   color: var(--ez-text2);
@@ -436,7 +436,7 @@ body .chief-strip { max-width: var(--ez-max-w-wide); }
 .ca-tf-label { font-size: 16px; font-weight: 700; color: var(--ez-text2); margin-right: 4px; }
 .ca-tf-btn {
   padding: 3px 12px;
-  border-radius: 100px;
+  border-radius: 999px;
   border: 1px solid var(--ez-border2);
   background: transparent;
   color: var(--ez-text2);
@@ -468,7 +468,7 @@ body .chief-strip { max-width: var(--ez-max-w-wide); }
   align-items: center;
   gap: 5px;
   padding: 5px 12px;
-  border-radius: 100px;
+  border-radius: 999px;
   font-size: 16px;
   font-weight: 700;
   border: 1px solid transparent;
@@ -578,7 +578,7 @@ body .chief-strip { max-width: var(--ez-max-w-wide); }
 .ca-buy-score-bar {
   flex: 1;
   height: 8px;
-  border-radius: 4px;
+  border-radius: 6px;
   background: var(--ez-border2);
   overflow: hidden;
   position: relative;
@@ -587,7 +587,7 @@ body .chief-strip { max-width: var(--ez-max-w-wide); }
   position: absolute;
   top: 0; left: 0;
   height: 100%;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: width 0.4s ease;
 }
 .ca-buy-score-num { font-size: 18px; font-weight: 900; flex-shrink: 0; }
@@ -718,7 +718,6 @@ body .chief-strip { max-width: var(--ez-max-w-wide); }
 .ez-nav-bar {
   height: 60px;
   background: var(--ez-surface);
-  border-bottom: 1px solid var(--ez-border);
   display: flex;
   align-items: center;
   padding: 0 var(--ez-px);
@@ -727,6 +726,22 @@ body .chief-strip { max-width: var(--ez-max-w-wide); }
   z-index: 100;
   gap: 20px;
 }
+/* 스크롤 엣지 페이드 (apple-design §12) — 1px 하드 구분선 대신,
+   콘텐츠가 헤더 밑으로 흘러 들어가는 자리에만 옅은 그라데이션을 둔다.
+   선은 "여기서 끊긴다"고 말하고, 페이드는 "여기 밑으로 계속된다"고 말한다. */
+.ez-nav-bar::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 100%;
+  height: 14px; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.055), rgba(0,0,0,0));
+}
+@media (prefers-color-scheme: dark) {
+  .ez-nav-bar::after { background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0)); }
+}
+@media (prefers-contrast: more) {
+  .ez-nav-bar { border-bottom: 1px solid var(--ez-text2); }
+  .ez-nav-bar::after { display: none; }
+}
+
 .ez-nav-logo {
   font-size: 18px;
   font-weight: 900;

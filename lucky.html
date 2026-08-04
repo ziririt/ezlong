@@ -135,25 +135,25 @@
 
     /* Card */
     .glass{background:rgba(15,25,60,.6);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-      border:1px solid rgba(212,175,55,.15);border-radius:18px;padding:18px}
+      border:1px solid rgba(212,175,55,.15);border-radius:16px;padding:18px}
 
     /* Buttons */
     .btn-primary{display:block;width:100%;padding:16px;
       background:linear-gradient(135deg,#B8911F 0%,#FFD700 50%,#B8911F 100%);
-      color:#0A0E1A;font-weight:700;font-size:16px;border:none;border-radius:50px;
+      color:#0A0E1A;font-weight:700;font-size:16px;border:none;border-radius:999px;
       cursor:pointer;font-family:inherit;letter-spacing:.04em;transition:all .3s;
       box-shadow:0 4px 24px rgba(212,175,55,.35)}
     .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(212,175,55,.5)}
     .btn-primary:active{transform:translateY(0)}
     .btn-primary:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
     .btn-ghost{display:block;width:100%;padding:14px;background:transparent;color:var(--gold);
-      font-size:14px;border:1px solid rgba(212,175,55,.3);border-radius:50px;
+      font-size:14px;border:1px solid rgba(212,175,55,.3);border-radius:999px;
       cursor:pointer;font-family:inherit;transition:all .3s;letter-spacing:.02em}
     .btn-ghost:hover{background:rgba(212,175,55,.08)}
 
     /* Steps */
     .steps{display:flex;justify-content:center;gap:8px;margin-bottom:18px}
-    .step-dot{height:6px;width:6px;border-radius:3px;background:rgba(212,175,55,.2);transition:all .4s}
+    .step-dot{height:6px;width:6px;border-radius:999px;background:rgba(212,175,55,.2);transition:all .4s}
     .step-dot.done{background:rgba(212,175,55,.5)}
     .step-dot.active{background:var(--gold);width:22px;box-shadow:0 0 8px rgba(212,175,55,.6)}
 
@@ -162,14 +162,14 @@
       text-align:center;cursor:pointer;transition:all .3s;background:rgba(15,25,55,.4)}
     .upload-zone:hover{border-color:var(--gold);background:rgba(212,175,55,.05)}
     .upload-zone.has-img{padding:0;overflow:hidden;border-style:solid}
-    .upload-zone.has-img img{width:100%;border-radius:18px;display:block}
+    .upload-zone.has-img img{width:100%;border-radius:16px;display:block}
 
     /* Fortune bars */
     .fortune-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid rgba(212,175,55,.08)}
     .fortune-row:last-child{border-bottom:none}
     .fortune-label{min-width:58px;font-size:13px;color:var(--dim)}
-    .fortune-bar-bg{flex:1;height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
-    .fortune-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#B8911F,#FFD700);
+    .fortune-bar-bg{flex:1;height:6px;background:rgba(255,255,255,.07);border-radius:999px;overflow:hidden}
+    .fortune-bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#B8911F,#FFD700);
       width:0;transition:width 1.6s ease .4s}
     .fortune-pct{min-width:36px;font-size:13px;color:var(--gold);text-align:right}
 
@@ -184,7 +184,7 @@
       font-size:13px;font-weight:700;letter-spacing:.08em;margin-bottom:14px}
     .rx-page-title{font-size:25px;font-weight:700;color:var(--text);line-height:1.22;margin-bottom:12px}
     .rx-page-desc{font-size:15px;color:var(--silver);line-height:1.62;margin-bottom:12px}
-    .rx-page-why{padding:14px 15px;border-radius:14px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.16);
+    .rx-page-why{padding:14px 15px;border-radius:16px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.16);
       font-size:13px;color:rgba(226,232,240,.84);line-height:1.5}
 
     /* Gauge */
@@ -201,7 +201,7 @@
     .result-deck::-webkit-scrollbar{display:none}
     .result-page{position:relative;flex:0 0 100%;min-height:390px;scroll-snap-align:center;overflow:hidden;isolation:isolate;cursor:pointer;
       background:linear-gradient(160deg,rgba(15,25,60,.86),rgba(8,12,24,.94));
-      border:1px solid rgba(212,175,55,.2);border-radius:22px;padding:20px 20px;
+      border:1px solid rgba(212,175,55,.2);border-radius:20px;padding:20px 20px;
       box-shadow:0 18px 55px rgba(0,0,0,.34)}
     .result-page>*:not(.sketch-art){position:relative;z-index:1}
     .result-page:before{content:"";position:absolute;inset:-40% -30% auto auto;width:220px;height:220px;border-radius:50%;
@@ -240,9 +240,9 @@
     .ritual-day{font-size:16px;color:var(--gold);font-weight:700;letter-spacing:.08em;margin-bottom:9px}
     .ritual-act{font-size:22px;color:var(--text);font-weight:700;line-height:1.28;margin-bottom:11px}
     .ritual-why{font-size:15px;color:var(--silver);line-height:1.55}
-    .ritual-note{margin-top:12px;padding:12px 13px;border-radius:13px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.18);font-size:13px;color:rgba(226,232,240,.82);line-height:1.45}
+    .ritual-note{margin-top:12px;padding:12px 13px;border-radius:16px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.18);font-size:13px;color:rgba(226,232,240,.82);line-height:1.45}
     .omen-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
-    .omen-tile{border:1px solid rgba(212,175,55,.11);background:rgba(255,255,255,.04);border-radius:14px;padding:12px}
+    .omen-tile{border:1px solid rgba(212,175,55,.11);background:rgba(255,255,255,.04);border-radius:16px;padding:12px}
     .omen-label{font-size:12px;color:var(--dim);margin-bottom:6px}
     .omen-value{font-size:15px;color:var(--gold);line-height:1.45}
 
@@ -263,10 +263,10 @@
     @keyframes waveExp{0%{transform:scale(0);opacity:.8}100%{transform:scale(3.5);opacity:0}}
 
     /* Drum picker */
-    .drum-wrap{display:flex;align-items:center;justify-content:center;gap:0;position:relative;height:144px;overflow:hidden;border-radius:13px;background:rgba(8,12,24,.5)}
+    .drum-wrap{display:flex;align-items:center;justify-content:center;gap:0;position:relative;height:144px;overflow:hidden;border-radius:16px;background:rgba(8,12,24,.5)}
     .drum-fade-top{position:absolute;top:0;left:0;right:0;height:42px;background:linear-gradient(to bottom,rgba(8,12,24,.92),transparent);z-index:3;pointer-events:none}
     .drum-fade-bot{position:absolute;bottom:0;left:0;right:0;height:42px;background:linear-gradient(to top,rgba(8,12,24,.92),transparent);z-index:3;pointer-events:none}
-    .drum-hl{position:absolute;top:50%;left:10px;right:10px;height:38px;transform:translateY(-50%);border-top:1px solid rgba(212,175,55,.4);border-bottom:1px solid rgba(212,175,55,.4);background:rgba(212,175,55,.07);border-radius:8px;z-index:2;pointer-events:none}
+    .drum-hl{position:absolute;top:50%;left:10px;right:10px;height:38px;transform:translateY(-50%);border-top:1px solid rgba(212,175,55,.4);border-bottom:1px solid rgba(212,175,55,.4);background:rgba(212,175,55,.07);border-radius:10px;z-index:2;pointer-events:none}
     .drum-col{flex:1;overflow-y:scroll;height:144px;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior:contain}
     .drum-col::-webkit-scrollbar{display:none}
     .drum-item{height:38px;display:flex;align-items:center;justify-content:center;scroll-snap-align:center;font-size:18px;color:rgba(226,232,240,.55);font-family:'Noto Serif KR',serif;letter-spacing:.02em;transition:color .15s,font-size .15s;user-select:none}
@@ -277,13 +277,13 @@
 
     /* Gender select */
     .gender-row{display:flex;gap:10px;margin-top:0}
-    .gender-btn{flex:1;padding:11px;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:50px;color:var(--dim);font-size:15px;font-family:inherit;cursor:pointer;transition:all .25s;font-weight:400;letter-spacing:.04em}
+    .gender-btn{flex:1;padding:11px;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:999px;color:var(--dim);font-size:15px;font-family:inherit;cursor:pointer;transition:all .25s;font-weight:400;letter-spacing:.04em}
     .gender-btn.active{background:rgba(212,175,55,.15);border-color:var(--gold);color:var(--gold);font-weight:600}
 
     /* ========== SCALE QUESTION SYSTEM ========== */
     /* Progress bar for 20 questions */
-    .q-prog-bar{width:100%;height:3px;background:rgba(212,175,55,.12);border-radius:2px;margin-bottom:8px;overflow:hidden}
-    .q-prog-fill{height:100%;background:linear-gradient(90deg,#B8911F,#FFD700);border-radius:2px;transition:width .4s ease}
+    .q-prog-bar{width:100%;height:3px;background:rgba(212,175,55,.12);border-radius:999px;margin-bottom:8px;overflow:hidden}
+    .q-prog-fill{height:100%;background:linear-gradient(90deg,#B8911F,#FFD700);border-radius:6px;transition:width .4s ease}
 
     /* Group tag */
     .q-group-tag{display:inline-block;padding:3px 10px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);
@@ -296,7 +296,7 @@
     /* Scale buttons row */
     .scale-row{display:flex;justify-content:space-between;align-items:flex-end;gap:6px;margin-top:28px;padding:0 4px}
     .scale-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;
-      background:none;border:none;cursor:pointer;padding:8px 2px;border-radius:12px;
+      background:none;border:none;cursor:pointer;padding:8px 2px;border-radius:10px;
       transition:all .2s;-webkit-tap-highlight-color:transparent}
     .scale-btn:active{transform:scale(.94)}
 

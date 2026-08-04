@@ -82,7 +82,7 @@ body { min-height: 100vh; }
 img { display: block; max-width: 100%; }
 a { text-decoration: none; color: inherit; }
 ::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-thumb { background: #C7C7CC; border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: #C7C7CC; border-radius: 999px; }
 
 /* ── NAV ─────────────────────────────────── */
 .nav {
@@ -97,7 +97,7 @@ a { text-decoration: none; color: inherit; }
 .nav-logo { display: flex; align-items: center; }
 .nav-logo-img { height: 32px; width: auto; }
 @media (prefers-color-scheme: dark) { .nav-logo-img { filter: brightness(1.1); } }
-.nav-tagline { font-size: 12px; font-weight: 500; color: var(--t2); letter-spacing: -.01em; line-height: 1.5; text-align: right; }
+.nav-tagline { font-size: 12px; font-weight: 500; color: var(--t2); letter-spacing: 0; line-height: 1.5; text-align: right; }
 
 /* ── ADMIN BAR ───────────────────────────── */
 .admin-bar {
@@ -121,7 +121,7 @@ a { text-decoration: none; color: inherit; }
   font-size: 12px;
   font-weight: 600;
   padding: 4px 12px;
-  border-radius: 100px;
+  border-radius: 999px;
   cursor: pointer;
   transition: background .15s;
 }
@@ -155,7 +155,7 @@ a { text-decoration: none; color: inherit; }
   color: var(--bl);
   background: var(--bl-s);
   padding: 4px 11px;
-  border-radius: 100px;
+  border-radius: 999px;
   display: inline-block;
   margin-bottom: 16px;
 }
@@ -243,7 +243,7 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   gap: 8px;
   padding: 14px 28px;
-  border-radius: 100px;
+  border-radius: 999px;
   border: 2px solid var(--bd);
   background: var(--card);
   color: var(--t3);
@@ -254,7 +254,7 @@ a { text-decoration: none; color: inherit; }
 }
 .btn-like:hover { border-color: var(--rd); color: var(--rd); background: rgba(255,59,48,0.05); }
 .btn-like.liked { border-color: var(--rd); color: var(--rd); background: rgba(255,59,48,0.08); }
-.btn-like svg { width: 18px; height: 18px; transition: transform .2s; }
+.btn-like svg { width: 18px; height: 18px; transition: transform .3s; }
 .btn-like:hover svg, .btn-like.liked svg { transform: scale(1.15); }
 .like-count-label { font-size: 13px; color: var(--t3); }
 
@@ -276,7 +276,7 @@ a { text-decoration: none; color: inherit; }
   background: var(--bl-s);
   color: var(--bl);
   padding: 3px 9px;
-  border-radius: 100px;
+  border-radius: 999px;
 }
 
 /* 댓글 작성 폼 */
@@ -339,7 +339,7 @@ a { text-decoration: none; color: inherit; }
   font-size: 14px;
   font-weight: 700;
   padding: 9px 20px;
-  border-radius: 100px;
+  border-radius: 999px;
   border: none;
   cursor: pointer;
   transition: opacity .2s;
@@ -415,7 +415,7 @@ a { text-decoration: none; color: inherit; }
 .footer-top { display: flex; flex-direction: column; gap: 16px; }
 @media (min-width: 640px) { .footer-top { flex-direction: row; align-items: flex-start; justify-content: space-between; } }
 .footer-brand { display: flex; flex-direction: column; gap: 8px; }
-.footer-brand-name { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; letter-spacing: -.04em; color: var(--t1); }
+.footer-brand-name { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; letter-spacing: 0; color: var(--t1); }
 .footer-brand-desc { font-size: 13px; color: var(--t1); line-height: 1.6; }
 .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
 .footer-link-col { display: flex; flex-direction: column; gap: 10px; }

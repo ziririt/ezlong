@@ -57,9 +57,15 @@
   --ez-mono: 'SF Mono', 'Fira Code', Consolas, 'Courier New', monospace;
   --ez-font: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Segoe UI', Roboto, sans-serif;
 
-  /* 반경 — 2026-07-04 애플 스타일 리디자인: 12→16 / 8→10로 소폭 확대 */
-  --ez-r:  16px;
-  --ez-rs: 10px;
+  /* 반경 — 2026-08-04 5단계로 통일. 그 전엔 1~24px이 20종으로 흩어져 있었다
+     ("모든 값은 방어할 수 있는 선택이어야 한다" — apple-design §16 craft).
+     크기에 맞춰 고른다: 얇은 바·스크롤바는 알약, 작은 배지 6, 컨트롤 10,
+     카드·패널 16, 모달·대형 표면 20. 새 값을 만들지 말고 이 다섯 중에서 고를 것. */
+  --ez-r-xs:   6px;    /* 배지·닷·인라인 칩 */
+  --ez-rs:    10px;    /* 버튼·인풋·탭 등 컨트롤 (기존 이름 유지) */
+  --ez-r:     16px;    /* 카드·패널 (기존 이름 유지) */
+  --ez-r-lg:  20px;    /* 모달·시트·대형 표면 */
+  --ez-r-pill: 999px;  /* 진행바·토글·알약 버튼 */
 
   /* 그림자 */
   --ez-shadow:    0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.07);
@@ -123,13 +129,28 @@ a { color: inherit; }
   background: rgba(255,255,255,0.92);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid rgba(0,0,0,0.08);
   position: sticky !important; top: 0 !important; z-index: 9999 !important;
   width: 100%;
   font-family: var(--ez-font);
 }
 @media (prefers-color-scheme: dark) {
-  .ez-nav { background: rgba(10,10,10,0.92); border-color: rgba(255,255,255,0.10); }
+  .ez-nav { background: rgba(10,10,10,0.92); }
+}
+
+/* 스크롤 엣지 페이드 (apple-design §12) — 1px 하드 구분선 대신, 콘텐츠가 헤더
+   밑으로 흘러 들어가는 자리에만 옅은 그라데이션을 둔다. 선은 "여기서 끊긴다"고
+   말하고, 페이드는 "여기 밑으로 계속된다"고 말한다. 글라스와 짝을 이루는 처리다. */
+.ez-nav::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 100%;
+  height: 14px; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.055), rgba(0,0,0,0));
+}
+@media (prefers-color-scheme: dark) {
+  .ez-nav::after { background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0)); }
+}
+@media (prefers-contrast: more) {
+  .ez-nav { border-bottom: 1px solid var(--ez-text2); }
+  .ez-nav::after { display: none; }
 }
 
 /* ─ PC 기본 레이아웃 ─ */
@@ -180,7 +201,7 @@ a { color: inherit; }
   /* 2026-08-04: 장식용 캐럿(▾)이지만 DOM 텍스트라 14px 하한 규칙(금지 1) 적용 대상.
      12px → 14px. 회전 애니메이션은 그대로. */
   font-size: 14px; display: inline-block;
-  transition: transform 0.2s;
+  transition: transform .3s;
 }
 .ez-mob-toggle.open .ez-mob-toggle-arrow { transform: rotate(180deg); }
 
@@ -241,7 +262,7 @@ a { color: inherit; }
   display: flex;
   align-items: flex-start;
   padding: 10px 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--ez-border);
   background: var(--ez-card);
   font-size: 14px;

@@ -101,7 +101,7 @@
     }
 
     /* 테이블 */
-    .tbl-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
+    .tbl-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
     table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
     th {
       background: var(--surface); color: var(--muted); font-weight: 500;
@@ -115,7 +115,7 @@
     /* 배지 */
     .badge {
       display: inline-flex; align-items: center; gap: 5px;
-      padding: 3px 9px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;
+      padding: 3px 9px; border-radius: 10px; font-size: 0.75rem; font-weight: 600;
     }
     .badge::before { content:''; width:6px; height:6px; border-radius:50%; }
     .b-ok   { background: rgba(63,185,80,.13);  color: var(--green);  }
@@ -163,12 +163,12 @@
     /* 경고 배너 */
     .setup-banner {
       background: rgba(210,153,34,.08); border: 1px solid rgba(210,153,34,.3);
-      border-radius: 8px; padding: 14px 18px; margin-bottom: 24px;
+      border-radius: 10px; padding: 14px 18px; margin-bottom: 24px;
       font-size: 0.85rem; color: var(--yellow); line-height: 1.7;
       display: none;
     }
     .setup-banner code {
-      background: rgba(210,153,34,.15); padding: 1px 5px; border-radius: 3px;
+      background: rgba(210,153,34,.15); padding: 1px 5px; border-radius: 6px;
       font-family: monospace;
     }
 
@@ -176,7 +176,7 @@
     .dispatch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
     .dispatch-card {
       background: var(--bg); border: 1px solid var(--border);
-      border-radius: 8px; padding: 16px 18px;
+      border-radius: 10px; padding: 16px 18px;
       display: flex; flex-direction: column; gap: 6px;
     }
     .dispatch-card-name  { font-size: .88rem; font-weight: 600; }
@@ -197,7 +197,7 @@
     }
     .pat-box {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 8px; padding: 16px 20px; margin-bottom: 16px;
+      border-radius: 10px; padding: 16px 20px; margin-bottom: 16px;
     }
     .pat-desc { font-size: .83rem; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
     .pat-row  { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }

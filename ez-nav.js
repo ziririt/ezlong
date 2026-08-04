@@ -299,20 +299,58 @@
        많은 페이지(스윙 대시보드)에서 브라우저가 조용히 무시/취소하는 게 실측 확인됨
        (2026-08-04 라이브 검증: scrollBy smooth 호출 후 scrollLeft 변화 0).
        scrollLeft 직접 대입은 항상 동작하므로 rAF로 직접 애니메이션한다. */
+    /* 스프링 기반 글라이드 (apple-design §3·§4, 2026-08-04 개편)
+       기존엔 320ms 고정 ease-out 큐빅이었다. 고정 시간 애니메이션은
+       (a) 중간에 잡아서 되돌릴 수 없고 (b) 진행 중 다시 누르면 시작값이
+       튄다. 스프링은 "현재 화면값"에서 출발하고 속도를 이어받으므로 둘 다
+       자연히 해결된다.
+       파라미터는 애플이 이동(reposition)에 쓰는 값 — 감쇠비 1.0(오버슈트
+       없음), response 0.4s. 손가락이 던진 게 아니라 버튼을 누른 이동이므로
+       튕김(bounce)을 주지 않는 게 맞다.
+       움직임 저감 설정이면 스프링 없이 즉시 이동한다(§14). */
+    var _spring = null;
     function glide(delta) {
-      var start  = linksEl.scrollLeft;
-      var target = Math.max(0, Math.min(start + delta, linksEl.scrollWidth - linksEl.clientWidth));
-      var t0 = null, DUR = 320;
+      var target = Math.max(0, Math.min(linksEl.scrollLeft + delta,
+                                        linksEl.scrollWidth - linksEl.clientWidth));
+
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        linksEl.scrollLeft = target; update(); return;
+      }
+
+      /* 진행 중이면 새 애니메이션을 만들지 않고 목표만 갈아끼운다 —
+         속도가 이어져 "벽에 부딪히는" 불연속이 생기지 않는다. */
+      if (_spring) { _spring.target = target; return; }
+
+      var RESPONSE = 0.4, DAMPING = 1.0;
+      var w  = 2 * Math.PI / RESPONSE;            /* 고유 각진동수 */
+      var st = { x: linksEl.scrollLeft, v: 0, target: target, last: null };
+      _spring = st;
+
       function step(ts) {
-        if (t0 === null) t0 = ts;
-        var k = Math.min(1, (ts - t0) / DUR);
-        var e = 1 - Math.pow(1 - k, 3);          /* ease-out cubic */
-        linksEl.scrollLeft = start + (target - start) * e;
+        if (st.last === null) st.last = ts;
+        var dt = Math.min((ts - st.last) / 1000, 1 / 30);  /* 탭 비활성 복귀 시 폭주 방지 */
+        st.last = ts;
+
+        /* 임계 감쇠 스프링 — 반해석적 적분(큰 dt에서도 발산하지 않는다) */
+        var d  = st.x - st.target;
+        var a  = -w * w * d - 2 * DAMPING * w * st.v;
+        st.v  += a * dt;
+        st.x  += st.v * dt;
+
+        if (Math.abs(st.x - st.target) < 0.5 && Math.abs(st.v) < 8) {
+          linksEl.scrollLeft = st.target; update(); _spring = null; return;
+        }
+        linksEl.scrollLeft = st.x;
         update();                                 /* scroll 이벤트 미발화 대비 직접 갱신 */
-        if (k < 1) requestAnimationFrame(step);
+        requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
     }
+
+    /* 사용자가 직접 손대면 즉시 양보한다 — 애니메이션이 입력을 가로막지 않는다(§3) */
+    ['pointerdown', 'touchstart', 'wheel'].forEach(function (ev) {
+      linksEl.addEventListener(ev, function () { _spring = null; }, { passive: true });
+    });
 
     var more = document.createElement('button');
     more.type = 'button';

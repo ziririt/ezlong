@@ -134,7 +134,7 @@ html, body {
 /* 2026-07-04: overflow-x:hidden을 html,body에서 제거 — body 직계 자식인 .ez-nav의
    position:sticky가 깨지는 원인이었음. 가로 스크롤 방지는 body 바로 다음 wrapper div로 이전. */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-thumb { background: #C7C7CC; border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: #C7C7CC; border-radius: 999px; }
 
 /* ── Global Nav ─────────────────────────────────────────── */
 #global-nav {
@@ -166,7 +166,7 @@ html, body {
 }
 .ql-tag {
   font-size: 10px; font-weight: 700; letter-spacing: .06em; color: var(--t3);
-  background: var(--bg2); border-radius: 4px; padding: 2px 6px; white-space: nowrap;
+  background: var(--bg2); border-radius: 6px; padding: 2px 6px; white-space: nowrap;
 }
 .ql-link {
   display: inline-flex; align-items: center; gap: 6px;
@@ -194,7 +194,7 @@ html, body {
   padding: 24px;
 }
 .card-title {
-  font-size: 15px; font-weight: 700; letter-spacing: -.03em;
+  font-size: 15px; font-weight: 700; letter-spacing: 0;
   display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
 }
 .badge {
@@ -212,7 +212,7 @@ html, body {
   margin-bottom: 20px;
 }
 .form-group { display: flex; flex-direction: column; gap: 6px; }
-.form-label { font-size: 12px; font-weight: 600; color: var(--t2); letter-spacing: -.01em; }
+.form-label { font-size: 12px; font-weight: 600; color: var(--t2); letter-spacing: 0; }
 
 .input-wrap {
   display: flex; align-items: center;
@@ -231,7 +231,7 @@ html, body {
 /* 한국어 금액 표시 */
 .kor-display {
   font-size: 12px; font-weight: 600; color: var(--bl);
-  min-height: 18px; letter-spacing: -.01em;
+  min-height: 18px; letter-spacing: 0;
   transition: opacity .15s;
 }
 
@@ -257,8 +257,8 @@ html, body {
   flex: 1; height: 46px; border: none; border-radius: var(--r-sm);
   background: var(--bl); color: white;
   font-family: var(--font); font-size: 15px; font-weight: 700;
-  cursor: pointer; transition: background .15s, transform .1s;
-  letter-spacing: -.02em;
+  cursor: pointer; transition: background .15s, transform .3s;
+  letter-spacing: 0;
 }
 .btn-primary:hover { background: var(--bl-dk); }
 .btn-primary:active { transform: scale(.98); }
@@ -334,7 +334,7 @@ html, body {
 .cmp-section-label {
   display: flex; align-items: center; gap: 7px;
   font-size: 13px; font-weight: 700; color: var(--t1);
-  margin-bottom: 12px; letter-spacing: -.02em;
+  margin-bottom: 12px; letter-spacing: 0;
 }
 
 /* ── Winner Banner ──────────────────────────────────────── */
@@ -470,7 +470,7 @@ html, body {
   border-radius: 0 var(--r-sm) var(--r-sm) 0;
   padding: 14px 18px; margin: 16px 0;
   font-size: 15px; font-weight: 700; color: var(--t1);
-  letter-spacing: -.01em; line-height: 1.6;
+  letter-spacing: 0; line-height: 1.6;
 }
 .result-block {
   background: var(--gr-s); border: 1px solid var(--gr-m);
@@ -505,7 +505,7 @@ html, body {
   background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25);
   border-radius: var(--r-sm); padding: 14px 18px; margin: 0 0 20px;
   font-size: 16px; font-weight: 800; color: white;
-  letter-spacing: -.02em; text-align: center; position: relative;
+  letter-spacing: 0; text-align: center; position: relative;
 }
 .rule72-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;

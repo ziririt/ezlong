@@ -206,7 +206,23 @@ body{min-height:100vh;}
 a{text-decoration:none;color:inherit;}
 
 /* ── NAV ── */
-.nav{height:var(--nav-h);background:rgba(245,245,247,0.92);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:200;}
+.nav{height:var(--nav-h);background:rgba(245,245,247,0.92);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);position:sticky;top:0;z-index:200;}
+/* 스크롤 엣지 페이드 (apple-design §12) — 1px 하드 구분선 대신,
+   콘텐츠가 헤더 밑으로 흘러 들어가는 자리에만 옅은 그라데이션을 둔다.
+   선은 "여기서 끊긴다"고 말하고, 페이드는 "여기 밑으로 계속된다"고 말한다. */
+.nav::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 100%;
+  height: 14px; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.055), rgba(0,0,0,0));
+}
+@media (prefers-color-scheme: dark) {
+  .nav::after { background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0)); }
+}
+@media (prefers-contrast: more) {
+  .nav { border-bottom: 1px solid var(--ez-text2); }
+  .nav::after { display: none; }
+}
+
 @media(prefers-color-scheme:dark){.nav{background:rgba(0,0,0,0.92);}}
 .nav-inner{max-width:640px;margin:0 auto;padding:0 20px;height:100%;display:flex;align-items:center;justify-content:space-between;}
 .nav-logo{display:flex;align-items:center;}
@@ -229,16 +245,16 @@ a{text-decoration:none;color:inherit;}
 @keyframes exitUp{from{opacity:1;transform:translateY(0);}to{opacity:0;transform:translateY(-10px);}}
 
 /* ── INTRO ── */
-.i-badge{display:inline-flex;align-items:center;gap:6px;font-size:16px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bl);background:var(--bl-s);padding:6px 14px;border-radius:100px;margin-bottom:16px;}
+.i-badge{display:inline-flex;align-items:center;gap:6px;font-size:16px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bl);background:var(--bl-s);padding:6px 14px;border-radius:999px;margin-bottom:16px;}
 .i-title{font-size:clamp(30px,7vw,50px);font-weight:900;letter-spacing:-.03em;line-height:1.15;color:var(--t1);margin-bottom:12px;}
 .i-sub{font-size:16px;font-weight:400;line-height:1.7;color:var(--t2);margin-bottom:24px;word-break:keep-all;}
-.btn-start{display:block;width:100%;padding:17px 24px;background:var(--bl);color:#fff;font-family:var(--font);font-size:17px;font-weight:700;border:none;border-radius:var(--r-sm);cursor:pointer;transition:background .2s,transform .1s;letter-spacing:-.01em;}
+.btn-start{display:block;width:100%;padding:17px 24px;background:var(--bl);color:#fff;font-family:var(--font);font-size:17px;font-weight:700;border:none;border-radius:var(--r-sm);cursor:pointer;transition:background .2s,transform .3s;letter-spacing:-.01em;}
 .btn-start:hover{background:var(--bl-dk);}
 .btn-start:active{transform:scale(.98);}
 .i-meta{font-size:16px;font-weight:500;color:var(--t2);text-align:center;margin-top:14px;line-height:1.6;opacity:.75;}
 
 /* ── QUESTION ── */
-.q-cluster{display:inline-flex;align-items:center;gap:6px;font-size:16px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bl);background:var(--bl-s);padding:4px 10px;border-radius:100px;margin-bottom:16px;}
+.q-cluster{display:inline-flex;align-items:center;gap:6px;font-size:16px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bl);background:var(--bl-s);padding:4px 10px;border-radius:999px;margin-bottom:16px;}
 .q-text{font-size:clamp(18px,3vw,22px);font-weight:700;letter-spacing:-.02em;line-height:1.6;color:var(--t1);margin-bottom:28px;word-break:keep-all;}
 .scale-wrap{width:100%;}
 .scale-labels{display:flex;justify-content:space-between;font-size:16px;font-weight:600;color:var(--t2);margin-bottom:16px;}
@@ -263,7 +279,7 @@ a{text-decoration:none;color:inherit;}
 .r-hero.g4{background:var(--or-s);border:1.5px solid rgba(255,107,43,0.3);}
 .r-hero.g5{background:var(--rd-s);border:1.5px solid rgba(255,59,48,0.3);}
 
-.r-badge{display:inline-flex;align-items:center;font-size:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:100px;margin-bottom:12px;}
+.r-badge{display:inline-flex;align-items:center;font-size:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:999px;margin-bottom:12px;}
 .r-badge.g1{color:var(--gr);background:var(--gr-m);}
 .r-badge.g2{color:var(--yg);background:var(--yg-m);}
 .r-badge.g3{color:var(--yl);background:var(--yl-m);}
@@ -333,7 +349,7 @@ a{text-decoration:none;color:inherit;}
 .no-pattern{background:var(--gr-s);border:1px solid rgba(52,199,89,.2);border-radius:var(--r-sm);padding:20px 22px;font-size:17px;font-weight:600;color:var(--t2);line-height:1.7;}
 
 /* ── 버튼 ── */
-.btn-retry{display:block;width:100%;margin-top:32px;padding:16px 24px;background:transparent;border:2px solid var(--bd);color:var(--t2);font-family:var(--font);font-size:16px;font-weight:700;cursor:pointer;border-radius:var(--r-sm);transition:all .2s;letter-spacing:-.01em;}
+.btn-retry{display:block;width:100%;margin-top:32px;padding:16px 24px;background:transparent;border:2px solid var(--bd);color:var(--t2);font-family:var(--font);font-size:16px;font-weight:700;cursor:pointer;border-radius:var(--r-sm);transition:all .2s;letter-spacing: 0;}
 .btn-retry:hover{border-color:var(--bl);color:var(--bl);}
 
 /* ── 등급 표현 검토 (크리에이터 전용) ── */
@@ -368,7 +384,7 @@ a{text-decoration:none;color:inherit;}
 }
 .review-grade-badge{
   font-size:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  padding:4px 10px;border-radius:100px;flex-shrink:0;
+  padding:4px 10px;border-radius:999px;flex-shrink:0;
 }
 .review-grade-badge.g1{color:var(--gr);background:var(--gr-m);}
 .review-grade-badge.g2{color:var(--yg);background:var(--yg-m);}
@@ -385,7 +401,7 @@ a{text-decoration:none;color:inherit;}
 .review-name-row:last-child{border-bottom:none;}
 .review-opt{
   font-size:16px;font-weight:700;color:var(--t2);
-  background:var(--bg);padding:3px 8px;border-radius:4px;
+  background:var(--bg);padding:3px 8px;border-radius:6px;
   flex-shrink:0;margin-top:2px;white-space:nowrap;
 }
 .review-name-text{font-weight:700;color:var(--t1);line-height:1.4;}

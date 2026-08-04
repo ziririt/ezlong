@@ -209,7 +209,7 @@ html { font-size: 18px; font-family: var(--font); background: var(--bg); color: 
 body { min-height: 100vh; }
 a { text-decoration: none; color: inherit; }
 ::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-thumb { background: #C7C7CC; border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: #C7C7CC; border-radius: 999px; }
 
 /* ─── 네비게이션 ─────────────────────────────────── */
 .nav {
@@ -217,9 +217,24 @@ a { text-decoration: none; color: inherit; }
   background: rgba(255,255,255,0.92);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid var(--bd);
   position: sticky; top: 0; z-index: 100;
 }
+/* 스크롤 엣지 페이드 (apple-design §12) — 1px 하드 구분선 대신,
+   콘텐츠가 헤더 밑으로 흘러 들어가는 자리에만 옅은 그라데이션을 둔다.
+   선은 "여기서 끊긴다"고 말하고, 페이드는 "여기 밑으로 계속된다"고 말한다. */
+.nav::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 100%;
+  height: 14px; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.055), rgba(0,0,0,0));
+}
+@media (prefers-color-scheme: dark) {
+  .nav::after { background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0)); }
+}
+@media (prefers-contrast: more) {
+  .nav { border-bottom: 1px solid var(--ez-text2); }
+  .nav::after { display: none; }
+}
+
 @media (prefers-color-scheme: dark) { .nav { background: rgba(28,28,30,0.92); } }
 .nav-inner {
   max-width: 960px; margin: 0 auto; padding: 0 20px;
@@ -301,7 +316,7 @@ a { text-decoration: none; color: inherit; }
   border-left: 3px solid var(--bl);
   border-radius: 0 8px 8px 0;
   padding: 8px 14px;
-  letter-spacing: -.01em;
+  letter-spacing: 0;
   display: inline-block;
 }
 .refresh-area { display: none; }  /* 새로고침 버튼 제거 */
@@ -513,7 +528,7 @@ a { text-decoration: none; color: inherit; }
 .action-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .action-pill {
   font-size: 16px; font-weight: 700; padding: 5px 14px;
-  border-radius: 100px; border: none;
+  border-radius: 999px; border: none;
   display: inline-flex; align-items: center;
 }
 
@@ -563,9 +578,9 @@ a { text-decoration: none; color: inherit; }
 .score-verdict.hold  { background: transparent; color: var(--bl); }
 
 /* 게이지 바 */
-.gauge-bar { height: 8px; background: var(--bg); border-radius: 100px; overflow: hidden; margin-bottom: 14px; }
+.gauge-bar { height: 8px; background: var(--bg); border-radius: 999px; overflow: hidden; margin-bottom: 14px; }
 .gauge-fill {
-  height: 100%; border-radius: 100px; transition: width .6s ease;
+  height: 100%; border-radius: 999px; transition: width .6s ease;
 }
 .gauge-fill.buy   { background: linear-gradient(90deg, #248A3D, #30D158); }
 .gauge-fill.watch { background: linear-gradient(90deg, #8E8E93, #AEAEB2); }
@@ -632,8 +647,8 @@ a { text-decoration: none; color: inherit; }
 .dual-score-verdict.watch { background: transparent; color: var(--yl); }
 .dual-score-verdict.sell  { background: transparent; color: var(--rd); }
 .dual-score-verdict.hold  { background: transparent; color: var(--bl); }
-.dual-gauge { height: 6px; background: var(--bg); border-radius: 100px; overflow: hidden; }
-.dual-gauge-fill { height: 100%; border-radius: 100px; transition: width .6s ease; }
+.dual-gauge { height: 6px; background: var(--bg); border-radius: 999px; overflow: hidden; }
+.dual-gauge-fill { height: 100%; border-radius: 999px; transition: width .6s ease; }
 .dual-gauge-fill.buy   { background: linear-gradient(90deg, #248A3D, #30D158); }
 .dual-gauge-fill.watch { background: linear-gradient(90deg, #8E8E93, #AEAEB2); }
 .dual-gauge-fill.sell  { background: linear-gradient(90deg, #D70015, #FF453A); }
@@ -646,12 +661,12 @@ a { text-decoration: none; color: inherit; }
   border: none;
   box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 20px rgba(0,0,0,0.06);
 }
-.gear-card-title { font-size: 16px; font-weight: 700; color: var(--t2); margin-bottom: 18px; letter-spacing: -.01em; }
+.gear-card-title { font-size: 16px; font-weight: 700; color: var(--t2); margin-bottom: 18px; letter-spacing: 0; }
 .gear-items {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
 }
 .gear-item {
-  border-radius: 14px; padding: 20px 14px;
+  border-radius: 16px; padding: 20px 14px;
   text-align: center; border: 1.5px solid transparent;
   transition: all .25s;
 }
@@ -727,7 +742,7 @@ a { text-decoration: none; color: inherit; }
 }
 .vix-zone {
   font-size: 16px; font-weight: 600; padding: 3px 10px;
-  border-radius: 100px; border: 1px solid currentColor; opacity: .7;
+  border-radius: 999px; border: 1px solid currentColor; opacity: .7;
 }
 
 /* ─── TOP9 티커 바로가기 칩 (2026-08-03) ────────── */
@@ -791,7 +806,7 @@ a { text-decoration: none; color: inherit; }
 
 .king-gear-badge {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 14px; border-radius: 100px; margin-bottom: 14px;
+  padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
   font-size: 16px; font-weight: 700;
 }
 .king-gear-badge.g3 { background: transparent; color: var(--gr); border: 1.5px solid var(--gr); }
@@ -804,11 +819,11 @@ a { text-decoration: none; color: inherit; }
 }
 .king-ind-label { font-size: 16px; color: var(--t2); font-weight: 500; }
 .king-ind-val { font-size: 16px; font-weight: 700; }
-.king-ind-bar-wrap { width: 80px; height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; }
-.king-ind-bar { height: 100%; border-radius: 2px; transition: width .5s ease; }
+.king-ind-bar-wrap { width: 80px; height: 4px; background: var(--bg); border-radius: 999px; overflow: hidden; }
+.king-ind-bar { height: 100%; border-radius: 6px; transition: width .5s ease; }
 
 .king-ai-brief {
-  background: var(--bg); border-radius: 12px; padding: 14px;
+  background: var(--bg); border-radius: 10px; padding: 14px;
   font-size: 16px; line-height: 1.7; color: var(--t1);
   border-left: 3px solid var(--bl);
 }
@@ -819,7 +834,7 @@ a { text-decoration: none; color: inherit; }
 
 /* ── 시황 브리핑 배너 (스윙 지수 상단) ──────────────────── */
 .mkt-brief-banner {
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 16px 18px;
   margin-bottom: 16px;
   border: 1.5px solid;
@@ -871,7 +886,7 @@ a { text-decoration: none; color: inherit; }
   display: inline-block;
   font-size: 16px; font-weight: 700;
   color: #92400E; background: rgba(180,83,9,0.10);
-  border-radius: 8px; padding: 4px 10px;
+  border-radius: 10px; padding: 4px 10px;
   margin-top: 8px;
 }
 @media (prefers-color-scheme: dark) {
@@ -895,7 +910,7 @@ a { text-decoration: none; color: inherit; }
 .strategy-tier-badge {
   display: inline-flex; align-items: center; gap: 6px;
   font-size: 16px; font-weight: 700; letter-spacing: .10em; text-transform: uppercase;
-  padding: 4px 12px; border-radius: 100px; margin-bottom: 12px;
+  padding: 4px 12px; border-radius: 999px; margin-bottom: 12px;
 }
 .strategy-tier-badge.t1 { background: transparent; color: var(--bl); border: 1.5px solid var(--bl); }
 .strategy-tier-badge.t2 { background: transparent; color: var(--pu); border: 1.5px solid var(--pu); }
@@ -904,7 +919,7 @@ a { text-decoration: none; color: inherit; }
 .strategy-etfs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 .etf-chip {
   font-size: 16px; font-weight: 700; padding: 5px 12px;
-  border-radius: 8px; border: 1px solid var(--bd); background: var(--bg);
+  border-radius: 10px; border: 1px solid var(--bd); background: var(--bg);
 }
 .etf-chip.core  { border-color: var(--bl); color: var(--bl); background: transparent; }
 .etf-chip.lev   { border-color: var(--pu); color: var(--pu); background: transparent; }
@@ -913,7 +928,7 @@ a { text-decoration: none; color: inherit; }
 .strategy-rules { display: flex; flex-direction: column; gap: 10px; }
 .rule-item {
   display: flex; align-items: flex-start; gap: 14px;
-  padding: 16px; background: var(--bg); border-radius: 14px;
+  padding: 16px; background: var(--bg); border-radius: 16px;
 }
 /* 2026-07-09: 고정 지름 원(28px)에 "손절"/"익절" 2글자를 넣는 방식은
    폰트 크기가 조금만 커져도 텍스트가 원 밖으로 삐져나온다(유저 스크린샷
@@ -950,7 +965,7 @@ a { text-decoration: none; color: inherit; }
 .deep-buy-table { display: flex; flex-direction: column; gap: 6px; }
 .deep-buy-row {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 14px; background: var(--bg); border-radius: 8px;
+  padding: 10px 14px; background: var(--bg); border-radius: 10px;
 }
 .deep-buy-dd { font-size: 16px; font-weight: 700; color: var(--rd); }
 .deep-buy-mult { font-size: 16px; font-weight: 900; color: var(--gr); }
@@ -960,7 +975,7 @@ a { text-decoration: none; color: inherit; }
   background: var(--card);
   border: 1px solid var(--bd);
   border-left: 3px solid var(--rd);
-  border-radius: 14px; padding: 18px 20px;
+  border-radius: 16px; padding: 18px 20px;
   margin-top: 16px; display: flex; align-items: flex-start; gap: 14px;
 }
 .leverage-alert-icon { font-size: 20px; flex-shrink: 0; }
@@ -993,7 +1008,7 @@ a { text-decoration: none; color: inherit; }
 .ltier-card.tier3 .ltier-num { color: var(--rd); }
 .ltier-num sup { font-size: 20px; letter-spacing: 0; font-weight: 700; vertical-align: top; margin-top: 8px; display: inline-block; }
 .ltier-info { flex: 1; min-width: 0; }
-.ltier-name { font-size: 16px; font-weight: 700; color: var(--t1); letter-spacing: -.01em; }
+.ltier-name { font-size: 16px; font-weight: 700; color: var(--t1); letter-spacing: 0; }
 .ltier-sub  { font-size: 16px; color: var(--t2); margin-top: 3px; line-height: 1.45; }
 .ltier-etf-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
 .ltier-etf-chip {
@@ -1008,8 +1023,8 @@ a { text-decoration: none; color: inherit; }
 .ltier-score-col { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; width: 138px; }
 .ltier-score-item { display: flex; flex-direction: column; gap: 3px; }
 .ltier-score-lbl { font-size: 16px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--t3); }
-.ltier-score-track { height: 3px; background: var(--bd); border-radius: 2px; overflow: hidden; }
-.ltier-score-fill  { height: 100%; border-radius: 2px; }
+.ltier-score-track { height: 3px; background: var(--bd); border-radius: 999px; overflow: hidden; }
+.ltier-score-fill  { height: 100%; border-radius: 6px; }
 .ltier-score-fill.buy  { background: var(--gr); }
 .ltier-score-fill.sell { background: var(--rd); }
 .ltier-score-val { font-size: 16px; font-weight: 600; color: var(--t2); }
@@ -1045,7 +1060,7 @@ a { text-decoration: none; color: inherit; }
 .ltier-cat-badge.buy  { color: var(--gr); }
 .ltier-cat-badge.avg  { color: var(--or); }
 .ltier-cat-badge.fire { color: var(--pu); }
-.ltier-cat-head { font-size: 16px; font-weight: 700; color: var(--t1); letter-spacing: -.01em; line-height: 1.3; }
+.ltier-cat-head { font-size: 16px; font-weight: 700; color: var(--t1); letter-spacing: 0; line-height: 1.3; }
 .ltier-cat-body { font-size: 16px; color: var(--t2); line-height: 1.65; }
 .ltier-cat-body .ok  { color: var(--gr); font-weight: 600; }
 .ltier-cat-body .no  { color: var(--rd); font-weight: 600; }
@@ -1081,7 +1096,7 @@ a { text-decoration: none; color: inherit; }
 .dot-list li[data-for-gear] { transition: opacity .25s; }
 .dot-list li[data-for-gear].gear-current {
   background: var(--bg);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 7px 10px 7px 26px !important;
   margin: 2px 0;
   color: var(--t1) !important;
@@ -1110,7 +1125,7 @@ li.gear-other-sep { display: none !important; }
 .now-score-item strong { font-size: 16px; font-weight: 800; }
 .now-actions { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px; }
 .now-row { display: flex; gap: 12px; align-items: flex-start; }
-.now-tier-badge { flex-shrink: 0; font-size: 16px; font-weight: 700; border-radius: 100px; padding: 2px 10px; margin-top: 3px; border: 1px solid; }
+.now-tier-badge { flex-shrink: 0; font-size: 16px; font-weight: 700; border-radius: 999px; padding: 2px 10px; margin-top: 3px; border: 1px solid; }
 .now-tier-badge.t1 { color: var(--gr); background: transparent; border-color: var(--gr); }
 .now-tier-badge.t2 { color: var(--bl); background: transparent; border-color: var(--bl); }
 .now-tier-badge.t3 { color: var(--rd); background: transparent; border-color: var(--rd); }
@@ -1143,7 +1158,7 @@ li.gear-other-sep { display: none !important; }
   max-width: 960px; margin: 0 auto;
   display: flex; flex-direction: column; gap: 16px;
 }
-.footer-brand-name { font-size: 16px; font-weight: 800; color: var(--t1); letter-spacing: -.02em; }
+.footer-brand-name { font-size: 16px; font-weight: 800; color: var(--t1); letter-spacing: 0; }
 .footer-brand-desc { font-size: 16px; color: var(--t2); line-height: 1.6; margin-top: 4px; }
 .footer-bottom { font-size: 16px; color: var(--t3); border-top: 1px solid var(--bd); padding-top: 16px; line-height: 1.7; }
 
@@ -1270,7 +1285,7 @@ li.gear-other-sep { display: none !important; }
   display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
 }
 .history-item {
-  flex-shrink: 0; padding: 10px 14px; border-radius: 12px;
+  flex-shrink: 0; padding: 10px 14px; border-radius: 10px;
   background: var(--bg); border: 1px solid var(--bd);
   min-width: 130px;
 }
@@ -1427,7 +1442,7 @@ li.gear-other-sep { display: none !important; }
   font-weight: 600;
   text-align: center;
   line-height: 1.3;
-  letter-spacing: -.01em;
+  letter-spacing: 0;
 }
 
 /* ─── 모바일: 볼카운트 전광판 잘림 방지 ─────────────── */
@@ -1455,7 +1470,7 @@ li.gear-other-sep { display: none !important; }
 
 /* ─── AI 상담 채팅 위젯 ───────────────────────── */
 .ai-chat-wrap {
-  border-radius: 14px;
+  border-radius: 16px;
   border: 1px solid var(--bd);
   overflow: hidden;
   background: var(--card);
@@ -1485,7 +1500,7 @@ li.gear-other-sep { display: none !important; }
   align-items: center;
   justify-content: center;
   width: 28px; height: 28px;
-  border-radius: 8px;
+  border-radius: 10px;
   background: linear-gradient(135deg, #0a84ff 0%, #9b59b6 100%);
   color: #fff;
   font-size: 16px;
@@ -1495,7 +1510,7 @@ li.gear-other-sep { display: none !important; }
   margin-left: auto;
   font-size: 16px;
   color: var(--t3);
-  transition: transform .2s;
+  transition: transform .3s;
 }
 .ai-chat-toggle.open .ai-chevron { transform: rotate(180deg); }
 .ai-chat-body {
@@ -1516,7 +1531,7 @@ li.gear-other-sep { display: none !important; }
 .ai-msg {
   max-width: 88%;
   padding: 9px 13px;
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 16px;
   line-height: 1.65;
   word-break: break-word;
@@ -1607,7 +1622,7 @@ li.gear-other-sep { display: none !important; }
 .t9-box {
   background: var(--card);
   border: 1px solid rgba(120,120,128,0.22);
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 16px;
   margin-bottom: 12px;
 }

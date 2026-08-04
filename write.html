@@ -86,7 +86,7 @@ a { text-decoration: none; color: inherit; }
 .nav-logo { display: flex; align-items: center; }
 .nav-logo-img { height: 32px; width: auto; }
 @media (prefers-color-scheme: dark) { .nav-logo-img { filter: brightness(1.1); } }
-.nav-tagline { font-size: 12px; font-weight: 500; color: var(--t2); letter-spacing: -.01em; line-height: 1.5; text-align: right; }
+.nav-tagline { font-size: 12px; font-weight: 500; color: var(--t2); letter-spacing: 0; line-height: 1.5; text-align: right; }
 
 /* ── LOGIN SCREEN ────────────────────────── */
 #login-screen {
@@ -125,7 +125,7 @@ a { text-decoration: none; color: inherit; }
   width: 100%;
   background: var(--card);
   border: 1.5px solid var(--bd);
-  border-radius: 100px;
+  border-radius: 999px;
   padding: 13px 20px;
   font-family: var(--font);
   font-size: 15px;
@@ -201,7 +201,7 @@ a { text-decoration: none; color: inherit; }
   font-size: 14px;
   font-weight: 600;
   padding: 9px 18px;
-  border-radius: 100px;
+  border-radius: 999px;
   border: 1px solid var(--bd);
   cursor: pointer;
   transition: background .15s;
@@ -214,7 +214,7 @@ a { text-decoration: none; color: inherit; }
   font-size: 14px;
   font-weight: 700;
   padding: 9px 20px;
-  border-radius: 100px;
+  border-radius: 999px;
   border: none;
   cursor: pointer;
   transition: opacity .2s;
@@ -233,7 +233,7 @@ a { text-decoration: none; color: inherit; }
   background: none;
   border: 1px solid var(--bd);
   padding: 7px 14px;
-  border-radius: 100px;
+  border-radius: 999px;
   cursor: pointer;
   transition: color .15s;
 }
@@ -249,7 +249,7 @@ a { text-decoration: none; color: inherit; }
   font-size: 14px;
   font-weight: 600;
   padding: 9px 16px;
-  border-radius: 100px;
+  border-radius: 999px;
   border: 1px solid var(--bd);
   cursor: pointer;
   transition: all .15s;
@@ -286,7 +286,7 @@ a { text-decoration: none; color: inherit; }
   font-weight: 700;
   color: var(--t3);
   padding: 5px 13px;
-  border-radius: 100px;
+  border-radius: 999px;
   cursor: pointer;
   transition: all .15s;
   font-family: var(--font);
@@ -327,7 +327,7 @@ a { text-decoration: none; color: inherit; }
 }
 .rp-btn {
   font-size: 12px; font-weight: 700;
-  padding: 6px 14px; border-radius: 100px;
+  padding: 6px 14px; border-radius: 999px;
   border: 1px solid var(--bd);
   background: var(--bg); color: var(--t2);
   cursor: pointer; transition: all .15s;
@@ -361,7 +361,7 @@ a { text-decoration: none; color: inherit; }
 .si-btns { display: flex; gap: 4px; margin-left: auto; }
 .si-btn {
   font-size: 11px; font-weight: 700;
-  padding: 3px 9px; border-radius: 100px;
+  padding: 3px 9px; border-radius: 999px;
   border: 1px solid var(--bd); background: none;
   color: var(--t3); cursor: pointer; transition: all .15s;
   font-family: var(--font);
@@ -417,7 +417,7 @@ a { text-decoration: none; color: inherit; }
   font-size: 14px;
   font-weight: 600;
   padding: 9px 16px;
-  border-radius: 100px;
+  border-radius: 999px;
   border: 1px solid var(--bd);
   cursor: pointer;
   transition: all .15s;
@@ -435,7 +435,7 @@ a { text-decoration: none; color: inherit; }
   font-size: 14px;
   font-weight: 600;
   padding: 9px 16px;
-  border-radius: 100px;
+  border-radius: 999px;
   border: 1px solid var(--bd);
   cursor: pointer;
   transition: all .15s;
@@ -454,7 +454,7 @@ a { text-decoration: none; color: inherit; }
   font-size: 14px;
   font-weight: 600;
   padding: 9px 16px;
-  border-radius: 100px;
+  border-radius: 999px;
   border: 1px solid rgba(255,59,48,0.35);
   cursor: pointer;
   transition: all .15s;
@@ -484,7 +484,7 @@ a { text-decoration: none; color: inherit; }
   font-size: 12px;
   font-weight: 700;
   padding: 4px 12px;
-  border-radius: 100px;
+  border-radius: 999px;
   border: 1px solid rgba(255,159,10,0.4);
   background: none;
   color: var(--yl);
@@ -550,7 +550,7 @@ a { text-decoration: none; color: inherit; }
   font-size: 14px;
   font-weight: 600;
   padding: 9px 18px;
-  border-radius: 100px;
+  border-radius: 999px;
   cursor: pointer;
 }
 .modal-actions .btn-confirm {
@@ -559,7 +559,7 @@ a { text-decoration: none; color: inherit; }
   font-size: 14px;
   font-weight: 700;
   padding: 9px 20px;
-  border-radius: 100px;
+  border-radius: 999px;
   border: none;
   cursor: pointer;
   transition: opacity .2s;
@@ -814,7 +814,7 @@ button.ql-more-tools.open { color: var(--bl); }
 button.ext-btn {
   display: inline-flex; align-items: center; justify-content: center;
   width: 30px; height: 28px; border: none; background: none;
-  border-radius: 5px; cursor: pointer; color: var(--t2);
+  border-radius: 6px; cursor: pointer; color: var(--t2);
   font-size: 12px; font-family: var(--font); font-weight: 700;
   transition: background .12s, color .12s; padding: 0; outline: none;
 }
@@ -825,7 +825,7 @@ button.ext-color {
   width: 20px; height: 20px; border-radius: 50%;
   border: 2.5px solid var(--bd);
   cursor: pointer; outline: none; margin: 0 2px;
-  transition: transform .12s, box-shadow .12s; flex-shrink: 0;
+  transition: transform .3s, box-shadow .12s; flex-shrink: 0;
 }
 button.ext-color:hover { transform: scale(1.2); box-shadow: 0 0 0 2.5px var(--t1); }
 
@@ -834,7 +834,7 @@ select.ql-pt-size-picker {
   height: 26px;
   background: transparent;
   border: 1px solid var(--bd);
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
   color: var(--t2);
@@ -865,7 +865,7 @@ select.ql-pt-size-picker:focus { border-color: var(--bl); }
 button.ext-char {
   width: 30px; height: 30px;
   display: inline-flex; align-items: center; justify-content: center;
-  background: none; border: none; border-radius: 5px;
+  background: none; border: none; border-radius: 6px;
   font-size: 15px; cursor: pointer; line-height: 1;
   transition: background .1s; padding: 0; outline: none;
   flex-shrink: 0;
