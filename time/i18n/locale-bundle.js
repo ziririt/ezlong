@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-04T09:28:33.410Z
+ * 생성 시각: 2026-08-04T12:48:09.114Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -13,6 +13,12 @@
   root.FLIPZEN_LOCALE_CATALOGS = {
   "en": {
     "settings": {
+      "startPage": {
+        "heading": "Screen on launch",
+        "aria": "Choose the screen shown on launch",
+        "quote": "Investment quotes",
+        "ezlong": "AI tools at ezlong.com"
+      },
       "title": "Settings",
       "premium": {
         "heading": "Premium",
@@ -382,6 +388,12 @@
   },
   "es": {
     "settings": {
+      "startPage": {
+        "heading": "Pantalla al abrir",
+        "aria": "Elige la pantalla que se muestra al abrir",
+        "quote": "Citas de inversión",
+        "ezlong": "Herramientas de IA en ezlong.com"
+      },
       "title": "Ajustes",
       "premium": {
         "heading": "Premium",
@@ -751,6 +763,12 @@
   },
   "ja": {
     "settings": {
+      "startPage": {
+        "heading": "起動時に表示する画面",
+        "aria": "起動時に表示する画面を選択",
+        "quote": "投資の名著の一節",
+        "ezlong": "投資AIツール ezlong.com"
+      },
       "title": "設定",
       "premium": {
         "heading": "プレミアム",
@@ -1120,6 +1138,12 @@
   },
   "ko": {
     "settings": {
+      "startPage": {
+        "heading": "앱을 열면 보일 화면",
+        "aria": "앱을 열면 보일 화면 선택",
+        "quote": "투자명저 문장",
+        "ezlong": "투자AI도구 ezlong.com"
+      },
       "title": "설정",
       "premium": {
         "heading": "프리미엄",
@@ -1489,6 +1513,12 @@
   },
   "pt": {
     "settings": {
+      "startPage": {
+        "heading": "Tela ao abrir",
+        "aria": "Escolha a tela exibida ao abrir",
+        "quote": "Citações de investimento",
+        "ezlong": "Ferramentas de IA em ezlong.com"
+      },
       "title": "Configurações",
       "premium": {
         "heading": "Premium",
@@ -1858,6 +1888,12 @@
   },
   "zh": {
     "settings": {
+      "startPage": {
+        "heading": "打开应用时显示的画面",
+        "aria": "选择打开应用时显示的画面",
+        "quote": "投资名著语句",
+        "ezlong": "投资 AI 工具 ezlong.com"
+      },
       "title": "设置",
       "premium": {
         "heading": "高级版",

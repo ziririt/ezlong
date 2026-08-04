@@ -1608,9 +1608,9 @@ button { font: inherit; }
   border: 1px solid rgba(255,255,255,0.16);
   border-top-color: rgba(255,255,255,0.28);
   border-radius: clamp(24px, 6vw, 38px);
-  background: rgba(20,28,42,0.30);
-  -webkit-backdrop-filter: blur(18px) saturate(1.6);
-  backdrop-filter: blur(18px) saturate(1.6);
+  background: rgba(13,20,31,0.18);
+  -webkit-backdrop-filter: blur(8px) saturate(1.35);
+  backdrop-filter: blur(8px) saturate(1.35);
   box-shadow: 0 18px 50px rgba(0,0,0,0.22);
   text-shadow: 0 1px 4px rgba(0,0,0,0.55), 0 2px 20px rgba(0,0,0,0.35);
 }
@@ -4243,16 +4243,21 @@ button { font: inherit; }
    배경사진이 은은히 비쳐 깊이가 생기고, 블러가 바탕을 고르게 만들어
    가독성도 오히려 좋아진다. 위 모서리 하이라이트는 "빛이 재질에 닿는"
    visionOS 디테일. 레이아웃·라운드 값은 기존 그대로 둔다. */
+/* 2026-08-04 2차(성동님 실기기 피드백) — 첫 값(틴트 0.30 + 블러 18px)은
+   재질감은 좋았지만 배경사진을 너무 가렸다. 이 앱에서 사진이 비쳐
+   보이는 것은 재질감보다 중요한 가치다. 그래서 플립시계 숫자판
+   (.flip-card: rgba(13,20,31,0.26), 블러 없음)과 같은 눈높이로 낮춘다 —
+   틴트를 0.18로 옅게, 블러도 8px만 남겨 '유리 한 겹' 정도로. */
 .quote-panel,
 .music-info-panel,
 .weather-card,
 .special-info-text {
-  background: rgba(20, 28, 42, 0.30);
-  -webkit-backdrop-filter: blur(18px) saturate(1.6);
-  backdrop-filter: blur(18px) saturate(1.6);
+  background: rgba(13, 20, 31, 0.18);
+  -webkit-backdrop-filter: blur(8px) saturate(1.35);
+  backdrop-filter: blur(8px) saturate(1.35);
   border-color: rgba(255, 255, 255, 0.16);
-  border-top-color: rgba(255, 255, 255, 0.28);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+  border-top-color: rgba(255, 255, 255, 0.26);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.18);
 }
 
 /* (4) 터치 다운 즉시 피드백 — 애플 1원칙 "응답은 터치 다운에서".

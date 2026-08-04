@@ -298,7 +298,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.36</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.37</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -353,6 +353,17 @@
             </label>
           </div>
           <p class="settings-desc settings-desc-muted bg-filter-license">This app uses some background images in accordance with the Pexels license.</p>
+        </section>
+
+        <!-- 2026-08-04 성동님 요청 — 앱을 열었을 때 보일 첫 화면 선택.
+             기본값은 투자명저 문장(기존 동작). ezlong.com을 고르면 실행
+             직후 2페이지로 넘어간다(app.js setupStartPagePreference). -->
+        <section class="settings-section">
+          <h3 class="settings-subtitle" data-i18n="settings.startPage.heading">앱을 열면 보일 화면</h3>
+          <div class="field-grid" id="startPageOptions" role="radiogroup" data-i18n-aria="settings.startPage.aria" aria-label="앱을 열면 보일 화면 선택">
+            <label class="field-option"><input type="radio" name="startPage" value="quote" checked><span data-i18n="settings.startPage.quote">투자명저 문장</span></label>
+            <label class="field-option"><input type="radio" name="startPage" value="ezlong"><span data-i18n="settings.startPage.ezlong">투자AI도구 ezlong.com</span></label>
+          </div>
         </section>
 
         <!-- 2026-07-19 4차 피드백: "NOW PLAYING" 박스(#musicPlaylistInfo)를
