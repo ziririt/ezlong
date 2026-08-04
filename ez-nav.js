@@ -164,13 +164,32 @@
         '.ez-nav-more .ez-nav-more-ico, .ez-nav-more-left .ez-nav-more-ico { animation: none; } }';
     document.head.appendChild(style);
 
+    /* 자체 rAF 애니메이션 — behavior:'smooth' 프로그래매틱 스크롤은 TV 위젯 iframe이
+       많은 페이지(스윙 대시보드)에서 브라우저가 조용히 무시/취소하는 게 실측 확인됨
+       (2026-08-04 라이브 검증: scrollBy smooth 호출 후 scrollLeft 변화 0).
+       scrollLeft 직접 대입은 항상 동작하므로 rAF로 직접 애니메이션한다. */
+    function glide(delta) {
+      var start  = linksEl.scrollLeft;
+      var target = Math.max(0, Math.min(start + delta, linksEl.scrollWidth - linksEl.clientWidth));
+      var t0 = null, DUR = 320;
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var k = Math.min(1, (ts - t0) / DUR);
+        var e = 1 - Math.pow(1 - k, 3);          /* ease-out cubic */
+        linksEl.scrollLeft = start + (target - start) * e;
+        update();                                 /* scroll 이벤트 미발화 대비 직접 갱신 */
+        if (k < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
     var more = document.createElement('button');
     more.type = 'button';
     more.className = 'ez-nav-more';
     more.setAttribute('aria-label', '오른쪽으로 스크롤하면 메뉴가 더 있습니다');
     more.innerHTML = '<span class="ez-nav-more-ico">&#10095;</span>';
     more.addEventListener('click', function () {
-      linksEl.scrollBy({ left: Math.max(200, linksEl.clientWidth * 0.7), behavior: 'smooth' });
+      glide(Math.max(200, linksEl.clientWidth * 0.7));
     });
     var moreL = document.createElement('button');
     moreL.type = 'button';
@@ -178,7 +197,7 @@
     moreL.setAttribute('aria-label', '왼쪽으로 스크롤하면 이전 메뉴가 있습니다');
     moreL.innerHTML = '<span class="ez-nav-more-ico">&#10094;</span>';
     moreL.addEventListener('click', function () {
-      linksEl.scrollBy({ left: -Math.max(200, linksEl.clientWidth * 0.7), behavior: 'smooth' });
+      glide(-Math.max(200, linksEl.clientWidth * 0.7));
     });
     var inner = nav.querySelector('.ez-nav-inner');
     if (inner) { inner.appendChild(more); inner.appendChild(moreL); }
@@ -204,12 +223,13 @@
     window.addEventListener('resize', update);
     update();
 
-    /* 첫 로드 힌트 모션 — 오버플로가 있고 사용자가 아직 스크롤 안 했을 때 1회 */
+    /* 첫 로드 힌트 모션 — 오버플로가 있고 사용자가 아직 스크롤 안 했을 때 1회
+       (smooth 스크롤 무시 이슈로 glide 사용) */
     setTimeout(function () {
       if (linksEl.scrollWidth - linksEl.clientWidth > 12 && linksEl.scrollLeft === 0) {
-        linksEl.scrollTo({ left: 84, behavior: 'smooth' });
+        glide(84);
         setTimeout(function () {
-          if (linksEl.scrollLeft <= 100) linksEl.scrollTo({ left: 0, behavior: 'smooth' });
+          if (linksEl.scrollLeft <= 100) glide(-linksEl.scrollLeft);
         }, 700);
       }
       update();
