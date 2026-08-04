@@ -9147,3 +9147,33 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
     }
   };
 })();
+
+
+// 2026-08-04 성동님 요청 — 화면 왕복 내비게이션 3곳(상단 ezlong.com 브랜드·
+// 하단 ezlong.com 링크·Basecamp 복귀)의 터치감. CSS :active에 맡기지 않고
+// pointerdown에서 직접 클래스를 붙이는 이유는 두 가지다: (1) iOS WKWebView는
+// 버튼이 아닌 요소(.app-brand는 div)의 :active를 잘 안 잡아준다, (2) 손을
+// 떼는 시점(up/cancel/leave)을 우리가 통제해야 스크롤로 빠져나갈 때도
+// 눌린 채로 남지 않는다. 시각 효과는 styles.css의 .is-pressed 규칙 참조.
+(function setupNavPressFeedback() {
+  const targets = document.querySelectorAll(".app-brand, .scene-ezlong-link, .webview-back");
+  if (!targets.length) return;
+  targets.forEach((el) => {
+    const press = () => {
+      el.classList.add("is-pressed");
+      // 안드로이드 WebView는 짧은 햅틱을 지원한다 — 시각 효과와 같은
+      // 프레임에 울려야 한 몸으로 느껴진다(apple-design 다감각 조화 원칙).
+      // iOS WKWebView는 이 API가 없어 조용히 건너뛴다(1.3에서 네이티브 햅틱).
+      try {
+        if (navigator.vibrate) navigator.vibrate(8);
+      } catch (error) {
+        // 진동 실패는 무시 — 터치감의 본체는 시각 효과다.
+      }
+    };
+    const release = () => el.classList.remove("is-pressed");
+    el.addEventListener("pointerdown", press);
+    el.addEventListener("pointerup", release);
+    el.addEventListener("pointercancel", release);
+    el.addEventListener("pointerleave", release);
+  });
+})();

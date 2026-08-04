@@ -4267,3 +4267,77 @@ button { font: inherit; }
 :where(button, label.field-option, .mini-weather, [role="button"]):active {
   scale: 0.96;
 }
+
+
+/* ════════════════════════════════════════════════════════════════
+   2026-08-04 성동님 요청 — 화면 왕복 내비게이션 3곳의 터치감
+   (상단 ezlong.com 브랜드 / 하단 ezlong.com 링크 / Basecamp 복귀)
+   apple-design: 응답은 터치다운에서(§1), 갈 방향으로 미리 기울기(§8),
+   왕복은 서로의 역방향으로 대칭(§7).
+   ──────────────────────────────────────────────────────────────── */
+.app-brand,
+.scene-ezlong-link,
+.webview-back {
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  /* 놓을 때 아주 살짝 넘어갔다 돌아오는 커브 — 손을 뗀 뒤의 여운. */
+  transition:
+    scale 260ms cubic-bezier(.22, 1.24, .36, 1),
+    translate 260ms cubic-bezier(.22, 1.24, .36, 1),
+    filter 200ms ease;
+}
+
+/* 누르는 순간 손끝을 중심으로 은은하게 번지는 빛무리.
+   currentColor 기반이라 흰 글자 위에서는 흰빛, 회색 아이콘에서는
+   회색빛으로 — 어느 배경에서도 재질과 겉돌지 않는다. */
+.app-brand::after,
+.scene-ezlong-link::after,
+.webview-back::after {
+  content: "";
+  position: absolute;
+  inset: -12px -18px;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, currentColor, transparent);
+  opacity: 0;
+  scale: 0.55;
+  pointer-events: none;
+  transition: opacity 260ms ease, scale 320ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.app-brand.is-pressed::after,
+.scene-ezlong-link.is-pressed::after,
+.webview-back.is-pressed::after {
+  opacity: 0.17;
+  scale: 1;
+}
+
+.app-brand.is-pressed,
+.scene-ezlong-link.is-pressed,
+.webview-back.is-pressed {
+  scale: 0.93;
+  filter: brightness(1.18);
+  /* 누른 순간은 즉각 반응해야 한다 — 들어갈 때는 짧고 곧게. */
+  transition-duration: 90ms;
+  transition-timing-function: ease-out;
+}
+
+/* 방향 힌트 — ezlong.com은 아래에 있고, Basecamp는 위에 있다. */
+.app-brand.is-pressed,
+.scene-ezlong-link.is-pressed {
+  translate: 0 4px;
+}
+
+.webview-back.is-pressed {
+  translate: 0 -4px;
+}
+
+/* 하단 링크의 ⌄ 화살표는 조금 더 크게 내려가 방향을 한 번 더 말해준다. */
+.scene-ezlong-link .scene-ezlong-hint {
+  transition: translate 260ms cubic-bezier(.22, 1.24, .36, 1), opacity 200ms ease;
+}
+
+.scene-ezlong-link.is-pressed .scene-ezlong-hint {
+  translate: 0 3px;
+  opacity: 1;
+}
