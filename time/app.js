@@ -824,6 +824,9 @@ let backgroundArchiveLoaded = false;
 let weatherResolved = false;
 let activePhotoSet = [];
 let activePhotoSetKey = "";
+// 2026-08-04 성동님 리듬 설계 — 4장을 한 바퀴(16분) 다 보여줄 때마다 1씩
+// 올라가는 세대 카운터. photoSetKey에 포함되어 다음 4장 세트를 강제한다.
+let photoCycleGen = 0;
 let activePhotoIndex = 0;
 let activePhotoSlot = "";
 let manualPhotoUntil = 0;
@@ -1575,7 +1578,7 @@ function photoSetKey(sceneId) {
   // 그대로다.
   const weatherOn = loadBgFilterToggle(bgFilterWeatherStorageKey) ? "1" : "0";
   const timeOn = loadBgFilterToggle(bgFilterTimeStorageKey) ? "1" : "0";
-  return [currentSeason, currentTag, timeBuckets.join("-"), photoBatchSlot(), weatherOn, timeOn].join("|");
+  return [currentSeason, currentTag, timeBuckets.join("-"), photoBatchSlot(), weatherOn, timeOn, String(photoCycleGen)].join("|");
 }
 
 function matchingArchivePhotos(sceneId) {
@@ -1750,7 +1753,9 @@ function ensurePhotoSet(sceneId) {
     : [...candidates, ...fallbackCandidates.filter((image) => !seenUrls.has(imageUrl(image)))];
   activePhotoSet = pickPhotoSetWithCoolSummer(photos);
   activePhotoSetKey = nextKey;
-  activePhotoIndex = activePhotoSet.length > 0 ? Math.floor(Date.now() / (15 * 60 * 1000)) % activePhotoSet.length : 0;
+  // 2026-08-04 — 새 세트는 항상 1번 사진부터 순서대로(15분 슬롯 기반
+  // 시작 인덱스는 명시 타이머 전환 후 의미가 없어졌다).
+  activePhotoIndex = 0;
   activePhotoSlot = "";
   manualPhotoUntil = 0;
   preloadPhotoSet(activePhotoSet);
@@ -8892,11 +8897,19 @@ window.setInterval(tick, 1000);
 // pickScenePhoto 내부 재비교)을 버리고, 한 곳에서 끝나는 명시적 타이머로
 // 교체. 화면이 보이는 동안 5분마다 다음 장으로 한 장씩(4장 한 바퀴 20분).
 // 수동 스와이프 직후 15분(manualPhotoUntil)은 기존 약속대로 손대지 않는다.
-const PHOTO_AUTO_ROTATE_MS = 5 * 60 * 1000;
+// 2026-08-04 성동님 리듬 설계 — 문장 4개(1분씩)가 흐르는 4분마다 배경
+// 한 장. 4장이 다 돌면(16분) 같은 세트를 반복하지 않고 photoCycleGen을
+// 올려 다음 4장 세트로 교체한다(photoHistory 덕에 본 사진은 회피됨).
+const PHOTO_AUTO_ROTATE_MS = 4 * 60 * 1000;
 function photoAutoRotateTick() {
   if (document.visibilityState !== "visible") return;
   if (!activePhotoSet.length || Date.now() < manualPhotoUntil) return;
-  activePhotoIndex = (activePhotoIndex + 1) % activePhotoSet.length;
+  const nextIndex = (activePhotoIndex + 1) % activePhotoSet.length;
+  if (nextIndex === 0) {
+    photoCycleGen += 1; // 한 바퀴 완료 — setScene의 ensurePhotoSet이 새 4장을 뽑는다
+  } else {
+    activePhotoIndex = nextIndex;
+  }
   if (activeScene) setScene(activeScene, { syncDots: true, force: true });
 }
 window.setInterval(photoAutoRotateTick, PHOTO_AUTO_ROTATE_MS);
