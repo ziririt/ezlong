@@ -8254,7 +8254,7 @@ function tick() {
   renderTime(now);
   // 2026-08-04 2차 — 배경 자동전환(4분마다 1장, 4장 돌면 새 세트).
   // 위 photoAutoRotateTick 주석 참조 — 시계 루프에 얹어 확실하게.
-  if (Date.now() - lastPhotoRotateAt >= PHOTO_AUTO_ROTATE_MS) {
+  if (typeof lastPhotoRotateAt === "number" && Date.now() - lastPhotoRotateAt >= PHOTO_AUTO_ROTATE_MS) {
     lastPhotoRotateAt = Date.now();
     photoAutoRotateTick();
   }
@@ -9018,7 +9018,7 @@ const PHOTO_AUTO_ROTATE_MS = 4 * 60 * 1000;
 // 원인을 플랫폼별로 쫓는 대신, "실기기에서 매초 도는 것이 이미 증명된"
 // tick()(플립시계 갱신 루프)에 경과시간 판정을 얹는다 — 시계가 움직이는
 // 한 배경도 반드시 바뀐다. 독립 setInterval에 기대지 않는 구조.
-let lastPhotoRotateAt = Date.now();
+var lastPhotoRotateAt = Date.now(); // var — tick()이 선언보다 먼저 호출돼도 TDZ 오류가 없도록(2026-08-04 긴급수정)
 function photoAutoRotateTick() {
   if (document.visibilityState !== "visible") return;
   if (!activePhotoSet.length || Date.now() < manualPhotoUntil) return;
