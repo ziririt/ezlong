@@ -125,7 +125,7 @@
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2336764115275414" crossorigin="anonymous"></script>
 
-<link rel="stylesheet" href="ez-design.css">
+<link rel="stylesheet" href="/ez-design.css">
 <!-- 2026-07-04 긴급 수정: 이 페이지에 ez-design.css 링크가 누락돼 있었음.
      --ez-font/--ez-blue/--ez-r 등 공유 변수가 전부 undefined였고,
      특히 --font:var(--ez-font)가 무효 참조가 되어 폰트가 브라우저 기본값(세리프)으로
@@ -1144,10 +1144,12 @@ li.gear-other-sep { display: none !important; }
 .dual-score-num.neutral { color: var(--t1); }
 .king-score-num.neutral { color: var(--t1); }
 .score-verdict.neutral  { background: rgba(0,0,0,0.07); color: var(--t1); }
-.dual-score-verdict.neutral { background: rgba(0,0,0,0.07); color: var(--t1); }
+/* 2026-08-04: neutral만 회색 박스라 나머지 4종(투명 배경 + 색 글자)과 어긋나
+   있었다 — 한 줄에 나란히 놓이는 판정 라벨이라 하나만 상자를 두르면 튄다. 통일. */
+.dual-score-verdict.neutral { background: transparent; color: var(--t2); }
 @media (prefers-color-scheme: dark) {
   .score-verdict.neutral  { background: rgba(255,255,255,0.12); color: var(--t1); }
-  .dual-score-verdict.neutral { background: rgba(255,255,255,0.12); color: var(--t1); }
+  .dual-score-verdict.neutral { background: transparent; color: var(--t2); }
 }
 .gauge-fill.neutral     { background: linear-gradient(90deg, #8E8E93, #AEAEB2); }
 .dual-gauge-fill.neutral { background: linear-gradient(90deg, #8E8E93, #AEAEB2); }
@@ -1586,6 +1588,83 @@ li.gear-other-sep { display: none !important; }
 .ktp-lv-v.gr{ color:var(--gr); }
 .ktp-lv-v.rd{ color:var(--rd); }
 .ktp-inval  { font-size:16px; color:var(--t2); margin-top:8px; border-top:1px solid var(--bd); padding-top:7px; }
+
+/* ── TOP9 카드 스택 공통 상자 (2026-08-04 성동님 지시) ──────────────────────
+   판단·AI·행동진단·지표 카드가 각자 인라인 스타일로 padding 14/16/18px을 제각각
+   쓰고 있어서 텍스트 좌측 시작점이 카드마다 어긋났다. 하나로 통일한다.
+   기준선: 바깥 왼쪽 모서리 + 17px = (테두리 1px + 안쪽 16px).
+   강조형(.t9-box-hi)은 좌측 4px 라인을 갖되 안쪽 여백을 13px로 줄여 텍스트가
+   같은 x에서 시작하게 한다 — 라인은 라인끼리, 글자는 글자끼리 한 줄. */
+.t9-box {
+  background: var(--card);
+  border: 1px solid rgba(120,120,128,0.22);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.t9-box-hi { border-left: 4px solid #0a84ff; padding-left: 13px; }
+
+/* 심층 카드 상단 배너 2종(시장 맥락 · 최근 등락 흐름) — 인라인 스타일을 클래스로
+   이관(2026-08-04). 색만 상황에 따라 달라지므로 border-left-color·color만 인라인에
+   남기고 나머지 형태는 여기서 잡는다. 인라인으로 두면 모바일 평탄화가 불가능하다. */
+.king-banner {
+  margin: 0 0 14px; padding: 10px 14px; border-radius: 10px;
+  background: var(--bg); border-left: 3px solid var(--bl);
+  font-size: 16px; line-height: 1.5;
+}
+.king-banner-box {
+  margin-bottom: 12px; padding: 11px 14px;
+  border-top: 1px solid var(--bd); border-right: 1px solid var(--bd); border-bottom: 1px solid var(--bd);
+}
+@media (max-width: 699px) {
+  .king-banner, .king-banner-box {
+    background: transparent; border-radius: 0;
+    border-top: none; border-right: none; border-bottom: none;
+    border-left: 3px solid var(--bl);
+    margin: 0 0 14px -17px; padding: 2px 0 2px 14px;
+  }
+}
+
+/* AI 차트분석 '판단 원장' 연속성 블록 — 인라인 스타일이던 것을 클래스로 이관
+   (2026-08-04). 인라인은 미디어쿼리가 이길 수 없어 모바일 평탄화가 불가능했다. */
+.ktp-continuity {
+  margin: 8px 0; padding: 8px 10px;
+  background: rgba(10,132,255,0.08);
+  border-left: 3px solid var(--bl);
+  border-radius: 6px;
+  font-size: 16px; color: var(--t1); line-height: 1.55;
+}
+
+/* ── 모바일: 심층 분석 카드 평탄화 (2026-08-04 성동님 지시) ────────────────
+   기존엔 카드 안에 카드가 3중으로 겹쳐, 393px 실측 기준 텍스트 좌측 시작점이
+   20 / 36 / 52 / 69 / 82px 다섯 갈래로 흩어져 있었다. 좁은 화면에서 여백만
+   먹고 시선이 계단처럼 끊겼다("복잡해 보이기만 한다").
+   모바일에선 안쪽 상자의 배경·모서리·좌우 여백을 걷어내고, 구분은 가로 실선
+   하나로만 한다. 강조용 좌측 세로선은 음수 마진으로 카드 바깥 모서리에 맞춰
+   전부 같은 x에 겹치게 했다 → 텍스트는 36px 한 줄, 세로선은 20px 한 줄. */
+@media (max-width: 699px) {
+  /* 좌측 기준선 17px — .t9-box(테두리 1 + 여백 16)와 같은 x에 글자가 오도록.
+     king-card는 테두리가 없으므로 안쪽 여백만 17px로 준다. */
+  .king-card { padding: 18px 17px; }
+  .king-header     { margin-bottom: 14px; }
+  .king-indicators { margin-bottom: 16px; }
+
+  .king-ai-brief {
+    background: transparent; border-radius: 0;
+    border: none; border-left: 3px solid var(--bl);
+    margin: 16px 0 0 -17px; padding: 2px 0 2px 14px;
+  }
+  .king-trade-plan {
+    background: transparent; border: none; border-radius: 0;
+    border-top: 1px solid var(--bd);
+    margin: 16px 0 0; padding: 14px 0 0;
+  }
+  .ktp-continuity {
+    background: transparent; border-radius: 0;
+    border-left: 3px solid var(--bl);
+    margin: 10px 0 10px -17px; padding: 2px 0 2px 14px;
+  }
+}
 
 /* ── EN nav/footer — custom header/footer convention for English pages
      (same pattern as en/market-vs.html, en/chart-analysis.html), reusing
@@ -5269,7 +5348,7 @@ function _deepAnalysisCardHtml(d, _ai) {
       // every day resets "as if seeing this for the first time."
       const _continuityText = pick(_ai.continuityEn, _ai.continuity);
       const _continuity = _continuityText
-        ? '<div class="ktp-continuity" style="margin:6px 0;padding:8px 10px;background:rgba(10,132,255,0.08);border-left:3px solid var(--bl);border-radius:6px;font-size:16px;color:var(--t1);line-height:1.5;">' + _continuityText + '</div>' : '';
+        ? '<div class="ktp-continuity">' + _continuityText + '</div>' : '';
       tradePlanHtml =
         '<div class="king-trade-plan">' +
           '<div class="ktp-header">' +
@@ -5355,7 +5434,7 @@ function _deepAnalysisCardHtml(d, _ai) {
         msText  = `Market-wide uptrend holding — wait for the buy signal to recover, don't rush new entries`;
         msColor = 'var(--t2)'; msBg = 'var(--bg)';
       }
-      msBanner = `<div style="margin:0 0 14px;padding:10px 14px;border-radius:10px;background:var(--bg);border-left:3px solid ${msColor};font-size:16px;font-weight:600;color:${msColor};line-height:1.5;">
+      msBanner = `<div class="king-banner" style="border-left-color:${msColor};color:${msColor};font-weight:600;">
         <span style="font-size:16px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;opacity:.7;display:block;margin-bottom:3px;">Market-Wide Context — Same Basis as Swing Signal</span>
         ${msText}
       </div>`;
@@ -5386,7 +5465,7 @@ function _deepAnalysisCardHtml(d, _ai) {
       const _hasSummary = _summary.length > 0;
       const _bColor = (_r0 ?? 0) < -2 ? 'var(--rd)' : (_r0 ?? 0) > 2 ? 'var(--gr)' : 'var(--or)';
 
-      stockRecentBanner = `<div style="margin:0 0 12px;padding:11px 14px;border-radius:10px;background:var(--bg);border-left:3px solid ${_bColor};border-top:1px solid var(--bd);border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);">
+      stockRecentBanner = `<div class="king-banner king-banner-box" style="border-left-color:${_bColor};">
         <div style="font-size:16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:${_bColor};opacity:.85;margin-bottom:6px;">${d.symbol} Recent Price Trend</div>
         <div style="display:flex;gap:18px;margin-bottom:${_hasSummary ? '8' : '0'}px;">
           <div style="text-align:center;">
@@ -5747,7 +5826,7 @@ function buildAudienceHtml(aud) {
   const row = (cls, label, txt) => `<div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(120,120,128,0.14);">
     <span class="ltier-cat-badge ${cls}" style="flex-shrink:0;">${label}</span>
     <span style="font-size:15px;line-height:1.6;color:var(--t1);">${txt}</span></div>`;
-  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:14px 16px 6px;margin-bottom:12px;">
+  return `<div class="t9-box">
     <div style="font-weight:800;color:var(--t1);font-size:16px;margin-bottom:6px;">Tailored Action Read</div>
     ${row('hold', 'Holder', aud.holder)}
     ${row('buy', 'New entry', aud.newbie)}
@@ -5761,7 +5840,7 @@ function _stanceCardHtml(v) {
   const label = v.stanceLabelEn || v.stanceLabel || '';
   const body  = v.commentaryEn || '';
   if (!body) return '';
-  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-left:4px solid #0a84ff;border-radius:14px;padding:16px 16px 10px;margin-bottom:12px;">
+  return `<div class="t9-box t9-box-hi">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
       <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">Today's Call</span>
       <span style="font-weight:800;color:var(--t1);font-size:16px;">${label}</span>
@@ -5787,7 +5866,7 @@ function buildMegaMetricsHtml(d) {
   const rsiColor = d.rsi < 30 ? 'var(--gr)' : d.rsi > 70 ? 'var(--rd)' : 'var(--t1)';
   const row = (l, v) => `<div style="display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid rgba(120,120,128,0.14);">
     <span style="color:var(--t2);font-size:15px;">${l}</span><span style="font-size:15px;font-weight:700;">${v}</span></div>`;
-  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:14px 16px 6px;margin-bottom:12px;">
+  return `<div class="t9-box">
     ${row('Price', `<span style="color:var(--t1)">$${d.price != null ? d.price.toFixed(2) : '—'}</span> <span style="color:${chgCls}">${chgStr}</span>`)}
     ${row('Buy score', `<span style="color:var(--t1)">${buy}</span>`)}
     ${row('Sell pressure', `<span style="color:var(--t1)">${sell}</span>`)}
@@ -5809,7 +5888,7 @@ function buildMegaAiHtml(ai) {
   const reason = rawReason ? String(rawReason).replace(/◆/g, '').replace(/\s{2,}/g, ' ').trim() : '';
   const contiTxt = ai.continuityEn || ai.continuity;
   const conti = contiTxt
-    ? `<div style="margin:8px 0;padding:8px 10px;background:rgba(10,132,255,0.08);border-left:3px solid var(--bl);border-radius:6px;font-size:16px;color:var(--t1);line-height:1.55;">${contiTxt}</div>` : '';
+    ? `<div class="ktp-continuity">${contiTxt}</div>` : '';
   let plan = '';
   if (ai.entry && ai.stop && ai.target) {
     const f = v => typeof v === 'number' ? v.toFixed(2) : String(v ?? '—');
@@ -5824,7 +5903,7 @@ function buildMegaAiHtml(ai) {
   }
   const inval = ai.invalidation
     ? `<div style="color:var(--t2);font-size:14px;margin-top:6px;">Invalidation: scenario void on a break of $${typeof ai.invalidation === 'number' ? ai.invalidation.toFixed(2) : ai.invalidation}</div>` : '';
-  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px 16px 12px;margin-bottom:12px;">
+  return `<div class="t9-box">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
       <span style="font-weight:800;color:${col};font-size:16px;">${mark}</span>
       <span style="color:var(--t3);font-size:14px;">AI chart analysis · swing trading plan</span>
@@ -5888,7 +5967,7 @@ function renderMegaCards(sym) {
          : (ai === undefined ? '<div style="color:var(--t3);font-size:14px;margin:0 0 12px;">Loading AI chart analysis…</div>' : '')}
     ${buildAudienceHtml(window._swingView?.megas?.[sym]?.audienceEn)}
     ${d ? buildMegaMetricsHtml(d)
-        : '<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px;color:var(--t2);font-size:16px;margin-bottom:12px;">Awaiting data collection — this will populate after the next automatic refresh (up to every 30 minutes during market hours).</div>'}
+        : '<div class="t9-box" style="color:var(--t2);font-size:16px;">Awaiting data collection — this will populate after the next automatic refresh (up to every 30 minutes during market hours).</div>'}
     ${_deepCardReady(d) ? `<details class="sv-det-page"><summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:10px 4px;">Full detail — indicators, scores, and trade criteria</summary><div>${_deepAnalysisCardHtml(d, ai || null)}</div></details>` : ''}`;
   if (ai === undefined && MEGA9.ai[sym]) {
     fetchAnalysisJSON(MEGA9.ai[sym]).then(a => {
