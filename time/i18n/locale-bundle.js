@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-01T04:36:06.813Z
+ * 생성 시각: 2026-08-04T09:21:04.242Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -246,6 +246,12 @@
       "like": "Like this track",
       "dislike": "Dislike this track",
       "waiting": "Ready to play",
+      "specialInfoAria": "Why this music helps",
+      "specialInfo": {
+        "stress": "Slow, steady rhythms invite your heartbeat and breathing to fall in step with them, a response known as entrainment. Clinical studies show this calms the sympathetic nervous system and lowers cortisol, the body's main stress hormone.",
+        "sleep": "As you drift off, brain waves shift from fast beta to slower alpha and theta rhythms. Gentle, repetitive melodies around 60 BPM, just below a resting heartbeat, ease that transition and have been shown to shorten the time it takes to fall asleep and improve sleep quality.",
+        "meditation": "A soft, continuous sound gives wandering attention an anchor to return to. Its simple harmonies and unhurried pace quiet the brain's default mode network, the circuit behind mind-wandering, making it easier to stay in the present moment."
+      },
       "openSettings": "Open music settings",
       "shuffle": "Shuffle again",
       "autoPaused": "Paused automatically to give your ears a rest.",
@@ -609,6 +615,12 @@
       "like": "Me gusta esta pista",
       "dislike": "No me gusta esta pista",
       "waiting": "Listo para reproducir",
+      "specialInfoAria": "Por qué ayuda esta música",
+      "specialInfo": {
+        "stress": "Los ritmos lentos y constantes hacen que el corazón y la respiración se acompasen a ellos, una respuesta llamada entrainment. Estudios clínicos muestran que esto calma el sistema nervioso simpático y reduce el cortisol, la principal hormona del estrés.",
+        "sleep": "Al quedarnos dormidos, las ondas cerebrales pasan de las rápidas beta a las lentas alfa y theta. Las melodías suaves y repetitivas en torno a 60 BPM, justo por debajo del pulso en reposo, facilitan esa transición y se ha observado que acortan el tiempo para conciliar el sueño y mejoran su calidad.",
+        "meditation": "Un sonido suave y continuo ofrece un ancla a la que la atención puede volver cuando se dispersa. Sus armonías simples y su ritmo pausado calman la red neuronal por defecto, el circuito de la mente errante, ayudando a permanecer en el momento presente."
+      },
       "openSettings": "Abrir los ajustes de música",
       "shuffle": "Volver a mezclar",
       "autoPaused": "Se pausó automáticamente para dar un descanso a los oídos.",
@@ -972,6 +984,12 @@
       "like": "この曲が好き",
       "dislike": "この曲は好みではない",
       "waiting": "再生待機中",
+      "specialInfoAria": "この音楽が役立つ理由",
+      "specialInfo": {
+        "stress": "ゆっくりとした一定のリズムには、心拍と呼吸がその速さに同調していく「エントレインメント」という反応があります。この過程で緊張を司る交感神経が鎮まり、ストレスホルモンのコルチゾールが減ることが臨床研究で確認されています。",
+        "sleep": "眠りに入るとき、脳波は速いベータ波からゆっくりしたアルファ波・シータ波へ移っていきます。安静時の心拍よりやや遅い60BPM前後の穏やかで反復的な旋律はこの移行をやさしく後押しし、入眠までの時間を短くし睡眠の質を高めると報告されています。",
+        "meditation": "静かに続く一定の音は、雑念に流れた注意が戻ってくるための「錨」になります。シンプルな和声とゆったりした展開は、とりとめのない思考を生む脳のデフォルトモードネットワークの働きを鎮め、今この瞬間にとどまりやすくしてくれます。"
+      },
       "openSettings": "音楽の設定を開く",
       "shuffle": "もう一度シャッフル",
       "autoPaused": "耳を休ませるため自動で一時停止しました。",
@@ -1335,6 +1353,12 @@
       "like": "이 곡 좋아요",
       "dislike": "이 곡 싫어요",
       "waiting": "재생 대기 중",
+      "specialInfoAria": "이 음악이 도움이 되는 이유",
+      "specialInfo": {
+        "stress": "느리고 일정한 리듬은 심박과 호흡을 그 속도에 맞춰 함께 늦추는 '동조(entrainment)' 반응을 이끌어냅니다. 이 과정에서 긴장을 담당하는 교감신경이 가라앉고, 스트레스 호르몬인 코르티솔 분비가 줄어드는 것이 여러 임상 연구로 확인되어 있습니다.",
+        "sleep": "잠들 무렵 뇌파는 빠른 베타파에서 느린 알파·세타파로 내려갑니다. 안정 시 심박보다 조금 느린 60BPM 안팎의 잔잔하고 반복적인 선율은 이 전환을 부드럽게 거들어, 잠드는 데 걸리는 시간을 줄이고 수면의 질을 높이는 것으로 보고되어 있습니다.",
+        "meditation": "잔잔하게 이어지는 일정한 소리는 잡념으로 흩어진 주의가 되돌아올 '닻' 역할을 합니다. 단순한 화성과 느린 전개는 딴생각을 만들어내는 뇌의 기본모드 네트워크(DMN) 활동을 가라앉혀, 지금 이 순간에 머무르기 쉽게 해줍니다."
+      },
       "openSettings": "음악설정 열기",
       "shuffle": "재생 순서 다시 섞기",
       "autoPaused": "귀의 휴식을 위해 자동 일시정지됐어요.",
@@ -1698,6 +1722,12 @@
       "like": "Gostei desta faixa",
       "dislike": "Não gostei desta faixa",
       "waiting": "Pronto para tocar",
+      "specialInfoAria": "Por que esta música ajuda",
+      "specialInfo": {
+        "stress": "Ritmos lentos e constantes fazem o coração e a respiração entrarem no mesmo compasso, uma resposta chamada entrainment. Estudos clínicos mostram que isso acalma o sistema nervoso simpático e reduz o cortisol, o principal hormônio do estresse.",
+        "sleep": "Ao adormecer, as ondas cerebrais passam das rápidas beta para as lentas alfa e teta. Melodias suaves e repetitivas em torno de 60 BPM, pouco abaixo do pulso em repouso, facilitam essa transição e demonstraram encurtar o tempo para pegar no sono e melhorar sua qualidade.",
+        "meditation": "Um som suave e contínuo funciona como uma âncora para a atenção que se dispersa. Harmonias simples e um andamento calmo aquietam a rede de modo padrão do cérebro, o circuito da mente errante, tornando mais fácil permanecer no momento presente."
+      },
       "openSettings": "Abrir as configurações de música",
       "shuffle": "Embaralhar de novo",
       "autoPaused": "Pausou sozinho para dar um descanso aos ouvidos.",
@@ -2061,6 +2091,12 @@
       "like": "喜欢这首",
       "dislike": "不喜欢这首",
       "waiting": "等待播放",
+      "specialInfoAria": "这类音乐为何有效",
+      "specialInfo": {
+        "stress": "缓慢而稳定的节奏会让心跳和呼吸不知不觉与之同步，这种反应被称为「同频引导（entrainment）」。多项临床研究证实，这一过程能安抚交感神经，并降低压力荷尔蒙皮质醇的分泌。",
+        "sleep": "入睡时，脑电波会从快速的β波过渡到缓慢的α波和θ波。约60BPM、略低于静息心率的轻柔重复旋律能温和地推动这一转换，研究表明它可以缩短入睡时间并提高睡眠质量。",
+        "meditation": "持续而平稳的柔和声音，是注意力被杂念带走时可以返回的「锚」。简单的和声与舒缓的进行能平息大脑默认模式网络——产生胡思乱想的回路——让人更容易安住于当下。"
+      },
       "openSettings": "打开音乐设置",
       "shuffle": "重新随机播放",
       "autoPaused": "已自动暂停，让耳朵休息一下。",

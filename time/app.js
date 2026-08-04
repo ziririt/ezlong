@@ -7535,14 +7535,59 @@ function renderMusicPlaylistFilterOptions() {
 // 일반 목록과 동일하게 써서 브라우저 라디오 그룹이 자동으로 하나만
 // 남기도록 한다(Special에서 하나 고르면 위 일반 선택은 자동 해제되고,
 // 반대로 일반 쪽에서 고르면 Special 선택도 자동 해제된다).
+// 2026-08-04 성동님 요청 — Special 카테고리별 "왜 효과가 있는가" 과학
+// 설명(2~3줄). 쉬우면서 전문성이 느껴지는 문장으로, 6개 언어 번역은
+// i18n/locales/*.json(music.specialInfo.*)에 있다.
+function specialCategoryInfoText(key) {
+  if (key === "Calm Circles For A Busy Brain-스트레스해소") {
+    return t("music.specialInfo.stress", null, "느리고 일정한 리듬은 심박과 호흡을 그 속도에 맞춰 함께 늦추는 '동조(entrainment)' 반응을 이끌어냅니다. 이 과정에서 긴장을 담당하는 교감신경이 가라앉고, 스트레스 호르몬인 코르티솔 분비가 줄어드는 것이 여러 임상 연구로 확인되어 있습니다.");
+  }
+  if (key === "sleep") {
+    return t("music.specialInfo.sleep", null, "잠들 무렵 뇌파는 빠른 베타파에서 느린 알파·세타파로 내려갑니다. 안정 시 심박보다 조금 느린 60BPM 안팎의 잔잔하고 반복적인 선율은 이 전환을 부드럽게 거들어, 잠드는 데 걸리는 시간을 줄이고 수면의 질을 높이는 것으로 보고되어 있습니다.");
+  }
+  if (key === "명상") {
+    return t("music.specialInfo.meditation", null, "잔잔하게 이어지는 일정한 소리는 잡념으로 흩어진 주의가 되돌아올 '닻' 역할을 합니다. 단순한 화성과 느린 전개는 딴생각을 만들어내는 뇌의 기본모드 네트워크(DMN) 활동을 가라앉혀, 지금 이 순간에 머무르기 쉽게 해줍니다.");
+  }
+  return "";
+}
+
 function renderMusicSpecialFilterOptions() {
   if (!musicSpecialOptionsEl) return;
   const options = buildMusicSpecialOptions();
   const current = loadMusicPlaylistFilter();
   musicSpecialOptionsEl.innerHTML = options.map((option) => {
     const checked = option.key === current ? " checked" : "";
-    return `<label class="field-option"><input type="radio" name="musicPlaylistFilter" value="${option.key}"${checked}><span>${option.label}</span></label>`;
+    // 2026-08-04 — 항목 옆 정보(i) 버튼: 터치하면 아래로 과학 설명이
+    // 펼쳐진다(한 번에 하나만, 다시 누르면 접힘). 키에 공백·한글이
+    // 있어 data 속성에는 encodeURIComponent로 안전하게 싣는다.
+    const info = specialCategoryInfoText(option.key);
+    const infoId = encodeURIComponent(option.key);
+    const infoBtn = info
+      ? `<button type="button" class="special-info-btn" data-special-info-btn="${infoId}" aria-expanded="false" aria-label="${t("music.specialInfoAria", null, "이 음악이 도움이 되는 이유")}">i</button>`
+      : "";
+    const infoText = info
+      ? `<p class="special-info-text" data-special-info-text="${infoId}" hidden>${info}</p>`
+      : "";
+    return `<div class="special-option-block"><div class="special-option-row"><label class="field-option"><input type="radio" name="musicPlaylistFilter" value="${option.key}"${checked}><span>${option.label}</span></label>${infoBtn}</div>${infoText}</div>`;
   }).join("");
+}
+
+// 정보(i) 버튼 토글 — 컨테이너 위임 방식이라 innerHTML을 다시 그려도
+// 리스너를 다시 걸 필요가 없다. 라디오 선택(change 버블링)과는 무관.
+if (musicSpecialOptionsEl) {
+  musicSpecialOptionsEl.addEventListener("click", (event) => {
+    const btn = event.target.closest("[data-special-info-btn]");
+    if (!btn) return;
+    event.preventDefault();
+    const id = btn.getAttribute("data-special-info-btn");
+    const text = musicSpecialOptionsEl.querySelector(`[data-special-info-text="${id}"]`);
+    if (!text) return;
+    const willOpen = text.hidden;
+    musicSpecialOptionsEl.querySelectorAll("[data-special-info-text]").forEach((el) => { el.hidden = true; });
+    musicSpecialOptionsEl.querySelectorAll("[data-special-info-btn]").forEach((el) => el.setAttribute("aria-expanded", "false"));
+    text.hidden = !willOpen;
+    btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+  });
 }
 
 // 2026-07-22 유저 요청 — 비주얼라이저 커스터마이징 옵션 7종의 "현재 선택됨"
