@@ -5212,7 +5212,19 @@ function renderKings(tsla, nvda) {
   kings.forEach(({ data: d }) => {
     const container = document.getElementById(`king-card-${d.symbol}`);
     if (!container) return;
-    container.innerHTML = (() => {
+    const _aiK = d.symbol === 'TSLA' ? window._tslaAnalysis : window._nvdaAnalysis;
+    container.innerHTML = _deepAnalysisCardHtml(d, _aiK);
+  });
+}
+
+/* ── Deep-analysis card — 2026-08-04: promoted to a shared 9-symbol function.
+   It used to be trapped inside renderKings' IIFE, so only TSLA/NVDA got it.
+   market-signals.json carries price/buyScore/sellScore/gear/rsi/macd/dev200/
+   dev5/sma200/recentDailyReturns for all nine symbols, so nothing else was missing.
+   Only the symbol-bound bits (_ai lookup, CHAT_CTX key) became a parameter/guard.
+   ★ Keep in sync with atmr-dashboard.html's twin (CLAUDE.md rule 8). */
+function _deepAnalysisCardHtml(d, _ai) {
+  return (() => {
     const score      = d.buyScore;
     const sellScore  = d.sellScore ?? 50;
     const cls        = getScoreClass(score);
@@ -5228,7 +5240,6 @@ function renderKings(tsla, nvda) {
     const macdColor   = d.macd?.histogram > 0 ? 'var(--gr)' : 'var(--rd)';
 
     // AI 브리핑 생성 (Gemini 분석 JSON 우선 활용)
-    const _ai = d.symbol === 'TSLA' ? window._tslaAnalysis : window._nvdaAnalysis;
     const brief = generateKingBrief(d, _ai);
 
     // 트레이딩 플랜 HTML (string concat — nested template literal 회피)
@@ -5278,8 +5289,9 @@ function renderKings(tsla, nvda) {
     }
 
     // AI 상담 컨텍스트 저장
-    const ctxKey = d.symbol.toLowerCase(); // 'tsla' or 'nvda'
-    CHAT_CTX[ctxKey] =
+    const ctxKey = d.symbol.toLowerCase();
+    // only TSLA/NVDA have an AI chat corner
+    if (ctxKey === 'tsla' || ctxKey === 'nvda') CHAT_CTX[ctxKey] =
       `[${d.symbol} Analysis Briefing]\n` +
       `Current Price: $${d.price?.toFixed(2) ?? '—'} (${changeStr})\n` +
       `Buy Score: ${score}, Sell Suitability: ${sellScore}\n` +
@@ -5401,7 +5413,7 @@ function renderKings(tsla, nvda) {
         <div class="king-header">
           <div class="king-symbol-block">
             <div class="king-symbol">${d.symbol}</div>
-            <div class="king-name">${SYMBOLS[d.symbol]?.name ?? ''}</div>
+            <div class="king-name">${SYMBOLS[d.symbol]?.name ?? MEGA9?.name?.[d.symbol] ?? ''}</div>
           </div>
           <div class="king-price-block">
             <div class="king-price" id="live-price-${d.symbol}">$${d.price.toFixed(2)}</div>
@@ -5468,8 +5480,7 @@ function renderKings(tsla, nvda) {
         <div style="font-size:16px;font-weight:600;color:var(--t2);margin-top:10px;padding:8px 0;">${actionRec}</div>
       </div>
     `;
-    })();
-  });
+  })();
 }
 
 function generateKingBrief(d, ai) {
@@ -5859,6 +5870,14 @@ function megaScaffold() {
 
 // Cards only — the TradingView widget is never touched, so data refreshes
 // never reload the chart.
+// The deep card calls .toFixed() on price/changePct/dev200/dev5/rsi without guards.
+// A single missing field would kill the whole render, so gate it here (all 9 symbols).
+function _deepCardReady(d) {
+  if (!d) return false;
+  return ['price', 'changePct', 'dev200', 'dev5', 'rsi'].every(k => typeof d[k] === 'number')
+      && typeof d.gear === 'number' && typeof d.buyScore === 'number';
+}
+
 function renderMegaCards(sym) {
   const box = document.getElementById(`mega-cards-${sym}`);
   if (!box) return;
@@ -5869,7 +5888,8 @@ function renderMegaCards(sym) {
          : (ai === undefined ? '<div style="color:var(--t3);font-size:14px;margin:0 0 12px;">Loading AI chart analysis…</div>' : '')}
     ${buildAudienceHtml(window._swingView?.megas?.[sym]?.audienceEn)}
     ${d ? buildMegaMetricsHtml(d)
-        : '<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px;color:var(--t2);font-size:16px;margin-bottom:12px;">Awaiting data collection — this will populate after the next automatic refresh (up to every 30 minutes during market hours).</div>'}`;
+        : '<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px;color:var(--t2);font-size:16px;margin-bottom:12px;">Awaiting data collection — this will populate after the next automatic refresh (up to every 30 minutes during market hours).</div>'}
+    ${_deepCardReady(d) ? `<details class="sv-det-page"><summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:10px 4px;">Full detail — indicators, scores, and trade criteria</summary><div>${_deepAnalysisCardHtml(d, ai || null)}</div></details>` : ''}`;
   if (ai === undefined && MEGA9.ai[sym]) {
     fetchAnalysisJSON(MEGA9.ai[sym]).then(a => {
       window._megaAi[sym] = a || null;
@@ -5905,6 +5925,19 @@ function renderKingStanceCards() {
       + buildMegaAiHtml(ai)
       + buildAudienceHtml(v?.audienceEn)
       + (d ? buildMegaMetricsHtml(d) : '');
+    // 2026-08-04: match the seven MEGA sections — the legacy deep card goes behind
+    // the same "Full detail" disclosure so all nine symbols read identically.
+    // renderKings() rewrites this container on every refresh, so re-wrap each time;
+    // the guard below keeps it from nesting when nothing was rewritten.
+    if (!c.querySelector('details.sv-det-page') && c.childElementCount) {
+      const det = document.createElement('details');
+      det.className = 'sv-det-page';
+      det.innerHTML = '<summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:10px 4px;">Full detail — indicators, scores, and trade criteria</summary>';
+      const inner = document.createElement('div');
+      while (c.childElementCount) inner.appendChild(c.children[0]);
+      det.appendChild(inner);
+      c.appendChild(det);
+    }
   });
 }
 
