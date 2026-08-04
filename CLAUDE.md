@@ -1294,4 +1294,69 @@ Counter(re.findall(r'[+−-]?\d+(?:\.\d+)?%?', text))
 
 ---
 
+## 35. 안드로이드 에뮬레이터 자동 조작 — 스크린샷·디버깅 레시피 (2026-08-05 신설)
+
+**왜 적어두나:** 2026-08-05 새벽에 "언어별 스토어 스크린샷을 알아서 찍어달라"는
+요청을 처리하면서 만든 장치다. 매번 다시 만들면 두 시간이 또 든다.
+
+**전제:** 맥에 안드로이드 SDK, 에뮬레이터(`ltel_pixel`) 기동, FlipZen 앱
+(`com.ezlong.flipzenweather`) 설치. `MainActivity.kt`가 이미
+`WebView.setWebContentsDebuggingEnabled(true)`를 켜두었다 — 이게 전부의 전제다.
+
+**연결 사슬**
+
+```
+adb shell pidof com.ezlong.flipzenweather                 # WebView 프로세스 PID
+adb forward tcp:9222 localabstract:webview_devtools_remote_<PID>
+curl http://127.0.0.1:9222/json                            # webSocketDebuggerUrl 획득
+node <script> <wsUrl> ...                                  # CDP로 페이지 조작
+```
+
+Node 22+의 전역 `WebSocket`이면 충분하다 — `ws` 패키지 설치 불필요. 단
+DevTools의 `/json` HTTP는 node의 기본 `http.get`으로 붙으면 소켓이 끊긴다
+(ECONNRESET). `curl`로 받아 ws URL만 노드에 인자로 넘기는 구조가 안전하다.
+
+**핵심 CDP 명령 세 개**
+
+- `Emulation.setGeolocationOverride {latitude, longitude, accuracy}`
+  — `adb emu geo fix`는 에뮬레이터 Extended Controls의 기본 위치(마운틴뷰,
+  역지오코딩하면 샌프란시스코)에 계속 덮여서 **믿을 수 없다**. 실제로 도쿄·
+  베이징·마드리드를 지정했는데 전부 "San Francisco weather"로 찍혔다.
+  CDP 오버라이드는 WebView의 geolocation을 직접 갈아끼우므로 확실하다.
+- `Emulation.setUserAgentOverride {userAgent, acceptLanguage}`
+  — 온도 단위(`FZ_SEASON.temperatureUnit`)는 `navigator.language`의 지역
+  서브태그로 정해진다. 에뮬레이터 시스템 언어가 en-US면 도쿄 날씨가 화씨 74°로
+  나온다. `acceptLanguage: "ja-JP,ja;q=0.9"`를 줘야 섭씨가 된다.
+- `Runtime.evaluate {userGesture: true}`
+  — 음악 재생 버튼은 자동재생 정책 때문에 사용자 제스처 없이는 안 먹는다.
+
+**언어 전환은 OS 로케일이 아니라 localStorage로**
+
+`adb shell cmd locale set-app-locales`는 반영이 한 박자 늦고 불안정했다
+(ko를 지정했는데 en으로 찍힌 컷이 나왔다). 앱의 로케일 결정 1순위가
+`localStorage["flipzen.locale"]`(i18n/index.js `resolveLocale`)이므로 이걸
+직접 쓰고 `Page.reload`가 가장 확실하다. **작업 끝에는 반드시 `ko`로
+되돌려라** — 안 그러면 성동님 기기가 포르투갈어로 남는다(실제로 남겼고,
+"상파울루인데 왜 한글이냐"는 문의를 받았다. 되돌림 자체는 맞았고 캐시된
+좌표만 남아 생긴 착시였다).
+
+**버튼 토글은 상태를 보고 눌러라**
+
+`musicToggle`을 무조건 click하면 이미 재생 중이던 회차에서는 **꺼진다**.
+`aria-pressed`를 먼저 읽고 꺼져 있을 때만 눌러야 한다. 한 회차에서 트랙명이
+"Ready to play"로 찍힌 원인이 이것이었다.
+
+**스크린샷:** `adb -s emulator-5554 exec-out screencap -p > out.png` (1080×2400).
+CDP 세션을 열어둔 채로 찍어야 하므로, 노드 스크립트 안에서 `child_process`로
+adb를 부르는 구조가 맞다 — 쉘에서 따로 찍으면 오버라이드가 이미 풀려 있다.
+
+**osascript 브릿지 주의**
+- `do shell script`는 완료를 기다린다. 1분 넘는 작업은 `nohup ... & disown`으로
+  띄우고 로그 파일을 폴링해야 한다. 안 그러면 브릿지 타임아웃으로 통째로 날아간다.
+- 스크립트 파일은 base64로 인코딩해 `base64 --decode > 파일`로 심는 것이
+  따옴표 지옥을 피하는 유일한 방법이다.
+- 맥이 잠들면 브릿지가 끊긴다. 밤샘 작업은 이 전제를 깔고 설계할 것.
+
+---
+
 전체 규칙·CSS 변수·배포 체크리스트·Git 워크플로우 → **EZLONG_GUIDE.md** 참조
