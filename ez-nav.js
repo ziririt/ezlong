@@ -73,11 +73,36 @@
         shortLbl +
       '</a>';
 
+    /* 모바일 타일 메뉴는 짧은 이름 사용 (2026-08-04, 성동님 지시 — 긴 설명형
+       메뉴명 폐지, 2열 타일로 스크롤 없이 한 화면). NEW 딱지는 TOP9에만 별도 부착. */
+    var mobLbl = shortLbl +
+      (href.indexOf('#top9') >= 0
+        ? ' <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 5px;margin-left:2px;vertical-align:middle;">NEW</span>'
+        : '');
     mobileItemsHTML +=
       '<a href="' + href + '" class="ez-mob-item' + (active ? ' active' : '') + '">' +
-        fullLbl +
+        mobLbl +
       '</a>';
   }
+
+  /* ── 모바일 메뉴 타일화 — 1열 리스트(스크롤 압박) → 2열 타일 그리드 ──
+     ez-design.css의 기존 규칙보다 id 셀렉터로 우선 적용 (CSS 파일 캐시 무관) */
+  (function mobTileStyle() {
+    var st = document.createElement('style');
+    st.textContent =
+      '@media (max-width: 768px) {' +
+      '#ez-mob-menu { grid-template-columns: 1fr 1fr; gap: 10px;' +
+        'padding: 64px 14px 24px; align-content: start; }' +
+      '#ez-mob-menu.open { display: grid; }' +
+      '#ez-mob-menu .ez-mob-item { display: flex; align-items: center; justify-content: center;' +
+        'text-align: center; padding: 15px 8px; min-height: 56px; line-height: 1.35; word-break: keep-all;' +
+        'border: 1px solid var(--ez-border); border-radius: 14px;' +
+        'background: var(--ez-surface); }' +
+      '#ez-mob-menu .ez-mob-item.active { border: 2px solid var(--ez-blue);' +
+        'padding-left: 8px; background: var(--ez-blue-dim); color: var(--ez-blue); }' +
+      '}';
+    document.head.appendChild(st);
+  })();
 
   /* ── 1. <nav> 생성 ── */
   var nav = document.createElement('nav');
