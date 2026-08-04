@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-04T22:06:45.746973+00:00",
-  "generatedAtKST": "2026-08-05 07:06 KST",
+  "generatedAt": "2026-08-04T22:17:53.410250+00:00",
+  "generatedAtKST": "2026-08-05 07:17 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -67,7 +67,7 @@
         "histogram": 1.7841
       },
       "high52": 708.98,
-      "low52": 570.6108,
+      "low52": 570.6107,
       "dev200": 10.4539,
       "dev5": 2.9163,
       "dev20": 3.2287,
@@ -343,7 +343,7 @@
         "histogram": -3.5222
       },
       "high52": 340.08,
-      "low52": 202.1182,
+      "low52": 202.1181,
       "dev200": 11.1891,
       "dev5": -2.914,
       "dev20": -4.4655,
@@ -688,7 +688,7 @@
     "prevClose": 46,
     "prev1Week": 38,
     "prev1Month": 33,
-    "timestamp": "2026-08-04T21:49:28+00:00"
+    "timestamp": "2026-08-04T21:59:34+00:00"
   },
   "macro": {
     "yield10y": {
@@ -708,31 +708,48 @@
       "unit": "%"
     },
     "oil": {
-      "price": 75.14,
-      "change": -5.2,
-      "changePct": -6.4725,
+      "price": 75.29,
+      "change": -5.05,
+      "changePct": -6.2858,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 99.88,
-      "change": -0.08,
-      "changePct": -0.08,
+      "price": 99.882,
+      "change": -0.078,
+      "changePct": -0.078,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4134.2002,
-      "change": 100.5002,
-      "changePct": 2.4915,
+      "price": 4133.7998,
+      "change": 100.0999,
+      "changePct": 2.4816,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-08-04T22:06:45.746973+00:00",
+      "atKST": "2026-08-05 07:06 KST",
+      "qqq": {
+        "rsi": 58.06,
+        "macdHist": 1.9429,
+        "dev5": 4.6876,
+        "dev200": 12.2298,
+        "gear": 3,
+        "buyScore": 73,
+        "sellScore": 56,
+        "price": 723.85
+      },
+      "soxxMacdHist": -0.6501,
+      "fearAndGreed": 58,
+      "yield10y": 4.627
+    },
     {
       "at": "2026-08-04T22:01:12.509166+00:00",
       "atKST": "2026-08-05 07:01 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": -5.8128,
       "fearAndGreed": 42,
       "yield10y": 4.745
-    },
-    {
-      "at": "2026-07-31T22:10:51.773058+00:00",
-      "atKST": "2026-08-01 07:10 KST",
-      "qqq": {
-        "rsi": 45.12,
-        "macdHist": -2.5607,
-        "dev5": 1.4471,
-        "dev200": 6.8588,
-        "gear": 3,
-        "buyScore": 75,
-        "sellScore": 34,
-        "price": 687.99
-      },
-      "soxxMacdHist": -5.8128,
-      "fearAndGreed": 42,
-      "yield10y": 4.745
     }
   ],
-  "swingContinuity": "{\"ko\": \"\ucd5c\uadfc \uba70\uce60\uac04 QQQ\ub294 \uae0d\uc815\uc801\uc778 \ud750\ub984\uc744 \uc774\uc5b4\uc654\uc73c\uba70, \ud2b9\ud788 8\uc6d4 4\uc77c RSI 55.52\uc5d0\uc11c \uc624\ub298 58.06\uc73c\ub85c \uc0c1\uc2b9\ud558\uba70 \ub9e4\uc218 \uc2ec\ub9ac\uac00 \uac15\ud654\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \uc624\ub298 \ub9e4\uc218 \uc810\uc218 73\uc740 \uc774\uc804 71\ubcf4\ub2e4 \uac1c\uc120\ub418\uc5c8\uace0, \ub9e4\ub3c4 \uc810\uc218 56\uc740 \uc774\uc804 45\ubcf4\ub2e4 \ub192\uc544\uc838 \ub9e4\uc218\uc138\uac00 \uc6b0\uc704\ub97c \uc810\ud558\ub294 \ud750\ub984\uc785\ub2c8\ub2e4. SOXX\uc640 TSLA, NVDA \ubaa8\ub450 \ucd5c\uadfc 5\uac70\ub798\uc77c \ub3d9\uc548 \uae0d\uc815\uc801\uc778 \ub4f1\ub77d\ub960\uc744 \ubcf4\uc600\uc73c\ub098, \uc624\ub298 QQQ\uc758 +3.40% \uc0c1\uc2b9\ub960\uc740 SOXX\uc758 +6.80% \uc0c1\uc2b9\ub960\uc5d0 \ube44\ud574 \ub2e4\uc18c \ub454\ud654\ub41c \ubaa8\uc2b5\uc785\ub2c8\ub2e4.\", \"en\": \"QQQ has shown a positive trend in recent days, with buyer sentiment strengthening as the RSI rose from 55.52 on August 4th to 58.06 today. Today's buy score of 73 improved from the previous 71, and the sell score of 56 increased from 45, indicating a bullish momentum. While SOXX, TSLA, and NVDA all posted positive returns over the last five trading days, QQQ's +3.40% rise today appears somewhat subdued compared to SOXX's +6.80% surge.\"}\n.\"}",
-  "swingContinuityEn": null
+  "swingContinuity": "\ucd5c\uadfc \uba70\uce60\uac04 QQQ\ub294 \uae0d\uc815\uc801\uc778 \ub4f1\ub77d\ub960 \ud750\ub984\uc744 \uc774\uc5b4\uc654\uc73c\uba70, \uc624\ub298 \ub9e4\uc218\uc810\uc218\ub294 73\uc73c\ub85c \uc774\uc804 71\ubcf4\ub2e4 \uc18c\ud3ed \uac1c\uc120\ub418\uc5c8\uc2b5\ub2c8\ub2e4. RSI \ub610\ud55c 58.06\uc73c\ub85c \uc0c1\uc2b9\ud558\uba70 \uae0d\uc815\uc801\uc778 \ud750\ub984\uc744 \uc720\uc9c0\ud558\uace0 \uc788\uc73c\uba70, \ud2b9\ud788 SOXX\uc640 NVDA\ub294 \uc624\ub298 \uac01\uac01 6.80%, 2.56% \uc0c1\uc2b9\ud558\uba70 \ubc18\ub3c4\uccb4 \uc139\ud130\uc758 \uac15\uc138\uac00 \ub450\ub4dc\ub7ec\uc84c\uc2b5\ub2c8\ub2e4. \uc804\ubc18\uc801\uc73c\ub85c \ub9e4\uc218 \uc2ec\ub9ac\uac00 \uac15\ud654\ub418\ub294 \uad6c\uac04\uc73c\ub85c \ud574\uc11d\ub429\ub2c8\ub2e4.",
+  "swingContinuityEn": "QQQ has maintained a positive trend in daily returns over the past few days, and today's buy score improved slightly to 73 from the previous 71. The RSI also rose to 58.06, maintaining a positive momentum, with the semiconductor sector showing particular strength as SOXX and NVDA gained 6.80% and 2.56% respectively today. This is interpreted as a zone where buying sentiment is strengthening."
 }
