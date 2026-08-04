@@ -258,8 +258,15 @@
     .en-footer a:hover { text-decoration: underline; }
 
     @media (max-width: 600px) {
-      .hero { padding: 56px 20px 48px; }
-      .tools-section { padding: 48px 20px; }
+      .hero { padding: 40px 20px 36px; }
+      .tools-section { padding: 36px 14px; }
+      /* 2-column tile grid on mobile — same layout as the Korean main page (2026-08-04) */
+      .tools-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .tool-card { padding: 14px 12px; }
+      .tool-icon { font-size: 26px; }
+      .tool-name { font-size: 16px; }
+      .tool-desc { font-size: 14px; display: -webkit-box; -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical; overflow: hidden; }
     }
   </style>
 </head>
