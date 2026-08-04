@@ -203,6 +203,26 @@ IntersectionObserver(600px 선행)로 스크롤 접근 시 지연 렌더, 하단
 - 후속(별도 세션 규모): en/atmr-dashboard의 TOP9·스윙 전략 동기화, 각 en 페이지
   자체 헤더의 ez-nav 영어 모드 전환, 국문 신기능 번역 반영.
 
+### 조치 — 25단계 (08-04 오후, 성동님 지시): 영문판 3단계 — en 대시보드 TOP9 이식 완료
+
+영문판이 국문 개편에서 뒤처지던 근본 원인(별도 파일 구조)을 해소하는 본 작업.
+
+1. **서버 (generate-swing-view.py):** 영문 형제 필드 `commentaryEn`·`audienceEn` 신설.
+   MEGA_EN(7종 검증 문법 영문 서술)·STATS_EN·`_audience_en()`·`_move_prefix_en()` 추가.
+   **한국어와 같은 분기에서 함께 생성**(분기 로직 복제 금지 — 한쪽만 고치면 어긋나므로
+   `_audience`/`_audience_en`은 항상 동시 수정). 전부 규칙 엔진 — **LLM 비용 0.**
+   실데이터 9종 + 인공 5케이스 교차 45건 스모크(한글 혼입 0·크래시 0) 후 배포,
+   15:02 KST 재생성분에 En 필드 실측 확인.
+2. **en/atmr-dashboard.html:** TOP9 전면 이식 — swing-view 로더, 상·하단 티커 칩 9종,
+   7종 지연 렌더 섹션(IntersectionObserver 600px), 오늘의 판단(Today's Call)·AI 차트분석·
+   맞춤 행동 진단(Tailored Action Read)·핵심 지표 4카드, TSLA/NVDA 동일 포맷 통일
+   (renderKingStanceCards), 탭 라벨 TSLA·NVDA → TOP9+NEW, data-tab 상하단 동기화,
+   해시 #top9 딥링크.
+3. **ez-nav.js:** 영문 메뉴 3분할(Swing Signal / Swing Strategy / TOP9 Deep Dive+NEW).
+
+검증: 7종 섹션 전부 4카드 렌더·한글 혼입 0·JS 에러 0(Playwright 실데이터 라우팅),
+en/index·en/stocks 메뉴 3분할, 국문판 회귀 없음.
+
 ### 조치 — 24단계 (08-04 오후, 성동님 지시): 영문판 2단계 — 전 코너 메뉴 버튼 + 메인 2열 타일
 
 - en 코너 페이지 17개 전부: 우측 상단 "한국어 →" 링크 삭제 → Menu 버튼 + 영어 타일

@@ -726,6 +726,30 @@ a { text-decoration: none; color: inherit; }
   border-radius: 100px; border: 1px solid currentColor; opacity: .7;
 }
 
+/* ─── TOP9 ticker shortcut chips (ported from KR, 2026-08-04) ────────── */
+.top9-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+.top9-chip {
+  border: 1px solid rgba(120,120,128,0.28); background: var(--card); color: var(--t1);
+  border-radius: 999px; padding: 8px 14px; font-size: 15px; font-weight: 700;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 6px; line-height: 1;
+}
+.top9-chip .t9-chg { font-size: 14px; font-weight: 600; }
+.top9-chip.active { border-color: #0a84ff; background: #0a84ff; color: #fff; }
+.top9-chip.active .t9-chg { color: #fff !important; }
+.top9-sec-head {
+  font-size: 22px; font-weight: 800; color: var(--t1);
+  display: flex; align-items: baseline; gap: 8px; margin: 4px 0 12px;
+  padding-left: 2px;
+}
+.top9-sec-head span { color: #0a84ff; font-size: 18px; font-weight: 800; letter-spacing: .02em; }
+.tab-new-badge {
+  display: inline-block; background: #ff3b30; color: #fff;
+  font-size: 14px; font-weight: 800; line-height: 1.3;
+  border-radius: 6px; padding: 1px 7px; margin-left: 4px; vertical-align: middle;
+}
+/* keep section headers clear of the sticky nav when chips scroll to them */
+.king-section { scroll-margin-top: 64px; }
+
 /* ─── Two Kings ─────────────────────────────────── */
 .kings-grid {
   display: grid; grid-template-columns: 1fr 1fr;
@@ -1627,17 +1651,17 @@ li.gear-other-sep { display: none !important; }
 
     <!-- 탭 네비게이션 -->
     <div class="tab-bar">
-      <button class="tab-btn active" onclick="switchTab('market')">
+      <button class="tab-btn active" data-tab="market" onclick="switchTab('market')">
         Swing Signal
         <span class="tab-btn-sub">Nasdaq 100 · S&P 500 · Semiconductors</span>
       </button>
-      <button class="tab-btn" onclick="switchTab('strategy')">
+      <button class="tab-btn" data-tab="strategy" onclick="switchTab('strategy')">
         Swing Strategy
         <span class="tab-btn-sub">3-3-4 Rule · Leverage Guide</span>
       </button>
-      <button class="tab-btn" onclick="switchTab('kings')">
-        TSLA·NVDA
-        <span class="tab-btn-sub">Deep Dive</span>
+      <button class="tab-btn" data-tab="kings" onclick="switchTab('kings')">
+        TOP9 <span class="tab-new-badge">NEW</span>
+        <span class="tab-btn-sub">Big Tech Deep Dive</span>
       </button>
     </div>
 
@@ -1724,7 +1748,10 @@ li.gear-other-sep { display: none !important; }
     <!-- ────────────────────────────────────────── -->
     <div class="tab-pane" id="tab-kings">
 
-      <!-- ── TSLA 섹션 ── -->
+      <!-- TOP9 ticker shortcuts (top) -->
+      <div id="top9-chip-bar" class="top9-chips"></div>
+
+      <!-- ── TSLA section ── -->
       <div class="king-section">
         <div class="tv-chart-card" style="margin-bottom:20px;">
           <div class="tv-chart-label">Tesla TSLA <span>Daily · TradingView</span></div>
@@ -1749,6 +1776,12 @@ li.gear-other-sep { display: none !important; }
         <!-- AI 상담 — NVDA -->
         <div id="chat-nvda" style="margin-top:12px;"></div>
       </div>
+
+      <!-- 7 additional mega-cap sections (lazy-rendered on scroll) -->
+      <div id="mega-sections"></div>
+
+      <!-- TOP9 ticker shortcuts (bottom) -->
+      <div id="top9-chip-bar-bottom" class="top9-chips" style="margin-top:28px;"></div>
 
     </div><!-- /tab-kings -->
 
@@ -2107,9 +2140,9 @@ li.gear-other-sep { display: none !important; }
 
     <!-- 하단 탭 바 -->
     <div class="tab-bar tab-bar-bottom">
-      <button class="tab-btn" onclick="switchTab('market'); window.scrollTo({top:0,behavior:'smooth'})">Swing Signal</button>
-      <button class="tab-btn" onclick="switchTab('strategy'); window.scrollTo({top:0,behavior:'smooth'})">Swing Strategy</button>
-      <button class="tab-btn" onclick="switchTab('kings'); window.scrollTo({top:0,behavior:'smooth'})">TSLA·NVDA</button>
+      <button class="tab-btn" data-tab="market" onclick="switchTab('market'); window.scrollTo({top:0,behavior:'smooth'})">Swing Signal</button>
+      <button class="tab-btn" data-tab="strategy" onclick="switchTab('strategy'); window.scrollTo({top:0,behavior:'smooth'})">Swing Strategy</button>
+      <button class="tab-btn" data-tab="kings" onclick="switchTab('kings'); window.scrollTo({top:0,behavior:'smooth'})">TOP9 <span class="tab-new-badge">NEW</span></button>
     </div>
 
     <!-- 면책 고지 -->
@@ -3211,6 +3244,7 @@ async function loadAllData(forceRefresh = false) {
 // ─── 렌더링 함수들 ───────────────────────────────
 
 function renderAll(data) {
+  window._renderData = data;   // TOP9 chips/cards read from this
   const vix  = data['VIX']?.price ?? 18;
   const qqq  = data['QQQ'];
   const voo  = data['VOO'];
@@ -3333,6 +3367,13 @@ function renderAll(data) {
   try { renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vix); } catch(e) { console.error('[renderStrategyGuide]', e); }
   try { renderChartAiComments(); } catch(e) { console.error('[renderChartAiComments]', e); }
   try { renderKings(tsla, nvda); } catch(e) { console.error('[renderKings]', e); }
+  // TOP9: refresh chips / king stance cards / already-rendered mega sections
+  try {
+    renderTop9Chips();
+    megaScaffold();
+    renderKingStanceCards();
+    window._megaRendered.forEach(sy => renderMegaCards(sy));
+  } catch (e) { console.error('[top9]', e); }
 
   // 히스토리 저장 & 재렌더
   saveSignalSnapshot(data);
@@ -5590,14 +5631,15 @@ function setUpdateTime(ts) {
 
 function switchTab(tab) {
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(`tab-${tab}`).classList.add('active');
-  const idx = ['market','strategy','kings'].indexOf(tab);
-  document.querySelectorAll('.tab-btn')[idx]?.classList.add('active');
+  // 2026-08-04 (ported from KR): sync active state on BOTH top and bottom tab bars
+  // via data-tab. The old positional-index approach only covered the top three.
+  document.querySelectorAll('.tab-btn[data-tab]').forEach(b =>
+    b.classList.toggle('active', b.dataset.tab === tab));
 
   // ── 탭 딥링크 (2026-07-03): 각 탭에 공유 가능한 해시 URL 부여 ──────────
   // #swing-strategy = 스윙 전략, #tsla-nvda = TSLA·NVDA 집중 분석
-  const TAB_HASH = { market: '', strategy: '#swing-strategy', kings: '#tsla-nvda' };
+  const TAB_HASH = { market: '', strategy: '#swing-strategy', kings: '#top9' };
   try {
     history.replaceState(null, '', location.pathname + location.search + (TAB_HASH[tab] ?? ''));
   } catch (e) { /* 미지원 브라우저 무시 */ }
@@ -5606,10 +5648,261 @@ function switchTab(tab) {
 // ── 해시 딥링크 진입/변경 처리 (2026-07-03) ─────────────────────────────────
 // https://ezlong.com/atmr-dashboard.html#swing-strategy → 스윙 전략 탭 바로 열림
 // https://ezlong.com/atmr-dashboard.html#tsla-nvda      → TSLA·NVDA 탭 바로 열림
+
+// ══════════════════════════════════════════════════════════════════════════
+// TOP9 Deep Dive — ported from the Korean dashboard (2026-08-04).
+// Data source: data/swing-view.json (rule engine, English sibling fields
+// stanceLabelEn / commentaryEn / audienceEn). No extra LLM cost.
+// Keep this block in sync with atmr-dashboard.html's TOP9 block.
+// ══════════════════════════════════════════════════════════════════════════
+const GITHUB_SWING_VIEW_URL = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/swing-view.json';
+window._swingView = null;
+(async function loadSwingViewEn() {
+  try {
+    const res = await fetch(GITHUB_SWING_VIEW_URL + '?t=' + Math.floor(Date.now() / 300000));
+    if (!res.ok) return;
+    window._swingView = await res.json();
+    try { renderTop9Chips(); megaScaffold(); } catch (e) {}
+    try { renderKingStanceCards(); } catch (e) {}
+    window._megaRendered.forEach(s => renderMegaCards(s));
+  } catch (e) { console.warn('[swing-view]', e); }
+})();
+
+const MEGA9 = {
+  order: ['TSLA', 'NVDA', 'AAPL', 'GOOG', 'MSFT', 'AMZN', 'TSM', 'AVGO', 'META'],
+  name: { TSLA: 'Tesla', NVDA: 'NVIDIA', AAPL: 'Apple', GOOG: 'Alphabet',
+          MSFT: 'Microsoft', AMZN: 'Amazon', TSM: 'TSMC', AVGO: 'Broadcom', META: 'Meta' },
+  tv:   { AAPL: 'NASDAQ:AAPL', GOOG: 'NASDAQ:GOOG', MSFT: 'NASDAQ:MSFT',
+          AMZN: 'NASDAQ:AMZN', TSM: 'NYSE:TSM', AVGO: 'NASDAQ:AVGO', META: 'NASDAQ:META' },
+  // The chart-analysis engine files Alphabet under GOOGL
+  ai:   { AAPL: 'AAPL', GOOG: 'GOOGL', MSFT: 'MSFT', AMZN: 'AMZN',
+          TSM: 'TSM', AVGO: 'AVGO', META: 'META' }
+};
+window._megaAi = {};
+window._megaRendered = new Set();
+
+function _top9ChipsHtml() {
+  return MEGA9.order.map(sym => {
+    const d = window._renderData?.[sym];
+    const pct = (d && typeof d.changePct === 'number')
+      ? `<span class="t9-chg" style="color:${d.changePct >= 0 ? 'var(--gr)' : 'var(--rd)'}">${d.changePct >= 0 ? '+' : ''}${d.changePct.toFixed(1)}%</span>`
+      : '';
+    return `<button type="button" class="top9-chip" data-sym="${sym}" onclick="selectTop9('${sym}')">${sym}${pct}</button>`;
+  }).join('');
+}
+
+function renderTop9Chips() {
+  const html = _top9ChipsHtml();
+  const top = document.getElementById('top9-chip-bar');
+  const bot = document.getElementById('top9-chip-bar-bottom');
+  if (top) top.innerHTML = html;
+  if (bot) bot.innerHTML = html;
+}
+
+function selectTop9(sym) {
+  document.querySelectorAll('.top9-chip').forEach(c =>
+    c.classList.toggle('active', c.dataset.sym === sym));
+  let target;
+  if (sym === 'TSLA' || sym === 'NVDA') {
+    target = document.getElementById(`king-card-${sym}`)?.closest('.king-section');
+  } else {
+    // Render every section ABOVE the target first so the layout is fixed before
+    // scrolling — otherwise lazy sections expand mid-scroll and we land off-target.
+    const extras = MEGA9.order.filter(s => s !== 'TSLA' && s !== 'NVDA');
+    for (const s of extras) { renderMegaSection(s); if (s === sym) break; }
+    target = document.getElementById(`mega-sec-${sym}`);
+  }
+  if (!target) return;
+  const go = () => target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  requestAnimationFrame(go);
+  setTimeout(go, 900);   // corrective re-scroll after images/charts settle
+}
+
+// Tailored action read — holder / new entry / averaging down / pyramiding
+function buildAudienceHtml(aud) {
+  if (!aud) return '';
+  const row = (cls, label, txt) => `<div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(120,120,128,0.14);">
+    <span class="ltier-cat-badge ${cls}" style="flex-shrink:0;">${label}</span>
+    <span style="font-size:15px;line-height:1.6;color:var(--t1);">${txt}</span></div>`;
+  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:14px 16px 6px;margin-bottom:12px;">
+    <div style="font-weight:800;color:var(--t1);font-size:16px;margin-bottom:6px;">Tailored Action Read</div>
+    ${row('hold', 'Holder', aud.holder)}
+    ${row('buy', 'New entry', aud.newbie)}
+    ${row('avg', 'Avg. down', aud.avgdown)}
+    ${row('fire', 'Pyramid', aud.pyramid)}
+  </div>`;
+}
+
+function _stanceCardHtml(v) {
+  if (!v) return '';
+  const label = v.stanceLabelEn || v.stanceLabel || '';
+  const body  = v.commentaryEn || '';
+  if (!body) return '';
+  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-left:4px solid #0a84ff;border-radius:14px;padding:16px 16px 10px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">Today's Call</span>
+      <span style="font-weight:800;color:var(--t1);font-size:16px;">${label}</span>
+    </div>
+    <p style="margin:0 0 10px;line-height:1.75;color:var(--t1);font-size:16px;">${body}</p>
+    <div style="color:var(--t3);font-size:14px;">Only backtested statistics (11 years) are cited · Reference material, not investment advice</div>
+  </div>`;
+}
+
+function _megaStanceCardHtml(sym) {
+  return _stanceCardHtml(window._swingView?.megas?.[sym]);
+}
+
+// Key metrics card — server-computed values from market-signals.json
+function buildMegaMetricsHtml(d) {
+  const buy = d.buyScore ?? 50, sell = d.sellScore ?? 50;
+  const gearTxt = d.gear === 3 ? 'Uptrend (above 200-day)' : d.gear === 2 ? 'Range-bound (near 200-day)' : 'Downtrend (below 200-day)';
+  const gearColor = d.gear === 3 ? 'var(--gr)' : d.gear === 2 ? 'var(--yl)' : 'var(--rd)';
+  const chgCls = (d.changePct ?? 0) >= 0 ? 'var(--gr)' : 'var(--rd)';
+  const chgStr = d.changePct != null ? ((d.changePct >= 0 ? '+' : '') + d.changePct.toFixed(2) + '%') : '—';
+  const devStr = d.dev200 != null ? ((d.dev200 >= 0 ? '+' : '') + d.dev200.toFixed(1) + '%') : '—';
+  const rsiStr = d.rsi != null ? d.rsi.toFixed(1) : '—';
+  const rsiColor = d.rsi < 30 ? 'var(--gr)' : d.rsi > 70 ? 'var(--rd)' : 'var(--t1)';
+  const row = (l, v) => `<div style="display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid rgba(120,120,128,0.14);">
+    <span style="color:var(--t2);font-size:15px;">${l}</span><span style="font-size:15px;font-weight:700;">${v}</span></div>`;
+  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:14px 16px 6px;margin-bottom:12px;">
+    ${row('Price', `<span style="color:var(--t1)">$${d.price != null ? d.price.toFixed(2) : '—'}</span> <span style="color:${chgCls}">${chgStr}</span>`)}
+    ${row('Buy score', `<span style="color:var(--t1)">${buy}</span>`)}
+    ${row('Sell pressure', `<span style="color:var(--t1)">${sell}</span>`)}
+    ${row('Trend', `<span style="color:${gearColor}">${gearTxt}</span>`)}
+    ${row('RSI (14)', `<span style="color:${rsiColor}">${rsiStr}</span>`)}
+    ${row('vs 200-day', `<span style="color:var(--t1)">${devStr}</span>`)}
+  </div>`;
+}
+
+// Gemini AI chart-analysis block — same information set as the King trading plan
+function buildMegaAiHtml(ai) {
+  if (!ai) return '';
+  const act = ai.actionEn || ai.action;
+  const isBuy = act === '매수' || /buy/i.test(String(act || ''));
+  const isSell = act === '매도' || /sell/i.test(String(act || ''));
+  const col = isBuy ? 'var(--gr)' : isSell ? 'var(--rd)' : 'var(--t2)';
+  const mark = isBuy ? '▲ Buy bias' : isSell ? '▼ Sell bias' : '◆ Neutral';
+  const rawReason = ai.reasonEn || ai.reason;
+  const reason = rawReason ? String(rawReason).replace(/◆/g, '').replace(/\s{2,}/g, ' ').trim() : '';
+  const contiTxt = ai.continuityEn || ai.continuity;
+  const conti = contiTxt
+    ? `<div style="margin:8px 0;padding:8px 10px;background:rgba(10,132,255,0.08);border-left:3px solid var(--bl);border-radius:6px;font-size:16px;color:var(--t1);line-height:1.55;">${contiTxt}</div>` : '';
+  let plan = '';
+  if (ai.entry && ai.stop && ai.target) {
+    const f = v => typeof v === 'number' ? v.toFixed(2) : String(v ?? '—');
+    const rr = (typeof ai.entry === 'number' && typeof ai.stop === 'number' && typeof ai.target === 'number' && ai.entry !== ai.stop)
+      ? ((ai.target - ai.entry) / Math.abs(ai.entry - ai.stop)).toFixed(1) + ':1' : '—';
+    const lv = (l, v, c) => `<div style="flex:1;min-width:70px;text-align:center;">
+      <div style="color:var(--t3);font-size:14px;">${l}</div>
+      <div style="font-size:15px;font-weight:800;color:${c};">${v}</div></div>`;
+    plan = `<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px;padding:10px 6px;background:rgba(120,120,128,0.08);border-radius:10px;">
+      ${lv('Entry', '$' + f(ai.entry), 'var(--gr)')}${lv('Stop', '$' + f(ai.stop), 'var(--rd)')}
+      ${lv('Target', '$' + f(ai.target), 'var(--gr)')}${lv('R:R', rr, 'var(--t1)')}</div>`;
+  }
+  const inval = ai.invalidation
+    ? `<div style="color:var(--t2);font-size:14px;margin-top:6px;">Invalidation: scenario void on a break of $${typeof ai.invalidation === 'number' ? ai.invalidation.toFixed(2) : ai.invalidation}</div>` : '';
+  return `<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px 16px 12px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+      <span style="font-weight:800;color:${col};font-size:16px;">${mark}</span>
+      <span style="color:var(--t3);font-size:14px;">AI chart analysis · swing trading plan</span>
+    </div>
+    ${conti}
+    ${reason ? `<p style="margin:0 0 4px;line-height:1.7;color:var(--t1);font-size:16px;">${reason}</p>` : ''}
+    ${plan}
+    ${inval}
+  </div>`;
+}
+
+// Build the 7 extra sections + register lazy render on scroll
+function megaScaffold() {
+  const wrap = document.getElementById('mega-sections');
+  if (!wrap || wrap.childElementCount) return;
+  const extras = MEGA9.order.filter(s => s !== 'TSLA' && s !== 'NVDA');
+  wrap.innerHTML = extras.map(sym => `
+    <div class="king-section" id="mega-sec-${sym}" style="margin-top:32px;">
+      <div class="top9-sec-head">${MEGA9.name[sym]} <span>${sym}</span></div>
+      <div id="mega-cards-${sym}"><div class="skeleton skel-card" style="height:180px;"></div></div>
+      <div class="tv-chart-card" style="margin-bottom:20px;">
+        <div class="tv-chart-label">${MEGA9.name[sym]} ${sym} <span>Daily · TradingView</span></div>
+        <div class="tv-chart-frame" id="tv-MEGA-${sym}"></div>
+      </div>
+    </div>`).join('');
+  if ('IntersectionObserver' in window) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          renderMegaSection(en.target.id.replace('mega-sec-', ''));
+          obs.unobserve(en.target);
+        }
+      });
+    }, { rootMargin: '600px 0px' });
+    extras.forEach(sym => {
+      const el = document.getElementById(`mega-sec-${sym}`);
+      if (el) obs.observe(el);
+    });
+  } else {
+    extras.forEach(renderMegaSection);   // fallback: render everything at once
+  }
+}
+
+// Cards only — the TradingView widget is never touched, so data refreshes
+// never reload the chart.
+function renderMegaCards(sym) {
+  const box = document.getElementById(`mega-cards-${sym}`);
+  if (!box) return;
+  const d = window._renderData?.[sym];
+  const ai = window._megaAi[sym];   // undefined = loading, null = none, object = ready
+  box.innerHTML = `${_megaStanceCardHtml(sym)}
+    ${ai ? buildMegaAiHtml(ai)
+         : (ai === undefined ? '<div style="color:var(--t3);font-size:14px;margin:0 0 12px;">Loading AI chart analysis…</div>' : '')}
+    ${buildAudienceHtml(window._swingView?.megas?.[sym]?.audienceEn)}
+    ${d ? buildMegaMetricsHtml(d)
+        : '<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px;color:var(--t2);font-size:16px;margin-bottom:12px;">Awaiting data collection — this will populate after the next automatic refresh (up to every 30 minutes during market hours).</div>'}`;
+  if (ai === undefined && MEGA9.ai[sym]) {
+    fetchAnalysisJSON(MEGA9.ai[sym]).then(a => {
+      window._megaAi[sym] = a || null;
+      renderMegaCards(sym);
+    }).catch(() => { window._megaAi[sym] = null; });
+  }
+}
+
+function renderMegaSection(sym) {
+  if (window._megaRendered.has(sym)) return;
+  window._megaRendered.add(sym);
+  renderMegaCards(sym);
+  try { loadTVChart(`tv-MEGA-${sym}`, MEGA9.tv[sym]); } catch (e) { console.error('[top9 tv]', e); }
+}
+
+// TSLA / NVDA — put the same "Today's Call" stance card on top of the legacy
+// king cards so all nine symbols share one format.
+function renderKingStanceCards() {
+  ['TSLA', 'NVDA'].forEach(sym => {
+    const c = document.getElementById(`king-card-${sym}`);
+    if (!c) return;
+    const section = c.closest('.king-section') || c;
+    let holder = document.getElementById(`v2-king-${sym}`);
+    if (!holder) {
+      holder = document.createElement('div');
+      holder.id = `v2-king-${sym}`;
+      section.insertBefore(holder, section.firstChild);
+    }
+    const v = sym === 'TSLA' ? window._swingView?.tsla : window._swingView?.nvda;
+    const d = window._renderData?.[sym];
+    const ai = sym === 'TSLA' ? window._tslaAnalysis : window._nvdaAnalysis;
+    holder.innerHTML = _stanceCardHtml(v)
+      + buildMegaAiHtml(ai)
+      + buildAudienceHtml(v?.audienceEn)
+      + (d ? buildMegaMetricsHtml(d) : '');
+  });
+}
+
+// Initial paint — chips and section scaffolding show before data arrives
+try { renderTop9Chips(); megaScaffold(); } catch (e) {}
+
 function tabFromHash() {
   const h = (location.hash || '').toLowerCase();
   if (h === '#swing-strategy' || h === '#strategy')                 return 'strategy';
-  if (h === '#tsla-nvda' || h === '#kings' || h === '#tesla-nvidia') return 'kings';
+  if (h === '#tsla-nvda' || h === '#kings' || h === '#tesla-nvidia' || h === '#top9') return 'kings';
   return null;
 }
 (function initTabDeepLink() {

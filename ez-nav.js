@@ -20,6 +20,8 @@
 
   var linksEN = [
     ['/en/atmr-dashboard.html',        'Swing Signal',    'Swing Signal Dashboard'],
+    ['/en/atmr-dashboard.html#swing-strategy', 'Swing Strategy', 'Swing Strategy — 3-3-4 Rule'],
+    ['/en/atmr-dashboard.html#top9',   'TOP9 Deep Dive',  'TOP9 Deep Dive — Big Tech'],
     ['/en/market-vs.html',             'Bull vs Bear',    'Bull vs Bear — AI Market Read'],
     ['/en/stocks.html',                'Live Prices',     'Simple Live Prices'],
     ['/en/chart-analysis.html',        'AI Chart Analysis', 'AI Chart Analysis'],
