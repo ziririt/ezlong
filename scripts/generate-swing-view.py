@@ -334,6 +334,35 @@ def prev_session_tag():
     return f'직전 장({lbl})'
 
 
+_EN_MON = ('', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
+
+
+def session_date_label_en():
+    """session_date_label()의 영어 형제 — 'Aug 4'."""
+    try:
+        d = et_day_of((load(SIGNALS) or {}).get('generatedAt'))
+        return f'{_EN_MON[int(d[5:7])]} {int(d[8:10])}'
+    except Exception:
+        return ''
+
+
+def prev_session_tag_en():
+    """prev_session_tag()의 영어 형제 — 한쪽만 국면을 반영하면 국문·영문이
+    어긋나므로 두 함수는 항상 같이 수정한다."""
+    lbl = session_date_label_en()
+    if not lbl:
+        return 'Prior session'
+    ph = us_session_now()
+    if ph == 'pre':
+        return f'Today\'s pre-market ({lbl})'
+    if ph == 'open':
+        return f'Today\'s session ({lbl}), intraday'
+    if ph == 'post':
+        return f'Today\'s close ({lbl})'
+    return f'Prior session ({lbl})'
+
+
 def market_context(state, syms, advanced):
     """시황 문단 — 직전 장마감 등락 + 재료(스코어카드) + 급반등 터닝포인트 관문"""
     p = []
@@ -508,14 +537,61 @@ def _flat(blocks):
     return ' '.join(b['h'] + ' — ' + ' · '.join(b['items']) for b in blocks if b['items'])
 
 
-def _move_prefix(s):
-    chg = s.get('changePct')
-    if chg is None or abs(chg) < 0.8:
+def _px(s):
+    """등락률 옆에 붙일 주가 표기. 소수점은 버리고 정수 달러만 — 등락률만
+    있으면 '얼마짜리 주식이 그만큼 움직였는지'가 안 잡혀서 답답하다."""
+    p = s.get('price')
+    if p is None:
         return ''
+    try:
+        return f'({float(p):,.0f}달러)'
+    except (TypeError, ValueError):
+        return ''
+
+
+def _px_en(s):
+    p = s.get('price')
+    if p is None:
+        return ''
+    try:
+        return f'(${float(p):,.0f})'
+    except (TypeError, ValueError):
+        return ''
+
+
+def _move_tone(chg):
+    """등락 폭에 붙일 한 마디. 장중에 '마감'이라고 쓰면 모순이라 국면을 본다.
+    ±0.8% 미만은 예전엔 아예 문구를 생략했지만, 그러면 주가도 같이 사라져서
+    '지금 얼마짜리인지'를 알 수 없다 — 이제 '보합'으로 부르고 주가는 남긴다."""
     live = us_session_now() in ('pre', 'open')
-    # 장중에 "마감"이라고 쓰면 모순이다 — 진행 중임을 그대로 말한다
-    tone = ('급반등' if chg >= 3 else '급락' if chg <= -3 else ('진행 중' if live else '마감'))
-    return f'{prev_session_tag()} {chg:+.1f}% {tone}. '
+    if chg >= 3:
+        return '급반등'
+    if chg <= -3:
+        return '급락'
+    if abs(chg) < 0.8:
+        return '보합권' if live else '보합'
+    return '진행 중' if live else '마감'
+
+
+def _move_txt(s):
+    """'+6.0%(416달러) 급반등' — 등락률·주가·한 마디."""
+    chg = s.get('changePct')
+    if chg is None:
+        return ''
+    return f'{chg:+.1f}%{_px(s)} {_move_tone(chg)}'
+
+
+def _move_prefix(s):
+    txt = _move_txt(s)
+    return f'{prev_session_tag()} {txt}. ' if txt else ''
+
+
+def _move_blk(s):
+    """블록 렌더러용 — 소제목에 장 국면, 항목에 등락·주가.
+    _move_prefix()가 평문에서 '오늘 장(8월4일) 장중'을 이미 말하는데 소제목까지
+    같은 말을 반복하면 두 번 읽힌다. 소제목이 맥락, 항목이 숫자."""
+    txt = _move_txt(s)
+    return _blk(prev_session_tag(), txt) if txt else None
 
 
 def tsla_view(s):
@@ -553,7 +629,7 @@ def tsla_view(s):
                    'selling early or buying early, this is a zone managed by one criterion: whether the '
                    '200-day line breaks.')
     _mv = _move_prefix(s)
-    _kb = ([_blk('오늘 장' if us_session_now() in ('pre','open') else '직전 장', _mv.strip().rstrip('.'))] if _mv else []) + [
+    _kb = ([_move_blk(s)] if _mv else []) + [
         _blk('지금 숫자',
              f'매수점수 {buy} · 매도압력 {sell} · RSI {rsi:.0f}' if rsi is not None
              else f'매수점수 {buy} · 매도압력 {sell}',
@@ -730,11 +806,21 @@ STATS_EN = dict(
 
 
 def _move_prefix_en(s):
+    """_move_prefix()의 영어 형제 — 임계치·톤 분기를 KO와 1:1로 맞춘다."""
     chg = s.get('changePct')
-    if chg is None or abs(chg) < 0.8:
+    if chg is None:
         return ''
-    tone = 'sharp rebound' if chg >= 3 else ('sharp drop' if chg <= -3 else 'close')
-    return f'Prior session {chg:+.1f}% {tone}. '
+    live = us_session_now() in ('pre', 'open')
+    if chg >= 3:
+        tone = 'sharp rebound'
+    elif chg <= -3:
+        tone = 'sharp drop'
+    elif abs(chg) < 0.8:
+        tone = 'little changed'
+    else:
+        tone = 'in progress' if live else 'close'
+    px = _px_en(s)
+    return f'{prev_session_tag_en()}: {chg:+.1f}%{" " + px if px else ""}, {tone}. '
 
 
 def _audience_en(stance, buy, sell, gear, rsi, hot, down, sig_label_en):
@@ -980,7 +1066,7 @@ def mega_view(sym, s):
                     else 'no clearly validated signal (a signal-insensitive stock)')
     mv = _move_prefix(s)
     if mv:
-        kb = [_blk('오늘 장' if us_session_now() in ('pre','open') else '직전 장', mv.strip().rstrip('.'))] + kb
+        kb = [_move_blk(s)] + kb
     return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
                 commentary=mv + body,
                 commentaryEn=_move_prefix_en(s) + body_en,
@@ -1020,7 +1106,7 @@ def nvda_view(s):
                    f'broken below the 200-day line, reviewing exposure downward is where the data points. '
                    f'Rebuilding once the trend is reclaimed is the principle.')
     _mv = _move_prefix(s)
-    _kb = ([_blk('오늘 장' if us_session_now() in ('pre','open') else '직전 장', _mv.strip().rstrip('.'))] if _mv else []) + [
+    _kb = ([_move_blk(s)] if _mv else []) + [
         _blk('지금 숫자',
              f'매수점수 {buy} · 매도압력 {sell} · RSI {rsi:.0f}' if rsi is not None
              else f'매수점수 {buy} · 매도압력 {sell}',
