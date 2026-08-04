@@ -761,6 +761,23 @@ a { text-decoration: none; color: inherit; }
   padding-left: 2px;
 }
 .top9-sec-head span { color: #0a84ff; font-size: 18px; font-weight: 800; letter-spacing: .02em; }
+/* 시세 기준시각 — 종목명 오른쪽 끝에. 2026-08-05 성동님 지시:
+   "최신 주가 업데이트 시각을 종목명 우측에. 2줄이 되지 않고 1줄 안에."
+   margin-left:auto로 오른쪽 끝에 밀고 nowrap+flex-shrink:0으로 절대 안 접히게 한다.
+   대신 좁은 화면에서는 제목 쪽 폰트를 한 단계 줄여 자리를 만든다(폰트 14px 하한 준수). */
+.top9-sec-head .t9-asof {
+  margin-left: auto; flex-shrink: 0; white-space: nowrap;
+  font-size: 14px; font-weight: 600; color: var(--t3); letter-spacing: 0;
+}
+@media (max-width: 699px) {
+  .top9-sec-head { font-size: 18px; gap: 6px; }
+  .top9-sec-head span { font-size: 16px; }
+}
+@media (max-width: 400px) {
+  /* 360px + '마이크로소프트'(7자) 조합이 한계선. 제목만 한 단계 더 줄인다. */
+  .top9-sec-head { font-size: 17px; gap: 5px; }
+  .top9-sec-head span { font-size: 15px; }
+}
 .tab-new-badge {
   display: inline-block; background: #ff3b30; color: #fff;
   font-size: 14px; font-weight: 800; line-height: 1.3;
@@ -3325,6 +3342,7 @@ async function loadAllData(forceRefresh = false) {
       window._prevSignals = ghJson.previousSignals ?? null;  // 3영업일 흐름용 (2026-07-03)
       window._swingContinuity = ghJson.swingContinuity ?? null;  // 스윙 연속성 서술 (2026-07-09)
       const ageH   = Math.round((Date.now() - new Date(ghJson.generatedAt).getTime()) / 3600000 * 10) / 10;
+      window._priceAsOf = ghJson.generatedAtKST || ghJson.generatedAt || null;  // TOP9 섹션 헤더 기준시각
       console.log(`[GitHub JSON] ${ghJson.generatedAtKST} 기준 데이터 로드 성공 (${ageH}h 전)`);
     } else {
       throw new Error('JSON 구조 오류');
@@ -6087,6 +6105,7 @@ renderKings = function(tsla, nvda) {
   try {
     renderTop9Chips();
     megaScaffold();
+    refreshAsOfLabels();
     window._megaRendered.forEach(s => renderMegaCards(s));
   } catch (e) { console.error('[top9]', e); }
 };
@@ -6116,6 +6135,35 @@ function _top9ChipsHtml() {
       : '';
     return `<button type="button" class="top9-chip" data-sym="${sym}" onclick="selectTop9('${sym}')">${sym}${pct}</button>`;
   }).join('');
+}
+
+// 시세 기준시각 라벨 — "8/5(수) 01:01 KST". 한 줄에 들어가야 하므로 최대한 짧게.
+function _asOfLabel() {
+  const raw = window._priceAsOf;
+  if (!raw) return '';
+  let d;
+  const m = String(raw).match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+  if (m) {
+    // 'YYYY-MM-DD HH:MM KST' 형태면 그 값이 이미 KST — 재변환하지 않는다
+    if (/KST/.test(raw)) return `${+m[2]}/${+m[3]}(${'일월화수목금토'[new Date(+m[1], +m[2]-1, +m[3]).getDay()]}) ${m[4]}:${m[5]} KST`;
+    d = new Date(raw);
+  } else { d = new Date(raw); }
+  if (isNaN(d)) return '';
+  const k = new Date(d.getTime() + 9 * 3600 * 1000);
+  const wd = '일월화수목금토'[k.getUTCDay()];
+  const p2 = n => String(n).padStart(2, '0');
+  return `${k.getUTCMonth() + 1}/${k.getUTCDate()}(${wd}) ${p2(k.getUTCHours())}:${p2(k.getUTCMinutes())} KST`;
+}
+
+// 모든 TOP9 섹션 헤더에 기준시각을 붙인다(이미 있으면 갱신).
+function refreshAsOfLabels() {
+  const lbl = _asOfLabel();
+  document.querySelectorAll('.top9-sec-head').forEach(h => {
+    let el = h.querySelector('.t9-asof');
+    if (!lbl) { if (el) el.remove(); return; }
+    if (!el) { el = document.createElement('span'); el.className = 't9-asof'; h.appendChild(el); }
+    el.textContent = lbl;   // '기준'은 뺀다 — KST 표기가 이미 시각임을 말하고, 360px에서 긴 종목명(마이크로소프트)이 2줄로 넘어간다
+  });
 }
 
 function renderTop9Chips() {
@@ -6315,11 +6363,12 @@ function renderMegaSection(sym) {
   if (window._megaRendered.has(sym)) return;
   window._megaRendered.add(sym);
   renderMegaCards(sym);
+  try { refreshAsOfLabels(); } catch (e) {}
   try { loadTVChart(`tv-MEGA-${sym}`, MEGA9.tv[sym]); } catch (e) { console.error('[top9 tv]', e); }
 }
 
 // 초기 1회 즉시 실행 — 데이터 도착 전에도 칩 바·섹션 골격이 보이도록
-try { renderTop9Chips(); megaScaffold(); } catch (e) {}
+try { renderTop9Chips(); megaScaffold(); refreshAsOfLabels(); } catch (e) {}
 
 function renderRecentContext(symbols) {
   const wrap = document.getElementById('recent-context-wrap');
