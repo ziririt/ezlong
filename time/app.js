@@ -6355,6 +6355,19 @@ async function updateMusicProgress(event) {
   // 그대로 재사용해 폭(%)만 매 프레임 갱신한다(새 계산 없음, 8항 원칙과 동일).
   if (musicProgressFill) musicProgressFill.style.width = (progress * 100).toFixed(2) + "%";
 
+  // 2026-08-04 성동님 제보 — 음악은 잘 나오는데 곡명이 "재생 대기 중"으로
+  // 남는 경우가 종종 있다. 곡명은 트랙 전환 시점에만 다시 그려지므로,
+  // 웹뷰 재로드·플레이리스트 늦은 로드처럼 라벨을 그린 "후에" 트랙
+  // 정보가 채워지는 경로에서는 대기 문구가 다음 곡까지 남았다. 재생이
+  // 실제 진행 중인 이 timeupdate에서 라벨이 아직 대기 문구면 스스로
+  // 고쳐 그린다(자기 치유). skipNativeSync — 화면 텍스트만 갱신하고
+  // 네이티브에 trackChanged를 다시 보내지 않는다(크로스페이드 경쟁 방지,
+  // renderMusicPlaylistInfo 안 주석 참조).
+  if (musicTrackTitle && Array.isArray(musicPlaylist) && musicPlaylist.length > 0
+      && musicTrackTitle.textContent === t("music.waiting", null, "재생 대기 중")) {
+    renderMusicPlaylistInfo({ skipNativeSync: true });
+  }
+
   if (!hasDuration) return;
   const remaining = duration - player.currentTime;
   const standby = standbyPlayer();
