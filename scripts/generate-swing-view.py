@@ -143,6 +143,27 @@ def advance(state, day, price, buy, sell, gear, dev200, cap=None):
     return action
 
 
+def _streak_line(word, stance, days, chg):
+    """같은 판단이 이어질 때 쓰는 한 줄. 그 구간의 등락을 반드시 함께 말한다.
+    판단이 시장에 뒤처졌으면 변명 없이 먼저 인정한다 — 2026-08-05 성동님 지시.
+    맞았으면 맞았다고 담백하게. 어느 쪽이든 숫자 없이 일수만 세지 않는다."""
+    base = f"'{word}' 판단 {days}일째"
+    if chg is None:
+        return base + '.'
+    passive = stance in ('hold', 'wait', 'accumulate_wait')
+    if passive and chg >= 3:
+        return (base + f' — 그 사이 {chg:+.1f}%. 반등 초입에 비중을 더 실었어야 했다. '
+                f'너무 보수적이었음을 인정한다. 지금 할 일은 남은 차수를 채우는 것.')
+    if passive and chg <= -3:
+        return base + f' — 그 사이 {chg:+.1f}%. 버틴 쪽이 맞았던 구간.'
+    if not passive and chg >= 3:
+        return base + f' — 그 사이 {chg:+.1f}%. 방향은 맞았음.'
+    if not passive and chg <= -3:
+        return (base + f' — 그 사이 {chg:+.1f}%. 판단이 빗나갔다. '
+                f'변명 없이 손절 기준부터 재확인할 자리.')
+    return base + f' — 그 사이 {chg:+.1f}%.'
+
+
 def stance_of(state, action, buy, sell, gear):
     if state.get('targetWhy') == 'lifeline' and state.get('target', 1) <= 0.2 \
             and state.get('exposure', 0) > state.get('target', 0):
@@ -1366,6 +1387,7 @@ def desk_with_fable(view, sc_entry, ca):
         'post':   '미국 장이 오늘 막 마감한 직후다',
         'closed': '미국 장이 닫혀 있는 시간대다',
     }[_ph]
+    _FLOW_LINE = view.get('flow') or '연속성 정보 없음'
     _SESSION_PHASE_RULE = (
         '오늘 수치는 아직 확정값이 아니다 — "마감", "마감했다", "종가" 같은 완료형 표현 절대 금지. '
         '"장중", "진행 중", "현재" 같은 진행형으로만 쓰라.'
@@ -1413,6 +1435,12 @@ def desk_with_fable(view, sc_entry, ca):
 - 포스트마켓은 초안에 등장할 때만 언급하라(큰 이벤트가 있는 날만 초안에 실린다). 초안에 없으면 절대 언급 금지.
 - 오늘 날짜와 직전 장 정보는 초안 서술을 따를 것. '직전 장'을 언급할 때는 초안처럼 반드시 날짜를 병기하라 — 예: "직전 장(7월30일)".
 - [지금 장 국면] {_SESSION_PHASE_KO}. {_SESSION_PHASE_RULE}
+- [판단 연속성] {_FLOW_LINE}
+  이 줄이 "너무 보수적이었음을 인정한다"로 시작하면, headline에서 승리를 자랑하지 마라.
+  놓친 것은 놓쳤다고 하고, 지금 할 일(남은 차수)로 넘어가라. 신뢰는 맞히는 데서가 아니라
+  틀린 걸 먼저 말하는 데서 나온다.
+- 쉬운 말만 쓴다. 어려운 한자어·업계 밖 용어 금지 — '만재(滿載)' 같은 화물 용어를 실제로
+  썼다가 지적받았다. 52세 일반 투자자가 한 번에 읽히는 단어로만.
 - 등락률을 말할 때는 반드시 대상을 붙여라. 주어 없는 "시장 +x%" 표기 금지 —
   지수 등락은 "QQQ(나스닥100 ETF) +x%(683달러)"처럼 티커와 주가를 함께 적는다
   (x·주가는 초안의 실제 수치를 그대로 쓸 것, 새로 만들지 말 것).
@@ -1512,27 +1540,41 @@ def main():
     SHORT = dict(accumulate='분할매수', accumulate_wait='매수대기', hold='보유',
                  trim='축소', risk_off='위험관리', wait='관망')
     flow = None
-    runs = []
-    for h in comp.get('history', [])[-15:]:
-        s2 = h.get('st')
-        if not s2:
-            continue
-        if runs and runs[-1][0] == s2:
+    _hist = [h for h in comp.get('history', [])[-15:] if h.get('st')]
+    runs = []            # [스탠스, 일수, 시작 인덱스]
+    for i, h in enumerate(_hist):
+        if runs and runs[-1][0] == h['st']:
             runs[-1][1] += 1
         else:
-            runs.append([s2, 1])
-    # 의미가 생기기 전(전환 이력 없음 + 연속 3일 미만)엔 아예 숨긴다 — "보유 1일째 유지" 같은
-    # 자기 자신도 설명 못 하는 라인 금지 (2026-07-31 유저 피드백). 표시할 땐 라벨 없이 자체로
-    # 이해되는 완결 문장으로 쓴다.
+            runs.append([h['st'], 1, i])
+
+    # 연속 판단이 이어지는 동안 시장이 어디로 갔는지 — 이 숫자가 없으면
+    # "'보유' 판단 오늘로 4일째"는 자랑도 반성도 아닌 무의미한 카운터다.
+    # 2026-08-05 성동님 지적 원문: "니가 나흘째 보유라고 한 게 보는 이들로 하여금
+    # 너에 대한 신뢰를 죽인다. 너무 보수적이었다고 반성 표현하는 게 나을 듯."
+    # 맞다. 4일 연속 반등장에서 '보유 4일째'를 세고 있는 건 놓쳤다는 걸 광고하는
+    # 것과 같다. 그래서 이제 그 구간의 등락을 같이 붙이고, 판단이 시장에 뒤처졌으면
+    # 뒤처졌다고 먼저 말한다.
+    def _run_chg(idx):
+        try:
+            p0 = _hist[idx].get('price')
+            if p0 and price:
+                return (price / p0 - 1) * 100
+        except Exception:
+            pass
+        return None
+
     if len(runs) >= 2:
-        prev_s, prev_n = runs[-2]
-        cur_s, cur_n = runs[-1]
+        prev_s, prev_n, _ = runs[-2]
+        cur_s, cur_n, cur_i = runs[-1]
         if cur_n == 1:
             flow = f"오늘 판단 전환 — {SHORT[prev_s]} {prev_n}일 → 오늘부터 '{SHORT[cur_s]}'."
         else:
-            flow = f"'{SHORT[cur_s]}' 판단 오늘로 {cur_n}일째 (직전: {SHORT[prev_s]} {prev_n}일)."
+            flow = _streak_line(SHORT[cur_s], cur_s, cur_n, _run_chg(cur_i)) + \
+                   f" (직전: {SHORT[prev_s]} {prev_n}일)"
     elif runs and runs[-1][1] >= 3:
-        flow = f"'{SHORT[runs[-1][0]]}' 판단 오늘로 {runs[-1][1]}일째."
+        cur_s, cur_n, cur_i = runs[-1]
+        flow = _streak_line(SHORT[cur_s], cur_s, cur_n, _run_chg(cur_i))
 
     # 성적 자기공개 — 방향 판단(강세/약세)만, 5거래일 후 수익률로 채점 (표본 15+부터 공개)
     grade = None
