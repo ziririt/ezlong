@@ -3592,13 +3592,30 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
   // ── 3영업일 판단 연속성 라인 (2026-07-03) ─────────────────────────────────
   // 서버 스냅샷(previousSignals)의 QQQ 매수신호를 날짜별 마지막 값으로 추려 흐름 표시.
   // 스냅샷은 거래일에만 쌓이므로 날짜 자체가 영업일 — 휴일 테이블 불필요.
-  function buildTrendLineHtml() {
+    // 2026-08-05 사고 방어 — JSON 덩어리가 화면에 나가지 않게 한 겹 더 막는다.
+  // 서버 파서를 고쳤지만, 이미 localStorage 캐시에 들어간 옛 값이나 다른 경로로
+  // 들어온 값까지는 서버가 못 막는다. 화면 직전에서 한 번 더 거른다.
+  function _svSafeText(s) {
+    if (typeof s !== 'string') return '';
+    const t = s.trim();
+    if (!t) return '';
+    if (t.startsWith('{') || t.startsWith('[') || /"(ko|en)"\s*:/.test(t)) {
+      // 그래도 한국어/영어 본문만 뽑아낼 수 있으면 살린다
+      const m = t.match(/"ko"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+      if (m) { try { return JSON.parse('"' + m[1] + '"'); } catch (e) { return m[1]; } }
+      return '';
+    }
+    return t;
+  }
+
+function buildTrendLineHtml() {
     try {
       // 2026-07-09: 서버(fetch-market-data.py)가 Gemini로 생성한 다종목·다일 연속성
       // 서술이 있으면 그것을 우선 사용 — QQQ 점수 숫자 나열보다 훨씬 풍부하다.
       // 없으면(구버전 캐시, Gemini 실패 등) 기존 숫자 나열 방식으로 조용히 폴백.
-      if (window._swingContinuityEn || window._swingContinuity) {
-        return `<div class="swing-trend-line">${pick(window._swingContinuityEn, window._swingContinuity)}</div>`;
+      const _cont = _svSafeText(pick(window._swingContinuityEn, window._swingContinuity));
+      if (_cont) {
+        return `<div class="swing-trend-line">${_cont}</div>`;
       }
       const ps = window._prevSignals;
       if (!Array.isArray(ps) || ps.length < 2) return '';

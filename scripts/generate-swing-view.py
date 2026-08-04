@@ -157,6 +157,15 @@ def stance_of(state, action, buy, sell, gear):
     if target > expo + 0.05:
         return 'accumulate_wait', '분할 매수 대기 구간 (조건 충족 시 증액)'
     if expo >= 0.5:
+        # 2026-08-05 성동님 지적 — "며칠째 똑같은 '보유 유지 구간'은 너무 게으르다.
+        # 아무것도 안 하면 틀리지 않으니 버티는 소리 하지 마라."
+        # 1배수를 이미 목표까지 채운 상태에서 '보유'는 맞는 판단이다. 문제는 그 다음에
+        # 할 말이 없다는 것 — 1배수가 꽉 찼으면 다음 카드는 레버리지다.
+        # 제목이 그 다음 카드를 가리키게 한다. 매일 같은 네 글자만 반복하지 않는다.
+        if expo >= 0.95 and gear >= 3 and buy >= 60 and sell < 70:
+            return 'hold', '1배수 만재 — 다음 카드는 레버리지 비중'
+        if expo >= 0.95 and gear >= 3:
+            return 'hold', '1배수 만재 — 신호 강화 시 레버리지 검토'
         return 'hold', '보유 유지 구간'
     return 'wait', '관망 구간'
 
@@ -619,6 +628,50 @@ def _move_blk(s):
     return _blk(prev_session_tag(), txt) if txt else None
 
 
+# ─── 성동님 스윙 철학 어댑터 (2026-08-05 신설) ──────────────────────────────
+# 성동님 지시: "니가 조사한 역대 통계는 내 스윙 철학 기반 위에서 보조적으로 써라."
+# 아래는 새로 만든 규칙이 아니라, 이미 사이트에 적혀 있던 성동님 원칙을
+# 판단부가 실제로 쓸 수 있게 코드로 옮긴 것이다.
+#
+#   · "스윙 매수의 진짜 타이밍 = 사람들이 가장 두려워할 때"   (S-CORE v3 핵심 철학)
+#   · RSI는 레벨이 아니라 방향 — 35→55 과매도 탈출이 강력 매수  (S-CORE Delta 항)
+#   · Gear 3 + RSI 40~60 = 추세 추종 분할 매수 타이밍            (사이트 FAQ 원문)
+#   · Gear 3라도 RSI 70+ 는 추격 금지, 보유 유지
+#   · Gear 1(200일선 아래) = 200일선 회복 확인 후 본대           (사이트 FAQ 원문)
+#   · 3-3-4 — 1차 30%(지표 반등 확인) / 2차 30%(저항 돌파·지지 확인) / 3차 40%(추세 확정)
+#   · 손절 = 200일선 하향 이탈 시 기계적 실행, 감정 배제
+
+def _rally(s):
+    """반등이 며칠째인지 + 공포에서 빠져나오는 중인지. 성동님 철학의 '지금 분위기'.
+    2026-08-05 성동님 지적 — '4일 연속 반등인데 왜 이 분위기를 못 읽니.'
+    데이터(upDays5·rsi5dAgo)는 처음부터 있었고, 판단부가 안 보고 있었을 뿐이다."""
+    days = s.get('upDays5') or 0
+    rsi_now, rsi_prev = s.get('rsi'), s.get('rsi5dAgo')
+    escape = (rsi_prev is not None and rsi_now is not None
+              and rsi_prev < 42 and rsi_now >= 45)   # 과매도 탈출 = 성동님 강력 매수 패턴
+    return days, escape, rsi_prev
+
+
+def _stage334(days):
+    """반등 경과일 → 3-3-4 진행 단계. 매일 1차로 되돌아가지 않게 하는 장치."""
+    if days >= 4:
+        return 3, '3차(40%)'
+    if days >= 2:
+        return 2, '2차 본대(30%)'
+    return 1, '1차 정찰대(30%)'
+
+
+def _rally_txt(s):
+    """'반등 4일째 · RSI 27→39 과매도 탈출' — 분위기 한 줄."""
+    days, escape, rsi_prev = _rally(s)
+    if days < 2:
+        return ''
+    txt = f'반등 {days}일째'
+    if escape:
+        txt += f' · RSI {rsi_prev:.0f}→{s["rsi"]:.0f} 과매도 탈출'
+    return txt
+
+
 def tsla_view(s):
     buy, sell, gear = s.get('buyScore') or 50, s.get('sellScore') or 50, s.get('gear') or 2
     rsi = s.get('rsi')
@@ -638,13 +691,40 @@ def tsla_view(s):
                    f'follow it at face value. {STATS_EN["tsla_hot"]}. If profit-taking is needed, the right '
                    f'trigger is a trend break, not a moment in time.')
     elif gear <= 1:
-        st, label = 'wait', '내리막 — 확실한 바닥 신호 대기'
-        body = (f'200일선 아래 하락 추세. TSLA는 중간 점수대(50~79)의 매수 신호가 사실상 '
-                f'동전던지기였던 종목 — 어중간한 자리에서 잡지 않고 극단 신호(매수점수 80 이상)를 '
-                f'기다리는 것이 데이터가 가리키는 방향.')
-        body_en = ('A downtrend below the 200-day line. On TSLA, mid-range buy signals (scores of 50–79) have '
-                   'been effectively a coin flip, so the data points toward waiting for the extreme signal '
-                   '(a buy score above 80) rather than reaching for a half-measure entry.')
+        # 2026-08-05 성동님 지시로 재작성 — 성동님 스윙 철학 기반.
+        # 옛 문구는 '확실한 바닥 신호 대기'였다. 성동님 원칙에 '확실한 바닥'이라는
+        # 항목은 없다. 있는 건 두 개다 — 200일선 회복(본대 조건)과 과매도 탈출
+        # (공포 매수 = 1차 정찰대 조건). 정의되지 않은 말로 판단을 미루는 대신
+        # 성동님이 이미 정해둔 두 트리거로 말한다.
+        _dev = s.get('dev200')
+        _days, _escape, _rsi_prev = _rally(s)
+        _stage, _stage_word = _stage334(_days)
+        _rt = _rally_txt(s)
+        _devtxt = f'200일선 대비 {_dev:.0f}%' if _dev is not None else '200일선 아래'
+        if _escape or _days >= 2:
+            st, label = 'accumulate', f'공포 구간 탈출 진행 — 1차 정찰대(30%) 자리'
+            body = (f'{_rt}. {_devtxt}, RSI {rsi:.0f}. '
+                    f'이 분석의 매수 타이밍 원칙은 "사람들이 가장 두려워할 때"이고, '
+                    f'RSI가 과매도에서 방향을 튼 구간이 그 자리 — 지금이 거기. '
+                    f'다만 200일선 아래(Gear {gear})라 본대는 아직: 3-3-4의 1차 30%까지. '
+                    f'2차 30%는 200일선 회복 확인 후, 3차 40%는 추세 확정 후. '
+                    f'손절은 원칙대로 직전 저점 이탈 시 기계적으로 — 감정 배제.'
+                    + (f' 반등 {_days}일째라 이미 1차는 들어가 있어야 할 시점 — 비어 있다면 지금이라도.'
+                       if _stage >= 2 else ''))
+            body_en = (f'A {_days}-day rebound with RSI at {rsi:.0f}, {_devtxt.replace("200일선 대비", "")} versus the '
+                       f'200-day line. The buy timing in this framework is "when people are most afraid," and a turn '
+                       f'up out of oversold is exactly that spot. Still below the 200-day line, so this is the first '
+                       f'30% tranche only — the second 30% waits for a reclaim of the 200-day, the final 40% for trend '
+                       f'confirmation. Cut mechanically on a break of the prior low.')
+        else:
+            st, label = 'watch', '내리막 — 공포 반전 첫 신호에 1차 정찰대'
+            body = (f'{_devtxt}, RSI {rsi:.0f} — 아직 반등 전환 신호 없음. '
+                    f'"확실한 바닥"을 기다리는 게 아니라 정해진 두 트리거를 기다린다: '
+                    f'RSI가 과매도에서 방향을 트는 순간(공포 매수 자리) 1차 정찰대 30%, '
+                    f'200일선 회복 시 2차 30%. 둘 중 앞의 것이 오면 그날 들어간다.')
+            body_en = (f'RSI at {rsi:.0f} below the 200-day line with no turn yet. Not waiting for a "certain bottom" — '
+                       f'waiting for two defined triggers: a turn up out of oversold (the fear-buying spot) for the '
+                       f'first 30% tranche, and a reclaim of the 200-day for the second 30%.')
     else:
         st, label = 'hold', '들고 가는 구간 — 추세가 깨지는지만 확인'
         body = (f'추세 훼손 신호 없는 구간. TSLA는 예측보다 대응이 유리했던 종목 — '
@@ -755,7 +835,10 @@ LABEL_EN = {
     '많이 올랐음 — 일부 이익실현 검토 구간': 'Overheated — worth taking some profit',
     '많이 올랐음 — 지금 새로 사기엔 불리': 'Overheated — a poor spot to start buying',
     '많이 올랐지만 — 서둘러 팔 필요 없는 종목': 'Overheated — but quick selling has not paid off here',
-    '내리막 — 확실한 바닥 신호 대기': 'Downtrend — waiting for a clear bottom signal',
+    '내리막 — 반등 첫 신호에 정찰대': 'Downtrend — a scout position on the first rebound signal',
+    '내리막이나 반등 진행 — 소량 정찰대': 'Downtrend but rebounding — a small scout position',
+    '내리막이나 반등 진행 — 소량 진입 후보': 'Downtrend but rebounding — a candidate for a small entry',
+    '많이 빠진 자리 — 소량 1차 진입 검토': 'Deeply sold off — worth a small first tranche',
     '내리막 — 이 종목엔 오히려 기회였던 자리': 'Downtrend — historically a buying zone for this stock',
     '내리막이지만 — 크게 겁낼 필요 없었던 종목': 'Downtrend — but this stock has held up fine',
     '많이 오른 상태 — 식는지 지켜보는 중': 'Getting hot — watching for cooling',
@@ -912,7 +995,7 @@ def _audience(stance, buy, sell, gear, rsi, hot, down, sig_label):
     elif overheated:
         holder = '보유 유지 가능 — 다만 과열 이후 수익률 둔화 이력이 있는 종목. 이탈 기준 재점검 권고.'
     elif gear <= 1 and down == 'wait':
-        holder = '이탈 기준 재점검 구간 — 200일선 아래에서는 노출 축소 검토가 데이터의 방향.'
+        holder = '비중 조절 구간 — 200일선 아래에서는 승률이 떨어지는 종목. 전량 정리가 아니라 목표 비중 축소로 대응, 200일선 회복 시 원복.'
     elif gear <= 1 and down == 'opportunity':
         holder = '보유 유지 — 이 종목은 하락 추세 구간의 이후 성과가 오히려 좋았던 이력. 공포 매도 비권고.'
     elif gear <= 1:
@@ -927,14 +1010,18 @@ def _audience(stance, buy, sell, gear, rsi, hot, down, sig_label):
     elif gear >= 3 and buy >= 65:
         newbie = f'소량 분할 진입 검토 가능 — 상승 추세 + 매수점수 {buy}. 다만 이 종목의 최적 진입은 {sig_label}.'
     elif gear <= 1:
-        newbie = f'대기 구간 — 유효 신호({sig_label}) 발동 전에는 진입의 통계적 근거 없음.'
+        newbie = (f'소량 정찰대까지 가능 — 유효 신호({sig_label}) 전이라 통계적 우위는 없는 자리. '
+                  f'우위가 없다는 건 사지 말라가 아니라 크게 걸지 말라는 뜻. 목표 비중의 10~20%로 '
+                  f'시작하고 200일선 회복 시 증액, 직전 저점 이탈 시 철수.')
     else:
         newbie = '관망 구간 — 진입 신호 대기.'
     # 물타기 (손실 보유자의 추가 매수)
     if stance == 'accumulate':
         avgdown = f'1회차 물타기 검토 가능 — {sig_label} 발동 구간. 소량(30% 이내) + 출구 기준 사전 설정 전제.'
     elif gear <= 1 and down != 'opportunity':
-        avgdown = '물타기 금지 구간 — 하락 추세 확인 상태. 바닥 확인 전 평단 낮추기는 손실 확대 이력.'
+        avgdown = ('물타기는 소량까지 — 하락 추세에서 평단 낮추기는 손실 확대 이력이 있는 자리. '
+                   '넣는다면 기존 수량의 10% 이내, 철수선(직전 저점)을 먼저 정하고. 그게 부담이면 '
+                   '물타기보다 비중 축소가 먼저.')
     elif gear <= 1:
         avgdown = f'역발상 이력이 있는 종목이나, 물타기는 {sig_label} 발동 시에만 — 현재는 대기.'
     elif overheated:
@@ -1008,16 +1095,28 @@ def mega_view(sym, s):
         body_en = f'The stock has run up sharply in a short stretch (sell pressure {sell}). {cfe["hot_txt"]}.'
     # 3) 하락 추세
     elif gear <= 1:
+        # 2026-08-05 성동님 지시로 재작성 — TSLA 분기와 같은 철학, 같은 트리거.
+        # Gear 1에서 본대는 200일선 회복 후, 1차 정찰대는 공포 반전 시.
+        _days, _escape, _rsi_prev = _rally(s)
+        _stage, _stage_word = _stage334(_days)
+        _rt = _rally_txt(s)
+        _rsitxt = f'{rsi:.0f}' if rsi is not None else '측정 불가'
         if cfg['down'] == 'opportunity':
             st, label = 'watch', '내리막 — 이 종목엔 오히려 기회였던 자리'
-        elif cfg['down'] == 'wait':
-            st, label = 'wait', '내리막 — 확실한 바닥 신호 대기'
+        elif _escape or _days >= 2:
+            st, label = 'accumulate', '공포 구간 탈출 진행 — 1차 정찰대(30%) 자리'
         else:
-            st, label = 'hold', '내리막이지만 — 크게 겁낼 필요 없었던 종목'
-        body = f'주가가 200일선 아래로 내려간 내리막 구간. {cfg["down_txt"]}.'
-        kb = [_blk('지금 자리', '200일선 아래 — 내리막 구간'),
-              _blk('이 종목의 검증 문법', cfg['down_txt'])]
-        body_en = f'The price has slipped below its 200-day line into a downtrend. {cfe["down_txt"]}.'
+            st, label = 'watch', '내리막 — 공포 반전 첫 신호에 1차 정찰대'
+        body = (f'{(_rt + ". ") if _rt else ""}200일선 아래 내리막 구간, RSI {_rsitxt}. {cfg["down_txt"]}. '
+                f'매수 타이밍 원칙은 "사람들이 가장 두려워할 때" — RSI가 과매도에서 방향을 트는 순간이 '
+                f'3-3-4의 1차 정찰대(30%) 자리. 2차 30%는 200일선 회복 확인 후, 3차 40%는 추세 확정 후. '
+                f'철수는 직전 저점 이탈 시 기계적으로.')
+        kb = [_blk('지금 자리', ((_rt + ' · ') if _rt else '') + '200일선 아래 내리막 구간'),
+              _blk('이 종목의 검증 문법', cfg['down_txt']),
+              _blk('3-3-4 진행', '1차 30% — 과매도 방향 전환 시',
+                   '2차 30% — 200일선 회복 확인 후', '3차 40% — 추세 확정 후',
+                   '철수 — 직전 저점 이탈 시 기계적')]
+        body_en = f'Below its 200-day line in a downtrend (RSI {_rsitxt}). {cfe["down_txt"]}.'
     # 4) 평상시 — "특이 신호 없음" 표현 금지 (2026-08-04 성동님 지시). 극단 신호가
     # 아니어도 AI는 좌표를 짚는다: 현재 위치, 다음 유효 신호까지의 거리, 판단이
     # 바뀌는 트리거를 항상 명시. 단 검증 안 된 확률은 여전히 만들어내지 않는다.

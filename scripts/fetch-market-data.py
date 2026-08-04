@@ -49,6 +49,69 @@ GEMINI_MODEL   = 'gemini-2.5-flash-lite'  # 비용 절감 — chart-analysis와 
 
 # ─── 시장 상태 판단 ────────────────────────────────────────────────────────
 
+def _looks_like_json(s):
+    """화면에 나가면 안 되는 JSON 덩어리인지 — 앞이 { 이거나 "ko"/"en" 키가 보이면 그렇다."""
+    s = (s or '').strip()
+    return s.startswith('{') or s.startswith('[') or '"ko"' in s or '"en"' in s
+
+
+def _parse_bilingual(text):
+    """{"ko":..,"en":..} 회수. 모델이 앞뒤에 코드펜스나 쓰레기를 붙여도 견딘다.
+    1) 코드펜스 제거 → 2) 균형 잡힌 첫 객체만 잘라 파싱 → 3) 그래도 실패하면
+    ko/en 값만 정규식으로 회수. 전부 실패하면 None(원문 덤프 금지)."""
+    if not text:
+        return None
+    s = text.strip()
+    if s.startswith('```'):
+        s = re.sub(r'^```[a-zA-Z]*\s*', '', s)
+        s = re.sub(r'\s*```$', '', s).strip()
+    try:
+        return json.loads(s)
+    except Exception:
+        pass
+    # 균형 잡힌 첫 객체 — 문자열 안의 중괄호와 이스케이프를 건너뛴다
+    start = s.find('{')
+    if start >= 0:
+        depth, in_str, esc = 0, False, False
+        for i in range(start, len(s)):
+            ch = s[i]
+            if in_str:
+                if esc:
+                    esc = False
+                elif ch == '\\':
+                    esc = True
+                elif ch == '"':
+                    in_str = False
+                continue
+            if ch == '"':
+                in_str = True
+            elif ch == '{':
+                depth += 1
+            elif ch == '}':
+                depth -= 1
+                if depth == 0:
+                    try:
+                        return json.loads(s[start:i + 1])
+                    except Exception:
+                        break
+    # 마지막 수단 — 값만 뽑아낸다
+    def grab(key):
+        m = re.search(r'"' + key + r'"\s*:\s*"((?:[^"\\]|\\.)*)"', s)
+        if not m:
+            return ''
+        try:
+            return json.loads('"' + m.group(1) + '"')
+        except Exception:
+            return m.group(1)
+    ko, en = grab('ko'), grab('en')
+    if ko:
+        return {'ko': ko, 'en': en}
+    # 중괄호가 아예 없으면 구모델이 순수 텍스트를 낸 경우다 — 그건 그대로 쓴다
+    if '{' not in s and s:
+        return {'ko': s, 'en': ''}
+    return None
+
+
 def get_is_us_market_open():
     """미국 동부시간 기준 정규장 오픈 여부 (9:30~16:00, 주중)
     pytz 없이 UTC 기반 어림 계산. 서머타임 전환일 ±1일 오차 감수.
@@ -694,21 +757,28 @@ def generate_swing_continuity(processed, previous_signals, fg_data):
             print("  [swingContinuity] Gemini 빈 응답 — 건너뜀")
             return None
         # 2026-07-29: 응답이 {"ko":..., "en":...} JSON으로 바뀜 — ko/en 동시 파싱.
-        # 파싱 실패(구모델이 실수로 순수 텍스트를 낸 경우 등) 시 그 텍스트를 ko로만 사용하고
-        # en은 없는 채로 진행 — 프런트엔드(한국어판)는 기존과 동일하게 동작, 영어판만 결손.
-        try:
-            m = re.search(r'\{[\s\S]*\}', text)
-            parsed = json.loads(m.group(0) if m else text)
+        #
+        # 2026-08-05 사고: 파싱에 실패하면 **원문을 그대로 ko로 넘겼다**. 그래서
+        # 모델이 JSON 뒤에 쓰레기 한 조각(` ."}`)을 붙인 날, 화면에
+        # `{"ko": "...", "en": "..."} ."}` 가 통째로 노출됐다(성동님 제보).
+        # 원인은 두 겹이다 — (1) 탐욕적 정규식 \{[\s\S]*\} 이 마지막 } 까지
+        # 집어삼켜 쓰레기를 포함시킨다, (2) 실패 시 폴백이 원문 덤프였다.
+        # 이제는 균형 잡힌 첫 JSON 객체만 잘라내고, 그래도 안 되면 ko 값만
+        # 정규식으로 회수하며, 그것마저 실패하면 **아무것도 내보내지 않는다**.
+        # 문구 하나 결손이 화면에 JSON을 뿌리는 것보다 훨씬 낫다.
+        ko_text = en_text = ''
+        parsed = _parse_bilingual(text)
+        if parsed:
             ko_text = (parsed.get('ko') or '').strip()
             en_text = (parsed.get('en') or '').strip()
-            if not ko_text:
-                print("  [swingContinuity] ko 필드 비어있음 — 건너뜀")
-                return None
-            print(f"  [swingContinuity] 생성 완료 (ko {len(ko_text)}자 / en {len(en_text)}자)")
-            return {'ko': ko_text, 'en': en_text or None}
-        except (json.JSONDecodeError, AttributeError):
-            print("  [swingContinuity] JSON 파싱 실패 — 원문을 ko로만 사용(en 없음)")
-            return {'ko': text, 'en': None}
+        if not ko_text:
+            print("  [swingContinuity] ko 회수 실패 — 이번 회차는 문구 없이 진행")
+            return None
+        if _looks_like_json(ko_text):
+            print("  [swingContinuity] ko가 JSON 덩어리로 보임 — 폐기")
+            return None
+        print(f"  [swingContinuity] 생성 완료 (ko {len(ko_text)}자 / en {len(en_text)}자)")
+        return {'ko': ko_text, 'en': (en_text if en_text and not _looks_like_json(en_text) else None)}
     except Exception as e:
         print(f"  [swingContinuity] 실패(무시하고 계속 진행): {e}")
         return None
