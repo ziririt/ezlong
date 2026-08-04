@@ -1256,6 +1256,22 @@ a { text-decoration: none; color: inherit; }
     border: 1px solid var(--bd);
   }
 }
+
+/* 메뉴 2열 타일 그리드 — ez-nav.js 모바일 타일과 동일 규격 (2026-08-04) */
+#ez-mob-menu {
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding-left: 14px; padding-right: 14px; padding-bottom: 24px;
+  align-content: start;
+}
+#ez-mob-menu.open { display: grid; }
+#ez-mob-menu .ez-mob-item {
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 15px 8px; min-height: 56px;
+  line-height: 1.35; word-break: keep-all;
+  border: 1px solid var(--ez-border); border-radius: 14px;
+  background: var(--ez-surface);
+}
 </style>
 </head>
 
@@ -1948,22 +1964,31 @@ a { text-decoration: none; color: inherit; }
 })();
 </script>
 
-<!-- ── 투자 AI 도구 오버레이 메뉴 ─────────────────── -->
+<!-- ── 투자 AI 도구 오버레이 메뉴 ───────────────────
+     ★ 이 목록은 ez-nav.js의 links 배열과 항상 동기화할 것 (2026-08-04).
+     메인 페이지는 커스텀 헤더라 공용 ez-nav.js를 안 쓰는데, 이 하드코딩
+     사본이 수개월치 뒤처져 신규 메뉴(스윙 전략·TOP9·긍정vs부정·투자유형·
+     밸런스게임)가 메인에서 통째로 안 보이는 사고가 있었다. ez-nav.js
+     메뉴를 바꾸면 반드시 여기도 같이 바꾼다. -->
 <div class="ez-mob-menu" id="ez-mob-menu" aria-hidden="true">
-  <a href="/atmr-dashboard.html"        class="ez-mob-item">스윙 트레이더를 위한 '스윙 시그널'</a>
-  <a href="/stocks.html"                class="ez-mob-item">심플 주가 정보</a>
-  <a href="/chart-analysis.html"        class="ez-mob-item">AI 차트 분석</a>
+  <a href="/atmr-dashboard.html"        class="ez-mob-item">스윙 시그널</a>
+  <a href="/atmr-dashboard.html#swing-strategy" class="ez-mob-item">스윙 전략</a>
+  <a href="/atmr-dashboard.html#top9"   class="ez-mob-item">TOP9 집중분석 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 5px;margin-left:2px;vertical-align:middle;">NEW</span></a>
+  <a href="/market-vs.html"             class="ez-mob-item">긍정vs부정</a>
+  <a href="/stocks.html"                class="ez-mob-item">심플 주가</a>
+  <a href="/chart-analysis.html"        class="ez-mob-item">AI 차트분석</a>
   <a href="/analyst-reports.html"       class="ez-mob-item">월가 목표주가</a>
-  <a href="/market-cycle.html"          class="ez-mob-item">하락장 변곡점 감시</a>
-  <a href="/dca-simulator.html"         class="ez-mob-item">DCA 복리 시뮬레이터</a>
-  <a href="/portfolio-manager.html"     class="ez-mob-item">투자성향별 AI 포트폴리오</a>
-  <a href="/tax-account-simulator.html" class="ez-mob-item">절세 계좌 시뮬레이터</a>
+  <a href="/market-cycle.html"          class="ez-mob-item">마켓 사이클</a>
+  <a href="/dca-simulator.html"         class="ez-mob-item">DCA 시뮬레이터</a>
+  <a href="/portfolio-manager.html"     class="ez-mob-item">AI 포트폴리오</a>
+  <a href="/tax-account-simulator.html" class="ez-mob-item">절세 계좌</a>
   <a href="/compound-calculator.html"   class="ez-mob-item">복리 계산기</a>
-  <a href="/retirement-calculator.html" class="ez-mob-item">은퇴목표역산 투자액 시뮬레이터</a>
-  <a href="/backtest.html"              class="ez-mob-item">몬테카를로 포트폴리오 백테스트</a>
-  <a href="/risk-diagnostic.html"       class="ez-mob-item">투자성향 자가진단</a>
-  <a href="/stock-personality-quiz.html" class="ez-mob-item">MBTI로 찾는 맞춤 투자 포트폴리오</a>
-  <a href="/auto-dca-guide.html"        class="ez-mob-item">투자 자동화 가이드</a>
+  <a href="/retirement-calculator.html" class="ez-mob-item">은퇴 계산기</a>
+  <a href="/backtest.html"              class="ez-mob-item">백테스트</a>
+  <a href="/risk-diagnostic.html"       class="ez-mob-item">투자성향 진단</a>
+  <a href="/stock-personality-quiz.html" class="ez-mob-item">투자유형 진단</a>
+  <a href="/auto-dca-guide.html"        class="ez-mob-item">자동화 가이드</a>
+  <a href="/life-balance-game.html"     class="ez-mob-item">밸런스게임:마이 라이프</a>
 </div>
 <script>
 window.ezNavToggle = function () {
