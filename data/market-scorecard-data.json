@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-08-04-23:20",
+      "timestamp_kst": "2026-08-04(화) 23:20 KST",
+      "key_event": {
+        "name": "반도체 업종 강한 회복세 지속",
+        "name_en": "Semiconductor Sector Continues Strong Recovery",
+        "time": "정규장 진행 중",
+        "why": "SOXX 520달러 돌파, NVDA 강세, 과매도 해소",
+        "why_en": "SOXX breaks $520, NVDA strength, oversold conditions ease"
+      },
+      "positive_total": 85,
+      "negative_total": 15,
+      "summary": "반도체 업종의 강한 회복세와 중동 지정학적 리스크 완화 기대감으로 긍정 우위 지속. 4일 연속 긍정 우위 유지.",
+      "summary_en": "Positive sentiment prevails due to strong semiconductor recovery and easing Middle East geopolitical risks. Positive bias maintained for 4 consecutive days.",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "반도체 업종 회복 가속화",
+          "name_en": "Semiconductor Sector Recovery Accelerates",
+          "desc": "SOXX 531.24달러 (+3.69%)로 520달러 저항선 돌파, 과매도 해소 기대감 증폭",
+          "desc_en": "SOXX at $531.24 (+3.69%) breaks $520 resistance, boosting hopes of oversold conditions easing",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "주요 기술주 전반적 강세",
+          "name_en": "Broad Strength in Major Tech Stocks",
+          "desc": "QQQ (+1.84%), NVDA (+1.21%), MSFT (+2.24%) 등 주요 기술주 견고한 상승세",
+          "desc_en": "Major tech stocks like QQQ (+1.84%), NVDA (+1.21%), MSFT (+2.24%) show solid gains",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "미-이란 휴전 기대감 고조",
+          "name_en": "Heightened Hopes for US-Iran Truce",
+          "desc": "호르무즈 해협 재개방 기대 및 유가 하락으로 시장 심리 개선",
+          "desc_en": "Strait of Hormuz reopening hopes and falling oil prices improve market sentiment",
+          "category": "geopolitics"
+        },
+        {
+          "score": 10,
+          "name": "WTI 원유 가격 급락",
+          "name_en": "WTI Crude Oil Price Plummets",
+          "desc": "WTI 원유 75.90달러 (-6.52%)로 하락, 인플레이션 우려 완화",
+          "desc_en": "WTI crude oil falls to $75.90 (-6.52%), easing inflation concerns",
+          "category": "oil_energy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "VIX 공포지수 소폭 상승",
+          "name_en": "VIX Volatility Index Slightly Up",
+          "desc": "VIX 16.14 (+1.77%)로 소폭 상승, 시장의 잠재적 불안감 반영",
+          "desc_en": "VIX rises slightly to 16.14 (+1.77%), reflecting underlying market unease",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "고용 지표와 금리 인상 가능성",
+          "name_en": "Job Openings and Potential Rate Hikes",
+          "desc": "JOLTs 구인건수 7.4M으로 감소했으나, 필라델피아 연은 총재의 금리 인상 '열린 마음' 발언으로 해석 혼조",
+          "desc_en": "JOLTs job openings fell to 7.4M, but Philadelphia Fed president's 'open mind' on rates creates mixed interpretations",
+          "category": "macro_data"
+        }
+      ]
+    },
+    {
       "id": "2026-08-04-21:50",
       "timestamp_kst": "2026-08-04(화) 21:50 KST",
       "key_event": {
@@ -507,68 +575,8 @@
           "category": "fed_policy"
         }
       ]
-    },
-    {
-      "id": "2026-08-03-21:26",
-      "timestamp_kst": "2026-08-03(월) 21:26 KST",
-      "key_event": {
-        "name": "빅테크 실적 및 AI 기대감 지속",
-        "name_en": "Big Tech Earnings & AI Optimism Continue",
-        "time": "오늘 정규장 및 단기",
-        "why": "주요 빅테크 실적 호조, AI 투자 심리, 시장 전반 긍정 영향",
-        "why_en": "Strong Big Tech earnings, AI investment sentiment, positive market impact"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "빅테크 실적 호조와 AI 기대감으로 긍정 우위 유지. 유가 하락이 추가 긍정 요인.",
-      "summary_en": "Positive sentiment maintained due to strong Big Tech earnings and AI optimism. Falling oil prices add to positive factors.",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "AI 투자 기대감 지속",
-          "name_en": "Sustained AI Investment Optimism",
-          "desc": "AI 관련 클라우드 딜 및 투자 뉴스, 시장 전반의 AI 기대감 유지",
-          "desc_en": "News of AI cloud deals and investments, maintaining overall market AI optimism",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 15,
-          "name": "유가 하락",
-          "name_en": "Oil Price Decline",
-          "desc": "WTI 유가 하락으로 인플레이션 우려 완화 및 성장주에 긍정적",
-          "desc_en": "Falling WTI oil prices ease inflation concerns and benefit growth stocks",
-          "category": "oil_energy"
-        },
-        {
-          "score": 15,
-          "name": "시장 심리 개선",
-          "name_en": "Improved Market Sentiment",
-          "desc": "S&P 500 선물 상승 및 전반적인 투자 심리 개선",
-          "desc_en": "S&P 500 futures rise, indicating overall improved investor sentiment",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "반도체 섹터 혼조세",
-          "name_en": "Mixed Semiconductor Sector",
-          "desc": "SOXX 하락 및 NVDA 약보합, 일부 반도체 종목에 대한 신중론 지속",
-          "desc_en": "SOXX decline and NVDA slight dip, ongoing caution for some semiconductor stocks",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 15,
-          "name": "미 국채금리 상승",
-          "name_en": "Rising US Treasury Yields",
-          "desc": "미 10년물 국채금리 상승, 고금리 환경 지속 우려로 성장주에 부담",
-          "desc_en": "Rising 10-year Treasury yields, concerns over sustained high-rate environment weigh on growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-04T12:51:20Z",
+  "updated_at": "2026-08-04T14:21:06Z",
   "max_entries": 10
 }
