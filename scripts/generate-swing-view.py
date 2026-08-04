@@ -473,25 +473,26 @@ def tsla_view(s):
     buy, sell, gear = s.get('buyScore') or 50, s.get('sellScore') or 50, s.get('gear') or 2
     rsi = s.get('rsi')
     if buy >= 80:
-        st, label = 'accumulate', '극단 과매도 — 분할 매수 검토 유효'
+        st, label = 'accumulate', '많이 빠졌음 — 나눠서 사볼 만한 구간'
         body = (f'TSLA가 극단 과매도 구간(매수점수 {buy})에 들어왔습니다. 이 종목에서 유일하게 '
                 f'통계적으로 믿을 만한 매수 신호가 바로 이 구간입니다 — {STATS["tsla_extreme"]}. '
                 f'다만 변동성이 큰 종목이라 한 번에 들어가지 않고 나눠 들어가는 것이 전제입니다.')
     elif sell >= 75:
-        st, label = 'hold', '과열이지만 기계적 익절 비권고'
+        st, label = 'hold', '많이 올랐지만 — 서둘러 팔 필요 없는 종목'
         body = (f'과열 신호(매도압력 {sell})가 켜졌지만, 이 종목에서는 그 신호를 그대로 따르지 않습니다. '
                 f'{STATS["tsla_hot"]} 익절이 필요하다면 시점이 아니라 이탈(추세 붕괴)을 기준으로 잡는 것이 '
                 f'맞다고 봅니다.')
     elif gear <= 1:
-        st, label = 'wait', '하락 추세 — 극단 신호 대기'
+        st, label = 'wait', '내리막 — 확실한 바닥 신호 대기'
         body = (f'200일선 아래 하락 추세입니다. TSLA는 중간 점수대(50~79)의 매수 신호가 사실상 '
                 f'동전던지기였던 종목이라, 어중간한 자리에서 잡지 않고 극단 신호(매수점수 80 이상)를 '
                 f'기다리는 것이 데이터가 가리키는 방향입니다.')
     else:
-        st, label = 'hold', '보유 유지 — 이탈 관리 중심'
+        st, label = 'hold', '들고 가는 구간 — 추세가 깨지는지만 확인'
         body = (f'추세 훼손 신호가 없는 구간입니다. TSLA는 예측보다 대응이 유리했던 종목입니다 — '
                 f'미리 팔거나 미리 사는 대신, 200일선 이탈 여부 하나를 기준으로 관리하는 구간입니다.')
-    return dict(stance=st, stanceLabel=label, commentary=_move_prefix(s) + body,
+    return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
+                commentary=_move_prefix(s) + body,
                 nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi),
                 audience=_audience(st, buy, sell, gear, rsi, 'ignore', 'wait', '매수점수 80 이상 극단 과매도'))
 
@@ -571,6 +572,34 @@ MEGA_CFG = {
 }
 
 
+
+# ─── 스탠스 라벨 한→영 사전 (2026-08-04 성동님 지시: 쉬운 말 + 글로벌 번역 대비) ───
+# 원칙: "지금 상태 — 그래서 어떤 구간인지"를 일상어로. 행동 명령형 금지(진단형 유지).
+# UI 다국어(en판·번역 프록시)가 이 En 라벨을 그대로 쓸 수 있도록 형제 필드로 내보낸다.
+LABEL_EN = {
+    '많이 빠졌음 — 나눠서 사볼 만한 구간': 'Deeply oversold — worth buying in parts',
+    '강한 매수 신호 — 나눠서 사볼 만한 구간': 'Strong buy signal — worth buying in parts',
+    '많이 올랐음 — 일부 이익실현 검토 구간': 'Overheated — worth taking some profit',
+    '많이 올랐음 — 지금 새로 사기엔 불리': 'Overheated — a poor spot to start buying',
+    '많이 올랐지만 — 서둘러 팔 필요 없는 종목': 'Overheated — but quick selling has not paid off here',
+    '내리막 — 확실한 바닥 신호 대기': 'Downtrend — waiting for a clear bottom signal',
+    '내리막 — 이 종목엔 오히려 기회였던 자리': 'Downtrend — historically a buying zone for this stock',
+    '내리막이지만 — 크게 겁낼 필요 없었던 종목': 'Downtrend — but this stock has held up fine',
+    '많이 오른 상태 — 식는지 지켜보는 중': 'Getting hot — watching for cooling',
+    '매수 기회에 가까워지는 중': 'Getting closer to a buy opportunity',
+    '갈림길 근처 — 방향 확인 중': 'Near a crossroads — direction unclear',
+    '흐름 좋음 — 그대로 들고 가는 구간': 'On track — a zone to keep holding',
+    '들고 가는 구간 — 추세가 깨지는지만 확인': 'Keep-holding zone — just watch the trend line',
+    '오르막 유지 — 들고 가는 구간': 'Uptrend intact — a zone to keep holding',
+    '갈림길 — 200일선 공방 중': 'At a crossroads — battling the 200-day line',
+    '오르막 꺾임 — 줄이기 검토 구간': 'Trend broken — worth considering a trim',
+}
+
+
+def _en(label):
+    return LABEL_EN.get(label, label)
+
+
 # ─── 4분류 맞춤 행동 진단 (2026-08-04 신설, 성동님 지시) ─────────────────────
 # 스윙 전략 탭의 보유자/신규 진입/물타기/불타기 분류를 종목 단위로 제공.
 # 전부 규칙 엔진 — LLM 비용 0. 문구는 진단형(행동 촉구 금지) 원칙 준수.
@@ -643,31 +672,31 @@ def mega_view(sym, s):
         # 감사 지적(2026-08-03) 반영: ①rsi가 None인 경로(buy80 단독 발동) 방어,
         # ②비과매도 RSI를 "극단 과매도"로 오표기하지 않도록 실제 발동 신호로 서술.
         if rsi_panic:
-            st, label = 'accumulate', '극단 과매도 — 분할 매수 검토 유효'
-            trigger = f'극단 과매도 구간(RSI {rsi:.0f}, 매수점수 {buy})'
+            st, label = 'accumulate', '많이 빠졌음 — 나눠서 사볼 만한 구간'
+            trigger = f'많이 빠진 자리(RSI {rsi:.0f}, 매수점수 {buy})'
         else:
-            st, label = 'accumulate', '극단 매수 신호 — 분할 매수 검토 유효'
-            trigger = f'극단 매수점수 구간(매수점수 {buy})'
-        body = (f'{cfg["label"]}({sym})가 {trigger}에 '
-                f'들어왔습니다. {cfg["buy_txt"]}. 한 번에 들어가지 않고 나눠 들어가는 것이 전제입니다.')
+            st, label = 'accumulate', '강한 매수 신호 — 나눠서 사볼 만한 구간'
+            trigger = f'강한 매수 신호 자리(매수점수 {buy})'
+        body = (f'{cfg["label"]}({sym})가 {trigger}까지 왔습니다. {cfg["buy_txt"]}. '
+                f'다만 한 번에 다 사지 않고 나눠서 사는 것이 전제입니다.')
     # 2) 과열
     elif sell >= 75:
         if cfg['hot'] == 'trim':
-            st, label = 'trim', '과열 — 분할 익절 검토 구간'
+            st, label = 'trim', '많이 올랐음 — 일부 이익실현 검토 구간'
         elif cfg['hot'] == 'slow':
-            st, label = 'hold', '과열 — 신규 진입 자제 구간'
+            st, label = 'hold', '많이 올랐음 — 지금 새로 사기엔 불리'
         else:
-            st, label = 'hold', '과열이지만 기계적 익절 비권고'
-        body = f'과열 신호(매도압력 {sell})가 켜졌습니다. {cfg["hot_txt"]}.'
+            st, label = 'hold', '많이 올랐지만 — 서둘러 팔 필요 없는 종목'
+        body = f'단기간에 많이 오른 상태입니다(매도압력 {sell}). {cfg["hot_txt"]}.'
     # 3) 하락 추세
     elif gear <= 1:
         if cfg['down'] == 'opportunity':
-            st, label = 'watch', '하락 추세 — 역발상 관찰 구간'
+            st, label = 'watch', '내리막 — 이 종목엔 오히려 기회였던 자리'
         elif cfg['down'] == 'wait':
-            st, label = 'wait', '하락 추세 — 극단 신호 대기'
+            st, label = 'wait', '내리막 — 확실한 바닥 신호 대기'
         else:
-            st, label = 'hold', '하락 추세 — 통계상 과민 반응 불필요'
-        body = f'200일선 아래 하락 추세입니다. {cfg["down_txt"]}.'
+            st, label = 'hold', '내리막이지만 — 크게 겁낼 필요 없었던 종목'
+        body = f'주가가 200일선 아래로 내려간 내리막 구간입니다. {cfg["down_txt"]}.'
     # 4) 평상시 — "특이 신호 없음" 표현 금지 (2026-08-04 성동님 지시). 극단 신호가
     # 아니어도 AI는 좌표를 짚는다: 현재 위치, 다음 유효 신호까지의 거리, 판단이
     # 바뀌는 트리거를 항상 명시. 단 검증 안 된 확률은 여전히 만들어내지 않는다.
@@ -678,40 +707,42 @@ def mega_view(sym, s):
         # 이 종목의 유효 신호까지 남은 거리
         watch = []
         if cfg['buy'] in ('rsi30', 'both') and rsi is not None:
-            watch.append(f'검증 매수 신호(RSI 30 미만)까지 {max(0.0, rsi - 30):.0f}p')
+            watch.append(f'"많이 빠졌다" 신호(RSI 30)까지 {max(0.0, rsi - 30):.0f}점')
         if cfg['buy'] == 'both':
-            watch.append(f'극단 매수점수(80)까지 {max(0, 80 - buy)}p')
-        watch.append(f'과열 경계(매도압력 75)까지 {max(0, 75 - sell)}p')
+            watch.append(f'강한 매수 신호(매수점수 80)까지 {max(0, 80 - buy)}점')
+        watch.append(f'과열선(매도압력 75)까지 {max(0, 75 - sell)}점')
         watch_txt = ' · '.join(watch)
         # 판단이 바뀌는 트리거 — 종목 문법별
         if cfg['buy'] is None:
-            trigger_txt = ('200일선 이탈(추세 훼손) 하나입니다 — 그 전까지 이 종목은 '
-                           '들고 가는 쪽이 통계적으로 유리했던 종목입니다')
+            trigger_txt = ('주가가 200일선 아래로 내려갈 때 하나뿐입니다 — 그 전까지는 '
+                           '그냥 들고 가는 쪽이 유리했던 종목입니다')
         elif cfg['buy'] == 'both':
-            trigger_txt = ('RSI 30 미만 또는 매수점수 80 이상이면 분할 매수 검토, '
-                           '200일선 이탈이면 관리 모드 전환입니다')
+            trigger_txt = ('많이 빠지거나(RSI 30 아래) 매수점수가 80을 넘으면 "나눠 사볼 자리", '
+                           '200일선 아래로 내려가면 "조심 모드"로 바뀝니다')
         elif cfg['down'] == 'wait':
-            trigger_txt = ('RSI 30 미만이면 분할 매수 검토, 200일선 이탈이면 축소 검토로 '
-                           '전환됩니다')
+            trigger_txt = ('많이 빠지면(RSI 30 아래) "나눠 사볼 자리"로, 200일선 아래로 '
+                           '내려가면 "줄이기 검토"로 바뀝니다')
         else:
-            trigger_txt = 'RSI 30 미만 진입 하나이고, 추세 이탈은 이 종목에선 과민 반응 대상이 아닙니다'
-        # 라벨 — 현재 좌표가 어느 신호에 가까운지로 차등 (전부 다른 문구, 관찰 포인트 명시)
+            trigger_txt = ('많이 빠질 때(RSI 30 아래)뿐이고, 추세가 흔들리는 건 이 종목에선 '
+                           '크게 겁낼 일이 아니었습니다')
+        # 라벨 — 지금 어느 쪽에 가까운지로 차등 (쉬운 말, "이렇다"는 상태 서술)
         if sell >= 60 or (rsi is not None and rsi >= 62):
-            st, label = 'hold', '보유 유지 — 과열 접근 감시'
+            st, label = 'hold', '많이 오른 상태 — 식는지 지켜보는 중'
         elif (cfg['buy'] in ('rsi30', 'both') and rsi is not None and rsi <= 38) or \
              (cfg['buy'] == 'both' and buy >= 72):
-            st, label = 'hold', '보유 유지 — 매수 신호 접근 감시'
+            st, label = 'hold', '매수 기회에 가까워지는 중'
         elif dev is not None and 0 <= dev <= 4:
-            st, label = 'hold', '보유 유지 — 200일선 근접 관찰'
+            st, label = 'hold', '갈림길 근처 — 방향 확인 중'
         else:
-            st, label = 'hold', '보유 유지 — 추세 순항 구간'
-        body = (f'{cfg["base_txt"]}. 현재 좌표 — 매수점수 {buy}·매도압력 {sell}·RSI {rsi_txt}·'
-                f'200일선 대비 {dev_txt}. 신호 거리로 보면 {watch_txt} 남은 위치입니다. '
-                f'판단이 바뀌는 트리거는 {trigger_txt}.')
+            st, label = 'hold', '흐름 좋음 — 그대로 들고 가는 구간'
+        body = (f'{cfg["base_txt"]}. 지금 숫자로 보면 매수점수 {buy}·매도압력 {sell}·RSI {rsi_txt}, '
+                f'주가는 200일선보다 {dev_txt} 자리에 있습니다. 다음 신호까지는 {watch_txt} 남았습니다. '
+                f'이 판단이 바뀌는 조건은 {trigger_txt}.')
     sig_label = ('RSI 30 미만 극단 과매도 또는 매수점수 80 이상' if cfg['buy'] == 'both'
                  else 'RSI 30 미만 극단 과매도' if cfg['buy'] == 'rsi30'
                  else '뚜렷한 검증 신호 없음(신호 둔감 종목)')
-    return dict(stance=st, stanceLabel=label, commentary=_move_prefix(s) + body,
+    return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
+                commentary=_move_prefix(s) + body,
                 nums=dict(buy=buy, sell=sell, gear=gear, rsi=round(rsi, 1) if rsi is not None else None),
                 audience=_audience(st, buy, sell, gear, rsi, cfg['hot'], cfg['down'], sig_label))
 
@@ -720,22 +751,23 @@ def nvda_view(s):
     buy, sell, gear = s.get('buyScore') or 50, s.get('sellScore') or 50, s.get('gear') or 2
     rsi = s.get('rsi')
     if gear >= 3:
-        st, label = 'hold', '추세 유지 — 보유 중심'
+        st, label = 'hold', '오르막 유지 — 들고 가는 구간'
         body = (f'NVDA는 추세가 전부인 종목입니다. {STATS["nvda_trend"]} 지금은 200일선 위 구간이라 '
                 f'보유를 유지하는 쪽이고, 과열 신호(매도압력 {sell})는 이 종목에서 검증력이 없어 '
                 f'그 이유만으로 덜어내지는 않습니다.')
     elif gear == 2:
-        st, label = 'hold', '경계 — 200일선 공방 구간'
+        st, label = 'hold', '갈림길 — 200일선 공방 중'
         body = (f'NVDA가 200일선 부근 공방에 들어왔습니다. 이 종목의 판단 기준은 추세 하나입니다. '
                 f'{STATS["nvda_trend"]} 아직 추세가 꺾였다고 확정할 단계는 아니라 보유를 유지하되, '
                 f'200일선을 종가 기준으로 명확히 이탈하면 그때는 축소가 판단이 됩니다. 미리 팔지도, '
                 f'무작정 버티지도 않는 구간입니다.')
     else:
-        st, label = 'trim', '추세 이탈 — 축소 검토 구간'
+        st, label = 'trim', '오르막 꺾임 — 줄이기 검토 구간'
         body = (f'NVDA의 판단 기준은 하나, 추세입니다. {STATS["nvda_trend"]} 200일선 아래로 추세가 '
                 f'무너진 지금 같은 구간에서는 노출 축소를 검토하는 것이 데이터의 방향입니다. '
                 f'추세 복귀가 확인되면 다시 싣는 것이 원칙입니다.')
-    return dict(stance=st, stanceLabel=label, commentary=_move_prefix(s) + body,
+    return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
+                commentary=_move_prefix(s) + body,
                 nums=dict(buy=buy, sell=sell, gear=gear, rsi=rsi),
                 audience=_audience(st, buy, sell, gear, rsi, 'ignore', 'wait', '200일선 위 추세 복귀'))
 
