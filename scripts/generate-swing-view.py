@@ -292,10 +292,46 @@ def session_date_label():
     return _SESSION_DATE
 
 
+def us_session_now():
+    """지금 미국 시장이 어느 국면인지 — 'pre' | 'open' | 'post' | 'closed'.
+    ET 기준. 3월 둘째 일요일~11월 첫째 일요일 EDT(-4), 그 밖 EST(-5)."""
+    u = datetime.now(timezone.utc)
+    y = u.year
+
+    def _nth_sun(month, nth):
+        d = datetime(y, month, 1, tzinfo=timezone.utc)
+        d += timedelta(days=(6 - d.weekday()) % 7)
+        return d + timedelta(days=7 * (nth - 1))
+
+    edt = _nth_sun(3, 2) <= u < _nth_sun(11, 1)
+    et = u.astimezone(timezone(timedelta(hours=-4 if edt else -5)))
+    if et.weekday() >= 5:
+        return 'closed'
+    m = et.hour * 60 + et.minute
+    if 240 <= m < 570:
+        return 'pre'
+    if 570 <= m < 960:
+        return 'open'
+    if 960 <= m < 1200:
+        return 'post'
+    return 'closed'
+
+
 def prev_session_tag():
-    """'직전 장(7월30일)' — 날짜 산출 실패 시 '직전 장'으로 폴백"""
+    """장 국면에 맞는 라벨. 2026-08-05 성동님 지적 — "지금이 8월5일 01시인데
+    8월4일을 직전 장이라고 하면, 지금 펼쳐지는 장이라 헷갈린다." 데이터는 오늘
+    장 것인데 문구만 '직전 장'으로 고정돼 있었다. 이제 국면을 보고 부른다."""
     lbl = session_date_label()
-    return f'직전 장({lbl})' if lbl else '직전 장'
+    if not lbl:
+        return '직전 장'
+    ph = us_session_now()
+    if ph == 'pre':
+        return f'오늘 프리마켓({lbl})'
+    if ph == 'open':
+        return f'오늘 장({lbl}) 장중'
+    if ph == 'post':
+        return f'오늘 장({lbl}) 마감'
+    return f'직전 장({lbl})'
 
 
 def market_context(state, syms, advanced):
@@ -476,7 +512,9 @@ def _move_prefix(s):
     chg = s.get('changePct')
     if chg is None or abs(chg) < 0.8:
         return ''
-    tone = '급반등' if chg >= 3 else ('급락' if chg <= -3 else '마감')
+    live = us_session_now() in ('pre', 'open')
+    # 장중에 "마감"이라고 쓰면 모순이다 — 진행 중임을 그대로 말한다
+    tone = ('급반등' if chg >= 3 else '급락' if chg <= -3 else ('진행 중' if live else '마감'))
     return f'{prev_session_tag()} {chg:+.1f}% {tone}. '
 
 
@@ -515,7 +553,7 @@ def tsla_view(s):
                    'selling early or buying early, this is a zone managed by one criterion: whether the '
                    '200-day line breaks.')
     _mv = _move_prefix(s)
-    _kb = ([_blk('직전 장', _mv.strip().rstrip('.'))] if _mv else []) + [
+    _kb = ([_blk('오늘 장' if us_session_now() in ('pre','open') else '직전 장', _mv.strip().rstrip('.'))] if _mv else []) + [
         _blk('지금 숫자',
              f'매수점수 {buy} · 매도압력 {sell} · RSI {rsi:.0f}' if rsi is not None
              else f'매수점수 {buy} · 매도압력 {sell}',
@@ -942,7 +980,7 @@ def mega_view(sym, s):
                     else 'no clearly validated signal (a signal-insensitive stock)')
     mv = _move_prefix(s)
     if mv:
-        kb = [_blk('직전 장', mv.strip().rstrip('.'))] + kb
+        kb = [_blk('오늘 장' if us_session_now() in ('pre','open') else '직전 장', mv.strip().rstrip('.'))] + kb
     return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
                 commentary=mv + body,
                 commentaryEn=_move_prefix_en(s) + body_en,
@@ -982,7 +1020,7 @@ def nvda_view(s):
                    f'broken below the 200-day line, reviewing exposure downward is where the data points. '
                    f'Rebuilding once the trend is reclaimed is the principle.')
     _mv = _move_prefix(s)
-    _kb = ([_blk('직전 장', _mv.strip().rstrip('.'))] if _mv else []) + [
+    _kb = ([_blk('오늘 장' if us_session_now() in ('pre','open') else '직전 장', _mv.strip().rstrip('.'))] if _mv else []) + [
         _blk('지금 숫자',
              f'매수점수 {buy} · 매도압력 {sell} · RSI {rsi:.0f}' if rsi is not None
              else f'매수점수 {buy} · 매도압력 {sell}',
@@ -1229,6 +1267,7 @@ def main():
     view = dict(
         generatedAtKST=now_kst(),
         dataDay=day,
+        session=us_session_now(),
         beta=True,
         stanceChangedToday=changed,
         lifeline=(dict(count=ll['count'], broken=[n for n, b in ll['detail'] if b]) if ll else None),
