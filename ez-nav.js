@@ -28,6 +28,14 @@
     var p = '/' + lang + '/';
     var a = [
       [p + 'atmr-dashboard.html', L.swing,    L.swing],
+      /* 2026-08-04(성동님 지적): 한국어·영문과 달리 스윙이 한 덩어리로 남아 있었다.
+         다만 ja/zh/es/pt의 /{lang}/atmr-dashboard.html은 탭이 없는 SEO 랜딩 페이지라
+         #swing-strategy·#top9 해시가 아무 동작도 하지 않는다. 그래서 이 둘만은 실제로
+         동작하는 영문 대시보드로 보낸다 — 성동님 원칙("외국인이 굳이 한국어 웹을 볼
+         필요가 없잖아")에 따라 한국어판이 아니라 영문판이 목적지다.
+         나중에 해당 언어 대시보드가 실제로 생기면 p + '...#top9' 로 되돌릴 것. */
+      ['/en/atmr-dashboard.html#swing-strategy', L.strategy, L.strategy],
+      ['/en/atmr-dashboard.html#top9',           L.top9,     L.top9],
       [p + 'market-vs.html',      L.vs,       L.vs],
       [p + 'stocks.html',         L.prices,   L.prices],
       [p + 'chart-analysis.html', L.chart,    L.chart],
@@ -47,21 +55,21 @@
   }
 
   var LANG_LABELS = {
-    ja: { swing: 'スイングシグナル', vs: '強気vs弱気', prices: '株価情報', chart: 'AIチャート分析',
+    ja: { swing: 'スイングシグナル', strategy: 'スイング戦略', top9: 'TOP9集中分析', vs: '強気vs弱気', prices: '株価情報', chart: 'AIチャート分析',
           targets: '目標株価', cycle: 'マーケットサイクル', dca: 'DCAシミュレーター',
           folio: 'AIポートフォリオ', compound: '複利計算機', retire: '退職計算機',
           backtest: 'バックテスト', risk: '投資性向診断', quiz: '投資タイプ診断',
           game: 'バランスゲーム', autoGuide: '自動積立ガイド' },
-    zh: { swing: '波段信号', vs: '多空对比', prices: '股价信息', chart: 'AI图表分析',
+    zh: { swing: '波段信号', strategy: '波段策略', top9: 'TOP9集中分析', vs: '多空对比', prices: '股价信息', chart: 'AI图表分析',
           targets: '目标股价', cycle: '市场周期', dca: '定投模拟器',
           folio: 'AI投资组合', compound: '复利计算器', retire: '退休计算器',
           backtest: '回测', risk: '风险偏好测评', quiz: '投资类型测试', game: '平衡游戏' },
-    es: { swing: 'Señal de Swing', vs: 'Alcista vs Bajista', prices: 'Precios', chart: 'Análisis IA',
+    es: { swing: 'Señal de Swing', strategy: 'Estrategia Swing', top9: 'TOP9 a Fondo', vs: 'Alcista vs Bajista', prices: 'Precios', chart: 'Análisis IA',
           targets: 'Precio Objetivo', cycle: 'Ciclo de Mercado', dca: 'Simulador DCA',
           folio: 'Cartera IA', compound: 'Interés Compuesto', retire: 'Calc. Jubilación',
           backtest: 'Backtest', risk: 'Perfil de Riesgo', quiz: 'Tipo de Inversor',
           game: 'Juego de Equilibrio' },
-    pt: { swing: 'Sinal de Swing', vs: 'Alta vs Baixa', prices: 'Preços', chart: 'Análise IA',
+    pt: { swing: 'Sinal de Swing', strategy: 'Estratégia Swing', top9: 'TOP9 a Fundo', vs: 'Alta vs Baixa', prices: 'Preços', chart: 'Análise IA',
           targets: 'Preço-Alvo', cycle: 'Ciclo de Mercado', dca: 'Simulador DCA',
           folio: 'Carteira IA', compound: 'Juros Compostos', retire: 'Calc. Aposentadoria',
           backtest: 'Backtest', risk: 'Perfil de Risco', quiz: 'Tipo de Investidor',

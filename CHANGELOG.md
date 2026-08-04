@@ -5,6 +5,59 @@
 
 ---
 
+## [2026-08-04] 비한국어 5개 언어 — 스윙을 3개(시그널·전략·TOP9)로 분리
+
+### 배경
+
+성동님 지적: "아직 비한국어의 경우, ezlong.com의 메인 페이지와 메뉴에서 '스윙 분석'과
+'top9 집중분석'이 분리되어있지 않네."
+
+실제 상태를 확인한 결과 언어별로 다르게 어긋나 있었다.
+- `en/`: 메뉴는 이미 3분할(ez-nav.js `linksEN`)이었으나 **메인 페이지 타일은 1개**.
+- `ja·zh·es·pt`: **메뉴·타일 둘 다 1개**(ez-nav.js `_localLinks`가 스윙 1줄).
+
+### 조치
+
+- **`en/index.html`**: 스윙 타일 1개 → 3개(Swing Signal / Swing Strategy — 3-3-4 Rule /
+  TOP9 Deep Dive). 해시는 메뉴와 동일(`#swing-strategy`·`#top9`). "14 Tools" → "16 Tools".
+- **`ja·zh·es·pt/index.html`**: 각 언어로 번역한 타일 2개 추가, 개수 문구 14 → 16
+  (제목·히어로 노트·ja는 메타 description까지).
+- **`ez-nav.js` `_localLinks`**: 스윙 항목을 3줄로 분리하고 `LANG_LABELS`에
+  `strategy`·`top9` 라벨을 4개 언어 모두 추가.
+
+### 목적지를 영문 대시보드로 정한 이유
+
+`ja·zh·es·pt`의 `/{lang}/atmr-dashboard.html`은 탭이 없는 345줄짜리 SEO 랜딩 페이지다.
+`#swing-strategy`·`#top9` 해시를 걸어도 아무 동작도 하지 않는다. 그렇다고 한국어
+대시보드로 보내는 건 성동님 원칙("외국인이 굳이 한국어 웹을 볼 필요가 없잖아")에
+어긋난다. 그래서 이 두 항목만 실제로 동작하는 `/en/atmr-dashboard.html#...`로 보낸다.
+사용자가 놀라지 않도록 타일 배지에 언어를 명시했다 — 「戦略ガイド（英語）」,
+「策略指南（英文）」, "Guía de Estrategia (en inglés)", "Guia de Estratégia (em inglês)".
+1번 항목(스윙 시그널)은 SEO 자산이므로 각 언어 랜딩 페이지 그대로 둔다.
+
+해당 언어 대시보드가 실제로 생기면 `p + '...#top9'`로 되돌리면 된다 — ez-nav.js
+주석에 명시해뒀다.
+
+### 검증
+
+로컬 HTTP 서버(python3 -m http.server)로 실제 경로(`/ja/index.html` 등)를 재현해 측정 —
+`file://`로는 `ez-nav.js`의 `LANG` 판정 정규식(`/^\/(en|ja|zh|es|pt)\//`)이 맞지 않아
+전부 한국어로 폴백된다(이 함정에 한 번 빠졌다).
+
+- 6개 언어 전부 메뉴 2줄·타일 2줄 분리 확인, 링크 href 실측.
+- 해시 착지: `/en/atmr-dashboard.html` → market, `#swing-strategy` → strategy,
+  `#top9` → kings 탭. 3건 모두 PASS.
+- 5개 언어 index × 360/393/1280px 스모크 — 타일 16개, 가로스크롤 0, 넘침 0, JS 에러 0.
+- `node --check ez-nav.js` 통과.
+
+### 롤백
+
+```
+git checkout cp-20260804-i18n-swing-split~1 -- ez-nav.js en/index.html ja/index.html zh/index.html es/index.html pt/index.html
+```
+
+---
+
 ## [2026-08-04] 심층 분석 카드 CSS 정리 — 좌측 기준선 하나로 통일 + en/ 스타일시트 404 발견
 
 ### 배경
