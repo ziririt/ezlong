@@ -347,6 +347,23 @@ def session_date_label_en():
         return ''
 
 
+def _ctx_tag():
+    """market_context 전용 장 국면 라벨 — prev_session_tag()와 달리 뒤에
+    '마감했습니다' 같은 서술어가 붙기 때문에, post 국면에서 '마감'을 두 번
+    말하지 않도록 꼬리말을 뺀 형태로 돌려준다."""
+    lbl = session_date_label()
+    if not lbl:
+        return '직전 장'
+    ph = us_session_now()
+    if ph == 'pre':
+        return f'오늘 프리마켓({lbl})'
+    if ph == 'open':
+        return f'오늘 장({lbl}) 장중'
+    if ph == 'post':
+        return f'오늘 장({lbl})'
+    return f'직전 장({lbl})'
+
+
 def prev_session_tag_en():
     """prev_session_tag()의 영어 형제 — 한쪽만 국면을 반영하면 국문·영문이
     어긋나므로 두 함수는 항상 같이 수정한다."""
@@ -380,12 +397,20 @@ def market_context(state, syms, advanced):
     sc = load_scorecard()
     move_txt = None
     if chg is not None:
-        if chg >= 2.0:
-            move_txt = f'{prev_session_tag()}에서 시장이 {chg:+.1f}% 급반등으로 마감했습니다'
-        elif chg <= -2.0:
-            move_txt = f'{prev_session_tag()}에서 시장이 {chg:+.1f}% 급락으로 마감했습니다'
+        # 2026-08-05 성동님 지적 두 가지:
+        #  (1) 새벽 01:48, 장중인데 "급반등으로 마감했습니다"는 모순. 국면을 본다.
+        #  (2) "시장이 +2.7%"는 뭐가 움직였는지 알 수 없다. 기준 지표를 밝힌다.
+        #      이 문단의 등락률은 처음부터 QQQ(나스닥100 ETF) 하나였다.
+        live = us_session_now() in ('pre', 'open')
+        tag  = _ctx_tag()
+        px   = f'({price:,.0f}달러)' if price is not None else ''
+        mv   = '급반등' if chg >= 2.0 else ('급락' if chg <= -2.0 else None)
+        if mv:
+            move_txt = (f'{tag} QQQ(나스닥100 ETF) {chg:+.1f}%{px} {mv} 진행 중입니다' if live
+                        else f'{tag} QQQ(나스닥100 ETF)가 {chg:+.1f}%{px} {mv}으로 마감했습니다')
         elif abs(chg) >= 0.8:
-            move_txt = f'{prev_session_tag()}은 {chg:+.1f}%로 마감했습니다'
+            move_txt = (f'{tag} QQQ(나스닥100 ETF) {chg:+.1f}%{px} 진행 중입니다' if live
+                        else f'{tag} QQQ(나스닥100 ETF)가 {chg:+.1f}%{px}로 마감했습니다')
     if sc:
         cur = sc[0]
         pos, neg = cur.get('positive_total'), cur.get('negative_total')
@@ -1147,6 +1172,21 @@ def desk_with_fable(view, sc_entry, ca):
         ca_line = f"추세 {ca.get('trend')} | 판정 {ca.get('action')} | 반등 신뢰도 {conf.get('verdict')} ({conf.get('score')})"
     stats_block = '\n'.join(f'- {v}' for v in STATS.values())
     n = comp['nums']
+    # 장중 갱신을 켠 뒤로는 데스크가 "마감했습니다"를 쓰면 그대로 모순이 된다
+    # (2026-08-05 새벽 01:48, 장중인데 '급반등 마감'으로 나간 사고).
+    _ph = us_session_now()
+    _SESSION_PHASE_KO = {
+        'pre':    '미국 장 시작 전 프리마켓 시간대다',
+        'open':   '미국 장이 지금 열려 있는 장중이다',
+        'post':   '미국 장이 오늘 막 마감한 직후다',
+        'closed': '미국 장이 닫혀 있는 시간대다',
+    }[_ph]
+    _SESSION_PHASE_RULE = (
+        '오늘 수치는 아직 확정값이 아니다 — "마감", "마감했다", "종가" 같은 완료형 표현 절대 금지. '
+        '"장중", "진행 중", "현재" 같은 진행형으로만 쓰라.'
+        if _ph in ('pre', 'open') else
+        '오늘 장은 이미 끝났으므로 마감·종가 표현을 써도 된다.'
+    )
     prompt = f"""너는 미국주식 분석 사이트 ezlong.com의 최종 데스크(주식 전문 매체 편집장이자 20년 경력 스윙 트레이더)다.
 아래 초안·재료를 데스킹해 방문자용 최종 논평을 JSON으로 완성하라.
 
@@ -1187,6 +1227,10 @@ def desk_with_fable(view, sc_entry, ca):
 - "~하세요" 행동 촉구 금지. 분석/진단형.
 - 포스트마켓은 초안에 등장할 때만 언급하라(큰 이벤트가 있는 날만 초안에 실린다). 초안에 없으면 절대 언급 금지.
 - 오늘 날짜와 직전 장 정보는 초안 서술을 따를 것. '직전 장'을 언급할 때는 초안처럼 반드시 날짜를 병기하라 — 예: "직전 장(7월30일)".
+- [지금 장 국면] {_SESSION_PHASE_KO}. {_SESSION_PHASE_RULE}
+- 등락률을 말할 때는 반드시 대상을 붙여라. 주어 없는 "시장 +x%" 표기 금지 —
+  지수 등락은 "QQQ(나스닥100 ETF) +x%(683달러)"처럼 티커와 주가를 함께 적는다
+  (x·주가는 초안의 실제 수치를 그대로 쓸 것, 새로 만들지 말 것).
 
 [출력 형식 — 이 JSON만 출력, 다른 텍스트 금지]
 {{"headline": "…", "core": ["…", "…", "…"], "sections": [{{"title": "…", "bullets": ["…"]}}]}}

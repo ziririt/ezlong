@@ -138,25 +138,34 @@
   var swingTabHashes = ['#swing-strategy', '#top9', '#tsla-nvda', '#kings', '#tesla-nvidia'];
   var curHash = window.location.hash || '';
 
+  /* 활성 판정을 함수로 뽑아둔다 — 최초 렌더뿐 아니라 해시가 바뀔 때마다
+     같은 규칙으로 다시 계산해야 하기 때문 (아래 syncActive 참조). */
+  var TOP9_ALIASES = ['#tsla-nvda', '#kings', '#tesla-nvidia'];
+  function isDashboardPath(hrefPath) {
+    /* /atmr-dashboard.html, /en/..., /ja/... 전부 해당 — 로케일별로
+       경로가 달라서 문자열 완전일치로 보면 en 이하에서 판정이 새어나간다. */
+    return /(^|\/)atmr-dashboard\.html$/.test(hrefPath);
+  }
+  function computeActive(href, hash) {
+    var hi   = href.indexOf('#');
+    var hp   = hi >= 0 ? href.slice(0, hi) : href;
+    var hh   = hi >= 0 ? href.slice(hi) : '';
+    var onP  = (p === hp) || (p === hp.slice(1));
+    if (hh) {
+      return onP && (hash === hh ||
+             (hh === '#top9' && TOP9_ALIASES.indexOf(hash) >= 0));
+    }
+    if (isDashboardPath(hp)) {
+      return onP && swingTabHashes.indexOf(hash) < 0;
+    }
+    return onP;
+  }
+
   for (var i = 0; i < links.length; i++) {
     var href     = links[i][0];
     var shortLbl = links[i][1];
     var fullLbl  = links[i][2];
-    var hashIdx  = href.indexOf('#');
-    var hrefPath = hashIdx >= 0 ? href.slice(0, hashIdx) : href;
-    var hrefHash = hashIdx >= 0 ? href.slice(hashIdx) : '';
-    var onPath   = (p === hrefPath) || (p === hrefPath.slice(1));
-    var active;
-    if (hrefHash) {
-      /* 해시 항목: 경로 + 해시가 모두 일치할 때만 (구 별칭 #tsla-nvda → #top9 취급) */
-      active = onPath && (curHash === hrefHash ||
-               (hrefHash === '#top9' && (curHash === '#tsla-nvda' || curHash === '#kings' || curHash === '#tesla-nvidia')));
-    } else if (hrefPath === '/atmr-dashboard.html') {
-      /* 기본 '스윙 시그널' 항목: 대시보드에 있되 다른 탭 해시가 아닐 때만 */
-      active = onPath && swingTabHashes.indexOf(curHash) < 0;
-    } else {
-      active = onPath;
-    }
+    var active   = computeActive(href, curHash);
 
     if (active) activeShort = shortLbl;
 
@@ -196,6 +205,106 @@
     document.head.appendChild(st);
   })();
 
+  /* ── 0-A. 같은 페이지 안에서의 메뉴 이동 처리 (2026-08-05, 성동님 제보) ──
+     증상: '스윙 시그널 / 스윙 전략 / TOP9 집중분석' 세 메뉴는 전부
+     atmr-dashboard.html 한 파일의 탭이라 서로 이동해도 페이지가 언로드되지
+     않는다. 그래서 모바일 전면 메뉴가 열린 채로 남고, 사용자 눈에는
+     "눌렀는데 아무 일도 안 일어남 = 고장"으로 보인다.
+     해결: 메뉴 링크 클릭을 위임 처리해서 (1) 항상 메뉴를 먼저 닫고,
+     (2) 같은 경로면 해시만 바꿔 탭 전환을 직접 트리거한다.
+     다른 페이지로 가는 링크는 그대로 브라우저에 맡긴다(기존 동작 유지). */
+  function closeMobMenu() {
+    var menu = document.getElementById('ez-mob-menu');
+    var btn  = document.getElementById('ez-mob-toggle');
+    if (!menu || !menu.classList.contains('open')) return false;
+    menu.classList.remove('open');
+    if (btn) {
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+    document.body.style.overflow = '';
+    return true;
+  }
+  window.ezNavCloseMenu = closeMobMenu;
+
+  function fireHashChange() {
+    /* replaceState로 해시를 지우면 hashchange가 안 뜬다 — 직접 쏜다.
+       HashChangeEvent 생성자를 못 쓰는 구형 브라우저 대비 폴백 포함. */
+    var ev;
+    try { ev = new HashChangeEvent('hashchange'); }
+    catch (e) {
+      try { ev = new Event('hashchange'); }
+      catch (e2) {
+        ev = document.createEvent('Event');
+        ev.initEvent('hashchange', false, false);
+      }
+    }
+    window.dispatchEvent(ev);
+  }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    if (!t || !t.closest) return;
+    var a = t.closest('a.ez-mob-item, a.ez-nav-svc-link');
+    if (!a) return;
+    /* 새 탭/다운로드 등 브라우저 기본 동작 의도는 건드리지 않는다 */
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    if (a.target && a.target !== '_self') return;
+
+    var closed = closeMobMenu();
+
+    /* a.pathname은 브라우저가 절대경로로 정규화해준 값이라 상대경로도 안전 */
+    if (a.protocol !== location.protocol || a.host !== location.host) return;
+    if (a.pathname !== location.pathname) return;   /* 진짜 이동 — 브라우저에 맡김 */
+
+    e.preventDefault();
+    var newHash = a.hash || '';
+    var cur     = location.hash || '';
+    if (newHash === cur) {
+      /* 이미 그 탭에 있다 — 메뉴만 닫고 맨 위로 올려 "반응했다"를 보여준다 */
+      window.scrollTo({ top: 0, behavior: closed ? 'auto' : 'smooth' });
+      syncActive();
+      return;
+    }
+    if (newHash) {
+      location.hash = newHash;              /* hashchange 자동 발생 */
+    } else {
+      try {
+        history.replaceState(null, '', location.pathname + location.search);
+      } catch (err) { /* 미지원 브라우저 무시 */ }
+      fireHashChange();
+    }
+    window.scrollTo({ top: 0 });
+  }, false);
+
+  /* 해시가 바뀌면 활성 표시와 토글 라벨을 다시 계산한다 — 같은 페이지 안에서
+     탭만 바뀌면 스크립트가 재실행되지 않아 예전 탭이 계속 활성으로 남는다. */
+  function syncActive() {
+    var hash = window.location.hash || '';
+    var label = MENU_WORD[LANG] || 'Menu';
+    var apply = function (nodes) {
+      for (var k = 0; k < nodes.length; k++) {
+        var el = nodes[k];
+        var raw = el.getAttribute('href') || '';
+        var on  = computeActive(raw, hash);
+        el.classList.toggle('active', on);
+        if (on) {
+          var idx = -1;
+          for (var j = 0; j < links.length; j++) if (links[j][0] === raw) { idx = j; break; }
+          if (idx >= 0) label = links[idx][1];
+        }
+      }
+    };
+    apply(document.querySelectorAll('a.ez-nav-svc-link'));
+    apply(document.querySelectorAll('a.ez-mob-item'));
+    var lbl = document.querySelector('#ez-mob-toggle .ez-mob-toggle-label');
+    /* index.html처럼 라벨이 고정 문구('투자 AI 도구')인 커스텀 헤더는 건드리지
+       않는다 — 그 페이지엔 ez-nav가 만든 토글이 없으므로 data 표식으로 구분 */
+    if (lbl && lbl.getAttribute('data-ez-nav-label') === '1') lbl.textContent = label;
+  }
+  window.addEventListener('hashchange', syncActive);
+  window.addEventListener('popstate', syncActive);
+
   /* ── 0. 메뉴 전용 모드 (data-menu-only="1") — 커스텀 헤더 페이지용 ──
      index.html처럼 자체 헤더를 가진 페이지는 nav를 새로 만들지 않고,
      페이지에 이미 있는 #ez-mob-menu 컨테이너에 위 links 배열로 만든
@@ -227,7 +336,7 @@
       '<div class="ez-nav-svc-links">' + desktopLinksHTML + '</div>' +
       '<button class="ez-mob-toggle" id="ez-mob-toggle" ' +
              'onclick="ezNavToggle()" aria-expanded="false" aria-haspopup="true">' +
-        '<span class="ez-mob-toggle-label">' + activeShort + '</span>' +
+        '<span class="ez-mob-toggle-label" data-ez-nav-label="1">' + activeShort + '</span>' +
         '<span class="ez-mob-toggle-arrow">&#9662;</span>' +
       '</button>' +
     '</div>';

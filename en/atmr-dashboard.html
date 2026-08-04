@@ -6086,7 +6086,11 @@ function tabFromHash() {
   const h = (location.hash || '').toLowerCase();
   if (h === '#swing-strategy' || h === '#strategy')                 return 'strategy';
   if (h === '#tsla-nvda' || h === '#kings' || h === '#tesla-nvidia' || h === '#top9') return 'kings';
-  return null;
+  // 2026-08-05: 해시 없음 = 기본 탭(스윙 시그널). 예전엔 null을 돌려줘서,
+  // #top9에서 메뉴로 '스윙 시그널'을 눌러 해시가 지워져도 탭이 그대로 남았다.
+  // 그 상태가 성동님이 본 "눌러도 아무 반응 없음"의 절반이었다.
+  if (h === '' || h === '#') return 'market';
+  return null;   // 그 밖의 해시(본문 앵커)는 탭 전환 대상이 아니다
 }
 (function initTabDeepLink() {
   const t = tabFromHash();
