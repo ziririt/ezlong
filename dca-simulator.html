@@ -863,7 +863,7 @@ function App(){
       {/* HEADER */}
       <header style={{background:'var(--hdr-bg)',backdropFilter:'blur(20px)',
         WebkitBackdropFilter:'blur(20px)',borderBottom:'1px solid var(--bd)',
-        position:'sticky',top:48,zIndex:100}}>
+        position:'sticky',top:'var(--ez-nav-h, 56px)',zIndex:100}}>
         <div className="r-hdr" style={{maxWidth:1180,margin:'0 auto',padding:'0 24px',height:54,
           display:'flex',alignItems:'center',justifyContent:'space-between'}}>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
@@ -890,7 +890,7 @@ function App(){
         display:'grid',gridTemplateColumns:'370px 1fr',gap:24,alignItems:'start'}}>
 
         {/* ── LEFT PANEL */}
-        <div className="r-sticky" style={{position:'sticky',top:114,display:'flex',flexDirection:'column',gap:16}}>
+        <div className="r-sticky" style={{position:'sticky',top:'calc(var(--ez-nav-h, 56px) + 66px)',display:'flex',flexDirection:'column',gap:16}}>
           <Card style={{padding:22}}>
             <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:18}}>
               <span style={{fontSize:15,fontWeight:700}}>투자 설정</span>

@@ -248,6 +248,24 @@
   parent.insertBefore(nav, ref);
   parent.insertBefore(mobMenu, ref);  /* nav 다음에, 페이지 본문보다 앞에 */
 
+  /* ── 네비 실제 높이를 --ez-nav-h 로 노출 (2026-08-04) ─────────────────
+     배경: retirement-calculator가 페이지 헤더를 top:48px에 고정하고 있었는데,
+     그 48px은 지금 DOM에 존재하지도 않는 옛 #global-nav 높이였다. 실제
+     .ez-nav는 모바일 54px·PC 73px이라 헤더가 네비 뒤로 밀려 들어가
+     "덮인 것처럼" 보였다(성동님 제보). 숫자를 페이지마다 손으로 박으면
+     네비가 바뀔 때마다 조용히 어긋난다 — 실측값을 변수로 내보낸다. */
+  (function publishNavHeight() {
+    var apply = function () {
+      var h = Math.round(nav.getBoundingClientRect().height);
+      if (h > 0) document.documentElement.style.setProperty('--ez-nav-h', h + 'px');
+    };
+    apply();
+    if (window.ResizeObserver) { try { new ResizeObserver(apply).observe(nav); } catch (e) {} }
+    window.addEventListener('resize', apply, { passive: true });
+    window.addEventListener('load', apply, { passive: true });
+  })();
+
+
 
   /* ── 4. 모바일 메뉴 padding-top 동적 조정 ──
      각 페이지마다 nav 실제 높이가 다를 수 있으므로

@@ -1207,7 +1207,9 @@ function App(){
         background:'var(--hdr-bg)', backdropFilter:'saturate(180%) blur(20px)',
         WebkitBackdropFilter:'saturate(180%) blur(20px)',
         borderBottom:'1px solid var(--bd)',
-        position:'sticky', top:48, zIndex:100,
+        /* 2026-08-04: top:48은 지금 DOM에 없는 옛 #global-nav 높이였다.
+           실제 네비 높이를 ez-nav.js가 --ez-nav-h로 내보낸다. */
+        position:'sticky', top:'var(--ez-nav-h, 56px)', zIndex:100,
       }}>
         <div style={{
           maxWidth:1180, margin:'0 auto', padding:'12px 24px',
@@ -1231,7 +1233,7 @@ function App(){
       }}>
 
         {/* 좌측 입력 패널 */}
-        <div className="r-sticky" style={{position:'sticky',top:130}}>
+        <div className="r-sticky" style={{position:'sticky',top:'calc(var(--ez-nav-h, 56px) + 82px)'}}>
           <Card style={{padding:'22px'}}>
             <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:18,
               paddingBottom:14,borderBottom:'1px solid var(--bd)'}}>
