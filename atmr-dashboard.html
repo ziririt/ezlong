@@ -759,8 +759,11 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 699px) {
   .top9-chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
   .top9-chip {
+    /* 2026-08-04 정정: 자간을 -.02em으로 좁혔었는데 음수 트래킹은 큰 표제용이고
+       14px 티커는 오히려 0~약간 양수가 읽기 좋다(apple-design 타이포그래피 원칙).
+       3열은 여백(padding·gap)으로만 확보한다. */
     padding: 8px 4px; gap: 3px; justify-content: center;
-    font-size: 14px; letter-spacing: -.02em;
+    font-size: 14px; letter-spacing: 0.01em;
   }
   .top9-chip .t9-chg { font-size: 14px; }
 }

@@ -504,7 +504,7 @@ a { text-decoration: none; color: inherit; }
 
 @media (max-width: 600px) {
   .nav-links { display: none; }
-  .nav-tagline { font-size: 14px; letter-spacing: -.02em; }
+  .nav-tagline { font-size: 14px; }
 }
 
 /* ─── Hero ────────────────────────────────────────── */
@@ -677,12 +677,15 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* 좁은 화면(안드로이드 360px 등) — 한 줄에 들어가는 글자 수 확보.
-   폰트 14px 하한(가독성 절대 규칙)은 지키고 여백·자간·타이틀만 1단계 줄인다. */
+   폰트 14px 하한(가독성 절대 규칙)은 지키고 여백과 타이틀 크기만 줄인다.
+   2026-08-04 정정: 처음엔 자간도 -.02em으로 좁혔는데, 음수 트래킹은 큰 표제용이고
+   작은 본문은 오히려 0~약간 양수여야 읽힌다(apple-design 타이포그래피 원칙).
+   글자 수는 여백으로 벌고 자간은 건드리지 않는다. */
 @media (max-width: 400px) {
   .tools-grid { gap: 8px; }
   .tool-card { padding: 12px 10px; gap: 7px; }
-  .tool-card-title { font-size: 14px; letter-spacing: -.02em; }
-  .tool-card-desc { font-size: 14px; line-height: 1.45; letter-spacing: -.02em; }
+  .tool-card-title { font-size: 14px; letter-spacing: 0; }
+  .tool-card-desc { font-size: 14px; line-height: 1.45; letter-spacing: 0; }
   .tool-card-icon { width: 28px; height: 28px; border-radius: 8px; }
   .tool-card-icon svg { width: 15px; height: 15px; }
 }
@@ -1243,7 +1246,10 @@ a { text-decoration: none; color: inherit; }
   font-size: clamp(23px, 7vw, 64px);
   word-break: keep-all;
   font-weight: 900;
-  letter-spacing: -0.03em;
+  /* 트래킹도 크기를 따라간다 — 커질수록 글자가 성겨 보이므로 더 좁히고,
+     작을 때는 덜 좁힌다. 고정값 하나를 전 구간에 쓰면 한쪽이 반드시 틀린다
+     (apple-design 타이포그래피 원칙). 320px에서 -0.012em, 1200px 이상 -0.03em. */
+  letter-spacing: clamp(-0.03em, -0.055em + 0.55vw, -0.012em);
   line-height: 1.15;
   color: #ffffff;
   text-shadow: 0 2px 24px rgba(0,0,0,0.35);
