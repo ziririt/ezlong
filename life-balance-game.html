@@ -130,6 +130,12 @@
 
     /* ── 진행바 ── */
     #lbg-progress-wrap { padding: 18px 20px 0; }
+    .lbg-back-btn {
+      cursor: pointer; border: 1px solid var(--ez-border); border-radius: 8px;
+      background: var(--ez-surface); color: var(--ez-text2);
+      font-size: 15px; font-weight: 700; padding: 4px 10px; line-height: 1.4;
+    }
+    .lbg-back-btn:hover { border-color: var(--ez-blue); color: var(--ez-blue); }
     .lbg-progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .lbg-progress-label { font-size: 15px; font-weight: 600; color: var(--ez-text3); }
     .lbg-progress-track { height: 5px; background: var(--ez-border); border-radius: 3px; overflow: hidden; }
@@ -227,9 +233,15 @@
        기본정보 선택지를 2열 유지 + 여백 압축 → 한 화면에서 스크롤 없이 응답.
        (기존엔 480px 이하에서 1열로 무너져 12개 선택지가 세로로 길게 늘어졌음) */
     @media (max-width: 480px) {
+      /* 상단 히어로 압축 (2026-08-04 성동님 지시 — 위 빈 여백 절약) */
+      .page-brand { padding: 12px 16px 10px; }
+      .page-brand-label { margin-bottom: 3px; }
+      .page-brand-title { font-size: 22px; margin-bottom: 4px; }
+      .page-brand-desc { line-height: 1.5; }
+      #lbg-progress-wrap { padding: 12px 16px 0; }
       /* 다크 씬(인트로·프리게임): 78vh 세로 중앙 정렬이 모바일에선 위 공백만
          키우고 '다음' 버튼을 화면 밖으로 밀어냈음 — 내용 높이만큼만 차지 */
-      .lbg-dark { min-height: auto; padding: 44px 20px 40px; justify-content: flex-start; }
+      .lbg-dark { min-height: auto; padding: 40px 20px 36px; justify-content: flex-start; }
       .lbg-panel { padding: 22px 14px 14px; }
       .lbg-step-title { margin-bottom: 8px; }
       .lbg-step-desc { margin-bottom: 14px; }
@@ -257,7 +269,10 @@
 
 <div id="lbg-progress-wrap" style="display:none;">
   <div class="lbg-progress-top">
-    <span class="lbg-progress-label" id="lbg-progress-label">1 / 10</span>
+    <span style="display:flex;align-items:center;gap:12px;">
+      <button type="button" id="lbg-back" class="lbg-back-btn" style="display:none;">&#8249; 이전</button>
+      <span class="lbg-progress-label" id="lbg-progress-label">1 / 10</span>
+    </span>
     <span class="lbg-progress-label" id="lbg-progress-pct">10%</span>
   </div>
   <div class="lbg-progress-track"><div class="lbg-progress-fill" id="lbg-progress-fill" style="width:0%"></div></div>
@@ -752,7 +767,18 @@
     var key = basicSteps[basicIdx];
     var s = el("section", "lbg-scene active");
     var panel = el("div", "lbg-panel");
-    panel.appendChild(el("div", "lbg-step-tag", "기본 정보 " + (basicIdx + 1) + " / 5"));
+    var tagRow = el("div", "");
+    tagRow.style.cssText = "display:flex;align-items:center;gap:12px;margin-bottom:10px;";
+    if (basicIdx > 0) {
+      var bk = el("button", "lbg-back-btn", "‹ 이전");
+      bk.type = "button";
+      bk.onclick = function () { basicIdx--; renderBasicStep(); };
+      tagRow.appendChild(bk);
+    }
+    var tagEl = el("div", "lbg-step-tag", "기본 정보 " + (basicIdx + 1) + " / 5");
+    tagEl.style.marginBottom = "0";
+    tagRow.appendChild(tagEl);
+    panel.appendChild(tagRow);
 
     if (key === "age") {
       panel.appendChild(el("h2", "lbg-step-title", "연령대를 알려주세요"));
@@ -799,6 +825,8 @@
       var boxes = [];
       CONCERN_OPTIONS.forEach(function (label) {
         var c = el("div", "lbg-opt", label);
+        /* '이전'으로 돌아왔을 때 기존 선택 표시 복원 */
+        if (state.basic.concerns.indexOf(label) >= 0) c.classList.add("selected");
         c.onclick = function () {
           var idx = state.basic.concerns.indexOf(label);
           if (idx >= 0) {
@@ -852,18 +880,32 @@
 
   var pendingAnswer = null;
 
-  function updateProgress(current, total) {
+  /* '‹ 이전' 버튼 (2026-08-04 성동님 지시) — 각 화면 렌더러가 back 동작을 지정.
+     null이면 숨김. 뒤로 갈 때는 해당 답변의 점수 반영도 되돌린다(unapplyScore). */
+  var backBtn = document.getElementById("lbg-back");
+  var backAction = null;
+  if (backBtn) backBtn.onclick = function () { if (backAction) backAction(); };
+
+  function updateProgress(current, total, back) {
     progressWrap.style.display = "block";
     var pct = Math.round((current / total) * 100);
     progressFill.style.width = pct + "%";
     progressLabel.textContent = current + " / " + total;
     progressPct.textContent = pct + "%";
+    backAction = back || null;
+    if (backBtn) backBtn.style.display = backAction ? "" : "none";
   }
 
   function renderQuestion(idx) {
     clearApp();
     var total = 10;
-    updateProgress(idx + 1, total);
+    updateProgress(idx + 1, total, idx > 0 ? function () {
+      /* 직전 문항으로 — 그 답의 점수 반영을 되돌리고 다시 묻는다 */
+      var last = state.answers.pop();
+      if (last) unapplyScore(last);
+      pendingAnswer = null;
+      renderQuestion(idx - 1);
+    } : null);
     var q;
     var isTournament = idx === 9;
     if (isTournament) {
@@ -900,7 +942,11 @@
 
   function renderConfidence(idx, total) {
     clearApp();
-    updateProgress(idx + 1, total);
+    updateProgress(idx + 1, total, function () {
+      /* 확신도 화면에서 이전 = 같은 문항의 A/B 선택으로 복귀 (아직 미반영 상태) */
+      pendingAnswer = null;
+      renderQuestion(idx);
+    });
     var s = el("section", "lbg-scene active");
     var panel = el("div", "lbg-panel");
     panel.appendChild(el("h2", "lbg-step-title", "이 선택, 얼마나 어려웠나요?"));
@@ -928,6 +974,17 @@
     if (ans.confidence === "hard") {
       state.scores[ans.value] += 1;
       state.scores[ans.oppositeValue] += 1;
+    }
+  }
+
+  /* applyScore의 정확한 역연산 — '‹ 이전'으로 답을 물릴 때 사용.
+     applyScore 채점 규칙을 바꾸면 반드시 이 함수도 같이 바꾼다. */
+  function unapplyScore(ans) {
+    state.scores[ans.value] -= 3;
+    if (ans.confidence === "easy") state.scores[ans.value] -= 1;
+    if (ans.confidence === "hard") {
+      state.scores[ans.value] -= 1;
+      state.scores[ans.oppositeValue] -= 1;
     }
   }
 
