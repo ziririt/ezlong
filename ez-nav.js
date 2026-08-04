@@ -13,10 +13,60 @@
 (function () {
   var scriptEl = document.currentScript;
 
-  /* ── 영문판(/en/) 감지 — 같은 스크립트가 en 페이지에선 영어 메뉴를 그린다.
-     (2026-08-04 신설: 메뉴 단일 출처 원칙을 en 서브사이트까지 확장.
-     en에 실존하는 페이지만 나열 — 절세 계좌 등 한국 전용 도구는 제외.) */
-  var IS_EN = window.location.pathname.indexOf('/en/') === 0;
+  /* ── 다국어 감지 (2026-08-04) — 같은 스크립트가 경로에 따라 해당 언어 메뉴를 그린다.
+     메뉴 단일 출처 원칙을 en·ja·zh·es·pt 전 서브사이트로 확장. 각 언어 폴더에
+     **실존하는 페이지만** 나열한다(없는 페이지로 보내면 404). 절세 계좌 등 한국
+     전용 도구는 en에서만 제외가 아니라 전 언어에서 제외. */
+  var LANG = (function () {
+    var m = /^\/(en|ja|zh|es|pt)\//.exec(window.location.pathname);
+    return m ? m[1] : 'ko';
+  })();
+  var IS_EN = LANG !== 'ko';   /* 비한국어 = 로컬라이즈 메뉴 경로 */
+
+  /* 언어별 실존 도구 8종(계산기류) + 랜딩 페이지. ja만 자동화 가이드·절세 계좌 보유. */
+  function _localLinks(lang, L) {
+    var p = '/' + lang + '/';
+    var a = [
+      [p + 'atmr-dashboard.html', L.swing,    L.swing],
+      [p + 'market-vs.html',      L.vs,       L.vs],
+      [p + 'stocks.html',         L.prices,   L.prices],
+      [p + 'chart-analysis.html', L.chart,    L.chart],
+      [p + 'analyst-reports.html', L.targets, L.targets],
+      [p + 'market-cycle.html',   L.cycle,    L.cycle],
+      [p + 'dca-simulator.html',  L.dca,      L.dca],
+      [p + 'portfolio-manager.html', L.folio, L.folio],
+      [p + 'compound-calculator.html', L.compound, L.compound],
+      [p + 'retirement-calculator.html', L.retire, L.retire],
+      [p + 'backtest.html',       L.backtest, L.backtest],
+      [p + 'risk-diagnostic.html', L.risk,    L.risk],
+      [p + 'stock-personality-quiz.html', L.quiz, L.quiz],
+      [p + 'life-balance-game.html', L.game,  L.game]
+    ];
+    if (lang === 'ja') a.push([p + 'auto-dca-guide.html', L.autoGuide, L.autoGuide]);
+    return a;
+  }
+
+  var LANG_LABELS = {
+    ja: { swing: 'スイングシグナル', vs: '強気vs弱気', prices: '株価情報', chart: 'AIチャート分析',
+          targets: '目標株価', cycle: 'マーケットサイクル', dca: 'DCAシミュレーター',
+          folio: 'AIポートフォリオ', compound: '複利計算機', retire: '退職計算機',
+          backtest: 'バックテスト', risk: '投資性向診断', quiz: '投資タイプ診断',
+          game: 'バランスゲーム', autoGuide: '自動積立ガイド' },
+    zh: { swing: '波段信号', vs: '多空对比', prices: '股价信息', chart: 'AI图表分析',
+          targets: '目标股价', cycle: '市场周期', dca: '定投模拟器',
+          folio: 'AI投资组合', compound: '复利计算器', retire: '退休计算器',
+          backtest: '回测', risk: '风险偏好测评', quiz: '投资类型测试', game: '平衡游戏' },
+    es: { swing: 'Señal de Swing', vs: 'Alcista vs Bajista', prices: 'Precios', chart: 'Análisis IA',
+          targets: 'Precio Objetivo', cycle: 'Ciclo de Mercado', dca: 'Simulador DCA',
+          folio: 'Cartera IA', compound: 'Interés Compuesto', retire: 'Calc. Jubilación',
+          backtest: 'Backtest', risk: 'Perfil de Riesgo', quiz: 'Tipo de Inversor',
+          game: 'Juego de Equilibrio' },
+    pt: { swing: 'Sinal de Swing', vs: 'Alta vs Baixa', prices: 'Preços', chart: 'Análise IA',
+          targets: 'Preço-Alvo', cycle: 'Ciclo de Mercado', dca: 'Simulador DCA',
+          folio: 'Carteira IA', compound: 'Juros Compostos', retire: 'Calc. Aposentadoria',
+          backtest: 'Backtest', risk: 'Perfil de Risco', quiz: 'Tipo de Investidor',
+          game: 'Jogo de Equilíbrio' }
+  };
 
   var linksEN = [
     ['/en/atmr-dashboard.html',        'Swing Signal',    'Swing Signal Dashboard'],
@@ -65,8 +115,11 @@
   ];
 
   var p = window.location.pathname;
-  var links = IS_EN ? linksEN : linksKR;
-  var activeShort = IS_EN ? 'Menu' : '메뉴';
+  var links = LANG === 'ko' ? linksKR
+            : LANG === 'en' ? linksEN
+            : _localLinks(LANG, LANG_LABELS[LANG]);
+  var MENU_WORD = { ko: '메뉴', en: 'Menu', ja: 'メニュー', zh: '菜单', es: 'Menú', pt: 'Menu' };
+  var activeShort = MENU_WORD[LANG] || 'Menu';
   var desktopLinksHTML = '';
   var mobileItemsHTML  = '';
 
