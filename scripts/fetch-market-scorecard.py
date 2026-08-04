@@ -683,7 +683,9 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 실제 영향력 기반 점수 배분 (50:50 기계적 배분 금지)
 - mixed_factors: 해석이 엇갈리는 혼조·양면 재료 0~3개 (점수 없음, 아래 규칙 참조)
 - summary: 단기 시장 구도 총평 (한국어, 50자 이내)
-- 모든 문자열 값은 한국어, 분석/진단형 문체 ("~하세요" 금지)
+- 모든 문자열 값은 한국어, 분석/진단형 문체. 서술어 없이 명사로 끝맺어라
+  ('~구간', '~우세', '~확대', '~진정' 형태). '~하세요' 권유형, '~했다/~한다' 해라체,
+  '~습니다/~입니다' 존대체 전부 금지 — ezlong.com 전 분석글이 같은 명사형 문체다
 - name 필드: 20자 이내, desc 필드: 30자 이내
 - category 필드 (positive_factors·negative_factors·mixed_factors 각 항목 필수, 2026-07-28 추가):
   아래 목록에서 정확히 하나만 골라 그대로 쓸 것 (목록에 없는 값·번역·창작 금지):

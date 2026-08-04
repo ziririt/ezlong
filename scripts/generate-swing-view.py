@@ -34,14 +34,14 @@ CFG = dict(
 # 검증된 통계만 (2015.6~2026.7, backtest/REPORT-2026-07-31.md 4절)
 STATS = dict(
     base20='지난 11년 이 시장 조합의 20거래일 평균 수익은 +1.5%',
-    warn='매도압력 60선 돌파 뒤에는 그 평균이 +0.4%까지, 60거래일 기준으로는 +0.1% 수준까지 떨어졌던 이력이 있습니다',
-    gear3='200일선 위 구간의 20거래일 승률은 70%였습니다',
-    tsla_extreme='TSLA 매수점수 80 이상 구간은 표본 61일, 이후 20거래일 평균 +15.3%·승률 69%였습니다',
-    tsla_hot='TSLA는 매도압력 75를 넘긴 뒤에도 20거래일 평균 +7.5%로 더 오른 이력이 많았습니다 — 과열을 기계적으로 파는 문법이 이 종목에선 돈을 잃어왔습니다',
-    nvda_trend='NVDA는 200일선 위(기어3)에서 20거래일 승률 69%, 아래에서는 56%로 갈립니다 — 추세 유지가 판단의 중심입니다',
-    rebound='약세 구간(RSI 45 미만)에서 나온 하루 +2.5% 이상 급반등은 지난 11년 49차례 있었고, 반등 자체만으로는 이후 5거래일 승률이 52%로 동전던지기였습니다',
-    follow='다만 진위는 이틀 안에 갈렸습니다 — 2거래일 내 반등일 종가 위에서 다시 마감하면 이후 20거래일 평균 +3.2%·승률 63%, 못 하면 −1.1%·승률 38%였습니다',
-    lifeline='이 생명선은 백테스트에서 2022년 1월 28일 QQQ 352에 발동해 바닥(254)까지의 추가 하락을 통째로 피하게 했고, 2021~2026 구간 최대낙폭을 −20.7%에서 −16.0%로 줄였습니다. 대신 2020·2023·2025년의 휩쏘로 연 1.4%p가량을 보험료로 냈습니다 — 더 비싸게 다시 사는 비용까지가 이 규칙의 가격입니다',
+    warn='매도압력 60선 돌파 이후 그 평균은 +0.4%까지, 60거래일 기준으로는 +0.1% 수준까지 하락한 이력',
+    gear3='200일선 위 구간의 20거래일 승률 70%',
+    tsla_extreme='TSLA 매수점수 80 이상 구간은 표본 61일, 이후 20거래일 평균 +15.3%·승률 69%',
+    tsla_hot='TSLA는 매도압력 75 돌파 이후에도 20거래일 평균 +7.5%로 더 오른 이력 다수 — 과열을 기계적으로 파는 문법은 이 종목에서 손실 누적',
+    nvda_trend='NVDA는 200일선 위(기어3) 20거래일 승률 69%, 아래 56%로 분기 — 추세 유지가 판단의 중심',
+    rebound='약세 구간(RSI 45 미만)의 하루 +2.5% 이상 급반등은 지난 11년 49차례, 반등 자체만으로는 이후 5거래일 승률 52%로 동전던지기 수준',
+    follow='진위는 이틀 안에 판명 — 2거래일 내 반등일 종가 위 재마감 시 이후 20거래일 평균 +3.2%·승률 63%, 실패 시 −1.1%·승률 38%',
+    lifeline='이 생명선은 백테스트에서 2022년 1월 28일 QQQ 352에 발동, 바닥(254)까지의 추가 하락을 통째로 회피. 2021~2026 구간 최대낙폭을 −20.7%에서 −16.0%로 축소. 대신 2020·2023·2025년의 휩쏘로 연 1.4%p가량을 보험료로 지출 — 더 비싸게 다시 사는 비용까지가 이 규칙의 가격',
 )
 
 KST = timezone(timedelta(hours=9))
@@ -172,14 +172,14 @@ def self_review(state):
     bullish = past['act'] in ('ADD', 'INIT') or (past['act'] == 'WAIT' and past['expo'] >= 0.8)
     bearish = past['act'] in ('TRIM', 'STOP') or past['expo'] <= 0.2
     if bullish and chg <= -4:
-        return (f'짚고 갈 것이 있습니다. 5거래일 전 노출을 유지·확대하는 쪽에 섰던 판단은 '
-                f'이후 {chg:.1f}%로 빗나갔습니다. 변명하지 않겠습니다 — 다만 그 판단의 전제였던 '
-                f'200일선 위 추세는 아직 유효해서, 손절선 관리로 대응하는 것이 원칙에 맞다고 봅니다.')
+        return (f'짚고 갈 것 하나 — 5거래일 전 노출 유지·확대 쪽에 섰던 판단, '
+                f'이후 {chg:.1f}%로 빗나감. 변명 없이 그대로 기록. '
+                f'다만 그 판단의 전제였던 200일선 위 추세는 아직 유효, 손절선 관리로 대응하는 것이 원칙.')
     if bearish and chg >= 4:
-        return (f'먼저 인정할 것이 있습니다. 5거래일 전 노출을 줄이는 쪽에 섰던 판단 이후 '
-                f'가격은 오히려 +{chg:.1f}% 올랐습니다. 방어의 대가로 상승 일부를 놓친 셈입니다. '
-                f'이 시스템은 폭락 방어를 우선하는 구조라 이런 비용이 주기적으로 발생합니다 — '
-                f'그 트레이드오프까지가 판단입니다.')
+        return (f'먼저 인정할 것 하나 — 5거래일 전 노출 축소 쪽에 섰던 판단 이후 '
+                f'가격은 오히려 +{chg:.1f}% 상승. 방어의 대가로 상승 일부를 놓친 셈. '
+                f'폭락 방어를 우선하는 구조라 이런 비용은 주기적으로 발생 — '
+                f'그 트레이드오프까지가 판단.')
     return None
 
 
@@ -273,8 +273,8 @@ def postmarket_context():
             and (idx_big or ups or dns):
         idx_txt = f" 지수(QQQ) 시간외 {qqq['extPct']:+.1f}% — 다음 정규장 갭 방향의 단서."
     if body:
-        return f'장 마감 뒤 시간외 거래에서 큰 움직임이 나왔습니다 — {body}.' + idx_txt
-    return f'장마감 뒤 지수가 크게 움직였습니다.{idx_txt} 매크로급 재료 발생 가능성 — 재료 균형 갱신분 확인 대상.'
+        return f'장 마감 뒤 시간외 거래에서 큰 움직임 발생 — {body}.' + idx_txt
+    return f'장마감 뒤 지수 급변동.{idx_txt} 매크로급 재료 발생 가능성 — 재료 균형 갱신분 확인 대상.'
 
 
 _SESSION_DATE = None
@@ -406,11 +406,11 @@ def market_context(state, syms, advanced):
         px   = f'({price:,.0f}달러)' if price is not None else ''
         mv   = '급반등' if chg >= 2.0 else ('급락' if chg <= -2.0 else None)
         if mv:
-            move_txt = (f'{tag} QQQ(나스닥100 ETF) {chg:+.1f}%{px} {mv} 진행 중입니다' if live
-                        else f'{tag} QQQ(나스닥100 ETF)가 {chg:+.1f}%{px} {mv}으로 마감했습니다')
+            move_txt = (f'{tag} QQQ(나스닥100 ETF) {chg:+.1f}%{px} {mv} 진행 중' if live
+                        else f'{tag} QQQ(나스닥100 ETF) {chg:+.1f}%{px} {mv} 마감')
         elif abs(chg) >= 0.8:
-            move_txt = (f'{tag} QQQ(나스닥100 ETF) {chg:+.1f}%{px} 진행 중입니다' if live
-                        else f'{tag} QQQ(나스닥100 ETF)가 {chg:+.1f}%{px}로 마감했습니다')
+            move_txt = (f'{tag} QQQ(나스닥100 ETF) {chg:+.1f}%{px} 진행 중' if live
+                        else f'{tag} QQQ(나스닥100 ETF) {chg:+.1f}%{px} 마감')
     if sc:
         cur = sc[0]
         pos, neg = cur.get('positive_total'), cur.get('negative_total')
@@ -424,13 +424,13 @@ def market_context(state, syms, advanced):
             lke = (low.get('key_event') or {}).get('name', '')
             neg_names = [f.get('name') for f in (low.get('negative_factors') or [])][:2]
             neg_txt = '·'.join(n for n in neg_names if n)
-            parts.append(f"불과 직전까지 {neg_txt or lke}가 누르던 분위기(긍정 {low['positive_total']} 대 "
-                         f"부정 {100 - low['positive_total']})가 {ke} 등으로 짧은 시간에 뒤집혔습니다. "
-                         f'지금 재료 균형은 긍정 {pos} 대 부정 {neg}.')
+            parts.append(f"직전까지 {neg_txt or lke}가 누르던 분위기(긍정 {low['positive_total']} 대 "
+                         f"부정 {100 - low['positive_total']})가 {ke} 등으로 단시간에 반전. "
+                         f'현재 재료 균형은 긍정 {pos} 대 부정 {neg}.')
         elif pos is not None:
             parts.append(f'재료 균형은 긍정 {pos} 대 부정 {neg} — 핵심 재료는 {ke}.')
         if cum5 is not None and abs(cum5) >= 3:
-            parts.append(f'최근 5거래일 누적으로는 {cum5:+.1f}%입니다.')
+            parts.append(f'최근 5거래일 누적 {cum5:+.1f}%.')
         if parts:
             p.append(' '.join(parts))
     elif move_txt:
@@ -442,23 +442,23 @@ def market_context(state, syms, advanced):
     watch = state.get('reboundWatch')
     if advanced and watch:
         if price is not None and price > watch['price']:
-            p.append(f"급반등의 첫 관문 — QQQ가 반등일 종가인 {int(watch['price'])}달러 선 위에서 재마감 — 은 "
-                     f'통과됐습니다. {STATS["follow"]}. 통계는 이 반등을 진짜 쪽에 두기 시작했습니다.')
+            p.append(f"급반등의 첫 관문 통과 — QQQ가 반등일 종가인 {int(watch['price'])}달러 선 위에서 재마감. "
+                     f'{STATS["follow"]}. 통계는 이 반등을 진짜 쪽으로 분류 시작.')
             state['reboundWatch'] = None
         else:
             watch['daysLeft'] -= 1
             if watch['daysLeft'] <= 0:
-                p.append(f"급반등의 첫 관문(QQQ 종가의 {int(watch['price'])}달러 선 재돌파)은 기한 안에 "
-                         f'통과되지 못했습니다. {STATS["follow"]}. 이 반등을 추세 전환으로 승격하지 않습니다.')
+                p.append(f"급반등의 첫 관문(QQQ 종가의 {int(watch['price'])}달러 선 재돌파) 기한 내 미통과. "
+                         f'{STATS["follow"]}. 이 반등을 추세 전환으로 승격하지 않음.')
                 state['reboundWatch'] = None
     if advanced and chg is not None and chg >= 2.5 and (rsi_prev is None or rsi_prev < 45)             and not state.get('reboundWatch'):
         state['reboundWatch'] = dict(day=state.get('lastDay'), price=price, daysLeft=2)
     # 활성 관문은 (같은 날 재실행 포함) 항상 서술 — 상태 기반이라 하루 여러 번 갱신에도 유지
     watch = state.get('reboundWatch')
     if watch:
-        p.append(f'급반등이 추세의 터닝포인트인지는 아직 단정하지 않습니다. {STATS["rebound"]}. '
-                 f'{STATS["follow"]}. 그래서 지금 관문은 하나입니다 — 남은 {watch["daysLeft"]}거래일 '
-                 f'안에 QQQ 종가가 반등일 종가인 {int(watch["price"])}달러 선 위에서 다시 마감하는지 확인 중입니다.')
+        p.append(f'급반등의 터닝포인트 여부는 아직 미확정. {STATS["rebound"]}. '
+                 f'{STATS["follow"]}. 지금 관문은 하나 — 남은 {watch["daysLeft"]}거래일 '
+                 f'안에 QQQ 종가가 반등일 종가인 {int(watch["price"])}달러 선 위에서 재마감하는지 확인 중.')
     return p
 
 
@@ -473,7 +473,7 @@ def chart_engine_crosscheck(st):
     verdict = conf.get('verdict') or ''
     bits = []
     if act or trend:
-        bits.append(f"차트분석 엔진의 오늘 판독은 '{act or trend}'입니다")
+        bits.append(f"차트분석 엔진의 오늘 판독 '{act or trend}'")
     if verdict:
         # 'N/5' 분수 표기는 일반 방문자에게 낯설다 — 퍼센트로 변환 (2026-08-01 유저 지시)
         raw = str(conf.get('score', '') or '')
@@ -491,11 +491,11 @@ def chart_engine_crosscheck(st):
     bullish_st = st in ('accumulate', 'hold')
     cautious_ca = any(k in (str(act) + str(verdict)) for k in ('관망', '주의', '위장', '매도'))
     if bullish_st and cautious_ca:
-        line += ' 이 판단과 결이 다른 부분인데, 이럴 때 원칙은 보수적인 쪽입니다 — 보유는 유지하되 신규 증액은 이 모순이 풀린 뒤로 미룹니다.'
+        line += ' 이 판단과 결이 다른 지점 — 이럴 때 원칙은 보수적인 쪽. 보유는 유지, 신규 증액은 이 모순이 풀린 뒤로 유보.'
     elif not bullish_st and not cautious_ca:
-        line += ' 차트 쪽이 더 낙관적이지만, 노출 판단은 이 시스템의 규율을 따릅니다.'
+        line += ' 차트 쪽이 더 낙관적이나, 노출 판단은 이 시스템의 규율 우선.'
     else:
-        line += ' 이 판단과 같은 방향입니다.'
+        line += ' 이 판단과 같은 방향.'
     return line
 
 
@@ -509,40 +509,40 @@ def comp_commentary(state, action, buy, sell, gear, dev200, price):
 
     # 1) 오늘의 판단
     if state.get('stopped') or action == 'STOP':
-        p.append(f'지금은 수익을 좇을 자리가 아니라 계좌를 지킬 자리입니다. 종가가 200일선 아래 '
-                 f'{dev200:.1f}%까지 밀렸고, 이 선을 이 정도로 이탈한 뒤에는 관성적으로 더 밀린 '
-                 f'사례가 많아 계획된 노출 축소를 진행하는 구간입니다. 바닥을 맞히려 들지 않고, '
-                 f'200일선 부근을 되찾을 때 다시 들어가는 것이 이 시스템의 원칙입니다.')
+        p.append(f'수익을 좇을 자리가 아니라 계좌를 지킬 자리. 종가가 200일선 아래 '
+                 f'{dev200:.1f}%까지 하락, 이 정도 이탈 이후 관성적으로 더 밀린 사례 다수 — '
+                 f'계획된 노출 축소를 진행하는 구간. 바닥을 맞히려 들지 않고 '
+                 f'200일선 부근 회복 시 재진입하는 것이 이 시스템의 원칙.')
     elif action == 'ADD':
-        p.append(f'오늘은 계획된 분할 매수를 한 단계 진행하는 것이 맞다고 봅니다. 200일선 '
-                 f'{"위" if (dev200 or 0) > 0 else "부근"} 추세가 유지되는 가운데 현재 노출이 목표보다 '
-                 f'낮아, 추격이 아니라 계획의 이행에 해당합니다.')
+        p.append(f'오늘은 계획된 분할 매수를 한 단계 진행할 자리. 200일선 '
+                 f'{"위" if (dev200 or 0) > 0 else "부근"} 추세 유지 중이고 현재 노출이 목표보다 '
+                 f'낮은 상태 — 추격이 아니라 계획의 이행.')
     elif action == 'TRIM':
         reason = '매도압력 점수가 경고선(60)을 넘어선 것' if why in ('warn', 'warn2') else '추세 기어가 한 단계 내려온 것'
-        p.append(f'오늘은 일부를 덜어내는 쪽입니다. {reason}이 이유인데, 이는 전량 청산이 아니라 '
-                 f'계획된 부분 축소입니다. 추세 자체가 꺾인 게 아니라면 남긴 물량으로 상승을 계속 탑니다.')
+        p.append(f'오늘은 일부를 덜어내는 쪽. 이유는 {reason} — 전량 청산이 아니라 '
+                 f'계획된 부분 축소. 추세 자체가 꺾인 게 아니라면 남긴 물량으로 상승분 계속 확보.')
     elif action == 'INIT':
-        p.append(f'오늘부터 이 판단 체계를 가동합니다. 현재 추세와 신호를 기준으로 한 적정 노출에서 '
-                 f'출발하며, 이제부터의 증액·축소는 전부 조건 충족일에만, 단계적으로만 이뤄집니다. '
-                 f'매일 무언가를 하라는 시스템이 아니라, 해야 할 날에만 말하는 시스템입니다.')
+        p.append(f'오늘부터 이 판단 체계 가동. 현재 추세와 신호를 기준으로 한 적정 노출에서 '
+                 f'출발, 이후 증액·축소는 전부 조건 충족일에만 단계적으로 진행. '
+                 f'매일 무언가를 하라는 시스템이 아니라, 해야 할 날에만 말하는 시스템.')
     elif state.get('exposure', 0) >= 0.5 and gear >= 3:
-        p.append(f'지금은 새로 사거나 팔 자리가 아니라 버틸 자리입니다. 이번 구간에서 계획된 분할 매수는 '
-                 f'{"대부분" if expo >= 0.8 else "상당 부분"} 진행된 상태이고, 마지막 조정 이후 '
-                 f'{days}거래일째 새 조건이 충족되지 않았습니다. 여기서 더 사는 건 분할이 아니라 추격입니다.')
+        p.append(f'새로 사거나 팔 자리가 아니라 버틸 자리. 이번 구간의 계획된 분할 매수는 '
+                 f'{"대부분" if expo >= 0.8 else "상당 부분"} 완료, 마지막 조정 이후 '
+                 f'{days}거래일째 새 조건 미충족. 여기서 더 사면 분할이 아니라 추격.')
     elif target > expo + 0.05:
-        p.append(f'방향은 매수 쪽이지만 오늘은 아닙니다. 조건(간격·쿨다운)이 아직 충족되지 않아 '
-                 f'다음 증액을 기다리는 구간입니다 — 분할의 가치는 사는 날이 아니라 기다리는 날에 만들어집니다.')
+        p.append(f'방향은 매수 쪽이나 오늘은 아님. 조건(간격·쿨다운) 미충족으로 '
+                 f'다음 증액을 기다리는 구간 — 분할의 가치는 사는 날이 아니라 기다리는 날에 형성.')
     else:
-        p.append(f'관망이 맞는 구간입니다. 추세 신호와 노출 목표가 모두 낮아, 아무것도 하지 않는 것이 '
-                 f'오늘의 판단입니다. 관망도 포지션입니다.')
+        p.append(f'관망이 맞는 구간. 추세 신호와 노출 목표가 모두 낮은 상태로, '
+                 f'아무것도 하지 않는 것이 오늘의 판단. 관망도 포지션.')
 
     # 2) 경고/통계 (검증된 것만)
     if sell >= CFG['warn_sell'] and not state.get('stopped'):
-        p.append(f'가볍게 볼 수 없는 신호가 하나 있습니다 — 매도압력 점수 {sell}점. {STATS["warn"]}. '
-                 f'그래서 목표 노출을 한 단계 낮춰 잡고 있습니다.')
+        p.append(f'가볍게 볼 수 없는 신호 하나 — 매도압력 점수 {sell}점. {STATS["warn"]}. '
+                 f'이에 따라 목표 노출을 한 단계 하향 적용 중.')
     elif gear >= 3 and expo >= 0.5:
-        p.append(f'근거를 하나만 들자면 이렇습니다. {STATS["gear3"]}. 추세와 함께 가는 동안은 '
-                 f'흔들림을 견디는 편이 통계적으로 유리했습니다.')
+        p.append(f'근거 하나만 들자면 — {STATS["gear3"]}. 추세와 함께 가는 동안은 '
+                 f'흔들림을 견디는 쪽이 통계적으로 유리했던 구간.')
 
     # 3) 자기 채점
     sr = self_review(state)
@@ -624,32 +624,31 @@ def tsla_view(s):
     rsi = s.get('rsi')
     if buy >= 80:
         st, label = 'accumulate', '많이 빠졌음 — 나눠서 사볼 만한 구간'
-        body = (f'TSLA가 극단 과매도 구간(매수점수 {buy})에 들어왔습니다. 이 종목에서 유일하게 '
-                f'통계적으로 믿을 만한 매수 신호가 바로 이 구간입니다 — {STATS["tsla_extreme"]}. '
-                f'다만 변동성이 큰 종목이라 한 번에 들어가지 않고 나눠 들어가는 것이 전제입니다.')
+        body = (f'TSLA 극단 과매도 구간 진입(매수점수 {buy}). 이 종목에서 통계적으로 '
+                f'믿을 만한 유일한 매수 신호가 이 구간 — {STATS["tsla_extreme"]}. '
+                f'다만 변동성이 큰 종목이라 일시 진입이 아닌 분할 진입이 전제.')
         body_en = (f'TSLA has entered extreme oversold territory (buy score {buy}). This is the one zone '
                    f'on this stock with a statistically dependable buy signal — {STATS_EN["tsla_extreme"]}. '
                    f'Given the volatility, scaling in rather than entering all at once is the premise.')
     elif sell >= 75:
         st, label = 'hold', '많이 올랐지만 — 서둘러 팔 필요 없는 종목'
-        body = (f'과열 신호(매도압력 {sell})가 켜졌지만, 이 종목에서는 그 신호를 그대로 따르지 않습니다. '
-                f'{STATS["tsla_hot"]} 익절이 필요하다면 시점이 아니라 이탈(추세 붕괴)을 기준으로 잡는 것이 '
-                f'맞다고 봅니다.')
+        body = (f'과열 신호 점등(매도압력 {sell}). 다만 이 종목에서는 그 신호를 액면 그대로 따르지 않음 — '
+                f'{STATS["tsla_hot"]}. 익절 판단의 기준은 시점이 아니라 이탈(추세 붕괴).')
         body_en = (f'The overheating signal has flagged (sell pressure {sell}), but this stock is not one to '
                    f'follow it at face value. {STATS_EN["tsla_hot"]}. If profit-taking is needed, the right '
                    f'trigger is a trend break, not a moment in time.')
     elif gear <= 1:
         st, label = 'wait', '내리막 — 확실한 바닥 신호 대기'
-        body = (f'200일선 아래 하락 추세입니다. TSLA는 중간 점수대(50~79)의 매수 신호가 사실상 '
-                f'동전던지기였던 종목이라, 어중간한 자리에서 잡지 않고 극단 신호(매수점수 80 이상)를 '
-                f'기다리는 것이 데이터가 가리키는 방향입니다.')
+        body = (f'200일선 아래 하락 추세. TSLA는 중간 점수대(50~79)의 매수 신호가 사실상 '
+                f'동전던지기였던 종목 — 어중간한 자리에서 잡지 않고 극단 신호(매수점수 80 이상)를 '
+                f'기다리는 것이 데이터가 가리키는 방향.')
         body_en = ('A downtrend below the 200-day line. On TSLA, mid-range buy signals (scores of 50–79) have '
                    'been effectively a coin flip, so the data points toward waiting for the extreme signal '
                    '(a buy score above 80) rather than reaching for a half-measure entry.')
     else:
         st, label = 'hold', '들고 가는 구간 — 추세가 깨지는지만 확인'
-        body = (f'추세 훼손 신호가 없는 구간입니다. TSLA는 예측보다 대응이 유리했던 종목입니다 — '
-                f'미리 팔거나 미리 사는 대신, 200일선 이탈 여부 하나를 기준으로 관리하는 구간입니다.')
+        body = (f'추세 훼손 신호 없는 구간. TSLA는 예측보다 대응이 유리했던 종목 — '
+                f'미리 팔거나 미리 사는 대신 200일선 이탈 여부 하나로 관리하는 자리.')
         body_en = ('No sign of trend damage here. TSLA has rewarded reacting over predicting — instead of '
                    'selling early or buying early, this is a zone managed by one criterion: whether the '
                    '200-day line breaks.')
@@ -988,8 +987,8 @@ def mega_view(sym, s):
             st, label = 'accumulate', '강한 매수 신호 — 나눠서 사볼 만한 구간'
             trigger = f'강한 매수 신호 자리(매수점수 {buy})'
             trigger_en = f'a strong buy-signal level (buy score {buy})'
-        body = (f'{cfg["label"]}({sym})가 {trigger}까지 왔습니다. {cfg["buy_txt"]}. '
-                f'다만 한 번에 다 사지 않고 나눠서 사는 것이 전제입니다.')
+        body = (f'{cfg["label"]}({sym}) {trigger} 도달. {cfg["buy_txt"]}. '
+                f'다만 일시 전량 매수가 아니라 분할 매수가 전제.')
         kb = [_blk('지금 자리', f'{cfg["label"]}({sym}) — {trigger} 도달'),
               _blk('이 종목의 검증 문법', cfg['buy_txt']),
               _blk('전제', '한 번에 전량 아님 — 분할 매수가 조건')]
@@ -1003,7 +1002,7 @@ def mega_view(sym, s):
             st, label = 'hold', '많이 올랐음 — 지금 새로 사기엔 불리'
         else:
             st, label = 'hold', '많이 올랐지만 — 서둘러 팔 필요 없는 종목'
-        body = f'단기간에 많이 오른 상태입니다(매도압력 {sell}). {cfg["hot_txt"]}.'
+        body = f'단기간 급등 구간(매도압력 {sell}). {cfg["hot_txt"]}.'
         kb = [_blk('지금 자리', f'단기 급등 구간 — 매도압력 {sell}'),
               _blk('이 종목의 검증 문법', cfg['hot_txt'])]
         body_en = f'The stock has run up sharply in a short stretch (sell pressure {sell}). {cfe["hot_txt"]}.'
@@ -1015,7 +1014,7 @@ def mega_view(sym, s):
             st, label = 'wait', '내리막 — 확실한 바닥 신호 대기'
         else:
             st, label = 'hold', '내리막이지만 — 크게 겁낼 필요 없었던 종목'
-        body = f'주가가 200일선 아래로 내려간 내리막 구간입니다. {cfg["down_txt"]}.'
+        body = f'주가가 200일선 아래로 내려간 내리막 구간. {cfg["down_txt"]}.'
         kb = [_blk('지금 자리', '200일선 아래 — 내리막 구간'),
               _blk('이 종목의 검증 문법', cfg['down_txt'])]
         body_en = f'The price has slipped below its 200-day line into a downtrend. {cfe["down_txt"]}.'
@@ -1040,23 +1039,23 @@ def mega_view(sym, s):
         watch_txt_en = ' · '.join(watch_en)
         # 판단이 바뀌는 트리거 — 종목 문법별
         if cfg['buy'] is None:
-            trigger_txt = ('주가가 200일선 아래로 내려갈 때 하나뿐입니다 — 그 전까지는 '
-                           '그냥 들고 가는 쪽이 유리했던 종목입니다')
+            trigger_txt = ('주가가 200일선 아래로 내려갈 때 하나뿐 — 그 전까지는 '
+                           '그냥 들고 가는 쪽이 유리했던 종목')
             trigger_txt_en = ('a single one: the price slipping below its 200-day line. Until then, '
                               'simply holding has been the favorable side on this stock')
         elif cfg['buy'] == 'both':
-            trigger_txt = ('많이 빠지거나(RSI 30 아래) 매수점수가 80을 넘으면 "나눠 사볼 자리", '
-                           '200일선 아래로 내려가면 "조심 모드"로 바뀝니다')
+            trigger_txt = ('많이 빠지거나(RSI 30 아래) 매수점수 80 돌파 시 "나눠 사볼 자리"로, '
+                           '200일선 이탈 시 "조심 모드"로 전환')
             trigger_txt_en = ('a deep sell-off (RSI below 30) or a buy score above 80 turning this into '
                               'a scale-in zone, or a break below the 200-day line turning it cautious')
         elif cfg['down'] == 'wait':
-            trigger_txt = ('많이 빠지면(RSI 30 아래) "나눠 사볼 자리"로, 200일선 아래로 '
-                           '내려가면 "줄이기 검토"로 바뀝니다')
+            trigger_txt = ('많이 빠지면(RSI 30 아래) "나눠 사볼 자리"로, '
+                           '200일선 이탈 시 "줄이기 검토"로 전환')
             trigger_txt_en = ('a deep sell-off (RSI below 30) turning this into a scale-in zone, or a break '
                               'below the 200-day line turning it into a trim review')
         else:
-            trigger_txt = ('많이 빠질 때(RSI 30 아래)뿐이고, 추세가 흔들리는 건 이 종목에선 '
-                           '크게 겁낼 일이 아니었습니다')
+            trigger_txt = ('많이 빠질 때(RSI 30 아래) 하나뿐 — 추세 흔들림은 이 종목에서 '
+                           '크게 겁낼 사안이 아니었던 이력')
             trigger_txt_en = ('only a deep sell-off (RSI below 30) — a wobbling trend has not been much '
                               'to fear on this particular stock')
         # 라벨 — 지금 어느 쪽에 가까운지로 차등 (쉬운 말, "이렇다"는 상태 서술)
@@ -1069,8 +1068,8 @@ def mega_view(sym, s):
             st, label = 'hold', '갈림길 근처 — 방향 확인 중'
         else:
             st, label = 'hold', '흐름 좋음 — 그대로 들고 가는 구간'
-        body = (f'{cfg["base_txt"]}. 지금 숫자로 보면 매수점수 {buy}·매도압력 {sell}·RSI {rsi_txt}, '
-                f'주가는 200일선보다 {dev_txt} 자리에 있습니다. 다음 신호까지는 {watch_txt} 남았습니다. '
+        body = (f'{cfg["base_txt"]}. 현재 숫자는 매수점수 {buy}·매도압력 {sell}·RSI {rsi_txt}, '
+                f'주가는 200일선 대비 {dev_txt} 위치. 다음 신호까지 {watch_txt} 잔여. '
                 f'이 판단이 바뀌는 조건은 {trigger_txt}.')
         kb = [_blk('지금 숫자',
                    f'매수점수 {buy} · 매도압력 {sell} · RSI {rsi_txt}',
@@ -1106,27 +1105,27 @@ def nvda_view(s):
     rsi = s.get('rsi')
     if gear >= 3:
         st, label = 'hold', '오르막 유지 — 들고 가는 구간'
-        body = (f'NVDA는 추세가 전부인 종목입니다. {STATS["nvda_trend"]} 지금은 200일선 위 구간이라 '
-                f'보유를 유지하는 쪽이고, 과열 신호(매도압력 {sell})는 이 종목에서 검증력이 없어 '
-                f'그 이유만으로 덜어내지는 않습니다.')
+        body = (f'NVDA는 추세가 전부인 종목. {STATS["nvda_trend"]}. 현재 200일선 위 구간이라 '
+                f'보유 유지가 기본, 과열 신호(매도압력 {sell})는 이 종목에서 검증력이 없어 '
+                f'그 이유만으로 축소하지 않음.')
         body_en = (f'On NVDA the trend is everything. {STATS_EN["nvda_trend"]}. The price sits above its '
                    f'200-day line, so holding is the side of the trade, and the overheating reading '
                    f'(sell pressure {sell}) has no predictive power here — not a reason on its own to trim.')
     elif gear == 2:
         st, label = 'hold', '갈림길 — 200일선 공방 중'
-        body = (f'NVDA가 200일선 부근 공방에 들어왔습니다. 이 종목의 판단 기준은 추세 하나입니다. '
-                f'{STATS["nvda_trend"]} 아직 추세가 꺾였다고 확정할 단계는 아니라 보유를 유지하되, '
-                f'200일선을 종가 기준으로 명확히 이탈하면 그때는 축소가 판단이 됩니다. 미리 팔지도, '
-                f'무작정 버티지도 않는 구간입니다.')
+        body = (f'NVDA가 200일선 부근 공방 구간 진입. 이 종목의 판단 기준은 추세 하나. '
+                f'{STATS["nvda_trend"]}. 아직 추세 훼손 확정 단계는 아니라 보유 유지, '
+                f'200일선 종가 기준 명확한 이탈 시 축소로 전환. 미리 팔지도, '
+                f'무작정 버티지도 않는 자리.')
         body_en = (f'NVDA has entered a battle around its 200-day line. There is exactly one criterion on '
                    f'this stock: the trend. {STATS_EN["nvda_trend"]}. It is too early to call the trend '
                    f'broken, so holding stands — but a clear close below the 200-day line makes trimming '
                    f'the call. Neither selling early nor holding blindly.')
     else:
         st, label = 'trim', '오르막 꺾임 — 줄이기 검토 구간'
-        body = (f'NVDA의 판단 기준은 하나, 추세입니다. {STATS["nvda_trend"]} 200일선 아래로 추세가 '
-                f'무너진 지금 같은 구간에서는 노출 축소를 검토하는 것이 데이터의 방향입니다. '
-                f'추세 복귀가 확인되면 다시 싣는 것이 원칙입니다.')
+        body = (f'NVDA의 판단 기준은 하나, 추세. {STATS["nvda_trend"]}. 200일선 아래로 추세가 '
+                f'무너진 현 구간에서는 노출 축소 검토가 데이터의 방향. '
+                f'추세 복귀 확인 시 재편입이 원칙.')
         body_en = (f'There is one criterion on NVDA: the trend. {STATS_EN["nvda_trend"]}. With the trend '
                    f'broken below the 200-day line, reviewing exposure downward is where the data points. '
                    f'Rebuilding once the trend is reclaimed is the principle.')
@@ -1343,11 +1342,11 @@ def main():
         prev_s, prev_n = runs[-2]
         cur_s, cur_n = runs[-1]
         if cur_n == 1:
-            flow = f"오늘 판단이 바뀌었습니다 — {SHORT[prev_s]} {prev_n}일 → 오늘부터 '{SHORT[cur_s]}'."
+            flow = f"오늘 판단 전환 — {SHORT[prev_s]} {prev_n}일 → 오늘부터 '{SHORT[cur_s]}'."
         else:
-            flow = f"'{SHORT[cur_s]}' 판단은 오늘로 {cur_n}일째입니다 (직전: {SHORT[prev_s]} {prev_n}일)."
+            flow = f"'{SHORT[cur_s]}' 판단 오늘로 {cur_n}일째 (직전: {SHORT[prev_s]} {prev_n}일)."
     elif runs and runs[-1][1] >= 3:
-        flow = f"'{SHORT[runs[-1][0]]}' 판단은 오늘로 {runs[-1][1]}일째입니다."
+        flow = f"'{SHORT[runs[-1][0]]}' 판단 오늘로 {runs[-1][1]}일째."
 
     # 성적 자기공개 — 방향 판단(강세/약세)만, 5거래일 후 수익률로 채점 (표본 15+부터 공개)
     grade = None
@@ -1368,31 +1367,31 @@ def main():
     commentary = comp_commentary(comp, action, buy, sell, gear, dev200, price)
     ll_paras = []
     if ll and ll.get('stale'):
-        ll_paras.append('참고 — 생명선(주봉 30주선) 데이터가 2주 이상 갱신되지 않아 오늘은 생명선 '
-                        '판정을 적용하지 않았습니다. 마켓사이클 파이프라인 점검이 필요합니다.')
+        ll_paras.append('참고 — 생명선(주봉 30주선) 데이터가 2주 이상 미갱신 상태로 오늘은 생명선 '
+                        '판정 미적용. 마켓사이클 파이프라인 점검 필요.')
     elif ll and ll['count'] >= 2:
         broken = '·'.join(n for n, b in ll['detail'] if b)
-        ll_paras.append(f'생명선이 끊겼습니다. {broken}이 주봉 기준 30주선 아래에서 마감했습니다. '
-                        f'이 선 아래에서 강세장을 논하지 않는 것이 이 시스템의 헌법입니다. '
-                        f'{STATS["lifeline"]}. 규칙에 따라 노출 상한을 '
-                        f'{"0%" if ll["count"] >= 3 else "20%"}로 내립니다.')
+        ll_paras.append(f'생명선 절단. {broken}이 주봉 기준 30주선 아래에서 마감. '
+                        f'이 선 아래에서 강세장을 논하지 않는 것이 이 시스템의 헌법. '
+                        f'{STATS["lifeline"]}. 규칙에 따라 노출 상한 '
+                        f'{"0%" if ll["count"] >= 3 else "20%"}로 하향.')
     elif ll and ll['count'] == 1:
         first = next(n for n, b in ll['detail'] if b)
-        ll_paras.append(f'생명선 경계 — 3개 지수 중 {first}가 먼저 주봉 30주선 아래로 내려왔습니다. '
-                        f'단독 이탈은 발동 조건이 아니지만, 두 번째 지수가 무너지면 그날로 노출 상한을 '
-                        f'20%로 내리는 것이 예약된 행동입니다. 지금은 감시 단계입니다.')
+        ll_paras.append(f'생명선 경계 — 3개 지수 중 {first}가 먼저 주봉 30주선 아래로 하락. '
+                        f'단독 이탈은 발동 조건이 아니나, 두 번째 지수 붕괴 시 그날로 노출 상한 '
+                        f'20% 하향이 예약된 행동. 현재는 감시 단계.')
     commentary = ctx_paras + ll_paras + commentary
     cross = chart_engine_crosscheck(st)
     if cross:
         commentary.append(cross)
 
     if grade:
-        commentary.append(f'성적은 숨기지 않겠습니다. 최근 {grade["n"]}번의 방향 판단 중 '
-                          f'{grade["hits"]}번이 5거래일 뒤 방향과 일치했습니다(적중률 {grade["pct"]}%). '
-                          f'이 숫자는 매일 갱신되고, 나빠져도 그대로 공개합니다.')
+        commentary.append(f'성적 공개 — 최근 {grade["n"]}번의 방향 판단 중 '
+                          f'{grade["hits"]}번이 5거래일 뒤 방향과 일치(적중률 {grade["pct"]}%). '
+                          f'이 숫자는 매일 갱신, 악화돼도 그대로 공개.')
     if stale:
-        commentary.insert(0, '주의 — 상류 데이터가 3일 이상 갱신되지 않아 오늘은 판단을 전진시키지 '
-                             '않았습니다. 아래 내용은 마지막 정상 데이터 기준입니다.')
+        commentary.insert(0, '주의 — 상류 데이터가 3일 이상 미갱신 상태로 오늘은 판단 미전진. '
+                             '아래 내용은 마지막 정상 데이터 기준.')
 
     view = dict(
         generatedAtKST=now_kst(),
