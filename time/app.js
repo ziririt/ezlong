@@ -7540,13 +7540,13 @@ function renderMusicPlaylistFilterOptions() {
 // i18n/locales/*.json(music.specialInfo.*)에 있다.
 function specialCategoryInfoText(key) {
   if (key === "Calm Circles For A Busy Brain-스트레스해소") {
-    return t("music.specialInfo.stress", null, "느리고 일정한 리듬은 심박과 호흡을 그 속도에 맞춰 함께 늦추는 '동조(entrainment)' 반응을 이끌어냅니다. 이 과정에서 긴장을 담당하는 교감신경이 가라앉고, 스트레스 호르몬인 코르티솔 분비가 줄어드는 것이 여러 임상 연구로 확인되어 있습니다.");
+    return t("music.specialInfo.stress", null, "60~80BPM의 느린 템포와 저주파 위주의 부드러운 사운드는 심박과 호흡이 리듬에 맞춰 함께 느려지는 '동조(entrainment)' 반응을 일으킵니다. 이때 자율신경의 균형이 교감신경에서 부교감신경 우위로 옮겨가면서 심박변이도(HRV)가 안정되고, 스트레스 호르몬 코르티솔이 감소하는 것이 임상 연구로 확인되어 있습니다.");
   }
   if (key === "sleep") {
-    return t("music.specialInfo.sleep", null, "잠들 무렵 뇌파는 빠른 베타파에서 느린 알파·세타파로 내려갑니다. 안정 시 심박보다 조금 느린 60BPM 안팎의 잔잔하고 반복적인 선율은 이 전환을 부드럽게 거들어, 잠드는 데 걸리는 시간을 줄이고 수면의 질을 높이는 것으로 보고되어 있습니다.");
+    return t("music.specialInfo.sleep", null, "잠들 무렵 뇌파는 깨어 있을 때의 베타파(13~30Hz)에서 알파파(8~12Hz)를 거쳐 얕은 수면의 세타파(4~8Hz)로 내려갑니다. 안정 시 심박보다 느린 60BPM 안팎, 고음역(고주파 성분)을 덜어낸 반복 선율은 이 하강을 부드럽게 도와 입면 시간을 줄이고 수면의 질을 높이는 것으로 보고되어 있습니다.");
   }
   if (key === "명상") {
-    return t("music.specialInfo.meditation", null, "잔잔하게 이어지는 일정한 소리는 잡념으로 흩어진 주의가 되돌아올 '닻' 역할을 합니다. 단순한 화성과 느린 전개는 딴생각을 만들어내는 뇌의 기본모드 네트워크(DMN) 활동을 가라앉혀, 지금 이 순간에 머무르기 쉽게 해줍니다.");
+    return t("music.specialInfo.meditation", null, "일정하게 지속되는 소리는 주의가 흩어질 때 되돌아올 청각적 '닻'이 됩니다. 뇌파(EEG) 연구에서는 명상 중 이완된 집중과 관련된 알파파(8~12Hz)·세타파(4~8Hz)의 증가가 관찰되고, fMRI 연구는 잡념을 만들어내는 기본모드 네트워크(DMN)의 활동 저하를 보여줍니다. 단순한 화성과 느린 전개의 음악은 바로 이 상태로의 진입을 돕습니다.");
   }
   return "";
 }

@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-04T09:21:04.242Z
+ * 생성 시각: 2026-08-04T09:28:33.410Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -248,9 +248,9 @@
       "waiting": "Ready to play",
       "specialInfoAria": "Why this music helps",
       "specialInfo": {
-        "stress": "Slow, steady rhythms invite your heartbeat and breathing to fall in step with them, a response known as entrainment. Clinical studies show this calms the sympathetic nervous system and lowers cortisol, the body's main stress hormone.",
-        "sleep": "As you drift off, brain waves shift from fast beta to slower alpha and theta rhythms. Gentle, repetitive melodies around 60 BPM, just below a resting heartbeat, ease that transition and have been shown to shorten the time it takes to fall asleep and improve sleep quality.",
-        "meditation": "A soft, continuous sound gives wandering attention an anchor to return to. Its simple harmonies and unhurried pace quiet the brain's default mode network, the circuit behind mind-wandering, making it easier to stay in the present moment."
+        "stress": "Slow tempos of 60-80 BPM with soft, low-frequency textures draw your heartbeat and breathing into the same pace, a response called entrainment. Autonomic balance then shifts from sympathetic toward parasympathetic dominance: heart-rate variability (HRV) stabilizes and cortisol, the main stress hormone, drops, as shown in clinical studies.",
+        "sleep": "As you fall asleep, brain waves descend from waking beta (13-30 Hz) through alpha (8-12 Hz) into the theta rhythms (4-8 Hz) of light sleep. Repetitive melodies around 60 BPM, just below a resting heartbeat and softened in the high-frequency range, support that descent and have been shown to shorten sleep-onset time and improve sleep quality.",
+        "meditation": "A steady, continuous sound serves as an auditory anchor for wandering attention. EEG studies show that meditation increases alpha (8-12 Hz) and theta (4-8 Hz) waves linked to relaxed focus, while fMRI research shows reduced activity in the default mode network (DMN), the circuit behind mind-wandering. Simple harmonies and an unhurried pace help usher the brain into exactly these states."
       },
       "openSettings": "Open music settings",
       "shuffle": "Shuffle again",
@@ -617,9 +617,9 @@
       "waiting": "Listo para reproducir",
       "specialInfoAria": "Por qué ayuda esta música",
       "specialInfo": {
-        "stress": "Los ritmos lentos y constantes hacen que el corazón y la respiración se acompasen a ellos, una respuesta llamada entrainment. Estudios clínicos muestran que esto calma el sistema nervioso simpático y reduce el cortisol, la principal hormona del estrés.",
-        "sleep": "Al quedarnos dormidos, las ondas cerebrales pasan de las rápidas beta a las lentas alfa y theta. Las melodías suaves y repetitivas en torno a 60 BPM, justo por debajo del pulso en reposo, facilitan esa transición y se ha observado que acortan el tiempo para conciliar el sueño y mejoran su calidad.",
-        "meditation": "Un sonido suave y continuo ofrece un ancla a la que la atención puede volver cuando se dispersa. Sus armonías simples y su ritmo pausado calman la red neuronal por defecto, el circuito de la mente errante, ayudando a permanecer en el momento presente."
+        "stress": "Los tempos lentos de 60-80 BPM con texturas suaves de baja frecuencia hacen que el corazón y la respiración se acompasen a su ritmo, una respuesta llamada entrainment. El equilibrio autónomo pasa entonces del sistema simpático al parasimpático: la variabilidad de la frecuencia cardíaca (HRV) se estabiliza y el cortisol, la principal hormona del estrés, disminuye, como muestran estudios clínicos.",
+        "sleep": "Al dormirnos, las ondas cerebrales descienden desde las beta de la vigilia (13-30 Hz), pasando por las alfa (8-12 Hz), hasta las theta (4-8 Hz) del sueño ligero. Las melodías repetitivas en torno a 60 BPM, por debajo del pulso en reposo y suavizadas en las frecuencias altas, acompañan ese descenso y se ha demostrado que acortan el tiempo de conciliación y mejoran la calidad del sueño.",
+        "meditation": "Un sonido constante actúa como ancla auditiva para la atención dispersa. Los estudios de EEG muestran que durante la meditación aumentan las ondas alfa (8-12 Hz) y theta (4-8 Hz), asociadas a la concentración relajada, y la investigación con fMRI revela una menor actividad de la red neuronal por defecto (DMN), el circuito de la mente errante. Las armonías simples y el ritmo pausado facilitan la entrada en esos estados."
       },
       "openSettings": "Abrir los ajustes de música",
       "shuffle": "Volver a mezclar",
@@ -986,9 +986,9 @@
       "waiting": "再生待機中",
       "specialInfoAria": "この音楽が役立つ理由",
       "specialInfo": {
-        "stress": "ゆっくりとした一定のリズムには、心拍と呼吸がその速さに同調していく「エントレインメント」という反応があります。この過程で緊張を司る交感神経が鎮まり、ストレスホルモンのコルチゾールが減ることが臨床研究で確認されています。",
-        "sleep": "眠りに入るとき、脳波は速いベータ波からゆっくりしたアルファ波・シータ波へ移っていきます。安静時の心拍よりやや遅い60BPM前後の穏やかで反復的な旋律はこの移行をやさしく後押しし、入眠までの時間を短くし睡眠の質を高めると報告されています。",
-        "meditation": "静かに続く一定の音は、雑念に流れた注意が戻ってくるための「錨」になります。シンプルな和声とゆったりした展開は、とりとめのない思考を生む脳のデフォルトモードネットワークの働きを鎮め、今この瞬間にとどまりやすくしてくれます。"
+        "stress": "60~80BPMの遅いテンポと低周波中心のやわらかな音は、心拍と呼吸がそのリズムに同調していく「エントレインメント」反応を起こします。自律神経のバランスが交感神経から副交感神経優位へと移り、心拍変動(HRV)が安定し、ストレスホルモンのコルチゾールが減少することが臨床研究で確認されています。",
+        "sleep": "入眠時、脳波は覚醒時のベータ波(13~30Hz)からアルファ波(8~12Hz)を経て、浅い眠りのシータ波(4~8Hz)へ下がっていきます。安静時心拍より遅い60BPM前後で高周波成分を抑えた反復的な旋律はこの移行を後押しし、入眠までの時間を短縮し睡眠の質を高めると報告されています。",
+        "meditation": "一定に続く音は、注意がそれたときに戻るための聴覚的な「錨」になります。脳波(EEG)研究では瞑想中にリラックスした集中と関わるアルファ波(8~12Hz)・シータ波(4~8Hz)の増加が観察され、fMRI研究は雑念を生むデフォルトモードネットワーク(DMN)の活動低下を示しています。シンプルな和声とゆったりした展開は、まさにこの状態への移行を助けます。"
       },
       "openSettings": "音楽の設定を開く",
       "shuffle": "もう一度シャッフル",
@@ -1355,9 +1355,9 @@
       "waiting": "재생 대기 중",
       "specialInfoAria": "이 음악이 도움이 되는 이유",
       "specialInfo": {
-        "stress": "느리고 일정한 리듬은 심박과 호흡을 그 속도에 맞춰 함께 늦추는 '동조(entrainment)' 반응을 이끌어냅니다. 이 과정에서 긴장을 담당하는 교감신경이 가라앉고, 스트레스 호르몬인 코르티솔 분비가 줄어드는 것이 여러 임상 연구로 확인되어 있습니다.",
-        "sleep": "잠들 무렵 뇌파는 빠른 베타파에서 느린 알파·세타파로 내려갑니다. 안정 시 심박보다 조금 느린 60BPM 안팎의 잔잔하고 반복적인 선율은 이 전환을 부드럽게 거들어, 잠드는 데 걸리는 시간을 줄이고 수면의 질을 높이는 것으로 보고되어 있습니다.",
-        "meditation": "잔잔하게 이어지는 일정한 소리는 잡념으로 흩어진 주의가 되돌아올 '닻' 역할을 합니다. 단순한 화성과 느린 전개는 딴생각을 만들어내는 뇌의 기본모드 네트워크(DMN) 활동을 가라앉혀, 지금 이 순간에 머무르기 쉽게 해줍니다."
+        "stress": "60~80BPM의 느린 템포와 저주파 위주의 부드러운 사운드는 심박과 호흡이 리듬에 맞춰 함께 느려지는 '동조(entrainment)' 반응을 일으킵니다. 이때 자율신경의 균형이 교감신경에서 부교감신경 우위로 옮겨가면서 심박변이도(HRV)가 안정되고, 스트레스 호르몬 코르티솔이 감소하는 것이 임상 연구로 확인되어 있습니다.",
+        "sleep": "잠들 무렵 뇌파는 깨어 있을 때의 베타파(13~30Hz)에서 알파파(8~12Hz)를 거쳐 얕은 수면의 세타파(4~8Hz)로 내려갑니다. 안정 시 심박보다 느린 60BPM 안팎, 고음역(고주파 성분)을 덜어낸 반복 선율은 이 하강을 부드럽게 도와 입면 시간을 줄이고 수면의 질을 높이는 것으로 보고되어 있습니다.",
+        "meditation": "일정하게 지속되는 소리는 주의가 흩어질 때 되돌아올 청각적 '닻'이 됩니다. 뇌파(EEG) 연구에서는 명상 중 이완된 집중과 관련된 알파파(8~12Hz)·세타파(4~8Hz)의 증가가 관찰되고, fMRI 연구는 잡념을 만들어내는 기본모드 네트워크(DMN)의 활동 저하를 보여줍니다. 단순한 화성과 느린 전개의 음악은 바로 이 상태로의 진입을 돕습니다."
       },
       "openSettings": "음악설정 열기",
       "shuffle": "재생 순서 다시 섞기",
@@ -1724,9 +1724,9 @@
       "waiting": "Pronto para tocar",
       "specialInfoAria": "Por que esta música ajuda",
       "specialInfo": {
-        "stress": "Ritmos lentos e constantes fazem o coração e a respiração entrarem no mesmo compasso, uma resposta chamada entrainment. Estudos clínicos mostram que isso acalma o sistema nervoso simpático e reduz o cortisol, o principal hormônio do estresse.",
-        "sleep": "Ao adormecer, as ondas cerebrais passam das rápidas beta para as lentas alfa e teta. Melodias suaves e repetitivas em torno de 60 BPM, pouco abaixo do pulso em repouso, facilitam essa transição e demonstraram encurtar o tempo para pegar no sono e melhorar sua qualidade.",
-        "meditation": "Um som suave e contínuo funciona como uma âncora para a atenção que se dispersa. Harmonias simples e um andamento calmo aquietam a rede de modo padrão do cérebro, o circuito da mente errante, tornando mais fácil permanecer no momento presente."
+        "stress": "Tempos lentos de 60-80 BPM com texturas suaves de baixa frequência fazem o coração e a respiração entrarem no mesmo compasso, uma resposta chamada entrainment. O equilíbrio autonômico passa então do sistema simpático ao parassimpático: a variabilidade da frequência cardíaca (HRV) se estabiliza e o cortisol, principal hormônio do estresse, diminui, como mostram estudos clínicos.",
+        "sleep": "Ao adormecer, as ondas cerebrais descem das beta da vigília (13-30 Hz), passando pelas alfa (8-12 Hz), até as teta (4-8 Hz) do sono leve. Melodias repetitivas em torno de 60 BPM, abaixo do pulso em repouso e suavizadas nas frequências altas, acompanham essa descida e demonstraram encurtar o tempo para adormecer e melhorar a qualidade do sono.",
+        "meditation": "Um som constante funciona como âncora auditiva para a atenção dispersa. Estudos de EEG mostram que, durante a meditação, aumentam as ondas alfa (8-12 Hz) e teta (4-8 Hz), ligadas à concentração relaxada, e pesquisas com fMRI revelam menor atividade da rede de modo padrão (DMN), o circuito da mente errante. Harmonias simples e um andamento calmo facilitam a entrada nesses estados."
       },
       "openSettings": "Abrir as configurações de música",
       "shuffle": "Embaralhar de novo",
@@ -2093,9 +2093,9 @@
       "waiting": "等待播放",
       "specialInfoAria": "这类音乐为何有效",
       "specialInfo": {
-        "stress": "缓慢而稳定的节奏会让心跳和呼吸不知不觉与之同步，这种反应被称为「同频引导（entrainment）」。多项临床研究证实，这一过程能安抚交感神经，并降低压力荷尔蒙皮质醇的分泌。",
-        "sleep": "入睡时，脑电波会从快速的β波过渡到缓慢的α波和θ波。约60BPM、略低于静息心率的轻柔重复旋律能温和地推动这一转换，研究表明它可以缩短入睡时间并提高睡眠质量。",
-        "meditation": "持续而平稳的柔和声音，是注意力被杂念带走时可以返回的「锚」。简单的和声与舒缓的进行能平息大脑默认模式网络——产生胡思乱想的回路——让人更容易安住于当下。"
+        "stress": "60~80BPM的缓慢节奏与以低频为主的柔和音色，会让心跳和呼吸与之同步，这种反应称为「同频引导（entrainment）」。此时自律神经的平衡由交感神经转向副交感神经优势：心率变异性（HRV）趋于平稳，压力荷尔蒙皮质醇随之下降，这已得到临床研究证实。",
+        "sleep": "入睡时，脑电波从清醒的β波（13~30Hz）经α波（8~12Hz）降至浅睡眠的θ波（4~8Hz）。约60BPM、低于静息心率且削减了高频成分的重复旋律，能温和地推动这一下降过程，研究表明可缩短入睡时间并提高睡眠质量。",
+        "meditation": "持续平稳的声音是注意力涣散时可以返回的听觉之「锚」。脑电（EEG）研究显示，冥想时与放松专注相关的α波（8~12Hz）和θ波（4~8Hz）会增强；fMRI研究则显示产生杂念的默认模式网络（DMN）活动降低。简单的和声与舒缓的进行，正是帮助大脑进入这两种状态的音乐。"
       },
       "openSettings": "打开音乐设置",
       "shuffle": "重新随机播放",
