@@ -746,6 +746,19 @@ a { text-decoration: none; color: inherit; }
   padding-left: 2px;
 }
 .top9-sec-head span { color: #0a84ff; font-size: 18px; font-weight: 800; letter-spacing: .02em; }
+/* Price as-of, right-aligned in the section head. Must never wrap to a 2nd line. */
+.top9-sec-head .t9-asof {
+  margin-left: auto; flex-shrink: 0; white-space: nowrap;
+  font-size: 14px; font-weight: 600; color: var(--t3); letter-spacing: 0;
+}
+@media (max-width: 699px) {
+  .top9-sec-head { font-size: 18px; gap: 6px; }
+  .top9-sec-head span { font-size: 16px; }
+}
+@media (max-width: 400px) {
+  .top9-sec-head { font-size: 17px; gap: 5px; }
+  .top9-sec-head span { font-size: 15px; }
+}
 .tab-new-badge {
   display: inline-block; background: #ff3b30; color: #fff;
   font-size: 14px; font-weight: 800; line-height: 1.3;
@@ -1851,6 +1864,7 @@ li.gear-other-sep { display: none !important; }
 
       <!-- ── TSLA section ── -->
       <div class="king-section">
+        <div class="top9-sec-head">Tesla <span>TSLA</span></div>
         <div class="tv-chart-card" style="margin-bottom:20px;">
           <div class="tv-chart-label">Tesla TSLA <span>Daily · TradingView</span></div>
           <div class="tv-chart-frame" id="tv-TSLA"></div>
@@ -1862,8 +1876,9 @@ li.gear-other-sep { display: none !important; }
         <div id="chat-tsla" style="margin-top:12px;"></div>
       </div>
 
-      <!-- ── NVDA 섹션 ── -->
+      <!-- ── NVDA section ── -->
       <div class="king-section" style="margin-top:32px;">
+        <div class="top9-sec-head">NVIDIA <span>NVDA</span></div>
         <div class="tv-chart-card" style="margin-bottom:20px;">
           <div class="tv-chart-label">NVIDIA NVDA <span>Daily · TradingView</span></div>
           <div class="tv-chart-frame" id="tv-NVDA"></div>
@@ -3233,6 +3248,7 @@ async function loadAllData(forceRefresh = false) {
       window._swingContinuity = ghJson.swingContinuity ?? null;  // 스윙 연속성 서술 (2026-07-09)
       window._swingContinuityEn = ghJson.swingContinuityEn ?? null;  // EN bilingual sibling
       const ageH   = Math.round((Date.now() - new Date(ghJson.generatedAt).getTime()) / 3600000 * 10) / 10;
+      window._priceAsOf = ghJson.generatedAtKST || ghJson.generatedAt || null;  // TOP9 section header as-of
       console.log(`[GitHub JSON] Data loaded successfully as of ${ghJson.generatedAtKST} (${ageH}h ago)`);
     } else {
       throw new Error('Invalid JSON structure');
@@ -3469,6 +3485,7 @@ function renderAll(data) {
   try {
     renderTop9Chips();
     megaScaffold();
+    refreshAsOfLabels();
     renderKingStanceCards();
     window._megaRendered.forEach(sy => renderMegaCards(sy));
   } catch (e) { console.error('[top9]', e); }
@@ -5771,7 +5788,7 @@ window._swingView = null;
     const res = await fetch(GITHUB_SWING_VIEW_URL + '?t=' + Math.floor(Date.now() / 300000));
     if (!res.ok) return;
     window._swingView = await res.json();
-    try { renderTop9Chips(); megaScaffold(); } catch (e) {}
+    try { renderTop9Chips(); megaScaffold(); refreshAsOfLabels(); } catch (e) {}
     try { renderKingStanceCards(); } catch (e) {}
     window._megaRendered.forEach(s => renderMegaCards(s));
   } catch (e) { console.warn('[swing-view]', e); }
@@ -5798,6 +5815,34 @@ function _top9ChipsHtml() {
       : '';
     return `<button type="button" class="top9-chip" data-sym="${sym}" onclick="selectTop9('${sym}')">${sym}${pct}</button>`;
   }).join('');
+}
+
+// Price as-of label — "Aug 5, 01:01 KST". Kept short so the header stays one line.
+function _asOfLabel() {
+  const raw = window._priceAsOf;
+  if (!raw) return '';
+  const m = String(raw).match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+  let k;
+  if (m && /KST/.test(raw)) {
+    k = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]));
+  } else {
+    const d = new Date(raw);
+    if (isNaN(d)) return '';
+    k = new Date(d.getTime() + 9 * 3600 * 1000);
+  }
+  const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const p2 = n => String(n).padStart(2, '0');
+  return `${MON[k.getUTCMonth()]} ${k.getUTCDate()}, ${p2(k.getUTCHours())}:${p2(k.getUTCMinutes())} KST`;
+}
+
+function refreshAsOfLabels() {
+  const lbl = _asOfLabel();
+  document.querySelectorAll('.top9-sec-head').forEach(h => {
+    let el = h.querySelector('.t9-asof');
+    if (!lbl) { if (el) el.remove(); return; }
+    if (!el) { el = document.createElement('span'); el.className = 't9-asof'; h.appendChild(el); }
+    el.textContent = lbl;
+  });
 }
 
 function renderTop9Chips() {
@@ -5988,6 +6033,7 @@ function renderMegaSection(sym) {
   if (window._megaRendered.has(sym)) return;
   window._megaRendered.add(sym);
   renderMegaCards(sym);
+  try { refreshAsOfLabels(); } catch (e) {}
   try { loadTVChart(`tv-MEGA-${sym}`, MEGA9.tv[sym]); } catch (e) { console.error('[top9 tv]', e); }
 }
 
@@ -6028,7 +6074,7 @@ function renderKingStanceCards() {
 }
 
 // Initial paint — chips and section scaffolding show before data arrives
-try { renderTop9Chips(); megaScaffold(); } catch (e) {}
+try { renderTop9Chips(); megaScaffold(); refreshAsOfLabels(); } catch (e) {}
 
 function tabFromHash() {
   const h = (location.hash || '').toLowerCase();
