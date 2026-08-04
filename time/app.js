@@ -1776,13 +1776,12 @@ function pickScenePhoto(sceneId) {
   ensurePhotoSet(sceneId);
   if (activePhotoSet.length === 0) return "";
 
-  if (Date.now() >= manualPhotoUntil) {
-    const nextSlot = photoRotationSlot();
-    if (activePhotoSlot !== nextSlot) {
-      activePhotoIndex = Number(nextSlot) % activePhotoSet.length;
-      activePhotoSlot = nextSlot;
-    }
-  }
+  // 2026-08-04 성동님 제보(배경 자동 전환 멈춤) — 슬롯 비교 기반 자동
+  // 회전을 여기서 제거하고 아래 명시적 5분 타이머(photoAutoRotateTick)로
+  // 이관했다. activePhotoSlot 갱신은 남긴다 — renderTime의 shouldRotatePhoto()
+  // 경로가 15분에 1회만 강제 setScene을 발화하게 하는 스로틀 역할
+  // (그 강제 호출은 ensurePhotoSet의 날씨/2시간 배치 변화 반영에 여전히 쓰인다).
+  activePhotoSlot = photoRotationSlot();
 
   const photo = activePhotoSet[activePhotoIndex];
   lastScenePhoto[sceneId] = imageUrl(photo);
@@ -8887,6 +8886,20 @@ window.setInterval(() => {
   if (document.visibilityState === "visible") requestCurrentWeather();
 }, WEATHER_REFRESH_INTERVAL_MS);
 window.setInterval(tick, 1000);
+
+// 2026-08-04 성동님 제보 — "앱을 계속 켜두는데 배경이 자동으로 안 바뀐다".
+// 기존 15분 슬롯-비교 사슬(renderTime→shouldRotatePhoto→setScene(force)→
+// pickScenePhoto 내부 재비교)을 버리고, 한 곳에서 끝나는 명시적 타이머로
+// 교체. 화면이 보이는 동안 5분마다 다음 장으로 한 장씩(4장 한 바퀴 20분).
+// 수동 스와이프 직후 15분(manualPhotoUntil)은 기존 약속대로 손대지 않는다.
+const PHOTO_AUTO_ROTATE_MS = 5 * 60 * 1000;
+function photoAutoRotateTick() {
+  if (document.visibilityState !== "visible") return;
+  if (!activePhotoSet.length || Date.now() < manualPhotoUntil) return;
+  activePhotoIndex = (activePhotoIndex + 1) % activePhotoSet.length;
+  if (activeScene) setScene(activeScene, { syncDots: true, force: true });
+}
+window.setInterval(photoAutoRotateTick, PHOTO_AUTO_ROTATE_MS);
 window.setInterval(musicStallWatchdog, 2000);
 // 2026-07-16: 이 15초 주기 재동기화를 폐기한다 — 유저가 겪은 "곡 중간에
 // 갑자기 몇 초 되감겼다 정상 재생됨"(5초 지점 2초 되돌림, 3~5초·65% 지점
