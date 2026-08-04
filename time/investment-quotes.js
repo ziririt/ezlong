@@ -8394,5 +8394,12 @@ window.investmentQuotes = [
     "title": "서시",
     "author": "윤동주",
     "genre": "literature"
+  },
+  {
+    "english": "If you're not worried, you need to worry. And if you're worried, you don't need to worry.",
+    "text": "걱정하고 있지 않다면, 걱정해야 한다. 그리고 이미 걱정하고 있다면, 더는 걱정할 필요가 없다. 리스크를 미리 두려워하고 대비하는 사람에게는, 그 두려움이 오히려 방패가 되어준다.",
+    "title": "원칙 (Principles: Life and Work)",
+    "author": "레이 달리오 (Ray Dalio)",
+    "category": "mindset"
   }
 ];
