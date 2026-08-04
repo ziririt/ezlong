@@ -5350,7 +5350,20 @@ function renderKings(tsla, nvda) {
   kings.forEach(({ data: d }) => {
     const container = document.getElementById(`king-card-${d.symbol}`);
     if (!container) return;
-    container.innerHTML = (() => {
+    const _aiK = d.symbol === 'TSLA' ? window._tslaAnalysis : window._nvdaAnalysis;
+    container.innerHTML = _deepAnalysisCardHtml(d, _aiK);
+  });
+}
+
+/* ── 심층 분석 카드 — 2026-08-04 3차: 9종 공통 함수로 승격 ─────────────────
+   배경(성동님 지적): "상세보기 — 지표·점수·매매 기준 전체"가 TSLA·NVDA에만 있고
+   나머지 7종엔 없었다. 원인은 데이터 부족이 아니라 이 카드가 renderKings 안쪽
+   IIFE에 갇혀 있었던 것 — market-signals.json은 9종 모두 price·buyScore·sellScore·
+   gear·rsi·macd·dev200·dev5·sma200·recentDailyReturns를 전부 갖고 있음을 실측 확인했다.
+   그래서 심볼 종속 코드(_ai 선택, CHAT_CTX 키)만 인자·가드로 빼고 본문은 그대로 승격.
+   ★ 수정 시 en/atmr-dashboard.html의 같은 함수도 반드시 동시에 (CLAUDE.md 8항). */
+function _deepAnalysisCardHtml(d, _ai) {
+  return (() => {
     const score      = d.buyScore;
     const sellScore  = d.sellScore ?? 50;
     const cls        = getScoreClass(score);
@@ -5366,7 +5379,6 @@ function renderKings(tsla, nvda) {
     const macdColor   = d.macd?.histogram > 0 ? 'var(--gr)' : 'var(--rd)';
 
     // AI 브리핑 생성 (Gemini 분석 JSON 우선 활용)
-    const _ai = d.symbol === 'TSLA' ? window._tslaAnalysis : window._nvdaAnalysis;
     const brief = generateKingBrief(d, _ai);
 
     // 트레이딩 플랜 HTML (string concat — nested template literal 회피)
@@ -5411,8 +5423,9 @@ function renderKings(tsla, nvda) {
     }
 
     // AI 상담 컨텍스트 저장
-    const ctxKey = d.symbol.toLowerCase(); // 'tsla' or 'nvda'
-    CHAT_CTX[ctxKey] =
+    const ctxKey = d.symbol.toLowerCase();
+    // 'tsla'/'nvda'일 때만 AI 상담 컨텍스트 저장 (7종은 상담 코너 없음)
+    if (ctxKey === 'tsla' || ctxKey === 'nvda') CHAT_CTX[ctxKey] =
       `[${d.symbol} 분석 브리핑]\n` +
       `현재가: $${d.price?.toFixed(2) ?? '—'} (${changeStr})\n` +
       `매수 매력도: ${score}점, 매도 적합도: ${sellScore}점\n` +
@@ -5534,7 +5547,7 @@ function renderKings(tsla, nvda) {
         <div class="king-header">
           <div class="king-symbol-block">
             <div class="king-symbol">${d.symbol}</div>
-            <div class="king-name">${SYMBOLS[d.symbol]?.name ?? ''}</div>
+            <div class="king-name">${SYMBOLS[d.symbol]?.name ?? MEGA9?.name?.[d.symbol] ?? ''}</div>
           </div>
           <div class="king-price-block">
             <div class="king-price" id="live-price-${d.symbol}">$${d.price.toFixed(2)}</div>
@@ -5601,8 +5614,7 @@ function renderKings(tsla, nvda) {
         <div style="font-size:16px;font-weight:600;color:var(--t2);margin-top:10px;padding:8px 0;">${actionRec}</div>
       </div>
     `;
-    })();
-  });
+  })();
 }
 
 function generateKingBrief(d, ai) {
@@ -6152,6 +6164,14 @@ function megaScaffold() {
 }
 
 // 판단·AI·지표 카드 부분만 렌더 — TV차트는 건드리지 않아 데이터 갱신 시 위젯 리로드 없음
+// 심층 카드는 price·changePct·dev200·dev5·gear·rsi 를 무가드로 .toFixed() 한다.
+// 하나라도 비면 렌더가 통째로 죽으므로 호출 전에 여기서 막는다(9종 공통).
+function _deepCardReady(d) {
+  if (!d) return false;
+  return ['price', 'changePct', 'dev200', 'dev5', 'rsi'].every(k => typeof d[k] === 'number')
+      && typeof d.gear === 'number' && typeof d.buyScore === 'number';
+}
+
 function renderMegaCards(sym) {
   const box = document.getElementById(`mega-cards-${sym}`);
   if (!box) return;
@@ -6162,7 +6182,8 @@ function renderMegaCards(sym) {
          : (ai === undefined ? '<div style="color:var(--t3);font-size:14px;margin:0 0 12px;">AI 차트분석 불러오는 중…</div>' : '')}
     ${buildAudienceHtml(window._swingView?.megas?.[sym]?.audience)}
     ${d ? buildMegaMetricsHtml(d)
-        : '<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px;color:var(--t2);font-size:16px;margin-bottom:12px;">데이터 수집 대기 구간 — 다음 자동 갱신(장중 최대 30분 주기) 이후 표시됩니다.</div>'}`;
+        : '<div style="background:var(--card);border:1px solid rgba(120,120,128,0.22);border-radius:14px;padding:16px;color:var(--t2);font-size:16px;margin-bottom:12px;">데이터 수집 대기 구간 — 다음 자동 갱신(장중 최대 30분 주기) 이후 표시됩니다.</div>'}
+    ${_deepCardReady(d) ? `<details class="sv-det-page"><summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:10px 4px;">상세보기 — 지표·점수·매매 기준 전체</summary><div>${_deepAnalysisCardHtml(d, ai || null)}</div></details>` : ''}`;
   if (ai === undefined && MEGA9.ai[sym]) {
     fetchAnalysisJSON(MEGA9.ai[sym]).then(a => {
       window._megaAi[sym] = a || null;

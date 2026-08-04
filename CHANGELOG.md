@@ -5,6 +5,48 @@
 
 ---
 
+## [2026-08-04] TOP9 심층 분석 카드 — TSLA·NVDA 전용에서 9종 전체로
+
+### 배경
+
+성동님 지적: "top9종 집중분석에서 테슬라와 엔비디아만 하단에 '상세보기 — 지표·점수·
+매매 기준 전체'가 있고 나머지 7종은 없네?"
+
+원인은 데이터 부족이 아니었다. 이 카드를 그리는 코드 전체가 `renderKings()` 안쪽
+익명 IIFE에 갇혀 있어서, 구조적으로 TSLA·NVDA 말고는 호출할 방법이 없었던 것이다.
+`data/market-signals.json`을 실측해보니 9종 전부 price·changePct·buyScore·sellScore·
+gear·rsi·macd·dev200·dev5·sma200·recentDailyReturns를 빠짐없이 갖고 있었다.
+
+### 조치
+
+- `_deepAnalysisCardHtml(d, _ai)` 로 승격. 본문은 한 줄도 고치지 않고 그대로 옮겼고,
+  심볼에 묶여 있던 두 곳만 분리했다: (1) `_ai` 선택(`window._tslaAnalysis` /
+  `_nvdaAnalysis`)은 인자로, (2) `CHAT_CTX[ctxKey]` 저장은 TSLA·NVDA 가드 안으로
+  (7종은 AI 상담 코너가 없다). 종목명은 `SYMBOLS`에 7종이 없으므로 `MEGA9.name` 폴백.
+- `_deepCardReady(d)` 가드 신설. 이 카드는 price·changePct·dev200·dev5·rsi를 무가드로
+  `.toFixed()` 하므로 하나만 비어도 렌더가 통째로 죽는다. 호출 전에 막는다.
+- `renderMegaCards()`에서 7종 각각에 동일 라벨의 `<details class="sv-det-page">` 추가.
+- **en/**: 같은 승격을 적용하고, 추가로 TSLA·NVDA의 레거시 카드도 7종과 동일하게
+  "Full detail — indicators, scores, and trade criteria" 디스클로저 안으로 넣었다.
+  기존 en/은 2종만 펼친 채였는데, 7종에 접힌 카드를 붙이면 오히려 어긋나기 때문.
+  `renderKings()`가 갱신 때마다 컨테이너를 다시 쓰므로 매번 재포장하되, 중첩 방지
+  가드를 뒀다.
+
+### 검증
+
+Playwright — 한국어·영문 각 9종 = 18종목. 전부 상세보기 존재, 본문 1,600~2,400자,
+점수 카드(`.dual-score-num`)·AI 브리핑(`.king-ai-brief`) 실재 확인. JS 런타임 에러 0건.
+데이터 갱신 3회 반복 시뮬레이션 — details 개수 1 유지, 중첩 0, 본문 길이 불변
+(재포장 무한 중첩·내용 유실 없음 확인). `node --check` 전 스크립트 블록 통과.
+
+### 롤백
+
+```
+git checkout cp-20260804-top9-deep~1 -- atmr-dashboard.html en/atmr-dashboard.html
+```
+
+---
+
 ## [2026-08-04] 모바일 타이포그래피 — TOP9 칩 3열, 메인 히어로 1행, 툴 타일 압축
 
 ### 배경
