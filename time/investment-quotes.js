@@ -8429,5 +8429,12 @@ window.investmentQuotes = [
     "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
     "author": "필립 피셔 (Philip Fisher)",
     "category": "mindset"
+  },
+  {
+    "english": "Courage starts with showing up and letting ourselves be seen.",
+    "text": "용기는 나서서 있는 그대로의 나를 보여주는 데서 시작된다.",
+    "title": "마음가면",
+    "author": "브레네 브라운",
+    "genre": "literature"
   }
 ];
