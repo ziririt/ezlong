@@ -129,6 +129,63 @@
     }
   }
 
+  /* ── 4-B. PC 칩 메뉴 "우측에 더 있음" 표시기 (2026-08-04, 성동님 지시) ──
+     칩이 화면보다 길면: ①우측 가장자리 그라디언트+맥동하는 ❯ 버튼 표시(클릭 시
+     한 화면만큼 스크롤), ②첫 로드 때 칩 줄을 살짝 밀었다 되돌리는 1회 힌트 모션.
+     끝까지 스크롤하면 표시기 자동 숨김. 모바일(768px 이하)은 칩 자체가 숨겨지므로 제외. */
+  (function navMoreHint() {
+    var linksEl = nav.querySelector('.ez-nav-svc-links');
+    if (!linksEl) return;
+
+    var style = document.createElement('style');
+    style.textContent =
+      '.ez-nav-inner { position: relative; }' +
+      '.ez-nav-more { position: absolute; right: 0; top: 0; bottom: 0; width: 72px;' +
+        'display: none; align-items: center; justify-content: flex-end; padding-right: 10px;' +
+        'border: 0; cursor: pointer; z-index: 3; pointer-events: none;' +
+        'background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 62%); }' +
+      '.ez-nav-more.show { display: flex; pointer-events: auto; }' +
+      '.ez-nav-more .ez-nav-more-ico { font-size: 16px; font-weight: 800; color: var(--ez-text);' +
+        'animation: ezNavNudge 1.4s ease-in-out infinite; }' +
+      '@keyframes ezNavNudge { 0%,100% { transform: translateX(0); opacity: .55; }' +
+        '50% { transform: translateX(5px); opacity: 1; } }' +
+      '@media (prefers-color-scheme: dark) { .ez-nav-more {' +
+        'background: linear-gradient(90deg, rgba(10,10,10,0) 0%, rgba(10,10,10,0.95) 62%); } }' +
+      '@media (max-width: 768px) { .ez-nav-more { display: none !important; } }' +
+      '@media (prefers-reduced-motion: reduce) { .ez-nav-more .ez-nav-more-ico { animation: none; } }';
+    document.head.appendChild(style);
+
+    var more = document.createElement('button');
+    more.type = 'button';
+    more.className = 'ez-nav-more';
+    more.setAttribute('aria-label', '오른쪽으로 스크롤하면 메뉴가 더 있습니다');
+    more.innerHTML = '<span class="ez-nav-more-ico">&#10095;</span>';
+    more.addEventListener('click', function () {
+      linksEl.scrollBy({ left: Math.max(200, linksEl.clientWidth * 0.7), behavior: 'smooth' });
+    });
+    var inner = nav.querySelector('.ez-nav-inner');
+    if (inner) inner.appendChild(more);
+
+    function update() {
+      var remain = linksEl.scrollWidth - linksEl.clientWidth - linksEl.scrollLeft;
+      more.classList.toggle('show', remain > 12);
+    }
+    linksEl.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+
+    /* 첫 로드 힌트 모션 — 오버플로가 있고 사용자가 아직 스크롤 안 했을 때 1회 */
+    setTimeout(function () {
+      if (linksEl.scrollWidth - linksEl.clientWidth > 12 && linksEl.scrollLeft === 0) {
+        linksEl.scrollTo({ left: 84, behavior: 'smooth' });
+        setTimeout(function () {
+          if (linksEl.scrollLeft <= 100) linksEl.scrollTo({ left: 0, behavior: 'smooth' });
+        }, 700);
+      }
+      update();
+    }, 900);
+  })();
+
   /* ── 5. 토글 함수 — 전역 등록 ── */
   window.ezNavToggle = function () {
     var menu = document.getElementById('ez-mob-menu');
