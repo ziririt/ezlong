@@ -5743,6 +5743,12 @@ function setUpdateTime(ts) {
     return;
   }
   const d = ts instanceof Date ? ts : new Date(ts);
+  // TOP9 섹션 헤더의 시세 기준시각 — 캐시/GitHub/백그라운드 갱신 어느 경로로 와도
+  // 이 함수는 반드시 지나가므로, 여기 한 곳에서 잡으면 경로 누락이 생기지 않는다.
+  if (d && !isNaN(d.getTime())) {
+    window._priceAsOf = d.toISOString();
+    try { refreshAsOfLabels(); } catch (e) {}
+  }
   if (!d || isNaN(d.getTime())) {
     el.textContent = 'Loading data...';
     return;
