@@ -2738,6 +2738,14 @@ function clearSettingsDirty() {
 // 찾는다"). focusSection 인자가 없으면 기존과 완전히 동일하게 동작한다.
 function openSettings(focusSection) {
   settingsPanel.classList.add("is-open");
+  // 2026-08-04 2차 — 시트를 열 때마다 '앱을 열면 보일 화면'을 저장값으로
+  // 다시 그린다. HTML에 checked가 박혀 있어서, 어떤 이유로든 초기 배선이
+  // 실패하면 저장값과 무관하게 늘 기본값으로 보이는 착시가 생긴다.
+  try {
+    if (typeof window.syncStartPageUi === "function") window.syncStartPageUi();
+  } catch (error) {
+    // 동기화 실패가 설정 열기를 막아서는 안 된다.
+  }
   document.body.appendChild(settingsPanel);
   settingsPanel.setAttribute("aria-hidden", "false");
   settingsOpen.setAttribute("aria-expanded", "true");
@@ -9258,19 +9266,50 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
 // 2026-08-04 성동님 요청 — 설정의 '앱을 열면 보일 화면' 선택 배선.
 // (라디오 2개: 투자명저 문장 / 투자AI도구 ezlong.com. 기본값 문장.)
 (function setupStartPagePreference() {
-  const box = document.getElementById("startPageOptions");
-  if (box) {
-    const current = loadStartPage();
-    box.querySelectorAll("input[name=\"startPage\"]").forEach((input) => {
+  // 2026-08-04 2차(성동님 제보) — "ezlong.com으로 설정해도 재실행하면 도로
+  // 문장으로 돌아와 있다." 1차 원인은 파일 앞쪽 TDZ 오류로 이 IIFE가 아예
+  // 실행되지 않았던 것(1.8.38에서 수정). 원인이 그거 하나뿐이라고 믿지 않고
+  // 저장·복원 양쪽에 각각 안전장치를 둔다.
+  //   · change와 click을 모두 듣는다 — 라벨로 감싼 라디오는 웹킷 계열에서
+  //     change가 늦거나 누락되는 사례가 있다.
+  //   · 저장한 뒤 곧바로 다시 읽어 검증하고, 어긋나면 콘솔에 남긴다.
+  //   · window.syncStartPageUi()로 재동기화를 밖에 열어둔다(설정을 열 때마다
+  //     openSettings가 호출한다).
+  var box = document.getElementById("startPageOptions");
+  if (!box) return;
+  var inputs = Array.prototype.slice.call(
+    box.querySelectorAll("input[name=\"startPage\"]")
+  );
+  if (!inputs.length) return;
+
+  window.syncStartPageUi = function syncStartPageUi() {
+    var current = loadStartPage();
+    inputs.forEach(function (input) {
       input.checked = input.value === current;
-      input.addEventListener("change", () => {
-        if (input.checked) saveStartPage(input.value);
-      });
     });
+  };
+
+  function commit(input) {
+    if (!input || !input.checked) return;
+    saveStartPage(input.value);
+    if (loadStartPage() !== input.value) {
+      // 저장이 실제로 안 먹은 경우(사파리 프라이빗 모드 등). 조용히 넘기면
+      // 성동님이 겪은 "설정한 게 무의미해지는" 상황이 반복된다.
+      console.warn("[FlipZen] 시작 화면 설정 저장 실패:", input.value);
+    }
   }
+
+  inputs.forEach(function (input) {
+    input.addEventListener("change", function () { commit(input); });
+    input.addEventListener("click", function () { commit(input); });
+  });
+
+  // 화면을 저장값에 맞춰 처음 한 번 그린다(HTML의 checked를 덮어쓴다).
+  window.syncStartPageUi();
+
   // 부팅 적용 — 웹뷰가 자리를 잡은 뒤 넘어가야 전환이 끊기지 않는다.
   if (loadStartPage() === "ezlong") {
-    window.setTimeout(() => {
+    window.setTimeout(function () {
       try { goToPage(1); } catch (error) { /* 전환 실패는 무시 — 문장 화면 유지 */ }
     }, 900);
   }
