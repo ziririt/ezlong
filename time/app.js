@@ -8252,6 +8252,12 @@ function rotateQuote(now = new Date()) {
 function tick() {
   const now = new Date();
   renderTime(now);
+  // 2026-08-04 2차 — 배경 자동전환(4분마다 1장, 4장 돌면 새 세트).
+  // 위 photoAutoRotateTick 주석 참조 — 시계 루프에 얹어 확실하게.
+  if (Date.now() - lastPhotoRotateAt >= PHOTO_AUTO_ROTATE_MS) {
+    lastPhotoRotateAt = Date.now();
+    photoAutoRotateTick();
+  }
   rotateQuote(now);
   // 2026-07-20: 정각 세리모니/퇴근 세리모니가 트랙 전환 우연에만 기대지
   // 않도록 매초 별도로도 확인한다(handleMusicCeremonyOnTrackStart 위
@@ -8339,6 +8345,25 @@ function settleEzlongOpen() {
   ezlongSection.style.zIndex = "40";      // 시계보다 위 — 네이티브 제스처 라우팅 확보
   if (app) app.style.visibility = "hidden"; // 비켜난 시계를 히트테스트에서 완전 제거
 }
+// 2026-08-04 성동님 요청 — 앱을 열었을 때 첫 화면을 고를 수 있게 한다.
+// 기본값은 '투자명저 문장'(기존 동작 그대로). 'ezlong.com'을 고른
+// 사람은 실행 직후 바로 2페이지로 넘어간다.
+const startPageStorageKey = "ezlong:startPage";
+function loadStartPage() {
+  try {
+    return localStorage.getItem(startPageStorageKey) === "ezlong" ? "ezlong" : "quote";
+  } catch (error) {
+    return "quote";
+  }
+}
+function saveStartPage(value) {
+  try {
+    localStorage.setItem(startPageStorageKey, value === "ezlong" ? "ezlong" : "quote");
+  } catch (error) {
+    // 저장 실패해도 이번 실행에는 영향 없다.
+  }
+}
+
 function goToPage(index) {
   const open = index >= 1;
   currentPageIndex = open ? 1 : 0;
@@ -8989,6 +9014,11 @@ window.setInterval(tick, 1000);
 // 한 장. 4장이 다 돌면(16분) 같은 세트를 반복하지 않고 photoCycleGen을
 // 올려 다음 4장 세트로 교체한다(photoHistory 덕에 본 사진은 회피됨).
 const PHOTO_AUTO_ROTATE_MS = 4 * 60 * 1000;
+// 2026-08-04 2차 — iOS에서 배경 자동전환이 또 멈췄다(안드로이드는 정상).
+// 원인을 플랫폼별로 쫓는 대신, "실기기에서 매초 도는 것이 이미 증명된"
+// tick()(플립시계 갱신 루프)에 경과시간 판정을 얹는다 — 시계가 움직이는
+// 한 배경도 반드시 바뀐다. 독립 setInterval에 기대지 않는 구조.
+let lastPhotoRotateAt = Date.now();
 function photoAutoRotateTick() {
   if (document.visibilityState !== "visible") return;
   if (!activePhotoSet.length || Date.now() < manualPhotoUntil) return;
@@ -9000,7 +9030,7 @@ function photoAutoRotateTick() {
   }
   if (activeScene) setScene(activeScene, { syncDots: true, force: true });
 }
-window.setInterval(photoAutoRotateTick, PHOTO_AUTO_ROTATE_MS);
+// (독립 타이머는 폐기 — tick() 안에서 경과시간으로 호출한다.)
 window.setInterval(musicStallWatchdog, 2000);
 // 2026-07-16: 이 15초 주기 재동기화를 폐기한다 — 유저가 겪은 "곡 중간에
 // 갑자기 몇 초 되감겼다 정상 재생됨"(5초 지점 2초 되돌림, 3~5초·65% 지점
@@ -9131,7 +9161,9 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
       const innerY = r.top + padOf("padding-top") + gap;
       const innerW = Math.max(160, r.width - padOf("padding-left") - padOf("padding-right") - gap * 2);
       const innerH = Math.max(50, r.height - padOf("padding-top") - padOf("padding-bottom") - gap * 2);
-      const bannerH = Math.max(50, Math.min(72, Math.round(innerH * 0.4)));
+      // 2026-08-04 성동님 요청 — 네이티브 광고 카드가 좋다, 높이는 2배로.
+      // 썸네일·제목·설명이 여유롭게 놓이는 크기(문장박스 안쪽의 8할까지).
+      const bannerH = Math.max(96, Math.min(144, Math.round(innerH * 0.8)));
       const payload = {
         action: "adLayout",
         x: Math.round(innerX),
@@ -9182,7 +9214,15 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
       // 프레임에 울려야 한 몸으로 느껴진다(apple-design 다감각 조화 원칙).
       // iOS WKWebView는 이 API가 없어 조용히 건너뛴다(1.3에서 네이티브 햅틱).
       try {
-        if (navigator.vibrate) navigator.vibrate(8);
+        if (navigator.vibrate) {
+          navigator.vibrate(8);
+        } else if (window.webkit && window.webkit.messageHandlers
+                   && window.webkit.messageHandlers.flipzenNativeRadio) {
+          // 2026-08-04 성동님 지적 — 아이폰은 반응이 없었다. WKWebView에는
+          // navigator.vibrate가 아예 없기 때문. iOS는 네이티브 햅틱
+          // (UIImpactFeedbackGenerator)을 브릿지로 요청한다(ContentView 수신).
+          window.webkit.messageHandlers.flipzenNativeRadio.postMessage({ action: "haptic" });
+        }
       } catch (error) {
         // 진동 실패는 무시 — 터치감의 본체는 시각 효과다.
       }
@@ -9193,4 +9233,26 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
     el.addEventListener("pointercancel", release);
     el.addEventListener("pointerleave", release);
   });
+})();
+
+
+// 2026-08-04 성동님 요청 — 설정의 '앱을 열면 보일 화면' 선택 배선.
+// (라디오 2개: 투자명저 문장 / 투자AI도구 ezlong.com. 기본값 문장.)
+(function setupStartPagePreference() {
+  const box = document.getElementById("startPageOptions");
+  if (box) {
+    const current = loadStartPage();
+    box.querySelectorAll("input[name=\"startPage\"]").forEach((input) => {
+      input.checked = input.value === current;
+      input.addEventListener("change", () => {
+        if (input.checked) saveStartPage(input.value);
+      });
+    });
+  }
+  // 부팅 적용 — 웹뷰가 자리를 잡은 뒤 넘어가야 전환이 끊기지 않는다.
+  if (loadStartPage() === "ezlong") {
+    window.setTimeout(() => {
+      try { goToPage(1); } catch (error) { /* 전환 실패는 무시 — 문장 화면 유지 */ }
+    }, 900);
+  }
 })();
