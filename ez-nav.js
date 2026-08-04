@@ -13,11 +13,35 @@
 (function () {
   var scriptEl = document.currentScript;
 
+  /* ── 영문판(/en/) 감지 — 같은 스크립트가 en 페이지에선 영어 메뉴를 그린다.
+     (2026-08-04 신설: 메뉴 단일 출처 원칙을 en 서브사이트까지 확장.
+     en에 실존하는 페이지만 나열 — 절세 계좌 등 한국 전용 도구는 제외.) */
+  var IS_EN = window.location.pathname.indexOf('/en/') === 0;
+
+  var linksEN = [
+    ['/en/atmr-dashboard.html',        'Swing Signal',    'Swing Signal Dashboard'],
+    ['/en/market-vs.html',             'Bull vs Bear',    'Bull vs Bear — AI Market Read'],
+    ['/en/stocks.html',                'Live Prices',     'Simple Live Prices'],
+    ['/en/chart-analysis.html',        'AI Chart Analysis', 'AI Chart Analysis'],
+    ['/en/analyst-reports.html',       'Price Targets',   'Wall Street Price Targets'],
+    ['/en/market-cycle.html',          'Market Cycle',    'Market Cycle Monitor'],
+    ['/en/today-chart.html',           "Today's Chart",   "Today's Chart"],
+    ['/en/dca-simulator.html',         'DCA Simulator',   'DCA Compound Simulator'],
+    ['/en/portfolio-manager.html',     'AI Portfolio',    'AI Portfolio by Risk Profile'],
+    ['/en/compound-calculator.html',   'Compound Calc',   'Compound Interest Calculator'],
+    ['/en/retirement-calculator.html', 'Retirement Calc', 'Retirement Target Calculator'],
+    ['/en/backtest.html',              'Backtest',        'Monte Carlo Portfolio Backtest'],
+    ['/en/risk-diagnostic.html',       'Risk Profile',    'Investor Risk Self-Check'],
+    ['/en/stock-personality-quiz.html','Investor Type',   'Investor Type by MBTI'],
+    ['/en/auto-dca-guide.html',        'Automation Guide','Investing Automation Guide'],
+    ['/en/life-balance-game.html',     'Balance Game',    'Balance Game: My Life']
+  ];
+
   /* [href, 짧은 이름(PC칩), 긴 이름(모바일 오버레이)]
      2026-08-04: 첫 항목을 3개로 분리 (성동님 지시) — 스윙 시그널 대시보드의
      3개 탭(시그널/전략/TOP9)에 해시 딥링크로 각각 직접 진입. 활성 판정은
      아래 루프에서 pathname+hash 조합으로 처리한다. */
-  var links = [
+  var linksKR = [
     ['/atmr-dashboard.html',        '스윙 시그널',    "스윙 트레이더를 위한 '스윙 시그널'"],
     ['/atmr-dashboard.html#swing-strategy', '스윙 전략', '스윙 전략 — 3-3-4 원칙 · 레버리지 가이드'],
     ['/atmr-dashboard.html#top9',   'TOP9 집중분석',  'TOP9 집중분석 — 테슬라·엔비디아 등 빅테크 9종 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
@@ -39,7 +63,8 @@
   ];
 
   var p = window.location.pathname;
-  var activeShort = '메뉴';
+  var links = IS_EN ? linksEN : linksKR;
+  var activeShort = IS_EN ? 'Menu' : '메뉴';
   var desktopLinksHTML = '';
   var mobileItemsHTML  = '';
 
