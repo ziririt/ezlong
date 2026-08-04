@@ -50,7 +50,9 @@
       [p + 'stock-personality-quiz.html', L.quiz, L.quiz],
       [p + 'life-balance-game.html', L.game,  L.game]
     ];
-    if (lang === 'ja') a.push([p + 'auto-dca-guide.html', L.autoGuide, L.autoGuide]);
+    /* 2026-08-04: ja의 자동적립 가이드를 push하면 밸런스게임 뒤로 밀려
+       "밸런스게임은 맨 끝" 원칙(성동님)이 깨진다. 밸런스게임 앞에 끼워넣는다. */
+    if (lang === 'ja') a.splice(a.length - 1, 0, [p + 'auto-dca-guide.html', L.autoGuide, L.autoGuide]);
     return a;
   }
 
