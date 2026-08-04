@@ -11,6 +11,8 @@
  * 파서 버그 확인. createElement + insertBefore 방식으로 교체.
  */
 (function () {
+  var scriptEl = document.currentScript;
+
   /* [href, 짧은 이름(PC칩), 긴 이름(모바일 오버레이)]
      2026-08-04: 첫 항목을 3개로 분리 (성동님 지시) — 스윙 시그널 대시보드의
      3개 탭(시그널/전략/TOP9)에 해시 딥링크로 각각 직접 진입. 활성 판정은
@@ -104,6 +106,21 @@
     document.head.appendChild(st);
   })();
 
+  /* ── 0. 메뉴 전용 모드 (data-menu-only="1") — 커스텀 헤더 페이지용 ──
+     index.html처럼 자체 헤더를 가진 페이지는 nav를 새로 만들지 않고,
+     페이지에 이미 있는 #ez-mob-menu 컨테이너에 위 links 배열로 만든
+     타일 항목만 채운다. 메뉴 목록의 출처가 이 파일 하나로 통일된다
+     (2026-08-04 하드코딩 사본 수개월 방치 사고의 구조적 재발 방지). */
+  if (scriptEl && scriptEl.getAttribute('data-menu-only') === '1') {
+    var fillMenu = function () {
+      var h = document.getElementById('ez-mob-menu');
+      if (h) h.innerHTML = mobileItemsHTML;
+    };
+    if (document.getElementById('ez-mob-menu')) fillMenu();
+    else document.addEventListener('DOMContentLoaded', fillMenu);
+    return;
+  }
+
   /* ── 1. <nav> 생성 ── */
   var nav = document.createElement('nav');
   nav.className = 'ez-nav';
@@ -135,7 +152,6 @@
   /* ── 3. 현재 스크립트 태그 바로 앞에 nav, 그 다음 mobMenu 삽입 ──
      document.write 없이 현재 스크립트 위치(currentScript)를
      기준점으로 삼아 insertBefore로 정확한 위치에 배치. */
-  var scriptEl = document.currentScript;
   var parent   = scriptEl ? scriptEl.parentNode : document.body;
   var ref      = scriptEl ? scriptEl.nextSibling : null;
 

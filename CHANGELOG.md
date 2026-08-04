@@ -177,6 +177,19 @@ IntersectionObserver(600px 선행)로 스크롤 접근 시 지연 렌더, 하단
   고민 다중선택은 복귀 시 선택 표시 복원. Playwright 종단 시나리오 검증(스텝 왕복·
   점수 롤백 경로·에러 0).
 
+### 조치 — 22단계 (08-04 정오, 성동님 지적): 메뉴 단일 출처화 + JS 캐시 수명 단축
+
+- "공통 글로벌 메뉴여야 한다" — 정론. 20단계의 하드코딩 사본 갱신은 임시조치였고,
+  구조를 수술: ez-nav.js에 **menu-only 모드**(`data-menu-only="1"`) 신설 — 커스텀
+  헤더 페이지(index.html)는 nav를 새로 만들지 않고 기존 #ez-mob-menu 컨테이너를
+  ez-nav.js의 links 배열로 채운다. index.html 하드코딩 목록 삭제 → **메뉴 출처가
+  ez-nav.js 하나로 통일**, 앞으로 메뉴 추가는 links 배열 한 곳만 수정.
+- 앱/웹뷰에서 "어떤 메뉴는 새것, 어떤 것은 옛것" 혼재의 근본원인 실측: JS 응답이
+  `max-age=14400`(4시간 브라우저 캐시 — Cloudflare 기본 Browser TTL). firebase.json에
+  JS/CSS `Cache-Control: max-age=600, must-revalidate` 명시(web.app 적용 확인).
+  ezlong.com은 Cloudflare 퍼지 1회 필요, 퍼지 후에도 14400이면 Browser Cache TTL을
+  "Respect Existing Headers"로 변경(성동님 액션).
+
 ### 조치 — 20단계 (08-04 오전, 성동님 제보): 메인 페이지 하드코딩 구메뉴 사고
 
 "캐시 퍼지+시크릿모드에도 새 메뉴가 안 보인다" 제보 — 캐시 문제가 아니었다.
