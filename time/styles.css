@@ -4177,3 +4177,55 @@ button { font: inherit; }
 .clock-meta .music-controls {
   flex: 0 0 auto;
 }
+
+
+/* 2026-08-04 성동님 요청 — 음악 Special 카테고리 정보(i) 버튼과 과학 설명.
+   설정 시트가 라이트/다크 어느 쪽이든 어울리도록 currentColor 기반 중립톤. */
+.special-option-block {
+  width: 100%;
+}
+
+.special-option-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.special-option-row .field-option {
+  flex: 1;
+}
+
+.special-info-btn {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.2px solid currentColor;
+  background: transparent;
+  color: inherit;
+  opacity: 0.55;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+}
+
+.special-info-btn[aria-expanded="true"] {
+  opacity: 1;
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.special-info-text {
+  margin: 6px 2px 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(125, 125, 125, 0.12);
+  border: 1px solid rgba(125, 125, 125, 0.25);
+  font-size: 12.5px;
+  line-height: 1.6;
+  opacity: 0.92;
+}
