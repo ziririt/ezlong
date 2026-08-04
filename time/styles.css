@@ -1602,12 +1602,16 @@ button { font: inherit; }
    쓴다). hero/코멘트박스는 6차 때 이미 기본값보다 더 낮춘 상태였는데,
    그 두 곳도 비례해서 더 낮춘다(아래 개별 오버라이드 참조). */
 .wd-glass {
-  border: 1px solid rgba(255,255,255,0.12);
+  /* 2026-08-04 apple-design 점검 — blur 3px는 재질감이 없었다. visionOS
+     유리로 승격: 진짜 블러 + 채도 부스트 + 위쪽 모서리에 빛이 닿는
+     하이라이트. 어두운 틴트는 기존 무드를 유지한다. */
+  border: 1px solid rgba(255,255,255,0.16);
+  border-top-color: rgba(255,255,255,0.28);
   border-radius: clamp(24px, 6vw, 38px);
-  background: rgba(13,20,31,0.01);
-  -webkit-backdrop-filter: blur(3px) saturate(1.04);
-  backdrop-filter: blur(3px) saturate(1.04);
-  box-shadow: 0 22px 70px rgba(0,0,0,0.08);
+  background: rgba(20,28,42,0.30);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  backdrop-filter: blur(18px) saturate(1.6);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.22);
   text-shadow: 0 1px 4px rgba(0,0,0,0.55), 0 2px 20px rgba(0,0,0,0.35);
 }
 
@@ -4228,4 +4232,38 @@ button { font: inherit; }
   font-size: 12.5px;
   line-height: 1.6;
   opacity: 0.92;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   2026-08-04 apple-design 스킬 점검 반영 (성동님 확정: 2번·4번만)
+   ──────────────────────────────────────────────────────────────── */
+
+/* (2) 앱 화면의 3대 표면 — 문장박스·음악 패널·날씨 카드 — visionOS 유리.
+   배경사진이 은은히 비쳐 깊이가 생기고, 블러가 바탕을 고르게 만들어
+   가독성도 오히려 좋아진다. 위 모서리 하이라이트는 "빛이 재질에 닿는"
+   visionOS 디테일. 레이아웃·라운드 값은 기존 그대로 둔다. */
+.quote-panel,
+.music-info-panel,
+.weather-card,
+.special-info-text {
+  background: rgba(20, 28, 42, 0.30);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  backdrop-filter: blur(18px) saturate(1.6);
+  border-color: rgba(255, 255, 255, 0.16);
+  border-top-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+}
+
+/* (4) 터치 다운 즉시 피드백 — 애플 1원칙 "응답은 터치 다운에서".
+   CSS `scale` 속성은 transform과 별개로 합성되므로 위치용 transform을
+   쓰는 컨트롤과 충돌하지 않고, :where()의 특이도 0 덕분에 이미 자기만의
+   눌림 효과를 가진 컨트롤은 기존 효과가 그대로 이긴다. */
+:where(button, label.field-option, .mini-weather, [role="button"]) {
+  transition: scale 130ms ease-out;
+  touch-action: manipulation; /* 더블탭 확대 대기 제거 — 탭 반응 지연 최소화 */
+}
+
+:where(button, label.field-option, .mini-weather, [role="button"]):active {
+  scale: 0.96;
 }
