@@ -22,6 +22,13 @@ on:
     - cron: '5 5 * * *'    # KST 14:05
     - cron: '35 6 * * *'   # KST 15:35 (장마감 5분 후)
 
+  # 스크립트/워크플로 수정 push 시 1회 즉시 실행 — 수정 반영을 다음 스케줄까지
+  # 기다리지 않는다 (API dispatch가 막힌 환경 대비, swing-view.yml과 동일 패턴)
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fetch-kr-crypto-analysis.yml'
+
   workflow_dispatch:
     inputs:
       force_kr:

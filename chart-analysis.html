@@ -1327,44 +1327,50 @@ function renderPriceHeader(analysis, currency) {
     stateLabel = { REGULAR:'정규장', PRE:'프리마켓', POST:'포스트마켓', CLOSED:'장마감' }[s] || s;
   }
 
-  // ── 한국 주식: kr-prices.json 실시간 가격 오버레이 ──────────
-  // fetch-kr-prices.yml 이 10분마다 data/kr-prices.json 갱신
-  // krPricesCache 가 있고 데이터가 20분 이내이면 실시간 가격으로 덮어씀
+  // ── 한국 주식: kr-prices.json 가격 오버레이 (2026-08-04 전면 개정) ──
+  // 규칙: 분석 스냅샷의 "내용물 시각"(야후 시세 자체 시각 quoteTime, 없으면 분석
+  // 실행 시각)보다 kr-prices가 더 새로우면 무조건 오버레이한다.
+  // 구 기준("지금으로부터 20분 이내")은 kr-prices 갱신이 지연될 때마다 오버레이가
+  // 꺼지며 더 오래된 분석 스냅샷으로 되돌아가는 역효과가 실측됨 — 두 소스 중
+  // 더 새로운 쪽을 쓰는 게 항상 옳다. '실시간' 라벨만 20분 이내로 제한.
   let livePrice = null;
   let krLiveUpdatedAt = null;
   let staleWarn = '';
 
+  const contentTime = (isKRStock && p.quoteTime)
+    ? new Date(p.quoteTime * 1000)
+    : new Date(analysis.updatedAt);
+
   if (isKRStock && krPricesCache?.prices?.[analysis.ticker]) {
     const kpUpdated = new Date(krPricesCache.updatedAt);
-    const ageMin    = Math.round((new Date() - kpUpdated) / 60000);
-    if (ageMin <= 20) {
+    if (kpUpdated > contentTime) {
       livePrice      = krPricesCache.prices[analysis.ticker];
       krLiveUpdatedAt = krPricesCache.updatedAt;
     }
   }
 
-  // ── 시세 스냅샷이 "전일 세션" 것인지 판별 (2026-08-04 KRX 실측 사고) ──
-  // 장 시작 직후(09:05 분석 실행) 야후가 전일 마감 스냅샷을 그대로 반환하는
-  // 경우가 있다 — 그날 분석 updatedAt은 오늘인데 가격·등락률은 전일 것이라
-  // "장중 −8.93%"처럼 완전히 다른 수치가 노출됐다. 분석 JSON의 quoteTime
-  // (야후 시세 자체 타임스탬프)의 KST 날짜가 오늘이 아니면 전일 마감으로 표시.
-  // (KR 전용 — 미국은 프리/포스트 세션에서 regularMarketTime이 전일인 게 정상이라 제외)
-  let quoteIsPrevSession = false;
-  if (isKRStock && !livePrice && p.quoteTime) {
-    const qKST   = new Date(p.quoteTime * 1000 + 9 * 3600 * 1000);
-    const nowKST = new Date(Date.now() + 9 * 3600 * 1000);
-    quoteIsPrevSession = qKST.toISOString().slice(0, 10) !== nowKST.toISOString().slice(0, 10);
-  }
-  if (quoteIsPrevSession) stateLabel = '전일 마감';
-
-  // 실시간 가격이 있으면 분석 스냅샷을 덮어쓴 표시 값 결정
+  // 표시 값 = 두 소스 중 더 새로운 쪽
   const dispPrice     = livePrice ? livePrice.price     : p.current;
   const dispChange    = livePrice ? livePrice.change     : p.change;
   const dispChangePct = livePrice ? livePrice.changePct  : p.changePct;
   const dispUp        = (dispChangePct ?? 0) >= 0;
   const dispUpdatedAt = krLiveUpdatedAt ??
-    (quoteIsPrevSession ? new Date(p.quoteTime * 1000).toISOString() : analysis.updatedAt);
-  const dispLabel     = krLiveUpdatedAt ? '실시간' : '데이터 기준';
+    ((isKRStock && p.quoteTime) ? new Date(p.quoteTime * 1000).toISOString() : analysis.updatedAt);
+  const liveAgeMin    = krLiveUpdatedAt ? Math.round((Date.now() - new Date(krLiveUpdatedAt)) / 60000) : null;
+  const dispLabel     = (liveAgeMin !== null && liveAgeMin <= 20) ? '실시간' : '데이터 기준';
+
+  // ── KR 세션 배지: 표시 데이터 자체의 날짜를 명기 (2026-08-04 성동님 지시) ──
+  // "장중"처럼 시계 기준으로만 찍으면 데이터가 밀렸을 때 전일 수치가 오늘
+  // 장중 시세로 위장된다("장중 −8.93%" 사고). 배지 날짜·세션을 표시 데이터의
+  // 타임스탬프에서 뽑으면 갱신 실패 시 "8월 3일 장마감"으로 바로 드러난다.
+  if (isKRStock) {
+    const t   = new Date(new Date(dispUpdatedAt).getTime() + 9 * 3600 * 1000); // → KST
+    const mm  = t.getUTCMonth() + 1, dd = t.getUTCDate();
+    const min = t.getUTCHours() * 60 + t.getUTCMinutes();
+    const dow = t.getUTCDay();
+    const inSession = dow >= 1 && dow <= 5 && min >= 540 && min < 930; // KRX 09:00~15:30
+    stateLabel = mm + '월 ' + dd + '일 ' + (inSession ? '장중' : '장마감');
+  }
 
   // 실시간 피드 없이 장중 60분 이상 경과 → 경고
   if (isKRStock && !livePrice) {
