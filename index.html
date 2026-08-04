@@ -573,20 +573,6 @@ a { text-decoration: none; color: inherit; }
   gap: 10px;
 }
 
-/* 모바일 컴팩트 카드 — 여백·간격 축소, 설명은 3줄 클램프 (폰트는 14px 이상 유지) */
-@media (max-width: 699px) {
-  .tool-card { padding: 14px 12px; gap: 8px; }
-  .tool-card-header { gap: 8px; flex-direction: column; align-items: flex-start; }
-  .tool-card-icon { width: 32px; height: 32px; border-radius: 9px; }
-  .tool-card-icon svg { width: 17px; height: 17px; }
-  .tool-card-title { font-size: 15px; }
-  .tool-card-desc {
-    font-size: 14px; line-height: 1.5;
-    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-}
-
 /* PC: 4개 이하 → 2×2, 5개 이상 → 3열(3+2 / 3+3) */
 @media (min-width: 700px) {
   .tools-grid {
@@ -661,6 +647,37 @@ a { text-decoration: none; color: inherit; }
 }
 .tool-card-link:hover { gap: 8px; }
 .tool-card-link svg { width: 14px; height: 14px; }
+
+/* ── 모바일 카드 타이포그래피 — 반드시 .tool-card* 기본 선언 "뒤에" 둔다 ──
+   2026-08-04 발견: 이 두 블록이 원래 .tools-grid 바로 아래(기본 선언보다 위)에
+   있어서, 동일 특이도(specificity)의 뒤쪽 기본 규칙에 전부 덮여 아무 효과가
+   없었다. 오늘 오전 모바일 2열 개편 때 넣은 컴팩트 값도 실제로는 죽어 있었다.
+   미디어쿼리는 특이도를 올려주지 않는다 — 순서가 곧 승패다. 이 위치 유지할 것. */
+
+/* 모바일 컴팩트 카드 — 여백·간격 축소, 설명은 3줄 클램프 (폰트는 14px 이상 유지) */
+@media (max-width: 699px) {
+  .tool-card { padding: 14px 12px; gap: 8px; }
+  .tool-card-header { gap: 8px; flex-direction: column; align-items: flex-start; }
+  .tool-card-icon { width: 32px; height: 32px; border-radius: 9px; }
+  .tool-card-icon svg { width: 17px; height: 17px; }
+  .tool-card-title { font-size: 15px; }
+  .tool-card-desc {
+    font-size: 14px; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* 좁은 화면(안드로이드 360px 등) — 한 줄에 들어가는 글자 수 확보.
+   폰트 14px 하한(가독성 절대 규칙)은 지키고 여백·자간·타이틀만 1단계 줄인다. */
+@media (max-width: 400px) {
+  .tools-grid { gap: 8px; }
+  .tool-card { padding: 12px 10px; gap: 7px; }
+  .tool-card-title { font-size: 14px; letter-spacing: -.02em; }
+  .tool-card-desc { font-size: 14px; line-height: 1.45; letter-spacing: -.02em; }
+  .tool-card-icon { width: 28px; height: 28px; border-radius: 8px; }
+  .tool-card-icon svg { width: 15px; height: 15px; }
+}
 
 .badge-soon {
   position: absolute;
@@ -1211,7 +1228,12 @@ a { text-decoration: none; color: inherit; }
 }
 
 .hero-title-hero {
-  font-size: clamp(32px, 6vw, 64px);
+  /* 2026-08-04: 안드로이드(CSS 폭 360px)에서 "미국주식 매매 타이밍부터"(12자)가
+     32px면 폭을 넘겨 2줄로 깨졌다. 좁은 화면일수록 더 줄어들도록 vw 비중을 올리고
+     하한을 23px로 — 360px에서 25.2px, 320px(구형 SE·폴드 외부화면)에서 23px로
+     3행 구조(<br> 2개)를 그대로 유지한다. 큰 화면은 기존 64px 상한 그대로. */
+  font-size: clamp(23px, 7vw, 64px);
+  word-break: keep-all;
   font-weight: 900;
   letter-spacing: -0.03em;
   line-height: 1.15;
