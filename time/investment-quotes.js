@@ -8388,5 +8388,11 @@ window.investmentQuotes = [
     "title": "왜 나는 너를 사랑하는가",
     "author": "알랭 드 보통 (Alain de Botton)",
     "genre": "literature"
+  },
+  {
+    "text": "죽는 날까지 하늘을 우러러 한 점 부끄럼이 없기를, 잎새에 이는 바람에도 나는 괴로워했다.",
+    "title": "서시",
+    "author": "윤동주",
+    "genre": "literature"
   }
 ];
