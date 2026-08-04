@@ -9115,12 +9115,29 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
     try {
       if (!quotePanel) return;
       const r = quotePanel.getBoundingClientRect();
+      // 2026-08-04 성동님 지적 — 예전엔 이 사각형(박스 바깥 전체)을
+      // 그대로 넘겨서 배너가 문장박스를 통째로 덮었다(유리 테두리까지
+      // 안 보일 정도). 네이티브는 받은 높이를 인라인 적응형 배너의
+      // maxHeight로 쓰기 때문에, 박스 높이(210~300px)를 넘기면 AdMob이
+      // 그 안을 꽉 채우는 대형 광고를 골라 온다. 이제 두 가지를 지킨다:
+      //   (1) 문장박스의 실제 패딩 + 여유 8px 만큼 안으로 들여서 유리
+      //       테두리와 여백이 광고 옆으로 항상 보이게 하고,
+      //   (2) 높이를 표준 배너대(최대 72px)로 제한해 안쪽 영역 세로
+      //       중앙에 놓는다 — 광고도 이 화면의 여백 감각을 따르게.
+      const cs = window.getComputedStyle(quotePanel);
+      const padOf = (v) => parseFloat(cs.getPropertyValue(v)) || 0;
+      const gap = 8; // 패딩에 더해 광고와 글자자리 사이의 숨 쉴 틈
+      const innerX = r.left + padOf("padding-left") + gap;
+      const innerY = r.top + padOf("padding-top") + gap;
+      const innerW = Math.max(160, r.width - padOf("padding-left") - padOf("padding-right") - gap * 2);
+      const innerH = Math.max(50, r.height - padOf("padding-top") - padOf("padding-bottom") - gap * 2);
+      const bannerH = Math.max(50, Math.min(72, Math.round(innerH * 0.4)));
       const payload = {
         action: "adLayout",
-        x: Math.round(r.left),
-        y: Math.round(r.top),
-        w: Math.round(r.width),
-        h: Math.round(r.height),
+        x: Math.round(innerX),
+        y: Math.round(innerY + (innerH - bannerH) / 2),
+        w: Math.round(innerW),
+        h: bannerH,
         calendarOpen: !!calendarPanelOpen,
       };
       const key = [payload.x, payload.y, payload.w, payload.h, payload.calendarOpen].join(",");
