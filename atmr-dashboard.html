@@ -2161,12 +2161,12 @@ li.gear-other-sep { display: none !important; }
           <div class="strategy-tier-badge t1">현금(예수금) 최소 10~20% 보유 원칙</div>
           <h2 class="strategy-title">마른 화약을 항상 준비해두세요</h2>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
-            <div style="background:var(--bg);border-radius:12px;padding:14px 16px;border:1px solid var(--bd);">
+            <div style="background:var(--bg);border-radius:10px;padding:14px 16px;border:1px solid var(--bd);">
               <div style="font-size:16px;font-weight:700;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;margin-bottom:6px;">고점 탐욕 구간</div>
               <div style="font-size:16px;font-weight:700;color:var(--or);">레버리지 분할 익절</div>
               <div style="font-size:16px;color:var(--t2);margin-top:4px;line-height:1.5;">RSI 75 이상 · 매도 압력 65 상향 돌파 시 수익 실현 후 현금 축적</div>
             </div>
-            <div style="background:var(--bg);border-radius:12px;padding:14px 16px;border:1px solid var(--bd);">
+            <div style="background:var(--bg);border-radius:10px;padding:14px 16px;border:1px solid var(--bd);">
               <div style="font-size:16px;font-weight:700;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;margin-bottom:6px;">급락 공포 구간</div>
               <div style="font-size:16px;font-weight:700;color:var(--gr);">현금으로 저가 매수</div>
               <div style="font-size:16px;color:var(--t2);margin-top:4px;line-height:1.5;">RSI 35 이하 · 상승 추세(Gear 3) 유지 확인 시 딥바잉 집행</div>
@@ -4103,7 +4103,7 @@ function renderScoreGrid(qqq, voo, soxx) {
     const ovBuyAdj  = d.optionsBuyAdj  ?? 0;
     const ovSellAdj = d.optionsSellAdj ?? 0;
     const overlayBadgeHtml = d.optionsOverlayApplied
-      ? `<div style="margin-top:8px;padding:6px 10px;border-radius:8px;background:rgba(10,132,255,0.08);border:1px solid rgba(10,132,255,0.2);font-size:16px;color:var(--ac);font-weight:600;line-height:1.5;">
+      ? `<div style="margin-top:8px;padding:6px 10px;border-radius:10px;background:rgba(10,132,255,0.08);border:1px solid rgba(10,132,255,0.2);font-size:16px;color:var(--ac);font-weight:600;line-height:1.5;">
           옵션 시장 수급 반영
          </div>`
       : '';
@@ -4872,7 +4872,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     const labelColor  = isWarning ? 'var(--rd)' : 'var(--or)';
     const items = lines.map(l => `<div style="margin-top:5px;padding-left:4px;border-left:2px solid ${borderColor}40;line-height:1.5;">· ${l}</div>`).join('');
 
-    return `<div style="margin-bottom:20px;padding:14px 16px;border-radius:12px;background:var(--card);border-left:3px solid ${borderColor};border-top:1px solid var(--bd);border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);">
+    return `<div style="margin-bottom:20px;padding:14px 16px;border-radius:10px;background:var(--card);border-left:3px solid ${borderColor};border-top:1px solid var(--bd);border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);">
       <div style="font-size:16px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:${labelColor};margin-bottom:6px;">오늘의 시장 흐름 — 전략 수립 시 반드시 고려</div>
       <div style="font-size:16px;font-weight:500;color:var(--t1);">${items}</div>
       <div style="font-size:16px;font-weight:600;color:var(--t2);margin-top:8px;padding-top:8px;border-top:1px solid var(--bd);">· 위 흐름이 반영된 상태에서 아래 전략 가이드를 확인할 것</div>
@@ -4949,7 +4949,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   // ── "지금 해야 할 것" 배너: 각 tier 카드 상단에 현재 조건 기반 직접 지침 주입 ──
   // 조건별 해설이 아니라, 지금 이 순간의 단일 행동 지침을 가장 크게 보여준다.
   function buildNowActionHTML(action, reason, color, bg, border) {
-    return `<div style="margin:0 16px 20px;padding:18px 20px;border-radius:14px;background:var(--card);border-left:3px solid ${color};border-top:1px solid var(--bd);border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);">
+    return `<div style="margin:0 16px 20px;padding:18px 20px;border-radius:16px;background:var(--card);border-left:3px solid ${color};border-top:1px solid var(--bd);border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);">
       <div style="font-size:16px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${color};opacity:.75;margin-bottom:8px;">지금 해야 할 것</div>
       <div style="font-size:20px;font-weight:900;color:${color};line-height:1.25;letter-spacing:-.02em;">${action}</div>
       <div style="font-size:16px;color:var(--t2);margin-top:8px;line-height:1.55;border-top:1px solid var(--bd);padding-top:8px;">${reason}</div>
@@ -5403,8 +5403,8 @@ function renderChartAiComments() {
       <div style="margin-bottom:10px;">
         <div style="display:flex;align-items:center;gap:8px;">
           <span style="font-size:16px;color:var(--t2);white-space:nowrap;">매수 매력도</span>
-          <div style="flex:1;height:6px;background:var(--bd);border-radius:3px;overflow:hidden;">
-            <div style="height:100%;width:${ai.buyScore * 10}%;background:${scoreBarColor(ai.buyScore)};border-radius:3px;"></div>
+          <div style="flex:1;height:6px;background:var(--bd);border-radius:6px;overflow:hidden;">
+            <div style="height:100%;width:${ai.buyScore * 10}%;background:${scoreBarColor(ai.buyScore)};border-radius:6px;"></div>
           </div>
           <span style="font-size:16px;font-weight:700;color:${scoreBarColor(ai.buyScore)};white-space:nowrap;">${ai.buyScore}<span style="font-size:16px;font-weight:500;color:var(--t3);">/10</span></span>
         </div>
@@ -5420,7 +5420,7 @@ function renderChartAiComments() {
       ? `<div style="margin-bottom:10px;padding:8px 10px;background:rgba(10,132,255,0.08);border-left:3px solid var(--bl);border-radius:6px;font-size:16px;color:var(--t1);line-height:1.5;"><b style="color:var(--bl);">판독 흐름</b> — ${aiHl(contTxt)}</div>`
       : '';
     return `
-      <div class="ai-comment-card" style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;">
+      <div class="ai-comment-card" style="background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:16px 18px;">
         <div style="margin-bottom:10px;">
           <span style="font-size:16px;font-weight:800;color:var(--t1);">${sym}</span>
           <span style="font-size:16px;color:var(--t2);margin-left:6px;">${label}</span>

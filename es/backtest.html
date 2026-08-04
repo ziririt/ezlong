@@ -449,7 +449,7 @@
     <div id="data-period-badge" class="data-badge" style="display:none"></div>
 
     <div style="margin-bottom:12px;margin-top:16px">
-      <div style="font-size:14px;font-weight:700;color:var(--bt-text);margin-bottom:3px">Inversión Inicial <span style="font-size:14px;font-weight:700;background:var(--bt-blue-dim);color:var(--bt-blue);border-radius:3px;padding:2px 8px;margin-left:5px">Obligatorio</span></div>
+      <div style="font-size:14px;font-weight:700;color:var(--bt-text);margin-bottom:3px">Inversión Inicial <span style="font-size:14px;font-weight:700;background:var(--bt-blue-dim);color:var(--bt-blue);border-radius:6px;padding:2px 8px;margin-left:5px">Obligatorio</span></div>
       <div style="font-size:14px;color:var(--bt-text3);margin-bottom:6px">Tu capital inicial al comienzo de la simulación.</div>
       <div style="display:flex;align-items:center;gap:8px">
         <div style="font-size:14px;color:var(--bt-text3);font-weight:700">$</div>
@@ -1323,7 +1323,7 @@ function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,en
     return `<div class="cwrap">
       <div class="cwrap-title">Comparación con Benchmarks — S&amp;P 500 · Nasdaq 100 (Comprar y Mantener)</div>
       <div class="bench-2col">
-        <div style="background:var(--bt-surface);border:1px solid rgba(0,113,227,.2);border-radius:8px;padding:14px">
+        <div style="background:var(--bt-surface);border:1px solid rgba(0,113,227,.2);border-radius:10px;padding:14px">
           <div style="font-size:14px;font-weight:800;color:var(--bt-blue);margin-bottom:10px">S&amp;P 500 (SPY)</div>
           <div class="bench-row" style="margin-top:0">
             <div class="bench-item"><div class="bench-label">Rendimiento Anual (CAGR)</div><div class="bench-val pos">${bSPY?fp(bSPY.ret):'-'}</div></div>
@@ -1332,7 +1332,7 @@ function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,en
             <div class="bench-item"><div class="bench-label">Rendimiento Real</div><div class="bench-val ${bSPY&&bSPY.ret>INFLATION?'pos':'neg'}">${spyReal}</div></div>
           </div>
         </div>
-        <div style="background:var(--bt-surface);border:1px solid rgba(124,58,237,.2);border-radius:8px;padding:14px">
+        <div style="background:var(--bt-surface);border:1px solid rgba(124,58,237,.2);border-radius:10px;padding:14px">
           <div style="font-size:14px;font-weight:800;color:var(--bt-purple);margin-bottom:10px">Nasdaq 100 (QQQ)</div>
           <div class="bench-row" style="margin-top:0">
             <div class="bench-item"><div class="bench-label">Rendimiento Anual (CAGR)</div><div class="bench-val pos">${bQQQ?fp(bQQQ.ret):'-'}</div></div>
@@ -1351,8 +1351,8 @@ function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,en
   const _endLbl=endLbl;
   const _limitT=effStart>_modeOffset?tickers.find(t=>A[t].ds===effStart)||'':null;
   const periodWarning=(_limitT&&nYears<_expectedYrs)?`
-    <div style="background:rgba(255,159,10,0.06);border:1px solid rgba(255,159,10,0.25);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:14px;color:var(--bt-text2);line-height:1.6">
-      <span style="display:inline-block;background:rgba(255,159,10,0.12);border:1px solid rgba(255,159,10,0.35);border-radius:4px;padding:2px 8px;font-size:14px;font-weight:800;color:var(--bt-amber);margin-right:6px">Periodo Acortado</span>
+    <div style="background:rgba(255,159,10,0.06);border:1px solid rgba(255,159,10,0.25);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:14px;color:var(--bt-text2);line-height:1.6">
+      <span style="display:inline-block;background:rgba(255,159,10,0.12);border:1px solid rgba(255,159,10,0.35);border-radius:6px;padding:2px 8px;font-size:14px;font-weight:800;color:var(--bt-amber);margin-right:6px">Periodo Acortado</span>
       Seleccionaste el modo de ${_expectedYrs} años, pero los datos de <strong style="color:var(--bt-amber)">${_limitT}</strong> solo comienzan desde <strong style="color:var(--bt-amber)">${yr}</strong>, por lo que el periodo de análisis real es de <strong style="color:var(--bt-amber)">${nYears} años</strong>. Elimina este activo para analizar el periodo completo de ${_expectedYrs} años.
     </div>`:'';
 

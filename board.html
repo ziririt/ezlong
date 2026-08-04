@@ -419,7 +419,7 @@ a { text-decoration: none; color: inherit; }
 <div class="admin-bar" id="admin-bar">
   <span class="ab-label">관리자 모드</span>
   <button id="btn-logout">로그아웃</button>
-  <a href="write.html" style="font-size:12px;font-weight:700;padding:4px 12px;border-radius:100px;border:1px solid rgba(0,113,227,0.4);color:var(--bl);background:var(--bl-s);text-decoration:none;">+ 새 글</a>
+  <a href="write.html" style="font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;border:1px solid rgba(0,113,227,0.4);color:var(--bl);background:var(--bl-s);text-decoration:none;">+ 새 글</a>
 </div>
 
 <!-- 관리자 탭 바 -->
@@ -727,9 +727,9 @@ async function loadPosts(direction = 'init') {
         if (d.scheduledAt && d.scheduledAt.toDate() > now) {
           const dt = d.scheduledAt.toDate();
           const ts = `${dt.getMonth()+1}/${dt.getDate()} ${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
-          adminBadge = `<span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--bl-s);color:var(--bl);margin-bottom:6px;display:inline-block;">예약 ${ts}</span>`;
+          adminBadge = `<span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--bl-s);color:var(--bl);margin-bottom:6px;display:inline-block;">예약 ${ts}</span>`;
         } else {
-          adminBadge = `<span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--yl-s);color:var(--yl);margin-bottom:6px;display:inline-block;">임시저장</span>`;
+          adminBadge = `<span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--yl-s);color:var(--yl);margin-bottom:6px;display:inline-block;">임시저장</span>`;
         }
       }
       return `

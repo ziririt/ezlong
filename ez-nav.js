@@ -188,7 +188,7 @@
       '#ez-mob-menu.open { display: grid; }' +
       '#ez-mob-menu .ez-mob-item { display: flex; align-items: center; justify-content: center;' +
         'text-align: center; padding: 15px 8px; min-height: 56px; line-height: 1.35; word-break: keep-all;' +
-        'border: 1px solid var(--ez-border); border-radius: 14px;' +
+        'border: 1px solid var(--ez-border); border-radius: 16px;' +
         'background: var(--ez-surface); }' +
       '#ez-mob-menu .ez-mob-item.active { border: 2px solid var(--ez-blue);' +
         'padding-left: 8px; background: var(--ez-blue-dim); color: var(--ez-blue); }' +

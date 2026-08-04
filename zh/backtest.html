@@ -449,7 +449,7 @@
     <div id="data-period-badge" class="data-badge" style="display:none"></div>
 
     <div style="margin-bottom:12px;margin-top:16px">
-      <div style="font-size:14px;font-weight:700;color:var(--bt-text);margin-bottom:3px">初始投资金额 <span style="font-size:14px;font-weight:700;background:var(--bt-blue-dim);color:var(--bt-blue);border-radius:3px;padding:2px 8px;margin-left:5px">必填</span></div>
+      <div style="font-size:14px;font-weight:700;color:var(--bt-text);margin-bottom:3px">初始投资金额 <span style="font-size:14px;font-weight:700;background:var(--bt-blue-dim);color:var(--bt-blue);border-radius:6px;padding:2px 8px;margin-left:5px">必填</span></div>
       <div style="font-size:14px;color:var(--bt-text3);margin-bottom:6px">模拟开始时的本金金额。</div>
       <div style="display:flex;align-items:center;gap:8px">
         <div style="font-size:14px;color:var(--bt-text3);font-weight:700">$</div>
@@ -1319,7 +1319,7 @@ function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,en
     return `<div class="cwrap">
       <div class="cwrap-title">基准对比 — 标普500 · 纳斯达克100（买入并持有）</div>
       <div class="bench-2col">
-        <div style="background:var(--bt-surface);border:1px solid rgba(0,113,227,.2);border-radius:8px;padding:14px">
+        <div style="background:var(--bt-surface);border:1px solid rgba(0,113,227,.2);border-radius:10px;padding:14px">
           <div style="font-size:14px;font-weight:800;color:var(--bt-blue);margin-bottom:10px">标普500 (SPY)</div>
           <div class="bench-row" style="margin-top:0">
             <div class="bench-item"><div class="bench-label">年化回报率(CAGR)</div><div class="bench-val pos">${bSPY?fp(bSPY.ret):'-'}</div></div>
@@ -1328,7 +1328,7 @@ function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,en
             <div class="bench-item"><div class="bench-label">实际回报</div><div class="bench-val ${bSPY&&bSPY.ret>INFLATION?'pos':'neg'}">${spyReal}</div></div>
           </div>
         </div>
-        <div style="background:var(--bt-surface);border:1px solid rgba(124,58,237,.2);border-radius:8px;padding:14px">
+        <div style="background:var(--bt-surface);border:1px solid rgba(124,58,237,.2);border-radius:10px;padding:14px">
           <div style="font-size:14px;font-weight:800;color:var(--bt-purple);margin-bottom:10px">纳斯达克100 (QQQ)</div>
           <div class="bench-row" style="margin-top:0">
             <div class="bench-item"><div class="bench-label">年化回报率(CAGR)</div><div class="bench-val pos">${bQQQ?fp(bQQQ.ret):'-'}</div></div>
@@ -1347,8 +1347,8 @@ function renderResults(results,myPref,maxSR,minVol,tickers,effStart,nYears,RF,en
   const _endLbl=endLbl;
   const _limitT=effStart>_modeOffset?tickers.find(t=>A[t].ds===effStart)||'':null;
   const periodWarning=(_limitT&&nYears<_expectedYrs)?`
-    <div style="background:rgba(255,159,10,0.06);border:1px solid rgba(255,159,10,0.25);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:14px;color:var(--bt-text2);line-height:1.6">
-      <span style="display:inline-block;background:rgba(255,159,10,0.12);border:1px solid rgba(255,159,10,0.35);border-radius:4px;padding:2px 8px;font-size:14px;font-weight:800;color:var(--bt-amber);margin-right:6px">周期已缩短</span>
+    <div style="background:rgba(255,159,10,0.06);border:1px solid rgba(255,159,10,0.25);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:14px;color:var(--bt-text2);line-height:1.6">
+      <span style="display:inline-block;background:rgba(255,159,10,0.12);border:1px solid rgba(255,159,10,0.35);border-radius:6px;padding:2px 8px;font-size:14px;font-weight:800;color:var(--bt-amber);margin-right:6px">周期已缩短</span>
       你选择了${_expectedYrs}年周期模式，但<strong style="color:var(--bt-amber)">${_limitT}</strong>的数据仅从<strong style="color:var(--bt-amber)">${yr}</strong>年开始，因此实际分析周期为<strong style="color:var(--bt-amber)">${nYears}年</strong>。移除此资产即可分析完整的${_expectedYrs}年周期。
     </div>`:'';
 

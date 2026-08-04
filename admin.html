@@ -858,7 +858,7 @@ function buildScheduleAnalysis(commits) {
     <div style="color:var(--muted);font-size:.8rem;margin-bottom:8px">
       스케줄 · UTC 13:00~21:30 평일 30분 간격 · 기준 · data/market-signals.json 커밋 시각 · 슬롯+25분 이내 커밋 = 이행
     </div>
-    <div style="font-size:.79rem;color:var(--blue);background:rgba(88,166,255,.06);border-left:2px solid rgba(88,166,255,.3);padding:7px 12px;border-radius:4px;margin-bottom:12px;line-height:1.55">
+    <div style="font-size:.79rem;color:var(--blue);background:rgba(88,166,255,.06);border-left:2px solid rgba(88,166,255,.3);padding:7px 12px;border-radius:6px;margin-bottom:12px;line-height:1.55">
       GitHub Actions 무료 플랜은 30분 간격 cron을 지연·뭉침 실행하는 구조적 특성이 있습니다.
       이행률 수치가 낮더라도 위 요약 배너에서 데이터 최신성이 정상이라면 실제 서비스에 영향이 없습니다.
       <span style="opacity:.7">이행률 기준 · 80% 이상 정상 / 50~79% 주의 / 50% 미만 + 데이터 지연 시에만 경보</span>
@@ -950,7 +950,7 @@ function buildDispatchSection() {
           style="color:var(--blue);font-size:.8rem">
           GitHub → Settings → Developer settings → Personal access tokens → Generate new token (classic)
         </a>
-        &nbsp;— 권한: <code style="background:rgba(255,255,255,.07);padding:1px 5px;border-radius:3px;font-family:monospace">workflow</code> 스코프 체크
+        &nbsp;— 권한: <code style="background:rgba(255,255,255,.07);padding:1px 5px;border-radius:6px;font-family:monospace">workflow</code> 스코프 체크
       </div>
       <div class="pat-row">
         <input type="password" class="pat-input" id="gh-pat-input"
