@@ -3824,7 +3824,12 @@ button { font: inherit; }
   left: 0;
   right: 0;
   width: 100%;
-  height: max(40px, calc(env(safe-area-inset-top) + 15px));
+  /* 2026-08-04 성동님 제보(안드로이드 앱에서 ezlong 메뉴 버튼 터치 씹힘) —
+     기존 max(40px, env+15px)는 env=0인 Android WebView에서 40px 투명 띠가
+     ezlong 헤더(메뉴 버튼)를 덮어 터치를 가로챘다. 이제 실제 빈 여백
+     (.webview-scale padding-top과 같은 env값)만큼만 덮는다 — iOS는 기존
+     동작 유지, Android에서는 띠가 사실상 사라져 메뉴가 정상 반응한다. */
+  height: calc(env(safe-area-inset-top, 0px) + 6px);
   z-index: 5;
   background: transparent;
 }
