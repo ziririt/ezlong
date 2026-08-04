@@ -481,7 +481,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .nav-links a {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--t2);
   transition: color .2s;
@@ -489,7 +489,7 @@ a { text-decoration: none; color: inherit; }
 .nav-links a:hover { color: var(--bl); }
 
 .nav-tagline {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--t2);
   letter-spacing: -.01em;
@@ -500,7 +500,7 @@ a { text-decoration: none; color: inherit; }
 
 @media (max-width: 600px) {
   .nav-links { display: none; }
-  .nav-tagline { font-size: 11px; }
+  .nav-tagline { font-size: 14px; letter-spacing: -.02em; }
 }
 
 /* ─── Hero ────────────────────────────────────────── */
@@ -512,7 +512,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .hero-eyebrow {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -665,6 +665,10 @@ a { text-decoration: none; color: inherit; }
     font-size: 14px; line-height: 1.5;
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
     overflow: hidden;
+    /* 2026-08-04: "QQQ·VOO·TSLA·NVDA", "S&P500·Nasdaq100·SOXX"처럼 가운뎃점으로
+       이어붙인 티커 나열은 브라우저가 한 단어로 봐서 줄바꿈 지점을 못 찾는다.
+       좁은 카드(360px에서 134px)에서 첫 줄이 가로로 잘려나가므로 강제 분절 허용. */
+    overflow-wrap: anywhere;
   }
 }
 
@@ -683,7 +687,7 @@ a { text-decoration: none; color: inherit; }
   position: absolute;
   top: 18px;
   right: 18px;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -760,7 +764,7 @@ a { text-decoration: none; color: inherit; }
   gap: 8px;
   background: var(--bl-s);
   color: var(--bl);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   text-align: center;
   padding: 12px;
@@ -776,7 +780,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .book-badge {
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: .10em;
   text-transform: uppercase;
@@ -879,7 +883,7 @@ a { text-decoration: none; color: inherit; }
   justify-content: center;
   background: var(--pu-s);
   color: var(--pu);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -889,7 +893,7 @@ a { text-decoration: none; color: inherit; }
   left: 8px;
   background: rgba(0,0,0,0.65);
   color: white;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: .05em;
   padding: 3px 8px;
@@ -909,7 +913,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .course-meta {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--t3);
 }
 
@@ -970,7 +974,7 @@ a { text-decoration: none; color: inherit; }
   justify-content: center;
   background: var(--yl-s);
   color: var(--yl);
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
   text-align: center;
   padding: 8px;

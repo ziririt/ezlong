@@ -56,6 +56,24 @@ git checkout cp-20260804-mobile-typo~1 -- index.html atmr-dashboard.html en/atmr
 
 ---
 
+### 추가 정리 — 14px 하한 위반 일괄 해소 (같은 배포 묶음)
+
+위 캐스케이드 감사를 돌리는 김에 `index.html` 전체를 렌더 기준으로 훑었더니
+금지 1(14px 하한) 위반이 11건 남아 있었다. 전부 14px로 올렸다: 네비 링크 13,
+네비 태그라인 12(모바일 11), 히어로 eyebrow 11, badge-soon 10, book-badge 10,
+course-platform-badge 10, course-meta 12, 플레이스홀더 3종(12·13·11).
+`ez-design.css`의 `.ez-mob-toggle-arrow`도 12 → 14px(장식용 캐럿이지만 DOM 텍스트).
+
+부수로 `.tool-card-desc`에 `overflow-wrap: anywhere` 추가 — "QQQ·VOO·TSLA·NVDA",
+"S&P500·Nasdaq100·SOXX"처럼 가운뎃점으로 이어붙인 티커 나열을 브라우저가 한 단어로
+취급해, 360px에서 134px 폭인 카드의 첫 줄이 가로로 잘려나가고 있었다(scrollWidth 146
+vs clientWidth 134). 이제 134/134으로 일치.
+
+렌더 감사 스크립트로 320/360/393/430/600/768/1280/1663px 전 구간에서 14px 미만
+텍스트 0건·가로 넘침 0건 확인.
+
+---
+
 ## [2026-08-04] 세션 — TOP9 집중분석: 스윙 집중 분석을 TSLA·NVDA 2종에서 빅테크 9종으로 확장
 
 ### 배경

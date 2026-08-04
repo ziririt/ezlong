@@ -177,7 +177,9 @@ a { color: inherit; }
   .ez-mob-toggle { box-shadow: 0 2px 12px rgba(10,132,255,0.50); }
 }
 .ez-mob-toggle-arrow {
-  font-size: 12px; display: inline-block;
+  /* 2026-08-04: 장식용 캐럿(▾)이지만 DOM 텍스트라 14px 하한 규칙(금지 1) 적용 대상.
+     12px → 14px. 회전 애니메이션은 그대로. */
+  font-size: 14px; display: inline-block;
   transition: transform 0.2s;
 }
 .ez-mob-toggle.open .ez-mob-toggle-arrow { transform: rotate(180deg); }
