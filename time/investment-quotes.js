@@ -8415,5 +8415,12 @@ window.investmentQuotes = [
     "title": "안전마진 (Margin of Safety)",
     "author": "세스 클라만 (Seth Klarman)",
     "category": "mindset"
+  },
+  {
+    "english": "The bird fights its way out of the egg. The egg is the world. Whoever wants to be born must first destroy a world.",
+    "text": "새는 알에서 나오려고 투쟁한다. 알은 세계이다. 태어나려고 하는 자는 하나의 세계를 깨뜨리지 않으면 안 된다.",
+    "title": "데미안 (Demian)",
+    "author": "헤르만 헤세 (Hermann Hesse)",
+    "genre": "literature"
   }
 ];
