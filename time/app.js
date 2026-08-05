@@ -10187,7 +10187,9 @@ var bedsideActive = false;
     // ★ 원복 방법 ★ — 아래 한 줄의 "inter"를 "system"으로 바꾸면 끝난다.
     //   (기기에서 즉시 되돌리려면 localStorage 에
     //    ezlong:clockFont = "system" 을 넣으면 된다. 그 값이 항상 우선한다.)
-    var DEFAULT_CLOCK_FONT = "inter";     // "inter" | "system"
+    // 2026-08-05 성동님 판단 — Inter보다 직전(10% 축소한 Roboto)이 낫다.
+    // 파일과 규칙은 남겨둔다. "inter"로 바꾸면 언제든 다시 볼 수 있다.
+    var DEFAULT_CLOCK_FONT = "system";    // "inter" | "system"
     var choice = DEFAULT_CLOCK_FONT;
     try {
       var saved = localStorage.getItem("ezlong:clockFont");
@@ -10195,4 +10197,66 @@ var bedsideActive = false;
     } catch (error) { /* 무시 */ }
     if (choice === "inter") document.body.classList.add("clockfont-inter");
   } catch (error) { /* 무시 */ }
+})();
+
+
+// ══════════════════════════════════════════════════════════════════
+// 네이티브 재생 정체 감시 — 2026-08-05 (웹 응급조치)
+// ══════════════════════════════════════════════════════════════════
+// 성동님 제보: 아이폰에서 음악이 진행되지 않고 "뿌우~~~" 하는 소리만
+// 반복되는데, 다음 곡을 누르면 즉시 정상으로 돌아온다.
+//
+// 녹화 음성을 뜯어보니 11.7초 내내 음량이 완전히 일정했고(RMS 289~338),
+// 220Hz 기본음에 660Hz 3배음이 얹힌 인공적인 파형이었다. 아주 짧은 조각
+// (약 4.5ms)을 무한 반복하는 소리다 — 디코더가 굶었는데 출력은 계속
+// 돌아서 마지막 버퍼를 되풀이하는, 전형적인 재생 파이프라인 정체다.
+//
+// 왜 스스로 못 빠져나오는가. 웹에는 이미 정체 감시(checkMusicStallWatchdog)가
+// 있는데 첫 줄이 `if (isNativeWrapper) return;` 이다 — 네이티브 앱에서는
+// 통째로 꺼져 있었다. 그리고 네이티브 쪽에는 대응하는 감시가 없다.
+// 그래서 한 번 굶으면 사용자가 직접 '다음 곡'을 누를 때까지 그대로다.
+//
+// 여기서는 웹이 할 수 있는 응급조치를 한다. 네이티브가 15Hz로 보내주는
+// 오디오 레벨(저음/중음/고음)을 지켜본다. **같은 조각이 반복되면 레벨도
+// 딱 얼어붙는다** — 진짜 음악은 8초 동안 세 값이 소수점까지 똑같을 수
+// 없다. 얼어붙은 채 8초가 지나면 다음 곡으로 넘긴다.
+//
+// 곡을 하나 잃는 것은 아쉽지만, '뿌우' 소리를 계속 듣는 것보다는 낫다.
+// 곡을 잃지 않고 같은 자리에서 이어붙이는 정식 복구는 네이티브의 몫이라
+// 1.3(iOS)·1.0.7(안드로이드)에 넣는다.
+(function setupNativeStallWatchdog() {
+  if (!isNativeWrapper) return;
+  var FROZEN_MS = 8000;        // 이만큼 얼어붙어 있으면 정체로 본다
+  var COOLDOWN_MS = 30000;     // 구조는 30초에 한 번까지만(되풀이 방지)
+  var EPS = 0.004;             // 이보다 작은 변화는 "안 움직인 것"
+  var lastTriple = null;
+  var frozenSince = 0;
+  var lastRescueAt = 0;
+
+  window.setInterval(function () {
+    try {
+      if (typeof musicPlaying === "undefined" || !musicPlaying) { frozenSince = 0; return; }
+      // 레벨 브릿지가 살아 있을 때만 판단한다. 백그라운드에서는 브릿지가
+      // 꺼져 있어(2026-07-26 작업3) 값이 안 오는데, 그걸 정체로 오해하면 안 된다.
+      if (Date.now() - nativeAudioLevelReceivedAt > 2000) { frozenSince = 0; return; }
+
+      var now = Date.now();
+      var t = [nativeAudioBass, nativeAudioMid, nativeAudioTreble];
+      var same = lastTriple
+        && Math.abs(t[0] - lastTriple[0]) < EPS
+        && Math.abs(t[1] - lastTriple[1]) < EPS
+        && Math.abs(t[2] - lastTriple[2]) < EPS;
+      lastTriple = t;
+
+      if (!same) { frozenSince = 0; return; }
+      if (!frozenSince) { frozenSince = now; return; }
+      if (now - frozenSince < FROZEN_MS) return;
+      if (now - lastRescueAt < COOLDOWN_MS) return;
+
+      frozenSince = 0;
+      lastRescueAt = now;
+      console.warn("[FlipZen] 재생이 멈춘 것으로 판단 — 다음 곡으로 넘깁니다.");
+      try { playNextTrack(); } catch (error) { /* 무시 */ }
+    } catch (error) { /* 감시 실패가 재생을 막으면 안 된다 */ }
+  }, 1000);
 })();
