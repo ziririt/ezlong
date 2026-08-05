@@ -8469,5 +8469,12 @@ window.investmentQuotes = [
     "title": "기록하기로 했습니다",
     "author": "김신지",
     "genre": "literature"
+  },
+  {
+    "english": "You don't have to understand life. You just have to live it.",
+    "text": "당신은 삶을 이해할 필요가 없어요. 그저 살아내면 됩니다.",
+    "title": "미드나잇 라이브러리 (The Midnight Library)",
+    "author": "맷 헤이그 (Matt Haig)",
+    "genre": "literature"
   }
 ];
