@@ -8476,5 +8476,12 @@ window.investmentQuotes = [
     "title": "미드나잇 라이브러리 (The Midnight Library)",
     "author": "맷 헤이그 (Matt Haig)",
     "genre": "literature"
+  },
+  {
+    "english": "In the short run, the market is a voting machine, but in the long run, it is a weighing machine.",
+    "text": "짧은 기간에는 시장이 투표소와 같지만, 긴 기간에는 저울과 같다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
   }
 ];
