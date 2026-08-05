@@ -2043,6 +2043,21 @@ a { text-decoration: none; color: inherit; }
     return null;
   }
 
+  /* 앱 웹뷰 안인지 판정. 앱은 첫 진입 URL에 embed=app 을 붙이는데 이 값은
+     첫 로드에만 있으므로 sessionStorage 에 새겨두고 이후 페이지에서 읽는다.
+     상위 프레임에서 앱의 네이티브 브릿지가 보이면 그것만으로도 확정이다. */
+  var EMBED_KEY = 'ezlong.embedApp';
+  function inAppWebview() {
+    try {
+      if (new URLSearchParams(location.search).get('embed') === 'app') {
+        try { sessionStorage.setItem(EMBED_KEY, '1'); } catch (e) {}
+        return true;
+      }
+      if (sessionStorage.getItem(EMBED_KEY) === '1') return true;
+    } catch (e) {}
+    return !!findBridge();
+  }
+
   document.addEventListener('click', function (ev) {
     if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey) return;
 
@@ -2053,13 +2068,29 @@ a { text-decoration: none; color: inherit; }
     try { url = new URL(a.getAttribute('href'), location.href); } catch (e) { return; }
     if (url.hostname.toLowerCase() !== PREMIUM_HOST) return;
 
-    /* 브릿지가 없으면 일반 브라우저다 — 손대지 않는다.
-       거기서는 target="_blank"가 이미 제대로 동작한다. */
+    /* 1순위 — 네이티브 브릿지로 기기 브라우저 열기.
+       네이버 로그인·구독 세션이 살아 있는 곳이라 유료 글이 바로 열린다. */
     var send = findBridge();
-    if (!send) return;
+    if (send) {
+      ev.preventDefault();
+      send(url.href);
+      return;
+    }
+
+    /* 앱이 아니면(일반 브라우저) 손대지 않는다 — target="_blank"가 정상 동작. */
+    if (!inAppWebview()) return;
+
+    /* 2순위 — 앱인데 브릿지를 못 찾은 경우의 안전망. 여기서 그냥 두면
+       화면에 아무 일도 안 일어나는 "먹통" 상태가 그대로 재현된다.
+       진짜 새 탭을 한 번 시도해 보고, 웹뷰가 무시하면(null 반환) 이 프레임
+       자체를 글로 이동시킨다. 앱 하단의 닫기·뒤로 버튼은 상위 프레임에
+       있으므로 이 이동 뒤에도 그대로 남아 돌아올 수 있다. */
+    var opened = null;
+    try { opened = window.open(url.href, '_blank', 'noopener'); } catch (e) { opened = null; }
+    if (opened) return;
 
     ev.preventDefault();
-    send(url.href);
+    location.href = url.href;
   }, true);
 })();
 </script>
