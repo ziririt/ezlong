@@ -9737,6 +9737,20 @@ var bedsideActive = false;
     } catch (error) { /* 무시 */ }
     return false;
   }
+  // 2026-08-05 2차 — 성동님 재제보: "아이폰은 충전 중인데도 어두워진다."
+  // 아이폰 1.2에는 충전 브릿지가 없어 충전 여부가 '모름'인데, 모름을
+  // 비충전으로 간주해 어둡게 만들고 있었다. 비주얼라이저 규칙은 이미
+  // "확실히 비충전일 때만"으로 고쳤는데 침대맡 모드만 옛 기준으로 남아
+  // 있었다 — 같은 기준으로 통일한다. 규칙이 두 개면 반드시 어긋난다.
+  // 안드로이드는 지금도 정확히 알고, 아이폰은 1.3부터 정확해진다.
+  function shouldDim() {
+    try {
+      if (typeof window.__flipzenKnownNotCharging === "function") {
+        return window.__flipzenKnownNotCharging();
+      }
+    } catch (error) { /* 무시 */ }
+    return false;   // 모르면 어둡게 하지 않는다
+  }
 
   // 지금 잠들면 안 되는 상황인가 — 뭔가를 읽고 있는 중이면 기다린다.
   function busyReading() {
@@ -9753,9 +9767,9 @@ var bedsideActive = false;
 
   function enter() {
     if (bedsideActive) return;
-    // 충전 중이면 잠들지 않는다. 타이머만 다시 세워 두었다가, 케이블을
-    // 뽑는 순간부터 다시 시간을 센다.
-    if (chargingNow()) { arm(); return; }
+    // 확실히 비충전일 때만 잠든다. 충전 중이거나 충전 여부를 모르면
+    // 타이머만 다시 세워 두었다가, 상황이 바뀌면 그때 다시 센다.
+    if (!shouldDim()) { arm(); return; }
     if (busyReading()) { arm(); return; }
     bedsideActive = true;
     document.body.classList.remove("is-bedside-waking");
@@ -9823,7 +9837,7 @@ var bedsideActive = false;
   // 바뀌었든 똑같이 걸리는 단순한 방법이 빠뜨림이 없다. 어두운 동안에만
   // 도는 확인이라 비용도 사실상 없다.
   window.setInterval(function () {
-    if (bedsideActive && chargingNow()) exit();
+    if (bedsideActive && !shouldDim()) exit();
   }, 10000);
 
   // ── 설정 UI ──────────────────────────────────────────────────────
@@ -10142,4 +10156,20 @@ var bedsideActive = false;
     var el = document.getElementById(id);
     if (el) el.addEventListener("click", markUsed);
   });
+})();
+
+
+// 2026-08-05 성동님 지적 — 안드로이드의 플립시계 숫자가 플립시계에 어울리지
+// 않는다. 원인은 폰트다. 이 앱의 글꼴 스택은 -apple-system → SF Pro Display
+// 순인데, 안드로이드에는 그 둘이 없어 결국 sans-serif(=Roboto)로 떨어진다.
+// SF Pro는 애플 전용이라 웹폰트로 실어 나를 수 없다(라이선스). 그래서
+// 성동님이 주신 대안대로 안드로이드에서는 크기를 10% 줄인다 — Roboto의
+// 숫자는 SF보다 폭이 넓고 무거워서, 같은 크기로 두면 카드를 꽉 채워
+// "플립시계 숫자판"이 아니라 "글자 상자"처럼 보인다.
+// 굵기도 760(합성 굵기, Roboto에는 그 굵기가 없어 브라우저가 억지로
+// 늘린다)에서 700(Roboto Bold 실물)으로 내린다 — 합성 굵기는 획이 뭉개진다.
+(function markAndroidForClockFont() {
+  try {
+    if (/Android/i.test(navigator.userAgent)) document.body.classList.add("is-android");
+  } catch (error) { /* 무시 */ }
 })();
