@@ -8578,5 +8578,12 @@ window.investmentQuotes = [
     "title": "레슨 인 케미스트리 (Lessons in Chemistry)",
     "author": "보니 가머스 (Bonnie Garmus)",
     "genre": "literature"
+  },
+  {
+    "english": "A part of all you earn is yours to keep. It should be not less than a tenth no matter how little you earn.",
+    "text": "네가 버는 것의 일부는 언제나 네 몫으로 남겨두어라. 아무리 적게 벌더라도 그 몫은 최소한 십분의 일은 되어야 한다.",
+    "title": "바빌론 부자들의 돈 버는 지혜 (The Richest Man in Babylon)",
+    "author": "조지 S. 클레이슨 (George S. Clason)",
+    "category": "mindset"
   }
 ];
