@@ -8544,5 +8544,12 @@ window.investmentQuotes = [
     "title": "주식 매매하는 법 (How to Trade in Stocks)",
     "author": "제시 리버모어 (Jesse Livermore)",
     "category": "mindset"
+  },
+  {
+    "english": "Ruin is a gift. Ruin is the road to transformation.",
+    "text": "무너짐은 선물이다. 무너짐이야말로 변화로 가는 길이다.",
+    "title": "먹고 기도하고 사랑하라 (Eat, Pray, Love)",
+    "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
+    "genre": "literature"
   }
 ];
