@@ -1987,9 +1987,10 @@ a { text-decoration: none; color: inherit; }
 </script>
 
 <script>
-/* ── 앱 웹뷰에서 네이버 프리미엄 글 열기 (2026-08-06 신설) ─────────────
+/* ── 앱 웹뷰에서 외부 링크 열기 (2026-08-06 신설) ─────────────────────
    증상: Long Time, Easy Life 앱 안에서 네이버 프리미엄 글을 눌러도 아무
    일도 일어나지 않는다. 같은 링크가 사파리·크롬에서는 정상.
+   책 구매 링크(알라딘·예스24·교보·리디·밀리)도 같은 원인으로 먹통.
 
    원인: 이 링크들은 target="_blank"인데, 앱 웹뷰에는 "새 탭"이라는 게
    없다. iOS WKWebView는 WKUIDelegate의 createWebViewWith 를 구현해야만
@@ -2004,14 +2005,20 @@ a { text-decoration: none; color: inherit; }
    동일 출처라, iframe 안에서도 상위 프레임의 브릿지에 접근할 수 있다.
 
    왜 인앱 시트가 아니라 기기 브라우저인가: 네이버 프리미엄은 로그인과
-   구독 상태가 있어야 본문이 열린다. 그 세션은 평소 쓰는 브라우저에 있다.
-   과거 알라딘 로그인이 인앱 시트 안에서 유지되지 않아 결국 기본 브라우저로
-   내보낸 전례와 같은 이유다.
+   구독 상태가 있어야 본문이 열리고, 서점은 로그인·장바구니·결제가 이어져야
+   한다. 그 세션은 전부 평소 쓰는 브라우저에 있다. 과거 알라딘 로그인이
+   인앱 시트 안에서 유지되지 않아 결국 기본 브라우저로 내보낸 전례와 같다.
 
-   적용 범위는 contents.premium.naver.com 한 곳뿐 — 다른 외부 링크는
-   지금 동작을 그대로 둔다. */
+   적용 범위: 이 페이지의 ezlong.com 바깥으로 나가는 모든 http(s) 링크.
+   내부 이동은 건드리지 않고, mailto:·tel: 같은 다른 스킴도 제외한다. */
 (function () {
-  var PREMIUM_HOST = 'contents.premium.naver.com';
+  /* ezlong.com 밖으로 나가는 링크인가. 서브도메인·www 포함해서 자기
+     사이트면 앱 웹뷰가 그대로 처리해야 하므로 가로채지 않는다. */
+  function isExternal(url) {
+    if (url.protocol !== 'https:' && url.protocol !== 'http:') return false;
+    var h = url.hostname.toLowerCase();
+    return h !== 'ezlong.com' && h.slice(-11) !== '.ezlong.com';
+  }
 
   /* 브릿지는 자기 프레임에 주입돼 있는 게 정상이지만, 주입 시점·프레임
      범위는 OS 버전에 따라 미묘하게 다르다. 자기 → 부모 → 최상위 순서로
@@ -2066,10 +2073,10 @@ a { text-decoration: none; color: inherit; }
 
     var url;
     try { url = new URL(a.getAttribute('href'), location.href); } catch (e) { return; }
-    if (url.hostname.toLowerCase() !== PREMIUM_HOST) return;
+    if (!isExternal(url)) return;
 
-    /* 1순위 — 네이티브 브릿지로 기기 브라우저 열기.
-       네이버 로그인·구독 세션이 살아 있는 곳이라 유료 글이 바로 열린다. */
+    /* 1순위 — 네이티브 브릿지로 기기 브라우저 열기. 네이버 구독 세션도
+       서점 로그인·장바구니도 전부 그쪽에 살아 있어야 끝까지 이어진다. */
     var send = findBridge();
     if (send) {
       ev.preventDefault();
