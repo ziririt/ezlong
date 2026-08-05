@@ -9802,7 +9802,26 @@ var bedsideActive = false;
     try { postToNativeHaptic("light"); } catch (error) { /* 무시 */ }
   }
 
+  // 2026-08-05 성동님 요청 — 침대맡 모드 앞에 "얕은 절전" 한 단계를 더 둔다.
+  // 무조작 30초가 지나면 콜론 깜빡임(1초)과 시계 숨쉬기(4초)를 멈춘다.
+  // 이 둘은 비용 자체는 작지만 **매초 화면 합성을 깨우는** 성격이라, 가만히
+  // 두는 시간이 긴 침대맡 앱에서는 쌓이면 무시하기 어렵다. 시각적으로는
+  // 시계가 조용해질 뿐 정보는 하나도 줄지 않는다 — 시간은 그대로 보인다.
+  // 손을 대는 순간 즉시 되살아난다. 충전 여부와 무관하게 적용한다(이건
+  // 배터리 절약이자, 밤에 눈에 덜 거슬리는 쪽이기도 하다).
+  var LOWMOTION_MS = 30000;
+  var lowTimer = null;
+
+  function armLowMotion() {
+    if (lowTimer) { window.clearTimeout(lowTimer); lowTimer = null; }
+    document.body.classList.remove("is-lowmotion");
+    lowTimer = window.setTimeout(function () {
+      document.body.classList.add("is-lowmotion");
+    }, LOWMOTION_MS);
+  }
+
   function arm() {
+    armLowMotion();
     if (timer) { window.clearTimeout(timer); timer = null; }
     var d = loadDelay();
     if (d === "off") return;
