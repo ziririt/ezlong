@@ -1,6 +1,81 @@
 {
   "entries": [
     {
+      "id": "2026-08-05-20:22",
+      "timestamp_kst": "2026-08-05(수) 20:22 KST",
+      "key_event": {
+        "name": "AI·반도체 강세 지속",
+        "name_en": "Continued AI & Semiconductor Strength",
+        "time": "오늘 정규장 및 단기",
+        "why": "주요 지수 상승 견인, 시장 심리 개선, 위험자산 선호",
+        "why_en": "Driving major index gains, improving market sentiment, risk-on preference"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "AI·반도체 강세 및 중동 리스크 완화로 긍정 우위 지속. 11일 연속 긍정 우위.",
+      "summary_en": "Continued positive bias with AI/semiconductor strength and easing Middle East risks. 11th consecutive day of positive bias.",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "중동 지정학적 리스크 완화",
+          "name_en": "Easing Middle East Geopolitical Risks",
+          "desc": "미-이란 평화 신호 및 유가 하락으로 위험자산 선호 심리 강화",
+          "desc_en": "US-Iran peace signals and falling oil prices boost risk-on sentiment",
+          "category": "geopolitics"
+        },
+        {
+          "score": 15,
+          "name": "미 국채금리 하락",
+          "name_en": "US Treasury Yields Decline",
+          "desc": "미 10년물 국채금리 1.26% 하락, 성장주 투자 매력 증가",
+          "desc_en": "US 10-year Treasury yield down 1.26%, increasing attractiveness of growth stocks",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 15,
+          "name": "기업 실적 기대감",
+          "name_en": "Positive Corporate Earnings Outlook",
+          "desc": "Shopify 분기 매출 예상치 상회 전망, AI 관련 기업 투자 심리 개선",
+          "desc_en": "Shopify forecasts quarterly revenue above estimates, improving AI-related investment sentiment",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "반도체 차익실현 압력",
+          "name_en": "Semiconductor Profit-Taking Pressure",
+          "desc": "SOXX 프리마켓 하락, 전일 급등에 따른 단기 차익실현 우려",
+          "desc_en": "SOXX down in premarket, short-term profit-taking concerns after previous day's surge",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "AI CapEx 과잉 지출 우려",
+          "name_en": "AI CapEx Overspending Concerns",
+          "desc": "빅테크의 AI 투자 과열에 대한 시장 일각의 우려 제기",
+          "desc_en": "Some market concerns raised about big tech's overheated AI investments",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "ISM 서비스업 PMI 대기",
+          "name_en": "Awaiting ISM Services PMI",
+          "desc": "예상치 하회 시 랠리 주춤 우려, 반면 금리 인하 기대감 강화 가능성",
+          "desc_en": "Below-estimate reading could slow rally, but also strengthen rate cut expectations",
+          "category": "macro_data"
+        },
+        {
+          "name": "마이클 버리 시장 경고",
+          "name_en": "Michael Burry's Market Warning",
+          "desc": "주식 시장 신기록에도 불구하고 1987년과 같은 하락 가능성 경고",
+          "desc_en": "Warns of a possible 1987-type fall despite stocks hitting new highs",
+          "category": "vix_risk_sentiment"
+        }
+      ]
+    },
+    {
       "id": "2026-08-05-18:18",
       "timestamp_kst": "2026-08-05(수) 18:18 KST",
       "key_event": {
@@ -539,68 +614,8 @@
           "category": "company_specific"
         }
       ]
-    },
-    {
-      "id": "2026-08-04-18:21",
-      "timestamp_kst": "2026-08-04(화) 18:21 KST",
-      "key_event": {
-        "name": "반도체 업종 회복 기대감",
-        "name_en": "Semiconductor Sector Recovery Hopes",
-        "time": "오늘 정규장 및 단기",
-        "why": "SOXX 반등 시도, NVDA 강세, 과매도 해소 기대",
-        "why_en": "SOXX rebound attempt, NVDA strength, oversold relief expectation"
-      },
-      "positive_total": 80,
-      "negative_total": 20,
-      "summary": "빅테크 실적 호조와 반도체 회복 시도로 긍정 우위 지속. 7일 연속 긍정 우위 유지.",
-      "summary_en": "Positive sentiment continues with strong Big Tech earnings and semiconductor recovery attempts. Positive bias maintained for 7 consecutive days.",
-      "positive_factors": [
-        {
-          "score": 55,
-          "name": "빅테크 실적 호조 지속",
-          "name_en": "Continued Strong Big Tech Earnings",
-          "desc": "AMZN, MSFT AI 테스트 통과 및 전반적인 빅테크 실적 기대감 유지.",
-          "desc_en": "AMZN, MSFT pass AI tests, and overall Big Tech earnings expectations remain positive.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 25,
-          "name": "미 10년 국채금리 하락",
-          "name_en": "US 10-Year Treasury Yield Decline",
-          "desc": "미 10년 국채금리 1.24% 하락, 성장주 투자 심리에 긍정적 영향.",
-          "desc_en": "US 10-year Treasury yield down 1.24%, positively impacting growth stock sentiment.",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 10,
-          "name": "미-이란 긴장 불확실성",
-          "name_en": "US-Iran Tensions Uncertainty",
-          "desc": "미-이란 전쟁 휴전 불확실성 지속, 유가 상승 압력으로 작용.",
-          "desc_en": "Uncertainty over US-Iran war truce persists, contributing to upward pressure on oil prices.",
-          "category": "geopolitics"
-        },
-        {
-          "score": 10,
-          "name": "유가 상승 압력",
-          "name_en": "Upward Oil Price Pressure",
-          "desc": "WTI 원유 1.24% 상승, 중동 긴장 고조로 인플레이션 우려 재점화 가능성.",
-          "desc_en": "WTI crude up 1.24%, Middle East tensions could reignite inflation concerns.",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "애플-OpenAI 법적 분쟁",
-          "name_en": "Apple-OpenAI Legal Dispute",
-          "desc": "애플의 OpenAI 상표권 소송 및 OpenAI의 반박, AI 섹터 내 경쟁 심화 및 불확실성 야기.",
-          "desc_en": "Apple's trademark lawsuit against OpenAI and OpenAI's rebuttal create intensified competition and uncertainty within the AI sector.",
-          "category": "company_specific"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-05T09:19:17Z",
+  "updated_at": "2026-08-05T11:23:07Z",
   "max_entries": 10
 }
