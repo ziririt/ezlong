@@ -8490,5 +8490,12 @@ window.investmentQuotes = [
     "title": "돈의 심리학 (The Psychology of Money)",
     "author": "모건 하우절 (Morgan Housel)",
     "category": "mindset"
+  },
+  {
+    "english": "And, when you want something, all the universe conspires in helping you to achieve it.",
+    "text": "그리고 당신이 무언가를 진정으로 원할 때, 온 우주는 당신이 그것을 이루도록 돕기 위해 힘을 모은다.",
+    "title": "연금술사 (The Alchemist)",
+    "author": "파울로 코엘료 (Paulo Coelho)",
+    "genre": "literature"
   }
 ];
