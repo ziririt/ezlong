@@ -8524,5 +8524,12 @@ window.investmentQuotes = [
     "title": "가재가 노래하는 곳 (Where the Crawdads Sing)",
     "author": "델리아 오언스 (Delia Owens)",
     "genre": "literature"
+  },
+  {
+    "english": "Our favorite holding period is forever.",
+    "text": "우리가 가장 좋아하는 주식 보유 기간은 영원히다.",
+    "title": "버크셔 해서웨이 1988년 주주 서한",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "mindset"
   }
 ];
