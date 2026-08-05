@@ -2013,11 +2013,16 @@ a { text-decoration: none; color: inherit; }
    내부 이동은 건드리지 않고, mailto:·tel: 같은 다른 스킴도 제외한다. */
 (function () {
   /* ezlong.com 밖으로 나가는 링크인가. 서브도메인·www 포함해서 자기
-     사이트면 앱 웹뷰가 그대로 처리해야 하므로 가로채지 않는다. */
+     사이트면 앱 웹뷰가 그대로 처리해야 하므로 가로채지 않는다.
+     현재 호스트도 같이 본다 — 프리뷰 도메인(web.app)이나 로컬 테스트에서
+     자기 사이트 링크가 "외부"로 오판돼 브라우저로 튕겨나가지 않게 한다. */
+  function isSameSite(h) {
+    if (h === String(location.hostname).toLowerCase()) return true;
+    return h === 'ezlong.com' || h.slice(-11) === '.ezlong.com';
+  }
   function isExternal(url) {
     if (url.protocol !== 'https:' && url.protocol !== 'http:') return false;
-    var h = url.hostname.toLowerCase();
-    return h !== 'ezlong.com' && h.slice(-11) !== '.ezlong.com';
+    return !isSameSite(url.hostname.toLowerCase());
   }
 
   /* 브릿지는 자기 프레임에 주입돼 있는 게 정상이지만, 주입 시점·프레임
