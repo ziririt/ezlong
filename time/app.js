@@ -6756,7 +6756,8 @@ function musicAutoPauseLimitMs() {
   // (네이티브 __FLIPZEN_CHARGING__ 우선, 없으면 Battery Status API,
   //  둘 다 없으면 '모름' = 비충전으로 간주).
   try {
-    if (typeof window.__flipzenIsCharging === "function" && !window.__flipzenIsCharging()) {
+    if (typeof window.__flipzenKnownNotCharging === "function"
+        && window.__flipzenKnownNotCharging()) {
       return Math.round(base / 2);
     }
   } catch (error) { /* 판정 실패 시엔 기존 상한 그대로 */ }
@@ -9726,6 +9727,17 @@ var bedsideActive = false;
     try { localStorage.setItem(DELAY_KEY, v); } catch (error) { /* 무시 */ }
   }
 
+  // 2026-08-05 성동님 지적 — 충전 중에는 어두워지지 않는다.
+  // 침대맡 모드의 존재 이유가 배터리 절약인데, 전기가 들어오는 동안에는
+  // 아낄 이유가 없다. 판정은 비주얼라이저 보호와 같은 함수를 쓴다 —
+  // 기준이 한 곳에만 있어야 두 기능이 어긋나지 않는다.
+  function chargingNow() {
+    try {
+      if (typeof window.__flipzenIsCharging === "function") return window.__flipzenIsCharging();
+    } catch (error) { /* 무시 */ }
+    return false;
+  }
+
   // 지금 잠들면 안 되는 상황인가 — 뭔가를 읽고 있는 중이면 기다린다.
   function busyReading() {
     try {
@@ -9741,6 +9753,9 @@ var bedsideActive = false;
 
   function enter() {
     if (bedsideActive) return;
+    // 충전 중이면 잠들지 않는다. 타이머만 다시 세워 두었다가, 케이블을
+    // 뽑는 순간부터 다시 시간을 센다.
+    if (chargingNow()) { arm(); return; }
     if (busyReading()) { arm(); return; }
     bedsideActive = true;
     document.body.classList.remove("is-bedside-waking");
@@ -9800,6 +9815,16 @@ var bedsideActive = false;
   document.addEventListener("visibilitychange", function () {
     if (document.visibilityState === "visible") poke();
   });
+
+  // 2026-08-05 — 어두워진 상태에서 충전기를 꽂으면 스스로 밝아진다.
+  // 손을 대지 않아도 된다 — 꽂는 행위 자체가 "계속 볼 거야"라는 뜻이다.
+  // 배터리 이벤트를 직접 듣지 않고 10초마다 확인하는 이유: 충전 신호가
+  // 오는 경로가 셋(네이티브 훅 / Battery API / 값 없음)이라, 어느 경로로
+  // 바뀌었든 똑같이 걸리는 단순한 방법이 빠뜨림이 없다. 어두운 동안에만
+  // 도는 확인이라 비용도 사실상 없다.
+  window.setInterval(function () {
+    if (bedsideActive && chargingNow()) exit();
+  }, 10000);
 
   // ── 설정 UI ──────────────────────────────────────────────────────
   function syncUi() {
@@ -9974,6 +9999,20 @@ var bedsideActive = false;
   // 2026-08-05 — 충전 판정은 이 한 곳에서만 한다. 음악 자동 일시정지 상한
   // (musicAutoPauseLimitMs)도 같은 판정을 써야 규칙이 어긋나지 않는다.
   window.__flipzenIsCharging = isCharging;
+  // 2026-08-05 — 충전 여부를 "확실히" 아는가. 네이티브 브릿지가 값을
+  // 채워줬거나 Battery Status API가 답을 준 경우에만 true. 둘 다 없으면
+  // (브릿지 없는 구버전 iOS 등) 모름이고, 모름일 때는 아무 규칙도
+  // 적용하지 않는다 — 사실이 아닐 수 있는 이유로 기능을 뺏지 않는다.
+  function chargingKnown() {
+    try {
+      if (typeof window.__FLIPZEN_CHARGING__ === "boolean") return true;
+    } catch (error) { /* 무시 */ }
+    return batteryCharging !== null;
+  }
+  function knownNotCharging() {
+    return chargingKnown() && !isCharging();
+  }
+  window.__flipzenKnownNotCharging = knownNotCharging;
   // 2026-08-05 — 네이티브(iOS)가 충전 상태를 알려줄 때 즉시 반응한다.
   // 꽂는 순간 그동안 센 곡 수는 없던 일로 한다 — 전기가 들어오는데
   // 접을 이유가 없다.
@@ -10019,7 +10058,9 @@ var bedsideActive = false;
   // 왔든 결국 제목이 바뀐다는 사실 하나만 보는 편이 빠뜨림이 없다.
   function onSongChanged() {
     if (!isMusicPanelOpen()) return;
-    if (isCharging()) { songsSinceOpen = 0; return; }
+    // 2026-08-05 — 확실히 비충전일 때만 센다. 충전 중이거나, 충전 여부를
+    // 아예 모르는 기기(브릿지 없는 구버전 iOS)에서는 손대지 않는다.
+    if (!knownNotCharging()) { songsSinceOpen = 0; return; }
     songsSinceOpen += 1;
     if (songsSinceOpen >= SONGS_BEFORE_COLLAPSE) {
       songsSinceOpen = 0;
@@ -10048,7 +10089,8 @@ var bedsideActive = false;
       window.setTimeout(function () {
         if (!isMusicPanelOpen()) return;
         songsSinceOpen = 0;
-        if (!isCharging()) showGuardNote();
+        // 모르면 안내하지 않는다 — 사실이 아닐 수 있는 이유로 잔소리하지 않는다.
+        if (knownNotCharging()) showGuardNote();
       }, 0);
     });
   }
