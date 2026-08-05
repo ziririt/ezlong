@@ -520,7 +520,7 @@
       handleScale: true,
     });
 
-    // 정규화 지수값이라 소수점이 의미 없다(성동님 지적) — 우측 축·크로스헤어 라벨 모두
+    // 정규화 지수값이라 소수점이 의미 없다(운영 피드백) — 우측 축·크로스헤어 라벨 모두
     // 정수로 표시. 자릿수가 "800.00"(6자)→"800"(3자)로 줄면서 축 폭 자체도 함께 줄어든다
     // (LightweightCharts는 축 폭을 라벨 텍스트 길이 기준으로 자동 계산 — 별도 폭 설정 불필요).
     const IDX_PRICE_FORMAT = { type: 'price', precision: 0, minMove: 1 };
@@ -538,7 +538,7 @@
     // 가격축에 이 라인을 얹어서 마커 호스트로만 쓴다. 실제 가격값은 의미 없음(항상 0).
     // scaleMargins를 top 크게·bottom 작게 잡아서, 이 라인(값 0, 전 구간 동일)이 차트
     // 하단(가로축=시간축 바로 위)에 딱 붙게 만든다 — 예전엔 오버레이 스케일 기본 여백
-    // 때문에 마커가 차트 중간쯤에 붕 떠 보였음(성동님 스크린샷 지적사항).
+    // 때문에 마커가 차트 중간쯤에 붕 떠 보였음(운영자 스크린샷 지적사항).
     markerHostSeries = chart.addLineSeries({
       lineVisible: false, priceLineVisible: false, lastValueVisible: false,
       crosshairMarkerVisible: false, priceScaleId: 'bh-marker-overlay', visible: true,
@@ -635,7 +635,7 @@
   // pointer-events:none이라 팬·줌·소사 마커 클릭 등 기존 차트 조작을 그대로 통과시키고,
   // 도구를 선택한 동안만 클릭을 받도록 전환한다.
   //
-  // (성동님 2차 피드백 반영) 가격범위도 처음엔 드래그(mousedown~mouseup) 방식이었는데
+  // (운영자 2차 피드백 반영) 가격범위도 처음엔 드래그(mousedown~mouseup) 방식이었는데
   // PC에서 불편하고, 특히 모바일에서는 손가락 드래그가 차트 자체의 팬(스크롤) 제스처와
   // 충돌해 그림이 전혀 안 그려지고 차트만 움직였다 — 추세선과 똑같이 "1번째 탭으로
   // 점A 확정 → 2번째 탭으로 점B 확정" 클릭-클릭 방식으로 통일해 두 문제를 한번에 해결.

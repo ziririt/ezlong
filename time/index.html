@@ -45,7 +45,7 @@
       <section class="clock-stage" aria-live="polite">
         <audio id="bgAudio" preload="auto"></audio>
         <audio id="bgAudioB" preload="auto"></audio>
-        <!-- 2026-07-14 20차: 성동님 재지적 — "패널을 열면 플립시계·날씨줄이
+        <!-- 2026-07-14 20차: 운영자 재지적 — "패널을 열면 플립시계·날씨줄이
              위로 밀려 올라간다, 공간이 충분한데도 왜 밀어버리냐. 이 줄은
              가만히 있고 그 아래에 비주얼라이저만 나타나야 한다." 원인은
              .clock-stage가 grid의 1fr 행 안에서 align-self:center로
@@ -99,7 +99,7 @@
                    않으므로, 이 정적 엘리먼트는 지워지지 않고 항상 막대들보다
                    먼저(즉, 그 위에 겹쳐) 그려진다. -->
               <div class="music-leave-work" id="musicLeaveWork" aria-hidden="true">Clock out, live up.</div>
-              <!-- 2026-08-05 성동님 요청 — 음악이 멈춰 있을 때 비주얼라이저
+              <!-- 2026-08-05 운영 요청 — 음악이 멈춰 있을 때 비주얼라이저
                    한가운데에 뜨는 크고 투명한 재생 버튼. 재생이 시작되면
                    스스로 물러난다(app.js musicToggle의 is-playing 토글이
                    .music-info-panel에 is-music-playing을 함께 건다). -->
@@ -245,7 +245,7 @@
         ></iframe>
       </div>
       <footer class="webview-footer">
-        <!-- 2026-08-05 성동님 요청 — 맨 왼쪽 칸(그동안 비어 있었다)에
+        <!-- 2026-08-05 운영 요청 — 맨 왼쪽 칸(그동안 비어 있었다)에
              '이전 페이지로'. iframe 안 히스토리를 되감는다(app.js). -->
         <button type="button" class="webview-hist" id="webviewHistoryBack" data-i18n-aria="webview.historyBackAria" aria-label="이전 페이지로">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5 L7.5 12 L14.5 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -265,7 +265,7 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 13 L12 7 L17 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 18 H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           <span class="webview-back-label" aria-hidden="true">Basecamp</span>
         </button>
-        <!-- 2026-07-20 9차 피드백(유저 제보): "이 버튼 눌러도 무반응" —
+        <!-- 2026-07-20 9차 피드백(이슈 제보): "이 버튼 눌러도 무반응" —
              WKWebView는 target="_blank" 앵커의 새 창 열기를 기본적으로
              무시한다(별도 WKUIDelegate 처리 없이는 아무 일도 안 일어남).
              알라딘 모달의 "기본 브라우저에서 열기"(aladinModalExternalOpen,
@@ -276,7 +276,7 @@
              메시지가 아니라 기존에 이미 있는 액션이라 Xcode 재빌드 불필요.
              아이콘도 유저 요청대로 알라딘 링크 버튼(quote-aladin-link)과
              동일한 "새창 열기" SVG로 교체. -->
-        <!-- 2026-08-05 성동님 요청 — '브라우저로 열기'를 빼고 '맨 위로'.
+        <!-- 2026-08-05 운영 요청 — '브라우저로 열기'를 빼고 '맨 위로'.
              예전엔 화면 최상단 더블탭이라는 숨은 제스처로만 있었는데,
              숨은 기능은 없는 기능이다. 눈에 보이는 버튼으로 꺼낸다. -->
         <button type="button" class="webview-top" id="webviewTopButton" data-i18n-aria="webview.scrollTopAria" aria-label="맨 위로">
@@ -375,7 +375,7 @@
           <p class="settings-desc settings-desc-muted bg-filter-license">This app uses some background images in accordance with the Pexels license.</p>
         </section>
 
-        <!-- 2026-08-04 성동님 요청 — 앱을 열었을 때 보일 첫 화면 선택.
+        <!-- 2026-08-04 운영 요청 — 앱을 열었을 때 보일 첫 화면 선택.
              기본값은 투자명저 문장(기존 동작). ezlong.com을 고르면 실행
              직후 2페이지로 넘어간다(app.js setupStartPagePreference). -->
         <!-- 2026-08-04 2차 — settings-section은 styles.css에 없는 유령
@@ -407,7 +407,7 @@
         <!-- 2026-07-19 4차 피드백: "NOW PLAYING" 박스(#musicPlaylistInfo)를
              완전히 제거했다 — 곡 제목은 상단 클록 화면의 음악 정보 패널
              (#musicTrackTitle)에서 이미 보여주고 있어 여기선 중복이었다. -->
-        <!-- 2026-08-04 성동님 요청 — 음악 플레이어의 톱니를 누르면 설정
+        <!-- 2026-08-04 운영 요청 — 음악 플레이어의 톱니를 누르면 설정
              맨 위가 아니라 이 음악 섹션으로 바로 스크롤된다(app.js
              openSettings("music") 참조). 그래서 id가 필요하다. -->
         <section class="settings-block settings-card" id="musicSettingsSection" data-i18n-aria="settings.music.heading" aria-label="음악 · 플레이리스트">
@@ -416,7 +416,7 @@
                .settings-subtitle-tagline(styles.css)에서 작게·은은하게. -->
           <p class="settings-subtitle-tagline">Curated for focus — great for work &amp; study.</p>
           <div class="field-grid" id="musicPlaylistOptions" role="radiogroup" data-i18n-aria="settings.music.playlistSelectAria" aria-label="플레이리스트(장르) 선택"></div>
-          <!-- 2026-07-20 유저 제보: 선택이 반영되는 데 시간이 걸리는 것처럼
+          <!-- 2026-07-20 이슈 제보: 선택이 반영되는 데 시간이 걸리는 것처럼
                느껴진다는 피드백 — 탭한 즉시(트랙 전환 완료를 기다리지 않고)
                "OO 선택됨"을 짧게 띄워 선택 자체가 확실히 됐다는 걸 바로
                확인시켜준다(app.js flashMusicFilterNotice 참조). -->
@@ -504,7 +504,7 @@
               </div>
             </div>
             <div class="viz-option-group">
-              <!-- 2026-07-22 유저 지적 — "베이스 펀치가 뭔지 모르겠다"는
+              <!-- 2026-07-22 운영 피드백 — "베이스 펀치가 뭔지 모르겠다"는
                    재지적으로 쉬운 말로 변경. 곡에 실제 킥/베이스 타격이
                    있을 때만 반응하는 옵션이라 잔잔한 곡에서는 강하게로
                    바꿔도 차이가 잘 안 느껴질 수 있다는 걸 짧게 안내. -->
@@ -561,7 +561,7 @@
               </div>
             </div>
           </div>
-          <!-- 2026-07-22 유저 지적 — 원래 여기 있던 "대기 모양(숨쉬기/반짝임/
+          <!-- 2026-07-22 운영 피드백 — 원래 여기 있던 "대기 모양(숨쉬기/반짝임/
                미니멀)" 옵션 제거. 일시정지 중에만 보이는 옵션이라 음악이
                흐르는 동안엔 셋 다 똑같아 보여 "의미 없다"는 재지적으로 설정
                항목에서 뺐다 — app.js의 idle 스타일 로직 자체는 남겨두고
@@ -601,7 +601,7 @@
              과학/문학/시/에세이/인문·역사/철학·고전)는 investment-quotes.js의
              기존 category 값과 그대로 매칭된다(app.js flatGenreLabels).
              기본값은 "투자"만 선택된 상태. -->
-        <!-- 2026-07-29 성동님 확정 — 비한국어 화면에서는 이 섹션을 통째로 감춘다.
+        <!-- 2026-07-29 운영자 확정 — 비한국어 화면에서는 이 섹션을 통째로 감춘다.
              그쪽 문장 풀은 투자서로 고정이라(app.js getEligibleQuotes) 고를 것이
              없고, 고를 수 없는 선택지를 보여주는 것 자체가 혼란이다.
              감추는 주체는 app.js applyQuoteTopicsLocaleGating(). -->
@@ -615,14 +615,14 @@
           <div class="field-grid" id="flatGenreOptions"></div>
         </section>
 
-        <!-- 2026-08-01 성동님 지시 — 설정 맨 아래 "애플워치" 안내 섹션.
+        <!-- 2026-08-01 운영 지침 — 설정 맨 아래 "애플워치" 안내 섹션.
              워치 앱은 프리미엄 전용 혜택이고, watchOS의 "시계로 돌아가기"
              기본값 때문에 앱이 금방 기본 페이스로 돌아가는 것을 이용자가
              설정 두 번으로 해결할 수 있게 안내한다(앱이 코드로 바꿀 수 없는
              OS 사용자 설정 — 모든 워치 시계 앱의 공통 대응 패턴). -->
         <section class="settings-block settings-card" data-i18n-aria="settings.watch.heading" aria-label="애플워치">
           <h3 class="settings-subtitle" data-i18n="settings.watch.heading">애플워치</h3>
-          <!-- 2026-08-01 성동님 지시 — 결제 화면에서 쓴 워치 목업(울트라+
+          <!-- 2026-08-01 운영 지침 — 결제 화면에서 쓴 워치 목업(울트라+
                일반 워치 합성, iOS WatchAppPreview 에셋과 동일 원본)을 웹용
                으로 축소(900x480 webp, 31KB)해 안내 섹션에도 노출한다. -->
           <img class="settings-watch-preview" src="watch-app-preview.webp?v=20260801-watchimg-v1" alt="" role="presentation" loading="lazy" width="900" height="480">
@@ -806,7 +806,7 @@
           <!-- 2026-07-17 2차 기획(묶음B): 다음 비 카운트다운. 이번 주에 비
                소식이 없으면 빈 문자열이라 :empty로 자연스럽게 접힌다. -->
           <p class="weather-comment weather-next-rain" id="wdNextRain"></p>
-          <!-- 2026-08-04 성동님 지시: 폭염(35°+)·강추위(-10°−) 케어 한 줄.
+          <!-- 2026-08-04 운영 지침: 폭염(35°+)·강추위(-10°−) 케어 한 줄.
                해당 없으면 빈 문자열이라 :empty로 자연스럽게 접힌다. -->
           <p class="weather-comment weather-care" id="wdCareComment"></p>
         </div>
@@ -955,7 +955,7 @@
   <script src="i18n/book-titles.js?v=20260728-i18n-v13"></script>
   <script src="i18n/quote-translations.js?v=20260728-i18n-v13"></script>
 
-    <!-- 2026-08-05 성동님 요청 — 설치 후 첫 실행에서 첫 화면을 직접 고르게 한다.
+    <!-- 2026-08-05 운영 요청 — 설치 후 첫 실행에서 첫 화면을 직접 고르게 한다.
          첫인상이라 목록으로 묻지 않고 미니 화면 두 개를 보여주고 고르게 했다.
          미리보기는 이미지가 아니라 CSS로 그린다(파일 증가 없음·항상 선명함).
          app.js setupFirstRunChoice 참조. -->

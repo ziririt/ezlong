@@ -9,7 +9,7 @@ name: Firebase Hosting 자동 배포
 # 수정했다. 이제 deploy 출력을 실제로 검사해서 알려진 무해 패턴일 때만 성공 처리하고,
 # 그 외 실패는 워크플로가 그대로 빨갛게 실패하도록 둔다. 추가로 firebase CLI의 종료
 # 코드를 맹신하지 않고, 라이브 사이트가 실제로 응답하는지 마지막에 직접 curl로 재확인한다
-# (성동님 2026-08-02 승인, 주간 운영 점검 후속 조치).
+# (운영자 2026-08-02 승인, 주간 운영 점검 후속 조치).
 
 on:
   push:
@@ -31,6 +31,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      # 2026-08-06 신설 — 화면에 렌더되는 문자열에 개인 지칭(호칭·지시 출처 표기)이
+      # 섞인 채 라이브로 나간 사고 재발 방지. 렌더 문자열에서 걸리면 배포를 중단한다.
+      # 주석 안에만 있는 경우는 경고만 남기고 통과시킨다.
+      - name: 프라이버시 가드 (렌더 문구 개인 지칭 검사)
+        run: python3 scripts/check-privacy.py
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools

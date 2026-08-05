@@ -1183,7 +1183,7 @@ def _redistribute(factors, total, step=5):
 
 
 def rebalance_factor_scores(entry, orig_pos=None, orig_neg=None):
-    """데스킹 후 '소계 = 항목 점수 합'을 항상 보장한다 (2026-08-01 유저 제보 사고 —
+    """데스킹 후 '소계 = 항목 점수 합'을 항상 보장한다 (2026-08-01 이슈 제보 사고 —
     부정 합계 60인데 항목 합 30인 카드가 공개 노출됨. 원인: 2026-07-31 결과 재료 데스크가
     재료를 빼면서 점수 재배분을 하지 않았다).
     원칙: 총점(positive_total/negative_total)은 Gemini의 종합 판단이므로 유지하고,
