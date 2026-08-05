@@ -8551,5 +8551,12 @@ window.investmentQuotes = [
     "title": "먹고 기도하고 사랑하라 (Eat, Pray, Love)",
     "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
     "genre": "literature"
+  },
+  {
+    "english": "The big money is not in the buying and selling, but in the waiting.",
+    "text": "큰돈은 사고파는 데서 나오는 것이 아니라, 기다리는 데서 나온다.",
+    "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "patience"
   }
 ];
