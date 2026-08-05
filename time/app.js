@@ -5012,8 +5012,24 @@ function isMusicVizActiveContext() {
   return isMusicPanelOpen() || Boolean(settingsPanel && settingsPanel.classList.contains("is-open"));
 }
 
+// 2026-08-05 성동님 요청 — "사람들이 비주얼라이저를 켤 수 있다는 걸 모른다."
+// 그래서 이 패널의 기본값을 '열림'으로 바꿨다. 다만 접은 사람에게 매번 다시
+// 펴 보이지는 않는다 — 접었다는 사실을 기억한다(강요하지 않는다).
+const musicPanelOpenStorageKey = "ezlong:musicPanelOpen";
+function loadMusicPanelPreferredOpen() {
+  try {
+    return localStorage.getItem(musicPanelOpenStorageKey) !== "0"; // 값 없음 = 기본 열림
+  } catch (error) {
+    return true;
+  }
+}
+function saveMusicPanelPreferredOpen(open) {
+  try { localStorage.setItem(musicPanelOpenStorageKey, open ? "1" : "0"); } catch (error) {}
+}
+
 function setMusicPanelOpen(open) {
   if (!musicInfoPanel) return;
+  saveMusicPanelPreferredOpen(open);
   musicInfoPanel.classList.toggle("is-open", open);
   musicInfoPanel.setAttribute("aria-hidden", String(!open));
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", String(open));
@@ -9428,6 +9444,13 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
 // 조작감: 카드 선택은 pointerdown에서 즉시 반응하고(§1), 같은 순간에
 // 햅틱을 울린다(§13 harmony — 시각과 촉각이 같은 프레임에).
 (function setupFirstRunChoice() {
+  // 2026-08-05 재발 방지 — 이 스크립트가 시트 마크업보다 먼저 실행되는 순간이
+  // 한 번 있었다(그때는 조용히 아무 일도 일어나지 않았다). 마크업 위치를
+  // 바로잡았지만, 순서가 다시 어긋나도 동작하도록 DOM 완성을 기다린다.
+  if (document.readyState === "loading" && !document.getElementById("firstRunSheet")) {
+    document.addEventListener("DOMContentLoaded", setupFirstRunChoice, { once: true });
+    return;
+  }
   const ASKED_KEY = "ezlong:startPageAsked";
   const sheet = document.getElementById("firstRunSheet");
   if (!sheet) return;
@@ -9445,6 +9468,29 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
   const cardEzlong = document.getElementById("firstRunEzlong");
   const cta = document.getElementById("firstRunStart");
   if (!cardQuote || !cardEzlong || !cta) return;
+
+  // 미리보기 사진 — 이 기기의 언어로 찍은 실제 화면을 건다.
+  // 지원 밖 언어는 영어판으로(로케일 해석 규칙과 같은 원칙).
+  (function mountFirstRunShots() {
+    const SUPPORTED = ["ko", "en", "ja", "zh", "es", "pt"];
+    let tag = "";
+    try { tag = localStorage.getItem("flipzen.locale") || ""; } catch (error) { tag = ""; }
+    if (!tag) tag = document.documentElement.getAttribute("lang") || "";
+    const base = String(tag).toLowerCase().split(/[-_]/)[0];
+    const loc = SUPPORTED.indexOf(base) >= 0 ? base : "en";
+    [["firstRunShotQuote", "basecamp"], ["firstRunShotEzlong", "ezlong"]].forEach(function (pair) {
+      const img = document.getElementById(pair[0]);
+      if (!img) return;
+      img.addEventListener("load", function () { img.classList.add("is-ready"); }, { once: true });
+      img.addEventListener("error", function () {
+        // 그 언어 사진이 없으면 영어판으로 한 번만 되짚는다(무한 루프 방지).
+        if (img.dataset.fallback === "1") return;
+        img.dataset.fallback = "1";
+        img.src = "assets/firstrun/en-" + pair[1] + ".webp";
+      }, { once: true });
+      img.src = "assets/firstrun/" + loc + "-" + pair[1] + ".webp";
+    });
+  })();
 
   let choice = "quote"; // 기본값 — 문장 화면(기존 동작과 동일)
 
@@ -9508,4 +9554,30 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
   paint();
   // 브랜드 시작 화면이 걷히는 시간(네이티브 onPageFinished)을 지나서.
   window.setTimeout(open, 1150);
+})();
+
+
+// ══════════════════════════════════════════════════════════════════
+// 음악 패널(비주얼라이저) 기본 노출 — 2026-08-05 성동님 요청
+// ══════════════════════════════════════════════════════════════════
+// 왜 부팅 직후가 아니라 조금 뒤인가. 플립시계·날씨·문장이 먼저 자리를 잡은
+// 다음에 비주얼라이저가 "합류"해야 화면이 어수선하지 않다. 첫 실행 시트가
+// 떠 있는 경우에는 그 뒤에서 조용히 열려, 시트를 닫는 순간 이미 켜져 있다.
+(function restoreMusicPanelDefault() {
+  function apply() {
+    try {
+      if (!loadMusicPanelPreferredOpen()) return;
+      if (typeof isMusicPanelOpen === "function" && isMusicPanelOpen()) return;
+      setMusicPanelOpen(true);
+    } catch (error) {
+      // 패널 복원 실패는 앱 사용을 막지 않는다 — 조용히 넘어간다.
+    }
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () {
+      window.setTimeout(apply, 900);
+    }, { once: true });
+  } else {
+    window.setTimeout(apply, 900);
+  }
 })();

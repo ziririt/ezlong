@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-05T00:27:16.669Z
+ * 생성 시각: 2026-08-05T01:01:08.192Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -393,7 +393,8 @@
       "ezlongTitle": "AI tools at ezlong.com",
       "ezlongDesc": "From market timing to retirement planning",
       "note": "You can change this anytime in Settings.",
-      "cta": "Get started"
+      "cta": "Get started",
+      "note2": "You can move between the two anytime with the ⌄ ezlong.com and ⏏ Basecamp buttons."
     }
   },
   "es": {
@@ -778,7 +779,8 @@
       "ezlongTitle": "Herramientas de IA en ezlong.com",
       "ezlongDesc": "Del momento de comprar al plan de retiro",
       "note": "Puedes cambiarla cuando quieras en Ajustes.",
-      "cta": "Empezar"
+      "cta": "Empezar",
+      "note2": "Puedes pasar de una pantalla a otra cuando quieras con los botones ⌄ ezlong.com y ⏏ Basecamp."
     }
   },
   "ja": {
@@ -1163,7 +1165,8 @@
       "ezlongTitle": "投資AIツール ezlong.com",
       "ezlongDesc": "売買タイミングから引退設計まで",
       "note": "この設定は、あとから設定画面でいつでも変更できます。",
-      "cta": "はじめる"
+      "cta": "はじめる",
+      "note2": "2つの画面は ⌄ ezlong.com・⏏ Basecamp ボタンでいつでも行き来できます。"
     }
   },
   "ko": {
@@ -1548,7 +1551,8 @@
       "ezlongTitle": "투자AI도구 ezlong.com",
       "ezlongDesc": "미국주식 매매 타이밍부터 은퇴 설계까지",
       "note": "이후에도 언제나 설정에서 첫 화면을 바꿀 수 있습니다.",
-      "cta": "시작하기"
+      "cta": "시작하기",
+      "note2": "두 화면은 언제든 ⌄ ezlong.com · ⏏ Basecamp 버튼으로 오갈 수 있어요."
     }
   },
   "pt": {
@@ -1933,7 +1937,8 @@
       "ezlongTitle": "Ferramentas de IA em ezlong.com",
       "ezlongDesc": "Do momento de comprar ao plano de aposentadoria",
       "note": "Você pode mudar isso quando quiser nas Configurações.",
-      "cta": "Começar"
+      "cta": "Começar",
+      "note2": "Você pode alternar entre as duas telas quando quiser com os botões ⌄ ezlong.com e ⏏ Basecamp."
     }
   },
   "zh": {
@@ -2318,7 +2323,8 @@
       "ezlongTitle": "投资 AI 工具 ezlong.com",
       "ezlongDesc": "从买卖时机到退休规划",
       "note": "之后随时可以在设置中更改第一个画面。",
-      "cta": "开始"
+      "cta": "开始",
+      "note2": "两个画面随时可以用 ⌄ ezlong.com·⏏ Basecamp 按钮来回切换。"
     }
   }
 };

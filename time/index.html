@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260805-firstrun-v1">
+  <link rel="stylesheet" href="styles.css?v=20260805-shots-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -298,7 +298,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.45</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.49</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -920,8 +920,6 @@
   <script src="i18n/book-titles.js?v=20260728-i18n-v13"></script>
   <script src="i18n/quote-translations.js?v=20260728-i18n-v13"></script>
 
-  <script src="app.js?v=20260805-firstrun-v1"></script>
-
     <!-- 2026-08-05 성동님 요청 — 설치 후 첫 실행에서 첫 화면을 직접 고르게 한다.
          첫인상이라 목록으로 묻지 않고 미니 화면 두 개를 보여주고 고르게 했다.
          미리보기는 이미지가 아니라 CSS로 그린다(파일 증가 없음·항상 선명함).
@@ -935,13 +933,7 @@
 
         <div class="firstrun-options">
           <button class="firstrun-card is-selected" id="firstRunQuote" type="button" aria-pressed="true">
-            <span class="frp frp-quote" aria-hidden="true">
-              <span class="frp-top"><i class="frp-menu"></i><i class="frp-date"></i></span>
-              <span class="frp-clock"><i></i><i></i><i></i><i></i></span>
-              <span class="frp-row"><i class="frp-wx"></i><i class="frp-ctrl"></i><i class="frp-ctrl"></i></span>
-              <span class="frp-viz"><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u></span>
-              <span class="frp-quotebox"><i></i><i></i><i class="frp-short"></i></span>
-            </span>
+            <span class="firstrun-shot" aria-hidden="true"><img id="firstRunShotQuote" alt="" decoding="async" fetchpriority="high"></span>
             <span class="firstrun-card-body">
               <span class="firstrun-card-title" data-i18n="firstRun.quoteTitle">플립시계 + 날씨 + 음악플레이어 + 투자명저 문장</span>
               <span class="firstrun-card-desc" data-i18n="firstRun.quoteDesc">머리맡에 두는 조용한 화면</span>
@@ -950,11 +942,7 @@
           </button>
 
           <button class="firstrun-card" id="firstRunEzlong" type="button" aria-pressed="false">
-            <span class="frp frp-ez" aria-hidden="true">
-              <span class="frp-ez-bar"><i></i><b></b></span>
-              <span class="frp-ez-hero"><i></i><i class="frp-short"></i></span>
-              <span class="frp-ez-grid"><u></u><u></u><u></u><u></u></span>
-            </span>
+            <span class="firstrun-shot" aria-hidden="true"><img id="firstRunShotEzlong" alt="" decoding="async" fetchpriority="high"></span>
             <span class="firstrun-card-body">
               <span class="firstrun-card-title" data-i18n="firstRun.ezlongTitle">투자AI도구 ezlong.com</span>
               <span class="firstrun-card-desc" data-i18n="firstRun.ezlongDesc">미국주식 매매 타이밍부터 은퇴 설계까지</span>
@@ -963,9 +951,12 @@
           </button>
         </div>
 
+        <p class="firstrun-note firstrun-note-move" data-i18n="firstRun.note2">두 화면은 언제든 ⌄ ezlong.com · ⏏ Basecamp 버튼으로 오갈 수 있어요.</p>
         <p class="firstrun-note" data-i18n="firstRun.note">이후에도 언제나 설정에서 첫 화면을 바꿀 수 있습니다.</p>
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
+  <script src="app.js?v=20260805-shots-v1"></script>
+
   </body>
 </html>
