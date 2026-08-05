@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-08-05-23:20",
+      "timestamp_kst": "2026-08-05(수) 23:20 KST",
+      "key_event": {
+        "name": "AI·반도체 강세 지속",
+        "name_en": "Continued AI & Semiconductor Strength",
+        "time": "정규장",
+        "why": "주요 지수 상승 견인, 시장 심리 개선, 위험자산 선호",
+        "why_en": "Driving major indices, improving market sentiment, risk-on preference"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "AI·반도체 강세 및 중동 리스크 완화로 긍정 우위 지속. 13일 연속 긍정 우위.",
+      "summary_en": "Positive sentiment continues with AI/semiconductor strength and easing Mideast risks. 13th consecutive day of positive dominance.",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "AI·반도체 업종 강세",
+          "name_en": "AI & Semiconductor Sector Strength",
+          "desc": "NVDA 2.25% 상승, Arista Networks 실적 호조로 AI 수요 확인",
+          "desc_en": "NVDA up 2.25%, Arista Networks earnings confirm strong AI demand",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "중동 지정학적 리스크 완화",
+          "name_en": "Easing Middle East Geopolitical Risks",
+          "desc": "이란 핵 협상 기대감으로 유가 하락, 시장 불확실성 감소",
+          "desc_en": "Hopes for Iran deal drive oil prices down, reducing market uncertainty",
+          "category": "geopolitics"
+        },
+        {
+          "score": 10,
+          "name": "S&P 500 및 다우 사상 최고치",
+          "name_en": "S&P 500 & Dow at Record Highs",
+          "desc": "지수 상승세 지속, 투자 심리 개선 및 위험자산 선호",
+          "desc_en": "Indices continue to rise, improving investor sentiment and risk-on appetite",
+          "category": "vix_risk_sentiment"
+        },
+        {
+          "score": 10,
+          "name": "금 가격 상승",
+          "name_en": "Gold Price Increase",
+          "desc": "달러 약세 및 인플레이션 헤지 수요로 금 가격 2.44% 상승",
+          "desc_en": "Gold up 2.44% on weaker dollar and inflation hedge demand",
+          "category": "other"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "AI CapEx 과잉 지출 우려",
+          "name_en": "AI CapEx Overspending Concerns",
+          "desc": "SpaceX 및 Tesla 실적에서 CapEx 지출 우려 제기, 시장 경계심",
+          "desc_en": "Concerns over CapEx spending from SpaceX and Tesla earnings, market caution",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "ADP 고용 지표 둔화",
+          "name_en": "Softening ADP Employment Data",
+          "desc": "7월 민간 고용 4.4만 명 증가로 예상치 하회, 금리 인하 기대와 경기 둔화 우려 혼재",
+          "desc_en": "July private sector employment up 44k, below expectations, mixing rate cut hopes with recession fears",
+          "category": "macro_data"
+        }
+      ]
+    },
+    {
       "id": "2026-08-05-21:50",
       "timestamp_kst": "2026-08-05(수) 21:50 KST",
       "key_event": {
@@ -569,60 +637,8 @@
           "category": "macro_data"
         }
       ]
-    },
-    {
-      "id": "2026-08-04-21:50",
-      "timestamp_kst": "2026-08-04(화) 21:50 KST",
-      "key_event": {
-        "name": "반도체 업종 강한 회복세",
-        "name_en": "Strong Semiconductor Sector Recovery",
-        "time": "오늘 프리마켓",
-        "why": "SOXX 520달러 돌파, NVDA 강세, 과매도 해소",
-        "why_en": "SOXX breaks $520, NVDA strength, oversold relief"
-      },
-      "positive_total": 85,
-      "negative_total": 15,
-      "summary": "반도체 업종의 강한 회복세와 시장 전반의 긍정적 심리로 긍정 우위 지속.",
-      "summary_en": "Continued positive sentiment driven by strong semiconductor recovery and overall market optimism.",
-      "positive_factors": [
-        {
-          "score": 60,
-          "name": "미-이란 휴전 기대감",
-          "name_en": "US-Iran Truce Optimism",
-          "desc": "Bessent 이란 호르무즈 협상 발언에 다우 선물 급등, 지정학적 리스크 완화",
-          "desc_en": "Dow futures jump on Bessent's Iran Hormuz deal comments, easing geopolitical risks",
-          "category": "geopolitics"
-        },
-        {
-          "score": 25,
-          "name": "WTI 유가 급락",
-          "name_en": "WTI Crude Oil Plunge",
-          "desc": "WTI 유가 4.06% 하락, 인플레이션 압력 완화 및 기업 비용 감소 기대",
-          "desc_en": "WTI crude oil down 4.06%, easing inflation pressure and reducing corporate costs",
-          "category": "oil_energy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "일부 빅테크 약세",
-          "name_en": "Weakness in Some Big Tech",
-          "desc": "MSFT 1.27%, GOOGL 0.71% 하락, AI 지출 우려 및 매그니피센트 7 균열 조짐",
-          "desc_en": "MSFT down 1.27%, GOOGL down 0.71%, due to AI spending concerns and 'Magnificent Seven' fracture signs",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 관련 기업 실적 및 전망 혼조",
-          "name_en": "Mixed AI-Related Earnings and Outlooks",
-          "desc": "Caterpillar, Palantir 실적 호조에도 Google 임원은 AI 지출로 인한 수익 격차 경고",
-          "desc_en": "While Caterpillar and Palantir soar on earnings, Google exec warns of revenue gap from AI spending",
-          "category": "earnings_bellwether"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-05T12:51:11Z",
+  "updated_at": "2026-08-05T14:20:55Z",
   "max_entries": 10
 }
