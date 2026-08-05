@@ -8456,5 +8456,12 @@ window.investmentQuotes = [
     "title": "존 보글 가치투자의 원칙 (The Clash of the Cultures)",
     "author": "존 보글 (John C. Bogle)",
     "category": "patience"
+  },
+  {
+    "english": "The person that turns over the most rocks wins the game. And that's always been my philosophy.",
+    "text": "가장 많은 돌을 뒤집어보는 사람이 이 게임에서 승리한다. 그리고 그것이 언제나 나의 철학이었다.",
+    "title": "월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
   }
 ];
