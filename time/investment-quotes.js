@@ -8504,5 +8504,11 @@ window.investmentQuotes = [
     "title": "시장의 마법사들 (Market Wizards)",
     "author": "폴 튜더 존스 (잭 슈웨거 인터뷰집)",
     "category": "behavior"
+  },
+  {
+    "text": "'무소유'란 아무것도 갖지 않는다는 것이 아니라 불필요한 것을 갖지 않는다는 것입니다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
   }
 ];
