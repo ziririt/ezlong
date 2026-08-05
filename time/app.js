@@ -9541,9 +9541,9 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
         // 그 언어 사진이 없으면 영어판으로 한 번만 되짚는다(무한 루프 방지).
         if (img.dataset.fallback === "1") return;
         img.dataset.fallback = "1";
-        img.src = "assets/firstrun/en-" + pair[1] + ".webp";
+        img.src = "assets/firstrun/en-" + pair[1] + ".webp?v=2";
       }, { once: true });
-      img.src = "assets/firstrun/" + loc + "-" + pair[1] + ".webp";
+      img.src = "assets/firstrun/" + loc + "-" + pair[1] + ".webp?v=2";
     });
   })();
 
