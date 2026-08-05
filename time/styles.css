@@ -295,9 +295,19 @@ button { font: inherit; }
      막아주는 최소한의 여유(3% 고정)로만 남기고, 시간에 따라 커지는 확대
      자체는 제거했다. 기준점도 46%/42%(비대칭)에서 50%/50%(정중앙)로
      바로잡아 크롭이 좌우/상하 대칭이 되게 했다. */
-  transform: scale(1.03);
+  /* 2026-08-05 성동님 지적 — "배경사진이 실제로 움직이는 효과는 없애기로
+     했다. 해상도만 나빠 보인다." 맞다. 7/15에는 '시간에 따라 커지는 확대'만
+     걷어내고 3% 고정 확대 + 76초 드리프트(livingSky)는 남겨뒀는데, 그 둘이
+     아직 두 가지 대가를 치르고 있었다.
+       (1) 화질 — scale(1.03)은 cover가 이미 맞춰 놓은 사진을 한 번 더
+           리샘플링한다. 3%라도 선명도는 확실히 깎인다.
+       (2) 전력 — 76초짜리 무한 transform은 배경 전체를 매 프레임 GPU가
+           다시 합성하게 만든다. 침대맡에서 밤새 켜두는 앱에서 이건 작지 않다.
+     확대를 없애면 드리프트가 가장자리에 빈 배경을 노출시킬 위험도 함께
+     사라지므로, 3% 여유를 남길 이유 자체가 없어진다. 둘 다 제거한다.
+     사진은 이제 cover가 계산한 크기 그대로, 원본 화소로 정지해 있다. */
+  transform: none;
   transform-origin: 50% 50%;
-  animation: livingSky 76s ease-in-out infinite alternate;
   filter: saturate(1.04) contrast(1.03);
   opacity: 0;
   /* background(=position/size 포함)는 transition에서 뺐다. 사진마다 photoPosition/
