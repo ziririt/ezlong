@@ -5101,3 +5101,53 @@ body.is-android .flip-card {
   font-size: clamp(88px, 52.2cqi, 171px);   /* 기존의 90% */
   font-weight: 700;
 }
+
+
+/* ══════════════════════════════════════════════════════════════════
+   안드로이드 플립시계 숫자 — Inter (2026-08-05 성동님 요청)
+   ══════════════════════════════════════════════════════════════════
+   SF Pro는 애플 전용이라 실어 나를 수 없다. 무료 글꼴 중 SF Pro와 비례가
+   가장 가까운 것이 Inter(SIL 오픈폰트 라이선스)다. 숫자 열 개와 콜론만
+   잘라낸 3.3KB짜리 파일이라 부담이 없다.
+
+   font-display: block 인 이유 — 시계다. 글꼴이 늦게 도착해 숫자가 눈앞에서
+   바뀌면(FOUT) 그게 더 거슬린다. 잠깐 비워두고 제 모습으로 한 번에 그린다.
+
+   ★ 원복 ★ app.js markAndroidForClockFont 의 DEFAULT_CLOCK_FONT 를
+   "system" 으로 바꾸면 이 규칙이 통째로 꺼지고 아래 .is-android 규칙(10%
+   축소된 Roboto)으로 돌아간다. 파일은 남겨둬도 로드되지 않는다.
+   ────────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "FlipInter";
+  src: url("assets/fonts/inter-digits.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+  unicode-range: U+0030-003A;   /* 0~9 와 콜론만 */
+}
+
+body.is-android.clockfont-inter .flip-card {
+  font-family: "FlipInter", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  /* Inter의 숫자는 Roboto보다 폭이 좁고 획이 정갈해서, 10%까지 줄일 필요가
+     없다. 원래 크기의 96%로 되돌려 카드가 다시 넉넉해 보이게 한다. */
+  font-size: clamp(94px, 55.7cqi, 182px);
+  font-weight: 700;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   안드로이드 달력 (2026-08-05 성동님 지적 — "더 줄여야 할 듯")
+   ══════════════════════════════════════════════════════════════════
+   안드로이드 기기는 화면이 더 길고(1169×2600) 상·하단 시스템 바가 세로를
+   더 가져간다. 아이폰 기준으로 맞춘 달력이 여기서는 비주얼라이저와 하단
+   ezlong.com 버튼 사이를 꽉 채워버린다. 안드로이드에서만 한 단계 더 줄인다.
+   숫자 칸 26→22px(6줄이면 24px), 월 표기도 한 눈금 낮춘다. */
+body.is-android .calendar-day {
+  height: 22px;
+  font-size: 11.5px;
+}
+body.is-android .calendar-month-label {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+body.is-android .calendar-weekdays span { font-size: 10px; }
+body.is-android .calendar-panel { padding: 9px 10px 7px; }

@@ -2416,7 +2416,15 @@ function renderQuote(index, immediate = false) {
     let englishText, bodyText;
     if (koMode) {
       // ★ 한국어는 예전과 완전히 동일 ★ 120자 초과 원문 숨김 규칙 포함
-      englishText = rawEnglish.length > 120 ? "" : rawEnglish;
+      // 2026-08-05 성동님 제보(아이폰 문장박스가 비주얼라이저와 겹침) —
+      // 기존 규칙은 **영어 원문 길이만** 봤다. 그런데 실제로 박스를 넘치게
+      // 만드는 건 두 줄의 합이다. 원문이 84자로 짧아도 한국어 본문이 118자면
+      // 합쳐서 박스를 넘긴다(제보된 그 문장이 정확히 그랬다).
+      // 그래서 한국어 본문이 이미 긴 경우(95자 초과)에도 원문을 접는다 —
+      // 본문이 주인공이고 원문은 곁들이는 멋이니, 둘 중 하나를 접어야 한다면
+      // 접을 것은 원문 쪽이다.
+      const koBodyLen = (quote.text || "").length;
+      englishText = (rawEnglish.length > 120 || koBodyLen > 95) ? "" : rawEnglish;
       bodyText = quote.text;
     } else if (translated) {
       // 번역이 있는 언어 — 한국어 화면과 같은 두 줄 구성으로 돌려놓는다.
@@ -10170,6 +10178,21 @@ var bedsideActive = false;
 // 늘린다)에서 700(Roboto Bold 실물)으로 내린다 — 합성 굵기는 획이 뭉개진다.
 (function markAndroidForClockFont() {
   try {
-    if (/Android/i.test(navigator.userAgent)) document.body.classList.add("is-android");
+    if (!/Android/i.test(navigator.userAgent)) return;
+    document.body.classList.add("is-android");
+    // 2026-08-05 2차 — 성동님 요청으로 Inter(무료, SIL 오픈폰트 라이선스)를
+    // 숫자 열 개와 콜론만 잘라낸 3.3KB짜리 파일로 실어 붙인다. SF Pro와
+    // 비례가 가장 가까운 무료 글꼴이다.
+    //
+    // ★ 원복 방법 ★ — 아래 한 줄의 "inter"를 "system"으로 바꾸면 끝난다.
+    //   (기기에서 즉시 되돌리려면 localStorage 에
+    //    ezlong:clockFont = "system" 을 넣으면 된다. 그 값이 항상 우선한다.)
+    var DEFAULT_CLOCK_FONT = "inter";     // "inter" | "system"
+    var choice = DEFAULT_CLOCK_FONT;
+    try {
+      var saved = localStorage.getItem("ezlong:clockFont");
+      if (saved === "inter" || saved === "system") choice = saved;
+    } catch (error) { /* 무시 */ }
+    if (choice === "inter") document.body.classList.add("clockfont-inter");
   } catch (error) { /* 무시 */ }
 })();
