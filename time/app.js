@@ -10285,3 +10285,38 @@ var bedsideActive = false;
     } catch (error) { /* 감시 실패가 재생을 막으면 안 된다 */ }
   }, 1000);
 })();
+
+
+// ══════════════════════════════════════════════════════════════════
+// 비주얼라이저 레벨 브릿지 2단 게이트 — 웹 신호 (2026-08-05)
+// ══════════════════════════════════════════════════════════════════
+// 네이티브는 "앱이 화면에 떠 있는가"까지만 스스로 안다(1단, 2026-07-26).
+// 하지만 앱이 떠 있어도 비주얼라이저를 아무도 안 보는 시간이 훨씬 길다 —
+// 음악이 멈춰 있을 때, ezlong.com 페이지를 보고 있을 때, 침대맡 모드로
+// 화면이 어두울 때, 패널이 접혀 있을 때. 그건 웹만 안다. 그래서 알려준다.
+//
+// 판단은 isMusicVizActiveContext()가 이미 하고 있다(오늘 하루 조건을 모두
+// 모아둔 곳이다). 여기서는 그 결과가 바뀔 때만 네이티브에 한 줄 보낸다.
+// 매번 보내지 않는 이유 — 신호 자체가 프로세스 경계를 넘는 비용이라,
+// 아끼자고 만든 장치가 새 낭비가 되면 안 된다.
+//
+// 네이티브 하위호환: 이 신호를 한 번이라도 받은 뒤에만 지시를 따르고,
+// 받은 적 없으면 예전처럼 항상 켜둔다. 그래서 구버전 앱(iOS 1.2 등)에서는
+// 이 메시지가 그냥 무시되고 아무 일도 일어나지 않는다.
+(function setupVizStreamGate() {
+  if (!isNativeWrapper) return;
+  var lastSent = null;
+  function evaluate() {
+    var on;
+    try {
+      on = !!(isMusicVizActiveContext() && typeof musicPlaying !== "undefined" && musicPlaying);
+    } catch (error) {
+      on = true;    // 판단 실패 시엔 켜둔다 — 안 보이는 것보다 낫다
+    }
+    if (on === lastSent) return;
+    lastSent = on;
+    try { postToNativeRadio({ action: "vizStream", on: on }); } catch (error) { /* 무시 */ }
+  }
+  window.setInterval(evaluate, 1000);
+  evaluate();
+})();
