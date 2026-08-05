@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-04T12:48:09.114Z
+ * 생성 시각: 2026-08-05T00:27:16.669Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -14,9 +14,9 @@
   "en": {
     "settings": {
       "startPage": {
-        "heading": "Screen on launch",
-        "aria": "Choose the screen shown on launch",
-        "quote": "Investment quotes",
+        "heading": "First screen on launch",
+        "aria": "Choose the first screen on launch",
+        "quote": "Flip clock, weather, music & quotes",
         "ezlong": "AI tools at ezlong.com"
       },
       "title": "Settings",
@@ -384,14 +384,24 @@
           "title": "Investing without comparison"
         }
       }
+    },
+    "firstRun": {
+      "title": "Choose your first screen",
+      "subtitle": "This is where the app will open.",
+      "quoteTitle": "Flip clock + weather + music + investment quotes",
+      "quoteDesc": "The calm bedside screen",
+      "ezlongTitle": "AI tools at ezlong.com",
+      "ezlongDesc": "From market timing to retirement planning",
+      "note": "You can change this anytime in Settings.",
+      "cta": "Get started"
     }
   },
   "es": {
     "settings": {
       "startPage": {
-        "heading": "Pantalla al abrir",
-        "aria": "Elige la pantalla que se muestra al abrir",
-        "quote": "Citas de inversión",
+        "heading": "Primera pantalla al abrir",
+        "aria": "Elige la primera pantalla al abrir",
+        "quote": "Reloj, clima, música y frases",
         "ezlong": "Herramientas de IA en ezlong.com"
       },
       "title": "Ajustes",
@@ -759,14 +769,24 @@
           "title": "Invertir sin comparar"
         }
       }
+    },
+    "firstRun": {
+      "title": "Elige tu primera pantalla",
+      "subtitle": "La app se abrirá en esta pantalla.",
+      "quoteTitle": "Reloj + clima + música + frases de inversión",
+      "quoteDesc": "La pantalla tranquila de la mesa de noche",
+      "ezlongTitle": "Herramientas de IA en ezlong.com",
+      "ezlongDesc": "Del momento de comprar al plan de retiro",
+      "note": "Puedes cambiarla cuando quieras en Ajustes.",
+      "cta": "Empezar"
     }
   },
   "ja": {
     "settings": {
       "startPage": {
-        "heading": "起動時に表示する画面",
-        "aria": "起動時に表示する画面を選択",
-        "quote": "投資の名著の一節",
+        "heading": "起動時に最初に表示する画面",
+        "aria": "起動時に最初に表示する画面を選択",
+        "quote": "フリップ時計・天気・音楽・投資の名言",
         "ezlong": "投資AIツール ezlong.com"
       },
       "title": "設定",
@@ -1134,14 +1154,24 @@
           "title": "比べない投資"
         }
       }
+    },
+    "firstRun": {
+      "title": "最初に開く画面を選んでください",
+      "subtitle": "アプリを開くと、この画面から始まります。",
+      "quoteTitle": "フリップ時計＋天気＋音楽＋投資の名言",
+      "quoteDesc": "枕元に置く静かな画面",
+      "ezlongTitle": "投資AIツール ezlong.com",
+      "ezlongDesc": "売買タイミングから引退設計まで",
+      "note": "この設定は、あとから設定画面でいつでも変更できます。",
+      "cta": "はじめる"
     }
   },
   "ko": {
     "settings": {
       "startPage": {
-        "heading": "앱을 열면 보일 화면",
-        "aria": "앱을 열면 보일 화면 선택",
-        "quote": "투자명저 문장",
+        "heading": "앱을 열면 보일 첫 화면",
+        "aria": "앱을 열면 보일 첫 화면 선택",
+        "quote": "플립시계+날씨+음악플레이어+투자명저 문장 화면",
         "ezlong": "투자AI도구 ezlong.com"
       },
       "title": "설정",
@@ -1509,14 +1539,24 @@
           "title": "비교하지 않는 투자"
         }
       }
+    },
+    "firstRun": {
+      "title": "첫 화면을 골라주세요",
+      "subtitle": "앱을 열면 이 화면부터 시작합니다.",
+      "quoteTitle": "플립시계 + 날씨 + 음악플레이어 + 투자명저 문장",
+      "quoteDesc": "머리맡에 두는 조용한 화면",
+      "ezlongTitle": "투자AI도구 ezlong.com",
+      "ezlongDesc": "미국주식 매매 타이밍부터 은퇴 설계까지",
+      "note": "이후에도 언제나 설정에서 첫 화면을 바꿀 수 있습니다.",
+      "cta": "시작하기"
     }
   },
   "pt": {
     "settings": {
       "startPage": {
-        "heading": "Tela ao abrir",
-        "aria": "Escolha a tela exibida ao abrir",
-        "quote": "Citações de investimento",
+        "heading": "Primeira tela ao abrir",
+        "aria": "Escolha a primeira tela ao abrir",
+        "quote": "Relógio, clima, música e frases",
         "ezlong": "Ferramentas de IA em ezlong.com"
       },
       "title": "Configurações",
@@ -1884,14 +1924,24 @@
           "title": "Investir sem comparar"
         }
       }
+    },
+    "firstRun": {
+      "title": "Escolha sua primeira tela",
+      "subtitle": "O app vai abrir nesta tela.",
+      "quoteTitle": "Relógio + clima + música + frases de investimento",
+      "quoteDesc": "A tela calma da mesa de cabeceira",
+      "ezlongTitle": "Ferramentas de IA em ezlong.com",
+      "ezlongDesc": "Do momento de comprar ao plano de aposentadoria",
+      "note": "Você pode mudar isso quando quiser nas Configurações.",
+      "cta": "Começar"
     }
   },
   "zh": {
     "settings": {
       "startPage": {
-        "heading": "打开应用时显示的画面",
-        "aria": "选择打开应用时显示的画面",
-        "quote": "投资名著语句",
+        "heading": "打开应用时最先显示的画面",
+        "aria": "选择打开应用时最先显示的画面",
+        "quote": "翻页时钟・天气・音乐・投资金句",
         "ezlong": "投资 AI 工具 ezlong.com"
       },
       "title": "设置",
@@ -2259,6 +2309,16 @@
           "title": "不比较的投资"
         }
       }
+    },
+    "firstRun": {
+      "title": "请选择最先打开的画面",
+      "subtitle": "打开应用时将从这个画面开始。",
+      "quoteTitle": "翻页时钟＋天气＋音乐＋投资金句",
+      "quoteDesc": "放在床头的安静画面",
+      "ezlongTitle": "投资 AI 工具 ezlong.com",
+      "ezlongDesc": "从买卖时机到退休规划",
+      "note": "之后随时可以在设置中更改第一个画面。",
+      "cta": "开始"
     }
   }
 };

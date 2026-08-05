@@ -2234,18 +2234,13 @@ function requestCurrentWeather() {
   return new Promise((resolve) => {
     // 2026-08-04 — 성공 콜백을 이름 있는 함수로 분리: 아래 onGeoError의
     // "캐시 좌표 즉시 사용" 폴백이 같은 경로를 그대로 재사용한다.
-    const onCoords = async ({ coords }, opts) => {
-        const approx = !!(opts && opts.approx);
+    const onCoords = async ({ coords }) => {
         try {
           const { latitude, longitude } = coords;
           userCoords = { lat: latitude, lng: longitude };
           // 2026-08-04 — 다음 실행에서 안드로이드 위치 타임아웃이 나도
           // 즉시 날씨를 그릴 수 있도록 마지막 성공 좌표를 기억해둔다.
-          // 2026-08-05 — 단, 폴백 좌표(approx)는 저장하지 않는다. 저장하면
-          // 실패 한 번이 "마지막으로 알던 위치"로 굳어 계속 재사용된다.
-          if (!approx) {
-            try { localStorage.setItem("ezlong:lastWeatherCoords", JSON.stringify(userCoords)); } catch (e) {}
-          }
+          try { localStorage.setItem("ezlong:lastWeatherCoords", JSON.stringify(userCoords)); } catch (e) {}
           const location = await reverseGeocode(latitude, longitude);
           // 2026-07-21: 이 fetchWeatherJson 호출은 fetchWeatherDetail()이 바로
           // 뒤이어 다시 부르는 /api/weather/current와 같은 엔드포인트다 —
@@ -2287,32 +2282,34 @@ function requestCurrentWeather() {
         resolve();
     };
     const onGeoError = () => {
-        // 2026-08-04 — 안드로이드 WebView는 첫 위치 fix가 느려 타임아웃에
-        // 자주 걸린다(iOS는 CoreLocation 캐시로 즉시). 지난번 성공 좌표가
-        // 있으면 그걸로 즉시 그리고, 진짜 fix는 watch가 늦게라도 받아
-        // 자동 갱신한다.
+        // 2026-08-04 — 안드로이드 WebView는 첫 위치 fix가 느려 9초
+        // 타임아웃에 자주 걸린다(iOS는 CoreLocation 캐시로 즉시). 지난번
+        // 성공 좌표가 있으면 그걸로 즉시 그리고, 진짜 fix는 watch가
+        // 늦게라도 받아 자동 갱신한다.
         startLateGeoWatch();
         let cached = null;
         try { cached = JSON.parse(localStorage.getItem("ezlong:lastWeatherCoords") || "null"); } catch (e) { cached = null; }
-        const usable = cached && typeof cached.lat === "number" && typeof cached.lng === "number";
-        // 2026-08-05 성동님 제보 — 캐시 좌표가 없으면 예전에는 여기서 상단
-        // 한줄이 "--° / 위치 권한 필요"로 끝났다. 그런데 바로 아래
-        // fetchWeatherDetail()은 DEFAULT 좌표로 상세 패널을 정상 로드해서,
-        // 상단은 "--°"인데 상세는 다른 도시 날씨가 뜨는 모순이 났다.
-        // 게다가 권한이 실제로는 허용돼 있고 fix만 늦은 경우에도 "권한 필요"
-        // 라고 말해 원인을 오도했다. 이제는 폴백 좌표로 상단까지 같이 그린다 —
-        // 상단과 상세가 항상 같은 좌표를 쓰고, 늦은 fix가 오면 조용히 교체된다.
-        const fallback = usable ? cached : DEFAULT_WEATHER_COORDS;
-        onCoords(
-          { coords: { latitude: fallback.lat, longitude: fallback.lng } },
-          { approx: !usable }
-        );
+        if (cached && typeof cached.lat === "number" && typeof cached.lng === "number") {
+          onCoords({ coords: { latitude: cached.lat, longitude: cached.lng } });
+          return;
+        }
+        userCoords = DEFAULT_WEATHER_COORDS;
+        weatherState = {
+      location: t("weather.defaultLocation", null, "서울"),
+      temp: "--°",
+      summary: t("weather.permissionNeeded", null, "위치 권한 필요"),
+      icon: "sun-icon",
+      tag: "clear"
+    };
+        weatherResolved = true;
+        renderWeather();
+        fetchWeatherDetail();
+        if (activeScene) setScene(activeScene, { syncDots: true, force: true });
+        resolve();
     };
     navigator.geolocation.getCurrentPosition(onCoords, onGeoError, {
       enableHighAccuracy: false,
-      // 2026-08-05 — 안드로이드(특히 에뮬레이터)는 첫 fix가 9초를 넘기는 일이
-      // 흔하다. 네이티브 래퍼에서만 넉넉히 잡는다 — 브라우저는 기존대로.
-      timeout: isAndroidNativeWrapper() ? 20000 : 9000,
+      timeout: 9000,
       maximumAge: 10 * 60 * 1000
     });
   });
@@ -9416,4 +9413,99 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
       try { goToPage(1); } catch (error) { /* 전환 실패는 무시 — 문장 화면 유지 */ }
     }, 900);
   }
+})();
+
+
+// ══════════════════════════════════════════════════════════════════
+// 첫 실행 — 첫 화면 선택 (2026-08-05 성동님 요청)
+// ══════════════════════════════════════════════════════════════════
+// 언제 뜨는가: 이 기기에서 아직 한 번도 답하지 않았을 때만, 딱 한 번.
+//   · 이미 설정에서 첫 화면을 고른 적이 있는 사람에게는 묻지 않는다
+//     (ezlong:startPage 값이 있으면 '이미 답한 것'으로 본다).
+//   · 브랜드 시작 화면(네이티브 오버레이)이 걷힌 뒤에 올라온다 — 두 개가
+//     겹치면 어느 쪽도 인상에 남지 않는다.
+//
+// 조작감: 카드 선택은 pointerdown에서 즉시 반응하고(§1), 같은 순간에
+// 햅틱을 울린다(§13 harmony — 시각과 촉각이 같은 프레임에).
+(function setupFirstRunChoice() {
+  const ASKED_KEY = "ezlong:startPageAsked";
+  const sheet = document.getElementById("firstRunSheet");
+  if (!sheet) return;
+
+  let answered = false;
+  try {
+    answered = localStorage.getItem(ASKED_KEY) === "1"
+      || localStorage.getItem(startPageStorageKey) !== null;
+  } catch (error) {
+    answered = false;
+  }
+  if (answered) return;
+
+  const cardQuote = document.getElementById("firstRunQuote");
+  const cardEzlong = document.getElementById("firstRunEzlong");
+  const cta = document.getElementById("firstRunStart");
+  if (!cardQuote || !cardEzlong || !cta) return;
+
+  let choice = "quote"; // 기본값 — 문장 화면(기존 동작과 동일)
+
+  function paint() {
+    const pairs = [[cardQuote, "quote"], [cardEzlong, "ezlong"]];
+    pairs.forEach(([el, value]) => {
+      const on = choice === value;
+      el.classList.toggle("is-selected", on);
+      el.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+
+  function select(value) {
+    if (choice === value) return;
+    choice = value;
+    paint();
+    try { postToNativeHaptic("light"); } catch (error) { /* 진동 실패는 무시 */ }
+  }
+
+  // 응답은 눌리는 순간에. click까지 기다리면 손끝에서 반 박자 늦게 느껴진다.
+  cardQuote.addEventListener("pointerdown", () => select("quote"));
+  cardEzlong.addEventListener("pointerdown", () => select("ezlong"));
+  // 키보드/보조기술 경로도 막지 않는다.
+  cardQuote.addEventListener("click", () => select("quote"));
+  cardEzlong.addEventListener("click", () => select("ezlong"));
+
+  function open() {
+    sheet.hidden = false;
+    // 다음 프레임에 클래스를 붙여야 전환이 실제로 재생된다.
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      sheet.classList.add("is-open");
+      try { cta.focus({ preventScroll: true }); } catch (error) { /* 무시 */ }
+    }));
+  }
+
+  function close() {
+    sheet.classList.remove("is-open");
+    sheet.classList.add("is-closing");
+    window.setTimeout(() => {
+      sheet.hidden = true;
+      sheet.classList.remove("is-closing");
+    }, 420);
+  }
+
+  cta.addEventListener("click", () => {
+    try { saveStartPage(choice); } catch (error) { /* 무시 */ }
+    try { localStorage.setItem(ASKED_KEY, "1"); } catch (error) { /* 무시 */ }
+    try { postToNativeHaptic("light"); } catch (error) { /* 무시 */ }
+    if (typeof window.syncStartPageUi === "function") {
+      try { window.syncStartPageUi(); } catch (error) { /* 무시 */ }
+    }
+    close();
+    if (choice === "ezlong") {
+      // 시트가 내려가는 길과 화면 전환이 겹치지 않게 한 박자 뒤에.
+      window.setTimeout(() => {
+        try { goToPage(1); } catch (error) { /* 전환 실패는 무시 */ }
+      }, 320);
+    }
+  });
+
+  paint();
+  // 브랜드 시작 화면이 걷히는 시간(네이티브 onPageFinished)을 지나서.
+  window.setTimeout(open, 1150);
 })();
