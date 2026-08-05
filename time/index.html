@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260805-footer-v1">
+  <link rel="stylesheet" href="styles.css?v=20260805-vizflat-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -99,6 +99,18 @@
                    않으므로, 이 정적 엘리먼트는 지워지지 않고 항상 막대들보다
                    먼저(즉, 그 위에 겹쳐) 그려진다. -->
               <div class="music-leave-work" id="musicLeaveWork" aria-hidden="true">Clock out, live up.</div>
+              <!-- 2026-08-05 성동님 요청 — 음악이 멈춰 있을 때 비주얼라이저
+                   한가운데에 뜨는 크고 투명한 재생 버튼. 재생이 시작되면
+                   스스로 물러난다(app.js musicToggle의 is-playing 토글이
+                   .music-info-panel에 is-music-playing을 함께 건다). -->
+              <!-- 2026-08-05 — 비충전 상태에서 비주얼라이저를 다시 펼쳤을 때
+                   10초간 뜨는 안내. 자꾸 접히기만 하면 고장으로 읽힌다. -->
+              <div class="viz-guard-note" id="vizGuardNote" aria-live="polite" hidden></div>
+              <button class="viz-play-cue" id="vizPlayCue" type="button" data-i18n-aria="music.play" aria-label="음악 재생">
+                <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                  <path d="M19 14.5 L34 24 L19 33.5 Z" fill="currentColor" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/>
+                </svg>
+              </button>
             </div>
             <div class="music-progress-bar" id="musicProgressBar" aria-hidden="true">
               <div class="music-progress-fill" id="musicProgressFill"></div>
@@ -306,7 +318,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.53</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.56</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -984,7 +996,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260805-footer-v1"></script>
+  <script src="app.js?v=20260805-vizflat-v1"></script>
 
   </body>
 </html>

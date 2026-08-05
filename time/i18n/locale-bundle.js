@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-05T01:26:54.743Z
+ * 생성 시각: 2026-08-05T01:34:03.772Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -290,7 +290,8 @@
       "playAction": "Play",
       "categoriesShort": {
         "acoustic": "Acoustic"
-      }
+      },
+      "vizChargingHint": "The visualizer is best used while charging — it drains the battery quickly."
     },
     "quote": {
       "aria": "Quote of the day",
@@ -688,7 +689,8 @@
       "playAction": "Reproducir",
       "categoriesShort": {
         "acoustic": "Acústica"
-      }
+      },
+      "vizChargingHint": "Te recomendamos usar el visualizador mientras cargas: consume batería rápido."
     },
     "quote": {
       "aria": "Frase del día",
@@ -1086,7 +1088,8 @@
       "playAction": "再生",
       "categoriesShort": {
         "acoustic": "アコースティック"
-      }
+      },
+      "vizChargingHint": "ビジュアライザーは充電中のご利用をおすすめします。バッテリーの消費が速くなります。"
     },
     "quote": {
       "aria": "今日の言葉",
@@ -1484,7 +1487,8 @@
       "playAction": "재생",
       "categoriesShort": {
         "acoustic": "어쿠스틱"
-      }
+      },
+      "vizChargingHint": "비주얼라이저는 충전 중에 사용하시길 권합니다. 배터리를 빠르게 씁니다."
     },
     "quote": {
       "aria": "오늘의 한 문장",
@@ -1882,7 +1886,8 @@
       "playAction": "Tocar",
       "categoriesShort": {
         "acoustic": "Acústica"
-      }
+      },
+      "vizChargingHint": "Recomendamos usar o visualizador enquanto carrega — ele gasta bateria rápido."
     },
     "quote": {
       "aria": "Frase do dia",
@@ -2280,7 +2285,8 @@
       "playAction": "播放",
       "categoriesShort": {
         "acoustic": "原声"
-      }
+      },
+      "vizChargingHint": "建议在充电时使用可视化效果。它会较快消耗电量。"
     },
     "quote": {
       "aria": "今日语句",

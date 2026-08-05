@@ -4896,3 +4896,142 @@ body.is-bedside .special-info-text {
 @media (prefers-reduced-motion: reduce) {
   .webview-hist:active, .webview-top:active { scale: 1; translate: 0 0; }
 }
+
+
+/* ══════════════════════════════════════════════════════════════════
+   비주얼라이저 한가운데의 재생 버튼 (2026-08-05 성동님 요청)
+   ══════════════════════════════════════════════════════════════════
+   비주얼라이저가 기본으로 펼쳐지게 되면서, 음악이 꺼져 있을 때 그 자리는
+   "잔잔하게 숨쉬는 무지개 띠"로만 보인다 — 여기서 소리가 난다는 걸 알
+   길이 없다. 빈 무대 한가운데 놓인 재생 버튼 하나가 그 말을 대신한다.
+
+   불투명한 원을 얹으면 비주얼라이저를 가린다. 유리처럼 비치게 해서 막대가
+   원을 통과해 보이게 했다 — 가리는 게 아니라 겹쳐 놓는다.
+   ────────────────────────────────────────────────────────────────── */
+.viz-play-cue {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  z-index: 3;                     /* 막대(1)와 '퇴근' 문구(2) 위 */
+  display: grid;
+  place-items: center;
+  /* 비주얼라이저 높이(48~85px)에 붙어 자란다 — 어느 기기에서도 "한가운데
+     크게"가 성립하도록 고정 px가 아니라 비율로 잡는다. */
+  width: clamp(38px, 7.4vh, 62px);
+  height: clamp(38px, 7.4vh, 62px);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+
+  /* 유리 원 — 위 모서리에 빛이 걸리고, 아래로 갈수록 어둡게 가라앉는다.
+     backdrop-filter는 쓰지 않는다(막대를 뭉개지 않기 위해, 그리고 상시
+     노출 요소의 blur는 GPU 합성 비용의 주범이라 침대맡 모드 취지에도 어긋난다). */
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04) 48%, rgba(0,0,0,0.10)),
+    rgba(255,255,255,0.06);
+  box-shadow:
+    inset 0 0.5px 0 rgba(255,255,255,0.42),
+    inset 0 0 0 0.5px rgba(255,255,255,0.20),
+    0 6px 18px rgba(0,0,0,0.28);
+  color: rgba(255,255,255,0.88);
+
+  transition:
+    opacity 320ms ease,
+    scale 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 200ms ease;
+}
+
+.viz-play-cue svg {
+  width: 46%;
+  height: 46%;
+  /* 삼각형은 시각적으로 왼쪽이 무거워 정중앙에 두면 왼쪽으로 쏠려 보인다.
+     광학 중심을 맞춰 오른쪽으로 살짝 민다 — 재생 아이콘의 기본 보정이다. */
+  translate: 6% 0;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.45));
+}
+
+/* 초대의 리듬 — 하단 ⌄와 같은 문법. 두 번 숨쉬고 4초쯤 쉰다.
+   쉼 없는 맥동은 몇 초 만에 배경이 된다. */
+.viz-play-cue::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: vizPlayCueHalo 5.6s ease-out infinite;
+}
+
+@keyframes vizPlayCueHalo {
+  0%   { box-shadow: 0 0 0 0 rgba(255,255,255,0.00); }
+  5%   { box-shadow: 0 0 0 0 rgba(255,255,255,0.26); }
+  20%  { box-shadow: 0 0 0 13px rgba(255,255,255,0.00); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.00); }
+}
+
+/* 응답은 손끝이 닿는 순간(§1). */
+.viz-play-cue:active {
+  scale: 0.92;
+  filter: brightness(1.16);
+  transition-duration: 90ms;
+}
+
+/* 음악이 시작되면 물러난다. 툭 꺼지면 "버튼이 없어졌다"가 되고,
+   살짝 커지면서 흩어지면 "음악에 자리를 내줬다"가 된다. 후자로. */
+.music-info-panel.is-music-playing .viz-play-cue {
+  opacity: 0;
+  scale: 1.22;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viz-play-cue::after { animation: none; }
+  .viz-play-cue:active { scale: 1; }
+  .music-info-panel.is-music-playing .viz-play-cue { scale: 1; }
+}
+@media (prefers-contrast: more) {
+  .viz-play-cue {
+    background: rgba(10, 16, 26, 0.62);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.62), 0 6px 18px rgba(0,0,0,0.4);
+    color: #fff;
+  }
+}
+
+
+/* 비충전 안내 — 비주얼라이저 위에 10초. 막대를 가리지 않도록 배경은
+   아주 옅게만 깔고, 글자에 그림자를 줘서 어떤 사진 위에서도 읽히게 한다. */
+.viz-guard-note {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 4;                       /* 재생 버튼(3)보다도 위 */
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: rgba(8, 13, 22, 0.42);
+  box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.14);
+  text-align: center;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.65);
+  word-break: keep-all;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease, translate 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.viz-guard-note[hidden] { display: none; }
+.viz-guard-note.is-shown { opacity: 1; }
+
+/* 안내가 떠 있는 동안 재생 버튼은 자리를 비켜준다 — 둘이 겹치면 둘 다 안 읽힌다. */
+.music-info-panel.is-guard-note .viz-play-cue { opacity: 0.16; }
+
+@media (prefers-contrast: more) {
+  .viz-guard-note { background: rgba(8, 13, 22, 0.86); color: #fff; }
+}

@@ -5030,9 +5030,12 @@ function saveMusicPanelPreferredOpen(open) {
   try { localStorage.setItem(musicPanelOpenStorageKey, open ? "1" : "0"); } catch (error) {}
 }
 
-function setMusicPanelOpen(open) {
+function setMusicPanelOpen(open, persist) {
   if (!musicInfoPanel) return;
-  saveMusicPanelPreferredOpen(open);
+  // persist가 명시적으로 false면 취향으로 기억하지 않는다 — 배터리 보호로
+  // 자동으로 접는 경우가 그렇다(2026-08-05). 자동 조작을 사용자의 선택으로
+  // 기억하면 다음 실행에서 기본 노출이 통째로 무너진다.
+  if (persist !== false) saveMusicPanelPreferredOpen(open);
   musicInfoPanel.classList.toggle("is-open", open);
   musicInfoPanel.setAttribute("aria-hidden", String(!open));
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", String(open));
@@ -5961,6 +5964,22 @@ function ensureMusicVizGraph() {
 
 // 오디오 그래프를 못 쓰는 예외적 환경을 위한 잔잔한 폴백 웨이브. 실제
 // 소리는 대부분 정상 분석되므로 이 분기는 안전장치 성격이 강하다.
+// 2026-08-05 성동님 지시 — 음악이 멈춰 있을 때의 모습. 사인파도 반짝임도
+// 없이, 막대가 있던 자리에서 바닥까지 스르르 내려앉는다. 다 내려앉으면
+// true를 돌려주고, 호출자는 그때 rAF 루프 자체를 끝낸다(정지 화면을
+// 60fps로 다시 그릴 이유가 없다 — 배터리).
+function drawMusicVizFlat(h) {
+  const FLOOR = 3;
+  let settled = true;
+  for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
+    musicVizBars[i] += (FLOOR - musicVizBars[i]) * 0.18;
+    if (Math.abs(musicVizBars[i] - FLOOR) > 0.4) settled = false;
+    musicVizIntensity[i] = Math.min(1, musicVizBars[i] / h);
+  }
+  writeVizBarsToDom();
+  return settled;
+}
+
 function drawMusicVizIdle(h) {
   musicVizIdlePhase += 0.045;
   // 2026-07-22 유저 요청 — 유휴(대기) 애니메이션 스타일 3종. 실제 오디오
@@ -6200,6 +6219,19 @@ function drawMusicViz() {
   musicVizAnimId = requestAnimationFrame(drawMusicViz);
 
   const h = (musicVizWrap && musicVizWrap.clientHeight) || (musicVizPreviewWrap && musicVizPreviewWrap.clientHeight) || 52;
+
+  // 2026-08-05 — 음악이 멈춰 있으면 바닥에 깔린다(성동님 지시).
+  // 설정 화면의 미리보기는 예외 — 거기서는 색·감도를 고르는 중이라
+  // 움직임이 보여야 고를 수 있다.
+  const vizSettingsOpen = Boolean(settingsPanel && settingsPanel.classList.contains("is-open"));
+  if (!vizSettingsOpen && typeof musicPlaying !== "undefined" && !musicPlaying) {
+    if (drawMusicVizFlat(h)) {
+      // 다 내려앉았다 — 여기서 루프를 끝낸다.
+      if (musicVizAnimId) cancelAnimationFrame(musicVizAnimId);
+      musicVizAnimId = null;
+    }
+    return;
+  }
 
   if (isNativeWrapper) {
     drawMusicVizNative(h);
@@ -6702,6 +6734,14 @@ function renderMusicToggle() {
   syncContinuousPlaybackWatchdog();
   if (!musicToggle) return;
   musicToggle.classList.toggle("is-playing", musicPlaying);
+  // 2026-08-05 — 비주얼라이저 한가운데의 큰 재생 버튼은 "멈춰 있을 때만"
+  // 보인다. 상태를 패널에 얹어두면 CSS 한 줄로 나타났다 물러난다.
+  if (musicInfoPanel) musicInfoPanel.classList.toggle("is-music-playing", musicPlaying);
+  // 2026-08-05 — 정지 상태에서는 rAF 루프를 아예 꺼두므로(위 drawMusicViz의
+  // 가라앉기 분기), 재생이 시작되는 이 순간에 다시 깨워줘야 한다.
+  try {
+    if (musicPlaying && isMusicVizActiveContext() && !musicVizAnimId) drawMusicViz();
+  } catch (error) { /* 무시 */ }
   musicToggle.setAttribute("aria-pressed", String(musicPlaying));
   musicToggle.setAttribute(
     "aria-label",
@@ -9758,6 +9798,126 @@ var bedsideActive = false;
     topBtn.addEventListener("click", function () {
       try { postToNativeHaptic("light"); } catch (error) { /* 무시 */ }
       ask("scrollToTop");
+    });
+  }
+})();
+
+
+// 2026-08-05 — 비주얼라이저 한가운데의 큰 재생 버튼. 작은 ▶를 정확히
+// 겨누지 않아도, 비주얼라이저 한가운데를 누르면 음악이 시작된다.
+(function setupVizPlayCue() {
+  var cue = document.getElementById("vizPlayCue");
+  if (!cue) return;
+  cue.addEventListener("click", function (event) {
+    // 패널 자체의 클릭 핸들러(stopPropagation)와 얽히지 않게 여기서 끊는다.
+    event.stopPropagation();
+    try { postToNativeHaptic("light"); } catch (error) { /* 무시 */ }
+    try { toggleMusic(); } catch (error) { /* 무시 */ }
+  });
+  // 부팅 직후 한 번 — 이미 재생 중인 상태로 복원됐을 수 있다.
+  try {
+    if (musicInfoPanel && typeof musicPlaying !== "undefined") {
+      musicInfoPanel.classList.toggle("is-music-playing", !!musicPlaying);
+    }
+  } catch (error) { /* 무시 */ }
+})();
+
+
+// ══════════════════════════════════════════════════════════════════
+// 비충전 상태의 비주얼라이저 자동 접기 — 2026-08-05 성동님 제안
+// ══════════════════════════════════════════════════════════════════
+// 처음 몇 곡은 보여주고(발견), 그 뒤에는 조용히 접는다(절전).
+// 충전 중이면 접지 않는다 — 전기가 들어오는 동안은 아낄 이유가 없다.
+(function setupVizBatteryGuard() {
+  var SONGS_BEFORE_COLLAPSE = 3;   // "몇 곡" — 세 곡이면 충분히 봤다
+  var NOTE_MS = 10000;             // 안내는 10초
+  var note = document.getElementById("vizGuardNote");
+  var titleEl = document.getElementById("musicTrackTitle");
+  if (!musicInfoPanel) return;
+
+  var songsSinceOpen = 0;
+  var lastTitle = "";
+  var noteTimer = null;
+  var batteryCharging = null;      // true | false | null(모름)
+
+  // ── 충전 여부 ────────────────────────────────────────────────────
+  // 네이티브가 알려준 값이 최우선이다(iOS 1.3에서 채워줄 예정).
+  // 그 다음이 Battery Status API. 둘 다 없으면 "모름"이고, 모름은
+  // 비충전으로 간주한다 — 배터리에 보수적인 쪽이 안전하다.
+  function isCharging() {
+    try {
+      if (typeof window.__FLIPZEN_CHARGING__ === "boolean") return window.__FLIPZEN_CHARGING__;
+    } catch (error) { /* 무시 */ }
+    return batteryCharging === true;
+  }
+  try {
+    if (navigator.getBattery) {
+      navigator.getBattery().then(function (b) {
+        batteryCharging = !!b.charging;
+        b.addEventListener("chargingchange", function () {
+          batteryCharging = !!b.charging;
+          if (batteryCharging) songsSinceOpen = 0; // 꽂는 순간 카운트는 없던 일로
+        });
+      }).catch(function () { /* 무시 */ });
+    }
+  } catch (error) { /* 무시 */ }
+
+  // ── 안내 문구 ────────────────────────────────────────────────────
+  function showGuardNote() {
+    if (!note) return;
+    note.textContent = t("music.vizChargingHint", null,
+      "비주얼라이저는 충전 중에 사용하시길 권합니다. 배터리를 빠르게 씁니다.");
+    note.hidden = false;
+    musicInfoPanel.classList.add("is-guard-note");
+    // 다음 프레임에 클래스를 붙여야 전환이 실제로 재생된다.
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { note.classList.add("is-shown"); });
+    });
+    if (noteTimer) window.clearTimeout(noteTimer);
+    noteTimer = window.setTimeout(function () {
+      note.classList.remove("is-shown");
+      musicInfoPanel.classList.remove("is-guard-note");
+      window.setTimeout(function () { note.hidden = true; }, 320);
+    }, NOTE_MS);
+  }
+
+  // ── 곡이 바뀔 때마다 센다 ────────────────────────────────────────
+  // 내부 재생 함수에 갈고리를 거는 대신 제목 변화를 본다. 곡 전환 경로가
+  // 여럿(수동 스킵/크로스페이드/네이티브 autoAdvanced)이라, 어느 길로
+  // 왔든 결국 제목이 바뀐다는 사실 하나만 보는 편이 빠뜨림이 없다.
+  function onSongChanged() {
+    if (!isMusicPanelOpen()) return;
+    if (isCharging()) { songsSinceOpen = 0; return; }
+    songsSinceOpen += 1;
+    if (songsSinceOpen >= SONGS_BEFORE_COLLAPSE) {
+      songsSinceOpen = 0;
+      // persist=false — 이건 사용자의 선택이 아니라 배터리 보호다.
+      try { setMusicPanelOpen(false, false); } catch (error) { /* 무시 */ }
+    }
+  }
+
+  if (titleEl && typeof MutationObserver === "function") {
+    lastTitle = (titleEl.textContent || "").trim();
+    new MutationObserver(function () {
+      var now = (titleEl.textContent || "").trim();
+      if (!now || now === lastTitle) return;
+      lastTitle = now;
+      onSongChanged();
+    }).observe(titleEl, { childList: true, characterData: true, subtree: true });
+  }
+
+  // ── 사용자가 손으로 다시 펼쳤을 때만 안내한다 ────────────────────
+  // 부팅 직후의 기본 노출에서는 뜨지 않는다 — 매번 뜨면 잔소리가 된다.
+  var noteBtn = document.getElementById("musicSettingsOpen");
+  if (noteBtn) {
+    noteBtn.addEventListener("click", function () {
+      // 이 핸들러는 handleMusicIconTap 다음에 붙으므로, 이 시점의 패널
+      // 상태가 곧 "방금 펼쳤는가"다.
+      window.setTimeout(function () {
+        if (!isMusicPanelOpen()) return;
+        songsSinceOpen = 0;
+        if (!isCharging()) showGuardNote();
+      }, 0);
     });
   }
 })();
