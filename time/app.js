@@ -5012,7 +5012,19 @@ function isMusicVizActiveContext() {
   // 2026-08-05 — 침대맡 모드에서는 그리지 않는다. 화면이 어두워 보이지도
   // 않는데 60fps로 계속 그리는 건 순수한 낭비다(Fable 5 작업 5-1·5-2).
   if (typeof bedsideActive !== "undefined" && bedsideActive) return false;
-  return isMusicPanelOpen() || Boolean(settingsPanel && settingsPanel.classList.contains("is-open"));
+  // 2026-08-05 성동님 지적 — 문서가 안 보이면(다른 앱 전환·화면 잠금)
+  // 그릴 이유가 없다. 브라우저가 대개 rAF를 재워주지만 '대개'에 기대지
+  // 않는다 — 웹뷰 구현마다 다르고, 이 프로젝트는 그 차이에 여러 번 데였다.
+  try {
+    if (document.visibilityState === "hidden") return false;
+  } catch (error) { /* 무시 */ }
+  // 설정 시트가 열려 있으면 그 안의 미리보기를 위해 계속 돈다(페이지와 무관).
+  if (settingsPanel && settingsPanel.classList.contains("is-open")) return true;
+  // ezlong.com 페이지(2페이지)를 보는 중이면 비주얼라이저는 화면 밖이다.
+  try {
+    if (typeof currentPageIndex !== "undefined" && currentPageIndex >= 1) return false;
+  } catch (error) { /* 무시 */ }
+  return isMusicPanelOpen();
 }
 
 // 2026-08-05 성동님 요청 — "사람들이 비주얼라이저를 켤 수 있다는 걸 모른다."
@@ -9920,4 +9932,28 @@ var bedsideActive = false;
       }, 0);
     });
   }
+})();
+
+
+// 2026-08-05 — 위 게이트로 잠든 비주얼라이저를 "돌아왔을 때" 다시 깨운다.
+// 잠들게 하는 조건이 세 가지(비가시 / 2페이지 / 침대맡)이므로, 깨우는
+// 신호도 그만큼 필요하다. 조건 판정은 isMusicVizActiveContext 한 곳에만
+// 있으니, 여기서는 "지금 다시 봐 달라"고 두드리기만 하면 된다.
+(function setupVizWakeSignals() {
+  function wake() {
+    try {
+      if (isMusicVizActiveContext() && !musicVizAnimId) drawMusicViz();
+    } catch (error) { /* 무시 */ }
+  }
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") window.setTimeout(wake, 60);
+  });
+  window.addEventListener("pageshow", function () { window.setTimeout(wake, 60); });
+  // 페이지 전환(1↔2)은 transform 애니메이션이라 이벤트가 따로 없다.
+  // goToPage가 부르는 광고 브릿지에 얹지 않고, 여기서 가볍게 감시한다 —
+  // 1초에 한 번, 깨어날 조건이 갖춰졌는데 루프가 멈춰 있으면 깨운다.
+  // (조건이 안 맞으면 아무 일도 하지 않으므로 비용이 사실상 없다.)
+  window.setInterval(function () {
+    if (!musicVizAnimId) wake();
+  }, 1000);
 })();
