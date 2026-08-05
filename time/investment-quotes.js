@@ -8497,5 +8497,12 @@ window.investmentQuotes = [
     "title": "연금술사 (The Alchemist)",
     "author": "파울로 코엘료 (Paulo Coelho)",
     "genre": "literature"
+  },
+  {
+    "english": "Losers average losers.",
+    "text": "손해 보는 사람들이나 물타기를 한다.",
+    "title": "시장의 마법사들 (Market Wizards)",
+    "author": "폴 튜더 존스 (잭 슈웨거 인터뷰집)",
+    "category": "behavior"
   }
 ];
