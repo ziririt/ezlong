@@ -8449,5 +8449,12 @@ window.investmentQuotes = [
     "title": "봄길",
     "author": "정호승",
     "genre": "literature"
+  },
+  {
+    "english": "Time is your friend; impulse is your enemy.",
+    "text": "시간은 당신의 친구이고, 충동은 당신의 적이다.",
+    "title": "존 보글 가치투자의 원칙 (The Clash of the Cultures)",
+    "author": "존 보글 (John C. Bogle)",
+    "category": "patience"
   }
 ];
