@@ -4154,10 +4154,40 @@ function renderRainDayCard(day) {
 // 맨 위 wdTopComment로 뺀다(유저 피드백: "코멘트 2~3줄은 상단으로, '이번 주
 // 강수 예보'는 그 아래로"). 문구 자체는 그대로 재사용 — 두 함수가 같은
 // rain-windows API 응답(data.umbrellaToday)을 나눠서 채울 뿐이다.
+// 2026-08-05 성동님 지시 — 한국 장마철 판정.
+// "비 소식이 없어요, 우산 없이 다녀와도 괜찮아요"는 비가 올지 말지가 매일의
+// 관심사인 기간에만 살가운 말이다. 평상시에는 당연한 걸 말하는 것이라 낯설다.
+// 기상청 기준 중부지방 장마는 해마다 다르지만 대체로 6월 하순에 시작해
+// 7월 하순에 끝난다 — 창을 6/20~7/31로 넉넉히 잡아도 "비가 관심사인 기간"을
+// 벗어나지 않는다. 한국 밖 사용자에게는 장마라는 개념 자체가 없으므로
+// 이 창을 적용하지 않고, 비가 없는 날에는 그냥 말을 아낀다.
+function isKoreanRainySeason(now) {
+  try {
+    if (!isKoreanLocale()) return false;
+    const d = now instanceof Date ? now : new Date();
+    const month = d.getMonth() + 1;   // 1~12
+    const day = d.getDate();
+    if (month === 6) return day >= 20;
+    if (month === 7) return true;
+    return false;
+  } catch (error) {
+    return false;   // 판정 실패 시엔 조용한 쪽으로
+  }
+}
+
 function renderWeatherTopComment(data) {
   if (!wdTopComment) return;
   if (!data || !data.umbrellaToday) {
     wdTopComment.textContent = "";
+    return;
+  }
+  // 2026-08-05 성동님 지시 — 우산 인사는 두 갈래로 나뉜다.
+  //   · 비가 온다(needed=true) — 언제나 말한다. 계절과 무관하게 필요한 정보다.
+  //   · 비 소식이 없다(needed=false) — 한국 장마철에만 말한다. 그 밖에는
+  //     아무 말도 하지 않는다("비 안 온다"는 말은 평상시엔 당연한 소리다).
+  if (!data.umbrellaToday.needed && !isKoreanRainySeason()) {
+    wdTopComment.textContent = "";
+    wdTopComment.removeAttribute("data-needed");
     return;
   }
   // 2026-07-19 6차 피드백: 이모티콘 접두사(☔) 제거 — 유저 요청.
@@ -6716,9 +6746,21 @@ let continuousPlaybackStartedAt = null;
 let continuousPlaybackWatchdogId = null;
 
 function musicAutoPauseLimitMs() {
-  return isSpecialCategory(loadMusicPlaylistFilter())
+  const base = isSpecialCategory(loadMusicPlaylistFilter())
     ? MUSIC_AUTOPAUSE_LIMIT_SPECIAL_MS
     : MUSIC_AUTOPAUSE_LIMIT_NORMAL_MS;
+  // 2026-08-05 성동님 지시 — 충전 중이 아니면 절반으로 앞당긴다
+  // (Special 1시간→30분, 일반 2시간→1시간). "비충전 상태에서는 배터리를
+  // 절약해주는 게 고마운 것"이라는 판단. 충전 중이면 기존 그대로다.
+  // 충전 여부는 비주얼라이저 배터리 보호와 같은 판정을 쓴다
+  // (네이티브 __FLIPZEN_CHARGING__ 우선, 없으면 Battery Status API,
+  //  둘 다 없으면 '모름' = 비충전으로 간주).
+  try {
+    if (typeof window.__flipzenIsCharging === "function" && !window.__flipzenIsCharging()) {
+      return Math.round(base / 2);
+    }
+  } catch (error) { /* 판정 실패 시엔 기존 상한 그대로 */ }
+  return base;
 }
 
 // setInterval 콜백 — musicPlaying이 계속 true인 동안 1분마다 불려서 누적
@@ -9929,6 +9971,9 @@ var bedsideActive = false;
     } catch (error) { /* 무시 */ }
     return batteryCharging === true;
   }
+  // 2026-08-05 — 충전 판정은 이 한 곳에서만 한다. 음악 자동 일시정지 상한
+  // (musicAutoPauseLimitMs)도 같은 판정을 써야 규칙이 어긋나지 않는다.
+  window.__flipzenIsCharging = isCharging;
   // 2026-08-05 — 네이티브(iOS)가 충전 상태를 알려줄 때 즉시 반응한다.
   // 꽂는 순간 그동안 센 곡 수는 없던 일로 한다 — 전기가 들어오는데
   // 접을 이유가 없다.
