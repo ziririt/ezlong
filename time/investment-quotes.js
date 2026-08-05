@@ -8537,5 +8537,12 @@ window.investmentQuotes = [
     "title": "하마터면 열심히 살 뻔했다",
     "author": "하완",
     "genre": "literature"
+  },
+  {
+    "english": "There is only one side to the stock market; and it is not the bull side or the bear side, but the right side.",
+    "text": "주식시장에는 오직 한쪽 편만 있다. 그것은 매수편도 매도편도 아닌, 옳은 편이다.",
+    "title": "주식 매매하는 법 (How to Trade in Stocks)",
+    "author": "제시 리버모어 (Jesse Livermore)",
+    "category": "mindset"
   }
 ];
