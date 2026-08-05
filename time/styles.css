@@ -5035,3 +5035,49 @@ body.is-bedside .special-info-text {
 @media (prefers-contrast: more) {
   .viz-guard-note { background: rgba(8, 13, 22, 0.86); color: #fff; }
 }
+
+
+/* 되돌아갈 곳이 없을 때의 '이전' — 감추지 않고 흐리게 둔다.
+   버튼이 사라졌다 나타났다 하면 하단바가 들썩여서 더 불안하다.
+   "지금은 쓸 수 없다"가 "눌러도 아무 일 없다"보다 정직하다. */
+.webview-hist.is-dead {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   초대는 한 번이면 된다 (2026-08-05 성동님 지적)
+   ══════════════════════════════════════════════════════════════════
+   ⌄와 ⏏의 초대 리듬을 무한 반복으로 두었더니, 이미 아는 사람에게는
+   그저 소음이었다. 초대는 모르는 사람에게만 필요하다. 그리고 무한 반복
+   애니메이션은 화면 합성을 계속 깨우므로 침대맡 앱에서는 실제 비용이 있다.
+
+     · 아직 안 눌러본 사람 — 실행 직후 3번 반복하고 멈춘다
+     · 한 번이라도 눌러본 사람(body.nav-learned) — 딱 1번만 인사하고 멈춘다
+     · 방금 누른 사람(body.nav-used) — 그 자리에서 즉시 멈춘다
+   ────────────────────────────────────────────────────────────────── */
+.scene-ezlong-hint,
+.scene-ezlong-link::before,
+.webview-back svg,
+.webview-back.hint-play svg {
+  animation-iteration-count: 3;
+  animation-fill-mode: both;
+}
+
+body.nav-learned .scene-ezlong-hint,
+body.nav-learned .scene-ezlong-link::before,
+body.nav-learned .webview-back svg,
+body.nav-learned .webview-back.hint-play svg {
+  animation-iteration-count: 1;
+}
+
+body.nav-used .scene-ezlong-hint,
+body.nav-used .scene-ezlong-link::before,
+body.nav-used .webview-back svg,
+body.nav-used .webview-back.hint-play svg {
+  animation: none !important;
+}
+
+/* 초대가 끝난 뒤에도 ⌄가 사라지지는 않는다 — 버튼은 늘 거기 있어야 한다.
+   fill-mode:both가 마지막 프레임(투명도 0.58)에 멈춰 세워둔다. */

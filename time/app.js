@@ -5970,7 +5970,20 @@ function ensureMusicVizBarsBuilt() {
 }
 
 function ensureMusicVizGraph() {
-  ensureAudioGraph();
+  // 2026-08-05 긴급 수정 — 여기서 ensureAudioGraph()를 부르면 안 된다.
+  //
+  // ensureAudioGraph()는 AudioContext를 만들면서 <audio> 두 개를
+  // createMediaElementSource로 그래프에 **영구히** 물린다. iOS는 사용자
+  // 제스처 밖에서 만들어진 AudioContext를 suspended/interrupted 상태로
+  // 두는데, 그 죽어 있는 그래프에 물린 <audio>는 재생 시계(currentTime/
+  // duration)가 흔들린다. 이 앱은 그 시계로 크로스페이드 시점을 계산하므로
+  // (timeupdate의 remaining = duration - currentTime), 시계가 흔들리면
+  // 곡 한복판에서 "끝났다"고 판단해 다음 곡으로 넘어간다.
+  //
+  // 그래서 그래프 생성은 원래 자리(playMusic — 사용자가 재생을 누른 그
+  // 순간)에만 둔다. 여기서는 막대 DOM만 만든다. 잃는 것은 없다 — 음악이
+  // 멈춰 있는 동안 비주얼라이저는 분석기를 쓰지 않고 바닥에 깔려 있고,
+  // 분석기가 필요한 순간에는 이미 그래프가 만들어져 있다.
   ensureMusicVizBarsBuilt();
 }
 
@@ -9778,40 +9791,94 @@ var bedsideActive = false;
 // 같은 출처라 직접 호출도 되지만, 사용자가 iframe 안에서 외부 사이트로
 // 넘어간 순간 막힌다. 메시지는 어느 쪽이든 안전하다.
 (function setupWebviewFooterNav() {
+  // 부모가 iframe의 이동 기록을 직접 적는다. 브라우저 히스토리를 쓰지 않는
+  // 이유는 이 파일 상단 주석(patch-footer2)과 같다 — iframe의 back()은
+  // 합동 세션 히스토리를 되감아서 앱 자체를 뒤로 보낼 수 있다.
+  var trail = [];          // 이 화면에 머무는 동안 iframe이 지나온 주소들
+  var goingBack = false;   // 되돌아가는 중의 load는 기록하지 않는다
+
   function ezFrame() {
-    const section = document.querySelector(".ezlong-webview");
+    var section = document.querySelector(".ezlong-webview");
     return section ? section.querySelector(".ezlong-frame") : null;
   }
   function ask(action) {
-    const frame = ezFrame();
+    var frame = ezFrame();
     if (!frame || !frame.contentWindow) return;
     try {
       frame.contentWindow.postMessage({ source: "flipzen-app", action: action }, "https://ezlong.com");
     } catch (error) { /* 막혀도 앱 동작에는 영향 없음 */ }
   }
+  function currentUrl(frame) {
+    // 같은 출처면 읽힌다. 외부 사이트로 넘어갔으면 예외가 난다 — 그때는
+    // 주소를 모르는 채로 두고, 되돌아갈 때 마지막으로 알던 곳으로 간다.
+    try { return frame.contentWindow.location.href; } catch (error) { return null; }
+  }
 
-  const backBtn = document.getElementById("webviewHistoryBack");
-  if (backBtn) {
-    backBtn.addEventListener("click", function () {
-      try { postToNativeHaptic("light"); } catch (error) { /* 무시 */ }
-      ask("historyBack");
-      // 같은 출처라면 직접 호출도 통한다 — 옛 ez-nav.js가 떠 있는 경우의 보험.
-      try {
-        const frame = ezFrame();
-        if (frame && frame.contentWindow && frame.contentWindow.history) {
-          frame.contentWindow.history.back();
-        }
-      } catch (error) { /* 크로스오리진이면 여기서 막힌다 — 메시지 쪽에 맡긴다 */ }
+  function syncBackButton() {
+    var btn = document.getElementById("webviewHistoryBack");
+    if (!btn) return;
+    var can = trail.length > 1;
+    btn.classList.toggle("is-dead", !can);
+    btn.setAttribute("aria-disabled", can ? "false" : "true");
+  }
+
+  var frame = ezFrame();
+  if (frame) {
+    frame.addEventListener("load", function () {
+      if (goingBack) { goingBack = false; syncBackButton(); return; }
+      var url = currentUrl(frame);
+      if (!url) { syncBackButton(); return; }              // 외부 사이트 — 기록 못 함
+      if (trail.length && trail[trail.length - 1] === url) { syncBackButton(); return; }
+      trail.push(url);
+      if (trail.length > 40) trail.shift();                // 무한정 쌓지 않는다
+      syncBackButton();
     });
   }
 
-  const topBtn = document.getElementById("webviewTopButton");
+  var backBtn = document.getElementById("webviewHistoryBack");
+  if (backBtn) {
+    backBtn.addEventListener("click", function () {
+      var f = ezFrame();
+      if (!f) return;
+      if (trail.length <= 1) return;                       // 돌아갈 곳이 없다
+      try { postToNativeHaptic("light"); } catch (error) { /* 무시 */ }
+      trail.pop();
+      var target = trail[trail.length - 1];
+      goingBack = true;
+      // replace는 새 기록을 남기지 않는다 — 합동 히스토리를 건드리지 않으므로
+      // 앱(부모)은 이 이동에 아무 영향도 받지 않는다.
+      var moved = false;
+      try {
+        if (f.contentWindow && f.contentWindow.location) {
+          f.contentWindow.location.replace(target);
+          moved = true;
+        }
+      } catch (error) { /* 외부 사이트에 있었다 — 아래로 폴백 */ }
+      if (!moved) {
+        try { f.src = target; } catch (error) { goingBack = false; }
+      }
+      syncBackButton();
+    });
+  }
+
+  var topBtn = document.getElementById("webviewTopButton");
   if (topBtn) {
     topBtn.addEventListener("click", function () {
       try { postToNativeHaptic("light"); } catch (error) { /* 무시 */ }
-      ask("scrollToTop");
+      var f = ezFrame();
+      var done = false;
+      // 같은 출처면 직접 올리는 쪽이 확실하다(ez-nav.js 버전에 의존하지 않는다).
+      try {
+        if (f && f.contentWindow && f.contentWindow.scrollTo) {
+          f.contentWindow.scrollTo({ top: 0, behavior: "smooth" });
+          done = true;
+        }
+      } catch (error) { /* 외부 사이트 — 메시지로 부탁한다 */ }
+      if (!done) ask("scrollToTop");
     });
   }
+
+  syncBackButton();
 })();
 
 
@@ -9956,4 +10023,28 @@ var bedsideActive = false;
   window.setInterval(function () {
     if (!musicVizAnimId) wake();
   }, 1000);
+})();
+
+
+// 2026-08-05 — 화면을 오가는 두 버튼의 "초대"는 한 번이면 된다.
+// 한 번이라도 눌러본 기기는 다음 실행부터 딱 한 번만 인사하고 멈춘다.
+(function setupNavInviteLearning() {
+  var KEY = "ezlong:navLearned";
+  var learned = false;
+  try { learned = localStorage.getItem(KEY) === "1"; } catch (error) { learned = false; }
+  if (learned) document.body.classList.add("nav-learned");
+
+  function markUsed() {
+    if (!learned) {
+      learned = true;
+      try { localStorage.setItem(KEY, "1"); } catch (error) { /* 무시 */ }
+    }
+    // 방금 쓴 사람에게 계속 권하는 건 실례다 — 이번 실행에서는 바로 멈춘다.
+    document.body.classList.add("nav-used");
+  }
+
+  ["sceneEzlongLink", "webviewBackButton"].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener("click", markUsed);
+  });
 })();
