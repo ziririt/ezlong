@@ -8571,5 +8571,12 @@ window.investmentQuotes = [
     "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
     "author": "버튼 말킬 (Burton Malkiel)",
     "category": "mindset"
+  },
+  {
+    "english": "Whenever you feel afraid, just remember. Courage is the root of change—and change is what we're chemically designed to do.",
+    "text": "두려운 순간이 올 때마다 이것만 기억하세요. 용기는 변화의 뿌리이고, 변화야말로 우리가 화학적으로 타고난 본성이라는 것을.",
+    "title": "레슨 인 케미스트리 (Lessons in Chemistry)",
+    "author": "보니 가머스 (Bonnie Garmus)",
+    "genre": "literature"
   }
 ];
