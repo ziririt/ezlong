@@ -4759,3 +4759,140 @@ button { font: inherit; }
 .firstrun-note-move + .firstrun-note {
   margin-top: 7px;
 }
+
+
+/* ══════════════════════════════════════════════════════════════════
+   침대맡 모드 (2026-08-05 — Fable 5 배터리 지시서 작업 5-2)
+   ══════════════════════════════════════════════════════════════════
+   이 앱은 침대맡에 세워두고 밤새 켜두는 앱이다. 그래서 배터리를 먹는 건
+   백그라운드가 아니라 **켜져 있는 화면 그 자체**다(7/26 실측 확정).
+
+   무조작 N분이 지나면 여기서 두 가지를 한다.
+     1) 검은 장막을 아주 느리게(2.4초) 덮는다. OLED에서 검은 화소는 실제로
+        꺼지므로 절전 폭이 가장 크다. 사람이 "꺼졌나?" 하고 놀라지 않도록
+        인지 한계보다 느리게 내린다.
+     2) 화면 위에서 도는 것을 전부 멈춘다. 안 보이는 것을 계속 그리는 건
+        순수한 낭비다.
+   ────────────────────────────────────────────────────────────────── */
+.bedside-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 8500;          /* 설정 시트(위)보다는 아래, 본화면보다는 위 */
+  background: #000;
+  opacity: 0;
+  pointer-events: none;   /* 평소엔 없는 것과 같다 */
+  transition: opacity 2400ms ease-in-out;
+}
+body.is-bedside .bedside-veil {
+  opacity: 0.62;
+  pointer-events: auto;   /* 깨우는 첫 터치를 여기서 삼킨다 */
+}
+/* 돌아올 때는 빠르게 — 기다리게 하면 안 된다(§1 응답). */
+body.is-bedside-waking .bedside-veil {
+  transition-duration: 220ms;
+}
+
+/* ── 멈추는 것들 ─────────────────────────────────────────────────
+   선택자를 하나씩 열거하지 않는다. 나중에 누가 새 애니메이션을 추가해도
+   자동으로 걸리게 하려면 범위로 잡는 편이 안전하다(빠뜨림 방지).
+   animation: none 이 아니라 play-state: paused 를 쓰는 이유 — none 은 첫
+   프레임으로 되돌려버려서, 깨어날 때 모든 것이 '툭' 하고 리셋된다.
+   paused 는 있던 자리에 그대로 멈췄다가 그 자리에서 다시 이어진다.
+   합성 비용은 어느 쪽이든 똑같이 사라진다. */
+body.is-bedside .clock-app *,
+body.is-bedside .clock-app *::before,
+body.is-bedside .clock-app *::after,
+body.is-bedside .sky-photo,
+body.is-bedside .scene-dots * {
+  animation-play-state: paused !important;
+}
+
+/* blur는 밑에서 뭔가 바뀔 때마다 매 프레임 다시 계산된다 — 어두운 동안엔
+   보이지도 않으므로 전부 뗀다(작업 5-3). */
+body.is-bedside .quote-panel,
+body.is-bedside .music-info-panel,
+body.is-bedside .weather-card,
+body.is-bedside .flip-card,
+body.is-bedside .wd-glass,
+body.is-bedside .special-info-text {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   구름·별 제거 (2026-08-05 성동님 지시)
+   ══════════════════════════════════════════════════════════════════
+   "배경사진이 움직이는 느낌을 주려던 것이면 이것도 삭제하라."
+   맞다. 구름 2개(80초·110초 drift)와 밤하늘 별 반짝임(4초)은 livingSky와
+   한 세트로 "살아있는 하늘"을 만들려던 장치였다. 배경사진이 정지한 지금
+   이것들만 남으면 어색하고, blur(6px)가 걸린 레이어의 상시 이동은 GPU
+   합성 비용이 특히 비싸다. 사진 위에 얹힌 것이 없어야 사진이 가장 선명하다.
+   display:none이면 애니메이션도 합성도 함께 사라진다(규칙만 남기고 되돌릴
+   수 있게 마크업은 그대로 둔다). */
+.cloud,
+.cloud-a,
+.cloud-b,
+.stars {
+  display: none !important;
+  animation: none !important;
+}
+
+/* 움직임을 꺼둔 사용자에게는 장막도 담백하게. */
+@media (prefers-reduced-motion: reduce) {
+  .bedside-veil { transition-duration: 400ms; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   ezlong.com 하단바 3칸 (2026-08-05 성동님 요청)
+   ══════════════════════════════════════════════════════════════════
+   <  뒤로     ⏏ Basecamp     ^  맨 위로
+   세 버튼이 서로 다른 축을 가리킨다. 왼쪽은 시간축(뒤로), 가운데는 화면
+   밖(베이스캠프), 오른쪽은 이 페이지 안의 맨 위. 그래서 아이콘도 서로
+   헷갈리지 않는 모양으로 골랐다 — 셰브론만 셋을 쓰면 구분이 안 된다.
+   ────────────────────────────────────────────────────────────────── */
+.webview-hist,
+.webview-top {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  color: #3f4650;
+  background: rgba(18, 27, 42, 0.07);
+  box-shadow: inset 0 0 0 0.5px rgba(18, 27, 42, 0.12);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  /* 놓을 때 아주 살짝 넘어갔다 돌아오는 커브 — Basecamp 버튼과 같은 결. */
+  transition:
+    scale 260ms cubic-bezier(.22, 1.24, .36, 1),
+    translate 260ms cubic-bezier(.22, 1.24, .36, 1),
+    filter 200ms ease;
+}
+.webview-hist { grid-column: 1; justify-self: start; }
+.webview-top  { grid-column: 3; justify-self: end; }
+
+.webview-hist svg,
+.webview-top svg { width: 16px; height: 16px; }
+
+/* 누르는 순간은 즉각, 갈 방향으로 미리 기운다(§1 응답 · §8 방향 힌트). */
+.webview-hist:active,
+.webview-top:active {
+  scale: 0.93;
+  filter: brightness(1.1);
+  transition-duration: 90ms;
+  transition-timing-function: ease-out;
+}
+.webview-hist:active { translate: -3px 0; }   /* 뒤로 = 왼쪽 */
+.webview-top:active  { translate: 0 -3px; }   /* 맨 위로 = 위 */
+
+@media (prefers-contrast: more) {
+  .webview-hist, .webview-top { background: rgba(18,27,42,0.16); color: #23282f; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .webview-hist:active, .webview-top:active { scale: 1; translate: 0 0; }
+}

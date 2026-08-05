@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>ezlong.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121b2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='30' font-family='Arial' fill='white'%3E12%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260805-stillsky-v1">
+  <link rel="stylesheet" href="styles.css?v=20260805-footer-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -233,6 +233,11 @@
         ></iframe>
       </div>
       <footer class="webview-footer">
+        <!-- 2026-08-05 성동님 요청 — 맨 왼쪽 칸(그동안 비어 있었다)에
+             '이전 페이지로'. iframe 안 히스토리를 되감는다(app.js). -->
+        <button type="button" class="webview-hist" id="webviewHistoryBack" data-i18n-aria="webview.historyBackAria" aria-label="이전 페이지로">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5 L7.5 12 L14.5 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
         <!-- 2026-07-17 8차: iframe 내부(ezlong.com 콘텐츠)에서 시작된
              터치는 브라우저 구조상 상위로 버블링되지 않아 스와이프로
              돌아가는 제스처가 항상 통하진 않는다 — 확실한 대안으로 이
@@ -259,8 +264,11 @@
              메시지가 아니라 기존에 이미 있는 액션이라 Xcode 재빌드 불필요.
              아이콘도 유저 요청대로 알라딘 링크 버튼(quote-aladin-link)과
              동일한 "새창 열기" SVG로 교체. -->
-        <button type="button" class="webview-open" id="webviewOpenButton" data-i18n-aria="webview.openNewWindowAria" aria-label="ezlong.com 새창 열기">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 13.5 L20 4 M20 4 h-6 M20 4 v6 M18 13 v6 a1 1 0 0 1 -1 1 H5 a1 1 0 0 1 -1 -1 V7 a1 1 0 0 1 1 -1 h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <!-- 2026-08-05 성동님 요청 — '브라우저로 열기'를 빼고 '맨 위로'.
+             예전엔 화면 최상단 더블탭이라는 숨은 제스처로만 있었는데,
+             숨은 기능은 없는 기능이다. 눈에 보이는 버튼으로 꺼낸다. -->
+        <button type="button" class="webview-top" id="webviewTopButton" data-i18n-aria="webview.scrollTopAria" aria-label="맨 위로">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 11 L12 5 L18 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 5 V19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
       </footer>
     </section>
@@ -298,7 +306,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.51</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.53</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -366,6 +374,21 @@
           <div class="field-grid" id="startPageOptions" role="radiogroup" data-i18n-aria="settings.startPage.aria" aria-label="앱을 열면 보일 첫 화면 선택">
             <label class="field-option"><input type="radio" name="startPage" value="quote" checked><span data-i18n="settings.startPage.quote">플립시계+날씨+음악플레이어+투자명저 문장 화면</span></label>
             <label class="field-option"><input type="radio" name="startPage" value="ezlong"><span data-i18n="settings.startPage.ezlong">투자AI도구 ezlong.com</span></label>
+          </div>
+        </section>
+
+        <!-- 2026-08-05 — 침대맡 모드(Fable 5 배터리 지시서 작업 5-2).
+             무조작 N분 뒤 화면을 어둡게 하고 화면 위의 모든 움직임을 멈춘다.
+             app.js setupBedsideMode 참조. -->
+        <section class="settings-block settings-card">
+          <h3 class="settings-subtitle" data-i18n="settings.bedside.heading">침대맡 모드</h3>
+          <p class="settings-desc settings-desc-muted" data-i18n="settings.bedside.desc">일정 시간 손대지 않으면 화면이 서서히 어두워지고 모든 움직임이 멈춥니다. 화면을 한 번 터치하면 바로 돌아옵니다. 밤새 켜두어도 배터리를 훨씬 덜 씁니다.</p>
+          <div class="field-grid" id="bedsideOptions" role="radiogroup" data-i18n-aria="settings.bedside.aria" aria-label="침대맡 모드 시작 시간">
+            <label class="field-option"><input type="radio" name="bedsideDelay" value="1"><span data-i18n="settings.bedside.min1">1분 후</span></label>
+            <label class="field-option"><input type="radio" name="bedsideDelay" value="3" checked><span data-i18n="settings.bedside.min3">3분 후</span></label>
+            <label class="field-option"><input type="radio" name="bedsideDelay" value="5"><span data-i18n="settings.bedside.min5">5분 후</span></label>
+            <label class="field-option"><input type="radio" name="bedsideDelay" value="10"><span data-i18n="settings.bedside.min10">10분 후</span></label>
+            <label class="field-option"><input type="radio" name="bedsideDelay" value="off"><span data-i18n="settings.bedside.off">사용 안 함</span></label>
           </div>
         </section>
 
@@ -924,6 +947,11 @@
          첫인상이라 목록으로 묻지 않고 미니 화면 두 개를 보여주고 고르게 했다.
          미리보기는 이미지가 아니라 CSS로 그린다(파일 증가 없음·항상 선명함).
          app.js setupFirstRunChoice 참조. -->
+    <!-- 2026-08-05 침대맡 모드의 장막. 화면 맨 위에 깔리되 평소엔 완전히
+         투명하고 터치도 통과시킨다(pointer-events:none). 모드가 켜지면
+         2.4초에 걸쳐 서서히 검어지면서 터치를 받기 시작한다 — 그래서
+         깨우는 첫 터치가 밑의 버튼을 잘못 누르는 일이 없다. -->
+    <div class="bedside-veil" id="bedsideVeil" aria-hidden="true"></div>
     <div class="firstrun" id="firstRunSheet" role="dialog" aria-modal="true" aria-labelledby="firstRunTitle" hidden>
       <div class="firstrun-scrim" aria-hidden="true"></div>
       <div class="firstrun-sheet">
@@ -956,7 +984,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260805-stillsky-v1"></script>
+  <script src="app.js?v=20260805-footer-v1"></script>
 
   </body>
 </html>

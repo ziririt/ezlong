@@ -555,7 +555,19 @@
      안 와서 조용히 미사용 상태로 남는다 — 부작용 없음. */
   window.addEventListener('message', function (event) {
     if (!event || !event.data || event.data.source !== 'flipzen-app') return;
-    if (event.data.action !== 'scrollToTop') return;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (event.data.action === 'scrollToTop') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    /* [2026-08-05 신설] 앱 하단바 왼쪽 '<' — 이 페이지 안에서 뒤로 간다.
+       되돌아갈 곳이 없으면(앱이 방금 이 페이지를 처음 띄웠으면) 아무 일도
+       일어나지 않는 것이 맞다 — 부모 창을 대신 되돌리면 사용자가 의도하지
+       않은 화면 전환이 일어난다. */
+    if (event.data.action === 'historyBack') {
+      try {
+        if (window.history.length > 1) window.history.back();
+      } catch (e) { /* 무시 */ }
+      return;
+    }
   });
 })();

@@ -5009,6 +5009,9 @@ function isMusicPanelOpen() {
 // 열려있으면 애니메이션 루프를 계속 돌린다. 어느 쪽이든 닫히면 나머지
 // 하나가 열려있는지 다시 확인해 그때만 완전히 멈춘다.
 function isMusicVizActiveContext() {
+  // 2026-08-05 — 침대맡 모드에서는 그리지 않는다. 화면이 어두워 보이지도
+  // 않는데 60fps로 계속 그리는 건 순수한 낭비다(Fable 5 작업 5-1·5-2).
+  if (typeof bedsideActive !== "undefined" && bedsideActive) return false;
   return isMusicPanelOpen() || Boolean(settingsPanel && settingsPanel.classList.contains("is-open"));
 }
 
@@ -9579,5 +9582,182 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
     }, { once: true });
   } else {
     window.setTimeout(apply, 900);
+  }
+})();
+
+
+// ══════════════════════════════════════════════════════════════════
+// 침대맡 모드 — 2026-08-05 (Fable 5 배터리 지시서 작업 5-2)
+// ══════════════════════════════════════════════════════════════════
+// 7/26 실측 결론: iOS 배터리 폭식의 주범은 화면(디스플레이+GPU)이다.
+// 백그라운드가 11분뿐인 날이 점유율 96%로 최고였다. 이 앱은 침대맡에
+// 세워두고 밤새 켜두는 앱이니, 손대지 않는 동안 화면을 어둡게 하고 화면
+// 위에서 도는 것을 멈추는 것이 가장 큰 한 수다.
+//
+// 설계 원칙
+//   · 강요하지 않는다 — 설정에서 시간을 고르거나 아예 끌 수 있다(기본 3분).
+//   · 깨우는 건 아무 터치 하나. 그 첫 터치는 장막이 삼킨다 — 어두운 화면을
+//     깨우려다 '다음 곡'을 잘못 누르는 일이 없어야 한다.
+//   · 설정 시트나 날씨 상세를 열어둔 동안에는 잠들지 않는다(읽는 중이다).
+//   · 음악은 건드리지 않는다. 어두워져도 소리는 계속 난다 — 그게 이 앱이다.
+var bedsideActive = false;
+(function setupBedsideMode() {
+  var DELAY_KEY = "ezlong:bedsideDelay";   // "1" | "3" | "5" | "10" | "off"
+  var DEFAULT_DELAY = "3";
+  var veil = document.getElementById("bedsideVeil");
+  var timer = null;
+
+  function loadDelay() {
+    try {
+      var v = localStorage.getItem(DELAY_KEY);
+      return (v === "1" || v === "3" || v === "5" || v === "10" || v === "off") ? v : DEFAULT_DELAY;
+    } catch (error) {
+      return DEFAULT_DELAY;
+    }
+  }
+  function saveDelay(v) {
+    try { localStorage.setItem(DELAY_KEY, v); } catch (error) { /* 무시 */ }
+  }
+
+  // 지금 잠들면 안 되는 상황인가 — 뭔가를 읽고 있는 중이면 기다린다.
+  function busyReading() {
+    try {
+      if (settingsPanel && settingsPanel.classList.contains("is-open")) return true;
+      var wd = document.getElementById("weatherDetailPanel");
+      if (wd && wd.getBoundingClientRect().height > 200) return true;
+      var fr = document.getElementById("firstRunSheet");
+      if (fr && !fr.hidden) return true;
+      if (currentPageIndex >= 1) return true;   // ezlong.com 페이지를 보는 중
+    } catch (error) { /* 판단 실패 시엔 그냥 진행 */ }
+    return false;
+  }
+
+  function enter() {
+    if (bedsideActive) return;
+    if (busyReading()) { arm(); return; }
+    bedsideActive = true;
+    document.body.classList.remove("is-bedside-waking");
+    document.body.classList.add("is-bedside");
+    // 비주얼라이저 루프는 다음 프레임에 스스로 멈춘다
+    // (isMusicVizActiveContext가 false를 돌려준다).
+  }
+
+  function exit() {
+    if (!bedsideActive) return;
+    bedsideActive = false;
+    document.body.classList.add("is-bedside-waking");
+    document.body.classList.remove("is-bedside");
+    window.setTimeout(function () {
+      document.body.classList.remove("is-bedside-waking");
+    }, 260);
+    // 멈춰 있던 비주얼라이저를 다시 돌린다.
+    try {
+      if (typeof isMusicVizActiveContext === "function" && isMusicVizActiveContext()
+          && !musicVizAnimId) drawMusicViz();
+    } catch (error) { /* 무시 */ }
+    try { postToNativeHaptic("light"); } catch (error) { /* 무시 */ }
+  }
+
+  function arm() {
+    if (timer) { window.clearTimeout(timer); timer = null; }
+    var d = loadDelay();
+    if (d === "off") return;
+    timer = window.setTimeout(enter, parseInt(d, 10) * 60000);
+  }
+
+  function poke() {
+    if (bedsideActive) exit();
+    arm();
+  }
+
+  // 깨우는 첫 터치는 장막이 삼킨다 — 밑의 버튼으로 새어나가지 않게.
+  if (veil) {
+    ["pointerdown", "touchstart", "click"].forEach(function (type) {
+      veil.addEventListener(type, function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        exit();
+        arm();
+      }, { capture: true });
+    });
+  }
+
+  // 평소의 조작은 전부 "아직 깨어 있다"는 신호다.
+  ["pointerdown", "keydown", "wheel", "touchstart"].forEach(function (type) {
+    document.addEventListener(type, function () {
+      if (!bedsideActive) arm();
+    }, { passive: true, capture: true });
+  });
+
+  // 화면이 꺼졌다 다시 켜지면 타이머를 새로 센다.
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") poke();
+  });
+
+  // ── 설정 UI ──────────────────────────────────────────────────────
+  function syncUi() {
+    var current = loadDelay();
+    var inputs = document.querySelectorAll('input[name="bedsideDelay"]');
+    for (var i = 0; i < inputs.length; i++) inputs[i].checked = (inputs[i].value === current);
+  }
+  window.syncBedsideUi = syncUi;
+
+  var box = document.getElementById("bedsideOptions");
+  if (box) {
+    box.addEventListener("change", function (event) {
+      var t = event.target;
+      if (!t || t.name !== "bedsideDelay" || !t.checked) return;
+      saveDelay(t.value);
+      try { postToNativeHaptic("light"); } catch (error) { /* 무시 */ }
+      arm();
+    });
+  }
+
+  syncUi();
+  arm();
+})();
+
+
+// ══════════════════════════════════════════════════════════════════
+// ezlong.com 하단바 — 뒤로(<) / 맨 위로(^)  2026-08-05 성동님 요청
+// ══════════════════════════════════════════════════════════════════
+// 부모가 iframe 안의 history/scroll을 직접 만지지 않고 postMessage로
+// 부탁한다 — 스크롤톱 때 깔아둔 통로(ez-nav.js)를 그대로 재사용한다.
+// 같은 출처라 직접 호출도 되지만, 사용자가 iframe 안에서 외부 사이트로
+// 넘어간 순간 막힌다. 메시지는 어느 쪽이든 안전하다.
+(function setupWebviewFooterNav() {
+  function ezFrame() {
+    const section = document.querySelector(".ezlong-webview");
+    return section ? section.querySelector(".ezlong-frame") : null;
+  }
+  function ask(action) {
+    const frame = ezFrame();
+    if (!frame || !frame.contentWindow) return;
+    try {
+      frame.contentWindow.postMessage({ source: "flipzen-app", action: action }, "https://ezlong.com");
+    } catch (error) { /* 막혀도 앱 동작에는 영향 없음 */ }
+  }
+
+  const backBtn = document.getElementById("webviewHistoryBack");
+  if (backBtn) {
+    backBtn.addEventListener("click", function () {
+      try { postToNativeHaptic("light"); } catch (error) { /* 무시 */ }
+      ask("historyBack");
+      // 같은 출처라면 직접 호출도 통한다 — 옛 ez-nav.js가 떠 있는 경우의 보험.
+      try {
+        const frame = ezFrame();
+        if (frame && frame.contentWindow && frame.contentWindow.history) {
+          frame.contentWindow.history.back();
+        }
+      } catch (error) { /* 크로스오리진이면 여기서 막힌다 — 메시지 쪽에 맡긴다 */ }
+    });
+  }
+
+  const topBtn = document.getElementById("webviewTopButton");
+  if (topBtn) {
+    topBtn.addEventListener("click", function () {
+      try { postToNativeHaptic("light"); } catch (error) { /* 무시 */ }
+      ask("scrollToTop");
+    });
   }
 })();

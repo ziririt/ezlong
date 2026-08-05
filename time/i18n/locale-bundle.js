@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-05T01:01:08.192Z
+ * 생성 시각: 2026-08-05T01:26:54.743Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -131,7 +131,17 @@
         "intro": "Premium users can use the dedicated flip clock app for Apple Watch.",
         "keepGuide": "If your watch keeps returning to the default watch face: on your watch, open Settings → General → Return to Clock, choose 'After 1 Hour', then in the app list below turn on 'Return to App' for Long Time, Easy Life. The flip clock will stay on for an hour even after you lower your wrist."
       },
-      "closeAria": "Close settings"
+      "closeAria": "Close settings",
+      "bedside": {
+        "heading": "Bedside mode",
+        "desc": "After a while without a touch, the screen dims and everything stops moving. One tap brings it right back. Leave it on all night and it uses far less battery.",
+        "aria": "When bedside mode starts",
+        "min1": "After 1 min",
+        "min3": "After 3 min",
+        "min5": "After 5 min",
+        "min10": "After 10 min",
+        "off": "Off"
+      }
     },
     "weather": {
       "title": "Weather",
@@ -301,7 +311,9 @@
       "frameAria": "ezlong.com web view",
       "openNewWindowAria": "Open ezlong.com in a new window",
       "backToBasecampAria": "Back to Basecamp",
-      "scrollTopHintAria": "Tap to scroll to the top"
+      "scrollTopHintAria": "Tap to scroll to the top",
+      "historyBackAria": "Back",
+      "scrollTopAria": "Back to top"
     },
     "common": {
       "showAll": "Show all ({count}) ▾",
@@ -517,7 +529,17 @@
         "intro": "Los usuarios premium pueden usar la app de reloj flip exclusiva para Apple Watch.",
         "keepGuide": "Si tu reloj vuelve constantemente a la esfera predeterminada: en el reloj, abre Ajustes → General → Volver al reloj, elige «Después de 1 hora» y, en la lista de apps de abajo, activa «Volver a la app» para Long Time, Easy Life. El reloj flip permanecerá visible durante una hora aunque bajes la muñeca."
       },
-      "closeAria": "Cerrar los ajustes"
+      "closeAria": "Cerrar los ajustes",
+      "bedside": {
+        "heading": "Modo mesita de noche",
+        "desc": "Si no lo tocas durante un rato, la pantalla se atenúa y todo deja de moverse. Un toque la devuelve al instante. Déjala encendida toda la noche y gastará mucha menos batería.",
+        "aria": "Cuándo empieza el modo mesita de noche",
+        "min1": "Tras 1 min",
+        "min3": "Tras 3 min",
+        "min5": "Tras 5 min",
+        "min10": "Tras 10 min",
+        "off": "Desactivado"
+      }
     },
     "weather": {
       "title": "Tiempo",
@@ -687,7 +709,9 @@
       "frameAria": "Vista web de ezlong.com",
       "openNewWindowAria": "Abrir ezlong.com en una ventana nueva",
       "backToBasecampAria": "Volver al Campamento base",
-      "scrollTopHintAria": "Toca para subir al principio"
+      "scrollTopHintAria": "Toca para subir al principio",
+      "historyBackAria": "Atrás",
+      "scrollTopAria": "Volver arriba"
     },
     "common": {
       "showAll": "Ver todo ({count}) ▾",
@@ -903,7 +927,17 @@
         "intro": "プレミアムをご利用の方は、Apple Watch専用のフリップ時計アプリを使えます。",
         "keepGuide": "ウォッチの画面がすぐ標準の文字盤に戻る場合は、ウォッチの設定 → 一般 → 時計に戻るで「1時間後」を選び、下のアプリ一覧でLong Time, Easy Lifeの「アプリに戻る」をオンにしてください。手首を下げても1時間はフリップ時計が表示されたままになります。"
       },
-      "closeAria": "設定を閉じる"
+      "closeAria": "設定を閉じる",
+      "bedside": {
+        "heading": "枕元モード",
+        "desc": "しばらく触れずにいると画面がゆっくり暗くなり、動きがすべて止まります。画面に一度触れればすぐ戻ります。一晩中つけっぱなしでもバッテリーの消費がぐっと減ります。",
+        "aria": "枕元モードが始まるまでの時間",
+        "min1": "1分後",
+        "min3": "3分後",
+        "min5": "5分後",
+        "min10": "10分後",
+        "off": "使わない"
+      }
     },
     "weather": {
       "title": "天気",
@@ -1073,7 +1107,9 @@
       "frameAria": "ezlong.com ウェブビュー",
       "openNewWindowAria": "ezlong.com を新しいウィンドウで開く",
       "backToBasecampAria": "ベースキャンプに戻る",
-      "scrollTopHintAria": "タップすると一番上までスクロールします"
+      "scrollTopHintAria": "タップすると一番上までスクロールします",
+      "historyBackAria": "前のページへ",
+      "scrollTopAria": "いちばん上へ"
     },
     "common": {
       "showAll": "すべて表示({count}) ▾",
@@ -1289,7 +1325,17 @@
         "intro": "프리미엄 이용자는 애플워치 전용 플립시계 앱을 쓸 수 있습니다.",
         "keepGuide": "워치 화면이 자꾸 기본 시계로 돌아간다면: 워치의 설정 → 일반 → 시계로 돌아가기에서 '1시간 후'를 선택하고, 아래 앱 목록에서 Long Time, Easy Life의 '앱으로 복귀'를 켜주세요. 손목을 내렸다 올려도 1시간 동안 플립시계가 유지됩니다."
       },
-      "closeAria": "설정 닫기"
+      "closeAria": "설정 닫기",
+      "bedside": {
+        "heading": "침대맡 모드",
+        "desc": "일정 시간 손대지 않으면 화면이 서서히 어두워지고 모든 움직임이 멈춥니다. 화면을 한 번 터치하면 바로 돌아옵니다. 밤새 켜두어도 배터리를 훨씬 덜 씁니다.",
+        "aria": "침대맡 모드 시작 시간",
+        "min1": "1분 후",
+        "min3": "3분 후",
+        "min5": "5분 후",
+        "min10": "10분 후",
+        "off": "사용 안 함"
+      }
     },
     "weather": {
       "title": "날씨",
@@ -1459,7 +1505,9 @@
       "frameAria": "ezlong.com 웹뷰",
       "openNewWindowAria": "ezlong.com 새창 열기",
       "backToBasecampAria": "ezlong 베이스캠프로 돌아가기",
-      "scrollTopHintAria": "탭하면 맨 위로 스크롤됩니다"
+      "scrollTopHintAria": "탭하면 맨 위로 스크롤됩니다",
+      "historyBackAria": "이전 페이지로",
+      "scrollTopAria": "맨 위로"
     },
     "common": {
       "showAll": "모두 보기 ({count}) ▾",
@@ -1675,7 +1723,17 @@
         "intro": "Usuários premium podem usar o app de relógio flip exclusivo para Apple Watch.",
         "keepGuide": "Se o relógio voltar sempre para o mostrador padrão: no relógio, abra Ajustes → Geral → Voltar ao Relógio, escolha 'Após 1 hora' e, na lista de apps abaixo, ative 'Voltar ao App' para Long Time, Easy Life. O relógio flip permanecerá na tela por uma hora mesmo depois de abaixar o pulso."
       },
-      "closeAria": "Fechar as configurações"
+      "closeAria": "Fechar as configurações",
+      "bedside": {
+        "heading": "Modo cabeceira",
+        "desc": "Depois de um tempo sem toque, a tela escurece e tudo para de se mexer. Um toque traz tudo de volta na hora. Deixe ligado a noite toda e gasta bem menos bateria.",
+        "aria": "Quando o modo cabeceira começa",
+        "min1": "Após 1 min",
+        "min3": "Após 3 min",
+        "min5": "Após 5 min",
+        "min10": "Após 10 min",
+        "off": "Desativado"
+      }
     },
     "weather": {
       "title": "Tempo",
@@ -1845,7 +1903,9 @@
       "frameAria": "Visualização web de ezlong.com",
       "openNewWindowAria": "Abrir ezlong.com em uma nova janela",
       "backToBasecampAria": "Voltar ao Acampamento-base",
-      "scrollTopHintAria": "Toque para subir ao topo"
+      "scrollTopHintAria": "Toque para subir ao topo",
+      "historyBackAria": "Voltar",
+      "scrollTopAria": "Voltar ao topo"
     },
     "common": {
       "showAll": "Ver tudo ({count}) ▾",
@@ -2061,7 +2121,17 @@
         "intro": "高级版用户可以使用 Apple Watch 专用的翻页时钟 App。",
         "keepGuide": "如果手表总是回到默认表盘：请在手表上打开 设置 → 通用 → 返回表盘，选择“1小时后”，并在下方 App 列表中为 Long Time, Easy Life 开启“返回 App”。即使放下手腕，翻页时钟也会保持显示 1 小时。"
       },
-      "closeAria": "关闭设置"
+      "closeAria": "关闭设置",
+      "bedside": {
+        "heading": "床头模式",
+        "desc": "一段时间不触摸时，画面会慢慢变暗，所有动效停止。轻触一下即可立刻恢复。整夜开着也能省下大量电量。",
+        "aria": "床头模式开始时间",
+        "min1": "1分钟后",
+        "min3": "3分钟后",
+        "min5": "5分钟后",
+        "min10": "10分钟后",
+        "off": "不使用"
+      }
     },
     "weather": {
       "title": "天气",
@@ -2231,7 +2301,9 @@
       "frameAria": "ezlong.com 网页视图",
       "openNewWindowAria": "在新窗口打开 ezlong.com",
       "backToBasecampAria": "返回大本营",
-      "scrollTopHintAria": "点击可滚动到顶部"
+      "scrollTopHintAria": "点击可滚动到顶部",
+      "historyBackAria": "上一页",
+      "scrollTopAria": "回到顶部"
     },
     "common": {
       "showAll": "查看全部（{count}） ▾",
