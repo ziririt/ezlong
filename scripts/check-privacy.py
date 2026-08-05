@@ -29,8 +29,22 @@ BANNED = re.compile(
     r'오너\s*지시|운영자\s*지시|유저\s*지적|사용자\s*지적'
 )
 
+# 독자가 읽는 글에 나가면 안 되는 "내부 사정" 표현.
+# 2026-08-06 사고: TSLA 카드 헤드라인이 "규칙은 매수 — 차트 미확인이라 1차를 절반으로"
+# 로 나갔다. 방문자에게 우리 내부의 작업 상태(무엇을 확인했고 못 했는지, 엔진이 몇
+# 개인지)를 보고하는 문장이다. 손님 앞에서 직원끼리 하는 말을 그대로 노출한 격.
+# 판단이 갈리는 상황은 시장 언어로만 쓴다 — "지표는 진입 구간이나 차트 패턴은 아직".
+INTERNAL = re.compile(
+    r'규칙\s*엔진|차트\s*엔진|분석\s*엔진|두\s*엔진|엔진\s*판독|엔진의\s|'
+    r'차트\s*미확인|미확인이라|이\s*시스템(은|의|이)|초안에\s*따르면|'
+    r'아직\s*확인\s*(못|안)\s*'
+)
+
 SERVED_EXT = ('.html', '.js', '.css', '.json')
 SKIP_DIRS = {'.git', 'node_modules', 'mobile', 'analyst-pipeline'}
+
+# 생성 카피(파이프라인 산출물) — 독자가 읽는 문장이 그대로 들어 있다
+COPY_JSON = ('swing-view.json', 'analysis-', 'market-scorecard.json')
 
 
 def strip_js(s):
@@ -127,6 +141,36 @@ def main():
               % len(only_cmt))
         for rel, i, txt in only_cmt[:40]:
             print('  %s:%d  %s' % (rel, i, txt))
+        print()
+
+    # ── 2차: 생성 카피의 내부 사정 노출 검사 ──────────────────────────────
+    internal = []
+    data_dir = os.path.join(root, 'data')
+    if os.path.isdir(data_dir):
+        for f in sorted(os.listdir(data_dir)):
+            if not f.endswith('.json'):
+                continue
+            if not any(k in f for k in COPY_JSON):
+                continue
+            p = os.path.join(data_dir, f)
+            try:
+                src = open(p, encoding='utf-8').read()
+            except (OSError, UnicodeDecodeError):
+                continue
+            for m in INTERNAL.finditer(src):
+                a = max(0, m.start() - 30)
+                internal.append(('data/' + f, src[a:m.end() + 50].replace('\n', ' ')))
+
+    if internal:
+        print('[경고] 생성 카피에 내부 사정 표현 %d건 — 다음 파이프라인 실행에서 갱신되어야 한다:'
+              % len(internal))
+        seen = set()
+        for rel, txt in internal:
+            k = txt[:60]
+            if k in seen:
+                continue
+            seen.add(k)
+            print('  %s  …%s…' % (rel, txt))
         print()
 
     if rendered:

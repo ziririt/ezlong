@@ -505,7 +505,7 @@ def chart_engine_crosscheck(st):
     verdict = conf.get('verdict') or ''
     bits = []
     if act or trend:
-        bits.append(f"차트분석 엔진의 오늘 판독 '{act or trend}'")
+        bits.append(f"오늘 차트 패턴 '{act or trend}'")
     if verdict:
         # 'N/5' 분수 표기는 일반 방문자에게 낯설다 — 퍼센트로 변환 (2026-08-01 운영 지침)
         raw = str(conf.get('score', '') or '')
@@ -523,11 +523,11 @@ def chart_engine_crosscheck(st):
     bullish_st = st in ('accumulate', 'hold')
     cautious_ca = any(k in (str(act) + str(verdict)) for k in ('관망', '주의', '위장', '매도'))
     if bullish_st and cautious_ca:
-        line += ' 이 판단과 결이 다른 지점 — 이럴 때 원칙은 보수적인 쪽. 보유는 유지, 신규 증액은 이 모순이 풀린 뒤로 유보.'
+        line += ' 지표와 결이 다른 지점 — 이럴 때 원칙은 보수적인 쪽. 보유는 유지, 신규 증액은 방향이 모일 때까지 유보.'
     elif not bullish_st and not cautious_ca:
-        line += ' 차트 쪽이 더 낙관적이나, 노출 판단은 이 시스템의 규율 우선.'
+        line += ' 차트 쪽이 더 낙관적. 다만 비중 판단은 원칙대로 보수적으로.'
     else:
-        line += ' 이 판단과 같은 방향.'
+        line += ' 지표와 같은 방향.'
     return line
 
 
@@ -544,7 +544,7 @@ def comp_commentary(state, action, buy, sell, gear, dev200, price):
         p.append(f'수익을 좇을 자리가 아니라 계좌를 지킬 자리. 종가가 200일선 아래 '
                  f'{dev200:.1f}%까지 하락, 이 정도 이탈 이후 관성적으로 더 밀린 사례 다수 — '
                  f'계획된 노출 축소를 진행하는 구간. 바닥을 맞히려 들지 않고 '
-                 f'200일선 부근 회복 시 재진입하는 것이 이 시스템의 원칙.')
+                 f'200일선 부근 회복 시 재진입하는 것이 이 분석의 원칙.')
     elif action == 'ADD':
         p.append(f'오늘은 계획된 분할 매수를 한 단계 진행할 자리. 200일선 '
                  f'{"위" if (dev200 or 0) > 0 else "부근"} 추세 유지 중이고 현재 노출이 목표보다 '
@@ -554,9 +554,9 @@ def comp_commentary(state, action, buy, sell, gear, dev200, price):
         p.append(f'오늘은 일부를 덜어내는 쪽. 이유는 {reason} — 전량 청산이 아니라 '
                  f'계획된 부분 축소. 추세 자체가 꺾인 게 아니라면 남긴 물량으로 상승분 계속 확보.')
     elif action == 'INIT':
-        p.append(f'오늘부터 이 판단 체계 가동. 현재 추세와 신호를 기준으로 한 적정 노출에서 '
+        p.append(f'오늘부터 판단 시작. 현재 추세와 신호를 기준으로 한 적정 노출에서 '
                  f'출발, 이후 증액·축소는 전부 조건 충족일에만 단계적으로 진행. '
-                 f'매일 무언가를 하라는 시스템이 아니라, 해야 할 날에만 말하는 시스템.')
+                 f'매일 무언가를 하라는 신호가 아니라, 해야 할 날에만 나오는 신호.')
     elif state.get('exposure', 0) >= 0.5 and gear >= 3:
         p.append(f'새로 사거나 팔 자리가 아니라 버틸 자리. 이번 구간의 계획된 분할 매수는 '
                  f'{"대부분" if expo >= 0.8 else "상당 부분"} 완료, 마지막 조정 이후 '
@@ -742,7 +742,7 @@ def _reconcile(sym, st, label, kb):
     act, sc = ca['action'], (ca['score'] if isinstance(ca['score'], (int, float)) else None)
     buy_side = act == '매수'
     strong = buy_side and sc is not None and sc >= 7
-    line = f"차트 엔진 판독 '{act}'" + (f" {sc}/10" if sc is not None else '')
+    line = f"차트 패턴 '{act}'" + (f" {sc}/10" if sc is not None else '')
     if ca['stage']:
         line += f" · {ca['stage']}"
     if ca['why']:
@@ -751,26 +751,26 @@ def _reconcile(sym, st, label, kb):
     verdict = None
     if buy_side and st in ('watch', 'wait'):
         st = 'accumulate'
-        label = '규칙·차트 모두 매수 쪽 — 1차 정찰대(30%) 자리'
-        verdict = '두 엔진 방향 일치 — 망설일 자리가 아니라 1차를 넣는 자리. 3-3-4의 1차 30%.'
+        label = '지표·차트 모두 매수 쪽 — 1차 정찰대(30%) 자리'
+        verdict = '지표와 차트 패턴 방향 일치 — 망설일 자리가 아니라 1차를 넣는 자리. 3-3-4의 1차 30%.'
     elif buy_side and st == 'trim':
         label = '과열 신호 vs 차트 매수 — 1차 30%만 분할 익절'
-        verdict = ('규칙 엔진은 과열, 차트 엔진은 매수 — 방향이 갈린다. 전량 익절이 아니라 '
+        verdict = ('지표는 과열, 차트 패턴은 매수 — 방향이 갈린다. 전량 익절이 아니라 '
                    '보유분의 1차 30%만 덜어내고 나머지는 추세 이탈까지 들고 간다. '
                    '고점에서 확실히 덜어내되 추세를 통째로 버리지는 않는 자리.')
     elif strong and st == 'hold':
         label = '추세 양호 + 차트 매수 — 추가 1차(30%) 가능 구간'
-        verdict = (f'차트 엔진 매수 {sc}/10. 보유만 하고 끝낼 자리가 아니라 목표 비중이 '
+        verdict = (f'차트 패턴 매수 신호 {sc}/10. 보유만 하고 끝낼 자리가 아니라 목표 비중이 '
                    f'덜 찼다면 1차 30%를 더 채우는 자리. 과열 신호가 켜지면 그때 익절로 전환.')
     elif st == 'accumulate' and not buy_side:
-        label = '규칙은 매수 — 차트 미확인이라 1차를 절반으로'
-        verdict = (f"규칙 엔진은 진입 자리로 보지만 차트 엔진은 아직 '{act}'. "
-                   f'두 엔진이 갈릴 때는 크기로 답한다 — 1차 30%가 아니라 15% 선에서 시작하고, '
+        label = '지표는 매수 자리 — 차트 패턴 미성숙, 1차는 절반으로'
+        verdict = (f"지표는 진입 구간이지만 차트 패턴은 아직 '{act}'. "
+                   f'판단이 갈릴 때는 크기로 답한다 — 1차 30%가 아니라 15% 선에서 시작하고, '
                    f'차트가 매수로 돌아서면 나머지를 채운다.')
     else:
-        verdict = '규칙 엔진 판단과 같은 방향 — 별도 조정 없음.'
+        verdict = '차트 패턴도 같은 방향 — 조정 없이 그대로.'
 
-    return st, label, kb + [_blk('AI 차트분석 교차검증', line, verdict)]
+    return st, label, kb + [_blk('차트 패턴 교차검증', line, verdict)]
 
 
 def tsla_view(s):
@@ -937,10 +937,10 @@ LABEL_EN = {
     '많이 올랐음 — 일부 이익실현 검토 구간': 'Overheated — worth taking some profit',
     '많이 올랐음 — 지금 새로 사기엔 불리': 'Overheated — a poor spot to start buying',
     '많이 올랐지만 — 서둘러 팔 필요 없는 종목': 'Overheated — but quick selling has not paid off here',
-    '규칙·차트 모두 매수 쪽 — 1차 정찰대(30%) 자리': 'Both engines lean buy — a first 30% tranche',
+    '지표·차트 모두 매수 쪽 — 1차 정찰대(30%) 자리': 'Indicators and chart both lean buy — a first 30% tranche',
     '과열 신호 vs 차트 매수 — 1차 30%만 분할 익절': 'Overheated vs chart buy — trim just the first 30%',
     '추세 양호 + 차트 매수 — 추가 1차(30%) 가능 구간': 'Trend intact plus a chart buy — room for another 30%',
-    '규칙은 매수 — 차트 미확인이라 1차를 절반으로': 'Rules say buy, chart unconfirmed — halve the first tranche',
+    '지표는 매수 자리 — 차트 패턴 미성숙, 1차는 절반으로': 'Indicators say buy, chart pattern immature — halve the first tranche',
     '내리막 — 반등 첫 신호에 정찰대': 'Downtrend — a scout position on the first rebound signal',
     '내리막이나 반등 진행 — 소량 정찰대': 'Downtrend but rebounding — a small scout position',
     '내리막이나 반등 진행 — 소량 진입 후보': 'Downtrend but rebounding — a candidate for a small entry',
@@ -1400,13 +1400,13 @@ def desk_with_fable(view, sc_entry, ca):
 [오늘의 확정 스탠스 — 절대 변경 금지]
 {comp['stanceLabel']} (매수점수 {n['buy']}, 매도압력 {n['sell']}, 기어 {n['gear']}, 200일선 {n['dev200']:+}%)
 
-[규칙 엔진 초안]
+[지표 판단 초안]
 {draft}
 
 [뉴스 재료 (결과 재료 섞여 있을 수 있음)]
 {factors}
 
-[차트 엔진 판독]
+[차트 패턴 판독]
 {ca_line}
 
 [사용 가능한 검증 통계 — 이것 외의 확률·통계 절대 금지]
@@ -1432,6 +1432,12 @@ def desk_with_fable(view, sc_entry, ca):
 - 틀리지 않으려고 애매하거나 하나마나한 소리("변동성 유의", "지켜볼 필요") 금지 — 모든 항목은 수치·조건·판단 중 하나를 반드시 담을 것. 담을 게 없는 섹션은 빼라.
 - 결과 재료('VIX 하락', '지수 상승', '섹터 강세' 등)는 근거 인용 금지 — 원인 재료만.
 - "~하세요" 행동 촉구 금지. 분석/진단형.
+- [내부 사정 노출 금지] 이 글은 독자가 읽는 완성된 분석이다. 제작 과정·시스템 구조·
+  작업 상태를 절대 쓰지 마라. 금지어 예시 — "엔진", "규칙 엔진", "차트 엔진",
+  "교차검증 결과 미확인", "차트 미확인", "아직 확인 못 했다", "데이터가 없어서",
+  "이 시스템은", "초안에 따르면". 두 갈래 판단이 갈릴 때는 그 사실을 시장 언어로 쓴다 —
+  "지표는 진입 구간이나 차트 패턴은 아직 매수로 돌아서지 않았다"처럼. 무엇을 확인했는지
+  안 했는지가 아니라, 시장이 어떤 상태인지만 말한다.
 - 포스트마켓은 초안에 등장할 때만 언급하라(큰 이벤트가 있는 날만 초안에 실린다). 초안에 없으면 절대 언급 금지.
 - 오늘 날짜와 직전 장 정보는 초안 서술을 따를 것. '직전 장'을 언급할 때는 초안처럼 반드시 날짜를 병기하라 — 예: "직전 장(7월30일)".
 - [지금 장 국면] {_SESSION_PHASE_KO}. {_SESSION_PHASE_RULE}
@@ -1439,8 +1445,8 @@ def desk_with_fable(view, sc_entry, ca):
   이 줄이 "너무 보수적이었음을 인정한다"로 시작하면, headline에서 승리를 자랑하지 마라.
   놓친 것은 놓쳤다고 하고, 지금 할 일(남은 차수)로 넘어가라. 신뢰는 맞히는 데서가 아니라
   틀린 걸 먼저 말하는 데서 나온다.
-- 쉬운 말만 쓴다. 어려운 한자어·업계 밖 용어 금지 — '만재(滿載)' 같은 화물 용어를 실제로
-  썼다가 지적받았다. 52세 일반 투자자가 한 번에 읽히는 단어로만.
+- 쉬운 말만 쓴다. 어려운 한자어·업계 밖 용어 금지 — '만재(滿載)' 같은 화물 용어는
+  실패 사례다. 일반 투자자가 한 번에 읽히는 단어로만.
 - 등락률을 말할 때는 반드시 대상을 붙여라. 주어 없는 "시장 +x%" 표기 금지 —
   지수 등락은 "QQQ(나스닥100 ETF) +x%(683달러)"처럼 티커와 주가를 함께 적는다
   (x·주가는 초안의 실제 수치를 그대로 쓸 것, 새로 만들지 말 것).
@@ -1600,7 +1606,7 @@ def main():
     elif ll and ll['count'] >= 2:
         broken = '·'.join(n for n, b in ll['detail'] if b)
         ll_paras.append(f'생명선 절단. {broken}이 주봉 기준 30주선 아래에서 마감. '
-                        f'이 선 아래에서 강세장을 논하지 않는 것이 이 시스템의 헌법. '
+                        f'이 선 아래에서 강세장을 논하지 않는 것이 이 분석의 대원칙. '
                         f'{STATS["lifeline"]}. 규칙에 따라 노출 상한 '
                         f'{"0%" if ll["count"] >= 3 else "20%"}로 하향.')
     elif ll and ll['count'] == 1:
