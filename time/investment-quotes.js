@@ -8531,5 +8531,11 @@ window.investmentQuotes = [
     "title": "버크셔 해서웨이 1988년 주주 서한",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "mindset"
+  },
+  {
+    "text": "열심히 산 것도, 열심히 살지 않는 것도 어느 게 옳고 그르다고 말할 수는 없다. 인생에 정답이 어디 있을까.",
+    "title": "하마터면 열심히 살 뻔했다",
+    "author": "하완",
+    "genre": "literature"
   }
 ];
