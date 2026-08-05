@@ -8463,5 +8463,11 @@ window.investmentQuotes = [
     "title": "월가의 영웅 (One Up on Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "text": "우리가 사랑한 모든 것은 언젠가 사라질 테니까요. 하지만 우리는 기억할 수 있습니다. 기록해두기만 한다면요.",
+    "title": "기록하기로 했습니다",
+    "author": "김신지",
+    "genre": "literature"
   }
 ];
