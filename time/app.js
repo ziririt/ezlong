@@ -9816,6 +9816,10 @@ var bedsideActive = false;
     if (lowTimer) { window.clearTimeout(lowTimer); lowTimer = null; }
     document.body.classList.remove("is-lowmotion");
     lowTimer = window.setTimeout(function () {
+      // 2026-08-05 성동님 지적 — 충전 중에는 아낄 이유가 없다.
+      // 판정은 침대맡 모드와 같은 함수(shouldDim = 확실히 비충전일 때만).
+      // 규칙이 두 개면 반드시 어긋나므로 기준은 하나만 둔다.
+      if (!shouldDim()) return;
       document.body.classList.add("is-lowmotion");
     }, LOWMOTION_MS);
   }
@@ -9865,6 +9869,8 @@ var bedsideActive = false;
   // 도는 확인이라 비용도 사실상 없다.
   window.setInterval(function () {
     if (bedsideActive && !shouldDim()) exit();
+    // 충전기를 꽂으면 얕은 절전도 함께 풀린다(콜론·숨쉬기가 다시 살아난다).
+    if (!shouldDim()) document.body.classList.remove("is-lowmotion");
   }, 10000);
 
   // ── 설정 UI ──────────────────────────────────────────────────────
