@@ -9929,6 +9929,14 @@ var bedsideActive = false;
     } catch (error) { /* 무시 */ }
     return batteryCharging === true;
   }
+  // 2026-08-05 — 네이티브(iOS)가 충전 상태를 알려줄 때 즉시 반응한다.
+  // 꽂는 순간 그동안 센 곡 수는 없던 일로 한다 — 전기가 들어오는데
+  // 접을 이유가 없다.
+  window.__flipzenChargingChanged = function (charging) {
+    try {
+      if (charging) songsSinceOpen = 0;
+    } catch (error) { /* 무시 */ }
+  };
   try {
     if (navigator.getBattery) {
       navigator.getBattery().then(function (b) {
