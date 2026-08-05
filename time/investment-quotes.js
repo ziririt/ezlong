@@ -8517,5 +8517,12 @@ window.investmentQuotes = [
     "title": "월가의 영웅 (One Up on Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "english": "Autumn leaves don't fall, they fly. They take their time and wander on this their only chance to soar.",
+    "text": "가을 낙엽은 떨어지는 것이 아니라 난다. 서두르지 않고, 하늘을 오를 단 한 번의 기회를 마음껏 누비면서.",
+    "title": "가재가 노래하는 곳 (Where the Crawdads Sing)",
+    "author": "델리아 오언스 (Delia Owens)",
+    "genre": "literature"
   }
 ];
