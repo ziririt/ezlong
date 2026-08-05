@@ -961,7 +961,7 @@ function buildSparkline(rawCloses, baselineValue) {
       '<line x1="' + pad + '" y1="' + (H/2) + '" x2="' + (W-pad) + '" y2="' + (H/2) + '" stroke="var(--ez-border)" stroke-width="1" stroke-dasharray="4,3"/></svg>';
   }
   // 세로 여백 14% — 선을 min~max 원본값 그대로 카드 상/하단에 꽉 채우면 실제 변동폭보다
-  // 훨씬 드라마틱해 보이는 착시가 생긴다(2026-07-10, 유저 제보: SOXX/SOXL 스파클라인이
+  // 훨씬 드라마틱해 보이는 착시가 생긴다(2026-07-10, 이슈 제보: SOXX/SOXL 스파클라인이
   // 장초가~장마감 차이는 작은데 그래프는 수십% 스윙처럼 보임). min/max 양쪽에 14%씩
   // 여백을 둬서 선이 상/하단 끝에 딱 붙지 않도록 완화 — 모양(추세)은 그대로 유지.
   var rawMin = Math.min.apply(null, closes);
@@ -1030,7 +1030,7 @@ function buildSparklineSmall(rawCloses, isUp, baselineValue) {
       '<line x1="0" y1="' + (H/2) + '" x2="' + W + '" y2="' + (H/2) + '" stroke="var(--ez-border)" stroke-width="1" stroke-dasharray="6,4"/></svg>';
   }
   // 세로 여백 14% — 선을 min~max 원본값 그대로 카드 상/하단에 꽉 채우면 실제 변동폭보다
-  // 훨씬 드라마틱해 보이는 착시가 생긴다(2026-07-10, 유저 제보: SOXX/SOXL 스파클라인이
+  // 훨씬 드라마틱해 보이는 착시가 생긴다(2026-07-10, 이슈 제보: SOXX/SOXL 스파클라인이
   // 장초가~장마감 차이는 작은데 그래프는 수십% 스윙처럼 보임). min/max 양쪽에 14%씩
   // 여백을 둬서 선이 상/하단 끝에 딱 붙지 않도록 완화 — 모양(추세)은 그대로 유지.
   var rawMin = Math.min.apply(null, closes);

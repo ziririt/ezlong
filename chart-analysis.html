@@ -1382,7 +1382,7 @@ function renderPriceHeader(analysis, currency) {
   const liveAgeMin    = krLiveUpdatedAt ? Math.round((Date.now() - new Date(krLiveUpdatedAt)) / 60000) : null;
   const dispLabel     = (liveAgeMin !== null && liveAgeMin <= 20) ? '실시간' : '데이터 기준';
 
-  // ── KR 세션 배지: 표시 데이터 자체의 날짜를 명기 (2026-08-04 성동님 지시) ──
+  // ── KR 세션 배지: 표시 데이터 자체의 날짜를 명기 (2026-08-04 운영 지침) ──
   // "장중"처럼 시계 기준으로만 찍으면 데이터가 밀렸을 때 전일 수치가 오늘
   // 장중 시세로 위장된다("장중 −8.93%" 사고). 배지 날짜·세션을 표시 데이터의
   // 타임스탬프에서 뽑으면 갱신 실패 시 "8월 3일 장마감"으로 바로 드러난다.
