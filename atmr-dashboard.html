@@ -1971,7 +1971,7 @@ li.gear-other-sep { display: none !important; }
               </div>
             </div>
             <div class="ltier-cat-item">
-              <span class="ltier-cat-badge buy">신규 진입</span>
+              <span class="ltier-cat-badge buy">첫매수</span>
               <div class="ltier-cat-head">새로 들어간다면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
@@ -2046,7 +2046,7 @@ li.gear-other-sep { display: none !important; }
               </div>
             </div>
             <div class="ltier-cat-item">
-              <span class="ltier-cat-badge buy">신규 진입</span>
+              <span class="ltier-cat-badge buy">첫매수</span>
               <div class="ltier-cat-head">새로 들어간다면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
@@ -2121,7 +2121,7 @@ li.gear-other-sep { display: none !important; }
               </div>
             </div>
             <div class="ltier-cat-item">
-              <span class="ltier-cat-badge buy">신규 진입</span>
+              <span class="ltier-cat-badge buy">첫매수</span>
               <div class="ltier-cat-head">새로 들어간다면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
@@ -4010,9 +4010,14 @@ function buildTrendLineHtml() {
       _bodyHtml = _c.commentary.map(t => `<p style="margin:0 0 12px;line-height:1.78;">${t}</p>`).join('');
     }
     if (_dk?.headline) title = _v2Colorize(_dk.headline);
-    desc  = _flowLine
+    // 2026-08-05 성동님 지적 — 기준시각을 본문 아래에 두면 "글 다 읽고 나서
+    // 나오는" 꼴이라 쓸모가 없다. 어느 시점 기준인지는 읽기 전에 알아야 한다.
+    // 박스 맨 위로 올린다. 면책성 문구(백테스트 검증분 인용)는 그대로 아래 남긴다.
+    const _asOfTop = `<div style="margin:0 0 10px;color:var(--t3);font-size:14px;font-weight:600;">${window._swingView.generatedAtKST} 기준 · 기준일 ${window._swingView.dataDay}(미국장)</div>`;
+    desc  = _asOfTop
+          + _flowLine
           + _bodyHtml
-          + `<div style="margin-top:8px;color:var(--t3);font-size:14px;">${window._swingView.generatedAtKST} 기준 · 기준일 ${window._swingView.dataDay}(미국장) — 확률·통계는 11년 백테스트 검증분만 인용</div>`;
+          + `<div style="margin-top:8px;color:var(--t3);font-size:14px;">확률·통계는 11년 백테스트 검증분만 인용</div>`;
     pills = [
       {text: gearText, tone: gear >= 3 ? 'good' : gear === 2 ? 'positive' : 'negative'},
       {text: `매도압력 ${_compSell}`, tone: _compSell >= 60 ? 'negative' : 'neutral'},
@@ -6313,7 +6318,7 @@ function buildAudienceHtml(aud) {
   return `<div class="t9-box">
     <div style="font-weight:800;color:var(--t1);font-size:16px;margin-bottom:6px;">맞춤 행동 진단</div>
     ${row('hold', '보유자', aud.holder)}
-    ${row('buy', '신규 진입', aud.newbie)}
+    ${row('buy', '첫매수', aud.newbie)}
     ${row('avg', '물타기', aud.avgdown)}
     ${row('fire', '불타기', aud.pyramid)}
   </div>`;
