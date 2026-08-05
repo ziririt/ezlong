@@ -8443,5 +8443,11 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각",
     "author": "하워드 막스 (Howard Marks)",
     "category": "mindset"
+  },
+  {
+    "text": "길이 끝나는 곳에서도 길이 있다. 길이 끝나는 곳에서도 길이 되는 사람이 있다. 스스로 봄길이 되어 걸어가는 사람이 있다.",
+    "title": "봄길",
+    "author": "정호승",
+    "genre": "literature"
   }
 ];
