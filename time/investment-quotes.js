@@ -8558,5 +8558,11 @@ window.investmentQuotes = [
     "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "patience"
+  },
+  {
+    "text": "너는 커서 네가 될 거야. 아마도 최대한의 너일 거야.",
+    "title": "부지런한 사랑",
+    "author": "이슬아",
+    "genre": "literature"
   }
 ];
