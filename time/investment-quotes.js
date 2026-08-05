@@ -8564,5 +8564,12 @@ window.investmentQuotes = [
     "title": "부지런한 사랑",
     "author": "이슬아",
     "genre": "literature"
+  },
+  {
+    "english": "A blindfolded monkey throwing darts at a newspaper's financial pages could select a portfolio that would do just as well as one carefully selected by experts.",
+    "text": "눈을 가린 원숭이가 신문의 경제면에 다트를 던져 종목을 고르더라도, 전문가들이 신중하게 골라낸 포트폴리오 못지않은 성과를 낼 수 있다.",
+    "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
+    "author": "버튼 말킬 (Burton Malkiel)",
+    "category": "mindset"
   }
 ];
