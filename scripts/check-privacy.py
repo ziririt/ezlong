@@ -9,8 +9,9 @@
 이 스크립트가 하는 일
   · 배포되는 파일(html/js/css/json)에서 주석을 제거한 뒤 남은 "실제 코드"에
     개인 지칭 표현이 있는지 본다 → 있으면 종료코드 1 (배포 차단)
-  · 주석 안에 남은 표현은 경고만 한다 → View Source 로 보이긴 하지만
-    화면에 렌더되진 않으므로 차단 사유는 아니다
+  · 주석 안에 남은 표현도 차단한다 (2026-08-07 강화) → 배포되는 js/html 은
+    누구나 원문을 그대로 내려받는다. "화면에 안 보이니 괜찮다"가 아니다.
+    경고로 두었더니 실제로 한 건이 며칠 동안 라이브에 남아 있었다.
 
 허용 목록
   · "김성동" — 저자 표기(meta author, JSON-LD, 출간 도서 인용 저자)는
@@ -158,10 +159,11 @@ def main():
     only_cmt = [h for h in commented if (h[0], h[1]) not in ren_keys]
 
     if only_cmt:
-        print('[경고] 주석 안 개인 지칭 %d건 — 렌더되진 않으나 View Source 로 보인다:'
+        print('[차단] 주석 안 개인 지칭 %d건 — 화면에 안 보여도 파일째 공개된다:'
               % len(only_cmt))
         for rel, i, txt in only_cmt[:40]:
             print('  %s:%d  %s' % (rel, i, txt))
+        print('  ※ 배포되는 js/html 은 누구나 원문을 내려받는다. 주석도 공개 문서다.')
         print()
 
     # ── 2차: 생성 카피의 내부 사정 노출 검사 ──────────────────────────────
@@ -217,7 +219,7 @@ def main():
         print('\n화면 문구에서 개인 호칭·지시 출처 표기를 제거한 뒤 다시 배포하세요.')
         return 1
 
-    if banned_copy or unversioned:
+    if banned_copy or unversioned or only_cmt:
         return 1
 
     print('[통과] 개인 지칭·금지 문구 없음, 캐시 자산 버전 표기 정상.')
