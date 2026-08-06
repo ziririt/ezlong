@@ -8611,5 +8611,12 @@ window.investmentQuotes = [
     "title": "원칙 (Principles: Life and Work)",
     "author": "레이 달리오 (Ray Dalio)",
     "category": "mindset"
+  },
+  {
+    "english": "To allow yourself to play with another person is no small risk. It means allowing yourself to be open, to be exposed, to be hurt.",
+    "text": "누군가와 함께 논다는 것을 스스로에게 허락하는 일은 결코 작은 위험이 아니다. 그것은 자신을 열어 보이고, 드러내고, 상처받을 수 있음을 허락하는 일이다.",
+    "title": "투모로우 앤드 투모로우 앤드 투모로우 (Tomorrow, and Tomorrow, and Tomorrow)",
+    "author": "가브리엘 제빈 (Gabrielle Zevin)",
+    "genre": "literature"
   }
 ];
