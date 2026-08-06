@@ -47,6 +47,15 @@ INTERNAL = re.compile(
 # 공유카드·스플래시를 새로 받으면 눈으로 한 번 확인할 것.
 BANNED_COPY = re.compile(r'오래\s*두면\s*편해진다')
 
+# firebase.json 에서 /icons/** · /splash/** 를 1년 immutable 로 걸어 두었다.
+# 그 자산은 URL 에 버전이 없으면 내용을 바꿔도 브라우저·엣지가 1년 동안 옛것을
+# 계속 쓴다. 2026-08-06 실제로 심볼을 바꿨는데 파비콘만 옛 그림으로 남았다.
+# 그래서 참조에는 반드시 ?v=… 를 붙인다 — 붙이는 건 build-web-brand.py 가 아니라
+# 사람이 하는 일이므로 여기서 막는다.
+# 절대경로만 대상이다. time/ 은 자기 폴더의 icons/ 를 상대경로로 쓰는데
+# firebase 의 /icons/** 규칙은 루트만 매칭하므로 1년 캐시 대상이 아니다.
+IMMUTABLE_REF = re.compile(r'(?:href|src)"?\s*[:=]\s*"(/(?:icons|splash)/[^"?]+\.(?:png|ico|svg))"')
+
 SERVED_EXT = ('.html', '.js', '.css', '.json', '.webmanifest')
 SKIP_DIRS = {'.git', 'node_modules', 'mobile', 'analyst-pipeline'}
 
@@ -109,7 +118,7 @@ def strip_html(s):
 
 def main():
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    rendered, commented, banned_copy = [], [], []
+    rendered, commented, banned_copy, unversioned = [], [], [], []
 
     for cur, dirs, files in os.walk(root):
         dirs[:] = [d for d in dirs
@@ -126,6 +135,8 @@ def main():
             for i, line in enumerate(src.split('\n'), 1):
                 if BANNED_COPY.search(line):
                     banned_copy.append((rel, i, line.strip()[:160]))
+                for m in IMMUTABLE_REF.finditer(line):
+                    unversioned.append((rel, i, m.group(1)))
             if not BANNED.search(src):
                 continue
             if f.endswith('.html'):
@@ -183,6 +194,16 @@ def main():
             print('  %s  …%s…' % (rel, txt))
         print()
 
+    if unversioned:
+        print('[차단] 1년 캐시 자산인데 URL 에 버전이 없는 참조 %d건:' % len(unversioned))
+        seen = set()
+        for rel, i, u in unversioned:
+            if u in seen:
+                continue
+            seen.add(u)
+            print('  %s:%d  %s   → %s?v=YYYYMMDD 를 붙일 것' % (rel, i, u, u))
+        print()
+
     if banned_copy:
         print('[차단] 쓰지 않기로 한 문구 %d건:' % len(banned_copy))
         for rel, i, txt in banned_copy:
@@ -196,10 +217,10 @@ def main():
         print('\n화면 문구에서 개인 호칭·지시 출처 표기를 제거한 뒤 다시 배포하세요.')
         return 1
 
-    if banned_copy:
+    if banned_copy or unversioned:
         return 1
 
-    print('[통과] 렌더되는 문자열에 개인 지칭·금지 문구 없음.')
+    print('[통과] 개인 지칭·금지 문구 없음, 캐시 자산 버전 표기 정상.')
     return 0
 
 
