@@ -8653,5 +8653,11 @@ window.investmentQuotes = [
     "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
     "author": "필립 피셔 (Philip Fisher)",
     "category": "mindset"
+  },
+  {
+    "text": "무소유란 아무것도 갖지 않는다는 것이 아니라 불필요한 것을 갖지 않는다는 것이다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
   }
 ];
