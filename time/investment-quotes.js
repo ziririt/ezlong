@@ -8687,5 +8687,12 @@ window.investmentQuotes = [
     "title": "돈의 심리학 (The Psychology of Money)",
     "author": "모건 하우절 (Morgan Housel)",
     "category": "compound"
+  },
+  {
+    "english": "It is not the lives we regret not living that are the real problem. It is the regret itself. It’s the regret that makes us shrivel and wither and feel like our own and other people’s worst enemy.",
+    "text": "살아보지 못한 삶을 후회하는 것, 그 자체가 진짜 문제는 아니다. 진짜 문제는 후회라는 감정 그 자체다. 바로 그 후회가 우리를 시들고 움츠러들게 만들어, 나 자신에게도 남에게도 가장 큰 적으로 만든다.",
+    "title": "미드나잇 라이브러리 (The Midnight Library)",
+    "author": "매트 헤이그 (Matt Haig)",
+    "genre": "literature"
   }
 ];
