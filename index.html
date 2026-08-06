@@ -513,6 +513,15 @@ a { text-decoration: none; color: inherit; }
   .nav-logo-img { filter: brightness(1.1); }
 }
 
+/* 2026-08-06 — 모바일에서 로고가 우측 "투자 AI 도구" 버튼과 맞붙던 문제.
+   .nav-inner 가 space-between 이라 둘 사이 여백이 화면 폭에서 남는 만큼만
+   생기는데, 40px 높이의 가로형 락업은 폭이 200px 을 넘어 360~400px 화면에서
+   남는 게 없었다. 모바일에서만 로고를 낮추고 최소 간격을 못 박는다. */
+@media (max-width: 640px) {
+  .nav-inner { gap: 16px; }
+  .nav-logo-img { height: 32px; }
+}
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -1355,8 +1364,8 @@ a { text-decoration: none; color: inherit; }
   <div class="nav-inner">
     <a href="/" class="nav-logo">
       <picture>
-        <source srcset="logo-darkmode.png?v=20260806d" media="(prefers-color-scheme: dark)" />
-        <img src="logo.png?v=20260806d" alt="EZLONG" class="nav-logo-img" />
+        <source srcset="logo-darkmode.png?v=20260806e" media="(prefers-color-scheme: dark)" />
+        <img src="logo.png?v=20260806e" alt="EZLONG" class="nav-logo-img" />
       </picture>
     </a>
     <button class="ez-mob-toggle" id="ez-mob-toggle"
@@ -1944,8 +1953,8 @@ a { text-decoration: none; color: inherit; }
       <div class="footer-brand">
         <div class="footer-brand-name">
           <picture>
-            <source srcset="logo-darkmode.png?v=20260806d" media="(prefers-color-scheme: dark)" />
-            <img src="logo.png?v=20260806d" alt="EZLONG" style="height:32px;width:auto;" />
+            <source srcset="logo-darkmode.png?v=20260806e" media="(prefers-color-scheme: dark)" />
+            <img src="logo.png?v=20260806e" alt="EZLONG" style="height:32px;width:auto;" />
           </picture>
         </div>
         <p class="footer-brand-desc">

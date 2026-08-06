@@ -51,6 +51,12 @@ SUB_SCALE = 2.552                          # 서브라인 하단 = 심볼 하단
 SUB_TIGHTEN = 3.8                          # 원본 트래킹 4.2 중 걷어낼 양
 SUB_COLOR = {'color': '#0E9384', 'white': '#4FD1C5'}
 
+# 심볼과 글자 사이 간격. 원본 락업은 37.4 단위(심볼 폭의 38%)나 벌어져 있어서,
+# 모바일 헤더에서 로고가 쓸데없이 길어지고 그만큼 우측 메뉴 버튼과 붙었다.
+# 글자 블록을 왼쪽으로 당겨 간격을 절반 이하로 줄인다 — 로고가 짧아진 만큼
+# 우측 버튼과의 숨통이 트인다. (심볼 x 51.0~148.8 / 워드마크 x 186.2~)
+TEXT_SHIFT = 20.0
+
 NUM = re.compile(r'-?\d*\.?\d+(?:[eE][-+]?\d+)?')
 
 
@@ -168,6 +174,15 @@ def tighten(d, amount):
     return ''.join(res), len(glyphs)
 
 
+def shift_text(svg, dx):
+    """워드마크와 서브라인을 왼쪽으로 dx 만큼 당긴다(심볼은 그대로)."""
+    P = list(re.finditer(r'<path\b[^>]*?/>', svg, re.S))
+    word = P[1]
+    return (svg[:word.start()]
+            + f'<g transform="translate({-dx},0)">' + word.group(0) + '</g>'
+            + svg[word.end():])
+
+
 def fix_subline(svg, variant):
     """락업의 서브라인(세 번째 패스)을 키우고 자간·색을 조정."""
     P = list(re.finditer(r'<path\b[^>]*?/>', svg, re.S))
@@ -176,8 +191,9 @@ def fix_subline(svg, variant):
     nd, ng = tighten(d, SUB_TIGHTEN)
     k = SUB_SCALE
     tx, ty = SUB_BBOX[0] * (1 - k), SUB_TOP - SUB_BBOX[1] * k
-    g = (f'<g transform="translate({tx:.3f},{ty:.3f}) scale({k})">'
-         f'<path d="{nd}" fill="{SUB_COLOR[variant]}"/></g>')
+    g = (f'<g transform="translate({-TEXT_SHIFT},0)">'
+         f'<g transform="translate({tx:.3f},{ty:.3f}) scale({k})">'
+         f'<path d="{nd}" fill="{SUB_COLOR[variant]}"/></g></g>')
     print(f'  서브라인 글자 {ng}자 · 자간 -{SUB_TIGHTEN} · {SUB_COLOR[variant]}')
     return svg[:P[2].start()] + g + svg[P[2].end():]
 
@@ -209,7 +225,7 @@ def build_lockup():
     outs = {}
     for variant, dst in (('color', 'logo.png'), ('white', 'logo-darkmode.png')):
         svg = open(os.path.join(TPL, f'lockup-{variant}.svg'), encoding='utf-8').read()
-        svg = fix_subline(swap_spiral(svg), variant)
+        svg = fix_subline(shift_text(swap_spiral(svg), TEXT_SHIFT), variant)
         tmp = f'/tmp/lockup-{variant}.png'
         render(svg, tmp, 592, 200, scale=4)   # 헤더에서 축소해 쓰므로 4배로 뽑는다
         outs[dst] = Image.open(tmp).convert('RGBA')

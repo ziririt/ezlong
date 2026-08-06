@@ -250,7 +250,9 @@ a { color: inherit; }
     align-items: center !important;
     padding: 10px 16px !important;
   }
-  .ez-nav-logo { padding: 0 !important; }
+  /* 로고와 우측 버튼 사이 최소 숨통. 버튼이 margin-left:auto 로 밀려 있어도
+     좁은 화면에서는 둘이 맞붙는다 — 안드로이드 실기기에서 실제로 붙었다. */
+  .ez-nav-logo { padding: 0 !important; margin-right: 16px; }
   .ez-nav-svc-links { display: none !important; }
   .ez-mob-toggle { display: flex !important; }
 }
