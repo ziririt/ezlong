@@ -8591,5 +8591,12 @@ window.investmentQuotes = [
     "title": "무례한 사람에게 웃으며 대처하는 법",
     "author": "정문정",
     "genre": "literature"
+  },
+  {
+    "english": "Rule No. 1: Most things will prove to be cyclical. Rule No. 2: Some of the greatest opportunities for gain and loss come when other people forget Rule No. 1.",
+    "text": "제1원칙: 거의 모든 것은 주기적이다. 제2원칙: 가장 큰 이익과 손실의 기회는 사람들이 제1원칙을 잊을 때 찾아온다.",
+    "title": "가장 중요한 것 (The Most Important Thing)",
+    "author": "하워드 막스 (Howard Marks)",
+    "category": "mindset"
   }
 ];
