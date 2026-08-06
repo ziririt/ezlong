@@ -3921,6 +3921,46 @@ button { font: inherit; }
   border-top: 1px solid rgba(18, 27, 42, 0.10);
 }
 
+/* ────────────────────────────────────────────────────────────────
+   2026-08-07 운영 요청 — "다크모드인데 이 부분만 눈이 부시다."
+
+   이 바는 ezlong.com 을 감싸고 있는 앱 껍데기다. 안쪽 사이트가
+   prefers-color-scheme 를 따라 어두워지는데 껍데기만 밝은 회색 판으로
+   남아 있으면, 밤에는 화면 아래쪽에 그 띠 하나만 등처럼 남는다.
+   같은 신호를 따라가게 해서 경계가 어긋나지 않게 한다.
+
+   단색 대신 반투명 + 블러로 둔 것은 이 바가 콘텐츠 위에 떠 있는
+   층이라는 것을 재질로 말하기 위해서다(불투명 판은 화면을 잘라 먹는다).
+   대비는 라이트 모드(5.22:1)와 눈으로 같은 무게가 되도록 6.36:1 로
+   잡았다 — 어두운 바탕의 밝은 글자는 같은 수치에서 더 굵게 읽힌다.
+   ──────────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .webview-footer {
+    background: rgba(14, 18, 27, 0.86);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-top-color: rgba(255, 255, 255, 0.10);
+  }
+
+  .webview-footer a,
+  .webview-back,
+  .webview-open,
+  .webview-hist,
+  .webview-top {
+    color: #8e97a6;
+  }
+}
+
+/* 투명도를 줄여 달라고 한 기기에서는 유리를 걷고 단색으로 — 흐릿한 판이
+   겹쳐 보이는 것보다 또렷한 한 겹이 낫다. */
+@media (prefers-color-scheme: dark) and (prefers-reduced-transparency: reduce) {
+  .webview-footer {
+    background: #0e121b;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
 .webview-footer a,
 .webview-back,
 .webview-open {
