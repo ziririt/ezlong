@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-08-06-18:20",
+      "timestamp_kst": "2026-08-06(목) 18:20 KST",
+      "key_event": {
+        "name": "기술주 혼조 및 AI 리더십 우려 지속",
+        "name_en": "Mixed Tech Performance & Ongoing AI Leadership Concerns",
+        "time": "오늘 프리마켓 및 오늘 정규장",
+        "why": "주요 기술주 하락, AI 리더십 불안, 금리 인상 우려 지속",
+        "why_en": "Major tech stocks decline, AI leadership uncertainty, persistent rate hike concerns"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "기술주 혼조 및 AI 리더십 불안으로 부정 우위 지속",
+      "summary_en": "Negative sentiment prevails due to mixed tech performance and AI leadership uncertainty",
+      "positive_factors": [
+        {
+          "score": 15,
+          "name": "구글 AI 리더십 우려 완화",
+          "name_en": "Easing Concerns on Google's AI Leadership",
+          "desc": "CEO 발언 및 분석가 평가로 AI 인재 이탈 우려 진정",
+          "desc_en": "CEO remarks and analyst assessments calm fears of AI talent exodus",
+          "category": "company_specific"
+        },
+        {
+          "score": 10,
+          "name": "인플레이션 우려 완화 기대",
+          "name_en": "Anticipated Easing of Inflation Concerns",
+          "desc": "S&P 500 선물 상승 및 유가 하락으로 인플레 둔화 신호",
+          "desc_en": "S&P 500 futures rise and oil prices dip, signaling potential inflation moderation",
+          "category": "macro_data"
+        },
+        {
+          "score": 10,
+          "name": "AI 스토리지 수요 장기 전망",
+          "name_en": "Long-term AI Storage Demand Outlook",
+          "desc": "Western Digital, AI 스토리지 수요 2031년까지 지속 전망",
+          "desc_en": "Western Digital projects AI storage demand to continue until 2031",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 45,
+          "name": "Fed 금리 인상 가능성 재부각",
+          "name_en": "Resurfacing Fed Rate Hike Possibility",
+          "desc": "Fed 이사 발언으로 인플레이션 둔화 정체 시 금리 인상 시사",
+          "desc_en": "Fed Governor's remarks suggest rate hikes if disinflation stalls",
+          "category": "fed_policy"
+        },
+        {
+          "score": 20,
+          "name": "AI 전력 수요 데이터센터 문제",
+          "name_en": "AI Power Demand Damaging Data Centers",
+          "desc": "AI의 변동성 높은 전력 수요가 데이터센터에 손상 야기 우려",
+          "desc_en": "Volatile AI power demand raises concerns about damage to data centers",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "이란-오만 협상 기대감",
+          "name_en": "Iran-Oman Negotiation Hopes",
+          "desc": "호르무즈 협상 기대감으로 유가 하락은 긍정적이나, 중동 긴장 고조 뉴스도 혼재",
+          "desc_en": "Oil prices fall on hopes for Hormuz negotiations, but news of rising Middle East tensions also present",
+          "category": "geopolitics"
+        }
+      ]
+    },
+    {
       "id": "2026-08-06-14:43",
       "timestamp_kst": "2026-08-06(목) 14:43 KST",
       "key_event": {
@@ -569,52 +637,8 @@
           "category": "macro_data"
         }
       ]
-    },
-    {
-      "id": "2026-08-05-14:41",
-      "timestamp_kst": "2026-08-05(수) 14:41 KST",
-      "key_event": {
-        "name": "AI·반도체 강세 지속",
-        "name_en": "Continued AI & Semiconductor Strength",
-        "time": "직전 정규장 및 다음 정규장",
-        "why": "주요 지수 상승 견인, 시장 심리 개선, 위험자산 선호",
-        "why_en": "Driving major index gains, improving market sentiment, risk-on appetite"
-      },
-      "positive_total": 85,
-      "negative_total": 15,
-      "summary": "AI·반도체 강세 및 중동 리스크 완화로 긍정 우위 지속. 9일 연속 긍정 우위.",
-      "summary_en": "Continued positive sentiment driven by AI/semiconductor strength and easing Middle East tensions. 9th consecutive day of positive dominance.",
-      "positive_factors": [
-        {
-          "score": 60,
-          "name": "중동 지정학적 리스크 완화",
-          "name_en": "Easing Middle East Geopolitical Risks",
-          "desc": "미-이란 휴전 기대감 지속, 유가 안정화 기여",
-          "desc_en": "Continued US-Iran truce expectations, contributing to oil price stability",
-          "category": "geopolitics"
-        },
-        {
-          "score": 25,
-          "name": "인플레이션 압력 완화 기대",
-          "name_en": "Expectations of Easing Inflationary Pressure",
-          "desc": "유가 하락 및 금리 인하 기대감으로 성장주 랠리 촉진",
-          "desc_en": "Falling oil prices and rate cut expectations fueling growth stock rally",
-          "category": "macro_data"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "Fed 매파적 발언 지속",
-          "name_en": "Continued Hawkish Fed Remarks",
-          "desc": "금리 인상 가능성 언급 지속, 시장 경계심 유지",
-          "desc_en": "Persistent mentions of potential rate hikes, maintaining market caution",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-06T05:44:41Z",
+  "updated_at": "2026-08-06T09:21:02Z",
   "max_entries": 10
 }
