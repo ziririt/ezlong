@@ -8714,5 +8714,12 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각 (The Most Important Thing)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "mindset"
+  },
+  {
+    "english": "It was my life—like all lives, mysterious and irrevocable and sacred. So very close, so very present, so very belonging to me. How wild it was, to let it be.",
+    "text": "그것은 나의 삶이었다. 모든 삶이 그렇듯, 신비롭고 되돌릴 수 없고 성스러운 것. 너무도 가깝고, 너무도 생생하고, 너무도 온전히 나의 것이었다. 그것을 그대로 놓아둔다는 것, 그것이 얼마나 거친 일이었는지.",
+    "title": "와일드 (Wild: From Lost to Found on the Pacific Crest Trail)",
+    "author": "셰릴 스트레이드 (Cheryl Strayed)",
+    "genre": "literature"
   }
 ];
