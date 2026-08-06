@@ -8604,5 +8604,12 @@ window.investmentQuotes = [
     "title": "쓰기의 말들",
     "author": "은유",
     "genre": "literature"
+  },
+  {
+    "english": "The challenges you face will test and strengthen you. If you're not failing, you're not pushing your limits, and if you're not pushing your limits, you're not maximizing your potential.",
+    "text": "당신이 마주하는 어려움은 당신을 시험하고 단련시킬 것이다. 실패하지 않고 있다면 한계를 밀어붙이고 있지 않다는 뜻이고, 한계를 밀어붙이고 있지 않다면 자신의 잠재력을 최대로 끌어내고 있지 않다는 뜻이다.",
+    "title": "원칙 (Principles: Life and Work)",
+    "author": "레이 달리오 (Ray Dalio)",
+    "category": "mindset"
   }
 ];
