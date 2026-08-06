@@ -9718,21 +9718,21 @@ window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
 //   · 음악은 건드리지 않는다. 어두워져도 소리는 계속 난다 — 그게 이 앱이다.
 var bedsideActive = false;
 (function setupBedsideMode() {
-  var DELAY_KEY = "ezlong:bedsideDelay";   // "1" | "3" | "5" | "10" | "off"
+  // 2026-08-06 운영 지침 — "침대맡 모드 설정 불필요. 충전 중엔 사용 안 함,
+  // 비충전일 땐 3분." 고를 것이 없으면 고민할 것도 없다. 설정 화면에서
+  // 항목을 빼고 값을 3분으로 못 박는다.
+  //
+  // ★ 예전에 저장해 둔 값(1·5·10·off)은 일부러 무시한다 ★ 설정 항목이
+  // 사라진 마당에 옛 선택이 살아 있으면, 사용자는 어디서도 바꿀 수 없는
+  // 상태에 갇힌다. 특히 "off"로 두었던 사람은 절전이 영영 안 걸린다.
+  // localStorage 키는 지우지 않는다 — 나중에 설정을 되살릴 일이 생기면
+  // 그때 다시 읽으면 된다.
   var DEFAULT_DELAY = "3";
   var veil = document.getElementById("bedsideVeil");
   var timer = null;
 
   function loadDelay() {
-    try {
-      var v = localStorage.getItem(DELAY_KEY);
-      return (v === "1" || v === "3" || v === "5" || v === "10" || v === "off") ? v : DEFAULT_DELAY;
-    } catch (error) {
-      return DEFAULT_DELAY;
-    }
-  }
-  function saveDelay(v) {
-    try { localStorage.setItem(DELAY_KEY, v); } catch (error) { /* 무시 */ }
+    return DEFAULT_DELAY;   // 항상 3분. 충전 중이면 shouldDim()이 따로 막는다.
   }
 
   // 2026-08-05 운영 피드백 — 충전 중에는 어두워지지 않는다.
@@ -9873,26 +9873,10 @@ var bedsideActive = false;
     if (!shouldDim()) document.body.classList.remove("is-lowmotion");
   }, 10000);
 
-  // ── 설정 UI ──────────────────────────────────────────────────────
-  function syncUi() {
-    var current = loadDelay();
-    var inputs = document.querySelectorAll('input[name="bedsideDelay"]');
-    for (var i = 0; i < inputs.length; i++) inputs[i].checked = (inputs[i].value === current);
-  }
-  window.syncBedsideUi = syncUi;
+  // 설정 UI 는 없앴다(2026-08-06). 다른 코드가 window.syncBedsideUi 를
+  // 부를 수 있으므로 빈 함수만 남겨 둔다 — 없애면 그쪽에서 터진다.
+  window.syncBedsideUi = function () {};
 
-  var box = document.getElementById("bedsideOptions");
-  if (box) {
-    box.addEventListener("change", function (event) {
-      var t = event.target;
-      if (!t || t.name !== "bedsideDelay" || !t.checked) return;
-      saveDelay(t.value);
-      try { postToNativeHaptic("light"); } catch (error) { /* 무시 */ }
-      arm();
-    });
-  }
-
-  syncUi();
   arm();
 })();
 

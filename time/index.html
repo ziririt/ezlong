@@ -333,7 +333,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.81</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.82</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -404,20 +404,13 @@
           </div>
         </section>
 
-        <!-- 2026-08-05 — 침대맡 모드(Fable 5 배터리 지시서 작업 5-2).
-             무조작 N분 뒤 화면을 어둡게 하고 화면 위의 모든 움직임을 멈춘다.
-             app.js setupBedsideMode 참조. -->
-        <section class="settings-block settings-card">
-          <h3 class="settings-subtitle" data-i18n="settings.bedside.heading">침대맡 모드</h3>
-          <p class="settings-desc settings-desc-muted" data-i18n="settings.bedside.desc">일정 시간 손대지 않으면 화면이 서서히 어두워지고 모든 움직임이 멈춥니다. 화면을 한 번 터치하면 바로 돌아옵니다. 밤새 켜두어도 배터리를 훨씬 덜 씁니다.</p>
-          <div class="field-grid" id="bedsideOptions" role="radiogroup" data-i18n-aria="settings.bedside.aria" aria-label="침대맡 모드 시작 시간">
-            <label class="field-option"><input type="radio" name="bedsideDelay" value="1"><span data-i18n="settings.bedside.min1">1분 후</span></label>
-            <label class="field-option"><input type="radio" name="bedsideDelay" value="3" checked><span data-i18n="settings.bedside.min3">3분 후</span></label>
-            <label class="field-option"><input type="radio" name="bedsideDelay" value="5"><span data-i18n="settings.bedside.min5">5분 후</span></label>
-            <label class="field-option"><input type="radio" name="bedsideDelay" value="10"><span data-i18n="settings.bedside.min10">10분 후</span></label>
-            <label class="field-option"><input type="radio" name="bedsideDelay" value="off"><span data-i18n="settings.bedside.off">사용 안 함</span></label>
-          </div>
-        </section>
+        <!-- 2026-08-06 운영 지침 — 침대맡 모드는 설정에서 뺀다.
+             "설정 불필요. 충전 중엔 사용 안 함, 비충전일 땐 3분 기본."
+             고를 것이 없으면 고민할 것도 없다. 규칙은 앱이 알아서 지킨다:
+               · 충전 중  — 작동하지 않는다(전기가 들어오는데 아낄 이유가 없다)
+               · 비충전   — 손대지 않고 3분이 지나면 서서히 어두워진다
+             동작 자체는 그대로다(app.js setupBedsideMode). 설정 항목과
+             그에 딸린 안내 문구만 사라진다. -->
 
         <!-- 2026-07-19 4차 피드백: "NOW PLAYING" 박스(#musicPlaylistInfo)를
              완전히 제거했다 — 곡 제목은 상단 클록 화면의 음악 정보 패널
