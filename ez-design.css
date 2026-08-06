@@ -160,7 +160,13 @@ a { color: inherit; }
   display: flex; flex-direction: column; align-items: flex-start;
 }
 .ez-nav-logo { display: flex; align-items: center; text-decoration: none; padding: 2px 0 10px; }
-.ez-nav-logo img { height: 24px; width: auto; display: block; }
+/* 로고 높이 — 2026-08-06 상향. 새 락업은 워드마크 아래에 ezlong.com 서브라인이
+   붙은 2단 구성이라, 옛 워드마크 단독 로고와 같은 24px 로 두면 서브라인이 3px대가
+   되어 읽히지 않는다. PC 에서는 헤더 여백이 넉넉하니 더 키운다. */
+.ez-nav-logo img { height: 28px; width: auto; display: block; }
+@media (min-width: 768px) {
+  .ez-nav-logo img { height: 38px; }
+}
 .ez-nav-svc-links {
   display: flex; align-items: center; gap: 2px;
   overflow-x: auto; -webkit-overflow-scrolling: touch;
@@ -301,7 +307,7 @@ a { color: inherit; }
   .ez-footer-top { flex-direction: row; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 32px; }
 }
 .ez-footer-brand { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
-.ez-footer-brand img { height: 20px; width: auto; display: block; }
+.ez-footer-brand img { height: 30px; width: auto; display: block; }
 .ez-footer-brand-desc { font-size: 14px; line-height: 1.65; color: #3C3C3E; }
 @media (prefers-color-scheme: dark) { .ez-footer-brand-desc { color: #F5F5F7; } }
 .ez-footer-books { display: flex; gap: 20px; flex-wrap: wrap; }

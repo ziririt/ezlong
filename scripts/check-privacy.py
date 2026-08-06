@@ -40,7 +40,14 @@ INTERNAL = re.compile(
     r'아직\s*확인\s*(못|안)\s*'
 )
 
-SERVED_EXT = ('.html', '.js', '.css', '.json')
+# 쓰지 않기로 한 문구. 브랜드 패키지 기본 카피에 들어 있어서, 새 에셋을
+# 받을 때마다 다시 딸려 들어오기 쉽다 — 배포 전에 기계로 막는다.
+# 2026-08-06 사고: 공유카드 이미지와 time/manifest 설명에 들어간 채 배포됐다.
+# 주의 — 이 검사는 텍스트만 본다. **이미지 안의 글자는 못 잡는다.**
+# 공유카드·스플래시를 새로 받으면 눈으로 한 번 확인할 것.
+BANNED_COPY = re.compile(r'오래\s*두면\s*편해진다')
+
+SERVED_EXT = ('.html', '.js', '.css', '.json', '.webmanifest')
 SKIP_DIRS = {'.git', 'node_modules', 'mobile', 'analyst-pipeline'}
 
 # 생성 카피(파이프라인 산출물) — 독자가 읽는 문장이 그대로 들어 있다
@@ -102,7 +109,7 @@ def strip_html(s):
 
 def main():
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    rendered, commented = [], []
+    rendered, commented, banned_copy = [], [], []
 
     for cur, dirs, files in os.walk(root):
         dirs[:] = [d for d in dirs
@@ -116,6 +123,9 @@ def main():
                 src = open(p, encoding='utf-8').read()
             except (OSError, UnicodeDecodeError):
                 continue
+            for i, line in enumerate(src.split('\n'), 1):
+                if BANNED_COPY.search(line):
+                    banned_copy.append((rel, i, line.strip()[:160]))
             if not BANNED.search(src):
                 continue
             if f.endswith('.html'):
@@ -173,6 +183,12 @@ def main():
             print('  %s  …%s…' % (rel, txt))
         print()
 
+    if banned_copy:
+        print('[차단] 쓰지 않기로 한 문구 %d건:' % len(banned_copy))
+        for rel, i, txt in banned_copy:
+            print('  %s:%d  %s' % (rel, i, txt))
+        print()
+
     if rendered:
         print('[차단] 렌더되는 문자열에 개인 지칭 %d건:' % len(rendered))
         for rel, i, txt in rendered:
@@ -180,7 +196,10 @@ def main():
         print('\n화면 문구에서 개인 호칭·지시 출처 표기를 제거한 뒤 다시 배포하세요.')
         return 1
 
-    print('[통과] 렌더되는 문자열에 개인 지칭 없음.')
+    if banned_copy:
+        return 1
+
+    print('[통과] 렌더되는 문자열에 개인 지칭·금지 문구 없음.')
     return 0
 
 
