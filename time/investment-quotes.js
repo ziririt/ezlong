@@ -8659,5 +8659,12 @@ window.investmentQuotes = [
     "title": "무소유",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "It's not how much money you make, but how much money you keep, how hard it works for you, and how many generations you keep it for.",
+    "text": "중요한 것은 얼마를 버느냐가 아니라, 얼마를 지키고, 그 돈이 나를 위해 얼마나 열심히 일하며, 몇 세대에 걸쳐 그것을 지켜내느냐다.",
+    "title": "부자 아빠 가난한 아빠",
+    "author": "로버트 기요사키",
+    "category": "mindset"
   }
 ];
