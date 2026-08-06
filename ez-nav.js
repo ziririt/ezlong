@@ -186,6 +186,16 @@
       '</a>';
   }
 
+  /* ── 메뉴 닫기 버튼 (2026-08-06 신설) ────────────────────────────────
+     전면 메뉴를 닫는 방법이 헤더 우측 토글을 다시 누르는 것뿐이었다.
+     메뉴가 화면을 꽉 채우고 있으면 그 버튼이 시야 밖 위쪽에 있어서,
+     "어떻게 빠져나가지" 하는 순간이 생긴다. 목록 끝에 닫기를 둔다 —
+     끝까지 훑고 원하는 게 없을 때 손가락이 이미 가 있는 자리다. */
+  mobileItemsHTML +=
+    '<button type="button" class="ez-mob-close" onclick="ezNavCloseMenu()">' +
+      '<span class="ez-mob-close-x" aria-hidden="true">&#10005;</span> 닫기' +
+    '</button>';
+
   /* ── 모바일 메뉴 타일화 — 1열 리스트(스크롤 압박) → 2열 타일 그리드 ──
      ez-design.css의 기존 규칙보다 id 셀렉터로 우선 적용 (CSS 파일 캐시 무관) */
   (function mobTileStyle() {
@@ -201,6 +211,20 @@
         'background: var(--ez-surface); }' +
       '#ez-mob-menu .ez-mob-item.active { border: 2px solid var(--ez-blue);' +
         'padding-left: 8px; background: var(--ez-blue-dim); color: var(--ez-blue); }' +
+      /* 닫기 — 2열을 통째로 차지하되 버튼 자체는 가운데. 타일과 같은 색이면
+         목록의 연장으로 읽히므로 톤을 낮춰 "이건 항목이 아니다"를 알린다. */
+      '#ez-mob-menu .ez-mob-close { grid-column: 1 / -1; justify-self: center;' +
+        'margin: 18px 0 calc(8px + env(safe-area-inset-bottom));' +
+        'display: inline-flex; align-items: center; justify-content: center; gap: 7px;' +
+        'min-height: 48px; padding: 0 30px;' +
+        'font-family: inherit; font-size: 16px; font-weight: 700;' +
+        'color: var(--ez-text3); background: var(--ez-card2);' +
+        'border: 1px solid var(--ez-border); border-radius: 999px;' +
+        'cursor: pointer; -webkit-tap-highlight-color: transparent;' +
+        'transition: background .12s, color .12s; }' +
+      '#ez-mob-menu .ez-mob-close:active { background: var(--ez-border);' +
+        'color: var(--ez-text); }' +
+      '#ez-mob-menu .ez-mob-close-x { font-size: 15px; line-height: 1; }' +
       '}';
     document.head.appendChild(st);
   })();
