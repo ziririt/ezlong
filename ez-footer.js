@@ -33,8 +33,8 @@
         '<div class="ez-footer-top">' +
           '<div class="ez-footer-brand">' +
             '<picture>' +
-              '<source srcset="/logo-darkmode.png?v=20260806c" media="(prefers-color-scheme: dark)">' +
-              '<img src="/logo.png?v=20260806c" alt="EZLONG">' +
+              '<source srcset="/logo-darkmode.png?v=20260806d" media="(prefers-color-scheme: dark)">' +
+              '<img src="/logo.png?v=20260806d" alt="EZLONG">' +
             '</picture>' +
             '<p class="ez-footer-brand-desc">쉽고 안전한 장기투자 파트너<br>easy.invest.good@gmail.com</p>' +
           '</div>' +
