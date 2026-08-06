@@ -8585,5 +8585,11 @@ window.investmentQuotes = [
     "title": "바빌론 부자들의 돈 버는 지혜 (The Richest Man in Babylon)",
     "author": "조지 S. 클레이슨 (George S. Clason)",
     "category": "mindset"
+  },
+  {
+    "text": "행복한 사람은 자기를 알아달라고 남을 괴롭히지 않는다. 스스로 충만하면 남의 인정을 갈구할 필요가 없으니까.",
+    "title": "무례한 사람에게 웃으며 대처하는 법",
+    "author": "정문정",
+    "genre": "literature"
   }
 ];
