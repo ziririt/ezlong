@@ -8680,5 +8680,12 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "english": "Compounding doesn't rely on earning big returns. Merely good returns sustained uninterrupted for the longest period of time — especially in times of chaos and havoc — will always win.",
+    "text": "복리는 엄청난 수익률에 좌우되지 않는다. 그저 좋은 수익률을 가장 오랫동안 끊김 없이 유지하는 것, 특히 혼란과 격변의 시기에도 그렇게 하는 것이 언제나 승리한다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절 (Morgan Housel)",
+    "category": "compound"
   }
 ];
