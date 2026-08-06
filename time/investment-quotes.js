@@ -8646,5 +8646,12 @@ window.investmentQuotes = [
     "title": "에블린 휴고의 일곱 남편",
     "author": "테일러 젠킨스 리드 (Taylor Jenkins Reid)",
     "genre": "literature"
+  },
+  {
+    "english": "The stock market is filled with individuals who know the price of everything, but the value of nothing.",
+    "text": "주식시장에는 모든 것의 가격은 알지만 그 무엇의 가치도 모르는 사람들로 가득하다.",
+    "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔 (Philip Fisher)",
+    "category": "mindset"
   }
 ];
