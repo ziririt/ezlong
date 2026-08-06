@@ -8694,5 +8694,12 @@ window.investmentQuotes = [
     "title": "미드나잇 라이브러리 (The Midnight Library)",
     "author": "매트 헤이그 (Matt Haig)",
     "genre": "literature"
+  },
+  {
+    "english": "The whole secret to winning big in the stock market is not to be right all the time, but to lose the least amount possible when you're wrong.",
+    "text": "주식시장에서 크게 이기는 비결은 늘 옳은 판단을 내리는 데 있지 않다. 틀렸을 때 손실을 최소한으로 줄이는 데 있다.",
+    "title": "최고의 주식 최적의 타이밍 (How to Make Money in Stocks)",
+    "author": "윌리엄 오닐 (William J. O'Neil)",
+    "category": "mindset"
   }
 ];
