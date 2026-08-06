@@ -1,12 +1,12 @@
 {
-  "lastRun": "2026-08-06T21:51:19.886Z",
-  "lastRunKST": "2026-08-07 06:51:19 KST",
+  "lastRun": "2026-08-06T22:17:31.755Z",
+  "lastRunKST": "2026-08-07 07:17:31 KST",
   "summary": {
-    "ok": 8,
+    "ok": 7,
     "triggered": 0,
     "alreadyRunning": 0,
     "stale": 0,
-    "skipped": 3,
+    "skipped": 4,
     "errors": 0
   },
   "results": [
@@ -14,18 +14,18 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-08-06T21:51:19.886Z",
+      "checkedAt": "2026-08-06T22:17:31.755Z",
       "lastUpdate": "2026-08-06T20:54:53.655Z",
-      "ageHours": 0.9,
+      "ageHours": 1.4,
       "maxAgeHours": 2.5,
       "status": "OK",
-      "reason": "최신 (0.9h 전 업데이트)"
+      "reason": "최신 (1.4h 전 업데이트)"
     },
     {
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-08-06T21:51:19.886Z",
+      "checkedAt": "2026-08-06T22:17:31.755Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -33,29 +33,26 @@
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-08-06T21:51:19.886Z",
+      "checkedAt": "2026-08-06T22:17:31.755Z",
       "lastUpdate": "2026-08-06T20:52:40.875Z",
-      "ageHours": 1,
+      "ageHours": 1.4,
       "maxAgeHours": 5,
       "status": "OK",
-      "reason": "최신 (1h 전 업데이트)"
+      "reason": "최신 (1.4h 전 업데이트)"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-08-06T21:51:19.886Z",
-      "lastUpdate": "2026-08-06T21:22:19.031980+00:00",
-      "ageHours": 0.5,
-      "maxAgeHours": 1.5,
-      "status": "OK",
-      "reason": "최신 (0.5h 전 업데이트)"
+      "checkedAt": "2026-08-06T22:17:31.755Z",
+      "status": "SKIP",
+      "reason": "비활성 시간대"
     },
     {
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-08-06T21:51:19.886Z",
+      "checkedAt": "2026-08-06T22:17:31.755Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -63,62 +60,62 @@
       "id": "scorecard",
       "name": "긍정vs부정 스코어카드",
       "workflow": "market-scorecard.yml",
-      "checkedAt": "2026-08-06T21:51:19.886Z",
-      "lastUpdate": "2026-08-06T14:21:24Z",
-      "ageHours": 7.5,
+      "checkedAt": "2026-08-06T22:17:31.755Z",
+      "lastUpdate": "2026-08-06T22:01:19Z",
+      "ageHours": 0.3,
       "maxAgeHours": 8,
       "status": "OK",
-      "reason": "최신 (7.5h 전 업데이트)"
+      "reason": "최신 (0.3h 전 업데이트)"
     },
     {
       "id": "stocks-prices",
       "name": "심플 주가 실시간",
       "workflow": "fetch-stocks-prices.yml",
-      "checkedAt": "2026-08-06T21:51:19.886Z",
+      "checkedAt": "2026-08-06T22:17:31.755Z",
       "lastUpdate": "2026-08-06T21:38:05.630111+00:00",
-      "ageHours": 0.2,
+      "ageHours": 0.7,
       "maxAgeHours": 0.75,
       "status": "OK",
-      "reason": "최신 (0.2h 전 업데이트)"
+      "reason": "최신 (0.7h 전 업데이트)"
     },
     {
       "id": "stocks-data",
       "name": "심플 주가 일간(스파크라인)",
       "workflow": "fetch-stocks-data.yml",
-      "checkedAt": "2026-08-06T21:51:19.886Z",
+      "checkedAt": "2026-08-06T22:17:31.755Z",
       "lastUpdate": "2026-08-05T23:09:20.307974+00:00",
-      "ageHours": 22.7,
+      "ageHours": 23.1,
       "maxAgeHours": 26,
       "status": "OK",
-      "reason": "최신 (22.7h 전 업데이트)"
+      "reason": "최신 (23.1h 전 업데이트)"
     },
     {
       "id": "market-cycle",
       "name": "마켓 사이클 주봉",
       "workflow": "fetch-market-cycle.yml",
-      "checkedAt": "2026-08-06T21:51:19.886Z",
+      "checkedAt": "2026-08-06T22:17:31.755Z",
       "lastUpdate": "2026-08-05T23:11:45.638Z",
-      "ageHours": 22.7,
+      "ageHours": 23.1,
       "maxAgeHours": 30,
       "status": "OK",
-      "reason": "최신 (22.7h 전 업데이트)"
+      "reason": "최신 (23.1h 전 업데이트)"
     },
     {
       "id": "swing-view",
       "name": "스윙 시그널 판단",
       "workflow": "swing-view.yml",
-      "checkedAt": "2026-08-06T21:51:19.886Z",
+      "checkedAt": "2026-08-06T22:17:31.755Z",
       "lastUpdate": "2026-08-06T20:50:13.391349Z",
-      "ageHours": 1,
+      "ageHours": 1.5,
       "maxAgeHours": 2.5,
       "status": "OK",
-      "reason": "최신 (1h 전 업데이트)"
+      "reason": "최신 (1.5h 전 업데이트)"
     },
     {
       "id": "kr-prices",
       "name": "한국 주가",
       "workflow": "fetch-kr-prices.yml",
-      "checkedAt": "2026-08-06T21:51:19.886Z",
+      "checkedAt": "2026-08-06T22:17:31.755Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     }
