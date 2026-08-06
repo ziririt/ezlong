@@ -153,6 +153,27 @@ const MONITORS = [
     isActive: (now) => { const day = now.getUTCDay(); return day >= 1 && day <= 5; }
   },
   {
+    // 2026-08-07 추가 — 오늘 새벽 01:09 KST 에 화면이 20:15 KST(프리마켓)
+    // 논평을 그대로 걸고 있었다. 22:45·23:45·23:50 KST 슬롯이 전부 안 돌았는데
+    // 아무도 몰랐다. 감시 대상 10개 중에 정작 방문자가 가장 먼저 읽는 판단
+    // 코멘트가 빠져 있었던 것. 신선도를 재려면 ISO 시각이 필요해서 생성기에
+    // generatedAt(UTC) 필드를 같이 추가했다.
+    id:             'swing-view',
+    name:           '스윙 시그널 판단',
+    workflow:       'swing-view.yml',
+    checkFile:      'swing-view.json',
+    timestampField: 'generatedAt',
+    // 설계상 가장 긴 슬롯 간격은 07:37→18:00 KST 의 야간 공백(10h)이라
+    // 그 구간은 아래 isActive 로 아예 제외한다. 활성 구간 안에서는 2.5h.
+    maxAgeHours:    2.5,
+    // 미국 프리마켓~마감 후: KST 18:00~익일 07:40 = UTC 09:00~22:40, 평일
+    isActive: (now) => {
+      const day = now.getUTCDay();
+      const h   = now.getUTCHours() + now.getUTCMinutes() / 60;
+      return day >= 1 && day <= 5 && h >= 9.0 && h <= 22.6;
+    }
+  },
+  {
     id:             'kr-prices',
     name:           '한국 주가',
     workflow:       'fetch-kr-prices.yml',

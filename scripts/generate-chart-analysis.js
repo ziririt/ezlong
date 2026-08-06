@@ -178,9 +178,35 @@ const TICKER_ORDER = [
 // ── 실행 그룹 결정 ────────────────────────────────────────────────────────
 const GROUP = process.argv[2] || 'us';
 
+/* ── 계층 실행 (2026-08-07 신설) ────────────────────────────────────────────
+   미국 종목이 180개(주식 84 + ETF 96)인데 하루 7번 전부 다시 분석한다 =
+   하루 1,260콜. 이게 운영비의 대부분을 차지한다(flash-lite 기준 월 ₩5만 근처).
+   그런데 방문자가 실제로 여는 건 TOP9·지수·레버리지에 몰려 있고, 긴 꼬리
+   종목은 하루 한두 번이면 충분하다.
+
+   `node generate-chart-analysis.js us core` → 핵심만 (아래 US_CORE)
+   `node generate-chart-analysis.js us`      → 전체 (기존과 동일, 기본값)
+
+   인자를 안 주면 예전과 똑같이 전부 돈다 — 기존 워크플로는 그대로 두고
+   자주 도는 슬롯만 core 로 바꾸면 된다. */
+const US_CORE = new Set([
+  // TOP9 집중분석 대상
+  'TSLA','NVDA','AAPL','MSFT','GOOGL','AMZN','META','TSM','AVGO',
+  // 스윙 판단이 직접 쓰는 지수·섹터
+  'QQQ','SPY','VOO','SOXX','IWM','DIA',
+  // 레버리지 — 3-3-4 가이드가 참조
+  'TQQQ','QLD','SOXL','UPRO','SSO',
+]);
+const TIER = process.argv[3] || 'all';
+
 let tickersToProcess = [];
 switch (GROUP) {
-  case 'us':     tickersToProcess = [...TICKERS_US_STOCKS, ...TICKERS_US_ETFS]; break;
+  case 'us':
+    tickersToProcess = [...TICKERS_US_STOCKS, ...TICKERS_US_ETFS];
+    if (TIER === 'core') {
+      tickersToProcess = tickersToProcess.filter(t => US_CORE.has(t.symbol));
+    }
+    break;
   case 'kr':     tickersToProcess = [...TICKERS_KR_ETFS, ...TICKERS_KR_STOCKS]; break;
   case 'crypto': tickersToProcess = TICKERS_CRYPTO; break;
   default:

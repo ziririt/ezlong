@@ -1632,6 +1632,9 @@ def main():
 
     view = dict(
         generatedAtKST=now_kst(),
+        # ISO(UTC) — 감시견이 신선도를 재는 필드. KST 문자열은 Date 파서가
+        # 못 읽어서 감시 대상에 넣을 수가 없었다(2026-08-07 추가).
+        generatedAt=datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
         dataDay=day,
         session=us_session_now(),
         beta=True,

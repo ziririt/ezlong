@@ -77,8 +77,14 @@ jobs:
           else
             ET_TIME=$(TZ=America/New_York date +%H%M)
             echo "현재 ET 시각: $ET_TIME"
+            # 2026-08-07 정정 — 1800~1905 ET 구간을 새로 연다.
+            # 2026-07-15 에 "KST 07:15 아침 갱신" 슬롯(UTC 22:15 = 18:15 ET)을
+            # 추가해놓고 이 시간 체크는 안 넓혔다. 그래서 그 슬롯은 3주 동안
+            # 매번 "목표 시간대 외 — 건너뜀"으로 죽었다. 크론만 보고 "돌고 있다"고
+            # 믿으면 이런 게 안 보인다. 실행 기록으로 확인해야 한다.
             if ([ "$ET_TIME" -ge "0930" ] && [ "$ET_TIME" -lt "1205" ]) || \
-               ([ "$ET_TIME" -ge "1530" ] && [ "$ET_TIME" -lt "1605" ]); then
+               ([ "$ET_TIME" -ge "1530" ] && [ "$ET_TIME" -lt "1605" ]) || \
+               ([ "$ET_TIME" -ge "1800" ] && [ "$ET_TIME" -lt "1905" ]); then
               echo "skip=false" >> $GITHUB_OUTPUT
               echo "목표 시간대 — 분석 실행 (ET $ET_TIME)"
             else
@@ -92,7 +98,25 @@ jobs:
         if: steps.time_check.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/generate-chart-analysis.js us
+        # 2026-08-07 — 계층 실행. 미국 차트 분석이 LLM 비용의 최대 항목이다
+        # (45종 × 하루 4~6회). 방문자가 실제로 여는 건 TOP9·지수·레버리지에
+        # 몰려 있고 긴 꼬리 종목은 하루 한 번이면 충분하다.
+        #   장중(ET 09:30~16:05)  → 핵심 20종
+        #   아침 갱신(ET 18~19시) → 전체 45종
+        #   수동 실행             → 전체 45종
+        # 판정 기준을 "어느 크론이 쐈나"가 아니라 **ET 시각**으로 잡는다.
+        # 실행의 상당수가 감시견의 workflow_dispatch 라 event.schedule 이 비어
+        # 있고, 그걸로 나누면 감시견 실행이 전부 전체 분석이 되어 무의미해진다.
+        run: |
+          ET_HOUR=$(TZ=America/New_York date +%H)
+          if [ "$ET_HOUR" -ge 18 ]; then TIER=""; else TIER="core"; fi
+          if [ -z "$TIER" ]; then
+            echo "전체 45종 분석 (ET ${ET_HOUR}시 — 아침 갱신 구간)"
+            node scripts/generate-chart-analysis.js us
+          else
+            echo "핵심 20종 분석 (ET ${ET_HOUR}시 — 장중)"
+            node scripts/generate-chart-analysis.js us core
+          fi
 
       # ── 5. 변경사항 커밋 및 푸시 ─────────────────────────────────────
       - name: Commit and push analysis data
