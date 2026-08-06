@@ -391,7 +391,7 @@
     '<div class="ez-nav-inner">' +
       '<a href="/" class="ez-nav-logo" aria-label="EZLONG 홈">' +
         '<picture>' +
-          '<source srcset="/logo-darkmode.png?v=20260807b" media="(prefers-color-scheme: dark)">' +
+          '<source srcset="/logo-darkmode.png?v=20260807c" media="(prefers-color-scheme: dark)">' +
           '<img src="/logo.png?v=20260807b" alt="EZLONG">' +
         '</picture>' +
       '</a>' +
