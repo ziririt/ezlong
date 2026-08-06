@@ -16,15 +16,31 @@ import os
 
 from PIL import Image, ImageDraw
 
-TEAL = (114, 201, 193)          # #72C9C1 — 시안 실측
-NAVY_HI = (16, 50, 82)          # #103252 navy600
-NAVY_LO = (4, 18, 31)           # #04121F navy900
-NAVY_FLAT = (10, 37, 64)        # #0A2540 navy700
+# 2026-08-06 성동님 확정 — 컬러 시안 C(잉크블랙 · 하늘색).
+#   배경 잉크블랙 #0D0D0F · 심볼 하늘색 #4FC3F7
+# 시안 9종을 29px 축소까지 놓고 비교한 뒤 고른 조합이다. 어두운 배경은
+# 밤에 보는 앱이라는 성격과도 맞고, 하늘색은 29px 에서도 감김이 읽힌다.
+#
+# 밝은 배경 위에 얹을 때를 위한 변형도 함께 둔다(성동님 지시 "배경에
+# 따라서는 F나 G도 가능"):
+#   F  종이흰색 #F5F7FA · 딥블루 #0B2545
+#   G  종이흰색 #F5F7FA · 하늘색 #2E9BF0
+# 밝은 배경에서는 선이 실제보다 가늘어 보이므로 굵기를 15% 올려 쓴다.
+TEAL = (79, 195, 247)           # #4FC3F7 sky — 심볼 기본색
+INK = (13, 13, 15)              # #0D0D0F — 배경 기본색
+PAPER = (245, 247, 250)         # #F5F7FA — 밝은 배경 변형
+DEEP = (11, 37, 69)             # #0B2545 — 밝은 배경용 심볼(F)
+SKY_ON_PAPER = (46, 155, 240)   # #2E9BF0 — 밝은 배경용 심볼(G)
+NAVY_HI = INK
+NAVY_LO = INK
+NAVY_FLAT = INK
 CORNER = 0.2237                 # 브랜드 규격 corner_radius_ratio
 SS = 4                          # supersampling
 
-TURNS, GROWTH, OCC, END_ANGLE = 2.2, 3.2, 0.68, 48.0
-W_START, W_END = 8.0, 18.0
+# 2026-08-06 굵기 상향 — 회전 2.2→2.15 는 굵기를 감당하려 틈을 벌린 결과다.
+# TURNS 와 W_END 는 한 묶음이다. 하나만 바꾸면 안쪽 감김이 붙는다.
+TURNS, GROWTH, OCC, END_ANGLE = 2.15, 3.2, 0.68, 48.0
+W_START, W_END = 8.0, 21.0
 RAMP, TAPER_FROM, TIP = 0.35, 0.90, 0.25
 
 
@@ -87,16 +103,10 @@ def spiral_points(steps=1200):
 RING = spiral_points()
 
 
-def gradient(size, flat=False):
-    g = Image.new("RGB", (size, size))
-    if flat:
-        return Image.new("RGB", (size, size), NAVY_FLAT)
-    d = ImageDraw.Draw(g)
-    for i in range(size):
-        t = i / max(1, size - 1)
-        d.line([(0, i), (size, i)],
-               fill=tuple(round(NAVY_HI[c] + (NAVY_LO[c] - NAVY_HI[c]) * t) for c in range(3)))
-    return g
+def gradient(size, flat=False, color=None):
+    """배경. 잉크블랙은 단색이다 — 어두운 색에 그라디언트를 주면 깊이감이
+    생기는 게 아니라 얼룩으로 보인다(시안 C 도 단색이었다)."""
+    return Image.new("RGB", (size, size), color or INK)
 
 
 def draw_spiral(size, color=TEAL, scale=1.0):
@@ -133,7 +143,7 @@ def icon(size, shape="squircle", flat=False, spiral_scale=1.0, alpha=True):
     return base if alpha else base.convert("RGB")
 
 
-def svg_symbol(fill="#72C9C1", bg=None, corner=None):
+def svg_symbol(fill="#4FC3F7", bg=None, corner=None):
     d = "M " + " L ".join(f"{x:.2f} {y:.2f}" for x, y in RING) + " Z"
     parts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="-100 -100 200 200">']
     if bg:

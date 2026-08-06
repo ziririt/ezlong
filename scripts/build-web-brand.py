@@ -49,7 +49,13 @@ SUB_BBOX = (185.5, 112.2, 299.2, 126.5)   # 원본 락업 좌표계에서 실측
 SUB_TOP = 112.0                            # 워드마크 아래 간격
 SUB_SCALE = 2.552                          # 서브라인 하단 = 심볼 하단
 SUB_TIGHTEN = 3.8                          # 원본 트래킹 4.2 중 걷어낼 양
-SUB_COLOR = {'color': '#0E9384', 'white': '#4FD1C5'}
+# 2026-08-07 브랜드 확정색. 한 색으로는 라이트·다크 양쪽 대비를 못 버틴다 —
+# #2563EB 는 흰 배경 5.17:1 / 잉크블랙 3.76:1, #3B82F6 은 3.68:1 / 5.28:1 이라
+# 각자 자기 배경에서만 본문 기준 4.5:1 을 넘긴다. 그래서 배경별로 나눈다.
+# 이전 청록 계열은 흰 배경에서 1.64:1 로 사실상 안 읽혔다.
+SUB_COLOR = {'color': '#2563EB', 'white': '#3B82F6'}   # 도메인 글자
+SYM_COLOR = {'color': '#2563EB', 'white': '#4FC3F7'}   # 나선 심볼
+OG_SPIRAL = '#4FC3F7'                                  # 짙은 배경(공유카드·스플래시)
 
 # 심볼과 글자 사이 간격. 원본 락업은 37.4 단위(심볼 폭의 38%)나 벌어져 있어서,
 # 모바일 헤더에서 로고가 쓸데없이 길어지고 그만큼 우측 메뉴 버튼과 붙었다.
@@ -108,17 +114,22 @@ def build_icons():
 
 
 # ─── SVG 조작 ──────────────────────────────────────────────────────────────
-def swap_spiral(svg):
+def swap_spiral(svg, fill=None):
     """템플릿의 나선 패스를 새 나선으로 교체.
 
     템플릿은 나선을 `<g transform="translate(...) scale(...)"><path .../>` 로
     갖고 있고 그 안이 -100..100 좌표계다. RING 을 그대로 넣으면 위치·크기가
-    자동으로 맞는다.
+    자동으로 맞는다. fill 을 주면 색까지 바꾼다(브랜드 확정색은 단색이라
+    템플릿의 그라디언트 참조를 그대로 두면 옛 색이 남는다).
+
+    ★ 템플릿(assets/brand/lockup-*.svg)의 나선은 브랜드 패키지 v1.2 의 옛
+    곡선이다. 워드마크만 쓰고 나선은 반드시 여기서 갈아끼운다 — 글자를 다시
+    조판하지 않으므로 자간·굵기가 예전과 어긋나지 않는다.
     """
     m = re.search(r'(<g transform="translate\([^"]*\)[^"]*">)\s*(<path\b[^>]*?/>)', svg, re.S)
     if not m:
         raise SystemExit('나선 그룹을 못 찾았다')
-    fill = re.search(r'fill="([^"]*)"', m.group(2)).group(1)
+    fill = fill or re.search(r'fill="([^"]*)"', m.group(2)).group(1)
     d = 'M ' + ' L '.join(f'{x:.2f} {y:.2f}' for x, y in bs.RING) + ' Z'
     return svg[:m.start()] + m.group(1) + f'<path d="{d}" fill="{fill}"/>' + svg[m.end():]
 
@@ -225,7 +236,7 @@ def build_lockup():
     outs = {}
     for variant, dst in (('color', 'logo.png'), ('white', 'logo-darkmode.png')):
         svg = open(os.path.join(TPL, f'lockup-{variant}.svg'), encoding='utf-8').read()
-        svg = fix_subline(shift_text(swap_spiral(svg), TEXT_SHIFT), variant)
+        svg = fix_subline(shift_text(swap_spiral(svg, SYM_COLOR[variant]), TEXT_SHIFT), variant)
         tmp = f'/tmp/lockup-{variant}.png'
         render(svg, tmp, 592, 200, scale=4)   # 헤더에서 축소해 쓰므로 4배로 뽑는다
         outs[dst] = Image.open(tmp).convert('RGBA')
@@ -242,7 +253,7 @@ def build_lockup():
 
 
 def build_og():
-    svg = swap_spiral(open(os.path.join(TPL, 'og-card.svg'), encoding='utf-8').read())
+    svg = swap_spiral(open(os.path.join(TPL, 'og-card.svg'), encoding='utf-8').read(), OG_SPIRAL)
     render(svg, path('og', 'og-1200x630.png'), 1200, 630)
     Image.open(path('og', 'og-1200x630.png')).save(path('logo-preview.png'))
     print('  공유카드 og/og-1200x630.png')
@@ -252,7 +263,7 @@ def build_splash():
     """iOS 스플래시 14종. 각 해상도에서 직접 렌더한다 — 한 장을 확대·축소해
     돌려쓰면 그라디언트에 리샘플 잡음이 섞여 PNG 가 6배로 부풀고(24MB) 띠도
     보인다. viewBox 는 마스터 그대로 두고 slice 로 채워 잘라낸다."""
-    master = swap_spiral(open(os.path.join(TPL, 'splash-master.svg'), encoding='utf-8').read())
+    master = swap_spiral(open(os.path.join(TPL, 'splash-master.svg'), encoding='utf-8').read(), OG_SPIRAL)
     for name in SPLASH:
         w, h = (int(v) for v in name.split('x'))
         svg = re.sub(r'<svg\b[^>]*>',
