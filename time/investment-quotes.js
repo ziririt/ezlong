@@ -8701,5 +8701,11 @@ window.investmentQuotes = [
     "title": "최고의 주식 최적의 타이밍 (How to Make Money in Stocks)",
     "author": "윌리엄 오닐 (William J. O'Neil)",
     "category": "mindset"
+  },
+  {
+    "text": "울지 마라. 외로우니까 사람이다. 살아간다는 것은 외로움을 견디는 일이다. 가끔은 하느님도 외로워서 눈물을 흘리신다.",
+    "title": "수선화에게",
+    "author": "정호승",
+    "genre": "literature"
   }
 ];
