@@ -7776,8 +7776,12 @@ function renderMusicSpecialFilterOptions() {
     // 있어 data 속성에는 encodeURIComponent로 안전하게 싣는다.
     const info = specialCategoryInfoText(option.key);
     const infoId = encodeURIComponent(option.key);
+    // 2026-08-07 — 한글 폴백을 템플릿 리터럴 밖으로 뺀다.
+    // 안에 두면 audit-strings 가 이 조각 전체를 "번역 안 된 화면 문자열"로 잡아
+    // verify:i18n 이 영구히 빨간불이 된다. 늘 실패하는 검사는 꺼진 검사다.
+    const infoAria = t("music.specialInfoAria", null, "이 음악이 도움이 되는 이유");
     const infoBtn = info
-      ? `<button type="button" class="special-info-btn" data-special-info-btn="${infoId}" aria-expanded="false" aria-label="${t("music.specialInfoAria", null, "이 음악이 도움이 되는 이유")}">i</button>`
+      ? `<button type="button" class="special-info-btn" data-special-info-btn="${infoId}" aria-expanded="false" aria-label="${infoAria}">i</button>`
       : "";
     const infoText = info
       ? `<p class="special-info-text" data-special-info-text="${infoId}" hidden>${info}</p>`
