@@ -8625,5 +8625,12 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "english": "The bird fights its way out of the egg. The egg is the world. Whoever wants to be born must first destroy a world.",
+    "text": "새는 알에서 나오려고 싸운다. 알은 세계다. 태어나려는 자는 하나의 세계를 깨뜨리지 않으면 안 된다.",
+    "title": "데미안 (Demian)",
+    "author": "헤르만 헤세 (Hermann Hesse)",
+    "genre": "literature"
   }
 ];
