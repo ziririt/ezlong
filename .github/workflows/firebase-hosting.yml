@@ -38,6 +38,13 @@ jobs:
       - name: 프라이버시 가드 (렌더 문구 개인 지칭 검사)
         run: python3 scripts/check-privacy.py
 
+      # 2026-08-07 신설 — 한국어를 고치고 번역본을 잊는 일이 잦다. 잊혀도
+      # 아무 신호가 없어서(페이지는 멀쩡히 뜬다) 사람 기억으로는 반드시 샌다.
+      # 배포를 막지는 않는다 — 번역은 원본보다 늦게 따라오는 게 정상이고,
+      # 여기서 막으면 급한 수정까지 못 나간다. 로그에 남겨 다음 작업 때 본다.
+      - name: 번역 반영 점검 (경고만, 배포는 막지 않음)
+        run: python3 scripts/check-i18n.py || true
+
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
