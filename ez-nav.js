@@ -203,8 +203,17 @@
     st.textContent =
       '@media (max-width: 768px) {' +
       '#ez-mob-menu { grid-template-columns: 1fr 1fr; gap: 10px;' +
-        'padding: 64px 14px 24px; align-content: start; }' +
+        'padding: 64px 14px calc(28px + env(safe-area-inset-bottom) + var(--ez-mob-bottom-bar, 0px));' +
+        'align-content: start; }' +
       '#ez-mob-menu.open { display: grid; }' +
+      /* 2026-08-07 — 안드로이드 크롬에서 마지막 줄(닫기)이 화면 밖으로 잘렸다.
+         position:fixed + inset:0 의 기준은 주소창이 숨겨졌을 때의 큰 뷰포트라,
+         주소창이 떠 있으면 요소 바닥이 화면 아래로 내려간다. 내용이 요소 안에는
+         다 들어가 있으니 스크롤도 안 생겨서 그냥 잘려 보인다. dvh 는 지금 실제로
+         보이는 높이를 따라가므로 이 어긋남이 사라진다. */
+      '@supports (height: 100dvh) {' +
+        '#ez-mob-menu { height: 100dvh; bottom: auto; }' +
+      '}' +
       '#ez-mob-menu .ez-mob-item { display: flex; align-items: center; justify-content: center;' +
         'text-align: center; padding: 15px 8px; min-height: 56px; line-height: 1.35; word-break: keep-all;' +
         'border: 1px solid var(--ez-border); border-radius: 16px;' +
@@ -237,6 +246,35 @@
      해결: 메뉴 링크 클릭을 위임 처리해서 (1) 항상 메뉴를 먼저 닫고,
      (2) 같은 경로면 해시만 바꿔 탭 전환을 직접 트리거한다.
      다른 페이지로 가는 링크는 그대로 브라우저에 맡긴다(기존 동작 유지). */
+  /* 메뉴 바닥 여백을 화면 아래 고정 배너 높이만큼 더 준다 (2026-08-07).
+     증상: 목록 끝의 '닫기'가 언어 안내 배너(#ezlb-bar, position:fixed bottom:0)에
+     덮여 반쯤 잘려 보였다. 배너는 메뉴보다 z-index 가 높아 항상 위에 뜬다.
+     배너 높이는 문구·화면폭에 따라 달라지므로 CSS 상수로는 못 맞춘다 — 열 때
+     실측해서 넣는다. 배너가 없으면 0 이라 평소엔 여백이 늘지 않는다. */
+  function padMenuForBottomBar() {
+    var menu = document.getElementById('ez-mob-menu');
+    if (!menu) return;
+    var bar = document.getElementById('ezlb-bar');
+    var h = 0;
+    if (bar) {
+      /* offsetParent 로 노출 여부를 보면 안 된다 — position:fixed 요소는
+         숨어 있지 않아도 offsetParent 가 null 이다(처음 이걸로 짰다가 배너
+         높이를 0 으로 읽었다). 실제 상자 크기와 computed style 로 판정한다. */
+      var cs = window.getComputedStyle(bar);
+      var r  = bar.getBoundingClientRect();
+      if (cs.display !== 'none' && cs.visibility !== 'hidden' && parseFloat(cs.opacity || '1') > 0.05
+          && r.height > 0 && r.bottom > window.innerHeight - 4) {
+        h = Math.ceil(r.height);
+      }
+    }
+    menu.style.setProperty('--ez-mob-bottom-bar', h + 'px');
+  }
+  window.ezNavPadMenuBottom = padMenuForBottomBar;
+  window.addEventListener('resize', function () {
+    var m = document.getElementById('ez-mob-menu');
+    if (m && m.classList.contains('open')) padMenuForBottomBar();
+  });
+
   function closeMobMenu() {
     var menu = document.getElementById('ez-mob-menu');
     var btn  = document.getElementById('ez-mob-toggle');
@@ -562,7 +600,7 @@
     var btn  = document.getElementById('ez-mob-toggle');
     if (!menu || !btn) return;
     var opening = !menu.classList.contains('open');
-    if (opening) syncMenuTop();   /* 열기 직전에 nav 높이 재측정 */
+    if (opening) { syncMenuTop(); padMenuForBottomBar(); }  /* 열기 직전에 nav 높이·하단 배너 재측정 */
     menu.classList.toggle('open', opening);
     btn.classList.toggle('open', opening);
     btn.setAttribute('aria-expanded', opening ? 'true' : 'false');

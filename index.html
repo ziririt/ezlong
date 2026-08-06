@@ -2196,6 +2196,9 @@ window.ezNavToggle = function () {
   if (opening) {
     var nav = document.querySelector('nav.nav');
     if (nav) menu.style.paddingTop = nav.getBoundingClientRect().height + 'px';
+    /* 목록 끝 '닫기'가 하단 고정 배너(언어 안내)에 덮이지 않게 — ez-nav.js 가
+       노출하는 실측 함수를 쓴다. 배너가 없으면 0이라 평소 여백은 그대로. */
+    if (window.ezNavPadMenuBottom) window.ezNavPadMenuBottom();
   }
   menu.classList.toggle('open', opening);
   btn.classList.toggle('open', opening);
