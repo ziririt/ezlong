@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-06-14:43",
+      "timestamp_kst": "2026-08-06(목) 14:43 KST",
+      "key_event": {
+        "name": "기술주 혼조 및 AI 리더십 우려 지속",
+        "name_en": "Mixed Tech Performance & AI Leadership Concerns Persist",
+        "time": "직전 정규장 및 야간",
+        "why": "주요 기술주 하락, AI 리더십 불안, 금리 인상 우려 지속",
+        "why_en": "Major tech stocks decline, AI leadership uncertainty, persistent rate hike concerns"
+      },
+      "positive_total": 30,
+      "negative_total": 70,
+      "summary": "기술주 혼조 및 AI 리더십 불안으로 부정 우위 지속",
+      "summary_en": "Negative sentiment prevails due to mixed tech performance and AI leadership uncertainty",
+      "positive_factors": [
+        {
+          "score": 15,
+          "name": "VIX 공포지수 하락",
+          "name_en": "VIX Fear Index Decline",
+          "desc": "시장 변동성 완화 및 투자 심리 개선",
+          "desc_en": "Easing market volatility and improved investor sentiment",
+          "category": "vix_risk_sentiment"
+        },
+        {
+          "score": 15,
+          "name": "엔비디아 반등 지속",
+          "name_en": "Nvidia Rebound Continues",
+          "desc": "NVDA 1.96% 상승, 반도체 섹터 일부 회복 기대",
+          "desc_en": "NVDA up 1.96%, fueling partial recovery hopes for semiconductor sector",
+          "category": "company_specific"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 50,
+          "name": "알파벳 급락 및 AI 리더십 우려",
+          "name_en": "Alphabet Plunge & AI Leadership Concerns",
+          "desc": "GOOGL 3.94% 하락, Jeff Dean 이탈 및 AI 리스크 오프 신호",
+          "desc_en": "GOOGL down 3.94%, Jeff Dean's departure signals AI risk-off sentiment",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "애플-OpenAI 소송 우려",
+          "name_en": "Apple-OpenAI Lawsuit Concerns",
+          "desc": "애플의 OpenAI 상대로 한 소송 제기, AI 섹터 불확실성 증대",
+          "desc_en": "Apple files lawsuit against OpenAI, increasing uncertainty in the AI sector",
+          "category": "company_specific"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-06-11:50",
       "timestamp_kst": "2026-08-06(목) 11:50 KST",
       "key_event": {
@@ -561,76 +613,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-05-11:50",
-      "timestamp_kst": "2026-08-05(수) 11:50 KST",
-      "key_event": {
-        "name": "AI·반도체 강세 지속",
-        "name_en": "Continued Strength in AI & Semiconductors",
-        "time": "직전 정규장 및 포스트마켓",
-        "why": "주요 지수 상승 견인, 시장 심리 개선, 위험자산 선호",
-        "why_en": "Driving major index gains, improving market sentiment, risk-on appetite"
-      },
-      "positive_total": 85,
-      "negative_total": 15,
-      "summary": "AI·반도체 강세 및 중동 리스크 완화로 긍정 우위 지속. 8일 연속 긍정 우위.",
-      "summary_en": "Sustained positive sentiment driven by AI/semiconductor strength and easing Middle East tensions. 8th consecutive day of positive dominance.",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "AI·반도체 업종 강세",
-          "name_en": "AI & Semiconductor Sector Strength",
-          "desc": "NVDA 4.69%, SOXX 4.93% 상승하며 시장 상승 주도",
-          "desc_en": "NVDA up 4.69%, SOXX up 4.93%, leading market gains",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 25,
-          "name": "중동 지정학적 리스크 완화",
-          "name_en": "Easing Middle East Geopolitical Risks",
-          "desc": "미-이란 휴전 기대감으로 유가 8.47% 하락, 인플레 완화 기대",
-          "desc_en": "Oil prices down 8.47% on US-Iran truce hopes, easing inflation concerns",
-          "category": "geopolitics"
-        },
-        {
-          "score": 20,
-          "name": "주요 지수 사상 최고치 마감",
-          "name_en": "Major Indices Close at Record Highs",
-          "desc": "S&P 500 및 다우 지수 사상 최고치 마감, 투자 심리 개선",
-          "desc_en": "S&P 500 and Dow close at record highs, boosting investor sentiment",
-          "category": "vix_risk_sentiment"
-        },
-        {
-          "score": 10,
-          "name": "국채금리 하락",
-          "name_en": "Treasury Yields Decline",
-          "desc": "미 10년 국채금리 1.26% 하락, 성장주 투자 매력 증가",
-          "desc_en": "US 10-year Treasury yield down 1.26%, increasing growth stock appeal",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "VIX 공포지수 상승",
-          "name_en": "VIX Fear Index Rises",
-          "desc": "VIX 4.04% 상승, 단기 변동성 확대 및 차익실현 압력 가능성",
-          "desc_en": "VIX up 4.04%, indicating potential for increased short-term volatility and profit-taking",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "Fed 매파적 발언 지속",
-          "name_en": "Continued Hawkish Fed Remarks",
-          "desc": "Fed 위원, '너무 높은' 인플레이션 억제 위해 긴축 통화 정책 요구",
-          "desc_en": "Fed official calls for tighter monetary policy to curb 'too high' inflation",
-          "category": "fed_policy"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-06T02:51:47Z",
+  "updated_at": "2026-08-06T05:44:41Z",
   "max_entries": 10
 }
