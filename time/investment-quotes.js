@@ -8632,5 +8632,12 @@ window.investmentQuotes = [
     "title": "데미안 (Demian)",
     "author": "헤르만 헤세 (Hermann Hesse)",
     "genre": "literature"
+  },
+  {
+    "english": "Value investing by its very nature is contrarian. Out-of-favor securities may be undervalued; popular securities almost never are.",
+    "text": "가치투자는 본질적으로 반대편에 서는 일이다. 인기 없는 종목은 저평가되어 있을 수 있지만, 인기 있는 종목이 저평가되어 있는 경우는 거의 없다.",
+    "title": "마진 오브 세이프티 (Margin of Safety)",
+    "author": "세스 클라만 (Seth Klarman)",
+    "category": "mindset"
   }
 ];
