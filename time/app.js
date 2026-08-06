@@ -824,7 +824,7 @@ let backgroundArchiveLoaded = false;
 let weatherResolved = false;
 let activePhotoSet = [];
 let activePhotoSetKey = "";
-// 2026-08-04 리듬 설계 — 4장을 한 바퀴(16분) 다 보여줄 때마다 1씩
+// 2026-08-04 운영자 리듬 설계 — 4장을 한 바퀴(16분) 다 보여줄 때마다 1씩
 // 올라가는 세대 카운터. photoSetKey에 포함되어 다음 4장 세트를 강제한다.
 let photoCycleGen = 0;
 let activePhotoIndex = 0;
@@ -5113,7 +5113,7 @@ function handleMusicIconTap() {
 
 // 2026-07-28 W9 — QC 전용 "곡 삭제" 도구를 제거했다.
 //   원음 품질 점검용 임시 도구였는데(?musicqc=1 로만 노출), 글로벌 출시
-//   준비 중 설정 화면 전수 점검에서 발견돼 운영자 판단으로 삭제했다.
+//   준비 중 설정 화면 전수 점검에서 발견돼 운영 판단으로 삭제했다.
 //   개발자용 문구가 사용자 화면에 남아있을 이유가 없고, 번역 대상도 아니다.
 //   기기에 남은 ezlong:musicQCMode / ezlong:musicRemovalRequests 키는
 //   이제 아무도 읽지 않아 자동으로 무해해진다(정리 코드 불필요).
@@ -9229,7 +9229,7 @@ window.setInterval(tick, 1000);
 // pickScenePhoto 내부 재비교)을 버리고, 한 곳에서 끝나는 명시적 타이머로
 // 교체. 화면이 보이는 동안 5분마다 다음 장으로 한 장씩(4장 한 바퀴 20분).
 // 수동 스와이프 직후 15분(manualPhotoUntil)은 기존 약속대로 손대지 않는다.
-// 2026-08-04 리듬 설계 — 문장 4개(1분씩)가 흐르는 4분마다 배경
+// 2026-08-04 운영자 리듬 설계 — 문장 4개(1분씩)가 흐르는 4분마다 배경
 // 한 장. 4장이 다 돌면(16분) 같은 세트를 반복하지 않고 photoCycleGen을
 // 올려 다음 4장 세트로 교체한다(photoHistory 덕에 본 사진은 회피됨).
 const PHOTO_AUTO_ROTATE_MS = 4 * 60 * 1000;
@@ -10212,7 +10212,7 @@ var bedsideActive = false;
     // ★ 원복 방법 ★ — 아래 한 줄의 "inter"를 "system"으로 바꾸면 끝난다.
     //   (기기에서 즉시 되돌리려면 localStorage 에
     //    ezlong:clockFont = "system" 을 넣으면 된다. 그 값이 항상 우선한다.)
-    // 2026-08-05 운영자 판단 — Inter보다 직전(10% 축소한 Roboto)이 낫다.
+    // 2026-08-05 운영 판단 — Inter보다 직전(10% 축소한 Roboto)이 낫다.
     // 파일과 규칙은 남겨둔다. "inter"로 바꾸면 언제든 다시 볼 수 있다.
     var DEFAULT_CLOCK_FONT = "system";    // "inter" | "system"
     var choice = DEFAULT_CLOCK_FONT;

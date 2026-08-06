@@ -10,6 +10,26 @@
 // 로컬 assets/music/으로 되돌리려면 아래를 빈 문자열로 바꾸면 된다(레거시 호환 유지).
 const musicSourceBaseUrl = "https://pub-82b6dfa1c27c40a283a8836677a76fc5.r2.dev";
 
+// 2026-08-06 긴급 제거 — 아래 3트랙은 **파일 자체가 깨져 있다**.
+//   05-office-window-sunlight-b.m4a (524,332바이트)
+//   10-green-window-focus-a.m4a     (1,048,620바이트)
+//   10-green-window-focus-b.m4a     (524,332바이트)
+// 셋 다 512KB/1MB에 딱 맞아떨어지는 크기로 잘려 있고, ffprobe가
+// "moov atom not found"로 거부한다 — 다운로드가 중간에 끊긴 파일이
+// 그대로 R2에 올라간 것이다(R2 원본도 같은 크기임을 2026-08-06 확인).
+// 재생하면 곡이 시작되지 않거나 도중에 멈춘다. group 10은 A/B가 모두
+// 깨져 그룹 전체가 재생 불가였다. 음원 속성 태그 분석을 준비하다
+// ffmpeg 디코딩이 실패하면서 발견했다.
+// 원본을 다시 확보하면 되살린다 — 그때까지는 목록에서 뺀다.
+// 2026-08-06 운영 지침 — **4분 이상 트랙 29곡 일괄 제거.**
+// "4분 이상되는 곡은 뭔가 잘못된 곡이다. suno에서 잘못 제작된 곡일
+// 것이다. 8분은 확실히 에러난 곡이다."
+// 길이 분포가 이 판단을 그대로 뒷받침한다 — 전체 655곡의 중앙값이
+// 2분 33초인데, 4~5분에 13곡, 5~7분에 **0곡**, 그리고 7분 59초(479초)에
+// 정확히 5곡이 몰려 있었다. 5~7분이 텅 빈 채 479초에만 뭉쳐 있는 것은
+// 자연스러운 길이 분포가 아니라 생성기의 상한에 걸려 잘린 흔적이다.
+// 4분 정각(240초)인 11곡도 같은 이유로 함께 뺀다.
+// 655 → 626곡.
 const musicPlaylist = [
   { group: 1, title: "Before the Inbox", playlist: "A", duration: "1:02", file: "assets/music/01-before-the-inbox-a.m4a" },
   { group: 1, title: "Before the Inbox", playlist: "B", duration: "1:13", file: "assets/music/01-before-the-inbox-b.m4a" },
@@ -20,7 +40,6 @@ const musicPlaylist = [
   { group: 4, title: "Office Window Sunlight", playlist: "A", duration: "0:49", file: "assets/music/04-office-window-sunlight-a.m4a" },
   { group: 4, title: "Office Window Sunlight", playlist: "B", duration: "1:19", file: "assets/music/04-office-window-sunlight-b.m4a" },
   { group: 5, title: "Office Window Sunlight", playlist: "A", duration: "1:31", file: "assets/music/05-office-window-sunlight-a.m4a" },
-  { group: 5, title: "Office Window Sunlight", playlist: "B", duration: "1:38", file: "assets/music/05-office-window-sunlight-b.m4a" },
   { group: 6, title: "Office Window Sunlight", playlist: "A", duration: "0:59", file: "assets/music/06-office-window-sunlight-a.m4a" },
   { group: 6, title: "Office Window Sunlight", playlist: "B", duration: "1:22", file: "assets/music/06-office-window-sunlight-b.m4a" },
   { group: 7, title: "Office Window Sunlight", playlist: "A", duration: "1:54", file: "assets/music/07-office-window-sunlight-a.m4a" },
@@ -29,8 +48,6 @@ const musicPlaylist = [
   { group: 8, title: "Office Window Sunlight", playlist: "B", duration: "2:07", file: "assets/music/08-office-window-sunlight-b.m4a" },
   { group: 9, title: "Green Window Focus", playlist: "A", duration: "2:15", file: "assets/music/09-green-window-focus-a.m4a" },
   { group: 9, title: "Green Window Focus", playlist: "B", duration: "2:43", file: "assets/music/09-green-window-focus-b.m4a" },
-  { group: 10, title: "Green Window Focus", playlist: "A", duration: "2:16", file: "assets/music/10-green-window-focus-a.m4a" },
-  { group: 10, title: "Green Window Focus", playlist: "B", duration: "2:01", file: "assets/music/10-green-window-focus-b.m4a" },
   { group: 11, title: "Green Window Focus", playlist: "A", duration: "1:57", file: "assets/music/11-green-window-focus-a.m4a" },
   { group: 11, title: "Green Window Focus", playlist: "B", duration: "2:02", file: "assets/music/11-green-window-focus-b.m4a" },
   { group: 12, title: "Green Window Focus", playlist: "A", duration: "1:53", file: "assets/music/12-green-window-focus-a.m4a" },
@@ -42,7 +59,6 @@ const musicPlaylist = [
   { group: 15, title: "Morning Briefing", playlist: "A", duration: "1:57", file: "assets/music/15-morning-briefing-a.m4a" },
   { group: 15, title: "Morning Briefing", playlist: "B", duration: "2:14", file: "assets/music/15-morning-briefing-b.m4a" },
   { group: 16, title: "Green Window Focus", playlist: "A", duration: "1:52", file: "assets/music/16-green-window-focus-a.m4a" },
-  { group: 16, title: "Green Window Focus", playlist: "B", duration: "7:59", file: "assets/music/16-green-window-focus-b.m4a" },
   { group: 17, title: "Green Window Notes", playlist: "A", duration: "1:51", file: "assets/music/17-green-window-notes-a.m4a" },
   { group: 17, title: "Green Window Notes", playlist: "B", duration: "1:59", file: "assets/music/17-green-window-notes-b.m4a" },
   { group: 18, title: "Rainy Reading Room", playlist: "A", duration: "2:19", file: "assets/music/18-rainy-reading-room-a.m4a" },
@@ -139,7 +155,6 @@ const musicPlaylist = [
   { group: 74, title: "Gilded Dust in Motion", playlist: "SINGLE", duration: "0:38", file: "My Workspace/Gilded Dust in Motion.m4a", category: "My Workspace", vocal: false },
   { group: 75, title: "Gilded Dust Moties", playlist: "SINGLE", duration: "1:30", file: "My Workspace/Gilded Dust Moties.m4a", category: "My Workspace", vocal: false },
   { group: 76, title: "Glass Shelf Drift", playlist: "1", duration: "2:29", file: "My Workspace/Glass Shelf Drift_part1.m4a", category: "My Workspace", vocal: false },
-  { group: 76, title: "Glass Shelf Drift", playlist: "2", duration: "7:59", file: "My Workspace/Glass Shelf Drift_part2.m4a", category: "My Workspace", vocal: false },
   { group: 77, title: "Glass Thumb Piano", playlist: "1", duration: "2:23", file: "My Workspace/Glass Thumb Piano_part1.m4a", category: "My Workspace", vocal: false },
   { group: 77, title: "Glass Thumb Piano", playlist: "2", duration: "1:33", file: "My Workspace/Glass Thumb Piano_part2.m4a", category: "My Workspace", vocal: false },
   { group: 78, title: "Golden Fermata Pluck", playlist: "SINGLE", duration: "1:43", file: "My Workspace/Golden Fermata Pluck.m4a", category: "My Workspace", vocal: false },
@@ -269,43 +284,32 @@ const musicPlaylist = [
   { group: 168, title: "Windows Open Music On", playlist: "SINGLE", duration: "2:03", file: "My Workspace/Windows Open Music On.m4a", category: "My Workspace", vocal: false },
   { group: 169, title: "Windows Open, Static State", playlist: "SINGLE", duration: "1:35", file: "My Workspace/Windows Open, Static State.m4a", category: "My Workspace", vocal: false },
   { group: 170, title: "air", playlist: "SINGLE", duration: "1:49", file: "piano chello/air.mp3", category: "piano chello", vocal: false },
-  { group: 171, title: "Alone", playlist: "1", duration: "4:00", file: "piano chello/Alone_part1.mp3", category: "piano chello", vocal: false },
   { group: 171, title: "Alone", playlist: "2", duration: "1:56", file: "piano chello/Alone_part2.mp3", category: "piano chello", vocal: false },
   { group: 172, title: "bird", playlist: "1", duration: "3:29", file: "piano chello/bird_part1.mp3", category: "piano chello", vocal: false },
   { group: 172, title: "bird", playlist: "2", duration: "2:04", file: "piano chello/bird_part2.mp3", category: "piano chello", vocal: false },
-  { group: 173, title: "dream Remastered", playlist: "SINGLE", duration: "4:29", file: "piano chello/dream Remastered.mp3", category: "piano chello", vocal: false },
   { group: 174, title: "End", playlist: "SINGLE", duration: "3:55", file: "piano chello/End.mp3", category: "piano chello", vocal: false },
   { group: 175, title: "Forever", playlist: "1", duration: "2:55", file: "piano chello/Forever_part1.mp3", category: "piano chello", vocal: false },
   { group: 175, title: "Forever", playlist: "2", duration: "3:14", file: "piano chello/Forever_part2.mp3", category: "piano chello", vocal: false },
   { group: 176, title: "Here", playlist: "SINGLE", duration: "3:09", file: "piano chello/Here.mp3", category: "piano chello", vocal: false },
-  { group: 177, title: "Journey", playlist: "1", duration: "4:00", file: "piano chello/Journey_part1.mp3", category: "piano chello", vocal: false },
-  { group: 177, title: "Journey", playlist: "2", duration: "4:00", file: "piano chello/Journey_part2.mp3", category: "piano chello", vocal: false },
   { group: 178, title: "Moon Remastered", playlist: "1", duration: "3:25", file: "piano chello/Moon Remastered_part1.m4a", category: "piano chello", vocal: false },
   { group: 178, title: "Moon Remastered", playlist: "2", duration: "3:25", file: "piano chello/Moon Remastered_part2.m4a", category: "piano chello", vocal: false },
   { group: 179, title: "Moon", playlist: "SINGLE", duration: "3:25", file: "piano chello/Moon.mp3", category: "piano chello", vocal: false },
-  { group: 180, title: "Night", playlist: "SINGLE", duration: "4:00", file: "piano chello/Night.mp3", category: "piano chello", vocal: false },
   { group: 181, title: "Road", playlist: "1", duration: "2:22", file: "piano chello/Road_part1.mp3", category: "piano chello", vocal: false },
   { group: 181, title: "Road", playlist: "2", duration: "2:15", file: "piano chello/Road_part2.mp3", category: "piano chello", vocal: false },
   { group: 182, title: "sorrow", playlist: "1", duration: "2:28", file: "piano chello/sorrow_part1.mp3", category: "piano chello", vocal: false },
   { group: 182, title: "sorrow", playlist: "2", duration: "2:13", file: "piano chello/sorrow_part2.mp3", category: "piano chello", vocal: false },
-  { group: 183, title: "Star", playlist: "1", duration: "4:00", file: "piano chello/Star_part1.mp3", category: "piano chello", vocal: false },
   { group: 183, title: "Star", playlist: "2", duration: "2:59", file: "piano chello/Star_part2.mp3", category: "piano chello", vocal: false },
-  { group: 184, title: "Story Remastered", playlist: "SINGLE", duration: "4:00", file: "piano chello/Story Remastered.mp3", category: "piano chello", vocal: false },
-  { group: 185, title: "Story", playlist: "1", duration: "4:00", file: "piano chello/Story_part1.mp3", category: "piano chello", vocal: false },
-  { group: 185, title: "Story", playlist: "2", duration: "4:00", file: "piano chello/Story_part2.mp3", category: "piano chello", vocal: false },
   { group: 186, title: "Street", playlist: "SINGLE", duration: "3:34", file: "piano chello/Street.mp3", category: "piano chello", vocal: false },
   { group: 187, title: "there Remastered", playlist: "1", duration: "3:02", file: "piano chello/there Remastered_part1.m4a", category: "piano chello", vocal: false },
   { group: 187, title: "there Remastered", playlist: "2", duration: "3:02", file: "piano chello/there Remastered_part2.m4a", category: "piano chello", vocal: false },
   { group: 188, title: "there", playlist: "SINGLE", duration: "3:02", file: "piano chello/there.mp3", category: "piano chello", vocal: false },
   { group: 189, title: "Waiting", playlist: "1", duration: "3:59", file: "piano chello/Waiting_part1.mp3", category: "piano chello", vocal: false },
-  { group: 189, title: "Waiting", playlist: "2", duration: "4:00", file: "piano chello/Waiting_part2.mp3", category: "piano chello", vocal: false },
   { group: 199, title: "Echoes of Yesterday Remastered", playlist: "SINGLE", duration: "3:23", file: "vocal - CITY POP/Echoes of Yesterday Remastered_vocal.mp3", category: "vocal - CITY POP", vocal: true },
   { group: 200, title: "Electric Allure", playlist: "SINGLE", duration: "2:45", file: "vocal - CITY POP/Electric Allure_vocal.mp3", category: "vocal - CITY POP", vocal: true },
   { group: 201, title: "Electric Smile", playlist: "2", duration: "3:08", file: "vocal - CITY POP/Electric Smile_part2_vocal.mp3", category: "vocal - CITY POP", vocal: true },
   { group: 201, title: "Electric Smile", playlist: "SINGLE", duration: "2:50", file: "vocal - CITY POP/Electric Smile_vocal.mp3", category: "vocal - CITY POP", vocal: true },
   { group: 202, title: "Kiss", playlist: "1", duration: "3:31", file: "vocal - CITY POP/Kiss_1_vocal.mp3", category: "vocal - CITY POP", vocal: true },
   { group: 202, title: "Kiss", playlist: "SINGLE", duration: "3:21", file: "vocal - CITY POP/Kiss_vocal.mp3", category: "vocal - CITY POP", vocal: true },
-  { group: 203, title: "Leap Into Light", playlist: "2", duration: "4:00", file: "vocal - CITY POP/Leap Into Light_part2_vocal.mp3", category: "vocal - CITY POP", vocal: true },
   { group: 203, title: "Leap Into Light", playlist: "SINGLE", duration: "3:03", file: "vocal - CITY POP/Leap Into Light_vocal.mp3", category: "vocal - CITY POP", vocal: true },
   { group: 204, title: "Midnight Drive", playlist: "SINGLE", duration: "3:25", file: "vocal - CITY POP/Midnight Drive_vocal.mp3", category: "vocal - CITY POP", vocal: true },
   { group: 205, title: "orever Tonight", playlist: "SINGLE", duration: "3:31", file: "vocal - CITY POP/orever Tonight_vocal.mp3", category: "vocal - CITY POP", vocal: true },
@@ -330,7 +334,6 @@ const musicPlaylist = [
   { group: 215, title: "One Line Across the Page", playlist: "1", duration: "1:55", file: "vocal - workspace 20260711 1400/One Line Across the Page_part1_vocal.m4a", category: "vocal - workspace 20260711 1400", vocal: true },
   { group: 215, title: "One Line Across the Page", playlist: "2", duration: "1:49", file: "vocal - workspace 20260711 1400/One Line Across the Page_part2_vocal.m4a", category: "vocal - workspace 20260711 1400", vocal: true },
   { group: 216, title: "The Line I Draw", playlist: "1", duration: "3:58", file: "vocal - workspace 20260711 1400/The Line I Draw_part1_vocal.m4a", category: "vocal - workspace 20260711 1400", vocal: true },
-  { group: 216, title: "The Line I Draw", playlist: "2", duration: "4:04", file: "vocal - workspace 20260711 1400/The Line I Draw_part2_vocal.m4a", category: "vocal - workspace 20260711 1400", vocal: true },
   { group: 217, title: "Three Chords for You", playlist: "1", duration: "1:40", file: "vocal - workspace 20260711 1400/Three Chords for You_part1_vocal.m4a", category: "vocal - workspace 20260711 1400", vocal: true },
   { group: 217, title: "Three Chords for You", playlist: "2", duration: "1:43", file: "vocal - workspace 20260711 1400/Three Chords for You_part2_vocal.m4a", category: "vocal - workspace 20260711 1400", vocal: true },
   { group: 218, title: "When It Ends It Ends", playlist: "1", duration: "1:40", file: "vocal - workspace 20260711 1400/When It Ends It Ends_part1_vocal.m4a", category: "vocal - workspace 20260711 1400", vocal: true },
@@ -381,7 +384,6 @@ const musicPlaylist = [
   { group: 240, title: "House Lights At Blue Hour", playlist: "SINGLE", duration: "2:47", file: "classic 20260718/House Lights At Blue Hour.m4a", category: "classic 20260718", vocal: false },
   { group: 241, title: "House Wakes Slowly", playlist: "Part 2", duration: "3:47", file: "classic 20260718/House Wakes Slowly_part2.m4a", category: "classic 20260718", vocal: false },
   { group: 241, title: "House Wakes Slowly", playlist: "SINGLE", duration: "3:39", file: "classic 20260718/House Wakes Slowly.m4a", category: "classic 20260718", vocal: false },
-  { group: 242, title: "If You Ever Walk Beside Me", playlist: "Part 2", duration: "4:04", file: "classic 20260718/If You Ever Walk Beside Me_part2.m4a", category: "classic 20260718", vocal: false },
   { group: 242, title: "If You Ever Walk Beside Me", playlist: "SINGLE", duration: "3:46", file: "classic 20260718/If You Ever Walk Beside Me.m4a", category: "classic 20260718", vocal: false },
   { group: 243, title: "Kitchen Lamp At Midnight", playlist: "Part 2", duration: "1:18", file: "classic 20260718/Kitchen Lamp At Midnight_part2.m4a", category: "classic 20260718", vocal: false },
   { group: 243, title: "Kitchen Lamp At Midnight", playlist: "SINGLE", duration: "2:23", file: "classic 20260718/Kitchen Lamp At Midnight.m4a", category: "classic 20260718", vocal: false },
@@ -409,17 +411,13 @@ const musicPlaylist = [
   { group: 254, title: "Quiet Fields From A Train Window", playlist: "SINGLE", duration: "1:48", file: "classic 20260718/Quiet Fields From A Train Window.m4a", category: "classic 20260718", vocal: false },
   { group: 255, title: "Quiet Hands At The Door", playlist: "Part 2", duration: "1:40", file: "classic 20260718/Quiet Hands At The Door_part2.m4a", category: "classic 20260718", vocal: false },
   { group: 255, title: "Quiet Hands At The Door", playlist: "SINGLE", duration: "1:25", file: "classic 20260718/Quiet Hands At The Door.m4a", category: "classic 20260718", vocal: false },
-  { group: 256, title: "River Breeze With Flute And Strings", playlist: "Part 2", duration: "7:59", file: "classic 20260718/River Breeze With Flute And Strings_part2.m4a", category: "classic 20260718", vocal: false },
   { group: 256, title: "River Breeze With Flute And Strings", playlist: "Part 3", duration: "3:23", file: "classic 20260718/River Breeze With Flute And Strings_part3.m4a", category: "classic 20260718", vocal: false },
-  { group: 256, title: "River Breeze With Flute And Strings", playlist: "SINGLE", duration: "4:00", file: "classic 20260718/River Breeze With Flute And Strings.m4a", category: "classic 20260718", vocal: false },
   { group: 257, title: "River Walk With Clarinet And Guitar", playlist: "Part 2", duration: "2:55", file: "classic 20260718/River Walk With Clarinet And Guitar_part2.m4a", category: "classic 20260718", vocal: false },
   { group: 257, title: "River Walk With Clarinet And Guitar", playlist: "SINGLE", duration: "2:39", file: "classic 20260718/River Walk With Clarinet And Guitar.m4a", category: "classic 20260718", vocal: false },
   { group: 258, title: "Rooftop Wind Over Sleeping City", playlist: "Part 2", duration: "1:50", file: "classic 20260718/Rooftop Wind Over Sleeping City_part2.m4a", category: "classic 20260718", vocal: false },
   { group: 258, title: "Rooftop Wind Over Sleeping City", playlist: "SINGLE", duration: "1:53", file: "classic 20260718/Rooftop Wind Over Sleeping City.m4a", category: "classic 20260718", vocal: false },
   { group: 259, title: "Small Rivers Between Buildings", playlist: "Part 2", duration: "1:29", file: "classic 20260718/Small Rivers Between Buildings_part2.m4a", category: "classic 20260718", vocal: false },
   { group: 259, title: "Small Rivers Between Buildings", playlist: "SINGLE", duration: "1:13", file: "classic 20260718/Small Rivers Between Buildings.m4a", category: "classic 20260718", vocal: false },
-  { group: 260, title: "Soft Footsteps on a Borrowed Sky", playlist: "Part 2", duration: "4:28", file: "classic 20260718/Soft Footsteps on a Borrowed Sky_part2.m4a", category: "classic 20260718", vocal: false },
-  { group: 260, title: "Soft Footsteps on a Borrowed Sky", playlist: "SINGLE", duration: "4:15", file: "classic 20260718/Soft Footsteps on a Borrowed Sky.m4a", category: "classic 20260718", vocal: false },
   { group: 261, title: "Street Corner Waltz For Strings And Guitar", playlist: "Part 2", duration: "1:55", file: "classic 20260718/Street Corner Waltz For Strings And Guitar_part2.m4a", category: "classic 20260718", vocal: false },
   { group: 261, title: "Street Corner Waltz For Strings And Guitar", playlist: "SINGLE", duration: "1:47", file: "classic 20260718/Street Corner Waltz For Strings And Guitar.m4a", category: "classic 20260718", vocal: false },
   { group: 262, title: "Streetlamp Halo For Two", playlist: "Part 2", duration: "2:14", file: "classic 20260718/Streetlamp Halo For Two_part2.m4a", category: "classic 20260718", vocal: false },
@@ -442,8 +440,6 @@ const musicPlaylist = [
   { group: 270, title: "Sunlight On Wooden Floors", playlist: "SINGLE", duration: "3:22", file: "classic 20260718/Sunlight On Wooden Floors.m4a", category: "classic 20260718", vocal: false },
   { group: 271, title: "Sunlit Hills For String Orchestra", playlist: "Part 2", duration: "0:40", file: "classic 20260718/Sunlit Hills For String Orchestra_part2.m4a", category: "classic 20260718", vocal: false },
   { group: 271, title: "Sunlit Hills For String Orchestra", playlist: "SINGLE", duration: "0:39", file: "classic 20260718/Sunlit Hills For String Orchestra.m4a", category: "classic 20260718", vocal: false },
-  { group: 272, title: "While the Grass Is Still This Green", playlist: "Part 2", duration: "4:10", file: "classic 20260718/While the Grass Is Still This Green_part2.m4a", category: "classic 20260718", vocal: false },
-  { group: 272, title: "While the Grass Is Still This Green", playlist: "SINGLE", duration: "4:22", file: "classic 20260718/While the Grass Is Still This Green.m4a", category: "classic 20260718", vocal: false },
   { group: 273, title: "Window Seat Melody For Oboe And Guitar", playlist: "Part 2", duration: "2:59", file: "classic 20260718/Window Seat Melody For Oboe And Guitar_part2.m4a", category: "classic 20260718", vocal: false },
   { group: 273, title: "Window Seat Melody For Oboe And Guitar", playlist: "Part 3", duration: "2:33", file: "classic 20260718/Window Seat Melody For Oboe And Guitar_part3.m4a", category: "classic 20260718", vocal: false },
   { group: 273, title: "Window Seat Melody For Oboe And Guitar", playlist: "SINGLE", duration: "2:55", file: "classic 20260718/Window Seat Melody For Oboe And Guitar.m4a", category: "classic 20260718", vocal: false },
@@ -469,7 +465,6 @@ const musicPlaylist = [
   { group: 283, title: "Convenience Store Halo", playlist: "Part 2", duration: "2:32", file: "Rock-20260720/Convenience Store Halo_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 283, title: "Convenience Store Halo", playlist: "SINGLE", duration: "3:05", file: "Rock-20260720/Convenience Store Halo.m4a", category: "Rock-20260720", vocal: false },
   { group: 284, title: "Crosswalk Choices", playlist: "Part 2", duration: "3:37", file: "Rock-20260720/Crosswalk Choices_part2.m4a", category: "Rock-20260720", vocal: false },
-  { group: 284, title: "Crosswalk Choices", playlist: "SINGLE", duration: "4:20", file: "Rock-20260720/Crosswalk Choices.m4a", category: "Rock-20260720", vocal: false },
   { group: 285, title: "Dancing on the Ground", playlist: "Part 2", duration: "3:18", file: "Rock-20260720/Dancing on the Ground_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 285, title: "Dancing on the Ground", playlist: "SINGLE", duration: "3:00", file: "Rock-20260720/Dancing on the Ground.m4a", category: "Rock-20260720", vocal: false },
   { group: 286, title: "Detour Sign Summer", playlist: "Part 2", duration: "2:53", file: "Rock-20260720/Detour Sign Summer_part2.m4a", category: "Rock-20260720", vocal: false },
@@ -482,7 +477,6 @@ const musicPlaylist = [
   { group: 289, title: "Last Bus Air Guitar", playlist: "Part 3", duration: "3:22", file: "Rock-20260720/Last Bus Air Guitar_part3.m4a", category: "Rock-20260720", vocal: false },
   { group: 289, title: "Last Bus Air Guitar", playlist: "SINGLE", duration: "2:54", file: "Rock-20260720/Last Bus Air Guitar.m4a", category: "Rock-20260720", vocal: false },
   { group: 290, title: "Last Ice Cream Turn", playlist: "Part 2", duration: "3:40", file: "Rock-20260720/Last Ice Cream Turn_part2.m4a", category: "Rock-20260720", vocal: false },
-  { group: 290, title: "Last Ice Cream Turn", playlist: "SINGLE", duration: "4:06", file: "Rock-20260720/Last Ice Cream Turn.m4a", category: "Rock-20260720", vocal: false },
   { group: 291, title: "Late Train Quiet Heart", playlist: "Part 2", duration: "3:57", file: "Rock-20260720/Late Train Quiet Heart_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 291, title: "Late Train Quiet Heart", playlist: "SINGLE", duration: "3:36", file: "Rock-20260720/Late Train Quiet Heart.m4a", category: "Rock-20260720", vocal: false },
   { group: 292, title: "Laundry Moon Above the Court", playlist: "Part 2", duration: "3:24", file: "Rock-20260720/Laundry Moon Above the Court_part2.m4a", category: "Rock-20260720", vocal: false },
@@ -495,7 +489,6 @@ const musicPlaylist = [
   { group: 295, title: "Mountain Shade Switchback", playlist: "SINGLE", duration: "2:54", file: "Rock-20260720/Mountain Shade Switchback.m4a", category: "Rock-20260720", vocal: false },
   { group: 296, title: "Neon Bicycle Halo", playlist: "Part 2", duration: "2:50", file: "Rock-20260720/Neon Bicycle Halo_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 296, title: "Neon Bicycle Halo", playlist: "SINGLE", duration: "2:49", file: "Rock-20260720/Neon Bicycle Halo.m4a", category: "Rock-20260720", vocal: false },
-  { group: 297, title: "Paper Lantern Screens", playlist: "Part 2", duration: "4:15", file: "Rock-20260720/Paper Lantern Screens_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 297, title: "Paper Lantern Screens", playlist: "SINGLE", duration: "3:57", file: "Rock-20260720/Paper Lantern Screens.m4a", category: "Rock-20260720", vocal: false },
   { group: 298, title: "Plastic Constellation Cup", playlist: "Part 2", duration: "2:54", file: "Rock-20260720/Plastic Constellation Cup_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 298, title: "Plastic Constellation Cup", playlist: "SINGLE", duration: "3:10", file: "Rock-20260720/Plastic Constellation Cup.m4a", category: "Rock-20260720", vocal: false },
@@ -506,16 +499,11 @@ const musicPlaylist = [
   { group: 301, title: "Quiet Shoes on Wet Asphalt", playlist: "Part 2", duration: "3:00", file: "Rock-20260720/Quiet Shoes on Wet Asphalt_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 301, title: "Quiet Shoes on Wet Asphalt", playlist: "Part 3", duration: "3:51", file: "Rock-20260720/Quiet Shoes on Wet Asphalt_part3.m4a", category: "Rock-20260720", vocal: false },
   { group: 301, title: "Quiet Shoes on Wet Asphalt", playlist: "SINGLE", duration: "3:50", file: "Rock-20260720/Quiet Shoes on Wet Asphalt.m4a", category: "Rock-20260720", vocal: false },
-  { group: 302, title: "River Rocks and Engine", playlist: "Part 2", duration: "4:42", file: "Rock-20260720/River Rocks and Engine_part2.m4a", category: "Rock-20260720", vocal: false },
-  { group: 302, title: "River Rocks and Engine", playlist: "SINGLE", duration: "4:34", file: "Rock-20260720/River Rocks and Engine.m4a", category: "Rock-20260720", vocal: false },
   { group: 303, title: "Rooftop Bento Talk", playlist: "Part 2", duration: "2:55", file: "Rock-20260720/Rooftop Bento Talk_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 303, title: "Rooftop Bento Talk", playlist: "SINGLE", duration: "2:48", file: "Rock-20260720/Rooftop Bento Talk.m4a", category: "Rock-20260720", vocal: false },
-  { group: 304, title: "Rooftop Linen Sea", playlist: "Part 2", duration: "4:07", file: "Rock-20260720/Rooftop Linen Sea_part2.m4a", category: "Rock-20260720", vocal: false },
-  { group: 304, title: "Rooftop Linen Sea", playlist: "SINGLE", duration: "7:59", file: "Rock-20260720/Rooftop Linen Sea.m4a", category: "Rock-20260720", vocal: false },
   { group: 305, title: "Running In Closed Captions", playlist: "Part 2", duration: "2:59", file: "Rock-20260720/Running In Closed Captions_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 305, title: "Running In Closed Captions", playlist: "SINGLE", duration: "2:57", file: "Rock-20260720/Running In Closed Captions.m4a", category: "Rock-20260720", vocal: false },
   { group: 306, title: "Screen Door Breeze", playlist: "Part 2", duration: "2:57", file: "Rock-20260720/Screen Door Breeze_part2.m4a", category: "Rock-20260720", vocal: false },
-  { group: 306, title: "Screen Door Breeze", playlist: "SINGLE", duration: "7:59", file: "Rock-20260720/Screen Door Breeze.m4a", category: "Rock-20260720", vocal: false },
   { group: 307, title: "Sidewalk Branches", playlist: "Part 2", duration: "3:00", file: "Rock-20260720/Sidewalk Branches_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 307, title: "Sidewalk Branches", playlist: "SINGLE", duration: "2:42", file: "Rock-20260720/Sidewalk Branches.m4a", category: "Rock-20260720", vocal: false },
   { group: 308, title: "Skylight Timing", playlist: "Part 2", duration: "3:00", file: "Rock-20260720/Skylight Timing_part2.m4a", category: "Rock-20260720", vocal: false },
