@@ -8618,5 +8618,12 @@ window.investmentQuotes = [
     "title": "투모로우 앤드 투모로우 앤드 투모로우 (Tomorrow, and Tomorrow, and Tomorrow)",
     "author": "가브리엘 제빈 (Gabrielle Zevin)",
     "genre": "literature"
+  },
+  {
+    "english": "Everyone has the brainpower to make money in stocks. Not everyone has the stomach. If you are susceptible to selling everything in a panic, you ought to avoid stocks and stock mutual funds altogether.",
+    "text": "누구나 주식으로 돈을 벌 수 있는 두뇌를 가지고 있다. 그러나 누구나 그럴 배짱을 가진 것은 아니다. 공황 상태에서 모든 것을 팔아치우기 쉬운 성향이라면, 주식과 주식형 펀드는 아예 멀리하는 편이 낫다.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
   }
 ];
