@@ -8721,5 +8721,12 @@ window.investmentQuotes = [
     "title": "와일드 (Wild: From Lost to Found on the Pacific Crest Trail)",
     "author": "셰릴 스트레이드 (Cheryl Strayed)",
     "genre": "literature"
+  },
+  {
+    "english": "The game of speculation is the most uniformly fascinating game in the world. But it is not a game for the stupid, the mentally lazy, the person of inferior emotional balance, or the get-rich-quick adventurer. They will die poor.",
+    "text": "투기라는 게임은 세상에서 가장 한결같이 매혹적인 게임이다. 그러나 이것은 어리석은 자, 정신적으로 게으른 자, 감정적 균형이 부족한 자, 혹은 벼락부자를 꿈꾸는 모험가를 위한 게임이 아니다. 그런 사람들은 결국 가난하게 죽는다.",
+    "title": "제시 리버모어의 회상 (Reminiscences of a Stock Operator)",
+    "author": "제시 리버모어",
+    "category": "mindset"
   }
 ];
