@@ -8598,5 +8598,11 @@ window.investmentQuotes = [
     "title": "가장 중요한 것 (The Most Important Thing)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "mindset"
+  },
+  {
+    "text": "그리 대단한 사람은 없다. 그렇다고 그냥 사는 사람도 없다.",
+    "title": "쓰기의 말들",
+    "author": "은유",
+    "genre": "literature"
   }
 ];
