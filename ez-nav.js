@@ -571,3 +571,143 @@
     }
   });
 })();
+
+/* ─────────────────────────────────────────────────────────────
+   2026-08-06 성동님 요청 — 당겨서 새로고침 (pull to refresh)
+
+   "ezlong.com에 들어가서 페이지를 터치해서 아래로 당겼다 놓으면
+    페이지가 새로고침되게 해줘."
+
+   ★ 왜 아무 데서나 켜지 않는가 ★
+   모바일 브라우저(Safari·Chrome)는 페이지 최상단에서 당기면 이미 스스로
+   새로고침한다. 거기에 우리 것을 얹으면 한 번의 제스처에 두 반응이 겹쳐
+   화면이 두 번 튀거나, 브라우저 것이 먼저 먹어 우리 것이 죽는다.
+   그래서 **브라우저가 해주지 않는 자리에서만** 켠다:
+     · 앱 안의 웹뷰(iframe) — 부모가 스크롤을 쥐고 있어 기본 동작이 없다
+     · 홈 화면에 추가한 PWA(standalone) — 브라우저 크롬이 없어 기본 동작이 없다
+   일반 브라우저 탭에서는 아무것도 하지 않고 브라우저에게 맡긴다.
+
+   ★ 손가락을 따라오게 만든다 ★
+   당기는 동안 표시가 손가락과 1:1로 따라와야 "붙잡고 있다"는 느낌이 난다.
+   다만 그대로 따라오면 한없이 늘어나므로 임계점을 넘어선 뒤로는 저항을
+   키워(고무줄처럼) 점점 덜 따라오게 한다. 놓는 순간은 두 갈래다.
+     · 임계점을 넘겼다 — 표시를 임계 위치에 세우고 새로고침한다
+     · 못 넘겼다 — 튕김 없이 제자리로 되돌린다
+   ───────────────────────────────────────────────────────────── */
+(function setupPullToRefresh() {
+  'use strict';
+
+  function inIframe() {
+    try { return window.self !== window.top; } catch (e) { return true; }
+  }
+  function isStandalone() {
+    try {
+      if (window.navigator.standalone === true) return true;
+      return window.matchMedia('(display-mode: standalone)').matches;
+    } catch (e) { return false; }
+  }
+  if (!('ontouchstart' in window)) return;
+  if (!inIframe() && !isStandalone()) return;
+
+  var THRESHOLD = 78;
+  var MAX_PULL = 132;
+  var RESIST = 0.55;
+
+  var startY = 0, pulling = false, armed = false, refreshing = false, curDist = 0;
+
+  var ind = document.createElement('div');
+  ind.setAttribute('aria-hidden', 'true');
+  ind.style.cssText = [
+    'position:fixed', 'left:50%', 'top:0', 'z-index:2147483000',
+    'width:36px', 'height:36px', 'margin-left:-18px',
+    'border-radius:50%', 'pointer-events:none',
+    'background:rgba(13,13,15,.92)',
+    'box-shadow:0 6px 20px rgba(0,0,0,.28)',
+    'display:flex', 'align-items:center', 'justify-content:center',
+    'transform:translate3d(0,-52px,0)', 'opacity:0'
+  ].join(';');
+  ind.innerHTML =
+    '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" ' +
+    'stroke="#4FC3F7" stroke-width="2.4" stroke-linecap="round" ' +
+    'stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.2-6.9"/>' +
+    '<path d="M21 3v6h-6"/></svg>';
+  var svg = ind.firstChild;
+
+  function place(dist, animate) {
+    curDist = dist;
+    ind.style.transition = animate
+      ? 'transform .34s cubic-bezier(.22,.9,.3,1), opacity .28s ease'
+      : 'none';
+    ind.style.transform = 'translate3d(0,' + (dist - 52) + 'px,0) rotate('
+      + Math.min(360, dist * 3.2) + 'deg)';
+    ind.style.opacity = dist > 6 ? String(Math.min(1, dist / 46)) : '0';
+  }
+  function attach() {
+    if (!ind.parentNode && document.body) document.body.appendChild(ind);
+  }
+
+  /* 스크롤이 정말 맨 위인가. 문서뿐 아니라 손가락이 놓인 자리의 **안쪽
+     스크롤 영역**까지 본다 — 안쪽을 읽는 중인데 페이지를 새로고침해
+     버리면 읽던 자리를 통째로 잃는다. */
+  function atTop(target) {
+    var doc = window.pageYOffset || document.documentElement.scrollTop || 0;
+    if (doc > 0) return false;
+    var el = target;
+    while (el && el !== document.body && el !== document.documentElement) {
+      if (el.scrollHeight > el.clientHeight + 1) {
+        var st = window.getComputedStyle(el).overflowY;
+        if ((st === 'auto' || st === 'scroll') && el.scrollTop > 0) return false;
+      }
+      el = el.parentElement;
+    }
+    return true;
+  }
+
+  document.addEventListener('touchstart', function (e) {
+    if (refreshing || e.touches.length !== 1) return;
+    attach();
+    startY = e.touches[0].clientY;
+    armed = atTop(e.target);
+    pulling = false;
+    curDist = 0;
+  }, { passive: true });
+
+  document.addEventListener('touchmove', function (e) {
+    if (!armed || refreshing || e.touches.length !== 1) return;
+    var dy = e.touches[0].clientY - startY;
+    if (dy <= 0) {
+      if (pulling) { pulling = false; place(0, true); }
+      return;
+    }
+    var dist = dy <= THRESHOLD ? dy : THRESHOLD + (dy - THRESHOLD) * RESIST;
+    dist = Math.min(MAX_PULL, dist);
+    if (dist > 4) {
+      pulling = true;
+      if (e.cancelable) e.preventDefault();
+      place(dist, false);
+    }
+  }, { passive: false });
+
+  function end() {
+    if (!pulling || refreshing) { pulling = false; return; }
+    var dist = curDist;
+    pulling = false;
+    if (dist >= THRESHOLD) {
+      refreshing = true;
+      place(THRESHOLD, true);
+      svg.style.animation = 'ezPtrSpin .8s linear infinite';
+      /* 표시가 제자리에 서는 것을 눈으로 확인할 짧은 틈을 준 뒤 새로고침한다.
+         곧바로 reload 하면 흰 화면이 튀어 "눌리긴 한 건가" 싶어진다. */
+      window.setTimeout(function () { window.location.reload(); }, 220);
+    } else {
+      place(0, true);
+    }
+  }
+  document.addEventListener('touchend', end, { passive: true });
+  document.addEventListener('touchcancel', end, { passive: true });
+
+  var ptrStyle = document.createElement('style');
+  ptrStyle.textContent =
+    '@keyframes ezPtrSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}';
+  (document.head || document.documentElement).appendChild(ptrStyle);
+})();
