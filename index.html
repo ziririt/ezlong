@@ -443,6 +443,15 @@ a { text-decoration: none; color: inherit; }
 /* ─── 공통 레이아웃 ───────────────────────────────── */
 .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
 
+/* 2026-08-06 — 모바일 좌우 여백 축소. 도구 타일이 2열이라 바깥 여백 20px 은
+   그대로 카드 폭에서 깎이는데, 정작 카드 안 설명은 세 줄로 잘려 빡빡했다.
+   화면 밖 여백은 넉넉하고 글자는 부족한 배분이었다. 여백을 좁혀 그만큼을
+   글자에 준다. .wrap 은 페이지 전 구역이 쓰므로 섹션끼리 좌우 선은 계속 맞는다.
+   헤더(.nav-inner)는 선언이 아래에 있어 같은 값을 그 뒤에서 다시 건다 —
+   미디어쿼리는 특이도를 올려주지 않으므로 순서가 곧 승패다. */
+@media (max-width: 699px) { .wrap { padding: 0 14px; } }
+@media (max-width: 400px) { .wrap { padding: 0 12px; } }
+
 .section-label {
   display: inline-flex;
   align-items: center;
@@ -497,6 +506,12 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   justify-content: space-between;
 }
+
+/* 헤더 좌우 여백을 본문(.wrap)과 같은 값으로 — 로고 왼쪽 선과 카드 왼쪽
+   선이 어긋나면 여백을 줄인 게 오히려 지저분해 보인다. 반드시 위 .nav-inner
+   선언보다 "뒤"에 둘 것(미디어쿼리는 특이도를 올려주지 않는다). */
+@media (max-width: 699px) { .nav-inner { padding: 0 14px; } }
+@media (max-width: 400px) { .nav-inner { padding: 0 12px; } }
 
 .nav-logo {
   display: flex;
