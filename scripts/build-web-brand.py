@@ -233,16 +233,24 @@ def build_og():
 
 
 def build_splash():
+    """iOS 스플래시 14종. 각 해상도에서 직접 렌더한다 — 한 장을 확대·축소해
+    돌려쓰면 그라디언트에 리샘플 잡음이 섞여 PNG 가 6배로 부풀고(24MB) 띠도
+    보인다. viewBox 는 마스터 그대로 두고 slice 로 채워 잘라낸다."""
     master = swap_spiral(open(os.path.join(TPL, 'splash-master.svg'), encoding='utf-8').read())
-    render(master, '/tmp/splash-master.png', 1290, 2796)
-    src = Image.open('/tmp/splash-master.png').convert('RGB')
     for name in SPLASH:
         w, h = (int(v) for v in name.split('x'))
-        # 마스터를 덮도록 채운 뒤 중앙을 잘라낸다 — 나선이 늘 화면 한가운데 온다
-        r = max(w / src.width, h / src.height)
-        rs = src.resize((round(src.width * r), round(src.height * r)), Image.LANCZOS)
-        x, y = (rs.width - w) // 2, (rs.height - h) // 2
-        rs.crop((x, y, x + w, y + h)).save(path('splash', f'splash-{name}.png'))
+        svg = re.sub(r'<svg\b[^>]*>',
+                     f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" '
+                     f'viewBox="0 0 1290 2796" preserveAspectRatio="xMidYMid slice">',
+                     master, count=1)
+        dst = path('splash', f'splash-{name}.png')
+        render(svg, dst, w, h)
+        im = Image.open(dst)
+        if im.mode != 'RGB':                       # 불투명 화면이라 알파가 필요 없다
+            bg = Image.new('RGB', im.size, (4, 18, 31))
+            bg.paste(im, mask=im.split()[-1] if im.mode == 'RGBA' else None)
+            im = bg
+        im.save(dst, optimize=True)
     print(f'  스플래시 {len(SPLASH)}종')
 
 
