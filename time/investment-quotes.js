@@ -8707,5 +8707,12 @@ window.investmentQuotes = [
     "title": "수선화에게",
     "author": "정호승",
     "genre": "literature"
+  },
+  {
+    "english": "First-level thinking says, 'It's a good company; let's buy the stock.' Second-level thinking says, 'It's a good company, but everyone thinks it's a good company, and thus it's not such a good company.'",
+    "text": "1단계 사고는 이렇게 말한다. '좋은 회사니까 주식을 사자.' 2단계 사고는 이렇게 말한다. '좋은 회사이긴 하지만, 모두가 좋은 회사라고 생각하고 있으니 사실은 그렇게 좋은 회사가 아닐 수도 있다.'",
+    "title": "투자에 대한 생각 (The Most Important Thing)",
+    "author": "하워드 막스 (Howard Marks)",
+    "category": "mindset"
   }
 ];
