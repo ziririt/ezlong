@@ -8795,5 +8795,12 @@ window.investmentQuotes = [
     "title": "원칙",
     "author": "레이 달리오",
     "category": "mindset"
+  },
+  {
+    "english": "You only find out who is swimming naked when the tide goes out.",
+    "text": "밀물이 빠지고 나서야, 누가 발가벗은 채 헤엄치고 있었는지 알 수 있다.",
+    "title": "버크셔 해서웨이 주주 서한",
+    "author": "워런 버핏",
+    "category": "mindset"
   }
 ];
