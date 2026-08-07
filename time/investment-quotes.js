@@ -8761,5 +8761,12 @@ window.investmentQuotes = [
     "title": "바깥은 여름",
     "author": "김애란",
     "genre": "literature"
+  },
+  {
+    "english": "Those who can not adjust to change will be swept aside by it. Those who recognize change and react accordingly will benefit.",
+    "text": "변화에 적응하지 못하는 사람은 결국 그 변화에 휩쓸려 사라지고, 변화를 알아채고 거기에 맞춰 움직이는 사람은 그 혜택을 누리게 된다.",
+    "title": "백만장자 아빠가 딸에게 보내는 편지 (A Gift to My Children)",
+    "author": "짐 로저스 (Jim Rogers)",
+    "category": "mindset"
   }
 ];
