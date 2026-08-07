@@ -8788,5 +8788,12 @@ window.investmentQuotes = [
     "title": "언제 들어도 좋은 말",
     "author": "이석원",
     "genre": "literature"
+  },
+  {
+    "english": "If you don't look back at yourself a year ago and think, 'Wow, how stupid I was a year ago,' then you must not have learned much in the past year.",
+    "text": "1년 전의 나를 돌아보며 '와, 그때 나는 참 어리석었구나' 하는 생각이 들지 않는다면, 지난 1년 동안 별로 배운 게 없다는 뜻이다.",
+    "title": "원칙",
+    "author": "레이 달리오",
+    "category": "mindset"
   }
 ];
