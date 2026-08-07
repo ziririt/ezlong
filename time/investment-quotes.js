@@ -8748,5 +8748,25 @@ window.investmentQuotes = [
     "title": "언테임드: 나는 길들지 않겠다 (Untamed)",
     "author": "글레넌 도일 (Glennon Doyle)",
     "genre": "literature"
+  },
+  {
+    "english": "It's not whether you're right or wrong that's important, but how much money you make when you're right and how much you lose when you're wrong.",
+    "text": "중요한 것은 당신이 옳은지 틀린지가 아니라, 옳았을 때 얼마나 벌고 틀렸을 때 얼마나 잃는지다.",
+    "title": "금융의 연금술 (The Alchemy of Finance)",
+    "author": "조지 소로스 (George Soros)",
+    "category": "mindset"
+  },
+  {
+    "text": "손에 스마트폰이 아닌 스노볼을 쥔 기분이었다. 유리볼 안에선 하얀 눈보라가 흩날리는데, 구 바깥은 온통 여름인. 시끄럽고 왕성한 계절인, 그런.",
+    "title": "바깥은 여름",
+    "author": "김애란",
+    "genre": "literature"
+  },
+  {
+    "english": "Those who can not adjust to change will be swept aside by it. Those who recognize change and react accordingly will benefit.",
+    "text": "변화에 적응하지 못하는 사람은 결국 그 변화에 휩쓸려 사라지고, 변화를 알아채고 거기에 맞춰 움직이는 사람은 그 혜택을 누리게 된다.",
+    "title": "백만장자 아빠가 딸에게 보내는 편지 (A Gift to My Children)",
+    "author": "짐 로저스 (Jim Rogers)",
+    "category": "mindset"
   }
 ];
