@@ -1,6 +1,81 @@
 {
   "entries": [
     {
+      "id": "2026-08-08-05:48",
+      "timestamp_kst": "2026-08-08(토) 05:48 KST",
+      "key_event": {
+        "name": "고용지표 둔화 및 금리 인하 기대",
+        "name_en": "Weak Jobs Report Fuels Rate Cut Hopes",
+        "time": "최근 6시간 및 향후 12시간",
+        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
+        "why_en": "Lower-than-expected jobs, eased Fed hike concerns, improved market sentiment"
+      },
+      "positive_total": 80,
+      "negative_total": 20,
+      "summary": "고용 둔화에 따른 금리 인하 기대감으로 긍정 우위 지속, 어제와 동일한 구도 유지",
+      "summary_en": "Positive sentiment continues due to weak employment and rate cut expectations, maintaining yesterday's trend",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "고용지표 둔화에 따른 금리 인하 기대",
+          "name_en": "Weak Jobs Report Boosts Rate Cut Expectations",
+          "desc": "예상치 하회 고용 수치로 Fed의 금리 인상 우려 완화, 시장 심리 개선",
+          "desc_en": "Lower-than-expected job numbers ease Fed hike concerns, improving market sentiment",
+          "category": "macro_data"
+        },
+        {
+          "score": 30,
+          "name": "AI 인프라 투자 지속",
+          "name_en": "Continued AI Infrastructure Investment",
+          "desc": "Nvidia, Blackstone 등 주요 기업의 AI 인프라 투자 확대 소식",
+          "desc_en": "Major companies like Nvidia and Blackstone expanding AI infrastructure investments",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 15,
+          "name": "테슬라 로보택시 시장 기대감",
+          "name_en": "Tesla Robotaxi Market Optimism",
+          "desc": "$16.8B 규모 테라팹 착공 소식 및 로보택시 시장 독점 가능성 부각",
+          "desc_en": "News of $16.8B Terafab groundbreaking and potential robotaxi market monopoly",
+          "category": "company_specific"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 10,
+          "name": "Google 실적 우려 지속",
+          "name_en": "Persistent Google Earnings Concerns",
+          "desc": "Alphabet Inc. (GOOGL) 주가 하락 및 실적 관련 우려 지속",
+          "desc_en": "Alphabet Inc. (GOOGL) stock decline and ongoing earnings-related concerns",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 10,
+          "name": "Apple과 OpenAI 법적 분쟁",
+          "name_en": "Apple-OpenAI Legal Dispute",
+          "desc": "두 기술 거대 기업 간 법적 분쟁 심화, 시장 불확실성 증대",
+          "desc_en": "Escalating legal battle between two tech giants, increasing market uncertainty",
+          "category": "company_specific"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "약한 고용에도 금리 인상 가능성",
+          "name_en": "Rate Hike Possibility Despite Weak Jobs",
+          "desc": "고용 지표 둔화에도 불구하고 일부 분석가들은 여전히 Fed의 9월 금리 인상 가능성을 배제하지 않음",
+          "desc_en": "Despite weak jobs data, some analysts still do not rule out a September Fed rate hike",
+          "category": "fed_policy"
+        },
+        {
+          "name": "AI 투자 과열 우려",
+          "name_en": "AI Investment Overheating Concerns",
+          "desc": "AI 섹터에 대한 지속적인 투자에도 불구하고 일부에서는 과열에 대한 우려 제기",
+          "desc_en": "Despite continuous investment in the AI sector, some express concerns about overheating",
+          "category": "ai_tech_valuation"
+        }
+      ]
+    },
+    {
       "id": "2026-08-08-01:02",
       "timestamp_kst": "2026-08-08(토) 01:02 KST",
       "key_event": {
@@ -473,68 +548,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-07-07:01",
-      "timestamp_kst": "2026-08-07(금) 07:01 KST",
-      "key_event": {
-        "name": "마이크로소프트 AI 성과 기대",
-        "name_en": "Microsoft AI Performance Expectations",
-        "time": "포스트마켓",
-        "why": "주요 기술주 상승 견인, 시장 심리 개선",
-        "why_en": "Driving major tech stock gains, improving market sentiment"
-      },
-      "positive_total": 65,
-      "negative_total": 35,
-      "summary": "마이크로소프트 강세 및 지정학적 리스크 완화로 긍정 우위 전환",
-      "summary_en": "Positive shift due to Microsoft's strength and easing geopolitical risks",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "마이크로소프트 AI 성과 부각",
-          "name_en": "Microsoft AI Performance Highlighted",
-          "desc": "AI 투자 성과 가시화, 주가 2.69% 상승",
-          "desc_en": "Visible AI investment results, stock up 2.69%",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 25,
-          "name": "이란-오만 협상 기대감",
-          "name_en": "Iran-Oman Deal Expectations",
-          "desc": "호르무즈 해협 불확실성 완화, S&P 500 상승 견인",
-          "desc_en": "Easing Hormuz Strait uncertainty, driving S&P 500 gains",
-          "category": "geopolitics"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "주요 기술주 혼조세 지속",
-          "name_en": "Continued Mixed Performance in Major Tech Stocks",
-          "desc": "GOOGL, NVDA 등 일부 기술주 하락 지속",
-          "desc_en": "Continued decline in some tech stocks like GOOGL, NVDA",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "WTI 유가 급등",
-          "name_en": "WTI Oil Price Surge",
-          "desc": "인플레이션 압력 우려 증대, 4.32% 상승",
-          "desc_en": "Increased inflation pressure concerns, up 4.32%",
-          "category": "oil_energy"
-        },
-        {
-          "score": 10,
-          "name": "미 10년 국채금리 상승",
-          "name_en": "US 10-Year Treasury Yield Rise",
-          "desc": "성장주 투자 매력 감소, 1.15% 상승",
-          "desc_en": "Reduced attractiveness for growth stocks, up 1.15%",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-07T16:02:18Z",
+  "updated_at": "2026-08-07T20:49:03Z",
   "max_entries": 10
 }
