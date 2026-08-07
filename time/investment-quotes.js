@@ -8734,5 +8734,12 @@ window.investmentQuotes = [
     "title": "무소유",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "Everyone has the brainpower to make money in stocks. Not everyone has the stomach. If you are susceptible to selling everything in a panic, you ought to avoid stocks and mutual funds altogether.",
+    "text": "주식으로 돈을 벌 두뇌는 누구에게나 있다. 그러나 그것을 견뎌낼 배짱은 누구에게나 있는 것이 아니다. 공황 속에서 가진 것을 모두 팔아치우기 쉬운 사람이라면, 애초에 주식이나 주식형 펀드에는 손대지 않는 편이 낫다.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
   }
 ];
