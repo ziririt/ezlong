@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-08-07-09:54",
+      "timestamp_kst": "2026-08-07(금) 09:54 KST",
+      "key_event": {
+        "name": "마이크로소프트 AI 성과 기대",
+        "name_en": "Microsoft AI Performance Expectations",
+        "time": "직전 정규장 및 다음 정규장",
+        "why": "주요 기술주 상승 견인, 시장 심리 개선",
+        "why_en": "Driving major tech stock gains, improving market sentiment"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "마이크로소프트 강세 및 지정학적 리스크 완화로 긍정 우위 지속",
+      "summary_en": "Positive sentiment sustained by Microsoft's strength and easing geopolitical risks",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "마이크로소프트 AI 성과 기대",
+          "name_en": "Microsoft AI Performance Expectations",
+          "desc": "AI 투자 성과 가시화, MSFT 2.72% 상승",
+          "desc_en": "Visible AI investment returns, MSFT up 2.72%",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 30,
+          "name": "중동 지정학적 리스크 완화",
+          "name_en": "Easing Middle East Geopolitical Risks",
+          "desc": "이란-오만 협상 기대감, S&P 500 상승 견인",
+          "desc_en": "Iran-Oman deal hopes, driving S&P 500 gains",
+          "category": "geopolitics"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "구글 AI 투자 우려",
+          "name_en": "Google AI Investment Concerns",
+          "desc": "AI 지출 증가 및 주요 연구원 이탈, GOOGL 1.59% 하락",
+          "desc_en": "Increased AI spending and key researcher departures, GOOGL down 1.59%",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "유가 상승 및 인플레이션 압력",
+          "name_en": "Rising Oil Prices and Inflationary Pressure",
+          "desc": "호르무즈 해협 재개방 우려로 WTI 4.28% 상승",
+          "desc_en": "WTI up 4.28% on Strait of Hormuz reopening concerns",
+          "category": "oil_energy"
+        },
+        {
+          "score": 5,
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "인플레이션 우려 및 Fed 금리 인상 가능성, 10년물 1.15% 상승",
+          "desc_en": "Inflation concerns and potential Fed rate hikes, 10-year yield up 1.15%",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-07-08:20",
       "timestamp_kst": "2026-08-07(금) 08:20 KST",
       "key_event": {
@@ -537,76 +597,8 @@
           "category": "macro_data"
         }
       ]
-    },
-    {
-      "id": "2026-08-06-06:18",
-      "timestamp_kst": "2026-08-06(목) 06:18 KST",
-      "key_event": {
-        "name": "기술주 혼조세 및 금리 인상 우려",
-        "name_en": "Mixed Tech Performance & Rate Hike Concerns",
-        "time": "향후 12시간",
-        "why": "주요 지수 하락, 시장 심리 위축, 금리 인상 가능성",
-        "why_en": "Major indices decline, market sentiment weakens, potential rate hikes"
-      },
-      "positive_total": 30,
-      "negative_total": 70,
-      "summary": "AI·반도체 일부 강세에도 기술주 혼조 및 금리 인상 우려로 부정 우위 전환",
-      "summary_en": "Negative sentiment prevails due to mixed tech performance and rate hike concerns, despite some AI/chip strength",
-      "positive_factors": [
-        {
-          "score": 20,
-          "name": "NVIDIA 강세 지속",
-          "name_en": "NVIDIA's Continued Strength",
-          "desc": "AI 수요 견인 및 시장 관심 유지",
-          "desc_en": "Driven by AI demand and sustained market interest",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "중동 지정학적 리스크 완화 기대",
-          "name_en": "Easing Middle East Geopolitical Risks",
-          "desc": "호르무즈 해협 안전 확보 기대감",
-          "desc_en": "Anticipation of secure Strait of Hormuz",
-          "category": "geopolitics"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "Alphabet 주가 급락",
-          "name_en": "Alphabet Stock Plunge",
-          "desc": "주요 기술주 하락 주도, 시장 불안 확대",
-          "desc_en": "Leading decline in major tech stocks, increasing market unease",
-          "category": "company_specific"
-        },
-        {
-          "score": 20,
-          "name": "Fed 매파적 발언 지속",
-          "name_en": "Continued Hawkish Fed Remarks",
-          "desc": "금리 인상 가능성 시사, 시장 불확실성 증대",
-          "desc_en": "Hinting at potential rate hikes, increasing market uncertainty",
-          "category": "fed_policy"
-        },
-        {
-          "score": 15,
-          "name": "반도체 섹터 약세 전환",
-          "name_en": "Semiconductor Sector Weakness",
-          "desc": "SOXX 하락, AI 랠리 피로감 확산",
-          "desc_en": "SOXX decline, spreading fatigue in AI rally",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "주요 지수 하락 압력",
-          "name_en": "Downward Pressure on Major Indices",
-          "desc": "QQQ, SPY 포스트마켓 하락세",
-          "desc_en": "QQQ, SPY showing post-market declines",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-06T23:21:08Z",
+  "updated_at": "2026-08-07T00:54:44Z",
   "max_entries": 10
 }
