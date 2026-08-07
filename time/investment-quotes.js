@@ -8741,5 +8741,12 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "english": "This life is mine alone. So I have stopped asking people for directions to places they've never been.",
+    "text": "이 삶은 오롯이 나의 것이다. 그래서 나는 한 번도 가보지 못한 곳으로 가는 길을, 더는 남에게 묻지 않기로 했다.",
+    "title": "언테임드: 나는 길들지 않겠다 (Untamed)",
+    "author": "글레넌 도일 (Glennon Doyle)",
+    "genre": "literature"
   }
 ];
