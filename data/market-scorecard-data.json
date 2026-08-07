@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-07-13:51",
+      "timestamp_kst": "2026-08-07(금) 13:51 KST",
+      "key_event": {
+        "name": "기술주 혼조 및 지정학적 긴장",
+        "name_en": "Mixed Tech Performance & Geopolitical Tensions",
+        "time": "직전 정규장 및 다음 정규장",
+        "why": "주요 기술주 방향성 혼조, 중동 리스크 지속, 시장 불확실성 증대",
+        "why_en": "Mixed direction in major tech stocks, persistent Middle East risks, increased market uncertainty"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "기술주 혼조 및 지정학적 긴장 지속으로 부정 우위 유지",
+      "summary_en": "Negative sentiment persists due to mixed tech performance and ongoing geopolitical tensions",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "마이크로소프트 강세 지속",
+          "name_en": "Microsoft's Continued Strength",
+          "desc": "핵심 기술주 상승 견인, AI 리더십 기대감 유지",
+          "desc_en": "Driving gains in key tech stocks, sustained optimism for AI leadership",
+          "category": "company_specific"
+        },
+        {
+          "score": 15,
+          "name": "VIX 공포지수 하락",
+          "name_en": "VIX Fear Index Decline",
+          "desc": "시장 변동성 완화, 투자 심리 소폭 개선",
+          "desc_en": "Reduced market volatility, slight improvement in investor sentiment",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 35,
+          "name": "중동 지정학적 긴장 지속",
+          "name_en": "Persistent Middle East Geopolitical Tensions",
+          "desc": "호르무즈 해협 관련 불확실성, 유가 상승 압력",
+          "desc_en": "Uncertainty surrounding Strait of Hormuz, upward pressure on oil prices",
+          "category": "geopolitics"
+        },
+        {
+          "score": 30,
+          "name": "미 국채금리 상승",
+          "name_en": "Rising US Treasury Yields",
+          "desc": "성장주 투자 매력 감소, 금리 인상 불확실성 반영",
+          "desc_en": "Reduced attractiveness for growth stocks, reflecting interest rate uncertainty",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-07-11:50",
       "timestamp_kst": "2026-08-07(금) 11:50 KST",
       "key_event": {
@@ -537,60 +589,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-06-11:50",
-      "timestamp_kst": "2026-08-06(목) 11:50 KST",
-      "key_event": {
-        "name": "기술주 혼조 및 AI 리더십 우려",
-        "name_en": "Mixed Tech Performance & AI Leadership Concerns",
-        "time": "직전 정규장 및 포스트마켓",
-        "why": "주요 기술주 하락, AI 리더십 불안, 금리 인상 우려 지속",
-        "why_en": "Major tech stocks decline, AI leadership uncertainty, persistent rate hike concerns"
-      },
-      "positive_total": 30,
-      "negative_total": 70,
-      "summary": "기술주 혼조 및 AI 리더십 불안으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to mixed tech performance and AI leadership uncertainty",
-      "positive_factors": [
-        {
-          "score": 15,
-          "name": "일부 반도체 종목 강세",
-          "name_en": "Strength in Select Semiconductor Stocks",
-          "desc": "NVDA의 포스트마켓 반등(+1.96%)으로 일부 매수세 유입",
-          "desc_en": "NVDA's post-market rebound (+1.96%) attracts some buying interest",
-          "category": "company_specific"
-        },
-        {
-          "score": 15,
-          "name": "VIX 하락 및 금리 안정",
-          "name_en": "VIX Decline & Stable Rates",
-          "desc": "VIX 공포지수 하락(-4.18%) 및 미10년 국채금리 안정화",
-          "desc_en": "VIX fear index decline (-4.18%) and stabilization of US 10-year Treasury yields",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 45,
-          "name": "AI 리더십 교체 불안",
-          "name_en": "AI Leadership Transition Uncertainty",
-          "desc": "Google의 Jeff Dean 이탈 및 AI 리더십 재편에 대한 시장 불안감",
-          "desc_en": "Market unease over Google's Jeff Dean departure and AI leadership restructuring",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 25,
-          "name": "AMD 주가 하락",
-          "name_en": "AMD Stock Decline",
-          "desc": "AMD 주가 하락 뉴스 보도로 반도체 업종 투자 심리 악화",
-          "desc_en": "News of AMD stock drop further deteriorates semiconductor investment sentiment",
-          "category": "company_specific"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-07T02:51:02Z",
+  "updated_at": "2026-08-07T04:51:37Z",
   "max_entries": 10
 }
