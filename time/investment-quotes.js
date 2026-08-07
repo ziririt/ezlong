@@ -8815,5 +8815,12 @@ window.investmentQuotes = [
     "title": "Poor Charlie's Almanack (푸어 찰리스 알마낙)",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "mindset"
+  },
+  {
+    "english": "Investors must be willing to forego some near-term return, if necessary, as an insurance premium against unexpected and unpredictable adversity.",
+    "text": "투자자는 예상치 못한, 예측할 수 없는 역경에 대비하는 일종의 보험료로서, 필요하다면 눈앞의 수익 일부를 기꺼이 포기할 수 있어야 한다.",
+    "title": "마진 오브 세이프티",
+    "author": "세스 클라만",
+    "category": "mindset"
   }
 ];
