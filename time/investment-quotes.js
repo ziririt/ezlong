@@ -8296,7 +8296,7 @@ window.investmentQuotes = [
   },
   {
     "english": "Dhandho, literally translated from Gujarati, means \"endeavors that create wealth.\" At its core, Dhandho is about generating maximum wealth with minimum risk. Heads, I win; tails, I don't lose much!",
-    "text": "다안도(Dhandho)는 구자라트어로 '부를 만들어내는 노력'이라는 뜻이다. 그 핵심은 최소한의 위험으로 최대한의 부를 만들어내는 데 있다. 앞면이 나오면 내가 이기고, 뒷면이 나와도 크게 잃지 않는 베팅 — 이것이 진짜 좋은 투자다.",
+    "text": "단도투자(Dhandho)는 구자라트어로 '부를 만들어내는 노력'이라는 뜻이다. 그 핵심은 최소한의 위험으로 최대한의 부를 만들어내는 데 있다. 앞면이 나오면 내가 이기고, 뒷면이 나와도 크게 잃지 않는 베팅 — 이것이 진짜 좋은 투자다.",
     "title": "투자를 어떻게 할 것인가 (The Dhandho Investor)",
     "author": "모니시 파브라이 (Mohnish Pabrai)",
     "category": "mindset"
@@ -8363,7 +8363,7 @@ window.investmentQuotes = [
   },
   {
     "english": "Heads, I win; tails, I don't lose much!",
-    "text": "동전을 던져 앞면이 나오면 크게 벌고, 뒷면이 나와도 별로 잃을 게 없다 — 이것이 다안도 투자의 핵심이다.",
+    "text": "동전을 던져 앞면이 나오면 크게 벌고, 뒷면이 나와도 별로 잃을 게 없다 — 이것이 단도투자의 핵심이다.",
     "title": "투자를 어떻게 할 것인가 (The Dhandho Investor)",
     "author": "모니시 파브라이 (Mohnish Pabrai)",
     "category": "mindset"
