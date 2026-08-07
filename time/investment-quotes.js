@@ -8808,5 +8808,12 @@ window.investmentQuotes = [
     "title": "기록하기로 했습니다",
     "author": "김신지",
     "genre": "literature"
+  },
+  {
+    "english": "It is remarkable how much long-term advantage people like us have gotten by trying to be consistently not stupid, instead of trying to be very intelligent.",
+    "text": "우리 같은 사람들이 장기적으로 이만큼 유리한 위치에 설 수 있었던 건, 아주 똑똑해지려 애쓰는 대신 그저 꾸준히 어리석지 않으려 노력했기 때문이다. 놀라운 일이다.",
+    "title": "Poor Charlie's Almanack (푸어 찰리스 알마낙)",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "mindset"
   }
 ];
