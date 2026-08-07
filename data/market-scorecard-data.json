@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-07-16:52",
+      "timestamp_kst": "2026-08-07(금) 16:52 KST",
+      "key_event": {
+        "name": "AI 및 반도체 투자 기대감",
+        "name_en": "Anticipation for AI and Semiconductor Investment",
+        "time": "향후 12시간",
+        "why": "SpaceX의 AI 네트워크 및 칩 공장 계획 발표, 삼성의 AI 칩 기술 발전",
+        "why_en": "SpaceX's AI network and chip factory plans, Samsung's advanced AI chip tech"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "AI 및 반도체 투자 기대감으로 긍정 우위 전환",
+      "summary_en": "Positive sentiment shifts to AI and semiconductor investment anticipation",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "SpaceX AI 네트워크 및 칩 공장 계획",
+          "name_en": "SpaceX AI Network and Chip Factory Plans",
+          "desc": "SpaceX의 대규모 AI 투자 계획 발표로 기술 성장 기대감 증대",
+          "desc_en": "SpaceX's announcement of large-scale AI investment plans boosts tech growth expectations",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "삼성의 AI 칩 기술 발전",
+          "name_en": "Samsung's Advanced AI Chip Technology",
+          "desc": "삼성의 새로운 메모리 칩이 Nvidia AI 칩 성능 향상 기대",
+          "desc_en": "Samsung's new memory chip is expected to enhance Nvidia's AI chip performance",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "지정학적 긴장 지속",
+          "name_en": "Persistent Geopolitical Tensions",
+          "desc": "호르무즈 해협 재개방 우려 및 미-이란 갈등 지속",
+          "desc_en": "Concerns over Strait of Hormuz reopening and ongoing US-Iran conflict",
+          "category": "geopolitics"
+        },
+        {
+          "score": 10,
+          "name": "AI Capex 과열 우려",
+          "name_en": "AI Capex Overheating Concerns",
+          "desc": "마이클 버리, AI Capex가 2008년 주택 시장처럼 붕괴될 수 있다고 경고",
+          "desc_en": "Michael Burry warns AI Capex could unwind like 2008 housing market",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-07-13:51",
       "timestamp_kst": "2026-08-07(금) 13:51 KST",
       "key_event": {
@@ -537,60 +589,8 @@
           "category": "macro_data"
         }
       ]
-    },
-    {
-      "id": "2026-08-06-14:43",
-      "timestamp_kst": "2026-08-06(목) 14:43 KST",
-      "key_event": {
-        "name": "기술주 혼조 및 AI 리더십 우려 지속",
-        "name_en": "Mixed Tech Performance & AI Leadership Concerns Persist",
-        "time": "직전 정규장 및 야간",
-        "why": "주요 기술주 하락, AI 리더십 불안, 금리 인상 우려 지속",
-        "why_en": "Major tech stocks decline, AI leadership uncertainty, persistent rate hike concerns"
-      },
-      "positive_total": 30,
-      "negative_total": 70,
-      "summary": "기술주 혼조 및 AI 리더십 불안으로 부정 우위 지속",
-      "summary_en": "Negative sentiment prevails due to mixed tech performance and AI leadership uncertainty",
-      "positive_factors": [
-        {
-          "score": 15,
-          "name": "VIX 공포지수 하락",
-          "name_en": "VIX Fear Index Decline",
-          "desc": "시장 변동성 완화 및 투자 심리 개선",
-          "desc_en": "Easing market volatility and improved investor sentiment",
-          "category": "vix_risk_sentiment"
-        },
-        {
-          "score": 15,
-          "name": "엔비디아 반등 지속",
-          "name_en": "Nvidia Rebound Continues",
-          "desc": "NVDA 1.96% 상승, 반도체 섹터 일부 회복 기대",
-          "desc_en": "NVDA up 1.96%, fueling partial recovery hopes for semiconductor sector",
-          "category": "company_specific"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 50,
-          "name": "알파벳 급락 및 AI 리더십 우려",
-          "name_en": "Alphabet Plunge & AI Leadership Concerns",
-          "desc": "GOOGL 3.94% 하락, Jeff Dean 이탈 및 AI 리스크 오프 신호",
-          "desc_en": "GOOGL down 3.94%, Jeff Dean's departure signals AI risk-off sentiment",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 20,
-          "name": "애플-OpenAI 소송 우려",
-          "name_en": "Apple-OpenAI Lawsuit Concerns",
-          "desc": "애플의 OpenAI 상대로 한 소송 제기, AI 섹터 불확실성 증대",
-          "desc_en": "Apple files lawsuit against OpenAI, increasing uncertainty in the AI sector",
-          "category": "company_specific"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-07T04:51:37Z",
+  "updated_at": "2026-08-07T07:52:45Z",
   "max_entries": 10
 }
