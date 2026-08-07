@@ -8802,5 +8802,11 @@ window.investmentQuotes = [
     "title": "버크셔 해서웨이 주주 서한",
     "author": "워런 버핏",
     "category": "mindset"
+  },
+  {
+    "text": "매일 기록하는 사람은 하루도 자신을 잊지 않습니다. 그건 곧, 하루도 자신을 잃어버리지 않는다는 말과 같아요.",
+    "title": "기록하기로 했습니다",
+    "author": "김신지",
+    "genre": "literature"
   }
 ];
