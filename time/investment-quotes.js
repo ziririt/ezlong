@@ -8755,5 +8755,11 @@ window.investmentQuotes = [
     "title": "금융의 연금술 (The Alchemy of Finance)",
     "author": "조지 소로스 (George Soros)",
     "category": "mindset"
+  },
+  {
+    "text": "손에 스마트폰이 아닌 스노볼을 쥔 기분이었다. 유리볼 안에선 하얀 눈보라가 흩날리는데, 구 바깥은 온통 여름인. 시끄럽고 왕성한 계절인, 그런.",
+    "title": "바깥은 여름",
+    "author": "김애란",
+    "genre": "literature"
   }
 ];
