@@ -8728,5 +8728,11 @@ window.investmentQuotes = [
     "title": "제시 리버모어의 회상 (Reminiscences of a Stock Operator)",
     "author": "제시 리버모어",
     "category": "mindset"
+  },
+  {
+    "text": "무소유란 아무 것도 갖지 않는다는 것이 아니라 불필요한 것을 갖지 않는다는 것이다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
   }
 ];
