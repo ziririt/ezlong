@@ -8782,5 +8782,11 @@ window.investmentQuotes = [
     "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
     "author": "존 보글 (John C. Bogle)",
     "category": "mindset"
+  },
+  {
+    "text": "사람과 사람이 만나는 일은 세계와 세계가 만나는 일. 그래서 나는 사람을 만날 때 그 사람의 세계가 넓길 바란다.",
+    "title": "언제 들어도 좋은 말",
+    "author": "이석원",
+    "genre": "literature"
   }
 ];
