@@ -8768,5 +8768,12 @@ window.investmentQuotes = [
     "title": "백만장자 아빠가 딸에게 보내는 편지 (A Gift to My Children)",
     "author": "짐 로저스 (Jim Rogers)",
     "category": "mindset"
+  },
+  {
+    "english": "For me, becoming isn't about arriving somewhere or achieving a certain aim. I see it instead as forward motion, a means of evolving, a way to reach continuously toward a better self. The journey doesn't end.",
+    "text": "나에게 '되어가는 것'은 어딘가에 도달하거나 특정한 목표를 이루는 일이 아니다. 오히려 앞으로 나아가는 움직임이며, 진화해가는 방식이고, 더 나은 자신을 향해 끊임없이 다가가는 여정이다. 그 여정은 끝나지 않는다.",
+    "title": "비커밍",
+    "author": "미셸 오바마 (Michelle Obama)",
+    "genre": "literature"
   }
 ];
