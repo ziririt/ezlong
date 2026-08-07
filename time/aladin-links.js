@@ -1,4 +1,6 @@
 window.aladinLinks = {
+  "투자를 어떻게 할 것인가 (The Dhandho Investor)|모니시 파브라이": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=152552521&partner=friends327",
+  "투자를 어떻게 할 것인가 (The Dhandho Investor)|모니시 파브라이 (Mohnish Pabrai)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=152552521&partner=friends327",
   "현명한 투자자|벤저민 그레이엄": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=364922786&partner=friends327",
   "버크셔 해서웨이 주주 서한|워런 버핏": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=298436020&partner=friends327",
   "위대한 기업에 투자하라|필립 피셔": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=368029432&partner=friends327",
