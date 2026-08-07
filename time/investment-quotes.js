@@ -8795,5 +8795,12 @@ window.investmentQuotes = [
     "title": "원칙",
     "author": "레이 달리오",
     "category": "mindset"
+  },
+  {
+    "english": "Whenever you feel afraid, just remember. Courage is the root of change – and change is what we're chemically designed to do.",
+    "text": "두려움이 느껴질 때마다 기억하세요. 용기는 변화의 뿌리이며, 변화란 우리가 화학적으로 그렇게 하도록 설계된 일입니다.",
+    "title": "레슨 인 케미스트리 (Lessons in Chemistry)",
+    "author": "보니 가머스 (Bonnie Garmus)",
+    "genre": "literature"
   }
 ];
