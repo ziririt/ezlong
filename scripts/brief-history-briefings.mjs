@@ -229,8 +229,13 @@ async function main() {
   if (chart) chart.dates.forEach((d, i) => { idxMap[d] = i; });
 
   // 기계가 얹은 기록만 대상. 손으로 쓴 소사는 건드리지 않는다.
-  const targets = events.filter((e) => e.source === 'own_archive' && e.articles && e.articles.length);
-  console.log(`대상 ${targets.length}일`);
+  /* 최신 날짜부터 채운다. 한 번에 LIMIT 일까지만 만들므로, 오래된 쪽부터
+     채우면 밀린 만큼 **오늘 아침 글이 맨 뒤로 밀린다** — 실제로 8월 글이
+     제목만 걸린 채 며칠을 기다렸다. 사람들이 먼저 보는 건 최근이다. */
+  const targets = events
+    .filter((e) => e.source === 'own_archive' && e.articles && e.articles.length)
+    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+  console.log(`대상 ${targets.length}일 (최신순)`);
 
   let made = 0, reused = 0, skipped = 0, fetched = 0;
 
