@@ -8835,5 +8835,12 @@ window.investmentQuotes = [
     "title": "부에 이르는 가장 단순한 길",
     "author": "JL 콜린스",
     "category": "compound"
+  },
+  {
+    "english": "the world gives you so much pain and here you are making gold out of it — there is nothing purer than that.",
+    "text": "세상은 네게 그토록 많은 아픔을 안겼는데, 너는 그것으로 금을 만들어내고 있구나. 그보다 더 순수한 것은 없다.",
+    "title": "밀크 앤 허니 (Milk and Honey)",
+    "author": "루피 카우르 (Rupi Kaur)",
+    "genre": "literature"
   }
 ];
