@@ -186,7 +186,14 @@
       // ── 아마존 검색 ──
       // amazonQuery 는 build-global-quotes.mjs 가 book-i18n-map.json 에서
       // 미리 넣어준다. 없으면 영문 제목+저자로 즉석 조립한다.
-      var q = quote.amazonQuery;
+      //
+      // 2026-08-09: opts.amazonQuery 를 먼저 본다. 실측해보니 런타임 문장
+      // 풀(investmentQuotes)의 title/author 는 전부 한국어였다 — 1,202개 중
+      // 영문 서지를 가진 문장이 7개뿐이었다. 즉 이 함수만으로는 아래 한글
+      // 필터에 전부 걸려 링크가 사실상 생기지 않았다. 호출자(app.js)는
+      // 번역 서지와 영문 서지 테이블을 들고 있으므로, 검색어를 만들어
+      // 넘겨주게 했다.
+      var q = opts.amazonQuery || quote.amazonQuery;
       if (!q) {
         var parts = [];
         if (quote.title) parts.push(quote.title);

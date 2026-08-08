@@ -2524,21 +2524,64 @@ function formatQuoteSource(quote, koMode, translated) {
 // 가 1,092건 전부 같은 URL 이었고, 한쪽에만 링크가 있는 경우는 0건이었다.
 // 그래서 두 경로를 하나로 합친다. 버튼이 여는 주소와 복사본에 담기는 주소가
 // 같은 함수에서 나오므로 앞으로 둘이 어긋날 일도 없다.
+// 아마존 검색어를 만든다. 순서에 이유가 있다.
+//
+//   1) 표시 언어의 번역 서지. 일본 이용자를 amazon.co.jp 로 보내면서 영어
+//      제목으로 검색시키면 정작 일본어판을 못 찾는다. 화면에 보이는 그
+//      제목으로 찾게 하는 것이 맞다.
+//   2) 영문 서지(book-titles). 번역이 없는 책의 표준 경로다. 각국 아마존은
+//      원서도 같이 팔기 때문에 결과가 나온다.
+//   3) 둘 다 없으면 빈 문자열. 그러면 quote-source 가 한국어 제목을 보고
+//      스스로 링크를 포기한다(한글 검색어를 아마존에 던져봐야 안 나온다).
+//
+// zh 만 1번을 건너뛴다. 아마존 중국은 도서를 접어서 중국어권 이용자는
+// amazon.com 으로 가는데, 거기에 중국어 제목을 넣으면 결과가 비어버린다.
+function quoteAmazonQuery(quote) {
+  if (!quote) return "";
+  if (FZ_LOCALE !== "zh") {
+    try {
+      const translated = lookupQuoteTranslation(quote.english || "");
+      if (translated && translated.title) {
+        return `${translated.title} ${translated.author || ""}`.trim();
+      }
+    } catch (error) { /* 무시 */ }
+  }
+  try {
+    if (FZ_BOOK_TITLES && FZ_BOOK_TITLES.lookup) {
+      const en = FZ_BOOK_TITLES.lookup(quote.title);
+      if (en && en.t) return `${en.t} ${en.a || ""}`.trim();
+    }
+  } catch (error) { /* 무시 */ }
+  return "";
+}
+
+// 버튼과 복사본이 같은 주소를 쓰도록, 링크 결정은 이 함수 하나만 거친다.
+// 예전에는 버튼이 aladinLinks 를 직접 뒤지고 복사본은 quote-source 를 부르는
+// 두 갈래였다 — 둘이 어긋나면 아무도 눈치채지 못한다.
+function resolveQuoteBookLink(quote) {
+  if (!quote) return null;
+  try {
+    if (FZ_QUOTE_SRC && typeof FZ_QUOTE_SRC.resolve === "function") {
+      const opts = {};
+      if (!isKoreanLocale()) {
+        const query = quoteAmazonQuery(quote);
+        if (query) opts.amazonQuery = query;
+      }
+      return FZ_QUOTE_SRC.resolve(quote, opts);
+    }
+    // 모듈 로드가 실패했을 때의 안전망 — 한국어만이라도 예전처럼 동작시킨다.
+    if (isKoreanLocale()) {
+      const legacy = (window.aladinLinks || {})[`${quote.title}|${quote.author}`];
+      if (legacy) return { kind: "aladin", url: legacy, labelKey: "quote.buyOnAladin" };
+    }
+  } catch (error) { /* 링크 하나 때문에 문장이 안 뜨는 일은 없어야 한다 */ }
+  return null;
+}
+
 function updateAladinLinkButton(quote) {
   if (!quoteAladinLink) return;
 
-  let link = null;
-  try {
-    if (FZ_QUOTE_SRC && typeof FZ_QUOTE_SRC.resolve === "function") {
-      link = FZ_QUOTE_SRC.resolve(quote, {});
-    } else if (isKoreanLocale()) {
-      // 모듈 로드가 실패했을 때의 안전망 — 한국어만이라도 예전처럼 동작시킨다.
-      const legacy = (window.aladinLinks || {})[`${quote.title}|${quote.author}`];
-      if (legacy) link = { kind: "aladin", url: legacy, labelKey: "quote.buyOnAladin" };
-    }
-  } catch (error) {
-    link = null; // 링크 하나 때문에 문장이 안 뜨는 일은 없어야 한다
-  }
+  const link = resolveQuoteBookLink(quote);
 
   if (link && link.url) {
     const store = link.kind || "aladin";
@@ -8968,12 +9011,8 @@ function stripAffiliateParams(url) {
 }
 
 function currentQuoteBookLink() {
-  try {
-    if (FZ_QUOTE_SRC && typeof FZ_QUOTE_SRC.resolve === "function" && lastRenderedQuote) {
-      const link = FZ_QUOTE_SRC.resolve(lastRenderedQuote, {});
-      if (link && link.url) return stripAffiliateParams(link.url);
-    }
-  } catch (error) { /* 링크 하나 때문에 복사 자체가 막히면 안 된다 */ }
+  const link = resolveQuoteBookLink(lastRenderedQuote);
+  if (link && link.url) return stripAffiliateParams(link.url);
   // 모듈이 없거나 실패한 경우의 안전망 — 화면의 알라딘 버튼이 이미 링크를
   // 들고 있으면(= 보이는 상태면) 그것을 쓴다.
   if (quoteAladinLink && !quoteAladinLink.hidden && quoteAladinLink.dataset.url) {
