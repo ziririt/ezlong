@@ -8862,5 +8862,12 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "english": "The market, like the Lord, helps those who help themselves. But unlike the Lord, the market does not forgive those who know not what they do.",
+    "text": "시장은 주님과 같아서 스스로 돕는 자를 돕는다. 하지만 주님과 달리 시장은 자신이 무엇을 하는지 모르는 자를 용서하지 않는다.",
+    "title": "주식시장을 이기는 작은 책",
+    "author": "조엘 그린블라트 (Joel Greenblatt)",
+    "category": "mindset"
   }
 ];
