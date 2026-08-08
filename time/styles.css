@@ -3638,7 +3638,60 @@ button { font: inherit; }
   min-width: 0;
 }
 
+/* 2026-08-09 운영 요청 — 문장 복사 버튼. 오른쪽 알라딘 버튼과 생김새를
+   맞추되(26px 원형), 오터치가 나지 않도록 두 가지를 지킨다.
+   (1) 두 버튼 사이 실제 간격 20px = quote-source-wrap 의 gap 8px + 아래
+       margin-left 12px. (2) 시각 크기는 26px 그대로 두고 ::after 로 히트
+       영역만 44x44 로 넓힌다(iOS 44pt / Android 48dp 권장을 만족).
+       26 + 9*2 = 44 이므로 두 히트영역 사이에 20 - 18 = 2px 이 남는다 —
+       겹치지 않으므로 손가락이 어느 쪽을 눌렀는지 기기가 헷갈리지 않는다. */
+.quote-copy-btn {
+  flex: 0 0 auto;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,0.32);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.86);
+  cursor: pointer;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.quote-copy-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.quote-copy-btn::after,
+.quote-aladin-link::after {
+  content: "";
+  position: absolute;
+  inset: -9px;
+}
+
+.quote-copy-btn:active {
+  transform: scale(0.92);
+  background: rgba(255,255,255,0.2);
+}
+
+/* 복사가 끝난 순간 잠깐 초록빛으로 물들었다 원래대로 돌아온다 — 토스트가
+   가려지거나 놓쳐도 눌린 자리에서 바로 성공을 알 수 있게. */
+.quote-copy-btn.is-copied {
+  background: rgba(76, 217, 100, 0.28);
+  border-color: rgba(76, 217, 100, 0.6);
+  color: #eafff0;
+}
+
+.quote-copy-btn + .quote-aladin-link {
+  margin-left: 12px;
+}
+
 .quote-aladin-link {
+  position: relative;
   flex: 0 0 auto;
   display: grid;
   place-items: center;

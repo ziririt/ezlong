@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-05T01:34:03.772Z
+ * 생성 시각: 2026-08-08T15:37:16.965Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -299,7 +299,10 @@
       "settingsOpenAria": "Open quote settings",
       "sourceAria": "Book information",
       "buyOnAladin": "View on Aladin",
-      "buyOnAmazon": "Find on Amazon"
+      "buyOnAmazon": "Find on Amazon",
+      "copy": "Copy this quote",
+      "copied": "Quote copied",
+      "copyFailed": "Couldn't copy"
     },
     "clock": {
       "aria": "Flip clock",
@@ -698,7 +701,10 @@
       "settingsOpenAria": "Abrir los ajustes de las frases",
       "sourceAria": "Información del libro",
       "buyOnAladin": "Ver este libro en Aladin",
-      "buyOnAmazon": "Buscar este libro en Amazon"
+      "buyOnAmazon": "Buscar este libro en Amazon",
+      "copy": "Copiar esta cita",
+      "copied": "Cita copiada",
+      "copyFailed": "No se pudo copiar"
     },
     "clock": {
       "aria": "Reloj de solapas",
@@ -1097,7 +1103,10 @@
       "settingsOpenAria": "言葉の設定を開く",
       "sourceAria": "書籍の情報",
       "buyOnAladin": "アラジンでこの本を見る",
-      "buyOnAmazon": "Amazonでこの本を探す"
+      "buyOnAmazon": "Amazonでこの本を探す",
+      "copy": "この文章をコピー",
+      "copied": "文章をコピーしました",
+      "copyFailed": "コピーできませんでした"
     },
     "clock": {
       "aria": "フリップ時計",
@@ -1496,7 +1505,10 @@
       "settingsOpenAria": "오늘의 한 문장 설정 열기",
       "sourceAria": "알라딘 도서 정보",
       "buyOnAladin": "알라딘에서 이 책 보기",
-      "buyOnAmazon": "아마존에서 이 책 보기"
+      "buyOnAmazon": "아마존에서 이 책 보기",
+      "copy": "이 문장 복사하기",
+      "copied": "문장을 복사했습니다",
+      "copyFailed": "복사하지 못했습니다"
     },
     "clock": {
       "aria": "플립시계",
@@ -1895,7 +1907,10 @@
       "settingsOpenAria": "Abrir as configurações das frases",
       "sourceAria": "Informações do livro",
       "buyOnAladin": "Ver este livro na Aladin",
-      "buyOnAmazon": "Procurar este livro na Amazon"
+      "buyOnAmazon": "Procurar este livro na Amazon",
+      "copy": "Copiar esta citação",
+      "copied": "Citação copiada",
+      "copyFailed": "Não foi possível copiar"
     },
     "clock": {
       "aria": "Relógio de abas",
@@ -2294,7 +2309,10 @@
       "settingsOpenAria": "打开语句设置",
       "sourceAria": "书籍信息",
       "buyOnAladin": "在 Aladin 查看这本书",
-      "buyOnAmazon": "在亚马逊查找这本书"
+      "buyOnAmazon": "在亚马逊查找这本书",
+      "copy": "复制这段文字",
+      "copied": "已复制",
+      "copyFailed": "无法复制"
     },
     "clock": {
       "aria": "翻页时钟",

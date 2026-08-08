@@ -185,6 +185,12 @@
                  app.js renderQuote()가 window.aladinLinks에서 찾아서 토글).
                  눌리면 모달 웹뷰(#aladinModalPanel)로 알라딘 모바일 상품
                  페이지를 띄운다 — 구매/책소개 열람 유도, 제휴 링크. -->
+            <!-- 2026-08-09 운영 요청 — 화면에 보이는 그대로(영문·한글·출처)를
+                 클립보드에 담는 버튼. 오른쪽 알라딘 버튼과 오터치가 나지 않도록
+                 둘 사이 간격과 히트영역을 styles.css 에서 함께 잡는다. -->
+            <button type="button" class="quote-copy-btn" id="quoteCopyBtn" data-i18n-aria="quote.copy" aria-label="이 문장 복사하기">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1z M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
             <button type="button" class="quote-aladin-link" id="quoteAladinLink" data-i18n-aria="quote.buyOnAladin" aria-label="알라딘에서 이 책 보기" hidden>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 13.5 L20 4 M20 4 h-6 M20 4 v6 M18 13 v6 a1 1 0 0 1 -1 1 H5 a1 1 0 0 1 -1 -1 V7 a1 1 0 0 1 1 -1 h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
@@ -333,7 +339,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.87</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.8.88</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더

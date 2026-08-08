@@ -8886,6 +8886,76 @@ document.querySelectorAll("[data-weather-detail-close]").forEach((element) => {
 // 2026-07-18 3차 피드백: 네이티브 뒤로가기 제스처에 기대지 않는 좌측 엣지
 // 스와이프 직접 구현 — 위 setupWeatherDetailEdgeSwipe() 정의부 주석 참조.
 setupWeatherDetailEdgeSwipe();
+// 2026-08-09 운영 요청 — 문장 복사 버튼. 화면에 보이는 그대로(영문 원문 →
+// 한글 번역 → 출처)를 빈 줄로 나눠 클립보드에 담는다. 어디에 붙여넣어도
+// 화면에서 읽던 모양 그대로 나오는 것이 목적이라, 따옴표나 말머리 같은
+// 장식은 일부러 붙이지 않는다. 영문이 없는 문장(한국어 원전)은 그 줄을
+// 통째로 건너뛴다.
+const quoteCopyBtn = document.getElementById("quoteCopyBtn");
+let quoteCopiedTimer = null;
+
+function buildQuoteClipboardText() {
+  const pick = (id) => {
+    const element = document.getElementById(id);
+    if (!element || element.hidden) return "";
+    return (element.textContent || "").replace(/\s+$/, "").trim();
+  };
+  return [pick("quoteEnglish"), pick("quoteText"), pick("quoteSource")]
+    .filter(Boolean)
+    .join("\n\n");
+}
+
+// 클립보드 쓰기는 환경마다 막힌는 지점이 달라 두 겹으로 간다.
+// 1순위 표준 API(navigator.clipboard) — HTTPS + 사용자 제스처 안에서만 통한다.
+// 2순위 execCommand — 표준 API가 막힌 웹뷰용. iOS 는 readOnly textarea 에서
+// select() 가 먹지 않으므로 Range 로 직접 선택해야 실제로 복사된다.
+async function writeToClipboard(text) {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch (error) { /* 폴백으로 내려간다 */ }
+  try {
+    const holder = document.createElement("textarea");
+    holder.value = text;
+    holder.setAttribute("readonly", "");
+    holder.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none;";
+    document.body.appendChild(holder);
+    const range = document.createRange();
+    range.selectNodeContents(holder);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    holder.setSelectionRange(0, text.length);
+    const copied = document.execCommand("copy");
+    selection.removeAllRanges();
+    document.body.removeChild(holder);
+    return copied;
+  } catch (error) {
+    return false;
+  }
+}
+
+if (quoteCopyBtn) {
+  quoteCopyBtn.addEventListener("click", async () => {
+    const text = buildQuoteClipboardText();
+    if (!text) return;
+    const copied = await writeToClipboard(text);
+    postToNativeHaptic("soft");
+    // 토스트를 놓치거나 가려져도 눌린 자리에서 결과를 알 수 있게 버튼 자체가
+    // 잠깐 초록으로 물든다(styles.css .quote-copy-btn.is-copied).
+    if (copied) {
+      quoteCopyBtn.classList.add("is-copied");
+      clearTimeout(quoteCopiedTimer);
+      quoteCopiedTimer = setTimeout(() => quoteCopyBtn.classList.remove("is-copied"), 1200);
+    }
+    showMusicToast(copied
+      ? t("quote.copied", null, "문장을 복사했습니다")
+      : t("quote.copyFailed", null, "복사하지 못했습니다"));
+  });
+}
+
 if (quoteAladinLink) {
   quoteAladinLink.addEventListener("click", () => {
     const url = quoteAladinLink.dataset.url;
