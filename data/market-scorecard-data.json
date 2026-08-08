@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-08-21:50",
+      "timestamp_kst": "2026-08-08(토) 21:50 KST",
+      "key_event": {
+        "name": "고용지표 둔화 및 금리 인하 기대 지속",
+        "name_en": "Soft Jobs Data Sustains Rate Cut Hopes",
+        "time": "직전 거래일 마감 및 다음 주 개장",
+        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
+        "why_en": "Lower-than-expected jobs, eased Fed hike concerns, improved market sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "고용 둔화에 따른 금리 인하 기대감으로 6일 연속 긍정 우위 유지",
+      "summary_en": "6th consecutive day of positive sentiment driven by soft jobs data and rate cut expectations",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "고용지표 둔화 지속",
+          "name_en": "Continued Softening in Jobs Data",
+          "desc": "예상치 하회 고용 지표로 Fed 금리 인상 우려 완화, 시장 심리 개선",
+          "desc_en": "Weaker-than-expected jobs data eases Fed rate hike concerns, boosting market sentiment",
+          "category": "macro_data"
+        },
+        {
+          "score": 35,
+          "name": "금리 인하 기대감 확산",
+          "name_en": "Spreading Rate Cut Expectations",
+          "desc": "고용 둔화 및 인플레이션 완화 기대감으로 금리 인하 가능성 부각",
+          "desc_en": "Soft jobs and easing inflation fuel expectations for potential rate cuts",
+          "category": "fed_policy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "일부 기술주 약세",
+          "name_en": "Weakness in Select Tech Stocks",
+          "desc": "GOOGL -1.16% 하락 등 일부 대형 기술주에서 차익 실현 및 매도 압력",
+          "desc_en": "Profit-taking and selling pressure observed in some large tech stocks, including GOOGL down 1.16%",
+          "category": "company_specific"
+        },
+        {
+          "score": 10,
+          "name": "AI 및 기술주 매도 지속",
+          "name_en": "Continued AI and Tech Selloff",
+          "desc": "S&P 500, Nasdaq, Dow 하락하며 광범위한 기술 및 AI 매도세 지속",
+          "desc_en": "S&P 500, Nasdaq, and Dow declined amidst a broader selloff in tech and AI sectors",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-08-18:20",
       "timestamp_kst": "2026-08-08(토) 18:20 KST",
       "key_event": {
@@ -496,60 +548,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-07-16:52",
-      "timestamp_kst": "2026-08-07(금) 16:52 KST",
-      "key_event": {
-        "name": "AI 및 반도체 투자 기대감",
-        "name_en": "Anticipation for AI and Semiconductor Investment",
-        "time": "향후 12시간",
-        "why": "SpaceX의 AI 네트워크 및 칩 공장 계획 발표, 삼성의 AI 칩 기술 발전",
-        "why_en": "SpaceX's AI network and chip factory plans, Samsung's advanced AI chip tech"
-      },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "AI 및 반도체 투자 기대감으로 긍정 우위 전환",
-      "summary_en": "Positive sentiment shifts to AI and semiconductor investment anticipation",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "SpaceX AI 네트워크 및 칩 공장 계획",
-          "name_en": "SpaceX AI Network and Chip Factory Plans",
-          "desc": "SpaceX의 대규모 AI 투자 계획 발표로 기술 성장 기대감 증대",
-          "desc_en": "SpaceX's announcement of large-scale AI investment plans boosts tech growth expectations",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 20,
-          "name": "삼성의 AI 칩 기술 발전",
-          "name_en": "Samsung's Advanced AI Chip Technology",
-          "desc": "삼성의 새로운 메모리 칩이 Nvidia AI 칩 성능 향상 기대",
-          "desc_en": "Samsung's new memory chip is expected to enhance Nvidia's AI chip performance",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "지정학적 긴장 지속",
-          "name_en": "Persistent Geopolitical Tensions",
-          "desc": "호르무즈 해협 재개방 우려 및 미-이란 갈등 지속",
-          "desc_en": "Concerns over Strait of Hormuz reopening and ongoing US-Iran conflict",
-          "category": "geopolitics"
-        },
-        {
-          "score": 10,
-          "name": "AI Capex 과열 우려",
-          "name_en": "AI Capex Overheating Concerns",
-          "desc": "마이클 버리, AI Capex가 2008년 주택 시장처럼 붕괴될 수 있다고 경고",
-          "desc_en": "Michael Burry warns AI Capex could unwind like 2008 housing market",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-08T09:20:57Z",
+  "updated_at": "2026-08-08T12:51:01Z",
   "max_entries": 10
 }
