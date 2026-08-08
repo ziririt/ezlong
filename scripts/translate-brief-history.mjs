@@ -161,7 +161,7 @@ function looksTranslated(lang, t) {
   return need ? need.test(sample) : true;
 }
 
-async function translateBatch(units, lang) {
+async function translateBatch(units, lang, depth = 0) {
   const out = await gemini(PROMPT_HEAD(lang) + JSON.stringify(units, null, 0));
   if (!Array.isArray(out) || out.length !== units.length) {
     console.warn(`  [${lang}] 응답 길이 불일치 — 이 묶음 건너뜀 (기대 ${units.length}, 받음 ${Array.isArray(out) ? out.length : 'non-array'})`);
@@ -169,6 +169,17 @@ async function translateBatch(units, lang) {
   }
   const bad = out.filter((t) => !looksTranslated(lang, t)).length;
   if (bad > out.length / 3) {
+    /* 묶음이 통째로 영어로 돌아오는 일이 있다(일본어에서 특히). 그냥 버리면
+       그 항목들은 매 실행마다 같은 자리에서 같은 이유로 실패해 영원히 안 채워진다.
+       입력이 길수록 목표 언어를 놓치는 경향이 있으므로 반으로 쪼개 한 번 더 본다. */
+    if (depth < 2 && units.length > 1) {
+      const mid = Math.ceil(units.length / 2);
+      console.warn(`  [${lang}] ${bad}/${out.length} 이 목표 언어가 아니다 — 반으로 쪼개 재시도`);
+      const a = await translateBatch(units.slice(0, mid), lang, depth + 1);
+      const b = await translateBatch(units.slice(mid), lang, depth + 1);
+      if (!a || !b) return null;
+      return a.concat(b);
+    }
     console.warn(`  [${lang}] ${bad}/${out.length} 이 목표 언어가 아니다 — 이 묶음 버림(다음 실행에서 재시도)`);
     return null;
   }
