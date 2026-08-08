@@ -8922,5 +8922,12 @@ window.investmentQuotes = [
     "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
     "author": "앙드레 코스톨라니",
     "category": "patience"
+  },
+  {
+    "english": "Marsh is not swamp. Marsh is a space of light, where grass grows in water, and water flows into the sky.",
+    "text": "습지는 늪이 아니다. 습지는 빛으로 가득한 공간이다. 그 안에서 풀은 물속에서 자라고, 물은 하늘로 흘러든다.",
+    "title": "크로다드가 노래하는 곳 (Where the Crawdads Sing)",
+    "author": "델리아 오언스 (Delia Owens)",
+    "genre": "literature"
   }
 ];
