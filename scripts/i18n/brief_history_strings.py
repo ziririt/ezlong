@@ -14,6 +14,7 @@ BODY = {
     'ko': {
         'h1': '그날 무슨 일이 있었나',
         'lede': '시간이 지나면 잊습니다. 이 날은 왜 바닥을 치고 반등했을까 — 차트에서 그 날짜를 누르면 그날을 브리핑합니다.',
+        'lede2': '하락장에는 악재만 쏟아지는데 그 끝에 반등한 날이 있고, 끝없이 오를 것 같은 랠리에서는 악재마저 호재로 읽히다 다음날 조정이 시작됩니다. 호재는 상승, 악재는 하락 — 그 등식은 성립하지 않습니다.',
         'weekdays': ['일', '월', '화', '수', '목', '금', '토'],
         'legendMajor': '핵심 이슈',
         'legendNotable': '주요 이슈',
@@ -33,6 +34,7 @@ BODY = {
     'en': {
         'h1': 'What Happened That Day',
         'lede': 'Time passes and you forget. Why did it bottom out and bounce that day — tap the date on the chart and you get that day briefed.',
+        'lede2': 'In a selloff the bad news never stops, and somewhere inside it sits the day the market bounced. In a rally that looks endless, even bad news reads as good — and the correction starts the next morning. Good news up, bad news down: that equation does not hold.',
         'weekdays': ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
         'legendMajor': 'Key event',
         'legendNotable': 'Notable event',
@@ -52,6 +54,7 @@ BODY = {
     'ja': {
         'h1': 'その日、何があったか',
         'lede': '時間が経つと忘れます。あの日はなぜ底を打って反発したのか — チャートでその日付を押すと、その日をブリーフィングします。',
+        'lede2': '下落局面では悪材料が途切れなく出てきますが、その中に反発した日があります。上げ続けるように見えるラリーでは悪材料まで好材料として読まれ、翌日に調整が始まります。好材料は上昇、悪材料は下落 — その等式は成り立ちません。',
         'weekdays': ['日', '月', '火', '水', '木', '金', '土'],
         'legendMajor': '重要イベント',
         'legendNotable': '主要イベント',
@@ -71,6 +74,7 @@ BODY = {
     'zh': {
         'h1': '那一天发生了什么',
         'lede': '时间一长就忘了。那天为什么触底反弹 — 在图表上点一下那个日期，就能看到当天的简报。',
+        'lede2': '下跌行情里坏消息接连不断，可其中总有反弹的那一天。看似涨不完的行情里连坏消息都被当作利好，第二天调整就开始了。利好上涨、利空下跌——这个等式并不成立。',
         'weekdays': ['日', '一', '二', '三', '四', '五', '六'],
         'legendMajor': '核心事件',
         'legendNotable': '主要事件',
@@ -90,6 +94,7 @@ BODY = {
     'es': {
         'h1': 'Qué pasó ese día',
         'lede': 'Con el tiempo se olvida. ¿Por qué tocó fondo y rebotó ese día? Toca la fecha en el gráfico y verás el resumen de ese día.',
+        'lede2': 'En una caída las malas noticias no paran, y en medio de ellas está el día en que el mercado rebotó. En un rally que parece infinito hasta lo malo se lee como bueno, y al día siguiente empieza la corrección. Buenas noticias suben, malas bajan: esa ecuación no se cumple.',
         'weekdays': ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
         'legendMajor': 'Evento clave',
         'legendNotable': 'Evento destacado',
@@ -109,6 +114,7 @@ BODY = {
     'pt': {
         'h1': 'O que aconteceu naquele dia',
         'lede': 'Com o tempo a gente esquece. Por que caiu ao fundo e reagiu naquele dia? Toque na data no gráfico e veja o resumo daquele dia.',
+        'lede2': 'Numa queda as más notícias não param, e no meio delas está o dia em que o mercado reagiu. Num rally que parece infinito até o que é ruim é lido como bom, e no dia seguinte começa a correção. Boa notícia sobe, má notícia desce: essa equação não se sustenta.',
         'weekdays': ['Do', 'Se', 'Te', 'Qua', 'Qui', 'Sex', 'Sá'],
         'legendMajor': 'Evento-chave',
         'legendNotable': 'Evento relevante',

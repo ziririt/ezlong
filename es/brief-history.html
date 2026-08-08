@@ -244,14 +244,17 @@ window.BH_T = {
     font-size: clamp(22px, 4vw, 32px); font-weight: 800; letter-spacing: -.03em;
     color: var(--ez-text); margin-bottom: 10px;
   }
-  /* 제목 아래 한 줄 — 이 코너를 왜 쓰는지. 폰에서 세 줄을 넘지 않게 max-width 로
-     행 길이를 잡는다(긴 줄은 눈이 다음 줄 첫 글자를 못 찾는다). */
+  /* 제목 아래 두 문단 — 첫째는 이 코너가 무엇인지, 둘째는 왜 보는지.
+     한 문단에 몰아넣지 않고 나눈 이유는 행 길이다. 폰에서 한 덩어리가 대여섯
+     줄을 넘으면 눈이 다음 줄 첫 글자를 못 찾는다. max-width 로 행을 자르고,
+     문단 사이에 숨 쉴 자리를 둔다. */
   .bh-brand-lede {
     font-size: 16px; line-height: 1.65; color: var(--ez-text2);
     margin: 0; max-width: 44em;
     /* 마지막 줄에 단어 하나만 남는 걸 막는다(미지원 브라우저는 그냥 무시) */
     text-wrap: pretty;
   }
+  .bh-brand-lede + .bh-brand-lede { margin-top: 10px; }
 
   .bh-main { max-width: var(--ez-max-w-wide); margin: 0 auto; padding: 28px 20px 60px; }
 
@@ -535,6 +538,7 @@ window.BH_T = {
     <div class="bh-brand-label">A Brief History</div>
     <h1 class="bh-brand-title">Qué pasó ese día</h1>
     <p class="bh-brand-lede">Con el tiempo se olvida. ¿Por qué tocó fondo y rebotó ese día? Toca la fecha en el gráfico y verás el resumen de ese día.</p>
+    <p class="bh-brand-lede">En una caída las malas noticias no paran, y en medio de ellas está el día en que el mercado rebotó. En un rally que parece infinito hasta lo malo se lee como bueno, y al día siguiente empieza la corrección. Buenas noticias suben, malas bajan: esa ecuación no se cumple.</p>
   </div>
 </div>
 

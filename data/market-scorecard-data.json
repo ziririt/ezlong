@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-08-09-07:00",
+      "timestamp_kst": "2026-08-09(일) 07:00 KST",
+      "key_event": {
+        "name": "고용지표 둔화 및 금리 인하 기대 지속",
+        "name_en": "Sustained Hopes for Rate Cuts Amid Weakening Job Market",
+        "time": "직전 거래일 마감 및 다음 주 개장 영향",
+        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
+        "why_en": "Lower-than-expected employment, easing Fed rate hike concerns, improved market sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "고용 둔화에 따른 금리 인하 기대감으로 8일 연속 긍정 우위 유지",
+      "summary_en": "Positive sentiment prevails for 8 consecutive days due to rate cut expectations from slowing employment",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "고용지표 둔화 지속",
+          "name_en": "Continued Weakening Job Data",
+          "desc": "예상치 하회 고용 보고서 발표, Fed 금리 인하 기대감 증폭",
+          "desc_en": "Lower-than-expected jobs report, amplifying Fed rate cut expectations",
+          "category": "macro_data"
+        },
+        {
+          "score": 30,
+          "name": "금리 인하 기대감 유지",
+          "name_en": "Sustained Rate Cut Expectations",
+          "desc": "고용 둔화로 인한 Fed의 금리 인상 우려 완화 및 시장 심리 개선",
+          "desc_en": "Easing Fed rate hike concerns due to slowing employment, improving market sentiment",
+          "category": "fed_policy"
+        },
+        {
+          "score": 10,
+          "name": "AI 관련 기업 실적 기대",
+          "name_en": "Optimism for AI-Related Earnings",
+          "desc": "Doximity, ON Semiconductor 등 AI 관련 기업의 긍정적 실적 및 전망",
+          "desc_en": "Positive earnings and outlook from AI-related companies like Doximity, ON Semiconductor",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "지정학적 긴장 지속",
+          "name_en": "Persistent Geopolitical Tensions",
+          "desc": "이란의 호르무즈 해협 관련 미국 철수 요구 등 지정학적 불확실성",
+          "desc_en": "Geopolitical uncertainties including Iran's demand for US withdrawal from Hormuz Strait",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 혁명 단계에 대한 시각차",
+          "name_en": "Divergent Views on AI Revolution Stage",
+          "desc": "AI 기술의 발전과 투자에 대한 기대감은 높으나, 실제 수익화 및 밸류에이션에 대한 시각은 엇갈림",
+          "desc_en": "High expectations for AI tech advancement and investment, but mixed views on monetization and valuation",
+          "category": "ai_tech_valuation"
+        }
+      ]
+    },
+    {
       "id": "2026-08-08-23:20",
       "timestamp_kst": "2026-08-08(토) 23:20 KST",
       "key_event": {
@@ -497,60 +557,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-07-21:50",
-      "timestamp_kst": "2026-08-07(금) 21:50 KST",
-      "key_event": {
-        "name": "AI·반도체 투자 기대감 지속",
-        "name_en": "Continued AI & Semiconductor Investment Optimism",
-        "time": "오늘 정규장 및 단기",
-        "why": "주요 지수 상승, 반도체 섹터 강세, AI 관련 뉴스",
-        "why_en": "Major indices rise, strong semiconductor sector, AI-related news"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "AI·반도체 투자 기대감으로 긍정 우위 지속, 어제와 동일한 구도 유지",
-      "summary_en": "Positive sentiment continues due to AI/semiconductor investment expectations, maintaining yesterday's trend",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "AI 및 반도체 섹터 강세",
-          "name_en": "Strong AI and Semiconductor Sector",
-          "desc": "SOXX 2.61% 상승 등 AI 및 반도체 관련 종목 프리마켓 강세",
-          "desc_en": "AI and semiconductor stocks show strength in premarket, with SOXX up 2.61%",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 25,
-          "name": "기술주 전반의 회복세",
-          "name_en": "Broad Tech Sector Recovery",
-          "desc": "QQQ 0.94%, SPY 0.51% 상승 등 AI 우려 완화로 기술주 회복",
-          "desc_en": "Tech stocks recover as AI fears fade, QQQ up 0.94%, SPY up 0.51%",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 15,
-          "name": "미국 고용 지표 긍정적 해석",
-          "name_en": "Positive Interpretation of US Jobs Report",
-          "desc": "예상치 상회하는 고용 보고서에 다우 상승, 시장 심리 개선",
-          "desc_en": "Dow rises on stronger-than-expected jobs report, improving market sentiment",
-          "category": "macro_data"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "AI 투자 관련 부채 우려",
-          "name_en": "AI Investment Debt Concerns",
-          "desc": "빅테크의 AI 투자 관련 부채 증가 및 월스트리트의 채권 판매 재고려",
-          "desc_en": "Big Tech's increasing AI-related debt and Wall Street rethinking bond sales",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-08T14:21:00Z",
+  "updated_at": "2026-08-08T22:01:14Z",
   "max_entries": 10
 }
