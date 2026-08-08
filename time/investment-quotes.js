@@ -8882,5 +8882,11 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각",
     "author": "하워드 막스",
     "category": "mindset"
+  },
+  {
+    "text": "별 하나에 추억과 별 하나에 사랑과 별 하나에 쓸쓸함과 별 하나에 동경과 별 하나에 시와 별 하나에 어머니, 어머니,",
+    "title": "별 헤는 밤",
+    "author": "윤동주",
+    "genre": "literature"
   }
 ];
