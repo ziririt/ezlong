@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-08-08-23:20",
+      "timestamp_kst": "2026-08-08(토) 23:20 KST",
+      "key_event": {
+        "name": "고용지표 둔화 및 금리 인하 기대 지속",
+        "name_en": "Sustained Expectations for Rate Cuts Amid Weakening Job Market",
+        "time": "다음 주 개장 전까지",
+        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
+        "why_en": "Lower-than-expected employment, easing Fed rate hike concerns, improved market sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "고용 둔화에 따른 금리 인하 기대감으로 7일 연속 긍정 우위 유지",
+      "summary_en": "Positive sentiment prevails for 7 consecutive days due to rate cut expectations from slowing employment",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "고용지표 둔화 지속",
+          "name_en": "Continued Weakening Job Market",
+          "desc": "예상치 하회 고용 보고서로 Fed 금리 인하 기대감 증폭",
+          "desc_en": "Lower-than-expected jobs report boosts Fed rate cut expectations",
+          "category": "macro_data"
+        },
+        {
+          "score": 35,
+          "name": "금리 인하 기대감 확산",
+          "name_en": "Spreading Rate Cut Optimism",
+          "desc": "둔화된 고용 데이터로 Fed의 매파적 기조 완화 기대",
+          "desc_en": "Soft employment data fuels hopes for a dovish shift from the Fed",
+          "category": "fed_policy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "일부 빅테크 실적 우려",
+          "name_en": "Concerns Over Some Big Tech Earnings",
+          "desc": "GOOGL -1.16% 하락, Alphabet 실적의 이면 우려 지속",
+          "desc_en": "GOOGL down 1.16%, ongoing concerns about Alphabet's underlying performance",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 10,
+          "name": "지정학적 긴장 가능성",
+          "name_en": "Potential Geopolitical Tensions",
+          "desc": "이란 관련 뉴스 헤드라인, 유가 변동성 및 시장 불확실성 야기",
+          "desc_en": "Iran-related headlines introduce oil price volatility and market uncertainty",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 혁명 단계에 대한 시각차",
+          "name_en": "Divergent Views on AI Revolution Stage",
+          "desc": "Dan Ives는 AI 혁명의 '3회 초' 언급하며 긍정적이나, 일부는 AI 트레이드 로테이션 우려 제기",
+          "desc_en": "Dan Ives sees AI revolution in '3rd inning' (positive), while others raise concerns about AI trade rotation",
+          "category": "ai_tech_valuation"
+        }
+      ]
+    },
+    {
       "id": "2026-08-08-21:50",
       "timestamp_kst": "2026-08-08(토) 21:50 KST",
       "key_event": {
@@ -489,67 +549,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-07-18:20",
-      "timestamp_kst": "2026-08-07(금) 18:20 KST",
-      "key_event": {
-        "name": "AI·반도체 투자 기대감 지속",
-        "name_en": "Continued AI & Semiconductor Investment Hopes",
-        "time": "오늘 프리마켓 및 정규장",
-        "why": "SpaceX AI 네트워크, 칩 공장 계획, 시스코 AI 목표 상향",
-        "why_en": "SpaceX AI network, chip factory plans, Cisco's raised AI target"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "AI·반도체 투자 기대감으로 긍정 우위 지속",
-      "summary_en": "Positive sentiment persists due to AI and semiconductor investment expectations",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "SpaceX AI 네트워크 및 칩 공장 계획",
-          "name_en": "SpaceX AI Network & Chip Factory Plans",
-          "desc": "SpaceX의 대규모 AI 네트워크 및 168억 달러 칩 공장 계획 발표, AI 섹터 투자 심리 강화",
-          "desc_en": "SpaceX announced large-scale AI network and $16.8 billion chip factory plans, boosting AI sector investment sentiment",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 30,
-          "name": "시스코 AI 주문 목표 상향",
-          "name_en": "Cisco Raises AI Order Target",
-          "desc": "시스코의 AI 주문 목표 90억 달러 상향, 기업 AI 투자 확대 신호",
-          "desc_en": "Cisco raised its AI order target to $9 billion, signaling increased enterprise AI investment",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "AI Capex 버블 우려",
-          "name_en": "AI Capex Bubble Concerns",
-          "desc": "마이클 버리, AI Capex가 2008년 주택 시장처럼 붕괴될 수 있다고 경고",
-          "desc_en": "Michael Burry warns AI Capex could unwind like the 2008 housing market",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "유가 상승 및 호르무즈 불확실성",
-          "name_en": "Oil Price Rise & Hormuz Uncertainty",
-          "desc": "이란 핵 협상 기대에도 호르무즈 불확실성으로 유가 상승, 인플레이션 우려와 지정학적 긴장 상존",
-          "desc_en": "Despite Iran deal hopes, Hormuz uncertainty leads to rising oil prices, persistent inflation concerns and geopolitical tension",
-          "category": "oil_energy"
-        },
-        {
-          "name": "국채금리 상승 및 금리 인상 경고",
-          "name_en": "Treasury Yields Rise & Rate Hike Warning",
-          "desc": "미 10년 국채금리 1.15% 상승, 연준 위원 금리 인상 및 인플레이션 위험 경고, 시장 불확실성 증대",
-          "desc_en": "US 10-year Treasury yields up 1.15%, Fed member warns of rate hikes and inflation risks, increasing market uncertainty",
-          "category": "rates_treasury"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-08T12:51:01Z",
+  "updated_at": "2026-08-08T14:21:00Z",
   "max_entries": 10
 }
