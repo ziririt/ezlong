@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "2026-08-09-08:20",
+      "timestamp_kst": "2026-08-09(일) 08:20 KST",
+      "key_event": {
+        "name": "고용지표 둔화 및 금리 인하 기대 지속",
+        "name_en": "Sustained Weak Jobs Data Fuels Rate Cut Hopes",
+        "time": "다음 주 개장 전까지",
+        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
+        "why_en": "Lower-than-expected jobs, eased Fed hike concerns, improved market sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "고용 둔화에 따른 금리 인하 기대감으로 9일 연속 긍정 우위 유지",
+      "summary_en": "Positive sentiment prevails for 9 consecutive days due to weak jobs data and rate cut expectations",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "고용지표 둔화 지속",
+          "name_en": "Continued Weak Employment Data",
+          "desc": "미국 고용 예상치 하회, Fed 금리 인상 우려 완화",
+          "desc_en": "US jobs miss expectations, easing Fed rate hike concerns",
+          "category": "macro_data"
+        },
+        {
+          "score": 35,
+          "name": "금리 인하 기대감 유지",
+          "name_en": "Sustained Rate Cut Expectations",
+          "desc": "약한 고용 지표로 인한 금리 인하 기대감 증폭",
+          "desc_en": "Weak jobs data amplifies expectations for Fed rate cuts",
+          "category": "fed_policy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "AI 혁명 단계에 대한 시각차",
+          "name_en": "Divergent Views on AI Revolution Stage",
+          "desc": "AI 기술의 현재와 미래 가치에 대한 시장 내 의견 분분",
+          "desc_en": "Market divided on current and future value of AI technology",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-09-07:00",
       "timestamp_kst": "2026-08-09(일) 07:00 KST",
       "key_event": {
@@ -513,52 +557,8 @@
           "category": "fed_policy"
         }
       ]
-    },
-    {
-      "id": "2026-08-07-23:24",
-      "timestamp_kst": "2026-08-07(금) 23:24 KST",
-      "key_event": {
-        "name": "고용지표 둔화 및 금리 인하 기대",
-        "name_en": "Weak Jobs Data Fuels Rate Cut Hopes",
-        "time": "정규장 진행 중",
-        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
-        "why_en": "Softer jobs report, eases Fed hike concerns, improves market sentiment"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "고용 둔화에 따른 금리 인하 기대감으로 긍정 우위 지속, 어제와 동일한 구도 유지",
-      "summary_en": "Positive sentiment continues, driven by rate cut hopes from weaker jobs data, maintaining yesterday's trend",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "예상치 하회 고용 지표",
-          "name_en": "Weaker-than-expected Jobs Report",
-          "desc": "7월 고용 2.3만명 감소, Fed 금리 인상 우려 완화",
-          "desc_en": "July jobs fell by 23,000, easing Fed rate hike concerns",
-          "category": "macro_data"
-        },
-        {
-          "score": 35,
-          "name": "AI·반도체 투자 기대감 지속",
-          "name_en": "Continued AI & Semiconductor Investment Hopes",
-          "desc": "SpaceX AI 컴퓨팅 투자 확대, OpenAI 기기 개발 소식",
-          "desc_en": "SpaceX boosts AI compute investment, OpenAI device news",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "Trade Desk 실적 부진",
-          "name_en": "Trade Desk Earnings Disappoint",
-          "desc": "실적 예상치 하회 및 하향 조정으로 주가 급락",
-          "desc_en": "Earnings miss and downgrade cause sharp stock decline",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-08T22:01:14Z",
+  "updated_at": "2026-08-08T23:20:44Z",
   "max_entries": 10
 }
