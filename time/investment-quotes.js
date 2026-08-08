@@ -8828,5 +8828,12 @@ window.investmentQuotes = [
     "title": "나는 나로 살기로 했다",
     "author": "김수현",
     "genre": "literature"
+  },
+  {
+    "english": "It's not hard. Stop thinking about what your money can buy. Start thinking about what your money can earn. And then think about what the money it earns can earn.",
+    "text": "어렵지 않다. 돈으로 무엇을 살 수 있는지 생각하지 마라. 그 돈이 무엇을 벌어들일 수 있는지 생각하라. 그리고 그 돈이 벌어들인 돈이 또 무엇을 벌어들일지 생각하라.",
+    "title": "부에 이르는 가장 단순한 길",
+    "author": "JL 콜린스",
+    "category": "compound"
   }
 ];
