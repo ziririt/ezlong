@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""소사(A Brief History) — 네이버 채널 글 전체를 날짜축에 얹는다.
+"""이슈(A Brief History) — 네이버 채널 글 전체를 날짜축에 얹는다.
 
 무엇을 하는가
   · data/naver-archive.json(전체 목록) + data/naver-content.json(최근분)을
     합쳐, 각 글을 '그 글이 다루는 장(場)의 날짜'에 매단다.
-  · 손으로 고른 소사(importance 2·3)가 이미 있는 날이면 그 카드에 그날의
+  · 손으로 고른 이슈(importance 2·3)가 이미 있는 날이면 그 카드에 그날의
     다른 글 링크만 덧붙이고, 없는 날이면 importance 1 '기록' 항목을 만든다.
 
 무엇을 하지 않는가
-  · 손으로 쓴 소사(제목·요약·importance·moves)는 건드리지 않는다. 판단이
+  · 손으로 쓴 이슈(제목·요약·importance·moves)는 건드리지 않는다. 판단이
     들어간 문장이라 기계가 덮으면 안 된다.
-  · 글 본문을 읽지 않는다(유료 구독 영역). 카드에 담는 건 제목·링크와,
-    그날 지수 등락(차트 데이터에서 직접 계산한 값)뿐이다.
+  · 본문 요약(브리핑)을 만들지 않는다 — 그건 scripts/brief-history-briefings.mjs
+    가 이 스크립트 뒤에 이어서 한다. 여기서는 날짜축에 얹는 일만 한다.
 
 멱등성
   생성분은 source='own_archive' 로 표시하고, 매 실행 첫 단계에서 그걸 통째로
@@ -72,14 +72,21 @@ def published_kst(aid):
 
 
 def market_date(pub_kst, trading_days, last_day):
-    """글이 다루는 장의 날짜.
+    """글이 다루는 장의 날짜 = **발행 시점의 뉴욕 날짜**(거래일로 스냅).
 
-    아침 시황은 전날 미국장을 쓴다. 발행 시각을 뉴욕 시간으로 옮겨서,
-    그 시점에 **이미 마감된 가장 최근 정규장**의 날짜를 고른다.
-    (16:00 ET 이전이면 그날 장은 아직 안 끝났으므로 하루 앞으로)
+    필자는 한국에 있지만 글이 다루는 시계는 뉴욕이다. 발행 시각을 뉴욕으로
+    옮기면 그날이 곧 그 글이 살고 있던 장이다.
+      · 아침 08시대(KST) 시황 → ET 전날 저녁 → 전날 장. 의도대로.
+      · 새벽 03시대(KST) 분석 → ET 같은 날 오후(장중) → 그날 장.
+      · 밤 22시대(KST) 글   → ET 같은 날 오전(프리마켓) → 그날 장.
+
+    예전에는 '이미 마감된 가장 최근 정규장'(16:00 ET 기준)을 골랐는데,
+    그러면 장중·프리마켓에 쓴 글이 하루 뒤로 밀렸다. 실제로 8월 8일 새벽에
+    쓴 테슬라 분석이 8월 7일이 아니라 8월 6일에 얹혀, 8월 7일 장에는 아무것도
+    안 남았다. 검증된 시황 매핑(3/23·3/25·8/6)은 새 규칙에서도 그대로다.
     """
     et = pub_kst.astimezone(ET)
-    cand = et.date() if et.hour >= 16 else et.date() - timedelta(days=1)
+    cand = et.date()
     if cand > last_day:
         # 차트 데이터가 아직 못 따라온 최근 며칠 — 달력·목록에는 그대로 싣는다.
         return cand.isoformat()
@@ -115,7 +122,7 @@ def main():
     events = load(EVENTS)
     chart = load(CHART)
     if not events or not chart:
-        print('::error::소사/차트 데이터를 읽지 못했다 — 중단')
+        print('::error::이슈/차트 데이터를 읽지 못했다 — 중단')
         return 1
 
     archive = load(ARCHIVE, []) or []
@@ -195,7 +202,7 @@ def main():
 
     print(f'네이버 글 {len(pool)}건 · 신규 기록 {len(made)}일 · '
           f'기존 카드에 덧붙임 {attached}건 · 건너뜀 {skipped}건')
-    print(f'소사 총 {len(merged)}건 (손으로 쓴 것 {len(curated)} + 기록 {len(made)})')
+    print(f'이슈 총 {len(merged)}건 (손으로 쓴 것 {len(curated)} + 기록 {len(made)})')
 
     if dry:
         print('--dry — 파일을 쓰지 않았다')

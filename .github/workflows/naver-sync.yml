@@ -55,6 +55,16 @@ jobs:
         continue-on-error: true
         run: python3 scripts/merge-naver-archive.py
 
+      # 그날 글의 공개 본문을 읽어 소제목+닷블릿 브리핑으로 압축한다.
+      # 제목만 따오면 '그날 무슨 일이 있었나'가 헤드라인 한 줄로 끝난다.
+      # merge 가 매번 항목을 새로 만들므로 반드시 그 뒤에 온다(캐시로 재적용).
+      # 한 번에 100일까지만 — 첫 채우기가 워크플로를 붙잡고 있지 않게.
+      - name: 이슈 브리핑 생성
+        continue-on-error: true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/brief-history-briefings.mjs --limit 100
+
       # 새로 붙은 항목만 번역한다(원문 해시 캐시). 첫 실행만 무겁고 그 뒤로는
       # 하루 두세 건이라 호출이 거의 없다. 키가 없으면 조용히 건너뛴다.
       - name: 이슈 다국어 번역
@@ -93,7 +103,8 @@ jobs:
           # 번역 캐시 — 이게 안 실리면 매일 463건×5개 언어를 처음부터 다시
           # 번역한다(약 195회 호출·40분). 캐시가 커밋돼야 다음날 두세 건만 돈다.
           # 신선도 판정에는 넣지 않는다 — 캐시만 바뀐 날에 배포할 이유가 없다.
-          git add data/.cache/brief-history-i18n.json data/naver-content.json
+          git add data/.cache/brief-history-i18n.json data/.cache/brief-history-briefings.json \
+                  data/naver-content.json
           if git diff --staged --quiet; then
             echo "변경 없음, 커밋 생략"
           else
