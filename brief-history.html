@@ -52,19 +52,19 @@
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <title>그날 무슨 일이 있었나 — A Brief History | EZLONG</title>
-<meta name="description" content="QQQ·SPY·SOXX 3대 지수 차트에 날짜별 주요 이벤트를 겹쳐 보여주는 소사(小史). 차트가 크게 흔들린 날, 실제로 무슨 일이 있었는지 캘린더로 바로 찾아본다.">
+<meta name="description" content="QQQ·SPY·SOXX 3대 지수 차트 위에 날짜별 주요 이슈를 겹쳐 본다. 차트가 크게 흔들린 날 실제로 무슨 일이 있었는지 달력에서 바로 찾아본다.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="https://ezlong.com/brief-history.html">
 <!-- Open Graph -->
 <meta property="og:type"        content="website">
 <meta property="og:url"         content="https://ezlong.com/brief-history.html">
 <meta property="og:title"       content="그날 무슨 일이 있었나 — A Brief History | EZLONG">
-<meta property="og:description" content="QQQ·SPY·SOXX 차트와 날짜별 주요 이벤트를 함께 보는 소사. 차트가 왜 이렇게 움직였는지 캘린더로 바로 확인.">
+<meta property="og:description" content="QQQ·SPY·SOXX 차트와 날짜별 주요 이슈를 한 화면에서. 차트가 왜 이렇게 움직였는지 달력에서 바로 확인.">
 <meta property="og:site_name"   content="EZLONG">
 <!-- Twitter Card -->
 <meta name="twitter:card"        content="summary">
 <meta name="twitter:title"       content="그날 무슨 일이 있었나 — A Brief History | EZLONG">
-<meta name="twitter:description" content="QQQ·SPY·SOXX 차트와 날짜별 주요 이벤트를 함께 보는 소사.">
+<meta name="twitter:description" content="QQQ·SPY·SOXX 차트와 날짜별 주요 이슈를 한 화면에서.">
 
 <!-- 공유 디자인 시스템 -->
 <link rel="stylesheet" href="ez-design.css">
@@ -107,18 +107,25 @@
     background: var(--ez-card2); border: 1px solid var(--ez-border); border-radius: 999px;
     padding: 5px 12px 5px 8px; cursor: pointer; opacity: 1; transition: opacity .15s;
   }
-  .bh-legend-item:not(.active) { opacity: .55; }
-  /* 체크박스형 표시 — 켜짐 상태를 색칠+체크마크로 명확히 보여줌. 테두리·채움색은 해당 종목 라인 색 그대로 사용 */
+  /* 꺼짐은 체크박스가 이미 말해준다 — 글자까지 과하게 죽이면 라이트모드에서
+     주황·청록 티커가 배경에 묻힌다. 살짝만 눌러둔다. */
+  .bh-legend-item:not(.active) { opacity: .7; }
+  /* 종목 색은 티커 글자가 맡는다 — 네모는 체크박스 본연의 모양으로만 둔다.
+     네모까지 종목 색으로 칠했더니 작은 화면에서 그냥 색점으로 보여서
+     켜고 끄는 스위치라는 게 읽히지 않았다. */
+  .bh-legend-label { color: var(--sym-color, var(--ez-text2)); }
   .bh-legend-check {
-    width: 17px; height: 17px; border-radius: 6px; flex: none; box-sizing: border-box;
-    border: 2px solid var(--sym-color, var(--ez-border2));
-    background: var(--ez-surface);
+    width: 17px; height: 17px; border-radius: 4px; flex: none; box-sizing: border-box;
+    border: 1.5px solid var(--ez-text3);
+    background: transparent;
     display: inline-flex; align-items: center; justify-content: center;
     transition: background .15s, border-color .15s;
   }
-  .bh-legend-item.active .bh-legend-check { background: var(--sym-color, var(--ez-blue)); }
+  .bh-legend-item.active .bh-legend-check {
+    background: var(--ez-blue); border-color: var(--ez-blue);
+  }
   .bh-legend-check::after {
-    content: ''; width: 8px; height: 5px; margin-top: -1px;
+    content: ''; width: 8px; height: 4px; margin-top: -2px;
     border-left: 2px solid #fff; border-bottom: 2px solid #fff;
     transform: rotate(-45deg); opacity: 0; transition: opacity .1s;
   }
@@ -164,7 +171,7 @@
   .bh-draw-btn.active { background: var(--ez-blue); color: #fff; border-color: var(--ez-blue); }
   .bh-draw-sep { height: 1px; background: var(--ez-border); margin: 2px 4px; }
   /* 그림 도구가 그려지는 오버레이 캔버스 — 평소엔 pointer-events:none이라 차트 조작(팬·줌·
-     소사 마커 클릭)을 그대로 통과시키고, 도구를 선택했을 때만 JS로 auto 전환해 클릭을 받는다.
+     이슈 마커 클릭)을 그대로 통과시키고, 도구를 선택했을 때만 JS로 auto 전환해 클릭을 받는다.
      touch-action:none은 도구 활성화(pointer-events:auto) 상태에서 손가락 드래그가 브라우저
      기본 스크롤/팬으로 새는 걸 막는다 — 평소(none)엔 캔버스가 애초에 터치를 안 받아 무해. */
   .bh-draw-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; touch-action: none; }
@@ -179,9 +186,18 @@
   /* 모바일 — 범례 5개·기간버튼 6개를 한 줄에 고정. 폰트는 사이트 14px 하한선을 유지하고
      여백(패딩·간격)만 압축한다(2026-08-01). 티커만 남긴 라벨(SYMBOL_LABELS)과 합쳐서 작동. */
   @media (max-width: 640px) {
-    .bh-legend { gap: 1px; }
-    .bh-legend-item { gap: 2px; font-size: 14px; padding: 2px 3px 2px 2px; }
-    .bh-legend-check { width: 10px; height: 10px; border-radius: 6px; }
+    /* 좁은 화면에서는 알약 테두리·배경을 걷어낸다. 체크박스와 색 있는 티커만으로
+       이미 '켜고 끄는 것'이 읽히고, 그 껍데기를 지운 만큼 다섯 종목이 한 줄에
+       들어간다(테두리+좌우 여백만 종목당 12px 였다). 세로 여백은 오히려 늘려서
+       손가락 표적을 44px 로 확보한다 — 세로는 줄 수에 영향이 없다. */
+    .bh-legend { gap: 2px; }
+    .bh-legend-item {
+      gap: 3px; font-size: 14px; padding: 0;
+      background: none; border: none; border-radius: 0; min-height: 44px;
+    }
+    /* 예전엔 10px 였는데 그 안에 체크마크(가로 8px)가 들어가질 못해서, 켜져
+       있어도 체크가 안 보이고 색칠된 점처럼만 보였다. */
+    .bh-legend-check { width: 15px; height: 15px; border-radius: 4px; }
     .bh-range-btns { gap: 4px; }
     .bh-range-btn { padding: 5px 7px; }
   }
@@ -239,9 +255,6 @@
   .bh-events-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
   .bh-events-title { font-size: 17px; font-weight: 700; color: var(--ez-text); }
   .bh-events-count { font-size: 14px; color: var(--ez-text3); }
-  .bh-clear-btn {
-    font-size: 14px; font-weight: 600; color: var(--ez-blue); background: none; border: none; cursor: pointer;
-  }
 
   .bh-event-item {
     padding: 16px 16px; border-radius: var(--ez-rs); border: 1px solid var(--ez-border2);
@@ -258,7 +271,7 @@
   .bh-badge { font-size: 14px; font-weight: 700; padding: 2px 9px; border-radius: 999px; color: #fff; }
   .bh-badge.major { background: var(--ez-blue); }
   .bh-badge.notable { background: var(--ez-text3); }
-  /* 기록 = 그날 올라간 글. 소사(핵심·주요)와 무게가 다르므로 테두리만 쓴다. */
+  /* 기록 = 그날 올라간 글. 이슈(핵심·주요)와 무게가 다르므로 테두리만 쓴다. */
   .bh-badge.log { background: transparent; color: var(--ez-text2); border: 1px solid var(--ez-border); font-weight: 600; }
   .bh-dot-notable { background: var(--ez-text3); }
   .bh-dot-log { background: var(--ez-text3); opacity: .45; }
@@ -278,7 +291,7 @@
   .bh-more-btn:hover { color: var(--ez-blue); }
   .bh-event-title { font-size: 16px; font-weight: 700; color: var(--ez-text); line-height: 1.45; margin-bottom: 6px; }
   .bh-event-summary { font-size: 15px; color: var(--ez-text2); line-height: 1.6; margin-bottom: 10px; }
-  /* 소제목 + 닷블릿 리스트 구조 요약 (2024-10-29 이후 소사) */
+  /* 소제목 + 닷블릿 리스트 구조 요약 (2024-10-29 이후 이슈) */
   .bh-event-groups { margin-bottom: 10px; }
   .bh-event-group { margin-bottom: 9px; }
   .bh-event-group:last-child { margin-bottom: 0; }
@@ -290,7 +303,7 @@
   }
   .bh-event-group-list li:last-child { margin-bottom: 0; }
   .bh-event-group-list li::before { content: '·'; position: absolute; left: 0; top: 0; color: var(--ez-text2); font-weight: 800; }
-  .bh-event-moves { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+  .bh-event-moves { display: flex; gap: 8px; flex-wrap: wrap; margin: 2px 0 9px; }
   .bh-move-pill { font-size: 14px; font-weight: 700; padding: 3px 9px; border-radius: 6px; }
   .bh-move-pill.up { color: var(--ez-green); background: color-mix(in srgb, var(--ez-green) 14%, transparent); }
   .bh-move-pill.down { color: var(--ez-red); background: color-mix(in srgb, var(--ez-red) 14%, transparent); }
@@ -377,10 +390,9 @@
     <div class="bh-card bh-events-card">
       <div class="bh-events-head">
         <div>
-          <div class="bh-events-title" id="bh-events-title">전체 소사 (최신순)</div>
+          <div class="bh-events-title" id="bh-events-title">전체 이슈 (최신순)</div>
           <div class="bh-events-count" id="bh-events-count"></div>
         </div>
-        <button class="bh-clear-btn" id="bh-clear-btn" style="display:none">전체 보기로 돌아가기</button>
       </div>
       <div id="bh-events-list"></div>
     </div>
@@ -396,13 +408,13 @@
       </div>
       <div class="bh-cal-grid" id="bh-cal-grid"></div>
       <div class="bh-cal-legend">
-        <span class="bh-cal-dot-mark" style="background:var(--ez-blue)"></span>핵심 소사
-        <span style="margin-left:14px" class="bh-cal-dot-mark bh-dot-notable"></span>주요 소사
+        <span class="bh-cal-dot-mark" style="background:var(--ez-blue)"></span>핵심 이슈
+        <span style="margin-left:14px" class="bh-cal-dot-mark bh-dot-notable"></span>주요 이슈
         <span style="margin-left:14px" class="bh-cal-dot-mark bh-dot-log"></span>그날의 기록
       </div>
       <div class="bh-filter-row">
         <input type="checkbox" id="bh-major-only">
-        <label for="bh-major-only">핵심 소사만 표시 — 달력·목록</label>
+        <label for="bh-major-only">핵심 이슈만 표시 — 달력·목록</label>
       </div>
     </div>
   </div>
@@ -427,7 +439,7 @@
     NVDA: IS_DARK ? '#FF6482' : '#C2185B',
     green: IS_DARK ? '#30D158' : '#1A7F37',
     red:   IS_DARK ? '#FF453A' : '#D92A2A',
-    // 기록용 — 같은 색을 배경 쪽으로 눌러 소사 마커와 무게를 구분한다
+    // 기록용 — 같은 색을 배경 쪽으로 눌러 이슈 마커와 무게를 구분한다
     greenDim: IS_DARK ? '#1E7A38' : '#8FC6A2',
     redDim:   IS_DARK ? '#8C2C26' : '#E9A3A0',
   };
@@ -441,16 +453,23 @@
 
   let chartData = null, eventsData = [];
   let chart;
-  let markerHostSeries; // 소사 마커 전용 숨은 기준선 — 가격축과 무관하게 항상 날짜에 고정
+  let markerHostSeries; // 이슈 마커 전용 숨은 기준선 — 가격축과 무관하게 항상 날짜에 고정
   const seriesRefs = {};
-  const seriesVisible = { QQQ: true, SPY: true, SOXX: true, TSLA: false, NVDA: false };
+  /* 처음엔 QQQ 하나만. 여러 선을 한꺼번에 켜두면 세로축이 가장 큰 종목에
+     맞춰져 나머지가 바닥에 눌려 붙는다 — 볼 것을 직접 고르게 둔다. */
+  const seriesVisible = { QQQ: true, SPY: false, SOXX: false, TSLA: false, NVDA: false };
   let selectedDate = null;
   let calYear, calMonth; // 0-indexed month
   let majorOnly = false;  // 기본값: 전부 표시 (체크박스 checked 속성과 동기화)
   const LIST_PAGE = 120;  // 전체 목록을 끊어서 그리는 단위
   let listShown = LIST_PAGE;
-  const LOG_MARKER_MAX_BARS = 170;  // 이 정도(약 8개월)보다 좁을 때만 기록 점을 찍는다
-  let logMarkersOn = false;
+  /* 기록 점을 찍을지는 '몇 개월치냐'가 아니라 '점 하나에 몇 픽셀이 돌아가느냐'로
+     정한다. 같은 6개월이라도 PC 는 1,100px, 폰은 350px 라서 봉 개수로 재면 폰에서만
+     점이 서로 붙어 띠가 된다(실제로 그렇게 나왔다). 점 지름이 5px 안팎이니
+     8px 은 확보돼야 서로 구분되고 손가락으로도 겨냥할 수 있다. */
+  const PX_PER_BAR_FOR_ALL  = 8;    // 이만큼 여유가 있으면 그날의 글(기록)까지
+  const PX_PER_BAR_FOR_SOSA = 3.5;  // 그 아래로는 이슈(핵심+주요)만
+  let markerTier = 'major';         // 'major' | 'sosa' | 'all' — 그보다 좁으면 핵심만
   let currentRangeMonths = null;   // 현재 적용된 기간(개월) — 줌 계산 기준. null = 전체
   let currentCenterDate = null;    // 현재 기간의 중심 날짜 — null이면 최신일 기준
   let chartOK = false;             // 차트가 실제로 그려졌는가 (외부 라이브러리 의존)
@@ -465,7 +484,7 @@
     chartData = chartJson;
     chartDateSet = new Set(chartData.dates);
     eventsData = eventsJson.slice().sort((a,b) => a.date < b.date ? 1 : -1); // 최신순
-    // 한 날짜에 소사와 기록이 겹칠 수 있다 — 달력 점은 그중 가장 무거운 것을 따른다.
+    // 한 날짜에 이슈와 기록이 겹칠 수 있다 — 달력 점은 그중 가장 무거운 것을 따른다.
     eventsJson.forEach(e => {
       const cur = eventsByDate[e.date];
       if (!cur || e.importance > cur.importance) eventsByDate[e.date] = e;
@@ -478,7 +497,7 @@
     /* 차트는 외부 라이브러리(unpkg의 LightweightCharts)에 기대고 있다.
        그게 안 뜨면 예전엔 이 블록이 통째로 예외를 던져 catch 로 빠졌고,
        화면 전체가 "데이터를 불러오지 못했습니다" 한 줄로 끝났다 —
-       정작 이 페이지의 본론인 소사 목록과 달력은 멀쩡한 로컬 데이터인데도.
+       정작 이 페이지의 본론인 이슈 목록과 달력은 멀쩡한 로컬 데이터인데도.
        차트 실패를 목록 실패로 번지지 않게 분리한다. */
     try {
       if (typeof LightweightCharts === 'undefined') throw new Error('chart lib unavailable');
@@ -488,14 +507,14 @@
       buildRangeButtons();
       chartOK = true;
     } catch (e) {
-      console.warn('[소사] 차트를 그리지 못했다 — 목록·달력은 그대로 표시한다:', e);
+      console.warn('[이슈] 차트를 그리지 못했다 — 목록·달력은 그대로 표시한다:', e);
       /* 카드를 통째로 지우면 그 안에 같이 들어 있는 '날짜로 이동'·필터까지
          사라져서 뒤 코드가 null 을 만진다. 차트 영역과 차트 전용 조작만
          걷어내고 나머지 조작은 그대로 남긴다. */
       var outer = document.querySelector('.bh-chart-outer');
       if (outer) {
         outer.innerHTML =
-          '<div class="bh-empty">차트를 불러오지 못했습니다. 아래 소사 목록과 달력은 정상입니다.</div>';
+          '<div class="bh-empty">차트를 불러오지 못했습니다. 아래 이슈 목록과 달력은 정상입니다.</div>';
       }
       ['.bh-legend', '.bh-range-btns'].forEach(function (sel) {
         var el = document.querySelector(sel);
@@ -505,7 +524,7 @@
     renderCalendar();
     renderEventList();
 
-    // "핵심 소사만 표시"는 달력쪽·차트쪽 두 군데에 있고 항상 같은 값으로 동기화된다.
+    // "핵심 이슈만 표시"는 달력쪽·차트쪽 두 군데에 있고 항상 같은 값으로 동기화된다.
     // 어느 쪽을 누르든 majorOnly 갱신 + 캘린더·목록·차트 마커(applyMarkers)까지 전부 다시 그린다.
     const majorOnlyCheckboxes = [
       document.getElementById('bh-major-only'),
@@ -520,14 +539,9 @@
         applyMarkers();
       });
     });
-    document.getElementById('bh-clear-btn').addEventListener('click', () => {
-      selectedDate = null;
-      listShown = LIST_PAGE;
-      document.getElementById('bh-clear-btn').style.display = 'none';
-      renderCalendar();
-      renderEventList();
-    });
-    /* 소사 카드를 누르면 그 날짜가 차트 한가운데로 온다. 카드 안의 '원문 보기'
+    /* 전체 목록으로 돌아가는 길 — 달력에서 이미 고른 날짜를 한 번 더 누르면
+       선택이 풀린다. 별도 버튼을 두지 않는다. */
+    /* 이슈 카드를 누르면 그 날짜가 차트 한가운데로 온다. 카드 안의 '원문 보기'
        링크를 누른 경우는 제외 — 그건 글을 열러 가는 동작이다. */
     var listEl = document.getElementById('bh-events-list');
     if (listEl) {
@@ -575,7 +589,7 @@
       `<button type="button" class="bh-legend-item${seriesVisible[sym] ? ' active' : ''}" data-sym="${sym}" ` +
       `style="--sym-color:${COLORS[sym]}" role="checkbox" aria-checked="${seriesVisible[sym]}" ` +
       `title="${SYMBOL_FULL_LABELS[sym]}" aria-label="${SYMBOL_FULL_LABELS[sym]} 표시">` +
-      `<span class="bh-legend-check"></span>${SYMBOL_LABELS[sym]}</button>`
+      `<span class="bh-legend-check"></span><span class="bh-legend-label">${SYMBOL_LABELS[sym]}</span></button>`
     ).join('');
     document.querySelectorAll('.bh-legend-item').forEach(btn => {
       btn.addEventListener('click', () => toggleSeries(btn.dataset.sym));
@@ -594,7 +608,7 @@
     const visibleCount = Object.values(seriesVisible).filter(Boolean).length;
     if (seriesVisible[sym] && visibleCount <= 1) {
       // 최소 1개는 항상 볼 수 있어야 함 — 마지막 하나는 끌 수 없음. 5개 중 어느 것을
-      // 마지막으로 남기든 상관없음(소사 마커는 별도의 숨은 기준선에 고정돼 있어
+      // 마지막으로 남기든 상관없음(이슈 마커는 별도의 숨은 기준선에 고정돼 있어
       // 어떤 종목을 끄고 켜도 항상 그대로 보임 — buildChart의 markerHost 참조)
       shakeLegendBtn(sym);
       return;
@@ -641,7 +655,7 @@
     const toPoints = (arr) => chartData.dates.map((d, i) => ({ time: d, value: arr[i] }));
     SYMBOLS.forEach(sym => seriesRefs[sym].setData(toPoints(chartData[sym])));
 
-    // 소사 마커 전용 숨은 기준선 — 5개 종목 중 어느 것을 켜고 끄든(가격 축이 서로 달라도)
+    // 이슈 마커 전용 숨은 기준선 — 5개 종목 중 어느 것을 켜고 끄든(가격 축이 서로 달라도)
     // 마커는 항상 날짜(가로축) 위치에 고정돼 보이도록, 화면에 보이지 않는 별도 오버레이
     // 가격축에 이 라인을 얹어서 마커 호스트로만 쓴다. 실제 가격값은 의미 없음(항상 0).
     // scaleMargins를 top 크게·bottom 작게 잡아서, 이 라인(값 0, 전 구간 동일)이 차트
@@ -657,26 +671,23 @@
     });
     markerHostSeries.setData(chartData.dates.map(d => ({ time: d, value: 0 })));
 
-    /* 소사(핵심·주요)는 항상 찍고, 기록(그날의 글)은 화면이 좁혀졌을 때만 찍는다.
+    /* 이슈(핵심·주요)는 항상 찍고, 기록(그날의 글)은 화면이 좁혀졌을 때만 찍는다.
        기록은 거의 매 거래일에 하나씩 있어서, 1년치를 한 화면에 놓으면 점이
        서로 붙어 시간축 위에 띠 하나가 생긴다 — 정보가 아니라 잡음이 된다. */
-    chart.timeScale().subscribeVisibleLogicalRangeChange(() => {
-      const lr = chart.timeScale().getVisibleLogicalRange();
-      const bars = lr ? (lr.to - lr.from) : Infinity;
-      const on = bars <= LOG_MARKER_MAX_BARS;
-      if (on !== logMarkersOn) { logMarkersOn = on; applyMarkers(); }
-    });
+    chart.timeScale().subscribeVisibleLogicalRangeChange(updateMarkerDensity);
+    // 화면 회전·창 크기 변경도 픽셀 여유를 바꾼다 — 같은 기준으로 다시 판정한다.
+    new ResizeObserver(updateMarkerDensity).observe(el);
     applyMarkers();
 
-    // 모바일에서 핀치줌·드래그 같은 터치 조작이 클릭으로 오인되어 바로 아래 소사로
+    // 모바일에서 핀치줌·드래그 같은 터치 조작이 클릭으로 오인되어 바로 아래 이슈로
     // 스크롤 이동해버리는 문제가 있었다 — 이제 "등락 포인트(마커)"를 정확히 눌렀을
-    // 때만(hoveredObjectId로 판별) 소사를 연다. 그 외 차트 조작은 아무 반응 없음.
+    // 때만(hoveredObjectId로 판별) 이슈를 연다. 그 외 차트 조작은 아무 반응 없음.
     // 누른 순간엔 그 마커만 잠깐 커지고 강조색으로 바뀌어(터치 피드백) 눌렸다는 게
-    // 눈에 보이고, 동시에 그 날짜의 소사로 바로 스크롤 이동한다.
+    // 눈에 보이고, 동시에 그 날짜의 이슈로 바로 스크롤 이동한다.
     //
     // 커서 모드(drawMode===null)일 땐 이 클릭이 그림(추세선·가격범위) 위를 눌렀는지도
     // 먼저 확인한다 — 그림 위 클릭이면 그 그림 옆에 개별 삭제(휴지통) 버튼을 띄우고
-    // 소사 마커 로직은 건너뛴다. 오버레이 캔버스(#bh-draw-canvas)는 커서 모드일 땐
+    // 이슈 마커 로직은 건너뛴다. 오버레이 캔버스(#bh-draw-canvas)는 커서 모드일 땐
     // pointer-events:none이라 이 클릭이 캔버스를 거치지 않고 곧장 여기(차트 자체의
     // subscribeClick)로 들어오므로, 별도 캔버스 클릭 리스너 없이도 그림 히트테스트가 가능하다.
     chart.subscribeClick((param) => {
@@ -691,7 +702,7 @@
       if (param.hoveredObjectId) { flashMarkerAndSelect(param.hoveredObjectId); return; }
 
       /* 마커를 정확히 누르기는 손가락으로 쉽지 않다 — 빗나가도 누른 자리의
-         날짜를 읽어 가장 가까운 소사로 보낸다. 그림 도구를 쥐고 있을 때는
+         날짜를 읽어 가장 가까운 이슈로 보낸다. 그림 도구를 쥐고 있을 때는
          건너뛴다 — 그땐 클릭이 점 찍기다. */
       if (drawMode !== null) return;
       const clicked = timeToDateStr(param.time);
@@ -724,7 +735,7 @@
     el.addEventListener('pointercancel', () => { tapOK = false; st = 0; }, true);
   }
 
-  /* 누른 날짜에서 가장 가까운 소사 날짜. 한 달 넘게 떨어져 있으면 포기한다 —
+  /* 누른 날짜에서 가장 가까운 이슈 날짜. 한 달 넘게 떨어져 있으면 포기한다 —
      엉뚱한 시점으로 끌고 가는 것보다 아무 일도 안 일어나는 게 낫다. */
   function nearestEventDate(dateStr) {
     const t = new Date(dateStr + 'T00:00:00Z').getTime();
@@ -748,13 +759,13 @@
   }
 
   function buildMarkers(pool) {
-    /* 한 날짜에 소사와 기록이 겹치면 마커는 하나만 찍는다 — 같은 시각에 마커를
+    /* 한 날짜에 이슈와 기록이 겹치면 마커는 하나만 찍는다 — 같은 시각에 마커를
        겹쳐 넣으면 라이브러리가 뒤엣것으로 덮어써서 무게가 뒤바뀐다. */
     const perDate = new Map();
     pool.forEach(e => {
       if (!chartDateSet.has(e.date)) return;   // 차트에 없는 날짜는 마커를 못 건다
-      // 기록은 거의 매 거래일에 있다 — 넓게 볼 땐 점이 붙어 띠가 되므로 뺀다.
-      if (e.importance === 1 && !logMarkersOn) return;
+      const minImp = markerTier === 'all' ? 1 : (markerTier === 'sosa' ? 2 : 3);
+      if (e.importance < minImp) return;
       const cur = perDate.get(e.date);
       if (!cur || e.importance > cur.importance) perDate.set(e.date, e);
     });
@@ -764,7 +775,7 @@
         const vals = Object.values(moves).filter(v => typeof v === 'number');
         const avg = vals.length ? vals.reduce((a,b) => a+b, 0) / vals.length : 0;
         const up = avg >= 0;
-        // 기록(1)은 소사(2·3)보다 눈에 덜 띄게 — 같은 색 계열이되 작고 옅게.
+        // 기록(1)은 이슈(2·3)보다 눈에 덜 띄게 — 같은 색 계열이되 작고 옅게.
         const log = e.importance === 1;
         return {
           time: e.date,
@@ -778,11 +789,26 @@
       .sort((a,b) => a.time < b.time ? -1 : 1);
   }
 
-  /* 차트 마커는 '핵심'만 걸러내지 않는다 — 전체 소사를 다 찍는다.
-     달력·목록의 '핵심 소사만 표시'는 그대로 두되(읽을 목록은 추릴 이유가 있다),
+  /* 차트 마커는 '핵심'만 걸러내지 않는다 — 전체 이슈를 다 찍는다.
+     달력·목록의 '핵심 이슈만 표시'는 그대로 두되(읽을 목록은 추릴 이유가 있다),
      차트는 그날 무슨 일이 있었는지 한눈에 훑는 자리라 빠뜨릴수록 손해다. */
   function currentPool() {
     return eventsData;
+  }
+
+  /* 지금 보이는 폭에서 점 하나에 몇 픽셀이 돌아가는지 재서, 기록 점을 켤지 끈다.
+     넓게 볼 땐 이슈(핵심·주요)만, 기간을 좁혀 들어가면 그날의 글까지 다 나온다. */
+  function updateMarkerDensity() {
+    if (!chartOK && !markerHostSeries) return;
+    const lr = chart.timeScale().getVisibleLogicalRange();
+    const bars = lr ? Math.max(1, lr.to - lr.from) : Infinity;
+    const width = document.getElementById('bh-chart').clientWidth || 0;
+    if (!width) return;
+    const px = width / bars;
+    const tier = px >= PX_PER_BAR_FOR_ALL ? 'all'
+               : px >= PX_PER_BAR_FOR_SOSA ? 'sosa'
+               : 'major';
+    if (tier !== markerTier) { markerTier = tier; applyMarkers(); }
   }
 
   function applyMarkers() {
@@ -792,14 +818,14 @@
        (증상: 차트는 그려지는데 등락 포인트만 전부 사라짐). 목록·달력이 차트
        실패에 휘말리지 않게 하려던 가드가 마커까지 같이 껐던 자리. */
     if (!markerHostSeries) return;
-    // 소사 마커는 특정 종목의 가격(세로축)이 아니라 markerHostSeries(숨은 오버레이
+    // 이슈 마커는 특정 종목의 가격(세로축)이 아니라 markerHostSeries(숨은 오버레이
     // 기준선)에 표시한다. 종목마다 가격 축이 서로 달라 마커가 종목 조합에 따라
     // 들쭉날쭉해 보이던 문제를 해결 — 5개 중 무엇을 켜고 끄든 마커는 항상 같은 자리다.
     markerHostSeries.setMarkers(buildMarkers(currentPool()));
   }
 
   // 마커를 터치했을 때: 그 마커만 잠깐 커지고 강조색으로 바뀌어 "눌렸다"는 느낌을
-  // 준 뒤(약 0.25초), 원래 모양으로 되돌린다. 동시에 그 날짜의 소사로 바로 이동.
+  // 준 뒤(약 0.25초), 원래 모양으로 되돌린다. 동시에 그 날짜의 이슈로 바로 이동.
   function flashMarkerAndSelect(dateStr) {
     const flashColor = IS_DARK ? '#FFFFFF' : '#0A84FF';
     const markers = buildMarkers(currentPool()).map(m =>
@@ -812,11 +838,11 @@
 
   // ── 차트 그림 도구(추세선·가격범위 측정) ──────────────────────────────────
   // LightweightCharts 자체엔 TradingView 정식 위젯 같은 드로잉 툴바가 없어서(무료
-  // 임베드 위젯과 이 커스텀 라이브러리는 서로 다른 제품 — 소사 마커·정규화 비교 기능을
+  // 임베드 위젯과 이 커스텀 라이브러리는 서로 다른 제품 — 이슈 마커·정규화 비교 기능을
   // 유지하려면 이 라이브러리를 계속 써야 함), 차트 위에 별도 <canvas> 오버레이를 얹고
   // 좌표 변환만 라이브러리 API(priceToCoordinate/coordinateToPrice, timeScale의
   // timeToCoordinate/coordinateToTime)로 위임해 직접 그린다. 평소엔 이 캔버스가
-  // pointer-events:none이라 팬·줌·소사 마커 클릭 등 기존 차트 조작을 그대로 통과시키고,
+  // pointer-events:none이라 팬·줌·이슈 마커 클릭 등 기존 차트 조작을 그대로 통과시키고,
   // 도구를 선택한 동안만 클릭을 받도록 전환한다.
   //
   // (운영자 2차 피드백 반영) 가격범위도 처음엔 드래그(mousedown~mouseup) 방식이었는데
@@ -1167,8 +1193,18 @@
     const grid = document.getElementById('bh-cal-grid');
     grid.innerHTML = cells;
     grid.querySelectorAll('.bh-cal-cell.has-event').forEach(cell => {
-      cell.addEventListener('click', () => selectDate(cell.dataset.date));
+      cell.addEventListener('click', () => {
+        if (cell.dataset.date === selectedDate) { clearSelection(); return; }
+        selectDate(cell.dataset.date);
+      });
     });
+  }
+
+  function clearSelection() {
+    selectedDate = null;
+    listShown = LIST_PAGE;
+    renderCalendar();
+    renderEventList();
   }
 
   /* dateStr 날짜를 차트 한가운데에 놓고 달력·목록도 그 날짜로 맞춘다.
@@ -1181,7 +1217,6 @@
     calMonth = d.getUTCMonth();
     renderCalendar();
     renderEventList();
-    document.getElementById('bh-clear-btn').style.display = 'inline-block';
     if (chartOK) applyRange(6, dateStr);   // 6개월 창의 정중앙에 그 날짜가 온다
     document.querySelectorAll('.bh-range-btn').forEach(b => b.classList.remove('active'));
     var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1236,22 +1271,25 @@
     const sourceTag = showFootLink
       ? `<a class="bh-event-link" href="${e.link}" target="_blank" rel="noopener">원문 보기 →</a>`
       : '';
-    // 2024-10-29 이후 소사는 summaryGroups(소제목+닷블릿) 구조로 표시,
-    // 그 이전 소사는 기존 한 문장 요약(summary) 그대로 유지
+    // 2024-10-29 이후 이슈는 summaryGroups(소제목+닷블릿) 구조로 표시,
+    // 그 이전 이슈는 기존 한 문장 요약(summary) 그대로 유지
     const bodyHtml = (e.summaryGroups && e.summaryGroups.length)
       ? renderSummaryGroups(e.summaryGroups)
       : (e.summary ? `<div class="bh-event-summary">${escapeHtml(e.summary)}</div>` : '');
     const articlesHtml = (many ? renderArticleList(e.articles) : '')
       + renderArticleList(e.moreArticles, '이 날의 다른 글');
+    // 등락은 날짜 바로 아래에 둔다 — 그날을 고른 이유가 대개 '얼마나 움직였나'라
+    // 제목보다 먼저 눈에 들어와야 한다. 값이 없는 날은 빈 줄을 만들지 않는다.
+    const moves = renderMoves(e.moves);
     return `<div class="bh-event-item${highlight ? ' highlight' : ''}" data-date="${e.date}">
       <div class="bh-event-top">
         <span class="bh-event-date">${e.date}</span>
         ${badge}
       </div>
+      ${moves ? `<div class="bh-event-moves">${moves}</div>` : ''}
       <div class="bh-event-title">${escapeHtml(e.title)}</div>
       ${bodyHtml}
       ${articlesHtml}
-      <div class="bh-event-moves">${renderMoves(e.moves)}</div>
       ${sourceTag ? `<div class="bh-event-foot">${sourceTag}</div>` : ''}
     </div>`;
   }
@@ -1282,22 +1320,22 @@
         const t = new Date(e.date + 'T00:00:00Z').getTime();
         return Math.abs(t - target) <= 1 * 86400000;
       }).sort((a,b) => Math.abs(new Date(a.date)-target) - Math.abs(new Date(b.date)-target));
-      titleEl.textContent = `${selectedDate} 전후 소사`;
+      titleEl.textContent = `${selectedDate} 전후 이슈`;
       countEl.textContent = `${nearby.length}건 (앞뒤 1일, 총 3일)`;
       listEl.innerHTML = nearby.length
         ? nearby.map(e => renderEventCard(e, e.date === selectedDate)).join('')
-        : '<div class="bh-empty">이 날짜 근처에 기록된 소사가 없습니다.</div>';
+        : '<div class="bh-empty">이 날짜 근처에 기록된 이슈가 없습니다.</div>';
       return;
     }
 
-    titleEl.textContent = '전체 소사 (최신순)';
+    titleEl.textContent = '전체 이슈 (최신순)';
     countEl.textContent = `${pool.length}건`;
     /* 전체 목록은 수백 건이라 한 번에 다 그리면 첫 화면이 늦어진다(특히 모바일).
        최신분부터 끊어서 보여주고, 더 보고 싶을 때만 이어 붙인다. */
     const shown = Math.min(listShown, pool.length);
     listEl.innerHTML = pool.slice(0, shown).map(e => renderEventCard(e, false)).join('')
       + (shown < pool.length
-        ? `<div class="bh-more-row"><button type="button" class="bh-more-btn" id="bh-more-btn">이전 소사 더 보기 (${pool.length - shown}건 남음)</button></div>`
+        ? `<div class="bh-more-row"><button type="button" class="bh-more-btn" id="bh-more-btn">이전 이슈 더 보기 (${pool.length - shown}건 남음)</button></div>`
         : '');
     const moreBtn = document.getElementById('bh-more-btn');
     if (moreBtn) moreBtn.addEventListener('click', () => { listShown += LIST_PAGE; renderEventList(); });
