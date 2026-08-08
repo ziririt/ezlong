@@ -8894,13 +8894,35 @@ setupWeatherDetailEdgeSwipe();
 const quoteCopyBtn = document.getElementById("quoteCopyBtn");
 let quoteCopiedTimer = null;
 
+// 2026-08-09 운영자 추가 요청 — 복사 맨 끝에 그 책을 더 볼 수 있는 링크를
+// 붙인다. 어느 서점이냐는 quote-source 모듈이 로케일을 보고 정한다:
+// 한국어면 알라딘(제휴 파라미터 포함), 영어면 미국 아마존 검색, 그 밖의
+// 언어면 null — 즉 링크가 없는 책·언어에서는 아무것도 붙지 않는다.
+function currentQuoteBookLink() {
+  try {
+    if (FZ_QUOTE_SRC && typeof FZ_QUOTE_SRC.resolve === "function" && lastRenderedQuote) {
+      const link = FZ_QUOTE_SRC.resolve(lastRenderedQuote, {});
+      if (link && link.url) return link.url;
+    }
+  } catch (error) { /* 링크 하나 때문에 복사 자체가 막히면 안 된다 */ }
+  // 모듈이 없거나 실패한 경우의 안전망 — 화면의 알라딘 버튼이 이미 링크를
+  // 들고 있으면(= 보이는 상태면) 그것을 쓴다.
+  if (quoteAladinLink && !quoteAladinLink.hidden && quoteAladinLink.dataset.url) {
+    return quoteAladinLink.dataset.url;
+  }
+  return "";
+}
+
 function buildQuoteClipboardText() {
   const pick = (id) => {
     const element = document.getElementById(id);
     if (!element || element.hidden) return "";
     return (element.textContent || "").replace(/\s+$/, "").trim();
   };
-  return [pick("quoteEnglish"), pick("quoteText"), pick("quoteSource")]
+  // 출처와 링크는 한 덩어리로 붙인다(빈 줄 없이 바로 아랫줄) — 붙여넣었을 때
+  // "책 정보"가 한 뭉치로 읽히는 편이 자연스럽다.
+  const tail = [pick("quoteSource"), currentQuoteBookLink()].filter(Boolean).join("\n");
+  return [pick("quoteEnglish"), pick("quoteText"), tail]
     .filter(Boolean)
     .join("\n\n");
 }
