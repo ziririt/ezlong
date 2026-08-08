@@ -8875,5 +8875,12 @@ window.investmentQuotes = [
     "title": "흔들리며 피는 꽃",
     "author": "도종환",
     "genre": "literature"
+  },
+  {
+    "english": "Rule number one: most things will prove to be cyclical. Rule number two: some of the greatest opportunities for gain and loss come when other people forget rule number one.",
+    "text": "제1원칙: 대부분의 것들은 결국 순환한다는 것이 증명된다. 제2원칙: 이익과 손실의 가장 큰 기회는 사람들이 제1원칙을 잊을 때 찾아온다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "mindset"
   }
 ];
