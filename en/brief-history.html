@@ -166,6 +166,7 @@ window.BH_T = {
  "vScore": "buy score {n}",
  "chipCat": "Driver",
  "chipVerdict": "AI call",
+ "emptyFilter": "No events match this filter.",
  "cats": {
   "fed_policy": "Fed / FOMC",
   "geopolitics": "Geopolitics",
@@ -1668,8 +1669,16 @@ window.BH_T = {
     wrap.addEventListener('click', (ev) => {
       const b = ev.target.closest('.bh-chip');
       if (!b) return;
-      if (b.dataset.cat) catFilter = (catFilter === b.dataset.cat) ? null : b.dataset.cat;
-      if (b.dataset.v) vFilter = (vFilter === b.dataset.v) ? null : b.dataset.v;
+      /* 두 갈래를 동시에 걸면 교집합이 비어 0건이 나온다 — 화면이 고장난 것처럼
+         보인다. 한 번에 한 질문만 던지게 배타적으로 둔다. */
+      if (b.dataset.cat) {
+        catFilter = (catFilter === b.dataset.cat) ? null : b.dataset.cat;
+        vFilter = null;
+      }
+      if (b.dataset.v) {
+        vFilter = (vFilter === b.dataset.v) ? null : b.dataset.v;
+        catFilter = null;
+      }
       listShown = LIST_PAGE;
       wrap.querySelectorAll('.bh-chip').forEach(x => x.classList.toggle('on',
         (x.dataset.cat && x.dataset.cat === catFilter) || (x.dataset.v && x.dataset.v === vFilter)));
@@ -1713,6 +1722,10 @@ window.BH_T = {
     /* 전체 목록은 수백 건이라 한 번에 다 그리면 첫 화면이 늦어진다(특히 모바일).
        최신분부터 끊어서 보여주고, 더 보고 싶을 때만 이어 붙인다. */
     const shown = Math.min(listShown, pool.length);
+    if (!pool.length) {
+      listEl.innerHTML = '<div class="bh-empty">' + T.emptyFilter + '</div>';
+      return;
+    }
     listEl.innerHTML = pool.slice(0, shown).map(e => renderEventCard(e, false)).join('')
       + (shown < pool.length
         ? `<div class="bh-more-row"><button type="button" class="bh-more-btn" id="bh-more-btn">${fmt(T.moreBtn, { n: pool.length - shown })}</button></div>`
