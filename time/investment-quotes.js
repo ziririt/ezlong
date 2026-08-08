@@ -8902,5 +8902,12 @@ window.investmentQuotes = [
     "title": "미드나잇 라이브러리 (The Midnight Library)",
     "author": "매트 헤이그 (Matt Haig)",
     "genre": "literature"
+  },
+  {
+    "english": "The market is never wrong — opinions often are.",
+    "text": "시장은 결코 틀리지 않는다. 틀리는 것은 언제나 사람들의 생각이다.",
+    "title": "제시 리버모어의 회상 (Reminiscences of a Stock Operator)",
+    "author": "제시 리버모어 (Jesse Livermore)",
+    "category": "mindset"
   }
 ];
