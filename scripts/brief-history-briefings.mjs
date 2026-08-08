@@ -46,12 +46,11 @@ const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (
 const argv = process.argv.slice(2);
 const argOf = (n, d) => { const i = argv.indexOf(n); return i >= 0 && argv[i + 1] ? argv[i + 1] : d; };
 const LIMIT = parseInt(argOf('--limit', '400'), 10);
-/* 그날 글 중 몇 편까지 읽나. 오래 2편이었는데, 필자가 아침 시황을 늘 먼저
-   쓰는 건 아니다 — 2025-11-20 은 그날 지수를 설명한 시황이 네 번째 글이라
-   본문에 아예 안 들어왔고, 앞의 두 편(사우디 GPU 동맹·엔비디아 실적)만 읽은
-   모델이 QQQ -2.37% 인 날을 긍정 재료로만 채웠다. 한 편 늘려 방향을 설명한
-   글이 들어올 확률을 높인다. */
-const MAX_ARTICLES_PER_DAY = 3;
+/* 그날 글 중 몇 편까지 읽나. 오래 2편이었는데, 그날 지수를 설명한 시황이
+   세 번째·네 번째 글인 날이 흔해서(2025-11-20 은 세 번째였다) 앞에서 자르면
+   방향을 설명할 재료를 통째로 놓친다. 다섯 편까지 읽고, 그중 시황을 골라
+   맨 앞에 놓는다(orderBodies). 하루 글이 다섯 편 넘는 날은 22일뿐이다. */
+const MAX_ARTICLES_PER_DAY = 5;
 const MIN_BODY = 400;             // 이보다 짧으면 브리핑을 만들지 않는다
 const MAX_BODY = 6000;
 /* 프롬프트를 고치면 캐시도 갈아야 한다 — 안 그러면 옛 요약이 영원히 산다.
@@ -145,9 +144,33 @@ function dayContext(chart, idxMap, date) {
    앞에서 두세 편만 자르면 분석·기업 글만 읽고 시황을 통째로 빠뜨린다 —
    2025-11-20 이 그랬다. 앞에서 (N-1)편, 그리고 마지막 한 편을 항상 넣는다. */
 function pickArticles(arts) {
-  if (!Array.isArray(arts) || arts.length <= MAX_ARTICLES_PER_DAY) return (arts || []).slice();
-  const head = arts.slice(0, MAX_ARTICLES_PER_DAY - 1);
-  return head.concat([arts[arts.length - 1]]);
+  return (arts || []).slice(0, MAX_ARTICLES_PER_DAY);
+}
+
+/* 어느 글이 '그날 장 마감 정리'인가 — 제목으로 맞히려다 두 번 틀렸다.
+
+   제목만 보면 시황인지 분석인지 갈리지 않는다("엔비디아 서프라이즈도 못 막은
+   하루"는 시황이고 "애플은 AI 캐펙스를 피했지만…"은 분석인데, 둘 다 기업명이
+   앞에 온다). 발행 순서로도 안 된다 — 시황 뒤에 후속 분석이 여러 편 붙는 날이
+   있어서 '맨 끝'도 시황이 아니다.
+
+   본문을 보면 확실하다. 시황에는 그날 4대 지수가 함께 등장한다. 그걸 세서
+   가장 많이 나온 글을 앞으로 올린다. 앞에 둬야 하는 이유는 본문이 MAX_BODY 로
+   잘리기 때문이다 — 뒤에 있으면 잘려 나가고, 그러면 모델은 그날 방향을 설명할
+   재료를 못 본 채로 답한다(2025-11-20 이 그랬다: QQQ -2.37% 인 날이 긍정
+   재료로만 채워졌다). */
+const INDEX_WORDS = ['나스닥', 'S&P500', 'S&P 500', '다우', '러셀2000', '러셀 2000'];
+function wrapScore(text) {
+  return INDEX_WORDS.reduce((n, w) => n + (text.includes(w) ? 1 : 0), 0);
+}
+function orderBodies(docs) {
+  if (!docs.length) return '';
+  const scored = docs.map((d, i) => ({ ...d, i, s: wrapScore(d.body) }));
+  const best = scored.reduce((a, b) => (b.s > a.s ? b : a), scored[0]);
+  const isWrap = best.s >= 2;
+  const rest = scored.filter((d) => d !== best || !isWrap);
+  const head = isWrap ? [`[그날 장 마감 정리]\n${best.body}`] : [];
+  return head.concat(rest.map((d) => `[같은 날 글] ${d.t || ''}\n${d.body}`)).join('\n\n');
 }
 
 const DIR_THRESHOLD = 1.0;
@@ -236,6 +259,8 @@ const PROMPT = (dateStr, body, ctx) => `아래는 한국 필자가 쓴 미국 �
   등락률은 재료를 설명할 때 근거로만 쓴다.
 
 [방향이 맞아야 한다 — 가장 중요]
+- 원문에 **[그날 장 마감 정리]** 로 시작하는 대목이 있으면 그게 그날을 설명하는 글이다.
+  거기서 재료를 먼저 고른다. [같은 날 글] 은 배경·기업 분석이라 그날 방향과 무관할 수 있다.
 - 아래 [이 날의 성격]에 그날 지수가 오른 날인지 내린 날인지 적혀 있다.
   **내린 날의 재료를 전부 pos 로, 오른 날의 재료를 전부 neg 로 채우지 마라.**
 - 본문이 강세 일색인데 그날 지수가 내렸다면, 그건 그 재료가 지수를 못 움직였다는 뜻이다.
@@ -305,19 +330,19 @@ async function main() {
     if (!brief) {
       if (made >= LIMIT) { skipped++; continue; }
       if (!GEMINI_KEY) { skipped++; continue; }
-      const bodies = [];
+      const docs = [];
       for (const a of arts) {
         try {
           const html = await httpGet(a.u);
           fetched++;
           const paras = extractBody(html);
-          if (paras.length) bodies.push(paras.join('\n'));
+          if (paras.length) docs.push({ t: a.t, body: paras.join('\n') });
           await sleep(350);   // 남의 서버다 — 몰아치지 않는다
         } catch (err) {
           console.warn(`  본문 실패 ${a.u}: ${err.message}`);
         }
       }
-      const body = bodies.join('\n\n').slice(0, MAX_BODY);
+      const body = orderBodies(docs).slice(0, MAX_BODY);
       if (body.length < MIN_BODY) {
         console.warn(`  ${e.date} 본문이 짧다(${body.length}자) — 제목만 남긴다`);
         skipped++;
