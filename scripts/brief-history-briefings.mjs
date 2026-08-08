@@ -46,12 +46,17 @@ const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (
 const argv = process.argv.slice(2);
 const argOf = (n, d) => { const i = argv.indexOf(n); return i >= 0 && argv[i + 1] ? argv[i + 1] : d; };
 const LIMIT = parseInt(argOf('--limit', '400'), 10);
-const MAX_ARTICLES_PER_DAY = 2;   // 토큰·요청 상한. 그날 첫 글(아침 시황)이 본론이다
+/* 그날 글 중 몇 편까지 읽나. 오래 2편이었는데, 필자가 아침 시황을 늘 먼저
+   쓰는 건 아니다 — 2025-11-20 은 그날 지수를 설명한 시황이 네 번째 글이라
+   본문에 아예 안 들어왔고, 앞의 두 편(사우디 GPU 동맹·엔비디아 실적)만 읽은
+   모델이 QQQ -2.37% 인 날을 긍정 재료로만 채웠다. 한 편 늘려 방향을 설명한
+   글이 들어올 확률을 높인다. */
+const MAX_ARTICLES_PER_DAY = 3;
 const MIN_BODY = 400;             // 이보다 짧으면 브리핑을 만들지 않는다
 const MAX_BODY = 6000;
 /* 프롬프트를 고치면 캐시도 갈아야 한다 — 안 그러면 옛 요약이 영원히 산다.
    이 값을 올리면 다음 실행에서 전부 다시 만든다. */
-const PROMPT_VERSION = 'v3-cats';
+const PROMPT_VERSION = 'v4-direction';
 
 /* 분류 어휘는 새로 만들지 않는다 — 스코어카드 파이프라인이 쓰는 목록을 그대로
    쓴다(CLAUDE.md 20항 FACTOR_CATEGORIES). 어휘가 갈라지면 나중에 두 코너의
@@ -124,7 +129,22 @@ function dayContext(chart, idxMap, date) {
   if (kind === 'normal' && move <= -2) kind = 'plunge';
   if (kind === 'normal' && move >= 2) kind = 'surge';
   if (kind === 'normal' && move >= 1.2 && back5 != null && back5 <= -3) kind = 'rebound';
-  return { kind, lines };
+  return { kind, lines, move };
+}
+
+/* 방향과 톤이 어긋났는지 — 내린 날인데 재료가 전부 pos, 오른 날인데 전부 neg.
+   실제로 254장 중 3장이 이 상태였다(2025-11-20 은 QQQ -2.37% 인 날이 긍정
+   재료 세 묶음으로 채워졌다). 원인은 모델이 아니라 입력이었다 — 그날 하락을
+   설명한 시황이 네 번째 글이라 본문에 안 들어갔다. 그래도 화면에는 틀린 카드가
+   걸리므로, 만들어진 결과를 한 번 더 재는 자리를 둔다. */
+const DIR_THRESHOLD = 1.0;
+function directionOK(groups, move) {
+  if (move == null || Math.abs(move) < DIR_THRESHOLD) return true;
+  const tones = new Set(groups.map((g) => String(g.tone || '').trim()));
+  if (tones.size !== 1) return true;
+  if (move <= -DIR_THRESHOLD && tones.has('pos')) return false;
+  if (move >= DIR_THRESHOLD && tones.has('neg')) return false;
+  return true;
 }
 
 const KIND_ORDER = {
@@ -190,8 +210,22 @@ const PROMPT = (dateStr, body, ctx) => `아래는 한국 필자가 쓴 미국 �
 - 각 묶음에 cat 을 붙인다. **아래 목록의 값만** 쓴다(새로 만들지 않는다):
   ${CAT_HINT}
 - 필자의 전략·대응·관전 포인트·다음 일정·개인 판단은 **넣지 않는다**. 재료가 아니다.
+- 앞으로의 기대·전망·수혜 예상도 재료가 아니다("~ 가속화 전망", "~ 신뢰 상승 효과 예상").
+  그날 가격에 반영된 사실만 쓴다.
+- 차트 지표 판독(RSI·MACD·스토캐스틱·볼린저·이동평균·옵션 미결제·풋콜 비율)도 재료가 아니다.
+  그건 가격의 결과이지 원인이 아니다.
+- 본문에 재료가 하나도 없으면(지표 판독·기업 소개·개인 회고뿐이면) 빈 배열을 돌려라:
+  {"summaryGroups":[]}. 억지로 채우지 않는다.
 - 지수 등락률만 나열하는 묶음도 넣지 않는다 — 카드에 이미 숫자가 따로 붙는다.
   등락률은 재료를 설명할 때 근거로만 쓴다.
+
+[방향이 맞아야 한다 — 가장 중요]
+- 아래 [이 날의 성격]에 그날 지수가 오른 날인지 내린 날인지 적혀 있다.
+  **내린 날의 재료를 전부 pos 로, 오른 날의 재료를 전부 neg 로 채우지 마라.**
+- 본문이 강세 일색인데 그날 지수가 내렸다면, 그건 그 재료가 지수를 못 움직였다는 뜻이다.
+  그럴 때는 지어내지 말고 **tone 을 "mix" 로 두고** 소제목을 '그날 나온 재료' 성격으로 쓴다.
+  본문 안에 하락을 설명하는 대목(금리·매크로·차익실현 등)이 있으면 그걸 첫 묶음으로 올린다.
+- 반대도 같다. 오른 날에 본문이 우려 일색이면 mix 로 두고 사실만 남긴다.
 
 [이 날의 성격]
 ${ctx ? ctx.lines.map((l) => '- ' + l).join('\n') : '- 차트 데이터 없음'}
@@ -246,6 +280,11 @@ async function main() {
     /* 캐시를 읽을 때도 검사한다 — 한 번 깨진 채 담긴 것이 영원히 살면 안 된다.
        U+FFFD 는 응답 청크 경계에서 한 글자가 잘려 나갔다는 뜻이다. */
     if (brief && !looksClean(brief)) { delete cache[key]; brief = null; }
+    // 재료 없음으로 확정된 날 — 다시 묻지 않고 제목만 둔다
+    if (brief && Array.isArray(brief.summaryGroups) && brief.summaryGroups.length === 0) {
+      reused++;
+      continue;
+    }
 
     if (!brief) {
       if (made >= LIMIT) { skipped++; continue; }
@@ -269,8 +308,31 @@ async function main() {
         continue;
       }
       const ctx = chart ? dayContext(chart, idxMap, e.date) : null;
-      const out = await gemini(PROMPT(e.date, body, ctx));
-      const groups = out && Array.isArray(out.summaryGroups) ? out.summaryGroups : null;
+      let out = await gemini(PROMPT(e.date, body, ctx));
+      let groups = out && Array.isArray(out.summaryGroups) ? out.summaryGroups : null;
+      /* 방향이 어긋나면 한 번만 다시 묻는다. 지시를 더 얹는 게 아니라, 어긋난
+         사실 자체를 알려준다 — 모델은 자기 출력을 못 보고 답했기 때문이다. */
+      if (groups && ctx && !directionOK(groups, ctx.move)) {
+        const dir = ctx.move <= 0 ? '내린' : '오른';
+        const want = ctx.move <= 0 ? 'pos' : 'neg';
+        console.warn(`  ${e.date} 방향 불일치(QQQ ${ctx.move.toFixed(2)}%, 전부 ${want}) — 다시 요청`);
+        const retry = await gemini(PROMPT(e.date, body, ctx) +
+          `\n\n[다시 쓴다]\n방금 만든 답이 ${dir} 날의 재료를 전부 "${want}" 로 채웠다. ` +
+          '본문에서 그날 지수 방향을 설명하는 대목을 먼저 찾아 첫 묶음으로 올리고, ' +
+          '없으면 tone 을 "mix" 로 두고 그날 나온 재료로만 서술하라. 지어내지 마라.');
+        const rg = retry && Array.isArray(retry.summaryGroups) ? retry.summaryGroups : null;
+        if (rg && rg.length) { out = retry; groups = rg; }
+      }
+      /* 빈 배열은 실패가 아니라 답이다 — 본문에 재료가 없다는 뜻(지표 판독·
+         기업 소개뿐인 날). 그 사실을 캐시에 남겨야 매 실행마다 같은 글을 다시
+         묻지 않는다. 카드는 제목만으로 남는다. */
+      if (groups && groups.length === 0) {
+        cache[key] = { summaryGroups: [] };
+        writeFileSync(CACHE, JSON.stringify(cache), 'utf8');
+        made++;
+        console.log(`  ${e.date} 그날 재료 없음 — 제목만 남긴다`);
+        continue;
+      }
       if (!groups || !groups.length || !groups.every((g) => g.heading && Array.isArray(g.points) && g.points.length)) {
         console.warn(`  ${e.date} 브리핑 형식 불량 — 건너뜀`);
         skipped++;
