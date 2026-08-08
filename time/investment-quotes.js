@@ -8942,5 +8942,12 @@ window.investmentQuotes = [
     "title": "담론",
     "author": "신영복",
     "genre": "literature"
+  },
+  {
+    "english": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave. And behavior is hard to teach, even to really smart people.",
+    "text": "돈을 잘 다루는 일은 당신이 얼마나 똑똑한가와는 큰 상관이 없다. 오히려 당신이 어떻게 행동하느냐에 달려 있다. 그리고 행동은, 아무리 똑똑한 사람이라도 가르치기 어려운 것이다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절 (Morgan Housel)",
+    "category": "mindset"
   }
 ];
