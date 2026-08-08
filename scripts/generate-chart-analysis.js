@@ -109,6 +109,16 @@ const TICKERS_US_STOCKS = [
   { symbol:'ABNB',  name:'에어비앤비',         type:'stock', context:'글로벌 숙박 공유 플랫폼. 여행 수요와 거시경제에 민감하게 반응합니다.' },
   { symbol:'INTU',  name:'인튜이트',           type:'stock', context:'세금·회계 소프트웨어(TurboTax, QuickBooks) 선두 기업입니다.' },
   { symbol:'COIN',  name:'코인베이스',          type:'stock', context:'미국 최대 암호화폐 거래소. 크립토 시장 변동성에 강하게 연동됩니다.' },
+  // 2026-08-08 추가 — 포트폴리오 점검 코너의 26종목 중 여기 없던 것들.
+  // 코너에서 '차트분석에서 보기'를 눌렀는데 그 종목이 없으면 링크가 헛돈다.
+  // 전력·데이터센터 테마가 통째로 비어 있었다.
+  { symbol:'MRVL',  name:'마벨',             type:'stock', context:'커스텀 실리콘 2인자이자 데이터센터 인터커넥트 공급사. AI 맞춤 반도체 수주가 실적을 좌우합니다.' },
+  { symbol:'GEV',   name:'GE 버노바',         type:'stock', context:'가스터빈·그리드·소형원자로를 아우르는 전력 설비 기업. 데이터센터 전력 수요의 직접 수혜주입니다.' },
+  { symbol:'VRT',   name:'버티브',            type:'stock', context:'데이터센터 전력분배와 액침냉각 장비 기업. 랙 밀도가 올라갈수록 수요가 커집니다.' },
+  { symbol:'ETN',   name:'이튼',             type:'stock', context:'전력관리 글로벌 1티어 기업. 전기화와 데이터센터 증설의 장기 수혜주입니다.' },
+  { symbol:'COHR',  name:'코히런트',          type:'stock', context:'800G·1.6T 광트랜시버 공급사. 데이터센터 간 광통신 수요에 연동됩니다.' },
+  { symbol:'CIEN',  name:'시에나',            type:'stock', context:'데이터센터 간 광전송 장비 기업. 대역폭 증설 사이클에 민감합니다.' },
+  { symbol:'SMR',   name:'뉴스케일파워',       type:'stock', context:'소형모듈원자로(SMR) 순수 플레이. 상업화 시점이 멀어 변동성이 매우 높습니다.' },
 ];
 
 const TICKERS_US_ETFS = [

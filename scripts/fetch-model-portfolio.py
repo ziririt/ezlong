@@ -142,6 +142,18 @@ def main():
         print(f'::error::비중 합계가 {total} 다 (100 이어야 함) — 파일을 쓰지 않는다')
         return 1
 
+    # AI 차트분석 대상인지 표시 — 페이지의 '차트분석에서 보기' 링크가 이걸 본다.
+    # 파일이 실제로 있는지로 판단한다. 목록을 손으로 관리하면 파이프라인에서
+    # 종목이 빠져도 링크는 계속 살아 있어서, 눌렀을 때 엉뚱한 종목이 열린다.
+    ddir = os.path.join(HERE, '..', 'data')
+    for h in doc['holdings']:
+        safe = h['tk'].replace('-', '_')
+        if h.get('c') == '₩':
+            safe += '_KS'          # 한국 종목은 000660_KS 형태로 저장된다
+        h['ai'] = os.path.isfile(os.path.join(ddir, f'analysis-{safe}.json'))
+    print('AI 차트분석 연결: %d/%d 종목' %
+          (sum(1 for h in doc['holdings'] if h['ai']), len(doc['holdings'])))
+
     # 판정 기준은 52주 밴드로 둔다 — 2026-08-08 실측 결과다.
     #
     # 인수인계 문서는 주간 RSI(14) 기준(80/70/30/20)으로 올리라고 했는데,

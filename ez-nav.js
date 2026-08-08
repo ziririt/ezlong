@@ -110,7 +110,7 @@
     ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇 — AI 시황 분석'],
     ['/stocks.html',                '심플 주가',      '심플 주가 정보'],
     ['/chart-analysis.html',        'AI 차트분석',    'AI 차트 분석'],
-    ['/model-portfolio.html',       '모델 포트폴리오', '모델 포트폴리오 — 공격형 AI 시대 26종목 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
+    ['/model-portfolio.html',       '포트폴리오 점검', '포트폴리오 점검 — 공격형 AI 시대 26종목 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
     ['/market-cycle.html',          '마켓 사이클',    '하락장 변곡점 감시'],
     ['/dca-simulator.html',         'DCA 시뮬레이터', 'DCA 복리 시뮬레이터'],
     ['/portfolio-manager.html',     'AI 포트폴리오',  '투자성향별 AI 포트폴리오'],
