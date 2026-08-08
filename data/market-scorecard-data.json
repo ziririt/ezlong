@@ -1,6 +1,82 @@
 {
   "entries": [
     {
+      "id": "2026-08-08-18:20",
+      "timestamp_kst": "2026-08-08(토) 18:20 KST",
+      "key_event": {
+        "name": "고용지표 둔화 및 금리 인하 기대",
+        "name_en": "Weak Jobs Data Fuels Rate Cut Hopes",
+        "time": "직전 거래일 마감 및 다음 주 개장 영향",
+        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
+        "why_en": "Lower-than-expected job numbers, easing Fed hike concerns, improved market sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "고용 둔화에 따른 금리 인하 기대감으로 5일 연속 긍정 우위 유지",
+      "summary_en": "Positive sentiment maintained for 5th consecutive day on rate cut hopes from weak jobs data",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "예상치 하회 고용지표",
+          "name_en": "Weaker-than-Expected Jobs Report",
+          "desc": "7월 비농업 고용 예상치 하회, 금리 인하 기대감 증폭",
+          "desc_en": "July nonfarm payrolls missed estimates, boosting rate cut expectations",
+          "category": "macro_data"
+        },
+        {
+          "score": 25,
+          "name": "금리 인상 우려 완화",
+          "name_en": "Easing Rate Hike Concerns",
+          "desc": "고용 둔화로 Fed의 금리 인상 압력 감소, 시장 심리 개선",
+          "desc_en": "Weak jobs data reduces Fed's pressure for rate hikes, improving market sentiment",
+          "category": "fed_policy"
+        },
+        {
+          "score": 10,
+          "name": "AI 혁명 지속 기대",
+          "name_en": "Continued AI Revolution Optimism",
+          "desc": "Dan Ives, AI 혁명의 '3회 초' 언급하며 엔비디아 등 AI 관련주 기대감 유지",
+          "desc_en": "Dan Ives' '3rd Inning' comment on AI revolution sustains optimism for Nvidia and AI stocks",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "지정학적 긴장 완화 기대",
+          "name_en": "Hopes for Geopolitical De-escalation",
+          "desc": "미-이란 평화 신호 및 호르무즈 해협 관련 긍정적 움직임",
+          "desc_en": "US-Iran peace signals and positive developments regarding Strait of Hormuz",
+          "category": "geopolitics"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "트럼프발 인플레이션 위협",
+          "name_en": "Trumpflation Inflation Threat",
+          "desc": "잠재적 트럼프 재집권 시 인플레이션 가속화 우려 제기",
+          "desc_en": "Concerns raised over potential acceleration of inflation under a future Trump administration",
+          "category": "geopolitics"
+        },
+        {
+          "score": 10,
+          "name": "AI 트레이드 로테이션 우려",
+          "name_en": "AI Trade Rotation Concerns",
+          "desc": "AI 관련 자금이 반도체에서 다른 섹터로 이동 가능성 시사",
+          "desc_en": "Suggests potential rotation of AI-related capital out of chips into other sectors",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "Alphabet 실적의 이면",
+          "name_en": "The Catch in Alphabet's Earnings",
+          "desc": "기록적인 이익에도 불구하고 시장은 그 지속 가능성 및 성장 동력에 대한 우려를 동시에 표출",
+          "desc_en": "Despite record profits, the market expresses simultaneous concerns about sustainability and growth drivers",
+          "category": "earnings_bellwether"
+        }
+      ]
+    },
+    {
       "id": "2026-08-08-11:31",
       "timestamp_kst": "2026-08-08(토) 11:31 KST",
       "key_event": {
@@ -472,60 +548,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-07-13:51",
-      "timestamp_kst": "2026-08-07(금) 13:51 KST",
-      "key_event": {
-        "name": "기술주 혼조 및 지정학적 긴장",
-        "name_en": "Mixed Tech Performance & Geopolitical Tensions",
-        "time": "직전 정규장 및 다음 정규장",
-        "why": "주요 기술주 방향성 혼조, 중동 리스크 지속, 시장 불확실성 증대",
-        "why_en": "Mixed direction in major tech stocks, persistent Middle East risks, increased market uncertainty"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "기술주 혼조 및 지정학적 긴장 지속으로 부정 우위 유지",
-      "summary_en": "Negative sentiment persists due to mixed tech performance and ongoing geopolitical tensions",
-      "positive_factors": [
-        {
-          "score": 20,
-          "name": "마이크로소프트 강세 지속",
-          "name_en": "Microsoft's Continued Strength",
-          "desc": "핵심 기술주 상승 견인, AI 리더십 기대감 유지",
-          "desc_en": "Driving gains in key tech stocks, sustained optimism for AI leadership",
-          "category": "company_specific"
-        },
-        {
-          "score": 15,
-          "name": "VIX 공포지수 하락",
-          "name_en": "VIX Fear Index Decline",
-          "desc": "시장 변동성 완화, 투자 심리 소폭 개선",
-          "desc_en": "Reduced market volatility, slight improvement in investor sentiment",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "중동 지정학적 긴장 지속",
-          "name_en": "Persistent Middle East Geopolitical Tensions",
-          "desc": "호르무즈 해협 관련 불확실성, 유가 상승 압력",
-          "desc_en": "Uncertainty surrounding Strait of Hormuz, upward pressure on oil prices",
-          "category": "geopolitics"
-        },
-        {
-          "score": 30,
-          "name": "미 국채금리 상승",
-          "name_en": "Rising US Treasury Yields",
-          "desc": "성장주 투자 매력 감소, 금리 인상 불확실성 반영",
-          "desc_en": "Reduced attractiveness for growth stocks, reflecting interest rate uncertainty",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-08T02:31:26Z",
+  "updated_at": "2026-08-08T09:20:57Z",
   "max_entries": 10
 }
