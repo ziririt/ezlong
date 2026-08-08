@@ -70,7 +70,11 @@ jobs:
       - name: AI 판단 타임라인 복원
         continue-on-error: true
         run: |
-          git fetch --deepen=400 origin main 2>/dev/null || true
+          # 커밋 수로 되짚으면(--deepen) 봇 커밋이 하루에 수십 개라 며칠밖에
+          # 못 간다. 기간으로 끊는다. 그래도 모자라면 스크립트가 기존 파일을
+          # 유지하므로 결과가 줄어들지는 않는다.
+          git fetch --shallow-since="120 days ago" origin main 2>/dev/null \
+            || git fetch --deepen=2000 origin main 2>/dev/null || true
           python3 scripts/extract-judgment-timeline.py
 
       # 새로 붙은 항목만 번역한다(원문 해시 캐시). 첫 실행만 무겁고 그 뒤로는

@@ -100,6 +100,29 @@ def main():
         print('::warning::뽑아낸 판단이 없다 — 파일을 쓰지 않는다')
         return 0
 
+    """이미 복원해 둔 날짜를 잃지 않는다.
+
+    워크플로 러너의 클론은 얕다(fetch-depth 1). git 이력을 얼마나 되짚을 수
+    있는지가 실행 환경마다 다르므로, 이 스크립트의 산출은 실행할 때마다
+    줄어들 수 있다 — 실제로 32일치가 4일치로 덮인 적이 있다. 그래서 결과를
+    새로 쓰지 않고 **기존 파일에 얹는다.** 같은 날짜는 더 늦은 시각이 이긴다.
+    이 병합을 지우면 얕은 실행 한 번이 복원해 둔 몇 주치를 지운다.
+    """
+    prev = {}
+    try:
+        with open(OUT, encoding='utf-8') as f:
+            prev = (json.load(f) or {}).get('verdicts') or {}
+    except (OSError, ValueError):
+        prev = {}
+    kept = 0
+    for d, v in prev.items():
+        cur = out.get(d)
+        if cur is None or (v.get('at') or '') > (cur.get('at') or ''):
+            out[d] = v
+            kept += 1
+    if kept:
+        print(f'기존 파일에서 {kept}일 유지')
+
     days = sorted(out)
     from collections import Counter
     dist = Counter(v['v'] for v in out.values())
