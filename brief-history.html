@@ -638,7 +638,17 @@
         // 크로스헤어 하단 날짜 표기 — 항상 YYYY-MM-DD 전체 표기
         timeFormatter: (time) => timeToDateStr(time) || '',
       },
-      handleScroll: true,
+      /* 터치에서 세로 스와이프는 차트가 가져가지 않는다(vertTouchDrag: false).
+         폰에서는 차트가 화면 대부분을 덮기 때문에, 차트 위에서 위아래로 쓸면
+         페이지가 안 내려가고 차트만 움직였다 — 읽던 사람이 갇히는 상황이다.
+         가로 스와이프(기간 이동)와 핀치 줌은 그대로 둔다. 라이브러리가 첫
+         움직임의 방향을 보고 세로면 손을 떼므로 브라우저가 페이지를 스크롤한다. */
+      handleScroll: {
+        mouseWheel: true,
+        pressedMouseMove: true,
+        horzTouchDrag: true,
+        vertTouchDrag: false,
+      },
       handleScale: true,
     });
 
