@@ -15,6 +15,7 @@ v4 노출 변조 모델을 '하루 1스텝' 진행시키고 두 파일을 쓴다
 """
 import json
 import os
+import re as _re
 from datetime import datetime, timezone, timedelta
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -145,22 +146,25 @@ def advance(state, day, price, buy, sell, gear, dev200, cap=None):
 
 def _streak_line(word, stance, days, chg):
     """같은 판단이 이어질 때 쓰는 한 줄. 그 구간의 등락을 반드시 함께 말한다.
-    판단이 시장에 뒤처졌으면 변명 없이 먼저 인정한다 — 2026-08-05 운영 지침.
-    맞았으면 맞았다고 담백하게. 어느 쪽이든 숫자 없이 일수만 세지 않는다."""
+
+    2026-08-08 개정 — 이전 판은 판단이 시장에 뒤처지면 '너무 보수적이었음을
+    인정한다' 같은 반성문을 붙였다. 그건 내부에서 오간 지적을 그대로 화면에
+    옮긴 것이고, 스탠스가 며칠 이어지면 같은 반성문이 며칠 연속 걸린다.
+    독자가 이 줄에서 얻어야 하는 건 사과가 아니라 "지금 시장이 어디에 있고
+    다음에 무엇을 보는가"다. 숫자는 그대로 공개한다 — 성적을 숨기지 않는다.
+    다만 자책·변명·사과는 쓰지 않는다."""
     base = f"'{word}' 판단 {days}일째"
     if chg is None:
         return base + '.'
     passive = stance in ('hold', 'wait', 'accumulate_wait')
     if passive and chg >= 3:
-        return (base + f' — 그 사이 {chg:+.1f}%. 반등 초입에 비중을 더 실었어야 했다. '
-                f'너무 보수적이었음을 인정한다. 지금 할 일은 남은 차수를 채우는 것.')
+        return base + f' — 그 사이 {chg:+.1f}%. 추세 진행 구간, 남은 차수는 조건 충족 시 집행.'
     if passive and chg <= -3:
-        return base + f' — 그 사이 {chg:+.1f}%. 버틴 쪽이 맞았던 구간.'
+        return base + f' — 그 사이 {chg:+.1f}%. 하락 구간 방어 유효.'
     if not passive and chg >= 3:
-        return base + f' — 그 사이 {chg:+.1f}%. 방향은 맞았음.'
+        return base + f' — 그 사이 {chg:+.1f}%. 방향 일치 구간.'
     if not passive and chg <= -3:
-        return (base + f' — 그 사이 {chg:+.1f}%. 판단이 빗나갔다. '
-                f'변명 없이 손절 기준부터 재확인할 자리.')
+        return base + f' — 그 사이 {chg:+.1f}%. 방향 불일치 — 손절 기준 재확인 구간.'
     return base + f' — 그 사이 {chg:+.1f}%.'
 
 
@@ -204,14 +208,11 @@ def self_review(state):
     bullish = past['act'] in ('ADD', 'INIT') or (past['act'] == 'WAIT' and past['expo'] >= 0.8)
     bearish = past['act'] in ('TRIM', 'STOP') or past['expo'] <= 0.2
     if bullish and chg <= -4:
-        return (f'짚고 갈 것 하나 — 5거래일 전 노출 유지·확대 쪽에 섰던 판단, '
-                f'이후 {chg:.1f}%로 빗나감. 변명 없이 그대로 기록. '
-                f'다만 그 판단의 전제였던 200일선 위 추세는 아직 유효, 손절선 관리로 대응하는 것이 원칙.')
+        return (f'5거래일 전 노출 유지·확대 판단 이후 {chg:.1f}%. '
+                f'전제였던 200일선 위 추세는 여전히 유효, 손절선 관리로 대응하는 구간.')
     if bearish and chg >= 4:
-        return (f'먼저 인정할 것 하나 — 5거래일 전 노출 축소 쪽에 섰던 판단 이후 '
-                f'가격은 오히려 +{chg:.1f}% 상승. 방어의 대가로 상승 일부를 놓친 셈. '
-                f'폭락 방어를 우선하는 구조라 이런 비용은 주기적으로 발생 — '
-                f'그 트레이드오프까지가 판단.')
+        return (f'5거래일 전 노출 축소 판단 이후 +{chg:.1f}%. '
+                f'방어의 대가로 상승분 일부 미확보 — 폭락 방어를 우선하는 구조의 상시 비용.')
     return None
 
 
@@ -1445,9 +1446,12 @@ def desk_with_fable(view, sc_entry, ca):
 - 오늘 날짜와 직전 장 정보는 초안 서술을 따를 것. '직전 장'을 언급할 때는 초안처럼 반드시 날짜를 병기하라 — 예: "직전 장(7월30일)".
 - [지금 장 국면] {_SESSION_PHASE_KO}. {_SESSION_PHASE_RULE}
 - [판단 연속성] {_FLOW_LINE}
-  이 줄이 "너무 보수적이었음을 인정한다"로 시작하면, headline에서 승리를 자랑하지 마라.
-  놓친 것은 놓쳤다고 하고, 지금 할 일(남은 차수)로 넘어가라. 신뢰는 맞히는 데서가 아니라
-  틀린 걸 먼저 말하는 데서 나온다.
+- [자기 평가 금지] 판단이 시장에 뒤처졌더라도 반성문·사과·자책을 쓰지 마라.
+  금지어 예시 — "실책", "인정한다", "너무 보수적이었다", "놓쳤다", "솔직한 복기",
+  "변명 없이". 반대로 자랑도 금지 — "적중", "예측대로"처럼 승리를 뽐내는 표현도 쓰지 마라.
+  숫자는 그대로 적어라(성적은 숨기지 않는다). 다만 문장은 지금 시장 상태와 다음 조건으로
+  쓴다 — 나쁨: "반등 초입에 더 못 실은 건 실책" / 좋음: "1배수는 채운 상태, 추가 차수는
+  새 매수 조건 점등 이후". 자랑도 자책도 독자에게는 정보가 아니다.
 - 쉬운 말만 쓴다. 어려운 한자어·업계 밖 용어 금지 — '만재(滿載)' 같은 화물 용어는
   실패 사례다. 일반 투자자가 한 번에 읽히는 단어로만.
 - 등락률을 말할 때는 반드시 대상을 붙여라. 주어 없는 "시장 +x%" 표기 금지 —
@@ -1488,6 +1492,42 @@ sections 3~5개: 직전 장 시황 / 터닝포인트 관문 / 오늘의 판단 /
     except Exception as e:
         print(f'::warning::[데스크] 호출 실패 — 규칙 논평 사용: {e}')
         return None
+
+
+# ── 자책·자랑 문장 청소기 (2026-08-08 신설) ────────────────────────────────
+# 이 글은 독자가 읽는 분석이다. "실책이었다", "인정한다" 같은 자기 평가는
+# 내부에서 오갈 말이지 화면에 실을 말이 아니다. 스탠스가 며칠 이어지면 같은
+# 반성문이 며칠 연속 걸린다는 게 실제 문제였다. 규칙 엔진 쪽 문장은 위에서
+# 이미 고쳤고, 이건 데스크(LLM)가 프롬프트 지시를 어겼을 때를 막는 마지막 문이다.
+# 문장 단위로만 걷어낸다 — 나머지 문장의 수치·판단은 손대지 않는다.
+_BLAME_RE = _re.compile(
+    r'실책|인정한다|인정함|인정\.|너무\s*보수적|보수적이었|더\s*실었어야|'
+    r'못\s*실은|놓쳤|반성|솔직한\s*복기|변명\s*없이|먼저\s*인정|'
+    r'예측대로|예상대로\s*적중|정확히\s*맞'
+)
+
+
+def _blame_free(text):
+    """자기 평가 문장만 빼고 돌려준다. 남는 게 없으면 빈 문자열."""
+    if not text or not _BLAME_RE.search(text):
+        return text
+    kept = [x for x in _re.split(r'(?<=[.!?])\s+', text) if not _BLAME_RE.search(x)]
+    out = ' '.join(kept).strip()
+    if not out:
+        # 한 문장 안에 섞인 경우 — 대시 구획으로 한 번 더 잘라 살릴 수 있는 절을 남긴다
+        segs = [x.strip() for x in _re.split(r'\s*—\s*', text) if x.strip()]
+        out = ' — '.join(x for x in segs if not _BLAME_RE.search(x)).strip()
+    return out if len(out) >= 12 else ''
+
+
+def scrub_blame(node):
+    if isinstance(node, str):
+        return _blame_free(node)
+    if isinstance(node, list):
+        return [x for x in (scrub_blame(v) for v in node) if x not in ('', None)]
+    if isinstance(node, dict):
+        return {k: scrub_blame(v) for k, v in node.items()}
+    return node
 
 
 def main():
@@ -1661,6 +1701,14 @@ def main():
     desked = desk_with_fable(view, (load_scorecard() or [None])[0], load_chart_engine())
     if desked:
         view['desked'] = desked
+
+    # 자기 평가 문장 제거 — 데스크가 프롬프트를 어겨도 화면에는 못 나가게 한다.
+    view = scrub_blame(view)
+    _dk = view.get('desked') or {}
+    if _dk and not _dk.get('headline'):
+        # headline 이 통째로 자기 평가였던 경우 — 카드 제목이 비면 안 되므로
+        # 스탠스 라벨로 대체한다(항상 존재하는 값).
+        _dk['headline'] = (view.get('comp') or {}).get('stanceLabel') or '오늘의 판단'
 
     with open(LEDGER, 'w', encoding='utf-8') as f:
         json.dump(ledger, f, ensure_ascii=False, indent=1)

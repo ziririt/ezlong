@@ -48,6 +48,16 @@ INTERNAL = re.compile(
 # 공유카드·스플래시를 새로 받으면 눈으로 한 번 확인할 것.
 BANNED_COPY = re.compile(r'오래\s*두면\s*편해진다')
 
+# 독자가 읽는 글에 나가면 안 되는 "자기 평가" 표현 (2026-08-08 신설).
+# 사고: 스윙 판단 카드가 "반등 초입에 더 못 실은 건 실책 — …", "너무 보수적이었음을
+# 인정한다"를 며칠 연속 걸고 있었다. 내부에서 오간 지적을 그대로 화면에 옮긴 것이다.
+# 독자는 분석을 보러 오지 사과문을 보러 오지 않는다. 자랑도 같이 막는다 — 자책이든
+# 자랑이든 독자에게는 정보가 아니다. 숫자로 성적을 공개하는 것과는 다른 문제다.
+SELF_BLAME = re.compile(
+    r'실책|인정한다|너무\s*보수적|보수적이었|더\s*실었어야|못\s*실은|'
+    r'놓쳤|솔직한\s*복기|변명\s*없이|먼저\s*인정|예측대로|정확히\s*맞'
+)
+
 # firebase.json 에서 /icons/** · /splash/** 를 1년 immutable 로 걸어 두었다.
 # 그 자산은 URL 에 버전이 없으면 내용을 바꿔도 브라우저·엣지가 1년 동안 옛것을
 # 계속 쓴다. 2026-08-06 실제로 심볼을 바꿨는데 파비콘만 옛 그림으로 남았다.
@@ -180,12 +190,13 @@ def main():
                 src = open(p, encoding='utf-8').read()
             except (OSError, UnicodeDecodeError):
                 continue
-            for m in INTERNAL.finditer(src):
-                a = max(0, m.start() - 30)
-                internal.append(('data/' + f, src[a:m.end() + 50].replace('\n', ' ')))
+            for rx in (INTERNAL, SELF_BLAME):
+                for m in rx.finditer(src):
+                    a = max(0, m.start() - 30)
+                    internal.append(('data/' + f, src[a:m.end() + 50].replace('\n', ' ')))
 
     if internal:
-        print('[경고] 생성 카피에 내부 사정 표현 %d건 — 다음 파이프라인 실행에서 갱신되어야 한다:'
+        print('[경고] 생성 카피에 내부 사정·자기 평가 표현 %d건 — 다음 파이프라인 실행에서 갱신되어야 한다:'
               % len(internal))
         seen = set()
         for rel, txt in internal:
