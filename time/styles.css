@@ -1313,10 +1313,17 @@ button { font: inherit; }
    .settings-divider/.settings-subtitle의 다크 기본값(흰 텍스트)이 이제
    그대로 잘 맞으므로, 예전에 라이트 톤으로 뒤집던 스코프 오버라이드
    블록은 전부 제거했다 — 기본값을 그대로 상속한다. */
+/* 2026-08-09 이슈 제보(스크린샷) — 마지막 카드의 마지막 문장이 화면
+   밑끝에 거의 붙어 끝난다. 예전 값은 max(28px, safe-area) 였는데, 홈
+   인디케이터 기기에서 safe-area 가 34px 안팎이라 결국 "34px 만에 화면이
+   끝나는" 셈이었다. 안전영역은 잘리지 않기 위한 최소치일 뿐 읽기 좋은
+   여백이 아니다 — 그래서 안전영역 위에 여백을 얹는 방식으로 바꾼다.
+   스크롤이 끝났다는 신호를 눈으로 주는 것도 이 여백의 역할이다. */
 .weather-detail-sheet {
   max-width: 760px;
   margin: 0 auto;
-  padding: max(28px, env(safe-area-inset-top)) clamp(20px, 5vw, 34px) max(28px, env(safe-area-inset-bottom));
+  padding: max(28px, env(safe-area-inset-top)) clamp(20px, 5vw, 34px)
+    calc(env(safe-area-inset-bottom, 0px) + clamp(56px, 12vw, 88px));
   background: transparent;
   color: #fff;
 }

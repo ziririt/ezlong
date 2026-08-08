@@ -247,5 +247,16 @@ window.aladinLinks = {
   "주식 투자자의 회상|에드윈 르페브르": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=333428000&partner=friends327",
   "최고의 주식 최적의 타이밍 (How to Make Money in Stocks)|윌리엄 오닐 (William J. O'Neil)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=17788668&partner=friends327",
   "투자에 대한 생각 (The Most Important Thing)|하워드 막스 (Howard Marks)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=19905832&partner=friends327",
-  "투자에 대한 생각|하워드 막스 (Howard Marks)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=19905832&partner=friends327"
+  "투자에 대한 생각|하워드 막스 (Howard Marks)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=19905832&partner=friends327",
+  "비커밍|미셸 오바마 (Michelle Obama)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=54846298&partner=friends327",
+  "모든 주식을 소유하라 (The Little Book of Common Sense Investing)|존 보글 (John C. Bogle)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=372978368&partner=friends327",
+  "언제 들어도 좋은 말|이석원": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=66411912&partner=friends327",
+  "밀크 앤 허니 (Milk and Honey)|루피 카우르 (Rupi Kaur)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=106779719&partner=friends327",
+  "너에게 묻는다|안도현": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=366124867&partner=friends327",
+  "주식시장을 이기는 작은 책|조엘 그린블라트 (Joel Greenblatt)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=648220&partner=friends327",
+  "흔들리며 피는 꽃|도종환": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=19064242&partner=friends327",
+  "별 헤는 밤|윤동주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=83474992&partner=friends327",
+  "행운에 속지 마라 (Fooled by Randomness)|나심 니콜라스 탈레브 (Nassim Nicholas Taleb)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=6904292&partner=friends327",
+  "제시 리버모어의 회상 (Reminiscences of a Stock Operator)|제시 리버모어 (Jesse Livermore)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=7447533&partner=friends327",
+  "진달래꽃|김소월": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=150892569&partner=friends327"
 };
