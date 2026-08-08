@@ -8896,19 +8896,37 @@ let quoteCopiedTimer = null;
 
 // 2026-08-09 운영자 추가 요청 — 복사 맨 끝에 그 책을 더 볼 수 있는 링크를
 // 붙인다. 어느 서점이냐는 quote-source 모듈이 로케일을 보고 정한다:
-// 한국어면 알라딘(제휴 파라미터 포함), 영어면 미국 아마존 검색, 그 밖의
-// 언어면 null — 즉 링크가 없는 책·언어에서는 아무것도 붙지 않는다.
+// 한국어면 알라딘, 그 밖의 모든 언어면 아마존(지역은 로케일에 맞춰 고른다).
+// 링크를 만들 수 없는 책이면 아무것도 붙지 않는다.
+// 2026-08-09 운영 지침 — 복사본 링크에서는 제휴 파라미터를 뗀다. 남이
+// 붙여넣어 읽을 주소에 내 제휴 ID가 따라다닐 이유가 없고, 주소도 길어진다.
+// 화면 버튼(알라딘 모달)이 여는 링크는 손대지 않으므로 수수료 추적에는
+// 영향이 없다 — 복사본만 깨끗해진다. 알라딘 partner 와 아마존 tag 를 같은
+// 기준으로 다룬다(둘 중 하나만 빼면 어느 쪽이 왜 남았는지 설명할 길이 없다).
+function stripAffiliateParams(url) {
+  try {
+    const parsed = new URL(url);
+    parsed.searchParams.delete("partner");
+    parsed.searchParams.delete("tag");
+    const query = parsed.searchParams.toString();
+    return query ? parsed.origin + parsed.pathname + "?" + query : parsed.origin + parsed.pathname;
+  } catch (error) {
+    // URL 파싱이 안 되는 이상한 주소여도 복사 자체는 막지 않는다.
+    return url.replace(/[?&](partner|tag)=[^&]*/g, "").replace(/\?&/, "?").replace(/[?&]$/, "");
+  }
+}
+
 function currentQuoteBookLink() {
   try {
     if (FZ_QUOTE_SRC && typeof FZ_QUOTE_SRC.resolve === "function" && lastRenderedQuote) {
       const link = FZ_QUOTE_SRC.resolve(lastRenderedQuote, {});
-      if (link && link.url) return link.url;
+      if (link && link.url) return stripAffiliateParams(link.url);
     }
   } catch (error) { /* 링크 하나 때문에 복사 자체가 막히면 안 된다 */ }
   // 모듈이 없거나 실패한 경우의 안전망 — 화면의 알라딘 버튼이 이미 링크를
   // 들고 있으면(= 보이는 상태면) 그것을 쓴다.
   if (quoteAladinLink && !quoteAladinLink.hidden && quoteAladinLink.dataset.url) {
-    return quoteAladinLink.dataset.url;
+    return stripAffiliateParams(quoteAladinLink.dataset.url);
   }
   return "";
 }
