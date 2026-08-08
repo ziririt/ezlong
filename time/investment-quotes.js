@@ -8895,5 +8895,12 @@ window.investmentQuotes = [
     "title": "행운에 속지 마라 (Fooled by Randomness)",
     "author": "나심 니콜라스 탈레브 (Nassim Nicholas Taleb)",
     "category": "mindset"
+  },
+  {
+    "english": "You don't have to understand life. You just have to live it.",
+    "text": "인생을 전부 이해할 필요는 없다. 그저 살아내면 되는 것이다.",
+    "title": "미드나잇 라이브러리 (The Midnight Library)",
+    "author": "매트 헤이그 (Matt Haig)",
+    "genre": "literature"
   }
 ];
