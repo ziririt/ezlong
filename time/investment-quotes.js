@@ -8956,5 +8956,12 @@ window.investmentQuotes = [
     "title": "레슨 인 케미스트리 (Lessons in Chemistry)",
     "author": "보니 가머스 (Bonnie Garmus)",
     "genre": "literature"
+  },
+  {
+    "english": "The time of maximum pessimism is the best time to buy, and the time of maximum optimism is the best time to sell. To buy when others are despondently selling and to sell when others are greedily buying requires the greatest fortitude, even while offering the greatest reward.",
+    "text": "최고의 비관이 지배할 때가 매수의 최적기이고, 최고의 낙관이 지배할 때가 매도의 최적기다. 남들이 절망 속에 팔 때 사고, 남들이 탐욕스럽게 살 때 파는 일은 가장 큰 용기를 요구하지만 그만큼 가장 큰 보상을 안겨준다.",
+    "title": "더 템플턴 터치 (The Templeton Touch)",
+    "author": "존 템플턴 (John Templeton)",
+    "category": "mindset"
   }
 ];
