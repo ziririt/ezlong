@@ -110,10 +110,10 @@
     ['/atmr-dashboard.html#swing-strategy', '스윙 전략', '스윙 전략 — 3-3-4 원칙 · 레버리지 가이드'],
     ['/atmr-dashboard.html#top9',   'TOP9 집중분석',  'TOP9 집중분석 — 테슬라·엔비디아 등 빅테크 9종 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
     ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇 — AI 시황 분석'],
-    ['/brief-history.html',         '차트: 그날 무슨 일이 있었나', '차트: 그날 무슨 일이 있었나 — 날짜별 미국 증시 이슈 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
+    ['/brief-history.html',         '차트: 그날 무슨 일이 있었나<span style="display:inline-block;background:#ff3b30;color:#fff;font-size:11px;font-weight:800;border-radius:5px;padding:0 4px;margin-left:4px;vertical-align:middle;line-height:1.5;">NEW</span>', '차트: 그날 무슨 일이 있었나 — 날짜별 미국 증시 이슈 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
     ['/stocks.html',                '심플 주가',      '심플 주가 정보'],
     ['/chart-analysis.html',        'AI 차트분석',    'AI 차트 분석'],
-    ['/model-portfolio.html',       '포트폴리오 점검', '포트폴리오 점검 — 공격형 AI 시대 26종목 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
+    ['/model-portfolio.html',       'AI포트폴리오 점검<span style="display:inline-block;background:#ff3b30;color:#fff;font-size:11px;font-weight:800;border-radius:5px;padding:0 4px;margin-left:4px;vertical-align:middle;line-height:1.5;">NEW</span>', 'AI포트폴리오 점검 — 공격형 AI 시대 26종목 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
     ['/market-cycle.html',          '마켓 사이클',    '하락장 변곡점 감시'],
     ['/dca-simulator.html',         'DCA 시뮬레이터', 'DCA 복리 시뮬레이터'],
     ['/portfolio-manager.html',     'AI 포트폴리오',  '투자성향별 AI 포트폴리오'],
@@ -173,7 +173,9 @@
     var fullLbl  = links[i][2];
     var active   = computeActive(href, curHash);
 
-    if (active) activeShort = shortLbl;
+    /* 모바일 메뉴 버튼 라벨에는 칩에 붙인 NEW 배지를 빼고 글자만 쓴다 —
+       버튼이 좁아 배지까지 들어가면 종목명이 잘린다. */
+    if (active) activeShort = shortLbl.replace(/<span[^>]*>NEW<\/span>/, '');
 
     desktopLinksHTML +=
       '<a href="' + href + '" class="ez-nav-svc-link' + (active ? ' active' : '') + '">' +

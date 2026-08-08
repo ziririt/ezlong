@@ -39,10 +39,18 @@ jobs:
         with:
           python-version: '3.11'
 
-      # 소사(A Brief History)의 날짜축에 새 글을 얹는다. 손으로 쓴 소사는 건드리지
-      # 않고, source=own_archive 항목만 매번 다시 만든다(멱등).
-      # 이 단계가 깨져도 원래 있던 naver-content.json 갱신은 그대로 커밋되게 둔다 —
-      # 새로 붙인 기능이 기존 파이프라인을 같이 죽이면 안 된다.
+      # 가격 곡선을 먼저 최신으로 — 이슈의 등락 수치가 이 파일에서 계산된다.
+      # 이 단계가 밀리면 최근 며칠 이슈가 차트에 점도 못 찍고 등락도 비게 된다.
+      - name: 이슈 차트 데이터 갱신
+        continue-on-error: true
+        run: |
+          pip install yfinance --quiet 2>/dev/null || pip install yfinance
+          python3 scripts/fetch-brief-history-chart.py
+
+      # 이슈(A Brief History)의 날짜축에 새 글을 얹는다. 손으로 쓴 항목은 건드리지
+      # 않고, source=own_archive 만 매번 다시 만든다(멱등).
+      # 아래 단계들이 깨져도 원래 있던 naver-content.json 갱신은 그대로 커밋되게
+      # 둔다 — 새로 붙인 기능이 기존 파이프라인을 같이 죽이면 안 된다.
       - name: 이슈에 새 글 반영
         continue-on-error: true
         run: python3 scripts/merge-naver-archive.py
@@ -70,7 +78,8 @@ jobs:
           # actions/checkout@v4가 이미 올바른 상태. 추가 fetch/reset 불필요.
           # 새 글이 실제로 생겼는가 — naver-content.json 은 updatedAt 때문에 매번
           # 달라지므로 신선도 판정에는 쓸 수 없다. 목록·소사가 바뀌었는지로 본다.
-          git add data/naver-archive.json data/brief-history.json data/brief-history-*.json
+          git add data/naver-archive.json data/brief-history.json data/brief-history-*.json \
+                  data/brief-history-chart.json
           if git diff --staged --quiet; then
             echo "새 글 없음"
             echo "fresh=no" >> "$GITHUB_OUTPUT"
