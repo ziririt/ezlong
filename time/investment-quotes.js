@@ -8936,5 +8936,11 @@ window.investmentQuotes = [
     "title": "워런 버핏과의 점심식사",
     "author": "가이 스파이어 (Guy Spier)",
     "category": "behavior"
+  },
+  {
+    "text": "머리에서 가슴까지의 여행은 가장 먼 여행입니다. 가슴에서 발까지의 여행은 더 먼 여행입니다.",
+    "title": "담론",
+    "author": "신영복",
+    "genre": "literature"
   }
 ];
