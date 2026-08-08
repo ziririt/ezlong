@@ -49,8 +49,6 @@
   .mp-brand { font-size:14px; letter-spacing:.14em; color:var(--ez-text3); font-weight:800; text-transform:uppercase; }
   .mp-head h1 { font-size:30px; margin:8px 0 0; letter-spacing:-.02em; font-weight:800; line-height:1.28; color:var(--ez-text); }
   .mp-sub { color:var(--ez-text2); font-size:16px; margin-top:10px; }
-  .mp-stamp { color:var(--ez-text3); font-size:14px; margin-top:8px; }
-  .mp-stamp b { color:var(--ez-text2); }
   @media (max-width:480px) { .mp-head h1 { font-size:25px; } }
 
   .lede { background:var(--ez-card); border:1px solid var(--ez-border);
@@ -303,7 +301,6 @@
     <div class="mp-brand">EZLONG · 포트폴리오 점검</div>
     <h1>포트폴리오를 점검해보세요</h1>
     <p class="mp-sub">AI가 소프트웨어에서 나와 전기와 쇳덩이와 우주로 넘어가는 10년, 그 가치사슬 전체를 한 장으로.</p>
-    <div class="mp-stamp" id="stamp"></div>
   </header>
 
   <div id="app">
@@ -673,16 +670,6 @@
     paintSum();
   }
 
-  /* 상단 '주식 100%' 도 고정 문구가 아니다 — 내가 고쳤으면 실제 합계를 쓴다. */
-  function paintStamp() {
-    var el = document.getElementById('stamp');
-    if (!el || !D) return;
-    var t = round1(totalW());
-    el.innerHTML = '기준일 <b>' + esc(D.meta.asOfLabel) + '</b> · 주식 ' + t.toFixed(t % 1 ? 1 : 0) +
-      '% · ' + D.holdings.length + '종목 · ' + esc(D.meta.version) +
-      '<br>시세·주간 RSI는 매주 일요일 갱신 · 최종 갱신 ' + esc(D.meta.updatedKST);
-  }
-
   function paintBanner() {
     var el = document.getElementById('myBanner');
     if (!el) return;
@@ -730,7 +717,6 @@
      boot 와 rerender 가 같은 함수를 쓴다 — 두 벌로 나뉘면 한쪽만 고치는
      사고가 난다(공유 함수 동기화 원칙). */
   function wireSections(built) {
-    paintStamp();
     paintBanner();
 
     /* 편집 버튼은 '테마별 비중'과 '포트폴리오' 두 곳에 있다. 비중을 보다가
@@ -793,7 +779,6 @@
 
   function boot(data) {
     D = data;
-    paintStamp();
     document.getElementById('risk').innerHTML = '<p><b>리스크 고지</b></p>' +
       D.disclaimer.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
       '<p style="margin-top:14px">데이터 출처 ' + esc(D.meta.priceSource) + ' · 기준일 ' +
