@@ -8869,5 +8869,11 @@ window.investmentQuotes = [
     "title": "주식시장을 이기는 작은 책",
     "author": "조엘 그린블라트 (Joel Greenblatt)",
     "category": "mindset"
+  },
+  {
+    "text": "흔들리지 않고 피는 꽃이 어디 있으랴\n이 세상 그 어떤 아름다운 꽃들도\n다 흔들리면서 피었나니\n흔들리면서 줄기를 곧게 세웠나니",
+    "title": "흔들리며 피는 꽃",
+    "author": "도종환",
+    "genre": "literature"
   }
 ];
