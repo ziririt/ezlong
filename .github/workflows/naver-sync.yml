@@ -48,16 +48,39 @@ jobs:
         run: python3 scripts/merge-naver-archive.py
 
       - name: Commit updated data (if changed)
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # git reset --hard 금지 (CLAUDE.md Rule 2/16) — tracked 파일 소멸 위험
           # actions/checkout@v4가 이미 올바른 상태. 추가 fetch/reset 불필요.
-          git add data/naver-content.json data/naver-archive.json data/brief-history.json
+          # 새 글이 실제로 생겼는가 — naver-content.json 은 updatedAt 때문에 매번
+          # 달라지므로 신선도 판정에는 쓸 수 없다. 목록·소사가 바뀌었는지로 본다.
+          git add data/naver-archive.json data/brief-history.json
+          if git diff --staged --quiet; then
+            echo "새 글 없음"
+            echo "fresh=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "새 글 반영됨"
+            echo "fresh=yes" >> "$GITHUB_OUTPUT"
+          fi
+
+          git add data/naver-content.json
           if git diff --staged --quiet; then
             echo "변경 없음, 커밋 생략"
           else
             git commit -m "chore: naver content sync $(TZ='Asia/Seoul' date +'%Y-%m-%d %H:%M KST')"
             git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
           fi
+
+      # 봇(GITHUB_TOKEN) push 는 firebase-hosting.yml 을 트리거하지 않는다(깃허브 정책).
+      # 새 글이 실제로 생긴 날만 직접 배포한다 — 그래야 아침에 확인한 글이
+      # 몇 시간 뒤 다른 워크플로의 배포를 기다리지 않고 바로 화면에 뜬다.
+      - name: 새 글이 있으면 배포
+        if: steps.commit.outputs.fresh == 'yes'
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          npm install -g firebase-tools --quiet
+          firebase deploy --only hosting --project ezlong-541a8 --token "$FIREBASE_TOKEN" || true
