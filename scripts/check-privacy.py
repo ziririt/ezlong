@@ -20,6 +20,7 @@
 사용
   python3 scripts/check-privacy.py          # 저장소 루트에서
 """
+import glob
 import os
 import re
 import sys
@@ -125,6 +126,31 @@ def strip_html(s):
                lambda m: m.group(1) + strip_js(m.group(2)) + m.group(3),
                s, flags=re.S | re.I)
     return s
+
+
+def check_mojibake():
+    """화면에 나가는 텍스트에 U+FFFD 가 섞였는지 본다.
+
+    LLM 응답을 청크로 이어붙일 때 setEncoding('utf8') 을 빼면, 청크 경계에
+    걸친 한글·가나·한자 한 글자가 이 문자로 바뀐 채 조용히 통과한다.
+    파싱도 되고 에러도 안 나서, 사람이 화면에서 보기 전까지 아무도 모른다.
+    실제로 브리핑 37일치와 일본어·중국어 번역본이 이 상태로 배포됐다.
+    """
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    out = []
+    for pat in ('*.html', 'data/*.json', '*/brief-history.html'):
+        for path in glob.glob(os.path.join(root, pat)):
+            rel = os.path.relpath(path, root)
+            if rel.startswith('.') or '/node_modules/' in rel:
+                continue
+            try:
+                with open(path, encoding='utf-8') as f:
+                    n = f.read().count('�')
+            except (OSError, UnicodeDecodeError):
+                continue
+            if n:
+                out.append((rel, n))
+    return out
 
 
 def main():
@@ -233,7 +259,15 @@ def main():
     if banned_copy or unversioned or only_cmt:
         return 1
 
-    print('[통과] 개인 지칭·금지 문구 없음, 캐시 자산 버전 표기 정상.')
+    broken = check_mojibake()
+    if broken:
+        print('[차단] 글자가 깨진 채 배포될 파일 %d개:' % len(broken))
+        for rel, n in broken:
+            print('  %s  U+FFFD %d개' % (rel, n))
+        print('\n응답을 청크로 이어붙일 때 setEncoding("utf8") 이 빠지면 한 글자가 이렇게 깨집니다.')
+        return 1
+
+    print('[통과] 개인 지칭·금지 문구 없음, 캐시 자산 버전 표기 정상, 깨진 글자 없음.')
     return 0
 
 

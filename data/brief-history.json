@@ -1180,12 +1180,336 @@
   "source": "external_knowledge"
  },
  {
+  "date": "2022-01-03",
+  "title": "2022년 첫 거래일 강세 — 애플 시총 3조달러 첫 도달",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "애플·테슬라 강세",
+    "tone": "pos",
+    "cat": "company_specific",
+    "points": [
+     "애플 장중 시가총액 3조달러 최초 도달",
+     "테슬라 4분기 인도량 30만8600대로 분기 기록 경신",
+     "나스닥 종합 1.2% 상승한 15,832.80 마감"
+    ]
+   },
+   {
+    "heading": "금리 상승·가치주",
+    "tone": "pos",
+    "cat": "rates_treasury",
+    "points": [
+     "10년물 국채금리 13bp 오른 1.628%로 상승",
+     "금리 수혜 기대에 뱅크오브아메리카 3.8%·씨티그룹 4.5% 상승",
+     "에너지 섹터 ETF 3.1%·기술 섹터 1% 상승"
+    ]
+   },
+   {
+    "heading": "오미크론 우려 완화",
+    "tone": "pos",
+    "cat": "other",
+    "points": [
+     "오미크론 중증도가 이전 변이보다 낮다는 의료계 판단 확산",
+     "노르위전크루즈·아메리칸항공·라스베이거스샌즈 등 여행·레저주 3~7% 상승",
+     "VIX 3.6% 하락한 16.60"
+    ]
+   }
+  ],
+  "cats": [
+   "company_specific",
+   "other",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.96,
+   "SPY(VOO)": 0.61,
+   "SOXX": 1.99
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-01-04",
+  "title": "금리 급등에 기술주 이탈 — 다우 최고치·나스닥 1.3% 하락",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "10년물 금리 급등",
+    "tone": "neg",
+    "cat": "rates_treasury",
+    "points": [
+     "10년물 국채금리 1.71%까지 상승",
+     "3월 또는 4월 첫 금리인상 전망 확산",
+     "엔비디아 2.8%·크라우드스트라이크 4.6% 하락, 기술 섹터 1.1% 하락"
+    ]
+   },
+   {
+    "heading": "에너지·금융 강세",
+    "tone": "pos",
+    "cat": "oil_energy",
+    "points": [
+     "에너지 3.5%·금융 2.62%·산업재 2% 상승",
+     "다우 3만6799.65로 사상 최고 마감"
+    ]
+   },
+   {
+    "heading": "제조업 지표 둔화",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "12월 ISM 제조업지수 58.7로 11개월 최저",
+     "시장 예상치 60.3 하회",
+     "11월 구인건수 1056만건으로 전월 1109만건 대비 감소"
+    ]
+   }
+  ],
+  "cats": [
+   "macro_data",
+   "oil_energy",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.3,
+   "SPY(VOO)": -0.04,
+   "SOXX": -0.31
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
   "date": "2022-01-05",
   "title": "연준 조기 긴축 시사(12월 의사록)에 급락",
   "summary": "공개된 12월 FOMC 의사록에서 예상보다 매파적인 조기 금리인상·양적긴축 논의가 확인되며 성장주 중심 매도세가 시작됐다.",
   "importance": 3,
   "moves": {
    "QQQ": -3.07
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-01-06",
+  "title": "FOMC 의사록 후폭풍 지속 — 10년물 1.75% 돌파",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "긴축 경계 지속",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "10년물 국채금리 1.75%까지 상승",
+     "연준 인사들의 공격적 금리인상·대차대조표 축소 시사 부담",
+     "애플·마이크로소프트·넷플릭스 0.8~2.5% 하락"
+    ]
+   },
+   {
+    "heading": "지표 혼조",
+    "tone": "neu",
+    "cat": "macro_data",
+    "points": [
+     "주간 신규 실업수당 청구 20만7000건으로 예상 19만6000건 상회",
+     "무역적자 802억달러로 전망 초과",
+     "12월 ISM 서비스업지수 69.1에서 62로 하락"
+    ]
+   },
+   {
+    "heading": "에너지·금융 강세",
+    "tone": "pos",
+    "cat": "oil_energy",
+    "points": [
+     "에너지 2.2%·금융 1.5% 상승",
+     "헬스케어 1.2%·소재 1.3%·유틸리티 1% 하락으로 지수 낙폭 제한"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "macro_data",
+   "oil_energy"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.07,
+   "SPY(VOO)": -0.13,
+   "SOXX": 0.78
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-01-07",
+  "title": "12월 고용 부진에도 금리 1.8% — 반도체 급락",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "12월 고용 부진",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "12월 비농업 고용 19만9000건으로 예상 42만2000건 크게 하회",
+     "실업률 3.9%로 하락, 시간당 임금 0.6% 상승으로 예상 상회",
+     "임금 상승에 따른 조기 긴축 우려 확산"
+    ]
+   },
+   {
+    "heading": "10년물 1.8% 돌파",
+    "tone": "neg",
+    "cat": "rates_treasury",
+    "points": [
+     "10년물 국채금리 1.8%까지 상승, 전년말 1.51% 대비 급등",
+     "연준 12월 의사록의 빠른 부양 축소 시사 여파 지속"
+    ]
+   },
+   {
+    "heading": "반도체 급락",
+    "tone": "neg",
+    "cat": "ai_tech_valuation",
+    "points": [
+     "엔비디아 3.3%·AMD 3.1% 하락",
+     "기술 섹터 ETF 0.9%·경기소비재 ETF 1.7% 하락",
+     "나스닥 1% 하락한 14,935.90 마감"
+    ]
+   }
+  ],
+  "cats": [
+   "ai_tech_valuation",
+   "macro_data",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.08,
+   "SPY(VOO)": -0.35,
+   "SOXX": -2.9
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-01-10",
+  "title": "나스닥 장중 2.7% 급락 후 반등 마감",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "장중 급락 후 반등",
+    "tone": "pos",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "나스닥 장중 2.7% 하락 후 상승 전환 마감",
+     "2020년 2월 28일 이후 최대 장중 되돌림",
+     "테슬라 3%·엔비디아 0.6% 반등 마감"
+    ]
+   },
+   {
+    "heading": "금리 부담 지속",
+    "tone": "neg",
+    "cat": "rates_treasury",
+    "points": [
+     "10년물 국채금리 1.8% 상회, 전년말 1.5% 대비 상승",
+     "다우 4거래일 연속·S&P500 5거래일 연속 하락",
+     "산업재 1.1%·소재 1% 하락 등 11개 업종 중 9개 하락"
+    ]
+   }
+  ],
+  "cats": [
+   "rates_treasury",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.07,
+   "SPY(VOO)": -0.13,
+   "SOXX": 0.04
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-01-11",
+  "title": "파월 청문회 안도 — 3대 지수 동반 반등",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "파월 청문회",
+    "tone": "pos",
+    "cat": "fed_policy",
+    "points": [
+     "파월 의장 상원 청문회에서 신중한 금리인상 기조 언급",
+     "급격한 긴축 우려 완화로 성장주 투자심리 회복",
+     "나스닥 1.4%·S&P500 0.9%·다우 0.5% 상승"
+    ]
+   },
+   {
+    "heading": "에너지 강세",
+    "tone": "pos",
+    "cat": "oil_energy",
+    "points": [
+     "국제유가 배럴당 80달러 상회",
+     "에너지 섹터 3.4%·기술 섹터 1.2% 상승",
+     "애플 1.7%·메타 1.9% 상승"
+    ]
+   },
+   {
+    "heading": "위험선호 회복",
+    "tone": "pos",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "VIX 5.51% 하락",
+     "상승 종목 수가 하락 종목 수 크게 상회"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "oil_energy",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.5,
+   "SPY(VOO)": 0.88,
+   "SOXX": 1.88
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-01-12",
+  "title": "12월 CPI 7% — 예상 부합에 안도 매수",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "12월 소비자물가",
+    "tone": "pos",
+    "cat": "macro_data",
+    "points": [
+     "12월 CPI 전월비 0.5% 상승으로 예상 0.4% 소폭 상회",
+     "전년비 7%로 1982년 이후 최고치이나 시장 전망과 대체로 부합",
+     "추가 서프라이즈 부재로 긴축 가속 우려 후퇴"
+    ]
+   },
+   {
+    "heading": "경기민감주 매수",
+    "tone": "pos",
+    "cat": "other",
+    "points": [
+     "소재 섹터 1%·경기소비재 0.7% 상승, 11개 업종 중 10개 상승",
+     "프리포트맥모란 5% 상승",
+     "테슬라 3.9%·마이크로소프트 1% 상승"
+    ]
+   }
+  ],
+  "cats": [
+   "macro_data",
+   "other"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.4,
+   "SPY(VOO)": 0.3,
+   "SOXX": 0.73
   },
   "link": null,
   "source": "external_knowledge"
@@ -1213,6 +1537,192 @@
   "cats": [
    "fed_policy"
   ],
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-01-14",
+  "title": "은행 실적 실망·소비 부진 속 기술주 반등",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "은행 실적 실망",
+    "tone": "neg",
+    "cat": "earnings_bellwether",
+    "points": [
+     "씨티그룹 예상 상회에도 분기 순이익 전년비 24% 감소로 주가 1.3% 하락",
+     "퍼스트리퍼블릭 비용 급증에 4.2% 하락",
+     "부동산 1.2%·금융 1% 하락"
+    ]
+   },
+   {
+    "heading": "소매판매 급감",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "12월 소매판매 전월비 1.9% 감소",
+     "물가 상승에 따른 연말 소비 위축 확인"
+    ]
+   },
+   {
+    "heading": "기술주·에너지 반등",
+    "tone": "pos",
+    "cat": "other",
+    "points": [
+     "나스닥 0.6% 상승한 14,893.75로 반등 마감",
+     "에너지 섹터 ETF 2.4% 상승",
+     "마카오 카지노 6개 사업자 유지 결정에 라스베이거스샌즈 14.2%·윈리조트 8.6% 급등"
+    ]
+   }
+  ],
+  "cats": [
+   "earnings_bellwether",
+   "macro_data",
+   "other"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.62,
+   "SPY(VOO)": 0.03,
+   "SOXX": 2.39
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-01-18",
+  "title": "국채금리 2년 최고·골드만 실적 쇼크에 나스닥 2.6% 급락",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "국채금리 2년 최고",
+    "tone": "neg",
+    "cat": "rates_treasury",
+    "points": [
+     "10년물 국채금리 1.866%로 2년 최고",
+     "2년물 국채금리 1.038%까지 상승",
+     "할인율 상승 부담에 기술 섹터 2.4%·경기소비재 1.9% 하락"
+    ]
+   },
+   {
+    "heading": "골드만 실적 부진",
+    "tone": "neg",
+    "cat": "earnings_bellwether",
+    "points": [
+     "골드만삭스 4분기 순이익 시장 기대 하회",
+     "골드만삭스 주가 7% 급락하며 은행주 동반 매도 촉발",
+     "다우 543.34포인트 하락한 35,368.47 마감"
+    ]
+   },
+   {
+    "heading": "MS·액티비전 인수",
+    "tone": "neu",
+    "cat": "company_specific",
+    "points": [
+     "마이크로소프트, 액티비전블리자드 주당 95달러·687억달러 인수 발표",
+     "마이크로소프트 2.4% 하락, 액티비전블리자드 25.9% 급등"
+    ]
+   }
+  ],
+  "cats": [
+   "company_specific",
+   "earnings_bellwether",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -2.49,
+   "SPY(VOO)": -1.75,
+   "SOXX": -4.47
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-01-19",
+  "title": "10년물 1.9% 터치 — 3대 지수 1% 안팎 하락",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "금리 추가 상승",
+    "tone": "neg",
+    "cat": "rates_treasury",
+    "points": [
+     "10년물 국채금리 1.9%로 2년 최고",
+     "2년물 국채금리 1.045%로 2020년 2월 말 이후 최고",
+     "기술·금융·경기소비재 각 1.4~1.8% 하락"
+    ]
+   },
+   {
+    "heading": "실적·주택지표 양호",
+    "tone": "pos",
+    "cat": "earnings_bellwether",
+    "points": [
+     "모건스탠리 주당순이익 2.08달러로 예상 2.00달러 상회",
+     "P&G 순이익·매출 모두 예상 상회",
+     "12월 주택착공·건축허가 모두 예상 상회"
+    ]
+   }
+  ],
+  "cats": [
+   "earnings_bellwether",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.1,
+   "SPY(VOO)": -1.05,
+   "SOXX": -2.94
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-01-20",
+  "title": "실업수당 청구 1년 최대 — 상승분 반납 후 하락 마감",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "고용·주택 지표 부진",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "주간 신규 실업수당 청구 28만6000건으로 예상 22만4000건 크게 상회",
+     "2021년 1월 이후 최고 수준",
+     "12월 기존주택 판매 4.6% 감소로 예상 하회"
+    ]
+   },
+   {
+    "heading": "금리·긴축 경계",
+    "tone": "neg",
+    "cat": "rates_treasury",
+    "points": [
+     "2년물 국채금리 주중 1% 상회, 2020년 2월 이후 처음",
+     "할인율 상승에 성장·기술주 집중 매도",
+     "나스닥 186.23포인트 하락한 14,154.02 마감"
+    ]
+   },
+   {
+    "heading": "지정학·유가",
+    "tone": "neg",
+    "cat": "geopolitics",
+    "points": [
+     "러시아·우크라이나 긴장 고조",
+     "국제유가 상승에 따른 투자심리 위축"
+    ]
+   }
+  ],
+  "cats": [
+   "geopolitics",
+   "macro_data",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.3,
+   "SPY(VOO)": -1.1,
+   "SOXX": -3.14
+  },
   "link": null,
   "source": "external_knowledge"
  },
@@ -1252,6 +1762,191 @@
   "source": "external_knowledge"
  },
  {
+  "date": "2022-01-24",
+  "title": "장중 4% 급락 후 대반전 — 다우 사상 최대폭 되돌림",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "사상 최대 U턴",
+    "tone": "pos",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "다우 장중 33,150.33까지 하락 후 상승 반전 마감",
+     "S&P500 장중 4% 넘는 하락 후 장 막판 10분 급반등",
+     "다우 0.3%·S&P500 0.3%·나스닥 0.6% 상승 마감"
+    ]
+   },
+   {
+    "heading": "낙폭과대주 매수",
+    "tone": "pos",
+    "cat": "ai_tech_valuation",
+    "points": [
+     "연준 금리인상 우려로 눌렸던 기술주에 저가 매수 유입",
+     "경기소비재·커뮤니케이션·에너지·산업재·기술 주도로 11개 업종 중 8개 상승"
+    ]
+   }
+  ],
+  "cats": [
+   "ai_tech_valuation",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.46,
+   "SPY(VOO)": 0.42,
+   "SOXX": 1.14
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-01-25",
+  "title": "FOMC 앞두고 기술주 급락 — S&P500 장중 조정 진입",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "FOMC 경계",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "연준 이틀 일정 통화정책회의 개시",
+     "기존 예상보다 공격적인 정책 전환 우려 확산",
+     "기술 섹터 ETF 2.3% 하락, 나스닥 315.83포인트 하락한 13,539.29"
+    ]
+   },
+   {
+    "heading": "지정학·코로나",
+    "tone": "neg",
+    "cat": "geopolitics",
+    "points": [
+     "러시아의 우크라이나 침공 가능성 우려 확대",
+     "코로나19 확진·입원 증가에 따른 경기 불확실성",
+     "1월 소비자신뢰지수 1.4포인트 하락한 113.8"
+    ]
+   },
+   {
+    "heading": "에너지 강세",
+    "tone": "pos",
+    "cat": "oil_energy",
+    "points": [
+     "에너지 섹터 ETF 3.9% 상승",
+     "에너지·금융만 상승, 11개 업종 중 9개 하락"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "geopolitics",
+   "oil_energy"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -2.32,
+   "SPY(VOO)": -1.21,
+   "SOXX": -3.73
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-01-26",
+  "title": "FOMC 3월 인상 시사 — 상승 출발 후 반락 마감",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "파월 매파 발언",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "연준 기준금리 동결하되 3월 회의 인상 착수 시사",
+     "파월 의장 고용 훼손 없이 금리 올릴 여지 상당하다는 언급",
+     "9조달러 규모 대차대조표 축소 방안 향후 회의 결정 예고"
+    ]
+   },
+   {
+    "heading": "금리 상승·반락",
+    "tone": "neg",
+    "cat": "rates_treasury",
+    "points": [
+     "10년물 국채금리 6.1bp 오른 1.8%",
+     "상승 출발한 지수가 긴축 전망 소화 과정에서 상승분 반납",
+     "부동산·커뮤니케이션 서비스 업종 부진"
+    ]
+   },
+   {
+    "heading": "기술주 초반 반등",
+    "tone": "pos",
+    "cat": "ai_tech_valuation",
+    "points": [
+     "전일 장 마감 후 마이크로소프트 실적 발표에 기술주 장 초반 반등",
+     "알파벳 1.8% 상승, 나스닥은 소폭 상승 마감",
+     "반도체 업종 상대 강세 유지"
+    ]
+   }
+  ],
+  "cats": [
+   "ai_tech_valuation",
+   "fed_policy",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.16,
+   "SPY(VOO)": -0.22,
+   "SOXX": 1.54
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-01-27",
+  "title": "FOMC 매파 여진 + 테라다인 가이던스 쇼크",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "반도체 실적 쇼크",
+    "tone": "neg",
+    "cat": "company_specific",
+    "points": [
+     "테라다인 1분기 매출 가이던스 7억~7억7000만달러 제시, 시장 예상 8억7700만달러 대폭 하회",
+     "주력 시장의 기술 전환 지연에 따른 SoC 테스트 수요 감소 경고, 장중 최대 28.5% 급락",
+     "반도체 업종 전반으로 약세 확산, SOXX 4.45% 하락"
+    ]
+   },
+   {
+    "heading": "연준 조기 인상 경계",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "파월 의장의 3월 인상 시사 여파 지속, 장 초반 반등분 반납 후 하락 마감",
+     "부동산 SPDR 1.8%, 경기소비재 SPDR 2.4% 하락으로 금리 민감 업종 부진"
+    ]
+   },
+   {
+    "heading": "견조한 실물 지표",
+    "tone": "pos",
+    "cat": "macro_data",
+    "points": [
+     "4분기 GDP 연율 6.9% 성장으로 경기 확장 확인",
+     "주간 신규 실업수당 청구 26만건으로 감소, 내구재 주문 0.9% 증가로 예상 상회"
+    ]
+   }
+  ],
+  "cats": [
+   "company_specific",
+   "fed_policy",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.01,
+   "SPY(VOO)": -0.51,
+   "SOXX": -4.45
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
   "date": "2022-01-28",
   "title": "긴축 우려 속 저가매수세 유입",
   "summary": "1월 급락 이후 반발 매수세가 유입되며 반등했다.",
@@ -1275,12 +1970,296 @@
   "source": "external_knowledge"
  },
  {
+  "date": "2022-02-01",
+  "title": "1월 조정 뒤 3거래일 연속 반등",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "금리 상승·금융주 강세",
+    "tone": "pos",
+    "cat": "rates_treasury",
+    "points": [
+     "10년물 국채금리 1.8%대 상승으로 은행 예대마진 개선 기대",
+     "웰스파고 3.3%, 골드만삭스 2.6%, JP모간 1.7% 상승"
+    ]
+   },
+   {
+    "heading": "위험선호 회복",
+    "tone": "pos",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "VIX 11.6% 하락한 21.96로 1월 조정 이후 불안 완화",
+     "에너지·소재·산업재 동반 강세, 다우 273포인트 상승"
+    ]
+   },
+   {
+    "heading": "제조업 지표 둔화",
+    "tone": "neu",
+    "cat": "macro_data",
+    "points": [
+     "1월 ISM 제조업지수 57.6%로 14개월 최저, 확장 국면 기준선 50은 상회",
+     "구인건수 1100만건 근접 유지, 건설지출 0.2% 증가"
+    ]
+   }
+  ],
+  "cats": [
+   "macro_data",
+   "rates_treasury",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.68,
+   "SPY(VOO)": 0.65,
+   "SOXX": 0.83
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-02-02",
+  "title": "알파벳 7.5% 급등, 빅테크 실적 랠리",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "빅테크 호실적",
+    "tone": "pos",
+    "cat": "earnings_bellwether",
+    "points": [
+     "알파벳 분기 주당순이익 30.69달러로 컨센서스 14.9% 상회, 7.5% 급등",
+     "AMD 컨센서스 22.7% 상회하며 5.1% 상승, SOXX 2.53% 동반 강세",
+     "S&P500 11개 업종 중 10개 상승, 커뮤니케이션서비스 주도"
+    ]
+   },
+   {
+    "heading": "민간고용 부진",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "1월 ADP 민간고용 30만1000명 감소, 오미크론 확산 여파",
+     "서비스업에서 27만4000명 감소, 레저·접객업에서만 15만4000명 감소"
+    ]
+   }
+  ],
+  "cats": [
+   "earnings_bellwether",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.81,
+   "SPY(VOO)": 0.95,
+   "SOXX": 2.53
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
   "date": "2022-02-03",
   "title": "메타(페이스북) 실적 참사가 시장 전체로 확산",
   "summary": "메타 플랫폼스가 사상 최대 규모 시가총액 하락(-26%, 약 2,300억달러 증발)을 기록하며 대형 기술주 전반의 광고·성장 둔화 우려로 번졌다.",
   "importance": 3,
   "moves": {
    "QQQ": -4.05
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-02-04",
+  "title": "아마존 13.5% 급등 + 고용 서프라이즈",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "아마존 실적 급등",
+    "tone": "pos",
+    "cat": "earnings_bellwether",
+    "points": [
+     "아마존 4분기 주당순이익 27.75달러로 컨센서스 3.89달러 대폭 상회, 13.5% 급등",
+     "스냅 58.8% 폭등, 전일 메타 급락 충격 상당 부분 상쇄",
+     "나스닥 1.6% 상승한 반면 다우는 0.1% 하락으로 지수별 차별화"
+    ]
+   },
+   {
+    "heading": "고용보고서 상회",
+    "tone": "pos",
+    "cat": "macro_data",
+    "points": [
+     "1월 비농업 신규고용 46만7000명으로 예상 15만명 대폭 상회",
+     "장 초반 하락 출발 후 고용 호조 확인되며 상승 반전"
+    ]
+   }
+  ],
+  "cats": [
+   "earnings_bellwether",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.26,
+   "SPY(VOO)": 0.47,
+   "SOXX": 0.57
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-02-07",
+  "title": "CPI 대기 속 기술주 약세",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "빅테크 약세 지속",
+    "tone": "neg",
+    "cat": "company_specific",
+    "points": [
+     "메타 5.1% 추가 하락으로 실적 발표 이후 낙폭 누적",
+     "넷플릭스 2% 하락, 커뮤니케이션서비스 업종 1.7% 하락으로 최대 부진",
+     "11개 업종 중 6개 하락, 나스닥 0.6% 약세"
+    ]
+   },
+   {
+    "heading": "물가 지표 관망",
+    "tone": "neu",
+    "cat": "macro_data",
+    "points": [
+     "당일 주요 경제지표 부재, 목요일 1월 CPI 발표 대기 심리 우세",
+     "S&P500 기업 56% 실적 발표 완료, 이 중 77% 예상 상회",
+     "에너지 업종 1.3% 상승으로 지수 하방 일부 완충"
+    ]
+   }
+  ],
+  "cats": [
+   "company_specific",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.8,
+   "SPY(VOO)": -0.33,
+   "SOXX": -0.06
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-02-08",
+  "title": "실적 호조에 반등, 금리 부담 상존",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "기업 실적 호조",
+    "tone": "pos",
+    "cat": "earnings_bellwether",
+    "points": [
+     "할리데이비슨 15.5%, 체그 16%, 암젠 7.8% 상승 등 어닝 서프라이즈 확산",
+     "S&P500 11개 업종 중 8개 상승, 소재·기술·경기소비재 주도",
+     "다우 372포인트 상승, 나스닥 1.3% 상승"
+    ]
+   },
+   {
+    "heading": "금리 상승 부담",
+    "tone": "neu",
+    "cat": "rates_treasury",
+    "points": [
+     "10년물 국채금리 3.9bp 상승해 2019년 7월 이후 최고 수준",
+     "VIX 6.21% 하락한 21.44로 위험선호 개선, CPI 발표 앞두고 경계 병존"
+    ]
+   }
+  ],
+  "cats": [
+   "earnings_bellwether",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.12,
+   "SPY(VOO)": 0.81,
+   "SOXX": 2.53
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-02-09",
+  "title": "국채금리 후퇴에 나스닥 2.1% 급등",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "금리 진정",
+    "tone": "pos",
+    "cat": "rates_treasury",
+    "points": [
+     "10년물 국채금리 2.6bp 하락한 1.928%, 전일 1.954%에서 후퇴",
+     "금리 상승세 둔화로 밸류에이션 부담 완화, 성장주 전반 강세"
+    ]
+   },
+   {
+    "heading": "기술·성장주 랠리",
+    "tone": "pos",
+    "cat": "ai_tech_valuation",
+    "points": [
+     "커뮤니케이션서비스 2.8%, 리츠 2.4%, 기술 2.2% 상승으로 11개 업종 전부 상승",
+     "메타·쇼피파이 각 5.4%, 엣시 3.8% 상승, SOXX 3.28% 급등"
+    ]
+   }
+  ],
+  "cats": [
+   "ai_tech_valuation",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 2.12,
+   "SPY(VOO)": 1.47,
+   "SOXX": 3.28
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-02-10",
+  "title": "1월 CPI 7.5% — 1982년 이후 최고",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "물가 지표 상회",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "1월 소비자물가 전년대비 7.5% 상승으로 1982년 이후 최대 상승폭",
+     "전월대비 0.6% 상승, 예상치 0.4% 상회"
+    ]
+   },
+   {
+    "heading": "금리 급등·매파 발언",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "10년물 국채금리 10bp 급등하며 2019년 이후 처음 2% 돌파",
+     "불라드 세인트루이스 연은 총재, 7월 1일까지 3회 회의에서 100bp 인상 지지 발언"
+    ]
+   },
+   {
+    "heading": "빅테크 낙폭 확대",
+    "tone": "neg",
+    "cat": "ai_tech_valuation",
+    "points": [
+     "마이크로소프트 2.8%, 어도비 5.1%, 메타 1.7% 하락",
+     "전일 랠리를 주도한 기술·리츠가 최대 하락 업종으로 반전, 나스닥 2.1% 하락"
+    ]
+   }
+  ],
+  "cats": [
+   "ai_tech_valuation",
+   "fed_policy",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -2.26,
+   "SPY(VOO)": -1.76,
+   "SOXX": -3.12
   },
   "link": null,
   "source": "external_knowledge"
@@ -1298,12 +2277,106 @@
   "source": "external_knowledge"
  },
  {
+  "date": "2022-02-14",
+  "title": "침공 임박 경고에 3거래일 연속 하락",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "지정학 긴장 고조",
+    "tone": "neg",
+    "cat": "geopolitics",
+    "points": [
+     "백악관, 러시아의 우크라이나 영토 진입 임박 경고",
+     "미국 키이우 대사관 폐쇄 후 서부 르비우로 이전, VIX 3.6% 상승한 28.33"
+    ]
+   },
+   {
+    "heading": "3월 인상 기정사실화",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "3년 만의 첫 금리 인상 시점으로 3월 확정 분위기",
+     "파월 의장, 경제가 더 이상 고강도 통화 완화를 필요로 하지 않는다는 인식 재확인"
+    ]
+   },
+   {
+    "heading": "지수별 차별화",
+    "tone": "neu",
+    "cat": "other",
+    "points": [
+     "다우 171포인트(0.5%) 하락한 반면 나스닥은 24포인트 하락에 그치며 낙폭 대부분 만회",
+     "모더나 11.7% 급락으로 S&P500 최대 낙폭 종목"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "geopolitics",
+   "other"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.12,
+   "SPY(VOO)": -0.33,
+   "SOXX": 0.09
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
   "date": "2022-02-15",
   "title": "러시아 일부 병력 철수 발표에 안도 반등",
   "summary": "러시아가 일부 병력 철수를 발표하며 전쟁 우려가 일시 완화, 반도체주 중심 반등이 나왔다.",
   "importance": 3,
   "moves": {
    "SOXX": 5.52
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-02-16",
+  "title": "FOMC 의사록 소화, 보합권 혼조",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "의사록 내용 확인",
+    "tone": "neu",
+    "cat": "fed_policy",
+    "points": [
+     "1월 FOMC 의사록에서 3년 만의 3월 인상 방침 확인",
+     "하커 필라델피아 연은 총재, 3월 소폭 인상 후 점진적 조정 주장"
+    ]
+   },
+   {
+    "heading": "소비·생산 호조",
+    "tone": "pos",
+    "cat": "macro_data",
+    "points": [
+     "1월 소매판매 3.8% 증가로 예상치 2.1% 상회",
+     "산업생산 1.4% 증가, 설비가동률 77.6%로 전망 상회"
+    ]
+   },
+   {
+    "heading": "우크라이나 불확실",
+    "tone": "neg",
+    "cat": "geopolitics",
+    "points": [
+     "나토, 러시아군 철수 증거 없다고 발표하며 철군 발언 신뢰 저하",
+     "줌 5.7% 하락 등 기술주 부진, 커뮤니케이션서비스 업종 0.7% 하락"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "geopolitics",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.03,
+   "SPY(VOO)": 0.12,
+   "SOXX": 0.03
   },
   "link": null,
   "source": "external_knowledge"
@@ -1331,6 +2404,90 @@
   "cats": [
    "geopolitics"
   ],
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-02-18",
+  "title": "침공 재우려에 기술주 중심 하락",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "지정학 리스크 재부각",
+    "tone": "neg",
+    "cat": "geopolitics",
+    "points": [
+     "블링컨 국무장관, 현 상황을 위험한 국면으로 규정",
+     "철군 대신 국경 인근 병력 추가 배치 보도, 주말 앞두고 리스크 회피 매도"
+    ]
+   },
+   {
+    "heading": "기술주 낙폭 확대",
+    "tone": "neg",
+    "cat": "company_specific",
+    "points": [
+     "인텔 5.3% 급락, 애플 0.9% 하락",
+     "기술·산업재·커뮤니케이션서비스 업종 부진으로 나스닥 1.2% 하락"
+    ]
+   }
+  ],
+  "cats": [
+   "company_specific",
+   "geopolitics"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.14,
+   "SPY(VOO)": -0.64,
+   "SOXX": -1.12
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-02-22",
+  "title": "S&P500 조정 진입, 러시아 1차 제재",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "돈바스 승인·제재",
+    "tone": "neg",
+    "cat": "geopolitics",
+    "points": [
+     "러시아의 우크라이나 분리 지역 독립 승인 및 병력 배치로 매도 압력 확대",
+     "바이든 대통령, 러시아 은행·국채 대상 1차 제재 발표 후 장중 저점에서는 일부 회복"
+    ]
+   },
+   {
+    "heading": "조정 국면 확인",
+    "tone": "neg",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "S&P500이 1월 3일 사상 최고치 대비 10% 이상 하락하며 조정 진입 공식 확인",
+     "다우 482포인트(1.42%), 나스닥 1.23% 하락, 전 업종 하락 마감"
+    ]
+   },
+   {
+    "heading": "홈디포 마진 악화",
+    "tone": "neg",
+    "cat": "company_specific",
+    "points": [
+     "홈디포 8.9% 급락, 운송·인건비 상승에 연말 분기 매출총이익률 축소",
+     "경기소비재·에너지 등 경기민감 업종 낙폭 최대"
+    ]
+   }
+  ],
+  "cats": [
+   "company_specific",
+   "geopolitics",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.0,
+   "SPY(VOO)": -1.09,
+   "SOXX": -0.61
+  },
   "link": null,
   "source": "external_knowledge"
  },
@@ -1367,6 +2524,102 @@
   "importance": 3,
   "moves": {
    "QQQ": 3.36
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-02-25",
+  "title": "협상 기대에 다우 835포인트 급반등",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "협상 기대 부각",
+    "tone": "pos",
+    "cat": "geopolitics",
+    "points": [
+     "크렘린궁, 민스크에 대표단 파견 용의 표명하며 협상 기대 확산",
+     "미국·영국·EU의 푸틴·라브로프 개인 제재 발표에도 위험자산 반등 지속"
+    ]
+   },
+   {
+    "heading": "지수 급반등",
+    "tone": "pos",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "다우 834.92포인트(2.5%) 상승으로 2020년 11월 이후 최대 상승폭",
+     "S&P500 2.2%, 나스닥 1.6% 상승, 존슨앤드존슨 5% 상승으로 다우 견인"
+    ]
+   },
+   {
+    "heading": "PCE 물가 부담",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "1월 PCE 물가 전년대비 6.1%로 1982년 2월 이후 최고",
+     "근원 PCE 5.2%로 1983년 4월 이후 최고, 소비지출은 2.1% 증가로 견조"
+    ]
+   }
+  ],
+  "cats": [
+   "geopolitics",
+   "macro_data",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.55,
+   "SPY(VOO)": 2.18,
+   "SOXX": 1.67
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-02-28",
+  "title": "SWIFT 배제·루블 폭락 속 2월 마지막날 혼조",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "금융 제재 강화",
+    "tone": "neg",
+    "cat": "geopolitics",
+    "points": [
+     "미국·동맹국, 러시아 주요 은행 SWIFT 배제 합의로 글로벌 결제망 차단",
+     "러시아·우크라이나 1차 협상 성과 없이 종료",
+     "루블 22% 이상 급락, 러시아 중앙은행 기준금리 20% 인상 및 증시 1주일 폐쇄"
+    ]
+   },
+   {
+    "heading": "안전자산 선호",
+    "tone": "neu",
+    "cat": "rates_treasury",
+    "points": [
+     "10년물 국채금리 14.8bp 하락한 1.836%로 지난해 11월 26일 이후 최대 낙폭",
+     "록히드마틴 6.7%, 노스럽그러먼 7.9% 상승 등 방산주 강세",
+     "다우 0.5% 하락·나스닥 0.4% 상승으로 지수 혼조"
+    ]
+   },
+   {
+    "heading": "유가 급등",
+    "tone": "neg",
+    "cat": "oil_energy",
+    "points": [
+     "WTI 4.5% 상승한 배럴당 95.72달러, 브렌트 3% 상승한 101.10달러",
+     "2월 한 달 다우 3.5%·S&P500 3.1%·나스닥 3.4% 하락으로 마감"
+    ]
+   }
+  ],
+  "cats": [
+   "geopolitics",
+   "oil_energy",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.3,
+   "SPY(VOO)": -0.25,
+   "SOXX": -0.61
   },
   "link": null,
   "source": "external_knowledge"
@@ -2081,6 +3334,43 @@
   "source": "external_knowledge"
  },
  {
+  "date": "2022-11-01",
+  "title": "구인 건수 예상 상회로 연준 경계 확대",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "9월 구인 1070만",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "9월 JOLTS 구인 건수 1070만 건으로 1000만 건 하회 전망 상회",
+     "노동시장 견조 확인에 연준 인상 속도 조절 기대 후퇴"
+    ]
+   },
+   {
+    "heading": "ISM 둔화·FOMC 대기",
+    "tone": "neu",
+    "cat": "fed_policy",
+    "points": [
+     "10월 ISM 제조업 50.2로 2020년 5월 이후 최저",
+     "FOMC 결과 대기 속 기술주 매도 우위, 나스닥 0.9% 하락"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.02,
+   "SPY(VOO)": -0.4,
+   "SOXX": 0.81
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
   "date": "2022-11-02",
   "title": "연준 4연속 자이언트스텝 + 파월 '최종금리 더 높아질 것'",
   "summary": "예상대로 0.75%p를 인상했지만 파월이 최종금리 수준이 기존 예상보다 높아질 수 있다고 언급하며 급락했다.",
@@ -2119,6 +3409,175 @@
   "source": "external_knowledge"
  },
  {
+  "date": "2022-11-04",
+  "title": "고용 혼조 해석 + 중국 리오프닝 기대",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "10월 고용보고서",
+    "tone": "neu",
+    "cat": "macro_data",
+    "points": [
+     "비농업 신규고용 26만1000건으로 견조한 수준 유지",
+     "실업률 3.7%로 상승하며 노동시장 냉각 신호 혼재",
+     "다우 401포인트(1.26%), S&P500 1.36% 상승"
+    ]
+   },
+   {
+    "heading": "중국 리오프닝 기대",
+    "tone": "pos",
+    "cat": "geopolitics",
+    "points": [
+     "중국 방역 완화 관련 미확인 보도 확산에 핀둬둬·JD닷컴·알리바바 등 급등",
+     "중국 매출 비중 높은 반도체·기술주 동반 강세"
+    ]
+   }
+  ],
+  "cats": [
+   "geopolitics",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.61,
+   "SPY(VOO)": 1.46,
+   "SOXX": 4.63
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-07",
+  "title": "중간선거 앞둔 정책 교착 기대에 반등",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "중간선거 기대",
+    "tone": "pos",
+    "cat": "geopolitics",
+    "points": [
+     "분할 의회 형성 시 정책 교착 기대에 위험선호 회복",
+     "다우 423포인트(1.31%), S&P500 0.96% 상승"
+    ]
+   },
+   {
+    "heading": "빅테크 비용 절감",
+    "tone": "pos",
+    "cat": "company_specific",
+    "points": [
+     "메타 대규모 감원 보도에 주가 6.5% 급등",
+     "애플은 중국 봉쇄에 따른 아이폰 생산 차질에도 0.4% 상승"
+    ]
+   },
+   {
+    "heading": "CPI 발표 대기",
+    "tone": "neu",
+    "cat": "macro_data",
+    "points": [
+     "10일 예정 10월 소비자물가 발표 대기",
+     "상방 서프라이즈 시 정책 전환 기대 후퇴 우려"
+    ]
+   }
+  ],
+  "cats": [
+   "company_specific",
+   "geopolitics",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.1,
+   "SPY(VOO)": 0.96,
+   "SOXX": 2.16
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-08",
+  "title": "선거 당일 관망 + 가상자산 급락",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "선거 결과 대기",
+    "tone": "pos",
+    "cat": "geopolitics",
+    "points": [
+     "공화당 하원 장악 전망에 정책 교착 기대 지속",
+     "다우 333포인트(1.02%), S&P500 0.56% 상승"
+    ]
+   },
+   {
+    "heading": "FTX 유동성 위기",
+    "tone": "neg",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "바이낸스의 FTX 인수 발표 후 비트코인 1만7300달러대로 2020년 11월 이후 최저",
+     "가상자산 급락에도 지수 전반 영향은 제한적"
+    ]
+   }
+  ],
+  "cats": [
+   "geopolitics",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.73,
+   "SPY(VOO)": 0.54,
+   "SOXX": 2.2
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-09",
+  "title": "선거 결과 지연 + FTX 인수 무산",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "레드웨이브 무산",
+    "tone": "neg",
+    "cat": "geopolitics",
+    "points": [
+     "중간선거 개표 지연과 기대했던 공화당 압승 무산",
+     "다우 646포인트(2.0%) 하락, S&P500 11개 업종 전부 약세"
+    ]
+   },
+   {
+    "heading": "FTX 인수 철회",
+    "tone": "neg",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "바이낸스의 FTX 인수 철회로 파산 우려 확산",
+     "가상자산 급락에 위험자산 투자심리 위축"
+    ]
+   },
+   {
+    "heading": "실적 실망",
+    "tone": "neg",
+    "cat": "earnings_bellwether",
+    "points": [
+     "디즈니 이익이 컨센서스를 40% 하회하며 주가 13.2% 급락",
+     "옥시덴탈 부진과 유가 약세로 에너지 업종 4.9% 하락"
+    ]
+   }
+  ],
+  "cats": [
+   "earnings_bellwether",
+   "geopolitics",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -2.31,
+   "SPY(VOO)": -2.04,
+   "SOXX": -3.2
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
   "date": "2022-11-10",
   "title": "10월 CPI 예상치 하회, 2020년 이후 최대 상승",
   "summary": "핵심 인플레이션이 예상보다 뚜렷하게 둔화되며 연준의 긴축 속도조절 기대가 폭발, 나스닥이 하루 만에 7% 넘게 급등했다.",
@@ -2127,6 +3586,554 @@
    "QQQ": 7.38,
    "SPY(VOO)": 5.47,
    "SOXX": 10.35
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-11",
+  "title": "CPI 둔화 후속 랠리 + 중국 방역 완화",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "인상 속도 조절 기대",
+    "tone": "pos",
+    "cat": "fed_policy",
+    "points": [
+     "12월 50bp 인상 전환 기대 확산에 나스닥 1.9% 상승",
+     "10년물 국채금리 4% 하회로 성장주 밸류에이션 부담 완화"
+    ]
+   },
+   {
+    "heading": "중국 방역 완화",
+    "tone": "pos",
+    "cat": "geopolitics",
+    "points": [
+     "중국 입국 격리 요건과 항공 운항 제재 완화 발표",
+     "수요 회복 기대에 WTI 2.9% 상승한 배럴당 88.96달러"
+    ]
+   },
+   {
+    "heading": "소비심리 부진",
+    "tone": "neu",
+    "cat": "macro_data",
+    "points": [
+     "11월 소비자심리 54.7로 예상치 59.4 하회",
+     "물가 안도 랠리에 밀려 지표 부진 영향은 제한적"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "geopolitics",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.84,
+   "SPY(VOO)": 0.96,
+   "SOXX": 3.06
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-14",
+  "title": "연준 매파 발언에 랠리 되돌림",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "월러 발언",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "월러 이사, 최종 정책금리 도달까지 아직 갈 길 멀다는 견해 제시",
+     "브레이너드 부의장의 속도 조절 시사에도 차익실현 우위"
+    ]
+   },
+   {
+    "heading": "아마존 감원",
+    "tone": "neg",
+    "cat": "company_specific",
+    "points": [
+     "아마존 약 1만 명 감원 착수 보도",
+     "기술주 약세로 나스닥 1.12% 하락"
+    ]
+   },
+   {
+    "heading": "기대인플레 상승",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "연준 소비자 조사에서 향후 1년 기대인플레이션 상승",
+     "물가 둔화 지속 기대 약화"
+    ]
+   }
+  ],
+  "cats": [
+   "company_specific",
+   "fed_policy",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.88,
+   "SPY(VOO)": -0.8,
+   "SOXX": -1.09
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-15",
+  "title": "PPI 예상 하회로 물가 둔화 재확인",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "10월 PPI 하회",
+    "tone": "pos",
+    "cat": "macro_data",
+    "points": [
+     "생산자물가 시장 예상 하회로 인플레이션 둔화 신호 추가",
+     "S&P500 0.87%, 나스닥 1.45% 상승"
+    ]
+   },
+   {
+    "heading": "중국 기술주 급등",
+    "tone": "pos",
+    "cat": "geopolitics",
+    "points": [
+     "크레인셰어스 중국인터넷 ETF 9.56% 급등",
+     "커뮤니케이션서비스·정보기술 업종 주도 상승"
+    ]
+   }
+  ],
+  "cats": [
+   "geopolitics",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.38,
+   "SPY(VOO)": 0.83,
+   "SOXX": 2.9
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-16",
+  "title": "타깃 가이던스 충격 + 마이크론 감산",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "타깃 실적 쇼크",
+    "tone": "neg",
+    "cat": "earnings_bellwether",
+    "points": [
+     "타깃 EPS 1.54달러로 컨센서스 0.61달러 하회, 주가 13.1% 급락",
+     "4분기 매출 감소 전망 제시로 소비 둔화 우려 확산"
+    ]
+   },
+   {
+    "heading": "마이크론 감산",
+    "tone": "neg",
+    "cat": "company_specific",
+    "points": [
+     "마이크론, 재고 과잉에 따른 공급 축소와 설비투자 삭감 발표로 주가 6.7% 하락",
+     "필라델피아 반도체지수 4.3% 급락으로 기술주 전반 압박"
+    ]
+   }
+  ],
+  "cats": [
+   "company_specific",
+   "earnings_bellwether"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.37,
+   "SPY(VOO)": -0.76,
+   "SOXX": -4.13
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-17",
+  "title": "불러드 매파 발언 vs 엔비디아 실적",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "불러드 5%대 제시",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "불러드 총재, 정책금리 5.00~5.25%까지 인상 필요 언급",
+     "10년물 금리 8bp 상승한 3.773%로 성장주 부담"
+    ]
+   },
+   {
+    "heading": "엔비디아 실적",
+    "tone": "pos",
+    "cat": "earnings_bellwether",
+    "points": [
+     "엔비디아 3분기 매출 전년비 17% 감소에도 데이터센터 부문 견조",
+     "가이던스가 시장 예상 상회하며 반도체 업종만 상대적 강세"
+    ]
+   },
+   {
+    "heading": "지표 혼조",
+    "tone": "neu",
+    "cat": "macro_data",
+    "points": [
+     "신규 실업수당 청구 22만2000건으로 감소, 계속청구 150만7000건으로 증가",
+     "주택착공과 건축허가 모두 전월 대비 감소"
+    ]
+   }
+  ],
+  "cats": [
+   "earnings_bellwether",
+   "fed_policy",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.22,
+   "SPY(VOO)": -0.29,
+   "SOXX": 0.78
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-18",
+  "title": "매파 발언 속 방어주 중심 소폭 반등",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "연준 매파 기조",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "불러드 총재, 인플레 억제 위한 추가 인상 필요 재확인",
+     "보스턴 연은 콜린스 총재, 최소 75bp 추가 인상 가능성 언급"
+    ]
+   },
+   {
+    "heading": "주택지표 부진",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "10월 기존주택 판매 5.9% 감소로 9개월 연속 위축, 전년비 28.4% 감소",
+     "10월 경기선행지수 0.8% 하락"
+    ]
+   },
+   {
+    "heading": "방어주 강세",
+    "tone": "pos",
+    "cat": "other",
+    "points": [
+     "유틸리티 2.1%, 리츠 1.3%, 헬스케어 1.2% 상승",
+     "11개 업종 중 9개 상승으로 S&P500 0.5% 반등"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "macro_data",
+   "other"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.0,
+   "SPY(VOO)": 0.44,
+   "SOXX": 0.22
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-21",
+  "title": "중국 방역 재강화에 위험자산 후퇴",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "중국 봉쇄 재개",
+    "tone": "neg",
+    "cat": "geopolitics",
+    "points": [
+     "중국, 확진 증가 지역의 사업장·학교 폐쇄 방침 발표",
+     "중국 노출 종목 약세로 윈리조트 2.9%, MGM리조트 2.7% 하락"
+    ]
+   },
+   {
+    "heading": "경기 둔화 우려",
+    "tone": "neg",
+    "cat": "oil_energy",
+    "points": [
+     "성장 둔화 우려에 유가 하락, 엑슨모빌·셰브론 각각 1% 하락",
+     "에너지·경기소비재 업종 중심 매도로 나스닥 1.1% 하락"
+    ]
+   },
+   {
+    "heading": "데일리 발언",
+    "tone": "pos",
+    "cat": "fed_policy",
+    "points": [
+     "샌프란시스코 연은 데일리 총재, 침체 회피 위한 신중한 인상 필요 언급",
+     "완화적 발언에도 지수 낙폭 축소 효과는 제한적"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "geopolitics",
+   "oil_energy"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.03,
+   "SPY(VOO)": -0.35,
+   "SOXX": -1.66
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-22",
+  "title": "베스트바이 호실적에 위험선호 회복",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "소매 실적 개선",
+    "tone": "pos",
+    "cat": "earnings_bellwether",
+    "points": [
+     "베스트바이 예상 상회 실적으로 주가 12.8% 급등",
+     "달러트리는 실적 상회에도 연간 이익 전망 하향으로 7.9% 하락"
+    ]
+   },
+   {
+    "heading": "위험선호 회복",
+    "tone": "pos",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "중국 방역 강화 우려를 실적 호조가 상쇄",
+     "VIX 4.79% 하락한 21.29로 변동성 진정"
+    ]
+   },
+   {
+    "heading": "업종 전면 상승",
+    "tone": "pos",
+    "cat": "other",
+    "points": [
+     "에너지 3.1%, 소재 2.3%, 기술 1.9% 상승으로 11개 업종 전부 강세",
+     "S&P500 1.4% 상승으로 2개월여 만의 최대 상승폭"
+    ]
+   }
+  ],
+  "cats": [
+   "earnings_bellwether",
+   "other",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.44,
+   "SPY(VOO)": 1.33,
+   "SOXX": 2.98
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-23",
+  "title": "FOMC 의사록 인상 속도 조절 시사",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "의사록 완화 신호",
+    "tone": "pos",
+    "cat": "fed_policy",
+    "points": [
+     "다수 위원이 조만간 인상 폭 축소가 적절하다는 견해 확인",
+     "12월 50bp 인상 전망 강화와 국채금리 하락"
+    ]
+   },
+   {
+    "heading": "성장주 강세",
+    "tone": "pos",
+    "cat": "rates_treasury",
+    "points": [
+     "금리 하락에 넷플릭스 1.7%, 마이크로소프트 1% 상승",
+     "나스닥 1.0% 상승으로 지수 상승 주도"
+    ]
+   },
+   {
+    "heading": "지표 혼조",
+    "tone": "neu",
+    "cat": "macro_data",
+    "points": [
+     "11월 미시간대 소비자심리 56.8, 신규 실업수당 청구 24만 건",
+     "10월 신규주택 판매 7.5% 증가한 63만2000건, 내구재 주문 1% 증가"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "macro_data",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.0,
+   "SPY(VOO)": 0.63,
+   "SOXX": 1.21
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-25",
+  "title": "블랙프라이데이 단축장 — 중국 방역 불안에 혼조",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "연준 의사록 완화",
+    "tone": "pos",
+    "cat": "fed_policy",
+    "points": [
+     "11월 FOMC 의사록의 인상 속도 둔화 시사가 직전 상승 지지",
+     "12월 인상폭 축소 전망 우세로 금리 부담 일부 완화"
+    ]
+   },
+   {
+    "heading": "중국 방역 불확실성",
+    "tone": "neg",
+    "cat": "supply_chain",
+    "points": [
+     "중국 인민은행 연내 두 번째 지급준비율 인하 발표에도 방역 불확실성 지속",
+     "공급망 노출이 큰 기술·반도체 업종 상대적 약세",
+     "거래 시간 오후 1시 조기 종료로 거래대금 축소"
+    ]
+   },
+   {
+    "heading": "유가 반락",
+    "tone": "neg",
+    "cat": "oil_energy",
+    "points": [
+     "WTI 장중 3% 상승분 반납 후 1.5% 하락 마감",
+     "연중 저점권 접근으로 수요 둔화 우려 부각"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "oil_energy",
+   "supply_chain"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.66,
+   "SPY(VOO)": -0.01,
+   "SOXX": -1.33
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-28",
+  "title": "중국 제로코로나 반대 시위 확산 — 위험자산 동반 하락",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "중국 봉쇄 시위",
+    "tone": "neg",
+    "cat": "geopolitics",
+    "points": [
+     "중국 주요 도시에서 제로코로나 방역 반대 시위 확산",
+     "글로벌 공급망의 중국 의존도 감안한 차질 재발 우려",
+     "S&P500 1.5% 하락으로 약 3주 만의 최대 낙폭"
+    ]
+   },
+   {
+    "heading": "유가·에너지주 급락",
+    "tone": "neg",
+    "cat": "oil_energy",
+    "points": [
+     "WTI 배럴당 77.24달러 마감으로 2021년 12월 이후 최저",
+     "에너지 섹터 2.7% 하락으로 업종 최대 낙폭"
+    ]
+   },
+   {
+    "heading": "연준 매파 발언",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "불러드 세인트루이스 연은 총재의 공격적 긴축 지속 강조",
+     "시장이 추가 긴축 가능성을 과소평가하고 있다는 지적"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "geopolitics",
+   "oil_energy"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.47,
+   "SPY(VOO)": -1.58,
+   "SOXX": -2.5
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-11-29",
+  "title": "파월 연설 대기 — 소비 지표 혼조에 눌린 장세",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "소비자신뢰 혼조",
+    "tone": "neu",
+    "cat": "macro_data",
+    "points": [
+     "11월 컨퍼런스보드 소비자신뢰지수 100.2로 예상 소폭 상회",
+     "현재여건지수·기대지수 모두 10월 대비 하락",
+     "케이스실러 주택가격 상승률 둔화 확인"
+    ]
+   },
+   {
+    "heading": "파월 연설 경계",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "11월 30일 파월 의장 통화정책 연설 대기에 따른 관망세",
+     "S&P500·나스닥 3거래일 연속 하락",
+     "거래량 96억주로 20일 평균 112억주 하회"
+    ]
+   },
+   {
+    "heading": "중국 불안 잔존",
+    "tone": "neg",
+    "cat": "supply_chain",
+    "points": [
+     "중국 내 소요 지속에 따른 공급망 차질 우려 잔존",
+     "중국 조달 의존도 높은 기업의 비용 부담 확대 경계"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "macro_data",
+   "supply_chain"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.76,
+   "SPY(VOO)": -0.18,
+   "SOXX": -0.39
   },
   "link": null,
   "source": "external_knowledge"
@@ -2171,12 +4178,686 @@
   "source": "external_knowledge"
  },
  {
+  "date": "2022-12-02",
+  "title": "11월 고용 서프라이즈 — 임금 상승에 상승분 반납",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "고용 예상 상회",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "11월 비농업 신규고용 26.3만건으로 예상 20만건 상회",
+     "시간당 평균임금 전월 대비 0.6% 상승, 10월치도 0.5%로 상향",
+     "실업률 3.7% 유지"
+    ]
+   },
+   {
+    "heading": "긴축 재가속 경계",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "파월 발언 이후 확대됐던 장중 상승분 대부분 반납",
+     "12월 75bp 인상 재개 가능성 재부각",
+     "금리 민감도 높은 반도체 업종 상대적 약세"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.4,
+   "SPY(VOO)": -0.14,
+   "SOXX": -1.13
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-05",
+  "title": "ISM 서비스업 예상 상회 — 긴축 장기화 경계",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "서비스업 지표 강세",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "11월 ISM 서비스업 지수 56.5로 10월 54.4에서 상승",
+     "예상 상회하며 미 경제 3분의 2를 차지하는 서비스 경기 견조 확인"
+    ]
+   },
+   {
+    "heading": "긴축 지속 우려",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "고용·임금에 이은 서비스업 강세로 공격적 인상 지속 우려 확산",
+     "S&P500 11개 전 섹터 하락, 에너지·경기소비재·기술 낙폭 확대",
+     "S&P500 1.79% 하락한 3,998.84"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.68,
+   "SPY(VOO)": -1.78,
+   "SOXX": -1.27
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-06",
+  "title": "침체 경계 확산 — 대형 기술주 중심 낙폭 확대",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "침체 우려 부각",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "견조한 지표가 연준 긴축 지속 근거로 해석되며 2023년 침체 경계",
+     "커뮤니케이션·에너지·기술 섹터 각각 2.9%·2.6%·2.1% 하락"
+    ]
+   },
+   {
+    "heading": "메타 규제 악재",
+    "tone": "neg",
+    "cat": "company_specific",
+    "points": [
+     "EU 맞춤형 광고 규제 소식에 메타 6.8% 급락",
+     "애플 2.5%·마이크로소프트 2% 하락으로 지수 하방 압력"
+    ]
+   },
+   {
+    "heading": "변동성 확대",
+    "tone": "neg",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "VIX 6.8% 상승한 22.17",
+     "성장주·대형 기술주 중심 자금 이탈"
+    ]
+   }
+  ],
+  "cats": [
+   "company_specific",
+   "macro_data",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -2.07,
+   "SPY(VOO)": -1.45,
+   "SOXX": -2.1
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-07",
+  "title": "FOMC 대기 관망 — 유가 연저점에 에너지 부담",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "관망 속 침체 우려",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "12월 13~14일 FOMC 50bp 인상 및 2023년 인상 지속 전망",
+     "11개 중 8개 섹터 하락, 기술·경기소비재·커뮤니케이션 약세",
+     "거래량 103억주로 20일 평균 110억주 하회"
+    ]
+   },
+   {
+    "heading": "유가 연저점",
+    "tone": "neg",
+    "cat": "oil_energy",
+    "points": [
+     "국제유가 2022년 최저치로 러시아 침공 이전 수준까지 하락",
+     "글로벌 수요 둔화 우려 반영"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "oil_energy"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.41,
+   "SPY(VOO)": -0.19,
+   "SOXX": -0.21
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-08",
+  "title": "실업수당 청구 증가 — 긴축 완화 기대에 반등",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "고용 냉각 신호",
+    "tone": "pos",
+    "cat": "macro_data",
+    "points": [
+     "12월 3일 주간 신규 실업수당 청구 23.0만건으로 전주 대비 4천건 증가",
+     "계속청구 167.1만건으로 증가",
+     "노동시장 냉각을 긴축 효과 확인으로 해석"
+    ]
+   },
+   {
+    "heading": "긴축 속도 둔화 기대",
+    "tone": "pos",
+    "cat": "fed_policy",
+    "points": [
+     "12월 FOMC 50bp 인상 전망 강화",
+     "국채금리 하락 기대에 기술·경기소비재 주도 상승",
+     "금리 민감도 높은 반도체 업종 상승폭 확대"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.18,
+   "SPY(VOO)": 0.79,
+   "SOXX": 2.89
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-09",
+  "title": "PPI 예상 상회 — CPI 앞둔 경계 매도",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "생산자물가 상회",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "11월 PPI 전월 대비 0.3% 상승으로 예상 0.2% 상회",
+     "근원 PPI도 0.3% 상승",
+     "인플레이션 둔화 기대 후퇴"
+    ]
+   },
+   {
+    "heading": "주간 낙폭 확대",
+    "tone": "neg",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "S&P500 주간 3.4% 하락으로 9월 이후 최대 주간 낙폭",
+     "에너지주 약세, 셰브론 3.2%·엑슨모빌 0.8% 하락"
+    ]
+   },
+   {
+    "heading": "소비심리 개선",
+    "tone": "pos",
+    "cat": "macro_data",
+    "points": [
+     "12월 미시간대 소비자심리 예비치 59.1로 11월 56.8에서 상승",
+     "물가 부담 완화 기대 일부 반영"
+    ]
+   }
+  ],
+  "cats": [
+   "macro_data",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.64,
+   "SPY(VOO)": -0.73,
+   "SOXX": -0.93
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-12",
+  "title": "기대인플레 하락 — CPI·FOMC 앞두고 반등",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "기대인플레 둔화",
+    "tone": "pos",
+    "cat": "macro_data",
+    "points": [
+     "뉴욕 연은 조사 1년 기대인플레이션 5.9%에서 5.2%로 하락",
+     "물가 압력 지속 우려 완화",
+     "익일 CPI와 FOMC 결과를 앞둔 선반영 매수"
+    ]
+   },
+   {
+    "heading": "전 업종 강세",
+    "tone": "pos",
+    "cat": "other",
+    "points": [
+     "S&P500 11개 전 섹터 상승, 에너지 2.6%·기술 2.2% 강세",
+     "마이크로소프트 2.9%·애플 1.6% 상승",
+     "유가 안정에 엑슨모빌 2.9% 반등"
+    ]
+   }
+  ],
+  "cats": [
+   "macro_data",
+   "other"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.26,
+   "SPY(VOO)": 1.43,
+   "SOXX": 1.77
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-13",
+  "title": "11월 CPI 7.1% — 둔화 확인에도 상승분 축소",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "물가 둔화 확인",
+    "tone": "pos",
+    "cat": "macro_data",
+    "points": [
+     "11월 CPI 전년 대비 7.1%로 예상 7.3% 하회, 10월 7.7%에서 둔화",
+     "전월 대비 0.1% 상승으로 예상 0.3% 하회",
+     "근원 CPI 전월 0.2%·전년 6.0%로 예상 하회"
+    ]
+   },
+   {
+    "heading": "FOMC 경계",
+    "tone": "neu",
+    "cat": "fed_policy",
+    "points": [
+     "다우 장중 700포인트 이상 급등 후 상승분 대부분 축소",
+     "익일 FOMC 결정 대기에 따른 차익 실현"
+    ]
+   },
+   {
+    "heading": "금리 하락 수혜",
+    "tone": "pos",
+    "cat": "rates_treasury",
+    "points": [
+     "국채금리 하락에 에너지·리츠·기술 업종 강세",
+     "12월 인상폭 25~50bp 축소 기대 확산"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "macro_data",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.07,
+   "SPY(VOO)": 0.74,
+   "SOXX": 1.44
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-14",
+  "title": "FOMC 50bp 인상 — 점도표 최종금리 5.1% 상향",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "매파적 FOMC",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "기준금리 50bp 인상으로 4.25~4.50%, 2007년 이후 최고",
+     "점도표 최종금리 5.1%로 9월 전망 4.6%에서 상향",
+     "파월 의장의 2023년 인상 지속 및 추가 지표 확인 필요 언급"
+    ]
+   },
+   {
+    "heading": "업종별 낙폭",
+    "tone": "neg",
+    "cat": "other",
+    "points": [
+     "커뮤니케이션·금융·소재 업종 하락 주도",
+     "뱅크오브아메리카·골드만삭스 등 금융주 약세",
+     "최종금리 상향에 고밸류 성장주·반도체 낙폭 확대"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "other"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.74,
+   "SPY(VOO)": -0.6,
+   "SOXX": -1.5
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
   "date": "2022-12-15",
   "title": "연준 속도조절에도 매파적 점도표 충격",
   "summary": "예상대로 0.5%p로 속도를 늦췄지만, 2023년 최종금리 전망(점도표)이 시장 예상보다 높게 나오며 랠리가 꺾였다.",
   "importance": 3,
   "moves": {
    "QQQ": -3.36
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-16",
+  "title": "쿼드러플 위칭 — 침체 우려에 주간 낙폭 확대",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "침체 우려 지속",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "다우 0.8% 하락한 32,920.46, S&P500 1.1% 하락",
+     "11월 소매판매 부진 여파로 경기 둔화 우려 지속",
+     "S&P500 11개 전 섹터 하락"
+    ]
+   },
+   {
+    "heading": "글로벌 긴축 부담",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "연준 50bp 인상 후 2023년 추가 인상 전망 부담",
+     "유럽 중앙은행들의 긴축 지속 시사로 침체 우려 가중"
+    ]
+   },
+   {
+    "heading": "선물·옵션 만기",
+    "tone": "neu",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "쿼드러플 위칭 만기일 수급 변동성 확대",
+     "주요 지수 주간 1.7~2.7% 하락"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "macro_data",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.95,
+   "SPY(VOO)": -1.19,
+   "SOXX": -0.76
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-19",
+  "title": "4거래일 연속 하락 — 침체 경계에 기술주 약세",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "침체 경계 지속",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "나스닥 1.5% 하락한 10,546.03으로 4거래일 연속 하락",
+     "11월 소매판매 부진과 주택 심리 약화로 경기 둔화 우려",
+     "NYSE 하락 종목 대비 상승 종목 비율 2.80대 1"
+    ]
+   },
+   {
+    "heading": "글로벌 긴축 지속",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "연준의 2023년 최종금리 상향 전망에 따른 금리 부담",
+     "유럽 중앙은행들의 2023년 추가 인상 시사"
+    ]
+   },
+   {
+    "heading": "커뮤니케이션 급락",
+    "tone": "neg",
+    "cat": "other",
+    "points": [
+     "11개 전 섹터 하락, 커뮤니케이션 서비스 2.6%로 최대 낙폭",
+     "대형 기술주 중심 매도 확대로 나스닥 상대적 부진"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "macro_data",
+   "other"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.64,
+   "SPY(VOO)": -0.86,
+   "SOXX": -1.24
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-20",
+  "title": "일본은행 YCC 확대 충격에 관망세",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "BOJ 정책 수정",
+    "tone": "neg",
+    "cat": "rates_treasury",
+    "points": [
+     "일본은행 10년물 국채 금리 목표 상단 0.25%에서 0.5%로 확대",
+     "긴축 선회 해석에 글로벌 채권 금리 상승 압력",
+     "엔화 강세와 위험자산 매도 확산"
+    ]
+   },
+   {
+    "heading": "주택지표 혼조",
+    "tone": "neu",
+    "cat": "macro_data",
+    "points": [
+     "11월 주택착공 142.7만호로 예상 140.9만호 상회",
+     "건축허가 134.2만호로 예상 149만호 하회",
+     "주택착공 전년 대비 16.4% 감소로 주택 경기 둔화 확인"
+    ]
+   }
+  ],
+  "cats": [
+   "macro_data",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.08,
+   "SPY(VOO)": -0.32,
+   "SOXX": -0.61
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-21",
+  "title": "소비자신뢰 급등과 나이키 호실적에 반등",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "소비자신뢰 개선",
+    "tone": "pos",
+    "cat": "macro_data",
+    "points": [
+     "12월 컨퍼런스보드 소비자신뢰지수 108.3으로 4월 이후 최고",
+     "시장 예상 101.2 대폭 상회로 침체 우려 후퇴",
+     "11월 기존주택 판매 409만호로 7.7% 감소하며 주택 부문은 부진"
+    ]
+   },
+   {
+    "heading": "실적 서프라이즈",
+    "tone": "pos",
+    "cat": "earnings_bellwether",
+    "points": [
+     "나이키 분기 매출 전년 대비 17% 증가에 주가 12.2% 상승",
+     "페덱스 주당순이익 3.18달러로 예상 상회, 주가 3.4% 상승",
+     "S&P500 11개 업종 전부 상승하며 산업재·에너지 각 1.9% 강세"
+    ]
+   }
+  ],
+  "cats": [
+   "earnings_bellwether",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 1.45,
+   "SPY(VOO)": 1.5,
+   "SOXX": 2.25
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-22",
+  "title": "GDP 상향에 긴축 경계, 반도체 급락",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "성장률 상향",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "3분기 GDP 확정치 3.2%로 예상 2.9% 상회",
+     "주간 실업수당 청구 21.6만건으로 예상 22.3만건 하회",
+     "견조한 지표에 연준 고강도 긴축 지속 우려 부각"
+    ]
+   },
+   {
+    "heading": "반도체 투매",
+    "tone": "neg",
+    "cat": "company_specific",
+    "points": [
+     "엔비디아 7%, AMD 5.6% 하락으로 반도체 낙폭 확대",
+     "나스닥 2.2% 하락하며 3거래일 연속 약세",
+     "VIX 9.5% 오른 21.97로 위험 회피 심리 강화"
+    ]
+   }
+  ],
+  "cats": [
+   "company_specific",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -2.45,
+   "SPY(VOO)": -1.41,
+   "SOXX": -4.04
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-23",
+  "title": "11월 PCE 둔화 확인에 소폭 반등",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "인플레 둔화",
+    "tone": "pos",
+    "cat": "macro_data",
+    "points": [
+     "11월 PCE 물가 전년 대비 5.5%로 10월 6.1%에서 둔화",
+     "근원 PCE 4.7%로 전월 대비 완화",
+     "12월 미시간대 소비심리 59.7로 11월 56.8에서 개선"
+    ]
+   },
+   {
+    "heading": "소비 둔화",
+    "tone": "neu",
+    "cat": "macro_data",
+    "points": [
+     "11월 개인소비 정체로 7월 이후 가장 부진",
+     "11월 신규주택 판매 전월 대비 5.8% 증가",
+     "연휴 앞둔 거래 감소 속 지수 소폭 상승 마감"
+    ]
+   }
+  ],
+  "cats": [
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.22,
+   "SPY(VOO)": 0.56,
+   "SOXX": 0.09
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-27",
+  "title": "테슬라 11% 급락과 금리 상승에 기술주 약세",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "테슬라 급락",
+    "tone": "neg",
+    "cat": "company_specific",
+    "points": [
+     "상하이 공장 감산 소식에 테슬라 11.4% 하락",
+     "연간 기준 최악의 주가 흐름 지속",
+     "대형 기술주 전반으로 매도 확산되며 나스닥 1.4% 하락"
+    ]
+   },
+   {
+    "heading": "국채 금리 상승",
+    "tone": "neg",
+    "cat": "rates_treasury",
+    "points": [
+     "10년물 국채 금리 11bp 가까이 오른 3.85%",
+     "금리 민감 대형 성장주 밸류에이션 부담 확대"
+    ]
+   },
+   {
+    "heading": "중국 방역 완화",
+    "tone": "pos",
+    "cat": "supply_chain",
+    "points": [
+     "중국 1월부터 해외 입국자 격리 요건 축소 방침 보도",
+     "공급망 차질 우려 완화",
+     "에너지 업종 1.1% 상승하며 시장 대비 강세"
+    ]
+   }
+  ],
+  "cats": [
+   "company_specific",
+   "rates_treasury",
+   "supply_chain"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.41,
+   "SPY(VOO)": -0.4,
+   "SOXX": -1.81
   },
   "link": null,
   "source": "external_knowledge"
@@ -2209,6 +4890,212 @@
   "source": "external_knowledge"
  },
  {
+  "date": "2022-12-29",
+  "title": "고용 둔화 신호에 긴축 완화 기대 반등",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "실업수당 증가",
+    "tone": "pos",
+    "cat": "macro_data",
+    "points": [
+     "주간 신규 실업수당 청구 22.5만건으로 전주 대비 9천건 증가",
+     "계속 청구 171만건으로 2월 이후 최고",
+     "연준 속도 조절 기대 자극하며 저가 매수 유입"
+    ]
+   },
+   {
+    "heading": "기술주 반등",
+    "tone": "pos",
+    "cat": "ai_tech_valuation",
+    "points": [
+     "기술 업종 2.6%, 커뮤니케이션 2.8%, 경기소비재 2.6% 상승",
+     "애플·아마존 각각 2.8~2.9% 반등",
+     "VIX 3.2% 내린 21.44로 위험 선호 회복"
+    ]
+   }
+  ],
+  "cats": [
+   "ai_tech_valuation",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 2.44,
+   "SPY(VOO)": 1.77,
+   "SOXX": 3.19
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2022-12-30",
+  "title": "2022년 마지막 거래일 약보합 마감",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "연간 급락 마감",
+    "tone": "neg",
+    "cat": "other",
+    "points": [
+     "S&P500 연간 19.4% 하락으로 2008년 이후 최악의 해 마감",
+     "나스닥 33.1%, 다우 8.8% 하락",
+     "연말 거래량 부진 속 방향성 부재"
+    ]
+   },
+   {
+    "heading": "방어주 부진",
+    "tone": "neu",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "유틸리티 1% 하락으로 업종 최하위, 부동산 동반 약세",
+     "VIX 1.1% 오른 21.67로 경계감 유지",
+     "연준 정책 경로 불확실성에 관망세 지속"
+    ]
+   }
+  ],
+  "cats": [
+   "other",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.06,
+   "SPY(VOO)": -0.28,
+   "SOXX": -0.09
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2023-01-03",
+  "title": "테슬라 인도 부진·애플 감산에 새해 첫날 하락",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "테슬라 인도 쇼크",
+    "tone": "neg",
+    "cat": "company_specific",
+    "points": [
+     "4분기 인도량 부진에 테슬라 12.24% 하락",
+     "물류 차질과 수요 둔화 우려 부각",
+     "애플 감산 보도에 3.74% 하락하며 2021년 중반 이후 최저"
+    ]
+   },
+   {
+    "heading": "유가 급락",
+    "tone": "neg",
+    "cat": "oil_energy",
+    "points": [
+     "중국 수요 둔화 우려에 브렌트유 4.4% 내린 배럴당 82.10달러",
+     "에너지 업종 3.5% 하락하며 업종 최하위",
+     "VIX 5.7% 오른 22.90으로 변동성 확대"
+    ]
+   }
+  ],
+  "cats": [
+   "company_specific",
+   "oil_energy"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -0.68,
+   "SPY(VOO)": -0.38,
+   "SOXX": -0.97
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2023-01-04",
+  "title": "FOMC 의사록 속도 조절 확인에 반등",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "의사록 해석",
+    "tone": "pos",
+    "cat": "fed_policy",
+    "points": [
+     "12월 FOMC 의사록에서 인상 속도 조절 공감대 확인",
+     "물가 진전 인정과 추가 인상 유연성 언급",
+     "장 후반 낙폭 만회하며 3대 지수 상승 전환"
+    ]
+   },
+   {
+    "heading": "제조업 위축",
+    "tone": "neu",
+    "cat": "macro_data",
+    "points": [
+     "12월 ISM 제조업 48.4로 두 달 연속 위축 국면",
+     "11월 구인 건수 1046만건으로 전월 1051만건 대비 소폭 감소",
+     "노동시장 견조 유지로 침체 우려는 제한"
+    ]
+   },
+   {
+    "heading": "기술주 반발",
+    "tone": "pos",
+    "cat": "ai_tech_valuation",
+    "points": [
+     "전일 급락 이후 반도체 중심 반발 매수 유입",
+     "넷플릭스 4.9% 상승 등 커뮤니케이션 업종 강세",
+     "VIX 3.9% 내린 22.01"
+    ]
+   }
+  ],
+  "cats": [
+   "ai_tech_valuation",
+   "fed_policy",
+   "macro_data"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.48,
+   "SPY(VOO)": 0.72,
+   "SOXX": 2.57
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2023-01-05",
+  "title": "ADP 고용 서프라이즈에 긴축 경계 재확산",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "고용 과열 확인",
+    "tone": "neg",
+    "cat": "macro_data",
+    "points": [
+     "12월 ADP 민간 고용 23.5만명으로 시장 예상 대폭 상회",
+     "주간 실업수당 청구 20.4만건으로 감소하며 노동시장 견조",
+     "연준 고강도 긴축 지속 우려 확대"
+    ]
+   },
+   {
+    "heading": "위험 회피 확대",
+    "tone": "neg",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "부동산 2.9%, 유틸리티 2.2%, 기술 1.9% 하락",
+     "11개 업종 중 9개 하락, 에너지만 1.8% 상승",
+     "VIX 2% 오른 22.46"
+    ]
+   }
+  ],
+  "cats": [
+   "macro_data",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": -1.57,
+   "SPY(VOO)": -1.09,
+   "SOXX": -1.69
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
   "date": "2023-01-06",
   "title": "임금 상승 둔화 — 연착륙 기대 점화",
   "importance": 2,
@@ -2231,6 +5118,84 @@
   "cats": [
    "macro_data"
   ],
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2023-01-09",
+  "title": "반도체 강세 속 매파 발언에 혼조",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "반도체 주도",
+    "tone": "pos",
+    "cat": "ai_tech_valuation",
+    "points": [
+     "반도체 강세가 나스닥 0.6% 상승 견인",
+     "기술 업종 1.2% 상승하며 대형 기술주 회복",
+     "다우 0.3% 하락으로 지수 간 차별화 확대"
+    ]
+   },
+   {
+    "heading": "매파 발언",
+    "tone": "neg",
+    "cat": "fed_policy",
+    "points": [
+     "샌프란시스코 연은 총재 5% 상회 금리 가능성 언급",
+     "애틀랜타 연은 총재도 5% 초과 필요성 제시",
+     "필수소비재 1%, 헬스케어 1.7% 하락"
+    ]
+   }
+  ],
+  "cats": [
+   "ai_tech_valuation",
+   "fed_policy"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.65,
+   "SPY(VOO)": -0.07,
+   "SOXX": 1.84
+  },
+  "link": null,
+  "source": "external_knowledge"
+ },
+ {
+  "date": "2023-01-10",
+  "title": "파월 연설 무난 평가에 3거래일 연속 상승",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "파월 연설",
+    "tone": "neu",
+    "cat": "fed_policy",
+    "points": [
+     "파월 의장 물가 안정 중요성과 중앙은행 독립성 강조",
+     "구체적 정책 경로 언급 부재로 경계감 완화",
+     "나스닥 1% 상승하며 지난해 11월 이후 첫 3거래일 연속 상승"
+    ]
+   },
+   {
+    "heading": "물가 지표 대기",
+    "tone": "pos",
+    "cat": "vix_risk_sentiment",
+    "points": [
+     "12월 CPI 발표 앞두고 연착륙 기대 유입",
+     "경기소비재·커뮤니케이션·소재 1~1.5% 상승",
+     "VIX 6.3% 내린 20.58로 위험 선호 개선"
+    ]
+   }
+  ],
+  "cats": [
+   "fed_policy",
+   "vix_risk_sentiment"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.85,
+   "SPY(VOO)": 0.71,
+   "SOXX": 1.29
+  },
   "link": null,
   "source": "external_knowledge"
  },
@@ -3033,8 +5998,7 @@
     "cat": "macro_data",
     "points": [
      "PCE 인플레이션 하락 추세 유지 vs. 스티키 인플레이션 우려 상존",
-     "일자리 성장 둔화 vs. 고용 시장 위축 가능성 상반된 전망",
-     "장기 국채 금리 고공 행진, 연준 정책 결�� 불확실성 증폭"
+     "일자리 성장 둔화 vs. 고용 시장 위축 가능성 상반된 전망"
     ]
    },
    {
@@ -3049,8 +6013,8 @@
   ],
   "cats": [
    "earnings_bellwether",
-   "macro_data",
-   "geopolitics"
+   "geopolitics",
+   "macro_data"
   ],
   "moreArticles": [
    {
@@ -3259,7 +6223,6 @@
     "tone": "pos",
     "cat": "company_specific",
     "points": [
-     "2025년 FSD 완전 자율주행 차량 출시 ��표, 무인 FSD 서비스 계획",
      "로보택시(사이버캡) 3만 달러 미만 예상, 2026년 대량 생산 시작",
      "2만 5천 달러 저가형 차량 2025년 상반기 출시 계획 확정"
     ]
@@ -3336,16 +6299,6 @@
      "대선 당선 직후 가파른 상승에 따른 조정 지속 가능성 높음",
      "330~340달러 구간에서 차익실현 및 신규 진입 혼재, 과매수세 완화 기대",
      "320달러 지지선 확인, 하회 시 300달러, 260달러까지 추가 하락 가능성 염두"
-    ]
-   },
-   {
-    "heading": "옵션 데이터, 높은 변동성 및 양방향 베팅 ���사",
-    "tone": "mix",
-    "cat": "other",
-    "points": [
-     "암묵적 변동성(IV) 68.42%, 역사적 변동성(HV) 98.88%로 급격한 주가 움직임 예상",
-     "330~340달러 구간 옵션 거래량 집중, 심리적 지지/저항 구간 형성",
-     "콜 옵션 거래량 우위이나 풋 옵션 수요도 높아 양방향 변동 가능성 시사"
     ]
    }
   ],
@@ -3425,8 +6378,7 @@
     "cat": "company_specific",
     "points": [
      "로보택시 네트워크 상용화 및 에너지 저장 사업 확장이 핵심 근거",
-     "기본 시나리오 50% 확률, 약세 시나리오 25% 확률, 강세 시나리오 25% 확률로 분석",
-     "로보택시가 2029�� 기업 가치의 90% 이상 차지할 것으로 전망"
+     "기본 시나리오 50% 확률, 약세 시나리오 25% 확률, 강세 시나리오 25% 확률로 분석"
     ]
    }
   ],
@@ -3472,16 +6424,6 @@
      "$7,500 EV 세금 공제 폐지 시 경쟁사 가격 경쟁력 약화 우려",
      "테슬라 고객층은 높은 소득 수준으로 공제 유무 영향 적음",
      "경쟁사 EV 투자 축소 시 테슬라 시장 점유율 확대 가능성"
-    ]
-   },
-   {
-    "heading": "���기 급등 후 과열 우려 및 조정 가능성",
-    "tone": "neg",
-    "cat": "other",
-    "points": [
-     "최근 45% 급등, 숏 스퀴즈 효과로 상승세 부추김",
-     "기술적 분석상 $360은 단기 목표가, $270 회귀 가능성 제기",
-     "높은 밸류에이션 부담, P/E 109배로 시장 기대치 높게 반영"
     ]
    }
   ],
@@ -3660,8 +6602,7 @@
     "cat": "company_specific",
     "points": [
      "MSTR 일봉 차트 MACD 데드 크로스, RSI 과매수 구간 하락 전환",
-     "8시간봉 및 4시간봉 차트에서도 하락 모멘텀 지속, 380달러 지지선 중요",
-     "비트코인 91,000달러 지지선 위협��으며 MSTR 추가 하락 가능성 시사"
+     "8시간봉 및 4시간봉 차트에서도 하락 모멘텀 지속, 380달러 지지선 중요"
     ]
    }
   ],
@@ -3930,8 +6871,7 @@
     "cat": "company_specific",
     "points": [
      "북미 보조금 적용 시 $3만 이하 예상, 2025년 상반기 출시 루머",
-     "모델 3보다 작고 가벼운 크기, 53kWh 및 75kWh 배터리 옵션 예상",
-     "머스크��� 2025년 저가형 차량 출시 계획 언급으로 신뢰도 상승"
+     "모델 3보다 작고 가벼운 크기, 53kWh 및 75kWh 배터리 옵션 예상"
     ]
    }
   ],
@@ -4093,15 +7033,14 @@
     "tone": "pos",
     "cat": "fed_policy",
     "points": [
-     "다음주 FOMC 금리 인하 기대치 93~96.7% 유지",
-     "VIX 지수 크게 오르지 않��� 안정적인 심리 유지"
+     "다음주 FOMC 금리 인하 기대치 93~96.7% 유지"
     ]
    }
   ],
   "cats": [
-   "macro_data",
    "company_specific",
-   "fed_policy"
+   "fed_policy",
+   "macro_data"
   ]
  },
  {
@@ -4257,8 +7196,7 @@
     "cat": "fed_policy",
     "points": [
      "닉 티미라오스 기자의 FOMC 하루 전 기사, 금리 인하 기대감 시사",
-     "연준 내 중립금리 불확실성 및 견고한 고용·미미한 인플레이션 둔화로 신중론 부상",
-     "트럼프 정책 변수(관세, 이민, 에너��)의 경제 영향 불확실성으로 금리 정책 반영 어려움"
+     "연준 내 중립금리 불확실성 및 견고한 고용·미미한 인플레이션 둔화로 신중론 부상"
     ]
    },
    {
@@ -4482,8 +7420,7 @@
     "cat": "ai_tech_valuation",
     "points": [
      "일봉 MACD 약세 전환 가능성, 4시간 봉은 단기 반등 가능성 유지",
-     "일봉 RSI는 상승 영역 진입, 4시간 봉은 과매수 신호로 단기 조정 가능성",
-     "스토캐스틱 오실레이터 과��수 구간 진입으로 단기 조정 가능성 시사"
+     "일봉 RSI는 상승 영역 진입, 4시간 봉은 과매수 신호로 단기 조정 가능성"
     ]
    },
    {
@@ -4498,8 +7435,8 @@
    }
   ],
   "cats": [
-   "company_specific",
    "ai_tech_valuation",
+   "company_specific",
    "vix_risk_sentiment"
   ],
   "moreArticles": [
@@ -4549,21 +7486,11 @@
      "테네시주 멤피스 신규 데이터센터 122일 만에 구축 완료",
      "Grok 3 모델 훈련에 10만 개 H100 GPU 활용, OpenAI GPT-4 대비 압도적 규모"
     ]
-   },
-   {
-    "heading": "브로드컴, AI 반도�� 시장에서 ASIC 기술로 주목",
-    "tone": "pos",
-    "cat": "ai_tech_valuation",
-    "points": [
-     "맞춤형 ASIC 기술 기반, GPU 대비 높은 효율성과 낮은 비용 제공",
-     "2024년 기준 ASIC 시장 점유율 70~80% 차지, 구글·메타 등과 협력",
-     "2024년 연간 AI 관련 매출 122억 달러 예상, 전년 대비 220% 성장"
-    ]
    }
   ],
   "cats": [
-   "company_specific",
-   "ai_tech_valuation"
+   "ai_tech_valuation",
+   "company_specific"
   ],
   "moreArticles": [
    {
@@ -4703,7 +7630,6 @@
     "tone": "mix",
     "cat": "other",
     "points": [
-     "2025년 연준 ��제, 중국 관세 협상, 과대평가 논란 등 긴장 순간 가능성",
      "이러한 상황이 기술 테마 소유 및 주요 기업 투자 기회 창출 가능성"
     ]
    }
@@ -4763,8 +7689,7 @@
     "cat": "company_specific",
     "points": [
      "단기 조정은 펀더멘탈 훼손이 아닌 저가 매수 기회로 활용 가능",
-     "스윙 트레이더는 추가 상승보다 리스크 관리에 초점, 분할 매수/매도 전략 권장",
-     "극단적 공포 심리 속 단기 반등 가능성 및 옵션 ��장 데이터 기반 시나리오 분석 제시"
+     "스윙 트레이더는 추가 상승보다 리스크 관리에 초점, 분할 매수/매도 전략 권장"
     ]
    }
   ],
@@ -4932,7 +7857,6 @@
     "cat": "company_specific",
     "points": [
      "일론 머스크, 테슬라 자율주행 3개월 내 인간 운전보다 안전해질 것 확신",
-     "2025년 2분기까지 자율���행 인간 운전보다 더 안전한 수준 도달 전망",
      "테슬라, 2026년까지 화성에 스타십 우주선 착륙 목표"
     ]
    },
@@ -5006,15 +7930,14 @@
     "tone": "neg",
     "cat": "geopolitics",
     "points": [
-     "트럼프 취임 첫날 25개 이상 행정명령 발표 예정, 시��� 충격 가능성",
      "중국 60%, 기타 국가 10-20% 관세 도입 계획으로 소비자 물가 5.1% 상승 경고"
     ]
    }
   ],
   "cats": [
-   "macro_data",
    "earnings_bellwether",
-   "geopolitics"
+   "geopolitics",
+   "macro_data"
   ]
  },
  {
@@ -5099,8 +8022,7 @@
     "cat": "company_specific",
     "points": [
      "주봉 차트상 2022년 10월 시작된 상승 채널 이탈 우려 속 130달러 지지선 주목",
-     "CPI 발표 결과에 따라 상승 채널 복귀 또는 추가 하락 가능성 시사",
-     "옵션 시장, 풋옵션 거���량 증가하며 하락 헤지 심리 강화"
+     "CPI 발표 결과에 따라 상승 채널 복귀 또는 추가 하락 가능성 시사"
     ]
    },
    {
@@ -5115,8 +8037,8 @@
    }
   ],
   "cats": [
-   "company_specific",
-   "ai_tech_valuation"
+   "ai_tech_valuation",
+   "company_specific"
   ],
   "moreArticles": [
    {
@@ -5168,7 +8090,6 @@
     "points": [
      "2025년 연간 매출 성장률 24~26% 예상, AI 및 HPC 관련 매출 최소 2배 증가 전망",
      "3nm 및 2nm 공정 확장 위한 연간 CAPEX 38~42억 달러로 최대 41% 증가",
-     "AI ��속기 및 서버용 칩 매출 증가로 고수익성 유지 예상",
      "엔비디아, AMD, 애플 등 고객사 AI 칩 수요 지속 확대 전망"
     ]
    },
@@ -5184,9 +8105,9 @@
    }
   ],
   "cats": [
-   "earnings_bellwether",
    "ai_tech_valuation",
-   "company_specific"
+   "company_specific",
+   "earnings_bellwether"
   ],
   "moreArticles": [
    {
@@ -5274,21 +8195,11 @@
      "데이터센터 매출 전년 대비 112% 증가하며 전체 매출의 87% 차지",
      "블랙웰 GPU 출시로 AI 인프라 시장 지배력 강화 전망"
     ]
-   },
-   {
-    "heading": "엔비디아, AI 수요 초기 단계 및 성장 잠재���",
-    "tone": "pos",
-    "cat": "ai_tech_valuation",
-    "points": [
-     "AI 모델 복잡성 증가로 GPU 수요 지속 확대 예상",
-     "데이터센터 기업들의 GPU 확보 경쟁 심화",
-     "미국 정부의 AI 인프라 투자 계획(Project Stargate) 수혜 기대"
-    ]
    }
   ],
   "cats": [
-   "company_specific",
-   "ai_tech_valuation"
+   "ai_tech_valuation",
+   "company_specific"
   ],
   "moreArticles": [
    {
@@ -5632,8 +8543,7 @@
     "tone": "pos",
     "cat": "ai_tech_valuation",
     "points": [
-     "AWS 기반 AI 모델 개발·운영·배포 올인원 플랫폼 Amazon Bedrock 구축",
-     "개발자 및 데이터 ��석가 대상 실무 지원 강화로 AWS 생태계 내 고객 락인 효과 증대"
+     "AWS 기반 AI 모델 개발·운영·배포 올인원 플랫폼 Amazon Bedrock 구축"
     ]
    },
    {
@@ -6075,8 +8985,7 @@
     "cat": "company_specific",
     "points": [
      "공식 발표 지연으로 디자인 및 출시 시점에 대한 설왕설래",
-     "연간 5백만 대 생산 목표의 실현 가능성에 대한 의구심",
-     "FSD, 로보택시 전환 가능성 및 규제 불확��성"
+     "연간 5백만 대 생산 목표의 실현 가능성에 대한 의구심"
     ]
    }
   ],
@@ -6182,7 +9091,6 @@
     "cat": "company_specific",
     "points": [
      "중국 FSD 업데이트 준비 완료 보도, 공식 확인 부재로 시장 불확실성 증폭",
-     "도시 도로 Autopilot 기능 강화, 운전석 카메라 통한 집중도 판단 기능 추���",
      "중국용 FSD 패키지 가격 64,000위안(약 8,900달러) 책정"
     ]
    }
@@ -6228,21 +9136,11 @@
      "관세 이슈로 소비자 인플레이션 기대 심리 자극 가능성",
      "미시간대 조사 단기·장기 인플레 기대치 상승, 소비심리 부담 요인"
     ]
-   },
-   {
-    "heading": "연��의 수동적 긴축 기조 지속 우려",
-    "tone": "neg",
-    "cat": "fed_policy",
-    "points": [
-     "파월 의장, 견고한 경제 강조하며 빠른 금리 인하 신호 부재",
-     "경기 둔화 속 금리 인하 지연 시 유동성 축소 및 기업 재무 압박 우려"
-    ]
    }
   ],
   "cats": [
-   "trade_tariff",
    "macro_data",
-   "fed_policy"
+   "trade_tariff"
   ],
   "moreArticles": [
    {
@@ -6356,7 +9254,6 @@
     "cat": "company_specific",
     "points": [
      "조 로건 팟캐스트 출연, 3시간 이상 대화",
-     "나치 지지자라는 비판에 대해 프로��간다로 해명",
      "온라인상의 살해 및 시신 모욕 위협 언급",
      "합리적이지 않은 비난은 집단 최면 효과로 인한 것이라 주장"
     ]
@@ -6607,8 +9504,7 @@
     "cat": "trade_tariff",
     "points": [
      "소비자 물가 상승 압력 가중, 가계 연간 약 1,700달러 추가 손실 가능성",
-     "과거 사례로 세탁기·건조기 가격 상승, GM 등 제조업체 원자재 비용 급등으로 손실 및 감원 경험",
-     "WTO 규정 무시한 일방적 관세 부과로 국제 무역 질서 ��협 및 글로벌 경제 성장 저하 가능성"
+     "과거 사례로 세탁기·건조기 가격 상승, GM 등 제조업체 원자재 비용 급등으로 손실 및 감원 경험"
     ]
    }
   ],
@@ -7327,7 +10223,6 @@
     "tone": "neg",
     "cat": "geopolitics",
     "points": [
-     "미·중 관세 협상 및 미·일 무역협상 소��� 주시",
      "파월 의장, 관세가 인플레이션 자극 및 성장 둔화 경고",
      "트럼프 대통령, 파월 의장 해임 압박 발언"
     ]
@@ -7455,15 +10350,14 @@
     "tone": "neg",
     "cat": "macro_data",
     "points": [
-     "실업률, 비농업��용지수 발표 앞두고 시장 변동성 확대 우려",
      "고용 지표 악화 시 경기 침체 및 스태그플레이션 우려 부각 가능성"
     ]
    }
   ],
   "cats": [
    "company_specific",
-   "trade_tariff",
-   "macro_data"
+   "macro_data",
+   "trade_tariff"
   ],
   "moreArticles": [
    {
@@ -7610,23 +10504,11 @@
      "신규 채용률 10년 최저권, 채용 망설임이 침체 전조 역할",
      "평균 시급 상승률 기준금리 하회, 실질 임금 약세 구간 진입"
     ]
-   },
-   {
-    "heading": "관세 및 물��망 충격 우려 지속",
-    "tone": "neg",
-    "cat": "supply_chain",
-    "points": [
-     "LA항 5월 수입 물동량 35% 감소 전망, 경기 침체 우려 확대",
-     "서부항만 빈 선적·컨테이너 운임 급락, 해운→트럭→창고 고용 하락 우려",
-     "UPS 2만 명 감원·시설 폐쇄 발표, 물류 체인 고용 타격 사례 부각",
-     "대중국 평균 145% 관세로 컨테이너당 추가 비용 발생, 소비자 가격 전가·재고 소진 가속화 예상"
-    ]
    }
   ],
   "cats": [
-   "trade_tariff",
    "macro_data",
-   "supply_chain"
+   "trade_tariff"
   ]
  },
  {
@@ -7889,8 +10771,7 @@
     "cat": "other",
     "points": [
      "재무장관, 무디스를 '후행 지표'로 평가하며 기초 체력 견고 주장",
-     "다수 투자 기관, 강등을 '대체로 중요하지 않은 사건'으로 평가하며 매수 기회 제시",
-     "연준 총재, 자본 비용 상승 및 경제 전반 ��급 효과 경고하며 신중론 제기"
+     "다수 투자 기관, 강등을 '대체로 중요하지 않은 사건'으로 평가하며 매수 기회 제시"
     ]
    }
   ],
@@ -7933,7 +10814,6 @@
     "cat": "rates_treasury",
     "points": [
      "경제 성장률 0~1%, 인플레이션 3~4%, 실업률 4.5~5% 전망으로 S&P 500 지수 4500~4800 범위 예상",
-     "미 재무부 대규모 국채 발행, 해외 투자��� 매입 감소, 연준 양적 긴축 지속으로 10년물 국채 금리 4.5~5% 상승 전망",
      "금리 상승은 주식의 미래 수익 할인율을 높여 성장주 및 테크 섹터에 하락 압력 작용"
     ]
    },
@@ -7949,9 +10829,9 @@
    }
   ],
   "cats": [
-   "vix_risk_sentiment",
+   "geopolitics",
    "rates_treasury",
-   "geopolitics"
+   "vix_risk_sentiment"
   ],
   "moreArticles": [
    {
@@ -8059,7 +10939,6 @@
     "cat": "ai_tech_valuation",
     "points": [
      "AI·로봇, 상품·서비스 한계비용 거의 0으로 낮춰 희소성 경제 종식 전망",
-     "소프트웨어·FSD 등 무�� 복제 가능 상품, 높은 수익률 근거",
      "옵티머스, 대량 생산 시 하드웨어 비용 급감 및 무한 복제 가능"
     ]
    },
@@ -8075,8 +10954,8 @@
    }
   ],
   "cats": [
-   "company_specific",
-   "ai_tech_valuation"
+   "ai_tech_valuation",
+   "company_specific"
   ],
   "moreArticles": [
    {
@@ -8275,7 +11154,6 @@
     "cat": "company_specific",
     "points": [
      "5월 유럽 판매량 스웨덴 -53.7%, 포르투갈 -68% 등 급감",
-     "머스크 정치 논란이 유럽 브랜드 이미지에 ���격",
      "6월 12일 로보택시 시범 서비스 기대감 상존"
     ]
    },
@@ -8291,9 +11169,9 @@
    }
   ],
   "cats": [
-   "trade_tariff",
+   "ai_tech_valuation",
    "company_specific",
-   "ai_tech_valuation"
+   "trade_tariff"
   ],
   "moreArticles": [
    {
@@ -8496,7 +11374,6 @@
     "tone": "mix",
     "cat": "other",
     "points": [
-     "빌 ��크먼 등 중재 노력, 머스크 긍정적 신호",
      "백악관 보좌관 중재 시도, 관계 회복 여지",
      "법안 통과 시 국채금리 상승 및 글로벌 시장 불안정 예상"
     ]
@@ -8553,8 +11430,7 @@
     "cat": "other",
     "points": [
      "날씨는 물리 법칙 기반으로 예측 가능, 주식 시장은 인간 심리 변수로 예측 어려움",
-     "단기 시장은 투표기계, 장기적으로는 기업 가치 반영",
-     "예측 자체가 시장에 영향을 미치는 반���성 존재"
+     "단기 시장은 투표기계, 장기적으로는 기업 가치 반영"
     ]
    }
   ],
@@ -8599,14 +11475,13 @@
     "points": [
      "이란, 60% 농축 우라늄 400kg 보유, 핵무기 10개 제조량",
      "이스라엘, 핵무기 완성 전 선제적 자위권 행사 가능성 시사",
-     "J.P. Morgan, ��란 사태 시 유가 120-130달러, CPI 5%까지 상승 전망",
      "협상 실패 및 이스라엘 군사행동 임박 신호 감지"
     ]
    }
   ],
   "cats": [
-   "trade_tariff",
-   "geopolitics"
+   "geopolitics",
+   "trade_tariff"
   ],
   "moreArticles": [
    {
@@ -8762,8 +11637,7 @@
     "cat": "oil_energy",
     "points": [
      "이란 의회 호르무즈 해협 봉쇄안 승인, 전 세계 석유 운송량 20% 차단 위험",
-     "WTI 원유 77달러, 브렌트유 3% 이상 급등, 80달러 돌파 시 휘발유 가격 추가 상승 예상",
-     "JP모���, 최악 시나리오 시 유가 120-130달러 도달 가능성 언급"
+     "WTI 원유 77달러, 브렌트유 3% 이상 급등, 80달러 돌파 시 휘발유 가격 추가 상승 예상"
     ]
    },
    {
@@ -8778,9 +11652,9 @@
    }
   ],
   "cats": [
+   "fed_policy",
    "geopolitics",
-   "oil_energy",
-   "fed_policy"
+   "oil_energy"
   ]
  },
  {
@@ -8943,7 +11817,6 @@
     "tone": "mix",
     "cat": "fed_policy",
     "points": [
-     "파월, 관세 임금-물�� 상승 악순환 경고, 장기 인플레이션 기대 불안정화 우려",
      "관세는 세금으로 재정 이전, 소비자 구매력 감소로 디플레이션 압력 발생 가능성",
      "보스턴 연은, 근원 인플레이션 0.5-0.8%p 상승 전망, 시장은 성장 둔화 우려 우세",
      "GDP 성장률 하락, 일자리 감소, 가계 소득 손실 등 스태그플레이션 우려 제기"
@@ -9276,15 +12149,14 @@
     "tone": "mix",
     "cat": "fed_policy",
     "points": [
-     "2025년 두 차례 금리 인하 예상 유지, 'wait-and-see' 모드",
-     "2025년 GDP 성��률 전망 하향, 코어 PCE 인플레이션 전망 상향 조정"
+     "2025년 두 차례 금리 인하 예상 유지, 'wait-and-see' 모드"
     ]
    }
   ],
   "cats": [
+   "fed_policy",
    "macro_data",
-   "trade_tariff",
-   "fed_policy"
+   "trade_tariff"
   ],
   "moreArticles": [
    {
@@ -12035,6 +14907,56 @@
    }
   ],
   "source": "own_archive"
+ },
+ {
+  "date": "2026-01-28",
+  "title": "1월 FOMC — 금리 동결, S&P500 장중 7,000 첫 돌파",
+  "summary": "",
+  "summaryGroups": [
+   {
+    "heading": "FOMC 금리 동결",
+    "tone": "neu",
+    "cat": "fed_policy",
+    "points": [
+     "기준금리 3.50~3.75% 동결, 지난해 말 3연속 인하 이후 첫 휴지",
+     "0.25%p 인하 선호 반대표 2명",
+     "성명서상 경제활동 견조한 확장, 고용 증가세 낮음, 인플레이션 다소 높은 수준 평가"
+    ]
+   },
+   {
+    "heading": "기자회견 매파 해석",
+    "tone": "neg",
+    "cat": "rates_treasury",
+    "points": [
+     "기자회견에서 경제의 견조한 기반, 현 금리 수준이 제약적이지 않다는 평가 제시",
+     "결정 직후 국채금리 상승",
+     "S&P500 장중 사상 첫 7,000 돌파 후 상승폭 반납"
+    ]
+   },
+   {
+    "heading": "빅테크 실적 대기",
+    "tone": "pos",
+    "cat": "earnings_bellwether",
+    "points": [
+     "장 마감 후 마이크로소프트·메타·테슬라 실적 발표 예정",
+     "반도체주 강세와 나스닥 종합 0.17% 상승 마감",
+     "AT&T 4분기 조정 EPS 0.52달러로 컨센서스 0.46달러 상회, 주가 4.7% 상승"
+    ]
+   }
+  ],
+  "cats": [
+   "earnings_bellwether",
+   "fed_policy",
+   "rates_treasury"
+  ],
+  "importance": 2,
+  "moves": {
+   "QQQ": 0.33,
+   "SPY(VOO)": -0.02,
+   "SOXX": 2.67
+  },
+  "link": null,
+  "source": "external_knowledge"
  },
  {
   "date": "2026-01-29",

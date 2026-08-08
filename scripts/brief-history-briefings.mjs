@@ -136,13 +136,20 @@ const KIND_ORDER = {
   normal: '평범한 하루다. 그래도 가격을 움직인 재료만 고른다.',
 };
 
+/* 글자가 깨진 채 통과하지 않게 — U+FFFD 는 응답 청크 경계에서 한 글자가
+   잘려 나갔다는 신호다. 에러가 안 나므로 사람이 화면에서 보기 전엔 모른다.
+   실제로 37일치 브리핑에 이 문자가 섞인 채 배포됐다. */
+function looksClean(obj) {
+  return !JSON.stringify(obj).includes('�');
+}
+
 // ── Gemini ──────────────────────────────────────────────────────────────
 function httpPost(host, path, body) {
   return new Promise((resolve, reject) => {
     const payload = JSON.stringify(body);
     const req = https.request({ host, path, method: 'POST', timeout: 120000,
       headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) } },
-      (res) => { let b = ''; res.on('data', (c) => { b += c; });
+      (res) => { let b = ''; res.setEncoding('utf8'); res.on('data', (c) => { b += c; });
         res.on('end', () => { try { resolve(JSON.parse(b)); } catch (e) { reject(new Error('JSON 파싱 실패')); } }); });
     req.on('timeout', () => req.destroy(new Error('timeout')));
     req.on('error', reject);
@@ -231,6 +238,9 @@ async function main() {
     const arts = e.articles.slice(0, MAX_ARTICLES_PER_DAY);
     const key = sha(PROMPT_VERSION + '|' + arts.map((a) => a.u).join('|'));
     let brief = cache[key];
+    /* 캐시를 읽을 때도 검사한다 — 한 번 깨진 채 담긴 것이 영원히 살면 안 된다.
+       U+FFFD 는 응답 청크 경계에서 한 글자가 잘려 나갔다는 뜻이다. */
+    if (brief && !looksClean(brief)) { delete cache[key]; brief = null; }
 
     if (!brief) {
       if (made >= LIMIT) { skipped++; continue; }
@@ -258,6 +268,11 @@ async function main() {
       const groups = out && Array.isArray(out.summaryGroups) ? out.summaryGroups : null;
       if (!groups || !groups.length || !groups.every((g) => g.heading && Array.isArray(g.points) && g.points.length)) {
         console.warn(`  ${e.date} 브리핑 형식 불량 — 건너뜀`);
+        skipped++;
+        continue;
+      }
+      if (!looksClean({ summaryGroups: groups })) {
+        console.warn(`  ${e.date} 응답에 깨진 글자 — 건너뜀`);
         skipped++;
         continue;
       }

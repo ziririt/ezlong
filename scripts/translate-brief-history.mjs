@@ -69,7 +69,11 @@ function httpPost(host, path, body) {
     const req = https.request(
       { host, path, method: 'POST', headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }, timeout: 120000 },
       (res) => {
+        // setEncoding 을 빼면 안 된다. 청크 경계에 한글·가나·한자 한 글자가
+        // 걸치면 그 글자만 U+FFFD 로 깨진 채 통과한다 — 에러가 안 난다.
+        // 실제로 일본어 219자·중국어 181자가 이렇게 깨진 채 배포됐다.
         let buf = '';
+        res.setEncoding('utf8');
         res.on('data', (c) => { buf += c; });
         res.on('end', () => { try { resolve(JSON.parse(buf)); } catch (e) { reject(new Error('JSON 파싱 실패: ' + buf.slice(0, 200))); } });
       }
@@ -156,6 +160,7 @@ function looksTranslated(lang, t) {
   const sample = [t.title, t.summary, ...(t.arts || []), ...((t.groups || [])[0]?.p || [])]
     .filter(Boolean).join(' ');
   if (!sample) return true;                 // 번역할 글자가 없던 항목
+  if (sample.includes('�')) return false;  // 글자가 깨진 채 담긴 것 — 다시 번역한다
   if (HANGUL.test(sample)) return false;    // 한국어가 그대로 남았다
   const need = SCRIPT_OF[lang];
   return need ? need.test(sample) : true;
