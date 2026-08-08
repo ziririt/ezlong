@@ -27,6 +27,11 @@ jobs:
       - name: Scrape Naver Premium Content
         run: node scripts/sync-naver.mjs
 
+      # 소사(A Brief History)의 날짜축에 새 글을 얹는다. 손으로 쓴 소사는 건드리지
+      # 않고, source=own_archive 항목만 매번 다시 만든다(멱등).
+      - name: 소사에 새 글 반영
+        run: python3 scripts/merge-naver-archive.py
+
       - name: Commit updated data (if changed)
         run: |
           git config user.name "github-actions[bot]"
@@ -34,7 +39,7 @@ jobs:
 
           # git reset --hard 금지 (CLAUDE.md Rule 2/16) — tracked 파일 소멸 위험
           # actions/checkout@v4가 이미 올바른 상태. 추가 fetch/reset 불필요.
-          git add data/naver-content.json
+          git add data/naver-content.json data/naver-archive.json data/brief-history.json
           if git diff --staged --quiet; then
             echo "변경 없음, 커밋 생략"
           else
