@@ -248,6 +248,11 @@
     background: var(--ez-card2); margin-bottom: 12px; scroll-margin-top: 90px;
   }
   .bh-event-item.highlight { outline: 2px solid var(--ez-blue); background: var(--ez-blue-dim); }
+  /* 누르면 차트가 그 날짜로 이동한다 — 누를 수 있다는 걸 보이게 한다. */
+  .bh-event-item { cursor: pointer; }
+  .bh-event-item:active { transform: scale(.995); }
+  @media (prefers-reduced-motion: reduce) { .bh-event-item:active { transform: none; } }
+  .bh-event-item .bh-event-link { cursor: pointer; }
   .bh-event-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
   .bh-event-date { font-size: 14px; font-weight: 700; color: var(--ez-text2); }
   .bh-badge { font-size: 14px; font-weight: 700; padding: 2px 9px; border-radius: 999px; color: #fff; }
@@ -346,10 +351,6 @@
         </svg>
       </button>
       <input type="date" id="bh-goto-input" class="bh-goto-input" style="display:none" aria-label="이동할 날짜 선택">
-    </div>
-    <div class="bh-filter-row">
-      <input type="checkbox" id="bh-major-only-chart" checked>
-      <label for="bh-major-only-chart">핵심 소사만 표시 — 차트 포인트</label>
     </div>
   </div>
 
@@ -476,8 +477,7 @@
     // 어느 쪽을 누르든 majorOnly 갱신 + 캘린더·목록·차트 마커(applyMarkers)까지 전부 다시 그린다.
     const majorOnlyCheckboxes = [
       document.getElementById('bh-major-only'),
-      document.getElementById('bh-major-only-chart'),
-    ].filter(Boolean);   // 차트 카드가 못 그려졌으면 그쪽 체크박스는 없다
+    ].filter(Boolean);
     majorOnlyCheckboxes.forEach(cb => {
       cb.addEventListener('change', (e) => {
         majorOnly = e.target.checked;
@@ -493,6 +493,18 @@
       renderCalendar();
       renderEventList();
     });
+    /* 소사 카드를 누르면 그 날짜가 차트 한가운데로 온다. 카드 안의 '원문 보기'
+       링크를 누른 경우는 제외 — 그건 글을 열러 가는 동작이다. */
+    var listEl = document.getElementById('bh-events-list');
+    if (listEl) {
+      listEl.addEventListener('click', (ev) => {
+        if (ev.target.closest('a')) return;
+        const card = ev.target.closest('.bh-event-item');
+        if (!card || !card.dataset.date) return;
+        selectDate(card.dataset.date, 'chart');
+      });
+    }
+
     document.getElementById('bh-cal-prev').addEventListener('click', () => shiftMonth(-1));
     document.getElementById('bh-cal-next').addEventListener('click', () => shiftMonth(1));
     var zin = document.getElementById('bh-zoom-in');
@@ -516,7 +528,7 @@
       }
     });
     gotoInput.addEventListener('change', (e) => {
-      if (e.target.value) selectDate(e.target.value);
+      if (e.target.value) selectDate(e.target.value, 'chart');
     });
   }).catch(err => {
     document.getElementById('bh-events-list').innerHTML =
@@ -665,8 +677,11 @@
       .sort((a,b) => a.time < b.time ? -1 : 1);
   }
 
+  /* 차트 마커는 '핵심'만 걸러내지 않는다 — 전체 소사를 다 찍는다.
+     달력·목록의 '핵심 소사만 표시'는 그대로 두되(읽을 목록은 추릴 이유가 있다),
+     차트는 그날 무슨 일이 있었는지 한눈에 훑는 자리라 빠뜨릴수록 손해다. */
   function currentPool() {
-    return majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
+    return eventsData;
   }
 
   function applyMarkers() {
@@ -1049,7 +1064,10 @@
     });
   }
 
-  function selectDate(dateStr) {
+  /* dateStr 날짜를 차트 한가운데에 놓고 달력·목록도 그 날짜로 맞춘다.
+     scrollTo 로 어디를 보여줄지 고른다 — 목록에서 눌렀으면 차트를 보여줘야
+     하고(그게 누른 이유다), 차트 마커나 달력에서 눌렀으면 목록을 보여준다. */
+  function selectDate(dateStr, scrollTo) {
     selectedDate = dateStr;
     const d = new Date(dateStr + 'T00:00:00Z');
     calYear = d.getUTCFullYear();
@@ -1057,11 +1075,18 @@
     renderCalendar();
     renderEventList();
     document.getElementById('bh-clear-btn').style.display = 'inline-block';
-    applyRange(6, dateStr);
+    if (chartOK) applyRange(6, dateStr);   // 6개월 창의 정중앙에 그 날짜가 온다
     document.querySelectorAll('.bh-range-btn').forEach(b => b.classList.remove('active'));
+    var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var behavior = calm ? 'auto' : 'smooth';
     setTimeout(() => {
+      if (scrollTo === 'chart') {
+        const card = document.querySelector('.bh-chart-card');
+        if (card) card.scrollIntoView({ behavior: behavior, block: 'start' });
+        return;
+      }
       const item = document.querySelector(`.bh-event-item[data-date="${dateStr}"]`);
-      if (item) item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (item) item.scrollIntoView({ behavior: behavior, block: 'center' });
     }, 50);
   }
 
