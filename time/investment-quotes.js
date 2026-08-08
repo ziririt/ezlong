@@ -8855,5 +8855,12 @@ window.investmentQuotes = [
     "title": "너에게 묻는다",
     "author": "안도현",
     "genre": "literature"
+  },
+  {
+    "english": "The investor's chief problem — and even his worst enemy — is likely to be himself.",
+    "text": "투자자의 가장 큰 문제, 어쩌면 최악의 적은 바로 자기 자신일 가능성이 크다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
   }
 ];
