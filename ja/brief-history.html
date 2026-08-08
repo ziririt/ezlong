@@ -162,6 +162,25 @@ window.BH_T = {
  "fwdLabel": "その後のQQQ",
  "fwdDays": "{n}日",
  "fwdSummary": "この一覧{n}件の20営業日後のQQQ平均 {avg}・上昇したのは{up}%",
+ "vLabel": "その日のAI判断",
+ "vScore": "買いスコア {n}",
+ "chipCat": "材料",
+ "chipVerdict": "AI判断",
+ "cats": {
+  "fed_policy": "FRB・FOMC",
+  "geopolitics": "地政学",
+  "trade_tariff": "関税・通商",
+  "macro_data": "経済指標",
+  "earnings_bellwether": "決算",
+  "vix_risk_sentiment": "VIX・心理",
+  "oil_energy": "原油・エネルギー",
+  "dollar_fx": "ドル・為替",
+  "rates_treasury": "国債金利",
+  "ai_tech_valuation": "AIバリュエーション",
+  "supply_chain": "サプライチェーン",
+  "company_specific": "個別企業",
+  "other": "その他"
+ },
  "readOriginal": "詳しく見る →",
  "moreBtn": "以前のイベントを表示（残り{n}件）",
  "emptyNear": "この日付の前後に記録されたイベントはありません。",
@@ -407,6 +426,27 @@ window.BH_T = {
   .bh-events-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
   .bh-events-title { font-size: 17px; font-weight: 700; color: var(--ez-text); }
   .bh-events-count { font-size: 14px; color: var(--ez-text3); }
+  /* 무엇으로 걸러 볼지 — 누르면 아래 요약 한 줄이 그 묶음 기준으로 다시 계산된다. */
+  .bh-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 14px; }
+  .bh-chips:empty { display: none; }
+  .bh-chip-lab { font-size: 14px; font-weight: 700; color: var(--ez-text2); margin-right: 2px; }
+  .bh-chip-lab:not(:first-child) { margin-left: 8px; }
+  .bh-chip {
+    font-size: 14px; font-weight: 600; color: var(--ez-text2); cursor: pointer;
+    background: var(--ez-card2); border: 1px solid var(--ez-border); border-radius: 999px;
+    padding: 5px 11px; min-height: 32px;
+  }
+  .bh-chip em { font-style: normal; font-weight: 700; color: var(--ez-text3); margin-left: 5px; }
+  .bh-chip.on { background: var(--ez-blue); border-color: var(--ez-blue); color: #fff; }
+  .bh-chip.on em { color: rgba(255,255,255,.75); }
+  /* 그날 AI 판단 — 그 뒤 수익률 바로 아래. 판단과 결과가 한 줄 간격으로 붙는다. */
+  .bh-verdict { display: flex; align-items: baseline; gap: 6px; font-size: 14px; margin: -4px 0 9px; }
+  .bh-verdict-lab { font-weight: 700; color: var(--ez-text2); }
+  .bh-verdict b { font-weight: 800; }
+  .bh-verdict em { font-style: normal; color: var(--ez-text2); }
+  .bh-v-buy { color: var(--ez-green); }
+  .bh-v-sell { color: var(--ez-red); }
+  .bh-v-hold { color: var(--ez-text2); }
 
   .bh-event-item {
     padding: 16px 16px; border-radius: var(--ez-rs); border: 1px solid var(--ez-border2);
@@ -566,6 +606,7 @@ window.BH_T = {
           <div id="bh-fwd-summary"></div>
         </div>
       </div>
+      <div class="bh-chips" id="bh-chips"></div>
       <div id="bh-events-list"></div>
       <!-- BH_NOSCRIPT_START — 빌더 생성 -->
       <noscript>
@@ -644,6 +685,8 @@ window.BH_T = {
   let selectedDate = null;
   let calYear, calMonth; // 0-indexed month
   let majorOnly = false;  // 기본값: 전부 표시 (체크박스 checked 속성과 동기화)
+  let catFilter = null;   // 분류 칩 — null 이면 전체
+  let vFilter = null;     // AI 판단 칩 — null 이면 전체
   const LIST_PAGE = 120;  // 전체 목록을 끊어서 그리는 단위
   let listShown = LIST_PAGE;
   /* 기록 점을 찍을지는 '몇 개월치냐'가 아니라 '점 하나에 몇 픽셀이 돌아가느냐'로
@@ -677,6 +720,13 @@ window.BH_T = {
       return c;
     });
   }
+  /* 판단 원장(그날 AI 가 뭐라고 했나) — 없으면 그 줄만 안 나온다. */
+  let verdicts = {};
+  fetch('/data/brief-history-verdicts.json')
+    .then(r => r.ok ? r.json() : null)
+    .then(d => { if (d && d.verdicts) { verdicts = d.verdicts; if (eventsData.length) renderEventList(); } })
+    .catch(() => {});
+
   const loadEvents = fetch(BH_DATA)
     .then(r => { if (!r.ok) throw new Error('no ' + BH_DATA); return r.json(); })
     .catch(() => {
@@ -1478,6 +1528,18 @@ window.BH_T = {
     return `<div class="bh-fwd"><span class="bh-fwd-lab">${T.fwdLabel}</span>${parts.join('')}</div>`;
   }
 
+  /* 그날 AI 가 뭐라고 했나. 바로 위에 그 뒤 수익률이 붙어 있으므로, 둘을
+     나란히 놓으면 판단과 결과가 한 줄 간격으로 대조된다. 맞았다·틀렸다를
+     화면이 판정하지는 않는다 — 그건 읽는 사람이 한다. */
+  function renderVerdict(dateStr) {
+    const v = verdicts[dateStr];
+    if (!v) return '';
+    const cls = v.v === '매수' ? 'buy' : (v.v === '매도' ? 'sell' : 'hold');
+    const score = (typeof v.s === 'number') ? ` <em>${fmt(T.vScore, { n: v.s })}</em>` : '';
+    return `<div class="bh-verdict"><span class="bh-verdict-lab">${T.vLabel}</span>` +
+           `<b class="bh-v-${cls}">${escapeHtml(v.v)}</b>${score}</div>`;
+  }
+
   /* 지금 목록에 걸린 이벤트들의 20거래일 뒤 성적을 한 줄로 요약한다.
      표본이 너무 적으면 평균이 우연에 흔들리므로 아예 내보내지 않는다. */
   const FWD_SUMMARY_MIN = 10;
@@ -1549,6 +1611,7 @@ window.BH_T = {
       </div>
       ${moves ? `<div class="bh-event-moves">${moves}</div>` : ''}
       ${renderForward(e.date)}
+      ${renderVerdict(e.date)}
       <div class="bh-event-title">${escapeHtml(title)}</div>
       ${bodyHtml}
       ${articlesHtml}
@@ -1574,11 +1637,54 @@ window.BH_T = {
     return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
+  /* 무엇으로 걸러 볼지 — 실제로 있는 것만 보여준다. 데이터에 없는 분류를
+     칩으로 늘어놓으면 눌러도 빈 목록이 나와서 고장처럼 보인다.
+     칩을 누르면 아래 요약 한 줄이 그 묶음 기준으로 다시 계산된다 —
+     "이런 재료가 있던 날들 이후 20거래일 평균"이 곧 이 화면의 답이다. */
+  function renderChips() {
+    const wrap = document.getElementById('bh-chips');
+    // 이벤트가 아직 안 왔는데 칩을 만들면 재료 칩이 통째로 빠진 채 굳는다
+    if (!wrap || wrap.dataset.built === '1' || !eventsData.length) return;
+    const count = {};
+    eventsData.forEach(e => (e.cats || []).forEach(c => { count[c] = (count[c] || 0) + 1; }));
+    const cats = Object.keys(count).filter(c => count[c] >= 3)
+      .sort((a, b) => count[b] - count[a]).slice(0, 8);
+    const vSet = {};
+    Object.values(verdicts).forEach(v => { vSet[v.v] = (vSet[v.v] || 0) + 1; });
+    const vKeys = Object.keys(vSet).filter(k => vSet[k] >= 3);
+    if (!cats.length && !vKeys.length) return;
+
+    let html = '';
+    if (cats.length) {
+      html += `<span class="bh-chip-lab">${T.chipCat}</span>` +
+        cats.map(c => `<button type="button" class="bh-chip" data-cat="${c}">${escapeHtml(T.cats[c] || c)}<em>${count[c]}</em></button>`).join('');
+    }
+    if (vKeys.length) {
+      html += `<span class="bh-chip-lab">${T.chipVerdict}</span>` +
+        vKeys.map(k => `<button type="button" class="bh-chip" data-v="${escapeHtml(k)}">${escapeHtml(k)}<em>${vSet[k]}</em></button>`).join('');
+    }
+    wrap.innerHTML = html;
+    wrap.dataset.built = '1';
+    wrap.addEventListener('click', (ev) => {
+      const b = ev.target.closest('.bh-chip');
+      if (!b) return;
+      if (b.dataset.cat) catFilter = (catFilter === b.dataset.cat) ? null : b.dataset.cat;
+      if (b.dataset.v) vFilter = (vFilter === b.dataset.v) ? null : b.dataset.v;
+      listShown = LIST_PAGE;
+      wrap.querySelectorAll('.bh-chip').forEach(x => x.classList.toggle('on',
+        (x.dataset.cat && x.dataset.cat === catFilter) || (x.dataset.v && x.dataset.v === vFilter)));
+      renderEventList();
+    });
+  }
+
   function renderEventList() {
     const listEl = document.getElementById('bh-events-list');
     const titleEl = document.getElementById('bh-events-title');
     const countEl = document.getElementById('bh-events-count');
     let pool = majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
+    if (catFilter) pool = pool.filter(e => (e.cats || []).indexOf(catFilter) >= 0);
+    if (vFilter) pool = pool.filter(e => verdicts[e.date] && verdicts[e.date].v === vFilter);
+    renderChips();
 
     if (selectedDate) {
       // 전후 1일씩, 총 3일치만 — 더 넓게 훑어보고 싶으면 아래 달력으로 다른 날짜를 고르면 된다.
@@ -1586,7 +1692,10 @@ window.BH_T = {
       const nearby = pool.filter(e => {
         const t = new Date(e.date + 'T00:00:00Z').getTime();
         return Math.abs(t - target) <= 1 * 86400000;
-      }).sort((a,b) => Math.abs(new Date(a.date)-target) - Math.abs(new Date(b.date)-target));
+      /* 날짜순(오래된 것부터)으로 놓는다. 예전엔 '고른 날짜와 가까운 순'이라
+         D, D+1, D-1 이 되어 시간이 뒤죽박죽으로 읽혔다. 전날 → 그날 → 다음날이
+         이어져야 무슨 일이 있었는지 흐름으로 읽힌다. */
+      }).sort((a,b) => a.date < b.date ? -1 : 1);
       const sumElN = document.getElementById('bh-fwd-summary');
       if (sumElN) sumElN.innerHTML = '';
       titleEl.textContent = fmt(T.nearTitle, { date: selectedDate });

@@ -51,7 +51,18 @@ const MIN_BODY = 400;             // 이보다 짧으면 브리핑을 만들지 
 const MAX_BODY = 6000;
 /* 프롬프트를 고치면 캐시도 갈아야 한다 — 안 그러면 옛 요약이 영원히 산다.
    이 값을 올리면 다음 실행에서 전부 다시 만든다. */
-const PROMPT_VERSION = 'v2-materials';
+const PROMPT_VERSION = 'v3-cats';
+
+/* 분류 어휘는 새로 만들지 않는다 — 스코어카드 파이프라인이 쓰는 목록을 그대로
+   쓴다(CLAUDE.md 20항 FACTOR_CATEGORIES). 어휘가 갈라지면 나중에 두 코너의
+   집계를 나란히 놓을 수 없다. 목록 밖 값은 'other' 로 강등한다. */
+const CATS = ['fed_policy', 'geopolitics', 'trade_tariff', 'macro_data',
+  'earnings_bellwether', 'vix_risk_sentiment', 'oil_energy', 'dollar_fx',
+  'rates_treasury', 'ai_tech_valuation', 'supply_chain', 'company_specific', 'other'];
+const CAT_HINT = `fed_policy(연준·FOMC·파월) geopolitics(전쟁·제재·지정학) trade_tariff(관세·무역)
+macro_data(CPI·고용·GDP·PMI) earnings_bellwether(벨웨더 실적) vix_risk_sentiment(VIX·리스크온오프)
+oil_energy(유가·에너지) dollar_fx(달러·환율) rates_treasury(국채금리·커브)
+ai_tech_valuation(AI·반도체 밸류에이션) supply_chain(공급망) company_specific(개별 기업) other`;
 
 const sha = (s) => createHash('sha1').update(s).digest('hex').slice(0, 16);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -169,6 +180,8 @@ const PROMPT = (dateStr, body, ctx) => `아래는 한국 필자가 쓴 미국 �
 [무엇을 담나 — 이게 전부다]
 - **그날 주가를 움직인 재료만** 담는다. 긍정 재료(올린 것)와 부정 재료(내린 것).
 - 각 묶음에 tone 을 붙인다: "pos"(올린 재료) / "neg"(내린 재료) / "mix"(양쪽이 상쇄).
+- 각 묶음에 cat 을 붙인다. **아래 목록의 값만** 쓴다(새로 만들지 않는다):
+  ${CAT_HINT}
 - 필자의 전략·대응·관전 포인트·다음 일정·개인 판단은 **넣지 않는다**. 재료가 아니다.
 - 지수 등락률만 나열하는 묶음도 넣지 않는다 — 카드에 이미 숫자가 따로 붙는다.
   등락률은 재료를 설명할 때 근거로만 쓴다.
@@ -187,12 +200,12 @@ ${ctx ? KIND_ORDER[ctx.kind] : ''}
 
 [예시 — 형식만 참고]
 {"summaryGroups":[
- {"heading":"유가·장기금리가 위를 막음","tone":"neg","points":["브렌트유 83달러대 재진입, 호르무즈 통행 합의 기대가 배경","10년물 4.67%·30년물 5.21%로 박스 상단 재확장 시도"]},
- {"heading":"AI 설비투자 고점 논쟁 재점화","tone":"neg","points":["아폴로 리서치, AI 설비투자의 GDP 비중이 과거 통신·주택 버블 대비 크고 상승 속도도 빠름","메모리·스토리지·소프트웨어 밸류에이션까지 파급"]},
- {"heading":"고용 지표는 견조","tone":"mix","points":["주간 실업수당 청구 199K로 예상 203K 하회, 챌린저 해고 2년 만에 최저","노동 약세 공포가 아니라 강세에 따른 고금리 장기화 우려로 소화"]}]}
+ {"heading":"유가·장기금리가 위를 막음","tone":"neg","cat":"oil_energy","points":["브렌트유 83달러대 재진입, 호르무즈 통행 합의 기대가 배경","10년물 4.67%·30년물 5.21%로 박스 상단 재확장 시도"]},
+ {"heading":"AI 설비투자 고점 논쟁 재점화","tone":"neg","cat":"ai_tech_valuation","points":["아폴로 리서치, AI 설비투자의 GDP 비중이 과거 통신·주택 버블 대비 크고 상승 속도도 빠름","메모리·스토리지·소프트웨어 밸류에이션까지 파급"]},
+ {"heading":"고용 지표는 견조","tone":"mix","cat":"macro_data","points":["주간 실업수당 청구 199K로 예상 203K 하회, 챌린저 해고 2년 만에 최저","노동 약세 공포가 아니라 강세에 따른 고금리 장기화 우려로 소화"]}]}
 
 [출력]
-JSON 하나만. {"summaryGroups":[{"heading":"...","tone":"pos|neg|mix","points":["...","..."]}]}
+JSON 하나만. {"summaryGroups":[{"heading":"...","tone":"pos|neg|mix","cat":"위 목록 중 하나","points":["...","..."]}]}
 
 [대상 날짜] ${dateStr}
 [원문]
@@ -229,7 +242,7 @@ async function main() {
           fetched++;
           const paras = extractBody(html);
           if (paras.length) bodies.push(paras.join('\n'));
-          await sleep(600);   // 남의 서버다 — 몰아치지 않는다
+          await sleep(350);   // 남의 서버다 — 몰아치지 않는다
         } catch (err) {
           console.warn(`  본문 실패 ${a.u}: ${err.message}`);
         }
@@ -252,6 +265,8 @@ async function main() {
       brief = { summaryGroups: groups.slice(0, 3).map((g) => ({
         heading: String(g.heading).trim(),
         tone: TONES[String(g.tone || '').trim()] || 'mix',
+        // 목록 밖 값은 'other' 로 강등 — 어휘가 늘어나면 집계가 흩어진다
+        cat: CATS.includes(String(g.cat || '').trim()) ? String(g.cat).trim() : 'other',
         points: g.points.slice(0, 4).map((p) => String(p).trim()).filter(Boolean),
       })) };
       cache[key] = brief;
@@ -268,6 +283,9 @@ async function main() {
     e.title = primary.t;
     e.link = primary.u;
     e.summaryGroups = brief.summaryGroups;
+    // 카드 필터가 쓰는 요약 — 그날 등장한 분류를 중복 없이 모아 둔다
+    const cats = [...new Set(brief.summaryGroups.map((g) => g.cat).filter((c) => c && c !== 'other'))];
+    if (cats.length) e.cats = cats; else delete e.cats;
     const rest = e.articles.slice(1);
     if (rest.length) e.moreArticles = (e.moreArticles || []).concat(rest);
     delete e.articles;

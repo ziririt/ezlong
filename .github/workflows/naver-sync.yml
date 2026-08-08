@@ -65,6 +65,14 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/brief-history-briefings.mjs --limit 100
 
+      # 판단 원장(그날 AI 가 뭐라고 했나)을 날짜축으로 편다. 원장 파일은 15개로
+      # prune 되므로 git 이력을 훑어 복원한다 — 새 데이터 소스가 필요 없다.
+      - name: AI 판단 타임라인 복원
+        continue-on-error: true
+        run: |
+          git fetch --deepen=400 origin main 2>/dev/null || true
+          python3 scripts/extract-judgment-timeline.py
+
       # 새로 붙은 항목만 번역한다(원문 해시 캐시). 첫 실행만 무겁고 그 뒤로는
       # 하루 두세 건이라 호출이 거의 없다. 키가 없으면 조용히 건너뛴다.
       - name: 이슈 다국어 번역
@@ -89,7 +97,7 @@ jobs:
           # 새 글이 실제로 생겼는가 — naver-content.json 은 updatedAt 때문에 매번
           # 달라지므로 신선도 판정에는 쓸 수 없다. 목록·소사가 바뀌었는지로 본다.
           git add data/naver-archive.json data/brief-history.json data/brief-history-*.json \
-                  data/brief-history-chart.json \
+                  data/brief-history-chart.json data/brief-history-verdicts.json \
                   en/brief-history.html ja/brief-history.html zh/brief-history.html \
                   es/brief-history.html pt/brief-history.html
           if git diff --staged --quiet; then
