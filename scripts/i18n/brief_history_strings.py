@@ -13,6 +13,7 @@
 BODY = {
     'ko': {
         'h1': '그날 무슨 일이 있었나',
+        'lede': '시간이 지나면 잊습니다. 이 날은 왜 바닥을 치고 반등했을까 — 차트에서 그 날짜를 누르면 그날을 브리핑합니다.',
         'weekdays': ['일', '월', '화', '수', '목', '금', '토'],
         'legendMajor': '핵심 이슈',
         'legendNotable': '주요 이슈',
@@ -31,6 +32,7 @@ BODY = {
     },
     'en': {
         'h1': 'What Happened That Day',
+        'lede': 'Time passes and you forget. Why did it bottom out and bounce that day — tap the date on the chart and you get that day briefed.',
         'weekdays': ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
         'legendMajor': 'Key event',
         'legendNotable': 'Notable event',
@@ -49,6 +51,7 @@ BODY = {
     },
     'ja': {
         'h1': 'その日、何があったか',
+        'lede': '時間が経つと忘れます。あの日はなぜ底を打って反発したのか — チャートでその日付を押すと、その日をブリーフィングします。',
         'weekdays': ['日', '月', '火', '水', '木', '金', '土'],
         'legendMajor': '重要イベント',
         'legendNotable': '主要イベント',
@@ -67,6 +70,7 @@ BODY = {
     },
     'zh': {
         'h1': '那一天发生了什么',
+        'lede': '时间一长就忘了。那天为什么触底反弹 — 在图表上点一下那个日期，就能看到当天的简报。',
         'weekdays': ['日', '一', '二', '三', '四', '五', '六'],
         'legendMajor': '核心事件',
         'legendNotable': '主要事件',
@@ -85,6 +89,7 @@ BODY = {
     },
     'es': {
         'h1': 'Qué pasó ese día',
+        'lede': 'Con el tiempo se olvida. ¿Por qué tocó fondo y rebotó ese día? Toca la fecha en el gráfico y verás el resumen de ese día.',
         'weekdays': ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
         'legendMajor': 'Evento clave',
         'legendNotable': 'Evento destacado',
@@ -103,6 +108,7 @@ BODY = {
     },
     'pt': {
         'h1': 'O que aconteceu naquele dia',
+        'lede': 'Com o tempo a gente esquece. Por que caiu ao fundo e reagiu naquele dia? Toque na data no gráfico e veja o resumo daquele dia.',
         'weekdays': ['Do', 'Se', 'Te', 'Qua', 'Qui', 'Sex', 'Sá'],
         'legendMajor': 'Evento-chave',
         'legendNotable': 'Evento relevante',

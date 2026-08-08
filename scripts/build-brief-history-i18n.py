@@ -119,6 +119,8 @@ def body_swaps(lang, s):
     pairs = [
         (f'<h1 class="bh-brand-title">{ko["h1"]}</h1>',
          f'<h1 class="bh-brand-title">{tr["h1"]}</h1>'),
+        (f'<p class="bh-brand-lede">{ko["lede"]}</p>',
+         f'<p class="bh-brand-lede">{tr["lede"]}</p>'),
         (''.join(f'<span>{d}</span>' for d in ko['weekdays']),
          ''.join(f'<span>{d}</span>' for d in tr['weekdays'])),
         (f'></span>{ko["legendMajor"]}\n', f'></span>{tr["legendMajor"]}\n'),

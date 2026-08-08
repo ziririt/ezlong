@@ -150,6 +150,14 @@ window.BH_T = {
     font-size: clamp(22px, 4vw, 32px); font-weight: 800; letter-spacing: -.03em;
     color: var(--ez-text); margin-bottom: 10px;
   }
+  /* 제목 아래 한 줄 — 이 코너를 왜 쓰는지. 폰에서 세 줄을 넘지 않게 max-width 로
+     행 길이를 잡는다(긴 줄은 눈이 다음 줄 첫 글자를 못 찾는다). */
+  .bh-brand-lede {
+    font-size: 16px; line-height: 1.65; color: var(--ez-text2);
+    margin: 0; max-width: 44em;
+    /* 마지막 줄에 단어 하나만 남는 걸 막는다(미지원 브라우저는 그냥 무시) */
+    text-wrap: pretty;
+  }
 
   .bh-main { max-width: var(--ez-max-w-wide); margin: 0 auto; padding: 28px 20px 60px; }
 
@@ -405,6 +413,7 @@ window.BH_T = {
   <div class="bh-brand-inner">
     <div class="bh-brand-label">A Brief History</div>
     <h1 class="bh-brand-title">그날 무슨 일이 있었나</h1>
+    <p class="bh-brand-lede">시간이 지나면 잊습니다. 이 날은 왜 바닥을 치고 반등했을까 — 차트에서 그 날짜를 누르면 그날을 브리핑합니다.</p>
   </div>
 </div>
 
