@@ -8822,5 +8822,11 @@ window.investmentQuotes = [
     "title": "마진 오브 세이프티",
     "author": "세스 클라만",
     "category": "mindset"
+  },
+  {
+    "text": "좋은 학생에는 여러 정의가 있고, 잘 사는 것에는 여러 방법이 있으며, 우리는 각자의 답을 가질 권리가 있다. 우리는 오답이 아닌, 각기 다른 답이다.",
+    "title": "나는 나로 살기로 했다",
+    "author": "김수현",
+    "genre": "literature"
   }
 ];
