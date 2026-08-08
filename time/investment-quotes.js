@@ -8915,5 +8915,12 @@ window.investmentQuotes = [
     "title": "진달래꽃",
     "author": "김소월",
     "genre": "literature"
+  },
+  {
+    "english": "A man walks his dog. The dog runs ahead, then falls behind, then runs ahead again — but in the end, both arrive at the same place. However wildly the stock market dog may run, it never strays far from its owner, the economy.",
+    "text": "주인과 개가 함께 산책을 나선다. 개는 주인보다 앞서 달려나갔다가 다시 뒤처지기를 반복하지만, 결국 둘은 같은 목적지에 도착한다. 주가라는 개가 아무리 제멋대로 날뛰어도, 경제라는 주인의 걸음을 벗어나지는 못한다.",
+    "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
+    "author": "앙드레 코스톨라니",
+    "category": "patience"
   }
 ];
