@@ -426,6 +426,7 @@
   let majorOnly = true;   // 기본값: 핵심 소사만 표시 (체크박스 checked 속성과 동기화)
   let currentRangeMonths = null;   // 현재 적용된 기간(개월) — 줌 계산 기준. null = 전체
   let currentCenterDate = null;    // 현재 기간의 중심 날짜 — null이면 최신일 기준
+  let chartOK = false;             // 차트가 실제로 그려졌는가 (외부 라이브러리 의존)
 
   const eventsByDate = {};
 
@@ -441,10 +442,33 @@
     calYear = parseInt(last.slice(0,4), 10);
     calMonth = parseInt(last.slice(5,7), 10) - 1;
 
-    buildLegend();
-    buildChart();
-    initDrawTools();
-    buildRangeButtons();
+    /* 차트는 외부 라이브러리(unpkg의 LightweightCharts)에 기대고 있다.
+       그게 안 뜨면 예전엔 이 블록이 통째로 예외를 던져 catch 로 빠졌고,
+       화면 전체가 "데이터를 불러오지 못했습니다" 한 줄로 끝났다 —
+       정작 이 페이지의 본론인 소사 목록과 달력은 멀쩡한 로컬 데이터인데도.
+       차트 실패를 목록 실패로 번지지 않게 분리한다. */
+    try {
+      if (typeof LightweightCharts === 'undefined') throw new Error('chart lib unavailable');
+      buildLegend();
+      buildChart();
+      initDrawTools();
+      buildRangeButtons();
+      chartOK = true;
+    } catch (e) {
+      console.warn('[소사] 차트를 그리지 못했다 — 목록·달력은 그대로 표시한다:', e);
+      /* 카드를 통째로 지우면 그 안에 같이 들어 있는 '날짜로 이동'·필터까지
+         사라져서 뒤 코드가 null 을 만진다. 차트 영역과 차트 전용 조작만
+         걷어내고 나머지 조작은 그대로 남긴다. */
+      var outer = document.querySelector('.bh-chart-outer');
+      if (outer) {
+        outer.innerHTML =
+          '<div class="bh-empty">차트를 불러오지 못했습니다. 아래 소사 목록과 달력은 정상입니다.</div>';
+      }
+      ['.bh-legend', '.bh-range-btns'].forEach(function (sel) {
+        var el = document.querySelector(sel);
+        if (el) el.style.display = 'none';
+      });
+    }
     renderCalendar();
     renderEventList();
 
@@ -453,7 +477,7 @@
     const majorOnlyCheckboxes = [
       document.getElementById('bh-major-only'),
       document.getElementById('bh-major-only-chart'),
-    ];
+    ].filter(Boolean);   // 차트 카드가 못 그려졌으면 그쪽 체크박스는 없다
     majorOnlyCheckboxes.forEach(cb => {
       cb.addEventListener('change', (e) => {
         majorOnly = e.target.checked;
@@ -471,8 +495,10 @@
     });
     document.getElementById('bh-cal-prev').addEventListener('click', () => shiftMonth(-1));
     document.getElementById('bh-cal-next').addEventListener('click', () => shiftMonth(1));
-    document.getElementById('bh-zoom-in').addEventListener('click', () => zoomChart(0.6));
-    document.getElementById('bh-zoom-out').addEventListener('click', () => zoomChart(1 / 0.6));
+    var zin = document.getElementById('bh-zoom-in');
+    var zout = document.getElementById('bh-zoom-out');
+    if (zin) zin.addEventListener('click', () => { if (chartOK) zoomChart(0.6); });
+    if (zout) zout.addEventListener('click', () => { if (chartOK) zoomChart(1 / 0.6); });
 
     // 날짜로 이동 — 버튼을 누르면 우측에 날짜 입력칸이 나타난다. 기본값은 오늘 날짜.
     const gotoBtn = document.getElementById('bh-goto-btn');
@@ -644,6 +670,7 @@
   }
 
   function applyMarkers() {
+    if (!chartOK) return;   // 차트가 없으면 마커도 없다 — 목록·달력은 그대로 돈다
     // 소사 마커는 특정 종목의 가격(세로축)이 아니라 markerHostSeries(숨은 오버레이
     // 기준선)에 표시한다. 종목마다 가격 축이 서로 달라 마커가 종목 조합에 따라
     // 들쭉날쭉해 보이던 문제를 해결 — 5개 중 무엇을 켜고 끄든 마커는 항상 같은 자리다.
@@ -1073,7 +1100,7 @@
       <div class="bh-event-title">${escapeHtml(e.title)}</div>
       ${bodyHtml}
       <div class="bh-event-moves">${renderMoves(e.moves)}</div>
-      <div class="bh-event-foot">${sourceTag}</div>
+      ${sourceTag ? `<div class="bh-event-foot">${sourceTag}</div>` : ''}
     </div>`;
   }
 
