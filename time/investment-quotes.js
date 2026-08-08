@@ -8909,5 +8909,11 @@ window.investmentQuotes = [
     "title": "제시 리버모어의 회상 (Reminiscences of a Stock Operator)",
     "author": "제시 리버모어 (Jesse Livermore)",
     "category": "mindset"
+  },
+  {
+    "text": "나 보기가 역겨워 가실 때에는, 말없이 고이 보내드리우리다.",
+    "title": "진달래꽃",
+    "author": "김소월",
+    "genre": "literature"
   }
 ];
