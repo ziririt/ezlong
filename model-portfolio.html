@@ -231,6 +231,7 @@
     color:#fff; background:var(--ez-blue); border:none; border-radius:var(--ez-r-pill);
     padding:10px 18px; cursor:pointer; box-shadow:var(--ez-shadow); }
   .edit-btn:active { transform:scale(.97); }
+  @media (prefers-reduced-motion: reduce) { .edit-btn:active { transform:none; } }
   @media (max-width:400px) { .edit-btn { padding:9px 14px; font-size:14px; } }
 
   .mine-bar { background:var(--ez-blue-dim); border:1px solid var(--ez-blue);
@@ -602,7 +603,7 @@
     /* 전체 종목 데이터 */
     out += '<section><h2>전체 종목 데이터</h2><div class="card">' +
       '<p class="tblhint">표를 좌우로 밀면 밴드·PER·Fwd 까지 볼 수 있다. 판정·종목은 고정된다.</p>' +
-      '<div class="tblwrap"><table>' +
+      '<div class="tblwrap" tabindex="0" role="region" aria-label="전체 종목 데이터"><table>' +
       '<thead><tr><th>판정</th><th>종목</th><th>티커</th><th>비중</th><th>종가</th>' +
       '<th>고점대비</th><th>밴드</th><th>PER</th><th>Fwd</th></tr></thead><tbody>' +
       H.slice().sort(function (a, b) { return wOf(b) - wOf(a); }).map(function (h) {
@@ -793,7 +794,10 @@
               document.querySelector('nav');
     var off = nav ? nav.getBoundingClientRect().height : 0;
     var y = panel.getBoundingClientRect().top + window.pageYOffset - off - 10;
-    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    /* 움직임 저감을 켠 사용자에게는 부드러운 스크롤이 멀미의 원인이 된다.
+       설정을 존중해 즉시 이동한다. */
+    var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: Math.max(0, y), behavior: calm ? 'auto' : 'smooth' });
   }
 
   function setEditLabel() {
