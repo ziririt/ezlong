@@ -23,7 +23,10 @@
     'tax-account-simulator.html': ['ko', 'en', 'ja'],
     'today-chart.html': ['ko', 'en'],
     'isa-irp-us-stock-tax-comparison.html': ['ko'],
-    'market-scorecard.html': ['ko']
+    'market-scorecard.html': ['ko'],
+    // 2026-08-08 신설 — 아직 한국어판만 있다. 번역본이 올라가면 이 줄에
+    // 언어를 추가한다. 여기 없으면 배너가 없는 페이지로 안내한다.
+    'model-portfolio.html': ['ko']
   };
 
   function pageLangs(file) {
