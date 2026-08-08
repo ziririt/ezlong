@@ -8849,5 +8849,11 @@ window.investmentQuotes = [
     "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
     "author": "필립 피셔 (Philip Fisher)",
     "category": "mindset"
+  },
+  {
+    "text": "연탄재 함부로 발로 차지 마라. 너는 누구에게 한 번이라도 뜨거운 사람이었느냐.",
+    "title": "너에게 묻는다",
+    "author": "안도현",
+    "genre": "literature"
   }
 ];
