@@ -41,6 +41,15 @@ Disallow: /
 # ── 데이터 원본 파일은 크롤링 불필요 ─────────────────────────────────────────
 # JSON 데이터 파일과 내부 설정 파일은 노출 불필요
 User-agent: *
+# 이슈(브리프 히스토리) 페이지는 본문이 통째로 이 JSON 안에 있다. 막아두면
+# 크롤러가 빈 껍데기만 보고 간다 — 이 두 개만 열어둔다(공개 콘텐츠다).
+Allow: /data/brief-history.json
+Allow: /data/brief-history-chart.json
+Allow: /data/brief-history-en.json
+Allow: /data/brief-history-ja.json
+Allow: /data/brief-history-zh.json
+Allow: /data/brief-history-es.json
+Allow: /data/brief-history-pt.json
 Disallow: /data/
 Disallow: /options-latest.json
 Disallow: /firebase.json

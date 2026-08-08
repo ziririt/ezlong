@@ -37,6 +37,7 @@
       ['/en/atmr-dashboard.html#swing-strategy', L.strategy, L.strategy],
       ['/en/atmr-dashboard.html#top9',           L.top9,     L.top9],
       [p + 'market-vs.html',      L.vs,       L.vs],
+      [p + 'brief-history.html',  L.events,   L.events],
       [p + 'stocks.html',         L.prices,   L.prices],
       [p + 'chart-analysis.html', L.chart,    L.chart],
       [p + 'analyst-reports.html', L.targets, L.targets],
@@ -57,21 +58,21 @@
   }
 
   var LANG_LABELS = {
-    ja: { swing: 'スイングシグナル', strategy: 'スイング戦略', top9: 'TOP9集中分析', vs: '強気vs弱気', prices: '株価情報', chart: 'AIチャート分析',
+    ja: { swing: 'スイングシグナル', strategy: 'スイング戦略', top9: 'TOP9集中分析', vs: '強気vs弱気', events: 'チャート：その日何が', prices: '株価情報', chart: 'AIチャート分析',
           targets: '目標株価', cycle: 'マーケットサイクル', dca: 'DCAシミュレーター',
           folio: 'AIポートフォリオ', compound: '複利計算機', retire: '退職計算機',
           backtest: 'バックテスト', risk: '投資性向診断', quiz: '投資タイプ診断',
           game: 'バランスゲーム', autoGuide: '自動積立ガイド' },
-    zh: { swing: '波段信号', strategy: '波段策略', top9: 'TOP9集中分析', vs: '多空对比', prices: '股价信息', chart: 'AI图表分析',
+    zh: { swing: '波段信号', strategy: '波段策略', top9: 'TOP9集中分析', vs: '多空对比', events: '图表：那天发生了什么', prices: '股价信息', chart: 'AI图表分析',
           targets: '目标股价', cycle: '市场周期', dca: '定投模拟器',
           folio: 'AI投资组合', compound: '复利计算器', retire: '退休计算器',
           backtest: '回测', risk: '风险偏好测评', quiz: '投资类型测试', game: '平衡游戏' },
-    es: { swing: 'Señal de Swing', strategy: 'Estrategia Swing', top9: 'TOP9 a Fondo', vs: 'Alcista vs Bajista', prices: 'Precios', chart: 'Análisis IA',
+    es: { swing: 'Señal de Swing', strategy: 'Estrategia Swing', top9: 'TOP9 a Fondo', vs: 'Alcista vs Bajista', events: 'Gráfico: qué pasó', prices: 'Precios', chart: 'Análisis IA',
           targets: 'Precio Objetivo', cycle: 'Ciclo de Mercado', dca: 'Simulador DCA',
           folio: 'Cartera IA', compound: 'Interés Compuesto', retire: 'Calc. Jubilación',
           backtest: 'Backtest', risk: 'Perfil de Riesgo', quiz: 'Tipo de Inversor',
           game: 'Juego de Equilibrio' },
-    pt: { swing: 'Sinal de Swing', strategy: 'Estratégia Swing', top9: 'TOP9 a Fundo', vs: 'Alta vs Baixa', prices: 'Preços', chart: 'Análise IA',
+    pt: { swing: 'Sinal de Swing', strategy: 'Estratégia Swing', top9: 'TOP9 a Fundo', vs: 'Alta vs Baixa', events: 'Gráfico: o que houve', prices: 'Preços', chart: 'Análise IA',
           targets: 'Preço-Alvo', cycle: 'Ciclo de Mercado', dca: 'Simulador DCA',
           folio: 'Carteira IA', compound: 'Juros Compostos', retire: 'Calc. Aposentadoria',
           backtest: 'Backtest', risk: 'Perfil de Risco', quiz: 'Tipo de Investidor',
@@ -83,6 +84,7 @@
     ['/en/atmr-dashboard.html#swing-strategy', 'Swing Strategy', 'Swing Strategy — 3-3-4 Rule'],
     ['/en/atmr-dashboard.html#top9',   'TOP9 Deep Dive',  'TOP9 Deep Dive — Big Tech'],
     ['/en/market-vs.html',             'Bull vs Bear',    'Bull vs Bear — AI Market Read'],
+    ['/en/brief-history.html',         'Chart: What Happened', 'Chart: What Happened That Day — US Market Events'],
     ['/en/stocks.html',                'Live Prices',     'Simple Live Prices'],
     ['/en/chart-analysis.html',        'AI Chart Analysis', 'AI Chart Analysis'],
     ['/en/analyst-reports.html',       'Price Targets',   'Wall Street Price Targets'],
@@ -108,6 +110,7 @@
     ['/atmr-dashboard.html#swing-strategy', '스윙 전략', '스윙 전략 — 3-3-4 원칙 · 레버리지 가이드'],
     ['/atmr-dashboard.html#top9',   'TOP9 집중분석',  'TOP9 집중분석 — 테슬라·엔비디아 등 빅테크 9종 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
     ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇 — AI 시황 분석'],
+    ['/brief-history.html',         '차트: 그날 무슨 일이 있었나', '차트: 그날 무슨 일이 있었나 — 날짜별 미국 증시 이슈 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
     ['/stocks.html',                '심플 주가',      '심플 주가 정보'],
     ['/chart-analysis.html',        'AI 차트분석',    'AI 차트 분석'],
     ['/model-portfolio.html',       '포트폴리오 점검', '포트폴리오 점검 — 공격형 AI 시대 26종목 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
@@ -129,6 +132,9 @@
             : LANG === 'en' ? linksEN
             : _localLinks(LANG, LANG_LABELS[LANG]);
   var MENU_WORD = { ko: '메뉴', en: 'Menu', ja: 'メニュー', zh: '菜单', es: 'Menú', pt: 'Menu' };
+  /* 닫기 버튼도 언어를 따라야 한다 — 영문 화면에 '닫기'가 남아 있었다 */
+  var CLOSE_LABEL = { ko: '닫기', en: 'Close', ja: '閉じる', zh: '关闭', es: 'Cerrar', pt: 'Fechar' };
+  var CLOSE_WORD = CLOSE_LABEL[LANG] || 'Close';
   var activeShort = MENU_WORD[LANG] || 'Menu';
   var desktopLinksHTML = '';
   var mobileItemsHTML  = '';
@@ -193,7 +199,7 @@
      끝까지 훑고 원하는 게 없을 때 손가락이 이미 가 있는 자리다. */
   mobileItemsHTML +=
     '<button type="button" class="ez-mob-close" onclick="ezNavCloseMenu()">' +
-      '<span class="ez-mob-close-x" aria-hidden="true">&#10005;</span> 닫기' +
+      '<span class="ez-mob-close-x" aria-hidden="true">&#10005;</span> ' + CLOSE_WORD +
     '</button>';
 
   /* ── 모바일 메뉴 타일화 — 1열 리스트(스크롤 압박) → 2열 타일 그리드 ──

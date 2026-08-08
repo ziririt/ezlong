@@ -43,9 +43,22 @@ jobs:
       # 않고, source=own_archive 항목만 매번 다시 만든다(멱등).
       # 이 단계가 깨져도 원래 있던 naver-content.json 갱신은 그대로 커밋되게 둔다 —
       # 새로 붙인 기능이 기존 파이프라인을 같이 죽이면 안 된다.
-      - name: 소사에 새 글 반영
+      - name: 이슈에 새 글 반영
         continue-on-error: true
         run: python3 scripts/merge-naver-archive.py
+
+      # 새로 붙은 항목만 번역한다(원문 해시 캐시). 첫 실행만 무겁고 그 뒤로는
+      # 하루 두세 건이라 호출이 거의 없다. 키가 없으면 조용히 건너뛴다.
+      - name: 이슈 다국어 번역
+        continue-on-error: true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/translate-brief-history.mjs
+
+      # 번역판 페이지는 한국어 원본에서 굽는다 — 손으로 여섯 벌을 관리하지 않는다.
+      - name: 이슈 번역판 페이지 생성
+        continue-on-error: true
+        run: python3 scripts/build-brief-history-i18n.py
 
       - name: Commit updated data (if changed)
         id: commit
@@ -57,7 +70,7 @@ jobs:
           # actions/checkout@v4가 이미 올바른 상태. 추가 fetch/reset 불필요.
           # 새 글이 실제로 생겼는가 — naver-content.json 은 updatedAt 때문에 매번
           # 달라지므로 신선도 판정에는 쓸 수 없다. 목록·소사가 바뀌었는지로 본다.
-          git add data/naver-archive.json data/brief-history.json
+          git add data/naver-archive.json data/brief-history.json data/brief-history-*.json
           if git diff --staged --quiet; then
             echo "새 글 없음"
             echo "fresh=no" >> "$GITHUB_OUTPUT"
