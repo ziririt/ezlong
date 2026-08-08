@@ -131,18 +131,6 @@ function dayContext(chart, idxMap, date) {
   return { kind, lines, move };
 }
 
-/* 방향과 톤이 어긋났는지 — 내린 날인데 재료가 전부 pos, 오른 날인데 전부 neg.
-   실제로 254장 중 3장이 이 상태였다(2025-11-20 은 QQQ -2.37% 인 날이 긍정
-   재료 세 묶음으로 채워졌다). 원인은 모델이 아니라 입력이었다 — 그날 하락을
-   설명한 시황이 네 번째 글이라 본문에 안 들어갔다. 그래도 화면에는 틀린 카드가
-   걸리므로, 만들어진 결과를 한 번 더 재는 자리를 둔다. */
-/* 그날 글 중 어느 편을 읽나 — 앞에서 자르면 시황이 빠진다.
-
-   글은 발행 시각 오름차순이다. 그런데 필자의 **아침 시황은 한국 시간으로
-   다음 날 08시대에 올라오고**, 날짜 매핑 규칙상(ET 기준) 그게 바로 그날 장의
-   글이 된다. 즉 그날을 설명하는 시황은 목록의 **맨 끝**에 있다.
-   앞에서 두세 편만 자르면 분석·기업 글만 읽고 시황을 통째로 빠뜨린다 —
-   2025-11-20 이 그랬다. 앞에서 (N-1)편, 그리고 마지막 한 편을 항상 넣는다. */
 function pickArticles(arts) {
   return (arts || []).slice(0, MAX_ARTICLES_PER_DAY);
 }
@@ -164,18 +152,28 @@ function wrapScore(text) {
   return INDEX_WORDS.reduce((n, w) => n + (text.includes(w) ? 1 : 0), 0);
 }
 function orderBodies(docs) {
-  if (!docs.length) return '';
+  if (!docs.length) return { text: '', hasWrap: false };
   const scored = docs.map((d, i) => ({ ...d, i, s: wrapScore(d.body) }));
   const best = scored.reduce((a, b) => (b.s > a.s ? b : a), scored[0]);
   const isWrap = best.s >= 2;
   const rest = scored.filter((d) => d !== best || !isWrap);
   const head = isWrap ? [`[그날 장 마감 정리]\n${best.body}`] : [];
-  return head.concat(rest.map((d) => `[같은 날 글] ${d.t || ''}\n${d.body}`)).join('\n\n');
+  const text = head.concat(rest.map((d) => `[같은 날 글] ${d.t || ''}\n${d.body}`)).join('\n\n');
+  return { text, hasWrap: isWrap };
 }
 
+/* 방향과 톤이 어긋났는지 — 내린 날인데 재료에 부정이 하나도 없거나, 오른 날인데
+   긍정이 하나도 없는 경우. 실제로 254장 중 3장이 이 상태였다(2025-11-20 은
+   QQQ -2.37% 인 날이 긍정 재료 세 묶음이었다). 원인은 모델이 아니라 입력이었고
+   위 orderBodies 로 고쳤지만, 화면에 틀린 카드가 걸리는 건 여기서 한 번 더 막는다. */
 const DIR_THRESHOLD = 1.0;
-function directionOK(groups, move) {
+function directionOK(groups, move, hasWrap) {
   if (move == null || Math.abs(move) < DIR_THRESHOLD) return true;
+  /* 그날 시황이 본문에 없으면 검사하지 않는다. 그런 날의 카드는 기업 분석
+     한 편이 전부라, 지수가 왜 움직였는지 말할 재료 자체가 없다. 없는 걸
+     내놓으라고 다그치면 지어내게 된다 — 그건 더 나쁘다. 등락 수치는 카드
+     상단에 이미 따로 붙어 있으므로 독자가 오해할 자리도 아니다. */
+  if (!hasWrap) return true;
   const tones = new Set(groups.map((g) => String(g.tone || '').trim()));
   /* '전부 pos' 만 잡으면 pos·mix·pos 가 빠져나간다 — 실제로 그렇게 새어나갔다.
      크게 내린 날에 부정 재료가 **하나도 없으면** 그 카드는 그날을 설명하지
@@ -342,7 +340,8 @@ async function main() {
           console.warn(`  본문 실패 ${a.u}: ${err.message}`);
         }
       }
-      const body = orderBodies(docs).slice(0, MAX_BODY);
+      const ordered = orderBodies(docs);
+      const body = ordered.text.slice(0, MAX_BODY);
       if (body.length < MIN_BODY) {
         console.warn(`  ${e.date} 본문이 짧다(${body.length}자) — 제목만 남긴다`);
         skipped++;
@@ -353,7 +352,7 @@ async function main() {
       let groups = out && Array.isArray(out.summaryGroups) ? out.summaryGroups : null;
       /* 방향이 어긋나면 한 번만 다시 묻는다. 지시를 더 얹는 게 아니라, 어긋난
          사실 자체를 알려준다 — 모델은 자기 출력을 못 보고 답했기 때문이다. */
-      if (groups && ctx && !directionOK(groups, ctx.move)) {
+      if (groups && ctx && !directionOK(groups, ctx.move, ordered.hasWrap)) {
         const dir = ctx.move <= 0 ? '내린' : '오른';
         const want = ctx.move <= 0 ? 'pos' : 'neg';
         console.warn(`  ${e.date} 방향 불일치(QQQ ${ctx.move.toFixed(2)}%, 전부 ${want}) — 다시 요청`);
