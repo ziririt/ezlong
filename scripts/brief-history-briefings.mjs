@@ -35,6 +35,7 @@ import https from 'https';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const DATA = join(HERE, '..', 'data');
 const EVENTS = join(DATA, 'brief-history.json');
+const CHART = join(DATA, 'brief-history-chart.json');
 const CACHE_DIR = join(DATA, '.cache');
 const CACHE = join(CACHE_DIR, 'brief-history-briefings.json');
 
@@ -48,6 +49,9 @@ const LIMIT = parseInt(argOf('--limit', '400'), 10);
 const MAX_ARTICLES_PER_DAY = 2;   // 토큰·요청 상한. 그날 첫 글(아침 시황)이 본론이다
 const MIN_BODY = 400;             // 이보다 짧으면 브리핑을 만들지 않는다
 const MAX_BODY = 6000;
+/* 프롬프트를 고치면 캐시도 갈아야 한다 — 안 그러면 옛 요약이 영원히 산다.
+   이 값을 올리면 다음 실행에서 전부 다시 만든다. */
+const PROMPT_VERSION = 'v2-materials';
 
 const sha = (s) => createHash('sha1').update(s).digest('hex').slice(0, 16);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -84,6 +88,42 @@ function extractBody(html) {
   }
   return out;
 }
+
+/* 그날이 어떤 날이었나 — 차트에서 직접 잰다.
+   변곡점(바닥·꼭대기·급락·급등)에 사람들의 관심이 몰린다. 모델에게 '평범한
+   하루'와 '바닥을 친 날'을 같은 무게로 요약하게 두면 정작 중요한 날이
+   밋밋해진다. 앞으로의 수익률은 알려주지 않는다 — 알려주면 결과를 알고
+   쓴 사후 서술이 섞인다. */
+const WIN = 20;
+function dayContext(chart, idxMap, date) {
+  const i = idxMap[date];
+  if (i == null || i < 1) return null;
+  const q = chart.QQQ;
+  const cur = q[i];
+  const move = (cur / q[i - 1] - 1) * 100;
+  const from = Math.max(0, i - WIN), to = Math.min(q.length - 1, i + WIN);
+  const win = q.slice(from, to + 1);
+  const lo = Math.min(...win), hi = Math.max(...win);
+  const back5 = i >= 5 ? (cur / q[i - 5] - 1) * 100 : null;
+  const lines = [`QQQ 당일 ${move >= 0 ? '+' : ''}${move.toFixed(2)}%` +
+    (back5 == null ? '' : ` (직전 5거래일 누적 ${back5 >= 0 ? '+' : ''}${back5.toFixed(2)}%)`)];
+  let kind = 'normal';
+  if (cur === lo) { kind = 'bottom'; lines.push(`전후 ${win.length}거래일 중 **최저 종가 — 바닥**`); }
+  else if (cur === hi) { kind = 'top'; lines.push(`전후 ${win.length}거래일 중 **최고 종가 — 꼭대기**`); }
+  if (kind === 'normal' && move <= -2) kind = 'plunge';
+  if (kind === 'normal' && move >= 2) kind = 'surge';
+  if (kind === 'normal' && move >= 1.2 && back5 != null && back5 <= -3) kind = 'rebound';
+  return { kind, lines };
+}
+
+const KIND_ORDER = {
+  bottom: '이 날은 **바닥**이다. 투매를 멈추게 한 것이 무엇인지, 반등의 방아쇠가 된 재료를 첫 묶음에 놓아라.',
+  top:    '이 날은 **꼭대기**다. 여기까지 밀어올린 재료와, 위를 막은 재료를 나눠서 놓아라.',
+  plunge: '**급락일**이다. 무엇이 팔게 만들었는지 — 부정 재료를 첫 묶음에 놓아라.',
+  surge:  '**급등일**이다. 무엇이 사게 만들었는지 — 긍정 재료를 첫 묶음에 놓아라.',
+  rebound:'**반등일**이다. 직전 하락을 멈춰 세운 재료를 첫 묶음에 놓아라.',
+  normal: '평범한 하루다. 그래도 가격을 움직인 재료만 고른다.',
+};
 
 // ── Gemini ──────────────────────────────────────────────────────────────
 function httpPost(host, path, body) {
@@ -123,24 +163,36 @@ async function gemini(prompt, tries = 3) {
 
 /* 원문이 이미 명사형 개조식이라 새로 쓰는 게 아니라 고르고 줄이는 일이다.
    예시를 하나 붙여 형식을 못박는다 — 설명만으로는 문장이 길어지고 서술어가 붙는다. */
-const PROMPT = (dateStr, body) => `아래는 한국 필자가 쓴 미국 증시 마감 기록이다. 이것을 카드용 브리핑으로 압축하라.
+const PROMPT = (dateStr, body, ctx) => `아래는 한국 필자가 쓴 미국 증시 기록이다. 카드용 브리핑으로 압축하라.
+읽는 사람은 원문을 열지 않는다. 이 카드만 보고 "그날 왜 그렇게 움직였나"를 알아야 한다.
+
+[무엇을 담나 — 이게 전부다]
+- **그날 주가를 움직인 재료만** 담는다. 긍정 재료(올린 것)와 부정 재료(내린 것).
+- 각 묶음에 tone 을 붙인다: "pos"(올린 재료) / "neg"(내린 재료) / "mix"(양쪽이 상쇄).
+- 필자의 전략·대응·관전 포인트·다음 일정·개인 판단은 **넣지 않는다**. 재료가 아니다.
+- 지수 등락률만 나열하는 묶음도 넣지 않는다 — 카드에 이미 숫자가 따로 붙는다.
+  등락률은 재료를 설명할 때 근거로만 쓴다.
+
+[이 날의 성격]
+${ctx ? ctx.lines.map((l) => '- ' + l).join('\n') : '- 차트 데이터 없음'}
+${ctx ? KIND_ORDER[ctx.kind] : ''}
 
 [형식]
-- 소제목 2~3개. 각 소제목 아래 닷블릿 2~3개.
+- 묶음 2~3개. 각 묶음 아래 닷블릿 2~3개.
 - 모든 문장은 **명사형으로 끝낸다**. '~했다/~이다/~습니다/~하세요' 금지.
 - 숫자·티커·지표명은 원문 그대로. 반올림하거나 바꾸지 않는다.
 - 원문에 없는 사실·해석·전망을 만들지 않는다. 고르고 줄이기만 한다.
-- 면책 문구, 투자 권유, 인사말을 붙이지 않는다.
-- 소제목은 그날의 원인을 가리킨다. '시장 요약' 같은 빈 제목 금지.
+- 소제목은 원인을 가리킨다. '시장 요약'·'주요 지수' 같은 빈 제목 금지.
+- 면책 문구, 투자 권유, 인사말 금지.
 
 [예시 — 형식만 참고]
 {"summaryGroups":[
- {"heading":"유가·장기금리가 위를 막은 하루","points":["브렌트유 83달러대 재진입, 호르무즈 통행 합의 기대가 배경","10년물 4.67%·30년물 5.21%로 박스 상단 재확장 시도"]},
- {"heading":"AI 설비투자 논쟁 재점화","points":["아폴로 리서치, AI 설비투자의 GDP 비중이 과거 통신·주택 버블 대비 크고 상승 속도도 빠름","메모리·스토리지·소프트웨어 밸류에이션까지 파급"]},
- {"heading":"고용은 견조, 그래서 금리가 눌림","points":["주간 실업수당 청구 199K로 예상 203K 하회, 챌린저 해고 2년 만에 최저","노동 약세 공포가 아니라 강세에 따른 고금리 장기화 우려로 소화"]}]}
+ {"heading":"유가·장기금리가 위를 막음","tone":"neg","points":["브렌트유 83달러대 재진입, 호르무즈 통행 합의 기대가 배경","10년물 4.67%·30년물 5.21%로 박스 상단 재확장 시도"]},
+ {"heading":"AI 설비투자 고점 논쟁 재점화","tone":"neg","points":["아폴로 리서치, AI 설비투자의 GDP 비중이 과거 통신·주택 버블 대비 크고 상승 속도도 빠름","메모리·스토리지·소프트웨어 밸류에이션까지 파급"]},
+ {"heading":"고용 지표는 견조","tone":"mix","points":["주간 실업수당 청구 199K로 예상 203K 하회, 챌린저 해고 2년 만에 최저","노동 약세 공포가 아니라 강세에 따른 고금리 장기화 우려로 소화"]}]}
 
 [출력]
-JSON 하나만. {"summaryGroups":[{"heading":"...","points":["...","..."]}]}
+JSON 하나만. {"summaryGroups":[{"heading":"...","tone":"pos|neg|mix","points":["...","..."]}]}
 
 [대상 날짜] ${dateStr}
 [원문]
@@ -152,6 +204,9 @@ async function main() {
   if (!Array.isArray(events)) { console.error('::error::brief-history.json 을 읽지 못했다'); return 1; }
   if (!existsSync(CACHE_DIR)) mkdirSync(CACHE_DIR, { recursive: true });
   const cache = loadJSON(CACHE, {});
+  const chart = loadJSON(CHART, null);
+  const idxMap = {};
+  if (chart) chart.dates.forEach((d, i) => { idxMap[d] = i; });
 
   // 기계가 얹은 기록만 대상. 손으로 쓴 소사는 건드리지 않는다.
   const targets = events.filter((e) => e.source === 'own_archive' && e.articles && e.articles.length);
@@ -161,7 +216,7 @@ async function main() {
 
   for (const e of targets) {
     const arts = e.articles.slice(0, MAX_ARTICLES_PER_DAY);
-    const key = sha(arts.map((a) => a.u).join('|'));
+    const key = sha(PROMPT_VERSION + '|' + arts.map((a) => a.u).join('|'));
     let brief = cache[key];
 
     if (!brief) {
@@ -185,21 +240,24 @@ async function main() {
         skipped++;
         continue;
       }
-      const out = await gemini(PROMPT(e.date, body));
+      const ctx = chart ? dayContext(chart, idxMap, e.date) : null;
+      const out = await gemini(PROMPT(e.date, body, ctx));
       const groups = out && Array.isArray(out.summaryGroups) ? out.summaryGroups : null;
       if (!groups || !groups.length || !groups.every((g) => g.heading && Array.isArray(g.points) && g.points.length)) {
         console.warn(`  ${e.date} 브리핑 형식 불량 — 건너뜀`);
         skipped++;
         continue;
       }
+      const TONES = { pos: 'pos', neg: 'neg', mix: 'mix' };
       brief = { summaryGroups: groups.slice(0, 3).map((g) => ({
         heading: String(g.heading).trim(),
+        tone: TONES[String(g.tone || '').trim()] || 'mix',
         points: g.points.slice(0, 4).map((p) => String(p).trim()).filter(Boolean),
       })) };
       cache[key] = brief;
       writeFileSync(CACHE, JSON.stringify(cache), 'utf8');
       made++;
-      console.log(`  ${e.date} 브리핑 생성 (${brief.summaryGroups.length}묶음)`);
+      console.log(`  ${e.date} 브리핑 생성 (${brief.summaryGroups.length}묶음, ${ctx ? ctx.kind : 'no-chart'})`);
     } else {
       reused++;
     }

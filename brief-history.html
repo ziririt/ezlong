@@ -374,6 +374,12 @@ window.BH_T = {
   .bh-event-group { margin-bottom: 9px; }
   .bh-event-group:last-child { margin-bottom: 0; }
   .bh-event-group-title { font-size: 15px; font-weight: 700; color: var(--ez-text); margin: 0 0 3px; }
+  .bh-tone {
+    display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+    margin-right: 6px; vertical-align: middle; position: relative; top: -1px;
+  }
+  .bh-tone-pos { background: var(--ez-green); }
+  .bh-tone-neg { background: var(--ez-red); }
   .bh-event-group-list { list-style: none; margin: 0; padding: 0; }
   .bh-event-group-list li {
     position: relative; padding-left: 13px; font-size: 15px; color: var(--ez-text2);
@@ -1490,7 +1496,12 @@ window.BH_T = {
 
   function renderSummaryGroups(groups) {
     const groupsHtml = groups.map(g => {
-      const titleHtml = g.heading ? `<div class="bh-event-group-title">${escapeHtml(g.heading)}</div>` : '';
+      /* 올린 재료인지 내린 재료인지를 소제목 앞 점 하나로 말한다.
+         글자색을 바꾸지 않는 이유 — 소제목이 초록·빨강으로 물들면 그날 지수
+         등락(위 알약)과 헷갈린다. 점은 '재료의 방향'이라는 다른 층위다. */
+      const tone = g.tone === 'pos' || g.tone === 'neg' ? g.tone : '';
+      const dot = tone ? `<i class="bh-tone bh-tone-${tone}" aria-hidden="true"></i>` : '';
+      const titleHtml = g.heading ? `<div class="bh-event-group-title">${dot}${escapeHtml(g.heading)}</div>` : '';
       const pointsHtml = (g.points || []).map(p => `<li>${escapeHtml(p)}</li>`).join('');
       return `<div class="bh-event-group">${titleHtml}<ul class="bh-event-group-list">${pointsHtml}</ul></div>`;
     }).join('');
