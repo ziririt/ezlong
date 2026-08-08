@@ -117,7 +117,7 @@ jobs:
             echo "변경 없음, 커밋 생략"
           else
             git commit -m "chore: naver content sync $(TZ='Asia/Seoul' date +'%Y-%m-%d %H:%M KST')"
-            git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
+            git push origin main || bash scripts/naver-sync-rebase.sh
           fi
 
       # 봇(GITHUB_TOKEN) push 는 firebase-hosting.yml 을 트리거하지 않는다(깃허브 정책).
