@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>모델 포트폴리오 — 공격형 AI 시대 26종목 | ezlong.com</title>
+<meta name="description" content="AI 가치사슬 일곱 개 테마에 나눠 담은 공격형 모델 포트폴리오. 26종목 비중, 주간 기술적 판정, 비중 조정 권고를 매주 일요일 갱신합니다.">
+<link rel="canonical" href="https://ezlong.com/model-portfolio.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="모델 포트폴리오 — 공격형 AI 시대 26종목">
+<meta property="og:description" content="AI 가치사슬 일곱 개 테마. 26종목 비중과 주간 기술적 판정. 매주 일요일 갱신.">
+<meta property="og:url" content="https://ezlong.com/model-portfolio.html">
+<meta property="og:image" content="https://ezlong.com/og/og-1200x630.png?v=20260807b">
+<meta name="author" content="김성동">
+<link rel="stylesheet" href="/ez-design.css">
+<link rel="icon" href="/icons/favicon.ico?v=20260807b">
+<style>
+  /* ── 판정 색 — 매수권 그린 / 적정권 연한 그린 / 매도권 레드 ──────────
+     기획 지정 규칙이라 계열을 바꾸지 않는다. 브랜드 색으로만 치환했고
+     극단(초과매수·초과매도)일수록 라이트에서는 진하게, 다크에서는
+     밝고 선명하게 — 두 모드 모두 배경 대비 3:1 이상을 확보한다. */
+  :root {
+    --sig-ob:#0A6B2E; --sig-b:#1A7F37; --sig-n:#3F7D5F; --sig-s:#D92A2A; --sig-os:#9E1414;
+    --mp-s1:#0071E3; --mp-s2:#C2410C; --mp-s3:#0F766E; --mp-s4:#B45309;
+    --mp-s5:#9D2A6B; --mp-s6:#15803D; --mp-s7:#5B4BC4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sig-ob:#32E06B; --sig-b:#28A745; --sig-n:#79BE95; --sig-s:#E0645F; --sig-os:#FF453A;
+      --mp-s1:#0A84FF; --mp-s2:#FF7A45; --mp-s3:#2DD4BF; --mp-s4:#FFB020;
+      --mp-s5:#F472B6; --mp-s6:#4ADE80; --mp-s7:#A78BFA;
+    }
+  }
+  body { font-size:16px; line-height:1.7; }
+  .wrap { max-width:var(--ez-max-w); margin:0 auto; padding:0 20px 90px; }
+  @media (max-width:699px) { .wrap { padding:0 14px 80px; } }
+  @media (max-width:400px) { .wrap { padding:0 12px 80px; } }
+
+  .mp-head { padding:26px 0 4px; }
+  .mp-brand { font-size:14px; letter-spacing:.14em; color:var(--ez-text3); font-weight:800; text-transform:uppercase; }
+  .mp-head h1 { font-size:30px; margin:8px 0 0; letter-spacing:-.02em; font-weight:800; line-height:1.28; color:var(--ez-text); }
+  .mp-sub { color:var(--ez-text2); font-size:16px; margin-top:10px; }
+  .mp-stamp { color:var(--ez-text3); font-size:14px; margin-top:8px; }
+  .mp-stamp b { color:var(--ez-text2); }
+  @media (max-width:480px) { .mp-head h1 { font-size:25px; } }
+
+  .lede { background:var(--ez-card); border:1px solid var(--ez-border);
+    border-left:4px solid var(--ez-blue); border-radius:var(--ez-r);
+    padding:18px 20px; margin-top:20px; font-size:16px; color:var(--ez-text2); }
+  .lede b { color:var(--ez-text); font-weight:700; }
+
+  section { margin-top:40px; }
+  h2 { font-size:14px; letter-spacing:.06em; color:var(--ez-text3); font-weight:800;
+       margin:0 0 8px; text-transform:uppercase; }
+  .h2sub { font-size:15px; color:var(--ez-text2); margin:0 0 16px; }
+  h3 { font-size:18px; margin:0; font-weight:800; letter-spacing:-.01em; color:var(--ez-text); }
+  .card { background:var(--ez-card); border:1px solid var(--ez-border);
+    border-radius:var(--ez-r); padding:20px; box-shadow:var(--ez-shadow); }
+  @media (max-width:480px) { .card { padding:16px 14px; } }
+
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px;
+    background:var(--ez-border); border:1px solid var(--ez-border);
+    border-radius:var(--ez-r); overflow:hidden; }
+  .kpis>div { background:var(--ez-card); padding:16px 18px; }
+  .kpis .k { color:var(--ez-text3); font-size:14px; font-weight:600; }
+  .kpis .v { font-size:26px; font-weight:800; margin-top:4px; letter-spacing:-.02em; color:var(--ez-text); }
+  .kpis .d { font-size:14px; color:var(--ez-text2); margin-top:4px; }
+
+  .alloc { display:flex; height:44px; gap:2px; border-radius:var(--ez-r-xs); overflow:hidden; }
+  .alloc div { display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px;
+    font-weight:800; overflow:hidden; white-space:nowrap; }
+  .legend { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:8px 18px;
+    margin-top:16px; font-size:15px; color:var(--ez-text2); }
+  .legend .dot { display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:8px; vertical-align:-1px; }
+  .legend b { color:var(--ez-text); font-weight:700; }
+
+  .themes { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:16px; align-items:stretch; }
+  @media (max-width:520px) { .themes { grid-template-columns:1fr; } }
+  .th { background:var(--ez-card); border:1px solid var(--ez-border); border-radius:var(--ez-r);
+    overflow:hidden; display:flex; flex-direction:column; box-shadow:var(--ez-shadow); }
+  .th.wide { grid-column:1/-1; }
+  .th.wide ul { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:0 24px; }
+  .th .hd { padding:16px 18px 14px; border-bottom:1px solid var(--ez-border2);
+    display:flex; align-items:baseline; gap:10px; }
+  .th .bar { width:4px; align-self:stretch; border-radius:2px; }
+  .th .w { margin-left:auto; font-size:20px; font-weight:800; color:var(--ez-text); }
+  .th .role { font-size:15px; color:var(--ez-text2); padding:0 18px; margin-top:12px; }
+  .th ul { list-style:none; margin:12px 0 0; padding:0 18px 18px; flex:1 1 auto; }
+  .th li { display:grid; grid-template-columns:1fr auto; gap:6px 10px; padding:12px 0;
+    border-top:1px solid var(--ez-border2); }
+  .th li:first-child { border-top:none; }
+  .th .nm { font-size:16px; font-weight:700; color:var(--ez-text); }
+  .th .tk { font-size:14px; color:var(--ez-text3); margin-left:7px; font-weight:600; }
+  .th .pw { font-size:16px; font-weight:800; text-align:right; color:var(--ez-text); }
+  .th .desc { grid-column:1/-1; font-size:15px; color:var(--ez-text2); line-height:1.65; }
+  .th .mt { grid-column:1/-1; font-size:14px; color:var(--ez-text3); }
+  .th .extra { margin-top:auto; padding:15px 18px 18px; border-top:1px dashed var(--ez-border);
+    font-size:15px; color:var(--ez-text2); line-height:1.7; }
+  .th .extra b { color:var(--ez-text); }
+  .th .extra .hl { display:grid; grid-template-columns:1fr auto; gap:3px 10px; margin-top:9px; }
+  .th .extra .hl span:nth-child(even) { color:var(--ez-text3); }
+
+  .sig { display:inline-block; padding:2px 8px; border-radius:var(--ez-r-xs); font-size:14px;
+    font-weight:800; border:1px solid currentColor; background:transparent; white-space:nowrap; }
+  .sigt { font-weight:800; white-space:nowrap; }
+  .sig-ob,.sigt.sig-ob { color:var(--sig-ob); } .sig-b,.sigt.sig-b { color:var(--sig-b); }
+  .sig-n,.sigt.sig-n { color:var(--sig-n); } .sig-s,.sigt.sig-s { color:var(--sig-s); }
+  .sig-os,.sigt.sig-os { color:var(--sig-os); }
+  .scale { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 18px; }
+
+  .tech { display:grid; grid-template-columns:28px 1fr 104px 1fr 116px; align-items:center; gap:12px;
+    padding:12px 0; border-bottom:1px solid var(--ez-border2); }
+  .tech:last-of-type { border-bottom:none; }
+  .tech .rk { font-size:14px; color:var(--ez-text3); text-align:right; font-weight:700; }
+  .tech .nm { font-size:16px; font-weight:700; color:var(--ez-text);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .tech .nm span { font-size:14px; color:var(--ez-text3); margin-left:7px; font-weight:600; }
+  .tech .gauge { position:relative; height:10px; background:var(--ez-card2); border-radius:var(--ez-r-pill); }
+  .tech .gauge i { position:absolute; top:-3px; width:3px; height:16px; border-radius:2px;
+    box-shadow:0 0 0 2px var(--ez-card); }
+  .tech .gz { position:absolute; top:0; bottom:0; background:var(--ez-border); }
+  .tech .val { font-size:14px; color:var(--ez-text3); text-align:right; }
+  @media (max-width:640px) {
+    .tech { grid-template-columns:24px 1fr auto; row-gap:8px; }
+    .tech .gauge, .tech .val { grid-column:2/-1; }
+    .tech .val { text-align:left; }
+  }
+
+  .selbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:14px; }
+  select { font-family:inherit; font-size:16px; background:var(--ez-card2); color:var(--ez-text);
+    border:1px solid var(--ez-border); border-radius:var(--ez-rs); padding:9px 12px; cursor:pointer;
+    max-width:100%; }
+  .btnlink { display:inline-block; font-size:15px; font-weight:700; color:var(--ez-blue);
+    border:1px solid var(--ez-border); border-radius:var(--ez-r-pill); padding:8px 15px;
+    text-decoration:none; background:var(--ez-card); }
+  .btnlink:active { background:var(--ez-blue-dim); }
+
+  .posmap .pmhead { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:18px; }
+  .posmap .pmnm { font-size:19px; font-weight:800; color:var(--ez-text); }
+  .posmap .pmtk { font-size:14px; color:var(--ez-text3); }
+  .posmap .pmpx { margin-left:auto; font-size:22px; font-weight:800; color:var(--ez-text); }
+  .pmscale { display:flex; justify-content:space-between; margin-top:9px; font-size:14px; color:var(--ez-text3); gap:8px; }
+  .pmscale .mid { text-align:center; }
+  @media (max-width:520px) { .pmscale .mid { display:none; } }
+
+  .rb { background:var(--ez-card); border:1px solid var(--ez-border); border-radius:var(--ez-r);
+    padding:18px 20px; margin-bottom:14px; box-shadow:var(--ez-shadow); }
+  @media (max-width:480px) { .rb { padding:15px 14px; } }
+  .rb .top { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .rb .tag { font-size:14px; font-weight:800; padding:3px 10px; border-radius:var(--ez-r-xs); color:#fff; }
+  .rb .mv { font-size:16px; font-weight:800; }
+  .rb .arrow { font-size:15px; color:var(--ez-text3); }
+  .rb .why { font-size:16px; color:var(--ez-text2); margin-top:12px; line-height:1.75; }
+  .rb .why b { color:var(--ez-text); }
+  .rb .det { font-size:15px; color:var(--ez-text3); margin-top:10px; }
+  .rb .cnt { font-size:15px; color:var(--ez-text3); margin-top:12px; padding-top:12px;
+    border-top:1px solid var(--ez-border2); line-height:1.7; }
+  .rb .cnt b { color:var(--ez-text2); }
+  .updn { display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:14px; }
+  @media (max-width:520px) { .updn { grid-template-columns:1fr; } }
+
+  .rules { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+  .rule { background:var(--ez-card); border:1px solid var(--ez-border); border-radius:var(--ez-r);
+    padding:16px 18px; box-shadow:var(--ez-shadow); }
+  .rule .k { font-size:14px; color:var(--ez-text3); font-weight:600; }
+  .rule .v { font-size:20px; font-weight:800; margin-top:4px; color:var(--ez-text); }
+  .rule .d { font-size:15px; color:var(--ez-text2); margin-top:6px; line-height:1.6; }
+
+  ul.cal { list-style:none; margin:0; padding:0; }
+  ul.cal li { display:flex; gap:14px; align-items:baseline; padding:12px 0;
+    border-bottom:1px solid var(--ez-border2); font-size:16px; color:var(--ez-text2); }
+  ul.cal li:last-child { border-bottom:none; }
+  ul.cal .dt { color:var(--ez-text3); min-width:100px; font-size:15px; font-weight:600; }
+  ul.cal li.hot .dt { color:var(--ez-amber); font-weight:800; }
+  ul.cal li.hot .tx { font-weight:700; color:var(--ez-text); }
+  @media (max-width:480px) { ul.cal li { flex-direction:column; gap:3px; } }
+
+  details { margin-top:18px; }
+  summary { cursor:pointer; font-size:15px; color:var(--ez-blue); font-weight:700; padding:6px 0; }
+  .tblwrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  table { border-collapse:collapse; width:100%; font-size:15px; }
+  th,td { text-align:right; padding:10px 8px; border-bottom:1px solid var(--ez-border2); white-space:nowrap; }
+  th:first-child,td:first-child,th:nth-child(2),td:nth-child(2) { text-align:left; }
+  th { color:var(--ez-text3); font-weight:700; font-size:14px; }
+  td { color:var(--ez-text2); }
+  td:first-child { color:var(--ez-text); font-weight:700; }
+  /* 모바일 — 9열은 어차피 한 화면에 안 들어간다. 가로로 밀되 종목명은
+     따라오게 고정한다. 이름이 사라진 채 숫자만 흐르면 어느 줄인지 모른다. */
+  @media (max-width:640px) {
+    th,td { padding:9px 6px; font-size:14px; }
+    th:first-child, td:first-child {
+      position:sticky; left:0; background:var(--ez-card); z-index:1;
+      box-shadow:1px 0 0 var(--ez-border2);
+    }
+  }
+  .tblhint { display:none; }
+  @media (max-width:640px) { .tblhint { display:block; font-size:14px; color:var(--ez-text3); margin:0 0 10px; } }
+
+  .note { font-size:15px; color:var(--ez-text2); margin-top:14px; line-height:1.7; }
+  .note b { color:var(--ez-text); }
+  .risk { margin-top:44px; padding:20px; background:var(--ez-card2);
+    border-radius:var(--ez-r); color:var(--ez-text3); font-size:14px; line-height:1.75; }
+  .risk b { color:var(--ez-text2); }
+  .risk p { margin:6px 0; }
+  .loading { padding:40px 0; text-align:center; color:var(--ez-text3); font-size:16px; }
+</style>
+</head>
+<body>
+<script src="/ez-nav.js"></script>
+
+<div class="wrap">
+
+  <header class="mp-head">
+    <div class="mp-brand">EZLONG · Model Portfolio</div>
+    <h1>공격형 AI 시대 모델 포트폴리오</h1>
+    <p class="mp-sub">AI가 소프트웨어에서 나와 전기와 쇳덩이와 우주로 넘어가는 10년, 그 가치사슬 전체를 한 장으로.</p>
+    <div class="mp-stamp" id="stamp"></div>
+  </header>
+
+  <div class="lede" id="lede"></div>
+
+  <div id="app">
+    <div class="loading">불러오는 중…</div>
+  </div>
+
+  <div class="risk" id="risk"></div>
+</div>
+
+<script src="/ez-footer.js"></script>
+<script>
+/* ── 모델 포트폴리오 렌더러 ─────────────────────────────────────────
+   데이터는 전부 data/model-portfolio.json 한 곳에 있다. 이 파일은 그리기만 한다.
+   시세·주간 RSI는 매주 일요일 파이프라인(model-portfolio.yml)이 갱신하고,
+   비중·편입/편출·조정 권고 같은 판단은 월 1회 사람이 갱신한다.
+   두 갱신이 같은 파일을 쓰므로 화면과 숫자가 어긋날 자리가 없다. */
+(function () {
+  'use strict';
+  var D = null;
+
+  function esc(s) { return String(s == null ? '' : s); }
+  var S = function (i) { return 'var(--mp-s' + i + ')'; };
+
+  function fmtPx(h) {
+    return h.c === '₩' ? '₩' + h.px.toLocaleString()
+      : '$' + h.px.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function pxInt(h) { return (h.c === '₩' ? '₩' : '$') + Math.round(h.px).toLocaleString(); }
+  function dd(h) { return (h.px / h.hi - 1) * 100; }
+  function band(h) { return (h.px - h.lo) / (h.hi - h.lo) * 100; }
+
+  /* 판정 — 주간 RSI(14)가 있으면 RSI 기준, 없으면 52주 밴드 위치로 폴백.
+     종목별로 섞여 있어도 안전하다. 화면 세 곳이 모두 이 함수 하나를 쓴다. */
+  function signal(h) {
+    var useRsi = D.meta.signalSource === 'rsi' && h.rsiW != null;
+    var v = useRsi ? h.rsiW : band(h);
+    var cut = useRsi ? [20, 30, 70, 80] : [20, 35, 75, 90];
+    if (v >= cut[3]) return { k: '초과매수권', c: 'sig-ob' };
+    if (v >= cut[2]) return { k: '과매수권', c: 'sig-b' };
+    if (v >= cut[1]) return { k: '적정권', c: 'sig-n' };
+    if (v >= cut[0]) return { k: '과매도권', c: 'sig-s' };
+    return { k: '초과매도권', c: 'sig-os' };
+  }
+  function rsiNote(h) {
+    return (D.meta.signalSource === 'rsi' && h.rsiW != null)
+      ? ' · 주간 RSI ' + h.rsiW.toFixed(1) : '';
+  }
+
+  function sectionsHTML() {
+    var TH = D.themes, H = D.holdings;
+    var t20 = D.top20.map(function (tk) {
+      return H.filter(function (h) { return h.tk === tk; })[0];
+    }).filter(Boolean).sort(function (a, b) { return band(a) - band(b); });
+
+    var out = '';
+
+    /* 지표 */
+    out += '<section><h2>주식 포트폴리오 지표</h2><div class="kpis">' +
+      D.kpis.map(function (k) {
+        return '<div><div class="k">' + esc(k[0]) + '</div><div class="v">' + esc(k[1]) +
+          '</div><div class="d">' + esc(k[2]) + '</div></div>';
+      }).join('') + '</div></section>';
+
+    /* 테마별 비중 */
+    out += '<section><h2>테마별 비중</h2>' +
+      '<p class="h2sub">일곱 개 테마로 나눠 담았다. 각 테마는 AI 가치사슬의 한 단계다.</p>' +
+      '<div class="card"><div class="alloc">' +
+      TH.map(function (t) {
+        return '<div style="width:' + t.w + '%;background:' + S(t.slot) + '" title="' + esc(t.nm) + ' ' + t.w + '%">' +
+          (t.w >= 7 ? t.w.toFixed(0) + '%' : '') + '</div>';
+      }).join('') + '</div><div class="legend">' +
+      TH.map(function (t) {
+        return '<span><span class="dot" style="background:' + S(t.slot) + '"></span>' +
+          esc(t.nm) + ' <b>' + t.w.toFixed(1) + '%</b></span>';
+      }).join('') + '</div><p class="note">' + D.allocNote + '</p></div></section>';
+
+    /* 테마별 포트폴리오 */
+    out += '<section><h2>테마별 포트폴리오</h2><div class="themes">' +
+      TH.map(function (t) {
+        var rows = H.filter(function (h) { return h.t === t.id; })
+          .sort(function (a, b) { return b.w - a.w; });
+        return '<div class="th' + (t.wide ? ' wide' : '') + '"><div class="hd">' +
+          '<span class="bar" style="background:' + S(t.slot) + '"></span>' +
+          '<h3>' + esc(t.nm) + '</h3><span class="w">' + t.w.toFixed(1) + '%</span></div>' +
+          '<div class="role">' + esc(t.role) + '</div><ul>' +
+          rows.map(function (h) {
+            var s = signal(h);
+            return '<li><span class="nm">' + esc(h.nm) + '<span class="tk">' + esc(h.tk) + '</span> ' +
+              '<span class="sig ' + s.c + '">' + s.k + '</span></span>' +
+              '<span class="pw">' + h.w.toFixed(1) + '%</span>' +
+              '<span class="mt">' + fmtPx(h) + ' · PER ' + esc(h.pe) + ' · Fwd ' + esc(h.fpe) +
+              ' · 고점 대비 ' + dd(h).toFixed(0) + '%' + rsiNote(h) + '</span>' +
+              '<span class="desc">' + esc(h.d) + '</span></li>';
+          }).join('') + '</ul>' +
+          (t.extra ? '<div class="extra">' + t.extra + '</div>' : '') + '</div>';
+      }).join('') + '</div></section>';
+
+    /* 주간 기술적 점검 */
+    var scale = [['초과매수권', 'sig-ob'], ['과매수권', 'sig-b'], ['적정권', 'sig-n'],
+                 ['과매도권', 'sig-s'], ['초과매도권', 'sig-os']];
+    var srcLine = D.meta.signalSource === 'rsi'
+      ? '판정 기준은 <b>주간 RSI(14)</b>다. 80 이상 초과매수권 / 70~80 과매수권 / 30~70 적정권 / 20~30 과매도권 / 20 이하 초과매도권.'
+      : '판정 기준은 <b>52주 밴드 내 위치</b>(저점 0% ~ 고점 100%)다. 90% 이상 초과매수권 / 75~90% 과매수권 / 35~75% 적정권 / 20~35% 과매도권 / 20% 미만 초과매도권.';
+    out += '<section><h2>주간 기술적 점검 · 핵심 20종목</h2>' +
+      '<p class="h2sub">기본은 <b>주간(Weekly)</b> 기준. ETF는 제외하고 개별 종목 비중 상위 20종목.</p>' +
+      '<div class="card"><div class="scale">' +
+      scale.map(function (x) { return '<span class="sig ' + x[1] + '">' + x[0] + '</span>'; }).join('') +
+      '</div><div>' + t20.map(function (h, i) {
+        var b = band(h), s = signal(h);
+        return '<div class="tech"><span class="rk">' + (i + 1) + '</span>' +
+          '<span class="nm">' + esc(h.nm) + '<span>' + esc(h.tk) + ' · ' + h.w.toFixed(1) + '%</span></span>' +
+          '<span><span class="sig ' + s.c + '">' + s.k + '</span></span>' +
+          '<span class="gauge"><span class="gz" style="left:0;width:20%"></span>' +
+          '<span class="gz" style="left:90%;width:10%"></span>' +
+          '<i class="' + s.c + '" style="left:calc(' + b.toFixed(1) + '% - 1.5px);background:currentColor"></i></span>' +
+          '<span class="val">고점 대비 ' + dd(h).toFixed(0) + '%' + rsiNote(h) + '</span></div>';
+      }).join('') + '</div>' +
+      '<details><summary>판정 기준 보기</summary><p class="note">' + srcLine +
+      '<br><br>기술적 판정은 추세를 보조하는 참고 지표이며 매매 신호가 아니다. ' +
+      '과매도가 저가 매수를, 과매수가 매도를 뜻하지 않는다.</p></details></div></section>';
+
+    /* 종목 상세 — 52주 포지션 맵 */
+    out += '<section><h2>종목별 52주 포지션</h2>' +
+      '<p class="h2sub">주간 기준. 종목을 고르면 52주 저점~고점 구간에서 지금 어디에 서 있는지 보여준다.</p>' +
+      '<div class="card"><div class="selbar"><select id="symSel" aria-label="종목 선택"></select>' +
+      '<a id="chartLink" class="btnlink" href="/chart-analysis.html">AI 차트분석에서 보기</a></div>' +
+      '<div id="posmap"></div></div></section>';
+
+    /* 비중 조정 권고 */
+    out += '<section><h2>비중 조정 권고 · 2026년 8월</h2><div>' +
+      D.rebalance.map(function (r) {
+        var up = r.to > r.from, d = r.to - r.from;
+        var col = up ? 'var(--sig-ob)' : 'var(--sig-s)';
+        return '<div class="rb"><div class="top"><h3>' + esc(r.th) + '</h3>' +
+          '<span class="mv" style="color:' + col + '">' + r.from + '% → ' + r.to + '% : ' +
+          (up ? '+' : '') + d + '% ' + esc(r.dir) + ' 권고' + (r.cond ? ' (조건부)' : '') + '</span></div>' +
+          '<div class="why">' + r.why + '</div>' +
+          '<div class="det">실행 : ' + esc(r.det) + '</div>' +
+          (r.trig ? '<div class="det" style="color:var(--ez-amber)">' + esc(r.trig) + '</div>' : '') +
+          '<div class="cnt">' + r.cnt + '</div></div>';
+      }).join('') + '</div>' +
+      '<p class="note">권고 반영 후 합계는 그대로 100%다. 조정은 한 번에 하지 않고 <b>3회 분할</b>로 집행한다.</p></section>';
+
+    /* 검토 필요 */
+    out += '<section><h2>검토 필요 : 새로 담을 종목 · 덜어낼 종목</h2>' +
+      '<p class="h2sub">비중 조정과 별개로 검토가 필요한 종목. 아직 실행 전이다.</p><div class="updn">' +
+      D.add.map(function (a) {
+        return '<div class="rb"><div class="top"><span class="tag" style="background:var(--ez-blue)">새로 담기</span>' +
+          '<h3>' + esc(a.nm) + '</h3><span class="arrow">' + esc(a.tk) + ' · ' + esc(a.px) + '</span>' +
+          '<span class="mv" style="color:var(--ez-blue)">' + esc(a.w) + '</span></div>' +
+          '<div class="why">' + a.why + '</div><div class="det">' + esc(a.fund) + '</div>' +
+          '<div class="cnt">' + esc(a.earn) + '</div></div>';
+      }).join('') +
+      D.drop.map(function (x) {
+        return '<div class="rb"><div class="top"><span class="tag" style="background:var(--sig-s)">덜어내기</span>' +
+          '<h3>' + esc(x.nm) + '</h3><span class="arrow">' + esc(x.tk) + ' · ' + esc(x.px) + '</span>' +
+          '<span class="mv" style="color:var(--sig-s)">' + esc(x.w) + '</span></div>' +
+          '<div class="why">' + x.why + '</div></div>';
+      }).join('') +
+      '<div class="rb"><div class="top"><span class="tag" style="background:var(--ez-text3)">검토했으나 보류</span>' +
+      '<h3>후보 4종목</h3></div><div class="why"><b>편입 후보 선정 원칙</b> — SOXX가 이미 담고 있는 34종목' +
+      '(어플라이드머티어리얼즈·KLA·램리서치·텍사스인스트루먼트·퀄컴·아나로그디바이스 등)은 개별 편입 후보에서 제외한다. ' +
+      '이미 5% 비중으로 갖고 있기 때문이다. 아래는 SOXX 밖에 있는 종목만 검토한 결과다.</div>' +
+      D.watchNew.map(function (w) {
+        return '<div class="why"><b>' + esc(w.nm) + ' (' + esc(w.tk) + ')</b> — ' + esc(w.why) + '</div>';
+      }).join('') + '</div></div></section>';
+
+    /* 운용 규칙 */
+    out += '<section><h2>운용 규칙</h2><div class="rules">' +
+      D.rules.map(function (r) {
+        return '<div class="rule"><div class="k">' + esc(r[0]) + '</div><div class="v">' + esc(r[1]) +
+          '</div><div class="d">' + esc(r[2]) + '</div></div>';
+      }).join('') + '</div></section>';
+
+    /* 일정 */
+    out += '<section><h2>주요 일정 · 핵심 20종목 한정</h2>' +
+      '<p class="h2sub">비중이 작거나 시장 영향이 제한적인 종목의 일정은 싣지 않는다.</p>' +
+      '<div class="card"><ul class="cal">' +
+      D.calendar.map(function (c) {
+        return '<li' + (c.hot ? ' class="hot"' : '') + '><span class="dt">' + esc(c.d) + '</span>' +
+          '<span class="tx">' + esc(c.t) + '</span></li>';
+      }).join('') + '</ul>' +
+      '<p class="note">날짜는 미국 동부시간(ET) 기준. 한국 시간으로는 대부분 다음 날 새벽이다. ' +
+      '10월 이후 일정은 통상 패턴 기반 추정이며 확정 공시가 아니다.</p></div></section>';
+
+    /* 전체 종목 데이터 */
+    out += '<section><h2>전체 종목 데이터</h2><div class="card">' +
+      '<p class="tblhint">표를 좌우로 밀면 밴드·PER·Fwd 까지 볼 수 있다.</p>' +
+      '<div class="tblwrap"><table>' +
+      '<thead><tr><th>종목</th><th>티커</th><th>비중</th><th>종가</th><th>판정</th>' +
+      '<th>고점대비</th><th>밴드</th><th>PER</th><th>Fwd</th></tr></thead><tbody>' +
+      H.slice().sort(function (a, b) { return b.w - a.w; }).map(function (h) {
+        var s = signal(h);
+        var rnd = function (v) { return (v === '—' || v == null) ? '—' : Math.round(parseFloat(v)); };
+        return '<tr><td>' + esc(h.nm) + '</td><td>' + esc(h.tk) + '</td><td>' + h.w.toFixed(1) + '%</td>' +
+          '<td>' + pxInt(h) + '</td><td class="sigt ' + s.c + '">' + s.k + '</td>' +
+          '<td>' + dd(h).toFixed(0) + '%</td><td>' + band(h).toFixed(0) + '%</td>' +
+          '<td>' + rnd(h.pe) + '</td><td>' + rnd(h.fpe) + '</td></tr>';
+      }).join('') + '</tbody></table></div></div></section>';
+
+    return { html: out, t20: t20 };
+  }
+
+  function posMap(h) {
+    var b = Math.max(0, Math.min(100, band(h)));
+    var zones = [[0, 20, 'os'], [20, 35, 's'], [35, 75, 'n'], [75, 90, 'b'], [90, 100, 'ob']];
+    var fills = { os: 'var(--sig-os)', s: 'var(--sig-s)', n: 'var(--sig-n)', b: 'var(--sig-b)', ob: 'var(--sig-ob)' };
+    var seg = zones.map(function (z) {
+      return '<div style="position:absolute;left:' + z[0] + '%;width:' + (z[1] - z[0]) +
+        '%;top:0;bottom:0;background:' + fills[z[2]] + ';opacity:.30"></div>';
+    }).join('');
+    var s = signal(h);
+    return '<div class="posmap"><div class="pmhead"><span class="pmnm">' + esc(h.nm) + '</span>' +
+      '<span class="pmtk">' + esc(h.tk) + ' · 비중 ' + h.w.toFixed(1) + '%</span>' +
+      '<span class="sig ' + s.c + '">' + s.k + '</span>' +
+      '<span class="pmpx">' + fmtPx(h) + '</span></div>' +
+      '<div style="position:relative;height:28px;border-radius:var(--ez-r-xs);overflow:hidden;background:var(--ez-card2)">' +
+      seg + '<div style="position:absolute;left:calc(' + b.toFixed(1) + '% - 2px);top:-4px;bottom:-4px;' +
+      'width:4px;border-radius:2px;background:var(--ez-text);box-shadow:0 0 0 3px var(--ez-card)"></div></div>' +
+      '<div class="pmscale"><span>52주 저점 ' + h.c + h.lo.toLocaleString() + '</span>' +
+      '<span class="mid">초과매도권 · 과매도권 · 적정권 · 과매수권 · 초과매수권</span>' +
+      '<span>52주 고점 ' + h.c + h.hi.toLocaleString() + '</span></div>' +
+      '<p class="note">52주 고점 대비 <b>' + dd(h).toFixed(1) + '%</b> · 저점 대비 <b>+' +
+      ((h.px / h.lo - 1) * 100).toFixed(1) + '%</b> · PER ' + esc(h.pe) + ' · Fwd PER ' + esc(h.fpe) +
+      rsiNote(h) + '<br>' + esc(h.d) + '</p></div>';
+  }
+
+  function boot(data) {
+    D = data;
+    document.getElementById('stamp').innerHTML =
+      '기준일 <b>' + esc(D.meta.asOfLabel) + '</b> · 주식 100% · ' + D.meta.holdings + '종목 · ' +
+      esc(D.meta.version) + '<br>시세·주간 RSI는 매주 일요일 갱신 · 최종 갱신 ' + esc(D.meta.updatedKST);
+    document.getElementById('lede').innerHTML = D.lede;
+
+    var built = sectionsHTML();
+    document.getElementById('app').innerHTML = built.html;
+    document.getElementById('risk').innerHTML = '<p><b>리스크 고지</b></p>' +
+      D.disclaimer.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
+      '<p style="margin-top:14px">데이터 출처 ' + esc(D.meta.priceSource) + ' · 기준일 ' +
+      esc(D.meta.asOf) + ' 종가 · ' + esc(D.meta.version) + '</p>';
+
+    /* 종목 선택 */
+    var sel = document.getElementById('symSel');
+    var list = built.t20.slice().sort(function (a, b) { return b.w - a.w; });
+    var soxx = D.holdings.filter(function (h) { return h.tk === 'SOXX'; })[0];
+    if (soxx) list = list.concat([soxx]);
+    sel.innerHTML = list.map(function (h) {
+      return '<option value="' + esc(h.tk) + '">' + esc(h.nm) + ' (' + esc(h.tk) + ') · ' + h.w.toFixed(1) + '%</option>';
+    }).join('');
+
+    function draw() {
+      var h = D.holdings.filter(function (x) { return x.tk === sel.value; })[0];
+      if (!h) return;
+      document.getElementById('posmap').innerHTML = posMap(h);
+      /* 우리 차트 코너로 보낸다. 한국 종목은 AI 차트분석 대상이 아니라
+         그때만 TradingView 로 내보낸다(앱에서는 ez-nav.js 가 기기 브라우저로 연다). */
+      var link = document.getElementById('chartLink');
+      if (h.c === '₩') {
+        link.href = 'https://www.tradingview.com/chart/?symbol=' + encodeURIComponent(h.sym) + '&interval=W';
+        link.target = '_blank'; link.rel = 'noopener';
+        link.textContent = '주간 차트 열기';
+      } else {
+        link.href = '/chart-analysis.html?symbol=' + encodeURIComponent(h.tk);
+        link.removeAttribute('target'); link.removeAttribute('rel');
+        link.textContent = 'AI 차트분석에서 보기';
+      }
+    }
+    sel.addEventListener('change', draw);
+    draw();
+  }
+
+  fetch('/data/model-portfolio.json?t=' + Math.floor(Date.now() / 3600000))
+    .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+    .then(boot)
+    .catch(function () {
+      document.getElementById('app').innerHTML =
+        '<div class="loading">데이터를 불러오지 못했습니다. 잠시 후 새로고침해 주세요.</div>';
+    });
+})();
+</script>
+</body>
+</html>

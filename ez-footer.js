@@ -16,7 +16,7 @@
           '<a href="/market-vs.html" class="ez-footer-nav-item">긍정 vs 부정 몇대몇</a>' +
           '<a href="/stocks.html" class="ez-footer-nav-item">심플 주가 정보</a>' +
           '<a href="/chart-analysis.html" class="ez-footer-nav-item">AI 차트분석</a>' +
-          '<a href="/analyst-reports.html" class="ez-footer-nav-item">핵심기업 목표주가</a>' +
+          '<a href="/model-portfolio.html" class="ez-footer-nav-item">모델 포트폴리오</a>' +
           '<a href="/market-cycle.html" class="ez-footer-nav-item">Market Cycle Monitor</a>' +
           '<a href="/dca-simulator.html" class="ez-footer-nav-item">DCA 복리 시뮬레이터</a>' +
           '<a href="/portfolio-manager.html" class="ez-footer-nav-item">포트폴리오 복리 시뮬레이터</a>' +

@@ -110,7 +110,7 @@
     ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇 — AI 시황 분석'],
     ['/stocks.html',                '심플 주가',      '심플 주가 정보'],
     ['/chart-analysis.html',        'AI 차트분석',    'AI 차트 분석'],
-    ['/analyst-reports.html',       '월가 목표주가',  '월가 목표주가'],
+    ['/model-portfolio.html',       '모델 포트폴리오', '모델 포트폴리오 — 공격형 AI 시대 26종목 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
     ['/market-cycle.html',          '마켓 사이클',    '하락장 변곡점 감시'],
     ['/dca-simulator.html',         'DCA 시뮬레이터', 'DCA 복리 시뮬레이터'],
     ['/portfolio-manager.html',     'AI 포트폴리오',  '투자성향별 AI 포트폴리오'],
@@ -815,3 +815,128 @@ window.ezWeekPhase = function (now) {
   if (d === 1) return 'ahead';                  // 현지 월요일 — 개장 전
   return 'weekend';
 };
+
+/* ─────────────────────────────────────────────────────────────
+   앱 웹뷰에서 외부 링크 열기 — 2026-08-08 에 index.html 에서 이리로 옮김.
+   메인 페이지에만 있으면 새 코너를 만들 때마다 같은 먹통이 재발한다.
+   ez-nav.js 는 모든 페이지가 로드하므로 여기 한 벌이면 전부 덮는다.
+   (원래 주석은 아래 그대로 유지 — 왜 이 처리가 필요한지가 담겨 있다.)
+   ───────────────────────────────────────────────────────────── */
+/* ── 앱 웹뷰에서 외부 링크 열기 (2026-08-06 신설) ─────────────────────
+   증상: Long Time, Easy Life 앱 안에서 네이버 프리미엄 글을 눌러도 아무
+   일도 일어나지 않는다. 같은 링크가 사파리·크롬에서는 정상.
+   책 구매 링크(알라딘·예스24·교보·리디·밀리)도 같은 원인으로 먹통.
+
+   원인: 이 링크들은 target="_blank"인데, 앱 웹뷰에는 "새 탭"이라는 게
+   없다. iOS WKWebView는 WKUIDelegate의 createWebViewWith 를 구현해야만
+   새 창 요청을 처리하는데 이 앱은 구현하지 않았다 — 그래서 요청이 조용히
+   버려진다. 에러도 안 나고 화면도 안 바뀌니 사용자에겐 "먹통"으로 보인다.
+   (안드로이드는 shouldOverrideUrlLoading 이 외부 도메인을 Custom Tabs로
+    넘기는 안전망이 이미 있어 대체로 열린다. 아래 처리를 거치면 양쪽이
+    같은 경로를 타므로 동작이 통일된다.)
+
+   해법: 앱이 이미 갖고 있는 네이티브 브릿지로 기기 브라우저를 연다.
+   앱 재빌드 불필요 — 앱 웹뷰(ezlong.com/time/)와 이 페이지(ezlong.com)가
+   동일 출처라, iframe 안에서도 상위 프레임의 브릿지에 접근할 수 있다.
+
+   왜 인앱 시트가 아니라 기기 브라우저인가: 네이버 프리미엄은 로그인과
+   구독 상태가 있어야 본문이 열리고, 서점은 로그인·장바구니·결제가 이어져야
+   한다. 그 세션은 전부 평소 쓰는 브라우저에 있다. 과거 알라딘 로그인이
+   인앱 시트 안에서 유지되지 않아 결국 기본 브라우저로 내보낸 전례와 같다.
+
+   적용 범위: 이 페이지의 ezlong.com 바깥으로 나가는 모든 http(s) 링크.
+   내부 이동은 건드리지 않고, mailto:·tel: 같은 다른 스킴도 제외한다. */
+(function () {
+  /* ezlong.com 밖으로 나가는 링크인가. 서브도메인·www 포함해서 자기
+     사이트면 앱 웹뷰가 그대로 처리해야 하므로 가로채지 않는다.
+     현재 호스트도 같이 본다 — 프리뷰 도메인(web.app)이나 로컬 테스트에서
+     자기 사이트 링크가 "외부"로 오판돼 브라우저로 튕겨나가지 않게 한다. */
+  function isSameSite(h) {
+    if (h === String(location.hostname).toLowerCase()) return true;
+    return h === 'ezlong.com' || h.slice(-11) === '.ezlong.com';
+  }
+  function isExternal(url) {
+    if (url.protocol !== 'https:' && url.protocol !== 'http:') return false;
+    return !isSameSite(url.hostname.toLowerCase());
+  }
+
+  /* 브릿지는 자기 프레임에 주입돼 있는 게 정상이지만, 주입 시점·프레임
+     범위는 OS 버전에 따라 미묘하게 다르다. 자기 → 부모 → 최상위 순서로
+     찾는다. 교차 출처면 접근 자체가 예외를 던지므로 전부 감싼다. */
+  function findBridge() {
+    var frames = [];
+    try { frames.push(window); } catch (e) {}
+    try { if (window.parent && window.parent !== window) frames.push(window.parent); } catch (e) {}
+    try { if (window.top && frames.indexOf(window.top) < 0) frames.push(window.top); } catch (e) {}
+
+    for (var i = 0; i < frames.length; i++) {
+      var w = frames[i];
+      try {
+        var ios = w.webkit && w.webkit.messageHandlers && w.webkit.messageHandlers.flipzenNativeRadio;
+        if (ios) {
+          return function (url) { ios.postMessage({ action: 'openExternalSafari', url: url }); };
+        }
+      } catch (e) {}
+      try {
+        var aos = w.AndroidNativeBridge;
+        if (aos && typeof aos.postMessage === 'function') {
+          return function (url) {
+            aos.postMessage('flipzenNativeRadio',
+              JSON.stringify({ action: 'openExternalSafari', url: url }));
+          };
+        }
+      } catch (e) {}
+    }
+    return null;
+  }
+
+  /* 앱 웹뷰 안인지 판정. 앱은 첫 진입 URL에 embed=app 을 붙이는데 이 값은
+     첫 로드에만 있으므로 sessionStorage 에 새겨두고 이후 페이지에서 읽는다.
+     상위 프레임에서 앱의 네이티브 브릿지가 보이면 그것만으로도 확정이다. */
+  var EMBED_KEY = 'ezlong.embedApp';
+  function inAppWebview() {
+    try {
+      if (new URLSearchParams(location.search).get('embed') === 'app') {
+        try { sessionStorage.setItem(EMBED_KEY, '1'); } catch (e) {}
+        return true;
+      }
+      if (sessionStorage.getItem(EMBED_KEY) === '1') return true;
+    } catch (e) {}
+    return !!findBridge();
+  }
+
+  document.addEventListener('click', function (ev) {
+    if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey) return;
+
+    var a = ev.target && ev.target.closest ? ev.target.closest('a[href]') : null;
+    if (!a) return;
+
+    var url;
+    try { url = new URL(a.getAttribute('href'), location.href); } catch (e) { return; }
+    if (!isExternal(url)) return;
+
+    /* 1순위 — 네이티브 브릿지로 기기 브라우저 열기. 네이버 구독 세션도
+       서점 로그인·장바구니도 전부 그쪽에 살아 있어야 끝까지 이어진다. */
+    var send = findBridge();
+    if (send) {
+      ev.preventDefault();
+      send(url.href);
+      return;
+    }
+
+    /* 앱이 아니면(일반 브라우저) 손대지 않는다 — target="_blank"가 정상 동작. */
+    if (!inAppWebview()) return;
+
+    /* 2순위 — 앱인데 브릿지를 못 찾은 경우의 안전망. 여기서 그냥 두면
+       화면에 아무 일도 안 일어나는 "먹통" 상태가 그대로 재현된다.
+       진짜 새 탭을 한 번 시도해 보고, 웹뷰가 무시하면(null 반환) 이 프레임
+       자체를 글로 이동시킨다. 앱 하단의 닫기·뒤로 버튼은 상위 프레임에
+       있으므로 이 이동 뒤에도 그대로 남아 돌아올 수 있다. */
+    var opened = null;
+    try { opened = window.open(url.href, '_blank', 'noopener'); } catch (e) { opened = null; }
+    if (opened) return;
+
+    ev.preventDefault();
+    location.href = url.href;
+  }, true);
+})();

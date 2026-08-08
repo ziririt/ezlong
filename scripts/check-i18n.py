@@ -37,6 +37,9 @@ SKIP = {
     # 한국 세법·제도 전용 — 번역해도 다른 나라 방문자에게 의미가 없다
     'tax-account-simulator.html', 'isa-irp-us-stock-tax-comparison.html',
     'dc-rebalance.html', 'job.html', 'lucky.html', 'life-signal.html',
+    # 모델 포트폴리오는 한국어 전용 코너다(2026-08-08). 편입 논거가 한국 투자자
+    # 관점의 글이라 그대로 번역하면 맥락이 빠진다 — 번역은 별건으로 판단한다.
+    'model-portfolio.html',
 }
 
 

@@ -1,0 +1,53 @@
+name: 모델 포트폴리오 주간 갱신
+# 시세 · 52주 범위 · 주간 RSI(14) 를 다시 채운다.
+# 비중·편입/편출·조정 권고는 건드리지 않는다 — 그건 사람이 월 1회 갱신하는 판단이다.
+#
+# 왜 일요일인가: 미국장은 금요일에 마감하고 월요일까지 열리지 않는다.
+# 주간 봉이 확정된 뒤 새 주가 시작되기 전에 한 번 갱신하는 게 이 코너의 호흡이다.
+# 두 슬롯을 두는 이유는 깃허브 예약 실행이 밀리거나 통째로 건너뛰기 때문이다
+# (2026-08-06 에 세 슬롯이 연달아 안 돌았다). 감시견이 그 다음 안전망이다.
+
+on:
+  schedule:
+    - cron: '0 20 * * 0'   # 일 20:00 UTC = 월 05:00 KST — 본실행
+    - cron: '0 23 * * 0'   # 일 23:00 UTC = 월 08:00 KST — 보조
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['scripts/fetch-model-portfolio.py', '.github/workflows/model-portfolio.yml']
+
+concurrency:
+  group: model-portfolio
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: yfinance 설치
+        run: pip install yfinance --break-system-packages 2>/dev/null || pip install yfinance
+
+      - name: 시세·주간 RSI 갱신
+        run: python3 scripts/fetch-model-portfolio.py
+
+      - name: 커밋 & 푸시
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/model-portfolio.json
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
+            git commit -m "data: 모델 포트폴리오 주간 갱신 ${KST}"
+            git push origin main || (git fetch origin main && git merge --ff-only origin/main && git push origin main)
+          fi

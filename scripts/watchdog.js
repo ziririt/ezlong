@@ -174,6 +174,24 @@ const MONITORS = [
     }
   },
   {
+    // 2026-08-08 추가 — 모델 포트폴리오는 주 1회(일요일 밤) 갱신이라 빈도가
+    // 낮은 만큼 한 번 걸러지면 일주일이 통째로 묵는다. 파이프라인을 만들면
+    // 감시견 등록까지가 한 세트다(CLAUDE.md 40항).
+    // 활성 구간은 월요일 낮(KST) 한나절뿐 — 그때까지 갱신이 안 됐으면 밀린 것이다.
+    id:             'model-portfolio',
+    name:           '모델 포트폴리오',
+    workflow:       'model-portfolio.yml',
+    checkFile:      'model-portfolio.json',
+    timestampField: 'generatedAt',
+    maxAgeHours:    30.0,
+    // UTC 월 00:00~06:00 = KST 월 09:00~15:00
+    isActive: (now) => {
+      const day = now.getUTCDay();
+      const h   = now.getUTCHours() + now.getUTCMinutes() / 60;
+      return day === 1 && h >= 0.0 && h <= 6.0;
+    }
+  },
+  {
     id:             'kr-prices',
     name:           '한국 주가',
     workflow:       'fetch-kr-prices.yml',
