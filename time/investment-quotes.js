@@ -8888,5 +8888,12 @@ window.investmentQuotes = [
     "title": "별 헤는 밤",
     "author": "윤동주",
     "genre": "literature"
+  },
+  {
+    "english": "We favor the visible, the embedded, the personal, the narrated, and the tangible; we scorn the abstract.",
+    "text": "우리는 눈에 보이는 것, 뿌리내린 것, 개인적인 것, 이야기로 전해지는 것, 손에 잡히는 것을 선호한다. 그리고 추상적인 것은 경시한다.",
+    "title": "행운에 속지 마라 (Fooled by Randomness)",
+    "author": "나심 니콜라스 탈레브 (Nassim Nicholas Taleb)",
+    "category": "mindset"
   }
 ];
