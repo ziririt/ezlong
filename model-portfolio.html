@@ -477,6 +477,26 @@
       rsiNote(h) + '<br>' + esc(h.d) + '</p></div>';
   }
 
+  var aiProbe = {};   // 티커 → AI 차트분석 파일 실재 여부(세션 캐시)
+
+  /* AI 차트분석이 쓰는 심볼 표기 — 한국 종목은 거래소 접미사가 붙는다.
+     차트분석 쪽 색인 키가 '000660.KS' 라서 '000660' 으로 보내면 해시가
+     아무 종목도 못 찾고 기본 화면(QQQ)이 열린다. */
+  function aiSymbol(h) { return h.c === '₩' ? h.tk + '.KS' : h.tk; }
+  function aiFile(h) { return 'analysis-' + aiSymbol(h).replace(/[.\-]/g, '_') + '.json'; }
+
+  function setChartLink(link, h, useAI) {
+    if (useAI) {
+      link.href = '/chart-analysis.html#' + encodeURIComponent(aiSymbol(h));
+      link.removeAttribute('target'); link.removeAttribute('rel');
+      link.textContent = 'AI 차트분석에서 보기';
+    } else {
+      link.href = 'https://www.tradingview.com/chart/?symbol=' + encodeURIComponent(h.sym) + '&interval=W';
+      link.target = '_blank'; link.rel = 'noopener';
+      link.textContent = '주간 차트 열기';
+    }
+  }
+
   function boot(data) {
     D = data;
     document.getElementById('stamp').innerHTML =
@@ -515,14 +535,22 @@
          주간 파이프라인이 data/analysis-{티커}.json 실재 여부로 채운다.
          없는 종목까지 그 링크를 걸면 엉뚱한 종목 화면이 열린다. */
       var link = document.getElementById('chartLink');
-      if (h.ai) {
-        link.href = '/chart-analysis.html#' + encodeURIComponent(h.tk);
-        link.removeAttribute('target'); link.removeAttribute('rel');
-        link.textContent = 'AI 차트분석에서 보기';
-      } else {
-        link.href = 'https://www.tradingview.com/chart/?symbol=' + encodeURIComponent(h.sym) + '&interval=W';
-        link.target = '_blank'; link.rel = 'noopener';
-        link.textContent = '주간 차트 열기';
+      setChartLink(link, h, h.ai);
+
+      /* h.ai 는 주 1회(일요일) 파이프라인이 채운다. 그 사이에 차트분석이 새
+         종목을 굽기 시작하면 최대 일주일 동안 플래그가 거짓으로 남는다.
+         플래그가 꺼져 있을 때만 실제 파일을 한 번 두드려 본다 — 200이면
+         바로 AI 링크로 승격한다. 켜져 있는 종목은 확인하지 않으므로
+         평소엔 추가 요청이 0이다. */
+      if (!h.ai && !aiProbe.hasOwnProperty(h.tk)) {
+        fetch('/data/' + aiFile(h), { method: 'HEAD' })
+          .then(function (r) {
+            aiProbe[h.tk] = r.ok;
+            if (r.ok && sel.value === h.tk) setChartLink(link, h, true);
+          })
+          .catch(function () { aiProbe[h.tk] = false; });
+      } else if (aiProbe[h.tk]) {
+        setChartLink(link, h, true);
       }
     }
     sel.addEventListener('change', draw);
