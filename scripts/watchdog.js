@@ -192,6 +192,26 @@ const MONITORS = [
     }
   },
   {
+    // 2026-08-09 추가 — 네이버 채널 동기화. 이 파이프라인이 멎으면 소사
+    // (brief-history)의 최신 글이 조용히 안 올라온다. 화면은 멀쩡하고
+    // 며칠 전 글까지만 보이는 종류의 고장이라 아무도 눈치채지 못한다.
+    // 트리거가 cron-job.org 한 곳에 몰려 있던 것도 같이 푼다(워크플로에
+    // 깃허브 자체 예약 슬롯 추가 + 여기 감시 등록).
+    id:             'naver-sync',
+    name:           '네이버 채널 동기화',
+    workflow:       'naver-sync.yml',
+    checkFile:      'naver-content.json',
+    timestampField: 'updatedAt',
+    // 하루 한 번만 돌아도 정상인 파이프라인이라 26h. 그보다 묵었으면 밀린 것.
+    maxAgeHours:    26.0,
+    // KST 10:00~18:00 = UTC 01:00~09:00. 아침 슬롯(09:05 KST)이 지난 뒤부터
+    // 재는 창. 새 글은 대개 오전에 올라오므로 낮 동안 확인하면 충분하다.
+    isActive: (now) => {
+      const h = now.getUTCHours() + now.getUTCMinutes() / 60;
+      return h >= 1.0 && h <= 9.0;
+    }
+  },
+  {
     id:             'kr-prices',
     name:           '한국 주가',
     workflow:       'fetch-kr-prices.yml',
