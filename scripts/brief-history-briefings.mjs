@@ -137,13 +137,29 @@ function dayContext(chart, idxMap, date) {
    재료 세 묶음으로 채워졌다). 원인은 모델이 아니라 입력이었다 — 그날 하락을
    설명한 시황이 네 번째 글이라 본문에 안 들어갔다. 그래도 화면에는 틀린 카드가
    걸리므로, 만들어진 결과를 한 번 더 재는 자리를 둔다. */
+/* 그날 글 중 어느 편을 읽나 — 앞에서 자르면 시황이 빠진다.
+
+   글은 발행 시각 오름차순이다. 그런데 필자의 **아침 시황은 한국 시간으로
+   다음 날 08시대에 올라오고**, 날짜 매핑 규칙상(ET 기준) 그게 바로 그날 장의
+   글이 된다. 즉 그날을 설명하는 시황은 목록의 **맨 끝**에 있다.
+   앞에서 두세 편만 자르면 분석·기업 글만 읽고 시황을 통째로 빠뜨린다 —
+   2025-11-20 이 그랬다. 앞에서 (N-1)편, 그리고 마지막 한 편을 항상 넣는다. */
+function pickArticles(arts) {
+  if (!Array.isArray(arts) || arts.length <= MAX_ARTICLES_PER_DAY) return (arts || []).slice();
+  const head = arts.slice(0, MAX_ARTICLES_PER_DAY - 1);
+  return head.concat([arts[arts.length - 1]]);
+}
+
 const DIR_THRESHOLD = 1.0;
 function directionOK(groups, move) {
   if (move == null || Math.abs(move) < DIR_THRESHOLD) return true;
   const tones = new Set(groups.map((g) => String(g.tone || '').trim()));
-  if (tones.size !== 1) return true;
-  if (move <= -DIR_THRESHOLD && tones.has('pos')) return false;
-  if (move >= DIR_THRESHOLD && tones.has('neg')) return false;
+  /* '전부 pos' 만 잡으면 pos·mix·pos 가 빠져나간다 — 실제로 그렇게 새어나갔다.
+     크게 내린 날에 부정 재료가 **하나도 없으면** 그 카드는 그날을 설명하지
+     못한 것이다(반대도 같다). 설명할 재료가 정말 없으면 다시 물었을 때
+     mix 로만 채워져 돌아오고, 그건 정직한 답이라 통과시킨다. */
+  if (move <= -DIR_THRESHOLD && !tones.has('neg')) return false;
+  if (move >= DIR_THRESHOLD && !tones.has('pos')) return false;
   return true;
 }
 
@@ -274,7 +290,7 @@ async function main() {
   let made = 0, reused = 0, skipped = 0, fetched = 0;
 
   for (const e of targets) {
-    const arts = e.articles.slice(0, MAX_ARTICLES_PER_DAY);
+    const arts = pickArticles(e.articles);
     const key = sha(PROMPT_VERSION + '|' + arts.map((a) => a.u).join('|'));
     let brief = cache[key];
     /* 캐시를 읽을 때도 검사한다 — 한 번 깨진 채 담긴 것이 영원히 살면 안 된다.
