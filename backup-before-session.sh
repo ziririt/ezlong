@@ -42,6 +42,28 @@ if [ -d "$PROJECT_DIR/scripts" ]; then
   echo "  ✓ scripts/ 복사"
 fi
 
+# 언어별 번역 페이지 (2026-08-09 추가)
+# en/ja/zh/es/pt 는 기계가 굽는 산출물이라 잃어도 다시 만들 수 있지만,
+# 되돌릴 기준점이 없으면 "어제 화면이 어땠는지" 확인할 방법이 사라진다.
+echo "→ 번역 페이지 백업 중..."
+for lang in en ja zh es pt; do
+  if [ -d "$PROJECT_DIR/$lang" ]; then
+    mkdir -p "$BACKUP_DIR/$lang"
+    cp "$PROJECT_DIR/$lang"/*.html "$BACKUP_DIR/$lang/" 2>/dev/null || true
+  fi
+done
+echo "  ✓ 번역 페이지 복사"
+
+# 손으로 관리하는 데이터 (2026-08-09 추가)
+# data/ 전체는 봇이 매일 덮어쓰는 파일이 대부분이라 백업 대상이 아니다.
+# 사람이 판단해서 쓴 것, 잃으면 다시 못 만드는 것만 담는다.
+echo "→ 핵심 데이터 백업 중..."
+mkdir -p "$BACKUP_DIR/data"
+for f in brief-history.json brief-history-chart.json naver-archive.json model-portfolio.json; do
+  [ -f "$PROJECT_DIR/data/$f" ] && cp "$PROJECT_DIR/data/$f" "$BACKUP_DIR/data/"
+done
+echo "  ✓ 핵심 데이터 복사"
+
 # 핵심 이미지
 echo "→ 이미지 백업 중..."
 for img in wallstreet.png logo.png logo-darkmode.png; do

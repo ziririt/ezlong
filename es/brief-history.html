@@ -159,6 +159,9 @@ window.BH_T = {
  "badgeLog": "Registro",
  "otherArticles": "Otras notas de ese día",
  "dayLog": "{n} notas de este día",
+ "fwdLabel": "QQQ después",
+ "fwdDays": "{n}d",
+ "fwdSummary": "En estas {n} entradas, QQQ promedió {avg} 20 sesiones después · subió el {up}% de las veces",
  "readOriginal": "Leer más →",
  "moreBtn": "Ver eventos anteriores (quedan {n})",
  "emptyNear": "No hay eventos registrados cerca de esta fecha.",
@@ -438,6 +441,18 @@ window.BH_T = {
   .bh-event-group-list li:last-child { margin-bottom: 0; }
   .bh-event-group-list li::before { content: '·'; position: absolute; left: 0; top: 0; color: var(--ez-text2); font-weight: 800; }
   .bh-event-moves { display: flex; gap: 8px; flex-wrap: wrap; margin: 2px 0 9px; }
+  /* 그 뒤 시장이 어디로 갔는가 — 그날 등락 바로 아래. 등락 알약보다 한 톤
+     낮춰서, 먼저 읽히는 건 그날이고 그다음이 결과가 되게 한다. */
+  .bh-fwd { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: -3px 0 9px; }
+  .bh-fwd-lab { font-size: 14px; font-weight: 700; color: var(--ez-text2); }
+  .bh-fwd-item { font-size: 14px; color: var(--ez-text2); white-space: nowrap; }
+  .bh-fwd-item em { font-style: normal; margin-right: 4px; }
+  .bh-fwd-item b { font-weight: 800; }
+  .bh-fwd-item b.up { color: var(--ez-green); }
+  .bh-fwd-item b.down { color: var(--ez-red); }
+  .bh-fwd-sum { font-size: 14px; color: var(--ez-text2); margin-top: 4px; line-height: 1.5; }
+  .bh-fwd-sum b.up { color: var(--ez-green); }
+  .bh-fwd-sum b.down { color: var(--ez-red); }
   .bh-move-pill { font-size: 14px; font-weight: 700; padding: 3px 9px; border-radius: 6px; }
   .bh-move-pill.up { color: var(--ez-green); background: color-mix(in srgb, var(--ez-green) 14%, transparent); }
   .bh-move-pill.down { color: var(--ez-red); background: color-mix(in srgb, var(--ez-red) 14%, transparent); }
@@ -526,6 +541,7 @@ window.BH_T = {
         <div>
           <div class="bh-events-title" id="bh-events-title">Todos los eventos (más recientes primero)</div>
           <div class="bh-events-count" id="bh-events-count"></div>
+          <div id="bh-fwd-summary"></div>
         </div>
       </div>
       <div id="bh-events-list"></div>
@@ -621,6 +637,10 @@ window.BH_T = {
 
   const eventsByDate = {};
   let chartDateSet = new Set();   // 차트가 실제로 가진 거래일 — 마커를 걸 수 있는 날짜
+  const chartIdx = {};            // 날짜 → 배열 위치. 사후 수익률을 세는 자
+  /* 그 뒤 며칠 — '달력 날짜'가 아니라 '거래일'이다. 주말·휴장을 세면
+     구간마다 실제 장 일수가 달라져서 서로 비교가 안 된다. */
+  const FWD_STEPS = [5, 20, 60];
 
   /* 번역본이 아직 안 구워졌거나 실패한 경우의 안전망 — 한국어 원본으로 대신
      그린다. 화면이 통째로 죽는 것보다 낫다. 다만 이때도 원문 링크는 걷어낸다:
@@ -649,6 +669,7 @@ window.BH_T = {
   ]).then(([chartJson, eventsJson]) => {
     chartData = chartJson;
     chartDateSet = new Set(chartData.dates);
+    chartData.dates.forEach((d, i) => { chartIdx[d] = i; });
     eventsData = eventsJson.slice().sort((a,b) => a.date < b.date ? 1 : -1); // 최신순
     // 한 날짜에 이슈와 기록이 겹칠 수 있다 — 달력 점은 그중 가장 무거운 것을 따른다.
     eventsJson.forEach(e => {
@@ -1407,6 +1428,47 @@ window.BH_T = {
     return `${sign}${v.toFixed(2)}%`;
   }
 
+  /* 그 이벤트 날짜로부터 N거래일 뒤 QQQ 수익률(%). 차트에 없는 날짜이거나
+     아직 N일이 지나지 않았으면 null — 없는 값을 0으로 채우지 않는다. */
+  function fwdReturn(dateStr, steps) {
+    const i = chartIdx[dateStr];
+    if (i == null) return null;
+    const j = i + steps;
+    const q = chartData.QQQ;
+    if (!q || j >= q.length) return null;
+    const a = q[i], b = q[j];
+    if (!a) return null;
+    return (b / a - 1) * 100;
+  }
+
+  /* 그날 이후 시장이 어떻게 갔는가. 이 코너가 아카이브에서 근거 뭉치로
+     바뀌는 자리다 — 그날 얼마나 빠졌는지보다, 그 뒤 어디로 갔는지가
+     다음 판단에 쓰인다. 값이 하나도 없으면 줄 자체를 만들지 않는다. */
+  function renderForward(dateStr) {
+    const parts = FWD_STEPS.map(function (n) {
+      const v = fwdReturn(dateStr, n);
+      if (v == null) return null;
+      const cls = v >= 0 ? 'up' : 'down';
+      return `<span class="bh-fwd-item"><em>${fmt(T.fwdDays, { n: n })}</em>` +
+             `<b class="${cls}">${fmtPct(v)}</b></span>`;
+    }).filter(Boolean);
+    if (!parts.length) return '';
+    return `<div class="bh-fwd"><span class="bh-fwd-lab">${T.fwdLabel}</span>${parts.join('')}</div>`;
+  }
+
+  /* 지금 목록에 걸린 이벤트들의 20거래일 뒤 성적을 한 줄로 요약한다.
+     표본이 너무 적으면 평균이 우연에 흔들리므로 아예 내보내지 않는다. */
+  const FWD_SUMMARY_MIN = 10;
+  function forwardSummary(pool) {
+    const vals = pool.map(e => fwdReturn(e.date, 20)).filter(v => v != null);
+    if (vals.length < FWD_SUMMARY_MIN) return '';
+    const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+    const up = Math.round(vals.filter(v => v > 0).length / vals.length * 100);
+    const cls = avg >= 0 ? 'up' : 'down';
+    return `<div class="bh-fwd-sum">${fmt(T.fwdSummary, {
+      n: vals.length, avg: `<b class="${cls}">${fmtPct(avg)}</b>`, up: up })}</div>`;
+  }
+
   function renderMoves(moves) {
     if (!moves) return '';
     return Object.entries(moves).map(([sym, v]) => {
@@ -1464,6 +1526,7 @@ window.BH_T = {
         ${badge}
       </div>
       ${moves ? `<div class="bh-event-moves">${moves}</div>` : ''}
+      ${renderForward(e.date)}
       <div class="bh-event-title">${escapeHtml(title)}</div>
       ${bodyHtml}
       ${articlesHtml}
@@ -1497,6 +1560,8 @@ window.BH_T = {
         const t = new Date(e.date + 'T00:00:00Z').getTime();
         return Math.abs(t - target) <= 1 * 86400000;
       }).sort((a,b) => Math.abs(new Date(a.date)-target) - Math.abs(new Date(b.date)-target));
+      const sumElN = document.getElementById('bh-fwd-summary');
+      if (sumElN) sumElN.innerHTML = '';
       titleEl.textContent = fmt(T.nearTitle, { date: selectedDate });
       countEl.textContent = fmt(T.nearCount, { n: nearby.length });
       listEl.innerHTML = nearby.length
@@ -1507,6 +1572,8 @@ window.BH_T = {
 
     titleEl.textContent = T.allTitle;
     countEl.textContent = fmt(T.countUnit, { n: pool.length });
+    const sumEl = document.getElementById('bh-fwd-summary');
+    if (sumEl) sumEl.innerHTML = forwardSummary(pool);
     /* 전체 목록은 수백 건이라 한 번에 다 그리면 첫 화면이 늦어진다(특히 모바일).
        최신분부터 끊어서 보여주고, 더 보고 싶을 때만 이어 붙인다. */
     const shown = Math.min(listShown, pool.length);
