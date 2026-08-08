@@ -3881,6 +3881,8 @@ function buildTrendLineHtml() {
 
   // ── 상황별 시그널 텍스트 (S-CORE 방향: 높을수록 매수) ───────────────────
   let title, desc, pills;
+  // 카드 라벨 — 평일은 '오늘의 시그널', 주말은 국면에 맞춰 바뀐다 (아래 v2 블록에서 설정)
+  let _swingLabel = '오늘의 시그널';
 
   if (score >= 80) {
     // ── 최적 매수 구간 ───────────────────────────────────────────────────────
@@ -4025,9 +4027,17 @@ function buildTrendLineHtml() {
   if (window._swingView?.comp?.commentary?.length) {
     const _c = window._swingView.comp;
     title = _c.stanceLabel;
-    const _flowLine = window._swingView.flow
+    /* 주말 국면 — 금 마감 후 월 개장 전에는 "오늘"이 성립하지 않는다.
+       현지 일요일 오전을 넘기면 새 주 전망으로 갈아탄다.
+       판정 함수는 ez-nav.js 의 window.ezWeekPhase 하나뿐 — chief-strip.js 와 공유한다. */
+    const _wkPhase = (typeof window.ezWeekPhase === 'function') ? window.ezWeekPhase() : 'session';
+    const _wa = window._swingView.weekAhead;
+    const _useAhead = _wkPhase === 'ahead' && _wa?.headline && _wa?.core?.length;
+    _swingLabel = _wkPhase === 'session' ? '오늘의 시그널'
+                : _useAhead ? '새 주 전망' : '직전 장 마감 시그널';
+    const _flowLine = (window._swingView.flow && !_useAhead)
       ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">${window._swingView.flow}</div>` : '';
-    const _dk = window._swingView.desked;
+    const _dk = _useAhead ? _wa : window._swingView.desked;
     const _secHtml = (_dk?.sections || []).map(s =>
       `<div style="margin:0 0 14px;">
          <div style="font-weight:800;color:var(--t1);font-size:16px;margin-bottom:6px;">${_v2Colorize(s.title)}</div>
@@ -4066,12 +4076,22 @@ function buildTrendLineHtml() {
     })();
     const _PHASE_KO = { pre: '프리마켓', open: '장중', post: '마감 직후', closed: '장 마감' };
     const _phaseWas = window._swingView.session;
-    const _phaseWarn = (_phaseWas && _PHASE_KO[_phaseWas] && _phaseWas !== _phaseNow)
+    const _wkNotice = _wkPhase === 'session' ? '' :
+      `<div style="margin:0 0 10px;padding:8px 10px;border-radius:10px;background:var(--bd2,rgba(120,120,128,.12));color:var(--t2);font-size:14px;font-weight:600;line-height:1.55;">
+         ${_useAhead
+           ? `미국장 휴장 중 — 아래는 <b>다음 장을 준비하는 전망</b>이다. 근거는 직전 장(${window._swingView.dataDay}) 마감 자료.`
+           : `미국장 휴장 중 — 아래는 <b>직전 장(${window._swingView.dataDay}) 마감 시점</b>의 판단이다. 다음 장 개장 전까지 갱신 없음.`}
+       </div>`;
+    const _phaseWarn = (_wkPhase !== 'session') ? _wkNotice
+      : (_phaseWas && _PHASE_KO[_phaseWas] && _phaseWas !== _phaseNow)
       ? `<div style="margin:0 0 10px;padding:8px 10px;border-radius:10px;background:var(--am-dim,rgba(255,159,10,.12));color:var(--am,#FF9F0A);font-size:14px;font-weight:700;line-height:1.55;">
            아래 논평은 <b>${_PHASE_KO[_phaseWas]}</b> 시점(${window._swingView.generatedAtKST})에 쓴 글이다. 지금은 <b>${_PHASE_KO[_phaseNow]}</b> — 문장 속 시점 표현은 위 기준 시각으로 읽을 것.
          </div>`
       : '';
-    const _asOfTop = `<div style="margin:0 0 10px;color:var(--t3);font-size:14px;font-weight:600;">${window._swingView.generatedAtKST} 기준 · 기준일 ${window._swingView.dataDay}(미국장)</div>` + _phaseWarn;
+    const _asOfTop = `<div style="margin:0 0 10px;color:var(--t3);font-size:14px;font-weight:600;">${
+      _useAhead ? `직전 장 ${window._swingView.dataDay}(미국장) 마감 자료 기준`
+                : `${window._swingView.generatedAtKST} 기준 · 기준일 ${window._swingView.dataDay}(미국장)`
+    }</div>` + _phaseWarn;
     desc  = _asOfTop
           + _flowLine
           + _bodyHtml
@@ -4081,7 +4101,7 @@ function buildTrendLineHtml() {
       {text: `매도압력 ${_compSell}`, tone: _compSell >= 60 ? 'negative' : 'neutral'},
       {text: `확신도 ${_c.confidence ?? '—'}`, tone: 'positive'},
     ];
-    if (window._swingView.stanceChangedToday) {
+    if (window._swingView.stanceChangedToday && _wkPhase === 'session') {
       pills.unshift({text: '오늘 스탠스 변경', tone: 'positive'});
     } else if ((window._swingView.stanceStreak ?? 1) >= 2) {
       pills.push({text: `${window._swingView.stanceStreak}거래일째 유지`, tone: 'neutral'});
@@ -4099,7 +4119,7 @@ function buildTrendLineHtml() {
           ${volatilityWarn}
         </div>
         <div style="flex:1;min-width:0;">
-          <div class="action-label">오늘의 시그널</div>
+          <div class="action-label">${_swingLabel}</div>
           <div class="action-title">${title}</div>
           ${trendLineHtml}
         </div>

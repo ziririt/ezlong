@@ -774,3 +774,44 @@
     '@keyframes ezPtrSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}';
   (document.head || document.documentElement).appendChild(ptrStyle);
 })();
+
+/* ─────────────────────────────────────────────────────────────
+   주말 국면 판정 — 스윙 판단 카드가 "오늘"이라고 말할 수 있는 때인가
+   (2026-08-08 신설)
+
+   미국장은 금요일 마감 후 월요일까지 열리지 않는다. 그 사이에도 카드는
+   금요일에 쓴 글을 "오늘의 스윙 판단"으로 걸고 있었다 — 구조적으로 거짓말이
+   되는 구간이 매주 이틀씩 있었던 셈이다.
+
+   토요일은 자연스럽다. 직전 장 마감 판단을 보는 게 맞다. 그런데 일요일
+   오전을 넘기면 독자의 관심은 지난주가 아니라 다음 주로 옮겨간다.
+   경계는 **보는 사람의 현지 시계**로 나눈다 — 서울의 일요일 오전과 뉴욕의
+   일요일 오전은 같은 순간이 아니고, 각자 자기 일요일 아침에 다음 주를
+   생각하기 때문이다.
+
+   반환값
+     'session'  평일 — 평소대로
+     'weekend'  금 마감 ~ 현지 일요일 오전 — 직전 장 마감 판단
+     'ahead'    현지 일요일 오전 이후 ~ 월요일 개장 전 — 새 주 전망
+
+   ※ 같은 판정을 chief-strip.js 와 atmr-dashboard.html 이 함께 쓴다.
+     여기 하나만 고치면 둘 다 따라온다 (공유 함수 동기화 원칙).
+   ───────────────────────────────────────────────────────────── */
+window.ezWeekPhase = function (now) {
+  now = now || new Date();
+  var et;
+  try {
+    et = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+  } catch (e) {
+    et = now;
+  }
+  var ed = et.getDay(), em = et.getHours() * 60 + et.getMinutes();
+  // 미국장 주말 휴장 구간인가 — 금 20:00 ET(애프터마켓 종료) ~ 월 04:00 ET(프리마켓)
+  var closed = (ed === 6) || (ed === 0) ||
+               (ed === 5 && em >= 1200) || (ed === 1 && em < 240);
+  if (!closed) return 'session';
+  var d = now.getDay(), h = now.getHours();     // 여기부터는 보는 사람의 현지 시계
+  if (d === 0 && h >= 9) return 'ahead';        // 현지 일요일 오전
+  if (d === 1) return 'ahead';                  // 현지 월요일 — 개장 전
+  return 'weekend';
+};

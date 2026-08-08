@@ -1494,6 +1494,119 @@ sections 3~5개: 직전 장 시황 / 터닝포인트 관문 / 오늘의 판단 /
         return None
 
 
+
+# ── 주말 — 새 주 전망 (2026-08-08 신설) ────────────────────────────────────
+# 구조적 문제였다. 미국장은 금요일 마감 후 월요일까지 열리지 않는데, 카드는
+# 그 사이 내내 금요일에 쓴 글을 "오늘의 판단"이라고 걸고 있었다. 토요일에는
+# 그게 자연스럽다 — 직전 장 마감 판단이니까. 그런데 일요일 오전을 넘기면
+# 독자의 관심사는 지난주가 아니라 다음 주로 옮겨간다. 그때부터는 화면도
+# 앞을 봐야 한다.
+#
+# 비용은 주말당 한 번. 감시견이 주말에도 워크플로를 여러 번 깨울 수 있으므로
+# forDay(직전 장 기준일)로 이미 구운 게 있으면 그대로 재사용한다.
+
+def us_market_weekend(now_utc=None):
+    """미국장 주말 휴장 구간인가 — 금요일 애프터마켓 종료(20:00 ET) 이후부터
+    월요일 프리마켓 시작 전까지."""
+    now = now_utc or datetime.now(timezone.utc)
+    et = now.astimezone(timezone(timedelta(hours=-4)))   # EDT 기준 근사(경계 판정용)
+    d, m = et.weekday(), et.hour * 60 + et.minute        # 월=0 … 일=6
+    if d in (5, 6):
+        return True
+    if d == 4 and m >= 1200:      # 금 20:00 ET 이후
+        return True
+    if d == 0 and m < 240:        # 월 04:00 ET(프리마켓 개시) 전
+        return True
+    return False
+
+
+def desk_week_ahead(view, sc_entry, ca):
+    """새 주 전망 한 벌. 지난주를 요약하는 글이 아니라 다음 장을 준비하는 글이다.
+    실패하면 None — 화면은 직전 장 판단으로 폴백한다(파이프라인 불사불패)."""
+    import urllib.request
+    key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
+    if not key:
+        return None
+    comp = view['comp']
+    n = comp['nums']
+    factors = ''
+    if sc_entry:
+        f = lambda k: [x.get('name') for x in (sc_entry.get(k) or [])]
+        factors = (f"긍정: {f('positive_factors')} / 부정: {f('negative_factors')} / "
+                   f"혼조: {f('mixed_factors')}\n긍정 대 부정: {sc_entry.get('positive_total')} 대 "
+                   f"{sc_entry.get('negative_total')}")
+    ca_line = ''
+    if ca:
+        conf = ca.get('confluenceChecklist') or {}
+        ca_line = f"추세 {ca.get('trend')} | 판정 {ca.get('action')} | 반등 신뢰도 {conf.get('verdict')}"
+    stats_block = '\n'.join(f'- {v}' for v in STATS.values())
+    prompt = f"""당신은 미국 주식 스윙 데스크다. 지금은 주말 휴장 중이고, 이 글은
+**다음 주를 준비하는 독자**가 읽는다. 지난주 복기가 아니라 **다음 장에 무엇을 보고
+무엇을 할 것인가**를 쓴다.
+
+[직전 장({view.get('dataDay')}) 마감 상태]
+- 스탠스: {comp.get('stanceLabel')} (연속 {view.get('stanceStreak')}거래일)
+- 매수압력 {n.get('buy')} / 매도압력 {n.get('sell')} / Gear {n.get('gear')} / 200일선 괴리 {n.get('dev200')}%
+- 목표 비중 {comp.get('target')} / 현재 비중 {comp.get('exposure')}
+- 판단 연속성: {view.get('flow') or '정보 없음'}
+
+[시장 재료]
+{factors or '재료 정보 없음'}
+
+[차트 판정]
+{ca_line or '정보 없음'}
+
+[검증 통계 — 이 안의 수치만 인용 가능]
+{stats_block}
+
+[쓰는 법]
+- 개조식: 소제목으로 그룹핑, 각 항목은 닷블릿. 서술어 없이 명사형 종결.
+  단, 의미가 흐려질 만큼 줄이지 말 것 — 수치·조건·이유를 담아 디테일하게.
+- 시제는 **앞**을 본다. "직전 장에서 ~했다"는 근거로만 짧게, 본론은 "다음 장에서
+  무엇이 켜지면 무엇을 한다"의 조건문. 예 — "QQQ 종가 723달러 위 재마감 시 2차 집행,
+  아래면 현 비중 유지".
+- 관문·조건은 반드시 **숫자와 종목/지수 이름**을 붙인다. 주어 없는 "시장" 금지.
+- 가격 표기는 소수점 버림 — "683달러".
+- 다음 주에 예정된 일정을 임의로 만들어내지 마라. 위 재료에 없는 이벤트·날짜·지표
+  발표는 언급 금지. 모르면 안 쓴다.
+- [자기 평가 금지] 반성문·사과·자책도, 자랑도 쓰지 마라. 금지어 — "실책",
+  "인정한다", "너무 보수적이었다", "놓쳤다", "예측대로". 숫자는 그대로 적되
+  문장은 시장 상태와 다음 조건으로 쓴다.
+- [내부 사정 노출 금지] 제작 과정·시스템 구조·작업 상태를 쓰지 마라
+  ("엔진", "데이터가 없어서", "아직 확인 못 했다" 등).
+- "~하세요" 행동 촉구 금지. 분석/진단형.
+- 색 강조 태그: 긍정 [G]…[/G], 부정 [R]…[/R], 핵심 조건·가격 [B]…[/B].
+  전체 4~7곳 이내, 단어·구 단위만.
+- 확률·통계는 위 검증 통계 안의 수치만 인용. 새로 만들지 말 것.
+
+[출력 형식 — 이 JSON만 출력, 다른 텍스트 금지]
+{{"headline": "…", "core": ["…", "…", "…"]}}
+headline 은 다음 주의 결론 한 줄(관문 조건 하나 포함). core 는 3~4개."""
+    try:
+        body = json.dumps({'model': DESK_MODEL, 'max_tokens': 3000,
+                           'messages': [{'role': 'user', 'content': prompt}]}).encode()
+        req = urllib.request.Request('https://api.anthropic.com/v1/messages', data=body,
+            headers={'x-api-key': key, 'anthropic-version': '2023-06-01',
+                     'content-type': 'application/json'})
+        r = json.load(urllib.request.urlopen(req, timeout=240))
+        txt = ''.join(b.get('text', '') for b in r.get('content', []) if b.get('type') == 'text')
+        d = json.loads(txt[txt.index('{'): txt.rindex('}') + 1])
+        core = [x for x in (d.get('core') or []) if x][:4]
+        if not d.get('headline') or not core:
+            return None
+        allowed = set(_re.findall(r'\d+(?:\.\d+)?(?=%)', prompt))
+        unknown = [x for x in _re.findall(r'\d+(?:\.\d+)?(?=%)', json.dumps(d, ensure_ascii=False))
+                   if x not in allowed]
+        if len(set(unknown)) > 2:
+            print(f'::warning::[새 주 전망] 미검증 수치 {sorted(set(unknown))} — 폐기')
+            return None
+        return dict(headline=d['headline'], core=core, forDay=view.get('dataDay'),
+                    generatedAtKST=view.get('generatedAtKST'), model=DESK_MODEL)
+    except Exception as e:
+        print(f'::warning::[새 주 전망] 호출 실패 — 직전 장 판단으로 폴백: {e}')
+        return None
+
+
 # ── 자책·자랑 문장 청소기 (2026-08-08 신설) ────────────────────────────────
 # 이 글은 독자가 읽는 분석이다. "실책이었다", "인정한다" 같은 자기 평가는
 # 내부에서 오갈 말이지 화면에 실을 말이 아니다. 스탠스가 며칠 이어지면 같은
@@ -1698,9 +1811,31 @@ def main():
                if syms.get(sym) and syms[sym].get('buyScore') is not None},
     )
 
-    desked = desk_with_fable(view, (load_scorecard() or [None])[0], load_chart_engine())
+    _sc = (load_scorecard() or [None])[0]
+    _ca = load_chart_engine()
+    desked = desk_with_fable(view, _sc, _ca)
     if desked:
         view['desked'] = desked
+
+    # 주말이면 '새 주 전망'을 한 벌 더 굽는다. 주말당 한 번만 — 감시견이 주말에도
+    # 워크플로를 여러 번 깨우므로, 직전 장 기준일(forDay)이 같으면 재사용한다.
+    if us_market_weekend():
+        _prev_wa = None
+        try:
+            with open(VIEW, encoding='utf-8') as _f:
+                _prev_wa = (json.load(_f) or {}).get('weekAhead')
+        except Exception:
+            pass
+        if _prev_wa and _prev_wa.get('forDay') == view.get('dataDay'):
+            view['weekAhead'] = _prev_wa
+            print('새 주 전망: 이번 주말 것 재사용 (forDay=%s)' % _prev_wa.get('forDay'))
+        else:
+            _wa = desk_week_ahead(view, _sc, _ca)
+            if _wa:
+                view['weekAhead'] = _wa
+                print('새 주 전망: 새로 생성 (forDay=%s)' % _wa.get('forDay'))
+            elif _prev_wa:
+                view['weekAhead'] = _prev_wa
 
     # 자기 평가 문장 제거 — 데스크가 프롬프트를 어겨도 화면에는 못 나가게 한다.
     view = scrub_blame(view)

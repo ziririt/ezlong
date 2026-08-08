@@ -1,4 +1,4 @@
-/* 오늘의 스윙 판단 스트립 (전 페이지 공통) (v2 베타 페이지 전용)
+/* 스윙 판단 스트립 (전 페이지 공통) (v2 베타 페이지 전용)
  * data/swing-view.json(swing-view.yml 파이프라인 산출)을 읽어
  * 페이지 최상단에 오늘의 스탠스 + 논평 요약을 표시한다.
  * 주가·기술분석 페이지 공통 상단 띠.
@@ -39,7 +39,20 @@
         .replace(/\[R\](.*?)\[\/R\]/g, '<strong class="cs-r">$1</strong>')
         .replace(/\[B\](.*?)\[\/B\]/g, '<strong class="cs-b">$1</strong>');
     }
-    var first = colorize((view.desked && view.desked.headline) || (c.commentary && c.commentary[0]) || '');
+    /* 주말 국면 — 금 마감 후에는 "오늘의 판단"이라고 부를 수 없다.
+       현지 일요일 오전을 넘기면 새 주 전망으로 갈아탄다 (ez-nav.js: ezWeekPhase). */
+    var phase = (typeof window.ezWeekPhase === 'function') ? window.ezWeekPhase() : 'session';
+    var wa = view.weekAhead;
+    var useAhead = (phase === 'ahead' && wa && wa.headline);
+    var badge = phase === 'session' ? '오늘의 스윙 판단'
+              : useAhead ? '새 주 전망' : '직전 장 마감 판단';
+    var first = colorize(
+      useAhead ? wa.headline
+               : ((view.desked && view.desked.headline) || (c.commentary && c.commentary[0]) || ''));
+    var asOf = phase === 'session'
+      ? view.generatedAtKST + ' 기준'
+      : (useAhead ? '직전 장 ' + (view.dataDay || '') + '(미국장) 마감 자료 기준'
+                  : view.generatedAtKST + ' 기준 · 미국장 휴장 중');
     var style = document.createElement('style');
     style.textContent = css;
     document.head.appendChild(style);
@@ -47,13 +60,13 @@
     div.className = 'chief-strip';
     div.innerHTML =
       '<div class="cs-head">' +
-      '<span class="cs-badge">오늘의 스윙 판단</span>' +
+      '<span class="cs-badge">' + badge + '</span>' +
       '<span class="cs-stance">' + c.stanceLabel + '</span>' +
       '</div>' +
-      (view.stanceChangedToday && !view.flow ? '<div style="font-weight:700;margin-bottom:4px;">오늘 스탠스가 바뀌었습니다.</div>' : '') +
-      (view.flow ? '<div style="margin-bottom:4px;">' + view.flow + '</div>' : '') +
+      (phase === 'session' && view.stanceChangedToday && !view.flow ? '<div style="font-weight:700;margin-bottom:4px;">오늘 스탠스가 바뀌었습니다.</div>' : '') +
+      (view.flow && !useAhead ? '<div style="margin-bottom:4px;">' + view.flow + '</div>' : '') +
       '<div>' + first + '</div>' +
-      '<div class="cs-meta">' + view.generatedAtKST + ' 기준 · ' +
+      '<div class="cs-meta">' + asOf + ' · ' +
       '<a href="/atmr-dashboard.html">전체 판단 보기</a></div>';
     var nav = document.getElementById('ez-nav') || document.querySelector('nav');
     if (nav && nav.parentNode) {
