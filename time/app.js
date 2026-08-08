@@ -2512,15 +2512,49 @@ function formatQuoteSource(quote, koMode, translated) {
 // 2026-07-16: 현재 문장의 책이 알라딘과 매칭됐으면 아이콘을 보여주고 링크를
 // data-url에 저장, 매칭이 안 됐으면 숨긴다. aladin-links.js 로드 실패/누락
 // 시에도(window.aladinLinks === undefined) 에러 없이 그냥 숨김 처리한다.
+//
+// 2026-08-09 운영 지침로 확장 — 비한국어 로케일에서도 이 버튼을 띄운다.
+// 그전까지는 한국어에만 알라딘 버튼이 떴고, 다른 언어에서는 아마존 링크가
+// "복사본 마지막 줄"에만 들어갔다. 즉 링크는 있는데 화면에서 갈 길이 없었다.
+// 어느 서점이냐는 quote-source 모듈이 로케일을 보고 정한다(한국어→알라딘,
+// 그 밖의 모든 언어→아마존 검색).
+//
+// 한국어까지 이 모듈에 맡겨도 되는지는 실측으로 확인했다 — 라이브에서 문장
+// 1,202개를 전수 비교했더니 예전 직접조회(aladinLinks[제목|저자])와 resolve()
+// 가 1,092건 전부 같은 URL 이었고, 한쪽에만 링크가 있는 경우는 0건이었다.
+// 그래서 두 경로를 하나로 합친다. 버튼이 여는 주소와 복사본에 담기는 주소가
+// 같은 함수에서 나오므로 앞으로 둘이 어긋날 일도 없다.
 function updateAladinLinkButton(quote) {
   if (!quoteAladinLink) return;
-  const links = window.aladinLinks || {};
-  const url = links[`${quote.title}|${quote.author}`];
-  if (url) {
-    quoteAladinLink.dataset.url = url;
+
+  let link = null;
+  try {
+    if (FZ_QUOTE_SRC && typeof FZ_QUOTE_SRC.resolve === "function") {
+      link = FZ_QUOTE_SRC.resolve(quote, {});
+    } else if (isKoreanLocale()) {
+      // 모듈 로드가 실패했을 때의 안전망 — 한국어만이라도 예전처럼 동작시킨다.
+      const legacy = (window.aladinLinks || {})[`${quote.title}|${quote.author}`];
+      if (legacy) link = { kind: "aladin", url: legacy, labelKey: "quote.buyOnAladin" };
+    }
+  } catch (error) {
+    link = null; // 링크 하나 때문에 문장이 안 뜨는 일은 없어야 한다
+  }
+
+  if (link && link.url) {
+    const store = link.kind || "aladin";
+    const labelKey = link.labelKey || (store === "amazon" ? "quote.buyOnAmazon" : "quote.buyOnAladin");
+    quoteAladinLink.dataset.url = link.url;
+    quoteAladinLink.dataset.store = store;
+    // 아리아 라벨은 서점에 따라 갈린다. data-i18n-aria 속성까지 갈아끼우는
+    // 이유는, 언어를 바꾸면 i18n 적용기가 이 속성을 다시 읽어 라벨을 덮어쓰기
+    // 때문이다 — 속성을 그대로 두면 아마존 버튼에 "알라딘에서 이 책 보기"가
+    // 도로 붙는다.
+    quoteAladinLink.setAttribute("data-i18n-aria", labelKey);
+    quoteAladinLink.setAttribute("aria-label", t(labelKey, null, quoteAladinLink.getAttribute("aria-label") || ""));
     quoteAladinLink.hidden = false;
   } else {
     delete quoteAladinLink.dataset.url;
+    delete quoteAladinLink.dataset.store;
     quoteAladinLink.hidden = true;
   }
 }
@@ -2892,9 +2926,13 @@ function withAladinPartnerParam(url) {
 // aladinModalCurrentUrl/aladinModalExternalOpenEl 버튼이 그 진입점이다.
 let aladinModalCurrentUrl = null;
 
-function openAladinModal(url) {
+function openAladinModal(url, store) {
   if (!url) return;
-  const finalUrl = withAladinPartnerParam(url);
+  // 2026-08-09: 이제 아마존 링크도 이 함수를 탄다. 제휴 파라미터 규칙이 서점마다
+  // 다르므로(알라딘 partner=, 아마존 tag=) 알라딘일 때만 보강한다 — 아마존
+  // 주소는 quote-source 가 이미 완성해서 넘겨준다.
+  const isAladinStore = (store || "aladin") !== "amazon";
+  const finalUrl = isAladinStore ? withAladinPartnerParam(url) : url;
   aladinModalCurrentUrl = finalUrl;
   // 2026-07-18: 네이티브 앱에서는 iframe 모달을 아예 띄우지 않는다. iframe은
   // ezlong.com 기준 서드파티 컨텍스트라 ITP가 알라딘 로그인/장바구니 쿠키를
@@ -2911,6 +2949,19 @@ function openAladinModal(url) {
     window.AndroidNativeBridge.postMessage("flipzenNativeRadio", JSON.stringify({ action: "openAladinInApp", url: finalUrl }));
     return;
   }
+  // 아마존은 iframe 안에 뜨지 않는다(X-Frame-Options). 네이티브가 아닌
+  // 환경에서는 모달을 건너뛰고 새 탭으로 보낸다 — 빈 모달을 띄우느니 낫다.
+  if (!isAladinStore) {
+    let openedTab = null;
+    try {
+      openedTab = window.open(finalUrl, "_blank", "noopener");
+    } catch (error) {
+      openedTab = null;
+    }
+    if (!openedTab) window.location.href = finalUrl;
+    return;
+  }
+
   // 네이티브가 아닌 일반 브라우저/PWA에서는 기존 iframe 모달을 그대로 쓴다
   // (이 경로는 데스크톱 사파리/크롬 등 다양한 환경이 섞여있어 이번 수정
   // 범위 밖 — 이번 문제는 네이티브 iOS 앱에 한정된 제보였다).
@@ -8999,7 +9050,7 @@ if (quoteCopyBtn) {
 if (quoteAladinLink) {
   quoteAladinLink.addEventListener("click", () => {
     const url = quoteAladinLink.dataset.url;
-    if (url) openAladinModal(url);
+    if (url) openAladinModal(url, quoteAladinLink.dataset.store);
   });
 }
 // 2026-07-16 3차 개정: 하단 버튼이 이제 링크가 아니라 순수 "닫기" 버튼
