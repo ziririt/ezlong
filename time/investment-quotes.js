@@ -8842,5 +8842,12 @@ window.investmentQuotes = [
     "title": "밀크 앤 허니 (Milk and Honey)",
     "author": "루피 카우르 (Rupi Kaur)",
     "genre": "literature"
+  },
+  {
+    "english": "Even in those earlier times, finding the really outstanding companies and staying with them through all the fluctuations of a gyrating market proved far more profitable to far more people than did the more colorful practice of trying to buy them cheap and sell them dear.",
+    "text": "그 시절에도 이미, 정말 뛰어난 기업을 찾아내 시장이 요동치는 와중에도 오래 보유하는 것이, 싸게 사서 비싸게 파는 화려한 방식보다 훨씬 더 많은 사람에게 훨씬 더 큰 수익을 안겨주었다.",
+    "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔 (Philip Fisher)",
+    "category": "mindset"
   }
 ];
