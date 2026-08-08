@@ -131,18 +131,45 @@ Rules:
 - Korean company nicknames must become the standard English-market name, then localized: 마소 = Microsoft, 엔비디아 = NVIDIA, 애플 = Apple, 구글 = Google/Alphabet, 테슬라 = Tesla, 아마존 = Amazon, 연준 = the Fed.
 - Keep each string about as short as the Korean. These are headlines and bullet points, not paragraphs.
 - Do not add commentary, disclaimers, or anything not in the source.
+- EVERY output string must be written in ${LANG_NAME[lang]}. Never answer in English unless ${LANG_NAME[lang]} IS English. This is the most common failure — check each string before returning it.
 - Return ONLY a JSON array. Same length and same order as the input array. Each element must have exactly the same shape as its input element.
 
 Input is a JSON array of objects shaped {title, summary, groups:[{h, p:[...]}], arts:[...], more:[...]}.
 Translate every string value. Keep empty strings and empty arrays as they are.
+Target language, once more: ${LANG_NAME[lang]}.
 
 Input:
 `;
+
+/* 정말 그 언어로 왔는가.
+   실측(2026-08-09 첫 실행): 일본어 요청의 67%가 영어로 돌아왔다. 모델이
+   목표 언어를 조용히 무시하는 일이 있고, 그대로 저장하면 일본어 페이지가
+   영어로 채워진 채 아무도 모른다. 캐시를 읽을 때도 같은 검사를 걸어서,
+   한 번 잘못 담긴 것도 다음 실행에서 저절로 다시 번역되게 한다. */
+const HANGUL = /[가-힣]/;
+const SCRIPT_OF = {
+  ja: /[ぁ-んァ-ヴ一-鿿]/,     // 가나 또는 한자
+  zh: /[一-鿿]/,
+};
+function looksTranslated(lang, t) {
+  if (!t || typeof t !== 'object') return false;
+  const sample = [t.title, t.summary, ...(t.arts || []), ...((t.groups || [])[0]?.p || [])]
+    .filter(Boolean).join(' ');
+  if (!sample) return true;                 // 번역할 글자가 없던 항목
+  if (HANGUL.test(sample)) return false;    // 한국어가 그대로 남았다
+  const need = SCRIPT_OF[lang];
+  return need ? need.test(sample) : true;
+}
 
 async function translateBatch(units, lang) {
   const out = await gemini(PROMPT_HEAD(lang) + JSON.stringify(units, null, 0));
   if (!Array.isArray(out) || out.length !== units.length) {
     console.warn(`  [${lang}] 응답 길이 불일치 — 이 묶음 건너뜀 (기대 ${units.length}, 받음 ${Array.isArray(out) ? out.length : 'non-array'})`);
+    return null;
+  }
+  const bad = out.filter((t) => !looksTranslated(lang, t)).length;
+  if (bad > out.length / 3) {
+    console.warn(`  [${lang}] ${bad}/${out.length} 이 목표 언어가 아니다 — 이 묶음 버림(다음 실행에서 재시도)`);
     return null;
   }
   return out;
@@ -194,7 +221,10 @@ async function main() {
     const units = events.map(unitOf);
     const keys = units.map((u) => sha(JSON.stringify(u)));
     const todo = [];
-    keys.forEach((k, i) => { if (!cache[lang] || !cache[lang][k]) todo.push(i); });
+    keys.forEach((k, i) => {
+      const hit = cache[lang] && cache[lang][k];
+      if (!hit || !looksTranslated(lang, hit)) todo.push(i);
+    });
 
     console.log(`[${lang}] 전체 ${events.length}건 · 새로 번역할 것 ${todo.length}건`);
     const slice = todo.slice(0, LIMIT);
@@ -219,7 +249,7 @@ async function main() {
     let missing = 0;
     events.forEach((e, i) => {
       const t = cache[lang][keys[i]];
-      if (!t) { missing++; return; }
+      if (!t || !looksTranslated(lang, t)) { missing++; return; }
       translated.push(applyUnit(e, t));
     });
     if (!translated.length) {
