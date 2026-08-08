@@ -8929,5 +8929,12 @@ window.investmentQuotes = [
     "title": "크로다드가 노래하는 곳 (Where the Crawdads Sing)",
     "author": "델리아 오언스 (Delia Owens)",
     "genre": "literature"
+  },
+  {
+    "english": "I believed that I could use the force of my intellect to rise above my environment. But I was wrong: our environment is much stronger than our intellect. Remarkably few investors -- either amateur or professional -- truly understand this critical point.",
+    "text": "나는 내 지성의 힘만으로 환경을 뛰어넘을 수 있다고 믿었다. 하지만 그것은 착각이었다. 환경은 지성보다 훨씬 강하다. 아마추어든 전문가든, 이 사실을 제대로 이해하는 투자자는 놀라울 만큼 적다.",
+    "title": "워런 버핏과의 점심식사",
+    "author": "가이 스파이어 (Guy Spier)",
+    "category": "behavior"
   }
 ];
