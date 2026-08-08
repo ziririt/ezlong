@@ -146,6 +146,63 @@
     .tech .val { text-align:left; }
   }
 
+  /* ── 포트폴리오 제목줄 + 편집 ─────────────────────────────────────── */
+  .sec-head { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+  .sec-head h2 { margin:0; }
+  .edit-btn { margin-left:auto; font-family:inherit; font-size:15px; font-weight:800;
+    color:#fff; background:var(--ez-blue); border:none; border-radius:var(--ez-r-pill);
+    padding:10px 18px; cursor:pointer; box-shadow:var(--ez-shadow); }
+  .edit-btn:active { transform:scale(.97); }
+  @media (max-width:400px) { .edit-btn { padding:9px 14px; font-size:14px; } }
+
+  .mine-bar { background:var(--ez-blue-dim); border:1px solid var(--ez-blue);
+    border-radius:var(--ez-r); padding:12px 16px; margin-bottom:14px;
+    font-size:15px; font-weight:700; color:var(--ez-text); }
+  .mine-bar b { color:var(--ez-blue); }
+  .mine-bar span { display:block; font-weight:600; color:var(--ez-text2); font-size:14px; margin-top:2px; }
+  .pw.mine, td.mine { color:var(--ez-blue) !important; }
+
+  .edt { background:var(--ez-card); border:1px solid var(--ez-border);
+    border-radius:var(--ez-r); padding:18px 20px 0; margin-bottom:16px; box-shadow:var(--ez-shadow); }
+  @media (max-width:480px) { .edt { padding:14px 12px 0; } }
+  .edt-help { font-size:14px; color:var(--ez-text2); margin:0 0 14px; line-height:1.6; }
+  /* 종목 26개 — 2열로 접어 13줄. 한 줄에 하나씩이면 모바일에서 화면 세 개다. */
+  /* minmax(0,1fr) 이어야 한다. 그냥 1fr 은 최소 크기가 콘텐츠 폭이라
+     긴 종목명 하나 때문에 격자 전체가 화면 밖으로 밀려난다(실제로 밀렸다). */
+  .edt-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:2px 14px; }
+  .edt-row { display:flex; align-items:center; gap:8px; padding:7px 0; min-width:0;
+    border-bottom:1px solid var(--ez-border2); }
+  .edt-nm { flex:1 1 auto; min-width:0; font-size:15px; font-weight:700; color:var(--ez-text);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .edt-nm em { font-style:normal; font-size:14px; font-weight:600; color:var(--ez-text3); margin-left:6px; }
+  /* 좁은 화면에선 티커를 접는다 — 종목명이 잘리는 것보다 낫다. */
+  @media (max-width:430px) { .edt-nm em { display:none; } }
+  .edt-in { display:inline-flex; align-items:center; gap:3px; flex:0 0 auto; }
+  .edt-in input { width:58px; text-align:right; font-family:inherit; font-size:16px; font-weight:800;
+    color:var(--ez-text); background:var(--ez-card2); border:1px solid var(--ez-border);
+    border-radius:var(--ez-rs); padding:7px 7px; }
+  .edt-in input:focus { outline:none; border-color:var(--ez-blue); background:var(--ez-blue-dim); }
+  .edt-in i { font-style:normal; font-size:14px; color:var(--ez-text3); font-weight:700; }
+  /* 합계는 패널 안에 붙박이 — 다 고치고 스크롤 내려 확인하는 구조면 아무도 안 본다. */
+  .edt-foot { position:sticky; bottom:0; background:var(--ez-card); margin:0 -20px;
+    padding:14px 20px 16px; border-top:1px solid var(--ez-border);
+    border-radius:0 0 var(--ez-r) var(--ez-r);
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  @media (max-width:480px) { .edt-foot { margin:0 -12px; padding:12px; } }
+  .edt-sum { flex:1; min-width:190px; font-size:15px; color:var(--ez-text2); }
+  .edt-sum b { font-size:19px; color:var(--ez-text); margin-right:8px; }
+  .edt-sum .edt-bar { display:block; height:8px; border-radius:var(--ez-r-pill);
+    background:var(--ez-card2); overflow:hidden; margin-top:7px; }
+  .edt-sum .edt-bar i { display:block; height:100%; background:var(--ez-blue); }
+  .edt-sum.ok b { color:var(--sig-b); } .edt-sum.ok .edt-bar i { background:var(--sig-b); }
+  .edt-sum.over b { color:var(--sig-s); } .edt-sum.over .edt-bar i { background:var(--sig-s); }
+  .edt-sum.capped span { color:var(--sig-s); font-weight:700; }
+  .edt-act { display:flex; gap:8px; }
+  .edt-reset, .edt-done { font-family:inherit; font-size:15px; font-weight:800; cursor:pointer;
+    border-radius:var(--ez-r-pill); padding:10px 16px; }
+  .edt-reset { background:transparent; color:var(--ez-text2); border:1px solid var(--ez-border); }
+  .edt-done { background:var(--ez-blue); color:#fff; border:none; }
+
   .selbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:14px; }
   select { font-family:inherit; font-size:16px; background:var(--ez-card2); color:var(--ez-text);
     border:1px solid var(--ez-border); border-radius:var(--ez-rs); padding:9px 12px; cursor:pointer;
@@ -303,40 +360,40 @@
 
     var out = '';
 
-    /* 지표 */
-    out += '<section><h2>주식 포트폴리오 지표</h2><div class="kpis">' +
-      D.kpis.map(function (k) {
-        return '<div><div class="k">' + esc(k[0]) + '</div><div class="v">' + esc(k[1]) +
-          '</div><div class="d">' + esc(k[2]) + '</div></div>';
-      }).join('') + '</div></section>';
-
-    /* 테마별 비중 */
+    /* 테마별 비중 — 테마 비중은 선언값이 아니라 종목 비중의 합으로 계산한다.
+       방문자가 자기 비중으로 고치면 테마 합계도 같이 따라와야 하기 때문이다.
+       (기본 데이터에서는 선언값과 합계가 정확히 일치하는 것을 확인했다) */
     out += '<section><h2>테마별 비중</h2>' +
       '<p class="h2sub">일곱 개 테마로 나눠 담았다. 각 테마는 AI 가치사슬의 한 단계다.</p>' +
       '<div class="card"><div class="alloc">' +
       TH.map(function (t) {
-        return '<div style="width:' + t.w + '%;background:' + S(t.slot) + '" title="' + esc(t.nm) + ' ' + t.w + '%">' +
-          (t.w >= 7 ? t.w.toFixed(0) + '%' : '') + '</div>';
+        var tw = themeW(t);
+        return '<div style="width:' + tw + '%;background:' + S(t.slot) + '" title="' + esc(t.nm) + ' ' + tw.toFixed(1) + '%">' +
+          (tw >= 7 ? tw.toFixed(0) + '%' : '') + '</div>';
       }).join('') + '</div><div class="legend">' +
       TH.map(function (t) {
         return '<span><span class="dot" style="background:' + S(t.slot) + '"></span>' +
-          esc(t.nm) + ' <b>' + t.w.toFixed(1) + '%</b></span>';
+          esc(t.nm) + ' <b>' + themeW(t).toFixed(1) + '%</b></span>';
       }).join('') + '</div><p class="note">' + D.allocNote + '</p></div></section>';
 
-    /* 테마별 포트폴리오 */
-    out += '<section><h2>테마별 포트폴리오</h2><div class="themes">' +
+    /* 포트폴리오 */
+    out += '<section><div class="sec-head"><h2>포트폴리오</h2>' +
+      '<button type="button" class="edit-btn" id="editBtn">포트폴리오 비중 편집</button></div>' +
+      '<div id="editPanel" hidden></div>' +
+      '<div id="myBanner"></div>' +
+      '<div class="themes">' +
       TH.map(function (t) {
         var rows = H.filter(function (h) { return h.t === t.id; })
-          .sort(function (a, b) { return b.w - a.w; });
+          .sort(function (a, b) { return wOf(b) - wOf(a); });
         return '<div class="th' + (t.wide ? ' wide' : '') + '"><div class="hd">' +
           '<span class="bar" style="background:' + S(t.slot) + '"></span>' +
-          '<h3>' + esc(t.nm) + '</h3><span class="w">' + t.w.toFixed(1) + '%</span></div>' +
+          '<h3>' + esc(t.nm) + '</h3><span class="w">' + themeW(t).toFixed(1) + '%</span></div>' +
           '<div class="role">' + esc(t.role) + '</div><ul>' +
           rows.map(function (h) {
             var s = signal(h);
             return '<li><span class="nm">' + esc(h.nm) + '<span class="tk">' + esc(h.tk) + '</span> ' +
               '<span class="sig ' + s.c + '">' + s.k + '</span></span>' +
-              '<span class="pw">' + h.w.toFixed(1) + '%</span>' +
+              '<span class="pw' + (isMine(h) ? ' mine' : '') + '">' + wOf(h).toFixed(1) + '%</span>' +
               '<span class="mt">' + fmtPx(h) + ' · PER ' + esc(h.pe) + ' · Fwd ' + esc(h.fpe) +
               ' · 고점 대비 ' + dd(h).toFixed(0) + '%' + rsiNote(h) + '</span>' +
               '<span class="desc">' + esc(h.d) + '</span></li>';
@@ -345,8 +402,6 @@
       }).join('') + '</div></section>';
 
     /* 주간 기술적 점검 */
-    var scale = [['초과매수권', 'sig-ob'], ['과매수권', 'sig-b'], ['적정권', 'sig-n'],
-                 ['과매도권', 'sig-s'], ['초과매도권', 'sig-os']];
     var srcLine = D.meta.signalSource === 'rsi'
       ? '판정 기준은 <b>주간 RSI(14)</b>. 80 이상 초과매수권 / 70~80 과매수권 / 30~70 적정권 / 20~30 과매도권 / 20 이하 초과매도권.'
       : '판정 기준은 <b>52주 밴드 내 위치</b>(저점 0% ~ 고점 100%). 90% 이상 초과매수권 / 75~90% 과매수권 / 35~75% 적정권 / 20~35% 과매도권 / 20% 미만 초과매도권.'
@@ -355,12 +410,10 @@
         + '구간은 밴드가, 그 안에서의 위치와 방향은 RSI가 말해준다.';
     out += '<section><h2>주간 기술적 점검 · 핵심 20종목</h2>' +
       '<p class="h2sub">기본은 <b>주간(Weekly)</b> 기준. ETF는 제외하고 개별 종목 비중 상위 20종목.</p>' +
-      '<div class="card"><div class="scale">' +
-      scale.map(function (x) { return '<span class="sig ' + x[1] + '">' + x[0] + '</span>'; }).join('') +
-      '</div><div>' + t20.map(function (h, i) {
+      '<div class="card"><div>' + t20.map(function (h, i) {
         var b = band(h), s = signal(h);
         return '<div class="tech"><span class="rk">' + (i + 1) + '</span>' +
-          '<span class="nm">' + esc(h.nm) + '<span>' + esc(h.tk) + ' · ' + h.w.toFixed(1) + '%</span></span>' +
+          '<span class="nm">' + esc(h.nm) + '<span>' + esc(h.tk) + ' · ' + wOf(h).toFixed(1) + '%</span></span>' +
           '<span><span class="sig ' + s.c + '">' + s.k + '</span></span>' +
           '<span class="gauge">' + MINI_ZONES +
           '<i class="' + s.c + '" style="left:calc(' + b.toFixed(1) + '% - 2px);background:currentColor"></i></span>' +
@@ -440,10 +493,11 @@
       '<div class="tblwrap"><table>' +
       '<thead><tr><th>종목</th><th>티커</th><th>비중</th><th>종가</th><th>판정</th>' +
       '<th>고점대비</th><th>밴드</th><th>PER</th><th>Fwd</th></tr></thead><tbody>' +
-      H.slice().sort(function (a, b) { return b.w - a.w; }).map(function (h) {
+      H.slice().sort(function (a, b) { return wOf(b) - wOf(a); }).map(function (h) {
         var s = signal(h);
         var rnd = function (v) { return (v === '—' || v == null) ? '—' : Math.round(parseFloat(v)); };
-        return '<tr><td>' + esc(h.nm) + '</td><td>' + esc(h.tk) + '</td><td>' + h.w.toFixed(1) + '%</td>' +
+        return '<tr><td>' + esc(h.nm) + '</td><td>' + esc(h.tk) + '</td><td' +
+          (isMine(h) ? ' class="mine"' : '') + '>' + wOf(h).toFixed(1) + '%</td>' +
           '<td>' + pxInt(h) + '</td><td class="sigt ' + s.c + '">' + s.k + '</td>' +
           '<td>' + dd(h).toFixed(0) + '%</td><td>' + band(h).toFixed(0) + '%</td>' +
           '<td>' + rnd(h.pe) + '</td><td>' + rnd(h.fpe) + '</td></tr>';
@@ -462,7 +516,7 @@
     }).join('');
     var s = signal(h);
     return '<div class="posmap"><div class="pmhead"><span class="pmnm">' + esc(h.nm) + '</span>' +
-      '<span class="pmtk">' + esc(h.tk) + ' · 비중 ' + h.w.toFixed(1) + '%</span>' +
+      '<span class="pmtk">' + esc(h.tk) + ' · 비중 ' + wOf(h).toFixed(1) + '%</span>' +
       '<span class="sig ' + s.c + '">' + s.k + '</span>' +
       '<span class="pmpx">' + fmtPx(h) + '</span></div>' +
       '<div style="position:relative;height:30px;border-radius:var(--ez-r-xs);overflow:visible;background:var(--ez-card2)">' +
@@ -475,6 +529,28 @@
       '<p class="note">52주 고점 대비 <b>' + dd(h).toFixed(1) + '%</b> · 저점 대비 <b>+' +
       ((h.px / h.lo - 1) * 100).toFixed(1) + '%</b> · PER ' + esc(h.pe) + ' · Fwd PER ' + esc(h.fpe) +
       rsiNote(h) + '<br>' + esc(h.d) + '</p></div>';
+  }
+
+  /* ── 내 비중 (방문자별) ─────────────────────────────────────────────
+     이 페이지의 26종목은 운영자의 포트폴리오다. 방문자는 같은 종목 구성을
+     보되 비중만 자기 것으로 바꿔 볼 수 있다. 값은 브라우저에만 남는다 —
+     서버로 보내지 않고, 계정도 필요 없다. 지우면 원래대로 돌아온다. */
+  var MYKEY = 'ezlong.mp.weights.v1';
+  var MY = {};
+  try { MY = JSON.parse(localStorage.getItem(MYKEY) || '{}') || {}; } catch (e) { MY = {}; }
+  /* '내 비중으로 보는 중'은 키가 있는 것과 다르다 — 기본값과 같은 숫자를
+     다시 입력한 경우까지 '수정함'으로 표시하면 배너가 거짓말이 된다. */
+  function hasMine() {
+    return D && D.holdings ? D.holdings.some(isMine) : false;
+  }
+  function isMine(h) { return MY.hasOwnProperty(h.tk) && Math.abs(MY[h.tk] - h.w) > 0.001; }
+  function wOf(h) { var v = MY[h.tk]; return (typeof v === 'number' && isFinite(v)) ? v : h.w; }
+  function themeW(t) {
+    return D.holdings.reduce(function (a, h) { return h.t === t.id ? a + wOf(h) : a; }, 0);
+  }
+  function totalW() { return D.holdings.reduce(function (a, h) { return a + wOf(h); }, 0); }
+  function saveMine() {
+    try { localStorage.setItem(MYKEY, JSON.stringify(MY)); } catch (e) {}
   }
 
   var aiProbe = {};   // 티커 → AI 차트분석 파일 실재 여부(세션 캐시)
@@ -497,51 +573,161 @@
     }
   }
 
-  function boot(data) {
-    D = data;
-    document.getElementById('stamp').innerHTML =
-      '기준일 <b>' + esc(D.meta.asOfLabel) + '</b> · 주식 100% · ' + D.meta.holdings + '종목 · ' +
-      esc(D.meta.version) + '<br>시세·주간 RSI는 매주 일요일 갱신 · 최종 갱신 ' + esc(D.meta.updatedKST);
-    document.getElementById('lede').innerHTML = D.lede;
+  /* ── 비중 편집 패널 ─────────────────────────────────────────────────
+     종목이 26개라 한 줄에 하나씩 놓으면 모바일에서 화면 세 개 분량이 된다.
+     2열(종목·입력이 각각이라 실제로는 4열)로 접어 13줄에 담는다.
+     합계는 패널 안에 붙박이로 두고 입력할 때마다 바로 갱신한다 —
+     다 고치고 나서 스크롤을 내려 확인하는 구조면 아무도 안 본다. */
+  function round1(v) { return Math.round(v * 10) / 10; }
 
+  function editorHTML() {
+    var rows = D.holdings.slice().sort(function (a, b) { return wOf(b) - wOf(a); });
+    return '<div class="edt">' +
+      '<p class="edt-help">숫자를 눌러 내 비중으로 바꾼다. 합계 100%를 넘지 않게 자동으로 막힌다. ' +
+      '값은 이 브라우저에만 저장되고 서버로 가지 않는다.</p>' +
+      '<div class="edt-grid">' +
+      rows.map(function (h) {
+        return '<label class="edt-row"><span class="edt-nm">' + esc(h.nm) +
+          '<em>' + esc(h.tk) + '</em></span>' +
+          '<span class="edt-in"><input type="text" inputmode="decimal" data-tk="' + esc(h.tk) +
+          '" value="' + wOf(h).toFixed(1) + '" aria-label="' + esc(h.nm) + ' 비중"><i>%</i></span></label>';
+      }).join('') +
+      '</div>' +
+      '<div class="edt-foot"><div class="edt-sum" id="edtSum"></div>' +
+      '<div class="edt-act"><button type="button" class="edt-reset" id="edtReset">원래 비중으로</button>' +
+      '<button type="button" class="edt-done" id="edtDone">완료</button></div></div></div>';
+  }
+
+  function paintSum(capped) {
+    var el = document.getElementById('edtSum');
+    if (!el) return;
+    var t = round1(totalW()), left = round1(100 - t);
+    var cls = Math.abs(left) < 0.05 ? 'ok' : (left > 0 ? 'under' : 'over');
+    var msg = cls === 'ok' ? '딱 100% 맞음'
+            : cls === 'under' ? '아직 ' + left.toFixed(1) + '% 남음'
+            : (-left).toFixed(1) + '% 초과';
+    /* 상한에 막혔을 때 아무 말도 안 하면 "왜 안 올라가지"가 된다.
+       합계가 이미 100 이라 남은 자리가 없다는 사실을 그 자리에서 말해준다. */
+    if (capped) msg = '합계 100% 상한 — 다른 종목을 먼저 줄여야 더 올릴 수 있다';
+    el.className = 'edt-sum ' + cls + (capped ? ' capped' : '');
+    el.innerHTML = '<b>합계 ' + t.toFixed(1) + '%</b><span>' + msg + '</span>' +
+      '<span class="edt-bar"><i style="width:' + Math.min(100, t) + '%"></i></span>';
+  }
+
+  function bindEditor() {
+    var panel = document.getElementById('editPanel');
+    if (!panel) return;
+    panel.querySelectorAll('input[data-tk]').forEach(function (inp) {
+      /* 누르면 숫자가 사라진다 — 지우고 다시 치는 손이 한 번 덜 간다.
+         비운 채로 나가면 0 이 아니라 원래 값으로 되돌린다(실수 방지). */
+      inp.addEventListener('focus', function () {
+        inp.dataset.prev = inp.value;
+        inp.value = '';
+      });
+      inp.addEventListener('blur', function () {
+        if (inp.value.trim() === '') { inp.value = inp.dataset.prev || '0.0'; return; }
+        inp.value = (parseFloat(inp.value) || 0).toFixed(1);
+      });
+      inp.addEventListener('input', function () {
+        var tk = inp.dataset.tk;
+        var h = D.holdings.filter(function (x) { return x.tk === tk; })[0];
+        if (!h) return;
+        var raw = inp.value.replace(/[^0-9.]/g, '');
+        if (raw !== inp.value) inp.value = raw;
+        if (raw === '') return;                      // 입력 중 — 합계는 건드리지 않는다
+        var v = Math.max(0, parseFloat(raw) || 0);
+        /* 100% 상한 — 다른 종목 합에 남은 자리만큼만 허용한다.
+           경고를 띄우는 대신 값 자체를 막는 쪽이 손이 덜 간다. */
+        var others = D.holdings.reduce(function (a, x) { return x.tk === tk ? a : a + wOf(x); }, 0);
+        var cap = round1(100 - others);
+        var capped = false;
+        if (v > cap) { v = Math.max(0, cap); inp.value = v.toFixed(1); capped = true; }
+        MY[tk] = round1(v);
+        saveMine();
+        paintSum(capped);
+      });
+    });
+    var reset = document.getElementById('edtReset');
+    if (reset) reset.addEventListener('click', function () {
+      MY = {}; saveMine(); rerender(true);
+    });
+    var done = document.getElementById('edtDone');
+    if (done) done.addEventListener('click', function () { rerender(false); });
+    paintSum();
+  }
+
+  function paintBanner() {
+    var el = document.getElementById('myBanner');
+    if (!el) return;
+    if (!hasMine()) { el.innerHTML = ''; return; }
+    el.innerHTML = '<div class="mine-bar">내 비중으로 보는 중 · 합계 <b>' +
+      round1(totalW()).toFixed(1) + '%</b>' +
+      '<span>아래 비중 조정 권고는 기본 모델 기준</span></div>';
+  }
+
+  var editOpen = false;
+
+  function rerender(keepOpen) {
     var built = sectionsHTML();
     document.getElementById('app').innerHTML = built.html;
-    document.getElementById('risk').innerHTML = '<p><b>리스크 고지</b></p>' +
-      D.disclaimer.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
-      '<p style="margin-top:14px">데이터 출처 ' + esc(D.meta.priceSource) + ' · 기준일 ' +
-      esc(D.meta.asOf) + ' 종가 · ' + esc(D.meta.version) + '</p>';
+    wireSections(built);
+    if (keepOpen) openEditor();
+  }
 
-    /* 종목 선택 */
+  function openEditor() {
+    var panel = document.getElementById('editPanel');
+    var btn = document.getElementById('editBtn');
+    if (!panel) return;
+    panel.innerHTML = editorHTML();
+    panel.hidden = false;
+    editOpen = true;
+    if (btn) btn.textContent = '편집 닫기';
+    bindEditor();
+  }
+
+  /* 섹션을 다시 그린 뒤 배선을 새로 건다. 편집으로 화면이 통째로 갈리므로
+     boot 와 rerender 가 같은 함수를 쓴다 — 두 벌로 나뉘면 한쪽만 고치는
+     사고가 난다(공유 함수 동기화 원칙). */
+  function wireSections(built) {
+    paintBanner();
+
+    var btn = document.getElementById('editBtn');
+    if (btn) {
+      btn.textContent = editOpen ? '편집 닫기' : '포트폴리오 비중 편집';
+      btn.addEventListener('click', function () {
+        var panel = document.getElementById('editPanel');
+        if (!panel) return;
+        if (editOpen) { panel.hidden = true; panel.innerHTML = ''; editOpen = false;
+                        btn.textContent = '포트폴리오 비중 편집'; rerender(false); }
+        else { openEditor(); panel.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+      });
+    }
+
     var sel = document.getElementById('symSel');
-    var list = built.t20.slice().sort(function (a, b) { return b.w - a.w; });
+    if (!sel) return;
+    var list = built.t20.slice().sort(function (a, b) { return wOf(b) - wOf(a); });
     var soxx = D.holdings.filter(function (h) { return h.tk === 'SOXX'; })[0];
     if (soxx) list = list.concat([soxx]);
+    var keep = sel.value;
     sel.innerHTML = list.map(function (h) {
-      return '<option value="' + esc(h.tk) + '">' + esc(h.nm) + ' (' + esc(h.tk) + ') · ' + h.w.toFixed(1) + '%</option>';
+      return '<option value="' + esc(h.tk) + '">' + esc(h.nm) + ' (' + esc(h.tk) + ') · ' + wOf(h).toFixed(1) + '%</option>';
     }).join('');
+    if (keep) sel.value = keep;
 
     function draw() {
       var h = D.holdings.filter(function (x) { return x.tk === sel.value; })[0];
       if (!h) return;
       document.getElementById('posmap').innerHTML = posMap(h);
-      /* 우리 차트 코너로 보낸다. 한국 종목은 AI 차트분석 대상이 아니라
-         그때만 TradingView 로 내보낸다(앱에서는 ez-nav.js 가 기기 브라우저로 연다). */
-      /* AI 차트분석은 **해시**로 종목을 받는다(?symbol= 이 아니다).
-         chart-analysis.html 이 location.hash 를 읽어 해당 종목을 선택하고,
-         hashchange 도 처리한다. 쿼리스트링으로 보내면 조용히 무시되고
-         기본 종목(QQQ)이 열린다 — 링크가 헛도는 걸 눈치채기 어렵다.
 
-         그리고 우리 26종목이 전부 AI 차트분석 대상인 건 아니다. h.ai 는
-         주간 파이프라인이 data/analysis-{티커}.json 실재 여부로 채운다.
-         없는 종목까지 그 링크를 걸면 엉뚱한 종목 화면이 열린다. */
+      /* AI 차트분석은 **해시**로 종목을 받는다(?symbol= 이 아니다).
+         쿼리스트링으로 보내면 조용히 무시되고 기본 종목(QQQ)이 열린다.
+         그리고 26종목이 전부 차트분석 대상인 것도 아니다 — h.ai 가 꺼져 있으면
+         TradingView 주간 차트로 내보낸다(앱에서는 ez-nav.js 가 기기 브라우저로 연다). */
       var link = document.getElementById('chartLink');
       setChartLink(link, h, h.ai);
 
-      /* h.ai 는 주 1회(일요일) 파이프라인이 채운다. 그 사이에 차트분석이 새
-         종목을 굽기 시작하면 최대 일주일 동안 플래그가 거짓으로 남는다.
-         플래그가 꺼져 있을 때만 실제 파일을 한 번 두드려 본다 — 200이면
-         바로 AI 링크로 승격한다. 켜져 있는 종목은 확인하지 않으므로
-         평소엔 추가 요청이 0이다. */
+      /* h.ai 는 주 1회 갱신이라 최대 일주일 늦을 수 있다. 꺼진 종목만 파일을
+         한 번 두드려 보고 200이면 즉시 승격한다 — 켜진 종목은 확인하지 않는다. */
       if (!h.ai && !aiProbe.hasOwnProperty(h.tk)) {
         fetch('/data/' + aiFile(h), { method: 'HEAD' })
           .then(function (r) {
@@ -555,6 +741,19 @@
     }
     sel.addEventListener('change', draw);
     draw();
+  }
+
+  function boot(data) {
+    D = data;
+    document.getElementById('stamp').innerHTML =
+      '기준일 <b>' + esc(D.meta.asOfLabel) + '</b> · 주식 100% · ' + D.meta.holdings + '종목 · ' +
+      esc(D.meta.version) + '<br>시세·주간 RSI는 매주 일요일 갱신 · 최종 갱신 ' + esc(D.meta.updatedKST);
+    document.getElementById('lede').innerHTML = D.lede;
+    document.getElementById('risk').innerHTML = '<p><b>리스크 고지</b></p>' +
+      D.disclaimer.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
+      '<p style="margin-top:14px">데이터 출처 ' + esc(D.meta.priceSource) + ' · 기준일 ' +
+      esc(D.meta.asOf) + ' 종가 · ' + esc(D.meta.version) + '</p>';
+    rerender(false);
   }
 
   fetch('/data/model-portfolio.json?t=' + Math.floor(Date.now() / 3600000))
