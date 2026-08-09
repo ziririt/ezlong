@@ -35,3 +35,9 @@ _to_delete/**
 # 호스팅에 올릴 이유는 없다. 방문자가 쓸 파일이 아니고 용량만 먹는다.
 data/.cache/
 **/data/.cache/**
+
+# 2026-08-10 — 시장 국면 진단(BFRS) 화면 데이터. 코너를 내렸으므로 웹에서
+# 서빙하지 않는다. 파일 자체는 저장소에 남겨 둔다(엔진 산출물이라 다시 올릴
+# 때 그대로 쓴다). 페이지·메뉴·사이트맵은 이미 제거됨.
+data/market-regime.json
+data/market-regime-history.json
