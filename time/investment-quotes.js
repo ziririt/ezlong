@@ -9070,5 +9070,12 @@ window.investmentQuotes = [
     "title": "제철 행복",
     "author": "김신지",
     "genre": "literature"
+  },
+  {
+    "english": "I have become increasingly convinced that the past records of mutual fund managers are essentially worthless in predicting future success. The few examples of consistently superior performance occur no more frequently than can be expected by chance.",
+    "text": "나는 뮤추얼펀드 매니저들의 과거 실적이 미래의 성공을 예측하는 데 거의 쓸모가 없다는 확신을 점점 더 굳혀가고 있다. 지속적으로 우수한 성과를 낸 몇 안 되는 사례들도, 순전히 우연으로 기대할 수 있는 빈도보다 더 자주 나타나지는 않는다.",
+    "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
+    "author": "버튼 말킬 (Burton Malkiel)",
+    "category": "mindset"
   }
 ];
