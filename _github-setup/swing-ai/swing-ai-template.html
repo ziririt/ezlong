@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>EZLong Swing AI 2.0 — Phase 1 테스트판 (웹 미공개)</title>
+<style>
+  /* 자체 완결 파일 — 외부 CSS·JS 없이 파일만 열면 그대로 동작한다.
+     디자인 토큰은 ez-design.css 값을 그대로 옮겨 왔다. */
+  :root {
+    --bg: #F5F5F7; --surface: #FFFFFF; --card2: rgba(0,0,0,0.04);
+    --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.05);
+    --text: #1D1D1F; --text2: #3C3C3E; --text3: #6E6E73;
+    --blue: #0071E3; --green: #1A7F37; --red: #D92A2A;
+    --r: 16px;
+    --shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.07);
+    /* 7단계 온도 — 과열(뜨거움) → 투매(차가움) */
+    --t0: #E5484D; --t1: #F76B15; --t2: #12A150; --t3: #B8860B;
+    --t4: #0D9488; --t5: #2563EB; --t6: #1E40AF;
+    --t0-bg: rgba(229,72,77,0.14); --t1-bg: rgba(247,107,21,0.13); --t2-bg: rgba(18,161,80,0.10);
+    --t3-bg: rgba(184,134,11,0.14); --t4-bg: rgba(13,148,136,0.12); --t5-bg: rgba(37,99,235,0.12);
+    --t6-bg: rgba(30,64,175,0.16);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #000; --surface: #0A0A0A; --card2: rgba(255,255,255,0.05);
+      --border: rgba(255,255,255,0.14); --border2: rgba(255,255,255,0.08);
+      --text: #FFF; --text2: #C8C8CC; --text3: #888;
+      --blue: #0A84FF; --green: #28A745; --red: #FF453A;
+      --shadow: 0 1px 4px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.4);
+      --t0: #FF6369; --t1: #FF8A3D; --t2: #30D158; --t3: #E5A50A;
+      --t4: #2DD4BF; --t5: #60A5FA; --t6: #818CF8;
+      --t0-bg: rgba(255,99,105,0.16); --t1-bg: rgba(255,138,61,0.14); --t2-bg: rgba(48,209,88,0.12);
+      --t3-bg: rgba(229,165,10,0.14); --t4-bg: rgba(45,212,191,0.13); --t5-bg: rgba(96,165,250,0.14);
+      --t6-bg: rgba(129,140,248,0.18);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Segoe UI', Roboto, sans-serif; }
+  body { background: var(--bg); color: var(--text); line-height: 1.5; }
+
+  .ribbon {
+    background: var(--red); color: #fff; text-align: center;
+    font-size: 14px; font-weight: 800; padding: 8px 12px; letter-spacing: .02em;
+  }
+  .brand { background: var(--surface); border-bottom: 1px solid var(--border); padding: 30px 20px 26px; }
+  .brand-in { max-width: 1080px; margin: 0 auto; }
+  .eyebrow { font-size: 14px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+  h1 { font-size: clamp(25px, 6vw, 40px); font-weight: 800; letter-spacing: -0.015em; line-height: 1.12; margin-bottom: 12px; }
+  @media (min-width: 700px) { h1 { letter-spacing: -0.028em; } }
+  .lede { font-size: 16px; line-height: 1.66; color: var(--text2); max-width: 44em; text-wrap: pretty; }
+  .lede + .lede { margin-top: 8px; }
+  .lede b { color: var(--text); font-weight: 700; }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 18px 14px 60px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+    box-shadow: var(--shadow); padding: 20px 16px; margin-bottom: 14px;
+  }
+  h2 { font-size: 19px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 4px; }
+  .sub { font-size: 15px; line-height: 1.6; color: var(--text2); margin-bottom: 14px; }
+
+  /* 행동 카드 */
+  .act-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 10px 0 12px; }
+  .state-badge { font-size: 18px; font-weight: 800; color: #fff; padding: 8px 15px; border-radius: 10px; }
+  .act-price { font-size: 16px; font-weight: 700; color: var(--text2); }
+  .act-reco { font-size: 17px; font-weight: 700; line-height: 1.6; margin-bottom: 12px; }
+  .act-grid { display: grid; gap: 8px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .act-grid { grid-template-columns: repeat(2, 1fr); } }
+  .act-row { display: flex; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 10px; background: var(--card2); font-size: 15px; }
+  .act-row b { font-weight: 800; }
+  .act-note { font-size: 14px; color: var(--text2); margin-top: 10px; line-height: 1.6; }
+
+  /* Swing Cycle 패널 */
+  .cyc-line { font-size: 17px; font-weight: 700; line-height: 1.7; margin-bottom: 10px; }
+  .cyc-line b { font-weight: 800; }
+  .stage-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+  .stage {
+    font-size: 14px; font-weight: 800; padding: 6px 10px; border-radius: 8px;
+    background: var(--card2); color: var(--text3); border: 1px solid var(--border2);
+  }
+  .stage.done-s { background: var(--red); border-color: var(--red); color: #fff; }
+  .stage.done-b { background: var(--green); border-color: var(--green); color: #fff; }
+
+  /* 점수 카드 */
+  .scores { display: grid; gap: 10px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .scores { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 980px) { .scores { grid-template-columns: repeat(5, 1fr); } }
+  .score { border: 1px solid var(--border); border-radius: 12px; padding: 13px 14px; background: var(--card2); }
+  .score-top { display: flex; justify-content: space-between; align-items: baseline; }
+  .score-name { font-size: 15px; font-weight: 800; }
+  .score-val { font-size: 22px; font-weight: 800; }
+  .score-bar { height: 7px; border-radius: 999px; background: var(--border); overflow: hidden; margin: 9px 0 7px; }
+  .score-bar span { display: block; height: 100%; border-radius: 999px; }
+  .score-help { font-size: 14px; color: var(--text2); line-height: 1.5; }
+
+  /* 차트 */
+  canvas.main-chart { display: block; width: 100%; height: 330px; touch-action: pan-y; }
+  @media (min-width: 760px) { canvas.main-chart { height: 400px; } }
+  .legend { display: flex; flex-wrap: wrap; gap: 7px 14px; margin-top: 12px; }
+  .leg { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--text2); }
+  .sw { width: 14px; height: 10px; border-radius: 3px; display: inline-block; }
+
+  /* 타임라인 */
+  .tl { display: grid; gap: 8px; }
+  .tl-row {
+    display: grid; grid-template-columns: auto 1fr; gap: 4px 12px;
+    padding: 11px 13px; border-radius: 11px; background: var(--card2); border-left: 4px solid var(--border);
+  }
+  .tl-date { font-size: 14px; font-weight: 800; white-space: nowrap; }
+  .tl-state { font-size: 14px; font-weight: 700; }
+  .tl-act { grid-column: 1 / -1; font-size: 15px; line-height: 1.6; }
+  .tl-act b { font-weight: 800; }
+  .tl-meta { grid-column: 1 / -1; font-size: 14px; color: var(--text2); }
+
+  .ul { padding-left: 1.15em; }
+  .ul li { font-size: 15px; line-height: 1.72; color: var(--text2); margin-bottom: 6px; }
+  .ul li b { color: var(--text); font-weight: 700; }
+  .note { font-size: 14px; line-height: 1.65; color: var(--text2); margin-top: 10px; }
+  .warn {
+    border-left: 4px solid var(--red); padding: 10px 14px; background: var(--card2);
+    border-radius: 8px; font-size: 15px; line-height: 1.65; color: var(--text2); margin-top: 12px;
+  }
+  .warn b { color: var(--text); }
+</style>
+</head>
+<body>
+
+<div class="ribbon">테스트 전용 — 웹 미공개 · 모든 수치는 백테스트용 초기값</div>
+
+<div class="brand">
+  <div class="brand-in">
+    <div class="eyebrow">EZLong Swing AI 2.0 · Phase 1</div>
+    <h1>확률형 상태기계 + 집행 엔진</h1>
+    <p class="lede">"지금이 꼭지인가"를 맞히는 예측기가 아닙니다. 시장을 <b>7단계 상태</b>로 추적하고, 분할 매매 실행 이력을 기억하고, 확률이 개선될수록 자금을 키우는 집행 엔진입니다.</p>
+    <p class="lede">아래 Replay 는 2026-05-01~08-01 을 하루씩 이동하며 <b>그날까지 존재했던 데이터만으로</b> 재현한 것입니다. 사후 차트를 참조하지 않았습니다.</p>
+  </div>
+</div>
+
+<main>
+  <section class="card" id="action-card"></section>
+  <section class="card" id="cycle-panel"></section>
+  <section class="card">
+    <h2>점수 드릴다운 — SOXX</h2>
+    <p class="sub">과열은 위험 예고, 추세훼손이 매도 신호. 투매는 가격 매력도, 반등확인이 매수 신호. 모든 점수는 SOXX 자신의 직전 5년 백분위(0~100).</p>
+    <div class="scores" id="scores"></div>
+  </section>
+  <section class="card">
+    <h2>Replay 차트 — 2026년 SOXX</h2>
+    <p class="sub">배경색이 그날의 상태 판정. 빨강 ▼ 매도, 초록 ▲ 매수, × 무효화 손절. 실선은 종가, 점선은 20·50일선.</p>
+    <canvas class="main-chart" id="chart"></canvas>
+    <div class="legend" id="legend"></div>
+  </section>
+  <section class="card">
+    <h2>Replay 타임라인 — 상태 전환과 집행</h2>
+    <p class="sub">상태가 바뀐 날과 매매가 나간 날만 표시. 상태 확정은 2-of-3 지속성(하루 지표로 바꾸지 않음), 급락일은 Shock Transition 으로 즉시 전환.</p>
+    <div class="tl" id="timeline"></div>
+  </section>
+  <section class="card" id="verdict-card">
+    <h2>실측 대조 — 시스템은 2026년 5~7월을 어떻게 지났나</h2>
+    <div id="verdict"></div>
+  </section>
+  <section class="card">
+    <h2>이 화면의 한계</h2>
+    <ul class="ul">
+      <li><b>모든 비중·임계치는 백테스트용 초기값</b> — S1 12% · S2 22% · S3 27% 등은 하드코딩 최종값이 아님. walk-forward 검증(Phase 3) 전에는 실거래 판단 근거로 사용 금지.</li>
+      <li><b>체결은 당일 종가로 근사</b> — 원칙은 신호 다음 거래일 시가 체결. 상태 판정 검증이 목적인 Phase 1 에서는 오차가 작으나 Phase 3 백테스트에서 정밀화.</li>
+      <li><b>breadth·수급은 무료 프록시</b> — 동일가중/시총가중 상대 모멘텀과 상승·하락일 거래량 배분으로 근사. CVD·GEX 는 무료 데이터 부재로 기각(기획서 3부).</li>
+      <li><b>이벤트 반응 엔진·반도체 사이클 엔진은 미구현</b> — 각각 Phase 5·6. 현재 판정에 CPI surprise·HBM 지표는 반영되지 않음.</li>
+      <li>확률 도구이지 예측 도구가 아님. 성공 기준은 적중률이 아니라 <b>세운 작전의 실행률</b>.</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+var DATA = /*__DATA__*/null;
+
+(function () {
+  'use strict';
+  if (!DATA) { document.body.insertAdjacentHTML('beforeend', '<p style="padding:20px">데이터가 주입되지 않았습니다.</p>'); return; }
+
+  var TEMP_VAR = ['--t0', '--t1', '--t2', '--t3', '--t4', '--t5', '--t6'];
+  var TEMP_BG = ['--t0-bg', '--t1-bg', '--t2-bg', '--t3-bg', '--t4-bg', '--t5-bg', '--t6-bg'];
+  function cv(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+  function tcol(t) { return cv(TEMP_VAR[t]); }
+  function tbg(t) { return cv(TEMP_BG[t]); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function num(v, nd) { return (typeof v !== 'number' || !isFinite(v)) ? '—' : v.toFixed(nd == null ? 1 : nd); }
+
+  var SC_META = {
+    heat: { name: '과열 Heat', help: '가격이 얼마나 앞서 달렸나. 높아도 그 자체는 매도 신호 아님' },
+    dist: { name: '추세훼손 Distribution', help: '실제 매도가 필요한가. 고점 갱신 실패·상대강도·breadth·거래량' },
+    cap:  { name: '투매 Capitulation', help: '얼마나 깊이 팔렸나. 가격 매력도이지 매수 신호 아님' },
+    rev:  { name: '반등확인 Reversal', help: '진짜 반등이 시작됐나. 신저가 실패·10일선 회복·거래량' },
+    whip: { name: '휩쏘 Whipsaw', help: '높으면 신호를 끄지 않고 포지션 크기를 줄임' },
+  };
+  var SC_COLOR = { heat: '--t0', dist: '--t1', cap: '--t6', rev: '--t4', whip: '--t3' };
+
+  var soxx = DATA.tickers.SOXX, card = soxx.card, rep = DATA.replay;
+
+  // ── 행동 카드 ─────────────────────────────────────────────────────────
+  (function () {
+    var host = document.getElementById('action-card');
+    host.innerHTML =
+      '<h2>현재 행동 카드 — SOXX</h2>' +
+      '<p class="sub">' + esc(soxx.asOf) + ' 종가 기준. 결론 한 장이 먼저, 근거는 아래 점수로.</p>' +
+      '<div class="act-top">' +
+        '<span class="state-badge" style="background:' + tcol(card.temp) + '">' + esc(card.stateKo) + '</span>' +
+        '<span class="act-price">SOXX ' + num(card.close, 2) + '</span>' +
+      '</div>' +
+      '<p class="act-reco">' + esc(card.reco) + '</p>' +
+      '<div class="act-grid">' +
+        '<div class="act-row"><span>레버리지</span><b>' + esc(card.leverage) + '</b></div>' +
+        '<div class="act-row"><span>무효화선 (전저점 −0.5ATR)</span><b>' + num(card.invalidation, 2) + '</b></div>' +
+        '<div class="act-row"><span>샹들리에 엑시트 1.5 / 2.0 / 3.0 ATR</span><b>' +
+          num(card.chandelier['1.5'], 0) + ' / ' + num(card.chandelier['2.0'], 0) + ' / ' + num(card.chandelier['3.0'], 0) + '</b></div>' +
+        '<div class="act-row"><span>QQQ 상태 (참고)</span><b>' + esc(DATA.tickers.QQQ.card.stateKo) + '</b></div>' +
+      '</div>' +
+      '<p class="act-note">권고 문구는 상태별 고정 규칙(기획서 5부)이고 개인 맞춤 조언이 아닙니다. 종가가 무효화선을 이탈하면 탐색 물량은 기계적으로 손절 — 손절은 실패가 아니라 추가 하락 보험료.</p>';
+  })();
+
+  // ── Swing Cycle 패널 ──────────────────────────────────────────────────
+  (function () {
+    var f = rep.final;
+    var host = document.getElementById('cycle-panel');
+    var sTags = ['S1', 'S2', 'S3', 'S4'], bTags = ['B1', 'B2', 'B3', 'B4'];
+    function strip(tags, doneList, cls) {
+      return '<div class="stage-strip">' + tags.map(function (t) {
+        var on = doneList.indexOf(t) >= 0;
+        return '<span class="stage' + (on ? ' done-' + cls : '') + '">' + t + (on ? ' 실행' : '') + '</span>';
+      }).join('') + '</div>';
+    }
+    host.innerHTML =
+      '<h2>Swing Cycle — Replay 종료 시점의 원장</h2>' +
+      '<p class="sub">"오늘 어떤 분석이 나왔나"가 아니라 "세운 작전을 어디까지 실행했나"를 먼저 봅니다.</p>' +
+      '<p class="cyc-line">사이클 <b>#' + f.cycles + '</b> · 매도 <b>' + f.sellsDone.length + '/4</b> 실행 · 매수 <b>' + f.buysDone.length + '/4</b> 실행 · 현금 <b>' + num(f.cash) + '%</b> · stop-out ' + f.stopOuts + '회' + (f.whipsawMode ? ' · <b>Whipsaw Mode</b>' : '') + '</p>' +
+      strip(sTags, f.sellsDone, 's') + strip(bTags, f.buysDone, 'b') +
+      '<p class="act-note">stop-out 뒤 B1·B2 는 재진입 가능 상태로 되돌아감 — "재진입가 &gt; 손절가는 실패가 아니다"(기획서 5부). 10거래일 내 stop-out 2회면 Whipsaw Mode(레버리지 금지).</p>';
+  })();
+
+  // ── 점수 드릴다운 ─────────────────────────────────────────────────────
+  (function () {
+    var host = document.getElementById('scores');
+    host.innerHTML = Object.keys(SC_META).map(function (k) {
+      var v = card.scores[k], m = SC_META[k], col = cv(SC_COLOR[k]);
+      return '<div class="score">' +
+        '<div class="score-top"><span class="score-name">' + esc(m.name) + '</span>' +
+          '<span class="score-val" style="color:' + col + '">' + num(v, 0) + '</span></div>' +
+        '<div class="score-bar"><span style="width:' + Math.max(2, v) + '%;background:' + col + '"></span></div>' +
+        '<div class="score-help">' + esc(m.help) + '</div>' +
+      '</div>';
+    }).join('');
+  })();
+
+  // ── 차트 ──────────────────────────────────────────────────────────────
+  (function () {
+    var ch = soxx.chart;
+    var canvas = document.getElementById('chart');
+    var ctx = canvas.getContext('2d');
+
+    // 리플레이 액션을 날짜로 색인
+    var actByDate = {};
+    rep.events.forEach(function (e) {
+      e.acts.forEach(function (a) {
+        if (a.tag === 'CYCLE') return;
+        (actByDate[e.date] = actByDate[e.date] || []).push(a.tag);
+      });
+    });
+
+    function draw() {
+      var dpr = window.devicePixelRatio || 1;
+      var w = canvas.clientWidth || 340, h = canvas.clientHeight || 330;
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+
+      var padL = 40, padR = 8, padT = 8, padB = 22;
+      var W = w - padL - padR, H = h - padT - padB;
+      var n = ch.dates.length;
+      var vals = ch.close.filter(function (v) { return v != null; });
+      var lo = Math.min.apply(null, vals) * 0.985, hi = Math.max.apply(null, vals) * 1.015;
+      var x = function (i) { return padL + (i / (n - 1)) * W; };
+      var y = function (v) { return padT + (1 - (v - lo) / (hi - lo)) * H; };
+
+      // 상태 배경 띠 — 같은 온도 연속 구간을 합쳐 그린다
+      var i0 = 0;
+      for (var i = 1; i <= n; i++) {
+        if (i === n || ch.temp[i] !== ch.temp[i0]) {
+          ctx.fillStyle = tbg(ch.temp[i0]);
+          var xa = i0 === 0 ? padL : (x(i0 - 1) + x(i0)) / 2;
+          var xb = i === n ? padL + W : (x(i - 1) + x(i)) / 2;
+          ctx.fillRect(xa, padT, xb - xa, H);
+          i0 = i;
+        }
+      }
+
+      // 눈금
+      var grid = cv('--border'), label = cv('--text3');
+      ctx.strokeStyle = grid; ctx.lineWidth = 1; ctx.fillStyle = label;
+      ctx.font = '12px sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      for (var g = 0; g < 5; g++) {
+        var vv = lo + (hi - lo) * g / 4, yy = Math.round(y(vv)) + 0.5;
+        ctx.beginPath(); ctx.moveTo(padL, yy); ctx.lineTo(padL + W, yy); ctx.stroke();
+        ctx.fillText(String(Math.round(vv)), padL - 6, yy);
+      }
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      var months = {}, ticks = [];
+      ch.dates.forEach(function (d, k) { var m = d.slice(0, 7); if (!months[m]) { months[m] = 1; ticks.push([k, m.slice(5) + '월']); } });
+      ticks.forEach(function (t) { ctx.fillText(t[1].replace(/^0/, ''), x(t[0]), padT + H + 6); });
+
+      // 20·50일선 (점선)
+      [['sma20', 0.55], ['sma50', 0.85]].forEach(function (sp) {
+        ctx.beginPath(); ctx.setLineDash([4, 4]); ctx.strokeStyle = label; ctx.globalAlpha = sp[1] === 0.55 ? 0.65 : 0.45; ctx.lineWidth = 1.1;
+        var pen = false;
+        for (var k = 0; k < n; k++) {
+          var v = ch[sp[0]][k];
+          if (v == null) { pen = false; continue; }
+          if (!pen) { ctx.moveTo(x(k), y(v)); pen = true; } else ctx.lineTo(x(k), y(v));
+        }
+        ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+      });
+
+      // 종가
+      ctx.beginPath(); ctx.strokeStyle = cv('--text'); ctx.lineWidth = 1.8; ctx.lineJoin = 'round';
+      for (var k2 = 0; k2 < n; k2++) {
+        var v2 = ch.close[k2];
+        if (k2 === 0) ctx.moveTo(x(k2), y(v2)); else ctx.lineTo(x(k2), y(v2));
+      }
+      ctx.stroke();
+
+      // 액션 마커
+      ch.dates.forEach(function (d, k) {
+        var tags = actByDate[d];
+        if (!tags) return;
+        var py = y(ch.close[k]);
+        tags.forEach(function (t, j) {
+          var up = t[0] === 'B';
+          var stop = t === 'STOP';
+          var col = stop ? cv('--t3') : up ? cv('--green') : cv('--red');
+          ctx.fillStyle = col;
+          var px = x(k), off = (j + 1) * 13;
+          if (stop) {
+            ctx.font = '800 13px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText('×', px, py + off);
+          } else {
+            ctx.beginPath();
+            if (up) { ctx.moveTo(px, py + off); ctx.lineTo(px - 5, py + off + 9); ctx.lineTo(px + 5, py + off + 9); }
+            else { ctx.moveTo(px, py - off); ctx.lineTo(px - 5, py - off - 9); ctx.lineTo(px + 5, py - off - 9); }
+            ctx.closePath(); ctx.fill();
+          }
+        });
+      });
+    }
+    draw();
+    if (window.ResizeObserver) new ResizeObserver(draw).observe(canvas);
+    var dk = window.matchMedia('(prefers-color-scheme: dark)');
+    if (dk.addEventListener) dk.addEventListener('change', function () { setTimeout(draw, 30); });
+
+    document.getElementById('legend').innerHTML =
+      Object.keys(DATA.stateKo).map(function (s) {
+        var t = DATA.stateTemp[s];
+        return '<span class="leg"><i class="sw" style="background:' + tcol(t) + '"></i>' + esc(DATA.stateKo[s]) + '</span>';
+      }).join('') +
+      '<span class="leg" style="color:var(--red)">▼ 매도</span>' +
+      '<span class="leg" style="color:var(--green)">▲ 매수</span>' +
+      '<span class="leg">× 무효화 손절</span>';
+  })();
+
+  // ── 타임라인 ──────────────────────────────────────────────────────────
+  (function () {
+    var host = document.getElementById('timeline');
+    var rows = [];
+    var prev = null;
+    rep.days.forEach(function (d) {
+      var changed = d.state !== prev;
+      if (!changed && !d.actions.length) { prev = d.state; return; }
+      var col = tcol(d.temp);
+      var html = '<div class="tl-row" style="border-left-color:' + col + '">' +
+        '<span class="tl-date">' + esc(d.date) + '</span>' +
+        '<span class="tl-state" style="color:' + col + '">' + esc(d.stateKo) +
+          (changed ? ' 진입' : '') + (d.shock ? ' · Shock' : '') +
+          ' <span style="color:var(--text3);font-weight:600">종가 ' + num(d.close, 0) +
+          ' · H' + num(d.scores.heat, 0) + ' D' + num(d.scores.dist, 0) +
+          ' C' + num(d.scores.cap, 0) + ' R' + num(d.scores.rev, 0) + '</span></span>';
+      d.actions.forEach(function (a) {
+        var sizeTxt = a.size != null ? ' <b>' + num(a.size) + '%p</b>' : '';
+        var levTxt = a.lev ? ' · ' + esc(a.lev) : '';
+        html += '<span class="tl-act">' + esc(a.label) + sizeTxt + levTxt +
+          (a.position != null ? ' → 보유 <b>' + num(a.position) + '%</b> · 현금 ' + num(a.cash) + '%' : '') +
+          (a.note ? ' · ' + esc(a.note) : '') + '</span>';
+      });
+      html += '</div>';
+      rows.push(html);
+      prev = d.state;
+    });
+    host.innerHTML = rows.join('');
+  })();
+
+  // ── 실측 대조 ─────────────────────────────────────────────────────────
+  (function () {
+    var f = rep.final;
+    document.getElementById('verdict').innerHTML =
+      '<ul class="ul">' +
+      '<li><b>5월 초 과열 판정 → S1 12%만 익절</b> — v1 실패의 원인이던 "과열에서 30% 매도"를 차단. 과열은 예고일 뿐이라 소량만 덜어내고 추세에 남음.</li>' +
+      '<li><b>6월 5일 −10.4% 쇼크 → Shock Transition 으로 즉시 투매 판정, B1 탐색매수</b> — 실제 이날 SOXX 는 −10.4% 급락 후 V자 회복. 시스템은 2~3일 기다리지 않고 당일 반응.</li>' +
+      '<li><b>6월 15~18일 회복 확인 → B3·B4 재투입(100%)</b> — 6월 22일 정점(655) 직전 재매수는 사후에 보면 아프지만, 그날까지의 데이터로는 정당한 판정. 대신 시스템은 6월 30일 사이클을 닫고 매도 사다리를 리셋해 두 번째 하락에 대비.</li>' +
+      '<li><b>7월 6~13일 분배→조정 → S2·S3·S4 로 보유 42.7%까지 축소</b> — 고점 655 대비 약 −13% 구간에서 사다리가 순서대로 발동. "매일의 새 분석이 작전을 덮어쓰는" 문제 없이 단계가 기억됨.</li>' +
+      '<li><b>7월 23~24일 반등 탐색·투매 → B2+B1 탐색매수, 7월 29일 저점(465)에서 무효화 손절</b> — 탐색 물량 18%p 를 기계적으로 손절. 다음 날 +8.5% 반등으로 stop 직후 되돌림이 나왔지만, 이것이 "일찍 살 때 작게"의 비용이며 B1·B2 는 재진입 가능 상태로 복귀.</li>' +
+      '<li><b>Replay 종료(8/1): 보유 42.7% · 현금 57.3%</b> — 실화에서는 바닥에서 현금이 없었다. 시스템은 7월 내내 판 현금을 들고 저점 구간에 진입했고, 8월 첫 주 반등(543)에서 반등 탐색 상태로 복귀.</li>' +
+      '</ul>' +
+      '<div class="warn"><b>남는 비용 두 가지(숨기지 않음):</b> 6월 18일 100% 재투입 뒤 6월 22일~7월 6일 하락 초입 −11% 를 전량 보유로 맞음(사이클 리셋 전이라 매도 사다리가 잠겨 있던 구간). 7월 29일 저점 당일 손절 뒤 다음 날 +8.5% 를 탐색 물량 없이 봄. 둘 다 Phase 3 walk-forward 에서 임계치 튜닝 대상이며, 이 초기값 그대로도 "정점 100% 보유 → 바닥 현금 0%" 였던 실화보다는 구조적으로 낫다.</div>';
+  })();
+})();
+</script>
+</body>
+</html>
