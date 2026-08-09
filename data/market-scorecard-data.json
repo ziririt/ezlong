@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-09-11:50",
+      "timestamp_kst": "2026-08-09(일) 11:50 KST",
+      "key_event": {
+        "name": "고용지표 둔화 및 금리 인하 기대 지속",
+        "name_en": "Sustained Expectations for Rate Cuts Amid Weakening Job Market",
+        "time": "직전 거래일 및 다음 주 개장",
+        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
+        "why_en": "Lower-than-expected employment, easing Fed rate hike concerns, improved market sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "고용 둔화에 따른 금리 인하 기대감으로 10일 연속 긍정 우위 유지",
+      "summary_en": "Positive sentiment prevails for 10 consecutive days due to rate cut expectations from weakening employment data",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "고용지표 둔화 지속",
+          "name_en": "Continued Weakening Job Market",
+          "desc": "미국 고용지표 예상치 하회, Fed 금리 인상 압력 완화 기대",
+          "desc_en": "US employment data below expectations, easing pressure for Fed rate hikes",
+          "category": "macro_data"
+        },
+        {
+          "score": 35,
+          "name": "금리 인하 기대감 유지",
+          "name_en": "Sustained Rate Cut Expectations",
+          "desc": "둔화된 고용 데이터로 인한 시장의 금리 인하 기대감 지속",
+          "desc_en": "Market continues to anticipate rate cuts due to softening employment data",
+          "category": "fed_policy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "호르무즈 해협 긴장 지속",
+          "name_en": "Continued Hormuz Strait Tensions",
+          "desc": "이란-미국 간 호르무즈 해협 관련 협상 불확실성 지속",
+          "desc_en": "Ongoing uncertainty in Iran-US negotiations regarding the Strait of Hormuz",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 혁명 단계에 대한 시각차",
+          "name_en": "Divergent Views on AI Revolution Stage",
+          "desc": "AI 기술의 현재 혁신 단계 및 투자 가치에 대한 시장 내 시각차 존재",
+          "desc_en": "Market holds differing views on the current innovation stage and investment value of AI technology",
+          "category": "ai_tech_valuation"
+        }
+      ]
+    },
+    {
       "id": "2026-08-09-08:20",
       "timestamp_kst": "2026-08-09(일) 08:20 KST",
       "key_event": {
@@ -498,67 +550,8 @@
           "category": "ai_tech_valuation"
         }
       ]
-    },
-    {
-      "id": "2026-08-08-01:02",
-      "timestamp_kst": "2026-08-08(토) 01:02 KST",
-      "key_event": {
-        "name": "고용지표 둔화 및 금리 인하 기대",
-        "name_en": "Weak Jobs Report Fuels Rate Cut Hopes",
-        "time": "정규장 진행 중",
-        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
-        "why_en": "Jobs miss expectations, easing Fed hike fears, improving market sentiment"
-      },
-      "positive_total": 80,
-      "negative_total": 20,
-      "summary": "고용 둔화에 따른 금리 인하 기대감으로 긍정 우위 지속, 어제와 동일한 구도 유지",
-      "summary_en": "Positive sentiment continues due to weak jobs data and rate cut expectations, maintaining yesterday's trend",
-      "positive_factors": [
-        {
-          "score": 60,
-          "name": "예상치 하회 고용 지표",
-          "name_en": "Weaker-than-Expected Jobs Report",
-          "desc": "7월 비농업 고용 -23K 기록, 금리 인상 우려 완화",
-          "desc_en": "July nonfarm payrolls fell by 23K, easing rate hike concerns",
-          "category": "macro_data"
-        },
-        {
-          "score": 20,
-          "name": "소프트웨어 기업 실적 호조",
-          "name_en": "Strong Software Company Earnings",
-          "desc": "Atlassian 34% 급등 등 소프트웨어 주식 상승 주도",
-          "desc_en": "Atlassian surged 34%, leading a rally in software stocks",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "일부 대형 기술주 하락",
-          "name_en": "Decline in Some Large Tech Stocks",
-          "desc": "AAPL, GOOGL 등 일부 대형 기술주 약세, 혼조세 보임",
-          "desc_en": "AAPL, GOOGL and other large tech stocks show weakness, indicating mixed sentiment",
-          "category": "company_specific"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 투자 과열 우려",
-          "name_en": "Concerns Over AI Investment Overheating",
-          "desc": "일부 전문가들 AI 기업의 과도한 투자 지적, 밸류에이션 논란",
-          "desc_en": "Some experts point to excessive AI company investments, raising valuation concerns",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "약한 고용에도 금리 인상 가능성",
-          "name_en": "Rate Hike Possibility Despite Weak Jobs",
-          "desc": "약한 고용 지표에도 불구하고 9월 금리 인상 가능성 제기",
-          "desc_en": "Despite weak jobs data, prospects of a September rate hike are still being discussed",
-          "category": "fed_policy"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-08T23:20:44Z",
+  "updated_at": "2026-08-09T02:50:56Z",
   "max_entries": 10
 }
