@@ -681,6 +681,9 @@ window.BH_T = {
   const BH_DATA = window.BH_DATA;
   const fmt = (tpl, vars) => String(tpl).replace(/\{(\w+)\}/g, (_, k) => vars[k]);
   const IS_DARK = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  /* 손가락으로 쓰는 화면인가 — 마우스가 없고 포인터가 굵으면 터치로 본다.
+     화면 폭으로 판정하지 않는다. 좁은 창의 PC 는 마우스로 쓰기 때문이다. */
+  const IS_TOUCH = !!(window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
   const IS_MOBILE = window.matchMedia('(max-width: 640px)').matches;
   const COLORS = {
     QQQ:  IS_DARK ? '#0A84FF' : '#0071E3',
@@ -927,7 +930,13 @@ window.BH_T = {
       handleScroll: {
         mouseWheel: true,
         pressedMouseMove: true,
-        horzTouchDrag: true,
+        /* 터치에서는 가로 끌기를 라이브러리에 주지 않는다 — 우리가 '문지르기'로
+           쓴다(attachTouchScrub). 폰에서는 마커를 손가락으로 정확히 누르기가
+           어렵고, 눌러도 한 번 더 눌러야 하는 흐름이라 손이 많이 간다.
+           끌면서 날짜를 훑고 손을 떼면 그 날이 잡히는 편이 훨씬 빠르다.
+           대신 폰에서 기간을 옮기는 일은 기간 버튼·달력·날짜 이동이 맡는다.
+           PC 는 그대로 — 마우스 끌기는 팬, 클릭은 선택. */
+        horzTouchDrag: !IS_TOUCH,
         vertTouchDrag: false,
       },
       handleScale: true,
@@ -1004,6 +1013,7 @@ window.BH_T = {
     });
 
     watchTapGesture(el);
+    if (IS_TOUCH) attachTouchScrub(el);
   }
 
   /* 탭인가 끌기인가 — 누른 지점에서 8px 이상 움직였거나 0.4초 넘게 눌렀으면
@@ -1025,6 +1035,98 @@ window.BH_T = {
       st = 0;
     }, true);
     el.addEventListener('pointercancel', () => { tapOK = false; st = 0; }, true);
+  }
+
+  /* 폰에서 차트를 문지르면 날짜가 따라오고, 손을 떼면 그 날이 잡힌다.
+
+     왜 필요했나 — 폰에서는 마커를 손가락으로 정확히 누르기가 어렵고, 빗나가면
+     다시 눌러야 한다. 접속의 대부분이 폰인데 가장 중요한 동작이 가장 어려웠다.
+     끌면서 훑다가 떼는 방식이면 한 번의 손짓으로 끝난다.
+
+     주의한 것 세 가지
+       · 세로로 쓸면 페이지가 내려가야 한다 — 처음 8px 의 방향을 보고 세로면
+         우리는 손을 뗀다(preventDefault 를 걸지 않는다).
+       · 손가락이 둘이면 핀치 줌이다 — 문지르기를 취소한다.
+       · 그림 도구를 쥐고 있으면 그건 점 찍기다 — 건드리지 않는다.
+
+     끄는 동안에는 빨간 선과 날짜만 미리 움직인다(카드는 그대로). 카드까지
+     매 프레임 다시 그리면 손가락 아래에서 글이 번쩍인다. */
+  function chartDateAtX(x) {
+    let t = null;
+    try { t = chart.timeScale().coordinateToTime(x); } catch (e) { return null; }
+    const ds = timeToDateStr(t);
+    if (!ds) return null;
+    const dates = chartData.dates;
+    if (!dates || !dates.length) return null;
+    if (ds <= dates[0]) return dates[0];
+    if (ds >= dates[dates.length - 1]) return dates[dates.length - 1];
+    let lo = 0, hi = dates.length - 1;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (dates[mid] < ds) lo = mid + 1; else hi = mid;
+    }
+    const a = dates[Math.max(0, lo - 1)], b = dates[lo];
+    const t0 = new Date(ds + 'T00:00:00Z').getTime();
+    return Math.abs(new Date(a + 'T00:00:00Z').getTime() - t0)
+         <= Math.abs(new Date(b + 'T00:00:00Z').getTime() - t0) ? a : b;
+  }
+
+  function previewVLine(x, dateStr) {
+    const line = document.getElementById('bh-vline');
+    const lab = document.getElementById('bh-vline-lab');
+    const host = document.getElementById('bh-chart');
+    if (!line || !lab || !host) return;
+    const w = host.clientWidth, h = host.clientHeight;
+    line.style.display = 'block';
+    line.style.left = x + 'px';
+    line.style.height = h + 'px';
+    lab.style.display = 'block';
+    lab.textContent = dateStr;
+    lab.style.left = Math.min(Math.max(x, 42), w - 42) + 'px';
+  }
+
+  function attachTouchScrub(el) {
+    let mode = null, lastX = null, sx = 0, sy = 0;
+    el.addEventListener('touchstart', (ev) => {
+      if (drawMode !== null || ev.touches.length !== 1) { mode = null; return; }
+      mode = 'undecided';
+      lastX = null;
+      sx = ev.touches[0].clientX;
+      sy = ev.touches[0].clientY;
+    }, { passive: true });
+
+    el.addEventListener('touchmove', (ev) => {
+      if (!mode || mode === 'page') return;
+      if (ev.touches.length !== 1) { mode = null; updateVLine(); return; }
+      const t = ev.touches[0];
+      const dx = Math.abs(t.clientX - sx), dy = Math.abs(t.clientY - sy);
+      if (mode === 'undecided') {
+        if (dy > dx && dy > 8) { mode = 'page'; return; }   // 페이지 스크롤에 양보
+        if (dx > 8) mode = 'scrub'; else return;
+      }
+      ev.preventDefault();
+      const rect = el.getBoundingClientRect();
+      const x = Math.min(Math.max(t.clientX - rect.left, 0), rect.width);
+      const ds = chartDateAtX(x);
+      if (!ds) return;
+      lastX = x;
+      previewVLine(x, ds);
+    }, { passive: false });
+
+    const finish = () => {
+      if (mode === 'scrub' && lastX != null) {
+        const ds = chartDateAtX(lastX);
+        if (ds) {
+          const near = nearestEventDate(ds);
+          if (near) flashMarkerAndSelect(near); else selectDate(ds);
+        }
+      } else if (mode === 'scrub') {
+        updateVLine();
+      }
+      mode = null; lastX = null;
+    };
+    el.addEventListener('touchend', finish, { passive: true });
+    el.addEventListener('touchcancel', () => { mode = null; lastX = null; updateVLine(); }, { passive: true });
   }
 
   /* 누른 날짜에서 가장 가까운 이슈 날짜. 한 달 넘게 떨어져 있으면 포기한다 —
@@ -1527,7 +1629,17 @@ window.BH_T = {
     calMonth = d.getUTCMonth();
     renderCalendar();
     renderEventList();
-    if (chartOK) applyRange(6, dateStr);   // 6개월 창의 정중앙에 그 날짜가 온다
+    /* 고른 날이 이미 화면 안에 있으면 차트를 옮기지 않는다.
+       문지르다 손을 뗄 때마다 창이 다시 가운데로 튀면, 방금 보던 자리가
+       사라져서 어지럽다. 화면 밖의 날짜(달력에서 먼 달을 고른 경우)일 때만
+       그 날짜가 보이도록 창을 옮긴다. */
+    if (chartOK) {
+      let cx = null;
+      try { cx = chart.timeScale().timeToCoordinate(dateStr); } catch (e) { cx = null; }
+      const cw = (document.getElementById('bh-chart') || {}).clientWidth || 0;
+      const onScreen = cx != null && cx >= 8 && cx <= cw - 8;
+      if (!onScreen) applyRange(6, dateStr);   // 6개월 창의 정중앙에 그 날짜가 온다
+    }
     updateVLine();
     document.querySelectorAll('.bh-range-btn').forEach(b => b.classList.remove('active'));
     /* 화면을 대신 굴리지 않는다.
