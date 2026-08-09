@@ -8969,5 +8969,12 @@ window.investmentQuotes = [
     "title": "여행의 이유",
     "author": "김영하",
     "genre": "literature"
+  },
+  {
+    "english": "Time is the friend of the wonderful business, the enemy of the mediocre.",
+    "text": "시간은 훌륭한 기업의 친구이고, 평범한 기업의 적이다.",
+    "title": "버크셔 해서웨이 1989년 주주 서한",
+    "author": "워런 버핏",
+    "category": "mindset"
   }
 ];
