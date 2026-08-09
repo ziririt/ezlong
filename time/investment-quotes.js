@@ -9043,5 +9043,12 @@ window.investmentQuotes = [
     "title": "밝은 밤",
     "author": "최은영",
     "genre": "literature"
+  },
+  {
+    "english": "Buy good stocks, then take a sleeping pill and don't look at the newspaper for a couple of years.",
+    "text": "좋은 주식을 사서 수면제를 먹고 몇 년 동안 신문을 보지 마라. 그러면 당신은 부자가 되어 있을 것이다.",
+    "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
+    "author": "앙드레 코스톨라니",
+    "category": "patience"
   }
 ];
