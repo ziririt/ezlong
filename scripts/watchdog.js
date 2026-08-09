@@ -232,6 +232,25 @@ const MONITORS = [
     }
   },
   {
+    // 2026-08-10 추가 — AI 과매수·과매도 진단. 주 1회(일요일 아침)라 한 번
+    // 걸러지면 일주일이 묵는다. 파이프라인을 만들면 감시견 등록까지가
+    // 한 세트다(CLAUDE.md 40항).
+    id:             'swing-ai',
+    name:           'AI 과매수·과매도 진단',
+    workflow:       'swing-ai.yml',
+    checkFile:      'swing-ai.json',
+    timestampField: 'generatedAt',
+    // 본실행 07:10 KST · 보조 10:10 KST. 아래 창(일 13:00~21:00 KST)에서
+    // 20h 을 넘겼다면 이번 주 두 슬롯이 다 건너뛴 것.
+    maxAgeHours:    20.0,
+    // UTC 일 04:00~12:00 = KST 일 13:00~21:00
+    isActive: (now) => {
+      const day = now.getUTCDay();
+      const h   = now.getUTCHours() + now.getUTCMinutes() / 60;
+      return day === 0 && h >= 4.0 && h <= 12.0;
+    }
+  },
+  {
     id:             'kr-prices',
     name:           '한국 주가',
     workflow:       'fetch-kr-prices.yml',

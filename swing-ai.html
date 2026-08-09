@@ -1,460 +1,512 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="icon" href="/icons/favicon.ico?v=20260809" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/icons/favicon.svg?v=20260809">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=20260809">
+<link rel="apple-touch-icon" href="/icons/pwa-180.png?v=20260809">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#080C18" media="(prefers-color-scheme: dark)">
+
+<!-- 시험 공개 구간 — 메뉴·사이트맵 미등록. 정식 공개 시 이 한 줄만 지운다. -->
 <meta name="robots" content="noindex,nofollow">
-<title>EZLong Swing AI 2.0 — Phase 1 시험판 | EZLONG</title>
+
+<title>AI 과매수·과매도 진단 — 지금 시장은 어느 단계인가 | EZLONG</title>
+<meta name="description" content="꼭지와 바닥을 맞히는 도구가 아닙니다. 과매수와 추세훼손, 과매도와 반등확인을 분리해 지금 시장이 7단계 중 어디인지, 이 단계에서 무엇을 할 때인지 진단합니다. 매주 일요일 갱신.">
+<meta name="author" content="김성동">
+
+<link rel="stylesheet" href="/ez-design.css">
+
 <style>
-  /* 자체 완결 파일 — 외부 CSS·JS 없이 파일만 열면 그대로 동작한다.
-     디자인 토큰은 ez-design.css 값을 그대로 옮겨 왔다. */
+  /* 7단계 온도 — 과열(뜨거움) → 투매(차가움). 배지·차트 배경·사다리가 한 값을 본다. */
   :root {
-    --bg: #F5F5F7; --surface: #FFFFFF; --card2: rgba(0,0,0,0.04);
-    --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.05);
-    --text: #1D1D1F; --text2: #3C3C3E; --text3: #6E6E73;
-    --blue: #0071E3; --green: #1A7F37; --red: #D92A2A;
-    --r: 16px;
-    --shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.07);
-    /* 7단계 온도 — 과열(뜨거움) → 투매(차가움) */
-    --t0: #E5484D; --t1: #F76B15; --t2: #12A150; --t3: #B8860B;
-    --t4: #0D9488; --t5: #2563EB; --t6: #1E40AF;
-    --t0-bg: rgba(229,72,77,0.14); --t1-bg: rgba(247,107,21,0.13); --t2-bg: rgba(18,161,80,0.10);
-    --t3-bg: rgba(184,134,11,0.14); --t4-bg: rgba(13,148,136,0.12); --t5-bg: rgba(37,99,235,0.12);
-    --t6-bg: rgba(30,64,175,0.16);
+    --sa-t0: #E5484D; --sa-t1: #F76B15; --sa-t2: #12A150; --sa-t3: #B8860B;
+    --sa-t4: #0D9488; --sa-t5: #2563EB; --sa-t6: #1E40AF;
+    --sa-t0-bg: rgba(229,72,77,0.13); --sa-t1-bg: rgba(247,107,21,0.12); --sa-t2-bg: rgba(18,161,80,0.09);
+    --sa-t3-bg: rgba(184,134,11,0.13); --sa-t4-bg: rgba(13,148,136,0.11); --sa-t5-bg: rgba(37,99,235,0.11);
+    --sa-t6-bg: rgba(30,64,175,0.15);
+    --sa-heat: #E5484D; --sa-dist: #F76B15; --sa-cap: #1E40AF; --sa-rev: #0D9488; --sa-whip: #B8860B;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #000; --surface: #0A0A0A; --card2: rgba(255,255,255,0.05);
-      --border: rgba(255,255,255,0.14); --border2: rgba(255,255,255,0.08);
-      --text: #FFF; --text2: #C8C8CC; --text3: #888;
-      --blue: #0A84FF; --green: #28A745; --red: #FF453A;
-      --shadow: 0 1px 4px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.4);
-      --t0: #FF6369; --t1: #FF8A3D; --t2: #30D158; --t3: #E5A50A;
-      --t4: #2DD4BF; --t5: #60A5FA; --t6: #818CF8;
-      --t0-bg: rgba(255,99,105,0.16); --t1-bg: rgba(255,138,61,0.14); --t2-bg: rgba(48,209,88,0.12);
-      --t3-bg: rgba(229,165,10,0.14); --t4-bg: rgba(45,212,191,0.13); --t5-bg: rgba(96,165,250,0.14);
-      --t6-bg: rgba(129,140,248,0.18);
+      --sa-t0: #FF6369; --sa-t1: #FF8A3D; --sa-t2: #30D158; --sa-t3: #E5A50A;
+      --sa-t4: #2DD4BF; --sa-t5: #60A5FA; --sa-t6: #818CF8;
+      --sa-t0-bg: rgba(255,99,105,0.15); --sa-t1-bg: rgba(255,138,61,0.13); --sa-t2-bg: rgba(48,209,88,0.11);
+      --sa-t3-bg: rgba(229,165,10,0.13); --sa-t4-bg: rgba(45,212,191,0.12); --sa-t5-bg: rgba(96,165,250,0.13);
+      --sa-t6-bg: rgba(129,140,248,0.17);
+      --sa-heat: #FF6369; --sa-dist: #FF8A3D; --sa-cap: #818CF8; --sa-rev: #2DD4BF; --sa-whip: #E5A50A;
     }
   }
-  * { box-sizing: border-box; margin: 0; }
-  html { font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Segoe UI', Roboto, sans-serif; }
-  body { background: var(--bg); color: var(--text); line-height: 1.5; }
 
-  .ribbon {
-    background: var(--red); color: #fff; text-align: center;
-    font-size: 14px; font-weight: 800; padding: 8px 12px; letter-spacing: .02em;
+  .sa-brand { background: var(--ez-surface); border-bottom: 1px solid var(--ez-border); padding: 32px 20px 28px; }
+  .sa-brand-in { max-width: var(--ez-max-w); margin: 0 auto; }
+  .sa-eyebrow { font-size: 14px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; color: var(--ez-blue); margin-bottom: 8px; }
+  .sa-title {
+    font-size: clamp(26px, 6.4vw, 42px); font-weight: 800; color: var(--ez-text);
+    line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 12px;
   }
-  .brand { background: var(--surface); border-bottom: 1px solid var(--border); padding: 30px 20px 26px; }
-  .brand-in { max-width: 1080px; margin: 0 auto; }
-  .eyebrow { font-size: 14px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
-  h1 { font-size: clamp(25px, 6vw, 40px); font-weight: 800; letter-spacing: -0.015em; line-height: 1.12; margin-bottom: 12px; }
-  @media (min-width: 700px) { h1 { letter-spacing: -0.028em; } }
-  .lede { font-size: 16px; line-height: 1.66; color: var(--text2); max-width: 44em; text-wrap: pretty; }
-  .lede + .lede { margin-top: 8px; }
-  .lede b { color: var(--text); font-weight: 700; }
+  @media (min-width: 700px) { .sa-title { letter-spacing: -0.028em; line-height: 1.06; } }
+  .sa-lede { font-size: 17px; line-height: 1.68; color: var(--ez-text2); margin: 0; max-width: 43em; text-wrap: pretty; }
+  .sa-lede + .sa-lede { margin-top: 10px; }
+  .sa-lede b { color: var(--ez-text); font-weight: 700; }
 
-  main { max-width: 1080px; margin: 0 auto; padding: 18px 14px 60px; }
-  .card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
-    box-shadow: var(--shadow); padding: 20px 16px; margin-bottom: 14px;
+  .sa-main { max-width: var(--ez-max-w); margin: 0 auto; padding: 20px 16px 60px; }
+  .sa-card {
+    background: var(--ez-surface); border: 1px solid var(--ez-border);
+    border-radius: var(--ez-r); box-shadow: var(--ez-shadow);
+    padding: 20px 16px; margin-bottom: 14px;
   }
-  h2 { font-size: 19px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 4px; }
-  .sub { font-size: 15px; line-height: 1.6; color: var(--text2); margin-bottom: 14px; }
+  .sa-h2 { font-size: 19px; font-weight: 800; color: var(--ez-text); margin: 0 0 4px; letter-spacing: -.01em; }
+  .sa-sub { font-size: 15px; line-height: 1.6; color: var(--ez-text2); margin: 0 0 14px; }
 
-  /* 행동 카드 */
-  .act-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 10px 0 12px; }
-  .state-badge { font-size: 18px; font-weight: 800; color: #fff; padding: 8px 15px; border-radius: 10px; }
-  .act-price { font-size: 16px; font-weight: 700; color: var(--text2); }
-  .act-reco { font-size: 17px; font-weight: 700; line-height: 1.6; margin-bottom: 12px; }
-  .act-grid { display: grid; gap: 8px; grid-template-columns: 1fr; }
-  @media (min-width: 640px) { .act-grid { grid-template-columns: repeat(2, 1fr); } }
-  .act-row { display: flex; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 10px; background: var(--card2); font-size: 15px; }
-  .act-row b { font-weight: 800; }
-  .act-note { font-size: 14px; color: var(--text2); margin-top: 10px; line-height: 1.6; }
+  /* 오늘의 결론 */
+  .sa-verdict { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .sa-badge { font-size: 18px; font-weight: 800; color: #fff; padding: 8px 15px; border-radius: 10px; }
+  .sa-asof { font-size: 15px; font-weight: 600; color: var(--ez-text2); }
+  .sa-reco { font-size: 17px; font-weight: 700; line-height: 1.65; color: var(--ez-text); margin: 0 0 12px; }
+  .sa-facts { display: grid; gap: 8px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .sa-facts { grid-template-columns: repeat(2, 1fr); } }
+  .sa-fact { display: flex; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 10px; background: var(--ez-card2); font-size: 15px; color: var(--ez-text2); }
+  .sa-fact b { color: var(--ez-text); font-weight: 800; }
+  .sa-note { font-size: 14px; line-height: 1.65; color: var(--ez-text2); margin: 10px 0 0; }
 
-  /* Swing Cycle 패널 */
-  .cyc-line { font-size: 17px; font-weight: 700; line-height: 1.7; margin-bottom: 10px; }
-  .cyc-line b { font-weight: 800; }
-  .stage-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
-  .stage {
-    font-size: 14px; font-weight: 800; padding: 6px 10px; border-radius: 8px;
-    background: var(--card2); color: var(--text3); border: 1px solid var(--border2);
+  /* 질문 카드 */
+  .sa-qa { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .sa-qa { grid-template-columns: repeat(2, 1fr); } }
+  .sa-q {
+    background: var(--ez-surface); border: 1px solid var(--ez-border);
+    border-radius: var(--ez-r); box-shadow: var(--ez-shadow); padding: 18px 16px;
   }
-  .stage.done-s { background: var(--red); border-color: var(--red); color: #fff; }
-  .stage.done-b { background: var(--green); border-color: var(--green); color: #fff; }
+  .sa-q-h { font-size: 18px; font-weight: 800; color: var(--ez-text); margin: 0 0 2px; }
+  .sa-q-a { font-size: 16px; font-weight: 700; line-height: 1.6; margin: 0 0 14px; }
+  .sa-meter { margin-bottom: 12px; }
+  .sa-meter-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+  .sa-meter-name { font-size: 15px; font-weight: 700; color: var(--ez-text); }
+  .sa-meter-val { font-size: 18px; font-weight: 800; }
+  .sa-meter-bar { height: 8px; border-radius: 999px; background: var(--ez-border); overflow: hidden; }
+  .sa-meter-bar span { display: block; height: 100%; border-radius: 999px; }
+  .sa-meter-help { font-size: 14px; color: var(--ez-text2); margin-top: 4px; line-height: 1.5; }
+  .sa-q-note { font-size: 14px; color: var(--ez-text2); line-height: 1.62; margin: 6px 0 0; border-top: 1px solid var(--ez-border2); padding-top: 10px; }
+  .sa-q-note b { color: var(--ez-text); }
 
-  /* 점수 카드 */
-  .scores { display: grid; gap: 10px; grid-template-columns: 1fr; }
-  @media (min-width: 640px) { .scores { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 980px) { .scores { grid-template-columns: repeat(5, 1fr); } }
-  .score { border: 1px solid var(--border); border-radius: 12px; padding: 13px 14px; background: var(--card2); }
-  .score-top { display: flex; justify-content: space-between; align-items: baseline; }
-  .score-name { font-size: 15px; font-weight: 800; }
-  .score-val { font-size: 22px; font-weight: 800; }
-  .score-bar { height: 7px; border-radius: 999px; background: var(--border); overflow: hidden; margin: 9px 0 7px; }
-  .score-bar span { display: block; height: 100%; border-radius: 999px; }
-  .score-help { font-size: 14px; color: var(--text2); line-height: 1.5; }
+  /* 사다리 */
+  .sa-ladders { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .sa-ladders { grid-template-columns: 1fr 1fr; } }
+  .sa-lad-h { font-size: 15px; font-weight: 800; color: var(--ez-text); margin: 0 0 8px; }
+  .sa-lad { display: grid; gap: 6px; }
+  .sa-step {
+    display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; align-items: baseline;
+    padding: 10px 12px; border-radius: 10px; background: var(--ez-card2);
+    border: 1px solid var(--ez-border2);
+  }
+  .sa-step.now { border-color: var(--sa-now, var(--ez-blue)); border-width: 2px; background: transparent; }
+  .sa-step-tag { font-size: 14px; font-weight: 800; color: var(--ez-text); }
+  .sa-step-txt { font-size: 14px; color: var(--ez-text2); line-height: 1.55; }
+  .sa-step-txt b { color: var(--ez-text); }
+  .sa-now-chip { font-size: 14px; font-weight: 800; color: #fff; background: var(--sa-now, var(--ez-blue)); border-radius: 5px; padding: 1px 6px; margin-left: 6px; }
+
+  /* 레버리지 신호등 */
+  .sa-lev { display: grid; gap: 8px; grid-template-columns: repeat(3, 1fr); }
+  .sa-lev-cell { text-align: center; padding: 12px 8px; border-radius: 11px; background: var(--ez-card2); border: 1px solid var(--ez-border2); }
+  .sa-lev-cell.on { background: var(--ez-blue); border-color: var(--ez-blue); }
+  .sa-lev-x { font-size: 19px; font-weight: 800; color: var(--ez-text); }
+  .sa-lev-s { font-size: 14px; font-weight: 700; color: var(--ez-text2); margin-top: 2px; }
+  .sa-lev-cell.on .sa-lev-x, .sa-lev-cell.on .sa-lev-s { color: #fff; }
 
   /* 차트 */
-  canvas.main-chart { display: block; width: 100%; height: 330px; touch-action: pan-y; }
-  @media (min-width: 760px) { canvas.main-chart { height: 400px; } }
-  .legend { display: flex; flex-wrap: wrap; gap: 7px 14px; margin-top: 12px; }
-  .leg { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--text2); }
-  .sw { width: 14px; height: 10px; border-radius: 3px; display: inline-block; }
+  .sa-canvas { display: block; width: 100%; height: 320px; touch-action: pan-y; }
+  @media (min-width: 760px) { .sa-canvas { height: 380px; } }
+  .sa-legend { display: flex; flex-wrap: wrap; gap: 7px 14px; margin-top: 12px; }
+  .sa-leg { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--ez-text2); }
+  .sa-sw { width: 14px; height: 10px; border-radius: 3px; display: inline-block; }
 
-  /* 타임라인 */
-  .tl { display: grid; gap: 8px; }
-  .tl-row {
-    display: grid; grid-template-columns: auto 1fr; gap: 4px 12px;
-    padding: 11px 13px; border-radius: 11px; background: var(--card2); border-left: 4px solid var(--border);
-  }
-  .tl-date { font-size: 14px; font-weight: 800; white-space: nowrap; }
-  .tl-state { font-size: 14px; font-weight: 700; }
-  .tl-act { grid-column: 1 / -1; font-size: 15px; line-height: 1.6; }
-  .tl-act b { font-weight: 800; }
-  .tl-meta { grid-column: 1 / -1; font-size: 14px; color: var(--text2); }
+  .sa-ul { margin: 0; padding-left: 1.15em; }
+  .sa-ul li { font-size: 15px; line-height: 1.74; color: var(--ez-text2); margin-bottom: 7px; }
+  .sa-ul li b { color: var(--ez-text); font-weight: 700; }
 
-  .ul { padding-left: 1.15em; }
-  .ul li { font-size: 15px; line-height: 1.72; color: var(--text2); margin-bottom: 6px; }
-  .ul li b { color: var(--text); font-weight: 700; }
-  .note { font-size: 14px; line-height: 1.65; color: var(--text2); margin-top: 10px; }
-  .warn {
-    border-left: 4px solid var(--red); padding: 10px 14px; background: var(--card2);
-    border-radius: 8px; font-size: 15px; line-height: 1.65; color: var(--text2); margin-top: 12px;
+  details.sa-details { border: 1px solid var(--ez-border); border-radius: 12px; padding: 0; background: var(--ez-card2); }
+  details.sa-details summary {
+    cursor: pointer; font-size: 15px; font-weight: 700; color: var(--ez-text);
+    padding: 13px 14px; list-style: none;
   }
-  .warn b { color: var(--text); }
+  details.sa-details summary::-webkit-details-marker { display: none; }
+  details.sa-details summary::after { content: ' +'; color: var(--ez-text3); }
+  details.sa-details[open] summary::after { content: ' −'; }
+  .sa-details-body { padding: 0 14px 14px; }
+  .sa-mini { display: grid; gap: 6px; }
+  .sa-mini-row { font-size: 14px; line-height: 1.6; color: var(--ez-text2); padding: 8px 10px; background: var(--ez-surface); border-radius: 8px; border: 1px solid var(--ez-border2); }
+  .sa-mini-row b { color: var(--ez-text); }
+
+  .sa-fail { font-size: 16px; color: var(--ez-text2); line-height: 1.7; }
 </style>
 </head>
+
 <body>
 
-<div class="ribbon">시험 공개 — 메뉴 미등록 · 모든 수치는 백테스트용 초기값</div>
+<script src="/ez-nav.js"></script>
 
-<div class="brand">
-  <div class="brand-in">
-    <div class="eyebrow">EZLong Swing AI 2.0 · Phase 1</div>
-    <h1>확률형 상태기계 + 집행 엔진</h1>
-    <p class="lede">"지금이 꼭지인가"를 맞히는 예측기가 아닙니다. 시장을 <b>7단계 상태</b>로 추적하고, 분할 매매 실행 이력을 기억하고, 확률이 개선될수록 자금을 키우는 집행 엔진입니다.</p>
-    <p class="lede">아래 Replay 는 2026-05-01~08-01 을 하루씩 이동하며 <b>그날까지 존재했던 데이터만으로</b> 재현한 것입니다. 사후 차트를 참조하지 않았습니다.</p>
+<div class="sa-brand">
+  <div class="sa-brand-in">
+    <div class="sa-eyebrow">AI Overbought · Oversold</div>
+    <h1 class="sa-title">AI 과매수·과매도 진단</h1>
+    <p class="sa-lede">꼭지와 바닥을 맞히는 도구가 아닙니다. <b>과매수와 추세훼손을 분리</b>하고 <b>과매도와 반등확인을 분리</b>해서, 지금 시장이 7단계 중 어디에 있고 이 단계에서 무엇을 할 때인지만 봅니다.</p>
+    <p class="sa-lede">과매수에서 다 팔면 랠리를 놓치고, 과매도에서 다 사면 떨어지는 칼을 받습니다. 답은 타이밍이 아니라 <b>단계별 크기</b>입니다. 매주 일요일 아침 갱신.</p>
   </div>
 </div>
 
-<main>
-  <section class="card" id="action-card"></section>
-  <section class="card" id="cycle-panel"></section>
-  <section class="card">
-    <h2>점수 드릴다운 — SOXX</h2>
-    <p class="sub">과열은 위험 예고, 추세훼손이 매도 신호. 투매는 가격 매력도, 반등확인이 매수 신호. 모든 점수는 SOXX 자신의 직전 5년 백분위(0~100).</p>
-    <div class="scores" id="scores"></div>
+<main class="sa-main">
+
+  <!-- 1. 오늘의 결론 -->
+  <section class="sa-card">
+    <h2 class="sa-h2">오늘의 결론 — 미국 반도체 (SOXX)</h2>
+    <div class="sa-verdict" id="sa-verdict"><span class="sa-asof">불러오는 중</span></div>
+    <p class="sa-reco" id="sa-reco"></p>
+    <div class="sa-facts" id="sa-facts"></div>
+    <p class="sa-note" id="sa-cadence"></p>
   </section>
-  <section class="card">
-    <h2>Replay 차트 — 2026년 SOXX</h2>
-    <p class="sub">배경색이 그날의 상태 판정. 빨강 ▼ 매도, 초록 ▲ 매수, × 무효화 손절. 실선은 종가, 점선은 20·50일선.</p>
-    <canvas class="main-chart" id="chart"></canvas>
-    <div class="legend" id="legend"></div>
+
+  <!-- 2. 두 가지 질문 -->
+  <div class="sa-qa">
+    <section class="sa-q" id="sa-q-ob"></section>
+    <section class="sa-q" id="sa-q-os"></section>
+  </div>
+
+  <!-- 3. 분할 대응 사다리 -->
+  <section class="sa-card">
+    <h2 class="sa-h2">분할 대응 사다리 — 지금은 어느 단계인가</h2>
+    <p class="sa-sub">한 번에 다 팔거나 다 사지 않습니다. 상태가 한 단계 나아갈 때마다 한 칸씩 실행하고, 지금 상태에 해당하는 칸을 표시합니다. 비중은 백테스트용 초기값.</p>
+    <div class="sa-ladders" id="sa-ladders"></div>
+    <p class="sa-note">첫 매도가 크면 "너무 일찍 팔았나"에 발이 묶여 진짜 분배에서 못 팝니다. 그래서 첫 칸이 10~15%로 작습니다. 매수도 같습니다 — 바닥을 맞히려 하지 않고, 바닥에 가까울수록 작게 먼저, 확률이 오를수록 크게.</p>
   </section>
-  <section class="card">
-    <h2>Replay 타임라인 — 상태 전환과 집행</h2>
-    <p class="sub">상태가 바뀐 날과 매매가 나간 날만 표시. 상태 확정은 2-of-3 지속성(하루 지표로 바꾸지 않음), 급락일은 Shock Transition 으로 즉시 전환.</p>
-    <div class="tl" id="timeline"></div>
+
+  <!-- 4. 레버리지 신호등 -->
+  <section class="sa-card">
+    <h2 class="sa-h2">레버리지 신호등</h2>
+    <p class="sa-sub">가격이 쌀 때가 아니라 확률이 개선될 때 배율을 올립니다. 반등확인·휩쏘 점수가 문을 열고, 변동성이 실제 배율을 정합니다.</p>
+    <div class="sa-lev" id="sa-lev"></div>
+    <p class="sa-note" id="sa-lev-note"></p>
   </section>
-  <section class="card" id="verdict-card">
-    <h2>실측 대조 — 시스템은 2026년 5~7월을 어떻게 지났나</h2>
-    <div id="verdict"></div>
+
+  <!-- 5. 차트 -->
+  <section class="sa-card">
+    <h2 class="sa-h2">2026년 국면 기록 — SOXX</h2>
+    <p class="sa-sub">배경색이 그날의 상태 판정. 지나간 판정을 지우지 않고 그대로 둡니다 — 이 도구가 무엇을 맞히고 무엇을 틀리는지 함께 보기 위해서입니다.</p>
+    <canvas class="sa-canvas" id="sa-canvas"></canvas>
+    <div class="sa-legend" id="sa-legend"></div>
   </section>
-  <section class="card">
-    <h2>다중 구간 검증 — 같은 파라미터, 튜닝 없음</h2>
-    <p class="sub">2026년 5~7월은 이 시스템의 철학을 만든 사건이라 더 이상 순수한 검증 자료가 아님. 아래는 파라미터를 한 글자도 바꾸지 않고 성격이 다른 여섯 구간을 돌린 결과 — 잘 나온 구간과 못 나온 구간을 그대로 실음.</p>
-    <div class="tl" id="multi"></div>
-    <div class="warn" id="multi-verdict"></div>
-  </section>
-  <section class="card">
-    <h2>외부 피드백 반영 내역</h2>
-    <p class="sub">두 건의 외부 검토에서 의미 있는 항목만 채택. 채택·보류의 근거를 남김.</p>
-    <ul class="ul">
-      <li><b>[채택] 다중 구간 검증</b> — 2026년 6~7월에 맞춘 과최적화 방지. 위 여섯 구간을 같은 파라미터로 실행, 목표 날짜·정답 상태 없이 재현. 진짜 out-of-sample 은 오늘 이후의 기록.</li>
-      <li><b>[채택] Confidence(신호 불일치) 점수와 크기 공식</b> — 매수 = 기본 × 합의도 × (1−0.5×휩쏘). 단 <b>매수에만 적용</b> — 검증 중 매도까지 줄였더니 약세장 방어가 무너져서, 불확실성은 위험을 '덜 늘릴' 이유이지 '덜 줄일' 이유가 아니라는 규칙으로 확정.</li>
-      <li><b>[채택] No-Trade Zone</b> — 휩쏘 70 이상 + 합의도 65% 미만이면 신규 진입 보류. 항상 무언가를 하려는 시스템 방지. 기존 물량의 손절·익절은 막지 않음.</li>
-      <li><b>[채택] 연속 레버리지 예산</b> — 1x/2x/3x 계단 위에 목표변동성÷실현변동성 예산을 얹음. 방향이 맞아도 변동성이 극단이면 3배가 안 나오는 구조.</li>
-      <li><b>[해당 없음] breadth 생존 편향</b> — 구성종목 직접 집계가 아니라 동일가중 ETF(QQQE) 가격 비율 프록시라 과거 구성종목 문제가 발생하지 않는 구조. 구성종목 집계로 갈 때(3단계 이후) constituent history DB 필수.</li>
-      <li><b>[보류] 7상태 확률 벡터</b> — 지금 룰 점수로 확률을 흉내 내면 가짜 정밀도(피드백 자신의 9번 지적과 충돌). 확률은 Phase 4 보정(calibration)과 함께 도입.</li>
-      <li><b>[보류] Portfolio Risk Engine</b> — 보유 종목 입력이 필요한 상위 레이어. Phase 2 (Trade Cycle Memory) 와 함께. 컨센서스 스냅샷 DB·Expectation Gap·이벤트 반응 잔차는 각각 Phase 5·6 에서, 단 컨센서스는 <b>지금부터 수집</b>이 원칙.</li>
-      <li><b>[동의] 실행률은 3차 KPI</b> — 1차 위험조정수익, 2차 모델 품질(보정), 3차 실행률. 잘못된 작전의 성실한 실행은 더 큰 손실.</li>
+
+  <!-- 6. 읽는 법 -->
+  <section class="sa-card">
+    <h2 class="sa-h2">읽는 법 — 이 도구의 네 가지 원칙</h2>
+    <ul class="sa-ul">
+      <li><b>과매수는 매도 신호가 아니라 위험 예고</b> — 강한 추세에서 과매수는 몇 주씩 지속됨. 실제 매도는 추세훼손(고점 갱신 실패·상대강도 하락·오르는 종목 축소)이 결정. 과열 90에 훼손 25면 소량 익절만.</li>
+      <li><b>과매도는 매수 신호가 아니라 가격 매력도</b> — 깊게 팔렸다는 것과 반등이 시작됐다는 것은 다른 정보. 투매 구간의 매수는 탐색 물량(10~15%)만, 본 매수는 반등확인이 결정.</li>
+      <li><b>거짓 반등에는 예측이 아니라 크기로 대응</b> — 데드캣인지 진짜 바닥인지 미리 알 수 없음. 일찍 사되 작게 사고, 무효화선(전저점 −0.5×ATR) 이탈 시 기계적으로 손절, 구조가 회복되면 더 높은 가격이라도 재진입. 손절은 실패가 아니라 보험료.</li>
+      <li><b>신호가 갈릴 때는 금지가 아니라 축소</b> — 기술·매크로·업황 셋이 다 맞을 때까지 기다리면 늦음. 신호 합의도가 낮으면 매수 크기를 줄이고, 휩쏘가 심하면 신규 진입을 보류(No-Trade).</li>
     </ul>
   </section>
-  <section class="card">
-    <h2>이 화면의 한계</h2>
-    <ul class="ul">
-      <li><b>모든 비중·임계치는 백테스트용 초기값</b> — S1 12% · S2 22% · S3 27% 등은 하드코딩 최종값이 아님. walk-forward 검증(Phase 3) 전에는 실거래 판단 근거로 사용 금지.</li>
-      <li><b>체결은 당일 종가로 근사</b> — 원칙은 신호 다음 거래일 시가 체결. 상태 판정 검증이 목적인 Phase 1 에서는 오차가 작으나 Phase 3 백테스트에서 정밀화.</li>
-      <li><b>breadth·수급은 무료 프록시</b> — 동일가중/시총가중 상대 모멘텀과 상승·하락일 거래량 배분으로 근사. CVD·GEX 는 무료 데이터 부재로 기각(기획서 3부).</li>
-      <li><b>이벤트 반응 엔진·반도체 사이클 엔진은 미구현</b> — 각각 Phase 5·6. 현재 판정에 CPI surprise·HBM 지표는 반영되지 않음.</li>
-      <li>확률 도구이지 예측 도구가 아님. 성공 기준은 적중률이 아니라 <b>세운 작전의 실행률</b>.</li>
-    </ul>
+
+  <!-- 7. 검증 기록 (접힘) -->
+  <section class="sa-card">
+    <h2 class="sa-h2">검증 기록</h2>
+    <p class="sa-sub">이 규칙을 2026년 5~8월에 하루씩 되돌려 실행한 결과와, 같은 규칙을 과거 여섯 구간에 튜닝 없이 적용한 결과입니다. 잘 나온 구간과 못 나온 구간을 그대로 실었습니다.</p>
+    <div id="sa-replay-sum" class="sa-note" style="margin:0 0 10px"></div>
+    <details class="sa-details">
+      <summary>2026년 5~8월 하루씩 재현 — 매매 내역</summary>
+      <div class="sa-details-body"><div class="sa-mini" id="sa-replay"></div></div>
+    </details>
+    <div style="height:8px"></div>
+    <details class="sa-details">
+      <summary>과거 여섯 구간 검증 — 같은 규칙, 튜닝 없음</summary>
+      <div class="sa-details-body"><div class="sa-mini" id="sa-multi"></div></div>
+    </details>
   </section>
+
+  <!-- 8. 한계 -->
+  <section class="sa-card">
+    <h2 class="sa-h2">이 진단의 한계</h2>
+    <ul class="sa-ul">
+      <li>확률 도구이지 예측 도구가 아님. 분할 비중과 임계치는 전부 백테스트용 초기값이며 검증을 거치며 계속 조정됨.</li>
+      <li>주 1회 표본이라 주중 급변은 다음 갱신에 반영. 장중 대응용 화면이 아님.</li>
+      <li>수급·업황(반도체 사이클) 지표는 아직 미반영 — 다음 단계에서 추가 예정.</li>
+      <li>2~3배 레버리지 ETF 는 일일 리셋 구조라 횡보장에서 원금이 녹음. 기초지수 −30% 구간에서 3배는 −90% 근접 가능 — 추세장 전용.</li>
+    </ul>
+    <p class="sa-note" id="sa-stamp"></p>
+    <p class="sa-note">이 화면은 연구용 진단 신호판입니다. 투자 권유나 수익 보장이 아니며, 매매 주문 기능도 없습니다. 판단과 책임은 보는 사람에게 있습니다.</p>
+  </section>
+
 </main>
 
-<script>
-var DATA = {"system":"EZLong Swing AI 2.0 — Phase 1 (Rule Engine + Replay)","generatedAt":"2026-08-09T22:20:26Z","generatedAtKST":"2026-08-10 07:20 KST","states":["UPTREND","OVERHEAT","DISTRIBUTION","CORRECTION","CAPITULATION","REVERSAL_PROBE","RECOVERY"],"stateKo":{"UPTREND":"정상 추세","OVERHEAT":"과열","DISTRIBUTION":"분배","CORRECTION":"조정","CAPITULATION":"투매","REVERSAL_PROBE":"반등 탐색","RECOVERY":"회복"},"stateTemp":{"UPTREND":2,"OVERHEAT":0,"DISTRIBUTION":1,"CORRECTION":3,"CAPITULATION":6,"REVERSAL_PROBE":5,"RECOVERY":4},"initialValues":{"sell":{"S1":12,"S2":22,"S3":27,"S4":25},"buy":{"B1":12,"B2":22,"B3":27},"probeStopATR":0.5,"gate2":{"reversal":60,"whipsaw":55},"gate3":{"reversal":70,"whipsaw":35},"pctWindowDays":1260},"tickers":{"SOXX":{"card":{"state":"REVERSAL_PROBE","stateKo":"반등 탐색","temp":5,"close":543.27,"reco":"B2 추가 20~25%. 거짓 반등 위험 상존 — 무효화선 필수","confidence":60,"sizeMult":43,"noTrade":false,"levBudget":0.5,"leverage":"금지 (1배만)","gate2":false,"gate3":false,"invalidation":449.32,"chandelier":{"1.5":523.64,"2.0":508.88,"3.0":479.36},"scores":{"heat":43.0,"dist":60.4,"cap":45.6,"rev":90.3,"whip":57.0}},"asOf":"2026-08-07","multi":[{"name":"2018 Q4 급락","start":"2018-09-01","end":"2019-03-01","perf":{"nav":98.2,"buyHold":98.0,"navRet":-1.8,"bhRet":-2.0},"final":{"position":83.3,"cash":16.7,"whipsawMode":false,"stopOuts":1,"cycles":3,"sellsDone":[],"buysDone":[]},"transitions":15,"events":[{"date":"2018-09-12","acts":["S3 조정 확정 축소 27.0%p","S4 추세 훼손 축소 18.2%p"]},{"date":"2018-09-19","acts":["B2 반등 시도 매수 7.2%p"]},{"date":"2018-09-21","acts":["B3 반등 확인 매수 7.1%p"]},{"date":"2018-10-01","acts":["B4 회복 투입 12.8%p"]},{"date":"2018-10-04","acts":["사이클 종료 — 새 사이클 #2 시작"]},{"date":"2018-10-08","acts":["B1 투매 탐색 매수 1.5%p"]},{"date":"2018-10-10","acts":["탐색 물량 무효화 손절 1.5%p"]},{"date":"2019-01-18","acts":["B3 반등 확인 매수 2.9%p"]},{"date":"2019-01-22","acts":["B1 투매 탐색 매수 0.8%p"]},{"date":"2019-01-25","acts":["B4 회복 투입 9.1%p"]},{"date":"2019-02-13","acts":["S1 과열 익절 11.4%p"]},{"date":"2019-03-01","acts":["사이클 종료 — 새 사이클 #3 시작"]}]},{"name":"2020 코로나","start":"2020-01-15","end":"2020-06-30","perf":{"nav":105.5,"buyHold":106.0,"navRet":5.5,"bhRet":6.0},"final":{"position":87.4,"cash":12.6,"whipsawMode":false,"stopOuts":2,"cycles":2,"sellsDone":[],"buysDone":[]},"transitions":14,"events":[{"date":"2020-01-22","acts":["S1 과열 익절 12.0%p"]},{"date":"2020-01-27","acts":["B1 투매 탐색 매수 0.9%p"]},{"date":"2020-01-29","acts":["S2 분배 익절 19.6%p"]},{"date":"2020-01-31","acts":["탐색 물량 무효화 손절 0.9%p"]},{"date":"2020-02-06","acts":["B2 반등 시도 매수 2.8%p"]},{"date":"2020-02-11","acts":["B3 반등 확인 매수 3.1%p"]},{"date":"2020-02-14","acts":["B4 회복 투입 14.7%p"]},{"date":"2020-02-24","acts":["B1 투매 탐색 매수 0.5%p","탐색 물량 무효화 손절 3.3%p"]},{"date":"2020-04-30","acts":["B1 투매 탐색 매수 1.2%p"]},{"date":"2020-06-17","acts":["사이클 종료 — 새 사이클 #2 시작"]}]},{"name":"2022 약세 진입","start":"2021-11-01","end":"2022-06-30","perf":{"nav":76.6,"buyHold":74.1,"navRet":-23.4,"bhRet":-25.9},"final":{"position":88.1,"cash":11.9,"whipsawMode":false,"stopOuts":2,"cycles":4,"sellsDone":[],"buysDone":[]},"transitions":16,"events":[{"date":"2021-11-02","acts":["S1 과열 익절 12.0%p"]},{"date":"2021-11-26","acts":["사이클 종료 — 새 사이클 #2 시작"]},{"date":"2021-12-13","acts":["S2 분배 익절 19.4%p"]},{"date":"2021-12-16","acts":["사이클 종료 — 새 사이클 #3 시작"]},{"date":"2021-12-20","acts":["B1 투매 탐색 매수 2.1%p"]},{"date":"2021-12-22","acts":["B2 반등 시도 매수 2.7%p"]},{"date":"2021-12-28","acts":["B3 반등 확인 매수 4.2%p"]},{"date":"2021-12-31","acts":["B4 회복 투입 10.4%p"]},{"date":"2022-01-10","acts":["사이클 종료 — 새 사이클 #4 시작"]},{"date":"2022-01-18","acts":["No-Trade — 신호 불일치·휩쏘 과다로 신규 진입 보류"]},{"date":"2022-02-09","acts":["B2 반등 시도 매수 1.1%p"]},{"date":"2022-02-10","acts":["B1 투매 탐색 매수 0.5%p"]},{"date":"2022-03-14","acts":["탐색 물량 무효화 손절 1.6%p"]},{"date":"2022-03-22","acts":["B2 반등 시도 매수 1.1%p"]},{"date":"2022-03-23","acts":["B1 투매 탐색 매수 0.7%p"]},{"date":"2022-04-26","acts":["탐색 물량 무효화 손절 1.7%p"]}]},{"name":"2022-10 바닥","start":"2022-08-01","end":"2023-02-01","perf":{"nav":107.8,"buyHold":105.1,"navRet":7.8,"bhRet":5.1},"final":{"position":98.9,"cash":1.1,"whipsawMode":false,"stopOuts":2,"cycles":2,"sellsDone":[],"buysDone":["B3","B4"]},"transitions":10,"events":[{"date":"2022-08-18","acts":["S2 분배 익절 22.0%p"]},{"date":"2022-08-22","acts":["B1 투매 탐색 매수 1.4%p"]},{"date":"2022-08-29","acts":["탐색 물량 무효화 손절 1.4%p"]},{"date":"2022-11-07","acts":["B2 반등 시도 매수 3.0%p"]},{"date":"2022-11-10","acts":["B3 반등 확인 매수 3.5%p"]},{"date":"2022-11-15","acts":["B4 회복 투입 11.7%p"]},{"date":"2022-12-01","acts":["사이클 종료 — 새 사이클 #2 시작"]},{"date":"2022-12-15","acts":["B1 투매 탐색 매수 0.3%p"]},{"date":"2022-12-20","acts":["탐색 물량 무효화 손절 0.3%p"]},{"date":"2023-01-06","acts":["No-Trade — 신호 불일치·휩쏘 과다로 신규 진입 보류"]},{"date":"2023-01-18","acts":["B3 반등 확인 매수 0.8%p"]},{"date":"2023-01-23","acts":["B4 회복 투입 2.0%p"]}]},{"name":"2023 AI 랠리","start":"2023-01-01","end":"2023-07-01","perf":{"nav":130.6,"buyHold":146.3,"navRet":30.6,"bhRet":46.3},"final":{"position":29.5,"cash":70.5,"whipsawMode":false,"stopOuts":0,"cycles":6,"sellsDone":[],"buysDone":[]},"transitions":20,"events":[{"date":"2023-02-09","acts":["S2 분배 익절 22.0%p"]},{"date":"2023-02-15","acts":["S1 과열 익절 9.4%p"]},{"date":"2023-02-22","acts":["B1 투매 탐색 매수 1.7%p"]},{"date":"2023-02-28","acts":["사이클 종료 — 새 사이클 #2 시작"]},{"date":"2023-03-13","acts":["B1 투매 탐색 매수 1.9%p"]},{"date":"2023-03-16","acts":["No-Trade — 신호 불일치·휩쏘 과다로 신규 진입 보류"]},{"date":"2023-03-30","acts":["사이클 종료 — 새 사이클 #3 시작"]},{"date":"2023-04-13","acts":["S2 분배 익절 15.9%p"]},{"date":"2023-04-20","acts":["S3 조정 확정 축소 15.2%p","S4 추세 훼손 축소 10.3%p"]},{"date":"2023-05-01","acts":["B2 반등 시도 매수 7.2%p"]},{"date":"2023-05-19","acts":["사이클 종료 — 새 사이클 #4 시작"]},{"date":"2023-05-22","acts":["S1 과열 익절 4.6%p"]},{"date":"2023-05-25","acts":["사이클 종료 — 새 사이클 #5 시작"]},{"date":"2023-05-26","acts":["S1 과열 익절 4.0%p"]},{"date":"2023-06-23","acts":["사이클 종료 — 새 사이클 #6 시작"]}]},{"name":"2025 관세 급락·회복","start":"2025-02-01","end":"2025-07-01","perf":{"nav":106.5,"buyHold":109.3,"navRet":6.5,"bhRet":9.3},"final":{"position":57.7,"cash":42.3,"whipsawMode":false,"stopOuts":2,"cycles":4,"sellsDone":["S1"],"buysDone":[]},"transitions":17,"events":[{"date":"2025-02-03","acts":["S3 조정 확정 축소 27.0%p","S4 추세 훼손 축소 18.2%p"]},{"date":"2025-02-05","acts":["B2 반등 시도 매수 5.6%p"]},{"date":"2025-02-21","acts":["사이클 종료 — 새 사이클 #2 시작"]},{"date":"2025-02-26","acts":["S3 조정 확정 축소 16.3%p","S4 추세 훼손 축소 11.0%p"]},{"date":"2025-02-27","acts":["B1 투매 탐색 매수 4.4%p","탐색 물량 무효화 손절 4.4%p"]},{"date":"2025-03-03","acts":["No-Trade — 신호 불일치·휩쏘 과다로 신규 진입 보류"]},{"date":"2025-03-19","acts":["B2 반등 시도 매수 8.9%p"]},{"date":"2025-03-20","acts":["B1 투매 탐색 매수 4.2%p"]},{"date":"2025-04-03","acts":["탐색 물량 무효화 손절 13.2%p"]},{"date":"2025-05-07","acts":["B3 반등 확인 매수 7.1%p"]},{"date":"2025-05-12","acts":["B4 회복 투입 34.4%p"]},{"date":"2025-05-27","acts":["사이클 종료 — 새 사이클 #3 시작"]},{"date":"2025-06-06","acts":["S1 과열 익절 8.9%p"]},{"date":"2025-06-24","acts":["사이클 종료 — 새 사이클 #4 시작"]},{"date":"2025-06-25","acts":["S1 과열 익절 7.9%p"]}]}],"chart":{"dates":["2026-01-02","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-20","2026-04-21","2026-04-22","2026-04-23","2026-04-24","2026-04-27","2026-04-28","2026-04-29","2026-04-30","2026-05-01","2026-05-04","2026-05-05","2026-05-06","2026-05-07","2026-05-08","2026-05-11","2026-05-12","2026-05-13","2026-05-14","2026-05-15","2026-05-18","2026-05-19","2026-05-20","2026-05-21","2026-05-22","2026-05-26","2026-05-27","2026-05-28","2026-05-29","2026-06-01","2026-06-02","2026-06-03","2026-06-04","2026-06-05","2026-06-08","2026-06-09","2026-06-10","2026-06-11","2026-06-12","2026-06-15","2026-06-16","2026-06-17","2026-06-18","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-29","2026-06-30","2026-07-01","2026-07-02","2026-07-06","2026-07-07","2026-07-08","2026-07-09","2026-07-10","2026-07-13","2026-07-14","2026-07-15","2026-07-16","2026-07-17","2026-07-20","2026-07-21","2026-07-22","2026-07-23","2026-07-24","2026-07-27","2026-07-28","2026-07-29","2026-07-30","2026-07-31","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-07"],"close":[313.35,317.71,327.99,324.54,319.23,328.42,329.99,332.94,331.54,336.85,342.1,336.98,347.76,348.29,344.33,342.7,350.7,360.07,360.74,345.92,352.31,345.26,330.02,330.47,348.13,352.39,351.05,359.81,351.12,354.27,353.71,357.53,355.45,359.04,356.43,361.65,367.6,356.41,351.91,351.67,334.42,341.17,337.39,323.16,336.0,338.44,341.72,329.83,330.96,337.46,340.09,338.13,340.04,332.35,336.43,340.86,345.09,328.69,323.33,309.64,328.5,338.38,339.45,343.94,347.59,370.22,378.45,386.42,393.15,401.05,401.67,405.76,415.51,417.35,420.5,431.57,440.79,461.38,455.19,438.5,449.78,461.22,465.53,461.84,482.5,506.63,492.13,520.05,532.51,515.75,528.04,529.78,508.28,495.63,496.5,520.06,524.46,537.08,569.82,563.71,569.2,568.81,571.66,604.73,615.39,602.43,539.51,571.18,561.87,541.25,586.65,595.97,628.45,591.24,599.73,639.45,655.01,603.39,601.5,625.2,589.94,614.35,640.76,599.7,566.32,581.51,551.69,562.03,581.7,581.34,553.61,567.92,555.27,530.5,521.81,524.14,552.69,555.52,551.24,527.01,516.23,491.46,465.0,504.53,504.89,507.68,542.21,530.7,532.52,543.27],"sma20":[303.9,304.51,305.48,306.11,306.5,307.15,307.96,309.67,311.39,313.44,316.3,318.56,320.97,323.21,325.2,327.04,329.29,332.04,334.85,337.11,339.06,340.43,340.53,340.83,342.28,343.47,344.53,345.87,346.85,347.72,348.3,349.33,349.71,350.25,350.86,351.8,352.65,352.46,352.02,352.31,351.42,351.21,351.58,351.21,350.61,349.91,349.44,347.95,346.94,346.1,345.42,344.45,343.67,342.34,341.34,340.3,339.18,337.79,336.36,334.26,333.96,333.82,333.93,334.97,335.55,337.14,338.97,341.8,344.91,348.09,351.17,354.55,358.32,362.57,366.78,371.31,376.1,382.73,389.33,395.77,401.83,407.97,414.28,420.17,426.92,433.74,439.42,446.11,453.07,458.81,465.13,471.33,475.97,479.88,483.68,488.1,492.29,496.07,501.8,508.06,514.04,519.42,524.72,531.87,538.51,543.3,545.67,548.23,549.69,550.97,553.9,557.21,563.22,568.0,573.16,579.13,585.66,588.97,590.56,593.63,594.67,596.95,600.4,600.15,597.7,596.65,597.26,596.8,597.79,599.8,598.14,596.74,593.08,590.05,586.15,580.38,575.27,572.88,570.36,565.45,561.77,555.62,546.83,542.08,539.0,535.31,534.84,533.27,530.81,528.91],"sma50":[297.56,298.25,299.0,299.59,299.91,300.4,300.83,301.39,301.91,302.49,303.42,304.07,305.09,306.18,307.05,308.01,309.05,310.48,311.93,313.2,314.72,316.0,317.26,318.46,319.79,321.18,322.39,323.66,324.76,325.8,326.71,327.75,328.69,329.63,330.53,331.45,332.53,333.68,334.77,335.89,336.88,337.87,338.63,339.02,339.65,340.3,341.02,341.52,342.05,342.78,343.31,343.72,343.96,344.12,344.46,344.71,345.01,344.93,344.76,344.22,343.95,343.98,343.81,343.72,343.79,344.34,344.89,345.42,346.07,347.17,348.16,349.37,351.08,352.82,354.26,355.85,357.64,359.67,361.75,363.44,365.36,367.43,369.64,371.69,374.21,377.11,379.6,382.88,386.49,389.77,393.64,397.41,400.83,404.28,407.49,411.12,414.78,418.92,423.7,428.23,432.81,437.42,442.05,447.5,453.08,458.31,462.2,467.05,471.82,476.45,481.62,486.77,492.55,497.5,502.54,507.92,513.45,517.79,521.96,526.44,530.21,534.38,538.89,542.53,545.45,548.45,550.67,552.68,555.21,558.07,560.14,562.28,564.07,565.44,566.23,566.58,567.79,568.5,568.88,569.1,568.86,568.1,567.23,567.41,567.58,567.33,567.69,567.56,566.81,566.4],"temp":[2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,6,6,6,6,6,6,5,5,6,6,5,5,5,5,6,6,6,6,6,6,6,6,5,5,5,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,6,6,2,6,6,6,4,4,4,4,4,4,4,4,2,2,2,2,2,1,1,1,3,3,3,3,3,3,3,3,3,3,5,6,6,6,6,6,6,5,5,5,5,5],"state":["UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","CAPITULATION","CAPITULATION","CAPITULATION","CAPITULATION","CAPITULATION","CAPITULATION","REVERSAL_PROBE","REVERSAL_PROBE","CAPITULATION","CAPITULATION","REVERSAL_PROBE","REVERSAL_PROBE","REVERSAL_PROBE","REVERSAL_PROBE","CAPITULATION","CAPITULATION","CAPITULATION","CAPITULATION","CAPITULATION","CAPITULATION","CAPITULATION","CAPITULATION","REVERSAL_PROBE","REVERSAL_PROBE","REVERSAL_PROBE","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","DISTRIBUTION","DISTRIBUTION","DISTRIBUTION","DISTRIBUTION","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","OVERHEAT","CAPITULATION","CAPITULATION","UPTREND","CAPITULATION","CAPITULATION","CAPITULATION","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","RECOVERY","UPTREND","UPTREND","UPTREND","UPTREND","UPTREND","DISTRIBUTION","DISTRIBUTION","DISTRIBUTION","CORRECTION","CORRECTION","CORRECTION","CORRECTION","CORRECTION","CORRECTION","CORRECTION","CORRECTION","CORRECTION","CORRECTION","REVERSAL_PROBE","CAPITULATION","CAPITULATION","CAPITULATION","CAPITULATION","CAPITULATION","CAPITULATION","REVERSAL_PROBE","REVERSAL_PROBE","REVERSAL_PROBE","REVERSAL_PROBE","REVERSAL_PROBE"]},"scoreHist":{"heat":[65.9,76.0,87.7,75.6,64.8,80.4,84.2,89.6,80.7,87.7,93.0,80.7,90.8,91.7,80.9,77.4,88.1,94.6,94.3,66.9,76.4,58.8,32.3,36.8,64.3,69.1,59.4,74.1,55.2,62.2,55.7,65.8,55.7,64.7,56.8,68.7,77.9,48.6,41.0,43.0,18.5,32.0,26.0,13.2,27.2,31.7,37.2,16.7,22.7,32.7,37.3,27.9,35.2,21.6,31.7,40.3,48.2,19.7,14.9,6.9,31.8,46.3,49.6,59.8,62.8,85.0,89.5,94.0,95.8,97.2,96.7,97.0,98.1,97.9,97.7,98.4,98.6,99.1,90.5,85.3,91.3,94.7,95.8,87.2,94.1,97.0,88.7,94.7,96.8,87.2,92.5,93.8,77.9,67.5,69.9,82.9,84.8,89.0,96.5,86.4,90.0,85.0,88.0,95.5,96.8,85.6,48.9,66.8,54.6,43.5,69.1,74.4,87.1,62.3,68.4,84.1,88.2,56.1,51.8,67.0,43.4,58.7,72.1,40.9,25.8,36.7,26.8,31.1,43.2,39.1,21.3,31.0,21.1,14.4,12.7,16.8,29.9,33.7,25.7,16.0,13.8,7.9,4.2,19.2,22.6,25.0,44.5,31.1,35.0,43.0],"dist":[31.2,30.4,27.7,33.1,42.1,30.6,25.4,22.4,23.1,17.8,14.0,19.8,16.4,15.6,20.9,26.4,22.4,21.0,16.5,37.2,35.7,45.9,60.7,56.8,47.8,39.9,43.5,35.4,47.0,38.4,41.8,32.2,30.7,32.3,37.3,31.9,32.3,47.5,50.2,56.1,72.9,73.4,76.4,80.6,77.4,77.6,73.9,83.0,80.2,78.8,63.7,66.7,57.1,54.0,54.7,51.1,45.9,47.5,52.6,65.8,61.0,51.4,53.1,47.8,44.2,48.4,44.4,32.8,32.3,25.8,27.8,29.1,30.2,26.9,28.1,27.1,24.7,21.0,29.4,42.7,33.6,24.2,19.1,27.8,20.6,22.0,39.9,41.4,31.2,42.5,40.5,40.9,62.4,67.5,69.2,62.0,49.9,37.5,36.0,36.0,30.8,31.1,17.7,14.2,13.7,23.6,47.8,45.9,50.6,53.7,47.5,43.0,34.3,59.3,56.9,41.2,32.2,52.6,51.5,38.2,61.6,59.3,47.7,55.8,71.0,71.1,73.7,73.2,71.0,68.9,63.2,65.2,69.1,70.8,72.7,72.3,70.9,70.1,70.2,74.3,74.7,74.8,75.4,75.3,72.6,73.5,67.1,71.3,70.3,60.4],"cap":[20.5,17.8,14.9,24.4,33.1,16.3,17.8,19.6,28.9,18.3,17.0,42.1,23.7,16.8,25.9,29.4,19.6,18.2,21.7,42.2,29.0,47.7,64.2,65.9,53.3,37.6,43.7,33.2,54.6,47.3,51.9,42.8,49.7,40.0,51.5,38.9,31.0,49.7,59.5,64.4,79.5,64.1,74.6,85.0,71.8,69.1,66.0,78.8,73.8,65.7,61.4,69.4,63.7,75.7,69.8,66.9,62.6,78.3,83.6,89.6,71.4,66.1,64.2,61.9,61.3,40.5,34.5,31.8,32.2,28.9,27.6,25.9,23.0,28.4,30.3,27.7,28.9,26.7,31.4,40.5,34.1,22.3,20.5,32.6,21.6,22.5,30.9,22.3,26.5,36.0,27.1,24.1,42.3,47.4,42.8,32.3,28.9,24.2,25.4,29.5,21.8,24.9,21.2,18.6,19.1,26.5,72.3,51.4,61.4,72.9,49.7,40.3,26.8,44.9,47.8,28.5,32.9,60.5,60.8,51.0,61.9,50.6,38.2,53.7,58.4,46.9,59.3,57.0,47.3,48.5,65.6,53.2,55.4,66.9,77.5,70.3,57.6,53.9,68.0,74.4,78.2,80.1,88.4,64.5,58.3,57.2,53.2,55.9,49.1,45.6],"rev":[65.9,63.6,74.5,70.4,70.6,72.4,67.1,60.8,61.0,77.2,74.7,61.1,77.1,84.1,72.4,64.0,79.3,77.8,79.6,48.5,78.7,30.8,14.6,25.6,64.8,72.2,75.4,92.7,72.5,65.2,59.8,71.0,55.5,70.0,53.7,68.8,73.0,43.7,30.2,14.7,8.0,27.4,9.6,9.4,27.2,54.9,74.9,39.4,51.1,75.7,76.7,64.8,79.8,37.5,39.4,60.6,72.4,34.3,26.6,17.0,47.5,71.1,83.7,89.0,90.2,90.6,90.1,89.0,89.0,87.7,84.9,84.0,84.3,82.6,71.2,69.9,70.3,73.4,68.1,56.1,53.2,61.6,57.9,53.7,78.2,77.1,61.2,64.4,67.2,51.4,47.3,61.3,40.9,17.8,27.0,53.6,59.0,76.0,82.3,81.3,80.2,76.9,73.5,73.5,80.0,69.2,26.3,38.2,19.8,22.0,56.6,80.7,79.4,76.8,85.5,83.7,81.5,61.5,49.6,60.8,27.7,21.8,72.3,49.3,30.0,51.9,31.0,31.8,46.8,56.8,36.6,49.6,44.3,19.6,15.2,32.3,39.7,68.7,65.2,44.1,35.9,17.6,12.7,42.6,50.5,56.8,90.1,94.5,88.5,90.3],"whip":[59.1,57.2,54.8,54.4,47.9,49.4,44.1,40.1,40.7,42.6,34.2,37.3,40.9,34.4,38.5,33.1,32.1,30.6,27.8,31.4,42.2,51.8,51.4,63.3,60.5,64.0,64.6,66.8,70.5,70.4,71.1,68.4,71.5,71.6,71.8,65.5,63.5,67.5,64.0,64.3,64.3,62.7,63.8,54.7,56.8,52.4,51.3,48.3,50.3,49.5,48.4,47.2,54.5,58.7,52.0,57.1,56.7,56.9,51.2,55.1,59.3,55.5,53.3,53.8,52.5,45.9,42.5,39.0,41.2,34.3,33.0,32.0,23.7,21.8,19.9,18.3,17.3,17.2,12.7,15.5,15.3,14.6,18.9,26.9,30.3,30.4,35.6,40.3,34.9,41.9,41.5,41.0,39.5,38.0,45.3,45.3,45.1,40.5,40.2,43.2,42.9,47.5,47.5,46.9,41.4,47.2,48.2,53.5,61.7,59.2,61.8,58.0,48.0,52.9,57.5,53.1,53.2,55.0,52.4,58.8,62.3,63.5,64.5,66.7,66.7,73.1,76.8,78.9,74.2,74.4,70.9,71.9,78.3,70.8,66.0,63.2,57.1,53.3,57.8,52.6,56.8,52.3,43.3,44.0,44.3,46.9,48.7,49.5,55.8,57.0]}},"QQQ":{"card":{"state":"REVERSAL_PROBE","stateKo":"반등 탐색","temp":5,"close":723.03,"reco":"B2 추가 20~25%. 거짓 반등 위험 상존 — 무효화선 필수","confidence":80,"sizeMult":58,"noTrade":false,"levBudget":0.8,"leverage":"금지 (1배만)","gate2":false,"gate3":false,"invalidation":653.67,"chandelier":{"1.5":701.44,"2.0":693.97,"3.0":679.03},"scores":{"heat":55.6,"dist":48.3,"cap":34.6,"rev":90.3,"whip":55.4}},"asOf":"2026-08-07"}},"replay":{"start":"2026-05-01","end":"2026-08-01","days":[{"date":"2026-05-01","close":465.53,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":true,"shock":false,"scores":{"heat":95.8,"dist":19.1,"cap":20.5,"rev":57.9,"whip":18.9},"position":88.0,"cash":12.0,"actions":[{"tag":"S1","label":"S1 과열 익절","size":12.0,"position":88.0,"cash":12.0}]},{"date":"2026-05-04","close":461.84,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":87.2,"dist":27.8,"cap":32.6,"rev":53.7,"whip":26.9},"position":88.0,"cash":12.0,"actions":[]},{"date":"2026-05-05","close":482.5,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":94.1,"dist":20.6,"cap":21.6,"rev":78.2,"whip":30.3},"position":88.0,"cash":12.0,"actions":[]},{"date":"2026-05-06","close":506.63,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":97.0,"dist":22.0,"cap":22.5,"rev":77.1,"whip":30.4},"position":88.0,"cash":12.0,"actions":[]},{"date":"2026-05-07","close":492.13,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":88.7,"dist":39.9,"cap":30.9,"rev":61.2,"whip":35.6},"position":88.0,"cash":12.0,"actions":[]},{"date":"2026-05-08","close":520.05,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":94.7,"dist":41.4,"cap":22.3,"rev":64.4,"whip":40.3},"position":88.0,"cash":12.0,"actions":[]},{"date":"2026-05-11","close":532.51,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":96.8,"dist":31.2,"cap":26.5,"rev":67.2,"whip":34.9},"position":88.0,"cash":12.0,"actions":[]},{"date":"2026-05-12","close":515.75,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":87.2,"dist":42.5,"cap":36.0,"rev":51.4,"whip":41.9},"position":88.0,"cash":12.0,"actions":[]},{"date":"2026-05-13","close":528.04,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":92.5,"dist":40.5,"cap":27.1,"rev":47.3,"whip":41.5},"position":88.0,"cash":12.0,"actions":[]},{"date":"2026-05-14","close":529.78,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":93.8,"dist":40.9,"cap":24.1,"rev":61.3,"whip":41.0},"position":88.0,"cash":12.0,"actions":[]},{"date":"2026-05-15","close":508.28,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":true,"scores":{"heat":77.9,"dist":62.4,"cap":42.3,"rev":40.9,"whip":39.5},"position":88.0,"cash":12.0,"actions":[]},{"date":"2026-05-18","close":495.63,"state":"DISTRIBUTION","stateKo":"분배","temp":1,"entered":true,"shock":false,"scores":{"heat":67.5,"dist":67.5,"cap":47.4,"rev":17.8,"whip":38.0},"position":68.6,"cash":31.4,"actions":[{"tag":"S2","label":"S2 분배 익절","size":19.4,"position":68.6,"cash":31.4}]},{"date":"2026-05-19","close":496.5,"state":"DISTRIBUTION","stateKo":"분배","temp":1,"entered":false,"shock":false,"scores":{"heat":69.9,"dist":69.2,"cap":42.8,"rev":27.0,"whip":45.3},"position":68.6,"cash":31.4,"actions":[]},{"date":"2026-05-20","close":520.06,"state":"DISTRIBUTION","stateKo":"분배","temp":1,"entered":false,"shock":false,"scores":{"heat":82.9,"dist":62.0,"cap":32.3,"rev":53.6,"whip":45.3},"position":68.6,"cash":31.4,"actions":[]},{"date":"2026-05-21","close":524.46,"state":"DISTRIBUTION","stateKo":"분배","temp":1,"entered":false,"shock":false,"scores":{"heat":84.8,"dist":49.9,"cap":28.9,"rev":59.0,"whip":45.1},"position":68.6,"cash":31.4,"actions":[]},{"date":"2026-05-22","close":537.08,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":true,"shock":false,"scores":{"heat":89.0,"dist":37.5,"cap":24.2,"rev":76.0,"whip":40.5},"position":68.6,"cash":31.4,"actions":[]},{"date":"2026-05-26","close":569.82,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":96.5,"dist":36.0,"cap":25.4,"rev":82.3,"whip":40.2},"position":68.6,"cash":31.4,"actions":[]},{"date":"2026-05-27","close":563.71,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":86.4,"dist":36.0,"cap":29.5,"rev":81.3,"whip":43.2},"position":68.6,"cash":31.4,"actions":[]},{"date":"2026-05-28","close":569.2,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":90.0,"dist":30.8,"cap":21.8,"rev":80.2,"whip":42.9},"position":68.6,"cash":31.4,"actions":[]},{"date":"2026-05-29","close":568.81,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":85.0,"dist":31.1,"cap":24.9,"rev":76.9,"whip":47.5},"position":68.6,"cash":31.4,"actions":[]},{"date":"2026-06-01","close":571.66,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":88.0,"dist":17.7,"cap":21.2,"rev":73.5,"whip":47.5},"position":68.6,"cash":31.4,"actions":[]},{"date":"2026-06-02","close":604.73,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":95.5,"dist":14.2,"cap":18.6,"rev":73.5,"whip":46.9},"position":68.6,"cash":31.4,"actions":[]},{"date":"2026-06-03","close":615.39,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":96.8,"dist":13.7,"cap":19.1,"rev":80.0,"whip":41.4},"position":68.6,"cash":31.4,"actions":[]},{"date":"2026-06-04","close":602.43,"state":"OVERHEAT","stateKo":"과열","temp":0,"entered":false,"shock":false,"scores":{"heat":85.6,"dist":23.6,"cap":26.5,"rev":69.2,"whip":47.2},"position":68.6,"cash":31.4,"actions":[]},{"date":"2026-06-05","close":539.51,"state":"CAPITULATION","stateKo":"투매","temp":6,"entered":true,"shock":true,"scores":{"heat":48.9,"dist":47.8,"cap":72.3,"rev":26.3,"whip":48.2},"position":70.4,"cash":29.6,"actions":[{"tag":"B1","label":"B1 투매 탐색 매수","size":1.7,"position":70.4,"cash":29.6,"lev":"1x"}]},{"date":"2026-06-08","close":571.18,"state":"CAPITULATION","stateKo":"투매","temp":6,"entered":false,"shock":false,"scores":{"heat":66.8,"dist":45.9,"cap":51.4,"rev":38.2,"whip":53.5},"position":70.4,"cash":29.6,"actions":[]},{"date":"2026-06-09","close":561.87,"state":"UPTREND","stateKo":"정상 추세","temp":2,"entered":true,"shock":false,"scores":{"heat":54.6,"dist":50.6,"cap":61.4,"rev":19.8,"whip":61.7},"position":70.4,"cash":29.6,"actions":[]},{"date":"2026-06-10","close":541.25,"state":"CAPITULATION","stateKo":"투매","temp":6,"entered":true,"shock":true,"scores":{"heat":43.5,"dist":53.7,"cap":72.9,"rev":22.0,"whip":59.2},"position":70.4,"cash":29.6,"actions":[]},{"date":"2026-06-11","close":586.65,"state":"CAPITULATION","stateKo":"투매","temp":6,"entered":false,"shock":false,"scores":{"heat":69.1,"dist":47.5,"cap":49.7,"rev":56.6,"whip":61.8},"position":70.4,"cash":29.6,"actions":[]},{"date":"2026-06-12","close":595.97,"state":"CAPITULATION","stateKo":"투매","temp":6,"entered":false,"shock":false,"scores":{"heat":74.4,"dist":43.0,"cap":40.3,"rev":80.7,"whip":58.0},"position":70.4,"cash":29.6,"actions":[]},{"date":"2026-06-15","close":628.45,"state":"RECOVERY","stateKo":"회복","temp":4,"entered":true,"shock":false,"scores":{"heat":87.1,"dist":34.3,"cap":26.8,"rev":79.4,"whip":48.0},"position":75.2,"cash":24.8,"actions":[{"tag":"B3","label":"B3 반등 확인 매수","size":4.9,"position":75.2,"cash":24.8,"lev":"2x 허용"}]},{"date":"2026-06-16","close":591.24,"state":"RECOVERY","stateKo":"회복","temp":4,"entered":false,"shock":true,"scores":{"heat":62.3,"dist":59.3,"cap":44.9,"rev":76.8,"whip":52.9},"position":75.2,"cash":24.8,"actions":[]},{"date":"2026-06-17","close":599.73,"state":"RECOVERY","stateKo":"회복","temp":4,"entered":false,"shock":false,"scores":{"heat":68.4,"dist":56.9,"cap":47.8,"rev":85.5,"whip":57.5},"position":75.2,"cash":24.8,"actions":[]},{"date":"2026-06-18","close":639.45,"state":"RECOVERY","stateKo":"회복","temp":4,"entered":false,"shock":false,"scores":{"heat":84.1,"dist":41.2,"cap":28.5,"rev":83.7,"whip":53.1},"position":93.4,"cash":6.6,"actions":[{"tag":"B4","label":"B4 회복 투입","size":18.2,"position":93.4,"cash":6.6,"lev":"2x 허용"}]},{"date":"2026-06-22","close":655.01,"state":"RECOVERY","stateKo":"회복","temp":4,"entered":false,"shock":false,"scores":{"heat":88.2,"dist":32.2,"cap":32.9,"rev":81.5,"whip":53.2},"position":93.4,"cash":6.6,"actions":[]},{"date":"2026-06-23","close":603.39,"state":"RECOVERY","stateKo":"회복","temp":4,"entered":false,"shock":true,"scores":{"heat":56.1,"dist":52.6,"cap":60.5,"rev":61.5,"whip":55.0},"position":93.4,"cash":6.6,"actions":[]},{"date":"2026-06-24","close":601.5,"state":"RECOVERY","stateKo":"회복","temp":4,"entered":false,"shock":false,"scores":{"heat":51.8,"dist":51.5,"cap":60.8,"rev":49.6,"whip":52.4},"position":93.4,"cash":6.6,"actions":[]},{"date":"2026-06-25","close":625.2,"state":"RECOVERY","stateKo":"회복","temp":4,"entered":false,"shock":false,"scores":{"heat":67.0,"dist":38.2,"cap":51.0,"rev":60.8,"whip":58.8},"position":93.4,"cash":6.6,"actions":[]},{"date":"2026-06-26","close":589.94,"state":"UPTREND","stateKo":"정상 추세","temp":2,"entered":true,"shock":true,"scores":{"heat":43.4,"dist":61.6,"cap":61.9,"rev":27.7,"whip":62.3},"position":93.4,"cash":6.6,"actions":[]},{"date":"2026-06-29","close":614.35,"state":"UPTREND","stateKo":"정상 추세","temp":2,"entered":false,"shock":false,"scores":{"heat":58.7,"dist":59.3,"cap":50.6,"rev":21.8,"whip":63.5},"position":93.4,"cash":6.6,"actions":[]},{"date":"2026-06-30","close":640.76,"state":"UPTREND","stateKo":"정상 추세","temp":2,"entered":false,"shock":false,"scores":{"heat":72.1,"dist":47.7,"cap":38.2,"rev":72.3,"whip":64.5},"position":93.4,"cash":6.6,"actions":[{"tag":"CYCLE","label":"사이클 종료 — 새 사이클 #2 시작","position":93.4,"cash":6.6}]},{"date":"2026-07-01","close":599.7,"state":"UPTREND","stateKo":"정상 추세","temp":2,"entered":false,"shock":true,"scores":{"heat":40.9,"dist":55.8,"cap":53.7,"rev":49.3,"whip":66.7},"position":93.4,"cash":6.6,"actions":[]},{"date":"2026-07-02","close":566.32,"state":"UPTREND","stateKo":"정상 추세","temp":2,"entered":false,"shock":true,"scores":{"heat":25.8,"dist":71.0,"cap":58.4,"rev":30.0,"whip":66.7},"position":93.4,"cash":6.6,"actions":[]},{"date":"2026-07-06","close":581.51,"state":"DISTRIBUTION","stateKo":"분배","temp":1,"entered":true,"shock":false,"scores":{"heat":36.7,"dist":71.1,"cap":46.9,"rev":51.9,"whip":73.1},"position":72.9,"cash":27.1,"actions":[{"tag":"S2","label":"S2 분배 익절","size":20.6,"position":72.9,"cash":27.1}]},{"date":"2026-07-07","close":551.69,"state":"DISTRIBUTION","stateKo":"분배","temp":1,"entered":false,"shock":true,"scores":{"heat":26.8,"dist":73.7,"cap":59.3,"rev":31.0,"whip":76.8},"position":72.9,"cash":27.1,"actions":[]},{"date":"2026-07-08","close":562.03,"state":"DISTRIBUTION","stateKo":"분배","temp":1,"entered":false,"shock":false,"scores":{"heat":31.1,"dist":73.2,"cap":57.0,"rev":31.8,"whip":78.9},"position":72.9,"cash":27.1,"actions":[]},{"date":"2026-07-09","close":581.7,"state":"CORRECTION","stateKo":"조정","temp":3,"entered":true,"shock":false,"scores":{"heat":43.2,"dist":71.0,"cap":47.3,"rev":46.8,"whip":74.2},"position":53.2,"cash":46.8,"actions":[{"tag":"S3","label":"S3 조정 확정 축소","size":19.7,"position":53.2,"cash":46.8}]},{"date":"2026-07-10","close":581.34,"state":"CORRECTION","stateKo":"조정","temp":3,"entered":false,"shock":false,"scores":{"heat":39.1,"dist":68.9,"cap":48.5,"rev":56.8,"whip":74.4},"position":53.2,"cash":46.8,"actions":[]},{"date":"2026-07-13","close":553.61,"state":"CORRECTION","stateKo":"조정","temp":3,"entered":false,"shock":true,"scores":{"heat":21.3,"dist":63.2,"cap":65.6,"rev":36.6,"whip":70.9},"position":39.9,"cash":60.1,"actions":[{"tag":"S4","label":"S4 추세 훼손 축소","size":13.3,"position":39.9,"cash":60.1}]},{"date":"2026-07-14","close":567.92,"state":"CORRECTION","stateKo":"조정","temp":3,"entered":false,"shock":false,"scores":{"heat":31.0,"dist":65.2,"cap":53.2,"rev":49.6,"whip":71.9},"position":39.9,"cash":60.1,"actions":[]},{"date":"2026-07-15","close":555.27,"state":"CORRECTION","stateKo":"조정","temp":3,"entered":false,"shock":false,"scores":{"heat":21.1,"dist":69.1,"cap":55.4,"rev":44.3,"whip":78.3},"position":39.9,"cash":60.1,"actions":[]},{"date":"2026-07-16","close":530.5,"state":"CORRECTION","stateKo":"조정","temp":3,"entered":false,"shock":true,"scores":{"heat":14.4,"dist":70.8,"cap":66.9,"rev":19.6,"whip":70.8},"position":39.9,"cash":60.1,"actions":[]},{"date":"2026-07-17","close":521.81,"state":"CORRECTION","stateKo":"조정","temp":3,"entered":false,"shock":false,"scores":{"heat":12.7,"dist":72.7,"cap":77.5,"rev":15.2,"whip":66.0},"position":39.9,"cash":60.1,"actions":[]},{"date":"2026-07-20","close":524.14,"state":"CORRECTION","stateKo":"조정","temp":3,"entered":false,"shock":false,"scores":{"heat":16.8,"dist":72.3,"cap":70.3,"rev":32.3,"whip":63.2},"position":39.9,"cash":60.1,"actions":[]},{"date":"2026-07-21","close":552.69,"state":"CORRECTION","stateKo":"조정","temp":3,"entered":false,"shock":false,"scores":{"heat":29.9,"dist":70.9,"cap":57.6,"rev":39.7,"whip":57.1},"position":39.9,"cash":60.1,"actions":[]},{"date":"2026-07-22","close":555.52,"state":"CORRECTION","stateKo":"조정","temp":3,"entered":false,"shock":false,"scores":{"heat":33.7,"dist":70.1,"cap":53.9,"rev":68.7,"whip":53.3},"position":39.9,"cash":60.1,"actions":[]},{"date":"2026-07-23","close":551.24,"state":"REVERSAL_PROBE","stateKo":"반등 탐색","temp":5,"entered":true,"shock":false,"scores":{"heat":25.7,"dist":70.2,"cap":68.0,"rev":65.2,"whip":57.8},"position":45.5,"cash":54.5,"actions":[{"tag":"B2","label":"B2 반등 시도 매수","size":5.6,"position":45.5,"cash":54.5,"lev":"1x"}]},{"date":"2026-07-24","close":527.01,"state":"CAPITULATION","stateKo":"투매","temp":6,"entered":true,"shock":true,"scores":{"heat":16.0,"dist":74.3,"cap":74.4,"rev":44.1,"whip":52.6},"position":48.4,"cash":51.6,"actions":[{"tag":"B1","label":"B1 투매 탐색 매수","size":2.9,"position":48.4,"cash":51.6,"lev":"1x"}]},{"date":"2026-07-27","close":516.23,"state":"CAPITULATION","stateKo":"투매","temp":6,"entered":false,"shock":false,"scores":{"heat":13.8,"dist":74.7,"cap":78.2,"rev":35.9,"whip":56.8},"position":48.4,"cash":51.6,"actions":[]},{"date":"2026-07-28","close":491.46,"state":"CAPITULATION","stateKo":"투매","temp":6,"entered":false,"shock":true,"scores":{"heat":7.9,"dist":74.8,"cap":80.1,"rev":17.6,"whip":52.3},"position":48.4,"cash":51.6,"actions":[]},{"date":"2026-07-29","close":465.0,"state":"CAPITULATION","stateKo":"투매","temp":6,"entered":false,"shock":true,"scores":{"heat":4.2,"dist":75.4,"cap":88.4,"rev":12.7,"whip":43.3},"position":39.9,"cash":60.1,"actions":[{"tag":"STOP","label":"탐색 물량 무효화 손절","size":8.5,"position":39.9,"cash":60.1,"stopAt":483.52}]},{"date":"2026-07-30","close":504.53,"state":"CAPITULATION","stateKo":"투매","temp":6,"entered":false,"shock":false,"scores":{"heat":19.2,"dist":75.3,"cap":64.5,"rev":42.6,"whip":44.0},"position":39.9,"cash":60.1,"actions":[]},{"date":"2026-07-31","close":504.89,"state":"CAPITULATION","stateKo":"투매","temp":6,"entered":false,"shock":false,"scores":{"heat":22.6,"dist":72.6,"cap":58.3,"rev":50.5,"whip":44.3},"position":39.9,"cash":60.1,"actions":[]}],"events":[{"date":"2026-05-01","state":"과열","acts":[{"tag":"S1","label":"S1 과열 익절","size":12.0,"position":88.0,"cash":12.0}]},{"date":"2026-05-18","state":"분배","acts":[{"tag":"S2","label":"S2 분배 익절","size":19.4,"position":68.6,"cash":31.4}]},{"date":"2026-06-05","state":"투매","acts":[{"tag":"B1","label":"B1 투매 탐색 매수","size":1.7,"position":70.4,"cash":29.6,"lev":"1x"}]},{"date":"2026-06-15","state":"회복","acts":[{"tag":"B3","label":"B3 반등 확인 매수","size":4.9,"position":75.2,"cash":24.8,"lev":"2x 허용"}]},{"date":"2026-06-18","state":"회복","acts":[{"tag":"B4","label":"B4 회복 투입","size":18.2,"position":93.4,"cash":6.6,"lev":"2x 허용"}]},{"date":"2026-06-30","state":"정상 추세","acts":[{"tag":"CYCLE","label":"사이클 종료 — 새 사이클 #2 시작","position":93.4,"cash":6.6}]},{"date":"2026-07-06","state":"분배","acts":[{"tag":"S2","label":"S2 분배 익절","size":20.6,"position":72.9,"cash":27.1}]},{"date":"2026-07-09","state":"조정","acts":[{"tag":"S3","label":"S3 조정 확정 축소","size":19.7,"position":53.2,"cash":46.8}]},{"date":"2026-07-13","state":"조정","acts":[{"tag":"S4","label":"S4 추세 훼손 축소","size":13.3,"position":39.9,"cash":60.1}]},{"date":"2026-07-23","state":"반등 탐색","acts":[{"tag":"B2","label":"B2 반등 시도 매수","size":5.6,"position":45.5,"cash":54.5,"lev":"1x"}]},{"date":"2026-07-24","state":"투매","acts":[{"tag":"B1","label":"B1 투매 탐색 매수","size":2.9,"position":48.4,"cash":51.6,"lev":"1x"}]},{"date":"2026-07-29","state":"투매","acts":[{"tag":"STOP","label":"탐색 물량 무효화 손절","size":8.5,"position":39.9,"cash":60.1,"stopAt":483.52}]}],"perf":{"nav":109.2,"buyHold":109.5,"navRet":9.2,"bhRet":9.5},"final":{"position":39.9,"cash":60.1,"whipsawMode":false,"stopOuts":1,"cycles":2,"sellsDone":["S2","S3","S4"],"buysDone":[]}}};
+<script src="/ez-footer.js"></script>
 
+<script>
 (function () {
   'use strict';
-  if (!DATA) { document.body.insertAdjacentHTML('beforeend', '<p style="padding:20px">데이터가 주입되지 않았습니다.</p>'); return; }
+  var SRC = '/data/swing-ai.json';
+  var TEMP = ['--sa-t0', '--sa-t1', '--sa-t2', '--sa-t3', '--sa-t4', '--sa-t5', '--sa-t6'];
+  var TEMP_BG = ['--sa-t0-bg', '--sa-t1-bg', '--sa-t2-bg', '--sa-t3-bg', '--sa-t4-bg', '--sa-t5-bg', '--sa-t6-bg'];
 
-  var TEMP_VAR = ['--t0', '--t1', '--t2', '--t3', '--t4', '--t5', '--t6'];
-  var TEMP_BG = ['--t0-bg', '--t1-bg', '--t2-bg', '--t3-bg', '--t4-bg', '--t5-bg', '--t6-bg'];
   function cv(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
-  function tcol(t) { return cv(TEMP_VAR[t]); }
-  function tbg(t) { return cv(TEMP_BG[t]); }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function num(v, nd) { return (typeof v !== 'number' || !isFinite(v)) ? '—' : v.toFixed(nd == null ? 1 : nd); }
+  function pm(v, nd) { return (typeof v !== 'number') ? '—' : (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(nd == null ? 1 : nd); }
+  function dateKo(iso) {
+    var p = String(iso || '').split('-');
+    if (p.length !== 3) return iso;
+    var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+    return iso + '(' + ['일', '월', '화', '수', '목', '금', '토'][d.getUTCDay()] + ')';
+  }
+  function guard(name, fn) {
+    try { fn(); } catch (e) { if (window.console) console.warn('[swing-ai] ' + name, e); }
+  }
 
-  var SC_META = {
-    heat: { name: '과열 Heat', help: '가격이 얼마나 앞서 달렸나. 높아도 그 자체는 매도 신호 아님' },
-    dist: { name: '추세훼손 Distribution', help: '실제 매도가 필요한가. 고점 갱신 실패·상대강도·breadth·거래량' },
-    cap:  { name: '투매 Capitulation', help: '얼마나 깊이 팔렸나. 가격 매력도이지 매수 신호 아님' },
-    rev:  { name: '반등확인 Reversal', help: '진짜 반등이 시작됐나. 신저가 실패·10일선 회복·거래량' },
-    whip: { name: '휩쏘 Whipsaw', help: '높으면 신호를 끄지 않고 포지션 크기를 줄임' },
-  };
-  var SC_COLOR = { heat: '--t0', dist: '--t1', cap: '--t6', rev: '--t4', whip: '--t3' };
+  var D = null;
 
-  var soxx = DATA.tickers.SOXX, card = soxx.card, rep = DATA.replay;
+  // ── 1. 오늘의 결론 ────────────────────────────────────────────────────
+  function renderVerdict() {
+    var c = D.tickers.SOXX.card;
+    document.getElementById('sa-verdict').innerHTML =
+      '<span class="sa-badge" style="background:' + cv(TEMP[c.temp]) + '">' + esc(c.stateKo) + '</span>' +
+      '<span class="sa-asof">' + esc(dateKo(D.asOf)) + ' 마감 기준 · SOXX ' + num(c.close, 2) + '</span>';
+    document.getElementById('sa-reco').textContent = c.reco;
+    var q = D.tickers.QQQ.card;
+    document.getElementById('sa-facts').innerHTML =
+      '<div class="sa-fact"><span>나스닥100 (QQQ) 상태</span><b>' + esc(q.stateKo) + '</b></div>' +
+      '<div class="sa-fact"><span>신호 합의도 — 다섯 신호 계열이 같은 방향인가</span><b>' + c.confidence + '%</b></div>' +
+      '<div class="sa-fact"><span>매수 크기 — 합의도·휩쏘 반영 시 기본 대비</span><b>' + c.sizeMult + '%</b></div>' +
+      '<div class="sa-fact"><span>무효화선 — 종가 이탈 시 탐색 물량 손절</span><b>' + num(c.invalidation, 2) + '</b></div>';
+    document.getElementById('sa-cadence').textContent =
+      '갱신 ' + D.generatedAtKST + ' · 다음 갱신은 다음 주 일요일 아침(한국시각). 상태 확정은 하루 지표가 아니라 3거래일 중 2일 지속 기준이며, 급락일은 당일 즉시 전환.';
+    document.getElementById('sa-stamp').textContent =
+      D.system + ' · 점수는 SOXX 자신의 직전 5년 분포 대비 백분위(0~100) · 기준일 ' + D.asOf;
+  }
 
-  // ── 행동 카드 ─────────────────────────────────────────────────────────
-  (function () {
-    var host = document.getElementById('action-card');
-    host.innerHTML =
-      '<h2>현재 행동 카드 — SOXX</h2>' +
-      '<p class="sub">' + esc(soxx.asOf) + ' 종가 기준. 결론 한 장이 먼저, 근거는 아래 점수로.</p>' +
-      '<div class="act-top">' +
-        '<span class="state-badge" style="background:' + tcol(card.temp) + '">' + esc(card.stateKo) + '</span>' +
-        '<span class="act-price">SOXX ' + num(card.close, 2) + '</span>' +
-      '</div>' +
-      '<p class="act-reco">' + esc(card.reco) + '</p>' +
-      '<div class="act-grid">' +
-        '<div class="act-row"><span>레버리지</span><b>' + esc(card.leverage) + '</b></div>' +
-        '<div class="act-row"><span>무효화선 (전저점 −0.5ATR)</span><b>' + num(card.invalidation, 2) + '</b></div>' +
-        '<div class="act-row"><span>샹들리에 엑시트 1.5 / 2.0 / 3.0 ATR</span><b>' +
-          num(card.chandelier['1.5'], 0) + ' / ' + num(card.chandelier['2.0'], 0) + ' / ' + num(card.chandelier['3.0'], 0) + '</b></div>' +
-        '<div class="act-row"><span>QQQ 상태 (참고)</span><b>' + esc(DATA.tickers.QQQ.card.stateKo) + '</b></div>' +
-        '<div class="act-row"><span>신호 합의도 Confidence</span><b>' + card.confidence + '%</b></div>' +
-        '<div class="act-row"><span>매수 크기 배수 (합의도×휩쏘 반영)</span><b>기본의 ' + card.sizeMult + '%</b></div>' +
-        '<div class="act-row"><span>연속 레버리지 예산 (목표변동성÷실현변동성)</span><b>' + num(card.levBudget, 1) + 'x</b></div>' +
-      '</div>' +
-      '<p class="act-note">권고 문구는 상태별 고정 규칙(기획서 5부)이고 개인 맞춤 조언이 아닙니다. 종가가 무효화선을 이탈하면 탐색 물량은 기계적으로 손절 — 손절은 실패가 아니라 추가 하락 보험료.</p>';
-  })();
+  // ── 2. 두 질문 ────────────────────────────────────────────────────────
+  function meter(name, val, colVar, help) {
+    var col = cv(colVar);
+    return '<div class="sa-meter">' +
+      '<div class="sa-meter-top"><span class="sa-meter-name">' + esc(name) + '</span>' +
+        '<span class="sa-meter-val" style="color:' + col + '">' + num(val, 0) + '</span></div>' +
+      '<div class="sa-meter-bar"><span style="width:' + Math.max(2, val) + '%;background:' + col + '"></span></div>' +
+      '<div class="sa-meter-help">' + esc(help) + '</div>' +
+    '</div>';
+  }
 
-  // ── Swing Cycle 패널 ──────────────────────────────────────────────────
-  (function () {
-    var f = rep.final;
-    var host = document.getElementById('cycle-panel');
-    var sTags = ['S1', 'S2', 'S3', 'S4'], bTags = ['B1', 'B2', 'B3', 'B4'];
-    function strip(tags, doneList, cls) {
-      return '<div class="stage-strip">' + tags.map(function (t) {
-        var on = doneList.indexOf(t) >= 0;
-        return '<span class="stage' + (on ? ' done-' + cls : '') + '">' + t + (on ? ' 실행' : '') + '</span>';
-      }).join('') + '</div>';
-    }
-    host.innerHTML =
-      '<h2>Swing Cycle — Replay 종료 시점의 원장</h2>' +
-      '<p class="sub">"오늘 어떤 분석이 나왔나"가 아니라 "세운 작전을 어디까지 실행했나"를 먼저 봅니다.</p>' +
-      '<p class="cyc-line">사이클 <b>#' + f.cycles + '</b> · 매도 <b>' + f.sellsDone.length + '/4</b> 실행 · 매수 <b>' + f.buysDone.length + '/4</b> 실행 · 현금 <b>' + num(f.cash) + '%</b> · stop-out ' + f.stopOuts + '회' + (f.whipsawMode ? ' · <b>Whipsaw Mode</b>' : '') + '</p>' +
-      strip(sTags, f.sellsDone, 's') + strip(bTags, f.buysDone, 'b') +
-      '<p class="act-note">stop-out 뒤 B1·B2 는 재진입 가능 상태로 되돌아감 — "재진입가 &gt; 손절가는 실패가 아니다"(기획서 5부). 10거래일 내 stop-out 2회면 Whipsaw Mode(레버리지 금지).</p>';
-  })();
+  function renderQA() {
+    var sc = D.tickers.SOXX.card.scores;
 
-  // ── 점수 드릴다운 ─────────────────────────────────────────────────────
-  (function () {
-    var host = document.getElementById('scores');
-    host.innerHTML = Object.keys(SC_META).map(function (k) {
-      var v = card.scores[k], m = SC_META[k], col = cv(SC_COLOR[k]);
-      return '<div class="score">' +
-        '<div class="score-top"><span class="score-name">' + esc(m.name) + '</span>' +
-          '<span class="score-val" style="color:' + col + '">' + num(v, 0) + '</span></div>' +
-        '<div class="score-bar"><span style="width:' + Math.max(2, v) + '%;background:' + col + '"></span></div>' +
-        '<div class="score-help">' + esc(m.help) + '</div>' +
+    // 과매수 판독 — 과열과 추세훼손을 함께 읽는다
+    var obAns, obCol;
+    if (sc.dist >= 62) { obAns = '과열 여부와 무관하게 추세훼손 진행 — 진짜 매도 신호'; obCol = cv('--sa-dist'); }
+    else if (sc.heat >= 80 && sc.dist < 55) { obAns = '뜨겁지만 추세는 정상 — 소량 익절만, 추가 매도 금지'; obCol = cv('--sa-heat'); }
+    else if (sc.heat >= 80) { obAns = '과열 + 훼손 조짐 — 분배 신호 확인 대기'; obCol = cv('--sa-heat'); }
+    else { obAns = '과매수 아님'; obCol = cv('--ez-text2'); }
+    document.getElementById('sa-q-ob').innerHTML =
+      '<h2 class="sa-q-h">지금 과매수인가</h2>' +
+      '<p class="sa-q-a" style="color:' + obCol + '">' + esc(obAns) + '</p>' +
+      meter('과열 — 가격이 얼마나 앞서 달렸나', sc.heat, '--sa-heat', '높다고 곧 하락 아님. 강한 추세의 과매수는 몇 주씩 지속') +
+      meter('추세훼손 — 실제 매도가 필요한가', sc.dist, '--sa-dist', '고점 갱신 실패·상대강도 하락·오르는 종목 축소·거래량 쏠림') +
+      '<p class="sa-q-note"><b>읽기:</b> 과열 90 + 훼손 25 = 아직 강한 추세(소량 익절만). 과열 70 + 훼손 78 = 과열은 식었지만 진짜 매도 신호. 매도를 결정하는 쪽은 언제나 아래 막대.</p>';
+
+    // 과매도 판독 — 투매와 반등확인을 함께 읽는다
+    var osAns, osCol;
+    if (sc.rev >= 62) { osAns = '반등 확인 진행 — 본 매수 구간'; osCol = cv('--sa-rev'); }
+    else if (sc.cap >= 70) { osAns = '투매 구간 — 탐색 매수만, 반드시 1배 자산'; osCol = cv('--sa-cap'); }
+    else if (sc.cap >= 50 && sc.rev >= 50) { osAns = '깊게 팔린 뒤 반등 시도 중 — 2차 매수 검토 구간'; osCol = cv('--sa-rev'); }
+    else if (sc.cap >= 50) { osAns = '조정 진행 — 반등 확인 전'; osCol = cv('--sa-cap'); }
+    else { osAns = '과매도 아님'; osCol = cv('--ez-text2'); }
+    document.getElementById('sa-q-os').innerHTML =
+      '<h2 class="sa-q-h">지금 과매도인가</h2>' +
+      '<p class="sa-q-a" style="color:' + osCol + '">' + esc(osAns) + '</p>' +
+      meter('투매 — 얼마나 깊게 팔렸나', sc.cap, '--sa-cap', '가격 매력도이지 매수 신호 아님. 공포·변동성·낙폭의 깊이') +
+      meter('반등확인 — 진짜 반등이 시작됐나', sc.rev, '--sa-rev', '신저가 실패·10일선 회복·상승 거래량·변동성 진정') +
+      '<p class="sa-q-note"><b>읽기:</b> 투매 80 + 확인 30 = 싸졌지만 떨어지는 칼(탐색 물량만). 투매 60 + 확인 70 = 반등 진행(본 매수). 매수를 결정하는 쪽은 언제나 아래 막대.</p>';
+  }
+
+  // ── 3. 사다리 ─────────────────────────────────────────────────────────
+  var SELL_LADDER = [
+    ['S1', 'OVERHEAT', '과열 진입 시 10~15% 익절', '수익 일부 확보와 추세 존중의 양립. 여기서 크게 팔지 않는 것이 핵심'],
+    ['S2', 'DISTRIBUTION', '분배 확인 시 20~25% 추가', '고점 갱신 실패·breadth 악화 — 진짜 매도 신호'],
+    ['S3', 'CORRECTION', '조정 확정 시 25~30% 추가', '20일선 붕괴·하락 추세 현실화. 신규 레버리지 금지'],
+    ['S4', 'CORRECTION', '추세 훼손 심화 시 잔여 축소', '50일선 이탈 시 방어 우선'],
+  ];
+  var BUY_LADDER = [
+    ['B1', 'CAPITULATION', '투매 구간 탐색 매수 10~15%', '바닥 미확인 전제. 반드시 1배 자산(SOXX·QQQ)만'],
+    ['B2', 'REVERSAL_PROBE', '반등 시도 시 20~25% 추가', '신저가 실패·장중 저점 회복. 무효화선 필수'],
+    ['B3', 'RECOVERY', '반등 확인 시 25~30% 추가', '이동평균 회복·추세 복원. 조건 충족 시 2배 검토'],
+    ['B4', 'RECOVERY', '회복 확정 시 잔여 투입', '회복 유지 확인 후. 조건 충족 시 3배 검토'],
+  ];
+
+  function ladder(title, rows, state, extra) {
+    var col = cv(TEMP[D.stateTemp[state] != null ? D.stateTemp[state] : 2]);
+    var cur = D.tickers.SOXX.card.state;
+    return '<div><div class="sa-lad-h">' + esc(title) + '</div><div class="sa-lad">' +
+      rows.map(function (r, i) {
+        var now = r[1] === cur && !(cur === 'CORRECTION' && title.indexOf('매도') >= 0 && i === 3 && rows[2][1] === cur && i !== 3);
+        // CORRECTION 은 S3·S4 두 칸에 걸린다 — 둘 다 표시
+        now = r[1] === cur;
+        var st = '--sa-now:' + cv(TEMP[D.stateTemp[r[1]]]);
+        return '<div class="sa-step' + (now ? ' now' : '') + '" style="' + st + '">' +
+          '<span class="sa-step-tag">' + r[0] + (now ? '<span class="sa-now-chip">지금</span>' : '') + '</span>' +
+          '<span class="sa-step-txt"><b>' + esc(r[2]) + '</b> — ' + esc(r[3]) + '</span>' +
+        '</div>';
+      }).join('') + '</div></div>';
+  }
+
+  function renderLadders() {
+    document.getElementById('sa-ladders').innerHTML =
+      ladder('매도 사다리 — 오를 때 한 칸씩', SELL_LADDER) +
+      ladder('매수 사다리 — 내릴 때 한 칸씩', BUY_LADDER);
+  }
+
+  // ── 4. 레버리지 ───────────────────────────────────────────────────────
+  function renderLev() {
+    var c = D.tickers.SOXX.card;
+    var lv = [['1배', 'SOXX · QQQ', true], ['2배', 'QLD 등', c.gate2], ['3배', 'SOXL · TQQQ', c.gate3]];
+    document.getElementById('sa-lev').innerHTML = lv.map(function (l) {
+      return '<div class="sa-lev-cell' + (l[2] ? ' on' : '') + '">' +
+        '<div class="sa-lev-x">' + l[0] + '</div>' +
+        '<div class="sa-lev-s">' + esc(l[1]) + ' · ' + (l[2] ? '허용' : '금지') + '</div>' +
       '</div>';
     }).join('');
-  })();
+    document.getElementById('sa-lev-note').innerHTML =
+      '현재 판정 <b>' + esc(c.leverage) + '</b> · 변동성 기준 유효 배율 예산 <b>' + num(c.levBudget, 1) + '배</b>. ' +
+      '조건 — 2배는 반등확인 60·휩쏘 55 이내, 3배는 반등확인 70·휩쏘 35 이내 + breadth 개선. ' +
+      '레버리지의 손절 기준은 레버리지 ETF 가격이 아니라 <b>기초지수(SOXX·QQQ)의 기술적 레벨</b> — 3배 상품의 자체 변동성은 손절선을 무의미하게 관통함.';
+  }
 
-  // ── 차트 ──────────────────────────────────────────────────────────────
-  (function () {
-    var ch = soxx.chart;
-    var canvas = document.getElementById('chart');
+  // ── 5. 차트 ───────────────────────────────────────────────────────────
+  function drawChart() {
+    var ch = D.tickers.SOXX.chart;
+    var canvas = document.getElementById('sa-canvas');
     var ctx = canvas.getContext('2d');
+    var dpr = window.devicePixelRatio || 1;
+    var w = canvas.clientWidth || 340, h = canvas.clientHeight || 320;
+    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
 
-    // 리플레이 액션을 날짜로 색인
-    var actByDate = {};
-    rep.events.forEach(function (e) {
-      e.acts.forEach(function (a) {
-        if (a.tag === 'CYCLE') return;
-        (actByDate[e.date] = actByDate[e.date] || []).push(a.tag);
-      });
-    });
+    var padL = 40, padR = 8, padT = 8, padB = 22;
+    var W = w - padL - padR, H = h - padT - padB;
+    var n = ch.dates.length;
+    if (!n) return;
+    var vals = ch.close.filter(function (v) { return v != null; });
+    var lo = Math.min.apply(null, vals) * 0.985, hi = Math.max.apply(null, vals) * 1.015;
+    var x = function (i) { return padL + (i / (n - 1)) * W; };
+    var y = function (v) { return padT + (1 - (v - lo) / (hi - lo)) * H; };
 
-    function draw() {
-      var dpr = window.devicePixelRatio || 1;
-      var w = canvas.clientWidth || 340, h = canvas.clientHeight || 330;
-      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, w, h);
-
-      var padL = 40, padR = 8, padT = 8, padB = 22;
-      var W = w - padL - padR, H = h - padT - padB;
-      var n = ch.dates.length;
-      var vals = ch.close.filter(function (v) { return v != null; });
-      var lo = Math.min.apply(null, vals) * 0.985, hi = Math.max.apply(null, vals) * 1.015;
-      var x = function (i) { return padL + (i / (n - 1)) * W; };
-      var y = function (v) { return padT + (1 - (v - lo) / (hi - lo)) * H; };
-
-      // 상태 배경 띠 — 같은 온도 연속 구간을 합쳐 그린다
-      var i0 = 0;
-      for (var i = 1; i <= n; i++) {
-        if (i === n || ch.temp[i] !== ch.temp[i0]) {
-          ctx.fillStyle = tbg(ch.temp[i0]);
-          var xa = i0 === 0 ? padL : (x(i0 - 1) + x(i0)) / 2;
-          var xb = i === n ? padL + W : (x(i - 1) + x(i)) / 2;
-          ctx.fillRect(xa, padT, xb - xa, H);
-          i0 = i;
-        }
+    var i0 = 0;
+    for (var i = 1; i <= n; i++) {
+      if (i === n || ch.temp[i] !== ch.temp[i0]) {
+        ctx.fillStyle = cv(TEMP_BG[ch.temp[i0]]);
+        var xa = i0 === 0 ? padL : (x(i0 - 1) + x(i0)) / 2;
+        var xb = i === n ? padL + W : (x(i - 1) + x(i)) / 2;
+        ctx.fillRect(xa, padT, xb - xa, H);
+        i0 = i;
       }
-
-      // 눈금
-      var grid = cv('--border'), label = cv('--text3');
-      ctx.strokeStyle = grid; ctx.lineWidth = 1; ctx.fillStyle = label;
-      ctx.font = '12px sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
-      for (var g = 0; g < 5; g++) {
-        var vv = lo + (hi - lo) * g / 4, yy = Math.round(y(vv)) + 0.5;
-        ctx.beginPath(); ctx.moveTo(padL, yy); ctx.lineTo(padL + W, yy); ctx.stroke();
-        ctx.fillText(String(Math.round(vv)), padL - 6, yy);
-      }
-      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-      var months = {}, ticks = [];
-      ch.dates.forEach(function (d, k) { var m = d.slice(0, 7); if (!months[m]) { months[m] = 1; ticks.push([k, m.slice(5) + '월']); } });
-      ticks.forEach(function (t) { ctx.fillText(t[1].replace(/^0/, ''), x(t[0]), padT + H + 6); });
-
-      // 20·50일선 (점선)
-      [['sma20', 0.55], ['sma50', 0.85]].forEach(function (sp) {
-        ctx.beginPath(); ctx.setLineDash([4, 4]); ctx.strokeStyle = label; ctx.globalAlpha = sp[1] === 0.55 ? 0.65 : 0.45; ctx.lineWidth = 1.1;
-        var pen = false;
-        for (var k = 0; k < n; k++) {
-          var v = ch[sp[0]][k];
-          if (v == null) { pen = false; continue; }
-          if (!pen) { ctx.moveTo(x(k), y(v)); pen = true; } else ctx.lineTo(x(k), y(v));
-        }
-        ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
-      });
-
-      // 종가
-      ctx.beginPath(); ctx.strokeStyle = cv('--text'); ctx.lineWidth = 1.8; ctx.lineJoin = 'round';
-      for (var k2 = 0; k2 < n; k2++) {
-        var v2 = ch.close[k2];
-        if (k2 === 0) ctx.moveTo(x(k2), y(v2)); else ctx.lineTo(x(k2), y(v2));
-      }
-      ctx.stroke();
-
-      // 액션 마커
-      ch.dates.forEach(function (d, k) {
-        var tags = actByDate[d];
-        if (!tags) return;
-        var py = y(ch.close[k]);
-        tags.forEach(function (t, j) {
-          var up = t[0] === 'B';
-          var stop = t === 'STOP';
-          var col = stop ? cv('--t3') : up ? cv('--green') : cv('--red');
-          ctx.fillStyle = col;
-          var px = x(k), off = (j + 1) * 13;
-          if (stop) {
-            ctx.font = '800 13px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText('×', px, py + off);
-          } else {
-            ctx.beginPath();
-            if (up) { ctx.moveTo(px, py + off); ctx.lineTo(px - 5, py + off + 9); ctx.lineTo(px + 5, py + off + 9); }
-            else { ctx.moveTo(px, py - off); ctx.lineTo(px - 5, py - off - 9); ctx.lineTo(px + 5, py - off - 9); }
-            ctx.closePath(); ctx.fill();
-          }
-        });
-      });
     }
-    draw();
-    if (window.ResizeObserver) new ResizeObserver(draw).observe(canvas);
-    var dk = window.matchMedia('(prefers-color-scheme: dark)');
-    if (dk.addEventListener) dk.addEventListener('change', function () { setTimeout(draw, 30); });
 
-    document.getElementById('legend').innerHTML =
-      Object.keys(DATA.stateKo).map(function (s) {
-        var t = DATA.stateTemp[s];
-        return '<span class="leg"><i class="sw" style="background:' + tcol(t) + '"></i>' + esc(DATA.stateKo[s]) + '</span>';
-      }).join('') +
-      '<span class="leg" style="color:var(--red)">▼ 매도</span>' +
-      '<span class="leg" style="color:var(--green)">▲ 매수</span>' +
-      '<span class="leg">× 무효화 손절</span>';
-  })();
-
-  // ── 타임라인 ──────────────────────────────────────────────────────────
-  (function () {
-    var host = document.getElementById('timeline');
-    var rows = [];
-    var prev = null;
-    rep.days.forEach(function (d) {
-      var changed = d.state !== prev;
-      if (!changed && !d.actions.length) { prev = d.state; return; }
-      var col = tcol(d.temp);
-      var html = '<div class="tl-row" style="border-left-color:' + col + '">' +
-        '<span class="tl-date">' + esc(d.date) + '</span>' +
-        '<span class="tl-state" style="color:' + col + '">' + esc(d.stateKo) +
-          (changed ? ' 진입' : '') + (d.shock ? ' · Shock' : '') +
-          ' <span style="color:var(--text3);font-weight:600">종가 ' + num(d.close, 0) +
-          ' · H' + num(d.scores.heat, 0) + ' D' + num(d.scores.dist, 0) +
-          ' C' + num(d.scores.cap, 0) + ' R' + num(d.scores.rev, 0) + '</span></span>';
-      d.actions.forEach(function (a) {
-        var sizeTxt = a.size != null ? ' <b>' + num(a.size) + '%p</b>' : '';
-        var levTxt = a.lev ? ' · ' + esc(a.lev) : '';
-        html += '<span class="tl-act">' + esc(a.label) + sizeTxt + levTxt +
-          (a.position != null ? ' → 보유 <b>' + num(a.position) + '%</b> · 현금 ' + num(a.cash) + '%' : '') +
-          (a.note ? ' · ' + esc(a.note) : '') + '</span>';
-      });
-      html += '</div>';
-      rows.push(html);
-      prev = d.state;
+    var grid = cv('--ez-border'), label = cv('--ez-text3');
+    ctx.strokeStyle = grid; ctx.lineWidth = 1; ctx.fillStyle = label;
+    ctx.font = '12px ' + (cv('--ez-font') || 'sans-serif');
+    ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    for (var g = 0; g < 5; g++) {
+      var vv = lo + (hi - lo) * g / 4, yy = Math.round(y(vv)) + 0.5;
+      ctx.beginPath(); ctx.moveTo(padL, yy); ctx.lineTo(padL + W, yy); ctx.stroke();
+      ctx.fillText(String(Math.round(vv)), padL - 6, yy);
+    }
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    var seen = {};
+    ch.dates.forEach(function (d, k) {
+      var m = d.slice(0, 7);
+      if (!seen[m]) { seen[m] = 1; ctx.fillText(String(+m.slice(5)) + '월', x(k), padT + H + 6); }
     });
-    host.innerHTML = rows.join('');
-  })();
 
-  // ── 다중 구간 검증 ────────────────────────────────────────────────────
-  (function () {
-    var host = document.getElementById('multi');
-    var multi = soxx.multi || [];
-    host.innerHTML = multi.map(function (m) {
-      var diff = m.perf.navRet - m.perf.bhRet;
-      var col = diff > 0.5 ? 'var(--green)' : diff < -0.5 ? 'var(--red)' : 'var(--text2)';
-      return '<div class="tl-row" style="border-left-color:' + col + '">' +
-        '<span class="tl-date">' + esc(m.name) + '</span>' +
-        '<span class="tl-state">' + esc(m.start) + ' ~ ' + esc(m.end) + '</span>' +
-        '<span class="tl-act">전략 <b>' + (m.perf.navRet > 0 ? '+' : '') + num(m.perf.navRet) + '%</b>' +
-          ' vs 보유지속 ' + (m.perf.bhRet > 0 ? '+' : '') + num(m.perf.bhRet) + '%' +
-          ' · 상태 전환 ' + m.transitions + '회 · 종료 보유 ' + num(m.final.position) + '%' +
-          ' · 매매 ' + m.events.length + '회</span>' +
-      '</div>';
+    [['sma20', 0.6], ['sma50', 0.4]].forEach(function (sp) {
+      ctx.beginPath(); ctx.setLineDash([4, 4]); ctx.strokeStyle = label;
+      ctx.globalAlpha = sp[1]; ctx.lineWidth = 1.1;
+      var pen = false;
+      for (var k = 0; k < n; k++) {
+        var v = ch[sp[0]][k];
+        if (v == null) { pen = false; continue; }
+        if (!pen) { ctx.moveTo(x(k), y(v)); pen = true; } else ctx.lineTo(x(k), y(v));
+      }
+      ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+    });
+
+    ctx.beginPath(); ctx.strokeStyle = cv('--ez-text'); ctx.lineWidth = 1.8; ctx.lineJoin = 'round';
+    for (var k2 = 0; k2 < n; k2++) {
+      if (k2 === 0) ctx.moveTo(x(k2), y(ch.close[k2])); else ctx.lineTo(x(k2), y(ch.close[k2]));
+    }
+    ctx.stroke();
+  }
+
+  function renderLegend() {
+    document.getElementById('sa-legend').innerHTML = Object.keys(D.stateKo).map(function (s) {
+      return '<span class="sa-leg"><i class="sa-sw" style="background:' + cv(TEMP[D.stateTemp[s]]) + '"></i>' + esc(D.stateKo[s]) + '</span>';
     }).join('');
-    document.getElementById('multi-verdict').innerHTML =
-      '<b>정직한 판독:</b> 급락 구간(2018 Q4·2020·2022-10·2025)에서는 보유지속과 비슷하거나 앞서면서 종료 시 현금을 확보 — 위험은 줄고 수익은 유지. 약점 둘도 그대로 보임 — <b>2022년형 장기 약세장</b>에서는 반등 때마다 재매수해 방어 폭이 얕고(−23.4% vs −25.9%), <b>2023년형 강한 랠리</b>에서는 눌림마다 팔아 상승분을 놓침(+30.6% vs +46.3%). 둘 다 Phase 3 walk-forward 의 1순위 튜닝 과제이며, 이 초기값으로 실거래 판단을 하지 않는 이유.';
-  })();
+  }
 
-  // ── 실측 대조 ─────────────────────────────────────────────────────────
-  (function () {
-    var f = rep.final;
-    document.getElementById('verdict').innerHTML =
-      '<ul class="ul">' +
-      '<li><b>5월 초 과열 판정 → S1 12%만 익절</b> — v1 실패의 원인이던 "과열에서 30% 매도"를 차단. 과열은 예고일 뿐이라 소량만 덜어내고 추세에 남음.</li>' +
-      '<li><b>6월 5일 −10.4% 쇼크 → Shock Transition 으로 즉시 투매 판정, B1 탐색매수</b> — 실제 이날 SOXX 는 −10.4% 급락 후 V자 회복. 시스템은 2~3일 기다리지 않고 당일 반응.</li>' +
-      '<li><b>6월 15~18일 회복 확인 → B3·B4 재투입(93%)</b> — 6월 22일 정점(655) 직전 재매수는 사후에 보면 아프지만, 그날까지의 데이터로는 정당한 판정. 매수 크기 배수 덕에 100% 가 아닌 93%에서 멈췄고, 시스템은 6월 30일 사이클을 닫고 매도 사다리를 리셋해 두 번째 하락에 대비.</li>' +
-      '<li><b>7월 6~13일 분배→조정 → S2·S3·S4 발동</b> — 고점 655 대비 약 −13% 구간에서 사다리가 순서대로 발동해 보유 39.9%까지 축소. "매일의 새 분석이 작전을 덮어쓰는" 문제 없이 단계가 기억됨.</li>' +
-      '<li><b>7월 23~24일 반등 탐색·투매 → B2+B1 탐색매수, 7월 29일 저점(465)에서 무효화 손절</b> — 탐색 물량 8.5%p 를 기계적으로 손절. 다음 날 +8.5% 반등으로 stop 직후 되돌림이 나왔지만, 이것이 "일찍 살 때 작게"의 비용이며 B1·B2 는 재진입 가능 상태로 복귀.</li>' +
-      '<li><b>Replay 종료(8/1): 보유 ' + num(f.position) + '% · 현금 ' + num(f.cash) + '% · 전략 ' + (rep.perf.navRet > 0 ? '+' : '') + num(rep.perf.navRet) + '% vs 보유지속 ' + (rep.perf.bhRet > 0 ? '+' : '') + num(rep.perf.bhRet) + '%</b> — 실화에서는 바닥에서 현금이 없었다. 시스템은 비슷한 수익을 절반 이하의 노출로 만들고, 현금을 들고 저점 구간에 진입해 8월 첫 주 반등(543)에서 반등 탐색 상태로 복귀.</li>' +
-      '</ul>' +
-      '<div class="warn"><b>남는 비용 두 가지(숨기지 않음):</b> 6월 18일 93% 재투입 뒤 6월 22일~7월 6일 하락 초입 −11% 를 거의 전량 보유로 맞음(사이클 리셋 전이라 매도 사다리가 잠겨 있던 구간). 7월 29일 저점 당일 손절 뒤 다음 날 +8.5% 를 탐색 물량 없이 봄. 둘 다 Phase 3 walk-forward 에서 임계치 튜닝 대상이며, 이 초기값 그대로도 "정점 100% 보유 → 바닥 현금 0%" 였던 실화보다는 구조적으로 낫다.</div>';
-  })();
+  // ── 7. 검증 기록 ──────────────────────────────────────────────────────
+  function renderProof() {
+    var r = D.replay;
+    document.getElementById('sa-replay-sum').innerHTML =
+      '2026-05-01~08-01 재현 — 그날까지 존재했던 데이터만 사용. 결과: 수익률 <b>' + pm(r.perf.navRet) + '%</b>' +
+      ' (계속 보유했다면 ' + pm(r.perf.bhRet) + '%) · 종료 시 현금 <b>' + num(r.final.cash, 0) + '%</b> 확보' +
+      ' — 정점에서 100% 들고 바닥에서 현금이 없던 경로와 달리, 저점 구간에 현금을 들고 진입.';
+    document.getElementById('sa-replay').innerHTML = (r.events || []).map(function (e) {
+      return '<div class="sa-mini-row"><b>' + esc(e.date) + '</b> · ' + esc(e.state) + ' — ' +
+        e.acts.map(function (a) {
+          return esc(a.label) + (a.size != null ? ' ' + num(a.size) + '%p' : '') +
+            (a.position != null ? ' → 보유 ' + num(a.position) + '%' : '');
+        }).join(' · ') + '</div>';
+    }).join('');
+    document.getElementById('sa-multi').innerHTML = (D.multi || []).map(function (m) {
+      return '<div class="sa-mini-row"><b>' + esc(m.name) + '</b> (' + esc(m.start) + '~' + esc(m.end) + ') — ' +
+        '규칙 ' + pm(m.perf.navRet) + '% vs 계속 보유 ' + pm(m.perf.bhRet) + '% · 종료 보유 ' + num(m.final.position, 0) + '%</div>';
+    }).join('') +
+    '<div class="sa-mini-row">정직한 판독 — 급락 구간에서는 계속 보유와 비슷한 수익을 더 적은 노출로 만들고 현금을 확보. 약점 둘도 그대로 보임: 장기 약세장(2022년형) 방어가 얕고, 강한 랠리(2023년형)에서 일찍 팖. 다음 단계 검증의 1순위 조정 대상.</div>';
+  }
+
+  function boot(d) {
+    D = d;
+    guard('verdict', renderVerdict);
+    guard('qa', renderQA);
+    guard('ladders', renderLadders);
+    guard('lev', renderLev);
+    guard('chart', drawChart);
+    guard('legend', renderLegend);
+    guard('proof', renderProof);
+    if (window.ResizeObserver) new ResizeObserver(function () { guard('chart', drawChart); }).observe(document.getElementById('sa-canvas'));
+    var dk = window.matchMedia('(prefers-color-scheme: dark)');
+    if (dk.addEventListener) dk.addEventListener('change', function () {
+      setTimeout(function () {
+        guard('verdict', renderVerdict); guard('qa', renderQA); guard('ladders', renderLadders);
+        guard('lev', renderLev); guard('chart', drawChart); guard('legend', renderLegend);
+      }, 30);
+    });
+  }
+
+  fetch(SRC, { cache: 'no-cache' })
+    .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+    .then(boot)
+    .catch(function () {
+      document.getElementById('sa-verdict').innerHTML =
+        '<span class="sa-fail">데이터를 불러오지 못했습니다. 잠시 뒤 새로고침해 주십시오.</span>';
+    });
 })();
 </script>
+
 </body>
 </html>

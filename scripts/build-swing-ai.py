@@ -67,6 +67,11 @@ GATE2 = {'reversal': 60, 'whipsaw': 55}
 GATE3 = {'reversal': 70, 'whipsaw': 35}
 
 
+def argof(name, default=None):
+    argv = sys.argv[1:]
+    return argv[argv.index(name) + 1] if name in argv and len(argv) > argv.index(name) + 1 else default
+
+
 def load(mkt, sym):
     f = pd.read_parquet(os.path.join(mkt, f'{sym}.parquet')).sort_values('date').reset_index(drop=True)
     f['date'] = pd.to_datetime(f['date'])
@@ -584,6 +589,32 @@ def main():
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, 'w', encoding='utf-8') as fp:
         json.dump(payload, fp, ensure_ascii=False, separators=(',', ':'))
+
+    # ── 공개 화면용 — 현재 진단이 주인공, 검증 기록은 요약만.
+    pub = argof('--public-out')
+    if pub:
+        public = {
+            'system': payload['system'],
+            'generatedAt': payload['generatedAt'],
+            'generatedAtKST': payload['generatedAtKST'],
+            'asOf': results['SOXX']['asOf'],
+            'stateKo': STATE_KO, 'stateTemp': STATE_TEMP,
+            'initialValues': payload['initialValues'],
+            'tickers': {
+                'SOXX': {'card': results['SOXX']['card'], 'chart': results['SOXX']['chart']},
+                'QQQ': {'card': results['QQQ']['card']},
+            },
+            'replay': {
+                'start': rep['start'], 'end': rep['end'],
+                'perf': rep['perf'], 'final': rep['final'],
+                'events': rep['events'],
+            },
+            'multi': results['SOXX']['multi'],
+        }
+        os.makedirs(os.path.dirname(pub), exist_ok=True)
+        with open(pub, 'w', encoding='utf-8') as fp:
+            json.dump(public, fp, ensure_ascii=False, separators=(',', ':'))
+        print(f'공개용 {pub} {os.path.getsize(pub):,}바이트')
 
     # ── 콘솔 검증 출력
     print(f"기준일 {results['SOXX']['asOf']} · SOXX {results['SOXX']['card']['stateKo']} · QQQ {results['QQQ']['card']['stateKo']}")
