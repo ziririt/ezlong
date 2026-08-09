@@ -9023,5 +9023,12 @@ window.investmentQuotes = [
     "title": "단도 투자 (The Dhandho Investor)",
     "author": "모니시 파브라이 (Mohnish Pabrai)",
     "category": "patience"
+  },
+  {
+    "english": "There is power in allowing yourself to be known and heard, in owning your unique story, in using your authentic voice.",
+    "text": "자신을 있는 그대로 알리고 들려주는 데는, 나만의 이야기를 온전히 받아들이고 진짜 내 목소리를 내는 데는 힘이 있습니다.",
+    "title": "비커밍 (Becoming)",
+    "author": "미셸 오바마 (Michelle Obama)",
+    "genre": "literature"
   }
 ];
