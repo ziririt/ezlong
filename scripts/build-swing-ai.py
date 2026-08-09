@@ -176,6 +176,20 @@ def build_features(df, bench, breadth_pair):
     f['flips10'] = (sign != sign.shift(1)).rolling(10).sum()
     gap = f['open'] / f['close'].shift(1) - 1
     f['gaprev10'] = (((gap > 0.004) & (f['ret1'] < 0)) | ((gap < -0.004) & (f['ret1'] > 0))).rolling(10).sum()
+
+    # Confidence — 신호 계열 다섯이 같은 방향을 보는가(피드백 반영 항목).
+    # Whipsaw(가격이 왔다갔다할 가능성)와 다른 축이다: 이건 '우리 신호끼리
+    # 서로 동의하지 않는 정도'다. 불일치가 크면 억지로 한 상태로 단정하지
+    # 말고 포지션 변경량을 줄인다.
+    votes = pd.concat([
+        np.sign((f['close'] > f['sma50']).astype(float) - 0.5 + f['slope20'].fillna(0) * 10).rename('trend'),
+        np.sign(f['rsi'].diff(5)).rename('momentum'),
+        np.sign(f['breadth_chg']).rename('breadth'),
+        np.sign(f['rs63_chg']).rename('relstr'),
+        np.sign(f['upvol_share5'] - 0.5).rename('volume'),
+    ], axis=1)
+    agree = votes.sum(axis=1).abs() / votes.notna().sum(axis=1).clip(lower=1)
+    f['conf'] = (0.5 + 0.5 * agree).clip(0.5, 1.0)     # 0.5(완전 불일치) ~ 1.0(만장일치)
     return f
 
 
@@ -277,6 +291,7 @@ def replay(f, states, start, end):
     체결 시점 오차는 검증 목적에 영향이 작다 — Phase 3 백테스트에서 정밀화)."""
     win = f[(f['date'] >= start) & (f['date'] <= end)]
     position, cash = 100.0, 0.0        # 시작: 전량 보유(2026년 5월 실화 기준)
+    nav, bh = 100.0, 100.0             # 전략/보유지속 순자산 — 전일 보유비중으로 그날 수익률을 먹는다
     done = set()
     probe = None                       # (진입가, 무효화선, 투입 cash%)
     stops = []                         # stop-out 날짜 인덱스
@@ -291,6 +306,24 @@ def replay(f, states, start, end):
         row = f.loc[i]
         st = states.loc[i]
         acts = []
+
+        # 성과 추적 — 오늘 수익률은 어제 종가의 보유비중으로 먹는다(당일 체결분 제외)
+        r1 = float(row['ret1']) if pd.notna(row['ret1']) else 0.0
+        nav *= 1 + (position / 100.0) * r1
+        bh *= 1 + r1
+
+        # 매수 크기 배수 — 기본 크기 × Confidence × (1 − 0.5×Whipsaw).
+        # 신호 불일치·휩쏘가 크면 '금지'가 아니라 '작게'로 답한다(기획서 3부 +
+        # 피드백 공식). **매수에만 적용한다** — 다중 구간 검증에서 매도까지
+        # 줄였더니 2022년형 약세장에서 방어 사다리가 부스러기가 됐다.
+        # 불확실성이 크다는 것은 위험을 '덜 늘릴' 이유이지 '덜 줄일' 이유가
+        # 아니다. 전부 초기값.
+        conf = float(row['conf']) if pd.notna(row['conf']) else 0.75
+        whip_adj = 1 - 0.5 * (float(row['whip']) / 100 if pd.notna(row['whip']) else 0.5)
+        size_mult = conf * whip_adj
+        # No-Trade Zone — 휩쏘가 높고 신호가 갈릴 때 신규 진입은 하지 않는다.
+        # "항상 무언가를 하려는 시스템"을 막는 장치. 기존 보유의 손절·익절은 막지 않는다.
+        no_trade = (pd.notna(row['whip']) and row['whip'] >= 70) and conf < 0.65
 
         # ── 사이클 리셋 — 정상 추세가 3일 지속되면 이번 사이클은 끝났다.
         #    리셋이 없으면 5월에 쓴 S2 가 7월 분배에서 다시 못 나간다(사이클
@@ -315,7 +348,7 @@ def replay(f, states, start, end):
 
         def buy(tag, pct_of_cash, leverage='1x'):
             nonlocal position, cash, probe
-            amt = cash * pct_of_cash / 100
+            amt = cash * (pct_of_cash * size_mult) / 100
             cash -= amt
             position += amt
             acts.append({'tag': tag, 'label': ACTION_LABEL[tag], 'size': round(amt, 1),
@@ -336,7 +369,10 @@ def replay(f, states, start, end):
         # ── 매수 사다리 (1배 먼저 — 레버리지는 게이트)
         gate2 = row['rev'] >= GATE2['reversal'] and row['whip'] <= GATE2['whipsaw']
         gate3 = row['rev'] >= GATE3['reversal'] and row['whip'] <= GATE3['whipsaw'] and row['breadth_chg'] > 0
-        if not whipsaw_mode:
+        if entered and no_trade and st in ('CAPITULATION', 'REVERSAL_PROBE') and cash > 1 and not whipsaw_mode:
+            acts.append({'tag': 'NOTRADE', 'label': 'No-Trade — 신호 불일치·휩쏘 과다로 신규 진입 보류',
+                         'position': round(position, 1), 'cash': round(cash, 1)})
+        if not whipsaw_mode and not no_trade:
             if entered and st == 'CAPITULATION' and 'B1' not in done and cash > 1:
                 amt = buy('B1', BUY_STAGES['B1'], '1x')
                 # 탐색 물량은 B1·B2 를 합산해 한 무효화선으로 관리한다 —
@@ -391,12 +427,27 @@ def replay(f, states, start, end):
 
     return {
         'start': start, 'end': end, 'days': days, 'events': events,
+        'perf': {'nav': round(nav, 1), 'buyHold': round(bh, 1),
+                 'navRet': round(nav - 100, 1), 'bhRet': round(bh - 100, 1)},
         'final': {'position': round(position, 1), 'cash': round(cash, 1),
                   'whipsawMode': whipsaw_mode, 'stopOuts': len(stops),
                   'cycles': cycle_no,
                   'sellsDone': sorted(t for t in done if t.startswith('S')),
                   'buysDone': sorted(t for t in done if t.startswith('B'))},
     }
+
+
+TARGET_VOL = 0.22    # 연속 레버리지 예산의 목표 변동성(연율) — 초기값
+
+
+def leverage_budget(row, gate2, gate3):
+    """이산 게이트(1x/2x/3x)를 연속 위험 예산으로 보강(피드백 반영 항목).
+    예산 = 목표 변동성 ÷ 실현 변동성. 게이트가 상한을 지정하고 예산이 그 안에서
+    실제 배수를 정한다 — 방향이 맞아도 변동성이 극단이면 3배가 안 나온다."""
+    rv = float(row['rv20']) if pd.notna(row['rv20']) and row['rv20'] > 0 else TARGET_VOL
+    raw = TARGET_VOL / rv
+    cap = 3.0 if gate3 else (2.0 if gate2 else 1.0)
+    return round(float(min(max(raw, 0.5), cap)), 1)
 
 
 def action_card(row, st):
@@ -414,16 +465,39 @@ def action_card(row, st):
     }[st]
     inval = row['lo10_prev'] - PROBE_STOP_ATR * row['atr']
     chand = row['hi20'] if not pd.isna(row['hi20']) else row['close']
+    conf = float(row['conf']) if pd.notna(row['conf']) else 0.75
+    whip_adj = 1 - 0.5 * float(row['whip']) / 100
+    no_trade = row['whip'] >= 70 and conf < 0.65
+    if no_trade and st in ('CAPITULATION', 'REVERSAL_PROBE'):
+        reco = 'No-Trade — 신호 불일치·휩쏘 과다. 신규 진입 보류, 기존 물량의 무효화선만 관리'
     return {
         'state': st, 'stateKo': STATE_KO[st], 'temp': STATE_TEMP[st],
         'close': round(float(row['close']), 2),
         'reco': reco,
+        'confidence': round(conf * 100),
+        'sizeMult': round(conf * whip_adj * 100),
+        'noTrade': bool(no_trade),
+        'levBudget': leverage_budget(row, gate2, gate3),
         'leverage': '3배 허용' if gate3 else ('2배 허용' if gate2 else '금지 (1배만)'),
         'gate2': bool(gate2), 'gate3': bool(gate3),
         'invalidation': round(float(inval), 2),
         'chandelier': {str(m): round(float(chand - m * row['atr']), 2) for m in (1.5, 2.0, 3.0)},
         'scores': {k: round(float(row[k]), 1) for k in ('heat', 'dist', 'cap', 'rev', 'whip')},
     }
+
+
+# 다중 구간 검증(피드백 반영 항목) — 2026년 5~7월은 이 시스템의 철학을 만든
+# 사건이라 더 이상 순수한 out-of-sample 이 아니다. 같은 파라미터를 한 글자도
+# 바꾸지 않고 성격이 다른 역사 구간을 돌려, 특정 구간에 맞춘 룰이 아님을
+# 확인한다. 진짜 OOS 는 오늘 이후의 Shadow 기록이다.
+VALIDATION_WINDOWS = [
+    ('2018 Q4 급락', '2018-09-01', '2019-03-01'),
+    ('2020 코로나', '2020-01-15', '2020-06-30'),
+    ('2022 약세 진입', '2021-11-01', '2022-06-30'),
+    ('2022-10 바닥', '2022-08-01', '2023-02-01'),
+    ('2023 AI 랠리', '2023-01-01', '2023-07-01'),
+    ('2025 관세 급락·회복', '2025-02-01', '2025-07-01'),
+]
 
 
 def main():
@@ -465,6 +539,19 @@ def main():
         }
         if sym == 'SOXX':
             rep = replay(f, states, REPLAY_START, REPLAY_END)
+            # 다중 구간 — 요약만 싣는다(하루치 전체는 2026 구간만)
+            multi = []
+            for name, ws, we in VALIDATION_WINDOWS:
+                r = replay(f, states, ws, we)
+                trans = sum(1 for k, d in enumerate(r['days']) if k and d['state'] != r['days'][k - 1]['state'])
+                multi.append({
+                    'name': name, 'start': ws, 'end': we,
+                    'perf': r['perf'], 'final': r['final'], 'transitions': trans,
+                    'events': [{'date': e['date'],
+                                'acts': [a2['label'] + (' ' + str(a2['size']) + '%p' if a2.get('size') is not None else '')
+                                         for a2 in e['acts']]} for e in r['events']],
+                })
+            results[sym]['multi'] = multi
             # 차트 — 2026년 전체 (상태 배경 + 액션 마커)
             cw = f[f['date'] >= '2026-01-01']
             results[sym]['chart'] = {
@@ -511,7 +598,11 @@ def main():
         for a in e['acts']:
             extra = f" {a.get('lev','')}" if a.get('lev') else ''
             print(f"  {e['date']} {a['label']} {a.get('size','')}%{extra} → 보유 {a.get('position','?')}% 현금 {a.get('cash','?')}%")
-    print(f"최종: 보유 {rep['final']['position']}% 현금 {rep['final']['cash']}% · stop-out {rep['final']['stopOuts']}회 · {os.path.getsize(out):,}바이트")
+    print(f"최종: 보유 {rep['final']['position']}% 현금 {rep['final']['cash']}% · stop-out {rep['final']['stopOuts']}회 · 전략 {rep['perf']['navRet']:+.1f}% vs 보유지속 {rep['perf']['bhRet']:+.1f}%")
+    print('다중 구간 검증(파라미터 동일):')
+    for m in results['SOXX']['multi']:
+        print(f"  {m['name']:<12} 전략 {m['perf']['navRet']:+6.1f}% vs 보유 {m['perf']['bhRet']:+6.1f}% · 전환 {m['transitions']}회 · 종료 보유 {m['final']['position']}%")
+    print(f"{os.path.getsize(out):,}바이트")
     return 0
 
 
