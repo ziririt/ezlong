@@ -9037,5 +9037,11 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각 (The Most Important Thing)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "mindset"
+  },
+  {
+    "text": "네가 내 이야기를 들어주니까, 새비 아저씨는 그만큼 더 사는 거잖아.",
+    "title": "밝은 밤",
+    "author": "최은영",
+    "genre": "literature"
   }
 ];
