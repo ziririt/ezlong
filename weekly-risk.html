@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="icon" href="/icons/favicon.ico?v=20260809" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/icons/favicon.svg?v=20260809">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=20260809">
+<link rel="apple-touch-icon" href="/icons/pwa-180.png?v=20260809">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#080C18" media="(prefers-color-scheme: dark)">
+
+<!-- 시험 공개 구간 — 메뉴·사이트맵에 올리지 않았고 색인도 막아 둔다.
+     정식 공개 시 이 한 줄만 지우면 된다. -->
+<meta name="robots" content="noindex,nofollow">
+
+<title>주간 위험 진단 — 이번 주 위험은 어디에서 커졌나 | EZLONG</title>
+<meta name="description" content="시장 과열·내부 취약성·추세 붕괴·하락 후 회복을 따로 재서, 지난주 대비 어느 쪽에서 위험이 커졌는지 봅니다. 매주 일요일 아침 갱신.">
+<meta name="author" content="김성동">
+
+<link rel="stylesheet" href="/ez-design.css">
+
+<style>
+  /* 축마다 고유색. 화면·차트·스파크라인이 한 값을 본다. */
+  :root {
+    --wr-ex:  #B87900;   /* 과열 */
+    --wr-fr:  #BE185D;   /* 취약성 */
+    --wr-bd:  #D92A2A;   /* 붕괴 */
+    --wr-rp:  #1A7F37;   /* 회복 */
+    --wr-risk:#D92A2A;   /* 위험이 커진 쪽 — 테두리·배경용 */
+    --wr-ease:#1A7F37;   /* 위험이 줄어든 쪽 — 테두리·배경용 */
+    /* 같은 계열의 옅은 배경 위에 얹는 글자는 한 단계 더 어둡게 간다.
+       테두리용 색을 그대로 쓰면 라이트모드에서 4.2:1 로 내려앉는다. */
+    --wr-risk-ink:#C81E1E;
+    --wr-ease-ink:#15722F;
+    --wr-risk-bg: rgba(217,42,42,0.10);
+    --wr-ease-bg: rgba(26,127,55,0.10);
+    --wr-glass: rgba(255,255,255,0.72);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --wr-ex:  #FFD60A;
+      --wr-fr:  #F472B6;
+      --wr-bd:  #FF453A;
+      --wr-rp:  #30D158;
+      --wr-risk:#FF453A;
+      --wr-ease:#30D158;
+      --wr-risk-ink:#FF453A;
+      --wr-ease-ink:#30D158;
+      --wr-risk-bg: rgba(255,69,58,0.14);
+      --wr-ease-bg: rgba(48,209,88,0.14);
+      --wr-glass: rgba(20,20,22,0.62);
+    }
+  }
+
+  /* ── 머리 ── */
+  .wr-brand { background: var(--ez-surface); border-bottom: 1px solid var(--ez-border); padding: 34px 20px 28px; }
+  .wr-brand-inner { max-width: var(--ez-max-w); margin: 0 auto; }
+  .wr-eyebrow {
+    font-size: 14px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase;
+    color: var(--ez-blue); margin-bottom: 8px;
+  }
+  /* 자간은 크기별로 다르게 준다. 한 값으로 고정하면 큰 쪽이나 작은 쪽 중
+     한쪽이 반드시 틀린다 — 작은 글자는 성기게, 큰 글자는 좁게. */
+  .wr-title {
+    font-size: clamp(26px, 6.4vw, 44px); font-weight: 800; color: var(--ez-text);
+    line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 12px;
+  }
+  @media (min-width: 700px) { .wr-title { letter-spacing: -0.028em; line-height: 1.06; } }
+  .wr-lede { font-size: 17px; line-height: 1.68; color: var(--ez-text2); margin: 0; max-width: 42em; text-wrap: pretty; }
+  .wr-lede b { color: var(--ez-text); font-weight: 700; }
+  .wr-lede + .wr-lede { margin-top: 10px; }
+
+  .wr-main { max-width: var(--ez-max-w); margin: 0 auto; padding: 20px 16px 60px; }
+  .wr-card {
+    background: var(--ez-surface); border: 1px solid var(--ez-border);
+    border-radius: var(--ez-r); box-shadow: var(--ez-shadow);
+    padding: 20px 16px; margin-bottom: 14px;
+  }
+  .wr-h2 { font-size: 19px; font-weight: 800; color: var(--ez-text); margin: 0 0 4px; letter-spacing: -.01em; }
+  .wr-sub { font-size: 15px; line-height: 1.6; color: var(--ez-text2); margin: 0 0 14px; }
+
+  /* ── 이번 주 결론 ── */
+  .wr-verdict { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .wr-badge { font-size: 17px; font-weight: 800; color: #fff; padding: 8px 14px; border-radius: 10px; background: #12A150; }
+  .wr-badge.lv1 { background: #B87900; }
+  .wr-badge.lv2 { background: #C2410C; }
+  .wr-badge.lv3 { background: #BE185D; }
+  .wr-badge.lv4 { background: #9F1239; }
+  .wr-asof { font-size: 15px; font-weight: 600; color: var(--ez-text2); }
+  .wr-headline { font-size: 17px; line-height: 1.7; color: var(--ez-text); margin: 0 0 8px; font-weight: 600; }
+  .wr-headline b { font-weight: 800; }
+  .wr-cadence { font-size: 14px; color: var(--ez-text2); margin: 0; }
+
+  /* ── 위험이 커진 곳 ── */
+  .wr-movers { display: grid; gap: 8px; }
+  .wr-mover {
+    display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px 12px;
+    padding: 12px 14px; border-radius: 12px; border: 1px solid var(--ez-border);
+    background: var(--ez-card2);
+  }
+  .wr-mover.up { border-color: color-mix(in srgb, var(--wr-risk) 34%, transparent); background: var(--wr-risk-bg); }
+  .wr-mover.dn { border-color: color-mix(in srgb, var(--wr-ease) 34%, transparent); background: var(--wr-ease-bg); }
+  .wr-mover-name { font-size: 16px; font-weight: 700; color: var(--ez-text); }
+  .wr-mover-axis { font-size: 14px; font-weight: 700; color: var(--ez-text2); }
+  .wr-mover-meta { font-size: 14px; color: var(--ez-text2); grid-column: 1 / -1; margin-top: 2px; line-height: 1.55; }
+  .wr-delta { font-size: 17px; font-weight: 800; white-space: nowrap; }
+  .wr-delta.up { color: var(--wr-risk-ink); }
+  .wr-delta.dn { color: var(--wr-ease-ink); }
+  .wr-delta.flat { color: var(--ez-text2); }
+  .wr-movers-h { font-size: 15px; font-weight: 800; color: var(--ez-text); margin: 16px 0 8px; }
+  .wr-movers-h:first-child { margin-top: 0; }
+  .wr-empty { font-size: 15px; color: var(--ez-text2); line-height: 1.6; }
+
+  /* ── 네 축 ── */
+  .wr-axes { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .wr-axes { grid-template-columns: repeat(2, 1fr); } }
+  .wr-axis {
+    background: var(--ez-surface); border: 1px solid var(--ez-border);
+    border-radius: var(--ez-r); box-shadow: var(--ez-shadow); padding: 18px 16px;
+    border-top: 3px solid var(--wr-accent, var(--ez-blue));
+  }
+  .wr-axis-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .wr-axis-name { font-size: 18px; font-weight: 800; color: var(--ez-text); margin: 0; }
+  .wr-axis-help { font-size: 14px; color: var(--ez-text2); margin: 3px 0 0; line-height: 1.55; }
+  .wr-axis-val { font-size: 32px; font-weight: 800; color: var(--ez-text); line-height: 1; letter-spacing: -.02em; }
+  .wr-axis-unit { font-size: 15px; font-weight: 700; color: var(--ez-text2); }
+  .wr-axis-nums { text-align: right; white-space: nowrap; }
+  .wr-axis-bar { height: 8px; border-radius: 999px; background: var(--ez-border); overflow: hidden; margin: 14px 0 10px; }
+  .wr-axis-bar span { display: block; height: 100%; border-radius: 999px; background: var(--wr-accent, var(--ez-blue)); }
+  .wr-axis-line { font-size: 14px; color: var(--ez-text2); line-height: 1.7; }
+  .wr-axis-line b { color: var(--ez-text); font-weight: 700; }
+  .wr-spark { display: block; width: 100%; height: 34px; margin: 8px 0 4px; overflow: visible; }
+  .wr-axis-note { font-size: 14px; color: var(--ez-text2); line-height: 1.6; margin: 8px 0 0; }
+  .wr-parts { margin: 12px 0 0; display: grid; gap: 6px; border-top: 1px solid var(--ez-border2); padding-top: 12px; }
+  .wr-part { display: grid; grid-template-columns: 1fr auto auto; align-items: baseline; gap: 4px 10px; }
+  .wr-part-name { font-size: 14px; color: var(--ez-text2); font-weight: 600; }
+  .wr-part-val { font-size: 15px; font-weight: 700; color: var(--ez-text); }
+  .wr-part-chg { font-size: 14px; font-weight: 700; min-width: 3.6em; text-align: right; }
+  .wr-flag { font-size: 14px; font-weight: 800; padding: 2px 8px; border-radius: 6px; }
+  .wr-flag.on { background: var(--wr-bd); color: #fff; }
+  .wr-flag.off { background: var(--ez-card2); color: var(--ez-text2); }
+
+  /* ── 차트 ── */
+  .wr-chart-wrap { position: relative; width: 100%; }
+  .wr-canvas { display: block; width: 100%; height: 300px; touch-action: pan-y; cursor: crosshair; }
+  @media (min-width: 760px) { .wr-canvas { height: 360px; } }
+  .wr-readout {
+    display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline;
+    min-height: 26px; margin-bottom: 8px; font-size: 15px; color: var(--ez-text2);
+  }
+  .wr-readout-date { font-weight: 800; color: var(--ez-text); }
+  .wr-ro { font-weight: 600; }
+  .wr-ro b { font-weight: 800; }
+  .wr-btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .wr-btn {
+    font-size: 15px; font-weight: 600; padding: 9px 14px; border-radius: 999px; min-height: 44px;
+    border: 1px solid var(--ez-border); background: var(--ez-card2); color: var(--ez-text2); cursor: pointer;
+    transition: transform 100ms ease-out;
+  }
+  .wr-btn:active { transform: scale(0.97); }
+  .wr-btn.on { background: var(--ez-blue); border-color: var(--ez-blue); color: #fff; font-weight: 700; }
+  .wr-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 12px; }
+  .wr-leg { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--ez-text2); }
+  .wr-dot { width: 14px; height: 4px; border-radius: 2px; display: inline-block; }
+
+  /* ── 읽는 법 ── */
+  .wr-ul { margin: 0; padding-left: 1.15em; }
+  .wr-ul li { font-size: 15px; line-height: 1.75; color: var(--ez-text2); margin-bottom: 6px; }
+  .wr-ul li b { color: var(--ez-text); font-weight: 700; }
+  .wr-note { font-size: 14px; line-height: 1.7; color: var(--ez-text2); margin: 12px 0 0; }
+  .wr-fail { font-size: 16px; color: var(--ez-text2); line-height: 1.7; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wr-btn { transition: none; }
+    .wr-btn:active { transform: none; }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    :root { --wr-glass: var(--ez-surface); }
+  }
+</style>
+</head>
+
+<body>
+
+<script src="/ez-nav.js"></script>
+
+<div class="wr-brand">
+  <div class="wr-brand-inner">
+    <div class="wr-eyebrow">Weekly Risk</div>
+    <h1 class="wr-title">주간 위험 진단</h1>
+    <p class="wr-lede">시장 과열·내부 취약성·추세 붕괴·하락 후 회복을 하나로 합치지 않고 따로 잽니다. 합치면 숫자 하나만 남고, 정작 알고 싶은 <b>어디에서</b> 커졌는지가 사라지기 때문입니다.</p>
+    <p class="wr-lede">지난주 마감과 이번 주 마감을 나란히 놓고, 위험 쪽으로 움직인 항목만 순서대로 세웁니다. 매주 한 번, 한국시각 일요일 아침에 갱신합니다.</p>
+  </div>
+</div>
+
+<main class="wr-main">
+
+  <section class="wr-card">
+    <h2 class="wr-h2">이번 주 결론</h2>
+    <div class="wr-verdict" id="wr-verdict"><span class="wr-asof">불러오는 중</span></div>
+    <p class="wr-headline" id="wr-headline"></p>
+    <p class="wr-cadence" id="wr-cadence"></p>
+  </section>
+
+  <section class="wr-card">
+    <h2 class="wr-h2">이번 주 위험이 움직인 곳</h2>
+    <p class="wr-sub">열여덟 개 구성요소를 위험 방향으로 정렬했습니다. 숫자는 지난주 대비 실제 변화이고, 어느 묶음에 들어갔는지가 위험 방향입니다 — 회복 항목은 값이 올라가면 위험이 줄어드는 쪽으로 갑니다.</p>
+    <div id="wr-movers"></div>
+  </section>
+
+  <div class="wr-axes" id="wr-axes"></div>
+
+  <section class="wr-card">
+    <h2 class="wr-h2">2004년 이후 주간 추이</h2>
+    <p class="wr-sub">네 축을 같은 0~100 눈금에 놓았습니다. 차트를 누르거나 끌면 그 주의 값이 위에 나옵니다.</p>
+    <div class="wr-readout" id="wr-readout"></div>
+    <div class="wr-chart-wrap">
+      <canvas class="wr-canvas" id="wr-canvas"></canvas>
+    </div>
+    <div class="wr-btns" id="wr-range">
+      <button type="button" class="wr-btn on" data-w="52">1년</button>
+      <button type="button" class="wr-btn" data-w="156">3년</button>
+      <button type="button" class="wr-btn" data-w="520">10년</button>
+      <button type="button" class="wr-btn" data-w="0">전체</button>
+    </div>
+    <div class="wr-legend" id="wr-legend"></div>
+  </section>
+
+  <section class="wr-card">
+    <h2 class="wr-h2">읽는 법</h2>
+    <ul class="wr-ul">
+      <li><b>색은 값이 아니라 위험 방향</b> — 빨강은 위험이 커진 쪽, 초록은 줄어든 쪽. 회복 점수가 올라가면 숫자는 플러스지만 색은 초록.</li>
+      <li><b>과열이 높다고 곧 하락은 아님</b> — 과열은 상승장에서 늘 높음. 취약성이 같이 올라올 때만 경고로 읽음.</li>
+      <li><b>취약성은 지수보다 먼저 움직임</b> — 가격에 아직 안 나타난 균열을 재는 축. 지수는 버티는데 이 값만 오르는 구간이 실제 위험 구간.</li>
+      <li><b>붕괴는 개수</b> — 여섯 개 신호 중 몇 개가 켜졌는가. 0에서 1로 바뀌는 순간이 숫자 크기보다 중요.</li>
+      <li><b>상위 N%</b> — 2004년 이후 같은 축의 주간 기록 중 N%가 지금보다 높았다는 뜻. 좋고 나쁨이 아니라 위치만 말함. 더 높았던 주가 하나도 없으면 '역대 최고 수준'.</li>
+      <li><b>기준일은 금요일 마감</b> — 미국장이 금요일에 닫히므로 주간 값은 금요일 종가. 주말 사이 화면은 바뀌지 않음.</li>
+    </ul>
+  </section>
+
+  <section class="wr-card">
+    <h2 class="wr-h2">이 진단의 한계</h2>
+    <ul class="wr-ul" id="wr-limits">
+      <li>무료 시장 데이터 기반 연구용 지표. 유료 데이터와 대조 전 단계.</li>
+      <li>경제지표는 공표 시차를 보수적으로 적용(일별 1일·주별 7일). 그날 실제로 알 수 있었던 값만 사용.</li>
+      <li>과거 지수 구성 종목 대신 동일가중 ETF 비율을 대용. 쏠림·폭 지표는 근사치.</li>
+      <li>주 1회 표본이라 주중에 벌어진 급변은 다음 주 값에 반영. 장중 대응용 화면이 아님.</li>
+    </ul>
+    <p class="wr-note" id="wr-coverage"></p>
+    <p class="wr-note">이 화면은 연구용 진단 신호판입니다. 투자 권유나 수익 보장이 아니며, 매매 주문 기능도 없습니다. 판단과 책임은 보는 사람에게 있습니다.</p>
+  </section>
+
+</main>
+
+<script src="/ez-footer.js"></script>
+
+<script>
+(function () {
+  'use strict';
+
+  var SRC = '/data/weekly-risk.json';
+  var ACCENT = { exuberance: '--wr-ex', fragility: '--wr-fr', breakdown: '--wr-bd', repair: '--wr-rp' };
+  var SERIES = [
+    { key: 'ex', name: '시장 과열', varName: '--wr-ex', fill: false },
+    { key: 'fr', name: '내부 취약성', varName: '--wr-fr', fill: false },
+    { key: 'rp', name: '하락 후 회복', varName: '--wr-rp', fill: false },
+    { key: 'bd', name: '추세 붕괴', varName: '--wr-bd', fill: true }
+  ];
+
+  var data = null, weeks = 52, cursor = -1;
+
+  function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  /* 표시용 부호는 U+2212(−). 하이픈과 섞이면 자릿수 정렬이 흐트러진다. */
+  function signed(v, nd) {
+    if (typeof v !== 'number' || !isFinite(v)) return '—';
+    var n = nd == null ? 1 : nd;
+    if (Math.abs(v) < 0.05) return '0.0';
+    return (v > 0 ? '+' : '−') + Math.abs(v).toFixed(n);
+  }
+  function num(v, nd) {
+    return (typeof v !== 'number' || !isFinite(v)) ? '—' : v.toFixed(nd == null ? 1 : nd);
+  }
+  /* 백분위는 언제나 '위에서 몇 %'로만 말한다. 상위·하위를 값에 따라 갈라
+     쓰면 축마다 좋고 나쁨이 반대라(회복은 높을수록 좋고 붕괴는 낮을수록
+     좋다) 같은 표현이 어떤 카드에선 칭찬, 어떤 카드에선 경고로 읽힌다.
+     '상위 N%' = 2004년 이후 주간 기록 중 N%가 지금보다 높았다는 뜻. */
+  function pctPhrase(p) {
+    if (typeof p !== 'number') return '';
+    if (p < 0.5) return '역대 최고 수준';
+    if (p > 99.5) return '역대 최저 수준';
+    return '상위 ' + Math.round(p) + '%';
+  }
+  /* '2004년 이후 역대 최고 수준' 처럼 기간을 두 번 말하지 않는다. */
+  function pctWith(prefix, p, bold) {
+    var t = pctPhrase(p);
+    if (!t) return '';
+    var head = t.indexOf('역대') === 0 ? '' : prefix;
+    return head + (bold ? '<b>' + t + '</b>' : t);
+  }
+  function riskClass(v) { return v > 0.05 ? 'up' : v < -0.05 ? 'dn' : 'flat'; }
+  function dateKo(iso) {
+    var p = String(iso).split('-');
+    if (p.length !== 3) return iso;
+    var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+    var w = ['일', '월', '화', '수', '목', '금', '토'][d.getUTCDay()];
+    return p[0] + '-' + p[1] + '-' + p[2] + '(' + w + ')';
+  }
+
+  // ── 이번 주 결론 ──────────────────────────────────────────────────────
+  /* 한 구획이 예외를 던져도 나머지는 그린다. 예전 구조에서는 표본 수 한
+     칸이 비어 있으면 그 예외가 boot() 밖으로 새어 '불러오지 못했습니다'
+     한 줄만 남고 진단 전체가 사라졌다. */
+  function guard(name, fn) {
+    try { fn(); } catch (e) {
+      if (window.console && console.warn) console.warn('[weekly-risk] ' + name, e);
+    }
+  }
+
+  function renderVerdict() {
+    var sev = data.severity | 0;
+    document.getElementById('wr-verdict').innerHTML =
+      '<span class="wr-badge lv' + sev + '">' + esc(data.regimeKo) + '</span>' +
+      '<span class="wr-asof">' + esc(dateKo(data.asOf)) + ' 마감 기준 · 직전 주 ' + esc(data.prevAsOf) + ' 대비</span>';
+
+    var axes = data.axes || [];
+    var up = axes.filter(function (a) { return (a.riskChg || 0) > 0.5; });
+    var dn = axes.filter(function (a) { return (a.riskChg || 0) < -0.5; });
+    var names = function (arr) { return arr.map(function (a) { return a.name; }).join(' · '); };
+
+    var parts = [];
+    if (up.length) parts.push('위험이 커진 축 <b>' + up.length + '개</b> — ' + esc(names(up)));
+    if (dn.length) parts.push('줄어든 축 <b>' + dn.length + '개</b> — ' + esc(names(dn)));
+    if (!parts.length) parts.push('네 축 모두 지난주와 사실상 같은 자리 — 뚜렷한 방향 없음');
+
+    var top = (data.movers && data.movers.up && data.movers.up[0]) || null;
+    if (top) {
+      parts.push('가장 크게 나빠진 곳 — <b>' + esc(top.axisName) + ' · ' + esc(top.name) + '</b> ' + signed(top.chg));
+    }
+    document.getElementById('wr-headline').innerHTML = parts.join('. ') + '.';
+
+    document.getElementById('wr-cadence').textContent =
+      '갱신 ' + data.generatedAtKST + ' · 다음 갱신은 다음 주 일요일 아침(한국시각)';
+    var cv = data.coverage || {};
+    document.getElementById('wr-coverage').textContent =
+      '표본 ' + (typeof cv.weeks === 'number' ? cv.weeks.toLocaleString() : '—') +
+      '주 (' + (cv.start || '—') + ' ~ ' + (cv.end || '—') + ') · ' + (data.system || 'BFRS');
+  }
+
+  // ── 위험이 움직인 곳 ──────────────────────────────────────────────────
+  function moverRow(m, dir) {
+    var meta = [];
+    if (m.flag) {
+      meta.push(m.on ? '이번 주 켜짐' : '이번 주 꺼짐');
+    } else {
+      meta.push('현재 ' + num(m.value));
+      if (typeof m.pct === 'number') meta.push(pctWith('2004년 이후 ', m.pct));
+    }
+    return '<div class="wr-mover ' + dir + '">' +
+      '<div><span class="wr-mover-name">' + esc(m.name) + '</span> ' +
+        '<span class="wr-mover-axis">' + esc(m.axisName) + '</span></div>' +
+      '<div class="wr-delta ' + dir + '">' + (m.flag && m.flipped ? (m.on ? '켜짐' : '꺼짐') : signed(m.chg)) + '</div>' +
+      '<div class="wr-mover-meta">' + esc(meta.join(' · ')) + '</div>' +
+    '</div>';
+  }
+
+  function renderMovers() {
+    var mv = data.movers || {};
+    var up = mv.up || [], dn = mv.down || [];
+    var host = document.getElementById('wr-movers');
+    if (!up.length && !dn.length) {
+      host.innerHTML = '<p class="wr-empty">지난주 대비 ' + (typeof data.moverMin === 'number' ? data.moverMin : 1.5) +
+        '점을 넘게 움직인 구성요소 없음 — 조용한 한 주. 아래 네 축의 절대 수준과 역사적 위치로 판단.</p>';
+      return;
+    }
+    var html = '';
+    var minTxt = typeof data.moverMin === 'number' ? data.moverMin : 1.5;
+    html += '<div class="wr-movers-h">위험이 커진 쪽</div>';
+    html += up.length
+      ? '<div class="wr-movers">' + up.map(function (m) { return moverRow(m, 'up'); }).join('') + '</div>'
+      : '<p class="wr-empty">없음 — 이번 주 위험 방향으로 유의미하게 움직인 항목 없음.</p>';
+    html += '<div class="wr-movers-h">위험이 줄어든 쪽</div>';
+    html += dn.length
+      ? '<div class="wr-movers">' + dn.map(function (m) { return moverRow(m, 'dn'); }).join('') + '</div>'
+      : '<p class="wr-empty">없음.</p>';
+    host.innerHTML = html;
+  }
+
+  // ── 네 축 ─────────────────────────────────────────────────────────────
+  function sparkSvg(vals, color) {
+    var pts = (vals || []).filter(function (v) { return typeof v === 'number'; });
+    if (pts.length < 2) return '';
+    var lo = Math.min.apply(null, pts), hi = Math.max.apply(null, pts);
+    /* 위아래로 8% 여백. 선이 상자 끝에 붙으면 실제보다 큰 진폭으로 읽힌다. */
+    var pad = (hi - lo) * 0.08 || 1;
+    lo -= pad; hi += pad;
+    var W = 100, H = 30, n = pts.length;
+    var d = pts.map(function (v, i) {
+      var x = (i / (n - 1)) * W;
+      var y = H - ((v - lo) / (hi - lo)) * H;
+      return (i ? 'L' : 'M') + x.toFixed(2) + ' ' + y.toFixed(2);
+    }).join(' ');
+    /* 끝점 표시는 넣지 않는다 — preserveAspectRatio="none" 로 가로만 늘어나
+       원이 타원으로 찌그러진다. 선 끝이 곧 현재 위치라 표식이 없어도 읽힌다. */
+    return '<svg class="wr-spark" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
+      '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="1.6" ' +
+        'vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"></path>' +
+    '</svg>';
+  }
+
+  function partRow(p, flags) {
+    if (flags) {
+      var changed = p.on !== p.wasOn;
+      return '<div class="wr-part">' +
+        '<span class="wr-part-name">' + esc(p.name) + '</span>' +
+        '<span class="wr-flag ' + (p.on ? 'on' : 'off') + '">' + (p.on ? '켜짐' : '꺼짐') + '</span>' +
+        '<span class="wr-part-chg ' + (changed ? (p.on ? 'wr-delta up' : 'wr-delta dn') : '') + '">' +
+          (changed ? (p.on ? '신규' : '해제') : '—') + '</span>' +
+      '</div>';
+    }
+    /* 숫자는 실제 변화, 색만 위험 방향. 회복 항목에서 riskChg 를 그대로
+       찍으면 '78.6 인데 −32.2' 가 되어 값이 떨어진 것처럼 읽힌다. */
+    return '<div class="wr-part">' +
+      '<span class="wr-part-name">' + esc(p.name) + '</span>' +
+      '<span class="wr-part-val">' + num(p.value) + '</span>' +
+      '<span class="wr-part-chg wr-delta ' + riskClass(p.riskChg) + '">' + signed(p.chg) + '</span>' +
+    '</div>';
+  }
+
+  function axisCard(a) {
+    var color = cssVar(ACCENT[a.key] || '--ez-blue');
+    /* 붕괴 축만 단위가 '개'다. 소수점으로 찍으면 개수를 점수로 오해한다. */
+    /* Math.round(null) 은 0 이다. 그대로 두면 데이터가 빈 주에 '0개'
+       — 신호가 하나도 안 켜졌다는 가장 안심되는 말 — 이 찍힌다. */
+    var one = function (v) {
+      if (typeof v !== 'number' || !isFinite(v)) return '—';
+      return a.flags ? Math.round(v) + '개' : num(v);
+    };
+    var oneChg = function (v) {
+      if (typeof v !== 'number') return '—';
+      if (!a.flags) return signed(v);
+      return Math.abs(v) < 0.5 ? '변화 없음' : signed(v, 0) + '개';
+    };
+    var okVal = typeof a.value === 'number' && isFinite(a.value);
+    var val = !okVal ? '—' : a.flags ? String(Math.round(a.value)) : num(a.value);
+    var unit = a.flags ? '<span class="wr-axis-unit"> / ' + (data.breakdownMax || 6) + '개</span>' : '';
+    var lines = [];
+    lines.push('지난주 ' + one(a.prev) + ' → 이번 주 <b>' + one(a.value) + '</b>');
+    var trail = [];
+    if (typeof a.chg4w === 'number') trail.push('4주 전 대비 ' + oneChg(a.chg4w));
+    if (typeof a.chg13w === 'number') trail.push('13주 전 대비 ' + oneChg(a.chg13w));
+    if (trail.length) lines.push(trail.join(' · '));
+    if (typeof a.pct === 'number') lines.push(pctWith('2004년 이후 주간 기록 ', a.pct, true));
+
+    return '<section class="wr-axis" style="--wr-accent:' + color + '">' +
+      '<div class="wr-axis-top">' +
+        '<div><h2 class="wr-axis-name">' + esc(a.name) + '</h2>' +
+          '<p class="wr-axis-help">' + esc(a.help) + '</p></div>' +
+        '<div class="wr-axis-nums">' +
+          '<div class="wr-axis-val">' + val + unit + '</div>' +
+          '<div class="wr-delta ' + riskClass(a.riskChg) + '">' + oneChg(a.chg1w) + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="wr-axis-bar"><span style="width:' +
+        (typeof a.bar === 'number' && isFinite(a.bar) ? Math.max(0, Math.min(100, a.bar)) : 0) + '%"></span></div>' +
+      '<div class="wr-axis-line">' + lines.join('<br>') + '</div>' +
+      sparkSvg(a.spark, color) +
+      '<p class="wr-axis-note">최근 52주 흐름 · ' + esc(a.note) + '</p>' +
+      '<div class="wr-parts">' + a.parts.map(function (p) { return partRow(p, a.flags); }).join('') + '</div>' +
+    '</section>';
+  }
+
+  function renderAxes() {
+    document.getElementById('wr-axes').innerHTML = (data.axes || []).map(axisCard).join('');
+  }
+
+  // ── 차트 ──────────────────────────────────────────────────────────────
+  var canvas, ctx, plot = null;
+
+  function sliceRange() {
+    var h = (data && data.history) || {};
+    var n = (h.dates || []).length;
+    var from = weeks > 0 ? Math.max(0, n - weeks) : 0;
+    return { from: from, to: n };
+  }
+
+  function drawChart() {
+    if (!canvas) return;
+    var dpr = window.devicePixelRatio || 1;
+    var cw = canvas.clientWidth || 320, ch = canvas.clientHeight || 300;
+    canvas.width = Math.round(cw * dpr);
+    canvas.height = Math.round(ch * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, cw, ch);
+
+    var r = sliceRange(), h = (data && data.history) || {};
+    var n = r.to - r.from;
+    if (n < 2 || !h.dates) return;
+
+    var padL = 30, padR = 8, padT = 8, padB = 22;
+    var W = cw - padL - padR, H = ch - padT - padB;
+    var x = function (i) { return padL + (i / (n - 1)) * W; };
+    var y = function (v) { return padT + (1 - v / 100) * H; };
+    plot = { from: r.from, n: n, padL: padL, W: W };
+
+    var grid = cssVar('--ez-border') || 'rgba(0,0,0,0.08)';
+    var label = cssVar('--ez-text3') || '#6E6E73';
+
+    ctx.strokeStyle = grid; ctx.lineWidth = 1;
+    ctx.fillStyle = label; ctx.font = '12px ' + (cssVar('--ez-font') || 'sans-serif');
+    ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    [0, 25, 50, 75, 100].forEach(function (v) {
+      var yy = Math.round(y(v)) + 0.5;
+      ctx.beginPath(); ctx.moveTo(padL, yy); ctx.lineTo(padL + W, yy); ctx.stroke();
+      ctx.fillText(String(v), padL - 6, yy);
+    });
+
+    // 연도 눈금 — 폭에 맞춰 개수를 줄인다. 폰에서 라벨이 겹치면 못 읽는다.
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    var years = [], seen = {};
+    for (var i = 0; i < n; i++) {
+      var yr = h.dates[r.from + i].slice(0, 4);
+      if (!seen[yr]) { seen[yr] = 1; years.push({ i: i, y: yr }); }
+    }
+    var step = Math.max(1, Math.ceil(years.length / Math.max(2, Math.floor(W / 54))));
+    years.forEach(function (t, k) {
+      if (k % step) return;
+      ctx.fillText(t.y, x(t.i), padT + H + 6);
+    });
+
+    SERIES.forEach(function (s) {
+      var col = cssVar(s.varName);
+      var arr = h[s.key];
+      ctx.beginPath();
+      for (var i = 0; i < n; i++) {
+        var v = arr[r.from + i];
+        if (typeof v !== 'number') continue;
+        var px = x(i), py = y(v);
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      if (s.fill) {
+        ctx.lineTo(x(n - 1), y(0)); ctx.lineTo(x(0), y(0)); ctx.closePath();
+        ctx.fillStyle = col; ctx.globalAlpha = 0.20; ctx.fill(); ctx.globalAlpha = 1;
+        ctx.strokeStyle = col; ctx.lineWidth = 1.2; ctx.stroke();
+      } else {
+        ctx.strokeStyle = col; ctx.lineWidth = n > 400 ? 1.1 : n > 160 ? 1.4 : 1.9;
+        ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+        ctx.stroke();
+      }
+    });
+
+    if (cursor >= 0 && cursor < n) {
+      var gx = Math.round(x(cursor)) + 0.5;
+      ctx.strokeStyle = cssVar('--ez-text3') || '#888'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(gx, padT); ctx.lineTo(gx, padT + H); ctx.stroke();
+      SERIES.forEach(function (s) {
+        var v = h[s.key][r.from + cursor];
+        if (typeof v !== 'number') return;
+        ctx.beginPath(); ctx.arc(gx, y(v), 3.2, 0, Math.PI * 2);
+        ctx.fillStyle = cssVar(s.varName); ctx.fill();
+      });
+    }
+  }
+
+  function renderReadout() {
+    var host = document.getElementById('wr-readout');
+    var r = sliceRange(), h = (data && data.history) || {};
+    if (!h.dates || !h.dates.length) { host.textContent = ''; return; }
+    var idx = cursor >= 0 ? r.from + cursor : h.dates.length - 1;
+    var tail = cursor >= 0 ? '' : ' <span class="wr-ro">(가장 최근 주)</span>';
+    host.innerHTML = '<span class="wr-readout-date">' + esc(dateKo(h.dates[idx])) + '</span>' + tail +
+      SERIES.map(function (s) {
+        var v = h[s.key][idx];
+        var extra = s.key === 'bd' && typeof v === 'number'
+          ? ' (' + Math.round(v * (data.breakdownMax || 6) / 100) + '개)' : '';
+        return '<span class="wr-ro" style="color:' + cssVar(s.varName) + '">' +
+          esc(s.name) + ' <b>' + num(v) + extra + '</b></span>';
+      }).join('');
+  }
+
+  function renderLegend() {
+    document.getElementById('wr-legend').innerHTML = SERIES.map(function (s) {
+      return '<span class="wr-leg"><i class="wr-dot" style="background:' + cssVar(s.varName) + '"></i>' +
+        esc(s.name) + (s.fill ? ' (개수를 0~100으로 환산)' : '') + '</span>';
+    }).join('');
+  }
+
+  /* 손가락·마우스를 1:1로 따라간다. 누르는 순간 바로 반응하고(§피드백은
+     pointer-down 에), 끄는 동안 계속 갱신한다. 캔버스 밖으로 나가도 추적이
+     끊기지 않도록 포인터를 잡아 둔다. */
+  function bindScrub() {
+    var active = false;
+    function pick(ev) {
+      if (!plot) return;
+      var rect = canvas.getBoundingClientRect();
+      var rel = (ev.clientX - rect.left - plot.padL) / plot.W;
+      var i = Math.round(rel * (plot.n - 1));
+      cursor = Math.max(0, Math.min(plot.n - 1, i));
+      drawChart(); renderReadout();
+    }
+    canvas.addEventListener('pointerdown', function (ev) {
+      active = true;
+      try { canvas.setPointerCapture(ev.pointerId); } catch (e) {}
+      pick(ev);
+    });
+    canvas.addEventListener('pointermove', function (ev) {
+      if (!active && ev.pointerType === 'touch') return;
+      if (!active && ev.pointerType !== 'mouse') return;
+      pick(ev);
+    });
+    canvas.addEventListener('pointerup', function (ev) {
+      active = false;
+      try { canvas.releasePointerCapture(ev.pointerId); } catch (e) {}
+    });
+    canvas.addEventListener('pointercancel', function () { active = false; });
+    canvas.addEventListener('pointerleave', function () {
+      if (!active) { cursor = -1; drawChart(); renderReadout(); }
+    });
+  }
+
+  function bindRange() {
+    var host = document.getElementById('wr-range');
+    host.addEventListener('click', function (ev) {
+      var btn = ev.target.closest('.wr-btn');
+      if (!btn) return;
+      weeks = parseInt(btn.getAttribute('data-w'), 10) || 0;
+      Array.prototype.forEach.call(host.querySelectorAll('.wr-btn'), function (b) {
+        b.classList.toggle('on', b === btn);
+      });
+      cursor = -1;
+      drawChart(); renderReadout();
+    });
+  }
+
+  // ── 시작 ──────────────────────────────────────────────────────────────
+  function boot(d) {
+    data = d;
+    canvas = document.getElementById('wr-canvas');
+    ctx = canvas.getContext('2d');
+    guard('verdict', renderVerdict);
+    guard('movers', renderMovers);
+    guard('axes', renderAxes);
+    guard('legend', renderLegend);
+    guard('chart', drawChart);
+    guard('readout', renderReadout);
+    guard('scrub', bindScrub);
+    guard('range', bindRange);
+
+    if (window.ResizeObserver) {
+      new ResizeObserver(function () { drawChart(); }).observe(canvas);
+    } else {
+      window.addEventListener('resize', drawChart);
+    }
+    var dark = window.matchMedia('(prefers-color-scheme: dark)');
+    if (dark.addEventListener) {
+      dark.addEventListener('change', function () {
+        renderAxes(); renderLegend(); drawChart(); renderReadout();
+      });
+    }
+  }
+
+  fetch(SRC, { cache: 'no-cache' })
+    .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+    .then(boot)
+    .catch(function () {
+      document.getElementById('wr-verdict').innerHTML =
+        '<span class="wr-fail">데이터를 불러오지 못했습니다. 잠시 뒤 새로고침해 주십시오.</span>';
+    });
+})();
+</script>
+
+</body>
+</html>

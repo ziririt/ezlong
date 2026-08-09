@@ -1,0 +1,94 @@
+name: Weekly Risk (BFRS 주간)
+
+# 주 1회, 한국시각 일요일 아침. 미국장은 금요일 16:00 ET 에 닫히므로 그때는
+# 금요일 종가가 확정돼 있다. 깃허브 예약은 밀리거나 통째로 건너뛰므로
+# (CLAUDE.md 40항) 슬롯을 둘 두고, 그래도 안 되면 감시견이 받는다.
+on:
+  schedule:
+    - cron: '0 22 * * 6'   # 토 22:00 UTC = 일 07:00 KST — 본실행
+    - cron: '0 1 * * 0'    # 일 01:00 UTC = 일 10:00 KST — 보조
+  workflow_dispatch:
+
+concurrency:
+  group: weekly-risk
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (최신 main)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 의존성 설치
+        run: pip install --quiet "httpx>=0.27,<1" "numpy>=2,<3" "pandas>=2.2,<4" "pyarrow>=17,<24" "pydantic>=2.8,<3" "python-dotenv>=1,<2" "PyYAML>=6,<7"
+
+      # 원시 데이터는 저장소에 두지 않는다(파케이를 커밋하면 저장소가 매일
+      # 수 MB씩 불어난다). 주 1회니 매번 다시 받아도 부담이 없다.
+      - name: 시장 데이터 수집
+        env:
+          PYTHONPATH: scripts
+        run: |
+          python -m bfrs.cli init
+          python -m bfrs.cli fetch-market --start 2004-10-18
+
+      - name: 경제 데이터 수집
+        env:
+          PYTHONPATH: scripts
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: |
+          if [ -z "$FRED_API_KEY" ]; then
+            echo "::error::FRED_API_KEY 시크릿이 없다 — 신용·실질금리 점수를 계산할 수 없어 중단한다"
+            exit 1
+          fi
+          python -m bfrs.cli fetch-fred --start 2004-01-01
+
+      # 결측을 조용히 메우지 않는다. 검사에 걸리면 그 자리에서 멈춘다.
+      - name: 데이터 검증
+        env:
+          PYTHONPATH: scripts
+        run: python -m bfrs.cli validate-data --strict
+
+      # analyze 가 .bfrs-work/processed/bfrs_daily.parquet 을 남긴다.
+      # 주간 화면은 스냅샷이 아니라 이 파일을 읽는다 — 스냅샷에는 날짜별
+      # 네 점수가 들어 있지 않기 때문이다.
+      - name: 분석
+        env:
+          PYTHONPATH: scripts
+        run: python -m bfrs.cli analyze
+
+      - name: 주간 진단 데이터 만들기
+        run: python3 scripts/build-weekly-risk.py
+
+      # 주 1회 갱신이라 값이 바뀌지 않는 실행이 정상적으로는 없다. 그래도
+      # 보조 슬롯이 본실행 직후 또 돌면 같은 값이 나오므로 커밋을 생략한다.
+      - name: Commit updated data (if changed)
+        id: commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/weekly-risk.json
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+            echo "fresh=no" >> "$GITHUB_OUTPUT"
+          else
+            KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
+            git commit -m "data: 주간 위험 진단 ${KST}"
+            git push origin main || (git fetch origin main && git merge --ff-only origin/main && git push origin main)
+            echo "fresh=yes" >> "$GITHUB_OUTPUT"
+          fi
+
+      # 봇 push 는 firebase-hosting.yml 을 트리거하지 않는다(깃허브 정책).
+      - name: 갱신됐으면 배포
+        if: steps.commit.outputs.fresh == 'yes'
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          npm install -g firebase-tools --quiet
+          firebase deploy --only hosting --project ezlong-541a8 --token "$FIREBASE_TOKEN" || true
