@@ -9057,5 +9057,12 @@ window.investmentQuotes = [
     "title": "내일, 또 내일, 또 내일 (Tomorrow, and Tomorrow, and Tomorrow)",
     "author": "가브리엘 제빈 (Gabrielle Zevin)",
     "genre": "literature"
+  },
+  {
+    "english": "There is nothing like losing all you have in the world for teaching you what not to do. And when you know what not to do in order not to lose money, you begin to learn what to do in order to win.",
+    "text": "가진 것을 전부 잃어보는 것만큼 하지 말아야 할 일을 확실히 가르쳐주는 것은 없다. 돈을 잃지 않기 위해 하지 말아야 할 것을 알게 되면, 그제야 이기기 위해 해야 할 것을 배우기 시작한다.",
+    "title": "제시 리버모어의 회상 (Reminiscences of a Stock Operator)",
+    "author": "제시 리버모어 (Jesse Livermore)",
+    "category": "mindset"
   }
 ];
