@@ -9104,5 +9104,12 @@ window.investmentQuotes = [
     "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
     "author": "존 보글 (John C. Bogle)",
     "category": "patience"
+  },
+  {
+    "english": "We don't even know how strong we are until we are forced to bring that hidden strength forward. In times of tragedy, of war, of necessity, people do amazing things.",
+    "text": "우리는 그 숨겨진 힘을 끄집어내야만 하는 순간이 오기 전까지는, 자신이 얼마나 강한지 알지 못한다. 비극과 전쟁과 절박함의 시간 속에서, 사람들은 놀라운 일들을 해낸다.",
+    "title": "파울라 (Paula)",
+    "author": "이사벨 아옌데 (Isabel Allende)",
+    "genre": "literature"
   }
 ];
