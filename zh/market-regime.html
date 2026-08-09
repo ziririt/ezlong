@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="zh">
 <head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
@@ -51,66 +51,122 @@
         media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-<!-- MR_SEO_START — 번역판은 scripts/build-market-regime-i18n.py 가 이 구간을 갈아끼운다 -->
-<title>시장 국면 진단 — 위험은 어디서 시작해 어디로 번지나 | EZLONG</title>
-<meta name="description" content="반도체가 먼저 경고하고 성장주가 확산을 확인하고 시장 전체가 판정합니다. SPY·QQQ·SOXX를 역할로 나눠 지금 미국 증시가 어느 단계에 있는지 진단합니다. 2004년 이후 장기 위험 기록 포함.">
-<meta name="keywords" content="시장 국면, 버블 취약성, SPY, QQQ, SOXX, 반도체 선행 경고, 추세 붕괴, 미국 증시 위험, 시장 진단">
-<link rel="canonical" href="https://ezlong.com/market-regime.html">
+<!-- MR_SEO_START — 빌더 생성. 원본은 /market-regime.html -->
+<title>市场阶段诊断 — 风险从哪里开始、蔓延到哪里 | EZLONG</title>
+<meta name="description" content="半导体先警告，成长股确认扩散，整体市场做最终判定。把 SPY、QQQ、SOXX 分成三种角色，并附 2004 年以来的长期风险记录。">
+<meta name="keywords" content="市场阶段, 泡沫脆弱性, SPY, QQQ, SOXX, 半导体先行警告, 趋势崩塌, 美股风险">
+<link rel="canonical" href="https://ezlong.com/zh/market-regime.html">
 <meta name="author" content="김성동">
+<link rel="alternate" hreflang="ko" href="https://ezlong.com/market-regime.html">
+<link rel="alternate" hreflang="en" href="https://ezlong.com/en/market-regime.html">
+<link rel="alternate" hreflang="ja" href="https://ezlong.com/ja/market-regime.html">
+<link rel="alternate" hreflang="es" href="https://ezlong.com/es/market-regime.html">
+<link rel="alternate" hreflang="pt" href="https://ezlong.com/pt/market-regime.html">
+<link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/market-regime.html">
+<link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/market-regime.html">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://ezlong.com/market-regime.html">
-<meta property="og:title" content="시장 국면 진단 — 위험은 어디서 시작해 어디로 번지나">
-<meta property="og:description" content="SPY·QQQ·SOXX를 역할로 나눠 지금 미국 증시가 어느 단계에 있는지 진단합니다.">
-<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://ezlong.com/zh/market-regime.html">
+<meta property="og:title" content="市场阶段诊断 — 风险从哪里开始、蔓延到哪里 | EZLONG">
+<meta property="og:description" content="半导体先警告，成长股确认扩散，整体市场做最终判定。把 SPY、QQQ、SOXX 分成三种角色，并附 2004 年以来的长期风险记录。">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="EZLONG">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="시장 국면 진단 — 위험은 어디서 시작해 어디로 번지나">
-<meta name="twitter:description" content="SPY·QQQ·SOXX를 역할로 나눠 지금 미국 증시가 어느 단계에 있는지 진단합니다.">
+<meta name="twitter:title" content="市场阶段诊断 — 风险从哪里开始、蔓延到哪里 | EZLONG">
+<meta name="twitter:description" content="半导体先警告，成长股确认扩散，整体市场做最终判定。把 SPY、QQQ、SOXX 分成三种角色，并附 2004 年以来的长期风险记录。">
 <!-- MR_SEO_END -->
 
-<!-- MR_I18N_START — 빌더가 갈아끼우는 구간 -->
+<!-- MR_I18N_START — 빌더 생성 -->
 <script>
 window.MR_TODAY = '/data/market-regime.json';
 window.MR_HIST = '/data/market-regime-history.json';
-window.MR_DK = {};          /* 엔진이 만든 한국어 값 → 그 언어 (한국어판은 비어 있다) */
-window.MR_TEXT = null;      /* 자유문(다음 조건·한계·역할 설명) — 번역판만 채운다 */
+window.MR_DK = {
+ "정상": "正常",
+ "선행 경고": "先行警告",
+ "경계": "警戒",
+ "추세 붕괴": "趋势崩塌",
+ "투매": "恐慌抛售",
+ "강함": "强",
+ "보통": "一般",
+ "주의": "注意",
+ "약함": "弱",
+ "위험": "危险",
+ "반도체 선행 경고": "半导体先行警告",
+ "정상 상승": "正常上涨",
+ "과열됐지만 건강함": "过热但健康",
+ "성장주 동반 약화": "成长股同步走弱",
+ "취약한 버블": "脆弱的泡沫",
+ "방어": "防御",
+ "미국 전체 시장": "美国整体市场",
+ "대형 기술·성장주": "大型科技与成长股",
+ "반도체 산업": "半导体产业",
+ "최종 기준": "最终判定",
+ "확인 신호": "确认信号",
+ "선행 경보": "先行预警",
+ "분배·경계": "派发·警戒",
+ "복구 중": "修复中",
+ "상승 추세 복원": "上升趋势恢复"
+};
+window.MR_TEXT = {
+ "next": [
+  "SPY 的崩塌信号达到3个以上，则转为全市场防御阶段",
+  "若 SOXX 先走弱，则作为半导体先行警告缩减战术仓位",
+  "若 QQQ 与 SOXX 同时走弱，则升级为成长股同步走弱的警告",
+  "恢复评分在65以上，则分阶段恢复战术仓位",
+  "过热70与脆弱性60同时出现，判定为脆弱的泡沫"
+ ],
+ "limits": [
+  "免费市场数据在与付费数据核对之前仅供研究使用",
+  "FRED 公布时滞按日频1天、周频7天做保守近似",
+  "SPY 代表整体市场，QQQ 代表成长股，SOXX 作为半导体先行预警",
+  "以等权 ETF 的比值代替历史成分股"
+ ],
+ "quality": "信号于次一交易日执行，经济指标计入公布时滞。使用市场数据{m}项、经济数据{f}项。",
+ "roleNote": {
+  "spy": "确认美国整体市场的方向是否维持。",
+  "qqq": "确认大型科技与成长股是否先于整体市场走弱。",
+  "soxx": "确认半导体是否先行警示科技景气的变化。"
+ }
+};
 window.MR_T = {
-  asOf: '{date} 미국 시장 마감 기준',
-  todayTitle: '오늘의 결론',
-  rolesTitle: '세 시장의 역할',
-  scoresTitle: '네 가지 점수',
-  chartTitle: '2004년 이후 장기 기록',
-  histTitle: '국면이 바뀐 날',
-  episodeTitle: '지난 위험 구간',
-  nextTitle: '다음에 무엇을 보나',
-  limitTitle: '이 진단의 한계',
-  weekly: '주간', daily: '일간',
-  rangeAll: '전체', range3y: '3년', range5y: '5년', range10y: '10년', range120w: '120주',
-  legendTitle: '배경색이 뜻하는 것',
-  exposure: '모델 전술 비중',
-  scoreEx: '시장 과열', scoreFr: '내부 취약성', scoreBd: '추세 붕괴 신호', scoreRp: '회복력',
-  scoreExHelp: '가격이 얼마나 앞서 달렸는가',
-  scoreFrHelp: '겉은 멀쩡해도 속이 약해졌는가',
-  scoreBdHelp: '실제로 무너지기 시작한 신호가 몇 개인가',
-  scoreRpHelp: '무너진 뒤 얼마나 되돌아왔는가',
-  bdUnit: '{n}개',
-  above50: '50일선 위', below50: '50일선 아래',
-  above200: '200일선 위', below200: '200일선 아래',
-  ret3m: '3개월', ret6m: '6개월', dd: '고점 대비',
-  warnCount: '경고 {n}개',
-  loading: '불러오는 중',
-  failed: '데이터를 불러오지 못했습니다. 잠시 뒤 새로고침해 주십시오.',
-  episodeDays: '위험 {n}일',
-  episodeSpy: 'SPY {v}',
-  parts: {
-    price_explosiveness: '가격 과속', momentum: '상승 탄력', concentration: '쏠림', speculation: '투기 열기',
-    breadth_divergence: '오르는 종목 축소', credit_stress: '회사채 압박', volatility_stress: '변동성 압박',
-    liquidity_tightening: '돈줄 조임',
-    price_reclaim: '가격 회복', momentum_repair: '탄력 회복', volatility_relief: '변동성 진정', credit_repair: '회사채 회복'
-  },
-  order: '해석 순서',
-  orderTpl: '반도체(SOXX) <b>{soxx}</b>, 성장주(QQQ) <b>{qqq}</b>, 시장 전체(SPY) <b>{spy}</b> 순서로 읽습니다.',
-  empty: '기록이 없습니다.'
+ "parts": {
+  "price_explosiveness": "价格跑在前面",
+  "momentum": "上涨动能",
+  "concentration": "集中度",
+  "speculation": "投机热度",
+  "breadth_divergence": "上涨个股减少",
+  "credit_stress": "信用债承压",
+  "volatility_stress": "波动率承压",
+  "liquidity_tightening": "资金收紧",
+  "price_reclaim": "价格收复",
+  "momentum_repair": "动能修复",
+  "volatility_relief": "波动率缓和",
+  "credit_repair": "信用债修复"
+ },
+ "asOf": "以 {date} 美股收盘为准",
+ "exposure": "模型战术仓位",
+ "scoreEx": "市场过热",
+ "scoreFr": "内部脆弱性",
+ "scoreBd": "趋势崩塌信号",
+ "scoreRp": "恢复力",
+ "scoreExHelp": "价格跑在前面多少",
+ "scoreFrHelp": "表面无恙但内部是否已经变弱",
+ "scoreBdHelp": "真正开始崩塌的信号有几个",
+ "scoreRpHelp": "崩塌之后收回了多少",
+ "bdUnit": "{n}个",
+ "above50": "50日线上方",
+ "below50": "50日线下方",
+ "above200": "200日线上方",
+ "below200": "200日线下方",
+ "ret3m": "3个月",
+ "ret6m": "6个月",
+ "dd": "距高点",
+ "warnCount": "警告{n}项",
+ "failed": "未能加载数据，请稍后刷新。",
+ "episodeDays": "风险{n}天",
+ "episodeSpy": "SPY {v}",
+ "order": "阅读顺序",
+ "orderTpl": "半导体(SOXX) <b>{soxx}</b>、成长股(QQQ) <b>{qqq}</b>、整体市场(SPY) <b>{spy}</b>。",
+ "empty": "暂无记录。"
 };
 </script>
 <!-- MR_I18N_END -->
@@ -251,9 +307,9 @@ window.MR_T = {
 <div class="mr-brand">
   <div class="mr-brand-inner">
     <div class="mr-brand-label">Bubble Fragility &amp; Regime</div>
-    <h1 class="mr-brand-title">시장 국면 진단</h1>
-    <p class="mr-lede">위험이 어디서 시작해 어디로 번지는지 봅니다. 반도체가 먼저 경고하고, 성장주가 확산을 확인하고, 시장 전체가 최종 판정을 내립니다.</p>
-    <p class="mr-lede">수익률을 겨루는 화면이 아닙니다. 지금 시장이 어느 단계에 와 있는지, 그리고 무엇이 켜지면 다음 단계로 넘어가는지만 봅니다.</p>
+    <h1 class="mr-brand-title">市场阶段诊断</h1>
+    <p class="mr-lede">看风险从哪里开始、又蔓延到哪里。半导体先发出警告，成长股确认扩散，整体市场做出最终判定。</p>
+    <p class="mr-lede">这不是比拼收益的页面。只看市场现在处于哪个阶段，以及什么亮起才会进入下一阶段。</p>
   </div>
 </div>
 
@@ -261,72 +317,72 @@ window.MR_T = {
 
   <!-- 1. 오늘의 결론 -->
   <section class="mr-card" id="mr-today">
-    <h2 class="mr-h2">오늘의 결론</h2>
-    <div class="mr-verdict" id="mr-verdict"><span class="mr-asof">불러오는 중</span></div>
+    <h2 class="mr-h2">今日结论</h2>
+    <div class="mr-verdict" id="mr-verdict"><span class="mr-asof">加载中</span></div>
     <p class="mr-order" id="mr-order"></p>
     <div class="mr-exposure" id="mr-exposure"></div>
   </section>
 
   <!-- 2. 세 시장의 역할 -->
   <section class="mr-card">
-    <h2 class="mr-h2">세 시장의 역할</h2>
-    <p class="mr-sub">세 값을 평균하지 않습니다. 순서대로 읽습니다 — 반도체가 먼저, 성장주가 그다음, 시장 전체가 마지막입니다.</p>
+    <h2 class="mr-h2">三个市场的角色</h2>
+    <p class="mr-sub">不对三个值取平均。按顺序读 — 半导体在先，成长股其次，整体市场最后。</p>
     <div class="mr-roles" id="mr-roles"></div>
   </section>
 
   <!-- 3. 네 가지 점수 -->
   <section class="mr-card">
-    <h2 class="mr-h2">네 가지 점수</h2>
-    <p class="mr-sub">버블이 만들어지는 과정과 무너지는 과정을 따로 잽니다. 과열은 높아도 취약성이 낮으면 아직 버틸 힘이 있다는 뜻입니다.</p>
+    <h2 class="mr-h2">四项评分</h2>
+    <p class="mr-sub">把泡沫形成与崩塌分开衡量。过热即使偏高，只要脆弱性低，市场仍有承受力。</p>
     <div class="mr-scores" id="mr-scores"></div>
   </section>
 
   <!-- 4. 장기 차트 -->
   <section class="mr-card">
-    <h2 class="mr-h2">2004년 이후 장기 기록</h2>
-    <p class="mr-sub">배경색이 그때의 위험 등급입니다. 세 지수는 시작점을 100으로 맞춰 겹쳐 놓았습니다.</p>
+    <h2 class="mr-h2">2004年以来的长期记录</h2>
+    <p class="mr-sub">背景色是当时的风险等级。三个指数以起点为100叠加显示。</p>
     <div class="mr-chart-wrap">
       <canvas class="mr-bands" id="mr-bands"></canvas>
       <div class="mr-chart" id="mr-chart"></div>
     </div>
     <div class="mr-btns" id="mr-freq">
-      <button type="button" class="mr-btn on" data-freq="w">주간</button>
-      <button type="button" class="mr-btn" data-freq="d">일간</button>
+      <button type="button" class="mr-btn on" data-freq="w">周</button>
+      <button type="button" class="mr-btn" data-freq="d">日</button>
     </div>
     <div class="mr-btns" id="mr-range">
-      <button type="button" class="mr-btn" data-w="120">120주</button>
-      <button type="button" class="mr-btn" data-y="3">3년</button>
-      <button type="button" class="mr-btn" data-y="5">5년</button>
-      <button type="button" class="mr-btn" data-y="10">10년</button>
-      <button type="button" class="mr-btn" data-y="0">전체</button>
+      <button type="button" class="mr-btn" data-w="120">120周</button>
+      <button type="button" class="mr-btn" data-y="3">3年</button>
+      <button type="button" class="mr-btn" data-y="5">5年</button>
+      <button type="button" class="mr-btn" data-y="10">10年</button>
+      <button type="button" class="mr-btn" data-y="0">全部</button>
     </div>
     <div class="mr-legend" id="mr-legend"></div>
   </section>
 
   <!-- 5. 국면이 바뀐 날 / 지난 위험 구간 -->
   <section class="mr-card">
-    <h2 class="mr-h2">국면이 바뀐 날</h2>
-    <p class="mr-sub">최근에 판정이 바뀐 시점입니다.</p>
+    <h2 class="mr-h2">阶段发生变化的日子</h2>
+    <p class="mr-sub">最近判定发生翻转的时点。</p>
     <div class="mr-list" id="mr-transitions"></div>
   </section>
 
   <section class="mr-card">
-    <h2 class="mr-h2">지난 위험 구간</h2>
-    <p class="mr-sub">위험 등급이 올라가 있던 구간과 그때 무엇이 켜져 있었는지입니다.</p>
+    <h2 class="mr-h2">过去的风险区间</h2>
+    <p class="mr-sub">风险等级抬升的区间，以及当时亮起的因素。</p>
     <div class="mr-list" id="mr-episodes"></div>
   </section>
 
   <!-- 6. 다음 조건 · 한계 -->
   <section class="mr-card">
-    <h2 class="mr-h2">다음에 무엇을 보나</h2>
+    <h2 class="mr-h2">接下来看什么</h2>
     <ul class="mr-ul" id="mr-next"></ul>
   </section>
 
   <section class="mr-card">
-    <h2 class="mr-h2">이 진단의 한계</h2>
+    <h2 class="mr-h2">本诊断的局限</h2>
     <ul class="mr-ul" id="mr-limits"></ul>
     <p class="mr-note" id="mr-quality"></p>
-    <p class="mr-note">이 화면은 연구용 진단 신호판입니다. 투자 권유나 수익 보장이 아니며, 매매 주문 기능도 없습니다. 판단과 책임은 보는 사람에게 있습니다.</p>
+    <p class="mr-note">本页面是研究用的诊断信号板。既非投资建议，也不保证收益，更没有下单功能。判断与后果由阅读者自负。</p>
   </section>
 
 </main>

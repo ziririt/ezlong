@@ -38,9 +38,7 @@
       ['/en/atmr-dashboard.html#top9',           L.top9,     L.top9],
       [p + 'market-vs.html',      L.vs,       L.vs],
       [p + 'brief-history.html',  L.events,   L.events],
-      /* 시장 국면 진단은 한국어판만 있다. 번역판을 굽기 전에 링크를 걸면
-         /ja/market-regime.html 같은 주소가 404 가 된다 — 번역이 올라간 뒤 켠다.
-      [p + 'market-regime.html',  L.regime,   L.regime], */
+      [p + 'market-regime.html',  L.regime,   L.regime],
       [p + 'stocks.html',         L.prices,   L.prices],
       [p + 'chart-analysis.html', L.chart,    L.chart],
       [p + 'analyst-reports.html', L.targets, L.targets],
@@ -88,6 +86,7 @@
     ['/en/atmr-dashboard.html#top9',   'TOP9 Deep Dive',  'TOP9 Deep Dive — Big Tech'],
     ['/en/market-vs.html',             'Bull vs Bear',    'Bull vs Bear — AI Market Read'],
     ['/en/brief-history.html',         'Chart: What Happened', 'Chart: What Happened That Day — US Market Events'],
+    ['/en/market-regime.html',         'Market Regime', 'Market Regime — where risk starts and how far it spreads'],
     ['/en/stocks.html',                'Live Prices',     'Simple Live Prices'],
     ['/en/chart-analysis.html',        'AI Chart Analysis', 'AI Chart Analysis'],
     ['/en/analyst-reports.html',       'Price Targets',   'Wall Street Price Targets'],

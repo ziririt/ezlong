@@ -74,12 +74,19 @@ jobs:
       - name: 과거 값이 흔들렸는지 확인
         run: python3 scripts/check-market-regime-drift.py
 
+      # 번역판은 한국어 원본에서 굽는다 — 손으로 여섯 벌을 관리하지 않는다.
+      # 데이터는 한국어 하나만 쓰고, 엔진이 내는 값은 사전으로 덮는다.
+      - name: 번역판 페이지 생성
+        run: python3 scripts/build-market-regime-i18n.py
+
       - name: Commit updated data (if changed)
         id: commit
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/market-regime.json data/market-regime-history.json
+          git add data/market-regime.json data/market-regime-history.json \
+                  en/market-regime.html ja/market-regime.html zh/market-regime.html \
+                  es/market-regime.html pt/market-regime.html
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 생략"
             echo "fresh=no" >> "$GITHUB_OUTPUT"
