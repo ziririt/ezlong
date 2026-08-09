@@ -271,7 +271,8 @@ ${ctx ? ctx.lines.map((l) => '- ' + l).join('\n') : '- 차트 데이터 없음'}
 ${ctx ? KIND_ORDER[ctx.kind] : ''}
 
 [형식]
-- 묶음 2~3개. 각 묶음 아래 닷블릿 2~3개.
+- 묶음 2~3개. 각 묶음 아래 닷블릿 2~3개. **전체 닷블릿은 7개를 넘기지 않는다.**
+- 한 닷블릿은 한 줄로 읽히게 짧게. 두 가지 사실을 한 줄에 욱여넣지 않는다.
 - 모든 문장은 **명사형으로 끝낸다**. '~했다/~이다/~습니다/~하세요' 금지.
 - 숫자·티커·지표명은 원문 그대로. 반올림하거나 바꾸지 않는다.
 - 원문에 없는 사실·해석·전망을 만들지 않는다. 고르고 줄이기만 한다.
@@ -389,8 +390,18 @@ async function main() {
         tone: TONES[String(g.tone || '').trim()] || 'mix',
         // 목록 밖 값은 'other' 로 강등 — 어휘가 늘어나면 집계가 흩어진다
         cat: CATS.includes(String(g.cat || '').trim()) ? String(g.cat).trim() : 'other',
-        points: g.points.slice(0, 4).map((p) => String(p).trim()).filter(Boolean),
+        points: g.points.slice(0, 3).map((p) => String(p).trim()).filter(Boolean),
       })) };
+      /* 카드 한 장이 한눈에 들어와야 한다. 8월 며칠이 3묶음×4닷블릿 12줄로
+         나와서 7월 이전(6줄 안팎)의 두 배가 됐다. 묶음당 3개로 줄이고,
+         그래도 넘치면 뒤에서 잘라 전체 7개로 맞춘다 — 앞에 놓인 것이 그날의
+         본론이므로 뒤를 자르는 게 맞다. */
+      let budget = 7;
+      brief.summaryGroups = brief.summaryGroups.map((g) => {
+        const take = Math.max(0, Math.min(g.points.length, budget));
+        budget -= take;
+        return { ...g, points: g.points.slice(0, take) };
+      }).filter((g) => g.points.length);
       cache[key] = brief;
       writeFileSync(CACHE, JSON.stringify(cache), 'utf8');
       made++;

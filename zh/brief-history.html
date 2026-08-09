@@ -161,7 +161,7 @@ window.BH_T = {
  "dayLog": "当天记录 {n}条",
  "fwdLabel": "此后QQQ",
  "fwdDays": "{n}日",
- "fwdSummary": "本列表{n}条在20个交易日后QQQ平均 {avg}·上涨占{up}%",
+ "fwdSummary": "已记录{n}条在20个交易日后QQQ平均 {avg}·上涨占{up}%",
  "vLabel": "当天AI判断",
  "vScore": "买入评分 {n}",
  "chipCat": "按题材检索全部",
@@ -305,7 +305,21 @@ window.BH_T = {
     75% { transform: translateX(3px); }
   }
   .bh-chart-outer { position: relative; }
-  .bh-chart-wrap { width: 100%; height: 380px; }
+  .bh-chart-wrap { width: 100%; height: 380px; position: relative; }
+  /* 고른 날짜를 차트 위에 세로선으로 세운다. 카드에 날짜가 적혀 있어도
+     그게 이 곡선의 어느 지점인지는 선이 없으면 눈으로 못 찾는다.
+     캔버스에 그리지 않고 DOM 으로 얹는 이유 — 라이브러리의 크로스헤어는
+     마우스가 움직이면 따라가 버려서 '고정 표시'로 쓸 수 없다. */
+  .bh-vline {
+    position: absolute; top: 0; width: 2px; margin-left: -1px;
+    background: #E5484D; pointer-events: none; display: none; z-index: 3;
+  }
+  .bh-vline-lab {
+    position: absolute; bottom: 0; transform: translateX(-50%);
+    background: #E5484D; color: #fff; font-size: 14px; font-weight: 700;
+    padding: 2px 8px; border-radius: 5px; white-space: nowrap;
+    pointer-events: none; display: none; z-index: 4;
+  }
   .bh-range-btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
   .bh-range-btn {
     font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: 999px;
@@ -430,19 +444,6 @@ window.BH_T = {
   .bh-events-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
   .bh-events-title { font-size: 17px; font-weight: 700; color: var(--ez-text); }
   .bh-events-count { font-size: 14px; color: var(--ez-text3); }
-  /* 무엇으로 걸러 볼지 — 누르면 아래 요약 한 줄이 그 묶음 기준으로 다시 계산된다. */
-  .bh-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 14px; }
-  .bh-chips:empty { display: none; }
-  .bh-chip-lab { font-size: 14px; font-weight: 700; color: var(--ez-text2); margin-right: 2px; }
-  .bh-chip-lab:not(:first-child) { margin-left: 8px; }
-  .bh-chip {
-    font-size: 14px; font-weight: 600; color: var(--ez-text2); cursor: pointer;
-    background: var(--ez-card2); border: 1px solid var(--ez-border); border-radius: 999px;
-    padding: 5px 11px; min-height: 32px;
-  }
-  .bh-chip em { font-style: normal; font-weight: 700; color: var(--ez-text2); margin-left: 5px; }
-  .bh-chip.on { background: var(--ez-blue); border-color: var(--ez-blue); color: #fff; }
-  .bh-chip.on em { color: rgba(255,255,255,.75); }
   /* 그날 AI 판단 — 그 뒤 수익률 바로 아래. 판단과 결과가 한 줄 간격으로 붙는다. */
   .bh-verdict { display: flex; align-items: baseline; gap: 6px; font-size: 14px; margin: -4px 0 9px; }
   .bh-verdict-lab { font-weight: 700; color: var(--ez-text2); }
@@ -505,7 +506,9 @@ window.BH_T = {
   }
   .bh-event-group-list li:last-child { margin-bottom: 0; }
   .bh-event-group-list li::before { content: '·'; position: absolute; left: 0; top: 0; color: var(--ez-text2); font-weight: 800; }
-  .bh-event-moves { display: flex; gap: 8px; flex-wrap: wrap; margin: 2px 0 9px; }
+  /* 세 개가 폰에서 한 줄에 들어가야 한다. 두 줄로 접히면 그 아래 '그 뒤 QQQ'
+     줄까지 밀려서 카드 머리가 숫자로만 세 줄이 된다. 간격을 좁혀 자리를 만든다. */
+  .bh-event-moves { display: flex; gap: 5px; flex-wrap: wrap; margin: 2px 0 9px; }
   /* 그 뒤 시장이 어디로 갔는가 — 그날 등락 바로 아래. 등락 알약보다 한 톤
      낮춰서, 먼저 읽히는 건 그날이고 그다음이 결과가 되게 한다. */
   .bh-fwd { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: -3px 0 9px; }
@@ -518,7 +521,7 @@ window.BH_T = {
   .bh-fwd-sum { font-size: 14px; color: var(--ez-text2); margin-top: 4px; line-height: 1.5; }
   .bh-fwd-sum b.up { color: var(--ez-green); }
   .bh-fwd-sum b.down { color: var(--ez-red); }
-  .bh-move-pill { font-size: 14px; font-weight: 700; padding: 3px 9px; border-radius: 6px; }
+  .bh-move-pill { font-size: 14px; font-weight: 700; padding: 3px 6px; border-radius: 6px; white-space: nowrap; }
   .bh-move-pill.up { color: var(--ez-green); background: color-mix(in srgb, var(--ez-green) 14%, transparent); }
   .bh-move-pill.down { color: var(--ez-red); background: color-mix(in srgb, var(--ez-red) 14%, transparent); }
   .bh-event-foot { display: flex; align-items: center; justify-content: space-between; font-size: 14px; color: var(--ez-text2); }
@@ -550,7 +553,10 @@ window.BH_T = {
       <div class="bh-legend" id="bh-legend"></div>
     </div>
     <div class="bh-chart-outer">
-      <div class="bh-chart-wrap" id="bh-chart"></div>
+      <div class="bh-chart-wrap" id="bh-chart">
+        <div class="bh-vline" id="bh-vline"></div>
+        <div class="bh-vline-lab" id="bh-vline-lab"></div>
+      </div>
       <canvas id="bh-draw-canvas" class="bh-draw-canvas"></canvas>
       <button type="button" id="bh-draw-delete-btn" class="bh-draw-delete-btn" style="display:none" aria-label="删除此绘图" title="删除">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -611,7 +617,6 @@ window.BH_T = {
           <div id="bh-fwd-summary"></div>
         </div>
       </div>
-      <div class="bh-chips" id="bh-chips"></div>
       <div id="bh-events-list"></div>
       <!-- BH_NOSCRIPT_START — 빌더 생성 -->
       <noscript>
@@ -690,8 +695,6 @@ window.BH_T = {
   let selectedDate = null;
   let calYear, calMonth; // 0-indexed month
   let majorOnly = false;  // 기본값: 전부 표시 (체크박스 checked 속성과 동기화)
-  let catFilter = null;   // 분류 칩 — null 이면 전체
-  let vFilter = null;     // AI 판단 칩 — null 이면 전체
   const LIST_PAGE = 120;  // 전체 목록을 끊어서 그리는 단위
   let listShown = LIST_PAGE;
   /* 기록 점을 찍을지는 '몇 개월치냐'가 아니라 '점 하나에 몇 픽셀이 돌아가느냐'로
@@ -949,8 +952,9 @@ window.BH_T = {
        기록은 거의 매 거래일에 하나씩 있어서, 1년치를 한 화면에 놓으면 점이
        서로 붙어 시간축 위에 띠 하나가 생긴다 — 정보가 아니라 잡음이 된다. */
     chart.timeScale().subscribeVisibleLogicalRangeChange(updateMarkerDensity);
+    chart.timeScale().subscribeVisibleLogicalRangeChange(updateVLine);
     // 화면 회전·창 크기 변경도 픽셀 여유를 바꾼다 — 같은 기준으로 다시 판정한다.
-    new ResizeObserver(updateMarkerDensity).observe(el);
+    new ResizeObserver(() => { updateMarkerDensity(); updateVLine(); }).observe(el);
     applyMarkers();
 
     // 모바일에서 핀치줌·드래그 같은 터치 조작이 클릭으로 오인되어 바로 아래 이슈로
@@ -1467,11 +1471,36 @@ window.BH_T = {
     });
   }
 
+  /* 고른 날짜를 차트 위에 세로선으로 세운다.
+     라이브러리의 크로스헤어는 마우스를 따라가므로 '고정 표시'로 쓸 수 없다.
+     그래서 시간축 좌표(timeToCoordinate)만 빌려 DOM 으로 얹는다.
+     좌표는 팬·줌·창 크기에 따라 매번 달라지므로 그때마다 다시 잰다.
+     보이는 구간 밖으로 나가면 감춘다 — 가장자리에 붙여 두면 그 날짜가
+     화면 안에 있는 것처럼 보인다. */
+  function updateVLine() {
+    const line = document.getElementById('bh-vline');
+    const lab = document.getElementById('bh-vline-lab');
+    const host = document.getElementById('bh-chart');
+    if (!line || !lab || !host) return;
+    if (!chartOK || !selectedDate) { line.style.display = 'none'; lab.style.display = 'none'; return; }
+    let x = null;
+    try { x = chart.timeScale().timeToCoordinate(selectedDate); } catch (e) { x = null; }
+    const w = host.clientWidth, h = host.clientHeight;
+    if (x == null || !(x >= 0 && x <= w)) { line.style.display = 'none'; lab.style.display = 'none'; return; }
+    line.style.display = 'block';
+    line.style.left = x + 'px';
+    line.style.height = h + 'px';
+    lab.style.display = 'block';
+    lab.textContent = selectedDate;
+    lab.style.left = Math.min(Math.max(x, 42), w - 42) + 'px';
+  }
+
   function clearSelection() {
     selectedDate = null;
     listShown = LIST_PAGE;
     renderCalendar();
     renderEventList();
+    updateVLine();
   }
 
   /* dateStr 날짜를 차트 한가운데에 놓고 달력·목록도 그 날짜로 맞춘다.
@@ -1485,6 +1514,7 @@ window.BH_T = {
     renderCalendar();
     renderEventList();
     if (chartOK) applyRange(6, dateStr);   // 6개월 창의 정중앙에 그 날짜가 온다
+    updateVLine();
     document.querySelectorAll('.bh-range-btn').forEach(b => b.classList.remove('active'));
     var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var behavior = calm ? 'auto' : 'smooth';
@@ -1558,12 +1588,26 @@ window.BH_T = {
       n: vals.length, avg: `<b class="${cls}">${fmtPct(avg)}</b>`, up: up })}</div>`;
   }
 
+  /* 카드 상단 등락 — 폰에서 한 줄에 들어가야 한다.
+     'QQQ -11.98%  SPY(VOO) -11.74%  SOXX -15.23%' 는 390px 에서 두 줄로 접혔다.
+     소수점 두 자리와 '(VOO)' 가 길이의 대부분이었다. 둘 다 뺀다.
+     다만 1% 미만을 정수로 반올림하면 '-0%' 나 '+1%' 가 되어 사실과 달라지므로
+     그 구간만 소수 한 자리를 남긴다 — 짧게 만들자고 숫자를 틀리게 두지 않는다. */
+  function fmtPctShort(v) {
+    if (typeof v !== 'number') return '';
+    const sign = v > 0 ? '+' : v < 0 ? '−' : '';
+    const a = Math.abs(v);
+    return sign + (a < 1 ? a.toFixed(1) : String(Math.round(a))) + '%';
+  }
+  function shortSym(sym) {
+    return String(sym).replace(/\s*\([^)]*\)\s*/, '');
+  }
   function renderMoves(moves) {
     if (!moves) return '';
     return Object.entries(moves).map(([sym, v]) => {
       if (typeof v !== 'number') return '';
       const cls = v >= 0 ? 'up' : 'down';
-      return `<span class="bh-move-pill ${cls}">${sym} ${fmtPct(v)}</span>`;
+      return `<span class="bh-move-pill ${cls}">${shortSym(sym)} ${fmtPctShort(v)}</span>`;
     }).join('');
   }
 
@@ -1642,54 +1686,6 @@ window.BH_T = {
     return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
-  /* 무엇으로 걸러 볼지 — 실제로 있는 것만 보여준다. 데이터에 없는 분류를
-     칩으로 늘어놓으면 눌러도 빈 목록이 나와서 고장처럼 보인다.
-     칩을 누르면 아래 요약 한 줄이 그 묶음 기준으로 다시 계산된다 —
-     "이런 재료가 있던 날들 이후 20거래일 평균"이 곧 이 화면의 답이다. */
-  function renderChips() {
-    const wrap = document.getElementById('bh-chips');
-    // 이벤트가 아직 안 왔는데 칩을 만들면 재료 칩이 통째로 빠진 채 굳는다
-    if (!wrap || wrap.dataset.built === '1' || !eventsData.length) return;
-    const count = {};
-    eventsData.forEach(e => (e.cats || []).forEach(c => { count[c] = (count[c] || 0) + 1; }));
-    const cats = Object.keys(count).filter(c => count[c] >= 3)
-      .sort((a, b) => count[b] - count[a]).slice(0, 8);
-    const vSet = {};
-    Object.values(verdicts).forEach(v => { vSet[v.v] = (vSet[v.v] || 0) + 1; });
-    const vKeys = Object.keys(vSet).filter(k => vSet[k] >= 3);
-    if (!cats.length && !vKeys.length) return;
-
-    let html = '';
-    if (cats.length) {
-      html += `<span class="bh-chip-lab">${T.chipCat}</span>` +
-        cats.map(c => `<button type="button" class="bh-chip" data-cat="${c}">${escapeHtml(T.cats[c] || c)}<em>${fmt(T.chipCount, { n: count[c] })}</em></button>`).join('');
-    }
-    if (vKeys.length) {
-      html += `<span class="bh-chip-lab">${T.chipVerdict}</span>` +
-        vKeys.map(k => `<button type="button" class="bh-chip" data-v="${escapeHtml(k)}">${escapeHtml(k)}<em>${fmt(T.chipCount, { n: vSet[k] })}</em></button>`).join('');
-    }
-    wrap.innerHTML = html;
-    wrap.dataset.built = '1';
-    wrap.addEventListener('click', (ev) => {
-      const b = ev.target.closest('.bh-chip');
-      if (!b) return;
-      /* 두 갈래를 동시에 걸면 교집합이 비어 0건이 나온다 — 화면이 고장난 것처럼
-         보인다. 한 번에 한 질문만 던지게 배타적으로 둔다. */
-      if (b.dataset.cat) {
-        catFilter = (catFilter === b.dataset.cat) ? null : b.dataset.cat;
-        vFilter = null;
-      }
-      if (b.dataset.v) {
-        vFilter = (vFilter === b.dataset.v) ? null : b.dataset.v;
-        catFilter = null;
-      }
-      listShown = LIST_PAGE;
-      wrap.querySelectorAll('.bh-chip').forEach(x => x.classList.toggle('on',
-        (x.dataset.cat && x.dataset.cat === catFilter) || (x.dataset.v && x.dataset.v === vFilter)));
-      renderEventList();
-    });
-  }
-
   function renderEventList() {
     const listEl = document.getElementById('bh-events-list');
     const titleEl = document.getElementById('bh-events-title');
@@ -1699,13 +1695,6 @@ window.BH_T = {
        (전후 3일)에서는 걸 자리가 아니다 — 세 장짜리 목록 위에 '80건' 같은
        전체 집계가 붙으면 그날의 성격을 말하는 것처럼 읽힌다. 실제로 그렇게
        읽혔다. 그 화면에서는 칩을 감추고 필터도 걸지 않는다. */
-    if (!selectedDate) {
-      if (catFilter) pool = pool.filter(e => (e.cats || []).indexOf(catFilter) >= 0);
-      if (vFilter) pool = pool.filter(e => verdicts[e.date] && verdicts[e.date].v === vFilter);
-    }
-    renderChips();
-    const chipsEl = document.getElementById('bh-chips');
-    if (chipsEl) chipsEl.style.display = selectedDate ? 'none' : '';
 
     if (selectedDate) {
       // 전후 1일씩, 총 3일치만 — 더 넓게 훑어보고 싶으면 아래 달력으로 다른 날짜를 고르면 된다.
@@ -1730,23 +1719,21 @@ window.BH_T = {
       return;
     }
 
-    titleEl.textContent = T.allTitle;
-    countEl.textContent = fmt(T.countUnit, { n: pool.length });
+    /* 날짜를 고르지 않았을 때는 **가장 최근 하루만** 보여준다.
+       예전에는 전체 목록을 최신순으로 수십 장씩 늘어놓고 '더 보기'를 달았는데,
+       그건 이 페이지가 하려는 일이 아니었다 — 여기서 무언가를 찾는 방법은
+       차트를 누르거나 달력에서 날짜를 고르는 것이다. 목록을 길게 깔면 그 두
+       입구가 화면 밖으로 밀려난다. 제목·건수도 두지 않는다. 카드 한 장이
+       날짜를 달고 있으므로 설명할 것이 없다. */
+    titleEl.textContent = '';
+    countEl.textContent = '';
     const sumEl = document.getElementById('bh-fwd-summary');
     if (sumEl) sumEl.innerHTML = forwardSummary(pool);
-    /* 전체 목록은 수백 건이라 한 번에 다 그리면 첫 화면이 늦어진다(특히 모바일).
-       최신분부터 끊어서 보여주고, 더 보고 싶을 때만 이어 붙인다. */
-    const shown = Math.min(listShown, pool.length);
     if (!pool.length) {
       listEl.innerHTML = '<div class="bh-empty">' + T.emptyFilter + '</div>';
       return;
     }
-    listEl.innerHTML = pool.slice(0, shown).map(e => renderEventCard(e, false)).join('')
-      + (shown < pool.length
-        ? `<div class="bh-more-row"><button type="button" class="bh-more-btn" id="bh-more-btn">${fmt(T.moreBtn, { n: pool.length - shown })}</button></div>`
-        : '');
-    const moreBtn = document.getElementById('bh-more-btn');
-    if (moreBtn) moreBtn.addEventListener('click', () => { listShown += LIST_PAGE; renderEventList(); });
+    listEl.innerHTML = renderEventCard(pool[0], false);
   }
 })();
 </script>
