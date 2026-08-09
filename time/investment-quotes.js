@@ -9016,5 +9016,12 @@ window.investmentQuotes = [
     "title": "무소유",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "After three years, if the investment is still underwater, the cause is virtually always a misjudgment on the intrinsic value of the business or its critical value drivers. It could also be because intrinsic value has indeed declined over the years. Don't hesitate to take a realized loss once three years have passed. Such losses are your best teachers to becoming a better investor.",
+    "text": "3년이 지나도 투자가 여전히 손실 상태라면, 그 원인은 거의 언제나 기업의 내재가치나 핵심 가치 동인을 잘못 판단한 데 있다. 때로는 그 사이 실제로 내재가치가 하락했기 때문일 수도 있다. 3년이 지났다면 실현 손실을 취하는 것을 주저하지 마라. 그런 손실이야말로 더 나은 투자자가 되기 위한 최고의 스승이다.",
+    "title": "단도 투자 (The Dhandho Investor)",
+    "author": "모니시 파브라이 (Mohnish Pabrai)",
+    "category": "patience"
   }
 ];
