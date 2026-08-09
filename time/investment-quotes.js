@@ -9091,5 +9091,11 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "text": "남자를 만날 거면, 너를 존경할 줄 아는 애를 만나.",
+    "title": "가녀장의 시대",
+    "author": "이슬아",
+    "genre": "literature"
   }
 ];
