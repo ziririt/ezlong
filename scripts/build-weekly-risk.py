@@ -11,15 +11,36 @@
   · 시장 과열(exuberance)     — 가격이 실제 흐름보다 얼마나 앞서 달렸나
   · 내부 취약성(fragility)    — 겉은 멀쩡해도 속이 약해졌나
   · 추세 붕괴(breakdown)      — 실제로 무너지기 시작한 신호가 몇 개 켜졌나
-  · 하락 후 회복(repair)      — 무너진 뒤 얼마나 되돌아왔나
+  · 회복 부진(100 − repair)   — 무너진 뒤 되돌아오지 못한 정도
 
   네 값을 하나로 합치지 않는다. 합치는 순간 "무엇이 나빠졌나"가 사라지고 숫자
   하나만 남는다 — 이 화면이 존재하는 이유가 바로 그 분해다.
 
-위험 방향의 정규화
-  과열·취약성·붕괴는 오르면 위험이 커지고, 회복은 오르면 위험이 **줄어든다.**
-  그래서 순위를 매길 때는 부호를 뒤집은 riskChg 로 비교한다. 이 정규화를 빼면
-  '회복이 좋아졌다'가 '위험이 커졌다'로 뒤집혀 나온다.
+네 축의 방향을 하나로 맞춘다
+  엔진의 repair 는 '높을수록 좋다'라서 혼자만 반대였다. 화면에서는 뒤집어
+  **회복 부진**(100 − repair)으로 싣는다. 넷 다 '오르면 위험'이 되므로 숫자의
+  부호와 색이 언제나 같이 움직인다 — 읽는 사람이 축마다 방향을 외울 필요가 없다.
+
+몇 개가 동시에 켜졌나 — 과열만 시계가 다르다
+  각 축이 제 분포의 상위 20% 안에 들면 '켜짐'으로 본다(축마다 분포가 달라 절대
+  기준 하나로는 못 잰다). 그런데 과열은 붕괴와 상관 −0.68 이다. 꼭대기에서
+  켜지고 나머지 셋은 무너진 뒤에 켜져서, **같은 주에 넷이 켜지는 일은 없다**
+  (1,138주 중 0주).
+
+  그렇다고 과열을 빼면 안 된다 — 실측하면 셋이 동시 점등된 15개 구간 중 14개가
+  **직전 52주 안에 과열 점등을 거쳤다**(26주 기준 10개). 폭락은 과열 끝에 온다.
+  반대로 과열 단독은 예보력이 약하다(과열 점등 66회 중 26주 안에 위기가 온 건
+  23%). 즉 과열은 동시 신호가 아니라 **선행 조건**이다.
+
+  그래서 과열만 `LOOKBACK_WEEKS`(26주) 안에 한 번이라도 점등했으면 켜진 것으로
+  본다. 이 기준에서 네 축 동시 점등은 48주(4.2%)·11개 구간이고, 전부 실제
+  위기다 — 2007-08 신용경색, 2008-01~03, 2010-05 유럽, 2011-08 신용등급 강등,
+  2012-05, 2015-12~2016-02, 2020-02~03 코로나, 2025-04. 잡음 구간이 없다.
+  그래서 판정선은 **넷**이고, 셋은 그 앞자리(경계)다.
+
+  한계도 같이 적어 둔다 — 무너지는 국면이 반년을 넘기면 과열 기억이 만료된다.
+  2008년 9~11월(리먼)은 마지막 과열 점등이 26주를 넘겨 3/4 로 잡힌다. 넷이
+  안 켜졌다고 안전하다는 뜻이 아니다.
 
 주간 표본
   각 ISO 주의 **마지막 거래일**을 그 주의 값으로 삼는다. 미국장은 금요일에
@@ -98,17 +119,41 @@ AXES = [
         ],
     },
     {
-        'key': 'repair', 'name': '하락 후 회복', 'col': 'repair_score', 'riskUp': False,
-        'help': '무너진 뒤 얼마나 되돌아왔는가',
-        'note': '이 축만 반대 방향 — 오르면 위험이 줄어듦',
+        # 엔진의 repair(높을수록 좋다)를 뒤집어 싣는다. 네 축의 방향을 맞추면
+        # 화면에서 부호와 색이 언제나 같이 움직인다.
+        'key': 'norepair', 'name': '회복 부진', 'col': 'x_norepair', 'riskUp': True,
+        'help': '무너진 뒤 되돌아오지 못한 정도',
+        'note': '엔진 회복력 점수의 뒷면 — 회복력 80이면 여기서는 20',
         'parts': [
-            ('r_price_reclaim', '가격 회복', '20일 평균선 복귀 정도'),
-            ('r_momentum_repair', '탄력 회복', 'RSI 35→65 구간 회복'),
-            ('r_volatility_relief', '변동성 진정', '10일 전 대비 VIX 하락'),
-            ('r_credit_repair', '회사채 회복', '고위험 회사채 3개월 반등'),
+            ('x_price_reclaim', '가격 미회복', '20일 평균선 아래에 머무는 정도'),
+            ('x_momentum_repair', '탄력 미회복', 'RSI가 낮은 구간에 머무는 정도'),
+            ('x_volatility_relief', '변동성 재확대', '10일 전 대비 VIX 상승'),
+            ('x_credit_repair', '회사채 미회복', '고위험 회사채 3개월 부진'),
         ],
     },
 ]
+
+# 뒤집어 싣는 열 — 원본을 건드리지 않고 파생만 만든다.
+INVERTED = {
+    'x_norepair': 'repair_score',
+    'x_price_reclaim': 'r_price_reclaim',
+    'x_momentum_repair': 'r_momentum_repair',
+    'x_volatility_relief': 'r_volatility_relief',
+    'x_credit_repair': 'r_credit_repair',
+}
+
+# 축이 '켜졌다'고 볼 자리 — 축마다 분포가 완전히 달라(붕괴는 절반이 0) 절대
+# 기준 하나로는 못 잰다. 제 분포의 상위 20% 안이면 켜진 것으로 본다.
+HOT_Q = 0.80
+# 비상 판정선. 과열을 되돌아보기(아래)까지 넣으면 넷이 실제로 켜진다 —
+# 1,138주 중 48주(4.2%), 11개 구간이 전부 실제 위기였고 잡음 구간이 없다.
+# 셋은 그 앞자리라 '경계'로 둔다(79주).
+ALERT_AT = 4
+WARN_AT = 3
+# 과열만 되돌아본다. 꼭대기의 과열과 무너진 뒤의 나머지 셋은 시점이 어긋나
+# 같은 주에 안 잡힌다 — 6개월 안에 있었으면 그 사이클 안으로 본다.
+LOOKBACK_WEEKS = 26
+LOOKBACK_KEYS = {'exuberance'}
 
 # 이 폭보다 작은 주간 변화는 순위에 올리지 않는다. 0.3점짜리 움직임을
 # '위험이 커진 곳'이라고 부르면 매주 아무 말이나 하게 된다.
@@ -152,7 +197,10 @@ def weekly_frame(daily):
     iso = frame['date'].dt.isocalendar()
     frame['_wk'] = iso['year'].astype(str) + '-' + iso['week'].astype(str).str.zfill(2)
     idx = frame.groupby('_wk')['date'].idxmax()
-    return frame.loc[idx].sort_values('date').reset_index(drop=True)
+    weekly = frame.loc[idx].sort_values('date').reset_index(drop=True)
+    for new, src in INVERTED.items():
+        weekly[new] = 100.0 - weekly[src]
+    return weekly
 
 
 def axis_payload(wk, axis):
@@ -172,6 +220,16 @@ def axis_payload(wk, axis):
         return None if prev is None or pd.isna(prev) else float(cur) - float(prev)
 
     c1, c4, c13 = chg(1), chg(4), chg(13)
+
+    threshold = float(series.quantile(HOT_Q))
+    hot_now = float(cur) >= threshold
+    hot_back, hot_ago = False, None
+    if axis['key'] in LOOKBACK_KEYS and not hot_now:
+        window = series.iloc[max(0, n - 1 - LOOKBACK_WEEKS):n - 1]
+        lit = [k for k, v in enumerate(window) if float(v) >= threshold]
+        if lit:
+            hot_back = True
+            hot_ago = int(len(window) - lit[-1])   # 몇 주 전에 마지막으로 켜졌나
 
     parts = []
     for pcol, pname, phelp in axis['parts']:
@@ -199,6 +257,11 @@ def axis_payload(wk, axis):
         'chg13w': None if c13 is None else round(c13, 1),
         'riskChg': None if c1 is None else round(c1 * sign, 1),
         'pct': pct_above(series, cur),
+        'hotAt': r1(threshold),
+        'hotNow': bool(hot_now),
+        'hot': bool(hot_now or hot_back),
+        'lookback': LOOKBACK_WEEKS if axis['key'] in LOOKBACK_KEYS else 0,
+        'hotAgo': hot_ago,
         'spark': [r1(v) for v in series.tail(52)],
         'parts': parts,
     }
@@ -242,6 +305,73 @@ def movers(axes):
     return {'up': up, 'down': cut(down, 4)}
 
 
+def alert_history(wk, axes):
+    """몇 개가 동시에 켜졌던 주가 얼마나 있었나, 그리고 어느 구간이었나.
+
+    '넷이 다 켜지면 비상'은 듣기엔 자연스럽지만 실측으로는 성립하지 않는다 —
+    과열은 꼭대기에서, 나머지 셋은 무너진 뒤에 켜져서 시점이 어긋난다.
+    그래서 판정선을 셋에 두고, 그 근거인 분포와 지난 구간을 같이 싣는다.
+    """
+    import numpy as np
+    lit = np.zeros(len(wk), dtype=int)
+    now_lit = np.zeros(len(wk), dtype=int)
+    for a in axes:
+        spec = next(x for x in AXES if x['key'] == a['key'])
+        col = spec['col']
+        on = (wk[col] >= float(wk[col].quantile(HOT_Q))).astype(int)
+        now_lit += on.to_numpy()
+        if a['key'] in LOOKBACK_KEYS:
+            # 6개월 안에 한 번이라도 켜졌으면 그 사이클 안으로 본다
+            on = on.rolling(LOOKBACK_WEEKS + 1, min_periods=1).max().astype(int)
+        lit += on.to_numpy()
+
+    dist = {int(n): int((lit == n).sum()) for n in range(len(axes) + 1)}
+
+    # 연속 구간으로 묶는다. 한두 주 끊긴 것은 같은 사건으로 본다.
+    runs, cur = [], None
+    for i, v in enumerate(lit):
+        if v >= ALERT_AT:   # 넷이 다 켜진 구간만 묶는다
+            cur = [i, i] if cur is None else [cur[0], i]
+        elif cur is not None:
+            runs.append(cur)
+            cur = None
+    if cur is not None:
+        runs.append(cur)
+    merged = []
+    for r in runs:
+        if merged and r[0] - merged[-1][1] <= 4:
+            merged[-1][1] = r[1]
+        else:
+            merged.append(list(r))
+
+    episodes = [
+        {
+            'start': pd.Timestamp(wk.iloc[a]['date']).date().isoformat(),
+            'end': pd.Timestamp(wk.iloc[b]['date']).date().isoformat(),
+            'weeks': int(b - a + 1),
+            'peak': int(lit[a:b + 1].max()),
+        }
+        for a, b in merged if (b - a + 1) >= 2
+    ]
+    all_weeks = wk.loc[lit == len(axes), 'date']
+    return {
+        'at': ALERT_AT,
+        'warnAt': WARN_AT,
+        'quantile': int(HOT_Q * 100),
+        'lookback': LOOKBACK_WEEKS,
+        'count': int(lit[-1]),
+        'countNow': int(now_lit[-1]),
+        'dist': dist,
+        'weeksAtOrAbove': int((lit >= ALERT_AT).sum()),
+        'weeksAtWarn': int((lit == WARN_AT).sum()),
+        'weeksAll': int((lit == len(axes)).sum()),
+        'allYears': sorted(set(all_weeks.dt.year.astype(int).tolist())),
+        'neverAllSameWeek': int((now_lit == len(axes)).sum()) == 0,
+        'episodes': episodes[-6:],
+        'episodeCount': len(episodes),
+    }
+
+
 def main():
     src = argof('--parquet', os.path.join(ROOT, '.bfrs-work', 'processed', 'bfrs_daily.parquet'))
     if not os.path.exists(src):
@@ -280,6 +410,7 @@ def main():
         'axesRiskUp': risk_up,
         'axesRiskDown': risk_dn,
         'axes': axes,
+        'alert': alert_history(wk, axes),
         'movers': movers(axes),
         'moverMin': MOVER_MIN,
         'breakdownMax': BREAKDOWN_MAX,
@@ -288,7 +419,7 @@ def main():
             'ex': [r1(v) for v in wk['exuberance_score']],
             'fr': [r1(v) for v in wk['fragility_score']],
             'bd': [r1(float(v) * 100.0 / BREAKDOWN_MAX) for v in wk['breakdown_count']],
-            'rp': [r1(v) for v in wk['repair_score']],
+            'nr': [r1(v) for v in wk['x_norepair']],
             'sev': [int(RISK_SEVERITY.get(str(g), 0)) for g in wk['regime']],
         },
         'coverage': {
@@ -305,6 +436,9 @@ def main():
     print(f'기준주 {payload["asOf"]}(직전 {payload["prevAsOf"]}) · {payload["regimeKo"]} · 주간 표본 {len(wk):,}주')
     for a in axes:
         print(f'  {a["name"]:<8} {a["value"]:>6}  지난주 대비 {a["chg1w"]:+.1f}  위험방향 {a["riskChg"]:+.1f}  역사적 {a["pct"]}%')
+    al = payload['alert']
+    print(f'  점등 {al["count"]}/4 (지금만 세면 {al["countNow"]}) · 판정선 {al["at"]} · '
+          f'4개 {al["weeksAll"]}주 {al["episodeCount"]}구간 · 3개 {al["weeksAtWarn"]}주 · {al["allYears"]}')
     print(f'  위험 커진 구성요소 {len(payload["movers"]["up"])}건 · 줄어든 구성요소 {len(payload["movers"]["down"])}건')
     print(f'  {os.path.getsize(OUT):,}바이트')
     return 0
