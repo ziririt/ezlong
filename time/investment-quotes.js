@@ -9097,5 +9097,12 @@ window.investmentQuotes = [
     "title": "가녀장의 시대",
     "author": "이슬아",
     "genre": "literature"
+  },
+  {
+    "english": "Time is your friend; impulse is your enemy. Take advantage of compound interest and don't be captivated by the siren song of the market.",
+    "text": "시간은 당신의 친구이고, 충동은 당신의 적이다. 복리의 힘을 활용하고, 시장이 부르는 유혹의 노래에 홀리지 마라.",
+    "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
+    "author": "존 보글 (John C. Bogle)",
+    "category": "patience"
   }
 ];
