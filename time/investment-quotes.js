@@ -9003,5 +9003,12 @@ window.investmentQuotes = [
     "title": "우리는 모두 페미니스트가 되어야 합니다 (We Should All Be Feminists)",
     "author": "치마만다 응고지 아디치에 (Chimamanda Ngozi Adichie)",
     "genre": "literature"
+  },
+  {
+    "english": "Markets are constantly in a state of uncertainty and flux, and money is made by discounting the obvious and betting on the unexpected.",
+    "text": "시장은 언제나 불확실성과 유동 속에 있다. 돈은 뻔한 것을 미리 반영하고, 예상하지 못한 것에 베팅함으로써 벌게 된다.",
+    "title": "금융의 연금술 (The Alchemy of Finance)",
+    "author": "조지 소로스 (George Soros)",
+    "category": "mindset"
   }
 ];
