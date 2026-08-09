@@ -8989,5 +8989,12 @@ window.investmentQuotes = [
     "title": "글쓰기의 최전선",
     "author": "은유",
     "genre": "literature"
+  },
+  {
+    "english": "In this business if you're good, you're right six times out of ten. You're never going to be right nine times out of ten.",
+    "text": "이 바닥에서는 잘해봐야 열 번 중 여섯 번 맞히면 잘하는 것이다. 아홉 번을 맞히는 일은 결코 없다.",
+    "title": "전설로 떠나는 월가의 영웅",
+    "author": "피터 린치",
+    "category": "mindset"
   }
 ];
