@@ -532,7 +532,7 @@ def main():
 
     results = {}
     rep = None
-    for sym, df, bench in (('SOXX', soxx, qqq), ('QQQ', qqq, spy)):
+    for sym, df, bench in (('SOXX', soxx, qqq), ('QQQ', qqq, spy), ('SPY', spy, rsp)):
         f = build_features(df, bench, breadth)
         sc = build_scores(f, vix)
         f = pd.concat([f, sc, vix.reindex(f.index)], axis=1)
@@ -541,6 +541,16 @@ def main():
         results[sym] = {
             'card': action_card(last, states.iloc[-1]),
             'asOf': f['date'].iloc[-1].date().isoformat(),
+        }
+        # 차트는 세 지수 모두 — 화면이 탭으로 고른다.
+        cw_all = f[f['date'] >= '2026-01-01']
+        results[sym]['chart'] = {
+            'dates': [d.date().isoformat() for d in cw_all['date']],
+            'close': [round(float(v), 2) for v in cw_all['close']],
+            'sma20': [None if pd.isna(v) else round(float(v), 2) for v in cw_all['sma20']],
+            'sma50': [None if pd.isna(v) else round(float(v), 2) for v in cw_all['sma50']],
+            'temp': [STATE_TEMP[s] for s in states.loc[cw_all.index]],
+            'state': [s for s in states.loc[cw_all.index]],
         }
         if sym == 'SOXX':
             rep = replay(f, states, REPLAY_START, REPLAY_END)
@@ -557,19 +567,9 @@ def main():
                                          for a2 in e['acts']]} for e in r['events']],
                 })
             results[sym]['multi'] = multi
-            # 차트 — 2026년 전체 (상태 배경 + 액션 마커)
-            cw = f[f['date'] >= '2026-01-01']
-            results[sym]['chart'] = {
-                'dates': [d.date().isoformat() for d in cw['date']],
-                'close': [round(float(v), 2) for v in cw['close']],
-                'sma20': [None if pd.isna(v) else round(float(v), 2) for v in cw['sma20']],
-                'sma50': [None if pd.isna(v) else round(float(v), 2) for v in cw['sma50']],
-                'temp': [STATE_TEMP[s] for s in states.loc[cw.index]],
-                'state': [s for s in states.loc[cw.index]],
-            }
-            # 점수 히스토리 — 같은 창
+            # 점수 히스토리 — 2026 창(개발용 상세 JSON 전용)
             results[sym]['scoreHist'] = {
-                k: [None if pd.isna(v) else round(float(v), 1) for v in f.loc[cw.index, k]]
+                k: [None if pd.isna(v) else round(float(v), 1) for v in f.loc[cw_all.index, k]]
                 for k in ('heat', 'dist', 'cap', 'rev', 'whip')
             }
 
@@ -601,8 +601,8 @@ def main():
             'stateKo': STATE_KO, 'stateTemp': STATE_TEMP,
             'initialValues': payload['initialValues'],
             'tickers': {
-                'SOXX': {'card': results['SOXX']['card'], 'chart': results['SOXX']['chart']},
-                'QQQ': {'card': results['QQQ']['card']},
+                sym: {'card': results[sym]['card'], 'chart': results[sym]['chart']}
+                for sym in ('SOXX', 'QQQ', 'SPY')
             },
             'replay': {
                 'start': rep['start'], 'end': rep['end'],
@@ -617,7 +617,8 @@ def main():
         print(f'공개용 {pub} {os.path.getsize(pub):,}바이트')
 
     # ── 콘솔 검증 출력
-    print(f"기준일 {results['SOXX']['asOf']} · SOXX {results['SOXX']['card']['stateKo']} · QQQ {results['QQQ']['card']['stateKo']}")
+    print(f"기준일 {results['SOXX']['asOf']} · SOXX {results['SOXX']['card']['stateKo']}"
+          f" · QQQ {results['QQQ']['card']['stateKo']} · SPY {results['SPY']['card']['stateKo']}")
     print('Replay 상태 전환:')
     prev = None
     for d in rep['days']:
