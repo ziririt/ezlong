@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-09-18:20",
+      "timestamp_kst": "2026-08-09(일) 18:20 KST",
+      "key_event": {
+        "name": "고용지표 둔화 및 금리 인하 기대 지속",
+        "name_en": "Sustained Expectations for Rate Cuts Amid Softening Employment",
+        "time": "직전 거래일 및 다음 주 개장 영향",
+        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
+        "why_en": "Lower-than-expected employment, easing Fed rate hike concerns, improved market sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "고용 둔화에 따른 금리 인하 기대감으로 11일 연속 긍정 우위 유지",
+      "summary_en": "Positive sentiment prevails for 11 consecutive days due to rate cut expectations from softening employment",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "고용지표 둔화 지속",
+          "name_en": "Continued Softening Employment Data",
+          "desc": "실업률 4.10%로 전기 대비 0.10% 하락, 금리 인하 기대감 유지",
+          "desc_en": "Unemployment rate at 4.10%, down 0.10% from previous period, sustaining rate cut expectations",
+          "category": "macro_data"
+        },
+        {
+          "score": 35,
+          "name": "기업 실적 호조",
+          "name_en": "Strong Corporate Earnings",
+          "desc": "WSJ 보도, 어닝 비트가 증시 랠리 우려 완화",
+          "desc_en": "WSJ reports earnings beats easing concerns over stock rally",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "유가 상승 압력",
+          "name_en": "Upward Oil Price Pressure",
+          "desc": "WTI 원유 78.18(+0.17%), 미-이란 긴장 고조로 인플레이션 우려",
+          "desc_en": "WTI crude at 78.18 (+0.17%), US-Iran tensions raise inflation concerns",
+          "category": "oil_energy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 혁명 단계에 대한 시각차",
+          "name_en": "Divergent Views on AI Revolution Stage",
+          "desc": "Jensen Huang의 'AI가 일자리가 아닌 업무를 죽일 것' 발언과 Cathie Wood의 AI 투자 확대 소식은 긍정적이나, AI 밸류에이션에 대한 근본적인 시각차는 여전",
+          "desc_en": "Jensen Huang's statement on AI eliminating tasks, not jobs, and Cathie Wood's increased AI investments are positive, but fundamental valuation differences persist for AI",
+          "category": "ai_tech_valuation"
+        }
+      ]
+    },
+    {
       "id": "2026-08-09-11:50",
       "timestamp_kst": "2026-08-09(일) 11:50 KST",
       "key_event": {
@@ -475,83 +527,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-08-05:48",
-      "timestamp_kst": "2026-08-08(토) 05:48 KST",
-      "key_event": {
-        "name": "고용지표 둔화 및 금리 인하 기대",
-        "name_en": "Weak Jobs Report Fuels Rate Cut Hopes",
-        "time": "최근 6시간 및 향후 12시간",
-        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
-        "why_en": "Lower-than-expected jobs, eased Fed hike concerns, improved market sentiment"
-      },
-      "positive_total": 80,
-      "negative_total": 20,
-      "summary": "고용 둔화에 따른 금리 인하 기대감으로 긍정 우위 지속, 어제와 동일한 구도 유지",
-      "summary_en": "Positive sentiment continues due to weak employment and rate cut expectations, maintaining yesterday's trend",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "고용지표 둔화에 따른 금리 인하 기대",
-          "name_en": "Weak Jobs Report Boosts Rate Cut Expectations",
-          "desc": "예상치 하회 고용 수치로 Fed의 금리 인상 우려 완화, 시장 심리 개선",
-          "desc_en": "Lower-than-expected job numbers ease Fed hike concerns, improving market sentiment",
-          "category": "macro_data"
-        },
-        {
-          "score": 30,
-          "name": "AI 인프라 투자 지속",
-          "name_en": "Continued AI Infrastructure Investment",
-          "desc": "Nvidia, Blackstone 등 주요 기업의 AI 인프라 투자 확대 소식",
-          "desc_en": "Major companies like Nvidia and Blackstone expanding AI infrastructure investments",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 15,
-          "name": "테슬라 로보택시 시장 기대감",
-          "name_en": "Tesla Robotaxi Market Optimism",
-          "desc": "$16.8B 규모 테라팹 착공 소식 및 로보택시 시장 독점 가능성 부각",
-          "desc_en": "News of $16.8B Terafab groundbreaking and potential robotaxi market monopoly",
-          "category": "company_specific"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 10,
-          "name": "Google 실적 우려 지속",
-          "name_en": "Persistent Google Earnings Concerns",
-          "desc": "Alphabet Inc. (GOOGL) 주가 하락 및 실적 관련 우려 지속",
-          "desc_en": "Alphabet Inc. (GOOGL) stock decline and ongoing earnings-related concerns",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 10,
-          "name": "Apple과 OpenAI 법적 분쟁",
-          "name_en": "Apple-OpenAI Legal Dispute",
-          "desc": "두 기술 거대 기업 간 법적 분쟁 심화, 시장 불확실성 증대",
-          "desc_en": "Escalating legal battle between two tech giants, increasing market uncertainty",
-          "category": "company_specific"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "약한 고용에도 금리 인상 가능성",
-          "name_en": "Rate Hike Possibility Despite Weak Jobs",
-          "desc": "고용 지표 둔화에도 불구하고 일부 분석가들은 여전히 Fed의 9월 금리 인상 가능성을 배제하지 않음",
-          "desc_en": "Despite weak jobs data, some analysts still do not rule out a September Fed rate hike",
-          "category": "fed_policy"
-        },
-        {
-          "name": "AI 투자 과열 우려",
-          "name_en": "AI Investment Overheating Concerns",
-          "desc": "AI 섹터에 대한 지속적인 투자에도 불구하고 일부에서는 과열에 대한 우려 제기",
-          "desc_en": "Despite continuous investment in the AI sector, some express concerns about overheating",
-          "category": "ai_tech_valuation"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-09T02:50:56Z",
+  "updated_at": "2026-08-09T09:20:56Z",
   "max_entries": 10
 }
