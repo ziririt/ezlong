@@ -45,7 +45,7 @@ ROOT = os.path.join(HERE, '..')
 
 STATES = ['UPTREND', 'OVERHEAT', 'DISTRIBUTION', 'CORRECTION', 'CAPITULATION', 'REVERSAL_PROBE', 'RECOVERY']
 STATE_KO = {
-    'UPTREND': '정상 추세', 'OVERHEAT': '과열', 'DISTRIBUTION': '분배',
+    'UPTREND': '정상 추세', 'OVERHEAT': '과열', 'DISTRIBUTION': '고점 이탈 조짐',
     'CORRECTION': '조정', 'CAPITULATION': '투매', 'REVERSAL_PROBE': '반등 탐색',
     'RECOVERY': '회복',
 }
@@ -530,6 +530,30 @@ def main():
         return -(r.pct_change(63))
     breadth = relmom(qqq, qqqe)
 
+    # 업황·수급 프록시 — 63일 상대 모멘텀을 직전 5년 분포의 백분위로.
+    # 반도체 주도력: SOXX/SPY (업황이 좋으면 반도체가 시장을 이긴다)
+    # 투기 수급: SOXL/SOXX (3배 ETF 로 돈이 몰리는 정도 — 과열 수급의 프록시)
+    # 신용 환경: HYG/LQD (위험 회사채 선호 — 위험자산 수급의 바탕)
+    hyg = align(load(mkt, 'HYG')); lqd = align(load(mkt, 'LQD')); soxl = align(load(mkt, 'SOXL'))
+    def pct5y(series):
+        w = series.dropna().tail(1260)
+        if len(w) < 200 or pd.isna(series.iloc[-1]):
+            return None
+        return round(float((w < series.iloc[-1]).mean() * 100), 0)
+    def rel63(a_, b_):
+        return (a_['close'] / b_['close']).pct_change(63)
+    aux_specs = [
+        ('semiLead', '반도체 주도력', rel63(soxx, spy), '반도체(SOXX)가 시장 전체(SPY)를 이기는 정도 — 업황 기대의 가격 반영'),
+        ('spec', '레버리지 투기 수급', rel63(soxl, soxx), '3배 ETF(SOXL)로 돈이 몰리는 정도 — 높으면 과열 수급, 낮으면 투매 뒤 공백'),
+        ('credit', '신용 환경', rel63(hyg, lqd), '위험 회사채(HYG) 선호 — 위험자산에 돈이 들어오는 바탕'),
+    ]
+    aux = []
+    for key, name, series, help_ in aux_specs:
+        aux.append({'key': key, 'name': name, 'help': help_,
+                    'pct': pct5y(series),
+                    'chg21': None if len(series) < 22 or pd.isna(series.iloc[-1]) or pd.isna(series.iloc[-22])
+                             else round(float((series.iloc[-1] - series.iloc[-22]) * 100), 1)})
+
     results = {}
     rep = None
     for sym, df, bench in (('SOXX', soxx, qqq), ('QQQ', qqq, spy), ('SPY', spy, rsp)):
@@ -604,6 +628,7 @@ def main():
                 sym: {'card': results[sym]['card'], 'chart': results[sym]['chart']}
                 for sym in ('SOXX', 'QQQ', 'SPY')
             },
+            'aux': aux,
             'replay': {
                 'start': rep['start'], 'end': rep['end'],
                 'perf': rep['perf'], 'final': rep['final'],

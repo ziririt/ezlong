@@ -98,6 +98,9 @@
   .sa-pick-badge { font-size: 14px; font-weight: 800; color: #fff; padding: 4px 9px; border-radius: 7px; white-space: nowrap; }
   .sa-pick-close { font-size: 14px; color: var(--ez-text2); margin-top: 5px; }
   .sa-pick-close b { color: var(--ez-text); font-weight: 700; }
+  .sa-pick-cta { font-size: 14px; font-weight: 700; border-radius: 999px; padding: 2px 10px; }
+  .sa-pick.on .sa-pick-cta { background: var(--ez-blue); color: #fff; }
+  .sa-pick:not(.on) .sa-pick-cta { border: 1px solid var(--ez-border); color: var(--ez-blue); background: var(--ez-surface); }
   @media (prefers-reduced-motion: reduce) { .sa-pick { transition: none; } .sa-pick:active { transform: none; } }
 
   /* 질문 카드 */
@@ -204,7 +207,7 @@
 
   <!-- 3. 분할 대응 사다리 -->
   <section class="sa-card">
-    <h2 class="sa-h2">분할 대응 사다리 — <span class="sa-cur-name">미국 반도체</span>는 지금 어느 단계인가</h2>
+    <h2 class="sa-h2">분할 대응 사다리 — <span class="sa-cur-sym">SOXX</span>는 지금 어느 단계인가</h2>
     <p class="sa-sub">한 번에 다 팔거나 다 사지 않습니다. 상태가 한 단계 나아갈 때마다 한 칸씩 실행하고, 지금 상태에 해당하는 칸을 표시합니다. 비중은 백테스트용 초기값.</p>
     <div class="sa-ladders" id="sa-ladders"></div>
     <p class="sa-note">첫 매도가 크면 "너무 일찍 팔았나"에 발이 묶여 진짜 분배에서 못 팝니다. 그래서 첫 칸이 10~15%로 작습니다. 매수도 같습니다 — 바닥을 맞히려 하지 않고, 바닥에 가까울수록 작게 먼저, 확률이 오를수록 크게.</p>
@@ -212,10 +215,18 @@
 
   <!-- 4. 레버리지 신호등 -->
   <section class="sa-card">
-    <h2 class="sa-h2">레버리지 신호등</h2>
-    <p class="sa-sub">가격이 쌀 때가 아니라 확률이 개선될 때 배율을 올립니다. 반등확인·휩쏘 점수가 문을 열고, 변동성이 실제 배율을 정합니다.</p>
+    <h2 class="sa-h2">레버리지 신호등 — <span class="sa-cur-sym">SOXX</span> 기준</h2>
+    <p class="sa-sub">위에서 고른 지수를 따라갑니다. 가격이 쌀 때가 아니라 확률이 개선될 때 배율을 올립니다. 반등확인·휩쏘 점수가 문을 열고, 변동성이 실제 배율을 정합니다.</p>
     <div class="sa-lev" id="sa-lev"></div>
     <p class="sa-note" id="sa-lev-note"></p>
+  </section>
+
+  <!-- 업황·수급 점검 -->
+  <section class="sa-card">
+    <h2 class="sa-h2">업황·수급 점검 — 세 지수 공통</h2>
+    <p class="sa-sub">가격에 이미 반영된 업황·수급을 세 가지 비율로 읽습니다. 값은 직전 5년 분포에서의 위치(0~100)이고, 화살 방향은 한 달 전 대비입니다.</p>
+    <div id="sa-aux"></div>
+    <p class="sa-note">실물 업황 데이터(DRAM 고정거래가·재고·팹 가동률)는 유료 소스라 미반영 — 여기 값은 가격이 말해 주는 범위까지만. 세 값이 함께 오르면 반등의 바탕이 갖춰지는 것이고, 주가만 오르고 셋이 안 따라오면 그 반등은 의심 대상.</p>
   </section>
 
   <!-- 5. 차트 -->
@@ -228,7 +239,7 @@
 
   <!-- 6. 읽는 법 -->
   <section class="sa-card">
-    <h2 class="sa-h2">읽는 법 — 이 도구의 네 가지 원칙</h2>
+    <h2 class="sa-h2">타이밍이 아니라 크기 — 이 진단의 생각법</h2>
     <ul class="sa-ul">
       <li><b>과매수는 매도 신호가 아니라 위험 예고</b> — 강한 추세에서 과매수는 몇 주씩 지속됨. 실제 매도는 추세훼손(고점 갱신 실패·상대강도 하락·오르는 종목 축소)이 결정. 과열 90에 훼손 25면 소량 익절만.</li>
       <li><b>과매도는 매수 신호가 아니라 가격 매력도</b> — 깊게 팔렸다는 것과 반등이 시작됐다는 것은 다른 정보. 투매 구간의 매수는 탐색 물량(10~15%)만, 본 매수는 반등확인이 결정.</li>
@@ -255,11 +266,11 @@
 
   <!-- 8. 한계 -->
   <section class="sa-card">
-    <h2 class="sa-h2">이 진단의 한계</h2>
+    <h2 class="sa-h2">이 도구가 하지 않는 것</h2>
     <ul class="sa-ul">
       <li>확률 도구이지 예측 도구가 아님. 분할 비중과 임계치는 전부 백테스트용 초기값이며 검증을 거치며 계속 조정됨.</li>
       <li>주 1회 표본이라 주중 급변은 다음 갱신에 반영. 장중 대응용 화면이 아님.</li>
-      <li>수급·업황(반도체 사이클) 지표는 아직 미반영 — 다음 단계에서 추가 예정.</li>
+      <li>업황·수급은 가격 기반 지표(반도체 주도력·레버리지 수급·신용 환경)까지만 반영. DRAM 가격·재고 같은 실물 데이터는 미반영.</li>
       <li>2~3배 레버리지 ETF 는 일일 리셋 구조라 횡보장에서 원금이 녹음. 기초지수 −30% 구간에서 3배는 −90% 근접 가능 — 추세장 전용.</li>
     </ul>
     <p class="sa-note" id="sa-stamp"></p>
@@ -310,7 +321,9 @@
         '<span class="sa-pick-top"><span><span class="sa-pick-sym">' + t + '</span> ' +
           '<span class="sa-pick-name">' + esc(META[t].name) + '</span></span>' +
         '<span class="sa-pick-badge" style="background:' + cv(TEMP[c.temp]) + '">' + esc(c.stateKo) + '</span></span>' +
-        '<span class="sa-pick-close">종가 <b>' + num(c.close, 2) + '</b> · 합의도 ' + c.confidence + '%</span>' +
+        '<span class="sa-pick-top" style="margin-top:6px">' +
+          '<span class="sa-pick-close">종가 <b>' + num(c.close, 2) + '</b> · 합의도 ' + c.confidence + '%</span>' +
+          '<span class="sa-pick-cta">' + (t === CUR ? '보는 중' : '누르면 전환') + '</span></span>' +
       '</button>';
     }).join('');
     var c = card();
@@ -326,6 +339,9 @@
       D.system + ' · 점수는 각 지수 자신의 직전 5년 분포 대비 백분위(0~100) · 기준일 ' + D.asOf;
     Array.prototype.forEach.call(document.querySelectorAll('.sa-cur-name'), function (el) {
       el.textContent = META[CUR].name;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.sa-cur-sym'), function (el) {
+      el.textContent = CUR;
     });
   }
 
@@ -347,10 +363,10 @@
     var obAns, obCol;
     if (sc.dist >= 62) { obAns = '과열 여부와 무관하게 추세훼손 진행 — 진짜 매도 신호'; obCol = cv('--sa-dist'); }
     else if (sc.heat >= 80 && sc.dist < 55) { obAns = '뜨겁지만 추세는 정상 — 소량 익절만, 추가 매도 금지'; obCol = cv('--sa-heat'); }
-    else if (sc.heat >= 80) { obAns = '과열 + 훼손 조짐 — 분배 신호 확인 대기'; obCol = cv('--sa-heat'); }
+    else if (sc.heat >= 80) { obAns = '과열 + 훼손 조짐 — 고점 이탈 신호 확인 대기'; obCol = cv('--sa-heat'); }
     else { obAns = '과매수 아님'; obCol = cv('--ez-text2'); }
     document.getElementById('sa-q-ob').innerHTML =
-      '<h2 class="sa-q-h">지금 과매수인가</h2>' +
+      '<h2 class="sa-q-h">지금 과매수인가 — ' + CUR + '</h2>' +
       '<p class="sa-q-a" style="color:' + obCol + '">' + esc(obAns) + '</p>' +
       meter('과열 — 가격이 얼마나 앞서 달렸나', sc.heat, '--sa-heat', '높다고 곧 하락 아님. 강한 추세의 과매수는 몇 주씩 지속') +
       meter('추세훼손 — 실제 매도가 필요한가', sc.dist, '--sa-dist', '고점 갱신 실패·상대강도 하락·오르는 종목 축소·거래량 쏠림') +
@@ -364,7 +380,7 @@
     else if (sc.cap >= 50) { osAns = '조정 진행 — 반등 확인 전'; osCol = cv('--sa-cap'); }
     else { osAns = '과매도 아님'; osCol = cv('--ez-text2'); }
     document.getElementById('sa-q-os').innerHTML =
-      '<h2 class="sa-q-h">지금 과매도인가</h2>' +
+      '<h2 class="sa-q-h">지금 과매도인가 — ' + CUR + '</h2>' +
       '<p class="sa-q-a" style="color:' + osCol + '">' + esc(osAns) + '</p>' +
       meter('투매 — 얼마나 깊게 팔렸나', sc.cap, '--sa-cap', '가격 매력도이지 매수 신호 아님. 공포·변동성·낙폭의 깊이') +
       meter('반등확인 — 진짜 반등이 시작됐나', sc.rev, '--sa-rev', '신저가 실패·10일선 회복·상승 거래량·변동성 진정') +
@@ -374,7 +390,7 @@
   // ── 3. 사다리 ─────────────────────────────────────────────────────────
   var SELL_LADDER = [
     ['S1', 'OVERHEAT', '과열 진입 시 10~15% 익절', '수익 일부 확보와 추세 존중의 양립. 여기서 크게 팔지 않는 것이 핵심'],
-    ['S2', 'DISTRIBUTION', '분배 확인 시 20~25% 추가', '고점 갱신 실패·breadth 악화 — 진짜 매도 신호'],
+    ['S2', 'DISTRIBUTION', '고점 이탈 확인 시 20~25% 추가', '고점 갱신 실패·오르는 종목 축소 — 진짜 매도 신호'],
     ['S3', 'CORRECTION', '조정 확정 시 25~30% 추가', '20일선 붕괴·하락 추세 현실화. 신규 레버리지 금지'],
     ['S4', 'CORRECTION', '추세 훼손 심화 시 잔여 축소', '50일선 이탈 시 방어 우선'],
   ];
@@ -434,6 +450,24 @@
       '레버리지의 손절 기준은 레버리지 ETF 가격이 아니라 <b>기초지수(' + CUR + ')의 기술적 레벨</b> — 3배 상품의 자체 변동성은 손절선을 무의미하게 관통함.';
   }
 
+  // ── 업황·수급 ─────────────────────────────────────────────────────────
+  function renderAux() {
+    var host = document.getElementById('sa-aux');
+    if (!D.aux || !D.aux.length) { host.innerHTML = ''; return; }
+    host.innerHTML = D.aux.map(function (a) {
+      var dir = typeof a.chg21 !== 'number' ? '' :
+        a.chg21 > 0.5 ? ' · 한 달 전보다 <b>개선</b>' : a.chg21 < -0.5 ? ' · 한 달 전보다 <b>후퇴</b>' : ' · 한 달째 제자리';
+      var col = typeof a.pct !== 'number' ? cv('--ez-text3') :
+        a.pct >= 67 ? cv('--sa-rev') : a.pct <= 33 ? cv('--sa-cap') : cv('--ez-text2');
+      return '<div class="sa-meter">' +
+        '<div class="sa-meter-top"><span class="sa-meter-name">' + esc(a.name) + '</span>' +
+          '<span class="sa-meter-val" style="color:' + col + '">' + (typeof a.pct === 'number' ? Math.round(a.pct) : '—') + '</span></div>' +
+        '<div class="sa-meter-bar"><span style="width:' + Math.max(2, a.pct || 0) + '%;background:' + col + '"></span></div>' +
+        '<div class="sa-meter-help">' + esc(a.help) + dir + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
   // ── 5. 차트 ───────────────────────────────────────────────────────────
   function drawChart() {
     document.getElementById('sa-chart-sym').textContent = CUR;
@@ -482,9 +516,11 @@
       if (!seen[m]) { seen[m] = 1; ctx.fillText(String(+m.slice(5)) + '월', x(k), padT + H + 6); }
     });
 
-    [['sma20', 0.6], ['sma50', 0.4]].forEach(function (sp) {
-      ctx.beginPath(); ctx.setLineDash([4, 4]); ctx.strokeStyle = label;
-      ctx.globalAlpha = sp[1]; ctx.lineWidth = 1.1;
+    /* 20일선은 파란 짧은 점선, 50일선은 회색 긴 점선 — 둘을 같은 모양으로
+       그리면 어느 선이 무엇인지 알 길이 없다. */
+    [['sma20', cv('--ez-blue'), [3, 3], 0.9], ['sma50', label, [9, 5], 0.75]].forEach(function (sp) {
+      ctx.beginPath(); ctx.setLineDash(sp[2]); ctx.strokeStyle = sp[1];
+      ctx.globalAlpha = sp[3]; ctx.lineWidth = 1.2;
       var pen = false;
       for (var k = 0; k < n; k++) {
         var v = ch[sp[0]][k];
@@ -502,9 +538,17 @@
   }
 
   function renderLegend() {
+    var line = function (color, dash, name) {
+      return '<span class="sa-leg"><svg width="26" height="10" aria-hidden="true">' +
+        '<line x1="1" y1="5" x2="25" y2="5" stroke="' + color + '" stroke-width="2"' +
+        (dash ? ' stroke-dasharray="' + dash + '"' : '') + '></line></svg>' + esc(name) + '</span>';
+    };
     document.getElementById('sa-legend').innerHTML = Object.keys(D.stateKo).map(function (s) {
       return '<span class="sa-leg"><i class="sa-sw" style="background:' + cv(TEMP[D.stateTemp[s]]) + '"></i>' + esc(D.stateKo[s]) + '</span>';
-    }).join('');
+    }).join('') +
+      line(cv('--ez-text'), '', '종가') +
+      line(cv('--ez-blue'), '3 3', '20일 이동평균') +
+      line(cv('--ez-text3'), '9 5', '50일 이동평균');
   }
 
   // ── 7. 검증 기록 ──────────────────────────────────────────────────────
@@ -548,6 +592,7 @@
     guard('qa', renderQA);
     guard('ladders', renderLadders);
     guard('lev', renderLev);
+    guard('aux', renderAux);
     guard('chart', drawChart);
     guard('legend', renderLegend);
     guard('proof', renderProof);
