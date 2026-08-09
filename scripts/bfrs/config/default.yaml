@@ -1,0 +1,82 @@
+portfolio:
+  core_weight: 0.75
+  tactical_weight: 0.25
+  max_buy_tranches: 6
+  max_sell_tranches: 6
+rules:
+  cooldown_trading_days: 5
+  minimum_atr_move: 1.0
+  minimum_score_change: 10
+costs:
+  transaction_cost_bps: 5
+  slippage_bps: 5
+data:
+  market_provider: yahoo_chart
+  fred_series:
+    - DFII10
+    - BAMLH0A0HYM2
+    - BAMLC0A4CBBB
+    - STLFSI4
+  market_symbols:
+    - QQQ
+    - SPY
+    - RSP
+    - QQQE
+    - TQQQ
+    - SOXX
+    - SOXL
+    - HYG
+    - LQD
+    - IEF
+    - VIX
+    - VIX3M
+  maximum_gap_days: 10
+  stale_after_days: 7
+# 원시·중간 산출물은 저장소에 남기지 않는다. 매 실행마다 다시 받고 다시 만든다
+# (파케이를 커밋하면 매일 통째로 다시 실려 저장소가 하루 수 MB씩 불어난다).
+# 화면이 읽는 결과 JSON만 data/ 에 커밋한다.
+paths:
+  database: .bfrs-work/state/bfrs.db
+  raw: .bfrs-work/raw
+  processed: .bfrs-work/processed
+  reports: .bfrs-work/reports
+scoring:
+  exuberance:
+    price_explosiveness: 0.30
+    momentum: 0.25
+    concentration: 0.25
+    speculation: 0.20
+  fragility:
+    breadth_divergence: 0.30
+    credit_stress: 0.25
+    volatility_stress: 0.25
+    liquidity_tightening: 0.20
+regime:
+  exuberant: 70
+  fragile: 60
+  repair: 65
+  panic_vix: 30
+market_roles:
+  weak_health: 40
+  spy_healthy_floor: 60
+  qqq_warning_health: 40
+  soxx_warning_health: 40
+  warning_count_trigger: 2
+  confirmation_window: 3
+  confirmation_hits: 2
+  soxx_relative_warning_63d: -0.05
+backtest:
+  initial_capital: 100000
+  annual_trading_days: 252
+  plan_b:
+    early_reentry_repair: 40
+    early_reentry_moving_average: sma_50
+    evacuation_regimes:
+      - FRAGILE_BUBBLE
+      - DISTRIBUTION
+      - GROWTH_WARNING
+      - BREAKDOWN
+      - PANIC
+    severe_regimes:
+      - BREAKDOWN
+      - PANIC

@@ -1,0 +1,817 @@
+{
+ "system": "BFRS v0.3",
+ "asOf": "2026-08-07",
+ "regime": "TECH_LEADING_WARNING",
+ "regimeKo": "반도체 선행 경고",
+ "scores": {
+  "exuberance": 39.55,
+  "fragility": 14.47,
+  "breakdown": 0,
+  "repair": 84.91
+ },
+ "components": {
+  "exuberance": {
+   "price_explosiveness": 76.81,
+   "momentum": 50.75,
+   "concentration": 2.16,
+   "speculation": 16.43
+  },
+  "fragility": {
+   "breadth_divergence": 0.0,
+   "credit_stress": 7.12,
+   "volatility_stress": 5.04,
+   "liquidity_tightening": 57.16
+  },
+  "repair": {
+   "price_reclaim": 78.64,
+   "momentum_repair": 100.0,
+   "volatility_relief": 77.35,
+   "credit_repair": 83.65
+  }
+ },
+ "market": {
+  "spy": 773.26,
+  "qqq": 723.03,
+  "soxx": 543.27,
+  "vix": 14.9,
+  "vix3m": 18.72,
+  "drawdown": 0.0,
+  "real_yield_10y": 2.43,
+  "hy_oas": 2.71
+ },
+ "roles": {
+  "spy": {
+   "symbol": "SPY",
+   "name": "미국 전체 시장",
+   "role": "최종 기준",
+   "price": 773.26,
+   "health": 100.0,
+   "state": "강함",
+   "above_50d": true,
+   "above_200d": true,
+   "return_3m": 6.0,
+   "return_6m": 14.7,
+   "drawdown": 0.0,
+   "warnings": 0,
+   "interpretation": "미국 전체 시장의 방향이 유지되는지 확인합니다."
+  },
+  "qqq": {
+   "symbol": "QQQ",
+   "name": "대형 기술·성장주",
+   "role": "확인 신호",
+   "price": 723.03,
+   "health": 100.0,
+   "state": "강함",
+   "above_50d": true,
+   "above_200d": true,
+   "return_3m": 4.2,
+   "return_6m": 21.4,
+   "drawdown": -3.0,
+   "warnings": 0,
+   "interpretation": "대형 기술·성장주가 전체 시장보다 먼저 약해지는지 확인합니다."
+  },
+  "soxx": {
+   "symbol": "SOXX",
+   "name": "반도체 산업",
+   "role": "선행 경보",
+   "price": 543.27,
+   "health": 80.0,
+   "state": "주의",
+   "above_50d": false,
+   "above_200d": true,
+   "return_3m": 10.4,
+   "return_6m": 64.4,
+   "drawdown": -17.1,
+   "warnings": 2,
+   "interpretation": "반도체가 기술 경기의 변화를 먼저 경고하는지 확인합니다."
+  }
+ },
+ "cross": {
+  "weak_count": 1,
+  "soxx_leading_alert": true,
+  "growth_warning": false,
+  "soxx_vs_spy_3m": 4.2,
+  "qqq_vs_spy_3m": -1.7
+ },
+ "nextConditions": [
+  "SPY의 붕괴 신호 3개 이상이면 시장 전체 방어 국면으로 전환",
+  "SOXX가 먼저 약해지면 반도체 선행 경고로 전술 비중을 축소",
+  "QQQ와 SOXX가 함께 약해지면 성장주 동반 약화로 경고 강화",
+  "복구 점수 65 이상이면 전술 비중을 단계적으로 복원",
+  "과열 70·취약성 60 이상이 함께 나타나면 취약한 버블로 판정"
+ ],
+ "transitions": [
+  {
+   "date": "2025-11-25",
+   "regime": "NORMAL_UPTREND",
+   "label": "정상 상승"
+  },
+  {
+   "date": "2026-03-06",
+   "regime": "BREAKDOWN",
+   "label": "추세 붕괴"
+  },
+  {
+   "date": "2026-03-10",
+   "regime": "NORMAL_UPTREND",
+   "label": "정상 상승"
+  },
+  {
+   "date": "2026-03-20",
+   "regime": "BREAKDOWN",
+   "label": "추세 붕괴"
+  },
+  {
+   "date": "2026-03-30",
+   "regime": "PANIC",
+   "label": "투매"
+  },
+  {
+   "date": "2026-03-31",
+   "regime": "BREAKDOWN",
+   "label": "추세 붕괴"
+  },
+  {
+   "date": "2026-04-08",
+   "regime": "REPAIR",
+   "label": "복구 중"
+  },
+  {
+   "date": "2026-04-09",
+   "regime": "RESTORED_UPTREND",
+   "label": "상승 추세 복원"
+  },
+  {
+   "date": "2026-04-10",
+   "regime": "NORMAL_UPTREND",
+   "label": "정상 상승"
+  },
+  {
+   "date": "2026-05-06",
+   "regime": "EXUBERANT_HEALTHY",
+   "label": "과열됐지만 건강함"
+  },
+  {
+   "date": "2026-06-04",
+   "regime": "NORMAL_UPTREND",
+   "label": "정상 상승"
+  },
+  {
+   "date": "2026-07-15",
+   "regime": "TECH_LEADING_WARNING",
+   "label": "반도체 선행 경고"
+  }
+ ],
+ "episodes": [
+  {
+   "start": "2004-10-18",
+   "end": "2005-06-08",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 157,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "QQQ·SOXX 성장주 동반 약화",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "SPY 50일선이 200일선 아래"
+   ],
+   "max_breakdown_count": 3,
+   "max_vix": 17.7,
+   "spy_drawdown": -7.0,
+   "changes": {
+    "spy": 8.6,
+    "qqq": 5.3,
+    "soxx": 12.2
+   }
+  },
+  {
+   "start": "2006-05-11",
+   "end": "2006-11-14",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 116,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "QQQ·SOXX 성장주 동반 약화",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "SPY 50일선이 200일선 아래"
+   ],
+   "max_breakdown_count": 2,
+   "max_vix": 23.8,
+   "spy_drawdown": -7.6,
+   "changes": {
+    "spy": 7.6,
+    "qqq": 8.0,
+    "soxx": -2.0
+   }
+  },
+  {
+   "start": "2007-08-03",
+   "end": "2007-09-10",
+   "level": "투매",
+   "severity": 4,
+   "regime": "PANIC",
+   "regime_ko": "투매",
+   "risk_days": 14,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 4,
+   "max_vix": 30.8,
+   "spy_drawdown": -9.0,
+   "changes": {
+    "spy": 1.4,
+    "qqq": 1.6,
+    "soxx": 3.0
+   }
+  },
+  {
+   "start": "2007-10-25",
+   "end": "2009-07-14",
+   "level": "투매",
+   "severity": 4,
+   "regime": "PANIC",
+   "regime_ko": "투매",
+   "risk_days": 422,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "QQQ·SOXX 성장주 동반 약화",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "SPY 50일선이 200일선 아래",
+    "SPY 최근 고점 대비 10% 이상 하락",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 6,
+   "max_vix": 80.9,
+   "spy_drawdown": -51.5,
+   "changes": {
+    "spy": -37.8,
+    "qqq": -32.2,
+    "soxx": -39.6
+   }
+  },
+  {
+   "start": "2009-08-17",
+   "end": "2009-09-04",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 8,
+   "signals": [
+    "SPY 최근 고점 대비 10% 이상 하락",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 3,
+   "max_vix": 29.1,
+   "spy_drawdown": -22.5,
+   "changes": {
+    "spy": 3.8,
+    "qqq": 4.9,
+    "soxx": 8.1
+   }
+  },
+  {
+   "start": "2010-01-22",
+   "end": "2010-02-11",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 12,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "SPY 50일 평균선 이탈",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 3,
+   "max_vix": 27.3,
+   "spy_drawdown": -8.0,
+   "changes": {
+    "spy": -1.0,
+    "qqq": -1.1,
+    "soxx": 1.1
+   }
+  },
+  {
+   "start": "2010-05-06",
+   "end": "2010-10-27",
+   "level": "투매",
+   "severity": 4,
+   "regime": "PANIC",
+   "regime_ko": "투매",
+   "risk_days": 111,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "SPY 50일선이 200일선 아래",
+    "SPY 최근 고점 대비 10% 이상 하락",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 6,
+   "max_vix": 45.8,
+   "spy_drawdown": -15.7,
+   "changes": {
+    "spy": 5.9,
+    "qqq": 12.8,
+    "soxx": 6.9
+   }
+  },
+  {
+   "start": "2011-03-16",
+   "end": "2011-03-22",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 5,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "SPY 50일 평균선 이탈",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 3,
+   "max_vix": 29.4,
+   "spy_drawdown": -6.2,
+   "changes": {
+    "spy": 2.9,
+    "qqq": 2.5,
+    "soxx": 2.5
+   }
+  },
+  {
+   "start": "2011-04-14",
+   "end": "2012-02-03",
+   "level": "투매",
+   "severity": 4,
+   "regime": "PANIC",
+   "regime_ko": "투매",
+   "risk_days": 188,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "QQQ·SOXX 성장주 동반 약화",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "SPY 50일선이 200일선 아래",
+    "SPY 최근 고점 대비 10% 이상 하락",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 6,
+   "max_vix": 48.0,
+   "spy_drawdown": -18.6,
+   "changes": {
+    "spy": 4.0,
+    "qqq": 10.2,
+    "soxx": 0.7
+   }
+  },
+  {
+   "start": "2012-04-23",
+   "end": "2012-08-07",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 75,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "QQQ·SOXX 성장주 동반 약화",
+    "SPY 50일 평균선 이탈",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 3,
+   "max_vix": 26.7,
+   "spy_drawdown": -9.7,
+   "changes": {
+    "spy": 3.1,
+    "qqq": 2.6,
+    "soxx": 0.5
+   }
+  },
+  {
+   "start": "2012-09-24",
+   "end": "2013-01-02",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 68,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "QQQ·SOXX 성장주 동반 약화",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "고위험 회사채 시장 약화"
+   ],
+   "max_breakdown_count": 3,
+   "max_vix": 22.7,
+   "spy_drawdown": -7.3,
+   "changes": {
+    "spy": 1.0,
+    "qqq": -3.1,
+    "soxx": 3.2
+   }
+  },
+  {
+   "start": "2014-10-13",
+   "end": "2014-10-21",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 7,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 4,
+   "max_vix": 25.3,
+   "spy_drawdown": -7.3,
+   "changes": {
+    "spy": 3.6,
+    "qqq": 4.2,
+    "soxx": 10.2
+   }
+  },
+  {
+   "start": "2015-07-07",
+   "end": "2016-03-17",
+   "level": "투매",
+   "severity": 4,
+   "regime": "PANIC",
+   "regime_ko": "투매",
+   "risk_days": 147,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "QQQ·SOXX 성장주 동반 약화",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "SPY 50일선이 200일선 아래",
+    "SPY 최근 고점 대비 10% 이상 하락",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 6,
+   "max_vix": 40.7,
+   "spy_drawdown": -13.0,
+   "changes": {
+    "spy": -0.5,
+    "qqq": 0.1,
+    "soxx": -0.0
+   }
+  },
+  {
+   "start": "2016-05-02",
+   "end": "2016-05-23",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 16,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "QQQ·SOXX 성장주 동반 약화",
+    "SPY 50일 평균선 이탈",
+    "고위험 회사채 시장 약화"
+   ],
+   "max_breakdown_count": 2,
+   "max_vix": 16.3,
+   "spy_drawdown": -2.8,
+   "changes": {
+    "spy": -1.3,
+    "qqq": -0.4,
+    "soxx": 3.1
+   }
+  },
+  {
+   "start": "2018-02-08",
+   "end": "2018-02-13",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 4,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "SPY 50일 평균선 이탈",
+    "SPY 최근 고점 대비 10% 이상 하락",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 3,
+   "max_vix": 33.5,
+   "spy_drawdown": -10.1,
+   "changes": {
+    "spy": 3.2,
+    "qqq": 4.1,
+    "soxx": 4.7
+   }
+  },
+  {
+   "start": "2018-04-02",
+   "end": "2018-05-07",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 15,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "SPY 50일 평균선 이탈",
+    "고위험 회사채 시장 약화"
+   ],
+   "max_breakdown_count": 2,
+   "max_vix": 23.6,
+   "spy_drawdown": -9.8,
+   "changes": {
+    "spy": 3.7,
+    "qqq": 6.9,
+    "soxx": 2.5
+   }
+  },
+  {
+   "start": "2018-08-16",
+   "end": "2019-02-11",
+   "level": "투매",
+   "severity": 4,
+   "regime": "PANIC",
+   "regime_ko": "투매",
+   "risk_days": 111,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "QQQ·SOXX 성장주 동반 약화",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "SPY 50일선이 200일선 아래",
+    "SPY 최근 고점 대비 10% 이상 하락",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 6,
+   "max_vix": 36.1,
+   "spy_drawdown": -19.3,
+   "changes": {
+    "spy": -3.7,
+    "qqq": -5.9,
+    "soxx": -1.2
+   }
+  },
+  {
+   "start": "2019-05-20",
+   "end": "2019-06-26",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 27,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "고위험 회사채 시장 약화"
+   ],
+   "max_breakdown_count": 3,
+   "max_vix": 18.9,
+   "spy_drawdown": -6.6,
+   "changes": {
+    "spy": 2.8,
+    "qqq": 3.5,
+    "soxx": 7.1
+   }
+  },
+  {
+   "start": "2020-02-24",
+   "end": "2020-05-26",
+   "level": "투매",
+   "severity": 4,
+   "regime": "PANIC",
+   "regime_ko": "투매",
+   "risk_days": 65,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "SPY 50일선이 200일선 아래",
+    "SPY 최근 고점 대비 10% 이상 하락",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 6,
+   "max_vix": 82.7,
+   "spy_drawdown": -33.7,
+   "changes": {
+    "spy": -6.7,
+    "qqq": 3.7,
+    "soxx": 1.4
+   }
+  },
+  {
+   "start": "2020-06-11",
+   "end": "2020-07-02",
+   "level": "투매",
+   "severity": 4,
+   "regime": "PANIC",
+   "regime_ko": "투매",
+   "risk_days": 10,
+   "signals": [
+    "SPY 50일선이 200일선 아래",
+    "SPY 최근 고점 대비 10% 이상 하락",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 4,
+   "max_vix": 40.8,
+   "spy_drawdown": -10.6,
+   "changes": {
+    "spy": 4.3,
+    "qqq": 8.0,
+    "soxx": 6.2
+   }
+  },
+  {
+   "start": "2020-09-21",
+   "end": "2020-09-25",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 3,
+   "signals": [
+    "SPY 50일 평균선 이탈",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 3,
+   "max_vix": 28.6,
+   "spy_drawdown": -9.4,
+   "changes": {
+    "spy": 0.5,
+    "qqq": 1.5,
+    "soxx": 0.9
+   }
+  },
+  {
+   "start": "2022-01-20",
+   "end": "2023-01-30",
+   "level": "투매",
+   "severity": 4,
+   "regime": "PANIC",
+   "regime_ko": "투매",
+   "risk_days": 255,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "QQQ·SOXX 성장주 동반 약화",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "SPY 50일선이 200일선 아래",
+    "SPY 최근 고점 대비 10% 이상 하락",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 6,
+   "max_vix": 36.5,
+   "spy_drawdown": -24.5,
+   "changes": {
+    "spy": -8.9,
+    "qqq": -19.2,
+    "soxx": -16.6
+   }
+  },
+  {
+   "start": "2023-02-24",
+   "end": "2023-03-28",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 18,
+   "signals": [
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "SPY 최근 고점 대비 10% 이상 하락",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 5,
+   "max_vix": 26.5,
+   "spy_drawdown": -15.4,
+   "changes": {
+    "spy": 0.2,
+    "qqq": 5.4,
+    "soxx": 3.9
+   }
+  },
+  {
+   "start": "2023-09-13",
+   "end": "2023-11-07",
+   "level": "추세 붕괴",
+   "severity": 3,
+   "regime": "BREAKDOWN",
+   "regime_ko": "추세 붕괴",
+   "risk_days": 37,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈"
+   ],
+   "max_breakdown_count": 2,
+   "max_vix": 21.7,
+   "spy_drawdown": -10.0,
+   "changes": {
+    "spy": -1.8,
+    "qqq": -0.3,
+    "soxx": -2.6
+   }
+  },
+  {
+   "start": "2024-07-25",
+   "end": "2025-06-25",
+   "level": "투매",
+   "severity": 4,
+   "regime": "PANIC",
+   "regime_ko": "투매",
+   "risk_days": 217,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "QQQ·SOXX 성장주 동반 약화",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "SPY 50일선이 200일선 아래",
+    "SPY 최근 고점 대비 10% 이상 하락",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 6,
+   "max_vix": 52.3,
+   "spy_drawdown": -18.8,
+   "changes": {
+    "spy": 14.2,
+    "qqq": 18.8,
+    "soxx": 6.4
+   }
+  },
+  {
+   "start": "2026-03-06",
+   "end": "2026-04-07",
+   "level": "투매",
+   "severity": 4,
+   "regime": "PANIC",
+   "regime_ko": "투매",
+   "risk_days": 14,
+   "signals": [
+    "SOXX 반도체 선행 경고",
+    "SPY 50일 평균선 이탈",
+    "SPY 200일 평균선 이탈",
+    "고위험 회사채 시장 약화",
+    "시장 공포지수 25 이상"
+   ],
+   "max_breakdown_count": 4,
+   "max_vix": 31.0,
+   "spy_drawdown": -8.9,
+   "changes": {
+    "spy": -1.7,
+    "qqq": -1.7,
+    "soxx": 7.6
+   }
+  }
+ ],
+ "dataQuality": {
+  "market_series": 12,
+  "fred_series": 4,
+  "future_data_rule": "신호 다음 거래일 실행, 경제지표 공표 지연 적용",
+  "limitations": [
+   "무료 시장 데이터는 유료 데이터와 대조 전 연구용으로만 사용",
+   "FRED 공표 시차는 일별 1일·주별 7일의 보수적 근사치",
+   "SPY는 전체 시장, QQQ는 성장주, SOXX는 반도체 선행 경보로 역할을 분리",
+   "과거 구성 종목 대신 동일가중 ETF 비율을 사용"
+  ]
+ },
+ "levels": [
+  "정상",
+  "선행 경고",
+  "경계",
+  "추세 붕괴",
+  "투매"
+ ]
+}
