@@ -193,6 +193,23 @@ const KIND_ORDER = {
   normal: '평범한 하루다. 그래도 가격을 움직인 재료만 고른다.',
 };
 
+/* 카드 한 장이 한눈에 들어와야 한다. 8월 며칠이 3묶음×4닷블릿 12줄로 나와
+   7월 이전(6줄 안팎)의 두 배가 됐다. 묶음당 3개, 전체 7개로 맞춘다 —
+   앞에 놓인 것이 그날의 본론이므로 뒤를 자른다.
+
+   생성할 때만이 아니라 **카드에 얹을 때도** 한 번 더 건다. 캐시에는 옛 규칙으로
+   만들어진 긴 브리핑이 남아 있는데, 그것 때문에 전부 다시 만드는 건 낭비다
+   (모델 호출은 돈이고, 자르는 건 공짜다). */
+function trimBrief(groups) {
+  let budget = 7;
+  return (groups || []).map((g) => {
+    const pts = (g.points || []).slice(0, 3);
+    const take = Math.max(0, Math.min(pts.length, budget));
+    budget -= take;
+    return { ...g, points: pts.slice(0, take) };
+  }).filter((g) => g.points.length);
+}
+
 /* 글자가 깨진 채 통과하지 않게 — U+FFFD 는 응답 청크 경계에서 한 글자가
    잘려 나갔다는 신호다. 에러가 안 나므로 사람이 화면에서 보기 전엔 모른다.
    실제로 37일치 브리핑에 이 문자가 섞인 채 배포됐다. */
@@ -392,16 +409,7 @@ async function main() {
         cat: CATS.includes(String(g.cat || '').trim()) ? String(g.cat).trim() : 'other',
         points: g.points.slice(0, 3).map((p) => String(p).trim()).filter(Boolean),
       })) };
-      /* 카드 한 장이 한눈에 들어와야 한다. 8월 며칠이 3묶음×4닷블릿 12줄로
-         나와서 7월 이전(6줄 안팎)의 두 배가 됐다. 묶음당 3개로 줄이고,
-         그래도 넘치면 뒤에서 잘라 전체 7개로 맞춘다 — 앞에 놓인 것이 그날의
-         본론이므로 뒤를 자르는 게 맞다. */
-      let budget = 7;
-      brief.summaryGroups = brief.summaryGroups.map((g) => {
-        const take = Math.max(0, Math.min(g.points.length, budget));
-        budget -= take;
-        return { ...g, points: g.points.slice(0, take) };
-      }).filter((g) => g.points.length);
+      brief.summaryGroups = trimBrief(brief.summaryGroups);
       cache[key] = brief;
       writeFileSync(CACHE, JSON.stringify(cache), 'utf8');
       made++;
@@ -415,9 +423,10 @@ async function main() {
     const primary = e.articles[0];
     e.title = primary.t;
     e.link = primary.u;
-    e.summaryGroups = brief.summaryGroups;
+    const groupsOut = trimBrief(brief.summaryGroups);
+    e.summaryGroups = groupsOut;
     // 카드 필터가 쓰는 요약 — 그날 등장한 분류를 중복 없이 모아 둔다
-    const cats = [...new Set(brief.summaryGroups.map((g) => g.cat).filter((c) => c && c !== 'other'))];
+    const cats = [...new Set(groupsOut.map((g) => g.cat).filter((c) => c && c !== 'other'))];
     if (cats.length) e.cats = cats; else delete e.cats;
     const rest = e.articles.slice(1);
     if (rest.length) e.moreArticles = (e.moreArticles || []).concat(rest);
