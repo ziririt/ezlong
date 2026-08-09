@@ -8963,5 +8963,11 @@ window.investmentQuotes = [
     "title": "더 템플턴 터치 (The Templeton Touch)",
     "author": "존 템플턴 (John Templeton)",
     "category": "mindset"
+  },
+  {
+    "text": "어둠이 빛의 부재라면, 여행은 일상의 부재이다. 풀리지 않는 삶의 난제들과 맞서기도 해야겠지만, 가끔은 달아나는 것도 필요하다.",
+    "title": "여행의 이유",
+    "author": "김영하",
+    "genre": "literature"
   }
 ];
