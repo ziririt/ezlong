@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-08-10-08:20",
+      "timestamp_kst": "2026-08-10(월) 08:20 KST",
+      "key_event": {
+        "name": "고용 둔화 및 금리 인하 기대 지속",
+        "name_en": "Sustained Slowdown in Employment and Rate Cut Expectations",
+        "time": "직전 거래일 및 다음 주 개장 전",
+        "why": "고용지표 둔화, 금리 인상 우려 완화, 시장 심리 개선",
+        "why_en": "Slowing employment data, easing rate hike concerns, improved market sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "고용 둔화에 따른 금리 인하 기대감으로 17일 연속 긍정 우위 유지",
+      "summary_en": "Positive sentiment prevails for 17 consecutive days due to slowing employment and rate cut expectations",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "고용지표 둔화 지속",
+          "name_en": "Continued Slowdown in Employment Data",
+          "desc": "실업률 4.10%로 전기대비 -0.10% 하락, 금리 인하 기대감 증폭",
+          "desc_en": "Unemployment rate fell to 4.10% (-0.10% MoM), boosting rate cut expectations",
+          "category": "macro_data"
+        },
+        {
+          "score": 35,
+          "name": "금리 인상 우려 완화",
+          "name_en": "Easing Rate Hike Concerns",
+          "desc": "Fed 기준금리 3.63% 유지, 10년물 국채금리 하락으로 금리 인상 우려 진정",
+          "desc_en": "Fed policy rate held at 3.63%, 10Y Treasury yield decline calms rate hike fears",
+          "category": "fed_policy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "일부 기업 실적 부진",
+          "name_en": "Underperformance of Some Companies",
+          "desc": "Sezzle 매출 호조에도 주가 급락, 개별 기업 리스크 부각",
+          "desc_en": "Sezzle stock plunged despite revenue beat, highlighting company-specific risks",
+          "category": "company_specific"
+        },
+        {
+          "score": 10,
+          "name": "지정학적 불확실성 지속",
+          "name_en": "Persistent Geopolitical Uncertainty",
+          "desc": "이란 관련 불확실성 및 트럼프의 경제 압력 시그널",
+          "desc_en": "Uncertainty surrounding Iran and Trump's signals of economic pressure",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 혁명 단계 시각차",
+          "name_en": "Divergent Views on AI Revolution Stage",
+          "desc": "AI 관련 기업들의 성장 기대감과 함께 혁명 단계에 대한 시각차 존재",
+          "desc_en": "Growth expectations for AI companies coexist with differing views on the stage of the AI revolution",
+          "category": "ai_tech_valuation"
+        }
+      ]
+    },
+    {
       "id": "2026-08-10-06:56",
       "timestamp_kst": "2026-08-10(월) 06:56 KST",
       "key_event": {
@@ -442,68 +502,8 @@
           "category": "ai_tech_valuation"
         }
       ]
-    },
-    {
-      "id": "2026-08-08-23:20",
-      "timestamp_kst": "2026-08-08(토) 23:20 KST",
-      "key_event": {
-        "name": "고용지표 둔화 및 금리 인하 기대 지속",
-        "name_en": "Sustained Expectations for Rate Cuts Amid Weakening Job Market",
-        "time": "다음 주 개장 전까지",
-        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
-        "why_en": "Lower-than-expected employment, easing Fed rate hike concerns, improved market sentiment"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "고용 둔화에 따른 금리 인하 기대감으로 7일 연속 긍정 우위 유지",
-      "summary_en": "Positive sentiment prevails for 7 consecutive days due to rate cut expectations from slowing employment",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "고용지표 둔화 지속",
-          "name_en": "Continued Weakening Job Market",
-          "desc": "예상치 하회 고용 보고서로 Fed 금리 인하 기대감 증폭",
-          "desc_en": "Lower-than-expected jobs report boosts Fed rate cut expectations",
-          "category": "macro_data"
-        },
-        {
-          "score": 35,
-          "name": "금리 인하 기대감 확산",
-          "name_en": "Spreading Rate Cut Optimism",
-          "desc": "둔화된 고용 데이터로 Fed의 매파적 기조 완화 기대",
-          "desc_en": "Soft employment data fuels hopes for a dovish shift from the Fed",
-          "category": "fed_policy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "일부 빅테크 실적 우려",
-          "name_en": "Concerns Over Some Big Tech Earnings",
-          "desc": "GOOGL -1.16% 하락, Alphabet 실적의 이면 우려 지속",
-          "desc_en": "GOOGL down 1.16%, ongoing concerns about Alphabet's underlying performance",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 10,
-          "name": "지정학적 긴장 가능성",
-          "name_en": "Potential Geopolitical Tensions",
-          "desc": "이란 관련 뉴스 헤드라인, 유가 변동성 및 시장 불확실성 야기",
-          "desc_en": "Iran-related headlines introduce oil price volatility and market uncertainty",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 혁명 단계에 대한 시각차",
-          "name_en": "Divergent Views on AI Revolution Stage",
-          "desc": "Dan Ives는 AI 혁명의 '3회 초' 언급하며 긍정적이나, 일부는 AI 트레이드 로테이션 우려 제기",
-          "desc_en": "Dan Ives sees AI revolution in '3rd inning' (positive), while others raise concerns about AI trade rotation",
-          "category": "ai_tech_valuation"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-09T21:56:36Z",
+  "updated_at": "2026-08-09T23:20:56Z",
   "max_entries": 10
 }
