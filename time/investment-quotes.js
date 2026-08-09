@@ -9077,5 +9077,12 @@ window.investmentQuotes = [
     "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
     "author": "버튼 말킬 (Burton Malkiel)",
     "category": "mindset"
+  },
+  {
+    "english": "And, when you want something, all the universe conspires in helping you to achieve it.",
+    "text": "네가 무언가를 온 마음으로 원할 때, 온 우주는 그 소망이 이루어지도록 도와준다.",
+    "title": "연금술사",
+    "author": "파울로 코엘료 (Paulo Coelho)",
+    "genre": "literature"
   }
 ];
