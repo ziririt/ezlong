@@ -8996,5 +8996,12 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅",
     "author": "피터 린치",
     "category": "mindset"
+  },
+  {
+    "english": "We teach girls to shrink themselves, to make themselves smaller. We say to girls, 'You can have ambition, but not too much.'",
+    "text": "우리는 딸들에게 스스로를 움츠러들게 만들라고, 더 작아지라고 가르친다. 우리는 딸들에게 이렇게 말한다. '야망을 가져도 좋지만, 너무 크면 안 된다.'",
+    "title": "우리는 모두 페미니스트가 되어야 합니다 (We Should All Be Feminists)",
+    "author": "치마만다 응고지 아디치에 (Chimamanda Ngozi Adichie)",
+    "genre": "literature"
   }
 ];
