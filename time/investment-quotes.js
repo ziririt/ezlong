@@ -9030,5 +9030,12 @@ window.investmentQuotes = [
     "title": "비커밍 (Becoming)",
     "author": "미셸 오바마 (Michelle Obama)",
     "genre": "literature"
+  },
+  {
+    "english": "Rule number one: most things will prove to be cyclical. Rule number two: some of the greatest opportunities for gain and loss come when other people forget rule number one.",
+    "text": "첫 번째 원칙: 대부분의 것들은 결국 순환한다는 사실이 드러난다. 두 번째 원칙: 이익과 손실의 가장 큰 기회는 다른 사람들이 첫 번째 원칙을 잊을 때 찾아온다.",
+    "title": "투자에 대한 생각 (The Most Important Thing)",
+    "author": "하워드 막스 (Howard Marks)",
+    "category": "mindset"
   }
 ];
