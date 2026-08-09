@@ -9050,5 +9050,12 @@ window.investmentQuotes = [
     "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
     "author": "앙드레 코스톨라니",
     "category": "patience"
+  },
+  {
+    "english": "This life is filled with inescapable moral compromises. We should do what we can to avoid the easy ones.",
+    "text": "이 삶은 피할 수 없는 도덕적 타협으로 가득하다. 우리가 할 수 있는 건, 적어도 그중 쉬운 쪽을 택하지 않으려 애쓰는 일이다.",
+    "title": "내일, 또 내일, 또 내일 (Tomorrow, and Tomorrow, and Tomorrow)",
+    "author": "가브리엘 제빈 (Gabrielle Zevin)",
+    "genre": "literature"
   }
 ];
