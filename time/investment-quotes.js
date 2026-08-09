@@ -8983,5 +8983,11 @@ window.investmentQuotes = [
     "title": "안전마진 (Margin of Safety)",
     "author": "세스 클라만 (Seth Klarman)",
     "category": "mindset"
+  },
+  {
+    "text": "삶의 복잡한 문제에 치여 있던 때, 나는 자주 화가 나 있는 사람처럼 굴었는데 글쓰기를 하면서 마음의 평정을 되찾고 또 하루를 살아내곤 했다. 있던 일을 복기하고 감정을 들여다보고 뒤엉킨 생각과 의견을 가지런히 정리하는 과정을 거치면서 나는 화를 덜 내는 사람이 되었다.",
+    "title": "글쓰기의 최전선",
+    "author": "은유",
+    "genre": "literature"
   }
 ];
