@@ -30,6 +30,7 @@ BODY = {
         'tZoomIn': '확대', 'tZoomInAria': '차트 확대 — 더 좁은 기간 보기',
         'tGoto': '날짜로 이동', 'tGotoAria': '이동할 날짜 선택',
         'tPrevMonth': '이전 달', 'tNextMonth': '다음 달',
+        'tPrevDay': '이전 날짜', 'tNextDay': '다음 날짜',
     },
     'en': {
         'h1': 'What Happened That Day',
@@ -50,6 +51,7 @@ BODY = {
         'tZoomIn': 'Zoom in', 'tZoomInAria': 'Zoom in — show a narrower period',
         'tGoto': 'Go to date', 'tGotoAria': 'Pick a date to jump to',
         'tPrevMonth': 'Previous month', 'tNextMonth': 'Next month',
+        'tPrevDay': 'Previous date', 'tNextDay': 'Next date',
     },
     'ja': {
         'h1': 'その日、何があったか',
@@ -70,6 +72,7 @@ BODY = {
         'tZoomIn': '拡大', 'tZoomInAria': '拡大 — より狭い期間を表示',
         'tGoto': '日付へ移動', 'tGotoAria': '移動する日付を選択',
         'tPrevMonth': '前の月', 'tNextMonth': '次の月',
+        'tPrevDay': '前の日付', 'tNextDay': '次の日付',
     },
     'zh': {
         'h1': '那一天发生了什么',
@@ -90,6 +93,7 @@ BODY = {
         'tZoomIn': '放大', 'tZoomInAria': '放大 — 显示更短周期',
         'tGoto': '跳转日期', 'tGotoAria': '选择要跳转的日期',
         'tPrevMonth': '上个月', 'tNextMonth': '下个月',
+        'tPrevDay': '上一个日期', 'tNextDay': '下一个日期',
     },
     'es': {
         'h1': 'Qué pasó ese día',
@@ -110,6 +114,7 @@ BODY = {
         'tZoomIn': 'Acercar', 'tZoomInAria': 'Acercar — mostrar un periodo más corto',
         'tGoto': 'Ir a fecha', 'tGotoAria': 'Elegir una fecha',
         'tPrevMonth': 'Mes anterior', 'tNextMonth': 'Mes siguiente',
+        'tPrevDay': 'Fecha anterior', 'tNextDay': 'Fecha siguiente',
     },
     'pt': {
         'h1': 'O que aconteceu naquele dia',
@@ -130,6 +135,7 @@ BODY = {
         'tZoomIn': 'Ampliar', 'tZoomInAria': 'Ampliar — mostrar período mais curto',
         'tGoto': 'Ir para data', 'tGotoAria': 'Escolher uma data',
         'tPrevMonth': 'Mês anterior', 'tNextMonth': 'Mês seguinte',
+        'tPrevDay': 'Data anterior', 'tNextDay': 'Próxima data',
     },
 }
 
@@ -137,7 +143,7 @@ BODY = {
 JS = {
     'ko': {
         'allTitle': '전체 이슈 (최신순)',
-        'nearTitle': '{date} 전후 이슈',
+        'nearTitle': '{date}',
         'nearCount': '{n}건 (앞뒤 1일, 총 3일)',
         'countUnit': '{n}건',
         'badgeMajor': '핵심', 'badgeNotable': '주요', 'badgeLog': '기록',
@@ -166,7 +172,7 @@ JS = {
     },
     'en': {
         'allTitle': 'All events (newest first)',
-        'nearTitle': 'Around {date}',
+        'nearTitle': '{date}',
         'nearCount': '{n} entries (±1 day, 3 days total)',
         'countUnit': '{n} entries',
         'badgeMajor': 'Key', 'badgeNotable': 'Notable', 'badgeLog': 'Log',
@@ -196,7 +202,7 @@ JS = {
     },
     'ja': {
         'allTitle': '全イベント（新着順）',
-        'nearTitle': '{date} 前後のイベント',
+        'nearTitle': '{date}',
         'nearCount': '{n}件（前後1日・計3日）',
         'countUnit': '{n}件',
         'badgeMajor': '重要', 'badgeNotable': '主要', 'badgeLog': '記録',
@@ -226,7 +232,7 @@ JS = {
     },
     'zh': {
         'allTitle': '全部事件（最新优先）',
-        'nearTitle': '{date} 前后事件',
+        'nearTitle': '{date}',
         'nearCount': '{n}条（前后1天，共3天）',
         'countUnit': '{n}条',
         'badgeMajor': '核心', 'badgeNotable': '主要', 'badgeLog': '记录',
@@ -254,7 +260,7 @@ JS = {
     },
     'es': {
         'allTitle': 'Todos los eventos (más recientes primero)',
-        'nearTitle': 'Alrededor del {date}',
+        'nearTitle': '{date}',
         'nearCount': '{n} entradas (±1 día, 3 días en total)',
         'countUnit': '{n} entradas',
         'badgeMajor': 'Clave', 'badgeNotable': 'Destacado', 'badgeLog': 'Registro',
@@ -284,7 +290,7 @@ JS = {
     },
     'pt': {
         'allTitle': 'Todos os eventos (mais recentes primeiro)',
-        'nearTitle': 'Em torno de {date}',
+        'nearTitle': '{date}',
         'nearCount': '{n} entradas (±1 dia, 3 dias no total)',
         'countUnit': '{n} entradas',
         'badgeMajor': 'Chave', 'badgeNotable': 'Relevante', 'badgeLog': 'Registro',

@@ -151,7 +151,7 @@
 window.BH_DATA = '/data/brief-history-ja.json';
 window.BH_T = {
  "allTitle": "全イベント（新着順）",
- "nearTitle": "{date} 前後のイベント",
+ "nearTitle": "{date}",
  "nearCount": "{n}件（前後1日・計3日）",
  "countUnit": "{n}件",
  "badgeMajor": "重要",
@@ -452,6 +452,18 @@ window.BH_T = {
   .bh-events-card { padding: 18px 20px 20px; }
   .bh-events-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
   .bh-events-title { font-size: 17px; font-weight: 700; color: var(--ez-text); }
+  /* 날짜 좌우의 이전·다음. 하루씩 옮기려고 매번 달력을 열게 하지 않는다.
+     44px 은 손가락으로 눌리는 최소 크기다 — 이보다 작으면 옆 글자가 눌린다. */
+  .bh-title-row { display: flex; align-items: center; gap: 4px; }
+  .bh-step {
+    font-size: 20px; font-weight: 700; line-height: 1;
+    min-width: 44px; min-height: 44px; padding: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--ez-card2); border: 1px solid var(--ez-border);
+    border-radius: 10px; color: var(--ez-text2); cursor: pointer;
+  }
+  .bh-step:disabled { opacity: .4; cursor: default; }
+  .bh-step[hidden] { display: none; }
   .bh-events-count { font-size: 14px; color: var(--ez-text3); }
   /* 그날 AI 판단 — 그 뒤 수익률 바로 아래. 판단과 결과가 한 줄 간격으로 붙는다. */
   .bh-verdict { display: flex; align-items: baseline; gap: 6px; font-size: 14px; margin: -4px 0 9px; }
@@ -626,7 +638,11 @@ window.BH_T = {
     <div class="bh-card bh-events-card">
       <div class="bh-events-head">
         <div>
-          <div class="bh-events-title" id="bh-events-title">全イベント（新着順）</div>
+          <div class="bh-title-row">
+            <button type="button" class="bh-step" id="bh-prev-day" aria-label="前の日付" hidden>‹</button>
+            <div class="bh-events-title" id="bh-events-title">全イベント（新着順）</div>
+            <button type="button" class="bh-step" id="bh-next-day" aria-label="次の日付" hidden>›</button>
+          </div>
           <div class="bh-events-count" id="bh-events-count"></div>
           <div id="bh-fwd-summary"></div>
         </div>
@@ -836,6 +852,10 @@ window.BH_T = {
 
     document.getElementById('bh-cal-prev').addEventListener('click', () => shiftMonth(-1));
     document.getElementById('bh-cal-next').addEventListener('click', () => shiftMonth(1));
+    const stepPrev = document.getElementById('bh-prev-day');
+    const stepNext = document.getElementById('bh-next-day');
+    if (stepPrev) stepPrev.addEventListener('click', () => stepDay(-1));
+    if (stepNext) stepNext.addEventListener('click', () => stepDay(1));
     var zin = document.getElementById('bh-zoom-in');
     var zout = document.getElementById('bh-zoom-out');
     if (zin) zin.addEventListener('click', () => { if (chartOK) zoomChart(0.6); });
@@ -1527,7 +1547,16 @@ window.BH_T = {
     calMonth = d.getUTCMonth();
     renderCalendar();
     renderEventList();
-    if (chartOK) applyRange(6, dateStr);   // 6개월 창의 정중앙에 그 날짜가 온다
+    /* 고른 날이 이미 화면 안에 있으면 차트를 옮기지 않는다. 이전·다음을
+       누를 때마다 창이 다시 가운데로 튀면 방금 보던 자리가 사라진다.
+       화면 밖의 날짜일 때만 그 날짜가 보이도록 창을 옮긴다. */
+    if (chartOK) {
+      let cx = null;
+      try { cx = chart.timeScale().timeToCoordinate(dateStr); } catch (e) { cx = null; }
+      const cw = (document.getElementById('bh-chart') || {}).clientWidth || 0;
+      const onScreen = cx != null && cx >= 8 && cx <= cw - 8;
+      if (!onScreen) applyRange(6, dateStr);   // 6개월 창의 정중앙에 그 날짜가 온다
+    }
     updateVLine();
     document.querySelectorAll('.bh-range-btn').forEach(b => b.classList.remove('active'));
     /* 화면을 대신 굴리지 않는다.
@@ -1701,6 +1730,41 @@ window.BH_T = {
     return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
+  /* 날짜 좌우의 이전·다음 — 하루씩 옮기려고 매번 달력을 열지 않게.
+     '하루 전'이 아니라 '카드가 있는 바로 앞 날짜'로 간다. 휴장일이나 빈 날에
+     멈춰서 아무것도 안 나오면 버튼이 고장 난 것처럼 보인다.
+     끝에 닿으면 버튼을 비활성으로 둔다 — 감추면 옆 버튼이 밀려 자리가 흔들린다. */
+  function eventDatesAsc() {
+    const pool = majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
+    return pool.map(e => e.date).sort();
+  }
+
+  function stepDay(dir) {
+    if (!selectedDate) return;
+    const ds = eventDatesAsc();
+    let i = ds.indexOf(selectedDate);
+    if (i < 0) {
+      // 고른 날에 카드가 없을 수도 있다 — 그 자리에 가장 가까운 쪽으로 붙인다
+      i = ds.findIndex(d => d > selectedDate);
+      if (i < 0) i = ds.length;
+      i = dir > 0 ? i - 1 : i;
+    }
+    const j = i + dir;
+    if (j < 0 || j >= ds.length) return;
+    selectDate(ds[j]);
+  }
+
+  function syncStepButtons() {
+    const prev = document.getElementById('bh-prev-day');
+    const next = document.getElementById('bh-next-day');
+    if (!prev || !next) return;
+    if (!selectedDate) { prev.hidden = true; next.hidden = true; return; }
+    const ds = eventDatesAsc();
+    prev.hidden = false; next.hidden = false;
+    prev.disabled = !(ds[0] < selectedDate);
+    next.disabled = !(ds[ds.length - 1] > selectedDate);
+  }
+
   function renderEventList() {
     const listEl = document.getElementById('bh-events-list');
     const titleEl = document.getElementById('bh-events-title');
@@ -1731,6 +1795,7 @@ window.BH_T = {
       listEl.innerHTML = nearby.length
         ? nearby.map(e => renderEventCard(e, e.date === selectedDate)).join('')
         : '<div class="bh-empty">' + T.emptyNear + '</div>';
+      syncStepButtons();
       return;
     }
 
@@ -1742,6 +1807,7 @@ window.BH_T = {
        날짜를 달고 있으므로 설명할 것이 없다. */
     titleEl.textContent = '';
     countEl.textContent = '';
+    syncStepButtons();
     const sumEl = document.getElementById('bh-fwd-summary');
     if (sumEl) sumEl.innerHTML = forwardSummary(pool);
     if (!pool.length) {

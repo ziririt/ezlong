@@ -139,6 +139,8 @@ def body_swaps(lang, s):
     pairs.append((f'aria-label="{ko["tGoto"]}"', f'aria-label="{tr["tGoto"]}"'))
     pairs.append((f'aria-label="{ko["tPrevMonth"]}"', f'aria-label="{tr["tPrevMonth"]}"'))
     pairs.append((f'aria-label="{ko["tNextMonth"]}"', f'aria-label="{tr["tNextMonth"]}"'))
+    pairs.append((f'aria-label="{ko["tPrevDay"]}"', f'aria-label="{tr["tPrevDay"]}"'))
+    pairs.append((f'aria-label="{ko["tNextDay"]}"', f'aria-label="{tr["tNextDay"]}"'))
 
     missed = []
     for old, new in pairs:
