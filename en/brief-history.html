@@ -164,8 +164,9 @@ window.BH_T = {
  "fwdSummary": "Across these {n} entries, QQQ averaged {avg} 20 trading days later · higher {up}% of the time",
  "vLabel": "AI call that day",
  "vScore": "buy score {n}",
- "chipCat": "Driver",
- "chipVerdict": "AI call",
+ "chipCat": "Search all by driver",
+ "chipVerdict": "By AI call",
+ "chipCount": "{n}",
  "emptyFilter": "No events match this filter.",
  "cats": {
   "fed_policy": "Fed / FOMC",
@@ -440,7 +441,7 @@ window.BH_T = {
     background: var(--ez-card2); border: 1px solid var(--ez-border); border-radius: 999px;
     padding: 5px 11px; min-height: 32px;
   }
-  .bh-chip em { font-style: normal; font-weight: 700; color: var(--ez-text3); margin-left: 5px; }
+  .bh-chip em { font-style: normal; font-weight: 700; color: var(--ez-text2); margin-left: 5px; }
   .bh-chip.on { background: var(--ez-blue); border-color: var(--ez-blue); color: #fff; }
   .bh-chip.on em { color: rgba(255,255,255,.75); }
   /* 그날 AI 판단 — 그 뒤 수익률 바로 아래. 판단과 결과가 한 줄 간격으로 붙는다. */
@@ -538,7 +539,7 @@ window.BH_T = {
     <div class="bh-brand-label">A Brief History</div>
     <h1 class="bh-brand-title">What Happened That Day</h1>
     <p class="bh-brand-lede">Time passes and you forget. Why did it bottom out and bounce that day — tap the date on the chart and you get that day briefed.</p>
-    <p class="bh-brand-lede">In a selloff the bad news never stops, and somewhere inside it sits the day the market bounced. In a rally that looks endless, even bad news reads as good — and the correction starts the next morning. Good news up, bad news down: that equation does not hold.</p>
+    <p class="bh-brand-lede">In a selloff the bad news never stops, and somewhere inside it sits the day the market bounced. In a rally that looks endless, even bad news reads as good — and the correction starts the next morning. Look back and you find that good news up, bad news down is not a one-to-one equation.</p>
   </div>
 </div>
 
@@ -1662,11 +1663,11 @@ window.BH_T = {
     let html = '';
     if (cats.length) {
       html += `<span class="bh-chip-lab">${T.chipCat}</span>` +
-        cats.map(c => `<button type="button" class="bh-chip" data-cat="${c}">${escapeHtml(T.cats[c] || c)}<em>${count[c]}</em></button>`).join('');
+        cats.map(c => `<button type="button" class="bh-chip" data-cat="${c}">${escapeHtml(T.cats[c] || c)}<em>${fmt(T.chipCount, { n: count[c] })}</em></button>`).join('');
     }
     if (vKeys.length) {
       html += `<span class="bh-chip-lab">${T.chipVerdict}</span>` +
-        vKeys.map(k => `<button type="button" class="bh-chip" data-v="${escapeHtml(k)}">${escapeHtml(k)}<em>${vSet[k]}</em></button>`).join('');
+        vKeys.map(k => `<button type="button" class="bh-chip" data-v="${escapeHtml(k)}">${escapeHtml(k)}<em>${fmt(T.chipCount, { n: vSet[k] })}</em></button>`).join('');
     }
     wrap.innerHTML = html;
     wrap.dataset.built = '1';
@@ -1695,9 +1696,17 @@ window.BH_T = {
     const titleEl = document.getElementById('bh-events-title');
     const countEl = document.getElementById('bh-events-count');
     let pool = majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
-    if (catFilter) pool = pool.filter(e => (e.cats || []).indexOf(catFilter) >= 0);
-    if (vFilter) pool = pool.filter(e => verdicts[e.date] && verdicts[e.date].v === vFilter);
+    /* 재료·판단 칩은 **전체 아카이브를 걸러 보는 도구**다. 날짜를 고른 화면
+       (전후 3일)에서는 걸 자리가 아니다 — 세 장짜리 목록 위에 '80건' 같은
+       전체 집계가 붙으면 그날의 성격을 말하는 것처럼 읽힌다. 실제로 그렇게
+       읽혔다. 그 화면에서는 칩을 감추고 필터도 걸지 않는다. */
+    if (!selectedDate) {
+      if (catFilter) pool = pool.filter(e => (e.cats || []).indexOf(catFilter) >= 0);
+      if (vFilter) pool = pool.filter(e => verdicts[e.date] && verdicts[e.date].v === vFilter);
+    }
     renderChips();
+    const chipsEl = document.getElementById('bh-chips');
+    if (chipsEl) chipsEl.style.display = selectedDate ? 'none' : '';
 
     if (selectedDate) {
       // 전후 1일씩, 총 3일치만 — 더 넓게 훑어보고 싶으면 아래 달력으로 다른 날짜를 고르면 된다.
@@ -1712,7 +1721,10 @@ window.BH_T = {
       const sumElN = document.getElementById('bh-fwd-summary');
       if (sumElN) sumElN.innerHTML = '';
       titleEl.textContent = fmt(T.nearTitle, { date: selectedDate });
-      countEl.textContent = fmt(T.nearCount, { n: nearby.length });
+      /* 부제를 두지 않는다. '2건(앞뒤 1일, 총 3일)'은 화면이 스스로를 설명하는
+         문장이라 읽는 사람에게 정보가 아니었다 — 카드 세 장이 이미 날짜를
+         달고 나란히 있다. */
+      countEl.textContent = '';
       listEl.innerHTML = nearby.length
         ? nearby.map(e => renderEventCard(e, e.date === selectedDate)).join('')
         : '<div class="bh-empty">' + T.emptyNear + '</div>';
