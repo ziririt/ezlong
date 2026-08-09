@@ -9064,5 +9064,11 @@ window.investmentQuotes = [
     "title": "제시 리버모어의 회상 (Reminiscences of a Stock Operator)",
     "author": "제시 리버모어 (Jesse Livermore)",
     "category": "mindset"
+  },
+  {
+    "text": "제철 행복을 미리 심어두는 건, 시간이 나면 행복해지려 했던 과거의 나와 작별하고 생긴 습관이다.",
+    "title": "제철 행복",
+    "author": "김신지",
+    "genre": "literature"
   }
 ];
