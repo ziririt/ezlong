@@ -9010,5 +9010,11 @@ window.investmentQuotes = [
     "title": "금융의 연금술 (The Alchemy of Finance)",
     "author": "조지 소로스 (George Soros)",
     "category": "mindset"
+  },
+  {
+    "text": "무소유란 아무것도 갖지 않는다는 것이 아니라, 불필요한 것을 갖지 않는다는 것이다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
   }
 ];
