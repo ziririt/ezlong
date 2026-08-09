@@ -164,8 +164,9 @@ window.BH_T = {
  "fwdSummary": "本列表{n}条在20个交易日后QQQ平均 {avg}·上涨占{up}%",
  "vLabel": "当天AI判断",
  "vScore": "买入评分 {n}",
- "chipCat": "题材",
- "chipVerdict": "AI判断",
+ "chipCat": "按题材检索全部",
+ "chipVerdict": "按AI判断",
+ "chipCount": "{n}条",
  "cats": {
   "fed_policy": "美联储·FOMC",
   "geopolitics": "地缘政治",
@@ -439,7 +440,7 @@ window.BH_T = {
     background: var(--ez-card2); border: 1px solid var(--ez-border); border-radius: 999px;
     padding: 5px 11px; min-height: 32px;
   }
-  .bh-chip em { font-style: normal; font-weight: 700; color: var(--ez-text3); margin-left: 5px; }
+  .bh-chip em { font-style: normal; font-weight: 700; color: var(--ez-text2); margin-left: 5px; }
   .bh-chip.on { background: var(--ez-blue); border-color: var(--ez-blue); color: #fff; }
   .bh-chip.on em { color: rgba(255,255,255,.75); }
   /* 그날 AI 판단 — 그 뒤 수익률 바로 아래. 판단과 결과가 한 줄 간격으로 붙는다. */
@@ -537,7 +538,7 @@ window.BH_T = {
     <div class="bh-brand-label">A Brief History</div>
     <h1 class="bh-brand-title">那一天发生了什么</h1>
     <p class="bh-brand-lede">时间一长就忘了。那天为什么触底反弹 — 在图表上点一下那个日期，就能看到当天的简报。</p>
-    <p class="bh-brand-lede">下跌行情里坏消息接连不断，可其中总有反弹的那一天。看似涨不完的行情里连坏消息都被当作利好，第二天调整就开始了。利好上涨、利空下跌——这个等式并不成立。</p>
+    <p class="bh-brand-lede">下跌行情里坏消息接连不断，可其中总有反弹的那一天。看似涨不完的行情里连坏消息都被当作利好，第二天调整就开始了。回头看就会发现，利好上涨、利空下跌这样的一对一等式并不成立。</p>
   </div>
 </div>
 
@@ -1661,11 +1662,11 @@ window.BH_T = {
     let html = '';
     if (cats.length) {
       html += `<span class="bh-chip-lab">${T.chipCat}</span>` +
-        cats.map(c => `<button type="button" class="bh-chip" data-cat="${c}">${escapeHtml(T.cats[c] || c)}<em>${count[c]}</em></button>`).join('');
+        cats.map(c => `<button type="button" class="bh-chip" data-cat="${c}">${escapeHtml(T.cats[c] || c)}<em>${fmt(T.chipCount, { n: count[c] })}</em></button>`).join('');
     }
     if (vKeys.length) {
       html += `<span class="bh-chip-lab">${T.chipVerdict}</span>` +
-        vKeys.map(k => `<button type="button" class="bh-chip" data-v="${escapeHtml(k)}">${escapeHtml(k)}<em>${vSet[k]}</em></button>`).join('');
+        vKeys.map(k => `<button type="button" class="bh-chip" data-v="${escapeHtml(k)}">${escapeHtml(k)}<em>${fmt(T.chipCount, { n: vSet[k] })}</em></button>`).join('');
     }
     wrap.innerHTML = html;
     wrap.dataset.built = '1';
@@ -1694,9 +1695,17 @@ window.BH_T = {
     const titleEl = document.getElementById('bh-events-title');
     const countEl = document.getElementById('bh-events-count');
     let pool = majorOnly ? eventsData.filter(e => e.importance === 3) : eventsData;
-    if (catFilter) pool = pool.filter(e => (e.cats || []).indexOf(catFilter) >= 0);
-    if (vFilter) pool = pool.filter(e => verdicts[e.date] && verdicts[e.date].v === vFilter);
+    /* 재료·판단 칩은 **전체 아카이브를 걸러 보는 도구**다. 날짜를 고른 화면
+       (전후 3일)에서는 걸 자리가 아니다 — 세 장짜리 목록 위에 '80건' 같은
+       전체 집계가 붙으면 그날의 성격을 말하는 것처럼 읽힌다. 실제로 그렇게
+       읽혔다. 그 화면에서는 칩을 감추고 필터도 걸지 않는다. */
+    if (!selectedDate) {
+      if (catFilter) pool = pool.filter(e => (e.cats || []).indexOf(catFilter) >= 0);
+      if (vFilter) pool = pool.filter(e => verdicts[e.date] && verdicts[e.date].v === vFilter);
+    }
     renderChips();
+    const chipsEl = document.getElementById('bh-chips');
+    if (chipsEl) chipsEl.style.display = selectedDate ? 'none' : '';
 
     if (selectedDate) {
       // 전후 1일씩, 총 3일치만 — 더 넓게 훑어보고 싶으면 아래 달력으로 다른 날짜를 고르면 된다.
@@ -1711,7 +1720,10 @@ window.BH_T = {
       const sumElN = document.getElementById('bh-fwd-summary');
       if (sumElN) sumElN.innerHTML = '';
       titleEl.textContent = fmt(T.nearTitle, { date: selectedDate });
-      countEl.textContent = fmt(T.nearCount, { n: nearby.length });
+      /* 부제를 두지 않는다. '2건(앞뒤 1일, 총 3일)'은 화면이 스스로를 설명하는
+         문장이라 읽는 사람에게 정보가 아니었다 — 카드 세 장이 이미 날짜를
+         달고 나란히 있다. */
+      countEl.textContent = '';
       listEl.innerHTML = nearby.length
         ? nearby.map(e => renderEventCard(e, e.date === selectedDate)).join('')
         : '<div class="bh-empty">' + T.emptyNear + '</div>';
