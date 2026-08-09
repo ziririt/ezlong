@@ -1,6 +1,57 @@
 {
   "entries": [
     {
+      "id": "2026-08-09-23:20",
+      "timestamp_kst": "2026-08-09(일) 23:20 KST",
+      "key_event": {
+        "name": "고용지표 둔화 및 금리 인하 기대 지속",
+        "name_en": "Sustained Expectations for Rate Cuts Amid Weakening Job Market",
+        "time": "직전 거래일 및 다음 주 개장",
+        "why": "고용 둔화, 금리 인상 우려 완화, 시장 심리 개선",
+        "why_en": "Weakening employment, easing rate hike concerns, improved market sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "고용 둔화에 따른 금리 인하 기대감으로 13일 연속 긍정 우위 유지",
+      "summary_en": "Positive sentiment prevails for 13 consecutive days due to rate cut expectations from slowing job growth",
+      "positive_factors": [
+        {
+          "score": 75,
+          "name": "고용지표 둔화 및 금리 인하 기대",
+          "name_en": "Weakening Job Data Fuels Rate Cut Hopes",
+          "desc": "예상치 하회 고용 보고서로 Fed 금리 인상 우려 완화, 시장 심리 개선",
+          "desc_en": "Lower-than-expected jobs report eases Fed rate hike concerns, boosting market sentiment",
+          "category": "macro_data"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "Fed 인플레이션 경고",
+          "name_en": "Fed's Inflation Warning",
+          "desc": "연준의 초기 인플레이션 전망에 잠재적 위험 신호",
+          "desc_en": "Federal Reserve's initial August inflation forecast contains a red flag",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 혁명 단계에 대한 시각차",
+          "name_en": "Divergent Views on AI Revolution Stage",
+          "desc": "AI 에이전트의 S&P 500 상승 견인 기대와 AI 주식 매도세 속 매수 기회 주장은 혼조",
+          "desc_en": "Expectations that AI agents can drive S&P 500 higher conflict with Nvidia CEO's 'buy at a discount' advice during recent AI stock sell-off",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "미국-이란 갈등 우려",
+          "name_en": "US-Iran Conflict Concerns",
+          "desc": "이란-오만 협상 소식과 동시에 호르무즈 해협 재개방을 위한 미국 행동 필요성 언급은 유가 불확실성 증폭",
+          "desc_en": "News of Iran-Oman deal alongside calls for US action to reopen Strait of Hormuz creates oil price uncertainty",
+          "category": "geopolitics"
+        }
+      ]
+    },
+    {
       "id": "2026-08-09-21:50",
       "timestamp_kst": "2026-08-09(일) 21:50 KST",
       "key_event": {
@@ -491,52 +542,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-08-08:20",
-      "timestamp_kst": "2026-08-08(토) 08:20 KST",
-      "key_event": {
-        "name": "고용지표 둔화 및 금리 인하 기대",
-        "name_en": "Weak Jobs Data Fuels Rate Cut Hopes",
-        "time": "직전 정규장 및 포스트마켓",
-        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
-        "why_en": "Lower-than-expected job numbers, easing Fed rate hike concerns, improved market sentiment"
-      },
-      "positive_total": 80,
-      "negative_total": 20,
-      "summary": "고용 둔화에 따른 금리 인하 기대감으로 3일 연속 긍정 우위 유지",
-      "summary_en": "Positive sentiment continues for 3rd consecutive day due to weak jobs data and rate cut expectations",
-      "positive_factors": [
-        {
-          "score": 50,
-          "name": "예상치 하회 고용지표",
-          "name_en": "Weaker-than-Expected Jobs Report",
-          "desc": "미국 경제의 예상치 하회 고용으로 Fed 금리 인상 우려 완화",
-          "desc_en": "Lower-than-expected US job numbers ease concerns about Fed rate hikes",
-          "category": "macro_data"
-        },
-        {
-          "score": 30,
-          "name": "금리 인하 기대감 확산",
-          "name_en": "Growing Rate Cut Expectations",
-          "desc": "고용 둔화가 금리 인하 기대를 높여 시장 전반의 투자 심리 개선",
-          "desc_en": "Weak jobs data boosts rate cut expectations, improving overall market sentiment",
-          "category": "fed_policy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "Google 주가 하락",
-          "name_en": "Google Stock Decline",
-          "desc": "GOOGL (-1.21%) 포스트마켓 하락, AI 경쟁 심화 우려 지속",
-          "desc_en": "GOOGL (-1.21%) falls in post-market, ongoing concerns about intensifying AI competition",
-          "category": "company_specific"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-09T12:51:02Z",
+  "updated_at": "2026-08-09T14:20:58Z",
   "max_entries": 10
 }
