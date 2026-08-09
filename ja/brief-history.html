@@ -930,13 +930,7 @@ window.BH_T = {
       handleScroll: {
         mouseWheel: true,
         pressedMouseMove: true,
-        /* 터치에서는 가로 끌기를 라이브러리에 주지 않는다 — 우리가 '문지르기'로
-           쓴다(attachTouchScrub). 폰에서는 마커를 손가락으로 정확히 누르기가
-           어렵고, 눌러도 한 번 더 눌러야 하는 흐름이라 손이 많이 간다.
-           끌면서 날짜를 훑고 손을 떼면 그 날이 잡히는 편이 훨씬 빠르다.
-           대신 폰에서 기간을 옮기는 일은 기간 버튼·달력·날짜 이동이 맡는다.
-           PC 는 그대로 — 마우스 끌기는 팬, 클릭은 선택. */
-        horzTouchDrag: !IS_TOUCH,
+        horzTouchDrag: true,
         vertTouchDrag: false,
       },
       handleScale: true,
@@ -1013,7 +1007,7 @@ window.BH_T = {
     });
 
     watchTapGesture(el);
-    if (IS_TOUCH) attachTouchScrub(el);
+    if (IS_TOUCH) attachTouchPick(el);
   }
 
   /* 탭인가 끌기인가 — 누른 지점에서 8px 이상 움직였거나 0.4초 넘게 눌렀으면
@@ -1085,49 +1079,79 @@ window.BH_T = {
     lab.style.left = Math.min(Math.max(x, 42), w - 42) + 'px';
   }
 
-  function attachTouchScrub(el) {
-    let mode = null, lastX = null, sx = 0, sy = 0;
+  /* 폰에서 끌어서 기간을 옮기고, 손을 떼면 그 자리의 날짜가 잡힌다.
+
+     앞선 시도에서 가로 끌기를 통째로 가져와 '문지르기'로 썼더니 기간을 옆으로
+     미는 동작이 사라졌다. 그건 더 중요한 조작이라 되돌렸다. 팬은 라이브러리에
+     그대로 맡기고, 우리는 **손을 뗀 순간의 좌표만** 읽는다. 둘이 겹치지 않는다 —
+     끄는 동안은 차트가 움직이고, 떼는 순간 그 자리의 날짜가 선택된다.
+
+     건드리지 않는 경우
+       · 세로가 우세한 제스처 — 페이지 스크롤이다.
+       · 손가락이 둘 이상 닿은 적이 있으면 — 핀치 줌이다.
+       · 거의 안 움직인 탭 — 기존 클릭 경로(마커 명중·그림 히트테스트)가 맡는다.
+       · 그림 도구를 쥐고 있을 때 — 그건 점 찍기다.
+
+     끄는 동안 빨간 선을 손가락에 붙여 둔다. 뗐을 때 무엇이 잡힐지 미리 보인다. */
+  function attachTouchPick(el) {
+    let armed = false, multi = false, sx = 0, sy = 0, lx = 0, ly = 0, horiz = false;
+    /* 끄는 동안 마지막으로 **보여준** 날짜를 쥐고 있다가 그걸 고른다.
+       손을 떼는 순간 다시 읽으면 안 된다 — 라이브러리가 관성으로 조금 더
+       미끄러져서, 눈에 보이던 날짜와 잡히는 날짜가 어긋난다(실측 3주 차이).
+       본 것과 잡히는 것이 같아야 한다. */
+    let shown = null;
     el.addEventListener('touchstart', (ev) => {
-      if (drawMode !== null || ev.touches.length !== 1) { mode = null; return; }
-      mode = 'undecided';
-      lastX = null;
-      sx = ev.touches[0].clientX;
-      sy = ev.touches[0].clientY;
+      if (drawMode !== null || ev.touches.length !== 1) { armed = false; multi = true; return; }
+      armed = true; multi = false; horiz = false; shown = null;
+      sx = lx = ev.touches[0].clientX;
+      sy = ly = ev.touches[0].clientY;
     }, { passive: true });
 
     el.addEventListener('touchmove', (ev) => {
-      if (!mode || mode === 'page') return;
-      if (ev.touches.length !== 1) { mode = null; updateVLine(); return; }
+      if (!armed) return;
+      if (ev.touches.length > 1) { multi = true; updateVLine(); return; }
       const t = ev.touches[0];
-      const dx = Math.abs(t.clientX - sx), dy = Math.abs(t.clientY - sy);
-      if (mode === 'undecided') {
-        if (dy > dx && dy > 8) { mode = 'page'; return; }   // 페이지 스크롤에 양보
-        if (dx > 8) mode = 'scrub'; else return;
-      }
-      ev.preventDefault();
+      lx = t.clientX; ly = t.clientY;
+      const dx = Math.abs(lx - sx), dy = Math.abs(ly - sy);
+      if (!horiz && dx > 8 && dx >= dy) horiz = true;
+      if (!horiz) return;
       const rect = el.getBoundingClientRect();
-      const x = Math.min(Math.max(t.clientX - rect.left, 0), rect.width);
+      const x = Math.min(Math.max(lx - rect.left, 0), rect.width);
       const ds = chartDateAtX(x);
       if (!ds) return;
-      lastX = x;
-      previewVLine(x, ds);
-    }, { passive: false });
+      /* 손가락 아래 날짜가 아니라 **실제로 잡힐 날짜**를 미리 보여준다.
+         카드가 없는 날에 손을 떼면 가장 가까운 날이 잡히는데, 미리보기가
+         손가락을 따라가면 본 것과 잡히는 것이 하루씩 어긋난다.
+         선도 그 날짜의 좌표에 세운다 — 선이 곧 잡힐 자리다. */
+      const pick = nearestEventDate(ds) || ds;
+      let px = null;
+      try { px = chart.timeScale().timeToCoordinate(pick); } catch (e) { px = null; }
+      shown = pick;
+      previewVLine(px == null ? x : px, pick);
+    }, { passive: true });
 
-    const finish = () => {
-      if (mode === 'scrub' && lastX != null) {
-        const ds = chartDateAtX(lastX);
-        if (ds) {
-          const near = nearestEventDate(ds);
-          if (near) flashMarkerAndSelect(near); else selectDate(ds);
-        }
-      } else if (mode === 'scrub') {
-        updateVLine();
-      }
-      mode = null; lastX = null;
-    };
-    el.addEventListener('touchend', finish, { passive: true });
-    el.addEventListener('touchcancel', () => { mode = null; lastX = null; updateVLine(); }, { passive: true });
+    el.addEventListener('touchend', (ev) => {
+      if (!armed) { armed = false; return; }
+      armed = false;
+      if (multi) { updateVLine(); return; }
+      const t = (ev.changedTouches && ev.changedTouches[0]) || null;
+      const cx = t ? t.clientX : lx, cy = t ? t.clientY : ly;
+      const dx = Math.abs(cx - sx), dy = Math.abs(cy - sy);
+      if (dy > dx && dy > 8) { updateVLine(); return; }   // 페이지를 내린 것
+      if (dx <= 8 && dy <= 8) return;                      // 탭 — 클릭 경로에 맡긴다
+      const rect = el.getBoundingClientRect();
+      const x = Math.min(Math.max(cx - rect.left, 0), rect.width);
+      const ds = shown || chartDateAtX(x);
+      if (!ds) { updateVLine(); return; }
+      // shown 은 이미 '잡힐 날짜'다. 여기서 다시 가까운 날을 찾지 않는다.
+      const pick = shown || nearestEventDate(ds) || ds;
+      if (eventsData.some(e => e.date === pick)) flashMarkerAndSelect(pick);
+      else selectDate(pick);
+    }, { passive: true });
+
+    el.addEventListener('touchcancel', () => { armed = false; multi = false; updateVLine(); }, { passive: true });
   }
+
 
   /* 누른 날짜에서 가장 가까운 이슈 날짜. 한 달 넘게 떨어져 있으면 포기한다 —
      엉뚱한 시점으로 끌고 가는 것보다 아무 일도 안 일어나는 게 낫다. */
