@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-08T15:37:16.965Z
+ * 생성 시각: 2026-08-10T13:34:52.361Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -311,10 +311,10 @@
     },
     "webview": {
       "goAria": "Go to ezlong.com",
-      "goFromBasecampAria": "Go from Basecamp to ezlong.com",
+      "goFromBasecampAria": "Go from StandBy to ezlong.com",
       "frameAria": "ezlong.com web view",
       "openNewWindowAria": "Open ezlong.com in a new window",
-      "backToBasecampAria": "Back to Basecamp",
+      "backToBasecampAria": "Back to StandBy",
       "scrollTopHintAria": "Tap to scroll to the top",
       "historyBackAria": "Back",
       "scrollTopAria": "Back to top"
@@ -410,7 +410,7 @@
       "ezlongDesc": "From market timing to retirement planning",
       "note": "You can change this anytime in Settings.",
       "cta": "Get started",
-      "note2": "You can move between the two anytime with the ⌄ ezlong.com and ⏏ Basecamp buttons."
+      "note2": "You can move between the two anytime with the ⌄ ezlong.com and ⏏ StandBy buttons."
     }
   },
   "es": {
@@ -713,10 +713,10 @@
     },
     "webview": {
       "goAria": "Ir a ezlong.com",
-      "goFromBasecampAria": "Ir del Campamento base a ezlong.com",
+      "goFromBasecampAria": "Ir de StandBy a ezlong.com",
       "frameAria": "Vista web de ezlong.com",
       "openNewWindowAria": "Abrir ezlong.com en una ventana nueva",
-      "backToBasecampAria": "Volver al Campamento base",
+      "backToBasecampAria": "Volver a StandBy",
       "scrollTopHintAria": "Toca para subir al principio",
       "historyBackAria": "Atrás",
       "scrollTopAria": "Volver arriba"
@@ -812,7 +812,7 @@
       "ezlongDesc": "Del momento de comprar al plan de retiro",
       "note": "Puedes cambiarla cuando quieras en Ajustes.",
       "cta": "Empezar",
-      "note2": "Puedes pasar de una pantalla a otra cuando quieras con los botones ⌄ ezlong.com y ⏏ Basecamp."
+      "note2": "Puedes pasar de una pantalla a otra cuando quieras con los botones ⌄ ezlong.com y ⏏ StandBy."
     }
   },
   "ja": {
@@ -1115,10 +1115,10 @@
     },
     "webview": {
       "goAria": "ezlong.com へ移動",
-      "goFromBasecampAria": "ベースキャンプから ezlong.com へ移動",
+      "goFromBasecampAria": "StandBy から ezlong.com へ移動",
       "frameAria": "ezlong.com ウェブビュー",
       "openNewWindowAria": "ezlong.com を新しいウィンドウで開く",
-      "backToBasecampAria": "ベースキャンプに戻る",
+      "backToBasecampAria": "StandBy に戻る",
       "scrollTopHintAria": "タップすると一番上までスクロールします",
       "historyBackAria": "前のページへ",
       "scrollTopAria": "いちばん上へ"
@@ -1214,7 +1214,7 @@
       "ezlongDesc": "売買タイミングから引退設計まで",
       "note": "この設定は、あとから設定画面でいつでも変更できます。",
       "cta": "はじめる",
-      "note2": "2つの画面は ⌄ ezlong.com・⏏ Basecamp ボタンでいつでも行き来できます。"
+      "note2": "2つの画面は ⌄ ezlong.com・⏏ StandBy ボタンでいつでも行き来できます。"
     }
   },
   "ko": {
@@ -1517,10 +1517,10 @@
     },
     "webview": {
       "goAria": "ezlong.com 이동",
-      "goFromBasecampAria": "ezlong 베이스캠프에서 ezlong.com으로 이동",
+      "goFromBasecampAria": "StandBy 화면에서 ezlong.com으로 이동",
       "frameAria": "ezlong.com 웹뷰",
       "openNewWindowAria": "ezlong.com 새창 열기",
-      "backToBasecampAria": "ezlong 베이스캠프로 돌아가기",
+      "backToBasecampAria": "StandBy 화면으로 돌아가기",
       "scrollTopHintAria": "탭하면 맨 위로 스크롤됩니다",
       "historyBackAria": "이전 페이지로",
       "scrollTopAria": "맨 위로"
@@ -1616,7 +1616,7 @@
       "ezlongDesc": "미국주식 매매 타이밍부터 은퇴 설계까지",
       "note": "이후에도 언제나 설정에서 첫 화면을 바꿀 수 있습니다.",
       "cta": "시작하기",
-      "note2": "두 화면은 언제든 ⌄ ezlong.com · ⏏ Basecamp 버튼으로 오갈 수 있어요."
+      "note2": "두 화면은 언제든 ⌄ ezlong.com · ⏏ StandBy 버튼으로 오갈 수 있어요."
     }
   },
   "pt": {
@@ -1919,10 +1919,10 @@
     },
     "webview": {
       "goAria": "Ir para ezlong.com",
-      "goFromBasecampAria": "Ir do Acampamento-base para ezlong.com",
+      "goFromBasecampAria": "Ir de StandBy para ezlong.com",
       "frameAria": "Visualização web de ezlong.com",
       "openNewWindowAria": "Abrir ezlong.com em uma nova janela",
-      "backToBasecampAria": "Voltar ao Acampamento-base",
+      "backToBasecampAria": "Voltar para StandBy",
       "scrollTopHintAria": "Toque para subir ao topo",
       "historyBackAria": "Voltar",
       "scrollTopAria": "Voltar ao topo"
@@ -2018,7 +2018,7 @@
       "ezlongDesc": "Do momento de comprar ao plano de aposentadoria",
       "note": "Você pode mudar isso quando quiser nas Configurações.",
       "cta": "Começar",
-      "note2": "Você pode alternar entre as duas telas quando quiser com os botões ⌄ ezlong.com e ⏏ Basecamp."
+      "note2": "Você pode alternar entre as duas telas quando quiser com os botões ⌄ ezlong.com e ⏏ StandBy."
     }
   },
   "zh": {
@@ -2321,10 +2321,10 @@
     },
     "webview": {
       "goAria": "前往 ezlong.com",
-      "goFromBasecampAria": "从大本营前往 ezlong.com",
+      "goFromBasecampAria": "从 StandBy 前往 ezlong.com",
       "frameAria": "ezlong.com 网页视图",
       "openNewWindowAria": "在新窗口打开 ezlong.com",
-      "backToBasecampAria": "返回大本营",
+      "backToBasecampAria": "返回 StandBy",
       "scrollTopHintAria": "点击可滚动到顶部",
       "historyBackAria": "上一页",
       "scrollTopAria": "回到顶部"
@@ -2420,7 +2420,7 @@
       "ezlongDesc": "从买卖时机到退休规划",
       "note": "之后随时可以在设置中更改第一个画面。",
       "cta": "开始",
-      "note2": "两个画面随时可以用 ⌄ ezlong.com·⏏ Basecamp 按钮来回切换。"
+      "note2": "两个画面随时可以用 ⌄ ezlong.com·⏏ StandBy 按钮来回切换。"
     }
   }
 };

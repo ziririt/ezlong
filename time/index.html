@@ -225,7 +225,7 @@
            고정 배치돼 있어서, 왼쪽 span을 지워도 가운데 정렬은 그대로
            유지된다. -->
       <div class="scene-dots" data-i18n-aria="webview.goAria" aria-label="ezlong.com 이동">
-        <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" data-i18n-aria="webview.goFromBasecampAria" aria-label="ezlong 베이스캠프에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
+        <button type="button" class="scene-ezlong-link" id="sceneEzlongLink" data-i18n-aria="webview.goFromBasecampAria" aria-label="StandBy 화면에서 ezlong.com으로 이동">ezlong.com<span class="scene-ezlong-hint" aria-hidden="true">⌄</span></button>
       </div>
     </section>
         </div>
@@ -245,7 +245,7 @@
       <!-- 2026-07-20 16차: 복귀 손잡이 — iframe은 터치를 삼켜서(크로스오리진
            경계) 그 위에서 시작한 스와이프를 부모가 볼 수 없다. 부모 DOM 소유의
            이 얇은 띠가 터치 표면이 된다.
-           2026-07-22 유저 요청으로 용도 변경: 하단 Basecamp 버튼이 이미
+           2026-07-22 유저 요청으로 용도 변경: 하단 StandBy(옛 Basecamp) 버튼이 이미
            "시계로 복귀"를 담당하니 이 자리의 "아래로 쓸어내려 복귀" 제스처는
            중복이라 제거하고, 대신 "탭하면 ezlong.com 콘텐츠 맨 위로 스크롤"
            로 바꿨다(app.js webviewGrabber 클릭 핸들러 참조, postMessage로
@@ -278,13 +278,22 @@
         <!-- 2026-07-20 유저 요청: 아이콘을 "<" 셰브론에서 "위로 돌아간다"는
              느낌의 이젝트(⏏) 심볼로 교체 — 삼각형+가로줄, webview-open과
              동일한 stroke 스타일 SVG. 위치도 가운데(그리드 2번째 칸)로. -->
-        <!-- 2026-07-20 유저 요청: 아이콘만으로는 의미가 모호해서 "Basecamp"
+        <!-- 2026-08-10 운영 지침로 이름 변경: Basecamp → StandBy.
+             이 화면이 하는 일(충전 중 세워두고 시계를 띄워 두는 것)을 그대로
+             가리키는 말이고, Basecamp 는 협업 도구 이름과 겹쳐 늘 묻혔다.
+             기능 이름이므로 어느 언어에서도 번역하지 않는다 — 문장만 각 언어,
+             이름은 StandBy 하나로 간다(i18n/locales/*.json 세 키).
+             ※ 스토어 노출 영역(앱 이름·부제·키워드·스크린샷 문구)에는 넣지 않는다.
+               StandBy 는 iOS 17 의 애플 기능 이름이기도 해서, 앱 안 라벨은
+               관행상 문제되지 않지만 스토어 문구는 오인 소지가 생긴다.
+
+             2026-07-20 유저 요청: 아이콘만으로는 의미가 모호해서 라벨"
              텍스트를 아이콘 옆에 병기 — 영어 표기는 고유명사 스타일로 첫
-             글자만 대문자(Basecamp), 이 화면의 이름("ezlong 베이스캠프")을
+             글자만 대문자(StandBy), 이 화면의 이름을
              그대로 영문 라벨로 옮긴 것. -->
-        <button type="button" class="webview-back" id="webviewBackButton" data-i18n-aria="webview.backToBasecampAria" aria-label="ezlong 베이스캠프로 돌아가기">
+        <button type="button" class="webview-back" id="webviewBackButton" data-i18n-aria="webview.backToBasecampAria" aria-label="StandBy 화면으로 돌아가기">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 13 L12 7 L17 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 18 H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          <span class="webview-back-label" aria-hidden="true">Basecamp</span>
+          <span class="webview-back-label" aria-hidden="true">StandBy</span>
         </button>
         <!-- 2026-07-20 9차 피드백(이슈 제보): "이 버튼 눌러도 무반응" —
              WKWebView는 target="_blank" 앵커의 새 창 열기를 기본적으로
@@ -339,7 +348,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.9.4</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.9.5</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -964,7 +973,7 @@
   <script src="i18n/season.js?v=20260728-i18n-v13"></script>
   <script src="i18n/region.js?v=20260728-i18n-v13"></script>
   <script src="i18n/quote-source.js?v=20260809-amazonlink-v2"></script>
-  <script src="i18n/locale-bundle.js?v=20260801-watch-v14"></script>
+  <script src="i18n/locale-bundle.js?v=20260810-standby-v1"></script>
   <script src="i18n/index.js?v=20260728-i18n-v13"></script>
   <script src="i18n/book-titles.js?v=20260728-i18n-v13"></script>
   <script src="i18n/quote-translations.js?v=20260728-i18n-v13"></script>
@@ -1005,7 +1014,7 @@
           </button>
         </div>
 
-        <p class="firstrun-note firstrun-note-move" data-i18n="firstRun.note2">두 화면은 언제든 ⌄ ezlong.com · ⏏ Basecamp 버튼으로 오갈 수 있어요.</p>
+        <p class="firstrun-note firstrun-note-move" data-i18n="firstRun.note2">두 화면은 언제든 ⌄ ezlong.com · ⏏ StandBy 버튼으로 오갈 수 있어요.</p>
         <p class="firstrun-note" data-i18n="firstRun.note">이후에도 언제나 설정에서 첫 화면을 바꿀 수 있습니다.</p>
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
