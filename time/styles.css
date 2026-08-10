@@ -5544,3 +5544,62 @@ body.is-lowmotion .clock-colon {
     }
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   ezlong 화면의 받침 — 2026-08-11 운영자 "비상사태" 제보 대응
+   ══════════════════════════════════════════════════════════════════
+   운영 기준은 첫 화면을 ezlong.com 으로 두셨다. 그래서 앱은 켜지자마자 이
+   iframe 앞에 선다. 사이트가 재배포되는 짧은 창에는 iframe 이 아무것도
+   받지 못해 투명해지고, 뒤의 어두운 배경만 남는다 — 화면이 온통 검다.
+   앱이 죽은 것과 구분이 안 된다. 실제로 그렇게 보고를 받았다.
+
+   고칠 것은 배포 타이밍이 아니라 **비었을 때 무엇이 보이는가**이다.
+   iframe 뒤에 받침을 깔아 두면, 못 받은 순간에도 "불러오는 중"으로 읽힌다.
+   글자는 쓰지 않는다 — 여섯 언어 카탈로그를 건드리지 않으려는 것도 있고,
+   브랜드와 점 세 개면 어느 언어에서나 뜻이 통하기 때문이다.
+   ══════════════════════════════════════════════════════════════════ */
+.ezlong-standby {
+  position: absolute;
+  inset: 0;
+  z-index: 0;              /* iframe 보다 뒤 — 정상일 땐 안 보인다 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  pointer-events: none;
+  background: #0d0d0f;
+}
+
+.ezlong-standby-mark {
+  color: rgba(255,255,255,0.50);
+  font-size: clamp(15px, 3.6vw, 20px);
+  font-weight: 760;
+  letter-spacing: 0.01em;
+}
+
+.ezlong-standby-dots {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.ezlong-standby-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.34);
+  animation: ezlongStandbyDot 1.25s ease-in-out infinite;
+}
+
+.ezlong-standby-dots i:nth-child(2) { animation-delay: 0.16s; }
+.ezlong-standby-dots i:nth-child(3) { animation-delay: 0.32s; }
+
+@keyframes ezlongStandbyDot {
+  0%, 70%, 100% { opacity: 0.28; transform: translateY(0); }
+  35%           { opacity: 0.95; transform: translateY(-3px); }
+}
+
+/* 움직임을 줄여 쓰는 사용자에게는 점만 남기고 흔들지 않는다. */
+@media (prefers-reduced-motion: reduce) {
+  .ezlong-standby-dots i { animation: none; opacity: 0.5; }
+}

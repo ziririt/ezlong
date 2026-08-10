@@ -8804,6 +8804,12 @@ function saveStartPage(value) {
 function goToPage(index) {
   const open = index >= 1;
   currentPageIndex = open ? 1 : 0;
+  // 2026-08-11 이슈 제보 — "StandBy 를 보다가 백그라운드 갔다 오면
+  // ezlong.com 으로 바뀌어 있다." 지금 어느 화면인지를 여기서 남겨 둔다.
+  // sessionStorage 를 쓰는 이유가 핵심이다: 이 값은 **웹뷰가 다시 로드돼도
+  // 살아남고, 앱이 완전히 새로 뜨면 비어 있다.** 그래서 "이용 중 복귀"와
+  // "첫 실행"을 코드가 따로 묻지 않고도 구분할 수 있다(아래 부팅 적용부).
+  try { sessionStorage.setItem("ezlong:lastPage", open ? "ezlong" : "quote"); } catch (error) { /* 무시 */ }
   // 2026-07-23 신설 — 페이지 전환은 "자연스러운 중단 지점"이라 하루 1회
   // 리워드 전면 광고를 제안하기 적합한 타이밍이다. 실제 노출 여부/1일 상한은
   // 네이티브 AdTimerManager가 판단한다 — 여기서는 그냥 신호만 보낸다.
@@ -9882,7 +9888,27 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
   window.syncStartPageUi();
 
   // 부팅 적용 — 웹뷰가 자리를 잡은 뒤 넘어가야 전환이 끊기지 않는다.
-  if (loadStartPage() === "ezlong") {
+  //
+  // 2026-08-11 이슈 제보 — "첫 화면을 ezlong.com 으로 해뒀는데, StandBy 를
+  // 보다가 백그라운드 갔다 돌아오면 ezlong.com 으로 바뀌어 있다. 설정은 첫
+  // 로딩에만 적용돼야지, 이용 중에는 직전 화면이 유지돼야 한다."
+  //
+  // 원인은 이 블록이 아니라 그 위에 있다. 포그라운드로 돌아올 때 웹뷰가
+  // 통째로 다시 로드되는 일이 있고(docs/TODO.md 에 이미 적혀 있는 미해결
+  // 과제), 그러면 이 코드가 처음부터 다시 돌면서 "설정대로 ezlong 으로"를
+  // 또 실행한다. 설정을 문장 화면으로 두셨을 때는 리로드가 나도 제자리로
+  // 보였기 때문에 아무도 눈치채지 못했을 뿐이다.
+  //
+  // 리로드 자체를 막는 것은 네이티브 쪽 숙제로 남기고, 여기서는 리로드가
+  // 나도 **화면 위치는 어긋나지 않게** 만든다. sessionStorage 는 웹뷰가 다시
+  // 로드돼도 살아남고 앱이 새로 뜨면 비어 있으므로, 그 값이 있다는 것 자체가
+  // "첫 실행이 아니라 이용 중"이라는 증거다. 있으면 그걸 따르고, 없을 때만
+  // 설정을 적용한다.
+  var resumedPage = null;
+  try { resumedPage = sessionStorage.getItem("ezlong:lastPage"); } catch (error) { /* 무시 */ }
+  var bootTarget = resumedPage || loadStartPage();
+  try { sessionStorage.setItem("ezlong:lastPage", bootTarget); } catch (error) { /* 무시 */ }
+  if (bootTarget === "ezlong") {
     window.setTimeout(function () {
       try { goToPage(1); } catch (error) { /* 전환 실패는 무시 — 문장 화면 유지 */ }
     }, 900);
