@@ -5216,14 +5216,6 @@ function setMusicPanelOpen(open, persist) {
   // 기억하면 다음 실행에서 기본 노출이 통째로 무너진다.
   if (persist !== false) saveMusicPanelPreferredOpen(open);
   musicInfoPanel.classList.toggle("is-open", open);
-  // 2026-08-10 운영 피드백 — "뮤직박스와 문장박스가 간격 없이 붙었다."
-  // 음악 패널은 position:absolute 라 레이아웃 흐름 밖에 있고, 시계 칸의
-  // 남는 공간으로 흘러내린다. 그 공간이 적은 기기에서는 패널 아래끝이
-  // 문장박스 윗변까지 내려와 두 박스가 맞붙어 보인다 — 문장박스에 걸어둔
-  // margin-top 은 흐름 밖 요소를 밀어내지 못하니 소용이 없었다.
-  // 열림 여부를 body 에 표시해서, CSS 가 그 상태에서만 문장박스를 조금
-  // 줄이고 간격을 확실히 벌리게 한다(styles.css .is-musicviz-open 참조).
-  try { document.body.classList.toggle("is-musicviz-open", open); } catch (error) { /* 무시 */ }
   musicInfoPanel.setAttribute("aria-hidden", String(!open));
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", String(open));
   if (open) {
