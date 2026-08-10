@@ -9111,5 +9111,11 @@ window.investmentQuotes = [
     "title": "파울라 (Paula)",
     "author": "이사벨 아옌데 (Isabel Allende)",
     "genre": "literature"
+  },
+  {
+    "text": "예전에는 헤어진다는 것이 이런 의미가 아니었어. 적어도 그때는 같은 하늘 아래 있었지. 같은 행성 위에서, 같은 대기를 공유했단 말일세.",
+    "title": "우리가 빛의 속도로 갈 수 없다면",
+    "author": "김초엽",
+    "genre": "literature"
   }
 ];
