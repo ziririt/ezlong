@@ -340,7 +340,7 @@ def replay(f, states, start, end):
             probe = None
             b3_at = None
             whipsaw_mode = False
-            acts.append({'tag': 'CYCLE', 'label': f'사이클 종료 — 새 사이클 #{cycle_no} 시작',
+            acts.append({'tag': 'CYCLE', 'label': f'매매 사이클 종료: 새 사이클 #{cycle_no} 시작',
                          'position': round(position, 1), 'cash': round(cash, 1)})
 
         def sell(tag, pct_of_position):
@@ -375,7 +375,7 @@ def replay(f, states, start, end):
         gate2 = row['rev'] >= GATE2['reversal'] and row['whip'] <= GATE2['whipsaw']
         gate3 = row['rev'] >= GATE3['reversal'] and row['whip'] <= GATE3['whipsaw'] and row['breadth_chg'] > 0
         if entered and no_trade and st in ('CAPITULATION', 'REVERSAL_PROBE') and cash > 1 and not whipsaw_mode:
-            acts.append({'tag': 'NOTRADE', 'label': 'No-Trade — 신호 불일치·휩쏘 과다로 신규 진입 보류',
+            acts.append({'tag': 'NOTRADE', 'label': '신규 진입 보류: 신호 불일치·속임수 움직임 과다',
                          'position': round(position, 1), 'cash': round(cash, 1)})
         if not whipsaw_mode and not no_trade:
             if entered and st == 'CAPITULATION' and 'B1' not in done and cash > 1:
@@ -460,13 +460,13 @@ def action_card(row, st):
     gate2 = row['rev'] >= GATE2['reversal'] and row['whip'] <= GATE2['whipsaw']
     gate3 = row['rev'] >= GATE3['reversal'] and row['whip'] <= GATE3['whipsaw'] and row['breadth_chg'] > 0
     reco = {
-        'UPTREND': '보유 유지. 신규 진입은 눌림에서 분할',
-        'OVERHEAT': 'S1 익절 10~15%만 허용. 추가 매도 금지 — 과열은 예고이지 매도 신호 아님',
-        'DISTRIBUTION': 'S2 추가 20~25% 익절 — 추세훼손이 진짜 매도 신호',
-        'CORRECTION': 'S3 추가 25~30% 축소. 현금 확대, 신규 레버리지 금지',
-        'CAPITULATION': '매도 중단. B1 탐색매수 10~15% — 반드시 1배 자산만',
-        'REVERSAL_PROBE': 'B2 추가 20~25%. 거짓 반등 위험 상존 — 무효화선 필수',
-        'RECOVERY': 'B3/B4 잔여 투입 구간. 게이트 충족 시에만 2·3배',
+        'UPTREND': '보유 유지 구간. 신규 매수는 눌림에서 나눠서',
+        'OVERHEAT': '가진 것의 10~15%만 익절해 두는 구간. 그 이상의 매도는 금물: 과열은 위험 예고이지 매도 신호가 아님',
+        'DISTRIBUTION': '가진 것의 20~25%를 더 파는 구간: 고점 이탈이 진짜 매도 신호',
+        'CORRECTION': '가진 것의 25~30%를 더 줄이고 현금을 확보하는 구간. 신규 레버리지 금물',
+        'CAPITULATION': '매도를 멈추는 구간. 현금의 10~15%로 탐색 매수 가능: 반드시 1배 상품만',
+        'REVERSAL_PROBE': '현금의 20~25%로 2차 매수 가능한 구간. 거짓 반등일 수 있으니 손절선을 정하고 진입',
+        'RECOVERY': '남은 현금을 나눠 투입하는 구간. 조건 충족 시에만 2·3배 검토',
     }[st]
     inval = row['lo10_prev'] - PROBE_STOP_ATR * row['atr']
     chand = row['hi20'] if not pd.isna(row['hi20']) else row['close']
@@ -474,7 +474,7 @@ def action_card(row, st):
     whip_adj = 1 - 0.5 * float(row['whip']) / 100
     no_trade = row['whip'] >= 70 and conf < 0.65
     if no_trade and st in ('CAPITULATION', 'REVERSAL_PROBE'):
-        reco = 'No-Trade — 신호 불일치·휩쏘 과다. 신규 진입 보류, 기존 물량의 무효화선만 관리'
+        reco = '신호가 서로 어긋나고 속임수 움직임이 많은 구간: 신규 진입 보류, 가진 물량의 손절선만 관리'
     return {
         'state': st, 'stateKo': STATE_KO[st], 'temp': STATE_TEMP[st],
         'close': round(float(row['close']), 2),
@@ -543,9 +543,9 @@ def main():
     def rel63(a_, b_):
         return (a_['close'] / b_['close']).pct_change(63)
     aux_specs = [
-        ('semiLead', '반도체 주도력', rel63(soxx, spy), '반도체(SOXX)가 시장 전체(SPY)를 이기는 정도 — 업황 기대의 가격 반영'),
-        ('spec', '레버리지 투기 수급', rel63(soxl, soxx), '3배 ETF(SOXL)로 돈이 몰리는 정도 — 높으면 과열 수급, 낮으면 투매 뒤 공백'),
-        ('credit', '신용 환경', rel63(hyg, lqd), '위험 회사채(HYG) 선호 — 위험자산에 돈이 들어오는 바탕'),
+        ('semiLead', '반도체 주도력', rel63(soxx, spy), '반도체(SOXX)가 시장 전체(SPY)를 이기는 정도. 업황 기대가 가격에 반영된 값'),
+        ('spec', '레버리지 투기 수급', rel63(soxl, soxx), '3배 ETF(SOXL)로 돈이 몰리는 정도. 높으면 과열 수급, 낮으면 투매 뒤 공백'),
+        ('credit', '신용 환경', rel63(hyg, lqd), '위험 회사채(HYG) 선호. 위험자산에 돈이 들어오는 바탕'),
     ]
     aux = []
     for key, name, series, help_ in aux_specs:
@@ -599,7 +599,7 @@ def main():
 
     now = datetime.now(timezone.utc)
     payload = {
-        'system': 'EZLong Swing AI 2.0 — Phase 1 (Rule Engine + Replay)',
+        'system': 'EZLong Swing AI 2.0',
         'generatedAt': now.replace(microsecond=0).isoformat().replace('+00:00', 'Z'),
         'generatedAtKST': (now + timedelta(hours=9)).strftime('%Y-%m-%d %H:%M KST'),
         'states': STATES, 'stateKo': STATE_KO, 'stateTemp': STATE_TEMP,
