@@ -9131,5 +9131,12 @@ window.investmentQuotes = [
     "title": "비치 리드 (Beach Read)",
     "author": "에밀리 헨리 (Emily Henry)",
     "genre": "literature"
+  },
+  {
+    "english": "If you don't mind being wrong on the way to being right you'll learn a lot—and increase your effectiveness. But if you can't tolerate being wrong, you won't grow, you'll make yourself and everyone around you miserable, and your work environment will be marked by petty backbiting and malevolent barbs rather than by a healthy, honest search for truth.",
+    "text": "틀리는 것을 개의치 않는다면 그 과정에서 많은 것을 배우고 효과성도 커진다. 하지만 틀리는 것을 견디지 못한다면 성장하지 못하고, 자신과 주변 사람 모두를 힘들게 하며, 그 일터는 진실을 향한 건강한 탐구 대신 옹졸한 뒷담화와 악의적인 비난으로 물들게 된다.",
+    "title": "원칙 (Principles)",
+    "author": "레이 달리오 (Ray Dalio)",
+    "category": "mindset"
   }
 ];
