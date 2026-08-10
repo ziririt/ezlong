@@ -9164,5 +9164,12 @@ window.investmentQuotes = [
     "title": "담쟁이",
     "author": "도종환",
     "genre": "literature"
+  },
+  {
+    "english": "All I want to know is where I'm going to die, so I'll never go there.",
+    "text": "내가 어디서 죽게 될지만 안다면, 나는 그곳에는 절대 가지 않을 것이다.",
+    "title": "가난한 찰리의 연감",
+    "author": "찰리 멍거",
+    "category": "mindset"
   }
 ];
