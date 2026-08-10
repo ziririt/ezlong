@@ -3148,8 +3148,26 @@ button { font: inherit; }
 }
 
 .music-note-button { background-image: url("assets/icons/music/note.png"); background-size: 92%; }
-.music-toggle { background-image: url("assets/icons/music/play.png"); }
-.music-toggle.is-playing { background-image: url("assets/icons/music/pause.png"); }
+/* 2026-08-11 이슈 제보 — "일시중지 버튼이 이상하게 가운데 | 이게 사라지고
+   동그라미만." 디자인 문제가 아니라 네트워크 문제였다. pause 아이콘은
+   **재생을 눌러야 비로소 요청되는** 파일이라 CDN 엣지 캐시가 식어 있을 때가
+   많다. 실측(2026-08-11 02:5x): 첫 요청이 11.5초 뒤 HTTP 503, 재시도 200.
+   그 503 한 번이면 background-image 가 비고 버튼은 빈 동그라미가 된다.
+   play 쪽은 화면을 열면 늘 요청되어 캐시가 뜨거우므로 증상이 일시정지에서만
+   나타났다 — 그래서 더 찾기 어려웠다.
+
+   그래서 두 아이콘만 파일에서 떼어내 인라인 SVG 로 박는다. 네트워크 요청이
+   0이 되므로 이 실패 모드가 원천적으로 사라진다. skip·note 는 화면을 열면
+   바로 요청되어 캐시가 뜨겁고 모양도 복잡해 그대로 둔다 — 필요 없는 것까지
+   바꾸지 않는다.
+
+   ★ viewBox 를 256 으로 맞춘 이유 ★ 원본 PNG 가 256x256 캔버스이고 도형은
+   그 안에서 폭 25%만 차지한다(Pillow 실측: play 65x78 @ (102,84),
+   pause 65x86 @ (96,84)). 아래 background-size:140% 규칙이 바로 그 여백을
+   전제로 계산된 값이므로, 같은 캔버스에 같은 자리로 그리면 그 규칙을
+   손대지 않아도 픽셀이 그대로 맞는다. 캔버스를 바꾸면 140% 도 다시 재야 한다. */
+.music-toggle { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M108 92 L160 123 L108 154 Z' fill='%23fff' stroke='%23fff' stroke-width='14' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E"); }
+.music-toggle.is-playing { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect x='96' y='84' width='17.5' height='86' rx='5.5' fill='%23fff'/%3E%3Crect x='143.5' y='84' width='17.5' height='86' rx='5.5' fill='%23fff'/%3E%3C/svg%3E"); }
 .music-skip { background-image: url("assets/icons/music/skip.png"); }
 
 /* 2026-07-15: "재생/일시정지 도형이 너무 작아서 뭔지도 안 보인다" 재지적 —
@@ -5222,11 +5240,19 @@ body.is-bedside .special-info-text {
   background:
     linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04) 48%, rgba(0,0,0,0.10)),
     rgba(255,255,255,0.06);
+  /* 2026-08-11 운영 요청 — "더 세련되게, 애플스럽게."
+     그림자를 하나에서 둘로 나눈다. 가까운 그림자(2px)는 원의 윤곽을 바닥에서
+     떼어내고, 먼 그림자(10px)는 그 아래 공간의 깊이를 만든다. 하나로 뭉치면
+     "흐릿한 얼룩"이 되고, 나누면 "떠 있는 물건"이 된다.
+     안쪽으로는 위에 밝은 선(빛이 걸리는 윗면), 아래에 어두운 선(그늘진 아랫면)을
+     둬서 평평한 원반이 아니라 구(球)의 일부로 읽히게 한다. */
   box-shadow:
-    inset 0 0.5px 0 rgba(255,255,255,0.42),
-    inset 0 0 0 0.5px rgba(255,255,255,0.20),
-    0 6px 18px rgba(0,0,0,0.28);
-  color: rgba(255,255,255,0.88);
+    inset 0 0.75px 0 rgba(255,255,255,0.50),
+    inset 0 0 0 0.5px rgba(255,255,255,0.22),
+    inset 0 -1.5px 2px rgba(0,0,0,0.16),
+    0 2px 6px rgba(0,0,0,0.22),
+    0 10px 26px rgba(0,0,0,0.30);
+  color: rgba(255,255,255,0.95);
 
   transition:
     opacity 320ms ease,
@@ -5235,12 +5261,20 @@ body.is-bedside .special-info-text {
 }
 
 .viz-play-cue svg {
-  width: 46%;
-  height: 46%;
+  /* 2026-08-11 운영 요청 — "새가 좀더 커져야 밸런스가 맞을 듯."
+     정확한 지적이다. 원이 큰 게 아니라 삼각형이 작아서 가운데가 비어 보였다.
+     원 지름은 그대로 두고 삼각형만 키운다: 46%% → 52%%, 그리고 path 의
+     stroke-width 도 3.2 → 4.4 로 올려 획이 함께 두꺼워지게 했다(index.html).
+     둘을 합쳐 시각 크기가 약 33%% 커진다 — 버튼 폭 대비 세로 21%% → 29%%.
+     애플의 미디어 컨트롤이 대략 이 비율이다. */
+  width: 52%;
+  height: 52%;
   /* 삼각형은 시각적으로 왼쪽이 무거워 정중앙에 두면 왼쪽으로 쏠려 보인다.
-     광학 중심을 맞춰 오른쪽으로 살짝 민다 — 재생 아이콘의 기본 보정이다. */
-  translate: 6% 0;
-  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.45));
+     광학 중심을 맞춰 오른쪽으로 살짝 민다 — 재생 아이콘의 기본 보정이다.
+     %% 는 svg 자신의 크기 기준이라, svg 를 키운 만큼 같은 %% 도 절대값이
+     커진다. 그래서 6%% → 5%% 로 줄여야 보정량이 전과 같아진다. */
+  translate: 5% 0;
+  filter: drop-shadow(0 1.5px 4px rgba(0,0,0,0.42));
 }
 
 /* 초대의 리듬 — 하단 ⌄와 같은 문법. 두 번 숨쉬고 4초쯤 쉰다.
@@ -5263,8 +5297,10 @@ body.is-bedside .special-info-text {
 
 /* 응답은 손끝이 닿는 순간(§1). */
 .viz-play-cue:active {
-  scale: 0.92;
-  filter: brightness(1.16);
+  /* 0.92 는 과하다. 애플의 누름 반응은 0.94~0.97 사이에서 절제되어 있다 —
+     눌린 게 보이되 버튼이 도망가지는 않는 정도. */
+  scale: 0.94;
+  filter: brightness(1.14);
   transition-duration: 90ms;
 }
 
@@ -5272,7 +5308,8 @@ body.is-bedside .special-info-text {
    살짝 커지면서 흩어지면 "음악에 자리를 내줬다"가 된다. 후자로. */
 .music-info-panel.is-music-playing .viz-play-cue {
   opacity: 0;
-  scale: 1.22;
+  /* 1.22 는 "터진다"에 가깝다. 1.12 면 "물러난다"로 읽힌다. */
+  scale: 1.12;
   pointer-events: none;
 }
 
