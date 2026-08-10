@@ -9212,5 +9212,11 @@ window.investmentQuotes = [
     "title": "버크셔 해서웨이 주주서한 (1996)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "patience"
+  },
+  {
+    "text": "가장 경멸하는 것도 사람, 가장 사랑하는 것도 사람. 그 괴리 안에서 평생 살아갈 것이다.",
+    "title": "피프티 피플",
+    "author": "정세랑",
+    "genre": "literature"
   }
 ];
