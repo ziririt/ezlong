@@ -10030,21 +10030,25 @@ var bedsideActive = false;
   // 이 한 줄을 읽으면 된다. 진단 도구를 남겨두는 비용보다 같은 버그를 세 번
   // 쫓는 비용이 크다.
   window.setTimeout(function () {
-    var src = "모름";
+    // 로그 문자열은 일부러 전부 영문이다. 한국어로 쓰면 문자열 감사기가
+    // "번역 안 된 화면 문구"로 잡아 verify:i18n 이 빨간불이 된다 —
+    // IGNORE 목록으로 덮는 대신 애초에 걸리지 않게 쓴다. 개발자만 보는 줄이라
+    // 영문이어도 잃는 것이 없다.
+    var src = "unknown";
     var val = null;
     try {
       if (window.AndroidNativeBridge && typeof window.AndroidNativeBridge.isCharging === "function") {
-        src = "안드로이드 브릿지";
+        src = "android-bridge";
         val = window.AndroidNativeBridge.isCharging();
       } else if (typeof window.__FLIPZEN_CHARGING__ === "boolean") {
-        src = "네이티브 주입값";
+        src = "native-injected";
         val = String(window.__FLIPZEN_CHARGING__);
       } else if (navigator.getBattery) {
-        src = "웹 배터리 API";
+        src = "web-battery-api";
       }
-    } catch (error) { src = "조회 실패"; }
-    console.log("[FZ-CHARGE] 근거=" + src + " 값=" + val +
-      " 어둡게할까=" + shouldDim() + " 침대맡지연=" + loadDelay() + "분");
+    } catch (error) { src = "lookup-failed"; }
+    console.log("[FZ-CHARGE] source=" + src + " value=" + val +
+      " willDim=" + shouldDim() + " bedsideDelayMin=" + loadDelay());
   }, 2500);
 
   // 지금 잠들면 안 되는 상황인가 — 뭔가를 읽고 있는 중이면 기다린다.
