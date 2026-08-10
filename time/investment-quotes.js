@@ -9239,5 +9239,11 @@ window.investmentQuotes = [
     "title": "주식투자의 기술 (How to Trade in Stocks)",
     "author": "제시 리버모어 (Jesse Livermore)",
     "category": "mindset"
+  },
+  {
+    "text": "새는 알에서 나오려고 투쟁한다. 알은 세계다. 태어나려는 자는 한 세계를 파괴해야만 한다.",
+    "title": "데미안",
+    "author": "헤르만 헤세 (Hermann Hesse)",
+    "genre": "literature"
   }
 ];
