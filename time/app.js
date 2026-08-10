@@ -10725,10 +10725,9 @@ var bedsideActive = false;
   if (nativePlatformKey !== "ios") return;
 
   var el = document.getElementById("appBattery");
-  var fillEl = document.getElementById("appBatteryFill");
   var numEl = document.getElementById("appBatteryNum");
   var tldEl = document.getElementById("appBrandTld");
-  if (!el || !fillEl || !numEl || !tldEl) return;
+  if (!el || !numEl || !tldEl) return;
 
   var lastShown = -1;
 
@@ -10758,7 +10757,6 @@ var bedsideActive = false;
     var charging = chargingNow();
     if (level !== lastShown) {
       numEl.textContent = String(level);
-      fillEl.style.width = Math.max(4, level) + "%";
       el.setAttribute("aria-label", level + "%");
       lastShown = level;
     }
