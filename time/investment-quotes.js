@@ -9198,5 +9198,12 @@ window.investmentQuotes = [
     "title": "주식투자자의 회상 (Reminiscences of a Stock Operator)",
     "author": "에드윈 르페브르 (Edwin Lefèvre)",
     "category": "mindset"
+  },
+  {
+    "english": "At times I think of human relationships as something soft like sand or water, and by pouring them into particular vessels we give them shape.",
+    "text": "때로 나는 인간관계란 모래나 물처럼 무른 것이라고 생각한다. 우리가 그것을 특정한 그릇에 담아 부음으로써, 비로소 그것은 형태를 갖게 되는 것이다.",
+    "title": "아름다운 세상이여, 그대는 어디에 (Beautiful World, Where Are You)",
+    "author": "샐리 루니 (Sally Rooney)",
+    "genre": "literature"
   }
 ];
