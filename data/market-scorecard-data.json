@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-08-11-01:04",
+      "timestamp_kst": "2026-08-11(화) 01:04 KST",
+      "key_event": {
+        "name": "지정학적 리스크 및 유가 상승",
+        "name_en": "Geopolitical Risks and Rising Oil Prices",
+        "time": "현재 정규장 진행 중",
+        "why": "중동 긴장 고조, 유가 상승 압력, 인플레이션 우려",
+        "why_en": "Escalating Middle East tensions, upward oil price pressure, inflation concerns"
+      },
+      "positive_total": 30,
+      "negative_total": 70,
+      "summary": "지정학적 리스크와 유가 상승으로 부정 우위 지속, 기술주 하락 압력",
+      "summary_en": "Negative sentiment persists due to geopolitical risks and rising oil, pressuring tech stocks",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "MSFT 강세 및 AI 클라우드 기대",
+          "name_en": "MSFT Strength & AI Cloud Expectations",
+          "desc": "MSFT 2.31% 상승, AI 클라우드 경쟁력 부각",
+          "desc_en": "MSFT up 2.31%, highlighting AI cloud competitiveness",
+          "category": "company_specific"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "중동 지정학적 긴장 고조",
+          "name_en": "Escalating Middle East Geopolitical Tensions",
+          "desc": "호르무즈 해협 및 이란 관련 뉴스, 시장 불확실성 증대",
+          "desc_en": "News on Hormuz Strait and Iran, increasing market uncertainty",
+          "category": "geopolitics"
+        },
+        {
+          "score": 25,
+          "name": "유가 급등 및 인플레이션 우려",
+          "name_en": "Oil Price Surge & Inflation Concerns",
+          "desc": "WTI 원유 2.96% 상승, 인플레이션 압력 가중",
+          "desc_en": "WTI crude up 2.96%, intensifying inflation pressure",
+          "category": "oil_energy"
+        },
+        {
+          "score": 15,
+          "name": "애플 주가 하락 및 아이폰 우려",
+          "name_en": "Apple Stock Decline & iPhone Concerns",
+          "desc": "AAPL 2.12% 하락, 아이폰 판매 부진 우려 및 투자의견 하향",
+          "desc_en": "AAPL down 2.12% on iPhone sales concerns and downgrade",
+          "category": "company_specific"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "고용 지표 해석 엇갈림",
+          "name_en": "Mixed Interpretations of Employment Data",
+          "desc": "고용 둔화가 금리 인하 기대로 이어질지, 경기 침체 신호로 해석될지 논쟁",
+          "desc_en": "Debate over whether slowing employment signals rate cuts or economic recession",
+          "category": "macro_data"
+        }
+      ]
+    },
+    {
       "id": "2026-08-10-23:20",
       "timestamp_kst": "2026-08-10(월) 23:20 KST",
       "key_event": {
@@ -510,52 +570,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-10-00:38",
-      "timestamp_kst": "2026-08-10(월) 00:38 KST",
-      "key_event": {
-        "name": "고용지표 둔화 및 금리 인하 기대 지속",
-        "name_en": "Sustained Hopes for Rate Cuts Amid Softening Job Market",
-        "time": "직전 거래일 및 다음 주",
-        "why": "고용 둔화, 금리 인상 우려 완화, 시장 심리 개선",
-        "why_en": "Softening job market, easing rate hike concerns, improved market sentiment"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "고용 둔화에 따른 금리 인하 기대감으로 14일 연속 긍정 우위 유지",
-      "summary_en": "Positive sentiment prevails for 14 consecutive days due to rate cut expectations from softening employment data",
-      "positive_factors": [
-        {
-          "score": 75,
-          "name": "고용지표 둔화에 따른 금리 인하 기대",
-          "name_en": "Rate Cut Hopes from Softening Job Data",
-          "desc": "예상치 하회하는 고용 보고서, 금리 인상 우려 완화",
-          "desc_en": "Weaker-than-expected jobs report, easing concerns over rate hikes",
-          "category": "macro_data"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "AI 혁명 단계에 대한 시각차",
-          "name_en": "Divergent Views on AI Revolution Stage",
-          "desc": "AI 기술의 현재 및 미래 가치에 대한 시장의 혼조된 시각",
-          "desc_en": "Mixed market perspectives on the current and future value of AI technology",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미국-이란 갈등 우려",
-          "name_en": "US-Iran Conflict Concerns",
-          "desc": "지정학적 긴장감 지속, 유가 및 시장 변동성 유발 가능성",
-          "desc_en": "Ongoing geopolitical tensions, potential for oil price and market volatility",
-          "category": "geopolitics"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-10T14:21:10Z",
+  "updated_at": "2026-08-10T16:05:02Z",
   "max_entries": 10
 }
