@@ -271,6 +271,12 @@ def candidate(row, prev_state):
         return 'REVERSAL_PROBE'
     if sc['dist'] >= 60 and c['close'] < c['sma20'] and c['slope20'] < 0:
         return 'CORRECTION'
+    # 점수·기울기는 후행이라 빠른 하락을 놓친다 — 2025년 11월에 2주간
+    # -11% 미끄러지는 동안 '정상 추세'가 붙어 있었다. 가격 자체로도
+    # 조정을 판정한다: 20일 고점에서 6% 넘게 내려왔고 20일선 아래면 조정.
+    # (지속성 2-of-3 이 있어 정상 눌림 하루로는 안 바뀐다)
+    if (c['close'] / c['hi20'] - 1) <= -0.06 and c['close'] < c['sma20']:
+        return 'CORRECTION'
     # 고점 이탈 '조짐'은 고점 부근에서만 성립한다. 이미 20일 고점에서 5%
     # 넘게 내려온 뒤라면 조짐이 아니라 조정이다 — 7월에 조정 2주 뒤에야
     # 분홍이 찍히는 뒤늦은 표기가 있었다.
