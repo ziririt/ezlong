@@ -9144,5 +9144,12 @@ window.investmentQuotes = [
     "title": "풀꽃",
     "author": "나태주",
     "genre": "literature"
+  },
+  {
+    "english": "Autumn leaves don't fall; they fly. They take their time and wander on this, their only chance to soar.",
+    "text": "가을 낙엽은 떨어지는 것이 아니라 난다. 서두르지 않고 바람을 타고 떠돌며, 하늘로 날아오를 수 있는 단 한 번의 기회를 만끽한다.",
+    "title": "가재가 노래하는 곳 (Where the Crawdads Sing)",
+    "author": "델리아 오언스 (Delia Owens)",
+    "genre": "literature"
   }
 ];
