@@ -33,13 +33,15 @@
   :root {
     --sa-t0: #E5121A; --sa-t1: #E91E8C; --sa-t2: #16A34A; --sa-t3: #B8860B;
     --sa-t4: #65A30D; --sa-t5: #2563EB; --sa-t6: #7C3AED;
-    --sa-t0-bg: rgba(255,0,0,0.22);     /* 과열: 순수 빨강 */
-    --sa-t1-bg: rgba(255,46,147,0.30);  /* 고점 이탈 조짐: 형광 분홍 — 짧게 지나가니 굵게 */
-    --sa-t2-bg: rgba(34,197,94,0.16);   /* 정상 추세: 그린 */
-    --sa-t3-bg: rgba(255,221,0,0.32);   /* 조정: 노랑 */
-    --sa-t4-bg: rgba(163,255,63,0.32);  /* 반등 확인: 야광 연두 */
-    --sa-t5-bg: rgba(37,99,235,0.22);   /* 반등 탐색: 파랑 */
-    --sa-t6-bg: rgba(139,63,255,0.28);  /* 깊은 과매도: 보라 */
+    /* 라이트모드 띠는 다크보다 옅게 보인다(흰 배경이 색을 먹는다) —
+       다크와 같은 체감이 되도록 알파를 다크 수준으로 올려 둔다. */
+    --sa-t0-bg: rgba(255,0,0,0.34);     /* 과열: 순수 빨강 */
+    --sa-t1-bg: rgba(255,46,147,0.42);  /* 고점 이탈 조짐: 형광 분홍 — 짧게 지나가니 굵게 */
+    --sa-t2-bg: rgba(34,197,94,0.26);   /* 정상 추세: 그린 */
+    --sa-t3-bg: rgba(255,221,0,0.45);   /* 조정: 노랑 */
+    --sa-t4-bg: rgba(163,255,63,0.45);  /* 반등 확인: 야광 연두 */
+    --sa-t5-bg: rgba(37,99,235,0.30);   /* 반등 탐색: 파랑 */
+    --sa-t6-bg: rgba(139,63,255,0.38);  /* 깊은 과매도: 보라 */
     --sa-heat: #E5484D; --sa-dist: #F76B15; --sa-cap: #1E40AF; --sa-rev: #0D9488; --sa-whip: #B8860B;
   }
   @media (prefers-color-scheme: dark) {
@@ -101,22 +103,18 @@
     background: var(--ez-card2); transition: transform 100ms ease-out;
   }
   .sa-pick:active { transform: scale(0.98); }
-  .sa-pick.on { border-color: var(--ez-blue); border-width: 2px; background: transparent; }
+  /* 선택 표시는 레버리지 신호등과 같은 문법 — 선택된 칸만 파란 바탕 + 흰 글자.
+     흐리게 눌러 두는 방식은 '왜 흐리지'로 읽혀서 폐기. */
+  .sa-pick.on { background: var(--ez-blue); border-color: var(--ez-blue); }
+  .sa-pick.on .sa-pick-sym, .sa-pick.on .sa-pick-name,
+  .sa-pick.on .sa-pick-close, .sa-pick.on .sa-pick-close b { color: #fff; }
+  .sa-pick.on .sa-pick-badge { box-shadow: 0 0 0 1.5px rgba(255,255,255,0.9); }
   .sa-pick-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
   .sa-pick-sym { font-size: 16px; font-weight: 800; color: var(--ez-text); }
   .sa-pick-name { font-size: 14px; font-weight: 600; color: var(--ez-text2); }
   .sa-pick-badge { font-size: 14px; font-weight: 800; color: #fff; padding: 4px 9px; border-radius: 7px; white-space: nowrap; }
   .sa-pick-close { font-size: 14px; color: var(--ez-text2); margin-top: 5px; }
   .sa-pick-close b { color: var(--ez-text); font-weight: 700; }
-  .sa-pick { position: relative; overflow: hidden; }
-  .sa-pick::before {
-    content: ''; position: absolute; left: 0; top: 0; right: 0; height: 3px;
-    background: var(--ez-blue); opacity: 0; transition: opacity 140ms ease;
-  }
-  .sa-pick.on::before { opacity: 1; }
-  .sa-pick:not(.on) { opacity: 0.62; }
-  .sa-pick:not(.on):hover { opacity: 0.85; }
-  @media (prefers-reduced-motion: reduce) { .sa-pick::before { transition: none; } }
   @media (prefers-reduced-motion: reduce) { .sa-pick { transition: none; } .sa-pick:active { transform: none; } }
 
   /* 일곱 국면 순환 스트립 — '일곱 가지'가 무엇인지 처음부터 보여준다 */
@@ -127,7 +125,6 @@
   }
   .sa-phase.on { color: #fff; border-color: transparent; font-weight: 800; box-shadow: var(--ez-shadow); }
   .sa-phase-arrow { color: var(--ez-text3); font-weight: 700; }
-  .sa-phase-cap { font-size: 14px; font-weight: 700; color: var(--ez-text2); margin: 0 0 8px; }
   @media (min-width: 760px) {
     .sa-phase { font-size: 15px; padding: 8px 14px; }
     .sa-phases { gap: 7px; margin-bottom: 18px; }
@@ -172,6 +169,8 @@
   .sa-ing-name { font-size: 14px; font-weight: 600; color: var(--ez-text2); }
   .sa-ing-val { font-size: 14px; font-weight: 800; color: var(--ez-text); }
   .sa-ing-help { font-size: 14px; color: var(--ez-text3); grid-column: 1 / -1; line-height: 1.45; }
+  /* 실제 지표값(지금 RSI 몇, 비교 지수 대비 몇 %p) — 0~100 위치 숫자와 헷갈리지 않게 따로 */
+  .sa-raw { font-size: 14px; font-weight: 700; color: var(--ez-text2); }
   .sa-ing-bar { grid-column: 1 / -1; height: 4px; border-radius: 999px; background: var(--ez-border); overflow: hidden; margin-top: 2px; }
   .sa-ing-bar span { display: block; height: 100%; border-radius: 999px; background: var(--sa-ing, var(--ez-blue)); }
 
@@ -306,7 +305,6 @@
     <h2 class="sa-h2">오늘의 결론</h2>
     <p class="sa-sub" id="sa-asof-line">불러오는 중</p>
     <div id="sa-verdict"><div class="sa-picks" id="sa-picks"></div></div>
-    <p class="sa-phase-cap">시장은 아래 일곱 국면의 순환으로 추적합니다. 색이 칠해진 것이 <span class="sa-cur-sym">SOXX</span>의 현재 국면.</p>
     <div class="sa-phases" id="sa-phases"></div>
     <p class="sa-reco" id="sa-reco"></p>
     <div class="sa-facts" id="sa-facts"></div>
@@ -377,7 +375,7 @@
     <p class="sa-sub">이 규칙을 2026년 5~8월에 하루씩 되돌려 실행한 결과와, 같은 규칙을 과거 여섯 구간에 튜닝 없이 적용한 결과입니다. 잘 나온 구간과 못 나온 구간을 그대로 실었습니다.</p>
     <div id="sa-replay-sum" class="sa-note" style="margin:0 0 10px"></div>
     <details class="sa-details">
-      <summary>2026년 5~8월 하루씩 재현: 날짜별 판정과 자동 매매</summary>
+      <summary>2026년 5~8월 하루씩 재현: 날짜별 판정과, 그 판정대로 매매했다면의 기록</summary>
       <div class="sa-details-body"><div class="sa-mini" id="sa-replay"></div></div>
     </details>
     <div style="height:8px"></div>
@@ -454,7 +452,7 @@
       var on = st === curState;
       var chip = '<span class="sa-phase' + (on ? ' on' : '') + '"' +
         (on ? ' style="background:' + cv(TEMP[D.stateTemp[st]]) + '"' : '') + '>' +
-        esc(D.stateKo[st]) + (on ? ' · 현재' : '') + '</span>';
+        esc(D.stateKo[st]) + (on ? '(현재)' : '') + '</span>';
       return (i ? '<span class="sa-phase-arrow">›</span>' : '') + chip;
     }).join('') + '<span class="sa-phase-arrow">› (처음으로)</span>';
 
@@ -474,7 +472,8 @@
         return '<div class="sa-sig-cell"><div class="sa-sig-top">' +
           '<span class="sa-sig-name">' + esc(g.name) + '</span>' +
           '<span class="sa-sig-dir ' + cls + '">' + word + '</span></div>' +
-          '<div class="sa-sig-help">' + esc(g.help) + '</div></div>';
+          '<div class="sa-sig-help">' + esc(g.help) +
+          (g.raw ? '<br><span class="sa-raw">' + esc(g.raw) + '</span>' : '') + '</div></div>';
       }).join('') + '</div>';
     document.getElementById('sa-facts').innerHTML = sigHtml +
       '<div class="sa-fact"><span>손절선: ' + CUR + ' 종가가 <b>' + Math.round(c.invalidation).toLocaleString() + '달러</b> 아래로 마감하면 탐색 매수분은 정리</span><b></b></div>';
@@ -502,7 +501,8 @@
         return '<div class="sa-ing-row">' +
           '<span class="sa-ing-name">' + esc(r.name) + '</span>' +
           '<span class="sa-ing-val">' + (v == null ? '—' : Math.round(v)) + '</span>' +
-          '<span class="sa-ing-help">' + esc(r.help) + '</span>' +
+          '<span class="sa-ing-help">' + esc(r.help) +
+          (r.raw ? '<br><span class="sa-raw">' + esc(r.raw) + '</span>' : '') + '</span>' +
           '<span class="sa-ing-bar"><span style="width:' + Math.max(2, v || 0) + '%"></span></span>' +
         '</div>';
       }).join('') + '</div>';
@@ -607,7 +607,8 @@
       '</div>';
     }).join('');
     document.getElementById('sa-lev-note').innerHTML =
-      '현재 판정 <b>' + esc(c.leverage) + '</b> · 변동성 기준 유효 배율 예산 <b>' + num(c.levBudget, 1) + '배</b>. ' +
+      '현재 판정 <b>' + esc(c.leverage) + '</b>. 요즘 값이 출렁이는 정도까지 감안한 권장 투입 강도는 <b>' + num(c.levBudget, 1) + '배</b>' +
+      (typeof c.levBudget === 'number' ? ': 주식 노출을 계좌의 <b>' + Math.round(c.levBudget * 100) + '% 수준</b>까지만 두라는 뜻이고, 시장이 잔잔해질수록 이 숫자가 올라감' : '') + '. ' +
       '조건: 2배는 반등 증거가 어느 정도 모이면, 3배는 반등 증거가 충분하고 속임수 움직임이 잦아들고 오르는 종목이 다시 늘어날 때만. ' +
       '레버리지의 손절 기준은 레버리지 ETF 가격이 아니라 <b>기초지수(' + CUR + ')의 기술적 레벨</b>: 3배 상품의 자체 변동성은 손절선을 무의미하게 관통함.';
   }
@@ -767,7 +768,7 @@
     document.getElementById('sa-replay').innerHTML = (r.events || []).map(function (e) {
       return '<div class="sa-mini-row">' + esc(e.date) + ' · 이날 시장을 <b>' + esc(e.state) + '</b> 국면으로 판정. ' +
         e.acts.map(function (a) {
-          var t = '이에 따른 자동 매매: ' + esc(a.label);
+          var t = '이 판정대로 매매했다면: ' + esc(a.label);
           if (a.size != null) t += ' (전체 자산의 ' + Math.round(a.size) + '%를 이동)';
           if (a.position != null) t += ' → 매매 뒤 주식 ' + Math.round(a.position) + '% · 현금 ' + Math.round(100 - a.position) + '%';
           return t;
