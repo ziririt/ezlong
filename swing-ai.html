@@ -479,11 +479,13 @@
   function renderAux() {
     var host = document.getElementById('sa-aux');
     if (!D.aux || !D.aux.length) { host.innerHTML = ''; return; }
+    /* 항목마다 고유색. 값에 따라 색을 바꾸면 중간값이 무색이 되어
+       '왜 이것만 흰색이냐'로 읽힌다: 색은 항목, 값은 숫자가 말한다. */
+    var AUXCOL = { semiLead: '--sa-dist', spec: '--sa-cap', credit: '--sa-rev' };
     host.innerHTML = D.aux.map(function (a) {
       var dir = typeof a.chg21 !== 'number' ? '' :
         a.chg21 > 0.5 ? ' · 한 달 전보다 <b>개선</b>' : a.chg21 < -0.5 ? ' · 한 달 전보다 <b>후퇴</b>' : ' · 한 달째 제자리';
-      var col = typeof a.pct !== 'number' ? cv('--ez-text3') :
-        a.pct >= 67 ? cv('--sa-rev') : a.pct <= 33 ? cv('--sa-cap') : cv('--ez-text2');
+      var col = cv(AUXCOL[a.key] || '--ez-blue');
       return '<div class="sa-meter">' +
         '<div class="sa-meter-top"><span class="sa-meter-name">' + esc(a.name) + '</span>' +
           '<span class="sa-meter-val" style="color:' + col + '">' + (typeof a.pct === 'number' ? Math.round(a.pct) : '—') + '</span></div>' +
