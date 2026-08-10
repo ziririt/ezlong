@@ -14,9 +14,10 @@
           '<a href="/atmr-dashboard.html#swing-strategy" class="ez-footer-nav-item">스윙 전략 · 3-3-4 원칙</a>' +
           '<a href="/atmr-dashboard.html#top9" class="ez-footer-nav-item">TOP9 집중분석 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:3px;vertical-align:middle;">NEW</span></a>' +
           '<a href="/market-vs.html" class="ez-footer-nav-item">긍정 vs 부정 몇대몇</a>' +
+          '<a href="/brief-history.html" class="ez-footer-nav-item">차트: 그날 무슨 일이 있었나 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:3px;vertical-align:middle;">NEW</span></a>' +
           '<a href="/stocks.html" class="ez-footer-nav-item">심플 주가 정보</a>' +
           '<a href="/chart-analysis.html" class="ez-footer-nav-item">AI 차트분석</a>' +
-          '<a href="/model-portfolio.html" class="ez-footer-nav-item">포트폴리오 점검</a>' +
+          '<a href="/model-portfolio.html" class="ez-footer-nav-item">AI포트폴리오 점검 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:3px;vertical-align:middle;">NEW</span></a>' +
           '<a href="/market-cycle.html" class="ez-footer-nav-item">Market Cycle Monitor</a>' +
           '<a href="/dca-simulator.html" class="ez-footer-nav-item">DCA 복리 시뮬레이터</a>' +
           '<a href="/portfolio-manager.html" class="ez-footer-nav-item">포트폴리오 복리 시뮬레이터</a>' +
