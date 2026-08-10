@@ -9205,5 +9205,12 @@ window.investmentQuotes = [
     "title": "아름다운 세상이여, 그대는 어디에 (Beautiful World, Where Are You)",
     "author": "샐리 루니 (Sally Rooney)",
     "genre": "literature"
+  },
+  {
+    "english": "If you aren't willing to own a stock for ten years, don't even think about owning it for ten minutes. Put together a portfolio of companies whose aggregate earnings march upward over the years, and so also will the portfolio's market value.",
+    "text": "10년을 소유할 생각이 없는 주식이라면, 단 10분도 갖지 마라. 해마다 이익이 꾸준히 늘어나는 기업들로 포트폴리오를 채워라. 그러면 포트폴리오의 시장가치도 함께 오를 것이다.",
+    "title": "버크셔 해서웨이 주주서한 (1996)",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "patience"
   }
 ];
