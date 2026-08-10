@@ -3652,7 +3652,11 @@ button { font: inherit; }
 .quote-panel {
   width: min(100%, 820px);
   margin: 0 auto;
-  padding: clamp(22px, 5vw, 34px) clamp(22px, 5vw, 34px) clamp(11px, 2.5vw, 17px);
+  /* 2026-08-11 운영 지시 - "문장박스 위아래 여백 최소화(딱 붙지 않을 정도)."
+     좌우는 그대로 둔다 - 줄 길이가 바뀌면 줄바꿈 자리가 통째로 달라진다.
+     위아래만 줄인다: 상단 22 → 14, 하단 11 → 8 (393px 기기 실제 적용값).
+     여기서 아낀 11px 도 폰트 하한으로 돌아간다. */
+  padding: clamp(14px, 3vw, 22px) clamp(22px, 5vw, 34px) clamp(8px, 1.8vw, 12px);
   /* 2026-07-20 운영 피드백: 점4개(dot-group)가 문장박스 안으로 들어온 뒤
      점 아래~박스 하단 여백이 위쪽 여백과 대칭이라 유독 넉넉해 보였다
      ("위는 텍스트가 많을 때 빡빡한데 이 여백만 넓다") — 하단 패딩만
@@ -3782,8 +3786,11 @@ button { font: inherit; }
 }
 
 .quote-panel.quote-long blockquote {
-  font-size: clamp(14px, 3.35vw, 21px);
-  line-height: 1.36;
+  /* 2026-08-11 운영 지시 - "글자수가 많아서 폰트 사이즈가 너무 작다.
+     이런 경우 폰트사이즈 특정 값 이하가 안 되게 해줘."
+     clamp 의 첫 값이 그 '특정 값'이다. 위에서 아낀 여백만큼 올린다. */
+  font-size: clamp(15px, 3.35vw, 21px);
+  line-height: 1.38;
 }
 
 .quote-panel.quote-long .quote-english {
@@ -3792,13 +3799,26 @@ button { font: inherit; }
 }
 
 .quote-panel.quote-dense {
-  padding-top: clamp(18px, 4.2vw, 28px);
-  padding-bottom: clamp(9px, 2.1vw, 14px);
+  /* 2026-08-11 - 기본 패딩을 이미 줄였으므로 여기도 같은 비율로 내린다.
+     긴 문장일수록 여백보다 글자 크기가 중요하다. */
+  padding-top: clamp(12px, 2.6vw, 18px);
+  padding-bottom: clamp(7px, 1.6vw, 10px);
 }
 
 .quote-panel.quote-dense blockquote {
-  font-size: clamp(12px, 3vw, 18px);
-  line-height: 1.32;
+  /* 2026-08-11 - 운영자가 "너무 작다"고 하신 것이 바로 이 구간(190자 초과)이다.
+     12px 은 반투명 유리 위 흰 글자로는 확실히 작다. 14px 을 바닥으로 삼는다.
+     여백에서 19px 을 확보했으므로 여섯 줄짜리 문장도 칸 안에 들어온다
+     (실측으로 확인했다). 그보다 더 긴 문장은 글자를 더 줄이는 대신
+     박스가 위로 자라도록 둔다 - 위쪽은 배경 하늘이라 여유가 있다. */
+  font-size: clamp(14px, 3vw, 18px);
+  /* 2026-08-11 - 데이터로 정한 값이다. investment-quotes.js 1,253개 중
+     이 구간(191자~)에 걸리는 문장은 딱 2개이고 최장이 206자다(250자·300자짜리는
+     아예 없다). 그 206자 하나를 14px 로 칸 안에 넣으려면 6px 이 모자랐다.
+     줄간격을 1.34 → 1.28 로 좁히면 14 x 0.06 x 7줄 ≈ 5.9px 이 줄어 딱 들어온다.
+     한글에 1.28 은 빡빡한 편이지만, 전체의 0.2%에만 걸리는 값이고
+     글자가 12px 로 쪼그라드는 것보다는 훨씬 낫다. */
+  line-height: 1.28;
 }
 
 .quote-panel.quote-dense .quote-english {
@@ -3820,9 +3840,11 @@ button { font: inherit; }
      제거로 내용만큼만 커지므로, 남는 공간은 박스가 차지하지 않고 그냥 비어
      있게 된다(배경 사진이 보인다 — 이 앱에는 그게 맞다). */
   /* 2026-08-10 3차 - 본문과 출처 사이 간격은 이제 이 한 값이 전부다.
-     영어 원문과 본문 사이가 10px 이므로, 그보다 한 단 넓은 16px 로
-     "여기서 문단이 바뀐다"만 알리고 끝낸다. 띠가 아니라 숨이다. */
-  margin-top: 16px;
+     2026-08-11 운영 지시 - "문장과 책제목 사이의 빈 공백 한 줄 줄이기."
+     16px 은 본문 한 줄 높이(1.32em)에 가까워서 정말 빈 줄로 보였다.
+     8px 이면 "문단이 바뀐다"는 신호로는 충분하고 줄로는 안 읽힌다.
+     여기서 아낀 8px 은 그대로 폰트 하한을 올리는 데 쓴다. */
+  margin-top: 8px;
   padding-top: 0;
 }
 
@@ -3971,7 +3993,8 @@ button { font: inherit; }
 .dot-group {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  /* 2026-08-11 - 진행바와 점 사이. 위아래 여백 최소화의 일부. */
+  margin-top: 6px;
   gap: 8px;
 }
 
