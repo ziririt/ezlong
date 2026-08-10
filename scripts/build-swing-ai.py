@@ -195,6 +195,21 @@ def build_features(df, bench, breadth_pair):
     ], axis=1)
     agree = votes.sum(axis=1).abs() / votes.notna().sum(axis=1).clip(lower=1)
     f['conf'] = (0.5 + 0.5 * agree).clip(0.5, 1.0)     # 0.5(완전 불일치) ~ 1.0(만장일치)
+    f['rsi_d5'] = f['rsi'].diff(5)                     # 행동 카드 신호등이 그대로 쓴다
+    return f
+
+
+def attach_ingredient_pcts(f, vix):
+    """행동 카드가 펼쳐 보일 재료 백분위 — build_scores 와 같은 정의."""
+    p = lambda s: trailing_pct(s)
+    v = vix.reindex(f.index)
+    f['pct_rsi'] = p(f['rsi']); f['pct_ext20'] = p(f['ext20']); f['pct_ret20'] = p(f['ret20'])
+    f['pct_upstreak'] = p(f['upstreak'])
+    f['pct_offhi'] = p(-f['off_hi20']); f['pct_rsweak'] = p(-f['rs63_chg'])
+    f['pct_dnvol'] = p(f['dnvol_share10']); f['pct_brweak'] = p(-f['breadth_chg'])
+    f['pct_rsilow'] = p(-f['rsi']); f['pct_dd'] = p(-f['dd252']); f['pct_vix'] = p(v['vix'])
+    f['pct_dnstreak'] = p(f['dnstreak'])
+    f['pct_rsiup'] = p(f['rsi'] - f['rsi'].shift(5)); f['pct_upvol'] = p(f['upvol_share5'])
     return f
 
 
@@ -475,6 +490,52 @@ def action_card(row, st):
         'REVERSAL_PROBE': '현금의 20~25%로 2차 매수 가능한 구간. 거짓 반등일 수 있으니 손절선을 정하고 진입',
         'RECOVERY': '남은 현금을 나눠 투입하는 구간. 조건 충족 시에만 2·3배 검토',
     }[st]
+    # 점수의 재료 — 각 점수가 왜 그 값인지 화면이 펼쳐 보인다.
+    # 값은 직전 5년 분포 백분위(0~100). build_scores 의 구성과 같은 항목.
+    def _p(col_pct):
+        return None if pd.isna(col_pct) else round(float(col_pct), 0)
+    ingredients = {
+        'heat': [
+            ('단기 과열 지표(RSI)', _p(row['pct_rsi']), '최근 상승이 얼마나 쉼 없이 이어졌나'),
+            ('20일 평균선과의 거리', _p(row['pct_ext20']), '평소 자리보다 얼마나 높이 떠 있나'),
+            ('최근 한 달 상승폭', _p(row['pct_ret20']), '한 달 동안 얼마나 가파르게 올랐나'),
+            ('연속 상승', _p(row['pct_upstreak']), '쉬는 날 없이 며칠째 오르는 중인가'),
+        ],
+        'dist': [
+            ('고점에서 밀린 정도', _p(row['pct_offhi']), '최근 20일 고점을 지키지 못하는 정도'),
+            ('상대 강도 악화', _p(row['pct_rsweak']), '비교 지수 대비 힘이 빠지는 정도'),
+            ('하락일 거래량 쏠림', _p(row['pct_dnvol']), '파는 날에 거래가 더 실리는 정도'),
+            ('오르는 종목 축소', _p(row['pct_brweak']), '지수 안에서 오르는 종목이 줄어드는 정도'),
+        ],
+        'cap': [
+            ('과매도 지표(RSI)', _p(row['pct_rsilow']), '얼마나 과하게 팔렸나'),
+            ('1년 고점 대비 낙폭', _p(row['pct_dd']), '고점에서 얼마나 내려왔나'),
+            ('공포지수(VIX)', _p(row['pct_vix']), '시장 전체의 공포 수준'),
+            ('연속 하락', _p(row['pct_dnstreak']), '쉼 없이 며칠째 빠지는 중인가'),
+        ],
+        'rev': [
+            ('10일 평균선 회복', 100.0 if row['close'] > row['sma10'] else 0.0, '단기 평균선 위로 올라섰나'),
+            ('과매도 지표 반등', _p(row['pct_rsiup']), '일주일 전보다 힘이 붙는 중인가'),
+            ('상승일 거래량', _p(row['pct_upvol']), '사는 날에 거래가 실리는 중인가'),
+            ('신저가 갱신 실패', 100.0 if row['low'] > row['lo10_prev'] else 0.0, '더 낮은 저점을 만들지 못했나'),
+        ],
+    }
+
+    # 다섯 신호의 오늘 방향 — 화면 신호등용. conf 계산의 votes 와 같은 식.
+    sig_defs = [
+        ('trend', '추세', '주가가 50일 평균선 위인가',
+         (1 if (row['close'] > row['sma50']) else -1)),
+        ('momentum', '상승 탄력', '기술 지표(RSI)가 일주일 전보다 오르는 중인가',
+         0 if pd.isna(row['rsi_d5']) else (1 if row['rsi_d5'] > 0 else -1 if row['rsi_d5'] < 0 else 0)),
+        ('breadth', '오르는 종목 폭', '지수 안에서 오르는 종목이 늘어나는 중인가',
+         0 if pd.isna(row['breadth_chg']) else (1 if row['breadth_chg'] > 0 else -1 if row['breadth_chg'] < 0 else 0)),
+        ('relstr', '상대 강도', '비교 지수보다 잘 버티는 중인가',
+         0 if pd.isna(row['rs63_chg']) else (1 if row['rs63_chg'] > 0 else -1 if row['rs63_chg'] < 0 else 0)),
+        ('volume', '거래량 성격', '오르는 날에 거래가 더 실리는가',
+         0 if pd.isna(row['upvol_share5']) else (1 if row['upvol_share5'] > 0.5 else -1 if row['upvol_share5'] < 0.5 else 0)),
+    ]
+    signals = [{'key': k, 'name': n, 'help': h, 'dir': d} for k, n, h, d in sig_defs]
+
     inval = row['lo10_prev'] - PROBE_STOP_ATR * row['atr']
     chand = row['hi20'] if not pd.isna(row['hi20']) else row['close']
     conf = float(row['conf']) if pd.notna(row['conf']) else 0.75
@@ -487,6 +548,8 @@ def action_card(row, st):
         'close': round(float(row['close']), 2),
         'reco': reco,
         'confidence': round(conf * 100),
+        'signals': signals,
+        'ingredients': {k: [{'name': n, 'pct': v2, 'help': h} for n, v2, h in rows] for k, rows in ingredients.items()},
         'sizeMult': round(conf * whip_adj * 100),
         'noTrade': bool(no_trade),
         'levBudget': leverage_budget(row, gate2, gate3),
@@ -566,6 +629,7 @@ def main():
     for sym, df, bench in (('SOXX', soxx, qqq), ('QQQ', qqq, spy), ('SPY', spy, rsp)):
         f = build_features(df, bench, breadth)
         sc = build_scores(f, vix)
+        f = attach_ingredient_pcts(f, vix)
         f = pd.concat([f, sc, vix.reindex(f.index)], axis=1)
         states, cands = run_state_machine(f)
         last = f.iloc[-1]
