@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "2026-08-10-19:18",
+      "timestamp_kst": "2026-08-10(월) 19:18 KST",
+      "key_event": {
+        "name": "7월 CPI 발표 대기",
+        "name_en": "Anticipation for July CPI Release",
+        "time": "8월 12일(수) 오전 8시 30분 (미 동부)",
+        "why": "물가 지표에 따른 금리 인상 시나리오 변화, 시장 변동성 확대",
+        "why_en": "CPI data to influence Fed rate hike scenarios, increasing market volatility"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "CPI 발표 대기 속 관망세 유지, 고용 둔화 금리 인하 기대 지속",
+      "summary_en": "Market in wait-and-see mode ahead of CPI, sustained rate cut hopes from easing employment",
+      "positive_factors": [
+        {
+          "score": 60,
+          "name": "고용 지표 둔화에 따른 금리 인하 기대",
+          "name_en": "Rate Cut Expectations from Softening Employment Data",
+          "desc": "비농업 고용 감소 및 실업률 하락에도 경제활동참가율 하락으로 9월 금리 인상 확률 후퇴",
+          "desc_en": "Non-farm payrolls decreased, and despite lower unemployment, falling labor participation rate pushes back September rate hike odds",
+          "category": "macro_data"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "호르무즈 해협 통항료 협상 교착",
+          "name_en": "Hormuz Strait Transit Fee Negotiation Stalemate",
+          "desc": "미국-이란-오만 협상 교착으로 유가 리스크 상존",
+          "desc_en": "Negotiations between US, Iran, and Oman remain stalled, keeping oil price risks alive",
+          "category": "geopolitics"
+        },
+        {
+          "score": 20,
+          "name": "연준의 최소 메시지 기조 유지",
+          "name_en": "Fed Maintains Minimal Communication Stance",
+          "desc": "워시 의장의 포워드 가이던스 부재로 지표 민감도 증가 및 변동성 확대",
+          "desc_en": "Chair Warsh's lack of forward guidance increases data sensitivity and market volatility",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "고용 지표 해석 엇갈림",
+          "name_en": "Divergent Interpretations of Employment Data",
+          "desc": "고용 둔화가 금리 인하 기대로 이어지지만, 일부에서는 경기 침체 신호로 해석",
+          "desc_en": "While easing employment fuels rate cut hopes, some interpret it as a signal of economic recession",
+          "category": "macro_data"
+        },
+        {
+          "name": "AI 랠리 지속 여부 논쟁",
+          "name_en": "Debate Over AI Rally Continuation",
+          "desc": "7월 반도체 폭락이 레버리지 청산에 기인한 기술적 반등인지, 새로운 강세의 시작인지 의견 분분",
+          "desc_en": "Debate whether July's semiconductor crash was a technical rebound from leverage unwinding or the start of a new bull run",
+          "category": "ai_tech_valuation"
+        }
+      ]
+    },
+    {
       "id": "2026-08-10-17:13",
       "timestamp_kst": "2026-08-10(월) 17:13 KST",
       "key_event": {
@@ -472,60 +531,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-09-18:20",
-      "timestamp_kst": "2026-08-09(일) 18:20 KST",
-      "key_event": {
-        "name": "고용지표 둔화 및 금리 인하 기대 지속",
-        "name_en": "Sustained Expectations for Rate Cuts Amid Softening Employment",
-        "time": "직전 거래일 및 다음 주 개장 영향",
-        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
-        "why_en": "Lower-than-expected employment, easing Fed rate hike concerns, improved market sentiment"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "고용 둔화에 따른 금리 인하 기대감으로 11일 연속 긍정 우위 유지",
-      "summary_en": "Positive sentiment prevails for 11 consecutive days due to rate cut expectations from softening employment",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "고용지표 둔화 지속",
-          "name_en": "Continued Softening Employment Data",
-          "desc": "실업률 4.10%로 전기 대비 0.10% 하락, 금리 인하 기대감 유지",
-          "desc_en": "Unemployment rate at 4.10%, down 0.10% from previous period, sustaining rate cut expectations",
-          "category": "macro_data"
-        },
-        {
-          "score": 35,
-          "name": "기업 실적 호조",
-          "name_en": "Strong Corporate Earnings",
-          "desc": "WSJ 보도, 어닝 비트가 증시 랠리 우려 완화",
-          "desc_en": "WSJ reports earnings beats easing concerns over stock rally",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "유가 상승 압력",
-          "name_en": "Upward Oil Price Pressure",
-          "desc": "WTI 원유 78.18(+0.17%), 미-이란 긴장 고조로 인플레이션 우려",
-          "desc_en": "WTI crude at 78.18 (+0.17%), US-Iran tensions raise inflation concerns",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 혁명 단계에 대한 시각차",
-          "name_en": "Divergent Views on AI Revolution Stage",
-          "desc": "Jensen Huang의 'AI가 일자리가 아닌 업무를 죽일 것' 발언과 Cathie Wood의 AI 투자 확대 소식은 긍정적이나, AI 밸류에이션에 대한 근본적인 시각차는 여전",
-          "desc_en": "Jensen Huang's statement on AI eliminating tasks, not jobs, and Cathie Wood's increased AI investments are positive, but fundamental valuation differences persist for AI",
-          "category": "ai_tech_valuation"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-10T08:14:05Z",
+  "updated_at": "2026-08-10T10:19:09Z",
   "max_entries": 10
 }
