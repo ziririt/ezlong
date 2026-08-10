@@ -2491,20 +2491,66 @@ function renderQuote(index, immediate = false) {
  * title 이 비어 있으면 꺾쇠 없이 저자만 적는다 — 없는 책을 지어내는 것보다
  * "누가 한 말인지만 밝히는" 편이 정직하다.
  */
+// 2026-08-10 운영 지침 — "책제목과 저자 이름은 원어명을 굳이 쓰지 않아도
+// 된다. <행운에 속지마라> 나심 니콜라스 탈레브 처럼 심플하게. 다른 나라
+// 언어도 마찬가지다. 굳이 원어 제목과 이름을 써서 복잡해 보이게 만들지 마라."
+//
+// 문장 데이터의 제목은 오래전부터 "행운에 속지 마라 (Fooled by Randomness)"
+// 처럼 원어를 괄호로 달고 있었다. 데이터 자체를 고치면 될 것 같지만 그러면
+// 안 된다 — 알라딘 링크(aladin-links.js)와 영문 서지(book-titles.js)가 이
+// 문자열을 **열쇠 그대로** 쓰고 있어서, 한 글자만 바꿔도 그 책의 서점 버튼이
+// 통째로 사라진다. 그래서 데이터는 그대로 두고 **보여줄 때만** 한 언어로
+// 추린다. 열쇠와 표시를 분리하는 것이 이 경우의 정석이다.
+//
+// 규칙은 단순하다. 뒤에 붙은 괄호 한 덩어리만 보고, 괄호 밖과 안이 서로 다른
+// 문자 체계일 때만 화면 언어에 맞는 쪽을 남긴다.
+//   "행운에 속지 마라 (Fooled by Randomness)" → 한국어 화면: 행운에 속지 마라
+//                                              영어 화면: Fooled by Randomness
+//   "Poor Charlie's Almanack (푸어 찰리스 알마낙)" → 한국어 화면: 푸어 찰리스 알마낙
+// 같은 문자 체계면 그건 원어 병기가 아니라 부제·판본이므로 건드리지 않는다.
+//   "버크셔 해서웨이 주주 서한 (1989년)"  "The Life Before Us (Madame Rosa)"
+// 괄호 안에 라틴 문자가 없으면(예: "곰돌이 푸의 도(道)") 원어 병기로 보지
+// 않는다 — 제목의 일부다.
+function simplifyBibliography(text, preferKo) {
+  const raw = String(text == null ? "" : text).trim();
+  if (!raw) return raw;
+  const m = raw.match(/^(.*?)\s*[（(]([^（()）]+)[)）]\s*$/);
+  if (!m) return raw;
+  const outside = (m[1] || "").trim();
+  const inside = (m[2] || "").trim();
+  if (!outside || !inside) return raw;
+  const HANGUL = /[가-힣]/;
+  const LATIN = /[A-Za-z]{2,}/;
+  const outKo = HANGUL.test(outside);
+  const inKo = HANGUL.test(inside);
+  const inLat = LATIN.test(inside);
+  if (preferKo) {
+    if (outKo && inLat && !inKo) return outside;
+    if (!outKo && inKo) return inside;
+    return raw;
+  }
+  if (outKo && inLat && !inKo) return inside;
+  if (!outKo && inKo) return outside;
+  return raw;
+}
+
 function formatQuoteSource(quote, koMode, translated) {
-  const author = quote.author || "";
+  const author = simplifyBibliography(quote.author || "", koMode);
   // 번역된 서지가 있으면 그쪽이 우선이다. 본문은 일본어인데 출처만 영어면
   // 화면 안에서 언어가 갈린다 — 실제로 영어 서지로 먼저 붙였다가 그렇게 됐다.
   if (!koMode && translated && (translated.title || translated.author)) {
-    const t = (translated.title || "").trim();
-    const a = translated.author || author;
+    const t = simplifyBibliography(translated.title || "", false);
+    const a = simplifyBibliography(translated.author || author, false);
     return t ? `<${t}> ${a}` : a;
   }
   if (!koMode && FZ_BOOK_TITLES && FZ_BOOK_TITLES.lookup) {
+    // 열쇠는 원본 제목 그대로 넘긴다(quote.title) — 추린 제목으로 찾으면 못 찾는다.
     const en = FZ_BOOK_TITLES.lookup(quote.title);
-    if (en && en.t) return `<${en.t}> ${en.a || author}`;
+    if (en && en.t) {
+      return `<${simplifyBibliography(en.t, false)}> ${simplifyBibliography(en.a || author, false)}`;
+    }
   }
-  const title = (quote.title || "").trim();
+  const title = simplifyBibliography(quote.title || "", koMode);
   if (!title) return author;
   return `<${title}> ${author}`;
 }
