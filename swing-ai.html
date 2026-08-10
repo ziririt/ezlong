@@ -31,28 +31,28 @@
 <style>
   /* 7단계 온도: 과열(뜨거움) → 투매(차가움). 배지·차트 배경·사다리가 한 값을 본다. */
   :root {
-    --sa-t0: #E5484D; --sa-t1: #F76B15; --sa-t2: #12A150; --sa-t3: #B8860B;
-    --sa-t4: #0D9488; --sa-t5: #2563EB; --sa-t6: #7C3AED;
-    --sa-t0-bg: rgba(229,72,77,0.22);   /* 과열: 빨강 */
-    --sa-t1-bg: rgba(247,107,21,0.26);  /* 고점 이탈 조짐: 주황 */
-    --sa-t2-bg: transparent;            /* 정상 추세: 띠 없음 */
-    --sa-t3-bg: rgba(202,138,4,0.24);   /* 조정: 황갈 */
-    --sa-t4-bg: rgba(13,148,136,0.24);  /* 반등 확인: 청록 */
-    --sa-t5-bg: rgba(37,99,235,0.18);   /* 반등 탐색: 파랑 */
-    --sa-t6-bg: rgba(124,58,237,0.24);  /* 깊은 과매도: 보라 */
+    --sa-t0: #E5121A; --sa-t1: #E91E8C; --sa-t2: #16A34A; --sa-t3: #B8860B;
+    --sa-t4: #65A30D; --sa-t5: #2563EB; --sa-t6: #7C3AED;
+    --sa-t0-bg: rgba(255,0,0,0.22);     /* 과열: 순수 빨강 */
+    --sa-t1-bg: rgba(255,46,147,0.30);  /* 고점 이탈 조짐: 형광 분홍 — 짧게 지나가니 굵게 */
+    --sa-t2-bg: rgba(34,197,94,0.16);   /* 정상 추세: 그린 */
+    --sa-t3-bg: rgba(255,221,0,0.32);   /* 조정: 노랑 */
+    --sa-t4-bg: rgba(163,255,63,0.32);  /* 반등 확인: 야광 연두 */
+    --sa-t5-bg: rgba(37,99,235,0.22);   /* 반등 탐색: 파랑 */
+    --sa-t6-bg: rgba(139,63,255,0.28);  /* 깊은 과매도: 보라 */
     --sa-heat: #E5484D; --sa-dist: #F76B15; --sa-cap: #1E40AF; --sa-rev: #0D9488; --sa-whip: #B8860B;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --sa-t0: #FF6369; --sa-t1: #FF8A3D; --sa-t2: #30D158; --sa-t3: #E5A50A;
-      --sa-t4: #2DD4BF; --sa-t5: #60A5FA; --sa-t6: #A78BFA;
-      --sa-t0-bg: rgba(255,80,90,0.30);
-      --sa-t1-bg: rgba(255,150,50,0.30);
-      --sa-t2-bg: transparent;
-      --sa-t3-bg: rgba(240,200,40,0.24);
-      --sa-t4-bg: rgba(45,212,191,0.28);
-      --sa-t5-bg: rgba(90,160,255,0.26);
-      --sa-t6-bg: rgba(167,139,250,0.30);
+      --sa-t0: #FF3B30; --sa-t1: #FF4FA3; --sa-t2: #30D158; --sa-t3: #FFD60A;
+      --sa-t4: #A3FF3F; --sa-t5: #4D9AFF; --sa-t6: #B06BFF;
+      --sa-t0-bg: rgba(255,0,0,0.38);     /* 순수 빨강 */
+      --sa-t1-bg: rgba(255,46,150,0.44);  /* 형광 분홍 */
+      --sa-t2-bg: rgba(34,197,94,0.20);   /* 그린 */
+      --sa-t3-bg: rgba(255,225,0,0.30);   /* 노랑 */
+      --sa-t4-bg: rgba(170,255,60,0.36);  /* 야광 연두 */
+      --sa-t5-bg: rgba(50,140,255,0.36);  /* 파랑 */
+      --sa-t6-bg: rgba(150,70,255,0.42);  /* 보라 */
       --sa-heat: #FF6369; --sa-dist: #FF8A3D; --sa-cap: #818CF8; --sa-rev: #2DD4BF; --sa-whip: #E5A50A;
     }
   }
@@ -279,7 +279,7 @@
   <!-- 5. 차트 -->
   <section class="sa-card">
     <h2 class="sa-h2">2026년 국면 기록: <span id="sa-chart-sym">SOXX</span></h2>
-    <p class="sa-sub">배경색이 그날의 상태 판정이고, 배경이 없는 구간은 정상 추세입니다. 지나간 판정을 지우지 않고 그대로 둡니다: 무엇을 맞히고 무엇을 틀리는지 함께 보기 위해서입니다. 세로축은 달러.</p>
+    <p class="sa-sub">배경색이 그날의 상태 판정입니다. 지나간 판정을 지우지 않고 그대로 둡니다: 무엇을 맞히고 무엇을 틀리는지 함께 보기 위해서입니다. 세로축은 달러.</p>
     <div class="sa-switch" data-switch></div>
     <canvas class="sa-canvas" id="sa-canvas"></canvas>
     <div class="sa-legend" id="sa-legend"></div>
@@ -623,10 +623,8 @@
        다르게 칠하면 범례와 차트가 서로 다른 말을 한다. */
     document.getElementById('sa-legend').innerHTML = Object.keys(D.stateKo).map(function (s) {
       var t = D.stateTemp[s];
-      var none = t === 2;   /* 정상 추세는 띠를 칠하지 않는다 */
-      return '<span class="sa-leg"><i class="sa-sw" style="background:' + (none ? 'transparent' : cv(TEMP_BG[t])) +
-        ';border:1px ' + (none ? 'dashed ' + cv('--ez-text3') : 'solid ' + cv(TEMP[t])) + '"></i>' +
-        esc(D.stateKo[s]) + (none ? ' (띠 없음)' : '') + '</span>';
+      return '<span class="sa-leg"><i class="sa-sw" style="background:' + cv(TEMP_BG[t]) +
+        ';border:1px solid ' + cv(TEMP[t]) + '"></i>' + esc(D.stateKo[s]) + '</span>';
     }).join('') +
       line(cv('--ez-text'), '', '종가') +
       line(cv('--ez-blue'), '3 3', '20일 이동평균') +
