@@ -9218,5 +9218,12 @@ window.investmentQuotes = [
     "title": "피프티 피플",
     "author": "정세랑",
     "genre": "literature"
+  },
+  {
+    "english": "Wealth is what you don't see. It's the cars not purchased, the diamonds not bought, the watches not worn, the clothes forgone and the first-class upgrade declined. Wealth is financial assets that haven't yet been converted into the stuff you see.",
+    "text": "부는 보이지 않는 것이다. 사지 않은 자동차, 사지 않은 다이아몬드, 차지 않은 시계, 포기한 옷, 거절한 일등석 업그레이드 같은 것들이다. 부란 아직 눈에 보이는 것으로 바뀌지 않은 금융자산이다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절 (Morgan Housel)",
+    "category": "mindset"
   }
 ];
