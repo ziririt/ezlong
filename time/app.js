@@ -3934,6 +3934,40 @@ function updateWeatherDetailTitle() {
     : t("weather.titleWithLocation", { location: loc }, `${loc} 날씨`);
 }
 
+// 2026-08-10 이슈 제보 — "메인은 37도인데 상세에 들어가면 29도다."
+//
+// 두 화면이 같은 엔드포인트(/api/weather/current)를 보는데도 값이 갈린 이유는,
+// 각자 자기 시점의 응답을 따로 들고 있었기 때문이다. 메인 칩(weatherState)은
+// 앱 로드·10분 타이머·포그라운드 복귀 때만 갱신되고, 상세는 자기 15분 캐시로
+// 따로 움직인다. 안드로이드에서 앱을 오래 재우면 웹뷰의 JS 상태는 살아 있는데
+// 갱신 신호가 안 와서, 메인 칩만 어제 값(그날의 최고기온 37도)에 얼어붙는다.
+// 상세를 열면 캐시가 만료돼 새로 받아오니 거기만 29도로 맞았다.
+//
+// 고치는 방향은 "둘을 더 자주 갱신하자"가 아니라 "둘이 같은 숫자를 보게 하자"다.
+// 상세 요청이 성공하면 그 응답으로 메인 칩까지 함께 맞춘다 — 더 새로운 데이터가
+// 손에 들어왔는데 옆 화면이 옛 숫자를 붙들고 있을 이유가 없다.
+function syncMainChipFrom(current) {
+  if (!current || typeof current.temp !== "number") return;
+  const tag = vcCurrentTag(current);
+  const isDay =
+    typeof current.sunriseEpoch === "number" && typeof current.sunsetEpoch === "number"
+      ? current.datetimeEpoch >= current.sunriseEpoch && current.datetimeEpoch < current.sunsetEpoch
+      : true;
+  const nextTemp = formatTemp(current.temp);
+  const nextSummary = vcCurrentSummary(current);
+  // 위치 문구는 역지오코딩 결과라 이 응답에 없다 — 기존 값을 그대로 둔다.
+  if (weatherState && weatherState.temp === nextTemp && weatherState.summary === nextSummary) return;
+  weatherState = {
+    location: (weatherState && weatherState.location) || t("weather.currentLocation", null, "현재 위치"),
+    temp: nextTemp,
+    summary: nextSummary,
+    icon: weatherIconFor(tag, isDay),
+    tag
+  };
+  weatherResolved = true;
+  renderWeather();
+}
+
 function renderWeatherCurrent(current, hourlyNowItem) {
   if (!wdCurrentTemp) return;
   updateWeatherDetailTitle();
@@ -4903,6 +4937,7 @@ async function fetchWeatherDetail() {
     // "n분 전 정보" 안전망으로 기기에 저장해둔다.
     if (currentData && currentData.current) {
       wdSaveLastGoodCurrent(currentData, hourlyNowItem);
+      syncMainChipFrom(currentData.current);
     }
     renderWeatherCurrent(currentData, hourlyNowItem);
     renderWeatherTopComment(rainData);
@@ -9591,6 +9626,21 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
+
+// 2026-08-10 — visibilitychange 하나만 믿지 않는다. 안드로이드 웹뷰는 앱을
+// 오래 재웠다 깨울 때 이 이벤트를 흘리는 경우가 있어(이슈 제보의 "메인만
+// 어제 날씨" 가 그 증상이다), 창 포커스와 bfcache 복귀도 같은 갱신 신호로
+// 받는다. 세 신호가 겹쳐 들어와도 30초 안에는 한 번만 실제로 요청한다 —
+// 신호를 늘리는 것과 요청을 늘리는 것은 다른 이야기다.
+let lastForegroundWeatherAt = 0;
+function refreshWeatherOnForeground(reason) {
+  const now = Date.now();
+  if (now - lastForegroundWeatherAt < 30 * 1000) return;
+  lastForegroundWeatherAt = now;
+  try { requestCurrentWeather(); } catch (error) { /* 갱신 실패가 화면을 깨뜨리면 안 된다 */ }
+}
+window.addEventListener("focus", () => refreshWeatherOnForeground("focus"));
+window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow"));
 
 // ============================================================================
 // 2026-07-27 신설 — 광고 레이아웃 브릿지 (네이티브 앱 전용, 웹/PWA에서는
