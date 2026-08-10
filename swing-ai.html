@@ -142,7 +142,7 @@
   }
   .sa-q-h { font-size: 18px; font-weight: 800; color: var(--ez-text); margin: 0 0 2px; }
   .sa-q-a { font-size: 16px; font-weight: 700; line-height: 1.6; margin: 0 0 14px; }
-  .sa-meter { margin-bottom: 12px; }
+  .sa-meter { margin-bottom: 18px; }
   .sa-meter-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
   .sa-meter-name { font-size: 15px; font-weight: 700; color: var(--ez-text); }
   .sa-meter-val { font-size: 18px; font-weight: 800; }
@@ -153,7 +153,7 @@
   .sa-q-note b { color: var(--ez-text); }
 
   /* 점수 재료 */
-  .sa-ing { margin: 4px 0 14px; display: grid; gap: 5px; border-left: 3px solid var(--ez-border); padding-left: 10px; }
+  .sa-ing { margin: 8px 0 16px; display: grid; gap: 8px; border-left: 3px solid var(--ez-border); padding-left: 11px; }
   .sa-ing-row { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: baseline; }
   .sa-ing-name { font-size: 14px; font-weight: 600; color: var(--ez-text2); }
   .sa-ing-val { font-size: 14px; font-weight: 800; color: var(--ez-text); }
@@ -217,6 +217,48 @@
   .sa-mini-row b { color: var(--ez-text); }
 
   .sa-fail { font-size: 16px; color: var(--ez-text2); line-height: 1.7; }
+
+  /* 넓은 화면은 모바일 밀도를 그대로 키우면 답답하다 — 여백과 행간을
+     화면 크기에 맞춰 한 단계씩 푼다(31항: 넉넉한 여백, 콘텐츠가 주인공). */
+  @media (min-width: 760px) {
+    .sa-main { padding: 30px 24px 80px; }
+    .sa-card, .sa-q { padding: 32px 34px; }
+    .sa-card { margin-bottom: 24px; }
+    .sa-qa { gap: 24px; margin-bottom: 10px; }
+    .sa-h2 { font-size: 22px; margin-bottom: 8px; }
+    .sa-sub { font-size: 16px; line-height: 1.7; margin-bottom: 22px; }
+    .sa-lede { font-size: 18px; }
+    .sa-reco { font-size: 19px; line-height: 1.7; margin-bottom: 16px; }
+    .sa-q-a { font-size: 17px; line-height: 1.65; margin-bottom: 22px; }
+    .sa-meter { margin-bottom: 28px; }
+    .sa-meter-name { font-size: 16px; }
+    .sa-meter-val { font-size: 21px; }
+    .sa-meter-help { font-size: 15px; line-height: 1.6; margin-top: 6px; }
+    .sa-ing { gap: 12px; margin: 12px 0 8px; padding-left: 14px; }
+    .sa-ing-name { font-size: 15px; }
+    .sa-ing-help { font-size: 15px; line-height: 1.55; }
+    .sa-q-note { font-size: 15px; line-height: 1.7; padding-top: 14px; margin-top: 10px; }
+    .sa-fact { font-size: 16px; padding: 14px 16px; }
+    .sa-sig { gap: 10px; }
+    .sa-sig-cell { padding: 13px 15px; }
+    .sa-sig-name, .sa-sig-help { font-size: 15px; }
+    .sa-sig-help { line-height: 1.55; margin-top: 6px; }
+    .sa-sig-sum { font-size: 16px; margin-bottom: 12px; }
+    .sa-ladders { gap: 26px; }
+    .sa-lad { gap: 9px; }
+    .sa-lad-h { font-size: 16px; margin-bottom: 10px; }
+    .sa-step { padding: 14px 16px; }
+    .sa-step-tag, .sa-step-txt { font-size: 15px; }
+    .sa-step-txt { line-height: 1.6; }
+    .sa-lev-cell { padding: 16px 10px; }
+    .sa-note { font-size: 15px; line-height: 1.7; margin-top: 14px; }
+    .sa-ul { padding-left: 1.2em; }
+    .sa-ul li { font-size: 16px; line-height: 1.85; margin-bottom: 12px; }
+    .sa-legend { gap: 10px 18px; margin-top: 16px; }
+    .sa-mini { gap: 8px; }
+    .sa-mini-row { font-size: 15px; line-height: 1.65; padding: 10px 12px; }
+    details.sa-details summary { font-size: 16px; padding: 15px 16px; }
+  }
 </style>
 </head>
 
