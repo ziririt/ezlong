@@ -9232,5 +9232,12 @@ window.investmentQuotes = [
     "title": "이블린 휴고의 일곱 남편 (The Seven Husbands of Evelyn Hugo)",
     "author": "테일러 젠킨스 리드 (Taylor Jenkins Reid)",
     "genre": "literature"
+  },
+  {
+    "english": "There is nothing new in Wall Street. There can't be because speculation is as old as the hills. Whatever happens in the stock market today has happened before and will happen again.",
+    "text": "월스트리트에는 새로운 것이 없다. 있을 수가 없다. 투기는 태곳적부터 있어 온 것이기 때문이다. 오늘 주식시장에서 일어나는 일은 예전에도 일어났고 앞으로도 다시 일어날 것이다.",
+    "title": "주식투자의 기술 (How to Trade in Stocks)",
+    "author": "제시 리버모어 (Jesse Livermore)",
+    "category": "mindset"
   }
 ];
