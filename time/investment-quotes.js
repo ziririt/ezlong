@@ -9252,5 +9252,12 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각 (The Most Important Thing)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "mindset"
+  },
+  {
+    "english": "Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived.",
+    "text": "삶과 죽음 사이에는 도서관이 있고, 그 도서관의 서가는 끝없이 이어진다. 책 한 권 한 권이 당신이 살 수도 있었던 다른 삶을 시도해볼 기회를 준다.",
+    "title": "미드나잇 라이브러리 (The Midnight Library)",
+    "author": "매트 헤이그 (Matt Haig)",
+    "genre": "literature"
   }
 ];
