@@ -9259,5 +9259,12 @@ window.investmentQuotes = [
     "title": "미드나잇 라이브러리 (The Midnight Library)",
     "author": "매트 헤이그 (Matt Haig)",
     "genre": "literature"
+  },
+  {
+    "english": "Know what you own, and know why you own it.",
+    "text": "무엇을 소유하고 있는지 알고, 왜 그것을 소유하고 있는지 알아야 한다.",
+    "title": "전설로 떠나는 월가의 영웅",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
   }
 ];
