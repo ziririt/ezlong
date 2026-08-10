@@ -3499,7 +3499,12 @@ button { font: inherit; }
      밀리는 원인이 됐다(2026-07-07 재지적: "숫자판 바뀔 때마다 여전히
      흔들린다"). 최대치 기준으로 min-height를 고정해서 내용 길이와 무관하게
      박스 자체 높이가 항상 같도록 만든다. */
-  min-height: clamp(210px, 46vw, 300px);
+  /* 2026-08-10 3차 - 이 min-height 는 이미 죽은 선언이었다. 파일 끝
+     .quote-panel 규칙이 min-height:0 으로 덮고 있는데도 여기 남아 있어서,
+     "박스가 왜 이렇게 큰가"를 찾는 사람이 매번 여기서 헛다리를 짚는다.
+     박스 높이를 붙들어 플립시계를 안 흔들리게 하는 일은 이제 .sky-room
+     row3 의 clamp 와 align-self:start 가 맡는다. 선언은 지우고 이유만
+     남긴다. */
   /* 2026-07-24 이슈 제보 — "문장이 짧으면 제목/저자/진행바/점4개가 위로
      딸려 올라온다(들쑥날쑥)". 원인: 박스는 min-height로 고정인데 내용은
      위에서부터 쌓이는 일반 흐름이라, 내용이 짧으면 바닥이 비었다(길면
@@ -3580,7 +3585,15 @@ button { font: inherit; }
 }
 
 .quote-panel blockquote {
-  min-height: 4.2em;
+  /* 2026-08-10 3차 운영 피드백 - "문장은 짧은데도 문장박스는 아주 크게
+     잡혔다. 왜 문장박스 안의 책제목 위의 간격을 이렇게 넓게 잡나?"
+     범인이 여기 있었다. 본문 칸에 min-height:4.2em(= 네 줄 넘는 높이)이
+     박혀 있어서, 한 줄짜리 문장이 와도 본문은 네 줄치 자리를 그대로
+     차지했다. 눈에는 그것이 "출처 위에 통째로 남은 빈 띠"로 보인다.
+     원래 목적(문장 길이가 바뀌어도 발이 위아래로 안 튀게)은 이제 다른
+     것이 맡고 있다 - 박스 윗변은 align-self:start 로 못 박혀 있고,
+     격자 row3 높이도 clamp 로 따로 잡혀 있어 플립시계는 흔들리지 않는다.
+     그러니 이 바닥값은 순수한 부작용만 남은 잔재다. 걷어낸다. */
   font-size: clamp(16px, 3.65vw, 24px);
   font-weight: 340;
   line-height: 1.4;
@@ -3624,7 +3637,10 @@ button { font: inherit; }
      auto 를 걷어내면 발은 본문 바로 아래에 붙는다. 박스도 아래 min-height
      제거로 내용만큼만 커지므로, 남는 공간은 박스가 차지하지 않고 그냥 비어
      있게 된다(배경 사진이 보인다 — 이 앱에는 그게 맞다). */
-  margin-top: 22px;
+  /* 2026-08-10 3차 - 본문과 출처 사이 간격은 이제 이 한 값이 전부다.
+     영어 원문과 본문 사이가 10px 이므로, 그보다 한 단 넓은 16px 로
+     "여기서 문단이 바뀐다"만 알리고 끝낸다. 띠가 아니라 숨이다. */
+  margin-top: 16px;
   padding-top: 0;
 }
 
@@ -4253,14 +4269,16 @@ button { font: inherit; }
   .sky-room {
     grid-template-rows: auto minmax(0, 1fr) clamp(196px, 43vw, 285px) auto;
   }
+  /* 2026-08-10 3차 - 이 padding-top 은 .quote-foot 의 margin-top 이
+     auto 이던 시절(= 발이 바닥에 붙어 있어 위 간격이 여기서만 나오던
+     시절)의 값이다. 이제 margin-top:16px 이 그 역할을 하므로 여기 값이
+     남으면 안드로이드에서만 16+12=28px 로 이중 계상된다. 0 으로 둔다. */
   .quote-foot {
-    padding-top: 12px;
+    padding-top: 0;
   }
-  /* 문장 칸(row3)을 196px로 줄인 것과 박스 최소높이를 일치시킨다 —
-     아침에 칸만 줄이고 박스(210px)를 안 줄여 14px 넘침이 있었다. */
-  .quote-panel {
-    min-height: clamp(196px, 43vw, 285px);
-  }
+  /* 2026-08-10 3차 - 여기 있던 .quote-panel min-height 도 파일 끝
+     min-height:0 에 덮여 이미 죽어 있었다. 격자 row3 높이(위 grid-template-rows)
+     만 남기고 박스 쪽 바닥값은 지운다 - 박스는 내용만큼만 커진다. */
   .quote-foot cite {
     font-size: clamp(13.5px, 2vw, 15px);
   }
@@ -5282,7 +5300,9 @@ body.is-android .calendar-panel { padding: 9px 10px 7px; }
      줄인다. 아이폰은 노치·홈인디케이터 안전영역이 세로를 더 가져가서
      시뮬레이터보다 간격이 좁게 나온다 — 여유를 조금 더 준 이유다. */
   margin-top: 14px;
-  min-height: clamp(196px, 43.5vw, 286px);
+  /* 2026-08-10 3차 - 짝이던 min-height 는 아래 규칙의 min-height:0 에
+     덮여 죽은 지 오래다. 남겨두면 "박스 최소높이가 아직 286px 인가?"
+     하고 또 헷갈린다. 지운다. */
 }
 
 /* 2026-08-10 2차 — 운영자 재제보: "문장박스가 음악박스를 침범한다. 공백 한 줄을
@@ -5312,7 +5332,12 @@ body.is-android .calendar-panel { padding: 9px 10px 7px; }
      max-height 로 행을 넘지 않게 못 박아 아래쪽 침범도 함께 막는다 —
      내용이 그보다 길면 아래 quote-long/quote-dense 규칙이 글자를 줄인다. */
   min-height: 0;
-  max-height: 100%;
+  /* 2026-08-10 3차 - 100% 로 두면 안 된다. 윗변이 격자 행 맨 위에서
+     margin-top:20px 만큼 내려와 있는데 높이 상한만 행 전체(100%)면,
+     아래로 정확히 그 20px 만큼 행을 넘는다 - 그 20px 이 바로 운영자가
+     보신 "ezlong.com 버튼 침범"이다. 상한에서 같은 20px 을 빼면 박스
+     아랫변은 어떤 문장이 와도 행 안에 머문다. */
+  max-height: calc(100% - 20px);
   overflow: hidden;
 }
 
