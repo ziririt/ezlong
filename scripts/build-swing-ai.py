@@ -46,8 +46,8 @@ ROOT = os.path.join(HERE, '..')
 STATES = ['UPTREND', 'OVERHEAT', 'DISTRIBUTION', 'CORRECTION', 'CAPITULATION', 'REVERSAL_PROBE', 'RECOVERY']
 STATE_KO = {
     'UPTREND': '정상 추세', 'OVERHEAT': '과열', 'DISTRIBUTION': '고점 이탈 조짐',
-    'CORRECTION': '조정', 'CAPITULATION': '투매', 'REVERSAL_PROBE': '반등 탐색',
-    'RECOVERY': '회복',
+    'CORRECTION': '조정', 'CAPITULATION': '깊은 과매도', 'REVERSAL_PROBE': '반등 탐색',
+    'RECOVERY': '반등 확인',
 }
 # 7단계 온도 — 기존 스윙 인덱스 온도색 체계와 매핑(기획서 2부)
 STATE_TEMP = {'UPTREND': 2, 'OVERHEAT': 0, 'DISTRIBUTION': 1, 'CORRECTION': 3,
