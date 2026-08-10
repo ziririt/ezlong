@@ -20,7 +20,7 @@
   <meta name="apple-mobile-web-app-title" content="Long Time">
   <meta name="theme-color" content="#0D0D0F">
   <meta name="color-scheme" content="dark">
-  <link rel="stylesheet" href="styles.css?v=20260811-jank-v1">
+  <link rel="stylesheet" href="styles.css?v=20260811-revert-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -268,20 +268,6 @@
            로 바꿨다(app.js webviewGrabber 클릭 핸들러 참조, postMessage로
            ez-nav.js에 요청). -->
       <div class="webview-grabber" data-i18n-aria="webview.scrollTopHintAria" aria-label="탭하면 맨 위로 스크롤됩니다"><span></span></div>
-      <!-- 2026-08-11 이슈 제보("앱 로딩 화면 이후 온통 검은색, 비상사태") 대응.
-           원인은 앱이 아니라 이 iframe 이 그 순간 빈 화면이었던 것이다. 운영 기준은
-           첫 화면을 ezlong.com 으로 두셨으므로 앱은 켜지자마자 이 자리로 온다.
-           사이트가 재배포되는 짧은 창(운영자 자동 작업과 내 배포가 몇 분 사이
-           겹쳤다)에는 iframe 이 아무것도 못 받아 투명해지고, 그러면 뒤의 어두운
-           배경만 남아 **앱이 죽은 것처럼 보인다.**
-           그래서 iframe 뒤에 받침을 깐다. 글자는 넣지 않는다 — 여섯 언어
-           카탈로그를 건드리지 않고, 브랜드 표시와 점 세 개면 "불러오는 중"이라는
-           뜻은 어느 언어에서나 통한다. iframe 이 정상이면 그 위를 덮으므로
-           평소에는 보이지 않는다. -->
-      <div class="ezlong-standby" aria-hidden="true">
-        <span class="ezlong-standby-mark">ezlong.com</span>
-        <span class="ezlong-standby-dots"><i></i><i></i><i></i></span>
-      </div>
       <div class="webview-scale" id="ezlongWebviewScale">
         <iframe
           class="ezlong-frame"
@@ -379,7 +365,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.9.17</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.9.18</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
