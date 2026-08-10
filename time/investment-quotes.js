@@ -9138,5 +9138,11 @@ window.investmentQuotes = [
     "title": "원칙 (Principles)",
     "author": "레이 달리오 (Ray Dalio)",
     "category": "mindset"
+  },
+  {
+    "text": "자세히 보아야 예쁘다 오래 보아야 사랑스럽다 너도 그렇다",
+    "title": "풀꽃",
+    "author": "나태주",
+    "genre": "literature"
   }
 ];
