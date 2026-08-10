@@ -6226,6 +6226,43 @@ window.__flipzenNativeAudioLevels = function (bass, mid, treble) {
   nativeAudioLevelReceivedAt = Date.now();
 };
 
+// 2026-08-10 3차 이슈 제보 — "음은 세게 나오는데 파동은 0.x초 늦다.
+// 음에 맞춰 춤추는 게 아니라 제멋대로다. 아이폰과 달리 뻑뻑하다."
+//
+// 안드로이드는 이제 값을 받아 기다리지 않고, 그리기 직전에 직접 집어 온다.
+// 왜 그래야 하는지는 NativeRadioService.kt 링버퍼 주석에 길게 적어 두었다 —
+// 요약하면 (1) 네이티브 탭은 스피커보다 앞서 있고 (2) 밀어 넣는 길은
+// 들쭉날쭉 늦으며 (3) 15Hz 로 밀면 60Hz 화면에서 네 프레임에 한 번만
+// 움직여 계단이 진다. 여기서 매 프레임 당겨 오면 셋 다 사라진다.
+// 네이티브가 "지금 귀에 닿는 순간"의 값을 골라 주므로 정렬도 네이티브 몫이다.
+// iOS 는 이 함수가 아무것도 하지 않는다(브릿지 자체가 없다) — 기존 밀어넣기
+// 경로 그대로다.
+let nativeLevelPullActive = false;
+function pullNativeAudioLevels() {
+  const bridge = window.AndroidNativeBridge;
+  if (!bridge || typeof bridge.audioLevelsPacked !== "function") return false;
+  let packed = -1;
+  try {
+    packed = bridge.audioLevelsPacked();
+  } catch (e) {
+    return false;
+  }
+  if (!(typeof packed === "number") || packed < 0) return false;
+  nativeAudioBass = ((packed >> 20) & 1023) / 1023;
+  nativeAudioMid = ((packed >> 10) & 1023) / 1023;
+  nativeAudioTreble = (packed & 1023) / 1023;
+  nativeAudioLevelReceivedAt = Date.now();
+  if (!nativeLevelPullActive) {
+    nativeLevelPullActive = true;
+    // 당겨 오는 게 확인된 뒤에야 밀어넣기를 끈다 — 순서가 반대면 브릿지가
+    // 없는 빌드에서 레벨이 통째로 끊긴다.
+    try {
+      if (typeof bridge.setLevelPush === "function") bridge.setLevelPush(false);
+    } catch (e) {}
+  }
+  return true;
+}
+
 // 막대마다 고정된(항상 같은) 살짝의 세기 차이를 줘서 평평한 블록처럼
 // 보이지 않게 한다 — index 기반 결정적 해시라 프레임마다 흔들리지 않고
 // 항상 같은 모양을 유지한다.
@@ -6280,6 +6317,8 @@ let nativeVizMidAvg2 = 0;
 let nativeVizTrebleAvg2 = 0;
 
 function drawMusicVizNative(h) {
+  // 2026-08-10 3차 — 안드로이드는 그리기 직전에 직접 집어 온다(위 함수 주석).
+  pullNativeAudioLevels();
   // 네이티브 레벨이 한동안(1.2초) 안 들어오면(재생 시작 전, 또는 트랙 전환
   // 찰나) 대기 애니메이션으로 자연스럽게 폴백한다.
   if (Date.now() - nativeAudioLevelReceivedAt > 1200) {
