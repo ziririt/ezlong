@@ -63,6 +63,8 @@
   }
 
   /* ── 머리 ── */
+  /* 한글 줄바꿈은 어절 단위로 */
+  .wr-brand, .wr-main { word-break: keep-all; overflow-wrap: break-word; }
   .wr-brand { background: var(--ez-surface); border-bottom: 1px solid var(--ez-border); padding: 34px 20px 28px; }
   .wr-brand-inner { max-width: var(--ez-max-w); margin: 0 auto; }
   .wr-eyebrow {

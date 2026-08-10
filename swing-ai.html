@@ -49,6 +49,9 @@
     }
   }
 
+  /* 한글 줄바꿈은 어절 단위로. 기본값은 아무 글자 사이에서나 꺾여
+     '분리해서'가 '분리/해서'로 갈라진다. */
+  .sa-brand, .sa-main { word-break: keep-all; overflow-wrap: break-word; }
   .sa-brand { background: var(--ez-surface); border-bottom: 1px solid var(--ez-border); padding: 32px 20px 28px; }
   .sa-brand-in { max-width: var(--ez-max-w); margin: 0 auto; }
   .sa-eyebrow { font-size: 14px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; color: var(--ez-blue); margin-bottom: 8px; }
