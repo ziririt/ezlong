@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "2026-08-10-11:42",
+      "timestamp_kst": "2026-08-10(월) 11:42 KST",
+      "key_event": {
+        "name": "7월 CPI 발표 대기",
+        "name_en": "Anticipation for July CPI Release",
+        "time": "다음 주 8월 12일(수) 오전 8시 30분 ET",
+        "why": "물가 지표에 따른 금리 인상 시나리오 변화, 시장 변동성 확대",
+        "why_en": "CPI data to influence rate hike scenarios, increasing market volatility"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "고용 둔화 및 금리 인하 기대 지속, CPI 대기하며 관망세",
+      "summary_en": "Continued optimism from easing employment and rate cut hopes, market awaits CPI",
+      "positive_factors": [
+        {
+          "score": 70,
+          "name": "고용지표 둔화 지속",
+          "name_en": "Continued Softening Employment Data",
+          "desc": "비농업 고용 감소 및 실업률 하락(노동시장 이탈 영향), 금리 인상 우려 완화",
+          "desc_en": "Non-farm payrolls decreased and unemployment rate fell (due to labor market exit), easing rate hike concerns",
+          "category": "macro_data"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "CPI 상방 서프라이즈 리스크",
+          "name_en": "CPI Upside Surprise Risk",
+          "desc": "관세발 상품가격 상승 가능성, 7월 CPI 컨센서스 상회 시 금리 인상 압력",
+          "desc_en": "Potential for tariff-driven goods price increases, CPI above consensus could pressure rate hikes",
+          "category": "macro_data"
+        },
+        {
+          "score": 15,
+          "name": "연준의 매파적 스탠스",
+          "name_en": "Fed's Hawkish Stance",
+          "desc": "워시 의장의 최소 메시지 기조 및 9월 인상 준비 언급, 데이터 의존적 변동성 확대",
+          "desc_en": "Chair Wash's minimal communication and readiness for September hike, increasing data-driven volatility",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 기업 FCF 압박",
+          "name_en": "AI Companies' FCF Pressure",
+          "desc": "알파벳, 아마존 등 대규모 캐펙스 투자로 FCF 마이너스 전환, 마이크로소프트는 긍정적",
+          "desc_en": "Alphabet, Amazon's large capex investments lead to negative FCF, while Microsoft remains positive",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "유가 리스크 상존",
+          "name_en": "Persistent Oil Price Risk",
+          "desc": "호르무즈 해협 통항료 협상 교착 상태, 유가 변동성 잠재",
+          "desc_en": "Stalemate in Hormuz Strait transit fee negotiations, potential for oil price volatility",
+          "category": "oil_energy"
+        }
+      ]
+    },
+    {
       "id": "2026-08-10-08:20",
       "timestamp_kst": "2026-08-10(월) 08:20 KST",
       "key_event": {
@@ -442,68 +501,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-09-07:00",
-      "timestamp_kst": "2026-08-09(일) 07:00 KST",
-      "key_event": {
-        "name": "고용지표 둔화 및 금리 인하 기대 지속",
-        "name_en": "Sustained Hopes for Rate Cuts Amid Weakening Job Market",
-        "time": "직전 거래일 마감 및 다음 주 개장 영향",
-        "why": "예상치 하회 고용, Fed 금리 인상 우려 완화, 시장 심리 개선",
-        "why_en": "Lower-than-expected employment, easing Fed rate hike concerns, improved market sentiment"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "고용 둔화에 따른 금리 인하 기대감으로 8일 연속 긍정 우위 유지",
-      "summary_en": "Positive sentiment prevails for 8 consecutive days due to rate cut expectations from slowing employment",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "고용지표 둔화 지속",
-          "name_en": "Continued Weakening Job Data",
-          "desc": "예상치 하회 고용 보고서 발표, Fed 금리 인하 기대감 증폭",
-          "desc_en": "Lower-than-expected jobs report, amplifying Fed rate cut expectations",
-          "category": "macro_data"
-        },
-        {
-          "score": 30,
-          "name": "금리 인하 기대감 유지",
-          "name_en": "Sustained Rate Cut Expectations",
-          "desc": "고용 둔화로 인한 Fed의 금리 인상 우려 완화 및 시장 심리 개선",
-          "desc_en": "Easing Fed rate hike concerns due to slowing employment, improving market sentiment",
-          "category": "fed_policy"
-        },
-        {
-          "score": 10,
-          "name": "AI 관련 기업 실적 기대",
-          "name_en": "Optimism for AI-Related Earnings",
-          "desc": "Doximity, ON Semiconductor 등 AI 관련 기업의 긍정적 실적 및 전망",
-          "desc_en": "Positive earnings and outlook from AI-related companies like Doximity, ON Semiconductor",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "지정학적 긴장 지속",
-          "name_en": "Persistent Geopolitical Tensions",
-          "desc": "이란의 호르무즈 해협 관련 미국 철수 요구 등 지정학적 불확실성",
-          "desc_en": "Geopolitical uncertainties including Iran's demand for US withdrawal from Hormuz Strait",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 혁명 단계에 대한 시각차",
-          "name_en": "Divergent Views on AI Revolution Stage",
-          "desc": "AI 기술의 발전과 투자에 대한 기대감은 높으나, 실제 수익화 및 밸류에이션에 대한 시각은 엇갈림",
-          "desc_en": "High expectations for AI tech advancement and investment, but mixed views on monetization and valuation",
-          "category": "ai_tech_valuation"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-09T23:20:56Z",
+  "updated_at": "2026-08-10T02:43:17Z",
   "max_entries": 10
 }
