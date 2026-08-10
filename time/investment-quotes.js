@@ -9124,5 +9124,12 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅 (One Up On Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "english": "If you think the story has a sad ending, it's because it's not over yet.",
+    "text": "네가 그 이야기의 결말이 슬프다고 생각한다면, 그건 아직 이야기가 끝나지 않았기 때문이야.",
+    "title": "비치 리드 (Beach Read)",
+    "author": "에밀리 헨리 (Emily Henry)",
+    "genre": "literature"
   }
 ];
