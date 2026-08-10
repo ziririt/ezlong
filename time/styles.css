@@ -3616,10 +3616,16 @@ button { font: inherit; }
   grid-template-columns: minmax(0, 1fr) minmax(92px, 152px);
   gap: 16px;
   align-items: center;
-  /* 2026-07-24 — 바닥 고정(위 .quote-panel flex 주석 참조). 내용이 길어
-     박스가 꽉 차면 auto는 0이 되고 padding-top이 최소 간격을 보장한다. */
-  margin-top: auto;
-  padding-top: 20px;
+  /* 2026-08-10 운영 피드백 — "문장과 책제목 사이 간격이 왜 이렇게 넓나.
+     이게 문제다." 정확했다. 여기 margin-top:auto 가 발을 박스 바닥까지
+     밀어내고 있었고, 박스는 min-height 로 키가 고정돼 있었다. 그래서 문장이
+     짧은 날에는 본문과 출처 사이에 빈 띠가 통째로 생겼다 — 아무도 원하지
+     않은 공백이다.
+     auto 를 걷어내면 발은 본문 바로 아래에 붙는다. 박스도 아래 min-height
+     제거로 내용만큼만 커지므로, 남는 공간은 박스가 차지하지 않고 그냥 비어
+     있게 된다(배경 사진이 보인다 — 이 앱에는 그게 맞다). */
+  margin-top: 22px;
+  padding-top: 0;
 }
 
 .quote-foot cite {
@@ -5298,6 +5304,16 @@ body.is-android .calendar-panel { padding: 9px 10px 7px; }
 .quote-panel {
   align-self: start;
   margin-top: 20px;
+  /* 2026-08-10 — min-height 를 걷어낸다. 원래 목적은 "문장 길이가 바뀌어도
+     플립시계가 흔들리지 않게"였는데, 그 목적은 이미 격자 행 높이(clamp)가
+     맡고 있고 윗변도 align-self:start 로 고정됐다. 남아 있던 min-height 는
+     이제 박스를 쓸데없이 크게 만들어 아래로는 ezlong.com 버튼을 침범하고
+     안쪽으로는 빈 띠를 만드는 부작용만 냈다.
+     max-height 로 행을 넘지 않게 못 박아 아래쪽 침범도 함께 막는다 —
+     내용이 그보다 길면 아래 quote-long/quote-dense 규칙이 글자를 줄인다. */
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 /* 얕은 절전 — 무조작 30초 (2026-08-05 운영 요청)
