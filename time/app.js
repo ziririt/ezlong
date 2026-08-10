@@ -10022,6 +10022,31 @@ var bedsideActive = false;
     return false;   // 모르면 어둡게 하지 않는다
   }
 
+  // 2026-08-10 — "충전 중인데도 어두워진다"가 두 번 재발했다. 두 번 다 원인이
+  // 달랐고, 두 번 다 "고쳤다"고 말한 뒤에 다시 나왔다. 판정의 근거가 화면
+  // 밖에 있어서 눈으로 확인할 길이 없었던 것이 진짜 문제다.
+  // 그래서 앱이 뜰 때 한 번, 무엇을 근거로 어떻게 판정했는지 콘솔에 남긴다.
+  // 사용자 화면에는 아무 영향이 없고(콘솔뿐), 다음에 또 재발하면 추측 대신
+  // 이 한 줄을 읽으면 된다. 진단 도구를 남겨두는 비용보다 같은 버그를 세 번
+  // 쫓는 비용이 크다.
+  window.setTimeout(function () {
+    var src = "모름";
+    var val = null;
+    try {
+      if (window.AndroidNativeBridge && typeof window.AndroidNativeBridge.isCharging === "function") {
+        src = "안드로이드 브릿지";
+        val = window.AndroidNativeBridge.isCharging();
+      } else if (typeof window.__FLIPZEN_CHARGING__ === "boolean") {
+        src = "네이티브 주입값";
+        val = String(window.__FLIPZEN_CHARGING__);
+      } else if (navigator.getBattery) {
+        src = "웹 배터리 API";
+      }
+    } catch (error) { src = "조회 실패"; }
+    console.log("[FZ-CHARGE] 근거=" + src + " 값=" + val +
+      " 어둡게할까=" + shouldDim() + " 침대맡지연=" + loadDelay() + "분");
+  }, 2500);
+
   // 지금 잠들면 안 되는 상황인가 — 뭔가를 읽고 있는 중이면 기다린다.
   function busyReading() {
     try {
