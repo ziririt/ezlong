@@ -3668,8 +3668,25 @@ button { font: inherit; }
   background: rgba(13, 20, 31, 0.02);
   backdrop-filter: blur(3px) saturate(1.04);
   box-shadow: 0 22px 70px rgba(0,0,0,0.08);
-  transition: background 900ms ease, transform 1400ms ease, opacity 1400ms ease, filter 1400ms ease,
-    max-height 260ms ease, min-height 260ms ease, padding 260ms ease, margin 260ms ease;
+  /* 2026-08-11 이슈 제보 — "어제까지 없던 스와이프 프리징이 갑자기 생겼다.
+     배터리 작업의 부작용 같다." 사진 크기 탓이라던 내 진단은 틀렸다.
+     운영자 말씀이 맞다 — 어제까지 없던 일이라면 어제 바뀐 것에서 찾아야 한다.
+
+     범인은 어제 이 박스를 "내용만큼만 커지게" 바꾼 것과 이 한 줄의 조합이다.
+     여기 max-height·min-height·padding·margin 에 260ms 전환이 걸려 있다.
+     예전에는 박스 높이가 min-height 로 **고정**이라 이 전환이 한 번도 발동한
+     적이 없었다. 그런데 이제 문장이 바뀔 때마다 박스 높이가 실제로 달라진다.
+     즉 스와이프 한 번마다 **레이아웃 속성 네 개가 260ms 동안 애니메이션**된다.
+     레이아웃 애니메이션은 매 프레임 배치를 다시 계산하게 만들고, 이 박스에는
+     backdrop-filter(유리 효과)가 걸려 있어서 그때마다 뒤의 배경 사진까지
+     다시 흐려 그려야 한다. 배경은 5184x3456 짜리다. 빠르게 몇 번 넘기면
+     그 일이 겹겹이 쌓여 몇 초씩 멎는다.
+
+     그래서 레이아웃 속성 전환만 걷어낸다. 눈에 보이는 연출(문장이 흐려지며
+     바뀌는 것)은 opacity·transform·filter 가 맡고 있고 그건 그대로 둔다 —
+     이 셋은 배치를 다시 계산하지 않는다. 높이는 전환 없이 즉시 잡힌다.
+     달력이 열릴 때 접히는 연출(is-calendar-hidden)도 opacity 로 남는다. */
+  transition: background 900ms ease, transform 1400ms ease, opacity 1400ms ease, filter 1400ms ease;
 }
 
 /* 2026-07-21 유저 요청, 6차 구조 재설계로 갱신 — 달력이 열리면 문장박스는
