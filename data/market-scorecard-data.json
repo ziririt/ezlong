@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-08-11-08:20",
+      "timestamp_kst": "2026-08-11(화) 08:20 KST",
+      "key_event": {
+        "name": "지정학적 리스크 및 유가 급등",
+        "name_en": "Geopolitical Risks & Oil Price Surge",
+        "time": "포스트마켓 지속",
+        "why": "중동 긴장 고조, 인플레이션 압력, 기술주 하방 압력",
+        "why_en": "Middle East tensions, inflation pressure, tech stock downside"
+      },
+      "positive_total": 20,
+      "negative_total": 80,
+      "summary": "지정학적 리스크와 유가 상승으로 부정 우위 지속, 기술주 하락 압력 심화",
+      "summary_en": "Negative sentiment persists due to geopolitical risks and rising oil prices, intensifying pressure on tech stocks.",
+      "positive_factors": [
+        {
+          "score": 10,
+          "name": "일부 메가캡 반등 시도",
+          "name_en": "Select Megacaps Attempt Rebound",
+          "desc": "MSFT (+1.21%), GOOGL (+0.49%) 등 일부 대형 기술주 반등",
+          "desc_en": "Some large tech stocks like MSFT (+1.21%) and GOOGL (+0.49%) showing signs of rebound",
+          "category": "company_specific"
+        },
+        {
+          "score": 10,
+          "name": "TSLA 소폭 반등",
+          "name_en": "TSLA Modestly Rebounds",
+          "desc": "TSLA (+0.37%) 포스트마켓에서 소폭 상승, 로보택시 모멘텀 기대",
+          "desc_en": "TSLA (+0.37%) shows slight gain in post-market, anticipating robotaxi momentum",
+          "category": "company_specific"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 35,
+          "name": "지정학적 리스크 심화",
+          "name_en": "Geopolitical Risks Intensify",
+          "desc": "이란 불확실성 속 호르무즈 해협 관련 협상 기대 약화, 유가 급등",
+          "desc_en": "Fading hopes for Hormuz deal amid Iran uncertainty, leading to oil price surge",
+          "category": "geopolitics"
+        },
+        {
+          "score": 30,
+          "name": "유가 및 국채금리 급등",
+          "name_en": "Oil & Treasury Yields Surge",
+          "desc": "WTI 원유 (+4.16%), 미10년 국채금리 (+0.84%) 상승, 인플레 우려 재점화",
+          "desc_en": "WTI crude (+4.16%) and 10Y Treasury yield (+0.84%) rise, reigniting inflation concerns",
+          "category": "oil_energy"
+        },
+        {
+          "score": 15,
+          "name": "애플 목표가 하향 조정",
+          "name_en": "Apple Target Price Downgrade",
+          "desc": "Jefferies의 AAPL 'Sell' 강등, 아이폰 성장 우려로 AAPL (-1.78%) 하락",
+          "desc_en": "AAPL (-1.78%) falls after Jefferies downgrades to 'Sell' on iPhone growth concerns",
+          "category": "company_specific"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "고용 지표 해석 엇갈림",
+          "name_en": "Mixed Interpretations of Employment Data",
+          "desc": "고용 둔화가 금리 인하 기대로 이어질지, 경기 침체 신호로 해석될지 시장 의견 분분",
+          "desc_en": "Market divided on whether employment slowdown signals rate cut expectations or economic recession",
+          "category": "macro_data"
+        }
+      ]
+    },
+    {
       "id": "2026-08-11-07:05",
       "timestamp_kst": "2026-08-11(화) 07:05 KST",
       "key_event": {
@@ -526,68 +594,8 @@
           "category": "oil_energy"
         }
       ]
-    },
-    {
-      "id": "2026-08-10-08:20",
-      "timestamp_kst": "2026-08-10(월) 08:20 KST",
-      "key_event": {
-        "name": "고용 둔화 및 금리 인하 기대 지속",
-        "name_en": "Sustained Slowdown in Employment and Rate Cut Expectations",
-        "time": "직전 거래일 및 다음 주 개장 전",
-        "why": "고용지표 둔화, 금리 인상 우려 완화, 시장 심리 개선",
-        "why_en": "Slowing employment data, easing rate hike concerns, improved market sentiment"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "고용 둔화에 따른 금리 인하 기대감으로 17일 연속 긍정 우위 유지",
-      "summary_en": "Positive sentiment prevails for 17 consecutive days due to slowing employment and rate cut expectations",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "고용지표 둔화 지속",
-          "name_en": "Continued Slowdown in Employment Data",
-          "desc": "실업률 4.10%로 전기대비 -0.10% 하락, 금리 인하 기대감 증폭",
-          "desc_en": "Unemployment rate fell to 4.10% (-0.10% MoM), boosting rate cut expectations",
-          "category": "macro_data"
-        },
-        {
-          "score": 35,
-          "name": "금리 인상 우려 완화",
-          "name_en": "Easing Rate Hike Concerns",
-          "desc": "Fed 기준금리 3.63% 유지, 10년물 국채금리 하락으로 금리 인상 우려 진정",
-          "desc_en": "Fed policy rate held at 3.63%, 10Y Treasury yield decline calms rate hike fears",
-          "category": "fed_policy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "일부 기업 실적 부진",
-          "name_en": "Underperformance of Some Companies",
-          "desc": "Sezzle 매출 호조에도 주가 급락, 개별 기업 리스크 부각",
-          "desc_en": "Sezzle stock plunged despite revenue beat, highlighting company-specific risks",
-          "category": "company_specific"
-        },
-        {
-          "score": 10,
-          "name": "지정학적 불확실성 지속",
-          "name_en": "Persistent Geopolitical Uncertainty",
-          "desc": "이란 관련 불확실성 및 트럼프의 경제 압력 시그널",
-          "desc_en": "Uncertainty surrounding Iran and Trump's signals of economic pressure",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 혁명 단계 시각차",
-          "name_en": "Divergent Views on AI Revolution Stage",
-          "desc": "AI 관련 기업들의 성장 기대감과 함께 혁명 단계에 대한 시각차 존재",
-          "desc_en": "Growth expectations for AI companies coexist with differing views on the stage of the AI revolution",
-          "category": "ai_tech_valuation"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-10T22:05:40Z",
+  "updated_at": "2026-08-10T23:21:04Z",
   "max_entries": 10
 }
