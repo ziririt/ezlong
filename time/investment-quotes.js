@@ -9225,5 +9225,12 @@ window.investmentQuotes = [
     "title": "돈의 심리학 (The Psychology of Money)",
     "author": "모건 하우절 (Morgan Housel)",
     "category": "mindset"
+  },
+  {
+    "english": "People think that intimacy is about sex. But intimacy is about truth. When you realize you can tell someone your truth, when you can show yourself to them, when you stand in front of them bare and their response is 'you're safe with me' - that's intimacy.",
+    "text": "사람들은 친밀함이 섹스에 관한 거라고 생각한다. 하지만 친밀함은 진실에 관한 것이다. 누군가에게 진실을 말할 수 있다는 걸, 있는 그대로의 나를 보여줄 수 있다는 걸, 발가벗은 채로 그 사람 앞에 서도 \"너는 나에게 안전해\"라는 대답이 돌아온다는 걸 깨달을 때 -- 그게 바로 친밀함이다.",
+    "title": "이블린 휴고의 일곱 남편 (The Seven Husbands of Evelyn Hugo)",
+    "author": "테일러 젠킨스 리드 (Taylor Jenkins Reid)",
+    "genre": "literature"
   }
 ];
