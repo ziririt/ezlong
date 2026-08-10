@@ -485,7 +485,7 @@
         now = r[1] === cur;
         var st = '--sa-now:' + cv(TEMP[D.stateTemp[r[1]]]);
         return '<div class="sa-step' + (now ? ' now' : '') + '" style="' + st + '">' +
-          '<span class="sa-step-tag">' + r[0] + (now ? '<span class="sa-now-chip">지금</span>' : '') + '</span>' +
+          '<span class="sa-step-tag">' + r[0] + (now ? '<span class="sa-now-chip">현재</span>' : '') + '</span>' +
           '<span class="sa-step-txt"><b>' + esc(r[2]) + '</b>: ' + esc(r[3]) + '</span>' +
         '</div>';
       }).join('') + '</div></div>';
