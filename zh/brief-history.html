@@ -278,6 +278,8 @@ window.BH_T = {
     gap: 10px; margin-bottom: 14px;
   }
   .bh-legend { display: flex; gap: 8px; flex-wrap: wrap; }
+  /* 차트 사용법 안내 — 티커 스위치가 체크박스만으로는 안 읽힌다는 운영 피드백 */
+  .bh-chart-hint { font-size: 14px; color: var(--ez-text2); line-height: 1.5; word-break: keep-all; margin: -4px 0 12px; }
   .bh-legend-item {
     display: flex; align-items: center; gap: 7px; font-size: 15px; font-weight: 600; color: var(--ez-text2);
     background: var(--ez-card2); border: 1px solid var(--ez-border); border-radius: 999px;
@@ -577,6 +579,7 @@ window.BH_T = {
     <div class="bh-chart-top">
       <div class="bh-legend" id="bh-legend"></div>
     </div>
+    <p class="bh-chart-hint">在图表上点选某个日期，即可查看当天事件的摘要。图表共有 QQQ、SPY、SOXX、TSLA、NVDA 五种，点击上方名称即可选择或叠加显示。</p>
     <div class="bh-chart-outer">
       <div class="bh-chart-wrap" id="bh-chart">
         <div class="bh-vline" id="bh-vline"></div>

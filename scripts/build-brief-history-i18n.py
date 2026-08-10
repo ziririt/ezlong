@@ -125,6 +125,8 @@ def body_swaps(lang, s):
          f'<p class="bh-brand-lede">{tr["lede2"]}</p>'),
         (''.join(f'<span>{d}</span>' for d in ko['weekdays']),
          ''.join(f'<span>{d}</span>' for d in tr['weekdays'])),
+        (f'<p class="bh-chart-hint">{ko["chartHint"]}</p>',
+         f'<p class="bh-chart-hint">{tr["chartHint"]}</p>'),
         (f'></span>{ko["legendMajor"]}\n', f'></span>{tr["legendMajor"]}\n'),
         (f'></span>{ko["legendNotable"]}\n', f'></span>{tr["legendNotable"]}\n'),
         (f'></span>{ko["legendLog"]}\n', f'></span>{tr["legendLog"]}\n'),
