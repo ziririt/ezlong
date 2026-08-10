@@ -10725,9 +10725,10 @@ var bedsideActive = false;
   if (nativePlatformKey !== "ios") return;
 
   var el = document.getElementById("appBattery");
+  var fillEl = document.getElementById("appBatteryFill");
   var numEl = document.getElementById("appBatteryNum");
   var tldEl = document.getElementById("appBrandTld");
-  if (!el || !numEl || !tldEl) return;
+  if (!el || !fillEl || !numEl || !tldEl) return;
 
   var lastShown = -1;
 
@@ -10757,6 +10758,8 @@ var bedsideActive = false;
     var charging = chargingNow();
     if (level !== lastShown) {
       numEl.textContent = String(level);
+      // 0% 라도 실선 한 줄은 남긴다 — 완전히 비면 아이콘이 무엇인지 안 보인다.
+      fillEl.style.width = Math.max(6, level) + "%";
       el.setAttribute("aria-label", level + "%");
       lastShown = level;
     }

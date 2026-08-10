@@ -553,27 +553,45 @@ button { font: inherit; }
    걷어내고 통짜 캡슐로 간다 — 숫자를 캡슐 색과 반대로 칠하면 되므로
    mix-blend-mode 재주도 더는 필요 없다(단순한 쪽이 항상 옳다).
    색만 상태를 말한다: 평소 흰색, 충전 중 애플 그린, 20% 미만 빨강. */
+/* 2026-08-10 3차 — 운영자가 다시 나란히 찍어 보내주셨다. 기기 아이콘은
+   통짜가 아니었다. **왼쪽은 밝게 찬 부분, 오른쪽은 흐린 빈 부분**이고
+   그 위에 어두운 숫자가 얹힌다. 잔량을 색으로도 말하고 숫자로도 말한다.
+   앞선 수정에서 테두리를 걷어내며 채움까지 같이 걷어낸 것은 과했다.
+   여기서는 껍데기가 '빈 부분(트랙)', 안쪽 막대가 '찬 부분'을 맡는다.
+   테두리는 여전히 없다 — 그건 맞은 판단이었다.
+   폭은 운영 지침대로 5% 줄였다(36 → 34.2px 상한). */
 .app-battery-shell {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: clamp(28px, 6vw, 36px);
+  width: clamp(26.6px, 5.7vw, 34.2px);
   height: clamp(14px, 3vw, 18px);
   padding: 0 1px;
   border: 0;
   border-radius: 4.5px;
-  background: rgba(255,255,255,0.92);
-  transition: background 300ms ease;
+  background: rgba(255,255,255,0.34);   /* 빈 부분 — 기기 아이콘의 그 흐린 회색 */
   overflow: hidden;
 }
 
-.app-battery.is-charging .app-battery-shell {
+.app-battery-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  border-radius: 4.5px 2px 2px 4.5px;
+  background: rgba(255,255,255,0.95);
+  /* 잔량은 천천히 차오르고, 색은 그보다 빨리 바뀐다(꽂는 순간의 반응). */
+  transition: width 700ms ease, background 300ms ease;
+}
+
+.app-battery.is-charging .app-battery-fill {
   background: #34c759;   /* 애플 시스템 그린 — 전기가 들어오는 중 */
 }
 
-.app-battery.is-low .app-battery-shell {
+.app-battery.is-low .app-battery-fill {
   background: #ff453a;   /* 20% 미만, 충전 중이 아닐 때만 */
 }
 
