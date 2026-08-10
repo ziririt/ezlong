@@ -284,9 +284,11 @@ def run_state_machine(f):
 
 # ── 집행 엔진 — Replay 용 원장 ─────────────────────────────────────────────
 ACTION_LABEL = {
-    'S1': 'S1 과열 익절', 'S2': 'S2 분배 익절', 'S3': 'S3 조정 확정 축소', 'S4': 'S4 추세 훼손 축소',
-    'B1': 'B1 투매 탐색 매수', 'B2': 'B2 반등 시도 매수', 'B3': 'B3 반등 확인 매수', 'B4': 'B4 회복 투입',
-    'STOP': '탐색 물량 무효화 손절', 'WHIPSAW_ON': 'Whipsaw Mode 진입',
+    'S1': '매도 1단계(과열 구간 일부 익절)', 'S2': '매도 2단계(고점 이탈 확인 익절)',
+    'S3': '매도 3단계(조정 확정, 비중 축소)', 'S4': '매도 4단계(추세 훼손, 추가 축소)',
+    'B1': '매수 1단계(투매 구간 소량 탐색)', 'B2': '매수 2단계(반등 시도 확인)',
+    'B3': '매수 3단계(반등 확인)', 'B4': '매수 4단계(회복 확정, 잔여 투입)',
+    'STOP': '손절(탐색 매수분이 손절선 아래로 마감)', 'WHIPSAW_ON': '속임수 구간 진입(신규 매매 보류)',
 }
 
 
@@ -340,7 +342,7 @@ def replay(f, states, start, end):
             probe = None
             b3_at = None
             whipsaw_mode = False
-            acts.append({'tag': 'CYCLE', 'label': f'매매 사이클 종료: 새 사이클 #{cycle_no} 시작',
+            acts.append({'tag': 'CYCLE', 'label': '조정이 끝나고 정상 추세로 복귀(분할 단계 카운트 초기화)',
                          'position': round(position, 1), 'cash': round(cash, 1)})
 
         def sell(tag, pct_of_position):
