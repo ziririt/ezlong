@@ -2686,7 +2686,9 @@ button { font: inherit; }
   border: 1px solid rgba(255,255,255,0.3);
   border-radius: 50%;
   background-color: rgba(255,255,255,0.14);
-  background-image: url("assets/icons/music/play.png");
+  /* 2026-08-11 — 상단 버튼과 같은 이유로 인라인 SVG. 재생목록의 이 버튼도
+     같은 파일을 참조하고 있었다(라이브 검증에서 발견). */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M108 92 L160 123 L108 154 Z' fill='%23fff' stroke='%23fff' stroke-width='14' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 140%;
@@ -2695,7 +2697,7 @@ button { font: inherit; }
 
 .music-history-play-btn.is-playing {
   background-color: rgba(34, 197, 94, 0.85);
-  background-image: url("assets/icons/music/pause.png");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect x='96' y='84' width='17.5' height='86' rx='5.5' fill='%23fff'/%3E%3Crect x='143.5' y='84' width='17.5' height='86' rx='5.5' fill='%23fff'/%3E%3C/svg%3E");
   border-color: rgba(34, 197, 94, 0.85);
 }
 
