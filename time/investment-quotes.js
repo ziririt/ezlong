@@ -9158,5 +9158,11 @@ window.investmentQuotes = [
     "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
     "author": "필립 피셔 (Philip Fisher)",
     "category": "mindset"
+  },
+  {
+    "text": "저것은 벽 어쩔 수 없는 벽이라고 우리가 느낄 때 그대 담쟁이는 말없이 그 벽을 오른다.",
+    "title": "담쟁이",
+    "author": "도종환",
+    "genre": "literature"
   }
 ];
