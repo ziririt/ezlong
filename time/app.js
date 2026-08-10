@@ -10283,7 +10283,24 @@ var bedsideActive = false;
   // 네이티브가 알려준 값이 최우선이다(iOS 1.3에서 채워줄 예정).
   // 그 다음이 Battery Status API. 둘 다 없으면 "모름"이고, 모름은
   // 비충전으로 간주한다 — 배터리에 보수적인 쪽이 안전하다.
+  // 2026-08-10 — 안드로이드는 "물어본다". 네이티브가 밀어 넣는 값은 타이밍에
+  // 기대서, 페이지가 갈아엎이면 통째로 사라진다(운영자 재제보의 원인).
+  // 물어보는 경로는 언제 불러도 그 순간의 사실을 준다.
+  function androidChargingNow() {
+    try {
+      var b = window.AndroidNativeBridge;
+      if (b && typeof b.isCharging === "function") {
+        var v = b.isCharging();
+        if (v === "true") return true;
+        if (v === "false") return false;
+      }
+    } catch (error) { /* 무시 */ }
+    return null;   // 브릿지가 없거나(웹·아이폰) 조회 실패면 모름
+  }
+
   function isCharging() {
+    var asked = androidChargingNow();
+    if (asked !== null) return asked;
     try {
       if (typeof window.__FLIPZEN_CHARGING__ === "boolean") return window.__FLIPZEN_CHARGING__;
     } catch (error) { /* 무시 */ }
@@ -10297,6 +10314,7 @@ var bedsideActive = false;
   // (브릿지 없는 구버전 iOS 등) 모름이고, 모름일 때는 아무 규칙도
   // 적용하지 않는다 — 사실이 아닐 수 있는 이유로 기능을 뺏지 않는다.
   function chargingKnown() {
+    if (androidChargingNow() !== null) return true;
     try {
       if (typeof window.__FLIPZEN_CHARGING__ === "boolean") return true;
     } catch (error) { /* 무시 */ }
