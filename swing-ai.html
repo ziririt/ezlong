@@ -192,6 +192,16 @@
   .sa-lev-s { font-size: 14px; font-weight: 700; color: var(--ez-text2); margin-top: 2px; }
   .sa-lev-cell.on .sa-lev-x, .sa-lev-cell.on .sa-lev-s { color: #fff; }
 
+  /* 차트 기간 넘기기 */
+  .sa-nav6 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 2px 0 10px; }
+  .sa-nav6 button {
+    font-family: var(--ez-font); font-size: 14px; font-weight: 700; cursor: pointer;
+    padding: 8px 13px; border-radius: 999px; min-height: 40px;
+    border: 1px solid var(--ez-border); background: var(--ez-card2); color: var(--ez-text2);
+  }
+  .sa-nav6 button:disabled { opacity: 0.35; cursor: default; }
+  .sa-nav6-range { font-size: 14px; font-weight: 700; color: var(--ez-text); }
+
   /* 차트 */
   .sa-canvas { display: block; width: 100%; height: 320px; touch-action: pan-y; }
   @media (min-width: 760px) { .sa-canvas { height: 380px; } }
@@ -320,9 +330,14 @@
 
   <!-- 5. 차트 -->
   <section class="sa-card">
-    <h2 class="sa-h2">2026년 국면 기록: <span id="sa-chart-sym">SOXX</span></h2>
+    <h2 class="sa-h2">최근 6개월의 국면 기록: <span id="sa-chart-sym">SOXX</span></h2>
     <p class="sa-sub">배경색이 그날의 상태 판정입니다. 지나간 판정을 지우지 않고 그대로 둡니다: 무엇을 맞히고 무엇을 틀리는지 함께 보기 위해서입니다. 세로축은 달러.</p>
     <div class="sa-switch" data-switch></div>
+    <div class="sa-nav6">
+      <button type="button" id="sa-ch-prev">‹ 이전 6개월</button>
+      <span class="sa-nav6-range" id="sa-ch-range"></span>
+      <button type="button" id="sa-ch-next">다음 6개월 ›</button>
+    </div>
     <canvas class="sa-canvas" id="sa-canvas"></canvas>
     <div class="sa-legend" id="sa-legend"></div>
   </section>
@@ -331,6 +346,7 @@
   <section class="sa-card">
     <h2 class="sa-h2">타이밍이 아니라 크기: 이 진단의 생각법</h2>
     <ul class="sa-ul">
+      <li><b>과열은 고도가 아니라 속도</b>: 가격이 얼마나 높이 있느냐가 아니라 얼마나 급하게 오르느냐를 잼. 그래서 꼭지 직전의 완만한 구간이 '정상 추세'로, 마지막 분출이 '과열'로 찍히는 일이 자연스러움.</li>
       <li><b>과매수는 매도 신호가 아니라 위험 예고</b>: 강한 추세에서 과매수는 몇 주씩 지속됨. 실제 매도는 추세훼손(고점 갱신 실패·상대강도 하락·오르는 종목 축소)이 결정. 과열 90에 훼손 25면 소량 익절만.</li>
       <li><b>과매도는 매수 신호가 아니라 가격 매력도</b>: 깊게 팔렸다는 것과 반등이 시작됐다는 것은 다른 정보. 투매 구간의 매수는 탐색 물량(10~15%)만, 본 매수는 반등확인이 결정.</li>
       <li><b>거짓 반등에는 예측이 아니라 크기로 대응</b>: 가짜 반등인지 진짜 바닥인지 미리 알 수 없음. 일찍 사되 작게 사고, 손절선을 미리 정해 둠. 손절선은 직전 저점보다 반나절 흔들림만큼 더 아래: 저점을 살짝 스치는 흔들기에는 안 걸리고, 진짜로 무너질 때만 걸리게. 종가가 그 아래면 기계적으로 손절하고, 다시 살아나면 더 비싸더라도 재진입. 손절은 실패가 아니라 보험료.</li>
@@ -587,9 +603,38 @@
   }
 
   // ── 5. 차트 ───────────────────────────────────────────────────────────
+  /* 데이터는 최근 36개월. 화면은 6개월 창으로 보고 ‹ › 로 넘긴다. */
+  var chartPage = 0;                       // 0 = 가장 최근 6개월, 최대 5 = 30~36개월 전
+  var CHART_PAGE_MAX = 5;
+
+  function addMonths(iso, n) {
+    var p2 = iso.split('-');
+    var d = new Date(Date.UTC(+p2[0], +p2[1] - 1 + n, +p2[2]));
+    return d.toISOString().slice(0, 10);
+  }
+  function chartWindow(ch) {
+    var dates = ch.dates, last = dates[dates.length - 1];
+    var end = addMonths(last, -6 * chartPage);
+    var start = addMonths(end, -6);
+    var i0 = 0, i1 = dates.length - 1;
+    while (i0 < dates.length && dates[i0] < start) i0++;
+    while (i1 > 0 && dates[i1] > end) i1--;
+    if (i1 - i0 < 2) { i0 = Math.max(0, i1 - 2); }
+    return { i0: i0, i1: i1, n: i1 - i0 + 1 };
+  }
+  function renderChartNav(ch) {
+    var win = chartWindow(ch);
+    document.getElementById('sa-ch-range').textContent = ch.dates[win.i0] + ' ~ ' + ch.dates[win.i1];
+    var prev = document.getElementById('sa-ch-prev'), next = document.getElementById('sa-ch-next');
+    prev.disabled = chartPage >= CHART_PAGE_MAX || win.i0 <= 0;
+    next.disabled = chartPage <= 0;
+  }
+
   function drawChart() {
     document.getElementById('sa-chart-sym').textContent = CUR;
     var ch = D.tickers[CUR].chart;
+    var win = chartWindow(ch);
+    renderChartNav(ch);
     var canvas = document.getElementById('sa-canvas');
     var ctx = canvas.getContext('2d');
     var dpr = window.devicePixelRatio || 1;
@@ -600,21 +645,22 @@
 
     var padL = 40, padR = 8, padT = 8, padB = 22;
     var W = w - padL - padR, H = h - padT - padB;
-    var n = ch.dates.length;
-    if (!n) return;
-    var vals = ch.close.filter(function (v) { return v != null; });
+    var n = win.n;
+    if (n < 2) return;
+    var at = function (arr, k) { return arr[win.i0 + k]; };
+    var vals = ch.close.slice(win.i0, win.i1 + 1).filter(function (v) { return v != null; });
     var lo = Math.min.apply(null, vals) * 0.985, hi = Math.max.apply(null, vals) * 1.015;
     var x = function (i) { return padL + (i / (n - 1)) * W; };
     var y = function (v) { return padT + (1 - (v - lo) / (hi - lo)) * H; };
 
-    var i0 = 0;
+    var b0 = 0;
     for (var i = 1; i <= n; i++) {
-      if (i === n || ch.temp[i] !== ch.temp[i0]) {
-        ctx.fillStyle = cv(TEMP_BG[ch.temp[i0]]);
-        var xa = i0 === 0 ? padL : (x(i0 - 1) + x(i0)) / 2;
+      if (i === n || at(ch.temp, i) !== at(ch.temp, b0)) {
+        ctx.fillStyle = cv(TEMP_BG[at(ch.temp, b0)]);
+        var xa = b0 === 0 ? padL : (x(b0 - 1) + x(b0)) / 2;
         var xb = i === n ? padL + W : (x(i - 1) + x(i)) / 2;
         ctx.fillRect(xa, padT, xb - xa, H);
-        i0 = i;
+        b0 = i;
       }
     }
 
@@ -629,10 +675,15 @@
     }
     ctx.textAlign = 'center'; ctx.textBaseline = 'top';
     var seen = {};
-    ch.dates.forEach(function (d, k) {
-      var m = d.slice(0, 7);
-      if (!seen[m]) { seen[m] = 1; ctx.fillText(String(+m.slice(5)) + '월', x(k), padT + H + 6); }
-    });
+    for (var k = 0; k < n; k++) {
+      var m = at(ch.dates, k).slice(0, 7);
+      if (!seen[m]) {
+        seen[m] = 1;
+        /* 창이 해를 넘으면 달 숫자만으로는 어느 해인지 모른다 */
+        var lab = (m.slice(5) === '01' || k === 0) ? m.slice(0, 4) + '.' + (+m.slice(5)) : (+m.slice(5)) + '월';
+        ctx.fillText(lab, x(k), padT + H + 6);
+      }
+    }
 
     /* 20일선은 파란 짧은 점선, 50일선은 회색 긴 점선: 둘을 같은 모양으로
        그리면 어느 선이 무엇인지 알 길이 없다. */
@@ -641,7 +692,7 @@
       ctx.globalAlpha = sp[3]; ctx.lineWidth = 1.2;
       var pen = false;
       for (var k = 0; k < n; k++) {
-        var v = ch[sp[0]][k];
+        var v = at(ch[sp[0]], k);
         if (v == null) { pen = false; continue; }
         if (!pen) { ctx.moveTo(x(k), y(v)); pen = true; } else ctx.lineTo(x(k), y(v));
       }
@@ -650,7 +701,7 @@
 
     ctx.beginPath(); ctx.strokeStyle = cv('--ez-text'); ctx.lineWidth = 1.8; ctx.lineJoin = 'round';
     for (var k2 = 0; k2 < n; k2++) {
-      if (k2 === 0) ctx.moveTo(x(k2), y(ch.close[k2])); else ctx.lineTo(x(k2), y(ch.close[k2]));
+      if (k2 === 0) ctx.moveTo(x(k2), y(at(ch.close, k2))); else ctx.lineTo(x(k2), y(at(ch.close, k2)));
     }
     ctx.stroke();
   }
@@ -735,6 +786,12 @@
         CUR = btn.getAttribute('data-t');
         rerender();
       });
+    });
+    document.getElementById('sa-ch-prev').addEventListener('click', function () {
+      if (chartPage < CHART_PAGE_MAX) { chartPage++; guard('chart', drawChart); }
+    });
+    document.getElementById('sa-ch-next').addEventListener('click', function () {
+      if (chartPage > 0) { chartPage--; guard('chart', drawChart); }
     });
     guard('verdict', renderVerdict);
     guard('qa', renderQA);

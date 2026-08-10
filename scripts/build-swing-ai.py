@@ -196,6 +196,9 @@ def build_features(df, bench, breadth_pair):
     agree = votes.sum(axis=1).abs() / votes.notna().sum(axis=1).clip(lower=1)
     f['conf'] = (0.5 + 0.5 * agree).clip(0.5, 1.0)     # 0.5(완전 불일치) ~ 1.0(만장일치)
     f['rsi_d5'] = f['rsi'].diff(5)                     # 행동 카드 신호등이 그대로 쓴다
+    # 상태기계의 '전고 회복' 기준. 20일 창은 깊은 하락 뒤엔 폭락 가격만
+    # 남아 첫 반등에 회복 완료가 찍힌다 — 하락 전 고점을 담으려면 60일.
+    f['hi60_prev'] = f['high'].rolling(60).max().shift(1)
     return f
 
 
@@ -258,17 +261,29 @@ def candidate(row, prev_state):
     fallen = c['close'] < c['sma50'] and (c['close'] / c['hi20'] - 1) <= -0.06
     if fallen and (sc['cap'] >= 72 or (sc['cap'] >= 62 and c['vixr'] > 1.0)):
         return 'CAPITULATION'
-    if after_fall and sc['rev'] >= 62 and c['close'] > c['sma20'] and c['slope20'] > 0:
+    # 반등 확인은 '전고 회복'으로 끝난다. 하락 전 고점(직전 20일 고가)을
+    # 종가가 넘어서면 반등이라는 사건은 완료된 것 — 그 뒤로도 몇 주씩
+    # '반등 확인'을 달고 랠리하는 오표기가 실제로 있었다(4월, 3주).
+    reclaimed = pd.notna(c['hi60_prev']) and c['close'] > c['hi60_prev']
+    if after_fall and sc['rev'] >= 62 and c['close'] > c['sma20'] and c['slope20'] > 0 and not reclaimed:
         return 'RECOVERY'
-    if prev_state in ('CAPITULATION', 'REVERSAL_PROBE', 'CORRECTION') and sc['rev'] >= 50 and sc['cap'] >= 40:
+    if prev_state in ('CAPITULATION', 'REVERSAL_PROBE', 'CORRECTION') and sc['rev'] >= 50 and sc['cap'] >= 40 and not reclaimed:
         return 'REVERSAL_PROBE'
     if sc['dist'] >= 60 and c['close'] < c['sma20'] and c['slope20'] < 0:
         return 'CORRECTION'
+    # 고점 이탈 '조짐'은 고점 부근에서만 성립한다. 이미 20일 고점에서 5%
+    # 넘게 내려온 뒤라면 조짐이 아니라 조정이다 — 7월에 조정 2주 뒤에야
+    # 분홍이 찍히는 뒤늦은 표기가 있었다.
+    near_high = (c['close'] / c['hi20'] - 1) >= -0.05
     if sc['dist'] >= 62:
-        return 'DISTRIBUTION'
+        return 'DISTRIBUTION' if near_high else 'CORRECTION'
     if sc['heat'] >= 80 and sc['dist'] < 55:
         return 'OVERHEAT'
-    if prev_state == 'RECOVERY' and not (c['close'] > c['sma50'] and sc['rev'] < 50):
+    # 과열은 문턱에 히스테리시스를 둔다. 진입 80, 유지 70 — 문턱 하나로
+    # 하면 꼭지 부근에서 과열↔정상이 깜빡거린다(6월에 실제 발생).
+    if prev_state == 'OVERHEAT' and sc['heat'] >= 70 and sc['dist'] < 55:
+        return 'OVERHEAT'
+    if prev_state == 'RECOVERY' and not reclaimed and not (c['close'] > c['sma50'] and sc['rev'] < 50):
         return 'RECOVERY'
     if c['close'] < c['sma50'] and c['slope20'] < 0:
         return 'CORRECTION'
@@ -383,6 +398,19 @@ def replay(f, states, start, end):
             return amt
 
         entered = st != prev_state
+
+        # 하락 사이클(매수 1·2단계 실행)에서 곧장 정상 추세로 복귀했다면
+        # 반등이 전고 회복으로 완결된 것 — 남은 현금을 넣는다. 이 집행이
+        # 없으면 V자 반등에서 매수 3·4단계가 영영 안 나가고 현금이 랠리를
+        # 구경한다(2025 관세 구간에서 실측).
+        if (st == 'UPTREND' and prev_state in ('RECOVERY', 'REVERSAL_PROBE', 'CAPITULATION')
+                and ('B1' in done or 'B2' in done) and 'B4' not in done
+                and cash > 1 and not whipsaw_mode and not no_trade):
+            gate2r = row['rev'] >= GATE2['reversal'] and row['whip'] <= GATE2['whipsaw']
+            buy('B4', 100, '2x 허용' if gate2r else '1x (게이트 미충족)')
+            done.add('B4')
+            probe = None   # 전고 회복 — 탐색 물량 손절선 관리 종료
+
         # ── 매도 사다리
         if entered and st == 'OVERHEAT' and 'S1' not in done and not whipsaw_mode:
             sell('S1', SELL_STAGES['S1']); done.add('S1')
@@ -637,8 +665,8 @@ def main():
             'card': action_card(last, states.iloc[-1]),
             'asOf': f['date'].iloc[-1].date().isoformat(),
         }
-        # 차트는 세 지수 모두 — 화면이 탭으로 고른다.
-        cw_all = f[f['date'] >= '2026-01-01']
+        # 차트는 세 지수 모두, 최근 36개월 — 화면이 6개월 창으로 넘겨 본다.
+        cw_all = f[f['date'] >= (f['date'].iloc[-1] - pd.DateOffset(months=36))]
         results[sym]['chart'] = {
             'dates': [d.date().isoformat() for d in cw_all['date']],
             'close': [round(float(v), 2) for v in cw_all['close']],
