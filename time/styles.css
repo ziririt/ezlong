@@ -566,7 +566,7 @@ button { font: inherit; }
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: clamp(24.6px, 5.3vw, 32.2px);
+  min-width: clamp(22.6px, 4.9vw, 29.6px);
   height: clamp(14px, 3vw, 18px);
   padding: 0 1px;
   border: 0;
@@ -598,12 +598,17 @@ button { font: inherit; }
 .app-battery-num {
   position: relative;
   z-index: 1;
-  font-size: clamp(10.5px, 2.2vw, 12.5px);
+  font-size: clamp(11.5px, 2.4vw, 13.5px);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1;
   color: #0d0d0f;        /* 밝은 캡슐 위의 어두운 숫자 — 기기와 같은 대비 */
   text-shadow: none;
+  /* 2026-08-11 운영 피드백 — "숫자가 1픽셀 정도 내려와야 위아래 가운데가
+     맞는다." 맞는 관찰이다. 숫자에는 내려가는 획(g·y 같은)이 없어서 글자
+     상자를 가운데에 놓으면 잉크가 그보다 위로 뜬다. 그 차이가 대략 0.1em,
+     지금 폰트에서 1px 남짓이다. 광학 중심을 맞추는 보정이다. */
+  top: 1px;
 }
 
 /* 2026-08-11 운영 지침 — "번개 아이콘이 있어야 한다."
@@ -636,7 +641,7 @@ button { font: inherit; }
 }
 
 .app-battery.is-charging .app-battery-shell {
-  width: clamp(31px, 6.7vw, 40.6px);
+  min-width: clamp(29px, 6.3vw, 38px);
 }
 
 /* 캡슐 오른쪽 꼭지 — 아이폰 배터리 아이콘의 그 돌기. 본체보다 흐리다. */
