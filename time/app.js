@@ -10690,3 +10690,100 @@ var bedsideActive = false;
   window.setInterval(evaluate, 1000);
   evaluate();
 })();
+
+/* ═══════════════════════════════════════════════════════════════════════
+   우상단 배터리 표시 — 2026-08-10 운영 지침
+   ───────────────────────────────────────────────────────────────────────
+   운영 요청은 "아이폰 우상단처럼 신호·와이파이·배터리"였다. 그중 신호
+   세기는 **아이폰이 앱에 내주지 않는다** — 애플 공개 API가 없고, Core
+   Telephony 는 비공개 프레임워크라 쓰면 심사에서 걸린다. 없는 것을 지어내
+   그리는 대신 읽을 수 있는 것만 정직하게 그린다.
+
+   값을 구하는 순서에 이유가 있다.
+     1) 네이티브가 심어준 값(window.__FLIPZEN_BATTERY__). 아이폰 WKWebView 에는
+        Battery Status API 자체가 없어서 이 길뿐이다. 안드로이드도 이 길이
+        더 정확하다(웹 API 는 기기·정책에 따라 값이 얼어붙는 사례를 이미
+        충전 감지에서 겪었다).
+     2) 그게 없으면 navigator.getBattery(). 크로미움 계열 웹뷰·브라우저용.
+     3) 둘 다 없으면 **아무것도 그리지 않고 ".com" 을 그대로 둔다.**
+        모르는 값을 그럴듯하게 지어내는 것보다 예전 모습이 낫다.
+   ═══════════════════════════════════════════════════════════════════════ */
+(function () {
+  var el = document.getElementById("appBattery");
+  var fillEl = document.getElementById("appBatteryFill");
+  var numEl = document.getElementById("appBatteryNum");
+  var tldEl = document.getElementById("appBrandTld");
+  if (!el || !fillEl || !numEl || !tldEl) return;
+
+  var lastShown = -1;
+
+  function readNativeLevel() {
+    var v = window.__FLIPZEN_BATTERY__;
+    if (typeof v === "number" && isFinite(v) && v >= 0 && v <= 100) return Math.round(v);
+    return -1;
+  }
+
+  function chargingNow() {
+    try {
+      if (typeof window.__flipzenIsCharging === "function") return window.__flipzenIsCharging();
+    } catch (e) { /* 무시 */ }
+    return window.__FLIPZEN_CHARGING__ === true;
+  }
+
+  function render(level) {
+    if (!(level >= 0)) {
+      // 모르면 예전 모습으로 돌아간다 — 지어내지 않는다.
+      el.hidden = true;
+      tldEl.hidden = false;
+      lastShown = -1;
+      return;
+    }
+    tldEl.hidden = true;
+    el.hidden = false;
+    var charging = chargingNow();
+    if (level !== lastShown) {
+      numEl.textContent = String(level);
+      fillEl.style.width = Math.max(4, level) + "%";
+      el.setAttribute("aria-label", level + "%");
+      lastShown = level;
+    }
+    el.classList.toggle("is-charging", charging);
+    el.classList.toggle("is-low", !charging && level < 20);
+  }
+
+  function tick() {
+    var lv = readNativeLevel();
+    if (lv >= 0) { render(lv); return; }
+    if (navigator.getBattery) {
+      navigator.getBattery().then(function (b) {
+        var v = typeof b.level === "number" ? Math.round(b.level * 100) : -1;
+        render(v);
+      }).catch(function () { render(-1); });
+      return;
+    }
+    render(-1);
+  }
+
+  // 네이티브가 값이 바뀔 때마다 불러 준다(iOS batteryLevelDidChange /
+  // 안드로이드 ACTION_BATTERY_CHANGED). 폴링은 그 신호가 유실됐을 때를
+  // 위한 그물이지 주된 경로가 아니다.
+  window.__flipzenBatteryChanged = function (level) {
+    if (typeof level === "number") window.__FLIPZEN_BATTERY__ = level;
+    tick();
+  };
+
+  if (navigator.getBattery) {
+    navigator.getBattery().then(function (b) {
+      ["levelchange", "chargingchange"].forEach(function (evt) {
+        try { b.addEventListener(evt, tick); } catch (e) { /* 무시 */ }
+      });
+    }).catch(function () { /* 무시 */ });
+  }
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) tick();
+  });
+  window.addEventListener("focus", tick);
+  setInterval(tick, 60000);
+  tick();
+})();

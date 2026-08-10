@@ -20,7 +20,7 @@
   <meta name="apple-mobile-web-app-title" content="Long Time">
   <meta name="theme-color" content="#0D0D0F">
   <meta name="color-scheme" content="dark">
-  <link rel="stylesheet" href="styles.css?v=20260810-quotehug-v2">
+  <link rel="stylesheet" href="styles.css?v=20260810-battery-v1">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -52,8 +52,22 @@
           <div class="date-chip" id="dateLabel" role="button" tabindex="0" aria-haspopup="true" aria-controls="calendarPanel" aria-expanded="false" data-i18n-aria="clock.calendarAria" aria-label="이번달 달력 보기">7월 6일 월요일</div>
           <div class="date-chip-sparkle" id="dateChipSparkle" aria-hidden="true"></div>
         </div>
+        <!-- 2026-08-10 운영 지침 — 우상단을 "ezlong + 배터리"로.
+             아이폰 상태바처럼 신호·와이파이·배터리를 다 그리고 싶었지만,
+             **신호 세기는 아이폰이 앱에 내주지 않는다**(애플 공개 API 없음,
+             Core Telephony 는 비공개라 심사에서 걸린다). 그래서 읽을 수 있는
+             것만 정직하게 그린다 — 배터리.
+             배터리를 못 읽는 환경(옛 iOS 빌드 등)에서는 ".com" 이 그대로
+             남는다. 모르는 값을 지어내 그리느니 예전 모습이 낫다. -->
         <div class="app-brand" aria-label="ezlong.com">
-          ezlong.com
+          <span class="app-brand-name">ezlong<span class="app-brand-tld" id="appBrandTld">.com</span></span>
+          <span class="app-battery" id="appBattery" role="img" aria-label="" hidden>
+            <span class="app-battery-shell">
+              <span class="app-battery-fill" id="appBatteryFill"></span>
+              <span class="app-battery-num" id="appBatteryNum">--</span>
+            </span>
+            <span class="app-battery-cap" aria-hidden="true"></span>
+          </span>
         </div>
       </header>
 
@@ -348,7 +362,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.9.5</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.9.6</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -1019,7 +1033,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260810-citesimple-v1"></script>
+  <script src="app.js?v=20260810-battery-v1"></script>
 
   </body>
 </html>

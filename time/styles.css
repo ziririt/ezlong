@@ -505,8 +505,17 @@ button { font: inherit; }
   }
 }
 
+/* 2026-08-10 운영 지침 — 우상단 "ezlong + 배터리".
+   아이폰 상태바를 그대로 흉내 내고 싶었으나 신호 세기는 앱이 읽을 수 없다
+   (애플 공개 API 부재). 읽을 수 있는 배터리만 그린다. 숫자는 캡슐 안에
+   놓되 mix-blend-mode:difference 로 칠한다 — 채워진 흰 부분 위에서는 검게,
+   빈 어두운 부분 위에서는 희게 저절로 뒤집혀서, 잔량이 몇이든 항상 읽힌다.
+   (고정색으로 두면 잔량 50% 근처에서 숫자가 반쯤 사라진다.) */
 .app-brand {
   justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   color: rgba(255,255,255,0.92);
   font-size: clamp(16px, 3.8vw, 22px);
   font-weight: 760;
@@ -515,6 +524,79 @@ button { font: inherit; }
   text-shadow: 0 2px 18px rgba(0,0,0,0.42);
   white-space: nowrap;
   cursor: pointer; /* 2026-07-08: 탭하면 ezlong.com 섹션으로 플립 전환된다 */
+}
+
+.app-brand-name {
+  white-space: nowrap;
+}
+
+/* 배터리를 읽을 수 있으면 JS 가 이 ".com" 을 접고 캡슐을 편다. */
+.app-brand-tld[hidden] {
+  display: none;
+}
+
+.app-battery {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5px;
+}
+
+.app-battery[hidden] {
+  display: none;
+}
+
+.app-battery-shell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: clamp(28px, 6vw, 36px);
+  height: clamp(14px, 3vw, 18px);
+  padding: 1.5px;
+  border: 1.5px solid rgba(255,255,255,0.5);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.app-battery-fill {
+  position: absolute;
+  left: 1.5px;
+  top: 1.5px;
+  bottom: 1.5px;
+  width: 0%;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.92);
+  /* 잔량은 천천히 차오르고, 색은 그보다 빨리 바뀐다(꽂는 순간의 반응). */
+  transition: width 700ms ease, background 300ms ease;
+}
+
+.app-battery.is-charging .app-battery-fill {
+  background: #34c759;   /* 애플 시스템 그린 — 전기가 들어오는 중 */
+}
+
+.app-battery.is-low .app-battery-fill {
+  background: #ff453a;   /* 20% 미만, 충전 중이 아닐 때만 */
+}
+
+.app-battery-num {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(9.5px, 2vw, 11.5px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #fff;
+  mix-blend-mode: difference;
+  text-shadow: none;
+}
+
+/* 캡슐 오른쪽 꼭지 — 아이폰 배터리 아이콘의 그 돌기. */
+.app-battery-cap {
+  width: 2px;
+  height: clamp(5px, 1.1vw, 6px);
+  border-radius: 0 2px 2px 0;
+  background: rgba(255,255,255,0.5);
 }
 
 /* 2026-07-21 8차 피드백 — 온보딩 힌트(달력 자동 시연 + 반짝임)를 위해
