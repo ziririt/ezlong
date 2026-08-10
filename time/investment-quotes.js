@@ -9178,5 +9178,12 @@ window.investmentQuotes = [
     "title": "레슨 인 케미스트리 (Lessons in Chemistry)",
     "author": "보니 가머스 (Bonnie Garmus)",
     "genre": "literature"
+  },
+  {
+    "english": "The whole secret to winning big in the stock market is not to be right all the time, but to lose the least amount possible when you're wrong.",
+    "text": "주식시장에서 크게 이기는 비결은 늘 옳은 판단을 내리는 데 있지 않다. 틀렸을 때 손실을 최소한으로 줄이는 데 있다.",
+    "title": "How to Make Money in Stocks",
+    "author": "윌리엄 J. 오닐 (William J. O'Neil)",
+    "category": "mindset"
   }
 ];
