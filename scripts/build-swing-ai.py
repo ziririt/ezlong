@@ -236,7 +236,12 @@ def candidate(row, prev_state):
     """그날 하루의 후보 상태. 확정은 2-of-3 지속성이 한다."""
     c, sc = row, row
     after_fall = prev_state in ('CORRECTION', 'CAPITULATION', 'REVERSAL_PROBE', 'RECOVERY')
-    if sc['cap'] >= 72 or (sc['cap'] >= 62 and c['vixr'] > 1.0):
+    # 깊은 과매도는 점수만으로 판정하지 않는다. 급등기의 큰 일중 변동이
+    # 공포 점수를 밀어 올려, 신고가 부근에서 '깊은 과매도'가 찍히는 오판이
+    # 실제로 있었다(2026-06-08, 신고가 랠리 중 판정). 가격이 실제로
+    # 무너져 있어야 한다: 50일선 아래 + 최근 20일 고점에서 6% 이상 하락.
+    fallen = c['close'] < c['sma50'] and (c['close'] / c['hi20'] - 1) <= -0.06
+    if fallen and (sc['cap'] >= 72 or (sc['cap'] >= 62 and c['vixr'] > 1.0)):
         return 'CAPITULATION'
     if after_fall and sc['rev'] >= 62 and c['close'] > c['sma20'] and c['slope20'] > 0:
         return 'RECOVERY'
