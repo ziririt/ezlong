@@ -10709,6 +10709,21 @@ var bedsideActive = false;
         모르는 값을 그럴듯하게 지어내는 것보다 예전 모습이 낫다.
    ═══════════════════════════════════════════════════════════════════════ */
 (function () {
+  // 2026-08-10 운영자 확인 — 안드로이드는 취소.
+  // 이유가 명확하다. 안드로이드 앱은 시스템 상태표시줄을 그대로 띄우고
+  // 있어서(투명 상태바 위에 OS 가 신호·와이파이·배터리를 직접 그린다)
+  // 우리가 하나 더 그리면 배터리가 화면에 두 번 나온다. 아이폰은 반대로
+  // 상태바를 숨기고 있어서(UIStatusBarHidden) 우리가 안 그리면 아무것도
+  // 없다 — 그래서 아이폰에만 그린다.
+  //
+  // 일반 웹/PWA 도 대상이 아니다. 브라우저에는 이미 기기 상태표시줄이
+  // 있고, 웹페이지가 남의 배터리를 굳이 그려 보일 이유가 없다.
+  //
+  // ※ 네이티브 잔량 전달은 안드로이드에도 그대로 남겨 둔다. 지금은 쓰지
+  //   않지만 값은 정확하고 비용이 거의 없다 — 안드로이드가 나중에
+  //   상태바를 숨기는 날 이 한 줄만 풀면 된다.
+  if (nativePlatformKey !== "ios") return;
+
   var el = document.getElementById("appBattery");
   var fillEl = document.getElementById("appBatteryFill");
   var numEl = document.getElementById("appBatteryNum");
