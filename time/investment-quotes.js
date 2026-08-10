@@ -9171,5 +9171,12 @@ window.investmentQuotes = [
     "title": "가난한 찰리의 연감",
     "author": "찰리 멍거",
     "category": "mindset"
+  },
+  {
+    "english": "Whenever you feel afraid, just remember. Courage is the root of change—and change is what we're chemically designed to do.",
+    "text": "두려움이 느껴질 때마다 기억하라. 용기는 변화의 뿌리이며, 변화는 우리가 화학적으로 그렇게 하도록 설계된 바로 그 일이다.",
+    "title": "레슨 인 케미스트리 (Lessons in Chemistry)",
+    "author": "보니 가머스 (Bonnie Garmus)",
+    "genre": "literature"
   }
 ];
