@@ -9191,5 +9191,12 @@ window.investmentQuotes = [
     "title": "서시 (하늘과 바람과 별과 시)",
     "author": "윤동주",
     "genre": "literature"
+  },
+  {
+    "english": "The game of speculation is the most uniformly fascinating game in the world. But it is not a game for the stupid, the mentally lazy, the person of inferior emotional balance, or the get-rich-quick adventurer. They will die poor.",
+    "text": "투기라는 게임은 세상에서 가장 한결같이 매혹적인 게임이다. 그러나 이것은 어리석은 자, 정신적으로 게으른 자, 감정적으로 미숙한 자, 혹은 한탕을 노리는 모험가를 위한 게임이 아니다. 그런 사람들은 결국 가난하게 죽는다.",
+    "title": "주식투자자의 회상 (Reminiscences of a Stock Operator)",
+    "author": "에드윈 르페브르 (Edwin Lefèvre)",
+    "category": "mindset"
   }
 ];
