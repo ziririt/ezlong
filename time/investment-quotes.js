@@ -9306,5 +9306,12 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "english": "It was my life – like all lives, mysterious and irrevocable and sacred. So very close, so very present, so very belonging to me. How wild it was, to let it be.",
+    "text": "그것은 나의 삶이었다. 모든 삶이 그러하듯 신비롭고, 되돌릴 수 없고, 신성한 것이었다. 이토록 가깝고, 이토록 선명하고, 이토록 온전히 나의 것인 삶. 있는 그대로 두는 것, 그것이 얼마나 거친 일이었는지.",
+    "title": "와일드 (Wild)",
+    "author": "셰릴 스트레이드 (Cheryl Strayed)",
+    "genre": "literature"
   }
 ];
