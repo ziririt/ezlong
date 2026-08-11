@@ -9293,5 +9293,11 @@ window.investmentQuotes = [
     "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "mindset"
+  },
+  {
+    "text": "전문가에게 모든 것을 맡기고 편안해질 것이 아니라, 우리 스스로 치유자가 될 수 있는 힘을 기를 때, 비로소 문제는 해결의 기미를 보일 것이다.",
+    "title": "나를 돌보지 않는 나에게",
+    "author": "정여울",
+    "genre": "literature"
   }
 ];
