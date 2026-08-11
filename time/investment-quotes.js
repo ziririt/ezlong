@@ -9362,5 +9362,12 @@ window.investmentQuotes = [
     "title": "마진 오브 세이프티 (Margin of Safety)",
     "author": "세스 클라만 (Seth Klarman)",
     "category": "mindset"
+  },
+  {
+    "english": "Because once we feel, know, and dare to imagine more for ourselves, we cannot unfeel, unknow, or unimagine. There is no going back.",
+    "text": "한번 자신을 위해 더 많은 것을 느끼고 알고 감히 상상해버리면, 우리는 그것을 못 느낀 것으로, 몰랐던 것으로, 상상하지 않은 것으로 되돌릴 수 없다. 돌아갈 길은 없다.",
+    "title": "언테임드: 나는 길들지 않겠다 (Untamed)",
+    "author": "글레넌 도일 (Glennon Doyle)",
+    "genre": "literature"
   }
 ];
