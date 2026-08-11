@@ -6302,6 +6302,42 @@ window.__flipzenNativeAudioLevels = function (bass, mid, treble) {
 // iOS 는 이 함수가 아무것도 하지 않는다(브릿지 자체가 없다) — 기존 밀어넣기
 // 경로 그대로다.
 let nativeLevelPullActive = false;
+// 2026-08-11 신설 — 안드로이드가 보내주는 **진짜 스펙트럼**.
+//   지금까지는 저·중·고 숫자 세 개만 받아서 막대 서른네 개를 그렸다. 가중치와
+//   흔들림으로 서른네 개처럼 보이게 만든 그림이었지, 막대가 각자의 악기를
+//   나타내지는 않았다(운영 피드백: "각자 오케스트라 단원인 것처럼").
+//   이제 네이티브가 2048점 FFT 로 24개 대역 + 킥 타격을 25글자 문자열에 눌러
+//   보낸다. 옛 빌드에서는 이 창구가 없어 빈 문자열이 오고, 그때는 기존 세 값
+//   경로로 그대로 폴백한다 — 앱 업데이트 전에도 화면이 죽지 않는다.
+const NATIVE_VIZ_BANDS = 24;
+let nativeAudioSpectrum = null;   // Float 24개 (0..1)
+let nativeAudioKick = 0;          // 킥 타격 0..1
+let nativeSpectrumAt = 0;         // 마지막 수신 시각
+let nativeSpectrumUnsupported = false;  // 창구 자체가 없는 빌드 — 두 번 묻지 않는다
+
+function pullNativeAudioSpectrum(bridge) {
+  if (nativeSpectrumUnsupported) return false;
+  if (typeof bridge.audioSpectrumPacked !== "function") {
+    nativeSpectrumUnsupported = true;
+    return false;
+  }
+  let packed = "";
+  try {
+    packed = bridge.audioSpectrumPacked();
+  } catch (e) {
+    nativeSpectrumUnsupported = true;
+    return false;
+  }
+  if (typeof packed !== "string" || packed.length < NATIVE_VIZ_BANDS + 1) return false;
+  if (!nativeAudioSpectrum) nativeAudioSpectrum = new Array(NATIVE_VIZ_BANDS).fill(0);
+  for (let i = 0; i < NATIVE_VIZ_BANDS; i++) {
+    nativeAudioSpectrum[i] = (packed.charCodeAt(i) - 48) / 63;
+  }
+  nativeAudioKick = (packed.charCodeAt(NATIVE_VIZ_BANDS) - 48) / 63;
+  nativeSpectrumAt = Date.now();
+  return true;
+}
+
 function pullNativeAudioLevels() {
   const bridge = window.AndroidNativeBridge;
   if (!bridge || typeof bridge.audioLevelsPacked !== "function") return false;
@@ -6316,6 +6352,7 @@ function pullNativeAudioLevels() {
   nativeAudioMid = ((packed >> 10) & 1023) / 1023;
   nativeAudioTreble = (packed & 1023) / 1023;
   nativeAudioLevelReceivedAt = Date.now();
+  pullNativeAudioSpectrum(bridge);
   if (!nativeLevelPullActive) {
     nativeLevelPullActive = true;
     // 당겨 오는 게 확인된 뒤에야 밀어넣기를 끈다 — 순서가 반대면 브릿지가
@@ -6380,6 +6417,53 @@ let nativeVizBassAvg2 = 0;
 let nativeVizMidAvg2 = 0;
 let nativeVizTrebleAvg2 = 0;
 
+// 2026-08-11 신설 — 대역 24개를 받은 경우의 그리기.
+//   설계 원칙은 운영자 말씀 그대로다: 음향학적 정확도가 아니라 "음이 보인다"는
+//   느낌. 막대는 각자 자기 대역의 악기이고, 쎈 소리는 실제로 높이 올라가고,
+//   박자에는 화면 전체가 한 박 친다.
+//   웹/아이폰 경로(ver.1.9.24)와 같은 문법으로 맞춰 두 플랫폼의 체감을 통일한다.
+function drawMusicVizNativeSpectrum(h) {
+  const sens = getVizSensitivity();
+  const contrastAmount = getVizContrastAmount();
+  const bassPunchMul = getVizBassPunchMul();
+  const pointBarsOn = isVizPointBarsOn();
+  const kick = nativeAudioKick * bassPunchMul;
+  const n = MUSIC_VIZ_BAR_COUNT;
+  for (let i = 0; i < n; i++) {
+    // 막대 수(20/34/48)가 대역 수(24)와 달라도 되도록 선형 보간한다.
+    const pos = (i / Math.max(1, n - 1)) * (NATIVE_VIZ_BANDS - 1);
+    const lo = Math.floor(pos);
+    const hi = Math.min(NATIVE_VIZ_BANDS - 1, lo + 1);
+    const f = pos - lo;
+    let v = nativeAudioSpectrum[lo] * (1 - f) + nativeAudioSpectrum[hi] * f;
+
+    // 대비 설정 — 저음 쪽은 살짝 낮추고 고음 쪽은 살짝 올리는 중앙 대칭 기울기.
+    const t = i / Math.max(1, n - 1);
+    v *= 1 + contrastAmount * 0.5 * (t - 0.5) * 2;
+    // 대비를 키우는 지수 — 이번 순간의 강한 대역만 확실히 솟게.
+    let target = Math.pow(Math.max(0, Math.min(1, v)), 1.35) * h;
+
+    // 0번 막대(30~90Hz)는 킥 전용 — 박자를 치는 자리.
+    if (i === 0) target = Math.max(target, kick * h * 0.96);
+    // 포인트 막대 — 맨 끝 2개는 고음 대역에 유독 예민하게.
+    const isPointBar = pointBarsOn && i >= n - 2;
+    if (isPointBar) target = Math.max(target, Math.pow(v, 0.55) * h * 0.8);
+
+    // 킥이 박히면 화면 전체가 한 번 숨 쉰다.
+    target *= 1 + 0.2 * kick;
+    target *= sens.heightMul;
+    target = Math.max(4, Math.min(target, h));
+
+    // 비대칭 포락선 — 올라갈 땐 빠르게(때린다), 내려올 땐 천천히(여운).
+    const factor = target > musicVizBars[i]
+      ? Math.min(0.97, (isPointBar ? 0.88 : 0.72) * sens.attackMul)
+      : (isPointBar ? 0.28 : 0.18);
+    musicVizBars[i] += (target - musicVizBars[i]) * factor;
+    musicVizIntensity[i] = Math.min(1, Math.max(musicVizBars[i] / h, i === 0 ? kick : 0));
+  }
+  writeVizBarsToDom();
+}
+
 function drawMusicVizNative(h) {
   // 2026-08-10 3차 — 안드로이드는 그리기 직전에 직접 집어 온다(위 함수 주석).
   pullNativeAudioLevels();
@@ -6387,6 +6471,12 @@ function drawMusicVizNative(h) {
   // 찰나) 대기 애니메이션으로 자연스럽게 폴백한다.
   if (Date.now() - nativeAudioLevelReceivedAt > 1200) {
     drawMusicVizIdle(h);
+    return;
+  }
+  // 대역 24개가 신선하게 들어오고 있으면 그쪽으로 — 없으면(옛 앱 빌드)
+  // 아래 기존 3값 경로가 그대로 돈다.
+  if (nativeAudioSpectrum && Date.now() - nativeSpectrumAt < 600) {
+    drawMusicVizNativeSpectrum(h);
     return;
   }
   nativeVizShimmerPhase += 0.12;
