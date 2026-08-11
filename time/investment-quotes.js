@@ -9334,5 +9334,12 @@ window.investmentQuotes = [
     "title": "스노볼 (The Snowball)",
     "author": "앨리스 슈뢰더 (Alice Schroeder)",
     "category": "mindset"
+  },
+  {
+    "english": "Truth—or, more precisely, an accurate understanding of reality—is the essential foundation for any good outcome. Most people fight seeing what's true when it's not what they want it to be.",
+    "text": "진실—더 정확히 말하면 현실에 대한 정확한 이해—은 모든 좋은 결과의 필수적인 토대다. 대부분의 사람들은 진실이 자신이 원하는 모습이 아닐 때 그것을 보려 하지 않는다.",
+    "title": "원칙",
+    "author": "레이 달리오 (Ray Dalio)",
+    "category": "mindset"
   }
 ];
