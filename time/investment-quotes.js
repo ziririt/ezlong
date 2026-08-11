@@ -9272,5 +9272,12 @@ window.investmentQuotes = [
     "title": "여행의 이유",
     "author": "김영하",
     "genre": "literature"
+  },
+  {
+    "english": "Time is your friend; impulse is your enemy.",
+    "text": "시간은 당신의 친구이고, 충동은 당신의 적이다.",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글 (John C. Bogle)",
+    "category": "compound"
   }
 ];
