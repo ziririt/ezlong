@@ -9279,5 +9279,12 @@ window.investmentQuotes = [
     "title": "모든 주식을 소유하라",
     "author": "존 보글 (John C. Bogle)",
     "category": "compound"
+  },
+  {
+    "english": "You need to learn how to select your thoughts just the same way you select your clothes every day. This is a power you can cultivate.",
+    "text": "당신은 옷을 고르듯 매일 생각을 고르는 법을 배워야 한다. 이것은 스스로 기를 수 있는 힘이다.",
+    "title": "먹고 기도하고 사랑하라 (Eat, Pray, Love)",
+    "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
+    "genre": "literature"
   }
 ];
