@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-08-11-11:36",
+      "timestamp_kst": "2026-08-11(화) 11:36 KST",
+      "key_event": {
+        "name": "지정학적 긴장 고조 및 유가 급등",
+        "name_en": "Escalating Geopolitical Tensions & Oil Price Surge",
+        "time": "직전 정규장 및 야간",
+        "why": "인플레이션 압력, 기술주 하방 압력, 시장 불확실성 증대",
+        "why_en": "Inflationary pressure, tech stock downside, increased market uncertainty"
+      },
+      "positive_total": 20,
+      "negative_total": 80,
+      "summary": "지정학적 리스크와 유가 상승으로 부정 우위 지속, 기술주 하방 압력 심화",
+      "summary_en": "Negative sentiment persists due to geopolitical risks and rising oil prices, intensifying tech stock pressure",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "AI 인프라 투자 지속",
+          "name_en": "Continued AI Infrastructure Investment",
+          "desc": "Apollo Global Management의 AI 인프라 펀드 참여, AI 성장 기대감 유지",
+          "desc_en": "Apollo Global Management's participation in AI infrastructure fund, sustaining AI growth expectations",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "중동 지정학적 긴장 고조",
+          "name_en": "Escalating Middle East Geopolitical Tensions",
+          "desc": "트럼프의 호르무즈 해협 통제 발언, 이란 불확실성으로 시장 불안 심화",
+          "desc_en": "Trump's 'control' claim over Strait of Hormuz, Iran uncertainty deepens market anxiety",
+          "category": "geopolitics"
+        },
+        {
+          "score": 25,
+          "name": "유가 급등 및 인플레이션 우려",
+          "name_en": "Oil Price Surge & Inflation Concerns",
+          "desc": "WTI 4.45% 상승, 인플레이션 재발 경계로 금리 상승 압력 가중",
+          "desc_en": "WTI up 4.45%, renewed inflation fears increase pressure for higher interest rates",
+          "category": "oil_energy"
+        },
+        {
+          "score": 25,
+          "name": "반도체 섹터 차익실현 매물",
+          "name_en": "Semiconductor Sector Profit-Taking",
+          "desc": "SOXX 2.75% 하락, TSMC 실적 호재에도 불구하고 차익실현 매물 출회",
+          "desc_en": "SOXX down 2.75%, profit-taking despite positive TSMC earnings",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "고용 지표 해석 엇갈림",
+          "name_en": "Mixed Interpretations of Employment Data",
+          "desc": "실업률 하락에도 불구하고 고용 둔화 신호가 경기 침체 우려와 금리 인하 기대 사이에서 혼재",
+          "desc_en": "Despite falling unemployment, signs of slowing employment are mixed between recession fears and rate cut expectations",
+          "category": "macro_data"
+        }
+      ]
+    },
+    {
       "id": "2026-08-11-08:20",
       "timestamp_kst": "2026-08-11(화) 08:20 KST",
       "key_event": {
@@ -535,67 +595,8 @@
           "category": "macro_data"
         }
       ]
-    },
-    {
-      "id": "2026-08-10-11:42",
-      "timestamp_kst": "2026-08-10(월) 11:42 KST",
-      "key_event": {
-        "name": "7월 CPI 발표 대기",
-        "name_en": "Anticipation for July CPI Release",
-        "time": "다음 주 8월 12일(수) 오전 8시 30분 ET",
-        "why": "물가 지표에 따른 금리 인상 시나리오 변화, 시장 변동성 확대",
-        "why_en": "CPI data to influence rate hike scenarios, increasing market volatility"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "고용 둔화 및 금리 인하 기대 지속, CPI 대기하며 관망세",
-      "summary_en": "Continued optimism from easing employment and rate cut hopes, market awaits CPI",
-      "positive_factors": [
-        {
-          "score": 70,
-          "name": "고용지표 둔화 지속",
-          "name_en": "Continued Softening Employment Data",
-          "desc": "비농업 고용 감소 및 실업률 하락(노동시장 이탈 영향), 금리 인상 우려 완화",
-          "desc_en": "Non-farm payrolls decreased and unemployment rate fell (due to labor market exit), easing rate hike concerns",
-          "category": "macro_data"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "CPI 상방 서프라이즈 리스크",
-          "name_en": "CPI Upside Surprise Risk",
-          "desc": "관세발 상품가격 상승 가능성, 7월 CPI 컨센서스 상회 시 금리 인상 압력",
-          "desc_en": "Potential for tariff-driven goods price increases, CPI above consensus could pressure rate hikes",
-          "category": "macro_data"
-        },
-        {
-          "score": 15,
-          "name": "연준의 매파적 스탠스",
-          "name_en": "Fed's Hawkish Stance",
-          "desc": "워시 의장의 최소 메시지 기조 및 9월 인상 준비 언급, 데이터 의존적 변동성 확대",
-          "desc_en": "Chair Wash's minimal communication and readiness for September hike, increasing data-driven volatility",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 기업 FCF 압박",
-          "name_en": "AI Companies' FCF Pressure",
-          "desc": "알파벳, 아마존 등 대규모 캐펙스 투자로 FCF 마이너스 전환, 마이크로소프트는 긍정적",
-          "desc_en": "Alphabet, Amazon's large capex investments lead to negative FCF, while Microsoft remains positive",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "유가 리스크 상존",
-          "name_en": "Persistent Oil Price Risk",
-          "desc": "호르무즈 해협 통항료 협상 교착 상태, 유가 변동성 잠재",
-          "desc_en": "Stalemate in Hormuz Strait transit fee negotiations, potential for oil price volatility",
-          "category": "oil_energy"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-10T23:21:04Z",
+  "updated_at": "2026-08-11T02:36:23Z",
   "max_entries": 10
 }
