@@ -21,7 +21,7 @@ const musicSourceBaseUrl = "https://pub-82b6dfa1c27c40a283a8836677a76fc5.r2.dev"
 // 깨져 그룹 전체가 재생 불가였다. 음원 속성 태그 분석을 준비하다
 // ffmpeg 디코딩이 실패하면서 발견했다.
 // 원본을 다시 확보하면 되살린다 — 그때까지는 목록에서 뺀다.
-// 2026-08-06 운영 지침 — **4분 이상 트랙 29곡 일괄 제거.**
+// 2026-08-06 성동님 지시 — **4분 이상 트랙 29곡 일괄 제거.**
 // "4분 이상되는 곡은 뭔가 잘못된 곡이다. suno에서 잘못 제작된 곡일
 // 것이다. 8분은 확실히 에러난 곡이다."
 // 길이 분포가 이 판단을 그대로 뒷받침한다 — 전체 655곡의 중앙값이
@@ -440,10 +440,6 @@ const musicPlaylist = [
   { group: 273, title: "Window Seat Melody For Oboe And Guitar", playlist: "SINGLE", duration: "2:55", file: "classic 20260718/Window Seat Melody For Oboe And Guitar.m4a", category: "classic 20260718", vocal: false },
   { group: 274, title: "Wooden Echoes In A Small Room", playlist: "Part 2", duration: "2:28", file: "classic 20260718/Wooden Echoes In A Small Room_part2.m4a", category: "classic 20260718", vocal: false },
   { group: 274, title: "Wooden Echoes In A Small Room", playlist: "SINGLE", duration: "2:01", file: "classic 20260718/Wooden Echoes In A Small Room.m4a", category: "classic 20260718", vocal: false },
-  { group: 276, title: "Air-Conditioned Prayer", playlist: "Part 2", duration: "3:37", file: "Rock-20260720/Air-Conditioned Prayer_part2.m4a", category: "Rock-20260720", vocal: false },
-  { group: 276, title: "Air-Conditioned Prayer", playlist: "SINGLE", duration: "3:49", file: "Rock-20260720/Air-Conditioned Prayer.m4a", category: "Rock-20260720", vocal: false },
-  { group: 277, title: "Air-Conditioned Woods", playlist: "Part 2", duration: "2:50", file: "Rock-20260720/Air-Conditioned Woods_part2.m4a", category: "Rock-20260720", vocal: false },
-  { group: 277, title: "Air-Conditioned Woods", playlist: "SINGLE", duration: "3:41", file: "Rock-20260720/Air-Conditioned Woods.m4a", category: "Rock-20260720", vocal: false },
   { group: 278, title: "are you still awake", playlist: "Part 2", duration: "3:28", file: "Rock-20260720/are you still awake_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 278, title: "are you still awake", playlist: "SINGLE", duration: "3:28", file: "Rock-20260720/are you still awake.m4a", category: "Rock-20260720", vocal: false },
   { group: 279, title: "August Echo Corridor", playlist: "Part 2", duration: "3:07", file: "Rock-20260720/August Echo Corridor_part2.m4a", category: "Rock-20260720", vocal: false },
