@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-08-12-08:27",
+      "timestamp_kst": "2026-08-12(수) 08:27 KST",
+      "key_event": {
+        "name": "CPI 발표 대기 및 지정학적 긴장",
+        "name_en": "Anticipation for CPI & Geopolitical Tensions",
+        "time": "향후 12시간",
+        "why": "인플레이션 우려, 유가 상승 압력, 시장 관망세",
+        "why_en": "Inflation concerns, rising oil prices, market caution"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "CPI 발표 대기 속 지정학적 긴장 재고조로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to CPI anticipation and renewed geopolitical tensions",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "지정학적 긴장 완화 기대",
+          "name_en": "Easing Geopolitical Tensions Hope",
+          "desc": "미-이란 평화 협상 낙관론 부상",
+          "desc_en": "Optimism for US-Iran peace talks emerges",
+          "category": "geopolitics"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "CPI 발표 대기",
+          "name_en": "CPI Release Anticipation",
+          "desc": "인플레이션 우려 지속 및 Fed의 매파적 발언",
+          "desc_en": "Ongoing inflation concerns and hawkish Fed statements",
+          "category": "macro_data"
+        },
+        {
+          "score": 25,
+          "name": "지정학적 긴장 재고조",
+          "name_en": "Renewed Geopolitical Tensions",
+          "desc": "미-이란 평화 낙관론 퇴색 및 호르무즈 해협 우려",
+          "desc_en": "US-Iran peace optimism fades, concerns over Hormuz Strait",
+          "category": "geopolitics"
+        },
+        {
+          "score": 10,
+          "name": "유가 상승 압력",
+          "name_en": "Upward Oil Price Pressure",
+          "desc": "WTI 원유 1.66% 상승, 인플레이션 우려 가중",
+          "desc_en": "WTI crude up 1.66%, intensifying inflation concerns",
+          "category": "oil_energy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "테슬라 사이버캡 기대감",
+          "name_en": "Tesla Cybercab Optimism",
+          "desc": "플로리다 주지사 지지 발언은 긍정적이나, 투자자 불안감도 상존",
+          "desc_en": "Florida Governor's endorsement is positive, but investor nervousness persists",
+          "category": "company_specific"
+        }
+      ]
+    },
+    {
       "id": "2026-08-12-07:10",
       "timestamp_kst": "2026-08-12(수) 07:10 KST",
       "key_event": {
@@ -513,67 +573,8 @@
           "category": "ai_tech_valuation"
         }
       ]
-    },
-    {
-      "id": "2026-08-10-21:50",
-      "timestamp_kst": "2026-08-10(월) 21:50 KST",
-      "key_event": {
-        "name": "7월 CPI 발표 대기",
-        "name_en": "Anticipation for July CPI Release",
-        "time": "8월 12일(수) 미 동부 오전 8시 30분",
-        "why": "물가 지표에 따른 금리 인상 시나리오 변화, 시장 변동성 확대",
-        "why_en": "Inflation data to shift rate hike scenarios, increase market volatility"
-      },
-      "positive_total": 40,
-      "negative_total": 60,
-      "summary": "CPI 발표 대기 속 관망세 유지, 지정학적 리스크와 금리 인상 우려 상존",
-      "summary_en": "Market remains cautious awaiting CPI, geopolitical risks and rate hike concerns persist",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "AI 관련 기업 실적 기대감",
-          "name_en": "Optimism for AI-related company earnings",
-          "desc": "TSMC의 45% 매출 급증과 Meta의 AI 비전 제시로 AI 수요 지속 기대",
-          "desc_en": "TSMC's 45% revenue surge and Meta's AI vision fuel continued AI demand expectations",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "지정학적 긴장 고조",
-          "name_en": "Heightened geopolitical tensions",
-          "desc": "호르무즈 해협 협상 교착 및 유가 리스크 상존, 글로벌 증시 압박",
-          "desc_en": "Hormuz Strait negotiation deadlock and persistent oil price risks weigh on global stocks",
-          "category": "geopolitics"
-        },
-        {
-          "score": 25,
-          "name": "금리 인상 우려 재부각",
-          "name_en": "Resurgence of rate hike concerns",
-          "desc": "CPI 발표 앞두고 '금리 장기 고금리' 가능성 언급, 국채금리 상승 압력",
-          "desc_en": "Ahead of CPI, 'higher for longer' rates discussed, pushing treasury yields up",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "고용 지표 해석 엇갈림",
-          "name_en": "Mixed interpretations of employment data",
-          "desc": "비농업 고용 감소는 금리 인하 기대를 높이지만, 경기 침체 신호로도 해석",
-          "desc_en": "Non-farm payroll decline raises rate cut hopes but also signals economic slowdown",
-          "category": "macro_data"
-        },
-        {
-          "name": "AI 랠리 지속 여부 논쟁",
-          "name_en": "Debate over AI rally sustainability",
-          "desc": "일부 AI 관련 기업 강세에도 불구하고 7월 폭락의 근본 원인에 대한 논쟁 지속",
-          "desc_en": "Despite strength in some AI firms, debate continues on underlying causes of July's crash",
-          "category": "ai_tech_valuation"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-11T22:10:56Z",
+  "updated_at": "2026-08-11T23:27:46Z",
   "max_entries": 10
 }
