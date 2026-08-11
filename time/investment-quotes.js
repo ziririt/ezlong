@@ -9348,5 +9348,12 @@ window.investmentQuotes = [
     "title": "내일, 또 내일, 또 내일 (Tomorrow, and Tomorrow, and Tomorrow)",
     "author": "가브리엘 제빈 (Gabrielle Zevin)",
     "genre": "literature"
+  },
+  {
+    "english": "The desire for constant action irrespective of underlying conditions is responsible for many losses in Wall Street even among the professionals, who feel that they must take home some money every day, as though they were working for regular wages.",
+    "text": "시장 상황과는 상관없이 끊임없이 움직이려는 욕구, 이것이 월스트리트에서 숱한 손실의 원인이다. 전문 투자자들조차 마치 정해진 급여를 받는 사람처럼 매일 얼마간의 돈을 벌어가야 한다고 믿는다.",
+    "title": "주식 매매하는 법 (How to Trade in Stocks)",
+    "author": "제시 리버모어 (Jesse Livermore)",
+    "category": "mindset"
   }
 ];
