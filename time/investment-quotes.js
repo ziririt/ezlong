@@ -9266,5 +9266,11 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "text": "내가 여행을 정말 좋아하는 이유 중 하나는 과거에 대한 후회와 미래에 대한 불안, 우리의 현재를 위협하는 이 어두운 두 그림자로부터 벗어날 수 있기 때문이다.",
+    "title": "여행의 이유",
+    "author": "김영하",
+    "genre": "literature"
   }
 ];
