@@ -213,7 +213,7 @@ function isKoreanLocale() {
 //   분명한 이득이다. 앱 카탈로그에 ja 가 생기는 날 이 코드는 그대로 두고
 //   i18n/index.js 의 SUPPORTED 만 늘리면 된다.
 //
-// 매핑에 없는 언어(독일어·프랑스어 등)는 전부 /en/ 로 보낸다 — 운영자
+// 매핑에 없는 언어(독일어·프랑스어 등)는 전부 /en/ 로 보낸다 — 성동님
 // 확정(2026-07-28): "이 외의 비한국 앱스토어는 영어 페이지로."
 const EZLONG_SITE_LOCALES = ["en", "ja", "es", "pt", "zh"];
 
@@ -824,7 +824,7 @@ let backgroundArchiveLoaded = false;
 let weatherResolved = false;
 let activePhotoSet = [];
 let activePhotoSetKey = "";
-// 2026-08-04 운영자 리듬 설계 — 4장을 한 바퀴(16분) 다 보여줄 때마다 1씩
+// 2026-08-04 성동님 리듬 설계 — 4장을 한 바퀴(16분) 다 보여줄 때마다 1씩
 // 올라가는 세대 카운터. photoSetKey에 포함되어 다음 4장 세트를 강제한다.
 let photoCycleGen = 0;
 let activePhotoIndex = 0;
@@ -1035,7 +1035,7 @@ function setText(id, value) {
   document.getElementById(id).textContent = value;
 }
 
-// 2026-07-18 이슈 제보 — page2(.ezlong-webview) 안에서 세로 스크롤이 전혀
+// 2026-07-18 유저 제보 — page2(.ezlong-webview) 안에서 세로 스크롤이 전혀
 // 안 되고, 위로 스와이프해 되돌아가는 제스처도 안 먹힌다는 진단 요청.
 // 이 함수는 원래 ezlong.com을 "항상 390 CSS px 너비의 아이폰에서 보는 것"
 // 처럼 렌더한 뒤 transform:scale()로 실제 컨테이너 너비에 맞춰 시각적으로만
@@ -1149,13 +1149,13 @@ function getTimeBucketForHour(hour) {
 // 표시에 반영하지 않는다(기존 흐림/맑음 판정에 맡김).
 const RAIN_DISPLAY_PROB_THRESHOLD = 50;
 const RAIN_DISPLAY_MM_THRESHOLD = 1;
-// 2026-07-24 이슈 제보: "약한 비 74%"처럼 확률만 높고 실제 예보 강수량은
+// 2026-07-24 유저 제보: "약한 비 74%"처럼 확률만 높고 실제 예보 강수량은
 // 0mm에 가까운 순간에도 "비"로 확정 표시되는 오탐이 있었다(여름 소나기
 // 모델이 흔히 만드는 패턴). 원인은 이 함수가 확률>=50%만 보고 바로
 // showAsRain을 확정해버려서였다 — 정작 이 화면 하단의 "다음 비 소식"
 // 문구(백엔드 buildNextRainCountdown 등)는 강수량이 실제로 잡혀야만 비로
 // 인정하므로, 같은 화면 안에서 "비 74%"와 "이번 주는 비 소식 없음"이
-// 동시에 뜨는 자기모순이 났다. 운영 지침: "비"로 확정하려면 확률 50%
+// 동시에 뜨는 자기모순이 났다. 유저 지시: "비"로 확정하려면 확률 50%
 // 이상"이고" 강수량도 0.2mm/h 이상이어야 한다(AND 조건) — 확률만으론
 // 부족하다.
 const RAIN_CONFIRM_MM_THRESHOLD = 0.2;
@@ -1259,7 +1259,7 @@ function deriveRainDisplay(precipProb, precipMm) {
   };
 }
 
-// 2026-07-21 운영 지침("지금 하자, 시간이 걸려도 충분히"): 대기화면 메인
+// 2026-07-21 유저 지시("지금 하자, 시간이 걸려도 충분히"): 대기화면 메인
 // 한줄 요약이 그동안 클라이언트에서 Open-Meteo를 직접 호출해 왔다(WMO
 // weather_code 기반 weatherCodeToTag/weatherCodeToSummary). 문제 2가지 —
 // (1) Open-Meteo 무료 티어는 "비영리 전용" 약관이라 이 서비스를 유료
@@ -1467,7 +1467,7 @@ function getCurrentSeason(date = new Date()) {
 /**
  * 시간대 버킷을 앞뒤 한 칸씩 넓힌다(하루는 원형이라 pre-dawn 다음은 dawn).
  *
- * 2026-08-04 운영 승인 — 밤에 "여름 + 약한 비" 후보가 딱 4장이었다.
+ * 2026-08-04 성동님 승인 — 밤에 "여름 + 약한 비" 후보가 딱 4장이었다.
  * 밤·자정·새벽은 촬영분 자체가 적은데(밤 15장, 자정 3장, 새벽 3장) 자동
  * 모드가 버킷 하나만 보고 있어서, 16분마다 새 세트를 뽑아도 같은 4장이
  * 순서만 바뀌어 돌았다. 저녁 사진은 58장이나 되고 밤 사진과 눈으로
@@ -1661,13 +1661,13 @@ function matchingArchivePhotos(sceneId) {
   // 예전 코드는 매칭 수와 무관하게 그룹/폴백 티어를 항상 합쳐버려서, 비가 오는데도
   // 맑음/흐림 태그의 무관한 사진이 후보에 섞여 4장 중 1장만 비 사진으로 보이는 문제가 있었다.
   const exactPhotos = uniquePhotos(archivePhotos);
-  // 2026-08-04 운영 승인 — 예전엔 여기서 4장만 넘으면 바로 끝냈다.
+  // 2026-08-04 성동님 승인 — 예전엔 여기서 4장만 넘으면 바로 끝냈다.
   // 그런데 4장은 '한 세트'와 정확히 같은 수라서, 16분마다 새 세트를
   // 뽑아도 같은 4장이 순서만 바뀌어 돌아왔다(밤+비 조건의 실제 증상).
   // 한 바퀴 돌 때 새 얼굴이 나오려면 최소한 세트의 3배는 있어야 한다.
   const photoPoolComfortable = 12;
   if (exactPhotos.length >= photoPoolComfortable) return exactPhotos;
-  // 재고가 얇을 때 가장 먼저 푸는 것은 '시간대'다. 운영자가 반복해서
+  // 재고가 얇을 때 가장 먼저 푸는 것은 '시간대'다. 성동님이 반복해서
   // 지적하신 건 늘 날씨가 안 맞는다는 것이었지 시간대가 아니었고,
   // 저녁 사진과 밤 사진은 눈으로 구분되지 않는다. 계절·날씨 조건은
   // 그대로 둔 채 앞뒤 한 칸씩만 연다.
@@ -1834,7 +1834,7 @@ function pickScenePhoto(sceneId) {
   ensurePhotoSet(sceneId);
   if (activePhotoSet.length === 0) return "";
 
-  // 2026-08-04 이슈 제보(배경 자동 전환 멈춤) — 슬롯 비교 기반 자동
+  // 2026-08-04 성동님 제보(배경 자동 전환 멈춤) — 슬롯 비교 기반 자동
   // 회전을 여기서 제거하고 아래 명시적 5분 타이머(photoAutoRotateTick)로
   // 이관했다. activePhotoSlot 갱신은 남긴다 — renderTime의 shouldRotatePhoto()
   // 경로가 15분에 1회만 강제 setScene을 발화하게 하는 스로틀 역할
@@ -2041,7 +2041,7 @@ if (dateLabelEl) {
 // 닫으면서 "여기 누르는 거구나"를 몸으로 보여주고, 닫히는 순간 상단
 // 날짜칩에 5초짜리 마법가루 반짝임을 얹어 "방금 그 반짝인 자리를 눌러보면
 // 되겠네"라는 직관적 유도를 만든다.
-// 2026-07-21 피드백 — 최초엔 "하루에 한 번은 아쉽다"는 운영 피드백으로
+// 2026-07-21 피드백 — 최초엔 "하루에 한 번은 아쉽다"는 유저 지적으로
 // localStorage 1회 제한을 완전히 제거, 앱을 실행할 때마다 매번 재생한다.
 let calendarOnboardingTimers = [];
 
@@ -2189,7 +2189,7 @@ function renderWeather() {
 // 끝날 때까지" 버튼을 비활성화해둘 수 있도록 Promise를 반환하게 바꿨다 — 기존
 // 세 호출부(앱 로드 시/10분 주기 타이머/포그라운드 복귀 시)는 반환값을 그냥
 // 무시하므로 동작에 변화가 없다. 내부 로직(위치 확정 3분기)은 그대로다.
-// 2026-08-04 이슈 제보(안드로이드 날씨 첫 로드 실패) — 늦은 위치 fix
+// 2026-08-04 성동님 제보(안드로이드 날씨 첫 로드 실패) — 늦은 위치 fix
 // 자동 수신 장치. getCurrentPosition이 타임아웃으로 실패한 뒤에도 기기가
 // 뒤늦게 위치를 잡으면(안드로이드 실기기에서 수십 초~수 분 뒤) 그 순간
 // 자동으로 날씨를 다시 불러온다 — 유저가 '다시'를 누를 필요가 없다.
@@ -2416,7 +2416,7 @@ function renderQuote(index, immediate = false) {
     let englishText, bodyText;
     if (koMode) {
       // ★ 한국어는 예전과 완전히 동일 ★ 120자 초과 원문 숨김 규칙 포함
-      // 2026-08-05 이슈 제보(아이폰 문장박스가 비주얼라이저와 겹침) —
+      // 2026-08-05 성동님 제보(아이폰 문장박스가 비주얼라이저와 겹침) —
       // 기존 규칙은 **영어 원문 길이만** 봤다. 그런데 실제로 박스를 넘치게
       // 만드는 건 두 줄의 합이다. 원문이 84자로 짧아도 한국어 본문이 118자면
       // 합쳐서 박스를 넘긴다(제보된 그 문장이 정확히 그랬다).
@@ -2491,7 +2491,7 @@ function renderQuote(index, immediate = false) {
  * title 이 비어 있으면 꺾쇠 없이 저자만 적는다 — 없는 책을 지어내는 것보다
  * "누가 한 말인지만 밝히는" 편이 정직하다.
  */
-// 2026-08-10 운영 지침 — "책제목과 저자 이름은 원어명을 굳이 쓰지 않아도
+// 2026-08-10 성동님 지시 — "책제목과 저자 이름은 원어명을 굳이 쓰지 않아도
 // 된다. <행운에 속지마라> 나심 니콜라스 탈레브 처럼 심플하게. 다른 나라
 // 언어도 마찬가지다. 굳이 원어 제목과 이름을 써서 복잡해 보이게 만들지 마라."
 //
@@ -2559,7 +2559,7 @@ function formatQuoteSource(quote, koMode, translated) {
 // data-url에 저장, 매칭이 안 됐으면 숨긴다. aladin-links.js 로드 실패/누락
 // 시에도(window.aladinLinks === undefined) 에러 없이 그냥 숨김 처리한다.
 //
-// 2026-08-09 운영 지침로 확장 — 비한국어 로케일에서도 이 버튼을 띄운다.
+// 2026-08-09 성동님 지시로 확장 — 비한국어 로케일에서도 이 버튼을 띄운다.
 // 그전까지는 한국어에만 알라딘 버튼이 떴고, 다른 언어에서는 아마존 링크가
 // "복사본 마지막 줄"에만 들어갔다. 즉 링크는 있는데 화면에서 갈 길이 없었다.
 // 어느 서점이냐는 quote-source 모듈이 로케일을 보고 정한다(한국어→알라딘,
@@ -2661,7 +2661,7 @@ function shuffleQuotes(items) {
 // 투자서는 절대 대상 아님) 노출 가산점 — quote.priority === true인 문장을
 // 덱을 새로 채울 때 PRIORITY_WEIGHT배만큼 더 넣어서, 같은 덱 한 바퀴 안에서
 // 더 자주 뽑히도록 한다. genre !== "literature"이면 priority 필드가 있어도
-// 무시한다(투자서는 절대 가중치 대상이 아니라는 운영 지침를 코드로도 강제).
+// 무시한다(투자서는 절대 가중치 대상이 아니라는 유저 지시를 코드로도 강제).
 const PRIORITY_WEIGHT = 3;
 
 function buildWeightedDeckSource(items) {
@@ -2709,7 +2709,7 @@ function ensureQuoteWindow() {
 // 벗어나는 순간 곧바로 새 4개를 뽑아버려서, 스와이프를 연달아 하면
 // "문장이 수만 가지"인 것처럼 계속 새로 나오고, 왼쪽으로 한 번 갔다가
 // 다시 오른쪽으로 가도 방금 본 문장으로 못 돌아왔다("아껴서 보여줄
-// 필요가 있다"는 운영 피드백 그대로 재발). 이제 수동 이동(스와이프/점탭)은
+// 필요가 있다"는 유저 지적 그대로 재발). 이제 수동 이동(스와이프/점탭)은
 // 사진 점(selectPhotoIndex)과 완전히 동일하게 "이미 불러온 4개 안에서만"
 // 양방향 순환한다 — 새 4개를 뽑는 건 아래 advanceQuoteAuto()(1분마다
 // 자동 전진, 4개를 다 지나면 그때만 새로 리필)에서만 일어난다.
@@ -2775,8 +2775,8 @@ function resetQuoteWindow() {
 // 같은 영문 원전이라 영어권 사용자에게 오히려 더 잘 맞는다.
 //
 // ★ 한국어 화면은 이 게이트를 통과하지 않는다 ★ — koMode 일 때는 예전
-// 필터식 그대로라, 운영자가 보시는 화면의 문장 풀은 1,109개 전부 유지된다.
-// 2026-07-29 운영자 확정 — **비한국어 화면은 투자서 문장만 내보낸다.**
+// 필터식 그대로라, 성동님이 보시는 화면의 문장 풀은 1,109개 전부 유지된다.
+// 2026-07-29 성동님 확정 — **비한국어 화면은 투자서 문장만 내보낸다.**
 // 문학·시·에세이·인문역사 같은 분야는 한국어 화면 전용이다. 이유가 둘이다.
 //   1. 그 분야 문장은 한국 독자를 향해 고른 것이라, 번역 없이 영문 원문만
 //      던지면 맥락이 통째로 빠진다(투자서는 애초에 영문 원전이 대부분이라
@@ -2917,7 +2917,7 @@ function clearSettingsDirty() {
 // 요소의 터치 스크롤 등록이 누락되는 현상이 실기기 계측으로 확인됐다
 // (진단 v6: 제스처 35회 전부 스크롤 0px vs 진단 v5: 열린 상태에서
 // appendChild로 이동시키자 즉시 827px 완주 — 유일한 차이가 재부착).
-// 2026-08-04 운영 요청 — 음악 플레이어의 톱니로 들어오면 설정 맨 위가
+// 2026-08-04 성동님 요청 — 음악 플레이어의 톱니로 들어오면 설정 맨 위가
 // 아니라 음악 섹션으로 바로 데려다준다("음악 설정하려고 눌렀는데 못
 // 찾는다"). focusSection 인자가 없으면 기존과 완전히 동일하게 동작한다.
 function openSettings(focusSection) {
@@ -2997,7 +2997,7 @@ function withAladinPartnerParam(url) {
 // 전체가 알라딘으로 통째로 바뀌어버리고 돌아올 방법이 없었다(유저 실측
 // 피드백). 그래서 처음부터 iframe을 풀사이즈(높이 100%)로 보여주고,
 // 하단엔 확실하게 앱으로 돌아올 수 있는 큰 "닫기" 버튼만 둔다.
-// 2026-07-16 4차 개정: 이슈 제보 — 알라딘 로그인/장바구니가 이 iframe
+// 2026-07-16 4차 개정: 유저 제보 — 알라딘 로그인/장바구니가 이 iframe
 // 안에서 전혀 유지되지 않는다("담기 하면 장바구니로 넘어가는데 비어있다,
 // 로그인해도 다음에 열면 또 로그아웃돼있다"). 원인은 이 iframe이 ezlong.com
 // 기준으로 "서드파티" 컨텍스트라, iOS WebKit이 여기 심기는 알라딘 쿠키를
@@ -3759,7 +3759,7 @@ function weatherEmojiFromEnglish(conditions) {
 // "지금" 강수확률(hourlyNowProb)도 OR 조건으로 반영해 두 표시가 서로
 // 모순되지 않게 한다.
 function weatherEmojiFromCurrent(c, hourlyNowProb, hourlyNowMm) {
-  // 2026-07-24 이슈 제보 반영: 확률만 보고 비를 확정하던 예전 OR 조건을
+  // 2026-07-24 유저 제보 반영: 확률만 보고 비를 확정하던 예전 OR 조건을
   // 버리고, current/hourly-strip/weekly가 전부 공유하는 deriveRainDisplay()
   // (확률>=50% && 강수량>=0.2mm/h AND 조건)로 통일한다 — 아이콘·비
   // 애니메이션·히어로 텍스트가 항상 같은 판정을 말하게 하기 위함.
@@ -3795,7 +3795,7 @@ function weatherEmojiFromKoCondition(ko) {
 // 장식용 아이콘이라 낮/밤 추정이 다소 근사치여도 무방하다.
 // 2026-07-22: 비 아이콘 진입 문턱을 deriveRainDisplay()(30%→50%)와 통일 —
 // renderWeatherHourlyStrip의 isRainHour 판정과 반드시 같은 기준이어야 한다.
-// 2026-07-24 이슈 제보: 강수 신호가 없는 시간이 전부 "맑음" 아이콘으로
+// 2026-07-24 유저 제보: 강수 신호가 없는 시간이 전부 "맑음" 아이콘으로
 // 떨어져, 실제로는 흐리거나 구름 많은 시간에도 스트립엔 계속 해가 떠
 // 있었다 — deriveRainDisplay()의 iconDay/iconNight가 null인(=③, 비와
 // 무관) 경우의 폴백이 무조건 ☀️/🌙였던 게 원인. 이제 백엔드가 시간별로
@@ -3839,7 +3839,7 @@ function weatherEmojiFromHour(precipprob, precipMm, hourLabel, isNow, conditions
     // 전 시간에 뭉개는 특성과 같은 뿌리), 여기서 그 텍스트("비")를 그대로
     // 아이콘화하면 위에서 ③으로 억제한 비 신호가 폴백 경로로 되살아난다 —
     // 실제 사고: ver.1.6.13.7 배포 직후 스트립 전 시간이 🌧️로 도배
-    // (2026-07-27 13:2x 이슈 제보). "비"는 구름량 정보로 강등해 "흐림"으로
+    // (2026-07-27 13:2x 유저 제보). "비"는 구름량 정보로 강등해 "흐림"으로
     // 그린다. 천둥번개(⛈️)·눈(❄️)은 우산과 별개의 고유 신호라 유지.
     // 2026-07-28 글로벌화 W2: 강등 규칙을 WX.applyRainDowngrade() 로 이동.
     // 여기까지 왔다는 건 deriveRainDisplay 가 ③(비 신호 없음)을 준
@@ -3980,7 +3980,7 @@ function updateWeatherDetailTitle() {
     : t("weather.titleWithLocation", { location: loc }, `${loc} 날씨`);
 }
 
-// 2026-08-10 이슈 제보 — "메인은 37도인데 상세에 들어가면 29도다."
+// 2026-08-10 성동님 제보 — "메인은 37도인데 상세에 들어가면 29도다."
 //
 // 두 화면이 같은 엔드포인트(/api/weather/current)를 보는데도 값이 갈린 이유는,
 // 각자 자기 시점의 응답을 따로 들고 있었기 때문이다. 메인 칩(weatherState)은
@@ -4073,7 +4073,7 @@ function renderWeatherCurrent(current, hourlyNowItem) {
     : hourlyNowItem && typeof hourlyNowItem.precipprob === "number"
       ? hourlyNowItem.precipprob
       : null;
-  // 2026-07-24 이슈 제보 반영: hourly-strip "지금" 항목의 강수량(precipMm)도
+  // 2026-07-24 유저 제보 반영: hourly-strip "지금" 항목의 강수량(precipMm)도
   // 함께 넘겨서 deriveRainDisplay()의 AND 조건(확률>=50% && 강수량>=0.2mm/h)이
   // 아이콘·애니메이션·히어로 텍스트 전부에서 같은 기준으로 판정되게 한다.
   const hourlyNowMm = activeScenario
@@ -4092,7 +4092,7 @@ function renderWeatherCurrent(current, hourlyNowItem) {
   // 오는 날에도 빗줄기가 내리는 모순이 있었다(사소하지만 쉬운 교정).
   const precipTypes = (c.preciptype || []).map((t) => String(t).toLowerCase());
   const isSnowOnly = precipTypes.length > 0 && precipTypes.every((t) => t === "snow");
-  // 2026-07-24 이슈 제보 반영: "확률>=50%거나 강수량>0" OR 조건이던 예전
+  // 2026-07-24 유저 제보 반영: "확률>=50%거나 강수량>0" OR 조건이던 예전
   // 판정을 버리고, deriveRainDisplay()(확률>=50% && 강수량>=0.2mm/h AND
   // 조건)로 통일한다 — c(순간 관측)와 hourly-strip "지금" 예보 중 더 강한
   // 쪽을 각각 취해(effProb/effMm) 하나의 판정 근거로 쓰고, 이 값을 아래
@@ -4336,7 +4336,7 @@ function renderRainDayCard(day) {
 // 맨 위 wdTopComment로 뺀다(유저 피드백: "코멘트 2~3줄은 상단으로, '이번 주
 // 강수 예보'는 그 아래로"). 문구 자체는 그대로 재사용 — 두 함수가 같은
 // rain-windows API 응답(data.umbrellaToday)을 나눠서 채울 뿐이다.
-// 2026-08-05 운영 지침 — 한국 장마철 판정.
+// 2026-08-05 성동님 지시 — 한국 장마철 판정.
 // "비 소식이 없어요, 우산 없이 다녀와도 괜찮아요"는 비가 올지 말지가 매일의
 // 관심사인 기간에만 살가운 말이다. 평상시에는 당연한 걸 말하는 것이라 낯설다.
 // 기상청 기준 중부지방 장마는 해마다 다르지만 대체로 6월 하순에 시작해
@@ -4363,7 +4363,7 @@ function renderWeatherTopComment(data) {
     wdTopComment.textContent = "";
     return;
   }
-  // 2026-08-05 운영 지침 — 우산 인사는 두 갈래로 나뉜다.
+  // 2026-08-05 성동님 지시 — 우산 인사는 두 갈래로 나뉜다.
   //   · 비가 온다(needed=true) — 언제나 말한다. 계절과 무관하게 필요한 정보다.
   //   · 비 소식이 없다(needed=false) — 한국 장마철에만 말한다. 그 밖에는
   //     아무 말도 하지 않는다("비 안 온다"는 말은 평상시엔 당연한 소리다).
@@ -4398,7 +4398,7 @@ function renderWeatherNextRain(data) {
   wdNextRain.textContent = countdown.message;
 }
 
-// 2026-08-04 운영 지침 — 폭염(35°+)·강추위(-10°−)에는 이용자를 챙기는
+// 2026-08-04 성동님 지시 — 폭염(35°+)·강추위(-10°−)에는 이용자를 챙기는
 // 케어 한 줄을 덧붙인다("그늘에서 틈틈이 쉬어가세요. 건강이 먼저예요.").
 // 사람이 살가운 느낌이 드는 인간적인 앱 — 백엔드 careComment(rain-windows
 // 응답, logic.ts buildTempCareComment)를 그대로 보여주기만 한다.
@@ -4631,7 +4631,7 @@ function renderWeatherWeeklyForecast(data) {
       let mmForDisplay = maxMm;
       let isRainStopped = false;
 
-      // 2026-07-24 이슈 제보 반영, 같은 날 Fable 5 검토회신으로 사다리 재정렬
+      // 2026-07-24 유저 제보 반영, 같은 날 Fable 5 검토회신으로 사다리 재정렬
       // (FABLE5_검토회신_비표시일관성_2026-07-24.md): "오늘" 행만 하루 전체
       // (자정~24시) 확률로 판단하면, 이미 새벽에 그친 비가 마치 "이제부터
       // 올 비"처럼 보여 시간대별 스트립·우산 조언(둘 다 지금 이후만 봄)과
@@ -4689,7 +4689,7 @@ function renderWeatherWeeklyForecast(data) {
 // — fxtest 시나리오 스위처(wdApplyTestScenario)는 이 값을 건드리지 않고
 // 항상 실제 API값을 유지한다(아이콘/비연출만 테스트용으로 바뀌는 것과
 // 의도적으로 분리 — 오늘 실제 최고/최저까지 가짜로 바뀌면 오해 소지가 큼).
-// 2026-07-20 9차 피드백(운영 피드백): "메인페이지는 '옅은 이슬비'처럼 세밀한데
+// 2026-07-20 9차 피드백(유저 지적): "메인페이지는 '옅은 이슬비'처럼 세밀한데
 // 날씨상세는 '비'로 대충 나온다, 왜 상세페이지가 더 대충이냐?" — 당시 원인은
 // 두 화면이 서로 다른 날씨 소스를 쓰고 있었기 때문이다. 메인페이지 브리핑
 // (weatherState.summary)은 Open-Meteo WMO 코드 기반 weatherCodeToSummary()가
@@ -4720,7 +4720,7 @@ function weatherSummaryPlaceholders() {
     t("weather.error", null, "날씨 오류"),
   ];
 }
-// 2026-07-20 11차 피드백(운영 피드백): "옅은 이슬비 강수확률 5%"인데 바로
+// 2026-07-20 11차 피드백(유저 지적): "옅은 이슬비 강수확률 5%"인데 바로
 // 아래 시간대별 상세 예보(백엔드/Visual Crossing 기준)는 "지금" 시간에
 // 맑음 아이콘을 보여주는 모순이 스크린샷으로 실측됐다. wdCurrentConditionBase/
 // wdCurrentRainSuffix는 renderWeatherCurrent()(항상 이 함수보다 먼저
@@ -4762,7 +4762,7 @@ function renderWeatherCurrentToday(data) {
 function renderWeatherYesterday(data) {
   if (wd24hComparison) {
     // ★ comparison 은 백엔드가 만드는 한국어 서술문이다 ★
-    // 운영자 확정(2026-07-29): 날씨 상세의 서술문은 비한국어에서 아예 뺀다.
+    // 성동님 확정(2026-07-29): 날씨 상세의 서술문은 비한국어에서 아예 뺀다.
     // 라벨은 번역하되 문장은 내보내지 않는다 — 영어 화면에 한국어 문장이
     // 끼어드는 것보다, 아래 두 칼럼 대조표만 보여주는 편이 낫다.
     // (백엔드 문장 템플릿이 다국어화되면 그때 이 게이트를 풀면 된다.)
@@ -5087,7 +5087,7 @@ function recordTrackHeard(index) {
 function reshuffleMusicOrder() {
   saveMusicHistory([]);
   showMusicToast("Shuffled! Fresh order incoming.");
-  // 2026-07-16: 운영 피드백 — "셔플만 되어야지 왜 정각 세리모니까지 같이
+  // 2026-07-16: 성동님 지적 — "셔플만 되어야지 왜 정각 세리모니까지 같이
   // 뜨나?" recordPlayLog(→handleMusicCeremonyOnTrackStart)는 모든 트랙
   // 전환 경로에 공통으로 걸려있어(8항 원칙과 동일하게 재활용), 셔플이
   // 유발한 전환도 "새 곡 시작"으로 똑같이 인식되고 있었다. 셔플은 사용자가
@@ -5196,7 +5196,7 @@ function showMusicToast(text) {
   // 연속 클릭 시 트랜지션이 재트리거되도록 강제 리플로우.
   void musicToast.offsetWidth;
   musicToast.classList.add("is-visible");
-  // 2026-07-22 이슈 제보 — "너무 짧게 나타났다 사라진다"는 컴플레인으로
+  // 2026-07-22 유저 제보 — "너무 짧게 나타났다 사라진다"는 컴플레인으로
   // 5초 더 연장(3500ms→8500ms, 5000ms→10000ms). 숨김 시작~완전 사라짐
   // 사이 페이드아웃 간격(1500ms)은 그대로 유지.
   musicToastHideTimer = setTimeout(() => {
@@ -5225,7 +5225,7 @@ function isMusicVizActiveContext() {
   // 2026-08-05 — 침대맡 모드에서는 그리지 않는다. 화면이 어두워 보이지도
   // 않는데 60fps로 계속 그리는 건 순수한 낭비다(Fable 5 작업 5-1·5-2).
   if (typeof bedsideActive !== "undefined" && bedsideActive) return false;
-  // 2026-08-05 운영 피드백 — 문서가 안 보이면(다른 앱 전환·화면 잠금)
+  // 2026-08-05 성동님 지적 — 문서가 안 보이면(다른 앱 전환·화면 잠금)
   // 그릴 이유가 없다. 브라우저가 대개 rAF를 재워주지만 '대개'에 기대지
   // 않는다 — 웹뷰 구현마다 다르고, 이 프로젝트는 그 차이에 여러 번 데였다.
   try {
@@ -5240,7 +5240,7 @@ function isMusicVizActiveContext() {
   return isMusicPanelOpen();
 }
 
-// 2026-08-05 운영 요청 — "사람들이 비주얼라이저를 켤 수 있다는 걸 모른다."
+// 2026-08-05 성동님 요청 — "사람들이 비주얼라이저를 켤 수 있다는 걸 모른다."
 // 그래서 이 패널의 기본값을 '열림'으로 바꿨다. 다만 접은 사람에게 매번 다시
 // 펴 보이지는 않는다 — 접었다는 사실을 기억한다(강요하지 않는다).
 const musicPanelOpenStorageKey = "ezlong:musicPanelOpen";
@@ -5288,7 +5288,7 @@ function handleMusicIconTap() {
 
 // 2026-07-28 W9 — QC 전용 "곡 삭제" 도구를 제거했다.
 //   원음 품질 점검용 임시 도구였는데(?musicqc=1 로만 노출), 글로벌 출시
-//   준비 중 설정 화면 전수 점검에서 발견돼 운영 판단으로 삭제했다.
+//   준비 중 설정 화면 전수 점검에서 발견돼 성동님 판단으로 삭제했다.
 //   개발자용 문구가 사용자 화면에 남아있을 이유가 없고, 번역 대상도 아니다.
 //   기기에 남은 ezlong:musicQCMode / ezlong:musicRemovalRequests 키는
 //   이제 아무도 읽지 않아 자동으로 무해해진다(정리 코드 불필요).
@@ -5552,7 +5552,7 @@ function shuffleArray(items) {
 // 공평한 순번) — 그런데 실제 카테고리 곡수를 세어보니 My Workspace 199곡
 // 대 BGM/보컬 계열 16곡처럼 12배 넘게 차이가 나서, "순번은 공평"해도 "곡
 // 하나가 뽑힐 확률"로 환산하면 소규모 카테고리 곡이 큰 카테고리 곡보다
-// 12배 넘게 자주 나오는 결과가 됐다(이슈 제보: "좋아요 안 누른 곡이 자주
+// 12배 넘게 자주 나오는 결과가 됐다(유저 제보: "좋아요 안 누른 곡이 자주
 // 나오는 느낌" — 실제로 그럴 만했다). 그렇다고 곡수에 정확히 비례해서
 // 순번을 주면(완전 비례) My Workspace 혼자 전체 재생의 56%를 차지하게 돼,
 // 이번엔 반대로 "같은 카테고리만 계속 나온다"던 2026-07-12의 원래 문제가
@@ -5902,7 +5902,7 @@ function standbyPlayer() {
 // same-origin(R2 fetch 후 blob URL로 재생, resolveTrackUrl/loadMusicTrack
 // 참조)이라 CORS로 분석 데이터가 막힐 일이 거의 없다 — 그래도 AnalyserNode
 // 자체를 못 만드는 예외적 환경(구형 브라우저 등) 대비로 조용한 폴백만 둔다.
-// 2026-07-13 8차: 운영자가 첨부한 macOS 스펙트럼 스타일 참고 영상 — 가는
+// 2026-07-13 8차: 성동님이 첨부한 macOS 스펙트럼 스타일 참고 영상 — 가는
 // 막대 다수, 조용할 땐 점처럼 수축, 활성 구간만 봉긋 솟는 모양. 7차의
 // "14개, 넓은 폭"이 오히려 어색하다는 피드백으로 다시 늘렸다.
 // 2026-07-22 유저 요청 — "지겨워질 때 바꿀 수 있는" 비주얼라이저 커스터마이징
@@ -5922,7 +5922,7 @@ const MUSIC_VIZ_SENSITIVITY_PRESETS = {
   normal: { heightMul: 1, attackMul: 1 },
   intense: { heightMul: 1.32, attackMul: 1.2 }
 };
-// 2026-07-22 운영 피드백 — "바꿔도 뭐가 바뀐지 잘 모르겠다"는 재지적으로
+// 2026-07-22 유저 지적 — "바꿔도 뭐가 바뀐지 잘 모르겠다"는 재지적으로
 // strong 배율을 1.6 → 2.2로 키워 체감 차이를 키웠다. 다만 이 효과는 곡에
 // 실제로 뚜렷한 킥 드럼/베이스 타격이 있을 때만 발동한다 — 잔잔한 배경음악
 // 구간에서는 강하게로 바꿔도 원래 타격 자체가 감지 안 돼 차이가 없을 수
@@ -6009,7 +6009,7 @@ function applyMusicVizShapeClass() {
     wrap.classList.add(shapeClass);
   });
 }
-// 2026-07-22 운영 피드백 — "예민에서 막대가 박스 높이에 다 닿아서 다 똑같아
+// 2026-07-22 유저 지적 — "예민에서 막대가 박스 높이에 다 닿아서 다 똑같아
 // 보인다. 무조건 위에서 자르지 말고, 예민일 때만 박스 자체의 height를
 // 키워달라." drawMusicViz/drawMusicVizNative의 `target = Math.min(target, h)`
 // 클램프는 그대로 두되(막대가 박스를 뚫고 나가는 건 여전히 막아야 함),
@@ -6042,7 +6042,7 @@ function vizMirrorSourceIndex(j, n) {
 // 각 draw 함수는 musicVizBars[i](막대 높이)와 musicVizIntensity[i](밝기
 // 0~1)만 채우고, 실제 style.height/--bar-intensity 대입과 미러 재배치는
 // 전부 여기서 한 곳으로 모아 처리한다.
-// 2026-07-25 이슈 제보(배터리 급소모) — drawMusicViz는 requestAnimationFrame으로
+// 2026-07-25 유저 제보(배터리 급소모) — drawMusicViz는 requestAnimationFrame으로
 // 화면 주사율만큼(ProMotion 기기면 최대 120회/초) 계속 돌아가는데, 실제
 // 오디오 반응 값(nativeAudioBass/Mid/Treble)은 네이티브에서 15Hz로만 갱신된다
 // (ios CLAUDE.md 28항 "15Hz 스냅샷 방출" 규격). 즉 대부분의 rAF 틱은 같은
@@ -6220,7 +6220,7 @@ function ensureMusicVizGraph() {
 
 // 오디오 그래프를 못 쓰는 예외적 환경을 위한 잔잔한 폴백 웨이브. 실제
 // 소리는 대부분 정상 분석되므로 이 분기는 안전장치 성격이 강하다.
-// 2026-08-05 운영 지침 — 음악이 멈춰 있을 때의 모습. 사인파도 반짝임도
+// 2026-08-05 성동님 지시 — 음악이 멈춰 있을 때의 모습. 사인파도 반짝임도
 // 없이, 막대가 있던 자리에서 바닥까지 스르르 내려앉는다. 다 내려앉으면
 // true를 돌려주고, 호출자는 그때 rAF 루프 자체를 끝낸다(정지 화면을
 // 60fps로 다시 그릴 이유가 없다 — 배터리).
@@ -6290,7 +6290,7 @@ window.__flipzenNativeAudioLevels = function (bass, mid, treble) {
   nativeAudioLevelReceivedAt = Date.now();
 };
 
-// 2026-08-10 3차 이슈 제보 — "음은 세게 나오는데 파동은 0.x초 늦다.
+// 2026-08-10 3차 성동님 제보 — "음은 세게 나오는데 파동은 0.x초 늦다.
 // 음에 맞춰 춤추는 게 아니라 제멋대로다. 아이폰과 달리 뻑뻑하다."
 //
 // 안드로이드는 이제 값을 받아 기다리지 않고, 그리기 직전에 직접 집어 온다.
@@ -6305,7 +6305,7 @@ let nativeLevelPullActive = false;
 // 2026-08-11 신설 — 안드로이드가 보내주는 **진짜 스펙트럼**.
 //   지금까지는 저·중·고 숫자 세 개만 받아서 막대 서른네 개를 그렸다. 가중치와
 //   흔들림으로 서른네 개처럼 보이게 만든 그림이었지, 막대가 각자의 악기를
-//   나타내지는 않았다(운영 피드백: "각자 오케스트라 단원인 것처럼").
+//   나타내지는 않았다(성동님 지적: "각자 오케스트라 단원인 것처럼").
 //   이제 네이티브가 2048점 FFT 로 24개 대역 + 킥 타격을 25글자 문자열에 눌러
 //   보낸다. 옛 빌드에서는 이 창구가 없어 빈 문자열이 오고, 그때는 기존 세 값
 //   경로로 그대로 폴백한다 — 앱 업데이트 전에도 화면이 죽지 않는다.
@@ -6418,7 +6418,7 @@ let nativeVizMidAvg2 = 0;
 let nativeVizTrebleAvg2 = 0;
 
 // 2026-08-11 신설 — 대역 24개를 받은 경우의 그리기.
-//   설계 원칙은 운영자 말씀 그대로다: 음향학적 정확도가 아니라 "음이 보인다"는
+//   설계 원칙은 성동님 말씀 그대로다: 음향학적 정확도가 아니라 "음이 보인다"는
 //   느낌. 막대는 각자 자기 대역의 악기이고, 쎈 소리는 실제로 높이 올라가고,
 //   박자에는 화면 전체가 한 박 친다.
 //   웹/아이폰 경로(ver.1.9.24)와 같은 문법으로 맞춰 두 플랫폼의 체감을 통일한다.
@@ -6571,7 +6571,7 @@ function drawMusicVizNative(h) {
       target = Math.max(target, Math.pow(Math.max(0, trebleNow), 0.55) * h * 0.7);
     }
     target *= sens.heightMul;
-    // 2026-07-22 운영 피드백 — "격렬" 감도(heightMul 1.32)가 박스 높이(h)를
+    // 2026-07-22 유저 지적 — "격렬" 감도(heightMul 1.32)가 박스 높이(h)를
     // 넘어서 막대가 비주얼라이저 박스 테두리를 뚫고 나가버렸다. 예전에
     // 그만두기로 한 "정각 세리모니" 돌출 연출과 똑같은 문제라 반드시
     // 박스 안에서만 움직여야 한다 — 배율을 곱한 뒤 박스 높이로 다시
@@ -6605,7 +6605,7 @@ function drawMusicViz() {
 
   const h = (musicVizWrap && musicVizWrap.clientHeight) || (musicVizPreviewWrap && musicVizPreviewWrap.clientHeight) || 52;
 
-  // 2026-08-05 — 음악이 멈춰 있으면 바닥에 깔린다(운영 지침).
+  // 2026-08-05 — 음악이 멈춰 있으면 바닥에 깔린다(성동님 지시).
   // 설정 화면의 미리보기는 예외 — 거기서는 색·감도를 고르는 중이라
   // 움직임이 보여야 고를 수 있다.
   const vizSettingsOpen = Boolean(settingsPanel && settingsPanel.classList.contains("is-open"));
@@ -6670,7 +6670,7 @@ function drawMusicViz() {
   }
 
   // 2026-08-11 신설 — **킥 온셋(타격 순간) 검출**.
-  //   운영자: "제일 중요한 것은 비트감/박자이고, 쎈 소리가 세게 표현되는 것."
+  //   성동님: "제일 중요한 것은 비트감/박자이고, 쎈 소리가 세게 표현되는 것."
   //   방식은 사람이 듣는 방식과 같다 — 저음이 **직전보다 갑자기 올라간
   //   순간**을 잡는다(스펙트럴 플럭스). 크기가 아니라 "오름"을 보므로
   //   베이스가 기다란 구간에서도 킥만 골라낸다.
@@ -6748,10 +6748,10 @@ function drawMusicViz() {
     }
     // 2026-08-11 — 킥이 박히는 순간 **화면 전체**가 한 번 숨 쉰다.
     //   한 막대만 튀는 것보다 오케스트라가 다 같이 한 박 치는 편이
-    //   "박자가 보인다"는 느낌에 훨씬 가깝다(운영자 표현: 각자 단원처럼).
+    //   "박자가 보인다"는 느낌에 훨씬 가깝다(성동님 표현: 각자 단원처럼).
     target *= 1 + 0.20 * bassHitForViz;
     target *= sens.heightMul;
-    // 2026-07-22 운영 피드백 — 네이티브 경로와 동일하게 "격렬"이 박스 높이(h)를
+    // 2026-07-22 유저 지적 — 네이티브 경로와 동일하게 "격렬"이 박스 높이(h)를
     // 뚫고 나가지 않도록 상한을 건다.
     target = Math.min(target, h);
     // 어택은 더 빠르게(비트에 팍! 반응), 릴리즈도 조금 더 빠르게 — "더
@@ -6808,7 +6808,7 @@ function ensureAudioGraph() {
       const source = audioContext.createMediaElementSource(player);
       const gain = audioContext.createGain();
       const analyser = audioContext.createAnalyser();
-      // 2026-08-11 운영 피드백 — "비트감이 보이지 않는다."
+      // 2026-08-11 성동님 지적 — "비트감이 보이지 않는다."
       //   fftSize 128 은 44.1kHz 기준 한 칸이 **345Hz** 다. 킥(30~90Hz)이
       //   0번 칸 하나에 통째로 들어가 베이스·저음 피아노와 구분이 안 됐다.
       //   2048 이면 한 칸이 21.5Hz — 킥이 세 칸에 걸쳐 뚜렷하게 보인다.
@@ -6956,7 +6956,7 @@ async function updateMusicProgress(event) {
   // 그대로 재사용해 폭(%)만 매 프레임 갱신한다(새 계산 없음, 8항 원칙과 동일).
   if (musicProgressFill) musicProgressFill.style.width = (progress * 100).toFixed(2) + "%";
 
-  // 2026-08-04 이슈 제보 — 음악은 잘 나오는데 곡명이 "재생 대기 중"으로
+  // 2026-08-04 성동님 제보 — 음악은 잘 나오는데 곡명이 "재생 대기 중"으로
   // 남는 경우가 종종 있다. 곡명은 트랙 전환 시점에만 다시 그려지므로,
   // 웹뷰 재로드·플레이리스트 늦은 로드처럼 라벨을 그린 "후에" 트랙
   // 정보가 채워지는 경로에서는 대기 문구가 다음 곡까지 남았다. 재생이
@@ -7118,7 +7118,7 @@ function musicAutoPauseLimitMs() {
   const base = isSpecialCategory(loadMusicPlaylistFilter())
     ? MUSIC_AUTOPAUSE_LIMIT_SPECIAL_MS
     : MUSIC_AUTOPAUSE_LIMIT_NORMAL_MS;
-  // 2026-08-05 운영 지침 — 충전 중이 아니면 절반으로 앞당긴다
+  // 2026-08-05 성동님 지시 — 충전 중이 아니면 절반으로 앞당긴다
   // (Special 1시간→30분, 일반 2시간→1시간). "비충전 상태에서는 배터리를
   // 절약해주는 게 고마운 것"이라는 판단. 충전 중이면 기존 그대로다.
   // 충전 여부는 비주얼라이저 배터리 보호와 같은 판정을 쓴다
@@ -7725,7 +7725,7 @@ window.__flipzenNativeCommand = function (command) {
     //
     // 즉 지금 이 순간 음악은 **멈춰 있다**. 가상시계(tickNativeVirtualClock)만
     // 계속 돌아서 진행바가 움직이니 화면으로는 재생 중처럼 보인다 —
-    // 운영자가 "무음인데 진행바는 간다"고 하신 그 상태가 이것이다.
+    // 성동님이 "무음인데 진행바는 간다"고 하신 그 상태가 이것이다.
     //
     // 여기서 할 일은 하나뿐이다: 즉시 다음 곡으로 넘겨 소리를 되살린다.
     // 재생 중일 때만 반응한다 — 유저가 일시정지해둔 상태라면 곡이 끝나
@@ -7788,7 +7788,7 @@ function announceActiveFilterOnFirstPlay() {
     if (excluded) excludeParts.push(`${cat.label} 제외`);
   });
   if (!hasFilter && excludeParts.length === 0) return; // 기본값 그대로면 알려줄 게 없음
-  // 2026-07-22 운영 피드백 — "'수면유도'만 상태로"라는 표현이 어색하다는
+  // 2026-07-22 유저 지적 — "'수면유도'만 상태로"라는 표현이 어색하다는
   // 피드백으로, 카테고리 필터가 있을 땐 "'xxxx' 플레이리스트를 재생 중"으로
   // 자연스럽게 바꿨다. 제외 필터는 괄호로 덧붙여 정보는 그대로 유지.
   // 카테고리 필터 없이 제외만 걸려있는 경우(부를 플레이리스트 이름이
@@ -8110,7 +8110,7 @@ function renderMusicPlaylistFilterOptions() {
 // 일반 목록과 동일하게 써서 브라우저 라디오 그룹이 자동으로 하나만
 // 남기도록 한다(Special에서 하나 고르면 위 일반 선택은 자동 해제되고,
 // 반대로 일반 쪽에서 고르면 Special 선택도 자동 해제된다).
-// 2026-08-04 운영 요청 — Special 카테고리별 "왜 효과가 있는가" 과학
+// 2026-08-04 성동님 요청 — Special 카테고리별 "왜 효과가 있는가" 과학
 // 설명(2~3줄). 쉬우면서 전문성이 느껴지는 문장으로, 6개 언어 번역은
 // i18n/locales/*.json(music.specialInfo.*)에 있다.
 function specialCategoryInfoText(key) {
@@ -8214,7 +8214,7 @@ if (musicVizOptionsEl) {
   });
 }
 
-// 2026-07-20 이슈 제보 — "설정에서 값을 선택하면 선택되는데 2초 정도
+// 2026-07-20 유저 제보 — "설정에서 값을 선택하면 선택되는데 2초 정도
 // 걸린다." 라디오 자체는 브라우저 네이티브 :checked라 탭 즉시 반영되지만,
 // 재생 중일 때 이 함수가 곧바로 playTrackAtIndex(트랙 전환+네트워크 로드)
 // 까지 같은 틱에서 처리하다 보니, 유저가 "선택됐다"는 확신을 얻는 시점이
@@ -8341,7 +8341,7 @@ function syncMusicExcludeFilterUi() {
 
 // Rock/Vocal 포함 체크박스를 바꾼 직후 — 플레이리스트 필터를 바꿀 때와 동일한
 // 방식으로 즉시 반영한다(라운드로빈 순서 리셋 + 재생 중이면 바로 전환).
-// 2026-07-25 이슈 제보 — 제외 토글 체크박스가 눌러도 3초 가까이 체크
+// 2026-07-25 유저 제보 — 제외 토글 체크박스가 눌러도 3초 가까이 체크
 // 표시가 안 뜨는 것처럼 보인다는 버그. 원인은 위 플레이리스트 라디오
 // 버튼에서 2026-07-20에 이미 한 번 고쳤던 것과 동일하다(FZ-FILTER 로그
 // 주석 참조) — playTrackAtIndex(트랙 전환, 크로스페이드 준비 등 무거운
@@ -8384,7 +8384,7 @@ function saveMusicPlayLog(log) {
   }
 }
 
-// 2026-07-16: "정각 세리모니" / "퇴근 세리모니" — 운영 요청("어려우면
+// 2026-07-16: "정각 세리모니" / "퇴근 세리모니" — 성동님 요청("어려우면
 // 리스크 감수하지 말고")에 맞춰 기존 오디오/재생 로직은 전혀 건드리지
 // 않고, "새 곡이 실제로 시작된 순간"에만 훅을 거는 방식으로 구현한다.
 // recordPlayLog(index)는 자동재생/스킵/크로스페이드전환/히스토리 바로듣기/
@@ -8394,7 +8394,7 @@ function saveMusicPlayLog(log) {
 // 실수로 한 경로를 빠뜨릴 위험도 없다.
 // 트리거는 어디까지나 "수동적"이다: 정각마다 강제로 곡을 바꾸지 않고,
 // 그 순간 마침 새 곡이 시작됐을 때만 시계를 확인한다 — 재생 중이던 곡을
-// 세리모니를 위해 억지로 끊는 일은 절대 없다(운영 요청 원문 "시작되는
+// 세리모니를 위해 억지로 끊는 일은 절대 없다(성동님 요청 원문 "시작되는
 // 음악이 있는 경우"에 정확히 맞춘 설계).
 // 2026-07-16: 곡이 3분 안팎으로 길 수 있어 "정각+2분"은 너무 타이트하다는
 // 재지적 — 실제 서비스 값을 2분 → 5분으로 넓혔다.
@@ -8402,7 +8402,7 @@ function saveMusicPlayLog(log) {
 // 항상 켜져있다"는 재지적 발생 — 테스트 목적 달성 후 원래 값 5로 원복.
 const MUSIC_HOURLY_CEREMONY_WINDOW_MIN = 5;
 
-// 2026-07-20 이슈 제보 2건 대응:
+// 2026-07-20 유저 제보 2건 대응:
 // (1) "정각+5분 창 안에 곡이 2번 바뀌면 세리모니가 2번 뜬다" — 원래
 //     handleMusicCeremonyOnTrackStart는 "그 순간 시계"만 보고 매번 새로
 //     판정했다. 짧은 곡이 연달아 나오면(예: 정각+1분에 한 곡 끝나고 정각+3분에
@@ -8458,7 +8458,7 @@ function hideLeaveWorkCeremony() {
 }
 
 // recordPlayLog(index)가 호출될 때마다(= 새 곡이 막 시작될 때마다) 실행.
-// 2026-07-21 이슈 제보("9시1분에 시작한 곡인데 정각 세리모니가 안 떴다")로
+// 2026-07-21 유저 제보("9시1분에 시작한 곡인데 정각 세리모니가 안 떴다")로
 // 발견된 버그 수정: 예전엔 이 함수 맨 위에서 무조건 hideMusicHourlyCeremony()를
 // 불러 이전 세리모니를 껐다. checkHourlyCeremonyTick()(매초 실행)이 이미 그
 // 시간대의 세리모니를 "먼저" 띄워둔 상태(예: 정각에 마침 재생 중이던, 유저가
@@ -8493,7 +8493,7 @@ function handleMusicCeremonyOnTrackStart() {
   // "퇴근 세리모니": 18시대 또는 19시대에 정각 세리모니 조건까지 겹치면
   // 추가로 텍스트 표시 — 이 곡이 끝날 때까지 유지된다.
   // 2026-07-16: 하루 2번(18시·19시)으로 확대 — "6시에 퇴근 못하는 사람도
-  // 7시엔 퇴근하라"는 운영 요청.
+  // 7시엔 퇴근하라"는 성동님 요청.
   if (now.getHours() === 18 || now.getHours() === 19) showLeaveWorkCeremony();
 }
 
@@ -8929,7 +8929,7 @@ function settleEzlongOpen() {
   ezlongSection.style.zIndex = "40";      // 시계보다 위 — 네이티브 제스처 라우팅 확보
   if (app) app.style.visibility = "hidden"; // 비켜난 시계를 히트테스트에서 완전 제거
 }
-// 2026-08-04 운영 요청 — 앱을 열었을 때 첫 화면을 고를 수 있게 한다.
+// 2026-08-04 성동님 요청 — 앱을 열었을 때 첫 화면을 고를 수 있게 한다.
 // 기본값은 '투자명저 문장'(기존 동작 그대로). 'ezlong.com'을 고른
 // 사람은 실행 직후 바로 2페이지로 넘어간다.
 const startPageStorageKey = "ezlong:startPage";
@@ -8951,7 +8951,7 @@ function saveStartPage(value) {
 function goToPage(index) {
   const open = index >= 1;
   currentPageIndex = open ? 1 : 0;
-  // 2026-08-11 이슈 제보 — "StandBy 를 보다가 백그라운드 갔다 오면
+  // 2026-08-11 성동님 제보 — "StandBy 를 보다가 백그라운드 갔다 오면
   // ezlong.com 으로 바뀌어 있다." 지금 어느 화면인지를 여기서 남겨 둔다.
   // sessionStorage 를 쓰는 이유가 핵심이다: 이 값은 **웹뷰가 다시 로드돼도
   // 살아남고, 앱이 완전히 새로 뜨면 비어 있다.** 그래서 "이용 중 복귀"와
@@ -9110,7 +9110,7 @@ if (webviewGrabber && ezlongSection) {
   webviewGrabber.addEventListener("dblclick", scrollEzlongToTop);
 }
 
-// 2026-07-20 9차 피드백(이슈 제보: "브라우저에서 보기 버튼 눌러도 무반응") —
+// 2026-07-20 9차 피드백(유저 제보: "브라우저에서 보기 버튼 눌러도 무반응") —
 // 예전엔 <a href target="_blank">였는데, WKWebView는 target="_blank" 새 창
 // 열기를 기본적으로 무시한다(별도 WKUIDelegate 처리가 있어야 동작). 알라딘
 // 모달의 aladinModalExternalOpenEl과 완전히 같은 증상·같은 해법 — 이미 있는
@@ -9253,7 +9253,7 @@ document.querySelectorAll("[data-weather-detail-close]").forEach((element) => {
 // 2026-07-18 3차 피드백: 네이티브 뒤로가기 제스처에 기대지 않는 좌측 엣지
 // 스와이프 직접 구현 — 위 setupWeatherDetailEdgeSwipe() 정의부 주석 참조.
 setupWeatherDetailEdgeSwipe();
-// 2026-08-09 운영 요청 — 문장 복사 버튼. 화면에 보이는 그대로(영문 원문 →
+// 2026-08-09 성동님 요청 — 문장 복사 버튼. 화면에 보이는 그대로(영문 원문 →
 // 한글 번역 → 출처)를 빈 줄로 나눠 클립보드에 담는다. 어디에 붙여넣어도
 // 화면에서 읽던 모양 그대로 나오는 것이 목적이라, 따옴표나 말머리 같은
 // 장식은 일부러 붙이지 않는다. 영문이 없는 문장(한국어 원전)은 그 줄을
@@ -9261,11 +9261,11 @@ setupWeatherDetailEdgeSwipe();
 const quoteCopyBtn = document.getElementById("quoteCopyBtn");
 let quoteCopiedTimer = null;
 
-// 2026-08-09 운영자 추가 요청 — 복사 맨 끝에 그 책을 더 볼 수 있는 링크를
+// 2026-08-09 성동님 추가 요청 — 복사 맨 끝에 그 책을 더 볼 수 있는 링크를
 // 붙인다. 어느 서점이냐는 quote-source 모듈이 로케일을 보고 정한다:
 // 한국어면 알라딘, 그 밖의 모든 언어면 아마존(지역은 로케일에 맞춰 고른다).
 // 링크를 만들 수 없는 책이면 아무것도 붙지 않는다.
-// 2026-08-09 운영 지침 — 복사본 링크에서는 제휴 파라미터를 뗀다. 남이
+// 2026-08-09 성동님 지시 — 복사본 링크에서는 제휴 파라미터를 뗀다. 남이
 // 붙여넣어 읽을 주소에 내 제휴 ID가 따라다닐 이유가 없고, 주소도 길어진다.
 // 화면 버튼(알라딘 모달)이 여는 링크는 손대지 않으므로 수수료 추적에는
 // 영향이 없다 — 복사본만 깨끗해진다. 알라딘 partner 와 아마존 tag 를 같은
@@ -9400,7 +9400,7 @@ if (musicSkip) musicSkip.addEventListener("click", () => {
 if (musicGearOpen) musicGearOpen.addEventListener("click", (event) => {
   event.stopPropagation();
   postToNativeHaptic("light");
-  openSettings("music"); // 음악 섹션으로 바로 (2026-08-04 운영 요청)
+  openSettings("music"); // 음악 섹션으로 바로 (2026-08-04 성동님 요청)
 });
 if (musicShuffleButton) musicShuffleButton.addEventListener("click", (event) => {
   event.stopPropagation();
@@ -9436,7 +9436,7 @@ if (musicDislikeButton) musicDislikeButton.addEventListener("click", (event) => 
 });
 if (musicInfoPanel) musicInfoPanel.addEventListener("click", (event) => event.stopPropagation());
 
-// 2026-07-14 19차: 진행률 바 드래그/클릭 탐색(seek) — 운영 요청으로 재생
+// 2026-07-14 19차: 진행률 바 드래그/클릭 탐색(seek) — 성동님 요청으로 재생
 // 위치를 손가락/마우스로 자유롭게 옮길 수 있게 한다. Pointer Events 하나로
 // 마우스·터치 모두 처리하고, setPointerCapture로 손가락이 바 바깥으로
 // 나가도 드래그가 끊기지 않게 한다.
@@ -9701,12 +9701,12 @@ window.setInterval(() => {
 }, WEATHER_REFRESH_INTERVAL_MS);
 window.setInterval(tick, 1000);
 
-// 2026-08-04 이슈 제보 — "앱을 계속 켜두는데 배경이 자동으로 안 바뀐다".
+// 2026-08-04 성동님 제보 — "앱을 계속 켜두는데 배경이 자동으로 안 바뀐다".
 // 기존 15분 슬롯-비교 사슬(renderTime→shouldRotatePhoto→setScene(force)→
 // pickScenePhoto 내부 재비교)을 버리고, 한 곳에서 끝나는 명시적 타이머로
 // 교체. 화면이 보이는 동안 5분마다 다음 장으로 한 장씩(4장 한 바퀴 20분).
 // 수동 스와이프 직후 15분(manualPhotoUntil)은 기존 약속대로 손대지 않는다.
-// 2026-08-04 운영자 리듬 설계 — 문장 4개(1분씩)가 흐르는 4분마다 배경
+// 2026-08-04 성동님 리듬 설계 — 문장 4개(1분씩)가 흐르는 4분마다 배경
 // 한 장. 4장이 다 돌면(16분) 같은 세트를 반복하지 않고 photoCycleGen을
 // 올려 다음 4장 세트로 교체한다(photoHistory 덕에 본 사진은 회피됨).
 const PHOTO_AUTO_ROTATE_MS = 4 * 60 * 1000;
@@ -9773,7 +9773,7 @@ window.setInterval(musicStallWatchdog, 2000);
 // 2026-07-16: 이 15초 주기 재동기화를 폐기한다 — 유저가 겪은 "곡 중간에
 // 갑자기 몇 초 되감겼다 정상 재생됨"(5초 지점 2초 되돌림, 3~5초·65% 지점
 // 씹힘, 에어팟이 25~50% 지점에서 끊긴 것처럼 보인 사고 전부)의 공통 원인이
-// 바로 이 한 줄이었던 것으로 최종 판단했다(이슈 제보 "웹앱에서는 이런 문제가
+// 바로 이 한 줄이었던 것으로 최종 판단했다(유저 제보 "웹앱에서는 이런 문제가
 // 한 번도 없었다"가 결정적 단서 — syncNativeSeek()은 네이티브 모드에서만
 // 존재하는 경로다). 문제는 방향이 거꾸로였다는 것: 네이티브(AVPlayer)가
 // 실제로 소리를 내는 "진짜 재생 위치"의 원본(source of truth)인데, 이 줄은
@@ -9866,7 +9866,7 @@ document.addEventListener("visibilitychange", () => {
 window.addEventListener("pagehide", () => maybeSaveMusicResume(true));
 
 // 2026-08-10 — visibilitychange 하나만 믿지 않는다. 안드로이드 웹뷰는 앱을
-// 오래 재웠다 깨울 때 이 이벤트를 흘리는 경우가 있어(이슈 제보의 "메인만
+// 오래 재웠다 깨울 때 이 이벤트를 흘리는 경우가 있어(성동님 제보의 "메인만
 // 어제 날씨" 가 그 증상이다), 창 포커스와 bfcache 복귀도 같은 갱신 신호로
 // 받는다. 세 신호가 겹쳐 들어와도 30초 안에는 한 번만 실제로 요청한다 —
 // 신호를 늘리는 것과 요청을 늘리는 것은 다른 이야기다.
@@ -9898,7 +9898,7 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
     try {
       if (!quotePanel) return;
       const r = quotePanel.getBoundingClientRect();
-      // 2026-08-04 운영 피드백 — 예전엔 이 사각형(박스 바깥 전체)을
+      // 2026-08-04 성동님 지적 — 예전엔 이 사각형(박스 바깥 전체)을
       // 그대로 넘겨서 배너가 문장박스를 통째로 덮었다(유리 테두리까지
       // 안 보일 정도). 네이티브는 받은 높이를 인라인 적응형 배너의
       // maxHeight로 쓰기 때문에, 박스 높이(210~300px)를 넘기면 AdMob이
@@ -9914,7 +9914,7 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
       const innerY = r.top + padOf("padding-top") + gap;
       const innerW = Math.max(160, r.width - padOf("padding-left") - padOf("padding-right") - gap * 2);
       const innerH = Math.max(50, r.height - padOf("padding-top") - padOf("padding-bottom") - gap * 2);
-      // 2026-08-04 운영 요청 — 네이티브 광고 카드가 좋다, 높이는 2배로.
+      // 2026-08-04 성동님 요청 — 네이티브 광고 카드가 좋다, 높이는 2배로.
       // 썸네일·제목·설명이 여유롭게 놓이는 크기(문장박스 안쪽의 8할까지).
       const bannerH = Math.max(96, Math.min(144, Math.round(innerH * 0.8)));
       const payload = {
@@ -9951,7 +9951,7 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
 })();
 
 
-// 2026-08-04 운영 요청 — 화면 왕복 내비게이션 3곳(상단 ezlong.com 브랜드·
+// 2026-08-04 성동님 요청 — 화면 왕복 내비게이션 3곳(상단 ezlong.com 브랜드·
 // 하단 ezlong.com 링크·Basecamp 복귀)의 터치감. CSS :active에 맡기지 않고
 // pointerdown에서 직접 클래스를 붙이는 이유는 두 가지다: (1) iOS WKWebView는
 // 버튼이 아닌 요소(.app-brand는 div)의 :active를 잘 안 잡아준다, (2) 손을
@@ -9966,7 +9966,7 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
       // 안드로이드 WebView는 짧은 햅틱을 지원한다 — 시각 효과와 같은
       // 프레임에 울려야 한 몸으로 느껴진다(apple-design 다감각 조화 원칙).
       // iOS WKWebView는 이 API가 없어 조용히 건너뛴다(1.3에서 네이티브 햅틱).
-      // 2026-08-04 2차(운영 피드백) — "설정 버튼은 아이폰에서도 진동이
+      // 2026-08-04 2차(성동님 지적) — "설정 버튼은 아이폰에서도 진동이
       // 온다"는 정확한 관찰. 이미 검증된 postToNativeHaptic() 브릿지가
       // 있었고(iOS flipzenHaptic / 안드로이드 AndroidNativeBridge 양쪽
       // 모두 처리), 내가 새로 만들 이유가 없었다. 그 함수를 그대로 쓴다.
@@ -9990,10 +9990,10 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
 })();
 
 
-// 2026-08-04 운영 요청 — 설정의 '앱을 열면 보일 화면' 선택 배선.
+// 2026-08-04 성동님 요청 — 설정의 '앱을 열면 보일 화면' 선택 배선.
 // (라디오 2개: 투자명저 문장 / 투자AI도구 ezlong.com. 기본값 문장.)
 (function setupStartPagePreference() {
-  // 2026-08-04 2차(이슈 제보) — "ezlong.com으로 설정해도 재실행하면 도로
+  // 2026-08-04 2차(성동님 제보) — "ezlong.com으로 설정해도 재실행하면 도로
   // 문장으로 돌아와 있다." 1차 원인은 파일 앞쪽 TDZ 오류로 이 IIFE가 아예
   // 실행되지 않았던 것(1.8.38에서 수정). 원인이 그거 하나뿐이라고 믿지 않고
   // 저장·복원 양쪽에 각각 안전장치를 둔다.
@@ -10021,7 +10021,7 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
     saveStartPage(input.value);
     if (loadStartPage() !== input.value) {
       // 저장이 실제로 안 먹은 경우(사파리 프라이빗 모드 등). 조용히 넘기면
-      // 운영자가 겪은 "설정한 게 무의미해지는" 상황이 반복된다.
+      // 성동님이 겪은 "설정한 게 무의미해지는" 상황이 반복된다.
       console.warn("[FlipZen] 시작 화면 설정 저장 실패:", input.value);
     }
   }
@@ -10036,7 +10036,7 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
 
   // 부팅 적용 — 웹뷰가 자리를 잡은 뒤 넘어가야 전환이 끊기지 않는다.
   //
-  // 2026-08-11 이슈 제보 — "첫 화면을 ezlong.com 으로 해뒀는데, StandBy 를
+  // 2026-08-11 성동님 제보 — "첫 화면을 ezlong.com 으로 해뒀는데, StandBy 를
   // 보다가 백그라운드 갔다 돌아오면 ezlong.com 으로 바뀌어 있다. 설정은 첫
   // 로딩에만 적용돼야지, 이용 중에는 직전 화면이 유지돼야 한다."
   //
@@ -10064,7 +10064,7 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
 
 
 // ══════════════════════════════════════════════════════════════════
-// 첫 실행 — 첫 화면 선택 (2026-08-05 운영 요청)
+// 첫 실행 — 첫 화면 선택 (2026-08-05 성동님 요청)
 // ══════════════════════════════════════════════════════════════════
 // 언제 뜨는가: 이 기기에서 아직 한 번도 답하지 않았을 때만, 딱 한 번.
 //   · 이미 설정에서 첫 화면을 고른 적이 있는 사람에게는 묻지 않는다
@@ -10199,7 +10199,7 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
 
 
 // ══════════════════════════════════════════════════════════════════
-// 음악 패널(비주얼라이저) 기본 노출 — 2026-08-05 운영 요청
+// 음악 패널(비주얼라이저) 기본 노출 — 2026-08-05 성동님 요청
 // ══════════════════════════════════════════════════════════════════
 // 왜 부팅 직후가 아니라 조금 뒤인가. 플립시계·날씨·문장이 먼저 자리를 잡은
 // 다음에 비주얼라이저가 "합류"해야 화면이 어수선하지 않다. 첫 실행 시트가
@@ -10240,7 +10240,7 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
 //   · 음악은 건드리지 않는다. 어두워져도 소리는 계속 난다 — 그게 이 앱이다.
 var bedsideActive = false;
 (function setupBedsideMode() {
-  // 2026-08-06 운영 지침 — "침대맡 모드 설정 불필요. 충전 중엔 사용 안 함,
+  // 2026-08-06 성동님 지시 — "침대맡 모드 설정 불필요. 충전 중엔 사용 안 함,
   // 비충전일 땐 3분." 고를 것이 없으면 고민할 것도 없다. 설정 화면에서
   // 항목을 빼고 값을 3분으로 못 박는다.
   //
@@ -10257,7 +10257,7 @@ var bedsideActive = false;
     return DEFAULT_DELAY;   // 항상 3분. 충전 중이면 shouldDim()이 따로 막는다.
   }
 
-  // 2026-08-05 운영 피드백 — 충전 중에는 어두워지지 않는다.
+  // 2026-08-05 성동님 지적 — 충전 중에는 어두워지지 않는다.
   // 침대맡 모드의 존재 이유가 배터리 절약인데, 전기가 들어오는 동안에는
   // 아낄 이유가 없다. 판정은 비주얼라이저 보호와 같은 함수를 쓴다 —
   // 기준이 한 곳에만 있어야 두 기능이 어긋나지 않는다.
@@ -10267,7 +10267,7 @@ var bedsideActive = false;
     } catch (error) { /* 무시 */ }
     return false;
   }
-  // 2026-08-05 2차 — 운영자 재제보: "아이폰은 충전 중인데도 어두워진다."
+  // 2026-08-05 2차 — 성동님 재제보: "아이폰은 충전 중인데도 어두워진다."
   // 아이폰 1.2에는 충전 브릿지가 없어 충전 여부가 '모름'인데, 모름을
   // 비충전으로 간주해 어둡게 만들고 있었다. 비주얼라이저 규칙은 이미
   // "확실히 비충전일 때만"으로 고쳤는데 침대맡 모드만 옛 기준으로 남아
@@ -10353,7 +10353,7 @@ var bedsideActive = false;
     try { postToNativeHaptic("light"); } catch (error) { /* 무시 */ }
   }
 
-  // 2026-08-05 운영 요청 — 침대맡 모드 앞에 "얕은 절전" 한 단계를 더 둔다.
+  // 2026-08-05 성동님 요청 — 침대맡 모드 앞에 "얕은 절전" 한 단계를 더 둔다.
   // 무조작 30초가 지나면 콜론 깜빡임(1초)과 시계 숨쉬기(4초)를 멈춘다.
   // 이 둘은 비용 자체는 작지만 **매초 화면 합성을 깨우는** 성격이라, 가만히
   // 두는 시간이 긴 침대맡 앱에서는 쌓이면 무시하기 어렵다. 시각적으로는
@@ -10367,7 +10367,7 @@ var bedsideActive = false;
     if (lowTimer) { window.clearTimeout(lowTimer); lowTimer = null; }
     document.body.classList.remove("is-lowmotion");
     lowTimer = window.setTimeout(function () {
-      // 2026-08-05 운영 피드백 — 충전 중에는 아낄 이유가 없다.
+      // 2026-08-05 성동님 지적 — 충전 중에는 아낄 이유가 없다.
       // 판정은 침대맡 모드와 같은 함수(shouldDim = 확실히 비충전일 때만).
       // 규칙이 두 개면 반드시 어긋나므로 기준은 하나만 둔다.
       if (!shouldDim()) return;
@@ -10433,7 +10433,7 @@ var bedsideActive = false;
 
 
 // ══════════════════════════════════════════════════════════════════
-// ezlong.com 하단바 — 뒤로(<) / 맨 위로(^)  2026-08-05 운영 요청
+// ezlong.com 하단바 — 뒤로(<) / 맨 위로(^)  2026-08-05 성동님 요청
 // ══════════════════════════════════════════════════════════════════
 // 부모가 iframe 안의 history/scroll을 직접 만지지 않고 postMessage로
 // 부탁한다 — 스크롤톱 때 깔아둔 통로(ez-nav.js)를 그대로 재사용한다.
@@ -10552,7 +10552,7 @@ var bedsideActive = false;
 
 
 // ══════════════════════════════════════════════════════════════════
-// 비충전 상태의 비주얼라이저 자동 접기 — 2026-08-05 운영자 제안
+// 비충전 상태의 비주얼라이저 자동 접기 — 2026-08-05 성동님 제안
 // ══════════════════════════════════════════════════════════════════
 // 처음 몇 곡은 보여주고(발견), 그 뒤에는 조용히 접는다(절전).
 // 충전 중이면 접지 않는다 — 전기가 들어오는 동안은 아낄 이유가 없다.
@@ -10573,7 +10573,7 @@ var bedsideActive = false;
   // 그 다음이 Battery Status API. 둘 다 없으면 "모름"이고, 모름은
   // 비충전으로 간주한다 — 배터리에 보수적인 쪽이 안전하다.
   // 2026-08-10 — 안드로이드는 "물어본다". 네이티브가 밀어 넣는 값은 타이밍에
-  // 기대서, 페이지가 갈아엎이면 통째로 사라진다(운영자 재제보의 원인).
+  // 기대서, 페이지가 갈아엎이면 통째로 사라진다(성동님 재제보의 원인).
   // 물어보는 경로는 언제 불러도 그 순간의 사실을 준다.
   function androidChargingNow() {
     try {
@@ -10745,11 +10745,11 @@ var bedsideActive = false;
 })();
 
 
-// 2026-08-05 운영 피드백 — 안드로이드의 플립시계 숫자가 플립시계에 어울리지
+// 2026-08-05 성동님 지적 — 안드로이드의 플립시계 숫자가 플립시계에 어울리지
 // 않는다. 원인은 폰트다. 이 앱의 글꼴 스택은 -apple-system → SF Pro Display
 // 순인데, 안드로이드에는 그 둘이 없어 결국 sans-serif(=Roboto)로 떨어진다.
 // SF Pro는 애플 전용이라 웹폰트로 실어 나를 수 없다(라이선스). 그래서
-// 운영자가 주신 대안대로 안드로이드에서는 크기를 10% 줄인다 — Roboto의
+// 성동님이 주신 대안대로 안드로이드에서는 크기를 10% 줄인다 — Roboto의
 // 숫자는 SF보다 폭이 넓고 무거워서, 같은 크기로 두면 카드를 꽉 채워
 // "플립시계 숫자판"이 아니라 "글자 상자"처럼 보인다.
 // 굵기도 760(합성 굵기, Roboto에는 그 굵기가 없어 브라우저가 억지로
@@ -10758,14 +10758,14 @@ var bedsideActive = false;
   try {
     if (!/Android/i.test(navigator.userAgent)) return;
     document.body.classList.add("is-android");
-    // 2026-08-05 2차 — 운영 요청으로 Inter(무료, SIL 오픈폰트 라이선스)를
+    // 2026-08-05 2차 — 성동님 요청으로 Inter(무료, SIL 오픈폰트 라이선스)를
     // 숫자 열 개와 콜론만 잘라낸 3.3KB짜리 파일로 실어 붙인다. SF Pro와
     // 비례가 가장 가까운 무료 글꼴이다.
     //
     // ★ 원복 방법 ★ — 아래 한 줄의 "inter"를 "system"으로 바꾸면 끝난다.
     //   (기기에서 즉시 되돌리려면 localStorage 에
     //    ezlong:clockFont = "system" 을 넣으면 된다. 그 값이 항상 우선한다.)
-    // 2026-08-05 운영 판단 — Inter보다 직전(10% 축소한 Roboto)이 낫다.
+    // 2026-08-05 성동님 판단 — Inter보다 직전(10% 축소한 Roboto)이 낫다.
     // 파일과 규칙은 남겨둔다. "inter"로 바꾸면 언제든 다시 볼 수 있다.
     var DEFAULT_CLOCK_FONT = "system";    // "inter" | "system"
     var choice = DEFAULT_CLOCK_FONT;
@@ -10781,7 +10781,7 @@ var bedsideActive = false;
 // ══════════════════════════════════════════════════════════════════
 // 네이티브 재생 정체 감시 — 2026-08-05 (웹 응급조치)
 // ══════════════════════════════════════════════════════════════════
-// 이슈 제보: 아이폰에서 음악이 진행되지 않고 "뿌우~~~" 하는 소리만
+// 성동님 제보: 아이폰에서 음악이 진행되지 않고 "뿌우~~~" 하는 소리만
 // 반복되는데, 다음 곡을 누르면 즉시 정상으로 돌아온다.
 //
 // 녹화 음성을 뜯어보니 11.7초 내내 음량이 완전히 일정했고(RMS 289~338),
@@ -10875,9 +10875,9 @@ var bedsideActive = false;
 })();
 
 /* ═══════════════════════════════════════════════════════════════════════
-   우상단 배터리 표시 — 2026-08-10 운영 지침
+   우상단 배터리 표시 — 2026-08-10 성동님 지시
    ───────────────────────────────────────────────────────────────────────
-   운영 요청은 "아이폰 우상단처럼 신호·와이파이·배터리"였다. 그중 신호
+   성동님 요청은 "아이폰 우상단처럼 신호·와이파이·배터리"였다. 그중 신호
    세기는 **아이폰이 앱에 내주지 않는다** — 애플 공개 API가 없고, Core
    Telephony 는 비공개 프레임워크라 쓰면 심사에서 걸린다. 없는 것을 지어내
    그리는 대신 읽을 수 있는 것만 정직하게 그린다.
@@ -10892,7 +10892,7 @@ var bedsideActive = false;
         모르는 값을 그럴듯하게 지어내는 것보다 예전 모습이 낫다.
    ═══════════════════════════════════════════════════════════════════════ */
 (function () {
-  // 2026-08-10 운영자 확인 — 안드로이드는 취소.
+  // 2026-08-10 성동님 확인 — 안드로이드는 취소.
   // 이유가 명확하다. 안드로이드 앱은 시스템 상태표시줄을 그대로 띄우고
   // 있어서(투명 상태바 위에 OS 가 신호·와이파이·배터리를 직접 그린다)
   // 우리가 하나 더 그리면 배터리가 화면에 두 번 나온다. 아이폰은 반대로
