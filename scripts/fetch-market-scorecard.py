@@ -829,6 +829,20 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 
 위 기준 중 하나라도 수치·사실 근거 없이 해당하지 않으면 테슬라·머스크 관련 항목은 부정 재료 목록에 절대 포함하지 않는다.
 
+=== 개별 기업 재료의 점수 배분 금지 (2026-08-12 강화) ===
+- 한 기업의 지역 판매량·애널리스트 등급 조정·개별 계약 같은 뉴스는 그 기업의 재료이지
+  미국 시장 전체의 재료가 아니다 — positive_factors/negative_factors에 점수를 배분하지 마라.
+- 유일한 예외: 시장 전체를 실제로 움직인 실적 이벤트(예: 지수 급변을 동반한 대형주 실적) —
+  이때만 category를 earnings_bellwether로 달고 점수를 배분한다.
+- 그 외 개별 기업 소식이 정말 중요하면 mixed_factors(무점수)로만 다뤄라.
+- 수치를 인용할 때는 제공된 헤드라인·데이터에 실제로 있는 수치만 쓴다. 헤드라인에 없는
+  수치를 만들어 내지 마라.
+
+=== 지표 발표 재료의 방향 일치 (2026-08-12 강화) ===
+- 경제지표(주택·고용·물가 등) 발표를 재료로 쓸 때는 제공된 헤드라인·FRED 수치에 실제로
+  있는 발표만, 발표된 방향 그대로 서술하라. 헤드라인이 '감소'인 지표를 '견조'로 뒤집어
+  쓰는 것은 금지 — 발표 내용을 확인할 수 없으면 그 지표 재료를 아예 쓰지 마라.
+
 - 위 지시문 내용을 절대 출력값에 포함하지 마세요
 
 === 영어 병기 (2026-07-29 신설) ===
@@ -1598,6 +1612,16 @@ def guardrail_violations(entry, snap, prev_entry, spy_off_high):
         if abs(neg - prev_neg) > 30:
             errors.append(f"변화 상한 초과: 직전 부정 {prev_neg} → {neg} (새 충격 없이 30점 초과 이동). "
                           f"{max(0, prev_neg - 30)}~{min(100, prev_neg + 30)} 범위에서 재판정 필요")
+    # G4 — 개별 기업 재료의 점수 배분 금지 (2026-08-12 신설, 운영 피드백)
+    # 한 기업의 지역 판매·등급 조정 같은 뉴스는 시장 전체의 재료가 아니다. 시장을
+    # 실제로 움직인 실적 이벤트는 earnings_bellwether 카테고리로 허용된다.
+    # 해당 종목 주가가 그날 올랐는데 부정 재료로 실리는 자기모순도 이 검사가 잡는다.
+    for side, side_ko in (('positive_factors', '긍정'), ('negative_factors', '부정')):
+        for f in entry.get(side) or []:
+            if f.get('category') == 'company_specific' and int(f.get('score', 0) or 0) > 0:
+                errors.append(f"개별 기업 재료 점수 배분: {side_ko} '{f.get('name','')}'(company_specific)는 "
+                              f"시장 전체 재료가 아님 — 시장 전체를 움직인 실적 이벤트(earnings_bellwether)만 "
+                              f"점수 허용, 그 외 개별 기업 뉴스는 제외하거나 혼조(무점수)로")
     # G3 — 극단값 앵커
     neg = int(entry.get('negative_total', 50) or 50)
     pos = int(entry.get('positive_total', 50) or 50)
@@ -1644,6 +1668,18 @@ def enforce_guardrails(entry, snap, prev_entry, spy_off_high):
         entry['positive_total'] = 100 - neg
         entry['positive_factors'] = _redistribute(entry.get('positive_factors') or [], entry['positive_total'])
         entry['negative_factors'] = _redistribute(entry.get('negative_factors') or [], entry['negative_total'])
+    # G4 강제 — 개별 기업(company_specific) 점수 재료는 걷어내고 같은 편에 재배분.
+    # 단 그 편의 유일한 재료면 빈 칸이 생기므로 남긴다(재판정 피드백이 1차 방어).
+    for side in ('positive_factors', 'negative_factors'):
+        factors = entry.get(side) or []
+        keep = [f for f in factors if not (f.get('category') == 'company_specific'
+                                           and int(f.get('score', 0) or 0) > 0)]
+        if keep and len(keep) < len(factors):
+            dropped = [f.get('name', '') for f in factors if f not in keep]
+            total = int(entry.get(side.replace('_factors', '_total'), 0) or 0)
+            entry[side] = _redistribute(keep, total)
+            print(f"::warning::[가드레일] 개별 기업 재료 제거·재배분: {', '.join(dropped)}")
+
     # G1 문구 완화 — 실측이 뒷받침하지 않는 강한 단어만 교체 (명사형 유지)
     SOFTEN = [('급등', '상승'), ('폭등', '상승'), ('급락', '하락'), ('폭락', '하락'),
               ('하방 압력 심화', '하방 압력 경계'), ('하락 압력 심화', '하락 압력 경계')]
