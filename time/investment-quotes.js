@@ -9320,5 +9320,12 @@ window.investmentQuotes = [
     "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
     "author": "필립 피셔 (Philip Fisher)",
     "category": "mindset"
+  },
+  {
+    "english": "It's been one week since Mom went missing.",
+    "text": "엄마를 잃어버린 지 일주일째다.",
+    "title": "엄마를 부탁해",
+    "author": "신경숙",
+    "genre": "literature"
   }
 ];
