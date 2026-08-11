@@ -9956,9 +9956,19 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
   // 미리보기 사진 — 이 기기의 언어로 찍은 실제 화면을 건다.
   // 지원 밖 언어는 영어판으로(로케일 해석 규칙과 같은 원칙).
   (function mountFirstRunShots() {
+    // 2026-08-11 — 여기가 비한국어 사용자에게 한국어 사진을 보여주고 있었다.
+    //   이유: 이 시트는 **첫 실행**에만 뜨는데, 그때 localStorage 의
+    //   `flipzen.locale` 은 아직 비어 있다(사용자가 설정에서 고른 적이 없으니까).
+    //   그러면 <html lang> 으로 떨어지는데, 그 값을 채워주는
+    //   applyStaticTranslations() 는 DOMContentLoaded 에서 돌고 이 IIFE 는
+    //   파싱 시점에 돌기 때문에, 항상 index.html 의 기본값 lang="ko" 가 읽혔다.
+    //   결과로 일본·중국·스페인·브라질 사용자가 앱을 처음 열었을 때
+    //   본 첫 화면이 한국어 사진이었다. 글로벌 언어 결함은 제1 문제다(CLAUDE.md).
+    //   고침: DOM 을 거치지 않고 이미 확정된 FZ_LOCALE 을 그대로 쓴다.
     const SUPPORTED = ["ko", "en", "ja", "zh", "es", "pt"];
     let tag = "";
     try { tag = localStorage.getItem("flipzen.locale") || ""; } catch (error) { tag = ""; }
+    if (!tag) tag = (typeof FZ_LOCALE === "string" && FZ_LOCALE) || "";
     if (!tag) tag = document.documentElement.getAttribute("lang") || "";
     const base = String(tag).toLowerCase().split(/[-_]/)[0];
     const loc = SUPPORTED.indexOf(base) >= 0 ? base : "en";
