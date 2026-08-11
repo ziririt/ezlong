@@ -9341,5 +9341,12 @@ window.investmentQuotes = [
     "title": "원칙",
     "author": "레이 달리오 (Ray Dalio)",
     "category": "mindset"
+  },
+  {
+    "english": "It's tomorrow, and tomorrow, and tomorrow. It's the possibility of infinite rebirth, infinite redemption. The idea that if you keep playing, you could win. No loss is permanent, because nothing is permanent, ever.",
+    "text": "내일이 있고, 또 내일이 있고, 또 내일이 있다. 그건 무한한 재생의 가능성이고, 무한한 구원의 가능성이다. 계속하기만 하면 언젠가 이길 수 있다는 믿음. 그 무엇도 영원하지 않기에, 어떤 패배도 영원하지 않다.",
+    "title": "내일, 또 내일, 또 내일 (Tomorrow, and Tomorrow, and Tomorrow)",
+    "author": "가브리엘 제빈 (Gabrielle Zevin)",
+    "genre": "literature"
   }
 ];
