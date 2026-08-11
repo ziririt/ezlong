@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-08-11-18:20",
+      "timestamp_kst": "2026-08-11(화) 18:20 KST",
+      "key_event": {
+        "name": "지정학적 긴장 및 인플레 우려 지속",
+        "name_en": "Geopolitical Tensions & Inflation Concerns Persist",
+        "time": "오늘 정규장 및 단기",
+        "why": "유가 상승 압력, 금리 인상 가능성, 시장 불확실성 증대",
+        "why_en": "Rising oil prices, potential rate hikes, increased market uncertainty"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "지정학적 리스크와 인플레이션 우려로 부정 우위 지속, 기술주 하방 압력 경계",
+      "summary_en": "Negative sentiment persists due to geopolitical risks and inflation concerns, with downward pressure on tech stocks",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "AI 클라우드 기업 성장 기대",
+          "name_en": "AI Cloud Company Growth Expectations",
+          "desc": "CoreWeave 등 AI 클라우드 기업의 높은 수익률 및 투자 관심 지속",
+          "desc_en": "Continued interest and high returns for AI cloud companies like CoreWeave",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "미-이란 협상 난항 및 유가 급등",
+          "name_en": "US-Iran Talks Stall, Oil Prices Surge",
+          "desc": "트럼프 이란 배상 거부로 호르무즈 협상 교착, WTI 유가 3% 급등",
+          "desc_en": "Trump rejects Iran reparations, stalling Hormuz talks; WTI crude surges 3%",
+          "category": "geopolitics"
+        },
+        {
+          "score": 20,
+          "name": "CPI 발표 대기 및 인플레이션 우려",
+          "name_en": "CPI Anticipation & Inflation Concerns",
+          "desc": "CPI 발표 임박, 유가 상승과 금리 상승 압력으로 인플레이션 재발 경계",
+          "desc_en": "Upcoming CPI release, rising oil prices and bond yields fuel inflation recurrence concerns",
+          "category": "macro_data"
+        },
+        {
+          "score": 10,
+          "name": "엔비디아 AI 투자 과열 우려",
+          "name_en": "Nvidia AI Investment Overheating Concerns",
+          "desc": "Nvidia의 5천억 달러 AI 투자 지출 소식에 투자자들 불안감 표출",
+          "desc_en": "Investors express unease over Nvidia's reported $500bn AI spending spree",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "미 10년물 국채금리 상승",
+          "name_en": "US 10-Year Treasury Yield Rise",
+          "desc": "미 10년 국채금리 4.70%로 상승, 기술주 등 성장주에 부담",
+          "desc_en": "US 10-year Treasury yield rises to 4.70%, weighing on growth stocks including tech",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "인텔의 200억 달러 자금 조달",
+          "name_en": "Intel's $20 Billion Funding Round",
+          "desc": "인텔의 200억 달러 이상 자금 조달 소식은 긍정적이나, 파운드리 사업 손실 우려도 상존",
+          "desc_en": "Intel's news of raising over $20 billion is positive, yet concerns about foundry business losses persist",
+          "category": "company_specific"
+        }
+      ]
+    },
+    {
       "id": "2026-08-11-16:45",
       "timestamp_kst": "2026-08-11(화) 16:45 KST",
       "key_event": {
@@ -290,6 +358,6 @@
       ]
     }
   ],
-  "updated_at": "2026-08-11T07:46:05Z",
+  "updated_at": "2026-08-11T09:20:59Z",
   "max_entries": 10
 }
