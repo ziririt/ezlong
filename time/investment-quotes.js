@@ -9286,5 +9286,12 @@ window.investmentQuotes = [
     "title": "먹고 기도하고 사랑하라 (Eat, Pray, Love)",
     "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
     "genre": "literature"
+  },
+  {
+    "english": "Spend each day trying to be a little wiser than you were when you woke up. Day by day, and at the end of the day, if you live long enough, like most people, you will get out of life what you deserve.",
+    "text": "매일 아침 눈떴을 때보다 조금 더 현명해지려고 애써라. 그렇게 하루하루를 쌓아가다 보면, 충분히 오래 살았을 때쯤엔 대부분의 사람들처럼 인생에서 마땅히 받아야 할 것을 받게 될 것이다.",
+    "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "mindset"
   }
 ];
