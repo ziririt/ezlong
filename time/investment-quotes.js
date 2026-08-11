@@ -9327,5 +9327,12 @@ window.investmentQuotes = [
     "title": "엄마를 부탁해",
     "author": "신경숙",
     "genre": "literature"
+  },
+  {
+    "english": "It takes 20 years to build a reputation and five minutes to ruin it. If you think about that, you'll do things differently.",
+    "text": "평판을 쌓는 데는 20년이 걸리지만, 무너뜨리는 데는 5분이면 충분하다. 이 사실을 늘 생각한다면, 행동은 달라질 수밖에 없다.",
+    "title": "스노볼 (The Snowball)",
+    "author": "앨리스 슈뢰더 (Alice Schroeder)",
+    "category": "mindset"
   }
 ];
