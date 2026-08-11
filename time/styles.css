@@ -3860,10 +3860,14 @@ button { font: inherit; }
    너무 길어지는 책 제목은 cite 쪽만 줄바꿈되고 아이콘은 항상 오른쪽에
    고정 크기로 붙는다(min-width:0으로 cite가 grid/flex 안에서 줄어들 수
    있게 함). */
+/* 2026-08-11 운영 지시 — "복사 버튼을 저자명에서 2px 정도 더 떨어뜨려라."
+   이 gap 은 cite↔복사버튼 사이만이 아니라 복사버튼↔알라딘버튼 사이에도 같이
+   걸린다. 그래서 8 → 10 으로 올리되, 두 버튼 사이는 아래
+   margin-left 를 12 → 9 로 내려 상쇄한다(순증 20 → 19px). */
 .quote-source-wrap {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   min-width: 0;
 }
 
@@ -3919,8 +3923,12 @@ button { font: inherit; }
   color: #eafff0;
 }
 
+/* 2026-08-11 운영 지시 — 두 버튼 간격은 간섭 안 나는 최소값으로.
+   히트영역이 각각 44px(26 + 9*2) 이므로 중심 간격 18px 이면 히트영역이 정확히
+   맞닿는다. DPR 3 에서의 부분픽셀 반올림을 감안해 1px 을 남긴다 —
+   gap 10 + margin-left 9 = 19px. */
 .quote-copy-btn + .quote-aladin-link {
-  margin-left: 12px;
+  margin-left: 9px;
 }
 
 .quote-aladin-link {
