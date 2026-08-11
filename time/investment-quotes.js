@@ -9355,5 +9355,12 @@ window.investmentQuotes = [
     "title": "주식 매매하는 법 (How to Trade in Stocks)",
     "author": "제시 리버모어 (Jesse Livermore)",
     "category": "mindset"
+  },
+  {
+    "english": "Risk is not inherent in an investment; it is always relative to the price paid.",
+    "text": "위험은 투자 자체에 내재하는 것이 아니다. 위험은 언제나 얼마를 주고 샀느냐에 달려 있다.",
+    "title": "마진 오브 세이프티 (Margin of Safety)",
+    "author": "세스 클라만 (Seth Klarman)",
+    "category": "mindset"
   }
 ];
