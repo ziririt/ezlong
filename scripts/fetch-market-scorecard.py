@@ -1473,6 +1473,201 @@ def validate_content(entry, session_code=''):
 
 # ─── 메인 ────────────────────────────────────────────────────────────────────
 
+# ─── 극단 판정 가드레일 (2026-08-11 신설, CLAUDE.md 51항) ─────────────────────
+# 배경: 지수가 사상 최고치 부근 보합(SPY −0.03%)이고 VIX 15.4인 날, 긍정 20:부정 80
+# 판정이 다섯 번 연속 유지된 사고. 근거 문구('에너지 가격 급등')는 실측(WTI +0.1%)과
+# 어긋났고, 직전 판단(65:35)에서 새 충격 없이 20시간 만에 45점이 움직였다. 프롬프트
+# 지시만으로는 재발을 못 막아, 수집해 둔 실측 데이터와 대조하는 코드 안전장치를 둔다.
+# 구성: G1 사실 대조(강한 표현 vs 실제 등락률) · G2 점수 변화 상한(새 충격 없이 ±30)
+# · G3 극단값 앵커(평온한 시장에서 부정 66+ 금지, 공황 시장에서 긍정 66+ 금지).
+# 1차는 위반 사유를 프롬프트에 붙여 재판정(모순 재시도와 같은 경로), 그래도 남으면
+# 점수는 코드로 클램프하고(_redistribute 로 소계=항목합 유지) 문구는 강한 단어만 완화.
+
+_GR_PCT_RE = re.compile(r'\(([+\-−]?\d+(?:\.\d+)?)%\)')
+_GR_LEVEL_RE = re.compile(r':\s*\$?([\d,]+(?:\.\d+)?)')
+
+def _gr_row(rows, prefix):
+    for r in rows or []:
+        if r.startswith(prefix):
+            return r
+    return None
+
+def _gr_pct(rows, prefix):
+    r = _gr_row(rows, prefix)
+    if not r:
+        return None
+    m = _GR_PCT_RE.search(r)
+    return float(m.group(1).replace('−', '-')) if m else None
+
+def _gr_level(rows, prefix):
+    r = _gr_row(rows, prefix)
+    if not r:
+        return None
+    m = _GR_LEVEL_RE.search(r)
+    return float(m.group(1).replace(',', '')) if m else None
+
+def market_snapshot(equity_rows, macro_rows):
+    """프롬프트에 이미 넣는 수집 문자열에서 가드레일용 실측치를 다시 꺼낸다.
+    파싱 실패 항목은 None — 해당 검사만 조용히 건너뛴다(검사 불가 ≠ 위반)."""
+    return {
+        'qqq_pct': _gr_pct(equity_rows, 'QQQ:'),
+        'spy_pct': _gr_pct(equity_rows, 'SPY:'),
+        'vix': _gr_level(macro_rows, 'VIX 공포지수:'),
+        'vix_pct': _gr_pct(macro_rows, 'VIX 공포지수:'),
+        'oil_pct': _gr_pct(macro_rows, 'WTI 원유(USD):'),
+    }
+
+def fetch_spy_off_high():
+    """SPY 종가가 52주 고점에서 몇 % 아래인지. 실패 시 None(검사 생략)."""
+    try:
+        h = yf.Ticker('SPY').history(period='1y', interval='1d', auto_adjust=False)
+        if h.empty:
+            return None
+        return round(float((h['High'].max() - h['Close'].iloc[-1]) / h['High'].max() * 100), 2)
+    except Exception:
+        return None
+
+def _gr_entry_texts(entry):
+    parts = []
+    for k in ('positive_factors', 'negative_factors', 'mixed_factors'):
+        for f in entry.get(k) or []:
+            parts.append((f, (f.get('name', '') + ' ' + f.get('desc', ''))))
+    return parts, entry.get('summary', '')
+
+# (주제 정규식, 강한 표현 정규식, 스냅샷 키, 요구 조건, 설명) — 조건 미충족이면 위반
+_GR_CLAIMS = [
+    (r'유가|원유|에너지', r'급등|폭등', 'oil_pct', lambda v: v >= 1.5, '유가 급등 주장'),
+    (r'유가|원유|에너지', r'급락|폭락', 'oil_pct', lambda v: v <= -1.5, '유가 급락 주장'),
+    (r'기술주|나스닥', r'급락|폭락|하락\s*(?:압력|세)?\s*심화|하방\s*압력\s*심화', 'qqq_pct',
+     lambda v: v <= -1.0, '기술주 급락·심화 주장'),
+    (r'VIX|공포\s*지수', r'급등|폭등', 'vix_pct', lambda v: v >= 10.0, 'VIX 급등 주장'),
+]
+
+_GR_SUBJECTS_ALL = r'유가|원유|에너지|기술주|나스닥|반도체|VIX|공포\s*지수|금리|달러|지수'
+
+def _gr_claim_hit(text, subj_re, claim_re):
+    """주어와 강한 표현이 '가까이 붙어 있고, 사이에 다른 주어가 없을 때만' 그 주어의
+    주장으로 인정한다. '유가 급등과 기술주 급락'에서 '급락'을 유가 주장으로 오인하는
+    것 방지 — 주어 뒤 14자 이내에 표현이 오되, 그 사이에 기술주 같은 다른 주어가
+    끼어 있으면 그 표현은 그쪽 주어의 것이다."""
+    for m in re.finditer(r'(?:' + subj_re + r')([^.,·]{0,14}?)(?:' + claim_re + r')', text, re.I):
+        gap = m.group(1)
+        others = [w for w in re.findall(_GR_SUBJECTS_ALL, gap, re.I)
+                  if not re.fullmatch(subj_re, w, re.I)]
+        if not others:
+            return True
+    return False
+
+def _gr_shock(snap):
+    """점수가 크게 뛰어도 되는 '새 충격'이 실제로 있었는가 — 실측 기준."""
+    q, s = snap.get('qqq_pct'), snap.get('spy_pct')
+    v, vc = snap.get('vix'), snap.get('vix_pct')
+    return ((q is not None and abs(q) >= 2.0) or (s is not None and abs(s) >= 1.5)
+            or (v is not None and v >= 25.0) or (vc is not None and abs(vc) >= 20.0))
+
+def _gr_calm(snap, spy_off_high):
+    """평온한 시장: VIX 18 미만 + 지수 고점 3% 이내 + 당일 급락 없음."""
+    v, q = snap.get('vix'), snap.get('qqq_pct')
+    if v is None or v >= 18.0:
+        return False
+    if spy_off_high is not None and spy_off_high > 3.0:
+        return False
+    return q is None or q > -1.5
+
+def _gr_panic(snap, spy_off_high):
+    v = snap.get('vix')
+    return (v is not None and v >= 30.0) or (spy_off_high is not None and spy_off_high >= 15.0)
+
+def guardrail_violations(entry, snap, prev_entry, spy_off_high):
+    errors = []
+    # G1 — 사실 대조: 강한 표현은 실측 등락률이 뒷받침해야 한다
+    factor_texts, summary = _gr_entry_texts(entry)
+    all_texts = [t for _, t in factor_texts] + [summary]
+    for subj_re, claim_re, key, ok, label in _GR_CLAIMS:
+        val = snap.get(key)
+        if val is None:
+            continue
+        for t in all_texts:
+            if _gr_claim_hit(t, subj_re, claim_re) and not ok(val):
+                errors.append(f"사실 대조 실패: {label} — 실측 {key}={val:+.2f}%로 뒷받침 안 됨 ('{t[:40]}')")
+                break
+    # G2 — 변화 상한: 새 충격 없이 직전 판정에서 30점 초과 이동 금지
+    if prev_entry and not _gr_shock(snap):
+        prev_neg = int(prev_entry.get('negative_total', 50) or 50)
+        neg = int(entry.get('negative_total', 50) or 50)
+        if abs(neg - prev_neg) > 30:
+            errors.append(f"변화 상한 초과: 직전 부정 {prev_neg} → {neg} (새 충격 없이 30점 초과 이동). "
+                          f"{max(0, prev_neg - 30)}~{min(100, prev_neg + 30)} 범위에서 재판정 필요")
+    # G3 — 극단값 앵커
+    neg = int(entry.get('negative_total', 50) or 50)
+    pos = int(entry.get('positive_total', 50) or 50)
+    if _gr_calm(snap, spy_off_high) and neg > 65:
+        errors.append(f"극단값 앵커: VIX {snap.get('vix')} · 고점 대비 {spy_off_high}% 이내의 평온한 시장에서 "
+                      f"부정 {neg}는 과잉 — 부정 상한 65")
+    if _gr_panic(snap, spy_off_high) and pos > 65:
+        errors.append(f"극단값 앵커: 공황 지표(VIX {snap.get('vix')} / 고점 대비 −{spy_off_high}%)에서 "
+                      f"긍정 {pos}는 과잉 — 긍정 상한 65")
+    return errors
+
+def enforce_guardrails(entry, snap, prev_entry, spy_off_high):
+    """재판정 후에도 남은 위반을 코드로 강제한다. 점수는 클램프(+소계=항목합 재배분),
+    문구는 실측과 모순되는 강한 단어만 완화(급등→상승, 급락→하락)."""
+    changed = False
+    neg = int(entry.get('negative_total', 50) or 50)
+    lo, hi = 0, 100
+    # G2 클램프
+    if prev_entry and not _gr_shock(snap):
+        pv = prev_entry.get('negative_total')
+        prev_neg = int(pv) if pv is not None else 50   # 정당한 0점을 50으로 왜곡하지 않는다
+        lo, hi = max(0, prev_neg - 30), min(100, prev_neg + 30)
+        if neg < lo or neg > hi:
+            neg = lo if neg < lo else hi
+            changed = True
+    # G3 클램프
+    if _gr_calm(snap, spy_off_high) and neg > 65:
+        neg = min(neg, 65)
+        hi = min(hi, 65)
+        changed = True
+    if _gr_panic(snap, spy_off_high) and (100 - neg) > 65:
+        neg = max(neg, 35)
+        lo = max(lo, 35)
+        changed = True
+    if changed:
+        # 5단위 반올림이 클램프 경계 밖으로 나가면 경계 안쪽 5단위로 되돌린다
+        neg = int(round(neg / 5.0) * 5)
+        if neg < lo:
+            neg = int(-(-lo // 5) * 5)      # lo 이상의 최소 5단위
+        elif neg > hi:
+            neg = int(hi // 5 * 5)          # hi 이하의 최대 5단위
+        print(f"::warning::[가드레일] 점수 클램프 적용: 부정 {entry.get('negative_total')} → {neg}")
+        entry['negative_total'] = neg
+        entry['positive_total'] = 100 - neg
+        entry['positive_factors'] = _redistribute(entry.get('positive_factors') or [], entry['positive_total'])
+        entry['negative_factors'] = _redistribute(entry.get('negative_factors') or [], entry['negative_total'])
+    # G1 문구 완화 — 실측이 뒷받침하지 않는 강한 단어만 교체 (명사형 유지)
+    SOFTEN = [('급등', '상승'), ('폭등', '상승'), ('급락', '하락'), ('폭락', '하락'),
+              ('하방 압력 심화', '하방 압력 경계'), ('하락 압력 심화', '하락 압력 경계')]
+    factor_texts, _ = _gr_entry_texts(entry)
+    for subj_re, claim_re, key, ok, label in _GR_CLAIMS:
+        val = snap.get(key)
+        if val is None:
+            continue
+        for f, t in factor_texts:
+            if _gr_claim_hit(t, subj_re, claim_re) and not ok(val):
+                for a, b in SOFTEN:
+                    if a in f.get('name', '') or a in f.get('desc', ''):
+                        f['name'] = f.get('name', '').replace(a, b)
+                        f['desc'] = f.get('desc', '').replace(a, b)
+                        print(f"::warning::[가드레일] 문구 완화: '{a}' → '{b}' ({label}, 실측 {val:+.2f}%)")
+        summ = entry.get('summary', '')
+        if summ and _gr_claim_hit(summ, subj_re, claim_re) and not ok(val):
+            for a, b in SOFTEN:
+                if a in entry['summary']:
+                    entry['summary'] = entry['summary'].replace(a, b)
+                    print(f"::warning::[가드레일] 요약 완화: '{a}' → '{b}' ({label})")
+    return entry
+
+
 def main():
     kst_now = get_kst_now()
     print(f"=== 긍정 vs 부정 분석 시작 ({kst_label(kst_now)}) ===")
@@ -1496,6 +1691,13 @@ def main():
     macro_rows = fetch_macro_data()
     for r in macro_rows:
         print(f"    {r}")
+
+    # 가드레일용 실측 스냅샷 (51항) — 프롬프트에 넣는 것과 같은 수집치를 파싱
+    snap = market_snapshot(equity_rows, macro_rows)
+    spy_off_high = fetch_spy_off_high()
+    print(f"  가드레일 스냅샷: QQQ {snap['qqq_pct']}% · SPY {snap['spy_pct']}% · "
+          f"VIX {snap['vix']} ({snap['vix_pct']}%) · WTI {snap['oil_pct']}% · "
+          f"SPY 고점 대비 −{spy_off_high}%")
 
     print("  [3] 뉴스 헤드라인 수집 (yfinance)...")
     headlines = fetch_news_headlines()
@@ -1560,13 +1762,21 @@ def main():
 
     validate_entry(entry)
 
-    # 4-1. 내용 모순 검증 — 모순 발견 시 1회 재시도 (2026-06-29 추가, 2026-07-03 세션 검증 확장)
-    content_errors = validate_content(entry, session_code)
+    # 4-1. 내용 모순 + 가드레일 검증 — 발견 시 1회 재시도 (2026-06-29 추가,
+    # 2026-07-03 세션 검증 확장, 2026-08-11 가드레일 3종 + 재시도에 위반 사유 피드백)
+    prev_entry_for_guard = (data.get("entries") or [None])[0]
+    content_errors = validate_content(entry, session_code) \
+        + guardrail_violations(entry, snap, prev_entry_for_guard, spy_off_high)
     if content_errors:
-        print(f"  WARNING: 내용 모순 {len(content_errors)}건 발견 — 재시도")
+        print(f"  WARNING: 검증 실패 {len(content_errors)}건 발견 — 재시도")
         for err in content_errors:
             print(f"    ❌ {err}")
-        result2 = call_gemini(prompt)
+        # 같은 프롬프트를 다시 던지면 같은 답이 온다 — 무엇이 틀렸는지 붙여서 재판정
+        retry_prompt = prompt + "\n\n=== 재판정 지시 — 직전 응답이 아래 검증에 실패했다 ===\n" \
+            + "\n".join(f"- {e}" for e in content_errors) \
+            + "\n위 문제를 모두 해소한 새 판정을 같은 JSON 형식으로 다시 내라. " \
+              "실측 등락률이 뒷받침하지 않는 강한 표현(급등·급락 등)은 쓰지 마라."
+        result2 = call_gemini(retry_prompt)
         if result2:
             entry2 = build_entry(kst_now, result2)
             entry2, dropped_mixed2 = prune_stale_mixed_factors(
@@ -1577,16 +1787,26 @@ def main():
                 for name, age in dropped_mixed2:
                     print(f"  WARNING: (재시도) 혼조 재료 '{name}' {age}시간째 반복 & 오늘 뉴스 미확인 — 자동 제거")
             validate_entry(entry2)
-            errors2 = validate_content(entry2, session_code)
+            errors2 = validate_content(entry2, session_code) \
+                + guardrail_violations(entry2, snap, prev_entry_for_guard, spy_off_high)
             if errors2:
-                print(f"  WARNING: 재시도에도 모순 {len(errors2)}건 존재 — 1차 결과 그대로 사용")
+                print(f"  WARNING: 재시도에도 검증 실패 {len(errors2)}건 존재 — 두 결과 중 위반이 적은 쪽 사용")
                 for err in errors2:
                     print(f"    ❌ {err}")
+                if len(errors2) < len(content_errors):
+                    entry = entry2
             else:
-                print(f"  ✅ 재시도 성공 — 모순 없는 결과 채택")
+                print(f"  ✅ 재시도 성공 — 검증 통과 결과 채택")
                 entry = entry2
         else:
             print(f"  재시도 실패 — 1차 결과 그대로 사용")
+
+    # 4-2. 재판정 후에도 남은 가드레일 위반은 코드로 강제 (51항) — 점수 클램프 + 문구 완화
+    remaining = guardrail_violations(entry, snap, prev_entry_for_guard, spy_off_high)
+    if remaining:
+        print(f"  WARNING: 가드레일 위반 {len(remaining)}건 잔존 — 코드 강제 적용")
+        entry = enforce_guardrails(entry, snap, prev_entry_for_guard, spy_off_high)
+        validate_entry(entry)
 
     # 5. 신규 항목 추가
     entries = data.get("entries", [])
