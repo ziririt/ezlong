@@ -9299,5 +9299,12 @@ window.investmentQuotes = [
     "title": "나를 돌보지 않는 나에게",
     "author": "정여울",
     "genre": "literature"
+  },
+  {
+    "english": "In the old legend the wise men finally boiled down the history of mortal affairs into the single phrase, 'This too will pass.' Confronted with a like challenge to distill the secret of sound investment into three words, we venture the motto—Margin of Safety.",
+    "text": "옛이야기 속 현자들은 인간사의 모든 역사를 결국 한 문장으로 요약했다. '이것 또한 지나가리라.' 건전한 투자의 비밀을 세 단어로 압축하라는 도전을 받는다면, 우리는 이 모토를 내놓겠다 — 안전마진.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
   }
 ];
