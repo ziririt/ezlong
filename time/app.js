@@ -6131,17 +6131,35 @@ let musicVizBassHit = 0;
 let musicVizTrebleEnergyAvg = 0;
 let musicVizTrebleHit = 0;
 
-function buildMusicVizBands(binCount, barCount) {
-  // 저음역은 좁게, 고음역은 넓게 묶는 로그 스케일 경계 — 균등 step으로 뽑으면
-  // 에너지가 저음역 몇 개 bin에 쏠려 왼쪽 몇 바만 크게 움직이고 나머지는
-  // 밋밋해 보인다.
-  const bounds = [];
-  const minLog = Math.log10(1);
-  const maxLog = Math.log10(binCount);
-  for (let i = 0; i <= barCount; i++) {
-    const t = i / barCount;
-    const idx = Math.round(Math.pow(10, minLog + t * (maxLog - minLog)));
-    bounds.push(Math.min(Math.max(idx, 1), binCount));
+// 2026-08-11 신설 — 킥 온셋 검출과 느린 자동이득의 상태.
+//   musicVizKickPrev  : 직전 프레임의 30~90Hz 에너지(오름폭 계산용)
+//   musicVizKickFluxAvg: 오름폭의 이동평균 — 곡마다 다른 문턱을 자동으로 맞춘다
+//   musicVizKickLastAt : 마지막 타격 시각 — 불응기(120ms)로 이중계산 방지
+//   musicVizAgcPeak    : 최근 몇 초의 최댓값 — 프레임별 정규화를 대체한다
+let musicVizKickPrev = 0;
+let musicVizKickFluxAvg = 0;
+let musicVizKickLastAt = 0;
+let musicVizAgcPeak = 60;
+
+// 2026-08-11 전면 교체 — 이전 판은 **bin 번호**로 로그 경계를 만들었고,
+// 시작을 log10(1)=0 으로 잡아 경계 첫 값이 **1** 이었다. 그 바람에
+// **0번 bin 이 통째로 빠졌다.** fftSize 128 에서 0번 bin 은 0~345Hz —
+// 즉 킥과 베이스 전부다. 비주얼라이저가 박자를 못 보여준 진짜 이유가 이것이다.
+//
+// 새 판은 bin 번호가 아니라 **실제 주파수**로 경계를 잡는다.
+//   · 0번 막대 = 30~90Hz — 킥 전용. 이 막대 하나가 박자를 친다.
+//   · 나머지 = 90Hz~16kHz 를 로그로 나눈다(귀가 듣는 방식).
+function buildMusicVizBands(analyser, barCount) {
+  const binCount = analyser.frequencyBinCount;
+  const nyquist = (analyser.context ? analyser.context.sampleRate : 44100) / 2;
+  const binOf = (hz) => Math.max(0, Math.min(binCount, Math.round(hz / nyquist * binCount)));
+  const bounds = [binOf(30), binOf(90)];
+  const loLog = Math.log10(90);
+  const hiLog = Math.log10(Math.min(16000, nyquist));
+  for (let i = 1; i <= barCount - 1; i++) {
+    const t = i / (barCount - 1);
+    const hz = Math.pow(10, loLog + t * (hiLog - loLog));
+    bounds.push(Math.max(binOf(hz), bounds[bounds.length - 1] + 1));
   }
   return bounds;
 }
@@ -6522,7 +6540,7 @@ function drawMusicViz() {
   }
 
   if (!musicVizBandRanges) {
-    musicVizBandRanges = buildMusicVizBands(analyser.frequencyBinCount, MUSIC_VIZ_BAR_COUNT);
+    musicVizBandRanges = buildMusicVizBands(analyser, MUSIC_VIZ_BAR_COUNT);
   }
   const data = new Uint8Array(analyser.frequencyBinCount);
   analyser.getByteFrequencyData(data);
@@ -6539,6 +6557,7 @@ function drawMusicViz() {
   // 더 얹는다. normal(0)은 0.7 그대로라 기존 동작과 완전히 동일.
   const contrastAmount = getVizContrastAmount();
   const avgs = new Array(MUSIC_VIZ_BAR_COUNT);
+  let kickRaw = 0;   // 0번 막대(30~90Hz)의 **보정 전** 에너지 — 온셋 검출용
   let maxAvg = 24; // 무음에 가까운 순간에 0으로 나누는 걸 막는 바닥값
   for (let i = 0; i < MUSIC_VIZ_BAR_COUNT; i++) {
     const start = musicVizBandRanges[i];
@@ -6551,21 +6570,47 @@ function drawMusicViz() {
     // 프레임별 최댓값 정규화를 해도 고음역 막대가 "이번 프레임 1등"이 될
     // 기회 자체가 드물었다. 위치(고음역)가 높을수록 미리 이득(gain)을 줘서
     // 하이햇/심벌 같은 고음 타격이 실제로 화면에서 튀어 보이게 보정한다.
-    const trebleBoost = 1 + (i / (MUSIC_VIZ_BAR_COUNT - 1)) * (0.7 + contrastAmount); // 저음 1.0배 → 고음 1.7~2.7배
+    // 2026-08-11 — 대역을 이제 실주파수 로그로 나누므로 고음 이득을 줄인다.
+    //   예전엔 bin 균등분할이라 고음 막대가 구조적으로 불리해 0.7~2.7배를 부었다.
+    const trebleBoost = 1 + (i / (MUSIC_VIZ_BAR_COUNT - 1)) * (0.45 + contrastAmount);
+    if (i === 0) kickRaw = avg;   // 보정 전 원재료를 기억
     avg *= trebleBoost;
     avgs[i] = avg;
     if (avg > maxAvg) maxAvg = avg;
   }
 
-  // 드럼(킥) 타격 감지 — 맨 왼쪽 2개 대역(가장 낮은 저음)의 raw 평균을
-  // 최근 이동평균과 비교해, 확 튀어오르는 순간만 "타격"으로 잡는다.
-  const bassNow = (avgs[0] + avgs[1]) / 2;
-  if (bassNow > musicVizBassEnergyAvg * 1.35 + 6) {
+  // 2026-08-11 신설 — **킥 온셋(타격 순간) 검출**.
+  //   운영자: "제일 중요한 것은 비트감/박자이고, 쎈 소리가 세게 표현되는 것."
+  //   방식은 사람이 듣는 방식과 같다 — 저음이 **직전보다 갑자기 올라간
+  //   순간**을 잡는다(스펙트럴 플럭스). 크기가 아니라 "오름"을 보므로
+  //   베이스가 기다란 구간에서도 킥만 골라낸다.
+  //   문턱값·불응기(120ms)는 'Green window notes' 실측(316회/121.8초,
+  //   타격 간격 중앙값 354ms)을 잡아내는 값으로 맞췄다.
+  const kickFlux = Math.max(0, kickRaw - musicVizKickPrev);
+  musicVizKickPrev = kickRaw;
+  const nowMs = (typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now();
+  if (kickFlux > musicVizKickFluxAvg * 1.8 + 3 && nowMs - musicVizKickLastAt > 120) {
+    musicVizKickLastAt = nowMs;
     musicVizBassHit = 1;
   } else {
-    musicVizBassHit *= 0.8; // 5~6프레임 안에 빠르게 가라앉는 "팍" 펀치감
+    musicVizBassHit *= 0.80;   // 5~6프레임 안에 빠지는 "팍" 펀치감
   }
-  musicVizBassEnergyAvg += (bassNow - musicVizBassEnergyAvg) * 0.1;
+  musicVizKickFluxAvg += (kickFlux - musicVizKickFluxAvg) * 0.08;
+
+  // 2026-08-11 — **프레임별 최댓값 정규화를 버린다.**
+  //   이전에는 매 프레임 그 순간 제일 센 대역을 100% 로 놓았다. 그러면
+  //   조용한 구간이든 터지는 구간이든 제일 큰 막대는 항상 천장에 닿는다 —
+  //   "쎈 소리를 세게"가 원리적으로 불가능한 구조였다.
+  //   대신 **느린 자동이득** — 최근 몇 초의 최댓값을 기준으로 삼아
+  //   곡마다의 절대 음량은 맞춰주되, 곡 안의 셈여림은 그대로 남긴다.
+  //   0.997^60 ≈ 초당 0.84 — 반감기 약 4초.
+  musicVizAgcPeak = Math.max(maxAvg, musicVizAgcPeak * 0.997);
+  if (musicVizAgcPeak < 30) musicVizAgcPeak = 30;
+  const normPeak = musicVizAgcPeak;
+
+  // (구 버전의 저음 타격 감지는 위 킥 온셋 검출로 대체됐다 — 2026-08-11.
+  //  이전 방식은 고음 이득이 곱해진 avgs 를 봤고, 게다가 0번 bin 이 빠져
+  //  있어 실제 킥이 아닌 것을 타격으로 세고 있었다.)
 
   // 2026-07-22 2차 — "포인트 막대"용 트레블 타격 감지. 위 베이스 타격 감지와
   // 완전히 같은 패턴을 맨 오른쪽 2개 대역(가장 높은 고음)에 적용한다.
@@ -6598,7 +6643,7 @@ function drawMusicViz() {
     // 나머지는 더 가라앉는 대비를 키운다.
     const t = i / (MUSIC_VIZ_BAR_COUNT - 1);
     const shapeEnvelope = 0.75 + 0.25 * Math.sin(Math.PI * t);
-    const ratio = Math.pow(Math.max(0, avgs[i] / maxAvg), 1.5);
+    const ratio = Math.pow(Math.max(0, avgs[i] / normPeak), 1.5);
     let target = Math.max(4, ratio * shapeEnvelope * h);
     if (i <= 1) {
       // 드럼 타격 시 맨 왼쪽 1~2개 막대만 별도로 순간 펀치 — 다른 막대의
@@ -6611,6 +6656,10 @@ function drawMusicViz() {
     if (isPointBar) {
       target = Math.max(target, musicVizTrebleHit * h * 0.96);
     }
+    // 2026-08-11 — 킥이 박히는 순간 **화면 전체**가 한 번 숨 쉰다.
+    //   한 막대만 튀는 것보다 오케스트라가 다 같이 한 박 치는 편이
+    //   "박자가 보인다"는 느낌에 훨씬 가깝다(운영자 표현: 각자 단원처럼).
+    target *= 1 + 0.20 * bassHitForViz;
     target *= sens.heightMul;
     // 2026-07-22 운영 피드백 — 네이티브 경로와 동일하게 "격렬"이 박스 높이(h)를
     // 뚫고 나가지 않도록 상한을 건다.
@@ -6669,8 +6718,16 @@ function ensureAudioGraph() {
       const source = audioContext.createMediaElementSource(player);
       const gain = audioContext.createGain();
       const analyser = audioContext.createAnalyser();
-      analyser.fftSize = 128;
-      analyser.smoothingTimeConstant = 0.85;
+      // 2026-08-11 운영 피드백 — "비트감이 보이지 않는다."
+      //   fftSize 128 은 44.1kHz 기준 한 칸이 **345Hz** 다. 킥(30~90Hz)이
+      //   0번 칸 하나에 통째로 들어가 베이스·저음 피아노와 구분이 안 됐다.
+      //   2048 이면 한 칸이 21.5Hz — 킥이 세 칸에 걸쳐 뚜렷하게 보인다.
+      //   실측 근거: 'Green window notes' 저음 타격 316회/121.8초(169BPM).
+      //   평활 0.85 는 타격의 순간(20~50ms)을 뭉개는 값이다. 0.6 으로 내리고
+      //   대신 막대별 비대칭 포락선(빠른 어택/느린 릴리즈)으로 때리는 느낌을 만든다.
+      //   CPU: 2048점 FFT 는 프레임당 수십µs 수준 — 체감 비용 없다.
+      analyser.fftSize = 2048;
+      analyser.smoothingTimeConstant = 0.6;
       source.connect(gain);
       gain.connect(masterGainNode);
       gain.connect(analyser);
