@@ -9376,5 +9376,11 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "text": "크게 버리는 사람만이 크게 얻을 수 있다는 어수룩한 진리를 아는 사람은 흔치 않다. 무소유란 아무것도 갖지 않는다는 것이 아니라, 불필요한 것을 갖지 않는다는 것이다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
   }
 ];
