@@ -9490,5 +9490,12 @@ window.investmentQuotes = [
     "title": "상실의 시대 (노르웨이의 숲)",
     "author": "무라카미 하루키 (村上春樹)",
     "genre": "literature"
+  },
+  {
+    "english": "Know what you own, and know why you own it.",
+    "text": "당신이 무엇을 가지고 있는지, 그리고 왜 그것을 가지고 있는지 알아야 한다.",
+    "title": "One Up on Wall Street",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
   }
 ];
