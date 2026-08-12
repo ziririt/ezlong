@@ -9382,5 +9382,12 @@ window.investmentQuotes = [
     "title": "무소유",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "Doing well with money isn't necessarily about what you know. It's about how you behave. And behavior is hard to teach, even to really smart people.",
+    "text": "돈을 잘 다루는 것은 얼마나 많이 아느냐의 문제가 아니다. 어떻게 행동하느냐의 문제다. 그리고 행동은, 아무리 똑똑한 사람이라도 가르치기 어렵다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절 (Morgan Housel)",
+    "category": "mindset"
   }
 ];
