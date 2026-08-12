@@ -9477,5 +9477,12 @@ window.investmentQuotes = [
     "title": "먹고 기도하고 사랑하라 (Eat, Pray, Love)",
     "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
     "genre": "literature"
+  },
+  {
+    "english": "Spend each day trying to be a little wiser than you were when you woke up.",
+    "text": "매일 아침 눈을 뜬 순간보다 조금이라도 더 지혜로운 사람이 되려고 애쓰며 하루를 보내라.",
+    "title": "Poor Charlie's Almanack",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "mindset"
   }
 ];
