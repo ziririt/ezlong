@@ -9396,5 +9396,11 @@ window.investmentQuotes = [
     "title": "아메리카나 (Americanah)",
     "author": "치마만다 응고지 아디치에 (Chimamanda Ngozi Adichie)",
     "genre": "literature"
+  },
+  {
+    "text": "님은 갔습니다. 아아 사랑하는 나의 님은 갔습니다. 푸른 산빛을 깨치고 단풍나무 숲을 향하여 난 작은 길을 걸어서, 차마 떨치고 갔습니다. 우리는 만날 때에 떠날 것을 염려하는 것과 같이 떠날 때에 다시 만날 것을 믿습니다.",
+    "title": "님의 침묵",
+    "author": "한용운",
+    "genre": "literature"
   }
 ];
