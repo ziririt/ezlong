@@ -9416,5 +9416,11 @@ window.investmentQuotes = [
     "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
     "author": "버턴 말킬 (Burton G. Malkiel)",
     "category": "mindset"
+  },
+  {
+    "text": "우물 속에는 달이 밝고 구름이 흐르고 하늘이 펼치고 파아란 바람이 불고 가을이 있습니다. 그리고 한 사나이가 있습니다.",
+    "title": "자화상",
+    "author": "윤동주",
+    "genre": "literature"
   }
 ];
