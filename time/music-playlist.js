@@ -284,7 +284,6 @@ const musicPlaylist = [
   { group: 169, title: "Windows Open, Static State", playlist: "SINGLE", duration: "1:35", file: "My Workspace/Windows Open, Static State.m4a", category: "My Workspace", vocal: false },
   { group: 170, title: "air", playlist: "SINGLE", duration: "1:49", file: "piano chello/air.mp3", category: "piano chello", vocal: false },
   { group: 171, title: "Alone", playlist: "2", duration: "1:56", file: "piano chello/Alone_part2.mp3", category: "piano chello", vocal: false },
-  { group: 172, title: "bird", playlist: "1", duration: "3:29", file: "piano chello/bird_part1.mp3", category: "piano chello", vocal: false },
   { group: 172, title: "bird", playlist: "2", duration: "2:04", file: "piano chello/bird_part2.mp3", category: "piano chello", vocal: false },
   { group: 174, title: "End", playlist: "SINGLE", duration: "3:55", file: "piano chello/End.mp3", category: "piano chello", vocal: false },
   { group: 175, title: "Forever", playlist: "1", duration: "2:55", file: "piano chello/Forever_part1.mp3", category: "piano chello", vocal: false },

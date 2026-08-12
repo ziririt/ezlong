@@ -9369,5 +9369,32 @@ window.investmentQuotes = [
     "title": "언테임드: 나는 길들지 않겠다 (Untamed)",
     "author": "글레넌 도일 (Glennon Doyle)",
     "genre": "literature"
+  },
+  {
+    "english": "Know what you own, and know why you own it.",
+    "text": "무엇을 소유하고 있는지, 그리고 왜 소유하고 있는지 알아야 한다.",
+    "title": "전설로 떠나는 월가의 영웅",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
+  },
+  {
+    "text": "크게 버리는 사람만이 크게 얻을 수 있다는 어수룩한 진리를 아는 사람은 흔치 않다. 무소유란 아무것도 갖지 않는다는 것이 아니라, 불필요한 것을 갖지 않는다는 것이다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
+  },
+  {
+    "english": "Doing well with money isn't necessarily about what you know. It's about how you behave. And behavior is hard to teach, even to really smart people.",
+    "text": "돈을 잘 다루는 것은 얼마나 많이 아느냐의 문제가 아니다. 어떻게 행동하느냐의 문제다. 그리고 행동은, 아무리 똑똑한 사람이라도 가르치기 어렵다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절 (Morgan Housel)",
+    "category": "mindset"
+  },
+  {
+    "english": "Relaxing your hair is like being in prison. You're caged in. Your hair rules you.",
+    "text": "곧게 편 머리카락은 감옥과 같다. 그 안에 갇혀, 머리카락이 오히려 나를 지배하게 된다.",
+    "title": "아메리카나 (Americanah)",
+    "author": "치마만다 응고지 아디치에 (Chimamanda Ngozi Adichie)",
+    "genre": "literature"
   }
 ];
