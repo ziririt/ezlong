@@ -9422,5 +9422,12 @@ window.investmentQuotes = [
     "title": "자화상",
     "author": "윤동주",
     "genre": "literature"
+  },
+  {
+    "english": "Marsh is not swamp. Marsh is a space of light, where grass grows in water, and water flows into the sky. Slow-moving creeks wander, carrying the orb of the sun with them to the sea, and long-legged birds lift with unexpected grace -- as though not built to fly -- against the roar of a thousand snow geese.",
+    "text": "습지는 늪이 아니다. 습지는 빛이 깃든 공간이다. 물속에서 풀이 자라고, 물은 하늘로 흘러든다. 천천히 흐르는 개울은 태양의 둥근 빛을 실어 바다로 나르고, 다리가 긴 새들은 마치 날도록 만들어지지 않은 듯 뜻밖의 우아함으로 날아오른다. 수천 마리 흰기러기 울음소리를 가르며.",
+    "title": "가재가 노래하는 곳 (Where the Crawdads Sing)",
+    "author": "델리아 오언스 (Delia Owens)",
+    "genre": "literature"
   }
 ];
