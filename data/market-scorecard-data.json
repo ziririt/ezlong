@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-13-05:52",
+      "timestamp_kst": "2026-08-13(목) 05:52 KST",
+      "key_event": {
+        "name": "CPI 둔화 및 AI 수요 강세 지속",
+        "name_en": "Continued CPI Slowdown & Strong AI Demand",
+        "time": "포스트마켓 및 다음 정규장",
+        "why": "인플레이션 완화 기대, 금리 인상 압력 감소, AI 성장 지속",
+        "why_en": "Easing inflation expectations, reduced rate hike pressure, sustained AI growth"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "CPI 둔화 및 AI 관련주 강세로 긍정 우위 지속, 지정학적 긴장 완화 기대",
+      "summary_en": "Sustained positive sentiment from easing CPI and strong AI stocks, geopolitical tensions ease",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "AI 관련주 강세 지속",
+          "name_en": "Continued Strength in AI Stocks",
+          "desc": "NVIDIA (+2.41%), SOXX (+2.02%) 등 AI 관련주 강세 지속, CoreWeave 실적 낙관론",
+          "desc_en": "AI-related stocks like NVIDIA (+2.41%) and SOXX (+2.02%) continue strong, fueled by CoreWeave earnings optimism",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 30,
+          "name": "CPI 둔화로 인플레이션 우려 완화",
+          "name_en": "Easing Inflation Concerns from CPI Slowdown",
+          "desc": "7월 CPI 둔화 확인, Fed 금리 인상 압력 감소 기대",
+          "desc_en": "July CPI slowdown confirmed, raising expectations for reduced Fed rate hike pressure",
+          "category": "macro_data"
+        },
+        {
+          "score": 5,
+          "name": "WTI 원유 가격 하락",
+          "name_en": "WTI Crude Oil Price Decline",
+          "desc": "WTI 원유 가격 82.60달러로 하락 (-1.96%), 인플레이션 압력 완화",
+          "desc_en": "WTI crude oil price falls to $82.60 (-1.96%), easing inflationary pressures",
+          "category": "oil_energy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "달러인덱스 소폭 상승",
+          "name_en": "Slight Rise in Dollar Index",
+          "desc": "달러인덱스 DXY 99.99 (+0.11%)로 소폭 상승, 수출 기업에 부담",
+          "desc_en": "DXY slightly up to 99.99 (+0.11%), potentially pressuring export-oriented companies",
+          "category": "dollar_fx"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-13-01:04",
       "timestamp_kst": "2026-08-13(목) 01:04 KST",
       "key_event": {
@@ -459,59 +511,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-12-05:53",
-      "timestamp_kst": "2026-08-12(수) 05:53 KST",
-      "key_event": {
-        "name": "지정학적 긴장 재고조 및 CPI 대기",
-        "name_en": "Geopolitical Tensions Resurface, CPI Awaited",
-        "time": "향후 12시간 이내",
-        "why": "미-이란 협상 난항, 유가 상승 압력, 인플레이션 우려 지속",
-        "why_en": "US-Iran talks falter, oil price pressure, persistent inflation concerns"
-      },
-      "positive_total": 40,
-      "negative_total": 60,
-      "summary": "지정학적 긴장 재고조와 CPI 발표 대기 속 부정 우위 지속",
-      "summary_en": "Negative sentiment persists amid renewed geopolitical tensions and CPI anticipation",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "일부 AI 기업 실적 호조",
-          "name_en": "Strong Earnings from Select AI Companies",
-          "desc": "CoreWeave 등 AI 관련 기업 실적 발표 기대치 상회, AI 투자 심리 개선",
-          "desc_en": "CoreWeave and other AI-related companies beat earnings estimates, improving AI investment sentiment",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 60,
-          "name": "미-이란 평화 낙관론 약화",
-          "name_en": "US-Iran Peace Optimism Fades",
-          "desc": "미-이란 협상 난항으로 지정학적 긴장 재고조, 시장 불확실성 확대",
-          "desc_en": "US-Iran talks falter, reigniting geopolitical tensions and increasing market uncertainty",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "CPI 발표 대기",
-          "name_en": "Anticipation of CPI Release",
-          "desc": "내일 CPI 발표를 앞두고 관망세와 함께 인플레이션 우려 및 금리 인상 가능성 해석 엇갈림",
-          "desc_en": "Ahead of tomorrow's CPI release, market awaits with mixed interpretations regarding inflation concerns and potential rate hikes",
-          "category": "macro_data"
-        },
-        {
-          "name": "테슬라 중국 판매 부진",
-          "name_en": "Tesla's Weak China Sales",
-          "desc": "테슬라의 중국 소매 판매 32% 감소 소식에도 GM의 EV 배터리 지분 매각 등 혼조된 EV 시장 동향",
-          "desc_en": "Despite a 32% drop in Tesla's China retail sales, the EV market shows mixed trends with GM selling off EV battery stakes",
-          "category": "company_specific"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-12T16:04:24Z",
+  "updated_at": "2026-08-12T20:52:58Z",
   "max_entries": 10
 }
