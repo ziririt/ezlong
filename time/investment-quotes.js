@@ -9470,5 +9470,12 @@ window.investmentQuotes = [
     "title": "버크셔 해서웨이 2008년 주주 서한",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "mindset"
+  },
+  {
+    "english": "You need to learn how to select your thoughts just the same way you select your clothes every day. This is a power you can cultivate.",
+    "text": "매일 입을 옷을 고르듯, 생각도 스스로 골라 받아들이는 법을 배워야 한다. 이것은 누구나 기를 수 있는 힘이다.",
+    "title": "먹고 기도하고 사랑하라 (Eat, Pray, Love)",
+    "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
+    "genre": "literature"
   }
 ];
