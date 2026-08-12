@@ -9463,5 +9463,12 @@ window.investmentQuotes = [
     "title": "데미안 (Demian)",
     "author": "헤르만 헤세 (Hermann Hesse)",
     "genre": "literature"
+  },
+  {
+    "english": "Price is what you pay. Value is what you get.",
+    "text": "가격은 당신이 지불하는 것이고, 가치는 당신이 얻는 것이다.",
+    "title": "버크셔 해서웨이 2008년 주주 서한",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "mindset"
   }
 ];
