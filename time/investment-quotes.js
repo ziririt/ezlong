@@ -9429,5 +9429,11 @@ window.investmentQuotes = [
     "title": "가재가 노래하는 곳 (Where the Crawdads Sing)",
     "author": "델리아 오언스 (Delia Owens)",
     "genre": "literature"
+  },
+  {
+    "text": "물론 삶에는 그냥 흘러가는 시간도 있다. 기다리거나 견뎌야 하는 시간도 있다. 중요한 것은 그게 결코 버리는 시간이 아니라는 것을 깨닫는 일이다.",
+    "title": "평일도 인생이니까",
+    "author": "김신지",
+    "genre": "literature"
   }
 ];
