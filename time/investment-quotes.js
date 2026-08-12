@@ -9456,5 +9456,12 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각 (The Most Important Thing)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "mindset"
+  },
+  {
+    "english": "The bird fights its way out of the egg. The egg is the world. Who would be born must destroy a world.",
+    "text": "새는 알에서 나오려고 투쟁한다. 알은 세계다. 태어나려는 자는 하나의 세계를 깨뜨려야 한다.",
+    "title": "데미안 (Demian)",
+    "author": "헤르만 헤세 (Hermann Hesse)",
+    "genre": "literature"
   }
 ];
