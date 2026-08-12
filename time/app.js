@@ -8993,6 +8993,15 @@ if (skyRoom) {
     swipeStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
   }, { passive: true });
 
+  // 2026-08-12 — touchcancel 안전망. iOS 는 시스템이 제스처를 가져가면
+  //   touchend 를 안 보내고 touchcancel 을 보낸다. 이 핸들러가 없으면 시작
+  //   좌표가 그대로 남아, 다음 터치의 판정이 엉뚱한 기준점으로 계산될 수 있다.
+  //   (씹힘의 근본은 문장박스 쪽 CSS 에서 막았고 — styles.css .quote-panel 주석 —
+  //    이건 그래도 새는 경우를 위한 뒷정리다.)
+  skyRoom.addEventListener("touchcancel", () => {
+    swipeStart = null;
+  }, { passive: true });
+
   skyRoom.addEventListener("touchend", (event) => {
     if (!swipeStart) return;
     const touch = event.changedTouches[0];

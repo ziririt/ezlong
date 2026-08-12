@@ -9396,5 +9396,25 @@ window.investmentQuotes = [
     "title": "아메리카나 (Americanah)",
     "author": "치마만다 응고지 아디치에 (Chimamanda Ngozi Adichie)",
     "genre": "literature"
+  },
+  {
+    "text": "님은 갔습니다. 아아 사랑하는 나의 님은 갔습니다. 푸른 산빛을 깨치고 단풍나무 숲을 향하여 난 작은 길을 걸어서, 차마 떨치고 갔습니다. 우리는 만날 때에 떠날 것을 염려하는 것과 같이 떠날 때에 다시 만날 것을 믿습니다.",
+    "title": "님의 침묵",
+    "author": "한용운",
+    "genre": "literature"
+  },
+  {
+    "english": "Whenever you feel afraid, just remember. Courage is the root of change - and change is what we're chemically designed to do.",
+    "text": "두려움이 밀려올 때면 이것만 기억하세요. 용기는 변화의 뿌리이며, 변화는 우리가 화학적으로 원래 그렇게 만들어진 존재라는 사실을요.",
+    "title": "레슨 인 케미스트리 (Lessons in Chemistry)",
+    "author": "보니 가머스 (Bonnie Garmus)",
+    "genre": "literature"
+  },
+  {
+    "english": "A blindfolded monkey throwing darts at a newspaper's financial pages could select a portfolio that would do just as well as one carefully selected by experts.",
+    "text": "눈을 가린 원숭이가 신문의 경제면에 다트를 던져 고른 종목들도, 전문가들이 신중하게 골라낸 포트폴리오만큼이나 좋은 성과를 낼 수 있다.",
+    "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
+    "author": "버턴 말킬 (Burton G. Malkiel)",
+    "category": "mindset"
   }
 ];
