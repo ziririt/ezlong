@@ -9497,5 +9497,12 @@ window.investmentQuotes = [
     "title": "One Up on Wall Street",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "english": "There is power in allowing yourself to be known and heard, in owning your unique story, in using your authentic voice.",
+    "text": "자신을 알리고 목소리를 내도록 스스로에게 허락하는 데에, 자신만의 이야기를 소유하고 진정한 목소리를 사용하는 데에 힘이 있다.",
+    "title": "비커밍 (Becoming)",
+    "author": "미셸 오바마 (Michelle Obama)",
+    "genre": "literature"
   }
 ];
