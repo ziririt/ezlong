@@ -9484,5 +9484,11 @@ window.investmentQuotes = [
     "title": "Poor Charlie's Almanack",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "mindset"
+  },
+  {
+    "text": "죽음은 삶의 대극에 있는 것이 아니라 우리의 삶 속에 잠재해 있는 것이다.",
+    "title": "상실의 시대 (노르웨이의 숲)",
+    "author": "무라카미 하루키 (村上春樹)",
+    "genre": "literature"
   }
 ];
