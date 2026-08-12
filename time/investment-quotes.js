@@ -9449,5 +9449,12 @@ window.investmentQuotes = [
     "title": "미드나잇 라이브러리 (The Midnight Library)",
     "author": "매트 헤이그 (Matt Haig)",
     "genre": "literature"
+  },
+  {
+    "english": "Investment success doesn't come from buying good things, but rather from buying things well.",
+    "text": "투자에서 성공은 좋은 것을 사는 데서 오지 않는다. 잘 사는 데서 온다.",
+    "title": "투자에 대한 생각 (The Most Important Thing)",
+    "author": "하워드 막스 (Howard Marks)",
+    "category": "mindset"
   }
 ];
