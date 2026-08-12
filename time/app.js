@@ -5255,6 +5255,74 @@ function saveMusicPanelPreferredOpen(open) {
   try { localStorage.setItem(musicPanelOpenStorageKey, open ? "1" : "0"); } catch (error) {}
 }
 
+// ═════════════════════════════════════════════════════════════════
+// 비주얼라이저 첫 실행 온보딩 — 2026-08-12 운영 지침
+// ═════════════════════════════════════════════════════════════════
+// 2026-08-05에 "비주얼라이저를 켤 수 있다는 걸 사람들이 모른다"는 이유로
+// 이 패널의 기본값을 '열림'으로 바꿨다. 그 대가로 배경사진을 늘 가리게
+// 됐고, 그러면서도 "이걸 접었다 폈다 할 수 있다"는 사실은 여전히 전달되지
+// 않았다. 켜져 있는 상태는 조작 가능성을 설명하지 못한다.
+//
+// 그래서 노출을 '상태'에서 '동작'으로 바꾼다. 앱을 켜면 10초만 보여주고,
+// 그 사이 음악을 틀지 않으면 스스로 접힌다. 접히는 그 움직임 자체가
+// "이건 접었다 폈다 하는 것"이라는 설명이다 — 문구 한 줄 없이, 그러므로
+// 번역 한 줄 없이(9개 언어 × 새 문구 = 없음).
+//
+// 운영자 확정 규칙(2026-08-12):
+//   · 학습의 기준은 '토글 조작'이다. 음악 재생이 아니다. 음악은 하단
+//     ▶ 버튼으로도 틀 수 있으니, 틀었다는 사실이 곧 "패널을 접었다 폈다
+//     할 줄 안다"는 뜻은 아니다.
+//   · 학습 전까지는 매 실행마다 10초를 준다. 한 번만 보여주고 말면, 그때
+//     마침 화면을 안 보고 있던 사람에게는 없었던 일과 같다.
+// 학습이 끝나면 이 연출은 영구히 사라진다 — 아는 사람에게 반복하는 안내만큼
+// 앱을 싸구려 보이게 하는 것이 없다.
+const vizOnboardLearnedKey = "ezlong:vizOnboardLearned";
+const VIZ_ONBOARD_MS = 10000;
+let vizOnboardTimer = null;
+
+// localStorage를 못 쓰는 환경은 '학습됨'으로 간주한다. 기억하지 못하는
+// 기기에서 매번 10초 만에 접히는 연출이 반복되면 안내가 아니라 고장으로 읽힌다.
+function vizOnboardLearned() {
+  try {
+    return localStorage.getItem(vizOnboardLearnedKey) === "1";
+  } catch (error) {
+    return true;
+  }
+}
+
+function cancelVizOnboardCountdown() {
+  if (vizOnboardTimer) {
+    window.clearTimeout(vizOnboardTimer);
+    vizOnboardTimer = null;
+  }
+}
+
+// 토글을 손으로 만진 순간 = 학습 완료. 방향(펼침/접힘)은 상관없다 — 어느
+// 쪽이든 "이게 조작되는 물건이다"를 이미 알았다는 증거다.
+function markVizOnboardLearned() {
+  cancelVizOnboardCountdown();
+  try { localStorage.setItem(vizOnboardLearnedKey, "1"); } catch (error) { /* 무시 */ }
+}
+
+// 부팅 직후 기본 노출에서만 부른다. 사용자가 손으로 펼쳐서 열린 패널은
+// 이 카운트다운의 대상이 아니다(그 순간 이미 학습이 끝난다).
+function startVizOnboardCountdown() {
+  cancelVizOnboardCountdown();
+  if (vizOnboardLearned()) return;
+  vizOnboardTimer = window.setTimeout(function () {
+    vizOnboardTimer = null;
+    try {
+      // 10초 안에 음악을 틀었으면 그대로 둔다 — 보려고 튼 것을 뺏지 않는다.
+      // 다만 이것을 학습으로 치지도 않는다(운영자 확정 규칙).
+      if (typeof musicPlaying !== "undefined" && musicPlaying) return;
+      if (!isMusicPanelOpen()) return;
+      // persist=false — 이건 사용자의 선택이 아니라 안내 연출의 마무리다.
+      // 선택으로 기억해버리면 다음 실행에 기본 노출이 통째로 무너진다.
+      setMusicPanelOpen(false, false);
+    } catch (error) { /* 무시 */ }
+  }, VIZ_ONBOARD_MS);
+}
+
 function setMusicPanelOpen(open, persist) {
   if (!musicInfoPanel) return;
   // persist가 명시적으로 false면 취향으로 기억하지 않는다 — 배터리 보호로
@@ -5283,6 +5351,7 @@ function handleMusicIconTap() {
     openSettings(); // 롤백 모드: 예전 그대로 바로 음악설정 오픈
     return;
   }
+  markVizOnboardLearned();
   setMusicPanelOpen(!isMusicPanelOpen());
 }
 
@@ -10218,7 +10287,11 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
     try {
       if (!loadMusicPanelPreferredOpen()) return;
       if (typeof isMusicPanelOpen === "function" && isMusicPanelOpen()) return;
-      setMusicPanelOpen(true);
+      // persist=false — 부팅 직후의 기본 노출은 사용자의 선택이 아니다.
+      // (setMusicPanelOpen 주석의 원칙 — 자동 조작을 취향으로 기억하지 않는다.)
+      setMusicPanelOpen(true, false);
+      // 그리고 10초 시계를 돌린다 — 아직 토글을 손으로 만져본 적 없는 사람한테만.
+      startVizOnboardCountdown();
     } catch (error) {
       // 패널 복원 실패는 앱 사용을 막지 않는다 — 조용히 넘어간다.
     }
