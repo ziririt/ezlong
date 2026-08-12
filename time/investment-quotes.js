@@ -9435,5 +9435,12 @@ window.investmentQuotes = [
     "title": "평일도 인생이니까",
     "author": "김신지",
     "genre": "literature"
+  },
+  {
+    "english": "The intelligent investor is a realist who sells to optimists and buys from pessimists.",
+    "text": "현명한 투자자는 현실주의자다. 그는 낙관론자들에게 팔고 비관론자들로부터 산다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
   }
 ];
