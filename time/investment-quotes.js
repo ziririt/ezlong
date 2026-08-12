@@ -9409,5 +9409,12 @@ window.investmentQuotes = [
     "title": "레슨 인 케미스트리 (Lessons in Chemistry)",
     "author": "보니 가머스 (Bonnie Garmus)",
     "genre": "literature"
+  },
+  {
+    "english": "A blindfolded monkey throwing darts at a newspaper's financial pages could select a portfolio that would do just as well as one carefully selected by experts.",
+    "text": "눈을 가린 원숭이가 신문의 경제면에 다트를 던져 고른 종목들도, 전문가들이 신중하게 골라낸 포트폴리오만큼이나 좋은 성과를 낼 수 있다.",
+    "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
+    "author": "버턴 말킬 (Burton G. Malkiel)",
+    "category": "mindset"
   }
 ];
