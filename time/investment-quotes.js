@@ -9389,5 +9389,12 @@ window.investmentQuotes = [
     "title": "돈의 심리학 (The Psychology of Money)",
     "author": "모건 하우절 (Morgan Housel)",
     "category": "mindset"
+  },
+  {
+    "english": "Relaxing your hair is like being in prison. You're caged in. Your hair rules you.",
+    "text": "곧게 편 머리카락은 감옥과 같다. 그 안에 갇혀, 머리카락이 오히려 나를 지배하게 된다.",
+    "title": "아메리카나 (Americanah)",
+    "author": "치마만다 응고지 아디치에 (Chimamanda Ngozi Adichie)",
+    "genre": "literature"
   }
 ];
