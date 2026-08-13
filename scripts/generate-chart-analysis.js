@@ -1729,7 +1729,14 @@ async function main() {
   const ok  = results.filter(Boolean).length;
   const err = results.length - ok;
   console.log(`\n완료: ${ok}/${results.length}개 성공${err > 0 ? ` (실패 ${err}개)` : ' — 전원 성공'}`);
-  if (err > 0) process.exit(1);
+  // 부분 실패 허용 (2026-08-13) — 심볼 하나의 야후 데이터 불량(예: 102110.KS 봉 17개)이
+  // 이틀간 6회 연속 전체 실패·성공분 폐기·실패 메일 폭탄을 만들었다. exit 1이면 뒤의
+  // 커밋 스텝이 건너뛰어져 성공한 심볼의 새 분석까지 통째로 버려진다. 절반 이상
+  // 성공하면 성공분만 커밋하고 정상 종료 — 실패 심볼은 직전 분석이 화면에 유지된다.
+  if (err > 0) {
+    if (ok === 0 || ok < results.length / 2) process.exit(1);   // 전멸·과반 실패만 진짜 실패
+    console.warn(`::warning::부분 실패 ${err}개 — 성공 ${ok}개는 커밋, 실패 심볼은 직전 분석 유지`);
+  }
 }
 
 main().catch(e => {
