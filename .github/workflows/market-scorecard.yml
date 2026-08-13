@@ -22,7 +22,15 @@ on:
     - cron: '0 20 * * *'    # KST 05:00 — 장마감 직후
 
   # 수동 실행 허용 (GitHub Actions 탭 → Run workflow)
+  # force 입력은 75분 중복 방지 간격을 건너뛴다 — 판정 규칙을 고친 직후 그 규칙이
+  # 실제로 적용된 카드를 바로 확인하려면 이게 없으면 최대 75분을 기다려야 한다.
+  # (2026-08-14: 규칙을 배포하고도 화면이 그대로라 '왜 안 바뀌냐'는 제보를 받았다)
   workflow_dispatch:
+    inputs:
+      force:
+        description: '75분 간격 무시하고 즉시 재생성'
+        type: boolean
+        default: false
 
 jobs:
   analyze-and-update:
@@ -68,6 +76,7 @@ jobs:
         if: steps.gate.outputs.run == 'yes' || github.event_name == 'workflow_dispatch'
         run: python scripts/fetch-market-scorecard.py
         env:
+          FORCE_SCORECARD:       ${{ inputs.force && '1' || '' }}
           GEMINI_API_KEY:        ${{ secrets.GEMINI_API_KEY }}
           ALPHAVANTAGE_API_KEY:  ${{ secrets.ALPHAVANTAGE_API_KEY }}
           ANTHROPIC_API_KEY:     ${{ secrets.ANTHROPIC_API_KEY }}
