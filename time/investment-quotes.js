@@ -9598,5 +9598,12 @@ window.investmentQuotes = [
     "title": "밀크 앤 허니 (Milk and Honey)",
     "author": "루피 카우르 (Rupi Kaur)",
     "genre": "literature"
+  },
+  {
+    "english": "There is only one side to the stock market; and it is not the bull side or the bear side, but the right side.",
+    "text": "주식시장에는 한쪽만 있다. 강세도 약세도 아닌, 옳은 쪽이다.",
+    "title": "주식 매매하는 법 (How to Trade in Stocks)",
+    "author": "제시 리버모어 (Jesse Livermore)",
+    "category": "mindset"
   }
 ];
