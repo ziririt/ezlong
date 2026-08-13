@@ -188,6 +188,18 @@ window.BH_T = {
  "emptyNear": "No events recorded near this date.",
  "chartFail": "The chart could not be loaded. The list and calendar below still work.",
  "loadFail": "Could not load the data. Please refresh in a moment.",
+ "wdays": [
+  "Sun",
+  "Mon",
+  "Tue",
+  "Wed",
+  "Thu",
+  "Fri",
+  "Sat"
+ ],
+ "dateWd": "{date} ({wd})",
+ "moreBtnOpen": "Show this day",
+ "moreBtnClose": "Collapse",
  "months": [
   "January",
   "February",
@@ -437,13 +449,20 @@ window.BH_T = {
   .bh-filter-row input { width: 17px; height: 17px; }
   /* 날짜로 이동 — 버튼을 누르면 우측에 날짜 입력칸이 나타난다(기본값 오늘) */
   .bh-goto-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  /* 아이콘 하나로는 '눌러서 날짜를 고른다'가 안 읽힌다(운영 피드백) —
+     글자를 붙이고 브랜드 색 테두리로 세운다. 14px 소형 텍스트라 자간은
+     0~약간 양수(음수 트래킹은 큰 표제용). */
   .bh-goto-btn {
-    width: 32px; height: 32px; border-radius: 10px; border: 1px solid var(--ez-border);
-    background: var(--ez-card2); color: var(--ez-text2); cursor: pointer; flex: none;
-    display: flex; align-items: center; justify-content: center;
+    height: 36px; padding: 0 13px 0 10px; border-radius: 999px;
+    border: 1.5px solid var(--ez-blue); background: var(--ez-card2); color: var(--ez-blue);
+    cursor: pointer; flex: none; display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--ez-font); font-size: 14px; font-weight: 800; letter-spacing: .02em;
+    transition: transform 100ms ease-out, background 120ms ease;
   }
-  .bh-goto-btn:hover { background: var(--ez-border2); }
-  .bh-goto-btn.active { background: var(--ez-blue); color: #fff; border-color: var(--ez-blue); }
+  .bh-goto-btn:hover { background: var(--ez-blue); color: #fff; }
+  .bh-goto-btn:active { transform: scale(.97); }   /* 피드백은 누르는 순간에 */
+  .bh-goto-btn.active { background: var(--ez-blue); color: #fff; }
+  @media (prefers-reduced-motion: reduce) { .bh-goto-btn { transition: none; } .bh-goto-btn:active { transform: none; } }
   .bh-goto-input {
     font-size: 15px; font-weight: 600; color: var(--ez-text); background: var(--ez-surface);
     border: 1.5px solid var(--ez-blue); border-radius: 999px; padding: 6px 14px;
@@ -483,16 +502,35 @@ window.BH_T = {
   /* 고른 날짜의 카드 — 차트 세로선과 같은 빨강으로 묶는다. 색이 갈리면
      선과 카드가 서로 다른 것을 가리키는 것처럼 읽힌다. 배경은 아주 옅게만
      깔아 본문 대비를 건드리지 않는다(라이트/다크 각각 따로 잡는다). */
-  .bh-event-item.highlight {
-    outline: 2px solid var(--bh-pick); background: var(--bh-pick-dim);
-  }
+  /* 배경 틴트는 뺐다(운영 피드백) — 본문이 긴 카드라 옅은 색이라도 깔리면
+     읽는 대비가 떨어진다. 테두리만으로 충분히 지목된다. */
+  .bh-event-item.highlight { outline: 2px solid var(--bh-pick); }
   /* 누르면 차트가 그 날짜로 이동한다 — 누를 수 있다는 걸 보이게 한다. */
   .bh-event-item { cursor: pointer; }
   .bh-event-item:active { transform: scale(.995); }
   @media (prefers-reduced-motion: reduce) { .bh-event-item:active { transform: none; } }
   .bh-event-item .bh-event-link { cursor: pointer; }
+  /* 앞뒤 날짜 카드는 날짜·등락까지만 펴 둔다. 예전에는 하루 전 카드의 본문이
+     통째로 먼저 나와서, 정작 고른 날이 화면 밖으로 밀렸다(운영 피드백). */
+  .bh-event-item.folded { opacity: .82; }
+  .bh-event-item.folded:hover { opacity: 1; }
+  .bh-more-btn {
+    margin-top: 8px; padding: 6px 13px; border-radius: 999px;
+    border: 1px solid var(--ez-border); background: var(--ez-surface);
+    color: var(--ez-text2); font-family: var(--ez-font); font-size: 14px; font-weight: 700;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+    transition: transform 100ms ease-out;
+  }
+  .bh-more-btn:hover { background: var(--ez-card2); color: var(--ez-text); }
+  .bh-more-btn:active { transform: scale(.97); }
+  .bh-more-btn i { font-style: normal; font-size: 14px; line-height: 1; }
+  @media (prefers-reduced-motion: reduce) { .bh-more-btn { transition: none; } .bh-more-btn:active { transform: none; } }
   .bh-event-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
   .bh-event-date { font-size: 14px; font-weight: 700; color: var(--ez-text2); }
+  /* 고른 날짜 카드에서는 날짜가 곧 제목이다 — 크기·굵기로 위계를 만들고
+     요일을 붙인다(무슨 요일이었나가 그날을 읽는 맥락이다). */
+  .bh-event-date.is-day { font-size: 20px; font-weight: 800; color: var(--ez-text); letter-spacing: -.01em; }
+  @media (min-width: 760px) { .bh-event-date.is-day { font-size: 22px; } }
   .bh-badge { font-size: 14px; font-weight: 700; padding: 2px 9px; border-radius: 999px; color: #fff; }
   .bh-badge.major { background: var(--ez-blue); }
   .bh-badge.notable { background: var(--ez-text3); }
@@ -631,6 +669,7 @@ window.BH_T = {
           <line x1="13" y1="3" x2="13" y2="6.5"></line>
           <path d="M13 14 L20 14 M20 14 L17 11 M20 14 L17 17"></path>
         </svg>
+        <span>GOTO</span>
       </button>
       <input type="date" id="bh-goto-input" class="bh-goto-input" style="display:none" aria-label="Pick a date to jump to">
     </div>
@@ -824,6 +863,10 @@ window.BH_T = {
     renderCalendar();
     renderEventList();
 
+    /* 주소로 들어온 날짜가 있으면 그 날짜부터 연다 (없는 날은 다음 이슈로). */
+    const wantedDate = resolveEventDate(readDateParam());
+    if (wantedDate) selectDate(wantedDate, null);
+
     // "핵심 이슈만 표시"는 달력쪽·차트쪽 두 군데에 있고 항상 같은 값으로 동기화된다.
     // 어느 쪽을 누르든 majorOnly 갱신 + 캘린더·목록·차트 마커(applyMarkers)까지 전부 다시 그린다.
     const majorOnlyCheckboxes = [
@@ -847,6 +890,22 @@ window.BH_T = {
     if (listEl) {
       listEl.addEventListener('click', (ev) => {
         if (ev.target.closest('a')) return;
+        /* 접힌 카드의 '펼치기' — 카드 클릭(날짜 이동)보다 먼저 가로챈다.
+           펼치려고 눌렀는데 날짜까지 옮겨가면 보던 자리를 잃는다. */
+        const moreBtn = ev.target.closest('.bh-more-btn');
+        if (moreBtn) {
+          const host = moreBtn.closest('.bh-event-item');
+          const restEl = host && host.querySelector('.bh-event-rest');
+          if (restEl) {
+            const opening = restEl.hidden;
+            restEl.hidden = !opening;
+            host.classList.toggle('folded', !opening);
+            moreBtn.setAttribute('aria-expanded', String(opening));
+            moreBtn.innerHTML = '<i aria-hidden="true">' + (opening ? '▴' : '▾') + '</i>'
+              + (opening ? T.moreBtnClose : T.moreBtnOpen);
+          }
+          return;
+        }
         const card = ev.target.closest('.bh-event-item');
         if (!card || !card.dataset.date) return;
         selectDate(card.dataset.date, 'chart');
@@ -1534,6 +1593,7 @@ window.BH_T = {
 
   function clearSelection() {
     selectedDate = null;
+    syncUrl('');
     listShown = LIST_PAGE;
     renderCalendar();
     renderEventList();
@@ -1543,8 +1603,35 @@ window.BH_T = {
   /* dateStr 날짜를 차트 한가운데에 놓고 달력·목록도 그 날짜로 맞춘다.
      scrollTo 로 어디를 보여줄지 고른다 — 목록에서 눌렀으면 차트를 보여줘야
      하고(그게 누른 이유다), 차트 마커나 달력에서 눌렀으면 목록을 보여준다. */
+  /* 주소창의 날짜로 바로 들어오기 — ?d=2026-08-12 (또는 #2026-08-12).
+     그날 카드가 없으면 그 뒤로 가장 가까운 이슈 날짜로 보낸다. 빈 화면을
+     띄우고 '없습니다'로 끝내면 링크를 받은 사람은 아무것도 못 본다. */
+  function readDateParam() {
+    let v = '';
+    try { v = new URLSearchParams(location.search).get('d') || ''; } catch (e) {}
+    if (!v && /^#\d{4}-\d{2}-\d{2}$/.test(location.hash)) v = location.hash.slice(1);
+    return /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : '';
+  }
+
+  function resolveEventDate(wanted) {
+    if (!wanted) return '';
+    const ds = eventDatesAsc();
+    if (!ds.length) return '';
+    if (ds.indexOf(wanted) >= 0) return wanted;
+    const nextD = ds.find(d => d > wanted);      // 없으면 그 뒤 첫 이슈
+    return nextD || ds[ds.length - 1];           // 그마저 없으면(미래 날짜) 가장 최근
+  }
+
+  function syncUrl(dateStr) {
+    if (!history.replaceState) return;
+    try {
+      history.replaceState(null, '', dateStr ? location.pathname + '?d=' + dateStr : location.pathname);
+    } catch (e) {}
+  }
+
   function selectDate(dateStr, scrollTo) {
     selectedDate = dateStr;
+    syncUrl(dateStr);
     const d = new Date(dateStr + 'T00:00:00Z');
     calYear = d.getUTCFullYear();
     calMonth = d.getUTCMonth();
@@ -1671,7 +1758,15 @@ window.BH_T = {
     return `${head}<ul class="bh-article-list">${li}</ul>`;
   }
 
-  function renderEventCard(e, highlight) {
+  /* 날짜에 요일을 붙인다 — '2026-08-12(수)'. 요일은 사전에서 만든다
+     (기계 생성 문구를 번역기에 태우면 언어마다 제각각으로 돌아온다). */
+  function dateLabel(dateStr) {
+    const wd = (T.wdays || [])[new Date(dateStr + 'T00:00:00Z').getUTCDay()];
+    return wd ? fmt(T.dateWd || '{date}({wd})', { date: dateStr, wd: wd }) : dateStr;
+  }
+
+  /* folded = 고른 날의 앞뒤 카드. 날짜·등락까지만 펴 두고 나머지는 버튼 뒤에 둔다. */
+  function renderEventCard(e, highlight, folded) {
     const badge = e.importance === 3
       ? '<span class="bh-badge major">' + T.badgeMajor + '</span>'
       : e.importance === 2
@@ -1700,18 +1795,22 @@ window.BH_T = {
     const title = (many && e.source === 'own_archive')
       ? fmt(T.dayLog, { n: e.articles.length })
       : e.title;
-    return `<div class="bh-event-item${highlight ? ' highlight' : ''}" data-date="${e.date}">
-      <div class="bh-event-top">
-        <span class="bh-event-date">${e.date}</span>
-        ${badge}
-      </div>
-      ${moves ? `<div class="bh-event-moves">${moves}</div>` : ''}
-      ${renderForward(e.date)}
+    const rest = `${renderForward(e.date)}
       ${renderVerdict(e.date)}
       <div class="bh-event-title">${escapeHtml(title)}</div>
       ${bodyHtml}
       ${articlesHtml}
-      ${sourceTag ? `<div class="bh-event-foot">${sourceTag}</div>` : ''}
+      ${sourceTag ? `<div class="bh-event-foot">${sourceTag}</div>` : ''}`;
+    return `<div class="bh-event-item${highlight ? ' highlight' : ''}${folded ? ' folded' : ''}" data-date="${e.date}">
+      <div class="bh-event-top">
+        <span class="bh-event-date${highlight ? ' is-day' : ''}">${highlight ? dateLabel(e.date) : e.date}</span>
+        ${badge}
+      </div>
+      ${moves ? `<div class="bh-event-moves">${moves}</div>` : ''}
+      ${folded
+        ? `<button type="button" class="bh-more-btn" aria-expanded="false"><i aria-hidden="true">▾</i>${T.moreBtnOpen}</button>
+           <div class="bh-event-rest" hidden>${rest}</div>`
+        : rest}
     </div>`;
   }
 
@@ -1796,7 +1895,7 @@ window.BH_T = {
          달고 나란히 있다. */
       countEl.textContent = '';
       listEl.innerHTML = nearby.length
-        ? nearby.map(e => renderEventCard(e, e.date === selectedDate)).join('')
+        ? nearby.map(e => renderEventCard(e, e.date === selectedDate, e.date !== selectedDate)).join('')
         : '<div class="bh-empty">' + T.emptyNear + '</div>';
       syncStepButtons();
       return;
