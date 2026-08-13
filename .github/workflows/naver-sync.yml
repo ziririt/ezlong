@@ -55,6 +55,13 @@ jobs:
         continue-on-error: true
         run: python3 scripts/merge-naver-archive.py
 
+      # 상승·하락 상위 20일 순위 배지. 차트와 이슈가 모두 최신이 된 뒤에 계산한다
+      # (새 폭락일이 들어오면 순위가 밀린다). 책 인용용 동결본은 한 번 만든 뒤
+      # 스크립트가 스스로 건너뛰므로 매일 돌아도 덮어쓰지 않는다.
+      - name: 이슈 순위 배지 생성
+        continue-on-error: true
+        run: python3 scripts/build-brief-history-ranks.py
+
       # 그날 글의 공개 본문을 읽어 소제목+닷블릿 브리핑으로 압축한다.
       # 제목만 따오면 '그날 무슨 일이 있었나'가 헤드라인 한 줄로 끝난다.
       # merge 가 매번 항목을 새로 만들므로 반드시 그 뒤에 온다(캐시로 재적용).
