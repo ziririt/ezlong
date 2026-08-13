@@ -10,6 +10,7 @@ on:
   # 세 번째 안전망은 감시견(watchdog)이다 — 하루 넘게 갱신이 없으면 재실행한다.
   schedule:
     - cron: '5 0 * * *'    # 00:05 UTC = 09:05 KST — 본실행
+    - cron: '45 9 * * *'   # 09:45 UTC = 18:45 KST — 오후 실행
     - cron: '35 1 * * *'   # 01:35 UTC = 10:35 KST — 보조(본실행이 밀렸을 때)
   workflow_dispatch:
 
