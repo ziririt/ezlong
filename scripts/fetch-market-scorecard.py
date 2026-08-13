@@ -714,6 +714,23 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
   위험회피 요인의 desc에 부수 현상으로만 짧게 언급하라. (2026-07-18 추가 — 실사고: Fed
   매파 기조를 부정 요인으로 넣어놓고 같은 카드에서 국채금리 하락 0.61%를 "성장주 긍정"이라며
   혼조로 분류하는 자기모순 발생)
+- 국채금리 하락을 "안전자산 선호"로 설명하려면, 같은 카드에 실제 위험회피 증거
+  (주가 하락, VIX 상승 등)가 있어야 한다. 주가가 오르고 VIX가 내린 날에 "안전자산
+  선호·위험회피"라고 쓰면 그 자체가 사실 오류다 — 안전자산 선호는 주식이 팔리고
+  채권이 사질 때 쓰는 말이다. 주식도 사고 채권도 산 날은 금리 기대가 내려간 것이다.
+  (2026-08-14 추가 — 실사고: 나스닥 +0.95%·SOXX +2.05%·VIX 14.7인 날에 국채금리
+  하락을 "안전자산 선호 심리 반영, 경기 둔화 우려 잔존"이라며 부정 25점으로 배정)
+- 물가 지표 둔화를 긍정 요인으로 올렸으면, 그 지표가 만든 금리 하락을 같은 카드에서
+  부정 요인으로 다시 세지 마라. 원인을 +40으로 세고 그 결과를 −25로 세는 것은
+  같은 사건의 이중 계상이며 부호까지 뒤집힌 자기모순이다.
+- "경기 둔화 우려"는 부정란을 채우는 만능 열쇠가 아니다. 그날 실제로 나온 약한
+  지표나 하락한 주가 같은 증거가 없으면 쓰지 마라. 유가 하락·금리 하락처럼
+  디스인플레이션 신호를 "수요 둔화 우려"로 뒤집는 서술이 반복되고 있다.
+  (2026-08-14 추가 — 실사고: 18:20 카드가 유가 하락을 긍정 +5점으로 쓰고, 3시간
+  30분 뒤 21:50 카드가 같은 유가 하락을 "경기 둔화 우려" 부정 10점으로 씀)
+- 부정 요인이 정말 없는 날이면 부정 점수를 낮춰라. 점수를 먼저 정해 놓고 그 칸을
+  채울 이유를 찾지 마라. 같은 점수가 여러 장 이어지는데 그 점수를 채우는 재료만
+  계속 바뀌고 있다면, 그건 판단이 아니라 칸 채우기다.
 - 달러 강세 → 미국 수출주/신흥국 자금 유출 우려 → 부정
 - 달러 약세 → 수출주 실적 개선, 원자재 지지 → 긍정
 - 지정학적 리스크 완화 → 긍정, 지정학적 긴장 고조 → 부정
@@ -1401,7 +1418,7 @@ def validate_entry(entry):
         print(f"WARNING: 부정 요인 합계 {neg_sum} ≠ {neg_total}")
 
 
-def validate_content(entry, session_code=''):
+def validate_content(entry, session_code='', snap=None):
     """내용 모순 검증 — 동일 기업 양측 등장, 유가 방향 오류, VIX 방향 오류, 세션 용어 오용"""
     def texts(factors):
         return [(f.get('name', '') + ' ' + f.get('desc', '')).lower() for f in factors]
@@ -1426,25 +1443,13 @@ def validate_content(entry, session_code=''):
         if in_pos and in_neg:
             errors.append(f"모순: '{ticker.strip()}'가 긍정·부정 양쪽에 동시 등장")
 
-    # ── 체크 2: 유가 상승을 긍정 요인으로 분류 (기술주 투자자 관점에선 인플레 압력) ──
-    OIL_RISE = ['유가 상승', '유가상승', 'wti 상승', '원유 상승', '유가 올', '원유 올',
-                '유가가 상승', '원유가 상승', '에너지 가격 상승']
-    for kw in OIL_RISE:
-        if any(kw in t for t in pos_texts):
-            errors.append(f"오류: '{kw}'를 긍정 요인 분류 — 기술주 관점에선 인플레이션 압력(부정)")
-            break
-
-    # ── 체크 3: VIX 방향 오류 ────────────────────────────────────────────────
-    if any('vix' in t and ('상승' in t or '급등' in t or '올라' in t) for t in pos_texts):
-        errors.append("오류: VIX 상승이 긍정 요인에 분류됨 (VIX↑ = 공포지수 상승 = 부정)")
-    if any('vix' in t and ('하락' in t or '안정' in t or '내려' in t) for t in neg_texts):
-        errors.append("오류: VIX 하락이 부정 요인에 분류됨 (VIX↓ = 안정 = 긍정)")
-
-    # ── 체크 4: 국채금리 방향 오류 ──────────────────────────────────────────
-    if any(('국채금리' in t or '금리' in t) and ('상승' in t or '급등' in t) for t in pos_texts):
-        errors.append("오류: 국채금리 상승이 긍정 요인에 분류됨 (금리↑ = 성장주 밸류 압박 = 부정)")
-    if any(('국채금리' in t or '금리' in t) and ('하락' in t or '안정' in t) for t in neg_texts):
-        errors.append("오류: 국채금리 하락이 부정 요인에 분류됨 (금리↓ = 성장주 유리 = 긍정)")
+    # ── 체크 2·3·4: 방향(유가·VIX·국채금리) + 국면 + 미세 변동 ─────────────────
+    # 2026-08-14: 세 검사를 direction_offenders 하나로 합쳤다. 예전엔 여기서
+    # 문자열만 만들고 끝나 '감지하고도 게시'가 났다. 이제 같은 함수가 집행
+    # (enforce_direction_rules)에도 쓰여, 잡힌 재료는 반드시 점수를 잃는다.
+    # 유가는 상승만 보고 하락은 안 봤는데(8/13 21:50 사고) 이제 양방향 대칭이다.
+    for _side, _f, _why in direction_offenders(entry, snap):
+        errors.append(_why)
 
     # ── 체크 5: 세션 용어 오용 (2026-07-03) — 포스트마켓 시간에 '프리마켓 약세' 같은 사고 방지 ──
     if session_code in ('post', 'closed', 'weekend'):
@@ -1529,6 +1534,9 @@ def market_snapshot(equity_rows, macro_rows):
         'vix': _gr_level(macro_rows, 'VIX 공포지수:'),
         'vix_pct': _gr_pct(macro_rows, 'VIX 공포지수:'),
         'oil_pct': _gr_pct(macro_rows, 'WTI 원유(USD):'),
+        # G6(미세 변동) 판정에 쓴다 — 금리·달러도 실측 상대변동을 봐야 한다.
+        'yield_pct': _gr_pct(macro_rows, '미10년 국채금리(%):'),
+        'dxy_pct': _gr_pct(macro_rows, '달러인덱스 DXY:'),
     }
 
 def fetch_spy_off_high():
@@ -1557,19 +1565,28 @@ _GR_CLAIMS = [
     (r'VIX|공포\s*지수', r'급등|폭등', 'vix_pct', lambda v: v >= 10.0, 'VIX 급등 주장'),
 ]
 
-_GR_SUBJECTS_ALL = r'유가|원유|에너지|기술주|나스닥|반도체|VIX|공포\s*지수|금리|달러|지수'
+_GR_SUBJECTS_ALL = (r'유가|원유|에너지|기술주|나스닥|반도체|VIX|공포\s*지수|금리|달러|지수'
+                    r'|성장주|위험자산|안전자산|관련주|소비주|채권|주식|증시')
 
-def _gr_claim_hit(text, subj_re, claim_re):
+def _gr_claim_hit(text, subj_re, claim_re, deny_after=None):
     """주어와 강한 표현이 '가까이 붙어 있고, 사이에 다른 주어가 없을 때만' 그 주어의
     주장으로 인정한다. '유가 급등과 기술주 급락'에서 '급락'을 유가 주장으로 오인하는
     것 방지 — 주어 뒤 14자 이내에 표현이 오되, 그 사이에 기술주 같은 다른 주어가
-    끼어 있으면 그 표현은 그쪽 주어의 것이다."""
+    끼어 있으면 그 표현은 그쪽 주어의 것이다.
+
+    deny_after: 표현 바로 뒤(8자 이내)에 이 패턴이 오면 그 매치는 무시한다.
+    "국채금리 상승에도 실적 기대가 우위"처럼 양보 구문으로 받은 방향어는 그 재료의
+    주장이 아니라 반대 사실의 인정이다 (2026-08-14 감사 지적).
+    """
     for m in re.finditer(r'(?:' + subj_re + r')([^.,·]{0,14}?)(?:' + claim_re + r')', text, re.I):
         gap = m.group(1)
         others = [w for w in re.findall(_GR_SUBJECTS_ALL, gap, re.I)
                   if not re.fullmatch(subj_re, w, re.I)]
-        if not others:
-            return True
+        if others:
+            continue
+        if deny_after and re.match(r'.{0,8}?(?:' + deny_after + r')', text[m.end():], re.S):
+            continue
+        return True
     return False
 
 def _gr_shock(snap):
@@ -1591,6 +1608,295 @@ def _gr_calm(snap, spy_off_high):
 def _gr_panic(snap, spy_off_high):
     v = snap.get('vix')
     return (v is not None and v >= 30.0) or (spy_off_high is not None and spy_off_high >= 15.0)
+
+# ─── 방향·서사 검사 (2026-08-14 신설, CLAUDE.md 52항) ────────────────────────
+# 배경: 8/13 23:20 카드가 "인플레이션 둔화 기대(예상치 하회 PPI)"를 긍정 40점으로
+# 올려놓고, 그 PPI가 만든 국채금리 하락(4.69→4.66, 상대 −0.64%)을 "안전자산 선호
+# 심리 반영"이라며 부정 25점으로 깎았다. 원인을 +40, 그 결과를 −25로 센 셈이다.
+# 그날 나스닥 +0.95%, SOXX +2.05%, VIX 14.7 — 안전자산 선호와는 정반대 국면이었다.
+#
+# 뼈아픈 지점: 이걸 잡는 검사(validate_content 체크4)는 이미 있었고 실제로 걸렸다.
+# 그런데 재판정 후에도 오류가 남으면 "위반이 더 적은 쪽"을 골라 그대로 게시하는
+# 구조라, 감지하고도 내보냈다. 8/11 가드레일(G1~G4)에만 집행권을 주고 그보다 먼저
+# 있던 방향 검사에는 안 준 설계 누락이다.
+#
+# 이번에 넣는 것:
+#  · 방향 검사 대칭 보강 — 유가 하락을 부정에 넣는 경우가 검사조차 없었다
+#    (8/13 21:50 "유가 하락에 따른 경기 둔화 우려" 10점이 무사통과. 3시간 반 전
+#     18:20 카드는 같은 유가 하락을 긍정 +5점으로 썼다).
+#  · G5 국면 일관성 — 주가가 오르고 VIX가 내린 날에 '안전자산 선호·위험회피' 금지.
+#  · G6 미세 변동 — 매크로 지표 상대변동 1% 미만이면 점수를 못 싣는다.
+#    (프롬프트에 2026-07-18자로 이미 있던 조항인데 지시만으로 또 뚫렸다.)
+#  · 집행권 — 위반 재료는 점수를 잃고 혼조로 내려간다. 같은 편에 다른 재료가 없어
+#    한쪽이 통째로 비어버리는 경우엔 카드를 아예 내지 않는다. 코드가 정직하게
+#    고칠 수 없는 판정은 게시하지 않는 것이 틀린 카드를 내보내는 것보다 낫다.
+
+# 주제 정규식은 긴 표기를 앞에 둔다 — 'VIX 지수'를 'VIX'로 먼저 끊으면 남은 '지수'가
+# _gr_claim_hit 의 '사이에 낀 다른 주어' 필터에 걸려 미탐이 난다(감사 지적 6번).
+_SUBJ_RATE = r'국채\s*금리|국채\s*수익률|채권\s*금리|시장\s*금리|10년물|금리'
+_SUBJ_VIX = r'VIX\s*지수|공포\s*지수|VIX'
+_SUBJ_OIL = r'에너지\s*가격|유가|원유|WTI'
+
+# 양보·부정 구문 뒤에 오는 방향어는 그 재료의 주장이 아니다.
+# "국채금리 상승에도 실적 기대가 우위"는 긍정 재료로 정상이다(감사 지적 5번).
+_CONCESSIVE = r'에도|에 비해|불구|하지만|그럼에도|무색|상쇄|넘어서|웃돌'
+
+_DIR_RULES = [
+    # (주제 정규식, 방향 정규식, 금지된 편, 사유)
+    # 방향어에 '인상·인하'를 넣지 않는다 — "금리 인상 압력 완화"(둔화 호재를 서술한
+    # 정상 문구)가 '금리 상승'으로 오인되던 자리다. 정책금리 기대는 fed_policy 영역이고
+    # 여기서 보는 것은 시장금리의 실제 방향이다.
+    (_SUBJ_RATE, r'하락|안정|내림', 'negative_factors',
+     '금리 하락은 성장주에 유리 — 부정 요인이 될 수 없다'),
+    (_SUBJ_RATE, r'상승|급등|오름', 'positive_factors',
+     '금리 상승은 성장주 밸류 압박 — 긍정 요인이 될 수 없다'),
+    (_SUBJ_VIX, r'하락|안정|진정|내림', 'negative_factors',
+     'VIX 하락은 심리 안정 — 부정 요인이 될 수 없다'),
+    (_SUBJ_VIX, r'상승|급등|오름', 'positive_factors',
+     'VIX 상승은 공포 확대 — 긍정 요인이 될 수 없다'),
+    (_SUBJ_OIL, r'상승|급등|고공|오름', 'positive_factors',
+     '유가 상승은 인플레 압력 — 기술주 관점에서 긍정 요인이 될 수 없다'),
+    (_SUBJ_OIL, r'하락|급락|안정|내림', 'negative_factors',
+     '유가 하락은 인플레 압력 완화 — 기술주 관점에서 부정 요인이 될 수 없다'),
+]
+
+# G5 — 국면과 어긋나는 서사. 주가가 오르는 날의 '안전자산 선호'는 정의상 성립하지 않는다
+# (안전자산 선호는 주식이 팔리고 채권이 사질 때 쓰는 말이다).
+# 단, 그 심리가 '완화·해소'된다는 서술은 리스크온 국면에서 오히려 정상이므로 제외한다.
+_RISKOFF_WORDS = r'안전\s*자산\s*(?:선호|수요|쏠림)|위험\s*회피|리스크\s*오프|flight[\s-]*to[\s-]*(?:quality|safety)'
+_RISKON_WORDS = r'위험\s*선호|리스크\s*온|안도\s*랠리|위험\s*자산\s*선호'
+_TONE_NEGATED = r'완화|해소|축소|후퇴|진정|둔화|감소|약화|위축|제한|소멸|사라'
+
+# G6 — 매크로 지표별 최소 유의미 상대변동(%). 이 아래면 점수를 실을 수 없다.
+# 지표마다 평소 변동폭이 다르므로 임계값을 따로 둔다(감사 지적 4번) — VIX 는 하루
+# 3~8% 가 예사여서 1% 기준이면 사실상 발동하지 않고, 달러인덱스는 1% 가 연중 몇 번
+# 뿐이라 같은 기준이면 dollar_fx 카테고리가 상시 점수 금지가 된다.
+_SUBJ_DXY = r'달러\s*인덱스|달러\s*지수|DXY'
+# 크기·사실 검사에는 맨 '금리'를 넣지 않는다 — '금리 인하 기대'는 정책금리 얘기(fed_policy)라
+# 10년물 실측 변동폭으로 재면 안 된다(감사 2차 지적 3번).
+_SUBJ_MKT_RATE = r'국채\s*금리|국채\s*수익률|채권\s*금리|시장\s*금리|10년물'
+_MICRO_SUBJECTS = [
+    (_SUBJ_MKT_RATE, 'yield_pct', '국채금리', 1.0),
+    (_SUBJ_OIL, 'oil_pct', '유가', 1.5),
+    (_SUBJ_DXY, 'dxy_pct', '달러인덱스', 0.3),
+    (_SUBJ_VIX, 'vix_pct', 'VIX', 5.0),
+]
+
+# 방향 서술이 실측과 반대인가. 분류(어느 편에 넣었나)가 아니라 사실 자체를 본다.
+# 실사고: 유가가 1.72% 내린 날 부정 재료 설명에 '에너지 가격 상승 압력'.
+# G1(_GR_CLAIMS)은 '급등·폭등' 같은 강한 표현만 봐서 밋밋한 '상승'을 놓쳤다.
+_FACT_DIRS = [
+    (_SUBJ_OIL, 'oil_pct', '유가'),
+    (_SUBJ_MKT_RATE, 'yield_pct', '국채금리'),
+    (_SUBJ_DXY, 'dxy_pct', '달러인덱스'),
+    (_SUBJ_VIX, 'vix_pct', 'VIX'),
+]
+# '강세·약세'는 넣지 않는다 — 주식을 가리키는 서술어라 'VIX 안정에 위험자산 강세'가
+# 'VIX 상승 주장'으로 뒤집힌다(감사 2차 지적 4번).
+_UP_WORDS = r'상승|급등|폭등|오름|올라'
+_DOWN_WORDS = r'하락|급락|폭락|내림|내려'
+
+# 어느 쪽도 이 값을 넘지 않는다. 90:10 은 판정이 아니라 선언이다 — 위반 재료를 걷어낸
+# 뒤 남은 점수를 반대편에 넘길 때 한쪽이 무한정 부풀지 않게 하는 구조적 상한.
+_SIDE_MAX = 85
+
+
+def _tone_word_hit(text, words):
+    """국면 서사어가 '완화·해소' 같은 부정어에 걸리지 않은 채로 등장하는가."""
+    for m in re.finditer(words, text, re.I):
+        tail = text[m.end():m.end() + 12]
+        if not re.search(_TONE_NEGATED, tail):
+            return True
+    return False
+
+
+def _risk_tone(snap):
+    """그날 시장이 리스크온인가 리스크오프인가. 판정 불가면 None(검사 생략)."""
+    if not snap:
+        return None
+    q, v, vc = snap.get('qqq_pct'), snap.get('vix'), snap.get('vix_pct')
+    if q is None:
+        return None
+    # 주가가 뚜렷이 오르고 공포지수가 잠잠하다 → 리스크온.
+    # VIX 상승 허용폭을 5%로 좁혔다 — QQQ +0.3%인데 VIX +9%인 날을 리스크온으로
+    # 보면 그날 부정 쪽의 정당한 위험회피 서술까지 금지된다(감사 지적 3번).
+    if q >= 0.6 and (vc is None or vc <= 5.0) and (v is None or v < 22.0):
+        return 'on'
+    if q <= -0.3 and (vc is None or vc > -10.0):
+        return 'off'
+    return None
+
+
+def direction_offenders(entry, snap=None):
+    """방향·국면·크기 규칙을 어긴 '점수를 실은' 재료를 (편, 재료, 사유)로 돌려준다.
+
+    한 재료가 여러 규칙에 걸려도 항목은 하나만 만든다 — 사유는 이어 붙인다.
+    이유가 둘 있다: (1) 집행 때 같은 재료가 mixed_factors 에 여러 번 들어가 화면에
+    같은 혼조 재료가 반복 노출되던 문제, (2) main() 의 재시도 채택이 위반 '건수'를
+    비교하는데 한 재료가 3건으로 세어져 더 나쁜 결과를 고르던 문제. (감사 지적 2·8번)
+
+    혼조(mixed_factors)는 보지 않는다 — 점수를 안 실은 재료는 판정을 왜곡하지 않는다.
+    """
+    found = []
+    tone = _risk_tone(snap)
+    for side in ('positive_factors', 'negative_factors'):
+        side_ko = '긍정' if side == 'positive_factors' else '부정'
+        for f in entry.get(side) or []:
+            if int(f.get('score', 0) or 0) <= 0:
+                continue
+            name = f.get('name', '') or ''
+            text = name + ' ' + (f.get('desc', '') or '')
+            reasons = []
+
+            # 방향 규칙 — 이름과 설명을 함께 본다. 설명이 인과를 담기 때문이다
+            # (실사고: 이름은 '고유가', 설명은 '유가 하락에도…'인 자기모순 카드).
+            for subj_re, dir_re, bad_side, why in _DIR_RULES:
+                if side == bad_side and _gr_claim_hit(text, subj_re, dir_re,
+                                                      deny_after=_CONCESSIVE):
+                    reasons.append(f'방향 오류 — {why}')
+                    break
+
+            # G5 국면 불일치
+            if tone == 'on' and _tone_word_hit(text, _RISKOFF_WORDS):
+                vix = snap.get('vix')
+                reasons.append(
+                    f"국면 불일치 — 주가 상승(QQQ {snap.get('qqq_pct'):+.2f}%)"
+                    f"{f'·VIX {vix}' if vix is not None else ''}인 리스크온 국면에서 "
+                    f"'안전자산 선호·위험회피' 서술은 성립하지 않는다")
+            elif tone == 'off' and _tone_word_hit(text, _RISKON_WORDS):
+                reasons.append(
+                    f"국면 불일치 — 주가 하락(QQQ {snap.get('qqq_pct'):+.2f}%) 국면에서 "
+                    f"'위험선호·안도 랠리' 서술은 성립하지 않는다")
+
+            # 사실 방향 대조 — 서술한 방향이 실측과 반대인가
+            if snap:
+                for subj_re, key, label in _FACT_DIRS:
+                    v = snap.get(key)
+                    if v is None:
+                        continue
+                    up = _gr_claim_hit(text, subj_re, _UP_WORDS, deny_after=_CONCESSIVE)
+                    dn = _gr_claim_hit(text, subj_re, _DOWN_WORDS, deny_after=_CONCESSIVE)
+                    if up and not dn and v < 0:
+                        reasons.append(f'사실 대조 실패 — {label} 상승이라 썼는데 실측 {v:+.2f}%')
+                    elif dn and not up and v > 0:
+                        reasons.append(f'사실 대조 실패 — {label} 하락이라 썼는데 실측 {v:+.2f}%')
+
+            # G6 미세 변동 — 이름만 본다. 설명까지 보면 '인플레이션 둔화 신호'처럼
+            # 다른 재료가 근거로 국채금리를 곁들여 언급한 경우까지 걷어내게 된다.
+            # 그 지표가 이 재료의 주인공일 때만(=이름에 있을 때만) 크기를 따진다.
+            if snap:
+                for subj_re, key, label, floor in _MICRO_SUBJECTS:
+                    if not re.search(subj_re, name, re.I):
+                        continue
+                    v = snap.get(key)
+                    if v is None:
+                        continue   # 이 지표는 측정 불가 — 이름에 있는 다른 지표를 계속 본다
+                    if abs(v) < floor:
+                        reasons.append(
+                            f'미세 변동 재료화 — {label} 실측 {v:+.2f}%는 오차 범위'
+                            f'(상대 {floor}% 미만). 방향이 맞아도 점수를 실을 크기가 아니다')
+                    break
+
+            if reasons:
+                found.append((side, f, f"{side_ko} '{name}': " + ' / '.join(reasons)))
+    return found
+
+
+def score_frozen_violation(entry, prev_entries, snap=None):
+    """G7 — 점수는 못 박혀 있는데 그 점수를 채우는 이유만 매번 바뀌는 패턴.
+
+    배경(8/13): 긍정 75 : 부정 25가 22시간·아홉 장 연속 유지되는 동안 부정 25점의
+    정체는 'AI 안전 규제' → '고유가' → '반도체 약세' → '유가 하락' → '국채금리 하락'
+    으로 계속 갈렸다. 숫자를 먼저 정하고 이유를 나중에 찾은 흔적이다.
+
+    코드가 대신 고쳐줄 정답이 없는 종류라 집행하지 않는다 — 재판정 프롬프트에만
+    붙여 스스로 다시 보게 한다. (집행 가능한 것만 집행한다는 원칙)
+    """
+    if not prev_entries:
+        return None
+    neg = entry.get('negative_total')
+    if neg is None:
+        return None
+    same = []
+    for e in prev_entries[:3]:
+        if e.get('negative_total') != neg:
+            break
+        same.append(e)
+    if len(same) < 3:
+        return None
+
+    def names(e):
+        return {(f.get('name') or '').strip() for f in (e.get('negative_factors') or [])}
+
+    cur = names(entry)
+    churn = sum(1 for e in same if cur and names(e) and not (cur & names(e)))
+    if churn >= 2:
+        return (f"점수 고착 의심: 부정 {neg}이 직전 {len(same)}장과 동일한데 부정 요인의 정체는 "
+                f"매번 바뀌었다. 점수를 먼저 정하고 이유를 나중에 맞추지 마라 — 오늘 실제로 "
+                f"부정 재료가 없으면 부정 점수를 낮춰라")
+    return None
+
+
+def enforce_direction_rules(entry, snap):
+    """방향·국면·크기·사실 위반 재료의 점수를 걷어 혼조로 내린다.
+
+    걷어낸 점수는 남은 재료에 얹지 않는다 — 재배분하면 모델이 10점이라 판정한 재료가
+    25점으로 부풀어 화면에 나가고, "부정 재료가 없으면 부정 점수를 낮춰라"는 지시와
+    정반대가 된다. 양편의 잔여 가중치를 한 번에 계산해 100으로 재정규화한다
+    (편마다 순차로 조정하면 두 번째 편이 이미 부풀려진 값을 읽는다 — 감사 2차 지적 2번).
+
+    한쪽 편의 유일한 재료가 위반이면 그 편이 통째로 비어버린다 — 그 경우엔 코드가
+    정직하게 만들 수 있는 판정이 없으므로 (entry, False)를 돌려 게시를 포기시킨다.
+    75분 뒤 다음 사이클이 다시 시도한다. 직전 카드가 그대로 남는 편이 낫다.
+
+    주의: 이 함수는 총점을 움직이므로, 호출한 쪽에서 G2/G3 클램프를 한 번 더
+    돌려야 한다(감사 2차 지적 1번 — 재료 하나를 걷어낸 것만으로 무충격 45점 이동이
+    가능하다). main() 4-3이 그 역할을 한다.
+    """
+    offenders = direction_offenders(entry, snap)
+    if not offenders:
+        return entry, True
+
+    SIDES = ('positive_factors', 'negative_factors')
+    plan = {}
+    for side in SIDES:
+        # 객체 동일성으로 고른다 — dict 의 '==' 로 비교하면 이름·설명·점수가 우연히
+        # 같은 다른 재료까지 같이 걷어낸다(감사 1차 지적 9번).
+        bad_ids = {id(f) for s, f, _ in offenders if s == side}
+        factors = entry.get(side) or []
+        bad = [f for f in factors if id(f) in bad_ids]
+        keep = [f for f in factors if id(f) not in bad_ids]
+        if bad and not keep:
+            print(f"::warning::[방향집행] {side}의 유일한 재료가 위반 — 코드로 고칠 수 없어 게시 포기")
+            return entry, False
+        if not keep:
+            print(f"::warning::[방향집행] {side}에 재료가 없다 — 점수를 옮길 곳이 없어 게시 포기")
+            return entry, False
+        plan[side] = (bad, keep, sum(int(f.get('score', 0) or 0) for f in bad))
+
+    # 잔여 가중치 = 원래 총점 − 걷어낸 점수. 두 편을 함께 100으로 재정규화한다.
+    left = {side: max(0, int(entry.get(side.replace('_factors', '_total'), 0) or 0) - plan[side][2])
+            for side in SIDES}
+    if sum(left.values()) <= 0:
+        print("::warning::[방향집행] 양편 모두 잔여 점수 0 — 게시 포기")
+        return entry, False
+
+    pos = int(round(left['positive_factors'] * 100.0 / sum(left.values()) / 5.0) * 5)
+    pos = max(100 - _SIDE_MAX, min(_SIDE_MAX, pos))   # 90:10 은 판정이 아니라 선언이다
+    totals = {'positive_factors': pos, 'negative_factors': 100 - pos}
+
+    for side in SIDES:
+        bad, keep, _ = plan[side]
+        entry[side.replace('_factors', '_total')] = totals[side]
+        entry[side] = _redistribute(keep, totals[side])
+        for f in bad:
+            f.pop('score', None)
+            entry.setdefault('mixed_factors', []).append(f)
+            print(f"::warning::[방향집행] 재료 강등: '{f.get('name','')}' → 혼조(무점수)")
+    print(f"::warning::[방향집행] 점수 재정규화: 긍정 {totals['positive_factors']} : "
+          f"부정 {totals['negative_factors']}")
+    return entry, True
+
 
 def guardrail_violations(entry, snap, prev_entry, spy_off_high):
     errors = []
@@ -1801,8 +2107,17 @@ def main():
     # 4-1. 내용 모순 + 가드레일 검증 — 발견 시 1회 재시도 (2026-06-29 추가,
     # 2026-07-03 세션 검증 확장, 2026-08-11 가드레일 3종 + 재시도에 위반 사유 피드백)
     prev_entry_for_guard = (data.get("entries") or [None])[0]
-    content_errors = validate_content(entry, session_code) \
-        + guardrail_violations(entry, snap, prev_entry_for_guard, spy_off_high)
+    prev_entries_for_guard = (data.get("entries") or [])[:3]
+
+    def _all_violations(e):
+        v = validate_content(e, session_code, snap) \
+            + guardrail_violations(e, snap, prev_entry_for_guard, spy_off_high)
+        frozen = score_frozen_violation(e, prev_entries_for_guard, snap)
+        if frozen:
+            v.append(frozen)
+        return v
+
+    content_errors = _all_violations(entry)
     if content_errors:
         print(f"  WARNING: 검증 실패 {len(content_errors)}건 발견 — 재시도")
         for err in content_errors:
@@ -1823,8 +2138,7 @@ def main():
                 for name, age in dropped_mixed2:
                     print(f"  WARNING: (재시도) 혼조 재료 '{name}' {age}시간째 반복 & 오늘 뉴스 미확인 — 자동 제거")
             validate_entry(entry2)
-            errors2 = validate_content(entry2, session_code) \
-                + guardrail_violations(entry2, snap, prev_entry_for_guard, spy_off_high)
+            errors2 = _all_violations(entry2)
             if errors2:
                 print(f"  WARNING: 재시도에도 검증 실패 {len(errors2)}건 존재 — 두 결과 중 위반이 적은 쪽 사용")
                 for err in errors2:
@@ -1842,6 +2156,29 @@ def main():
     if remaining:
         print(f"  WARNING: 가드레일 위반 {len(remaining)}건 잔존 — 코드 강제 적용")
         entry = enforce_guardrails(entry, snap, prev_entry_for_guard, spy_off_high)
+        validate_entry(entry)
+
+    # 4-3. 방향·국면·미세변동 위반 집행 (52항) — 8/13 '감지하고도 게시' 사고의 직접 대응.
+    # 여기서부터는 경고가 아니라 집행이다. 위반 재료는 점수를 잃고 혼조로 내려간다.
+    dir_left = direction_offenders(entry, snap)
+    if dir_left:
+        print(f"  WARNING: 방향·국면 위반 {len(dir_left)}건 잔존 — 코드 강제 적용")
+        for _s, _f, _why in dir_left:
+            print(f"    ❌ {_why}")
+        entry, ok = enforce_direction_rules(entry, snap)
+        if not ok:
+            # 한쪽 편이 통째로 비는 판정은 코드가 정직하게 만들 수 없다.
+            # 틀린 카드를 내보내느니 이번 사이클을 거른다 — 직전 카드가 그대로 남는다.
+            print("::warning::[52항] 위반 재료가 한쪽 편의 전부 — 이번 사이클 게시 포기")
+            print("=== 중단 (카드 미생성) ===")
+            sys.exit(0)
+        # 재료 하나를 걷어낸 것만으로 총점이 크게 움직일 수 있다(부정 40→85 등).
+        # 그러면 방금 4-2에서 맞춰놓은 G2(변화 상한)·G3(극단값 앵커)가 다시 깨지므로
+        # 클램프를 한 번 더 돌린다. 순서가 중요하다 — 방향 집행이 먼저, 점수 앵커가 나중.
+        after = guardrail_violations(entry, snap, prev_entry_for_guard, spy_off_high)
+        if after:
+            print(f"  WARNING: 방향 집행 후 가드레일 위반 {len(after)}건 — 재클램프")
+            entry = enforce_guardrails(entry, snap, prev_entry_for_guard, spy_off_high)
         validate_entry(entry)
 
     # 5. 신규 항목 추가
