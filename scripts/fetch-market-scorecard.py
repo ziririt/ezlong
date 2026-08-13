@@ -731,6 +731,13 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 부정 요인이 정말 없는 날이면 부정 점수를 낮춰라. 점수를 먼저 정해 놓고 그 칸을
   채울 이유를 찾지 마라. 같은 점수가 여러 장 이어지는데 그 점수를 채우는 재료만
   계속 바뀌고 있다면, 그건 판단이 아니라 칸 채우기다.
+- [근거에 이름을 붙인다 — 2026-08-14 운영 제보] 신호·지표를 근거로 들면 **그 지표
+  이름과 수치**를, 사람 말을 근거로 들면 **그 사람이나 기관 이름**을 반드시 적어라.
+  나쁜 예: name '시장 경고 신호', desc '과거 5번만 나타난 시장 경고 신호 발생, 일부
+  전문가 비관론' — 무슨 신호인지도, 누구 말인지도 없어 독자가 판단할 수 없다.
+  좋은 예: name '실러 CAPE 41배', desc '경기조정 주가수익비율 41배로 장기 평균 17.8배의
+  2배 초과, 과거 같은 수준은 1929년·2000년 등 다섯 차례'.
+  '일부 전문가', '일각에서', '분석가들'만 적고 이름이 없으면 그건 근거가 아니다.
 - 달러 강세 → 미국 수출주/신흥국 자금 유출 우려 → 부정
 - 달러 약세 → 수출주 실적 개선, 원자재 지지 → 긍정
 - 지정학적 리스크 완화 → 긍정, 지정학적 긴장 고조 → 부정
@@ -1727,6 +1734,53 @@ def _risk_tone(snap):
     return None
 
 
+# ── 익명 근거 금지 (2026-08-14 신설, 운영 제보) ────────────────────────────────
+# 증상: 부정 25점 전부를 짊어진 재료가 "시장 경고 신호 / 과거 5번만 나타난 시장 경고
+# 신호 발생, 일부 전문가 비관론"이었다. 무슨 신호인지, 누가 한 말인지가 없다.
+# 실제 원문은 실러 CAPE(경기조정 주가수익비율) 41배 — 장기 평균 17.8배의 두 배가 넘고,
+# 과거 다섯 번은 1929년·1997~2001년·2017~2018년·2019~2020년·2020~2022년이었다.
+# 이름만 적었어도 독자가 스스로 판단할 수 있는 재료였는데 '경고 신호'로 뭉갰다.
+# 제보 원문: "혹시 Shiller CAPE 비율인가? 그럼 그 정도는 얘기해줘야지."
+#
+# 규칙: 신호·지표를 근거로 들면 그 이름을, 사람 말을 근거로 들면 그 이름을 밝힌다.
+# 둘 다 없으면 점수를 실을 수 없다(혼조로 내려가거나 카드가 안 나간다).
+_VAGUE_SIGNAL = (r'경고\s*신호|경고\s*시그널|위험\s*신호|이상\s*신호|경계\s*신호|'
+                 r'하락\s*신호|매도\s*신호|시장\s*신호|기술적\s*신호')
+_VAGUE_VOICE = (r'일부\s*전문가|전문가들|일각에서|일각의|분석가들|시장\s*일각|월가\s*일부|'
+                r'일부\s*투자자|일부\s*기관|비관론자')
+# 지표 이름 — 이 중 하나라도 있으면 '무슨 신호인지' 밝힌 것으로 본다
+_IND_ANCHOR = (r'CAPE|실러|쉴러|PER|주가수익|PBR|PSR|버핏\s*지[수표]|힌덴부르크|골든\s*크로스|'
+               r'데드\s*크로스|장단기\s*금리\s*차|수익률\s*곡선|역전|풋콜|put[/\s]?call|VIX|'
+               r'RSI|MACD|이격도|신고가|신저가|AAII|공포\s*탐욕|배당\s*수익률|시가총액\s*대비|'
+               r'\d+\s*배|\d+(?:\.\d+)?\s*%|\d+\s*[pP]|\d{2,}\s*(?:포인트|선)')
+# 출처 이름 — 라틴 고유명사(3자 이상) 또는 알려진 기관·인물
+_SRC_ANCHOR = (r'[A-Z][A-Za-z]{2,}|골드만|모건\s*스탠리|JP\s*모건|씨티|BofA|뱅크오브아메리카|'
+               r'UBS|바클레이|번스타인|웰스\s*파고|블랙록|브리지워터|버크셔|'
+               r'버핏|버리|달리오|서머스|엘\s*에리언|파월|옐런|연준|Fed|IMF|OECD|'
+               r'무디스|S&P|피치|골드만삭스|노무라|미즈호|웨드부시|번지|카이저')
+
+
+def anonymous_evidence(entry):
+    """점수를 실은 재료가 '무슨 신호인지·누구 말인지'를 안 밝혔는가."""
+    out = []
+    for side in ('positive_factors', 'negative_factors'):
+        side_ko = '긍정' if side == 'positive_factors' else '부정'
+        for f in entry.get(side) or []:
+            if int(f.get('score', 0) or 0) <= 0:
+                continue
+            name = f.get('name', '') or ''
+            text = name + ' ' + (f.get('desc', '') or '')
+            why = []
+            if re.search(_VAGUE_SIGNAL, text, re.I) and not re.search(_IND_ANCHOR, text, re.I):
+                why.append('무슨 신호인지 이름이 없다 — 지표명(예: 실러 CAPE, 힌덴부르크, '
+                           '장단기 금리차)이나 그 수치를 밝혀라')
+            if re.search(_VAGUE_VOICE, text, re.I) and not re.search(_SRC_ANCHOR, text):
+                why.append("'일부 전문가·일각'은 근거가 아니다 — 말한 사람이나 기관 이름을 밝혀라")
+            if why:
+                out.append((side, f, f"익명 근거: {side_ko} '{name}': " + ' / '.join(why)))
+    return out
+
+
 def direction_offenders(entry, snap=None):
     """방향·국면·크기 규칙을 어긴 '점수를 실은' 재료를 (편, 재료, 사유)로 돌려준다.
 
@@ -1799,6 +1853,8 @@ def direction_offenders(entry, snap=None):
 
             if reasons:
                 found.append((side, f, f"{side_ko} '{name}': " + ' / '.join(reasons)))
+    # 익명 근거도 같은 집행 경로를 탄다 — 점수를 잃고 혼조로 내려간다
+    found.extend(anonymous_evidence(entry))
     return found
 
 
