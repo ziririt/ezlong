@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-13-17:01",
+      "timestamp_kst": "2026-08-13(목) 17:01 KST",
+      "key_event": {
+        "name": "CPI 둔화 및 AI 수요 강세 지속",
+        "name_en": "Continued CPI Moderation & Strong AI Demand",
+        "time": "오늘 정규장 및 단기 전망",
+        "why": "인플레이션 완화 기대, 금리 인상 압력 감소, AI 성장 지속",
+        "why_en": "Easing inflation expectations, reduced rate hike pressure, sustained AI growth"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "CPI 둔화 및 AI 관련주 강세로 6일 연속 긍정 우위 지속",
+      "summary_en": "Positive sentiment continues for 6th consecutive day due to moderating CPI and strong AI stocks",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "AI 관련주 프리마켓 강세",
+          "name_en": "AI-related Stocks Strong in Premarket",
+          "desc": "CoreWeave 실적발표 등 AI 낙관론 지속, 반도체 지수 상승",
+          "desc_en": "Continued AI optimism from CoreWeave earnings, semiconductor index up",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "인플레이션 둔화 기대",
+          "name_en": "Easing Inflation Expectations",
+          "desc": "미국 인플레이션 완화 신호, Fed 금리 인상 압력 감소",
+          "desc_en": "Signs of moderating US inflation, reduced Fed rate hike pressure",
+          "category": "macro_data"
+        },
+        {
+          "score": 20,
+          "name": "주요 기술주 프리마켓 상승",
+          "name_en": "Major Tech Stocks Rise in Premarket",
+          "desc": "QQQ, SPY 등 주요 지수 및 대형 기술주 소폭 상승",
+          "desc_en": "QQQ, SPY and major tech stocks show slight gains",
+          "category": "other"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "고유가 및 인플레이션 우려",
+          "name_en": "High Oil Prices & Inflation Concerns",
+          "desc": "유가 하락에도 인플레이션 우려 잔존, 에너지 가격 상승 압력",
+          "desc_en": "Despite oil price dip, inflation concerns persist, upward pressure on energy prices",
+          "category": "oil_energy"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-13-13:47",
       "timestamp_kst": "2026-08-13(목) 13:47 KST",
       "key_event": {
@@ -403,76 +455,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-12-13:44",
-      "timestamp_kst": "2026-08-12(수) 13:44 KST",
-      "key_event": {
-        "name": "CPI 발표 대기 및 유가 상승",
-        "name_en": "Anticipation of CPI Release and Rising Oil Prices",
-        "time": "향후 12시간 이내",
-        "why": "인플레이션 우려, 금리 인상 가능성, 시장 변동성 확대",
-        "why_en": "Inflation concerns, potential rate hikes, increased market volatility"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "CPI 발표 대기 속 지정학적 긴장 재고조 및 유가 상승으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to geopolitical tensions and rising oil prices amidst CPI anticipation",
-      "positive_factors": [
-        {
-          "score": 20,
-          "name": "VIX 공포지수 하락",
-          "name_en": "VIX Fear Index Decline",
-          "desc": "시장 변동성 완화 기대감, VIX 1.16% 하락",
-          "desc_en": "Expectations of reduced market volatility, VIX down 1.16%",
-          "category": "vix_risk_sentiment"
-        },
-        {
-          "score": 15,
-          "name": "반도체 섹터 강세",
-          "name_en": "Semiconductor Sector Strength",
-          "desc": "SOXX 1.27% 상승, AI 관련 투자심리 유지",
-          "desc_en": "SOXX up 1.27%, AI-related investment sentiment sustained",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "지정학적 긴장 재고조",
-          "name_en": "Renewed Geopolitical Tensions",
-          "desc": "미-이란 평화 낙관론 퇴색, 선박 공격으로 유가 상승 압력",
-          "desc_en": "US-Iran peace optimism fades, shipping attacks fuel oil price increases",
-          "category": "geopolitics"
-        },
-        {
-          "score": 25,
-          "name": "CPI 발표 대기",
-          "name_en": "Awaiting CPI Release",
-          "desc": "인플레이션 데이터 발표 앞두고 시장 관망세 및 불확실성 증대",
-          "desc_en": "Increased market caution and uncertainty ahead of inflation data release",
-          "category": "macro_data"
-        },
-        {
-          "score": 10,
-          "name": "유가 상승 지속",
-          "name_en": "Continued Oil Price Increase",
-          "desc": "WTI 원유 0.62% 상승, 인플레이션 압력 가중 우려",
-          "desc_en": "WTI crude up 0.62%, raising concerns about increased inflationary pressure",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "Fed 금리 인상 우려",
-          "name_en": "Fed Rate Hike Concerns",
-          "desc": "인플레이션 우려로 Fed의 추가 금리 인상 가능성 제기, 시장 변동성 확대",
-          "desc_en": "Inflation concerns raise possibility of further Fed rate hikes, increasing market volatility",
-          "category": "fed_policy"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-13T04:47:54Z",
+  "updated_at": "2026-08-13T08:01:53Z",
   "max_entries": 10
 }
