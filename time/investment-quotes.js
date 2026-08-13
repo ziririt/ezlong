@@ -9564,5 +9564,12 @@ window.investmentQuotes = [
     "title": "향수",
     "author": "정지용",
     "genre": "literature"
+  },
+  {
+    "english": "Most people go through their whole lives, without ever really feeling that close with anyone.",
+    "text": "대부분의 사람은 평생을 살면서도, 누군가와 정말로 가깝다고 느껴본 적이 한 번도 없다.",
+    "title": "노멀 피플 (Normal People)",
+    "author": "샐리 루니 (Sally Rooney)",
+    "genre": "literature"
   }
 ];
