@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-13-21:50",
+      "timestamp_kst": "2026-08-13(목) 21:50 KST",
+      "key_event": {
+        "name": "인플레이션 둔화 기대 지속",
+        "name_en": "Continued Inflation Deceleration Expectations",
+        "time": "오늘 프리마켓 및 오늘 정규장",
+        "why": "금리 인상 압력 완화, 기술주 투자 심리 개선",
+        "why_en": "Easing rate hike pressure, improved tech sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "AI 낙관론 및 인플레이션 둔화로 긍정 우위 지속",
+      "summary_en": "Positive bias sustained by AI optimism and easing inflation",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "AI 성장 내러티브 지속",
+          "name_en": "Sustained AI Growth Narrative",
+          "desc": "Siri AI의 새로운 계약 추진 및 AI 관련주 투자 확대",
+          "desc_en": "Siri AI pursuing new deals, increased investment in AI stocks",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 35,
+          "name": "인플레이션 둔화 신호",
+          "name_en": "Signs of Decelerating Inflation",
+          "desc": "CPI 둔화 및 금리 인하 기대감 확산, 국채금리 하락",
+          "desc_en": "Cooling CPI, spreading rate cut expectations, falling Treasury yields",
+          "category": "macro_data"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "일부 AI 기업 실적 부진",
+          "name_en": "Underperformance of Some AI Companies",
+          "desc": "Cerebras의 혼조된 실적 발표로 AI 성장 내러티브 시험",
+          "desc_en": "Cerebras' mixed earnings test the AI growth narrative",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 10,
+          "name": "유가 하락에 따른 경기 둔화 우려",
+          "name_en": "Economic Slowdown Concerns from Falling Oil Prices",
+          "desc": "WTI 원유 1.72% 하락, 글로벌 수요 둔화 가능성 제기",
+          "desc_en": "WTI crude down 1.72%, raising possibility of global demand slowdown",
+          "category": "oil_energy"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-13-18:20",
       "timestamp_kst": "2026-08-13(목) 18:20 KST",
       "key_event": {
@@ -435,52 +487,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-12-18:20",
-      "timestamp_kst": "2026-08-12(수) 18:20 KST",
-      "key_event": {
-        "name": "CPI 발표 대기 및 AI 수요 강세",
-        "name_en": "Anticipation of CPI Release & Strong AI Demand",
-        "time": "오늘 정규장 개장 전",
-        "why": "인플레이션 우려, 금리 인상 가능성, AI 관련 기업 실적 호조",
-        "why_en": "Inflation concerns, potential rate hikes, strong AI company earnings"
-      },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "AI 관련 기업 실적 호조 및 지정학적 긴장 완화 속 CPI 발표 대기",
-      "summary_en": "Positive sentiment from AI earnings and easing geopolitical tensions ahead of CPI release",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "AI 관련 기업 실적 호조",
-          "name_en": "Strong AI-related company earnings",
-          "desc": "Foxconn, CoreWeave 등 AI 수요 기반 실적 발표, SOXX 1.42% 상승",
-          "desc_en": "Foxconn, CoreWeave report strong earnings driven by AI demand, SOXX up 1.42%",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 25,
-          "name": "지정학적 긴장 완화 기대",
-          "name_en": "Easing geopolitical tensions",
-          "desc": "유가 하락(-0.85%) 및 일부 평화 협상 기대감, 시장 심리 개선",
-          "desc_en": "Oil prices down (-0.85%) and some peace negotiation hopes, improving market sentiment",
-          "category": "geopolitics"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 40,
-          "name": "CPI 발표 대기 및 인플레이션 우려",
-          "name_en": "Anticipation of CPI release and inflation concerns",
-          "desc": "투자자들 인플레이션 신호 주시, 금리 인상 가능성 상존",
-          "desc_en": "Investors await inflation signals, potential for rate hikes remains",
-          "category": "macro_data"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-13T09:21:10Z",
+  "updated_at": "2026-08-13T12:50:58Z",
   "max_entries": 10
 }
