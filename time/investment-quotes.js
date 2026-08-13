@@ -9517,5 +9517,12 @@ window.investmentQuotes = [
     "title": "무소유",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
+    "text": "건초더미에서 바늘을 찾으려 하지 마라. 그냥 건초더미를 통째로 사라!",
+    "title": "The Little Book of Common Sense Investing",
+    "author": "존 보글 (John C. Bogle)",
+    "category": "mindset"
   }
 ];
