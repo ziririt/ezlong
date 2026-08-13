@@ -9591,5 +9591,12 @@ window.investmentQuotes = [
     "title": "원칙 (Principles: Life and Work)",
     "author": "레이 달리오 (Ray Dalio)",
     "category": "mindset"
+  },
+  {
+    "english": "i want to apologize to all the women i have called pretty before i've called them intelligent or brave. i am sorry i made it sound as though something as simple as what you're born with is the most you have to be proud of.",
+    "text": "나는 지적이거나 용감하다고 부르기 전에 예쁘다고 불렀던 모든 여성에게 사과하고 싶다. 태어날 때부터 가진 것처럼 단순한 무언가가 당신이 자랑스러워할 수 있는 전부인 것처럼 들리게 해서 미안하다.",
+    "title": "밀크 앤 허니 (Milk and Honey)",
+    "author": "루피 카우르 (Rupi Kaur)",
+    "genre": "literature"
   }
 ];
