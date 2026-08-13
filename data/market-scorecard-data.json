@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-08-13-18:20",
+      "timestamp_kst": "2026-08-13(목) 18:20 KST",
+      "key_event": {
+        "name": "AI 낙관론 및 CPI 둔화 지속",
+        "name_en": "Continued AI Optimism and Softening CPI",
+        "time": "오늘 정규장 및 단기 전망",
+        "why": "AI 관련주 강세, 인플레이션 완화 기대, 금리 인상 압력 감소",
+        "why_en": "Strong AI stocks, easing inflation expectations, reduced rate hike pressure"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "AI 수요 강세 및 인플레이션 둔화로 긍정 우위 지속",
+      "summary_en": "Positive sentiment continues due to strong AI demand and easing inflation",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "AI 관련 기업 실적 기대감",
+          "name_en": "AI-related Company Earnings Expectations",
+          "desc": "Nvidia, CoreWeave 등 AI 관련 기업에 대한 월가 긍정적 전망 및 실적 기대감",
+          "desc_en": "Positive Wall Street outlook and earnings expectations for AI companies like Nvidia and CoreWeave",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 30,
+          "name": "인플레이션 둔화 기대감",
+          "name_en": "Easing Inflation Expectations",
+          "desc": "CPI 둔화 데이터 및 금리 인상 압력 완화 기대",
+          "desc_en": "Softer CPI data and expectations of reduced interest rate hike pressure",
+          "category": "macro_data"
+        },
+        {
+          "score": 5,
+          "name": "원유 가격 하락",
+          "name_en": "Oil Price Decline",
+          "desc": "WTI 원유 가격 하락으로 인플레이션 압력 완화",
+          "desc_en": "WTI crude oil price decline eases inflationary pressure",
+          "category": "oil_energy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "반도체 섹터 일부 약세",
+          "name_en": "Partial Weakness in Semiconductor Sector",
+          "desc": "SOXX 지수 프리마켓 하락 및 일부 반도체 기업 혼조세",
+          "desc_en": "SOXX index decline in premarket and mixed performance for some semiconductor companies",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "VIX 공포지수 소폭 상승",
+          "name_en": "Slight Rise in VIX Fear Index",
+          "desc": "VIX 지수 소폭 상승하며 시장 불확실성 반영",
+          "desc_en": "Slight increase in VIX index reflecting market uncertainty",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "지정학적 긴장 완화 및 재고 우려",
+          "name_en": "Geopolitical Easing vs. Inventory Concerns",
+          "desc": "유럽 증시 지정학적 완화로 상승하나, 중동 공급 우려 및 메모리칩 재고 경고 상존",
+          "desc_en": "European shares rise on geopolitical easing, but Middle East supply concerns and memory chip inventory warnings persist",
+          "category": "geopolitics"
+        }
+      ]
+    },
+    {
       "id": "2026-08-13-17:01",
       "timestamp_kst": "2026-08-13(목) 17:01 KST",
       "key_event": {
@@ -411,52 +479,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-12-16:59",
-      "timestamp_kst": "2026-08-12(수) 16:59 KST",
-      "key_event": {
-        "name": "CPI 발표 대기 및 지정학적 긴장",
-        "name_en": "Anticipation of CPI Release & Geopolitical Tensions",
-        "time": "향후 12시간",
-        "why": "인플레이션 우려, 금리 인상 가능성, 시장 변동성 확대",
-        "why_en": "Inflation concerns, potential rate hikes, increased market volatility"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "CPI 발표 대기 속 지정학적 긴장 재고조 및 유가 상승으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to renewed geopolitical tensions and rising oil prices, awaiting CPI data",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "AI 수요 강세 및 실적 호조",
-          "name_en": "Strong AI Demand & Earnings Beat",
-          "desc": "CoreWeave 및 Foxconn의 AI 관련 매출 호조 및 가이던스 상향",
-          "desc_en": "CoreWeave and Foxconn report strong AI-related revenue and raised guidance",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 40,
-          "name": "지정학적 긴장 재고조 및 유가 상승",
-          "name_en": "Renewed Geopolitical Tensions & Rising Oil Prices",
-          "desc": "미-이란 평화 기대감 약화, 선박 공격으로 유가 상승 및 시장 불안",
-          "desc_en": "US-Iran peace optimism fades, ship attacks drive oil prices up and market instability",
-          "category": "geopolitics"
-        },
-        {
-          "score": 25,
-          "name": "CPI 발표 대기 인플레이션 우려",
-          "name_en": "CPI Anticipation & Inflation Concerns",
-          "desc": "7월 CPI 발표 임박, 인플레이션 압력 지속 가능성에 대한 경계 심리",
-          "desc_en": "Imminent July CPI release, maintaining caution over potential persistent inflation pressures",
-          "category": "macro_data"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-13T08:01:53Z",
+  "updated_at": "2026-08-13T09:21:10Z",
   "max_entries": 10
 }
