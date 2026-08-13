@@ -2022,7 +2022,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">손실 중이라면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3"><span class="ok">Gear 3 추세 유지 중</span> — 신규 매수가 허용되는 시장 조건(매수 신호 65점+, 매도 압력 65점 미만, RSI 70 미만)이라면 물타기도 가능. 단, 전량 아닌 소량(30% 이내), 손절선 반드시 사전 설정</li>
+                  <li id="tier1-avg-g3" data-for-gear="3"><span class="warn">판정 불러오는 중</span> — 실시간 지표로 오늘 물타기 가능 여부를 직접 판정합니다. 허용 시에도 소량(30% 이내) 한도.</li>
                   <li data-for-gear="2"><span class="warn">지금처럼 방향이 불명확할 때</span> — 추가 매수 자제. 추세 방향 확인 후 재진입 권장</li>
                   <li data-for-gear="1"><span class="no">지금처럼 하락 추세일 때 물타기는 절대 금지</span> — 바닥이 어딘지 아무도 모릅니다. 더 사면 손실만 커집니다</li>
                 </ul>
@@ -2097,7 +2097,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">손실 중이라면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3"><span class="warn">Gear 3 유지 중 — 조건 더 엄격하게 확인 후 소량만</span> — 2배수는 1배수보다 리스크가 2배이므로 물타기 조건도 더 엄격하게 봐야 합니다. 매도 압력 55점 미만 + 매수 신호 70점 이상 + RSI 65 이하, 이 세 조건 동시 충족 시에만 소량(20% 이내) 평단 낮추기 검토 가능. 매도 압력 65점 돌파 또는 Gear 2 하락 신호 발생 시 즉시 중단</li>
+                  <li id="tier2-avg-g3" data-for-gear="3"><span class="warn">판정 불러오는 중</span> — 실시간 지표로 오늘 물타기 가능 여부를 직접 판정합니다. 허용 시에도 소량(20% 이내) 한도.</li>
                   <li data-for-gear="2"><span class="no">횡보 구간(Gear 2) — 2배수 추가 매수 금지</span> — 방향이 결정되지 않은 구간에서 2배수 물타기는 어느 방향으로 튀어도 손실이 2배로 쌓입니다. 추가 없이 보유 포지션 유지 권고. Gear 3 복귀(200일선 위) 확인 후 재검토 권장</li>
                   <li data-for-gear="1"><span class="no">하락 추세(Gear 1) — 물타기 금지, 오히려 축소 구간</span> — 하락 추세에서 2배수 물타기는 손실이 2배 속도로 불어납니다. 추가 매수 없이 보유 물량 절반 정리 권고. 남은 포지션 손절선 재확인, 하락 가속 시 전량 정리 권고</li>
                 </ul>
@@ -2172,7 +2172,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">손실 중이라면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li data-for-gear="3"><span class="warn">Gear 3 유지 중 — 3배수 물타기는 조건부 허용</span> — 3배수는 물타기가 가장 위험한 구간. 그래서 조건을 건다: 매도압력 60점 미만 + 매수 신호 70점 이상 + RSI 65 이하 + MACD 히스토그램 또는 라인 중 하나 양전환. 이 4조건 충족 시 소량(10~15% 이내) 추가 가능. 하나라도 깨지면 중단하고, 그래도 불안하면 2배수로 배율을 낮추는 쪽이 먼저</li>
+                  <li id="tier3-avg-g3" data-for-gear="3"><span class="warn">판정 불러오는 중</span> — 실시간 지표로 오늘 물타기 가능 여부를 직접 판정합니다. 허용 시에도 소량(10~15% 이내) 한도.</li>
                   <li data-for-gear="2"><span class="no">횡보 구간(Gear 2) — 3배수 물타기 절대 금지</span> — 방향이 불분명한 구간에서 3배수 추가는 하루 3% 하락이 9% 손실로 직결됩니다. 추가 없이 2배수 또는 1배수 전환으로 리스크 축소 권고. 3배수는 Gear 3에서만 허용됩니다</li>
                   <li data-for-gear="1"><span class="no">하락 추세(Gear 1) — 3배수 물타기 금지, 전량 정리 검토 구간</span> — 하락 추세에서 3배수 추가는 손실이 3배 속도로 불어납니다. 물타기 대신 보유 물량 정리 권고. 손절선 이미 이탈했다면 전량 정리가 적절합니다. Gear 3 복귀 확인 후 새로 진입하는 것이 3배수를 들고 버티는 것보다 훨씬 낫습니다</li>
                 </ul>
@@ -5446,13 +5446,13 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
         if (compSell >= 65) {
           li.innerHTML = '<span class="no">신규 매수 금지</span>. 매도 압력 ' + compSell + '점 — 기준(65점) 초과. 매도 압력 64점 이하로 내려오면 재진입 검토';
         } else if (rsi >= 70) {
-          li.innerHTML = '<span class="no">지금 새로 사지 마세요</span>. RSI ' + rsi.toFixed(0) + ' 과열 — RSI 65 이하 복귀 후 QQQ·VOO 3-3-4 분할 매수 시작';
+          li.innerHTML = '<span class="no">신규 매수 자제 구간</span>. RSI ' + rsi.toFixed(0) + ' 과열 — RSI 65 이하 복귀 후 QQQ·VOO 3-3-4 분할 매수 시작';
         } else if (compBuy >= 65) {
           li.innerHTML = '<span class="ok">1차(30%) 진입 가능 구간</span>. QQQ·VOO 3-3-4: 1차 30% → 신호 강화 후 30% → 추세 안정 후 40%. 매수 매력도 ' + compBuy + '점';
         } else if (compBuy >= 50) {
           li.innerHTML = '<span class="ok">소량(1차 30%) 진입 가능</span>. Gear 3 + 매수 ' + compBuy + '점 충족. 단, 신호 약하니 1차만 먼저 — 60점 이상 확인 후 2차 추가';
         } else {
-          li.innerHTML = '<span class="no">지금은 새로 사지 마세요</span>. 매수 신호 ' + compBuy + '점 기준(50점) 미달. ' + (50 - compBuy) + '점 회복 후 재검토';
+          li.innerHTML = '<span class="no">신규 매수 자제 구간</span>. 매수 신호 ' + compBuy + '점 기준(50점) 미달. ' + (50 - compBuy) + '점 회복 후 재검토';
         }
       } else if (headTxt === '손실 중이라면') {
         if (compSell >= 65) {
@@ -5475,7 +5475,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
           // 매수 신호 약함 — 금지 + 이유 설명
           li.innerHTML = '<span class="no">물타기 금지 — 시장 조건 자체가 매수에 불리합니다</span><br>'
             + '매수 신호 ' + compBuy + '점으로 기준(65점) 미달. 지금은 시장이 신규 매수도 허용하지 않는 상태이므로 손실 포지션 추가는 손실만 키울 수 있습니다.<br>'
-            + '지금 해야 할 일: 손절선이 어딘지 다시 확인하고, 매수 신호가 65점 이상으로 회복하는지 지켜보세요. 급하게 평단 낮추려다가 추가 하락이 오면 대응이 더 어려워집니다';
+            + '지금 할 일: 손절선 위치 재확인, 매수 신호 65점 이상 회복 여부 관찰. 급하게 평단 낮추려다가 추가 하락이 오면 대응이 더 어려워집니다';
         }
       } else if (headTxt === '수익 중이라면') {
         if (compSell >= 65) {
@@ -5494,6 +5494,56 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   // ※ 이전 forEach + headTxt 문자열 비교 방식은 ReferenceError 이후 실행 불가
   //   문제였음. ID 기반으로 변경하여 컨텍스트 에러 무관하게 항상 동작 보장.
   {
+    // ── 물타기 판정 (2026-08-14 신설, 운영 제보) ──────────────────────────────
+    // 증상: 2배수·3배수 물타기 카드가 조건 '목록'만 나열하고 오늘 충족 여부를 판정하지
+    // 않았다. 동적 갱신 대상이 tier2-new / tier2-fire / tier3-new / tier3-fire 넷뿐이라
+    // 물타기 칸은 정적 HTML 그대로 나갔다. 제보 원문: "조건에 맞는지 니가 점검해서
+    // 단도직입 말해줘야지, 독자에게 조건에 맞는지 보고 들어가라고 하면 안 된다."
+    //
+    // 임계값 정리 — 카드마다 RSI 상한이 60·65·70으로 흩어져 있었다. 세 숫자 모두
+    // 근거가 없고, 그 탓에 같은 날 신규는 허용, 물타기는 판정 없음, 불타기는 금지가
+    // 동시에 나왔다("그럼 언제 사란 말이냐"). 스윙 원칙의 숫자는 하나다 —
+    // 최적 매수대 RSI 40~60, 추격 금지선 70. 그래서 상한을 70으로 통일하고,
+    // 40~60을 벗어난 구간은 '금지'가 아니라 '비중 축소'로 답한다.
+    // (우위가 없다는 건 사지 말라가 아니라 크게 걸지 말라는 뜻)
+    const RSI_CHASE = 70;      // 이 위는 추격 — 전 카드 공통
+    const RSI_SWEET = 60;      // 이 아래가 최적대. 사이 구간은 허용하되 크기를 줄인다
+    function avgDownVerdict(tier) {
+      const spec = {
+        1: { name: 'QQQ·VOO·SOXX', sellMax: 65, cap: '30%', half: '15%', lev: '' },
+        2: { name: 'QLD·SSO',      sellMax: 62, cap: '20%', half: '10%',
+             lev: ' 2배수는 하락도 2배로 쌓이므로 손절선을 진입 전에 정해두는 것이 조건의 일부.' },
+        3: { name: 'TQQQ·UPRO',    sellMax: 60, cap: '15%', half: '7%',
+             lev: ' 3배수는 물타기가 가장 위험한 자리 — 한 번에 넣지 않고 한도 안에서도 쪼개서.' },
+      }[tier];
+      const macdOK = tier < 3 || macdHist > 0 || macdLine > 0;   // 3배수만 방향 확인 추가
+      const fail = [];
+      if (compGear !== 3) fail.push(`추세 Gear ${compGear}(200일선 ${compGear === 2 ? '근처' : '아래'})`);
+      if (compSell >= spec.sellMax) fail.push(`매도압력 ${compSell}점(기준 ${spec.sellMax}점 미만)`);
+      if (compBuy < 60) fail.push(`매수신호 ${compBuy}점(기준 60점 이상)`);
+      if (rsi >= RSI_CHASE) fail.push(`RSI ${rsi.toFixed(0)}(추격 금지선 ${RSI_CHASE})`);
+      if (!macdOK) fail.push(`MACD 라인 ${macdLine.toFixed(2)}·히스토그램 ${macdHist.toFixed(2)} 모두 음수`);
+
+      const nums = `매도압력 ${compSell}점 · 매수신호 ${compBuy}점 · RSI ${rsi.toFixed(0)} · Gear ${compGear}`
+        + (tier === 3 ? ` · MACD 라인 ${macdLine >= 0 ? '+' : ''}${macdLine.toFixed(2)}·히스토그램 ${macdHist >= 0 ? '+' : ''}${macdHist.toFixed(2)}` : '');
+
+      if (fail.length) {
+        return `<span class="no">오늘 ${spec.name} 물타기 조건 미충족</span> — ${nums}.<br>`
+          + `걸린 항목: ${fail.join(' / ')}. 이 항목이 해소되기 전에는 평단 낮추기 보류, 손절선 재확인이 먼저.`;
+      }
+      const sweet = rsi < RSI_SWEET;
+      return `<span class="ok">오늘 ${spec.name} 물타기 조건 충족 — ${sweet ? `한도(${spec.cap}) 안에서 분할 추가 가능` : `한도의 절반(${spec.half} 이내)까지만`}</span> — ${nums}.<br>`
+        + (sweet
+            ? `RSI가 최적 매수대(40~${RSI_SWEET}) 안 — 이 구간에서 계획된 분할을 집행하는 것이 이 분석의 원칙.`
+            : `RSI ${rsi.toFixed(0)}은 최적대(40~${RSI_SWEET})를 넘어선 상태 — 문을 닫을 자리는 아니지만 크기를 줄이는 자리. 금지가 아니라 절반.`)
+        + spec.lev
+        + `<br><b>중단 조건</b> — 매도압력 ${spec.sellMax}점 돌파, RSI ${RSI_CHASE} 도달, Gear 3 이탈 중 하나라도 발생 시 추가 중단.`;
+    }
+    ['tier1-avg-g3', 'tier2-avg-g3', 'tier3-avg-g3'].forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = avgDownVerdict(i + 1);
+    });
+
     // ── tier2 신규진입 ──
     const li2new = document.getElementById('tier2-new-g3');
     if (li2new) {
@@ -5514,11 +5564,15 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     const li2fire = document.getElementById('tier2-fire-g3');
     if (li2fire) {
       if (compSell >= 65) {
-        li2fire.innerHTML = '<span class="warn">불타기 금지 — 오히려 익절 구간</span>. 매도 압력 ' + compSell + '점. 수익 포지션 일부 팔아서 비중 줄이세요';
-      } else if (lev2x && compBuy >= 60 && rsi < 65) {
-        li2fire.innerHTML = '<span class="ok">지금 QLD·SSO 소량 추가 가능</span> — 매수 ' + compBuy + '점, RSI ' + rsi.toFixed(0) + ', 3조건 유지. 전체 계좌 2배수 비중 50% 절대 초과 금지';
+        li2fire.innerHTML = '<span class="warn">불타기 금지 — 오히려 익절 구간</span>. 매도 압력 ' + compSell + '점. 수익 포지션 일부 비중 축소 권고';
+      } else if (lev2x && compBuy >= 60 && rsi < RSI_CHASE) {
+        // RSI 상한을 65가 아니라 추격 금지선 70으로 통일. 최적대(40~60) 밖은
+        // 금지가 아니라 절반으로 답한다 — 문을 닫으면 '언제 사란 말이냐'가 된다.
+        li2fire.innerHTML = (rsi < RSI_SWEET
+          ? '<span class="ok">QLD·SSO 소량 추가 가능</span> — 매수 ' + compBuy + '점 · RSI ' + rsi.toFixed(0) + ' 최적 매수대. 전체 계좌 2배수 비중 50% 한도 엄수'
+          : '<span class="ok">QLD·SSO 추가 가능 — 단 평소의 절반까지</span> — 매수 ' + compBuy + '점 · RSI ' + rsi.toFixed(0) + '로 최적대(40~' + RSI_SWEET + ') 상단 통과. 추격 금지선(' + RSI_CHASE + ')까지는 여유 있으나 크기를 줄이는 구간. 2배수 비중 50% 한도 엄수');
       } else {
-        li2fire.innerHTML = '<span class="warn">지금 더 사지 마세요</span> — 매수 ' + compBuy + '점 / RSI ' + rsi.toFixed(0) + '. 불타기 기준 미달. 현 포지션 유지';
+        li2fire.innerHTML = '<span class="warn">추가 매수 자제 구간</span> — 매수 ' + compBuy + '점 / RSI ' + rsi.toFixed(0) + '. 불타기 기준 미달. 현 포지션 유지';
       }
     }
 
@@ -5544,13 +5598,15 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     const li3fire = document.getElementById('tier3-fire-g3');
     if (li3fire) {
       if (compSell >= 80) {
-        li3fire.innerHTML = '<span class="no">즉시 비중 축소</span> — 매도 압력 ' + compSell + '점 위험 수준. TQQQ·UPRO를 지금 2배수 이하로 줄이세요';
+        li3fire.innerHTML = '<span class="no">즉시 비중 축소</span> — 매도 압력 ' + compSell + '점 위험 수준. TQQQ·UPRO 2배수 이하로 축소 권고';
       } else if (compSell >= 70) {
         li3fire.innerHTML = '<span class="warn">불타기 자제 — 현 포지션 유지</span>. 매도 압력 ' + compSell + '점(경계 구간). 추가 매수 없이 기존 포지션만 유지';
-      } else if (lev3x && compBuy >= 65 && rsi < 60) {
-        li3fire.innerHTML = '<span class="ok">TQQQ·UPRO 소량 추가 가능</span> — 매수 ' + compBuy + '점, RSI ' + rsi.toFixed(0) + ', 5조건 유지. 전체 계좌 3배수 비중 20% 절대 초과 금지';
+      } else if (lev3x && compBuy >= 60 && rsi < RSI_CHASE) {
+        li3fire.innerHTML = (rsi < RSI_SWEET
+          ? '<span class="ok">TQQQ·UPRO 소량 추가 가능</span> — 매수 ' + compBuy + '점 · RSI ' + rsi.toFixed(0) + ' 최적 매수대. 3배수 비중 20% 한도 엄수'
+          : '<span class="ok">TQQQ·UPRO 추가 가능 — 단 평소의 절반까지</span> — 매수 ' + compBuy + '점 · RSI ' + rsi.toFixed(0) + '로 최적대(40~' + RSI_SWEET + ') 상단 통과. 추격 금지선(' + RSI_CHASE + ') 전이라 문은 열려 있으나 크기를 줄이는 구간. 3배수 비중 20% 한도 엄수');
       } else {
-        li3fire.innerHTML = '<span class="warn">지금 더 사지 마세요</span> — 매수 ' + compBuy + '점 / RSI ' + rsi.toFixed(0) + '. 3배수 불타기 기준 미달. 현 포지션 유지';
+        li3fire.innerHTML = '<span class="warn">추가 매수 자제 구간</span> — 매수 ' + compBuy + '점 / RSI ' + rsi.toFixed(0) + '. 3배수 불타기 기준 미달. 현 포지션 유지';
       }
     }
   }
