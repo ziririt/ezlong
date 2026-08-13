@@ -9531,5 +9531,11 @@ window.investmentQuotes = [
     "title": "대담하게 맞서기 (Daring Greatly)",
     "author": "브레네 브라운 (Brené Brown)",
     "genre": "literature"
+  },
+  {
+    "text": "먼 훗날 당신이 찾으시면 그때에 내 말이 \"잊었노라\" 당신이 속으로 나무라면 \"무척 그리다가 잊었노라\"",
+    "title": "먼 후일",
+    "author": "김소월",
+    "genre": "literature"
   }
 ];
