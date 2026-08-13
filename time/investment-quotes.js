@@ -9558,5 +9558,11 @@ window.investmentQuotes = [
     "title": "우리가 끝이야 (It Ends with Us)",
     "author": "콜린 후버 (Colleen Hoover)",
     "genre": "literature"
+  },
+  {
+    "text": "넓은 벌 동쪽 끝으로 옛이야기 지줄대는 실개천이 휘돌아 나가고, 얼룩빼기 황소가 해설피 금빛 게으른 울음을 우는 곳, 그곳이 차마 꿈엔들 잊힐리야.",
+    "title": "향수",
+    "author": "정지용",
+    "genre": "literature"
   }
 ];
