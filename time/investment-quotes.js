@@ -9551,5 +9551,12 @@ window.investmentQuotes = [
     "title": "스트리트 스마트 (Street Smarts)",
     "author": "짐 로저스 (Jim Rogers)",
     "category": "patience"
+  },
+  {
+    "english": "All humans make mistakes. What determines a person's character aren't the mistakes we make. It's how we take those mistakes and turn them into lessons rather than excuses.",
+    "text": "인간은 누구나 실수를 한다. 한 사람의 인격을 결정짓는 것은 그 실수 자체가 아니다. 그 실수를 변명이 아니라 교훈으로 바꾸는 방식이다.",
+    "title": "우리가 끝이야 (It Ends with Us)",
+    "author": "콜린 후버 (Colleen Hoover)",
+    "genre": "literature"
   }
 ];
