@@ -9605,5 +9605,12 @@ window.investmentQuotes = [
     "title": "주식 매매하는 법 (How to Trade in Stocks)",
     "author": "제시 리버모어 (Jesse Livermore)",
     "category": "mindset"
+  },
+  {
+    "english": "I had no right to claim him, I knew it. But in a solitary life, there are rare moments when another soul dips near yours, as stars once a year brush the earth. Such a constellation he was to me.",
+    "text": "나는 그를 주장할 권리가 없다는 걸 알고 있었다. 하지만 고독한 삶 속에도, 다른 영혼이 내 영혼 가까이 스치는 드문 순간들이 있다. 별들이 일 년에 한 번 지구를 스치듯이. 그는 내게 그런 별자리였다.",
+    "title": "키르케 (Circe)",
+    "author": "매들린 밀러 (Madeline Miller)",
+    "genre": "literature"
   }
 ];
