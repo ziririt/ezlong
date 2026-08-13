@@ -9511,5 +9511,11 @@ window.investmentQuotes = [
     "title": "돈의 심리학 (The Psychology of Money)",
     "author": "모건 하우절 (Morgan Housel)",
     "category": "mindset"
+  },
+  {
+    "text": "무엇인가를 갖는다는 것은 다른 한편 무엇인가에 얽매인다는 것이다. 그러므로 많이 갖고 있다는 것은 흔히 자랑거리로 되어 있지만, 그만큼 많이 얽혀 있다는 측면도 동시에 지니고 있는 것이다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
   }
 ];
