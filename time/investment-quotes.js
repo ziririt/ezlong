@@ -9584,5 +9584,12 @@ window.investmentQuotes = [
     "title": "청포도",
     "author": "이육사",
     "genre": "literature"
+  },
+  {
+    "english": "Pain + Reflection = Progress. If you can develop a reflexive reaction to psychic pain that causes you to reflect on it rather than avoid it, it will lead to your rapid learning/evolving.",
+    "text": "고통 더하기 성찰은 곧 발전이다. 고통스러운 순간에 그것을 피하지 않고 돌아보는 반사적인 습관을 들일 수 있다면, 그것이 바로 빠른 배움과 성장으로 이어진다.",
+    "title": "원칙 (Principles: Life and Work)",
+    "author": "레이 달리오 (Ray Dalio)",
+    "category": "mindset"
   }
 ];
