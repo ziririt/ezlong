@@ -5243,6 +5243,37 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     }
   }
 
+  // ── 칸 경계 문장 (2026-08-14 운영 제보) ────────────────────────────────────
+  // 증상: 1배수 판단은 "새로 살 자리도 팔 자리도 아닌 버틸 자리"인데 바로 아래
+  // 3배수 카드는 "보유·신규 진입 모두 가능 — 5조건 전부 충족"이었다. 읽는 사람에게는
+  // 정면 모순이다.
+  // 원인: 두 카드가 서로 다른 질문에 답한다. 1배수는 '내 1배수 칸이 목표까지 찼는가'
+  // (보유 상태), 레버리지는 '지금 지표가 진입을 허용하는가'(시장 상태). 둘 다 참일 수
+  // 있는데 어느 쪽도 주어를 안 밝히니 충돌로 읽혔다.
+  // 조치: 레버리지 카드에 1배수 칸의 충전 상태를 한 줄로 붙여 두 판단을 잇는다.
+  // 데이터가 없으면 이 줄은 그냥 안 붙는다(폴백 안전).
+  let tierBridgeNote = '';
+  if (compGear === 3) {   // 하락·횡보장 카드(청산·축소 권고)에는 붙이지 않는다 — 그 카드에
+                          // 레버리지 한도 안내를 얹으면 없애려던 모순을 새로 만든다
+    const _c = window._swingView?.comp;
+    const _ex = typeof _c?.exposure === 'number' ? _c.exposure : null;
+    const _tg = typeof _c?.target === 'number' ? _c.target : null;
+    const _wrap = (t) => `<br><span style="color:var(--ac);font-size:16px;opacity:.9;">● ${t}</span>`;
+    if (_ex !== null && _tg !== null) {
+      const _pct = Math.round(_ex * 100), _tpct = Math.round(_tg * 100);
+      const _gap = _tg - _ex;                 // 부호를 그대로 쓴다 — 초과 노출과 미달을 구분
+      if (_tg <= 0) {
+        tierBridgeNote = _wrap(`1배수 칸의 계획 목표 자체가 0% — 위험 축소가 우선인 구간. 레버리지 한도를 논할 자리가 아니다.`);
+      } else if (_gap <= -0.05) {
+        tierBridgeNote = _wrap(`1배수 칸이 목표를 넘어선 상태(목표 ${_tpct}% · 현재 ${_pct}%) — 계획된 축소를 기다리는 구간. 이 상태에서 레버리지를 얹는 것은 위험을 두 번 싣는 것.`);
+      } else if (_gap < 0.05) {
+        tierBridgeNote = _wrap(`1배수 칸은 목표 비중 ${_tpct}%를 채운 상태 — 1배수 카드에 추가 매수 단계가 없는 것은 그 칸이 찼다는 뜻이지 시장 신호가 꺼졌다는 뜻이 아니다. 다음 자금의 판단은 이 레버리지 칸에서.`);
+      } else {
+        tierBridgeNote = _wrap(`1배수 칸은 목표 ${_tpct}% 대비 현재 ${_pct}% — 아직 채울 자리가 남은 상태. 레버리지는 1배수를 대신하는 칸이 아니라 그 위에 따로 얹는 칸이므로, 한도(2배수 30~50% · 3배수 5~20%)를 먼저 정하고 판단.`);
+      }
+    }
+  }
+
   const el1xAct = document.getElementById('now-action-1x');
   if (el1xAct) {
     el1xAct.innerHTML = buildNowActionHTML(act1, rsn1 + optionsCtxNote, col1, bg1, bd1);
@@ -5278,7 +5309,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
   }
   const el2xAct = document.getElementById('now-action-2x');
   if (el2xAct) {
-    el2xAct.innerHTML = buildNowActionHTML(act2, rsn2 + optionsCtxNote, col2, bg2, bd2);
+    el2xAct.innerHTML = buildNowActionHTML(act2, rsn2 + tierBridgeNote + optionsCtxNote, col2, bg2, bd2);
   }
 
   // ── 3배수 지금 행동 ──
@@ -5326,7 +5357,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     col3 = 'var(--rd)'; bg3 = 'var(--rd-s)'; bd3 = 'rgba(255,69,58,0.3)';
   }
   const el3xAct = document.getElementById('now-action-3x');
-  if (el3xAct) el3xAct.innerHTML = buildNowActionHTML(act3, rsn3 + optionsCtxNote, col3, bg3, bd3);
+  if (el3xAct) el3xAct.innerHTML = buildNowActionHTML(act3, rsn3 + tierBridgeNote + optionsCtxNote, col3, bg3, bd3);
 
   // ── masterSignal: 모든 탭이 공유하는 단일 시장 진단 객체 ──────────
   // renderKings, VIX 위젯 등 다른 섹션이 이 객체를 읽어 일관된 조언을 표시한다.
