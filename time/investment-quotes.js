@@ -9524,5 +9524,12 @@ window.investmentQuotes = [
     "title": "The Little Book of Common Sense Investing",
     "author": "존 보글 (John C. Bogle)",
     "category": "mindset"
+  },
+  {
+    "english": "Vulnerability is not weakness, and the uncertainty, risk, and emotional exposure we face every day are not optional.",
+    "text": "취약함은 약점이 아니다. 우리가 매일 마주하는 불확실함과 위험, 감정의 노출은 선택할 수 있는 것이 아니다.",
+    "title": "대담하게 맞서기 (Daring Greatly)",
+    "author": "브레네 브라운 (Brené Brown)",
+    "genre": "literature"
   }
 ];
