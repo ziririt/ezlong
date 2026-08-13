@@ -9537,5 +9537,12 @@ window.investmentQuotes = [
     "title": "먼 후일",
     "author": "김소월",
     "genre": "literature"
+  },
+  {
+    "english": "Even in those earlier times, finding the really outstanding companies and staying with them through all the fluctuations of a gyrating market proved far more profitable to far more people than did the more colorful practice of trying to buy them cheap and sell them dear.",
+    "text": "그 시절에도, 요동치는 시장의 온갖 등락 속에서 진짜 훌륭한 기업을 찾아내 오래 붙들고 있는 쪽이, 싸게 사서 비싸게 파는 화려한 방법보다 훨씬 더 많은 사람에게 훨씬 더 큰 수익을 안겨주었다.",
+    "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔 (Philip A. Fisher)",
+    "category": "mindset"
   }
 ];
