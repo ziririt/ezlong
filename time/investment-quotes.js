@@ -9578,5 +9578,11 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "text": "내 고장 칠월은 청포도가 익어 가는 시절. 이 마을 전설이 주저리주저리 열리고, 먼 데 하늘이 꿈꾸며 알알이 들어와 박혀.",
+    "title": "청포도",
+    "author": "이육사",
+    "genre": "literature"
   }
 ];
