@@ -9544,5 +9544,12 @@ window.investmentQuotes = [
     "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
     "author": "필립 피셔 (Philip A. Fisher)",
     "category": "mindset"
+  },
+  {
+    "english": "I just wait until there is money lying in the corner, and all I have to do is go over there and pick it up. I do nothing in the meantime.",
+    "text": "나는 그저 돈이 구석에 떨어져 있을 때까지 기다린다. 그러고는 가서 주워 오기만 하면 된다. 그때까지는 아무것도 하지 않는다.",
+    "title": "스트리트 스마트 (Street Smarts)",
+    "author": "짐 로저스 (Jim Rogers)",
+    "category": "patience"
   }
 ];
