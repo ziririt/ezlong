@@ -9995,13 +9995,22 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
       // 2026-08-04 운영 요청 — 네이티브 광고 카드가 좋다, 높이는 2배로.
       // 썸네일·제목·설명이 여유롭게 놓이는 크기(문장박스 안쪽의 8할까지).
       const bannerH = Math.max(96, Math.min(144, Math.round(innerH * 0.8)));
+      // 2026-08-14 운영 제보 — 날씨 상세 패널을 열어도 네이티브 광고 카드가
+      // 그 위에 그대로 떠 있었다(주간 예보를 광고가 가림). 네이티브 양쪽
+      // (iOS ContentView.swift, Android MainActivity.kt)은 이미 이 비콘의
+      // calendarOpen 이 true 면 배너를 숨긴다 — 그래서 앱 업데이트 없이
+      // 웹만 고치면 된다. 와이어 키 이름은 calendarOpen 그대로 두고(구버전
+      // 앱 호환), 의미만 "전면 오버레이가 하나라도 열려 있는가"로 넓힌다.
+      // 날씨 상세는 DOM 오버레이라 네이티브가 스스로는 구분할 수 없다.
+      const overlayOpen = !!calendarPanelOpen ||
+        !!(weatherDetailPanel && weatherDetailPanel.classList.contains("is-open"));
       const payload = {
         action: "adLayout",
         x: Math.round(innerX),
         y: Math.round(innerY + (innerH - bannerH) / 2),
         w: Math.round(innerW),
         h: bannerH,
-        calendarOpen: !!calendarPanelOpen,
+        calendarOpen: overlayOpen,
       };
       const key = [payload.x, payload.y, payload.w, payload.h, payload.calendarOpen].join(",");
       if (key === lastSent) return;
@@ -10014,6 +10023,18 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
   window.setInterval(reportAdLayout, 2000);
   window.addEventListener("resize", () => window.setTimeout(reportAdLayout, 300));
   window.setTimeout(reportAdLayout, 1500);
+  // 날씨 상세는 열리는 순간 광고가 사라져야 한다 — 2초 주기만 믿으면 최대
+  // 2초간 광고가 상세 화면을 가린 채 남는다. 기존 함수(openWeatherDetail 등)는
+  // 건드리지 않는다는 이 브릿지의 원칙(관찰 전용) 그대로, 패널의 class 변화를
+  // 지켜보다가 즉시 재보고한다.
+  if (weatherDetailPanel && typeof MutationObserver !== "undefined") {
+    try {
+      new MutationObserver(reportAdLayout)
+        .observe(weatherDetailPanel, { attributes: true, attributeFilter: ["class"] });
+    } catch (error) {
+      // 감시 실패 시 2초 주기 보고가 그대로 안전망.
+    }
+  }
 
   // 네이티브가 배너(문장박스 크기 오버레이)를 띄우는 90초 동안 문장박스
   // 내용을 숨긴다 — 광고가 콘텐츠를 "가리는" 게 아니라 "빈 자리에 놓이는"
