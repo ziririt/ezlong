@@ -9652,5 +9652,12 @@ window.investmentQuotes = [
     "title": "꽃",
     "author": "김춘수",
     "genre": "literature"
+  },
+  {
+    "english": "A long-term-oriented value investor is a batter in a game where no balls or strikes are called, allowing dozens, even hundreds, of pitches to go by, including many at which other batters would swing.",
+    "text": "장기적 관점을 가진 가치투자자는 볼도 스트라이크도 선언되지 않는 경기에 선 타자와 같다. 다른 타자라면 배트를 휘둘렀을 공까지 포함해, 수십 개, 수백 개의 공을 그냥 흘려보낼 수 있다.",
+    "title": "마진 오브 세이프티 (Margin of Safety)",
+    "author": "세스 클라만 (Seth Klarman)",
+    "category": "patience"
   }
 ];
