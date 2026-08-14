@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-08-14-13:45",
+      "timestamp_kst": "2026-08-14(금) 13:45 KST",
+      "key_event": {
+        "name": "인플레이션 둔화 기대 지속",
+        "name_en": "Sustained Inflation Deceleration Expectations",
+        "time": "직전 정규장 및 향후 12시간",
+        "why": "금리 인상 압력 완화, 기술주 투자 심리 개선",
+        "why_en": "Easing rate hike pressure, improved tech stock sentiment"
+      },
+      "positive_total": 80,
+      "negative_total": 20,
+      "summary": "AI 낙관론 및 인플레이션 둔화 기대 지속으로 긍정 우위 유지",
+      "summary_en": "Positive sentiment maintained due to AI optimism and persistent inflation deceleration expectations",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "AI 및 반도체 섹터 강세 지속",
+          "name_en": "Continued Strength in AI & Semiconductor Sector",
+          "desc": "CPI 및 PPI 냉각으로 금리 인상 확률 급락, AI 하드웨어 수요 증가 (SOXX +0.79%, NVDA +0.75%)",
+          "desc_en": "Cooling CPI and PPI sharply reduced rate hike probability, increasing AI hardware demand (SOXX +0.79%, NVDA +0.75%)",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "인플레이션 둔화 기대 강화",
+          "name_en": "Strengthened Inflation Deceleration Expectations",
+          "desc": "CPI 332.81% (+0.25%) 및 PPI 0% 냉각으로 금리 인상 압력 완화",
+          "desc_en": "CPI 332.81% (+0.25%) and PPI 0% cooling eased rate hike pressures",
+          "category": "macro_data"
+        },
+        {
+          "score": 15,
+          "name": "주요 지수 사상 최고치 경신",
+          "name_en": "Major Indices Hit Record Highs",
+          "desc": "S&P 500 사상 최고치 경신 (SPY +0.75%), 나스닥 주도 상승 (QQQ +1.34%)",
+          "desc_en": "S&P 500 reached record high (SPY +0.75%), Nasdaq led gains (QQQ +1.34%)",
+          "category": "vix_risk_sentiment"
+        },
+        {
+          "score": 10,
+          "name": "달러 약세 전환",
+          "name_en": "Dollar Weakens",
+          "desc": "달러인덱스 DXY 99.87 (-0.06%)로 약세 전환, 수출주 실적 개선 기대",
+          "desc_en": "DXY 99.87 (-0.06%) turned weaker, anticipating improved export company earnings",
+          "category": "dollar_fx"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "일부 기술주 과열 및 약세 신호",
+          "name_en": "Overheating & Weak Signals in Some Tech Stocks",
+          "desc": "MSFT RSI 72로 과열, GOOGL RSI 46으로 약세 신호 (GOOGL +0.86% 상승에도 기술적 약세)",
+          "desc_en": "MSFT RSI 72 indicates overheating, GOOGL RSI 46 shows weakness (despite GOOGL +0.86% gain, technically weak)",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-14-11:50",
       "timestamp_kst": "2026-08-14(금) 11:50 KST",
       "key_event": {
@@ -419,60 +479,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-13-05:52",
-      "timestamp_kst": "2026-08-13(목) 05:52 KST",
-      "key_event": {
-        "name": "CPI 둔화 및 AI 수요 강세 지속",
-        "name_en": "Continued CPI Slowdown & Strong AI Demand",
-        "time": "포스트마켓 및 다음 정규장",
-        "why": "인플레이션 완화 기대, 금리 인상 압력 감소, AI 성장 지속",
-        "why_en": "Easing inflation expectations, reduced rate hike pressure, sustained AI growth"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "CPI 둔화 및 AI 관련주 강세로 긍정 우위 지속, 지정학적 긴장 완화 기대",
-      "summary_en": "Sustained positive sentiment from easing CPI and strong AI stocks, geopolitical tensions ease",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "AI 관련주 강세 지속",
-          "name_en": "Continued Strength in AI Stocks",
-          "desc": "NVIDIA (+2.41%), SOXX (+2.02%) 등 AI 관련주 강세 지속, CoreWeave 실적 낙관론",
-          "desc_en": "AI-related stocks like NVIDIA (+2.41%) and SOXX (+2.02%) continue strong, fueled by CoreWeave earnings optimism",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 30,
-          "name": "CPI 둔화로 인플레이션 우려 완화",
-          "name_en": "Easing Inflation Concerns from CPI Slowdown",
-          "desc": "7월 CPI 둔화 확인, Fed 금리 인상 압력 감소 기대",
-          "desc_en": "July CPI slowdown confirmed, raising expectations for reduced Fed rate hike pressure",
-          "category": "macro_data"
-        },
-        {
-          "score": 5,
-          "name": "WTI 원유 가격 하락",
-          "name_en": "WTI Crude Oil Price Decline",
-          "desc": "WTI 원유 가격 82.60달러로 하락 (-1.96%), 인플레이션 압력 완화",
-          "desc_en": "WTI crude oil price falls to $82.60 (-1.96%), easing inflationary pressures",
-          "category": "oil_energy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "달러인덱스 소폭 상승",
-          "name_en": "Slight Rise in Dollar Index",
-          "desc": "달러인덱스 DXY 99.99 (+0.11%)로 소폭 상승, 수출 기업에 부담",
-          "desc_en": "DXY slightly up to 99.99 (+0.11%), potentially pressuring export-oriented companies",
-          "category": "dollar_fx"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-14T02:51:08Z",
+  "updated_at": "2026-08-14T04:45:33Z",
   "max_entries": 10
 }
