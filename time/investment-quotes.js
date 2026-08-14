@@ -9625,5 +9625,12 @@ window.investmentQuotes = [
     "title": "바람이 분다 당신이 좋다",
     "author": "이병률",
     "genre": "literature"
+  },
+  {
+    "english": "You can't predict. You can prepare.",
+    "text": "우리는 미래를 예측할 수 없다. 하지만 준비할 수는 있다.",
+    "title": "투자에 대한 생각",
+    "author": "하워드 막스",
+    "category": "mindset"
   }
 ];
