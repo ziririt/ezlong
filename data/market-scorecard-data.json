@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-08-14-21:50",
+      "timestamp_kst": "2026-08-14(금) 21:50 KST",
+      "key_event": {
+        "name": "AI 수요 및 인플레이션 둔화 기대",
+        "name_en": "AI Demand & Easing Inflation Expectations",
+        "time": "오늘 정규장 및 단기",
+        "why": "기술주 투자심리 개선, 금리 인상 압력 완화",
+        "why_en": "Improved tech sentiment, reduced rate hike pressure"
+      },
+      "positive_total": 80,
+      "negative_total": 20,
+      "summary": "AI 낙관론 및 인플레이션 둔화 기대 지속으로 긍정 우위 유지",
+      "summary_en": "Positive sentiment maintained due to AI optimism and persistent inflation cooling expectations",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "AI 산업 성장 기대",
+          "name_en": "AI Industry Growth Expectations",
+          "desc": "OpenAI 매출 급증 및 AMD 강세 전망, 기술주 전반 긍정적",
+          "desc_en": "OpenAI revenue surge and strong AMD outlook, positive for tech stocks",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 35,
+          "name": "인플레이션 둔화 지속",
+          "name_en": "Persistent Inflation Cooling",
+          "desc": "CPI 332.81% (+0.25% 전기대비) 및 PPI 0% 냉각, 금리 인상 압력 완화",
+          "desc_en": "CPI at 332.81% (+0.25% MoM) and PPI cooling to 0%, easing rate hike pressure",
+          "category": "macro_data"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 10,
+          "name": "미-이란 지정학적 긴장 고조",
+          "name_en": "US-Iran Geopolitical Tensions Rise",
+          "desc": "미국 재무부 이란 경제 고립 위협 및 유가 상승 압력",
+          "desc_en": "US Treasury threatens Iran with economic isolation, pressuring oil prices up",
+          "category": "geopolitics"
+        },
+        {
+          "score": 10,
+          "name": "일부 반도체 기업 실적 우려",
+          "name_en": "Concerns Over Some Semiconductor Earnings",
+          "desc": "Applied Materials 실적 발표 후 주가 하락, SOXX -0.08% 소폭 조정",
+          "desc_en": "Applied Materials stock dips post-earnings, SOXX sees minor adjustment of -0.08%",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "금리 인상 논쟁 지속",
+          "name_en": "Ongoing Rate Hike Debate",
+          "desc": "일부 Fed 인사 금리 인상 주장 vs. 인플레이션 둔화로 동결 기대",
+          "desc_en": "Some Fed officials advocate rate hikes vs. expectations for hold due to cooling inflation",
+          "category": "fed_policy"
+        },
+        {
+          "name": "소매 판매 데이터 대기",
+          "name_en": "Awaiting Retail Sales Data",
+          "desc": "소매 판매 데이터 발표 앞두고 시장 관망세, 경기 건전성 지표 주목",
+          "desc_en": "Market awaits retail sales data, focusing on economic health indicators",
+          "category": "macro_data"
+        }
+      ]
+    },
+    {
       "id": "2026-08-14-18:20",
       "timestamp_kst": "2026-08-14(금) 18:20 KST",
       "key_event": {
@@ -467,52 +534,8 @@
           "category": "geopolitics"
         }
       ]
-    },
-    {
-      "id": "2026-08-13-13:47",
-      "timestamp_kst": "2026-08-13(목) 13:47 KST",
-      "key_event": {
-        "name": "CPI 둔화 및 AI 수요 강세 지속",
-        "name_en": "Continued CPI Moderation and Strong AI Demand",
-        "time": "직전 정규장 및 다음 정규장",
-        "why": "인플레이션 완화 기대, 금리 인상 압력 감소, AI 성장 지속",
-        "why_en": "Easing inflation expectations, reduced rate hike pressure, sustained AI growth"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "CPI 둔화 및 AI 관련주 강세로 5일 연속 긍정 우위 지속",
-      "summary_en": "Positive sentiment continues for 5 consecutive days due to CPI moderation and strong AI stocks",
-      "positive_factors": [
-        {
-          "score": 75,
-          "name": "CPI 둔화 지속",
-          "name_en": "Continued CPI Moderation",
-          "desc": "7월 CPI 둔화 확인 및 Fed 금리 동결 기대감 유지",
-          "desc_en": "July CPI moderation confirmed, maintaining expectations for Fed rate pause",
-          "category": "macro_data"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "AI 안전 규제 논의",
-          "name_en": "AI Safety Regulation Discussions",
-          "desc": "DeepMind 등 AI 안전 규제 논의 지속, 산업 성장 제약 우려",
-          "desc_en": "Ongoing discussions on AI safety regulations by DeepMind, raising concerns about industry growth limitations",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "고유가 및 인플레이션 우려",
-          "name_en": "Elevated Oil Prices and Inflation Concerns",
-          "desc": "WTI 0.75% 상승 및 일부에서 인플레이션 지속 우려 제기",
-          "desc_en": "WTI up 0.75% and some concerns raised about persistent inflation",
-          "category": "oil_energy"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-14T09:21:08Z",
+  "updated_at": "2026-08-14T12:50:59Z",
   "max_entries": 10
 }
