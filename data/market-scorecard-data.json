@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "2026-08-14-11:50",
+      "timestamp_kst": "2026-08-14(금) 11:50 KST",
+      "key_event": {
+        "name": "인플레이션 둔화 기대 지속",
+        "name_en": "Sustained Inflation Deceleration Expectations",
+        "time": "직전 정규장 및 향후 12시간",
+        "why": "금리 인상 압력 완화, 기술주 투자 심리 개선",
+        "why_en": "Easing rate hike pressure, improved tech sector sentiment"
+      },
+      "positive_total": 80,
+      "negative_total": 20,
+      "summary": "AI 낙관론 및 인플레이션 둔화 기대 지속으로 긍정 우위 유지",
+      "summary_en": "Positive sentiment maintained due to AI optimism and sustained inflation deceleration expectations",
+      "positive_factors": [
+        {
+          "score": 80,
+          "name": "CPI 및 PPI 냉각",
+          "name_en": "Cooling CPI and PPI",
+          "desc": "CPI 332.81%(+0.25%) 및 PPI 0%로 인플레이션 둔화, 금리 인상 압력 완화",
+          "desc_en": "CPI at 332.81%(+0.25%) and PPI at 0% indicate cooling inflation, easing rate hike pressure",
+          "category": "macro_data"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "Fed 금리 인상 주장 지속",
+          "name_en": "Continued Fed Rate Hike Advocacy",
+          "desc": "일부 Fed 위원, 성장 및 인플레이션 억제를 위한 금리 인상 주장",
+          "desc_en": "Some Fed members advocate for rate hikes to curb growth and inflation",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-14-07:44",
       "timestamp_kst": "2026-08-14(금) 07:44 KST",
       "key_event": {
@@ -435,60 +471,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-13-01:04",
-      "timestamp_kst": "2026-08-13(목) 01:04 KST",
-      "key_event": {
-        "name": "CPI 둔화 및 AI 수요 강세 지속",
-        "name_en": "Continued CPI Moderation and Strong AI Demand",
-        "time": "2026-08-13 정규장",
-        "why": "인플레이션 완화 기대, 금리 인상 압력 감소, AI 성장 지속",
-        "why_en": "Easing inflation expectations, reduced rate hike pressure, sustained AI growth"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "CPI 둔화 및 AI 관련주 강세로 긍정 우위 지속, 지정학적 긴장 완화 기대",
-      "summary_en": "Positive sentiment continues with CPI moderation and strong AI stocks, geopolitical tensions ease",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "CPI 예상치 부합 및 인플레이션 둔화",
-          "name_en": "CPI Meets Expectations and Inflation Moderates",
-          "desc": "7월 CPI가 예상치에 부합하며 인플레이션 완화 기대감 증대, Fed 금리 인상 압력 감소",
-          "desc_en": "July CPI met expectations, increasing hopes for inflation moderation and reducing Fed rate hike pressure",
-          "category": "macro_data"
-        },
-        {
-          "score": 35,
-          "name": "AI 관련주 강세 및 수요 확대",
-          "name_en": "Strong AI Stocks and Expanding Demand",
-          "desc": "CoreWeave, Nebius 등 AI 관련 기업 실적 호조 및 Nvidia 파트너십 소식에 AI 수요 강세",
-          "desc_en": "Strong AI demand driven by positive earnings from CoreWeave, Nebius, and Nvidia partnerships",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "일부 대형 기술주 하락",
-          "name_en": "Decline in Some Major Tech Stocks",
-          "desc": "AAPL, MSFT, GOOGL 등 일부 대형 기술주가 하락하며 시장 상승폭 제한",
-          "desc_en": "Decline in some major tech stocks like AAPL, MSFT, and GOOGL limits overall market gains",
-          "category": "other"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "지정학적 긴장 및 유가 변동성",
-          "name_en": "Geopolitical Tensions and Oil Price Volatility",
-          "desc": "지정학적 긴장 완화 기대감에도 불구하고 유가 상승 압력이 상존하며 인플레이션 우려가 혼재",
-          "desc_en": "Despite hopes for easing geopolitical tensions, persistent oil price pressure creates mixed inflation concerns",
-          "category": "geopolitics"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-13T22:44:30Z",
+  "updated_at": "2026-08-14T02:51:08Z",
   "max_entries": 10
 }
