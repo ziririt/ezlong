@@ -9632,5 +9632,12 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각",
     "author": "하워드 막스",
     "category": "mindset"
+  },
+  {
+    "english": "And, when you want something, all the universe conspires in helping you to achieve it.",
+    "text": "무언가를 진심으로 원할 때, 온 우주는 그 소망이 이루어지도록 함께 힘을 모아준다.",
+    "title": "연금술사 (The Alchemist)",
+    "author": "파울로 코엘료 (Paulo Coelho)",
+    "genre": "literature"
   }
 ];
