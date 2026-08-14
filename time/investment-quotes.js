@@ -9612,5 +9612,18 @@ window.investmentQuotes = [
     "title": "키르케 (Circe)",
     "author": "매들린 밀러 (Madeline Miller)",
     "genre": "literature"
+  },
+  {
+    "english": "Opportunity is a haughty goddess who wastes no time with those who are unprepared.",
+    "text": "기회는 오만한 여신이다. 준비되지 않은 자에게는 단 한 순간도 곁을 내주지 않는다.",
+    "title": "바빌론 부자들의 돈 버는 지혜 (The Richest Man in Babylon)",
+    "author": "조지 S. 클레이슨 (George S. Clason)",
+    "category": "mindset"
+  },
+  {
+    "text": "삿포로에 갈까요. 이 말은 당신을 좋아한다는 말입니다.",
+    "title": "바람이 분다 당신이 좋다",
+    "author": "이병률",
+    "genre": "literature"
   }
 ];
