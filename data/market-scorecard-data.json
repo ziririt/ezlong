@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "2026-08-14-07:44",
+      "timestamp_kst": "2026-08-14(금) 07:44 KST",
+      "key_event": {
+        "name": "인플레이션 둔화 기대 지속",
+        "name_en": "Continued Inflation Deceleration Expectations",
+        "time": "최근 6시간 + 향후 12시간",
+        "why": "금리 인상 압력 완화, 기술주 투자 심리 개선",
+        "why_en": "Easing rate hike pressure, improved tech investment sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "인플레이션 둔화 기대 및 AI 낙관론 지속으로 긍정 우위 유지",
+      "summary_en": "Positive sentiment maintained due to ongoing inflation deceleration expectations and AI optimism",
+      "positive_factors": [
+        {
+          "score": 75,
+          "name": "CPI/PPI 냉각에 금리 인상 압력 완화",
+          "name_en": "Easing Rate Hike Pressure on Cooling CPI/PPI",
+          "desc": "CPI 및 PPI 0% 냉각으로 연준 금리 인상 확률 급락, 시장 전반 긍정적",
+          "desc_en": "CPI and PPI cooling to 0% sharply reduced Fed rate hike probability, positive for market",
+          "category": "macro_data"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "마이클 버리 QQQ 풋 매수",
+          "name_en": "Michael Burry Buys QQQ Puts",
+          "desc": "마이클 버리가 QQQ 풋을 매수하고 MU 숏 포지션 확대, 시장 하락 대비",
+          "desc_en": "Michael Burry bought QQQ puts and increased MU shorts, bracing for market fall",
+          "category": "vix_risk_sentiment"
+        },
+        {
+          "score": 10,
+          "name": "Fed 금리 인상 주장",
+          "name_en": "Fed Member Advocates Rate Hikes",
+          "desc": "Hammack의 성장 및 인플레이션 억제를 위한 금리 인상 주장",
+          "desc_en": "Hammack argues for rate hikes to restrain growth and inflation",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-14-07:09",
       "timestamp_kst": "2026-08-14(금) 07:09 KST",
       "key_event": {
@@ -445,6 +489,6 @@
       ]
     }
   ],
-  "updated_at": "2026-08-13T22:09:33Z",
+  "updated_at": "2026-08-13T22:44:30Z",
   "max_entries": 10
 }
