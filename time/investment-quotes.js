@@ -9646,5 +9646,11 @@ window.investmentQuotes = [
     "title": "루저 게임에서 승리하는 법 (Winning the Loser's Game)",
     "author": "찰스 엘리스 (Charles D. Ellis)",
     "category": "mindset"
+  },
+  {
+    "text": "내가 그의 이름을 불러주었을 때\n그는 나에게로 와서\n꽃이 되었다.",
+    "title": "꽃",
+    "author": "김춘수",
+    "genre": "literature"
   }
 ];
