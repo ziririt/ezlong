@@ -109,9 +109,28 @@
 <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 
 <style>
-/* ── 오늘의 스윙 판단 스트립: 이 페이지 그리드(.ca-layout 1440px)에 정렬 ──
-   chief-strip.js 기본 1080px은 이 페이지의 와이드 레이아웃과 안 맞음 (2026-08-04) */
-body .chief-strip { max-width: var(--ez-max-w-wide); }
+/* ── 오늘의 스윙 판단 스트립은 이 페이지에서 뺐다 (2026-08-14 운영 제보) ──
+   이 페이지에 온 사람은 차트 판독을 보러 왔다. 맨 위 자리를 다른 코너의 요약이
+   차지하면 정작 이 페이지의 본론이 스크롤 아래로 밀린다(41항 '같은 카드를
+   여기저기 붙이지 않는다'). 스트립은 긍정vs부정·스윙 대시보드에만 남긴다. */
+
+/* ── 가로 흔들림 방지 (2026-08-14 운영 제보) ─────────────────────────────
+   증상: 폰에서 세로로 스크롤하다 보면 가끔 화면이 좌우로 흔들린다. 늘 그런 건
+   아니고 간헐적.
+   원인: 문서가 가로로도 스크롤 가능한 상태가 되면 iOS 가 가로 고무줄 스크롤을
+   허용한다. 이 페이지는 차트 캔버스 크기를 라이브러리가 직접 계산하는데,
+   모바일에서 주소창이 접혔다 펴질 때 뷰포트가 바뀌면 재측정 사이에 캔버스가
+   컨테이너보다 잠깐 넓어질 수 있다. 그 순간 문서에 가로 스크롤이 생긴다.
+   조치: (1) 문서 가로 스크롤 자체를 없앤다 — hidden 이 아니라 clip 을 쓴다.
+   clip 은 스크롤 컨테이너를 만들지 않아 sticky 헤더가 그대로 동작한다.
+   (2) 캔버스가 넘칠 자리를 아예 없앤다 — wrap 에서 잘라낸다.
+   전체 창 모드는 position:fixed + 100vw 라 clip 이 방해가 될 수 있어 예외로 둔다. */
+html { overflow-x: clip; overscroll-behavior-x: none; }
+body { overflow-x: clip; }
+body:has(.ca-fullscreen) { overflow-x: visible; }
+.ca-chart-wrap { overflow: hidden; }
+.ca-chart-wrap canvas,
+.ca-chart-wrap table { max-width: 100%; }
 
 /* ── 페이지 레이아웃 ──────────────────────────────────────── */
 .ca-layout {
@@ -2091,6 +2110,5 @@ initIndex();
 </script>
 <!-- ── EZLONG 글로벌 푸터 ── -->
 <script src="/ez-footer.js"></script>
-<script src="/chief-strip.js" defer></script>
 </body>
 </html>

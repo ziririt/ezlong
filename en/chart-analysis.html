@@ -121,6 +121,17 @@
 
   <link rel="stylesheet" href="/ez-design.css">
   <style>
+/* ── 가로 흔들림 방지 (2026-08-14, 한국어판 chart-analysis.html 과 동일) ──
+   문서에 가로 스크롤이 생기면 폰에서 세로로 스크롤할 때 화면이 좌우로 흔들린다.
+   clip 은 스크롤 컨테이너를 만들지 않아 sticky 헤더가 그대로 동작한다.
+   전체 창 모드(position:fixed + 100vw)는 예외로 둔다. */
+html { overflow-x: clip; overscroll-behavior-x: none; }
+body { overflow-x: clip; }
+body:has(.ca-fullscreen) { overflow-x: visible; }
+.ca-chart-wrap { overflow: hidden; }
+.ca-chart-wrap canvas,
+.ca-chart-wrap table { max-width: 100%; }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg: #F5F5F7; --surface: #FFFFFF; --text: #1D1D1F;
