@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-08-14-23:20",
+      "timestamp_kst": "2026-08-14(금) 23:20 KST",
+      "key_event": {
+        "name": "소매 판매 부진 및 AI 성장 둔화 우려",
+        "name_en": "Weak Retail Sales & AI Growth Concerns",
+        "time": "향후 12시간",
+        "why": "소비 위축 신호, 기술주 전반 투자 심리 위축",
+        "why_en": "Signals of consumer spending slowdown, broad tech investor sentiment dampened"
+      },
+      "positive_total": 55,
+      "negative_total": 45,
+      "summary": "소매 판매 부진 및 AI 성장 둔화 우려로 부정 우위 전환",
+      "summary_en": "Negative sentiment prevails due to weak retail sales and AI growth concerns",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "인플레이션 둔화 기대 지속",
+          "name_en": "Continued Inflation Deceleration Expectations",
+          "desc": "CPI 332.81%(+0.25%), 10년 기대인플레이션 2.24%(-0.02%)로 안정세",
+          "desc_en": "CPI at 332.81%(+0.25%) and 10Y inflation expectations at 2.24%(-0.02%) show stability",
+          "category": "macro_data"
+        },
+        {
+          "score": 20,
+          "name": "달러 약세 전환",
+          "name_en": "Dollar Weakening",
+          "desc": "달러인덱스 DXY 99.53(-0.36%)로 약세, 수출 기업에 긍정적",
+          "desc_en": "DXY at 99.53(-0.36%) suggests dollar weakness, positive for exporters",
+          "category": "dollar_fx"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "소매 판매 부진 우려",
+          "name_en": "Retail Sales Weakness Concerns",
+          "desc": "예상치 하회하는 소매 판매 데이터 발표, 소비 위축 신호",
+          "desc_en": "Retail sales data below expectations, signaling consumer spending contraction",
+          "category": "macro_data"
+        },
+        {
+          "score": 20,
+          "name": "AI 성장 둔화 및 하드웨어 문제",
+          "name_en": "AI Growth Slowdown & Hardware Issues",
+          "desc": "AI 빌드아웃 문제 및 반도체 섹터 SOXX (-0.62%), NVDA (-0.16%) 하락",
+          "desc_en": "Concerns over AI build-out issues and declines in SOXX (-0.62%), NVDA (-0.16%)",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "금리 인상 논쟁 지속",
+          "name_en": "Ongoing Interest Rate Hike Debate",
+          "desc": "일부 Fed 인사 금리 인상 주장, 반면 냉각된 인플레이션 데이터는 동결 지지",
+          "desc_en": "Some Fed officials advocate rate hikes, while cooling inflation data supports holding rates",
+          "category": "fed_policy"
+        },
+        {
+          "name": "유가 상승에 따른 인플레이션 압력",
+          "name_en": "Inflationary Pressure from Rising Oil Prices",
+          "desc": "WTI 원유 81.50(+0.18%) 상승, 인플레이션 압력 재부각 우려",
+          "desc_en": "WTI crude oil rising to 81.50(+0.18%), rekindling inflation concerns",
+          "category": "oil_energy"
+        }
+      ]
+    },
+    {
       "id": "2026-08-14-21:50",
       "timestamp_kst": "2026-08-14(금) 21:50 KST",
       "key_event": {
@@ -466,76 +533,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-13-18:20",
-      "timestamp_kst": "2026-08-13(목) 18:20 KST",
-      "key_event": {
-        "name": "AI 낙관론 및 CPI 둔화 지속",
-        "name_en": "Continued AI Optimism and Softening CPI",
-        "time": "오늘 정규장 및 단기 전망",
-        "why": "AI 관련주 강세, 인플레이션 완화 기대, 금리 인상 압력 감소",
-        "why_en": "Strong AI stocks, easing inflation expectations, reduced rate hike pressure"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "AI 수요 강세 및 인플레이션 둔화로 긍정 우위 지속",
-      "summary_en": "Positive sentiment continues due to strong AI demand and easing inflation",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "AI 관련 기업 실적 기대감",
-          "name_en": "AI-related Company Earnings Expectations",
-          "desc": "Nvidia, CoreWeave 등 AI 관련 기업에 대한 월가 긍정적 전망 및 실적 기대감",
-          "desc_en": "Positive Wall Street outlook and earnings expectations for AI companies like Nvidia and CoreWeave",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 30,
-          "name": "인플레이션 둔화 기대감",
-          "name_en": "Easing Inflation Expectations",
-          "desc": "CPI 둔화 데이터 및 금리 인상 압력 완화 기대",
-          "desc_en": "Softer CPI data and expectations of reduced interest rate hike pressure",
-          "category": "macro_data"
-        },
-        {
-          "score": 5,
-          "name": "원유 가격 하락",
-          "name_en": "Oil Price Decline",
-          "desc": "WTI 원유 가격 하락으로 인플레이션 압력 완화",
-          "desc_en": "WTI crude oil price decline eases inflationary pressure",
-          "category": "oil_energy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "반도체 섹터 일부 약세",
-          "name_en": "Partial Weakness in Semiconductor Sector",
-          "desc": "SOXX 지수 프리마켓 하락 및 일부 반도체 기업 혼조세",
-          "desc_en": "SOXX index decline in premarket and mixed performance for some semiconductor companies",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "VIX 공포지수 소폭 상승",
-          "name_en": "Slight Rise in VIX Fear Index",
-          "desc": "VIX 지수 소폭 상승하며 시장 불확실성 반영",
-          "desc_en": "Slight increase in VIX index reflecting market uncertainty",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "지정학적 긴장 완화 및 재고 우려",
-          "name_en": "Geopolitical Easing vs. Inventory Concerns",
-          "desc": "유럽 증시 지정학적 완화로 상승하나, 중동 공급 우려 및 메모리칩 재고 경고 상존",
-          "desc_en": "European shares rise on geopolitical easing, but Middle East supply concerns and memory chip inventory warnings persist",
-          "category": "geopolitics"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-14T12:50:59Z",
+  "updated_at": "2026-08-14T14:21:12Z",
   "max_entries": 10
 }
