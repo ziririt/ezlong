@@ -1,6 +1,87 @@
 {
   "entries": [
     {
+      "id": "2026-08-15-08:20",
+      "timestamp_kst": "2026-08-15(토) 08:20 KST",
+      "key_event": {
+        "name": "소매 판매 부진 및 AI 성장 둔화 우려",
+        "name_en": "Weak Retail Sales & AI Growth Concerns",
+        "time": "직전 정규장 및 포스트마켓",
+        "why": "소비 위축 신호, 기술주 투자 심리 위축",
+        "why_en": "Signs of consumer slowdown, dampened tech investment sentiment"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "소매 판매 부진 및 AI 성장 둔화 우려로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to weak retail sales and AI growth concerns",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "금 가격 상승",
+          "name_en": "Gold Price Increase",
+          "desc": "금 가격 상승, 인플레이션 둔화 및 금리 인상 기대 완화 영향",
+          "desc_en": "Gold prices rise, influenced by easing inflation and lower rate hike expectations",
+          "category": "other"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "소매 판매 부진 지속",
+          "name_en": "Continued Weak Retail Sales",
+          "desc": "미국 소매 판매 9개월 만에 첫 감소, 소비 위축 신호",
+          "desc_en": "US retail sales decline for the first time in nine months, signaling consumer weakness",
+          "category": "macro_data"
+        },
+        {
+          "score": 25,
+          "name": "AI 성장 둔화 우려",
+          "name_en": "AI Growth Slowdown Concerns",
+          "desc": "Databricks vs Snowflake 등 AI 플랫폼 경쟁 심화 및 성장 둔화 우려",
+          "desc_en": "Intensified competition in AI platforms like Databricks vs Snowflake, raising growth slowdown concerns",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "기관 투자자 기술주 신중론",
+          "name_en": "Institutional Caution on Tech Stocks",
+          "desc": "기관 투자자 13F 공시에서 기술주에 대한 신중한 접근 방식 확인",
+          "desc_en": "Institutional investors show cautious approach to tech favorites in 13F filings",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "Fed 정책 불확실성",
+          "name_en": "Fed Policy Uncertainty",
+          "desc": "월스트리트 Fed의 다음 행보에 대한 재고, 금리 인상 논쟁 지속",
+          "desc_en": "Wall Street rethinks Fed's next moves, ongoing debate on interest rate hikes",
+          "category": "fed_policy"
+        },
+        {
+          "name": "국채금리 상승",
+          "name_en": "Treasury Yields Rise",
+          "desc": "미10년 국채금리 상승, 인플레이션 우려와 Fed 정책 불확실성 반영",
+          "desc_en": "US 10-year Treasury yields rise, reflecting inflation concerns and Fed policy uncertainty",
+          "category": "rates_treasury"
+        },
+        {
+          "name": "VIX 하락 및 시장 변동성 완화",
+          "name_en": "VIX Decline & Volatility Easing",
+          "desc": "VIX 공포지수 14.25로 하락, 시장 변동성 완화 신호",
+          "desc_en": "VIX fear index drops to 14.25, signaling easing market volatility",
+          "category": "vix_risk_sentiment"
+        },
+        {
+          "name": "유가 상승 및 지정학적 긴장",
+          "name_en": "Rising Oil Prices & Geopolitical Tensions",
+          "desc": "원유 가격 상승, 중동 긴장 고조로 인플레이션 압력 가중",
+          "desc_en": "Oil prices rise amid escalating Middle East tensions, increasing inflationary pressure",
+          "category": "geopolitics"
+        }
+      ]
+    },
+    {
       "id": "2026-08-15-07:00",
       "timestamp_kst": "2026-08-15(토) 07:00 KST",
       "key_event": {
@@ -528,52 +609,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-14-07:44",
-      "timestamp_kst": "2026-08-14(금) 07:44 KST",
-      "key_event": {
-        "name": "인플레이션 둔화 기대 지속",
-        "name_en": "Continued Inflation Deceleration Expectations",
-        "time": "최근 6시간 + 향후 12시간",
-        "why": "금리 인상 압력 완화, 기술주 투자 심리 개선",
-        "why_en": "Easing rate hike pressure, improved tech investment sentiment"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "인플레이션 둔화 기대 및 AI 낙관론 지속으로 긍정 우위 유지",
-      "summary_en": "Positive sentiment maintained due to ongoing inflation deceleration expectations and AI optimism",
-      "positive_factors": [
-        {
-          "score": 75,
-          "name": "CPI/PPI 냉각에 금리 인상 압력 완화",
-          "name_en": "Easing Rate Hike Pressure on Cooling CPI/PPI",
-          "desc": "CPI 및 PPI 0% 냉각으로 연준 금리 인상 확률 급락, 시장 전반 긍정적",
-          "desc_en": "CPI and PPI cooling to 0% sharply reduced Fed rate hike probability, positive for market",
-          "category": "macro_data"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "마이클 버리 QQQ 풋 매수",
-          "name_en": "Michael Burry Buys QQQ Puts",
-          "desc": "마이클 버리가 QQQ 풋을 매수하고 MU 숏 포지션 확대, 시장 하락 대비",
-          "desc_en": "Michael Burry bought QQQ puts and increased MU shorts, bracing for market fall",
-          "category": "vix_risk_sentiment"
-        },
-        {
-          "score": 10,
-          "name": "Fed 금리 인상 주장",
-          "name_en": "Fed Member Advocates Rate Hikes",
-          "desc": "Hammack의 성장 및 인플레이션 억제를 위한 금리 인상 주장",
-          "desc_en": "Hammack argues for rate hikes to restrain growth and inflation",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-14T22:01:49Z",
+  "updated_at": "2026-08-14T23:21:02Z",
   "max_entries": 10
 }
