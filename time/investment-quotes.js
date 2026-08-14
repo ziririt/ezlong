@@ -9639,5 +9639,12 @@ window.investmentQuotes = [
     "title": "연금술사 (The Alchemist)",
     "author": "파울로 코엘료 (Paulo Coelho)",
     "genre": "literature"
+  },
+  {
+    "english": "Like the weather, the average long-term experience in investing is never surprising, but the short-term experience is always surprising.",
+    "text": "날씨와 마찬가지로, 장기적으로 보면 투자의 평균적인 경험은 결코 놀랍지 않지만, 단기적인 경험은 언제나 놀랍다.",
+    "title": "루저 게임에서 승리하는 법 (Winning the Loser's Game)",
+    "author": "찰스 엘리스 (Charles D. Ellis)",
+    "category": "mindset"
   }
 ];
