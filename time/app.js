@@ -1855,6 +1855,14 @@ function selectPhotoIndex(index) {
 }
 
 function movePhoto(direction) {
+  // 2026-08-15 — 동영상 배경이 도는 동안에는 스와이프가 영상을 넘긴다.
+  // (사진은 영상 밑에 있어서 넘겨도 보이지 않는다 — 이슈 제보)
+  try {
+    if (typeof window.__flipzenVideoBgSwipe === "function"
+        && window.__flipzenVideoBgSwipe(direction)) {
+      return;
+    }
+  } catch (error) { /* 무시 — 사진 경로로 계속 */ }
   selectPhotoIndex(activePhotoIndex + direction);
 }
 
@@ -11104,6 +11112,7 @@ var bedsideActive = false;
   var playing = false;
   var loops = 0;
   var backReady = false;
+  var wantSwap = false;      // 스와이프 예약 — 다음 영상이 준비되면 즉시 교체
   var currentEntry = null;
   var pickGroup = null;      // 지금 도는 영상을 고를 때의 날씨 그룹
   // 2026-08-15 3차(운영자) — 비충전 재생 허용. 단 5개까지만.
@@ -11221,7 +11230,11 @@ var bedsideActive = false;
     v.load();
     var timer = window.setInterval(function () {
       if (!playing) { window.clearInterval(timer); return; }
-      if (reallyReady(v)) { backReady = true; window.clearInterval(timer); }
+      if (reallyReady(v)) {
+        backReady = true;
+        window.clearInterval(timer);
+        if (wantSwap) { wantSwap = false; swap(); }
+      }
     }, 300);
   }
   function swap() {
@@ -11232,6 +11245,7 @@ var bedsideActive = false;
       if (unpluggedPlays >= 5) { autoDisable(); return; }
     }
     var t2 = front; front = back; back = t2;
+    wantSwap = false;
     pickGroup = videoWeatherGroup();
     groupSwitched = false;
     currentEntry = backEntry;
@@ -11337,9 +11351,45 @@ var bedsideActive = false;
   };
   // 네트워크 변화 — 1.8 네이티브 브릿지가 부른다.
   window.__flipzenNetworkChanged = function () { tickMonitor(); };
+
+  // 잠금 화면에 다녀오면 WKWebView 가 미디어 파이프라인을 끊어 영상이
+  // 멈춘 채 굳는 일이 있다(운영자 실기기 제보). 3단 복구:
+  //   play() → 거부되면 load()+play() → 1.5초 뒤에도 멈춰 있으면 재시작.
+  function hardResume() {
+    if (!playing) { tickMonitor(); return; }
+    var v = front;
+    if (!v) return;
+    var attempt = v.play();
+    if (attempt && attempt.catch) {
+      attempt.catch(function () {
+        try { v.load(); v.play().catch(function () {}); } catch (error) {}
+      });
+    }
+    window.setTimeout(function () {
+      if (playing && v === front && v.paused) {
+        stop();
+        start();
+      }
+    }, 1500);
+  }
   document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) tickMonitor();
+    if (!document.hidden) hardResume();
   });
+  window.addEventListener("pageshow", hardResume);
+  window.addEventListener("focus", hardResume);
+
+  // 배경 스와이프가 부른다(movePhoto) — 영상이 돌면 다음 영상으로.
+  window.__flipzenVideoBgSwipe = function () {
+    if (!playing) return false;
+    hardResume();
+    if (backReady) {
+      swap();
+    } else {
+      wantSwap = true;
+      loadInto(back, pickNext());
+    }
+    return true;
+  };
 
   // 설정 토글
   if (toggleEl) {
