@@ -11216,10 +11216,20 @@ var bedsideActive = false;
   }
   function reallyReady(v) {
     if (v.readyState < 3 || !v.duration) return false;
+    // 이미 실제로 흐르고 있으면 준비된 것 — 걷어찬(kickBack) 영상 경로.
+    if (!v.paused && v.currentTime > 1) return true;
     for (var i = 0; i < v.buffered.length; i += 1) {
       if (v.buffered.end(i) >= v.duration - 0.3) return true;
     }
     return false;
+  }
+  // 비충전·저전력에서 iOS 가 숨은 영상의 preload 를 미룬다 — load() 만으로는
+  // 한 바이트도 안 받는 경우가 있다. 무음 재생으로 걷어차면 받기 시작한다.
+  function kickBack() {
+    if (!back || !back.src) return;
+    try {
+      if (back.paused) back.play().catch(function () {});
+    } catch (error) { /* 무시 */ }
   }
   var backEntry = null;
   function loadInto(v, entry) {
@@ -11245,6 +11255,7 @@ var bedsideActive = false;
       if (unpluggedPlays >= 5) { autoDisable(); return; }
     }
     var t2 = front; front = back; back = t2;
+    try { if (front.currentTime > 0.2) front.currentTime = 0; } catch (error) {}
     wantSwap = false;
     pickGroup = videoWeatherGroup();
     groupSwitched = false;
@@ -11263,6 +11274,7 @@ var bedsideActive = false;
     if ((loops >= VIDBG_MIN_LOOPS || groupSwitched) && backReady) {
       swap();
     } else {
+      if (loops >= VIDBG_MIN_LOOPS) kickBack();
       this.currentTime = 0;
       this.play().catch(function () {});
     }
@@ -11387,6 +11399,7 @@ var bedsideActive = false;
     } else {
       wantSwap = true;
       loadInto(back, pickNext());
+      kickBack();
     }
     return true;
   };
