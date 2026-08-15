@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-10T13:34:52.361Z
+ * 생성 시각: 2026-08-15T06:05:19.676Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -141,6 +141,11 @@
         "min5": "After 5 min",
         "min10": "After 10 min",
         "off": "Off"
+      },
+      "videoBg": {
+        "heading": "Video Background",
+        "desc": "Plays only while charging and connected to Wi-Fi. A premium feature.",
+        "toggle": "Use video background"
       }
     },
     "weather": {
@@ -411,6 +416,11 @@
       "note": "You can change this anytime in Settings.",
       "cta": "Get started",
       "note2": "You can move between the two anytime with the ⌄ ezlong.com and ⏏ StandBy buttons."
+    },
+    "videoBg": {
+      "autoPaused": "After a long session, the background returned to photos for a rest.",
+      "premiumOnly": "Available with Premium.",
+      "wifiOnly": "Can only be turned on while connected to Wi-Fi."
     }
   },
   "es": {
@@ -543,6 +553,11 @@
         "min5": "Tras 5 min",
         "min10": "Tras 10 min",
         "off": "Desactivado"
+      },
+      "videoBg": {
+        "heading": "Fondo de vídeo",
+        "desc": "Se reproduce solo durante la carga y con conexión Wi-Fi. Función premium.",
+        "toggle": "Usar fondo de vídeo"
       }
     },
     "weather": {
@@ -813,6 +828,11 @@
       "note": "Puedes cambiarla cuando quieras en Ajustes.",
       "cta": "Empezar",
       "note2": "Puedes pasar de una pantalla a otra cuando quieras con los botones ⌄ ezlong.com y ⏏ StandBy."
+    },
+    "videoBg": {
+      "autoPaused": "Tras una reproducción prolongada, el fondo volvió a las fotos.",
+      "premiumOnly": "Disponible con Premium.",
+      "wifiOnly": "Solo se puede activar con conexión Wi-Fi."
     }
   },
   "ja": {
@@ -945,6 +965,11 @@
         "min5": "5分後",
         "min10": "10分後",
         "off": "使わない"
+      },
+      "videoBg": {
+        "heading": "動画背景",
+        "desc": "充電中かつWi-Fi接続中のみ再生されます。プレミアム機能です。",
+        "toggle": "動画背景を使う"
       }
     },
     "weather": {
@@ -1215,6 +1240,11 @@
       "note": "この設定は、あとから設定画面でいつでも変更できます。",
       "cta": "はじめる",
       "note2": "2つの画面は ⌄ ezlong.com・⏏ StandBy ボタンでいつでも行き来できます。"
+    },
+    "videoBg": {
+      "autoPaused": "長時間再生のため、背景を写真に戻しました。",
+      "premiumOnly": "プレミアムでご利用いただけます。",
+      "wifiOnly": "Wi-Fi接続中のみオンにできます。"
     }
   },
   "ko": {
@@ -1347,6 +1377,11 @@
         "min5": "5분 후",
         "min10": "10분 후",
         "off": "사용 안 함"
+      },
+      "videoBg": {
+        "heading": "동영상 배경",
+        "desc": "충전 중이면서 Wi-Fi에 연결된 동안에만 재생됩니다. 프리미엄 기능이에요.",
+        "toggle": "동영상 배경 사용"
       }
     },
     "weather": {
@@ -1617,6 +1652,11 @@
       "note": "이후에도 언제나 설정에서 첫 화면을 바꿀 수 있습니다.",
       "cta": "시작하기",
       "note2": "두 화면은 언제든 ⌄ ezlong.com · ⏏ StandBy 버튼으로 오갈 수 있어요."
+    },
+    "videoBg": {
+      "autoPaused": "오래 재생되어 배경 동영상이 잠시 사진으로 돌아갔어요.",
+      "premiumOnly": "프리미엄에서 이용할 수 있어요.",
+      "wifiOnly": "Wi-Fi에 연결된 동안에만 켤 수 있어요."
     }
   },
   "pt": {
@@ -1749,6 +1789,11 @@
         "min5": "Após 5 min",
         "min10": "Após 10 min",
         "off": "Desativado"
+      },
+      "videoBg": {
+        "heading": "Fundo de vídeo",
+        "desc": "Reproduzido apenas durante o carregamento e com Wi-Fi. Recurso premium.",
+        "toggle": "Usar fundo de vídeo"
       }
     },
     "weather": {
@@ -2019,6 +2064,11 @@
       "note": "Você pode mudar isso quando quiser nas Configurações.",
       "cta": "Começar",
       "note2": "Você pode alternar entre as duas telas quando quiser com os botões ⌄ ezlong.com e ⏏ StandBy."
+    },
+    "videoBg": {
+      "autoPaused": "Após uma reprodução longa, o fundo voltou às fotos.",
+      "premiumOnly": "Disponível no Premium.",
+      "wifiOnly": "Só pode ser ativado com Wi-Fi."
     }
   },
   "zh": {
@@ -2151,6 +2201,11 @@
         "min5": "5分钟后",
         "min10": "10分钟后",
         "off": "不使用"
+      },
+      "videoBg": {
+        "heading": "视频背景",
+        "desc": "仅在充电且连接 Wi-Fi 时播放。此为高级版功能。",
+        "toggle": "使用视频背景"
       }
     },
     "weather": {
@@ -2421,6 +2476,11 @@
       "note": "之后随时可以在设置中更改第一个画面。",
       "cta": "开始",
       "note2": "两个画面随时可以用 ⌄ ezlong.com·⏏ StandBy 按钮来回切换。"
+    },
+    "videoBg": {
+      "autoPaused": "播放时间较长，背景已暂时切回照片。",
+      "premiumOnly": "高级版专属功能。",
+      "wifiOnly": "仅在连接 Wi-Fi 时可开启。"
     }
   }
 };

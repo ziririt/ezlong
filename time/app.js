@@ -11069,31 +11069,103 @@ var bedsideActive = false;
   tick();
 })();
 
-// ──────────────────────────────────────────────────────────
-// 2026-08-15 실험 — 동영상 배경 (ver.1.9.29, ?vidbg=1 일 때만)
-//   배경사진(.sky-photo)의 자식으로 <video> 두 장(A/B)을 넣는다.
-//   z-index -3 인 .sky-photo 안이므로 모든 UI 아래, 사진 위.
-//   규칙: 최소 3회 반복 + 다음 영상이 "정말" 준비된 경우에만 교체.
-//   canplaythrough 이벤트만 믿지 않고 버퍼 구간을 직접 확인한다.
-//   샘플 3개는 R2 시험 경로 — 운영 콘텐츠 아님(라이선스 확보 전).
-//   정식 구현 시 이 블록이 설정 토글 + 프리미엄 잠금 뒤로 들어간다.
 // ─────────────────────────────────────────────────────────────
-(function videoBackgroundExperiment() {
-  var enabled = false;
-  try {
-    enabled = new URLSearchParams(window.location.search).get("vidbg") === "1";
-  } catch (error) { enabled = false; }
-  if (!enabled) return;
+// 2026-08-15 동영상 배경 (ver.1.9.31, 프리미엄)
+//   배경사진 레이어(.sky-photo) 안에 <video> A/B 두 장을 넣어
+//   사진 위·모든 UI 아래에서 짧은 세로 영상을 돌린다. 운영자 확정 규칙:
+//   [1] 설정 토글 ON + 프리미엄일 때만 (2주 무료 체험은 구독 상품이 처리)
+//   [2] 충전 중 + Wi-Fi 에서만 재생 — 조건이 깨지면 즉시 사진 복귀.
+//       사진이 항상 밑에 살아 있으므로 복귀는 영상 페이드아웃 하나로 끝.
+//   [3] 셀룰러에서는 토글 자체를 못 켠다 (데이터 요금 보호)
+//   [4] 음악과 같은 연속 상한(일반 2시간) — 초과 시 사진 복귀 + 토스트
+//   조건 신호는 전부 네이티브 브릿지: __FLIPZEN_CHARGING__(기존),
+//   __FLIPZEN_WIFI__/__FLIPZEN_PREMIUM__(1.8 신설). 웹 단독 접속은
+//   신호가 없어 기능이 아예 안 보인다 — 의도된 앱 전용 기능이다.
+//   ?vidbg=1 은 개발용 강제 스위치(모든 조건 무시). 목록은
+//   data/video-backgrounds.json — scripts/build-video-backgrounds.mjs 가
+//   굽고, 영상 본체는 R2(bgv/)에 있다.
+// ─────────────────────────────────────────────────────────────
+(function setupVideoBackground() {
   var host = document.querySelector(".sky-photo");
   if (!host) return;
+  var devForce = false;
+  try {
+    devForce = new URLSearchParams(window.location.search).get("vidbg") === "1";
+  } catch (error) { devForce = false; }
 
-  var VIDBG_BASE = "https://pub-58d325a6a0ac4228bd2784eed797d328.r2.dev/video-test-20260815/";
-  var VIDBG_LIST = [
-    "13106820_1080_1920_25fps-720x1280-24fps.mp4",
-    "15128717_1080_1920_30fps-720x1280-24fps.mp4",
-    "16504816_2160_3840_60fps-720x1280-24fps.mp4"
-  ];
+  var VIDBG_STORE_KEY = "ezlong:videoBgEnabled";
+  var VIDBG_LIMIT_MS = 2 * 60 * 60 * 1000;  // 음악 일반 상한과 동일(2시간)
   var VIDBG_MIN_LOOPS = 3;
+
+  var manifest = null;
+  var manifestLoading = false;
+  var front = null;
+  var back = null;
+  var playing = false;
+  var loops = 0;
+  var backReady = false;
+  var currentEntry = null;
+  var startedAt = null;
+  var restCooldown = false;  // 2시간 상한에 걸린 뒤 재개 신호까지 쉼
+  var toggleEl = document.getElementById("videoBgToggle");
+
+  function storedOn() {
+    try { return localStorage.getItem(VIDBG_STORE_KEY) === "1"; }
+    catch (error) { return false; }
+  }
+  function setStored(on) {
+    try { localStorage.setItem(VIDBG_STORE_KEY, on ? "1" : "0"); }
+    catch (error) { /* 무시 */ }
+  }
+  function premiumOk() { return devForce || window.__FLIPZEN_PREMIUM__ === true; }
+  function wifiOk() { return devForce || window.__FLIPZEN_WIFI__ === true; }
+  function chargingOk() { return devForce || window.__FLIPZEN_CHARGING__ === true; }
+
+  // 날씨 3분류 — 사진 매칭보다 훨씬 거칠게 간다(영상 수가 적으므로).
+  function videoWeatherGroup() {
+    var tag = "";
+    try { tag = String(app.dataset.weather || "").toLowerCase(); }
+    catch (error) { tag = ""; }
+    if (/rain|drizzle|storm|thunder|shower/.test(tag)) return "rain";
+    if (/snow|sleet|hail|blizzard/.test(tag)) return "snow";
+    return "other";
+  }
+  function candidates() {
+    if (!manifest || !Array.isArray(manifest.videos) || !manifest.videos.length) return [];
+    var group = videoWeatherGroup();
+    var hit = manifest.videos.filter(function (v) {
+      return (v.w || []).indexOf(group) >= 0;
+    });
+    // 해당 날씨 영상이 없으면 '그외'로 폴백 — 빈 화면보다 낫다.
+    if (!hit.length && group !== "other") {
+      hit = manifest.videos.filter(function (v) {
+        return (v.w || []).indexOf("other") >= 0;
+      });
+    }
+    return hit;
+  }
+  function pickNext() {
+    var pool = candidates();
+    if (!pool.length) return null;
+    if (pool.length === 1) return pool[0];
+    var next = null;
+    for (var attempt = 0; attempt < 6; attempt += 1) {
+      next = pool[Math.floor(Math.random() * pool.length)];
+      if (next !== currentEntry) break;
+    }
+    return next;
+  }
+  function entryUrl(entry) {
+    return (manifest.base || "") + entry.x;
+  }
+  function loadManifest() {
+    if (manifest || manifestLoading) return;
+    manifestLoading = true;
+    fetch("data/video-backgrounds.json")
+      .then(function (r) { return r.json(); })
+      .then(function (j) { manifest = j; manifestLoading = false; tickMonitor(); })
+      .catch(function () { manifestLoading = false; });
+  }
 
   function makeVideo() {
     var v = document.createElement("video");
@@ -11105,15 +11177,10 @@ var bedsideActive = false;
     v.preload = "auto";
     v.disablePictureInPicture = true;
     v.setAttribute("disableremoteplayback", "");
+    v.addEventListener("ended", onEnded);
     host.appendChild(v);
     return v;
   }
-  var front = makeVideo();
-  var back = makeVideo();
-  var idx = 0;
-  var loops = 0;
-  var backReady = false;
-
   function reallyReady(v) {
     if (v.readyState < 3 || !v.duration) return false;
     for (var i = 0; i < v.buffered.length; i += 1) {
@@ -11121,52 +11188,133 @@ var bedsideActive = false;
     }
     return false;
   }
-  function loadInto(v, file) {
+  var backEntry = null;
+  function loadInto(v, entry) {
     backReady = false;
-    v.src = VIDBG_BASE + file;
+    backEntry = entry;
+    if (!entry) return;
+    v.src = entryUrl(entry);
     v.load();
     var timer = window.setInterval(function () {
+      if (!playing) { window.clearInterval(timer); return; }
       if (reallyReady(v)) { backReady = true; window.clearInterval(timer); }
     }, 300);
   }
   function swap() {
-    var t = front; front = back; back = t;
+    var t2 = front; front = back; back = t2;
+    currentEntry = backEntry;
     front.classList.add("on");
     back.classList.remove("on");
     front.play().catch(function () {});
     loops = 0;
-    loadInto(back, VIDBG_LIST[(idx + 1) % VIDBG_LIST.length]);
+    loadInto(back, pickNext());
   }
   function onEnded() {
-    if (this !== front) return;
+    if (!playing || this !== front) return;
     loops += 1;
     if (loops >= VIDBG_MIN_LOOPS && backReady) {
-      idx = (idx + 1) % VIDBG_LIST.length;
       swap();
     } else {
       this.currentTime = 0;
       this.play().catch(function () {});
     }
   }
-  front.addEventListener("ended", onEnded);
-  back.addEventListener("ended", onEnded);
 
-  front.src = VIDBG_BASE + VIDBG_LIST[0];
-  front.addEventListener("playing", function firstPlay() {
-    front.removeEventListener("playing", firstPlay);
-    front.classList.add("on");
-    window.setTimeout(function () {
-      loadInto(back, VIDBG_LIST[1]);
-    }, 1500);
-  });
-  front.play().catch(function () {
-    var resume = function () {
-      document.body.removeEventListener("touchend", resume);
-      front.play().catch(function () {});
-    };
-    document.body.addEventListener("touchend", resume);
-  });
+  function start() {
+    if (playing) return;
+    if (!manifest) { loadManifest(); return; }
+    var first = pickNext();
+    if (!first) return;
+    if (!front) { front = makeVideo(); back = makeVideo(); }
+    playing = true;
+    startedAt = Date.now();
+    currentEntry = first;
+    loops = 0;
+    front.src = entryUrl(first);
+    front.addEventListener("playing", function firstPlay() {
+      front.removeEventListener("playing", firstPlay);
+      if (!playing) return;
+      front.classList.add("on");
+      // 첫 재생 1.5초 뒤에야 다음 영상 프리로드 — 첫 화면 대역폭 보호
+      window.setTimeout(function () {
+        if (playing) loadInto(back, pickNext());
+      }, 1500);
+    });
+    front.play().catch(function () {});
+  }
+  function stop() {
+    if (!playing) return;
+    playing = false;
+    startedAt = null;
+    [front, back].forEach(function (v) {
+      if (!v) return;
+      v.classList.remove("on");
+      try { v.pause(); } catch (error) { /* 무시 */ }
+    });
+  }
+
+  function shouldPlay() {
+    if (restCooldown) return false;
+    if (devForce) return true;
+    return storedOn() && premiumOk() && wifiOk() && chargingOk();
+  }
+  function tickMonitor() {
+    if (playing) {
+      if (!shouldPlay()) { stop(); return; }
+      if (startedAt && Date.now() - startedAt > VIDBG_LIMIT_MS) {
+        restCooldown = true;
+        stop();
+        try {
+          showMusicToast(t("videoBg.autoPaused", null, "오래 재생되어 배경 동영상이 잠시 사진으로 돌아갔어요."));
+        } catch (error) { /* 무시 */ }
+      }
+      return;
+    }
+    if (shouldPlay()) start();
+  }
+  window.setInterval(tickMonitor, 15000);
+
+  // 충전 상태 변화 — 네이티브가 부르는 기존 훅에 끼어든다(체인 보존).
+  var prevChargingHook = window.__flipzenChargingChanged;
+  window.__flipzenChargingChanged = function (flag) {
+    if (typeof prevChargingHook === "function") {
+      try { prevChargingHook(flag); } catch (error) { /* 무시 */ }
+    }
+    restCooldown = false;  // 충전기를 다시 꽂으면 상한 휴식도 풀린다
+    tickMonitor();
+  };
+  // 네트워크 변화 — 1.8 네이티브 브릿지가 부른다.
+  window.__flipzenNetworkChanged = function () { tickMonitor(); };
   document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) front.play().catch(function () {});
+    if (!document.hidden) tickMonitor();
   });
+
+  // 설정 토글
+  if (toggleEl) {
+    toggleEl.checked = storedOn();
+    toggleEl.addEventListener("change", function () {
+      if (toggleEl.checked) {
+        if (!premiumOk()) {
+          toggleEl.checked = false;
+          try { postToNativeAd({ action: "openPaywall" }); } catch (error) { /* 무시 */ }
+          try { showMusicToast(t("videoBg.premiumOnly", null, "프리미엄에서 이용할 수 있어요.")); } catch (error) { /* 무시 */ }
+          return;
+        }
+        if (!wifiOk()) {
+          // 운영자 확정 — 셀룰러에서는 선택 자체가 안 된다.
+          toggleEl.checked = false;
+          try { showMusicToast(t("videoBg.wifiOnly", null, "Wi-Fi에 연결된 동안에만 켤 수 있어요.")); } catch (error) { /* 무시 */ }
+          return;
+        }
+        setStored(true);
+        loadManifest();
+        tickMonitor();
+      } else {
+        setStored(false);
+        tickMonitor();
+      }
+    });
+  }
+
+  if (devForce || storedOn()) loadManifest();
 })();
