@@ -149,8 +149,8 @@ def main():
         'model': 'google/timesfm-2.5-200m (zero-shot)',
         'horizonDays': HORIZON,
         'contextDays': CONTEXT,
-        'note': ('구글 TimesFM 2.5 제로샷 분위수 예측. 점이 아니라 대역이 산출물이다 — '
-                 '중앙값(q50)과 q10~q90 구간을 함께 볼 것. 실적·거시 충격 같은 '
+        'note': ('구글 TimesFM 2.5 제로샷 분위수 예측. 점이 아니라 범위가 산출물이다 — '
+                 '가운데 값(q50)과 q10~q90 구간을 함께 볼 것. 실적·거시 충격 같은 '
                  '이벤트는 어떤 분위수에도 반영되지 않는다.'),
         'generatedAt': now.strftime('%Y-%m-%dT%H:%M:%SZ'),
         'updatedKST': (now + timedelta(hours=9)).strftime('%Y-%m-%d %H:%M KST'),
