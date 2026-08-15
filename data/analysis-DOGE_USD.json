@@ -3,42 +3,42 @@
   "name": "도지코인",
   "assetType": "crypto",
   "market": "us",
-  "updatedAt": "2026-08-15T05:26:17.183Z",
+  "updatedAt": "2026-08-15T10:44:01.117Z",
   "price": {
-    "current": 0.0702,
-    "change": 0.0001,
-    "changePct": 0.12,
+    "current": 0.0699,
+    "change": -0.0001,
+    "changePct": -0.12,
     "high52": 0.3056,
     "low52": 0.068,
-    "pos52": 0.9,
+    "pos52": 0.8,
     "marketState": "CLOSED",
-    "quoteTime": 1786771562,
+    "quoteTime": 1786790613,
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 0.0702,
-    "sma50": 0.0721,
-    "sma100": 0.0838,
-    "sma200": 0.0907,
-    "rsi": 46.61,
+    "sma20": 0.07,
+    "sma50": 0.072,
+    "sma100": 0.0835,
+    "sma200": 0.0904,
+    "rsi": 45.7,
     "macd": {
-      "macd": -0.000784,
-      "signal": -0.001064,
-      "histogram": 0.00028
+      "macd": -0.000755,
+      "signal": -0.001005,
+      "histogram": 0.00025
     },
     "bb": {
-      "upper": 0.0721,
-      "middle": 0.0702,
-      "lower": 0.0683,
-      "bandwidth": 0.0542
+      "upper": 0.0713,
+      "middle": 0.07,
+      "lower": 0.0688,
+      "bandwidth": 0.0362
     },
     "adx": {
-      "plusDI": 19.4,
-      "minusDI": 19.11,
-      "adx": 20.49,
-      "status": "추세 형성 초기"
+      "plusDI": 19.15,
+      "minusDI": 19.71,
+      "adx": 19.28,
+      "status": "무추세(충격 가능)"
     }
   },
   "levels": {
@@ -49,12 +49,12 @@
       "r1": 0.07,
       "r2": 0.08,
       "s1": 0.07,
-      "s2": 0.06
+      "s2": 0.07
     }
   },
   "analysis": {
     "trend": "횡보",
-    "strength": 3,
+    "strength": 2,
     "support": 0.07,
     "resistance": 0.07,
     "rsiStatus": "중립",
@@ -64,52 +64,52 @@
     "action": "관망",
     "buyScore": 5,
     "scoreReason": "RSI 중립 구간 횡보, 거래량 위축 지속",
-    "scoreReasonEn": "RSI neutral range consolidation, continued low volume.",
-    "rsiTrajectory": "41.4 → 46.6 (과매도탈출)",
-    "rsiTrajectoryEn": "41.4 → 46.6 (exiting oversold)",
+    "scoreReasonEn": "RSI neutral range consolidation, continued low volume",
+    "rsiTrajectory": "43.4 → 45.7 (중립지속 중)",
+    "rsiTrajectoryEn": "43.4 → 45.7 (staying neutral)",
     "macdTrajectory": "히스토 0.0002 → 0.0003 (개선)",
-    "macdTrajectoryEn": "Hist 0.0002 → 0.0003 (improving)",
-    "pricePattern": "5일 저가와 20일 저가가 동일하여 횡보 패턴 확인",
-    "pricePatternEn": "5-day low and 20-day low are identical, confirming a sideways pattern.",
-    "volComment": "거래량비 0.63 (위축)",
+    "macdTrajectoryEn": "histo 0.0002 → 0.0003 (improving)",
+    "pricePattern": "5일 저가 = 20일 저가, 5일 고가 = 20일 고가 → 횡보",
+    "pricePatternEn": "5-day low = 20-day low, 5-day high = 20-day high → sideways",
+    "volComment": "거래량비 0.58 (위축)",
     "bbPosition": "중단",
-    "reason": "3거래일 연속 관망 유지. RSI는 과매도 구간에서 벗어나고 있으나 여전히 중립 구간에 머물러 있으며, MACD 히스토그램은 개선세를 보이나 추세 전환을 확정하기에는 부족. 거래량 위축 지속으로 방향성 부재. 5일/20일 고가/저가 모두 $0.07로 횡보 구간 확인.",
-    "reasonEn": "Maintaining a wait-and-see approach for the third consecutive session. RSI is exiting oversold territory but remains in the neutral zone, and while the MACD histogram shows improvement, it's insufficient to confirm a trend reversal. Continued low volume indicates a lack of directional conviction. Both 5-day and 20-day highs/lows are at $0.07, confirming a sideways range.",
+    "reason": "3거래일 연속 RSI 중립 구간 횡보, 거래량 위축 지속. 5일/20일 고가/저가 패턴 모두 횡보 구간 확인. ADX 19.3으로 추세 미형성 구간.",
+    "reasonEn": "Consolidation in the neutral RSI range for 3 consecutive sessions, with continued low volume. Both 5-day/20-day high/low patterns confirm a sideways range. ADX at 19.3 indicates no trend formation.",
     "entry": 0.07,
     "stop": 0.07,
     "target": 0.07,
     "invalidation": 0.07,
-    "weeklyConflict": "충돌 없음",
-    "weeklyConflictEn": "No conflict.",
+    "weeklyConflict": "주봉 ADX 33.5로 뚜렷한 추세이나 일봉은 횡보 구간",
+    "weeklyConflictEn": "Weekly ADX at 33.5 shows a clear trend, but the daily chart is in a sideways range.",
     "profitTarget1": 0.07,
     "profitTarget2": 0.07,
     "stopLoss": 0.07,
-    "narrative": "[추세 위치]\n· 현재가($0.07) vs SMA5/20/50($0.07/$0.07/$0.07) — 단기·중기 추세 중단 부근 횡보 확인\n· SMA100/200($0.08/$0.09) 대비 하회 — 중장기 추세 약세\n· 52주 위치(0.9%) + 현 가격대 역사적 저점 부근 위치\n[모멘텀 지표]\n· RSI 궤적 (41.4→46.6) + 과매도 탈출 중립 구간 진입 + 상승 방향성 시도\n· MACD 히스토그램 궤적 (0.0002→0.0003) + 개선 진단 + 약한 강세 신호\n· 볼린저밴드 현재가 위치 (중단 $0.07) + 밴드폭 5.42%로 축소 구간\n[지지·저항 구조]\n· 스윙 지지선 ($0.07) + 피벗 S1과 일치\n· 스윙 저항선 ($0.07) + 돌파 시 단기 반등 기대\n· 5일/20일 고가·저가 패턴 (횡보) + 추세 전환 신호 미확인\n[거래량·결론]\n· 거래량 비율 (0.63배) + 움직임의 신뢰도 위축\n· 현 구간 진단 (축적 구간) + 방향성 확인 시 진입 조건",
-    "narrativeEn": "[Trend Position]\n· Current price ($0.07) vs SMA5/20/50 ($0.07/$0.07/$0.07) — Short-to-medium term trend confirmed sideways near the middle band.\n· Below SMA100/200 ($0.08/$0.09) — Medium-to-long term trend is weak.\n· 52-week position (0.9%) + Current price level near historical lows.\n[Momentum Indicators]\n· RSI trajectory (41.4→46.6) + Exiting oversold, entering neutral zone + Attempting upward momentum.\n· MACD histogram trajectory (0.0002→0.0003) + Improvement diagnosis + Weak bullish signal.\n· Bollinger Band current price position (Middle band $0.07) + Bandwidth narrowed to 5.42%.\n[Support & Resistance Structure]\n· Swing support ($0.07) + Aligns with Pivot S1.\n· Swing resistance ($0.07) + Potential for short-term bounce on breakout.\n· 5-day/20-day high/low pattern (Sideways) + No trend reversal signal confirmed.\n[Volume & Conclusion]\n· Volume ratio (0.63x) + Reduced confidence in price movement.\n· Current range diagnosis (Accumulation phase) + Entry condition upon directional confirmation.",
-    "patternNote": "5일 및 20일 고가/저가가 모두 $0.07로 동일하여 명확한 횡보 구간 확인.",
-    "patternNoteEn": "Both 5-day and 20-day highs/lows are identical at $0.07, confirming a clear sideways range.",
+    "narrative": "[추세 위치]\n· 현재가($0.07) vs SMA5/20/50($0.07/$0.07/$0.07) — 단기·중기 추세 중단 위치 상회\n· SMA100/200($0.08/$0.09) 대비 위치 — 중장기 추세 하회\n· 52주 위치(0.8%) + 현 가격대 역사적 저점 부근\n[모멘텀 지표]\n· RSI 궤적 (43.4→45.7) + 중립 지속 판단 + 방향성 결여\n· MACD 히스토그램 궤적 (0.0002→0.0003) + 개선 진단 + 추세 전환 신호 미약\n· 볼린저밴드 현재가 위치 (중단 $0.07) + 밴드폭 3.62% 수준\n[지지·저항 구조]\n· 스윙 지지선 ($0.07) + 근거 (피벗/스윙저점/이동평균 기반)\n· 스윙 저항선 ($0.07) + 돌파 시 의미 없음\n· 5일/20일 고가·저가 패턴 (횡보) + 추세 해석 불가\n[거래량·결론]\n· 거래량 비율 (0.58배) + 움직임의 신뢰도 하락\n· 현 구간 진단 (축적구간) + 관망 조건 유지",
+    "narrativeEn": "[Trend Position]\n· Current price ($0.07) vs SMA5/20/50 ($0.07/$0.07/$0.07) — trading at the middle of short/mid-term trends.\n· Position vs SMA100/200 ($0.08/$0.09) — below long-term trends.\n· 52-week position (0.8%) + current price near historical lows.\n[Momentum Indicators]\n· RSI trajectory (43.4→45.7) + neutral consolidation + lack of direction.\n· MACD histogram trajectory (0.0002→0.0003) + improving diagnosis + weak trend reversal signal.\n· Bollinger Band current price position (middle $0.07) + 3.62% band width.\n[Support & Resistance Structure]\n· Swing support ($0.07) + basis (pivot/swing low/moving average based).\n· Swing resistance ($0.07) + no significance upon breakout.\n· 5-day/20-day high/low pattern (sideways) + trend interpretation impossible.\n[Volume & Conclusion]\n· Volume ratio (0.58x) + low confidence in movement.\n· Current range diagnosis (accumulation) + maintain wait-and-see conditions.",
+    "patternNote": "5일 고가/저가와 20일 고가/저가가 모두 동일하여 명확한 횡보 구간 확인.",
+    "patternNoteEn": "5-day and 20-day highs/lows are identical, confirming a clear sideways range.",
     "keyPoints": [
-      "RSI 과매도 탈출 구간 진입, 46.6 수준",
-      "MACD 히스토그램 개선세, 0.0003 수준",
-      "거래량 위축 지속, 0.63배 수준"
+      "3거래일 연속 RSI 중립 구간 횡보, 거래량 위축 지속",
+      "ADX 19.3으로 추세 미형성 구간, 충격성 변동 가능성",
+      "주봉 ADX 33.5는 추세 강도 시사하나 일봉은 횡보 구간"
     ],
     "keyPointsEn": [
-      "RSI entering exiting oversold territory, at 46.6.",
-      "MACD histogram showing improvement, at 0.0003.",
-      "Continued low volume, at 0.63x."
+      "RSI neutral range consolidation for 3 consecutive sessions, continued low volume.",
+      "ADX at 19.3 indicates no trend formation, potential for shock-like volatility.",
+      "Weekly ADX at 33.5 suggests trend strength, but daily chart remains sideways."
     ],
-    "riskNote": "ADX 20.5로 추세 미형성 구간, 충격성 변동 가능성 상존.",
-    "riskNoteEn": "ADX at 20.5 indicates a non-trending phase, with potential for shock-like volatility.",
-    "continuity": "직전 3거래일 연속 관망 판독 유지. 금일 지표 흐름은 전일과 유사하게 중립 구간 횡보 지속.",
-    "continuityEn": "The wait-and-see read has now held for 3 straight sessions. Today's indicator flow is similar to yesterday, continuing sideways consolidation in the neutral zone.",
+    "riskNote": "ADX 19.3으로 추세 미형성 구간, 충격성 변동 가능성.",
+    "riskNoteEn": "ADX at 19.3 indicates no trend formation, potential for shock-like volatility.",
+    "continuity": "직전 3거래일 연속 관망 판독 유지. 금일 지표 흐름도 전일과 동일하게 중립 구간 횡보 및 거래량 위축 지속.",
+    "continuityEn": "The wait-and-see read has now held for 3 consecutive sessions. Today's indicator flow continues the neutral range consolidation and low volume observed yesterday.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
       "adxLowRisk": true,
       "higherTimeframeAligned": false,
-      "oversoldExtremeOrigin": true,
-      "score": "2/5",
-      "verdict": "초기 단계 — 확인 관문 남음"
+      "oversoldExtremeOrigin": false,
+      "score": "1/5",
+      "verdict": "위장 가능성 — 신중 필요"
     }
   }
 }
