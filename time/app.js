@@ -11142,6 +11142,17 @@ var bedsideActive = false;
         return (v.w || []).indexOf("other") >= 0;
       });
     }
+    // 계절 필터(2026-08-15 2차) — 겨울 영상은 겨울에만. 판정은 사진과
+    // 같은 getCurrentSeason(위도 반구 보정, i18n/season.js). 봄처럼
+    // 태그에 없는 계절이면 필터를 접는다 — 빈 목록보다 낫다.
+    var season = "";
+    try { season = String(getCurrentSeason() || ""); } catch (error) { season = ""; }
+    if (season) {
+      var seasonHit = hit.filter(function (v) {
+        return (v.s || []).indexOf(season) >= 0;
+      });
+      if (seasonHit.length) hit = seasonHit;
+    }
     return hit;
   }
   function pickNext() {
