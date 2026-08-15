@@ -27,7 +27,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
+          # cache: pip 은 requirements.txt 가 있어야 동작한다(없으면 스텝 실패).
+          # 이 저장소는 요구사항 파일을 안 두므로 pip 캐시는 생략 — 설치 ~2분은 감수.
 
       # torch는 CPU 휠로 고정 — 기본 휠(CUDA 포함)은 1GB가 넘고 러너에 GPU도 없다.
       - name: Install deps (torch CPU + timesfm)
