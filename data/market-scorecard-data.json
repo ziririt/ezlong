@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-08-15-18:20",
+      "timestamp_kst": "2026-08-15(토) 18:20 KST",
+      "key_event": {
+        "name": "AI 및 반도체 수요 강세 지속",
+        "name_en": "Sustained Strong Demand for AI and Semiconductors",
+        "time": "직전 거래일 및 다음 주 개장 전",
+        "why": "AI 관련 기업 호재, 반도체 수요 견인, 투자 심리 개선",
+        "why_en": "Positive news for AI companies, driving semiconductor demand, improving investor sentiment"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "AI 및 반도체 수요 강세로 긍정 우위 유지, 지정학적 긴장 혼조",
+      "summary_en": "Positive sentiment maintained due to strong AI and semiconductor demand, mixed geopolitical tensions",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "AI 칩 수요 강세 지속",
+          "name_en": "Sustained Strong AI Chip Demand",
+          "desc": "Nvidia, Palantir 등 AI 관련 기업에 대한 긍정적 뉴스, 반도체 수요 견인",
+          "desc_en": "Positive news for AI-related companies like Nvidia and Palantir, driving semiconductor demand",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "인플레이션 둔화 기대",
+          "name_en": "Easing Inflation Expectations",
+          "desc": "최신 CPI 데이터 둔화 및 가스 가격 하락으로 인플레이션 압력 완화 기대",
+          "desc_en": "Latest CPI data shows moderation and falling gas prices, easing inflation pressures",
+          "category": "macro_data"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "중동 지정학적 긴장 지속",
+          "name_en": "Ongoing Middle East Geopolitical Tensions",
+          "desc": "미-이란 협상 낙관론 냉각 및 호르무즈 해협 관련 이란 경고로 긴장 지속",
+          "desc_en": "Cooling optimism on US-Iran talks and Iran's Strait of Hormuz warning sustain tensions",
+          "category": "geopolitics"
+        },
+        {
+          "score": 20,
+          "name": "소매 판매 부진 우려",
+          "name_en": "Retail Sales Weakness Concerns",
+          "desc": "소비 위축 신호 지속, 다음 주 월마트 등 소매 기업 실적 발표 주목",
+          "desc_en": "Continued signs of weakening consumer spending, focus on upcoming retail earnings from Walmart etc.",
+          "category": "macro_data"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "국채금리 상승과 성장주 영향",
+          "name_en": "Rising Treasury Yields and Growth Stock Impact",
+          "desc": "미10년 국채금리 소폭 상승 (+1.19%)은 성장주에 부정적이나, 인플레이션 둔화 기대와 상충",
+          "desc_en": "Slight rise in US 10-year Treasury yields (+1.19%) is negative for growth stocks, but conflicts with easing inflation expectations",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-15-12:34",
       "timestamp_kst": "2026-08-15(토) 12:34 KST",
       "key_event": {
@@ -565,76 +625,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-14-16:57",
-      "timestamp_kst": "2026-08-14(금) 16:57 KST",
-      "key_event": {
-        "name": "인플레이션 둔화 기대 지속",
-        "name_en": "Sustained Inflation Deceleration Hopes",
-        "time": "직전 정규장 및 다음 정규장",
-        "why": "금리 인상 압력 완화, 기술주 투자 심리 개선",
-        "why_en": "Easing rate hike pressure, improved tech sector sentiment"
-      },
-      "positive_total": 85,
-      "negative_total": 15,
-      "summary": "AI 낙관론 및 인플레이션 둔화 기대 지속으로 긍정 우위 유지",
-      "summary_en": "Positive sentiment maintained due to AI optimism and sustained inflation deceleration hopes",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "AI 및 반도체 섹터 강세",
-          "name_en": "AI and Semiconductor Sector Strength",
-          "desc": "CPI 둔화에 따른 금리 인상 확률 급락, AI 하드웨어 수요 증가",
-          "desc_en": "Sharp drop in rate hike probability due to CPI slowdown, increased AI hardware demand",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 25,
-          "name": "인플레이션 둔화 기대",
-          "name_en": "Inflation Deceleration Expectations",
-          "desc": "CPI 및 PPI 냉각으로 Fed 금리 인상 압력 완화",
-          "desc_en": "Cooling CPI and PPI ease Fed rate hike pressure",
-          "category": "macro_data"
-        },
-        {
-          "score": 10,
-          "name": "S&P 500 사상 최고치 경신",
-          "name_en": "S&P 500 Reaches All-Time High",
-          "desc": "인플레이션 우려 완화로 시장 전반의 투자 심리 개선",
-          "desc_en": "Overall market sentiment improved as inflation concerns ease",
-          "category": "vix_risk_sentiment"
-        },
-        {
-          "score": 10,
-          "name": "달러 약세 전환",
-          "name_en": "Dollar Weakens",
-          "desc": "달러인덱스 DXY -0.12% 하락, 수출주 실적 개선 기대",
-          "desc_en": "DXY down 0.12%, boosting expectations for export company earnings",
-          "category": "dollar_fx"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "중동 지정학적 긴장 지속",
-          "name_en": "Persistent Middle East Geopolitical Tensions",
-          "desc": "이란 관련 유가 상승 압력 및 시장 불확실성 증대",
-          "desc_en": "Iran-related oil price pressure and increased market uncertainty",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "비트코인 유동성 고갈 경고",
-          "name_en": "Bitcoin Liquidity Depletion Warning",
-          "desc": "Glassnode 경고에도 불구하고 미국 증시와 디커플링, AI/반도체로 자금 집중",
-          "desc_en": "Despite Glassnode warning, Bitcoin decoupled from US equities, funds concentrated in AI/semiconductors",
-          "category": "other"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-15T03:34:31Z",
+  "updated_at": "2026-08-15T09:21:06Z",
   "max_entries": 10
 }
