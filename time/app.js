@@ -11152,6 +11152,15 @@ var bedsideActive = false;
     if (/snow|sleet|hail|blizzard/.test(tag)) return "snow";
     return "other";
   }
+  // 시간대 3분류(2026-08-16) — 밤(20~04시)·해질무렵(17~20시)·낮.
+  // 스카이 그라데이션(getSceneForHour)과 같은 현지 시계를 쓴다.
+  function videoTimeGroup() {
+    var hour = new Date().getHours();
+    if (hour >= 20 || hour < 4) return "night";
+    if (hour >= 17) return "sunset";
+    return "day";
+  }
+
   function candidates() {
     if (!manifest || !Array.isArray(manifest.videos) || !manifest.videos.length) return [];
     var group = videoWeatherGroup();
@@ -11175,6 +11184,15 @@ var bedsideActive = false;
       });
       if (seasonHit.length) hit = seasonHit;
     }
+    // 시간대 필터(2026-08-16) — t 태그 있는 영상은 제 시간대에만.
+    // t 없는 기존 영상은 낮 취급이라, 밤에는 밤 컬렉션이 우선한다.
+    var tg = videoTimeGroup();
+    var timeHit = hit.filter(function (v) {
+      var t = v.t || [];
+      if (tg === "day") return !t.length || t.indexOf("day") >= 0;
+      return t.indexOf(tg) >= 0;
+    });
+    if (timeHit.length) hit = timeHit;
     return hit;
   }
   function pickNext() {
