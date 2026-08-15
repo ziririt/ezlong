@@ -11105,6 +11105,8 @@ var bedsideActive = false;
   var loops = 0;
   var backReady = false;
   var currentEntry = null;
+  var pickGroup = null;      // 지금 도는 영상을 고를 때의 날씨 그룹
+  var groupSwitched = false; // 날씨가 바뀌어 조기 교체가 허용된 상태
   var startedAt = null;
   var restCooldown = false;  // 2시간 상한에 걸린 뒤 재개 신호까지 쉼
   var toggleEl = document.getElementById("videoBgToggle");
@@ -11213,6 +11215,8 @@ var bedsideActive = false;
   }
   function swap() {
     var t2 = front; front = back; back = t2;
+    pickGroup = videoWeatherGroup();
+    groupSwitched = false;
     currentEntry = backEntry;
     front.classList.add("on");
     back.classList.remove("on");
@@ -11223,7 +11227,9 @@ var bedsideActive = false;
   function onEnded() {
     if (!playing || this !== front) return;
     loops += 1;
-    if (loops >= VIDBG_MIN_LOOPS && backReady) {
+    // 날씨가 바뀐 뒤라면(groupSwitched) 3회를 기다리지 않는다 —
+    // 비가 막 시작됐는데 맑은 영상을 세 바퀴 더 도는 건 이상하다.
+    if ((loops >= VIDBG_MIN_LOOPS || groupSwitched) && backReady) {
       swap();
     } else {
       this.currentTime = 0;
@@ -11239,6 +11245,8 @@ var bedsideActive = false;
     if (!front) { front = makeVideo(); back = makeVideo(); }
     playing = true;
     startedAt = Date.now();
+    pickGroup = videoWeatherGroup();
+    groupSwitched = false;
     currentEntry = first;
     loops = 0;
     front.src = entryUrl(first);
@@ -11272,6 +11280,15 @@ var bedsideActive = false;
   function tickMonitor() {
     if (playing) {
       if (!shouldPlay()) { stop(); return; }
+      // 날씨 그룹이 바뀌면(첫 날씨 도착 포함) 다음 영상을 즉시
+      // 새 그룹에서 다시 받는다. 15초 주기라 비 시작 후 늦어도
+      // 15초 + 현재 영상 남은 시간 안에 비 영상으로 넘어간다.
+      var groupNow = videoWeatherGroup();
+      if (groupNow !== pickGroup) {
+        pickGroup = groupNow;
+        groupSwitched = true;
+        loadInto(back, pickNext());
+      }
       if (startedAt && Date.now() - startedAt > VIDBG_LIMIT_MS) {
         restCooldown = true;
         stop();
