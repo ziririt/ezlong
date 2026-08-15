@@ -5679,3 +5679,18 @@ body.is-lowmotion .clock-colon {
    것이다 — 고치려던 것보다 나쁜 결과다.
    다시 넣을 거라면 아이프레임의 load 이벤트를 받아 '아직 안 왔을 때만'
    보이게 하고, 그리드 자식 구조를 건드리지 않는 방식이어야 한다. */
+
+/* 2026-08-15 실험 — 동영상 배경(?vidbg=1, ver.1.9.29). .sky-photo 안에
+   들어가는 A/B 비디오 두 장. 사진 위·모든 UI 아래에서 서로 크로스페이드. */
+.sky-photo video.vidbg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.sky-photo video.vidbg.on {
+  opacity: 1;
+}

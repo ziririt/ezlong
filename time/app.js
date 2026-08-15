@@ -9995,22 +9995,13 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
       // 2026-08-04 운영 요청 — 네이티브 광고 카드가 좋다, 높이는 2배로.
       // 썸네일·제목·설명이 여유롭게 놓이는 크기(문장박스 안쪽의 8할까지).
       const bannerH = Math.max(96, Math.min(144, Math.round(innerH * 0.8)));
-      // 2026-08-14 운영 제보 — 날씨 상세 패널을 열어도 네이티브 광고 카드가
-      // 그 위에 그대로 떠 있었다(주간 예보를 광고가 가림). 네이티브 양쪽
-      // (iOS ContentView.swift, Android MainActivity.kt)은 이미 이 비콘의
-      // calendarOpen 이 true 면 배너를 숨긴다 — 그래서 앱 업데이트 없이
-      // 웹만 고치면 된다. 와이어 키 이름은 calendarOpen 그대로 두고(구버전
-      // 앱 호환), 의미만 "전면 오버레이가 하나라도 열려 있는가"로 넓힌다.
-      // 날씨 상세는 DOM 오버레이라 네이티브가 스스로는 구분할 수 없다.
-      const overlayOpen = !!calendarPanelOpen ||
-        !!(weatherDetailPanel && weatherDetailPanel.classList.contains("is-open"));
       const payload = {
         action: "adLayout",
         x: Math.round(innerX),
         y: Math.round(innerY + (innerH - bannerH) / 2),
         w: Math.round(innerW),
         h: bannerH,
-        calendarOpen: overlayOpen,
+        calendarOpen: !!calendarPanelOpen,
       };
       const key = [payload.x, payload.y, payload.w, payload.h, payload.calendarOpen].join(",");
       if (key === lastSent) return;
@@ -10023,18 +10014,6 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
   window.setInterval(reportAdLayout, 2000);
   window.addEventListener("resize", () => window.setTimeout(reportAdLayout, 300));
   window.setTimeout(reportAdLayout, 1500);
-  // 날씨 상세는 열리는 순간 광고가 사라져야 한다 — 2초 주기만 믿으면 최대
-  // 2초간 광고가 상세 화면을 가린 채 남는다. 기존 함수(openWeatherDetail 등)는
-  // 건드리지 않는다는 이 브릿지의 원칙(관찰 전용) 그대로, 패널의 class 변화를
-  // 지켜보다가 즉시 재보고한다.
-  if (weatherDetailPanel && typeof MutationObserver !== "undefined") {
-    try {
-      new MutationObserver(reportAdLayout)
-        .observe(weatherDetailPanel, { attributes: true, attributeFilter: ["class"] });
-    } catch (error) {
-      // 감시 실패 시 2초 주기 보고가 그대로 안전망.
-    }
-  }
 
   // 네이티브가 배너(문장박스 크기 오버레이)를 띄우는 90초 동안 문장박스
   // 내용을 숨긴다 — 광고가 콘텐츠를 "가리는" 게 아니라 "빈 자리에 놓이는"
@@ -11088,4 +11067,106 @@ var bedsideActive = false;
   window.addEventListener("focus", tick);
   setInterval(tick, 60000);
   tick();
+})();
+
+// ──────────────────────────────────────────────────────────
+// 2026-08-15 실험 — 동영상 배경 (ver.1.9.29, ?vidbg=1 일 때만)
+//   배경사진(.sky-photo)의 자식으로 <video> 두 장(A/B)을 넣는다.
+//   z-index -3 인 .sky-photo 안이므로 모든 UI 아래, 사진 위.
+//   규칙: 최소 3회 반복 + 다음 영상이 "정말" 준비된 경우에만 교체.
+//   canplaythrough 이벤트만 믿지 않고 버퍼 구간을 직접 확인한다.
+//   샘플 3개는 R2 시험 경로 — 운영 콘텐츠 아님(라이선스 확보 전).
+//   정식 구현 시 이 블록이 설정 토글 + 프리미엄 잠금 뒤로 들어간다.
+// ─────────────────────────────────────────────────────────────
+(function videoBackgroundExperiment() {
+  var enabled = false;
+  try {
+    enabled = new URLSearchParams(window.location.search).get("vidbg") === "1";
+  } catch (error) { enabled = false; }
+  if (!enabled) return;
+  var host = document.querySelector(".sky-photo");
+  if (!host) return;
+
+  var VIDBG_BASE = "https://pub-58d325a6a0ac4228bd2784eed797d328.r2.dev/video-test-20260815/";
+  var VIDBG_LIST = [
+    "13106820_1080_1920_25fps-720x1280-24fps.mp4",
+    "15128717_1080_1920_30fps-720x1280-24fps.mp4",
+    "16504816_2160_3840_60fps-720x1280-24fps.mp4"
+  ];
+  var VIDBG_MIN_LOOPS = 3;
+
+  function makeVideo() {
+    var v = document.createElement("video");
+    v.className = "vidbg";
+    v.muted = true;
+    v.setAttribute("muted", "");
+    v.playsInline = true;
+    v.setAttribute("playsinline", "");
+    v.preload = "auto";
+    v.disablePictureInPicture = true;
+    v.setAttribute("disableremoteplayback", "");
+    host.appendChild(v);
+    return v;
+  }
+  var front = makeVideo();
+  var back = makeVideo();
+  var idx = 0;
+  var loops = 0;
+  var backReady = false;
+
+  function reallyReady(v) {
+    if (v.readyState < 3 || !v.duration) return false;
+    for (var i = 0; i < v.buffered.length; i += 1) {
+      if (v.buffered.end(i) >= v.duration - 0.3) return true;
+    }
+    return false;
+  }
+  function loadInto(v, file) {
+    backReady = false;
+    v.src = VIDBG_BASE + file;
+    v.load();
+    var timer = window.setInterval(function () {
+      if (reallyReady(v)) { backReady = true; window.clearInterval(timer); }
+    }, 300);
+  }
+  function swap() {
+    var t = front; front = back; back = t;
+    front.classList.add("on");
+    back.classList.remove("on");
+    front.play().catch(function () {});
+    loops = 0;
+    loadInto(back, VIDBG_LIST[(idx + 1) % VIDBG_LIST.length]);
+  }
+  function onEnded() {
+    if (this !== front) return;
+    loops += 1;
+    if (loops >= VIDBG_MIN_LOOPS && backReady) {
+      idx = (idx + 1) % VIDBG_LIST.length;
+      swap();
+    } else {
+      this.currentTime = 0;
+      this.play().catch(function () {});
+    }
+  }
+  front.addEventListener("ended", onEnded);
+  back.addEventListener("ended", onEnded);
+
+  front.src = VIDBG_BASE + VIDBG_LIST[0];
+  front.addEventListener("playing", function firstPlay() {
+    front.removeEventListener("playing", firstPlay);
+    front.classList.add("on");
+    window.setTimeout(function () {
+      loadInto(back, VIDBG_LIST[1]);
+    }, 1500);
+  });
+  front.play().catch(function () {
+    var resume = function () {
+      document.body.removeEventListener("touchend", resume);
+      front.play().catch(function () {});
+    };
+    document.body.addEventListener("touchend", resume);
+  });
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) front.play().catch(function () {});
+  });
 })();
