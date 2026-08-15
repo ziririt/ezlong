@@ -11106,6 +11106,11 @@ var bedsideActive = false;
   var backReady = false;
   var currentEntry = null;
   var pickGroup = null;      // 지금 도는 영상을 고를 때의 날씨 그룹
+  // 2026-08-15 3차(운영자) — 비충전 재생 허용. 단 5개까지만.
+  //   충전 중에만 되면 이용자가 체험해 볼 수 없다는 판단. 비충전
+  //   상태에서 영상 5개를 다 돌면 토글이 스스로 꺼지고 사진으로
+  //   돌아간다(설정 안내 문구에 명시). 충전을 시작하면 카운터 리셋.
+  var unpluggedPlays = 0;
   var groupSwitched = false; // 날씨가 바뀌어 조기 교체가 허용된 상태
   var startedAt = null;
   var restCooldown = false;  // 2시간 상한에 걸린 뒤 재개 신호까지 쉼
@@ -11122,6 +11127,12 @@ var bedsideActive = false;
   function premiumOk() { return devForce || window.__FLIPZEN_PREMIUM__ === true; }
   function wifiOk() { return devForce || window.__FLIPZEN_WIFI__ === true; }
   function chargingOk() { return devForce || window.__FLIPZEN_CHARGING__ === true; }
+  function autoDisable() {
+    // 비충전 5개 소진 — 토글을 스스로 끄고 사진으로 복귀.
+    setStored(false);
+    if (toggleEl) toggleEl.checked = false;
+    stop();
+  }
 
   // 날씨 3분류 — 사진 매칭보다 훨씬 거칠게 간다(영상 수가 적으므로).
   function videoWeatherGroup() {
@@ -11214,6 +11225,12 @@ var bedsideActive = false;
     }, 300);
   }
   function swap() {
+    if (chargingOk()) {
+      unpluggedPlays = 0;
+    } else {
+      unpluggedPlays += 1;
+      if (unpluggedPlays >= 5) { autoDisable(); return; }
+    }
     var t2 = front; front = back; back = t2;
     pickGroup = videoWeatherGroup();
     groupSwitched = false;
@@ -11245,6 +11262,7 @@ var bedsideActive = false;
     if (!front) { front = makeVideo(); back = makeVideo(); }
     playing = true;
     startedAt = Date.now();
+    unpluggedPlays = chargingOk() ? 0 : 1;
     pickGroup = videoWeatherGroup();
     groupSwitched = false;
     currentEntry = first;
@@ -11275,7 +11293,8 @@ var bedsideActive = false;
   function shouldPlay() {
     if (restCooldown) return false;
     if (devForce) return true;
-    return storedOn() && premiumOk() && wifiOk() && chargingOk();
+    // 충전은 조건이 아니라 '분량'을 정한다 — 비충전이면 5개 뒤 자동 해제.
+    return storedOn() && premiumOk() && wifiOk();
   }
   function tickMonitor() {
     if (playing) {
@@ -11309,6 +11328,11 @@ var bedsideActive = false;
       try { prevChargingHook(flag); } catch (error) { /* 무시 */ }
     }
     restCooldown = false;  // 충전기를 다시 꽂으면 상한 휴식도 풀린다
+    if (flag === true || flag === "true") {
+      unpluggedPlays = 0;      // 충전 시작 — 비충전 카운터 리셋
+    } else if (playing) {
+      unpluggedPlays = 1;      // 재생 중 분리 — 지금 영상이 1개째
+    }
     tickMonitor();
   };
   // 네트워크 변화 — 1.8 네이티브 브릿지가 부른다.
