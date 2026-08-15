@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-15T08:47:01.547Z
+ * 생성 시각: 2026-08-15T08:47:59.219Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -145,7 +145,7 @@
       "videoBg": {
         "heading": "Video Background",
         "desc": "Plays only on Wi-Fi. When not charging, up to 5 videos play, then the background returns to photos.",
-        "toggle": "Use video background (Premium)"
+        "toggle": "Video background (Premium)"
       }
     },
     "weather": {
@@ -557,7 +557,7 @@
       "videoBg": {
         "heading": "Fondo de vídeo",
         "desc": "Se reproduce solo con Wi-Fi. Sin cargar, se reproducen hasta 5 vídeos y luego vuelve a las fotos de fondo.",
-        "toggle": "Usar fondo de vídeo (Premium)"
+        "toggle": "Fondo de vídeo (Premium)"
       }
     },
     "weather": {
@@ -969,7 +969,7 @@
       "videoBg": {
         "heading": "動画背景",
         "desc": "Wi-Fi接続中のみ再生されます。充電していないときは最大5本まで再生され、その後は背景写真に戻ります。",
-        "toggle": "動画背景を使う（プレミアム）"
+        "toggle": "動画背景（プレミアム）"
       }
     },
     "weather": {
@@ -1381,7 +1381,7 @@
       "videoBg": {
         "heading": "동영상 배경",
         "desc": "와이파이 상태에서만 재생됩니다. 충전 중이 아닐 때에는 최다 5개의 영상만 재생되고 배경사진으로 바뀝니다.",
-        "toggle": "동영상 배경 사용(프리미엄 기능)"
+        "toggle": "동영상 배경(프리미엄)"
       }
     },
     "weather": {
@@ -1793,7 +1793,7 @@
       "videoBg": {
         "heading": "Fundo de vídeo",
         "desc": "Reproduzido apenas com Wi-Fi. Sem carregar, até 5 vídeos são reproduzidos e depois volta às fotos de fundo.",
-        "toggle": "Usar fundo de vídeo (Premium)"
+        "toggle": "Fundo de vídeo (Premium)"
       }
     },
     "weather": {
@@ -2205,7 +2205,7 @@
       "videoBg": {
         "heading": "视频背景",
         "desc": "仅在连接 Wi-Fi 时播放。未充电时最多播放 5 个视频，之后恢复为照片背景。",
-        "toggle": "使用视频背景（高级版）"
+        "toggle": "视频背景（高级版）"
       }
     },
     "weather": {
