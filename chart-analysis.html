@@ -132,6 +132,31 @@ body:has(.ca-fullscreen) { overflow-x: visible; }
 .ca-chart-wrap canvas,
 .ca-chart-wrap table { max-width: 100%; }
 
+/* ── TimesFM 예측 대역 카드 (2026-08-14 신설) ──────────────────────────
+   점 예측을 크게 쓰지 않는다 — 이 카드의 주인공은 대역(불확실성)이다.
+   대역 바는 q10~q90을 가로 막대로, 중앙값은 그 위의 눈금 하나로만 표시. */
+.ca-tfm { padding: 16px 20px 18px; background: var(--ez-surface); border-top: 1px solid var(--ez-border); }
+.ca-tfm-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+.ca-tfm-title { font-size: 16px; font-weight: 800; color: var(--ez-text2); text-transform: uppercase; letter-spacing: 0.05em; }
+.ca-tfm-beta { font-size: 14px; font-weight: 700; color: var(--ez-blue); border: 1px solid var(--ez-blue); border-radius: 999px; padding: 0 8px; }
+.ca-tfm-sub { font-size: 14px; color: var(--ez-text2); line-height: 1.55; margin-bottom: 12px; }
+.ca-tfm-row { display: flex; align-items: center; gap: 10px; margin: 9px 0; }
+.ca-tfm-lab { font-size: 14px; font-weight: 700; color: var(--ez-text2); width: 52px; flex: none; }
+.ca-tfm-bar { position: relative; height: 22px; flex: 1; background: var(--ez-card2); border-radius: 999px; overflow: hidden; }
+.ca-tfm-band { position: absolute; top: 0; bottom: 0; background: color-mix(in srgb, var(--ez-blue) 22%, transparent); }
+.ca-tfm-band.inner { background: color-mix(in srgb, var(--ez-blue) 40%, transparent); }
+.ca-tfm-zero { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--ez-text3); opacity: .55; }
+.ca-tfm-med { position: absolute; top: 2px; bottom: 2px; width: 3px; border-radius: 2px; background: var(--ez-blue); }
+.ca-tfm-nums { font-size: 14px; color: var(--ez-text2); white-space: nowrap; width: 168px; flex: none; text-align: right; font-weight: 600; }
+.ca-tfm-nums b { font-weight: 800; color: var(--ez-text); }
+.ca-tfm-note { font-size: 14px; color: var(--ez-text3); line-height: 1.5; margin-top: 10px; }
+@media (max-width: 640px) {
+  /* 폰 폭에서는 수치를 다음 줄로 강제 내림 — 같은 줄에 두면 대역 바가
+     90px까지 짜부라져 이 카드의 주인공(대역의 폭)이 안 보인다 */
+  .ca-tfm-row { flex-wrap: wrap; }
+  .ca-tfm-nums { flex-basis: 100%; width: auto; text-align: left; margin-left: 62px; margin-top: 2px; }
+}
+
 /* ── 페이지 레이아웃 ──────────────────────────────────────── */
 .ca-layout {
   display: flex;
@@ -981,6 +1006,17 @@ const SMA_COLORS = {
 // ── 상태 ──────────────────────────────────────────────────────
 let tickerIndex       = {};
 let currentSymbol     = null;
+// TimesFM 예측 대역 (2026-08-14) — 없으면 카드가 안 붙을 뿐, 본론엔 영향 없다.
+let tfmForecast = null;
+fetch('/data/timesfm-forecast.json').then(r => r.ok ? r.json() : null)
+  .then(d => {
+    tfmForecast = d;
+    // 이미 종목이 열려 있으면 카드만 뒤늦게 끼워 넣는다 (전체 재렌더 없이)
+    if (currentSymbol) {
+      const host = document.getElementById('ca-tfm-slot');
+      if (host && !host.innerHTML) host.innerHTML = renderTimesFMCard(currentSymbol);
+    }
+  }).catch(() => {});
 let currentAnalysis   = null;
 let currentOhlcvDaily = null;
 let currentOhlcvWeekly = null;
@@ -1318,6 +1354,9 @@ function renderChartView(container, analysis, ohlcvData, ohlcvWeekly) {
     <!-- 1순위: 분석 리포트 (차트보다 먼저) -->
     ${renderAnalysisPanel(analysis, currency)}
 
+    <!-- 1.5순위: TimesFM 예측 대역 (데이터 있을 때만) -->
+    <div id="ca-tfm-slot">${renderTimesFMCard(currentSymbol)}</div>
+
     <!-- 2순위: 차트 섹션 제목 -->
     <div style="padding:12px 20px 0; background:var(--ez-surface); border-top:1px solid var(--ez-border);">
       <div style="font-size:16px; font-weight:700; color:var(--ez-text2); text-transform:uppercase; letter-spacing:0.05em;">기술적 차트</div>
@@ -1523,6 +1562,52 @@ function bindTogglePills() {
 }
 
 // ── AI 분석 패널 ──────────────────────────────────────────────
+// ── TimesFM 예측 대역 카드 (2026-08-14) ────────────────────────────────
+// 정직성 원칙: 점 예측을 헤드라인으로 쓰지 않는다. 대역이 산출물이다.
+// 데이터가 없거나 이 심볼이 커버 대상이 아니면 빈 문자열 — 자리 자체가 안 생긴다.
+function renderTimesFMCard(symbol) {
+  const d = tfmForecast;
+  const s = d && d.symbols && d.symbols[symbol];
+  if (!s) return '';
+  const last = s.lastClose;
+  const pct = (v) => (v / last - 1) * 100;
+  const fmtP = (v) => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(1) + '%';
+  // 3개 구간만 — 1주(5거래일)·2주(10)·1개월(21). 21행 전부 쓰면 표가 된다.
+  const steps = [[4, '1주'], [9, '2주'], [20, '1개월']];
+  // 바의 눈금 범위: 세 구간의 q10~q90 중 최댓값 기준 대칭 (0%가 항상 가운데)
+  let span = 4;
+  steps.forEach(([t]) => {
+    span = Math.max(span, Math.abs(pct(s.q10[t])), Math.abs(pct(s.q90[t])));
+  });
+  span *= 1.15;
+  const X = (p) => (50 + (p / span) * 50).toFixed(1) + '%';
+  const rows = steps.map(([t, lab]) => {
+    const q10 = pct(s.q10[t]), q30 = pct(s.q30[t]), q50 = pct(s.q50[t]),
+          q70 = pct(s.q70[t]), q90 = pct(s.q90[t]);
+    return `<div class="ca-tfm-row">
+      <span class="ca-tfm-lab">${lab}</span>
+      <div class="ca-tfm-bar">
+        <div class="ca-tfm-band" style="left:${X(q10)};width:calc(${X(q90)} - ${X(q10)})"></div>
+        <div class="ca-tfm-band inner" style="left:${X(q30)};width:calc(${X(q70)} - ${X(q30)})"></div>
+        <div class="ca-tfm-zero" style="left:50%"></div>
+        <div class="ca-tfm-med" style="left:${X(q50)}"></div>
+      </div>
+      <span class="ca-tfm-nums"><b>${fmtP(q50)}</b> · 대역 ${fmtP(q10)} ~ ${fmtP(q90)}</span>
+    </div>`;
+  }).join('');
+  return `<div class="ca-tfm">
+    <div class="ca-tfm-head">
+      <span class="ca-tfm-title">구글 TimesFM 예측 대역</span>
+      <span class="ca-tfm-beta">베타</span>
+    </div>
+    <div class="ca-tfm-sub">구글 리서치의 시계열 파운데이션 모델(TimesFM 2.5)이 최근 ${d.contextDays}거래일 종가만 보고 계산한
+      향후 확률 대역 — 진한 띠 30~70%, 옅은 띠 10~90% 구간, 파란 눈금이 중앙값.</div>
+    ${rows}
+    <div class="ca-tfm-note">기준 종가 ${fmtPrice(last, 'USD')} (${s.lastDate}) · ${d.updatedKST} 갱신.
+      가격 흐름만 본 통계적 대역이며 실적 발표·거시 이벤트는 반영되지 않음 — 예측이 아니라 불확실성의 크기를 읽는 도구.</div>
+  </div>`;
+}
+
 function renderAnalysisPanel(analysis, currency) {
   const ai  = analysis.analysis;
   const ind = analysis.indicators;
