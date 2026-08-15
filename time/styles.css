@@ -1503,6 +1503,35 @@ button { font: inherit; }
   filter: saturate(1.02) contrast(1.02);
 }
 
+/* 2026-08-16 ver.1.9.39 — 날씨 상세도 동영상 배경(운영 요청). 메인에서
+   영상이 도는 동안에는 app.js applyWeatherDetailVideo()가 패널에
+   .weather-detail-video 클래스와 .wd-vidbg <video>를 넣는다. 영상은 사진
+   자리에 깔리고, 가독성 스크림(기존 사진용과 같은 농도)은 ::after 로 영상
+   위에 얹는다 — 요소 background 는 자식(video)보다 아래에 그려져 스크림
+   역할을 못 하기 때문. */
+.weather-detail-photo .wd-vidbg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+#weatherDetailPanel.weather-detail-video .weather-detail-photo {
+  /* 영상 로딩 전 잠깐 보이는 바탕 — 사진 없이 다크 그라디언트만 */
+  background: linear-gradient(180deg, #2b3a52 0%, #445b7c 55%, #1c2636 100%);
+}
+#weatherDetailPanel.weather-detail-video .weather-detail-photo .wd-vidbg {
+  display: block;
+}
+#weatherDetailPanel.weather-detail-video .weather-detail-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(4,8,16,0.62) 0%, rgba(4,8,16,0.46) 38%, rgba(4,8,16,0.76) 100%);
+}
+
 /* 2026-07-18 6차 피드백: "비 애니메이션이 옛날 TV 노이즈 같다" — 이전엔
    repeating-linear-gradient 2겹을 background-position 애니메이션으로
    움직였는데, 일정한 간격·각도의 줄무늬가 화면 전체를 균일하게 덮으면서

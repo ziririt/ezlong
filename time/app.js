@@ -3131,6 +3131,50 @@ function applyWeatherDetailPhoto() {
   if (url) {
     weatherDetailPanel.style.setProperty("--wd-photo", `url("${url}")`);
   }
+  applyWeatherDetailVideo();
+}
+
+// 2026-08-16 운영 요청 — "날씨 상세도 스탠바이의 그 동영상 배경이면
+// 좋겠다". 메인에서 동영상 배경이 도는 동안에는 상세 패널의 사진 대신
+// 같은 영상을 패널 전용 <video>로 튼다(무음·인라인·루프). 스크림은
+// styles.css 의 .weather-detail-video ::after 가 얹는다. 영상이 안 돌면
+// (사진 모드·셀룰러·비프리미엄) 기존 사진 경로 그대로다.
+function applyWeatherDetailVideo() {
+  if (!weatherDetailPanel) return;
+  const layer = weatherDetailPanel.querySelector(".weather-detail-photo");
+  if (!layer) return;
+  let vurl = "";
+  try {
+    if (typeof window.__flipzenVideoBgCurrent === "function") {
+      vurl = window.__flipzenVideoBgCurrent() || "";
+    }
+  } catch (error) { vurl = ""; }
+  let vid = layer.querySelector(".wd-vidbg");
+  if (!vurl) {
+    weatherDetailPanel.classList.remove("weather-detail-video");
+    if (vid) {
+      try { vid.pause(); vid.removeAttribute("src"); vid.load(); } catch (error) {}
+      vid.remove();
+    }
+    return;
+  }
+  if (!vid) {
+    vid = document.createElement("video");
+    vid.className = "wd-vidbg";
+    vid.muted = true;
+    vid.setAttribute("muted", "");
+    vid.playsInline = true;
+    vid.setAttribute("playsinline", "");
+    vid.loop = true;
+    vid.preload = "auto";
+    layer.appendChild(vid);
+  }
+  weatherDetailPanel.classList.add("weather-detail-video");
+  if (vid.getAttribute("src") !== vurl) {
+    vid.setAttribute("src", vurl);
+    try { vid.load(); } catch (error) {}
+  }
+  try { vid.play().catch(function () {}); } catch (error) {}
 }
 
 // 2026-07-18 6차 피드백: "비 내리는 애니메이션이 옛날 TV 노이즈 같다, 애플처럼
@@ -3593,6 +3637,13 @@ function closeWeatherDetail() {
   // (배터리 배려) — .weather-detail-rainy 클래스 자체는 그대로 둬서, 다시
   // 열 때 openWeatherDetail이 그 값을 보고 루프 재시작 여부를 판단한다.
   stopWeatherRainFxAll();
+  // 2026-08-16 — 패널 전용 배경 영상도 내린다(배터리·디코더 절약).
+  const wdVid = weatherDetailPanel.querySelector(".weather-detail-photo .wd-vidbg");
+  if (wdVid) {
+    try { wdVid.pause(); wdVid.removeAttribute("src"); wdVid.load(); } catch (error) {}
+    wdVid.remove();
+  }
+  weatherDetailPanel.classList.remove("weather-detail-video");
 }
 
 // X 버튼 등 "명시적" 닫기는 이걸 호출한다. openWeatherDetail이 쌓아둔 history
@@ -11209,6 +11260,11 @@ var bedsideActive = false;
   function entryUrl(entry) {
     return (manifest.base || "") + entry.x;
   }
+
+  // 2026-08-16 — 날씨 상세 패널이 부른다: 지금 영상이 돌고 있으면 그 URL.
+  window.__flipzenVideoBgCurrent = function () {
+    return (playing && currentEntry) ? entryUrl(currentEntry) : "";
+  };
   function loadManifest() {
     if (manifest || manifestLoading) return;
     manifestLoading = true;
