@@ -2414,6 +2414,52 @@ window._swingView = null;
   } catch (e) { console.warn('[swing-view]', e); }
 })();
 
+// TimesFM 1주 참고 지표 (2026-08-16, 운영 확정) — 규칙 판단과 완전 분리.
+// 없으면 카드에 그 줄이 안 붙을 뿐, 어떤 판단도 바뀌지 않는다.
+window._tfmForecast = null;
+(async () => {
+  try {
+    const res = await fetch('https://raw.githubusercontent.com/ziririt/ezlong/main/data/timesfm-forecast.json?t=' + Math.floor(Date.now() / 300000));
+    if (!res.ok) return;
+    window._tfmForecast = await res.json();
+    if (window._renderData) renderAll(window._renderData);
+    if (window._megaRendered) window._megaRendered.forEach(s => renderMegaCards(s));
+  } catch (e) { /* 참고 지표 실패는 조용히 */ }
+})();
+
+// 1주(5거래일) 시점의 '모델이 보는 상승 확률'. 저장된 분위수(q10~q90)의 누적분포를
+// 기준 종가 위치에서 선형 보간해 P(1주 뒤 가격 > 기준 종가)를 얻는다.
+// 분위수 밖이면 90%/10%에서 자른다 — 꼬리는 모델도 모른다.
+function _tfmWeekLine(sym) {
+  const d = window._tfmForecast;
+  const f = d && d.symbols && d.symbols[sym];
+  if (!f || !f.q50 || f.q50.length < 5) return '';
+  const t = 4, last = f.lastClose;
+  const qs = [f.q10[t], f.q30[t], f.q50[t], f.q70[t], f.q90[t]];
+  const ps = [0.10, 0.30, 0.50, 0.70, 0.90];
+  let pUp, capped = '';
+  if (last <= qs[0]) { pUp = 90; capped = ' 이상'; }
+  else if (last >= qs[4]) { pUp = 10; capped = ' 이하'; }
+  else {
+    let cdf = 0.5;
+    for (let i = 0; i < 4; i++) {
+      if (last >= qs[i] && last <= qs[i + 1]) {
+        const w = (last - qs[i]) / Math.max(1e-9, qs[i + 1] - qs[i]);
+        cdf = ps[i] + w * (ps[i + 1] - ps[i]);
+        break;
+      }
+    }
+    pUp = Math.round((1 - cdf) * 100);
+  }
+  const pct = (v) => { const x = (v / last - 1) * 100; return (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1) + '%'; };
+  return `<div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;font-size:14px;color:var(--t2);margin:2px 0 8px;padding:7px 10px;border:1px solid var(--bd);border-radius:8px;">
+    <span style="font-weight:800;color:var(--ez-blue);">TimesFM 1주</span>
+    <span style="font-weight:700;color:var(--ez-blue);border:1px solid var(--ez-blue);border-radius:999px;padding:0 6px;font-size:14px;line-height:1.5;">베타</span>
+    <span>모델이 보는 상승 확률 <b style="color:var(--t1);">${pUp}%${capped}</b>${capped ? '' : ` (하락 ${100 - pUp}%)`} · 1주 범위 ${pct(qs[0])} ~ ${pct(qs[4])}</span>
+    <span style="color:var(--t3);">— 규칙 판단과 무관한 참고 지표</span>
+  </div>`;
+}
+
 // [v2] 색 강조 태그 변환 — [G]긍정/[R]부정/[B]포인트 (남발은 데스킹 규격에서 제한)
 function _v2Colorize(s) {
   if (!s) return s;
@@ -2440,6 +2486,7 @@ function _v2ChiefCardHtml() {
       <span style="margin-left:auto;flex-shrink:0;white-space:nowrap;color:var(--t3);font-size:14px;font-weight:600;">${sv.generatedAtKST}</span>
     </div>
     ${paras}
+    ${_tfmWeekLine('QQQ')}
     <div style="color:var(--t3);font-size:14px;margin-top:2px;">검증된 통계만 인용 · 투자 판단의 참고 자료</div>
   </div>`;
 }
@@ -2455,6 +2502,7 @@ function _v2KingCardHtml(sym) {
       <span style="font-weight:800;color:var(--t1);font-size:16px;">${k.stanceLabel}</span>
     </div>
     ${_blocksHtml(k.blocks, k.commentary)}
+    ${_tfmWeekLine(sym)}
   </div>`;
 }
 
@@ -6517,6 +6565,7 @@ function _megaStanceCardHtml(sym) {
       <span style="font-weight:800;color:var(--t1);font-size:16px;">${m.stanceLabel}</span>
     </div>
     ${_blocksHtml(m.blocks, m.commentary)}
+    ${_tfmWeekLine(sym === 'GOOG' ? 'GOOGL' : sym)}
     <div style="color:var(--t3);font-size:14px;">확률·통계는 11년 백테스트 검증분만 인용 · 투자 판단의 참고 자료</div>
   </div>`;
 }

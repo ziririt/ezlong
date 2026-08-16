@@ -37,8 +37,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'data', 'timesfm-forecast.json')
 
 # 스윙 대시보드·차트분석의 핵심 축과 동일한 축 (TOP9 + 지수/반도체)
+# TOP9(TSLA·NVDA + 빅테크 7) 전부 + 지수 3종 — 스윙·TOP9 카드가 이 파일을 읽는다
 SYMBOLS = ['QQQ', 'VOO', 'SOXX', 'TSLA', 'NVDA',
-           'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META']
+           'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'TSM', 'AVGO']
 CONTEXT = 1024          # 약 4년치 일봉 — 모델 max_context와 일치
 HORIZON = 21            # 약 1개월(거래일)
 CHECKPOINT = 'google/timesfm-2.5-200m-pytorch'

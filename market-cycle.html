@@ -395,9 +395,6 @@ window.addEventListener('load', function(){
       display: flex; align-items: flex-start; justify-content: space-between;
       margin-bottom: 10px; gap: 10px;
     }
-    .chart-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
-    .chart-name { font-size: 17px; font-weight: 800; color: var(--ez-text); }
-    .chart-desc { font-size: 16px; color: var(--ez-text2); }
 
     /* 컨트롤 영역: 티커 토글 버튼만 */
     .chart-controls { display: flex; gap: 6px; align-items: flex-start; flex-shrink: 0; }
@@ -699,10 +696,9 @@ window.addEventListener('load', function(){
   <div class="section-label">주봉 차트 — 30W SMA + 거래량 + RSI + MACD + Coppock</div>
   <div class="chart-section" id="chart-section">
     <div class="chart-header">
-      <div class="chart-info">
-        <div class="chart-name" id="chart-name">SPY</div>
-        <div class="chart-desc" id="chart-desc">S&amp;P500 ETF (SPDR) — 주봉</div>
-      </div>
+      <!-- 종목 이름·설명 헤더는 뺐다 (2026-08-16 운영 제보) — 탭이 이미 어느
+           심볼인지 말하고 있고, 섹션 레이블이 이미 '주봉'이라고 말하고 있다.
+           같은 정보를 세 번 적으면 화면만 좁아진다. -->
       <div class="chart-controls">
         <button class="toggle-btn active" onclick="switchChart('SPY')"  id="btn-SPY" >SPY</button>
         <button class="toggle-btn"        onclick="switchChart('QQQ')"  id="btn-QQQ" >QQQ</button>
@@ -744,13 +740,6 @@ const TICKERS = {
   VIX:  { name: 'CBOE 공포지수',         file: '_VIX' },
   TNX:  { name: '미국 10년물 국채금리',  file: '_TNX' },
 };
-const CHART_META = {
-  SPY:  { name: 'SPY',  desc: 'S&P500 ETF (SPDR) — 주봉' },
-  QQQ:  { name: 'QQQ',  desc: '나스닥 100 ETF — 주봉' },
-  SOXX: { name: 'SOXX', desc: '반도체 ETF (iShares) — 주봉' },
-  TNX:  { name: 'TNX',  desc: '미국 10년물 국채금리 (^TNX) — 주봉' },
-};
-
 const weeklyCache = {};
 let activeChart   = 'SPY';
 let charts        = {};   // { price, rsi, macd }
@@ -1241,9 +1230,6 @@ function createSubChart(containerId, height, c, options = {}) {
 
 // ── 차트 렌더링 ───────────────────────────────────────────────────────────
 async function renderChart(symbol) {
-  const meta = CHART_META[symbol];
-  document.getElementById('chart-name').textContent = meta.name;
-  document.getElementById('chart-desc').textContent = meta.desc;
   ['SPY','QQQ','SOXX','TNX'].forEach(s =>
     document.getElementById('btn-' + s).classList.toggle('active', s === symbol)
   );
