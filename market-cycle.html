@@ -260,6 +260,35 @@ window.addEventListener('load', function(){
     }
     @media (prefers-color-scheme: dark) { .cors-banner code { background: rgba(255,214,10,0.12); } }
 
+    /* ── TimesFM 이번 달 계기판 (2026-08-16 신설) ──────────────────────
+       사이클 본 판정(주봉·수개월)과 시간축이 다른 보조 지표라 반드시 딴 상자에
+       담고, 판정 배지·색 어휘를 쓰지 않는다 — 여기는 좋다/나쁘다가 아니라
+       "이번 달 이만큼 흔들릴 수 있다"만 말하는 자리다. */
+    .tfm-gauge { background: var(--ez-card); border: 1px solid var(--ez-border);
+      border-radius: var(--ez-r); padding: 18px 18px 14px; margin-bottom: 24px;
+      box-shadow: var(--ez-shadow-sm); }
+    .tfm-gauge-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+    .tfm-gauge-title { font-size: 16px; font-weight: 800; color: var(--ez-text); }
+    .tfm-gauge-beta { font-size: 14px; font-weight: 700; color: var(--ez-blue);
+      border: 1px solid var(--ez-blue); border-radius: 999px; padding: 0 8px; }
+    .tfm-gauge-sub { font-size: 14px; color: var(--ez-text2); line-height: 1.55; margin: 4px 0 10px; }
+    .tfm-row { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+    .tfm-lab { font-size: 14px; font-weight: 700; color: var(--ez-text2); width: 46px; flex: none; }
+    .tfm-bar { position: relative; height: 20px; flex: 1; background: var(--ez-card2);
+      border-radius: 999px; overflow: hidden; }
+    .tfm-band { position: absolute; top: 0; bottom: 0;
+      background: color-mix(in srgb, var(--ez-blue) 22%, transparent); }
+    .tfm-band.inner { background: color-mix(in srgb, var(--ez-blue) 40%, transparent); }
+    .tfm-zero { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--ez-text3); opacity: .55; }
+    .tfm-med { position: absolute; top: 2px; bottom: 2px; width: 3px; border-radius: 2px; background: var(--ez-blue); }
+    .tfm-nums { font-size: 14px; color: var(--ez-text2); font-weight: 600; white-space: nowrap; }
+    .tfm-nums b { font-weight: 800; color: var(--ez-text); }
+    .tfm-gauge-note { font-size: 14px; color: var(--ez-text3); line-height: 1.5; margin-top: 8px; }
+    @media (max-width: 560px) {
+      .tfm-row { flex-wrap: wrap; }
+      .tfm-nums { flex-basis: 100%; margin-left: 56px; }
+    }
+
     /* ── 섹션 레이블 ── */
     .section-label {
       font-size: 16px; font-weight: 700; letter-spacing: 0.08em;
@@ -650,6 +679,20 @@ window.addEventListener('load', function(){
       <div class="signal-comment" id="comment-tnx" style="display:none;"></div>
     </div>
 
+  </div>
+
+  <!-- ── TimesFM 이번 달 계기판 (보조 지표 — 본 판정과 별개) ── -->
+  <div class="section-label">이번 달 계기판 — 보조 지표</div>
+  <div class="tfm-gauge" id="tfm-gauge" hidden>
+    <div class="tfm-gauge-head">
+      <span class="tfm-gauge-title">구글 TimesFM 1개월 예측 범위</span>
+      <span class="tfm-gauge-beta">베타</span>
+    </div>
+    <div class="tfm-gauge-sub">지수가 앞으로 한 달간 움직일 확률 범위 — 진한 띠 안에 들어올 확률 40%,
+      옅은 띠 안에 들어올 확률 80%, 파란 눈금이 가운데 값.</div>
+    <div id="tfm-gauge-rows"></div>
+    <div class="tfm-gauge-note" id="tfm-gauge-note">위 사이클 판정(주봉·수개월 시간축)과는 별개의 보조 지표 —
+      방향 판단이 아니라 이번 달 흔들림의 크기를 읽는 계기판.</div>
   </div>
 
   <!-- ── 차트 ── -->
@@ -1624,12 +1667,58 @@ function updateTimestamp() {
 }
 
 // ── 초기화 ────────────────────────────────────────────────────────────────
+// ── TimesFM 이번 달 계기판 (2026-08-16) ─────────────────────────────────
+// 본 판정 카드들과 완전히 분리된 보조 위젯. 데이터가 없거나 실패하면 상자째
+// 숨긴 채로 둔다(hidden 유지) — 이 위젯이 페이지 본론을 인질로 잡지 않는다.
+async function updateTfmGauge() {
+  try {
+    const res = await fetch('/data/timesfm-forecast.json');
+    if (!res.ok) return;
+    const d = await res.json();
+    const keys = ['QQQ', 'VOO', 'SOXX'].filter(k => d.symbols && d.symbols[k]);
+    if (!keys.length) return;
+    const pctOf = (v, last) => (v / last - 1) * 100;
+    const fmtP = (v) => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(1) + '%';
+    let span = 4;
+    keys.forEach(k => {
+      const sy = d.symbols[k], t = sy.q50.length - 1;
+      span = Math.max(span, Math.abs(pctOf(sy.q10[t], sy.lastClose)), Math.abs(pctOf(sy.q90[t], sy.lastClose)));
+    });
+    span *= 1.15;
+    const X = (pv) => (50 + (pv / span) * 50).toFixed(1) + '%';
+    // VOO 는 화면 라벨을 S&P500 로 — 이 페이지의 다른 카드들과 같은 어휘
+    const label = { QQQ: 'QQQ', VOO: 'S&P', SOXX: 'SOXX' };
+    document.getElementById('tfm-gauge-rows').innerHTML = keys.map(k => {
+      const sy = d.symbols[k], t = sy.q50.length - 1, last = sy.lastClose;
+      const q10 = pctOf(sy.q10[t], last), q30 = pctOf(sy.q30[t], last), q50 = pctOf(sy.q50[t], last),
+            q70 = pctOf(sy.q70[t], last), q90 = pctOf(sy.q90[t], last);
+      return `<div class="tfm-row">
+        <span class="tfm-lab">${label[k] || k}</span>
+        <div class="tfm-bar">
+          <div class="tfm-band" style="left:${X(q10)};width:calc(${X(q90)} - ${X(q10)})"></div>
+          <div class="tfm-band inner" style="left:${X(q30)};width:calc(${X(q70)} - ${X(q30)})"></div>
+          <div class="tfm-zero" style="left:50%"></div>
+          <div class="tfm-med" style="left:${X(q50)}"></div>
+        </div>
+        <span class="tfm-nums"><b>${fmtP(q50)}</b> · 범위 ${fmtP(q10)} ~ ${fmtP(q90)}</span>
+      </div>`;
+    }).join('');
+    const note = document.getElementById('tfm-gauge-note');
+    if (note) note.textContent = '위 사이클 판정(주봉·수개월 시간축)과는 별개의 보조 지표 — '
+      + '방향 판단이 아니라 이번 달 흔들림의 크기를 읽는 계기판. '
+      + (d.updatedKST || '') + ' 갱신, 실적·거시 이벤트 미반영.';
+    document.getElementById('tfm-gauge').hidden = false;
+  } catch (e) {
+    // 조용히 숨김 유지 — 본 판정에 영향 없음
+  }
+}
+
 async function initAll() {
   Object.keys(weeklyCache).forEach(k => delete weeklyCache[k]);
   updateTimestamp();
   await Promise.allSettled([
     updateSmaCard(), updateBreadthCard(), updateVixCard(),
-    updateCoppockCard(), updateTnxCard(),
+    updateCoppockCard(), updateTnxCard(), updateTfmGauge(),
   ]);
   await renderChart(activeChart);
 }
