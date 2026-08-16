@@ -11184,7 +11184,23 @@ var bedsideActive = false;
     try { localStorage.setItem(VIDBG_STORE_KEY, on ? "1" : "0"); }
     catch (error) { /* 무시 */ }
   }
-  function premiumOk() { return devForce || window.__FLIPZEN_PREMIUM__ === true; }
+  // 2026-08-16 운영자 확정 — "첫 2주는 프리미엄을 그대로 쓸 수 있어야
+  // 한다". 광고의 설치 후 14일 무료 창과 같은 정신. 네이티브 구버전은
+  // 설치일을 안 내려주므로 웹이 처음 본 날을 기록해 14일을 센다.
+  // (신버전 네이티브는 __FLIPZEN_PREMIUM__ 자체에 무료 창을 합쳐 내려줘서
+  //  이 폴백보다 정확하다. 스토리지가 지워지면 다시 시작되는 허점은
+  //  배경 영상 수준의 혜택이라 감수 — 광고 무료 창은 네이티브가 지킨다.)
+  var VIDBG_GRACE_MS = 14 * 24 * 60 * 60 * 1000;
+  function graceOk() {
+    try {
+      var v = localStorage.getItem("flipzen_first_seen");
+      if (!v) { v = String(Date.now()); localStorage.setItem("flipzen_first_seen", v); }
+      return (Date.now() - Number(v)) < VIDBG_GRACE_MS;
+    } catch (error) { return false; }
+  }
+  function premiumOk() {
+    return devForce || window.__FLIPZEN_PREMIUM__ === true || graceOk();
+  }
   function wifiOk() { return devForce || window.__FLIPZEN_WIFI__ === true; }
   function chargingOk() { return devForce || window.__FLIPZEN_CHARGING__ === true; }
   function autoDisable() {
