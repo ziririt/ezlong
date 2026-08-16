@@ -2451,12 +2451,29 @@ function _tfmWeekLine(sym) {
     }
     pUp = Math.round((1 - cdf) * 100);
   }
-  const pct = (v) => { const x = (v / last - 1) * 100; return (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1) + '%'; };
-  return `<div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;font-size:14px;color:var(--t2);margin:2px 0 8px;padding:7px 10px;border:1px solid var(--bd);border-radius:8px;">
-    <span style="font-weight:800;color:var(--ez-blue);">TimesFM 1주</span>
-    <span style="font-weight:700;color:var(--ez-blue);border:1px solid var(--ez-blue);border-radius:999px;padding:0 6px;font-size:14px;line-height:1.5;">베타</span>
-    <span>모델이 보는 상승 확률 <b style="color:var(--t1);">${pUp}%${capped}</b>${capped ? '' : ` (하락 ${100 - pUp}%)`} · 1주 범위 ${pct(qs[0])} ~ ${pct(qs[4])}</span>
-    <span style="color:var(--t3);">— 규칙 판단과 무관한 참고 지표</span>
+  // 범위 바 — 마켓 사이클 계기판과 같은 어휘(진한 띠 40%, 옅은 띠 80%, 파란 눈금 = 가운데 값).
+  // 0% 기준선이 항상 바의 정중앙에 오도록 대칭 눈금을 쓴다.
+  const rel = qs.map(v => (v / last - 1) * 100);
+  const span = Math.max(4, Math.abs(rel[0]), Math.abs(rel[4])) * 1.15;
+  const X = (pv) => (50 + (pv / span) * 50).toFixed(1) + '%';
+  const fmtP = (v) => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(1) + '%';
+  return `<div style="font-size:14px;color:var(--t2);margin:2px 0 8px;padding:8px 10px 9px;border:1px solid var(--bd);border-radius:8px;">
+    <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;margin-bottom:6px;">
+      <span style="font-weight:800;color:var(--ez-blue);">TimesFM 1주</span>
+      <span style="font-weight:700;color:var(--ez-blue);border:1px solid var(--ez-blue);border-radius:999px;padding:0 6px;font-size:14px;line-height:1.5;">베타</span>
+      <span>모델이 보는 상승 확률 <b style="color:var(--t1);">${pUp}%${capped}</b>${capped ? '' : ` (하락 ${100 - pUp}%)`}</span>
+    </div>
+    <div style="position:relative;height:20px;background:var(--bd);border-radius:999px;overflow:hidden;">
+      <div style="position:absolute;top:0;bottom:0;left:${X(rel[0])};width:calc(${X(rel[4])} - ${X(rel[0])});background:color-mix(in srgb, var(--ez-blue) 22%, transparent);"></div>
+      <div style="position:absolute;top:0;bottom:0;left:${X(rel[1])};width:calc(${X(rel[3])} - ${X(rel[1])});background:color-mix(in srgb, var(--ez-blue) 40%, transparent);"></div>
+      <div style="position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--t3);opacity:.55;"></div>
+      <div style="position:absolute;top:2px;bottom:2px;left:${X(rel[2])};width:3px;border-radius:2px;background:var(--ez-blue);"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:14px;color:var(--t3);font-weight:600;">
+      <span>${fmtP(rel[0])}</span>
+      <span style="color:var(--t2);">가운데 ${fmtP(rel[2])}</span>
+      <span>${fmtP(rel[4])}</span>
+    </div>
   </div>`;
 }
 
