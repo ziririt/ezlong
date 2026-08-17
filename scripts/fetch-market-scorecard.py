@@ -2035,21 +2035,40 @@ def collapsed_clause_violation(entry):
     return None
 
 
+# 정책금리와 시장금리를 이름만 보고 갈라내는 표지.
+_POLICY_MARK = r'정책금리|기준금리|Fed|연준|FOMC|금리\s*인상|금리\s*인하|긴축|완화\s*전환'
+_MARKET_MARK = r'국채|10년물|시장금리|채권|수익률'
+
 def rate_on_both_sides(entry):
-    """금리가 긍정·부정 양쪽에 동시에 올라온 카드. 정책금리 기대와 시장금리 실측은
-    다른 것이라 공존이 가능하지만, 문장이 스스로 구분하지 않으면 독자에게는 그냥
-    모순이다. 집행하지 않고 재판정 사유로만 쓴다 — 둘 다 사실일 수 있어서다."""
+    """금리가 긍정·부정 양쪽에 올라왔는데 **두 이름이 서로를 구분하지 못하는** 카드.
+
+    정책금리 기대와 시장금리 실측은 다른 것이라 공존 자체는 정상이다 —
+    '정책금리 인상 기대 후퇴'(긍정)와 '미10년 국채금리 상승'(부정)은 둘 다 사실일 수
+    있고, 이름이 이미 구분하고 있으니 걸지 않는다. 문제는 양쪽 다 그냥 '금리'라고만
+    적어 독자가 모순으로 읽는 경우다. 집행하지 않고 재판정 사유로만 쓴다.
+    (2026-08-17 첫 판 오탐 정정 — 이름이 이미 구분된 카드까지 잡아 재판정을 낭비했다.)"""
     def hit(side):
         for f in entry.get(side) or []:
-            if int(f.get('score', 0) or 0) > 0 and re.search(r'금리', f.get('name', '') or ''):
-                return f.get('name')
+            if int(f.get('score', 0) or 0) > 0 and re.search(r'금리|수익률', f.get('name', '') or ''):
+                return f.get('name') or ''
         return None
     p, n = hit('positive_factors'), hit('negative_factors')
-    if p and n:
-        return (f"금리 양쪽 등장: 긍정 '{p}' 와 부정 '{n}' 이 한 화면에 있다 — 정책금리(Fed) "
-                f"기대와 시장금리(국채) 실측은 다른 것이니, 남기려면 두 이름에 그 구분을 "
-                f"드러내라. 아니면 하나로 합쳐라")
-    return None
+    if not (p and n):
+        return None
+    def kind(name):
+        pol = bool(re.search(_POLICY_MARK, name, re.I))
+        mkt = bool(re.search(_MARKET_MARK, name))
+        if pol and not mkt:
+            return 'policy'
+        if mkt and not pol:
+            return 'market'
+        return 'vague'
+    kp, kn = kind(p), kind(n)
+    if kp != 'vague' and kn != 'vague' and kp != kn:
+        return None          # 이름이 이미 정책금리 / 시장금리를 갈라놨다 — 정상
+    return (f"금리 양쪽 등장: 긍정 '{p}' 와 부정 '{n}' 이 한 화면에 있는데 이름만으로는 "
+            f"구분이 안 된다 — 정책금리(Fed)인지 시장금리(국채)인지 이름에 드러내라. "
+            f"아니면 하나로 합쳐라")
 
 
 def direction_offenders(entry, snap=None):
