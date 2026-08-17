@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 실험실 페이지 — 운영자용. 메뉴·사이트맵에 없고 검색에도 안 잡힌다. -->
+<meta name="robots" content="noindex, nofollow">
+<title>카드 교차 감사 — 여러 장을 나란히 놓아야 보이는 것 | ezlong.com</title>
+<link rel="stylesheet" href="ez-design.css">
+<link rel="icon" type="image/svg+xml" href="/icons/favicon.svg?v=20260809">
+<style>
+.au-wrap { max-width: 780px; margin: 0 auto; padding: 28px 16px 80px; }
+.au-eyebrow { font-size: 14px; font-weight: 800; letter-spacing: .12em; color: var(--ez-blue); text-transform: uppercase; }
+.au-h1 { font-size: 27px; font-weight: 800; letter-spacing: -.02em; margin: 6px 0 10px; color: var(--ez-text); }
+.au-lede { font-size: 16px; color: var(--ez-text2); line-height: 1.65; margin-bottom: 10px; }
+.au-meta { font-size: 14px; color: var(--ez-text3); margin-bottom: 22px; line-height: 1.6; }
+.au-stat { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.au-chip { background: var(--ez-card2); border: 1px solid var(--ez-border); border-radius: 12px; padding: 10px 14px; }
+.au-chip .k { font-size: 14px; color: var(--ez-text3); font-weight: 700; }
+.au-chip .v { font-size: 21px; font-weight: 800; color: var(--ez-text); font-variant-numeric: tabular-nums; }
+.au-chip.warn .v { color: var(--ez-red); }
+.au-chip.ok .v { color: var(--ez-green); }
+.au-card { background: var(--ez-surface); border: 1px solid var(--ez-border); border-radius: 16px; padding: 16px 16px 14px; margin-bottom: 14px; }
+.au-card.high { border-left: 4px solid var(--ez-red); }
+.au-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.au-tag { font-size: 14px; font-weight: 800; padding: 1px 9px; border-radius: 999px; color: #fff; background: var(--ez-text3); }
+.au-tag.high { background: var(--ez-red); }
+.au-title { font-size: 17px; font-weight: 800; color: var(--ez-text); letter-spacing: -.01em; }
+.au-detail { font-size: 16px; color: var(--ez-text2); line-height: 1.6; margin: 4px 0 8px; }
+.au-samples { border-top: 1px dashed var(--ez-border); padding-top: 8px; }
+.au-row { font-size: 14px; color: var(--ez-text2); line-height: 1.6; padding: 3px 0; }
+.au-row b { color: var(--ez-text); font-weight: 800; }
+.au-row .pos { color: var(--ez-green); font-weight: 800; }
+.au-row .neg { color: var(--ez-red); font-weight: 800; }
+.au-row .gap { font-variant-numeric: tabular-nums; font-weight: 800; color: var(--ez-text); }
+.au-empty { font-size: 16px; color: var(--ez-text2); background: var(--ez-card2); border-radius: 14px; padding: 20px; text-align: center; line-height: 1.6; }
+.au-foot { font-size: 14px; color: var(--ez-text3); line-height: 1.65; margin-top: 24px; }
+.au-code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 14px; background: rgba(120,120,128,.14); border-radius: 6px; padding: 1px 6px; color: var(--ez-text); }
+</style>
+</head>
+<body>
+<script src="/ez-nav.js"></script>
+
+<div class="au-wrap">
+  <div class="au-eyebrow">Labs</div>
+  <h1 class="au-h1">카드 교차 감사</h1>
+  <p class="au-lede">
+    긍정vs부정 카드를 만드는 검사들은 전부 <b>한 장을 만드는 순간</b>에만 돕니다.
+    같은 주제가 반나절 만에 편을 갈아타는 것, 점수는 고정인데 이유만 바뀌는 것은
+    그 순간에는 안 보이고 <b>여러 장을 나란히 놓아야</b> 보입니다. 이 페이지가 그걸 봅니다.
+  </p>
+  <p class="au-meta" id="meta">불러오는 중…</p>
+
+  <div class="au-stat" id="stat"></div>
+  <div id="list"></div>
+
+  <p class="au-foot">
+    원장은 git 이력입니다. 카드 파일은 최근 몇 장만 들고 있지만 커밋 이력에는 게시된
+    모든 카드가 남아 있어, 지운 카드까지 포함해 되살려 봅니다.<br>
+    이 감사는 아무것도 고치지 않습니다. 발견만 하고 남깁니다 — 지나간 판정을 소급해
+    조용히 바꾸는 쪽이 더 나쁘다고 봤기 때문입니다(60항).<br>
+    관련 — <span class="au-code">scripts/audit-scorecard-history.py</span>,
+    매일 아침 7시 실행, <span class="au-code">CLAUDE.md</span> 61항.
+  </p>
+</div>
+
+<script>
+(function () {
+  var CHECK_KO = {
+    C1: '편 갈아타기', C2: '점수 고정', C3: '재탕',
+    C4: '총점 쏠림', C5: '규칙 소급', C6: '주제 편식'
+  };
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  function sideSpan(s) {
+    return '<span class="' + (s === '긍정' ? 'pos' : 'neg') + '">' + esc(s) + '</span>';
+  }
+  function sampleRow(check, s) {
+    if (check === 'C1' && s.from) {
+      return '<div class="au-row"><span class="gap">' + s.gapHours + '시간</span> · ' +
+        sideSpan(s.from.side) + ' <b>' + esc(s.from.name) + '</b> (' + esc(s.from.score) + '점, ' +
+        esc(s.from.at) + ')<br>&nbsp;&nbsp;&nbsp;→ ' + sideSpan(s.to.side) + ' <b>' +
+        esc(s.to.name) + '</b> (' + esc(s.to.score) + '점, ' + esc(s.to.at) + ')</div>';
+    }
+    if (check === 'C2' && s.cats) {
+      return '<div class="au-row">' + esc(s.at) + ' · ' + esc(s.cats.join(', ')) + '</div>';
+    }
+    if (check === 'C5' && s.why) {
+      return '<div class="au-row"><b>' + esc(s.at) + '</b> · ' + esc(s.why) + '</div>';
+    }
+    return '<div class="au-row">' + esc(s.at) + (s.score != null ? ' · ' + esc(s.score) + '점' : '') + '</div>';
+  }
+
+  fetch('/data/scorecard-audit.json?t=' + Date.now())
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (d) {
+      document.getElementById('meta').innerHTML =
+        esc(d.updatedKST) + ' 기준 · 원장 ' + esc(d.cardsInLedger) + '장(최근 ' +
+        esc(d.ledgerDays) + '일) 중 최근 ' + esc(d.windowDays) + '일 ' +
+        esc(d.cardsInWindow) + '장을 검사<br>' + esc(d.firstCard) + ' ~ ' + esc(d.lastCard);
+
+      document.getElementById('stat').innerHTML =
+        '<div class="au-chip"><div class="k">검사한 카드</div><div class="v">' + esc(d.cardsInWindow) + '</div></div>' +
+        '<div class="au-chip ' + (d.highCount ? 'warn' : 'ok') + '"><div class="k">주의</div><div class="v">' + esc(d.highCount) + '</div></div>' +
+        '<div class="au-chip"><div class="k">참고</div><div class="v">' + esc((d.findings || []).length - d.highCount) + '</div></div>';
+
+      var list = document.getElementById('list');
+      if (!d.findings || !d.findings.length) {
+        list.innerHTML = '<div class="au-empty">이번 창에서는 걸린 게 없습니다.<br>' +
+          '검사가 완벽해서가 아니라, 이 검사들이 보는 범위 안에서 조용했다는 뜻입니다.</div>';
+        return;
+      }
+      list.innerHTML = d.findings.map(function (f) {
+        var hi = f.severity === 'high';
+        return '<div class="au-card' + (hi ? ' high' : '') + '">' +
+          '<div class="au-head"><span class="au-tag' + (hi ? ' high' : '') + '">' +
+          esc(CHECK_KO[f.check] || f.check) + '</span>' +
+          '<span class="au-title">' + esc(f.title) + '</span></div>' +
+          '<div class="au-detail">' + esc(f.detail) + '</div>' +
+          ((f.samples && f.samples.length)
+            ? '<div class="au-samples">' + f.samples.map(function (s) { return sampleRow(f.check, s); }).join('') + '</div>'
+            : '') +
+          '</div>';
+      }).join('');
+    })
+    .catch(function () {
+      document.getElementById('meta').textContent =
+        '리포트를 아직 못 읽었습니다. 첫 감사가 돌기 전이거나 파일이 없습니다.';
+    });
+})();
+</script>
+</body>
+</html>
