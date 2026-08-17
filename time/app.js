@@ -11218,6 +11218,10 @@ var bedsideActive = false;
     catch (error) { tag = ""; }
     if (/rain|drizzle|storm|thunder|shower/.test(tag)) return "rain";
     if (/snow|sleet|hail|blizzard/.test(tag)) return "snow";
+    // 2026-08-17 — cloudy 세분화: 흐림·안개는 전용 컬렉션을 먼저 찾는다.
+    // partly-cloudy(구름조금)는 밝은 하늘이라 기존 '그외'에 남긴다.
+    // cloudy 태그 영상이 아직 없으면 candidates()가 '그외'로 폴백하므로 무해.
+    if (tag === "cloudy" || tag === "mist" || /overcast|fog/.test(tag)) return "cloudy";
     return "other";
   }
   // 시간대 3분류(2026-08-16) — 밤(20~04시)·해질무렵(17~20시)·낮.
