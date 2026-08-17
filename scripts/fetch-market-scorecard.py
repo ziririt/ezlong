@@ -837,6 +837,46 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
   좋은 예: name '고용 둔화에도 금리 상승', desc '인하 기대보다 재정·수급 우려 우세, 성장주 압박'
 - 같은 카드 안의 재료들이 서로 모순돼 보이면 summary에서 그 모순을 인정하고 '방향성 혼조'로 서술하라.
 
+=== 방향 없는 상태는 재료가 아니다 (60항) ===
+- '관망', '눈치보기', '숨 고르기', '방향성 탐색', '보합', '혼조 지속' 처럼 **방향이 없는
+  상태**를 positive_factors·negative_factors 의 재료 이름으로 쓰지 마라. 관망은 시장이
+  방향을 못 정했다는 뜻이라 오르지도 내리지도 않는다. 배경이지 재료가 아니다.
+- 실제 사고: 같은 'Fed 관망'이 한 사이클에는 **부정 10점**, 다음 사이클에는 **긍정 25점**
+  으로 나갔다. 새 사실이 생겨서가 아니라, 부호가 없는 재료라 그때그때 빈 칸으로 갔을 뿐이다.
+- 관망의 **이유**가 재료다. 관망 자체가 아니라 "무엇 때문에 못 정하고 있는가"를 쓰거나,
+  꼭 언급해야 하면 key_event 나 summary 문장에서 배경으로 다뤄라.
+
+=== 이름은 내용과 같은 쪽을 가리켜야 한다 (60항) ===
+- 독자는 재료의 **이름**을 먼저 읽고, 그게 긍정 칸에 있는지 부정 칸에 있는지를 본다.
+  이름과 칸이 어긋나면 카드는 한눈에 거짓말을 한다.
+- 나쁜 예 (실제 사고): 긍정 25점 재료의 이름이 'Fed 금리 인상 관망 심리'. 내용은
+  "인상 베팅이 과도했다는 평가 → 인상 리스크 완화"라 방향은 긍정이 맞는데, 독자는
+  긍정 칸에서 '금리 인상'이라는 글자를 먼저 읽는다.
+- 좋은 예: 'Fed 금리 인상 기대 후퇴' / '추가 인상 가능성 축소'. 이름 끝까지 써서
+  방향을 못 박아라. 긍정 칸 이름에 '금리 인상·긴축·매파'를 완화어 없이 쓰지 말고,
+  부정 칸 이름에 '금리 인하·완화 전환·비둘기'를 그대로 쓰지 마라.
+
+=== 금리를 말할 때 (60항) ===
+- **정책금리(Fed)와 시장금리(국채)는 다른 것이다.** 둘 다 카드에 넣어야 한다면 이름에서
+  구분하라 — '정책금리 인상 기대 후퇴' / '시장금리(10년물) 상승'. 구분 없이 '금리'가
+  긍정·부정 양쪽에 있으면 독자에게는 그냥 모순이다.
+- **용어를 섞지 마라.** 정책금리는 '인상·인하'하고, 시장금리(국채)는 '상승·하락'한다.
+  '시장 금리 인상'·'국채금리 인하' 같은 조합은 존재하지 않는 사건이다.
+  실사고: 긍정 재료에 "시장 금리 인상 리스크 완화"라 써놓고 같은 카드 부정 재료는
+  "미10년 국채금리 상승"이었다 — 한 카드가 시장금리가 오른다고도, 안 오른다고도 했다.
+
+=== 근거 문장에서 조사를 지우지 마라 (60항) ===
+- 명사만 이어 붙이면 **누가 무엇을 어떻게 봤는지**가 사라지고, 방향이 두 갈래로 읽힌다.
+- 실사고: "골드만삭스 등 Fed 금리 인상 베팅 과도 평가" →
+  (가) 골드만이 "시장의 인상 베팅이 과도하다"고 봤다(→ 인상 가능성 낮다, 긍정)
+  (나) 골드만 등이 인상에 과도하게 베팅하고 있다(→ 인상 온다, 부정).
+  정반대 두 뜻인데 문장이 어느 쪽인지 말하지 않는다. 이런 desc 는 점수를 실을 수 없다.
+- 좋은 예: '골드만삭스는 시장의 금리 인상 베팅이 과도하다고 평가 — 인상 가능성 축소'.
+  주체·대상·방향을 조사까지 붙여 끝까지 쓴다. 분석 본문의 개조식 문체와는 별개 규칙이다.
+- 국채금리 수치는 **수준과 변화를 함께** 적어라. 둘 다 %라서 하나만 적으면 반드시
+  오독된다. 좋은 예: '미10년 국채금리 4.70%(+1.19%) 상승'.
+  나쁜 예: '미10년 국채금리 1.19% 상승' (금리가 1.19%인 것으로 읽힌다).
+
 === 동일 기업·티커 양측 동시 등장 절대 금지 ===
 - MSFT, AAPL, NVDA, TSLA, GOOGL, AMZN, META, SOXX, QQQ, SPY 등 특정 기업·티커가
   positive_factors와 negative_factors 양쪽에 동시에 등장하는 것은 절대 금지.
@@ -1502,6 +1542,16 @@ def validate_content(entry, session_code='', snap=None):
                                f"원인(뉴스·이벤트)으로 교체 필요")
                 break
 
+    # ── 체크 9: 금리가 긍정·부정 양쪽에 (2026-08-17 신설, 60항) ──────────────
+    _both = rate_on_both_sides(entry)
+    if _both:
+        errors.append(_both)
+
+    # ── 체크 10: 조사 없는 명사 나열로 방향이 두 갈래 (2026-08-17 신설, 60항) ──
+    _collapsed = collapsed_clause_violation(entry)
+    if _collapsed:
+        errors.append(_collapsed)
+
     # ── 체크 8: 주말을 '휴장'이라 부름 (2026-08-17 신설, 58항) ────────────────
     # 성동님 지시 — "사람들은 토/일요일 주식시장을 하지 않는 것을 '휴장'이라고
     # 하지 않는다. 그러므로 '휴장'이라고 하면 평일에 주식시장 하지 않는 것으로
@@ -1547,6 +1597,43 @@ def scrub_weekend_closure_word(entry, session_code=''):
             s = s.replace('휴장 중이', '마감된 상태').replace('휴장 중', '마감된 상태')
             s = s.replace('휴장일', '비거래일').replace('휴장', '마감')
         return s
+
+    for key in ('positive_factors', 'negative_factors', 'mixed_factors'):
+        for f in (entry.get(key) or []):
+            for k in ('name', 'desc'):
+                if f.get(k):
+                    f[k] = fix(f[k])
+    kev = entry.get('key_event') or {}
+    for k in ('name', 'why'):
+        if kev.get(k):
+            kev[k] = fix(kev[k])
+    return entry
+
+
+# ─── 국채금리 수치 표기 교정 (60항) ──────────────────────────────────────────
+# 금리는 수준도 %, 변화도 %다. 하나만 적으면 독자가 반드시 헷갈린다 —
+# "미10년 국채금리 1.19% 상승"은 금리가 1.19%라는 말로 읽힌다(실제 4.70%였다).
+# 글에 적힌 숫자가 실측 변화율과 같을 때만, 수준을 앞에 붙여준다. 다른 숫자면
+# 손대지 않는다 — 모르는 수치를 코드가 지어내는 순간 더 큰 사고가 된다.
+_YIELD_TXT = re.compile(r'(국채\s*금리|국채\s*수익률|10년물)([^0-9%]{0,8})'
+                        r'(\d+(?:\.\d+)?)\s*%')
+
+def fix_yield_number(entry, snap):
+    if not snap:
+        return entry
+    lvl, pct = snap.get('yield_level'), snap.get('yield_pct')
+    if lvl is None or pct is None:
+        return entry
+
+    def fix(s):
+        if not s or '%' not in s:
+            return s
+        def rep(m):
+            n = float(m.group(3))
+            if abs(n - abs(pct)) > 0.05:        # 변화율이 아닌 숫자 — 손대지 않는다
+                return m.group(0)
+            return f"{m.group(1)}{m.group(2)}{lvl:.2f}%({pct:+.2f}%)"
+        return _YIELD_TXT.sub(rep, s)
 
     for key in ('positive_factors', 'negative_factors', 'mixed_factors'):
         for f in (entry.get(key) or []):
@@ -1607,6 +1694,9 @@ def market_snapshot(equity_rows, macro_rows):
         # G6(미세 변동) 판정에 쓴다 — 금리·달러도 실측 상대변동을 봐야 한다.
         'yield_pct': _gr_pct(macro_rows, '미10년 국채금리(%):'),
         'dxy_pct': _gr_pct(macro_rows, '달러인덱스 DXY:'),
+        # 60항 — 금리는 '수준(4.70%)'과 '변화(+1.19%)'가 둘 다 %라서, 하나만 적으면
+        # 반드시 오독된다. 실사고: "국채금리 1.19% 상승"이 금리가 1.19%인 것처럼 읽혔다.
+        'yield_level': _gr_level(macro_rows, '미10년 국채금리(%):'),
     }
 
 def fetch_spy_off_high():
@@ -1844,6 +1934,124 @@ def anonymous_evidence(entry):
     return out
 
 
+# ─── 60항: 방향 없는 상태는 재료가 아니다 / 이름이 내용을 배신하지 않는다 ────
+# 2026-08-17 실사고. 같은 'Fed 관망'이 한 사이클은 **부정 10점**, 다음 사이클은
+# **긍정 25점**으로 나갔다. 새 사실이 생겨서가 아니다 — 관망은 시장이 방향을 못
+# 정했다는 뜻이라 애초에 부호가 없고, 부호가 없으니 그때그때 필요한 칸으로 간다.
+# 편이 필요할 때마다 부호가 바뀌는 것은 재료가 아니라 채움재다.
+_NO_DIR_NAME = (r'관망|눈치\s*보기|지켜보기|대기\s*심리|방향성\s*탐색|숨\s*고르기|'
+                r'혼조세?\s*지속|보합')
+
+def no_direction_offenders(entry):
+    """이름이 '방향 없음'을 말하는데 긍정·부정 칸에서 점수를 받은 재료.
+    관망은 배경이지 재료가 아니다 — 필요하면 핵심이슈 문장에서 다룬다."""
+    out = []
+    for side in ('positive_factors', 'negative_factors'):
+        side_ko = '긍정' if side == 'positive_factors' else '부정'
+        for f in entry.get(side) or []:
+            if int(f.get('score', 0) or 0) <= 0:
+                continue
+            name = f.get('name', '') or ''
+            if re.search(_NO_DIR_NAME, name):
+                out.append((side, f, f"무방향 재료: {side_ko} '{name}': 관망·눈치보기 같은 "
+                                     f"'방향 없음'은 오르지도 내리지도 않는다 — 점수를 실을 "
+                                     f"재료가 아니라 배경이다"))
+    return out
+
+
+# 이름과 내용의 방향이 어긋난 재료. 실사고 — 긍정 25점 재료의 이름이
+# 'Fed 금리 인상 관망 심리'였다. 내용은 "인상 베팅이 과도했다 → 인상 리스크 완화"라
+# 방향 자체는 긍정이 맞는데, 독자는 긍정 칸에서 '금리 인상'이라는 글자를 먼저 읽는다.
+# 카드가 한눈에 거짓말을 하는 셈이다. 이름은 내용과 같은 쪽을 가리켜야 한다.
+_HAWK_NAME = r'금리\s*인상|긴축|매파'          # 주식에 불리한 쪽
+_DOVE_NAME = r'금리\s*인하|완화\s*전환|비둘기'  # 주식에 유리한 쪽
+_EASE_TAIL = (r'완화|후퇴|축소|약화|진정|해소|기대\s*감소|가능성\s*축소|'
+              r'과도|되돌림|일단락|종료|중단|없|미미')
+
+def name_betrays_content(entry):
+    """긍정 칸 이름이 매파 단어로 시작하거나, 부정 칸 이름이 비둘기 단어로 시작하는데
+    그 이름 안에 '완화·후퇴' 같은 꼬리가 없는 경우 — 이름만 읽으면 편이 뒤집힌다."""
+    out = []
+    for side, bad_re, ko in (('positive_factors', _HAWK_NAME, '긍정'),
+                             ('negative_factors', _DOVE_NAME, '부정')):
+        for f in entry.get(side) or []:
+            if int(f.get('score', 0) or 0) <= 0:
+                continue
+            name = f.get('name', '') or ''
+            if re.search(bad_re, name) and not re.search(_EASE_TAIL, name):
+                out.append((side, f, f"이름-내용 불일치: {ko} '{name}': 이름이 반대편을 "
+                                     f"가리킨다 — 내용이 '기대 후퇴·리스크 완화'라면 이름도 "
+                                     f"'{'금리 인상 기대 후퇴' if ko == '긍정' else '금리 인하 기대 후퇴'}'"
+                                     f"처럼 끝까지 써라"))
+    return out
+
+
+# 금리 용어 — 정책금리는 '인상·인하', 시장금리는 '상승·하락'이다. 이건 취향이 아니라
+# 다른 사건을 가리키는 다른 말이다. 섞어 쓰면 문장이 스스로 모순된다.
+# 실사고(2026-08-17): 긍정 재료에 "시장 금리 인상 리스크 완화"라 써놓고, 같은 카드
+# 부정 재료는 "미10년 국채금리 상승"이었다. 글자 그대로 읽으면 한 카드가 시장금리가
+# 오른다고도 하고 안 오른다고도 한 셈이다.
+_RATE_TERM_MISUSE = re.compile(r'(시장\s*금리|국채\s*금리|채권\s*금리|10년물|시중\s*금리)'
+                               r'[^.,·]{0,8}?(인상|인하)')
+
+def rate_term_offenders(entry):
+    out = []
+    for side in ('positive_factors', 'negative_factors'):
+        side_ko = '긍정' if side == 'positive_factors' else '부정'
+        for f in entry.get(side) or []:
+            if int(f.get('score', 0) or 0) <= 0:
+                continue
+            name = f.get('name', '') or ''
+            text = name + ' ' + (f.get('desc', '') or '')
+            mm = _RATE_TERM_MISUSE.search(text)
+            if mm:
+                out.append((side, f, f"금리 용어 오류: {side_ko} '{name}': "
+                                     f"'{mm.group(0).strip()}' — 정책금리(Fed)는 인상·인하하고, "
+                                     f"시장금리(국채)는 상승·하락한다. 둘을 섞으면 문장이 "
+                                     f"스스로 모순된다"))
+    return out
+
+
+# 명사만 이어 붙여 '누가 무엇을'이 사라진 근거 문장. 실사고(2026-08-17):
+# "골드만삭스 등 Fed 금리 인상 베팅 과도 평가" — (가) 골드만이 '시장의 인상 베팅이
+# 과도하다'고 봤다(긍정) (나) 골드만 등이 인상에 과도하게 베팅한다(부정), 두 뜻이
+# 정반대인데 문장은 어느 쪽인지 말하지 않는다. 34항의 명사형 개조식은 분석 본문의
+# 문체이지, 방향이 걸린 근거 문장에서 조사를 지워도 된다는 뜻이 아니다.
+_COLLAPSED_EVAL = re.compile(r'(?<![을를이가])\s(과도|과소|부정적|긍정적)\s*(평가|반영|해석)')
+
+def collapsed_clause_violation(entry):
+    hits = []
+    for side in ('positive_factors', 'negative_factors', 'mixed_factors'):
+        for f in entry.get(side) or []:
+            text = (f.get('name', '') or '') + ' ' + (f.get('desc', '') or '')
+            m2 = _COLLAPSED_EVAL.search(text)
+            if m2:
+                hits.append(f"'{(f.get('name') or '').strip()}'")
+    if hits:
+        return ("주어·목적어 없는 명사 나열: " + ', '.join(hits) +
+                " — '누가 무엇을 어떻게 봤는지'를 조사까지 붙여 써라. "
+                "나쁜 예: 'Fed 금리 인상 베팅 과도 평가'(두 뜻으로 읽힌다). "
+                "좋은 예: '골드만삭스는 시장의 인상 베팅이 과도하다고 평가'")
+    return None
+
+
+def rate_on_both_sides(entry):
+    """금리가 긍정·부정 양쪽에 동시에 올라온 카드. 정책금리 기대와 시장금리 실측은
+    다른 것이라 공존이 가능하지만, 문장이 스스로 구분하지 않으면 독자에게는 그냥
+    모순이다. 집행하지 않고 재판정 사유로만 쓴다 — 둘 다 사실일 수 있어서다."""
+    def hit(side):
+        for f in entry.get(side) or []:
+            if int(f.get('score', 0) or 0) > 0 and re.search(r'금리', f.get('name', '') or ''):
+                return f.get('name')
+        return None
+    p, n = hit('positive_factors'), hit('negative_factors')
+    if p and n:
+        return (f"금리 양쪽 등장: 긍정 '{p}' 와 부정 '{n}' 이 한 화면에 있다 — 정책금리(Fed) "
+                f"기대와 시장금리(국채) 실측은 다른 것이니, 남기려면 두 이름에 그 구분을 "
+                f"드러내라. 아니면 하나로 합쳐라")
+    return None
+
+
 def direction_offenders(entry, snap=None):
     """방향·국면·크기 규칙을 어긴 '점수를 실은' 재료를 (편, 재료, 사유)로 돌려준다.
 
@@ -1918,7 +2126,24 @@ def direction_offenders(entry, snap=None):
                 found.append((side, f, f"{side_ko} '{name}': " + ' / '.join(reasons)))
     # 익명 근거도 같은 집행 경로를 탄다 — 점수를 잃고 혼조로 내려간다
     found.extend(anonymous_evidence(entry))
-    return found
+    # 60항 — 무방향 재료와 이름-내용 불일치도 같은 경로. 둘 다 '읽는 사람이
+    # 카드를 오해하게 만드는' 잘못이라, 경고만 남기면 그대로 화면에 나간다.
+    found.extend(no_direction_offenders(entry))
+    found.extend(name_betrays_content(entry))
+    found.extend(rate_term_offenders(entry))
+
+    # 한 재료가 여러 규칙에 걸리면 항목을 하나로 합친다. 이 함수는 집행에도 쓰이는데,
+    # 중복이 남으면 같은 재료가 혼조 칸에 두 번 들어가 화면에 두 번 보인다.
+    # (본 루프는 원래 하나만 만들지만, 뒤에 붙는 세 검사는 각자 따로 만든다.)
+    merged, order = {}, []
+    for side, f, why in found:
+        k = id(f)
+        if k not in merged:
+            merged[k] = [side, f, [why]]
+            order.append(k)
+        else:
+            merged[k][2].append(why)
+    return [(s, f, ' / '.join(w)) for s, f, w in (merged[k] for k in order)]
 
 
 def score_frozen_violation(entry, prev_entries, snap=None):
@@ -2302,6 +2527,8 @@ def main():
 
     # 4-4. 주말 '휴장' 표현 최종 치환 (58항) — 재판정으로도 안 고쳐진 잔여분 처리
     entry = scrub_weekend_closure_word(entry, session_code)
+    # 4-5. 국채금리 수치 표기 교정 (60항) — 수준과 변화가 둘 다 %라 하나만 적으면 오독된다
+    entry = fix_yield_number(entry, snap)
 
     # 5. 신규 항목 추가
     entries = data.get("entries", [])
