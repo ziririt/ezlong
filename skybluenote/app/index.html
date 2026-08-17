@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DY4BGP444"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8DY4BGP444');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>AI 답변 정리기 — 붙여넣고 누르면 끝 | Skyblue Note</title>
+
+<meta name="description" content="ChatGPT·클로드·제미나이 답변을 붙여넣으면 별표와 우물 정, 이모지, 군더더기 인사말이 한 번에 걷힙니다. 깨진 표는 복구되고 엑셀로 바로 붙습니다. 설치도 로그인도 없이 브라우저에서 바로. 글은 서버로 가지 않습니다.">
+<meta name="keywords" content="마크다운 제거, AI 답변 정리, ChatGPT 정리, 별표 제거, 표 복구, TSV 변환, 마크다운 지우기, 웹 도구">
+<meta name="author" content="김성동">
+<link rel="canonical" href="https://ezlong.com/skybluenote/app">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI 답변 정리기 — 붙여넣고 누르면 끝">
+<meta property="og:description" content="별표와 우물 정, 이모지, 군더더기가 한 번에 걷힙니다. 깨진 표는 복구됩니다. 설치 없이 브라우저에서.">
+<meta property="og:url" content="https://ezlong.com/skybluenote/app">
+<meta property="og:image" content="https://ezlong.com/og/og-1200x630.png?v=20260817">
+<meta property="og:site_name" content="EZLONG">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 답변 정리기 — 붙여넣고 누르면 끝">
+<meta name="twitter:description" content="별표와 우물 정, 이모지, 군더더기가 한 번에 걷힙니다.">
+<meta name="twitter:image" content="https://ezlong.com/og/og-1200x630.png?v=20260817">
+
+<link rel="icon" href="/icons/favicon.ico?v=20260809" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/icons/favicon.svg?v=20260809">
+<link rel="apple-touch-icon" href="/icons/pwa-180.png?v=20260809">
+<meta name="theme-color" content="#EAF2F8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#080C18" media="(prefers-color-scheme: dark)">
+
+<!-- 이 페이지는 광고 지면임을 스스로 선언한다. ez-ads.js 가 이 표시가 없는
+     페이지에는 아무것도 붙이지 않는다(2026-08-17 게이트 계약). -->
+<meta name="ez-ads" content="on">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Skyblue Note 웹 정리기",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "JavaScript",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "author": { "@type": "Person", "name": "김성동" },
+  "publisher": { "@type": "Organization", "name": "EZLONG", "url": "https://ezlong.com" },
+  "description": "AI 답변을 붙여넣으면 마크다운 기호와 군더더기가 걷히고, 깨진 표가 복구됩니다. 처리는 전부 브라우저 안에서 이루어집니다.",
+  "url": "https://ezlong.com/skybluenote/app"
+}
+</script>
+
+<style>
+/* 등폭 글꼴은 표 때문에 필요하다. 이 앱은 한글을 영문 두 배 너비로 셈해서
+   칸을 맞춘다 — 그 셈이 맞는 글꼴이라야 표가 어긋나지 않는다.
+   (2026-08-14 측정: D2Coding 에서 '─'는 정확히 한 칸이다) */
+@font-face{ /* 영문·한글·기호·박스 드로잉 */
+  font-family:"D2Coding"; font-style:normal; font-weight:400; font-display:swap;
+  src:url("../fonts/D2Coding-core.ttf") format("truetype");
+  unicode-range:U+0020-00FF,U+2000-206F,U+2190-21FF,U+2500-257F,U+25A0-25FF,
+    U+3000-303F,U+3130-318F,U+AC00-D7A3,U+FF00-FFEF;
+}
+@font-face{ /* 가나·한자 — 필요할 때만 내려받는다 */
+  font-family:"D2Coding"; font-style:normal; font-weight:400; font-display:swap;
+  src:url("../fonts/D2Coding-cjk.ttf") format("truetype");
+  unicode-range:U+3040-30FF,U+4E00-9FFF,U+F900-FAFF;
+}
+
+:root{
+  --sky:#3FB2F0; --sky-deep:#0A66AA; --sky-soft:#DFF1FF;
+  --bg:#F7FAFD; --panel:#FFFFFF; --ink:#101418; --sub:#5C6672; --line:#E3E9EF;
+  --code-bg:#F1F5F9; --radius:18px; --ok:#0F7B4F; --warn-bg:#FFF6E0; --warn-ink:#8A5A00;
+  --shadow:0 1px 2px rgba(16,20,24,.04), 0 12px 36px rgba(16,20,24,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#080C18; --panel:#101728; --ink:#EDF1F6; --sub:#96A2B3; --line:#1E2739;
+    --code-bg:#0C1322; --sky-soft:#10344F; --ok:#5FD6A4;
+    --warn-bg:#2A2110; --warn-ink:#F0C86A;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 16px 44px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.7 -apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo",
+       "Noto Sans KR",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+a{color:var(--sky-deep); text-decoration:none}
+@media (prefers-color-scheme: dark){ a{color:#7ACBFF} }
+.wrap{max-width:1180px; margin:0 auto; padding:0 22px}
+
+/* ── 머리 ── */
+.nav{
+  position:sticky; top:0; z-index:50;
+  background:color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+.nav .wrap{display:flex; align-items:center; gap:14px; height:58px}
+.brand{display:flex; align-items:center; gap:9px; font-weight:800; letter-spacing:-.02em; color:var(--ink)}
+.brand .dot{
+  width:22px;height:22px;border-radius:7px;
+  background:linear-gradient(145deg,#7CD3FF,#0A66AA); flex:none;
+  box-shadow:0 2px 8px rgba(63,178,240,.45);
+}
+.nav nav{margin-left:auto; display:flex; gap:20px; font-size:14.5px; align-items:center}
+.nav nav a{color:var(--sub)}
+.nav nav a:hover{color:var(--ink)}
+@media (max-width:760px){ .nav nav a.hide-s{display:none} }
+
+/* ── 도구 ── */
+.tool{padding:26px 0 10px}
+.tool h1{
+  font-size:clamp(1.35rem,3.2vw,1.9rem); line-height:1.22; letter-spacing:-.03em;
+  font-weight:820; margin:0 0 6px;
+}
+.tool h1 .grad{
+  background:linear-gradient(100deg,#0A66AA,#3FB2F0 55%,#7CD3FF);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.tool .lede{color:var(--sub); font-size:15px; margin:0 0 18px}
+
+/* 프리셋 */
+.presets{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 6px}
+.pz{
+  font:600 13.5px/1 inherit; padding:9px 14px; border-radius:999px; cursor:pointer;
+  background:var(--panel); color:var(--sub); border:1px solid var(--line);
+  transition:transform .14s cubic-bezier(.22,.61,.36,1), background .14s, color .14s, border-color .14s;
+}
+.pz:hover{color:var(--ink)}
+.pz:active{transform:scale(.96)}
+.pz[aria-pressed="true"]{
+  background:var(--sky-soft); color:var(--sky-deep); border-color:transparent; font-weight:700;
+}
+@media (prefers-color-scheme: dark){ .pz[aria-pressed="true"]{color:#7ACBFF} }
+.pdesc{font-size:13px; color:var(--sub); min-height:1.7em; margin:0 0 14px}
+
+/* 세 칸 */
+.panes{
+  display:grid; grid-template-columns:1fr 132px 1fr; gap:14px; align-items:stretch;
+}
+@media (max-width:900px){ .panes{grid-template-columns:1fr; gap:10px} }
+
+.pane{
+  background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow); display:flex; flex-direction:column; overflow:hidden; min-width:0;
+}
+.pane.out{border-color:color-mix(in srgb,var(--sky) 45%, var(--line))}
+.phead{
+  display:flex; align-items:center; gap:8px; padding:10px 12px 10px 16px;
+  border-bottom:1px solid var(--line); min-height:48px;
+}
+.phead b{font-size:13px; letter-spacing:.04em; color:var(--sub); font-weight:700}
+.pane.out .phead b{color:var(--sky-deep)}
+@media (prefers-color-scheme: dark){ .pane.out .phead b{color:#7ACBFF} }
+.phead .sp{margin-left:auto; display:flex; gap:6px}
+
+.mini{
+  font:600 12.5px/1 inherit; padding:8px 11px; border-radius:9px; cursor:pointer;
+  background:transparent; color:var(--sub); border:1px solid var(--line);
+  transition:transform .14s cubic-bezier(.22,.61,.36,1), color .14s, border-color .14s;
+  white-space:nowrap;
+}
+.mini:hover:not(:disabled){color:var(--ink); border-color:color-mix(in srgb,var(--sky) 50%, var(--line))}
+.mini:active:not(:disabled){transform:scale(.95)}
+.mini:disabled{opacity:.38; cursor:default}
+.mini.done{color:var(--ok); border-color:color-mix(in srgb,var(--ok) 55%, var(--line))}
+
+textarea{
+  flex:1; width:100%; min-height:340px; resize:vertical; border:0; outline:0;
+  padding:16px; background:transparent; color:var(--ink);
+  font:13.5px/1.72 "D2Coding",ui-monospace,SFMono-Regular,Menlo,monospace;
+  white-space:pre; overflow:auto; -webkit-overflow-scrolling:touch; tab-size:4;
+}
+textarea::placeholder{color:var(--sub); opacity:.72}
+@media (max-width:900px){ textarea{min-height:220px} }
+
+/* 가운데 기둥 */
+.mid{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
+}
+@media (max-width:900px){ .mid{flex-direction:row; padding:2px 0} }
+.go{
+  width:96px; height:96px; border-radius:30px; border:0; cursor:pointer; color:#fff;
+  background:linear-gradient(135deg,#0A66AA,#3FB2F0);
+  box-shadow:0 10px 28px rgba(10,102,170,.38);
+  font:800 15px/1.25 inherit; letter-spacing:-.01em;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+  transition:transform .18s cubic-bezier(.22,.61,.36,1), box-shadow .18s, filter .18s;
+}
+.go .ar{font-size:20px; line-height:1; opacity:.9}
+.go:hover:not(:disabled){box-shadow:0 14px 34px rgba(10,102,170,.46)}
+.go:active:not(:disabled){transform:scale(.95)}
+.go:disabled{filter:grayscale(.75); opacity:.5; cursor:default; box-shadow:none}
+@media (max-width:900px){
+  .go{width:auto; height:auto; flex-direction:row; gap:9px; padding:14px 22px; border-radius:16px}
+  .go .ar{transform:rotate(90deg)}
+}
+.midhint{font-size:11.5px; color:var(--sub); text-align:center; line-height:1.5}
+@media (max-width:900px){ .midhint{display:none} }
+
+/* 결과 알림 */
+.status{
+  margin:14px 0 0; min-height:26px; display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+  font-size:13.5px; color:var(--sub);
+}
+.badge{
+  background:var(--sky-soft); color:var(--sky-deep); font-weight:700;
+  padding:6px 12px; border-radius:999px; font-size:13px;
+}
+@media (prefers-color-scheme: dark){ .badge{color:#7ACBFF} }
+.warn{
+  background:var(--warn-bg); color:var(--warn-ink); font-weight:600;
+  padding:6px 12px; border-radius:999px; font-size:13px;
+}
+
+/* 광고 자리 */
+.adzone{margin:30px 0 6px; min-height:0; text-align:center}
+.adzone small{display:block; font-size:11px; color:var(--sub); letter-spacing:.06em; margin-bottom:6px}
+
+/* 아래 글 */
+section{padding:44px 0}
+h2{font-size:clamp(1.3rem,3.2vw,1.8rem); line-height:1.25; letter-spacing:-.028em;
+   font-weight:820; margin:0 0 12px}
+.sub{color:var(--sub); max-width:40rem; margin:0 0 26px}
+.grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+@media (max-width:900px){ .grid{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:560px){ .grid{grid-template-columns:1fr} }
+.f{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+   padding:20px; box-shadow:var(--shadow)}
+.f h4{margin:0 0 6px; font-size:15.5px; letter-spacing:-.015em}
+.f p{margin:0; font-size:14px; color:var(--sub); line-height:1.65}
+.band{background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+.cta{display:flex; flex-wrap:wrap; gap:11px; align-items:center; margin-top:20px}
+.btn{
+  display:inline-flex; align-items:center; gap:9px; font-weight:700; font-size:15px;
+  padding:13px 20px; border-radius:14px; border:1px solid transparent;
+  transition:transform .18s cubic-bezier(.22,.61,.36,1);
+}
+.btn:active{transform:scale(.97)}
+.btn-p{background:linear-gradient(135deg,#0A66AA,#3FB2F0); color:#fff;
+       box-shadow:0 6px 20px rgba(10,102,170,.35)}
+.btn-s{background:var(--bg); color:var(--ink); border-color:var(--line)}
+.btn small{display:block; font-size:11px; font-weight:600; opacity:.75}
+
+footer{padding:36px 0 56px; border-top:1px solid var(--line); color:var(--sub); font-size:14px}
+footer a{color:var(--sub)}
+footer .row{display:flex; flex-wrap:wrap; gap:18px; align-items:center}
+footer .row .sp{margin-left:auto}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *{transition:none !important}
+}
+@media (prefers-contrast: more){
+  .pane,.f{border-color:var(--ink)}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/skybluenote"><span class="dot"></span> Skyblue Note</a>
+    <nav>
+      <a href="/skybluenote" class="hide-s">소개</a>
+      <a href="#how" class="hide-s">프리셋</a>
+      <a href="/skybluenote#features" class="hide-s">앱 기능</a>
+      <a href="/skybluenote/privacy">개인정보</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<div class="tool">
+  <div class="wrap">
+    <h1>붙여넣고 누르면, <span class="grad">바로 쓸 수 있는 글</span>이 됩니다.</h1>
+    <p class="lede">설치도 로그인도 없습니다. 글은 이 브라우저 밖으로 나가지 않습니다.</p>
+
+    <div class="presets" id="presets" role="group" aria-label="정리 방식"></div>
+    <p class="pdesc" id="pdesc"></p>
+
+    <div class="panes">
+      <div class="pane">
+        <div class="phead">
+          <b>붙여넣은 그대로</b>
+          <span class="sp">
+            <button class="mini" id="bPaste" type="button">붙여넣기</button>
+            <button class="mini" id="bSample" type="button">예시</button>
+            <button class="mini" id="bClear" type="button">비우기</button>
+          </span>
+        </div>
+        <textarea id="src" spellcheck="false" autocapitalize="off" autocomplete="off"
+          aria-label="정리할 글"
+          placeholder="여기에 ChatGPT·클로드·제미나이 답변을 붙여넣으세요.
+
+붙여넣으면 알아서 정리합니다."></textarea>
+      </div>
+
+      <div class="mid">
+        <button class="go" id="bGo" type="button">
+          <span class="ar">→</span>
+          <span>정리</span>
+        </button>
+        <p class="midhint">⌘/Ctrl + Enter</p>
+      </div>
+
+      <div class="pane out">
+        <div class="phead">
+          <b>정리 한 번</b>
+          <span class="sp">
+            <button class="mini" id="bCopy" type="button" disabled>글 복사</button>
+            <button class="mini" id="bTsv" type="button" disabled>표 복사</button>
+            <button class="mini" id="bDl" type="button" disabled>내려받기</button>
+          </span>
+        </div>
+        <textarea id="out" spellcheck="false" aria-label="정리 결과"
+          placeholder="여기에 결과가 나옵니다."></textarea>
+      </div>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <div class="adzone" data-ez-ad="header"></div>
+  </div>
+</div>
+
+<section id="how">
+  <div class="wrap">
+    <h2>프리셋 다섯 개가 하는 일</h2>
+    <p class="sub">기본값은 <b>AI 답변 정리</b>입니다. 대부분은 이것만으로 끝납니다.</p>
+    <div class="grid">
+      <div class="f"><h4>AI 답변 정리</h4>
+        <p>별표·우물 정·인용 꺾쇠·가로줄을 걷고, 이모지와 “요청하신 내용을 정리해 드리겠습니다” 같은 서두를 지웁니다. 깨진 표는 칸을 맞춰 되살립니다.</p></div>
+      <div class="f"><h4>Markdown 완전 제거</h4>
+        <p>마크다운 문법을 최대한 지웁니다. 표는 탭으로 나뉜 형식(TSV)으로 바꿔 엑셀·구글 시트에 바로 붙게 합니다.</p></div>
+      <div class="f"><h4>최소 정리</h4>
+        <p>구조는 그대로 두고 잡티만 없앱니다. 눈에 안 보이는 제로폭 문자, 줄 끝 공백, 이상한 공백 문자 같은 것들.</p></div>
+      <div class="f"><h4>표만 뽑기</h4>
+        <p>글은 버리고 표만 꺼냅니다. 여러 개면 여러 개 다. 곧바로 시트에 붙일 형태로 나옵니다.</p></div>
+      <div class="f"><h4>블로그 붙여넣기</h4>
+        <p>마커는 지우되 링크 주소는 살립니다. 붙여넣은 뒤 다시 링크를 찾아 헤매지 않도록.</p></div>
+      <div class="f"><h4>표는 두 가지 방법으로</h4>
+        <p>화면에서는 칸을 맞춰 읽기 좋게, ‘표 복사’ 단추로는 시트에 붙을 형태로. 같은 표를 쓰임새에 따라 다르게 내놓습니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <h2>글은 여기서 나가지 않습니다.</h2>
+    <p class="sub" style="margin-bottom:0">
+      정리는 전부 이 브라우저 안에서 이루어집니다. 서버로 보내는 것이 없으니 저장할 것도, 볼 사람도 없습니다.
+      인터넷이 끊겨도 한 번 연 뒤에는 그대로 동작합니다. 회원가입도 로그인도 없습니다.
+      쓰는 엔진은 앱과 <b>같은 것</b>입니다 — 웹에서 정리한 결과와 앱에서 정리한 결과가 다르지 않습니다.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>더 자주 쓰신다면, 앱이 낫습니다.</h2>
+    <p class="sub">
+      웹은 한 번 쓰고 닫는 자리입니다. 앱에는 메모가 남고, 되돌릴 수 있고, 버전 기록이 쌓입니다.
+      배경을 고르고, 표를 눌러 시트로 보내고, 직접 발급한 API 키로 요약·번역까지 맡길 수 있습니다.
+    </p>
+    <div class="cta">
+      <a class="btn btn-p" href="/skybluenote"> 앱 소개 보기 <small>아이폰 · 아이패드 · 맥 · 안드로이드</small></a>
+      <a class="btn btn-s" href="/skybluenote#features">기능 전부 보기</a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="adzone" data-ez-ad="footer"></div></div>
+
+</main>
+
+<footer>
+  <div class="wrap row">
+    <span>© 2026 EZLONG · Skyblue Note</span>
+    <span class="sp"><a href="/skybluenote/privacy">개인정보 처리방침</a></span>
+    <span><a href="https://ezlong.com">ezlong.com</a></span>
+  </div>
+</footer>
+
+<!-- 정리 엔진. 앱과 같은 다트 코드를 자바스크립트로 구운 것이다.
+     firebase.json 이 js·css 에 10분 캐시를 걸어 두므로 이 사이트의 관례대로
+     ?v=날짜 를 붙인다. 엔진을 다시 구우면 이 숫자를 같이 올릴 것. -->
+<script src="../tidy.js?v=20260817" defer></script>
+
+<!-- 광고 게이트. **이 페이지는 애드센스를 직접 부르지 않는다.**
+     앱 웹뷰 안에서 애드센스가 뜨면 무효 트래픽으로 계정이 날아가고, 그
+     판정은 ez-ads.js 한 곳에만 있어야 한다. 위의 data-ez-ad 자리와
+     meta[ez-ads]=on 이 이 파일이 요구하는 계약 전부다.
+     송출 스위치(EZ_ADS_LIVE)는 ez-nav.js 소관이라 지금은 꺼져 있고,
+     주소에 ?ads=preview 를 붙이면 자리만 미리 볼 수 있다. -->
+<script src="/ez-ads.js?v=20260817" defer></script>
+
+<script>
+(function(){
+  'use strict';
+
+  // 광고에 관한 코드는 이 파일에 **한 줄도 없다.** 애드센스를 부르는 판단은
+  // /ez-ads.js 한 곳에만 있어야 한다 — 이 도메인의 페이지들은 앱 웹뷰 안에서도
+  // 열리고, 그 안에서 애드센스가 한 번이라도 뜨면 무효 트래픽으로 계정이
+  // 날아간다. 여기서 편의상 한 벌 더 붙이는 순간 그 보장이 깨진다.
+  // 이 페이지가 하는 일은 자리(data-ez-ad)를 내어 주는 것뿐이다.
+
+  var $ = function(id){ return document.getElementById(id); };
+  var src = $('src'), out = $('out'), status = $('status');
+  var bGo = $('bGo'), bCopy = $('bCopy'), bTsv = $('bTsv'), bDl = $('bDl');
+  var preset = 'ai';
+  var lastTsv = [];
+
+  var SAMPLE = [
+    '안녕하세요! 🙂 요청하신 내용을 아래와 같이 정리해 드리겠습니다.',
+    '',
+    '---',
+    '',
+    '## 2026년 상반기 빅테크 정리',
+    '',
+    '**1. 흐름** — 인공지능 투자가 실적으로 돌아오는 구간입니다.',
+    '* 자본지출이 매출로 이어지는지가 관건 🎉',
+    '* 클라우드 매출 증가율을 먼저 봅니다',
+    '',
+    '> 아래 표는 예시 수치이며 실제 값이 아닙니다.',
+    '',
+    '| 종목 | 티커 | 수익률 | 비중',
+    '|------|------|--------|',
+    '| 애플 | AAPL | +14.2% | 12% |',
+    '| 마이크로소프트 | MSFT | +21.5% | 18% |',
+    '|테슬라|TSLA|-8.3%|8%|',
+    '',
+    '도움이 되셨길 바랍니다. 추가로 궁금한 점이 있으면 말씀해 주세요!'
+  ].join('\n');
+
+  function ready(){
+    return typeof window.SkyblueTidyRun === 'function';
+  }
+
+  function say(html){ status.innerHTML = html; }
+
+  function esc(s){
+    return String(s).replace(/[&<>"]/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+    });
+  }
+
+  // 눌렀다는 것을 바로 보여 주고, 잠시 뒤 원래대로. 결과를 기다리게 하지 않는다.
+  function flash(btn, word){
+    var old = btn.textContent;
+    btn.textContent = word;
+    btn.classList.add('done');
+    setTimeout(function(){ btn.textContent = old; btn.classList.remove('done'); }, 1400);
+  }
+
+  function buildPresets(){
+    var box = $('presets'), desc = $('pdesc');
+    var list;
+    try { list = JSON.parse(window.SkyblueTidyPresets()); }
+    catch (e) { return; }
+    list.forEach(function(p, i){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pz';
+      b.textContent = p.name;
+      b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+      b.addEventListener('click', function(){
+        preset = p.id;
+        Array.prototype.forEach.call(box.children, function(c){
+          c.setAttribute('aria-pressed', String(c === b));
+        });
+        desc.textContent = p.desc;
+        if (src.value.trim()) run();
+      });
+      box.appendChild(b);
+    });
+    desc.textContent = list.length ? list[0].desc : '';
+  }
+
+  function run(){
+    if (!ready()) { say('정리 엔진을 불러오지 못했습니다. 새로고침해 주세요.'); return; }
+    var raw = src.value;
+    if (!raw.trim()) {
+      out.value = '';
+      lastTsv = [];
+      lock(true);
+      say('');
+      return;
+    }
+    var r;
+    try { r = JSON.parse(window.SkyblueTidyRun(raw, preset)); }
+    catch (e) {
+      say('정리하다 막혔습니다: ' + esc(String(e && e.message || e)));
+      return;
+    }
+    out.value = r.text;
+    lastTsv = r.tsv || [];
+    lock(false);
+
+    var bits = [];
+    if (r.summary) bits.push('<span class="badge">' + esc(r.summary) + '</span>');
+    (r.warnings || []).forEach(function(w){
+      bits.push('<span class="warn">' + esc(w) + '</span>');
+    });
+    if (!bits.length) bits.push('<span>고칠 것이 없었습니다. 이미 깨끗한 글입니다.</span>');
+    say(bits.join(''));
+
+    if (window.gtag) gtag('event', 'tidy', { preset: preset, chars: raw.length });
+  }
+
+  function lock(empty){
+    bCopy.disabled = empty;
+    bDl.disabled = empty;
+    bTsv.disabled = empty || !lastTsv.length;
+  }
+
+  // ── 복사: 최신 방법이 막히면(비보안 접속 등) 옛 방법으로 내려간다 ──
+  function copy(text, btn, word){
+    function legacy(){
+      var t = document.createElement('textarea');
+      t.value = text;
+      t.style.position = 'fixed';
+      t.style.opacity = '0';
+      document.body.appendChild(t);
+      t.select();
+      try { document.execCommand('copy'); flash(btn, word); }
+      catch (e) { say('복사가 막혔습니다. 직접 선택해 복사해 주세요.'); }
+      document.body.removeChild(t);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function(){ flash(btn, word); }, legacy);
+    } else { legacy(); }
+  }
+
+  // ── 이어 붙이기 ──
+  bGo.addEventListener('click', run);
+
+  src.addEventListener('paste', function(){
+    // 붙여넣었으면 그게 곧 "정리해 달라"는 뜻이다. 단추를 하나 줄인다.
+    setTimeout(run, 0);
+  });
+
+  src.addEventListener('input', function(){
+    if (!src.value.trim()) { out.value = ''; lastTsv = []; lock(true); say(''); }
+  });
+
+  document.addEventListener('keydown', function(e){
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); run(); }
+  });
+
+  $('bPaste').addEventListener('click', function(){
+    if (!navigator.clipboard || !navigator.clipboard.readText) {
+      src.focus();
+      say('이 브라우저에서는 자동 붙여넣기가 막혀 있습니다. ⌘/Ctrl + V 를 눌러 주세요.');
+      return;
+    }
+    navigator.clipboard.readText().then(function(t){
+      src.value = t; run();
+    }, function(){
+      src.focus();
+      say('클립보드를 읽을 권한이 없습니다. ⌘/Ctrl + V 를 눌러 주세요.');
+    });
+  });
+
+  $('bSample').addEventListener('click', function(){ src.value = SAMPLE; run(); });
+
+  $('bClear').addEventListener('click', function(){
+    src.value = ''; out.value = ''; lastTsv = []; lock(true); say(''); src.focus();
+  });
+
+  bCopy.addEventListener('click', function(){ copy(out.value, bCopy, '복사됨'); });
+
+  bTsv.addEventListener('click', function(){
+    copy(lastTsv.join('\n\n'), bTsv, lastTsv.length > 1 ? '표 ' + lastTsv.length + '개' : '복사됨');
+  });
+
+  bDl.addEventListener('click', function(){
+    var blob = new Blob([out.value], { type: 'text/plain;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'skybluenote.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+    flash(bDl, '받는 중');
+  });
+
+  // ── 엔진이 붙기를 기다린다 ──
+  function boot(tries){
+    if (ready()) {
+      buildPresets();
+      bGo.disabled = false;
+      return;
+    }
+    if (tries <= 0) {
+      bGo.disabled = true;
+      say('정리 엔진을 불러오지 못했습니다. 새로고침해 주세요.');
+      return;
+    }
+    setTimeout(function(){ boot(tries - 1); }, 60);
+  }
+
+  bGo.disabled = true;
+  lock(true);
+  boot(120);   // 최대 7초쯤 기다린다
+})();
+</script>
+</body>
+</html>
