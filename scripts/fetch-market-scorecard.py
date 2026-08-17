@@ -1942,9 +1942,21 @@ def anonymous_evidence(entry):
 _NO_DIR_NAME = (r'관망|눈치\s*보기|지켜보기|대기\s*심리|방향성\s*탐색|숨\s*고르기|'
                 r'혼조세?\s*지속|보합')
 
+# 이름이 방향을 주장하고 있는가. '인상·인하'는 뺐다 — '금리 인상 논쟁'처럼 주제어로만
+# 쓰이는 경우가 많아, 이걸 방향어로 세면 관망 재료가 이름만 바꿔 빠져나간다.
+_DIR_CLAIM_WORD = (r'상승|하락|급등|급락|확대|축소|완화|후퇴|강세|약세|개선|악화|우려|'
+                   r'기대|둔화|가속|상향|하향|호조|부진|증가|감소|압력|긴장|호실적|'
+                   r'서프라이즈|쇼크|반등|조정')
+
 def no_direction_offenders(entry):
-    """이름이 '방향 없음'을 말하는데 긍정·부정 칸에서 점수를 받은 재료.
-    관망은 배경이지 재료가 아니다 — 필요하면 핵심이슈 문장에서 다룬다."""
+    """'방향 없음'인데 긍정·부정 칸에서 점수를 받은 재료.
+    관망은 배경이지 재료가 아니다 — 필요하면 핵심이슈 문장에서 다룬다.
+
+    두 겹으로 본다. (1) 이름이 대놓고 관망류인 경우. (2) 이름은 '…논쟁 지속'처럼
+    중립인데 설명이 관망을 말하는 경우 — 실제로 'Fed 금리 인상 논쟁 지속 / 투자자
+    관망세 유지'가 부정 10점을 달고 1차 규칙을 빠져나갔다. 이름만 갈아입으면 통과하는
+    규칙은 규칙이 아니다. 다만 이름이 방향을 주장하고 있으면(상승·완화·우려 등)
+    관망은 곁들인 배경으로 보고 건드리지 않는다."""
     out = []
     for side in ('positive_factors', 'negative_factors'):
         side_ko = '긍정' if side == 'positive_factors' else '부정'
@@ -1952,10 +1964,16 @@ def no_direction_offenders(entry):
             if int(f.get('score', 0) or 0) <= 0:
                 continue
             name = f.get('name', '') or ''
+            desc = f.get('desc', '') or ''
+            why = None
             if re.search(_NO_DIR_NAME, name):
-                out.append((side, f, f"무방향 재료: {side_ko} '{name}': 관망·눈치보기 같은 "
-                                     f"'방향 없음'은 오르지도 내리지도 않는다 — 점수를 실을 "
-                                     f"재료가 아니라 배경이다"))
+                why = ('관망·눈치보기 같은 \'방향 없음\'은 오르지도 내리지도 않는다 — '
+                       '점수를 실을 재료가 아니라 배경이다')
+            elif re.search(_NO_DIR_NAME, desc) and not re.search(_DIR_CLAIM_WORD, name):
+                why = ('이름은 중립인데 설명이 관망을 말한다 — 방향을 주장하지 않는 재료에 '
+                       '점수를 실었다. 관망의 이유를 방향까지 써서 이름에 담든가, 혼조로 내려라')
+            if why:
+                out.append((side, f, f"무방향 재료: {side_ko} '{name}': " + why))
     return out
 
 
