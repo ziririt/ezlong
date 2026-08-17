@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 실험실 페이지 — 정식 공개 전. 메뉴·사이트맵에 없고 검색에도 안 잡힌다. -->
+<meta name="robots" content="noindex, nofollow">
+<title>광고 게이트 실험실 — 누구에게 보이고 누구에게 안 보이나 | ezlong.com</title>
+<link rel="stylesheet" href="ez-design.css">
+<link rel="icon" type="image/svg+xml" href="/icons/favicon.svg?v=20260809">
+<style>
+/* 실험실 레이아웃 — labs-timesfm.html 과 같은 축(실험 노트). 과감함은 점선 프레임 하나에만. */
+.la-wrap { max-width: 760px; margin: 0 auto; padding: 28px 16px 80px; }
+.la-eyebrow { font-size: 14px; font-weight: 800; letter-spacing: .12em; color: var(--ez-blue); text-transform: uppercase; }
+.la-h1 { font-size: 27px; font-weight: 800; letter-spacing: -.02em; margin: 6px 0 10px; color: var(--ez-text); }
+.la-lede { font-size: 16px; color: var(--ez-text2); line-height: 1.65; margin-bottom: 8px; }
+.la-meta { font-size: 14px; color: var(--ez-text3); margin-bottom: 26px; }
+.la-sec { background: var(--ez-surface); border: 1px solid var(--ez-border); border-radius: 16px; padding: 18px 18px 16px; margin-bottom: 18px; }
+.la-sec-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.la-sec-title { font-size: 18px; font-weight: 800; color: var(--ez-text); letter-spacing: -.01em; }
+.la-badge { font-size: 14px; font-weight: 800; padding: 2px 10px; border-radius: 999px; color: #fff; }
+.la-badge.on { background: var(--ez-green); }
+.la-badge.no { background: var(--ez-red); }
+.la-badge.hold { background: #B8860B; }
+.la-p { font-size: 16px; color: var(--ez-text2); line-height: 1.65; margin: 6px 0 10px; }
+.la-p b { color: var(--ez-text); font-weight: 800; }
+.la-list { margin: 6px 0 10px; padding: 0; list-style: none; }
+.la-list li { position: relative; padding-left: 16px; margin-bottom: 7px; font-size: 16px; color: var(--ez-text2); line-height: 1.6; }
+.la-list li::before { content: ''; position: absolute; left: 2px; top: 10px; width: 5px; height: 5px; border-radius: 999px; background: var(--ez-text3); }
+.la-list li b { color: var(--ez-text); font-weight: 800; }
+/* 판정 진단판 */
+.la-verdict { border-radius: 14px; padding: 16px; border: 1.5px solid var(--ez-border); background: var(--ez-card2); }
+.la-vhead { font-size: 21px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 6px; }
+.la-vhead.yes { color: var(--ez-green); }
+.la-vhead.no { color: var(--ez-red); }
+.la-vwhy { font-size: 16px; color: var(--ez-text2); line-height: 1.6; margin-bottom: 10px; }
+.la-kv { display: flex; gap: 8px; font-size: 14px; margin-top: 5px; }
+.la-kv .k { color: var(--ez-text3); width: 132px; flex: none; font-weight: 700; }
+.la-kv .v { color: var(--ez-text); font-weight: 700; word-break: break-all; }
+/* 시안 프레임 */
+.la-mock { border: 1.5px dashed color-mix(in srgb, var(--ez-blue) 55%, transparent); border-radius: 12px; padding: 16px 14px; margin: 12px 0 4px; position: relative; }
+.la-mock-tag { position: absolute; top: -10px; left: 12px; background: var(--ez-surface); padding: 0 8px; font-size: 14px; font-weight: 800; color: var(--ez-blue); }
+.la-fake-body { font-size: 16px; color: var(--ez-text2); line-height: 1.6; }
+.la-fake-h { font-size: 18px; font-weight: 800; color: var(--ez-text); margin-bottom: 4px; }
+.la-adbox { border: 1.5px dashed rgba(120,120,128,.55); border-radius: 12px; min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 14px 12px; text-align: center; background: rgba(120,120,128,.06); margin: 12px 0; }
+.la-adbox .t1 { font-size: 14px; font-weight: 800; color: var(--ez-text2); }
+.la-adbox .t2 { font-size: 14px; color: var(--ez-text3); line-height: 1.5; }
+.la-btnrow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.la-btn { font-family: inherit; font-size: 16px; font-weight: 700; border-radius: 10px; padding: 9px 15px; border: 1px solid var(--ez-border); background: var(--ez-surface); color: var(--ez-text); cursor: pointer; }
+.la-btn.primary { background: var(--ez-blue); border-color: var(--ez-blue); color: #fff; }
+.la-note { font-size: 14px; color: var(--ez-text3); line-height: 1.6; margin-top: 10px; }
+.la-foot { font-size: 14px; color: var(--ez-text3); line-height: 1.6; margin-top: 26px; }
+.la-code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 14px; background: rgba(120,120,128,.14); border-radius: 6px; padding: 1px 6px; color: var(--ez-text); }
+</style>
+</head>
+<body>
+<script src="/ez-nav.js"></script>
+
+<div class="la-wrap">
+
+  <div class="la-eyebrow">Labs</div>
+  <h1 class="la-h1">광고 게이트 실험실</h1>
+  <p class="la-lede">
+    ezlong.com에 애드센스를 제대로 붙이기 전에, <b>누구에게 보이고 누구에게 안 보이는지</b>를
+    말이 아니라 화면으로 확인하는 자리다. 새 게이트의 송출 스위치는 꺼져 있어 이 구조로는
+    아직 아무에게도 광고가 나가지 않는다. 다만 <b>게이트 밖에서 이미 돌고 있는 애드센스가
+    11개 페이지에 있다</b> — 5번 항목에서 그 실측을 그대로 적었다.
+  </p>
+  <p class="la-meta">2026-08-17 신설 · noindex(검색 비노출) · 메뉴에 없음</p>
+
+  <!-- ── 1. 지금 이 화면의 판정 ─────────────────────────────────────── -->
+  <section class="la-sec">
+    <div class="la-sec-head"><span class="la-sec-title">지금 이 화면의 판정</span></div>
+    <p class="la-p">아래는 지금 이 브라우저(또는 앱 화면)에 대해 게이트가 실제로 내리는 판정이다.
+      폰의 앱에서 이 주소를 열면 값이 어떻게 달라지는지 바로 볼 수 있다.</p>
+    <div class="la-verdict" id="verdict">
+      <div class="la-vhead" id="v-head">판정 중…</div>
+      <div class="la-vwhy" id="v-why"></div>
+      <div class="la-kv"><span class="k">앱 화면인가</span><span class="v" id="v-inapp">-</span></div>
+      <div class="la-kv"><span class="k">그렇게 본 근거</span><span class="v" id="v-signals">-</span></div>
+      <div class="la-kv"><span class="k">유료 미러 값</span><span class="v" id="v-premium">-</span></div>
+      <div class="la-kv"><span class="k">송출 스위치</span><span class="v" id="v-live">-</span></div>
+      <div class="la-kv"><span class="k">미리보기</span><span class="v" id="v-preview">-</span></div>
+    </div>
+    <div class="la-btnrow">
+      <button class="la-btn primary" type="button" id="btn-on">미리보기 켜기(30일)</button>
+      <button class="la-btn" type="button" id="btn-off">끄기</button>
+      <a class="la-btn" href="/atmr-dashboard.html?ads=preview">스윙 대시보드에서 보기</a>
+    </div>
+    <p class="la-note">미리보기를 켜면 사이트 어느 페이지를 가든 광고 자리가 점선 상자로 그려지고,
+      오른쪽 아래에 판정 칩이 뜬다. 이 상태에서도 애드센스 스크립트는 <b>부르지 않는다</b>.
+      주소에 <span class="la-code">?ads=preview</span> / <span class="la-code">?ads=off</span>를
+      붙여도 같은 동작이다. 이 값은 이 브라우저에만 저장되므로 다른 방문자에게는 아무 영향이 없다.</p>
+  </section>
+
+  <!-- ── 2. 판정 규칙 ──────────────────────────────────────────────── -->
+  <section class="la-sec">
+    <div class="la-sec-head"><span class="la-sec-title">판정 규칙 — 네 갈래</span></div>
+    <ul class="la-list">
+      <li><b>일반 브라우저 방문자</b> → 허용. 애드센스의 정상 대상이다.</li>
+      <li><b>앱 화면 안 (현재)</b> → 유료·무료 가리지 않고 전면 금지. 앱이 구글의
+        WebView API for Ads 등록을 하지 않은 상태에서 앱 웹뷰에 애드센스를 띄우면
+        무효 트래픽으로 잡혀 계정이 정지될 수 있다.</li>
+      <li><b>앱 화면 안 + 유료 이용자 (등록 이후)</b> → 계속 금지. 앱에서 돈을 낸 사람은
+        앱 안 어디를 가든 광고를 보지 않아야 한다. 2주 무료 창도 유료로 취급된다.</li>
+      <li><b>앱 화면 안 + 무료 이용자 (등록 이후)</b> → 그때 비로소 허용.</li>
+    </ul>
+    <p class="la-p">규칙이 바뀌는 자리는 코드 한 곳이다 — <span class="la-code">ez-ads.js</span>의
+      <span class="la-code">WEBVIEW_ADS_REGISTERED</span>. 앱이 등록을 마쳤다고 알려오면 이 값만 켠다.</p>
+  </section>
+
+  <!-- ── 3. 앱 화면을 알아보는 법 ──────────────────────────────────── -->
+  <section class="la-sec">
+    <div class="la-sec-head"><span class="la-sec-title">앱 화면을 알아보는 법 — 세 겹</span></div>
+    <p class="la-p">앱 담당이 준 계약은 열쇠 하나(<span class="la-code">ezlong:inApp</span>)지만,
+      그 열쇠는 앱이 <span class="la-code">/time/</span>을 연 적이 있어야 생긴다. 앱이 딥링크로
+      다른 페이지를 바로 열거나, 웹뷰 저장소가 비워지면 <b>열쇠 없는 앱 화면</b>이 만들어진다.
+      그 화면에 광고가 뜨는 순간이 가장 위험한 순간이므로, 우리 쪽 신호를 같이 본다.</p>
+    <ul class="la-list">
+      <li>앱이 남긴 열쇠 <span class="la-code">ezlong:inApp</span> — 계약된 신호. 읽기만 하고 쓰거나 지우지 않는다.</li>
+      <li>주소의 <span class="la-code">embed=app</span> / <span class="la-code">native=ios|android</span> — 앱이 첫 진입 때 붙인다.</li>
+      <li>네이티브 브릿지 존재 여부 — 앱이 웹뷰에 주입하는 객체. 저장소가 전부 비어 있어도 잡힌다.</li>
+    </ul>
+    <p class="la-p">셋 중 <b>하나라도</b> 걸리면 앱으로 본다. 판정이 애매하면 끄는 쪽이다 —
+      틀린 광고보다 빈 자리가 낫다.</p>
+  </section>
+
+  <!-- ── 4. 지면 시안 ─────────────────────────────────────────────── -->
+  <section class="la-sec">
+    <div class="la-sec-head"><span class="la-sec-title">지면 시안</span><span class="la-badge hold">자리만</span></div>
+    <p class="la-p">아래 점선 안은 실제 화면이 아니라 <b>붙였을 때의 모습</b>이다. 자리 높이를
+      미리 잡아 광고가 늦게 떠도 본문이 밀리지 않게 한다(레이아웃 밀림 방지). 반대로 광고를
+      안 부르는 화면에서는 자리째 접는다 — 빈 회색 상자를 남기지 않는다.</p>
+
+    <div class="la-mock">
+      <span class="la-mock-tag">헤더 아래 가로형</span>
+      <div class="la-fake-h">스윙 시그널</div>
+      <div class="la-adbox"><div class="t1">광고 자리 · 헤더 아래 가로형 반응형</div>
+        <div class="t2">최소 높이 100px · 화면 높이의 15%를 넘기지 않는다</div></div>
+      <div class="la-fake-body">오늘의 스탠스와 매수·매도 압력이 여기서 시작한다.</div>
+    </div>
+
+    <div class="la-mock">
+      <span class="la-mock-tag">본문 중간</span>
+      <div class="la-fake-body">첫 문단은 광고 없이 읽힌다. 첫 화면에 광고가 콘텐츠보다
+        많아 보이면 심사에서 떨어진다.</div>
+      <div class="la-adbox"><div class="t1">광고 자리 · 본문 중간 가로형</div>
+        <div class="t2">문단과 문단 사이. 첫 화면 아래로 내린다</div></div>
+      <div class="la-fake-body">그다음 문단이 이어진다.</div>
+    </div>
+
+    <ul class="la-list" style="margin-top:14px">
+      <li><b>넣지 않을 곳</b> — <span class="la-code">/time/</span> 경로(앱 심사와 직결되는 별도 관리 영역),
+        시계·스탠바이류 화면형 페이지, 404·빈 결과 페이지, 팝업·오버레이.</li>
+      <li>페이지당 1~2개로 시작한다. 광고 수 제한은 폐지됐지만 콘텐츠보다 광고가 많으면 심사에서 떨어진다.</li>
+    </ul>
+  </section>
+
+  <!-- ── 5. 이미 붙어 있는 애드센스 ────────────────────────────────── -->
+  <section class="la-sec">
+    <div class="la-sec-head"><span class="la-sec-title">이미 붙어 있는 애드센스 11개 페이지</span><span class="la-badge no">게이트 밖</span></div>
+    <p class="la-p">이번 작업 중 실측으로 확인한 사실이다. 아래 11개 페이지는 게시자 ID
+      <span class="la-code">ca-pub-2336764115275414</span>로 애드센스 로더를 <b>아무 조건 없이</b>
+      부르고 있다. 즉 <b>지금 이 순간 앱 화면 안에서도 그대로 로드된다.</b> 앱 담당이 경고한
+      바로 그 상태다.</p>
+    <ul class="la-list">
+      <li>index / 스윙 대시보드(한국어·영문) / 구 스윙 대시보드 / 게시판 / 글 상세</li>
+      <li>DCA 시뮬레이터 / 복리 계산기 / 은퇴 계산기 / AI 포트폴리오 / 절세 계좌 시뮬레이터</li>
+    </ul>
+    <p class="la-p">광고 단위(<span class="la-code">&lt;ins&gt;</span>)는 한 개도 없다 —
+      로더만 있는 형태라 실제 노출은 애드센스 콘솔의 자동 광고 설정에 달려 있다.
+      <span class="la-code">/ads.txt</span>도 아직 없다.</p>
+    <p class="la-p"><b>가져와야 할 그림</b>: 이 11개의 하드코딩 스크립트를 걷어내고,
+      같은 페이지에 표시 하나(<span class="la-code">&lt;meta name="ez-ads" content="on"&gt;</span>)만 남긴다.
+      그러면 브라우저 방문자에게는 지금과 똑같이 나가고, 앱 화면에서만 사라진다.
+      노출이 늘지 않고 줄기만 하는 변경이라 되돌릴 일도 없다. 다만 수익이 걸린
+      실사용 페이지를 건드리는 일이라 <b>따로 승인을 받고</b> 한다.</p>
+  </section>
+
+  <!-- ── 6. 아직 남은 것 ──────────────────────────────────────────── -->
+  <section class="la-sec">
+    <div class="la-sec-head"><span class="la-sec-title">남은 준비물</span><span class="la-badge hold">대기</span></div>
+    <ul class="la-list">
+      <li><b>11개 페이지를 게이트 밑으로</b> — 위 항목. 승인 대기.</li>
+      <li><span class="la-code">/ads.txt</span> 게시 —
+        <span class="la-code">google.com, pub-2336764115275414, DIRECT, f08c47fec0942fa0</span> 한 줄.
+        없으면 일부 입찰이 빠져 수익이 새는데, 지금 없다.</li>
+      <li>개인정보처리방침에 광고 쿠키 사용 고지 추가.</li>
+      <li>유럽·영국 트래픽이 의미 있게 잡히면 구글 인증 동의 관리(CMP) 연결. 한국 위주면 애드센스 설정에서
+        해당 지역 개인화 제한으로 시작해도 된다.</li>
+      <li>직접 배치한 광고 단위를 쓸 거라면 각 자리에 단위 번호를
+        <span class="la-code">data-ez-ad-unit</span>으로 붙인다.</li>
+      <li>마지막으로 <span class="la-code">ez-nav.js</span>의 <span class="la-code">EZ_ADS_LIVE = true</span>.
+        송출 스위치는 이 한 줄뿐이고, 되돌리는 것도 이 한 줄이다.</li>
+    </ul>
+  </section>
+
+  <!-- ── 7. 알려진 한계 ───────────────────────────────────────────── -->
+  <section class="la-sec">
+    <div class="la-sec-head"><span class="la-sec-title">알려진 한계 — 지금은 못 하는 것</span></div>
+    <ul class="la-list">
+      <li><b>일반 브라우저의 유료 회원은 알아볼 수 없다.</b> 앱이 남기는 값은 앱 웹뷰 저장소에만 있고,
+        같은 폰의 크롬·사파리와는 완전히 분리되어 있다. 유료 회원이 브라우저로 ezlong.com에 오면
+        광고를 보게 된다. 이걸 없애려면 웹 로그인이 필요하고, 그건 별개의 큰 결정이다.</li>
+      <li><b>유료 미러는 앱이 /time/을 열 때 갱신된다.</b> 해지 직후 잠깐은 값이 뒤처질 수 있다.
+        지금은 앱 안이 전면 금지라 영향이 없고, 등록 이후에도 뒤처진 값은 '유료'쪽으로만 틀리므로
+        광고가 새어 나가지는 않는다.</li>
+      <li><b>저장소 접근이 막힌 환경</b>(사생활 보호 모드 등)에서는 열쇠를 못 읽는다. 이때는 브릿지·주소
+        신호만으로 판정하고, 그마저 없으면 일반 브라우저로 본다.</li>
+    </ul>
+  </section>
+
+  <p class="la-foot">
+    이 페이지는 검색에 노출되지 않고 메뉴에도 없다. 주소를 아는 사람만 본다.<br>
+    관련 파일 — <span class="la-code">ez-ads.js</span>(판정·렌더),
+    <span class="la-code">ez-nav.js</span>(송출 스위치·조건부 로더),
+    <span class="la-code">CLAUDE.md</span> 59항(계약과 원칙).
+  </p>
+</div>
+
+<script src="/ez-ads.js"></script>
+<script>
+(function () {
+  function txt(id, s) { var el = document.getElementById(id); if (el) el.textContent = s; }
+
+  function paint() {
+    if (typeof window.ezAdsDecide !== 'function') {
+      txt('v-head', '게이트 스크립트를 못 읽었다');
+      txt('v-why', 'ez-ads.js 로드 실패 — 콘솔을 확인할 것.');
+      return;
+    }
+    var d = window.ezAdsDecide();
+    var head = document.getElementById('v-head');
+    head.textContent = d.allowed ? '광고 허용' : '광고 차단';
+    head.className = 'la-vhead ' + (d.allowed ? 'yes' : 'no');
+    txt('v-why', d.reason);
+    txt('v-inapp', d.inApp ? '그렇다' : '아니다(일반 브라우저)');
+    txt('v-signals', d.signals.length ? d.signals.join(' / ') : '앱 신호 없음');
+    txt('v-premium', d.premium ? '"' + d.premium + '"' + (d.premium === '1' ? ' (유료)' : ' (무료)') : '값 없음');
+    txt('v-live', window.EZ_ADS_LIVE === true ? '켜짐 — 실제 송출 중' : '꺼짐 — 아무에게도 안 나간다');
+    var until = (window.ezAdsPreview && window.ezAdsPreview.until()) || 0;
+    txt('v-preview', until ? '켜짐 (' + new Date(until).toLocaleDateString('ko-KR') + '까지)' : '꺼짐');
+  }
+
+  document.getElementById('btn-on').addEventListener('click', function () {
+    if (window.ezAdsPreview) window.ezAdsPreview.on();
+    location.reload();
+  });
+  document.getElementById('btn-off').addEventListener('click', function () {
+    if (window.ezAdsPreview) window.ezAdsPreview.off();
+    location.reload();
+  });
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', paint);
+  else paint();
+})();
+</script>
+</body>
+</html>

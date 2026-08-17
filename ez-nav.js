@@ -914,6 +914,12 @@ window.ezWeekPhase = function (now) {
     return !!findBridge();
   }
 
+  /* 광고 게이트(ez-ads.js)가 같은 판정을 쓴다 — 59항. 앱이 남기는
+     localStorage 열쇠 하나만 믿으면 딥링크·저장소 초기화로 열쇠 없는 앱
+     화면이 생기고, 거기 광고가 뜨면 계정이 위험하다. 판정은 한 벌만 두고
+     둘이 같이 본다(공유 함수 동기화 원칙). */
+  window.ezInAppWebview = inAppWebview;
+
   document.addEventListener('click', function (ev) {
     if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey) return;
 
@@ -948,4 +954,35 @@ window.ezWeekPhase = function (now) {
     ev.preventDefault();
     location.href = url.href;
   }, true);
+})();
+
+/* ─────────────────────────────────────────────────────────────
+   광고 게이트 로더 (2026-08-17 신설, 59항)
+
+   ez-ads.js 는 평소에 아예 내려받지 않는다. 아직 송출하지 않는 기능 때문에
+   전 페이지가 요청을 하나 더 지는 건 낭비다 — 필요할 때만 부른다.
+
+   EZ_ADS_LIVE 가 이 사이트의 **유일한 송출 스위치**다. 스위치가 두 곳에
+   있으면 반드시 한쪽이 뒤처지므로, 켤 때는 여기 한 줄만 true 로 바꾼다
+   (그리고 ez-ads.js 의 PUB_ID 를 채운다).
+
+   운영자 미리보기: 아무 페이지에나 ?ads=preview 를 한 번 붙이면 그 브라우저
+   에서만 30일간 켜진다. ?ads=off 로 끈다. 미리보기 중에도 애드센스 스크립트는
+   부르지 않고 자리와 판정만 그린다.
+   ───────────────────────────────────────────────────────────── */
+window.EZ_ADS_LIVE = false;
+(function () {
+  var need = window.EZ_ADS_LIVE === true;
+  if (!need) {
+    try {
+      var q = new URLSearchParams(location.search).get('ads');
+      if (q === 'preview' || q === 'off') need = true;
+      else if (localStorage.getItem('ezlong:adsPreview')) need = true;
+    } catch (e) { /* 저장소 접근 불가 — 미리보기 없음 */ }
+  }
+  if (!need) return;
+  var s = document.createElement('script');
+  s.src = '/ez-ads.js?v=20260817a';
+  s.defer = true;
+  (document.head || document.documentElement).appendChild(s);
 })();
