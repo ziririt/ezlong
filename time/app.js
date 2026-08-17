@@ -11536,3 +11536,36 @@ var bedsideActive = false;
 
   if (devForce || storedOn()) loadManifest();
 })();
+
+// 2026-08-17 — 앱(WebView) 여부·프리미엄 여부를 ezlong.com 공통 페이지가
+// 읽을 수 있게 localStorage로 중계한다. 루트 사이트의 애드센스 게이트가
+// 이 두 키를 읽는다(광고 도입 가이드 문서 참조). 키 계약:
+//   ezlong:inApp   → "android" | "ios"  (앱 WebView로 열린 적이 있으면 기록.
+//                     WebView 저장소는 브라우저와 분리라 일반 방문자는 무관)
+//   ezlong:premium → "1" | "0"  (네이티브가 내려준 __FLIPZEN_PREMIUM__ 미러.
+//                     2주 무료 창 포함. 다음 /time 로드 때마다 갱신)
+(function () {
+  function mirrorPremium() {
+    try {
+      if (typeof window.__FLIPZEN_PREMIUM__ === "boolean") {
+        localStorage.setItem("ezlong:premium", window.__FLIPZEN_PREMIUM__ ? "1" : "0");
+      }
+    } catch (error) { /* 무시 */ }
+  }
+  try {
+    var native = new URLSearchParams(window.location.search).get("native");
+    if (native === "android" || native === "ios") {
+      localStorage.setItem("ezlong:inApp", native);
+    }
+  } catch (error) { /* 무시 */ }
+  // 네이티브 주입은 onPageFinished(로드 뒤)라서 잠시 늦게 온다 — 20초 동안
+  // 1초 간격으로 미러하고, 화면 복귀 때도 한 번씩 따라잡는다.
+  mirrorPremium();
+  var tries = 0;
+  var timer = window.setInterval(function () {
+    tries += 1;
+    mirrorPremium();
+    if (tries >= 20) window.clearInterval(timer);
+  }, 1000);
+  document.addEventListener("visibilitychange", mirrorPremium);
+})();
