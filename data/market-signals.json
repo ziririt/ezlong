@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-17T21:19:56.630776+00:00",
-  "generatedAtKST": "2026-08-18 06:19 KST",
+  "generatedAt": "2026-08-17T21:22:37.560534+00:00",
+  "generatedAtKST": "2026-08-18 06:22 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -434,7 +434,7 @@
         "signal": 25.3512,
         "histogram": 1.1096
       },
-      "high52": 538.6586,
+      "high52": 538.6585,
       "low52": 352.83,
       "dev200": 11.4437,
       "dev5": -2.7187,
@@ -618,7 +618,7 @@
         "signal": -5.8139,
         "histogram": -0.9538
       },
-      "high52": 782.6647,
+      "high52": 782.6648,
       "low52": 525.2332,
       "dev200": -9.0991,
       "dev5": -2.9644,
@@ -716,9 +716,9 @@
       "unit": "USD"
     },
     "dxy": {
-      "price": 99.586,
-      "change": -0.084,
-      "changePct": -0.0843,
+      "price": 99.58,
+      "change": -0.09,
+      "changePct": -0.0903,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
@@ -733,6 +733,23 @@
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-08-17T21:19:56.630776+00:00",
+      "atKST": "2026-08-18 06:19 KST",
+      "qqq": {
+        "rsi": 58.91,
+        "macdHist": 3.974,
+        "dev5": 0.3904,
+        "dev200": 12.2839,
+        "gear": 3,
+        "buyScore": 61,
+        "sellScore": 26,
+        "price": 729.87
+      },
+      "soxxMacdHist": 6.0465,
+      "fearAndGreed": 60,
+      "yield10y": 4.724
+    },
     {
       "at": "2026-08-17T21:07:37.378524+00:00",
       "atKST": "2026-08-18 06:07 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": 5.4237,
       "fearAndGreed": 66,
       "yield10y": 4.641
-    },
-    {
-      "at": "2026-08-14T00:17:38.209733+00:00",
-      "atKST": "2026-08-14 09:17 KST",
-      "qqq": {
-        "rsi": 60.14,
-        "macdHist": 4.481,
-        "dev5": 1.1672,
-        "dev200": 12.7998,
-        "gear": 3,
-        "buyScore": 74,
-        "sellScore": 44,
-        "price": 732.07
-      },
-      "soxxMacdHist": 5.4237,
-      "fearAndGreed": 66,
-      "yield10y": 4.641
     }
   ],
-  "swingContinuity": "\ucd5c\uadfc \uba70\uce60\uac04 \ub9e4\uc218 \uc810\uc218\uac00 60\uc120\uc744 \uc720\uc9c0\ud558\uba70 \uac15\ubcf4\ud569 \ud750\ub984\uc744 \ubcf4\uc600\uc73c\ub098, \uc624\ub298 \ub9e4\ub3c4 \uc810\uc218\uac00 26\uc73c\ub85c \ud06c\uac8c \ud558\ub77d\ud558\uba70 \ub9e4\uc218\uc138 \uc57d\ud654\ub97c \uc2dc\uc0ac\ud569\ub2c8\ub2e4. \ub2e4\ub9cc, RSI\uac00 58.91\ub85c \uc5ec\uc804\ud788 \uacfc\ub9e4\uc218 \uad6c\uac04\uc740 \uc544\ub2c8\uba70, QQQ\uc640 SOXX\uac00 \ucd5c\uadfc \uc57d\uc138\ub97c \ubcf4\uc778 \ubc18\uba74 TSLA\uc640 NVDA\ub294 \ub4f1\ub77d\uc774 \uc5c7\uac08\ub9ac\ub294 \ubaa8\uc2b5\uc744 \ubcf4\uc600\uc2b5\ub2c8\ub2e4.",
-  "swingContinuityEn": "While the buy score remained above 60 for the past few days, indicating a stable upward trend, today's sell score dropped significantly to 26, suggesting a weakening of buying momentum. However, the RSI at 58.91 is not yet in overbought territory, and while QQQ and SOXX have shown recent weakness, TSLA and NVDA have experienced mixed price action."
+  "swingContinuity": null,
+  "swingContinuityEn": null
 }
