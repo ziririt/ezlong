@@ -4144,8 +4144,8 @@ function buildTrendLineHtml() {
     const _wkNotice = _wkPhase === 'session' ? '' :
       `<div style="margin:0 0 10px;padding:8px 10px;border-radius:10px;background:var(--bd2,rgba(120,120,128,.12));color:var(--t2);font-size:14px;font-weight:600;line-height:1.55;">
          ${_useAhead
-           ? `미국장 휴장 중 — 아래는 <b>다음 장을 준비하는 전망</b>이다. 근거는 직전 장(${window._swingView.dataDay}) 마감 자료.`
-           : `미국장 휴장 중 — 아래는 <b>직전 장(${window._swingView.dataDay}) 마감 시점</b>의 판단이다. 다음 장 개장 전까지 갱신 없음.`}
+           ? `아래는 <b>다음 장을 준비하는 전망</b>이다. 근거는 직전 장(${window._swingView.dataDay}) 마감 자료.`
+           : `아래는 <b>직전 장(${window._swingView.dataDay}) 마감 시점</b>의 판단이다. 다음 장 개장 전까지 갱신 없음.`}
        </div>`;
     const _phaseWarn = (_wkPhase !== 'session') ? _wkNotice
       : (_phaseWas && _PHASE_KO[_phaseWas] && _phaseWas !== _phaseNow)

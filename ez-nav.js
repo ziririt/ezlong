@@ -814,7 +814,8 @@ window.ezWeekPhase = function (now) {
     et = now;
   }
   var ed = et.getDay(), em = et.getHours() * 60 + et.getMinutes();
-  // 미국장 주말 휴장 구간인가 — 금 20:00 ET(애프터마켓 종료) ~ 월 04:00 ET(프리마켓)
+  // 미국장이 안 열리는 주말 구간인가 — 금 20:00 ET(애프터마켓 종료) ~ 월 04:00 ET(프리마켓)
+  // (58항) 이 구간을 화면 문구에서 '휴장'이라 부르지 않는다.
   var closed = (ed === 6) || (ed === 0) ||
                (ed === 5 && em >= 1200) || (ed === 1 && em < 240);
   if (!closed) return 'session';
