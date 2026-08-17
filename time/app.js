@@ -11418,7 +11418,10 @@ var bedsideActive = false;
 
   function shouldPlay() {
     if (restCooldown) return false;
-    if (devForce) return true;
+    // 2026-08-17 운영자 실기기 제보 — 설정에서 '배경 동영상'을 꺼도 영상이
+    // 계속 나왔다. 개발용 강제(?vidbg=1)가 토글까지 무시한 탓. 강제는
+    // 프리미엄·Wi-Fi·충전 조건만 우회하고, 토글 해제는 존중한다.
+    if (devForce) return storedOn();
     // 충전은 조건이 아니라 '분량'을 정한다 — 비충전이면 5개 뒤 자동 해제.
     return storedOn() && premiumOk() && wifiOk();
   }
