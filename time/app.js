@@ -3161,6 +3161,7 @@ function applyWeatherDetailVideo() {
   if (!vid) {
     vid = document.createElement("video");
     vid.className = "wd-vidbg";
+    vid.poster = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; // 2026-08-17 안드 기본 재생 아이콘 봉쇄
     vid.muted = true;
     vid.setAttribute("muted", "");
     vid.playsInline = true;
@@ -11293,6 +11294,9 @@ var bedsideActive = false;
   function makeVideo() {
     var v = document.createElement("video");
     v.className = "vidbg";
+    // 2026-08-17 — 안드로이드 WebView가 poster 없는 영상의 "아직 안 도는"
+    // 찰나에 기본 재생 아이콘을 그린다. 투명 1px로 막는다.
+    v.poster = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
     v.muted = true;
     v.setAttribute("muted", "");
     v.playsInline = true;
@@ -11350,9 +11354,11 @@ var bedsideActive = false;
     pickGroup = videoWeatherGroup();
     groupSwitched = false;
     currentEntry = backEntry;
+    // 2026-08-17 — play()를 먼저, 노출을 나중에. 보이는 순간 이미 돌고
+    // 있어야 안드로이드가 기본 포스터를 그릴 틈이 없다.
+    front.play().catch(function () {});
     front.classList.add("on");
     back.classList.remove("on");
-    front.play().catch(function () {});
     loops = 0;
     loadInto(back, pickNext());
   }

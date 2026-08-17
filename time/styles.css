@@ -5723,3 +5723,18 @@ body.is-lowmotion .clock-colon {
 .sky-photo video.vidbg.on {
   opacity: 1;
 }
+
+
+/* 2026-08-17(1.9.41) — 안드로이드 WebView가 배경 <video> 교대 순간에
+   기본 재생 아이콘을 풀사이즈로 번쩍이던 문제. 투명 poster(app.js)와
+   함께 웹킷 기본 미디어 UI를 완전히 끈다. */
+.sky-photo video.vidbg::-webkit-media-controls,
+.sky-photo video.vidbg::-webkit-media-controls-start-playback-button,
+.sky-photo video.vidbg::-webkit-media-controls-overlay-play-button,
+.weather-detail-photo .wd-vidbg::-webkit-media-controls,
+.weather-detail-photo .wd-vidbg::-webkit-media-controls-start-playback-button,
+.weather-detail-photo .wd-vidbg::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+}
