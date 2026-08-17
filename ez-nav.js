@@ -972,7 +972,12 @@ window.ezWeekPhase = function (now) {
    ───────────────────────────────────────────────────────────── */
 window.EZ_ADS_LIVE = false;
 (function () {
-  var need = window.EZ_ADS_LIVE === true;
+  /* 어느 페이지에 광고를 두느냐는 페이지가 정한다 — <meta name="ez-ads" content="on">.
+     스위치를 켜도 이 표시가 없는 페이지에는 아무것도 안 붙는다. 2026-08-17에
+     11개 페이지의 하드코딩 애드센스를 전부 걷어냈으므로, 다시 켤 때는 원하는
+     페이지에 이 한 줄을 넣는 것이 유일한 절차다. */
+  var need = window.EZ_ADS_LIVE === true &&
+             !!document.querySelector('meta[name="ez-ads"][content="on"]');
   if (!need) {
     try {
       var q = new URLSearchParams(location.search).get('ads');

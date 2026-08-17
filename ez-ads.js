@@ -43,10 +43,10 @@
      내려받을지 말지도 그 값이 정하므로, 스위치가 두 곳에 있으면 반드시
      한쪽이 뒤처진다. 아래 둘은 이 파일의 소관이다. */
   var WEBVIEW_ADS_REGISTERED = false;   // 앱이 WebView API for Ads 등록을 마쳤는가
-  /* 게시자 ID — 이미 발급돼 있다. 2026-08-17 조사 결과 index·스윙 대시보드 등
-     11개 페이지가 이 ID로 애드센스 로더를 **아무 조건 없이** 부르고 있었다.
-     즉 앱 화면 안에서도 그대로 로드되는 중이다. 그 11개를 이 게이트 밑으로
-     옮기는 작업은 운영 판단이 필요해 별도 건으로 둔다(59항 '남은 일'). */
+  /* 게시자 ID — 이미 발급돼 있다. 2026-08-17 조사에서 index·스윙 대시보드 등
+     11개 페이지가 이 ID로 애드센스 로더를 아무 조건 없이(앱 화면 포함) 부르고
+     있는 것을 확인했고, 오너 판단으로 그 11개를 전부 걷어냈다. 지금 이 사이트에
+     애드센스를 부르는 경로는 이 파일 하나뿐이며, 그마저 스위치가 꺼져 있다. */
   var PUB_ID = 'ca-pub-2336764115275414';
 
   var PREVIEW_KEY = 'ezlong:adsPreview';
@@ -235,6 +235,10 @@
       if (window.console) console.warn('[ez-ads] PUB_ID 미설정 — 송출 보류');
       return;
     }
+    /* 페이지가 스스로 광고 지면임을 선언해야 한다. 로더(ez-nav.js)에도 같은
+       조건이 있지만, 이 파일을 직접 불러오는 경로(실험실 등)가 있으므로 여기서
+       한 번 더 본다 — 광고는 두 번 확인해서 손해 볼 일이 없다. */
+    if (!document.querySelector('meta[name="ez-ads"][content="on"]')) return;
     var s = document.createElement('script');
     s.async = true;
     s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + PUB_ID;
