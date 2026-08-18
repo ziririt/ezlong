@@ -1711,6 +1711,9 @@ def market_snapshot(equity_rows, macro_rows):
     return {
         'qqq_pct': _gr_pct(equity_rows, 'QQQ:'),
         'spy_pct': _gr_pct(equity_rows, 'SPY:'),
+        # 62항 — 섹터 학살은 지수에 안 보인다. 2026-08-19 장중 QQQ -1.59%인 날
+        # SOXX 는 -6.03%였다(MU -7.5%, SK하이닉스 -8.7%). 지수만 보면 '조용한 날'이다.
+        'soxx_pct': _gr_pct(equity_rows, 'SOXX:'),
         'vix': _gr_level(macro_rows, 'VIX 공포지수:'),
         'vix_pct': _gr_pct(macro_rows, 'VIX 공포지수:'),
         'oil_pct': _gr_pct(macro_rows, 'WTI 원유(USD):'),
@@ -1776,10 +1779,19 @@ def _gr_claim_hit(text, subj_re, claim_re, deny_after=None):
     return False
 
 def _gr_shock(snap):
-    """점수가 크게 뛰어도 되는 '새 충격'이 실제로 있었는가 — 실측 기준."""
+    """점수가 크게 뛰어도 되는 '새 충격'이 실제로 있었는가 — 실측 기준.
+
+    2026-08-19 보강(62항): 지수 셋(QQQ·SPY·VIX)만 보고 있었다. 그날 장중 QQQ 는
+    -1.59%로 문턱(2.0%) 아래였는데 SOXX 는 -6.03%, MU -7.5%, SK하이닉스 -8.7%였다.
+    카드는 부정을 35 → 70 으로 올리려 했고 G2 변화 상한이 '새 충격 없음'이라며
+    막았다 — 반도체가 무너지는 화면을 보면서 카드는 긍정 65 : 부정 35 를 유지했다.
+    **섹터 학살은 지수에 안 보인다.** SOXX 를 충격 판정에 넣는다. 문턱 4.0%는 QQQ
+    2.0%를 SOXX 의 변동성(대략 두 배)으로 환산한 값이다."""
     q, s = snap.get('qqq_pct'), snap.get('spy_pct')
     v, vc = snap.get('vix'), snap.get('vix_pct')
+    x = snap.get('soxx_pct')
     return ((q is not None and abs(q) >= 2.0) or (s is not None and abs(s) >= 1.5)
+            or (x is not None and abs(x) >= 4.0)
             or (v is not None and v >= 25.0) or (vc is not None and abs(vc) >= 20.0))
 
 def _gr_calm(snap, spy_off_high):
