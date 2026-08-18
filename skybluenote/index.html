@@ -14,7 +14,7 @@
 <title>Skyblue Note — AI 답변을 붙여넣으면, 바로 쓸 수 있는 글이 됩니다 | EZLONG</title>
 
 <meta name="description" content="ChatGPT·클로드·제미나이 답변을 붙여넣으면 별표와 우물 정, 이모지, 군더더기 인사말이 한 번에 걷힙니다. 깨진 표는 복구되고, 표는 스프레드시트로 바로 옮겨집니다. 아이폰·아이패드·맥·안드로이드.">
-<meta name="keywords" content="Skyblue Note, 스카이블루 노트, 마크다운 제거, AI 답변 정리, ChatGPT 정리, 메모앱, 표 복구, TSV, 노트앱">
+<meta name="keywords" content="Skyblue Note, 스카이블루 노트, 마크다운 제거, 별표 지우기, 우물정 제거, AI 답변 정리, ChatGPT 답변 정리, 클로드 답변 복사, 마크다운 표 깨짐, 표 복구, TSV, 메모앱, 노트앱">
 <meta name="author" content="김성동">
 <link rel="canonical" href="https://ezlong.com/skybluenote">
 
@@ -220,6 +220,7 @@ footer .row .sp{margin-left:auto}
   .btn{transition:none}
 }
 </style>
+<script defer src="/skybluenote/store.js?v=20260819"></script>
 </head>
 <body>
 
@@ -244,13 +245,15 @@ footer .row .sp{margin-left:auto}
     <span class="eyebrow">아이폰 · 아이패드 · 맥 · 안드로이드</span>
     <h1>AI 답변을 붙여넣으면,<br><span class="grad">바로 쓸 수 있는 글</span>이 됩니다.</h1>
     <p class="lede">
-      ChatGPT와 클로드가 준 답을 그대로 어디에 붙이면, 별표와 우물 정이 따라옵니다.
-      Skyblue Note는 그것을 한 번에 걷어내고, 깨진 표까지 되살립니다.
+      ChatGPT와 클로드가 준 답을 그대로 어디에 붙이면 별표(**)와 우물 정(##)이 따라오고,
+      표는 세로줄만 남아 깨집니다. Skyblue Note는 그것을 한 번에 걷어내고 표까지 되살립니다.
     </p>
     <div class="cta">
       <a class="btn btn-p" href="/skybluenote/app">웹에서 바로 해보기 <small>설치 없이 · 지금</small></a>
-      <span class="btn btn-s"> App Store <small>심사 준비 중</small></span>
-      <span class="btn btn-s">▶ Google Play <small>테스트 준비 중</small></span>
+      <a class="btn btn-s" href="#" data-store="ios" data-open="아이폰 · 아이패드 · 맥">
+         App Store <small>심사 중</small></a>
+      <a class="btn btn-s" href="#" data-store="android" data-open="안드로이드">
+        ▶ Google Play <small>테스트 중</small></a>
     </div>
     <p class="note">첫 판은 완전 무료입니다. 회원가입도, 로그인도 없습니다.</p>
 
@@ -391,7 +394,7 @@ footer .row .sp{margin-left:auto}
 
 <footer>
   <div class="wrap row">
-    <span>© 2026 EZLONG · Skyblue Note</span>
+    <span>© 2026 EZLONG · Skyblue Note <span style="opacity:.6">ver.1.0.0</span></span>
     <span class="sp"><a href="/skybluenote/privacy">개인정보 처리방침</a></span>
     <span><a href="https://ezlong.com">ezlong.com</a></span>
   </div>

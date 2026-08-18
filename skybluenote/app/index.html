@@ -265,7 +265,19 @@ footer .row .sp{margin-left:auto}
 @media (prefers-contrast: more){
   .pane,.f{border-color:var(--ink)}
 }
+
+/* 결과 아래의 문 (2026-08-19) */
+.getapp[hidden]{display:none}
+.getapp{
+  margin:14px 0 0; padding:16px 18px;
+  border:1px solid var(--line); border-radius:var(--radius);
+  background:var(--panel); box-shadow:var(--shadow);
+}
+.getapp p{margin:0 0 12px; font-size:15px; line-height:1.5}
+.getapp .cta{display:flex; flex-wrap:wrap; gap:10px}
+.btn.soon{opacity:.55; cursor:default}
 </style>
+<script defer src="/skybluenote/store.js?v=20260819"></script>
 </head>
 <body>
 
@@ -332,6 +344,20 @@ footer .row .sp{margin-left:auto}
 
     <div class="status" id="status"></div>
 
+    <!-- 정리가 한 번 돌아간 뒤에만 보인다.
+         지저분하던 글이 깨끗해진 걸 본 그 순간이 앱을 깔고 싶어지는
+         순간이다. 그 순간은 화면 맨 아래가 아니라 결과 바로 밑이다. -->
+    <div class="getapp" id="getapp" hidden>
+      <p><b>깨끗해졌습니다.</b> 폰에서도 같은 엔진으로 쓰실 수 있습니다.</p>
+      <div class="cta">
+        <a class="btn btn-p" href="/skybluenote">앱 소개 보기 <small>무료 · 회원가입 없음</small></a>
+        <a class="btn btn-s" href="#" data-store="ios" data-open="아이폰 · 아이패드 · 맥">
+           App Store <small>심사 중</small></a>
+        <a class="btn btn-s" href="#" data-store="android" data-open="안드로이드">
+          ▶ Google Play <small>테스트 중</small></a>
+      </div>
+    </div>
+
     <div class="adzone" data-ez-ad="header"></div>
   </div>
 </div>
@@ -388,7 +414,7 @@ footer .row .sp{margin-left:auto}
 
 <footer>
   <div class="wrap row">
-    <span>© 2026 EZLONG · Skyblue Note</span>
+    <span>© 2026 EZLONG · Skyblue Note <span style="opacity:.6">ver.1.0.0</span></span>
     <span class="sp"><a href="/skybluenote/privacy">개인정보 처리방침</a></span>
     <span><a href="https://ezlong.com">ezlong.com</a></span>
   </div>
@@ -518,6 +544,11 @@ footer .row .sp{margin-left:auto}
     say(bits.join(''));
 
     if (window.gtag) gtag('event', 'tidy', { preset: preset, chars: raw.length });
+
+    // 한 번이라도 돌아갔으면 문을 연다. 다시 숨기지 않는다 — 열렸다
+    // 닫혔다 하면 화면이 들썩이고, 그건 결과를 읽는 데 방해가 된다.
+    var g = document.getElementById('getapp');
+    if (g) g.hidden = false;
   }
 
   function lock(empty){
