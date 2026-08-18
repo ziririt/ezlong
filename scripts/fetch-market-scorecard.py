@@ -2235,6 +2235,13 @@ def direction_offenders(entry, snap=None):
                 for subj_re, key, label, floor in _MICRO_SUBJECTS:
                     if not re.search(subj_re, name, re.I):
                         continue
+                    # 62항 보강(2026-08-19) — 크기 검사는 '움직였다'고 **주장할 때만** 건다.
+                    # 수준을 말하는 재료는 오늘 변화율로 판단할 대상이 아니다.
+                    # 실제: 30년물이 5.32%로 2007년 이후 최고인 날, 장중 변화는 -0.2%였다.
+                    # "고금리 수준 지속"은 참인데 "오차 범위"라며 걷어내면 그날의 진짜
+                    # 이야기가 통째로 사라진다. 안전장치가 사실을 이기면 안 된다.
+                    if not re.search(_UP_WORDS + '|' + _DOWN_WORDS, name):
+                        break
                     v = snap.get(key)
                     if v is None:
                         continue   # 이 지표는 측정 불가 — 이름에 있는 다른 지표를 계속 본다
