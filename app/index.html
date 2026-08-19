@@ -23,10 +23,12 @@
     --bg:#0b0f14; --panel:#121821; --line:#1e2733;
     --ink:#e8eef6; --sub:#8b9bb0; --accent:#4fc3f7; --accent-ink:#08205a;
     --radius:16px;
+    --badge-bg:rgba(79,195,247,.14);
   }
   @media (prefers-color-scheme: light){
     :root{ --bg:#f7f9fc; --panel:#ffffff; --line:#e3e9f0;
-           --ink:#101822; --sub:#5b6b7f; --accent:#0070be; --accent-ink:#ffffff; }
+           --ink:#101822; --sub:#5b6b7f; --accent:#0070be; --accent-ink:#ffffff;
+           --badge-bg:rgba(0,112,190,.09); }
   }
   *{ box-sizing:border-box; }
   html{ -webkit-text-size-adjust:100%; }
@@ -70,6 +72,9 @@
   .chip.wait{ opacity:.55; cursor:default; }
   .chip.wait:hover{ border-color:var(--line); }
 
+  .badge{ display:inline-flex; align-items:center; border-radius:8px;
+           padding:8px 12px; font-size:13px; font-weight:600;
+           color:var(--accent); background:var(--badge-bg); }
   .soon{ border-style:dashed; text-align:center; padding:30px 22px; }
   .soon p{ margin:0; }
 
@@ -92,6 +97,20 @@
 <main>
   <div class="wrap">
 
+    <article class="card">
+      <p class="kind">시계 · 스탠바이</p>
+      <h2>Long Time, Easy Life</h2>
+      <p>충전기에 꽂아 가로로 세워두면 큼직한 플립시계가 뜨고, 계절과 날씨와 시간에
+         맞춰 배경 사진과 영상이 저절로 바뀝니다. 지금 날씨와 시간별·주간 예보를 그
+         자리에서 보고, 아래로는 투자 거장들의 문장이 흘러가고, 일하거나 공부할 때
+         듣기 좋은 음악도 함께 깔립니다.</p>
+      <div class="links">
+        <a class="chip go" href="/time/">웹앱 열기 <small>설치 없이</small></a>
+        <a class="chip" href="https://apps.apple.com/kr/app/id6793780938">App Store</a>
+        <span class="chip wait">Google Play <small>테스트 중</small></span>
+        <span class="badge">Apple Watch 지원</span>
+      </div>
+    </article>
     <article class="card">
       <p class="kind">노트 · 메모</p>
       <h2>Skyblue Note</h2>
