@@ -22011,43 +22011,52 @@
   "title": "S&P500 7,745 하락 마감, 반도체 SOXX만 +1.58% 홀로 강세",
   "summary": "",
   "importance": 1,
-  "moves": {},
+  "moves": {
+   "QQQ": -1.69,
+   "SPY(VOO)": -0.69,
+   "SOXX": -4.96
+  },
   "link": "https://contents.premium.naver.com/unis/something/contents/260818132943969oy",
   "source": "own_archive",
   "summaryGroups": [
    {
-    "heading": "장기 금리 재상승과 유가 상승이 성장주 압박",
+    "heading": "장기 금리 재상승과 유가 강세가 성장주 압박",
     "tone": "neg",
     "cat": "rates_treasury",
     "points": [
-     "10년물 국채 금리 장중 4.724%로 상승, 30년물 5.31% 유지",
-     "브렌트유 91.22달러로 상승, 이란과의 합의 진전 부재로 인플레이션 재가속 우려",
-     "금리 상승은 미래 이익 할인율 부담 확대, 특히 소프트웨어·플랫폼 기업에 영향"
+     "10년물 국채 금리 장중 4.724%로 상승, 4.7% 위에서의 재상승 부담",
+     "브렌트유 장중 91.22달러로 상승, 인플레이션 재가속 우려 재점화",
+     "금리와 유가 동시 상승은 성장주에 가장 불리한 조합으로 작용"
     ]
    },
    {
-    "heading": "AI 반도체 밸류체인 강세, 소프트웨어·빅테크는 약세 분화",
+    "heading": "AI 반도체 밸류에이션 재조정 및 차익실현",
+    "tone": "neg",
+    "cat": "ai_tech_valuation",
+    "points": [
+     "SOXX 지수 -4.96% 급락, 메모리·장비·파운드리 전 영역 동반 하락",
+     "SK하이닉스 -9.20%, 샌디스크 -9.01%, 마이크론 -7.02% 등 HBM·AI 서버 관련주 차익실현 강도 확대",
+     "금리 하락에도 엔비디아(-2.34%), TSMC(-4.07%), 메타(-4.45%) 등 빅테크 동반 하락"
+    ]
+   },
+   {
+    "heading": "AI 인프라 공급망 내 자금 이동 관찰",
     "tone": "mix",
     "cat": "ai_tech_valuation",
     "points": [
-     "반도체 지수(SOXX) +1.58% 상승, 메모리·장비·데이터센터 연결성 전반 강세",
-     "마이크론(+4.13%), 샌디스크(+8.88%), AMAT(+5.55%) 등 AI 인프라 관련주 급등",
-     "S&P 소프트웨어·서비스 지수 -2.8% 하락, 마이크로소프트·메타 등 금리 민감도 높은 기업 약세"
-    ]
-   },
-   {
-    "heading": "변동성 확대와 차익실현 압력",
-    "tone": "neg",
-    "cat": "vix_risk_sentiment",
-    "points": [
-     "VIX 지수 15.19로 6.60% 상승, 지수 하락폭보다 큰 반등 폭 기록"
+     "반도체 지수 하락 속 마이크론(+4.13%), 샌디스크(+8.88%), AMAT(+5.55%) 등 AI 인프라 후방 공급망 강세"
     ]
    }
   ],
   "cats": [
    "rates_treasury",
-   "ai_tech_valuation",
-   "vix_risk_sentiment"
+   "ai_tech_valuation"
+  ],
+  "moreArticles": [
+   {
+    "t": "ㅤSOXX -4.96% 급락, 10년물 4.7%로 내렸는데 반도체가 밀린 이유",
+    "u": "https://contents.premium.naver.com/unis/something/contents/260819081500385kt"
+   }
   ]
  }
 ]
