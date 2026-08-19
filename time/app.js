@@ -9864,9 +9864,33 @@ var lastPhotoRotateAt = (function () {
   }
   return Date.now();
 })();
+// 2026-08-19 이슈 제보 — "동영상 배경을 끄고 사진으로 돌아왔더니 한
+// 장이 30분 넘게 그대로다. 문장은 1분마다 잘 바뀌는데."
+//
+// 브라우저에서 재현해 보니 회전 로직은 멀쩡했다. 범인은 아래 회전 함수
+// 첫 줄의 visibilityState 가드였다 — 탭을 뒤에 두면 열 번 호출해도 열 번
+// 다 false를 반환하고 아무 일도 안 한다. 문장 회전(rotateQuote)에는 그
+// 가드가 없어서 혼자 계속 넘어간다. 사장님이 본 "문장만 바뀜"이 이
+// 비대칭 그대로다.
+//
+// 그래서 판정 신호를 하나 더 둔다. requestAnimationFrame은 브라우저가
+// 화면을 실제로 그릴 때만 돈다 — 프레임이 돌고 있다는 건 그 화면이 지금
+// 사람 눈앞에 있다는 뜻이다. WKWebView가 어떤 이유로든 visibilityState를
+// hidden에 굳혀 놓아도, 프레임이 살아 있으면 사진을 멈추지 않는다.
+// (진짜로 화면이 꺼져 있으면 rAF도 함께 멈추므로 배터리 걱정은 없다.)
+var lastFrameAt = Date.now();
+(function frameBeat() {
+  lastFrameAt = Date.now();
+  window.requestAnimationFrame(frameBeat);
+})();
+function screenIsLive() {
+  if (document.visibilityState === "visible") return true;
+  return Date.now() - lastFrameAt < 2000;
+}
+
 function photoAutoRotateTick() {
   // 회전이 실제로 일어났는지 돌려준다(tick이 타이머 소모 여부를 판단).
-  if (document.visibilityState !== "visible") return false;
+  if (!screenIsLive()) return false;
   if (!activePhotoSet.length || Date.now() < manualPhotoUntil) return false;
   if (!activeScene) return false;
   const nextIndex = (activePhotoIndex + 1) % activePhotoSet.length;
@@ -9906,6 +9930,24 @@ function savePhotoRotateState() {
     // 저장 실패해도 이번 실행의 리듬에는 영향이 없다.
   }
 }
+// 2026-08-19 — 화면이 다시 보이는 순간, 밀린 시간을 따져 즉시 한 장
+// 넘긴다. 예전에는 다음 tick(1초 주기)을 기다렸는데, 그 사이 조건이 또
+// 어긋나면 회전이 계속 밀렸다. 돌아오자마자 바뀌는 편이 사람 감각에도 맞다.
+function photoRotateCatchUp() {
+  if (typeof lastPhotoRotateAt !== "number") return;
+  if (Date.now() - lastPhotoRotateAt < PHOTO_AUTO_ROTATE_MS) return;
+  if (photoAutoRotateTick()) lastPhotoRotateAt = Date.now();
+}
+document.addEventListener("visibilitychange", function () {
+  if (document.visibilityState === "visible") {
+    // 복귀 직후 한 프레임은 지나야 레이아웃이 안정된다.
+    window.setTimeout(photoRotateCatchUp, 120);
+  }
+});
+window.addEventListener("pageshow", function () {
+  window.setTimeout(photoRotateCatchUp, 120);
+});
+
 // (독립 타이머는 폐기 — tick() 안에서 경과시간으로 호출한다.)
 window.setInterval(musicStallWatchdog, 2000);
 // 2026-07-16: 이 15초 주기 재동기화를 폐기한다 — 유저가 겪은 "곡 중간에
