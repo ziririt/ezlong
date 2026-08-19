@@ -20,7 +20,7 @@
   <meta name="apple-mobile-web-app-title" content="Long Time">
   <meta name="theme-color" content="#0D0D0F">
   <meta name="color-scheme" content="dark">
-  <link rel="stylesheet" href="styles.css?v=20260817-vidposter-v3">
+  <link rel="stylesheet" href="styles.css?v=20260820-wakealarm-v4">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -365,7 +365,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.9.45</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" aria-hidden="true">ver.1.9.46</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -669,6 +669,44 @@
             <span data-i18n="settings.quotes.all">모든 분야</span>
           </label>
           <div class="field-grid" id="flatGenreOptions"></div>
+        </section>
+
+        <!-- 2026-08-20 운영 지침 — '기상 알람'.
+             AlarmKit(iOS 26+)이 무음·집중 모드를 뚫고 울려 주는 알람을
+             걸고, 앱이 살아 있으면 그 위에 우리 음악을 3분에 걸쳐 서서히
+             키워 덮는다. 겹치지 않는다 — 앱이 살아 있으면 정각 직전에
+             네이티브가 시스템 알람 쪽을 스스로 취소한다(WakeMusicPlayer).
+             네이티브가 없는 환경(브라우저·안드로이드)에서는 app.js가 이
+             섹션을 통째로 감춘다(applyWakeAlarmPlatformGating). -->
+        <section class="settings-block settings-card" id="wakeAlarmSection" data-i18n-aria="settings.alarm.heading" aria-label="기상 알람" hidden>
+          <h3 class="settings-subtitle" data-i18n="settings.alarm.heading">기상 알람</h3>
+          <p class="settings-desc alarm-standby-hint" data-i18n="settings.alarm.standbyHint">Standby의 플립시계를 터치하면 바로 기상 알람 설정이 가능합니다.</p>
+
+          <div class="alarm-time-row">
+            <input type="time" id="wakeAlarmTime" class="alarm-time-input" value="07:00" step="60" data-i18n-aria="settings.alarm.timeAria" aria-label="기상 시각">
+          </div>
+
+          <div class="alarm-weekdays" id="wakeAlarmWeekdays" role="group" data-i18n-aria="settings.alarm.weekdayAria" aria-label="반복 요일"></div>
+          <p class="settings-desc settings-desc-muted alarm-weekday-note" id="wakeAlarmRepeatNote" data-i18n="settings.alarm.repeatOnce">요일을 고르지 않으면 한 번만 울립니다.</p>
+
+          <label class="field-option">
+            <input type="checkbox" id="wakeAlarmSnooze" checked>
+            <span data-i18n="settings.alarm.snooze">다시 알림 9분</span>
+          </label>
+
+          <h4 class="alarm-subhead" data-i18n="settings.alarm.soundHeading">알람 음악</h4>
+          <div class="alarm-sound-tabs" id="wakeAlarmSoundTabs" role="group" data-i18n-aria="settings.alarm.soundTabAria" aria-label="음악 갈래"></div>
+          <div class="alarm-sound-list" id="wakeAlarmSoundList"></div>
+          <p class="settings-desc settings-desc-muted alarm-fade-guide" data-i18n="settings.alarm.fadeGuide">아주 작은 소리로 시작해 3분에 걸쳐 서서히 커집니다. 놀라서 깨는 것이 아니라, 천천히 눈이 떠지도록.</p>
+
+          <button class="settings-save alarm-confirm" type="button" id="wakeAlarmConfirm" data-i18n="settings.alarm.confirm">확인</button>
+
+          <div class="alarm-list" id="wakeAlarmList"></div>
+
+          <div class="alarm-bedtime-block">
+            <button class="alarm-bedtime-start" type="button" id="wakeAlarmBedtime" data-i18n="settings.alarm.bedtimeStart">취침 시작</button>
+            <p class="settings-desc settings-desc-muted" data-i18n="settings.alarm.bedtimeGuide">자기 직전에 눌러 주세요. 화면이 취침 대기 상태로 바뀌고 잠금화면에 기상 시각이 뜹니다. 이때 알람 음악이 가장 확실하게 울립니다.</p>
+          </div>
         </section>
 
         <!-- 2026-08-01 운영 지침 — 설정 맨 아래 "애플워치" 안내 섹션.
@@ -985,6 +1023,16 @@
       </section>
     </aside>
 
+    <!-- 2026-08-20 운영 지침 — 취침 대기 표시줄.
+         '취침 시작'을 누르면 body.bedtime-mode가 켜지면서 배경이 잦아들고
+         이 줄만 남는다. 화면을 새로 만들지 않고 기존 화면을 어둡게 변형하는
+         쪽을 택했다 — 플립시계·시각 계산·배경을 두 벌 돌릴 이유가 없다. -->
+    <div class="bedtime-bar" id="bedtimeBar" hidden>
+      <span class="bedtime-bar-dot" aria-hidden="true"></span>
+      <span class="bedtime-bar-label" data-i18n="settings.alarm.bedtimeActive">취침 중</span>
+      <strong class="bedtime-bar-time" id="bedtimeBarTime">07:00</strong>
+      <button type="button" class="bedtime-bar-exit" id="bedtimeExit" data-i18n="settings.alarm.bedtimeExit">해제</button>
+    </div>
 
   <script src="investment-quotes.js"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
@@ -1052,7 +1100,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260819-photorotate-v17"></script>
+  <script src="app.js?v=20260820-wakealarm-v18"></script>
 
   </body>
 </html>

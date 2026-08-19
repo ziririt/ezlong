@@ -2954,8 +2954,11 @@ function openSettings(focusSection) {
 
   // 2026-08-04 — 특정 섹션으로 바로 데려다주기(현재는 "music"만 사용).
   // 시트가 화면에 자리를 잡은 다음 스크롤해야 위치가 정확하다.
-  if (focusSection === "music") {
-    const target = document.getElementById("musicSettingsSection");
+  // 2026-08-20 — "alarm"을 추가하며 섹션 id 대응표로 일반화했다. 새 섹션이
+  // 늘어도 이 표에 한 줄만 얹으면 된다.
+  const FOCUS_SECTION_IDS = { music: "musicSettingsSection", alarm: "wakeAlarmSection" };
+  if (FOCUS_SECTION_IDS[focusSection]) {
+    const target = document.getElementById(FOCUS_SECTION_IDS[focusSection]);
     if (target) {
       window.setTimeout(() => {
         try {
@@ -11610,4 +11613,647 @@ var bedsideActive = false;
     if (tries >= 20) window.clearInterval(timer);
   }, 1000);
   document.addEventListener("visibilitychange", mirrorPremium);
+})();
+
+
+// ══════════════════════════════════════════════════════════════════════
+// 2026-08-20 운영 지침 — 기상 알람
+//
+// 왜 화면을 웹에 두는가. 알람 UI에 필요한 재료(곡 613개 목록, 미리듣기,
+// 6개 로케일, 설정 화면의 유리 재질)가 전부 이미 웹에 있다. 네이티브에
+// 같은 것을 한 벌 더 만들 이유가 없다. 네이티브는 이 화면이 정한 값을
+// 받아 두 가지 일만 한다 — AlarmKit에 알람을 걸고, 아침에 음악을 3분에
+// 걸쳐 서서히 키운다.
+//
+// 두 겹으로 깔되 겹쳐서 울리지는 않는다:
+//   · 앱이 살아 있으면(취침 대기·충전 거치) 우리 음악이 페이드인으로 깨운다.
+//     네이티브가 정각 직전에 시스템 알람 쪽을 스스로 취소한다.
+//   · 앱이 죽어 있으면 AlarmKit이 무음·집중 모드를 뚫고 대신 울려 준다.
+// 그래서 "못 깨는" 경우는 없다.
+// ══════════════════════════════════════════════════════════════════════
+(function wakeAlarmModule() {
+  "use strict";
+
+  var STORE_KEY   = "ezlong:wakeAlarms";
+  var SOUND_KEY   = "ezlong:wakeAlarmSound";
+  var BEDTIME_KEY = "ezlong:bedtimeArmed";
+
+  // 볼륨을 0에서 최대까지 끌어올리는 데 쓰는 시간. 운영자 확정값.
+  var FADE_SECONDS = 180;
+
+  // 30초짜리로 사람을 깨울 수는 없다. 1분 30초 이상만 알람 후보로 둔다.
+  var MIN_TRACK_SECONDS = 90;
+
+  // 미리듣기는 곡을 다 들려줄 자리가 아니다 — 결을 확인할 만큼만.
+  var PREVIEW_SECONDS = 18;
+
+  var els = null;
+  var supported = false;          // 네이티브가 알람을 받아줄 수 있는가
+  var editingId = null;           // 수정 중인 알람 id(없으면 새로 거는 중)
+  var selectedWeekdays = [];      // 0=일 … 6=토
+  var selectedTrack = null;       // music-playlist.js의 트랙 객체
+  var soundTab = "acoustic";
+  var previewAudio = null;
+  var previewFile = null;
+  var previewStopTimer = null;
+
+  // ── 저장 ────────────────────────────────────────────────────────
+
+  function loadAlarms() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      var list = raw ? JSON.parse(raw) : [];
+      return Array.isArray(list) ? list : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function saveAlarms(list) {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify(list));
+    } catch (error) { /* 저장 실패가 알람 거는 것을 막지는 않는다 */ }
+  }
+
+  function loadSavedSoundFile() {
+    try { return localStorage.getItem(SOUND_KEY) || null; } catch (error) { return null; }
+  }
+
+  function saveSoundFile(file) {
+    try {
+      if (file) localStorage.setItem(SOUND_KEY, file);
+      else localStorage.removeItem(SOUND_KEY);
+    } catch (error) { /* 무시 */ }
+  }
+
+  function bedtimeArmed() {
+    try { return localStorage.getItem(BEDTIME_KEY) === "1"; } catch (error) { return false; }
+  }
+
+  function setBedtimeArmed(on) {
+    try {
+      if (on) localStorage.setItem(BEDTIME_KEY, "1");
+      else localStorage.removeItem(BEDTIME_KEY);
+    } catch (error) { /* 무시 */ }
+  }
+
+  // ── 곡 목록 ─────────────────────────────────────────────────────
+
+  function durationSeconds(track) {
+    var raw = (track && track.duration) || "";
+    var m = /^(\d+):(\d+)$/.exec(String(raw).trim());
+    if (!m) return 0;
+    return parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+  }
+
+  // trackCategoryKey()가 "classic 20260718"을 "piano chello"로,
+  // "My Workspace"를 __original__로 이미 통합해 준다(app.js 위쪽 참조).
+  function tabOf(track) {
+    var key = typeof trackCategoryKey === "function" ? trackCategoryKey(track) : "";
+    if (key === "piano chello") return "classical";
+    if (key === ORIGINAL_CATEGORY_KEY || key === "My Workspace") return "acoustic";
+    return null;   // 보컬·록·명상 등은 기상 알람 후보가 아니다
+  }
+
+  var _tracksCache = null;
+
+  function alarmTracks() {
+    if (_tracksCache) return _tracksCache;
+    var out = { acoustic: [], classical: [] };
+    if (Array.isArray(window.musicPlaylist || (typeof musicPlaylist !== "undefined" ? musicPlaylist : null))) {
+      var source = window.musicPlaylist || musicPlaylist;
+      for (var i = 0; i < source.length; i += 1) {
+        var track = source[i];
+        var tab = tabOf(track);
+        if (!tab) continue;
+        if (durationSeconds(track) < MIN_TRACK_SECONDS) continue;
+        out[tab].push(track);
+      }
+    }
+    function byTitle(a, b) {
+      return String(a.title || "").localeCompare(String(b.title || ""));
+    }
+    out.acoustic.sort(byTitle);
+    out.classical.sort(byTitle);
+    _tracksCache = out;
+    return out;
+  }
+
+  function findTrackByFile(file) {
+    if (!file) return null;
+    var all = alarmTracks();
+    var pools = [all.acoustic, all.classical];
+    for (var p = 0; p < pools.length; p += 1) {
+      for (var i = 0; i < pools[p].length; i += 1) {
+        if (pools[p][i].file === file) return pools[p][i];
+      }
+    }
+    return null;
+  }
+
+  // ── 미리듣기 ────────────────────────────────────────────────────
+
+  function stopPreview() {
+    if (previewStopTimer) { window.clearTimeout(previewStopTimer); previewStopTimer = null; }
+    if (previewAudio) {
+      try { previewAudio.pause(); } catch (error) { /* 무시 */ }
+      previewAudio = null;
+    }
+    previewFile = null;
+    if (els && els.soundList) {
+      var buttons = els.soundList.querySelectorAll(".alarm-sound-preview");
+      for (var i = 0; i < buttons.length; i += 1) {
+        buttons[i].dataset.playing = "0";
+        buttons[i].textContent = "▶";
+      }
+    }
+  }
+
+  function playPreview(track, button) {
+    if (previewFile === track.file) { stopPreview(); return; }
+    stopPreview();
+    // 배경음악과 겹쳐 나면 어느 쪽 결인지 분간이 안 된다. 잠깐 물러나게 한다.
+    try { if (typeof pauseMusic === "function") pauseMusic(); } catch (error) { /* 무시 */ }
+    var url = typeof resolveTrackAbsoluteUrl === "function"
+      ? resolveTrackAbsoluteUrl(track)
+      : (typeof resolveTrackUrl === "function" ? resolveTrackUrl(track) : track.file);
+    try {
+      previewAudio = new Audio(url);
+      previewAudio.volume = 0.85;
+      previewFile = track.file;
+      button.dataset.playing = "1";
+      button.textContent = "■";
+      previewAudio.play().catch(function () { stopPreview(); });
+      previewStopTimer = window.setTimeout(stopPreview, PREVIEW_SECONDS * 1000);
+      previewAudio.addEventListener("ended", stopPreview, { once: true });
+    } catch (error) {
+      stopPreview();
+    }
+  }
+
+  // ── 그리기 ──────────────────────────────────────────────────────
+
+  function weekdayNames() {
+    var fallback = ["일", "월", "화", "수", "목", "금", "토"];
+    var out = [];
+    for (var i = 0; i < 7; i += 1) {
+      out.push(t("settings.alarm.weekday" + i, null, fallback[i]));
+    }
+    return out;
+  }
+
+  function renderWeekdays() {
+    if (!els.weekdays) return;
+    var names = weekdayNames();
+    els.weekdays.innerHTML = "";
+    for (var i = 0; i < 7; i += 1) {
+      var chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "alarm-weekday-chip";
+      chip.textContent = names[i];
+      chip.dataset.day = String(i);
+      chip.setAttribute("aria-pressed", selectedWeekdays.indexOf(i) >= 0 ? "true" : "false");
+      chip.addEventListener("click", onWeekdayClick);
+      els.weekdays.appendChild(chip);
+    }
+    updateRepeatNote();
+  }
+
+  function onWeekdayClick(event) {
+    var day = parseInt(event.currentTarget.dataset.day, 10);
+    var at = selectedWeekdays.indexOf(day);
+    if (at >= 0) selectedWeekdays.splice(at, 1);
+    else selectedWeekdays.push(day);
+    selectedWeekdays.sort(function (a, b) { return a - b; });
+    event.currentTarget.setAttribute("aria-pressed", at >= 0 ? "false" : "true");
+    updateRepeatNote();
+  }
+
+  function updateRepeatNote() {
+    if (!els.repeatNote) return;
+    els.repeatNote.textContent = selectedWeekdays.length
+      ? t("settings.alarm.repeatWeekly", null, "고른 요일마다 매주 울립니다.")
+      : t("settings.alarm.repeatOnce", null, "요일을 고르지 않으면 한 번만 울립니다.");
+  }
+
+  function renderSoundTabs() {
+    if (!els.soundTabs) return;
+    var tabs = [
+      { key: "acoustic",  label: t("settings.alarm.tabAcoustic",  null, "어쿠스틱 연주곡") },
+      { key: "classical", label: t("settings.alarm.tabClassical", null, "클래식") }
+    ];
+    els.soundTabs.innerHTML = "";
+    tabs.forEach(function (tab) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "alarm-sound-tab";
+      button.textContent = tab.label;
+      button.dataset.tab = tab.key;
+      button.setAttribute("aria-pressed", soundTab === tab.key ? "true" : "false");
+      button.addEventListener("click", function () {
+        if (soundTab === tab.key) return;
+        soundTab = tab.key;
+        stopPreview();
+        renderSoundTabs();
+        renderSoundList();
+      });
+      els.soundTabs.appendChild(button);
+    });
+  }
+
+  function renderSoundList() {
+    if (!els.soundList) return;
+    var list = alarmTracks()[soundTab] || [];
+    els.soundList.innerHTML = "";
+    if (!list.length) {
+      var empty = document.createElement("p");
+      empty.className = "settings-desc settings-desc-muted";
+      empty.style.margin = "10px 12px";
+      empty.textContent = t("settings.alarm.soundEmpty", null, "고를 수 있는 곡이 없습니다.");
+      els.soundList.appendChild(empty);
+      return;
+    }
+    list.forEach(function (track) {
+      var row = document.createElement("button");
+      row.type = "button";
+      row.className = "alarm-sound-item";
+      row.setAttribute("aria-pressed", selectedTrack && selectedTrack.file === track.file ? "true" : "false");
+
+      var preview = document.createElement("span");
+      preview.className = "alarm-sound-preview";
+      preview.setAttribute("role", "button");
+      preview.dataset.playing = "0";
+      preview.textContent = "▶";
+      preview.addEventListener("click", function (event) {
+        event.stopPropagation();
+        playPreview(track, preview);
+      });
+
+      var title = document.createElement("span");
+      title.className = "alarm-sound-title";
+      title.textContent = track.title || track.file;
+
+      var dur = document.createElement("span");
+      dur.className = "alarm-sound-dur";
+      dur.textContent = track.duration || "";
+
+      row.appendChild(preview);
+      row.appendChild(title);
+      row.appendChild(dur);
+      row.addEventListener("click", function () {
+        selectedTrack = track;
+        saveSoundFile(track.file);
+        renderSoundList();
+      });
+      els.soundList.appendChild(row);
+    });
+  }
+
+  function two(n) { return (n < 10 ? "0" : "") + n; }
+
+  function alarmSubtitle(alarm) {
+    var names = weekdayNames();
+    var when;
+    if (!alarm.weekdays || !alarm.weekdays.length) {
+      when = t("settings.alarm.once", null, "한 번");
+    } else if (alarm.weekdays.length === 7) {
+      when = t("settings.alarm.everyday", null, "매일");
+    } else {
+      when = alarm.weekdays.map(function (d) { return names[d]; }).join(" ");
+    }
+    var track = findTrackByFile(alarm.trackFile);
+    var song = track ? track.title : (alarm.trackTitle || "");
+    return song ? (when + " · " + song) : when;
+  }
+
+  function renderList() {
+    if (!els.list) return;
+    var alarms = loadAlarms();
+    els.list.innerHTML = "";
+    alarms.forEach(function (alarm) {
+      var row = document.createElement("div");
+      row.className = "alarm-row";
+
+      var time = document.createElement("button");
+      time.type = "button";
+      time.className = "alarm-row-time";
+      time.textContent = two(alarm.hour) + ":" + two(alarm.minute);
+      time.setAttribute("aria-label", t("settings.alarm.editAria", null, "이 알람 수정"));
+      // 운영 지침 — 걸어 둔 알람의 시각을 누르면 위 입력창으로 올라와 수정된다.
+      time.addEventListener("click", function () { beginEdit(alarm); });
+
+      var meta = document.createElement("span");
+      meta.className = "alarm-row-meta";
+      meta.textContent = alarmSubtitle(alarm);
+
+      var del = document.createElement("button");
+      del.type = "button";
+      del.className = "alarm-row-delete";
+      del.textContent = "✕";
+      del.setAttribute("aria-label", t("settings.alarm.deleteAria", null, "이 알람 지우기"));
+      del.addEventListener("click", function () { removeAlarm(alarm.id); });
+
+      row.appendChild(time);
+      row.appendChild(meta);
+      row.appendChild(del);
+      els.list.appendChild(row);
+    });
+    updateConfirmLabel();
+    updateBedtimeButton();
+  }
+
+  function updateConfirmLabel() {
+    if (!els.confirm) return;
+    els.confirm.textContent = editingId
+      ? t("settings.alarm.confirmEdit", null, "수정 확인")
+      : t("settings.alarm.confirm", null, "확인");
+  }
+
+  function beginEdit(alarm) {
+    editingId = alarm.id;
+    if (els.time) els.time.value = two(alarm.hour) + ":" + two(alarm.minute);
+    selectedWeekdays = (alarm.weekdays || []).slice();
+    if (els.snooze) els.snooze.checked = alarm.snooze !== false;
+    var track = findTrackByFile(alarm.trackFile);
+    if (track) {
+      selectedTrack = track;
+      soundTab = tabOf(track) || soundTab;
+    }
+    renderWeekdays();
+    renderSoundTabs();
+    renderSoundList();
+    updateConfirmLabel();
+    try {
+      els.time.scrollIntoView({ behavior: "smooth", block: "center" });
+    } catch (error) { /* 무시 */ }
+  }
+
+  // ── 네이티브 브릿지 ─────────────────────────────────────────────
+
+  function pushAlarmToNative(alarm) {
+    var track = findTrackByFile(alarm.trackFile);
+    var url = "";
+    if (track && typeof resolveTrackAbsoluteUrl === "function") {
+      try { url = resolveTrackAbsoluteUrl(track); } catch (error) { url = ""; }
+    }
+    postToNativeApp({
+      action: "scheduleWakeAlarm",
+      id: alarm.id,
+      hour: alarm.hour,
+      minute: alarm.minute,
+      weekdays: alarm.weekdays || [],
+      snooze: alarm.snooze !== false,
+      soundUrl: url,
+      soundTitle: (track && track.title) || alarm.trackTitle || "",
+      fadeSeconds: FADE_SECONDS,
+      label: t("settings.alarm.heading", null, "기상 알람")
+    });
+  }
+
+  function removeAlarm(id) {
+    var alarms = loadAlarms().filter(function (a) { return a.id !== id; });
+    saveAlarms(alarms);
+    postToNativeApp({ action: "cancelWakeAlarm", id: id });
+    if (editingId === id) { editingId = null; }
+    if (!alarms.length && bedtimeArmed()) exitBedtime();
+    renderList();
+  }
+
+  function onConfirm() {
+    var raw = (els.time && els.time.value) || "07:00";
+    var parts = raw.split(":");
+    var hour = Math.max(0, Math.min(23, parseInt(parts[0], 10) || 0));
+    var minute = Math.max(0, Math.min(59, parseInt(parts[1], 10) || 0));
+
+    var alarms = loadAlarms();
+    var id = editingId || ("wk" + Date.now().toString(36));
+    var record = {
+      id: id,
+      hour: hour,
+      minute: minute,
+      weekdays: selectedWeekdays.slice(),
+      snooze: !els.snooze || els.snooze.checked,
+      trackFile: selectedTrack ? selectedTrack.file : null,
+      trackTitle: selectedTrack ? selectedTrack.title : ""
+    };
+
+    var at = -1;
+    for (var i = 0; i < alarms.length; i += 1) {
+      if (alarms[i].id === id) { at = i; break; }
+    }
+    if (at >= 0) alarms[at] = record;
+    else alarms.push(record);
+
+    alarms.sort(function (a, b) { return (a.hour * 60 + a.minute) - (b.hour * 60 + b.minute); });
+    saveAlarms(alarms);
+    pushAlarmToNative(record);
+
+    editingId = null;
+    stopPreview();
+    renderList();
+    flashConfirm();
+  }
+
+  function flashConfirm() {
+    if (!els.confirm) return;
+    var original = els.confirm.textContent;
+    els.confirm.textContent = t("settings.alarm.saved", null, "알람을 걸었습니다");
+    els.confirm.disabled = true;
+    window.setTimeout(function () {
+      els.confirm.disabled = false;
+      updateConfirmLabel();
+    }, 1400);
+  }
+
+  // ── 취침 모드 ───────────────────────────────────────────────────
+
+  function nextAlarm() {
+    var alarms = loadAlarms();
+    if (!alarms.length) return null;
+    var now = new Date();
+    var best = null;
+    var bestDelta = Infinity;
+    alarms.forEach(function (alarm) {
+      var delta = minutesUntil(alarm, now);
+      if (delta < bestDelta) { bestDelta = delta; best = alarm; }
+    });
+    return best;
+  }
+
+  function minutesUntil(alarm, now) {
+    var nowMin = now.getHours() * 60 + now.getMinutes();
+    var target = alarm.hour * 60 + alarm.minute;
+    if (!alarm.weekdays || !alarm.weekdays.length) {
+      return target > nowMin ? (target - nowMin) : (target + 1440 - nowMin);
+    }
+    var today = now.getDay();
+    var best = Infinity;
+    alarm.weekdays.forEach(function (day) {
+      var ahead = (day - today + 7) % 7;
+      var delta = ahead * 1440 + target - nowMin;
+      if (delta <= 0) delta += 7 * 1440;
+      if (delta < best) best = delta;
+    });
+    return best;
+  }
+
+  function updateBedtimeButton() {
+    if (!els.bedtime) return;
+    var armed = bedtimeArmed();
+    els.bedtime.dataset.armed = armed ? "1" : "0";
+    els.bedtime.textContent = armed
+      ? t("settings.alarm.bedtimeStop", null, "취침 해제")
+      : t("settings.alarm.bedtimeStart", null, "취침 시작");
+  }
+
+  function enterBedtime() {
+    var alarm = nextAlarm();
+    if (!alarm) {
+      // 알람이 하나도 없으면 지금 화면의 시각으로 먼저 하나 걸어 준다.
+      onConfirm();
+      alarm = nextAlarm();
+      if (!alarm) return;
+    }
+    setBedtimeArmed(true);
+    document.body.classList.add("bedtime-mode");
+    if (els.bar) {
+      els.bar.hidden = false;
+      if (els.barTime) els.barTime.textContent = two(alarm.hour) + ":" + two(alarm.minute);
+    }
+    postToNativeApp({ action: "startBedtime", id: alarm.id });
+    stopPreview();
+    updateBedtimeButton();
+    try { if (typeof closeSettings === "function") closeSettings(); } catch (error) { /* 무시 */ }
+    try { if (typeof goToPage === "function") goToPage(0); } catch (error) { /* 무시 */ }
+  }
+
+  function exitBedtime() {
+    setBedtimeArmed(false);
+    document.body.classList.remove("bedtime-mode");
+    if (els.bar) els.bar.hidden = true;
+    postToNativeApp({ action: "stopBedtime" });
+    updateBedtimeButton();
+  }
+
+  function restoreBedtimeUi() {
+    if (!bedtimeArmed()) return;
+    var alarm = nextAlarm();
+    if (!alarm) { setBedtimeArmed(false); return; }
+    document.body.classList.add("bedtime-mode");
+    if (els.bar) {
+      els.bar.hidden = false;
+      if (els.barTime) els.barTime.textContent = two(alarm.hour) + ":" + two(alarm.minute);
+    }
+  }
+
+  // ── 열기 ────────────────────────────────────────────────────────
+
+  function openAlarmSettings() {
+    if (!supported) return;
+    try {
+      if (typeof openSettings === "function") openSettings("alarm");
+    } catch (error) { /* 무시 */ }
+  }
+
+  // 네이티브(위젯 탭 → longtime://alarms)가 부른다.
+  window.__flipzenOpenWakeAlarm = openAlarmSettings;
+
+  // ── 플랫폼 판별 ─────────────────────────────────────────────────
+  //
+  // AlarmKit은 iOS 26부터다. 웹이 UA로 짐작하는 대신 네이티브에게 직접
+  // 묻는다 — 구버전 앱은 이 질문에 답하지 않으므로 자연스럽게 숨겨진다.
+
+  function askCapability() {
+    if (typeof isNativeWrapper === "undefined" || !isNativeWrapper) return;
+    var settled = false;
+    window.__flipzenAlarmCapability = function (result) {
+      if (settled) return;
+      settled = true;
+      supported = !!(result && result.supported);
+      applyGating();
+    };
+    window.setTimeout(function () {
+      if (settled) return;
+      settled = true;
+      supported = false;
+      applyGating();
+    }, 3000);
+    postToNativeApp({ action: "alarmCapability" });
+  }
+
+  function applyGating() {
+    if (!els || !els.section) return;
+    els.section.hidden = !supported;
+    if (!supported) {
+      if (els.bar) els.bar.hidden = true;
+      document.body.classList.remove("bedtime-mode");
+      return;
+    }
+    renderWeekdays();
+    renderSoundTabs();
+    renderSoundList();
+    renderList();
+    restoreBedtimeUi();
+  }
+
+  // ── 배선 ────────────────────────────────────────────────────────
+
+  function init() {
+    els = {
+      section:    document.getElementById("wakeAlarmSection"),
+      time:       document.getElementById("wakeAlarmTime"),
+      weekdays:   document.getElementById("wakeAlarmWeekdays"),
+      repeatNote: document.getElementById("wakeAlarmRepeatNote"),
+      snooze:     document.getElementById("wakeAlarmSnooze"),
+      soundTabs:  document.getElementById("wakeAlarmSoundTabs"),
+      soundList:  document.getElementById("wakeAlarmSoundList"),
+      confirm:    document.getElementById("wakeAlarmConfirm"),
+      list:       document.getElementById("wakeAlarmList"),
+      bedtime:    document.getElementById("wakeAlarmBedtime"),
+      bar:        document.getElementById("bedtimeBar"),
+      barTime:    document.getElementById("bedtimeBarTime"),
+      barExit:    document.getElementById("bedtimeExit")
+    };
+    if (!els.section) return;
+
+    var savedFile = loadSavedSoundFile();
+    if (savedFile) {
+      var track = findTrackByFile(savedFile);
+      if (track) { selectedTrack = track; soundTab = tabOf(track) || soundTab; }
+    }
+    // 아무 것도 고르지 않았으면 어쿠스틱의 첫 곡을 미리 골라 둔다 — 알람음이
+    // 비어 있는 상태로 알람이 걸리는 일이 없게.
+    if (!selectedTrack) {
+      var first = (alarmTracks().acoustic || [])[0];
+      if (first) selectedTrack = first;
+    }
+
+    if (els.confirm) els.confirm.addEventListener("click", onConfirm);
+    if (els.bedtime) {
+      els.bedtime.addEventListener("click", function () {
+        if (bedtimeArmed()) exitBedtime();
+        else enterBedtime();
+      });
+    }
+    if (els.barExit) els.barExit.addEventListener("click", exitBedtime);
+
+    // 운영 지침 — 스탠바이의 플립시계를 한 번 터치하면 기상 알람으로.
+    var clock = document.querySelector(".flip-clock");
+    if (clock) {
+      clock.addEventListener("click", function () {
+        if (!supported) return;
+        if (bedtimeArmed()) return;   // 취침 중에는 화면을 건드리지 않는다
+        openAlarmSettings();
+      });
+      clock.style.cursor = "pointer";
+    }
+
+    askCapability();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();

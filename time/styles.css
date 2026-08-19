@@ -5738,3 +5738,373 @@ body.is-lowmotion .clock-colon {
   -webkit-appearance: none !important;
   opacity: 0 !important;
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   2026-08-20 운영 지침 — 기상 알람 / 취침 모드
+   설정 카드 안에 들어가므로 .settings-card의 유리 재질을 그대로 잇는다.
+   한밤중에 눈이 부시지 않게, 이 블록의 모든 색은 채도를 낮게 잡았다.
+   ══════════════════════════════════════════════════════════════════ */
+
+.alarm-standby-hint {
+  margin-top: -2px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  background: rgba(56, 189, 248, 0.10);
+  color: rgba(226, 244, 255, 0.92);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.alarm-time-row {
+  display: flex;
+  justify-content: center;
+  margin: 18px 0 12px;
+}
+
+.alarm-time-input {
+  appearance: none;
+  -webkit-appearance: none;
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: #f8fbff;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  padding: 10px 22px;
+  text-align: center;
+  font-family: inherit;
+}
+
+.alarm-time-input::-webkit-datetime-edit { padding: 0; }
+.alarm-time-input::-webkit-calendar-picker-indicator { display: none; }
+.alarm-time-input:focus {
+  outline: none;
+  border-color: rgba(56, 189, 248, 0.55);
+  background: rgba(56, 189, 248, 0.09);
+}
+
+.alarm-weekdays {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin: 4px 0 8px;
+}
+
+.alarm-weekday-chip {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 120ms cubic-bezier(.34,1.56,.64,1);
+}
+
+.alarm-weekday-chip[aria-pressed="true"] {
+  background: rgba(56, 189, 248, 0.22);
+  border-color: rgba(56, 189, 248, 0.55);
+  color: #eaf7ff;
+}
+
+.alarm-weekday-chip:active { transform: scale(0.92); }
+
+.alarm-weekday-note { margin-top: 0; font-size: 13px; }
+
+.alarm-subhead {
+  margin: 22px 0 10px;
+  font-size: 15px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.alarm-sound-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.alarm-sound-tab {
+  flex: 1 1 0;
+  min-height: 40px;
+  padding: 0 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.alarm-sound-tab[aria-pressed="true"] {
+  background: rgba(56, 189, 248, 0.20);
+  border-color: rgba(56, 189, 248, 0.50);
+  color: #eaf7ff;
+}
+
+/* 곡이 300개가 넘는다. 전부 펼치면 설정 화면이 끝없이 늘어나므로
+   높이를 묶고 안에서만 스크롤시킨다. */
+.alarm-sound-list {
+  max-height: 268px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.18);
+  padding: 6px;
+}
+
+.alarm-sound-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  text-align: left;
+  transition: background 140ms ease;
+}
+
+.alarm-sound-item + .alarm-sound-item {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.alarm-sound-item[aria-pressed="true"] {
+  background: rgba(56, 189, 248, 0.16);
+  color: #eaf7ff;
+}
+
+.alarm-sound-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.alarm-sound-dur {
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* 미리듣기 — 곡 줄 안의 작은 삼각형/사각형 */
+.alarm-sound-preview {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
+  line-height: 1;
+  font-family: inherit;
+  display: grid;
+  place-items: center;
+  transition: background 140ms ease, transform 120ms cubic-bezier(.34,1.56,.64,1);
+}
+
+.alarm-sound-preview:active { transform: scale(0.88); }
+.alarm-sound-preview[data-playing="1"] {
+  background: rgba(56, 189, 248, 0.30);
+  border-color: rgba(56, 189, 248, 0.55);
+}
+
+.alarm-fade-guide { margin-top: 12px; }
+
+.alarm-confirm { margin-top: 16px; }
+
+/* 걸어 둔 알람 */
+.alarm-list { margin-top: 14px; }
+.alarm-list:empty { display: none; }
+
+.alarm-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.alarm-row + .alarm-row { margin-top: 8px; }
+
+/* 시각을 누르면 위 입력창으로 값이 올라와 수정된다 */
+.alarm-row-time {
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #f4faff;
+  font-size: 26px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  font-family: inherit;
+  text-align: left;
+}
+
+.alarm-row-time:active { opacity: 0.6; }
+
+.alarm-row-meta {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.55);
+  overflow: hidden;
+}
+
+.alarm-row-delete {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 160, 160, 0.9);
+  font-size: 15px;
+  line-height: 1;
+  font-family: inherit;
+  display: grid;
+  place-items: center;
+  transition: transform 120ms cubic-bezier(.34,1.56,.64,1), background 140ms ease;
+}
+
+.alarm-row-delete:active { transform: scale(0.88); }
+
+.alarm-bedtime-block { margin-top: 22px; }
+
+.alarm-bedtime-start {
+  width: 100%;
+  min-height: 56px;
+  border-radius: 20px;
+  border: 1px solid rgba(148, 163, 255, 0.42);
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.32), rgba(67, 56, 202, 0.30));
+  color: #f2f4ff;
+  font-size: 17px;
+  font-weight: 800;
+  font-family: inherit;
+  transition: transform 120ms cubic-bezier(.34,1.56,.64,1), opacity 120ms ease;
+}
+
+.alarm-bedtime-start:active { transform: scale(0.94); opacity: 0.8; }
+
+.alarm-bedtime-start[data-armed="1"] {
+  border-color: rgba(56, 189, 248, 0.5);
+  background: linear-gradient(180deg, rgba(14, 165, 233, 0.28), rgba(2, 132, 199, 0.26));
+}
+
+/* ── 취침 대기 표시줄 ────────────────────────────────────────── */
+
+.bedtime-bar {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(12, 16, 28, 0.62);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.42);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.bedtime-bar[hidden] { display: none; }
+
+.bedtime-bar-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.85);
+  animation: bedtimePulse 3.4s ease-in-out infinite;
+}
+
+@keyframes bedtimePulse {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 1; }
+}
+
+.bedtime-bar-label { color: rgba(255, 255, 255, 0.58); font-weight: 600; }
+
+.bedtime-bar-time {
+  font-size: 17px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #f4faff;
+}
+
+.bedtime-bar-exit {
+  margin-left: 4px;
+  min-height: 32px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  transition: transform 120ms cubic-bezier(.34,1.56,.64,1);
+}
+
+.bedtime-bar-exit:active { transform: scale(0.9); }
+
+/* ── 취침 모드 ────────────────────────────────────────────────
+   화면을 새로 만들지 않고 지금 화면을 재운다. 배경 사진/영상의
+   밝기를 떨어뜨리고, 시계 말고는 전부 물러나게 한다. */
+
+body.bedtime-mode .photo-layer,
+body.bedtime-mode .video-bg-layer,
+body.bedtime-mode #videoBgLayer {
+  filter: brightness(0.22) saturate(0.6);
+  transition: filter 2.2s ease;
+}
+
+body.bedtime-mode .quote-card,
+body.bedtime-mode .music-panel,
+body.bedtime-mode .clock-meta,
+body.bedtime-mode .date-chip,
+body.bedtime-mode .icon-button {
+  opacity: 0.16;
+  transition: opacity 1.6s ease;
+}
+
+body.bedtime-mode .flip-clock { opacity: 0.9; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bedtime-bar-dot { animation: none; opacity: 0.85; }
+  body.bedtime-mode .photo-layer,
+  body.bedtime-mode .video-bg-layer,
+  body.bedtime-mode #videoBgLayer,
+  body.bedtime-mode .quote-card,
+  body.bedtime-mode .music-panel,
+  body.bedtime-mode .clock-meta,
+  body.bedtime-mode .date-chip,
+  body.bedtime-mode .icon-button { transition: none; }
+}
