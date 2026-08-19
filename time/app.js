@@ -12029,7 +12029,7 @@ var bedsideActive = false;
     if (track && typeof resolveTrackAbsoluteUrl === "function") {
       try { url = resolveTrackAbsoluteUrl(track); } catch (error) { url = ""; }
     }
-    postToNativeApp({
+    postAlarmBridge({
       action: "scheduleWakeAlarm",
       id: alarm.id,
       hour: alarm.hour,
@@ -12046,7 +12046,7 @@ var bedsideActive = false;
   function removeAlarm(id) {
     var alarms = loadAlarms().filter(function (a) { return a.id !== id; });
     saveAlarms(alarms);
-    postToNativeApp({ action: "cancelWakeAlarm", id: id });
+    postAlarmBridge({ action: "cancelWakeAlarm", id: id });
     if (editingId === id) { editingId = null; }
     if (!alarms.length && bedtimeArmed()) exitBedtime();
     renderList();
@@ -12153,7 +12153,7 @@ var bedsideActive = false;
       els.bar.hidden = false;
       if (els.barTime) els.barTime.textContent = two(alarm.hour) + ":" + two(alarm.minute);
     }
-    postToNativeApp({ action: "startBedtime", id: alarm.id });
+    postAlarmBridge({ action: "startBedtime", id: alarm.id, title: t("settings.alarm.bedtimeActive", null, "취침 중") });
     stopPreview();
     updateBedtimeButton();
     try { if (typeof closeSettings === "function") closeSettings(); } catch (error) { /* 무시 */ }
@@ -12164,7 +12164,7 @@ var bedsideActive = false;
     setBedtimeArmed(false);
     document.body.classList.remove("bedtime-mode");
     if (els.bar) els.bar.hidden = true;
-    postToNativeApp({ action: "stopBedtime" });
+    postAlarmBridge({ action: "stopBedtime" });
     updateBedtimeButton();
   }
 
@@ -12182,7 +12182,6 @@ var bedsideActive = false;
   // ── 열기 ────────────────────────────────────────────────────────
 
   function openAlarmSettings() {
-    if (!supported) return;
     try {
       if (typeof openSettings === "function") openSettings("alarm");
     } catch (error) { /* 무시 */ }
@@ -12226,11 +12225,27 @@ var bedsideActive = false;
       "기상 알람은 iOS 26 이상에서, 그리고 앱을 새로 설치한 뒤에 쓸 수 있습니다."
     );
     els.section.appendChild(note);
+
+    // 같은 자리에서 두 번 막히지 않도록 진단 한 줄을 남긴다. 어디까지
+    // 신호가 닿았는지 화면만 보고 알 수 있다.
+    var diag = document.createElement("p");
+    diag.className = "settings-desc settings-desc-muted";
+    diag.style.fontSize = "11px";
+    diag.style.opacity = "0.5";
+    diag.textContent = "bridge " + (bridgeAvailable() ? "O" : "X")
+      + " / injected " + (typeof window.__FLIPZEN_ALARM_SUPPORTED__ === "boolean"
+          ? String(window.__FLIPZEN_ALARM_SUPPORTED__) : "none")
+      + " / wrapper " + (typeof isNativeWrapper !== "undefined" && isNativeWrapper ? "O" : "X");
+    els.section.appendChild(diag);
   }
 
   function clearUnsupportedNotice() {
     var note = document.getElementById(NOTICE_ID);
-    if (note && note.parentNode) note.parentNode.removeChild(note);
+    if (note && note.parentNode) {
+      var diag = note.nextSibling;
+      note.parentNode.removeChild(note);
+      if (diag && diag.parentNode) diag.parentNode.removeChild(diag);
+    }
     ["time", "weekdays", "repeatNote", "soundTabs", "soundList",
      "confirm", "list", "bedtime"].forEach(function (key) {
       var node = els[key];
@@ -12253,8 +12268,34 @@ var bedsideActive = false;
     return false;
   }
 
+  // 브릿지에 직접 보낸다. postToNativeApp은 isNativeWrapper(=쿼리스트링
+  // ?native=ios)에 기대는데, 그 값 하나가 어떤 이유로든 빠지면 알람이
+  // 통째로 사라진다. 여기서는 브릿지 객체를 직접 붙잡는다.
+  function postAlarmBridge(payload) {
+    try {
+      if (window.webkit && window.webkit.messageHandlers
+          && window.webkit.messageHandlers.flipzenApp) {
+        window.webkit.messageHandlers.flipzenApp.postMessage(payload);
+        return true;
+      }
+      if (window.AndroidNativeBridge) {
+        window.AndroidNativeBridge.postMessage("flipzenApp", JSON.stringify(payload));
+        return true;
+      }
+    } catch (error) { /* 브릿지 미준비 — 조용히 넘어간다 */ }
+    return false;
+  }
+
   function askCapability() {
-    // 쿼리스트링(?native=ios) 대신 브릿지 객체를 직접 본다 — 더 단단하다.
+    // 1차 — 네이티브가 문서 시작 전에 심어 둔 값. 왕복이 없어 실패할
+    // 여지가 없다(ContentView.swift의 atDocumentStart userScript).
+    if (typeof window.__FLIPZEN_ALARM_SUPPORTED__ === "boolean") {
+      supported = window.__FLIPZEN_ALARM_SUPPORTED__;
+      applyGating();
+      return;
+    }
+
+    // 2차 — 값이 안 심긴 구버전 앱. 물어보는 옛 경로로 폴백한다.
     if (!bridgeAvailable()) { applyGating(); return; }
     var settled = false;
     window.__flipzenAlarmCapability = function (result) {
@@ -12263,13 +12304,19 @@ var bedsideActive = false;
       supported = !!(result && result.supported);
       applyGating();
     };
+    // 한 번만 묻고 3초에 포기하면 브릿지가 늦게 붙는 순간을 놓친다.
+    // 1초·3초에 한 번씩 더 두드리고 7초까지 기다린다.
+    [0, 1000, 3000].forEach(function (delay) {
+      window.setTimeout(function () {
+        if (!settled) postAlarmBridge({ action: "alarmCapability" });
+      }, delay);
+    });
     window.setTimeout(function () {
       if (settled) return;
       settled = true;
       supported = false;
       applyGating();
-    }, 3000);
-    postToNativeApp({ action: "alarmCapability" });
+    }, 7000);
   }
 
   function applyGating() {
@@ -12340,7 +12387,11 @@ var bedsideActive = false;
     var clock = document.querySelector(".flip-clock");
     if (clock) {
       clock.addEventListener("click", function () {
-        if (!supported) return;
+        // 2026-08-20 수정 — 예전엔 supported가 true여야만 열었다. 그런데
+        // 지원 판정이 늦거나 실패하면 시계를 눌러도 아무 일이 없어서,
+        // 사용자는 "고장났다"고 느낀다. 앱 안이기만 하면 일단 연다 —
+        // 못 쓰는 상황이면 섹션 안에 이유가 적혀 있다.
+        if (!bridgeAvailable()) return;
         if (bedtimeArmed()) return;   // 취침 중에는 화면을 건드리지 않는다
         openAlarmSettings();
       });
