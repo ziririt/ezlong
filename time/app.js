@@ -12391,15 +12391,22 @@ var bedsideActive = false;
     if (!els || !els.section) return;
 
     // 2026-08-20 개정 — 예전엔 지원 안 되면 통째로 숨겼다. 그러면 왜
-    // 안 보이는지 알 길이 없다. 앱 안에서는 섹션을 보여 주되 이유를
-    // 적는다. 브라우저에서만 조용히 감춘다(알람을 걸 방법 자체가 없다).
-    var inApp = typeof isNativeWrapper !== "undefined" && isNativeWrapper;
-    els.section.hidden = !supported && !inApp;
+    // 안 보이는지 알 길이 없다. iOS 앱 안에서는 섹션을 보여 주되 이유를
+    // 적는다.
+    //
+    // 다만 안드로이드는 예외다. 기상 알람은 AlarmKit(iOS 26+) 위에 지은
+    // 기능이라 안드로이드에는 아직 대응물이 없는데, 그 사실을 "iOS 26
+    // 이상이 필요합니다"라고 알리면 안드로이드 사용자에게는 폰을 바꾸라는
+    // 말밖에 안 된다. 할 수 있는 일이 없는 안내는 안내가 아니다.
+    // 브라우저와 똑같이 조용히 감춘다 — 나중에 안드로이드 AlarmManager로
+    // 같은 기능을 지으면 그때 다시 연다.
+    var onIOS = typeof nativePlatformKey !== "undefined" && nativePlatformKey === "ios";
+    els.section.hidden = !supported && !onIOS;
 
     if (!supported) {
       if (els.bar) els.bar.hidden = true;
       document.body.classList.remove("bedtime-mode");
-      if (inApp) showUnsupportedNotice();
+      if (onIOS) showUnsupportedNotice();
       return;
     }
     clearUnsupportedNotice();
@@ -12464,7 +12471,9 @@ var bedsideActive = false;
         // 지원 판정이 늦거나 실패하면 시계를 눌러도 아무 일이 없어서,
         // 사용자는 "고장났다"고 느낀다. 앱 안이기만 하면 일단 연다 —
         // 못 쓰는 상황이면 섹션 안에 이유가 적혀 있다.
-        if (!bridgeAvailable()) return;
+        // 지원되는 기기에서만 연다. 안드로이드에서는 이 섹션 자체가
+        // 없으므로 시계를 눌러도 아무 일이 없는 게 맞다.
+        if (!supported) return;
         if (bedtimeArmed()) return;   // 취침 중에는 화면을 건드리지 않는다
         openAlarmSettings();
       });
