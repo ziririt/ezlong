@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-20-07:00",
+      "timestamp_kst": "2026-08-20(목) 07:00 KST",
+      "key_event": {
+        "name": "미 국채 매입 확대 및 금리 하락",
+        "name_en": "US Treasury Buybacks Expand, Yields Fall",
+        "time": "2026-08-20 포스트마켓",
+        "why": "국채금리 하락, 기술주 투자 심리 회복, 시장 전반 긍정적 영향",
+        "why_en": "Falling bond yields, improved tech sentiment, positive market impact"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "국채금리 하락 및 기술주 반등으로 긍정 우위 지속, AI 및 지정학적 긴장 혼조",
+      "summary_en": "Continued positive bias from falling bond yields and tech rebound, mixed AI and geopolitical tensions",
+      "positive_factors": [
+        {
+          "score": 75,
+          "name": "미 국채 매입 확대 및 금리 하락",
+          "name_en": "US Treasury Buybacks and Falling Yields",
+          "desc": "미 재무부의 국채 매입 확대 발표로 10년물 국채금리 4.65%(-1.13%) 하락, 기술주 투자 심리 회복",
+          "desc_en": "US Treasury's expanded buyback announcement led to a 1.13% drop in 10-year yield to 4.65%, boosting tech sentiment",
+          "category": "rates_treasury"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "Fed 매파적 회의록 공개",
+          "name_en": "Hawkish Fed Meeting Minutes Released",
+          "desc": "Fed 7월 FOMC 회의록에서 금리 인상 필요성 언급, 추가 금리 인상 우려 지속",
+          "desc_en": "July FOMC minutes showed Fed officials discussed need for rate hikes, sustaining concerns over further increases",
+          "category": "fed_policy"
+        },
+        {
+          "score": 10,
+          "name": "AI 투자 버블 우려 지속",
+          "name_en": "Persistent AI Investment Bubble Concerns",
+          "desc": "일부 전문가 S&P 500에 대한 주요 위험 경고, AI 관련 밸류에이션 논쟁 지속",
+          "desc_en": "Some strategists warn of major risks for S&P 500, ongoing debate on AI valuations",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "유가 수준 유지",
+          "name_en": "Oil Prices Maintain Level",
+          "desc": "WTI 원유 84.40(-0.33%)로 보합세 유지, 인플레이션 압력 완화와 지정학적 위험 혼조",
+          "desc_en": "WTI crude oil held steady at 84.40 (-0.33%), presenting a mixed outlook of easing inflation and geopolitical risks",
+          "category": "oil_energy"
+        }
+      ]
+    },
+    {
       "id": "2026-08-20-05:34",
       "timestamp_kst": "2026-08-20(목) 05:34 KST",
       "key_event": {
@@ -480,59 +532,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-19-07:09",
-      "timestamp_kst": "2026-08-19(수) 07:09 KST",
-      "key_event": {
-        "name": "반도체 투매 및 고금리 압박 지속",
-        "name_en": "Semiconductor Sell-off and Sustained High Interest Rates",
-        "time": "직전 정규장 및 포스트마켓",
-        "why": "기술주 전반 하락, 고금리 수준 유지, 인플레이션 우려 재점화",
-        "why_en": "Broad tech sector decline, sustained high interest rates, rekindled inflation concerns"
-      },
-      "positive_total": 30,
-      "negative_total": 70,
-      "summary": "반도체 투매 및 고금리 압박으로 부정 우위 지속, 지정학적 긴장 혼조",
-      "summary_en": "Negative sentiment persists due to semiconductor sell-off and high interest rates, with geopolitical tensions mixed.",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "일부 대형 기술주 선방",
-          "name_en": "Select Big Tech Outperformance",
-          "desc": "AAPL +1.61%, MSFT +0.32% 등 일부 대형 기술주 포스트마켓에서 선방",
-          "desc_en": "AAPL +1.61%, MSFT +0.32% showing resilience in post-market trading",
-          "category": "company_specific"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 70,
-          "name": "고금리 수준 유지 및 인플레 우려",
-          "name_en": "Sustained High Interest Rates and Inflation Concerns",
-          "desc": "미10년 국채금리 4.71%, 미30년 국채금리 5.28% 등 높은 금리 수준 유지, 성장주 할인율 압박",
-          "desc_en": "US 10-year Treasury yield at 4.71% and 30-year at 5.28%, maintaining high levels and pressuring growth stock valuations",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 버블 및 밸류에이션 논쟁",
-          "name_en": "AI Bubble and Valuation Debate",
-          "desc": "AI 관련 기업들의 높은 밸류에이션에 대한 우려와 지속적인 성장 기대가 혼재",
-          "desc_en": "Mixed sentiment regarding high valuations of AI-related companies and ongoing growth expectations",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "지정학적 긴장 지속",
-          "name_en": "Persistent Geopolitical Tensions",
-          "desc": "미-이란 갈등 고조 및 유가 상승 압력으로 시장 불안감 증폭",
-          "desc_en": "Escalating US-Iran tensions and upward oil price pressure amplify market anxiety",
-          "category": "geopolitics"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-19T20:35:01Z",
+  "updated_at": "2026-08-19T22:02:03Z",
   "max_entries": 10
 }
