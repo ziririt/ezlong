@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-19T16:56:42.390Z
+ * 생성 시각: 2026-08-19T22:55:52.980Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -159,7 +159,10 @@
         "bedtimeGuide": "Tap this right before you sleep. The screen settles into standby and your wake-up time appears on the Lock Screen — this is when the alarm music is most certain to play.",
         "bedtimeActive": "Bedtime",
         "bedtimeExit": "End",
-        "unsupported": "The wake-up alarm needs iOS 26 or later, and the latest version of the app."
+        "unsupported": "The wake-up alarm needs iOS 26 or later, and the latest version of the app.",
+        "ringLabel": "Time to wake up",
+        "ringStop": "Stop",
+        "ringSnooze": "5 more minutes"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -606,7 +609,10 @@
         "bedtimeGuide": "Pulsa justo antes de dormir. La pantalla pasa al modo de espera nocturna y la hora de despertar aparece en la pantalla bloqueada: así la música de la alarma suena con la mayor seguridad.",
         "bedtimeActive": "Descansando",
         "bedtimeExit": "Terminar",
-        "unsupported": "La alarma para despertar requiere iOS 26 o posterior y la última versión de la app."
+        "unsupported": "La alarma para despertar requiere iOS 26 o posterior y la última versión de la app.",
+        "ringLabel": "Hora de despertar",
+        "ringStop": "Detener",
+        "ringSnooze": "5 minutos más"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1053,7 +1059,10 @@
         "bedtimeGuide": "寝る直前に押してください。画面が就寝待機に変わり、ロック画面に起床時刻が表示されます。このときアラームの音楽が最も確実に鳴ります。",
         "bedtimeActive": "就寝中",
         "bedtimeExit": "解除",
-        "unsupported": "起床アラームはiOS 26以降で、アプリを最新版に更新してからご利用いただけます。"
+        "unsupported": "起床アラームはiOS 26以降で、アプリを最新版に更新してからご利用いただけます。",
+        "ringLabel": "起床の時間です",
+        "ringStop": "停止",
+        "ringSnooze": "5分後にもう一度"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1500,7 +1509,10 @@
         "bedtimeGuide": "자기 직전에 눌러 주세요. 화면이 취침 대기 상태로 바뀌고 잠금화면에 기상 시각이 뜹니다. 이때 알람 음악이 가장 확실하게 울립니다.",
         "bedtimeActive": "취침 중",
         "bedtimeExit": "해제",
-        "unsupported": "기상 알람은 iOS 26 이상에서, 그리고 앱을 새로 설치한 뒤에 쓸 수 있습니다."
+        "unsupported": "기상 알람은 iOS 26 이상에서, 그리고 앱을 새로 설치한 뒤에 쓸 수 있습니다.",
+        "ringLabel": "기상 시각입니다",
+        "ringStop": "그만",
+        "ringSnooze": "5분 더"
       },
       "watch": {
         "heading": "애플워치",
@@ -1947,7 +1959,10 @@
         "bedtimeGuide": "Toque logo antes de dormir. A tela entra no modo de espera noturna e a hora de acordar aparece na tela bloqueada — é assim que a música do alarme toca com mais segurança.",
         "bedtimeActive": "Dormindo",
         "bedtimeExit": "Encerrar",
-        "unsupported": "O alarme para acordar exige iOS 26 ou posterior e a versão mais recente do app."
+        "unsupported": "O alarme para acordar exige iOS 26 ou posterior e a versão mais recente do app.",
+        "ringLabel": "Hora de acordar",
+        "ringStop": "Parar",
+        "ringSnooze": "Mais 5 minutos"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -2394,7 +2409,10 @@
         "bedtimeGuide": "请在睡前按下。屏幕会切换到就寝待机状态，锁定屏幕上会显示起床时间——此时闹钟音乐最有把握响起。",
         "bedtimeActive": "就寝中",
         "bedtimeExit": "结束",
-        "unsupported": "起床闹钟需要 iOS 26 或更高版本，并且需将 App 更新至最新版本。"
+        "unsupported": "起床闹钟需要 iOS 26 或更高版本，并且需将 App 更新至最新版本。",
+        "ringLabel": "该起床了",
+        "ringStop": "停止",
+        "ringSnooze": "再睡 5 分钟"
       },
       "watch": {
         "heading": "Apple Watch",

@@ -12179,6 +12179,70 @@ var bedsideActive = false;
     }
   }
 
+  // ── 기상 화면 ───────────────────────────────────────────────────
+  //
+  // 운영자: "음악을 끄는 방법을 모르겠다."
+  //
+  // 네이티브가 음악을 틀기 시작하면 __flipzenWakeRinging(true)를 부른다.
+  // 그 순간 화면 전체가 [그만] 하나로 바뀐다. 잠에서 덜 깬 사람이
+  // 더듬을 곳을 남기지 않는 것이 이 화면의 유일한 목적이다.
+
+  var ringClockTimer = null;
+
+  function paintRingClock() {
+    if (!els.ringClock) return;
+    var now = new Date();
+    els.ringClock.textContent = two(now.getHours()) + ":" + two(now.getMinutes());
+  }
+
+  function showRingScreen() {
+    if (!els.ring) return;
+    els.ring.hidden = false;
+    paintRingClock();
+    if (ringClockTimer) window.clearInterval(ringClockTimer);
+    ringClockTimer = window.setInterval(paintRingClock, 1000);
+
+    // 지금 울리는 곡 이름 — 무엇이 나를 깨웠는지 알면 다음에 고르기 쉽다.
+    if (els.ringSong) {
+      var alarm = nextAlarm();
+      var label = alarm && alarm.soundTitle ? alarm.soundTitle : "";
+      els.ringSong.textContent = label;
+    }
+
+    // 취침 모드로 어두워져 있던 화면을 되돌린다. 어두운 채로 두면
+    // 버튼이 보여도 읽히지 않는다.
+    document.body.classList.remove("bedtime-mode");
+    try { if (typeof closeSettings === "function") closeSettings(); } catch (error) { /* 무시 */ }
+  }
+
+  function hideRingScreen() {
+    if (ringClockTimer) { window.clearInterval(ringClockTimer); ringClockTimer = null; }
+    if (els.ring) els.ring.hidden = true;
+  }
+
+  function bindRingButtons() {
+    if (els.ringStop) {
+      els.ringStop.addEventListener("click", function () {
+        postAlarmBridge({ action: "stopWakeMusic" });
+        hideRingScreen();
+        // 알람을 껐으면 취침 모드도 끝난 것이다. 아침이니까.
+        exitBedtime();
+      });
+    }
+    if (els.ringSnooze) {
+      els.ringSnooze.addEventListener("click", function () {
+        postAlarmBridge({ action: "snoozeWakeMusic", minutes: 5 });
+        hideRingScreen();
+      });
+    }
+  }
+
+  // 네이티브가 부른다.
+  window.__flipzenWakeRinging = function (ringing) {
+    if (ringing) showRingScreen();
+    else hideRingScreen();
+  };
+
   // ── 열기 ────────────────────────────────────────────────────────
 
   function openAlarmSettings() {
@@ -12286,6 +12350,10 @@ var bedsideActive = false;
     return false;
   }
 
+  function bindAll() {
+    bindRingButtons();
+  }
+
   function askCapability() {
     // 1차 — 네이티브가 문서 시작 전에 심어 둔 값. 왕복이 없어 실패할
     // 여지가 없다(ContentView.swift의 atDocumentStart userScript).
@@ -12358,6 +12426,11 @@ var bedsideActive = false;
       bedtime:    document.getElementById("wakeAlarmBedtime"),
       bar:        document.getElementById("bedtimeBar"),
       barTime:    document.getElementById("bedtimeBarTime"),
+      ring:       document.getElementById("wakeRingScreen"),
+      ringClock:  document.getElementById("wakeRingClock"),
+      ringSong:   document.getElementById("wakeRingSong"),
+      ringStop:   document.getElementById("wakeRingStop"),
+      ringSnooze: document.getElementById("wakeRingSnooze"),
       barExit:    document.getElementById("bedtimeExit")
     };
     if (!els.section) return;
@@ -12398,6 +12471,7 @@ var bedsideActive = false;
       clock.style.cursor = "pointer";
     }
 
+    bindAll();
     askCapability();
   }
 

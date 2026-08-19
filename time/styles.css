@@ -6111,3 +6111,115 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
   body.bedtime-mode .date-chip,
   body.bedtime-mode .icon-button { transition: none; }
 }
+
+
+/* ── 기상 화면 (2026-08-20) ─────────────────────────────────────
+   운영 피드백: "음악을 끄는 방법을 모르겠다."
+
+   눈을 반쯤 뜬 사람이 보는 화면이다. 대비를 최대로 올리고, 누를 곳을
+   하나로 줄이고, 글자를 크게 한다. 취침 모드에서 화면이 거의 꺼져
+   있었으므로 갑자기 밝아지면 눈이 부시다 — 검은 바탕에 흰 글씨로
+   가되, 버튼만 밝게 띄워 시선이 거기로 가게 한다. */
+.wake-ring {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 8, 16, 0.94);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  animation: wakeRingIn 700ms ease-out;
+}
+
+@keyframes wakeRingIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.wake-ring[hidden] { display: none; }
+
+.wake-ring-inner {
+  width: min(92vw, 420px);
+  text-align: center;
+  padding: 0 16px;
+}
+
+.wake-ring-label {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* 시각은 크게. 알람을 끄기 전에 "지금 몇 시인지"를 먼저 알고 싶어 한다. */
+.wake-ring-clock {
+  display: block;
+  font-size: clamp(64px, 22vw, 108px);
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -0.03em;   /* 큰 글자는 자간을 좁혀야 뭉치지 않는다 */
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+
+.wake-ring-song {
+  margin: 14px 0 0;
+  min-height: 20px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 화면 폭을 거의 다 쓴다. 잠결에 더듬지 않도록. */
+.wake-ring-stop {
+  display: block;
+  width: 100%;
+  margin-top: 34px;
+  padding: 22px 16px;
+  border: 0;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #38bdf8 0%, #0ea5e9 100%);
+  color: #04121e;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 10px 34px rgba(56, 189, 248, 0.34);
+  /* 숨 쉬듯 아주 느리게 — 시선을 끌되 재촉하지는 않는다.
+     0.2Hz 근처의 깜빡임은 피한다(접근성). */
+  animation: wakeStopPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes wakeStopPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.028); }
+}
+
+.wake-ring-stop:active { transform: scale(0.98); }
+
+/* 실수로 누르면 안 되는 쪽이 작아야 한다. */
+.wake-ring-snooze {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wake-ring-snooze:active { background: rgba(255, 255, 255, 0.06); }
+
+@media (prefers-reduced-motion: reduce) {
+  .wake-ring { animation: none; }
+  .wake-ring-stop { animation: none; }
+}
