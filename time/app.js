@@ -11631,6 +11631,39 @@ var bedsideActive = false;
 //   · 앱이 죽어 있으면 AlarmKit이 무음·집중 모드를 뚫고 대신 울려 준다.
 // 그래서 "못 깨는" 경우는 없다.
 // ══════════════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════════════
+// 2026-08-20 운영 지침 — 설정 상단 버전 표시
+//
+// "내 아이폰에 빌드 안되었다. 버전 확인해줘. 1.9.46이다."
+//
+// 여기 적힌 ver.1.9.46은 '웹' 버전이다. 앱(네이티브) 버전은 별개로
+// 1.9.2(빌드 46)이고, 하필 46이라는 숫자가 겹쳐 더 헷갈렸다. 앱 안에서
+// 볼 때는 두 번호를 나란히 보여 준다 — 새 앱이 실제로 깔렸는지
+// 이 한 줄로 바로 확인된다.
+// ══════════════════════════════════════════════════════════════════════
+(function settingsVersionLabel() {
+  "use strict";
+
+  function paint() {
+    var el = document.getElementById("settingsVersion");
+    if (!el) return;
+    var webLabel = (el.textContent || "").trim();
+    if (typeof getNativeAppVersion !== "function") return;
+    getNativeAppVersion(function (info) {
+      if (!info || !info.versionName) return;   // 브라우저 — 웹 버전만 둔다
+      var build = info.versionCode ? ("(" + info.versionCode + ")") : "";
+      el.textContent = webLabel + "  ·  app " + info.versionName + build;
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", paint);
+  } else {
+    paint();
+  }
+})();
+
 (function wakeAlarmModule() {
   "use strict";
 
@@ -12163,8 +12196,66 @@ var bedsideActive = false;
   // AlarmKit은 iOS 26부터다. 웹이 UA로 짐작하는 대신 네이티브에게 직접
   // 묻는다 — 구버전 앱은 이 질문에 답하지 않으므로 자연스럽게 숨겨진다.
 
+  var NOTICE_ID = "wakeAlarmUnsupportedNotice";
+
+  function showUnsupportedNotice() {
+    if (!els.section || document.getElementById(NOTICE_ID)) return;
+    // 알맹이는 감추고 안내만 남긴다 — 못 쓰는 조작부를 보여 줘 봐야
+    // 눌러 보고 실망하는 자리만 만든다.
+    ["time", "weekdays", "repeatNote", "soundTabs", "soundList",
+     "confirm", "list", "bedtime"].forEach(function (key) {
+      var node = els[key];
+      if (node) node.style.display = "none";
+    });
+    var hint = els.section.querySelector(".alarm-standby-hint");
+    if (hint) hint.style.display = "none";
+    var subhead = els.section.querySelector(".alarm-subhead");
+    if (subhead) subhead.style.display = "none";
+    var fade = els.section.querySelector(".alarm-fade-guide");
+    if (fade) fade.style.display = "none";
+    var block = els.section.querySelector(".alarm-bedtime-block");
+    if (block) block.style.display = "none";
+    var option = els.section.querySelector(".field-option");
+    if (option) option.style.display = "none";
+
+    var note = document.createElement("p");
+    note.id = NOTICE_ID;
+    note.className = "settings-desc settings-desc-muted";
+    note.textContent = t(
+      "settings.alarm.unsupported", null,
+      "기상 알람은 iOS 26 이상에서, 그리고 앱을 새로 설치한 뒤에 쓸 수 있습니다."
+    );
+    els.section.appendChild(note);
+  }
+
+  function clearUnsupportedNotice() {
+    var note = document.getElementById(NOTICE_ID);
+    if (note && note.parentNode) note.parentNode.removeChild(note);
+    ["time", "weekdays", "repeatNote", "soundTabs", "soundList",
+     "confirm", "list", "bedtime"].forEach(function (key) {
+      var node = els[key];
+      if (node) node.style.display = "";
+    });
+    if (!els.section) return;
+    [".alarm-standby-hint", ".alarm-subhead", ".alarm-fade-guide",
+     ".alarm-bedtime-block", ".field-option"].forEach(function (sel) {
+      var node = els.section.querySelector(sel);
+      if (node) node.style.display = "";
+    });
+  }
+
+  function bridgeAvailable() {
+    try {
+      if (window.webkit && window.webkit.messageHandlers
+          && window.webkit.messageHandlers.flipzenApp) return true;
+      if (window.AndroidNativeBridge) return true;
+    } catch (error) { /* 무시 */ }
+    return false;
+  }
+
   function askCapability() {
-    if (typeof isNativeWrapper === "undefined" || !isNativeWrapper) return;
+    // 쿼리스트링(?native=ios) 대신 브릿지 객체를 직접 본다 — 더 단단하다.
+    if (!bridgeAvailable()) { applyGating(); return; }
     var settled = false;
     window.__flipzenAlarmCapability = function (result) {
       if (settled) return;
@@ -12183,12 +12274,20 @@ var bedsideActive = false;
 
   function applyGating() {
     if (!els || !els.section) return;
-    els.section.hidden = !supported;
+
+    // 2026-08-20 개정 — 예전엔 지원 안 되면 통째로 숨겼다. 그러면 왜
+    // 안 보이는지 알 길이 없다. 앱 안에서는 섹션을 보여 주되 이유를
+    // 적는다. 브라우저에서만 조용히 감춘다(알람을 걸 방법 자체가 없다).
+    var inApp = typeof isNativeWrapper !== "undefined" && isNativeWrapper;
+    els.section.hidden = !supported && !inApp;
+
     if (!supported) {
       if (els.bar) els.bar.hidden = true;
       document.body.classList.remove("bedtime-mode");
+      if (inApp) showUnsupportedNotice();
       return;
     }
+    clearUnsupportedNotice();
     renderWeekdays();
     renderSoundTabs();
     renderSoundList();

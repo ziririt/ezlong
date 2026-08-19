@@ -957,11 +957,14 @@ button { font: inherit; }
 /* 2026-07-25 유저 요청 — 버전 라벨을 메인 화면 최하단(옛 .app-version)에서
    설정 페이지 제목 "설정" 옆으로 옮겼다. 제목 폰트(28px)보다 훨씬 작게,
    같은 줄에 자연스럽게 붙도록 baseline 정렬 + 왼쪽 여백만 살짝. */
+/* 2026-08-20 운영 지침 — 12px 회색은 실기기에서 거의 안 보였다.
+   한 단계 키우고 흰색으로. 버전은 서로 확인할 때 가장 먼저 찾는
+   글자라 읽히는 것이 우선이다. */
 .settings-version {
   margin-left: 8px;
-  font-size: 12px;
-  font-weight: 400;
-  color: rgba(255,255,255,0.4);
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
   vertical-align: middle;
 }
 
