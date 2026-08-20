@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "2026-08-21-06:51",
+      "timestamp_kst": "2026-08-21(금) 06:51 KST",
+      "key_event": {
+        "name": "매파적 Fed 발언 및 유가 상승",
+        "name_en": "Hawkish Fed Remarks & Rising Oil Prices",
+        "time": "향후 12시간",
+        "why": "금리 인상 우려, 인플레이션 압력, 기술주 투자 심리 위축",
+        "why_en": "Interest rate hike concerns, inflationary pressure, tech sentiment decline"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "매파적 Fed 발언 및 유가 상승으로 부정 우위 지속, 기술주 하락 압력",
+      "summary_en": "Negative sentiment persists due to hawkish Fed remarks and rising oil, pressuring tech stocks",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "AI 기술 경쟁 심화",
+          "name_en": "Intensifying AI Tech Competition",
+          "desc": "Waymo의 자체 AI 칩 개발 및 엔비디아 경쟁사 부각, AI 혁신 기대감 유지",
+          "desc_en": "Waymo's in-house AI chip development and Nvidia rival emergence, sustaining AI innovation hopes",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 35,
+          "name": "매파적 Fed 발언 지속",
+          "name_en": "Persistent Hawkish Fed Remarks",
+          "desc": "Fed 관계자들의 금리 인상 필요성 언급, 인플레이션 우려 지속",
+          "desc_en": "Fed officials highlight need for rate hikes, inflation concerns persist",
+          "category": "fed_policy"
+        },
+        {
+          "score": 30,
+          "name": "유가 상승 및 지정학적 긴장",
+          "name_en": "Rising Oil Prices & Geopolitical Tensions",
+          "desc": "WTI 원유 86.21달러(+2.04%) 상승 및 트럼프의 '경제 전쟁' 위협 발언",
+          "desc_en": "WTI crude up 2.04% to $86.21, Trump's 'economic warfare' threats",
+          "category": "oil_energy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 밸류에이션 재평가 리스크",
+          "name_en": "AI Valuation Reassessment Risk",
+          "desc": "일부 AI 관련주 고평가 우려 지속, 투자 심리 혼조",
+          "desc_en": "Ongoing concerns about overvaluation in some AI stocks, mixed investor sentiment",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "테슬라 AI 전략 및 밸류에이션",
+          "name_en": "Tesla's AI Strategy & Valuation",
+          "desc": "Cybercab 매출 기여도 예측 및 AI 위협 관련 일론 머스크 발언, 밸류에이션 논란",
+          "desc_en": "Cybercab revenue contribution predictions and Elon Musk's comments on AI threats, valuation debate",
+          "category": "company_specific"
+        }
+      ]
+    },
+    {
       "id": "2026-08-21-05:34",
       "timestamp_kst": "2026-08-21(금) 05:34 KST",
       "key_event": {
@@ -572,60 +631,8 @@
           "category": "oil_energy"
         }
       ]
-    },
-    {
-      "id": "2026-08-20-07:00",
-      "timestamp_kst": "2026-08-20(목) 07:00 KST",
-      "key_event": {
-        "name": "미 국채 매입 확대 및 금리 하락",
-        "name_en": "US Treasury Buybacks Expand, Yields Fall",
-        "time": "2026-08-20 포스트마켓",
-        "why": "국채금리 하락, 기술주 투자 심리 회복, 시장 전반 긍정적 영향",
-        "why_en": "Falling bond yields, improved tech sentiment, positive market impact"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "국채금리 하락 및 기술주 반등으로 긍정 우위 지속, AI 및 지정학적 긴장 혼조",
-      "summary_en": "Continued positive bias from falling bond yields and tech rebound, mixed AI and geopolitical tensions",
-      "positive_factors": [
-        {
-          "score": 75,
-          "name": "미 국채 매입 확대 및 금리 하락",
-          "name_en": "US Treasury Buybacks and Falling Yields",
-          "desc": "미 재무부의 국채 매입 확대 발표로 10년물 국채금리 4.65%(-1.13%) 하락, 기술주 투자 심리 회복",
-          "desc_en": "US Treasury's expanded buyback announcement led to a 1.13% drop in 10-year yield to 4.65%, boosting tech sentiment",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "Fed 매파적 회의록 공개",
-          "name_en": "Hawkish Fed Meeting Minutes Released",
-          "desc": "Fed 7월 FOMC 회의록에서 금리 인상 필요성 언급, 추가 금리 인상 우려 지속",
-          "desc_en": "July FOMC minutes showed Fed officials discussed need for rate hikes, sustaining concerns over further increases",
-          "category": "fed_policy"
-        },
-        {
-          "score": 10,
-          "name": "AI 투자 버블 우려 지속",
-          "name_en": "Persistent AI Investment Bubble Concerns",
-          "desc": "일부 전문가 S&P 500에 대한 주요 위험 경고, AI 관련 밸류에이션 논쟁 지속",
-          "desc_en": "Some strategists warn of major risks for S&P 500, ongoing debate on AI valuations",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "유가 수준 유지",
-          "name_en": "Oil Prices Maintain Level",
-          "desc": "WTI 원유 84.40(-0.33%)로 보합세 유지, 인플레이션 압력 완화와 지정학적 위험 혼조",
-          "desc_en": "WTI crude oil held steady at 84.40 (-0.33%), presenting a mixed outlook of easing inflation and geopolitical risks",
-          "category": "oil_energy"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-20T20:35:06Z",
+  "updated_at": "2026-08-20T21:51:37Z",
   "max_entries": 10
 }
