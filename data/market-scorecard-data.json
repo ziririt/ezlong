@@ -1,6 +1,81 @@
 {
   "entries": [
     {
+      "id": "2026-08-21-00:40",
+      "timestamp_kst": "2026-08-21(금) 00:40 KST",
+      "key_event": {
+        "name": "Fed 매파적 발언 및 유가 상승",
+        "name_en": "Fed Hawkish Remarks & Oil Price Surge",
+        "time": "정규장 진행 중",
+        "why": "금리 인상 우려, 인플레이션 압력, 기술주 투자 심리 위축",
+        "why_en": "Interest rate hike concerns, inflationary pressure, dampened tech sentiment"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "매파적 Fed 발언 및 유가 상승으로 부정 우위 지속, 기술주 하락 압력",
+      "summary_en": "Hawkish Fed remarks and rising oil prices maintain negative dominance, pressuring tech stocks",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "일부 AI 관련 기업 투자 심리 개선",
+          "name_en": "Improved Investment Sentiment for Some AI Firms",
+          "desc": "ARK의 Broadcom 매수, Qualcomm 구매 주문 등 일부 AI 관련 기업에 긍정적 소식",
+          "desc_en": "Positive news for some AI-related companies, including ARK buying Broadcom and Qualcomm purchase orders",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 15,
+          "name": "금 가격 상승",
+          "name_en": "Gold Price Increase",
+          "desc": "안전자산 선호 심리 일부 반영, 금 가격 0.66% 상승",
+          "desc_en": "Partially reflects safe-haven sentiment, gold prices up 0.66%",
+          "category": "other"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "Fed의 조건부 금리 인상 시사",
+          "name_en": "Fed Signals Conditional Rate Hike Trigger",
+          "desc": "Fed의 매파적 발언 지속, 추가 금리 인상 가능성 시사로 시장 금리 상승 압력",
+          "desc_en": "Continued hawkish Fed rhetoric, signaling potential for further rate hikes, pressuring market rates higher",
+          "category": "fed_policy"
+        },
+        {
+          "score": 25,
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미 10년물 국채금리 4.70%(+1.05%), 30년물 5.25%(+1.06%) 상승으로 기술주 할인율 부담 가중",
+          "desc_en": "US 10-year Treasury yield at 4.70%(+1.05%) and 30-year at 5.25%(+1.06%) rise, increasing discount rate pressure on tech stocks",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 10,
+          "name": "WTI 원유 가격 상승",
+          "name_en": "WTI Crude Oil Price Increase",
+          "desc": "WTI 원유 86.49 USD (+2.37%) 상승, 중동 공급 우려 및 인플레이션 압력 가중",
+          "desc_en": "WTI crude oil rises to 86.49 USD (+2.37%), increasing Middle East supply concerns and inflationary pressure",
+          "category": "oil_energy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 밸류에이션 재평가 리스크",
+          "name_en": "AI Valuation Repricing Risk",
+          "desc": "Fed 발언에서 AI 밸류에이션 리스크 언급, 일부 기업은 긍정적 소식에도 섹터 전반에 대한 우려 혼재",
+          "desc_en": "Fed remarks mention AI valuation risk; despite positive news for some companies, overall sector concerns persist",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "Walmart 실적 부진 및 시장 영향",
+          "name_en": "Walmart Earnings Miss and Market Impact",
+          "desc": "Walmart의 예상치 하회 실적 가이던스로 주가 8% 하락, 소비 심리 우려와 함께 시장 전반에 영향",
+          "desc_en": "Walmart's lower-than-expected EPS guidance leads to an 8% stock drop, impacting overall market with consumer sentiment concerns",
+          "category": "earnings_bellwether"
+        }
+      ]
+    },
+    {
       "id": "2026-08-20-23:20",
       "timestamp_kst": "2026-08-20(목) 23:20 KST",
       "key_event": {
@@ -527,52 +602,8 @@
           "category": "ai_tech_valuation"
         }
       ]
-    },
-    {
-      "id": "2026-08-20-00:39",
-      "timestamp_kst": "2026-08-20(목) 00:39 KST",
-      "key_event": {
-        "name": "미 국채 매입 확대 및 금리 하락",
-        "name_en": "US Treasury Buybacks and Yield Decline",
-        "time": "현재 정규장 진행 중",
-        "why": "국채금리 하락으로 기술주 투자 심리 회복, 시장 전반 긍정적 영향",
-        "why_en": "Falling Treasury yields boost tech sentiment, positive for overall market"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "국채금리 하락 및 기술주 반등으로 긍정 우위, AI 및 지정학적 긴장 혼조",
-      "summary_en": "Positive sentiment prevails with falling Treasury yields and tech rebound, mixed on AI and geopolitical tensions",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "미 국채 매입 확대 발표",
-          "name_en": "US Treasury Announces Increased Buybacks",
-          "desc": "미 재무부의 국채 매입 확대 발표로 10년물 국채금리 4.66%(-0.98%) 하락, 시장 금리 안정화 기대",
-          "desc_en": "US Treasury's increased buyback announcement led to a 0.98% drop in 10-year yield to 4.66%, stabilizing market rates",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 25,
-          "name": "AI 투자 기대 지속",
-          "name_en": "Continued AI Investment Expectations",
-          "desc": "Alphabet의 호주 채권 발행 및 Marvell의 Google AI 칩 계약 등 AI 관련 투자 기대 지속",
-          "desc_en": "Continued investment expectations in AI, evidenced by Alphabet's bond sale and Marvell's Google AI chip deal",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "연준 의사록 경계 심리",
-          "name_en": "Fed Minutes Caution",
-          "desc": "연준 회의록 발표를 앞두고 금리 인상 경로에 대한 불확실성 지속, 시장 경계 심리 유지",
-          "desc_en": "Uncertainty regarding future rate hikes persists ahead of Fed meeting minutes release, maintaining market caution",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-20T14:21:24Z",
+  "updated_at": "2026-08-20T15:41:10Z",
   "max_entries": 10
 }
