@@ -92,7 +92,7 @@
 <p>함께 사라집니다. iCloud에 올라간 자료는 애플 계정 설정에서 관리하실 수</p>
 <p>있습니다.</p>
 <p>개인정보와 관련해 문의하실 일이 있으면 아래로 연락 주십시오.</p>
-<p><strong>ziririt@gmail.com</strong></p>
+<p><span data-m="moc.liamg@doog.tsevni.ysae" data-strong>easy.invest.good [at] gmail [dot] com</span></p>
 <hr>
 <h2>8. 이 방침이 바뀔 때</h2>
 <p>내용이 바뀌면 이 문서를 고치고 맨 위의 최종 수정일을 갱신합니다.</p>
@@ -158,12 +158,33 @@
 <p>time, and removing the app removes them with it. Anything stored in iCloud</p>
 <p>can be managed from your Apple Account settings.</p>
 <p>For any privacy question, please write to:</p>
-<p><strong>ziririt@gmail.com</strong></p>
+<p><span data-m="moc.liamg@doog.tsevni.ysae" data-strong>easy.invest.good [at] gmail [dot] com</span></p>
 <hr>
 <h2>8. Changes to this policy</h2>
 <p>If this policy changes, this page is updated and the date at the top is</p>
 <p>revised. Significant changes are also noted in the app&#x27;s release notes.</p>
 </section>
-<footer>Skyblue Note · com.ziririt.simpletext · ziririt@gmail.com</footer>
+<footer>Skyblue Note · com.ziririt.simpletext · <span data-m="moc.liamg@doog.tsevni.ysae">easy.invest.good [at] gmail [dot] com</span></footer>
+<script>
+/* 주소를 HTML 원문에 안 둔다(2026-08-20).
+   뒤집어 적어 두었다가 브라우저가 열 때 되돌린다. 수집기 대부분은
+   자바스크립트를 안 돌리므로 여기서 걸러진다. 자바스크립트가 꺼진 사람에게는
+   [at]·[dot] 표기가 그대로 남아 사람은 읽고 기계는 못 읽는다. */
+(function () {
+  var ns = document.querySelectorAll("[data-m]");
+  for (var i = 0; i < ns.length; i++) {
+    var el = ns[i];
+    var addr = el.getAttribute("data-m").split("").reverse().join("");
+    var a = document.createElement("a");
+    a.href = "mailto:" + addr;
+    a.textContent = (el.getAttribute("data-pre") || "") + addr;
+    if (el.getAttribute("data-strong") !== null) {
+      var b = document.createElement("strong");
+      b.appendChild(a); a = b;
+    }
+    el.parentNode.replaceChild(a, el);
+  }
+})();
+</script>
 </body>
 </html>

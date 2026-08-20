@@ -166,9 +166,30 @@
 
   <h2>11. Contact</h2>
   <p>For any question about this policy or about how the App handles your data, please write to:<br>
-  Email: <a href="mailto:ziririt@gmail.com">ziririt@gmail.com</a></p>
+  Email: <span data-m="moc.liamg@doog.tsevni.ysae">easy.invest.good [at] gmail [dot] com</span></p>
 
   <div class="footer-note">Long Time, Easy Life · ezlong.com</div>
 </div>
+<script>
+/* 주소를 HTML 원문에 안 둔다(2026-08-20).
+   뒤집어 적어 두었다가 브라우저가 열 때 되돌린다. 수집기 대부분은
+   자바스크립트를 안 돌리므로 여기서 걸러진다. 자바스크립트가 꺼진 사람에게는
+   [at]·[dot] 표기가 그대로 남아 사람은 읽고 기계는 못 읽는다. */
+(function () {
+  var ns = document.querySelectorAll("[data-m]");
+  for (var i = 0; i < ns.length; i++) {
+    var el = ns[i];
+    var addr = el.getAttribute("data-m").split("").reverse().join("");
+    var a = document.createElement("a");
+    a.href = "mailto:" + addr;
+    a.textContent = (el.getAttribute("data-pre") || "") + addr;
+    if (el.getAttribute("data-strong") !== null) {
+      var b = document.createElement("strong");
+      b.appendChild(a); a = b;
+    }
+    el.parentNode.replaceChild(a, el);
+  }
+})();
+</script>
 </body>
 </html>
