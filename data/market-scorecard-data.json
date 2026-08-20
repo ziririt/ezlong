@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-08-20-23:20",
+      "timestamp_kst": "2026-08-20(목) 23:20 KST",
+      "key_event": {
+        "name": "매파적 Fed 발언 및 유가 상승",
+        "name_en": "Hawkish Fed Remarks & Oil Price Surge",
+        "time": "정규장 진행 중",
+        "why": "금리 인상 우려, 인플레이션 압력, 기술주 투자 심리 위축",
+        "why_en": "Interest rate hike concerns, inflation pressure, dampened tech sentiment"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "매파적 Fed 발언 및 유가 상승으로 부정 우위 지속, 기술주 하락 압력",
+      "summary_en": "Negative sentiment persists due to hawkish Fed remarks and rising oil prices, pressuring tech stocks",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "AI 메모리 투자 확대",
+          "name_en": "Increased AI Memory Investment",
+          "desc": "마이크론의 100억 달러 AI 메모리 투자 및 엔비디아, 애플의 연구 지원 소식",
+          "desc_en": "Micron's $10B AI memory investment and research support from Nvidia, Apple",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "매파적 Fed 발언 지속",
+          "name_en": "Continued Hawkish Fed Stance",
+          "desc": "Fed의 조건부 금리 인상 시그널 및 9월 인상 가능성 언급으로 긴축 우려 증대",
+          "desc_en": "Fed signals conditional rate hikes, 9월 hike possibility raises tightening concerns",
+          "category": "fed_policy"
+        },
+        {
+          "score": 25,
+          "name": "유가 상승 및 인플레이션 압력",
+          "name_en": "Oil Price Surge & Inflation Pressure",
+          "desc": "WTI 원유 2.52% 상승, 중동 공급 우려 및 인플레이션 재점화 가능성",
+          "desc_en": "WTI crude up 2.52%, Middle East supply concerns and inflation re-ignition risk",
+          "category": "oil_energy"
+        },
+        {
+          "score": 15,
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미10년 국채금리 4.70%(+1.01%) 상승, 기술주 할인율 부담 가중",
+          "desc_en": "US 10-year Treasury yield rises to 4.70%(+1.01%), increasing discount rate pressure on tech",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 밸류에이션 버블 우려",
+          "name_en": "AI Valuation Bubble Concerns",
+          "desc": "AI 관련 투자 기대감과 동시에 AI 채권 호황이 주식 시장에 문제가 될 수 있다는 우려 혼재",
+          "desc_en": "Mixed sentiment with AI investment optimism and concerns that AI bond bonanza could harm stock market",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "트럼프 경제 D-Day 위협",
+          "name_en": "Trump's Economic D-Day Threat",
+          "desc": "트럼프의 '경제 D-Day' 위협 발언이 시장에 불확실성을 가중시키나 구체적 영향은 미지수",
+          "desc_en": "Trump's 'Economic D-Day' threat adds uncertainty, but specific market impact is unclear",
+          "category": "geopolitics"
+        }
+      ]
+    },
+    {
       "id": "2026-08-20-21:50",
       "timestamp_kst": "2026-08-20(목) 21:50 KST",
       "key_event": {
@@ -504,67 +571,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-19-23:20",
-      "timestamp_kst": "2026-08-19(수) 23:20 KST",
-      "key_event": {
-        "name": "미 국채금리 하락 및 기술주 반등",
-        "name_en": "US Treasury Yields Decline, Tech Stocks Rebound",
-        "time": "2026-08-19 정규장",
-        "why": "금리 하락으로 기술주 투자 심리 회복, 시장 전반 긍정적 영향",
-        "why_en": "Falling yields boost tech investor sentiment, positive market impact"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "금리 하락 및 기술주 반등으로 긍정 우위, AI 및 지정학적 긴장 혼조",
-      "summary_en": "Positive bias due to falling yields and tech rebound, mixed on AI and geopolitical tensions",
-      "positive_factors": [
-        {
-          "score": 50,
-          "name": "미 국채금리 하락",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 국채금리 4.65%(-1.21%) 하락, 미30년 국채금리 5.19%(-1.74%) 하락으로 성장주 할인율 압박 완화",
-          "desc_en": "US 10-year Treasury yield fell to 4.65% (-1.21%) and 30-year to 5.19% (-1.74%), easing growth stock discount rate pressure",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 20,
-          "name": "달러 약세 전환",
-          "name_en": "Dollar Weakens",
-          "desc": "달러인덱스 DXY 98.89(-0.70%) 하락, 미국 수출 기업 실적 개선 기대감",
-          "desc_en": "Dollar Index DXY fell to 98.89 (-0.70%), raising expectations for improved US export company earnings",
-          "category": "dollar_fx"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "중동 지정학적 긴장 지속",
-          "name_en": "Ongoing Geopolitical Tensions in Middle East",
-          "desc": "트럼프의 이란 추가 제재 예고 및 호르무즈 해협 관련 위협 지속, 유가 수준 유지",
-          "desc_en": "Trump's renewed threats of sanctions on Iran and Strait of Hormuz tensions persist, keeping oil prices elevated",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "유가 수준 유지",
-          "name_en": "Oil Prices Remain Elevated",
-          "desc": "WTI 원유 84.63달러(-0.06%)로 소폭 하락했으나 여전히 2주 최고 수준 유지, 인플레이션 우려 잔존",
-          "desc_en": "WTI crude oil slightly down to $84.63 (-0.06%) but remains at a 2-week high, persistent inflation concerns",
-          "category": "oil_energy"
-        },
-        {
-          "name": "금 가격 상승",
-          "name_en": "Gold Prices Rise",
-          "desc": "금 가격 4531.00달러(+2.77%) 상승, 안전자산 선호 심리 및 인플레이션 헤지 수요 혼재",
-          "desc_en": "Gold prices rose to $4531.00 (+2.77%), reflecting mixed sentiment of safe-haven demand and inflation hedging",
-          "category": "other"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-20T12:51:12Z",
+  "updated_at": "2026-08-20T14:21:24Z",
   "max_entries": 10
 }
