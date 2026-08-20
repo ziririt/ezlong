@@ -138,17 +138,10 @@ h1 .grad{
 .note{font-size:13.5px; color:var(--sub); margin-top:14px}
 
 /* ── 기기 그림 ── */
-.shots{display:flex; gap:20px; justify-content:center; align-items:flex-end;
-       margin:50px 0 10px; perspective:1400px}
-.phone{
-  width:min(250px,44vw); border-radius:34px; padding:9px; background:#0d1117;
-  box-shadow:0 30px 70px rgba(8,12,24,.35), 0 2px 0 rgba(255,255,255,.08) inset;
-  flex:none;
-}
-.phone img{width:100%; display:block; border-radius:26px}
-.phone:nth-child(1){transform:rotateY(11deg) translateY(14px) scale(.93); opacity:.94}
-.phone:nth-child(3){transform:rotateY(-11deg) translateY(14px) scale(.93); opacity:.94}
-@media (max-width:640px){ .phone:nth-child(3){display:none} }
+.shots{display:flex; justify-content:center; margin:44px 0 6px}
+.shots img{width:100%; max-width:1180px; height:auto; display:block;
+           filter:drop-shadow(0 30px 60px rgba(8,12,24,.45))}
+@media (max-width:640px){ .shots{margin:28px 0 4px} }
 
 /* ── 공통 섹션 ── */
 section{padding:74px 0}
@@ -260,9 +253,8 @@ footer .row .sp{margin-left:auto}
     <p class="note">첫 판은 완전 무료입니다. 회원가입도, 로그인도 없습니다.</p>
 
     <div class="shots rv">
-      <div class="phone"><img src="shots/shot-2.png" alt="Skyblue Note 표 정리 화면" loading="lazy" width="1080" height="2160"></div>
-      <div class="phone"><img src="shots/shot-1.png" alt="Skyblue Note 메모 목록 화면" loading="lazy" width="1080" height="2160"></div>
-      <div class="phone"><img src="shots/shot-3.png" alt="Skyblue Note 버전 기록 화면" loading="lazy" width="1080" height="2160"></div>
+      <img src="shots/devices.png" width="2872" height="900" loading="lazy"
+           alt="맥·아이패드·아이폰·안드로이드에서 같은 메모를 나란히 보고 있는 화면">
     </div>
   </div>
 </section>
