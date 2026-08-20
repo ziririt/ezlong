@@ -50,6 +50,18 @@
   .lede{ margin:0; color:var(--sub); font-size:17px; line-height:1.55; max-width:46ch; }
 
   main{ padding:38px 0 10px; }
+  /* 앱마다 붙는 화면 줄. 옆으로 밀어 본다 — 세로로 쌓으면 카드가 길어져
+     아래 앱이 화면 밖으로 밀린다(2026-08-20). */
+  .shots{ display:flex; gap:14px; margin:16px 0 2px; overflow-x:auto;
+          padding-bottom:8px; scroll-snap-type:x proximity; }
+  .shots::-webkit-scrollbar{ height:6px }
+  .shots::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.16); border-radius:3px }
+  .shots figure{ margin:0; flex:0 0 auto; scroll-snap-align:start }
+  .shots img{ height:300px; width:auto; display:block; border-radius:14px;
+              border:1px solid rgba(255,255,255,.10); background:#0b0f14 }
+  .shots figcaption{ margin-top:8px; color:var(--sub); font-size:12.5px;
+                     text-align:center; letter-spacing:-0.01em }
+  @media (max-width:640px){ .shots img{ height:224px } }
   .card{
     display:block; background:var(--panel); border:1px solid var(--line);
     border-radius:var(--radius); padding:22px 22px 18px; margin-bottom:16px;
@@ -90,7 +102,6 @@
   <div class="wrap">
     <a class="brand" href="/"><span class="dot"></span> Long Time, Easy Life</a>
     <h1>만든 앱들</h1>
-    <p class="lede">여기 한 자리만 알아 두시면 됩니다. 새로 만드는 것도 이 아래로 붙습니다.</p>
   </div>
 </header>
 
@@ -104,6 +115,24 @@
          맞춰 배경 사진과 영상이 저절로 바뀝니다. 지금 날씨와 시간별·주간 예보를 그
          자리에서 보고, 아래로는 투자 거장들의 문장이 흘러가고, 일하거나 공부할 때
          듣기 좋은 음악도 함께 깔립니다.</p>
+      <div class="shots">
+        <figure>
+          <img src="shots/lt-1.jpg" alt="Long Time, Easy Life 플립시계 화면" loading="lazy">
+          <figcaption>아이폰 · 스탠바이</figcaption>
+        </figure>
+        <figure>
+          <img src="shots/lt-2.jpg" alt="투자 거장의 문장이 흐르는 화면" loading="lazy">
+          <figcaption>거장의 문장</figcaption>
+        </figure>
+        <figure>
+          <img src="shots/lt-3.jpg" alt="지금 날씨와 시간별·주간 예보 화면" loading="lazy">
+          <figcaption>날씨 · 예보</figcaption>
+        </figure>
+        <figure>
+          <img src="/time/watch-app-preview.webp" alt="Apple Watch 화면" loading="lazy">
+          <figcaption>Apple Watch</figcaption>
+        </figure>
+      </div>
       <div class="links">
         <a class="chip go" href="/time/">웹앱 열기 <small>설치 없이</small></a>
         <a class="chip" href="https://apps.apple.com/kr/app/id6793780938">App Store</a>
@@ -117,6 +146,21 @@
       <p>ChatGPT·클로드·그록이 준 답을 붙여넣고 한 번 누르면 별표와 우물 정이 걷히고
          깨진 표가 다시 섭니다. 화면에서는 제목과 굵게가 그대로 보이고, 복사해서
          메모장이나 게시판에 붙이면 표시만 빠집니다.</p>
+      <div class="shots">
+        <figure>
+          <img src="/skybluenote/shots/shot-2.png" alt="깨진 표가 다시 선 화면" loading="lazy">
+          <figcaption>표 정리</figcaption>
+        </figure>
+        <figure>
+          <img src="/skybluenote/shots/shot-1.png" alt="메모 목록 화면" loading="lazy">
+          <figcaption>메모 목록</figcaption>
+        </figure>
+        <figure>
+          <img src="/skybluenote/shots/shot-3.png" alt="고친 자취를 되돌리는 화면" loading="lazy">
+          <figcaption>되돌리기</figcaption>
+        </figure>
+
+      </div>
       <div class="links">
         <a class="chip go" href="/skybluenote/web/">웹앱 열기 <small>설치 없이</small></a>
         <a class="chip" href="/skybluenote">소개 보기</a>
