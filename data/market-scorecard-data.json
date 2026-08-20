@@ -1,6 +1,72 @@
 {
   "entries": [
     {
+      "id": "2026-08-21-05:34",
+      "timestamp_kst": "2026-08-21(금) 05:34 KST",
+      "key_event": {
+        "name": "매파적 Fed 발언 및 유가 상승",
+        "name_en": "Hawkish Fed Remarks and Rising Oil Prices",
+        "time": "최근 6시간 및 향후 12시간",
+        "why": "금리 인상 우려, 인플레이션 압력, 기술주 투자 심리 위축",
+        "why_en": "Interest rate hike concerns, inflationary pressure, dampened tech investor sentiment"
+      },
+      "positive_total": 40,
+      "negative_total": 60,
+      "summary": "매파적 Fed 발언 및 유가 상승으로 부정 우위 지속, 기술주 하락 압력",
+      "summary_en": "Continued negative bias due to hawkish Fed remarks and rising oil prices, tech sector facing downward pressure",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "AI 관련 투자 심리 유지",
+          "name_en": "Sustained AI Investment Sentiment",
+          "desc": "일부 억만장자 투자자의 AI 관련 주식 매수 소식, AI 투자 심리 지지",
+          "desc_en": "News of some billionaire investors buying AI-related stocks supports AI investment sentiment",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 35,
+          "name": "매파적 Fed 발언 지속",
+          "name_en": "Continued Hawkish Fed Remarks",
+          "desc": "Fed 관계자들의 인플레이션 고착 시 추가 금리 인상 가능성 경고 지속",
+          "desc_en": "Fed officials continue to warn of potential rate hikes if inflation remains high",
+          "category": "fed_policy"
+        },
+        {
+          "score": 25,
+          "name": "WTI 원유 가격 상승",
+          "name_en": "WTI Crude Oil Price Increase",
+          "desc": "WTI 원유 86.58달러(+2.47%)로 상승, 인플레이션 압력 가중 우려",
+          "desc_en": "WTI crude oil rises to $86.58 (+2.47%), raising concerns about increased inflationary pressure",
+          "category": "oil_energy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "테슬라 밸류에이션 및 AI 전략",
+          "name_en": "Tesla Valuation and AI Strategy",
+          "desc": "JPMorgan의 Optimus 출시 지연 시사 및 Tesla의 고평가 분석과 Waymo의 자체 AI 칩 개발 소식 혼재",
+          "desc_en": "JPMorgan hints at Optimus delay, analysis suggests Tesla is overvalued, while Waymo develops its own AI chip, creating mixed signals",
+          "category": "company_specific"
+        },
+        {
+          "name": "AI 밸류에이션 재평가 리스크",
+          "name_en": "AI Valuation Reassessment Risk",
+          "desc": "일부 AI 관련 주식의 고평가 우려 지속, 투자 심리 혼조",
+          "desc_en": "Continued concerns about overvaluation in some AI-related stocks, leading to mixed investor sentiment",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미10년 국채금리 4.70%(+0.92%) 상승, 기술주 할인율 부담 확대",
+          "desc_en": "US 10-year Treasury yield rises to 4.70% (+0.92%), increasing discount rate pressure on tech stocks",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-21-00:40",
       "timestamp_kst": "2026-08-21(금) 00:40 KST",
       "key_event": {
@@ -558,52 +624,8 @@
           "category": "oil_energy"
         }
       ]
-    },
-    {
-      "id": "2026-08-20-05:34",
-      "timestamp_kst": "2026-08-20(목) 05:34 KST",
-      "key_event": {
-        "name": "미 국채 매입 확대 및 금리 하락",
-        "name_en": "US Treasury Buybacks and Falling Yields",
-        "time": "포스트마켓",
-        "why": "국채금리 하락, 기술주 투자 심리 회복, 시장 전반 긍정적 영향",
-        "why_en": "Falling Treasury yields, boosted tech sentiment, positive market impact"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "국채금리 하락 및 기술주 반등으로 긍정 우위, AI 및 지정학적 긴장 혼조",
-      "summary_en": "Positive bias due to falling Treasury yields and tech rebound, mixed AI and geopolitical tensions",
-      "positive_factors": [
-        {
-          "score": 75,
-          "name": "미 국채 매입 확대 발표",
-          "name_en": "US Treasury Announces Increased Buybacks",
-          "desc": "재무부의 국채 매입 확대 발표로 장기 국채금리 4.65%(-1.13%) 하락, 시장 안정화",
-          "desc_en": "Treasury's announcement of increased buybacks led to a 1.13% drop in long-term yields, stabilizing the market",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "Fed 매파적 FOMC 의사록",
-          "name_en": "Hawkish FOMC Minutes",
-          "desc": "Fed 의사록, 인플레이션 고착 시 추가 금리 인상 가능성 시사",
-          "desc_en": "Fed minutes indicated potential for further rate hikes if inflation remains high",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 투자 버블 우려 지속",
-          "name_en": "Ongoing AI Investment Bubble Concerns",
-          "desc": "AI 관련 투자 기대와 함께 밸류에이션 과열 및 버블 논쟁 혼재",
-          "desc_en": "Mixed sentiment with AI investment expectations alongside debates on valuation overheating and a potential bubble",
-          "category": "ai_tech_valuation"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-20T15:41:10Z",
+  "updated_at": "2026-08-20T20:35:06Z",
   "max_entries": 10
 }
