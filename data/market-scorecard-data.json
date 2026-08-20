@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-08-20-18:20",
+      "timestamp_kst": "2026-08-20(목) 18:20 KST",
+      "key_event": {
+        "name": "국채금리 하락 및 AI 투자 기대",
+        "name_en": "Treasury Yield Decline & AI Investment Outlook",
+        "time": "오늘 정규장 개장 전",
+        "why": "할인율 부담 완화, 기술주 투자 심리 회복, AI 지출 확대",
+        "why_en": "Easing discount rate burden, improved tech investment sentiment, increased AI spending"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "국채금리 하락 및 AI 투자 기대감으로 긍정 우위 지속, 유가 상승 및 매파 발언 혼조",
+      "summary_en": "Positive sentiment continues with falling Treasury yields and AI investment hopes, mixed with rising oil prices and hawkish Fed remarks",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "AI 투자 기대감 지속",
+          "name_en": "Sustained AI Investment Optimism",
+          "desc": "Amazon의 Anthropic 투자 가치 및 Marvell의 Google TPU 계약 등 AI 관련 긍정 뉴스 지속",
+          "desc_en": "Continued positive AI news, including Amazon's Anthropic stake value and Marvell's Google TPU deal",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "국채 발행 개입 기대",
+          "name_en": "Treasury Intervention Hopes",
+          "desc": "미 재무부의 채권 시장 개입 노력으로 시장 안정 기대감 형성",
+          "desc_en": "Expectations of market stabilization due to US Treasury efforts to intervene in the bond market",
+          "category": "rates_treasury"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "WTI 원유 가격 상승",
+          "name_en": "WTI Crude Oil Price Increase",
+          "desc": "WTI 원유 86.46 USD(+2.33%) 상승, 인플레이션 압력 및 기술주 투자 심리 위축 우려",
+          "desc_en": "WTI crude oil rises to $86.46 (+2.33%), raising inflation concerns and dampening tech investment sentiment",
+          "category": "oil_energy"
+        },
+        {
+          "score": 20,
+          "name": "Fed 매파적 발언 지속",
+          "name_en": "Continued Hawkish Fed Remarks",
+          "desc": "Fed 관계자들의 금리 인상 가능성 언급 및 인플레이션 경고 지속",
+          "desc_en": "Fed officials continue to mention potential rate hikes and warn about inflation",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 밸류에이션 버블 우려",
+          "name_en": "AI Valuation Bubble Concerns",
+          "desc": "AI 관련 기업들의 높은 기업 가치에 대한 지속적인 버블 논쟁 및 밸류에이션 부담 우려",
+          "desc_en": "Ongoing debate about high valuations of AI-related companies and concerns over valuation burden",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "호주 소셜 미디어 세금 부과",
+          "name_en": "Australia Social Media Tax",
+          "desc": "호주, 소셜 미디어 기업에 뉴스 사용료 부과 법안 통과, 빅테크 기업 수익성에 잠재적 영향",
+          "desc_en": "Australia passes legislation ordering social media to pay taxes on news usage, potential impact on big tech profitability",
+          "category": "trade_tariff"
+        }
+      ]
+    },
+    {
       "id": "2026-08-20-16:23",
       "timestamp_kst": "2026-08-20(목) 16:23 KST",
       "key_event": {
@@ -494,68 +561,8 @@
           "category": "geopolitics"
         }
       ]
-    },
-    {
-      "id": "2026-08-19-18:22",
-      "timestamp_kst": "2026-08-19(수) 18:22 KST",
-      "key_event": {
-        "name": "반도체 투매 지속 및 고금리 압박",
-        "name_en": "Continued Semiconductor Sell-off & High Interest Rate Pressure",
-        "time": "오늘 프리마켓 및 직전 정규장",
-        "why": "기술주 전반 하락, 고금리 수준 유지, 인플레이션 우려 재점화",
-        "why_en": "Broad tech sector decline, sustained high interest rates, rekindled inflation concerns"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "반도체 투매 및 고금리 압박으로 부정 우위 지속, AI 기대 혼조",
-      "summary_en": "Negative sentiment persists due to semiconductor sell-off and high rates, mixed AI outlook",
-      "positive_factors": [
-        {
-          "score": 20,
-          "name": "일부 AI 관련 기업 투자 기대",
-          "name_en": "Investment Hopes for Select AI Companies",
-          "desc": "Alphabet의 호주 채권 발행 및 AI 지출 증가, D-Wave Quantum 등 AI 관련 기업에 대한 긍정적 전망",
-          "desc_en": "Alphabet's Australian bond debut for AI spending, positive outlook for D-Wave Quantum and other AI firms",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 15,
-          "name": "트럼프 캐나다 관세 부과 보류",
-          "name_en": "Trump Pauses Canada Tariff Imposition",
-          "desc": "캐나다산 제품 50% 관세 부과가 보류되며 무역 긴장 완화",
-          "desc_en": "50% tariff on Canadian products postponed, easing trade tensions",
-          "category": "trade_tariff"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 45,
-          "name": "고금리 수준 지속 및 채권 시장 경고",
-          "name_en": "Sustained High Rates & Bond Market Alarm",
-          "desc": "미 10년 국채금리 4.71%, 30년 국채금리 5.28%로 높은 수준 유지, 성장주 할인율 압박 지속 및 채권 시장의 경고음",
-          "desc_en": "US 10-year Treasury at 4.71% and 30-year at 5.28% maintain high levels, pressuring growth stock valuations, bond market sounding alarm",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 20,
-          "name": "AI 기업 밸류에이션 우려 및 비관론",
-          "name_en": "AI Company Valuation Concerns & Pessimism",
-          "desc": "OpenAI의 성장 둔화 및 'Magnificent 7'의 어려움에 대한 경고, AI 버블 논쟁 지속",
-          "desc_en": "Warnings about OpenAI's slowing growth and 'Magnificent 7' struggles, ongoing AI bubble debate",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "테슬라 로보택시 허가 제한",
-          "name_en": "Tesla Robotaxi Permit Restrictions",
-          "desc": "라스베이거스 시가 테슬라 로보택시 5,000대 신청에 10대만 허가, 속도 제한 및 공항 운행 금지 조치",
-          "desc_en": "Las Vegas approved only 10 of Tesla's 5,000 robotaxi permit requests, with speed limits and airport bans",
-          "category": "company_specific"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-20T07:23:49Z",
+  "updated_at": "2026-08-20T09:21:22Z",
   "max_entries": 10
 }
