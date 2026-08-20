@@ -5856,7 +5856,11 @@ body.is-lowmotion .clock-colon {
 /* 곡이 300개가 넘는다. 전부 펼치면 설정 화면이 끝없이 늘어나므로
    높이를 묶고 안에서만 스크롤시킨다. */
 .alarm-sound-list {
-  max-height: 268px;
+  /* 2026-08-20 운영 지침 — 268px는 다섯 곡 반이 보여서 목록이 화면을
+     너무 많이 먹었다. 곡 하나가 약 46px(패딩 11+11 + 줄높이)이므로
+     150px면 세 곡이 온전히 보이고 네 번째가 살짝 걸친다. 그 걸침이
+     "아래에 더 있다"는 신호 노릇을 한다. */
+  max-height: 150px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   border: 1px solid rgba(255, 255, 255, 0.10);

@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-19T22:55:52.980Z
+ * 생성 시각: 2026-08-20T02:34:22.514Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -162,7 +162,8 @@
         "unsupported": "The wake-up alarm needs iOS 26 or later, and the latest version of the app.",
         "ringLabel": "Time to wake up",
         "ringStop": "Stop",
-        "ringSnooze": "5 more minutes"
+        "ringSnooze": "5 more minutes",
+        "setAlarm": "Set alarm"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -612,7 +613,8 @@
         "unsupported": "La alarma para despertar requiere iOS 26 o posterior y la última versión de la app.",
         "ringLabel": "Hora de despertar",
         "ringStop": "Detener",
-        "ringSnooze": "5 minutos más"
+        "ringSnooze": "5 minutos más",
+        "setAlarm": "Poner alarma"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1062,7 +1064,8 @@
         "unsupported": "起床アラームはiOS 26以降で、アプリを最新版に更新してからご利用いただけます。",
         "ringLabel": "起床の時間です",
         "ringStop": "停止",
-        "ringSnooze": "5分後にもう一度"
+        "ringSnooze": "5分後にもう一度",
+        "setAlarm": "アラームを設定"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1512,7 +1515,8 @@
         "unsupported": "기상 알람은 iOS 26 이상에서, 그리고 앱을 새로 설치한 뒤에 쓸 수 있습니다.",
         "ringLabel": "기상 시각입니다",
         "ringStop": "그만",
-        "ringSnooze": "5분 더"
+        "ringSnooze": "5분 더",
+        "setAlarm": "알람 걸기"
       },
       "watch": {
         "heading": "애플워치",
@@ -1962,7 +1966,8 @@
         "unsupported": "O alarme para acordar exige iOS 26 ou posterior e a versão mais recente do app.",
         "ringLabel": "Hora de acordar",
         "ringStop": "Parar",
-        "ringSnooze": "Mais 5 minutos"
+        "ringSnooze": "Mais 5 minutos",
+        "setAlarm": "Definir alarme"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -2412,7 +2417,8 @@
         "unsupported": "起床闹钟需要 iOS 26 或更高版本，并且需将 App 更新至最新版本。",
         "ringLabel": "该起床了",
         "ringStop": "停止",
-        "ringSnooze": "再睡 5 分钟"
+        "ringSnooze": "再睡 5 分钟",
+        "setAlarm": "设置闹钟"
       },
       "watch": {
         "heading": "Apple Watch",
