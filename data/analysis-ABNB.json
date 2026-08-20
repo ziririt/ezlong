@@ -3,41 +3,41 @@
   "name": "에어비앤비",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-08-19T22:41:01.902Z",
+  "updatedAt": "2026-08-20T22:45:39.276Z",
   "price": {
-    "current": 186.39,
-    "change": 3.14,
-    "changePct": 1.71,
+    "current": 185,
+    "change": -1.39,
+    "changePct": -0.75,
     "high52": 189.2,
     "low52": 110.81,
-    "pos52": 96.4,
+    "pos52": 94.6,
     "marketState": "POST",
-    "quoteTime": 1787169601,
+    "quoteTime": 1787256001,
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 164.2953,
-    "sma50": 151.3607,
-    "sma100": 143.1042,
-    "sma200": 135.5778,
-    "rsi": 72.37,
+    "sma20": 166.6668,
+    "sma50": 152.4337,
+    "sma100": 143.7255,
+    "sma200": 135.8701,
+    "rsi": 70.36,
     "macd": {
-      "macd": 10.675146,
-      "signal": 8.74575,
-      "histogram": 1.929395
+      "macd": 10.619398,
+      "signal": 9.12048,
+      "histogram": 1.498918
     },
     "bb": {
-      "upper": 198.9201,
-      "middle": 164.2953,
-      "lower": 129.6704,
-      "bandwidth": 0.4215
+      "upper": 200.1223,
+      "middle": 166.6668,
+      "lower": 133.2112,
+      "bandwidth": 0.4015
     },
     "adx": {
-      "plusDI": 43.34,
-      "minusDI": 12.95,
-      "adx": 37.93,
+      "plusDI": 41.46,
+      "minusDI": 12.79,
+      "adx": 39,
       "status": "뚜렷한 추세"
     }
   },
@@ -45,11 +45,11 @@
     "swingResistance": 187.12,
     "swingSupport": 141.24,
     "pivot": {
-      "pp": 170.44,
-      "r1": 205.15,
-      "r2": 223.92,
-      "s1": 151.67,
-      "s2": 116.96
+      "pp": 170.79,
+      "r1": 203.41,
+      "r2": 221.83,
+      "s1": 152.37,
+      "s2": 119.75
     }
   },
   "analysis": {
@@ -64,18 +64,18 @@
     "action": "매수",
     "buyScore": 7,
     "scoreReason": "RSI 중립 구간 진입, MACD 강세 확산 유지",
-    "scoreReasonEn": "RSI neutral zone entry, MACD bullish expansion maintained",
-    "rsiTrajectory": "70.6 → 72.4 (중립 구간 지속)",
-    "rsiTrajectoryEn": "70.6 → 72.4 (staying neutral)",
-    "macdTrajectory": "히스토 1.9294 → 1.9294 (유지)",
-    "macdTrajectoryEn": "histogram 1.9294 → 1.9294 (holding steady)",
+    "scoreReasonEn": "RSI neutral zone entry, MACD strong expansion maintained",
+    "rsiTrajectory": "76.6 → 70.4 (과매수 냉각 중)",
+    "rsiTrajectoryEn": "76.6 → 70.4 (cooling from overbought)",
+    "macdTrajectory": "히스토 3.6956 → 1.4989 (개선 유지)",
+    "macdTrajectoryEn": "histo 3.6956 → 1.4989 (improving maintained)",
     "pricePattern": "Higher Low 패턴 확인, 5일 고가 경신",
     "pricePatternEn": "Higher Low pattern confirmed, 5-day high renewed",
-    "volComment": "거래량비 1.03 (정상)",
-    "bbPosition": "중단근처",
-    "reason": "RSI 72.4로 중립 구간 유지, MACD 히스토그램 1.9294로 강세 확산 지속. 5일 고가 경신하며 Higher Low 패턴 확인. 1배수 목표 비중 채움, 다음 카드는 레버리지.",
-    "reasonEn": "RSI at 72.4 maintains neutral zone, MACD histogram at 1.9294 continues bullish expansion. Confirmed Higher Low pattern with 5-day high renewal. Position at 1x target weight, next card is leverage.",
-    "entry": 186.39,
+    "volComment": "거래량비 1.27 (급증)",
+    "bbPosition": "중단",
+    "reason": "직전 3거래일 연속 매수 판정 유지. RSI 70.4로 과매수 구간에서 냉각 중이나 여전히 중립 구간. MACD 히스토그램은 개선세 유지하며 강세 확산. 5일 고가 경신하며 Higher Low 패턴 강화. 거래량도 1.27배로 증가하며 상승 동력 확인.",
+    "reasonEn": "The previous 3 consecutive buy decisions maintained. RSI at 70.4 is cooling from overbought but still in neutral territory. MACD histogram continues to improve, confirming strong expansion. The 5-day high renewal strengthens the Higher Low pattern. Volume also increased to 1.27x, confirming upward momentum.",
+    "entry": 185,
     "stop": 178.84,
     "target": 189.2,
     "invalidation": 141.24,
@@ -84,32 +84,32 @@
     "profitTarget1": 187.12,
     "profitTarget2": 189.2,
     "stopLoss": 178.84,
-    "narrative": "[추세 위치]\n· 현재가($186.39) vs SMA5($183.62)/SMA20($164.30)/SMA50($151.36) — 단기·중기 추세 상회 확인\n· SMA100($143.10)/SMA200($135.58) 대비 위치 — 중장기 추세 강도 유지\n· 52주 위치(96.4%) + 현 가격대 역사적 고점 구간 진입\n[모멘텀 지표]\n· RSI 궤적 (70.6→72.4) + 중립 구간 지속 판단 + 상승 방향성 유지\n· MACD 히스토그램 궤적 (1.9294→1.9294) + 유지 진단 + 강세 추세 전환 신호 유지\n· 볼린저밴드 현재가 위치 (중단 $164.30) + 밴드폭 42.15% 수준 해석\n[지지·저항 구조]\n· 스윙 지지선 ($141.24) + 피벗 기반 지지 확인\n· 스윙 저항선 ($187.12) + 돌파 시 추가 상승 가능성\n· 5일/20일 고가·저가 패턴 (Higher Low) + 상승 추세 확인\n[거래량·결론]\n· 거래량 비율 (1.03배) + 움직임의 신뢰도 정상 수준\n· 현 구간 진단 (상승추세) + 진입 조건 충족",
-    "narrativeEn": "[Trend Position]\n· Current Price ($186.39) vs SMA5 ($183.62)/SMA20 ($164.30)/SMA50 ($151.36) — Short-to-mid term uptrend confirmed above\n· Position relative to SMA100 ($143.10)/SMA200 ($135.58) — Mid-to-long term trend strength maintained\n· 52-week position (96.4%) + Current price level entering historical high range\n[Momentum Indicators]\n· RSI trajectory (70.6→72.4) + Neutral zone sustained, indicating upward momentum\n· MACD histogram trajectory (1.9294→1.9294) + Holding steady, confirming bullish trend continuation\n· Bollinger Band current price position (Mid Band $164.30) + Bandwidth at 42.15% interpreted as moderate volatility\n[Support & Resistance Structure]\n· Swing Support ($141.24) + Pivot-based support confirmed\n· Swing Resistance ($187.12) + Potential for further upside on breakout\n· 5-day/20-day High/Low pattern (Higher Low) + Uptrend confirmed\n[Volume & Conclusion]\n· Volume Ratio (1.03x) + Normal confidence level for price action\n· Current phase diagnosis (Uptrend) + Entry conditions met",
-    "patternNote": "5일 고가 경신하며 Higher Low 패턴 확인, 상승 추세 지속 구간.",
-    "patternNoteEn": "5-day high renewed, confirming Higher Low pattern in a sustained uptrend.",
+    "narrative": "[추세 위치]\n· 현재가($185.00) vs SMA5($183.60)/SMA20($166.67)/SMA50($152.43) — 단기·중기 추세 상회 진단\n· SMA100($143.73)/SMA200($135.87) 대비 위치 — 중장기 추세 강도 판단\n· 52주 위치(94.6%) + 현 가격대 역사적 고점 근접 구간\n[모멘텀 지표]\n· RSI 궤적 (76.6 → 70.4) — 과매수 냉각 중, 중립 구간 지속\n· MACD 히스토그램 궤적 (3.6956 → 1.4989) — 개선 유지, 강세 확산 진단\n· 볼린저밴드 현재가 위치 (중단 $166.67) — 중단 부근 횡보 구간\n[지지·저항 구조]\n· 스윙 지지선 ($141.24) — 피벗 S1($152.37) 및 SMA100($143.73) 기반\n· 스윙 저항선 ($187.12) — 5일 고가 경신 시 돌파 시도\n· 5일/20일 고가·저가 패턴 (Higher Low) — 회복 추세 강화\n[거래량·결론]\n· 거래량 비율 (1.27배) — 움직임의 신뢰도 상승\n· 현 구간 진단 (상승추세) — 1배수 목표 비중 채움, 다음은 레버리지 고려",
+    "narrativeEn": "[Trend Position]\n· Current price ($185.00) vs SMA5 ($183.60)/SMA20 ($166.67)/SMA50 ($152.43) — Short-to-mid term trend above\n· Position relative to SMA100 ($143.73)/SMA200 ($135.87) — Mid-to-long term trend strength assessment\n· 52-week position (94.6%) + Current price level near historical highs\n[Momentum Indicators]\n· RSI trajectory (76.6 → 70.4) — Cooling from overbought, continuing in neutral zone\n· MACD histogram trajectory (3.6956 → 1.4989) — Improvement maintained, strong expansion indicated\n· Bollinger Band current price position (Mid Band $166.67) — Sideways movement around the mid band\n[Support & Resistance Structure]\n· Swing support ($141.24) — Based on Pivot S1 ($152.37) and SMA100 ($143.73)\n· Swing resistance ($187.12) — Attempting breakout on 5-day high renewal\n· 5-day/20-day high/low pattern (Higher Low) — Recovery trend strengthening\n[Volume & Conclusion]\n· Volume ratio (1.27x) — Increased confidence in price movement\n· Current phase diagnosis (Uptrend) — 1x target allocation filled, considering leverage next",
+    "patternNote": "5일 고가 경신하며 20일 고가 돌파 시도하는 상승 채널 패턴 확인.",
+    "patternNoteEn": "Ascending channel pattern confirmed, attempting to break the 20-day high with a 5-day high renewal.",
     "keyPoints": [
-      "RSI 72.4 중립 구간 유지, MACD 강세 확산 지속.",
-      "5일 고가 경신, Higher Low 패턴 확인.",
-      "1배수 목표 비중 채움, 다음 카드는 레버리지."
+      "RSI 70.4로 과매수 냉각 중이나 중립 구간 유지",
+      "MACD 히스토그램 개선세 지속, 강세 확산 확인",
+      "5일 고가 경신하며 Higher Low 패턴 강화, 거래량 1.27배 증가"
     ],
     "keyPointsEn": [
-      "RSI at 72.4 holds neutral zone, MACD bullish expansion continues.",
-      "5-day high renewed, Higher Low pattern confirmed.",
-      "Position at 1x target weight, next card is leverage."
+      "RSI cooling from overbought at 70.4 but holding neutral",
+      "MACD histogram improvement continues, confirming strong expansion",
+      "Higher Low pattern strengthened by 5-day high renewal, volume up 1.27x"
     ],
-    "riskNote": "현재가 52주 고가($189.20) 근접 구간, 과열 경계 필요.",
-    "riskNoteEn": "Current price approaching 52-week high ($189.20), caution for overextension warranted.",
-    "continuity": "직전 3거래일 연속 관망 판독 유지 후, 금일 RSI 중립 구간 진입 및 MACD 강세 확산 유지 확인으로 매수 전환.",
-    "continuityEn": "After holding a wait-and-see stance for the past 3 sessions, action shifts to buy based on today's RSI entering neutral zone and sustained MACD bullish expansion.",
+    "riskNote": "주봉 RSI 77.2로 과매수 구간 진입, 단기 과열 경계 필요.",
+    "riskNoteEn": "Weekly RSI at 77.2 entering overbought territory, caution against short-term overheating needed.",
+    "continuity": "직전 4거래일 연속 매수 판정 유지. 금일 RSI 70.4로 과매수 냉각 중이나 MACD 강세 확산 유지, 5일 고가 경신하며 상승 추세 지속.",
+    "continuityEn": "Buy decision maintained for the past 4 consecutive trading days. Today, RSI is cooling from overbought at 70.4, but MACD strong expansion continues, and the uptrend persists with the 5-day high renewal.",
     "confluenceChecklist": {
-      "volumeConfirmed": false,
-      "resistanceReclaimed": true,
+      "volumeConfirmed": true,
+      "resistanceReclaimed": false,
       "adxLowRisk": true,
       "higherTimeframeAligned": true,
       "oversoldExtremeOrigin": false,
-      "score": "3/5",
-      "verdict": "초기 단계 — 확인 관문 남음"
+      "score": "4/5",
+      "verdict": "진짜 반등/추세 가능성 높음"
     }
   }
 }
