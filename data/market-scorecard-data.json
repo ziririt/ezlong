@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-21-18:39",
+      "timestamp_kst": "2026-08-21(금) 18:39 KST",
+      "key_event": {
+        "name": "기술주 프리마켓 강세",
+        "name_en": "Tech Stocks Strong in Premarket",
+        "time": "오늘 정규장 개장 전",
+        "why": "기술주 실적 낙관론, AI 모멘텀 지속",
+        "why_en": "Optimism on tech earnings, sustained AI momentum"
+      },
+      "positive_total": 85,
+      "negative_total": 15,
+      "summary": "기술주 실적 낙관론 및 AI 모멘텀으로 긍정 우위 지속, 국채금리 상승 압력 혼조",
+      "summary_en": "Positive sentiment continues with tech earnings optimism and AI momentum, mixed with persistent Treasury yield pressures",
+      "positive_factors": [
+        {
+          "score": 50,
+          "name": "기술주 실적 낙관론",
+          "name_en": "Optimism on Tech Earnings",
+          "desc": "Dow, S&P 500, Nasdaq 선물 상승, 기술주 강세 지속",
+          "desc_en": "Dow, S&P 500, Nasdaq futures drift higher, tech strength continues",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 35,
+          "name": "AI 모멘텀 지속",
+          "name_en": "Sustained AI Momentum",
+          "desc": "Dan Ives, Goldman Sachs 등 AI 수익화 기대감 증폭",
+          "desc_en": "Dan Ives, Goldman Sachs highlight AI monetization, boosting expectations",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "매파적 Fed 발언 우려",
+          "name_en": "Hawkish Fed Remarks Concern",
+          "desc": "Fed 9월 금리 인상 가능성 여전히 논의, 금리 인상 우려 지속",
+          "desc_en": "Fed minutes show September rate hike still on the table, rate hike concerns persist",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미 국채금리 상승 압력",
+          "name_en": "US Treasury Yields Rising",
+          "desc": "미10년 국채금리 4.70%(+0.92%) 상승, 주식 시장 압박",
+          "desc_en": "US 10-year Treasury yield rises to 4.70% (+0.92%), pressuring equity markets",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-21-16:23",
       "timestamp_kst": "2026-08-21(금) 16:23 KST",
       "key_event": {
@@ -576,75 +628,8 @@
           "category": "ai_tech_valuation"
         }
       ]
-    },
-    {
-      "id": "2026-08-20-18:20",
-      "timestamp_kst": "2026-08-20(목) 18:20 KST",
-      "key_event": {
-        "name": "국채금리 하락 및 AI 투자 기대",
-        "name_en": "Treasury Yield Decline & AI Investment Outlook",
-        "time": "오늘 정규장 개장 전",
-        "why": "할인율 부담 완화, 기술주 투자 심리 회복, AI 지출 확대",
-        "why_en": "Easing discount rate burden, improved tech investment sentiment, increased AI spending"
-      },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "국채금리 하락 및 AI 투자 기대감으로 긍정 우위 지속, 유가 상승 및 매파 발언 혼조",
-      "summary_en": "Positive sentiment continues with falling Treasury yields and AI investment hopes, mixed with rising oil prices and hawkish Fed remarks",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "AI 투자 기대감 지속",
-          "name_en": "Sustained AI Investment Optimism",
-          "desc": "Amazon의 Anthropic 투자 가치 및 Marvell의 Google TPU 계약 등 AI 관련 긍정 뉴스 지속",
-          "desc_en": "Continued positive AI news, including Amazon's Anthropic stake value and Marvell's Google TPU deal",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 25,
-          "name": "국채 발행 개입 기대",
-          "name_en": "Treasury Intervention Hopes",
-          "desc": "미 재무부의 채권 시장 개입 노력으로 시장 안정 기대감 형성",
-          "desc_en": "Expectations of market stabilization due to US Treasury efforts to intervene in the bond market",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "WTI 원유 가격 상승",
-          "name_en": "WTI Crude Oil Price Increase",
-          "desc": "WTI 원유 86.46 USD(+2.33%) 상승, 인플레이션 압력 및 기술주 투자 심리 위축 우려",
-          "desc_en": "WTI crude oil rises to $86.46 (+2.33%), raising inflation concerns and dampening tech investment sentiment",
-          "category": "oil_energy"
-        },
-        {
-          "score": 20,
-          "name": "Fed 매파적 발언 지속",
-          "name_en": "Continued Hawkish Fed Remarks",
-          "desc": "Fed 관계자들의 금리 인상 가능성 언급 및 인플레이션 경고 지속",
-          "desc_en": "Fed officials continue to mention potential rate hikes and warn about inflation",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 밸류에이션 버블 우려",
-          "name_en": "AI Valuation Bubble Concerns",
-          "desc": "AI 관련 기업들의 높은 기업 가치에 대한 지속적인 버블 논쟁 및 밸류에이션 부담 우려",
-          "desc_en": "Ongoing debate about high valuations of AI-related companies and concerns over valuation burden",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "호주 소셜 미디어 세금 부과",
-          "name_en": "Australia Social Media Tax",
-          "desc": "호주, 소셜 미디어 기업에 뉴스 사용료 부과 법안 통과, 빅테크 기업 수익성에 잠재적 영향",
-          "desc_en": "Australia passes legislation ordering social media to pay taxes on news usage, potential impact on big tech profitability",
-          "category": "trade_tariff"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-21T07:24:07Z",
+  "updated_at": "2026-08-21T09:39:34Z",
   "max_entries": 10
 }
