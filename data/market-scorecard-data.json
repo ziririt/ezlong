@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "2026-08-22-00:40",
+      "timestamp_kst": "2026-08-22(토) 00:40 KST",
+      "key_event": {
+        "name": "기술주 실적 낙관론 및 AI 모멘텀",
+        "name_en": "Tech Earnings Optimism & AI Momentum",
+        "time": "2026-08-22 정규장 진행 중",
+        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
+        "why_en": "Tech earnings expectations, improved AI investment sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "기술주 실적 낙관론 및 AI 모멘텀으로 긍정 우위 지속, 매파적 Fed 발언 우려 혼조",
+      "summary_en": "Continued positive sentiment driven by tech earnings optimism and AI momentum, mixed with hawkish Fed remarks concerns",
+      "positive_factors": [
+        {
+          "score": 75,
+          "name": "AI 기술 모멘텀 지속",
+          "name_en": "Sustained AI Tech Momentum",
+          "desc": "Starcloud의 23억 달러 펀딩 및 AMD와 Nvidia의 AI 경쟁 심화",
+          "desc_en": "Starcloud's $2.3 billion funding and intensifying AI competition between AMD and Nvidia",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "매파적 Fed 발언 우려",
+          "name_en": "Hawkish Fed Remarks Concerns",
+          "desc": "Fed와 재무부의 정책 충돌 및 Jackson Hole 테스트 언급, 금리 인상 가능성 잔존",
+          "desc_en": "Policy clash between Fed and Treasury, Jackson Hole test mentioned, lingering rate hike possibility",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미10년 국채금리 4.74%(+0.85%), 미30년 국채금리 5.27%(+0.63%) 상승. 금리 상승은 기술주에 부담이나, 변동폭이 미미하여 시장 영향 제한적",
+          "desc_en": "US 10-year Treasury yield at 4.74% (+0.85%) and 30-year at 5.27% (+0.63%). Rising yields typically pressure tech, but the change is minor, limiting market impact.",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-21-22:27",
       "timestamp_kst": "2026-08-21(금) 22:27 KST",
       "key_event": {
@@ -545,75 +589,8 @@
           "category": "earnings_bellwether"
         }
       ]
-    },
-    {
-      "id": "2026-08-20-23:20",
-      "timestamp_kst": "2026-08-20(목) 23:20 KST",
-      "key_event": {
-        "name": "매파적 Fed 발언 및 유가 상승",
-        "name_en": "Hawkish Fed Remarks & Oil Price Surge",
-        "time": "정규장 진행 중",
-        "why": "금리 인상 우려, 인플레이션 압력, 기술주 투자 심리 위축",
-        "why_en": "Interest rate hike concerns, inflation pressure, dampened tech sentiment"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "매파적 Fed 발언 및 유가 상승으로 부정 우위 지속, 기술주 하락 압력",
-      "summary_en": "Negative sentiment persists due to hawkish Fed remarks and rising oil prices, pressuring tech stocks",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "AI 메모리 투자 확대",
-          "name_en": "Increased AI Memory Investment",
-          "desc": "마이크론의 100억 달러 AI 메모리 투자 및 엔비디아, 애플의 연구 지원 소식",
-          "desc_en": "Micron's $10B AI memory investment and research support from Nvidia, Apple",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "매파적 Fed 발언 지속",
-          "name_en": "Continued Hawkish Fed Stance",
-          "desc": "Fed의 조건부 금리 인상 시그널 및 9월 인상 가능성 언급으로 긴축 우려 증대",
-          "desc_en": "Fed signals conditional rate hikes, 9월 hike possibility raises tightening concerns",
-          "category": "fed_policy"
-        },
-        {
-          "score": 25,
-          "name": "유가 상승 및 인플레이션 압력",
-          "name_en": "Oil Price Surge & Inflation Pressure",
-          "desc": "WTI 원유 2.52% 상승, 중동 공급 우려 및 인플레이션 재점화 가능성",
-          "desc_en": "WTI crude up 2.52%, Middle East supply concerns and inflation re-ignition risk",
-          "category": "oil_energy"
-        },
-        {
-          "score": 15,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 4.70%(+1.01%) 상승, 기술주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield rises to 4.70%(+1.01%), increasing discount rate pressure on tech",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 밸류에이션 버블 우려",
-          "name_en": "AI Valuation Bubble Concerns",
-          "desc": "AI 관련 투자 기대감과 동시에 AI 채권 호황이 주식 시장에 문제가 될 수 있다는 우려 혼재",
-          "desc_en": "Mixed sentiment with AI investment optimism and concerns that AI bond bonanza could harm stock market",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "트럼프 경제 D-Day 위협",
-          "name_en": "Trump's Economic D-Day Threat",
-          "desc": "트럼프의 '경제 D-Day' 위협 발언이 시장에 불확실성을 가중시키나 구체적 영향은 미지수",
-          "desc_en": "Trump's 'Economic D-Day' threat adds uncertainty, but specific market impact is unclear",
-          "category": "geopolitics"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-21T13:28:20Z",
+  "updated_at": "2026-08-21T15:41:03Z",
   "max_entries": 10
 }
