@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "2026-08-22-05:31",
+      "timestamp_kst": "2026-08-22(토) 05:31 KST",
+      "key_event": {
+        "name": "기술주 실적 낙관론 및 AI 모멘텀",
+        "name_en": "Tech Earnings Optimism & AI Momentum",
+        "time": "포스트마켓",
+        "why": "주요 기술 기업 실적 기대감, AI 관련 투자 심리 개선",
+        "why_en": "Optimism for major tech earnings, improved AI investment sentiment"
+      },
+      "positive_total": 85,
+      "negative_total": 15,
+      "summary": "기술주 실적 낙관론 및 AI 모멘텀으로 긍정 우위 지속, 국채금리 상승 혼조",
+      "summary_en": "Continued positive sentiment driven by tech earnings and AI momentum, mixed with rising Treasury yields",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "기술주 실적 기대감",
+          "name_en": "Tech Earnings Expectations",
+          "desc": "주요 기술 기업들의 실적 발표를 앞두고 낙관적인 전망 확산",
+          "desc_en": "Optimistic outlook spreading ahead of major tech companies' earnings reports",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 40,
+          "name": "AI 모멘텀 지속",
+          "name_en": "Sustained AI Momentum",
+          "desc": "AI 관련 신규 서비스 및 투자 소식으로 시장 심리 개선",
+          "desc_en": "Market sentiment improved by news of new AI services and investments",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "일부 AI 관련 우려",
+          "name_en": "Some AI-Related Concerns",
+          "desc": "DeepSeek 등 신규 경쟁사 등장으로 AI 주식에 대한 우려 제기",
+          "desc_en": "Concerns raised about AI stocks due to new competitors like DeepSeek",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "애플 AI 전략 및 리더십 의문",
+          "name_en": "Apple's AI Strategy & Leadership Questions",
+          "desc": "애플의 AI 경쟁력 강화 노력과 동시에 리더십 관련 의문 제기로 주가 혼조",
+          "desc_en": "Apple's stock shows mixed signals due to efforts to strengthen AI competitiveness alongside leadership questions",
+          "category": "company_specific"
+        },
+        {
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미10년 국채금리 4.74%(+0.89%), 30년 국채금리 5.28%(+0.74%) 상승, 성장주 압박",
+          "desc_en": "US 10-year Treasury yield rose to 4.74% (+0.89%) and 30-year to 5.28% (+0.74%), pressuring growth stocks",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-22-00:40",
       "timestamp_kst": "2026-08-22(토) 00:40 KST",
       "key_event": {
@@ -514,83 +573,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-21-00:40",
-      "timestamp_kst": "2026-08-21(금) 00:40 KST",
-      "key_event": {
-        "name": "Fed 매파적 발언 및 유가 상승",
-        "name_en": "Fed Hawkish Remarks & Oil Price Surge",
-        "time": "정규장 진행 중",
-        "why": "금리 인상 우려, 인플레이션 압력, 기술주 투자 심리 위축",
-        "why_en": "Interest rate hike concerns, inflationary pressure, dampened tech sentiment"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "매파적 Fed 발언 및 유가 상승으로 부정 우위 지속, 기술주 하락 압력",
-      "summary_en": "Hawkish Fed remarks and rising oil prices maintain negative dominance, pressuring tech stocks",
-      "positive_factors": [
-        {
-          "score": 20,
-          "name": "일부 AI 관련 기업 투자 심리 개선",
-          "name_en": "Improved Investment Sentiment for Some AI Firms",
-          "desc": "ARK의 Broadcom 매수, Qualcomm 구매 주문 등 일부 AI 관련 기업에 긍정적 소식",
-          "desc_en": "Positive news for some AI-related companies, including ARK buying Broadcom and Qualcomm purchase orders",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 15,
-          "name": "금 가격 상승",
-          "name_en": "Gold Price Increase",
-          "desc": "안전자산 선호 심리 일부 반영, 금 가격 0.66% 상승",
-          "desc_en": "Partially reflects safe-haven sentiment, gold prices up 0.66%",
-          "category": "other"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "Fed의 조건부 금리 인상 시사",
-          "name_en": "Fed Signals Conditional Rate Hike Trigger",
-          "desc": "Fed의 매파적 발언 지속, 추가 금리 인상 가능성 시사로 시장 금리 상승 압력",
-          "desc_en": "Continued hawkish Fed rhetoric, signaling potential for further rate hikes, pressuring market rates higher",
-          "category": "fed_policy"
-        },
-        {
-          "score": 25,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미 10년물 국채금리 4.70%(+1.05%), 30년물 5.25%(+1.06%) 상승으로 기술주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield at 4.70%(+1.05%) and 30-year at 5.25%(+1.06%) rise, increasing discount rate pressure on tech stocks",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 10,
-          "name": "WTI 원유 가격 상승",
-          "name_en": "WTI Crude Oil Price Increase",
-          "desc": "WTI 원유 86.49 USD (+2.37%) 상승, 중동 공급 우려 및 인플레이션 압력 가중",
-          "desc_en": "WTI crude oil rises to 86.49 USD (+2.37%), increasing Middle East supply concerns and inflationary pressure",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 밸류에이션 재평가 리스크",
-          "name_en": "AI Valuation Repricing Risk",
-          "desc": "Fed 발언에서 AI 밸류에이션 리스크 언급, 일부 기업은 긍정적 소식에도 섹터 전반에 대한 우려 혼재",
-          "desc_en": "Fed remarks mention AI valuation risk; despite positive news for some companies, overall sector concerns persist",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "Walmart 실적 부진 및 시장 영향",
-          "name_en": "Walmart Earnings Miss and Market Impact",
-          "desc": "Walmart의 예상치 하회 실적 가이던스로 주가 8% 하락, 소비 심리 우려와 함께 시장 전반에 영향",
-          "desc_en": "Walmart's lower-than-expected EPS guidance leads to an 8% stock drop, impacting overall market with consumer sentiment concerns",
-          "category": "earnings_bellwether"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-21T15:41:03Z",
+  "updated_at": "2026-08-21T20:32:02Z",
   "max_entries": 10
 }
