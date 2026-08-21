@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "2026-08-22-08:20",
+      "timestamp_kst": "2026-08-22(토) 08:20 KST",
+      "key_event": {
+        "name": "기술주 실적 낙관론 및 AI 모멘텀",
+        "name_en": "Tech Earnings Optimism & AI Momentum",
+        "time": "직전 정규장 및 포스트마켓",
+        "why": "주요 기술 기업 실적 기대감, AI 관련 투자 심리 개선",
+        "why_en": "Strong earnings expectations for major tech companies, improved AI investment sentiment"
+      },
+      "positive_total": 85,
+      "negative_total": 15,
+      "summary": "기술주 실적 낙관론 및 AI 모멘텀으로 3일 연속 긍정 우위 유지",
+      "summary_en": "Positive sentiment continues for the third consecutive day, driven by tech earnings optimism and AI momentum.",
+      "positive_factors": [
+        {
+          "score": 50,
+          "name": "기술주 실적 기대감 지속",
+          "name_en": "Sustained Tech Earnings Expectations",
+          "desc": "주요 기술 기업 실적 발표 임박, AI 관련 투자 심리 개선 지속",
+          "desc_en": "Anticipation for upcoming major tech earnings reports, continued improvement in AI investment sentiment.",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 35,
+          "name": "AI 관련 산업 성장 기대",
+          "name_en": "AI Industry Growth Expectations",
+          "desc": "Neoclouds 및 Anthropic IPO 등 AI 인프라 및 서비스 확장 기대감",
+          "desc_en": "Expectations for AI infrastructure and service expansion, including Neoclouds and Anthropic IPO.",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "일부 기술주 하락 압력",
+          "name_en": "Downward Pressure on Select Tech Stocks",
+          "desc": "애플 AI 전략 의문 및 Jefferies 매도 의견, 엔비디아 소폭 하락",
+          "desc_en": "Apple's AI strategy doubts and Jefferies' sell rating, slight decline in Nvidia.",
+          "category": "company_specific"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-22-06:46",
       "timestamp_kst": "2026-08-22(토) 06:46 KST",
       "key_event": {
@@ -484,67 +528,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-21-06:51",
-      "timestamp_kst": "2026-08-21(금) 06:51 KST",
-      "key_event": {
-        "name": "매파적 Fed 발언 및 유가 상승",
-        "name_en": "Hawkish Fed Remarks & Rising Oil Prices",
-        "time": "향후 12시간",
-        "why": "금리 인상 우려, 인플레이션 압력, 기술주 투자 심리 위축",
-        "why_en": "Interest rate hike concerns, inflationary pressure, tech sentiment decline"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "매파적 Fed 발언 및 유가 상승으로 부정 우위 지속, 기술주 하락 압력",
-      "summary_en": "Negative sentiment persists due to hawkish Fed remarks and rising oil, pressuring tech stocks",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "AI 기술 경쟁 심화",
-          "name_en": "Intensifying AI Tech Competition",
-          "desc": "Waymo의 자체 AI 칩 개발 및 엔비디아 경쟁사 부각, AI 혁신 기대감 유지",
-          "desc_en": "Waymo's in-house AI chip development and Nvidia rival emergence, sustaining AI innovation hopes",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "매파적 Fed 발언 지속",
-          "name_en": "Persistent Hawkish Fed Remarks",
-          "desc": "Fed 관계자들의 금리 인상 필요성 언급, 인플레이션 우려 지속",
-          "desc_en": "Fed officials highlight need for rate hikes, inflation concerns persist",
-          "category": "fed_policy"
-        },
-        {
-          "score": 30,
-          "name": "유가 상승 및 지정학적 긴장",
-          "name_en": "Rising Oil Prices & Geopolitical Tensions",
-          "desc": "WTI 원유 86.21달러(+2.04%) 상승 및 트럼프의 '경제 전쟁' 위협 발언",
-          "desc_en": "WTI crude up 2.04% to $86.21, Trump's 'economic warfare' threats",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 밸류에이션 재평가 리스크",
-          "name_en": "AI Valuation Reassessment Risk",
-          "desc": "일부 AI 관련주 고평가 우려 지속, 투자 심리 혼조",
-          "desc_en": "Ongoing concerns about overvaluation in some AI stocks, mixed investor sentiment",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "테슬라 AI 전략 및 밸류에이션",
-          "name_en": "Tesla's AI Strategy & Valuation",
-          "desc": "Cybercab 매출 기여도 예측 및 AI 위협 관련 일론 머스크 발언, 밸류에이션 논란",
-          "desc_en": "Cybercab revenue contribution predictions and Elon Musk's comments on AI threats, valuation debate",
-          "category": "company_specific"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-21T21:46:22Z",
+  "updated_at": "2026-08-21T23:20:59Z",
   "max_entries": 10
 }
