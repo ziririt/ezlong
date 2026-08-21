@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-21-22:27",
+      "timestamp_kst": "2026-08-21(금) 22:27 KST",
+      "key_event": {
+        "name": "기술주 실적 낙관론 및 AI 모멘텀",
+        "name_en": "Tech Earnings Optimism & AI Momentum",
+        "time": "오늘 프리마켓 및 오늘 정규장",
+        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
+        "why_en": "Tech earnings expectations, improved AI investment sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "기술주 실적 낙관론 및 AI 모멘텀으로 긍정 우위 지속, 매파적 Fed 발언 우려 혼조",
+      "summary_en": "Continued positive bias due to tech earnings optimism and AI momentum, mixed with hawkish Fed remarks concerns",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "기술주 실적 낙관론",
+          "name_en": "Tech Earnings Optimism",
+          "desc": "월스트리트 주요 기술 기업에 대한 낙관적인 전망 지속, QQQ +0.48% 상승",
+          "desc_en": "Optimistic outlook for major Wall Street tech companies continues, QQQ up +0.48%",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 25,
+          "name": "AI 모멘텀 지속",
+          "name_en": "Sustained AI Momentum",
+          "desc": "클라우드 AI 솔루션 및 메타의 AI 고객화 등 AI 관련 뉴스 지속, SOXX +1.05% 상승",
+          "desc_en": "Ongoing AI-related news including cloud AI solutions and Meta's AI customization, SOXX up +1.05%",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "비트코인 강세",
+          "name_en": "Bitcoin Rally",
+          "desc": "비트코인 77,000달러 돌파하며 관련 주식 강세, 시장 전반 투자 심리 개선",
+          "desc_en": "Bitcoin breaks past $77,000, boosting related stocks and overall market sentiment",
+          "category": "other"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "매파적 Fed 발언 우려",
+          "name_en": "Hawkish Fed Remarks Concerns",
+          "desc": "Fed 내부의 매파적 의견과 금리 인상 가능성 관련 논의 지속, 시장에 부담",
+          "desc_en": "Ongoing discussions about hawkish views within the Fed and potential rate hikes, weighing on the market",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-21-18:39",
       "timestamp_kst": "2026-08-21(금) 18:39 KST",
       "key_event": {
@@ -560,76 +612,8 @@
           "category": "geopolitics"
         }
       ]
-    },
-    {
-      "id": "2026-08-20-21:50",
-      "timestamp_kst": "2026-08-20(목) 21:50 KST",
-      "key_event": {
-        "name": "매파적 Fed 발언 및 유가 상승",
-        "name_en": "Hawkish Fed Remarks & Rising Oil Prices",
-        "time": "오늘 프리마켓 및 오늘 정규장",
-        "why": "금리 인상 우려, 인플레이션 압력, 기술주 투자 심리 위축",
-        "why_en": "Interest rate hike concerns, inflationary pressure, tech investment sentiment dampening"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "매파적 Fed 발언 및 유가 상승으로 부정 우위 강화, 기술주 하락 압력",
-      "summary_en": "Negative sentiment strengthened by hawkish Fed remarks and rising oil prices, pressuring tech stocks",
-      "positive_factors": [
-        {
-          "score": 15,
-          "name": "미국-캐나다 관세 협상 기대",
-          "name_en": "US-Canada Tariff Negotiation Hopes",
-          "desc": "미국-캐나다 관세 일시 중단이 영구적인 협상으로 이어질 가능성, 무역 긴장 완화 기대",
-          "desc_en": "Potential for temporary US-Canada tariff pause to become permanent deal, easing trade tensions",
-          "category": "trade_tariff"
-        },
-        {
-          "score": 20,
-          "name": "AI 투자 및 기술 혁신 지속",
-          "name_en": "Continued AI Investment & Innovation",
-          "desc": "Meta의 Microsoft Azure AI 고객 부상 및 AI 기반 그린 수소 투자 증가, 장기 성장 기대",
-          "desc_en": "Meta becoming a major Microsoft Azure AI customer and increased AI-powered green hydrogen investments, fostering long-term growth expectations",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "매파적 Fed 발언 지속",
-          "name_en": "Continued Hawkish Fed Remarks",
-          "desc": "Fed 위원들의 인플레이션 억제를 위한 추가 금리 인상 가능성 언급, 긴축 우려 지속",
-          "desc_en": "Fed officials indicating potential for further rate hikes to curb inflation, maintaining tightening concerns",
-          "category": "fed_policy"
-        },
-        {
-          "score": 25,
-          "name": "국채금리 상승 및 할인율 압박",
-          "name_en": "Rising Treasury Yields & Discount Rate Pressure",
-          "desc": "미10년 국채금리 4.71%(+1.27%) 및 30년 국채금리 5.26%(+1.35%) 상승, 기술주 밸류에이션 부담 가중",
-          "desc_en": "US 10-year Treasury yield rising to 4.71%(+1.27%) and 30-year yield to 5.26%(+1.35%), increasing valuation pressure on tech stocks",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 10,
-          "name": "유가 상승 및 인플레이션 우려",
-          "name_en": "Rising Oil Prices & Inflation Concerns",
-          "desc": "WTI 원유 87.35 USD (+3.39%) 상승, 중동 공급 우려 및 인플레이션 압력 고조",
-          "desc_en": "WTI crude oil rising to 87.35 USD (+3.39%), heightening Middle East supply concerns and inflationary pressure",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "AI 밸류에이션 버블 우려",
-          "name_en": "AI Valuation Bubble Concerns",
-          "desc": "AI 관련 투자 기대감은 높지만, 일부에서는 AI 채권 호황이 주식 시장에 문제가 될 수 있다는 우려 제기",
-          "desc_en": "While AI investment expectations are high, some express concerns that the AI bond bonanza could pose problems for the stock market",
-          "category": "ai_tech_valuation"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-21T09:39:34Z",
+  "updated_at": "2026-08-21T13:28:20Z",
   "max_entries": 10
 }
