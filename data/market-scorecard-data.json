@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "2026-08-23-07:00",
+      "timestamp_kst": "2026-08-23(일) 07:00 KST",
+      "key_event": {
+        "name": "AI 투자 확대 지속",
+        "name_en": "Continued AI Investment Expansion",
+        "time": "직전 거래일(금요일) 마감 기준",
+        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
+        "why_en": "Tech earnings optimism, improved AI investment sentiment"
+      },
+      "positive_total": 80,
+      "negative_total": 20,
+      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
+      "summary_en": "Continued positive bias from AI investment and tech optimism, mixed macro concerns",
+      "positive_factors": [
+        {
+          "score": 80,
+          "name": "AI 관련 투자 심리 개선",
+          "name_en": "Improved AI Investment Sentiment",
+          "desc": "AI 관련 ETF 자금 유입 및 AI 성장 엔진에 대한 낙관론 지속",
+          "desc_en": "Continued optimism on AI growth engines and inflows into AI-related ETFs",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "엔비디아 서버 가격 인상",
+          "name_en": "Nvidia Server Price Hikes",
+          "desc": "메모리 비용 상승으로 엔비디아 고객사 서버 가격 15% 이상 인상 통보",
+          "desc_en": "Nvidia customers notified of over 15% server price hikes due to soaring memory costs",
+          "category": "supply_chain"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "장기 국채금리 상승",
+          "name_en": "Long-Term Treasury Yields Rise",
+          "desc": "미10년 국채금리 4.74%(+0.89%), 미30년 국채금리 5.28%(+0.74%) 상승, 성장주 압박",
+          "desc_en": "US 10-year Treasury yield rose to 4.74%(+0.89%) and 30-year to 5.28%(+0.74%), pressuring growth stocks",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-22-23:20",
       "timestamp_kst": "2026-08-22(토) 23:20 KST",
       "key_event": {
@@ -442,60 +486,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-21-18:39",
-      "timestamp_kst": "2026-08-21(금) 18:39 KST",
-      "key_event": {
-        "name": "기술주 프리마켓 강세",
-        "name_en": "Tech Stocks Strong in Premarket",
-        "time": "오늘 정규장 개장 전",
-        "why": "기술주 실적 낙관론, AI 모멘텀 지속",
-        "why_en": "Optimism on tech earnings, sustained AI momentum"
-      },
-      "positive_total": 85,
-      "negative_total": 15,
-      "summary": "기술주 실적 낙관론 및 AI 모멘텀으로 긍정 우위 지속, 국채금리 상승 압력 혼조",
-      "summary_en": "Positive sentiment continues with tech earnings optimism and AI momentum, mixed with persistent Treasury yield pressures",
-      "positive_factors": [
-        {
-          "score": 50,
-          "name": "기술주 실적 낙관론",
-          "name_en": "Optimism on Tech Earnings",
-          "desc": "Dow, S&P 500, Nasdaq 선물 상승, 기술주 강세 지속",
-          "desc_en": "Dow, S&P 500, Nasdaq futures drift higher, tech strength continues",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 35,
-          "name": "AI 모멘텀 지속",
-          "name_en": "Sustained AI Momentum",
-          "desc": "Dan Ives, Goldman Sachs 등 AI 수익화 기대감 증폭",
-          "desc_en": "Dan Ives, Goldman Sachs highlight AI monetization, boosting expectations",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "매파적 Fed 발언 우려",
-          "name_en": "Hawkish Fed Remarks Concern",
-          "desc": "Fed 9월 금리 인상 가능성 여전히 논의, 금리 인상 우려 지속",
-          "desc_en": "Fed minutes show September rate hike still on the table, rate hike concerns persist",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미 국채금리 상승 압력",
-          "name_en": "US Treasury Yields Rising",
-          "desc": "미10년 국채금리 4.70%(+0.92%) 상승, 주식 시장 압박",
-          "desc_en": "US 10-year Treasury yield rises to 4.70% (+0.92%), pressuring equity markets",
-          "category": "rates_treasury"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-22T14:21:08Z",
+  "updated_at": "2026-08-22T22:01:50Z",
   "max_entries": 10
 }
