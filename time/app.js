@@ -11697,7 +11697,17 @@ var bedsideActive = false;
     try {
       var raw = localStorage.getItem(STORE_KEY);
       var list = raw ? JSON.parse(raw) : [];
-      return Array.isArray(list) ? list : [];
+      if (!Array.isArray(list)) return [];
+      // 2026-08-23 — id 없는 옥람에 id를 채운다. id가 없으면 수정이 업데이트 대신 중복 생성된다.
+      var changed = false;
+      for (var i = 0; i < list.length; i += 1) {
+        if (list[i] && !list[i].id) {
+          list[i].id = "wk" + Math.random().toString(36).slice(2, 8) + Date.now().toString(36);
+          changed = true;
+        }
+      }
+      if (changed) { try { localStorage.setItem(STORE_KEY, JSON.stringify(list)); } catch (e) { /* 무시 */ } }
+      return list;
     } catch (error) {
       return [];
     }
@@ -12082,7 +12092,7 @@ var bedsideActive = false;
     var minute = Math.max(0, Math.min(59, parseInt(parts[1], 10) || 0));
 
     var alarms = loadAlarms();
-    var id = editingId || ("wk" + Date.now().toString(36));
+    var id = editingId || ("wk" + Math.random().toString(36).slice(2, 8) + Date.now().toString(36));
     var record = {
       id: id,
       hour: hour,
@@ -12099,6 +12109,20 @@ var bedsideActive = false;
     }
     if (at >= 0) alarms[at] = record;
     else alarms.push(record);
+
+    // 2026-08-23 — 중복 시각 검사: 같은 시:분은 하나만 남긴다. 다른 동시각 옥람은 지우고 네이티브에서도 취소.
+    var kept = [];
+    var dropped = [];
+    for (var k = 0; k < alarms.length; k += 1) {
+      var a2 = alarms[k];
+      if (a2.id !== record.id && a2.hour === record.hour && a2.minute === record.minute) {
+        dropped.push(a2.id);
+      } else {
+        kept.push(a2);
+      }
+    }
+    alarms = kept;
+    dropped.forEach(function (rid) { if (rid) postAlarmBridge({ action: "cancelWakeAlarm", id: rid }); });
 
     alarms.sort(function (a, b) { return (a.hour * 60 + a.minute) - (b.hour * 60 + b.minute); });
     saveAlarms(alarms);
