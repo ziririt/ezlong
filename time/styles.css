@@ -6272,3 +6272,91 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
   .alarm-config { animation: none; }
   .sleep-screen { animation: none; }
 }
+
+
+/* 2026-08-23 재생 내역 · 수정 아이콘 · 시각화면 취침 시작 ────────── */
+
+/* 알람 목록 행의 수정(연필) 아이콘 — 삭제 x와 나란히 */
+.alarm-row-edit {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.alarm-row-edit:active { transform: scale(0.88); }
+
+/* 시각 수정화면의 '취침 시작' — 알람 걸기 아래, 채운 강조 버튼 */
+.alarm-config-bedtime {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 16px;
+  border: 0;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #38bdf8, #0ea5e9);
+  color: #04121e;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+.alarm-config-bedtime:active { transform: scale(0.98); }
+
+/* 울림 화면 재생 내역 — '알람 해제' 아래, 담담하고 친절하게 */
+.wake-ring-log {
+  margin: 26px auto 0;
+  max-width: 360px;
+  text-align: left;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 16px;
+}
+.wake-ring-log[hidden] { display: none; }
+.wake-ring-log-head {
+  margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+}
+.wake-ring-log-cap {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+}
+.wake-ring-log-row {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  padding: 5px 0;
+}
+.wake-ring-log-time {
+  flex: 0 0 auto;
+  font-size: 13px;
+  font-weight: 700;
+  color: #7dd3fc;
+  font-variant-numeric: tabular-nums;
+}
+.wake-ring-log-title {
+  flex: 1 1 auto;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* 2026-08-23 music collapse: summary row + toggle + collapsible detail */
+.alarm-sound-summary { display: flex; align-items: center; gap: 10px; margin: 16px 0 4px; }
+.alarm-sound-summary-label { flex: 0 0 auto; font-size: 15px; font-weight: 700; color: #fff; }
+.alarm-sound-summary-title { flex: 1 1 auto; font-size: 13px; color: rgba(255,255,255,0.6); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.alarm-sound-toggle { flex: 0 0 auto; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.06); color: #7dd3fc; font-size: 13px; font-weight: 700; border-radius: 12px; padding: 7px 14px; cursor: pointer; }
+.alarm-sound-toggle:active { transform: scale(0.94); }
+.alarm-sound-detail[hidden] { display: none; }

@@ -11938,6 +11938,8 @@ var bedsideActive = false;
         selectedTrack = track;
         saveSoundFile(track.file);
         renderSoundList();
+        updateSoundSummary();
+        setSoundDetailOpen(false);
       });
       els.soundList.appendChild(row);
     });
@@ -11987,8 +11989,17 @@ var bedsideActive = false;
       del.setAttribute("aria-label", t("settings.alarm.deleteAria", null, "이 알람 지우기"));
       del.addEventListener("click", function () { removeAlarm(alarm.id); });
 
+      // 2026-08-23 — 수정 아이콘. 시각을 눌러도 되지만 모르는 사람이 많아서 명시한다.
+      var edit = document.createElement("button");
+      edit.type = "button";
+      edit.className = "alarm-row-edit";
+      edit.textContent = "\u270e";
+      edit.setAttribute("aria-label", t("settings.alarm.editAria", null, "이 알람 수정"));
+      edit.addEventListener("click", function () { beginEdit(alarm); });
+
       row.appendChild(time);
       row.appendChild(meta);
+      row.appendChild(edit);
       row.appendChild(del);
       els.list.appendChild(row);
     });
@@ -12018,9 +12029,19 @@ var bedsideActive = false;
     renderSoundTabs();
     renderSoundList();
     updateConfirmLabel();
-    try {
-      els.time.scrollIntoView({ behavior: "smooth", block: "center" });
-    } catch (error) { /* 무시 */ }
+    // 2026-08-23 — 리스트 어느 행을 눌러도 확실히 시각 설정(맨 위)으로 올린다.
+    // scrollIntoView가 3번째 행부터 먹통이던 문제를 컨테이너 직접 스크롤로 교체.
+    if (els.configScreen && !els.configScreen.hidden) {
+      try { els.configScreen.scrollTo({ top: 0, behavior: "smooth" }); }
+      catch (error) { els.configScreen.scrollTop = 0; }
+    } else if (els.time) {
+      try { els.time.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (error) { /* 무시 */ }
+    }
+    // 2026-08-23 — 수정 아이콘을 누르면 바로 시각 돌림판이 뜼게. 클릭 제스처 안에서 showPicker 호출.
+    if (els.time) {
+      try { els.time.focus({ preventScroll: true }); } catch (error) { /* 무시 */ }
+      try { if (typeof els.time.showPicker === "function") els.time.showPicker(); } catch (error) { /* 무시 */ }
+    }
   }
 
   // ── 네이티브 브릿지 ─────────────────────────────────────────────
@@ -12149,6 +12170,7 @@ var bedsideActive = false;
       alarm = nextAlarm();
       if (!alarm) return;
     }
+    clearWakeLog();
     setBedtimeArmed(true);
     document.body.classList.add("bedtime-mode");
     if (els.bar) els.bar.hidden = true;
@@ -12203,6 +12225,7 @@ var bedsideActive = false;
     if (els.configScreen) els.configScreen.hidden = true;
     setAlarmAdHidden(true);
     paintRingClock();
+    renderWakeLog();
     if (ringClockTimer) window.clearInterval(ringClockTimer);
     ringClockTimer = window.setInterval(paintRingClock, 1000);
 
@@ -12242,9 +12265,59 @@ var bedsideActive = false;
     }
   }
 
-  // 네이티브가 부른다.
-  window.__flipzenWakeRinging = function (ringing) {
-    if (ringing) showRingScreen();
+  // ── 2026-08-23 울림 화면 재생 내역 ─────────────────────────
+  // 자느라 알람을 놓친 사람이 "왜 안 울렸지?" 오해하지 않도록, 어떤 음악이
+  // 몇 시 몇 분 몇 초부터 울리고 있었는지 담담하게 보여준다. 죄책감 주지 않게.
+  var WAKELOG_KEY = "ezlong:wakeLog";
+  function loadWakeLog() {
+    try { var r = localStorage.getItem(WAKELOG_KEY); var l = r ? JSON.parse(r) : []; return Array.isArray(l) ? l : []; }
+    catch (e) { return []; }
+  }
+  function saveWakeLog(list) { try { localStorage.setItem(WAKELOG_KEY, JSON.stringify(list.slice(-12))); } catch (e) { /* 무시 */ } }
+  function clearWakeLog() { try { localStorage.removeItem(WAKELOG_KEY); } catch (e) { /* 무시 */ } if (els && els.ringLog) { els.ringLog.hidden = true; els.ringLog.innerHTML = ""; } }
+  function recordWakePlay(title) {
+    var log = loadWakeLog();
+    var now = Date.now();
+    var last = log[log.length - 1];
+    // 핸드오프 재등록 등으로 같은 곡이 3초 안에 또 들어오면 한 줄로 친다.
+    if (last && last.title === (title || "") && (now - last.t) < 3000) { return; }
+    log.push({ t: now, title: title || "" });
+    saveWakeLog(log);
+    renderWakeLog();
+  }
+  function renderWakeLog() {
+    if (!els.ringLog) return;
+    var log = loadWakeLog();
+    if (!log.length) { els.ringLog.hidden = true; els.ringLog.innerHTML = ""; return; }
+    els.ringLog.hidden = false;
+    els.ringLog.innerHTML = "";
+    var head = document.createElement("p");
+    head.className = "wake-ring-log-head";
+    head.textContent = t("settings.alarm.logHead", null, "이 음악이 당신을 깨우고 있었어요");
+    els.ringLog.appendChild(head);
+    var cap = document.createElement("p");
+    cap.className = "wake-ring-log-cap";
+    cap.textContent = t("settings.alarm.logCap", null, "재생을 시작한 시각입니다");
+    els.ringLog.appendChild(cap);
+    log.forEach(function (e) {
+      var d = new Date(e.t);
+      var row = document.createElement("div");
+      row.className = "wake-ring-log-row";
+      var tm = document.createElement("span");
+      tm.className = "wake-ring-log-time";
+      tm.textContent = two(d.getHours()) + ":" + two(d.getMinutes()) + ":" + two(d.getSeconds());
+      var ti = document.createElement("span");
+      ti.className = "wake-ring-log-title";
+      ti.textContent = e.title || t("settings.alarm.logUnknown", null, "알람 음악");
+      row.appendChild(tm);
+      row.appendChild(ti);
+      els.ringLog.appendChild(row);
+    });
+  }
+
+  // 네이티브가 부른다. 두 번째 인자로 곡 제목이 온다(구버전 대비 기본값 처리).
+  window.__flipzenWakeRinging = function (ringing, title) {
+    if (ringing) { recordWakePlay(title); showRingScreen(); }
     else hideRingScreen();
   };
 
@@ -12418,6 +12491,7 @@ var bedsideActive = false;
     renderWeekdays();
     renderSoundTabs();
     renderSoundList();
+    updateSoundSummary();
     renderList();
     restoreBedtimeUi();
   }
@@ -12467,6 +12541,21 @@ var bedsideActive = false;
     setAlarmAdHidden(false);
   }
 
+  // 2026-08-23 — 음악 설정은 평소 접어두고(기본곱 하나), 시각 설정이 주인공.
+  function updateSoundSummary() {
+    if (els.soundSummaryTitle) {
+      els.soundSummaryTitle.textContent = (selectedTrack && selectedTrack.title)
+        ? selectedTrack.title
+        : t("settings.alarm.soundDefault", null, "기본 음악");
+    }
+  }
+  function setSoundDetailOpen(open) {
+    if (els.soundDetail) els.soundDetail.hidden = !open;
+    if (els.soundToggle) els.soundToggle.textContent = open
+      ? t("settings.alarm.soundDone", null, "접기")
+      : t("settings.alarm.soundChange", null, "변경");
+  }
+
   function init() {
     els = {
       section:    document.getElementById("wakeAlarmSection"),
@@ -12496,7 +12585,13 @@ var bedsideActive = false;
       sleep:      document.getElementById("sleepScreen"),
       sleepTime:  document.getElementById("sleepScreenTime"),
       sleepEdit:  document.getElementById("sleepEditTime"),
-      sleepCancel: document.getElementById("sleepCancel")
+      sleepCancel: document.getElementById("sleepCancel"),
+      ringLog:    document.getElementById("wakeRingLog"),
+      configBedtime: document.getElementById("wakeConfigBedtime"),
+      soundSummary: document.getElementById("alarmSoundSummary"),
+      soundSummaryTitle: document.getElementById("alarmSoundSummaryTitle"),
+      soundToggle: document.getElementById("alarmSoundToggle"),
+      soundDetail: document.getElementById("alarmSoundDetail")
     };
     if (!els.section) return;
 
@@ -12520,6 +12615,11 @@ var bedsideActive = false;
       });
     }
     if (els.barExit) els.barExit.addEventListener("click", exitBedtime);
+    if (els.configBedtime) els.configBedtime.addEventListener("click", function () { onConfirm(); enterBedtime(); });
+    if (els.soundToggle) els.soundToggle.addEventListener("click", function () {
+      setSoundDetailOpen(!!(els.soundDetail && els.soundDetail.hidden));
+    });
+    updateSoundSummary();
     if (els.openConfig) els.openConfig.addEventListener("click", function () { openConfigScreen(false); });
     if (els.configBack) els.configBack.addEventListener("click", closeConfigScreen);
     if (els.sleepCancel) els.sleepCancel.addEventListener("click", exitBedtime);

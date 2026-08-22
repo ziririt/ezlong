@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-22T09:02:47.152Z
+ * 생성 시각: 2026-08-22T23:01:43.740Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -171,7 +171,13 @@
         "sleepLabel": "Sleeping",
         "sleepSub": "Wake-up time",
         "sleepEdit": "Edit wake-up time",
-        "sleepCancel": "Cancel sleep"
+        "sleepCancel": "Cancel sleep",
+        "soundChange": "Change",
+        "soundDone": "Done",
+        "soundDefault": "Default track",
+        "logHead": "This music was waking you",
+        "logCap": "When each track started playing",
+        "logUnknown": "Alarm music"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -630,7 +636,13 @@
         "sleepLabel": "Durmiendo",
         "sleepSub": "Hora de despertar",
         "sleepEdit": "Cambiar la hora",
-        "sleepCancel": "Cancelar"
+        "sleepCancel": "Cancelar",
+        "soundChange": "Cambiar",
+        "soundDone": "Listo",
+        "soundDefault": "Pista predeterminada",
+        "logHead": "Esta música te estaba despertando",
+        "logCap": "Hora en que empezó cada pista",
+        "logUnknown": "Música de alarma"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1089,7 +1101,13 @@
         "sleepLabel": "睡眠中",
         "sleepSub": "起床時刻",
         "sleepEdit": "起床時刻を変更",
-        "sleepCancel": "睡眠を取り消す"
+        "sleepCancel": "睡眠を取り消す",
+        "soundChange": "変更",
+        "soundDone": "閉じる",
+        "soundDefault": "デフォルトの曲",
+        "logHead": "この音楽が目覚ましに鳴っていました",
+        "logCap": "再生を始めた時刻",
+        "logUnknown": "アラーム音楽"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1548,7 +1566,13 @@
         "sleepLabel": "수면 중",
         "sleepSub": "기상 시간",
         "sleepEdit": "기상 시간 수정하기",
-        "sleepCancel": "수면 취소"
+        "sleepCancel": "수면 취소",
+        "soundChange": "변경",
+        "soundDone": "접기",
+        "soundDefault": "기본 음악",
+        "logHead": "이 음악이 당신을 깨우고 있었어요",
+        "logCap": "재생을 시작한 시각입니다",
+        "logUnknown": "알람 음악"
       },
       "watch": {
         "heading": "애플워치",
@@ -2007,7 +2031,13 @@
         "sleepLabel": "A dormir",
         "sleepSub": "Hora de despertar",
         "sleepEdit": "Alterar a hora",
-        "sleepCancel": "Cancelar"
+        "sleepCancel": "Cancelar",
+        "soundChange": "Alterar",
+        "soundDone": "Concluir",
+        "soundDefault": "Faixa padrão",
+        "logHead": "Esta música estava a acordar-te",
+        "logCap": "Hora em que cada faixa começou",
+        "logUnknown": "Música do alarme"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -2466,7 +2496,13 @@
         "sleepLabel": "睡眠中",
         "sleepSub": "起床时间",
         "sleepEdit": "修改起床时间",
-        "sleepCancel": "取消睡眠"
+        "sleepCancel": "取消睡眠",
+        "soundChange": "更改",
+        "soundDone": "收起",
+        "soundDefault": "默认曲目",
+        "logHead": "这首音乐一直在叫醒你",
+        "logCap": "开始播放的时刻",
+        "logUnknown": "闹钟音乐"
       },
       "watch": {
         "heading": "Apple Watch",

@@ -20,7 +20,7 @@
   <meta name="apple-mobile-web-app-title" content="Long Time">
   <meta name="theme-color" content="#0D0D0F">
   <meta name="color-scheme" content="dark">
-  <link rel="stylesheet" href="styles.css?v=20260822-alarm2depth-v8">
+  <link rel="stylesheet" href="styles.css?v=20260823-alarmv2-v9">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -365,7 +365,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.52</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.53</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -1032,11 +1032,18 @@
           <input type="checkbox" id="wakeAlarmSnooze" checked>
           <span data-i18n="settings.alarm.snooze">다시 알림 9분</span>
         </label>
-        <h4 class="alarm-subhead" data-i18n="settings.alarm.soundHeading">알람 음악</h4>
-        <div class="alarm-sound-tabs" id="wakeAlarmSoundTabs" role="group" data-i18n-aria="settings.alarm.soundTabAria" aria-label="음악 갈래"></div>
-        <div class="alarm-sound-list" id="wakeAlarmSoundList"></div>
-        <p class="settings-desc settings-desc-muted alarm-fade-guide" data-i18n="settings.alarm.fadeGuide">아주 작은 소리로 시작해 조금씩 다섯 단계로 천천히 커집니다. 놀라서 깨는 것이 아니라, 천천히 눈이 떠지도록.</p>
+        <div class="alarm-sound-summary" id="alarmSoundSummary">
+          <span class="alarm-sound-summary-label" data-i18n="settings.alarm.soundHeading">알람 음악</span>
+          <span class="alarm-sound-summary-title" id="alarmSoundSummaryTitle"></span>
+          <button type="button" class="alarm-sound-toggle" id="alarmSoundToggle" data-i18n="settings.alarm.soundChange">변경</button>
+        </div>
+        <div class="alarm-sound-detail" id="alarmSoundDetail" hidden>
+          <div class="alarm-sound-tabs" id="wakeAlarmSoundTabs" role="group" data-i18n-aria="settings.alarm.soundTabAria" aria-label="음악 갈래"></div>
+          <div class="alarm-sound-list" id="wakeAlarmSoundList"></div>
+          <p class="settings-desc settings-desc-muted alarm-fade-guide" data-i18n="settings.alarm.fadeGuide">아주 작은 소리로 시작해 조금씩 다섯 단계로 천천히 커집니다. 놀라서 깨는 것이 아니라, 천천히 눈이 떠지도록.</p>
+        </div>
         <button class="settings-save alarm-confirm" type="button" id="wakeAlarmConfirm" data-i18n="settings.alarm.setAlarm">알람 걸기</button>
+        <button class="alarm-config-bedtime" type="button" id="wakeConfigBedtime" data-i18n="settings.alarm.bedtimeStart">취침 시작</button>
         <div class="alarm-list" id="wakeAlarmList"></div>
       </div>
     </div>
@@ -1059,6 +1066,7 @@
         <p class="wake-ring-song" id="wakeRingSong"></p>
         <button type="button" class="wake-ring-stop" id="wakeRingStop" data-i18n="settings.alarm.ringStop">알람 해제</button>
         <button type="button" class="wake-ring-snooze" id="wakeRingSnooze" data-i18n="settings.alarm.ringSnooze">5분 더</button>
+        <div class="wake-ring-log" id="wakeRingLog" hidden></div>
       </div>
     </div>
 
@@ -1135,7 +1143,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260822-alarm2depth-v23"></script>
+  <script src="app.js?v=20260823-alarmv2-v24"></script>
 
   </body>
 </html>
