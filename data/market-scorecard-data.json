@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-08-22-23:20",
+      "timestamp_kst": "2026-08-22(토) 23:20 KST",
+      "key_event": {
+        "name": "AI 투자 확대 지속",
+        "name_en": "Continued AI Investment Expansion",
+        "time": "직전 거래일 및 다음 주 개장 전",
+        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
+        "why_en": "Tech earnings optimism, improved AI investment sentiment"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
+      "summary_en": "Positive sentiment maintained due to AI investment and tech optimism, mixed macro concerns",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "AI 인프라 투자 확대",
+          "name_en": "Expansion of AI Infrastructure Investment",
+          "desc": "Alphabet, Amazon 등 주요 기업의 AI 인프라 투자 4200억 달러 규모 발표",
+          "desc_en": "Major companies like Alphabet, Amazon announced $420 billion investment in AI infrastructure",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 30,
+          "name": "기술주 실적 기대감 지속",
+          "name_en": "Sustained Tech Earnings Optimism",
+          "desc": "S&P 500 보고 기업 중 12개 주요 기업 모두 EPS 예상치 상회, Y/Y 성장 달성",
+          "desc_en": "All 12 key S&P 500 reporting firms topped EPS estimates and achieved Y/Y growth",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "중동 지정학적 긴장 고조",
+          "name_en": "Escalating Middle East Geopolitical Tensions",
+          "desc": "미-이란 갈등 심화로 원유 가격 상승 압력 지속, Brent유 94달러 돌파",
+          "desc_en": "US-Iran conflict intensification continues to pressure oil prices, Brent crude tops $94",
+          "category": "geopolitics"
+        },
+        {
+          "score": 10,
+          "name": "Fed 매파적 발언 지속",
+          "name_en": "Continued Hawkish Fed Remarks",
+          "desc": "Fed 관계자들 높은 금리 유지 시사, 실업률 하락에도 매파적 기조 유지",
+          "desc_en": "Fed officials signal higher rates, hawkish stance maintained despite falling unemployment",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "장기 국채금리 상승",
+          "name_en": "Long-Term Treasury Yields Rise",
+          "desc": "미 10년 국채금리 4.74%(+0.89%), 30년 국채금리 5.28%(+0.74%) 상승하며 기술주 밸류에이션에 부담, 그러나 상승폭은 미미",
+          "desc_en": "US 10-year Treasury yield at 4.74% (+0.89%), 30-year yield at 5.28% (+0.74%), posing valuation pressure on tech stocks, but the increase is minor",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-22-21:50",
       "timestamp_kst": "2026-08-22(토) 21:50 KST",
       "key_event": {
@@ -434,73 +494,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-21-16:23",
-      "timestamp_kst": "2026-08-21(금) 16:23 KST",
-      "key_event": {
-        "name": "매파적 Fed 발언 및 유가 상승",
-        "name_en": "Hawkish Fed Remarks and Rising Oil Prices",
-        "time": "직전 정규장 마감 후",
-        "why": "금리 인상 우려, 인플레이션 압력, 기술주 투자 심리 위축",
-        "why_en": "Interest rate hike concerns, inflation pressure, dampened tech sentiment"
-      },
-      "positive_total": 55,
-      "negative_total": 45,
-      "summary": "매파적 Fed 발언과 국채금리 상승으로 부정 우위 지속, 기술주 하락 압력 심화",
-      "summary_en": "Negative sentiment persists due to hawkish Fed remarks and rising bond yields, deepening tech sector pressure",
-      "positive_factors": [
-        {
-          "score": 55,
-          "name": "일부 기술주 실적 낙관론",
-          "name_en": "Optimism for Some Tech Earnings",
-          "desc": "Dow, S&P 500, Nasdaq 선물 기술주 실적 낙관론에 상승",
-          "desc_en": "Dow, S&P 500, Nasdaq futures rise on tech earnings optimism",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 45,
-          "name": "매파적 Fed 발언 지속",
-          "name_en": "Continued Hawkish Fed Remarks",
-          "desc": "Fed 의사록 9월 금리 인상 가능성 시사, 금리 인상 우려 확대",
-          "desc_en": "Fed minutes indicate September rate hike still on table, increasing rate hike concerns",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미국 고용 지표 혼조",
-          "name_en": "Mixed US Employment Data",
-          "desc": "7월 고용 23,000개 감소했으나 실업률 하락, 금리 인상 기대와 경기 둔화 우려 혼재",
-          "desc_en": "US economy shed 23,000 jobs in July, but unemployment rate fell, leading to mixed signals on rate hike expectations and recession fears",
-          "category": "macro_data"
-        },
-        {
-          "name": "AI 밸류에이션 논란",
-          "name_en": "AI Valuation Debate",
-          "desc": "Salesforce CEO AI 낙관론에도 주가 하락, AI 관련 기업 밸류에이션 재평가 우려",
-          "desc_en": "Salesforce CEO's AI optimism contrasts with stock decline, raising concerns about AI-related company valuations",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 4.70%(+0.92%) 상승, 기술주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield rises to 4.70% (+0.92%), increasing discount rate pressure on tech stocks",
-          "category": "rates_treasury"
-        },
-        {
-          "name": "유가 상승 압력 지속",
-          "name_en": "Persistent Upward Oil Price Pressure",
-          "desc": "미-이란 긴장 고조로 유가 상승 압력 지속, 인플레이션 우려 가중",
-          "desc_en": "US-Iran tensions continue to support bullish oil bias, exacerbating inflation concerns",
-          "category": "oil_energy"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-22T12:51:08Z",
+  "updated_at": "2026-08-22T14:21:08Z",
   "max_entries": 10
 }
