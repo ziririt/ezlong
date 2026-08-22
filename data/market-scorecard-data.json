@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "2026-08-23-08:20",
+      "timestamp_kst": "2026-08-23(일) 08:20 KST",
+      "key_event": {
+        "name": "AI 투자 확대 지속",
+        "name_en": "Continued AI Investment Expansion",
+        "time": "직전 거래일 및 다음 주 개장 전망",
+        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
+        "why_en": "Tech earnings optimism, improved AI investment sentiment"
+      },
+      "positive_total": 85,
+      "negative_total": 15,
+      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
+      "summary_en": "Continued positive sentiment driven by AI investment and tech optimism, mixed with macro concerns.",
+      "positive_factors": [
+        {
+          "score": 85,
+          "name": "AI 관련 기술주 투자 확대",
+          "name_en": "Expanded Investment in AI Tech Stocks",
+          "desc": "AI 모멘텀 지속 및 기술주 실적 기대감 유지, 관련 ETF 매수세 유입",
+          "desc_en": "Sustained AI momentum and tech earnings optimism, attracting ETF inflows.",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "엔비디아 서버 가격 인상",
+          "name_en": "Nvidia Server Price Hikes",
+          "desc": "메모리 비용 급등으로 엔비디아 고객사 서버 가격 15% 이상 인상 통보, AI 투자 비용 증가 우려",
+          "desc_en": "Nvidia customers notified of server price hikes over 15% due to soaring memory costs, raising concerns about increased AI investment expenses.",
+          "category": "supply_chain"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미10년 국채금리 4.74%(+0.89%), 30년 국채금리 5.28%(+0.74%) 상승, 성장주 할인율 압박",
+          "desc_en": "US 10-year Treasury yield rose to 4.74% (+0.89%) and 30-year to 5.28% (+0.74%), pressuring growth stock valuations.",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-23-07:00",
       "timestamp_kst": "2026-08-23(일) 07:00 KST",
       "key_event": {
@@ -434,60 +478,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-21-22:27",
-      "timestamp_kst": "2026-08-21(금) 22:27 KST",
-      "key_event": {
-        "name": "기술주 실적 낙관론 및 AI 모멘텀",
-        "name_en": "Tech Earnings Optimism & AI Momentum",
-        "time": "오늘 프리마켓 및 오늘 정규장",
-        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
-        "why_en": "Tech earnings expectations, improved AI investment sentiment"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "기술주 실적 낙관론 및 AI 모멘텀으로 긍정 우위 지속, 매파적 Fed 발언 우려 혼조",
-      "summary_en": "Continued positive bias due to tech earnings optimism and AI momentum, mixed with hawkish Fed remarks concerns",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "기술주 실적 낙관론",
-          "name_en": "Tech Earnings Optimism",
-          "desc": "월스트리트 주요 기술 기업에 대한 낙관적인 전망 지속, QQQ +0.48% 상승",
-          "desc_en": "Optimistic outlook for major Wall Street tech companies continues, QQQ up +0.48%",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 25,
-          "name": "AI 모멘텀 지속",
-          "name_en": "Sustained AI Momentum",
-          "desc": "클라우드 AI 솔루션 및 메타의 AI 고객화 등 AI 관련 뉴스 지속, SOXX +1.05% 상승",
-          "desc_en": "Ongoing AI-related news including cloud AI solutions and Meta's AI customization, SOXX up +1.05%",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 20,
-          "name": "비트코인 강세",
-          "name_en": "Bitcoin Rally",
-          "desc": "비트코인 77,000달러 돌파하며 관련 주식 강세, 시장 전반 투자 심리 개선",
-          "desc_en": "Bitcoin breaks past $77,000, boosting related stocks and overall market sentiment",
-          "category": "other"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "매파적 Fed 발언 우려",
-          "name_en": "Hawkish Fed Remarks Concerns",
-          "desc": "Fed 내부의 매파적 의견과 금리 인상 가능성 관련 논의 지속, 시장에 부담",
-          "desc_en": "Ongoing discussions about hawkish views within the Fed and potential rate hikes, weighing on the market",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-22T22:01:50Z",
+  "updated_at": "2026-08-22T23:20:58Z",
   "max_entries": 10
 }
