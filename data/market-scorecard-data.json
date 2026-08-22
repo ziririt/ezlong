@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "2026-08-22-11:50",
+      "timestamp_kst": "2026-08-22(토) 11:50 KST",
+      "key_event": {
+        "name": "기술주 실적 낙관론 및 AI 모멘텀",
+        "name_en": "Tech Earnings Optimism & AI Momentum",
+        "time": "직전 정규장 및 다음 정규장 전망",
+        "why": "주요 기술 기업 실적 기대감, AI 관련 투자 심리 개선",
+        "why_en": "Strong earnings expectations for major tech firms, improved AI investment sentiment"
+      },
+      "positive_total": 80,
+      "negative_total": 20,
+      "summary": "기술주 실적 낙관론 및 AI 모멘텀으로 긍정 우위 지속, 지정학적 긴장 혼조",
+      "summary_en": "Continued positive bias due to tech earnings optimism and AI momentum, mixed with geopolitical tensions",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "기술주 실적 기대감",
+          "name_en": "Optimism for Tech Earnings",
+          "desc": "주요 기술 기업 실적 발표 임박, 시장 전반 긍정적 기대감 확산",
+          "desc_en": "Anticipation for upcoming major tech earnings, fostering positive market sentiment",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 35,
+          "name": "AI 모멘텀 지속",
+          "name_en": "Sustained AI Momentum",
+          "desc": "AI 관련 투자 심리 개선 및 기술 혁신 기대감 유지",
+          "desc_en": "Improved investment sentiment in AI and continued expectations for technological innovation",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "중동 지정학적 긴장 재부각",
+          "name_en": "Resurgence of Middle East Geopolitical Tensions",
+          "desc": "미-이란 호르무즈 해협 긴장 재점화, 유가 상승 압력",
+          "desc_en": "US-Iran tensions reignite in the Strait of Hormuz, putting upward pressure on oil prices",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-22-08:20",
       "timestamp_kst": "2026-08-22(토) 08:20 KST",
       "key_event": {
@@ -462,74 +506,8 @@
           "category": "macro_data"
         }
       ]
-    },
-    {
-      "id": "2026-08-21-08:20",
-      "timestamp_kst": "2026-08-21(금) 08:20 KST",
-      "key_event": {
-        "name": "매파적 Fed 발언 및 유가 상승",
-        "name_en": "Hawkish Fed Remarks & Rising Oil Prices",
-        "time": "포스트마켓",
-        "why": "금리 인상 우려, 인플레이션 압력, 기술주 투자 심리 위축",
-        "why_en": "Interest rate hike concerns, inflation pressure, tech investor sentiment decline"
-      },
-      "positive_total": 45,
-      "negative_total": 55,
-      "summary": "매파적 Fed 발언 및 유가 상승으로 부정 우위 지속, 기술주 하락 압력 심화",
-      "summary_en": "Negative sentiment persists due to hawkish Fed remarks and rising oil, intensifying tech sector downturn",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "NVIDIA 중국 반도체 출하 재개 기대",
-          "name_en": "Anticipation of NVIDIA Resuming China Shipments",
-          "desc": "NVIDIA의 중국향 반도체 출하 재개 가능성 보도, 반도체 섹터 일부 기대감",
-          "desc_en": "Reports of NVIDIA potentially resuming semiconductor shipments to China, generating some optimism in the semiconductor sector",
-          "category": "supply_chain"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "매파적 Fed 발언 지속",
-          "name_en": "Continued Hawkish Fed Remarks",
-          "desc": "Fed 관계자들의 고인플레이션 시 금리 인상 필요성 경고, 9월 금리 인상 가능성 잔존",
-          "desc_en": "Fed officials warn of potential rate hikes if inflation remains high, keeping September rate hike possibility alive",
-          "category": "fed_policy"
-        },
-        {
-          "score": 25,
-          "name": "유가 상승 및 인플레이션 압력",
-          "name_en": "Rising Oil Prices & Inflationary Pressure",
-          "desc": "WTI 원유 86.30(+2.14%) 상승, 트럼프의 '경제 전쟁' 위협 및 이란 관련 보복 위협으로 유가 상승 압력",
-          "desc_en": "WTI crude oil rose to 86.30(+2.14%), with Trump's 'economic warfare' threats and Iran-related retaliation pushing oil prices higher",
-          "category": "oil_energy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미국 국가 부채 40조 달러 돌파",
-          "name_en": "US National Debt Exceeds $40 Trillion",
-          "desc": "예상보다 2년 빠르게 국가 부채 40조 달러 돌파, 장기 재정 건전성 우려와 단기 시장 영향 해석 엇갈림",
-          "desc_en": "National debt surpassed $40 trillion two years ahead of schedule, with mixed interpretations on long-term fiscal health and short-term market impact",
-          "category": "macro_data"
-        },
-        {
-          "name": "AI 관련 기업 밸류에이션 재평가",
-          "name_en": "AI Company Valuation Reassessment",
-          "desc": "일부 AI 관련 기업의 밸류에이션 고평가 우려 지속, 투자 심리 혼조",
-          "desc_en": "Ongoing concerns about overvaluation in some AI-related companies, leading to mixed investor sentiment",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "미 국채금리 급등",
-          "name_en": "Sharp Rise in US Treasury Yields",
-          "desc": "미10년 국채금리 4.70%(+0.92%) 상승, 미30년 국채금리 5.24%(+0.83%) 상승으로 기술주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield rose to 4.70%(+0.92%) and 30-year yield to 5.24%(+0.83%), increasing discount rate pressure on tech stocks",
-          "category": "rates_treasury"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-21T23:20:59Z",
+  "updated_at": "2026-08-22T02:51:15Z",
   "max_entries": 10
 }
