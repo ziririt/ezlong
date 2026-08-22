@@ -20,7 +20,7 @@
   <meta name="apple-mobile-web-app-title" content="Long Time">
   <meta name="theme-color" content="#0D0D0F">
   <meta name="color-scheme" content="dark">
-  <link rel="stylesheet" href="styles.css?v=20260820-wakealarm-v7">
+  <link rel="stylesheet" href="styles.css?v=20260822-alarm2depth-v8">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -365,7 +365,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.51</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.52</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -682,31 +682,15 @@
           <h3 class="settings-subtitle" data-i18n="settings.alarm.heading">기상 알람</h3>
           <p class="settings-desc alarm-standby-hint" data-i18n="settings.alarm.standbyHint">Standby의 플립시계를 터치하면 바로 기상 알람 설정이 가능합니다.</p>
 
-          <div class="alarm-time-row">
-            <input type="time" id="wakeAlarmTime" class="alarm-time-input" value="07:00" step="60" data-i18n-aria="settings.alarm.timeAria" aria-label="기상 시각">
+          <div class="alarm-home-summary" id="alarmHomeSummary" hidden>
+            <span class="alarm-home-summary-time" id="alarmHomeSummaryTime">07:00</span>
+            <span class="alarm-home-summary-meta" id="alarmHomeSummaryMeta"></span>
           </div>
-
-          <div class="alarm-weekdays" id="wakeAlarmWeekdays" role="group" data-i18n-aria="settings.alarm.weekdayAria" aria-label="반복 요일"></div>
-          <p class="settings-desc settings-desc-muted alarm-weekday-note" id="wakeAlarmRepeatNote" data-i18n="settings.alarm.repeatOnce">요일을 고르지 않으면 한 번만 울립니다.</p>
-
-          <label class="field-option">
-            <input type="checkbox" id="wakeAlarmSnooze" checked>
-            <span data-i18n="settings.alarm.snooze">다시 알림 9분</span>
-          </label>
-
-          <h4 class="alarm-subhead" data-i18n="settings.alarm.soundHeading">알람 음악</h4>
-          <div class="alarm-sound-tabs" id="wakeAlarmSoundTabs" role="group" data-i18n-aria="settings.alarm.soundTabAria" aria-label="음악 갈래"></div>
-          <div class="alarm-sound-list" id="wakeAlarmSoundList"></div>
-          <p class="settings-desc settings-desc-muted alarm-fade-guide" data-i18n="settings.alarm.fadeGuide">아주 작은 소리로 시작해 3분에 걸쳐 서서히 커집니다. 놀라서 깨는 것이 아니라, 천천히 눈이 떠지도록.</p>
-
-          <button class="settings-save alarm-confirm" type="button" id="wakeAlarmConfirm" data-i18n="settings.alarm.setAlarm">알람 걸기</button>
-
-          <div class="alarm-list" id="wakeAlarmList"></div>
-
-          <div class="alarm-bedtime-block">
+          <div class="alarm-home-actions">
             <button class="alarm-bedtime-start" type="button" id="wakeAlarmBedtime" data-i18n="settings.alarm.bedtimeStart">취침 시작</button>
-            <p class="settings-desc settings-desc-muted" data-i18n="settings.alarm.bedtimeGuide">자기 직전에 눌러 주세요. 화면이 취침 대기 상태로 바뀌고 잠금화면에 기상 시각이 뜹니다. 이때 알람 음악이 가장 확실하게 울립니다.</p>
+            <button class="alarm-config-open" type="button" id="wakeAlarmOpenConfig" data-i18n="settings.alarm.openConfig">설정하기</button>
           </div>
+          <p class="settings-desc settings-desc-muted" data-i18n="settings.alarm.homeGuide">잠들기 직전 '취침 시작'을 누르세요. 기상 시각과 음악은 '설정하기'에서 한 번만 정해두면 됩니다.</p>
         </section>
 
         <!-- 2026-08-01 운영 지침 — 설정 맨 아래 "애플워치" 안내 섹션.
@@ -1032,12 +1016,48 @@
          딱 하나만 말해야 한다: 여기를 누르면 꺼진다. 그래서 [그만]이
          화면 폭을 거의 다 쓴다. [5분 더]는 아래 작게 — 실수로 눌리면
          안 되는 쪽이 작아야 한다. -->
+    <!-- 2026-08-22 운영 지침 — 기상 알람 2depth 설정 페이지(전체화면). 광고 배너는 이 화면이 열려 있는 동안 숨긴다. -->
+    <div class="alarm-config" id="alarmConfigScreen" hidden>
+      <div class="alarm-config-head">
+        <button type="button" class="alarm-config-back" id="alarmConfigBack" data-i18n="settings.alarm.back">‹ 뒤로</button>
+        <h2 data-i18n="settings.alarm.configTitle">기상 알람 설정</h2>
+      </div>
+      <div class="alarm-config-body">
+        <div class="alarm-time-row">
+          <input type="time" id="wakeAlarmTime" class="alarm-time-input" value="07:00" step="60" data-i18n-aria="settings.alarm.timeAria" aria-label="기상 시각">
+        </div>
+        <div class="alarm-weekdays" id="wakeAlarmWeekdays" role="group" data-i18n-aria="settings.alarm.weekdayAria" aria-label="반복 요일"></div>
+        <p class="settings-desc settings-desc-muted alarm-weekday-note" id="wakeAlarmRepeatNote" data-i18n="settings.alarm.repeatOnce">요일을 고르지 않으면 한 번만 울립니다.</p>
+        <label class="field-option">
+          <input type="checkbox" id="wakeAlarmSnooze" checked>
+          <span data-i18n="settings.alarm.snooze">다시 알림 9분</span>
+        </label>
+        <h4 class="alarm-subhead" data-i18n="settings.alarm.soundHeading">알람 음악</h4>
+        <div class="alarm-sound-tabs" id="wakeAlarmSoundTabs" role="group" data-i18n-aria="settings.alarm.soundTabAria" aria-label="음악 갈래"></div>
+        <div class="alarm-sound-list" id="wakeAlarmSoundList"></div>
+        <p class="settings-desc settings-desc-muted alarm-fade-guide" data-i18n="settings.alarm.fadeGuide">아주 작은 소리로 시작해 조금씩 다섯 단계로 천천히 커집니다. 놀라서 깨는 것이 아니라, 천천히 눈이 떠지도록.</p>
+        <button class="settings-save alarm-confirm" type="button" id="wakeAlarmConfirm" data-i18n="settings.alarm.setAlarm">알람 걸기</button>
+        <div class="alarm-list" id="wakeAlarmList"></div>
+      </div>
+    </div>
+
+    <!-- 2026-08-22 운영 지침 — 수면 중 전용 화면. 밤 배경 + '수면 중' + 기상 시각 + 수정/취소. -->
+    <div class="sleep-screen" id="sleepScreen" hidden>
+      <div class="sleep-screen-inner">
+        <p class="sleep-screen-label" data-i18n="settings.alarm.sleepLabel">수면 중</p>
+        <strong class="sleep-screen-time" id="sleepScreenTime">07:00</strong>
+        <p class="sleep-screen-sub" data-i18n="settings.alarm.sleepSub">기상 시간</p>
+        <button type="button" class="sleep-screen-edit" id="sleepEditTime" data-i18n="settings.alarm.sleepEdit">기상 시간 수정하기</button>
+        <button type="button" class="sleep-screen-cancel" id="sleepCancel" data-i18n="settings.alarm.sleepCancel">수면 취소</button>
+      </div>
+    </div>
+
     <div class="wake-ring" id="wakeRingScreen" hidden>
       <div class="wake-ring-inner">
         <p class="wake-ring-label" data-i18n="settings.alarm.ringLabel">기상 시각입니다</p>
         <strong class="wake-ring-clock" id="wakeRingClock">07:00</strong>
         <p class="wake-ring-song" id="wakeRingSong"></p>
-        <button type="button" class="wake-ring-stop" id="wakeRingStop" data-i18n="settings.alarm.ringStop">그만</button>
+        <button type="button" class="wake-ring-stop" id="wakeRingStop" data-i18n="settings.alarm.ringStop">알람 해제</button>
         <button type="button" class="wake-ring-snooze" id="wakeRingSnooze" data-i18n="settings.alarm.ringSnooze">5분 더</button>
       </div>
     </div>
@@ -1115,7 +1135,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260820-wakealarm-v22"></script>
+  <script src="app.js?v=20260822-alarm2depth-v23"></script>
 
   </body>
 </html>

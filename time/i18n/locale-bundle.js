@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-20T02:34:22.514Z
+ * 생성 시각: 2026-08-22T09:02:47.152Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -146,7 +146,7 @@
         "tabAcoustic": "Acoustic instrumental",
         "tabClassical": "Classical",
         "soundEmpty": "No tracks available.",
-        "fadeGuide": "Starts very quietly and rises over three minutes. You wake up gradually, not with a jolt.",
+        "fadeGuide": "It starts almost silent and rises gently through five steps. Not a jolt awake — an easy opening of the eyes.",
         "confirm": "Done",
         "confirmEdit": "Save changes",
         "saved": "Alarm set",
@@ -161,9 +161,17 @@
         "bedtimeExit": "End",
         "unsupported": "The wake-up alarm needs iOS 26 or later, and the latest version of the app.",
         "ringLabel": "Time to wake up",
-        "ringStop": "Stop",
+        "ringStop": "Dismiss alarm",
         "ringSnooze": "5 more minutes",
-        "setAlarm": "Set alarm"
+        "setAlarm": "Set alarm",
+        "openConfig": "Settings",
+        "homeGuide": "Tap ‘Start Sleep’ right before bed. Set the wake-up time and music just once under ‘Settings’.",
+        "back": "‹ Back",
+        "configTitle": "Wake-up alarm",
+        "sleepLabel": "Sleeping",
+        "sleepSub": "Wake-up time",
+        "sleepEdit": "Edit wake-up time",
+        "sleepCancel": "Cancel sleep"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -597,7 +605,7 @@
         "tabAcoustic": "Instrumental acústico",
         "tabClassical": "Clásica",
         "soundEmpty": "No hay canciones disponibles.",
-        "fadeGuide": "Empieza muy bajito y sube poco a poco durante tres minutos. Despiertas despacio, sin sobresaltos.",
+        "fadeGuide": "Empieza casi en silencio y sube suave en cinco pasos. No es un sobresalto, sino abrir los ojos poco a poco.",
         "confirm": "Aceptar",
         "confirmEdit": "Guardar cambios",
         "saved": "Alarma configurada",
@@ -612,9 +620,17 @@
         "bedtimeExit": "Terminar",
         "unsupported": "La alarma para despertar requiere iOS 26 o posterior y la última versión de la app.",
         "ringLabel": "Hora de despertar",
-        "ringStop": "Detener",
+        "ringStop": "Apagar alarma",
         "ringSnooze": "5 minutos más",
-        "setAlarm": "Poner alarma"
+        "setAlarm": "Poner alarma",
+        "openConfig": "Ajustes",
+        "homeGuide": "Pulsa «Iniciar descanso» justo antes de dormir. La hora y la música se fijan una sola vez en «Ajustes».",
+        "back": "‹ Atrás",
+        "configTitle": "Alarma de despertador",
+        "sleepLabel": "Durmiendo",
+        "sleepSub": "Hora de despertar",
+        "sleepEdit": "Cambiar la hora",
+        "sleepCancel": "Cancelar"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1048,7 +1064,7 @@
         "tabAcoustic": "アコースティック演奏曲",
         "tabClassical": "クラシック",
         "soundEmpty": "選べる曲がありません。",
-        "fadeGuide": "ごく小さな音から始まり、3分かけて少しずつ大きくなります。驚いて起きるのではなく、ゆっくり目が覚めるように。",
+        "fadeGuide": "ごく小さな音から始まり、五段階で少しずつ大きくなります。驚いて起きるのではなく、そっと目が開くように。",
         "confirm": "確認",
         "confirmEdit": "変更を保存",
         "saved": "アラームを設定しました",
@@ -1063,9 +1079,17 @@
         "bedtimeExit": "解除",
         "unsupported": "起床アラームはiOS 26以降で、アプリを最新版に更新してからご利用いただけます。",
         "ringLabel": "起床の時間です",
-        "ringStop": "停止",
+        "ringStop": "アラーム解除",
         "ringSnooze": "5分後にもう一度",
-        "setAlarm": "アラームを設定"
+        "setAlarm": "アラームを設定",
+        "openConfig": "設定",
+        "homeGuide": "寝る直前に「就寝開始」を押してください。起床時刻と音楽は「設定」で一度だけ決めておけば十分です。",
+        "back": "‹ 戻る",
+        "configTitle": "めざまし設定",
+        "sleepLabel": "睡眠中",
+        "sleepSub": "起床時刻",
+        "sleepEdit": "起床時刻を変更",
+        "sleepCancel": "睡眠を取り消す"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1499,7 +1523,7 @@
         "tabAcoustic": "어쿠스틱 연주곡",
         "tabClassical": "클래식",
         "soundEmpty": "고를 수 있는 곡이 없습니다.",
-        "fadeGuide": "아주 작은 소리로 시작해 3분에 걸쳐 서서히 커집니다. 놀라서 깨는 것이 아니라, 천천히 눈이 떠지도록.",
+        "fadeGuide": "아주 작은 소리로 시작해 조금씩 다섯 단계로 천천히 커집니다. 놀라서 깨는 것이 아니라, 천천히 눈이 떠지도록.",
         "confirm": "확인",
         "confirmEdit": "수정 확인",
         "saved": "알람을 걸었습니다",
@@ -1514,9 +1538,17 @@
         "bedtimeExit": "해제",
         "unsupported": "기상 알람은 iOS 26 이상에서, 그리고 앱을 새로 설치한 뒤에 쓸 수 있습니다.",
         "ringLabel": "기상 시각입니다",
-        "ringStop": "그만",
+        "ringStop": "알람 해제",
         "ringSnooze": "5분 더",
-        "setAlarm": "알람 걸기"
+        "setAlarm": "알람 걸기",
+        "openConfig": "설정하기",
+        "homeGuide": "잠들기 직전 '취침 시작'을 누르세요. 기상 시각과 음악은 '설정하기'에서 한 번만 정해두면 됩니다.",
+        "back": "‹ 뒤로",
+        "configTitle": "기상 알람 설정",
+        "sleepLabel": "수면 중",
+        "sleepSub": "기상 시간",
+        "sleepEdit": "기상 시간 수정하기",
+        "sleepCancel": "수면 취소"
       },
       "watch": {
         "heading": "애플워치",
@@ -1950,7 +1982,7 @@
         "tabAcoustic": "Instrumental acústico",
         "tabClassical": "Clássica",
         "soundEmpty": "Nenhuma faixa disponível.",
-        "fadeGuide": "Começa bem baixinho e cresce ao longo de três minutos. Você acorda aos poucos, sem susto.",
+        "fadeGuide": "Começa quase em silêncio e sobe suave em cinco passos. Não é um sobressalto — é abrir os olhos devagar.",
         "confirm": "Confirmar",
         "confirmEdit": "Salvar alterações",
         "saved": "Alarme definido",
@@ -1965,9 +1997,17 @@
         "bedtimeExit": "Encerrar",
         "unsupported": "O alarme para acordar exige iOS 26 ou posterior e a versão mais recente do app.",
         "ringLabel": "Hora de acordar",
-        "ringStop": "Parar",
+        "ringStop": "Desligar alarme",
         "ringSnooze": "Mais 5 minutos",
-        "setAlarm": "Definir alarme"
+        "setAlarm": "Definir alarme",
+        "openConfig": "Configurar",
+        "homeGuide": "Toque em «Iniciar sono» mesmo antes de dormir. A hora e a música definem-se uma só vez em «Configurar».",
+        "back": "‹ Voltar",
+        "configTitle": "Despertador",
+        "sleepLabel": "A dormir",
+        "sleepSub": "Hora de despertar",
+        "sleepEdit": "Alterar a hora",
+        "sleepCancel": "Cancelar"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -2401,7 +2441,7 @@
         "tabAcoustic": "原声演奏曲",
         "tabClassical": "古典",
         "soundEmpty": "没有可选的曲目。",
-        "fadeGuide": "从极轻的音量开始，用三分钟慢慢变大。不是被惊醒，而是慢慢睁开眼睛。",
+        "fadeGuide": "从极轻的音量开始，分五级缓缓变大。不是被惊醒，而是慢慢睁开眼睛。",
         "confirm": "确定",
         "confirmEdit": "保存修改",
         "saved": "已设置闹钟",
@@ -2416,9 +2456,17 @@
         "bedtimeExit": "结束",
         "unsupported": "起床闹钟需要 iOS 26 或更高版本，并且需将 App 更新至最新版本。",
         "ringLabel": "该起床了",
-        "ringStop": "停止",
+        "ringStop": "关闭闹钟",
         "ringSnooze": "再睡 5 分钟",
-        "setAlarm": "设置闹钟"
+        "setAlarm": "设置闹钟",
+        "openConfig": "设置",
+        "homeGuide": "睡前点按“开始就寝”。起床时间和音乐只需在“设置”里定一次。",
+        "back": "‹ 返回",
+        "configTitle": "起床闹钟设置",
+        "sleepLabel": "睡眠中",
+        "sleepSub": "起床时间",
+        "sleepEdit": "修改起床时间",
+        "sleepCancel": "取消睡眠"
       },
       "watch": {
         "heading": "Apple Watch",

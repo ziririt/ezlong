@@ -10106,7 +10106,7 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
         y: Math.round(innerY + (innerH - bannerH) / 2),
         w: Math.round(innerW),
         h: bannerH,
-        calendarOpen: !!calendarPanelOpen,
+        calendarOpen: !!calendarPanelOpen || !!window.__alarmHidesAd,
       };
       const key = [payload.x, payload.y, payload.w, payload.h, payload.calendarOpen].join(",");
       if (key === lastSent) return;
@@ -10119,6 +10119,7 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
   window.setInterval(reportAdLayout, 2000);
   window.addEventListener("resize", () => window.setTimeout(reportAdLayout, 300));
   window.setTimeout(reportAdLayout, 1500);
+  window.__flipzenReportAdLayout = reportAdLayout;
 
   // 네이티브가 배너(문장박스 크기 오버레이)를 띄우는 90초 동안 문장박스
   // 내용을 숨긴다 — 광고가 콘텐츠를 "가리는" 게 아니라 "빈 자리에 놓이는"
@@ -11993,6 +11994,7 @@ var bedsideActive = false;
     });
     updateConfirmLabel();
     updateBedtimeButton();
+    renderHomeSummary();
   }
 
   function updateConfirmLabel() {
@@ -12149,10 +12151,9 @@ var bedsideActive = false;
     }
     setBedtimeArmed(true);
     document.body.classList.add("bedtime-mode");
-    if (els.bar) {
-      els.bar.hidden = false;
-      if (els.barTime) els.barTime.textContent = two(alarm.hour) + ":" + two(alarm.minute);
-    }
+    if (els.bar) els.bar.hidden = true;
+    if (els.configScreen) els.configScreen.hidden = true;
+    showSleepScreen(alarm);
     postAlarmBridge({ action: "startBedtime", id: alarm.id, title: t("settings.alarm.bedtimeActive", null, "취침 중") });
     stopPreview();
     updateBedtimeButton();
@@ -12164,6 +12165,9 @@ var bedsideActive = false;
     setBedtimeArmed(false);
     document.body.classList.remove("bedtime-mode");
     if (els.bar) els.bar.hidden = true;
+    if (els.sleep) els.sleep.hidden = true;
+    if (els.configScreen) els.configScreen.hidden = true;
+    setAlarmAdHidden(false);
     postAlarmBridge({ action: "stopBedtime" });
     updateBedtimeButton();
   }
@@ -12172,11 +12176,8 @@ var bedsideActive = false;
     if (!bedtimeArmed()) return;
     var alarm = nextAlarm();
     if (!alarm) { setBedtimeArmed(false); return; }
-    document.body.classList.add("bedtime-mode");
-    if (els.bar) {
-      els.bar.hidden = false;
-      if (els.barTime) els.barTime.textContent = two(alarm.hour) + ":" + two(alarm.minute);
-    }
+    if (els.bar) els.bar.hidden = true;
+    showSleepScreen(alarm);
   }
 
   // ── 기상 화면 ───────────────────────────────────────────────────
@@ -12198,6 +12199,9 @@ var bedsideActive = false;
   function showRingScreen() {
     if (!els.ring) return;
     els.ring.hidden = false;
+    if (els.sleep) els.sleep.hidden = true;
+    if (els.configScreen) els.configScreen.hidden = true;
+    setAlarmAdHidden(true);
     paintRingClock();
     if (ringClockTimer) window.clearInterval(ringClockTimer);
     ringClockTimer = window.setInterval(paintRingClock, 1000);
@@ -12218,6 +12222,7 @@ var bedsideActive = false;
   function hideRingScreen() {
     if (ringClockTimer) { window.clearInterval(ringClockTimer); ringClockTimer = null; }
     if (els.ring) els.ring.hidden = true;
+    setAlarmAdHidden(false);
   }
 
   function bindRingButtons() {
@@ -12419,6 +12424,49 @@ var bedsideActive = false;
 
   // ── 배선 ────────────────────────────────────────────────────────
 
+  // ── 2026-08-22 2depth 설정 페이지 · 수면 화면 · 홈 요약 ──────
+  function setAlarmAdHidden(on) {
+    window.__alarmHidesAd = !!on;
+    try { if (typeof window.__flipzenReportAdLayout === "function") window.__flipzenReportAdLayout(); } catch (error) { /* 무시 */ }
+  }
+  function renderHomeSummary() {
+    if (!els.homeSummary) return;
+    var a = nextAlarm();
+    if (!a) { els.homeSummary.hidden = true; return; }
+    els.homeSummary.hidden = false;
+    if (els.homeSummaryTime) els.homeSummaryTime.textContent = two(a.hour) + ":" + two(a.minute);
+    if (els.homeSummaryMeta) els.homeSummaryMeta.textContent = alarmSubtitle(a);
+  }
+  function openConfigScreen(scrollToTime) {
+    if (!els.configScreen) return;
+    els.configScreen.hidden = false;
+    setAlarmAdHidden(true);
+    if (scrollToTime && els.time) {
+      window.setTimeout(function () {
+        try { els.time.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (error) { /* 무시 */ }
+      }, 80);
+    }
+  }
+  function closeConfigScreen() {
+    if (els.configScreen) els.configScreen.hidden = true;
+    stopPreview();
+    renderHomeSummary();
+    if (bedtimeArmed()) showSleepScreen();
+    else setAlarmAdHidden(false);
+  }
+  function showSleepScreen(alarm) {
+    if (!els.sleep) return;
+    var a = alarm || nextAlarm();
+    if (els.sleepTime && a) els.sleepTime.textContent = two(a.hour) + ":" + two(a.minute);
+    document.body.classList.add("bedtime-mode");
+    els.sleep.hidden = false;
+    setAlarmAdHidden(true);
+  }
+  function hideSleepScreen() {
+    if (els.sleep) els.sleep.hidden = true;
+    setAlarmAdHidden(false);
+  }
+
   function init() {
     els = {
       section:    document.getElementById("wakeAlarmSection"),
@@ -12438,7 +12486,17 @@ var bedsideActive = false;
       ringSong:   document.getElementById("wakeRingSong"),
       ringStop:   document.getElementById("wakeRingStop"),
       ringSnooze: document.getElementById("wakeRingSnooze"),
-      barExit:    document.getElementById("bedtimeExit")
+      barExit:    document.getElementById("bedtimeExit"),
+      openConfig: document.getElementById("wakeAlarmOpenConfig"),
+      configScreen: document.getElementById("alarmConfigScreen"),
+      configBack: document.getElementById("alarmConfigBack"),
+      homeSummary: document.getElementById("alarmHomeSummary"),
+      homeSummaryTime: document.getElementById("alarmHomeSummaryTime"),
+      homeSummaryMeta: document.getElementById("alarmHomeSummaryMeta"),
+      sleep:      document.getElementById("sleepScreen"),
+      sleepTime:  document.getElementById("sleepScreenTime"),
+      sleepEdit:  document.getElementById("sleepEditTime"),
+      sleepCancel: document.getElementById("sleepCancel")
     };
     if (!els.section) return;
 
@@ -12462,6 +12520,14 @@ var bedsideActive = false;
       });
     }
     if (els.barExit) els.barExit.addEventListener("click", exitBedtime);
+    if (els.openConfig) els.openConfig.addEventListener("click", function () { openConfigScreen(false); });
+    if (els.configBack) els.configBack.addEventListener("click", closeConfigScreen);
+    if (els.sleepCancel) els.sleepCancel.addEventListener("click", exitBedtime);
+    if (els.sleepEdit) els.sleepEdit.addEventListener("click", function () {
+      if (els.sleep) els.sleep.hidden = true;
+      try { if (typeof openSettings === "function") openSettings("alarm"); } catch (error) { /* 무시 */ }
+      openConfigScreen(true);
+    });
 
     // 운영 지침 — 스탠바이의 플립시계를 한 번 터치하면 기상 알람으로.
     var clock = document.querySelector(".flip-clock");

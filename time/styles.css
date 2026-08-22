@@ -6227,3 +6227,48 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
   .wake-ring { animation: none; }
   .wake-ring-stop { animation: none; }
 }
+
+
+/* 2026-08-22 기상 알람 2depth · 수면 화면 · 해제 버튼 확대 ────────── */
+
+/* 1depth 홈 — 두 버튼(취침 시작 · 설정하기)만 */
+.alarm-home-summary { display: flex; align-items: baseline; gap: 12px; margin: 16px 0 2px; }
+.alarm-home-summary[hidden] { display: none; }
+.alarm-home-summary-time { font-size: 34px; font-weight: 300; letter-spacing: -0.02em; color: #fff; font-variant-numeric: tabular-nums; }
+.alarm-home-summary-meta { font-size: 13px; color: rgba(255, 255, 255, 0.55); }
+.alarm-home-actions { display: flex; gap: 10px; margin-top: 14px; }
+.alarm-home-actions > button { flex: 1; padding: 17px 12px; border: 0; border-radius: 16px; font-size: 16px; font-weight: 700; cursor: pointer; }
+.alarm-home-actions .alarm-bedtime-start { margin-top: 0; }
+.alarm-config-open { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.16); }
+.alarm-config-open:active { transform: scale(0.96); }
+
+/* 2depth 설정 페이지(전체화면). 광고는 이 화면이 열려 있는 동안 숨는다. */
+.alarm-config { position: fixed; inset: 0; z-index: 8600; background: #0a0f18; overflow-y: auto; -webkit-overflow-scrolling: touch; animation: alarmCfgIn 260ms ease-out; }
+.alarm-config[hidden] { display: none; }
+@keyframes alarmCfgIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.alarm-config-head { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 8px; padding: 16px; background: rgba(10, 15, 24, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.alarm-config-back { border: 0; background: transparent; color: #7dd3fc; font-size: 17px; font-weight: 600; cursor: pointer; padding: 6px 8px; }
+.alarm-config-back:active { opacity: 0.6; }
+.alarm-config-head h2 { margin: 0; font-size: 17px; font-weight: 700; color: #fff; }
+.alarm-config-body { padding: 8px 18px 64px; max-width: 520px; margin: 0 auto; }
+
+/* 수면 중 전용 화면 — 밤 배경 + '수면 중' + 기상 시각 + 수정/취소 */
+.sleep-screen { position: fixed; inset: 0; z-index: 8700; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, rgba(3, 6, 14, 0.6) 0%, rgba(3, 6, 14, 0.82) 100%); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); animation: sleepScreenIn 500ms ease-out; }
+.sleep-screen[hidden] { display: none; }
+@keyframes sleepScreenIn { from { opacity: 0; } to { opacity: 1; } }
+.sleep-screen-inner { text-align: center; padding: 0 20px; width: min(92vw, 420px); }
+.sleep-screen-label { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: 0.22em; color: rgba(255, 255, 255, 0.62); }
+.sleep-screen-time { display: block; margin: 18px 0 6px; font-size: clamp(72px, 26vw, 120px); font-weight: 200; line-height: 1; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
+.sleep-screen-sub { margin: 0 0 46px; font-size: 14px; color: rgba(255, 255, 255, 0.5); }
+.sleep-screen-edit { display: block; width: 100%; padding: 18px 16px; border: 0; border-radius: 18px; background: rgba(255, 255, 255, 0.12); color: #fff; font-size: 17px; font-weight: 700; cursor: pointer; }
+.sleep-screen-edit:active { transform: scale(0.98); }
+.sleep-screen-cancel { display: block; width: 100%; margin-top: 12px; padding: 15px 16px; border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 16px; background: transparent; color: rgba(255, 255, 255, 0.66); font-size: 15px; font-weight: 600; cursor: pointer; }
+.sleep-screen-cancel:active { background: rgba(255, 255, 255, 0.06); }
+
+/* 알람 해제 버튼 — 눈에 띄게 크게 (기존 .wake-ring-stop 위에 덮어쓴다) */
+.wake-ring-stop { margin-top: 40px; padding: 30px 16px; border-radius: 24px; font-size: 27px; min-height: 88px; box-shadow: 0 14px 44px rgba(56, 189, 248, 0.42); }
+
+@media (prefers-reduced-motion: reduce) {
+  .alarm-config { animation: none; }
+  .sleep-screen { animation: none; }
+}
