@@ -12199,6 +12199,10 @@ var bedsideActive = false;
       alarm = nextAlarm();
       if (!alarm) return;
     }
+    // 2026-08-23 — 취침 시작 시 항상 네이티브 알람을 다시 건다.
+    // (수정 없이 취침만 눌러도 예약이 확실히 서도록. 안드로이드 MIUI에서
+    //  예약이 누락돼 아예 안 울리던 경로를 원천 차단한다.)
+    try { pushAlarmToNative(alarm); } catch (e) { /* 무시 */ }
     clearWakeLog();
     setBedtimeArmed(true);
     document.body.classList.add("bedtime-mode");
@@ -12213,6 +12217,8 @@ var bedsideActive = false;
   }
 
   function exitBedtime() {
+    webWakeArmed = false;
+    stopWebWakeAudio();
     setBedtimeArmed(false);
     document.body.classList.remove("bedtime-mode");
     if (els.bar) els.bar.hidden = true;
@@ -12274,6 +12280,7 @@ var bedsideActive = false;
   function hideRingScreen() {
     if (ringClockTimer) { window.clearInterval(ringClockTimer); ringClockTimer = null; }
     if (els.ring) els.ring.hidden = true;
+    stopWebWakeAudio();
     setAlarmAdHidden(false);
   }
 
@@ -12301,6 +12308,7 @@ var bedsideActive = false;
   function loadWakeSession() { try { var r = localStorage.getItem(WAKESESSION_KEY); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
   function saveWakeSession(sess) { try { localStorage.setItem(WAKESESSION_KEY, JSON.stringify(sess)); } catch (e) { /* 무시 */ } }
   function clearWakeLog() {
+    webWakeArmed = false;
     try { localStorage.removeItem(WAKESESSION_KEY); } catch (e) { /* 무시 */ }
     [els && els.ringLog, els && els.sleepLog].forEach(function (cc) { if (cc) { cc.hidden = true; cc.innerHTML = ""; } });
   }
@@ -12596,10 +12604,77 @@ var bedsideActive = false;
     else setAlarmAdHidden(false);
   }
   var sleepClockTimer = null;
+  // ── 2026-08-23 포그라운드 폴백 ──────────────────────────────────
+  // 네이티브 알람이 안 뜬 안드로이드(및 만일의 경우)에서도, 앱이 켜져 있으면
+  // 웹이 스스로 기상 시각을 감지해 깨운다. 네이티브가 먼저 울리면(링 화면이
+  // 이미 떠 있으면) 절대 끼어들지 않는다 — 이중 재생을 막는다.
+  var webWakeArmed = false;
+  var webWakeAudio = null;
+  var webWakeRampTimer = null;
+  var webWakeStartedAt = 0;
+  function stopWebWakeAudio() {
+    if (webWakeRampTimer) { window.clearInterval(webWakeRampTimer); webWakeRampTimer = null; }
+    if (webWakeAudio) { try { webWakeAudio.pause(); } catch (e) { /* 무시 */ } webWakeAudio = null; }
+  }
+  function ringing() { return !!(els && els.ring && !els.ring.hidden); }
+  function webFallbackRing(alarm) {
+    if (ringing()) return;               // 네이티브가 먼저 울렸다 — 물러난다
+    var track = (typeof findTrackByFile === "function") ? findTrackByFile(alarm && alarm.trackFile) : null;
+    var url = "";
+    if (track && typeof resolveTrackAbsoluteUrl === "function") {
+      try { url = resolveTrackAbsoluteUrl(track); } catch (e) { url = ""; }
+    }
+    var title = (track && track.title) || (alarm && alarm.soundTitle) || "";
+    // 네이티브 경로와 똑같이 세션을 세우고 링 화면·히스토리를 띄운다.
+    saveWakeSession({ start: Date.now(), title: title, stop: null });
+    renderWakeLog();
+    startWakeLogTimer();
+    showRingScreen();
+    if (!url) return;
+    try {
+      stopWebWakeAudio();
+      webWakeAudio = new Audio(url);
+      webWakeAudio.loop = true;
+      webWakeAudio.volume = 0.06;       // 아주 작게 시작
+      webWakeStartedAt = Date.now();
+      webWakeAudio.play().catch(function () { /* 자동재생 차단 시 조용히 */ });
+      // 정각부터 서서히 — iOS 네이티브 곡선과 같은 결.
+      webWakeRampTimer = window.setInterval(function () {
+        if (!webWakeAudio) return;
+        var el = (Date.now() - webWakeStartedAt) / 1000;
+        var v;
+        if (el < 36) v = 0.06; else if (el < 72) v = 0.12;
+        else if (el < 108) v = 0.20; else if (el < 144) v = 0.32;
+        else if (el < 180) v = 0.50; else if (el < 240) v = 0.75; else v = 1.0;
+        try { webWakeAudio.volume = Math.max(0, Math.min(1, v)); } catch (e) { /* 무시 */ }
+        if (el > 690) stopWebWakeAudio();  // 11분 30초에 자동 종료
+      }, 500);
+    } catch (e) { /* 무시 */ }
+  }
+  function checkWebWake(now) {
+    if (!bedtimeArmed()) return;
+    if (ringing()) return;               // 이미 울리는 중
+    if (webWakeArmed) return;            // 이미 예약됨
+    var alarm = nextAlarm();
+    if (!alarm) return;
+    // 오늘의 기상 시각을 초 단위로 만들어, 방금 지났는지 본다.
+    var target = new Date(now);
+    target.setHours(alarm.hour, alarm.minute, 0, 0);
+    var passed = (now.getTime() - target.getTime()) / 1000; // 양수면 지났음
+    if (passed >= 0 && passed < 120) {
+      webWakeArmed = true;
+      // 네이티브에 4초 양보. 그새 네이티브가 울리면 물러난다.
+      window.setTimeout(function () {
+        if (ringing()) return;
+        webFallbackRing(alarm);
+      }, 4000);
+    }
+  }
   function updateSleepNow() {
     if (!els.sleepNow) return;
     var d = new Date();
     els.sleepNow.textContent = two(d.getHours()) + ":" + two(d.getMinutes());
+    try { checkWebWake(d); } catch (e) { /* 무시 */ }
   }
   function startSleepClock() { stopSleepClock(); try { sleepClockTimer = window.setInterval(updateSleepNow, 1000); } catch (e) { /* 무시 */ } }
   function stopSleepClock() { if (sleepClockTimer) { window.clearInterval(sleepClockTimer); sleepClockTimer = null; } }
