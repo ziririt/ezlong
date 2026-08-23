@@ -11979,6 +11979,8 @@ var bedsideActive = false;
     alarms.forEach(function (alarm) {
       var row = document.createElement("div");
       row.className = "alarm-row";
+      row.style.cursor = "pointer";
+      row.addEventListener("click", function () { beginEdit(alarm); });
 
       var time = document.createElement("button");
       time.type = "button";
@@ -11986,7 +11988,7 @@ var bedsideActive = false;
       time.textContent = two(alarm.hour) + ":" + two(alarm.minute);
       time.setAttribute("aria-label", t("settings.alarm.editAria", null, "이 알람 수정"));
       // 운영 지침 — 걸어 둔 알람의 시각을 누르면 위 입력창으로 올라와 수정된다.
-      time.addEventListener("click", function () { beginEdit(alarm); });
+      time.addEventListener("click", function (e) { e.stopPropagation(); beginEdit(alarm); });
 
       var meta = document.createElement("span");
       meta.className = "alarm-row-meta";
@@ -11997,7 +11999,7 @@ var bedsideActive = false;
       del.className = "alarm-row-delete";
       del.textContent = "✕";
       del.setAttribute("aria-label", t("settings.alarm.deleteAria", null, "이 알람 지우기"));
-      del.addEventListener("click", function () { removeAlarm(alarm.id); });
+      del.addEventListener("click", function (e) { e.stopPropagation(); removeAlarm(alarm.id); });
 
       // 2026-08-23 — 수정 아이콘. 시각을 눌러도 되지만 모르는 사람이 많아서 명시한다.
       var edit = document.createElement("button");
@@ -12005,7 +12007,7 @@ var bedsideActive = false;
       edit.className = "alarm-row-edit";
       edit.textContent = "\u270e";
       edit.setAttribute("aria-label", t("settings.alarm.editAria", null, "이 알람 수정"));
-      edit.addEventListener("click", function () { beginEdit(alarm); });
+      edit.addEventListener("click", function (e) { e.stopPropagation(); beginEdit(alarm); });
 
       row.appendChild(time);
       row.appendChild(meta);
@@ -12187,6 +12189,9 @@ var bedsideActive = false;
   }
 
   function enterBedtime() {
+    // 시각을 편집 중(설정 화면이 열려 있음)이면 먼저 저장한다 —
+    // '취침 시작'만 눌러도 '수정 완료'가 눌린 것처럼 동작한다.
+    if (els.configScreen && !els.configScreen.hidden) { onConfirm(); }
     var alarm = nextAlarm();
     if (!alarm) {
       // 알람이 하나도 없으면 지금 화면의 시각으로 먼저 하나 걸어 준다.
@@ -12590,15 +12595,26 @@ var bedsideActive = false;
     if (bedtimeArmed()) showSleepScreen();
     else setAlarmAdHidden(false);
   }
+  var sleepClockTimer = null;
+  function updateSleepNow() {
+    if (!els.sleepNow) return;
+    var d = new Date();
+    els.sleepNow.textContent = two(d.getHours()) + ":" + two(d.getMinutes());
+  }
+  function startSleepClock() { stopSleepClock(); try { sleepClockTimer = window.setInterval(updateSleepNow, 1000); } catch (e) { /* 무시 */ } }
+  function stopSleepClock() { if (sleepClockTimer) { window.clearInterval(sleepClockTimer); sleepClockTimer = null; } }
   function showSleepScreen(alarm) {
     if (!els.sleep) return;
     var a = alarm || nextAlarm();
     if (els.sleepTime && a) els.sleepTime.textContent = two(a.hour) + ":" + two(a.minute);
+    updateSleepNow();
+    startSleepClock();
     document.body.classList.add("bedtime-mode");
     els.sleep.hidden = false;
     setAlarmAdHidden(true);
   }
   function hideSleepScreen() {
+    stopSleepClock();
     if (els.sleep) els.sleep.hidden = true;
     setAlarmAdHidden(false);
   }
@@ -12646,6 +12662,7 @@ var bedsideActive = false;
       homeSummaryMeta: document.getElementById("alarmHomeSummaryMeta"),
       sleep:      document.getElementById("sleepScreen"),
       sleepTime:  document.getElementById("sleepScreenTime"),
+      sleepNow:   document.getElementById("sleepScreenNow"),
       sleepEdit:  document.getElementById("sleepEditTime"),
       sleepCancel: document.getElementById("sleepCancel"),
       ringLog:    document.getElementById("wakeRingLog"),
@@ -12678,7 +12695,7 @@ var bedsideActive = false;
       });
     }
     if (els.barExit) els.barExit.addEventListener("click", exitBedtime);
-    if (els.configBedtime) els.configBedtime.addEventListener("click", function () { onConfirm(); enterBedtime(); });
+    if (els.configBedtime) els.configBedtime.addEventListener("click", function () { enterBedtime(); });
     if (els.soundToggle) els.soundToggle.addEventListener("click", function () {
       setSoundDetailOpen(!!(els.soundDetail && els.soundDetail.hidden));
     });

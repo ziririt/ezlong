@@ -20,7 +20,7 @@
   <meta name="apple-mobile-web-app-title" content="Long Time">
   <meta name="theme-color" content="#0D0D0F">
   <meta name="color-scheme" content="dark">
-  <link rel="stylesheet" href="styles.css?v=20260823-alarmv2-v12">
+  <link rel="stylesheet" href="styles.css?v=20260823-alarmv2-v13">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -365,7 +365,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.56</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.57</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -1023,14 +1023,14 @@
         <h2 data-i18n="settings.alarm.configTitle">기상 알람 설정</h2>
       </div>
       <div class="alarm-config-body">
+        <div class="alarm-weekdays" id="wakeAlarmWeekdays" role="group" data-i18n-aria="settings.alarm.weekdayAria" aria-label="반복 요일"></div>
+        <p class="settings-desc settings-desc-muted alarm-weekday-note" id="wakeAlarmRepeatNote" data-i18n="settings.alarm.repeatOnce">요일을 고르지 않으면 한 번만 울립니다.</p>
         <div class="alarm-time-row">
           <input type="time" id="wakeAlarmTime" class="alarm-time-input" value="07:00" step="60" data-i18n-aria="settings.alarm.timeAria" aria-label="기상 시각">
         </div>
-        <div class="alarm-weekdays" id="wakeAlarmWeekdays" role="group" data-i18n-aria="settings.alarm.weekdayAria" aria-label="반복 요일"></div>
-        <p class="settings-desc settings-desc-muted alarm-weekday-note" id="wakeAlarmRepeatNote" data-i18n="settings.alarm.repeatOnce">요일을 고르지 않으면 한 번만 울립니다.</p>
         <label class="field-option">
           <input type="checkbox" id="wakeAlarmSnooze" checked>
-          <span data-i18n="settings.alarm.snooze">다시 알림 9분</span>
+          <span data-i18n="settings.alarm.snooze">다시 알림 10분</span>
         </label>
         <div class="alarm-sound-summary" id="alarmSoundSummary">
           <span class="alarm-sound-summary-label" data-i18n="settings.alarm.soundHeading">알람 음악</span>
@@ -1052,8 +1052,10 @@
     <div class="sleep-screen" id="sleepScreen" hidden>
       <div class="sleep-screen-inner">
         <p class="sleep-screen-label" data-i18n="settings.alarm.sleepLabel">수면 중</p>
+        <p class="sleep-screen-now-label" data-i18n="settings.alarm.sleepNow">현재 시각</p>
+        <strong class="sleep-screen-now" id="sleepScreenNow">00:00</strong>
+        <p class="sleep-screen-wake-label" data-i18n="settings.alarm.sleepSub">기상 시각</p>
         <strong class="sleep-screen-time" id="sleepScreenTime">07:00</strong>
-        <p class="sleep-screen-sub" data-i18n="settings.alarm.sleepSub">기상 시간</p>
         <button type="button" class="sleep-screen-edit" id="sleepEditTime" data-i18n="settings.alarm.sleepEdit">기상 시간 수정하기</button>
         <button type="button" class="sleep-screen-cancel" id="sleepCancel" data-i18n="settings.alarm.sleepCancel">수면 취소</button>
         <div class="wake-ring-log wake-sleep-log" id="wakeSleepLog" hidden></div>
@@ -1144,7 +1146,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260823-alarmv2-v26"></script>
+  <script src="app.js?v=20260823-alarmv2-v27"></script>
 
   </body>
 </html>

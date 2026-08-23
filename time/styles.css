@@ -6368,3 +6368,8 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
 #wakeAlarmSection { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 24px); }
 #musicSettingsSection { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 24px); }
 .wake-sleep-log { margin-top: 20px; width: 100%; max-height: 34vh; overflow-y: auto; }
+
+/* 2026-08-23 운영 지침 — 수면 화면: 현재 시각(위·작게)과 기상 시각(아래·크게) 구분 */
+.sleep-screen-now-label { margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; color: rgba(255,255,255,0.4); }
+.sleep-screen-now { display: block; margin: 0 0 30px; font-size: 34px; font-weight: 300; line-height: 1; color: rgba(255,255,255,0.6); font-variant-numeric: tabular-nums; }
+.sleep-screen-wake-label { margin: 0 0 6px; font-size: 15px; font-weight: 800; letter-spacing: 0.02em; color: #7dd3fc; }
