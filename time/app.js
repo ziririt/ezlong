@@ -13300,6 +13300,25 @@ var bedsideActive = false;
     }
 
     if (els.confirm) els.confirm.addEventListener("click", onConfirm);
+    // 2026-08-24 운영자: 기상 시간을 바꾸면 즉시 반영되게 — 편집 중(기존 알람)일 때는
+    // 시각 돌림판을 돌려 값이 바뀌는 순간 자동 저장한다. '수정 확인'을 따로 누르지
+    // 않아도 되고, iOS에서 확정 단계가 걸려 옛 시각이 남던 문제를 피한다.
+    // 새 알람(editingId 없음)은 종전대로 '알람 걸기' 버튼으로 확정한다.
+    if (els.time) {
+      els.time.addEventListener("change", function () {
+        if (!editingId) return;              // 편집 중일 때만
+        var keepId = editingId;
+        try { onConfirm(); } catch (e) { /* 무시 */ }
+        // 충돌 없이 저장되면 onConfirm이 editingId를 비운다. 같은 알람을 계속
+        // 조정할 수 있도록, 그 알람이 남아 있으면 다시 편집 상태로 잡아 준다.
+        try {
+          if (!editingId && loadAlarms().some(function (a) { return a.id === keepId; })) {
+            editingId = keepId;
+            updateConfirmLabel();
+          }
+        } catch (e) { /* 무시 */ }
+      });
+    }
     if (els.bedtime) {
       els.bedtime.addEventListener("click", function () {
         if (bedtimeArmed()) exitBedtime();
