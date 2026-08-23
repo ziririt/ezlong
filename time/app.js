@@ -12135,9 +12135,17 @@ var bedsideActive = false;
     // 2026-08-23 — 중복 시각 검사: 같은 시:분은 하나만 남긴다. 다른 동시각 옥람은 지우고 네이티브에서도 취소.
     var kept = [];
     var dropped = [];
+    // 2026-08-23 운영자 문의: 요일까지 본다. 같은 시:분이라도 요일이 안 겹치면
+    // (예: 평일 07:00 vs 주말 07:00) 실제로 동시에 울리지 않으므로 충돌이 아니다.
+    // 빈 요일 배열은 '매일'이라 어떤 요일과도 겹친다.
+    var recDays = record.weekdays || [];
     for (var k = 0; k < alarms.length; k += 1) {
       var a2 = alarms[k];
-      if (a2.id !== record.id && a2.hour === record.hour && a2.minute === record.minute) {
+      var a2Days = a2.weekdays || [];
+      var daysOverlap = (!recDays.length || !a2Days.length)
+        ? true
+        : recDays.some(function (d) { return a2Days.indexOf(d) !== -1; });
+      if (a2.id !== record.id && a2.hour === record.hour && a2.minute === record.minute && daysOverlap) {
         dropped.push(a2.id);
       } else {
         kept.push(a2);
