@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-23-21:50",
+      "timestamp_kst": "2026-08-23(일) 21:50 KST",
+      "key_event": {
+        "name": "AI 투자 확대 지속",
+        "name_en": "Continued AI Investment Expansion",
+        "time": "직전 거래일 마감 및 다음 주 개장 전",
+        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
+        "why_en": "Tech earnings expectations, improved AI investment sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
+      "summary_en": "Positive sentiment sustained by AI investment and tech optimism, mixed macro concerns",
+      "positive_factors": [
+        {
+          "score": 75,
+          "name": "AI 관련 기술주 실적 기대감",
+          "name_en": "Optimism for AI-related tech earnings",
+          "desc": "Nvidia의 실적 발표를 앞두고 AI 투자 수요 지속 전망, Micron 등 관련 기업 기대감",
+          "desc_en": "Anticipation of continued AI investment demand ahead of Nvidia earnings, optimism for related companies like Micron",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "잭슨홀 미팅 경계 심리",
+          "name_en": "Jackson Hole Meeting caution",
+          "desc": "잭슨홀 미팅을 앞두고 Fed 워시 의장의 발언에 대한 불확실성 증대",
+          "desc_en": "Increased uncertainty surrounding Fed Chair Warsh's speech ahead of the Jackson Hole meeting",
+          "category": "fed_policy"
+        },
+        {
+          "score": 10,
+          "name": "이란-미국 지정학적 긴장",
+          "name_en": "Iran-US geopolitical tensions",
+          "desc": "호르무즈 해협 관련 이란-미국 긴장 고조, 원유 시장 및 글로벌 증시 영향 우려",
+          "desc_en": "Escalating Iran-US tensions over the Strait of Hormuz, raising concerns for oil markets and global stocks",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury yield increase",
+          "desc": "미10년 국채금리 4.74%(+0.89%), 미30년 국채금리 5.28%(+0.74%) 기록. 인플레이션 우려와 함께 성장주 할인율 압박 요인",
+          "desc_en": "US 10-year Treasury yield at 4.74% (+0.89%) and 30-year at 5.28% (+0.74%). This poses a discount rate pressure on growth stocks amid inflation concerns",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-23-18:20",
       "timestamp_kst": "2026-08-23(일) 18:20 KST",
       "key_event": {
@@ -457,44 +509,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-22-06:46",
-      "timestamp_kst": "2026-08-22(토) 06:46 KST",
-      "key_event": {
-        "name": "기술주 실적 낙관론 및 AI 모멘텀",
-        "name_en": "Tech Earnings Optimism & AI Momentum",
-        "time": "향후 12시간",
-        "why": "주요 기술 기업 실적 기대감, AI 관련 투자 심리 개선",
-        "why_en": "Major tech earnings expectations, improved AI investment sentiment"
-      },
-      "positive_total": 85,
-      "negative_total": 15,
-      "summary": "기술주 실적 낙관론 및 AI 모멘텀으로 3일 연속 긍정 우위 유지",
-      "summary_en": "Positive sentiment maintained for 3 consecutive days due to tech earnings optimism and AI momentum",
-      "positive_factors": [
-        {
-          "score": 85,
-          "name": "AI 기술 투자 및 확장 기대",
-          "name_en": "AI Tech Investment & Expansion Expectation",
-          "desc": "Anthropic의 전 구글 칩 책임자 영입 및 하드웨어 진출, IPO 기대감",
-          "desc_en": "Anthropic hires ex-Google chip chief, pushes into hardware, IPO anticipation",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "애플 AI 전략 및 리더십 의문",
-          "name_en": "Apple AI Strategy & Leadership Doubts",
-          "desc": "Jefferies의 애플 매도 의견 및 아이폰 기능 취소 소식, AI 전략 불확실성",
-          "desc_en": "Jefferies 'Sell' rating on Apple, iPhone feature cancellation news, AI strategy uncertainty",
-          "category": "company_specific"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-23T09:21:13Z",
+  "updated_at": "2026-08-23T12:51:10Z",
   "max_entries": 10
 }
