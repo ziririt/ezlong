@@ -11696,7 +11696,7 @@ var bedsideActive = false;
   var FADE_SECONDS = 180;
 
   // 30초짜리로 사람을 깨울 수는 없다. 1분 30초 이상만 알람 후보로 둔다.
-  var MIN_TRACK_SECONDS = 90;
+  var MIN_TRACK_SECONDS = 80;
 
   // 미리듣기는 곡을 다 들려줄 자리가 아니다 — 결을 확인할 만큼만.
   var PREVIEW_SECONDS = 18;
@@ -11776,14 +11776,15 @@ var bedsideActive = false;
     var key = typeof trackCategoryKey === "function" ? trackCategoryKey(track) : "";
     if (key === "piano chello") return "classical";
     if (key === ORIGINAL_CATEGORY_KEY || key === "My Workspace") return "acoustic";
-    return null;   // 보컬·록·명상 등은 기상 알람 후보가 아니다
+    if (key === "vocal- girls rock") return "rock";   // 2026-08-23 운영자: 꼭 깨야 할 때 시끄럽게
+    return null;   // 보컬·명상 등은 기상 알람 후보가 아니다
   }
 
   var _tracksCache = null;
 
   function alarmTracks() {
     if (_tracksCache) return _tracksCache;
-    var out = { acoustic: [], classical: [] };
+    var out = { acoustic: [], classical: [], rock: [] };
     if (Array.isArray(window.musicPlaylist || (typeof musicPlaylist !== "undefined" ? musicPlaylist : null))) {
       var source = window.musicPlaylist || musicPlaylist;
       for (var i = 0; i < source.length; i += 1) {
@@ -11799,6 +11800,7 @@ var bedsideActive = false;
     }
     out.acoustic.sort(byTitle);
     out.classical.sort(byTitle);
+    out.rock.sort(byTitle);
     _tracksCache = out;
     return out;
   }
@@ -11806,7 +11808,7 @@ var bedsideActive = false;
   function findTrackByFile(file) {
     if (!file) return null;
     var all = alarmTracks();
-    var pools = [all.acoustic, all.classical];
+    var pools = [all.acoustic, all.classical, all.rock];
     for (var p = 0; p < pools.length; p += 1) {
       for (var i = 0; i < pools[p].length; i += 1) {
         if (pools[p][i].file === file) return pools[p][i];
@@ -11904,7 +11906,8 @@ var bedsideActive = false;
     if (!els.soundTabs) return;
     var tabs = [
       { key: "acoustic",  label: t("settings.alarm.tabAcoustic",  null, "어쿠스틱 연주곡") },
-      { key: "classical", label: t("settings.alarm.tabClassical", null, "클래식") }
+      { key: "classical", label: t("settings.alarm.tabClassical", null, "클래식") },
+      { key: "rock",      label: t("settings.alarm.tabRock",      null, "ROCK") }
     ];
     els.soundTabs.innerHTML = "";
     tabs.forEach(function (tab) {
@@ -13018,8 +13021,9 @@ var bedsideActive = false;
     // 아무 것도 고르지 않았으면 어쿠스틱의 첫 곡을 미리 골라 둔다 — 알람음이
     // 비어 있는 상태로 알람이 걸리는 일이 없게.
     if (!selectedTrack) {
-      var first = (alarmTracks().acoustic || [])[0];
-      if (first) selectedTrack = first;
+      // 2026-08-23 운영자: 기본곡 = A Soft Place to Fall (Acoustic)
+      selectedTrack = findTrackByFile("My Workspace/A Soft Place to Fall (Acoustic).m4a")
+        || (alarmTracks().acoustic || [])[0] || null;
     }
 
     if (els.confirm) els.confirm.addEventListener("click", onConfirm);
