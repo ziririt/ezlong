@@ -12500,7 +12500,16 @@ var bedsideActive = false;
       if (s3 && !s3.stop) { s3.stop = Date.now(); saveWakeSession(s3); }
       stopWakeLogTimer();
       renderWakeLog();
-      hideRingScreen();
+      // 2026-08-23 운영 지침: 소리가 멈춰도(사용자 해제/자동 종료) 화면은
+      // 닫지 않는다. 울림 화면이 떠 있으면 '해제됨' 상태로 두어 수면시간·
+      // 깨우기 내역·음악 변경하기를 계속 볼 수 있게 한다(iOS도 Android처럼).
+      if (els && els.ring && !els.ring.hidden) {
+        try { stopWebWakeAudio(); } catch (e) { /* 무시 */ }
+        try { renderSleepDuration(); } catch (e) { /* 무시 */ }
+        setRingDismissed(true);
+      } else {
+        hideRingScreen();
+      }
     }
   };
 
