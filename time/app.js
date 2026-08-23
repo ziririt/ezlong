@@ -12973,7 +12973,15 @@ var bedsideActive = false;
     if (els.sleepEdit) els.sleepEdit.addEventListener("click", function () {
       if (els.sleep) els.sleep.hidden = true;
       try { if (typeof openSettings === "function") openSettings("alarm"); } catch (error) { /* 무시 */ }
-      openConfigScreen(true);
+      // 2026-08-23 운영자: '기상시간 수정하기'는 지금 걸린 알람을 '수정'해야 한다.
+      // 예전엔 openConfigScreen(true)만 불러 editingId가 없던 탓에, 시간을 바꾸면
+      // 기존 알람은 그대로 두고 새 알람이 하나 더 생겨 "반영 안 됨"으로 보였다.
+      // 이제 현재 울릴 알람을 beginEdit로 폼에 싣고(editingId 설정) 돌림판을 연다.
+      openConfigScreen(false);
+      if (els.configScreen && els.configScreen.hidden) return; // 프리미엄 게이트 등으로 못 열면 중단
+      var editAlarm = nextAlarm();
+      if (editAlarm) beginEdit(editAlarm);
+      else openConfigScreen(true);
     });
 
     // 운영 지침 — 스탠바이의 플립시계를 한 번 터치하면 기상 알람으로.
