@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-08-24-05:29",
+      "timestamp_kst": "2026-08-24(월) 05:29 KST",
+      "key_event": {
+        "name": "AI 투자 확대 지속",
+        "name_en": "Continued AI Investment Expansion",
+        "time": "직전 거래일 및 다음 주 개장",
+        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선, 시장 전반 긍정 영향",
+        "why_en": "Tech earnings optimism, improved AI investment sentiment, positive market impact"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
+      "summary_en": "Positive sentiment continues with AI investment and tech optimism, mixed macro concerns",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "AI 및 기술주 투자 심리 강화",
+          "name_en": "Strengthened AI and Tech Investment Sentiment",
+          "desc": "Oracle, Amazon 등 AI 클라우드 주식 관심 및 휴깅페이스 매각 탐색 등 AI 관련 투자 심리 지속",
+          "desc_en": "Continued AI investment sentiment with interest in Oracle, Amazon AI cloud stocks and Hugging Face sale exploration",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "주요 기술주 상승세 유지",
+          "name_en": "Major Tech Stocks Maintain Upward Trend",
+          "desc": "QQQ (+0.50%), SPY (+0.54%), GOOGL (+1.26%) 등 주요 지수 및 기술주 상승 마감",
+          "desc_en": "Major indices and tech stocks closed higher, including QQQ (+0.50%), SPY (+0.54%), GOOGL (+1.26%)",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "시장 변동성 완화",
+          "name_en": "Market Volatility Easing",
+          "desc": "VIX 공포지수 15.13 (-5.50%) 하락으로 시장 불안감 진정",
+          "desc_en": "VIX fear index declined to 15.13 (-5.50%), indicating reduced market anxiety",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "엔비디아 가격 인상 및 차익 실현",
+          "name_en": "Nvidia Price Hike and Profit Taking",
+          "desc": "Nvidia의 15% 가격 인상 소식과 직전 거래일 주가 (-0.77%) 하락으로 차익 실현 압력",
+          "desc_en": "Nvidia's 15% price hike news and previous day's stock decline (-0.77%) suggest profit-taking pressure",
+          "category": "company_specific"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "잭슨홀 미팅 및 Fed 워시 발언",
+          "name_en": "Jackson Hole Meeting and Fed Warsh's Remarks",
+          "desc": "잭슨홀 미팅에서 Fed 워시 발언에 대한 시장의 기대와 불확실성 혼재, 향후 통화 정책 방향성 주목",
+          "desc_en": "Mixed expectations and uncertainties surrounding Fed Warsh's remarks at Jackson Hole, with focus on future monetary policy direction",
+          "category": "fed_policy"
+        },
+        {
+          "name": "미국-이란 긴장 고조",
+          "name_en": "Escalating US-Iran Tensions",
+          "desc": "미국-이란 긴장 고조로 유가 상승 우려와 지정학적 리스크 확대 가능성 혼재",
+          "desc_en": "Rising US-Iran tensions create mixed concerns about oil price increases and potential geopolitical risk expansion",
+          "category": "geopolitics"
+        }
+      ]
+    },
+    {
       "id": "2026-08-23-23:20",
       "timestamp_kst": "2026-08-23(일) 23:20 KST",
       "key_event": {
@@ -480,52 +547,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-22-11:50",
-      "timestamp_kst": "2026-08-22(토) 11:50 KST",
-      "key_event": {
-        "name": "기술주 실적 낙관론 및 AI 모멘텀",
-        "name_en": "Tech Earnings Optimism & AI Momentum",
-        "time": "직전 정규장 및 다음 정규장 전망",
-        "why": "주요 기술 기업 실적 기대감, AI 관련 투자 심리 개선",
-        "why_en": "Strong earnings expectations for major tech firms, improved AI investment sentiment"
-      },
-      "positive_total": 80,
-      "negative_total": 20,
-      "summary": "기술주 실적 낙관론 및 AI 모멘텀으로 긍정 우위 지속, 지정학적 긴장 혼조",
-      "summary_en": "Continued positive bias due to tech earnings optimism and AI momentum, mixed with geopolitical tensions",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "기술주 실적 기대감",
-          "name_en": "Optimism for Tech Earnings",
-          "desc": "주요 기술 기업 실적 발표 임박, 시장 전반 긍정적 기대감 확산",
-          "desc_en": "Anticipation for upcoming major tech earnings, fostering positive market sentiment",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 35,
-          "name": "AI 모멘텀 지속",
-          "name_en": "Sustained AI Momentum",
-          "desc": "AI 관련 투자 심리 개선 및 기술 혁신 기대감 유지",
-          "desc_en": "Improved investment sentiment in AI and continued expectations for technological innovation",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "중동 지정학적 긴장 재부각",
-          "name_en": "Resurgence of Middle East Geopolitical Tensions",
-          "desc": "미-이란 호르무즈 해협 긴장 재점화, 유가 상승 압력",
-          "desc_en": "US-Iran tensions reignite in the Strait of Hormuz, putting upward pressure on oil prices",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-23T14:21:04Z",
+  "updated_at": "2026-08-23T20:30:11Z",
   "max_entries": 10
 }
