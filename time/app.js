@@ -12360,6 +12360,7 @@ var bedsideActive = false;
     setAlarmAdHidden(false);
     postAlarmBridge({ action: "stopBedtime" });
     updateBedtimeButton();
+    try { updateWakeIcon(); } catch (e) { /* 무시 */ }
   }
 
   function restoreBedtimeUi() {
@@ -12746,6 +12747,72 @@ var bedsideActive = false;
   }
 
   // 네이티브(위젯 탭 → longtime://alarms)가 부른다.
+  // ── 2026-08-23 운영자: 밤(22~05시) 홈 플립시계 위 '기상 알람' 아이콘 ──────
+  // 누르면: 다가오는 아침(다음날)에 기상 알람이 있으면 바로 취침 시작,
+  // 없으면 기상 알람 설정 화면으로 보낸다.
+  function wakeIconWindowNow() {
+    var h = new Date().getHours();
+    return (h >= 22 || h < 5);   // 22:00 ~ 04:59
+  }
+  function comingWakeWeekday() {
+    var now = new Date();
+    return (now.getHours() >= 22) ? ((now.getDay() + 1) % 7) : now.getDay();
+  }
+  function hasWakeForComingMorning() {
+    var wd = comingWakeWeekday();
+    return loadAlarms().some(function (a) {
+      var d = a.weekdays || [];
+      return !d.length || d.indexOf(wd) !== -1;   // 매일 또는 그 요일
+    });
+  }
+  function onWakeIconTap() {
+    if (hasWakeForComingMorning() && nextAlarm()) {
+      enterBedtime();                 // 다음 기상시간에 맞춰 바로 취침 시작
+    } else {
+      openAlarmSettings();            // 기상시간 설정 화면으로
+      try { openConfigScreen(false); } catch (e) { /* 무시 */ }
+    }
+  }
+  function shouldShowWakeIcon() {
+    if (!supported) return false;
+    if (!wakeIconWindowNow()) return false;
+    if (bedtimeArmed()) return false;
+    try { if (document.body.classList.contains("bedtime-mode")) return false; } catch (e) { /* 무시 */ }
+    if (els.ring && !els.ring.hidden) return false;
+    if (els.sleep && !els.sleep.hidden) return false;
+    if (els.configScreen && !els.configScreen.hidden) return false;
+    return true;
+  }
+  function ensureWakeIcon() {
+    if (document.getElementById("wakeHomeIcon")) return;
+    var stage = document.querySelector(".clock-stage");
+    if (!stage) return;
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.id = "wakeHomeIcon";
+    btn.className = "wake-home-icon";
+    btn.hidden = true;
+    btn.setAttribute("aria-label", t("settings.alarm.heading", null, "기상 알람"));
+    btn.innerHTML =
+      '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+      + '<circle cx="12" cy="13" r="7.5"></circle>'
+      + '<path d="M12 9v4l2.6 1.6"></path>'
+      + '<path d="M4.2 4.8 7.2 7.4"></path>'
+      + '<path d="M19.8 4.8 16.8 7.4"></path>'
+      + '<path d="M7.6 20.4 6 22.3"></path>'
+      + '<path d="M16.4 20.4 18 22.3"></path>'
+      + '</svg>'
+      + '<span class="wake-home-icon-label">' + t("settings.alarm.heading", null, "기상 알람") + '</span>';
+    btn.addEventListener("click", function (e) { e.stopPropagation(); onWakeIconTap(); });
+    stage.insertBefore(btn, stage.firstChild);
+  }
+  function updateWakeIcon() {
+    var btn = document.getElementById("wakeHomeIcon");
+    if (!btn) { ensureWakeIcon(); btn = document.getElementById("wakeHomeIcon"); }
+    if (!btn) return;
+    btn.hidden = !shouldShowWakeIcon();
+  }
+
   window.__flipzenOpenWakeAlarm = openAlarmSettings;
   // 프리미엄 상태가 늦게 들어와도 설정을 열 때 다시 게이팅을 평가한다.
   window.__flipzenAlarmRefresh = function () { try { applyGating(); } catch (e) { /* 무시 */ } };
@@ -12999,6 +13066,7 @@ var bedsideActive = false;
     renderHomeSummary();
     if (bedtimeArmed()) showSleepScreen();
     else setAlarmAdHidden(false);
+    try { updateWakeIcon(); } catch (e) { /* 무시 */ }
   }
   var sleepClockTimer = null;
   // ── 2026-08-23 포그라운드 폴백 ──────────────────────────────────
@@ -13218,6 +13286,10 @@ var bedsideActive = false;
       });
       clock.style.cursor = "pointer";
     }
+
+    ensureWakeIcon();
+    updateWakeIcon();
+    try { window.setInterval(updateWakeIcon, 20000); } catch (e) { /* 무시 */ }
 
     bindAll();
     askCapability();
