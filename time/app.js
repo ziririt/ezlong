@@ -12266,6 +12266,8 @@ var bedsideActive = false;
   function commitAlarm(record, replaceIds) {
     var alarms = loadAlarms();
     replaceIds = replaceIds || [];
+    // 2026-08-24 운영자: 기존 알람을 고치는 중인가(같은 id가 이미 있는가).
+    var wasExistingAlarm = alarms.some(function (a) { return a.id === record.id; });
     if (replaceIds.length) {
       alarms = alarms.filter(function (a) { return replaceIds.indexOf(a.id) === -1; });
       replaceIds.forEach(function (rid) { if (rid) postAlarmBridge({ action: "cancelWakeAlarm", id: rid }); });
@@ -12295,6 +12297,12 @@ var bedsideActive = false;
     dropped.forEach(function (rid) { if (rid) postAlarmBridge({ action: "cancelWakeAlarm", id: rid }); });
     alarms.sort(function (a, b) { return (a.hour * 60 + a.minute) - (b.hour * 60 + b.minute); });
     saveAlarms(alarms);
+    // 2026-08-24 운영자: 기상 시간을 수정하면 옛 시각으로 남지 않게, 다시 걸기 전에
+    // 같은 id의 옛 예약을 먼저 지운다. (네이티브가 동일 id 재예약을 교체하지 않고
+    // 옛 알람을 남기던 문제 대비 — 충돌-대체 경로와 같은 '취소→예약' 순서다.)
+    if (wasExistingAlarm) {
+      try { postAlarmBridge({ action: "cancelWakeAlarm", id: record.id }); } catch (e) { /* 무시 */ }
+    }
     pushAlarmToNative(record);
     editingId = null;
     stopPreview();
