@@ -2707,9 +2707,41 @@ function getNextQuote() {
 // 자동으로 한 칸씩 전진하므로 두 인덱스는 각자의 시계로 따로 움직이고,
 // 스와이프나 점탭처럼 "수동 조작이 실제로 일어나는 그 순간"에만 두
 // 인덱스를 같은 방향으로 함께 옮겨 짝을 맞춘다.
+// 2026-08-23 운영자: 밤(현지 22~05시)엔 문장 4개 세트 중 2개를 '수면 격언'으로.
+// 투자자에게 잠의 중요성을 상기시킨다. 수면 격언은 sleep-quotes.js의 별도 풀이라
+// 낮/설정 주제 필터에는 전혀 섞이지 않고, 밤에만 이 경로로 끼어든다.
+// 비한국어 화면엔 넣지 않는다(한국어가 본문 자리에 새지 않도록).
+const sleepQuotes = (typeof window !== "undefined" && window.sleepQuotes) || [];
+let sleepDeck = [];
+let lastSleepEnglish = "";
+function getNextSleepQuote() {
+  if (!sleepQuotes.length) return getNextQuote();   // 안전망
+  if (sleepDeck.length === 0) sleepDeck = shuffleQuotes(sleepQuotes.slice());
+  if (sleepDeck.length > 1 && sleepDeck[0].english === lastSleepEnglish) {
+    const alt = sleepDeck.findIndex((q) => q.english !== lastSleepEnglish);
+    if (alt > 0) { const tmp = sleepDeck[0]; sleepDeck[0] = sleepDeck[alt]; sleepDeck[alt] = tmp; }
+  }
+  const q = sleepDeck.shift();
+  lastSleepEnglish = q.english || "";
+  return q;
+}
+function sleepInjectNow() {
+  if (!sleepQuotes.length) return false;
+  if (typeof isKoreanLocale === "function" && !isKoreanLocale()) return false;
+  const h = new Date().getHours();
+  return (h >= 22 || h < 5);   // 현지 22:00 ~ 04:59
+}
+// 문장 4개 창을 만든다. 밤이면 [수면, 일반, 수면, 일반]으로 2개를 수면 격언에 배정.
+function buildQuoteWindow() {
+  if (sleepInjectNow()) {
+    return [getNextSleepQuote(), getNextQuote(), getNextSleepQuote(), getNextQuote()];
+  }
+  return [getNextQuote(), getNextQuote(), getNextQuote(), getNextQuote()];
+}
+
 function ensureQuoteWindow() {
   if (quoteWindow.length === 4) return;
-  quoteWindow = [getNextQuote(), getNextQuote(), getNextQuote(), getNextQuote()];
+  quoteWindow = buildQuoteWindow();
   activeQuoteIndex = 0;
 }
 
@@ -2747,7 +2779,7 @@ function advanceQuoteAuto() {
   if (length === 0) return;
   let nextIndex = activeQuoteIndex + 1;
   if (nextIndex >= length) {
-    quoteWindow = [getNextQuote(), getNextQuote(), getNextQuote(), getNextQuote()];
+    quoteWindow = buildQuoteWindow();
     nextIndex = 0;
   }
   activeQuoteIndex = nextIndex;
