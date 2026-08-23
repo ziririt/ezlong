@@ -12156,6 +12156,77 @@ var bedsideActive = false;
     els.list.parentNode.insertBefore(btn, els.list);
   }
 
+  // ── 2026-08-24 운영자: "알람이 화면에 안 뜨나요?" 진단·안내(안드로이드 전용) ──
+  // 타 알람앱은 '다른 앱 위에 표시' 같은 무거운 권한을 요구하지만, 우리는
+  // 상태를 진단해 필요한 사용자만 정확한 설정으로 보낸다. 네이티브가
+  // alarmScreenStatus 질의에 {fullScreen, miui}로 답하면 여기서 그린다.
+  function renderAlarmScreenGuide(st) {
+    var host = els.list && els.list.parentNode;
+    if (!host) return;
+    var box = document.getElementById("alarmScreenGuide");
+    var needFull = st.fullScreen === false;   // Android 14+에서 권한 회수됨
+    var isMiui = !!st.miui;
+    if (!needFull && !isMiui) { if (box) box.hidden = true; return; }
+    if (!box) {
+      box = document.createElement("div");
+      box.id = "alarmScreenGuide";
+      box.className = "alarm-screen-guide";
+      host.appendChild(box);
+    }
+    box.hidden = false;
+    box.innerHTML = "";
+    var head = document.createElement("p");
+    head.className = "alarm-screen-guide-title";
+    head.textContent = t("settings.alarm.screenGuideTitle", null, "알람이 화면에 안 뜨나요?");
+    box.appendChild(head);
+    if (needFull) {
+      var warn = document.createElement("p");
+      warn.className = "alarm-screen-guide-warn";
+      warn.textContent = t("settings.alarm.screenGuideFullOff", null, "전체 화면 알림이 꺼져 있어 알람이 울려도 화면이 뜨지 않을 수 있습니다.");
+      box.appendChild(warn);
+      var bFull = document.createElement("button");
+      bFull.type = "button";
+      bFull.className = "alarm-screen-guide-btn";
+      bFull.textContent = t("settings.alarm.screenGuideFullBtn", null, "전체 화면 알림 켜기");
+      bFull.addEventListener("click", function () {
+        try { postAlarmBridge({ action: "openFullScreenSettings" }); } catch (e) { /* 무시 */ }
+      });
+      box.appendChild(bFull);
+    }
+    if (isMiui) {
+      var desc = document.createElement("p");
+      desc.className = "alarm-screen-guide-desc";
+      desc.textContent = t("settings.alarm.screenGuideMiui", null, "샤오미(Redmi) 기기는 '백그라운드에서 팝업 창 표시'와 '자동 시작'을 켜야 알람 화면이 뜹니다.");
+      box.appendChild(desc);
+      var row = document.createElement("div");
+      row.className = "alarm-screen-guide-row";
+      var bPop = document.createElement("button");
+      bPop.type = "button";
+      bPop.className = "alarm-screen-guide-btn";
+      bPop.textContent = t("settings.alarm.screenGuidePopupBtn", null, "팝업 권한 열기");
+      bPop.addEventListener("click", function () {
+        try { postAlarmBridge({ action: "openMiuiPopupSettings" }); } catch (e) { /* 무시 */ }
+      });
+      var bAuto = document.createElement("button");
+      bAuto.type = "button";
+      bAuto.className = "alarm-screen-guide-btn";
+      bAuto.textContent = t("settings.alarm.screenGuideAutoBtn", null, "자동 시작 열기");
+      bAuto.addEventListener("click", function () {
+        try { postAlarmBridge({ action: "openMiuiAutostart" }); } catch (e) { /* 무시 */ }
+      });
+      row.appendChild(bPop);
+      row.appendChild(bAuto);
+      box.appendChild(row);
+    }
+  }
+  window.__flipzenAlarmScreenStatus = function (st) {
+    try { renderAlarmScreenGuide(st || {}); } catch (e) { /* 무시 */ }
+  };
+  function requestAlarmScreenStatus() {
+    if (!window.AndroidNativeBridge) return;   // 안드로이드 앱에서만
+    try { postAlarmBridge({ action: "alarmScreenStatus" }); } catch (e) { /* 무시 */ }
+  }
+
   function pushAlarmToNative(alarm) {
     var track = findTrackByFile(alarm.trackFile);
     var url = "";
@@ -13101,6 +13172,7 @@ var bedsideActive = false;
     if (!alarmPremiumOk()) { try { postToNativeAd({ action: "openPaywall" }); } catch (e) { /* 무시 */ } return; }
     els.configScreen.hidden = false;
     setAlarmAdHidden(true);
+    try { requestAlarmScreenStatus(); } catch (e) { /* 무시 */ }
     if (scrollToTime && els.time) {
       // 클릭 제스처 안에서 바로 시간 돌림판을 띄운다(showPicker는 사용자
       // 활성화가 필요해 setTimeout으로 미루면 안 먹는다).

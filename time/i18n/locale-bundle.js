@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-23T14:43:16.616Z
+ * 생성 시각: 2026-08-23T22:41:59.585Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -194,7 +194,13 @@
         "conflictBody": "{days} already has a {time} alarm{extra}. Change it to {newtime}? Replace existing changes that alarm to this time; Add new keeps both.",
         "tabRock": "Rock",
         "addAnother": "Add alarm for other days",
-        "bedtimeJustStarted": "Getting into bed now."
+        "bedtimeJustStarted": "Getting into bed now.",
+        "screenGuideTitle": "Alarm not showing on screen?",
+        "screenGuideFullOff": "Full-screen alarm notifications are off, so the alarm may ring without showing the wake screen.",
+        "screenGuideFullBtn": "Turn on full-screen alerts",
+        "screenGuideMiui": "On Xiaomi (Redmi) devices, turn on \"Display pop-up windows while running in the background\" and \"Autostart\" so the alarm screen can appear.",
+        "screenGuidePopupBtn": "Open pop-up permission",
+        "screenGuideAutoBtn": "Open Autostart"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -676,7 +682,13 @@
         "conflictBody": "{days} ya tiene una alarma a las {time}{extra}. ¿Cambiarla a {newtime}? Cambiar existente ajusta esa alarma a esta hora; Añadir nueva mantiene ambas.",
         "tabRock": "Rock",
         "addAnother": "Añadir alarma para otros días",
-        "bedtimeJustStarted": "Ahora a la cama."
+        "bedtimeJustStarted": "Ahora a la cama.",
+        "screenGuideTitle": "¿La alarma no aparece en pantalla?",
+        "screenGuideFullOff": "Las notificaciones a pantalla completa están desactivadas; la alarma puede sonar sin mostrar la pantalla.",
+        "screenGuideFullBtn": "Activar avisos a pantalla completa",
+        "screenGuideMiui": "En dispositivos Xiaomi (Redmi), activa \"Mostrar ventanas emergentes en segundo plano\" e \"Inicio automático\" para que aparezca la pantalla de la alarma.",
+        "screenGuidePopupBtn": "Abrir permiso de ventanas",
+        "screenGuideAutoBtn": "Abrir inicio automático"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1158,7 +1170,13 @@
         "conflictBody": "{days}にすでに {time} のアラームがあります{extra}。{newtime} に変更しますか？ 「既存を変更」はそのアラームをこの時刻に変更し、「新規追加」は両方残します。",
         "tabRock": "ロック",
         "addAnother": "別の曜日のアラームを追加",
-        "bedtimeJustStarted": "そろそろ布団に入ります。"
+        "bedtimeJustStarted": "そろそろ布団に入ります。",
+        "screenGuideTitle": "アラーム画面が表示されませんか？",
+        "screenGuideFullOff": "全画面通知がオフのため、アラームが鳴っても画面が表示されないことがあります。",
+        "screenGuideFullBtn": "全画面通知をオンにする",
+        "screenGuideMiui": "Xiaomi（Redmi）端末では「バックグラウンドでのポップアップ表示」と「自動起動」をオンにすると、アラーム画面が表示されます。",
+        "screenGuidePopupBtn": "ポップアップ権限を開く",
+        "screenGuideAutoBtn": "自動起動を開く"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1640,7 +1658,13 @@
         "conflictBody": "{days}에 이미 {time} 알람이 있어요{extra}. {newtime}(으)로 바꿀까요? 기존 수정을 누르면 그 알람을 이 시각으로 바꾸고, 새로 추가를 누르면 둘 다 남깁니다.",
         "tabRock": "ROCK",
         "addAnother": "다른 요일 알람 추가",
-        "bedtimeJustStarted": "이제 잠자리에 듭니다."
+        "bedtimeJustStarted": "이제 잠자리에 듭니다.",
+        "screenGuideTitle": "알람이 화면에 안 뜨나요?",
+        "screenGuideFullOff": "전체 화면 알림이 꺼져 있어 알람이 울려도 화면이 뜨지 않을 수 있습니다.",
+        "screenGuideFullBtn": "전체 화면 알림 켜기",
+        "screenGuideMiui": "샤오미(Redmi) 기기는 '백그라운드에서 팝업 창 표시'와 '자동 시작'을 켜야 알람 화면이 뜹니다.",
+        "screenGuidePopupBtn": "팝업 권한 열기",
+        "screenGuideAutoBtn": "자동 시작 열기"
       },
       "watch": {
         "heading": "애플워치",
@@ -2122,7 +2146,13 @@
         "conflictBody": "{days} já tem um alarme às {time}{extra}. Alterar para {newtime}? Alterar existente muda esse alarme para este horário; Adicionar nova mantém os dois.",
         "tabRock": "Rock",
         "addAnother": "Adicionar alarme para outros dias",
-        "bedtimeJustStarted": "Hora de deitar."
+        "bedtimeJustStarted": "Hora de deitar.",
+        "screenGuideTitle": "O alarme não aparece na tela?",
+        "screenGuideFullOff": "As notificações em tela cheia estão desativadas; o alarme pode tocar sem mostrar a tela.",
+        "screenGuideFullBtn": "Ativar alertas em tela cheia",
+        "screenGuideMiui": "Em aparelhos Xiaomi (Redmi), ative \"Exibir janelas pop-up em segundo plano\" e \"Início automático\" para a tela do alarme aparecer.",
+        "screenGuidePopupBtn": "Abrir permissão de pop-up",
+        "screenGuideAutoBtn": "Abrir início automático"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -2604,7 +2634,13 @@
         "conflictBody": "{days}已有 {time} 的闹钟{extra}。要改为 {newtime} 吗？ “修改现有”会把该闹钟改到此时间，“新增”则两个都保留。",
         "tabRock": "摇滚",
         "addAnother": "为其他日期添加闹钟",
-        "bedtimeJustStarted": "现在准备就寝。"
+        "bedtimeJustStarted": "现在准备就寝。",
+        "screenGuideTitle": "闹钟没有显示在屏幕上？",
+        "screenGuideFullOff": "全屏通知已关闭，闹钟响起时可能不会显示唤醒画面。",
+        "screenGuideFullBtn": "开启全屏通知",
+        "screenGuideMiui": "小米（Redmi）设备需开启“后台弹出界面”和“自启动”，闹钟画面才能显示。",
+        "screenGuidePopupBtn": "打开弹窗权限",
+        "screenGuideAutoBtn": "打开自启动"
       },
       "watch": {
         "heading": "Apple Watch",

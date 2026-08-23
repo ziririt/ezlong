@@ -6427,3 +6427,15 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
 .wake-home-icon:active { transform: scale(0.96); }
 @keyframes wakeIconGlow { 0%,100% { box-shadow: 0 4px 18px rgba(0,0,0,0.28); opacity: 0.9; } 50% { box-shadow: 0 6px 26px rgba(140,180,255,0.38); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .wake-home-icon { animation: none; } }
+
+
+/* 2026-08-24 알람 화면 노출 진단·안내(안드로이드 전용) */
+.alarm-screen-guide { margin: 14px 0 6px; padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,190,90,0.35); }
+.alarm-screen-guide[hidden] { display: none; }
+.alarm-screen-guide-title { margin: 0 0 6px; font-size: 14px; font-weight: 800; color: #ffd28a; }
+.alarm-screen-guide-warn { margin: 0 0 10px; font-size: 13px; line-height: 1.5; color: #ffb4a2; }
+.alarm-screen-guide-desc { margin: 0 0 10px; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.75); }
+.alarm-screen-guide-row { display: flex; gap: 8px; }
+.alarm-screen-guide-btn { flex: 1; display: block; width: 100%; margin: 0 0 8px; padding: 12px 10px; border-radius: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(120,170,255,0.5); color: #8fb6ff; font-size: 14px; font-weight: 700; cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent; }
+.alarm-screen-guide-row .alarm-screen-guide-btn { margin-bottom: 0; }
+.alarm-screen-guide-btn:active { transform: scale(0.985); }
