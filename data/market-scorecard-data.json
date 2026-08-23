@@ -1,6 +1,64 @@
 {
   "entries": [
     {
+      "id": "2026-08-23-18:20",
+      "timestamp_kst": "2026-08-23(일) 18:20 KST",
+      "key_event": {
+        "name": "AI 투자 확대 지속",
+        "name_en": "Continued Expansion of AI Investment",
+        "time": "직전 거래일 마감 및 다음 주 개장 전",
+        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
+        "why_en": "Optimism for tech earnings, improved AI investment sentiment"
+      },
+      "positive_total": 80,
+      "negative_total": 20,
+      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
+      "summary_en": "Positive sentiment continues with AI investment and tech optimism, mixed with macro concerns",
+      "positive_factors": [
+        {
+          "score": 80,
+          "name": "기술주 실적 기대감",
+          "name_en": "Tech Earnings Optimism",
+          "desc": "Alphabet, Microsoft 등 주요 기술주 견조한 상승세 지속",
+          "desc_en": "Major tech stocks like Alphabet, Microsoft continue strong gains",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "지정학적 긴장 고조",
+          "name_en": "Heightened Geopolitical Tensions",
+          "desc": "미-이란 갈등 고조 및 유가 변동성 우려 지속",
+          "desc_en": "Escalating US-Iran conflict and persistent oil price volatility concerns",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "S&P 500 과거 패턴 경고",
+          "name_en": "S&P 500 Historical Pattern Warning",
+          "desc": "S&P 500이 1871년 이후 단 한 번 나타난 패턴을 보이며 시장 조정 우려 제기",
+          "desc_en": "S&P 500 showing a pattern seen only once since 1871, raising market correction concerns",
+          "category": "other"
+        },
+        {
+          "name": "엔비디아 실적 및 GPU 가격 인상",
+          "name_en": "Nvidia Earnings and GPU Price Hikes",
+          "desc": "엔비디아 실적 발표 및 GPU 가격 인상 소식에 대한 기대와 차익 실현 우려 혼재",
+          "desc_en": "Mixed expectations and profit-taking concerns around Nvidia's earnings and GPU price hike news",
+          "category": "earnings_bellwether"
+        },
+        {
+          "name": "미 국채금리 상승 압력",
+          "name_en": "US Treasury Yields Upward Pressure",
+          "desc": "미10년 국채금리 4.74%(+0.89%) 상승, 성장주 할인율 압박",
+          "desc_en": "US 10-year Treasury yield rose to 4.74% (+0.89%), pressuring growth stock valuations",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-23-16:50",
       "timestamp_kst": "2026-08-23(일) 16:50 KST",
       "key_event": {
@@ -435,67 +493,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-22-05:31",
-      "timestamp_kst": "2026-08-22(토) 05:31 KST",
-      "key_event": {
-        "name": "기술주 실적 낙관론 및 AI 모멘텀",
-        "name_en": "Tech Earnings Optimism & AI Momentum",
-        "time": "포스트마켓",
-        "why": "주요 기술 기업 실적 기대감, AI 관련 투자 심리 개선",
-        "why_en": "Optimism for major tech earnings, improved AI investment sentiment"
-      },
-      "positive_total": 85,
-      "negative_total": 15,
-      "summary": "기술주 실적 낙관론 및 AI 모멘텀으로 긍정 우위 지속, 국채금리 상승 혼조",
-      "summary_en": "Continued positive sentiment driven by tech earnings and AI momentum, mixed with rising Treasury yields",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "기술주 실적 기대감",
-          "name_en": "Tech Earnings Expectations",
-          "desc": "주요 기술 기업들의 실적 발표를 앞두고 낙관적인 전망 확산",
-          "desc_en": "Optimistic outlook spreading ahead of major tech companies' earnings reports",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 40,
-          "name": "AI 모멘텀 지속",
-          "name_en": "Sustained AI Momentum",
-          "desc": "AI 관련 신규 서비스 및 투자 소식으로 시장 심리 개선",
-          "desc_en": "Market sentiment improved by news of new AI services and investments",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "일부 AI 관련 우려",
-          "name_en": "Some AI-Related Concerns",
-          "desc": "DeepSeek 등 신규 경쟁사 등장으로 AI 주식에 대한 우려 제기",
-          "desc_en": "Concerns raised about AI stocks due to new competitors like DeepSeek",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "애플 AI 전략 및 리더십 의문",
-          "name_en": "Apple's AI Strategy & Leadership Questions",
-          "desc": "애플의 AI 경쟁력 강화 노력과 동시에 리더십 관련 의문 제기로 주가 혼조",
-          "desc_en": "Apple's stock shows mixed signals due to efforts to strengthen AI competitiveness alongside leadership questions",
-          "category": "company_specific"
-        },
-        {
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 4.74%(+0.89%), 30년 국채금리 5.28%(+0.74%) 상승, 성장주 압박",
-          "desc_en": "US 10-year Treasury yield rose to 4.74% (+0.89%) and 30-year to 5.28% (+0.74%), pressuring growth stocks",
-          "category": "rates_treasury"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-23T07:50:59Z",
+  "updated_at": "2026-08-23T09:21:13Z",
   "max_entries": 10
 }
