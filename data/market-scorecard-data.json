@@ -1,6 +1,79 @@
 {
   "entries": [
     {
+      "id": "2026-08-24-08:20",
+      "timestamp_kst": "2026-08-24(월) 08:20 KST",
+      "key_event": {
+        "name": "AI 투자 확대 지속",
+        "name_en": "Continued AI Investment Expansion",
+        "time": "직전 장 마감 기준 및 다음 주 개장 변수",
+        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선, 시장 전반 긍정 영향",
+        "why_en": "Tech earnings optimism, improved AI investment sentiment, positive market impact"
+      },
+      "positive_total": 80,
+      "negative_total": 20,
+      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
+      "summary_en": "Positive sentiment continues with AI investment and tech optimism, mixed macro concerns",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "AI 관련 기술주 투자 심리 개선",
+          "name_en": "Improved AI-related tech investment sentiment",
+          "desc": "Hugging Face 매각 논의 및 Verizon의 AI 서비스 강화 소식으로 AI 섹터 투자 심리 개선",
+          "desc_en": "AI sector investment sentiment improved by Hugging Face sale talks and Verizon's AI service enhancements",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 35,
+          "name": "주요 지수 상승 및 VIX 하락",
+          "name_en": "Major indices rise, VIX falls",
+          "desc": "SPY (+0.54%), QQQ (+0.50%) 상승 및 VIX (-5.50%) 하락으로 시장 위험 선호 심리 강화",
+          "desc_en": "SPY (+0.54%) and QQQ (+0.50%) gains, VIX (-5.50%) drop, strengthening market risk appetite",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "미국-캐나다 무역 긴장 고조",
+          "name_en": "Rising US-Canada trade tensions",
+          "desc": "미국과 캐나다 간 무역 전쟁 가능성 언급, 관세 부과 우려",
+          "desc_en": "Potential US-Canada trade war, tariff imposition concerns",
+          "category": "trade_tariff"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "잭슨홀 미팅 및 Fed 워시 발언",
+          "name_en": "Jackson Hole Meeting and Fed Warsh's remarks",
+          "desc": "Fed 워시 의장의 잭슨홀 연설 예정, 매파적 발언 우려와 통화 정책 방향성 탐색 혼조",
+          "desc_en": "Fed Chair Warsh's upcoming Jackson Hole speech, concerns over hawkish remarks mixed with search for monetary policy direction",
+          "category": "fed_policy"
+        },
+        {
+          "name": "미국-이란 긴장 고조 지속",
+          "name_en": "Continued US-Iran tensions",
+          "desc": "미국-이란 긴장 고조로 유가 상승 압력 우려와 지정학적 리스크 지속",
+          "desc_en": "Rising US-Iran tensions raise concerns about oil price increases and ongoing geopolitical risk",
+          "category": "geopolitics"
+        },
+        {
+          "name": "WTI 원유 가격 하락",
+          "name_en": "WTI crude oil price decline",
+          "desc": "WTI 원유 가격 1.07% 하락, 인플레이션 압력 완화 기대",
+          "desc_en": "WTI crude oil price fell 1.07%, easing inflation pressure expectations",
+          "category": "oil_energy"
+        },
+        {
+          "name": "장기 국채금리 상승 압력",
+          "name_en": "Upward pressure on long-term Treasury yields",
+          "desc": "미10년 국채금리 4.74%(+0.89%), 미30년 국채금리 5.28%(+0.74%) 상승, 기술주 할인율 부담",
+          "desc_en": "US 10-year Treasury yield at 4.74% (+0.89%) and 30-year at 5.28% (+0.74%), pressuring tech valuations",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-24-07:00",
       "timestamp_kst": "2026-08-24(월) 07:00 KST",
       "key_event": {
@@ -494,60 +567,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-22-21:50",
-      "timestamp_kst": "2026-08-22(토) 21:50 KST",
-      "key_event": {
-        "name": "AI 투자 확대 지속",
-        "name_en": "Continued AI Investment Expansion",
-        "time": "직전 거래일 및 다음 주 개장",
-        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
-        "why_en": "Tech earnings expectations, improved AI investment sentiment"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
-      "summary_en": "Positive sentiment persists due to AI investment and tech optimism, mixed with macro concerns",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "기술주 실적 낙관론 지속",
-          "name_en": "Sustained Tech Earnings Optimism",
-          "desc": "주요 기술 기업 실적 기대감 유지, QQQ 0.50% 상승",
-          "desc_en": "Major tech companies' earnings expectations maintained, QQQ up 0.50%",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 30,
-          "name": "AI 인프라 투자 확대",
-          "name_en": "Expansion of AI Infrastructure Investment",
-          "desc": "Alphabet, Amazon 4200억 달러 AI 인프라 투자 소식",
-          "desc_en": "Alphabet and Amazon's $420 billion AI infrastructure investment news",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "지정학적 긴장 지속",
-          "name_en": "Ongoing Geopolitical Tensions",
-          "desc": "미-이란 갈등 및 호르무즈 해협 관련 뉴스 지속, 유가 상승 압력",
-          "desc_en": "Continued US-Iran conflict and Hormuz Strait news, upward pressure on oil prices",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "장기 국채금리 상승",
-          "name_en": "Long-Term Treasury Yields Rise",
-          "desc": "미 10년물 국채금리 4.74%(+0.89%), 30년물 5.28%(+0.74%) 상승으로 기술주 밸류에이션 부담 우려",
-          "desc_en": "US 10-year Treasury yield rose to 4.74% (+0.89%), 30-year to 5.28% (+0.74%), raising concerns about tech valuation",
-          "category": "rates_treasury"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-23T22:01:52Z",
+  "updated_at": "2026-08-23T23:21:16Z",
   "max_entries": 10
 }
