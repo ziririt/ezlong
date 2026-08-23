@@ -3600,6 +3600,13 @@ function openWeatherDetail() {
   weatherDetailPanel.classList.add("is-open");
   // 15차-c: openSettings와 동일 — 재부착으로 터치 스크롤 영역 재등록 (제거 금지)
   document.body.appendChild(weatherDetailPanel);
+  // 2026-08-23 운영자: 기상 알람 '해제됨' 화면(.wake-ring, z-index 9000) 위에서
+  // 열면 날씨 상세(.app-page, z-index 20)가 그 뒤에 가려 안 보이던 문제 수정.
+  // 링 화면이 떠 있을 때만 상세 패널을 그 위(9500)로 올리고, 평소엔 기본값 유지.
+  try {
+    var wdRing = document.getElementById("wakeRingScreen");
+    weatherDetailPanel.style.zIndex = (wdRing && !wdRing.hidden) ? "9500" : "";
+  } catch (eWdZ) { /* 무시 */ }
   weatherDetailPanel.setAttribute("aria-hidden", "false");
   if (weatherChipOpen) weatherChipOpen.setAttribute("aria-expanded", "true");
   applyWeatherDetailPhoto();
@@ -3651,6 +3658,8 @@ function closeWeatherDetail() {
     wdVid.remove();
   }
   weatherDetailPanel.classList.remove("weather-detail-video");
+  // 링 화면 위에서 올렸던 z-index를 원복(다음 일반 오픈에 영향 없게).
+  try { weatherDetailPanel.style.zIndex = ""; } catch (eWdZ2) { /* 무시 */ }
 }
 
 // X 버튼 등 "명시적" 닫기는 이걸 호출한다. openWeatherDetail이 쌓아둔 history
