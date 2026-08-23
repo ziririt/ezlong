@@ -12635,7 +12635,7 @@ var bedsideActive = false;
       stopWebWakeAudio();
       webWakeAudio = new Audio(url);
       webWakeAudio.loop = true;
-      webWakeAudio.volume = 0.06;       // 아주 작게 시작
+      webWakeAudio.volume = 0.012;      // 새벽에도 놀라지 않게 아주 작게 시작
       webWakeStartedAt = Date.now();
       webWakeAudio.play().catch(function () { /* 자동재생 차단 시 조용히 */ });
       // 정각부터 서서히 — iOS 네이티브 곡선과 같은 결.
@@ -12643,9 +12643,11 @@ var bedsideActive = false;
         if (!webWakeAudio) return;
         var el = (Date.now() - webWakeStartedAt) / 1000;
         var v;
-        if (el < 36) v = 0.06; else if (el < 72) v = 0.12;
-        else if (el < 108) v = 0.20; else if (el < 144) v = 0.32;
-        else if (el < 180) v = 0.50; else if (el < 240) v = 0.75; else v = 1.0;
+        if (el < 30) v = 0.012; else if (el < 65) v = 0.022;
+        else if (el < 100) v = 0.04; else if (el < 140) v = 0.07;
+        else if (el < 180) v = 0.11; else if (el < 220) v = 0.18;
+        else if (el < 260) v = 0.30; else if (el < 310) v = 0.50;
+        else if (el < 370) v = 0.74; else v = 1.0;
         try { webWakeAudio.volume = Math.max(0, Math.min(1, v)); } catch (e) { /* 무시 */ }
         if (el > 690) stopWebWakeAudio();  // 11분 30초에 자동 종료
       }, 500);
