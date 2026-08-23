@@ -13196,7 +13196,13 @@ var bedsideActive = false;
     if (els.sleepLabel) {
       var _sa = 0;
       try { _sa = Number(localStorage.getItem("ezlong:bedtimeStartAt")) || 0; } catch (e) { _sa = 0; }
-      var _mins = _sa ? (Date.now() - _sa) / 60000 : 999;
+      // 2026-08-24 운영자: 시작 시각이 없으면(구세션·업그레이드로 비어 있으면) 지금을
+      // 시작으로 잡아 15분 '이제 잠자리에 듭니다' 창을 연다 — 곧바로 '수면 중'이 뜨지 않게.
+      if (!_sa) {
+        _sa = Date.now();
+        try { localStorage.setItem("ezlong:bedtimeStartAt", String(_sa)); } catch (e) { /* 무시 */ }
+      }
+      var _mins = (Date.now() - _sa) / 60000;
       els.sleepLabel.textContent = (_mins < 15)
         ? t("settings.alarm.bedtimeJustStarted", null, "이제 잠자리에 듭니다.")
         : t("settings.alarm.sleepLabel", null, "수면 중");

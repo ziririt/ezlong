@@ -6255,7 +6255,7 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
 .alarm-config-body { padding: 8px 18px 64px; max-width: 520px; margin: 0 auto; }
 
 /* 수면 중 전용 화면 — 밤 배경 + '수면 중' + 기상 시각 + 수정/취소 */
-.sleep-screen { position: fixed; inset: 0; z-index: 8700; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, rgba(3, 6, 14, 0.6) 0%, rgba(3, 6, 14, 0.82) 100%); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); animation: sleepScreenIn 500ms ease-out; }
+.sleep-screen { position: fixed; inset: 0; z-index: 8700; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, #070d1c 0%, #03060e 100%); animation: sleepScreenIn 500ms ease-out; }
 .sleep-screen[hidden] { display: none; }
 @keyframes sleepScreenIn { from { opacity: 0; } to { opacity: 1; } }
 .sleep-screen-inner { text-align: center; padding: 0 20px; width: min(92vw, 420px); }
