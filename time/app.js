@@ -11737,6 +11737,7 @@ var bedsideActive = false;
 
   var els = null;
   var supported = false;          // 네이티브가 알람을 받아줄 수 있는가
+  var wakeAlarmUnsupported = false; // 2026-08-24 운영자: 알람이 '확정적으로' 미지원일 때만 true. 기상 아이콘은 확정 전엔 미리 보여줘서 시계와 동시에 뜨게 한다.
   var editingId = null;           // 수정 중인 알람 id(없으면 새로 거는 중)
   var selectedWeekdays = [];      // 0=일 … 6=토
   var selectedTrack = null;       // music-playlist.js의 트랙 객체
@@ -12808,7 +12809,9 @@ var bedsideActive = false;
     }
   }
   function shouldShowWakeIcon() {
-    if (!supported) return false;
+    // 2026-08-24 운영자: 시계와 동시에(문장박스보다 먼저) 뜨게 — supported 확정을
+    // 기다리지 않는다. 알람이 확정적으로 미지원일 때만 숨긴다.
+    if (wakeAlarmUnsupported) return false;
     if (!wakeIconWindowNow()) return false;
     if (bedtimeArmed()) return false;
     try { if (document.body.classList.contains("bedtime-mode")) return false; } catch (e) { /* 무시 */ }
@@ -12956,6 +12959,7 @@ var bedsideActive = false;
     // 여지가 없다(ContentView.swift의 atDocumentStart userScript).
     if (typeof window.__FLIPZEN_ALARM_SUPPORTED__ === "boolean") {
       supported = window.__FLIPZEN_ALARM_SUPPORTED__;
+      wakeAlarmUnsupported = !supported;
       applyGating();
       return;
     }
@@ -12967,6 +12971,7 @@ var bedsideActive = false;
       if (settled) return;
       settled = true;
       supported = !!(result && result.supported);
+      wakeAlarmUnsupported = !supported;
       applyGating();
     };
     // 한 번만 묻고 3초에 포기하면 브릿지가 늦게 붙는 순간을 놓친다.
@@ -12980,6 +12985,7 @@ var bedsideActive = false;
       if (settled) return;
       settled = true;
       supported = false;
+      wakeAlarmUnsupported = true;
       applyGating();
     }, 7000);
   }
@@ -13334,7 +13340,7 @@ var bedsideActive = false;
 
     ensureWakeIcon();
     updateWakeIcon();
-    [300, 1000, 2500, 5000].forEach(function (d) { try { window.setTimeout(updateWakeIcon, d); } catch (e) { /* 무시 */ } });
+    [0, 100, 250, 600, 1500, 3000].forEach(function (d) { try { window.setTimeout(updateWakeIcon, d); } catch (e) { /* 무시 */ } });
     try { window.setInterval(updateWakeIcon, 5000); } catch (e) { /* 무시 */ }
 
     bindAll();
