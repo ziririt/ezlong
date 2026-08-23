@@ -13201,6 +13201,18 @@ var bedsideActive = false;
         ? t("settings.alarm.bedtimeJustStarted", null, "이제 잠자리에 듭니다.")
         : t("settings.alarm.sleepLabel", null, "수면 중");
     }
+    // 2026-08-24 운영자: 취침 중 '기상 시각' 표시를 현재 알람으로 항상 맞춘다.
+    // 기상 시간을 수정하면 알람은 곧바로 바뀌는데 이 큰 숫자만 옛 값으로 남아
+    // "두 번 고쳐야 반영"처럼 보였다. 매초 현재 알람으로 다시 그려 즉시 반영한다.
+    if (els.sleepTime) {
+      try {
+        var _na = nextAlarm();
+        if (_na) {
+          var _txt = two(_na.hour) + ":" + two(_na.minute);
+          if (els.sleepTime.textContent !== _txt) els.sleepTime.textContent = _txt;
+        }
+      } catch (e) { /* 무시 */ }
+    }
     try { checkWebWake(d); } catch (e) { /* 무시 */ }
   }
   function startSleepClock() { stopSleepClock(); try { sleepClockTimer = window.setInterval(updateSleepNow, 1000); } catch (e) { /* 무시 */ } }
