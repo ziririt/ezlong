@@ -6402,3 +6402,14 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
 .sleep-screen-now-label { margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; color: rgba(255,255,255,0.4); }
 .sleep-screen-now { display: block; margin: 0 0 30px; font-size: 34px; font-weight: 300; line-height: 1; color: rgba(255,255,255,0.6); font-variant-numeric: tabular-nums; }
 .sleep-screen-wake-label { margin: 0 0 6px; font-size: 15px; font-weight: 800; letter-spacing: 0.02em; color: #7dd3fc; }
+
+
+/* 2026-08-23 alarm weekday conflict confirm */
+.alarm-confirm-overlay { position: fixed; inset: 0; z-index: 9600; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(4,10,20,0.62); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.alarm-confirm-box { width: 100%; max-width: 340px; background: rgba(28,32,40,0.96); border: 1px solid rgba(255,255,255,0.14); border-radius: 18px; padding: 22px 20px 16px; box-shadow: 0 18px 50px rgba(0,0,0,0.5); }
+.alarm-confirm-msg { margin: 0 0 18px; font-size: 16px; line-height: 1.55; color: rgba(255,255,255,0.92); white-space: pre-line; text-align: center; }
+.alarm-confirm-actions { display: flex; gap: 10px; }
+.alarm-confirm-btn { flex: 1; padding: 13px 12px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; border: 1px solid transparent; }
+.alarm-confirm-no { background: rgba(255,255,255,0.10); color: #eaf1ff; border-color: rgba(255,255,255,0.18); }
+.alarm-confirm-yes { background: #3d7bfd; color: #fff; }
+.alarm-confirm-btn:active { transform: scale(0.97); }

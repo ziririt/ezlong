@@ -12107,13 +12107,52 @@ var bedsideActive = false;
     renderList();
   }
 
+  // 2026-08-23 운영자: 요일(시간대) 충돌 안내 — 같은 요일에 이미 알람이 있는데
+  // 시각만 다르면 조용히 추가하지 않고 "기존 걸 이 시각으로 바꿀까요?" 먼저 묻는다.
+  // 확인=기존 수정(대체), 취소=둘 다 추가.
+  var DOW_KO_LABELS = ["일", "월", "화", "수", "목", "금", "토"];
+  function alarmDaysLabel(days) {
+    if (!days || !days.length) return "매일";
+    return days.slice().sort(function (a, b) { return a - b; })
+      .map(function (d) { return DOW_KO_LABELS[d] || ""; }).join("·") + "요일";
+  }
+  function alarmHM(h, m) { return two(h) + ":" + two(m); }
+  function showAlarmConfirm(message, onYes, onNo) {
+    var prev = document.getElementById("alarmConfirmOverlay");
+    if (prev) { try { prev.remove(); } catch (e) { /* 무시 */ } }
+    var ov = document.createElement("div");
+    ov.id = "alarmConfirmOverlay";
+    ov.className = "alarm-confirm-overlay";
+    var box = document.createElement("div");
+    box.className = "alarm-confirm-box";
+    var msg = document.createElement("p");
+    msg.className = "alarm-confirm-msg";
+    msg.textContent = message;
+    var actions = document.createElement("div");
+    actions.className = "alarm-confirm-actions";
+    var no = document.createElement("button");
+    no.type = "button";
+    no.className = "alarm-confirm-btn alarm-confirm-no";
+    no.textContent = t("settings.alarm.conflictAdd", null, "새로 추가");
+    var yes = document.createElement("button");
+    yes.type = "button";
+    yes.className = "alarm-confirm-btn alarm-confirm-yes";
+    yes.textContent = t("settings.alarm.conflictReplace", null, "기존 수정");
+    function closeIt() { try { ov.remove(); } catch (e) { /* 무시 */ } }
+    no.addEventListener("click", function () { closeIt(); if (onNo) onNo(); });
+    yes.addEventListener("click", function () { closeIt(); if (onYes) onYes(); });
+    actions.appendChild(no);
+    actions.appendChild(yes);
+    box.appendChild(msg);
+    box.appendChild(actions);
+    ov.appendChild(box);
+    document.body.appendChild(ov);
+  }
   function onConfirm() {
     var raw = (els.time && els.time.value) || "07:00";
     var parts = raw.split(":");
     var hour = Math.max(0, Math.min(23, parseInt(parts[0], 10) || 0));
     var minute = Math.max(0, Math.min(59, parseInt(parts[1], 10) || 0));
-
-    var alarms = loadAlarms();
     var id = editingId || ("wk" + Math.random().toString(36).slice(2, 8) + Date.now().toString(36));
     var record = {
       id: id,
@@ -12124,21 +12163,44 @@ var bedsideActive = false;
       trackFile: selectedTrack ? selectedTrack.file : null,
       trackTitle: selectedTrack ? selectedTrack.title : ""
     };
-
+    var recDays = record.weekdays || [];
+    var conflicts = loadAlarms().filter(function (a2) {
+      if (a2.id === record.id) return false;
+      var a2Days = a2.weekdays || [];
+      var overlap = (!recDays.length || !a2Days.length)
+        ? true
+        : recDays.some(function (d) { return a2Days.indexOf(d) !== -1; });
+      return overlap && !(a2.hour === record.hour && a2.minute === record.minute);
+    });
+    if (conflicts.length) {
+      var c0 = conflicts[0];
+      var extra = conflicts.length > 1 ? t("settings.alarm.conflictMore", { n: conflicts.length - 1 }, " (외 {n}개 더)") : "";
+      var msg = t("settings.alarm.conflictBody", { days: alarmDaysLabel(c0.weekdays), time: alarmHM(c0.hour, c0.minute), extra: extra, newtime: alarmHM(record.hour, record.minute) }, "{days}에 이미 {time} 알람이 있어요{extra}. {newtime}(으)로 바꿀까요? 기존 수정을 누르면 그 알람을 이 시각으로 바꾸고, 새로 추가를 누르면 둘 다 남깁니다.");
+      showAlarmConfirm(
+        msg,
+        function () { commitAlarm(record, conflicts.map(function (c) { return c.id; })); },
+        function () { commitAlarm(record, []); }
+      );
+      return;
+    }
+    commitAlarm(record, []);
+  }
+  function commitAlarm(record, replaceIds) {
+    var alarms = loadAlarms();
+    replaceIds = replaceIds || [];
+    if (replaceIds.length) {
+      alarms = alarms.filter(function (a) { return replaceIds.indexOf(a.id) === -1; });
+      replaceIds.forEach(function (rid) { if (rid) postAlarmBridge({ action: "cancelWakeAlarm", id: rid }); });
+    }
     var at = -1;
     for (var i = 0; i < alarms.length; i += 1) {
-      if (alarms[i].id === id) { at = i; break; }
+      if (alarms[i].id === record.id) { at = i; break; }
     }
     if (at >= 0) alarms[at] = record;
     else alarms.push(record);
-
-    // 2026-08-23 — 중복 시각 검사: 같은 시:분은 하나만 남긴다. 다른 동시각 옥람은 지우고 네이티브에서도 취소.
+    var recDays = record.weekdays || [];
     var kept = [];
     var dropped = [];
-    // 2026-08-23 운영자 문의: 요일까지 본다. 같은 시:분이라도 요일이 안 겹치면
-    // (예: 평일 07:00 vs 주말 07:00) 실제로 동시에 울리지 않으므로 충돌이 아니다.
-    // 빈 요일 배열은 '매일'이라 어떤 요일과도 겹친다.
-    var recDays = record.weekdays || [];
     for (var k = 0; k < alarms.length; k += 1) {
       var a2 = alarms[k];
       var a2Days = a2.weekdays || [];
@@ -12153,11 +12215,9 @@ var bedsideActive = false;
     }
     alarms = kept;
     dropped.forEach(function (rid) { if (rid) postAlarmBridge({ action: "cancelWakeAlarm", id: rid }); });
-
     alarms.sort(function (a, b) { return (a.hour * 60 + a.minute) - (b.hour * 60 + b.minute); });
     saveAlarms(alarms);
     pushAlarmToNative(record);
-
     editingId = null;
     stopPreview();
     renderList();

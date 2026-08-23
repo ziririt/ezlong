@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-23T06:03:07.311Z
+ * 생성 시각: 2026-08-23T09:40:08.489Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -187,7 +187,11 @@
         "todayLabel": "Today",
         "sleptHM": "You slept {h}h {m}m",
         "sleptH": "You slept {h}h",
-        "sleptM": "You slept {m}m"
+        "sleptM": "You slept {m}m",
+        "conflictAdd": "Add new",
+        "conflictReplace": "Replace existing",
+        "conflictMore": " (+{n} more)",
+        "conflictBody": "{days} already has a {time} alarm{extra}. Change it to {newtime}? Replace existing changes that alarm to this time; Add new keeps both."
       },
       "watch": {
         "heading": "Apple Watch",
@@ -662,7 +666,11 @@
         "todayLabel": "Hoy",
         "sleptHM": "Dormiste {h}h {m}min",
         "sleptH": "Dormiste {h}h",
-        "sleptM": "Dormiste {m}min"
+        "sleptM": "Dormiste {m}min",
+        "conflictAdd": "Añadir nueva",
+        "conflictReplace": "Cambiar existente",
+        "conflictMore": " (+{n} más)",
+        "conflictBody": "{days} ya tiene una alarma a las {time}{extra}. ¿Cambiarla a {newtime}? Cambiar existente ajusta esa alarma a esta hora; Añadir nueva mantiene ambas."
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1137,7 +1145,11 @@
         "todayLabel": "今日",
         "sleptHM": "{h}時間{m}分眠りました",
         "sleptH": "{h}時間眠りました",
-        "sleptM": "{m}分眠りました"
+        "sleptM": "{m}分眠りました",
+        "conflictAdd": "新規追加",
+        "conflictReplace": "既存を変更",
+        "conflictMore": " (他{n}件)",
+        "conflictBody": "{days}にすでに {time} のアラームがあります{extra}。{newtime} に変更しますか？ 「既存を変更」はそのアラームをこの時刻に変更し、「新規追加」は両方残します。"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1612,7 +1624,11 @@
         "todayLabel": "오늘",
         "sleptHM": "{h}시간 {m}분 주무셨어요",
         "sleptH": "{h}시간 주무셨어요",
-        "sleptM": "{m}분 주무셨어요"
+        "sleptM": "{m}분 주무셨어요",
+        "conflictAdd": "새로 추가",
+        "conflictReplace": "기존 수정",
+        "conflictMore": " (외 {n}개 더)",
+        "conflictBody": "{days}에 이미 {time} 알람이 있어요{extra}. {newtime}(으)로 바꿀까요? 기존 수정을 누르면 그 알람을 이 시각으로 바꾸고, 새로 추가를 누르면 둘 다 남깁니다."
       },
       "watch": {
         "heading": "애플워치",
@@ -2087,7 +2103,11 @@
         "todayLabel": "Hoje",
         "sleptHM": "Você dormiu {h}h {m}min",
         "sleptH": "Você dormiu {h}h",
-        "sleptM": "Você dormiu {m}min"
+        "sleptM": "Você dormiu {m}min",
+        "conflictAdd": "Adicionar nova",
+        "conflictReplace": "Alterar existente",
+        "conflictMore": " (+{n} mais)",
+        "conflictBody": "{days} já tem um alarme às {time}{extra}. Alterar para {newtime}? Alterar existente muda esse alarme para este horário; Adicionar nova mantém os dois."
       },
       "watch": {
         "heading": "Apple Watch",
@@ -2562,7 +2582,11 @@
         "todayLabel": "今天",
         "sleptHM": "您睡了{h}小时{m}分钟",
         "sleptH": "您睡了{h}小时",
-        "sleptM": "您睡了{m}分钟"
+        "sleptM": "您睡了{m}分钟",
+        "conflictAdd": "新增",
+        "conflictReplace": "修改现有",
+        "conflictMore": "（另有{n}个）",
+        "conflictBody": "{days}已有 {time} 的闹钟{extra}。要改为 {newtime} 吗？ “修改现有”会把该闹钟改到此时间，“新增”则两个都保留。"
       },
       "watch": {
         "heading": "Apple Watch",
