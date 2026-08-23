@@ -12038,6 +12038,7 @@ var bedsideActive = false;
       row.appendChild(del);
       els.list.appendChild(row);
     });
+    ensureAddAlarmButton();
     updateConfirmLabel();
     updateBedtimeButton();
     renderHomeSummary();
@@ -12080,6 +12081,45 @@ var bedsideActive = false;
   }
 
   // ── 네이티브 브릿지 ─────────────────────────────────────────────
+
+  // 2026-08-23 운영자: "다른 요일 알람 추가" — 기존 알람을 건드리지 않고 새 알람을
+  // 만든다. 아직 알람이 없는 요일(예: 토·일)을 미리 골라 주고, 시각만 정하면 된다.
+  function startNewAlarm() {
+    editingId = null;
+    var covered = {};
+    loadAlarms().forEach(function (a) {
+      var d = a.weekdays || [];
+      if (!d.length) { for (var i = 0; i < 7; i += 1) covered[i] = true; }
+      else d.forEach(function (x) { covered[x] = true; });
+    });
+    var free = [];
+    for (var j = 0; j < 7; j += 1) { if (!covered[j]) free.push(j); }
+    selectedWeekdays = free;   // 빈 요일을 미리 선택(전부 차 있으면 빈 채로 둔다)
+    if (els.snooze) els.snooze.checked = true;
+    renderWeekdays();
+    renderSoundTabs();
+    renderSoundList();
+    updateConfirmLabel();
+    if (els.configScreen && !els.configScreen.hidden) {
+      try { els.configScreen.scrollTo({ top: 0, behavior: "smooth" }); }
+      catch (error) { try { els.configScreen.scrollTop = 0; } catch (e2) { /* 무시 */ } }
+    }
+    if (els.time) {
+      try { els.time.focus({ preventScroll: true }); } catch (error) { /* 무시 */ }
+      try { if (typeof els.time.showPicker === "function") els.time.showPicker(); } catch (error) { /* 무시 */ }
+    }
+  }
+  function ensureAddAlarmButton() {
+    if (document.getElementById("alarmAddNew")) return;
+    if (!els.list || !els.list.parentNode) return;
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.id = "alarmAddNew";
+    btn.className = "alarm-add-new";
+    btn.textContent = "\uff0b " + t("settings.alarm.addAnother", null, "다른 요일 알람 추가");
+    btn.addEventListener("click", startNewAlarm);
+    els.list.parentNode.insertBefore(btn, els.list);
+  }
 
   function pushAlarmToNative(alarm) {
     var track = findTrackByFile(alarm.trackFile);
