@@ -6360,3 +6360,9 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
 .alarm-sound-toggle { flex: 0 0 auto; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.06); color: #7dd3fc; font-size: 13px; font-weight: 700; border-radius: 12px; padding: 7px 14px; cursor: pointer; }
 .alarm-sound-toggle:active { transform: scale(0.94); }
 .alarm-sound-detail[hidden] { display: none; }
+
+/* 2026-08-23 운영 지침 — 플립시계 탭 시 '기상 알람' 소제목이 다이내믹
+   아일랜드/상태바에 안 가리도록 스크롤 착지점에 안전영역만큼 여백을 준다. */
+#wakeAlarmSection { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 24px); }
+#musicSettingsSection { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 24px); }
+.wake-sleep-log { margin-top: 20px; width: 100%; max-height: 34vh; overflow-y: auto; }

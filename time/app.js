@@ -12292,38 +12292,55 @@ var bedsideActive = false;
   // ── 2026-08-23 울림 화면 재생 내역 ─────────────────────────
   // 자느라 알람을 놓친 사람이 "왜 안 울렸지?" 오해하지 않도록, 어떤 음악이
   // 몇 시 몇 분 몇 초부터 울리고 있었는지 담담하게 보여준다. 죄책감 주지 않게.
-  var WAKELOG_KEY = "ezlong:wakeLog";
-  function loadWakeLog() {
-    try { var r = localStorage.getItem(WAKELOG_KEY); var l = r ? JSON.parse(r) : []; return Array.isArray(l) ? l : []; }
-    catch (e) { return []; }
+  var WAKESESSION_KEY = "ezlong:wakeSession";
+  function loadWakeSession() { try { var r = localStorage.getItem(WAKESESSION_KEY); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
+  function saveWakeSession(sess) { try { localStorage.setItem(WAKESESSION_KEY, JSON.stringify(sess)); } catch (e) { /* 무시 */ } }
+  function clearWakeLog() {
+    try { localStorage.removeItem(WAKESESSION_KEY); } catch (e) { /* 무시 */ }
+    [els && els.ringLog, els && els.sleepLog].forEach(function (cc) { if (cc) { cc.hidden = true; cc.innerHTML = ""; } });
   }
-  function saveWakeLog(list) { try { localStorage.setItem(WAKELOG_KEY, JSON.stringify(list.slice(-12))); } catch (e) { /* 무시 */ } }
-  function clearWakeLog() { try { localStorage.removeItem(WAKELOG_KEY); } catch (e) { /* 무시 */ } if (els && els.ringLog) { els.ringLog.hidden = true; els.ringLog.innerHTML = ""; } }
-  function recordWakePlay(title) {
-    var log = loadWakeLog();
-    var now = Date.now();
-    var last = log[log.length - 1];
-    // 핸드오프 재등록 등으로 같은 곡이 3초 안에 또 들어오면 한 줄로 친다.
-    if (last && last.title === (title || "") && (now - last.t) < 3000) { return; }
-    log.push({ t: now, title: title || "" });
-    saveWakeLog(log);
-    renderWakeLog();
+  // 깨우려고 한 모든 노력을 시간순으로 재구성한다. 네이티브 스케줄과 똑같은
+  // 타임라인이라 JS가 잠깐 멈췄다 깨어나도 본 시각 기준으로 정확히 채워진다.
+  function genWakeTimeline(session) {
+    if (!session || !session.start) return [];
+    var start = session.start;
+    var title = session.title || t("settings.alarm.logUnknown", null, "알람 음악");
+    var GIVE_UP = 690;
+    var stopped = session.stop || null;
+    var endMs = stopped ? Math.min(stopped, start + GIVE_UP * 1000) : Math.min(Date.now(), start + GIVE_UP * 1000);
+    var elapsed = Math.max(0, (endMs - start) / 1000);
+    var ev = [];
+    ev.push({ t: start, text: title + " \u2014 \uc544\uc8fc \uc791\uc740 \uc18c\ub9ac\ub85c \uc7ac\uc0dd \uc2dc\uc791" });
+    var n = 1;
+    for (var off = 30; off < 240; off += 30) {
+      if (off > elapsed) break;
+      n += 1;
+      var note = off < 180 ? "\uc18c\ub9ac\ub97c \uc870\uae08\uc529 \ud0a4\uc6b0\ub294 \uc911" : "\uc18c\ub9ac\ub97c \ucda9\ubd84\ud788 \ud0a4\uc6c0";
+      ev.push({ t: start + off * 1000, text: "\uac19\uc740 \uace1 " + n + "\ubc88\uc9f8 \uc774\uc5b4\uc11c \uc7ac\uc0dd \u2014 " + note });
+    }
+    var sysN = 0;
+    for (var sc = 240; sc < GIVE_UP; sc += 180) {
+      if (sc > elapsed) break;
+      sysN += 1;
+      ev.push({ t: start + sc * 1000, text: "\uc2dc\uc2a4\ud15c \uc54c\ub78c " + sysN + "\ubc88\uc9f8 \u2014 \ucd5c\ub300 \ubcfc\ub968\uacfc \uc9c4\ub3d9\uc73c\ub85c" });
+    }
+    if (stopped && (stopped - start) / 1000 < GIVE_UP) {
+      ev.push({ t: stopped, text: "\uc54c\ub78c \ud574\uc81c\ub428 \u2014 \uc218\uace0\ud588\uc5b4\uc694" });
+    } else if (elapsed >= GIVE_UP) {
+      ev.push({ t: start + GIVE_UP * 1000, text: "\uc5ec\uae30\uc11c \uba48\ucd64 \u2014 \uc790\ub9ac\ub97c \ube44\uc6e0\uac70\ub098 \uac00\ubc29 \uc18d\uc73c\ub85c \ubcf4\uace0 \uadf8\ub9cc\ub451\uc5b4\uc694" });
+    }
+    return ev;
   }
-  function renderWakeLog() {
-    if (!els.ringLog) return;
-    var log = loadWakeLog();
-    if (!log.length) { els.ringLog.hidden = true; els.ringLog.innerHTML = ""; return; }
-    els.ringLog.hidden = false;
-    els.ringLog.innerHTML = "";
+  function renderOneWakeLog(container, ev) {
+    if (!container) return;
+    if (!ev.length) { container.hidden = true; container.innerHTML = ""; return; }
+    container.hidden = false;
+    container.innerHTML = "";
     var head = document.createElement("p");
     head.className = "wake-ring-log-head";
-    head.textContent = t("settings.alarm.logHead", null, "이 음악이 당신을 깨우고 있었어요");
-    els.ringLog.appendChild(head);
-    var cap = document.createElement("p");
-    cap.className = "wake-ring-log-cap";
-    cap.textContent = t("settings.alarm.logCap", null, "재생을 시작한 시각입니다");
-    els.ringLog.appendChild(cap);
-    log.forEach(function (e) {
+    head.textContent = t("settings.alarm.logHead", null, "\uc774\ub807\uac8c \uae68\uc6b0\ub824\uace0 \ud588\uc5b4\uc694");
+    container.appendChild(head);
+    ev.forEach(function (e) {
       var d = new Date(e.t);
       var row = document.createElement("div");
       row.className = "wake-ring-log-row";
@@ -12332,17 +12349,38 @@ var bedsideActive = false;
       tm.textContent = two(d.getHours()) + ":" + two(d.getMinutes()) + ":" + two(d.getSeconds());
       var ti = document.createElement("span");
       ti.className = "wake-ring-log-title";
-      ti.textContent = e.title || t("settings.alarm.logUnknown", null, "알람 음악");
+      ti.textContent = e.text;
       row.appendChild(tm);
       row.appendChild(ti);
-      els.ringLog.appendChild(row);
+      container.appendChild(row);
     });
   }
-
+  function renderWakeLog() {
+    var ev = genWakeTimeline(loadWakeSession());
+    renderOneWakeLog(els && els.ringLog, ev);
+    renderOneWakeLog(els && els.sleepLog, ev);
+  }
+  var wakeLogTimer = null;
+  function startWakeLogTimer() { stopWakeLogTimer(); try { wakeLogTimer = window.setInterval(renderWakeLog, 15000); } catch (e) { /* 무시 */ } }
+  function stopWakeLogTimer() { if (wakeLogTimer) { window.clearInterval(wakeLogTimer); wakeLogTimer = null; } }
   // 네이티브가 부른다. 두 번째 인자로 곡 제목이 온다(구버전 대비 기본값 처리).
   window.__flipzenWakeRinging = function (ringing, title) {
-    if (ringing) { recordWakePlay(title); showRingScreen(); }
-    else hideRingScreen();
+    if (ringing) {
+      var s = loadWakeSession();
+      if (!s || s.stop || (Date.now() - (s.start || 0)) > 690000) {
+        s = { start: Date.now(), title: title || "", stop: null };
+        saveWakeSession(s);
+      }
+      renderWakeLog();
+      startWakeLogTimer();
+      showRingScreen();
+    } else {
+      var s3 = loadWakeSession();
+      if (s3 && !s3.stop) { s3.stop = Date.now(); saveWakeSession(s3); }
+      stopWakeLogTimer();
+      renderWakeLog();
+      hideRingScreen();
+    }
   };
 
   // ── 열기 ────────────────────────────────────────────────────────
@@ -12611,6 +12649,7 @@ var bedsideActive = false;
       sleepEdit:  document.getElementById("sleepEditTime"),
       sleepCancel: document.getElementById("sleepCancel"),
       ringLog:    document.getElementById("wakeRingLog"),
+      sleepLog:   document.getElementById("wakeSleepLog"),
       configBedtime: document.getElementById("wakeConfigBedtime"),
       soundSummary: document.getElementById("alarmSoundSummary"),
       soundSummaryTitle: document.getElementById("alarmSoundSummaryTitle"),
