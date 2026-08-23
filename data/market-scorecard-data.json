@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "2026-08-23-23:20",
+      "timestamp_kst": "2026-08-23(일) 23:20 KST",
+      "key_event": {
+        "name": "AI 투자 확대 지속",
+        "name_en": "Continued AI Investment Expansion",
+        "time": "다음 주 개장 전",
+        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
+        "why_en": "Tech earnings optimism, improved AI investment sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
+      "summary_en": "Continued positive bias from AI investment and tech optimism, mixed macro concerns",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "기술주 실적 기대감",
+          "name_en": "Tech Earnings Optimism",
+          "desc": "AI 관련 기술주들의 실적에 대한 시장의 낙관적 기대 지속",
+          "desc_en": "Market's optimistic expectations for AI-related tech earnings continue",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 35,
+          "name": "AI 투자 심리 개선",
+          "name_en": "Improved AI Investment Sentiment",
+          "desc": "Nvidia 실적 발표 및 AI 서버 가격 인상 소식에 투자 심리 개선",
+          "desc_en": "Investment sentiment improved on Nvidia earnings and AI server price hike news",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "Jackson Hole 회의 경계감",
+          "name_en": "Jackson Hole Meeting Caution",
+          "desc": "다음 주 Jackson Hole 회의를 앞두고 Fed 매파적 발언 가능성 경계",
+          "desc_en": "Caution ahead of next week's Jackson Hole meeting due to potential hawkish Fed remarks",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "Nvidia 실적 및 가격 인상",
+          "name_en": "Nvidia Earnings and Price Hikes",
+          "desc": "Nvidia의 실적 기대감은 긍정적이나, AI 서버 15% 가격 인상 소식은 인플레이션 압력으로 해석될 수 있음",
+          "desc_en": "Nvidia's earnings expectations are positive, but news of a 15% price hike on AI servers could be interpreted as inflationary pressure",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미 10년 국채금리 4.74%(+0.89%) 및 30년 국채금리 5.28%(+0.74%) 상승은 성장주에 부담, 그러나 변동폭 미미",
+          "desc_en": "US 10-year Treasury yield rose to 4.74% (+0.89%) and 30-year yield to 5.28% (+0.74%), a burden for growth stocks, but the change is minor",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-23-21:50",
       "timestamp_kst": "2026-08-23(일) 21:50 KST",
       "key_event": {
@@ -465,52 +524,8 @@
         }
       ],
       "mixed_factors": []
-    },
-    {
-      "id": "2026-08-22-08:20",
-      "timestamp_kst": "2026-08-22(토) 08:20 KST",
-      "key_event": {
-        "name": "기술주 실적 낙관론 및 AI 모멘텀",
-        "name_en": "Tech Earnings Optimism & AI Momentum",
-        "time": "직전 정규장 및 포스트마켓",
-        "why": "주요 기술 기업 실적 기대감, AI 관련 투자 심리 개선",
-        "why_en": "Strong earnings expectations for major tech companies, improved AI investment sentiment"
-      },
-      "positive_total": 85,
-      "negative_total": 15,
-      "summary": "기술주 실적 낙관론 및 AI 모멘텀으로 3일 연속 긍정 우위 유지",
-      "summary_en": "Positive sentiment continues for the third consecutive day, driven by tech earnings optimism and AI momentum.",
-      "positive_factors": [
-        {
-          "score": 50,
-          "name": "기술주 실적 기대감 지속",
-          "name_en": "Sustained Tech Earnings Expectations",
-          "desc": "주요 기술 기업 실적 발표 임박, AI 관련 투자 심리 개선 지속",
-          "desc_en": "Anticipation for upcoming major tech earnings reports, continued improvement in AI investment sentiment.",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 35,
-          "name": "AI 관련 산업 성장 기대",
-          "name_en": "AI Industry Growth Expectations",
-          "desc": "Neoclouds 및 Anthropic IPO 등 AI 인프라 및 서비스 확장 기대감",
-          "desc_en": "Expectations for AI infrastructure and service expansion, including Neoclouds and Anthropic IPO.",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "일부 기술주 하락 압력",
-          "name_en": "Downward Pressure on Select Tech Stocks",
-          "desc": "애플 AI 전략 의문 및 Jefferies 매도 의견, 엔비디아 소폭 하락",
-          "desc_en": "Apple's AI strategy doubts and Jefferies' sell rating, slight decline in Nvidia.",
-          "category": "company_specific"
-        }
-      ],
-      "mixed_factors": []
     }
   ],
-  "updated_at": "2026-08-23T12:51:10Z",
+  "updated_at": "2026-08-23T14:21:04Z",
   "max_entries": 10
 }
