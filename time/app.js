@@ -2931,6 +2931,7 @@ function clearSettingsDirty() {
 function openSettings(focusSection) {
   settingsPanel.classList.add("is-open");
   try { if (window.__flipzenReportAdLayout) window.__flipzenReportAdLayout(); } catch (e) { /* 무시 */ }
+  try { if (window.__flipzenAlarmRefresh) window.__flipzenAlarmRefresh(); } catch (e) { /* 무시 */ }
   // 2026-08-04 2차 — 시트를 열 때마다 '앱을 열면 보일 화면'을 저장값으로
   // 다시 그린다. HTML에 checked가 박혀 있어서, 어떤 이유로든 초기 배선이
   // 실패하면 저장값과 무관하게 늘 기본값으로 보이는 착시가 생긴다.
@@ -12191,6 +12192,7 @@ var bedsideActive = false;
   }
 
   function enterBedtime() {
+    if (!alarmPremiumOk()) { try { postToNativeAd({ action: "openPaywall" }); } catch (e) { /* 무시 */ } return; }
     // 시각을 편집 중(설정 화면이 열려 있음)이면 먼저 저장한다 —
     // '취침 시작'만 눌러도 '수정 완료'가 눌린 것처럼 동작한다.
     if (els.configScreen && !els.configScreen.hidden) { onConfirm(); }
@@ -12427,6 +12429,8 @@ var bedsideActive = false;
 
   // 네이티브(위젯 탭 → longtime://alarms)가 부른다.
   window.__flipzenOpenWakeAlarm = openAlarmSettings;
+  // 프리미엄 상태가 늦게 들어와도 설정을 열 때 다시 게이팅을 평가한다.
+  window.__flipzenAlarmRefresh = function () { try { applyGating(); } catch (e) { /* 무시 */ } };
 
   // ── 플랫폼 판별 ─────────────────────────────────────────────────
   //
@@ -12561,6 +12565,49 @@ var bedsideActive = false;
     }, 7000);
   }
 
+  // 2026-08-23 — 기상 알람 프리미엄 게이트. 설치 후 14일은 무료 체험,
+  // 이후에는 프리미엄(구독) 사용자만 쓸 수 있다. __FLIPZEN_PREMIUM__ 는
+  // 네이티브가 무료 창까지 합쳐 내려주는 값이고, 스토리지 폴백
+  // (flipzen_first_seen)은 영상 배경 게이트와 같은 키를 공유한다.
+  var ALARM_PREMIUM_NOTICE_ID = "wakeAlarmPremiumNotice";
+  function alarmPremiumOk() {
+    try {
+      if (window.__FLIPZEN_PREMIUM__ === true) return true;
+      var v = localStorage.getItem("flipzen_first_seen");
+      if (!v) { v = String(Date.now()); localStorage.setItem("flipzen_first_seen", v); }
+      return (Date.now() - Number(v)) < (14 * 24 * 60 * 60 * 1000);
+    } catch (e) { return false; }
+  }
+  var ALARM_HIDE_KEYS = ["time","weekdays","repeatNote","snooze","soundTabs","soundList","confirm","list","bedtime","openConfig","homeSummary","soundSummary","configBedtime"];
+  var ALARM_HIDE_SEL = [".alarm-standby-hint",".alarm-subhead",".alarm-fade-guide",".alarm-bedtime-block",".field-option"];
+  function showAlarmPremiumNotice() {
+    if (!els.section || document.getElementById(ALARM_PREMIUM_NOTICE_ID)) return;
+    ALARM_HIDE_KEYS.forEach(function (k) { var n = els[k]; if (n) n.style.display = "none"; });
+    ALARM_HIDE_SEL.forEach(function (sel) { var n = els.section.querySelector(sel); if (n) n.style.display = "none"; });
+    var note = document.createElement("p");
+    note.id = ALARM_PREMIUM_NOTICE_ID;
+    note.className = "settings-desc settings-desc-muted";
+    note.textContent = t("settings.alarm.premiumOnly", null,
+      "기상 알람은 프리미엄 기능입니다. 설치 후 첫 2주는 무료로 써 보실 수 있고, 이후에는 프리미엄에서 이용할 수 있어요.");
+    els.section.appendChild(note);
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.id = ALARM_PREMIUM_NOTICE_ID + "Btn";
+    btn.className = "premium-upgrade-button";
+    btn.textContent = t("settings.premium.cta", null, "프리미엄으로 업그레이드");
+    btn.addEventListener("click", function () {
+      try { postToNativeAd({ action: "openPaywall" }); } catch (e) { /* 무시 */ }
+    });
+    els.section.appendChild(btn);
+  }
+  function clearAlarmPremiumNotice() {
+    var note = document.getElementById(ALARM_PREMIUM_NOTICE_ID);
+    if (note && note.parentNode) note.parentNode.removeChild(note);
+    var btn = document.getElementById(ALARM_PREMIUM_NOTICE_ID + "Btn");
+    if (btn && btn.parentNode) btn.parentNode.removeChild(btn);
+    ALARM_HIDE_KEYS.forEach(function (k) { var n = els[k]; if (n) n.style.display = ""; });
+    if (els.section) ALARM_HIDE_SEL.forEach(function (sel) { var n = els.section.querySelector(sel); if (n) n.style.display = ""; });
+  }
   function applyGating() {
     if (!els || !els.section) return;
 
@@ -12584,6 +12631,14 @@ var bedsideActive = false;
       return;
     }
     clearUnsupportedNotice();
+    // 프리미엄 게이트 — 무료 체험(14일)이 지난 비구독자는 안내만 보여준다.
+    if (!alarmPremiumOk()) {
+      if (els.bar) els.bar.hidden = true;
+      document.body.classList.remove("bedtime-mode");
+      showAlarmPremiumNotice();
+      return;
+    }
+    clearAlarmPremiumNotice();
     renderWeekdays();
     renderSoundTabs();
     renderSoundList();
@@ -12609,6 +12664,7 @@ var bedsideActive = false;
   }
   function openConfigScreen(scrollToTime) {
     if (!els.configScreen) return;
+    if (!alarmPremiumOk()) { try { postToNativeAd({ action: "openPaywall" }); } catch (e) { /* 무시 */ } return; }
     els.configScreen.hidden = false;
     setAlarmAdHidden(true);
     if (scrollToTime && els.time) {

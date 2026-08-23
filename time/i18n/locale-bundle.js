@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-23T03:45:47.671Z
+ * 생성 시각: 2026-08-23T04:28:49.981Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -22,7 +22,7 @@
       "title": "Settings",
       "premium": {
         "heading": "Premium",
-        "desc": "Remove ads for a calmer, cleaner experience.",
+        "desc": "Remove ads and unlock premium features like the wake alarm and video backgrounds.",
         "cta": "Upgrade to Premium"
       },
       "background": {
@@ -179,7 +179,8 @@
         "logHead": "This music was waking you",
         "logCap": "When each track started playing",
         "logUnknown": "Alarm music",
-        "changeMusic": "Change music"
+        "changeMusic": "Change music",
+        "premiumOnly": "The wake alarm is a premium feature. It's free for the first 2 weeks after install; after that it's available with premium."
       },
       "watch": {
         "heading": "Apple Watch",
@@ -489,7 +490,7 @@
       "title": "Ajustes",
       "premium": {
         "heading": "Premium",
-        "desc": "Quita los anuncios para una experiencia más tranquila.",
+        "desc": "Elimina los anuncios y desbloquea funciones premium como la alarma para despertar y los fondos de vídeo.",
         "cta": "Pasar a Premium"
       },
       "background": {
@@ -646,7 +647,8 @@
         "logHead": "Esta música te estaba despertando",
         "logCap": "Hora en que empezó cada pista",
         "logUnknown": "Música de alarma",
-        "changeMusic": "Cambiar música"
+        "changeMusic": "Cambiar música",
+        "premiumOnly": "La alarma para despertar es una función premium. Es gratis durante las primeras 2 semanas tras la instalación; después está disponible con premium."
       },
       "watch": {
         "heading": "Apple Watch",
@@ -956,7 +958,7 @@
       "title": "設定",
       "premium": {
         "heading": "プレミアム",
-        "desc": "広告を消して、もっと静かに使えます。",
+        "desc": "広告を非表示にし、起床アラームや動画背景などのプレミアム機能をご利用いただけます。",
         "cta": "プレミアムにアップグレード"
       },
       "background": {
@@ -1113,7 +1115,8 @@
         "logHead": "この音楽が目覚ましに鳴っていました",
         "logCap": "再生を始めた時刻",
         "logUnknown": "アラーム音楽",
-        "changeMusic": "音楽を変更"
+        "changeMusic": "音楽を変更",
+        "premiumOnly": "起床アラームはプレミアム機能です。インストール後2週間は無料でお試しいただけ、その後はプレミアムでご利用いただけます。"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1423,7 +1426,7 @@
       "title": "설정",
       "premium": {
         "heading": "프리미엄",
-        "desc": "광고를 제거하고 더 쾌적하게 이용하세요.",
+        "desc": "광고 제거, 기상 알람, 동영상 배경 등 프리미엄 전용 기능을 이용하세요.",
         "cta": "프리미엄으로 업그레이드"
       },
       "background": {
@@ -1580,7 +1583,8 @@
         "logHead": "이 음악이 당신을 깨우고 있었어요",
         "logCap": "재생을 시작한 시각입니다",
         "logUnknown": "알람 음악",
-        "changeMusic": "음악 변경하기"
+        "changeMusic": "음악 변경하기",
+        "premiumOnly": "기상 알람은 프리미엄 기능입니다. 설치 후 첫 2주는 무료로 써 보실 수 있고, 이후에는 프리미엄에서 이용할 수 있어요."
       },
       "watch": {
         "heading": "애플워치",
@@ -1890,7 +1894,7 @@
       "title": "Configurações",
       "premium": {
         "heading": "Premium",
-        "desc": "Tire os anúncios para uma experiência mais tranquila.",
+        "desc": "Remova os anúncios e desbloqueie recursos premium como o alarme para acordar e os fundos de vídeo.",
         "cta": "Assinar o Premium"
       },
       "background": {
@@ -2047,7 +2051,8 @@
         "logHead": "Esta música estava a acordar-te",
         "logCap": "Hora em que cada faixa começou",
         "logUnknown": "Música do alarme",
-        "changeMusic": "Alterar música"
+        "changeMusic": "Alterar música",
+        "premiumOnly": "O alarme para acordar é um recurso premium. É gratuito nas primeiras 2 semanas após a instalação; depois fica disponível com o premium."
       },
       "watch": {
         "heading": "Apple Watch",
@@ -2357,7 +2362,7 @@
       "title": "设置",
       "premium": {
         "heading": "高级版",
-        "desc": "去除广告，用得更清爽。",
+        "desc": "去除广告，解锁起床闹钟、视频背景等高级功能。",
         "cta": "升级到高级版"
       },
       "background": {
@@ -2514,7 +2519,8 @@
         "logHead": "这首音乐一直在叫醒你",
         "logCap": "开始播放的时刻",
         "logUnknown": "闹钟音乐",
-        "changeMusic": "更换音乐"
+        "changeMusic": "更换音乐",
+        "premiumOnly": "起床闹钟是高级功能。安装后前两周可免费使用，之后需要高级会员。"
       },
       "watch": {
         "heading": "Apple Watch",
