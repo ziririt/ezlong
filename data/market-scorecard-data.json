@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-08-23-16:50",
+      "timestamp_kst": "2026-08-23(일) 16:50 KST",
+      "key_event": {
+        "name": "AI 투자 확대 지속",
+        "name_en": "Continued AI Investment Expansion",
+        "time": "직전 거래일 마감 및 다음 주 개장 변수",
+        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
+        "why_en": "Tech earnings optimism, improved AI investment sentiment"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
+      "summary_en": "Continued positive bias due to AI investment and tech optimism, mixed macro concerns",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "AI 투자 심리 개선",
+          "name_en": "Improved AI Investment Sentiment",
+          "desc": "월스트리트 전략가들, 빅테크 AI 투자 수익성 전망",
+          "desc_en": "Wall Street strategists foresee profitability from Big Tech's AI investments",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "주요 지수 상승 마감",
+          "name_en": "Major Indices Close Higher",
+          "desc": "QQQ (+0.50%), SPY (+0.54%) 등 주요 지수 상승 마감",
+          "desc_en": "Major indices like QQQ (+0.50%) and SPY (+0.54%) closed higher",
+          "category": "other"
+        },
+        {
+          "score": 20,
+          "name": "VIX 공포지수 하락",
+          "name_en": "VIX Fear Index Decline",
+          "desc": "VIX 공포지수 15.13(-5.50%) 하락, 시장 불안감 완화",
+          "desc_en": "VIX fear index fell to 15.13 (-5.50%), easing market anxiety",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "이란-미국 갈등 고조",
+          "name_en": "Escalating Iran-US Tensions",
+          "desc": "이란, 미국 '경제 전쟁' 동참하는 걸프 국가 위협 발언",
+          "desc_en": "Iran threatens Gulf neighbors joining US 'economic war'",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "엔비디아 실적 및 GPU 가격 인상",
+          "name_en": "Nvidia Earnings and GPU Price Hikes",
+          "desc": "엔비디아 실적 발표 임박 및 GPU 가격 인상 소식, 긍정적 기대와 고평가 우려 혼재",
+          "desc_en": "Nvidia earnings loom with GPU price hike news, mixing positive expectations with overvaluation concerns",
+          "category": "ai_tech_valuation"
+        }
+      ]
+    },
+    {
       "id": "2026-08-23-08:20",
       "timestamp_kst": "2026-08-23(일) 08:20 KST",
       "key_event": {
@@ -434,52 +494,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-22-00:40",
-      "timestamp_kst": "2026-08-22(토) 00:40 KST",
-      "key_event": {
-        "name": "기술주 실적 낙관론 및 AI 모멘텀",
-        "name_en": "Tech Earnings Optimism & AI Momentum",
-        "time": "2026-08-22 정규장 진행 중",
-        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
-        "why_en": "Tech earnings expectations, improved AI investment sentiment"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "기술주 실적 낙관론 및 AI 모멘텀으로 긍정 우위 지속, 매파적 Fed 발언 우려 혼조",
-      "summary_en": "Continued positive sentiment driven by tech earnings optimism and AI momentum, mixed with hawkish Fed remarks concerns",
-      "positive_factors": [
-        {
-          "score": 75,
-          "name": "AI 기술 모멘텀 지속",
-          "name_en": "Sustained AI Tech Momentum",
-          "desc": "Starcloud의 23억 달러 펀딩 및 AMD와 Nvidia의 AI 경쟁 심화",
-          "desc_en": "Starcloud's $2.3 billion funding and intensifying AI competition between AMD and Nvidia",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "매파적 Fed 발언 우려",
-          "name_en": "Hawkish Fed Remarks Concerns",
-          "desc": "Fed와 재무부의 정책 충돌 및 Jackson Hole 테스트 언급, 금리 인상 가능성 잔존",
-          "desc_en": "Policy clash between Fed and Treasury, Jackson Hole test mentioned, lingering rate hike possibility",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 4.74%(+0.85%), 미30년 국채금리 5.27%(+0.63%) 상승. 금리 상승은 기술주에 부담이나, 변동폭이 미미하여 시장 영향 제한적",
-          "desc_en": "US 10-year Treasury yield at 4.74% (+0.85%) and 30-year at 5.27% (+0.63%). Rising yields typically pressure tech, but the change is minor, limiting market impact.",
-          "category": "rates_treasury"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-22T23:20:58Z",
+  "updated_at": "2026-08-23T07:50:59Z",
   "max_entries": 10
 }
