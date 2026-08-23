@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-23T01:32:35.006Z
+ * 생성 시각: 2026-08-23T03:45:47.671Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -178,7 +178,8 @@
         "soundDefault": "Default track",
         "logHead": "This music was waking you",
         "logCap": "When each track started playing",
-        "logUnknown": "Alarm music"
+        "logUnknown": "Alarm music",
+        "changeMusic": "Change music"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -644,7 +645,8 @@
         "soundDefault": "Pista predeterminada",
         "logHead": "Esta música te estaba despertando",
         "logCap": "Hora en que empezó cada pista",
-        "logUnknown": "Música de alarma"
+        "logUnknown": "Música de alarma",
+        "changeMusic": "Cambiar música"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1110,7 +1112,8 @@
         "soundDefault": "デフォルトの曲",
         "logHead": "この音楽が目覚ましに鳴っていました",
         "logCap": "再生を始めた時刻",
-        "logUnknown": "アラーム音楽"
+        "logUnknown": "アラーム音楽",
+        "changeMusic": "音楽を変更"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1576,7 +1579,8 @@
         "soundDefault": "기본 음악",
         "logHead": "이 음악이 당신을 깨우고 있었어요",
         "logCap": "재생을 시작한 시각입니다",
-        "logUnknown": "알람 음악"
+        "logUnknown": "알람 음악",
+        "changeMusic": "음악 변경하기"
       },
       "watch": {
         "heading": "애플워치",
@@ -2042,7 +2046,8 @@
         "soundDefault": "Faixa padrão",
         "logHead": "Esta música estava a acordar-te",
         "logCap": "Hora em que cada faixa começou",
-        "logUnknown": "Música do alarme"
+        "logUnknown": "Música do alarme",
+        "changeMusic": "Alterar música"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -2508,7 +2513,8 @@
         "soundDefault": "默认曲目",
         "logHead": "这首音乐一直在叫醒你",
         "logCap": "开始播放的时刻",
-        "logUnknown": "闹钟音乐"
+        "logUnknown": "闹钟音乐",
+        "changeMusic": "更换音乐"
       },
       "watch": {
         "heading": "Apple Watch",

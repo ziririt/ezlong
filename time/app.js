@@ -12286,7 +12286,26 @@ var bedsideActive = false;
     setAlarmAdHidden(false);
   }
 
+  // 2026-08-23 — 링/수면 화면 히스토리 위 "음악 변경하기" → 알람 설정 음악 부분으로.
+  function goToMusicSettings() {
+    try { postAlarmBridge({ action: "stopWakeMusic" }); } catch (e) { /* 무시 */ }
+    try { stopWebWakeAudio(); } catch (e) { /* 무시 */ }
+    try { hideRingScreen(); } catch (e) { /* 무시 */ }
+    try { exitBedtime(); } catch (e) { /* 무시 */ }
+    try { openAlarmSettings(); } catch (e) { /* 무시 */ }
+    try { openConfigScreen(false); } catch (e) { /* 무시 */ }
+    try { setSoundDetailOpen(true); } catch (e) { /* 무시 */ }
+    window.setTimeout(function () {
+      try {
+        var node = (els && (els.soundDetail || els.soundList)) || null;
+        if (node && node.scrollIntoView) node.scrollIntoView({ behavior: "smooth", block: "center" });
+      } catch (e) { /* 무시 */ }
+    }, 260);
+  }
   function bindRingButtons() {
+    if (els.sleepMusicChange) els.sleepMusicChange.addEventListener("click", goToMusicSettings);
+    if (els.ringMusicChange) els.ringMusicChange.addEventListener("click", goToMusicSettings);
+
     if (els.ringStop) {
       els.ringStop.addEventListener("click", function () {
         postAlarmBridge({ action: "stopWakeMusic" });
@@ -12746,6 +12765,8 @@ var bedsideActive = false;
       sleepCancel: document.getElementById("sleepCancel"),
       ringLog:    document.getElementById("wakeRingLog"),
       sleepLog:   document.getElementById("wakeSleepLog"),
+      sleepMusicChange: document.getElementById("sleepMusicChange"),
+      ringMusicChange:  document.getElementById("ringMusicChange"),
       configBedtime: document.getElementById("wakeConfigBedtime"),
       soundSummary: document.getElementById("alarmSoundSummary"),
       soundSummaryTitle: document.getElementById("alarmSoundSummaryTitle"),

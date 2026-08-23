@@ -6266,6 +6266,9 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
 .sleep-screen-edit:active { transform: scale(0.98); }
 .sleep-screen-cancel { display: block; width: 100%; margin-top: 12px; padding: 15px 16px; border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 16px; background: transparent; color: rgba(255, 255, 255, 0.66); font-size: 15px; font-weight: 600; cursor: pointer; }
 .sleep-screen-cancel:active { background: rgba(255, 255, 255, 0.06); }
+/* 2026-08-23 — 링/수면 화면 히스토리 위 "음악 변경하기" 바로가기(하늘색 테두리). */
+.wake-music-change { display: block; width: 100%; margin: 18px 0 8px; padding: 14px 16px; border: 1px solid rgba(56, 189, 248, 0.55); border-radius: 16px; background: rgba(56, 189, 248, 0.12); color: #7dd3fc; font-size: 15px; font-weight: 700; cursor: pointer; }
+.wake-music-change:active { transform: scale(0.98); background: rgba(56, 189, 248, 0.2); }
 
 /* 알람 해제 버튼 — 눈에 띄게 크게 (기존 .wake-ring-stop 위에 덮어쓴다) */
 .wake-ring-stop { margin-top: 40px; padding: 30px 16px; border-radius: 24px; font-size: 27px; min-height: 88px; box-shadow: 0 14px 44px rgba(56, 189, 248, 0.42); }
