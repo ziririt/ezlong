@@ -12507,6 +12507,16 @@ var bedsideActive = false;
   var ROCK_OFFSETS = [180, 480, 780];   // 초 — 3분, 8분, 13분
   var ROCK_GIVE_UP = 1080;              // 초 — 18분
   var rockTimers = [];
+  var webRockRampTimer = null;
+  // 2026-08-23 운영자: 록 볼륨 계단 — 4단계(0.40)에서 0.80까지만, 6초 간격. 갑자기 크게 X.
+  function rockRampVolume(sec) {
+    if (sec < 6) return 0.40;
+    if (sec < 12) return 0.48;
+    if (sec < 18) return 0.57;
+    if (sec < 24) return 0.66;
+    if (sec < 30) return 0.74;
+    return 0.80;
+  }
   function clearRockTimers() {
     for (var ri = 0; ri < rockTimers.length; ri += 1) {
       try { window.clearTimeout(rockTimers[ri]); } catch (e) { /* 무시 */ }
@@ -12527,15 +12537,23 @@ var bedsideActive = false;
     var pick = pickRockUrl();
     if (!pick) return;   // 록 곡이 하나도 없으면 조용히 넘어간다(소프트 유지)
     // 네이티브 오디오 엔진에게: 이 URL 을 최대 볼륨으로 갈아끼워라.
-    try { postAlarmBridge({ action: "escalateWake", soundUrl: pick.url, volume: 1.0 }); } catch (e) { /* 무시 */ }
+    try { postAlarmBridge({ action: "escalateWake", soundUrl: pick.url, volume: 0.8 }); } catch (e) { /* 무시 */ }
     // 웹 폴백(네이티브 없이 웹이 소리 내는 중)이면 소스를 록으로 갈아끼운다.
+    // 볼륨은 4단계(0.40)에서 계단식으로 0.80까지만 — 놀라지 않게.
     if (webWakeAudio) {
       try {
         stopWebWakeAudio();
         webWakeAudio = new Audio(pick.url);
         webWakeAudio.loop = true;
-        webWakeAudio.volume = 1.0;
+        webWakeAudio.volume = rockRampVolume(0);
         webWakeAudio.play().catch(function () { /* 차단 시 조용히 */ });
+        var rockStart = Date.now();
+        webRockRampTimer = window.setInterval(function () {
+          if (!webWakeAudio) { if (webRockRampTimer) { window.clearInterval(webRockRampTimer); webRockRampTimer = null; } return; }
+          var rsec = (Date.now() - rockStart) / 1000;
+          try { webWakeAudio.volume = rockRampVolume(rsec); } catch (e) { /* 무시 */ }
+          if (rsec > 32 && webRockRampTimer) { window.clearInterval(webRockRampTimer); webRockRampTimer = null; }
+        }, 1000);
       } catch (e) { /* 무시 */ }
     }
     // 히스토리에 남긴다(익살스럽게 — genWakeTimeline 이 rockRounds 를 읽어 렌더).
@@ -12953,6 +12971,7 @@ var bedsideActive = false;
   var webWakeStartedAt = 0;
   function stopWebWakeAudio() {
     if (webWakeRampTimer) { window.clearInterval(webWakeRampTimer); webWakeRampTimer = null; }
+    if (webRockRampTimer) { window.clearInterval(webRockRampTimer); webRockRampTimer = null; }
     if (webWakeAudio) { try { webWakeAudio.pause(); } catch (e) { /* 무시 */ } webWakeAudio = null; }
   }
   function ringing() { return !!(els && els.ring && !els.ring.hidden); }
