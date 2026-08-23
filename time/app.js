@@ -4817,6 +4817,14 @@ function renderWeatherCurrentToday(data) {
           { high: formatTemp(today.tempMax), low: formatTemp(today.tempMin) },
           `최고:${formatTemp(today.tempMax)} 최저:${formatTemp(today.tempMin)}`)
       : "";
+    // 2026-08-23 — 기상 화면(알람)에서 '오늘 날씨'로 쓰라고 전역에 담아 둔다.
+    try {
+      window.__flipzenTodayHiLo = hasRange
+        ? t("weather.detail.highLow",
+            { high: formatTemp(today.tempMax), low: formatTemp(today.tempMin) },
+            `최고 ${formatTemp(today.tempMax)} 최저 ${formatTemp(today.tempMin)}`)
+        : (window.__flipzenTodayHiLo || "");
+    } catch (e) { /* 무시 */ }
   }
 }
 
@@ -12207,6 +12215,7 @@ var bedsideActive = false;
     // (수정 없이 취침만 눌러도 예약이 확실히 서도록. 안드로이드 MIUI에서
     //  예약이 누락돼 아예 안 울리던 경로를 원천 차단한다.)
     try { pushAlarmToNative(alarm); } catch (e) { /* 무시 */ }
+    try { localStorage.setItem("ezlong:bedtimeStartAt", String(Date.now())); } catch (e) { /* 무시 */ }
     clearWakeLog();
     setBedtimeArmed(true);
     document.body.classList.add("bedtime-mode");
@@ -12257,26 +12266,85 @@ var bedsideActive = false;
     els.ringClock.textContent = two(now.getHours()) + ":" + two(now.getMinutes());
   }
 
-  function showRingScreen() {
+  // 2026-08-23 — 기상 화면(스탠바이 모티브). 시간대 배경 사진 위에 현재 시각,
+  // 날씨, 수면 시간, 알람 버튼, 그리고 명언박스 자리에 깨우기 히스토리.
+  function ringBackgroundUrl() {
+    try {
+      if (typeof activePhotoSet !== "undefined" && activePhotoSet && activePhotoSet.length
+          && typeof imageUrl === "function") {
+        return imageUrl(activePhotoSet[activePhotoIndex]) || "";
+      }
+    } catch (e) { /* 무시 */ }
+    return "";
+  }
+  function renderSleepDuration() {
+    if (!els.wakeSleepDuration) return;
+    var startAt = 0;
+    try { startAt = Number(localStorage.getItem("ezlong:bedtimeStartAt")) || 0; } catch (e) { startAt = 0; }
+    if (!startAt) { els.wakeSleepDuration.hidden = true; return; }
+    var sess = loadWakeSession();
+    var wokeAt = (sess && sess.start) ? sess.start : Date.now();
+    var mins = Math.max(0, Math.round((wokeAt - startAt) / 60000));
+    if (mins < 1) { els.wakeSleepDuration.hidden = true; return; }
+    var h = Math.floor(mins / 60), m = mins % 60, txt;
+    if (h > 0 && m > 0) txt = t("settings.alarm.sleptHM", { h: h, m: m }, `${h}시간 ${m}분 주무셨어요`);
+    else if (h > 0) txt = t("settings.alarm.sleptH", { h: h }, `${h}시간 주무셨어요`);
+    else txt = t("settings.alarm.sleptM", { m: m }, `${m}분 주무셨어요`);
+    els.wakeSleepDuration.textContent = txt;
+    els.wakeSleepDuration.hidden = false;
+  }
+  function renderWakeWeather() {
+    if (!els.wakeWeather) return;
+    var parts = [];
+    try {
+      if (typeof weatherState !== "undefined" && weatherState) {
+        var cur = [];
+        if (weatherState.summary) cur.push(weatherState.summary);
+        if (weatherState.temp) cur.push(weatherState.temp);
+        if (cur.length) parts.push(cur.join(" "));
+      }
+    } catch (e) { /* 무시 */ }
+    try {
+      var hilo = window.__flipzenTodayHiLo;
+      if (hilo) parts.push(t("settings.alarm.todayLabel", null, "오늘") + " " + hilo);
+    } catch (e) { /* 무시 */ }
+    if (parts.length) { els.wakeWeather.textContent = parts.join("   ·   "); els.wakeWeather.hidden = false; }
+    else els.wakeWeather.hidden = true;
+  }
+  // 울리는 중 / 해제됨 두 상태의 버튼 전환.
+  function setRingDismissed(dismissed) {
+    if (els.ringStop) els.ringStop.hidden = dismissed;
+    if (els.ringSnooze) els.ringSnooze.hidden = dismissed;
+    if (els.wakeDismissed) els.wakeDismissed.hidden = !dismissed;
+    if (els.ringMusicChange) els.ringMusicChange.hidden = !dismissed;
+    if (els.wakeRingClose) els.wakeRingClose.hidden = !dismissed;
+  }
+  function showRingScreen(dismissed) {
     if (!els.ring) return;
     els.ring.hidden = false;
     if (els.sleep) els.sleep.hidden = true;
     if (els.configScreen) els.configScreen.hidden = true;
     setAlarmAdHidden(true);
+    // 시간대에 맞는 배경 사진(스탠바이 감성). 없으면 기본 어두운 배경.
+    var bg = ringBackgroundUrl();
+    try {
+      els.ring.style.backgroundImage = bg
+        ? ('linear-gradient(180deg, rgba(4,10,20,0.42) 0%, rgba(4,10,20,0.32) 32%, rgba(4,10,20,0.78) 100%), url("' + bg + '")')
+        : "";
+    } catch (e) { /* 무시 */ }
+    els.ring.classList.toggle("has-photo", !!bg);
     paintRingClock();
     renderWakeLog();
+    renderWakeWeather();
+    renderSleepDuration();
+    if (els.wakeInfo) els.wakeInfo.hidden = false;
     if (ringClockTimer) window.clearInterval(ringClockTimer);
     ringClockTimer = window.setInterval(paintRingClock, 1000);
-
-    // 지금 울리는 곡 이름 — 무엇이 나를 깨웠는지 알면 다음에 고르기 쉽다.
     if (els.ringSong) {
       var alarm = nextAlarm();
-      var label = alarm && alarm.soundTitle ? alarm.soundTitle : "";
-      els.ringSong.textContent = label;
+      els.ringSong.textContent = (alarm && alarm.soundTitle) ? alarm.soundTitle : "";
     }
-
-    // 취침 모드로 어두워져 있던 화면을 되돌린다. 어두운 채로 두면
-    // 버튼이 보여도 읽히지 않는다.
+    setRingDismissed(!!dismissed);
     document.body.classList.remove("bedtime-mode");
     try { if (typeof closeSettings === "function") closeSettings(); } catch (error) { /* 무시 */ }
   }
@@ -12305,20 +12373,37 @@ var bedsideActive = false;
     }, 260);
   }
   function bindRingButtons() {
-    if (els.sleepMusicChange) els.sleepMusicChange.addEventListener("click", goToMusicSettings);
     if (els.ringMusicChange) els.ringMusicChange.addEventListener("click", goToMusicSettings);
+    if (els.wakeWeatherDetail) els.wakeWeatherDetail.addEventListener("click", function () {
+      try { if (typeof openWeatherDetail === "function") openWeatherDetail(); } catch (e) { /* 무시 */ }
+    });
 
     if (els.ringStop) {
       els.ringStop.addEventListener("click", function () {
-        postAlarmBridge({ action: "stopWakeMusic" });
+        // 소리만 멈춘다. 화면은 그대로 두고 '해제됨' 상태로 바꿔,
+        // 깨우기 히스토리를 계속 볼 수 있게 한다(운영 지침).
+        try { postAlarmBridge({ action: "stopWakeMusic" }); } catch (e) { /* 무시 */ }
+        try { stopWebWakeAudio(); } catch (e) { /* 무시 */ }
+        try { var sess = loadWakeSession(); if (sess && !sess.stop) { sess.stop = Date.now(); saveWakeSession(sess); } } catch (e) { /* 무시 */ }
+        stopWakeLogTimer();
+        // 취침 모드는 끝났다(다시 안 울리게) — 다만 화면은 닫지 않는다.
+        try { setBedtimeArmed(false); } catch (e) { /* 무시 */ }
+        document.body.classList.remove("bedtime-mode");
+        try { postAlarmBridge({ action: "stopBedtime" }); } catch (e) { /* 무시 */ }
+        renderWakeLog();
+        renderSleepDuration();
+        setRingDismissed(true);
+      });
+    }
+    if (els.wakeRingClose) {
+      els.wakeRingClose.addEventListener("click", function () {
         hideRingScreen();
-        // 알람을 껐으면 취침 모드도 끝난 것이다. 아침이니까.
-        exitBedtime();
+        setAlarmAdHidden(false);
       });
     }
     if (els.ringSnooze) {
       els.ringSnooze.addEventListener("click", function () {
-        postAlarmBridge({ action: "snoozeWakeMusic", minutes: 5 });
+        postAlarmBridge({ action: "snoozeWakeMusic", minutes: 10 });
         hideRingScreen();
       });
     }
@@ -12668,9 +12753,11 @@ var bedsideActive = false;
     els.configScreen.hidden = false;
     setAlarmAdHidden(true);
     if (scrollToTime && els.time) {
-      window.setTimeout(function () {
-        try { els.time.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (error) { /* 무시 */ }
-      }, 80);
+      // 클릭 제스처 안에서 바로 시간 돌림판을 띄운다(showPicker는 사용자
+      // 활성화가 필요해 setTimeout으로 미루면 안 먹는다).
+      try { els.time.scrollIntoView({ behavior: "auto", block: "center" }); } catch (error) { /* 무시 */ }
+      try { els.time.focus({ preventScroll: true }); } catch (error) { /* 무시 */ }
+      try { if (typeof els.time.showPicker === "function") els.time.showPicker(); } catch (error) { /* 무시 */ }
     }
   }
   function closeConfigScreen() {
@@ -12823,6 +12910,12 @@ var bedsideActive = false;
       sleepLog:   document.getElementById("wakeSleepLog"),
       sleepMusicChange: document.getElementById("sleepMusicChange"),
       ringMusicChange:  document.getElementById("ringMusicChange"),
+      wakeInfo:         document.getElementById("wakeInfo"),
+      wakeSleepDuration:document.getElementById("wakeSleepDuration"),
+      wakeWeather:      document.getElementById("wakeWeather"),
+      wakeWeatherDetail:document.getElementById("wakeWeatherDetail"),
+      wakeDismissed:    document.getElementById("wakeDismissed"),
+      wakeRingClose:    document.getElementById("wakeRingClose"),
       configBedtime: document.getElementById("wakeConfigBedtime"),
       soundSummary: document.getElementById("alarmSoundSummary"),
       soundSummaryTitle: document.getElementById("alarmSoundSummaryTitle"),

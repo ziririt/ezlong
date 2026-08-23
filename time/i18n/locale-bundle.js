@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-23T04:28:49.981Z
+ * 생성 시각: 2026-08-23T06:03:07.311Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -162,7 +162,7 @@
         "unsupported": "The wake-up alarm needs iOS 26 or later, and the latest version of the app.",
         "ringLabel": "Time to wake up",
         "ringStop": "Dismiss alarm",
-        "ringSnooze": "5 more minutes",
+        "ringSnooze": "10 more min",
         "setAlarm": "Set alarm",
         "openConfig": "Settings",
         "homeGuide": "Tap ‘Start Sleep’ right before bed. Set the wake-up time and music just once under ‘Settings’.",
@@ -180,7 +180,14 @@
         "logCap": "When each track started playing",
         "logUnknown": "Alarm music",
         "changeMusic": "Change music",
-        "premiumOnly": "The wake alarm is a premium feature. It's free for the first 2 weeks after install; after that it's available with premium."
+        "premiumOnly": "The wake alarm is a premium feature. It's free for the first 2 weeks after install; after that it's available with premium.",
+        "dismissed": "Alarm dismissed",
+        "ringClose": "Close",
+        "weatherDetail": "See weather details",
+        "todayLabel": "Today",
+        "sleptHM": "You slept {h}h {m}m",
+        "sleptH": "You slept {h}h",
+        "sleptM": "You slept {m}m"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -630,7 +637,7 @@
         "unsupported": "La alarma para despertar requiere iOS 26 o posterior y la última versión de la app.",
         "ringLabel": "Hora de despertar",
         "ringStop": "Apagar alarma",
-        "ringSnooze": "5 minutos más",
+        "ringSnooze": "10 min más",
         "setAlarm": "Poner alarma",
         "openConfig": "Ajustes",
         "homeGuide": "Pulsa «Iniciar descanso» justo antes de dormir. La hora y la música se fijan una sola vez en «Ajustes».",
@@ -648,7 +655,14 @@
         "logCap": "Hora en que empezó cada pista",
         "logUnknown": "Música de alarma",
         "changeMusic": "Cambiar música",
-        "premiumOnly": "La alarma para despertar es una función premium. Es gratis durante las primeras 2 semanas tras la instalación; después está disponible con premium."
+        "premiumOnly": "La alarma para despertar es una función premium. Es gratis durante las primeras 2 semanas tras la instalación; después está disponible con premium.",
+        "dismissed": "Alarma desactivada",
+        "ringClose": "Cerrar",
+        "weatherDetail": "Ver detalles del tiempo",
+        "todayLabel": "Hoy",
+        "sleptHM": "Dormiste {h}h {m}min",
+        "sleptH": "Dormiste {h}h",
+        "sleptM": "Dormiste {m}min"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1098,7 +1112,7 @@
         "unsupported": "起床アラームはiOS 26以降で、アプリを最新版に更新してからご利用いただけます。",
         "ringLabel": "起床の時間です",
         "ringStop": "アラーム解除",
-        "ringSnooze": "5分後にもう一度",
+        "ringSnooze": "10分後に",
         "setAlarm": "アラームを設定",
         "openConfig": "設定",
         "homeGuide": "寝る直前に「就寝開始」を押してください。起床時刻と音楽は「設定」で一度だけ決めておけば十分です。",
@@ -1116,7 +1130,14 @@
         "logCap": "再生を始めた時刻",
         "logUnknown": "アラーム音楽",
         "changeMusic": "音楽を変更",
-        "premiumOnly": "起床アラームはプレミアム機能です。インストール後2週間は無料でお試しいただけ、その後はプレミアムでご利用いただけます。"
+        "premiumOnly": "起床アラームはプレミアム機能です。インストール後2週間は無料でお試しいただけ、その後はプレミアムでご利用いただけます。",
+        "dismissed": "アラームを解除しました",
+        "ringClose": "閉じる",
+        "weatherDetail": "天気の詳細を見る",
+        "todayLabel": "今日",
+        "sleptHM": "{h}時間{m}分眠りました",
+        "sleptH": "{h}時間眠りました",
+        "sleptM": "{m}分眠りました"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1566,7 +1587,7 @@
         "unsupported": "기상 알람은 iOS 26 이상에서, 그리고 앱을 새로 설치한 뒤에 쓸 수 있습니다.",
         "ringLabel": "기상 시각입니다",
         "ringStop": "알람 해제",
-        "ringSnooze": "5분 더",
+        "ringSnooze": "10분 더",
         "setAlarm": "알람 걸기",
         "openConfig": "설정하기",
         "homeGuide": "잠들기 직전 '취침 시작'을 누르세요. 기상 시각과 음악은 '설정하기'에서 한 번만 정해두면 됩니다.",
@@ -1584,7 +1605,14 @@
         "logCap": "재생을 시작한 시각입니다",
         "logUnknown": "알람 음악",
         "changeMusic": "음악 변경하기",
-        "premiumOnly": "기상 알람은 프리미엄 기능입니다. 설치 후 첫 2주는 무료로 써 보실 수 있고, 이후에는 프리미엄에서 이용할 수 있어요."
+        "premiumOnly": "기상 알람은 프리미엄 기능입니다. 설치 후 첫 2주는 무료로 써 보실 수 있고, 이후에는 프리미엄에서 이용할 수 있어요.",
+        "dismissed": "알람이 해제되었습니다",
+        "ringClose": "닫기",
+        "weatherDetail": "날씨 상세히 보기",
+        "todayLabel": "오늘",
+        "sleptHM": "{h}시간 {m}분 주무셨어요",
+        "sleptH": "{h}시간 주무셨어요",
+        "sleptM": "{m}분 주무셨어요"
       },
       "watch": {
         "heading": "애플워치",
@@ -2034,7 +2062,7 @@
         "unsupported": "O alarme para acordar exige iOS 26 ou posterior e a versão mais recente do app.",
         "ringLabel": "Hora de acordar",
         "ringStop": "Desligar alarme",
-        "ringSnooze": "Mais 5 minutos",
+        "ringSnooze": "+10 min",
         "setAlarm": "Definir alarme",
         "openConfig": "Configurar",
         "homeGuide": "Toque em «Iniciar sono» mesmo antes de dormir. A hora e a música definem-se uma só vez em «Configurar».",
@@ -2052,7 +2080,14 @@
         "logCap": "Hora em que cada faixa começou",
         "logUnknown": "Música do alarme",
         "changeMusic": "Alterar música",
-        "premiumOnly": "O alarme para acordar é um recurso premium. É gratuito nas primeiras 2 semanas após a instalação; depois fica disponível com o premium."
+        "premiumOnly": "O alarme para acordar é um recurso premium. É gratuito nas primeiras 2 semanas após a instalação; depois fica disponível com o premium.",
+        "dismissed": "Alarme desligado",
+        "ringClose": "Fechar",
+        "weatherDetail": "Ver detalhes do tempo",
+        "todayLabel": "Hoje",
+        "sleptHM": "Você dormiu {h}h {m}min",
+        "sleptH": "Você dormiu {h}h",
+        "sleptM": "Você dormiu {m}min"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -2502,7 +2537,7 @@
         "unsupported": "起床闹钟需要 iOS 26 或更高版本，并且需将 App 更新至最新版本。",
         "ringLabel": "该起床了",
         "ringStop": "关闭闹钟",
-        "ringSnooze": "再睡 5 分钟",
+        "ringSnooze": "10分钟后",
         "setAlarm": "设置闹钟",
         "openConfig": "设置",
         "homeGuide": "睡前点按“开始就寝”。起床时间和音乐只需在“设置”里定一次。",
@@ -2520,7 +2555,14 @@
         "logCap": "开始播放的时刻",
         "logUnknown": "闹钟音乐",
         "changeMusic": "更换音乐",
-        "premiumOnly": "起床闹钟是高级功能。安装后前两周可免费使用，之后需要高级会员。"
+        "premiumOnly": "起床闹钟是高级功能。安装后前两周可免费使用，之后需要高级会员。",
+        "dismissed": "闹钟已关闭",
+        "ringClose": "关闭",
+        "weatherDetail": "查看天气详情",
+        "todayLabel": "今天",
+        "sleptHM": "您睡了{h}小时{m}分钟",
+        "sleptH": "您睡了{h}小时",
+        "sleptM": "您睡了{m}分钟"
       },
       "watch": {
         "heading": "Apple Watch",

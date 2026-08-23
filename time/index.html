@@ -1058,7 +1058,6 @@
         <strong class="sleep-screen-time" id="sleepScreenTime">07:00</strong>
         <button type="button" class="sleep-screen-edit" id="sleepEditTime" data-i18n="settings.alarm.sleepEdit">기상 시간 수정하기</button>
         <button type="button" class="sleep-screen-cancel" id="sleepCancel" data-i18n="settings.alarm.sleepCancel">수면 취소</button>
-        <button type="button" class="wake-music-change" id="sleepMusicChange" data-i18n="settings.alarm.changeMusic">음악 변경하기</button>
         <div class="wake-ring-log wake-sleep-log" id="wakeSleepLog" hidden></div>
       </div>
     </div>
@@ -1068,9 +1067,16 @@
         <p class="wake-ring-label" data-i18n="settings.alarm.ringLabel">기상 시각입니다</p>
         <strong class="wake-ring-clock" id="wakeRingClock">07:00</strong>
         <p class="wake-ring-song" id="wakeRingSong"></p>
+        <div class="wake-info" id="wakeInfo" hidden>
+          <p class="wake-info-sleep" id="wakeSleepDuration"></p>
+          <p class="wake-info-weather" id="wakeWeather"></p>
+          <button type="button" class="wake-weather-detail" id="wakeWeatherDetail" data-i18n="settings.alarm.weatherDetail">날씨 상세히 보기</button>
+        </div>
         <button type="button" class="wake-ring-stop" id="wakeRingStop" data-i18n="settings.alarm.ringStop">알람 해제</button>
-        <button type="button" class="wake-ring-snooze" id="wakeRingSnooze" data-i18n="settings.alarm.ringSnooze">5분 더</button>
+        <button type="button" class="wake-ring-snooze" id="wakeRingSnooze" data-i18n="settings.alarm.ringSnooze">10분 더</button>
+        <p class="wake-dismissed" id="wakeDismissed" hidden data-i18n="settings.alarm.dismissed">알람이 해제되었습니다</p>
         <button type="button" class="wake-music-change" id="ringMusicChange" data-i18n="settings.alarm.changeMusic">음악 변경하기</button>
+        <button type="button" class="wake-ring-close" id="wakeRingClose" hidden data-i18n="settings.alarm.ringClose">닫기</button>
         <div class="wake-ring-log" id="wakeRingLog" hidden></div>
       </div>
     </div>
