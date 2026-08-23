@@ -12643,11 +12643,11 @@ var bedsideActive = false;
         if (!webWakeAudio) return;
         var el = (Date.now() - webWakeStartedAt) / 1000;
         var v;
-        if (el < 30) v = 0.012; else if (el < 65) v = 0.022;
-        else if (el < 100) v = 0.04; else if (el < 140) v = 0.07;
-        else if (el < 180) v = 0.11; else if (el < 220) v = 0.18;
-        else if (el < 260) v = 0.30; else if (el < 310) v = 0.50;
-        else if (el < 370) v = 0.74; else v = 1.0;
+        if (el < 60) v = 0.012; else if (el < 95) v = 0.022;
+        else if (el < 130) v = 0.04; else if (el < 170) v = 0.065;
+        else if (el < 210) v = 0.10; else if (el < 255) v = 0.16;
+        else if (el < 300) v = 0.26; else if (el < 350) v = 0.44;
+        else if (el < 410) v = 0.70; else v = 1.0;
         try { webWakeAudio.volume = Math.max(0, Math.min(1, v)); } catch (e) { /* 무시 */ }
         if (el > 690) stopWebWakeAudio();  // 11분 30초에 자동 종료
       }, 500);
