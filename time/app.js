@@ -13300,24 +13300,35 @@ var bedsideActive = false;
     }
 
     if (els.confirm) els.confirm.addEventListener("click", onConfirm);
-    // 2026-08-24 운영자: 기상 시간을 바꾸면 즉시 반영되게 — 편집 중(기존 알람)일 때는
-    // 시각 돌림판을 돌려 값이 바뀌는 순간 자동 저장한다. '수정 확인'을 따로 누르지
-    // 않아도 되고, iOS에서 확정 단계가 걸려 옛 시각이 남던 문제를 피한다.
+    // 2026-08-24 운영자: 기상 시간을 "한 번에" 반영. iOS의 시각 입력(<input type=time>)은
+    // 값이 한 박자 늦게 확정돼서, change 시점에 곧바로 읽으면 직전(옛) 값이 잡힌다.
+    // 그래서 "같은 시각으로 한 번 더 고쳐야" 반영되던 문제가 있었다.
+    // 대응 — 값이 실시간으로 반영되는 input 이벤트까지 듣고, 살짝(90ms) 뒤
+    // 확정된 값으로 자동 저장한다. 편집 중(기존 알람)일 때만, '수정 확인' 없이 즉시.
     // 새 알람(editingId 없음)은 종전대로 '알람 걸기' 버튼으로 확정한다.
     if (els.time) {
-      els.time.addEventListener("change", function () {
+      var alarmTimeCommitTimer = null;
+      var commitEditedTimeSoon = function () {
         if (!editingId) return;              // 편집 중일 때만
         var keepId = editingId;
-        try { onConfirm(); } catch (e) { /* 무시 */ }
-        // 충돌 없이 저장되면 onConfirm이 editingId를 비운다. 같은 알람을 계속
-        // 조정할 수 있도록, 그 알람이 남아 있으면 다시 편집 상태로 잡아 준다.
-        try {
-          if (!editingId && loadAlarms().some(function (a) { return a.id === keepId; })) {
-            editingId = keepId;
-            updateConfirmLabel();
-          }
-        } catch (e) { /* 무시 */ }
-      });
+        if (alarmTimeCommitTimer) { try { window.clearTimeout(alarmTimeCommitTimer); } catch (e) { /* 무시 */ } }
+        alarmTimeCommitTimer = window.setTimeout(function () {
+          alarmTimeCommitTimer = null;
+          try {
+            // 편집 대상 알람이 아직 살아 있을 때만(도중에 지워졌을 수 있다).
+            if (!loadAlarms().some(function (a) { return a.id === keepId; })) return;
+            editingId = keepId;              // 값이 확정된 지금, 그 알람을 편집 상태로 잡고
+            onConfirm();                     // 확정된 els.time.value 로 저장·재예약
+            // 저장되면 onConfirm 이 editingId 를 비운다. 계속 조정할 수 있게 다시 잡아 준다.
+            if (!editingId && loadAlarms().some(function (a) { return a.id === keepId; })) {
+              editingId = keepId;
+              updateConfirmLabel();
+            }
+          } catch (e) { /* 무시 */ }
+        }, 90);
+      };
+      els.time.addEventListener("change", commitEditedTimeSoon);
+      els.time.addEventListener("input", commitEditedTimeSoon);
     }
     if (els.bedtime) {
       els.bedtime.addEventListener("click", function () {
