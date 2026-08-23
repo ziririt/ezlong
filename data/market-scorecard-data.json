@@ -1,6 +1,57 @@
 {
   "entries": [
     {
+      "id": "2026-08-24-07:00",
+      "timestamp_kst": "2026-08-24(월) 07:00 KST",
+      "key_event": {
+        "name": "AI 투자 확대 지속",
+        "name_en": "Continued AI Investment Expansion",
+        "time": "직전 장 마감 및 다음 주 개장 전",
+        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선, 시장 전반 긍정 영향",
+        "why_en": "Tech earnings optimism, improved AI investment sentiment, positive market impact"
+      },
+      "positive_total": 80,
+      "negative_total": 20,
+      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
+      "summary_en": "Positive sentiment maintained by AI investment and tech optimism, mixed macro concerns",
+      "positive_factors": [
+        {
+          "score": 80,
+          "name": "AI 관련 투자 심리 개선",
+          "name_en": "Improved AI Investment Sentiment",
+          "desc": "Hugging Face 매각 논의 및 Verizon AI 기능 추가 등 AI 투자 확대 지속",
+          "desc_en": "Continued expansion of AI investment, including Hugging Face sale talks and Verizon AI features",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "잭슨홀 미팅 및 Fed 발언 주목",
+          "name_en": "Focus on Jackson Hole Meeting and Fed Remarks",
+          "desc": "잭슨홀 미팅 및 Kevin Warsh 발언 대기, 향후 통화정책 방향 불확실성 증대",
+          "desc_en": "Anticipation of Jackson Hole meeting and Kevin Warsh's speech, increasing uncertainty about future monetary policy",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미국-이란 긴장 고조",
+          "name_en": "Escalating US-Iran Tensions",
+          "desc": "이란 제재 및 원유 시장 영향 우려로 유가 상승 압력과 지정학적 불안감 혼재",
+          "desc_en": "Concerns over Iran sanctions and oil market impact lead to mixed signals of rising oil prices and geopolitical instability",
+          "category": "geopolitics"
+        },
+        {
+          "name": "미 국채금리 상승 압력",
+          "name_en": "Upward Pressure on US Treasury Yields",
+          "desc": "미10년 국채금리 4.74%(+0.89%), 미30년 국채금리 5.28%(+0.74%) 상승, 성장주에 부정적",
+          "desc_en": "US 10-year Treasury yield rose to 4.74% (+0.89%) and 30-year to 5.28% (+0.74%), negative for growth stocks",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-24-05:29",
       "timestamp_kst": "2026-08-24(월) 05:29 KST",
       "key_event": {
@@ -495,60 +546,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-22-18:20",
-      "timestamp_kst": "2026-08-22(토) 18:20 KST",
-      "key_event": {
-        "name": "AI 지출 확대 및 기술주 낙관론",
-        "name_en": "AI Spending Boom & Tech Optimism",
-        "time": "직전 거래일 마감 및 다음 주 개장",
-        "why": "AI 관련 투자 심리 개선, 기술 기업 실적 기대감 지속",
-        "why_en": "Continued improvement in AI investment sentiment, strong tech earnings expectations"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "AI 투자 확대 및 기술주 실적 낙관론으로 긍정 우위 지속, 지정학적 긴장 혼조",
-      "summary_en": "Continued positive sentiment driven by AI investment and tech earnings optimism, mixed with geopolitical tensions.",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "AI 지출 증가세 지속",
-          "name_en": "Sustained AI Spending Growth",
-          "desc": "월스트리트 예상치를 상회하는 AI 관련 지출 증가세, 기술주 전반에 긍정적 영향",
-          "desc_en": "AI-related spending continues to outpace Wall Street estimates, positively impacting the broader tech sector.",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 35,
-          "name": "기술주 실적 기대감 유지",
-          "name_en": "Persistent Tech Earnings Expectations",
-          "desc": "주요 기술 기업의 견조한 실적 기대감 지속, 시장 전반의 투자 심리 개선",
-          "desc_en": "Strong earnings expectations for major tech companies continue, improving overall market sentiment.",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "지정학적 긴장 지속",
-          "name_en": "Ongoing Geopolitical Tensions",
-          "desc": "이란 휴전 만료 및 이란산 원유 공급 압박 뉴스, 국제 유가 상승 압력 가중",
-          "desc_en": "Expiration of Iran truce and pressure on Iranian oil supply, increasing upward pressure on international oil prices.",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "장기 국채금리 상승",
-          "name_en": "Rising Long-Term Treasury Yields",
-          "desc": "미10년 국채금리 4.74%(+0.89%) 및 30년 국채금리 5.28%(+0.74%) 상승, 기술주 밸류에이션에 부담 우려와 함께 경제 강세 신호 해석 혼재",
-          "desc_en": "US 10-year Treasury yield rose to 4.74% (+0.89%) and 30-year yield to 5.28% (+0.74%), raising concerns about tech valuations while also interpreted as a sign of economic strength.",
-          "category": "rates_treasury"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-23T20:30:11Z",
+  "updated_at": "2026-08-23T22:01:52Z",
   "max_entries": 10
 }
