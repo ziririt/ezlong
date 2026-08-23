@@ -2930,6 +2930,7 @@ function clearSettingsDirty() {
 // 찾는다"). focusSection 인자가 없으면 기존과 완전히 동일하게 동작한다.
 function openSettings(focusSection) {
   settingsPanel.classList.add("is-open");
+  try { if (window.__flipzenReportAdLayout) window.__flipzenReportAdLayout(); } catch (e) { /* 무시 */ }
   // 2026-08-04 2차 — 시트를 열 때마다 '앱을 열면 보일 화면'을 저장값으로
   // 다시 그린다. HTML에 checked가 박혀 있어서, 어떤 이유로든 초기 배선이
   // 실패하면 저장값과 무관하게 늘 기본값으로 보이는 착시가 생긴다.
@@ -2973,6 +2974,7 @@ function openSettings(focusSection) {
 
 function closeSettings() {
   settingsPanel.classList.remove("is-open");
+  try { if (window.__flipzenReportAdLayout) window.__flipzenReportAdLayout(); } catch (e) { /* 무시 */ }
   settingsPanel.setAttribute("aria-hidden", "true");
   settingsOpen.setAttribute("aria-expanded", "false");
   if (musicSettingsOpen) musicSettingsOpen.setAttribute("aria-expanded", "false");
@@ -10106,7 +10108,7 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
         y: Math.round(innerY + (innerH - bannerH) / 2),
         w: Math.round(innerW),
         h: bannerH,
-        calendarOpen: !!calendarPanelOpen || !!window.__alarmHidesAd,
+        calendarOpen: !!calendarPanelOpen || !!window.__alarmHidesAd || !!(settingsPanel && settingsPanel.classList.contains("is-open")),
       };
       const key = [payload.x, payload.y, payload.w, payload.h, payload.calendarOpen].join(",");
       if (key === lastSent) return;
