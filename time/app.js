@@ -2544,6 +2544,8 @@ function simplifyBibliography(text, preferKo) {
 
 function formatQuoteSource(quote, koMode, translated) {
   const author = simplifyBibliography(quote.author || "", koMode);
+  // 2026-08-23 운영자: 수면 격언 등 authorEn 이 있으면 비한국어 화면엔 영어 출처.
+  if (!koMode && quote.authorEn) return simplifyBibliography(quote.authorEn, false);
   // 번역된 서지가 있으면 그쪽이 우선이다. 본문은 일본어인데 출처만 영어면
   // 화면 안에서 언어가 갈린다 — 실제로 영어 서지로 먼저 붙였다가 그렇게 됐다.
   if (!koMode && translated && (translated.title || translated.author)) {
@@ -2727,7 +2729,7 @@ function getNextSleepQuote() {
 }
 function sleepInjectNow() {
   if (!sleepQuotes.length) return false;
-  if (typeof isKoreanLocale === "function" && !isKoreanLocale()) return false;
+  // 2026-08-23 운영자: 모든 로케일에서 현지 밤 시간(22~05시)에 노출한다.
   const h = new Date().getHours();
   return (h >= 22 || h < 5);   // 현지 22:00 ~ 04:59
 }
@@ -12826,13 +12828,13 @@ var bedsideActive = false;
     btn.hidden = true;
     btn.setAttribute("aria-label", t("settings.alarm.heading", null, "기상 알람"));
     btn.innerHTML =
-      '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
-      + '<circle cx="12" cy="13" r="7.5"></circle>'
-      + '<path d="M12 9v4l2.6 1.6"></path>'
-      + '<path d="M4.2 4.8 7.2 7.4"></path>'
-      + '<path d="M19.8 4.8 16.8 7.4"></path>'
-      + '<path d="M7.6 20.4 6 22.3"></path>'
-      + '<path d="M16.4 20.4 18 22.3"></path>'
+      '<svg viewBox="0 0 42 34" width="36" height="29" fill="none" aria-hidden="true">'
+      + '<path d="M16 6.5a11 11 0 1 0 10 16.5A9 9 0 0 1 16 6.5z" fill="currentColor"></path>'
+      + '<circle cx="7.5" cy="10" r="0.9" fill="currentColor"></circle>'
+      + '<path d="M26.5 4l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7z" fill="currentColor"></path>'
+      + '<text x="28" y="31" font-size="7" font-weight="800" fill="currentColor" font-family="system-ui,-apple-system,sans-serif">z</text>'
+      + '<text x="32.5" y="26" font-size="9" font-weight="800" fill="currentColor" font-family="system-ui,-apple-system,sans-serif">z</text>'
+      + '<text x="37" y="20.5" font-size="11" font-weight="800" fill="currentColor" font-family="system-ui,-apple-system,sans-serif">z</text>'
       + '</svg>'
       + '<span class="wake-home-icon-label">' + t("settings.alarm.heading", null, "기상 알람") + '</span>';
     btn.addEventListener("click", function (e) { e.stopPropagation(); onWakeIconTap(); });
@@ -13048,6 +13050,7 @@ var bedsideActive = false;
       return;
     }
     clearUnsupportedNotice();
+    try { updateWakeIcon(); } catch (e) { /* 무시 */ }
     // 프리미엄 게이트 — 무료 체험(14일)이 지난 비구독자는 안내만 보여준다.
     if (!alarmPremiumOk()) {
       if (els.bar) els.bar.hidden = true;
@@ -13175,6 +13178,15 @@ var bedsideActive = false;
     if (!els.sleepNow) return;
     var d = new Date();
     els.sleepNow.textContent = two(d.getHours()) + ":" + two(d.getMinutes());
+    // 2026-08-23 운영자: 취침 시작 직후 15분은 "이제 잠자리에 듭니다.", 그 뒤 "수면 중".
+    if (els.sleepLabel) {
+      var _sa = 0;
+      try { _sa = Number(localStorage.getItem("ezlong:bedtimeStartAt")) || 0; } catch (e) { _sa = 0; }
+      var _mins = _sa ? (Date.now() - _sa) / 60000 : 999;
+      els.sleepLabel.textContent = (_mins < 15)
+        ? t("settings.alarm.bedtimeJustStarted", null, "이제 잠자리에 듭니다.")
+        : t("settings.alarm.sleepLabel", null, "수면 중");
+    }
     try { checkWebWake(d); } catch (e) { /* 무시 */ }
   }
   function startSleepClock() { stopSleepClock(); try { sleepClockTimer = window.setInterval(updateSleepNow, 1000); } catch (e) { /* 무시 */ } }
@@ -13237,6 +13249,7 @@ var bedsideActive = false;
       homeSummaryTime: document.getElementById("alarmHomeSummaryTime"),
       homeSummaryMeta: document.getElementById("alarmHomeSummaryMeta"),
       sleep:      document.getElementById("sleepScreen"),
+      sleepLabel: document.getElementById("sleepScreenLabel"),
       sleepTime:  document.getElementById("sleepScreenTime"),
       sleepNow:   document.getElementById("sleepScreenNow"),
       sleepEdit:  document.getElementById("sleepEditTime"),
@@ -13321,7 +13334,8 @@ var bedsideActive = false;
 
     ensureWakeIcon();
     updateWakeIcon();
-    try { window.setInterval(updateWakeIcon, 20000); } catch (e) { /* 무시 */ }
+    [300, 1000, 2500, 5000].forEach(function (d) { try { window.setTimeout(updateWakeIcon, d); } catch (e) { /* 무시 */ } });
+    try { window.setInterval(updateWakeIcon, 5000); } catch (e) { /* 무시 */ }
 
     bindAll();
     askCapability();
