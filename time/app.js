@@ -12433,6 +12433,7 @@ var bedsideActive = false;
     if (ringClockTimer) { window.clearInterval(ringClockTimer); ringClockTimer = null; }
     if (els.ring) els.ring.hidden = true;
     stopWebWakeAudio();
+    try { clearRockTimers(); } catch (e) { /* 무시 */ }
     setAlarmAdHidden(false);
   }
 
@@ -12464,6 +12465,7 @@ var bedsideActive = false;
         // 깨우기 히스토리를 계속 볼 수 있게 한다(운영 지침).
         try { postAlarmBridge({ action: "stopWakeMusic" }); } catch (e) { /* 무시 */ }
         try { stopWebWakeAudio(); } catch (e) { /* 무시 */ }
+        try { clearRockTimers(); } catch (e) { /* 무시 */ }
         try { var sess = loadWakeSession(); if (sess && !sess.stop) { sess.stop = Date.now(); saveWakeSession(sess); } } catch (e) { /* 무시 */ }
         stopWakeLogTimer();
         // 취침 모드는 끝났다(다시 안 울리게) — 다만 화면은 닫지 않는다.
@@ -12495,6 +12497,89 @@ var bedsideActive = false;
   var WAKESESSION_KEY = "ezlong:wakeSession";
   function loadWakeSession() { try { var r = localStorage.getItem(WAKESESSION_KEY); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
   function saveWakeSession(sess) { try { localStorage.setItem(WAKESESSION_KEY, JSON.stringify(sess)); } catch (e) { /* 무시 */ } }
+
+  // ── 2026-08-23 운영자: 록 에스컬레이션 ──────────────────────────
+  // 소프트 곡으로 3분 재웠는데도 안 깨면(=알람 해제 안 하면) 시끄러운 록으로
+  // 세게 깨운다. 3분·8분·13분 세 번, 매번 ROCK 탭에서 무작위로 한 곡 골라
+  // 최대 볼륨으로. 세 번 다 실패하면 18분에 그냥 그만둔다 — 자는 게 아니라
+  // 다른 일 중이거나 가방 속으로 본다. 타이밍은 웹이 쥐고, 네이티브는
+  // "이 URL 을 크게 틀어라"만 받는다(escalateWake).
+  var ROCK_OFFSETS = [180, 480, 780];   // 초 — 3분, 8분, 13분
+  var ROCK_GIVE_UP = 1080;              // 초 — 18분
+  var rockTimers = [];
+  function clearRockTimers() {
+    for (var ri = 0; ri < rockTimers.length; ri += 1) {
+      try { window.clearTimeout(rockTimers[ri]); } catch (e) { /* 무시 */ }
+    }
+    rockTimers = [];
+  }
+  function pickRockUrl() {
+    try {
+      var pool = (alarmTracks().rock || []);
+      if (!pool.length) return null;
+      var idx = Math.floor(Math.random() * pool.length);
+      var track = pool[idx];
+      var u = (typeof resolveTrackAbsoluteUrl === "function") ? resolveTrackAbsoluteUrl(track) : "";
+      return u ? { url: u, title: track.title || "" } : null;
+    } catch (e) { return null; }
+  }
+  function fireRockRound(roundIndex) {
+    var pick = pickRockUrl();
+    if (!pick) return;   // 록 곡이 하나도 없으면 조용히 넘어간다(소프트 유지)
+    // 네이티브 오디오 엔진에게: 이 URL 을 최대 볼륨으로 갈아끼워라.
+    try { postAlarmBridge({ action: "escalateWake", soundUrl: pick.url, volume: 1.0 }); } catch (e) { /* 무시 */ }
+    // 웹 폴백(네이티브 없이 웹이 소리 내는 중)이면 소스를 록으로 갈아끼운다.
+    if (webWakeAudio) {
+      try {
+        stopWebWakeAudio();
+        webWakeAudio = new Audio(pick.url);
+        webWakeAudio.loop = true;
+        webWakeAudio.volume = 1.0;
+        webWakeAudio.play().catch(function () { /* 차단 시 조용히 */ });
+      } catch (e) { /* 무시 */ }
+    }
+    // 히스토리에 남긴다(익살스럽게 — genWakeTimeline 이 rockRounds 를 읽어 렌더).
+    try {
+      var sess = loadWakeSession();
+      if (sess && !sess.stop) {
+        if (!Array.isArray(sess.rockRounds)) sess.rockRounds = [];
+        sess.rockRounds.push({ t: Date.now(), title: pick.title, round: roundIndex + 1 });
+        saveWakeSession(sess);
+        renderWakeLog();
+      }
+    } catch (e) { /* 무시 */ }
+  }
+  function startRockEscalation() {
+    clearRockTimers();
+    var sess = loadWakeSession();
+    if (!sess || !sess.start || sess.stop) return;
+    var base = sess.start;
+    for (var i = 0; i < ROCK_OFFSETS.length; i += 1) {
+      (function (idx) {
+        var due = base + ROCK_OFFSETS[idx] * 1000 - Date.now();
+        if (due < 0) due = 0;   // 이미 지난 시점이면(JS가 잠깐 멈췄다 깨어남) 곧바로
+        rockTimers.push(window.setTimeout(function () {
+          var s2 = loadWakeSession();
+          if (!s2 || s2.stop) return;   // 그새 해제됨 — 조용히
+          fireRockRound(idx);
+        }, due));
+      })(i);
+    }
+    // 마지막 — 18분에 그냥 그만둔다.
+    var giveUpDue = base + ROCK_GIVE_UP * 1000 - Date.now();
+    if (giveUpDue < 0) giveUpDue = 0;
+    rockTimers.push(window.setTimeout(function () {
+      var s3 = loadWakeSession();
+      if (!s3 || s3.stop) return;
+      try { postAlarmBridge({ action: "stopWakeMusic" }); } catch (e) { /* 무시 */ }
+      try { stopWebWakeAudio(); } catch (e) { /* 무시 */ }
+      try { s3.stop = Date.now(); s3.gaveUp = true; saveWakeSession(s3); } catch (e) { /* 무시 */ }
+      try { stopWakeLogTimer(); } catch (e) { /* 무시 */ }
+      try { renderWakeLog(); } catch (e) { /* 무시 */ }
+      try { renderSleepDuration(); } catch (e) { /* 무시 */ }
+      try { setRingDismissed(true); } catch (e) { /* 무시 */ }
+    }, giveUpDue));
+  }
   function clearWakeLog() {
     webWakeArmed = false;
     try { localStorage.removeItem(WAKESESSION_KEY); } catch (e) { /* 무시 */ }
@@ -12505,30 +12590,29 @@ var bedsideActive = false;
   function genWakeTimeline(session) {
     if (!session || !session.start) return [];
     var start = session.start;
-    var title = session.title || t("settings.alarm.logUnknown", null, "알람 음악");
-    var GIVE_UP = 690;
+    var title = session.title || t("settings.alarm.logUnknown", null, "\uc54c\ub78c \uc74c\uc545");
+    var GIVE_UP = 1080;   // 18\ubd84 \u2014 \uc18c\ud504\ud2b8 3\ubd84 + \ub85d 3\ud68c(5\ubd84 \uac04\uaca9)
     var stopped = session.stop || null;
-    var endMs = stopped ? Math.min(stopped, start + GIVE_UP * 1000) : Math.min(Date.now(), start + GIVE_UP * 1000);
+    var cap = start + GIVE_UP * 1000;
+    var endMs = stopped ? Math.min(stopped, cap) : Math.min(Date.now(), cap);
     var elapsed = Math.max(0, (endMs - start) / 1000);
+    var rounds = Array.isArray(session.rockRounds) ? session.rockRounds : [];
     var ev = [];
-    ev.push({ t: start, text: title + " \u2014 \uc544\uc8fc \uc791\uc740 \uc18c\ub9ac\ub85c \uc7ac\uc0dd \uc2dc\uc791" });
-    var n = 1;
-    for (var off = 30; off < 240; off += 30) {
-      if (off > elapsed) break;
-      n += 1;
-      var note = off < 180 ? "\uc18c\ub9ac\ub97c \uc870\uae08\uc529 \ud0a4\uc6b0\ub294 \uc911" : "\uc18c\ub9ac\ub97c \ucda9\ubd84\ud788 \ud0a4\uc6c0";
-      ev.push({ t: start + off * 1000, text: "\uac19\uc740 \uace1 " + n + "\ubc88\uc9f8 \uc774\uc5b4\uc11c \uc7ac\uc0dd \u2014 " + note });
-    }
-    var sysN = 0;
-    for (var sc = 240; sc < GIVE_UP; sc += 180) {
-      if (sc > elapsed) break;
-      sysN += 1;
-      ev.push({ t: start + sc * 1000, text: "\uc2dc\uc2a4\ud15c \uc54c\ub78c " + sysN + "\ubc88\uc9f8 \u2014 \ucd5c\ub300 \ubcfc\ub968\uacfc \uc9c4\ub3d9\uc73c\ub85c" });
+    ev.push({ t: start, text: title + " \u2014 " + "\uc544\uc8fc \uc791\uc740 \uc18c\ub9ac\ub85c \uc0b4\uc0b4 \uc7ac\uc0dd \uc2dc\uc791" });
+    if (elapsed >= 60)  ev.push({ t: start + 60 * 1000,  text: "\uc18c\ub9ac\ub97c \uc870\uae08\uc529 \ud0a4\uc6b0\ub294 \uc911 \u2014 \uc544\uc9c1 \ubd80\ub4dc\ub7fd\uac8c" });
+    if (elapsed >= 120) ev.push({ t: start + 120 * 1000, text: "\uadf8\ub798\ub3c4 \uc790\uace0 \uc788\ub124\uc694 \u2014 \uc18c\ub9ac \uc870\uae08 \ub354" });
+    var ROCK_OFF = [180, 480, 780];
+    var QUIP = ["3\ubd84 \ub3d9\uc548 \uc548 \uae68\uc11c, \uc2dc\ub044\ub7ec\uc6b4 \ub77d \uc74c\uc545\uc73c\ub85c \uae68\uc6b0\uae30 \uc2dc\ub3c4\ud569\ub2c8\ub2e4", "\uc544\uc9c1\ub3c4 \uafc8\ub098\ub77c\u2026 \ub77d \ud55c \uace1 \ub354 \uc138\uac8c \uac11\ub2c8\ub2e4", "\ub9c8\uc9c0\ub9c9\uc774\uc5d0\uc694, \ud06c\uac8c \ud55c \ubc88 \ub354 \ud754\ub4e4\uc5b4 \uae68\uc6c1\ub2c8\ub2e4"];
+    for (var i = 0; i < ROCK_OFF.length; i += 1) {
+      if (elapsed < ROCK_OFF[i]) break;
+      var rtitle = (rounds[i] && rounds[i].title) ? rounds[i].title : "";
+      var rt = (rounds[i] && rounds[i].t) ? rounds[i].t : (start + ROCK_OFF[i] * 1000);
+      ev.push({ t: rt, text: QUIP[i] + (rtitle ? (" \u2014 " + rtitle) : "") });
     }
     if (stopped && (stopped - start) / 1000 < GIVE_UP) {
-      ev.push({ t: stopped, text: "\uc54c\ub78c \ud574\uc81c\ub428 \u2014 \uc218\uace0\ud588\uc5b4\uc694" });
+      ev.push({ t: stopped, text: "\uc54c\ub78c \ud574\uc81c\ub428 \u2014 \uc798 \uc77c\uc5b4\ub0ac\uc5b4\uc694, \uc218\uace0\ud588\uc5b4\uc694" });
     } else if (elapsed >= GIVE_UP) {
-      ev.push({ t: start + GIVE_UP * 1000, text: "\uc5ec\uae30\uc11c \uba48\ucd64 \u2014 \uc790\ub9ac\ub97c \ube44\uc6e0\uac70\ub098 \uac00\ubc29 \uc18d\uc73c\ub85c \ubcf4\uace0 \uadf8\ub9cc\ub451\uc5b4\uc694" });
+      ev.push({ t: cap, text: "\uc5ec\uae30\uc11c \uba48\ucda5\ub2c8\ub2e4 \u2014 \uc790\ub294 \uac8c \uc544\ub2c8\ub77c \ub2e4\ub978 \uc77c \uc911\uc774\uac70\ub098 \uac00\ubc29 \uc18d\uc778\uac00 \ubd10\uc694" });
     }
     return ev;
   }
@@ -12575,7 +12659,9 @@ var bedsideActive = false;
       renderWakeLog();
       startWakeLogTimer();
       showRingScreen();
+      try { startRockEscalation(); } catch (e) { /* 무시 */ }
     } else {
+      try { clearRockTimers(); } catch (e) { /* 무시 */ }
       var s3 = loadWakeSession();
       if (s3 && !s3.stop) { s3.stop = Date.now(); saveWakeSession(s3); }
       stopWakeLogTimer();
@@ -12883,6 +12969,7 @@ var bedsideActive = false;
     renderWakeLog();
     startWakeLogTimer();
     showRingScreen();
+    try { startRockEscalation(); } catch (e) { /* 무시 */ }
     if (!url) return;
     try {
       stopWebWakeAudio();
@@ -12902,7 +12989,7 @@ var bedsideActive = false;
         else if (el < 300) v = 0.26; else if (el < 350) v = 0.44;
         else if (el < 410) v = 0.70; else v = 1.0;
         try { webWakeAudio.volume = Math.max(0, Math.min(1, v)); } catch (e) { /* 무시 */ }
-        if (el > 690) stopWebWakeAudio();  // 11분 30초에 자동 종료
+        if (el > 1080) stopWebWakeAudio();  // 18분에 자동 종료(록 3회 스케줄이 돌게)
       }, 500);
     } catch (e) { /* 무시 */ }
   }
