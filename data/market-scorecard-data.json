@@ -1,6 +1,64 @@
 {
   "entries": [
     {
+      "id": "2026-08-25-05:37",
+      "timestamp_kst": "2026-08-25(화) 05:37 KST",
+      "key_event": {
+        "name": "이란 제재 및 지정학적 긴장 고조",
+        "name_en": "Iran Sanctions and Geopolitical Tensions Escalation",
+        "time": "최근 6시간 이내",
+        "why": "시장 변동성 확대, 기술주 투자 심리 위축, 유가 하락",
+        "why_en": "Increased market volatility, dampened tech sentiment, oil price decline"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "지정학적 긴장 고조 및 반도체 섹터 약세로 부정 우위 지속, AI 투자 심리 유지",
+      "summary_en": "Negative sentiment persists due to geopolitical tensions and semiconductor weakness, while AI investment sentiment holds",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "AI 투자 심리 유지",
+          "name_en": "Sustained AI investment sentiment",
+          "desc": "Nvidia 실적 발표 대기 속 AI 관련 종목 관심 지속",
+          "desc_en": "Interest in AI-related stocks continues ahead of Nvidia earnings",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 65,
+          "name": "이란 제재 및 지정학적 긴장 고조",
+          "name_en": "Escalating Iran sanctions and geopolitical tensions",
+          "desc": "미국의 이란 제재 강화 발표 및 지정학적 긴장 고조로 시장 불확실성 증대",
+          "desc_en": "US announcement of strengthened Iran sanctions and heightened geopolitical tensions increase market uncertainty",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "Nvidia 실적 발표 대기",
+          "name_en": "Anticipation for Nvidia earnings",
+          "desc": "AI 투자 심리 유지에 긍정적이나, 반도체 섹터 전반의 약세와 맞물려 혼조세",
+          "desc_en": "Positive for AI investment sentiment, but mixed with broader weakness in the semiconductor sector",
+          "category": "earnings_bellwether"
+        },
+        {
+          "name": "잭슨홀 미팅 및 Fed 의장 연설 대기",
+          "name_en": "Waiting for Jackson Hole meeting and Fed Chair's speech",
+          "desc": "향후 통화정책 방향성 불확실성으로 시장 변동성 확대 우려와 관망세 혼조",
+          "desc_en": "Uncertainty over future monetary policy direction leads to concerns about increased market volatility and a wait-and-see approach",
+          "category": "fed_policy"
+        },
+        {
+          "name": "미 국채금리 하락",
+          "name_en": "US Treasury yields decline",
+          "desc": "미 10년물 국채금리 4.70%(-0.72%) 하락, 성장주에 긍정적",
+          "desc_en": "US 10-year Treasury yield fell to 4.70% (-0.72%), positive for growth stocks",
+          "category": "rates_treasury"
+        }
+      ]
+    },
+    {
       "id": "2026-08-24-23:20",
       "timestamp_kst": "2026-08-24(월) 23:20 KST",
       "key_event": {
@@ -536,67 +594,8 @@
           "category": "geopolitics"
         }
       ]
-    },
-    {
-      "id": "2026-08-23-23:20",
-      "timestamp_kst": "2026-08-23(일) 23:20 KST",
-      "key_event": {
-        "name": "AI 투자 확대 지속",
-        "name_en": "Continued AI Investment Expansion",
-        "time": "다음 주 개장 전",
-        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
-        "why_en": "Tech earnings optimism, improved AI investment sentiment"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
-      "summary_en": "Continued positive bias from AI investment and tech optimism, mixed macro concerns",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "기술주 실적 기대감",
-          "name_en": "Tech Earnings Optimism",
-          "desc": "AI 관련 기술주들의 실적에 대한 시장의 낙관적 기대 지속",
-          "desc_en": "Market's optimistic expectations for AI-related tech earnings continue",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 35,
-          "name": "AI 투자 심리 개선",
-          "name_en": "Improved AI Investment Sentiment",
-          "desc": "Nvidia 실적 발표 및 AI 서버 가격 인상 소식에 투자 심리 개선",
-          "desc_en": "Investment sentiment improved on Nvidia earnings and AI server price hike news",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "Jackson Hole 회의 경계감",
-          "name_en": "Jackson Hole Meeting Caution",
-          "desc": "다음 주 Jackson Hole 회의를 앞두고 Fed 매파적 발언 가능성 경계",
-          "desc_en": "Caution ahead of next week's Jackson Hole meeting due to potential hawkish Fed remarks",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "Nvidia 실적 및 가격 인상",
-          "name_en": "Nvidia Earnings and Price Hikes",
-          "desc": "Nvidia의 실적 기대감은 긍정적이나, AI 서버 15% 가격 인상 소식은 인플레이션 압력으로 해석될 수 있음",
-          "desc_en": "Nvidia's earnings expectations are positive, but news of a 15% price hike on AI servers could be interpreted as inflationary pressure",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미 10년 국채금리 4.74%(+0.89%) 및 30년 국채금리 5.28%(+0.74%) 상승은 성장주에 부담, 그러나 변동폭 미미",
-          "desc_en": "US 10-year Treasury yield rose to 4.74% (+0.89%) and 30-year yield to 5.28% (+0.74%), a burden for growth stocks, but the change is minor",
-          "category": "rates_treasury"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-24T14:21:24Z",
+  "updated_at": "2026-08-24T20:37:29Z",
   "max_entries": 10
 }
