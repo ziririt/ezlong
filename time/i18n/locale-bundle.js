@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-23T22:41:59.585Z
+ * 생성 시각: 2026-08-24T11:36:31.545Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -222,7 +222,13 @@
         "heading": "Video Background",
         "desc": "Plays only on Wi-Fi. When not charging, up to 5 videos play, then the background returns to photos.",
         "toggle": "Video background (Premium)"
-      }
+      },
+      "shareApp": "Share the app",
+      "shareAppDesc": "Tell your friends",
+      "rateApp": "Rate us",
+      "rateAppDesc": "Your rating helps a lot",
+      "shareAppMessage": "Try Long Time, Easy Life — a flip clock and gentle wake-up alarm app.",
+      "shareCopied": "Link copied. Paste it to share."
     },
     "weather": {
       "title": "Weather",
@@ -710,7 +716,13 @@
         "heading": "Fondo de vídeo",
         "desc": "Se reproduce solo con Wi-Fi. Sin cargar, se reproducen hasta 5 vídeos y luego vuelve a las fotos de fondo.",
         "toggle": "Fondo de vídeo (Premium)"
-      }
+      },
+      "shareApp": "Compartir la app",
+      "shareAppDesc": "Cuéntaselo a tus amigos",
+      "rateApp": "Valóranos",
+      "rateAppDesc": "Tu valoración nos ayuda mucho",
+      "shareAppMessage": "Prueba Long Time, Easy Life: reloj flip y alarma para despertar.",
+      "shareCopied": "Enlace copiado. Pégalo para compartir."
     },
     "weather": {
       "title": "Tiempo",
@@ -1198,7 +1210,13 @@
         "heading": "動画背景",
         "desc": "Wi-Fi接続中のみ再生されます。充電していないときは最大5本まで再生され、その後は背景写真に戻ります。",
         "toggle": "動画背景（プレミアム）"
-      }
+      },
+      "shareApp": "アプリを共有",
+      "shareAppDesc": "友だちに教えましょう",
+      "rateApp": "評価をお願いします",
+      "rateAppDesc": "あなたの評価が励みになります",
+      "shareAppMessage": "フリップ時計と起床アラームのアプリ「Long Time, Easy Life」を使ってみてください。",
+      "shareCopied": "リンクをコピーしました。貼り付けて共有してください。"
     },
     "weather": {
       "title": "天気",
@@ -1686,7 +1704,13 @@
         "heading": "동영상 배경",
         "desc": "와이파이 상태에서만 재생됩니다. 충전 중이 아닐 때에는 최다 5개의 영상만 재생되고 배경사진으로 바뀝니다.",
         "toggle": "동영상 배경(프리미엄)"
-      }
+      },
+      "shareApp": "앱 공유",
+      "shareAppDesc": "친구에게 알려주세요",
+      "rateApp": "우리를 평가해 주세요",
+      "rateAppDesc": "별점 하나가 큰 힘이 됩니다",
+      "shareAppMessage": "하루가 편해지는 플립시계·기상 알람 앱, Long Time, Easy Life를 써보세요.",
+      "shareCopied": "링크를 복사했어요. 붙여넣어 공유하세요."
     },
     "weather": {
       "title": "날씨",
@@ -2174,7 +2198,13 @@
         "heading": "Fundo de vídeo",
         "desc": "Reproduzido apenas com Wi-Fi. Sem carregar, até 5 vídeos são reproduzidos e depois volta às fotos de fundo.",
         "toggle": "Fundo de vídeo (Premium)"
-      }
+      },
+      "shareApp": "Compartilhar o app",
+      "shareAppDesc": "Conte aos amigos",
+      "rateApp": "Avalie-nos",
+      "rateAppDesc": "Sua avaliação ajuda muito",
+      "shareAppMessage": "Experimente o Long Time, Easy Life: relógio flip e alarme para acordar.",
+      "shareCopied": "Link copiado. Cole para compartilhar."
     },
     "weather": {
       "title": "Tempo",
@@ -2662,7 +2692,13 @@
         "heading": "视频背景",
         "desc": "仅在连接 Wi-Fi 时播放。未充电时最多播放 5 个视频，之后恢复为照片背景。",
         "toggle": "视频背景（高级版）"
-      }
+      },
+      "shareApp": "分享应用",
+      "shareAppDesc": "告诉朋友们",
+      "rateApp": "为我们评分",
+      "rateAppDesc": "您的评分是我们的动力",
+      "shareAppMessage": "试试翻页时钟与起床闹钟应用 Long Time, Easy Life。",
+      "shareCopied": "已复制链接，粘贴即可分享。"
     },
     "weather": {
       "title": "天气",

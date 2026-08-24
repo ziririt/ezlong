@@ -7603,6 +7603,50 @@ function openNativeAppStore() {
   postToNativeApp({ action: "openAppStore" });
 }
 
+// ── 2026-08-24 운영자: 설정 하단 '앱 공유'·'우리를 평가해 주세요' ──────────
+// 공유는 각 플랫폼 스토어 링크를 시스템 공유 시트로, 평가는 스토어 페이지로.
+function appStoreShareUrl() {
+  var plat = new URLSearchParams(window.location.search).get("native");
+  if (plat === "android") return "https://play.google.com/store/apps/details?id=com.ezlong.flipzenweather";
+  if (plat === "ios") return "https://apps.apple.com/app/id6793780938";
+  return "https://ezlong.com/time/";
+}
+function showShareToast(msg) {
+  var el = document.getElementById("shareToast");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "shareToast";
+    el.className = "share-toast";
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.classList.add("is-on");
+  window.setTimeout(function () { el.classList.remove("is-on"); }, 2600);
+}
+function shareAppNow() {
+  var url = appStoreShareUrl();
+  var text = t("settings.shareAppMessage", null, "하루가 편해지는 플립시계·기상 알람 앱, Long Time, Easy Life를 써보세요.");
+  if (navigator.share) {
+    navigator.share({ title: "Long Time, Easy Life", text: text, url: url })
+      .catch(function () { /* 사용자가 닫으면 조용히 */ });
+    return;
+  }
+  try {
+    navigator.clipboard.writeText(text + " " + url);
+    showShareToast(t("settings.shareCopied", null, "링크를 복사했어요. 붙여넣어 공유하세요."));
+  } catch (e) { /* 무시 */ }
+}
+function rateAppNow() {
+  if (isNativeWrapper) { openNativeAppStore(); return; }
+  try { window.open(appStoreShareUrl(), "_blank", "noopener"); } catch (e) { /* 무시 */ }
+}
+(function bindShareRate() {
+  var shareBtn = document.getElementById("shareAppBtn");
+  var rateBtn = document.getElementById("rateAppBtn");
+  if (shareBtn) shareBtn.addEventListener("click", shareAppNow);
+  if (rateBtn) rateBtn.addEventListener("click", rateAppNow);
+})();
+
 // 알라딘 모달과 동일한 "iOS는 기본 브라우저로, 안드로이드는 Custom Tabs로"
 // 외부 링크 열기 패턴을 그대로 재사용한다(openAladinModal/withAladinPartnerParam
 // 근처 참조) — 새 로직을 만들지 않는다.

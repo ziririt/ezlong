@@ -365,7 +365,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.76</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.77</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -706,6 +706,18 @@
           <img class="settings-watch-preview" src="watch-app-preview.webp?v=20260801-watchimg-v1" alt="" role="presentation" loading="lazy" width="900" height="480">
           <p class="settings-desc" data-i18n="settings.watch.intro">프리미엄 이용자는 애플워치 전용 플립시계 앱을 쓸 수 있습니다.</p>
           <p class="settings-desc settings-desc-muted" data-i18n="settings.watch.keepGuide">워치 화면이 자꾸 기본 시계로 돌아간다면: 워치의 설정 → 일반 → 시계로 돌아가기에서 '1시간 후'를 선택하고, 아래 앱 목록에서 Long Time, Easy Life의 '앱으로 복귀'를 켜주세요. 손목을 내렸다 올려도 1시간 동안 플립시계가 유지됩니다.</p>
+        </section>
+
+        <!-- 2026-08-24 운영 지침 — 설정 하단 '앱 공유'·'우리를 평가해 주세요'. -->
+        <section class="settings-section share-rate-section">
+          <button class="share-rate-row" type="button" id="shareAppBtn">
+            <span class="share-rate-title" data-i18n="settings.shareApp">앱 공유</span>
+            <span class="share-rate-desc" data-i18n="settings.shareAppDesc">친구에게 알려주세요</span>
+          </button>
+          <button class="share-rate-row" type="button" id="rateAppBtn">
+            <span class="share-rate-title" data-i18n="settings.rateApp">우리를 평가해 주세요</span>
+            <span class="share-rate-desc" data-i18n="settings.rateAppDesc">별점 하나가 큰 힘이 됩니다</span>
+          </button>
         </section>
 
         <button class="settings-save" type="button" id="settingsSave" data-i18n="settings.quotes.confirm">확인</button>
@@ -1155,7 +1167,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260824-alarmv2-v46"></script>
+  <script src="app.js?v=20260824-alarmv2-v47"></script>
 
   </body>
 </html>

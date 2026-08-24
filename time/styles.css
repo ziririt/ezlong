@@ -6439,3 +6439,13 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
 .alarm-screen-guide-btn { flex: 1; display: block; width: 100%; margin: 0 0 8px; padding: 12px 10px; border-radius: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(120,170,255,0.5); color: #8fb6ff; font-size: 14px; font-weight: 700; cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent; }
 .alarm-screen-guide-row .alarm-screen-guide-btn { margin-bottom: 0; }
 .alarm-screen-guide-btn:active { transform: scale(0.985); }
+
+
+/* 2026-08-24 설정 하단 앱 공유·평가해 주세요 */
+.share-rate-section { display: flex; flex-direction: column; gap: 10px; }
+.share-rate-row { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; width: 100%; padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.14); color: inherit; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.share-rate-row:active { transform: scale(0.99); background: rgba(255,255,255,0.09); }
+.share-rate-title { font-size: 15px; font-weight: 700; }
+.share-rate-desc { font-size: 12.5px; opacity: 0.65; }
+.share-toast { position: fixed; left: 50%; bottom: 60px; transform: translateX(-50%) translateY(12px); padding: 11px 18px; border-radius: 12px; background: rgba(20,28,46,0.95); color: rgba(255,255,255,0.92); font-size: 13.5px; opacity: 0; pointer-events: none; transition: opacity 240ms ease, transform 240ms ease; z-index: 9600; }
+.share-toast.is-on { opacity: 1; transform: translateX(-50%) translateY(0); }
