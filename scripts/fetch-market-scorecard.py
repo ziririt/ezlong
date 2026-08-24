@@ -1713,6 +1713,17 @@ _CIRC_CONJ = re.compile(r'\s*(?:와|과|및)\s*' + _RESULT_PHRASE +
                         r'(?=\s*(?:로|으로)\s*(?:긍정|부정)\s*우위)')
 _CIRC_SOLE = re.compile(_RESULT_PHRASE + r'\s*(?:로|으로)\s*(?=(?:긍정|부정)\s*우위)')
 
+def _fix_ro_josa(text):
+    """어구를 걷어낸 자리의 조사 교정 — '긴장과 …약세로'에서 결과 어구를 떼면
+    '긴장로'가 남는다(2026-08-25 실제 발생). 받침 있는 말 뒤의 '로'는 '으로'다
+    (ㄹ 받침 제외). 우위 앞자리만 본다 — 문장 전체를 건드리지 않는다."""
+    def rep(mm):
+        ch = mm.group(1)
+        jong = (ord(ch) - 0xAC00) % 28
+        return ch + ('로' if jong in (0, 8) else '으로')
+    return re.sub(r'([가-힣])로(?=\s*(?:긍정|부정)\s*우위)', rep, text)
+
+
 def scrub_circular_summary(entry):
     v = entry.get('summary') or ''
     if not v:
@@ -1720,6 +1731,7 @@ def scrub_circular_summary(entry):
     nv = _CIRC_CONJ.sub('', v)
     nv = _CIRC_SOLE.sub('', nv)
     if nv != v:
+        nv = _fix_ro_josa(nv)
         entry['summary'] = re.sub(r'\s{2,}', ' ', nv).strip(' ,')
         print(f"::warning::[63항] 요약 순환 서술 교정: '{v}' → '{entry['summary']}'")
     return entry
