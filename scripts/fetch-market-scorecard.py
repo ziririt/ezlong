@@ -1824,6 +1824,87 @@ def fix_yield_number(entry, snap):
     return entry
 
 
+
+# ─── 심층 보고서 (66항, 2026-08-25 성동님 지시) ──────────────────────────────
+# "현재의 분석이 너무 요약적이라서 무슨 말인지 잘 모를 때, 이 보고서를 보면
+#  '아… 이런 이야기였구나'를 알 수 있을 정도로. 전후 사정을 알 수 있을 정도로."
+# 카드가 확정된 뒤(집행·교정 완료 후) 별도 호출로 쓴다 — 같이 만들면 집행이
+# 재료를 바꿨을 때 보고서가 낡은 카드를 설명하게 된다. 실패해도 카드는 나간다.
+
+REPORT_SECTIONS = [('overview', '오늘 판 정리'), ('positive', '긍정 쪽 이야기'),
+                   ('negative', '부정 쪽 이야기'), ('mixed', '혼조·경계'),
+                   ('watch', '앞으로 12시간 체크포인트')]
+
+def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap):
+    """확정된 카드를 A4 한 장 분량으로 풀어 쓴 보고서. entry['report'] 에 저장."""
+    factors = []
+    for side, ko in (('positive_factors', '긍정'), ('negative_factors', '부정'),
+                     ('mixed_factors', '혼조')):
+        for f in entry.get(side) or []:
+            sc = f.get('score')
+            factors.append(f"[{ko}{f' {sc}점' if sc else ''}] {f.get('name')}: {f.get('desc')}")
+    news = '\n'.join(f'- {h}' for h in (list(headlines or []) + list(rss_headlines or []))[:24])
+    av = '\n'.join(f'- {h}' for h in (av_items or [])[:12])
+    fred = '\n'.join(f'- {r}' for r in (fred_rows or []))
+    prompt = f"""당신은 미국 주식 시황 데스크다. 아래 '확정 카드'는 이미 게시된 판정이다.
+이 카드를 처음 보고 "무슨 말인지 잘 모르겠다" 싶은 독자를 위해, 전후 사정을 풀어 쓴
+심층 보고서를 쓴다. 카드의 판정·점수를 바꾸거나 새 판정을 만들지 마라 — 설명만 한다.
+
+[확정 카드]
+- 총점: 긍정 {entry.get('positive_total')} 대 부정 {entry.get('negative_total')}
+- 요약: {entry.get('summary')}
+- 핵심 이슈: {(entry.get('key_event') or {}).get('name')} — {(entry.get('key_event') or {}).get('why')}
+- 재료:
+{chr(10).join(factors)}
+
+[근거로 쓸 수 있는 뉴스 헤드라인]
+{news or '- 없음'}
+
+[전문 금융뉴스]
+{av or '- 없음'}
+
+[공식 발표 매크로 수치]
+{fred or '- 없음'}
+
+[쓰는 법 — 전부 필수]
+- 다섯 부분으로 쓴다: overview(오늘 판을 3~4문장으로), positive(긍정 재료마다 전후
+  사정과 근거), negative(부정 재료마다 전후 사정과 근거), mixed(혼조 재료가 왜
+  양면인지), watch(향후 12시간 무엇이 확인되면 판이 어느 쪽으로 기우는지 2~3개).
+- 총 분량 1,200~1,700자(한글 기준). A4 한 장을 넘기지 마라. 혼조 재료가 없으면 mixed는 빈 문자열.
+- 단문으로. 한 문장에 주장 하나. '~이나/~지만' 복문 금지.
+- 근거에는 이름을 붙인다. 기관·인물·지표명·수치를 명시한다. '일부 전문가' 금지.
+- 원인을 쓴다. '반도체 약세' 같은 결과 묘사를 근거로 쓰지 마라.
+- 위 자료에 없는 수치·일정·이벤트를 만들어내지 마라. 모르면 안 쓴다.
+- 문단 구분이 필요하면 문자열 안에 개행(\n)을 쓴다.
+
+[출력 — 이 JSON만]
+{{"overview": "…", "positive": "…", "negative": "…", "mixed": "…", "watch": "…"}}"""
+    result = call_gemini(prompt)
+    if not result:
+        return None
+    rep = {}
+    for key, _ in REPORT_SECTIONS:
+        v = (result.get(key) or '').strip()
+        rep[key] = v
+    body = ''.join(rep.values())
+    if len(body) < 400:
+        print(f"::warning::[66항] 보고서 분량 미달({len(body)}자) — 폐기")
+        return None
+    if len(body) > 2600:
+        print(f"::warning::[66항] 보고서 과다({len(body)}자) — 폐기")
+        return None
+    # 표현 규칙은 보고서에도 적용된다 — 주말 '휴장'(58항)·금리 수치 표기(60항)
+    holder = {'positive_factors': [],
+              'negative_factors': [],
+              'mixed_factors': [{'name': k, 'desc': rep[k]} for k in rep],
+              'key_event': {}}
+    scrub_weekend_closure_word(holder, get_us_session()[0])
+    fix_yield_number(holder, snap)
+    for f in holder['mixed_factors']:
+        rep[f['name']] = f['desc']
+    return rep
+
+
 # ─── 메인 ────────────────────────────────────────────────────────────────────
 
 # ─── 극단 판정 가드레일 (2026-08-11 신설, CLAUDE.md 51항) ─────────────────────
@@ -2828,6 +2909,34 @@ def main():
     entry = scrub_circular_summary(entry)
     # 4-7. 금리 상시 노출 보증 (64항) — 모델이 금리를 통째로 뺐으면 실측치로 혼조 보충
     entry = ensure_rates_visible(entry, snap)
+
+    # 4-8. 심층 보고서 (66항) — 확정된 카드를 A4 한 장으로 풀어 쓴다. 실패해도 카드는 나간다.
+    try:
+        rep = desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
+        if rep:
+            entry['report'] = rep
+            entry['report_at'] = kst_label(kst_now)
+            print(f"  심층 보고서 생성: {sum(len(v) for v in rep.values())}자")
+    except Exception as _re:
+        print(f"::warning::[66항] 보고서 생성 실패 — 카드만 게시: {type(_re).__name__}: {_re}")
+
+    # 4-9. 보고서 백필 — 직전 카드 중 보고서가 없는 것을 최대 2장까지 채운다.
+    # 도입 시점 이전 카드와, 생성이 실패했던 카드를 다음 사이클이 자연 치유한다.
+    try:
+        _bf = 0
+        for _old in (data.get('entries') or []):
+            if _bf >= 2:
+                break
+            if _old.get('report'):
+                continue
+            _r2 = desk_deep_report(_old, headlines, rss_headlines, av_items, fred_rows, snap)
+            if _r2:
+                _old['report'] = _r2
+                _old['report_at'] = kst_label(kst_now)
+                _bf += 1
+                print(f"  보고서 백필: {_old.get('timestamp_kst')}")
+    except Exception as _re:
+        print(f"::warning::[66항] 보고서 백필 실패(무시): {type(_re).__name__}")
 
     # 5. 신규 항목 추가
     entries = data.get("entries", [])

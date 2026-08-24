@@ -258,6 +258,32 @@
   opacity: 0.65;
 }
 
+/* ── 심층 보고서 (66항, 2026-08-25) ─────────────────────────────
+   버튼을 누르면 카드 아래가 문서처럼 펼쳐진다. A4 한 장 분량.
+   글은 서술형이므로 카드보다 행간을 넉넉히 — 읽는 물건이다. */
+.mv-report-toggle {
+  display: block; width: calc(100% - 40px); margin: 0 20px 18px;
+  padding: 12px 16px; border-radius: 12px; cursor: pointer;
+  border: 1.5px solid var(--bd, #E5E5EA); background: transparent;
+  font-family: inherit; font-size: 16px; font-weight: 700; color: var(--t2, #515154);
+  transition: background .12s;
+}
+.mv-report-toggle:hover { background: rgba(120,120,128,.08); }
+.mv-report-toggle .arrow { display: inline-block; transition: transform .18s; margin-right: 6px; }
+.mv-report-toggle.open .arrow { transform: rotate(90deg); }
+.mv-report { display: none; margin: 0 20px 20px; padding: 20px 18px;
+  border: 1px solid var(--bd, #E5E5EA); border-radius: 14px;
+  background: var(--surface2, rgba(120,120,128,.05)); }
+.mv-report.open { display: block; }
+.mv-report-h { font-size: 16px; font-weight: 800; color: var(--t1, #1D1D1F);
+  margin: 18px 0 6px; padding-left: 10px; border-left: 3px solid var(--pos, #1D7A46); }
+.mv-report-h:first-child { margin-top: 0; }
+.mv-report-h.neg { border-left-color: var(--neg, #D92A2A); }
+.mv-report-h.plain { border-left-color: var(--t3, #86868B); }
+.mv-report p { font-size: 16px; line-height: 1.75; color: var(--t2, #3A3A3C); margin: 0 0 10px; }
+.mv-report-meta { font-size: 14px; color: var(--t3, #86868B); margin-top: 14px; }
+.mv-card-past .mv-report-toggle, .mv-card-past .mv-report { opacity: .92; }
+
 /* 타임스탬프 — 핵심 강조 */
 .mv-ts {
   display: flex;
@@ -753,8 +779,56 @@ function renderEntry(e, isLatest) {
         '</div>' +
       '</div>' +
 
+      /* 심층 보고서 (66항) — report 필드가 있을 때만 */
+      renderReport(e) +
+
     '</div>'
   );
+}
+
+/* 카드 요약이 너무 압축돼 "무슨 말인지 모르겠다" 싶을 때 펼쳐 보는 A4 한 장.
+   report 필드는 파이프라인이 카드 확정 후 별도 생성한다 — 없으면 버튼도 없다. */
+var REPORT_SECTIONS = [
+  ['overview', '오늘 판 정리', 'plain'],
+  ['positive', '긍정 쪽 이야기', ''],
+  ['negative', '부정 쪽 이야기', 'neg'],
+  ['mixed', '혼조 · 경계', 'plain'],
+  ['watch', '앞으로 12시간 체크포인트', 'plain']
+];
+
+function renderReport(e) {
+  var r = e.report;
+  if (!r) return '';
+  var body = '';
+  for (var i = 0; i < REPORT_SECTIONS.length; i++) {
+    var key = REPORT_SECTIONS[i][0], title = REPORT_SECTIONS[i][1], cls = REPORT_SECTIONS[i][2];
+    var txt = (r[key] || '').trim();
+    if (!txt) continue;
+    var paras = txt.split(/\n+/).map(function (t) {
+      return '<p>' + escHtml(t) + '</p>';
+    }).join('');
+    body += '<div class="mv-report-h' + (cls ? ' ' + cls : '') + '">' + title + '</div>' + paras;
+  }
+  if (!body) return '';
+  var rid = 'rp-' + (e.id || Math.abs((e.timestamp_kst || '').length)) ;
+  return (
+    '<button type="button" class="mv-report-toggle" aria-expanded="false"' +
+      ' onclick="toggleReport(this, \'' + rid + '\')">' +
+      '<span class="arrow">&#9656;</span>보고서 형식으로 보기</button>' +
+    '<div class="mv-report" id="' + escHtml(rid) + '">' + body +
+      (e.report_at ? '<div class="mv-report-meta">보고서 작성 ' + escHtml(e.report_at) + '</div>' : '') +
+    '</div>'
+  );
+}
+
+function toggleReport(btn, rid) {
+  var el = document.getElementById(rid);
+  if (!el) return;
+  var open = !el.classList.contains('open');
+  el.classList.toggle('open', open);
+  btn.classList.toggle('open', open);
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  btn.childNodes[1].nodeValue = open ? '보고서 접기' : '보고서 형식으로 보기';
 }
 
 function escHtml(s) {
