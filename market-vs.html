@@ -281,7 +281,14 @@
 .mv-report-h.neg { border-left-color: var(--neg, #D92A2A); }
 .mv-report-h.plain { border-left-color: var(--t3, #86868B); }
 .mv-report p { font-size: 16px; line-height: 1.75; color: var(--t2, #3A3A3C); margin: 0 0 10px; }
-.mv-report-meta { font-size: 14px; color: var(--t3, #86868B); margin-top: 14px; }
+.mv-report-meta { display: flex; align-items: center; gap: 10px;
+  font-size: 14px; color: var(--t3, #86868B); margin-top: 14px; }
+.mv-report-copy { font-family: inherit; font-size: 14px; font-weight: 700;
+  color: var(--t2, #515154); background: transparent; cursor: pointer;
+  border: 1.5px solid var(--bd, #E5E5EA); border-radius: 8px; padding: 5px 12px;
+  transition: background .12s; }
+.mv-report-copy:hover { background: rgba(120,120,128,.08); }
+.mv-report-copy.done { color: var(--pos, #1D7A46); border-color: var(--pos, #1D7A46); }
 .mv-card-past .mv-report-toggle, .mv-card-past .mv-report { opacity: .92; }
 
 /* 타임스탬프 — 핵심 강조 */
@@ -811,14 +818,54 @@ function renderReport(e) {
   }
   if (!body) return '';
   var rid = 'rp-' + (e.id || Math.abs((e.timestamp_kst || '').length)) ;
+
+  /* 복사용 평문 — 다른 곳에 붙여도 안 깨지게 제목+본문 평문으로 (48항: 표 금지 원칙과 동일) */
+  var plain = '[긍정 ' + (e.positive_total || 0) + ' vs 부정 ' + (e.negative_total || 0) + '] ' +
+              (e.timestamp_kst || '') + ' · ezlong.com 긍정vs부정\n\n';
+  for (var q = 0; q < REPORT_SECTIONS.length; q++) {
+    var k2 = REPORT_SECTIONS[q][0], t2 = REPORT_SECTIONS[q][1];
+    var v2 = (r[k2] || '').trim();
+    if (v2) plain += '■ ' + t2 + '\n' + v2 + '\n\n';
+  }
+  window._mvReports = window._mvReports || {};
+  window._mvReports[rid] = plain.trim();
+
   return (
     '<button type="button" class="mv-report-toggle" aria-expanded="false"' +
       ' onclick="toggleReport(this, \'' + rid + '\')">' +
       '<span class="arrow">&#9656;</span>보고서 형식으로 보기</button>' +
     '<div class="mv-report" id="' + escHtml(rid) + '">' + body +
-      (e.report_at ? '<div class="mv-report-meta">보고서 작성 ' + escHtml(e.report_at) + '</div>' : '') +
+      '<div class="mv-report-meta">' +
+        '<button type="button" class="mv-report-copy" onclick="copyReport(this, \'' + rid + '\')">복사</button>' +
+        (e.report_at ? '<span>보고서 작성 ' + escHtml(e.report_at) + '</span>' : '') +
+      '</div>' +
     '</div>'
   );
+}
+
+/* 보고서 평문 복사. 클립보드 API가 막힌 환경(일부 웹뷰)은 textarea 폴백. */
+function copyReport(btn, rid) {
+  var txt = (window._mvReports || {})[rid] || '';
+  if (!txt) return;
+  function ok() {
+    btn.classList.add('done');
+    btn.textContent = '복사됨';
+    setTimeout(function () { btn.classList.remove('done'); btn.textContent = '복사'; }, 1800);
+  }
+  function fallback() {
+    var ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); ok(); } catch (err) {}
+    document.body.removeChild(ta);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(ok, fallback);
+  } else {
+    fallback();
+  }
 }
 
 function toggleReport(btn, rid) {
