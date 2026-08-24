@@ -1,6 +1,57 @@
 {
   "entries": [
     {
+      "id": "2026-08-25-06:57",
+      "timestamp_kst": "2026-08-25(화) 06:57 KST",
+      "key_event": {
+        "name": "이란 제재 및 반도체 약세",
+        "name_en": "Iran Sanctions & Semiconductor Weakness",
+        "time": "포스트마켓 및 다음 정규장",
+        "why": "지정학적 긴장 고조, 반도체 투자 심리 위축",
+        "why_en": "Heightened geopolitical tension, dampened semiconductor investment sentiment"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "지정학적 긴장 고조와 반도체 섹터 약세로 부정 우위 지속, 일부 빅테크 강세",
+      "summary_en": "Negative sentiment persists due to geopolitical tensions and semiconductor weakness, with some big tech strength",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "AI 수요 기반 실적 기대감",
+          "name_en": "AI Demand-Driven Earnings Expectations",
+          "desc": "Analog Devices의 AI 수요 기반 실적 호조 발표 등 AI 관련 기업들의 실적 기대감 유지",
+          "desc_en": "Earnings expectations for AI-related companies remain, following strong AI demand-driven results from Analog Devices",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 65,
+          "name": "이란 제재 및 지정학적 긴장 고조",
+          "name_en": "Escalating Iran Sanctions & Geopolitical Tensions",
+          "desc": "미국의 이란 석유 구매국 제재 위협으로 지정학적 긴장이 고조되며 시장 변동성 확대",
+          "desc_en": "US threats of sanctions against buyers of Iranian oil escalate geopolitical tensions, increasing market volatility",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "Nvidia 실적 발표 대기",
+          "name_en": "Anticipation for Nvidia Earnings",
+          "desc": "Nvidia의 실적 발표를 앞두고 밸류에이션이 저평가되었다는 분석과 반도체 섹터 전반의 약세가 혼재",
+          "desc_en": "Ahead of Nvidia's earnings, mixed sentiments exist between analyses suggesting undervaluation and general semiconductor sector weakness",
+          "category": "earnings_bellwether"
+        },
+        {
+          "name": "잭슨홀 미팅 및 Fed 연설 대기",
+          "name_en": "Waiting for Jackson Hole Meeting & Fed Speech",
+          "desc": "잭슨홀 미팅과 Fed 의장 연설을 앞두고 시장은 금리 방향성에 대한 추가 신호를 기다리며 관망세",
+          "desc_en": "Markets are in a wait-and-see mode ahead of the Jackson Hole meeting and Fed Chair's speech, awaiting further signals on interest rate direction",
+          "category": "fed_policy"
+        }
+      ]
+    },
+    {
       "id": "2026-08-25-05:37",
       "timestamp_kst": "2026-08-25(화) 05:37 KST",
       "key_event": {
@@ -527,75 +578,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-24-05:29",
-      "timestamp_kst": "2026-08-24(월) 05:29 KST",
-      "key_event": {
-        "name": "AI 투자 확대 지속",
-        "name_en": "Continued AI Investment Expansion",
-        "time": "직전 거래일 및 다음 주 개장",
-        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선, 시장 전반 긍정 영향",
-        "why_en": "Tech earnings optimism, improved AI investment sentiment, positive market impact"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
-      "summary_en": "Positive sentiment continues with AI investment and tech optimism, mixed macro concerns",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "AI 및 기술주 투자 심리 강화",
-          "name_en": "Strengthened AI and Tech Investment Sentiment",
-          "desc": "Oracle, Amazon 등 AI 클라우드 주식 관심 및 휴깅페이스 매각 탐색 등 AI 관련 투자 심리 지속",
-          "desc_en": "Continued AI investment sentiment with interest in Oracle, Amazon AI cloud stocks and Hugging Face sale exploration",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 25,
-          "name": "주요 기술주 상승세 유지",
-          "name_en": "Major Tech Stocks Maintain Upward Trend",
-          "desc": "QQQ (+0.50%), SPY (+0.54%), GOOGL (+1.26%) 등 주요 지수 및 기술주 상승 마감",
-          "desc_en": "Major indices and tech stocks closed higher, including QQQ (+0.50%), SPY (+0.54%), GOOGL (+1.26%)",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 20,
-          "name": "시장 변동성 완화",
-          "name_en": "Market Volatility Easing",
-          "desc": "VIX 공포지수 15.13 (-5.50%) 하락으로 시장 불안감 진정",
-          "desc_en": "VIX fear index declined to 15.13 (-5.50%), indicating reduced market anxiety",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "엔비디아 가격 인상 및 차익 실현",
-          "name_en": "Nvidia Price Hike and Profit Taking",
-          "desc": "Nvidia의 15% 가격 인상 소식과 직전 거래일 주가 (-0.77%) 하락으로 차익 실현 압력",
-          "desc_en": "Nvidia's 15% price hike news and previous day's stock decline (-0.77%) suggest profit-taking pressure",
-          "category": "company_specific"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "잭슨홀 미팅 및 Fed 워시 발언",
-          "name_en": "Jackson Hole Meeting and Fed Warsh's Remarks",
-          "desc": "잭슨홀 미팅에서 Fed 워시 발언에 대한 시장의 기대와 불확실성 혼재, 향후 통화 정책 방향성 주목",
-          "desc_en": "Mixed expectations and uncertainties surrounding Fed Warsh's remarks at Jackson Hole, with focus on future monetary policy direction",
-          "category": "fed_policy"
-        },
-        {
-          "name": "미국-이란 긴장 고조",
-          "name_en": "Escalating US-Iran Tensions",
-          "desc": "미국-이란 긴장 고조로 유가 상승 우려와 지정학적 리스크 확대 가능성 혼재",
-          "desc_en": "Rising US-Iran tensions create mixed concerns about oil price increases and potential geopolitical risk expansion",
-          "category": "geopolitics"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-24T20:37:29Z",
+  "updated_at": "2026-08-24T21:58:12Z",
   "max_entries": 10
 }
