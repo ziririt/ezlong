@@ -858,6 +858,15 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - summary도 같다. "…약세로 부정 우위" 같은 결과-이유 서술 금지 — 우위의 이유는
   원인 재료의 이름이어야 한다.
 
+=== 단문으로 써라 (65항, 오너 지시) ===
+- 한 문장에는 주장 하나만 담는다. '~이나', '~지만'으로 두 주장을 잇지 말고 끊어라.
+- 순서는 원리 → 사실(숫자) → 판정. 예:
+  나쁜 예: "당일 움직임은 판단을 실을 크기가 아니나, 금리 수준 자체가 성장주 할인율을
+  좌우하는 핵심 변수 — 방향 판단 유보" (한 문장에 세 가지, 해석이 필요하다)
+  좋은 예: "금리는 성장주 할인율을 좌우하는 핵심 변수. 오늘 미10년 4.70%(-0.72%).
+  움직임이 작아 방향 판단은 유보" (끊어 읽히고 해석이 필요 없다)
+- 독자가 문장 해석에 신경 쓰게 하지 마라. 한눈에 읽히면 통과, 두 번 읽게 하면 실패다.
+
 === 빼기보다 혼조 — 분석이 어려운 큰 축은 혼조로 분류한다 (64항, 오너 지시) ===
 - 시장을 짓누르는 큰 축(특히 **금리**)은 판단이 애매하다고 카드에서 지우면 안 된다.
   "살짝 하락했지만 긍정이라 하기엔 부족하다" 같은 상황이 바로 혼조 칸의 존재 이유다.
@@ -1764,12 +1773,14 @@ def ensure_rates_visible(entry, snap):
     d10 = f"미10년 {lvl:.2f}%" + (f"({pct:+.2f}%)" if pct is not None else '')
     l30, p30 = snap.get('yield30_level'), snap.get('yield30_pct')
     d30 = (f" · 미30년 {l30:.2f}%" + (f"({p30:+.2f}%)" if p30 is not None else '')) if l30 else ''
+    # 문안은 단문 세 개다(65항, 성동님 지시): 원리 → 오늘 숫자 → 판정.
+    # 복문으로 이으면 독자가 해석에 신경을 쓴다. 끊어서 한눈에 읽히게.
     entry.setdefault('mixed_factors', []).append({
         'name': '미 국채금리 수준', 'name_en': 'US Treasury Yields',
-        'desc': (f"{d10}{d30}. 당일 움직임은 판단을 실을 크기가 아니나, 금리 수준 "
-                 f"자체가 성장주 할인율을 좌우하는 핵심 변수 — 방향 판단 유보"),
-        'desc_en': (f"{d10}{d30}. Daily move too small to score, but the yield level "
-                    f"itself drives growth-stock discount rates — direction on hold"),
+        'desc': (f"금리는 성장주 할인율을 좌우하는 핵심 변수. "
+                 f"오늘 {d10}{d30}. 움직임이 작아 방향 판단은 유보"),
+        'desc_en': (f"Yields drive growth-stock discount rates. "
+                    f"Today {d10}{d30}. Move too small to call — on hold"),
         'category': 'rates_treasury',
     })
     print("::warning::[64항] 카드에 금리가 없어 실측치로 혼조 재료 보충")
