@@ -1694,6 +1694,29 @@ def scrub_weekend_closure_word(entry, session_code=''):
     return entry
 
 
+# ─── 요약 순환 서술 교정 (63항) ──────────────────────────────────────────────
+# 체크 12는 재판정 사유일 뿐이라, 재시도로도 안 고쳐지면 "약세로 부정 우위"가
+# 그대로 게시된다(2026-08-25 실제 발생 — 두 시도 모두 같은 문구를 썼다).
+# 그래서 결정적 교정을 둔다. 문장을 새로 쓰지는 않는다 — 결과 어구만 걷어낸다.
+#   "지정학적 긴장 고조와 반도체 섹터 약세로 부정 우위" → "지정학적 긴장 고조로 부정 우위"
+#   "반도체 섹터 약세로 부정 우위" → "부정 우위" (원인이 그것뿐이면 이유째 뗀다)
+_RESULT_PHRASE = r'[가-힣A-Za-z0-9 ]{0,14}?(?:약세|강세|하락|상승|급락|급등|부진|호조)'
+_CIRC_CONJ = re.compile(r'\s*(?:와|과|및)\s*' + _RESULT_PHRASE +
+                        r'(?=\s*(?:로|으로)\s*(?:긍정|부정)\s*우위)')
+_CIRC_SOLE = re.compile(_RESULT_PHRASE + r'\s*(?:로|으로)\s*(?=(?:긍정|부정)\s*우위)')
+
+def scrub_circular_summary(entry):
+    v = entry.get('summary') or ''
+    if not v:
+        return entry
+    nv = _CIRC_CONJ.sub('', v)
+    nv = _CIRC_SOLE.sub('', nv)
+    if nv != v:
+        entry['summary'] = re.sub(r'\s{2,}', ' ', nv).strip(' ,')
+        print(f"::warning::[63항] 요약 순환 서술 교정: '{v}' → '{entry['summary']}'")
+    return entry
+
+
 # ─── 국채금리 수치 표기 교정 (60항) ──────────────────────────────────────────
 # 금리는 수준도 %, 변화도 %다. 하나만 적으면 독자가 반드시 헷갈린다 —
 # "미10년 국채금리 1.19% 상승"은 금리가 1.19%라는 말로 읽힌다(실제 4.70%였다).
@@ -2729,6 +2752,8 @@ def main():
     entry = scrub_weekend_closure_word(entry, session_code)
     # 4-5. 국채금리 수치 표기 교정 (60항) — 수준과 변화가 둘 다 %라 하나만 적으면 오독된다
     entry = fix_yield_number(entry, snap)
+    # 4-6. 요약 순환 서술 교정 (63항) — 재판정으로도 안 고쳐진 결과-이유 어구를 걷어낸다
+    entry = scrub_circular_summary(entry)
 
     # 5. 신규 항목 추가
     entries = data.get("entries", [])
