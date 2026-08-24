@@ -1,6 +1,57 @@
 {
   "entries": [
     {
+      "id": "2026-08-24-23:20",
+      "timestamp_kst": "2026-08-24(월) 23:20 KST",
+      "key_event": {
+        "name": "이란 제재 및 지정학적 긴장 고조",
+        "name_en": "Escalating Iran Sanctions and Geopolitical Tensions",
+        "time": "정규장 진행 중",
+        "why": "시장 변동성 확대, 기술주 투자 심리 위축",
+        "why_en": "Increased market volatility, dampened tech investor sentiment"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "지정학적 긴장 고조 및 반도체 섹터 약세로 부정 우위 전환, AI 투자 심리 유지",
+      "summary_en": "Negative sentiment prevails due to geopolitical tensions and semiconductor weakness, while AI investment sentiment holds.",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "AI 데이터센터 수요 기대",
+          "name_en": "Anticipation of AI data center demand",
+          "desc": "CoreWeave의 Nvidia 투자 소식 등 AI 데이터센터 수요 지속 기대",
+          "desc_en": "Continued anticipation for AI data center demand, fueled by news like CoreWeave's investment in Nvidia.",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 65,
+          "name": "지정학적 긴장 고조",
+          "name_en": "Heightened geopolitical tensions",
+          "desc": "미국의 이란 제재 발표 임박 소식에 S&P 500, 나스닥 하락 압력",
+          "desc_en": "S&P 500 and Nasdaq face downward pressure amid news of impending US sanctions on Iran.",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "잭슨홀 미팅 및 Fed 의장 연설 대기",
+          "name_en": "Anticipation of Jackson Hole meeting and Fed Chair's speech",
+          "desc": "향후 통화정책 방향성 불확실성으로 시장 관망세 유지, 변동성 확대 우려 상존",
+          "desc_en": "Market remains in wait-and-see mode due to uncertainty over future monetary policy, with volatility concerns persisting.",
+          "category": "fed_policy"
+        },
+        {
+          "name": "테슬라 로보택시 이벤트 기대와 회의론",
+          "name_en": "Tesla Cybercab event: anticipation vs. skepticism",
+          "desc": "9월 3일 사이버캡 출시 발표에도 불구하고 시장의 기대감과 회의론 혼재",
+          "desc_en": "Despite the September 3rd Cybercab launch announcement, market sentiment is mixed with both anticipation and skepticism.",
+          "category": "company_specific"
+        }
+      ]
+    },
+    {
       "id": "2026-08-24-21:50",
       "timestamp_kst": "2026-08-24(월) 21:50 KST",
       "key_event": {
@@ -544,60 +595,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-23-21:50",
-      "timestamp_kst": "2026-08-23(일) 21:50 KST",
-      "key_event": {
-        "name": "AI 투자 확대 지속",
-        "name_en": "Continued AI Investment Expansion",
-        "time": "직전 거래일 마감 및 다음 주 개장 전",
-        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
-        "why_en": "Tech earnings expectations, improved AI investment sentiment"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
-      "summary_en": "Positive sentiment sustained by AI investment and tech optimism, mixed macro concerns",
-      "positive_factors": [
-        {
-          "score": 75,
-          "name": "AI 관련 기술주 실적 기대감",
-          "name_en": "Optimism for AI-related tech earnings",
-          "desc": "Nvidia의 실적 발표를 앞두고 AI 투자 수요 지속 전망, Micron 등 관련 기업 기대감",
-          "desc_en": "Anticipation of continued AI investment demand ahead of Nvidia earnings, optimism for related companies like Micron",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "잭슨홀 미팅 경계 심리",
-          "name_en": "Jackson Hole Meeting caution",
-          "desc": "잭슨홀 미팅을 앞두고 Fed 워시 의장의 발언에 대한 불확실성 증대",
-          "desc_en": "Increased uncertainty surrounding Fed Chair Warsh's speech ahead of the Jackson Hole meeting",
-          "category": "fed_policy"
-        },
-        {
-          "score": 10,
-          "name": "이란-미국 지정학적 긴장",
-          "name_en": "Iran-US geopolitical tensions",
-          "desc": "호르무즈 해협 관련 이란-미국 긴장 고조, 원유 시장 및 글로벌 증시 영향 우려",
-          "desc_en": "Escalating Iran-US tensions over the Strait of Hormuz, raising concerns for oil markets and global stocks",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury yield increase",
-          "desc": "미10년 국채금리 4.74%(+0.89%), 미30년 국채금리 5.28%(+0.74%) 기록. 인플레이션 우려와 함께 성장주 할인율 압박 요인",
-          "desc_en": "US 10-year Treasury yield at 4.74% (+0.89%) and 30-year at 5.28% (+0.74%). This poses a discount rate pressure on growth stocks amid inflation concerns",
-          "category": "rates_treasury"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-24T12:51:15Z",
+  "updated_at": "2026-08-24T14:21:24Z",
   "max_entries": 10
 }
