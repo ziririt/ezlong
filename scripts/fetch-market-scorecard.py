@@ -858,6 +858,14 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - summary도 같다. "…약세로 부정 우위" 같은 결과-이유 서술 금지 — 우위의 이유는
   원인 재료의 이름이어야 한다.
 
+=== 빼기보다 혼조 — 분석이 어려운 큰 축은 혼조로 분류한다 (64항, 오너 지시) ===
+- 시장을 짓누르는 큰 축(특히 **금리**)은 판단이 애매하다고 카드에서 지우면 안 된다.
+  "살짝 하락했지만 긍정이라 하기엔 부족하다" 같은 상황이 바로 혼조 칸의 존재 이유다.
+- 이때 혼조 설명에는 **양면을 다 쓴다** — 당일 움직임(예: 소폭 하락)과 그 움직임을
+  눌러 담는 배경(예: 금리 수준 자체가 높고 통화정책 국면이 진행 중)을 함께.
+- 금리는 매 카드에서 다뤄야 할 상시 주제다. 긍정도 부정도 아니면 혼조로라도 싣는다.
+  독자가 "오늘 카드에 금리 얘기가 왜 없지"라고 묻게 만들지 마라.
+
 === 방향 없는 상태는 재료가 아니다 (60항) ===
 - '관망', '눈치보기', '숨 고르기', '방향성 탐색', '보합', '혼조 지속' 처럼 **방향이 없는
   상태**를 positive_factors·negative_factors 의 재료 이름으로 쓰지 마라. 관망은 시장이
@@ -1717,6 +1725,45 @@ def scrub_circular_summary(entry):
     return entry
 
 
+# ─── 금리 상시 노출 보증 (64항) ──────────────────────────────────────────────
+# 오너 지시(2026-08-25): "미 국채금리가 살짝 하락했지만 긍정 재료라 할 만하지 않다.
+# 나라면 혼조라고 하겠다. 주식시장을 짓누르는 가장 큰 악재이니까. 분석 곤란하다고
+# 아예 빼는 것은 오히려 문제다. 그런 것을 애매/혼조로 분류하면 되잖니."
+# 프롬프트·재판정 지시로도 모델이 금리를 통째로 빼면, 실측치만으로 혼조 재료를
+# 만들어 넣는다. 판단은 지어내지 않는다 — 숫자와 '판단 유보'만 쓴다.
+# 국면 서술(금리 인상기·인하기 등)은 코드에 박지 않는다 — 국면은 바뀌고,
+# 하드코딩된 국면은 언젠가 반드시 거짓말이 된다. 그건 모델의 몫이다.
+
+def ensure_rates_visible(entry, snap):
+    if not snap or snap.get('yield_level') is None:
+        return entry
+    has_rates = False
+    for side in ('positive_factors', 'negative_factors', 'mixed_factors'):
+        for f in entry.get(side) or []:
+            t = (f.get('name', '') or '') + ' ' + (f.get('desc', '') or '')
+            if re.search(r'금리|국채|수익률|10년물|30년물', t):
+                has_rates = True
+                break
+        if has_rates:
+            break
+    if has_rates:
+        return entry
+    lvl, pct = snap['yield_level'], snap.get('yield_pct')
+    d10 = f"미10년 {lvl:.2f}%" + (f"({pct:+.2f}%)" if pct is not None else '')
+    l30, p30 = snap.get('yield30_level'), snap.get('yield30_pct')
+    d30 = (f" · 미30년 {l30:.2f}%" + (f"({p30:+.2f}%)" if p30 is not None else '')) if l30 else ''
+    entry.setdefault('mixed_factors', []).append({
+        'name': '미 국채금리 수준', 'name_en': 'US Treasury Yields',
+        'desc': (f"{d10}{d30}. 당일 움직임은 판단을 실을 크기가 아니나, 금리 수준 "
+                 f"자체가 성장주 할인율을 좌우하는 핵심 변수 — 방향 판단 유보"),
+        'desc_en': (f"{d10}{d30}. Daily move too small to score, but the yield level "
+                    f"itself drives growth-stock discount rates — direction on hold"),
+        'category': 'rates_treasury',
+    })
+    print("::warning::[64항] 카드에 금리가 없어 실측치로 혼조 재료 보충")
+    return entry
+
+
 # ─── 국채금리 수치 표기 교정 (60항) ──────────────────────────────────────────
 # 금리는 수준도 %, 변화도 %다. 하나만 적으면 독자가 반드시 헷갈린다 —
 # "미10년 국채금리 1.19% 상승"은 금리가 1.19%라는 말로 읽힌다(실제 4.70%였다).
@@ -2332,7 +2379,9 @@ def direction_offenders(entry, snap=None):
                     if abs(v) < floor:
                         reasons.append(
                             f'미세 변동 재료화 — {label} 실측 {v:+.2f}%는 오차 범위'
-                            f'(상대 {floor}% 미만). 방향이 맞아도 점수를 실을 크기가 아니다')
+                            f'(상대 {floor}% 미만). 방향이 맞아도 점수를 실을 크기가 아니다. '
+                            f'단, 재료를 지우지 말고 혼조로 옮겨 배경(수준·국면)을 설명하라 — '
+                            f'큰 축을 카드에서 빼면 독자는 그 축이 사라졌다고 오해한다')
                     break
 
             if reasons:
@@ -2754,6 +2803,8 @@ def main():
     entry = fix_yield_number(entry, snap)
     # 4-6. 요약 순환 서술 교정 (63항) — 재판정으로도 안 고쳐진 결과-이유 어구를 걷어낸다
     entry = scrub_circular_summary(entry)
+    # 4-7. 금리 상시 노출 보증 (64항) — 모델이 금리를 통째로 뺐으면 실측치로 혼조 보충
+    entry = ensure_rates_visible(entry, snap)
 
     # 5. 신규 항목 추가
     entries = data.get("entries", [])
