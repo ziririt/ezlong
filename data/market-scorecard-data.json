@@ -1,6 +1,79 @@
 {
   "entries": [
     {
+      "id": "2026-08-24-21:50",
+      "timestamp_kst": "2026-08-24(월) 21:50 KST",
+      "key_event": {
+        "name": "잭슨홀 미팅 및 Fed 의장 연설 대기",
+        "name_en": "Anticipation for Jackson Hole Meeting and Fed Chair Speech",
+        "time": "오늘 정규장 이후",
+        "why": "향후 통화정책 방향성, 시장 변동성 확대 우려",
+        "why_en": "Future monetary policy direction, concerns over increased market volatility"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "AI 기술주 투자 심리 유지 속 매크로 우려 확대, 부정 우위 전환",
+      "summary_en": "AI tech investment sentiment sustained amidst growing macro concerns, shifting to negative dominance",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "AI 기술주 낙관론 유지",
+          "name_en": "Sustained Optimism in AI Tech Stocks",
+          "desc": "Nvidia의 소폭 상승 및 AI 관련 투자 심리 지속",
+          "desc_en": "Slight rise in Nvidia and continued investment sentiment in AI",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 35,
+          "name": "VIX 공포지수 상승",
+          "name_en": "VIX Fear Index Rises",
+          "desc": "VIX 공포지수 15.90(+5.09%) 상승, 시장 불확실성 증대",
+          "desc_en": "VIX fear index rose to 15.90 (+5.09%), increasing market uncertainty",
+          "category": "vix_risk_sentiment"
+        },
+        {
+          "score": 30,
+          "name": "주요 지수 프리마켓 하락",
+          "name_en": "Major Indices Decline in Premarket",
+          "desc": "QQQ -0.69%, SPY -0.33% 하락, 시장 전반의 약세 심리",
+          "desc_en": "QQQ down 0.69%, SPY down 0.33%, reflecting overall bearish market sentiment",
+          "category": "other"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "Nvidia 실적 발표 임박",
+          "name_en": "Nvidia Earnings Imminent",
+          "desc": "실적 기대감과 함께 Michael Burry의 공매도 소식으로 혼조세",
+          "desc_en": "Mixed sentiment due to earnings anticipation and news of Michael Burry's short position",
+          "category": "earnings_bellwether"
+        },
+        {
+          "name": "애플 AI 전략 재편",
+          "name_en": "Apple's AI Strategy Restructuring",
+          "desc": "Siri 및 Vision Pro 관련 200명 감원, AI 집중 전략에 대한 기대와 우려 교차",
+          "desc_en": "Layoffs of 200 in Siri and Vision Pro, mixed expectations and concerns about AI focus",
+          "category": "company_specific"
+        },
+        {
+          "name": "미 국채금리 하락",
+          "name_en": "US Treasury Yields Decline",
+          "desc": "미 10년물 국채금리 4.71%(-0.63%) 하락, 성장주에 긍정적",
+          "desc_en": "US 10-year Treasury yield fell to 4.71% (-0.63%), positive for growth stocks",
+          "category": "rates_treasury"
+        },
+        {
+          "name": "이란 제재 및 지정학적 긴장 고조",
+          "name_en": "Iran Sanctions and Heightened Geopolitical Tensions",
+          "desc": "미국 이란 경제 제재 발표 임박, 유가 변동성 및 시장 불안정성 확대",
+          "desc_en": "Imminent US sanctions on Iran, increasing oil price volatility and market instability",
+          "category": "geopolitics"
+        }
+      ]
+    },
+    {
       "id": "2026-08-24-18:20",
       "timestamp_kst": "2026-08-24(월) 18:20 KST",
       "key_event": {
@@ -523,66 +596,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-23-18:20",
-      "timestamp_kst": "2026-08-23(일) 18:20 KST",
-      "key_event": {
-        "name": "AI 투자 확대 지속",
-        "name_en": "Continued Expansion of AI Investment",
-        "time": "직전 거래일 마감 및 다음 주 개장 전",
-        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
-        "why_en": "Optimism for tech earnings, improved AI investment sentiment"
-      },
-      "positive_total": 80,
-      "negative_total": 20,
-      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
-      "summary_en": "Positive sentiment continues with AI investment and tech optimism, mixed with macro concerns",
-      "positive_factors": [
-        {
-          "score": 80,
-          "name": "기술주 실적 기대감",
-          "name_en": "Tech Earnings Optimism",
-          "desc": "Alphabet, Microsoft 등 주요 기술주 견조한 상승세 지속",
-          "desc_en": "Major tech stocks like Alphabet, Microsoft continue strong gains",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "지정학적 긴장 고조",
-          "name_en": "Heightened Geopolitical Tensions",
-          "desc": "미-이란 갈등 고조 및 유가 변동성 우려 지속",
-          "desc_en": "Escalating US-Iran conflict and persistent oil price volatility concerns",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "S&P 500 과거 패턴 경고",
-          "name_en": "S&P 500 Historical Pattern Warning",
-          "desc": "S&P 500이 1871년 이후 단 한 번 나타난 패턴을 보이며 시장 조정 우려 제기",
-          "desc_en": "S&P 500 showing a pattern seen only once since 1871, raising market correction concerns",
-          "category": "other"
-        },
-        {
-          "name": "엔비디아 실적 및 GPU 가격 인상",
-          "name_en": "Nvidia Earnings and GPU Price Hikes",
-          "desc": "엔비디아 실적 발표 및 GPU 가격 인상 소식에 대한 기대와 차익 실현 우려 혼재",
-          "desc_en": "Mixed expectations and profit-taking concerns around Nvidia's earnings and GPU price hike news",
-          "category": "earnings_bellwether"
-        },
-        {
-          "name": "미 국채금리 상승 압력",
-          "name_en": "US Treasury Yields Upward Pressure",
-          "desc": "미10년 국채금리 4.74%(+0.89%) 상승, 성장주 할인율 압박",
-          "desc_en": "US 10-year Treasury yield rose to 4.74% (+0.89%), pressuring growth stock valuations",
-          "category": "rates_treasury"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-24T09:21:26Z",
+  "updated_at": "2026-08-24T12:51:15Z",
   "max_entries": 10
 }
