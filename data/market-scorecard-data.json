@@ -1,6 +1,57 @@
 {
   "entries": [
     {
+      "id": "2026-08-24-12:50",
+      "timestamp_kst": "2026-08-24(월) 12:50 KST",
+      "key_event": {
+        "name": "AI 투자 확대 및 기술주 낙관론 지속",
+        "name_en": "Continued AI Investment & Tech Optimism",
+        "time": "직전 거래일 마감 기준",
+        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선, 시장 전반 긍정 영향",
+        "why_en": "Tech earnings optimism, improved AI investment sentiment, positive market impact"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "AI 투자 확대 및 기술주 낙관론 지속으로 긍정 우위 유지, 지정학적 긴장 혼조",
+      "summary_en": "Positive bias maintained by continued AI investment and tech optimism, mixed geopolitical tensions",
+      "positive_factors": [
+        {
+          "score": 70,
+          "name": "AI 투자 확대 지속",
+          "name_en": "Sustained AI Investment Expansion",
+          "desc": "기술주 실적 기대감 및 AI 관련 투자 심리 개선, 시장 전반 긍정 영향",
+          "desc_en": "Improved tech earnings expectations and AI investment sentiment, positive market-wide impact",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "미-이란 경제 전쟁 고조",
+          "name_en": "Escalating US-Iran Economic War",
+          "desc": "트럼프의 이란 경제 전쟁 선포, 지정학적 긴장 고조 및 시장 불확실성 증대",
+          "desc_en": "Trump's declaration of economic war on Iran, escalating geopolitical tensions and market uncertainty",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "Nvidia 실적 및 가격 인상",
+          "name_en": "Nvidia Earnings & Price Hike",
+          "desc": "Q2 실적 발표 임박 및 서버 가격 15% 인상 계획 보도, AI 모멘텀 지속 기대와 밸류에이션 압박 혼조",
+          "desc_en": "Impending Q2 earnings and reported 15% server price hike, mixed expectations of continued AI momentum and valuation pressure",
+          "category": "earnings_bellwether"
+        },
+        {
+          "name": "WTI 원유 가격 하락",
+          "name_en": "WTI Crude Oil Price Decline",
+          "desc": "WTI 원유 85.71(-1.55%) 하락, 인플레이션 압력 완화 기대와 경기 둔화 우려 혼조",
+          "desc_en": "WTI crude oil down 1.55% to $85.71, mixed expectations of easing inflation and concerns over economic slowdown",
+          "category": "oil_energy"
+        }
+      ]
+    },
+    {
       "id": "2026-08-24-11:08",
       "timestamp_kst": "2026-08-24(월) 11:08 KST",
       "key_event": {
@@ -515,52 +566,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-23-07:00",
-      "timestamp_kst": "2026-08-23(일) 07:00 KST",
-      "key_event": {
-        "name": "AI 투자 확대 지속",
-        "name_en": "Continued AI Investment Expansion",
-        "time": "직전 거래일(금요일) 마감 기준",
-        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
-        "why_en": "Tech earnings optimism, improved AI investment sentiment"
-      },
-      "positive_total": 80,
-      "negative_total": 20,
-      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
-      "summary_en": "Continued positive bias from AI investment and tech optimism, mixed macro concerns",
-      "positive_factors": [
-        {
-          "score": 80,
-          "name": "AI 관련 투자 심리 개선",
-          "name_en": "Improved AI Investment Sentiment",
-          "desc": "AI 관련 ETF 자금 유입 및 AI 성장 엔진에 대한 낙관론 지속",
-          "desc_en": "Continued optimism on AI growth engines and inflows into AI-related ETFs",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "엔비디아 서버 가격 인상",
-          "name_en": "Nvidia Server Price Hikes",
-          "desc": "메모리 비용 상승으로 엔비디아 고객사 서버 가격 15% 이상 인상 통보",
-          "desc_en": "Nvidia customers notified of over 15% server price hikes due to soaring memory costs",
-          "category": "supply_chain"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "장기 국채금리 상승",
-          "name_en": "Long-Term Treasury Yields Rise",
-          "desc": "미10년 국채금리 4.74%(+0.89%), 미30년 국채금리 5.28%(+0.74%) 상승, 성장주 압박",
-          "desc_en": "US 10-year Treasury yield rose to 4.74%(+0.89%) and 30-year to 5.28%(+0.74%), pressuring growth stocks",
-          "category": "rates_treasury"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-24T02:09:06Z",
+  "updated_at": "2026-08-24T03:50:47Z",
   "max_entries": 10
 }
