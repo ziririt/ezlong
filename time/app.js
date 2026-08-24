@@ -12161,19 +12161,14 @@ var bedsideActive = false;
 
   // ── 네이티브 브릿지 ─────────────────────────────────────────────
 
-  // 2026-08-23 운영자: "다른 요일 알람 추가" — 기존 알람을 건드리지 않고 새 알람을
+  // 2026-08-23 신설 / 2026-08-25 개명 "새 알람 추가" — 기존 알람을 건드리지 않고 새 알람을
   // 만든다. 아직 알람이 없는 요일(예: 토·일)을 미리 골라 주고, 시각만 정하면 된다.
   function startNewAlarm() {
     editingId = null;
-    var covered = {};
-    loadAlarms().forEach(function (a) {
-      var d = a.weekdays || [];
-      if (!d.length) { for (var i = 0; i < 7; i += 1) covered[i] = true; }
-      else d.forEach(function (x) { covered[x] = true; });
-    });
-    var free = [];
-    for (var j = 0; j < 7; j += 1) { if (!covered[j]) free.push(j); }
-    selectedWeekdays = free;   // 빈 요일을 미리 선택(전부 차 있으면 빈 채로 둔다)
+    // 2026-08-25 운영자: "새 알람 추가"는 낮잠·테스트 같은 단발 알람도 편히
+    // 넣도록 요일을 비운 채(= 한 번만 울림) 시작한다. 반복이 필요하면
+    // 위 요일 칩을 눌러 고르면 된다.
+    selectedWeekdays = [];
     if (els.snooze) els.snooze.checked = true;
     renderWeekdays();
     renderSoundTabs();
@@ -12195,7 +12190,7 @@ var bedsideActive = false;
     btn.type = "button";
     btn.id = "alarmAddNew";
     btn.className = "alarm-add-new";
-    btn.textContent = "\uff0b " + t("settings.alarm.addAnother", null, "다른 요일 알람 추가");
+    btn.textContent = "\uff0b " + t("settings.alarm.addAnother", null, "새 알람 추가");
     btn.addEventListener("click", startNewAlarm);
     els.list.parentNode.insertBefore(btn, els.list);
   }
