@@ -841,6 +841,23 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
   좋은 예: name '고용 둔화에도 금리 상승', desc '인하 기대보다 재정·수급 우려 우세, 성장주 압박'
 - 같은 카드 안의 재료들이 서로 모순돼 보이면 summary에서 그 모순을 인정하고 '방향성 혼조'로 서술하라.
 
+=== 이 코너의 정의 — 결과가 아니라 원인을 분석한다 (63항, 오너 재강조) ===
+- 이 코너의 존재 이유: **"향후 12시간 주가의 향방을 예상해볼 수 있는, 현재 시점의
+  원인 재료"를 분석하는 것**이다. 주가가 오르내린 결과는 이미 누구나 안다.
+- 독자의 질문은 언제나 "왜"다. 반도체가 빠지는 날 독자는 반도체가 왜 빠지는지
+  궁금한 것이다. 그때 "반도체 섹터 약세"를 부정 재료로 쓰면 **순환논리·동어반복**이다
+  — 현상을 묘사하지 말고 원인을 분석하라. 노이즈가 아닌 정보를.
+- '심리'와 '수급'은 가격의 다른 이름이다. 'AI 투자 심리 유지', '매수세 유입',
+  '관심 지속'은 상태 묘사지 원인이 아니다 — "심리가 왜 유지되는가"의 그 '왜'
+  (구체적 이벤트·수치·발언)가 재료다.
+- 같은 주제는 판정 하나만 갖는다. 한 주제를 긍정 칸과 혼조 칸에 쪼개 넣지 마라
+  (실사고: 'AI 투자 심리 유지'가 긍정 35점, 'Nvidia 실적 발표 대기'가 혼조 — 같은
+  이야기다). 판단이 서면 점수 칸에, 양면이면 혼조 칸에 — 한 곳에만.
+- 혼조 재료의 설명은 혼조인 이유(양면 또는 변동폭 제한)를 담아라. "…성장주에
+  긍정적"처럼 한쪽 방향으로 끝나는 설명을 혼조 칸에 두지 마라.
+- summary도 같다. "…약세로 부정 우위" 같은 결과-이유 서술 금지 — 우위의 이유는
+  원인 재료의 이름이어야 한다.
+
 === 방향 없는 상태는 재료가 아니다 (60항) ===
 - '관망', '눈치보기', '숨 고르기', '방향성 탐색', '보합', '혼조 지속' 처럼 **방향이 없는
   상태**를 positive_factors·negative_factors 의 재료 이름으로 쓰지 마라. 관망은 시장이
@@ -1506,12 +1523,24 @@ def validate_content(entry, session_code='', snap=None):
     # 영어 티커 + 한국어 기업명 모두 체크 (한국어만 쓰면 영어 티커 검사 통과 버그 방지)
     TICKERS = ['msft', 'aapl', 'nvda', 'tsla', 'googl', 'amzn', 'meta',
                'soxx', 'qqq', 'spy', 'amd', 'broadcom', 'mu ',
-               '마이크로소프트', '애플', '엔비디아', '테슬라', '구글', '아마존', '메타', '브로드컴']
+               # 63항 — 영문 사명 표기 추가. 실사고: 카드가 'Nvidia'라고 써서
+               # 'nvda'로는 못 잡았다. 검사는 카드가 실제로 쓰는 표기를 봐야 한다.
+               'nvidia', 'micron', 'apple', 'microsoft', 'tesla', 'google', 'alphabet',
+               '마이크로소프트', '애플', '엔비디아', '테슬라', '구글', '아마존', '메타', '브로드컴',
+               '마이크론']
     for ticker in TICKERS:
         in_pos = any(ticker in t for t in pos_texts)
         in_neg = any(ticker in t for t in neg_texts)
         if in_pos and in_neg:
             errors.append(f"모순: '{ticker.strip()}'가 긍정·부정 양쪽에 동시 등장")
+        # 63항(2026-08-25 실사고): 긍정 35점 'AI 투자 심리 유지 :: Nvidia 실적 발표
+        # 대기 속…' 과 혼조 'Nvidia 실적 발표 대기'가 같은 카드에 공존했다. 같은
+        # 주제를 점수 칸과 혼조 칸에 쪼개 놓으면 독자는 어느 판정을 믿어야 하는지
+        # 알 수 없다 — 판정은 하나여야 한다.
+        in_mix = any(ticker in t for t in mixed_texts)
+        if in_mix and (in_pos or in_neg):
+            errors.append(f"분열: '{ticker.strip()}'가 점수 칸과 혼조 칸에 동시 등장 — "
+                          f"같은 주제의 판정은 하나여야 한다. 합치거나 한쪽을 지워라")
 
     # ── 체크 2·3·4: 방향(유가·VIX·국채금리) + 국면 + 미세 변동 ─────────────────
     # 2026-08-14: 세 검사를 direction_offenders 하나로 합쳤다. 예전엔 여기서
@@ -1550,6 +1579,12 @@ def validate_content(entry, session_code='', snap=None):
         '전반 약세', '전반 강세', '섹터 약세', '섹터 강세', '섹터 전반',
         '전반적 하락', '전반적 상승', '하락 주도', '상승 주도',
         '시총 경쟁', '시총 1위 경쟁', '시가총액 경쟁',
+        # 63항(2026-08-25): '심리'와 '수급'은 가격의 다른 이름이다 — 상태 묘사지
+        # 원인이 아니다. 실사고: 긍정 35점 이름이 'AI 투자 심리 유지'였다.
+        # 독자의 질문은 "심리가 왜 유지되는가"다. 그 '왜'가 재료다.
+        '심리 유지', '심리 지속', '심리 개선', '심리 악화', '심리 위축', '심리 강화',
+        '심리 회복', '관심 지속', '관심 확대', '매수세 유입', '매수세 지속',
+        '매도세 유입', '매도세 지속', '매도세 확대', '저가 매수',
     ]
     for f in (entry.get('positive_factors', []) + entry.get('negative_factors', [])
               + entry.get('mixed_factors', [])):
@@ -1559,6 +1594,32 @@ def validate_content(entry, session_code='', snap=None):
                 errors.append(f"오류: 요인명 '{f.get('name','')}'은 결과(가격 움직임)만 서술 — "
                                f"원인(뉴스·이벤트)으로 교체 필요")
                 break
+
+    # ── 체크 12: 결과를 원인 자리에 놓는 순환 서술 (2026-08-25 신설, 63항) ────
+    # 실사고: summary가 "반도체 섹터 약세로 부정 우위 지속". 반도체가 빠진 건 결과다.
+    # 독자는 '왜 빠지는지'가 궁금한데 '빠져서 부정'이라고 답하면 동어반복이다.
+    _CIRCULAR = re.compile(r'(약세|강세|하락|상승|급락|급등|부진|호조)\s*(로|으로)\s*'
+                           r'(긍정|부정)\s*우위')
+    summ = entry.get('summary', '') or ''
+    m_c = _CIRCULAR.search(summ)
+    if m_c:
+        errors.append(f"순환 서술: 요약 '{m_c.group(0)}' — 주가·섹터의 등락은 결과다. "
+                      f"결과를 우위의 이유로 쓰지 말고, 그 등락을 만든 원인(이벤트·금리·"
+                      f"유가 등)을 이유로 써라")
+
+    # ── 체크 13: 혼조 재료가 한쪽 방향만 주장 (2026-08-25 신설, 63항) ─────────
+    # 실사고: 혼조 칸의 '미 국채금리 하락' 설명이 "성장주에 긍정적"으로 끝났다.
+    # 혼조는 양면이 있다는 뜻인데 설명이 한쪽만 말하면 독자는 분류를 의심한다.
+    # (점수를 실을 크기가 아니어서 혼조로 내린 재료라면, 설명에 그 사정 —
+    #  변동폭이 작다 · 해석이 갈린다 — 이 드러나야 한다.)
+    _ONE_SIDED_TAIL = re.compile(r'(긍정적|부정적|호재|악재)\s*$')
+    _TWO_SIDED = re.compile(r'이나|지만|반면|혼조|엇갈|양면|불확실|제한적|미미|관망|대기')
+    for f in entry.get('mixed_factors') or []:
+        dsc = (f.get('desc') or '').strip()
+        if _ONE_SIDED_TAIL.search(dsc) and not _TWO_SIDED.search(dsc):
+            errors.append(f"혼조 서술 오류: '{f.get('name','')}' 설명이 한쪽 방향"
+                          f"(\"…{dsc[-12:]}\")으로 끝난다 — 혼조인 이유(양면 또는 "
+                          f"변동폭 제한)를 설명에 담아라")
 
     # ── 체크 9: 금리가 긍정·부정 양쪽에 (2026-08-17 신설, 60항) ──────────────
     _both = rate_on_both_sides(entry)
@@ -2364,6 +2425,16 @@ def enforce_direction_rules(entry, snap):
         entry[side] = _redistribute(keep, totals[side])
         for f in bad:
             f.pop('score', None)
+            # 63항 — 강등된 재료가 "성장주에 긍정적" 같은 방향 주장을 단 채 혼조
+            # 칸에 앉아 있으면 독자는 분류를 의심한다(2026-08-25 실사고). 방향
+            # 주장 꼬리를 떼고, 왜 점수가 없는지를 한마디 남긴다.
+            for k in ('desc', 'desc_en'):
+                v = (f.get(k) or '')
+                nv = re.sub(r'[,·]?\s*(성장주|기술주|시장)?\s*(에|에게)?\s*'
+                            r'(긍정적|부정적|positive|negative)\s*$', '', v).rstrip(' ,·')
+                if nv != v:
+                    f[k] = nv + (' — 방향 대비 크기·근거가 약해 판정 제외' if k == 'desc'
+                                 else ' — excluded from scoring')
             entry.setdefault('mixed_factors', []).append(f)
             print(f"::warning::[방향집행] 재료 강등: '{f.get('name','')}' → 혼조(무점수)")
     print(f"::warning::[방향집행] 점수 재정규화: 긍정 {totals['positive_factors']} : "
