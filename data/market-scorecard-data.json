@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-24-11:08",
+      "timestamp_kst": "2026-08-24(월) 11:08 KST",
+      "key_event": {
+        "name": "장기 국채금리 19년래 최고치",
+        "name_en": "Long-Term Treasury Yields Hit 19-Year High",
+        "time": "직전 거래일 마감 기준 및 다음 주 개장 영향",
+        "why": "시장금리 상승, 성장주 밸류에이션 압박, 경기 둔화 우려",
+        "why_en": "Rising market rates, pressure on growth stock valuations, recession concerns"
+      },
+      "positive_total": 50,
+      "negative_total": 50,
+      "summary": "AI 투자 확대 및 기술주 낙관론 지속, 그러나 장기 국채금리 상승 압력으로 부정 우위",
+      "summary_en": "Continued optimism in AI investment and tech, but negative bias due to rising long-term Treasury yields",
+      "positive_factors": [
+        {
+          "score": 50,
+          "name": "AI 투자 확대 지속",
+          "name_en": "Continued AI Investment Expansion",
+          "desc": "기술주 실적 기대감 및 AI 관련 투자 심리 개선 지속, 시장 전반 긍정 영향",
+          "desc_en": "Sustained tech earnings expectations and improved AI investment sentiment, positively impacting the broader market",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "미-캐나다 무역 분쟁 우려",
+          "name_en": "US-Canada Trade Dispute Concerns",
+          "desc": "미국과 캐나다 간 관세 및 무역 전쟁 가능성 부각, 투자 심리 위축",
+          "desc_en": "Potential for tariffs and trade war between US and Canada, dampening investor sentiment",
+          "category": "trade_tariff"
+        },
+        {
+          "score": 20,
+          "name": "Fed 워시 발언 및 잭슨홀 미팅",
+          "name_en": "Fed Warsh Remarks & Jackson Hole Meeting",
+          "desc": "Fed 워시 발언 및 잭슨홀 미팅 관련 불확실성, 매파적 기조 유지 가능성",
+          "desc_en": "Uncertainty surrounding Fed Warsh's remarks and Jackson Hole meeting, potential for hawkish stance",
+          "category": "fed_policy"
+        },
+        {
+          "score": 10,
+          "name": "이란-미국 긴장 고조 지속",
+          "name_en": "Continued Iran-US Tensions",
+          "desc": "이란의 원유 수출 중단 위협 및 미국의 경제 제재, 지정학적 리스크 증대",
+          "desc_en": "Iran's threat to halt oil exports and US economic sanctions, escalating geopolitical risks",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": []
+    },
+    {
       "id": "2026-08-24-08:20",
       "timestamp_kst": "2026-08-24(월) 08:20 KST",
       "key_event": {
@@ -507,68 +559,8 @@
           "category": "rates_treasury"
         }
       ]
-    },
-    {
-      "id": "2026-08-22-23:20",
-      "timestamp_kst": "2026-08-22(토) 23:20 KST",
-      "key_event": {
-        "name": "AI 투자 확대 지속",
-        "name_en": "Continued AI Investment Expansion",
-        "time": "직전 거래일 및 다음 주 개장 전",
-        "why": "기술주 실적 기대감, AI 관련 투자 심리 개선",
-        "why_en": "Tech earnings optimism, improved AI investment sentiment"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "AI 투자 확대 및 기술주 낙관론으로 긍정 우위 지속, 매크로 우려 혼조",
-      "summary_en": "Positive sentiment maintained due to AI investment and tech optimism, mixed macro concerns",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "AI 인프라 투자 확대",
-          "name_en": "Expansion of AI Infrastructure Investment",
-          "desc": "Alphabet, Amazon 등 주요 기업의 AI 인프라 투자 4200억 달러 규모 발표",
-          "desc_en": "Major companies like Alphabet, Amazon announced $420 billion investment in AI infrastructure",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 30,
-          "name": "기술주 실적 기대감 지속",
-          "name_en": "Sustained Tech Earnings Optimism",
-          "desc": "S&P 500 보고 기업 중 12개 주요 기업 모두 EPS 예상치 상회, Y/Y 성장 달성",
-          "desc_en": "All 12 key S&P 500 reporting firms topped EPS estimates and achieved Y/Y growth",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "중동 지정학적 긴장 고조",
-          "name_en": "Escalating Middle East Geopolitical Tensions",
-          "desc": "미-이란 갈등 심화로 원유 가격 상승 압력 지속, Brent유 94달러 돌파",
-          "desc_en": "US-Iran conflict intensification continues to pressure oil prices, Brent crude tops $94",
-          "category": "geopolitics"
-        },
-        {
-          "score": 10,
-          "name": "Fed 매파적 발언 지속",
-          "name_en": "Continued Hawkish Fed Remarks",
-          "desc": "Fed 관계자들 높은 금리 유지 시사, 실업률 하락에도 매파적 기조 유지",
-          "desc_en": "Fed officials signal higher rates, hawkish stance maintained despite falling unemployment",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "장기 국채금리 상승",
-          "name_en": "Long-Term Treasury Yields Rise",
-          "desc": "미 10년 국채금리 4.74%(+0.89%), 30년 국채금리 5.28%(+0.74%) 상승하며 기술주 밸류에이션에 부담, 그러나 상승폭은 미미",
-          "desc_en": "US 10-year Treasury yield at 4.74% (+0.89%), 30-year yield at 5.28% (+0.74%), posing valuation pressure on tech stocks, but the increase is minor",
-          "category": "rates_treasury"
-        }
-      ]
     }
   ],
-  "updated_at": "2026-08-23T23:21:16Z",
+  "updated_at": "2026-08-24T02:09:06Z",
   "max_entries": 10
 }
