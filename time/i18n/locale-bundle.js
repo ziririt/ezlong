@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-25T17:29:53.488Z
+ * 생성 시각: 2026-08-25T22:46:18.044Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -200,7 +200,8 @@
         "screenGuideFullBtn": "Turn on full-screen alerts",
         "screenGuideMiui": "On Xiaomi (Redmi) devices, turn on \"Display pop-up windows while running in the background\" and \"Autostart\" so the alarm screen can appear.",
         "screenGuidePopupBtn": "Open pop-up permission",
-        "screenGuideAutoBtn": "Open Autostart"
+        "screenGuideAutoBtn": "Open Autostart",
+        "keepScreenHint": "You can leave the screen on. It stays very dim and wakes you on this screen in the morning."
       },
       "watch": {
         "heading": "Apple Watch",
@@ -698,7 +699,8 @@
         "screenGuideFullBtn": "Activar avisos a pantalla completa",
         "screenGuideMiui": "En dispositivos Xiaomi (Redmi), activa \"Mostrar ventanas emergentes en segundo plano\" e \"Inicio automático\" para que aparezca la pantalla de la alarma.",
         "screenGuidePopupBtn": "Abrir permiso de ventanas",
-        "screenGuideAutoBtn": "Abrir inicio automático"
+        "screenGuideAutoBtn": "Abrir inicio automático",
+        "keepScreenHint": "Puedes dejar la pantalla encendida. Se mantiene muy tenue y te despierta en esta pantalla."
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1196,7 +1198,8 @@
         "screenGuideFullBtn": "全画面通知をオンにする",
         "screenGuideMiui": "Xiaomi（Redmi）端末では「バックグラウンドでのポップアップ表示」と「自動起動」をオンにすると、アラーム画面が表示されます。",
         "screenGuidePopupBtn": "ポップアップ権限を開く",
-        "screenGuideAutoBtn": "自動起動を開く"
+        "screenGuideAutoBtn": "自動起動を開く",
+        "keepScreenHint": "画面を消さなくても大丈夫です。とても暗いまま保たれ、朝はこの画面で起こします。"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1694,7 +1697,8 @@
         "screenGuideFullBtn": "전체 화면 알림 켜기",
         "screenGuideMiui": "샤오미(Redmi) 기기는 '백그라운드에서 팝업 창 표시'와 '자동 시작'을 켜야 알람 화면이 뜹니다.",
         "screenGuidePopupBtn": "팝업 권한 열기",
-        "screenGuideAutoBtn": "자동 시작 열기"
+        "screenGuideAutoBtn": "자동 시작 열기",
+        "keepScreenHint": "화면을 끄지 않으셔도 됩니다. 아주 어둡게 유지되다가 아침에 이 화면에서 깨워 드립니다."
       },
       "watch": {
         "heading": "애플워치",
@@ -2192,7 +2196,8 @@
         "screenGuideFullBtn": "Ativar alertas em tela cheia",
         "screenGuideMiui": "Em aparelhos Xiaomi (Redmi), ative \"Exibir janelas pop-up em segundo plano\" e \"Início automático\" para a tela do alarme aparecer.",
         "screenGuidePopupBtn": "Abrir permissão de pop-up",
-        "screenGuideAutoBtn": "Abrir início automático"
+        "screenGuideAutoBtn": "Abrir início automático",
+        "keepScreenHint": "Pode deixar a tela ligada. Ela fica bem escura e acorda você nesta tela pela manhã."
       },
       "watch": {
         "heading": "Apple Watch",
@@ -2690,7 +2695,8 @@
         "screenGuideFullBtn": "开启全屏通知",
         "screenGuideMiui": "小米（Redmi）设备需开启“后台弹出界面”和“自启动”，闹钟画面才能显示。",
         "screenGuidePopupBtn": "打开弹窗权限",
-        "screenGuideAutoBtn": "打开自启动"
+        "screenGuideAutoBtn": "打开自启动",
+        "keepScreenHint": "不必关闭屏幕。它会保持很暗，早晨在这个画面上唤醒你。"
       },
       "watch": {
         "heading": "Apple Watch",
