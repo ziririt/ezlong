@@ -3,7 +3,64 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-  <title>ezlong.com</title>
+  <title data-i18n="seo.appTitle">Long Time, Easy Life — 플립시계 기상 알람 · 날씨</title>
+  <!-- ── 2026-08-25 SEO / AEO ─────────────────────────────────────────
+       이전에는 title 이 "ezlong.com" 한 줄이었고 description·OG·canonical·
+       구조화 데이터가 없었다. 검색 노출도, 링크 미리보기도 생길 수 없었다.
+       앱 화면은 JS로 그려져 크롤러가 읽을 본문이 없으므로, 읽을 글은
+       언어별 랜딩(flip-clock-alarm.html)이 맡고 여기서 그리로 연결한다. -->
+  <meta name="description" data-i18n-content="seo.appDescription" content="좋아하는 음악이 속삭이듯 시작해 서서히 커지며 깨워 주는 무료 기상 알람. 플립시계와 날씨, 취침 모드, 잠금화면 기상 시각 표시. 설치 없이 브라우저에서 바로.">
+  <link rel="canonical" href="https://ezlong.com/time/">
+  <link rel="alternate" hreflang="ko" href="https://ezlong.com/flip-clock-alarm.html">
+  <link rel="alternate" hreflang="en" href="https://ezlong.com/en/flip-clock-alarm.html">
+  <link rel="alternate" hreflang="ja" href="https://ezlong.com/ja/flip-clock-alarm.html">
+  <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/flip-clock-alarm.html">
+  <link rel="alternate" hreflang="es" href="https://ezlong.com/es/flip-clock-alarm.html">
+  <link rel="alternate" hreflang="pt" href="https://ezlong.com/pt/flip-clock-alarm.html">
+  <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/flip-clock-alarm.html">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ezlong.com/time/">
+  <meta property="og:title" content="Long Time, Easy Life — 플립시계 기상 알람 · 날씨">
+  <meta property="og:description" content="좋아하는 음악이 속삭이듯 시작해 서서히 커지며 깨워 주는 무료 기상 알람. 플립시계와 날씨, 취침 모드, 잠금화면 기상 시각 표시. 설치 없이 브라우저에서 바로.">
+  <meta property="og:image" content="https://ezlong.com/og/og-1200x630.png?v=20260809">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:locale:alternate" content="ja_JP">
+  <meta property="og:locale:alternate" content="zh_CN">
+  <meta property="og:locale:alternate" content="es_ES">
+  <meta property="og:locale:alternate" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Long Time, Easy Life — 플립시계 기상 알람 · 날씨">
+  <meta name="twitter:description" content="좋아하는 음악이 속삭이듯 시작해 서서히 커지며 깨워 주는 무료 기상 알람. 플립시계와 날씨, 취침 모드, 잠금화면 기상 시각 표시. 설치 없이 브라우저에서 바로.">
+  <meta name="twitter:image" content="https://ezlong.com/og/og-1200x630.png?v=20260809">
+  <!-- iOS Safari 상단의 "앱에서 열기" 배너 — 설치 전환에 직접 기여한다. -->
+  <meta name="apple-itunes-app" content="app-id=6793780938">
+  <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "MobileApplication",
+ "name": "Long Time, Easy Life",
+ "description": "좋아하는 음악이 속삭이듯 시작해 서서히 커지며 깨워 주는 무료 기상 알람. 플립시계와 날씨, 취침 모드, 잠금화면 기상 시각 표시. 설치 없이 브라우저에서 바로.",
+ "url": "https://ezlong.com/time/",
+ "applicationCategory": "LifestyleApplication",
+ "applicationSubCategory": "Alarm Clock",
+ "operatingSystem": "iOS, Android, Web",
+ "installUrl": ["https://apps.apple.com/app/id6793780938",
+                "https://play.google.com/store/apps/details?id=com.ezlong.flipzenweather"],
+ "softwareVersion": "1.9.7",
+ "inLanguage": ["ko","en","ja","zh","es","pt"],
+ "image": "https://ezlong.com/og/og-1200x630.png?v=20260809",
+ "offers": {"@type":"Offer","price":"0","priceCurrency":"USD",
+            "availability":"https://schema.org/InStock"},
+ "author": {"@type":"Organization","name":"ezlong","url":"https://ezlong.com/"},
+ "publisher": {"@type":"Organization","name":"ezlong","url":"https://ezlong.com/"}
+}
+  </script>
+
   <!-- 2026-08-06 브랜드 개편 — 인라인 SVG로 "12"를 그리던 임시 파비콘을
        실제 브랜드 심볼(청록 나선)로 교체한다. 경로는 전부 **상대경로**다:
        이 파일은 원본 폴더 / public/ / ezlong.com의 /time/ 세 곳에 같은
@@ -365,7 +422,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.78</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.79</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -1167,7 +1224,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260825-alarmv2-v48"></script>
+  <script src="app.js?v=20260825-alarmv2-v49"></script>
 
   </body>
 </html>

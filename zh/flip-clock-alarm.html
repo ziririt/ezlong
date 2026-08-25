@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>翻页时钟闹钟应用 | Long Time, Easy Life（免费）</title>
+  <meta name="description" content="用喜欢的音乐从耳语般的音量开始、缓缓变大唤醒你的免费闹钟。翻页时钟与天气、就寝模式、锁定屏幕显示起床时间。支持 iPhone、Android 与网页。">
+  <link rel="canonical" href="https://ezlong.com/zh/flip-clock-alarm.html">
+  <link rel="alternate" hreflang="ko" href="https://ezlong.com/flip-clock-alarm.html">
+  <link rel="alternate" hreflang="en" href="https://ezlong.com/en/flip-clock-alarm.html">
+  <link rel="alternate" hreflang="ja" href="https://ezlong.com/ja/flip-clock-alarm.html">
+  <link rel="alternate" hreflang="zh" href="https://ezlong.com/zh/flip-clock-alarm.html">
+  <link rel="alternate" hreflang="es" href="https://ezlong.com/es/flip-clock-alarm.html">
+  <link rel="alternate" hreflang="pt" href="https://ezlong.com/pt/flip-clock-alarm.html">
+  <link rel="alternate" hreflang="x-default" href="https://ezlong.com/en/flip-clock-alarm.html">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ezlong.com/zh/flip-clock-alarm.html">
+  <meta property="og:title" content="翻页时钟闹钟应用 | Long Time, Easy Life（免费）">
+  <meta property="og:description" content="用喜欢的音乐从耳语般的音量开始、缓缓变大唤醒你的免费闹钟。翻页时钟与天气、就寝模式、锁定屏幕显示起床时间。支持 iPhone、Android 与网页。">
+  <meta property="og:image" content="https://ezlong.com/og/og-1200x630.png?v=20260809">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="EZLONG">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale:alternate" content="ko_KR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:locale:alternate" content="ja_JP">
+  <meta property="og:locale:alternate" content="es_ES">
+  <meta property="og:locale:alternate" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="翻页时钟闹钟应用 | Long Time, Easy Life（免费）">
+  <meta name="twitter:description" content="用喜欢的音乐从耳语般的音量开始、缓缓变大唤醒你的免费闹钟。翻页时钟与天气、就寝模式、锁定屏幕显示起床时间。支持 iPhone、Android 与网页。">
+  <meta name="twitter:image" content="https://ezlong.com/og/og-1200x630.png?v=20260809">
+  <meta name="apple-itunes-app" content="app-id=6793780938">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  <link rel="icon" href="/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
+  <meta name="theme-color" content="#0B0F1A">
+  <style>
+*{box-sizing:border-box}
+body{margin:0;background:#0B0F1A;color:#E8EDF7;
+ font:16px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",
+ "Apple SD Gothic Neo","Noto Sans KR","Hiragino Sans","Noto Sans JP",
+ "PingFang SC","Noto Sans SC",sans-serif;
+ -webkit-font-smoothing:antialiased}
+a{color:#7DD3FC}
+.wrap{max-width:860px;margin:0 auto;padding:0 22px}
+header.top{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08);
+ font-size:13px}
+header.top a{color:#93A4C0;text-decoration:none}
+.hero{padding:64px 0 44px;text-align:center}
+.kicker{display:inline-block;font-size:12.5px;letter-spacing:.04em;
+ color:#7DD3FC;border:1px solid rgba(125,211,252,.35);border-radius:999px;
+ padding:6px 14px;margin-bottom:22px}
+h1{font-size:clamp(28px,5.2vw,44px);line-height:1.25;letter-spacing:-.02em;
+ margin:0 0 20px;font-weight:800}
+.lede{font-size:17.5px;color:#B9C6DC;margin:0 auto;max-width:62ch}
+.cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:34px 0 0}
+.btn{display:inline-block;padding:13px 22px;border-radius:12px;
+ text-decoration:none;font-weight:700;font-size:15px}
+.btn-a{background:#38BDF8;color:#04121F}
+.btn-b{background:rgba(255,255,255,.09);color:#E8EDF7;
+ border:1px solid rgba(255,255,255,.16)}
+section{padding:46px 0;border-top:1px solid rgba(255,255,255,.07)}
+h2{font-size:clamp(21px,3.4vw,28px);letter-spacing:-.01em;margin:0 0 26px;
+ font-weight:750}
+h3{font-size:17px;margin:0 0 7px;font-weight:700;color:#F2F6FF}
+.grid{display:grid;gap:26px}
+@media(min-width:680px){.grid{grid-template-columns:1fr 1fr;gap:30px 34px}}
+.item p{margin:0;color:#B0BED6;font-size:15.2px}
+ol.steps{counter-reset:s;list-style:none;padding:0;margin:0}
+ol.steps li{counter-increment:s;position:relative;padding-left:46px;
+ margin-bottom:22px}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:1px;
+ width:30px;height:30px;border-radius:50%;background:rgba(56,189,248,.15);
+ color:#7DD3FC;font-weight:800;font-size:14px;display:flex;
+ align-items:center;justify-content:center}
+details{border-top:1px solid rgba(255,255,255,.08);padding:15px 0}
+details:last-of-type{border-bottom:1px solid rgba(255,255,255,.08)}
+summary{cursor:pointer;font-weight:650;font-size:15.8px;color:#F2F6FF;
+ list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";float:right;color:#7DD3FC;font-weight:700}
+details[open] summary::after{content:"\2013"}
+details p{margin:11px 0 2px;color:#B0BED6;font-size:15.2px}
+.close{text-align:center;padding:56px 0 22px}
+footer{padding:26px 0 46px;color:#7D8CA6;font-size:13px;text-align:center;
+ border-top:1px solid rgba(255,255,255,.07)}
+footer a{color:#93A4C0}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "MobileApplication",
+ "name": "Long Time, Easy Life",
+ "alternateName": "音乐从耳语开始，缓缓把你唤醒",
+ "description": "用喜欢的音乐从耳语般的音量开始、缓缓变大唤醒你的免费闹钟。翻页时钟与天气、就寝模式、锁定屏幕显示起床时间。支持 iPhone、Android 与网页。",
+ "url": "https://ezlong.com/zh/flip-clock-alarm.html",
+ "applicationCategory": "LifestyleApplication",
+ "applicationSubCategory": "Alarm Clock",
+ "operatingSystem": "iOS, Android, Web",
+ "installUrl": [
+  "https://apps.apple.com/app/id6793780938",
+  "https://play.google.com/store/apps/details?id=com.ezlong.flipzenweather"
+ ],
+ "downloadUrl": "https://apps.apple.com/app/id6793780938",
+ "softwareVersion": "1.9.7",
+ "inLanguage": [
+  "ko",
+  "en",
+  "ja",
+  "zh",
+  "es",
+  "pt"
+ ],
+ "image": "https://ezlong.com/og/og-1200x630.png?v=20260809",
+ "screenshot": "https://ezlong.com/og/og-1200x630.png?v=20260809",
+ "offers": {
+  "@type": "Offer",
+  "price": "0",
+  "priceCurrency": "USD",
+  "availability": "https://schema.org/InStock"
+ },
+ "featureList": [
+  "从耳语开始的音量",
+  "超过 600 首起床音乐",
+  "就寝模式",
+  "穿透静音与专注模式",
+  "翻页时钟与天气",
+  "午睡用的一次性闹钟"
+ ],
+ "author": {
+  "@type": "Organization",
+  "name": "ezlong",
+  "url": "https://ezlong.com/"
+ },
+ "publisher": {
+  "@type": "Organization",
+  "name": "ezlong",
+  "url": "https://ezlong.com/"
+ }
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "inLanguage": "zh",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "是免费的吗？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "是的。闹钟、翻页时钟与天气都可免费使用，也不需要注册账号。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "静音模式下会响吗？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "会。iOS 上使用系统闹钟机制，可穿透静音开关与专注模式；Android 上则通过闹钟通道响铃。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "熄屏后音乐还会播放吗？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "会。点按开始就寝后，应用会保持唤醒直到早晨，因此熄屏睡觉也会在设定时间播放音乐。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "看 YouTube 或 Netflix 睡着了怎么办？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "到了起床时间，应用会接管音频，优先播放起床音乐。在此之前不会打扰你正在看的内容。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "音量会突然变大吗？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "不会。最初三分钟从近乎无声开始分阶梯上升。之后若仍未解除会继续变大，但阶梯间隔已收窄，不会突兀。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "可以不安装先试用吗？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "可以，直接在浏览器中使用。先在网页试过，喜欢再安装应用。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "支持哪些语言？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "支持中文、韩文、英文、日文、西班牙文与葡萄牙文，并会自动匹配设备语言。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "可以设定只响一次的午睡闹钟吗？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "可以。在添加新闹钟时不选择任何星期，该闹钟就只响一次。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "闹钟没有在屏幕上弹出，为什么？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "部分 Android 手机在全屏通知或后台弹出权限关闭时不会显示闹钟界面。应用的闹钟设置页会诊断状态，并可直接跳转到对应设置。"
+   }
+  }
+ ]
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "BreadcrumbList",
+ "itemListElement": [
+  {
+   "@type": "ListItem",
+   "position": 1,
+   "name": "ezlong",
+   "item": "https://ezlong.com/"
+  },
+  {
+   "@type": "ListItem",
+   "position": 2,
+   "name": "Long Time, Easy Life",
+   "item": "https://ezlong.com/zh/flip-clock-alarm.html"
+  }
+ ]
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "HowTo",
+ "name": "三步就好",
+ "inLanguage": "zh",
+ "step": [
+  {
+   "@type": "HowToStep",
+   "position": 1,
+   "name": "设定起床时间",
+   "text": "选择时间；若要重复，再选择星期。不选就只响一次。"
+  },
+  {
+   "@type": "HowToStep",
+   "position": 2,
+   "name": "挑选闹钟音乐",
+   "text": "选一首你喜欢的曲子，并设定稍后提醒的间隔。"
+  },
+  {
+   "@type": "HowToStep",
+   "position": 3,
+   "name": "睡前点按开始就寝",
+   "text": "屏幕变暗，锁定屏幕显示起床时间。放下手机安心睡吧。"
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<header class="top"><div class="wrap"><a href="https://ezlong.com/zh/">&lsaquo; ezlong.com 首页</a></div></header>
+<main>
+  <div class="wrap">
+    <div class="hero">
+      <span class="kicker">免费 · 无需注册 · iPhone / Android / 网页</span>
+      <h1>音乐从耳语开始，缓缓把你唤醒</h1>
+      <p class="lede">Long Time, Easy Life 是一台放在床头的翻页时钟，也是一个温柔的闹钟。它不用刺耳的电子音，而是从超过 600 首曲目中选出的一首，以几乎听不见的音量开始，再慢慢变大。它为「自然醒来的早晨」而做，不是为「被吓醒的早晨」。</p>
+      <div class="cta">
+        <a class="btn btn-a" href="https://ezlong.com/time/">免安装 — 直接在网页使用</a>
+        <a class="btn btn-b" href="https://apps.apple.com/app/id6793780938" rel="nofollow">在 App Store 下载</a>
+        <a class="btn btn-b" href="https://play.google.com/store/apps/details?id=com.ezlong.flipzenweather" rel="nofollow">在 Google Play 获取</a>
+      </div>
+    </div>
+
+    <section>
+      <h2>这个应用能做什么</h2>
+      <div class="grid">
+      <div class="item"><h3>从耳语开始的音量</h3><p>第一声小到需要留心才听得见。它在三分钟内分阶梯缓缓上升，若你仍未醒来，再逐级确实地叫醒你。拿起手机，音量会立刻降低。</p></div>
+      <div class="item"><h3>超过 600 首起床音乐</h3><p>从安静的钢琴到唤醒一天的曲子。你可以指定闹钟播放的曲目，不会因为天天同一个声音而失效。</p></div>
+      <div class="item"><h3>就寝模式</h3><p>点按开始就寝，屏幕会在九十秒内缓缓变暗，起床时间显示在锁定屏幕和灵动岛上。夜间会显示助眠的语句。</p></div>
+      <div class="item"><h3>穿透静音与专注模式</h3><p>在 iOS 上使用系统闹钟机制，即使静音开关打开、处于专注模式，或正在使用其他应用，也会在设定时间响起。</p></div>
+      <div class="item"><h3>翻页时钟与天气</h3><p>天空随时段变化的翻页时钟，同时显示当前天气与预报。放在床头正合适。</p></div>
+      <div class="item"><h3>午睡用的一次性闹钟</h3><p>不选择星期，闹钟就只响一次。午睡或小憩都能轻松使用。</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>三步就好</h2>
+      <ol class="steps">
+      <li><h3>设定起床时间</h3><p>选择时间；若要重复，再选择星期。不选就只响一次。</p></li>
+      <li><h3>挑选闹钟音乐</h3><p>选一首你喜欢的曲子，并设定稍后提醒的间隔。</p></li>
+      <li><h3>睡前点按开始就寝</h3><p>屏幕变暗，锁定屏幕显示起床时间。放下手机安心睡吧。</p></li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>常见问题</h2>
+    <details><summary>是免费的吗？</summary><p>是的。闹钟、翻页时钟与天气都可免费使用，也不需要注册账号。</p></details>
+    <details><summary>静音模式下会响吗？</summary><p>会。iOS 上使用系统闹钟机制，可穿透静音开关与专注模式；Android 上则通过闹钟通道响铃。</p></details>
+    <details><summary>熄屏后音乐还会播放吗？</summary><p>会。点按开始就寝后，应用会保持唤醒直到早晨，因此熄屏睡觉也会在设定时间播放音乐。</p></details>
+    <details><summary>看 YouTube 或 Netflix 睡着了怎么办？</summary><p>到了起床时间，应用会接管音频，优先播放起床音乐。在此之前不会打扰你正在看的内容。</p></details>
+    <details><summary>音量会突然变大吗？</summary><p>不会。最初三分钟从近乎无声开始分阶梯上升。之后若仍未解除会继续变大，但阶梯间隔已收窄，不会突兀。</p></details>
+    <details><summary>可以不安装先试用吗？</summary><p>可以，直接在浏览器中使用。先在网页试过，喜欢再安装应用。</p></details>
+    <details><summary>支持哪些语言？</summary><p>支持中文、韩文、英文、日文、西班牙文与葡萄牙文，并会自动匹配设备语言。</p></details>
+    <details><summary>可以设定只响一次的午睡闹钟吗？</summary><p>可以。在添加新闹钟时不选择任何星期，该闹钟就只响一次。</p></details>
+    <details><summary>闹钟没有在屏幕上弹出，为什么？</summary><p>部分 Android 手机在全屏通知或后台弹出权限关闭时不会显示闹钟界面。应用的闹钟设置页会诊断状态，并可直接跳转到对应设置。</p></details>
+    </section>
+
+    <div class="close">
+      <h2>今晚就换一种醒来的方式</h2>
+      <p class="lede">可以安装应用，也可以先在浏览器里试试，无需安装。</p>
+      <div class="cta">
+        <a class="btn btn-a" href="https://ezlong.com/time/">免安装 — 直接在网页使用</a>
+        <a class="btn btn-b" href="https://apps.apple.com/app/id6793780938" rel="nofollow">在 App Store 下载</a>
+        <a class="btn btn-b" href="https://play.google.com/store/apps/details?id=com.ezlong.flipzenweather" rel="nofollow">在 Google Play 获取</a>
+      </div>
+    </div>
+  </div>
+</main>
+<footer><div class="wrap">Long Time, Easy Life &middot; <a href="https://ezlong.com/zh/">ezlong.com</a></div></footer>
+</body>
+</html>

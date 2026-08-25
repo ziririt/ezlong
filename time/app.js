@@ -324,6 +324,13 @@ function applyStaticTranslations(root) {
     set: (el, v) => el.setAttribute("placeholder", v),
   });
 
+  // 2026-08-25 SEO — <meta name="description"> 같은 content 속성 번역.
+  // <title> 은 textContent 라 위의 [data-i18n] 갈래가 이미 처리한다.
+  put("[data-i18n-content]", "data-i18n-content", {
+    get: (el) => el.getAttribute("content"),
+    set: (el, v) => el.setAttribute("content", v),
+  });
+
   // 문서 언어 표시 — 스크린리더 발음과 CSS :lang() 선택자에 쓰인다
   try {
     if (scope.documentElement) scope.documentElement.setAttribute("lang", FZ_LOCALE);
