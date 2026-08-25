@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-08-25-23:20",
+      "timestamp_kst": "2026-08-25(화) 23:20 KST",
+      "key_event": {
+        "name": "AI 투자 심리 회복 지속",
+        "name_en": "Sustained AI Investment Sentiment Recovery",
+        "time": "정규장 진행 중",
+        "why": "반도체 섹터 강세, 기술주 반등, AI 성장 기대",
+        "why_en": "Strong semiconductor sector, tech rebound, AI growth expectations"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "AI 투자 심리 회복 및 기술주 반등으로 긍정 우위 지속",
+      "summary_en": "Positive sentiment continues with AI investment recovery and tech rebound",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "반도체 섹터 강세",
+          "name_en": "Strong Semiconductor Sector",
+          "desc": "NVIDIA (+2.19%), SOXX (+1.52%) 등 주요 반도체 기업 및 ETF 강세",
+          "desc_en": "Key semiconductor companies and ETFs like NVIDIA (+2.19%) and SOXX (+1.52%) show strong performance",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "기술주 전반 반등",
+          "name_en": "Broad Tech Stock Rebound",
+          "desc": "QQQ (+0.53%), SPY (+0.22%) 상승, 기술주 매수 심리 회복",
+          "desc_en": "QQQ (+0.53%) and SPY (+0.22%) rise, indicating renewed tech buying sentiment",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "AI 관련 기업 투자 확대",
+          "name_en": "Increased Investment in AI Companies",
+          "desc": "Elon Musk의 SpaceX Nvidia 협력 발언, Google의 AI 기술 채택 뉴스",
+          "desc_en": "Elon Musk's comments on SpaceX-Nvidia collaboration and Google's adoption of AI tech",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "Fed의 월가 경고",
+          "name_en": "Fed's Warning to Wall Street",
+          "desc": "Fed의 월가 경고 관련 뉴스, 금융 시장 불확실성 유발",
+          "desc_en": "News regarding the Fed's warning to Wall Street, creating financial market uncertainty",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미 국채금리 수준",
+          "name_en": "US Treasury Yields",
+          "desc": "금리는 성장주 할인율을 좌우하는 핵심 변수. 오늘 미10년 4.66%(-0.94%) · 미30년 5.20%(-0.67%). 움직임이 작아 방향 판단은 유보",
+          "desc_en": "Yields drive growth-stock discount rates. Today 미10년 4.66%(-0.94%) · 미30년 5.20%(-0.67%). Move too small to call — on hold",
+          "category": "rates_treasury"
+        }
+      ],
+      "report": {
+        "overview": "- 총점: 긍정 75 대 부정 25로 AI 투자 심리 회복 및 기술주 반등에 힘입어 긍정 우위 지속\n- 주요 원인: 반도체 섹터의 강력한 상승세와 기술주 전반의 매수 심리 회복이 시장을 견인\n- 하단 지지: AI 관련 기업에 대한 투자 확대 소식과 주요 기술 기업들의 긍정적 뉴스 흐름",
+        "positive": "- 반도체 섹터 강세: NVIDIA (+2.19%), SOXX (+1.52%) 등 주요 반도체 기업 및 ETF가 강세를 보이며 시장 전반의 상승 분위기 조성. AMD와 Intel 또한 강력한 매수 등급 상향 조정 및 Pelosi의 공시로 3% 상승, NVIDIA와 Broadcom도 상승세 지속. (뉴스: Stock Market Today: Dow Rises As Treasury Yields Fall; Nvidia, Micron, Sandisk Rally, AMD and Intel Rise 3% on a Strong Buy Upgrade and a Pelosi Disclosure, NVIDIA and Broadcom Tick Up)\n- 기술주 전반 반등: QQQ (+0.53%), SPY (+0.22%) 상승하며 기술주 매수 심리 회복. 전반적인 기술주 반등이 시장의 긍정적 흐름을 뒷받침. (뉴스: Exchange-Traded Funds, Equity Futures Higher Pre-Bell Tuesday as Chip Stocks Recover, US Stock Market Today: S&P 500, Dow Rebound As Treasury Yields Slip; Nasdaq Up On Chip Boost)\n- AI 관련 기업 투자 확대: Elon Musk의 SpaceX가 Nvidia와 협력하여 궤도 데이터 센터를 구축할 수 있다는 발언, Google의 AI 기술 채택 뉴스 등이 AI 관련 기업에 대한 투자 심리 확대. (뉴스: Elon Musk says SpaceX's Nvidia-powered orbital data center could be ready next year, Google Selects Rezolve Ai Database Technology for Google Cloud Web3)",
+        "negative": "- Fed의 월가 경고: Fed의 월가 경고 관련 뉴스가 금융 시장의 불확실성을 유발하며 투자 심리에 부정적 영향. (뉴스: What the Fed's Latest Warning to Wall Street Could Mean for Investors)",
+        "mixed": "- 미 국채금리 수준: 미 10년물 국채금리 4.66%(-0.94%), 미 30년물 국채금리 5.20%(-0.67%)로 하락했으나, 움직임이 작아 성장주 할인율에 미치는 방향성 판단은 유보. 금리 하락은 성장주에 긍정적이나, 미미한 변동성으로 시장에 명확한 신호 제공 부족. (뉴스: Stock Market Today: Dow Rises As Treasury Yields Fall; Nvidia, Micron, Sandisk Rally, US Stock Market Today: S&P 500, Dow Rebound As Treasury Yields Slip; Nasdaq Up On Chip Boost)",
+        "watch": "- AI 관련 추가 뉴스: Elon Musk의 SpaceX Nvidia 협력 발언에 대한 구체적인 진행 상황이나 Google의 AI 기술 채택 관련 추가 뉴스가 확인되면 AI 투자 심리 더욱 강화될 가능성.\n- 기술주 실적 발표: 주요 기술 기업들의 실적 발표가 예상치를 상회할 경우, 기술주 전반의 반등세가 더욱 확고해지며 긍정 우위 지속될 전망.\n- Fed 추가 발언: Fed의 월가 경고 이후 추가적인 금융 시장 관련 발언이나 정책 변화 시그널이 나타날 경우, 시장 불확실성 증폭 또는 해소 여부 확인."
+      },
+      "report_at": "2026-08-25(화) 23:20 KST"
+    },
+    {
       "id": "2026-08-25-21:50",
       "timestamp_kst": "2026-08-25(화) 21:50 KST",
       "key_event": {
@@ -552,74 +620,8 @@
         "watch": "향후 12시간 동안 Nvidia의 실적 발표 결과가 중요합니다. Nvidia 실적이 시장 예상치를 상회하면 반도체 섹터 전반의 투자 심리가 개선될 수 있습니다. 잭슨홀 미팅에서 연방준비제도(Fed) 의장의 발언에 주목해야 합니다. 금리 인상 또는 인하에 대한 명확한 신호가 나오면 시장의 방향성이 결정될 것입니다. 이란 제재 관련 추가 뉴스와 국제 유가 동향을 주시해야 합니다. 지정학적 긴장 완화는 시장 변동성을 줄일 수 있습니다."
       },
       "report_at": "2026-08-25(화) 08:38 KST"
-    },
-    {
-      "id": "2026-08-25-05:37",
-      "timestamp_kst": "2026-08-25(화) 05:37 KST",
-      "key_event": {
-        "name": "이란 제재 및 지정학적 긴장 고조",
-        "name_en": "Iran Sanctions and Geopolitical Tensions Escalation",
-        "time": "최근 6시간 이내",
-        "why": "시장 변동성 확대, 기술주 투자 심리 위축, 유가 하락",
-        "why_en": "Increased market volatility, dampened tech sentiment, oil price decline"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "지정학적 긴장 고조로 부정 우위 지속, AI 투자 심리 유지",
-      "summary_en": "Negative sentiment persists due to geopolitical tensions and semiconductor weakness, while AI investment sentiment holds",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "AI 투자 심리 유지",
-          "name_en": "Sustained AI investment sentiment",
-          "desc": "Nvidia 실적 발표 대기 속 AI 관련 종목 관심 지속",
-          "desc_en": "Interest in AI-related stocks continues ahead of Nvidia earnings",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 65,
-          "name": "이란 제재 및 지정학적 긴장 고조",
-          "name_en": "Escalating Iran sanctions and geopolitical tensions",
-          "desc": "미국의 이란 제재 강화 발표 및 지정학적 긴장 고조로 시장 불확실성 증대",
-          "desc_en": "US announcement of strengthened Iran sanctions and heightened geopolitical tensions increase market uncertainty",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "Nvidia 실적 발표 대기",
-          "name_en": "Anticipation for Nvidia earnings",
-          "desc": "AI 투자 심리 유지에 긍정적이나, 반도체 섹터 전반의 약세와 맞물려 혼조세",
-          "desc_en": "Positive for AI investment sentiment, but mixed with broader weakness in the semiconductor sector",
-          "category": "earnings_bellwether"
-        },
-        {
-          "name": "잭슨홀 미팅 및 Fed 의장 연설 대기",
-          "name_en": "Waiting for Jackson Hole meeting and Fed Chair's speech",
-          "desc": "향후 통화정책 방향성 불확실성으로 시장 변동성 확대 우려와 관망세 혼조",
-          "desc_en": "Uncertainty over future monetary policy direction leads to concerns about increased market volatility and a wait-and-see approach",
-          "category": "fed_policy"
-        },
-        {
-          "name": "미 국채금리 하락",
-          "name_en": "US Treasury yields decline",
-          "desc": "미 10년물 국채금리 4.70%(-0.72%) 하락, 성장주에 긍정적",
-          "desc_en": "US 10-year Treasury yield fell to 4.70% (-0.72%), positive for growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "report": {
-        "overview": "오늘 미국 주식 시장은 지정학적 긴장 고조로 인해 부정적 분위기가 지배했습니다. 이란 제재 강화 소식은 시장의 불확실성을 키웠습니다. 기술주 전반의 약세 속에서도 AI 관련 종목에 대한 투자 심리는 유지되었습니다. 전반적으로 시장 변동성이 확대되며 투자자들은 관망세를 보였습니다.",
-        "positive": "AI 투자 심리는 여전히 강했습니다. 엔비디아 실적 발표를 앞두고 AI 관련 종목에 대한 관심이 지속되었습니다. 이는 긍정적인 시장 분위기를 형성하는 데 기여했습니다. 엔비디아의 실적 발표 대기는 AI 섹터에 대한 기대를 높였습니다. 알리바바의 102억 달러 AI 투자 소식은 AI 산업의 성장 잠재력을 부각했습니다. 메타 주식이 가장 저렴한 메가캡 기술주라는 분석도 AI 관련 투자 심리를 지지했습니다.",
-        "negative": "이란 제재 및 지정학적 긴장 고조는 시장에 큰 불확실성을 안겼습니다. 미국의 이란 제재 강화 발표는 시장 변동성을 확대했습니다. 로이터 통신은 S&P 500과 나스닥이 기술주 하락과 이란 관련 움직임으로 마감했다고 보도했습니다. 지정학적 긴장은 기술주 투자 심리를 위축시키는 요인으로 작용했습니다. 반도체 섹터의 약세는 시장 전반의 하락을 이끌었습니다. AVGO, INTC, BE 등 주요 반도체 기업들의 약세가 두드러졌습니다. 엔비디아의 실적 발표를 앞두고도 매도세가 나타났습니다. 트럼프와 베센트의 발언도 기술주 손실에 영향을 미쳤습니다. 엔비디아 고객들이 15% AI 가격 인상에 직면했다는 소식은 잠재적 부담으로 작용했습니다. 테슬라는 중국에서 대규모 리콜을 시작했습니다. 테슬라의 솔라 루프 사업 중단은 에너지 야망에 대한 의문을 제기했습니다. 구글은 2027년까지 모든 픽셀 제조를 중국 밖으로 이전할 계획을 발표했습니다.",
-        "mixed": "엔비디아 실적 발표 대기는 혼조세를 보였습니다. AI 투자 심리 유지에는 긍정적인 영향을 미쳤습니다. 하지만 반도체 섹터 전반의 약세와 맞물려 시장에 불확실성을 더했습니다. 잭슨홀 미팅 및 연방준비제도(Fed) 의장 연설 대기 역시 혼조세였습니다. 향후 통화정책 방향성에 대한 불확실성이 시장 변동성 확대 우려를 낳았습니다. 동시에 투자자들은 관망세를 유지했습니다. 미 10년물 국채금리 하락은 혼조세를 보였습니다. 국채금리는 4.70%로 0.72% 하락했습니다. 이는 성장주에 긍정적인 요인으로 작용했습니다. 하지만 전반적인 시장 불확실성 속에서 그 영향은 제한적이었습니다. 10년-2년 스프레드는 0.46%로 전기 대비 0.04% 하락했습니다. 이는 경기 선행 지표로서 혼조된 신호를 보냈습니다.",
-        "watch": "향후 12시간 동안 엔비디아 실적 발표 결과가 확인되면 AI 관련주와 기술주 전반의 방향성이 결정될 것입니다. 잭슨홀 미팅에서 연방준비제도 의장의 통화정책 관련 발언이 확인되면 시장의 금리 인상 기대감이 조정될 것입니다. 이란 제재 관련 추가 소식이 확인되면 지정학적 긴장 완화 또는 고조 여부에 따라 시장 변동성이 달라질 것입니다."
-      },
-      "report_at": "2026-08-25(화) 11:04 KST"
     }
   ],
-  "updated_at": "2026-08-25T12:51:19Z",
+  "updated_at": "2026-08-25T14:21:16Z",
   "max_entries": 10
 }
