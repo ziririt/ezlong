@@ -14,7 +14,7 @@
 <title>Skyblue Note — AI 답변을 붙여넣으면, 바로 쓸 수 있는 글이 됩니다 | EZLONG</title>
 
 <meta name="description" content="ChatGPT·클로드·제미나이 답변을 붙여넣으면 별표와 우물 정, 이모지, 군더더기 인사말이 한 번에 걷힙니다. 깨진 표는 복구되고, 표는 스프레드시트로 바로 옮겨집니다. 아이폰·아이패드·맥·안드로이드.">
-<meta name="keywords" content="Skyblue Note, 스카이블루 노트, 마크다운 제거, 별표 지우기, 우물정 제거, AI 답변 정리, ChatGPT 답변 정리, 클로드 답변 복사, 마크다운 표 깨짐, 표 복구, TSV, 메모앱, 노트앱">
+<meta name="keywords" content="Skyblue Note, 스카이블루 노트, 블루스카이 노트, 챗지피티 정리, 챗GPT 정리, ChatGPT 정리, AI 답변 정리, 마크다운 제거, 마크다운 지우기, 표 복구, 표 엑셀 변환, TSV, 메모앱, 노트앱, clean chatgpt text, remove markdown, chatgpt to excel, strip markdown">
 <meta name="author" content="김성동">
 <link rel="canonical" href="https://ezlong.com/skybluenote">
 
@@ -48,7 +48,25 @@
   "author": { "@type": "Person", "name": "김성동" },
   "publisher": { "@type": "Organization", "name": "EZLONG", "url": "https://ezlong.com" },
   "description": "AI 답변을 붙여넣으면 마크다운 기호와 군더더기가 걷히고, 깨진 표가 복구됩니다.",
-  "url": "https://ezlong.com/skybluenote"
+  "url": "https://ezlong.com/skybluenote",
+  "alternateName": ["스카이블루 노트", "블루스카이 노트", "Skyblue Note"],
+  "sameAs": ["https://apps.apple.com/app/skyblue-note/id6802185169"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "챗GPT(ChatGPT) 답변을 깔끔하게 정리하려면 어떻게 하나요?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Skyblue Note에 답변을 붙여넣고 마법봉을 한 번 누르면 됩니다. 별표(**)와 우물 정(##) 같은 마크다운 기호, 이모지, 군더더기 인사말이 걷히고 바로 쓸 수 있는 글이 됩니다."}},
+    {"@type": "Question", "name": "마크다운 기호를 한 번에 제거할 수 있나요?",
+     "acceptedAnswer": {"@type": "Answer", "text": "네. **굵게**, ## 제목, --- 구분선, [1] 같은 출처 표시까지 한 번에 걷어냅니다. 제목과 굵게의 뜻은 화면에 남고, 복사하면 순수한 글로 나갑니다."}},
+    {"@type": "Question", "name": "AI 답변의 깨진 표를 엑셀로 옮길 수 있나요?",
+     "acceptedAnswer": {"@type": "Answer", "text": "줄이 어긋난 표를 다시 세우고, 메뉴의 표 복사를 누르면 엑셀·구글 시트에 그대로 붙는 형식(TSV)으로 복사됩니다."}},
+    {"@type": "Question", "name": "어떤 기기에서 쓸 수 있나요?",
+     "acceptedAnswer": {"@type": "Answer", "text": "아이폰·아이패드(앱스토어), 맥, 안드로이드, 윈도우, 웹에서 쓸 수 있고 구글 드라이브로 모든 기기가 동기화됩니다."}}
+  ]
 }
 </script>
 
@@ -138,10 +156,17 @@ h1 .grad{
 .note{font-size:13.5px; color:var(--sub); margin-top:14px}
 
 /* ── 기기 그림 ── */
-.shots{display:flex; justify-content:center; margin:44px 0 6px}
-.shots img{width:100%; max-width:1180px; height:auto; display:block;
-           filter:drop-shadow(0 30px 60px rgba(8,12,24,.45))}
-@media (max-width:640px){ .shots{margin:28px 0 4px} }
+.shots{display:flex; gap:20px; justify-content:center; align-items:flex-end;
+       margin:50px 0 10px; perspective:1400px}
+.phone{
+  width:min(250px,44vw); border-radius:34px; padding:9px; background:#0d1117;
+  box-shadow:0 30px 70px rgba(8,12,24,.35), 0 2px 0 rgba(255,255,255,.08) inset;
+  flex:none;
+}
+.phone img{width:100%; display:block; border-radius:26px}
+.phone:nth-child(1){transform:rotateY(11deg) translateY(14px) scale(.93); opacity:.94}
+.phone:nth-child(3){transform:rotateY(-11deg) translateY(14px) scale(.93); opacity:.94}
+@media (max-width:640px){ .phone:nth-child(3){display:none} }
 
 /* ── 공통 섹션 ── */
 section{padding:74px 0}
@@ -213,7 +238,6 @@ footer .row .sp{margin-left:auto}
   .btn{transition:none}
 }
 </style>
-<script defer src="/skybluenote/store.js?v=20260819"></script>
 </head>
 <body>
 
@@ -222,7 +246,6 @@ footer .row .sp{margin-left:auto}
     <a class="brand" href="/skybluenote"><span class="dot"></span> Skyblue Note</a>
     <nav>
       <a href="/skybluenote/app">웹에서 정리</a>
-      <a href="/skybluenote/web/">웹앱 열기</a>
       <a href="#demo">예시</a>
       <a href="#features">기능</a>
       <a href="#privacy">개인정보</a>
@@ -239,22 +262,20 @@ footer .row .sp{margin-left:auto}
     <span class="eyebrow">아이폰 · 아이패드 · 맥 · 안드로이드</span>
     <h1>AI 답변을 붙여넣으면,<br><span class="grad">바로 쓸 수 있는 글</span>이 됩니다.</h1>
     <p class="lede">
-      ChatGPT와 클로드가 준 답을 그대로 어디에 붙이면 별표(**)와 우물 정(##)이 따라오고,
-      표는 세로줄만 남아 깨집니다. Skyblue Note는 그것을 한 번에 걷어내고 표까지 되살립니다.
+      ChatGPT와 클로드가 준 답을 그대로 어디에 붙이면, 별표와 우물 정이 따라옵니다.
+      Skyblue Note는 그것을 한 번에 걷어내고, 깨진 표까지 되살립니다.
     </p>
     <div class="cta">
       <a class="btn btn-p" href="/skybluenote/app">웹에서 바로 해보기 <small>설치 없이 · 지금</small></a>
-      <a class="btn btn-s" href="#" data-store="ios" data-open="아이폰 · 아이패드 · 맥">
-         App Store <small>심사 중</small></a>
-      <a class="btn btn-s" href="#" data-store="android" data-open="안드로이드">
-        ▶ Google Play <small>테스트 중</small></a>
-      <a class="btn btn-s" href="/skybluenote/web/">웹앱 열기 <small>설치 없이 노트까지</small></a>
+      <span class="btn btn-s"> App Store <small>심사 준비 중</small></span>
+      <span class="btn btn-s">▶ Google Play <small>테스트 준비 중</small></span>
     </div>
     <p class="note">첫 판은 완전 무료입니다. 회원가입도, 로그인도 없습니다.</p>
 
     <div class="shots rv">
-      <img src="shots/devices.png" width="2872" height="900" loading="lazy"
-           alt="맥·아이패드·아이폰·안드로이드에서 같은 메모를 나란히 보고 있는 화면">
+      <div class="phone"><img src="shots/shot-2.png" alt="Skyblue Note 표 정리 화면" loading="lazy" width="1080" height="2160"></div>
+      <div class="phone"><img src="shots/shot-1.png" alt="Skyblue Note 메모 목록 화면" loading="lazy" width="1080" height="2160"></div>
+      <div class="phone"><img src="shots/shot-3.png" alt="Skyblue Note 버전 기록 화면" loading="lazy" width="1080" height="2160"></div>
     </div>
   </div>
 </section>
@@ -362,16 +383,24 @@ footer .row .sp{margin-left:auto}
     <div class="rv">
       <p class="kicker">만든 곳</p>
       <h2>EZLONG</h2>
+      <p class="sub" style="margin-bottom:0">
+        미국 주식과 장기 투자를 다루는 도구와 글을 만듭니다.
+        Skyblue Note는 그 과정에서 매일 쓰던 것을 앱으로 옮긴 것입니다 —
+        AI에게 물어본 답을 어딘가에 옮겨 적을 때마다 같은 기호를 지우고 있었기 때문입니다.
+      </p>
       <div class="chips">
-        <a class="btn btn-s" href="/app/">EZLONG이 만든 앱들
-          <small>Long Time, Easy Life 도 여기</small></a>
+        <span class="chip">Flutter 단일 코드</span>
+        <span class="chip">9개 언어</span>
+        <span class="chip">테스트 409개</span>
+        <span class="chip">오프라인 우선</span>
       </div>
     </div>
     <div class="card rv" style="padding:24px">
       <p style="margin:0 0 14px; font-weight:700">바로 가기</p>
       <p style="margin:0 0 9px"><a href="https://ezlong.com">EZLONG 홈</a></p>
       <p style="margin:0 0 9px"><a href="/skybluenote/privacy">개인정보 처리방침</a></p>
-      <p style="margin:0 0 9px"><span data-m="moc.liamg@doog.tsevni.ysae" data-pre="문의 · ">문의 · easy.invest.good [at] gmail [dot] com</span></p>
+      <p style="margin:0 0 9px"><a href="mailto:ziririt@gmail.com">문의 · ziririt@gmail.com</a></p>
+      <p style="margin:0; color:var(--sub); font-size:13.5px">문의는 보통 하루 안에 답합니다.</p>
     </div>
   </div>
 </section>
@@ -403,27 +432,6 @@ footer .row .sp{margin-left:auto}
     el.style.transitionDelay = Math.min(i % 6, 5) * 55 + 'ms';
     io.observe(el);
   });
-})();
-</script>
-<script>
-/* 주소를 HTML 원문에 안 둔다(2026-08-20).
-   뒤집어 적어 두었다가 브라우저가 열 때 되돌린다. 수집기 대부분은
-   자바스크립트를 안 돌리므로 여기서 걸러진다. 자바스크립트가 꺼진 사람에게는
-   [at]·[dot] 표기가 그대로 남아 사람은 읽고 기계는 못 읽는다. */
-(function () {
-  var ns = document.querySelectorAll("[data-m]");
-  for (var i = 0; i < ns.length; i++) {
-    var el = ns[i];
-    var addr = el.getAttribute("data-m").split("").reverse().join("");
-    var a = document.createElement("a");
-    a.href = "mailto:" + addr;
-    a.textContent = (el.getAttribute("data-pre") || "") + addr;
-    if (el.getAttribute("data-strong") !== null) {
-      var b = document.createElement("strong");
-      b.appendChild(a); a = b;
-    }
-    el.parentNode.replaceChild(a, el);
-  }
 })();
 </script>
 </body>
