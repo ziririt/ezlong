@@ -1831,8 +1831,10 @@ def fix_yield_number(entry, snap):
 # 카드가 확정된 뒤(집행·교정 완료 후) 별도 호출로 쓴다 — 같이 만들면 집행이
 # 재료를 바꿨을 때 보고서가 낡은 카드를 설명하게 된다. 실패해도 카드는 나간다.
 
-REPORT_SECTIONS = [('overview', '오늘 판 정리'), ('positive', '긍정 쪽 이야기'),
-                   ('negative', '부정 쪽 이야기'), ('mixed', '혼조·경계'),
+# 소제목은 화면(market-vs.html REPORT_SECTIONS)과 한 벌이다 — 2026-08-25 성동님 확정:
+# 현재 판 정리 / 호재 / 악재 / 혼조·경계 / 앞으로 12시간 체크포인트
+REPORT_SECTIONS = [('overview', '현재 판 정리'), ('positive', '호재'),
+                   ('negative', '악재'), ('mixed', '혼조·경계'),
                    ('watch', '앞으로 12시간 체크포인트')]
 
 def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap):
@@ -1867,9 +1869,9 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
 {fred or '- 없음'}
 
 [쓰는 법 — 전부 필수]
-- 다섯 부분으로 쓴다: overview(오늘 판을 3~4문장으로), positive(긍정 재료마다 전후
-  사정과 근거), negative(부정 재료마다 전후 사정과 근거), mixed(혼조 재료가 왜
-  양면인지), watch(향후 12시간 무엇이 확인되면 판이 어느 쪽으로 기우는지 2~3개).
+- 다섯 부분으로 쓴다: overview(현재 판을 3~4문장으로), positive(호재 — 긍정 재료마다
+  전후 사정과 근거), negative(악재 — 부정 재료마다 전후 사정과 근거), mixed(혼조
+  재료가 왜 양면인지), watch(향후 12시간 무엇이 확인되면 판이 어느 쪽으로 기우는지 2~3개).
 - 총 분량 1,200~1,700자(한글 기준). A4 한 장을 넘기지 마라. 혼조 재료가 없으면 mixed는 빈 문자열.
 - 단문으로. 한 문장에 주장 하나. '~이나/~지만' 복문 금지.
 - 근거에는 이름을 붙인다. 기관·인물·지표명·수치를 명시한다. '일부 전문가' 금지.
