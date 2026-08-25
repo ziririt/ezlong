@@ -1902,6 +1902,8 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
 - 근거에는 이름을 붙인다. 기관·인물·지표명·수치를 명시한다. '일부 전문가' 금지.
 - 원인을 쓴다. '반도체 약세' 같은 결과 묘사를 근거로 쓰지 마라.
 - 위 자료에 없는 수치·일정·이벤트를 만들어내지 마라. 모르면 안 쓴다.
+- **출처 기사 제목을 나열하지 마라.** "(뉴스: …)", "(출처: …)" 같은 영문 헤드라인
+  인용 금지 — 근거는 내용(기관·수치·이벤트)으로 녹여 쓰는 것이지 제목을 붙이는 게 아니다.
 
 [출력 — 이 JSON만]
 {{"overview": "…", "positive": "…", "negative": "…", "mixed": "…", "watch": "…"}}"""
@@ -1919,6 +1921,12 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
     if len(body) > 2600:
         print(f"::warning::[66항] 보고서 과다({len(body)}자) — 폐기")
         return None
+    # 출처 기사 제목 제거 — "(뉴스: Exchange-Traded Funds, …)" 같은 헤드라인 나열은
+    # 독자에게 소음이다(2026-08-25 성동님 지적). 괄호째 걷어낸다.
+    _cite = re.compile(r'\s*[\(\[](?:뉴스|출처|기사|참고|News|Source)\s*:[^\)\]]*[\)\]]', re.I)
+    for k in rep:
+        rep[k] = _cite.sub('', rep[k]).strip()
+
     # 표현 규칙은 보고서에도 적용된다 — 주말 '휴장'(58항)·금리 수치 표기(60항)
     holder = {'positive_factors': [],
               'negative_factors': [],
