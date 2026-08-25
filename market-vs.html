@@ -281,6 +281,12 @@
 .mv-report-h.neg { border-left-color: var(--neg, #D92A2A); }
 .mv-report-h.plain { border-left-color: var(--t3, #86868B); }
 .mv-report p { font-size: 16px; line-height: 1.75; color: var(--t2, #3A3A3C); margin: 0 0 10px; }
+.mv-report ul { list-style: none; margin: 0 0 6px; padding: 0; }
+.mv-report li { position: relative; padding-left: 16px; margin: 0 0 8px;
+  font-size: 16px; line-height: 1.65; color: var(--t2, #3A3A3C); }
+.mv-report li::before { content: ''; position: absolute; left: 2px; top: 11px;
+  width: 5px; height: 5px; border-radius: 999px; background: var(--t3, #86868B); }
+.mv-report li b { color: var(--t1, #1D1D1F); font-weight: 700; }
 .mv-report-meta { display: flex; align-items: center; gap: 10px;
   font-size: 14px; color: var(--t3, #86868B); margin-top: 14px; }
 .mv-report-copy { font-family: inherit; font-size: 14px; font-weight: 700;
@@ -811,10 +817,26 @@ function renderReport(e) {
     var key = REPORT_SECTIONS[i][0], title = REPORT_SECTIONS[i][1], cls = REPORT_SECTIONS[i][2];
     var txt = (r[key] || '').trim();
     if (!txt) continue;
-    var paras = txt.split(/\n+/).map(function (t) {
-      return '<p>' + escHtml(t) + '</p>';
-    }).join('');
-    body += '<div class="mv-report-h' + (cls ? ' ' + cls : '') + '">' + title + '</div>' + paras;
+    var lines = txt.split(/\n+/);
+    var isBullets = lines.length > 0 && lines.every(function (t) {
+      return /^\s*[-\u00b7\u2022]\s*/.test(t);
+    });
+    var inner;
+    if (isBullets) {
+      /* 개조식(67항 이후 표준) — "핵심어: 내용" 꼴이면 핵심어를 볼드로 */
+      inner = '<ul>' + lines.map(function (t) {
+        var c = t.replace(/^\s*[-\u00b7\u2022]\s*/, '');
+        var ci = c.indexOf(':');
+        if (ci > 0 && ci <= 24) {
+          return '<li><b>' + escHtml(c.slice(0, ci)) + '</b>:' + escHtml(c.slice(ci + 1)) + '</li>';
+        }
+        return '<li>' + escHtml(c) + '</li>';
+      }).join('') + '</ul>';
+    } else {
+      /* 구형 서술형 보고서 호환 */
+      inner = lines.map(function (t) { return '<p>' + escHtml(t) + '</p>'; }).join('');
+    }
+    body += '<div class="mv-report-h' + (cls ? ' ' + cls : '') + '">' + title + '</div>' + inner;
   }
   if (!body) return '';
   var rid = 'rp-' + (e.id || Math.abs((e.timestamp_kst || '').length)) ;
