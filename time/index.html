@@ -80,7 +80,6 @@
   <link rel="stylesheet" href="styles.css?v=20260823-alarmv2-v22">
 </head>
 <body>
-<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">Long Time, Easy Life — 플립시계 기상 알람</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검) -->
   <main class="clock-app" data-scene="midday">
     <!-- 2026-07-17 8차(근본 재설계): 페이지 1(.sky-room)↔2(.ezlong-webview)
          전환을 네이티브 scroll-snap 대신 이 wrapper의 JS transform으로
@@ -423,7 +422,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.79</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.80</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -1128,6 +1127,7 @@
         <strong class="sleep-screen-time" id="sleepScreenTime">07:00</strong>
         <button type="button" class="sleep-screen-edit" id="sleepEditTime" data-i18n="settings.alarm.sleepEdit">기상 시간 수정하기</button>
         <button type="button" class="sleep-screen-cancel" id="sleepCancel" data-i18n="settings.alarm.sleepCancel">수면 취소</button>
+        <p class="sleep-screen-hint" data-i18n="settings.alarm.keepScreenHint">화면을 끄지 않으셔도 됩니다. 아주 어둡게 유지되다가 아침에 이 화면에서 깨워 드립니다.</p>
         <div class="wake-ring-log wake-sleep-log" id="wakeSleepLog" hidden></div>
       </div>
     </div>
@@ -1225,7 +1225,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260825-alarmv2-v49"></script>
+  <script src="app.js?v=20260826-alarmv2-v50"></script>
 
   </body>
 </html>
