@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-25T21:31:05.815075+00:00",
-  "generatedAtKST": "2026-08-26 06:31 KST",
+  "generatedAt": "2026-08-25T21:34:54.916515+00:00",
+  "generatedAtKST": "2026-08-26 06:34 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -205,7 +205,7 @@
         "histogram": -0.8179
       },
       "high52": 542.3603,
-      "low52": 446.2364,
+      "low52": 446.2363,
       "dev200": 8.4578,
       "dev5": 0.533,
       "dev20": 0.3815,
@@ -618,7 +618,7 @@
         "signal": -11.007,
         "histogram": -1.4497
       },
-      "high52": 777.701,
+      "high52": 777.7011,
       "low52": 525.2332,
       "dev200": -8.4566,
       "dev5": 2.8663,
@@ -716,9 +716,9 @@
       "unit": "USD"
     },
     "dxy": {
-      "price": 98.917,
-      "change": -0.083,
-      "changePct": -0.0838,
+      "price": 98.915,
+      "change": -0.085,
+      "changePct": -0.0859,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
@@ -733,6 +733,23 @@
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-08-25T21:31:05.815075+00:00",
+      "atKST": "2026-08-26 06:31 KST",
+      "qqq": {
+        "rsi": 48.96,
+        "macdHist": -1.1265,
+        "dev5": -0.1094,
+        "dev200": 8.8996,
+        "gear": 3,
+        "buyScore": 60,
+        "sellScore": 16,
+        "price": 710.72
+      },
+      "soxxMacdHist": -1.4758,
+      "fearAndGreed": 59,
+      "yield10y": 4.639
+    },
     {
       "at": "2026-08-25T21:22:39.394637+00:00",
       "atKST": "2026-08-26 06:22 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": 0.2171,
       "fearAndGreed": 55,
       "yield10y": 4.738
-    },
-    {
-      "at": "2026-08-22T00:17:37.946834+00:00",
-      "atKST": "2026-08-22 09:17 KST",
-      "qqq": {
-        "rsi": 50.17,
-        "macdHist": -0.0339,
-        "dev5": -0.575,
-        "dev200": 9.4665,
-        "gear": 3,
-        "buyScore": 59,
-        "sellScore": 10,
-        "price": 713.44
-      },
-      "soxxMacdHist": 0.2171,
-      "fearAndGreed": 55,
-      "yield10y": 4.738
     }
   ],
-  "swingContinuity": "\ucd5c\uadfc \uba70\uce60\uac04 QQQ\ub294 \ub9e4\uc218\uc810\uc218 59~62, \ub9e4\ub3c4\uc810\uc218 10~16 \uc0ac\uc774\uc5d0\uc11c \ub4f1\ub77d\uc744 \ubc18\ubcf5\ud558\uba70 \ud6a1\ubcf4 \ud750\ub984\uc744 \ubcf4\uc600\uc2b5\ub2c8\ub2e4. \uc624\ub298 \ub9e4\uc218\uc810\uc218 60, \ub9e4\ub3c4\uc810\uc218 16\uc73c\ub85c \uc774\uc804 \ud750\ub984\uc744 \uc720\uc9c0\ud558\ub294 \uac00\uc6b4\ub370, RSI 48.96\uc740 \uc911\ub9bd \uad6c\uac04\uc5d0 \uba38\ubb3c\ub800\uc2b5\ub2c8\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c \ub4f1\ub77d\ub960\uc5d0\uc11c QQQ\ub294 -1.00% \uc774\ud6c4 +0.62%\ub85c \ubc18\ub4f1\ud588\uc73c\ub098, SOXX\ub294 -2.67% \uc774\ud6c4 +1.56%\ub85c \ub354 \uac15\ud55c \ubc18\ub4f1\uc744 \ubcf4\uc774\uba70 \ubc18\ub3c4\uccb4 \uc139\ud130\uc758 \uc0c1\ub300\uc801 \uac15\uc138\ub97c \ub098\ud0c0\ub0c8\uc2b5\ub2c8\ub2e4.",
-  "swingContinuityEn": "For the past few days, QQQ has been trading sideways, with buy scores ranging from 59-62 and sell scores from 10-16. Today's scores of 60 for buys and 16 for sells maintain this prior trend, with the RSI at 48.96 staying in neutral territory. While QQQ saw a rebound to +0.62% after a -1.00% dip in the last five trading days, SOXX showed a stronger bounce to +1.56% after a -2.67% drop, indicating relative strength in the semiconductor sector."
+  "swingContinuity": "\ucd5c\uadfc \uba70\uce60\uac04 QQQ\uc758 \ub9e4\uc218/\ub9e4\ub3c4 \uc810\uc218\ub294 59/10\uc5d0\uc11c 62/15, 59/16\uc73c\ub85c \ubcc0\ub3d9\ud558\ub2e4\uac00 \uc624\ub298 60/16\uc73c\ub85c \uc18c\ud3ed \uac1c\uc120\ub418\uc5c8\uc2b5\ub2c8\ub2e4. RSI\ub294 50.17\uc5d0\uc11c 46.2\uae4c\uc9c0 \ud558\ub77d \ud6c4 48.96\uc73c\ub85c \ud68c\ubcf5\ub418\uc5c8\uc73c\ub098 \uc5ec\uc804\ud788 \uc911\ub9bd \uad6c\uac04\uc5d0 \uba38\ubb3c\uace0 \uc788\uc2b5\ub2c8\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c \ub3d9\uc548 QQQ\ub294 -0.20%\uc5d0\uc11c +0.62%\ub85c \ub4f1\ub77d\uc774 \uc788\uc5c8\uace0, SOXX\ub294 -2.21%\uc5d0\uc11c +1.56%\ub85c, NVDA\ub294 -0.99%\uc5d0\uc11c +2.19%\ub85c \ubc18\ub4f1\ud558\uba70 \ubc18\ub3c4\uccb4 \uc139\ud130\uc758 \ud68c\ubcf5\uc138\ub97c \ubcf4\uc600\uc73c\ub098, TSLA\ub294 +4.23%\uc5d0\uc11c +0.37%\ub85c \uc0c1\uc2b9\ud3ed\uc774 \uc904\uc5b4\ub4dc\ub294 \ucc28\ubcc4\ud654\ub41c \ud750\ub984\uc744 \ubcf4\uc600\uc2b5\ub2c8\ub2e4.",
+  "swingContinuityEn": "QQQ's buy/sell scores fluctuated from 59/10 to 62/15 and 59/16 over the past few days, showing a slight improvement to 60/16 today. The RSI recovered to 48.96 after dipping to 46.2 from 50.17, remaining in neutral territory. Over the last five trading days, QQQ saw swings from -0.20% to +0.62%, while SOXX rebounded from -2.21% to +1.56% and NVDA from -0.99% to +2.19%, indicating a recovery in the semiconductor sector. However, TSLA showed a differentiated trend with its gains narrowing from +4.23% to +0.37%."
 }
