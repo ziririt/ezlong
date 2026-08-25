@@ -1854,6 +1854,71 @@ REPORT_SECTIONS = [('overview', '현재 판 정리'), ('positive', '호재'),
                    ('negative', '악재'), ('mixed', '혼조·경계'),
                    ('watch', '앞으로 12시간 체크포인트')]
 
+# ─── 68항 — 보고서는 카드의 해설이지 두 번째 판정이 아니다 ─────────────────────
+# 실사고(2026-08-26 00:51 카드): 카드에는 테슬라 재료가 없는데, 보고서 악재 섹션에
+# '테슬라 사이버트럭 가격 인상: … 주가에 부정적 영향'이 등장했다. 그 시각 TSLA는
+# 장중 +1.54% 상승 중이었다. 본판은 67항 게이트가 걸렀는데, 보고서 생성이 뉴스
+# 원문을 근거 자료로 받다 보니 거기서 노이즈를 다시 끌어와 제 판정을 얹은 것이다.
+# 원칙: 호재/악재/혼조 블릿의 '주제'(콜론 앞 핵심어)는 확정 카드의 재료여야 한다.
+# 카드에 없는 개별 기업이 주제면 그 블릿을 걷어낸다. 단, 시장 재료의 '근거'로
+# 개별 기업 등락을 인용하는 것(예: 반도체 강세의 근거로 "NVDA +2.2%")은 정상이라
+# 콜론 앞만 본다. watch(체크포인트)는 벨웨더 실적 등 예정 이벤트가 올 수 있어 면제.
+_RPT_COMPANY_GROUPS = {
+    'tesla':     ['tsla', 'tesla', '테슬라'],
+    'nvidia':    ['nvda', 'nvidia', '엔비디아'],
+    'apple':     ['aapl', 'apple', '애플'],
+    'microsoft': ['msft', 'microsoft', '마이크로소프트'],
+    'google':    ['googl', 'google', 'alphabet', '구글', '알파벳'],
+    'amazon':    ['amzn', 'amazon', '아마존'],
+    'meta':      ['meta', '메타'],
+    'amd':       ['amd'],
+    'broadcom':  ['avgo', 'broadcom', '브로드컴'],
+    'micron':    ['micron', '마이크론'],   # 'mu'는 두 글자라 오탐이 많아 뺀다
+    'intel':     ['intc', 'intel', '인텔'],
+    'marvell':   ['marvell', '마벨'],
+}
+
+def _rpt_groups_in(text):
+    """텍스트에 등장하는 기업 그룹 집합. 같은 회사의 티커·영문·한글 표기를 한 그룹으로
+    묶는다 — 카드가 '테슬라'라고 쓰고 보고서가 'Tesla'라고 써도 같은 회사다(63항 교훈)."""
+    low = (text or '').lower().replace('메타버스', '')   # '메타버스'는 메타(회사)가 아니다
+    found = set()
+    for g, aliases in _RPT_COMPANY_GROUPS.items():
+        for a in aliases:
+            if re.search(r'[a-z]', a):
+                # 라틴 표기는 낱말 경계 — 'meta'가 'metadata' 안에서 잡히는 것 방지
+                if re.search(r'(?<![a-z])' + re.escape(a) + r'(?![a-z])', low):
+                    found.add(g)
+                    break
+            elif a in low:
+                found.add(g)
+                break
+    return found
+
+def report_offcard_scrub(rep, entry):
+    """호재/악재/혼조 블릿 중 '카드에 없는 개별 기업'이 주제인 것을 걷어낸다.
+    걷어낸 (섹션, 기업, 블릿) 목록을 돌려준다 — 호출부가 경고를 찍는다."""
+    kev = entry.get('key_event') or {}
+    card_text = ' '.join(filter(None,
+        [entry.get('summary', ''), kev.get('name', ''), kev.get('why', '')] +
+        [(f.get('name', '') + ' ' + f.get('desc', ''))
+         for s in ('positive_factors', 'negative_factors', 'mixed_factors')
+         for f in (entry.get(s) or [])]))
+    on_card = _rpt_groups_in(card_text)
+    dropped = []
+    for k in ('positive', 'negative', 'mixed'):
+        kept = []
+        for line in (rep.get(k) or '').split('\n'):
+            head = line.split(':', 1)[0]           # "- 핵심어: 내용"의 핵심어만 본다
+            off = _rpt_groups_in(head) - on_card
+            if line.strip() and off:
+                dropped.append((k, sorted(off), line.strip()))
+                continue
+            kept.append(line)
+        rep[k] = '\n'.join(kept).strip()
+    return dropped
+
+
 def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap):
     """확정된 카드를 A4 한 장 분량으로 풀어 쓴 보고서. entry['report'] 에 저장."""
     factors = []
@@ -1901,6 +1966,15 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
 - 총 분량 1,000~1,600자(한글 기준). A4 한 장 이내.
 - 근거에는 이름을 붙인다. 기관·인물·지표명·수치를 명시한다. '일부 전문가' 금지.
 - 원인을 쓴다. '반도체 약세' 같은 결과 묘사를 근거로 쓰지 마라.
+- **호재/악재/혼조 블릿의 주제는 확정 카드의 재료만.** 보고서는 카드의 해설이지
+  두 번째 판정이 아니다. 뉴스 블록은 카드 재료의 전후 사정을 채우는 용도일 뿐,
+  거기서 새 재료를 끌어와 블릿으로 얹지 마라. 특히 개별 기업의 제품 가격·리콜·
+  소송 같은 단일 기업 이슈는 카드에 없으면 절대 금지 — 카드를 만들 때 이미
+  '시장을 움직일 재료가 아니다'로 판정된 것이다.
+- 시장 재료를 설명하는 **근거로** 개별 기업 등락을 인용하는 것은 된다.
+  예 — 반도체 섹터 강세의 근거로 "NVDA +2.2%, SOXX +1.5%".
+- watch에는 카드 밖이라도 시장 전체를 움직일 예정 이벤트(벨웨더 실적 발표·주요
+  지표 발표·연준 일정)는 쓸 수 있다. 단일 기업의 소소한 뉴스는 여기도 금지.
 - 위 자료에 없는 수치·일정·이벤트를 만들어내지 마라. 모르면 안 쓴다.
 - **출처 기사 제목을 나열하지 마라.** "(뉴스: …)", "(출처: …)" 같은 영문 헤드라인
   인용 금지 — 근거는 내용(기관·수치·이벤트)으로 녹여 쓰는 것이지 제목을 붙이는 게 아니다.
@@ -1914,6 +1988,22 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
     for key, _ in REPORT_SECTIONS:
         v = (result.get(key) or '').strip()
         rep[key] = v
+    # 출처 기사 제목 제거 — "(뉴스: Exchange-Traded Funds, …)" 같은 헤드라인 나열은
+    # 독자에게 소음이다(2026-08-25 성동님 지적). 괄호째 걷어낸다.
+    # "(8분 전 뉴스)", "(2.5시간 전 구글뉴스)" 같은 경과 시각 인용도 같은 소음이다.
+    _cite = re.compile(r'\s*[\(\[](?:뉴스|출처|기사|참고|News|Source)\s*:[^\)\]]*[\)\]]', re.I)
+    _ago = re.compile(r'\s*\([^()]*?(?:분|시간)\s*전[^()]*?\)')
+    for k in rep:
+        rep[k] = _ago.sub('', _cite.sub('', rep[k])).strip()
+
+    # 68항 — 카드에 없는 개별 기업이 주제인 블릿은 코드가 걷어낸다. 프롬프트 지시만으로는
+    # 못 막는다는 걸 이미 배웠다(51항 이래 반복된 교훈). 감지하고도 게시하지 않는다.
+    for _k, _off, _line in report_offcard_scrub(rep, entry):
+        print(f"::warning::[68항] 카드 밖 기업 블릿 제거({_k}/{','.join(_off)}): {_line[:70]}")
+    if not rep.get('positive') or not rep.get('negative'):
+        print("::warning::[68항] 걷어내고 나니 호재/악재 한쪽이 비었다 — 보고서 폐기(백필이 재작성)")
+        return None
+
     body = ''.join(rep.values())
     if len(body) < 400:
         print(f"::warning::[66항] 보고서 분량 미달({len(body)}자) — 폐기")
@@ -1921,11 +2011,6 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
     if len(body) > 2600:
         print(f"::warning::[66항] 보고서 과다({len(body)}자) — 폐기")
         return None
-    # 출처 기사 제목 제거 — "(뉴스: Exchange-Traded Funds, …)" 같은 헤드라인 나열은
-    # 독자에게 소음이다(2026-08-25 성동님 지적). 괄호째 걷어낸다.
-    _cite = re.compile(r'\s*[\(\[](?:뉴스|출처|기사|참고|News|Source)\s*:[^\)\]]*[\)\]]', re.I)
-    for k in rep:
-        rep[k] = _cite.sub('', rep[k]).strip()
 
     # 표현 규칙은 보고서에도 적용된다 — 주말 '휴장'(58항)·금리 수치 표기(60항)
     holder = {'positive_factors': [],
