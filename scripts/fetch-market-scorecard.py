@@ -850,6 +850,11 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - '심리'와 '수급'은 가격의 다른 이름이다. 'AI 투자 심리 유지', '매수세 유입',
   '관심 지속'은 상태 묘사지 원인이 아니다 — "심리가 왜 유지되는가"의 그 '왜'
   (구체적 이벤트·수치·발언)가 재료다.
+- **혼조 칸도 시장 재료만 싣는다.** 단일 기업·단일 제품 이슈(가격 조정, 모델 출시
+  루머 등)는 미국 증시 전체를 움직이지 못하면 노이즈다 — 혼조에도 싣지 않는다.
+  실사고: '테슬라 사이버트럭 가격 인상 논란'이 혼조로 나갔다. 테슬라 주가조차 못
+  움직일 이슈다. 이 코너의 취지는 시장에 영향을 줄 정보를 가려내는 것이다.
+  개별 기업 이슈가 시장급이 되는 예외는 벨웨더 실적 이벤트(earnings_bellwether)뿐이다.
 - 같은 주제는 판정 하나만 갖는다. 한 주제를 긍정 칸과 혼조 칸에 쪼개 넣지 마라
   (실사고: 'AI 투자 심리 유지'가 긍정 35점, 'Nvidia 실적 발표 대기'가 혼조 — 같은
   이야기다). 판단이 서면 점수 칸에, 양면이면 혼조 칸에 — 한 곳에만.
@@ -1637,6 +1642,18 @@ def validate_content(entry, session_code='', snap=None):
             errors.append(f"혼조 서술 오류: '{f.get('name','')}' 설명이 한쪽 방향"
                           f"(\"…{dsc[-12:]}\")으로 끝난다 — 혼조인 이유(양면 또는 "
                           f"변동폭 제한)를 설명에 담아라")
+
+    # ── 체크 14: 혼조 칸의 개별 기업 노이즈 (2026-08-25 신설, 67항) ──────────
+    # G4는 점수 칸만 막았고 혼조 칸은 뒷문이었다. 실사고: '테슬라 사이버트럭 가격
+    # 인상 논란'(company_specific)이 혼조로 게시됐다. 단일 기업, 단일 제품, 그중
+    # 판매량이 가장 작은 제품의 가격 이슈다 — 미국 증시를 움직이지 못한다.
+    # 이 코너의 취지는 시장에 영향을 줄 정보를 가려내는 것이다. 노이즈는 혼조도 아니다.
+    for f in entry.get('mixed_factors') or []:
+        if (f.get('category') or '') == 'company_specific':
+            errors.append(f"혼조 노이즈: '{f.get('name','')}'(개별 기업) — 미국 증시 전체에 "
+                          f"영향을 줄 재료가 아니면 혼조에도 싣지 않는다. 시장을 움직일 "
+                          f"이슈라면 벨웨더 실적 등 시장 카테고리로 분류해 근거를 대라. "
+                          f"아니면 빼라")
 
     # ── 체크 9: 금리가 긍정·부정 양쪽에 (2026-08-17 신설, 60항) ──────────────
     _both = rate_on_both_sides(entry)
@@ -2911,6 +2928,15 @@ def main():
     entry = scrub_circular_summary(entry)
     # 4-7. 금리 상시 노출 보증 (64항) — 모델이 금리를 통째로 뺐으면 실측치로 혼조 보충
     entry = ensure_rates_visible(entry, snap)
+
+    # 4-7b. 혼조 칸 개별 기업 노이즈 제거 (67항) — 재판정으로도 남으면 코드가 걷어낸다.
+    # 점수가 없는 재료라 판정(총점)은 변하지 않는다. 감지하고도 게시하지 않는다(52항).
+    _mf = entry.get('mixed_factors') or []
+    _noise = [f for f in _mf if (f.get('category') or '') == 'company_specific']
+    if _noise:
+        entry['mixed_factors'] = [f for f in _mf if f not in _noise]
+        for _f in _noise:
+            print(f"::warning::[67항] 혼조 노이즈 제거: '{_f.get('name','')}'(개별 기업)")
 
     # 4-8. 심층 보고서 (66항) — 확정된 카드를 A4 한 장으로 풀어 쓴다. 실패해도 카드는 나간다.
     try:
