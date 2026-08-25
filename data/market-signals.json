@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-25T20:32:13.250718+00:00",
-  "generatedAtKST": "2026-08-26 05:32 KST",
+  "generatedAt": "2026-08-25T20:37:43.364594+00:00",
+  "generatedAtKST": "2026-08-26 05:37 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -297,7 +297,7 @@
         "histogram": -1.4758
       },
       "high52": 655.01,
-      "low52": 240.5574,
+      "low52": 240.5575,
       "dev200": 21.6474,
       "dev5": -0.4651,
       "dev20": -2.2233,
@@ -389,7 +389,7 @@
         "histogram": -0.2756
       },
       "high52": 398.8,
-      "low52": 207.3579,
+      "low52": 207.3578,
       "dev200": 3.2799,
       "dev5": 0.4165,
       "dev20": -1.4117,
@@ -618,7 +618,7 @@
         "signal": -11.007,
         "histogram": -1.4497
       },
-      "high52": 777.7011,
+      "high52": 777.701,
       "low52": 525.2332,
       "dev200": -8.4566,
       "dev5": 2.8663,
@@ -708,31 +708,48 @@
       "unit": "%"
     },
     "oil": {
-      "price": 80.38,
-      "change": -4.63,
-      "changePct": -5.4464,
+      "price": 80.79,
+      "change": -4.22,
+      "changePct": -4.9641,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 98.883,
-      "change": -0.117,
-      "changePct": -0.1182,
+      "price": 98.889,
+      "change": -0.111,
+      "changePct": -0.1121,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4723.8999,
-      "change": 83.1001,
-      "changePct": 1.7906,
+      "price": 4719.7998,
+      "change": 79.0,
+      "changePct": 1.7023,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-08-25T20:32:13.250718+00:00",
+      "atKST": "2026-08-26 05:32 KST",
+      "qqq": {
+        "rsi": 48.96,
+        "macdHist": -1.1265,
+        "dev5": -0.1094,
+        "dev200": 8.8996,
+        "gear": 3,
+        "buyScore": 60,
+        "sellScore": 16,
+        "price": 710.72
+      },
+      "soxxMacdHist": -1.4758,
+      "fearAndGreed": 59,
+      "yield10y": 4.639
+    },
     {
       "at": "2026-08-25T20:22:50.449893+00:00",
       "atKST": "2026-08-26 05:22 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": 0.2171,
       "fearAndGreed": 55,
       "yield10y": 4.738
-    },
-    {
-      "at": "2026-08-21T21:32:17.036464+00:00",
-      "atKST": "2026-08-22 06:32 KST",
-      "qqq": {
-        "rsi": 50.17,
-        "macdHist": -0.0339,
-        "dev5": -0.575,
-        "dev200": 9.4665,
-        "gear": 3,
-        "buyScore": 59,
-        "sellScore": 10,
-        "price": 713.44
-      },
-      "soxxMacdHist": 0.2171,
-      "fearAndGreed": 55,
-      "yield10y": 4.738
     }
   ],
-  "swingContinuity": "\ucd5c\uadfc \uba70\uce60\uac04 QQQ\ub294 \ub9e4\uc218\uc810\uc218 59~62, \ub9e4\ub3c4\uc810\uc218 10~16 \uc0ac\uc774\uc5d0\uc11c \ub4f1\ub77d\uc744 \ubcf4\uc600\uc73c\uba70, \uc624\ub298 \ub9e4\uc218\uc810\uc218 60, \ub9e4\ub3c4\uc810\uc218 16\uc73c\ub85c \uc774\uc804 \ud750\ub984\uc744 \uc720\uc9c0\ud588\uc2b5\ub2c8\ub2e4. RSI\ub294 46.2\uc5d0\uc11c 48.96\uc73c\ub85c \uc18c\ud3ed \uac1c\uc120\ub418\uc5c8\uc73c\ub098 \uc5ec\uc804\ud788 50\uc120\uc744 \ud558\ud68c\ud558\ub294 \uad6c\uac04\uc785\ub2c8\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\ub294 -1.00% \ud558\ub77d \ud6c4 +0.62% \ubc18\ub4f1\ud588\uc73c\ub098, SOXX\ub294 -2.67% \ud558\ub77d \ud6c4 +1.56% \ubc18\ub4f1\ud558\uba70 \ubc18\ub3c4\uccb4 \uc139\ud130\uc758 \uc0c1\ub300\uc801 \uac15\uc138\uac00 \ub450\ub4dc\ub7ec\uc84c\uc2b5\ub2c8\ub2e4.",
-  "swingContinuityEn": "QQQ's recent trend showed buy scores between 59-62 and sell scores between 10-16, with today's scores of 60 and 16 maintaining that pattern. The RSI improved slightly from 46.2 to 48.96, still remaining below the 50 level. While QQQ saw a -1.00% drop followed by a +0.62% rebound in the last five trading days, SOXX experienced a -2.67% drop then a +1.56% rebound, highlighting relative strength in the semiconductor sector."
+  "swingContinuity": null,
+  "swingContinuityEn": null
 }
