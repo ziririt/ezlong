@@ -52,7 +52,30 @@
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <title id="page-title">투자 인사이트 — EZLONG</title>
-<meta name="description" id="page-desc" content="EZLONG 투자 인사이트" />
+<meta name="description" id="page-desc" content="미국주식 장기투자 인사이트 글 — 시황 분석과 투자 전략을 나누는 EZLONG 게시판의 개별 글 페이지입니다." />
+<!-- 2026-08-26 SEO 점검 — 글마다 URL이 ?id= 로 갈리는 페이지라 canonical과 OG는
+     아래 스크립트가 현재 글 주소로 채운다(정적으로 고정하면 모든 글이 한 URL로 합쳐진다).
+     본문 로드 스크립트가 제목을 채우면 og:title도 따라간다. -->
+<link rel="canonical" id="page-canonical" href="https://ezlong.com/board.html" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="EZLONG" />
+<meta property="og:title" id="og-title" content="투자 인사이트 — EZLONG" />
+<meta property="og:description" id="og-desc" content="미국주식 장기투자 인사이트 글 — EZLONG 게시판." />
+<meta property="og:url" id="og-url" content="https://ezlong.com/board.html" />
+<meta property="og:image" content="https://ezlong.com/og/og-1200x630.png?v=20260809" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://ezlong.com/og/og-1200x630.png?v=20260809" />
+<script>
+(function () {
+  // 현재 글 주소로 canonical·og:url 갱신 (id 파라미터만 유지, 그 외 파라미터 제거)
+  try {
+    var id = new URLSearchParams(location.search).get('id');
+    var u = 'https://ezlong.com/post.html' + (id ? '?id=' + encodeURIComponent(id) : '');
+    document.getElementById('page-canonical').setAttribute('href', id ? u : 'https://ezlong.com/board.html');
+    document.getElementById('og-url').setAttribute('content', u);
+  } catch (e) {}
+})();
+</script>
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -663,6 +686,11 @@ async function loadPost() {
     // 메타 태그 업데이트
     document.getElementById('page-title').textContent = `${postData.title} — EZLONG`;
     document.getElementById('page-desc').content = postData.title;
+    // 공유 카드도 글 제목으로 (2026-08-26 SEO 점검)
+    var _ogt = document.getElementById('og-title');
+    var _ogd = document.getElementById('og-desc');
+    if (_ogt) _ogt.content = `${postData.title} — EZLONG`;
+    if (_ogd) _ogd.content = postData.title;
 
     // 카테고리
     if (postData.category) {
