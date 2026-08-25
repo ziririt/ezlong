@@ -15,7 +15,8 @@ def head_of(p):
     return s[:m.end()] if m else s[:8000], s
 
 def attr(tag, name):
-    m = re.search(name + r'\s*=\s*["\']([^"\']*)["\']', tag, re.I)
+    # (?<![-\w]) — 'content='가 'data-i18n-content=' 안에서 잡히던 오탐 방지(2026-08-26)
+    m = re.search(r'(?<![-\w])' + name + r'\s*=\s*["\']([^"\']*)["\']', tag, re.I)
     return m.group(1) if m else None
 
 def tags(head, pat):
@@ -25,7 +26,20 @@ sitemap = open(os.path.join(ROOT,'sitemap.xml')).read()
 smap_urls = set(re.findall(r'<loc>([^<]+)</loc>', sitemap))
 llms = open(os.path.join(ROOT,'llms.txt')).read()
 
+# 서브디렉터리 단독 페이지 — 2차 점검(2026-08-26)에서 편입. (경로, 언어)
+EXTRA = [('app/index.html','ko'), ('time/index.html','ko'), ('time/privacy.html','ko'),
+         ('time/privacy-en.html','en'), ('skybluenote/index.html','ko'),
+         ('skybluenote/app/index.html','ko'), ('skybluenote/privacy/index.html','ko'),
+         ('skybluenote/web/index.html','ko'), ('kis-portfolio/index.html','ko'),
+         ('life-signal/index.html','ko'), ('life-signal/today.html','ko'),
+         ('life-signal/result.html','ko'), ('life-signal/import.html','ko'),
+         ('life-signal/test.html','ko')]
+
 pages = []
+for rel, lang in EXTRA:
+    p2 = os.path.join(ROOT, rel)
+    if os.path.exists(p2):
+        pages.append((rel, lang, p2))
 for d, lang in LANGS.items():
     for p in sorted(glob.glob(os.path.join(ROOT, d, '*.html') if d else os.path.join(ROOT,'*.html'))):
         base = os.path.basename(p)
@@ -117,7 +131,9 @@ for rel, lang, p in pages:
         if len(h1s) == 0: issues.append('h1 없음')
         elif len(h1s) > 1: issues.append(f'h1 {len(h1s)}개')
     # sitemap
-    in_smap = url in smap_urls or (rel.endswith('index.html') and url[:-len('index.html')] in smap_urls)
+    in_smap = url in smap_urls or (rel.endswith('index.html') and (
+        url[:-len('index.html')] in smap_urls                      # /dir/ 표기
+        or url[:-len('/index.html')] in smap_urls))                # /dir 확장자 없는 표기
     info['sitemap'] = in_smap
     if not noindex and not in_smap: issues.append('sitemap 미등재')
     if noindex and in_smap: issues.append('noindex인데 sitemap 등재')
