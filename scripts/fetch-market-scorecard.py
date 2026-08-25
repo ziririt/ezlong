@@ -1984,10 +1984,20 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
     result = call_gemini(prompt)
     if not result:
         return None
+    # 실사고(2026-08-26 백필 AttributeError): 전 섹션 닷블릿을 요구하니 모델이 가끔
+    # 섹션 값을 문자열이 아니라 블릿 '배열'로 돌려준다. .strip()이 리스트에서 터졌다.
+    # 형태가 다르다고 버리지 않는다 — 배열이면 줄바꿈으로 이어 붙여 같은 꼴로 받는다.
+    if isinstance(result, list):
+        result = result[0] if result and isinstance(result[0], dict) else None
+    if not isinstance(result, dict):
+        print(f"::warning::[66항] 보고서 응답 형태 이상({type(result).__name__}) — 폐기")
+        return None
     rep = {}
     for key, _ in REPORT_SECTIONS:
-        v = (result.get(key) or '').strip()
-        rep[key] = v
+        v = result.get(key)
+        if isinstance(v, list):
+            v = '\n'.join(str(x) for x in v if x is not None)
+        rep[key] = v.strip() if isinstance(v, str) else ''
     # 출처 기사 제목 제거 — "(뉴스: Exchange-Traded Funds, …)" 같은 헤드라인 나열은
     # 독자에게 소음이다(2026-08-25 성동님 지적). 괄호째 걷어낸다.
     # "(8분 전 뉴스)", "(2.5시간 전 구글뉴스)" 같은 경과 시각 인용도 같은 소음이다.
@@ -3064,7 +3074,8 @@ def main():
                 _bf += 1
                 print(f"  보고서 백필: {_old.get('timestamp_kst')}")
     except Exception as _re:
-        print(f"::warning::[66항] 보고서 백필 실패(무시): {type(_re).__name__}")
+        # 원인 추적을 위해 타입만이 아니라 메시지까지 남긴다(2026-08-26 AttributeError 사고)
+        print(f"::warning::[66항] 보고서 백필 실패(무시): {type(_re).__name__}: {_re}")
 
     # 5. 신규 항목 추가
     entries = data.get("entries", [])
