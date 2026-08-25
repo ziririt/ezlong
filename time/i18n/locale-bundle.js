@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-24T23:07:00.753Z
+ * 생성 시각: 2026-08-25T17:29:53.488Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -503,6 +503,10 @@
       "autoPaused": "After a long session, the background returned to photos for a rest.",
       "premiumOnly": "Available with Premium.",
       "wifiOnly": "Can only be turned on while connected to Wi-Fi."
+    },
+    "seo": {
+      "appTitle": "Long Time, Easy Life — Flip Clock Alarm & Weather",
+      "appDescription": "A free wake-up alarm that starts at a whisper and rises gently with your favorite music. Flip clock with weather, bedtime mode and wake time on the Lock Screen. Runs in your browser."
     }
   },
   "es": {
@@ -997,6 +1001,10 @@
       "autoPaused": "Tras una reproducción prolongada, el fondo volvió a las fotos.",
       "premiumOnly": "Disponible con Premium.",
       "wifiOnly": "Solo se puede activar con conexión Wi-Fi."
+    },
+    "seo": {
+      "appTitle": "Long Time, Easy Life — Reloj flip, despertador y tiempo",
+      "appDescription": "Una alarma gratuita que empieza como un susurro y sube suavemente con tu música favorita. Reloj flip con el tiempo, modo dormir y la hora en la pantalla bloqueada. Funciona en el navegador."
     }
   },
   "ja": {
@@ -1491,6 +1499,10 @@
       "autoPaused": "長時間再生のため、背景を写真に戻しました。",
       "premiumOnly": "プレミアムでご利用いただけます。",
       "wifiOnly": "Wi-Fi接続中のみオンにできます。"
+    },
+    "seo": {
+      "appTitle": "Long Time, Easy Life — フリップ時計・目覚まし・天気",
+      "appDescription": "好きな音楽がささやくような音から始まり、ゆっくり大きくなって起こす無料の目覚まし。フリップ時計と天気、就寝モード、ロック画面に起床時刻。ブラウザでそのまま使えます。"
     }
   },
   "ko": {
@@ -1985,6 +1997,10 @@
       "autoPaused": "오래 재생되어 배경 동영상이 잠시 사진으로 돌아갔어요.",
       "premiumOnly": "프리미엄에서 이용할 수 있어요.",
       "wifiOnly": "Wi-Fi에 연결된 동안에만 켤 수 있어요."
+    },
+    "seo": {
+      "appTitle": "Long Time, Easy Life — 플립시계 기상 알람 · 날씨",
+      "appDescription": "좋아하는 음악이 속삭이듯 시작해 서서히 커지며 깨워 주는 무료 기상 알람. 플립시계와 날씨, 취침 모드, 잠금화면 기상 시각 표시. 설치 없이 브라우저에서 바로."
     }
   },
   "pt": {
@@ -2479,6 +2495,10 @@
       "autoPaused": "Após uma reprodução longa, o fundo voltou às fotos.",
       "premiumOnly": "Disponível no Premium.",
       "wifiOnly": "Só pode ser ativado com Wi-Fi."
+    },
+    "seo": {
+      "appTitle": "Long Time, Easy Life — Relógio flip, despertador e tempo",
+      "appDescription": "Um alarme gratuito que começa como um sussurro e cresce suavemente com a sua música favorita. Relógio flip com tempo, modo de dormir e o horário na Tela Bloqueada. Funciona no navegador."
     }
   },
   "zh": {
@@ -2973,6 +2993,10 @@
       "autoPaused": "播放时间较长，背景已暂时切回照片。",
       "premiumOnly": "高级版专属功能。",
       "wifiOnly": "仅在连接 Wi-Fi 时可开启。"
+    },
+    "seo": {
+      "appTitle": "Long Time, Easy Life — 翻页时钟闹钟与天气",
+      "appDescription": "用喜欢的音乐从耳语般的音量开始、缓缓变大唤醒你的免费闹钟。翻页时钟与天气、就寝模式、锁定屏幕显示起床时间。在浏览器中直接使用。"
     }
   }
 };
