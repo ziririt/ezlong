@@ -491,22 +491,28 @@ def fetch_fred_macro():
     if not FRED_KEY:
         return []
 
+    # 69항(2026-08-26) — CPIAUCSL 원계열은 '지수 수준'(1982-84=100)이지 %가 아니다.
+    # 전 계열에 %를 붙이던 옛 포맷이 "CPI 소비자물가지수 332.81%"라는 오표기를 만들어
+    # 보고서까지 옮겨붙었다. CPI는 units=pc1(전년동월비 %)로 받아 진짜 %로 만든다.
+    # 날짜도 발표일로 오독되던 것을 '데이터 월'로 명시한다("2026년 7월 1일 발표된" 사고).
     SERIES = {
-        "CPIAUCSL": "CPI 소비자물가(%)",
-        "FEDFUNDS":  "Fed 기준금리(%)",
-        "T10Y2Y":    "10Y-2Y 스프레드(경기선행, %)",
-        "UNRATE":    "실업률(%)",
-        "T10YIE":    "10년 기대인플레이션(%)",
+        "CPIAUCSL": ("pc1", "CPI 소비자물가 상승률(전년동월비 %)"),
+        "FEDFUNDS":  (None, "Fed 기준금리(%)"),
+        "T10Y2Y":    (None, "10Y-2Y 스프레드(경기선행, %)"),
+        "UNRATE":    (None, "실업률(%)"),
+        "T10YIE":    (None, "10년 기대인플레이션(%)"),
     }
 
     rows = []
-    for sid, label in SERIES.items():
+    for sid, (units, label) in SERIES.items():
         try:
+            params = {"series_id": sid, "api_key": FRED_KEY,
+                      "sort_order": "desc", "limit": 2, "file_type": "json"}
+            if units:
+                params["units"] = units
             resp = requests.get(
                 "https://api.stlouisfed.org/fred/series/observations",
-                params={"series_id": sid, "api_key": FRED_KEY,
-                        "sort_order": "desc", "limit": 2, "file_type": "json"},
-                timeout=10
+                params=params, timeout=10
             )
             obs = resp.json().get("observations", [])
             if not obs:
@@ -515,12 +521,12 @@ def fetch_fred_macro():
             if val == ".":
                 continue
             val_f = float(val)
-            date  = obs[0]["date"]
+            month = obs[0]["date"][:7]   # 관측월 — 발표일이 아니다
             if len(obs) > 1 and obs[1].get("value", ".") != ".":
                 diff = val_f - float(obs[1]["value"])
-                rows.append(f"{label}: {val_f:.2f}% ({'+' if diff>=0 else ''}{diff:.2f}% 전기대비) [{date}]")
+                rows.append(f"{label}: {val_f:.2f}% ({'+' if diff>=0 else ''}{diff:.2f}%p 전기대비) [{month} 데이터]")
             else:
-                rows.append(f"{label}: {val_f:.2f}% [{date}]")
+                rows.append(f"{label}: {val_f:.2f}% [{month} 데이터]")
         except Exception as e:
             print(f"  FRED {sid} 오류: {e}")
 
@@ -1919,6 +1925,145 @@ def report_offcard_scrub(rep, entry):
     return dropped
 
 
+# ─── 69항 — watch(앞으로 12시간 체크포인트)의 일정 검증 ──────────────────────
+# 실사고(2026-08-26 성동님 지적): watch에 "CPI 소비자물가 지표: 다음 CPI 발표 시
+# 인플레이션 추이가 확인될 예정 …"이 올랐다. 다음 CPI는 9월 11일 — 12시간이 아니라
+# 2주 뒤다. 같은 카드에서 NVDA 실적도 "향후 12시간 내 예정"이라고 썼는데 실제로는
+# 더 뒤였다. 모델은 일정표가 없으면 '다음 발표'를 임박한 것처럼 쓴다.
+# 대책: 공식 일정표를 코드가 들고, 프롬프트에 실제 일정을 주고, 어긴 블릿은 걷어낸다.
+#
+# 일정 출처(2026-08-26 원문 확인): BLS bls.gov/schedule/2026 (고용보고서·CPI·PPI),
+# BEA bea.gov/news/schedule (PCE·GDP), Fed federalreserve.gov (FOMC).
+# ★ 2026년 말까지만 들어 있다. 2027년 일정이 발표되면(통상 연말) 여기에 이어 붙일 것.
+#   일정표가 소진되면 검증은 조용히 꺼지고 경고만 찍는다 — 낡은 표로 오판하지 않는다.
+_ECON_CALENDAR = [
+    # (ET 날짜, ET 시각, 종류, 이름)
+    ('2026-08-26', '08:30', 'pce',  'PCE 개인소비지출(7월분)·GDP 2차 잠정치(2분기)'),
+    ('2026-09-04', '08:30', 'jobs', '고용보고서(8월분)'),
+    ('2026-09-10', '08:30', 'ppi',  'PPI 생산자물가(8월분)'),
+    ('2026-09-11', '08:30', 'cpi',  'CPI 소비자물가(8월분)'),
+    ('2026-09-16', '14:00', 'fomc', 'FOMC 금리 결정'),
+    ('2026-09-30', '08:30', 'pce',  'PCE 개인소비지출(8월분)·GDP 확정치(2분기)'),
+    ('2026-10-02', '08:30', 'jobs', '고용보고서(9월분)'),
+    ('2026-10-14', '08:30', 'cpi',  'CPI 소비자물가(9월분)'),
+    ('2026-10-15', '08:30', 'ppi',  'PPI 생산자물가(9월분)'),
+    ('2026-10-28', '14:00', 'fomc', 'FOMC 금리 결정'),
+    ('2026-10-29', '08:30', 'pce',  'PCE 개인소비지출(9월분)·GDP 속보치(3분기)'),
+    ('2026-11-06', '08:30', 'jobs', '고용보고서(10월분)'),
+    ('2026-11-10', '08:30', 'cpi',  'CPI 소비자물가(10월분)'),
+    ('2026-11-13', '08:30', 'ppi',  'PPI 생산자물가(10월분)'),
+    ('2026-11-25', '08:30', 'pce',  'PCE 개인소비지출(10월분)'),
+    ('2026-12-04', '08:30', 'jobs', '고용보고서(11월분)'),
+    ('2026-12-09', '14:00', 'fomc', 'FOMC 금리 결정'),
+    ('2026-12-10', '08:30', 'cpi',  'CPI 소비자물가(11월분)'),
+    ('2026-12-15', '08:30', 'ppi',  'PPI 생산자물가(11월분)'),
+    ('2026-12-23', '08:30', 'pce',  'PCE 개인소비지출(11월분)'),
+]
+
+_KST_TZ = timezone(timedelta(hours=9))
+
+def _econ_events(now_utc=None):
+    """일정표에서 아직 안 지난 이벤트를 (UTC datetime, 종류, 이름)으로. ET→UTC는
+    zoneinfo로 서머타임까지 반영. 표가 소진되면 빈 목록 + 경고."""
+    if ET_TZ is None:
+        return []
+    now = now_utc or datetime.now(timezone.utc)
+    out = []
+    for d, t, key, name in _ECON_CALENDAR:
+        dt = (datetime.strptime(d + ' ' + t, '%Y-%m-%d %H:%M')
+              .replace(tzinfo=ET_TZ).astimezone(timezone.utc))
+        if dt > now:
+            out.append((dt, key, name))
+    if not out:
+        print("::warning::[69항] 경제 일정표 소진 — 2027년 일정을 추가할 것(BLS/BEA/Fed)")
+    return out
+
+def _next_event_hours(key, now_utc=None):
+    """해당 종류의 다음 이벤트까지 남은 시간(시간 단위). 표에 없으면 None."""
+    now = now_utc or datetime.now(timezone.utc)
+    for dt, k, _ in _econ_events(now):
+        if k == key:
+            return (dt - now).total_seconds() / 3600.0
+    return None
+
+# 벨웨더 실적 발표일 — yfinance 캘린더, 실행당 1회 조회. 실패는 조용히 건너뛴다
+# (조회 불가 ≠ 위반). 시각은 안 주므로 '현지 마감 후'(ET 16:30)로 가정해 계산한다.
+_BELLWETHER_TICKERS = {'nvidia': 'NVDA', 'apple': 'AAPL', 'microsoft': 'MSFT',
+                       'google': 'GOOGL', 'amazon': 'AMZN', 'meta': 'META',
+                       'tesla': 'TSLA', 'broadcom': 'AVGO'}
+_EARN_CACHE = {}
+
+def fetch_bellwether_earnings():
+    """{기업 그룹: 다음 실적 발표 UTC datetime}. 캐시됨."""
+    if _EARN_CACHE.get('done'):
+        return _EARN_CACHE.get('map', {})
+    m = {}
+    if ET_TZ is not None:
+        for g, tk in _BELLWETHER_TICKERS.items():
+            try:
+                cal = yf.Ticker(tk).calendar or {}
+                dates = cal.get('Earnings Date') or []
+                if dates:
+                    d0 = dates[0]   # datetime.date
+                    m[g] = (datetime(d0.year, d0.month, d0.day, 16, 30, tzinfo=ET_TZ)
+                            .astimezone(timezone.utc))
+            except Exception:
+                pass
+    _EARN_CACHE['done'] = True
+    _EARN_CACHE['map'] = m
+    return m
+
+_EVT_MENTION = {
+    'cpi':  re.compile(r'(?<![a-z])cpi(?![a-z])|소비자\s*물가'),
+    'ppi':  re.compile(r'(?<![a-z])ppi(?![a-z])|생산자\s*물가'),
+    'pce':  re.compile(r'(?<![a-z])pce(?![a-z])|개인\s*소비\s*지출'),
+    'jobs': re.compile(r'고용\s*보고서|비농업|(?<![a-z])nfp(?![a-z])|고용\s*지표'),
+    'fomc': re.compile(r'(?<![a-z])fomc(?![a-z])|연방공개시장|금리\s*결정'),
+}
+_SCHED_FRAME = re.compile(r'발표|예정|임박|앞두|대기')
+_IMMINENT_CLAIM = re.compile(r'12\s*시간|임박|오늘\s*밤?|내일')
+
+def report_schedule_scrub(rep, now_utc=None):
+    """watch 블릿의 일정 주장 검증. 규칙 —
+    · 예정 이벤트(지표·실적 발표)를 체크포인트로 쓰려면 48시간 이내여야 한다.
+      그보다 멀거나 일정표에 없는 '다음 발표'는 12시간 체크포인트가 아니다.
+    · 12~48시간 뒤 이벤트는 되지만(포지셔닝은 12시간 재료다), '12시간 내·임박'
+      이라고 단정하면 거짓이므로 걷어낸다.
+    걷어낸 (사유, 블릿) 목록을 돌려준다."""
+    now = now_utc or datetime.now(timezone.utc)
+    earns = fetch_bellwether_earnings()
+    dropped, kept = [], []
+    for line in (rep.get('watch') or '').split('\n'):
+        low = line.lower()
+        bad = None
+        if line.strip() and _SCHED_FRAME.search(line):
+            hours = None
+            what = None
+            for key, rx in _EVT_MENTION.items():
+                if rx.search(low):
+                    what, hours = key, _next_event_hours(key, now)
+                    break
+            if what is None and '실적' in line:
+                for g in _rpt_groups_in(low):
+                    if g in earns:
+                        what = f'{g} 실적'
+                        hours = (earns[g] - now).total_seconds() / 3600.0
+                        break
+            # hours가 None이면(일정표 소진·조회 실패) 검증 불가 — 오판으로 지우는 것보다
+            # 통과가 낫다. 확인된 날짜가 있을 때만 집행한다.
+            if what is not None and hours is not None:
+                if hours > 48:
+                    bad = f"'{what}' 다음 일정은 {hours/24:.0f}일 뒤 — 12시간 체크포인트 아님"
+                elif hours > 12 and _IMMINENT_CLAIM.search(line):
+                    bad = f"'{what}'는 {hours:.0f}시간 뒤인데 임박했다고 주장"
+        if bad:
+            dropped.append((bad, line.strip()))
+        else:
+            kept.append(line)
+    rep['watch'] = '\n'.join(kept).strip()
+    return dropped
+
+
 def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap):
     """확정된 카드를 A4 한 장 분량으로 풀어 쓴 보고서. entry['report'] 에 저장."""
     factors = []
@@ -1930,6 +2075,23 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
     news = '\n'.join(f'- {h}' for h in (list(headlines or []) + list(rss_headlines or []))[:24])
     av = '\n'.join(f'- {h}' for h in (av_items or [])[:12])
     fred = '\n'.join(f'- {r}' for r in (fred_rows or []))
+    # 69항 — 향후 7일 내 공식 예정 이벤트를 실제 일정과 함께 준다. 모델이 '다음 발표'를
+    # 임박한 것처럼 지어내는 병의 처방은 진짜 달력을 손에 쥐여 주는 것이다.
+    _now_u = datetime.now(timezone.utc)
+    _ev_lines = []
+    for _dt, _key, _name in _econ_events(_now_u):
+        _h = (_dt - _now_u).total_seconds() / 3600.0
+        if _h <= 24 * 7:
+            _ev_lines.append(f"- {_name}: 한국시간 {_dt.astimezone(_KST_TZ):%m월 %d일 %H:%M}"
+                             f" (약 {_h:.0f}시간 뒤)")
+    for _g, _dt in sorted(fetch_bellwether_earnings().items(), key=lambda x: x[1]):
+        _h = (_dt - _now_u).total_seconds() / 3600.0
+        if 0 < _h <= 24 * 7:
+            _tk = _BELLWETHER_TICKERS.get(_g, _g)
+            _ev_lines.append(f"- {_tk} 실적 발표: 현지 {_dt.astimezone(ET_TZ):%m월 %d일} 장 마감 후"
+                             f" (약 {_h:.0f}시간 뒤)")
+    events = '\n'.join(_ev_lines)
+    now_kst_str = f"{_now_u.astimezone(_KST_TZ):%Y-%m-%d %H:%M} KST"
     prompt = f"""당신은 미국 주식 시황 데스크다. 아래 '확정 카드'는 이미 게시된 판정이다.
 이 카드를 처음 보고 "무슨 말인지 잘 모르겠다" 싶은 독자를 위해, 전후 사정을 풀어 쓴
 심층 보고서를 쓴다. 카드의 판정·점수를 바꾸거나 새 판정을 만들지 마라 — 설명만 한다.
@@ -1947,8 +2109,12 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
 [전문 금융뉴스]
 {av or '- 없음'}
 
-[공식 발표 매크로 수치]
+[공식 발표 매크로 수치 — 대괄호 속 날짜는 '데이터가 가리키는 달'이지 발표일이 아니다]
 {fred or '- 없음'}
+
+[예정 이벤트 — 공식 일정표(BLS·BEA·Fed) 기준. 여기 없는 일정을 지어내지 마라]
+현재 시각: {now_kst_str}
+{events or '- 향후 7일 내 주요 예정 이벤트 없음'}
 
 [쓰는 법 — 전부 필수]
 - 다섯 부분으로 쓴다: overview(현재 판 정리), positive(호재), negative(악재),
@@ -1975,6 +2141,14 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
   예 — 반도체 섹터 강세의 근거로 "NVDA +2.2%, SOXX +1.5%".
 - watch에는 카드 밖이라도 시장 전체를 움직일 예정 이벤트(벨웨더 실적 발표·주요
   지표 발표·연준 일정)는 쓸 수 있다. 단일 기업의 소소한 뉴스는 여기도 금지.
+- **watch는 '앞으로 12시간' 안에 확인 가능한 것만.** 예정 이벤트는 위 [예정 이벤트]에
+  있는 것만, 그 일시를 붙여서 쓴다. 일정표에 없는 '다음 발표'를 임박한 것처럼 쓰는
+  것은 오류다 — 다음 CPI가 몇 주 뒤인데 12시간 체크포인트로 쓰면 안 된다.
+- 12~48시간 뒤 이벤트는 그것을 앞둔 포지셔닝이 12시간 안에 판을 움직일 때만,
+  실제 일시와 함께 쓴다(예: "NVDA 실적(현지 26일 장 마감 후, 약 28시간 뒤) 앞둔
+  포지셔닝"). '12시간 내 예정'이라는 말은 실제로 12시간 안일 때만 쓴다.
+- 12시간 내 예정 이벤트가 없으면, 지금 움직이는 실측 지표(국채금리·유가·달러·VIX·
+  지수 선물)의 추이 확인을 체크포인트로 쓴다.
 - 위 자료에 없는 수치·일정·이벤트를 만들어내지 마라. 모르면 안 쓴다.
 - **출처 기사 제목을 나열하지 마라.** "(뉴스: …)", "(출처: …)" 같은 영문 헤드라인
   인용 금지 — 근거는 내용(기관·수치·이벤트)으로 녹여 쓰는 것이지 제목을 붙이는 게 아니다.
@@ -2010,6 +2184,10 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
     # 못 막는다는 걸 이미 배웠다(51항 이래 반복된 교훈). 감지하고도 게시하지 않는다.
     for _k, _off, _line in report_offcard_scrub(rep, entry):
         print(f"::warning::[68항] 카드 밖 기업 블릿 제거({_k}/{','.join(_off)}): {_line[:70]}")
+    # 69항 — watch의 일정 주장을 공식 일정표와 대조한다. 프롬프트에 달력을 줬어도
+    # 어긴 블릿은 코드가 걷어낸다. 감지하고도 게시하지 않는다.
+    for _why, _line in report_schedule_scrub(rep):
+        print(f"::warning::[69항] 일정 오류 블릿 제거({_why}): {_line[:70]}")
     if not rep.get('positive') or not rep.get('negative'):
         print("::warning::[68항] 걷어내고 나니 호재/악재 한쪽이 비었다 — 보고서 폐기(백필이 재작성)")
         return None
