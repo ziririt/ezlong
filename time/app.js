@@ -9507,6 +9507,41 @@ if (premiumUpgradeButton) {
   var line = document.getElementById("adDiagLine");
   var floating = document.getElementById("adDiagFloat");
   if (!line && !floating) return;
+
+  // 2026-08-26 운영 지침 — 이제 안 나오게. 다만 지우지는 않는다.
+  //
+  // 오늘 이 줄이 세 번 일했다: 광고가 안 나오는 이유가 리워드 시청이었음을
+  // 밝혔고, 눌러도 안 바뀌던 것이 옛 판 때문이었음을 밝혔고, 지금 붙은
+  // 빌드가 무엇인지 보여 줬다. 지워 버리면 다음에 또 만들게 된다.
+  //
+  // 기본은 꺼 둔다. 되살리려면 설정 화면의 버전 라벨(ver.1.9.xx)을
+  // 다섯 번 누른다 — 안드로이드 개발자 옵션과 같은 관습이다.
+  var DIAG_KEY = "ezlong:adDiag";
+  function diagOn() {
+    try { return localStorage.getItem(DIAG_KEY) === "1"; } catch (error) { return false; }
+  }
+  (function wireDiagToggle() {
+    var badge = document.getElementById("settingsVersion");
+    if (!badge) return;
+    var taps = 0;
+    var timer = null;
+    badge.style.cursor = "pointer";
+    badge.addEventListener("click", function () {
+      taps += 1;
+      if (timer) window.clearTimeout(timer);
+      timer = window.setTimeout(function () { taps = 0; }, 1200);
+      if (taps < 5) return;
+      taps = 0;
+      var next = diagOn() ? "0" : "1";
+      try { localStorage.setItem(DIAG_KEY, next); } catch (error) { /* 무시 */ }
+      if (next === "0") {
+        [line, floating].forEach(function (el) { if (el) el.hidden = true; });
+      }
+      badge.textContent = next === "1" ? "진단 켬" : "진단 끔";
+      window.setTimeout(function () { location.reload(); }, 700);
+    });
+  })();
+  if (!diagOn()) return;
   // 웹 버전도 함께 붙인다 — 네이티브만 새것이고 웹이 옛것인(또는 그
   // 반대인) 어긋남이 실제로 있었다. 둘 다 눈에 보여야 판별이 된다.
   function webVer() {
