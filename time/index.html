@@ -422,7 +422,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.86</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.87</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -759,7 +759,11 @@
              네이티브가 없는 환경(브라우저·안드로이드)에서는 app.js가 이
              섹션을 통째로 감춘다(applyWakeAlarmPlatformGating). -->
         <section class="settings-block settings-card" id="wakeAlarmSection" data-i18n-aria="settings.alarm.heading" aria-label="기상 알람" hidden>
-          <h3 class="settings-subtitle" data-i18n="settings.alarm.heading">기상 알람<span class="premium-badge" data-i18n="settings.premium.badge">프리미엄</span></h3>
+          <!-- 배지를 h3 안에 넣되 제목 글자는 따로 span 으로 감싼다.
+               data-i18n 갈래는 textContent 를 통째로 갈아끼우기 때문에,
+               h3 에 직접 걸면 번역이 적용되는 순간 배지가 지워진다.
+               (첫 시도에서 실제로 그렇게 사라졌다.) -->
+          <h3 class="settings-subtitle"><span data-i18n="settings.alarm.heading">기상 알람</span><span class="premium-badge" data-i18n="settings.premium.badge">프리미엄</span></h3>
           <p class="settings-desc settings-desc-muted alarm-premium-hint" data-i18n="settings.alarm.premiumHint">프리미엄 기능입니다. 설치 후 첫 2주는 무료로 써 보실 수 있어요.</p>
           <p class="settings-desc alarm-standby-hint" data-i18n="settings.alarm.standbyHint">Standby의 플립시계를 터치하면 바로 기상 알람 설정이 가능합니다.</p>
 
