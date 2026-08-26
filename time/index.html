@@ -77,7 +77,7 @@
   <meta name="apple-mobile-web-app-title" content="Long Time">
   <meta name="theme-color" content="#0D0D0F">
   <meta name="color-scheme" content="dark">
-  <link rel="stylesheet" href="styles.css?v=20260826-sharegap-v4">
+  <link rel="stylesheet" href="styles.css?v=20260826-addiag-v5">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -422,7 +422,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.88</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.89</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -812,6 +812,11 @@
             <span class="share-rate-desc" data-i18n="settings.privacyOptionsDesc">광고 개인 맞춤 동의를 다시 선택합니다</span>
           </button>
         </section>
+
+        <!-- 2026-08-26 — 개발 빌드에서만 채워지는 광고 진단 한 줄.
+             네이티브가 값을 보내 줄 때만 보인다(릴리스에서는 영영 숨김).
+             번역하지 않는다 — 개발자만 보는 줄이다. -->
+        <p class="ad-diag-line" id="adDiagLine" hidden></p>
 
         <button class="settings-save" type="button" id="settingsSave" data-i18n="settings.quotes.confirm">확인</button>
 
@@ -1261,7 +1266,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260826-premiumperks-v55"></script>
+  <script src="app.js?v=20260826-addiag-v56"></script>
 
   </body>
 </html>

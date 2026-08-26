@@ -9497,6 +9497,28 @@ if (premiumUpgradeButton) {
   });
 }
 
+// 2026-08-26 — 광고 진단 한 줄(개발 빌드 전용).
+//
+// "광고가 안 나오네"를 짐작으로 쫓지 않기 위한 창구다. 광고가 뜨고 안
+// 뜨고를 정하는 값이 여섯 개인데 전부 네이티브 안에 숨어 있다.
+// 설정 화면이 열려 있는 동안만 3초에 한 번 물어본다 — 닫혀 있으면
+// 묻지 않는다(릴리스 빌드는 응답 자체를 안 하므로 줄도 안 생긴다).
+(function initAdDiag() {
+  var line = document.getElementById("adDiagLine");
+  if (!line) return;
+  window.__flipzenAdDiag = function (text) {
+    if (!text) return;
+    line.textContent = text;
+    line.hidden = false;
+  };
+  window.setInterval(function () {
+    try {
+      if (!settingsPanel || !settingsPanel.classList.contains("is-open")) return;
+      postToNativeAd({ action: "adDiag" });
+    } catch (error) { /* 무시 */ }
+  }, 3000);
+})();
+
 // 2026-08-26 운영 지침 — 애플워치는 iOS 전용이다.
 //
 // 안드로이드 설정 화면에도 "애플워치" 안내 섹션이 그대로 떠 있었다.
