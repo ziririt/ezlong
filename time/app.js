@@ -10338,12 +10338,18 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
       // 문장박스 안쪽 여백까지 비워 둘 이유가 없다. **가로는 운영자 확인대로
       // 지금이 딱 맞으니 그대로 두고, 세로만 되찾는다.**
       const gapX = 8; // 가로 — 유리 테두리가 광고 옆으로 보이게(그대로)
-      const gapY = 2; // 세로 — 최대한 문장이 놓이던 높이를 다 쓴다
-      const padY = (padOf("padding-top") + padOf("padding-bottom")) * 0.35;
+      // 2026-08-27 2차(운영자: "광고 문구가 한 줄 늘었는데 두 줄 더 늘려도
+      // 되겠다") — 세로 여백을 마지막 한 톨까지 내놓는다. 문장박스는
+      // 393px 기기에서 122px 이고, 직전까지 광고에 준 자리는 110px 이었다.
+      // 위아래 패딩을 0.35 만큼 남겨 두던 계수를 없애 12px 을 되찾는다.
+      // 광고 카드는 자기 유리 배경(반지름 16)을 갖고 있고 좌우로 8px 씩
+      // 들여져 있어서, 세로 2px 만 남겨도 문장박스의 둥근 모서리 안에
+      // 얌전히 들어앉는다(8 + 16 ≈ 문장박스 반지름).
+      const gapY = 2; // 세로 — 문장이 놓이던 높이를 전부 쓴다
       const innerX = r.left + padOf("padding-left") + gapX;
-      const innerY = r.top + padOf("padding-top") * 0.35 + gapY;
+      const innerY = r.top + gapY;
       const innerW = Math.max(160, r.width - padOf("padding-left") - padOf("padding-right") - gapX * 2);
-      const innerH = Math.max(50, r.height - padY - gapY * 2);
+      const innerH = Math.max(50, r.height - gapY * 2);
       // 2026-08-26 운영 지침 — "문장박스 대신에 나오는 것이니 문장박스
       // height 만큼 해도 되는데, 지금 오히려 너무 작아서 광고 효과가 별로."
       //
