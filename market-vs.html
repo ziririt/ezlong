@@ -548,6 +548,40 @@
   .mv-mixed-title { color: #FFD60A; }
 }
 
+/* ── 갱신 보류 알림 (75항, 2026-08-26) ──
+   자체 검증을 통과 못 한 회차는 카드를 내지 않는다. 그때 화면이 말없이 멈춰 있으면
+   독자는 고장으로 오해한다. 멈춘 이유를 직전 카드 위에 적어 둔다. */
+.mv-hold {
+  margin: 14px 0 2px;
+  padding: 14px 16px;
+  border: 1px solid var(--ez-amber);
+  border-left-width: 4px;
+  border-radius: var(--ez-r);
+  background: rgba(255,159,10,0.08);
+}
+.mv-hold-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ez-text);
+  letter-spacing: -0.01em;
+}
+.mv-hold-when {
+  font-weight: 500;
+  color: var(--ez-text3);
+}
+.mv-hold-body {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ez-text2);
+}
+.mv-hold-tail {
+  margin-top: 5px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ez-text3);
+}
+
 /* ── 로딩/에러 상태 ── */
 .mv-loading, .mv-error {
   text-align: center;
@@ -613,6 +647,8 @@
 
   <div class="mv-updated-bar" id="mv-updated-at">데이터 로딩 중...</div>
 
+  <div class="mv-hold" id="mv-hold" hidden></div>
+
   <div class="mv-stack" id="mv-stack">
     <div class="mv-loading">분석 데이터 불러오는 중...</div>
   </div>
@@ -671,6 +707,8 @@ function renderStack(data) {
     updatedEl.textContent = '최종 업데이트: ' + mm + '/' + dd + ' ' + hh + ':' + mi + ' KST · 총 ' + entries.length + '개';
   }
 
+  renderHold(data.hold);
+
   var stack = document.getElementById('mv-stack');
 
   if (!entries.length) {
@@ -690,6 +728,35 @@ function renderStack(data) {
     }
   }
   stack.innerHTML = html;
+}
+
+// 갱신 보류 알림 (75항) — 가드레일이 이번 회차 게시를 포기했을 때만 뜬다.
+// 파이프라인이 통째로 죽어 보류 표시만 남는 경우를 대비해 24시간 지난 기록은 숨긴다.
+function renderHold(hold) {
+  var el = document.getElementById('mv-hold');
+  if (!el) return;
+  el.hidden = true;
+  el.innerHTML = '';
+  if (!hold || !hold.reason) return;
+
+  if (hold.at_utc) {
+    var ageH = (Date.now() - new Date(hold.at_utc).getTime()) / 3600000;
+    if (!(ageH >= 0) || ageH > 24) return;
+  }
+
+  // '2026-08-26(수) 23:20 KST' → '08-26(수) 23:20' — 상단 업데이트 바와 눈높이를 맞춘다
+  var when = String(hold.at || '').replace(/^\d{4}-/, '').replace(' KST', '');
+  var n = parseInt(hold.count, 10);
+  var streak = (n > 1) ? ' · ' + n + '회 연속' : '';
+
+  el.innerHTML =
+    '<div class="mv-hold-title">갱신 보류' +
+      (when ? ' <span class="mv-hold-when">· ' + escHtml(when) + streak + '</span>' : '') +
+    '</div>' +
+    '<div class="mv-hold-body">' + escHtml(hold.reason) + '</div>' +
+    '<div class="mv-hold-tail">근거가 서지 않는 판정을 억지로 내는 대신 이번 회차를 걸렀습니다. ' +
+      '아래는 직전 회차 카드입니다.</div>';
+  el.hidden = false;
 }
 
 function renderEntry(e, isLatest) {

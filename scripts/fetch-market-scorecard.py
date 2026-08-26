@@ -1171,6 +1171,51 @@ def save_data(data):
     print(f"저장 완료: {OUTPUT_PATH}")
 
 
+# ─── 갱신 보류 표시 (75항, 2026-08-26) ───────────────────────────────────────
+# 52·72항 가드레일이 이번 회차 게시를 포기하면 화면에는 직전 카드가 그대로 남는다.
+# 그러면 독자는 "왜 몇 시간째 그대로냐"를 알 길이 없다. 침묵 대신 이유를 남긴다.
+#
+# updated_at은 일부러 건드리지 않는다. 감시견(scripts/watchdog.js)이 8시간 공백을
+# 보고 워크플로를 재트리거하는 자가 치유 경로를 살려두어야 하기 때문이다.
+# 보류 기록은 다음 회차가 성공하면 지워진다(main 6단계).
+
+HOLD_REASONS = {
+    'direction': (
+        '한쪽 편의 근거가 실측 지표와 어긋나 자체 검증을 통과하지 못했습니다.',
+        "One side's evidence contradicted the measured market data, so it failed our own checks.",
+    ),
+    'event_wait': (
+        "한쪽 편이 '결과를 기다리는 중'인 재료뿐이라, 점수를 매길 근거가 없었습니다.",
+        'One side consisted only of "awaiting the result" items, which carry no verdict.',
+    ),
+}
+HOLD_FALLBACK = ('이번 회차 판정이 자체 검증을 통과하지 못했습니다.',
+                 'This round did not pass our own verification.')
+
+
+def record_hold(data, kst_now, kind):
+    """게시 포기 사유를 데이터에 남긴다 — 틀린 카드 대신 '왜 멈췄는지'를 보여주기 위해."""
+    ko, en = HOLD_REASONS.get(kind, HOLD_FALLBACK)
+    prev = data.get('hold') or {}
+    try:
+        count = int(prev.get('count') or 0) + 1
+    except (TypeError, ValueError):
+        count = 1
+    data['hold'] = {
+        'at':        kst_label(kst_now),
+        'at_utc':    datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+        'kind':      kind,
+        'count':     count,
+        'reason':    ko,
+        'reason_en': en,
+    }
+    try:
+        save_data(data)
+        print(f"  갱신 보류 기록: {kind} ({count}회 연속) — 직전 카드 유지")
+    except Exception as e:
+        print(f"::warning::[75항] 보류 기록 실패(무시): {type(e).__name__}: {e}")
+
+
 def _with_clean_category(factors):
     """각 요인 dict에 category를 고정 목록 값으로 정제해서 채워넣는다 (2026-07-28).
     Gemini가 category를 빠뜨리거나 목록 밖 값을 내도 크래시 없이 'other'로 강등."""
@@ -3574,6 +3619,7 @@ def main():
             # 한쪽 편이 통째로 비는 판정은 코드가 정직하게 만들 수 없다.
             # 틀린 카드를 내보내느니 이번 사이클을 거른다 — 직전 카드가 그대로 남는다.
             print("::warning::[52항] 위반 재료가 한쪽 편의 전부 — 이번 사이클 게시 포기")
+            record_hold(data, kst_now, 'direction')   # 75항: 화면에 '갱신 보류'로 알린다
             print("=== 중단 (카드 미생성) ===")
             sys.exit(0)
         # 재료 하나를 걷어낸 것만으로 총점이 크게 움직일 수 있다(부정 40→85 등).
@@ -3611,6 +3657,7 @@ def main():
         # 한쪽 편이 통째로 '기다림'뿐이었다. 그 편에는 판정을 지탱할 근거가 없다.
         # 틀린 카드를 내보내느니 이번 사이클을 거른다 — 직전 카드가 그대로 남는다(52항).
         print("::warning::[72항] 한쪽 편이 대기 재료뿐 — 이번 사이클 게시 포기")
+        record_hold(data, kst_now, 'event_wait')      # 75항: 화면에 '갱신 보류'로 알린다
         print("=== 중단 (카드 미생성) ===")
         sys.exit(0)
 
@@ -3661,6 +3708,10 @@ def main():
     data["entries"]    = entries
     data["updated_at"] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     data["max_entries"] = MAX_ENTRIES
+
+    # 75항 — 새 카드가 나왔으므로 직전 보류 표시는 걷어낸다.
+    if data.pop('hold', None):
+        print("  갱신 보류 해제 — 새 카드 게시")
 
     # 6. 저장
     save_data(data)

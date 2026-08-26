@@ -243,6 +243,12 @@
     .mv-mixed-name { font-size: 15px; font-weight: 700; color: var(--ez-text); line-height: 1.3; }
     .mv-mixed-desc { font-size: 14px; font-weight: 500; color: var(--ez-text2); line-height: 1.35; margin-top: 1px; }
     @media (prefers-color-scheme: dark) { .mv-mixed-title { color: #FFD60A; } }
+    /* Update-hold notice (2026-08-26) — shown when our own checks withheld a round. */
+    .mv-hold { margin: 14px 0 2px; padding: 14px 16px; border: 1px solid var(--ez-amber); border-left-width: 4px; border-radius: var(--ez-r); background: rgba(255,159,10,0.08); }
+    .mv-hold-title { font-size: 15px; font-weight: 700; color: var(--ez-text); letter-spacing: -0.01em; }
+    .mv-hold-when { font-weight: 500; color: var(--ez-text3); }
+    .mv-hold-body { margin-top: 6px; font-size: 15px; line-height: 1.55; color: var(--ez-text2); }
+    .mv-hold-tail { margin-top: 5px; font-size: 14px; line-height: 1.5; color: var(--ez-text3); }
     .mv-loading, .mv-error, .mv-empty { text-align: center; padding: 50px 20px; color: var(--ez-text3); font-size: 15px; line-height: 1.6; }
     .mv-footer-note { text-align: center; font-size: 14px; color: var(--ez-text3); padding: 16px 20px 0; line-height: 1.6; }
     @media (prefers-color-scheme: light) {
@@ -292,6 +298,7 @@
   <!-- ── Live scorecard widget ── -->
   <div class="mv-page" id="live-scorecard">
     <div class="mv-updated-bar" id="mv-updated-at">Loading data...</div>
+    <div class="mv-hold" id="mv-hold" hidden></div>
     <div class="mv-stack" id="mv-stack">
       <div class="mv-loading">Loading the latest analysis...</div>
     </div>
@@ -442,6 +449,8 @@ function renderStack(data) {
     updatedEl.textContent = 'Last updated: ' + mm + '/' + dd + ' ' + hh + ':' + mi + ' KST (Seoul time) · ' + entries.length + ' entries';
   }
 
+  renderHold(data.hold);
+
   var stack = document.getElementById('mv-stack');
 
   if (!entries.length) {
@@ -461,6 +470,45 @@ function renderStack(data) {
     }
   }
   stack.innerHTML = html;
+}
+
+// Update-hold notice — only when a guardrail withheld this round.
+// Hidden after 24h so a dead pipeline never leaves a stale notice behind.
+function renderHold(hold) {
+  var el = document.getElementById('mv-hold');
+  if (!el) return;
+  el.hidden = true;
+  el.innerHTML = '';
+  if (!hold) return;
+
+  var reason = hold.reason_en || hold.reason;
+  if (!reason) return;
+
+  if (hold.at_utc) {
+    var ageH = (Date.now() - new Date(hold.at_utc).getTime()) / 3600000;
+    if (!(ageH >= 0) || ageH > 24) return;
+  }
+
+  // The stored label is Korean ("2026-08-26(수) 23:20 KST"), so rebuild it in English from UTC.
+  var when = '';
+  if (hold.at_utc) {
+    var k = new Date(new Date(hold.at_utc).getTime() + 9 * 3600 * 1000);
+    var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    when = MON[k.getUTCMonth()] + ' ' + k.getUTCDate() + ', ' +
+           String(k.getUTCHours()).padStart(2, '0') + ':' +
+           String(k.getUTCMinutes()).padStart(2, '0') + ' KST';
+  }
+  var n = parseInt(hold.count, 10);
+  var streak = (n > 1) ? ' \u00b7 ' + n + ' rounds in a row' : '';
+
+  el.innerHTML =
+    '<div class="mv-hold-title">Update on hold' +
+      (when ? ' <span class="mv-hold-when">\u00b7 ' + escHtml(when) + streak + '</span>' : '') +
+    '</div>' +
+    '<div class="mv-hold-body">' + escHtml(reason) + '</div>' +
+    '<div class="mv-hold-tail">Rather than force out a verdict its evidence cannot support, ' +
+      'we skipped this round. The card below is the previous one.</div>';
+  el.hidden = false;
 }
 
 function renderEntry(e, isLatest) {
