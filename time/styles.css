@@ -6473,6 +6473,22 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
    이 줄은 동의가 필요한 지역(유럽·영국·스위스)에서 네이티브가 켜 줄
    때만 보여야 한다 — 한국에서는 눌러도 띄울 폼 자체가 없다. */
 .share-rate-row[hidden] { display: none; }
+
+/* 2026-08-26 운영 지침 — 프리미엄이 무엇을 주는지 한 줄 요약으로는
+   읽히지 않는다. 항목을 하나씩 세우되, 기상 알람만 조금 앞으로 낸다. */
+.premium-perks { margin: 10px 0 2px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.premium-perk { display: flex; flex-direction: column; gap: 2px; padding: 11px 13px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10); }
+.premium-perk-lead { background: rgba(90,180,255,0.10); border-color: rgba(90,180,255,0.30); }
+.premium-perk-title { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.94); }
+.premium-perk-lead .premium-perk-title { color: #7fc4ff; }
+.premium-perk-desc { font-size: 12.5px; line-height: 1.5; color: rgba(255,255,255,0.62); }
+.premium-perk[hidden] { display: none; }
+.premium-trial-note { margin-top: 10px; }
+
+/* 제목 옆 작은 배지 — 이 기능이 프리미엄이라는 것을 켜자마자 알 수 있게. */
+.premium-badge { margin-left: 7px; padding: 2px 7px; border-radius: 999px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.01em; color: #0d1520; background: linear-gradient(180deg, #8fd0ff, #4aa8f0); vertical-align: middle; }
+.alarm-premium-hint { margin-top: 2px; }
+.settings-block[hidden] { display: none; }
 .share-rate-title { font-size: 15px; font-weight: 700; }
 .share-rate-desc { font-size: 12.5px; opacity: 0.65; }
 .share-toast { position: fixed; left: 50%; bottom: 60px; transform: translateX(-50%) translateY(12px); padding: 11px 18px; border-radius: 12px; background: rgba(20,28,46,0.95); color: rgba(255,255,255,0.92); font-size: 13.5px; opacity: 0; pointer-events: none; transition: opacity 240ms ease, transform 240ms ease; z-index: 9600; }

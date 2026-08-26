@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-26T02:42:08.473Z
+ * 생성 시각: 2026-08-26T05:05:03.843Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -23,7 +23,17 @@
       "premium": {
         "heading": "Premium",
         "desc": "Remove ads and unlock premium features like the wake alarm and video backgrounds.",
-        "cta": "Upgrade to Premium"
+        "cta": "Upgrade to Premium",
+        "badge": "Premium",
+        "perkAlarm": "Wake-up alarm",
+        "perkAlarmDesc": "Your music starts at a whisper and rises through five steps. You drift awake instead of jolting awake.",
+        "perkNoAds": "No ads",
+        "perkNoAdsDesc": "Nothing covers the screen — just the clock and the words.",
+        "perkVideo": "Video backgrounds",
+        "perkVideoDesc": "Moving scenery instead of a still photo changes the air in the room.",
+        "perkWatch": "Apple Watch app",
+        "perkWatchDesc": "The same flip clock and the same words, on your wrist.",
+        "trialNote": "Everything is free for your first two weeks."
       },
       "background": {
         "heading": "Background Photos",
@@ -209,7 +219,8 @@
         "logRock2": "Still dreaming… one more rock song, louder",
         "logRock3": "Last try — one big shake to wake you",
         "logStopped": "Alarm off — good morning, you made it",
-        "logGaveUp": "Stopping here — you're probably already up, or the phone is in a bag"
+        "logGaveUp": "Stopping here — you're probably already up, or the phone is in a bag",
+        "premiumHint": "A Premium feature. Free for your first two weeks after install."
       },
       "watch": {
         "heading": "Apple Watch",
@@ -532,7 +543,17 @@
       "premium": {
         "heading": "Premium",
         "desc": "Elimina los anuncios y desbloquea funciones premium como la alarma para despertar y los fondos de vídeo.",
-        "cta": "Pasar a Premium"
+        "cta": "Pasar a Premium",
+        "badge": "Premium",
+        "perkAlarm": "Alarma de despertador",
+        "perkAlarmDesc": "Tu música empieza como un susurro y sube en cinco pasos. Despiertas flotando, no de un sobresalto.",
+        "perkNoAds": "Sin anuncios",
+        "perkNoAdsDesc": "Nada tapa la pantalla: solo el reloj y las palabras.",
+        "perkVideo": "Fondos en vídeo",
+        "perkVideoDesc": "Un paisaje en movimiento en lugar de una foto fija cambia el aire de la habitación.",
+        "perkWatch": "App para Apple Watch",
+        "perkWatchDesc": "El mismo reloj flip y las mismas palabras, en tu muñeca.",
+        "trialNote": "Las dos primeras semanas tras la instalación son gratis."
       },
       "background": {
         "heading": "Fotos de fondo",
@@ -718,7 +739,8 @@
         "logRock2": "Aún soñando… otra de rock, más fuerte",
         "logRock3": "Último intento: una sacudida grande",
         "logStopped": "Alarma apagada — buenos días, lo lograste",
-        "logGaveUp": "Paramos aquí — quizá ya estés en pie, o el móvil esté en un bolso"
+        "logGaveUp": "Paramos aquí — quizá ya estés en pie, o el móvil esté en un bolso",
+        "premiumHint": "Función Premium. Gratis durante las dos primeras semanas tras la instalación."
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1041,7 +1063,17 @@
       "premium": {
         "heading": "プレミアム",
         "desc": "広告を非表示にし、起床アラームや動画背景などのプレミアム機能をご利用いただけます。",
-        "cta": "プレミアムにアップグレード"
+        "cta": "プレミアムにアップグレード",
+        "badge": "プレミアム",
+        "perkAlarm": "起床アラーム",
+        "perkAlarmDesc": "好きな音楽がささやくような音から始まり、五段階でゆっくり大きくなります。驚いて飛び起きる朝ではなく、自然に浮かび上がる朝へ。",
+        "perkNoAds": "広告なし",
+        "perkNoAdsDesc": "画面を覆うものがなくなり、時計と言葉だけが残ります。",
+        "perkVideo": "動画の背景",
+        "perkVideoDesc": "止まった写真ではなく、動く風景が部屋の空気を変えます。",
+        "perkWatch": "Apple Watch アプリ",
+        "perkWatchDesc": "手首でも同じフリップ時計と同じ言葉を。",
+        "trialNote": "インストールから最初の2週間はすべて無料でお試しいただけます。"
       },
       "background": {
         "heading": "背景写真",
@@ -1227,7 +1259,8 @@
         "logRock2": "まだ夢の中…ロックをもう一曲、強めに",
         "logRock3": "最後です。大きく一度、揺り起こします",
         "logStopped": "アラーム解除 — よく起きられました",
-        "logGaveUp": "ここで止めます — 眠っているのではなく、別のことをしているか、かばんの中かもしれません"
+        "logGaveUp": "ここで止めます — 眠っているのではなく、別のことをしているか、かばんの中かもしれません",
+        "premiumHint": "プレミアム機能です。インストールから最初の2週間は無料でお使いいただけます。"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1550,7 +1583,17 @@
       "premium": {
         "heading": "프리미엄",
         "desc": "광고 제거, 기상 알람, 동영상 배경 등 프리미엄 전용 기능을 이용하세요.",
-        "cta": "프리미엄으로 업그레이드"
+        "cta": "프리미엄으로 업그레이드",
+        "badge": "프리미엄",
+        "perkAlarm": "기상 알람",
+        "perkAlarmDesc": "좋아하는 음악이 속삭이듯 시작해 다섯 단계로 서서히 커집니다. 놀라서 깨는 아침이 아니라, 스며들듯 깨는 아침.",
+        "perkNoAds": "광고 없이",
+        "perkNoAdsDesc": "화면을 가리는 것 없이 시계와 문장만 남습니다.",
+        "perkVideo": "동영상 배경",
+        "perkVideoDesc": "멈춰 있는 사진 대신 움직이는 풍경이 방의 공기를 바꿉니다.",
+        "perkWatch": "애플워치 앱",
+        "perkWatchDesc": "손목에서도 같은 플립시계와 같은 문장을 봅니다.",
+        "trialNote": "설치 후 첫 2주는 모두 무료로 써 보실 수 있습니다."
       },
       "background": {
         "heading": "배경 사진",
@@ -1736,7 +1779,8 @@
         "logRock2": "아직도 꿈나라… 록 한 곡 더 세게 갑니다",
         "logRock3": "마지막이에요, 크게 한 번 더 흔들어 깨웁니다",
         "logStopped": "알람 해제됨 — 잘 일어났어요, 수고했어요",
-        "logGaveUp": "여기서 멈춥니다 — 자는 게 아니라 다른 일 중이거나 가방 속인가 봐요"
+        "logGaveUp": "여기서 멈춥니다 — 자는 게 아니라 다른 일 중이거나 가방 속인가 봐요",
+        "premiumHint": "프리미엄 기능입니다. 설치 후 첫 2주는 무료로 써 보실 수 있어요."
       },
       "watch": {
         "heading": "애플워치",
@@ -2059,7 +2103,17 @@
       "premium": {
         "heading": "Premium",
         "desc": "Remova os anúncios e desbloqueie recursos premium como o alarme para acordar e os fundos de vídeo.",
-        "cta": "Assinar o Premium"
+        "cta": "Assinar o Premium",
+        "badge": "Premium",
+        "perkAlarm": "Alarme de despertar",
+        "perkAlarmDesc": "A sua música começa como um sussurro e cresce em cinco passos. Acorda a flutuar, não num susto.",
+        "perkNoAds": "Sem anúncios",
+        "perkNoAdsDesc": "Nada tapa o ecrã: ficam apenas o relógio e as palavras.",
+        "perkVideo": "Fundos em vídeo",
+        "perkVideoDesc": "Uma paisagem em movimento em vez de uma foto parada muda o ar do quarto.",
+        "perkWatch": "App para Apple Watch",
+        "perkWatchDesc": "O mesmo relógio flip e as mesmas palavras, no seu pulso.",
+        "trialNote": "As duas primeiras semanas após a instalação são gratuitas."
       },
       "background": {
         "heading": "Fotos de fundo",
@@ -2245,7 +2299,8 @@
         "logRock2": "Ainda a sonhar… mais uma de rock, mais forte",
         "logRock3": "Última tentativa: um abanão para acordar",
         "logStopped": "Alarme desligado — bom dia, conseguiu",
-        "logGaveUp": "Paramos por aqui — talvez já esteja de pé, ou o telemóvel esteja numa mala"
+        "logGaveUp": "Paramos por aqui — talvez já esteja de pé, ou o telemóvel esteja numa mala",
+        "premiumHint": "Funcionalidade Premium. Gratuita durante as duas primeiras semanas após a instalação."
       },
       "watch": {
         "heading": "Apple Watch",
@@ -2568,7 +2623,17 @@
       "premium": {
         "heading": "高级版",
         "desc": "去除广告，解锁起床闹钟、视频背景等高级功能。",
-        "cta": "升级到高级版"
+        "cta": "升级到高级版",
+        "badge": "高级版",
+        "perkAlarm": "起床闹钟",
+        "perkAlarmDesc": "喜欢的音乐从耳语般的音量开始，分五个阶段缓缓变大。不是被吓醒的早晨，而是自然浮起的早晨。",
+        "perkNoAds": "没有广告",
+        "perkNoAdsDesc": "没有东西遮挡屏幕，只留下时钟和文字。",
+        "perkVideo": "视频背景",
+        "perkVideoDesc": "流动的风景取代静止的照片，改变房间里的空气。",
+        "perkWatch": "Apple Watch 应用",
+        "perkWatchDesc": "在手腕上也能看到同样的翻页时钟和同样的文字。",
+        "trialNote": "安装后的前两周，全部功能免费试用。"
       },
       "background": {
         "heading": "背景照片",
@@ -2754,7 +2819,8 @@
         "logRock2": "还在梦里…再来一首摇滚，更响一些",
         "logRock3": "最后一次，用力叫醒你",
         "logStopped": "闹钟已关 — 早安，起来啦",
-        "logGaveUp": "到此为止 — 也许你已经起来了，或者手机在包里"
+        "logGaveUp": "到此为止 — 也许你已经起来了，或者手机在包里",
+        "premiumHint": "这是高级版功能。安装后的前两周可以免费使用。"
       },
       "watch": {
         "heading": "Apple Watch",

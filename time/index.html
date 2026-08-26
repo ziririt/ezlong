@@ -77,7 +77,7 @@
   <meta name="apple-mobile-web-app-title" content="Long Time">
   <meta name="theme-color" content="#0D0D0F">
   <meta name="color-scheme" content="dark">
-  <link rel="stylesheet" href="styles.css?v=20260826-jazhwrap-v2">
+  <link rel="stylesheet" href="styles.css?v=20260826-premiumperks-v3">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -422,7 +422,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.85</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.86</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -438,7 +438,30 @@
              동작하지 않는다(그 환경엔 애초에 광고 자체가 없다). -->
         <section class="settings-block settings-card" data-i18n-aria="settings.premium.heading" aria-label="프리미엄">
           <h3 class="settings-subtitle" data-i18n="settings.premium.heading">프리미엄</h3>
-          <p class="settings-desc settings-desc-muted" data-i18n="settings.premium.desc">광고 제거, 기상 알람, 동영상 배경 등 프리미엄 전용 기능을 이용하세요.</p>
+          <!-- 2026-08-26 운영 지침 — 여기 애플워치 이야기만 있고 정작 주력인
+               기상 알람 홍보가 없었다. "광고 제거, 기상 알람, 동영상 배경 등"
+               한 줄로는 무엇을 얻는지 읽히지 않는다. 무엇을 주는지 하나씩,
+               기상 알람을 맨 앞에. -->
+          <ul class="premium-perks">
+            <li class="premium-perk premium-perk-lead">
+              <span class="premium-perk-title" data-i18n="settings.premium.perkAlarm">기상 알람</span>
+              <span class="premium-perk-desc" data-i18n="settings.premium.perkAlarmDesc">좋아하는 음악이 속삭이듯 시작해 다섯 단계로 서서히 커집니다. 놀라서 깨는 아침이 아니라, 스며들듯 깨는 아침.</span>
+            </li>
+            <li class="premium-perk">
+              <span class="premium-perk-title" data-i18n="settings.premium.perkNoAds">광고 없이</span>
+              <span class="premium-perk-desc" data-i18n="settings.premium.perkNoAdsDesc">화면을 가리는 것 없이 시계와 문장만 남습니다.</span>
+            </li>
+            <li class="premium-perk">
+              <span class="premium-perk-title" data-i18n="settings.premium.perkVideo">동영상 배경</span>
+              <span class="premium-perk-desc" data-i18n="settings.premium.perkVideoDesc">멈춰 있는 사진 대신 움직이는 풍경이 방의 공기를 바꿉니다.</span>
+            </li>
+            <!-- 애플워치는 iOS 전용이다. 안드로이드에서는 app.js가 이 줄을 숨긴다. -->
+            <li class="premium-perk" id="premiumPerkWatch">
+              <span class="premium-perk-title" data-i18n="settings.premium.perkWatch">애플워치 앱</span>
+              <span class="premium-perk-desc" data-i18n="settings.premium.perkWatchDesc">손목에서도 같은 플립시계와 같은 문장을 봅니다.</span>
+            </li>
+          </ul>
+          <p class="settings-desc settings-desc-muted premium-trial-note" data-i18n="settings.premium.trialNote">설치 후 첫 2주는 모두 무료로 써 보실 수 있습니다.</p>
           <button type="button" class="premium-upgrade-button" id="premiumUpgradeButton" data-i18n="settings.premium.cta">프리미엄으로 업그레이드</button>
         </section>
 
@@ -736,7 +759,8 @@
              네이티브가 없는 환경(브라우저·안드로이드)에서는 app.js가 이
              섹션을 통째로 감춘다(applyWakeAlarmPlatformGating). -->
         <section class="settings-block settings-card" id="wakeAlarmSection" data-i18n-aria="settings.alarm.heading" aria-label="기상 알람" hidden>
-          <h3 class="settings-subtitle" data-i18n="settings.alarm.heading">기상 알람</h3>
+          <h3 class="settings-subtitle" data-i18n="settings.alarm.heading">기상 알람<span class="premium-badge" data-i18n="settings.premium.badge">프리미엄</span></h3>
+          <p class="settings-desc settings-desc-muted alarm-premium-hint" data-i18n="settings.alarm.premiumHint">프리미엄 기능입니다. 설치 후 첫 2주는 무료로 써 보실 수 있어요.</p>
           <p class="settings-desc alarm-standby-hint" data-i18n="settings.alarm.standbyHint">Standby의 플립시계를 터치하면 바로 기상 알람 설정이 가능합니다.</p>
 
           <div class="alarm-home-summary" id="alarmHomeSummary" hidden>
@@ -755,7 +779,7 @@
              기본값 때문에 앱이 금방 기본 페이스로 돌아가는 것을 이용자가
              설정 두 번으로 해결할 수 있게 안내한다(앱이 코드로 바꿀 수 없는
              OS 사용자 설정 — 모든 워치 시계 앱의 공통 대응 패턴). -->
-        <section class="settings-block settings-card" data-i18n-aria="settings.watch.heading" aria-label="애플워치">
+        <section class="settings-block settings-card" id="watchSettingsSection" data-i18n-aria="settings.watch.heading" aria-label="애플워치">
           <h3 class="settings-subtitle" data-i18n="settings.watch.heading">애플워치</h3>
           <!-- 2026-08-01 운영 지침 — 결제 화면에서 쓴 워치 목업(울트라+
                일반 워치 합성, iOS WatchAppPreview 에셋과 동일 원본)을 웹용
@@ -1233,7 +1257,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260826-geosettled-v54"></script>
+  <script src="app.js?v=20260826-premiumperks-v55"></script>
 
   </body>
 </html>

@@ -9496,6 +9496,19 @@ if (premiumUpgradeButton) {
     postToNativeAd({ action: "openPaywall" });
   });
 }
+
+// 2026-08-26 운영 지침 — 애플워치는 iOS 전용이다.
+//
+// 안드로이드 설정 화면에도 "애플워치" 안내 섹션이 그대로 떠 있었다.
+// 살 수도 쓸 수도 없는 기능을 권하는 화면은 안내가 아니라 소음이다.
+// 프리미엄 혜택 목록의 워치 줄도 같이 감춘다.
+(function hideWatchOnAndroid() {
+  if (nativePlatformKey !== "android") return;
+  ["watchSettingsSection", "premiumPerkWatch"].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.hidden = true;
+  });
+})();
 if (weatherChipOpen) weatherChipOpen.addEventListener("click", () => {
   postToNativeHaptic("light");
   openWeatherDetail();
@@ -10241,9 +10254,14 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
       const innerY = r.top + padOf("padding-top") + gap;
       const innerW = Math.max(160, r.width - padOf("padding-left") - padOf("padding-right") - gap * 2);
       const innerH = Math.max(50, r.height - padOf("padding-top") - padOf("padding-bottom") - gap * 2);
-      // 2026-08-04 운영 요청 — 네이티브 광고 카드가 좋다, 높이는 2배로.
-      // 썸네일·제목·설명이 여유롭게 놓이는 크기(문장박스 안쪽의 8할까지).
-      const bannerH = Math.max(96, Math.min(144, Math.round(innerH * 0.8)));
+      // 2026-08-26 운영 지침 — "문장박스 대신에 나오는 것이니 문장박스
+      // height 만큼 해도 되는데, 지금 오히려 너무 작아서 광고 효과가 별로."
+      //
+      // 맞는 말이다. 이 광고는 문장박스를 덮는 것이 아니라 문장박스 자리에
+      // 대신 서는 것이다. 그러면 그 자리를 다 쓰는 게 옳다. 8할로 줄이고
+      // 144px 로 한 번 더 자르던 상한을 걷어낸다 — 문장이 놓이던 만큼.
+      // (폭은 운영자 확인대로 이미 맞다. 세로만 손댄다.)
+      const bannerH = Math.max(96, Math.round(innerH));
       const payload = {
         action: "adLayout",
         x: Math.round(innerX),
