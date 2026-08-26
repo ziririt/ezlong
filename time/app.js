@@ -9505,17 +9505,20 @@ if (premiumUpgradeButton) {
 // 묻지 않는다(릴리스 빌드는 응답 자체를 안 하므로 줄도 안 생긴다).
 (function initAdDiag() {
   var line = document.getElementById("adDiagLine");
-  if (!line) return;
+  var floating = document.getElementById("adDiagFloat");
+  if (!line && !floating) return;
   window.__flipzenAdDiag = function (text) {
     if (!text) return;
-    line.textContent = text;
-    line.hidden = false;
+    [line, floating].forEach(function (el) {
+      if (!el) return;
+      el.textContent = text;
+      el.hidden = false;
+    });
   };
+  // 설정이 열려 있든 닫혀 있든 계속 묻는다. 광고는 설정이 닫혀 있을 때만
+  // 뜨므로, 진단도 그때 보여야 쓸모가 있다.
   window.setInterval(function () {
-    try {
-      if (!settingsPanel || !settingsPanel.classList.contains("is-open")) return;
-      postToNativeAd({ action: "adDiag" });
-    } catch (error) { /* 무시 */ }
+    try { postToNativeAd({ action: "adDiag" }); } catch (error) { /* 무시 */ }
   }, 3000);
 })();
 

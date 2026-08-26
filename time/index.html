@@ -77,7 +77,7 @@
   <meta name="apple-mobile-web-app-title" content="Long Time">
   <meta name="theme-color" content="#0D0D0F">
   <meta name="color-scheme" content="dark">
-  <link rel="stylesheet" href="styles.css?v=20260826-addiag-v5">
+  <link rel="stylesheet" href="styles.css?v=20260826-addiag-v6">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -422,7 +422,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.89</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.90</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -1199,6 +1199,11 @@
       <button type="button" class="bedtime-bar-exit" id="bedtimeExit" data-i18n="settings.alarm.bedtimeExit">해제</button>
     </div>
 
+  <!-- 2026-08-26 — 광고 진단 줄(개발 빌드 전용, 메인 화면판).
+       설정 안에만 두면 볼 수가 없다: 설정을 여는 순간 광고가 숨기 때문에
+       (adLayout 의 calendarOpen) 광고와 진단을 동시에 못 본다. -->
+  <p class="ad-diag-line ad-diag-floating" id="adDiagFloat" hidden></p>
+
   <script src="investment-quotes.js"></script>
   <script src="sleep-quotes.js?v=20260823-sleep-v2"></script>
   <script src="aladin-links.js?v=20260720-aladinpartner-v1"></script>
@@ -1266,7 +1271,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260826-addiag-v56"></script>
+  <script src="app.js?v=20260826-addiag-v57"></script>
 
   </body>
 </html>
