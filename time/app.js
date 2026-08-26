@@ -2322,11 +2322,29 @@ function requestCurrentWeather() {
         if (activeScene) setScene(activeScene, { syncDots: true, force: true });
         resolve();
     };
-    navigator.geolocation.getCurrentPosition(onCoords, onGeoError, {
-      enableHighAccuracy: false,
-      timeout: 9000,
-      maximumAge: 10 * 60 * 1000
-    });
+    // 2026-08-26 — 위치 권한 팝업이 정리되면 네이티브에 알린다.
+    //
+    // 유럽 사용자의 첫 실행에서 GDPR 동의 폼과 이 위치 권한 팝업이 한꺼번에
+    // 겹쳐 떴다. iOS 시스템 권한 알림은 언제나 앱 화면 위에 뜨기 때문에,
+    // 동의 폼이 그 밑에 깔려 반쯤 가려진 채로 보인다. 첫인상은 한 번뿐이다.
+    //
+    // 그래서 네이티브가 동의 폼을 이 신호까지 기다렸다가 띄운다. 허용이든
+    // 거부든 상관없다 — "팝업이 화면에서 사라졌다"만 알리면 된다.
+    // 신호가 영영 안 와도 네이티브 쪽에 타임아웃이 있어 폼은 반드시 뜬다.
+    var geoToldNative = false;
+    function tellNativeGeoSettled() {
+      if (geoToldNative) return;
+      geoToldNative = true;
+      try { postToNativeAd({ action: "geoSettled" }); } catch (error) { /* 무시 */ }
+    }
+    navigator.geolocation.getCurrentPosition(
+      function (position) { tellNativeGeoSettled(); onCoords(position); },
+      function (error) { tellNativeGeoSettled(); onGeoError(error); },
+      {
+        enableHighAccuracy: false,
+        timeout: 9000,
+        maximumAge: 10 * 60 * 1000
+      });
   });
 }
 
