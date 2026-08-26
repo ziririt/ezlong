@@ -964,6 +964,16 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
   방향을 못 박아라. 긍정 칸 이름에 '금리 인상·긴축·매파'를 완화어 없이 쓰지 말고,
   부정 칸 이름에 '금리 인하·완화 전환·비둘기'를 그대로 쓰지 마라.
 
+=== 방향이 같으면 '~했으나'로 잇지 마라 (78항) ===
+- **'~했으나/~했지만'은 양보다.** 앞뒤가 **반대 방향**일 때만 쓴다. 방향이 같으면
+  인과·나열로 잇는다 — 없는 반전을 만들면 독자가 문장을 두 번 읽는다.
+- 나쁜 예(실사고): "미10년 4.66%(+0.54%)로 소폭 **상승했으나, 여전히** 높은 수준 유지"
+  — 올랐고 수준도 높다. 둘은 같은 편이라 양보가 성립하지 않는다.
+- 좋은 예: "미10년 4.66%(+0.54%)로 **상승해** 높은 수준 유지, 성장주 할인율 압박".
+- 양보가 참인 경우: "소폭 **하락했으나 여전히** 높은 수준" — 내렸는데도 높다. 반전이 있다.
+- 같은 기준이 유가·VIX·달러에도 적용된다. 오늘 방향과 수준이 같은 편이면 '해서·하며'로,
+  엇갈릴 때만 '했으나·하지만'으로 잇는다.
+
 === 나쁜 일에 '기대'라고 쓰지 마라 (76항) ===
 - **'기대·기대감'은 바라는 마음을 담은 말이다.** 투자자가 금리 인상을, 물가 급등을,
   주가 하락을, 경기 침체를 기대할 리 없다. 그런 사건에는 **'우려'·'경계'·'가능성'**을 써라.
@@ -1951,6 +1961,81 @@ def ensure_rates_visible(entry, snap):
     return entry
 
 
+# ─── 78항 — 같은 방향인데 '~했으나'로 잇지 않는다 (2026-08-27, 성동님 지적) ───
+# 실사고: "미10년 4.66%(+0.54%), 미30년 5.19%(+0.23%)로 소폭 **상승했으나, 여전히**
+# 높은 수준 유지하며 성장주 할인율 압박."
+# 성동님 지적: "'소폭 상승했으나, 여전히'는 어색. '소폭 상승해서 높은 금리 수준으로
+# 성장주 압박'이 되어야 한다. '소폭 하락했으나, 여전히 …'가 맞는 표현이니까."
+#
+# 맞는 말이다. '~했으나/~했지만'은 **양보**다 — 앞뒤가 반대 방향일 때만 성립한다.
+# 오늘 올랐고(상승) 수준도 높다(높은)면 둘은 같은 편이라 양보가 아니라 인과다.
+# 양보가 참인 경우는 "내렸는데도 여전히 높다"뿐이다. 방향이 같은데 양보로 이으면
+# 독자는 없는 반전을 찾느라 문장을 두 번 읽는다 — 65항이 실패로 규정한 그 상태다.
+#
+# 저장된 카드를 훑으니 23:20·01:23·02:04이 전부 같은 문형이었다. 만성이다.
+_CONC_RE = re.compile(
+    r'(상승|급등|반등|하락|급락)(?:했|하였)(?:으나|지만)\s*,?\s*(?:여전히\s*)?'
+    r'|(올랐|내렸)(?:으나|지만)\s*,?\s*(?:여전히\s*)?')
+_CONC_UP   = ('상승', '급등', '반등', '올랐')
+_CONC_HIGH = re.compile(r'높은|높아|높게|높고|고금리|고유가|고점|상단')
+_CONC_LOW  = re.compile(r'낮은|낮아|낮게|낮고|저금리|저점|하단')
+_CONC_WINDOW = 45     # 뒤 절의 방향을 찾는 범위. 넓히면 무관한 문장을 끌어온다.
+_CONC_JOIN = {'상승': '상승해', '급등': '급등해', '반등': '반등해',
+              '하락': '하락해', '급락': '급락해', '올랐': '올라', '내렸': '내려'}
+
+
+def fix_concessive_direction(text):
+    """방향이 같은데 양보 접속으로 이은 문장을 인과 접속으로 바꾼다.
+    바꾼 것과 원문 조각 목록을 함께 돌려준다. 방향이 실제로 반대면 손대지 않는다."""
+    if not text or ('으나' not in text and '지만' not in text):
+        return text, []
+    hits = []
+
+    def rep(m):
+        word = m.group(1) or m.group(2)
+        tail = text[m.end():m.end() + _CONC_WINDOW]
+        high, low = bool(_CONC_HIGH.search(tail)), bool(_CONC_LOW.search(tail))
+        if high == low:            # 둘 다 없거나 둘 다 있으면 판단하지 않는다
+            return m.group(0)
+        up = word in _CONC_UP
+        if (up and low) or (not up and high):
+            return m.group(0)      # 방향이 반대 — 양보가 맞다
+        hits.append(m.group(0).strip())
+        return _CONC_JOIN[word] + ' '
+
+    return _CONC_RE.sub(rep, text), hits
+
+
+def enforce_concessive(entry):
+    """재료·요약·핵심이슈의 같은 방향 양보 접속을 교정한다. 어휘만 고친다."""
+    changed = []
+    for key in ('positive_factors', 'negative_factors', 'mixed_factors'):
+        for f in (entry.get(key) or []):
+            for k in ('name', 'desc'):
+                new, hits = fix_concessive_direction(f.get(k))
+                if hits:
+                    f[k] = new
+                    changed.extend(hits)
+    kev = entry.get('key_event') or {}
+    for k in ('name', 'why'):
+        new, hits = fix_concessive_direction(kev.get(k))
+        if hits:
+            kev[k] = new
+            changed.extend(hits)
+    new, hits = fix_concessive_direction(entry.get('summary'))
+    if hits:
+        entry['summary'] = new
+        changed.extend(hits)
+    rep = entry.get('report')
+    if isinstance(rep, dict):
+        for k, v in list(rep.items()):
+            new, hits = fix_concessive_direction(v)
+            if hits:
+                rep[k] = new
+                changed.extend(hits)
+    return changed
+
+
 # ─── 국채금리 수치 표기 교정 (60항) ──────────────────────────────────────────
 # 금리는 수준도 %, 변화도 %다. 하나만 적으면 독자가 반드시 헷갈린다 —
 # "미10년 국채금리 1.19% 상승"은 금리가 1.19%라는 말로 읽힌다(실제 4.70%였다).
@@ -2790,6 +2875,10 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
               'key_event': {}}
     scrub_weekend_closure_word(holder, get_us_session()[0])
     fix_yield_number(holder, snap)
+    for _f in holder['mixed_factors']:                     # 78항 — 보고서에도 같은 규칙
+        _f['desc'], _h = fix_concessive_direction(_f['desc'])
+        for _x in _h:
+            print(f"::warning::[78항] 보고서 양보 접속 교정: '{_x}' → 인과 접속")
     for f in holder['mixed_factors']:
         rep[f['name']] = f['desc']
     # 76항 — 악재에 붙은 '기대(감)'을 '우려'로. 백필 보고서도 이 경로를 지난다.
@@ -3886,6 +3975,10 @@ def main():
     entry = scrub_weekend_closure_word(entry, session_code)
     # 4-5. 국채금리 수치 표기 교정 (60항) — 수준과 변화가 둘 다 %라 하나만 적으면 오독된다
     entry = fix_yield_number(entry, snap)
+    # 4-5b. 같은 방향 양보 접속 교정 (78항) — '상승했으나 여전히 높은'은 반전이 없다.
+    for _hit in enforce_concessive(entry):
+        print(f"::warning::[78항] 양보 접속 교정: '{_hit}' → 인과 접속")
+
     # 4-6. 요약 순환 서술 교정 (63항) — 재판정으로도 안 고쳐진 결과-이유 어구를 걷어낸다
     entry = scrub_circular_summary(entry)
     # 4-7. 금리 상시 노출 보증 (64항) — 모델이 금리를 통째로 뺐으면 실측치로 혼조 보충
