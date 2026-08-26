@@ -76,10 +76,15 @@ def seo_block(lang):
 <meta property="og:url"         content="{url}">
 <meta property="og:title"       content="{t['ogTitle']}">
 <meta property="og:description" content="{t['ogDesc']}">
+<meta property="og:image"       content="{BASE}/og/og-1200x630.png?v=20260809">
+<meta property="og:image:width"  content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale"      content="{t['locale']}">
 <meta property="og:site_name"   content="EZLONG">
-<!-- Twitter Card -->
-<meta name="twitter:card"        content="summary">
+<!-- Twitter Card — 2026-08-26 SEO 점검: 손으로 넣은 og:image 가 이 빌더에 덮여
+     사라졌다. 생성되는 페이지의 메타는 반드시 빌더에 있어야 한다. -->
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:image"       content="{BASE}/og/og-1200x630.png?v=20260809">
 <meta name="twitter:title"       content="{t['ogTitle']}">
 <meta name="twitter:description" content="{t['ogDesc']}">
 <script type="application/ld+json">

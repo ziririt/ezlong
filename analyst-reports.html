@@ -285,6 +285,9 @@ window.addEventListener('load', function(){
 .av-thesis{font-size:16px;line-height:1.7;max-width:100%;color:var(--ez-text);margin-top:10px;padding-top:10px;border-top:1px solid var(--ez-border2)}
 }
 </style>
+<script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
+     head 맨 끝에 둔다 — 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 <body>
 <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">테슬라·엔비디아 목표주가 — 월가 애널리스트 컨센서스 조회</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검: h1 부재 보강) -->

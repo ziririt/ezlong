@@ -52,6 +52,9 @@
 .la-foot { font-size: 14px; color: var(--ez-text3); line-height: 1.6; margin-top: 26px; }
 .la-code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 14px; background: rgba(120,120,128,.14); border-radius: 6px; padding: 1px 6px; color: var(--ez-text); }
 </style>
+<script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
+     head 맨 끝에 둔다 — 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 <body>
 <script src="/ez-nav.js"></script>

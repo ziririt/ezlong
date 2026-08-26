@@ -469,7 +469,7 @@ SEO = {
         ],
     },
     'pt': {
-        'title': 'O que aconteceu naquele dia — Linha do tempo do mercado dos EUA | EZLONG',
+        'title': 'O que aconteceu naquele dia — Mercado dos EUA | EZLONG',   # 2026-08-26: 72자→50자, SERP 잘림 해소
         'desc': 'Os principais eventos sobrepostos aos gráficos de QQQ, SPY e SOXX, dia a dia. Quando o gráfico se moveu forte, descubra o que aconteceu de fato.',
         'ogTitle': 'O que aconteceu naquele dia — Linha do tempo do mercado dos EUA',
         'ogDesc': 'Eventos do mercado sobre o gráfico, dia a dia. Toque numa data e veja o que a moveu.',

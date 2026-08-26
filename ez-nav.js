@@ -918,7 +918,10 @@ window.ezWeekPhase = function (now) {
      localStorage 열쇠 하나만 믿으면 딥링크·저장소 초기화로 열쇠 없는 앱
      화면이 생기고, 거기 광고가 뜨면 계정이 위험하다. 판정은 한 벌만 두고
      둘이 같이 본다(공유 함수 동기화 원칙). */
-  window.ezInAppWebview = inAppWebview;
+  /* 71항 — 판정 단일 출처는 head에서 먼저 로드되는 ez-app-banner.js 다.
+     이미 정의돼 있으면 그것을 쓰고, 이 파일만 로드되는 경로를 위해 위 구현을
+     폴백으로 남긴다. 아래 링크 처리도 같은 함수를 부른다(구현이 갈리지 않게). */
+  window.ezInAppWebview = window.ezInAppWebview || inAppWebview;
 
   document.addEventListener('click', function (ev) {
     if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey) return;
@@ -940,7 +943,7 @@ window.ezWeekPhase = function (now) {
     }
 
     /* 앱이 아니면(일반 브라우저) 손대지 않는다 — target="_blank"가 정상 동작. */
-    if (!inAppWebview()) return;
+    if (!window.ezInAppWebview()) return;
 
     /* 2순위 — 앱인데 브릿지를 못 찾은 경우의 안전망. 여기서 그냥 두면
        화면에 아무 일도 안 일어나는 "먹통" 상태가 그대로 재현된다.

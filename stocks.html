@@ -452,6 +452,9 @@
     .da-risk { margin-top: 10px; font-size: 16px; color: #FF3B30; font-weight: 600; line-height: 1.5; }
     .da-updated { margin-top: 10px; font-size: 16px; color: var(--ez-text3); }
   </style>
+<script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
+     head 맨 끝에 둔다 — 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 <body>
 <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">심플 주가 정보 — 미국 시총 100 실시간 주가</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검: h1 부재 보강) -->

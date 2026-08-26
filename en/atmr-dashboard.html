@@ -1735,6 +1735,9 @@ li.gear-other-sep { display: none !important; }
 .en-footer a:hover { text-decoration:underline; }
 </style>
 <!-- EZ Global Nav + Footer: ez-design.css 공유 스타일 사용 (2026-07-04 로컬 중복 제거 — nav max-width 1260px가 공유 1440px를 가리던 원인) -->
+<script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
+     head 맨 끝에 둔다 — 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 
 <body>

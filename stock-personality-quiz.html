@@ -663,6 +663,9 @@
     40%          { transform: scale(1.0); opacity:1; }
   }
 </style>
+<script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
+     head 맨 끝에 둔다 — 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 <body>
 <script src="/lang-banner.js"></script>
