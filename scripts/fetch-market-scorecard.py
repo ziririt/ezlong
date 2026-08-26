@@ -1199,6 +1199,10 @@ HOLD_REASONS = {
         "한쪽 편이 '결과를 기다리는 중'인 재료뿐이라, 점수를 매길 근거가 없었습니다.",
         'One side consisted only of "awaiting the result" items, which carry no verdict.',
     ),
+    'company_only': (
+        '한쪽 편이 개별 기업 뉴스뿐이라, 시장 전체의 판정 근거로 삼을 수 없었습니다.',
+        'One side rested only on single-company news, which cannot carry a market-wide verdict.',
+    ),
 }
 HOLD_FALLBACK = ('이번 회차 판정이 자체 검증을 통과하지 못했습니다.',
                  'This round did not pass our own verification.')
@@ -3552,16 +3556,26 @@ def enforce_guardrails(entry, snap, prev_entry, spy_off_high):
         entry['positive_factors'] = _redistribute(entry.get('positive_factors') or [], entry['positive_total'])
         entry['negative_factors'] = _redistribute(entry.get('negative_factors') or [], entry['negative_total'])
     # G4 강제 — 개별 기업(company_specific) 점수 재료는 걷어내고 같은 편에 재배분.
-    # 단 그 편의 유일한 재료면 빈 칸이 생기므로 남긴다(재판정 피드백이 1차 방어).
+    # 2026-08-27 수정(76항 세션): 예전에는 "그 편의 유일한 재료면 빈 칸이 생기므로
+    # 남긴다"였다. 그 결과 '메타 소송 합의 완료'(company_specific)가 검사에 걸리고도
+    # 긍정 35점을 달고 그대로 게시됐다 — 52항이 '사고'로 규정한 '감지하고도 게시'다.
+    # 72항이 같은 상황에서 게시를 포기하도록 정한 것과도 어긋났다. 이제 플래그를
+    # 세우고 main()이 이번 회차를 거른다(75항 '갱신 보류'가 화면에 이유를 적는다).
     for side in ('positive_factors', 'negative_factors'):
         factors = entry.get(side) or []
         keep = [f for f in factors if not (f.get('category') == 'company_specific'
                                            and int(f.get('score', 0) or 0) > 0)]
-        if keep and len(keep) < len(factors):
-            dropped = [f.get('name', '') for f in factors if f not in keep]
-            total = int(entry.get(side.replace('_factors', '_total'), 0) or 0)
-            entry[side] = _redistribute(keep, total)
-            print(f"::warning::[가드레일] 개별 기업 재료 제거·재배분: {', '.join(dropped)}")
+        if len(keep) == len(factors):
+            continue
+        dropped = [f.get('name', '') for f in factors if f not in keep]
+        if not keep:
+            entry['_g4_side_emptied'] = True
+            print(f"::warning::[가드레일] 개별 기업 재료가 {side}의 전부 — "
+                  f"{', '.join(dropped)} (게시 포기 대상)")
+            continue
+        total = int(entry.get(side.replace('_factors', '_total'), 0) or 0)
+        entry[side] = _redistribute(keep, total)
+        print(f"::warning::[가드레일] 개별 기업 재료 제거·재배분: {', '.join(dropped)}")
 
     # G1 문구 완화 — 실측이 뒷받침하지 않는 강한 단어만 교체 (명사형 유지)
     SOFTEN = [('급등', '상승'), ('폭등', '상승'), ('급락', '하락'), ('폭락', '하락'),
@@ -3758,6 +3772,14 @@ def main():
             print(f"  WARNING: 방향 집행 후 가드레일 위반 {len(after)}건 — 재클램프")
             entry = enforce_guardrails(entry, snap, prev_entry_for_guard, spy_off_high)
         validate_entry(entry)
+
+    # 4-3b. G4 한쪽 편 소멸 확인 — 개별 기업 재료가 그 편의 전부였던 경우.
+    # 코드가 정직하게 만들 수 없는 판정이다. 틀린 카드보다 낡은 카드가 낫다(52항).
+    if entry.pop('_g4_side_emptied', None):
+        print("::warning::[G4] 한쪽 편이 개별 기업 재료뿐 — 이번 사이클 게시 포기")
+        record_hold(data, kst_now, 'company_only')    # 75항: 화면에 '갱신 보류'로 알린다
+        print("=== 중단 (카드 미생성) ===")
+        sys.exit(0)
 
     # 4-4. 주말 '휴장' 표현 최종 치환 (58항) — 재판정으로도 안 고쳐진 잔여분 처리
     entry = scrub_weekend_closure_word(entry, session_code)
