@@ -496,6 +496,11 @@ def fetch_fred_macro():
     # 보고서까지 옮겨붙었다. CPI는 units=pc1(전년동월비 %)로 받아 진짜 %로 만든다.
     # 날짜도 발표일로 오독되던 것을 '데이터 월'로 명시한다("2026년 7월 1일 발표된" 사고).
     SERIES = {
+        # 74항(2026-08-26) — 연준이 보는 물가 기준은 CPI가 아니라 PCE, 그중에서도
+        # 근원 PCE다. 이게 목록에 없어서 PCE 발표 당일에도 카드가 며칠 전 CPI를
+        # 근거로 들었다. 연준을 이야기하려면 연준이 보는 숫자를 들고 있어야 한다.
+        "PCEPILFE": ("pc1", "근원 PCE 물가상승률(전년동월비 %, 연준 기준 지표)"),
+        "PCEPI":    ("pc1", "PCE 물가상승률(전년동월비 %)"),
         "CPIAUCSL": ("pc1", "CPI 소비자물가 상승률(전년동월비 %)"),
         "FEDFUNDS":  (None, "Fed 기준금리(%)"),
         "T10Y2Y":    (None, "10Y-2Y 스프레드(경기선행, %)"),
@@ -665,10 +670,19 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
     _ev = event_calendar_lines(_now_utc)
     _et_now = f"{_now_utc.astimezone(ET_TZ):%Y-%m-%d %H:%M}" if ET_TZ else ''
     event_block = ""
+    _done = just_released_lines(_now_utc)
+    if _done:
+        # 74항 — 방금 나온 결과가 있으면 그것이 오늘의 재료다. 며칠 전 지표를
+        # 근거로 드는 순간 카드는 한물간 이야기가 된다.
+        event_block += ("\n=== 방금 발표된 지표 (결과가 이미 나왔다 — 반드시 다뤄라) ===\n"
+                        + '\n'.join(_done)
+                        + "\n[지시] 위 지표는 발표가 끝났다. 시장이 오늘 반응한 대상이므로 "
+                          "카드에 반영하라. 실제 수치는 아래 [FRED 실제 발표 매크로 수치]와 "
+                          "뉴스 헤드라인에서 확인해 쓴다.\n")
     if _ev:
-        event_block = ("\n=== 예정 이벤트 (공식 일정표 — BLS·BEA·Fed·기업 IR) ===\n"
-                       + '\n'.join(_ev)
-                       + "\n[표기 규칙] 이 목록에 있는 일정만 쓴다. 없는 일정을 지어내지 마라.\n")
+        event_block += ("\n=== 예정 이벤트 (공식 일정표 — BLS·BEA·Fed·기업 IR) ===\n"
+                        + '\n'.join(_ev)
+                        + "\n[표기 규칙] 이 목록에 있는 일정만 쓴다. 없는 일정을 지어내지 마라.\n")
 
     return f"""당신은 미국 주식시장 시황 분석 전문가입니다.
 현재 시각(KST): {kst_now.strftime('%Y-%m-%d %H:%M')} / 뉴욕(ET): {_et_now}
@@ -723,6 +737,13 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
   부담, 달러 강세, 유가, 신용스프레드, 특정 섹터의 실제 등락을 만든 원인. 실측치와
   함께 쓰면 그것이 정직한 재료다. '기다린다'로 칸을 채우는 것보다 훨씬 낫다.
   (한쪽 편을 대기 재료로만 채우면 그 카드는 게시되지 않고 버려진다.)
+- [물가를 말할 때는 가장 최근 발표된 지표로 — 2026-08-26 운영 피드백]
+  **연준이 보는 물가 기준은 CPI가 아니라 PCE, 그중에서도 근원 PCE다.** 연준의 금리
+  판단을 이야기하면서 CPI를 근거로 들면 어긋난다. 위 [FRED 실제 발표 매크로 수치]에
+  근원 PCE·PCE·CPI가 모두 있으니 **맥락에 맞는 것**을 골라 쓰고, 지표 이름을 정확히
+  적어라(근원 PCE 3.3%를 'CPI 3.3%'라고 쓰면 틀린 문장이다).
+  방금 발표가 끝난 지표가 있으면 **그것이 오늘의 재료**다 — 며칠 전 다른 지표를
+  근거로 드는 것은 한물간 이야기다. 실사고: PCE 발표 20분 뒤 카드가 CPI를 들었다.
 - [예정 이벤트는 뉴욕 시간(ET) 날짜를 반드시 적는다 — 2026-08-26 성동님 지시]
   발표·회의·연설·실적처럼 '아직 오지 않은 일정'을 재료로 쓸 때는, 이름 또는 설명에
   위 [예정 이벤트] 목록의 ET 표기를 그대로 넣어라.
@@ -1695,6 +1716,10 @@ def validate_content(entry, session_code='', snap=None):
                           f"이슈라면 벨웨더 실적 등 시장 카테고리로 분류해 근거를 대라. "
                           f"아니면 빼라")
 
+    # ── 체크 17: 방금 나온 지표를 두고 묵은 지표를 근거로 (2026-08-26, 74항) ──
+    for _stale in stale_inflation_gauge(entry):
+        errors.append(_stale)
+
     # ── 체크 16: 예정 이벤트 '대기'에 점수 (2026-08-26 신설, 72항) ───────────
     for _side, _f, _why in event_wait_offenders(entry):
         errors.append(_why)
@@ -2039,6 +2064,18 @@ def et_stamp_en(dt_utc, approx=False):
         return f"{head} after the close ET"
     return f"{head} {'approx. ' if approx else ''}{e.hour:02d}:{e.minute:02d} ET"
 
+def just_released_lines(now_utc=None, hours=24):
+    """최근 N시간 안에 발표가 끝난 일정. 74항 —
+    카드가 '무엇을 기다리는가'는 알면서 '방금 무엇이 나왔는가'는 몰랐다.
+    실사고: 21:30 PCE 발표 직후 21:50 카드가 며칠 전 CPI를 근거로 들었다."""
+    now = now_utc or datetime.now(timezone.utc)
+    out = []
+    for dt, name in _past_events(now, hours).values():
+        h = (now - dt).total_seconds() / 3600.0
+        out.append(f"- {name}: {et_stamp(dt)} 발표 완료 (약 {h:.0f}시간 전)")
+    return out
+
+
 def event_calendar_lines(now_utc=None, days=7):
     """향후 N일 예정 이벤트를 ET 표기로. 카드 프롬프트·보고서 프롬프트 공용.
     KST는 일부러 넣지 않는다 — 프롬프트에 두 시계를 주면 생성문이 섞인다."""
@@ -2204,6 +2241,32 @@ def annotate_event_dates(entry, now_utc=None):
         # 핵심 이슈 줄은 카드 맨 위 한 줄이라 자리가 좁다 — 가장 가까운 하나만.
         _do(kev, ('name', 'why'), ('name_en', 'why_en'), max_events=1)
     return stamped
+
+# 74항 — 방금 나온 지표를 두고 묵은 지표를 근거로 드는 것.
+# 실사고: 21:30 PCE(7월분) 발표 20분 뒤 21:50 카드가 "높은 인플레이션 지속 :: CPI
+# 3.30%"라고 썼다. 시장이 그날 본 숫자는 근원 PCE였는데 며칠 전 CPI를 들고 나온 것이다.
+# 뿌리 원인은 FRED 수집 목록에 PCE가 없었다는 것(고침). 이 검사는 재발 감시다.
+_CPI_MENTION = re.compile(r'(?<![a-z])cpi(?![a-z])|소비자\s*물가', re.I)
+_PCE_MENTION = re.compile(r'(?<![a-z])pce(?![a-z])|개인\s*소비\s*지출', re.I)
+
+def stale_inflation_gauge(entry, now_utc=None):
+    """최근 PCE 발표 직후인데 카드가 물가를 CPI로만 말하면 재판정 사유."""
+    now = now_utc or datetime.now(timezone.utc)
+    past = _past_events(now, hours=18)
+    if 'pce' not in past:
+        return []
+    _dt, _name = past['pce']
+    out = []
+    for k in ('positive_factors', 'negative_factors', 'mixed_factors'):
+        for f in (entry.get(k) or []):
+            text = f"{f.get('name','')} {f.get('desc','')}"
+            if _CPI_MENTION.search(text) and not _PCE_MENTION.search(text):
+                out.append(f"묵은 물가 지표: '{f.get('name','')}' — {et_stamp(_dt)}에 "
+                           f"PCE가 발표됐는데 CPI를 근거로 들었다. 연준이 보는 기준은 "
+                           f"근원 PCE다. 방금 나온 수치로 바꿔 쓰거나, CPI를 쓸 이유가 "
+                           f"있으면 PCE와 함께 언급하라")
+    return out
+
 
 def stale_event_offenders(entry, now_utc=None):
     """이미 지난 일정을 '대기·예정·앞두고'로 쓴 재료. 재판정 사유 문자열 목록."""
