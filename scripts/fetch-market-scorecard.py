@@ -709,6 +709,15 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 점수는 오직 '원인' 재료에만 배분하라. 지수·VIX·섹터 등락 같은 결과 서술은 요인 항목
   자체가 금지다 — 원인을 3개 못 찾으면 찾은 원인들에 점수 전액을 배분하라
   (결과 항목에 점수를 실었다가 그 항목이 걸러지면 화면의 합계가 깨진다)
+- [아직 안 일어난 일은 점수 칸에 못 앉는다 — 2026-08-26 성동님 지적]
+  '엔비디아 실적 발표 대기', '지표 발표 앞두고', '연설 경계감'처럼 **예정 이벤트를
+  기다린다**는 재료는 긍정·부정 어느 쪽에도 점수를 실을 수 없다. 반드시 mixed_factors다.
+  이유: 기다리는 상태는 오르지도 내리지도 않는다. 같은 사실을 '기대감'이라 쓰면 긍정,
+  '불확실성'이라 쓰면 부정이 되어, 새 변수가 하나도 없는데 몇 시간 만에 판정이 뒤집힌다.
+  실사고: 같은 엔비디아 실적이 12:50 긍정 65점 → 18:20 부정 25점으로 편을 갈아탔다.
+  방향을 주장하고 싶으면 '기다린다'가 아니라 **방향을 만든 측정된 사실**을 이름에 써라
+  (예: '엔비디아 컨센서스 상향', '반도체 옵션 내재변동성 급등' — 숫자로 확인되는 것).
+  주가가 올랐다·내렸다는 결과이므로 근거가 될 수 없다(63항).
 - [예정 이벤트는 뉴욕 시간(ET) 날짜를 반드시 적는다 — 2026-08-26 성동님 지시]
   발표·회의·연설·실적처럼 '아직 오지 않은 일정'을 재료로 쓸 때는, 이름 또는 설명에
   위 [예정 이벤트] 목록의 ET 표기를 그대로 넣어라.
@@ -1680,6 +1689,10 @@ def validate_content(entry, session_code='', snap=None):
                           f"영향을 줄 재료가 아니면 혼조에도 싣지 않는다. 시장을 움직일 "
                           f"이슈라면 벨웨더 실적 등 시장 카테고리로 분류해 근거를 대라. "
                           f"아니면 빼라")
+
+    # ── 체크 16: 예정 이벤트 '대기'에 점수 (2026-08-26 신설, 72항) ───────────
+    for _side, _f, _why in event_wait_offenders(entry):
+        errors.append(_why)
 
     # ── 체크 15: 이미 지난 일정을 '대기'로 서술 (2026-08-26 신설, 70항) ──────
     # 예정 이벤트에 날짜를 붙이기 시작하면(70항) 그 반대편 병도 같이 잡아야 한다 —
@@ -2715,6 +2728,75 @@ _DIR_CLAIM_WORD = (r'상승|하락|급등|급락|확대|축소|완화|후퇴|강
                    r'기대|둔화|가속|상향|하향|호조|부진|증가|감소|압력|긴장|호실적|'
                    r'서프라이즈|쇼크|반등|조정')
 
+# ─── 72항 — 아직 안 일어난 일은 방향이 없다 (2026-08-26, 성동님 지적) ────────
+# 실사고: 같은 '엔비디아 실적 발표'가 12:50 카드에서 긍정 65점('실적 기대감'),
+# 5시간 반 뒤 18:20 카드에서 부정 25점('실적 발표 대기')으로 편을 갈아탔다.
+# 그 사이 실적은 나오지도 않았고 새 변수도 없었다. 이름만 '기대감 ↔ 대기'로
+# 바꾸면 같은 사실이 양쪽 칸 어디에나 앉을 수 있다는 뜻이다 — 그건 판정이 아니다.
+#
+# 원리: 예정된 이벤트를 '기다리는 상태' 자체는 오르지도 내리지도 않는다. 60항이
+# '관망'을 막았는데 '대기·앞두고'는 그물을 빠져나갔다. 같은 병이다.
+# 규칙: 예정 이벤트를 기다린다는 프레임의 재료는 점수 칸에 앉을 수 없다 — 혼조다.
+# 방향을 주장하려면 '기다린다'가 아니라 **방향을 만든 사실**을 이름에 적어야 한다
+# (예: '엔비디아 컨센서스 상향', '반도체 옵션 내재변동성 급등' 처럼 측정된 사실).
+_EVENT_WAIT_FRAME = r'대기|앞두고|앞둔|기다리|예정|임박|경계감|관망'
+_EVENT_WAIT_WHAT = (r'발표|실적|어닝|연설|기조|회의|심포지엄|지표|결과|공개|'
+                    r'FOMC|CPI|PPI|PCE|GDP|잭슨\s*홀')
+
+def event_wait_offenders(entry):
+    """예정 이벤트를 '기다린다'는 프레임으로 점수를 받은 재료. (편, 재료, 사유)"""
+    out = []
+    for side in ('positive_factors', 'negative_factors'):
+        side_ko = '긍정' if side == 'positive_factors' else '부정'
+        for f in entry.get(side) or []:
+            if int(f.get('score', 0) or 0) <= 0:
+                continue
+            text = f"{f.get('name', '') or ''} {f.get('desc', '') or ''}"
+            if not re.search(_EVENT_WAIT_FRAME, text):
+                continue
+            if not re.search(_EVENT_WAIT_WHAT, text, re.I):
+                continue
+            out.append((side, f,
+                        f"대기 재료에 점수: {side_ko} '{f.get('name','')}' — 아직 일어나지 "
+                        f"않은 이벤트를 '기다린다'는 것은 방향이 아니다. 같은 사실이 "
+                        f"'기대감'이면 긍정, '불확실성'이면 부정이 되어 판정이 뒤집힌다. "
+                        f"혼조로 옮기거나, 방향을 만든 **측정된 사실**(컨센서스 변화·"
+                        f"내재변동성·포지션 지표 등)을 이름에 적고 그것을 재료로 삼아라"))
+    return out
+
+
+def demote_event_waits(entry):
+    """집행 — 대기 재료를 혼조로 옮기고 남은 재료에 점수를 재배분한다(총점 불변).
+    64항 원칙: 강등의 목적지는 삭제가 아니라 혼조다."""
+    moved = []
+    flagged = {}
+    for side, f, _why in event_wait_offenders(entry):
+        flagged.setdefault(side, []).append(f)
+    for side, bad in flagged.items():
+        factors = entry.get(side) or []
+        keep = [f for f in factors if f not in bad]
+        if not keep:
+            # 그 편이 통째로 대기 재료였다 — 판정을 지탱할 근거가 없다는 뜻이다.
+            # 52항 원칙대로 호출부가 이번 사이클 게시를 포기한다(빈 칸을 내보내느니).
+            entry['_wait_side_emptied'] = side
+        total = int(entry.get(side.replace('_factors', '_total'), 0) or 0)
+        if keep:
+            entry[side] = _redistribute(keep, total)
+        else:
+            entry[side] = []
+        for f in bad:
+            f.pop('score', None)
+            # 4-7b(67항)가 혼조에서 개별 기업을 걷어내므로, 벨웨더 실적 대기는
+            # 그 예외 범주로 옮겨 적는다. 그 외는 시장 범주로 둔다.
+            if re.search(r'실적|어닝|earnings', f"{f.get('name','')} {f.get('desc','')}", re.I):
+                f['category'] = 'earnings_bellwether'
+            elif (f.get('category') or '') == 'company_specific':
+                f['category'] = 'other'
+            entry.setdefault('mixed_factors', []).append(f)
+            moved.append(f.get('name', ''))
+    return moved
+
+
 def no_direction_offenders(entry):
     """'방향 없음'인데 긍정·부정 칸에서 점수를 받은 재료.
     관망은 배경이지 재료가 아니다 — 필요하면 핵심이슈 문장에서 다룬다.
@@ -3412,6 +3494,17 @@ def main():
         entry['mixed_factors'] = [f for f in _mf if f not in _noise]
         for _f in _noise:
             print(f"::warning::[67항] 혼조 노이즈 제거: '{_f.get('name','')}'(개별 기업)")
+
+    # 4-7d. 대기 재료 혼조 강등 (72항) — 재판정으로도 남으면 코드가 옮긴다.
+    # 삭제가 아니라 이동이다(64항). 남은 재료에 점수를 재배분해 총점은 그대로 둔다.
+    for _nm in demote_event_waits(entry):
+        print(f"::warning::[72항] 대기 재료 혼조 강등: '{_nm}'")
+    if entry.pop('_wait_side_emptied', None):
+        # 한쪽 편이 통째로 '기다림'뿐이었다. 그 편에는 판정을 지탱할 근거가 없다.
+        # 틀린 카드를 내보내느니 이번 사이클을 거른다 — 직전 카드가 그대로 남는다(52항).
+        print("::warning::[72항] 한쪽 편이 대기 재료뿐 — 이번 사이클 게시 포기")
+        print("=== 중단 (카드 미생성) ===")
+        sys.exit(0)
 
     # 4-7c. 예정 이벤트 ET 날짜 표기 (70항) — 프롬프트로 시켰어도 빠지면 코드가 붙인다.
     # 판정·점수는 건드리지 않는다. 독자가 '언제'를 알 수 있게 사실을 더할 뿐이다.
