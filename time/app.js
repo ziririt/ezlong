@@ -9507,11 +9507,22 @@ if (premiumUpgradeButton) {
   var line = document.getElementById("adDiagLine");
   var floating = document.getElementById("adDiagFloat");
   if (!line && !floating) return;
+  // 웹 버전도 함께 붙인다 — 네이티브만 새것이고 웹이 옛것인(또는 그
+  // 반대인) 어긋남이 실제로 있었다. 둘 다 눈에 보여야 판별이 된다.
+  function webVer() {
+    try {
+      var el = document.getElementById("settingsVersion");
+      return (el && el.textContent ? el.textContent.trim() : "").replace(/^ver\./, "");
+    } catch (error) { return ""; }
+  }
   window.__flipzenAdDiag = function (text) {
     if (!text) return;
+    var v = webVer();
+    var full = v ? (text.replace(/^(b\S+)( · )?/, "$1 · web " + v + " · ")) : text;
+    if (v && full === text) full = "web " + v + " · " + text;
     [line, floating].forEach(function (el) {
       if (!el) return;
-      el.textContent = text;
+      el.textContent = full;
       el.hidden = false;
     });
   };
