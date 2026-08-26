@@ -501,3 +501,38 @@ summary:focus-visible, [tabindex]:focus-visible {
   flex-basis: 100%; text-align: center; margin-top: 6px;
   font-size: 14px; color: var(--ez-text3, #86868B);
 }
+
+/* ─────────────────────────────────────────────────────────────
+   도구 해설 본문 (2026-08-26 신설, CLAUDE.md 73항 2단계)
+
+   계산기 페이지는 위젯만 있고 읽을 글이 없었다. 사람에게도 검색엔진에도
+   "이 도구가 무엇을 재고, 숫자를 어떻게 읽고, 무엇을 못 하는지"가 필요하다.
+   자바스크립트 없이 HTML에 박혀 있어야 하므로 클래스만 여기에 둔다.
+   ───────────────────────────────────────────────────────────── */
+.ez-guide {
+  max-width: 760px; margin: 34px auto 0; padding: 0 18px 12px;
+  font-family: var(--ez-font, -apple-system, BlinkMacSystemFont, sans-serif);
+}
+.ez-guide h2 {
+  font-size: 21px; font-weight: 800; letter-spacing: -.01em; margin: 34px 0 10px;
+  padding-top: 20px; border-top: 1px solid var(--ez-border, rgba(120,120,128,.26));
+  color: var(--ez-text, #1D1D1F);
+}
+.ez-guide h2:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+.ez-guide h3 { font-size: 17px; font-weight: 800; margin: 20px 0 6px; color: var(--ez-text, #1D1D1F); }
+.ez-guide p { font-size: 16px; line-height: 1.75; color: var(--ez-text2, #515154); margin: 0 0 12px; }
+.ez-guide ul, .ez-guide ol { margin: 0 0 14px; padding-left: 20px; }
+.ez-guide li { font-size: 16px; line-height: 1.75; color: var(--ez-text2, #515154); margin-bottom: 6px; }
+.ez-guide b, .ez-guide strong { color: var(--ez-text, #1D1D1F); font-weight: 800; }
+.ez-guide a { color: var(--ez-blue, #0071E3); }
+.ez-guide-lede { font-size: 17px; line-height: 1.7; color: var(--ez-text2, #515154); margin-bottom: 4px; }
+.ez-guide-note {
+  background: var(--ez-card2, #F2F2F7); border: 1px solid var(--ez-border, rgba(120,120,128,.26));
+  border-radius: 14px; padding: 15px 17px; margin: 16px 0;
+}
+.ez-guide-note p { margin: 0; font-size: 15px; }
+.ez-guide-note p + p { margin-top: 8px; }
+.ez-guide-kv { border-top: 1px solid var(--ez-border, rgba(120,120,128,.26)); padding: 11px 0; display: flex; gap: 14px; flex-wrap: wrap; }
+.ez-guide-kv .k { flex: 0 0 132px; font-size: 15px; font-weight: 800; color: var(--ez-text, #1D1D1F); }
+.ez-guide-kv .v { flex: 1 1 260px; font-size: 15px; line-height: 1.7; color: var(--ez-text2, #515154); }
+.ez-guide-q { font-size: 16px; font-weight: 800; color: var(--ez-text, #1D1D1F); margin: 18px 0 4px; }
