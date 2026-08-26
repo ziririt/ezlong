@@ -9517,6 +9517,15 @@ if (premiumUpgradeButton) {
   };
   // 설정이 열려 있든 닫혀 있든 계속 묻는다. 광고는 설정이 닫혀 있을 때만
   // 뜨므로, 진단도 그때 보여야 쓸모가 있다.
+  // 줄을 누르면 오늘 광고 상태를 지운다 — 리워드를 본 날에도 광고 모양을
+  // 확인할 수 있어야 한다(개발 빌드에서만 네이티브가 응답한다).
+  [line, floating].forEach(function (el) {
+    if (!el) return;
+    el.addEventListener("click", function () {
+      postToNativeAd({ action: "adDiagReset" });
+      el.textContent = "오늘 광고 상태 초기화 — 10초 뒤 배너";
+    });
+  });
   window.setInterval(function () {
     try { postToNativeAd({ action: "adDiag" }); } catch (error) { /* 무시 */ }
   }, 3000);
