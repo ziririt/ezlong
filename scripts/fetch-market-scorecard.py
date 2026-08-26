@@ -960,19 +960,30 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 나쁜 예 (실제 사고): 긍정 25점 재료의 이름이 'Fed 금리 인상 관망 심리'. 내용은
   "인상 베팅이 과도했다는 평가 → 인상 리스크 완화"라 방향은 긍정이 맞는데, 독자는
   긍정 칸에서 '금리 인상'이라는 글자를 먼저 읽는다.
-- 좋은 예: 'Fed 금리 인상 기대 후퇴' / '추가 인상 가능성 축소'. 이름 끝까지 써서
+- 좋은 예: 'Fed 금리 인상 우려 후퇴' / '추가 인상 가능성 축소'. 이름 끝까지 써서
   방향을 못 박아라. 긍정 칸 이름에 '금리 인상·긴축·매파'를 완화어 없이 쓰지 말고,
   부정 칸 이름에 '금리 인하·완화 전환·비둘기'를 그대로 쓰지 마라.
 
+=== 나쁜 일에 '기대'라고 쓰지 마라 (76항) ===
+- **'기대·기대감'은 바라는 마음을 담은 말이다.** 투자자가 금리 인상을, 물가 급등을,
+  주가 하락을, 경기 침체를 기대할 리 없다. 그런 사건에는 **'우려'·'경계'·'가능성'**을 써라.
+- 실제 사고: 혼조 재료 이름이 'Fed 금리 인상 기대감'이었다. 시장 실무에서 관용어로
+  굳은 표현이라도 우리 독자는 자기 돈을 넣은 투자자다. 자산이 깎이는 사건을 '기대'라고
+  부르는 문장을 읽게 두지 마라.
+- 나쁜 예: '금리 인상 기대감' / '인플레이션 재점화 기대' / '관세 인상 기대감'.
+  좋은 예: '금리 인상 우려' / '인플레이션 재점화 경계' / '관세 인상 가능성'.
+- '기대'를 써도 되는 곳: 금리 인하, 실적 개선, 감세, 규제 완화처럼 **주가에 유리한**
+  일. 그리고 '시장 기대치', '기대 이상' 같은 컨센서스 표현은 그대로 쓴다.
+
 === 정책금리와 시장금리가 따로 놀 때 (62항) ===
-- Fed 인상 기대가 후퇴하는데 **장기 국채금리(10년·30년)는 오르는** 날이 있다.
-  교과서와 반대로 가는 이 상황에서 '금리 인상 기대 후퇴'만 떼어 긍정 재료로 크게 실으면
+- Fed 인상 우려가 후퇴하는데 **장기 국채금리(10년·30년)는 오르는** 날이 있다.
+  교과서와 반대로 가는 이 상황에서 '금리 인상 우려 후퇴'만 떼어 긍정 재료로 크게 실으면
   카드가 시장과 정반대를 가리킨다. **성장주·반도체를 누르는 것은 정책금리 기대가 아니라
   할인율로 실제 쓰이는 장기금리다.**
 - 실제(2026-08-18): 9월 인상 확률이 7월 말 거의 100%에서 3분의 1로 내려앉는 동안
   30년물은 5.09% → 5.31%(2007년 이후 최고)로 올랐고, 그날 반도체는 무너졌다.
-- 규칙: 인상 기대 후퇴를 긍정으로 쓰려면 **같은 재료 안에 장기금리 방향을 함께 적어라.**
-  좋은 예: '9월 인상 기대는 후퇴했으나 30년물은 5.31%로 2007년 이후 최고 — 할인율 압박은 지속'.
+- 규칙: 인상 우려 후퇴를 긍정으로 쓰려면 **같은 재료 안에 장기금리 방향을 함께 적어라.**
+  좋은 예: '9월 인상 우려는 후퇴했으나 30년물은 5.31%로 2007년 이후 최고 — 할인율 압박은 지속'.
   장기금리가 오르는 날 이 사실을 빼고 인상 기대 후퇴만 크게 실으면 재판정 대상이다.
 
 === 금리를 말할 때 (60항) ===
@@ -1765,6 +1776,10 @@ def validate_content(entry, session_code='', snap=None):
                           f"이슈라면 벨웨더 실적 등 시장 카테고리로 분류해 근거를 대라. "
                           f"아니면 빼라")
 
+    # ── 체크 19: 악재에 '기대(감)' 표현 (2026-08-27 신설, 76항) ─────────────
+    for _exp in adverse_expect_offenders(entry):
+        errors.append(_exp)
+
     # ── 체크 18: 물가 지표 미세 변동을 방향으로 (2026-08-26, 74항 후속) ──────
     for _tiny in tiny_inflation_move(entry):
         errors.append(_tiny)
@@ -2312,6 +2327,116 @@ _PRICE_GAUGE = re.compile(r'(?<![a-z])(?:pce|cpi|ppi)(?![a-z])|물가|인플레�
 _PP_DIR = re.compile(r'둔화|완화|하락|내려|상승|가속|악화|개선')
 _PP_MIN = 0.10        # 0.1%p 미만은 방향을 주장할 크기가 아니다
 
+# ─── 76항 — 나쁜 일에 '기대감'이라고 쓰지 않는다 (2026-08-27, 성동님 지적) ───
+# 실사고(2026-08-27 01:23 카드): 혼조 재료 이름이 "Fed 금리 인상 기대감"이었다.
+# 성동님 지적: "부정적인 소재에 '기대감'이라는 표현을 쓰는 것을 극도로 자제해야 한다.
+# 우려라고 해야 한다. 부정적인 것을 누가 기대하겠나? 금리 인상을 기대한다는 것은
+# 어불성설이다. 주가가 떨어지는데 그걸 누가 기대하나?"
+#
+# 맞는 말이다. '기대'는 바라는 마음을 담은 말이다. 시장 실무에서 "인상 기대"가
+# 관용어로 굳어 있다 해도, 우리 독자는 투자자다 — 자기 자산이 깎이는 사건을
+# '기대'라고 부르는 문장을 읽게 두지 않는다. 60항(이름이 내용과 반대편을 가리키면
+# 안 된다)의 어휘판이다.
+#
+# 다만 '기대'가 전부 나쁜 말은 아니다. "금리 인하 기대감", "실적 개선 기대감"은
+# 정상이다. 그래서 **불리한 사건 뒤에 붙은 기대만** 잡는다. 관용 표현
+# ('기대치', '기대 이상', '기대에 부합')은 시장 컨센서스를 가리키는 말이라 면제.
+_ADVERSE = (r'(?:금리|기준금리|정책금리)\s*인상|긴축|매파|테이퍼링|'
+            r'(?:물가|인플레이션)\s*(?:상승|가속|재점화|급등)|'
+            r'경기\s*(?:침체|둔화|위축)|(?:침체|리세션|스태그플레이션)|'
+            r'(?:주가|증시|지수|시장)\s*(?:하락|급락|조정|폭락)|'
+            r'관세\s*(?:인상|부과|확대)|규제\s*강화|'
+            r'실적\s*(?:부진|악화|쇼크)|'
+            r'실업(?:률)?\s*(?:증가|상승|악화)|신용\s*경색|디폴트|부도')
+# '기대치·기대 이상·기대에 부합'은 컨센서스를 뜻하는 말이라 건드리지 않는다.
+# 사이 구절(예: '인상' + ' 가능성에 대한' + ' 기대감')은 최대 12자까지 허용하되,
+# 그 안에 방향을 뒤집는 말(인하·개선·완화…)이 있으면 매칭하지 않는다 —
+# "금리 인상 우려에도 금리 인하 기대감" 같은 문장에서 앞뒤를 잘못 이을 수 있다.
+_ADVERSE_GAP = r'((?:(?!인하|인下|개선|완화|축소|후퇴|반등|회복|둔화)[가-힣A-Za-z0-9 ]){0,12}?)'
+_ADVERSE_EXPECT = re.compile(
+    r'(' + _ADVERSE + r')' + _ADVERSE_GAP + r'(\s*)기대(?:감)?(?!치|\s*이상|에\s*부합)')
+
+
+def adverse_expect_offenders(entry):
+    """불리한 사건에 '기대(감)'을 붙인 표현 — 재판정 사유(체크 19)."""
+    out = []
+    seen = set()
+    scopes = [('긍정', entry.get('positive_factors')),
+              ('부정', entry.get('negative_factors')),
+              ('혼조', entry.get('mixed_factors'))]
+    for side_ko, factors in scopes:
+        for f in (factors or []):
+            for k in ('name', 'desc'):
+                t = f.get(k) or ''
+                m = _ADVERSE_EXPECT.search(t)
+                if not m:
+                    continue
+                key = (side_ko, m.group(0))
+                if key in seen:
+                    continue
+                seen.add(key)
+                out.append(f"악재에 '기대' 표현: {side_ko} '{f.get('name','')}' — "
+                           f"이 표현(\"{m.group(0)}\")은 어불성설이다. 투자자가 금리 인상이나 "
+                           f"주가 하락을 기대할 리 없다. '우려'·'경계'·'가능성'으로 "
+                           f"바꿔 써라. '기대'는 인하·개선처럼 바라는 일에만 쓴다")
+    kev = entry.get('key_event') or {}
+    for k in ('name', 'why'):
+        m = _ADVERSE_EXPECT.search(kev.get(k) or '')
+        if m and ('핵심', m.group(0)) not in seen:
+            seen.add(('핵심', m.group(0)))
+            out.append(f"악재에 '기대' 표현: 핵심 이슈 \"{m.group(0)}\" — "
+                       f"'우려'·'경계'로 바꿔 써라")
+    m = _ADVERSE_EXPECT.search(entry.get('summary') or '')
+    if m:
+        out.append(f"악재에 '기대' 표현: 요약 \"{m.group(0)}\" — '우려'로 바꿔 써라")
+    return out
+
+
+def scrub_adverse_expect(text):
+    """불리한 사건 뒤의 '기대(감)'만 '우려'로 바꾼다. 인하·개선 쪽 기대는 그대로 둔다."""
+    if not text or '기대' not in text:
+        return text, []
+    hits = []
+
+    def rep(m):
+        hits.append(m.group(0))
+        # 관형어(예: '금리 인상' + ' 가능성에 대한' + ' 기대감')와 띄어쓰기를 살린다.
+        return f"{m.group(1)}{m.group(2)}{m.group(3) or ' '}우려"
+
+    return _ADVERSE_EXPECT.sub(rep, text), hits
+
+
+def enforce_adverse_expect(entry):
+    """재판정으로도 안 고쳐지면 코드가 바꾼다. 판정·점수는 건드리지 않는다 — 어휘만."""
+    changed = []
+    for key in ('positive_factors', 'negative_factors', 'mixed_factors'):
+        for f in (entry.get(key) or []):
+            for k in ('name', 'desc'):
+                new, hits = scrub_adverse_expect(f.get(k))
+                if hits:
+                    f[k] = new
+                    changed.extend(hits)
+    kev = entry.get('key_event') or {}
+    for k in ('name', 'why'):
+        new, hits = scrub_adverse_expect(kev.get(k))
+        if hits:
+            kev[k] = new
+            changed.extend(hits)
+    for k in ('summary',):
+        new, hits = scrub_adverse_expect(entry.get(k))
+        if hits:
+            entry[k] = new
+            changed.extend(hits)
+    rep = entry.get('report')
+    if isinstance(rep, dict):
+        for k, v in list(rep.items()):
+            new, hits = scrub_adverse_expect(v)
+            if hits:
+                rep[k] = new
+                changed.extend(hits)
+    return changed
+
+
 def tiny_inflation_move(entry):
     """물가 지표의 0.1%p 미만 변화에 방향·점수를 실은 재료."""
     out = []
@@ -2562,6 +2687,9 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
     fix_yield_number(holder, snap)
     for f in holder['mixed_factors']:
         rep[f['name']] = f['desc']
+    # 76항 — 악재에 붙은 '기대(감)'을 '우려'로. 백필 보고서도 이 경로를 지난다.
+    for _hit in enforce_adverse_expect({'report': rep}):
+        print(f"::warning::[76항] 보고서 표현 교정: '{_hit}' → '우려'")
     return rep
 
 
@@ -3665,6 +3793,11 @@ def main():
     # 판정·점수는 건드리지 않는다. 독자가 '언제'를 알 수 있게 사실을 더할 뿐이다.
     for _nm, _st in annotate_event_dates(entry):
         print(f"  [70항] 일정 표기 보강: '{_nm}' → {_st}")
+
+    # 4-7e. 악재의 '기대(감)' → '우려' (76항) — 재판정으로도 남으면 코드가 바꾼다.
+    # 어휘만 고친다. 판정·점수·재료 배치는 건드리지 않는다.
+    for _hit in enforce_adverse_expect(entry):
+        print(f"::warning::[76항] 악재 표현 교정: '{_hit}' → '우려'")
 
     # 4-8. 심층 보고서 (66항) — 확정된 카드를 A4 한 장으로 풀어 쓴다. 실패해도 카드는 나간다.
     try:
