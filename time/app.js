@@ -10329,11 +10329,21 @@ window.addEventListener("pageshow", () => refreshWeatherOnForeground("pageshow")
       //       중앙에 놓는다 — 광고도 이 화면의 여백 감각을 따르게.
       const cs = window.getComputedStyle(quotePanel);
       const padOf = (v) => parseFloat(cs.getPropertyValue(v)) || 0;
-      const gap = 8; // 패딩에 더해 광고와 글자자리 사이의 숨 쉴 틈
-      const innerX = r.left + padOf("padding-left") + gap;
-      const innerY = r.top + padOf("padding-top") + gap;
-      const innerW = Math.max(160, r.width - padOf("padding-left") - padOf("padding-right") - gap * 2);
-      const innerH = Math.max(50, r.height - padOf("padding-top") - padOf("padding-bottom") - gap * 2);
+      // 2026-08-27 운영 피드백 — "문장박스 height 보다 광고 height 가 너무
+      // 짧다. 광고 문구가 몇 글자 못 들어간다."
+      //
+      // 재보니 그 말이 맞았다. 문장박스는 130dp 인데 광고 자리는 82dp 였다.
+      // 48dp 를 어디서 잃었나 — 세로 패딩(위아래)을 통째로 빼고 거기에 다시
+      // 8dp 씩 여유를 준 탓이다. 광고 카드는 자기 유리 배경을 이미 갖고 있어서
+      // 문장박스 안쪽 여백까지 비워 둘 이유가 없다. **가로는 운영자 확인대로
+      // 지금이 딱 맞으니 그대로 두고, 세로만 되찾는다.**
+      const gapX = 8; // 가로 — 유리 테두리가 광고 옆으로 보이게(그대로)
+      const gapY = 2; // 세로 — 최대한 문장이 놓이던 높이를 다 쓴다
+      const padY = (padOf("padding-top") + padOf("padding-bottom")) * 0.35;
+      const innerX = r.left + padOf("padding-left") + gapX;
+      const innerY = r.top + padOf("padding-top") * 0.35 + gapY;
+      const innerW = Math.max(160, r.width - padOf("padding-left") - padOf("padding-right") - gapX * 2);
+      const innerH = Math.max(50, r.height - padY - gapY * 2);
       // 2026-08-26 운영 지침 — "문장박스 대신에 나오는 것이니 문장박스
       // height 만큼 해도 되는데, 지금 오히려 너무 작아서 광고 효과가 별로."
       //
