@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-08-27-07:00",
+      "timestamp_kst": "2026-08-27(목) 07:00 KST",
+      "key_event": {
+        "name": "잭슨홀 심포지엄 Fed 의장 연설 대기",
+        "name_en": "Jackson Hole Symposium Fed Chair Speech Anticipation",
+        "time": "8월 28일(금) 약 10:00 ET",
+        "why": "연준 통화 정책 방향, 시장 변동성 확대 (8월 28일(금) 약 10:00 ET)",
+        "why_en": "Fed monetary policy direction, increased market volatility (Aug 28 (Fri) approx. 10:00 ET)"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "AI 및 반도체 투자 심리 회복 지속, 주요 이벤트 대기 속 긍정 우위 전환",
+      "summary_en": "Continued recovery in AI and semiconductor investment sentiment, positive shift amidst key event anticipation",
+      "positive_factors": [
+        {
+          "score": 60,
+          "name": "엔비디아 실적 호조 및 AI 수요 견인",
+          "name_en": "Nvidia's Strong Earnings and AI Demand",
+          "desc": "엔비디아 Q2 실적 월가 예상치 상회, AI 칩 수요 지속으로 반도체 섹터 전반 강세",
+          "desc_en": "Nvidia's Q2 earnings beat Wall Street estimates, sustained AI chip demand drives strength across semiconductor sector",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "PCE 물가 상승률 지속",
+          "name_en": "Continued PCE Inflation Rate",
+          "desc": "7월 근원 PCE 물가 3.34%, PCE 물가 3.70%로 연준 목표치 상회, 긴축 장기화 우려",
+          "desc_en": "July Core PCE at 3.34% and PCE at 3.70% exceed Fed target, raising concerns about prolonged tightening",
+          "category": "macro_data"
+        },
+        {
+          "score": 15,
+          "name": "WTI 원유 가격 상승",
+          "name_en": "WTI Crude Oil Price Increase",
+          "desc": "WTI 원유 81.91(+2.04%)로 상승, 인플레이션 압력 가중 우려",
+          "desc_en": "WTI crude oil rises to 81.91 (+2.04%), increasing inflation pressure concerns",
+          "category": "oil_energy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미 국채금리 수준",
+          "name_en": "US Treasury Yield Levels",
+          "desc": "미10년 국채금리 4.66%(+0.54%), 미30년 국채금리 5.19%(+0.23%)로 소폭 상승했으나, 여전히 높은 수준 유지하며 성장주 할인율 압박",
+          "desc_en": "US 10-year Treasury yield at 4.66%(+0.54%) and 30-year at 5.19%(+0.23%) show slight increases, maintaining high levels and pressuring growth stock valuations",
+          "category": "rates_treasury"
+        }
+      ],
+      "report": {
+        "overview": "- 시장 총평: AI 및 반도체 투자 심리 회복이 지속되는 가운데, 주요 경제 이벤트 대기 심리가 혼재하며 긍정 우위로 전환된 시장 분위기.\n- 긍정 요인: 엔비디아의 견조한 실적 발표와 AI 칩 수요 지속이 반도체 섹터 전반의 강세를 견인하며 시장에 긍정적인 영향을 미침.\n- 부정 요인: 7월 근원 PCE 물가 및 PCE 물가가 연준 목표치를 상회하고 WTI 원유 가격이 상승하며 긴축 장기화 및 인플레이션 압력 가중 우려가 잔존.\n- 주요 대기 이벤트: 잭슨홀 심포지엄에서 예정된 연준 의장의 연설을 앞두고 통화 정책 방향에 대한 불확실성으로 시장 변동성 확대 가능성.",
+        "positive": "- 엔비디아 실적 호조 및 AI 수요 견인: 엔비디아의 2분기 실적이 월가 예상치를 크게 상회하며 AI 칩 수요가 견고하게 지속되고 있음을 확인. 이는 반도체 섹터 전반에 대한 투자 심리를 강화하며 관련 기업들의 주가 상승을 견인. 엔비디아는 AI 분야의 '중앙은행' 역할을 한다는 평가 속에, 일부 분석가는 '매도' 의견을 제시했음에도 불구하고 AI 붐에 대한 기대감이 시장을 지배.",
+        "negative": "- PCE 물가 상승률 지속: 7월 근원 PCE 물가가 3.34%, PCE 물가가 3.70%를 기록하며 연준의 목표치인 2%를 여전히 상회. 이는 연준의 긴축 정책이 예상보다 장기화될 수 있다는 우려를 증폭시키며, 고금리 환경이 지속될 가능성에 대한 시장의 경계심을 높임. 월스트리트 주식 시장은 뜨거운 인플레이션 데이터에 하락 마감.\n- WTI 원유 가격 상승: WTI 원유 가격이 81.91달러로 2.04% 상승하며 인플레이션 압력 가중 우려를 심화. 유가 상승은 기업의 생산 비용 증가와 소비자의 구매력 약화로 이어져 경제 전반에 부정적인 영향을 미 미칠 수 있다는 판단.",
+        "mixed": "- 미 국채금리 수준: 미 10년물 국채금리가 4.66%로 0.54% 상승하고, 미 30년물 국채금리도 5.19%로 0.23% 상승. 이는 여전히 높은 수준을 유지하며 성장주에 대한 할인율 압박으로 작용, 기업 가치 평가에 부정적인 영향을 미칠 수 있다는 우려. 그러나 동시에 인플레이션 헤지 수단으로서의 국채 매력도 일부 부각되며 시장에 혼조세를 제공.",
+        "watch": "- 잭슨홀 심포지엄 Fed 의장 연설: 8월 28일(금) 약 10:00 ET에 예정된 연준 의장의 기조연설에서 연준의 통화 정책 방향에 대한 구체적인 신호가 나올지 주목. 연설 내용에 따라 시장의 변동성이 크게 확대될 수 있으며, 긴축 장기화 또는 완화 신호에 따라 시장의 방향성이 결정될 전망.\n- 미 국채금리 및 WTI 원유 가격 추이: 향후 12시간 동안 미 국채금리와 WTI 원유 가격의 추가적인 변동 여부를 주시. 이들 지표의 안정화 또는 추가 상승 여부가 인플레이션 우려 및 긴축 장기화 가능성에 대한 시장의 판단을 좌우할 것."
+      },
+      "report_at": "2026-08-27(목) 07:00 KST"
+    },
+    {
       "id": "2026-08-27-02:04",
       "timestamp_kst": "2026-08-27(목) 02:04 KST",
       "key_event": {
@@ -49,7 +109,15 @@
           "desc_en": "Tech stocks decline ahead of NVDA earnings, reflecting continued investor caution (Aug 26 (Wed) after the close ET)",
           "category": "earnings_bellwether"
         }
-      ]
+      ],
+      "report": {
+        "overview": "- 시장 총평: PCE 물가 상승과 기술주 투자 심리 위축으로 부정적 우위 지속, 주요 경제 이벤트 대기 중.\n- 주요 원인: 7월 PCE 물가 상승으로 연준의 금리 인상 가능성 확대, 미 10년 국채금리 4.67%로 급등하며 증시 전반에 부담.\n- 기술주 동향: 엔비디아(NVDA) 실적 발표를 앞두고 기술주 전반에 대한 경계감과 하락 압력 잔존.\n- 지지 요인: 로봇 및 AI 기술에 대한 장기적 투자 심리는 긍정적 흐름을 유지하며 기술 ETF로 자금 유입 지속.",
+        "positive": "- 로봇 및 AI 기술 투자 심리: 로봇이 AI의 차세대 성장 동력으로 부상하며 관련 기술 ETF로 꾸준한 자금 유입. Anthropic이 Nscale과 450억 달러 규모의 컴퓨팅 자원 계약을 체결하는 등 AI 인프라 투자 지속.",
+        "negative": "- PCE 물가 상승 및 금리 인상 우려: 7월 근원 PCE 물가상승률 3.34%, PCE 물가상승률 3.70% 기록하며 인플레이션 압력 지속. 연준의 금리 인상 가능성 확대에 대한 우려로 미 10년 국채금리가 4.67%(+0.58%p)로 급등. 이는 기술주 중심의 나스닥 하락과 다우존스 산업평균지수 하락으로 이어지며 시장 전반에 부정적 영향.",
+        "mixed": "- WTI 원유 가격 상승: WTI 원유 가격이 82.89(+3.26%)로 상승하며 인플레이션 압력 재점화 우려를 키우는 동시에 에너지 섹터의 강세 기대를 혼재. 유가 상승이 전반적인 물가 상승 압력으로 작용할 수 있다는 경계감 잔존.\n- NVDA 실적 발표 경계감: 엔비디아(NVDA) 실적 발표(8월 26일(수) 장 마감 후 ET)를 앞두고 기술주 전반의 투자 심리 위축. 엔비디아 실적 호조에도 불구하고 일부 분석가들은 '매도' 의견을 제시하며 불확실성 증폭.",
+        "watch": "- 잭슨홀 심포지엄 Fed 의장 기조연설: 케빈 워시 연준 의장의 첫 연설(8월 28일(금) 약 10:00 ET)을 앞두고 통화 정책 방향에 대한 시장의 기대와 우려가 교차. 연설 내용에 따라 시장의 변동성 확대 가능성.\n- 미 10년 국채금리 추이: PCE 물가 상승 이후 급등한 미 10년 국채금리의 추가 상승 여부. 금리 안정화 시 기술주 투자 심리 개선, 추가 상승 시 시장 전반의 하락 압력 지속.\n- 주요 지수 선물 흐름: 다우, 나스닥, S&P 500 등 주요 지수 선물의 장 초반 흐름을 통해 투자 심리 변화 확인. 특히 기술주 중심의 나스닥 선물 추이가 중요."
+      },
+      "report_at": "2026-08-27(목) 07:00 KST"
     },
     {
       "id": "2026-08-27-01:54",
@@ -577,76 +645,8 @@
         "watch": "- PCE 개인소비지출(7월분) 발표: 8월 26일(수) 08:30 ET. 발표될 인플레이션 지표가 시장 예상치를 상회할 경우 Fed의 긴축 기조 유지 가능성이 높아져 시장에 부정적 영향 예상\n- 엔비디아(NVDA) 실적 발표: 8월 26일(수) 장 마감 후 ET. AI 반도체 섹터의 선두 주자인 엔비디아의 실적 및 가이던스가 AI 관련 기술주 전반의 투자 심리와 향후 방향성을 결정하는 중요한 변수로 작용\n- 미 국채금리 및 유가 추이: 미 10년물 국채금리와 국제 유가의 추가적인 하락 여부가 시장의 긍정적 심리를 유지하는 데 중요한 역할을 할 것으로 예상"
       },
       "report_at": "2026-08-26(수) 11:18 KST"
-    },
-    {
-      "id": "2026-08-26-11:10",
-      "timestamp_kst": "2026-08-26(수) 11:10 KST",
-      "key_event": {
-        "name": "엔비디아 실적 및 인플레이션 지표 대기",
-        "name_en": "Awaiting Nvidia Earnings and Inflation Data",
-        "time": "향후 12시간",
-        "why": "주요 기술주 실적 발표, 핵심 경제 지표 발표 임박 (8월 26일(수) 08:30 ET)",
-        "why_en": "Key tech earnings and crucial economic data release imminent (Aug 26 (Wed) 08:30 ET)"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "AI 및 기술주 투자 심리 회복 지속, 주요 이벤트 대기 속 긍정 우위 유지",
-      "summary_en": "AI and tech investment sentiment continues to recover, positive bias maintained amidst anticipation of key events",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "AI 및 반도체 섹터 강세",
-          "name_en": "AI and Semiconductor Sector Strength",
-          "desc": "NVDA (+2.33%) 및 SOXX (+1.78%) 등 AI 및 반도체 관련주 상승",
-          "desc_en": "AI and semiconductor stocks, including NVDA (+2.33%) and SOXX (+1.78%), show strength",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 20,
-          "name": "국채금리 하락",
-          "name_en": "Treasury Yields Decline",
-          "desc": "미10년 국채금리 4.64% (-1.38%), 미30년 국채금리 5.17% (-1.09%) 하락",
-          "desc_en": "US 10-year Treasury yield at 4.64% (-1.38%) and 30-year yield at 5.17% (-1.09%) decline",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 10,
-          "name": "유가 하락 및 지정학적 위험 완화",
-          "name_en": "Oil Price Drop and Geopolitical Risk Easing",
-          "desc": "WTI 원유 80.54 USD (-5.72%) 하락, 이란-오만 회담 기대감",
-          "desc_en": "WTI crude oil at 80.54 USD (-5.72%) declines, anticipation of Iran-Oman talks",
-          "category": "oil_energy"
-        },
-        {
-          "score": 10,
-          "name": "시장 변동성 완화",
-          "name_en": "Market Volatility Easing",
-          "desc": "VIX 공포지수 15.45 (-2.46%) 하락, 투자 심리 개선",
-          "desc_en": "VIX index at 15.45 (-2.46%) declines, improving investor sentiment",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "인플레이션 지표 발표 대기",
-          "name_en": "Anticipation of Inflation Data",
-          "desc": "투자자들 엔비디아 실적 및 주요 인플레이션 지표 발표 대기 (PCE 개인소비지출 8월 26일(수) 08:30 ET, NVDA 실적 8월 26일(수) 장 마감 후 ET)",
-          "desc_en": "Investors await Nvidia earnings and key inflation readings (PCE inflation Aug 26 (Wed) 08:30 ET, NVDA earnings Aug 26 (Wed) after the close ET)",
-          "category": "macro_data"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 오늘 시황 총평: AI 및 기술주 투자 심리 회복이 지속되며 긍정 우위의 시장 분위기 유지\n- 주요 원인: 엔비디아 실적 발표와 핵심 인플레이션 지표 발표를 앞두고 관망세가 짙어진 가운데, 국채금리 하락과 유가 안정화가 시장에 긍정적인 영향을 미침\n- 시장 하단 지지: AI 및 반도체 섹터의 견조한 강세와 시장 변동성 완화가 투자 심리 개선에 기여\n- 핵심 대기 이벤트: PCE 개인소비지출 발표와 엔비디아 실적 발표가 임박하며 시장의 방향성을 결정할 주요 변수로 작용할 전망",
-        "positive": "- AI 및 반도체 섹터 강세: 엔비디아(NVDA) 2.33% 상승, 반도체 ETF(SOXX) 1.78% 상승 등 AI 및 반도체 관련주가 강세를 보이며 시장 전반의 투자 심리를 견인. 이는 주요 기술주 실적 발표를 앞두고 AI 기술에 대한 기대감이 지속되는 영향으로 풀이\n- 국채금리 하락: 미국 10년물 국채금리 4.64%로 1.38% 하락, 미국 30년물 국채금리 5.17%로 1.09% 하락. 국채금리 하락은 기업의 자금 조달 비용 부담을 줄이고 성장주 투자 매력을 높여 증시에 긍정적인 요인으로 작용\n- 유가 하락 및 지정학적 위험 완화: 서부 텍사스산 원유(WTI) 가격이 80.54 USD로 5.72% 하락. 이란-오만 회담에 대한 기대감이 고조되며 중동 지역의 지정학적 위험 완화 가능성이 유가 하락에 기여, 이는 인플레이션 압력 완화 기대로 이어져 시장에 긍정적으로 작용\n- 시장 변동성 완화: VIX 공포지수가 15.45로 2.46% 하락하며 투자 심리 개선을 시사. 불확실성 감소는 투자자들의 위험 선호 심리를 높여 증시 상승에 기여",
-        "negative": "- 인플레이션 지표 발표 대기: 투자자들이 엔비디아 실적 발표와 함께 PCE 개인소비지출 등 주요 인플레이션 지표 발표를 대기하며 관망세가 짙어짐. 연방준비제도(Fed) 관계자(콜린스 총재)는 인플레이션 하락 증거 없이는 금리 인상이 필요할 수 있다고 언급하며 인플레이션 지표 결과에 대한 경계심 잔존",
-        "mixed": "",
-        "watch": "- PCE 개인소비지출(7월분)·GDP 2차 잠정치(2분기): 한국시간 08월 26일 21:30 발표 예정. 연방준비제도(Fed)의 통화 정책 방향을 가늠할 핵심 인플레이션 지표로, 예상치를 상회할 경우 시장에 부정적인 영향을 미칠 가능성\n- NVDA 실적 발표: 현지 08월 26일 장 마감 후(약 18시간 뒤) 발표 예정. AI 반도체 시장의 선두 주자인 엔비디아의 실적은 기술주 전반의 투자 심리와 AI 산업 전망에 중대한 영향을 미칠 것으로 예상"
-      },
-      "report_at": "2026-08-26(수) 11:10 KST"
     }
   ],
-  "updated_at": "2026-08-26T17:06:26Z",
+  "updated_at": "2026-08-26T22:02:17Z",
   "max_entries": 10
 }
