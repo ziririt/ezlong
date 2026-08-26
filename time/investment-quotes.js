@@ -1456,13 +1456,6 @@ window.investmentQuotes = [
     "genre": "literature"
   },
   {
-    "text": "그런 시간을 지나 이렇게 건재하게 살고 있다는 것이야말로 손님들께서 강하다는 증거 아니겠습니까?",
-    "title": "달러구트 꿈 백화점",
-    "author": "이미예",
-    "category": "문학",
-    "genre": "literature"
-  },
-  {
     "text": "매일 행복하진 않지만, 행복한 일은 매일 있어.",
     "title": "곰돌이 푸, 행복한 일은 매일 있어",
     "author": "곰돌이 푸",
@@ -5794,14 +5787,6 @@ window.investmentQuotes = [
     "priority": true
   },
   {
-    "text": "그런 생각들에 사로잡혀서 제대로 대처하거나 준비하지 못한 자신을 자책하는 것. 이 모든 게 정신력을 소모하는 일이다.",
-    "title": "기분을 관리하면 인생이 관리된다",
-    "author": "김다슬",
-    "category": "에세이",
-    "genre": "literature",
-    "priority": true
-  },
-  {
     "text": "인생을 결정하는 건 바로 하루의 기분이다. 그날의 기분이 하루의 성과를 결정하고, 하루의 성과들이 모여 미래를 만들고 그 미래들이 곧 내 인생이 되기 때문이다.",
     "title": "기분이 태도가 되지 말자",
     "author": "김수현",
@@ -6496,13 +6481,6 @@ window.investmentQuotes = [
   {
     "english": "An investment operation is one which, upon thorough analysis, promises safety of principal and an adequate return.",
     "text": "투자란 철저한 분석을 거쳐 원금의 안전성과 적정한 수익을 기대할 수 있는 행위다.",
-    "title": "증권분석",
-    "author": "벤저민 그레이엄·데이비드 도드",
-    "category": "mindset"
-  },
-  {
-    "english": "Operations not meeting these requirements are speculative.",
-    "text": "이러한 요건을 충족하지 못하는 행위는 투기다.",
     "title": "증권분석",
     "author": "벤저민 그레이엄·데이비드 도드",
     "category": "mindset"
@@ -8716,13 +8694,6 @@ window.investmentQuotes = [
     "category": "mindset"
   },
   {
-    "english": "It was my life—like all lives, mysterious and irrevocable and sacred. So very close, so very present, so very belonging to me. How wild it was, to let it be.",
-    "text": "그것은 나의 삶이었다. 모든 삶이 그렇듯, 신비롭고 되돌릴 수 없고 성스러운 것. 너무도 가깝고, 너무도 생생하고, 너무도 온전히 나의 것이었다. 그것을 그대로 놓아둔다는 것, 그것이 얼마나 거친 일이었는지.",
-    "title": "와일드 (Wild: From Lost to Found on the Pacific Crest Trail)",
-    "author": "셰릴 스트레이드 (Cheryl Strayed)",
-    "genre": "literature"
-  },
-  {
     "english": "The game of speculation is the most uniformly fascinating game in the world. But it is not a game for the stupid, the mentally lazy, the person of inferior emotional balance, or the get-rich-quick adventurer. They will die poor.",
     "text": "투기라는 게임은 세상에서 가장 한결같이 매혹적인 게임이다. 그러나 이것은 어리석은 자, 정신적으로 게으른 자, 감정적 균형이 부족한 자, 혹은 벼락부자를 꿈꾸는 모험가를 위한 게임이 아니다. 그런 사람들은 결국 가난하게 죽는다.",
     "title": "제시 리버모어의 회상 (Reminiscences of a Stock Operator)",
@@ -9306,13 +9277,6 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
-  },
-  {
-    "english": "It was my life – like all lives, mysterious and irrevocable and sacred. So very close, so very present, so very belonging to me. How wild it was, to let it be.",
-    "text": "그것은 나의 삶이었다. 모든 삶이 그러하듯 신비롭고, 되돌릴 수 없고, 신성한 것이었다. 이토록 가깝고, 이토록 선명하고, 이토록 온전히 나의 것인 삶. 있는 그대로 두는 것, 그것이 얼마나 거친 일이었는지.",
-    "title": "와일드 (Wild)",
-    "author": "셰릴 스트레이드 (Cheryl Strayed)",
-    "genre": "literature"
   },
   {
     "english": "The stock market is filled with individuals who know the price of everything, but the value of nothing.",
