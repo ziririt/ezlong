@@ -1720,6 +1720,10 @@ def validate_content(entry, session_code='', snap=None):
                           f"이슈라면 벨웨더 실적 등 시장 카테고리로 분류해 근거를 대라. "
                           f"아니면 빼라")
 
+    # ── 체크 18: 물가 지표 미세 변동을 방향으로 (2026-08-26, 74항 후속) ──────
+    for _tiny in tiny_inflation_move(entry):
+        errors.append(_tiny)
+
     # ── 체크 17: 방금 나온 지표를 두고 묵은 지표를 근거로 (2026-08-26, 74항) ──
     for _stale in stale_inflation_gauge(entry):
         errors.append(_stale)
@@ -2252,6 +2256,38 @@ def annotate_event_dates(entry, now_utc=None):
 # 뿌리 원인은 FRED 수집 목록에 PCE가 없었다는 것(고침). 이 검사는 재발 감시다.
 _CPI_MENTION = re.compile(r'(?<![a-z])cpi(?![a-z])|소비자\s*물가', re.I)
 _PCE_MENTION = re.compile(r'(?<![a-z])pce(?![a-z])|개인\s*소비\s*지출', re.I)
+
+# 74항 후속 — 물가 지표의 미세 변동을 방향으로 읽는 것.
+# 실사고: 근원 PCE가 전기대비 0.00%p, 헤드라인이 -0.02%p인데 카드가 "물가 상승률
+# 둔화"로 읽고 긍정 45점을 실었다. 0.02%p는 반올림 자리이지 방향이 아니다
+# (실제로 언론은 같은 날 헤드라인 PCE가 3.6→3.7로 올랐다고 보도했다 — 개정·반올림 차이).
+# 62항이 가격·금리의 미세 변동을 막았듯, 물가 지표에도 같은 기준이 필요하다.
+_PP_MOVE = re.compile(r'([\d.]+)\s*%p')
+_PRICE_GAUGE = re.compile(r'(?<![a-z])(?:pce|cpi|ppi)(?![a-z])|물가|인플레이션', re.I)
+_PP_DIR = re.compile(r'둔화|완화|하락|내려|상승|가속|악화|개선')
+_PP_MIN = 0.10        # 0.1%p 미만은 방향을 주장할 크기가 아니다
+
+def tiny_inflation_move(entry):
+    """물가 지표의 0.1%p 미만 변화에 방향·점수를 실은 재료."""
+    out = []
+    for side in ('positive_factors', 'negative_factors'):
+        side_ko = '긍정' if side == 'positive_factors' else '부정'
+        for f in entry.get(side) or []:
+            if int(f.get('score', 0) or 0) <= 0:
+                continue
+            text = f"{f.get('name','')} {f.get('desc','')}"
+            if not _PRICE_GAUGE.search(text) or not _PP_DIR.search(text):
+                continue
+            moves = [float(m) for m in _PP_MOVE.findall(text)]
+            if not moves or max(moves) >= _PP_MIN:
+                continue
+            out.append(f"물가 미세 변동: {side_ko} '{f.get('name','')}' — 전기대비 "
+                       f"{max(moves):.2f}%p는 반올림 자리이지 방향이 아니다. 물가 지표는 "
+                       f"0.1%p 미만 변화로 둔화·가속을 말할 수 없다. 수준(목표 대비 얼마나 "
+                       f"높은가)을 말하려면 혼조로 옮기고, 방향을 말하려면 더 큰 변화나 "
+                       f"시장 반응(금리 기대 변화 등)을 근거로 대라")
+    return out
+
 
 def stale_inflation_gauge(entry, now_utc=None):
     """최근 PCE 발표 직후인데 카드가 물가를 CPI로만 말하면 재판정 사유."""
