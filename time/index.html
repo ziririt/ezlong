@@ -422,7 +422,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.81</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.82</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -774,6 +774,14 @@
           <button class="share-rate-row" type="button" id="rateAppBtn">
             <span class="share-rate-title" data-i18n="settings.rateApp">우리를 평가해 주세요</span>
             <span class="share-rate-desc" data-i18n="settings.rateAppDesc">별점 하나가 큰 힘이 됩니다</span>
+          </button>
+          <!-- 2026-08-26 — 광고 개인정보 동의(UMP). 유럽·영국·스위스 사용자는
+               한 번 한 선택을 언제든 되돌릴 수 있어야 한다(GDPR 요건). 그
+               지역이 아니면 네이티브가 false를 돌려줘 이 줄은 아예 안 뜬다 —
+               눌러도 아무 일도 안 일어나는 버튼을 남기지 않기 위해서다. -->
+          <button class="share-rate-row" type="button" id="privacyOptionsBtn" hidden>
+            <span class="share-rate-title" data-i18n="settings.privacyOptions">개인정보 설정</span>
+            <span class="share-rate-desc" data-i18n="settings.privacyOptionsDesc">광고 개인 맞춤 동의를 다시 선택합니다</span>
           </button>
         </section>
 
@@ -1225,7 +1233,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260826-alarmv2-v51"></script>
+  <script src="app.js?v=20260826-alarmv2-v52"></script>
 
   </body>
 </html>

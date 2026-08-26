@@ -7652,6 +7652,27 @@ function rateAppNow() {
   var rateBtn = document.getElementById("rateAppBtn");
   if (shareBtn) shareBtn.addEventListener("click", shareAppNow);
   if (rateBtn) rateBtn.addEventListener("click", rateAppNow);
+
+  // 2026-08-26 — 광고 개인정보 동의(UMP) 재설정.
+  //
+  // 이 줄을 보여도 되는지는 UMP 가 지역을 확인한 뒤에야 안다. 페이지가 뜨는
+  // 시점에는 알 수 없다는 뜻이라, 문서 시작 전 주입이 아니라 콜백으로 받는다.
+  // 네이티브가 동의 절차를 마치면 스스로 한 번 알려주고(iOS ConsentManager
+  // .notifyWebPrivacyOptions / Android notifyPrivacyOptionsToWeb), 혹시 그
+  // 알림보다 페이지가 늦게 떴을 경우를 대비해 여기서도 한 번 물어본다.
+  var privacyBtn = document.getElementById("privacyOptionsBtn");
+  window.__flipzenPrivacyOptions = function (available) {
+    if (!privacyBtn) return;
+    privacyBtn.hidden = !available;
+  };
+  if (privacyBtn) {
+    privacyBtn.addEventListener("click", function () {
+      postToNativeAd({ action: "showPrivacyOptions" });
+    });
+    [0, 1500, 4000].forEach(function (delay) {
+      window.setTimeout(function () { postToNativeAd({ action: "privacyOptionsStatus" }); }, delay);
+    });
+  }
 })();
 
 // 알라딘 모달과 동일한 "iOS는 기본 브라우저로, 안드로이드는 Custom Tabs로"
@@ -12817,11 +12838,14 @@ var bedsideActive = false;
     var elapsed = Math.max(0, (endMs - start) / 1000);
     var rounds = Array.isArray(session.rockRounds) ? session.rockRounds : [];
     var ev = [];
-    ev.push({ t: start, text: title + " \u2014 " + "\uc544\uc8fc \uc791\uc740 \uc18c\ub9ac\ub85c \uc0b4\uc0b4 \uc7ac\uc0dd \uc2dc\uc791" });
-    if (elapsed >= 60)  ev.push({ t: start + 60 * 1000,  text: "\uc18c\ub9ac\ub97c \uc870\uae08\uc529 \ud0a4\uc6b0\ub294 \uc911 \u2014 \uc544\uc9c1 \ubd80\ub4dc\ub7fd\uac8c" });
-    if (elapsed >= 120) ev.push({ t: start + 120 * 1000, text: "\uadf8\ub798\ub3c4 \uc790\uace0 \uc788\ub124\uc694 \u2014 \uc18c\ub9ac \uc870\uae08 \ub354" });
+    ev.push({ t: start, text: title + " \u2014 " + t("settings.alarm.logStart", null, "\uc544\uc8fc \uc791\uc740 \uc18c\ub9ac\ub85c \uc0b4\uc0b4 \uc7ac\uc0dd \uc2dc\uc791") });
+    if (elapsed >= 60)  ev.push({ t: start + 60 * 1000,  text: t("settings.alarm.logRise1", null, "\uc18c\ub9ac\ub97c \uc870\uae08\uc529 \ud0a4\uc6b0\ub294 \uc911 \u2014 \uc544\uc9c1 \ubd80\ub4dc\ub7fd\uac8c") });
+    if (elapsed >= 120) ev.push({ t: start + 120 * 1000, text: t("settings.alarm.logRise2", null, "\uadf8\ub798\ub3c4 \uc790\uace0 \uc788\ub124\uc694 \u2014 \uc18c\ub9ac \uc870\uae08 \ub354") });
     var ROCK_OFF = [180, 480, 780];
-    var QUIP = ["3\ubd84 \ub3d9\uc548 \uc548 \uae68\uc11c, \uc2dc\ub044\ub7ec\uc6b4 \ub77d \uc74c\uc545\uc73c\ub85c \uae68\uc6b0\uae30 \uc2dc\ub3c4\ud569\ub2c8\ub2e4", "\uc544\uc9c1\ub3c4 \uafc8\ub098\ub77c\u2026 \ub77d \ud55c \uace1 \ub354 \uc138\uac8c \uac11\ub2c8\ub2e4", "\ub9c8\uc9c0\ub9c9\uc774\uc5d0\uc694, \ud06c\uac8c \ud55c \ubc88 \ub354 \ud754\ub4e4\uc5b4 \uae68\uc6c1\ub2c8\ub2e4"];
+    var QUIP = [
+      t("settings.alarm.logRock1", null, "3\ubd84 \ub3d9\uc548 \uc548 \uae68\uc11c, \uc2dc\ub044\ub7ec\uc6b4 \ub77d \uc74c\uc545\uc73c\ub85c \uae68\uc6b0\uae30 \uc2dc\ub3c4\ud569\ub2c8\ub2e4"),
+      t("settings.alarm.logRock2", null, "\uc544\uc9c1\ub3c4 \uafc8\ub098\ub77c\u2026 \ub77d \ud55c \uace1 \ub354 \uc138\uac8c \uac11\ub2c8\ub2e4"),
+      t("settings.alarm.logRock3", null, "\ub9c8\uc9c0\ub9c9\uc774\uc5d0\uc694, \ud06c\uac8c \ud55c \ubc88 \ub354 \ud754\ub4e4\uc5b4 \uae68\uc6c1\ub2c8\ub2e4")];
     for (var i = 0; i < ROCK_OFF.length; i += 1) {
       if (elapsed < ROCK_OFF[i]) break;
       var rtitle = (rounds[i] && rounds[i].title) ? rounds[i].title : "";
@@ -12829,9 +12853,9 @@ var bedsideActive = false;
       ev.push({ t: rt, text: QUIP[i] + (rtitle ? (" \u2014 " + rtitle) : "") });
     }
     if (stopped && (stopped - start) / 1000 < GIVE_UP) {
-      ev.push({ t: stopped, text: "\uc54c\ub78c \ud574\uc81c\ub428 \u2014 \uc798 \uc77c\uc5b4\ub0ac\uc5b4\uc694, \uc218\uace0\ud588\uc5b4\uc694" });
+      ev.push({ t: stopped, text: t("settings.alarm.logStopped", null, "\uc54c\ub78c \ud574\uc81c\ub428 \u2014 \uc798 \uc77c\uc5b4\ub0ac\uc5b4\uc694, \uc218\uace0\ud588\uc5b4\uc694") });
     } else if (elapsed >= GIVE_UP) {
-      ev.push({ t: cap, text: "\uc5ec\uae30\uc11c \uba48\ucda5\ub2c8\ub2e4 \u2014 \uc790\ub294 \uac8c \uc544\ub2c8\ub77c \ub2e4\ub978 \uc77c \uc911\uc774\uac70\ub098 \uac00\ubc29 \uc18d\uc778\uac00 \ubd10\uc694" });
+      ev.push({ t: cap, text: t("settings.alarm.logGaveUp", null, "\uc5ec\uae30\uc11c \uba48\ucda5\ub2c8\ub2e4 \u2014 \uc790\ub294 \uac8c \uc544\ub2c8\ub77c \ub2e4\ub978 \uc77c \uc911\uc774\uac70\ub098 \uac00\ubc29 \uc18d\uc778\uac00 \ubd10\uc694") });
     }
     return ev;
   }

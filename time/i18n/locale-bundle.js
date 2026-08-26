@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-25T22:46:18.044Z
+ * 생성 시각: 2026-08-26T02:42:08.473Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -201,7 +201,15 @@
         "screenGuideMiui": "On Xiaomi (Redmi) devices, turn on \"Display pop-up windows while running in the background\" and \"Autostart\" so the alarm screen can appear.",
         "screenGuidePopupBtn": "Open pop-up permission",
         "screenGuideAutoBtn": "Open Autostart",
-        "keepScreenHint": "You can leave the screen on. It stays very dim and wakes you on this screen in the morning."
+        "keepScreenHint": "You can leave the screen on. It stays very dim and wakes you on this screen in the morning.",
+        "logStart": "Starting very softly",
+        "logRise1": "Turning it up a little — still gentle",
+        "logRise2": "Still asleep — a bit louder",
+        "logRock1": "Three minutes and still asleep, so we try a loud rock track",
+        "logRock2": "Still dreaming… one more rock song, louder",
+        "logRock3": "Last try — one big shake to wake you",
+        "logStopped": "Alarm off — good morning, you made it",
+        "logGaveUp": "Stopping here — you're probably already up, or the phone is in a bag"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -229,7 +237,9 @@
       "rateApp": "Rate us",
       "rateAppDesc": "Your rating helps a lot",
       "shareAppMessage": "Try Long Time, Easy Life — a flip clock and gentle wake-up alarm app.",
-      "shareCopied": "Link copied. Paste it to share."
+      "shareCopied": "Link copied. Paste it to share.",
+      "privacyOptions": "Privacy settings",
+      "privacyOptionsDesc": "Review your ad personalisation choice"
     },
     "weather": {
       "title": "Weather",
@@ -700,7 +710,15 @@
         "screenGuideMiui": "En dispositivos Xiaomi (Redmi), activa \"Mostrar ventanas emergentes en segundo plano\" e \"Inicio automático\" para que aparezca la pantalla de la alarma.",
         "screenGuidePopupBtn": "Abrir permiso de ventanas",
         "screenGuideAutoBtn": "Abrir inicio automático",
-        "keepScreenHint": "Puedes dejar la pantalla encendida. Se mantiene muy tenue y te despierta en esta pantalla."
+        "keepScreenHint": "Puedes dejar la pantalla encendida. Se mantiene muy tenue y te despierta en esta pantalla.",
+        "logStart": "Empieza a sonar muy bajito",
+        "logRise1": "Subiendo poco a poco — todavía suave",
+        "logRise2": "Sigues dormido — un poco más alto",
+        "logRock1": "Tres minutos y sigues dormido: probamos con rock a buen volumen",
+        "logRock2": "Aún soñando… otra de rock, más fuerte",
+        "logRock3": "Último intento: una sacudida grande",
+        "logStopped": "Alarma apagada — buenos días, lo lograste",
+        "logGaveUp": "Paramos aquí — quizá ya estés en pie, o el móvil esté en un bolso"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -728,7 +746,9 @@
       "rateApp": "Valóranos",
       "rateAppDesc": "Tu valoración nos ayuda mucho",
       "shareAppMessage": "Prueba Long Time, Easy Life: reloj flip y alarma para despertar.",
-      "shareCopied": "Enlace copiado. Pégalo para compartir."
+      "shareCopied": "Enlace copiado. Pégalo para compartir.",
+      "privacyOptions": "Ajustes de privacidad",
+      "privacyOptionsDesc": "Revisa tu consentimiento de anuncios personalizados"
     },
     "weather": {
       "title": "Tiempo",
@@ -1199,7 +1219,15 @@
         "screenGuideMiui": "Xiaomi（Redmi）端末では「バックグラウンドでのポップアップ表示」と「自動起動」をオンにすると、アラーム画面が表示されます。",
         "screenGuidePopupBtn": "ポップアップ権限を開く",
         "screenGuideAutoBtn": "自動起動を開く",
-        "keepScreenHint": "画面を消さなくても大丈夫です。とても暗いまま保たれ、朝はこの画面で起こします。"
+        "keepScreenHint": "画面を消さなくても大丈夫です。とても暗いまま保たれ、朝はこの画面で起こします。",
+        "logStart": "ごく小さな音でそっと再生を開始",
+        "logRise1": "少しずつ音を上げています — まだやさしく",
+        "logRise2": "まだ眠っていますね — もう少し大きく",
+        "logRock1": "3分たっても起きないので、大きめのロックで起こします",
+        "logRock2": "まだ夢の中…ロックをもう一曲、強めに",
+        "logRock3": "最後です。大きく一度、揺り起こします",
+        "logStopped": "アラーム解除 — よく起きられました",
+        "logGaveUp": "ここで止めます — 眠っているのではなく、別のことをしているか、かばんの中かもしれません"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -1227,7 +1255,9 @@
       "rateApp": "評価をお願いします",
       "rateAppDesc": "あなたの評価が励みになります",
       "shareAppMessage": "フリップ時計と起床アラームのアプリ「Long Time, Easy Life」を使ってみてください。",
-      "shareCopied": "リンクをコピーしました。貼り付けて共有してください。"
+      "shareCopied": "リンクをコピーしました。貼り付けて共有してください。",
+      "privacyOptions": "プライバシー設定",
+      "privacyOptionsDesc": "広告のパーソナライズ同意を選び直します"
     },
     "weather": {
       "title": "天気",
@@ -1698,7 +1728,15 @@
         "screenGuideMiui": "샤오미(Redmi) 기기는 '백그라운드에서 팝업 창 표시'와 '자동 시작'을 켜야 알람 화면이 뜹니다.",
         "screenGuidePopupBtn": "팝업 권한 열기",
         "screenGuideAutoBtn": "자동 시작 열기",
-        "keepScreenHint": "화면을 끄지 않으셔도 됩니다. 아주 어둡게 유지되다가 아침에 이 화면에서 깨워 드립니다."
+        "keepScreenHint": "화면을 끄지 않으셔도 됩니다. 아주 어둡게 유지되다가 아침에 이 화면에서 깨워 드립니다.",
+        "logStart": "아주 작은 소리로 살살 재생 시작",
+        "logRise1": "소리를 조금씩 키우는 중 — 아직 부드럽게",
+        "logRise2": "그래도 자고 있네요 — 소리 조금 더",
+        "logRock1": "3분 동안 안 깨서, 시끄러운 록 음악으로 깨우기 시도합니다",
+        "logRock2": "아직도 꿈나라… 록 한 곡 더 세게 갑니다",
+        "logRock3": "마지막이에요, 크게 한 번 더 흔들어 깨웁니다",
+        "logStopped": "알람 해제됨 — 잘 일어났어요, 수고했어요",
+        "logGaveUp": "여기서 멈춥니다 — 자는 게 아니라 다른 일 중이거나 가방 속인가 봐요"
       },
       "watch": {
         "heading": "애플워치",
@@ -1726,7 +1764,9 @@
       "rateApp": "우리를 평가해 주세요",
       "rateAppDesc": "별점 하나가 큰 힘이 됩니다",
       "shareAppMessage": "하루가 편해지는 플립시계·기상 알람 앱, Long Time, Easy Life를 써보세요.",
-      "shareCopied": "링크를 복사했어요. 붙여넣어 공유하세요."
+      "shareCopied": "링크를 복사했어요. 붙여넣어 공유하세요.",
+      "privacyOptions": "개인정보 설정",
+      "privacyOptionsDesc": "광고 개인 맞춤 동의를 다시 선택합니다"
     },
     "weather": {
       "title": "날씨",
@@ -2197,7 +2237,15 @@
         "screenGuideMiui": "Em aparelhos Xiaomi (Redmi), ative \"Exibir janelas pop-up em segundo plano\" e \"Início automático\" para a tela do alarme aparecer.",
         "screenGuidePopupBtn": "Abrir permissão de pop-up",
         "screenGuideAutoBtn": "Abrir início automático",
-        "keepScreenHint": "Pode deixar a tela ligada. Ela fica bem escura e acorda você nesta tela pela manhã."
+        "keepScreenHint": "Pode deixar a tela ligada. Ela fica bem escura e acorda você nesta tela pela manhã.",
+        "logStart": "Começa a tocar bem baixinho",
+        "logRise1": "A subir aos poucos — ainda suave",
+        "logRise2": "Ainda a dormir — um pouco mais alto",
+        "logRock1": "Três minutos e ainda a dormir: vamos tentar com rock alto",
+        "logRock2": "Ainda a sonhar… mais uma de rock, mais forte",
+        "logRock3": "Última tentativa: um abanão para acordar",
+        "logStopped": "Alarme desligado — bom dia, conseguiu",
+        "logGaveUp": "Paramos por aqui — talvez já esteja de pé, ou o telemóvel esteja numa mala"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -2225,7 +2273,9 @@
       "rateApp": "Avalie-nos",
       "rateAppDesc": "Sua avaliação ajuda muito",
       "shareAppMessage": "Experimente o Long Time, Easy Life: relógio flip e alarme para acordar.",
-      "shareCopied": "Link copiado. Cole para compartilhar."
+      "shareCopied": "Link copiado. Cole para compartilhar.",
+      "privacyOptions": "Definições de privacidade",
+      "privacyOptionsDesc": "Reveja o seu consentimento de anúncios personalizados"
     },
     "weather": {
       "title": "Tempo",
@@ -2696,7 +2746,15 @@
         "screenGuideMiui": "小米（Redmi）设备需开启“后台弹出界面”和“自启动”，闹钟画面才能显示。",
         "screenGuidePopupBtn": "打开弹窗权限",
         "screenGuideAutoBtn": "打开自启动",
-        "keepScreenHint": "不必关闭屏幕。它会保持很暗，早晨在这个画面上唤醒你。"
+        "keepScreenHint": "不必关闭屏幕。它会保持很暗，早晨在这个画面上唤醒你。",
+        "logStart": "以极小的音量轻轻开始播放",
+        "logRise1": "正在一点点调大 — 仍然很轻柔",
+        "logRise2": "还在睡呢 — 再大一点",
+        "logRock1": "三分钟还没醒，试试大声的摇滚",
+        "logRock2": "还在梦里…再来一首摇滚，更响一些",
+        "logRock3": "最后一次，用力叫醒你",
+        "logStopped": "闹钟已关 — 早安，起来啦",
+        "logGaveUp": "到此为止 — 也许你已经起来了，或者手机在包里"
       },
       "watch": {
         "heading": "Apple Watch",
@@ -2724,7 +2782,9 @@
       "rateApp": "为我们评分",
       "rateAppDesc": "您的评分是我们的动力",
       "shareAppMessage": "试试翻页时钟与起床闹钟应用 Long Time, Easy Life。",
-      "shareCopied": "已复制链接，粘贴即可分享。"
+      "shareCopied": "已复制链接，粘贴即可分享。",
+      "privacyOptions": "隐私设置",
+      "privacyOptionsDesc": "重新选择广告个性化的同意选项"
     },
     "weather": {
       "title": "天气",
