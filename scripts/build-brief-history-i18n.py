@@ -170,11 +170,21 @@ def main():
     si, sj = between(src, '<!-- BH_SEO_START', '<!-- BH_SEO_END -->')
     ii, ij = between(src, '<!-- BH_I18N_START', '<!-- BH_I18N_END -->')
     ni, nj = between(src, '<!-- BH_NOSCRIPT_START', '<!-- BH_NOSCRIPT_END -->')
+    # 한국어 전용 해설(2026-08-27 신설). 번역이 준비되기 전까지 언어판에서는 통째로
+    # 뺀다 — 한국어 문단을 영어·일본어 페이지에 그대로 흘리는 쪽이 훨씬 나쁘다.
+    # ★ 번역이 준비되면 여기서 언어별 블록을 끼워 넣는다.
+    try:
+        gi, gj = between(src, '<!-- BH_GUIDE_START', '<!-- BH_GUIDE_END -->')
+    except Exception:
+        gi = gj = None
 
     rc = 0
     for lang in langs:
+        tail = src[nj:]
+        if gi is not None and gi > nj:
+            tail = src[nj:gi].rstrip('\n') + '\n' + src[gj:].lstrip('\n')
         s = (src[:si] + seo_block(lang) + src[sj:ii] + i18n_block(lang)
-             + src[ij:ni] + noscript_block(lang) + src[nj:])
+             + src[ij:ni] + noscript_block(lang) + tail)
         s = s.replace('<html lang="ko">', f'<html lang="{lang}">', 1)
         s, missed = body_swaps(lang, s)
         if missed:

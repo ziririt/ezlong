@@ -322,6 +322,34 @@
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
      head 맨 끝에 둔다 — 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
+<style>
+/* 접근성 폴백 — 투명도 저감·움직임 저감 (2026-08-27)
+   이 페이지는 ez-design.css 를 읽지 않아 공용 폴백이 닿지 않는다.
+   같은 규칙을 여기 한 벌 둔다. 화면 기본 모양은 바뀌지 않는다 —
+   사용자가 시스템에서 저감을 켰을 때만 발동한다. */
+@media (prefers-reduced-transparency: reduce) {
+  .en-nav, .nav, .glass, [class*="glass"], [class*="-blur"],
+  .hero-banner .page-subtitle-disclaimer, #pm-root .modal-overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .en-nav, .nav { background-color: #fff !important; }
+  .glass { background-color: #0f1a3c !important; }
+}
+@media (prefers-reduced-transparency: reduce) and (prefers-color-scheme: dark) {
+  .en-nav, .nav { background-color: #1c1c1e !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-property: opacity, color, background-color, border-color, fill, stroke !important;
+    transition-duration: 150ms !important;
+  }
+  *:active { transform: none !important; }
+}
+</style>
 </head>
 <body>
 <script src="/lang-banner.js"></script>
