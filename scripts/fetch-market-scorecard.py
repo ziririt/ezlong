@@ -658,9 +658,21 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 
 """
 
+    # ── 예정 이벤트 블록 (70항, 2026-08-26) ─────────────────────────────────
+    # 카드에도 진짜 달력을 쥐여 준다. 69항에서 보고서에만 줬더니, 카드 쪽은 여전히
+    # '잭슨홀 미팅 및 Fed 의장 연설 대기'처럼 날짜 없는 재료를 만들어냈다.
+    _now_utc = datetime.now(timezone.utc)
+    _ev = event_calendar_lines(_now_utc)
+    _et_now = f"{_now_utc.astimezone(ET_TZ):%Y-%m-%d %H:%M}" if ET_TZ else ''
+    event_block = ""
+    if _ev:
+        event_block = ("\n=== 예정 이벤트 (공식 일정표 — BLS·BEA·Fed·기업 IR) ===\n"
+                       + '\n'.join(_ev)
+                       + "\n[표기 규칙] 이 목록에 있는 일정만 쓴다. 없는 일정을 지어내지 마라.\n")
+
     return f"""당신은 미국 주식시장 시황 분석 전문가입니다.
-현재 시각(KST): {kst_now.strftime('%Y-%m-%d %H:%M')} ({schedule_label})
-{session_block}{fred_block}{av_block}{tv_inbox_section}
+현재 시각(KST): {kst_now.strftime('%Y-%m-%d %H:%M')} / 뉴욕(ET): {_et_now}
+{session_block}{fred_block}{av_block}{event_block}{tv_inbox_section}
 === 데이터 시점 안내 (분석 전 반드시 숙지) ===
 - 가격 데이터의 세션 태그를 그대로 신뢰하라: [프리마켓 실시간] [정규장] [포스트마켓 실시간] [야간/시간외] [직전 거래일 종가]
 - 태그 없는 항목은 직전 미국 정규장 종가 기준
@@ -697,6 +709,14 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 점수는 오직 '원인' 재료에만 배분하라. 지수·VIX·섹터 등락 같은 결과 서술은 요인 항목
   자체가 금지다 — 원인을 3개 못 찾으면 찾은 원인들에 점수 전액을 배분하라
   (결과 항목에 점수를 실었다가 그 항목이 걸러지면 화면의 합계가 깨진다)
+- [예정 이벤트는 뉴욕 시간(ET) 날짜를 반드시 적는다 — 2026-08-26 성동님 지시]
+  발표·회의·연설·실적처럼 '아직 오지 않은 일정'을 재료로 쓸 때는, 이름 또는 설명에
+  위 [예정 이벤트] 목록의 ET 표기를 그대로 넣어라.
+  나쁜 예: "잭슨홀 미팅 및 Fed 의장 연설 대기"  ← 언제인지 없어 독자가 판단할 수 없다
+  좋은 예: "잭슨홀 Fed 의장 연설 대기(8월 28일(금) 약 10:00 ET)"
+  기준시는 뉴욕(ET) 하나로 통일한다. 한국 시간·현지 시간으로 바꿔 쓰지 마라 —
+  이 카드는 6개 언어로 번역돼 전 세계 독자가 같은 화면을 본다.
+  이미 지난 일정을 '대기·예정·앞두고'로 쓰는 것은 명백한 오류다.
 - 요인 수: 각 3~5개
 - 실제 영향력 기반 점수 배분 (50:50 기계적 배분 금지)
 - mixed_factors: 해석이 엇갈리는 혼조·양면 재료 0~3개 (점수 없음, 아래 규칙 참조)
@@ -1661,6 +1681,12 @@ def validate_content(entry, session_code='', snap=None):
                           f"이슈라면 벨웨더 실적 등 시장 카테고리로 분류해 근거를 대라. "
                           f"아니면 빼라")
 
+    # ── 체크 15: 이미 지난 일정을 '대기'로 서술 (2026-08-26 신설, 70항) ──────
+    # 예정 이벤트에 날짜를 붙이기 시작하면(70항) 그 반대편 병도 같이 잡아야 한다 —
+    # 잭슨홀이 끝난 다음 날에도 '잭슨홀 연설 대기'가 남아 있으면 독자를 속이는 것이다.
+    for _stale in stale_event_offenders(entry):
+        errors.append(_stale)
+
     # ── 체크 9: 금리가 긍정·부정 양쪽에 (2026-08-17 신설, 60항) ──────────────
     _both = rate_on_both_sides(entry)
     if _both:
@@ -1936,31 +1962,80 @@ def report_offcard_scrub(rep, entry):
 # BEA bea.gov/news/schedule (PCE·GDP), Fed federalreserve.gov (FOMC).
 # ★ 2026년 말까지만 들어 있다. 2027년 일정이 발표되면(통상 연말) 여기에 이어 붙일 것.
 #   일정표가 소진되면 검증은 조용히 꺼지고 경고만 찍는다 — 낡은 표로 오판하지 않는다.
+# 70항(2026-08-26) — 5번째 칸 approx: 공식 시각이 아직 공표되지 않아 관례로 적은 경우.
+# 화면에는 '약'을 붙여 확정 일정과 구분한다. 모르는 것을 아는 척하지 않는다.
 _ECON_CALENDAR = [
-    # (ET 날짜, ET 시각, 종류, 이름)
-    ('2026-08-26', '08:30', 'pce',  'PCE 개인소비지출(7월분)·GDP 2차 잠정치(2분기)'),
-    ('2026-09-04', '08:30', 'jobs', '고용보고서(8월분)'),
-    ('2026-09-10', '08:30', 'ppi',  'PPI 생산자물가(8월분)'),
-    ('2026-09-11', '08:30', 'cpi',  'CPI 소비자물가(8월분)'),
-    ('2026-09-16', '14:00', 'fomc', 'FOMC 금리 결정'),
-    ('2026-09-30', '08:30', 'pce',  'PCE 개인소비지출(8월분)·GDP 확정치(2분기)'),
-    ('2026-10-02', '08:30', 'jobs', '고용보고서(9월분)'),
-    ('2026-10-14', '08:30', 'cpi',  'CPI 소비자물가(9월분)'),
-    ('2026-10-15', '08:30', 'ppi',  'PPI 생산자물가(9월분)'),
-    ('2026-10-28', '14:00', 'fomc', 'FOMC 금리 결정'),
-    ('2026-10-29', '08:30', 'pce',  'PCE 개인소비지출(9월분)·GDP 속보치(3분기)'),
-    ('2026-11-06', '08:30', 'jobs', '고용보고서(10월분)'),
-    ('2026-11-10', '08:30', 'cpi',  'CPI 소비자물가(10월분)'),
-    ('2026-11-13', '08:30', 'ppi',  'PPI 생산자물가(10월분)'),
-    ('2026-11-25', '08:30', 'pce',  'PCE 개인소비지출(10월분)'),
-    ('2026-12-04', '08:30', 'jobs', '고용보고서(11월분)'),
-    ('2026-12-09', '14:00', 'fomc', 'FOMC 금리 결정'),
-    ('2026-12-10', '08:30', 'cpi',  'CPI 소비자물가(11월분)'),
-    ('2026-12-15', '08:30', 'ppi',  'PPI 생산자물가(11월분)'),
-    ('2026-12-23', '08:30', 'pce',  'PCE 개인소비지출(11월분)'),
+    # (ET 날짜, ET 시각, 종류, 이름, 시각 미확정 여부)
+    ('2026-08-26', '08:30', 'pce',  'PCE 개인소비지출(7월분)·GDP 2차 잠정치(2분기)', False, 'PCE inflation (Jul) and Q2 GDP 2nd est.'),
+    ('2026-08-28', '10:00', 'jackson',
+     '잭슨홀 심포지엄(8/27~29) Fed 의장 기조연설 — 케빈 워시 취임 후 첫 연설', True, 'Jackson Hole symposium (Aug 27-29) — Fed Chair keynote'),
+    ('2026-09-04', '08:30', 'jobs', '고용보고서(8월분)', False, 'Jobs report (Aug)'),
+    ('2026-09-10', '08:30', 'ppi',  'PPI 생산자물가(8월분)', False, 'PPI (Aug)'),
+    ('2026-09-11', '08:30', 'cpi',  'CPI 소비자물가(8월분)', False, 'CPI (Aug)'),
+    ('2026-09-16', '14:00', 'fomc', 'FOMC 금리 결정', False, 'FOMC rate decision'),
+    ('2026-09-30', '08:30', 'pce',  'PCE 개인소비지출(8월분)·GDP 확정치(2분기)', False, 'PCE inflation (Aug) and Q2 GDP 3rd est.'),
+    ('2026-10-02', '08:30', 'jobs', '고용보고서(9월분)', False, 'Jobs report (Sep)'),
+    ('2026-10-14', '08:30', 'cpi',  'CPI 소비자물가(9월분)', False, 'CPI (Sep)'),
+    ('2026-10-15', '08:30', 'ppi',  'PPI 생산자물가(9월분)', False, 'PPI (Sep)'),
+    ('2026-10-28', '14:00', 'fomc', 'FOMC 금리 결정', False, 'FOMC rate decision'),
+    ('2026-10-29', '08:30', 'pce',  'PCE 개인소비지출(9월분)·GDP 속보치(3분기)', False, 'PCE inflation (Sep) and Q3 GDP advance'),
+    ('2026-11-06', '08:30', 'jobs', '고용보고서(10월분)', False, 'Jobs report (Oct)'),
+    ('2026-11-10', '08:30', 'cpi',  'CPI 소비자물가(10월분)', False, 'CPI (Oct)'),
+    ('2026-11-13', '08:30', 'ppi',  'PPI 생산자물가(10월분)', False, 'PPI (Oct)'),
+    ('2026-11-25', '08:30', 'pce',  'PCE 개인소비지출(10월분)', False, 'PCE inflation (Oct)'),
+    ('2026-12-04', '08:30', 'jobs', '고용보고서(11월분)', False, 'Jobs report (Nov)'),
+    ('2026-12-09', '14:00', 'fomc', 'FOMC 금리 결정', False, 'FOMC rate decision'),
+    ('2026-12-10', '08:30', 'cpi',  'CPI 소비자물가(11월분)', False, 'CPI (Nov)'),
+    ('2026-12-15', '08:30', 'ppi',  'PPI 생산자물가(11월분)', False, 'PPI (Nov)'),
+    ('2026-12-23', '08:30', 'pce',  'PCE 개인소비지출(11월분)', False, 'PCE inflation (Nov)'),
 ]
 
 _KST_TZ = timezone(timedelta(hours=9))
+
+# ─── 70항 — 예정 이벤트는 뉴욕(ET) 날짜·시각까지 적는다 (2026-08-26, 성동님 지시) ──
+# 지시 원문: "'잭슨홀 미팅 및 Fed 의장 연설 대기' 이런 것은 일정(날짜)를 명시해주면
+# 좋겠다. 미국 주식이니 전 세계인들이 보는 것이니 뉴욕 시간 기준으로."
+# 기준시는 ET 하나로 통일한다 — 6개 언어판이 같은 카드를 번역해 쓰는데 각자 자국 시간을
+# 쓰면 같은 이벤트가 언어마다 다른 날짜로 보인다. 미국장 이벤트의 공용 시계는 뉴욕이다.
+_ET_WD_KO = ['월', '화', '수', '목', '금', '토', '일']
+
+def et_stamp(dt_utc, approx=False):
+    """'8월 28일(금) 10:00 ET' — 한국어 카드용.
+    approx=True → '약 10:00 ET'(공식 시각 미공표)
+    approx='close' → '장 마감 후 ET'(실적은 날짜만 공표되고 시각은 관례다)"""
+    if ET_TZ is None:
+        return ''
+    e = dt_utc.astimezone(ET_TZ)
+    head = f"{e.month}월 {e.day}일({_ET_WD_KO[e.weekday()]})"
+    if approx == 'close':
+        return f"{head} 장 마감 후 ET"
+    return f"{head} {'약 ' if approx else ''}{e.hour:02d}:{e.minute:02d} ET"
+
+def et_stamp_en(dt_utc, approx=False):
+    """'Aug 28 (Fri) 10:00 ET' — 영문 병기 필드용."""
+    if ET_TZ is None:
+        return ''
+    e = dt_utc.astimezone(ET_TZ)
+    head = f"{e:%b} {e.day} ({e:%a})"
+    if approx == 'close':
+        return f"{head} after the close ET"
+    return f"{head} {'approx. ' if approx else ''}{e.hour:02d}:{e.minute:02d} ET"
+
+def event_calendar_lines(now_utc=None, days=7):
+    """향후 N일 예정 이벤트를 ET 표기로. 카드 프롬프트·보고서 프롬프트 공용.
+    KST는 일부러 넣지 않는다 — 프롬프트에 두 시계를 주면 생성문이 섞인다."""
+    now = now_utc or datetime.now(timezone.utc)
+    lines = []
+    for dt, _key, name, approx, _en in _econ_events(now):
+        h = (dt - now).total_seconds() / 3600.0
+        if h <= 24 * days:
+            lines.append(f"- {name}: {et_stamp(dt, approx)} (약 {h:.0f}시간 뒤)")
+    for g, dt in sorted(fetch_bellwether_earnings().items(), key=lambda x: x[1]):
+        h = (dt - now).total_seconds() / 3600.0
+        if 0 < h <= 24 * days:
+            tk = _BELLWETHER_TICKERS.get(g, g)
+            lines.append(f"- {tk} 실적 발표: {et_stamp(dt, 'close')} (약 {h:.0f}시간 뒤)")
+    return lines
 
 def _econ_events(now_utc=None):
     """일정표에서 아직 안 지난 이벤트를 (UTC datetime, 종류, 이름)으로. ET→UTC는
@@ -1969,11 +2044,11 @@ def _econ_events(now_utc=None):
         return []
     now = now_utc or datetime.now(timezone.utc)
     out = []
-    for d, t, key, name in _ECON_CALENDAR:
+    for d, t, key, name, approx, name_en in _ECON_CALENDAR:
         dt = (datetime.strptime(d + ' ' + t, '%Y-%m-%d %H:%M')
               .replace(tzinfo=ET_TZ).astimezone(timezone.utc))
         if dt > now:
-            out.append((dt, key, name))
+            out.append((dt, key, name, approx, name_en))
     if not out:
         print("::warning::[69항] 경제 일정표 소진 — 2027년 일정을 추가할 것(BLS/BEA/Fed)")
     return out
@@ -1981,7 +2056,7 @@ def _econ_events(now_utc=None):
 def _next_event_hours(key, now_utc=None):
     """해당 종류의 다음 이벤트까지 남은 시간(시간 단위). 표에 없으면 None."""
     now = now_utc or datetime.now(timezone.utc)
-    for dt, k, _ in _econ_events(now):
+    for dt, k, _n, _a, _e in _econ_events(now):
         if k == key:
             return (dt - now).total_seconds() / 3600.0
     return None
@@ -2019,7 +2094,127 @@ _EVT_MENTION = {
     'pce':  re.compile(r'(?<![a-z])pce(?![a-z])|개인\s*소비\s*지출'),
     'jobs': re.compile(r'고용\s*보고서|비농업|(?<![a-z])nfp(?![a-z])|고용\s*지표'),
     'fomc': re.compile(r'(?<![a-z])fomc(?![a-z])|연방공개시장|금리\s*결정'),
+    # 70항 — 잭슨홀은 매년 8월 말 사흘, 의장 기조연설이 그해 최대 통화정책 이벤트다.
+    'jackson': re.compile(r'잭슨\s*홀|jackson\s*hole'),
 }
+
+# 70항 집행 — 예정 이벤트를 다루면서 날짜가 없는 재료에 ET 표기를 붙인다.
+# 이미 날짜가 있으면 건드리지 않는다(모델이 제대로 썼으면 그대로 둔다).
+_DATE_TOKEN = re.compile(r'\d{1,2}\s*월\s*\d{1,2}\s*일|(?<![A-Za-z])ET(?![A-Za-z])|\d{1,2}/\d{1,2}')
+_FUTURE_FRAME = re.compile(r'대기|예정|앞두|앞둔|임박')   # 70항: 확실히 '아직 안 온 일'만
+
+def _past_events(now_utc, hours=72):
+    """최근 N시간 안에 이미 지나간 일정 — '대기/예정' 오표기를 잡는 데 쓴다."""
+    if ET_TZ is None:
+        return {}
+    out = {}
+    for d, t, key, name, approx, _en in _ECON_CALENDAR:
+        dt = (datetime.strptime(d + ' ' + t, '%Y-%m-%d %H:%M')
+              .replace(tzinfo=ET_TZ).astimezone(timezone.utc))
+        age = (now_utc - dt).total_seconds() / 3600.0
+        if 0 < age <= hours:
+            out[key] = (dt, name)
+    return out
+
+# '인플레이션 지표'처럼 뭉뚱그린 표현 — CPI·PPI·PCE 중 가장 가까운 것을 가리킨다.
+_INFLATION_GENERIC = re.compile(r'인플레이션\s*(?:지표|데이터|수치|발표)|물가\s*지표'
+                                r'|inflation\s+(?:data|print|report|gauge)')
+
+def _short_name(name):
+    """달력 이름에서 라벨만 — 'PCE 개인소비지출(7월분)·GDP 2차 잠정치' → 'PCE 개인소비지출'."""
+    return re.split(r'[(\u2014—]', name)[0].strip(' -·')
+
+def _event_hits(text, ev, earns):
+    """텍스트가 가리키는 예정 이벤트를 가까운 순으로. 각 원소 (UTC dt, 이름, 시각모드).
+
+    여러 개가 걸리면 가까운 순으로 준다 — 카드의 시야는 향후 12시간이라, 독자가 먼저
+    만나는 촉매가 우선이다. ('엔비디아 실적 및 잭슨홀 대기'에 사흘 뒤 잭슨홀만 적으면
+    몇 시간 뒤 실적을 앞둔 독자에게는 틀린 안내다.)"""
+    low = text.lower()
+    cands = []
+    for key, rx in _EVT_MENTION.items():
+        if rx.search(low) and key in ev:
+            cands.append(ev[key])
+    if _INFLATION_GENERIC.search(low):
+        for key in ('cpi', 'ppi', 'pce'):
+            if key in ev and ev[key] not in cands:
+                cands.append(ev[key])
+    if '실적' in text or 'earnings' in low:
+        for g in _rpt_groups_in(low):
+            if g in earns:
+                tk = _BELLWETHER_TICKERS.get(g, g)
+                cands.append((earns[g], f"{tk} 실적", 'close', f"{tk} earnings"))
+    return sorted(cands, key=lambda c: c[0])
+
+def annotate_event_dates(entry, now_utc=None):
+    """예정 이벤트를 다루는 재료의 설명 끝에 뉴욕(ET) 날짜·시각을 붙인다.
+    붙인 목록을 돌려준다 — 호출부가 로그를 찍는다."""
+    now = now_utc or datetime.now(timezone.utc)
+    ev = {}
+    for dt, key, name, approx, name_en in _econ_events(now):
+        ev.setdefault(key, (dt, name, approx, name_en))   # 같은 종류면 가장 가까운 것
+    earns = fetch_bellwether_earnings()
+    stamped = []
+
+    def _do(item, ko_pair, en_pair, max_events=2):
+        ko_name, ko_body = ko_pair
+        text = f"{item.get(ko_name) or ''} {item.get(ko_body) or ''}"
+        if not _FUTURE_FRAME.search(text) or _DATE_TOKEN.search(text):
+            return
+        hits = _event_hits(text, ev, earns)[:max_events]   # 셋이면 문장이 무너진다
+        if not hits:
+            return
+        # 하나면 날짜만(재료 이름이 이미 무엇인지 말해 준다), 둘이면 각각 이름을 붙인다
+        if len(hits) == 1:
+            dt, name, mode, _en = hits[0]
+            ko_tail, en_tail = et_stamp(dt, mode), et_stamp_en(dt, mode)
+        else:
+            ko_tail = ', '.join(f"{_short_name(n)} {et_stamp(d, m)}" for d, n, m, _e in hits)
+            en_tail = ', '.join(f"{_short_name(e)} {et_stamp_en(d, m)}" for d, _n, m, e in hits)
+        body = (item.get(ko_body) or '').rstrip()
+        item[ko_body] = (body.rstrip('.') + f" ({ko_tail})").strip()
+        en_name, en_body = en_pair
+        if item.get(en_body):
+            item[en_body] = item[en_body].rstrip().rstrip('.') + f" ({en_tail})"
+        stamped.append((item.get(ko_name) or hits[0][1], ko_tail))
+
+    for k in ('positive_factors', 'negative_factors', 'mixed_factors'):
+        for f in (entry.get(k) or []):
+            _do(f, ('name', 'desc'), ('name_en', 'desc_en'))
+    kev = entry.get('key_event')
+    if isinstance(kev, dict):
+        # 핵심 이슈 줄은 카드 맨 위 한 줄이라 자리가 좁다 — 가장 가까운 하나만.
+        _do(kev, ('name', 'why'), ('name_en', 'why_en'), max_events=1)
+    return stamped
+
+def stale_event_offenders(entry, now_utc=None):
+    """이미 지난 일정을 '대기·예정·앞두고'로 쓴 재료. 재판정 사유 문자열 목록."""
+    now = now_utc or datetime.now(timezone.utc)
+    past = _past_events(now)
+    if not past:
+        return []
+    upcoming = {}
+    for dt, key, _n, _a, _e in _econ_events(now):
+        upcoming.setdefault(key, dt)
+    _WAIT = re.compile(r'대기|예정|앞두|임박')
+    out = []
+    for k in ('positive_factors', 'negative_factors', 'mixed_factors'):
+        for f in (entry.get(k) or []):
+            text = f"{f.get('name') or ''} {f.get('desc') or ''}"
+            if not _WAIT.search(text):
+                continue
+            low = text.lower()
+            for key, rx in _EVT_MENTION.items():
+                if not rx.search(low) or key not in past:
+                    continue
+                nxt = upcoming.get(key)
+                # 다음 회차가 2주 밖이면 '대기'는 지난 일정을 가리키는 것이다
+                if nxt is None or (nxt - now).total_seconds() / 3600.0 > 24 * 14:
+                    out.append(f"지난 일정을 대기로 서술: '{f.get('name','')}' — "
+                               f"{past[key][1]}은(는) {et_stamp(past[key][0])}에 이미 끝났다. "
+                               f"결과를 평가하거나 재료에서 빼라")
+                break
+    return out
 _SCHED_FRAME = re.compile(r'발표|예정|임박|앞두|대기')
 _IMMINENT_CLAIM = re.compile(r'12\s*시간|임박|오늘\s*밤?|내일')
 
@@ -2078,20 +2273,9 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
     # 69항 — 향후 7일 내 공식 예정 이벤트를 실제 일정과 함께 준다. 모델이 '다음 발표'를
     # 임박한 것처럼 지어내는 병의 처방은 진짜 달력을 손에 쥐여 주는 것이다.
     _now_u = datetime.now(timezone.utc)
-    _ev_lines = []
-    for _dt, _key, _name in _econ_events(_now_u):
-        _h = (_dt - _now_u).total_seconds() / 3600.0
-        if _h <= 24 * 7:
-            _ev_lines.append(f"- {_name}: 한국시간 {_dt.astimezone(_KST_TZ):%m월 %d일 %H:%M}"
-                             f" (약 {_h:.0f}시간 뒤)")
-    for _g, _dt in sorted(fetch_bellwether_earnings().items(), key=lambda x: x[1]):
-        _h = (_dt - _now_u).total_seconds() / 3600.0
-        if 0 < _h <= 24 * 7:
-            _tk = _BELLWETHER_TICKERS.get(_g, _g)
-            _ev_lines.append(f"- {_tk} 실적 발표: 현지 {_dt.astimezone(ET_TZ):%m월 %d일} 장 마감 후"
-                             f" (약 {_h:.0f}시간 뒤)")
-    events = '\n'.join(_ev_lines)
-    now_kst_str = f"{_now_u.astimezone(_KST_TZ):%Y-%m-%d %H:%M} KST"
+    events = '\n'.join(event_calendar_lines(_now_u))    # 70항 — 기준시를 ET로 통일
+    now_kst_str = (f"{_now_u.astimezone(_KST_TZ):%Y-%m-%d %H:%M} KST"
+                   + (f" = 뉴욕 {_now_u.astimezone(ET_TZ):%m-%d %H:%M} ET" if ET_TZ else ""))
     prompt = f"""당신은 미국 주식 시황 데스크다. 아래 '확정 카드'는 이미 게시된 판정이다.
 이 카드를 처음 보고 "무슨 말인지 잘 모르겠다" 싶은 독자를 위해, 전후 사정을 풀어 쓴
 심층 보고서를 쓴다. 카드의 판정·점수를 바꾸거나 새 판정을 만들지 마라 — 설명만 한다.
@@ -2141,6 +2325,9 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
   예 — 반도체 섹터 강세의 근거로 "NVDA +2.2%, SOXX +1.5%".
 - watch에는 카드 밖이라도 시장 전체를 움직일 예정 이벤트(벨웨더 실적 발표·주요
   지표 발표·연준 일정)는 쓸 수 있다. 단일 기업의 소소한 뉴스는 여기도 금지.
+- **예정 이벤트에는 뉴욕 시간(ET) 날짜·시각을 반드시 붙인다.** 위 [예정 이벤트]의 표기를
+  그대로 옮겨라 — 예: "잭슨홀 Fed 의장 기조연설(8월 28일(금) 약 10:00 ET)". 한국 시간 등
+  다른 기준시로 바꾸지 마라 — 전 세계 독자가 같은 카드를 본다.
 - **watch는 '앞으로 12시간' 안에 확인 가능한 것만.** 예정 이벤트는 위 [예정 이벤트]에
   있는 것만, 그 일시를 붙여서 쓴다. 일정표에 없는 '다음 발표'를 임박한 것처럼 쓰는
   것은 오류다 — 다음 CPI가 몇 주 뒤인데 12시간 체크포인트로 쓰면 안 된다.
@@ -3225,6 +3412,11 @@ def main():
         entry['mixed_factors'] = [f for f in _mf if f not in _noise]
         for _f in _noise:
             print(f"::warning::[67항] 혼조 노이즈 제거: '{_f.get('name','')}'(개별 기업)")
+
+    # 4-7c. 예정 이벤트 ET 날짜 표기 (70항) — 프롬프트로 시켰어도 빠지면 코드가 붙인다.
+    # 판정·점수는 건드리지 않는다. 독자가 '언제'를 알 수 있게 사실을 더할 뿐이다.
+    for _nm, _st in annotate_event_dates(entry):
+        print(f"  [70항] 일정 표기 보강: '{_nm}' → {_st}")
 
     # 4-8. 심층 보고서 (66항) — 확정된 카드를 A4 한 장으로 풀어 쓴다. 실패해도 카드는 나간다.
     try:
