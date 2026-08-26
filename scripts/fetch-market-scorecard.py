@@ -2042,6 +2042,85 @@ def _rpt_groups_in(text):
                 break
     return found
 
+# ─── 77항 — 블릿의 '몸통'도 카드의 해설이어야 한다 (2026-08-27, 성동님 지적) ──
+# 실사고(2026-08-27 02:04 보고서 호재): "로봇 및 AI 기술 투자 심리: … 자금 유입 지속.
+# 'The Two Humanoid-Robot Funds Are 30 Points Apart This Year. The Winner Owns the
+# Parts, Not the Promises' 기사에서 … 애플(Apple)의 AI Mac 푸시가 … 마이크로소프트,
+# 아마존, 구글 등 주요 기술 기업들이 키미 K3 제조사에 구애하는 움직임 포착."
+# 한 블릿에 주제가 넷이고, 영문 기사 제목이 원문 그대로 두 줄 들어갔고, 카드에 없는
+# 기업이 다섯 개 나열됐다. 34항(구조)·65항(한 문장에 주장 하나)·68항(카드의 해설)이
+# 전부 깨진 문장이다.
+#
+# 68항 게이트는 **콜론 앞 주제**만 봤다. 주제는 카드 재료가 맞았으므로 통과했고,
+# 노이즈는 전부 콜론 뒤 몸통으로 들어왔다. 뒷문이 또 하나 있었던 것이다
+# (67항 혼조 칸 → 68항 보고서 주제 → 77항 보고서 몸통).
+#
+# 프롬프트에는 이미 "출처 기사 제목을 나열하지 마라 — '(뉴스: …)' 형태 금지"가
+# 있었다. 모델은 괄호를 떼고 "'제목' 기사에서"로 옷을 갈아입었다. 이름만 보는 검사는
+# 뚫린다는 그 교훈의 재발이다. 그래서 형태가 아니라 **성질**로 잡는다.
+
+# 영문 낱말 — 전부 대문자인 토큰(티커·약어: NVDA·ETF·PCE·AI)은 세지 않는다.
+_RPT_LATIN_WORD = re.compile(r'[A-Za-z][A-Za-z]+')
+_RPT_LATIN_MAX  = 5      # 한 문장에 영문 낱말 5개 이상이면 원문 인용으로 본다
+_RPT_HAS_NUM    = re.compile(r'\d')
+# 문장 분리 — '3.34%'의 소수점을 자르지 않도록 앞 글자가 숫자면 자르지 않는다.
+_RPT_SENT_SPLIT = re.compile(r'(?<=[^\d])\.(?=\s|$)')
+
+
+def _rpt_latin_words(sent):
+    """티커·약어를 뺀 영문 낱말 수. 'The Winner Owns the Parts'는 5, 'NVDA ETF'는 0."""
+    return sum(1 for w in _RPT_LATIN_WORD.findall(sent) if not w.isupper())
+
+
+def report_body_scrub(rep, entry, on_card):
+    """블릿 몸통(콜론 뒤)을 문장 단위로 훑어 카드의 해설이 아닌 문장을 걷어낸다.
+    걷어낸 (섹션, 사유, 문장) 목록을 돌려준다."""
+    dropped = []
+    for k in ('overview', 'positive', 'negative', 'mixed', 'watch'):
+        text = rep.get(k) or ''
+        if not text:
+            continue
+        out_lines = []
+        for line in text.split('\n'):
+            if not line.strip():
+                continue
+            head, sep, body = line.partition(':')
+            if not sep:                       # "핵심어: 내용" 꼴이 아니면 손대지 않는다
+                out_lines.append(line)
+                continue
+            keep = []
+            for raw in _RPT_SENT_SPLIT.split(body):
+                sent = raw.strip()
+                if not sent:
+                    continue
+                why = None
+                if _rpt_latin_words(sent) >= _RPT_LATIN_MAX:
+                    why = '영문 원문 인용'
+                elif k != 'watch':
+                    # watch는 벨웨더 실적·연준 일정 등 카드 밖 이벤트가 정상이라 면제(68항).
+                    off = _rpt_groups_in(sent) - on_card
+                    if len(off) >= 2:
+                        why = f"카드 밖 기업 나열({','.join(sorted(off))})"
+                    elif off and not _RPT_HAS_NUM.search(sent):
+                        # 68항이 허용한 것은 '수치를 든 근거 인용'이다.
+                        # 숫자 없이 이름만 나오면 근거가 아니라 새 주장이다.
+                        why = f"카드 밖 기업 무수치 언급({','.join(sorted(off))})"
+                if why:
+                    dropped.append((k, why, sent))
+                    continue
+                keep.append(sent)
+            body_new = '. '.join(keep)
+            if body_new and not body_new.endswith('.'):
+                body_new += '.'
+            if len(body_new.strip(' .')) < 12:
+                # 몸통이 통째로 걷혔다 — 제목만 남은 블릿은 정보가 없다.
+                dropped.append((k, '몸통 소실', line.strip()))
+                continue
+            out_lines.append(f"{head}:{' ' if not body_new.startswith(' ') else ''}{body_new.lstrip()}")
+        rep[k] = '\n'.join(out_lines).strip()
+    return dropped
+
+
 def report_offcard_scrub(rep, entry):
     """호재/악재/혼조 블릿 중 '카드에 없는 개별 기업'이 주제인 것을 걷어낸다.
     걷어낸 (섹션, 기업, 블릿) 목록을 돌려준다 — 호출부가 경고를 찍는다."""
@@ -2052,6 +2131,7 @@ def report_offcard_scrub(rep, entry):
          for s in ('positive_factors', 'negative_factors', 'mixed_factors')
          for f in (entry.get(s) or [])]))
     on_card = _rpt_groups_in(card_text)
+    entry['_rpt_on_card'] = on_card      # 77항 몸통 검사에서 같은 기준을 다시 쓴다
     dropped = []
     for k in ('positive', 'negative', 'mixed'):
         kept = []
@@ -2632,8 +2712,19 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
 - 12시간 내 예정 이벤트가 없으면, 지금 움직이는 실측 지표(국채금리·유가·달러·VIX·
   지수 선물)의 추이 확인을 체크포인트로 쓴다.
 - 위 자료에 없는 수치·일정·이벤트를 만들어내지 마라. 모르면 안 쓴다.
-- **출처 기사 제목을 나열하지 마라.** "(뉴스: …)", "(출처: …)" 같은 영문 헤드라인
-  인용 금지 — 근거는 내용(기관·수치·이벤트)으로 녹여 쓰는 것이지 제목을 붙이는 게 아니다.
+- **기사 제목을 옮겨 적지 마라 — 형태를 불문한다(77항).** "(뉴스: …)" 같은 괄호형도,
+  "'Nvidia earnings, PCE data…' 기사에서" 같은 인용형도 전부 금지다. 영문 문장을
+  통째로 붙여넣지 마라. 이 보고서는 한국어 독자가 읽는다 — 기사에서 얻은 것은
+  **내용(기관·수치·이벤트)만 한국어로 옮겨** 쓰고, 제목은 버린다.
+- **위 자료 블록의 라벨을 옮겨 적지 마라.** "[공식 발표 매크로 수치]", "[확정 카드]",
+  "[예정 이벤트]"는 너에게 자료를 건네는 이름표이지 독자가 읽을 말이 아니다.
+  이미 본문에서 말한 수치를 괄호 안에 한 번 더 적는 것도 금지다.
+- **한 블릿은 한 주제.** 콜론 앞 주제 하나를 끝까지 설명한다. 그 주제와 상관없는
+  다른 회사·다른 사건을 같은 블릿에 이어 붙이지 마라. 나쁜 예(실사고) —
+  "로봇 및 AI 기술 투자 심리: … 자금 유입 지속. 애플의 AI Mac 푸시가 … 마이크로소프트,
+  아마존, 구글 등이 키미 K3 제조사에 구애하는 움직임 포착." 한 블릿에 주제가 셋이다.
+- **카드 밖 기업은 수치를 든 근거로만, 한 문장에 하나까지.** 이름만 나열하는 문장은
+  근거가 아니라 새 주장이다 — 코드가 걷어낸다.
 
 [출력 — 이 JSON만]
 {{"overview": "…", "positive": "…", "negative": "…", "mixed": "…", "watch": "…"}}"""
@@ -2658,9 +2749,16 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
     # 독자에게 소음이다(2026-08-25 성동님 지적). 괄호째 걷어낸다.
     # "(8분 전 뉴스)", "(2.5시간 전 구글뉴스)" 같은 경과 시각 인용도 같은 소음이다.
     _cite = re.compile(r'\s*[\(\[](?:뉴스|출처|기사|참고|News|Source)\s*:[^\)\]]*[\)\]]', re.I)
+    # 77항 — 프롬프트에 준 자료 블록의 라벨을 그대로 베껴 쓴 괄호도 소음이다.
+    # 실사고: "(공식 발표 매크로 수치: 근원 PCE 3.34%, PCE 3.70% [2026-07 데이터])" —
+    # 앞 문장에서 이미 말한 수치를 내부 자료 이름을 달고 한 번 더 적었다.
+    # 안쪽에 '[2026-07 데이터]' 같은 대괄호가 한 겹 들어와도 통째로 걷어낸다.
+    _label = re.compile(r'\s*[\(\[](?:공식\s*발표\s*)?(?:매크로\s*수치|FRED[^:\)\]]*|'
+                        r'전문\s*금융뉴스|확정\s*카드|예정\s*이벤트)\s*:'
+                        r'(?:[^()\[\]]|\[[^\]]*\]|\([^)]*\))*[\)\]]', re.I)
     _ago = re.compile(r'\s*\([^()]*?(?:분|시간)\s*전[^()]*?\)')
     for k in rep:
-        rep[k] = _ago.sub('', _cite.sub('', rep[k])).strip()
+        rep[k] = _ago.sub('', _label.sub('', _cite.sub('', rep[k]))).strip()
 
     # 68항 — 카드에 없는 개별 기업이 주제인 블릿은 코드가 걷어낸다. 프롬프트 지시만으로는
     # 못 막는다는 걸 이미 배웠다(51항 이래 반복된 교훈). 감지하고도 게시하지 않는다.
@@ -2668,6 +2766,9 @@ def desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
         print(f"::warning::[68항] 카드 밖 기업 블릿 제거({_k}/{','.join(_off)}): {_line[:70]}")
     # 69항 — watch의 일정 주장을 공식 일정표와 대조한다. 프롬프트에 달력을 줬어도
     # 어긴 블릿은 코드가 걷어낸다. 감지하고도 게시하지 않는다.
+    # 77항 — 주제는 맞는데 몸통에 노이즈가 들어온 경우. 문장 단위로 걷어낸다.
+    for _k, _why, _sent in report_body_scrub(rep, entry, entry.pop('_rpt_on_card', set())):
+        print(f"::warning::[77항] 블릿 몸통 정화({_k}/{_why}): {_sent[:70]}")
     for _why, _line in report_schedule_scrub(rep):
         print(f"::warning::[69항] 일정 오류 블릿 제거({_why}): {_line[:70]}")
     if not rep.get('positive') or not rep.get('negative'):
