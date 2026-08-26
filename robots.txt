@@ -59,4 +59,19 @@ Disallow: /.firebaserc
 User-agent: *
 Allow: /
 
+# ── 개발·내부 페이지 (2026-08-26, 73항) ────────────────────────────────────
+# 심사자나 검색엔진이 열면 '빈 껍데기'로 보이는 것들. noindex도 붙였지만
+# 크롤 자체를 막아 크롤 예산을 본 페이지에 쓰게 한다.
+User-agent: *
+Disallow: /_og-render.html
+Disallow: /_template.html
+Disallow: /gauge-preview.html
+Disallow: /swing-signal-mockup.html
+Disallow: /admin.html
+Disallow: /write.html
+Disallow: /tv-inbox.html
+Disallow: /labs-ads.html
+Disallow: /labs-audit.html
+Disallow: /labs-timesfm.html
+
 Sitemap: https://ezlong.com/sitemap.xml

@@ -122,6 +122,15 @@
         '</div>' +
 
         '<div class="ez-footer-bottom">' +
+          /* 73항(2026-08-26) — 소개·방침·약관·유의사항·문의는 사이트의 신뢰 근거다.
+             푸터 어디서든 한 번에 닿아야 한다. */
+          '<div class="ez-footer-legal">' +
+            '<a href="/about.html">소개</a>' +
+            '<a href="/privacy.html">개인정보처리방침</a>' +
+            '<a href="/terms.html">이용약관</a>' +
+            '<a href="/disclaimer.html">투자 유의사항</a>' +
+            '<a href="/contact.html">문의</a>' +
+          '</div>' +
           '© 2025–2026 유니아빠 · EZLONG · easy.invest.good@gmail.com<br>' +
           '본 서비스에서 제공하는 모든 시뮬레이션 수치는 참고용 추정치이며, 실제 투자 수익을 보장하지 않습니다. 투자 판단의 책임은 투자자 본인에게 있습니다.' +
         '</div>' +

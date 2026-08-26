@@ -994,3 +994,31 @@ window.EZ_ADS_LIVE = false;
   s.defer = true;
   (document.head || document.documentElement).appendChild(s);
 })();
+
+/* ─────────────────────────────────────────────────────────────
+   법적 고지 바 (2026-08-26 신설, CLAUDE.md 73항)
+
+   애드센스 '가치 없는 콘텐츠' 판정의 원인 하나가 소개·방침·약관 부재였다.
+   페이지가 141장인데 푸터 HTML은 제각각이라, 큰 푸터(ez-footer.js)를 쓰는
+   36장에는 거기에 넣고, 나머지에는 여기서 최소한의 줄을 붙인다.
+   두 번 붙지 않도록 큰 푸터가 있으면 건너뛴다.
+   ───────────────────────────────────────────────────────────── */
+(function () {
+  var LINKS = [['/about.html', '소개'], ['/privacy.html', '개인정보처리방침'],
+               ['/terms.html', '이용약관'], ['/disclaimer.html', '투자 유의사항'],
+               ['/contact.html', '문의']];
+  function paint() {
+    if (document.querySelector('.ez-footer, .ez-legalbar')) return;   // 이미 있으면 끝
+    if (document.querySelector('meta[name="robots"][content*="noindex"]')) return;
+    var wrap = document.createElement('nav');
+    wrap.className = 'ez-legalbar';
+    wrap.setAttribute('aria-label', '사이트 정보');
+    wrap.innerHTML = LINKS.map(function (l) {
+      return '<a href="' + l[0] + '">' + l[1] + '</a>';
+    }).join('') +
+      '<span class="ez-legalbar-copy">© 2025–2026 유니아빠 · EZLONG</span>';
+    document.body.appendChild(wrap);
+  }
+  if (document.readyState === 'complete') paint();
+  else window.addEventListener('load', paint);
+})();
