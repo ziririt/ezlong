@@ -12458,11 +12458,37 @@ var bedsideActive = false;
   // 2026-08-23 운영자: 요일(시간대) 충돌 안내 — 같은 요일에 이미 알람이 있는데
   // 시각만 다르면 조용히 추가하지 않고 "기존 걸 이 시각으로 바꿀까요?" 먼저 묻는다.
   // 확인=기존 수정(대체), 취소=둘 다 추가.
+  //
+  // 2026-08-27 운영자: "요일별 다른 시간 추가하는 게 직관적이지 않다.
+  // 요일이 다르면 당연히 추가로 인식해라."
+  //
+  // 맞는 지적이다. 여태 요일이 **하나라도 겹치면** 충돌로 봤다. 그래서
+  // 일~금 06:45 를 두고 토·일 07:45 를 만들면 일요일 하나 겹쳤다고
+  // "바꿀까요?"를 물었다. 사용자 머릿속에서 그 둘은 서로 다른 알람이다 —
+  // 평일 알람과 주말 알람. 물어볼 일이 아니라 그냥 추가할 일이다.
+  //
+  // 이제 **요일 구성이 정확히 같을 때만** 묻는다. 그게 진짜 충돌이다:
+  // 같은 날들에 두 시각이 걸린 것 = 십중팔구 시각을 바꾸려던 것.
   var DOW_KO_LABELS = ["일", "월", "화", "수", "목", "금", "토"];
+  // 빈 배열(매일)과 일곱 개 전부 선택은 같은 것으로 본다.
+  function normDays(days) {
+    var u = [];
+    (days || []).forEach(function (d) {
+      d = Number(d);
+      if (d >= 0 && d <= 6 && u.indexOf(d) === -1) u.push(d);
+    });
+    if (!u.length) return "0,1,2,3,4,5,6";
+    return u.sort(function (a, b) { return a - b; }).join(",");
+  }
+  function sameDays(a, b) { return normDays(a) === normDays(b); }
   function alarmDaysLabel(days) {
-    if (!days || !days.length) return "매일";
-    return days.slice().sort(function (a, b) { return a - b; })
-      .map(function (d) { return DOW_KO_LABELS[d] || ""; }).join("·") + "요일";
+    if (!days || !days.length || normDays(days) === "0,1,2,3,4,5,6") {
+      return t("settings.alarm.everyday", null, "매일");
+    }
+    var names = days.slice().sort(function (a, b) { return a - b; })
+      .map(function (d) { return t("settings.alarm.weekday" + d, null, DOW_KO_LABELS[d] || ""); })
+      .join(t("settings.alarm.daysJoin", null, "·"));
+    return t("settings.alarm.daysWrap", { days: names }, "{days}요일");
   }
   function alarmHM(h, m) { return two(h) + ":" + two(m); }
   function showAlarmConfirm(message, onYes, onNo) {
@@ -12511,14 +12537,11 @@ var bedsideActive = false;
       trackFile: selectedTrack ? selectedTrack.file : null,
       trackTitle: selectedTrack ? selectedTrack.title : ""
     };
-    var recDays = record.weekdays || [];
     var conflicts = loadAlarms().filter(function (a2) {
       if (a2.id === record.id) return false;
-      var a2Days = a2.weekdays || [];
-      var overlap = (!recDays.length || !a2Days.length)
-        ? true
-        : recDays.some(function (d) { return a2Days.indexOf(d) !== -1; });
-      return overlap && !(a2.hour === record.hour && a2.minute === record.minute);
+      // 요일이 다르면 다른 알람이다 — 묻지 않고 추가한다(2026-08-27).
+      if (!sameDays(a2.weekdays, record.weekdays)) return false;
+      return !(a2.hour === record.hour && a2.minute === record.minute);
     });
     if (conflicts.length) {
       var c0 = conflicts[0];
@@ -12548,16 +12571,14 @@ var bedsideActive = false;
     }
     if (at >= 0) alarms[at] = record;
     else alarms.push(record);
-    var recDays = record.weekdays || [];
     var kept = [];
     var dropped = [];
     for (var k = 0; k < alarms.length; k += 1) {
       var a2 = alarms[k];
-      var a2Days = a2.weekdays || [];
-      var daysOverlap = (!recDays.length || !a2Days.length)
-        ? true
-        : recDays.some(function (d) { return a2Days.indexOf(d) !== -1; });
-      if (a2.id !== record.id && a2.hour === record.hour && a2.minute === record.minute && daysOverlap) {
+      // 2026-08-27 — 여기도 "겹치면 지운다"였다. 일~금 06:45 를 두고
+      // 토·일 06:45 를 추가하면 일요일 하나 겹쳤다는 이유로 평일 알람이
+      // 통째로 사라졌다. 진짜 중복은 시각도 요일도 같을 때뿐이다.
+      if (a2.id !== record.id && a2.hour === record.hour && a2.minute === record.minute && sameDays(a2.weekdays, record.weekdays)) {
         dropped.push(a2.id);
       } else {
         kept.push(a2);

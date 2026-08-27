@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-26T05:05:03.843Z
+ * 생성 시각: 2026-08-27T00:44:18.253Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -162,6 +162,8 @@
         "saved": "Alarm set",
         "once": "Once",
         "everyday": "Every day",
+        "daysJoin": ", ",
+        "daysWrap": "{days}",
         "editAria": "Edit this alarm",
         "deleteAria": "Delete this alarm",
         "bedtimeStart": "Start bedtime",
@@ -682,6 +684,8 @@
         "saved": "Alarma configurada",
         "once": "Una vez",
         "everyday": "Todos los días",
+        "daysJoin": ", ",
+        "daysWrap": "{days}",
         "editAria": "Editar esta alarma",
         "deleteAria": "Eliminar esta alarma",
         "bedtimeStart": "Iniciar descanso",
@@ -1202,6 +1206,8 @@
         "saved": "アラームを設定しました",
         "once": "一度",
         "everyday": "毎日",
+        "daysJoin": "・",
+        "daysWrap": "{days}曜日",
         "editAria": "このアラームを編集",
         "deleteAria": "このアラームを削除",
         "bedtimeStart": "就寝を開始",
@@ -1722,6 +1728,8 @@
         "saved": "알람을 걸었습니다",
         "once": "한 번",
         "everyday": "매일",
+        "daysJoin": "·",
+        "daysWrap": "{days}요일",
         "editAria": "이 알람 수정",
         "deleteAria": "이 알람 지우기",
         "bedtimeStart": "취침 시작",
@@ -2242,6 +2250,8 @@
         "saved": "Alarme definido",
         "once": "Uma vez",
         "everyday": "Todos os dias",
+        "daysJoin": ", ",
+        "daysWrap": "{days}",
         "editAria": "Editar este alarme",
         "deleteAria": "Excluir este alarme",
         "bedtimeStart": "Iniciar descanso",
@@ -2762,6 +2772,8 @@
         "saved": "已设置闹钟",
         "once": "一次",
         "everyday": "每天",
+        "daysJoin": "、",
+        "daysWrap": "{days}",
         "editAria": "编辑此闹钟",
         "deleteAria": "删除此闹钟",
         "bedtimeStart": "开始就寝",
