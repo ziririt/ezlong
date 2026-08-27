@@ -730,13 +730,17 @@ function renderStack(data) {
   stack.innerHTML = html;
 }
 
-// 갱신 보류 알림 (75항) — 가드레일이 이번 회차 게시를 포기했을 때만 뜬다.
-// 파이프라인이 통째로 죽어 보류 표시만 남는 경우를 대비해 24시간 지난 기록은 숨긴다.
+// 갱신 보류 알림 (75항 → 75-2항으로 화면 표시 중단, 2026-08-27 운영 방침)
+// 게시 포기 사유는 데이터(data.hold)에 그대로 기록된다 — 감사·로그용으로 남긴다.
+// 다시 켜려면 이 상수만 true 로 바꾼다. 렌더 코드는 아래에 그대로 살려 뒀다.
+var SHOW_HOLD_NOTICE = false;
+
 function renderHold(hold) {
   var el = document.getElementById('mv-hold');
   if (!el) return;
   el.hidden = true;
   el.innerHTML = '';
+  if (!SHOW_HOLD_NOTICE) return;
   if (!hold || !hold.reason) return;
 
   if (hold.at_utc) {

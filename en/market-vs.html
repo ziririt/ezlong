@@ -474,11 +474,16 @@ function renderStack(data) {
 
 // Update-hold notice — only when a guardrail withheld this round.
 // Hidden after 24h so a dead pipeline never leaves a stale notice behind.
+// Owner decision (2026-08-27): the hold notice is no longer shown on screen.
+// The reason is still recorded in data.hold for auditing. Flip this to re-enable.
+var SHOW_HOLD_NOTICE = false;
+
 function renderHold(hold) {
   var el = document.getElementById('mv-hold');
   if (!el) return;
   el.hidden = true;
   el.innerHTML = '';
+  if (!SHOW_HOLD_NOTICE) return;
   if (!hold) return;
 
   var reason = hold.reason_en || hold.reason;
