@@ -96,9 +96,26 @@
     (document.head || document.documentElement).appendChild(meta);
   }
 
-  /* ── 3) 안드로이드 배너 — 크롬엔 공식 기능이 없어 직접 그린다 ────────── */
-  var isAndroid = /Android/i.test(navigator.userAgent || '');
-  if (!isAndroid) return;
+  /* ── 3) 어느 스토어의 자체 배너를 그릴 것인가 (79항, 2026-08-27) ────────
+     스마트 앱 배너(위 2단계)는 **사파리 앱의 기능**이지 WebKit 엔진의 기능이
+     아니다. 아이폰의 크롬·파이어폭스·엣지·웨일과 네이버·카카오 인앱 브라우저는
+     전부 WebKit을 쓰지만 그 배너 UI를 구현하지 않아 아무것도 안 뜬다.
+     안드로이드는 애초에 공식 기능이 없어 우리가 직접 그리고 있었으므로 모든
+     브라우저에서 떴다 — 운영 제보로 확인된 이 비대칭을 여기서 없앤다.
+     즉 **자체 배너는 '안드로이드' + 'iOS 비사파리'** 둘 다에서 그린다. */
+  var UA = navigator.userAgent || '';
+  var isAndroid = /Android/i.test(UA);
+  var isIOS = /iPad|iPhone|iPod/i.test(UA) ||
+              (/Macintosh/i.test(UA) && (navigator.maxTouchPoints || 0) > 1);  // iPadOS 13+
+
+  // 사파리가 아닌 iOS 브라우저 — 이름을 대는 것들과, 'Version/'이 없는 웹뷰 계열.
+  // 엣지는 Version/을 달고 오므로 이름으로도 함께 본다.
+  var NOT_SAFARI = /CriOS|FxiOS|EdgiOS|OPT\/|Whale|DuckDuckGo|YaBrowser|Puffin|SamsungBrowser|NAVER|KAKAO|DaumApps|Line\/|FBAN|FBAV|Instagram|Snapchat|Twitter/i;
+  var isSafariIOS = isIOS && /Version\/\d/.test(UA) && !NOT_SAFARI.test(UA);
+
+  // 사파리는 위 메타 한 줄이 공식 배너를 그려 준다 — 우리가 겹쳐 그리지 않는다.
+  var STORE = isAndroid ? 'android' : (isIOS && !isSafariIOS ? 'ios' : null);
+  if (!STORE) return;
 
   // 이 페이지가 선언한 앱이 우리 앱이 아니면(예: Skyblue Note) 그리지 않는다
   var declared = meta.getAttribute('content') || '';
@@ -109,19 +126,26 @@
   var L = (function () {
     var m2 = /^\/(en|ja|zh|es|pt)\//.exec(location.pathname);
     var lang = m2 ? m2[1] : 'ko';
+    // 부제는 스토어 이름이 들어가므로 둘로 나눈다(79항). 애플 배너와 같은 문구 계열.
     var T = {
       ko: { name: 'Long Time, Easy Life', by: 'ezlong.com',
-            sub: '무료 · Google Play', cta: '받기', close: '배너 닫기' },
+            subG: '무료 · Google Play', subA: '무료 · App Store',
+            cta: '받기', close: '배너 닫기' },
       en: { name: 'Long Time, Easy Life', by: 'ezlong.com',
-            sub: 'FREE · On Google Play', cta: 'GET', close: 'Dismiss banner' },
+            subG: 'FREE · On Google Play', subA: 'FREE · On the App Store',
+            cta: 'GET', close: 'Dismiss banner' },
       ja: { name: 'Long Time, Easy Life', by: 'ezlong.com',
-            sub: '無料 · Google Play', cta: '入手', close: 'バナーを閉じる' },
+            subG: '無料 · Google Play', subA: '無料 · App Store',
+            cta: '入手', close: 'バナーを閉じる' },
       zh: { name: 'Long Time, Easy Life', by: 'ezlong.com',
-            sub: '免费 · Google Play', cta: '获取', close: '关闭横幅' },
+            subG: '免费 · Google Play', subA: '免费 · App Store',
+            cta: '获取', close: '关闭横幅' },
       es: { name: 'Long Time, Easy Life', by: 'ezlong.com',
-            sub: 'Gratis · Google Play', cta: 'OBTENER', close: 'Cerrar banner' },
+            subG: 'Gratis · Google Play', subA: 'Gratis · App Store',
+            cta: 'OBTENER', close: 'Cerrar banner' },
       pt: { name: 'Long Time, Easy Life', by: 'ezlong.com',
-            sub: 'Grátis · Google Play', cta: 'OBTER', close: 'Fechar banner' }
+            subG: 'Grátis · Google Play', subA: 'Grátis · App Store',
+            cta: 'OBTER', close: 'Fechar banner' }
     };
     return T[lang] || T.ko;
   })();
@@ -176,12 +200,15 @@
     body.className = 'ezab-b';
     var n = document.createElement('div'); n.className = 'ezab-n'; n.textContent = L.name;
     var p = document.createElement('div'); p.className = 'ezab-p'; p.textContent = L.by;
-    var s = document.createElement('div'); s.className = 'ezab-s'; s.textContent = L.sub;
+    var s = document.createElement('div'); s.className = 'ezab-s';
+    s.textContent = (STORE === 'ios') ? L.subA : L.subG;
     body.appendChild(n); body.appendChild(p); body.appendChild(s);
 
     var cta = document.createElement('a');
     cta.className = 'ezab-cta';
-    cta.href = 'https://play.google.com/store/apps/details?id=' + APP.android;
+    cta.href = (STORE === 'ios')
+      ? 'https://apps.apple.com/app/id' + APP.iosId
+      : 'https://play.google.com/store/apps/details?id=' + APP.android;
     cta.rel = 'nofollow noopener';
     cta.textContent = L.cta;
 
