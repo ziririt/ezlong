@@ -52,7 +52,7 @@
         media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-<title>나는 FOMO형 투자자일까? 투자 행동 편향 자가진단 무료 3분 — EZLONG</title>
+<title>나는 FOMO형 투자자일까? 투자 행동 편향 자가진단 무료 3분 - EZLONG</title>
 <meta name="description" content="FOMO·패닉셀링·과도한 거래·레버리지 의존 등 5가지 투자 행동 편향을 3분 무료 진단. 안정형·주의형·위험형 중 내 유형은? 다음 폭락장에서 내 행동 패턴을 미리 파악하세요."/>
 <meta name="keywords" content="투자 성향 테스트, 투자 성향 진단, 투자자 유형 테스트, FOMO 투자, 패닉 셀링, 투자 행동 편향, 행동재무학, 투자 심리 테스트, 미국주식 투자 성향, 레버리지 ETF 위험, 투자 자가진단, 무료 투자 테스트"/>
 <meta name="robots" content="index, follow"/>
@@ -105,7 +105,7 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "투자 행동 자가진단 — 나는 얼마나 위험한 투자자인가",
+  "name": "투자 행동 자가진단 - 나는 얼마나 위험한 투자자인가",
   "url": "https://ezlong.com/risk-diagnostic.html",
   "description": "FOMO·패닉 셀링·과도한 거래·레버리지 의존 등 5가지 투자 행동 편향을 무료로 자가진단하는 도구. 14문항 적응형 질문, 약 3~6분 소요.",
   "applicationCategory": "FinanceApplication",
@@ -242,7 +242,7 @@ a{text-decoration:none;color:inherit;}
 
 /* ── NAV ── */
 .nav{height:var(--nav-h);background:rgba(245,245,247,0.92);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);position:sticky;top:0;z-index:200;}
-/* 스크롤 엣지 페이드 (apple-design §12) — 1px 하드 구분선 대신,
+/* 스크롤 엣지 페이드 (apple-design §12) - 1px 하드 구분선 대신,
    콘텐츠가 헤더 밑으로 흘러 들어가는 자리에만 옅은 그라데이션을 둔다.
    선은 "여기서 끊긴다"고 말하고, 페이드는 "여기 밑으로 계속된다"고 말한다. */
 .nav::after {
@@ -457,11 +457,11 @@ a{text-decoration:none;color:inherit;}
 /* EZ 글로벌 nav + Footer Books: ez-design.css 공유 스타일 사용 (2026-07-04 로컬 중복 제거) */
 </style>
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
-     head 맨 끝에 둔다 — 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     head 맨 끝에 둔다 - 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 <body>
-<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">투자 행동 편향 자가진단 — 나는 FOMO형 투자자일까?</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검: h1 부재 보강) -->
+<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">투자 행동 편향 자가진단 - 나는 FOMO형 투자자일까?</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검: h1 부재 보강) -->
 <script src="/lang-banner.js"></script>
 
 <!-- ── EZLONG 글로벌 헤더 ── -->
@@ -645,7 +645,7 @@ function renderQ(qid){
   }
   document.getElementById('app').innerHTML=`
 <div class="screen">
-  <p class="q-cluster">클러스터 ${q.cluster} — ${q.cname}</p>
+  <p class="q-cluster">클러스터 ${q.cluster} - ${q.cname}</p>
   <p class="q-text">${q.text}</p>
   <div class="scale-wrap">
     <div class="scale-labels"><span>${q.lowLabel}</span><span>${q.highLabel}</span></div>
@@ -660,7 +660,7 @@ function handleScale(qid,val,btn,isReverse){
 }
 
 // ================================================================
-// 지배 클러스터 감지 (클러스터 5 제외 — 필수 역산 문항이라 거의 모두 높음)
+// 지배 클러스터 감지 (클러스터 5 제외 - 필수 역산 문항이라 거의 모두 높음)
 // ================================================================
 function getDominantCluster(){
   const branchMap={Q2:1,Q3:1,Q5:2,Q6:2,Q8:3,Q9:3,Q11:4,Q12:4};
@@ -712,7 +712,7 @@ function renderResult(){
     pctText = `진단 참여자의 약 ${pct}%보다 위험한 고위험 투자 행동`;
   }
 
-  // ── 게이지 SVG 생성 (5등분 존 방식 — 56px × 5 = 280px) ──
+  // ── 게이지 SVG 생성 (5등분 존 방식 - 56px × 5 = 280px) ──
   const ZW5 = 56;
   const zC = ['#34C759','#7AB829','#FF9F0A','#FF6B2B','#FF3B30'];
   const zL = ['안정형','경계형','주의형','위험형','고위험형'];
@@ -870,26 +870,26 @@ reset();renderIntro();
 </script>
 <!-- ── EZLONG 글로벌 푸터 ── -->
 
-<!-- 도구 해설 본문 (2026-08-26, CLAUDE.md 73항 2단계) — 정적 HTML -->
+<!-- 도구 해설 본문 (2026-08-26, CLAUDE.md 73항 2단계) - 정적 HTML -->
 <article class="ez-guide">
 <h2>수익률을 갉아먹는 건 대개 시장이 아니라 나입니다</h2>
-<p class="ez-guide-lede">좋은 종목을 고르고도 돈을 잃는 경우가 많습니다. 대개 이유는 하나입니다 — <b>폭락장에서 팔았고, 급등장에서 샀습니다.</b> 이 진단은 내가 그런 상황에서 어떻게 행동하는 사람인지를 3분 만에 짚어 줍니다.</p>
-<p>워런 버핏이 말한 "투자자의 가장 큰 적은 자기 자신"은 수사가 아닙니다. 여러 연구가 같은 결론을 냅니다 — <b>일반 투자자의 실제 수익률은 그가 보유한 펀드의 수익률보다 낮습니다.</b> 중간에 사고팔았기 때문입니다. 그 차이를 만드는 것이 행동입니다.</p>
+<p class="ez-guide-lede">좋은 종목을 고르고도 돈을 잃는 경우가 많습니다. 대개 이유는 하나입니다 - <b>폭락장에서 팔았고, 급등장에서 샀습니다.</b> 이 진단은 내가 그런 상황에서 어떻게 행동하는 사람인지를 3분 만에 짚어 줍니다.</p>
+<p>워런 버핏이 말한 "투자자의 가장 큰 적은 자기 자신"은 수사가 아닙니다. 여러 연구가 같은 결론을 냅니다 - <b>일반 투자자의 실제 수익률은 그가 보유한 펀드의 수익률보다 낮습니다.</b> 중간에 사고팔았기 때문입니다. 그 차이를 만드는 것이 행동입니다.</p>
 
 <h2>무엇을 진단하나</h2>
 <p>질문은 9~18개로, 답에 따라 다음 질문이 달라지는 <b>적응형</b>입니다. 다섯 갈래의 행동 습관을 봅니다.</p>
 <ul>
-<li><b>감정 반응</b> — 계좌가 −20%일 때 잠이 오는가, 앱을 몇 번 여는가</li>
-<li><b>거래 행동</b> — 얼마나 자주 사고파는가, 계획 없이 산 적이 있는가</li>
-<li><b>정보 소비</b> — 어디서 정보를 얻는가, 남의 수익 인증을 보면 어떤 기분인가</li>
-<li><b>포트폴리오 구조</b> — 한 종목 비중이 얼마인가, 레버리지를 쓰는가</li>
-<li><b>위험 관리</b> — 손절 기준이 있는가, 있다면 지키는가</li>
+<li><b>감정 반응</b> - 계좌가 −20%일 때 잠이 오는가, 앱을 몇 번 여는가</li>
+<li><b>거래 행동</b> - 얼마나 자주 사고파는가, 계획 없이 산 적이 있는가</li>
+<li><b>정보 소비</b> - 어디서 정보를 얻는가, 남의 수익 인증을 보면 어떤 기분인가</li>
+<li><b>포트폴리오 구조</b> - 한 종목 비중이 얼마인가, 레버리지를 쓰는가</li>
+<li><b>위험 관리</b> - 손절 기준이 있는가, 있다면 지키는가</li>
 </ul>
 <p>결과로 <b>핵심 한 줄</b>과 <b>감지된 행동 패턴</b>이 나옵니다. FOMO(남들 다 버는데 나만 놓친다는 조바심), 패닉셀링(공포에 던지기), 과도한 거래, 레버리지 의존 같은 것들입니다.</p>
 
 <h2>결과를 어떻게 읽나</h2>
 <p><b>등급에 기분 상하지 마십시오.</b> '위험형'이 나쁘고 '안정형'이 좋은 게 아닙니다. 20대 직장인의 공격적 성향과 은퇴 5년 앞둔 사람의 공격적 성향은 의미가 다릅니다. 이 진단이 알려 주는 것은 좋고 나쁨이 아니라 <b>"내 성향이 이러니 이런 실수를 하기 쉽다"</b>는 방향입니다.</p>
-<p>가장 쓸모 있는 활용법은 이겁니다. 결과에 나온 패턴을 보고 <b>미리 규칙을 만들어 두는 것</b>. 예를 들어 —</p>
+<p>가장 쓸모 있는 활용법은 이겁니다. 결과에 나온 패턴을 보고 <b>미리 규칙을 만들어 두는 것</b>. 예를 들어 - </p>
 <ul>
 <li>패닉셀링 성향이면 → <b>자동 적립</b>을 걸어 두고 앱을 지웁니다. 손이 닿지 않으면 못 팝니다</li>
 <li>FOMO 성향이면 → 새 종목은 <b>3일 기다렸다</b> 사는 규칙을 둡니다. 대개 3일 뒤엔 사고 싶지 않습니다</li>
@@ -907,10 +907,10 @@ reset();renderIntro();
 
 <h2>함께 보면 좋은 것</h2>
 <ul>
-<li><a href="/stock-personality-quiz.html">투자유형 진단</a> — 성향에 맞는 포트폴리오 조합을 찾습니다</li>
-<li><a href="/backtest.html">몬테카를로 백테스트</a> — 내가 견딜 수 있는 최대 낙폭(MDD)이 몇 %인지 정하실 때</li>
-<li><a href="/auto-dca-guide.html">자동 적립식 매수 가이드</a> — 감정을 빼는 가장 확실한 방법은 자동화입니다</li>
-<li><a href="/dca-simulator.html">DCA 시뮬레이터</a> — 꾸준함이 만드는 차이를 숫자로</li>
+<li><a href="/stock-personality-quiz.html">투자유형 진단</a> - 성향에 맞는 포트폴리오 조합을 찾습니다</li>
+<li><a href="/backtest.html">몬테카를로 백테스트</a> - 내가 견딜 수 있는 최대 낙폭(MDD)이 몇 %인지 정하실 때</li>
+<li><a href="/auto-dca-guide.html">자동 적립식 매수 가이드</a> - 감정을 빼는 가장 확실한 방법은 자동화입니다</li>
+<li><a href="/dca-simulator.html">DCA 시뮬레이터</a> - 꾸준함이 만드는 차이를 숫자로</li>
 </ul>
 <p><a href="/disclaimer.html">투자 유의사항</a>을 함께 읽어 주십시오.</p>
 </article>

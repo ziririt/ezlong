@@ -32,6 +32,14 @@ import os
 import sys
 from datetime import datetime, timedelta, timezone
 
+# 80항 — 화면 문구의 em dash(—)를 하이픈으로. 저장 직전 한 번만 훑는다.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    from ez_text import scrub as _ez_scrub
+except Exception:                      # 모듈이 없어도 본 기능은 죽지 않는다
+    def _ez_scrub(o):
+        return o
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 VIEW = os.path.join(HERE, '..', 'data', 'model-portfolio.json')
 KST = timezone(timedelta(hours=9))
@@ -195,6 +203,7 @@ def main():
     if dry:
         print('--dry — 파일을 쓰지 않았다')
         return 0
+    doc = _ez_scrub(doc)            # 80항 — ' — ' → ' - '
     with open(VIEW, 'w', encoding='utf-8') as f:
         json.dump(doc, f, ensure_ascii=False, indent=1)
     return 0

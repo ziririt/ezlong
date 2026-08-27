@@ -173,7 +173,7 @@
 {"@context": "https://schema.org", "@type": "WebApplication", "name": "EZLONG 오늘의 차트", "description": "SOXX·QQQ·SOXL·TQQQ·테슬라·엔비디아의 이동평균·RSI·볼린저밴드·ADX·스토캐스틱·52주 고저를 하루 여러 번 갱신하는 무료 AI 기술적 분석.", "url": "https://ezlong.com/today-chart.html", "inLanguage": "ko", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}, "publisher": {"@type": "Organization", "name": "EZLONG", "url": "https://ezlong.com/"}}
 </script>
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
-     head 맨 끝에 둔다 — 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     head 맨 끝에 둔다 - 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 <body>
@@ -185,7 +185,7 @@
 <div class="page-brand">
   <div class="page-brand-inner">
     <div class="page-brand-label">오늘의 차트</div>
-    <h1 class="page-brand-title">SOXX·QQQ·SOXL·TQQQ·TSLA·NVDA — 오늘의 차트</h1>
+    <h1 class="page-brand-title">SOXX·QQQ·SOXL·TQQQ·TSLA·NVDA - 오늘의 차트</h1>
     <p class="page-brand-desc">6종목의 이동평균(5·20·50·200일)·RSI(14)·52주 고저를 하루 2회(오전 6:30, 밤 10:35 KST) AI가 자동 분석합니다. 최신순 누적.</p>
     <p class="page-brand-updated" id="tc-updated-at">데이터 불러오는 중...</p>
   </div>
@@ -330,8 +330,8 @@ function renderCard(e) {
       '</div>' +
       '<h2 class="tc-headline">' + escHtml(e.headline) + '</h2>' +
       '<div class="tc-price-row">' + (e.price != null ? e.price.toFixed(2) : '-') + ' USD</div>' +
-      (e.chart_path ? '<div class="tc-chart-wrap"><img src="' + escHtml(e.chart_path) + '" alt="' + escHtml(e.symbol) + ' 차트 — 이동평균선·RSI" loading="lazy"></div>' : '') +
-      '<div class="tc-indicators">' + escHtml(indParts.join(' · ')) + (retParts.length ? '<br>기간 수익률 — ' + escHtml(retParts.join(' · ')) : '') + '</div>' +
+      (e.chart_path ? '<div class="tc-chart-wrap"><img src="' + escHtml(e.chart_path) + '" alt="' + escHtml(e.symbol) + ' 차트 - 이동평균선·RSI" loading="lazy"></div>' : '') +
+      '<div class="tc-indicators">' + escHtml(indParts.join(' · ')) + (retParts.length ? '<br>기간 수익률 - ' + escHtml(retParts.join(' · ')) : '') + '</div>' +
       '<div class="tc-body">' + paragraphs + '</div>' +
       (tags ? '<div class="tc-tags">' + tags + '</div>' : '') +
     '</div>'

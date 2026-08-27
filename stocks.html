@@ -11,7 +11,7 @@
 </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>심플 주가 정보 — 미국 시총 100 실시간 주가 | EZLONG</title>
+  <title>심플 주가 정보 - 미국 시총 100 실시간 주가 | EZLONG</title>
   <meta name="description" content="NVDA·AAPL·TSLA·MSFT·AMZN 등 미국 시총 100위 종목의 현재 주가와 등락률을 15분마다 업데이트. S&P 500·나스닥·다우존스 지수 포함. 스파크라인 차트·포트폴리오 관리 무료 제공.">
   <meta name="keywords" content="미국주식 주가, 미국 시총 100, NVDA 주가, TSLA 주가, AAPL 주가, MSFT 주가, SPCX 주가, 스페이스엑스 주가, S&P500 지수, 나스닥 지수, 실시간 주가, 미국주식 시세, 주가 확인">
   <meta name="robots" content="index, follow">
@@ -26,7 +26,7 @@
   <!-- Open Graph -->
   <meta property="og:type"        content="website">
   <meta property="og:url"         content="https://ezlong.com/stocks.html">
-  <meta property="og:title"       content="심플 주가 정보 — 미국 시총 100 실시간 주가 | EZLONG">
+  <meta property="og:title"       content="심플 주가 정보 - 미국 시총 100 실시간 주가 | EZLONG">
   <meta property="og:description" content="NVDA·AAPL·TSLA 등 미국 시총 100위 종목 주가를 15분마다 업데이트. S&P 500·나스닥·다우 지수 + 스파크라인 차트 무료 제공.">
 <meta property="og:image" content="https://ezlong.com/og/og-1200x630.png?v=20260809" />
 <meta property="og:image:width" content="1200" />
@@ -110,7 +110,7 @@
       padding: 18px 16px 12px;
       position: sticky; top: 0; z-index: 100;
     }
-/* 스크롤 엣지 페이드 (apple-design §12) — 1px 하드 구분선 대신,
+/* 스크롤 엣지 페이드 (apple-design §12) - 1px 하드 구분선 대신,
    콘텐츠가 헤더 밑으로 흘러 들어가는 자리에만 옅은 그라데이션을 둔다.
    선은 "여기서 끊긴다"고 말하고, 페이드는 "여기 밑으로 계속된다"고 말한다. */
 .sp-header::after {
@@ -129,7 +129,7 @@
     .sp-header-title { font-size: 20px; font-weight: 700; color: var(--ez-text); }
     .sp-header-meta  { font-size: 16px; color: var(--ez-text3); margin-top: 2px; }
 
-    /* ── 종합지수 카드 바 (야후 파이낸스 스타일 — 세로 4행) ── */
+    /* ── 종합지수 카드 바 (야후 파이낸스 스타일 - 세로 4행) ── */
     .index-bar {
       display: flex; gap: 8px;
       padding: 10px 12px;
@@ -149,14 +149,14 @@
       overflow: hidden;
     }
     .ix-card:hover { opacity: .8; }
-    /* 행 1 — 지수명 */
+    /* 행 1 - 지수명 */
     .ix-name  { font-size: 16px; font-weight: 700; color: var(--ez-text); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    /* 행 2 — 스파크라인 (카드 전체 너비) */
+    /* 행 2 - 스파크라인 (카드 전체 너비) */
     .ix-spark { width: 100%; margin: 6px 0 4px; line-height: 0; }
     .ix-spark svg { width: 100%; display: block; }
-    /* 행 3 — 가격 */
+    /* 행 3 - 가격 */
     .ix-price { font-size: 17px; font-weight: 700; color: var(--ez-text); line-height: 1.2; }
-    /* 행 4 — 등락률 (텍스트 컬러만, 배지 없음) */
+    /* 행 4 - 등락률 (텍스트 컬러만, 배지 없음) */
     .ix-pct   { font-size: 16px; font-weight: 600; margin-top: 2px; }
     .ix-pct.up   { color: var(--ez-green); }
     .ix-pct.dn   { color: var(--ez-red); }
@@ -374,7 +374,7 @@
     .dv-chg   { font-size: 17px; font-weight: 500; margin-left: 10px; }
     .dv-chg.up { color: var(--ez-green); }
     .dv-chg.dn { color: var(--ez-red); }
-    /* 기간 수익률 표시 — 1D 제외 */
+    /* 기간 수익률 표시 - 1D 제외 */
     .dv-period-return { padding: 2px 16px 10px; border-bottom: 1px solid var(--ez-border); font-size: 16px; }
     .dv-period-return.up { color: var(--ez-green); }
     .dv-period-return.dn { color: var(--ez-red); }
@@ -396,7 +396,7 @@
     }
     .ptab.active { color: var(--ez-blue); border-bottom-color: var(--ez-blue); font-weight: 700; }
 
-    /* TradingView 차트 컨테이너 — 고정 높이, 문서 흐름 안에 있음 */
+    /* TradingView 차트 컨테이너 - 고정 높이, 문서 흐름 안에 있음 */
     /* 전체 높이 안에서 TradingView가 주가/RSI/MACD 비율을 자동 분배 (~60/20/20)
        모바일 480px → 주가~288 / RSI~96 / MACD~96 : 한 화면에 전부 표시 가능
        데스크탑 650px → 주가~390 / RSI~130 / MACD~130 */
@@ -415,7 +415,7 @@
       pointer-events: none;
     }
 
-    /* AI 분석 — 내부 스크롤 없음 */
+    /* AI 분석 - 내부 스크롤 없음 */
     .detail-analysis {
       background: var(--ez-surface);
       border-top: 1px solid var(--ez-border);
@@ -435,7 +435,7 @@
     .da-badge.bull { background: rgba(26,127,55,.15); color: var(--ez-green); }
     .da-badge.bear { background: rgba(217,42,42,.12); color: var(--ez-red); }
     .da-narrative { font-size: 16px; color: var(--ez-text2); line-height: 1.7; }
-    /* 구조화 narrative — 섹션 제목 + 닷불릿 */
+    /* 구조화 narrative - 섹션 제목 + 닷불릿 */
     .da-sec-title {
       font-size: 16px; font-weight: 700; letter-spacing: 0.04em;
       color: var(--ez-text); text-transform: uppercase;
@@ -453,11 +453,11 @@
     .da-updated { margin-top: 10px; font-size: 16px; color: var(--ez-text3); }
   </style>
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
-     head 맨 끝에 둔다 — 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     head 맨 끝에 둔다 - 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 <body>
-<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">심플 주가 정보 — 미국 시총 100 실시간 주가</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검: h1 부재 보강) -->
+<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">심플 주가 정보 - 미국 시총 100 실시간 주가</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검: h1 부재 보강) -->
 <script src="/lang-banner.js"></script>
 
 <script src="/ez-nav.js"></script>
@@ -474,7 +474,7 @@
     <div class="sp-header-meta" id="data-ts">데이터 로딩 중…</div>
   </div>
 
-  <!-- 종합지수 카드 (S&P 500 / Nasdaq / Dow 30) — 야후 파이낸스 스타일 세로 4행 -->
+  <!-- 종합지수 카드 (S&P 500 / Nasdaq / Dow 30) - 야후 파이낸스 스타일 세로 4행 -->
   <div class="index-bar" id="index-bar">
     <div class="ix-card" id="ix-sp500" onclick="openDetail('SPX')">
       <div class="ix-name">S&amp;P 500</div>
@@ -514,7 +514,7 @@
 
   <!-- 패널: 반도체 -->
   <div id="panel-semi" class="panel">
-    <!-- 반도체 ETF 카드 (SOXX / SOXL) — 종합지수 카드와 동일 구조 -->
+    <!-- 반도체 ETF 카드 (SOXX / SOXL) - 종합지수 카드와 동일 구조 -->
     <div class="index-bar" id="semi-etf-bar">
       <div class="ix-card" onclick="openDetail('SOXX')">
         <div class="ix-name">SOXX</div>
@@ -614,10 +614,10 @@
     </div>
 
     <div class="dv-price-row">
-      <span class="dv-price" id="dv-price">—</span>
+      <span class="dv-price" id="dv-price"> - </span>
       <span class="dv-chg"   id="dv-chg"></span>
     </div>
-    <!-- 기간 수익률 — 1D는 숨김, 나머지는 기간별 등락 표시 -->
+    <!-- 기간 수익률 - 1D는 숨김, 나머지는 기간별 등락 표시 -->
     <div class="dv-period-return" id="dv-period-return" style="display:none"></div>
 
     <div class="dv-period-tabs">
@@ -635,13 +635,13 @@
     </div>
   </div><!-- /dv-sticky -->
 
-  <!-- TradingView 차트 — 문서 흐름 안에서 고정 높이 -->
+  <!-- TradingView 차트 - 문서 흐름 안에서 고정 높이 -->
   <div id="tv-chart-container">
     <div id="tv_chart_div" style="width:100%;height:100%;"></div>
     <div class="tv-loading" id="tv-loading">차트 로딩 중…</div>
   </div>
 
-  <!-- AI 분석 — 내부 스크롤 없음 -->
+  <!-- AI 분석 - 내부 스크롤 없음 -->
   <div class="detail-analysis" id="detail-analysis" style="display:none">
     <div class="da-label">AI 분석</div>
     <div class="da-badges"   id="da-badges"></div>
@@ -730,7 +730,7 @@ async function loadData() {
       document.getElementById('data-ts').textContent = label ? '스파크라인 ' + label : '';
     }
 
-    // SPCX 폴백 — stocks-data.json에 없을 경우 rank 6에 stub 삽입 (AMZN 바로 다음, 아마존 6위)
+    // SPCX 폴백 - stocks-data.json에 없을 경우 rank 6에 stub 삽입 (AMZN 바로 다음, 아마존 6위)
     // Massive API(stocks-prices.json)는 SPCX 15분 갱신 지원 확인
     if (allData.top100 && !allData.top100.some(function(x) { return x.symbol === 'SPCX'; })) {
       allData.top100.splice(5, 0, { rank: 6, symbol: 'SPCX', name: 'SpaceX', price: null, changePct: null, sparkline: [] });
@@ -755,7 +755,7 @@ async function loadData() {
   }
 }
 
-// 반도체 종목 — 시총 순위 고정 리스트
+// 반도체 종목 - 시총 순위 고정 리스트
 var SEMI_LIST = [
   {rank:1,  symbol:'NVDA', name:'NVIDIA'},
   {rank:2,  symbol:'AVGO', name:'Broadcom'},
@@ -838,11 +838,11 @@ function rowHTML(item, noRank) {
   var live      = (pricesData && pricesData.prices && pricesData.prices[sym]) || null;
   // 장마감~일봉갱신 공백 구간 브릿지 (2026-07-08, 2026-07-10 확장): live.dayClose = 확정된 정규장 종가.
   // extSession==='post' 단독 조건은 Massive가 포스트마켓 거래를 아직 확인 못했을 때(장마감 직후
-  // 수분~수십분) 브릿지가 안 켜지는 공백을 남긴다 — !isUSMarketOpen()(시간 기준) + dayClose가
+  // 수분~수십분) 브릿지가 안 켜지는 공백을 남긴다 - !isUSMarketOpen()(시간 기준) + dayClose가
   // prevClose와 실제로 다름(비거래일 오염 스냅샷 방어)을 대체 조건으로 추가한다(24항 참조).
   var bridgeOK  = isDailyStale() && live && live.dayClose > 0 &&
     (live.extSession === 'post' || (!isUSMarketOpen() && live.dayClose !== live.prevClose));
-  // 장 마감 후: yfinance 정규장 종가 우선 (포스트마켓 가격 오염 방지) — 단, 일봉이 아직
+  // 장 마감 후: yfinance 정규장 종가 우선 (포스트마켓 가격 오염 방지) - 단, 일봉이 아직
   // 오늘 걸로 안 바뀐 공백 구간엔 위 브릿지(live.dayClose)가 우선한다.
   var price     = isUSMarketOpen()
     ? ((live && live.price > 0) ? live.price : item.price)
@@ -857,10 +857,10 @@ function rowHTML(item, noRank) {
   var pctCls = isFlat ? 'flat' : (isUp ? 'up' : 'dn');
   var priceStr = price != null
     ? '$' + price.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})
-    : '—';
+    : ' - ';
   var pctStr = changePct != null
     ? (isUp && !isFlat ? '+' : '') + changePct.toFixed(2) + '%'
-    : '—';
+    : ' - ';
 
   // 확장시간 표시 (포스트/나이트: ☽, 프리마켓: ☀)
   var extHtml = '';
@@ -905,7 +905,7 @@ function rowHTML(item, noRank) {
 }
 
 function cleanName(name) {
-  // ETF 브랜드 접두어 제거 — Invesco, SPDR, iShares, Vanguard, VanEck 등
+  // ETF 브랜드 접두어 제거 - Invesco, SPDR, iShares, Vanguard, VanEck 등
   return name
     .replace(/^invesco\s+/i,   '')
     .replace(/^spdr\s+/i,      '')
@@ -929,11 +929,11 @@ function isUSMarketOpen() {
   return day >= 1 && day <= 5 && mins >= 570 && mins < 960; // 9:30~16:00 ET
 }
 
-// ── 일봉 파일(stocks-data.json) 날짜가 오늘인지 — "장마감~일봉갱신" 공백 구간 감지 (2026-07-08) ──
+// ── 일봉 파일(stocks-data.json) 날짜가 오늘인지 - "장마감~일봉갱신" 공백 구간 감지 (2026-07-08) ──
 // 배경: 일봉 파일은 평일 07:00 UTC(=07:00 KST) 이후 갱신되는데, 정규장은 그보다 최대
 // 2시간 앞선 05:00 KST에 이미 끝난다. 이 05:00~07:30 KST 사이엔 일봉 파일이 "어제" 걸
 // 그대로 들고 있어서, 시장 종료 후 표시 로직(itemChangePct 우선)이 실제로는 하루 전
-// 등락률·가격을 오늘 것처럼 보여준다 — 개별 종목·지수 3개·스파클라인이 동시에 어긋나 보이는
+// 등락률·가격을 오늘 것처럼 보여준다 - 개별 종목·지수 3개·스파클라인이 동시에 어긋나 보이는
 // 원인. allData.generatedAtKST의 날짜와 오늘 KST 날짜를 비교해 이 공백을 감지한다.
 function isDailyStale() {
   if (!allData || !allData.generatedAtKST) return false;
@@ -942,13 +942,13 @@ function isDailyStale() {
   return fileDate !== todayKST;
 }
 
-// ── 스파클라인 베이스라인 보정 — 주말·공휴일 비거래일 스냅샷 방어 (2026-07-04) ──
+// ── 스파클라인 베이스라인 보정 - 주말·공휴일 비거래일 스냅샷 방어 (2026-07-04) ──
 // 배경: 비거래일에 Massive 스냅샷이 day.c===prevDay.c로 동일하게 내려와
 // live.prevClose가 실제 "어제 종가"가 아니라 "그 거래일 자체의 종가"(=현재가)와 같아진다.
 // 이 값을 그대로 베이스라인으로 쓰면 그날 상승분 전체가 베이스라인 아래로 깔려버려
 // 스파클라인이 changePct 배지(+)와 반대(전체 빨강)로 보이는 착시가 생긴다(AAPL·SPCX 확인).
 // prevClose와 현재가가 사실상 같으면(비거래일 스냅샷) 신뢰하지 않고,
-// intraday 배열 자체의 첫 값(그 거래일 시작가)으로 대체한다 — 목록·지수·ETF 3곳 공용.
+// intraday 배열 자체의 첫 값(그 거래일 시작가)으로 대체한다 - 목록·지수·ETF 3곳 공용.
 function resolveSparkBaseline(prevClose, referencePrice, intradayBars) {
   if (prevClose != null && referencePrice != null && Math.abs(prevClose - referencePrice) < 0.005) {
     return (intradayBars && intradayBars.length) ? intradayBars[0] : null;
@@ -956,9 +956,9 @@ function resolveSparkBaseline(prevClose, referencePrice, intradayBars) {
   return prevClose;
 }
 
-// ── changePct 계산 — 목록·디테일 공용 (일관성 보장) ────────────────────
+// ── changePct 계산 - 목록·디테일 공용 (일관성 보장) ────────────────────
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// itemChangePct: stocks-data.json(yfinance) 기준 등락률 — 정규장 종가 기준, 오염 없음
+// itemChangePct: stocks-data.json(yfinance) 기준 등락률 - 정규장 종가 기준, 오염 없음
 function calcChangePct(price, sparkline, live, itemChangePct) {
   var spark = sparkline || [];
   // 장 마감 후: Massive API day.c가 포스트마켓 거래가로 오염됨
@@ -966,7 +966,7 @@ function calcChangePct(price, sparkline, live, itemChangePct) {
   if (!isUSMarketOpen()) {
     // 장마감~일봉갱신 공백 구간 브릿지 (2026-07-08): 일봉 파일이 아직 오늘 걸로 안 바뀌었는데
     // Massive가 포스트마켓 세션(정규장 종료 확정)이면, day.c/prevDay.c 기준 등락률(포스트마켓
-    // 잡음 없음)을 임시로 우선 사용 — 일봉 갱신되면 자동으로 꺼짐.
+    // 잡음 없음)을 임시로 우선 사용 - 일봉 갱신되면 자동으로 꺼짐.
     if (isDailyStale() && live && live.changePct != null &&
         (live.extSession === 'post' || (live.dayClose > 0 && live.dayClose !== live.prevClose))) {
       return live.changePct;
@@ -979,7 +979,7 @@ function calcChangePct(price, sparkline, live, itemChangePct) {
     }
     return null;
   }
-  // 장중: Massive API live.changePct 우선 — 실시간 추적
+  // 장중: Massive API live.changePct 우선 - 실시간 추적
   if (live && live.changePct != null) return live.changePct;  // ③ 실시간
   // sparkline 폴백 (Massive API 미지원 종목)
   if (price != null && spark.length >= 15) {
@@ -994,17 +994,17 @@ function calcChangePct(price, sparkline, live, itemChangePct) {
 function buildSparkline(rawCloses, baselineValue) {
   // baselineValue: 인트라데이 시 dayOpen(정규장 시가)을 별도로 받아 베이스라인으로 사용.
   //               미전달 또는 null이면 closes[0](기간 첫 가격)으로 폴백.
-  // null/NaN/Infinity 필터링 — JSON에 null이 포함될 경우 SVG 좌표가 NaN이 되는 것 방지
+  // null/NaN/Infinity 필터링 - JSON에 null이 포함될 경우 SVG 좌표가 NaN이 되는 것 방지
   var closes = (rawCloses || []).filter(function(v) { return v != null && isFinite(v); });
   var W = 90, H = 32, pad = 3;
   if (!closes || closes.length < 2) {
     return '<svg class="sr-spark-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">' +
       '<line x1="' + pad + '" y1="' + (H/2) + '" x2="' + (W-pad) + '" y2="' + (H/2) + '" stroke="var(--ez-border)" stroke-width="1" stroke-dasharray="4,3"/></svg>';
   }
-  // 세로 여백 14% — 선을 min~max 원본값 그대로 카드 상/하단에 꽉 채우면 실제 변동폭보다
+  // 세로 여백 14% - 선을 min~max 원본값 그대로 카드 상/하단에 꽉 채우면 실제 변동폭보다
   // 훨씬 드라마틱해 보이는 착시가 생긴다(2026-07-10, 이슈 제보: SOXX/SOXL 스파클라인이
   // 장초가~장마감 차이는 작은데 그래프는 수십% 스윙처럼 보임). min/max 양쪽에 14%씩
-  // 여백을 둬서 선이 상/하단 끝에 딱 붙지 않도록 완화 — 모양(추세)은 그대로 유지.
+  // 여백을 둬서 선이 상/하단 끝에 딱 붙지 않도록 완화 - 모양(추세)은 그대로 유지.
   var rawMin = Math.min.apply(null, closes);
   var rawMax = Math.max.apply(null, closes);
   var rawRange = rawMax - rawMin || 1;
@@ -1062,18 +1062,18 @@ function buildSparkline(rawCloses, baselineValue) {
 // 종합지수 카드 (S&P500 / Nasdaq / Dow 30)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function buildSparklineSmall(rawCloses, isUp, baselineValue) {
-  // null/NaN/Infinity 필터링 — SVG 좌표 NaN 방지
+  // null/NaN/Infinity 필터링 - SVG 좌표 NaN 방지
   var closes = (rawCloses || []).filter(function(v) { return v != null && isFinite(v); });
-  // 카드 전체 너비로 확장 — viewBox 고정 + width="100%" / 베이스라인 스타일
+  // 카드 전체 너비로 확장 - viewBox 고정 + width="100%" / 베이스라인 스타일
   var W = 200, H = 36, pad = 2;
   if (!closes || closes.length < 2) {
     return '<svg width="100%" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">' +
       '<line x1="0" y1="' + (H/2) + '" x2="' + W + '" y2="' + (H/2) + '" stroke="var(--ez-border)" stroke-width="1" stroke-dasharray="6,4"/></svg>';
   }
-  // 세로 여백 14% — 선을 min~max 원본값 그대로 카드 상/하단에 꽉 채우면 실제 변동폭보다
+  // 세로 여백 14% - 선을 min~max 원본값 그대로 카드 상/하단에 꽉 채우면 실제 변동폭보다
   // 훨씬 드라마틱해 보이는 착시가 생긴다(2026-07-10, 이슈 제보: SOXX/SOXL 스파클라인이
   // 장초가~장마감 차이는 작은데 그래프는 수십% 스윙처럼 보임). min/max 양쪽에 14%씩
-  // 여백을 둬서 선이 상/하단 끝에 딱 붙지 않도록 완화 — 모양(추세)은 그대로 유지.
+  // 여백을 둬서 선이 상/하단 끝에 딱 붙지 않도록 완화 - 모양(추세)은 그대로 유지.
   var rawMin = Math.min.apply(null, closes);
   var rawMax = Math.max.apply(null, closes);
   var rawRange = rawMax - rawMin || 1;
@@ -1112,7 +1112,7 @@ function buildSparklineSmall(rawCloses, isUp, baselineValue) {
   s += '<polygon points="' + fillPoly + '" fill="var(--ez-green)" opacity="0.18" clip-path="url(#' + uid + 'u)"/>';
   // 빨강 영역 (아래)
   s += '<polygon points="' + fillPoly + '" fill="var(--ez-red)" opacity="0.18" clip-path="url(#' + uid + 'd)"/>';
-  // 베이스라인 점선 — 가늘고 촘촘하게
+  // 베이스라인 점선 - 가늘고 촘촘하게
   s += '<line x1="' + extX1 + '" y1="' + baseY + '" x2="' + extX2 + '" y2="' + baseY + '" stroke="var(--ez-text3)" stroke-width="0.7" stroke-dasharray="2,2" stroke-opacity="0.75"/>';
   // 초록 라인 (위)
   s += '<polyline points="' + polyPts + '" fill="none" stroke="var(--ez-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#' + uid + 'u)"/>';
@@ -1124,7 +1124,7 @@ function buildSparklineSmall(rawCloses, isUp, baselineValue) {
 
 function renderIndexCards() {
   // allData.indices = [{symbol:'SPX',...}, {symbol:'NDX',...}, {symbol:'DJI',...}]
-  // 실제 지수 값 표시 — $ 없이 콤마 포맷 (7,420.09 / 26,021.66 / 51,492.55)
+  // 실제 지수 값 표시 - $ 없이 콤마 포맷 (7,420.09 / 26,021.66 / 51,492.55)
   var CARDS = [
     { idxSym: 'SPX', sparkEl: 'ix-sp-spark', priceEl: 'ix-sp-price', pctEl: 'ix-sp-pct' },
     { idxSym: 'NDX', sparkEl: 'ix-qq-spark', priceEl: 'ix-qq-price', pctEl: 'ix-qq-pct' },
@@ -1137,7 +1137,7 @@ function renderIndexCards() {
                      : null;
     var idxEntry   = allData && allData.indices ? allData.indices.find(function(x) { return x.symbol === c.idxSym; }) : null;
 
-    // ETF 프록시(SPY/ONEQ/DIA) — 스파클라인 + "장마감~일봉갱신 공백" 브릿지 판단에 공용 사용
+    // ETF 프록시(SPY/ONEQ/DIA) - 스파클라인 + "장마감~일봉갱신 공백" 브릿지 판단에 공용 사용
     // NDX는 2026-07-10부터 QQQ(나스닥100) 대신 ONEQ(나스닥 "종합"지수 추종)를 쓴다.
     // idxEntry(^IXIC, yfinance)와 지수 정의가 일치해서 SPX/DJI와 동일하게 실시간 추적 가능(22항 참조).
     var ETF_MAP = { 'SPX': 'SPY', 'NDX': 'ONEQ', 'DJI': 'DIA' };
@@ -1159,7 +1159,7 @@ function renderIndexCards() {
     // Massive v3 직접 수집(price!=null): 항상 신뢰
     // ETF 프록시(price==null): day.c가 포스트마켓 거래가로 오염됨
     //   → 장중(9:30~16:00 ET)에만 ETF 프록시 사용 (라이브 추적)
-    //   → 장 마감 후엔 yfinance 종가(stocks-data.json) 우선 — 정규장 기준 정확
+    //   → 장 마감 후엔 yfinance 종가(stocks-data.json) 우선 - 정규장 기준 정확
     //   → 단, 일봉 파일이 아직 오늘 걸로 안 바뀐 공백 구간엔 위 브릿지가 최우선
     var pct, pctIsLive = false;
     (function() {
@@ -1181,7 +1181,7 @@ function renderIndexCards() {
 
     // 가격 산출: liveIdx.price(Massive v3 직접) 최우선. 그게 없으면 pct가 "실시간"(장중
     // ETF 프록시 또는 공백구간 브릿지) 소스일 때 idxEntry.price(직전 완결 세션 종가) ×
-    // (1+pct/100)로 라이브 근사치를 계산한다 — 장중에도 가격이 어제 종가에 멈춰있던
+    // (1+pct/100)로 라이브 근사치를 계산한다 - 장중에도 가격이 어제 종가에 멈춰있던
     // 문제 수정(2026-07-10). idxEntry.price는 장 진행 중엔 항상 "직전 세션 종가"를
     // 가리키므로(오늘 세션은 아직 일봉 파일에 반영 전) 이 근사식이 하루 종일 유효하다.
     var price;
@@ -1234,7 +1234,7 @@ function renderSemiEtfCards() {
   SEMI_ETFS.forEach(function(c) {
     var item   = findItem(c.sym);
     var live   = (pricesData && pricesData.prices && pricesData.prices[c.sym]) || null;
-    // 장마감~일봉갱신 공백 구간 브릿지 (2026-07-08, 2026-07-10 확장 — 24항 참조)
+    // 장마감~일봉갱신 공백 구간 브릿지 (2026-07-08, 2026-07-10 확장 - 24항 참조)
     var bridgeOK = isDailyStale() && live && live.dayClose > 0 &&
       (live.extSession === 'post' || (!isUSMarketOpen() && live.dayClose !== live.prevClose));
     var price  = isUSMarketOpen()
@@ -1381,7 +1381,7 @@ function fillDetail(symbol) {
     chgEl.textContent = chgStr;
     chgEl.className   = 'dv-chg ' + (isUp ? 'up' : 'dn');
   } else {
-    document.getElementById('dv-price').textContent = '—';
+    document.getElementById('dv-price').textContent = ' - ';
     var chgEl2 = document.getElementById('dv-chg');
     chgEl2.textContent = '';
     chgEl2.className   = 'dv-chg';
@@ -1426,9 +1426,9 @@ function findItem(symbol) {
 // 해결책: range만 사용 → TradingView가 기간에 맞는 최적 봉을 자동 선택
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 var TV_PERIOD_MAP = {
-  '1D':  { range: '1D'  },   // TradingView 자동봉 — 15분봉 내외 자동 선택
-  '5D':  { range: '5D'  },   // TradingView 자동봉 — 30분~1시간봉 자동 선택
-  '1M':  { range: '1M'  },   // TradingView 자동봉 — 일봉 자동 선택
+  '1D':  { range: '1D'  },   // TradingView 자동봉 - 15분봉 내외 자동 선택
+  '5D':  { range: '5D'  },   // TradingView 자동봉 - 30분~1시간봉 자동 선택
+  '1M':  { range: '1M'  },   // TradingView 자동봉 - 일봉 자동 선택
   '3M':  { range: '3M'  },
   '6M':  { range: '6M'  },
   '1Y':  { range: '12M' },
@@ -1442,7 +1442,7 @@ function getYTDOpts() {
   return { range: 'YTD' };   // TradingView 자동봉
 }
 
-// 거래소 매핑 — NYSE 개별 종목
+// 거래소 매핑 - NYSE 개별 종목
 var NYSE_SYMS = {
   'TSM':1,  // Taiwan Semiconductor ADR (NYSE)
   'BRK-B':1,'JPM':1,'V':1,'MA':1,'JNJ':1,'PG':1,'HD':1,'UNH':1,'XOM':1,
@@ -1475,10 +1475,10 @@ var AMEX_SYMS = {
   'KWEB':1,'FXI':1,'MCHI':1,
   // 글로벌
   'EEM':1,'EFA':1,'VEA':1,'VWO':1,'SPDW':1,'SPEM':1,'ACWI':1,
-  // 레버리지 ETF — ProShares (NYSE Arca)
+  // 레버리지 ETF - ProShares (NYSE Arca)
   'QLD':1,'SSO':1,'SDS':1,'UPRO':1,'UDOW':1,'DDM':1,'DXD':1,'URTY':1,'SRTY':1,
   'SPXU':1,'SPXL':1,'SPXS':1,
-  // 레버리지 ETF — Direxion (NYSE Arca)
+  // 레버리지 ETF - Direxion (NYSE Arca)
   'SOXL':1,'SOXS':1,'TECL':1,'TECS':1,'LABU':1,'LABD':1,
   'FAS':1,'FAZ':1,'TNA':1,'TZA':1,'TMF':1,'TMV':1,
   'NAIL':1,'CURE':1,'NUGT':1,'DUST':1,'WEBL':1,'HIBL':1,
@@ -1515,7 +1515,7 @@ var EXTRA_NAMES = {
   'ON':    'ON Semiconductor',
   'GFS':   'GlobalFoundries',
   'LSCC':  'Lattice Semiconductor',
-  // 레버리지 ETF (ProShares) — QQQ 계열
+  // 레버리지 ETF (ProShares) - QQQ 계열
   'QLD':   'QQQ 2배 레버리지 (ProShares)',
   'TQQQ':  'QQQ 3배 레버리지 (ProShares)',
   'SQQQ':  'QQQ 3배 인버스 (ProShares)',
@@ -1590,25 +1590,25 @@ var EXTRA_NAMES = {
   'FBTC':  'Fidelity Wise Origin Bitcoin ETF',
   // 종합지수 (인덱스 카드 클릭 시 디테일 페이지)
   'SPX':   'S&P 500 Index',
-  'NDX':   'Nasdaq Composite Index',  // 2026-07-10 정정 — "NDX"는 이 사이트에서 항상 나스닥 "종합"지수(^IXIC)를 가리킨다(22항). 예전엔 잘못 "Nasdaq 100"으로 표기
+  'NDX':   'Nasdaq Composite Index',  // 2026-07-10 정정 - "NDX"는 이 사이트에서 항상 나스닥 "종합"지수(^IXIC)를 가리킨다(22항). 예전엔 잘못 "Nasdaq 100"으로 표기
   'DJI':   'Dow Jones Industrial Average',
 };
 
 function getTVSym(symbol) {
   // 2026-07-10 재정정: TVC:SPX/TVC:IXIC/TVC:DJI로 바꿨더니 실제로는 이 임베드 위젯에서
   // "TradingView에서만 제공되는 심볼입니다" 에러가 뜨며 로드 자체가 실패하고, 이후 완전히
-  // 엉뚱한 값(예: SPX가 310대로 표시 — 실제 7,500대와 무관)으로 대체되는 게 유저 스크린샷으로
+  // 엉뚱한 값(예: SPX가 310대로 표시 - 실제 7,500대와 무관)으로 대체되는 게 유저 스크린샷으로
   // 확인됨. 웹 검색에서 "TVC:SPX는 누구나 무료로 본다"고 나온 건 tradingview.com 사이트 안에서
-  // 직접 볼 때 얘기였고, 제3자 임베드 위젯(tv.js)에서는 지원 범위가 다르다 — 검증 한계가
+  // 직접 볼 때 얘기였고, 제3자 임베드 위젯(tv.js)에서는 지원 범위가 다르다 - 검증 한계가
   // 실제로 발현된 사례. Capital.com CFD(CAPITALCOM:US500/100/30)로 되돌린다. 이건 확실히
   // 작동하지만 24/5 연속거래 특성상 "1D" 시작 시각이 다른 차트(전날 22:30 KST)와 다르게
-  // 나오는 부작용은 남아있다 — 완전히 틀린 데이터보다는 이 쪽이 낫다는 판단.
+  // 나오는 부작용은 남아있다 - 완전히 틀린 데이터보다는 이 쪽이 낫다는 판단.
   if (symbol === 'SPX')  return 'CAPITALCOM:US500';  // S&P 500 (Capital.com CFD, 무료 임베드 확인됨)
-  if (symbol === 'NDX')  return 'CAPITALCOM:US100';  // Nasdaq 100 CFD — 종합지수 아님(22항 잔여 이슈, 목록 카드는 ONEQ로 정확)
+  if (symbol === 'NDX')  return 'CAPITALCOM:US100';  // Nasdaq 100 CFD - 종합지수 아님(22항 잔여 이슈, 목록 카드는 ONEQ로 정확)
   if (symbol === 'DJI')  return 'CAPITALCOM:US30';   // Dow Jones 30 (Capital.com CFD)
-  if (symbol === 'SOXX') return 'NASDAQ:SOXX';       // iShares 반도체 ETF — NASDAQ 상장
-  if (symbol === 'SOXL') return 'AMEX:SOXL';         // Direxion 반도체 3× ETF — NYSE ARCA(AMEX) 상장
-  if (symbol === 'SOXS') return 'AMEX:SOXS';         // Direxion 반도체 -3× ETF — NYSE ARCA(AMEX) 상장
+  if (symbol === 'SOXX') return 'NASDAQ:SOXX';       // iShares 반도체 ETF - NASDAQ 상장
+  if (symbol === 'SOXL') return 'AMEX:SOXL';         // Direxion 반도체 3× ETF - NYSE ARCA(AMEX) 상장
+  if (symbol === 'SOXS') return 'AMEX:SOXS';         // Direxion 반도체 -3× ETF - NYSE ARCA(AMEX) 상장
   var s = symbol.replace('-', '.');
   if (NYSE_SYMS[symbol]) return 'NYSE:' + s;
   if (AMEX_SYMS[symbol]) return 'AMEX:' + s;
@@ -1640,9 +1640,9 @@ function getStudies(period) {
   var intraday = ['1D', '5D'];
   if (intraday.indexOf(period) >= 0) return osc;
   return [
-    { id: 'MASimple@tv-basicstudies', inputs: { length: 10  }, overrides: { 'Plot.color': '#3B82F6', 'Plot.linewidth': 2 } },  // 10일 — 파랑
-    { id: 'MASimple@tv-basicstudies', inputs: { length: 50  }, overrides: { 'Plot.color': '#8B5CF6', 'Plot.linewidth': 2 } },  // 50일 — 보라
-    { id: 'MASimple@tv-basicstudies', inputs: { length: 100 }, overrides: { 'Plot.color': '#9CA3AF', 'Plot.linewidth': 2 } },  // 100일 — 회색
+    { id: 'MASimple@tv-basicstudies', inputs: { length: 10  }, overrides: { 'Plot.color': '#3B82F6', 'Plot.linewidth': 2 } },  // 10일 - 파랑
+    { id: 'MASimple@tv-basicstudies', inputs: { length: 50  }, overrides: { 'Plot.color': '#8B5CF6', 'Plot.linewidth': 2 } },  // 50일 - 보라
+    { id: 'MASimple@tv-basicstudies', inputs: { length: 100 }, overrides: { 'Plot.color': '#9CA3AF', 'Plot.linewidth': 2 } },  // 100일 - 회색
   ].concat(osc);
 }
 
@@ -1678,7 +1678,7 @@ function calcBaseLevelPct(live) {
   if (live.dayOpen  != null) vals.push(live.dayOpen);
   if (live.dayClose != null) vals.push(live.dayClose);
   if (live.price    != null) vals.push(live.price);
-  vals.push(live.prevClose);  // 기준선 자체도 범위에 포함 — 0%/100% 밖으로 벗어나는 것 방지
+  vals.push(live.prevClose);  // 기준선 자체도 범위에 포함 - 0%/100% 밖으로 벗어나는 것 방지
   if (vals.length < 2) return 50;
   var mn = Math.min.apply(null, vals);
   var mx = Math.max.apply(null, vals);
@@ -1701,16 +1701,16 @@ function renderTVChart(symbol, period) {
   var opts  = period === 'YTD' ? getYTDOpts() : (TV_PERIOD_MAP[period] || { interval: 'D' });
   var tvSym = getTVSym(symbol);
 
-  // 2026-07-10 4차 수정 — 캔들스틱(style:1)으로 최종 전환.
+  // 2026-07-10 4차 수정 - 캔들스틱(style:1)으로 최종 전환.
   // 경위: 1차(Baseline 기본 50% 기준선) → SOXL 착시 실패. 2차(Area 단색, 하루 전체 부호
   // 하나로 칠함) → NVDA처럼 일중 변동폭이 최종 순변동보다 클 때 모양·색 정반대로 보이는
   // 착시 실패. 3차(Baseline + 전일종가 근사 기준선, baseLevelPercentage 오버라이드) →
   // NVDA 실측 결과 오버라이드가 실제로는 반영 안 되고 여전히 화면 중간(기본 50%대)에서
   // 색이 갈려, "전일 종가 대비 -0.66%인데 차트 대부분이 초록"으로 보이는 문제 재확인
-  // (유저 스크린샷). 18항 재시도 상한선(같은 증상 3회) 도달 — 더 이상 baseline 퍼센트
+  // (유저 스크린샷). 18항 재시도 상한선(같은 증상 3회) 도달 - 더 이상 baseline 퍼센트
   // 추정을 시도하지 않고, 오버라이드 자체가 필요 없는 캔들스틱으로 전환한다. 봉 하나하나가
   // 자기 시가 대비 등락으로 색이 정해지는 TradingView 네이티브 기본 동작이라 100% 신뢰
-  // 가능 — 이게 사실 처음부터 가장 확실한 선택지였다.
+  // 가능 - 이게 사실 처음부터 가장 확실한 선택지였다.
   var cfg = {
     container_id:      'tv_chart_div',
     symbol:            tvSym,
@@ -1718,7 +1718,7 @@ function renderTVChart(symbol, period) {
     theme:             isDark() ? 'dark' : 'light',
     locale:            'kr',
     timezone:          'Asia/Seoul',
-    style:             '1',  // 캔들스틱 — 오버라이드 불필요, 봉별 시가 대비 등락으로 색 자동 결정 (2026-07-10 4차, 25항 참조)
+    style:             '1',  // 캔들스틱 - 오버라이드 불필요, 봉별 시가 대비 등락으로 색 자동 결정 (2026-07-10 4차, 25항 참조)
     hide_side_toolbar: false,
     hide_top_toolbar:  false,
     hide_legend:       true,
@@ -1728,7 +1728,7 @@ function renderTVChart(symbol, period) {
     prePostMarketData: true,
     studies:           getStudies(period),
   };
-  // range만 지정 — interval 제거 (TradingView 자동봉 선택)
+  // range만 지정 - interval 제거 (TradingView 자동봉 선택)
   // CLAUDE.md 규칙 13: interval + range 동시 사용 절대 금지
   if (opts.range) cfg.range = opts.range;
 
@@ -1859,7 +1859,7 @@ async function loadAnalysis(symbol) {
     document.getElementById('da-updated').textContent = '';
     secEl.style.display = '';
   } catch(e) {
-    // 분석 파일 없음 — 정상
+    // 분석 파일 없음 - 정상
   }
 }
 
@@ -2042,7 +2042,7 @@ function renderPortfolio() {
   if (editBtn) editBtn.style.display = '';
 
   if (editMode) {
-    // 편집 모드 — 드래그 핸들 + 삭제 버튼
+    // 편집 모드 - 드래그 핸들 + 삭제 버튼
     listEl.innerHTML = faves.map(function(sym, idx) {
       var item     = findItem(sym) || { symbol: sym, name: sym, price: null, changePct: null, sparkline: [] };
       var live     = (pricesData && pricesData.prices && pricesData.prices[sym]) || null;
@@ -2056,9 +2056,9 @@ function renderPortfolio() {
       var isFlat   = pfPct == null;
       var pctCls   = isFlat ? 'flat' : (isUp ? 'up' : 'dn');
       var priceStr = pfPrice != null
-        ? '$' + pfPrice.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : '—';
+        ? '$' + pfPrice.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : ' - ';
       var pctStr   = pfPct != null
-        ? (isUp && !isFlat ? '+' : '') + pfPct.toFixed(2) + '%' : '—';
+        ? (isUp && !isFlat ? '+' : '') + pfPct.toFixed(2) + '%' : ' - ';
       return [
         '<div class="stock-row edit-mode" draggable="true"',
         ' data-idx="' + idx + '" data-sym="' + sym + '"',
