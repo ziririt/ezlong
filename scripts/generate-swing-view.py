@@ -18,6 +18,15 @@ import os
 import re as _re
 from datetime import datetime, timezone, timedelta
 
+# 80항 — 화면 문구의 em dash(—)를 하이픈으로. 저장 직전 한 번만 훑는다.
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    from ez_text import scrub as _ez_scrub
+except Exception:                      # 모듈이 없어도 본 기능은 죽지 않는다
+    def _ez_scrub(o):
+        return o
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 SIGNALS = os.path.join(HERE, '..', 'data', 'market-signals.json')
 LEDGER = os.path.join(HERE, '..', 'data', 'swing-ledger.json')
@@ -1468,6 +1477,9 @@ def desk_with_fable(view, sc_entry, ca):
 - 앵커의 인간미: CNBC 주식 코너 앵커처럼, 독자의 감정을 아는 사람의 말로. 폭락·연속 하락·오랜만의 반등·신고가 같은 날에는 명쾌한 비유나 속시원한 표현을 한 문장 넣어라
   (예: 급락 연속 뒤 반등 — "긴 터널 끝에 처음 보인 불빛, 다만 출구인지 마주 오는 기차인지는 이틀 안에 판명" / 연속 하락 — "계좌가 두들겨 맞은 한 주, 그래도 도망칠 자리와 버틸 자리는 구분해야 하는 시점").
   조건: 비유는 문단당 하나까지, 과장·사실 왜곡 금지, 숫자와 판단은 그대로, 유치한 말장난 금지. 감정 표현이 판단을 흐리면 실격.
+- 문장 부호(80항): **긴 대시(—)를 쓰지 마라.** 끊어 읽는 자리에는 하이픈 ' - '를 쓴다.
+  나쁜 예: "1배수 칸은 채운 채로 유지 — 레버리지 검토는 반등 관문".
+  좋은 예: "1배수 칸은 채운 채로 유지 - 레버리지 검토는 반등 관문".
 - 가격 표기: 소수점은 버려라 — "$683.55"가 아니라 "683달러". 지수·종목가 공통.
 - 가격·관문 언급 시 반드시 어느 종목/지수인지 명시하라 (예: "QQQ 종가 683달러 선"). 관문 기준가는 QQQ(나스닥100 ETF) 종가다.
 - 색 강조 태그: 중요한 단어·구만 감싸라 — 긍정·상승·통과는 [G]…[/G], 부정·하락·경고는 [R]…[/R], 핵심 조건·가격·결론 포인트는 [B]…[/B].
@@ -1919,6 +1931,7 @@ def main():
 
     with open(LEDGER, 'w', encoding='utf-8') as f:
         json.dump(ledger, f, ensure_ascii=False, indent=1)
+    view = _ez_scrub(view)          # 80항 — ' — ' → ' - '
     with open(VIEW, 'w', encoding='utf-8') as f:
         json.dump(view, f, ensure_ascii=False, indent=1)
     print(f'swing-view 생성: day={day} advanced={advanced} action={action} '

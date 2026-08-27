@@ -17,6 +17,26 @@ const https = require('https');
 const fs    = require('fs');
 const path  = require('path');
 
+/* 80항 - 화면 문구의 em dash(—)를 하이픈으로. JSON 저장 직전 한 번만 훑는다.
+   파이썬 쪽 scripts/ez_text.py 와 같은 규칙이다(들여쓰기·줄바꿈은 건드리지 않는다). */
+function ezFixDash(t) {
+  if (typeof t !== 'string' || t.indexOf('\u2014') < 0) return t;
+  return t
+    .replace(/(\S)[ \t]*\u2014[ \t]*(?=\S)/g, '$1 - ')
+    .replace(/(^|\n)([ \t]*)\u2014[ \t]*/g, '$1$2- ')
+    .replace(/\u2014/g, '-');
+}
+function ezScrub(o) {
+  if (typeof o === 'string') return ezFixDash(o);
+  if (Array.isArray(o)) return o.map(ezScrub);
+  if (o && typeof o === 'object') {
+    const r = {};
+    for (const k of Object.keys(o)) r[k] = ezScrub(o[k]);
+    return r;
+  }
+  return o;
+}
+
 // ── Yahoo Finance Crumb 인증 캐시 (세션당 1회만 취득) ─────────────────────
 let _yfCookie = null;
 let _yfCrumb  = null;
@@ -1000,6 +1020,7 @@ ${first}
 - 기업 펀더멘털, 실적, 금리, 연준, 거시경제, 환율, 산업 트렌드, 규제, 정치적 요인은 절대 언급하지 마라.
 
 [문체 규격 — 모든 한국어 출력 필드에 예외 없이 적용]
+- 문장 부호(80항): 긴 대시(—)를 쓰지 마라. 끊어 읽는 자리에는 하이픈 ' - '를 쓴다.
 - 서술어 없이 명사로 끝맺어라. '~구간', '~확인', '~진단', '~수준', '~우위', '~미충족', '~진행 중' 형태.
 - 금지: '~했다/~한다/~이다/~된다' 같은 해라체, '~습니다/~입니다' 같은 존대체, '~하세요' 같은 권유형.
   한 응답 안에서 문체가 섞이면 실격이다 — 전 필드가 같은 명사형이어야 한다.
@@ -1658,7 +1679,7 @@ async function processTicker(meta) {
   );
   fs.writeFileSync(
     path.join(DATA_DIR, `analysis-${safeSymbol}.json`),
-    JSON.stringify(analysisOut, null, 2)
+    JSON.stringify(ezScrub(analysisOut), null, 2)   // 80항
   );
 
   const trend  = aiResult?.trend  || '-';

@@ -19,6 +19,14 @@ import urllib.request
 import requests
 from datetime import datetime, timezone, timedelta
 
+# 80항 — 화면 문구의 em dash(—)를 하이픈으로. 저장 직전 한 번만 훑는다.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    from ez_text import scrub as _ez_scrub
+except Exception:                      # 모듈이 없어도 본 기능은 죽지 않는다
+    def _ez_scrub(o):
+        return o
+
 try:
     import yfinance as yf
 except ImportError:
@@ -964,6 +972,11 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
   방향을 못 박아라. 긍정 칸 이름에 '금리 인상·긴축·매파'를 완화어 없이 쓰지 말고,
   부정 칸 이름에 '금리 인하·완화 전환·비둘기'를 그대로 쓰지 마라.
 
+=== 문장 부호 (80항) ===
+- **긴 대시(—)를 쓰지 마라.** 끊어 읽는 자리에는 하이픈 ' - '를 쓴다.
+  나쁜 예: "1배수 칸은 채운 채로 유지 — 레버리지 검토는 반등 관문".
+  좋은 예: "1배수 칸은 채운 채로 유지 - 레버리지 검토는 반등 관문".
+
 === 방향이 같으면 '~했으나'로 잇지 마라 (78항) ===
 - **'~했으나/~했지만'은 양보다.** 앞뒤가 **반대 방향**일 때만 쓴다. 방향이 같으면
   인과·나열로 잇는다 — 없는 반전을 만들면 독자가 문장을 두 번 읽는다.
@@ -1187,6 +1200,7 @@ def load_existing():
 
 
 def save_data(data):
+    data = _ez_scrub(data)          # 80항 — ' — ' → ' - '
     with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     print(f"저장 완료: {OUTPUT_PATH}")

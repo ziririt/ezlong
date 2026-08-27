@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- 실험실 페이지 — 정식 공개 전. 메뉴·사이트맵에 없고 검색에도 안 잡힌다. -->
+<!-- 실험실 페이지 - 정식 공개 전. 메뉴·사이트맵에 없고 검색에도 안 잡힌다. -->
 <meta name="robots" content="noindex, nofollow">
-<title>TimesFM 실험실 — 다른 코너에 얹으면 어떻게 되나 | ezlong.com</title>
+<title>TimesFM 실험실 - 다른 코너에 얹으면 어떻게 되나 | ezlong.com</title>
 <link rel="stylesheet" href="ez-design.css">
 <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg?v=20260809">
 <style>
@@ -25,11 +25,11 @@
 .lt-badge.holdb { background: #B8860B; }
 .lt-badge.no { background: var(--ez-red); }
 .lt-why { font-size: 16px; color: var(--ez-text2); line-height: 1.65; margin: 6px 0 12px; }
-/* 시안 프레임 — "이 안은 실제 화면이 아니라 붙였을 때의 모습"임을 점선으로 말한다 */
+/* 시안 프레임 - "이 안은 실제 화면이 아니라 붙였을 때의 모습"임을 점선으로 말한다 */
 .lt-mock { border: 1.5px dashed color-mix(in srgb, var(--ez-blue) 55%, transparent); border-radius: 12px; padding: 14px; margin: 10px 0 4px; position: relative; }
 .lt-mock-tag { position: absolute; top: -10px; left: 12px; background: var(--ez-surface); padding: 0 8px; font-size: 14px; font-weight: 800; color: var(--ez-blue); }
 .lt-fail { font-size: 14px; color: var(--ez-text3); margin-top: 10px; }
-/* 범위 바 (차트분석 카드와 같은 어휘 — 진한 띠 40%, 옅은 띠 80%) */
+/* 범위 바 (차트분석 카드와 같은 어휘 - 진한 띠 40%, 옅은 띠 80%) */
 .lt-row { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
 .lt-lab { font-size: 14px; font-weight: 700; color: var(--ez-text2); width: 76px; flex: none; }
 .lt-bar { position: relative; height: 20px; flex: 1; background: var(--ez-card2); border-radius: 999px; overflow: hidden; }
@@ -59,7 +59,7 @@
 .lt-foot { font-size: 14px; color: var(--ez-text3); line-height: 1.6; margin-top: 26px; }
 </style>
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
-     head 맨 끝에 둔다 — 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     head 맨 끝에 둔다 - 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 <body>
@@ -69,14 +69,14 @@
   <div class="lt-eyebrow">Labs · 시험 공개</div>
   <h1 class="lt-h1">TimesFM을 다른 코너에 얹으면 어떻게 되나</h1>
   <p class="lt-lede">구글의 시계열 모델 TimesFM 예측 범위를 사이트의 다른 코너에 실제로 붙이면
-    어떤 모습이 되는지, 오늘 실데이터로 그대로 그려본 실험실입니다. 점선 프레임 안이 그 시안입니다 —
+    어떤 모습이 되는지, 오늘 실데이터로 그대로 그려본 실험실입니다. 점선 프레임 안이 그 시안입니다 -
     적용/보류 판정은 각 섹션의 배지가 최신 상태입니다.</p>
   <div class="lt-meta" id="lt-meta">데이터 불러오는 중…</div>
 
-  <!-- 1. 차트분석 — 이미 적용 -->
+  <!-- 1. 차트분석 - 이미 적용 -->
   <section class="lt-sec">
     <div class="lt-sec-head"><span class="lt-sec-title">차트분석</span><span class="lt-badge on">적용됨</span></div>
-    <p class="lt-why">유일하게 정직하게 쓸 수 있는 자리 — 값을 맞히는 예측이 아니라 "앞으로 한 달, 이 종목은
+    <p class="lt-why">유일하게 정직하게 쓸 수 있는 자리 - 값을 맞히는 예측이 아니라 "앞으로 한 달, 이 종목은
       얼마나 흔들릴 수 있나"를 보여준다. <a href="/chart-analysis.html#QQQ" style="color:var(--ez-blue);font-weight:700;text-decoration:none">실제 화면 보기 →</a></p>
   </section>
 
@@ -84,8 +84,8 @@
   <section class="lt-sec">
     <div class="lt-sec-head"><span class="lt-sec-title">스윙 시그널 · 전략 + TOP9</span><span class="lt-badge on">적용됨</span></div>
     <div class="lt-mock"><span class="lt-mock-tag">적용된 모습</span><div id="lt-swing" class="lt-empty">데이터 준비 중</div></div>
-    <p class="lt-fail">2026-08-16 승격: 스윙 판단 카드와 TOP9(TSLA·NVDA·빅테크 7) 카드에 "TimesFM 1주 —
-      모델이 보는 상승 확률"을 참고 줄로 병기. 판단 엔진(200일선·RSI·매도압력)에는 미연결 —
+    <p class="lt-fail">2026-08-16 승격: 스윙 판단 카드와 TOP9(TSLA·NVDA·빅테크 7) 카드에 "TimesFM 1주 -
+      모델이 보는 상승 확률"을 참고 줄로 병기. 판단 엔진(200일선·RSI·매도압력)에는 미연결 -
       규칙 판단과 무관한 참고 지표임을 줄 안에 명시.
       <a href="/atmr-dashboard.html" style="color:var(--ez-blue);font-weight:700;text-decoration:none">실제 화면 보기 →</a></p>
   </section>
@@ -96,13 +96,13 @@
     <div class="lt-mock"><span class="lt-mock-tag">붙이면 이런 모습</span><div id="lt-score" class="lt-empty">데이터 준비 중</div></div>
     <p class="lt-fail" id="lt-score-why">부적합 이유: 이 코너는 시장을 움직인 <b>원인(뉴스·이벤트)</b>의 균형을 재는 곳이고,
       TimesFM은 가격 흐름이라는 <b>결과</b>만 본다. 실제로 이 사이트의 자체 검증 규칙("결과 재료는 근거 인용 금지")에
-      그대로 걸린다 — 위 시안의 빨간 도장이 그 규칙이 실제로 찍는 판정이다.</p>
+      그대로 걸린다 - 위 시안의 빨간 도장이 그 규칙이 실제로 찍는 판정이다.</p>
   </section>
 
   <!-- 4. AI 포트폴리오 점검 -->
   <section class="lt-sec">
     <div class="lt-sec-head"><span class="lt-sec-title">AI 포트폴리오 점검</span><span class="lt-badge holdb">보류</span></div>
-    <div class="lt-mock"><span class="lt-mock-tag">붙이면 이런 모습 — 보유 종목별 1개월 범위</span><div id="lt-port" class="lt-empty">데이터 준비 중</div></div>
+    <div class="lt-mock"><span class="lt-mock-tag">붙이면 이런 모습 - 보유 종목별 1개월 범위</span><div id="lt-port" class="lt-empty">데이터 준비 중</div></div>
     <p class="lt-fail">보류 이유: 모양은 자연스럽다. 다만 이 코너의 판정(주간 RSI 기준 매수권·적정권·매도권)과
       다른 잣대가 한 화면에 서면 어느 쪽을 믿어야 하는지 흐려진다. 범위의 적중률이 검증되면 "이번 달 변동성
       각오 폭" 열로 넣을 만하다.</p>
@@ -111,8 +111,8 @@
   <!-- 5. 마켓 사이클 -->
   <section class="lt-sec">
     <div class="lt-sec-head"><span class="lt-sec-title">마켓 사이클 모니터</span><span class="lt-badge on">적용됨</span></div>
-    <div class="lt-mock"><span class="lt-mock-tag">적용된 모습 — 지수 3종 1개월 범위</span><div id="lt-cycle" class="lt-empty">데이터 준비 중</div></div>
-    <p class="lt-fail">2026-08-16 승격: "이번 달 계기판" 보조 위젯으로 실제 적용 — 본 판정(주봉·수개월)과
+    <div class="lt-mock"><span class="lt-mock-tag">적용된 모습 - 지수 3종 1개월 범위</span><div id="lt-cycle" class="lt-empty">데이터 준비 중</div></div>
+    <p class="lt-fail">2026-08-16 승격: "이번 달 계기판" 보조 위젯으로 실제 적용 - 본 판정(주봉·수개월)과
       별도 상자, 판정 배지·색 어휘 없이 흔들림의 크기만.
       <a href="/market-cycle.html" style="color:var(--ez-blue);font-weight:700;text-decoration:none">실제 화면 보기 →</a></p>
   </section>
@@ -120,7 +120,7 @@
   <!-- 6. 장기 시뮬레이터 -->
   <section class="lt-sec">
     <div class="lt-sec-head"><span class="lt-sec-title">DCA·복리·은퇴·몬테카를로 시뮬레이터</span><span class="lt-badge no">부적합</span></div>
-    <div class="lt-mock"><span class="lt-mock-tag">억지로 늘리면 이렇게 된다 — QQQ 범위의 시간별 팽창</span><div id="lt-sim" class="lt-empty">데이터 준비 중</div></div>
+    <div class="lt-mock"><span class="lt-mock-tag">억지로 늘리면 이렇게 된다 - QQQ 범위의 시간별 팽창</span><div id="lt-sim" class="lt-empty">데이터 준비 중</div></div>
     <p class="lt-fail">부적합 이유: 이 모델이 실제로 계산하는 지평은 <b>최대 64거래일(약 3개월)</b>이다. 위 1년 줄은
       통계 공식(√시간)으로 억지로 늘린 것이고, 그 순간 이미 "모델의 예측"이 아니라 "우리가 덧댄 가정"이 된다.
       20~30년짜리 은퇴·몬테카를로 시뮬레이션에 넣으면 정밀해 보이는 장식이 될 뿐, 결과가 나아지지 않는다.
@@ -129,7 +129,7 @@
 
   <p class="lt-foot">이 페이지는 시험 공개 상태로 메뉴에 없습니다. 여기 보이는 시안 중 실제 코너로 승격할 것이
     있으면 그때 정식 디자인 절차를 거쳐 옮깁니다. 예측 범위 데이터는 매일 장 마감 후 갱신되고 이력이 저장소에
-    쌓이므로, 약 한 달 뒤부터 "범위 안에 실제 종가가 몇 %나 들어왔나"를 기계로 채점할 수 있습니다 —
+    쌓이므로, 약 한 달 뒤부터 "범위 안에 실제 종가가 몇 %나 들어왔나"를 기계로 채점할 수 있습니다 -
     그 채점 결과가 위 보류 항목들의 다음 판단 근거입니다.</p>
 </main>
 
@@ -172,11 +172,11 @@
     J('/data/market-scorecard-data.json'),
     J('/data/model-portfolio.json'),
   ]).then(([tfm, swing, score, port]) => {
-    if (!tfm || !tfm.symbols) { $('lt-meta').textContent = '예측 데이터가 아직 없습니다 — 다음 갱신 후 다시 열어 주세요.'; return; }
+    if (!tfm || !tfm.symbols) { $('lt-meta').textContent = '예측 데이터가 아직 없습니다 - 다음 갱신 후 다시 열어 주세요.'; return; }
     const S = tfm.symbols;
     $('lt-meta').textContent = `기준: ${S.QQQ ? S.QQQ.lastDate + ' 종가' : ''} · ${tfm.updatedKST} 갱신 · 대상 ${Object.keys(S).length}종목 · 지평 ${tfm.horizonDays}거래일`;
 
-    // 2. 스윙 — 현재 판단 + 병기 줄 (구획 가드: 하나 깨져도 나머지는 산다)
+    // 2. 스윙 - 현재 판단 + 병기 줄 (구획 가드: 하나 깨져도 나머지는 산다)
     try {
       const q = S.QQQ, comp = swing && swing.comp;
       if (q && comp) {
@@ -186,30 +186,30 @@
         const bullishStance = /매수|보유|레버리지|유지/.test(stance);
         const same = (med >= 0) === bullishStance;
         $('lt-swing').innerHTML = `
-          <div class="lt-line">오늘의 스윙 판단 — <b>${stance}</b></div>
+          <div class="lt-line">오늘의 스윙 판단 - <b>${stance}</b></div>
           <div class="lt-line" style="margin-top:6px">TimesFM 1개월: 가운데 값 <b>${fmtP(med)}</b>,
             범위 ${fmtP(pctOf(q.q10[t], last))} ~ ${fmtP(pctOf(q.q90[t], last))}
             <span class="lt-agree ${same ? 'same' : 'diff'}">${same ? '판단과 같은 방향' : '판단과 다른 방향'}</span></div>`;
       }
     } catch (e) { /* 구획 가드 */ }
 
-    // 3. 긍정vs부정 — 재료 카드 시안 + 규칙 도장
+    // 3. 긍정vs부정 - 재료 카드 시안 + 규칙 도장
     try {
       const q = S.QQQ, e0 = score && score.entries && score.entries[0];
       if (q && e0) {
         const t = q.q50.length - 1, med = pctOf(q.q50[t], q.lastClose);
         $('lt-score').innerHTML = `
-          <div class="lt-line">현재 판정 — 긍정 <b>${e0.positive_total}</b> : 부정 <b>${e0.negative_total}</b></div>
+          <div class="lt-line">현재 판정 - 긍정 <b>${e0.positive_total}</b> : 부정 <b>${e0.negative_total}</b></div>
           <div class="lt-factor">
             <div class="sc">+10</div>
             <div class="nm">TimesFM 1개월 전망 ${med >= 0 ? '상방' : '하방'}</div>
-            <div class="ds">구글 시계열 모델의 1개월 가운데 값 ${fmtP(med)} — 이걸 ${med >= 0 ? '긍정' : '부정'} 재료로 올린다면 이런 카드가 된다</div>
-            <div class="lt-stamp">자체 규칙 위반 — 결과 재료(가격 움직임)는 근거 인용 금지</div>
+            <div class="ds">구글 시계열 모델의 1개월 가운데 값 ${fmtP(med)} - 이걸 ${med >= 0 ? '긍정' : '부정'} 재료로 올린다면 이런 카드가 된다</div>
+            <div class="lt-stamp">자체 규칙 위반 - 결과 재료(가격 움직임)는 근거 인용 금지</div>
           </div>`;
       }
     } catch (e) { /* 구획 가드 */ }
 
-    // 4. 포트폴리오 — 보유 종목 중 커버 심볼
+    // 4. 포트폴리오 - 보유 종목 중 커버 심볼
     try {
       const held = (port && port.holdings ? port.holdings : [])
         .filter((h) => S[h.tk]).slice(0, 7);
@@ -220,7 +220,7 @@
       }
     } catch (e) { /* 구획 가드 */ }
 
-    // 5. 마켓 사이클 — 지수 3종
+    // 5. 마켓 사이클 - 지수 3종
     try {
       const idx = ['QQQ', 'VOO', 'SOXX'].filter((k) => S[k]);
       if (idx.length) {
@@ -229,7 +229,7 @@
       }
     } catch (e) { /* 구획 가드 */ }
 
-    // 6. 장기 시뮬레이터 — 지평 팽창 데모 (√시간 외삽은 '우리가 덧댄 가정'임을 명시)
+    // 6. 장기 시뮬레이터 - 지평 팽창 데모 (√시간 외삽은 '우리가 덧댄 가정'임을 명시)
     try {
       const q = S.QQQ;
       if (q) {
@@ -253,7 +253,7 @@
           bar('1년', y1.lo, y1.med, y1.hi, false) +
           `<div class="lt-row"><span class="lt-lab">20년</span>
             <div class="lt-bar" style="opacity:.35"><div class="lt-zero" style="left:50%"></div></div>
-            <span class="lt-nums" style="opacity:.75">모델 지평 밖 — 계산 불가</span></div>`;
+            <span class="lt-nums" style="opacity:.75">모델 지평 밖 - 계산 불가</span></div>`;
       }
     } catch (e) { /* 구획 가드 */ }
   });

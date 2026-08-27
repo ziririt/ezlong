@@ -1,13 +1,13 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   EZLONG — 브라우저 언어 감지 배너 (2026-07-29)
+   EZLONG - 브라우저 언어 감지 배너 (2026-07-29)
    목적: 방문자의 브라우저 언어와 현재 페이지 언어가 다르면 하단에 다른
    언어로 보기를 "제안"하는 배너를 띄운다. 자동 하드 리다이렉트는 하지
-   않는다 — 검색엔진 크롤러가 다른 언어판을 못 들어가는 문제를 피하기
+   않는다 - 검색엔진 크롤러가 다른 언어판을 못 들어가는 문제를 피하기
    위함(구글 공식 권고). 이미 6개 언어 hreflang이 배선돼 있으므로 색인은
    그쪽에 맡기고, 이 배너는 순수 UX 편의 기능이다.
 
    전 페이지 공통 로드: <script src="/lang-banner.js"></script>
-   (ez-nav.js/ez-footer.js와 동일하게 절대경로 1개 파일 — 개별 페이지 수정 금지,
+   (ez-nav.js/ez-footer.js와 동일하게 절대경로 1개 파일 - 개별 페이지 수정 금지,
    이 파일 하나만 고칠 것)
    ═══════════════════════════════════════════════════════════════════════ */
 (function () {
@@ -16,7 +16,7 @@
   var LANGS = ['ko', 'en', 'ja', 'es', 'pt', 'zh'];
 
   // 6개 언어 전체에 존재하지 않는 예외 페이지만 명시. 목록에 없으면
-  // "6개 언어 전부 존재"로 간주(기본값) — 새 페이지를 6개 언어에 동시
+  // "6개 언어 전부 존재"로 간주(기본값) - 새 페이지를 6개 언어에 동시
   // 추가하는 한 이 매니페스트를 매번 갱신할 필요가 없다.
   var PAGE_LANGS = {
     'auto-dca-guide.html': ['ko', 'en', 'ja'],
@@ -24,7 +24,7 @@
     'today-chart.html': ['ko', 'en'],
     'isa-irp-us-stock-tax-comparison.html': ['ko'],
     'market-scorecard.html': ['ko'],
-    // 2026-08-08 신설 — 아직 한국어판만 있다. 번역본이 올라가면 이 줄에
+    // 2026-08-08 신설 - 아직 한국어판만 있다. 번역본이 올라가면 이 줄에
     // 언어를 추가한다. 여기 없으면 배너가 없는 페이지로 안내한다.
     'model-portfolio.html': ['ko']
   };
@@ -33,7 +33,7 @@
     return PAGE_LANGS.hasOwnProperty(file) ? PAGE_LANGS[file] : LANGS;
   }
 
-  // ── 배너 문구 (타겟 언어로 표시 — 방문자가 읽을 수 있는 언어로 안내) ──
+  // ── 배너 문구 (타겟 언어로 표시 - 방문자가 읽을 수 있는 언어로 안내) ──
   var TXT = {
     ko: { msg: '이 사이트를 한국어로 보시겠어요?', go: '한국어로 보기', stay: '괜찮아요' },
     en: { msg: 'Would you like to view this site in English?', go: 'View in English', stay: 'No thanks' },
@@ -157,7 +157,7 @@
 
   function init() {
     try {
-      if (isEmbeddedApp()) return; // 네이티브 앱 웹뷰 — 언어 전환은 앱이 담당
+      if (isEmbeddedApp()) return; // 네이티브 앱 웹뷰 - 언어 전환은 앱이 담당
 
       var cur = currentLang();
       var choice = getChoice();

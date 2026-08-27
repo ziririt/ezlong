@@ -1,5 +1,5 @@
 /**
- * ez-footer.js — EZLONG 글로벌 푸터 공유 스크립트
+ * ez-footer.js - EZLONG 글로벌 푸터 공유 스크립트
  * 사용법: <script src="/ez-footer.js"></script>
  * - ez-design.css 가 먼저 로드되어 있어야 합니다.
  */
@@ -122,7 +122,7 @@
         '</div>' +
 
         '<div class="ez-footer-bottom">' +
-          /* 73항(2026-08-26) — 소개·방침·약관·유의사항·문의는 사이트의 신뢰 근거다.
+          /* 73항(2026-08-26) - 소개·방침·약관·유의사항·문의는 사이트의 신뢰 근거다.
              푸터 어디서든 한 번에 닿아야 한다. */
           '<div class="ez-footer-legal">' +
             '<a href="/about.html">소개</a>' +

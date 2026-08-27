@@ -63,6 +63,14 @@ from datetime import datetime, timezone, timedelta
 
 import pandas as pd
 
+# 80항 — 화면 문구의 em dash(—)를 하이픈으로. 저장 직전 한 번만 훑는다.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    from ez_text import scrub as _ez_scrub
+except Exception:                      # 모듈이 없어도 본 기능은 죽지 않는다
+    def _ez_scrub(o):
+        return o
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, '..')
 OUT = os.path.join(ROOT, 'data', 'weekly-risk.json')
@@ -430,6 +438,7 @@ def main():
     }
 
     os.makedirs(os.path.join(ROOT, 'data'), exist_ok=True)
+    payload = _ez_scrub(payload)    # 80항 — ' — ' → ' - '
     with open(OUT, 'w', encoding='utf-8') as f:
         json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
 

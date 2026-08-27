@@ -1,20 +1,20 @@
 /**
- * ez-app-banner.js — 앱 설치 배너 (2026-08-26 신설, CLAUDE.md 71항)
+ * ez-app-banner.js - 앱 설치 배너 (2026-08-26 신설, CLAUDE.md 71항)
  *
  * 사파리는 <meta name="apple-itunes-app"> 한 줄이면 상단에 공식 배너를 그려 준다
  * (App Store로 보내거나, 이미 깔려 있으면 앱을 연다). 안드로이드 크롬에는 같은
  * 기능이 없어 같은 모양의 배너를 직접 그린다.
  *
- * 이 파일이 존재하는 진짜 이유는 배너를 '띄우는' 쪽이 아니라 '막는' 쪽이다 —
+ * 이 파일이 존재하는 진짜 이유는 배너를 '띄우는' 쪽이 아니라 '막는' 쪽이다 -
  * 앱 웹뷰 안에서 앱 설치 배너가 뜨면 이미 앱을 쓰는 사람에게 앱을 권하는 꼴이다.
  * 그래서 판정을 먼저 하고, 브라우저일 때만 배너를 만든다.
  *
- * 왜 <head>에서 동기로 부르는가 —
+ * 왜 <head>에서 동기로 부르는가 -
  *   사파리는 문서를 훑으며 apple-itunes-app 을 찾는다. body 끝(ez-nav.js 자리)에서
  *   메타를 꽂으면 이미 늦을 수 있다. head 안에서, 파싱 도중에 꽂아야 확실하다.
  *
  * 판정 단일 출처: window.ezInAppWebview 를 여기서 정의한다(59항). ez-nav.js·
- * ez-ads.js 가 같은 함수를 쓴다 — 앱 판별이 파일마다 갈리면 언젠가 어긋난다.
+ * ez-ads.js 가 같은 함수를 쓴다 - 앱 판별이 파일마다 갈리면 언젠가 어긋난다.
  */
 (function () {
   'use strict';
@@ -28,7 +28,7 @@
   var CLOSED_KEY = 'ezlong:appBannerClosed';   // 애플 배너처럼 한 번 닫으면 끝
 
   /* ── 앱 웹뷰 판정 (3겹) ───────────────────────────────────────────────
-     ① 앱이 첫 진입 URL에 붙이는 embed=app — 첫 로드에만 있으므로 세션에 새긴다
+     ① 앱이 첫 진입 URL에 붙이는 embed=app - 첫 로드에만 있으므로 세션에 새긴다
      ② 앱이 남기는 localStorage 열쇠 / native= 파라미터
      ③ 네이티브 브릿지가 이 프레임이나 상위 프레임에 보이면 그것만으로 확정
      하나라도 걸리면 앱으로 본다. 앱인데 브라우저로 잘못 보는 쪽이 더 나쁘다. */
@@ -66,11 +66,11 @@
     return findBridge();
   }
 
-  window.ezInAppWebview = inAppWebview;   // 59항 — 판정은 한 벌만 둔다
+  window.ezInAppWebview = inAppWebview;   // 59항 - 판정은 한 벌만 둔다
 
   /* ── 페이지가 이미 다른 앱을 선언했는가 ───────────────────────────────
      Skyblue Note 랜딩처럼 자기 앱 배너를 이미 가진 페이지가 있다. 남의 지면을
-     빼앗지 않는다 — 선언이 있으면 그것을 존중하고, 안드로이드 배너도 그 앱이
+     빼앗지 않는다 - 선언이 있으면 그것을 존중하고, 안드로이드 배너도 그 앱이
      우리 앱일 때만 그린다. */
   function declaredMeta() {
     return document.querySelector('meta[name="apple-itunes-app"]');
@@ -85,7 +85,7 @@
     return;
   }
 
-  /* ── 2) 사파리 스마트 앱 배너 — 메타 한 줄 ─────────────────────────────
+  /* ── 2) 사파리 스마트 앱 배너 - 메타 한 줄 ─────────────────────────────
      iOS 외 플랫폼은 이 메타를 무시하므로 조건 없이 넣어도 해가 없다.
      사파리는 기기·지역에서 앱을 못 받으면 알아서 배너를 안 띄운다. */
   var meta = declaredMeta();
@@ -101,19 +101,19 @@
      아니다. 아이폰의 크롬·파이어폭스·엣지·웨일과 네이버·카카오 인앱 브라우저는
      전부 WebKit을 쓰지만 그 배너 UI를 구현하지 않아 아무것도 안 뜬다.
      안드로이드는 애초에 공식 기능이 없어 우리가 직접 그리고 있었으므로 모든
-     브라우저에서 떴다 — 운영 제보로 확인된 이 비대칭을 여기서 없앤다.
+     브라우저에서 떴다 - 운영 제보로 확인된 이 비대칭을 여기서 없앤다.
      즉 **자체 배너는 '안드로이드' + 'iOS 비사파리'** 둘 다에서 그린다. */
   var UA = navigator.userAgent || '';
   var isAndroid = /Android/i.test(UA);
   var isIOS = /iPad|iPhone|iPod/i.test(UA) ||
               (/Macintosh/i.test(UA) && (navigator.maxTouchPoints || 0) > 1);  // iPadOS 13+
 
-  // 사파리가 아닌 iOS 브라우저 — 이름을 대는 것들과, 'Version/'이 없는 웹뷰 계열.
+  // 사파리가 아닌 iOS 브라우저 - 이름을 대는 것들과, 'Version/'이 없는 웹뷰 계열.
   // 엣지는 Version/을 달고 오므로 이름으로도 함께 본다.
   var NOT_SAFARI = /CriOS|FxiOS|EdgiOS|OPT\/|Whale|DuckDuckGo|YaBrowser|Puffin|SamsungBrowser|NAVER|KAKAO|DaumApps|Line\/|FBAN|FBAV|Instagram|Snapchat|Twitter/i;
   var isSafariIOS = isIOS && /Version\/\d/.test(UA) && !NOT_SAFARI.test(UA);
 
-  // 사파리는 위 메타 한 줄이 공식 배너를 그려 준다 — 우리가 겹쳐 그리지 않는다.
+  // 사파리는 위 메타 한 줄이 공식 배너를 그려 준다 - 우리가 겹쳐 그리지 않는다.
   var STORE = isAndroid ? 'android' : (isIOS && !isSafariIOS ? 'ios' : null);
   if (!STORE) return;
 

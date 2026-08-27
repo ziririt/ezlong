@@ -52,7 +52,7 @@
         media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-<title>QQQ 30% IVV 40% 포트폴리오, 10년 후 얼마? 서학개미 포트폴리오 시뮬레이터 무료 — EZLONG</title>
+<title>QQQ 30% IVV 40% 포트폴리오, 10년 후 얼마? 서학개미 포트폴리오 시뮬레이터 무료 - EZLONG</title>
 <meta name="description" content="ETF 비중 직접 설정해 은퇴 자산 예측. QQQ·SPY·SCHD 등 미국주식 ETF 조합별 복리 수익을 연도별로 즉시 확인. 서학개미 장기투자 포트폴리오 복리 계산기. 회원가입 없이 무료." />
 <meta name="keywords" content="포트폴리오 시뮬레이터, ETF 포트폴리오, 수익 시뮬레이션, 복리, 미국주식, 은퇴 자산 계산, CAGR, 장기투자, 투자 성향, ETF 투자" />
 <meta name="robots" content="index, follow" />
@@ -90,7 +90,7 @@
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Portfolio Return Simulator — US Stock ETFs",
+  "name": "Portfolio Return Simulator - US Stock ETFs",
   "description": "Simulate compound returns for custom US stock ETF portfolio allocations. Add multiple ETFs, set DCA monthly contributions, and compare projected final values over any investment horizon.",
   "inLanguage": ["ko", "en"],
   "url": "https://ezlong.com/portfolio-manager.html"
@@ -150,7 +150,7 @@ a{text-decoration:none;color:inherit}
 
 /* Nav */
 .nav{height:var(--nav-h);background:rgba(255,255,255,0.92);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);position:sticky;top:0;z-index:100}
-/* 스크롤 엣지 페이드 (apple-design §12) — 1px 하드 구분선 대신,
+/* 스크롤 엣지 페이드 (apple-design §12) - 1px 하드 구분선 대신,
    콘텐츠가 헤더 밑으로 흘러 들어가는 자리에만 옅은 그라데이션을 둔다.
    선은 "여기서 끊긴다"고 말하고, 페이드는 "여기 밑으로 계속된다"고 말한다. */
 .nav::after {
@@ -396,7 +396,7 @@ tbody tr:hover td{background:var(--bl-s)}
 }
 </style>
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
-     head 맨 끝에 둔다 — 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     head 맨 끝에 둔다 - 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 <body>
@@ -1115,7 +1115,7 @@ function App() {
           </div>
           {!isValid && (
             <div style={{fontSize:11,color: totalWeight > 100 ? 'var(--rd)' : 'var(--t3)',marginTop:5,textAlign:'center'}}>
-              {totalWeight > 100 ? `${totalWeight - 100}% 초과 — 비중을 줄여주세요` : `${100 - totalWeight}% 부족 — 합계를 100%로 맞춰주세요`}
+              {totalWeight > 100 ? `${totalWeight - 100}% 초과 - 비중을 줄여주세요` : `${100 - totalWeight}% 부족 - 합계를 100%로 맞춰주세요`}
             </div>
           )}
         </div>
@@ -1438,7 +1438,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
 
 
-<!-- 도구 해설 본문 (2026-08-26, CLAUDE.md 73항 2단계) — 정적 HTML -->
+<!-- 도구 해설 본문 (2026-08-26, CLAUDE.md 73항 2단계) - 정적 HTML -->
 <article class="ez-guide">
 <h2>비중을 바꾸면 10년 뒤가 얼마나 달라지나</h2>
 <p class="ez-guide-lede">한 종목에 다 넣는 사람은 드뭅니다. 대부분 QQQ 얼마, S&amp;P500 얼마, 배당 ETF 얼마 하는 식으로 나눠 담습니다. 그런데 <b>그 비중을 조금 바꿨을 때 10년 뒤 자산이 얼마나 달라지는지</b>는 머릿속으로 계산이 안 됩니다. 이 시뮬레이터는 비중 슬라이더를 움직이면 그 자리에서 곡선을 다시 그려 줍니다.</p>
@@ -1470,10 +1470,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 
 <h2>함께 보면 좋은 것</h2>
 <ul>
-<li><a href="/backtest.html">몬테카를로 포트폴리오 시뮬레이터</a> — 20년 실제 데이터로 최적 비중과 실제 낙폭을 확인합니다. 여기서 정한 비중을 검증해 보십시오</li>
+<li><a href="/backtest.html">몬테카를로 포트폴리오 시뮬레이터</a> - 20년 실제 데이터로 최적 비중과 실제 낙폭을 확인합니다. 여기서 정한 비중을 검증해 보십시오</li>
 <li><a href="/dca-simulator.html">DCA 적립식 시뮬레이터</a> · <a href="/retirement-calculator.html">은퇴 목표 역산 계산기</a></li>
-<li><a href="/model-portfolio.html">AI 포트폴리오 점검</a> — 26종목 비중과 주간 기술적 판정</li>
-<li><a href="/tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a> — 어느 계좌에 담느냐로도 결과가 갈립니다</li>
+<li><a href="/model-portfolio.html">AI 포트폴리오 점검</a> - 26종목 비중과 주간 기술적 판정</li>
+<li><a href="/tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a> - 어느 계좌에 담느냐로도 결과가 갈립니다</li>
 </ul>
 <p><a href="/disclaimer.html">투자 유의사항</a>을 함께 읽어 주십시오. 참고용 추정치이며 투자 권유가 아닙니다.</p>
 </article>

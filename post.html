@@ -10,7 +10,7 @@
   gtag('config', 'G-8DY4BGP444');
 </script>
 <meta charset="UTF-8" />
-<meta name="robots" content="noindex, follow"><!-- 한시 색인 제외 (2026-08-26, 73항): 게시판 개별 글 — 본문이 Firestore에서 오고 목록 진입이 정상 경로라 단독 색인 가치 없음 -->
+<meta name="robots" content="noindex, follow"><!-- 한시 색인 제외 (2026-08-26, 73항): 게시판 개별 글 - 본문이 Firestore에서 오고 목록 진입이 정상 경로라 단독 색인 가치 없음 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- 브랜드 아이콘 · PWA · 스플래시 (LongTime EasyLife, 2026-08-06 교체) -->
   <link rel="icon" href="/icons/favicon.ico?v=20260809" sizes="any">
@@ -52,16 +52,16 @@
         media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-<title id="page-title">투자 인사이트 — EZLONG</title>
-<meta name="description" id="page-desc" content="미국주식 장기투자 인사이트 글 — 시황 분석과 투자 전략을 나누는 EZLONG 게시판의 개별 글 페이지입니다." />
-<!-- 2026-08-26 SEO 점검 — 글마다 URL이 ?id= 로 갈리는 페이지라 canonical과 OG는
+<title id="page-title">투자 인사이트 - EZLONG</title>
+<meta name="description" id="page-desc" content="미국주식 장기투자 인사이트 글 - 시황 분석과 투자 전략을 나누는 EZLONG 게시판의 개별 글 페이지입니다." />
+<!-- 2026-08-26 SEO 점검 - 글마다 URL이 ?id= 로 갈리는 페이지라 canonical과 OG는
      아래 스크립트가 현재 글 주소로 채운다(정적으로 고정하면 모든 글이 한 URL로 합쳐진다).
      본문 로드 스크립트가 제목을 채우면 og:title도 따라간다. -->
 <link rel="canonical" id="page-canonical" href="https://ezlong.com/board.html" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="EZLONG" />
-<meta property="og:title" id="og-title" content="투자 인사이트 — EZLONG" />
-<meta property="og:description" id="og-desc" content="미국주식 장기투자 인사이트 글 — EZLONG 게시판." />
+<meta property="og:title" id="og-title" content="투자 인사이트 - EZLONG" />
+<meta property="og:description" id="og-desc" content="미국주식 장기투자 인사이트 글 - EZLONG 게시판." />
 <meta property="og:url" id="og-url" content="https://ezlong.com/board.html" />
 <meta property="og:image" content="https://ezlong.com/og/og-1200x630.png?v=20260809" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -488,9 +488,9 @@ a { text-decoration: none; color: inherit; }
 .not-found p { font-size: 15px; color: var(--t3); }
 </style>
 <style>
-/* 접근성 폴백 — 투명도 저감·움직임 저감 (2026-08-27)
+/* 접근성 폴백 - 투명도 저감·움직임 저감 (2026-08-27)
    이 페이지는 ez-design.css 를 읽지 않아 공용 폴백이 닿지 않는다.
-   같은 규칙을 여기 한 벌 둔다. 화면 기본 모양은 바뀌지 않는다 —
+   같은 규칙을 여기 한 벌 둔다. 화면 기본 모양은 바뀌지 않는다 -
    사용자가 시스템에서 저감을 켰을 때만 발동한다. */
 @media (prefers-reduced-transparency: reduce) {
   .en-nav, .nav, .glass, [class*="glass"], [class*="-blur"],
@@ -641,7 +641,7 @@ a { text-decoration: none; color: inherit; }
 
 <script>
 // ================================================================
-// Firebase 설정 — board.html, post.html, write.html 모두 동일한 값으로 교체
+// Firebase 설정 - board.html, post.html, write.html 모두 동일한 값으로 교체
 // ================================================================
 const firebaseConfig = {
   apiKey:            "AIzaSyBKFL4Y_nZX8P0cczg9174ztL04TCi8GRc",
@@ -713,12 +713,12 @@ async function loadPost() {
     postData = doc.data();
 
     // 메타 태그 업데이트
-    document.getElementById('page-title').textContent = `${postData.title} — EZLONG`;
+    document.getElementById('page-title').textContent = `${postData.title} - EZLONG`;
     document.getElementById('page-desc').content = postData.title;
     // 공유 카드도 글 제목으로 (2026-08-26 SEO 점검)
     var _ogt = document.getElementById('og-title');
     var _ogd = document.getElementById('og-desc');
-    if (_ogt) _ogt.content = `${postData.title} — EZLONG`;
+    if (_ogt) _ogt.content = `${postData.title} - EZLONG`;
     if (_ogd) _ogd.content = postData.title;
 
     // 카테고리

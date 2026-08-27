@@ -43,7 +43,7 @@
         media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-<title>글 쓰기 — EZLONG</title>
+<title>글 쓰기 - EZLONG</title>
 <meta name="robots" content="noindex, nofollow" />
 
 <!-- Firebase SDK -->
@@ -760,7 +760,7 @@ a { text-decoration: none; color: inherit; }
 }
 .ql-editor.ql-blank::before { font-style: normal; color: var(--t3); font-size: 17px; }
 
-/* Quill 글자 크기 — style-based(attributors/style/size) */
+/* Quill 글자 크기 - style-based(attributors/style/size) */
 .ql-snow .ql-picker.ql-size { width: 52px; }
 .ql-snow .ql-picker.ql-size .ql-picker-label::before,
 .ql-snow .ql-picker.ql-size .ql-picker-item::before { content: '보통'; }
@@ -934,9 +934,9 @@ button.ext-char.emoji { font-size: 18px; width: 34px; height: 34px; }
 .save-status.error   { color: var(--rd); }
 </style>
 <style>
-/* 접근성 폴백 — 투명도 저감·움직임 저감 (2026-08-27)
+/* 접근성 폴백 - 투명도 저감·움직임 저감 (2026-08-27)
    이 페이지는 ez-design.css 를 읽지 않아 공용 폴백이 닿지 않는다.
-   같은 규칙을 여기 한 벌 둔다. 화면 기본 모양은 바뀌지 않는다 —
+   같은 규칙을 여기 한 벌 둔다. 화면 기본 모양은 바뀌지 않는다 -
    사용자가 시스템에서 저감을 켰을 때만 발동한다. */
 @media (prefers-reduced-transparency: reduce) {
   .en-nav, .nav, .glass, [class*="glass"], [class*="-blur"],
@@ -1151,7 +1151,7 @@ button.ext-char.emoji { font-size: 18px; width: 34px; height: 34px; }
     </div>
   </div>
 
-  <!-- 확장 툴바 (더보기) — JS가 .ql-container 바로 앞으로 이동시킴 -->
+  <!-- 확장 툴바 (더보기) - JS가 .ql-container 바로 앞으로 이동시킴 -->
   <div class="ql-extended-toolbar" id="ql-extended-toolbar">
     <span class="ext-label">첨자</span>
     <div class="ext-group">
@@ -1231,7 +1231,7 @@ button.ext-char.emoji { font-size: 18px; width: 34px; height: 34px; }
 
 <script>
 // ================================================================
-// Firebase 설정 — board.html, post.html, write.html 모두 동일한 값으로 교체
+// Firebase 설정 - board.html, post.html, write.html 모두 동일한 값으로 교체
 // ================================================================
 const firebaseConfig = {
   apiKey:            "AIzaSyBKFL4Y_nZX8P0cczg9174ztL04TCi8GRc",
@@ -1279,7 +1279,7 @@ function todayDateString() {
 const AlignStyle = Quill.import('attributors/style/align');
 Quill.register(AlignStyle, true);
 
-// ── 글자 크기 — 스타일 기반(attributors/style/size)으로 통합 ─────────
+// ── 글자 크기 - 스타일 기반(attributors/style/size)으로 통합 ─────────
 // 소(12pt)/보통(없음)/대(18pt)/특대(26pt) + 11~38pt 세밀 조절 모두 동일 포맷 사용
 const SizeStyle = Quill.import('attributors/style/size');
 SizeStyle.whitelist = [
@@ -1449,7 +1449,7 @@ let extToolbarOpen = false;
   // 빈 기본 옵션 (변경 없음)
   const defOpt = document.createElement('option');
   defOpt.value = '';
-  defOpt.textContent = '—';
+  defOpt.textContent = ' - ';
   select.appendChild(defOpt);
 
   sizes.forEach(pt => {
@@ -1499,7 +1499,7 @@ const SPECIAL_CHARS = [
   '¼','½','¾','¹','²','³',
   '€','£','¥','₩','¢','$',
   '“','”','‘','’','«','»','‹','›',
-  '…','—','–','·','•','‣','◦',
+  '…',' - ','–','·','•','‣','◦',
   '§','¶','†','‡','¡','¿','‼','‽',
   '①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩',
   'Α','Β','Γ','Δ','Ε','Ζ','Η','Θ','Ι','Κ','Λ','Μ',
@@ -1695,7 +1695,7 @@ auth.onAuthStateChanged(async user => {
 
     // 수정 모드라면 기존 데이터 로드, 아니면 임시저장 확인
     if (editId) {
-      document.title = '글 수정 — EZLONG';
+      document.title = '글 수정 - EZLONG';
       await loadExistingPost(editId);
     } else {
       // 새 글: 외부 노출 작성일 기본값 = 오늘
@@ -2051,7 +2051,7 @@ function confirmSchedule() {
   closeScheduleModal();
 }
 
-// 예약발행 버튼 — 이미 예약된 경우 클릭 시 취소/재설정
+// 예약발행 버튼 - 이미 예약된 경우 클릭 시 취소/재설정
 document.getElementById('btn-schedule').addEventListener('click', () => {
   if (scheduledAt) {
     if (confirm('예약을 초기화하고 재설정하시겠습니까?')) {
@@ -2084,7 +2084,7 @@ document.getElementById('schedule-modal').addEventListener('click', e => {
 const REPLACE_KEY = 'ezlong_replacements';
 
 const DEFAULT_REPLACEMENTS = [
-  { from: '—', to: '-' },
+  { from: ' - ', to: '-' },
   { from: '–', to: '-' },
   { from: '**', to: '' },
   { from: '* ', to: '' },
@@ -2216,7 +2216,7 @@ function rpReplaceAll() {
   msg.textContent = count > 0 ? `${count}개 치환됨` : '발견 없음';
 }
 
-// 핵심 치환 함수 — 역순 처리로 인덱스 보존
+// 핵심 치환 함수 - 역순 처리로 인덱스 보존
 function doReplaceAll(search, replace) {
   if (!search) return 0;
   const text = quill.getText();
@@ -2344,7 +2344,7 @@ function applyAutoHeadings() {
     if (t.length < 2 || t.length > 40) return false;
     if (PUNCT_END.test(t)) return false;
     // 숫자·기호만으로 구성된 줄 제외
-    if (/^[\d\s\-–—·*#.]+$/.test(t)) return false;
+    if (/^[\d\s\-– - ·*#.]+$/.test(t)) return false;
     // 한글 또는 영문자 포함 필수
     if (!/[가-힣a-zA-Z]/.test(t)) return false;
     // 이미 마크다운 마커 있는 줄 제외
