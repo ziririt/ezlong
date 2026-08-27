@@ -28,10 +28,13 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Skyblue Note">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png?v=2">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <!-- ?v= 는 캐시 깨기다. 브라우저는 파비콘을 지독하게 오래 붙들고
+       있어서, 파일만 바꾸면 몇 주씩 옛 아이콘이 남는다. -->
+  <link rel="icon" type="image/png" href="favicon.png?v=2"/>
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/Icon-192.png?v=2"/>
 
   <title>Skyblue Note</title>
   <link rel="manifest" href="manifest.json">
