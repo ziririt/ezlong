@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-08-27-09:55",
+      "timestamp_kst": "2026-08-27(목) 09:55 KST",
+      "key_event": {
+        "name": "NVIDIA 실적 호조 및 AI 기대감",
+        "name_en": "NVIDIA Earnings Beat & AI Optimism",
+        "time": "직전 정규장 마감 후",
+        "why": "AI 투자 심리 회복, 기술주 반등 견인",
+        "why_en": "AI investment sentiment recovery, driving tech rebound"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "NVIDIA 실적 호조와 AI 기대감으로 긍정 우위 전환",
+      "summary_en": "Positive sentiment shifts due to NVIDIA's strong earnings and AI optimism",
+      "positive_factors": [
+        {
+          "score": 70,
+          "name": "NVIDIA 실적 발표 호조",
+          "name_en": "Strong NVIDIA Earnings Report",
+          "desc": "NVIDIA의 Q2 매출 및 AI 칩 수요가 월가 예상치를 크게 상회하며 AI 섹터 전반의 투자 심리 개선",
+          "desc_en": "NVIDIA's Q2 revenue and AI chip demand significantly beat Wall Street expectations, improving overall AI sector sentiment",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "PCE 물가 상승률 여전히 높아",
+          "name_en": "PCE Inflation Rate Remains Elevated",
+          "desc": "7월 근원 PCE 물가상승률 3.34%, PCE 물가상승률 3.70%로 연준 목표치 상회, 금리 인하 기대 약화",
+          "desc_en": "July Core PCE inflation at 3.34% and PCE inflation at 3.70%, both above Fed target, weakening rate cut expectations",
+          "category": "macro_data"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "잭슨홀 심포지엄 Fed 의장 연설 대기",
+          "name_en": "Anticipation for Jackson Hole Fed Chair Speech",
+          "desc": "잭슨홀 심포지엄(8월 27일~29일) 중 Fed 의장 기조연설(8월 28일(금) 약 10:00 ET)을 앞두고 통화 정책 방향에 대한 경계감과 기대감 혼재",
+          "desc_en": "Ahead of the Fed Chair's keynote speech at the Jackson Hole Symposium (August 27-29, speech on August 28th (Fri) around 10:00 ET), there is mixed caution and anticipation regarding monetary policy direction",
+          "category": "fed_policy"
+        }
+      ],
+      "report": {
+        "overview": "- 총점: NVIDIA 실적 호조와 AI 기대감에 힘입어 긍정 70대 부정 30으로 긍정 우위 전환.\n- 시장 심리: NVIDIA의 강력한 실적 발표가 AI 섹터 전반의 투자 심리를 개선하며 기술주 반등 견인.\n- 인플레이션 우려: 여전히 높은 PCE 물가상승률이 금리 인하 기대감을 약화시키며 시장에 부담으로 작용.\n- 주요 이벤트 대기: 잭슨홀 심포지엄 Fed 의장 연설을 앞두고 통화 정책 방향에 대한 경계감과 기대감 혼재.",
+        "positive": "- NVIDIA 실적 발표 호조: NVIDIA의 2분기 매출과 AI 칩 수요가 월가 예상치를 크게 상회하며 AI 섹터 전반의 투자 심리 개선. NVIDIA는 매출이 두 배 증가하고 AI 지출이 더욱 늘어날 것으로 전망. 이는 AI 투자 심리 회복과 기술주 반등을 견인하는 주요 요인으로 작용.",
+        "negative": "- PCE 물가 상승률 여전히 높아: 7월 근원 PCE 물가상승률이 3.34%, PCE 물가상승률이 3.70%를 기록하며 연준 목표치인 2%를 상회. 이는 인플레이션이 여전히 높은 수준임을 시사하며 금리 인하 기대감을 약화시키는 요인으로 작용. 높은 인플레이션 데이터 발표 이후 월스트리트 증시는 소폭 하락 마감.",
+        "mixed": "- 잭슨홀 심포지엄 Fed 의장 연설 대기: 잭슨홀 심포지엄(8월 27일~29일) 중 Fed 의장 기조연설(8월 28일(금) 약 10:00 ET)을 앞두고 통화 정책 방향에 대한 불확실성이 증폭. 연설 내용에 따라 시장의 금리 인상 또는 인하 기대감이 크게 변동할 수 있어 경계감과 함께 향후 정책 방향에 대한 기대감이 혼재하는 상황.",
+        "watch": "- 잭슨홀 Fed 의장 기조연설: 8월 28일(금) 약 10:00 ET에 예정된 연설에서 연준의 통화 정책 방향에 대한 단서가 제시될지 주목. 연설 내용에 따라 시장의 금리 전망과 투자 심리가 크게 변화할 가능성 잔존.\n- 주요 지수 선물 추이: 현재 시점 이후 다우 존스 선물, S&P 500 선물, 나스닥 선물 등 주요 지수 선물의 등락을 통해 개장 전 투자 심리 변화 확인."
+      },
+      "report_at": "2026-08-27(목) 09:55 KST"
+    },
+    {
       "id": "2026-08-27-07:00",
       "timestamp_kst": "2026-08-27(목) 07:00 KST",
       "key_event": {
@@ -577,84 +629,8 @@
         "watch": "- PCE 개인소비지출(7월분) 및 GDP 2차 잠정치(2분기) 발표(8월 26일(수) 08:30 ET): 발표되는 인플레이션 및 성장률 지표가 시장의 인플레이션 및 경기 판단에 어떤 영향을 미칠지 주목.\n- 엔비디아 실적 발표(8월 26일(수) 장 마감 후 ET): AI 반도체 섹터의 핵심 기업인 엔비디아의 실적 결과와 가이던스가 AI 관련 투자 심리 및 기술주 전반의 방향성을 결정할 중요한 변수.\n- 미 국채금리 추이: 미 10년물 및 30년물 국채금리의 추가적인 변동 여부가 성장주 투자 심리에 미칠 영향을 지속적으로 확인."
       },
       "report_at": "2026-08-26(수) 12:50 KST"
-    },
-    {
-      "id": "2026-08-26-11:18",
-      "timestamp_kst": "2026-08-26(수) 11:18 KST",
-      "key_event": {
-        "name": "엔비디아 실적 및 주요 지표 대기",
-        "name_en": "Awaiting Nvidia Earnings & Key Data",
-        "time": "8월 26일(수) 장 마감 후 ET (NVDA), 8월 26일(수) 08:30 ET (PCE, GDP)",
-        "why": "AI 반도체 섹터 방향성 결정, 인플레이션 및 경기 판단 (8월 26일(수) 장 마감 후 ET)",
-        "why_en": "Determining AI semiconductor sector direction, assessing inflation and economic health (Aug 26 (Wed) after the close ET)"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "AI 및 기술주 투자 심리 회복 지속, 주요 이벤트 대기 속 긍정 우위 유지",
-      "summary_en": "AI and tech investment sentiment continues to recover, positive bias maintained amid anticipation of key events",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "AI 및 기술주 투자 심리 지속",
-          "name_en": "Sustained AI & Tech Investment Sentiment",
-          "desc": "S&P 500, Nasdaq 선물 강세 유지, AI 성장 기대감 지속",
-          "desc_en": "S&P 500, Nasdaq futures remain strong, sustained optimism for AI growth",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 25,
-          "name": "지정학적 리스크 완화 기대",
-          "name_en": "Easing Geopolitical Risk Expectations",
-          "desc": "이란-오만 호르무즈 해협 회담 기대감, 유가 급락(-5.98%)",
-          "desc_en": "Hopes for Iran-Oman Strait of Hormuz talks, crude oil sharply down (-5.98%)",
-          "category": "geopolitics"
-        },
-        {
-          "score": 15,
-          "name": "미 국채금리 하락",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 국채금리 4.64%(-1.38%) 하락, 성장주 투자 매력 증가",
-          "desc_en": "US 10-year Treasury yield down to 4.64% (-1.38%), increasing appeal for growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "인플레이션 지표 발표 대기",
-          "name_en": "Anticipation of Inflation Data",
-          "desc": "PCE 개인소비지출(7월분) 발표(8월 26일(수) 08:30 ET) 앞두고 경계심",
-          "desc_en": "Caution ahead of PCE Personal Consumption Expenditures (July) release (Aug 26, 08:30 ET)",
-          "category": "macro_data"
-        },
-        {
-          "score": 15,
-          "name": "잭슨홀 심포지엄 대기",
-          "name_en": "Waiting for Jackson Hole Symposium",
-          "desc": "Fed 의장 기조연설(8월 28일(금) 약 10:00 ET) 앞두고 정책 불확실성",
-          "desc_en": "Policy uncertainty ahead of Fed Chair's keynote speech (Aug 28, approx. 10:00 ET)",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 현재 판 결론: AI 및 기술주 투자 심리 회복이 지속되며 시장의 긍정적 분위기가 우세한 상황\n- 주요 원인: 엔비디아 실적 발표와 주요 경제 지표 발표를 앞두고 관망세가 짙지만, AI 성장 기대감과 지정학적 리스크 완화로 인한 유가 하락이 긍정적 요인으로 작용\n- 하단 지지: 미 국채금리 하락으로 성장주 투자 매력이 증가하며 시장 전반의 투자 심리 개선에 기여",
-        "positive": "- AI 및 기술주 투자 심리 지속: S&P 500 및 Nasdaq 선물 시장에서 강세가 유지되며 AI 산업의 지속적인 성장에 대한 기대감이 반영. 특히 엔비디아 실적 발표를 앞두고 AI 반도체 섹터에 대한 관심이 집중되는 상황\n- 지정학적 리스크 완화 기대: 이란과 오만 간 호르무즈 해협 회담에 대한 기대감이 고조되며 중동 지역의 긴장 완화 가능성이 부각. 이는 국제 유가 급락(-5.98%)으로 이어져 인플레이션 압력 완화에 대한 기대를 높이는 요인으로 작용\n- 미 국채금리 하락: 미국 10년물 국채금리가 4.64%(-1.38%)로 하락하며 성장주에 대한 투자 매력이 증가. 이는 기술주 중심의 시장 상승을 지지하는 중요한 배경으로 작용",
-        "negative": "- 인플레이션 지표 발표 대기: 7월 PCE 개인소비지출(8월 26일(수) 08:30 ET) 발표를 앞두고 인플레이션 우려에 대한 경계심이 잔존. 연방준비제도(Fed)의 통화정책 방향에 중요한 영향을 미칠 수 있는 지표로 시장의 관심이 집중\n- 잭슨홀 심포지엄 대기: 잭슨홀 심포지엄(8/27~29)에서 예정된 Fed 의장 기조연설(8월 28일(금) 약 10:00 ET)을 앞두고 통화정책 불확실성이 증대. Fed 관계자들의 매파적 발언 가능성에 대한 우려가 시장에 부담으로 작용",
-        "mixed": "",
-        "watch": "- PCE 개인소비지출(7월분) 발표: 8월 26일(수) 08:30 ET. 발표될 인플레이션 지표가 시장 예상치를 상회할 경우 Fed의 긴축 기조 유지 가능성이 높아져 시장에 부정적 영향 예상\n- 엔비디아(NVDA) 실적 발표: 8월 26일(수) 장 마감 후 ET. AI 반도체 섹터의 선두 주자인 엔비디아의 실적 및 가이던스가 AI 관련 기술주 전반의 투자 심리와 향후 방향성을 결정하는 중요한 변수로 작용\n- 미 국채금리 및 유가 추이: 미 10년물 국채금리와 국제 유가의 추가적인 하락 여부가 시장의 긍정적 심리를 유지하는 데 중요한 역할을 할 것으로 예상"
-      },
-      "report_at": "2026-08-26(수) 11:18 KST"
     }
   ],
-  "updated_at": "2026-08-26T22:02:17Z",
-  "max_entries": 10,
-  "hold": {
-    "at": "2026-08-27(목) 08:20 KST",
-    "at_utc": "2026-08-26T23:21:28Z",
-    "kind": "event_wait",
-    "count": 1,
-    "reason": "한쪽 편이 '결과를 기다리는 중'인 재료뿐이라, 점수를 매길 근거가 없었습니다.",
-    "reason_en": "One side consisted only of \"awaiting the result\" items, which carry no verdict."
-  }
+  "updated_at": "2026-08-27T00:56:07Z",
+  "max_entries": 10
 }
