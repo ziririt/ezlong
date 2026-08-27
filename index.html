@@ -104,7 +104,7 @@ window.addEventListener('load', function(){
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "EZLONG - Free US Stock Investment Tools",
+  "name": "EZLONG: Free US Stock Investment Tools",
   "description": "A free collection of US stock investment tools for long-term investors: DCA compound simulator, Monte Carlo portfolio optimizer, tax-advantaged account calculator, retirement goal planner, and more.",
   "inLanguage": ["ko", "en"],
   "url": "https://ezlong.com/"
@@ -439,7 +439,7 @@ a { text-decoration: none; color: inherit; }
 /* ─── 공통 레이아웃 ───────────────────────────────── */
 .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
 
-/* 2026-08-06 - 모바일 좌우 여백 축소. 도구 타일이 2열이라 바깥 여백 20px 은
+/* 2026-08-06: 모바일 좌우 여백 축소. 도구 타일이 2열이라 바깥 여백 20px 은
    그대로 카드 폭에서 깎이는데, 정작 카드 안 설명은 세 줄로 잘려 빡빡했다.
    화면 밖 여백은 넉넉하고 글자는 부족한 배분이었다. 여백을 좁혀 그만큼을
    글자에 준다. .wrap 은 페이지 전 구역이 쓰므로 섹션끼리 좌우 선은 계속 맞는다.
@@ -503,7 +503,7 @@ a { text-decoration: none; color: inherit; }
   justify-content: space-between;
 }
 
-/* 헤더 좌우 여백을 본문(.wrap)과 같은 값으로 - 로고 왼쪽 선과 카드 왼쪽
+/* 헤더 좌우 여백을 본문(.wrap)과 같은 값으로: 로고 왼쪽 선과 카드 왼쪽
    선이 어긋나면 여백을 줄인 게 오히려 지저분해 보인다. 반드시 위 .nav-inner
    선언보다 "뒤"에 둘 것(미디어쿼리는 특이도를 올려주지 않는다). */
 @media (max-width: 699px) { .nav-inner { padding: 0 14px; } }
@@ -524,7 +524,7 @@ a { text-decoration: none; color: inherit; }
   .nav-logo-img { filter: brightness(1.1); }
 }
 
-/* 2026-08-06 - 모바일에서 로고가 우측 "투자 AI 도구" 버튼과 맞붙던 문제.
+/* 2026-08-06: 모바일에서 로고가 우측 "투자 AI 도구" 버튼과 맞붙던 문제.
    .nav-inner 가 space-between 이라 둘 사이 여백이 화면 폭에서 남는 만큼만
    생기는데, 40px 높이의 가로형 락업은 폭이 200px 을 넘어 360~400px 화면에서
    남는 게 없었다. 모바일에서만 로고를 낮추고 최소 간격을 못 박는다. */
@@ -627,7 +627,7 @@ a { text-decoration: none; color: inherit; }
 
 .tools-grid {
   display: grid;
-  /* 2026-08-04 개편(운영 지침): 모바일도 2열 - 툴이 많아져 1열로는 메인
+  /* 2026-08-04 개편(운영 지침): 모바일도 2열: 툴이 많아져 1열로는 메인
      스크롤이 지나치게 길어짐. 카드 밀도를 높여 짧은 스크롤로 전체 메뉴 파악. */
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
@@ -708,13 +708,13 @@ a { text-decoration: none; color: inherit; }
 .tool-card-link:hover { gap: 8px; }
 .tool-card-link svg { width: 14px; height: 14px; }
 
-/* ── 모바일 카드 타이포그래피 - 반드시 .tool-card* 기본 선언 "뒤에" 둔다 ──
+/* ── 모바일 카드 타이포그래피: 반드시 .tool-card* 기본 선언 "뒤에" 둔다 ──
    2026-08-04 발견: 이 두 블록이 원래 .tools-grid 바로 아래(기본 선언보다 위)에
    있어서, 동일 특이도(specificity)의 뒤쪽 기본 규칙에 전부 덮여 아무 효과가
    없었다. 오늘 오전 모바일 2열 개편 때 넣은 컴팩트 값도 실제로는 죽어 있었다.
-   미디어쿼리는 특이도를 올려주지 않는다 - 순서가 곧 승패다. 이 위치 유지할 것. */
+   미디어쿼리는 특이도를 올려주지 않는다: 순서가 곧 승패다. 이 위치 유지할 것. */
 
-/* 모바일 컴팩트 카드 - 여백·간격 축소, 설명은 3줄 클램프 (폰트는 14px 이상 유지) */
+/* 모바일 컴팩트 카드: 여백·간격 축소, 설명은 3줄 클램프 (폰트는 14px 이상 유지) */
 @media (max-width: 699px) {
   .tool-card { padding: 14px 12px; gap: 8px; }
   .tool-card-header { gap: 8px; flex-direction: column; align-items: flex-start; }
@@ -732,7 +732,7 @@ a { text-decoration: none; color: inherit; }
   }
 }
 
-/* 좁은 화면(안드로이드 360px 등) - 한 줄에 들어가는 글자 수 확보.
+/* 좁은 화면(안드로이드 360px 등): 한 줄에 들어가는 글자 수 확보.
    폰트 14px 하한(가독성 절대 규칙)은 지키고 여백과 타이틀 크기만 줄인다.
    2026-08-04 정정: 처음엔 자간도 -.02em으로 좁혔는데, 음수 트래킹은 큰 표제용이고
    작은 본문은 오히려 0~약간 양수여야 읽힌다(apple-design 타이포그래피 원칙).
@@ -985,7 +985,7 @@ a { text-decoration: none; color: inherit; }
 
 .yt-scroll-wrap { width: 100%; }
 
-/* 세로 나열 - 모바일 1열, 태블릿 이상 2열 */
+/* 세로 나열: 모바일 1열, 태블릿 이상 2열 */
 .yt-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -1297,12 +1297,12 @@ a { text-decoration: none; color: inherit; }
 .hero-title-hero {
   /* 2026-08-04: 안드로이드(CSS 폭 360px)에서 "미국주식 매매 타이밍부터"(12자)가
      32px면 폭을 넘겨 2줄로 깨졌다. 좁은 화면일수록 더 줄어들도록 vw 비중을 올리고
-     하한을 23px로 - 360px에서 25.2px, 320px(구형 SE·폴드 외부화면)에서 23px로
+     하한을 23px로: 360px에서 25.2px, 320px(구형 SE·폴드 외부화면)에서 23px로
      3행 구조(<br> 2개)를 그대로 유지한다. 큰 화면은 기존 64px 상한 그대로. */
   font-size: clamp(23px, 7vw, 64px);
   word-break: keep-all;
   font-weight: 900;
-  /* 트래킹도 크기를 따라간다 - 커질수록 글자가 성겨 보이므로 더 좁히고,
+  /* 트래킹도 크기를 따라간다: 커질수록 글자가 성겨 보이므로 더 좁히고,
      작을 때는 덜 좁힌다. 고정값 하나를 전 구간에 쓰면 한쪽이 반드시 틀린다
      (apple-design 타이포그래피 원칙). 320px에서 -0.012em, 1200px 이상 -0.03em. */
   letter-spacing: clamp(-0.03em, -0.055em + 0.55vw, -0.012em);
@@ -1332,7 +1332,7 @@ a { text-decoration: none; color: inherit; }
   }
 }
 
-/* PC: "투자 AI 도구" 드롭다운 - 버튼이 우측 상단에 있는데 메뉴가
+/* PC: "투자 AI 도구" 드롭다운: 버튼이 우측 상단에 있는데 메뉴가
    좌측 전체화면으로 열리면 동선이 너무 멀다 (2026-07-04 수정).
    데스크톱 폭에서는 버튼 바로 아래, 우측에 붙는 작은 패널로 전환. */
 @media (min-width: 769px) {
@@ -1349,7 +1349,7 @@ a { text-decoration: none; color: inherit; }
   }
 }
 
-/* 메뉴 2열 타일 그리드 - ez-nav.js 모바일 타일과 동일 규격 (2026-08-04) */
+/* 메뉴 2열 타일 그리드: ez-nav.js 모바일 타일과 동일 규격 (2026-08-04) */
 #ez-mob-menu {
   grid-template-columns: 1fr 1fr;
   gap: 10px;
@@ -1366,7 +1366,7 @@ a { text-decoration: none; color: inherit; }
 }
 </style>
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
-     head 맨 끝에 둔다 - 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     head 맨 끝에 둔다: 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 
@@ -1411,7 +1411,7 @@ a { text-decoration: none; color: inherit; }
   <div class="wrap">
     <div class="tools-grid">
 
-      <!-- 스윙 시그널 - 1번째 (최우선 노출) -->
+      <!-- 스윙 시그널: 1번째 (최우선 노출) -->
       <a href="atmr-dashboard.html" class="tool-card" style="text-decoration:none;">
         <div class="tool-card-header">
           <div class="tool-card-icon bg-yl-s">
@@ -1435,7 +1435,7 @@ a { text-decoration: none; color: inherit; }
         </span>
       </a>
 
-      <!-- 스윙 전략 - 2번째 (2026-08-04 독립 노출, 운영 지침) -->
+      <!-- 스윙 전략: 2번째 (2026-08-04 독립 노출, 운영 지침) -->
       <a href="atmr-dashboard.html#swing-strategy" class="tool-card" style="text-decoration:none;">
         <div class="tool-card-header">
           <div class="tool-card-icon bg-yl-s">
@@ -1453,7 +1453,7 @@ a { text-decoration: none; color: inherit; }
         </span>
       </a>
 
-      <!-- TOP9 집중분석 - 3번째 (2026-08-04 신설·독립 노출, 운영 지침) -->
+      <!-- TOP9 집중분석: 3번째 (2026-08-04 신설·독립 노출, 운영 지침) -->
       <a href="atmr-dashboard.html#top9" class="tool-card" style="text-decoration:none;">
         <div class="tool-card-header">
           <div class="tool-card-icon bg-yl-s">
@@ -1509,7 +1509,7 @@ a { text-decoration: none; color: inherit; }
         </span>
       </a>
 
-      <!-- 심플 주가 정보 - 3번째 -->
+      <!-- 심플 주가 정보: 3번째 -->
       <a href="stocks.html" class="tool-card" style="text-decoration:none;">
         <div class="tool-card-header">
           <div class="tool-card-icon bg-gr-s">
@@ -1527,7 +1527,7 @@ a { text-decoration: none; color: inherit; }
         </span>
       </a>
 
-      <!-- AI 차트분석 - 3번째 -->
+      <!-- AI 차트분석: 3번째 -->
       <a href="chart-analysis.html" class="tool-card" style="text-decoration:none;">
         <div class="tool-card-header">
           <div class="tool-card-icon bg-bl-s">
@@ -1544,7 +1544,7 @@ a { text-decoration: none; color: inherit; }
         </span>
       </a>
 
-      <!-- 모델 포트폴리오 - 3번째 (2026-08-08 신설, 이 자리의 목표주가 코너를 대체) -->
+      <!-- 모델 포트폴리오: 3번째 (2026-08-08 신설, 이 자리의 목표주가 코너를 대체) -->
       <a href="model-portfolio.html" class="tool-card" style="text-decoration:none;">
         <div class="tool-card-header">
           <div class="tool-card-icon bg-gr-s">
@@ -1562,7 +1562,7 @@ a { text-decoration: none; color: inherit; }
         </span>
       </a>
 
-      <!-- Market Cycle Monitor - 4번째 -->
+      <!-- Market Cycle Monitor: 4번째 -->
       <a href="market-cycle.html" class="tool-card" style="text-decoration:none;">
         <div class="tool-card-header">
           <div class="tool-card-icon" style="background:rgba(255,159,10,0.10);">
@@ -1748,7 +1748,7 @@ a { text-decoration: none; color: inherit; }
           </div>
           <div class="tool-card-title">MBTI로 찾는 맞춤 투자 포트폴리오</div>
         </div>
-        <p class="tool-card-desc">투자 유형 진단 - 나의 투자 유형은? MBTI × 나이 × 성별 × 투자 경력. 4가지 조건으로 40개 프로필 중 나만의 투자 DNA를 찾아드립니다. 맞춤 포트폴리오 비율 + 관심 기업 인사이트까지.</p>
+        <p class="tool-card-desc">투자 유형 진단: 나의 투자 유형은? MBTI × 나이 × 성별 × 투자 경력. 4가지 조건으로 40개 프로필 중 나만의 투자 DNA를 찾아드립니다. 맞춤 포트폴리오 비율 + 관심 기업 인사이트까지.</p>
         <span class="tool-card-link">
           진단하기
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -1814,7 +1814,7 @@ a { text-decoration: none; color: inherit; }
 
       <!--
         ============================================================
-        책 1 - 표지 이미지 URL을 아래 src에 입력하세요
+        책 1: 표지 이미지 URL을 아래 src에 입력하세요
         구매/구독 링크도 href="" 안에 입력하세요
         ============================================================
       -->
@@ -1848,7 +1848,7 @@ a { text-decoration: none; color: inherit; }
 
       <!--
         ============================================================
-        책 2 - 두 번째 책
+        책 2: 두 번째 책
         ============================================================
       -->
       <div class="book-card">
@@ -1877,7 +1877,7 @@ a { text-decoration: none; color: inherit; }
 
       <!--
         ============================================================
-        책 3 - 월급쟁이 투자자를 위한 AI 자동 투자 시스템
+        책 3: 월급쟁이 투자자를 위한 AI 자동 투자 시스템
         ============================================================
       -->
       <div class="book-card">
@@ -2070,7 +2070,7 @@ a { text-decoration: none; color: inherit; }
      ez-nav.js 는 전 페이지가 로드하므로 거기 한 벌만 두면 전부 적용된다. -->
 
 <script>
-// 스윙 시그널 카드 - 날짜 동적 반영
+// 스윙 시그널 카드: 날짜 동적 반영
 (function() {
   const dateEl  = document.getElementById('alpha-signal-date');
   if (!dateEl) return;
@@ -2084,7 +2084,7 @@ a { text-decoration: none; color: inherit; }
 </script>
 
 <!-- ── 투자 AI 도구 오버레이 메뉴 ───────────────────
-     메뉴 항목은 ez-nav.js(links 배열)가 유일한 출처다 - 아래 스크립트가
+     메뉴 항목은 ez-nav.js(links 배열)가 유일한 출처다: 아래 스크립트가
      data-menu-only 모드로 이 컨테이너를 채운다. 여기에 항목을 하드코딩하지
      말 것 (2026-08-04 수개월 방치 사본 사고의 재발 방지 구조). -->
 <div class="ez-mob-menu" id="ez-mob-menu" aria-hidden="true"></div>
@@ -2098,7 +2098,7 @@ window.ezNavToggle = function () {
   if (opening) {
     var nav = document.querySelector('nav.nav');
     if (nav) menu.style.paddingTop = nav.getBoundingClientRect().height + 'px';
-    /* 목록 끝 '닫기'가 하단 고정 배너(언어 안내)에 덮이지 않게 - ez-nav.js 가
+    /* 목록 끝 '닫기'가 하단 고정 배너(언어 안내)에 덮이지 않게: ez-nav.js 가
        노출하는 실측 함수를 쓴다. 배너가 없으면 0이라 평소 여백은 그대로. */
     if (window.ezNavPadMenuBottom) window.ezNavPadMenuBottom();
   }

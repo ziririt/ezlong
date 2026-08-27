@@ -11,7 +11,7 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>미국 주식 시장 긍정 vs 부정 몇대몇 - AI 시황 분석 | EZLONG</title>
+<title>미국 주식 시장 긍정 vs 부정 몇대몇: AI 시황 분석 | EZLONG</title>
 <meta name="description" content="미국 주식시장 긍정·부정 요인을 AI가 실시간 분석. QQQ·SPY·TSLA·NVDA·AAPL 등 주요 종목과 VIX·금리·환율 데이터 기반 시황 스코어카드. 지금 미국장 분위기는?">
 <meta name="keywords" content="미국주식 시황, 미국증시 전망, 나스닥 전망, 미국주식 오늘, 미국장 분위기, 미국증시 긍정 부정, 미국주식 AI 분석, QQQ 전망, NVDA 전망, TSLA 전망, 미국 주식 지금">
 <meta name="robots" content="index, follow">
@@ -26,7 +26,7 @@
 <!-- Open Graph -->
 <meta property="og:type"        content="website">
 <meta property="og:url"         content="https://ezlong.com/market-vs.html">
-<meta property="og:title"       content="미국 주식 긍정 vs 부정 몇대몇 - AI 시황 | EZLONG">
+<meta property="og:title"       content="미국 주식 긍정 vs 부정 몇대몇: AI 시황 | EZLONG">
 <meta property="og:description" content="지금 미국장 분위기는? VIX·금리·뉴스 데이터를 AI가 분석해 긍정·부정 점수로 시각화. 장 전후·장중 수시 자동 업데이트.">
 <meta property="og:image" content="https://ezlong.com/og/og-1200x630.png?v=20260809" />
 <meta property="og:image:width" content="1200" />
@@ -134,7 +134,7 @@
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <link rel="stylesheet" href="ez-design.css">
 <style>
-/* ── 페이지 레이아웃 - PC 최대 너비 600px 중앙 정렬 ── */
+/* ── 페이지 레이아웃: PC 최대 너비 600px 중앙 정렬 ── */
 .mv-page {
   background: var(--ez-bg);
   min-height: 100vh;
@@ -150,7 +150,7 @@
   text-align: center;
 }
 
-/* 메인 타이틀 - 가운데 정렬, 인라인 블록으로 "몇대몇" 우측 첨자 가능하게 */
+/* 메인 타이틀: 가운데 정렬, 인라인 블록으로 "몇대몇" 우측 첨자 가능하게 */
 .mv-header-main {
   display: inline-flex;
   align-items: baseline;
@@ -183,7 +183,7 @@
   letter-spacing: -2px;
 }
 
-/* "몇대몇" - 부정 우측 윗첨자 + 30도 기울기 */
+/* "몇대몇": 부정 우측 윗첨자 + 30도 기울기 */
 .mv-header-super {
   font-size: 19px;
   font-weight: 700;
@@ -212,7 +212,7 @@
   color: var(--ez-text3);
 }
 
-/* ── 카드 스택 - 타임라인 구조 ── */
+/* ── 카드 스택: 타임라인 구조 ── */
 .mv-stack { padding: 16px 0 0; }
 
 /* 타임라인 엔트리 래퍼 */
@@ -252,7 +252,7 @@
   border-bottom: 1px solid var(--ez-border);
 }
 
-/* 과거 카드 - 시각적으로 "지나감" 처리 */
+/* 과거 카드: 시각적으로 "지나감" 처리 */
 .mv-card-past {
   background: var(--ez-bg);
 }
@@ -264,7 +264,7 @@
 
 /* ── 심층 보고서 (66항, 2026-08-25) ─────────────────────────────
    버튼을 누르면 카드 아래가 문서처럼 펼쳐진다. A4 한 장 분량.
-   글은 서술형이므로 카드보다 행간을 넉넉히 - 읽는 물건이다. */
+   글은 서술형이므로 카드보다 행간을 넉넉히: 읽는 물건이다. */
 .mv-report-toggle {
   display: block; width: calc(100% - 40px); margin: 0 20px 18px;
   padding: 12px 16px; border-radius: 12px; cursor: pointer;
@@ -301,7 +301,7 @@
 .mv-report-copy.done { color: var(--ez-green, #1D7A46); border-color: var(--ez-green, #1D7A46); }
 .mv-card-past .mv-report-toggle, .mv-card-past .mv-report { opacity: .92; }
 
-/* 타임스탬프 - 핵심 강조 */
+/* 타임스탬프: 핵심 강조 */
 .mv-ts {
   display: flex;
   align-items: center;
@@ -318,7 +318,7 @@
   flex-shrink: 0;
 }
 
-/* 최신 카드 - 타임스탬프 초록 강조 */
+/* 최신 카드: 타임스탬프 초록 강조 */
 .mv-ts-latest {
   background: #1D7A3E;
 }
@@ -334,7 +334,7 @@
   letter-spacing: -0.3px;
 }
 
-/* 과거 카드 타임스탬프 텍스트 - 약간 흐리게 */
+/* 과거 카드 타임스탬프 텍스트: 약간 흐리게 */
 .mv-ts:not(.mv-ts-latest) .mv-ts-text {
   opacity: 0.75;
 }
@@ -515,7 +515,7 @@
 .mv-mixed {
   border-top: 1px solid var(--ez-border2);
   padding: 12px 14px;
-  /* border-bottom 없음 - 바로 아래 .mv-factors의 border-top이 구분선 역할 (이중선 방지) */
+  /* border-bottom 없음: 바로 아래 .mv-factors의 border-top이 구분선 역할 (이중선 방지) */
 }
 
 .mv-mixed-title {
@@ -523,7 +523,7 @@
   font-weight: 800;
   letter-spacing: -0.1px;
   margin-bottom: 10px;
-  color: #92400E; /* 라이트모드 앰버 규칙 준수 - 노랑 금지 */
+  color: #92400E; /* 라이트모드 앰버 규칙 준수: 노랑 금지 */
 }
 
 .mv-mixed-item { margin-bottom: 10px; }
@@ -607,7 +607,7 @@
   line-height: 1.6;
 }
 
-/* ── 라이트모드 - 과거 타임스탬프 색 ── */
+/* ── 라이트모드: 과거 타임스탬프 색 ── */
 @media (prefers-color-scheme: light) {
   .mv-ts { background: #5A5A5E; }
   .mv-ts-latest { background: #1D7A3E; }
@@ -624,11 +624,11 @@
 }
 </style>
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
-     head 맨 끝에 둔다 - 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     head 맨 끝에 둔다: 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 <body>
-<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">미국 주식 시장 긍정 vs 부정 몇대몇 - AI 시황 분석</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검: h1 부재 보강) -->
+<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">미국 주식 시장 긍정 vs 부정 몇대몇: AI 시황 분석</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검: h1 부재 보강) -->
 <script src="/lang-banner.js"></script>
 
 <script src="/ez-nav.js"></script>
@@ -731,7 +731,7 @@ function renderStack(data) {
 }
 
 // 갱신 보류 알림 (75항 → 75-2항으로 화면 표시 중단, 2026-08-27 운영 방침)
-// 게시 포기 사유는 데이터(data.hold)에 그대로 기록된다 - 감사·로그용으로 남긴다.
+// 게시 포기 사유는 데이터(data.hold)에 그대로 기록된다: 감사·로그용으로 남긴다.
 // 다시 켜려면 이 상수만 true 로 바꾼다. 렌더 코드는 아래에 그대로 살려 뒀다.
 var SHOW_HOLD_NOTICE = false;
 
@@ -748,7 +748,7 @@ function renderHold(hold) {
     if (!(ageH >= 0) || ageH > 24) return;
   }
 
-  // '2026-08-26(수) 23:20 KST' → '08-26(수) 23:20' - 상단 업데이트 바와 눈높이를 맞춘다
+  // '2026-08-26(수) 23:20 KST' → '08-26(수) 23:20': 상단 업데이트 바와 눈높이를 맞춘다
   var when = String(hold.at || '').replace(/^\d{4}-/, '').replace(' KST', '');
   var n = parseInt(hold.count, 10);
   var streak = (n > 1) ? ' · ' + n + '회 연속' : '';
@@ -794,7 +794,7 @@ function renderEntry(e, isLatest) {
       '</div>';
   }
 
-  // 혼조·양면 재료 (2026-07-03 신설) - 없으면 섹션 자체를 렌더링하지 않음
+  // 혼조·양면 재료 (2026-07-03 신설): 없으면 섹션 자체를 렌더링하지 않음
   var mixedHtml = '';
   var mf = e.mixed_factors || [];
   if (mf.length) {
@@ -823,7 +823,7 @@ function renderEntry(e, isLatest) {
   return (
     '<div class="' + cardClass + '">' +
 
-      /* 타임스탬프 - 크게 강조 */
+      /* 타임스탬프: 크게 강조 */
       '<div class="mv-ts' + latestClass + '">' +
         '<div class="mv-ts-icon"></div>' +
         '<div class="mv-ts-text">' + escHtml(e.timestamp_kst || '') + latestBadge + '</div>' +
@@ -856,7 +856,7 @@ function renderEntry(e, isLatest) {
         '<div class="mv-summary">' + escHtml(e.summary || '') + '</div>' +
       '</div>' +
 
-      /* 혼조·양면 재료 (있을 때만) - 점수 구도 바로 아래, 요인 2열 위 (2026-07-03 상단 이동) */
+      /* 혼조·양면 재료 (있을 때만): 점수 구도 바로 아래, 요인 2열 위 (2026-07-03 상단 이동) */
       mixedHtml +
 
       /* 2열 요인 */
@@ -871,7 +871,7 @@ function renderEntry(e, isLatest) {
         '</div>' +
       '</div>' +
 
-      /* 심층 보고서 (66항) - report 필드가 있을 때만 */
+      /* 심층 보고서 (66항): report 필드가 있을 때만 */
       renderReport(e) +
 
     '</div>'
@@ -879,7 +879,7 @@ function renderEntry(e, isLatest) {
 }
 
 /* 카드 요약이 너무 압축돼 "무슨 말인지 모르겠다" 싶을 때 펼쳐 보는 A4 한 장.
-   report 필드는 파이프라인이 카드 확정 후 별도 생성한다 - 없으면 버튼도 없다. */
+   report 필드는 파이프라인이 카드 확정 후 별도 생성한다: 없으면 버튼도 없다. */
 var REPORT_SECTIONS = [
   ['overview', '현재 판 정리', 'plain'],
   ['positive', '호재', ''],
@@ -902,7 +902,7 @@ function renderReport(e) {
     });
     var inner;
     if (isBullets) {
-      /* 개조식(67항 이후 표준) - "핵심어: 내용" 꼴이면 핵심어를 볼드로 */
+      /* 개조식(67항 이후 표준): "핵심어: 내용" 꼴이면 핵심어를 볼드로 */
       inner = '<ul>' + lines.map(function (t) {
         var c = t.replace(/^\s*[-\u00b7\u2022]\s*/, '');
         var ci = c.indexOf(':');
@@ -920,7 +920,7 @@ function renderReport(e) {
   if (!body) return '';
   var rid = 'rp-' + (e.id || Math.abs((e.timestamp_kst || '').length)) ;
 
-  /* 복사용 평문 - 다른 곳에 붙여도 안 깨지게 제목+본문 평문으로 (48항: 표 금지 원칙과 동일) */
+  /* 복사용 평문: 다른 곳에 붙여도 안 깨지게 제목+본문 평문으로 (48항: 표 금지 원칙과 동일) */
   var plain = '[긍정 ' + (e.positive_total || 0) + ' vs 부정 ' + (e.negative_total || 0) + '] ' +
               (e.timestamp_kst || '') + ' · ezlong.com 긍정vs부정\n\n';
   for (var q = 0; q < REPORT_SECTIONS.length; q++) {

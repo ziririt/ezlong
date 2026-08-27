@@ -52,7 +52,7 @@
         media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-<title>은퇴 후 월 300만원 받으려면 지금 얼마씩 투자해야 할까? 역산 계산기 무료 - EZLONG</title>
+<title>은퇴 후 월 300만원 받으려면 지금 얼마씩 투자해야 할까? 역산 계산기 무료: EZLONG</title>
 <meta name="description" content="은퇴 목표 월 인출액 입력하면 필요 월 투자액 역산. 4% 룰 기반 7%·14%·21% 3가지 시나리오 동시 비교. 서학개미 은퇴 계획 역산 계산기. 회원가입 없이 무료 즉시 확인." />
 <meta name="keywords" content="은퇴 계산기, 은퇴 목표 역산, 필요 월 투자액, 4% 룰, FIRE, 조기은퇴, 미국주식 장기투자, 복리 계산기, 은퇴 자산 계산" />
 <meta name="robots" content="index, follow" />
@@ -85,7 +85,7 @@
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Retirement Goal Reverse Calculator - US Stock Investment",
+  "name": "Retirement Goal Reverse Calculator: US Stock Investment",
   "description": "Calculate how much you need to invest monthly to reach your retirement target. Enter your retirement goal amount, current savings, expected annual return, and years to retirement for a personalized investment roadmap.",
   "inLanguage": ["ko", "en"],
   "url": "https://ezlong.com/retirement-calculator.html"
@@ -238,19 +238,19 @@
     --chart-xax:  #48484A;
 
     /* ── 컨텍스트 색상 (다크) ── */
-    /* 성공/긍정 - 어두운 배경 + 밝은 초록 텍스트 */
+    /* 성공/긍정: 어두운 배경 + 밝은 초록 텍스트 */
     --ok-bg:    rgba(48,209,88,0.16);
     --ok-text:  #4CD964;
     --ok-bd:    rgba(48,209,88,0.45);
-    /* 경고 - 어두운 앰버 배경 + 밝은 노랑 텍스트 */
+    /* 경고: 어두운 앰버 배경 + 밝은 노랑 텍스트 */
     --warn-bg:  rgba(255,179,0,0.16);
     --warn-text:#FFD60A;
     --warn-bd:  rgba(255,179,0,0.45);
-    /* 정보 - 어두운 파랑 배경 + 밝은 파랑 텍스트 */
+    /* 정보: 어두운 파랑 배경 + 밝은 파랑 텍스트 */
     --info-bg:  rgba(64,156,255,0.16);
     --info-text:#90CAFF;
     --info-bd:  rgba(64,156,255,0.45);
-    /* 중립 팁 - 어두운 카드보다 조금 밝은 배경 + 밝은 텍스트 */
+    /* 중립 팁: 어두운 카드보다 조금 밝은 배경 + 밝은 텍스트 */
     --tip2-bg:  #2C2C2E;
     --tip2-text:#D1D1D6;
     --tip2-bd:  rgba(255,255,255,0.14);
@@ -268,10 +268,10 @@ html, body {
   -webkit-font-smoothing: antialiased;
   max-width: 100%;
 }
-/* 2026-07-04: overflow-x:hidden을 html,body에서 제거 - body 직계 자식인 .ez-nav의
+/* 2026-07-04: overflow-x:hidden을 html,body에서 제거: body 직계 자식인 .ez-nav의
    position:sticky가 깨지는 원인이었음. 가로 스크롤 방지는 body 바로 다음 wrapper div로 이전. */
 
-/* iOS 자동 확대 방지 - input은 반드시 font-size 16px 이상 */
+/* iOS 자동 확대 방지: input은 반드시 font-size 16px 이상 */
 input, select, textarea {
   font-size: 16px !important;
   touch-action: manipulation;
@@ -344,22 +344,22 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
 }
 </style>
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
-     head 맨 끝에 둔다 - 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     head 맨 끝에 둔다: 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 <body>
-<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">미국주식 은퇴 계산기 - 목표 월 인출액 역산 월 투자액</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검: h1 부재 보강) -->
+<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">미국주식 은퇴 계산기: 목표 월 인출액 역산 월 투자액</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검: h1 부재 보강) -->
 <script src="/lang-banner.js"></script>
 <!-- ── EZLONG 글로벌 헤더 ── -->
 <script src="/ez-nav.js"></script>
 
-<!-- 2026-07-04: overflow-x 래퍼 - html/body 대신 여기서 가로 스크롤 차단.
+<!-- 2026-07-04: overflow-x 래퍼: html/body 대신 여기서 가로 스크롤 차단.
      nav는 이 밖(위)에 있어 position:sticky 정상 작동.
      2026-08-04 정정(운영자 "상단이 덮인 느낌" 제보): overflow-x:hidden은 y축을
      자동으로 auto로 만들어 이 div가 스크롤 컨테이너가 된다. 그러면 안쪽
      position:sticky가 뷰포트가 아니라 이 div 기준으로 계산돼 (a) 헤더가 붙지
      않고 (b) top 값만큼 빈 띠가 생긴다. overflow-x:clip은 스크롤 컨테이너를
-     만들지 않으면서 가로 넘침만 자른다 - sticky가 정상 작동한다.
+     만들지 않으면서 가로 넘침만 자른다: sticky가 정상 작동한다.
      clip 미지원 구형 브라우저는 hidden으로 폴백(기존 동작 유지). -->
 <div style="overflow-x:hidden;overflow-x:clip;width:100%;">
 
@@ -373,7 +373,7 @@ const { useState, useCallback, useRef, useEffect, memo } = React;
 ═══════════════════════════════════════════ */
 const EX_RATE = 1380; // 원/달러 (2026년 5월 기준)
 
-// badgeBg: 불투명 단색 - 라이트/다크 무관하게 흰 텍스트와 충분한 대비
+// badgeBg: 불투명 단색: 라이트/다크 무관하게 흰 텍스트와 충분한 대비
 const SCENARIOS = [
   { label: '보수적',   rate: 7,  badgeBg: '#0052CC', desc: 'S&P500 역사 평균 수준 (채권+주식 혼합 가정)' },
   { label: '중간',     rate: 14, badgeBg: '#1A7030', desc: 'QQQ 나스닥100 장기 평균 수준', recommended: true },
@@ -388,7 +388,7 @@ const WITHDRAWAL_SCENARIOS = [
 ];
 
 /*
-  calcDynamicTargets - 4단계 월 수령 목표 동적 계산
+  calcDynamicTargets: 4단계 월 수령 목표 동적 계산
   ★ 최고값 기준: 현재 자산을 14%(중간 시나리오) CAGR로 운용했을 때
     추가 투자 없이 달성 가능한 월 수령액 (= 14% 컬럼 최상단 행이 '달성가능')
   ★ 현재 자산이 없으면 기본 타이어 반환
@@ -441,7 +441,7 @@ function fMan(v){
   if(a>=10000) return `${s}${(a/10000).toFixed(1)}억원`;
   return `${s}${a.toLocaleString()}만원`;
 }
-// 숫자와 단위를 분리 - 모바일 표에서 줄 나눔에 사용
+// 숫자와 단위를 분리: 모바일 표에서 줄 나눔에 사용
 function fManSplit(v){
   const n=Number(v); if(isNaN(n)||n===0) return {num:'0', unit:'원'};
   const s=n<0?'-':'', a=Math.abs(n);
@@ -509,7 +509,7 @@ function calcAccumulation(currentAge, retireAge, currentAssetMan, monthlyMan, an
 }
 
 function calcWithdrawalSim(assetMan, monthlyWdMan, annualRate, totalYears=30){
-  // 자산이 없으면 시뮬레이션 의미 없음 - 루프 진입 자체를 막음
+  // 자산이 없으면 시뮬레이션 의미 없음: 루프 진입 자체를 막음
   if(sN(assetMan) <= 0) return { rows:[{ year:0, assetMan:0 }], exhaustedYear:null };
   const mr=sN(annualRate)/100/12;
   let val=sN(assetMan)*1e4;
@@ -518,7 +518,7 @@ function calcWithdrawalSim(assetMan, monthlyWdMan, annualRate, totalYears=30){
   let exhaustedYear=null;
   for(let m=1; m<=totalYears*12; m++){
     val=(val-mWd)*(1+mr);
-    // mWd > 0 인 경우에만 소진 판정 - 인출 0이면 val=0이어도 소진 아님
+    // mWd > 0 인 경우에만 소진 판정: 인출 0이면 val=0이어도 소진 아님
     if(mWd>0 && val<=0 && exhaustedYear===null){ exhaustedYear=parseFloat((m/12).toFixed(1)); val=0; }
     if(m%12===0) rows.push({ year:m/12, assetMan:Math.max(0,Math.round(val/1e4)) });
   }
@@ -536,7 +536,7 @@ function Card({children, style, className}){
 }
 
 /*
-  Badge - 불투명 배경 + 흰색 텍스트
+  Badge: 불투명 배경 + 흰색 텍스트
   라이트/다크 모드 모두 동일한 명도 대비 보장
 */
 function Badge({ children, bg='#1A7030' }){
@@ -769,8 +769,8 @@ function WithdrawalLineChart({ assetMan, monthlyWdMan, retireAge }){
               <span>
                 {s.label}
                 {s.exhaustedYear
-                  ? <span style={{color:'#FF3B30',fontWeight:700}}> - {s.exhaustedYear}년 후 소진</span>
-                  : <span style={{color:'var(--bl-dk)',fontWeight:700}}> - {totalYears}년 후 {fTick(finalAmt)} 잔존</span>
+                  ? <span style={{color:'#FF3B30',fontWeight:700}}>: {s.exhaustedYear}년 후 소진</span>
+                  : <span style={{color:'var(--bl-dk)',fontWeight:700}}>: {totalYears}년 후 {fTick(finalAmt)} 잔존</span>
                 }
               </span>
             </div>
@@ -782,7 +782,7 @@ function WithdrawalLineChart({ assetMan, monthlyWdMan, retireAge }){
 }
 
 /* ═══════════════════════════════════════════
-   결과 그리드 - 순방향: CAGR별 은퇴자산 × 인출률 = 월 수령액
+   결과 그리드: 순방향: CAGR별 은퇴자산 × 인출률 = 월 수령액
 ═══════════════════════════════════════════ */
 const WD_TABLE_RATES_DISPLAY = [15, 10, 8, 4]; // 내림차순
 const WD_RATE_LABELS = { 15:'매우 공격적', 10:'공격적', 8:'중간', 4:'트리니티 룰' };
@@ -824,7 +824,7 @@ function ResultsGrid({ gridData, withdrawalRate, onRateChange, selectedScenario,
           gridColumn:'span 3', fontSize:11, fontWeight:700,
           color:'var(--bl-dk)', textAlign:'center', letterSpacing:'.04em',
         }}>
-          ▼ 은퇴 전 연평균 수익률 (CAGR) - 클릭하면 해당 시나리오 기준으로 시뮬레이션
+          ▼ 은퇴 전 연평균 수익률 (CAGR): 클릭하면 해당 시나리오 기준으로 시뮬레이션
         </div>
       </div>
 
@@ -905,7 +905,7 @@ function ResultsGrid({ gridData, withdrawalRate, onRateChange, selectedScenario,
               <div style={{fontSize:11,color:'var(--t3)',marginTop:2}}>{WD_RATE_LABELS[rate]}</div>
               {isSelected&&<div style={{fontSize:11,color:'var(--bl-dk)',fontWeight:600,marginTop:3}}>▶ 시뮬레이션 중</div>}
             </div>
-            {/* 각 CAGR별 월 수령액 - 선택된 열: 분홍 하이라이트 */}
+            {/* 각 CAGR별 월 수령액: 선택된 열: 분홍 하이라이트 */}
             {gridData.map((col, i)=>{
               const inc = col.incomes.find(x=>x.rate===rate);
               const monthly = inc ? inc.monthly : 0;
@@ -1042,7 +1042,7 @@ function ScenarioTable({ scenarios, selectedIdx, onSelect, withdrawalMonthlyMan,
         );
       })}
 
-      {/* 4% 룰 요약 - 테이블 하단 */}
+      {/* 4% 룰 요약: 테이블 하단 */}
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',borderTop:'2px solid var(--bd)'}}>
         <div style={{padding:'16px 20px',borderRight:'1px solid var(--bd)'}}>
           <div style={{fontSize:13,color:'var(--t2)',marginBottom:5}}>목표 은퇴 자산 (연 {wdPct}% 인출 역산)</div>
@@ -1061,7 +1061,7 @@ function ScenarioTable({ scenarios, selectedIdx, onSelect, withdrawalMonthlyMan,
    시작 시점 비교 인사이트 카드
 ═══════════════════════════════════════════ */
 /*
-  InsightCard - 지금 시작 vs 5년/10년 후 시작했을 때
+  InsightCard: 지금 시작 vs 5년/10년 후 시작했을 때
   은퇴 시 쌓이는 자산 차이를 순방향으로 직관적으로 보여줌
 */
 function InsightCard({ currentAge, retireAge, currentAssetMan, monthlyBudget }){
@@ -1082,7 +1082,7 @@ function InsightCard({ currentAge, retireAge, currentAssetMan, monthlyBudget }){
         지금 시작 안하면 얼마나 손해일까?
       </div>
       <div style={{fontSize:13,color:'var(--t2)',marginBottom:16,lineHeight:1.6}}>
-        S&P500 투자(14% CAGR) 기준 - 투자를 미룰수록 복리 기회를 잃는다
+        S&P500 투자(14% CAGR) 기준: 투자를 미룰수록 복리 기회를 잃는다
       </div>
 
       <div style={{display:'flex',flexDirection:'column',gap:10}}>
@@ -1148,7 +1148,7 @@ function App(){
   const canCalc = yearsLeft > 0;
 
   // 80세까지 잔존 자산 (선택된 CAGR 기준)
-  // 은퇴 자산이 0이면 시뮬레이션 의미 없음 - 박스 표시 안 함
+  // 은퇴 자산이 0이면 시뮬레이션 의미 없음: 박스 표시 안 함
   let residualInfo = null;
   if(result && result.effectiveTarget > 0){
     const totalYears = Math.max(5, 80 - retireAge);
@@ -1408,14 +1408,14 @@ function App(){
             </Card>
           ) : (
             <>
-              {/* ① 자산 축적 시뮬레이션 - 결과 최상단 */}
+              {/* ① 자산 축적 시뮬레이션: 결과 최상단 */}
               <Card style={{padding:'18px 20px',marginBottom:20}} className="fadeUp">
                 <div style={{marginBottom:14}}>
                   <div style={{fontSize:15,fontWeight:700,color:'var(--t1)',marginBottom:4}}>자산 축적을 위한 연평균 수익률 시뮬레이션</div>
                   <div style={{fontSize:16,fontWeight:700,color:'var(--bl-dk)',marginBottom:12}}>
                     {yearsLeft}년간 어디에 투자하시겠습니까?
                   </div>
-                  {/* 수익률 선택 카드 - 3개 독립 카드, 존재감 있게 */}
+                  {/* 수익률 선택 카드: 3개 독립 카드, 존재감 있게 */}
                   {(()=>{
                     const cur = [7,14,21].includes(result.chartReturnRate||chartReturnRate) ? (result.chartReturnRate||chartReturnRate) : 14;
                     const tabs = [
@@ -1441,7 +1441,7 @@ function App(){
                                   : '0 1px 4px rgba(0,0,0,.07)',
                                 transition:'all .18s',
                               }}>
-                              {/* 퍼센트 숫자 - 크고 굵게 */}
+                              {/* 퍼센트 숫자: 크고 굵게 */}
                               <div style={{
                                 fontSize:26, fontWeight:900, fontFamily:'var(--mono)',
                                 lineHeight:1.1,
@@ -1457,7 +1457,7 @@ function App(){
                                 fontSize:10, marginTop:3,
                                 color: sel ? 'rgba(255,255,255,0.7)' : 'var(--t3)',
                               }}>{t.desc}</div>
-                              {/* 선택 안 된 경우 - "탭해서 선택" 힌트 */}
+                              {/* 선택 안 된 경우: "탭해서 선택" 힌트 */}
                               {!sel && (
                                 <div style={{
                                   marginTop:8,
@@ -1471,7 +1471,7 @@ function App(){
                                   lineHeight:1.4,
                                 }}>탭해서 선택</div>
                               )}
-                              {/* 선택된 경우 - 체크 표시 */}
+                              {/* 선택된 경우: 체크 표시 */}
                               {sel && (
                                 <div style={{
                                   marginTop:8, fontSize:13, fontWeight:800,
@@ -1519,7 +1519,7 @@ function App(){
                 onScenarioSelect={handleScenarioSelect}
               />
 
-              {/* ③ 잔존 자산 강조 박스 - 테이블 바로 아래 */}
+              {/* ③ 잔존 자산 강조 박스: 테이블 바로 아래 */}
               {residualInfo && (
                 <div style={{
                   marginBottom:20,
@@ -1621,9 +1621,9 @@ function App(){
         }}>
           <div style={{fontSize:13,fontWeight:700,color:'var(--t1)',marginBottom:10}}>수익률 가정 안내</div>
           <div style={{display:'flex',flexDirection:'column',gap:6,fontSize:12,color:'var(--t2)',lineHeight:1.7}}>
-            <div><strong style={{color:'var(--bl-dk)'}}>7% 보수적</strong> - S&P500 장기 역사 평균(~10%) 기준 보수적 시나리오. 채권+주식 혼합 포트폴리오에 가까운 수준.</div>
-            <div><strong style={{color:'var(--bl-dk)'}}>14% 중간</strong> - QQQ 나스닥100 장기 평균 수준. 특정 구간(2010~2024)에서 실현된 수치.</div>
-            <div><strong style={{color:'#92400E'}}>21% 공격적</strong> - 나스닥100 최고 구간 기준 낙관적 시나리오. 과거 일부 구간에서만 달성된 수치.</div>
+            <div><strong style={{color:'var(--bl-dk)'}}>7% 보수적</strong>: S&P500 장기 역사 평균(~10%) 기준 보수적 시나리오. 채권+주식 혼합 포트폴리오에 가까운 수준.</div>
+            <div><strong style={{color:'var(--bl-dk)'}}>14% 중간</strong>: QQQ 나스닥100 장기 평균 수준. 특정 구간(2010~2024)에서 실현된 수치.</div>
+            <div><strong style={{color:'#92400E'}}>21% 공격적</strong>: 나스닥100 최고 구간 기준 낙관적 시나리오. 과거 일부 구간에서만 달성된 수치.</div>
           </div>
           <div style={{marginTop:12,paddingTop:10,borderTop:'1px solid var(--bd)',fontSize:11,color:'var(--t3)',lineHeight:1.7}}>
             복리 계산은 수학적으로 정확하나, 미래 수익률은 보장되지 않으며 실제 결과는 크게 다를 수 있습니다.
@@ -1727,7 +1727,7 @@ function App(){
             </div>
           </div>
 
-          {/* 72의 법칙 - 특별 하이라이트 */}
+          {/* 72의 법칙: 특별 하이라이트 */}
           <div style={{
             padding:'20px 22px',
             background:'linear-gradient(135deg, #1a3a6b 0%, #0d2248 100%)',
@@ -1743,7 +1743,7 @@ function App(){
               border:'1px solid rgba(100,180,255,0.35)',
               borderRadius:100,padding:'3px 10px',
               color:'#90CAFF',marginBottom:10,
-            }}>TIP - 72의 법칙</div>
+            }}>TIP: 72의 법칙</div>
             <div style={{fontSize:15,fontWeight:800,color:'#FFFFFF',marginBottom:10}}>
               30초 만에 복리 계산하는 방법
             </div>
@@ -1773,7 +1773,7 @@ function App(){
 
         </div>
 
-        {/* 관련 글 - 은퇴자금 계산 사례 */}
+        {/* 관련 글: 은퇴자금 계산 사례 */}
         <div style={{
           marginTop:16,
           padding:'20px 22px',
@@ -1802,11 +1802,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
 <!-- ── EZLONG 글로벌 푸터 ── -->
 
-<!-- 도구 해설 본문 (2026-08-26, CLAUDE.md 73항 2단계) - 정적 HTML -->
+<!-- 도구 해설 본문 (2026-08-26, CLAUDE.md 73항 2단계): 정적 HTML -->
 <article class="ez-guide">
 <h2>거꾸로 계산하면 답이 선명해집니다</h2>
 <p class="ez-guide-lede">보통은 이렇게 묻습니다. "월 100만원씩 20년 넣으면 얼마가 되지?" 이 계산기는 방향을 뒤집습니다. <b>"은퇴 후 매달 300만원을 쓰려면, 지금부터 얼마씩 넣어야 하지?"</b> 목표에서 출발해 오늘 해야 할 일을 역산합니다.</p>
-<p>방향을 뒤집으면 계획이 실행 가능한 문장으로 바뀝니다. "많이 모아야지"는 실행할 수 없지만 "매달 87만원"은 실행할 수 있습니다. 그리고 그 숫자가 도저히 불가능하다면, 그것도 중요한 정보입니다 - <b>목표를 낮추거나, 기간을 늘리거나, 수익률 가정을 다시 볼 때</b>라는 뜻이니까요.</p>
+<p>방향을 뒤집으면 계획이 실행 가능한 문장으로 바뀝니다. "많이 모아야지"는 실행할 수 없지만 "매달 87만원"은 실행할 수 있습니다. 그리고 그 숫자가 도저히 불가능하다면, 그것도 중요한 정보입니다: <b>목표를 낮추거나, 기간을 늘리거나, 수익률 가정을 다시 볼 때</b>라는 뜻이니까요.</p>
 
 <h2>4% 룰이 뭔가요</h2>
 <p>은퇴 자산을 얼마나 모아야 하는지 계산할 때 쓰는 기준입니다. 1998년 미국 트리니티 대학 연구진이 과거 시장 데이터로 확인한 결과, <b>은퇴 자산의 연 4%씩을 매년 빼 쓰면 30년 넘게 돈이 마르지 않을 확률이 상당히 높았습니다.</b></p>
@@ -1821,7 +1821,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 <div class="ez-guide-kv"><div class="k">수익률 시나리오</div><div class="v">7% · 14% · 21% 세 가지를 나란히 계산합니다. 한 줄만 보지 마시고 <b>세 줄을 함께</b> 보십시오</div></div>
 
 <h2>결과를 어떻게 읽나</h2>
-<p><b>수익률 세 줄을 나란히 보는 것이 이 도구의 핵심입니다.</b> 연 7%로 잡았을 때와 21%로 잡았을 때 필요한 월 투자액이 몇 배씩 차이 납니다. 이 격차가 뜻하는 바는 분명합니다 - <b>계획의 성패가 내 저축액보다 수익률 가정에 더 크게 달려 있다면, 그 계획은 위태롭습니다.</b> 수익률은 내가 통제할 수 없고 저축액은 통제할 수 있으니까요.</p>
+<p><b>수익률 세 줄을 나란히 보는 것이 이 도구의 핵심입니다.</b> 연 7%로 잡았을 때와 21%로 잡았을 때 필요한 월 투자액이 몇 배씩 차이 납니다. 이 격차가 뜻하는 바는 분명합니다: <b>계획의 성패가 내 저축액보다 수익률 가정에 더 크게 달려 있다면, 그 계획은 위태롭습니다.</b> 수익률은 내가 통제할 수 없고 저축액은 통제할 수 있으니까요.</p>
 <p>그래서 권해 드리는 방법은 이렇습니다. <b>가장 보수적인 줄(연 7%)로 세워도 실행 가능한 계획</b>을 목표로 잡으십시오. 그보다 잘되면 은퇴가 앞당겨지는 것이고, 안 되어도 계획은 무너지지 않습니다.</p>
 <p>'계산 불가'나 '이미 달성 가능'이 뜨면 조건이 극단적이라는 신호입니다. 기간이 너무 짧거나, 목표가 현재 자산으로 이미 충족되는 경우입니다.</p>
 
@@ -1839,10 +1839,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 
 <h2>함께 보면 좋은 것</h2>
 <ul>
-<li><a href="/fire-retirement-4percent-rule.html">FIRE 은퇴와 4% 룰</a> - 4% 룰의 근거와 한계를 자세히 풀어 쓴 글</li>
-<li><a href="/dca-simulator.html">DCA 적립식 시뮬레이터</a> - 역산으로 나온 월 납입액을 실제로 굴려 봅니다</li>
-<li><a href="/backtest.html">몬테카를로 포트폴리오 시뮬레이터</a> - 은퇴 자산이 실제로 겪었을 낙폭을 20년 데이터로</li>
-<li><a href="/tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a> - 연금저축·IRP를 함께 쓰면 필요 금액이 달라집니다</li>
+<li><a href="/fire-retirement-4percent-rule.html">FIRE 은퇴와 4% 룰</a>: 4% 룰의 근거와 한계를 자세히 풀어 쓴 글</li>
+<li><a href="/dca-simulator.html">DCA 적립식 시뮬레이터</a>: 역산으로 나온 월 납입액을 실제로 굴려 봅니다</li>
+<li><a href="/backtest.html">몬테카를로 포트폴리오 시뮬레이터</a>: 은퇴 자산이 실제로 겪었을 낙폭을 20년 데이터로</li>
+<li><a href="/tax-account-simulator.html">절세 계좌 세후 시뮬레이터</a>: 연금저축·IRP를 함께 쓰면 필요 금액이 달라집니다</li>
 </ul>
 <p><a href="/disclaimer.html">투자 유의사항</a>을 함께 읽어 주십시오. 참고용 추정이며 개인의 소득·연금 상황에 따라 결과가 달라집니다.</p>
 </article>

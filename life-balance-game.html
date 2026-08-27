@@ -12,7 +12,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <meta http-equiv="content-language" content="ko">
-  <title>밸런스게임: 마이 라이프 - 나는 무엇을 위해 사는가 | EZLONG</title>
+  <title>밸런스게임: 마이 라이프: 나는 무엇을 위해 사는가 | EZLONG</title>
   <meta name="description" content="가족, 돈, 자유, 건강, 성취, 의미 중 무엇을 위해 다른 것을 포기할 수 있나요? 10번의 인생 선택으로 나의 진짜 가치관과 지금 생활의 일치도를 확인하고, 오늘부터 할 수 있는 행동까지 받아보세요.">
   <meta name="keywords" content="밸런스게임, 인생 가치관 테스트, 가치관 진단, 마이 라이프, 인생 선택 게임, 자기점검, 라이프밸런스">
   <meta name="author" content="EZLONG">
@@ -27,7 +27,7 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="밸런스게임: 마이 라이프 - 나는 무엇을 위해 사는가">
+  <meta property="og:title" content="밸런스게임: 마이 라이프: 나는 무엇을 위해 사는가">
   <meta property="og:description" content="10번의 인생 선택으로 나의 진짜 가치관을 확인하고, 지금 생활과의 일치도까지 점검하는 밸런스 게임.">
   <meta property="og:url" content="https://ezlong.com/life-balance-game.html">
   <meta property="og:image" content="https://ezlong.com/og/og-1200x630.png?v=20260809">
@@ -36,7 +36,7 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="밸런스게임: 마이 라이프 - 나는 무엇을 위해 사는가">
+  <meta name="twitter:title" content="밸런스게임: 마이 라이프: 나는 무엇을 위해 사는가">
   <meta name="twitter:description" content="10번의 인생 선택으로 나의 진짜 가치관을 확인하고, 지금 생활과의 일치도까지 점검하는 밸런스 게임.">
   <meta name="twitter:image" content="https://ezlong.com/og/og-1200x630.png?v=20260809">
 
@@ -272,14 +272,14 @@
        기본정보 선택지를 2열 유지 + 여백 압축 → 한 화면에서 스크롤 없이 응답.
        (기존엔 480px 이하에서 1열로 무너져 12개 선택지가 세로로 길게 늘어졌음) */
     @media (max-width: 480px) {
-      /* 상단 히어로 압축 (2026-08-04 운영 지침 - 위 빈 여백 절약) */
+      /* 상단 히어로 압축 (2026-08-04 운영 지침: 위 빈 여백 절약) */
       .page-brand { padding: 12px 16px 10px; }
       .page-brand-label { margin-bottom: 3px; }
       .page-brand-title { font-size: 22px; margin-bottom: 4px; }
       .page-brand-desc { line-height: 1.5; }
       #lbg-progress-wrap { padding: 12px 16px 0; }
       /* 다크 씬(인트로·프리게임): 78vh 세로 중앙 정렬이 모바일에선 위 공백만
-         키우고 '다음' 버튼을 화면 밖으로 밀어냈음 - 내용 높이만큼만 차지 */
+         키우고 '다음' 버튼을 화면 밖으로 밀어냈음: 내용 높이만큼만 차지 */
       .lbg-dark { min-height: auto; padding: 40px 20px 36px; justify-content: flex-start; }
       .lbg-panel { padding: 22px 14px 14px; }
       .lbg-step-title { margin-bottom: 8px; }
@@ -292,7 +292,7 @@
     }
   </style>
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
-     head 맨 끝에 둔다 - 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     head 맨 끝에 둔다: 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 <body>
@@ -326,8 +326,8 @@
 
 <script>
 /* ══════════════════════════════════════════════════════════════════
-   밸런스게임: 마이 라이프 - 게임 엔진 + 데이터
-   ezlong.com - 정적 HTML/JS, 서버·백엔드·LLM 호출 없음 (전부 클라이언트)
+   밸런스게임: 마이 라이프: 게임 엔진 + 데이터
+   ezlong.com: 정적 HTML/JS, 서버·백엔드·LLM 호출 없음 (전부 클라이언트)
    ══════════════════════════════════════════════════════════════════ */
 (function () {
   "use strict";
@@ -548,10 +548,10 @@
     ]
   };
 
-  /* ── 5. 최종 토너먼트(1문항) - 상위 2개 가치를 직접 대결시킨다 ──── */
+  /* ── 5. 최종 토너먼트(1문항): 상위 2개 가치를 직접 대결시킨다 ──── */
   function buildTournamentQuestion(v1, v2) {
     var a = VALUES[v1], b = VALUES[v2];
-    return Q("당신이 지금까지 가장 중요하게 선택해온 두 가지가 정면으로 부딪힙니다. 이번 생에서, 단 하나만 최우선에 둘 수 있다면 - ",
+    return Q("당신이 지금까지 가장 중요하게 선택해온 두 가지가 정면으로 부딪힙니다. 이번 생에서, 단 하나만 최우선에 둘 수 있다면: ",
       v1, a.tHeadline, b.tLoss + "은(는) 뒷전으로 밀려난다",
       v2, b.tHeadline, a.tLoss + "은(는) 뒷전으로 밀려난다");
   }
@@ -684,7 +684,7 @@
     t.classList.add("show");
     setTimeout(function () { t.classList.remove("show"); }, 2200);
   }
-  /* 클립보드 복사 - navigator.clipboard가 없거나(비-HTTPS, 구형 브라우저) 권한이
+  /* 클립보드 복사: navigator.clipboard가 없거나(비-HTTPS, 구형 브라우저) 권한이
      막혀 있어도 execCommand('copy') 폴백으로 최대한 성공시킨다. 두 방법 다
      실패하면 onFail을 호출해 "직접 선택해서 복사" 안내로 전환한다. */
   function copyToClipboard(text, onSuccess, onFail) {
@@ -727,7 +727,7 @@
   function clearApp() {
     app.innerHTML = "";
     /* 긴 선택지 목록 → 짧은 다음 화면 전환 시 스크롤이 아래에 남아
-       빈 화면이 보이던 문제(2026-08-04 이슈 제보) - 응답 영역 위로 복귀.
+       빈 화면이 보이던 문제(2026-08-04 이슈 제보): 응답 영역 위로 복귀.
        첫 로드(스크롤 0)에서는 발동하지 않아 히어로를 건너뛰지 않는다. */
     var top = app.getBoundingClientRect().top + window.scrollY - 64;
     if (top > 0 && window.scrollY > top) window.scrollTo(0, top);
@@ -922,7 +922,7 @@
 
   var pendingAnswer = null;
 
-  /* '‹ 이전' 버튼 (2026-08-04 운영 지침) - 각 화면 렌더러가 back 동작을 지정.
+  /* '‹ 이전' 버튼 (2026-08-04 운영 지침): 각 화면 렌더러가 back 동작을 지정.
      null이면 숨김. 뒤로 갈 때는 해당 답변의 점수 반영도 되돌린다(unapplyScore). */
   var backBtn = document.getElementById("lbg-back");
   var backAction = null;
@@ -942,7 +942,7 @@
     clearApp();
     var total = 10;
     updateProgress(idx + 1, total, idx > 0 ? function () {
-      /* 직전 문항으로 - 그 답의 점수 반영을 되돌리고 다시 묻는다 */
+      /* 직전 문항으로: 그 답의 점수 반영을 되돌리고 다시 묻는다 */
       var last = state.answers.pop();
       if (last) unapplyScore(last);
       pendingAnswer = null;
@@ -975,7 +975,7 @@
       return c;
     }
     wrap.appendChild(makeCard("A", q.a));
-    wrap.appendChild(el("div", "lbg-ab-vs", " - 또는 - "));
+    wrap.appendChild(el("div", "lbg-ab-vs", ": 또는: "));
     wrap.appendChild(makeCard("B", q.b));
     panel.appendChild(wrap);
     s.appendChild(panel);
@@ -1019,7 +1019,7 @@
     }
   }
 
-  /* applyScore의 정확한 역연산 - '‹ 이전'으로 답을 물릴 때 사용.
+  /* applyScore의 정확한 역연산: '‹ 이전'으로 답을 물릴 때 사용.
      applyScore 채점 규칙을 바꾸면 반드시 이 함수도 같이 바꾼다. */
   function unapplyScore(ans) {
     state.scores[ans.value] -= 3;
@@ -1293,7 +1293,7 @@
       } else {
         body = "당신은 " + v.obj + " 가장 중요하게 선택했습니다.\n\n하지만 실제 시간표에서 " + v.withP + " 관련된 것은 상위 3위 안에 없습니다.\n\n이것은 당신이 " + v.obj + " 소중히 여기지 않는다는 뜻이 아닙니다. " + v.obj + " 보호할 구조를 아직 만들지 못했다는 뜻입니다.";
       }
-      card.innerHTML = "<h3>" + v.label + (matched ? " - 지키고 있는 가치" : " - 아직 구조가 없는 가치") + "</h3><p style='white-space:pre-line'>" + body + "</p>";
+      card.innerHTML = "<h3>" + v.label + (matched ? ": 지키고 있는 가치" : ": 아직 구조가 없는 가치") + "</h3><p style='white-space:pre-line'>" + body + "</p>";
       panel.appendChild(card);
     });
 
@@ -1504,7 +1504,7 @@
         committedText: state.committedText || null
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-    } catch (e) { /* localStorage 미지원 환경 - 조용히 무시 */ }
+    } catch (e) { /* localStorage 미지원 환경: 조용히 무시 */ }
   }
 
   function loadState() {
@@ -1640,7 +1640,7 @@
 </script>
 <!-- ── EZLONG 글로벌 푸터 ── -->
 
-<!-- 도구 해설 본문 (2026-08-26, CLAUDE.md 73항 2단계) - 정적 HTML -->
+<!-- 도구 해설 본문 (2026-08-26, CLAUDE.md 73항 2단계): 정적 HTML -->
 <article class="ez-guide">
 <h2>다 가질 수는 없으니까</h2>
 <p class="ez-guide-lede">건강도, 가족도, 자유도, 돈도, 성취도 다 중요합니다. 문제는 <b>시간과 힘이 유한하다</b>는 것입니다. 이 게임은 열 번의 양자택일로 그 유한함을 강제합니다. 둘 중 하나를 고르라고 계속 밀어붙이면, 평소에는 잘 안 보이던 <b>내 우선순위</b>가 드러납니다.</p>
@@ -1648,14 +1648,14 @@
 
 <h2>어떻게 진행되나</h2>
 <ol>
-<li><b>열 번의 선택</b> - 여덟 가지 핵심 가치(건강·가족·자유·경제적 안정·성취·의미·성장·진정성)가 서로 부딪히는 상황이 나옵니다</li>
-<li><b>당신이 선택한 인생</b> - 고른 것들을 모아 무엇을 우선하는 사람인지 보여 줍니다</li>
-<li><b>현실 점검</b> - 여기가 핵심입니다. "중요하다고 답한 것을 <b>실제로 지금 살고 있는지</b>"를 묻습니다</li>
-<li><b>오늘의 행동</b> - 격차가 가장 큰 항목에서, 오늘 할 수 있는 한 가지를 제안합니다</li>
+<li><b>열 번의 선택</b>: 여덟 가지 핵심 가치(건강·가족·자유·경제적 안정·성취·의미·성장·진정성)가 서로 부딪히는 상황이 나옵니다</li>
+<li><b>당신이 선택한 인생</b>: 고른 것들을 모아 무엇을 우선하는 사람인지 보여 줍니다</li>
+<li><b>현실 점검</b>: 여기가 핵심입니다. "중요하다고 답한 것을 <b>실제로 지금 살고 있는지</b>"를 묻습니다</li>
+<li><b>오늘의 행동</b>: 격차가 가장 큰 항목에서, 오늘 할 수 있는 한 가지를 제안합니다</li>
 </ol>
 
 <h2>왜 투자 사이트에 이런 게 있나</h2>
-<p>투자는 결국 <b>미래의 어떤 삶을 위해 지금을 견디는 일</b>입니다. 그런데 그 '어떤 삶'이 흐릿하면 견디는 이유도 흐릿해집니다. 은퇴 자금을 얼마로 잡을지, 얼마나 공격적으로 굴릴지, 언제까지 일할지 - 이 결정들은 전부 <b>무엇을 위해 사는가</b>에 딸린 문제입니다.</p>
+<p>투자는 결국 <b>미래의 어떤 삶을 위해 지금을 견디는 일</b>입니다. 그런데 그 '어떤 삶'이 흐릿하면 견디는 이유도 흐릿해집니다. 은퇴 자금을 얼마로 잡을지, 얼마나 공격적으로 굴릴지, 언제까지 일할지: 이 결정들은 전부 <b>무엇을 위해 사는가</b>에 딸린 문제입니다.</p>
 <p>계산기는 "얼마가 필요한가"에 답합니다. 이 게임은 그 앞의 질문, <b>"왜 필요한가"</b>에 답을 찾게 합니다. <a href="/retirement-calculator.html">은퇴 목표 역산 계산기</a>에 넣을 월 인출액을 정하기 전에 한 번 해 보시면 숫자가 달라질 수도 있습니다.</p>
 
 <h2>결과를 어떻게 쓰나</h2>
@@ -1671,8 +1671,8 @@
 
 <h2>함께 보면 좋은 것</h2>
 <ul>
-<li><a href="/retirement-calculator.html">은퇴 목표 역산 계산기</a> - 원하는 삶에 얼마가 필요한지 거꾸로 계산합니다</li>
-<li><a href="/fire-retirement-4percent-rule.html">FIRE 은퇴와 4% 룰</a> - 은퇴를 앞당기려면 무엇이 필요한지</li>
+<li><a href="/retirement-calculator.html">은퇴 목표 역산 계산기</a>: 원하는 삶에 얼마가 필요한지 거꾸로 계산합니다</li>
+<li><a href="/fire-retirement-4percent-rule.html">FIRE 은퇴와 4% 룰</a>: 은퇴를 앞당기려면 무엇이 필요한지</li>
 <li><a href="/risk-diagnostic.html">투자 행동 자가진단</a> · <a href="/stock-personality-quiz.html">투자유형 진단</a></li>
 </ul>
 </article>

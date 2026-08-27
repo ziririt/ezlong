@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<meta name="robots" content="noindex, nofollow"><!-- 스윙 시그널 목업(개발용) - 검색 색인 제외 (2026-08-26, 73항) -->
+<meta name="robots" content="noindex, nofollow"><!-- 스윙 시그널 목업(개발용): 검색 색인 제외 (2026-08-26, 73항) -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- 브랜드 아이콘 · PWA · 스플래시 (LongTime EasyLife, 2026-08-06 교체) -->
   <link rel="icon" href="/icons/favicon.ico?v=20260809" sizes="any">
@@ -44,7 +44,7 @@
         media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-<title>스윙 시그널 - 디자인 목업</title>
+<title>스윙 시그널: 디자인 목업</title>
 <style>
 /* ── atmr-dashboard.html 동일 CSS 변수 ── */
 :root {
@@ -198,13 +198,13 @@ body {
     <select id="scenario-sel">
       <option value="0">완만한 하락 추세 (88→77, -2.2점/일)</option>
       <option value="1">상승 반등 중 (45→68, +4.6점/일)</option>
-      <option value="2">횡보 - 방향 없음 (70→71, ≈0점/일)</option>
+      <option value="2">횡보: 방향 없음 (70→71, ≈0점/일)</option>
       <option value="3">급락 충격 (80→40, -8점/일)</option>
       <option value="4">초과열 소폭 하락 (92→85, -1.2점/일)</option>
     </select>
   </div>
   <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:180px;">
-    <label>현재 점수: <strong id="score-disp"> - </strong></label>
+    <label>현재 점수: <strong id="score-disp">: </strong></label>
     <input type="range" id="score-override" min="0" max="100" style="flex:1;" />
   </div>
 </div>
@@ -220,10 +220,10 @@ body {
     <div id="gauge-wrap" style="margin-bottom:10px;"></div>
     <div>
       <div class="action-label">오늘의 시그널</div>
-      <div class="action-title" id="card-title"> - </div>
+      <div class="action-title" id="card-title">: </div>
     </div>
   </div>
-  <div class="action-desc" id="card-desc"> - </div>
+  <div class="action-desc" id="card-desc">: </div>
   <div class="action-pills" id="card-pills"></div>
   <div id="card-options"></div>
 </div>
@@ -240,26 +240,26 @@ const SCENARIOS = [
   {
     history: [88,85,81,79,78,77],
     cls: 'watch', vix: 18.4,
-    title: '온기구간 - 하락 추세 진행 중, 보유 유지',
+    title: '온기구간: 하락 추세 진행 중, 보유 유지',
     desc:  '시장이 과열 구간에서 온기 구간으로 내려오는 추세입니다. QQQ·VOO는 여전히 <strong>200일선 위 상승 추세</strong>를 유지하고 있으나 방향성은 하락 중입니다. 급하게 추가 매수하기보다 기존 보유분을 유지하며 냉각구간 진입 여부를 확인하시길 권합니다.',
     buy: 2, sell: 1, hold: 0,
     pills: [
       { text:'VIX 18.4', bg:'rgba(155,89,182,0.15)', color:'#9b59b6' },
-      { text:'200일선 위 - 추세 유지', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
+      { text:'200일선 위: 추세 유지', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
       { text:'QQQ RSI 52.3', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
       { text:'단기: 반등 중 (MACD·5일선 ↑)', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
     ],
-    options: { icon:'▲', text:'SPY $739 - 안전 기준선($718) 위. 단기 급락 가능성이 낮은 안정 구간.', color:'var(--gr)' },
+    options: { icon:'▲', text:'SPY $739: 안전 기준선($718) 위. 단기 급락 가능성이 낮은 안정 구간.', color:'var(--gr)' },
   },
   {
     history: [45,50,55,60,64,68],
     cls: 'buy', vix: 22.1,
-    title: '온기구간 + 상승 추세 - QQQ·VOO 1차 분할매수 적기',
+    title: '온기구간 + 상승 추세: QQQ·VOO 1차 분할매수 적기',
     desc:  '시장이 냉각구간에서 온기구간으로 상승하는 추세입니다. QQQ·VOO는 <strong>200일선 위 상승 추세</strong>를 유지하고 있습니다. 3-3-4 원칙에 따라 예정 물량의 30%(정찰대)를 먼저 투입하시길 권합니다.',
     buy: 1, sell: 0, hold: 0,
     pills: [
       { text:'VIX 22.1', bg:'rgba(230,97,10,0.12)', color:'var(--or)' },
-      { text:'200일선 위 - 추세 유지', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
+      { text:'200일선 위: 추세 유지', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
       { text:'QQQ RSI 44.7', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
       { text:'QQQ·VOO 정찰대 30% 투입', bg:'rgba(215,0,21,0.1)', color:'var(--rd)' },
     ],
@@ -268,42 +268,42 @@ const SCENARIOS = [
   {
     history: [70,74,68,72,69,71],
     cls: 'hold', vix: 17.2,
-    title: '온기구간 - 방향성 없음, 보유 유지',
+    title: '온기구간: 방향성 없음, 보유 유지',
     desc:  '시장이 온기구간에서 뚜렷한 방향 없이 횡보 중입니다. QQQ·VOO는 <strong>200일선 위</strong>에서 안정적 구조를 유지하고 있습니다. 신규 진입보다 기존 보유분을 유지하며 추세 방향 확인을 권합니다.',
     buy: 1, sell: 1, hold: 0,
     pills: [
       { text:'VIX 17.2', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
-      { text:'200일선 위 - 추세 유지', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
+      { text:'200일선 위: 추세 유지', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
       { text:'단기: 혼조 (방향 불명확)', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
     ],
-    options: { icon:'✓', text:'단기 공포(17.2)가 장기 불안(19.8)보다 낮음 - 변동성 구조 안정적.', color:'var(--gr)' },
+    options: { icon:'✓', text:'단기 공포(17.2)가 장기 불안(19.8)보다 낮음: 변동성 구조 안정적.', color:'var(--gr)' },
   },
   {
     history: [80,72,60,50,44,40],
     cls: 'buy', vix: 34.8,
-    title: '냉각구간 - 역발상 매수의 최적 타이밍 (추세 유지 중)',
+    title: '냉각구간: 역발상 매수의 최적 타이밍 (추세 유지 중)',
     desc:  '역사적으로 냉각구간은 최고의 매수 기회였습니다. 단, VIX가 급등한 만큼 레버리지는 자제하고 QQQ·VOO 위주로 분할 투입하시길 권합니다.',
     buy: 0, sell: 0, hold: 1,
     pills: [
-      { text:'VIX 34.8 - 극단 공포', bg:'rgba(215,0,21,0.1)', color:'var(--rd)' },
+      { text:'VIX 34.8: 극단 공포', bg:'rgba(215,0,21,0.1)', color:'var(--rd)' },
       { text:'QQQ RSI 28.4 과매도', bg:'rgba(215,0,21,0.1)', color:'var(--rd)' },
       { text:'역발상 매수 최적 타이밍', bg:'rgba(215,0,21,0.1)', color:'var(--rd)' },
     ],
-    options: { icon:'▼', text:'SPY $682 - 안전 기준선($718) 아래. 하락 가속 구간 주의.', color:'var(--rd)' },
+    options: { icon:'▼', text:'SPY $682: 안전 기준선($718) 아래. 하락 가속 구간 주의.', color:'var(--rd)' },
   },
   {
     history: [92,91,90,88,87,85],
     cls: 'sell', vix: 14.1,
-    title: '과열구간 - 차익 실현 구간, 레버리지 정리',
+    title: '과열구간: 차익 실현 구간, 레버리지 정리',
     desc:  '시장이 초과열 구간에서 내려오고 있으나 여전히 과열 구간입니다. 레버리지 ETF 비중을 점진적으로 축소하고, 분할 익절을 시작할 타이밍입니다.',
     buy: 3, sell: 2, hold: 1,
     pills: [
-      { text:'VIX 14.1 - 극단 안정', bg:'rgba(0,113,227,0.12)', color:'var(--bl)' },
-      { text:'200일선 위 - 추세 유지', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
+      { text:'VIX 14.1: 극단 안정', bg:'rgba(0,113,227,0.12)', color:'var(--bl)' },
+      { text:'200일선 위: 추세 유지', bg:'rgba(120,120,128,0.15)', color:'var(--t2)' },
       { text:'레버리지 ETF 비중 축소', bg:'rgba(215,0,21,0.1)', color:'var(--rd)' },
       { text:'분할 익절 시작', bg:'rgba(215,0,21,0.1)', color:'var(--rd)' },
     ],
-    options: { icon:'▲', text:'SPY $762 - 상방 저항($750) 돌파. 추가 상승 여부가 관건.', color:'var(--or)' },
+    options: { icon:'▲', text:'SPY $762: 상방 저항($750) 돌파. 추가 상승 여부가 관건.', color:'var(--or)' },
   },
 ];
 
@@ -343,8 +343,8 @@ function makeSwingGaugeSVG(score, fgLabel, scoreColor, slope, periodDays, oldest
     {from:20,to:40,color:'#60a5fa',short:'냉각'},    // 연파랑
     {from:40,to:60,color:'#8b99a8',short:'미온'},    // 중립 회색
     {from:60,to:80,color:'#f97316',short:'온기'},    // 오렌지
-    {from:80,to:90,color:'#ff2200',short:'과열'},    // 순수 레드오렌지 - 선명한 열기
-    {from:90,to:100,color:'#e60000',short:'초과열'}, // 순수 레드 - 브라운 제로
+    {from:80,to:90,color:'#ff2200',short:'과열'},    // 순수 레드오렌지: 선명한 열기
+    {from:90,to:100,color:'#e60000',short:'초과열'}, // 순수 레드: 브라운 제로
   ];
   const toX = s => BX+(s/100)*BW;
   const absSlope = Math.abs(slope);

@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<meta name="robots" content="noindex, nofollow"><!-- 게이지 디자인 미리보기(개발용) - 검색 색인 제외 (2026-08-26, 73항) -->
+<meta name="robots" content="noindex, nofollow"><!-- 게이지 디자인 미리보기(개발용): 검색 색인 제외 (2026-08-26, 73항) -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- 브랜드 아이콘 · PWA · 스플래시 (LongTime EasyLife, 2026-08-06 교체) -->
   <link rel="icon" href="/icons/favicon.ico?v=20260809" sizes="any">
@@ -44,7 +44,7 @@
         media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-<title>스윙 지수 게이지 v6 - 추세 회귀</title>
+<title>스윙 지수 게이지 v6: 추세 회귀</title>
 <style>
   :root {
     --bg:#F5F5F7; --card:#FFFFFF; --t1:#1D1D1F; --t2:#2D2D2F; --t3:#6E6E73;
@@ -117,7 +117,7 @@
 </head>
 <body>
 
-<h2>스윙 지수 게이지 v6 - 추세 회귀</h2>
+<h2>스윙 지수 게이지 v6: 추세 회귀</h2>
 <p>단순 비교 대신 <strong>선형 회귀(기울기)</strong>로 방향성을 판단합니다.</p>
 
 <div class="note-box">
@@ -129,23 +129,23 @@
 
 <!-- 히스토리 직접 입력 -->
 <div class="hist-section">
-  <h3>히스토리 직접 입력 (최근 6일 → 오늘) - 빈칸은 무시됩니다</h3>
+  <h3>히스토리 직접 입력 (최근 6일 → 오늘): 빈칸은 무시됩니다</h3>
   <div class="hist-inputs" id="hist-inputs">
     <!-- JS로 생성 -->
   </div>
 </div>
 
-<div class="trend-info" id="trend-info"> - </div>
+<div class="trend-info" id="trend-info">: </div>
 
 <div class="card">
   <div id="live-gauge"></div>
   <hr class="divider">
   <div class="action-label">오늘의 시그널</div>
-  <div class="action-title" id="live-title"> - </div>
+  <div class="action-title" id="live-title">: </div>
 </div>
 
 <h2 style="margin-top:44px;margin-bottom:8px;">대표 시나리오 샘플</h2>
-<p style="margin-bottom:16px;">추세 기울기 기반 방향성 - 느린 추세도 잡힙니다</p>
+<p style="margin-bottom:16px;">추세 기울기 기반 방향성: 느린 추세도 잡힙니다</p>
 <div class="grid" id="sample-grid"></div>
 
 <script>
@@ -172,7 +172,7 @@ function getFGLabel(s) {
 
 // ── 선형 회귀 → 하루 기준 기울기 ────────────────────────────────────────────
 // pts: [{t: 일(day index, 0=가장 오래됨), v: 점수}]
-// 반환: slope (점/day) - 양수=상승, 음수=하락
+// 반환: slope (점/day): 양수=상승, 음수=하락
 function calcSlope(pts) {
   if (!pts || pts.length < 2) return 0;
   const n = pts.length;
@@ -190,8 +190,8 @@ function calcSlope(pts) {
 // oldestScore: 가장 오래된 점수 (점선 마커용)
 function makeSwingGaugeSVG(score, fgLabel, scoreColor, slope, periodDays, oldestScore) {
   const W = 320, BX = 0, BW = 320, BH = 18;
-  const BY = 52;   // 막대 상단 - 위쪽 텍스트 공간 확보
-  const H  = 98;   // viewBox 높이 - 최대 사다리꼴(tall=48px) 수용
+  const BY = 52;   // 막대 상단: 위쪽 텍스트 공간 확보
+  const H  = 98;   // viewBox 높이: 최대 사다리꼴(tall=48px) 수용
 
   const ZONES = [
     { from:  0, to: 10, color:'#060d1f', short:'초과냉' },  // 극한 다크 네이비
@@ -358,7 +358,7 @@ function updateFromHistory() {
   document.getElementById('live-gauge').innerHTML =
     makeSwingGaugeSVG(score, fgLabel, scoreColor, slope, periodDays, oldest);
   document.getElementById('live-title').textContent =
-    fgLabel + (slope < -SLOPE_THRESHOLD ? ' - 하락 추세 진행 중' : slope > SLOPE_THRESHOLD ? ' - 상승 추세 진행 중' : ' - 횡보 구간');
+    fgLabel + (slope < -SLOPE_THRESHOLD ? ': 하락 추세 진행 중' : slope > SLOPE_THRESHOLD ? ': 상승 추세 진행 중' : ': 횡보 구간');
 }
 
 updateFromHistory();

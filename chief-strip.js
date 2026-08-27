@@ -39,9 +39,9 @@
         .replace(/\[R\](.*?)\[\/R\]/g, '<strong class="cs-r">$1</strong>')
         .replace(/\[B\](.*?)\[\/B\]/g, '<strong class="cs-b">$1</strong>');
     }
-    /* 주말 국면 - 금 마감 후에는 "오늘의 판단"이라고 부를 수 없다.
+    /* 주말 국면: 금 마감 후에는 "오늘의 판단"이라고 부를 수 없다.
        (58항) 토·일에 장이 안 열리는 것을 화면에서 '휴장'이라고 부르지 않는다.
-       금요일 장이 끝나면 다음 장은 월요일 - 독자가 이미 아는 사실이다.
+       금요일 장이 끝나면 다음 장은 월요일: 독자가 이미 아는 사실이다.
        현지 일요일 오전을 넘기면 새 주 전망으로 갈아탄다 (ez-nav.js: ezWeekPhase). */
     var phase = (typeof window.ezWeekPhase === 'function') ? window.ezWeekPhase() : 'session';
     var wa = view.weekAhead;

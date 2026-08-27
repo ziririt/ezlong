@@ -1,11 +1,11 @@
 /**
- * ez-nav.js - EZLONG 글로벌 네비게이션 공유 스크립트
+ * ez-nav.js: EZLONG 글로벌 네비게이션 공유 스크립트
  * 사용법: <body> 직후 <script src="/ez-nav.js"></script>
  * - ez-design.css 가 먼저 로드되어 있어야 합니다.
  * - PC: 수평 스크롤 칩 메뉴
  * - 모바일: 현재 페이지 칩 탭 → 풀스크린 오버레이 전체 메뉴
  *
- * [2026-06-14 v3] document.write 완전 제거 - DOM API 전용
+ * [2026-06-14 v3] document.write 완전 제거: DOM API 전용
  * document.write + appendChild 혼용 시 HTML 파서가 </nav>를
  * 처리하기 전에 appendChild가 실행되어 menu가 nav 안으로 삽입되는
  * 파서 버그 확인. createElement + insertBefore 방식으로 교체.
@@ -13,7 +13,7 @@
 (function () {
   var scriptEl = document.currentScript;
 
-  /* ── 다국어 감지 (2026-08-04) - 같은 스크립트가 경로에 따라 해당 언어 메뉴를 그린다.
+  /* ── 다국어 감지 (2026-08-04): 같은 스크립트가 경로에 따라 해당 언어 메뉴를 그린다.
      메뉴 단일 출처 원칙을 en·ja·zh·es·pt 전 서브사이트로 확장. 각 언어 폴더에
      **실존하는 페이지만** 나열한다(없는 페이지로 보내면 404). 절세 계좌 등 한국
      전용 도구는 en에서만 제외가 아니라 전 언어에서 제외. */
@@ -31,7 +31,7 @@
       /* 2026-08-04(운영 피드백): 한국어·영문과 달리 스윙이 한 덩어리로 남아 있었다.
          다만 ja/zh/es/pt의 /{lang}/atmr-dashboard.html은 탭이 없는 SEO 랜딩 페이지라
          #swing-strategy·#top9 해시가 아무 동작도 하지 않는다. 그래서 이 둘만은 실제로
-         동작하는 영문 대시보드로 보낸다 - 사이트 원칙("외국인이 굳이 한국어 웹을 볼
+         동작하는 영문 대시보드로 보낸다: 사이트 원칙("외국인이 굳이 한국어 웹을 볼
          필요가 없잖아")에 따라 한국어판이 아니라 영문판이 목적지다.
          나중에 해당 언어 대시보드가 실제로 생기면 p + '...#top9' 로 되돌릴 것. */
       ['/en/atmr-dashboard.html#swing-strategy', L.strategy, L.strategy],
@@ -81,10 +81,10 @@
 
   var linksEN = [
     ['/en/atmr-dashboard.html',        'Swing Signal',    'Swing Signal Dashboard'],
-    ['/en/atmr-dashboard.html#swing-strategy', 'Swing Strategy', 'Swing Strategy - 3-3-4 Rule'],
-    ['/en/atmr-dashboard.html#top9',   'TOP9 Deep Dive',  'TOP9 Deep Dive - Big Tech'],
-    ['/en/market-vs.html',             'Bull vs Bear',    'Bull vs Bear - AI Market Read'],
-    ['/en/brief-history.html',         'Chart: What Happened', 'Chart: What Happened That Day - US Market Events'],
+    ['/en/atmr-dashboard.html#swing-strategy', 'Swing Strategy', 'Swing Strategy: 3-3-4 Rule'],
+    ['/en/atmr-dashboard.html#top9',   'TOP9 Deep Dive',  'TOP9 Deep Dive: Big Tech'],
+    ['/en/market-vs.html',             'Bull vs Bear',    'Bull vs Bear: AI Market Read'],
+    ['/en/brief-history.html',         'Chart: What Happened', 'Chart: What Happened That Day: US Market Events'],
     ['/en/stocks.html',                'Live Prices',     'Simple Live Prices'],
     ['/en/chart-analysis.html',        'AI Chart Analysis', 'AI Chart Analysis'],
     ['/en/analyst-reports.html',       'Price Targets',   'Wall Street Price Targets'],
@@ -102,18 +102,18 @@
   ];
 
   /* [href, 짧은 이름(PC칩), 긴 이름(모바일 오버레이)]
-     2026-08-04: 첫 항목을 3개로 분리 (운영 지침) - 스윙 시그널 대시보드의
+     2026-08-04: 첫 항목을 3개로 분리 (운영 지침): 스윙 시그널 대시보드의
      3개 탭(시그널/전략/TOP9)에 해시 딥링크로 각각 직접 진입. 활성 판정은
      아래 루프에서 pathname+hash 조합으로 처리한다. */
   var linksKR = [
     ['/atmr-dashboard.html',        '스윙 시그널',    "스윙 트레이더를 위한 '스윙 시그널'"],
-    ['/atmr-dashboard.html#swing-strategy', '스윙 전략', '스윙 전략 - 3-3-4 원칙 · 레버리지 가이드'],
-    ['/atmr-dashboard.html#top9',   'TOP9 집중분석',  'TOP9 집중분석 - 테슬라·엔비디아 등 빅테크 9종 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
-    ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇 - AI 시황 분석'],
-    ['/brief-history.html',         '차트: 그날 무슨 일이 있었나<span style="display:inline-block;background:#ff3b30;color:#fff;font-size:11px;font-weight:800;border-radius:5px;padding:0 4px;margin-left:4px;vertical-align:middle;line-height:1.5;">NEW</span>', '차트: 그날 무슨 일이 있었나 - 날짜별 미국 증시 이슈 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
+    ['/atmr-dashboard.html#swing-strategy', '스윙 전략', '스윙 전략: 3-3-4 원칙 · 레버리지 가이드'],
+    ['/atmr-dashboard.html#top9',   'TOP9 집중분석',  'TOP9 집중분석: 테슬라·엔비디아 등 빅테크 9종 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
+    ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇: AI 시황 분석'],
+    ['/brief-history.html',         '차트: 그날 무슨 일이 있었나<span style="display:inline-block;background:#ff3b30;color:#fff;font-size:11px;font-weight:800;border-radius:5px;padding:0 4px;margin-left:4px;vertical-align:middle;line-height:1.5;">NEW</span>', '차트: 그날 무슨 일이 있었나: 날짜별 미국 증시 이슈 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
     ['/stocks.html',                '심플 주가',      '심플 주가 정보'],
     ['/chart-analysis.html',        'AI 차트분석',    'AI 차트 분석'],
-    ['/model-portfolio.html',       'AI포트폴리오 점검<span style="display:inline-block;background:#ff3b30;color:#fff;font-size:11px;font-weight:800;border-radius:5px;padding:0 4px;margin-left:4px;vertical-align:middle;line-height:1.5;">NEW</span>', 'AI포트폴리오 점검 - 공격형 AI 시대 26종목 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
+    ['/model-portfolio.html',       'AI포트폴리오 점검<span style="display:inline-block;background:#ff3b30;color:#fff;font-size:11px;font-weight:800;border-radius:5px;padding:0 4px;margin-left:4px;vertical-align:middle;line-height:1.5;">NEW</span>', 'AI포트폴리오 점검: 공격형 AI 시대 26종목 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
     ['/market-cycle.html',          '마켓 사이클',    '하락장 변곡점 감시'],
     ['/dca-simulator.html',         'DCA 시뮬레이터', 'DCA 복리 시뮬레이터'],
     ['/portfolio-manager.html',     'AI 포트폴리오',  '투자성향별 AI 포트폴리오'],
@@ -132,23 +132,23 @@
             : LANG === 'en' ? linksEN
             : _localLinks(LANG, LANG_LABELS[LANG]);
   var MENU_WORD = { ko: '메뉴', en: 'Menu', ja: 'メニュー', zh: '菜单', es: 'Menú', pt: 'Menu' };
-  /* 닫기 버튼도 언어를 따라야 한다 - 영문 화면에 '닫기'가 남아 있었다 */
+  /* 닫기 버튼도 언어를 따라야 한다: 영문 화면에 '닫기'가 남아 있었다 */
   var CLOSE_LABEL = { ko: '닫기', en: 'Close', ja: '閉じる', zh: '关闭', es: 'Cerrar', pt: 'Fechar' };
   var CLOSE_WORD = CLOSE_LABEL[LANG] || 'Close';
   var activeShort = MENU_WORD[LANG] || 'Menu';
   var desktopLinksHTML = '';
   var mobileItemsHTML  = '';
 
-  /* 스윙 대시보드 탭 해시들 - 이 중 하나가 떠 있으면 '스윙 시그널' 기본 항목이
+  /* 스윙 대시보드 탭 해시들: 이 중 하나가 떠 있으면 '스윙 시그널' 기본 항목이
      아니라 해당 탭 항목을 활성으로 표시 (#tsla-nvda는 #top9의 구 별칭) */
   var swingTabHashes = ['#swing-strategy', '#top9', '#tsla-nvda', '#kings', '#tesla-nvidia'];
   var curHash = window.location.hash || '';
 
-  /* 활성 판정을 함수로 뽑아둔다 - 최초 렌더뿐 아니라 해시가 바뀔 때마다
+  /* 활성 판정을 함수로 뽑아둔다: 최초 렌더뿐 아니라 해시가 바뀔 때마다
      같은 규칙으로 다시 계산해야 하기 때문 (아래 syncActive 참조). */
   var TOP9_ALIASES = ['#tsla-nvda', '#kings', '#tesla-nvidia'];
   function isDashboardPath(hrefPath) {
-    /* /atmr-dashboard.html, /en/..., /ja/... 전부 해당 - 로케일별로
+    /* /atmr-dashboard.html, /en/..., /ja/... 전부 해당: 로케일별로
        경로가 달라서 문자열 완전일치로 보면 en 이하에서 판정이 새어나간다. */
     return /(^|\/)atmr-dashboard\.html$/.test(hrefPath);
   }
@@ -182,7 +182,7 @@
         shortLbl +
       '</a>';
 
-    /* 모바일 타일 메뉴는 짧은 이름 사용 (2026-08-04, 운영 지침 - 긴 설명형
+    /* 모바일 타일 메뉴는 짧은 이름 사용 (2026-08-04, 운영 지침: 긴 설명형
        메뉴명 폐지, 2열 타일로 스크롤 없이 한 화면). NEW 딱지는 TOP9에만 별도 부착. */
     var mobLbl = shortLbl +
       (href.indexOf('#top9') >= 0
@@ -204,7 +204,7 @@
       '<span class="ez-mob-close-x" aria-hidden="true">&#10005;</span> ' + CLOSE_WORD +
     '</button>';
 
-  /* ── 모바일 메뉴 타일화 - 1열 리스트(스크롤 압박) → 2열 타일 그리드 ──
+  /* ── 모바일 메뉴 타일화: 1열 리스트(스크롤 압박) → 2열 타일 그리드 ──
      ez-design.css의 기존 규칙보다 id 셀렉터로 우선 적용 (CSS 파일 캐시 무관) */
   (function mobTileStyle() {
     var st = document.createElement('style');
@@ -214,7 +214,7 @@
         'padding: 64px 14px calc(28px + env(safe-area-inset-bottom) + var(--ez-mob-bottom-bar, 0px));' +
         'align-content: start; }' +
       '#ez-mob-menu.open { display: grid; }' +
-      /* 2026-08-07 - 안드로이드 크롬에서 마지막 줄(닫기)이 화면 밖으로 잘렸다.
+      /* 2026-08-07: 안드로이드 크롬에서 마지막 줄(닫기)이 화면 밖으로 잘렸다.
          position:fixed + inset:0 의 기준은 주소창이 숨겨졌을 때의 큰 뷰포트라,
          주소창이 떠 있으면 요소 바닥이 화면 아래로 내려간다. 내용이 요소 안에는
          다 들어가 있으니 스크롤도 안 생겨서 그냥 잘려 보인다. dvh 는 지금 실제로
@@ -228,7 +228,7 @@
         'background: var(--ez-surface); }' +
       '#ez-mob-menu .ez-mob-item.active { border: 2px solid var(--ez-blue);' +
         'padding-left: 8px; background: var(--ez-blue-dim); color: var(--ez-blue); }' +
-      /* 닫기 - 2열을 통째로 차지하되 버튼 자체는 가운데. 타일과 같은 색이면
+      /* 닫기: 2열을 통째로 차지하되 버튼 자체는 가운데. 타일과 같은 색이면
          목록의 연장으로 읽히므로 톤을 낮춰 "이건 항목이 아니다"를 알린다. */
       '#ez-mob-menu .ez-mob-close { grid-column: 1 / -1; justify-self: center;' +
         'margin: 18px 0 calc(8px + env(safe-area-inset-bottom));' +
@@ -257,7 +257,7 @@
   /* 메뉴 바닥 여백을 화면 아래 고정 배너 높이만큼 더 준다 (2026-08-07).
      증상: 목록 끝의 '닫기'가 언어 안내 배너(#ezlb-bar, position:fixed bottom:0)에
      덮여 반쯤 잘려 보였다. 배너는 메뉴보다 z-index 가 높아 항상 위에 뜬다.
-     배너 높이는 문구·화면폭에 따라 달라지므로 CSS 상수로는 못 맞춘다 - 열 때
+     배너 높이는 문구·화면폭에 따라 달라지므로 CSS 상수로는 못 맞춘다: 열 때
      실측해서 넣는다. 배너가 없으면 0 이라 평소엔 여백이 늘지 않는다. */
   function padMenuForBottomBar() {
     var menu = document.getElementById('ez-mob-menu');
@@ -265,7 +265,7 @@
     var bar = document.getElementById('ezlb-bar');
     var h = 0;
     if (bar) {
-      /* offsetParent 로 노출 여부를 보면 안 된다 - position:fixed 요소는
+      /* offsetParent 로 노출 여부를 보면 안 된다: position:fixed 요소는
          숨어 있지 않아도 offsetParent 가 null 이다(처음 이걸로 짰다가 배너
          높이를 0 으로 읽었다). 실제 상자 크기와 computed style 로 판정한다. */
       var cs = window.getComputedStyle(bar);
@@ -298,7 +298,7 @@
   window.ezNavCloseMenu = closeMobMenu;
 
   function fireHashChange() {
-    /* replaceState로 해시를 지우면 hashchange가 안 뜬다 - 직접 쏜다.
+    /* replaceState로 해시를 지우면 hashchange가 안 뜬다: 직접 쏜다.
        HashChangeEvent 생성자를 못 쓰는 구형 브라우저 대비 폴백 포함. */
     var ev;
     try { ev = new HashChangeEvent('hashchange'); }
@@ -325,13 +325,13 @@
 
     /* a.pathname은 브라우저가 절대경로로 정규화해준 값이라 상대경로도 안전 */
     if (a.protocol !== location.protocol || a.host !== location.host) return;
-    if (a.pathname !== location.pathname) return;   /* 진짜 이동 - 브라우저에 맡김 */
+    if (a.pathname !== location.pathname) return;   /* 진짜 이동: 브라우저에 맡김 */
 
     e.preventDefault();
     var newHash = a.hash || '';
     var cur     = location.hash || '';
     if (newHash === cur) {
-      /* 이미 그 탭에 있다 - 메뉴만 닫고 맨 위로 올려 "반응했다"를 보여준다 */
+      /* 이미 그 탭에 있다: 메뉴만 닫고 맨 위로 올려 "반응했다"를 보여준다 */
       window.scrollTo({ top: 0, behavior: closed ? 'auto' : 'smooth' });
       syncActive();
       return;
@@ -347,7 +347,7 @@
     window.scrollTo({ top: 0 });
   }, false);
 
-  /* 해시가 바뀌면 활성 표시와 토글 라벨을 다시 계산한다 - 같은 페이지 안에서
+  /* 해시가 바뀌면 활성 표시와 토글 라벨을 다시 계산한다: 같은 페이지 안에서
      탭만 바뀌면 스크립트가 재실행되지 않아 예전 탭이 계속 활성으로 남는다. */
   function syncActive() {
     var hash = window.location.hash || '';
@@ -369,13 +369,13 @@
     apply(document.querySelectorAll('a.ez-mob-item'));
     var lbl = document.querySelector('#ez-mob-toggle .ez-mob-toggle-label');
     /* index.html처럼 라벨이 고정 문구('투자 AI 도구')인 커스텀 헤더는 건드리지
-       않는다 - 그 페이지엔 ez-nav가 만든 토글이 없으므로 data 표식으로 구분 */
+       않는다: 그 페이지엔 ez-nav가 만든 토글이 없으므로 data 표식으로 구분 */
     if (lbl && lbl.getAttribute('data-ez-nav-label') === '1') lbl.textContent = label;
   }
   window.addEventListener('hashchange', syncActive);
   window.addEventListener('popstate', syncActive);
 
-  /* ── 0. 메뉴 전용 모드 (data-menu-only="1") - 커스텀 헤더 페이지용 ──
+  /* ── 0. 메뉴 전용 모드 (data-menu-only="1"): 커스텀 헤더 페이지용 ──
      index.html처럼 자체 헤더를 가진 페이지는 nav를 새로 만들지 않고,
      페이지에 이미 있는 #ez-mob-menu 컨테이너에 위 links 배열로 만든
      타일 항목만 채운다. 메뉴 목록의 출처가 이 파일 하나로 통일된다
@@ -411,7 +411,7 @@
       '</button>' +
     '</div>';
 
-  /* ── 2. <div class="ez-mob-menu"> 생성 - nav와 완전 분리 ── */
+  /* ── 2. <div class="ez-mob-menu"> 생성: nav와 완전 분리 ── */
   var mobMenu = document.createElement('div');
   mobMenu.className = 'ez-mob-menu';
   mobMenu.id = 'ez-mob-menu';
@@ -432,7 +432,7 @@
      그 48px은 지금 DOM에 존재하지도 않는 옛 #global-nav 높이였다. 실제
      .ez-nav는 모바일 54px·PC 73px이라 헤더가 네비 뒤로 밀려 들어가
      "덮인 것처럼" 보였다(이슈 제보). 숫자를 페이지마다 손으로 박으면
-     네비가 바뀔 때마다 조용히 어긋난다 - 실측값을 변수로 내보낸다. */
+     네비가 바뀔 때마다 조용히 어긋난다: 실측값을 변수로 내보낸다. */
   (function publishNavHeight() {
     var apply = function () {
       var h = Math.round(nav.getBoundingClientRect().height);
@@ -492,7 +492,7 @@
         '.ez-nav-more .ez-nav-more-ico, .ez-nav-more-left .ez-nav-more-ico { animation: none; } }';
     document.head.appendChild(style);
 
-    /* 자체 rAF 애니메이션 - behavior:'smooth' 프로그래매틱 스크롤은 TV 위젯 iframe이
+    /* 자체 rAF 애니메이션: behavior:'smooth' 프로그래매틱 스크롤은 TV 위젯 iframe이
        많은 페이지(스윙 대시보드)에서 브라우저가 조용히 무시/취소하는 게 실측 확인됨
        (2026-08-04 라이브 검증: scrollBy smooth 호출 후 scrollLeft 변화 0).
        scrollLeft 직접 대입은 항상 동작하므로 rAF로 직접 애니메이션한다. */
@@ -501,7 +501,7 @@
        (a) 중간에 잡아서 되돌릴 수 없고 (b) 진행 중 다시 누르면 시작값이
        튄다. 스프링은 "현재 화면값"에서 출발하고 속도를 이어받으므로 둘 다
        자연히 해결된다.
-       파라미터는 애플이 이동(reposition)에 쓰는 값 - 감쇠비 1.0(오버슈트
+       파라미터는 애플이 이동(reposition)에 쓰는 값: 감쇠비 1.0(오버슈트
        없음), response 0.4s. 손가락이 던진 게 아니라 버튼을 누른 이동이므로
        튕김(bounce)을 주지 않는 게 맞다.
        움직임 저감 설정이면 스프링 없이 즉시 이동한다(§14). */
@@ -528,7 +528,7 @@
         var dt = Math.min((ts - st.last) / 1000, 1 / 30);  /* 탭 비활성 복귀 시 폭주 방지 */
         st.last = ts;
 
-        /* 임계 감쇠 스프링 - 반해석적 적분(큰 dt에서도 발산하지 않는다) */
+        /* 임계 감쇠 스프링: 반해석적 적분(큰 dt에서도 발산하지 않는다) */
         var d  = st.x - st.target;
         var a  = -w * w * d - 2 * DAMPING * w * st.v;
         st.v  += a * dt;
@@ -544,7 +544,7 @@
       requestAnimationFrame(step);
     }
 
-    /* 사용자가 직접 손대면 즉시 양보한다 - 애니메이션이 입력을 가로막지 않는다(§3) */
+    /* 사용자가 직접 손대면 즉시 양보한다: 애니메이션이 입력을 가로막지 않는다(§3) */
     ['pointerdown', 'touchstart', 'wheel'].forEach(function (ev) {
       linksEl.addEventListener(ev, function () { _spring = null; }, { passive: true });
     });
@@ -568,7 +568,7 @@
     var inner = nav.querySelector('.ez-nav-inner');
     if (inner) { inner.appendChild(more); inner.appendChild(moreL); }
 
-    /* 버튼을 칩 줄 높이에만 정렬 - nav가 로고줄+칩줄 2줄로 랩되는 레이아웃에서
+    /* 버튼을 칩 줄 높이에만 정렬: nav가 로고줄+칩줄 2줄로 랩되는 레이아웃에서
        버튼이 로고 클릭 영역까지 덮지 않도록 실측으로 top/height 지정 */
     function alignToChips() {
       if (!inner) return;
@@ -589,7 +589,7 @@
     window.addEventListener('resize', update);
     update();
 
-    /* 첫 로드 힌트 모션 - 오버플로가 있고 사용자가 아직 스크롤 안 했을 때 1회
+    /* 첫 로드 힌트 모션: 오버플로가 있고 사용자가 아직 스크롤 안 했을 때 1회
        (smooth 스크롤 무시 이슈로 glide 사용) */
     setTimeout(function () {
       if (linksEl.scrollWidth - linksEl.clientWidth > 12 && linksEl.scrollLeft === 0) {
@@ -602,7 +602,7 @@
     }, 900);
   })();
 
-  /* ── 5. 토글 함수 - 전역 등록 ── */
+  /* ── 5. 토글 함수: 전역 등록 ── */
   window.ezNavToggle = function () {
     var menu = document.getElementById('ez-mob-menu');
     var btn  = document.getElementById('ez-mob-toggle');
@@ -619,19 +619,19 @@
      최상단 그래버 탭 제스처로 이 페이지를 맨 위로 스크롤시키기 위한 메시지
      수신기. [2026-07-22 신설] postMessage는 parent가 진짜 크로스오리진이어도
      항상 안전하게 동작하는 방식이라, 부모(FlipZen)가 iframe.contentWindow에
-     직접 접근하지 않고 이 메시지만 보낸다 - 이 페이지 쪽에서 스크롤을
+     직접 접근하지 않고 이 메시지만 보낸다: 이 페이지 쪽에서 스크롤을
      실행하는 구조라 SOP(동일출처 정책) 우려가 없다. 이 리스너는 FlipZen
      앱 밖(일반 브라우저로 ezlong.com 직접 방문)에서는 그냥 아무 메시지도
-     안 와서 조용히 미사용 상태로 남는다 - 부작용 없음. */
+     안 와서 조용히 미사용 상태로 남는다: 부작용 없음. */
   window.addEventListener('message', function (event) {
     if (!event || !event.data || event.data.source !== 'flipzen-app') return;
     if (event.data.action === 'scrollToTop') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    /* [2026-08-05 신설] 앱 하단바 왼쪽 '<' - 이 페이지 안에서 뒤로 간다.
+    /* [2026-08-05 신설] 앱 하단바 왼쪽 '<': 이 페이지 안에서 뒤로 간다.
        되돌아갈 곳이 없으면(앱이 방금 이 페이지를 처음 띄웠으면) 아무 일도
-       일어나지 않는 것이 맞다 - 부모 창을 대신 되돌리면 사용자가 의도하지
+       일어나지 않는 것이 맞다: 부모 창을 대신 되돌리면 사용자가 의도하지
        않은 화면 전환이 일어난다. */
     if (event.data.action === 'historyBack') {
       try {
@@ -643,7 +643,7 @@
 })();
 
 /* ─────────────────────────────────────────────────────────────
-   2026-08-06 - 당겨서 새로고침 (pull to refresh)
+   2026-08-06: 당겨서 새로고침 (pull to refresh)
 
    모바일에서 페이지를 아래로 당겼다 놓으면 새로고침되게 한다.
    네이티브 앱 웹뷰에는 브라우저의 당겨서 새로고침이 없어서,
@@ -654,16 +654,16 @@
    새로고침한다. 거기에 우리 것을 얹으면 한 번의 제스처에 두 반응이 겹쳐
    화면이 두 번 튀거나, 브라우저 것이 먼저 먹어 우리 것이 죽는다.
    그래서 **브라우저가 해주지 않는 자리에서만** 켠다:
-     · 앱 안의 웹뷰(iframe) - 부모가 스크롤을 쥐고 있어 기본 동작이 없다
-     · 홈 화면에 추가한 PWA(standalone) - 브라우저 크롬이 없어 기본 동작이 없다
+     · 앱 안의 웹뷰(iframe): 부모가 스크롤을 쥐고 있어 기본 동작이 없다
+     · 홈 화면에 추가한 PWA(standalone): 브라우저 크롬이 없어 기본 동작이 없다
    일반 브라우저 탭에서는 아무것도 하지 않고 브라우저에게 맡긴다.
 
    ★ 손가락을 따라오게 만든다 ★
    당기는 동안 표시가 손가락과 1:1로 따라와야 "붙잡고 있다"는 느낌이 난다.
    다만 그대로 따라오면 한없이 늘어나므로 임계점을 넘어선 뒤로는 저항을
    키워(고무줄처럼) 점점 덜 따라오게 한다. 놓는 순간은 두 갈래다.
-     · 임계점을 넘겼다 - 표시를 임계 위치에 세우고 새로고침한다
-     · 못 넘겼다 - 튕김 없이 제자리로 되돌린다
+     · 임계점을 넘겼다: 표시를 임계 위치에 세우고 새로고침한다
+     · 못 넘겼다: 튕김 없이 제자리로 되돌린다
    ───────────────────────────────────────────────────────────── */
 (function setupPullToRefresh() {
   'use strict';
@@ -718,7 +718,7 @@
   }
 
   /* 스크롤이 정말 맨 위인가. 문서뿐 아니라 손가락이 놓인 자리의 **안쪽
-     스크롤 영역**까지 본다 - 안쪽을 읽는 중인데 페이지를 새로고침해
+     스크롤 영역**까지 본다: 안쪽을 읽는 중인데 페이지를 새로고침해
      버리면 읽던 자리를 통째로 잃는다. */
   function atTop(target) {
     var doc = window.pageYOffset || document.documentElement.scrollTop || 0;
@@ -784,23 +784,23 @@
 })();
 
 /* ─────────────────────────────────────────────────────────────
-   주말 국면 판정 - 스윙 판단 카드가 "오늘"이라고 말할 수 있는 때인가
+   주말 국면 판정: 스윙 판단 카드가 "오늘"이라고 말할 수 있는 때인가
    (2026-08-08 신설)
 
    미국장은 금요일 마감 후 월요일까지 열리지 않는다. 그 사이에도 카드는
-   금요일에 쓴 글을 "오늘의 스윙 판단"으로 걸고 있었다 - 구조적으로 거짓말이
+   금요일에 쓴 글을 "오늘의 스윙 판단"으로 걸고 있었다: 구조적으로 거짓말이
    되는 구간이 매주 이틀씩 있었던 셈이다.
 
    토요일은 자연스럽다. 직전 장 마감 판단을 보는 게 맞다. 그런데 일요일
    오전을 넘기면 독자의 관심은 지난주가 아니라 다음 주로 옮겨간다.
-   경계는 **보는 사람의 현지 시계**로 나눈다 - 서울의 일요일 오전과 뉴욕의
+   경계는 **보는 사람의 현지 시계**로 나눈다: 서울의 일요일 오전과 뉴욕의
    일요일 오전은 같은 순간이 아니고, 각자 자기 일요일 아침에 다음 주를
    생각하기 때문이다.
 
    반환값
-     'session'  평일 - 평소대로
-     'weekend'  금 마감 ~ 현지 일요일 오전 - 직전 장 마감 판단
-     'ahead'    현지 일요일 오전 이후 ~ 월요일 개장 전 - 새 주 전망
+     'session'  평일: 평소대로
+     'weekend'  금 마감 ~ 현지 일요일 오전: 직전 장 마감 판단
+     'ahead'    현지 일요일 오전 이후 ~ 월요일 개장 전: 새 주 전망
 
    ※ 같은 판정을 chief-strip.js 와 atmr-dashboard.html 이 함께 쓴다.
      여기 하나만 고치면 둘 다 따라온다 (공유 함수 동기화 원칙).
@@ -814,22 +814,22 @@ window.ezWeekPhase = function (now) {
     et = now;
   }
   var ed = et.getDay(), em = et.getHours() * 60 + et.getMinutes();
-  // 미국장이 안 열리는 주말 구간인가 - 금 20:00 ET(애프터마켓 종료) ~ 월 04:00 ET(프리마켓)
+  // 미국장이 안 열리는 주말 구간인가: 금 20:00 ET(애프터마켓 종료) ~ 월 04:00 ET(프리마켓)
   // (58항) 이 구간을 화면 문구에서 '휴장'이라 부르지 않는다.
   var closed = (ed === 6) || (ed === 0) ||
                (ed === 5 && em >= 1200) || (ed === 1 && em < 240);
   if (!closed) return 'session';
   var d = now.getDay(), h = now.getHours();     // 여기부터는 보는 사람의 현지 시계
   if (d === 0 && h >= 9) return 'ahead';        // 현지 일요일 오전
-  if (d === 1) return 'ahead';                  // 현지 월요일 - 개장 전
+  if (d === 1) return 'ahead';                  // 현지 월요일: 개장 전
   return 'weekend';
 };
 
 /* ─────────────────────────────────────────────────────────────
-   앱 웹뷰에서 외부 링크 열기 - 2026-08-08 에 index.html 에서 이리로 옮김.
+   앱 웹뷰에서 외부 링크 열기: 2026-08-08 에 index.html 에서 이리로 옮김.
    메인 페이지에만 있으면 새 코너를 만들 때마다 같은 먹통이 재발한다.
    ez-nav.js 는 모든 페이지가 로드하므로 여기 한 벌이면 전부 덮는다.
-   (원래 주석은 아래 그대로 유지 - 왜 이 처리가 필요한지가 담겨 있다.)
+   (원래 주석은 아래 그대로 유지: 왜 이 처리가 필요한지가 담겨 있다.)
    ───────────────────────────────────────────────────────────── */
 /* ── 앱 웹뷰에서 외부 링크 열기 (2026-08-06 신설) ─────────────────────
    증상: Long Time, Easy Life 앱 안에서 네이버 프리미엄 글을 눌러도 아무
@@ -838,14 +838,14 @@ window.ezWeekPhase = function (now) {
 
    원인: 이 링크들은 target="_blank"인데, 앱 웹뷰에는 "새 탭"이라는 게
    없다. iOS WKWebView는 WKUIDelegate의 createWebViewWith 를 구현해야만
-   새 창 요청을 처리하는데 이 앱은 구현하지 않았다 - 그래서 요청이 조용히
+   새 창 요청을 처리하는데 이 앱은 구현하지 않았다: 그래서 요청이 조용히
    버려진다. 에러도 안 나고 화면도 안 바뀌니 사용자에겐 "먹통"으로 보인다.
    (안드로이드는 shouldOverrideUrlLoading 이 외부 도메인을 Custom Tabs로
     넘기는 안전망이 이미 있어 대체로 열린다. 아래 처리를 거치면 양쪽이
     같은 경로를 타므로 동작이 통일된다.)
 
    해법: 앱이 이미 갖고 있는 네이티브 브릿지로 기기 브라우저를 연다.
-   앱 재빌드 불필요 - 앱 웹뷰(ezlong.com/time/)와 이 페이지(ezlong.com)가
+   앱 재빌드 불필요: 앱 웹뷰(ezlong.com/time/)와 이 페이지(ezlong.com)가
    동일 출처라, iframe 안에서도 상위 프레임의 브릿지에 접근할 수 있다.
 
    왜 인앱 시트가 아니라 기기 브라우저인가: 네이버 프리미엄은 로그인과
@@ -858,7 +858,7 @@ window.ezWeekPhase = function (now) {
 (function () {
   /* ezlong.com 밖으로 나가는 링크인가. 서브도메인·www 포함해서 자기
      사이트면 앱 웹뷰가 그대로 처리해야 하므로 가로채지 않는다.
-     현재 호스트도 같이 본다 - 프리뷰 도메인(web.app)이나 로컬 테스트에서
+     현재 호스트도 같이 본다: 프리뷰 도메인(web.app)이나 로컬 테스트에서
      자기 사이트 링크가 "외부"로 오판돼 브라우저로 튕겨나가지 않게 한다. */
   function isSameSite(h) {
     if (h === String(location.hostname).toLowerCase()) return true;
@@ -914,11 +914,11 @@ window.ezWeekPhase = function (now) {
     return !!findBridge();
   }
 
-  /* 광고 게이트(ez-ads.js)가 같은 판정을 쓴다 - 59항. 앱이 남기는
+  /* 광고 게이트(ez-ads.js)가 같은 판정을 쓴다: 59항. 앱이 남기는
      localStorage 열쇠 하나만 믿으면 딥링크·저장소 초기화로 열쇠 없는 앱
      화면이 생기고, 거기 광고가 뜨면 계정이 위험하다. 판정은 한 벌만 두고
      둘이 같이 본다(공유 함수 동기화 원칙). */
-  /* 71항 - 판정 단일 출처는 head에서 먼저 로드되는 ez-app-banner.js 다.
+  /* 71항: 판정 단일 출처는 head에서 먼저 로드되는 ez-app-banner.js 다.
      이미 정의돼 있으면 그것을 쓰고, 이 파일만 로드되는 경로를 위해 위 구현을
      폴백으로 남긴다. 아래 링크 처리도 같은 함수를 부른다(구현이 갈리지 않게). */
   window.ezInAppWebview = window.ezInAppWebview || inAppWebview;
@@ -933,7 +933,7 @@ window.ezWeekPhase = function (now) {
     try { url = new URL(a.getAttribute('href'), location.href); } catch (e) { return; }
     if (!isExternal(url)) return;
 
-    /* 1순위 - 네이티브 브릿지로 기기 브라우저 열기. 네이버 구독 세션도
+    /* 1순위: 네이티브 브릿지로 기기 브라우저 열기. 네이버 구독 세션도
        서점 로그인·장바구니도 전부 그쪽에 살아 있어야 끝까지 이어진다. */
     var send = findBridge();
     if (send) {
@@ -942,10 +942,10 @@ window.ezWeekPhase = function (now) {
       return;
     }
 
-    /* 앱이 아니면(일반 브라우저) 손대지 않는다 - target="_blank"가 정상 동작. */
+    /* 앱이 아니면(일반 브라우저) 손대지 않는다: target="_blank"가 정상 동작. */
     if (!window.ezInAppWebview()) return;
 
-    /* 2순위 - 앱인데 브릿지를 못 찾은 경우의 안전망. 여기서 그냥 두면
+    /* 2순위: 앱인데 브릿지를 못 찾은 경우의 안전망. 여기서 그냥 두면
        화면에 아무 일도 안 일어나는 "먹통" 상태가 그대로 재현된다.
        진짜 새 탭을 한 번 시도해 보고, 웹뷰가 무시하면(null 반환) 이 프레임
        자체를 글로 이동시킨다. 앱 하단의 닫기·뒤로 버튼은 상위 프레임에
@@ -963,7 +963,7 @@ window.ezWeekPhase = function (now) {
    광고 게이트 로더 (2026-08-17 신설, 59항)
 
    ez-ads.js 는 평소에 아예 내려받지 않는다. 아직 송출하지 않는 기능 때문에
-   전 페이지가 요청을 하나 더 지는 건 낭비다 - 필요할 때만 부른다.
+   전 페이지가 요청을 하나 더 지는 건 낭비다: 필요할 때만 부른다.
 
    EZ_ADS_LIVE 가 이 사이트의 **유일한 송출 스위치**다. 스위치가 두 곳에
    있으면 반드시 한쪽이 뒤처지므로, 켤 때는 여기 한 줄만 true 로 바꾼다
@@ -975,7 +975,7 @@ window.ezWeekPhase = function (now) {
    ───────────────────────────────────────────────────────────── */
 window.EZ_ADS_LIVE = false;
 (function () {
-  /* 어느 페이지에 광고를 두느냐는 페이지가 정한다 - <meta name="ez-ads" content="on">.
+  /* 어느 페이지에 광고를 두느냐는 페이지가 정한다: <meta name="ez-ads" content="on">.
      스위치를 켜도 이 표시가 없는 페이지에는 아무것도 안 붙는다. 2026-08-17에
      11개 페이지의 하드코딩 애드센스를 전부 걷어냈으므로, 다시 켤 때는 원하는
      페이지에 이 한 줄을 넣는 것이 유일한 절차다. */
@@ -986,7 +986,7 @@ window.EZ_ADS_LIVE = false;
       var q = new URLSearchParams(location.search).get('ads');
       if (q === 'preview' || q === 'off') need = true;
       else if (localStorage.getItem('ezlong:adsPreview')) need = true;
-    } catch (e) { /* 저장소 접근 불가 - 미리보기 없음 */ }
+    } catch (e) { /* 저장소 접근 불가: 미리보기 없음 */ }
   }
   if (!need) return;
   var s = document.createElement('script');

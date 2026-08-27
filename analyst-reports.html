@@ -57,7 +57,7 @@ window.addEventListener('load', function(){
         media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
   <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png?v=20260809"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-<title>테슬라·엔비디아 목표주가 얼마? 월가 애널리스트 컨센서스 무료 조회 - EZLONG</title>
+<title>테슬라·엔비디아 목표주가 얼마? 월가 애널리스트 컨센서스 무료 조회: EZLONG</title>
 <meta name="description" content="TSLA·NVDA·AAPL·MSFT 등 43개 미국주식 월가 목표주가·상승 여력 즉시 확인. Bull/Bear 시나리오, 매수·매도 비율, 평균 목표주가 한눈에. 회원가입 없이 무료." />
 <meta name="keywords" content="월가 목표 주가, 애널리스트 목표주가, 주가 컨센서스, TSLA 목표주가, NVDA 목표주가, AAPL 목표주가, 미국주식 애널리스트, Wall Street price target, analyst consensus, Strong Buy, 주식 전망" />
 <meta name="robots" content="index, follow" />
@@ -87,7 +87,7 @@ window.addEventListener('load', function(){
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "핵심기업 목표주가 - 월가 애널리스트 컨센서스",
+  "name": "핵심기업 목표주가: 월가 애널리스트 컨센서스",
   "description": "TSLA·NVDA·AAPL·MSFT 등 43개 미국주식의 월가 목표주가·상승 여력·Bull/Bear 시나리오·매수매도 비율을 즉시 확인하는 무료 도구.",
   "inLanguage": "ko",
   "url": "https://ezlong.com/analyst-reports.html"
@@ -286,11 +286,11 @@ window.addEventListener('load', function(){
 }
 </style>
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
-     head 맨 끝에 둔다 - 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
+     head 맨 끝에 둔다: 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
 </head>
 <body>
-<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">테슬라·엔비디아 목표주가 - 월가 애널리스트 컨센서스 조회</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검: h1 부재 보강) -->
+<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">테슬라·엔비디아 목표주가: 월가 애널리스트 컨센서스 조회</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검: h1 부재 보강) -->
 <script src="/lang-banner.js"></script>
 <!-- ── EZLONG 글로벌 헤더 ── -->
 <script src="/ez-nav.js"></script>
@@ -328,8 +328,8 @@ const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const TIER1=new Set(['TSLA','NVDA','AAPL','MSFT','GOOGL','META','AMZN']);
 const _sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 let allSnapshots=[],selectedTicker=null;
-function fmtPt(v){if(!v&&v!==0)return' - ';return'$'+Math.round(+v).toLocaleString('en-US')}
-function fmtUp(v){if(v==null)return{text:' - ',cls:'zero'};const n=+v;return{text:(n>=0?'+':'')+n.toFixed(2)+'%',cls:n>0?'pos':n<0?'neg':'zero'}}
+function fmtPt(v){if(!v&&v!==0)return': ';return'$'+Math.round(+v).toLocaleString('en-US')}
+function fmtUp(v){if(v==null)return{text:': ',cls:'zero'};const n=+v;return{text:(n>=0?'+':'')+n.toFixed(2)+'%',cls:n>0?'pos':n<0?'neg':'zero'}}
 function cleanMd(text){return(text||'').replace(/이번\s*주\s*/g,'')}
 function getRatingStyle(rating){
   if(!rating)return{color:'var(--ez-text3)',bg:'var(--ez-card2)',border:'var(--ez-border)'};
@@ -404,9 +404,9 @@ function renderDetail(snap,views){
   if(realViews.length>0){buyN=realViews.filter(v=>(v.stance_bucket||'').toLowerCase()==='bull').length;holdN=realViews.filter(v=>(v.stance_bucket||'').toLowerCase()==='neutral').length;sellN=realViews.filter(v=>(v.stance_bucket||'').toLowerCase()==='bear').length;const tot=buyN+holdN+sellN;if(tot>0){buyP=Math.round(buyN/tot*100);holdP=Math.round(holdN/tot*100);sellP=Math.round(sellN/tot*100);}}
   const bucketOrder={'bull':0,'neutral':1,'bear':2};
   const sortedViews=[...displayViews].sort((a,b)=>{const aB=bucketOrder[a.stance_bucket||'neutral']??1,bB=bucketOrder[b.stance_bucket||'neutral']??1;if(aB!==bB)return aB-bB;return(b.reference_date||'').localeCompare(a.reference_date||'');});
-  const avHtml=sortedViews.length===0?'<div class="av-empty-state">애널리스트 뷰 데이터가 없습니다.</div>':`${isFallbackSynth?'<div class="av-synthetic-note">애널리스트 뷰 데이터가 없어서 시나리오 기반 합성 뷰를 보여드립니다.</div>':''}<div class="av-grid">${sortedViews.map(v=>{const sb=(v.stance_bucket||'neutral').toLowerCase();return`<div class="av-card ${sb}"><div class="av-header-row"><div class="av-price-col"><div class="av-rating-tag">${v.rating}</div><div class="av-tp-big">${fmtPt(v.target_price)}</div><div><span class="av-stance-badge ${sb}">${sb==='bull'?'강세':sb==='bear'?'약세':'중립'}</span></div></div><div class="av-name-col"><div class="av-name">${v.analyst_name}</div><div class="av-house">${v.house}</div><div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;"><span class="av-date-small">${v.reference_date||''}</span>${v.snapshot_id===snap.id?'<span class="av-new-badge">NEW</span>':''}</div></div></div><div class="av-thesis">${v.thesis||' - '}</div></div>`}).join('')}</div>`;
-  const rs=getRatingStyle(snap.consensus_rating),rLabel=snap.consensus_rating?.split('(')[0].trim()||' - ';
-  const html=`<div class="rp-content"><div class="rp-hero"><div class="rp-hero-top"><div><div class="rp-ticker-name">${co}</div><div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;"><div class="rp-big-ticker" style="margin:0;">${t}</div><div><div class="rp-consensus-badge" style="color:${rs.color};background:${rs.bg};border-color:${rs.border}">${rLabel}</div><div class="rp-analyst-sub" style="margin-top:4px;">애널리스트 ${ac}명 기준</div></div></div><div class="rp-company-row"><span class="rp-sector-pill">${sec}</span></div></div><div class="rp-hero-right"><div class="rp-date-tag">${snap.snapshot_date} · ${snap.week_key}</div></div></div><div class="rp-kpi-row"><div class="rp-kpi"><div class="rp-kpi-label">Avg Target</div><div class="rp-kpi-val" id="kpi-mean"> - </div></div><div class="rp-kpi-divider"></div><div class="rp-kpi"><div class="rp-kpi-label">Upside</div><div class="rp-kpi-val ${up.cls==='pos'?'green':up.cls==='neg'?'red':''}">${up.text}</div></div><div class="rp-kpi-divider"></div><div class="rp-kpi"><div class="rp-kpi-label">High Target</div><div class="rp-kpi-val">${fmtPt(snap.pt_high)}</div></div><div class="rp-kpi-divider"></div><div class="rp-kpi"><div class="rp-kpi-label">Low Target</div><div class="rp-kpi-val">${fmtPt(snap.pt_low)}</div></div></div></div><div class="rp-body"><div class="rp-frame-section" style="padding-top:20px;"><div class="rp-section-label" style="color:var(--ez-blue);font-weight:800;letter-spacing:1.5px;">VALUATION FRAME</div><div class="rp-frame-pill"><span class="rp-frame-icon">⚖️</span><span>${snap.valuation_frame||' - '}</span></div></div><div class="rp-chart-section"><div class="rp-section-label">Price History</div><div id="analyst-price-chart"></div></div><div class="rp-pt-section"><div class="rp-section-label">Price Target Range</div><div class="rp-pt-range"><div class="rp-pt-track"><div class="rp-pt-fill" id="pt-fill" style="left:0;right:0;"></div><div class="rp-pt-mean-marker" id="pt-mean-dot" style="left:50%;"></div><div class="rp-pt-current" title="컨센서스 평균" id="pt-mean-marker" style="left:50%;"></div></div><div class="rp-pt-labels"><div class="rp-pt-label"><div class="rp-pt-tag">Low · Bear</div><div class="rp-pt-num" style="color:var(--ez-red)">${fmtPt(snap.pt_low)}</div><div class="rp-pt-analyst">${snap.pt_low_analyst||''}</div></div><div class="rp-pt-label center"><div class="rp-pt-tag">Avg · Consensus</div><div class="rp-pt-num" style="color:var(--ez-blue)">${fmtPt(snap.pt_mean)}</div><div class="rp-pt-analyst">${ac}명 평균</div></div><div class="rp-pt-label right"><div class="rp-pt-tag">High · Bull</div><div class="rp-pt-num" style="color:var(--ez-green)">${fmtPt(snap.pt_high)}</div><div class="rp-pt-analyst">${snap.pt_high_analyst||''}</div></div></div></div></div><div class="rp-sentiment-section"><div class="rp-section-label">Analyst Sentiment · ${ac}명</div><div class="rp-sentiment-bars"><div class="rp-sent-row"><div class="rp-sent-label">Buy</div><div class="rp-sent-bar-bg"><div class="rp-sent-bar-fill buy" id="bar-buy" style="width:${buyP}%"></div></div><div class="rp-sent-pct">${buyN}명</div></div><div class="rp-sent-row"><div class="rp-sent-label">Hold</div><div class="rp-sent-bar-bg"><div class="rp-sent-bar-fill hold" id="bar-hold" style="width:${holdP}%"></div></div><div class="rp-sent-pct">${holdN}명</div></div><div class="rp-sent-row"><div class="rp-sent-label">Sell</div><div class="rp-sent-bar-bg"><div class="rp-sent-bar-fill sell" id="bar-sell" style="width:${sellP}%"></div></div><div class="rp-sent-pct">${sellN}명</div></div></div></div><div class="rp-summary-section"><div class="rp-section-label">Summary</div><div class="rp-summary-box">${snap.one_line_summary||' - '}</div></div>${tier1&&mdHtml?`<div class="rp-report-section"><div class="rp-section-label">Research Note</div><div class="markdown-body">${mdHtml}</div></div>`:''}<div class="rp-av-section"><div class="rp-section-label">Analyst Views</div>${avHtml}</div><div class="rp-source-note">${snap.source_note||''}</div></div></div>`;
+  const avHtml=sortedViews.length===0?'<div class="av-empty-state">애널리스트 뷰 데이터가 없습니다.</div>':`${isFallbackSynth?'<div class="av-synthetic-note">애널리스트 뷰 데이터가 없어서 시나리오 기반 합성 뷰를 보여드립니다.</div>':''}<div class="av-grid">${sortedViews.map(v=>{const sb=(v.stance_bucket||'neutral').toLowerCase();return`<div class="av-card ${sb}"><div class="av-header-row"><div class="av-price-col"><div class="av-rating-tag">${v.rating}</div><div class="av-tp-big">${fmtPt(v.target_price)}</div><div><span class="av-stance-badge ${sb}">${sb==='bull'?'강세':sb==='bear'?'약세':'중립'}</span></div></div><div class="av-name-col"><div class="av-name">${v.analyst_name}</div><div class="av-house">${v.house}</div><div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;"><span class="av-date-small">${v.reference_date||''}</span>${v.snapshot_id===snap.id?'<span class="av-new-badge">NEW</span>':''}</div></div></div><div class="av-thesis">${v.thesis||': '}</div></div>`}).join('')}</div>`;
+  const rs=getRatingStyle(snap.consensus_rating),rLabel=snap.consensus_rating?.split('(')[0].trim()||': ';
+  const html=`<div class="rp-content"><div class="rp-hero"><div class="rp-hero-top"><div><div class="rp-ticker-name">${co}</div><div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;"><div class="rp-big-ticker" style="margin:0;">${t}</div><div><div class="rp-consensus-badge" style="color:${rs.color};background:${rs.bg};border-color:${rs.border}">${rLabel}</div><div class="rp-analyst-sub" style="margin-top:4px;">애널리스트 ${ac}명 기준</div></div></div><div class="rp-company-row"><span class="rp-sector-pill">${sec}</span></div></div><div class="rp-hero-right"><div class="rp-date-tag">${snap.snapshot_date} · ${snap.week_key}</div></div></div><div class="rp-kpi-row"><div class="rp-kpi"><div class="rp-kpi-label">Avg Target</div><div class="rp-kpi-val" id="kpi-mean">: </div></div><div class="rp-kpi-divider"></div><div class="rp-kpi"><div class="rp-kpi-label">Upside</div><div class="rp-kpi-val ${up.cls==='pos'?'green':up.cls==='neg'?'red':''}">${up.text}</div></div><div class="rp-kpi-divider"></div><div class="rp-kpi"><div class="rp-kpi-label">High Target</div><div class="rp-kpi-val">${fmtPt(snap.pt_high)}</div></div><div class="rp-kpi-divider"></div><div class="rp-kpi"><div class="rp-kpi-label">Low Target</div><div class="rp-kpi-val">${fmtPt(snap.pt_low)}</div></div></div></div><div class="rp-body"><div class="rp-frame-section" style="padding-top:20px;"><div class="rp-section-label" style="color:var(--ez-blue);font-weight:800;letter-spacing:1.5px;">VALUATION FRAME</div><div class="rp-frame-pill"><span class="rp-frame-icon">⚖️</span><span>${snap.valuation_frame||': '}</span></div></div><div class="rp-chart-section"><div class="rp-section-label">Price History</div><div id="analyst-price-chart"></div></div><div class="rp-pt-section"><div class="rp-section-label">Price Target Range</div><div class="rp-pt-range"><div class="rp-pt-track"><div class="rp-pt-fill" id="pt-fill" style="left:0;right:0;"></div><div class="rp-pt-mean-marker" id="pt-mean-dot" style="left:50%;"></div><div class="rp-pt-current" title="컨센서스 평균" id="pt-mean-marker" style="left:50%;"></div></div><div class="rp-pt-labels"><div class="rp-pt-label"><div class="rp-pt-tag">Low · Bear</div><div class="rp-pt-num" style="color:var(--ez-red)">${fmtPt(snap.pt_low)}</div><div class="rp-pt-analyst">${snap.pt_low_analyst||''}</div></div><div class="rp-pt-label center"><div class="rp-pt-tag">Avg · Consensus</div><div class="rp-pt-num" style="color:var(--ez-blue)">${fmtPt(snap.pt_mean)}</div><div class="rp-pt-analyst">${ac}명 평균</div></div><div class="rp-pt-label right"><div class="rp-pt-tag">High · Bull</div><div class="rp-pt-num" style="color:var(--ez-green)">${fmtPt(snap.pt_high)}</div><div class="rp-pt-analyst">${snap.pt_high_analyst||''}</div></div></div></div></div><div class="rp-sentiment-section"><div class="rp-section-label">Analyst Sentiment · ${ac}명</div><div class="rp-sentiment-bars"><div class="rp-sent-row"><div class="rp-sent-label">Buy</div><div class="rp-sent-bar-bg"><div class="rp-sent-bar-fill buy" id="bar-buy" style="width:${buyP}%"></div></div><div class="rp-sent-pct">${buyN}명</div></div><div class="rp-sent-row"><div class="rp-sent-label">Hold</div><div class="rp-sent-bar-bg"><div class="rp-sent-bar-fill hold" id="bar-hold" style="width:${holdP}%"></div></div><div class="rp-sent-pct">${holdN}명</div></div><div class="rp-sent-row"><div class="rp-sent-label">Sell</div><div class="rp-sent-bar-bg"><div class="rp-sent-bar-fill sell" id="bar-sell" style="width:${sellP}%"></div></div><div class="rp-sent-pct">${sellN}명</div></div></div></div><div class="rp-summary-section"><div class="rp-section-label">Summary</div><div class="rp-summary-box">${snap.one_line_summary||': '}</div></div>${tier1&&mdHtml?`<div class="rp-report-section"><div class="rp-section-label">Research Note</div><div class="markdown-body">${mdHtml}</div></div>`:''}<div class="rp-av-section"><div class="rp-section-label">Analyst Views</div>${avHtml}</div><div class="rp-source-note">${snap.source_note||''}</div></div></div>`;
   const el=document.getElementById('report-detail');el.innerHTML=html;
   setTimeout(()=>initPriceChart(t,snap),200);
   requestAnimationFrame(()=>{requestAnimationFrame(()=>{
@@ -437,16 +437,16 @@ loadSnapshots();
 </script>
 <!-- ── EZLONG 글로벌 푸터 ── -->
 
-<!-- 도구 해설 본문 (2026-08-26, CLAUDE.md 73항 2단계) - 정적 HTML -->
+<!-- 도구 해설 본문 (2026-08-26, CLAUDE.md 73항 2단계): 정적 HTML -->
 <article class="ez-guide">
 <h2>월가는 이 종목을 얼마로 보나</h2>
 <p class="ez-guide-lede">애널리스트 목표주가는 <b>"이 회사가 이 정도는 갈 것"이라고 전문가들이 적어 낸 숫자</b>입니다. 이 페이지는 테슬라·엔비디아·애플 같은 미국 주요 종목에 대해 여러 증권사가 낸 목표주가를 모아 평균(컨센서스)과 현재가 대비 상승여력을 보여 줍니다.</p>
-<p>혼자 기업 가치를 계산하기는 어렵습니다. 그 일을 직업으로 하는 사람들이 내놓은 숫자를 <b>참고 좌표</b>로 삼는 것이 이 도구의 쓰임입니다. 다만 좌표일 뿐 정답이 아닙니다 - 그 이유는 아래에 적었습니다.</p>
+<p>혼자 기업 가치를 계산하기는 어렵습니다. 그 일을 직업으로 하는 사람들이 내놓은 숫자를 <b>참고 좌표</b>로 삼는 것이 이 도구의 쓰임입니다. 다만 좌표일 뿐 정답이 아닙니다: 그 이유는 아래에 적었습니다.</p>
 
 <h2>무엇을 보여 주나</h2>
 <div class="ez-guide-kv"><div class="k">컨센서스 목표주가</div><div class="v">여러 애널리스트 목표가의 평균. 시장이 이 종목에 매기는 대략의 눈높이입니다</div></div>
 <div class="ez-guide-kv"><div class="k">상승여력</div><div class="v">현재가 대비 목표가가 몇 % 위인지. 이 숫자만 보고 종목을 고르시면 안 됩니다(아래 참고)</div></div>
-<div class="ez-guide-kv"><div class="k">Bull · Bear 시나리오</div><div class="v">가장 낙관적인 목표가와 가장 비관적인 목표가. <b>평균보다 이 범위의 폭이 더 중요합니다</b> - 폭이 넓다는 건 전문가들끼리도 의견이 갈린다는 뜻입니다</div></div>
+<div class="ez-guide-kv"><div class="k">Bull · Bear 시나리오</div><div class="v">가장 낙관적인 목표가와 가장 비관적인 목표가. <b>평균보다 이 범위의 폭이 더 중요합니다</b>: 폭이 넓다는 건 전문가들끼리도 의견이 갈린다는 뜻입니다</div></div>
 <div class="ez-guide-kv"><div class="k">투자의견 비율</div><div class="v">매수·보유·매도 의견의 분포. 한쪽으로 심하게 쏠려 있으면 그 자체가 신호입니다</div></div>
 
 <h2>이 숫자를 읽는 법</h2>
@@ -467,8 +467,8 @@ loadSnapshots();
 
 <h2>함께 보면 좋은 것</h2>
 <ul>
-<li><a href="/chart-analysis.html">AI 차트분석</a> - 목표가가 '얼마'라면 차트는 '지금 어디쯤'을 봅니다</li>
-<li><a href="/market-vs.html">긍정 vs 부정 몇대몇</a> - 시장 전체 분위기를 함께 보십시오</li>
+<li><a href="/chart-analysis.html">AI 차트분석</a>: 목표가가 '얼마'라면 차트는 '지금 어디쯤'을 봅니다</li>
+<li><a href="/market-vs.html">긍정 vs 부정 몇대몇</a>: 시장 전체 분위기를 함께 보십시오</li>
 <li><a href="/atmr-dashboard.html">스윙 시그널 대시보드</a> · <a href="/model-portfolio.html">AI 포트폴리오 점검</a></li>
 </ul>
 <p><a href="/disclaimer.html">투자 유의사항</a>을 함께 읽어 주십시오. 제3자가 산출한 정보를 참고용으로 정리한 것이며 투자 권유가 아닙니다.</p>
