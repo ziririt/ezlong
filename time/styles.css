@@ -6277,7 +6277,7 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
 .sleep-screen { position: fixed; inset: 0; z-index: 8700; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, #070d1c 0%, #03060e 100%); animation: sleepScreenIn 500ms ease-out; }
 .sleep-screen[hidden] { display: none; }
 @keyframes sleepScreenIn { from { opacity: 0; } to { opacity: 1; } }
-.sleep-screen-inner { text-align: center; padding: 0 20px; width: min(92vw, 420px); }
+.sleep-screen-inner { position: relative; z-index: 1; text-align: center; padding: 0 20px; width: min(92vw, 420px); }
 .sleep-screen-label { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: 0.22em; color: rgba(255, 255, 255, 0.62); }
 .sleep-screen-time { display: block; margin: 18px 0 6px; font-size: clamp(72px, 26vw, 120px); font-weight: 200; line-height: 1; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
 .sleep-screen-sub { margin: 0 0 46px; font-size: 14px; color: rgba(255, 255, 255, 0.5); }
@@ -6421,6 +6421,69 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
 .sleep-screen-now-label { margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; color: rgba(255,255,255,0.4); }
 .sleep-screen-now { display: block; margin: 0 0 30px; font-size: 34px; font-weight: 300; line-height: 1; color: rgba(255,255,255,0.6); font-variant-numeric: tabular-nums; }
 .sleep-screen-wake-label { margin: 0 0 6px; font-size: 15px; font-weight: 800; letter-spacing: 0.02em; color: #7dd3fc; }
+
+/* 2026-08-27 운영자 — "수면 시작 화면인데 너무 동적인 느낌 부족. 에러난 줄
+   알았다. 뭔가 살아있는 느낌."
+
+   맞는 말이다. 이 화면은 밤새 켜져 있는데 한 톨도 움직이지 않았다. 화면이
+   멈춘 것과 앱이 일하고 있는 것을 사람은 구별할 수 없다. 그렇다고 밝게
+   움직이면 잠을 방해한다 — 이 화면의 안내문이 스스로 "아주 어둡게
+   유지된다"고 약속하고 있다. 그 약속을 지키면서 살아 있다는 신호만 준다.
+
+   (1) 콜론 1초 호흡 — 심박처럼. 완전히 사라지지 않고 0.16까지만 내려간다.
+   (2) 하단 파동 세 겹 — 12·19·27초로 서로 다르게 흘러 규칙이 안 읽힌다.
+       주기가 0.04~0.08Hz 로 아주 느려서(사람이 어지러움을 느끼는 0.2Hz 대와
+       한참 떨어져 있다) 자려고 누운 눈에도 부담이 없다. */
+.sleep-screen-now .sn-c {
+  display: inline-block;
+  animation: sleepColonBreath 1s ease-in-out infinite;
+}
+@keyframes sleepColonBreath {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.16; }
+  100% { opacity: 1; }
+}
+
+.sleep-wave {
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(96px, 18vh, 168px);
+  overflow: hidden;
+  pointer-events: none;
+  /* 아래로 갈수록 진해지는 것이 아니라, 위쪽 가장자리를 녹여 배경에 스며들게. */
+  /* 위 가장자리는 배경에 녹이고, 바닥도 다시 가라앉힌다 — 파도의 능선만
+     은은히 남아 화면 아래가 통째로 밝아지지 않는다(실측 후 조정). */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 46%, rgba(0,0,0,0.42) 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 46%, rgba(0,0,0,0.42) 100%);
+}
+.sleep-wave svg {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 200%;
+  height: 100%;
+}
+.sleep-wave path {
+  /* 이 화면의 '기상 시각' 하늘색과 같은 계열. 셋 다 1할 미만이다. */
+  fill: #7dd3fc;
+  will-change: transform;
+}
+.sleep-wave-a { fill-opacity: 0.032; animation: sleepWaveDrift 12s linear infinite; }
+.sleep-wave-b { fill-opacity: 0.026; animation: sleepWaveDrift 19s linear infinite reverse; }
+.sleep-wave-c { fill-opacity: 0.042; animation: sleepWaveDrift 27s linear infinite; }
+/* 한 주기(360)가 전체 폭(1800)의 20%다 — 딱 20%만 밀면 이음매가 보이지 않는다. */
+@keyframes sleepWaveDrift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-20%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sleep-screen-now .sn-c,
+  .sleep-wave path { animation: none; }
+}
 
 
 /* 2026-08-23 alarm weekday conflict confirm */

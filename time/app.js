@@ -13486,7 +13486,26 @@ var bedsideActive = false;
   function updateSleepNow() {
     if (!els.sleepNow) return;
     var d = new Date();
-    els.sleepNow.textContent = two(d.getHours()) + ":" + two(d.getMinutes());
+    // 2026-08-27 운영자 — "현재 시각 표시에서 콜론이 1초마다 깜빡이는 것도
+    // 살아있는 느낌일 듯." 콜론만 제 span 에 두고 시·분만 갈아끼운다.
+    // textContent 로 통째로 쓰면 매초 span 이 새로 생겨 CSS 호흡 애니메이션이
+    // 1초마다 처음으로 되감긴다 — 깜빡이는 게 아니라 덜컥거리게 된다.
+    if (!els.sleepNow.firstElementChild) {
+      els.sleepNow.textContent = "";
+      var _p = ["sn-h", "sn-c", "sn-m"];
+      for (var _i = 0; _i < 3; _i += 1) {
+        var _sp = document.createElement("span");
+        _sp.className = _p[_i];
+        if (_p[_i] === "sn-c") _sp.textContent = ":";
+        els.sleepNow.appendChild(_sp);
+      }
+    }
+    var _eh = els.sleepNow.querySelector(".sn-h");
+    var _em = els.sleepNow.querySelector(".sn-m");
+    var _hh = two(d.getHours());
+    var _mm = two(d.getMinutes());
+    if (_eh && _eh.textContent !== _hh) _eh.textContent = _hh;
+    if (_em && _em.textContent !== _mm) _em.textContent = _mm;
     // 2026-08-23 운영자: 취침 시작 직후 15분은 "이제 잠자리에 듭니다.", 그 뒤 "수면 중".
     if (els.sleepLabel) {
       var _sa = 0;
