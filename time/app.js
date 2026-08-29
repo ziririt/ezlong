@@ -12883,13 +12883,28 @@ var bedsideActive = false;
   var ROCK_GIVE_UP = 1080;              // 초 — 18분
   var rockTimers = [];
   var webRockRampTimer = null;
-  // 2026-08-23 운영자: 록 볼륨 계단 — 4단계(0.40)에서 0.80까지만, 6초 간격. 갑자기 크게 X.
+  // 2026-08-23 운영자: 록 볼륨 계단 — 갑자기 크게 X.
+  //
+  // 2026-08-29 운영자: "락음악이 처음부터 큰 볼륨으로 나오는 건 안드로이드만이
+  // 아니라 아이폰에도 있던 문제였다."
+  //
+  // 맞다. 그리고 원인은 내 쪽이었다. 이 램프 함수는 **세 곳**에 있다 —
+  // 여기(웹), iOS WakeMusicPlayer.rockRampVolume, Android WakeVolumeCurve.rockSteps.
+  // 8월 27일에 네이티브 두 곳만 0.06 으로 낮추고 **여기를 빠뜨렸다.** 웹 폴백이
+  // 소리를 내고 있을 때는 이 값이 그대로 쓰이므로, 고쳤다고 말한 뒤에도
+  // 0.40 으로 터졌다. 세 곳의 숫자가 어긋나면 어느 한쪽은 반드시 틀린다.
+  //
+  // ※ 이 표를 고칠 때는 반드시 세 곳을 함께 고칠 것.
+  //    ios/FlipZenClock/WakeMusicPlayer.swift  rockRampVolume(_:)
+  //    android/.../alarm/WakeAlarm.kt          WakeVolumeCurve.rockSteps
   function rockRampVolume(sec) {
-    if (sec < 6) return 0.40;
-    if (sec < 12) return 0.48;
-    if (sec < 18) return 0.57;
-    if (sec < 24) return 0.66;
-    if (sec < 30) return 0.74;
+    if (sec < 8) return 0.06;
+    if (sec < 16) return 0.10;
+    if (sec < 24) return 0.16;
+    if (sec < 32) return 0.24;
+    if (sec < 40) return 0.34;
+    if (sec < 48) return 0.46;
+    if (sec < 56) return 0.60;
     return 0.80;
   }
   function clearRockTimers() {
@@ -12927,7 +12942,8 @@ var bedsideActive = false;
           if (!webWakeAudio) { if (webRockRampTimer) { window.clearInterval(webRockRampTimer); webRockRampTimer = null; } return; }
           var rsec = (Date.now() - rockStart) / 1000;
           try { webWakeAudio.volume = rockRampVolume(rsec); } catch (e) { /* 무시 */ }
-          if (rsec > 32 && webRockRampTimer) { window.clearInterval(webRockRampTimer); webRockRampTimer = null; }
+          // 2026-08-29 — 계단이 56초까지 이어지므로 32초에서 멈추면 0.24 에 갇힌다.
+          if (rsec > 60 && webRockRampTimer) { window.clearInterval(webRockRampTimer); webRockRampTimer = null; }
         }, 1000);
       } catch (e) { /* 무시 */ }
     }
