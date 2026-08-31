@@ -52,6 +52,15 @@
     return "winter";
   }
 
+  /**
+   * 늦여름 창 — 9월 1일부터 27일까지.
+   *
+   * 운영자가 정한 날짜다. 이 두 숫자가 이 규칙의 전부이고, 다른 곳에
+   * 같은 숫자를 적어 두지 않았다. 창을 옮기려면 여기만 고친다.
+   */
+  var LINGER_MONTH = 9;
+  var LINGER_LAST_DAY = 27;
+
   /** 남반구는 북반구를 정확히 6개월 민 것이다 */
   var SOUTHERN_SHIFT = {
     spring: "autumn",
@@ -128,8 +137,48 @@
     return unit === "F" ? celsius * 9 / 5 + 32 : celsius;
   }
 
+  /**
+   * 사진용 계절 — 달력의 계절과 **다르다.**
+   *
+   * 2026-08-31 운영 지침. "9월 27일까지는 가을이라고 보기도 애매한
+   * 늦여름이다. 그러니 9/1부터 가을 사진으로 바꾸지 말고, 9/27까지는
+   * 여름 사진으로 가자. 다만 해변 사진처럼 완전한 여름 사진은 빼라."
+   *
+   * 왜 resolveSeason 을 안 고치고 함수를 새로 만들었나.
+   * 달력의 계절(9월=가을)은 그 자체로 맞는 말이고, 다른 곳에서 쓰일 수
+   * 있다. 여기서 바꾸려는 것은 **어떤 사진을 보여 줄까**뿐이다. 둘은 다른
+   * 물음이라 다른 함수여야 한다. 게다가 resolveSeason 은
+   * scripts/test-season.mjs 가 app.js 원본과 12개월 전수 대조하는 기준선이다
+   * — 그 기준선을 흔들면 한국 사용자 회귀를 잡아 주던 그물이 헐거워진다.
+   *
+   * 남반구는 저절로 대칭이 된다. 북반구의 9월이 '여름이 남은 가을'이면
+   * 남반구의 9월은 '겨울이 남은 봄'이다. 같은 이유로 같은 창을 쓴다.
+   *
+   * @returns {{season:string, phase:"normal"|"late", avoid:string[]}}
+   *   season — 이 사진들을 고를 계절 태그
+   *   phase  — 'late' 면 늦여름(늦겨울) 창 안이다
+   *   avoid  — 이 창에서 빼야 할 태그들(예: peak-summer)
+   */
+  function photoSeason(date, latitude) {
+    var d = date instanceof Date && !isNaN(date.getTime()) ? date : new Date();
+    var calendar = resolveSeason(d, latitude);
+    if (!isLingeringWindow(d)) {
+      return { season: calendar, phase: "normal", avoid: [] };
+    }
+    // 달력은 이미 다음 계절이지만, 사진은 아직 지난 계절이다.
+    var lingering = isSouthernHemisphere(latitude) ? "winter" : "summer";
+    return { season: lingering, phase: "late", avoid: ["peak-" + lingering] };
+  }
+
+  /** 지난 계절이 아직 남아 있는 날인가 — 9월 1일부터 27일까지. */
+  function isLingeringWindow(d) {
+    return d.getMonth() + 1 === LINGER_MONTH && d.getDate() <= LINGER_LAST_DAY;
+  }
+
   return {
     resolveSeason: resolveSeason,
+    photoSeason: photoSeason,
+    isLingeringWindow: isLingeringWindow,
     northernSeason: northernSeason,
     isSouthernHemisphere: isSouthernHemisphere,
     firstDayOfWeek: firstDayOfWeek,

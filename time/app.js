@@ -1420,7 +1420,8 @@ function photoHistoryContextKey() {
   // 정확한 weather tag(예: light-rain/rain/heavy-rain) 대신 그룹 단위(rain/cloudy/snow/clear)로
   // 묶어서 히스토리를 공유한다. 장마 기간처럼 세부 태그가 오가도 "비 계열" 전체 사진 풀을
   // 하나의 순환 대상으로 취급해야 실제로 겹치지 않는 효과가 난다.
-  return [getCurrentSeason(), weatherTagGroup(weatherState.tag)].join("|");
+  const plan = getPhotoSeasonPlan();
+  return [plan.season + ":" + plan.phase, weatherTagGroup(weatherState.tag)].join("|");
 }
 
 function pickNonRepeatingPhotos(pool, count) {
@@ -1469,6 +1470,35 @@ function getCurrentSeason(date = new Date()) {
   if (month >= 6 && month <= 8) return "summer";
   if (month >= 9 && month <= 11) return "autumn";
   return "winter";
+}
+
+/**
+ * 지금 어떤 사진을 보여 줄 것인가 — 계절 + 빼야 할 태그.
+ *
+ * 2026-08-31 운영 지침로 생겼다. 9/1~9/27은 달력으로는 가을이지만
+ * 사진은 늦여름으로 간다. 다만 해변처럼 '완전 여름'인 사진은 뺀다.
+ * 판정은 i18n/season.js 의 photoSeason 한 곳에 있다.
+ *
+ * i18n 이 안 실렸으면 예전 동작(달력 계절 그대로, 빼는 것 없음)으로
+ * 떨어진다 — 이 앱의 오래된 원칙이다.
+ */
+function getPhotoSeasonPlan(date = new Date()) {
+  const lat = userCoords && typeof userCoords.lat === "number" ? userCoords.lat : null;
+  if (FZ_SEASON && FZ_SEASON.photoSeason) return FZ_SEASON.photoSeason(date, lat);
+  return { season: getCurrentSeason(date), phase: "normal", avoid: [] };
+}
+
+/**
+ * 이 사진이 지금 계절에 맞는가.
+ *
+ * 'peak-summer'(완전 여름)는 'summer'의 **부분집합**이다. 분류툴이 저장할
+ * 때 summer 를 같이 붙여 주지만, 옛 자료나 손으로 고친 자료가 peak 만
+ * 갖고 있어도 여름으로 세도록 여기서 한 번 더 받아 준다.
+ */
+function photoMatchesSeason(image, plan) {
+  const tags = image && image.seasonTags ? image.seasonTags : [];
+  if (plan.avoid.some((tag) => tags.includes(tag))) return false;
+  return tags.includes(plan.season) || tags.includes("peak-" + plan.season);
 }
 
 /**
@@ -1606,7 +1636,10 @@ function syncBgFilterUi() {
 function photoSetKey(sceneId) {
   const timeBuckets = getSceneTimeBuckets(sceneId);
   const currentTag = weatherState.tag;
-  const currentSeason = getCurrentSeason();
+  const plan = getPhotoSeasonPlan();
+  // 늦여름 창에 들어가고 나오는 순간에도 캐시된 세트가 무효화되도록
+  // phase 를 키에 넣는다. 9/27 밤과 9/28 아침은 같은 'summer' 가 아니다.
+  const currentSeason = plan.season + ":" + plan.phase;
   // 토글 상태도 키에 포함시켜서, 설정 화면에서 날씨/시간대를 껐다 켰다 할
   // 때마다 캐시된 4장 세트(activePhotoSetKey)가 즉시 무효화되고 다시
   // 계산되게 한다 — 안 그러면 토글을 바꿔도 다음 자연 순환 전까지 화면이
@@ -1620,10 +1653,10 @@ function matchingArchivePhotos(sceneId) {
   const timeBuckets = getSceneTimeBuckets(sceneId);
   const currentTag = weatherState.tag;
   const groupedTag = weatherTagGroup(currentTag);
-  const currentSeason = getCurrentSeason();
+  const seasonPlan = getPhotoSeasonPlan();
   const weatherFilterOn = loadBgFilterToggle(bgFilterWeatherStorageKey);
   const timeFilterOn = loadBgFilterToggle(bgFilterTimeStorageKey);
-  const seasonMatches = (image) => image.seasonTags?.includes(currentSeason);
+  const seasonMatches = (image) => photoMatchesSeason(image, seasonPlan);
   const timeMatches = (image) => !timeFilterOn || image.timeBuckets?.some((bucket) => timeBuckets.includes(bucket));
   const exactWeatherMatches = (image) => !weatherFilterOn || image.weatherTags?.includes(currentTag);
   const groupedWeatherMatches = (image) => !weatherFilterOn || image.weatherTags?.includes(groupedTag);
@@ -5210,15 +5243,125 @@ function saveMusicHistory(history) {
   }
 }
 
-// 재생했든(끝까지) 스킵했든 "들었다"로 기록한다. 전체 곡을 한 바퀴 다 돌기
-// 전까지는 같은 곡이 다시 나오지 않도록 하기 위함(같은 곡이 자주 반복된다는 피드백 반영).
-// 곡 수만큼 채워지면(=한 바퀴 완주) 다음 곡부터 새 사이클로 리셋한다.
+// ── 들은 기록 (2026-08-31 개편) ─────────────────────────────────
+//
+// 운영자 신고 — "전체 랜덤인데 항상 듣던 음악만 나온다. 수백 곡인데도
+// 신선한 느낌이 없다." 컴플레인이 들어왔고 본인도 공감한다고 했다.
+//
+// 재 보니 착각이 아니었다. 옛 코드에는 구멍이 둘 있었다.
+//
+//   1) **한 바퀴가 영영 안 끝났다.** 기록을 비우는 조건이
+//      `history.length >= musicPlaylist.length`(613곡)였는데, '전체 랜덤'은
+//      Special(수면·명상·스트레스해소 124곡)을 후보에서 빼므로 기록은
+//      아무리 들어도 489에서 멈춘다. 613에 닿을 수가 없다. 그래서 한 바퀴를
+//      돈 뒤부터는 "안 들은 곡" 후보가 늘 비고, 그때마다 후보 전체로
+//      떨어져 **복원추출 랜덤**이 된다. 1800회 모의재생에서 어떤 곡은 17번,
+//      어떤 곡은 1번 나왔다(좋아요 30곡이면 최다 29번). 사람은 이것을
+//      '늘 듣던 곡만 나온다'로 느낀다. 느낌이 아니라 사실이었다.
+//
+//   2) **기록의 열쇠가 번호(index)였다.** 곡을 새로 넣으면 파일 이름
+//      가나다순으로 다시 매겨져 기존 곡의 번호가 밀린다. 다음 달에 곡을
+//      넣는 순간 모두의 기록이 엉뚱한 곡을 가리키게 된다.
+//
+// 그래서 기록을 **파일 이름 → 몇 번째로 들었나**로 바꿨다. 번호가 밀려도
+// 안 흔들리고, '가장 오래전에 들은 곡'을 정확히 셀 수 있다.
+//
+// 옛 기록(번호)은 물려받지 않는다. 물려받아 봐야 위 2번 때문에 이미
+// 어긋나 있고, 비우고 시작하면 모두가 '안 들은 곡'이라 오히려 지금 겪는
+// 문제의 반대편에서 출발한다.
+const musicPlayedStorageKey = "ezlong:musicPlayed";
+
+function loadMusicPlayed() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(musicPlayedStorageKey) || "null");
+    if (!raw || typeof raw !== "object" || typeof raw.at !== "object" || !raw.at) {
+      return { n: 0, at: {} };
+    }
+    return { n: Number(raw.n) || 0, at: raw.at };
+  } catch (error) {
+    return { n: 0, at: {} };
+  }
+}
+
+function saveMusicPlayed(state) {
+  try {
+    localStorage.setItem(musicPlayedStorageKey, JSON.stringify(state));
+  } catch (error) {
+    // localStorage 를 못 쓰는 환경이어도 재생 자체는 지장이 없어야 한다.
+  }
+}
+
+// 곡이 몇 개든 613곡 남짓이라 통째로 들고 있어도 몇십 KB다.
 function recordTrackHeard(index) {
   if (!Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
-  let history = loadMusicHistory().filter((value) => value !== index);
-  history.push(index);
-  if (history.length >= musicPlaylist.length) history = [index];
-  saveMusicHistory(history);
+  const track = musicPlaylist[index];
+
+  // 같은 그룹(같은 제목의 다른 파트)을 연달아 안 내보내려면 '최근 순서'도
+  // 있어야 한다. 이건 짧은 창이면 충분하므로 24개만 굴린다.
+  let recent = loadMusicHistory().filter((value) => value !== index);
+  recent.push(index);
+  if (recent.length > 24) recent = recent.slice(-24);
+  saveMusicHistory(recent);
+
+  if (!track || !track.file) return;
+  const state = loadMusicPlayed();
+  state.n += 1;
+  state.at[track.file] = state.n;
+  saveMusicPlayed(state);
+}
+
+// 등록 순서. group 번호는 곡을 새로 넣을 때 기존 최대값 다음부터 이어
+// 붙으므로(scripts/build-music-playlist.js), 숫자가 클수록 나중에 들어온
+// 곡이다. 파일 순서는 가나다순이라 못 쓰고, 이 번호가 유일한 단서다.
+function trackAddedRank(track) {
+  const g = Number(track && track.group);
+  return Number.isFinite(g) ? g : 0;
+}
+
+// 안 들은 곡을 등록 최신순으로 3등분해 준 무게. 3:2:1 이라 새 곡이 먼저
+// 나오되 옛 곡도 섞여 나온다 — 운영자 선택("부드럽게").
+const MUSIC_FRESH_BANDS = [3, 2, 1];
+
+/**
+ * 후보 중에서 한 곡을 고른다. 이 함수가 이 앱의 '랜덤'이다.
+ *
+ * 1순위 — **아직 안 들은 곡.** 이게 있으면 무조건 여기서 고른다.
+ *   그래서 한 바퀴를 다 돌기 전에는 같은 곡이 두 번 나올 수 없다.
+ *   그 안에서는 최근 등록분에 무게를 더 준다(3:2:1).
+ *
+ * 2순위 — 다 들었을 때. **가장 오래전에 들은 3분의 1**에서 고른다.
+ *   방금 들은 곡이 다시 나오려면 후보의 3분의 2가 지나가야 한다.
+ *
+ * 좋아요는 '더 자주'가 아니라 '더 먼저'다(운영자 선택). 1순위에서는 무게를
+ * 한 칸 올리고, 2순위에서는 들은 시각을 조금 앞당겨 차례가 일찍 오게 한다.
+ * 겹치지 않는다는 약속을 깨지 않으면서 좋아하는 곡을 앞으로 당기는 방법이다.
+ */
+function chooseFromMusicPool(pool, played, likedSet) {
+  if (!Array.isArray(pool) || pool.length === 0) return null;
+  const fileOf = (i) => (musicPlaylist[i] && musicPlaylist[i].file) || "";
+  const heardAt = (i) => played.at[fileOf(i)] || 0;
+
+  const unheard = pool.filter((i) => heardAt(i) === 0);
+  if (unheard.length > 0) {
+    const sorted = unheard.slice().sort(
+      (a, b) => trackAddedRank(musicPlaylist[b]) - trackAddedRank(musicPlaylist[a])
+    );
+    const band = Math.max(1, Math.ceil(sorted.length / MUSIC_FRESH_BANDS.length));
+    const weighted = [];
+    sorted.forEach((index, pos) => {
+      const slot = Math.min(MUSIC_FRESH_BANDS.length - 1, Math.floor(pos / band));
+      let w = MUSIC_FRESH_BANDS[slot];
+      if (likedSet.has(fileOf(index))) w += 1;
+      for (let k = 0; k < w; k += 1) weighted.push(index);
+    });
+    return weighted[Math.floor(Math.random() * weighted.length)];
+  }
+
+  const early = Math.ceil(pool.length / 4);
+  const orderOf = (i) => (likedSet.has(fileOf(i)) ? heardAt(i) - early : heardAt(i));
+  const sorted = pool.slice().sort((a, b) => orderOf(a) - orderOf(b));
+  const head = sorted.slice(0, Math.max(1, Math.ceil(sorted.length / 3)));
+  return head[Math.floor(Math.random() * head.length)];
 }
 
 // 2026-07-16: "곡 순서가 마음에 안 들 때" 다시 섞기 버튼. musicHistory(이번
@@ -5228,6 +5371,10 @@ function recordTrackHeard(index) {
 // 누르는 것이므로 좋아요/싫어요 학습 데이터에는 영향을 주지 않는다.
 function reshuffleMusicOrder() {
   saveMusicHistory([]);
+  // 2026-08-31 — '다시 섞기'의 뜻이 바뀌었다. 이제 순서를 정하는 것은
+  // '무엇을 안 들었나'이므로, 섞으려면 그 기록을 비워야 한다. 비우면
+  // 모든 곡이 다시 '안 들은 곡'이 되어 한 바퀴가 새로 시작된다.
+  saveMusicPlayed({ n: 0, at: {} });
   showMusicToast("Shuffled! Fresh order incoming.");
   // 2026-07-16: 운영 피드백 — "셔플만 되어야지 왜 정각 세리모니까지 같이
   // 뜨나?" recordPlayLog(→handleMusicCeremonyOnTrackStart)는 모든 트랙
@@ -5891,8 +6038,9 @@ function pickNextTrackIndex() {
       : Array.from({ length: total }, (_, i) => i);
   }
 
+  const played = loadMusicPlayed();
+  const likedSet = new Set(loadLikedTracks());
   const recentHistory = loadMusicHistory();
-  const heard = new Set(recentHistory);
 
   // 최근 재생한 "그룹"(같은 제목의 다른 파트)은 간격이 찰 때까지 제외한다 —
   // 필터 종류와 무관하게 항상 적용.
@@ -5907,14 +6055,11 @@ function pickNextTrackIndex() {
   };
 
   if (filterKey !== "all") {
-    // 특정 장르만 고르는 중 — 그 장르 안에서만 "한 바퀴 다 돌면 새 사이클"을
-    // 적용한다(전체 카탈로그 상태와 무관하게 이 장르 자체가 독립적으로 순환).
-    let pool = searchBase.filter((i) => !heard.has(i));
-    if (pool.length === 0) pool = searchBase;
-    let groupSafe = pool.filter(isGroupSafe);
-    if (groupSafe.length === 0) groupSafe = pool; // 후보가 다 걸러지면 간격 제약을 완화
-    const weightedGroupSafe = applyLikedWeight(groupSafe);
-    return weightedGroupSafe[Math.floor(Math.random() * weightedGroupSafe.length)];
+    // 한 장르만 고른 상태 — 그 장르 안에서 겹치지 않게 한 바퀴를 돈다.
+    let groupSafe = searchBase.filter(isGroupSafe);
+    if (groupSafe.length === 0) groupSafe = searchBase;
+    const picked = chooseFromMusicPool(groupSafe, played, likedSet);
+    return picked === null ? searchBase[0] : picked;
   }
 
   // 기본(전체) 모드 — 카테고리를 라운드로빈으로 순환해 장르가 골고루 섞이게
@@ -5923,9 +6068,8 @@ function pickNextTrackIndex() {
   // 카테고리가 먼저 다 "들은 곡"이 되어 로테이션에서 통째로 빠지고, 그 뒤로는
   // 가장 큰 카테고리만 연달아 나오는 문제가 실측 시뮬레이션(2000회)에서
   // 확인됐다(같은 카테고리 최대 연속 140회). 그래서 "안 들은 곡" 여부는
-  // 카테고리를 고른 *다음에* 그 카테고리 안에서만 따지도록 바꿨다 — 각
-  // 카테고리가 자기 곡을 다 들으면 그 카테고리만 독립적으로 새 사이클을
-  // 시작하고, 로테이션 순서 자체에는 전혀 영향을 주지 않는다.
+  // 카테고리를 고른 *다음에* 그 카테고리 안에서만 따진다 — 그 판단은 이제
+  // chooseFromMusicPool 한 곳이 하고, 로테이션 순서에는 영향을 주지 않는다.
   const byCategoryAll = new Map();
   searchBase.forEach((i) => {
     const key = trackCategoryKey(musicPlaylist[i]);
@@ -5933,21 +6077,17 @@ function pickNextTrackIndex() {
     byCategoryAll.get(key).push(i);
   });
   const eligibleKeys = Array.from(byCategoryAll.keys());
-  // 2026-07-16: 카테고리별 실제 곡수(제곱근 가중치 계산용) — searchBase
-  // 기준이라 현재 필터/장르 제외/싫어요 반영 후의 "실질" 곡수다.
+  // 카테고리별 실제 곡수(제곱근 가중치 계산용) — searchBase 기준이라 현재
+  // 필터/장르 제외/싫어요 반영 후의 "실질" 곡수다.
   const categorySizeByKey = new Map(
     eligibleKeys.map((key) => [key, (byCategoryAll.get(key) || []).length])
   );
   const chosenCategory = nextRotatedCategory(eligibleKeys, categorySizeByKey);
   const categoryPool = chosenCategory ? byCategoryAll.get(chosenCategory) : searchBase;
-
   let candidates = (categoryPool || searchBase).filter(isGroupSafe);
   if (candidates.length === 0) candidates = categoryPool || searchBase;
-  let unheardCandidates = candidates.filter((i) => !heard.has(i));
-  if (unheardCandidates.length === 0) unheardCandidates = candidates; // 이 카테고리만 새 사이클 시작
-
-  const weightedUnheard = applyLikedWeight(unheardCandidates);
-  return weightedUnheard[Math.floor(Math.random() * weightedUnheard.length)];
+  const picked = chooseFromMusicPool(candidates, played, likedSet);
+  return picked === null ? candidates[0] : picked;
 }
 
 let musicErrorRetryCount = 0;
@@ -11552,11 +11692,16 @@ var bedsideActive = false;
     // 계절 필터(2026-08-15 2차) — 겨울 영상은 겨울에만. 판정은 사진과
     // 같은 getCurrentSeason(위도 반구 보정, i18n/season.js). 봄처럼
     // 태그에 없는 계절이면 필터를 접는다 — 빈 목록보다 낫다.
-    var season = "";
-    try { season = String(getCurrentSeason() || ""); } catch (error) { season = ""; }
+    // 2026-08-31 — 영상도 사진과 같은 계획을 따른다. 9/1~9/27에 사진만
+    // 늦여름이고 영상만 가을이면 화면이 두 계절을 동시에 말하게 된다.
+    var plan = { season: "", phase: "normal", avoid: [] };
+    try { plan = getPhotoSeasonPlan(); } catch (error) { plan = { season: "", phase: "normal", avoid: [] }; }
+    var season = String(plan.season || "");
     if (season) {
       var seasonHit = hit.filter(function (v) {
-        return (v.s || []).indexOf(season) >= 0;
+        var tags = v.s || [];
+        if (plan.avoid.some(function (bad) { return tags.indexOf(bad) >= 0; })) return false;
+        return tags.indexOf(season) >= 0 || tags.indexOf("peak-" + season) >= 0;
       });
       if (seasonHit.length) hit = seasonHit;
     }
