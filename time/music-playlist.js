@@ -486,8 +486,6 @@ const musicPlaylist = [
   { group: 301, title: "Quiet Shoes on Wet Asphalt", playlist: "Part 2", duration: "3:00", file: "Rock-20260720/Quiet Shoes on Wet Asphalt_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 301, title: "Quiet Shoes on Wet Asphalt", playlist: "Part 3", duration: "3:51", file: "Rock-20260720/Quiet Shoes on Wet Asphalt_part3.m4a", category: "Rock-20260720", vocal: false },
   { group: 301, title: "Quiet Shoes on Wet Asphalt", playlist: "SINGLE", duration: "3:50", file: "Rock-20260720/Quiet Shoes on Wet Asphalt.m4a", category: "Rock-20260720", vocal: false },
-  { group: 303, title: "Rooftop Bento Talk", playlist: "Part 2", duration: "2:55", file: "Rock-20260720/Rooftop Bento Talk_part2.m4a", category: "Rock-20260720", vocal: false },
-  { group: 303, title: "Rooftop Bento Talk", playlist: "SINGLE", duration: "2:48", file: "Rock-20260720/Rooftop Bento Talk.m4a", category: "Rock-20260720", vocal: false },
   { group: 305, title: "Running In Closed Captions", playlist: "Part 2", duration: "2:59", file: "Rock-20260720/Running In Closed Captions_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 305, title: "Running In Closed Captions", playlist: "SINGLE", duration: "2:57", file: "Rock-20260720/Running In Closed Captions.m4a", category: "Rock-20260720", vocal: false },
   { group: 306, title: "Screen Door Breeze", playlist: "Part 2", duration: "2:57", file: "Rock-20260720/Screen Door Breeze_part2.m4a", category: "Rock-20260720", vocal: false },
