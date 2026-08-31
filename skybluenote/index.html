@@ -72,6 +72,26 @@
 </script>
 
 <style>
+/* 2026-08-31 — 예시 상자의 표가 어긋나던 것.
+   이 엔진은 한글을 영문 두 배 너비로 셈해서 칸을 맞춘다. 그 셈이 맞으려면
+   한글까지 등폭인 글꼴이라야 하는데, 여기선 ui-monospace 가 먼저 잡히고
+   그 글꼴에 한글이 없어서 시스템 한글(가변폭)으로 떨어졌다. 한글 글자 수가
+   많은 줄일수록 어긋남이 커진다 — "마이크로소프트"가 제일 심했던 이유다.
+   웹앱(app/index.html)은 2026-08-14 에 이미 이렇게 고쳐져 있었는데,
+   소개 페이지만 빠져 있었다. 고칠 때는 두 곳을 함께 본다.
+   (2026-08-14 측정: D2Coding 에서 '─'는 정확히 한 칸이다) */
+@font-face{ /* 영문·한글·기호·박스 드로잉 */
+  font-family:"D2Coding"; font-style:normal; font-weight:400; font-display:swap;
+  src:url("fonts/D2Coding-core.ttf") format("truetype");
+  unicode-range:U+0020-00FF,U+2000-206F,U+2190-21FF,U+2500-257F,U+25A0-25FF,
+    U+3000-303F,U+3130-318F,U+AC00-D7A3,U+FF00-FFEF;
+}
+@font-face{ /* 가나·한자 — 필요할 때만 내려받는다 */
+  font-family:"D2Coding"; font-style:normal; font-weight:400; font-display:swap;
+  src:url("fonts/D2Coding-cjk.ttf") format("truetype");
+  unicode-range:U+3040-30FF,U+4E00-9FFF,U+F900-FAFF;
+}
+
 :root{
   --sky:#3FB2F0; --sky-deep:#0A66AA; --sky-soft:#DFF1FF;
   --bg:#F7FAFD; --panel:#FFFFFF; --ink:#101418; --sub:#5C6672; --line:#E3E9EF;
@@ -206,7 +226,13 @@ h2{font-size:clamp(1.55rem,3.8vw,2.35rem); line-height:1.2; letter-spacing:-.028
 @media (prefers-color-scheme: dark){ .card.after h3{color:#7ACBFF} }
 .card.after{border-color:color-mix(in srgb,var(--sky) 45%, var(--line))}
 pre{margin:0; padding:18px; overflow-x:auto; background:var(--code-bg);
-    font:12.5px/1.72 ui-monospace,SFMono-Regular,"D2Coding",Menlo,monospace;
+    /* 크기도 아무 값이나 쓰면 안 된다. 브라우저가 글자 폭을 정수 픽셀로 반올림하기
+       때문에, 한글 폭이 영문의 정확히 두 배가 되는 크기라야 칸이 맞는다.
+       D2Coding 은 영문 0.5em · 한글 1.0em 이라 round(px) == 2*round(px/2) 인
+       크기만 안전하다. 실측(2026-08-31, Chromium): 11.5·12·13.5·14·16 은 맞고
+       11·12.5·13·15 는 어긋난다. 12.5px 이었던 것이 이번 어긋남의 절반이다.
+       웹앱(app/index.html)이 쓰는 13.5px 로 맞춘다. */
+    font:13.5px/1.72 "D2Coding",ui-monospace,SFMono-Regular,Menlo,monospace;
     color:var(--ink); white-space:pre; -webkit-overflow-scrolling:touch}
 pre .m{color:#C0392B; font-weight:700}
 @media (prefers-color-scheme: dark){ pre .m{color:#FF8A80} }
