@@ -7353,6 +7353,38 @@ function resolveTrackUrl(track) {
   return `${base.replace(/\/$/, "")}/${encodedFileName}`;
 }
 
+// 네이티브가 "지금 이 곡이야" 하고 알려 오면 장부를 그 곡으로 맞춘다.
+//
+// 2026-08-31 운영자 신고 — "음악은 바뀌었는데 비주얼라이저 아래 제목은
+// 안 바뀐다. 잠금화면에서는 맞다." 잠금화면이 맞다는 말이 결정적이었다.
+// 소리를 내는 쪽(네이티브)은 제 곡을 알고 있었고, 화면을 그리는 쪽(웹)만
+// 옛 장부를 들고 있었다. 이제 네이티브가 넘어갈 때마다 URL 을 보내 준다.
+//
+// 파일 이름 뒷조각으로 맞춘다. 절대 URL·퍼센트 인코딩·R2 주소 형태가
+// 판마다 조금씩 달라도 파일 이름은 안 변하기 때문이다.
+window.__flipzenNativeNowPlaying = function (url) {
+  try {
+    if (!url || !Array.isArray(musicPlaylist) || musicPlaylist.length === 0) return;
+    let tail = String(url).split("?")[0];
+    try { tail = decodeURIComponent(tail); } catch (error) { /* 인코딩이 깨져 있어도 그대로 본다 */ }
+    const found = musicPlaylist.findIndex((track) => {
+      if (!track || !track.file) return false;
+      const name = track.file.replace(/^assets\/music\//, "");
+      return tail.endsWith(name) || tail.endsWith(encodeURI(name));
+    });
+    if (found < 0 || found === musicIndex) return;
+    musicIndex = found;
+    // 이 곡은 실제로 울린 곡이다 — 들은 기록에도 남겨야 다음 차례가 맞는다.
+    recordTrackHeard(musicIndex);
+    recordPlayLog(musicIndex);
+    // 네이티브가 이미 제 할 일을 끝냈으므로 되돌려 보내지 않는다.
+    renderMusicPlaylistInfo({ skipNativeSync: true });
+    renderMusicHistoryList();
+  } catch (error) {
+    // 제목 하나 때문에 재생이 멈추는 일은 없어야 한다.
+  }
+};
+
 // 네이티브 쪽(별도 프로세스)은 페이지의 상대경로 개념이 없으므로, 반드시
 // 완전한 절대 URL(https://...)로 변환해서 넘겨줘야 한다.
 function resolveTrackAbsoluteUrl(track) {
