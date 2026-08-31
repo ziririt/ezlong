@@ -225,9 +225,13 @@ h2{font-size:clamp(1.55rem,3.8vw,2.35rem); line-height:1.2; letter-spacing:-.028
 @media (max-width:820px){ .duo{grid-template-columns:1fr; gap:26px} }
 .duo .shot{justify-self:center}
 .duo .shot img{
-  /* 화면을 자르지 않으면서도 세로가 과하게 늘어지지 않는 폭. 9:19.5 라
-     폭 1px 이 세로 2.16px 이다 — 폭으로 높이를 다스린다. */
-  width:min(224px,54vw); display:block; border-radius:26px;
+  /* 9:19.5 화면을 폭만 정해 두면 세로가 폭의 2.16배로 늘어난다. 그러면
+     글 한 단락 옆에 기기 그림 한 장이 화면 하나를 통째로 차지한다.
+     그래서 높이를 못 박고 위쪽을 남긴다 — 두 화면 모두 할 말이 위에 있다
+     (날씨는 기온·특보·시간대별, 알람은 요일·시각·알람 음악). */
+  width:min(232px,56vw); height:min(38vh,352px);
+  object-fit:cover; object-position:top center;
+  display:block; border-radius:26px;
   box-shadow:0 26px 60px rgba(8,12,24,.3);
 }
 .list{margin:18px 0 0; padding-left:19px; color:var(--sub); line-height:1.85}
