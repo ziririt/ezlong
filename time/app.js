@@ -5322,6 +5322,20 @@ function trackAddedRank(track) {
 // 나오되 옛 곡도 섞여 나온다 — 운영자 선택("부드럽게").
 const MUSIC_FRESH_BANDS = [3, 2, 1];
 
+// 좋아요 곡 중 **몇 곡까지** 차례를 앞당길 것인가.
+//
+// 2026-08-31 운영 지침 — "이것도 너무 지겨울 수 있다. 2번만 더 먼저로
+// 배정하고 나머지는 앞당기지 말자. 너무 좋은 노래도 자주 들으면 오히려
+// 지겨워지는 법."
+//
+// 맞는 말이다. 좋아요를 서른 곡 눌러 두면 그 서른 곡이 통째로 앞당겨지고,
+// 그러면 좋아요 목록이 곧 재생목록이 된다 — 우리가 방금 고친 그 병이
+// 이름만 바꿔 돌아오는 셈이다. 그래서 한 번에 두 곡만 앞당긴다.
+//
+// 어느 두 곡인가는 고정이 아니다. **가장 오래 안 들은 좋아요 곡 두 곡**이라
+// 자리가 계속 돌아간다. 특정 곡이 편애받아 다시 지겨워질 자리가 없다.
+const MUSIC_LIKED_ADVANCE_MAX = 2;
+
 /**
  * 후보 중에서 한 곡을 고른다. 이 함수가 이 앱의 '랜덤'이다.
  *
@@ -5332,9 +5346,11 @@ const MUSIC_FRESH_BANDS = [3, 2, 1];
  * 2순위 — 다 들었을 때. **가장 오래전에 들은 3분의 1**에서 고른다.
  *   방금 들은 곡이 다시 나오려면 후보의 3분의 2가 지나가야 한다.
  *
- * 좋아요는 '더 자주'가 아니라 '더 먼저'다(운영자 선택). 1순위에서는 무게를
- * 한 칸 올리고, 2순위에서는 들은 시각을 조금 앞당겨 차례가 일찍 오게 한다.
- * 겹치지 않는다는 약속을 깨지 않으면서 좋아하는 곡을 앞으로 당기는 방법이다.
+ * 좋아요는 '더 자주'가 아니라 '더 먼저'이고, 그것도 **두 곡까지만**이다
+ * (2026-08-31 운영 지침 — MUSIC_LIKED_ADVANCE_MAX 참고).
+ * 1순위에서는 아예 손대지 않는다 — 안 들은 곡은 그 자체로 이미 새 곡이라
+ * 앞당길 이유가 없다. 2순위에서만, 가장 오래 안 들은 좋아요 곡 두 곡의
+ * 차례를 당긴다.
  */
 function chooseFromMusicPool(pool, played, likedSet) {
   if (!Array.isArray(pool) || pool.length === 0) return null;
@@ -5350,15 +5366,20 @@ function chooseFromMusicPool(pool, played, likedSet) {
     const weighted = [];
     sorted.forEach((index, pos) => {
       const slot = Math.min(MUSIC_FRESH_BANDS.length - 1, Math.floor(pos / band));
-      let w = MUSIC_FRESH_BANDS[slot];
-      if (likedSet.has(fileOf(index))) w += 1;
+      const w = MUSIC_FRESH_BANDS[slot];
       for (let k = 0; k < w; k += 1) weighted.push(index);
     });
     return weighted[Math.floor(Math.random() * weighted.length)];
   }
 
+  // 좋아요 곡 중 가장 오래 안 들은 두 곡만 차례를 당긴다.
+  const advanced = new Set(
+    pool.filter((i) => likedSet.has(fileOf(i)))
+      .sort((a, b) => heardAt(a) - heardAt(b))
+      .slice(0, MUSIC_LIKED_ADVANCE_MAX)
+  );
   const early = Math.ceil(pool.length / 4);
-  const orderOf = (i) => (likedSet.has(fileOf(i)) ? heardAt(i) - early : heardAt(i));
+  const orderOf = (i) => (advanced.has(i) ? heardAt(i) - early : heardAt(i));
   const sorted = pool.slice().sort((a, b) => orderOf(a) - orderOf(b));
   const head = sorted.slice(0, Math.max(1, Math.ceil(sorted.length / 3)));
   return head[Math.floor(Math.random() * head.length)];
