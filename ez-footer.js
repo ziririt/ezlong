@@ -31,6 +31,19 @@
           '<a href="/life-balance-game.html" class="ez-footer-nav-item">밸런스게임: 마이 라이프</a>' +
         '</nav>' +
 
+        '<!-- 직접 만든 앱 (82항) -->' +
+        '<nav class="ez-footer-apps" aria-label="직접 만든 앱">' +
+          '<span class="ez-footer-apps-title">직접 만든 앱</span>' +
+          '<a href="/app/" class="ez-footer-app">' +
+            '<img src="/time/icons/pwa-512.png" alt="" width="34" height="34" loading="lazy">' +
+            '<span><b>Long Time, Easy Life</b><small>플립시계 · 기상 알람</small></span>' +
+          '</a>' +
+          '<a href="/app/" class="ez-footer-app">' +
+            '<img src="/skybluenote/web/icons/Icon-512.png" alt="" width="34" height="34" loading="lazy">' +
+            '<span><b>Skyblue Note</b><small>AI 답변 정리 노트</small></span>' +
+          '</a>' +
+        '</nav>' +
+
         '<div class="ez-footer-top">' +
           '<div class="ez-footer-brand">' +
             '<picture>' +

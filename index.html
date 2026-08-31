@@ -765,6 +765,57 @@ a { text-decoration: none; color: inherit; }
   .badge-soon { background: #2C2C2E; }
 }
 
+/* ─── 앱 섹션 (2026-08-31, 82항) ──────────────────
+   직접 만든 앱 두 개를 메인에서 소개하고 /app/ 으로 보낸다.
+   도구 카드(.tool-card)와 문법은 같되 배치가 다르다: 앱은 아이콘이 곧 얼굴이라
+   아이콘을 왼쪽에 세우고 글을 오른쪽에 붙인다. 세로로 쌓으면 아이콘이 장식이 된다. */
+#apps { background: var(--bg2); }
+
+.apps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media (max-width: 699px) { .apps-grid { grid-template-columns: 1fr; gap: 10px; } }
+
+.app-card {
+  display: flex; align-items: stretch; gap: 16px;
+  background: var(--card); border: 1px solid var(--bd);
+  border-radius: var(--r); padding: 20px;
+  text-decoration: none; color: inherit;
+  transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+.app-card:hover { border-color: var(--bl-m); box-shadow: var(--shadow); transform: translateY(-2px); }
+.app-card:active { transform: translateY(0); }
+
+/* 곡률 22.5%: iOS 홈 화면에서 보는 그 모양과 같게 맞춘다. */
+.app-card-icon {
+  width: 64px; height: 64px; flex-shrink: 0; display: block; align-self: flex-start;
+  border-radius: 15px; border: 1px solid var(--bd);
+  background: var(--bg); object-fit: cover;
+}
+@media (max-width: 400px) { .app-card-icon { width: 56px; height: 56px; border-radius: 13px; } }
+
+.app-card-body { min-width: 0; display: flex; flex-direction: column; }
+.app-card-kind {
+  font-size: 14px; font-weight: 700; color: var(--bl);
+  letter-spacing: .02em; margin-bottom: 3px;
+}
+.app-card-title {
+  font-size: 19px; font-weight: 800; color: var(--t1);
+  letter-spacing: -.01em; line-height: 1.25; margin-bottom: 7px;
+}
+.app-card-desc { font-size: 15px; color: var(--t2); line-height: 1.6; }
+.app-card-link {
+  display: inline-flex; align-items: center; gap: 5px; align-self: flex-start;
+  margin-top: auto; padding-top: 12px;   /* auto: 설명 길이가 달라도 두 카드가 같은 줄에서 끝난다 */
+  font-size: 15px; font-weight: 700; color: var(--bl);
+}
+.app-card-link svg { width: 14px; height: 14px; flex-shrink: 0; transition: transform .15s ease; }
+.app-card:hover .app-card-link svg { transform: translateX(2px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .app-card, .app-card-link svg { transition: none; }
+  .app-card:hover { transform: none; }
+  .app-card:hover .app-card-link svg { transform: none; }
+}
+
 /* ─── 책 섹션 ────────────────────────────────────── */
 #books { background: var(--bg2); }
 
@@ -1777,6 +1828,44 @@ a { text-decoration: none; color: inherit; }
 </section>
 
 
+<!-- ── 앱 섹션 (2026-08-31, 82항) ─────────────────── -->
+<section class="section" id="apps">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="section-label">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2"/><rect x="3" y="13" width="8" height="8" rx="2.2"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg>
+        직접 만든 앱
+      </p>
+      <p class="section-sub">설치 없이 웹에서 바로 열어 볼 수 있습니다.</p>
+    </div>
+
+    <div class="apps-grid">
+
+      <a class="app-card" href="/app/">
+        <img class="app-card-icon" src="/time/icons/pwa-512.png" alt="Long Time, Easy Life 앱 아이콘" width="512" height="512" loading="lazy">
+        <div class="app-card-body">
+          <p class="app-card-kind">시계 · 스탠바이 · 기상 알람</p>
+          <div class="app-card-title">Long Time, Easy Life</div>
+          <p class="app-card-desc">충전기에 꽂아 가로로 세워두면 큼직한 플립시계가 뜹니다. 계절과 날씨에 맞춰 배경이 저절로 바뀌고, 좋아하는 음악이 속삭이듯 시작해 서서히 커지며 깨워 줍니다. 애플워치도 지원합니다.</p>
+          <span class="app-card-link">앱 소개 보기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a class="app-card" href="/app/">
+        <img class="app-card-icon" src="/skybluenote/web/icons/Icon-512.png" alt="Skyblue Note 앱 아이콘" width="512" height="512" loading="lazy">
+        <div class="app-card-body">
+          <p class="app-card-kind">노트 · AI 답변 정리</p>
+          <div class="app-card-title">Skyblue Note</div>
+          <p class="app-card-desc">챗GPT·클로드·그록이 준 답을 붙여넣고 한 번 누르면 마크다운 별표와 우물 정이 걷힙니다. 깨진 표가 다시 서서 엑셀로 바로 복사되고, 게시판에 붙이면 표시만 빠집니다.</p>
+          <span class="app-card-link">앱 소개 보기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+
 <!-- ── 네이버 프리미엄 콘텐츠 ──────────────────────── -->
 <section class="section" id="premium">
   <div class="wrap">
@@ -2022,6 +2111,11 @@ a { text-decoration: none; color: inherit; }
           <span class="footer-link-col-title">콘텐츠</span>
           <a href="#books">저자 도서</a>
           <a href="#youtube">유튜브</a>
+        </div>
+        <div class="footer-link-col">
+          <span class="footer-link-col-title">앱</span>
+          <a href="/app/">Long Time, Easy Life</a>
+          <a href="/app/">Skyblue Note</a>
         </div>
       </div>
     </div>

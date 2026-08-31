@@ -299,6 +299,46 @@ a { color: inherit; }
   .ez-footer-nav-grid { grid-template-columns: repeat(2, 1fr); gap: 5px; }
 }
 
+/* ── 푸터 앱 소개 (2026-08-31, 82항) ──────────────────────────────
+   서비스 메뉴 그리드는 이 사이트의 도구 목록이다. 앱은 별개의 물건이라
+   같은 격자에 섞으면 "사이트 메뉴 하나"로 읽힌다. 줄을 따로 세우고
+   아이콘을 붙여 앱임을 그림으로 먼저 알린다. */
+.ez-footer-apps {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  padding-bottom: 28px; border-bottom: 1px solid var(--ez-border); margin-bottom: 28px;
+}
+.ez-footer-apps-title {
+  font-size: 14px; font-weight: 800; letter-spacing: .06em;
+  color: var(--ez-text2); margin-right: 4px; flex-shrink: 0;
+}
+.ez-footer-app {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 9px 15px 9px 10px; border-radius: 12px;
+  border: 1px solid var(--ez-border); background: var(--ez-card);
+  text-decoration: none; color: var(--ez-text2);
+  transition: background .12s, color .12s, border-color .12s;
+}
+.ez-footer-app:hover {
+  background: var(--ez-blue-dim); color: var(--ez-blue); border-color: rgba(0,113,227,0.25);
+}
+/* 곡률 22.5%: iOS 홈 화면 아이콘과 같은 모양으로 보이게 한다. */
+.ez-footer-app img {
+  width: 34px; height: 34px; border-radius: 8px; display: block; flex-shrink: 0;
+  border: 1px solid var(--ez-border); background: var(--ez-bg);
+}
+.ez-footer-app b { display: block; font-size: 14px; font-weight: 700; line-height: 1.3; }
+.ez-footer-app small { display: block; font-size: 14px; font-weight: 500; opacity: .72; line-height: 1.3; }
+@media (max-width: 639px) {
+  /* 좁은 화면에서 2열로 나누면 'Long Time, Easy Life'가 석 줄로 접힌다(360px 실측).
+     한 줄에 하나씩 두면 앱 이름이 한 줄에 들어가고 아이콘도 글과 나란히 선다. */
+  .ez-footer-apps { gap: 8px; }
+  .ez-footer-apps-title { width: 100%; margin-bottom: 2px; }
+  .ez-footer-app { flex: 1 1 100%; min-width: 0; }
+}
+@media (prefers-color-scheme: dark) {
+  .ez-footer-app:hover { border-color: rgba(10,132,255,0.3); }
+}
+
 /* ── EZ 푸터 (2026 리디자인) ────────────────────────────────────── */
 .ez-footer {
   background: #FFFFFF;
