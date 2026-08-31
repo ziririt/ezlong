@@ -460,8 +460,6 @@ const musicPlaylist = [
   { group: 287, title: "Fence Between Summers", playlist: "SINGLE", duration: "2:50", file: "Rock-20260720/Fence Between Summers.m4a", category: "Rock-20260720", vocal: false },
   { group: 288, title: "Half-Finished Letters", playlist: "Part 2", duration: "3:18", file: "Rock-20260720/Half-Finished Letters_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 288, title: "Half-Finished Letters", playlist: "SINGLE", duration: "3:11", file: "Rock-20260720/Half-Finished Letters.m4a", category: "Rock-20260720", vocal: false },
-  { group: 289, title: "Last Bus Air Guitar", playlist: "Part 2", duration: "2:57", file: "Rock-20260720/Last Bus Air Guitar_part2.m4a", category: "Rock-20260720", vocal: false },
-  { group: 289, title: "Last Bus Air Guitar", playlist: "Part 3", duration: "3:22", file: "Rock-20260720/Last Bus Air Guitar_part3.m4a", category: "Rock-20260720", vocal: false },
   { group: 289, title: "Last Bus Air Guitar", playlist: "SINGLE", duration: "2:54", file: "Rock-20260720/Last Bus Air Guitar.m4a", category: "Rock-20260720", vocal: false },
   { group: 290, title: "Last Ice Cream Turn", playlist: "Part 2", duration: "3:40", file: "Rock-20260720/Last Ice Cream Turn_part2.m4a", category: "Rock-20260720", vocal: false },
   { group: 291, title: "Late Train Quiet Heart", playlist: "Part 2", duration: "3:57", file: "Rock-20260720/Late Train Quiet Heart_part2.m4a", category: "Rock-20260720", vocal: false },
