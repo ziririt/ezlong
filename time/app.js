@@ -815,7 +815,9 @@ let lastQuoteTitle = "";
 // 둔다 — 앱이 포그라운드로 돌아올 때 아이콘 상태를 이 값 기준으로 다시
 // 맞춰준다(resyncAladinUiAfterForeground 참고).
 let lastRenderedQuote = null;
-let quoteDeck = [];
+// quoteDeck 은 2026-08-31에 걷었다 — 덱이 메모리에만 있어서 앱을 껐다 켤
+// 때마다 처음부터 다시 섞이던 것이 '늘 같은 문장' 신고의 원인이었다.
+// 이제 무엇을 봤는지 기기에 남긴다(quoteSeenStorageKey).
 // 2026-07-20 유저 요청: 문장 4개 미리로드 창 — activePhotoSet/activePhotoIndex와
 // 동일한 역할(아래 ensureQuoteWindow/selectQuoteIndex 참조).
 let quoteWindow = [];
@@ -2742,21 +2744,91 @@ function buildWeightedDeckSource(items) {
   return pool;
 }
 
+// ── 본 문장 기록 (2026-08-31 신설) ─────────────────────────────
+//
+// 운영 지침로 음악을 고친 뒤, "문장도 정말 랜덤이 맞는지" 물으셨다.
+// 재 보니 문장에도 같은 병이 있었다. 원인만 달랐다.
+//
+// 문장은 원래 **덱(deck)** 방식이었다. 전부 섞어 놓고 한 장씩 뽑아 쓰고,
+// 다 쓰면 다시 섞는다 — 그 자체로는 옳은 설계다. 문제는 그 덱이
+// **메모리에만 있었다**는 것이다(let quoteDeck = []). 앱을 껐다 켤 때마다
+// 덱이 처음부터 새로 섞이므로, 매번 '새로 섞은 덱의 앞부분'만 보게 된다.
+// 세션이 짧을수록 그건 복원추출 랜덤과 같아진다.
+//
+// 게다가 덱 한 벌이 1,469장(문장 1,307개 + 가산점 문학 81개를 3벌씩)이다.
+// 1분에 한 장이니 **한 바퀴를 돌려면 24.5시간을 연달아 봐야 한다.**
+// 즉 '겹치지 않는다'는 보장이 실제로 작동한 적이 없다.
+//
+// 그래서 음악과 같은 약을 쓴다 — **무엇을 봤는지 기기에 남긴다.**
+// 문장 원문을 그대로 저장하면 1,300개에 수백 KB가 되므로 32비트 해시로
+// 줄인다. 해시가 겹칠 확률은 1,300개 기준 0.02% 남짓이고, 겹쳐도 문장
+// 하나가 '본 것'으로 처리될 뿐이라 해가 없다.
+const quoteSeenStorageKey = "ezlong:quoteSeen";
+
+function quoteKey(quote) {
+  const src = String((quote && (quote.english || quote.text)) || "");
+  let h = 2166136261;
+  for (let i = 0; i < src.length; i += 1) {
+    h ^= src.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return (h >>> 0).toString(36);
+}
+
+function loadQuoteSeen() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(quoteSeenStorageKey) || "null");
+    if (!raw || typeof raw !== "object" || typeof raw.at !== "object" || !raw.at) {
+      return { n: 0, at: {} };
+    }
+    return { n: Number(raw.n) || 0, at: raw.at };
+  } catch (error) {
+    return { n: 0, at: {} };
+  }
+}
+
+function saveQuoteSeen(state) {
+  try {
+    localStorage.setItem(quoteSeenStorageKey, JSON.stringify(state));
+  } catch (error) {
+    // localStorage 를 못 쓰는 환경이어도 문장은 떠야 한다.
+  }
+}
+
+/**
+ * 다음 문장. 규칙은 음악과 같다.
+ *
+ * 1순위 — **아직 안 본 문장.** 하나라도 있으면 여기서 고른다. 그래서 한
+ *   바퀴를 다 돌기 전에는 같은 문장이 두 번 나오지 않는다. 가산점(문학
+ *   큐레이션)은 그 안에서 3벌로 들어가므로 '더 자주'가 아니라 '더 먼저'가
+ *   된다 — 한 바퀴 안에서 어차피 한 번뿐이다.
+ * 2순위 — 다 봤을 때. **가장 오래전에 본 3분의 1**에서 고른다.
+ *
+ * 같은 책이 연달아 나오지 않게 하던 기존 규칙(lastQuoteTitle)은 그대로 둔다.
+ */
 function getNextQuote() {
   const eligibleQuotes = getEligibleQuotes();
-  if (quoteDeck.length === 0) {
-    quoteDeck = shuffleQuotes(buildWeightedDeckSource(eligibleQuotes));
-  }
+  if (!eligibleQuotes.length) return null;
 
-  if (quoteDeck.length > 1 && quoteDeck[0].title === lastQuoteTitle) {
-    const alternativeIndex = quoteDeck.findIndex((quote) => quote.title !== lastQuoteTitle);
-    if (alternativeIndex > 0) {
-      [quoteDeck[0], quoteDeck[alternativeIndex]] = [quoteDeck[alternativeIndex], quoteDeck[0]];
-    }
-  }
+  const seen = loadQuoteSeen();
+  const seenAt = (quote) => seen.at[quoteKey(quote)] || 0;
+  const unseen = eligibleQuotes.filter((quote) => seenAt(quote) === 0);
 
-  const quote = quoteDeck.shift();
+  let pool;
+  if (unseen.length > 0) {
+    pool = buildWeightedDeckSource(unseen);
+  } else {
+    const sorted = eligibleQuotes.slice().sort((a, b) => seenAt(a) - seenAt(b));
+    pool = sorted.slice(0, Math.max(1, Math.ceil(sorted.length / 3)));
+  }
+  const notLast = pool.filter((quote) => quote.title !== lastQuoteTitle);
+  const from = notLast.length > 0 ? notLast : pool;
+  const quote = from[Math.floor(Math.random() * from.length)];
+
   lastQuoteTitle = quote.title;
+  seen.n += 1;
+  seen.at[quoteKey(quote)] = seen.n;
+  saveQuoteSeen(seen);
   return quote;
 }
 
@@ -2852,7 +2924,6 @@ function advanceQuoteAuto() {
 // 패턴을 창 모델에 맞게 대체 — 덱과 창을 모두 비우고 새로 4개를 채운
 // 뒤 첫 번째를 보여준다.
 function resetQuoteWindow() {
-  quoteDeck = [];
   lastQuoteTitle = "";
   quoteWindow = [];
   ensureQuoteWindow();
@@ -2958,7 +3029,6 @@ function loadSavedFlatGenres() {
     selectedFlatGenres = new Set(["investment"]);
   }
   syncFlatGenreControls();
-  quoteDeck = [];
 }
 
 function saveSelectedFlatGenres() {
