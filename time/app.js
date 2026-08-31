@@ -4107,6 +4107,73 @@ function weatherEmojiFromHour(precipprob, precipMm, hourLabel, isNow, conditions
  *
  * @returns {boolean} 한국 전용 기능을 노출할 것인가
  */
+// ─────────────────────────────────────────────────────────────────────────
+// 열대야에는 철이 있다 (2026-09-01 운영 지침)
+//
+//   "이제 열대야는 언급하지 마. 열대야는 보통 6월20일에서 8월20일 사이이므로,
+//    이때에만 등장시켜줘. 남반구는 그 반대겠지."
+//
+// 9월에 "공식 기준 정상 · 체감상 괜찮음" 배지가 떠 있는 건 정보가 아니라
+// 소음이다. 철이 아니면 카드를 통째로 내리고 호출도 하지 않는다.
+//
+// 남반구는 여름이 해를 넘어가므로(12/20~2/20) 구간 판정이 반대로 감긴다 —
+// "시작 <= 오늘 <= 끝"이 아니라 "시작 <= 오늘 또는 오늘 <= 끝"이다.
+// 이 뒤집힘을 놓치면 남반구에서 1년 내내 숨거나 1년 내내 뜬다.
+//
+// 판정은 언어가 아니라 좌표로 한다(한국 전용 게이트와 같은 원칙).
+// 적도 부근(|위도| < 10도)은 열대야라는 말 자체가 무의미할 만큼 늘 덥지만,
+// 여기서 따로 재주를 부리지 않는다 — 북/남 두 갈래로만 나눈다.
+const TROPICAL_SEASON_NORTH = [620, 820];    // 6/20 ~ 8/20
+const TROPICAL_SEASON_SOUTH = [1220, 220];   // 12/20 ~ 2/20 (해를 넘는다)
+
+/**
+ * 오늘이 열대야를 말할 만한 철인가.
+ * @param {number|null} lat 위도 — 음수면 남반구
+ * @param {Date} [when] 기준 날짜(테스트용). 없으면 지금.
+ * @returns {boolean}
+ */
+function isTropicalNightSeason(lat, when) {
+  const d = when instanceof Date ? when : new Date();
+  const md = (d.getMonth() + 1) * 100 + d.getDate();   // 9월 1일 → 901
+  const south = typeof lat === "number" && lat < 0;
+  const [from, to] = south ? TROPICAL_SEASON_SOUTH : TROPICAL_SEASON_NORTH;
+  return from <= to ? md >= from && md <= to : md >= from || md <= to;
+}
+
+/**
+ * 열대야 카드를 철에 맞춰 보이거나 감춘다.
+ * @returns {boolean} 지금이 철인가 (= 호출도 할 것인가)
+ */
+function applyTropicalSeasonGating() {
+  const { lat } = weatherDetailCoords();
+  const inSeason = isTropicalNightSeason(lat);
+  const card = document.getElementById("wdTropicalCard");
+  if (card) card.hidden = !inSeason;
+  if (!inSeason) {
+    // 남겨두면 "불러오는 중…"이 영원히 박혀 있는다. 비워둔다.
+    if (wdTropicalBadges) wdTropicalBadges.innerHTML = "";
+    if (wdTropicalComment) wdTropicalComment.textContent = "";
+  }
+  syncWeatherDetailDivider();
+  return inSeason;
+}
+
+/**
+ * 평년비교 카드와 열대야 카드 사이의 구분선은 **둘 다 보일 때만** 필요하다.
+ * 예전엔 한국 게이트가 이 선을 평년비교와 한 몸으로 다뤘는데, 열대야가
+ * 철에 따라 따로 사라지게 되면서 "선만 덩그러니 남는" 경우가 생겼다.
+ * 두 카드의 상태를 함께 보고 정한다.
+ */
+function syncWeatherDetailDivider() {
+  const divider = document.getElementById("wdNormalDivider");
+  if (!divider) return;
+  const normal = document.getElementById("wdNormalSection");
+  const card = document.getElementById("wdTropicalCard");
+  const normalOn = !!normal && !normal.hidden;
+  const tropicalOn = !!card && !card.hidden;
+  divider.hidden = !(normalOn && tropicalOn);
+}
+
 function applyKoreaOnlyGating() {
   // ★ showKoreaOnlyFeatures 는 (lat, lng) 두 인자를 받는다 ★
   // 초안에서 userCoords 객체를 통째로 넘겼더니, 첫 인자가 number 가 아니라
@@ -4121,10 +4188,10 @@ function applyKoreaOnlyGating() {
 
   // 카드를 숨긴다. 숨기지 않으면 "불러올 수 없어요"가 남아 고장처럼 보인다.
   const normalSection = document.getElementById("wdNormalSection");
-  const normalDivider = document.getElementById("wdNormalDivider");
-  for (const el of [normalSection, normalDivider]) {
-    if (el) el.hidden = !show;
-  }
+  if (normalSection) normalSection.hidden = !show;
+  // 구분선은 이 카드 혼자 정하지 않는다 — 열대야 카드도 철에 따라 사라지므로
+  // 둘의 상태를 함께 보는 syncWeatherDetailDivider() 가 정한다.
+  syncWeatherDetailDivider();
   if (!show && wdAdvisoryBanner) {
     wdAdvisoryBanner.hidden = true;
     wdAdvisoryBanner.setAttribute("aria-hidden", "true");
@@ -5051,6 +5118,9 @@ function renderWeatherYesterday(data) {
 
 function renderWeatherTropical(data) {
   if (!wdTropicalBadges) return;
+  // 철이 아니면 그리지 않는다. 위 fetchWeatherDetail() 이 이미 걸러내지만,
+  // 이 함수가 다른 길(테스트 시나리오 등)로 불릴 수도 있어 여기서도 막는다.
+  if (!applyTropicalSeasonGating()) return;
   if (!data) {
     wdTropicalBadges.innerHTML = `<p class="weather-empty">${t("weather.tropicalNight.unavailable", null, "열대야 정보를 불러올 수 없어요.")}</p>`;
     if (wdTropicalComment) wdTropicalComment.textContent = "";
@@ -5190,12 +5260,16 @@ async function fetchWeatherDetail() {
     // ★ 판정은 언어가 아니라 좌표로 한다 ★ 한국에 사는 영어 사용자는
     //   이 기능들을 계속 봐야 하고, 해외의 한국어 사용자에게는 없는 게 맞다.
     const koreaOnly = applyKoreaOnlyGating();
+    // 2026-09-01 운영 지침 — 열대야는 철이 아닐 때 아예 말하지 않는다.
+    // 카드를 숨기는 김에 호출도 접는다(미세먼지를 보류할 때와 같은 원칙:
+    // 안 보이는 카드 때문에 네트워크를 쓰지 않는다).
+    const tropicalSeason = applyTropicalSeasonGating();
     const [currentR, rainR, yesterdayR, tropicalR, hourlyStripR, weeklyForecastR, tempVsNormalR, advisoryR] =
       await Promise.allSettled([
         fetchWeatherJson("/api/weather/current"),
         fetchWeatherJson("/api/weather/rain-windows"),
         fetchWeatherJson("/api/weather/yesterday"),
-        fetchWeatherJson("/api/weather/tropical-night"),
+        tropicalSeason ? fetchWeatherJson("/api/weather/tropical-night") : Promise.resolve(null),
         fetchWeatherJson("/api/weather/hourly-strip"),
         fetchWeatherJson("/api/weather/weekly-forecast"),
         // 2026-07-17 2차 기획(묶음D): 평년값 비교. 그 달력일이 처음
@@ -5245,7 +5319,7 @@ async function fetchWeatherDetail() {
     }
     renderWeatherRainWindows(rainData);
     renderWeatherYesterday(yesterdayR.status === "fulfilled" ? yesterdayR.value : null);
-    renderWeatherTropical(tropicalData);
+    if (tropicalSeason) renderWeatherTropical(tropicalData);
     if (koreaOnly) {
       renderWeatherAdvisory(advisoryR.status === "fulfilled" ? advisoryR.value : null);
       wxDiagReport(advisoryR.status, advisoryR.status === "fulfilled" ? advisoryR.value : advisoryR.reason);

@@ -422,7 +422,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.103</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.104</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -1069,8 +1069,10 @@
 
         <div class="settings-divider" id="wdNormalDivider" aria-hidden="true"></div>
 
-        <!-- 4. 오늘 밤 열대야 -->
-        <section class="weather-card" data-i18n-aria="weather.tropicalNight.heading" aria-label="오늘 밤 열대야">
+        <!-- 4. 오늘 밤 열대야
+             2026-09-01 운영 지침 — 철(북반구 6/20~8/20, 남반구 12/20~2/20)에만
+             띄운다. app.js 의 applyTropicalSeasonGating() 이 이 id 로 여닫는다. -->
+        <section class="weather-card" id="wdTropicalCard" data-i18n-aria="weather.tropicalNight.heading" aria-label="오늘 밤 열대야">
           <h3 class="settings-subtitle" data-i18n="weather.tropicalNight.heading">오늘 밤 열대야</h3>
           <div class="weather-tropical-badges" id="wdTropicalBadges">
             <p class="weather-empty" data-i18n="common.loading">불러오는 중…</p>
@@ -1283,7 +1285,7 @@
         <button class="firstrun-cta" id="firstRunStart" type="button" data-i18n="firstRun.cta">시작하기</button>
       </div>
     </div>
-  <script src="app.js?v=20260831-nowplaying-v68"></script>
+  <script src="app.js?v=20260901-tropicalseason-v69"></script>
 
   </body>
 </html>
