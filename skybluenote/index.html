@@ -160,11 +160,19 @@ h1 .grad{
 .shots{display:flex; gap:20px; justify-content:center; align-items:flex-end;
        margin:50px 0 10px; perspective:1400px}
 .phone{
-  width:min(250px,44vw); border-radius:34px; padding:9px; background:#0d1117;
+  width:min(250px,44vw); border-radius:34px; padding:9px; background:#0d1117; overflow:hidden;
   box-shadow:0 30px 70px rgba(8,12,24,.35), 0 2px 0 rgba(255,255,255,.08) inset;
   flex:none;
 }
-.phone img{width:100%; display:block; border-radius:26px}
+.phone img{
+  width:100%; display:block; border-radius:26px;
+  /* 2026-08-31 성동님 지적 — "이미지 height 가 과도하게 길다."
+     원본이 1080x2160(1:2)이라 폭만 정하면 세로가 폭의 두 배로 늘어난다.
+     첫 화면에서 기기가 화면 밖으로 흘러 나가 스크롤을 해야 CTA 아래가
+     보였다. 높이를 눈에 들어오는 만큼으로 못 박고 아래쪽을 자른다 —
+     화면 위쪽(도구 막대·목록)이 보여 줄 것의 전부라 잘라도 손해가 없다. */
+  height:min(46vh,420px); object-fit:cover; object-position:top center;
+}
 .phone:nth-child(1){transform:rotateY(11deg) translateY(14px) scale(.93); opacity:.94}
 .phone:nth-child(3){transform:rotateY(-11deg) translateY(14px) scale(.93); opacity:.94}
 @media (max-width:640px){ .phone:nth-child(3){display:none} }
@@ -263,7 +271,7 @@ footer .row .sp{margin-left:auto}
 
 <section class="hero">
   <div class="wrap">
-    <span class="eyebrow">아이폰 · 아이패드 · 맥 · 안드로이드</span>
+    <span class="eyebrow">웹앱 · 아이폰 · 아이패드 · 맥 · 안드로이드</span>
     <h1>AI 답변을 붙여넣으면,<br><span class="grad">바로 쓸 수 있는 글</span>이 됩니다.</h1>
     <p class="lede">
       ChatGPT와 클로드가 준 답을 그대로 어디에 붙이면, 별표와 우물 정이 따라옵니다.
@@ -403,8 +411,7 @@ footer .row .sp{margin-left:auto}
       <p style="margin:0 0 14px; font-weight:700">바로 가기</p>
       <p style="margin:0 0 9px"><a href="https://ezlong.com">EZLONG 홈</a></p>
       <p style="margin:0 0 9px"><a href="/skybluenote/privacy">개인정보 처리방침</a></p>
-      <p style="margin:0 0 9px"><a href="mailto:ziririt@gmail.com">문의 · ziririt@gmail.com</a></p>
-      <p style="margin:0; color:var(--sub); font-size:13.5px">문의는 보통 하루 안에 답합니다.</p>
+      <p style="margin:0 0 9px"><a href="mailto:easy.invetst.good@gmail.com">문의 · easy.invetst.good@gmail.com</a></p>
     </div>
   </div>
 </section>
