@@ -5269,6 +5269,8 @@ function saveMusicHistory(history) {
 // 옛 기록(번호)은 물려받지 않는다. 물려받아 봐야 위 2번 때문에 이미
 // 어긋나 있고, 비우고 시작하면 모두가 '안 들은 곡'이라 오히려 지금 겪는
 // 문제의 반대편에서 출발한다.
+// 담기는 것: { n: 지금까지 몇 곡 틀었나, at: { 파일이름: 몇 번째로 들었나 },
+//              bored: '다시 섞기'를 누른 시점의 n }
 const musicPlayedStorageKey = "ezlong:musicPlayed";
 
 function loadMusicPlayed() {
@@ -5277,7 +5279,7 @@ function loadMusicPlayed() {
     if (!raw || typeof raw !== "object" || typeof raw.at !== "object" || !raw.at) {
       return { n: 0, at: {} };
     }
-    return { n: Number(raw.n) || 0, at: raw.at };
+    return { n: Number(raw.n) || 0, at: raw.at, bored: Number(raw.bored) || 0 };
   } catch (error) {
     return { n: 0, at: {} };
   }
@@ -5336,6 +5338,25 @@ const MUSIC_FRESH_BANDS = [3, 2, 1];
 // 자리가 계속 돌아간다. 특정 곡이 편애받아 다시 지겨워질 자리가 없다.
 const MUSIC_LIKED_ADVANCE_MAX = 2;
 
+// '다시 섞기'를 누른 뒤 몇 곡 동안 **가장 오래전에 들은 것만** 틀 것인가.
+//
+// 2026-08-31 운영 지침 — "'다시 섞기'를 누르는 사람의 마음은 '지겹다'가
+// 많을 것이다. 그러므로 이런 경우 들은 곡을 과감히 줄이면 좋겠다."
+//
+// 처음에 나는 이 단추가 들은 기록을 **비우게** 해 뒀는데, 다시 생각하니
+// 그건 정확히 반대였다. 기록을 비우면 모든 곡이 '안 들은 곡'이 되고,
+// **방금 지겨워서 넘긴 그 곡이 곧바로 후보로 돌아온다.** 지겨운 사람에게
+// 지겨운 곡을 다시 주는 단추였던 셈이다.
+//
+// 그래서 비우지 않고 **좁힌다.** 평소에는 '가장 오래전에 들은 3분의 1'에서
+// 고르지만, 이 단추를 누른 뒤 40곡 동안은 '10분의 1'에서만 고른다. 창이
+// 좁아진 만큼 사실상 가장 오래된 것부터 차례로 나오고, 한 곡을 틀면 그
+// 곡은 창 밖으로 밀려나므로 겹치지도 않는다. 40곡이 지나면 저절로
+// 평소로 돌아간다 — 끄는 것을 기억할 필요가 없다.
+const MUSIC_BORED_SPAN = 40;
+const MUSIC_BORED_SLICE = 10;   // 지겨울 때는 10분의 1
+const MUSIC_NORMAL_SLICE = 3;   // 평소에는 3분의 1
+
 /**
  * 후보 중에서 한 곡을 고른다. 이 함수가 이 앱의 '랜덤'이다.
  *
@@ -5381,7 +5402,10 @@ function chooseFromMusicPool(pool, played, likedSet) {
   const early = Math.ceil(pool.length / 4);
   const orderOf = (i) => (advanced.has(i) ? heardAt(i) - early : heardAt(i));
   const sorted = pool.slice().sort((a, b) => orderOf(a) - orderOf(b));
-  const head = sorted.slice(0, Math.max(1, Math.ceil(sorted.length / 3)));
+  // '다시 섞기'를 누른 직후에는 창을 확 좁혀 가장 낯선 곡부터 낸다.
+  const bored = Number(played.bored) > 0 && (played.n - Number(played.bored)) < MUSIC_BORED_SPAN;
+  const slice = bored ? MUSIC_BORED_SLICE : MUSIC_NORMAL_SLICE;
+  const head = sorted.slice(0, Math.max(1, Math.ceil(sorted.length / slice)));
   return head[Math.floor(Math.random() * head.length)];
 }
 
@@ -5392,10 +5416,12 @@ function chooseFromMusicPool(pool, played, likedSet) {
 // 누르는 것이므로 좋아요/싫어요 학습 데이터에는 영향을 주지 않는다.
 function reshuffleMusicOrder() {
   saveMusicHistory([]);
-  // 2026-08-31 — '다시 섞기'의 뜻이 바뀌었다. 이제 순서를 정하는 것은
-  // '무엇을 안 들었나'이므로, 섞으려면 그 기록을 비워야 한다. 비우면
-  // 모든 곡이 다시 '안 들은 곡'이 되어 한 바퀴가 새로 시작된다.
-  saveMusicPlayed({ n: 0, at: {} });
+  // 2026-08-31 — 이 단추를 누르는 마음은 '지겹다'다(운영자). 그래서 들은
+  // 기록을 **비우지 않는다.** 비우면 방금 지겨워한 곡이 곧장 돌아온다.
+  // 대신 한동안 가장 오래전에 들은 곡만 나오게 표시를 남긴다.
+  const state = loadMusicPlayed();
+  state.bored = state.n;
+  saveMusicPlayed(state);
   showMusicToast("Shuffled! Fresh order incoming.");
   // 2026-07-16: 운영 피드백 — "셔플만 되어야지 왜 정각 세리모니까지 같이
   // 뜨나?" recordPlayLog(→handleMusicCeremonyOnTrackStart)는 모든 트랙
