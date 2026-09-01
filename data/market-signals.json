@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-01T22:31:10.447648+00:00",
-  "generatedAtKST": "2026-09-02 07:31 KST",
+  "generatedAt": "2026-09-01T22:32:31.353731+00:00",
+  "generatedAtKST": "2026-09-02 07:32 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -708,9 +708,9 @@
       "unit": "%"
     },
     "oil": {
-      "price": 90.84,
-      "change": 5.08,
-      "changePct": 5.9235,
+      "price": 90.9,
+      "change": 5.14,
+      "changePct": 5.9935,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
@@ -724,15 +724,32 @@
       "unit": ""
     },
     "gold": {
-      "price": 4374.7998,
-      "change": -56.3003,
-      "changePct": -1.2706,
+      "price": 4374.5,
+      "change": -56.6001,
+      "changePct": -1.2773,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-09-01T22:31:10.447648+00:00",
+      "atKST": "2026-09-02 07:31 KST",
+      "qqq": {
+        "rsi": 46.57,
+        "macdHist": -0.9366,
+        "dev5": -0.9826,
+        "dev200": 8.0162,
+        "gear": 3,
+        "buyScore": 63,
+        "sellScore": 17,
+        "price": 707.64
+      },
+      "soxxMacdHist": -1.7667,
+      "fearAndGreed": 45,
+      "yield10y": 4.796
+    },
     {
       "at": "2026-09-01T22:01:13.671702+00:00",
       "atKST": "2026-09-02 07:01 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": -1.1396,
       "fearAndGreed": 54,
       "yield10y": 4.72
-    },
-    {
-      "at": "2026-08-28T21:31:49.531618+00:00",
-      "atKST": "2026-08-29 06:31 KST",
-      "qqq": {
-        "rsi": 51.9,
-        "macdHist": -0.4934,
-        "dev5": 0.4543,
-        "dev200": 9.5136,
-        "gear": 3,
-        "buyScore": 63,
-        "sellScore": 21,
-        "price": 716.43
-      },
-      "soxxMacdHist": -1.1396,
-      "fearAndGreed": 54,
-      "yield10y": 4.72
     }
   ],
-  "swingContinuity": "\ucd5c\uadfc \uba70\uce60\uac04 \ub9e4\uc218 \uc810\uc218\uac00 60~64, \ub9e4\ub3c4 \uc810\uc218\uac00 17~25 \uad6c\uac04\uc5d0\uc11c \uc720\uc9c0\ub418\uc5c8\uace0 RSI\ub294 46.57\ub85c \ud558\ub77d\ud558\uba70 \uc57d\uc138 \ud750\ub984\uc744 \uc774\uc5b4\uac14\uc2b5\ub2c8\ub2e4. \ud2b9\ud788 \ubc18\ub3c4\uccb4 \uad00\ub828\uc8fc\uc778 SOXX\uc640 NVDA\uac00 \ucd5c\uadfc 5\uac70\ub798\uc77c \ub3d9\uc548 QQQ \ub300\ube44 \uc0c1\ub300\uc801\uc73c\ub85c \ud070 \ub4f1\ub77d\ud3ed\uc744 \ubcf4\uc774\uba70 \uc628\ub3c4\ucc28\ub97c \ub098\ud0c0\ub0c8\uc2b5\ub2c8\ub2e4.",
-  "swingContinuityEn": "For the past few days, the buy score has hovered between 60-64 and the sell score between 17-25, with the RSI declining to 46.57, continuing a weak trend. Notably, semiconductor-related stocks like SOXX and NVDA showed larger price swings compared to QQQ over the last five trading days, indicating a divergence."
+  "swingContinuity": "\ucd5c\uadfc \uba70\uce60\uac04 \ub9e4\uc218\uc810\uc218\uac00 60~64, \ub9e4\ub3c4\uc810\uc218\uac00 18~25 \uc0ac\uc774\uc5d0\uc11c \uc720\uc9c0\ub418\ub2e4\uac00 \uc624\ub298 \ub9e4\uc218\uc810\uc218 63, \ub9e4\ub3c4\uc810\uc218 17\ub85c \ub9e4\ub3c4\uc138\uac00 \uc18c\ud3ed \uc57d\ud654\ub418\uba70 \uae0d\uc815\uc801\uc778 \ud750\ub984\uc744 \ubcf4\uc600\uc2b5\ub2c8\ub2e4. \ub2e4\ub9cc, RSI\uac00 46.57\ub85c \ud558\ub77d\ud558\uba70 \uc57d\uc138 \uad6c\uac04\uc5d0 \uc9c4\uc785\ud55c \uc810\uc740 \uc720\uc758\ud574\uc57c \ud569\ub2c8\ub2e4. \ud2b9\ud788 SOXX\uc640 TSLA, NVDA\uac00 \ucd5c\uadfc 5\uac70\ub798\uc77c \ub3d9\uc548 \ud070 \ub4f1\ub77d\ud3ed\uc744 \ubcf4\uc774\uba70 \uc885\ubaa9 \uac04 \uc628\ub3c4\ucc28\uac00 \ubd80\uac01\ub418\ub294 \ud750\ub984\uc785\ub2c8\ub2e4.",
+  "swingContinuityEn": "While buy scores have hovered between 60-64 and sell scores between 18-25 in recent days, today's signal shows a slight easing of selling pressure with a buy score of 63 and sell score of 17, indicating a positive shift. However, the RSI's dip to 46.57 suggests a move into weaker territory, which warrants attention. Notably, SOXX, TSLA, and NVDA have exhibited significant price swings over the last five trading days, highlighting divergence among individual stocks."
 }
