@@ -2098,8 +2098,16 @@ _YIELD_TXT = re.compile(r'(국채\s*금리|국채\s*수익률|10년물)([^0-9%]{
 # 코드가 점수를 대신 정할 수는 없으므로 집행하지 않고 재판정 사유로만 쓴다
 # (52항 원칙: 집행 가능한 것만 집행한다). 재판정이 부정으로 옮기면 G6 예외가
 # 그것을 혼조로 되돌리지 않는다 — 두 장치가 한 벌이다.
-def high_yield_rise_in_mixed(entry, snap):
-    """수준이 높은 국채금리의 '상승'이 혼조 칸에 앉아 있으면 재판정 사유(체크 20)."""
+# 성동님 재지적(2026-09-02, 같은 저녁 두 번째): "'국채금리 상승 압력 / 미10년
+# 4.80%(+0.80%)로 소폭 상승해 높은 금리 수준이 성장주 할인율에 부담'은 혼조가
+# 아니야. 악재다." 재판정 사유만으로는 모델이 안 옮기면 그대로 나간다 —
+# 52항이 '감지하고도 게시하는 것은 사고'라고 정한 그 자리다. 집행으로 올린다.
+# 크기는 코드가 모른다. 방향만 안다. 그래서 최소 크기로 싣는다 —
+# 방향이 분명한 재료를 혼조에 두는 것보다 작게라도 부정에 두는 것이 정확하다.
+_YIELD_MIN_SCORE = 10
+
+def high_yield_rise_hits(entry, snap):
+    """수준이 높은 국채금리의 '상승'이 혼조 칸에 앉아 있는 재료를 (재료, 사유)로."""
     if not snap or not _yield_level_high(snap):
         return []
     v = snap.get('yield_pct')
@@ -2118,12 +2126,52 @@ def high_yield_rise_in_mixed(entry, snap):
             continue
         if not re.search(r'상승|급등|오름|올라', name):
             continue
-        out.append(
+        out.append((f, 
             "혼조 오분류: '%s' — 오늘 %s. 이미 성장주 할인율을 누르는 수준에서 "
             "금리가 더 올랐다(%+.2f%%). 하루 변화폭이 작아도 방향은 분명한 악재다. "
             "혼조가 아니라 부정 재료로 옮기고, 수준과 변화를 함께 적어라"
-            % (name, ' · '.join(lvl_txt) or '금리 수준 높음', v))
+            % (name, ' · '.join(lvl_txt) or '금리 수준 높음', v)))
     return out
+
+
+def high_yield_rise_in_mixed(entry, snap):
+    """체크 20 — 재판정 사유 문자열만."""
+    return [why for _f, why in high_yield_rise_hits(entry, snap)]
+
+
+def promote_high_yield_rise(entry, snap):
+    """집행 — 수준 높은 금리의 상승을 혼조에서 부정으로 올린다.
+
+    demote_event_waits()의 거울상이다. 그쪽은 방향이 없는 재료를 혼조로 내리고,
+    이쪽은 방향이 분명한 재료를 혼조에서 끌어올린다. 총점은 두 편을 함께
+    100으로 재정규화한다(편마다 순차로 고치면 두 번째 편이 부풀린 값을 읽는다).
+    호출부는 뒤이어 G2/G3 클램프를 한 번 더 돌려야 한다 — 총점이 움직이므로."""
+    hits = high_yield_rise_hits(entry, snap)
+    if not hits:
+        return entry, []
+    moved = [f for f, _ in hits]
+    mixed = [f for f in (entry.get('mixed_factors') or []) if id(f) not in {id(m) for m in moved}]
+    neg = list(entry.get('negative_factors') or [])
+    if not neg:
+        # 부정 칸이 비어 있으면 이 재료 하나로 편을 세우는 셈이라 크기를 알 수 없다.
+        # 코드가 정직하게 만들 수 없는 판정이므로 손대지 않는다(52항).
+        return entry, []
+    for f in moved:
+        f['score'] = _YIELD_MIN_SCORE
+        f['category'] = 'rates_treasury'
+        neg.append(f)
+    pos_t = int(entry.get('positive_total', 0) or 0)
+    neg_t = int(entry.get('negative_total', 0) or 0) + _YIELD_MIN_SCORE * len(moved)
+    tot = pos_t + neg_t
+    if tot <= 0:
+        return entry, []
+    pos = int(round(pos_t * 100.0 / tot / 5.0) * 5)
+    pos = max(100 - _SIDE_MAX, min(_SIDE_MAX, pos))
+    entry['positive_total'], entry['negative_total'] = pos, 100 - pos
+    entry['positive_factors'] = _redistribute(entry.get('positive_factors') or [], pos)
+    entry['negative_factors'] = _redistribute(neg, 100 - pos)
+    entry['mixed_factors'] = mixed
+    return entry, [why for _f, why in hits]
 
 
 def _yield_sep(sep):
@@ -4126,6 +4174,19 @@ def main():
         record_hold(data, kst_now, 'company_only')    # 75항: 화면에 '갱신 보류'로 알린다
         print("=== 중단 (카드 미생성) ===")
         sys.exit(0)
+
+    # 4-3c. 수준 높은 금리의 상승을 혼조에서 부정으로 (83항, 성동님 재지적)
+    # 재판정(체크 20)으로도 안 옮겼으면 코드가 옮긴다. 총점이 움직이므로
+    # 4-3과 같은 이유로 가드레일 클램프를 한 번 더 돌린다.
+    entry, _hy_moved = promote_high_yield_rise(entry, snap)
+    if _hy_moved:
+        for _why in _hy_moved:
+            print(f"  [83항] 혼조→부정 이동: {_why}")
+        _after_hy = guardrail_violations(entry, snap, prev_entry_for_guard, spy_off_high)
+        if _after_hy:
+            print(f"  WARNING: 금리 승격 후 가드레일 위반 {len(_after_hy)}건 — 재클램프")
+            entry = enforce_guardrails(entry, snap, prev_entry_for_guard, spy_off_high)
+        validate_entry(entry)
 
     # 4-4. 주말 '휴장' 표현 최종 치환 (58항) — 재판정으로도 안 고쳐진 잔여분 처리
     entry = scrub_weekend_closure_word(entry, session_code)
