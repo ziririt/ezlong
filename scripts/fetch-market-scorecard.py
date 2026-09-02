@@ -944,6 +944,17 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 등락률은 **근거로만** 곁들인다. 재료 이름은 그 등락을 만든 사건이어야 한다 —
   실적·가이던스·수주·지표·규제·발언처럼 이름을 댈 수 있는 것(55항).
   원인을 못 찾으면 그 재료를 쓰지 마라. 결과를 원인 자리에 놓느니 빼는 게 낫다.
+- **핵심 이슈(key_event)와 요약은 점수 칸에서 나온다(86항).** 핵심 이슈로 내건
+  사건은 반드시 긍정 또는 부정 재료로 점수를 실어라. 점수를 실을 만큼이 아니면
+  핵심 이슈로 내걸지 마라. 요약이 대는 우위의 이유도 점수를 실은 재료의 이름이어야 한다.
+  실사고: 핵심 이슈 '구글 광고 사업 분할 기각', 요약 '구글 규제 리스크 완화로 긍정
+  우위'인데 긍정 칸에는 구글이 없고 '엔비디아 AI 관련 투자 기대'만 있었다. 카드가
+  한 화면에서 두 이야기를 한 것이다 — 독자는 어느 쪽을 믿어야 할지 모른다.
+- **개별 기업 뉴스에 점수를 싣지 마라 — 카테고리 라벨로 피해 갈 수 없다.** 한 기업의
+  투자·소송·제품·인사 뉴스는 시장 카테고리(ai_tech_valuation 등)를 붙여도 개별 기업
+  뉴스다. 코드는 라벨이 아니라 재료 이름의 글자를 본다. 예외는 벨웨더 실적 이벤트뿐이며,
+  그 뉴스가 시장에 옮겨붙은 것을 말하려면 이름에 그 파급을 써라 —
+  '엔비디아 노키아 투자'가 아니라 '엔비디아 6G 진출로 통신장비 밸류체인 재평가'.
 
 === 단문으로 써라 (65항, 오너 지시) ===
 - 한 문장에는 주장 하나만 담는다. '~이나', '~지만'으로 두 주장을 잇지 말고 끊어라.
@@ -1864,11 +1875,15 @@ def validate_content(entry, session_code='', snap=None):
     # 판매량이 가장 작은 제품의 가격 이슈다 — 미국 증시를 움직이지 못한다.
     # 이 코너의 취지는 시장에 영향을 줄 정보를 가려내는 것이다. 노이즈는 혼조도 아니다.
     for f in entry.get('mixed_factors') or []:
-        if (f.get('category') or '') == 'company_specific':
+        if _company_only_factor(f):
             errors.append(f"혼조 노이즈: '{f.get('name','')}'(개별 기업) — 미국 증시 전체에 "
                           f"영향을 줄 재료가 아니면 혼조에도 싣지 않는다. 시장을 움직일 "
                           f"이슈라면 벨웨더 실적 등 시장 카테고리로 분류해 근거를 대라. "
                           f"아니면 빼라")
+
+    # ── 체크 23: 핵심 이슈·요약이 점수 칸에 없는 회사를 내건다 (86항) ───────
+    for _oc in offcard_topic_reasons(entry):
+        errors.append(_oc)
 
     # ── 체크 22: 매크로 주제가 점수 칸·혼조 칸에 분열 (2026-09-02, 84항) ────
     for _ms in macro_topic_split(entry):
@@ -2490,6 +2505,163 @@ def _rpt_groups_in(text):
                 found.add(g)
                 break
     return found
+
+# ─── 86항 — 라벨이 아니라 글자를 본다 / 핵심 이슈는 점수 칸에서 나온다 ──────
+# (2026-09-03, 오너 지적: "구글이 핵심 이슈라고 해놓고선, 정작 호재란에 왜 없니?")
+#
+# 실사고(09-03 01:48·07:01 두 장 연속): 핵심 이슈는 '구글 광고 사업 분할 기각',
+# 요약은 '구글 규제 리스크 완화로 긍정 우위'. 그런데 긍정 칸에는 구글이 없고
+# '엔비디아 AI 관련 투자 기대'(엔비디아의 노키아 투자, 60점)가 혼자 서 있었다.
+# 카드가 두 가지를 동시에 말한 셈이다 — 오늘의 재료는 구글인데 점수는 엔비디아다.
+#
+# 그 엔비디아 재료는 G4(개별 기업 점수 금지, 51항)의 정확한 표적인데도 통과했다.
+# G4가 모델이 스스로 붙인 category 라벨('ai_tech_valuation')만 봤기 때문이다.
+# 85항에서 "모델이 붙인 라벨로 모델을 검사하지 않는다"고 적어 놓고 그 자리를
+# 안 고쳤다. 이제 라벨이 아니라 이름의 글자를 본다.
+_G4_MARKET_SUBJ = (r'섹터|시장|증시|지수|업종|전반|반도체|기술주|성장주|가치주|'
+                   r'빅테크|관련주|테마|나스닥|다우|러셀|S&P|글로벌|산업\s*전반')
+_G4_EARNINGS    = r'실적|어닝|가이던스|매출|이익|EPS|전망치|컨센서스|백로그|수주'
+
+
+def _company_only_factor(f):
+    """개별 기업 재료인가 — 모델이 붙인 category 라벨을 믿지 않는다.
+
+    면제는 둘. (1) 벨웨더 실적 이벤트(라벨이든 이름의 실적류 낱말이든) —
+    시장을 실제로 움직이는 개별 기업 사건의 유일한 예외다(51항).
+    (2) 이름에 시장 단위 주어가 함께 있는 재료 — '애플 판매 호조에 기술주 강세'는
+    개별 기업 뉴스가 아니라 그 뉴스가 시장에 옮겨붙은 것을 말한다."""
+    if (f.get('category') or '') == 'company_specific':
+        return True
+    if (f.get('category') or '') == 'earnings_bellwether':
+        return False
+    name = f.get('name', '') or ''
+    if re.search(_G4_EARNINGS, name) or re.search(_G4_MARKET_SUBJ, name):
+        return False
+    return len(_rpt_groups_in(name)) == 1
+
+
+def _scored_factor_text(entry):
+    return ' '.join(((f.get('name') or '') + ' ' + (f.get('desc') or ''))
+                    for side in ('positive_factors', 'negative_factors')
+                    for f in (entry.get(side) or [])
+                    if int(f.get('score', 0) or 0) > 0)
+
+
+def offcard_topic_hits(entry):
+    """핵심 이슈·요약이 내건 회사가 점수 칸에 없으면 그 회사를 돌려준다.
+
+    카드 맨 위 두 줄(핵심 이슈·요약)은 "오늘 무엇 때문인가"를 말하는 자리다.
+    거기 이름이 나온 회사가 정작 긍정·부정 어느 칸에도 없으면, 카드는 한 화면에서
+    서로 다른 두 이야기를 하는 것이다. 판정 근거는 점수 칸에서만 나온다(68항의
+    보고서 규칙을 카드 머리에 그대로 적용)."""
+    on = _rpt_groups_in(_scored_factor_text(entry))
+    ke = entry.get('key_event') or {}
+    ktxt = (ke.get('name') or '') + ' ' + (ke.get('why') or '')
+    return {'key': _rpt_groups_in(ktxt) - on,
+            'summary': _rpt_groups_in(entry.get('summary') or '') - on}
+
+
+def _group_label(g):
+    """재판정 사유에 쓸 회사 표기 — 내부 그룹키('google') 대신 한글 별칭."""
+    ko = [a for a in _RPT_COMPANY_GROUPS.get(g, []) if not re.search(r'[a-z]', a)]
+    return ko[0] if ko else g
+
+
+def _josa_eul(word):
+    w = (word or '').strip()
+    ch = w[-1] if w else ''
+    if '가' <= ch <= '힣':
+        return '을' if (ord(ch) - 0xAC00) % 28 else '를'
+    return '를'
+
+
+def offcard_topic_reasons(entry):
+    """체크 23 — 재판정 사유. 집행은 4-6c가 한다."""
+    hits = offcard_topic_hits(entry)
+    out = []
+    ke = (entry.get('key_event') or {}).get('name', '')
+    for g in sorted(hits['key']):
+        lab = _group_label(g)
+        out.append(f"핵심 이슈 고아: 핵심 이슈로 '{ke}'{_josa_eul(ke)} 내걸었는데 긍정·부정 어느 "
+                   f"칸에도 {lab} 재료가 없다. 오늘의 핵심 이슈라면 점수를 실어라. 점수를 "
+                   f"실을 만큼이 아니면 핵심 이슈로 내걸지 마라 — 카드 맨 위와 점수 칸이 "
+                   f"다른 이야기를 하면 독자는 어느 쪽을 믿어야 할지 모른다")
+    for g in sorted(hits['summary'] - hits['key']):
+        out.append(f"요약 고아: 요약이 우위의 이유로 {_group_label(g)}를 대는데 그 재료가 "
+                   f"점수 칸에 없다. "
+                   f"우위의 이유는 반드시 점수를 실은 재료의 이름이어야 한다")
+    return out
+
+
+def _josa_ro(word):
+    """'로'인가 '으로'인가 — 받침 없음·ㄹ 받침이면 '로'."""
+    w = (word or '').strip()
+    ch = w[-1] if w else ''
+    if '가' <= ch <= '힣':
+        return '로' if (ord(ch) - 0xAC00) % 28 in (0, 8) else '으로'
+    return '로'
+
+
+def _top_scored_factor(entry):
+    best = None
+    for side in ('positive_factors', 'negative_factors'):
+        for f in (entry.get(side) or []):
+            sc = int(f.get('score', 0) or 0)
+            if sc > 0 and (best is None or sc > int(best.get('score', 0) or 0)):
+                best = f
+    return best
+
+
+def fix_offcard_topics(entry):
+    """집행(4-6c) — 재판정으로도 안 고쳐지면 카드 머리를 점수 칸에 맞춘다.
+
+    점수·재료는 건드리지 않는다. 코드가 아는 것은 "이 회사는 점수 칸에 없다"는
+    사실뿐이라, 할 수 있는 정직한 일은 카드 머리에서 그 이름을 내리는 것이다.
+    핵심 이슈는 실제 최고점 재료로 갈아 끼우고, 요약의 고아 구절은 그 재료 이름으로
+    바꾼다. 바꿀 자리를 못 찾으면 그 절을 통째로 뺀다."""
+    hits = offcard_topic_hits(entry)
+    orphans = hits['key'] | hits['summary']
+    if not orphans:
+        return entry, []
+    top = _top_scored_factor(entry)
+    if not top:
+        return entry, []
+    aliases = [a for g in orphans for a in _RPT_COMPANY_GROUPS.get(g, [])]
+    alias_re = '(?:' + '|'.join(re.escape(a) for a in sorted(aliases, key=len, reverse=True)) + ')'
+    done = []
+
+    if hits['summary']:
+        name = (top.get('name') or '').strip()
+        sm = entry.get('summary') or ''
+        new = re.sub(r'[^,]*?' + alias_re + r'[^,]*?(?:으로|로)(?=\s)',
+                     name + _josa_ro(name), sm, count=1, flags=re.I)
+        if new == sm:   # 원인 구절 꼴이 아니면 그 절을 통째로 뺀다
+            parts = [x for x in re.split(r'\s*,\s*', sm)
+                     if not re.search(alias_re, x, re.I)]
+            new = ', '.join(parts).strip(' ,')
+        if new and new != sm:
+            entry['summary'] = new
+            done.append(f"요약 '{sm[:24]}…' → '{new[:24]}…'")
+        # 영문은 절 구조가 달라 억지로 깁지 않는다 — 점수와 최고 재료로 다시 쓴다.
+        pos, neg = int(entry.get('positive_total', 0) or 0), int(entry.get('negative_total', 0) or 0)
+        lead = 'Positive' if pos > neg else ('Negative' if neg > pos else 'Mixed')
+        en_name = (top.get('name_en') or '').strip()
+        if en_name and re.search(alias_re, entry.get('summary_en') or '', re.I):
+            entry['summary_en'] = f"{lead} bias on {en_name}"
+
+    if hits['key']:
+        ke = entry.get('key_event') or {}
+        old = ke.get('name', '')
+        ke['name'] = top.get('name') or old
+        ke['why'] = top.get('desc') or ke.get('why', '')
+        if top.get('name_en'):
+            ke['name_en'] = top['name_en']
+        if top.get('desc_en'):
+            ke['why_en'] = top['desc_en']
+        entry['key_event'] = ke
+        done.append(f"핵심 이슈 '{old}' → '{ke['name']}'")
+    return entry, done
+
 
 # ─── 77항 — 블릿의 '몸통'도 카드의 해설이어야 한다 (2026-08-27, 성동님 지적) ──
 # 실사고(2026-08-27 02:04 보고서 호재): "로봇 및 AI 기술 투자 심리: … 자금 유입 지속.
@@ -4194,12 +4366,17 @@ def guardrail_violations(entry, snap, prev_entry, spy_off_high):
     # 한 기업의 지역 판매·등급 조정 같은 뉴스는 시장 전체의 재료가 아니다. 시장을
     # 실제로 움직인 실적 이벤트는 earnings_bellwether 카테고리로 허용된다.
     # 해당 종목 주가가 그날 올랐는데 부정 재료로 실리는 자기모순도 이 검사가 잡는다.
+    # 2026-09-03(86항) — 라벨이 아니라 이름의 글자를 본다. 'ai_tech_valuation'을
+    # 달고 나온 '엔비디아 AI 관련 투자 기대'(노키아 투자)가 이 검사를 그대로 통과해
+    # 긍정 60점을 혼자 차지했다. 모델이 붙인 이름표로 모델을 검사할 수 없다.
     for side, side_ko in (('positive_factors', '긍정'), ('negative_factors', '부정')):
         for f in entry.get(side) or []:
-            if f.get('category') == 'company_specific' and int(f.get('score', 0) or 0) > 0:
-                errors.append(f"개별 기업 재료 점수 배분: {side_ko} '{f.get('name','')}'(company_specific)는 "
-                              f"시장 전체 재료가 아님 — 시장 전체를 움직인 실적 이벤트(earnings_bellwether)만 "
-                              f"점수 허용, 그 외 개별 기업 뉴스는 제외하거나 혼조(무점수)로")
+            if _company_only_factor(f) and int(f.get('score', 0) or 0) > 0:
+                errors.append(f"개별 기업 재료 점수 배분: {side_ko} '{f.get('name','')}'는 "
+                              f"단일 기업 뉴스라 시장 전체 재료가 아님 — 시장 전체를 움직인 실적 "
+                              f"이벤트(earnings_bellwether)만 점수 허용, 그 외 개별 기업 뉴스는 "
+                              f"제외하거나 혼조(무점수)로. 카테고리 라벨이 아니라 재료의 내용으로 "
+                              f"판단한다")
     # G3 — 극단값 앵커
     neg = int(entry.get('negative_total', 50) or 50)
     pos = int(entry.get('positive_total', 50) or 50)
@@ -4254,7 +4431,7 @@ def enforce_guardrails(entry, snap, prev_entry, spy_off_high):
     # 세우고 main()이 이번 회차를 거른다(75항 '갱신 보류'가 화면에 이유를 적는다).
     for side in ('positive_factors', 'negative_factors'):
         factors = entry.get(side) or []
-        keep = [f for f in factors if not (f.get('category') == 'company_specific'
+        keep = [f for f in factors if not (_company_only_factor(f)
                                            and int(f.get('score', 0) or 0) > 0)]
         if len(keep) == len(factors):
             continue
@@ -4502,13 +4679,20 @@ def main():
     if _sfix:
         print(f"  [84항] 요약을 점수에 맞춰 교정: {entry.get('summary')}")
 
+    # 4-6c. 카드 머리와 점수 칸 정합 (86항) — 핵심 이슈·요약이 점수 칸에 없는 회사를
+    # 내걸면 카드가 한 화면에서 두 이야기를 한다. 점수는 건드리지 않고 머리를 맞춘다.
+    # 4-6b(요약 우위 표현) 다음에 온다 — 요약을 다시 쓰는 자리라 순서가 중요하다.
+    entry, _oc_done = fix_offcard_topics(entry)
+    for _d in _oc_done:
+        print(f"::warning::[86항] 카드 머리 정합: {_d}")
+
     # 4-7. 금리 상시 노출 보증 (64항) — 모델이 금리를 통째로 뺐으면 실측치로 혼조 보충
     entry = ensure_rates_visible(entry, snap)
 
     # 4-7b. 혼조 칸 개별 기업 노이즈 제거 (67항) — 재판정으로도 남으면 코드가 걷어낸다.
     # 점수가 없는 재료라 판정(총점)은 변하지 않는다. 감지하고도 게시하지 않는다(52항).
     _mf = entry.get('mixed_factors') or []
-    _noise = [f for f in _mf if (f.get('category') or '') == 'company_specific']
+    _noise = [f for f in _mf if _company_only_factor(f)]
     if _noise:
         entry['mixed_factors'] = [f for f in _mf if f not in _noise]
         for _f in _noise:
