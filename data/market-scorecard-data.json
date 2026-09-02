@@ -1,6 +1,81 @@
 {
   "entries": [
     {
+      "id": "2026-09-02-23:20",
+      "timestamp_kst": "2026-09-02(수) 23:20 KST",
+      "key_event": {
+        "name": "AI 관련 기업 실적 호조",
+        "name_en": "Strong Earnings from AI-Related Companies",
+        "time": "2026-09-02 정규장",
+        "why": "AI 관련 기업 실적 호조, 시장 심리 개선, 기술주 상승 견인",
+        "why_en": "Positive AI earnings, improved market sentiment, driving tech stocks up"
+      },
+      "positive_total": 55,
+      "negative_total": 45,
+      "summary": "긍정 우위, 지정학적 긴장 지속으로 혼조",
+      "summary_en": "Positive bias due to strong AI-related earnings, mixed by ongoing geopolitical tensions",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "델(Dell) 실적 및 AI 백로그 호조",
+          "name_en": "Dell's Strong Earnings and AI Backlog",
+          "desc": "델의 매출 가이던스 월가 예상치 상회, 950억 달러 AI 백로그 기록: AI 관련 투자 심리 강화",
+          "desc_en": "Dell's revenue guidance exceeded Wall Street forecasts, record $95B AI backlog: strengthens AI investment sentiment",
+          "category": "earnings_bellwether"
+        },
+        {
+          "score": 20,
+          "name": "엔비디아(NVDA) 주가 강세",
+          "name_en": "Nvidia (NVDA) Stock Strength",
+          "desc": "엔비디아 2.52% 상승: AI 관련 수요 지속 및 긍정적 전망 반영",
+          "desc_en": "Nvidia up 2.52%: reflecting continued AI demand and positive outlook",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 35,
+          "name": "미-이란 지정학적 긴장 지속",
+          "name_en": "Ongoing US-Iran Geopolitical Tensions",
+          "desc": "미-이란 긴장 고조 지속: 유가 변동성 및 시장 불확실성 증폭",
+          "desc_en": "Continued escalation of US-Iran tensions: increasing oil price volatility and market uncertainty",
+          "category": "geopolitics"
+        },
+        {
+          "name": "미 국채금리 소폭 하락",
+          "name_en": "Slight Decline in US Treasury Yields",
+          "desc": "미10년 국채금리 4.79%(-0.21%)로 소폭 하락했으나 여전히 높은 수준 유지: 성장주 할인율 압박은 지속",
+          "desc_en": "US 10-year Treasury yield slightly down to 4.79% (-0.21%), but remains at a high level: continued pressure on growth stock valuations",
+          "category": "rates_treasury",
+          "score": 10
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "WTI 유가 소폭 하락",
+          "name_en": "Slight Decline in WTI Crude Oil",
+          "desc": "WTI 유가 89.60달러(-1.20%)로 소폭 하락: 인플레이션 우려 완화에 긍정적이나 지정학적 리스크로 변동성 잔존",
+          "desc_en": "WTI crude oil slightly down to $89.60 (-1.20%): positive for easing inflation concerns, but volatility remains due to geopolitical risks",
+          "category": "oil_energy"
+        },
+        {
+          "name": "고용보고서 발표 대기",
+          "name_en": "Anticipation of Employment Report",
+          "desc": "8월 고용보고서 9월 4일(금) 08:30 ET 발표를 앞두고 관망세: 시장 방향성 탐색",
+          "desc_en": "Market awaiting August employment report on Sep 4 (Fri) 08:30 ET: seeking market direction",
+          "category": "macro_data"
+        }
+      ],
+      "report": {
+        "overview": "- 시장 총평: AI 관련 기업들의 실적 호조에 힘입어 긍정 우위로 마감했으나, 지정학적 긴장 지속으로 인한 불확실성으로 혼조세가 나타남.\n- 긍정 요인: 델(Dell)의 예상치를 상회하는 매출 가이던스와 950억 달러에 달하는 AI 백로그 기록, 엔비디아(NVDA)의 주가 강세가 AI 관련 투자 심리를 강화하며 기술주 전반의 상승을 견인.\n- 부정 요인: 미-이란 간 지정학적 긴장이 고조되며 유가 변동성 및 시장 불확실성을 증폭시키고, 미 국채금리가 소폭 하락했음에도 여전히 높은 수준을 유지하며 성장주 할인율에 압박을 가함.\n- 하방 지지: AI 관련 기술 기업들의 견조한 실적과 수요가 시장의 하방을 지지하는 주요 요인으로 작용.",
+        "positive": "- 델(Dell) 실적 및 AI 백로그 호조: 델의 매출 가이던스가 월가 예상치를 상회하고 950억 달러의 기록적인 AI 백로그를 기록하며 AI 관련 투자 심리가 크게 강화. 이는 AI 데이터 센터 지출 증가에 대한 기대를 높이는 요인으로 작용.\n- 엔비디아(NVDA) 주가 강세: 엔비디아 주가가 2.52% 상승하며 AI 관련 수요가 지속되고 긍정적인 시장 전망이 반영. 이는 AI 기술주 전반의 강세를 이끌며 시장 심리 개선에 기여.",
+        "negative": "- 미-이란 지정학적 긴장 지속: 미국과 이란 간의 긴장이 고조되며 유가 변동성이 커지고 시장 전반의 불확실성이 증폭. 이는 투자자들의 위험 회피 심리를 자극하며 증시 상승을 제한.\n- 미 국채금리 소폭 하락: 미 10년 국채금리가 4.79%(-0.21%)로 0.21%p 소폭 하락했으나 여전히 높은 수준을 유지. 이는 성장주에 대한 할인율 압박을 지속시키며 기술주 상승 여력을 제한.",
+        "mixed": "- WTI 유가 소폭 하락: WTI 유가가 89.60달러로 1.20% 소폭 하락하며 인플레이션 우려 완화에 긍정적인 영향을 미침. 그러나 미-이란 지정학적 리스크가 잔존하여 유가 변동성이 여전히 높은 상황.\n- 고용보고서 발표 대기: 8월 고용보고서(9월 4일(금) 08:30 ET 발표 예정)를 앞두고 시장에 관망세가 형성. 이는 향후 연준의 통화정책 방향에 대한 힌트를 제공할 것으로 예상되어 시장의 방향성 탐색이 지속.",
+        "watch": "- AVGO 실적 발표: 브로드컴(AVGO) 실적 발표(9월 2일(수) 장 마감 후 ET, 약 6시간 뒤)를 앞두고 반도체 및 AI 관련 기업들의 실적 전망에 대한 시장의 기대감 변화 확인.\n- 고용보고서 발표 전 포지셔닝: 8월 고용보고서(9월 4일(금) 08:30 ET) 발표를 앞두고 투자자들이 고용 지표 결과에 따라 포지션을 조정하는 움직임 확인. 이는 시장 전반의 변동성을 유발할 수 있음.\n- 미 10년 국채금리 및 WTI 유가 추이: 미-이란 지정학적 긴장 지속 여부와 글로벌 경제 지표에 따른 10년 국채금리 및 WTI 유가의 추가적인 변동성 확인."
+      },
+      "report_at": "2026-09-02(수) 23:20 KST"
+    },
+    {
       "id": "2026-09-02-21:50",
       "timestamp_kst": "2026-09-02(수) 21:50 KST",
       "key_event": {
@@ -581,68 +656,8 @@
         "watch": "- 미 국채금리 및 유가 추이: 중동 지정학적 긴장 고조에 따른 미 국채금리와 WTI 원유 가격의 추가 상승 여부 및 인플레이션 압력 변화 지속적 관찰."
       },
       "report_at": "2026-09-01(화) 04:13 KST"
-    },
-    {
-      "id": "2026-09-01-01:50",
-      "timestamp_kst": "2026-09-01(화) 01:50 KST",
-      "key_event": {
-        "name": "미-이란 긴장 고조 지속",
-        "name_en": "US-Iran Tensions Escalate",
-        "time": "2026-08-31 정규장",
-        "why": "중동 지정학적 리스크 확대, 유가 상승 압력, 인플레이션 우려",
-        "why_en": "Increased Middle East geopolitical risk, upward oil price pressure, inflation concerns"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "미-이란 긴장 고조와 인플레이션 우려로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to escalating US-Iran tensions and inflation concerns",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "AI 관련 기술주 견조한 흐름",
-          "name_en": "Resilient AI-related tech stocks",
-          "desc": "Trade Desk의 AI 에이전트 출시, OKTA 및 Adobe의 AI 보안 및 CXO 성장 소식에 일부 기술주 강세",
-          "desc_en": "Some tech stocks show strength on Trade Desk's AI agent launch, OKTA and Adobe's AI security and CXO growth news",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "미-이란 긴장 고조",
-          "name_en": "Escalating US-Iran tensions",
-          "desc": "미국과 이란의 상호 공격 소식, 호르무즈 해협 공급 우려로 유가 상승 압력 지속",
-          "desc_en": "News of US-Iran exchange attacks, renewed Hormuz supply fears, sustaining upward pressure on oil prices",
-          "category": "geopolitics"
-        },
-        {
-          "score": 30,
-          "name": "인플레이션 우려 지속",
-          "name_en": "Persistent inflation concerns",
-          "desc": "전 Fed 부의장의 추가 금리 인상 가능성 언급, 유가 상승으로 인플레이션 압력 심화",
-          "desc_en": "Former Fed Vice Chair's comments on potential rate hikes, rising oil prices exacerbate inflation pressure",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미 국채금리 상승 압력",
-          "name_en": "Upward pressure on US Treasury yields",
-          "desc": "미10년 국채금리 4.76%(+0.85%), 미30년 국채금리 5.26%(+1.00%)로 상승했으나, 변동폭이 작아 시장 방향성 판단은 혼조",
-          "desc_en": "US 10-year Treasury yield rose to 4.76% (+0.85%) and 30-year to 5.26% (+1.00%), but small movement makes market direction mixed",
-          "category": "rates_treasury"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총평: 미-이란 긴장 고조와 인플레이션 우려가 지속되며 부정적인 시장 분위기 우위.\n- 주요 하락 요인: 중동 지정학적 리스크 확대와 유가 상승 압력으로 인한 인플레이션 우려 심화가 시장 전반에 부담.\n- 기술주 동향: AI 관련 기술주들의 견조한 흐름이 일부 긍정적인 요인으로 작용했으나, 시장 전반의 부정적 흐름을 상쇄하기에는 역부족.\n- 국채금리 변동: 미 국채금리 상승 압력이 있었으나 변동폭이 작아 시장 방향성에 대한 명확한 신호는 부재.",
-        "positive": "- AI 관련 기술주 견조한 흐름: Trade Desk의 AI 에이전트 출시 소식과 OKTA 및 Adobe의 AI 보안 및 CXO 성장 발표에 힘입어 일부 기술주들이 강세를 보이며 긍정적인 투자 심리 형성.",
-        "negative": "- 미-이란 긴장 고조: 미국과 이란 간의 상호 공격 소식이 전해지며 중동 지정학적 리스크가 확대. 호르무즈 해협의 원유 공급 차질 우려로 국제 유가 상승 압력이 지속되며 시장 불안감 고조. US Equity Indexes가 하락하고 Crude Oil 가격이 상승하는 등 지정학적 리스크가 시장에 직접적인 영향을 미치는 상황.\n- 인플레이션 우려 지속: 전 Fed 부의장이 추가 금리 인상 가능성을 언급하며 시장에 인플레이션 압박에 대한 경고음 발신. 유가 상승이 인플레이션 압력을 심화시킬 것이라는 우려가 커지며, 이는 연준의 긴축 기조 장기화 가능성으로 이어져 증시 하방 압력으로 작용. PCE 물가상승률(3.70%) 및 근원 PCE 물가상승률(3.34%)이 여전히 높은 수준을 유지하는 점도 우려를 가중.",
-        "mixed": "- 미 국채금리 상승 압력: 미10년 국채금리가 4.76%(+0.85%), 미30년 국채금리가 5.26%(+1.00%)로 상승하며 채권 시장에 매도 압력이 존재. 이는 일반적으로 주식 시장에 부정적인 요인이지만, 금리 변동폭이 상대적으로 작아 시장 전반의 방향성을 명확히 제시하기보다는 혼조세를 유발하는 요인으로 작용.",
-        "watch": "- 미 국채금리 및 유가 추이: 중동 지정학적 리스크 지속 여부에 따른 미 국채금리 및 국제 유가 변동 추이 확인. 유가 상승 압력이 지속될 경우 인플레이션 우려가 더욱 심화되어 시장 전반에 부정적인 영향을 미칠 수 있으며, 미10년 국채금리가 4.76% 수준에서 추가 상승할 경우 기술주 등 성장주에 부담으로 작용할 가능성 잔존."
-      },
-      "report_at": "2026-09-01(화) 04:13 KST"
     }
   ],
-  "updated_at": "2026-09-02T12:51:14Z",
+  "updated_at": "2026-09-02T14:21:14Z",
   "max_entries": 10
 }
