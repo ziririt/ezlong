@@ -953,6 +953,28 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 금리는 매 카드에서 다뤄야 할 상시 주제다. 긍정도 부정도 아니면 혼조로라도 싣는다.
   독자가 "오늘 카드에 금리 얘기가 왜 없지"라고 묻게 만들지 마라.
 
+=== 안전자산이 오르는 것은 주식시장의 호재가 아니다 (83항, 오너 지적) ===
+- 금·엔화·스위스프랑·미 국채는 **위험이 커질 때 사는 자산**이다. 이것들이 오른다는
+  것은 위험자산(주식)에서 돈이 빠져나간다는 뜻이다. positive_factors 에 넣지 마라.
+- 나쁜 예(실사고): 긍정 35점 전부가 '금 가격 상승 / 안전자산 선호 심리 반영,
+  금 +0.60% 상승'. 오너 지적: "안전자산 선호 심리 반영이면 주식시장 악재지,
+  어떻게 호재냐?" 맞는 말이다. 이건 부정 재료이거나, 크기가 작으면 혼조다.
+- **'안전자산 선호'·'위험회피'·'리스크 오프'라는 말 자체를 긍정 칸에 쓰지 마라.**
+  국면과 무관하게 성립하지 않는다. 반대로 '안전자산 선호 완화'는 긍정이 맞다.
+- 금·엔이 **내리는** 것은 리스크온 신호라 긍정 재료가 될 수 있다. 방향을 보라.
+- 그리고 '심리 반영'은 원인이 아니라 상태 묘사다(63항). 왜 안전자산으로 갔는지를 써라.
+
+=== 수준이 높은 금리의 상승은 혼조가 아니라 악재다 (83항, 오너 지적) ===
+- 금리는 **수준이 이미 판정의 절반**이다. 10년물이 4.5%를 넘는 구간은 그 자체로
+  성장주 할인율을 누르고 있다. 거기서 더 오르면 하루 변화폭이 작아도 방향은 분명하다.
+- 오너 지적: "국채금리가 엄청 높은데 소폭 상승이라도 하면 악재지 어떻게 애매하냐?"
+- 혼조로 내리는 것은 **방향을 못 읽을 때**다. 수준이 높은데 올랐다면 방향은 읽힌다 —
+  작은 악재이지 애매한 재료가 아니다. negative_factors 에 작은 점수로 실어라.
+- 64항('빼기보다 혼조')은 **방향이 정말 안 서는** 재료를 위한 규칙이다. 이 경우와
+  헷갈리지 마라. 금리가 **낮은 구간**에서 소폭 움직인 것이 그 규칙의 자리다.
+- 표기는 늘 수준과 변화를 함께: '미10년 4.80%(+0.80%)'. 변화만 적으면 독자는
+  금리가 0.80%인 줄 읽는다. 수준에 '+'를 붙이지 마라 — 변화로 오독된다.
+
 === 방향 없는 상태는 재료가 아니다 (60항) ===
 - '관망', '눈치보기', '숨 고르기', '방향성 탐색', '보합', '혼조 지속' 처럼 **방향이 없는
   상태**를 positive_factors·negative_factors 의 재료 이름으로 쓰지 마라. 관망은 시장이
@@ -1807,6 +1829,10 @@ def validate_content(entry, session_code='', snap=None):
                           f"이슈라면 벨웨더 실적 등 시장 카테고리로 분류해 근거를 대라. "
                           f"아니면 빼라")
 
+    # ── 체크 20: 수준 높은 금리의 상승을 혼조로 (2026-09-02 신설, 83항) ─────
+    for _hy in high_yield_rise_in_mixed(entry, snap):
+        errors.append(_hy)
+
     # ── 체크 19: 악재에 '기대(감)' 표현 (2026-08-27 신설, 76항) ─────────────
     for _exp in adverse_expect_offenders(entry):
         errors.append(_exp)
@@ -2061,21 +2087,86 @@ def enforce_concessive(entry):
 _YIELD_TXT = re.compile(r'(국채\s*금리|국채\s*수익률|10년물)([^0-9%]{0,8})'
                         r'(\d+(?:\.\d+)?)\s*%')
 
+# --- 83항: 수준이 높은 금리의 상승은 혼조가 아니라 악재 (2026-09-02, 성동님 지적) ---
+# 지적 원문: "국채금리가 엄청 높은데 소폭 상승이라도 하면 악재지 어떻게 애매하냐?"
+#
+# 맞는 말이다. 64항이 '빼기보다 혼조'를 정하면서 미세 변동 재료의 목적지를 혼조로
+# 잡았는데, 그 규칙이 **수준을 안 봤다.** 10년물이 4.80%인 날의 +0.80% 상승은
+# 크기로만 재면 오차 범위지만, 이미 성장주를 누르고 있는 금리가 더 올라간 것이라
+# 방향은 분명하다. 애매한 게 아니라 작은 악재다.
+#
+# 코드가 점수를 대신 정할 수는 없으므로 집행하지 않고 재판정 사유로만 쓴다
+# (52항 원칙: 집행 가능한 것만 집행한다). 재판정이 부정으로 옮기면 G6 예외가
+# 그것을 혼조로 되돌리지 않는다 — 두 장치가 한 벌이다.
+def high_yield_rise_in_mixed(entry, snap):
+    """수준이 높은 국채금리의 '상승'이 혼조 칸에 앉아 있으면 재판정 사유(체크 20)."""
+    if not snap or not _yield_level_high(snap):
+        return []
+    v = snap.get('yield_pct')
+    if v is None or v <= 0:
+        return []
+    l10, l30 = snap.get('yield_level'), snap.get('yield30_level')
+    lvl_txt = []
+    if l10 is not None:
+        lvl_txt.append('미10년 %.2f%%' % l10)
+    if l30 is not None:
+        lvl_txt.append('미30년 %.2f%%' % l30)
+    out = []
+    for f in (entry.get('mixed_factors') or []):
+        name = f.get('name', '') or ''
+        if not re.search(_SUBJ_MKT_RATE, name, re.I):
+            continue
+        if not re.search(r'상승|급등|오름|올라', name):
+            continue
+        out.append(
+            "혼조 오분류: '%s' — 오늘 %s. 이미 성장주 할인율을 누르는 수준에서 "
+            "금리가 더 올랐다(%+.2f%%). 하루 변화폭이 작아도 방향은 분명한 악재다. "
+            "혼조가 아니라 부정 재료로 옮기고, 수준과 변화를 함께 적어라"
+            % (name, ' · '.join(lvl_txt) or '금리 수준 높음', v))
+    return out
+
+
+def _yield_sep(sep):
+    """숫자 앞 연결부에서 부호를 떼어낸다.
+
+    83항 실사고(2026-09-02): 화면에 '미10년 국채금리 +4.80%(+0.80%)'가 나갔다.
+    모델이 쓴 '+0.80%'를 수준으로 갈아끼우면서 앞의 '+'를 그대로 남긴 것이다.
+    4.80%는 수준이지 변화가 아니라서 '+'가 붙으면 거짓말이 된다."""
+    return re.sub(r'[+\-\u2212]\s*$', '', sep or '') or ' '
+
+
 def fix_yield_number(entry, snap):
     if not snap:
         return entry
-    lvl, pct = snap.get('yield_level'), snap.get('yield_pct')
-    if lvl is None or pct is None:
+    l10, p10 = snap.get('yield_level'), snap.get('yield_pct')
+    l30, p30 = snap.get('yield30_level'), snap.get('yield30_pct')
+    if (l10 is None or p10 is None) and (l30 is None or p30 is None):
         return entry
 
     def fix(s):
         if not s or '%' not in s:
             return s
         def rep(m):
-            n = float(m.group(3))
-            if abs(n - abs(pct)) > 0.05:        # 변화율이 아닌 숫자 — 손대지 않는다
+            # 83항 — 만기를 갈라 본다. 기존 코드는 10년물 수치만 알아서
+            # '미30년 국채금리 +0.36%'를 그냥 두었고, 독자는 30년물 금리가
+            # 0.36%인 줄 읽었다(60항이 막으려던 바로 그 오독).
+            head = s[max(0, m.start() - 8):m.start() + len(m.group(1))]
+            is30 = bool(re.search(r'30\s*년', head))
+            lvl, pct = (l30, p30) if is30 else (l10, p10)
+            if lvl is None or pct is None:
                 return m.group(0)
-            return f"{m.group(1)}{m.group(2)}{lvl:.2f}%({pct:+.2f}%)"
+            n = float(m.group(3))
+            sep = _yield_sep(m.group(2))
+            if abs(n - lvl) <= 0.05:
+                # 이미 수준이 적혀 있다. 뒤에 변화가 붙어 있으면 부호만 떼고,
+                # 없으면 변화를 채워 넣는다(60항: 수준과 변화는 늘 같이 적는다).
+                tail = s[m.end():m.end() + 12]
+                if re.match(r'\s*\(', tail):
+                    return f"{m.group(1)}{sep}{m.group(3)}%"
+                return f"{m.group(1)}{sep}{lvl:.2f}%({pct:+.2f}%)"
+            if abs(n - abs(pct)) > 0.05:    # 수준도 변화도 아닌 숫자 — 손대지 않는다
+                return m.group(0)
+            return f"{m.group(1)}{sep}{lvl:.2f}%({pct:+.2f}%)"
         return _YIELD_TXT.sub(rep, s)
 
     for key in ('positive_factors', 'negative_factors', 'mixed_factors'):
@@ -3068,6 +3159,12 @@ def _gr_panic(snap, spy_off_high):
 _SUBJ_RATE = r'국채\s*금리|국채\s*수익률|채권\s*금리|시장\s*금리|10년물|금리'
 _SUBJ_VIX = r'VIX\s*지수|공포\s*지수|VIX'
 _SUBJ_OIL = r'에너지\s*가격|유가|원유|WTI'
+# 83항(2026-09-02, 성동님 지적) — 안전자산. 맨 '금'은 넣지 않는다('금리'가 걸린다).
+# 금·엔화·스위스프랑은 위험이 커질 때 사는 자산이라, 이것들이 오른다는 것은
+# 돈이 주식에서 빠져나온다는 뜻이다. 주식시장 카드에서 긍정 재료가 될 수 없다.
+# '골드만삭스'·'Goldman'·'자금 시장'이 걸리지 않게 꼬리를 막는다.
+_SUBJ_SAFE = (r'안전\s*자산|(?<![가-힣])금\s*(?:가격|시세|값)|금값|국제\s*금(?![가-힣])|'
+              r'골드(?!만)|Gold(?!man)|귀금속|엔화|스위스\s*프랑|스위스프랑')
 
 # 양보·부정 구문 뒤에 오는 방향어는 그 재료의 주장이 아니다.
 # "국채금리 상승에도 실적 기대가 우위"는 긍정 재료로 정상이다(감사 지적 5번).
@@ -3090,6 +3187,12 @@ _DIR_RULES = [
      '유가 상승은 인플레 압력 — 기술주 관점에서 긍정 요인이 될 수 없다'),
     (_SUBJ_OIL, r'하락|급락|안정|내림', 'negative_factors',
      '유가 하락은 인플레 압력 완화 — 기술주 관점에서 부정 요인이 될 수 없다'),
+    # 83항 — 안전자산이 오르는 것은 위험자산에서 돈이 빠진다는 뜻이다.
+    # 실사고(2026-09-02): 긍정 35점 전부가 '금 가격 상승 / 안전자산 선호 심리
+    # 반영, 금 +0.60% 상승'이었다. 성동님 지적: "안전자산 선호 심리 반영이면
+    # 주식시장 악재지, 어떻게 호재냐?" 금 하락은 리스크온 신호라 막지 않는다.
+    (_SUBJ_SAFE, r'상승|급등|오름|올라|강세|랠리|최고치', 'positive_factors',
+     '안전자산 상승은 위험자산 회피의 표현 — 주식시장의 긍정 요인이 될 수 없다'),
 ]
 
 # G5 — 국면과 어긋나는 서사. 주가가 오르는 날의 '안전자산 선호'는 정의상 성립하지 않는다
@@ -3107,6 +3210,24 @@ _SUBJ_DXY = r'달러\s*인덱스|달러\s*지수|DXY'
 # 크기·사실 검사에는 맨 '금리'를 넣지 않는다 — '금리 인하 기대'는 정책금리 얘기(fed_policy)라
 # 10년물 실측 변동폭으로 재면 안 된다(감사 2차 지적 3번).
 _SUBJ_MKT_RATE = r'국채\s*금리|국채\s*수익률|채권\s*금리|시장\s*금리|10년물'
+# 83항 — 금리는 '수준'이 이미 판정의 절반이다. 4.8%대 10년물은 그 자체로
+# 성장주 할인율을 누르고 있고, 거기서 더 오르면 하루 변화폭이 작아도 방향은
+# 분명하다. 성동님 지적: "국채금리가 엄청 높은데 소폭 상승이라도 하면 악재지
+# 어떻게 애매하냐?"
+_YIELD_HIGH_10Y = 4.50
+_YIELD_HIGH_30Y = 5.00
+
+def _yield_level_high(snap):
+    """국채금리 수준이 성장주를 누르는 구간인가. 판정 불가면 False(예외 없음)."""
+    if not snap:
+        return False
+    l10, l30 = snap.get('yield_level'), snap.get('yield30_level')
+    if l10 is not None and l10 >= _YIELD_HIGH_10Y:
+        return True
+    if l30 is not None and l30 >= _YIELD_HIGH_30Y:
+        return True
+    return False
+
 _MICRO_SUBJECTS = [
     (_SUBJ_MKT_RATE, 'yield_pct', '국채금리', 1.0),
     (_SUBJ_OIL, 'oil_pct', '유가', 1.5),
@@ -3506,6 +3627,16 @@ def direction_offenders(entry, snap=None):
                     reasons.append(f'방향 오류 — {why}')
                     break
 
+            # 83항 — 국면 판정 이전의 정의 문제. G5는 '주가가 오르는 날'이라는
+            # 조건이 붙어 tone 판정이 안 서면(횡보장) 통째로 꺼진다. 그런데
+            # '안전자산 선호'가 긍정 재료라는 건 국면과 무관하게 말이 안 된다 —
+            # 위험자산에서 돈이 빠진다는 뜻이기 때문이다. 조건 없이 막는다.
+            if side == 'positive_factors' and _tone_word_hit(text, _RISKOFF_WORDS):
+                reasons.append(
+                    "정의 모순 — '안전자산 선호·위험회피'는 위험자산(주식)에서 돈이 "
+                    "빠져나간다는 뜻이다. 주식시장 카드의 긍정 요인이 될 수 없다. "
+                    "안전자산이 오르는 국면이면 그 자체가 부정 재료다")
+
             # G5 국면 불일치
             if tone == 'on' and _tone_word_hit(text, _RISKOFF_WORDS):
                 vix = snap.get('vix')
@@ -3548,6 +3679,14 @@ def direction_offenders(entry, snap=None):
                     v = snap.get(key)
                     if v is None:
                         continue   # 이 지표는 측정 불가 — 이름에 있는 다른 지표를 계속 본다
+                    # 83항 예외 — 수준이 높은 금리의 '상승'은 오차 범위가 아니다.
+                    # 이 예외가 없으면 재판정이 금리를 부정으로 옮겨도 G6가 곧바로
+                    # 혼조로 되돌린다. 실제로 그 왕복이 '국채금리 소폭 상승'을 매번
+                    # 혼조에 앉혀 놓고 있었다. 반대 방향(낮은 금리에서의 하락)은
+                    # 지금 국면에 사례가 없어 열지 않는다 — 필요해지면 대칭으로 연다.
+                    if (key == 'yield_pct' and side == 'negative_factors'
+                            and v > 0 and _yield_level_high(snap)):
+                        break
                     if abs(v) < floor:
                         reasons.append(
                             f'미세 변동 재료화 — {label} 실측 {v:+.2f}%는 오차 범위'
