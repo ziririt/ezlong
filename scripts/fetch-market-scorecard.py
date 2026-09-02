@@ -935,6 +935,15 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
   긍정적"처럼 한쪽 방향으로 끝나는 설명을 혼조 칸에 두지 마라.
 - summary도 같다. "…약세로 부정 우위" 같은 결과-이유 서술 금지 — 우위의 이유는
   원인 재료의 이름이어야 한다.
+- **개별 종목의 등락 자체를 재료로 쓰지 마라(85항).** 주가가 올라서 호재인 것이
+  아니다 — 주가를 올린 원인이 호재 성격일 때 호재다.
+  나쁜 예: name '엔비디아(NVDA) 주가 강세', desc '엔비디아 2.52% 상승: AI 관련 수요
+  지속 및 긍정적 전망 반영' (이름도 근거도 결과다. 독자는 이미 2.52%를 안다)
+  좋은 예: name '델(Dell) AI 서버 백로그 950억 달러', desc '매출 가이던스 월가 예상치
+  상회: AI 인프라 투자 지속 확인, 반도체 밸류체인 전반에 파급' (이름이 원인이다)
+- 등락률은 **근거로만** 곁들인다. 재료 이름은 그 등락을 만든 사건이어야 한다 —
+  실적·가이던스·수주·지표·규제·발언처럼 이름을 댈 수 있는 것(55항).
+  원인을 못 찾으면 그 재료를 쓰지 마라. 결과를 원인 자리에 놓느니 빼는 게 낫다.
 
 === 단문으로 써라 (65항, 오너 지시) ===
 - 한 문장에는 주장 하나만 담는다. '~이나', '~지만'으로 두 주장을 잇지 말고 끊어라.
@@ -1809,6 +1818,10 @@ def validate_content(entry, session_code='', snap=None):
         '심리 유지', '심리 지속', '심리 개선', '심리 악화', '심리 위축', '심리 강화',
         '심리 회복', '관심 지속', '관심 확대', '매수세 유입', '매수세 지속',
         '매도세 유입', '매도세 지속', '매도세 확대', '저가 매수',
+        # 85항(2026-09-02): 가장 노골적인 결과 서술이 정작 목록에 없었다.
+        # 실사고: 긍정 20점 '엔비디아(NVDA) 주가 강세'.
+        '주가 강세', '주가 약세', '주가 상승', '주가 하락', '주가 급등', '주가 급락',
+        '주가 반등', '주가 조정', '주가 부진', '주가 랠리', '주가 호조', '주가 신고가',
     ]
     for f in (entry.get('positive_factors', []) + entry.get('negative_factors', [])
               + entry.get('mixed_factors', [])):
@@ -3841,6 +3854,69 @@ def rate_on_both_sides(entry):
             f"아니면 하나로 합쳐라")
 
 
+# ─── 85항 — 주가가 오른 것은 재료가 아니다 (2026-09-02, 오너 지적) ──────────
+# 실사고(09-02 23:20 카드, 긍정 20점): 이름 '엔비디아(NVDA) 주가 강세',
+# 설명 '엔비디아 2.52% 상승: AI 관련 수요 지속 및 긍정적 전망 반영'.
+# 63항이 이미 "결과가 아니라 원인을"이라 못 박아 둔 자리인데 세 군데가 뚫려 있었다.
+#  (1) FACTOR_RESULT_ONLY 에 '주가 강세'·'주가 상승'이 없었다. '심리 유지'·'섹터
+#      약세'는 막으면서 가장 노골적인 표현이 빠져 있었다.
+#  (2) 그 목록은 재판정 사유만 만들고 집행하지 않는다 — 모델이 안 고치면 그대로
+#      나간다(52항: 감지하고도 게시하는 것은 사고다).
+#  (3) G4(개별 기업 점수 금지)는 모델이 스스로 붙인 category 라벨만 본다. 이
+#      재료는 'ai_tech_valuation'을 달고 있어서 개별 기업 검사 밖으로 빠져나갔다.
+# 원칙: 주가가 올라서 호재인 것이 아니다. 주가를 올린 원인이 호재 성격일 때 호재다.
+_PR_MOVE  = (r'강세|약세|상승|하락|급등|급락|폭등|폭락|반등|급락세|랠리|'
+             r'신고가|사상\s*최고가|부진')
+_PR_SUBJ  = r'주가|주식\s*가격|종목\s*가격|시총|시가\s*총액'
+# 이름이 원인을 가리키면 통과시킨다 — '엔비디아 실적 호조에 기술주 강세'는
+# 결과로 끝나지만 원인(실적)을 이름에 담고 있다. 오탐의 대가가 점수 박탈이라
+# (52항의 교훈) 이 면제 목록은 넓게 유지한다.
+_PR_CAUSE = (r'실적|가이던스|매출|이익|마진|수주|백로그|계약|수요|공급|증설|감산|'
+             r'발표|지표|데이터|합의|타결|승인|규제|관세|소송|인수|합병|배당|자사주|'
+             r'금리|물가|인플레|고용|유가|환율|정책|연준|목표주가|전망\s*상향|'
+             r'전망\s*하향|투자\s*확대')
+
+
+def _price_result_name(name):
+    """이름이 '무엇이 얼마나 올랐다'인가 — 결과 서술이면 그 주어를 돌려준다.
+
+    두 갈래만 잡는다. (1) '주가·시총'이 주어인 등락, (2) 개별 기업 이름 + 등락어.
+    '반도체 섹터 강세'처럼 시장 단위 서술은 FACTOR_RESULT_ONLY(체크 11)가 맡는다 —
+    여기서 함께 잡으면 집행 범위가 갑자기 넓어져 오탐의 대가가 커진다."""
+    nm = (name or '').strip()
+    if not nm or re.search(_PR_CAUSE, nm) or not re.search(_PR_MOVE, nm):
+        return None
+    if re.search(_PR_SUBJ, nm):
+        return '주가'
+    grp = _rpt_groups_in(nm)
+    if grp:
+        return sorted(grp)[0]
+    return None
+
+
+def price_result_offenders(entry):
+    """결과(가격 움직임)를 재료 이름 자리에 놓은 '점수를 실은' 재료를 돌려준다.
+
+    direction_offenders() 에 합류해 같은 집행 경로를 탄다(52항) — 재판정 사유가
+    붙고, 그래도 남으면 점수를 잃는다. 강등된 재료는 4-7b가 혼조에서도 걷어낸다.
+    결과 서술은 '판단이 갈리는 시장 재료'가 아니라서 혼조 칸에도 자리가 없다(67항)."""
+    out = []
+    for side in ('positive_factors', 'negative_factors'):
+        side_ko = '긍정' if side == 'positive_factors' else '부정'
+        for f in entry.get(side) or []:
+            if int(f.get('score', 0) or 0) <= 0:
+                continue
+            if not _price_result_name(f.get('name', '')):
+                continue
+            out.append((side, f,
+                        f"결과를 원인 자리에 — {side_ko} '{f.get('name','')}'은 가격이 "
+                        f"움직였다는 사실(결과)일 뿐 재료가 아니다. 주가가 올라서 호재인 "
+                        f"것이 아니라, 주가를 올린 원인이 호재 성격일 때 호재다. 그 원인"
+                        f"(실적·가이던스·지표·수주처럼 이름 있는 사건)을 재료 이름으로 "
+                        f"쓰고, 등락률은 근거로만 곁들여라"))
+    return out
+
+
 def direction_offenders(entry, snap=None):
     """방향·국면·크기 규칙을 어긴 '점수를 실은' 재료를 (편, 재료, 사유)로 돌려준다.
 
@@ -3962,6 +4038,8 @@ def direction_offenders(entry, snap=None):
     found.extend(no_direction_offenders(entry))
     found.extend(name_betrays_content(entry))
     found.extend(rate_term_offenders(entry))
+    # 85항 — 결과(가격 움직임)를 재료 이름 자리에 놓은 재료도 같은 경로.
+    found.extend(price_result_offenders(entry))
 
     # 한 재료가 여러 규칙에 걸리면 항목을 하나로 합친다. 이 함수는 집행에도 쓰이는데,
     # 중복이 남으면 같은 재료가 혼조 칸에 두 번 들어가 화면에 두 번 보인다.
@@ -4426,6 +4504,18 @@ def main():
         entry['mixed_factors'] = [f for f in _mf if f not in _noise]
         for _f in _noise:
             print(f"::warning::[67항] 혼조 노이즈 제거: '{_f.get('name','')}'(개별 기업)")
+
+    # 85항 — 혼조 칸의 결과 서술 제거. 4-3에서 강등된 재료가 여기로 내려오는데,
+    # '엔비디아 주가 강세'는 '판단이 갈리는 시장 재료'가 아니라 그냥 결과다.
+    # 혼조 칸은 노이즈의 피난처가 아니다(67항). 점수가 없어 총점은 변하지 않는다.
+    _mf2 = entry.get('mixed_factors') or []
+    _pres_ids = {id(f) for f in _mf2 if _price_result_name(f.get('name', ''))}
+    if _pres_ids:
+        entry['mixed_factors'] = [f for f in _mf2 if id(f) not in _pres_ids]
+        for _f in _mf2:
+            if id(_f) in _pres_ids:
+                print(f"::warning::[85항] 혼조 결과 서술 제거: '{_f.get('name','')}' — "
+                      f"가격 움직임은 원인이 아니다")
 
     # 4-7d. 대기 재료 혼조 강등 (72항) — 재판정으로도 남으면 코드가 옮긴다.
     # 삭제가 아니라 이동이다(64항). 남은 재료에 점수를 재배분해 총점은 그대로 둔다.
