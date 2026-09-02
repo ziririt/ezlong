@@ -10,13 +10,13 @@
         "why": "지정학 리스크, 유가 변동성, 인플레이션 우려",
         "why_en": "Geopolitical risk, oil price volatility, inflation concerns"
       },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "미-이란 긴장 지속 및 인플레이션 우려로 부정 우위 유지",
-      "summary_en": "Negative sentiment prevails due to ongoing US-Iran tensions and inflation concerns",
+      "positive_total": 50,
+      "negative_total": 50,
+      "summary": "미-이란 긴장 지속 및 인플레이션 우려로 팽팽한 균형 유지",
+      "summary_en": "Mixed sentiment prevails due to ongoing US-Iran tensions and inflation concerns",
       "positive_factors": [
         {
-          "score": 60,
+          "score": 50,
           "name": "고용 데이터 호조",
           "name_en": "Positive Jobs Data",
           "desc": "예상치 상회하는 고용 데이터 발표, 경제 연착륙 기대감 유지",
@@ -26,12 +26,28 @@
       ],
       "negative_factors": [
         {
-          "score": 40,
+          "score": 30,
           "name": "AI 밸류에이션 재평가 우려",
           "name_en": "AI Valuation Reassessment Concerns",
           "desc": "일부 AI 관련 기업 실적 발표 후 하락, 섹터 전반 밸류에이션 재평가 압력",
           "desc_en": "Some AI-related companies declined after earnings, pressuring overall sector valuations",
           "category": "ai_tech_valuation"
+        },
+        {
+          "name": "미-이란 지정학적 긴장 지속",
+          "name_en": "Persistent US-Iran Geopolitical Tensions",
+          "desc": "중동 지정학적 리스크 고조 지속, 유가 상승 압력 및 시장 불확실성 확대",
+          "desc_en": "Escalating Middle East geopolitical risks, increasing oil price pressure and market uncertainty",
+          "category": "geopolitics",
+          "score": 10
+        },
+        {
+          "name": "높은 국채금리 수준 지속",
+          "name_en": "Elevated Treasury Yields Persist",
+          "desc": "미10년 국채금리 4.78%(-0.33%)로 높은 수준 유지, 성장주 할인율 부담 가중",
+          "desc_en": "US 10-year Treasury yield remains high at 4.78%, increasing discount rate pressure on growth stocks",
+          "category": "rates_treasury",
+          "score": 10
         }
       ],
       "mixed_factors": [
@@ -48,20 +64,6 @@
           "desc": "8월 고용보고서(9월 4일(금) 08:30 ET) 발표를 앞두고 시장 관망세",
           "desc_en": "Market awaiting the August Jobs Report (Sep 4th (Fri) 08:30 ET), leading to a wait-and-see approach",
           "category": "macro_data"
-        },
-        {
-          "name": "미-이란 지정학적 긴장 지속",
-          "name_en": "Persistent US-Iran Geopolitical Tensions",
-          "desc": "중동 지정학적 리스크 고조 지속, 유가 상승 압력 및 시장 불확실성 확대",
-          "desc_en": "Escalating Middle East geopolitical risks, increasing oil price pressure and market uncertainty",
-          "category": "geopolitics"
-        },
-        {
-          "name": "국채금리 상승 압력",
-          "name_en": "Upward Pressure on Treasury Yields",
-          "desc": "미10년 국채금리 4.78%(-0.33%)로 높은 수준 유지, 성장주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield remains high at 4.78%, increasing discount rate pressure on growth stocks",
-          "category": "rates_treasury"
         }
       ],
       "report": {

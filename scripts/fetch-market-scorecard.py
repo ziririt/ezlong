@@ -953,6 +953,34 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
 - 금리는 매 카드에서 다뤄야 할 상시 주제다. 긍정도 부정도 아니면 혼조로라도 싣는다.
   독자가 "오늘 카드에 금리 얘기가 왜 없지"라고 묻게 만들지 마라.
 
+=== 혼조는 쓰레기통이 아니다 (84항, 오너 지적) ===
+- 혼조 칸은 **방향을 정말 못 읽을 때** 쓰는 자리다. 방향이 분명한 재료를 혼조에
+  넣으면 그만큼 부정(또는 긍정) 점수가 안 잡혀 **판정 자체가 왜곡된다.**
+- 나쁜 예(실사고): 혼조 칸에 '미-이란 지정학적 긴장 지속' · '국채금리 상승 압력' ·
+  '고용보고서 발표 대기'가 나란히 있고, 부정 재료는 하나뿐이라 부정이 40밖에
+  안 됐다. 오너 지적: "'미-이란 지정학적 긴장 지속'은 부정이지, 왜 애매하냐?"
+- **지정학적 긴장의 고조·지속은 부정이다.** 유가와 변동성을 밀어 올리고 위험자산을
+  누른다. 해석이 엇갈리는 자리가 아니다. 완화·타결이면 그때 긍정이다.
+- **수준이 높은 금리는 오늘 방향과 무관하게 부담이다.** 4.78%로 소폭 내렸어도
+  성장주 할인율 부담은 그대로다. 설명에 '부담·압박'을 써 놓고 혼조에 두지 마라.
+- 혼조에 어울리는 것: 유가가 내렸는데 지정학 때문에 상승 압력도 남아 있는 경우처럼
+  **같은 재료 안에서 힘이 맞부딪히는** 자리.
+
+=== 같은 주제를 두 칸에 쪼개지 마라 (84항, 오너 지적) ===
+- 특히 **'이미 나왔다'와 '아직 안 나왔다'를 같은 카드에서 동시에 말하지 마라.**
+- 나쁜 예(실사고): 긍정에 '고용 데이터 호조: 예상치 상회하는 고용 데이터 발표',
+  혼조에 '고용보고서 발표 대기: 9월 4일(금) 08:30 ET 발표를 앞두고 관망세'.
+  오너 지적: "모순이다." 맞다. 독자는 고용이 나왔다는 건지 아니라는 건지 모른다.
+- 지표를 근거로 쓸 때는 **어느 지표인지 이름을 대라**(55항). '고용 데이터'가 아니라
+  'ADP 민간고용 8월 +18.5만(예상 +15만)'처럼. 이름 없는 지표는 근거가 아니다.
+- 이미 발표된 지표와 앞으로 나올 지표는 **다른 이름**을 쓴다. 헷갈릴 여지를 없애라.
+
+=== 요약은 점수와 같은 말을 해야 한다 (84항, 오너 지적) ===
+- summary의 '긍정 우위 / 부정 우위'는 **positive_total·negative_total과 반드시
+  일치**해야 한다. 오너 지적: "부정우위라면서 왜 긍정이 60이냐?"
+- 화면 맨 윗줄이 요약이다. 거기가 점수와 어긋나면 나머지를 아무리 잘 써도 소용없다.
+- 점수가 같으면 '팽팽한 균형'이라고 쓴다. 억지로 한쪽 우위를 말하지 마라.
+
 === 안전자산이 오르는 것은 주식시장의 호재가 아니다 (83항, 오너 지적) ===
 - 금·엔화·스위스프랑·미 국채는 **위험이 커질 때 사는 자산**이다. 이것들이 오른다는
   것은 위험자산(주식)에서 돈이 빠져나간다는 뜻이다. positive_factors 에 넣지 마라.
@@ -1829,7 +1857,15 @@ def validate_content(entry, session_code='', snap=None):
                           f"이슈라면 벨웨더 실적 등 시장 카테고리로 분류해 근거를 대라. "
                           f"아니면 빼라")
 
-    # ── 체크 20: 수준 높은 금리의 상승을 혼조로 (2026-09-02 신설, 83항) ─────
+    # ── 체크 22: 매크로 주제가 점수 칸·혼조 칸에 분열 (2026-09-02, 84항) ────
+    for _ms in macro_topic_split(entry):
+        errors.append(_ms)
+
+    # ── 체크 21: 요약이 점수와 어긋난다 (2026-09-02 신설, 84항) ─────────────
+    for _sm in summary_side_mismatch(entry):
+        errors.append(_sm)
+
+    # ── 체크 20: 방향이 분명한 재료를 혼조로 (2026-09-02 신설, 83·84항) ─────
     for _hy in high_yield_rise_in_mixed(entry, snap):
         errors.append(_hy)
 
@@ -2106,62 +2142,221 @@ _YIELD_TXT = re.compile(r'(국채\s*금리|국채\s*수익률|10년물)([^0-9%]{
 # 방향이 분명한 재료를 혼조에 두는 것보다 작게라도 부정에 두는 것이 정확하다.
 _YIELD_MIN_SCORE = 10
 
-def high_yield_rise_hits(entry, snap):
-    """수준이 높은 국채금리의 '상승'이 혼조 칸에 앉아 있는 재료를 (재료, 사유)로."""
-    if not snap or not _yield_level_high(snap):
+# --- 84항: 혼조는 쓰레기통이 아니다 (2026-09-02, 성동님 지적) ---
+# 지적 원문: "'미-이란 지정학적 긴장 지속'은 부정이지, 왜 애매하냐?"
+#           "'국채금리 상승 압력'도 부정이지 왜 애매하냐? 조금전에 내가 이미
+#            얘기했는데 두 시간 만에 또 같은 실수를 하는구나."
+#
+# 83항은 '금리가 오르는 경우'만 막았다. 그날 밤 카드는 금리가 **내렸는데도**
+# 4.78%로 높아서 '할인율 부담 가중'이라 써 놓고 혼조에 앉아 있었다. 조건을
+# `v > 0`으로 좁게 잡은 것이 그대로 구멍이 됐다. 수준이 높으면 오늘 방향과
+# 무관하게 부담이다 — 소폭 하락이 그 부담을 없애지 못한다.
+#
+# 더 큰 문제는 direction_offenders()가 '점수를 실은 재료만 본다'는 전제였다.
+# "점수를 안 실은 재료는 판정을 왜곡하지 않는다"고 주석에 적혀 있었는데 틀렸다.
+# **방향이 분명한 악재를 혼조에 숨기면 그만큼 부정 점수가 안 잡힌다.** 그게 왜곡이다.
+# 실제로 그 카드는 부정 재료 셋이 혼조에 있어서 부정이 40밖에 안 됐다.
+# 67항이 혼조의 '노이즈 뒷문'을 닫았다면, 이건 '방향 뒷문'이다.
+_MIXED_MIN_SCORE = 10
+
+# 방향이 분명한데 혼조에 앉을 수 없는 주제들. 넓히면 오탐이 나므로 확실한 것만.
+_GEO_SUBJ = r'지정학|중동|전쟁|분쟁|무력\s*충돌|공습|피격|나포|호르무즈|제재'
+_GEO_UP   = r'고조|확대|심화|악화|격화|재점화|장기화|지속|불확실성'
+_DEESCALATE = r'완화|해소|진정|축소|타결|합의|철수|종식|안정|후퇴|개선'
+_YIELD_BURDEN = r'부담|압박|누르|압력|제약|짓누|경계'
+
+
+def _yield_level_txt(snap):
+    out = []
+    if snap.get('yield_level') is not None:
+        out.append('미10년 %.2f%%' % snap['yield_level'])
+    if snap.get('yield30_level') is not None:
+        out.append('미30년 %.2f%%' % snap['yield30_level'])
+    return ' · '.join(out) or '금리 수준 높음'
+
+
+# --- 84항 (2) 요약이 점수와 어긋나면 화면 맨 윗줄이 거짓말을 한다 ---
+# 성동님 지적: "부정우위라면서 왜 긍정이 60이냐?"
+# 원인은 구조다. 집행(52·72·83항)이 총점을 재정규화하는데 summary는 모델이 쓴
+# 문장 그대로 남는다. 판정이 뒤집혀도 요약은 옛말을 한다. 집행을 늘릴수록
+# 이 어긋남이 잦아진다 — 집행 기능을 만들면서 정작 그 부작용을 안 막았다.
+# 고치는 쪽은 요약이다. 점수는 집행의 결과이므로 그쪽이 정답이다.
+_SUM_NEG = r'부정\s*우위|부정\s*(?:이|가)\s*우세|약세\s*우위'
+_SUM_POS = r'긍정\s*우위|긍정\s*(?:이|가)\s*우세|강세\s*우위'
+
+
+# --- 84항 (3) 같은 매크로 주제가 '이미 나왔다'와 '아직이다'를 동시에 ---
+# 성동님 지적: "'고용보고서 발표 대기'라고? 그리고 그 아래에선 긍정에
+# '고용 데이터 호조'라고 썼네. 모순이다."
+# 체크 1은 기업 티커·사명만 봤다(63항). 매크로 주제는 목록에 없어서 통과했다.
+# 검사는 카드가 실제로 쓰는 표기를 봐야 한다는 63항 교훈이 매크로에는 적용이
+# 안 돼 있었다.
+_MACRO_TOPIC_GROUPS = {
+    '고용': [r'고용', r'일자리', r'비농업', r'실업', r'payroll', r'\bNFP\b'],
+    '물가': [r'\bCPI\b', r'\bPCE\b', r'\bPPI\b', r'소비자\s*물가', r'생산자\s*물가',
+             r'개인\s*소비\s*지출', r'인플레이션\s*지표'],
+    'FOMC': [r'\bFOMC\b', r'연준\s*회의', r'점도표', r'금리\s*결정'],
+    '잭슨홀': [r'잭슨홀', r'Jackson\s*Hole'],
+    'GDP': [r'\bGDP\b', r'국내\s*총생산'],
+}
+_RELEASED = r'발표|나왔|공개|확인|집계|기록|호조|부진|상회|하회'
+_PENDING  = r'대기|앞두고|앞둔|예정|관망|주목'
+
+
+def macro_topic_split(entry):
+    """같은 매크로 주제가 점수 칸과 혼조 칸에 갈라져 있는가 — 체크 1 확장."""
+    def texts(key):
+        return [(f.get('name', '') or '') + ' ' + (f.get('desc', '') or '')
+                for f in (entry.get(key) or [])]
+    scored = texts('positive_factors') + texts('negative_factors')
+    mixed = texts('mixed_factors')
+    out = []
+    for topic, pats in _MACRO_TOPIC_GROUPS.items():
+        rx = '|'.join(pats)
+        hit_s = [t for t in scored if re.search(rx, t, re.I)]
+        hit_m = [t for t in mixed if re.search(rx, t, re.I)]
+        if not (hit_s and hit_m):
+            continue
+        # 한쪽은 '이미 나왔다', 다른 쪽은 '아직이다'면 같은 카드가 정면 모순이다.
+        both = (any(re.search(_RELEASED, t) for t in hit_s)
+                and any(re.search(_PENDING, t) for t in hit_m))
+        extra = (" 게다가 한쪽은 '이미 발표됐다', 다른 쪽은 '아직 발표 전'이라고 "
+                 "말한다. 같은 카드가 정면으로 모순된다.") if both else ''
+        out.append("분열: '%s' 주제가 점수 칸과 혼조 칸에 동시 등장.%s "
+                   "같은 주제의 판정은 하나여야 한다 — 합치거나 한쪽을 지워라"
+                   % (topic, extra))
+    return out
+
+
+def summary_side_mismatch(entry):
+    """요약이 말하는 우위와 실제 점수가 어긋나는가 — 체크 21."""
+    pos = int(entry.get('positive_total', 0) or 0)
+    neg = int(entry.get('negative_total', 0) or 0)
+    txt = (entry.get('summary') or '')
+    if not txt:
         return []
-    v = snap.get('yield_pct')
-    if v is None or v <= 0:
-        return []
-    l10, l30 = snap.get('yield_level'), snap.get('yield30_level')
-    lvl_txt = []
-    if l10 is not None:
-        lvl_txt.append('미10년 %.2f%%' % l10)
-    if l30 is not None:
-        lvl_txt.append('미30년 %.2f%%' % l30)
+    said_neg = bool(re.search(_SUM_NEG, txt))
+    said_pos = bool(re.search(_SUM_POS, txt))
+    if said_neg and pos > neg:
+        return ["요약-점수 모순: 요약은 '부정 우위'라는데 점수는 긍정 %d : 부정 %d다. "
+                "화면 맨 윗줄이 거짓말을 한다. 점수를 고치든 요약을 고치든 하나로 맞춰라"
+                % (pos, neg)]
+    if said_pos and neg > pos:
+        return ["요약-점수 모순: 요약은 '긍정 우위'라는데 점수는 긍정 %d : 부정 %d다. "
+                "화면 맨 윗줄이 거짓말을 한다. 점수를 고치든 요약을 고치든 하나로 맞춰라"
+                % (pos, neg)]
+    if (said_neg or said_pos) and pos == neg:
+        return ["요약-점수 모순: 점수가 %d : %d로 팽팽한데 요약은 한쪽 우위를 말한다"
+                % (pos, neg)]
+    return []
+
+
+def fix_summary_side(entry):
+    """집행 — 요약의 우위 표현을 실제 점수에 맞춘다. 점수는 건드리지 않는다."""
+    if not summary_side_mismatch(entry):
+        return entry, False
+    pos = int(entry.get('positive_total', 0) or 0)
+    neg = int(entry.get('negative_total', 0) or 0)
+    if pos == neg:
+        ko_to, en_to = '팽팽한 균형', 'Mixed'
+    else:
+        win_pos = pos > neg
+        ko_to = '긍정 우위' if win_pos else '부정 우위'
+        en_to = 'Positive' if win_pos else 'Negative'
+    entry['summary'] = re.sub(_SUM_NEG + '|' + _SUM_POS, ko_to, entry.get('summary') or '')
+    en = entry.get('summary_en') or ''
+    if en:
+        # 영문은 'Negative/Positive sentiment prevails' 꼴만 안전하게 바꾼다.
+        # 패턴이 안 맞으면 손대지 않는다 — 억지로 고치다 문장을 망치는 것보다 낫다.
+        entry['summary_en'] = re.sub(
+            r'(?i)\b(negative|positive)\b(?=[^.]{0,40}?\b(?:prevail|dominat|outweigh|edge))',
+            en_to, en)
+    return entry, True
+
+
+def directional_mixed_hits(entry, snap):
+    """방향이 분명한데 혼조 칸에 앉아 있는 재료를 (재료, 종류, 사유)로 돌려준다.
+
+    종류는 'yield' | 'geo'. 집행이 종류별로 이름 교정을 달리 하므로 같이 준다."""
     out = []
     for f in (entry.get('mixed_factors') or []):
         name = f.get('name', '') or ''
-        if not re.search(_SUBJ_MKT_RATE, name, re.I):
+        text = name + ' ' + (f.get('desc', '') or '')
+
+        # (1) 수준이 높은 국채금리 + 부담·압박 서술. 오늘 방향은 묻지 않는다.
+        if (snap and _yield_level_high(snap)
+                and re.search(_SUBJ_MKT_RATE, name, re.I)
+                and re.search(_YIELD_BURDEN, text)
+                and not _all_negated(text, _YIELD_BURDEN, _DEESCALATE)):
+            out.append((f, 'yield',
+                "혼조 오분류: '%s' — 오늘 %s. 이 수준의 금리는 그 자체로 성장주 "
+                "할인율을 누른다. 재료 설명이 이미 '부담'을 말하고 있다면 방향은 "
+                "분명하다. 하루 움직임이 작거나 소폭 하락이어도 부담은 그대로다. "
+                "혼조가 아니라 부정 재료로 옮겨라" % (name, _yield_level_txt(snap))))
             continue
-        if not re.search(r'상승|급등|오름|올라', name):
+
+        # (2) 지정학적 긴장의 고조·지속. 완화·타결 서술이면 제외한다.
+        if (re.search(_GEO_SUBJ, name)
+                and re.search(_GEO_UP, text)
+                and not re.search(_DEESCALATE, text)):
+            out.append((f, 'geo',
+                "혼조 오분류: '%s' — 지정학적 긴장의 고조·지속은 방향이 하나뿐인 "
+                "재료다. 유가와 변동성을 밀어 올리고 위험자산을 누른다. 해석이 "
+                "엇갈리는 자리가 아니다. 부정 재료로 옮겨라" % name))
             continue
-        out.append((f, 
-            "혼조 오분류: '%s' — 오늘 %s. 이미 성장주 할인율을 누르는 수준에서 "
-            "금리가 더 올랐다(%+.2f%%). 하루 변화폭이 작아도 방향은 분명한 악재다. "
-            "혼조가 아니라 부정 재료로 옮기고, 수준과 변화를 함께 적어라"
-            % (name, ' · '.join(lvl_txt) or '금리 수준 높음', v)))
     return out
+
+
+def _all_negated(text, target_re, deny_re):
+    """target 뒤 6자에 완화어가 '전부' 붙어 있는가.
+
+    '부담 완화'를 '부담'으로 읽지 않기 위한 장치다. 하나라도 맨 '부담'이 있으면
+    False — 진짜 부담을 말하는 문장이다."""
+    for m in re.finditer(target_re, text):
+        tail = text[m.end():m.end() + 6]
+        if not re.search(deny_re, tail):
+            return False      # 완화어가 안 붙은 '부담'이 하나라도 있으면 진짜 부담
+    return True
 
 
 def high_yield_rise_in_mixed(entry, snap):
     """체크 20 — 재판정 사유 문자열만."""
-    return [why for _f, why in high_yield_rise_hits(entry, snap)]
+    return [why for _f, _k, why in directional_mixed_hits(entry, snap)]
 
 
-def promote_high_yield_rise(entry, snap):
-    """집행 — 수준 높은 금리의 상승을 혼조에서 부정으로 올린다.
+def promote_directional_mixed(entry, snap):
+    """집행 — 방향이 분명한 재료를 혼조에서 부정으로 올린다.
 
     demote_event_waits()의 거울상이다. 그쪽은 방향이 없는 재료를 혼조로 내리고,
     이쪽은 방향이 분명한 재료를 혼조에서 끌어올린다. 총점은 두 편을 함께
     100으로 재정규화한다(편마다 순차로 고치면 두 번째 편이 부풀린 값을 읽는다).
     호출부는 뒤이어 G2/G3 클램프를 한 번 더 돌려야 한다 — 총점이 움직이므로."""
-    hits = high_yield_rise_hits(entry, snap)
+    hits = directional_mixed_hits(entry, snap)
     if not hits:
         return entry, []
-    moved = [f for f, _ in hits]
-    mixed = [f for f in (entry.get('mixed_factors') or []) if id(f) not in {id(m) for m in moved}]
     neg = list(entry.get('negative_factors') or [])
     if not neg:
-        # 부정 칸이 비어 있으면 이 재료 하나로 편을 세우는 셈이라 크기를 알 수 없다.
+        # 부정 칸이 비어 있으면 이 재료들로 편을 세우는 셈이라 크기를 알 수 없다.
         # 코드가 정직하게 만들 수 없는 판정이므로 손대지 않는다(52항).
         return entry, []
-    for f in moved:
-        f['score'] = _YIELD_MIN_SCORE
-        f['category'] = 'rates_treasury'
+    moved_ids = {id(f) for f, _k, _w in hits}
+    mixed = [f for f in (entry.get('mixed_factors') or []) if id(f) not in moved_ids]
+    for f, kind, _why in hits:
+        f['score'] = _MIXED_MIN_SCORE
+        if kind == 'yield':
+            f['category'] = 'rates_treasury'
+            # 이름이 '상승'을 주장하는데 실측은 하락이면 이름이 거짓말이 된다.
+            # 방향 주장을 빼고 수준을 말하는 이름으로 바꾼다(60항: 이름은 내용과
+            # 같은 쪽을 가리켜야 한다). 판정·수치는 건드리지 않는다.
+            v = (snap or {}).get('yield_pct')
+            if v is not None and v <= 0 and re.search(r'상승|급등|오름|올라', f.get('name', '')):
+                f['name'] = '높은 국채금리 수준 지속'
+                f['name_en'] = 'Elevated Treasury Yields Persist'
+        else:
+            f['category'] = 'geopolitics'
         neg.append(f)
     pos_t = int(entry.get('positive_total', 0) or 0)
-    neg_t = int(entry.get('negative_total', 0) or 0) + _YIELD_MIN_SCORE * len(moved)
+    neg_t = int(entry.get('negative_total', 0) or 0) + _MIXED_MIN_SCORE * len(hits)
     tot = pos_t + neg_t
     if tot <= 0:
         return entry, []
@@ -2171,7 +2366,7 @@ def promote_high_yield_rise(entry, snap):
     entry['positive_factors'] = _redistribute(entry.get('positive_factors') or [], pos)
     entry['negative_factors'] = _redistribute(neg, 100 - pos)
     entry['mixed_factors'] = mixed
-    return entry, [why for _f, why in hits]
+    return entry, [w for _f, _k, w in hits]
 
 
 def _yield_sep(sep):
@@ -4178,10 +4373,10 @@ def main():
     # 4-3c. 수준 높은 금리의 상승을 혼조에서 부정으로 (83항, 성동님 재지적)
     # 재판정(체크 20)으로도 안 옮겼으면 코드가 옮긴다. 총점이 움직이므로
     # 4-3과 같은 이유로 가드레일 클램프를 한 번 더 돌린다.
-    entry, _hy_moved = promote_high_yield_rise(entry, snap)
+    entry, _hy_moved = promote_directional_mixed(entry, snap)
     if _hy_moved:
         for _why in _hy_moved:
-            print(f"  [83항] 혼조→부정 이동: {_why}")
+            print(f"  [83·84항] 혼조→부정 이동: {_why}")
         _after_hy = guardrail_violations(entry, snap, prev_entry_for_guard, spy_off_high)
         if _after_hy:
             print(f"  WARNING: 금리 승격 후 가드레일 위반 {len(_after_hy)}건 — 재클램프")
@@ -4198,6 +4393,13 @@ def main():
 
     # 4-6. 요약 순환 서술 교정 (63항) — 재판정으로도 안 고쳐진 결과-이유 어구를 걷어낸다
     entry = scrub_circular_summary(entry)
+    # 4-6b. 요약-점수 정합 (84항) — 집행이 총점을 움직였는데 요약이 옛 판정을
+    # 말하고 있으면 화면 맨 윗줄이 거짓말을 한다. 요약을 점수에 맞춘다.
+    # 반드시 점수를 움직이는 모든 집행(4-2·4-3·4-3c) 뒤에 와야 한다.
+    entry, _sfix = fix_summary_side(entry)
+    if _sfix:
+        print(f"  [84항] 요약을 점수에 맞춰 교정: {entry.get('summary')}")
+
     # 4-7. 금리 상시 노출 보증 (64항) — 모델이 금리를 통째로 뺐으면 실측치로 혼조 보충
     entry = ensure_rates_visible(entry, snap)
 
