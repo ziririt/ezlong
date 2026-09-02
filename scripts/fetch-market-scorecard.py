@@ -2345,11 +2345,11 @@ def promote_directional_mixed(entry, snap):
         f['score'] = _MIXED_MIN_SCORE
         if kind == 'yield':
             f['category'] = 'rates_treasury'
-            # 이름이 '상승'을 주장하는데 실측은 하락이면 이름이 거짓말이 된다.
-            # 방향 주장을 빼고 수준을 말하는 이름으로 바꾼다(60항: 이름은 내용과
-            # 같은 쪽을 가리켜야 한다). 판정·수치는 건드리지 않는다.
-            v = (snap or {}).get('yield_pct')
-            if v is not None and v <= 0 and re.search(r'상승|급등|오름|올라', f.get('name', '')):
+            # 이 재료를 부정으로 올린 근거는 '오늘 방향'이 아니라 '수준'이다.
+            # 그러니 이름도 수준을 말해야 한다. 방향어가 남으면 이름과 칸이
+            # 어긋난다(60항) — 실사고 둘: '상승 압력'인데 실측은 하락이었고,
+            # 그걸 고친 뒤엔 '소폭 하락'이라는 이름이 부정 칸에 앉았다.
+            if re.search(r'상승|급등|오름|올라|하락|급락|내림|내려', f.get('name', '')):
                 f['name'] = '높은 국채금리 수준 지속'
                 f['name_en'] = 'Elevated Treasury Yields Persist'
         else:
@@ -3867,6 +3867,15 @@ def direction_offenders(entry, snap=None):
             for subj_re, dir_re, bad_side, why in _DIR_RULES:
                 if side == bad_side and _gr_claim_hit(text, subj_re, dir_re,
                                                       deny_after=_CONCESSIVE):
+                    # 84항 예외 — 수준이 높은 금리는 소폭 하락해도 부담이다.
+                    # '금리 하락은 부정이 될 수 없다'는 규칙이 수준을 안 봐서,
+                    # 옳게 부정에 넣은 재료를 걷어차던 자리다. 재료가 '여전히
+                    # 높은 수준'을 함께 말할 때만 열어 준다 — 그냥 '금리 하락'
+                    # 하나로 부정을 주장하는 것은 여전히 위반이다.
+                    if (subj_re is _SUBJ_RATE and side == 'negative_factors'
+                            and _yield_level_high(snap)
+                            and re.search(r'여전히|높은\s*수준|높은\s*금리|고금리|수준\s*유지', text)):
+                        continue
                     reasons.append(f'방향 오류 — {why}')
                     break
 
@@ -3922,13 +3931,19 @@ def direction_offenders(entry, snap=None):
                     v = snap.get(key)
                     if v is None:
                         continue   # 이 지표는 측정 불가 — 이름에 있는 다른 지표를 계속 본다
-                    # 83항 예외 — 수준이 높은 금리의 '상승'은 오차 범위가 아니다.
-                    # 이 예외가 없으면 재판정이 금리를 부정으로 옮겨도 G6가 곧바로
-                    # 혼조로 되돌린다. 실제로 그 왕복이 '국채금리 소폭 상승'을 매번
-                    # 혼조에 앉혀 놓고 있었다. 반대 방향(낮은 금리에서의 하락)은
-                    # 지금 국면에 사례가 없어 열지 않는다 — 필요해지면 대칭으로 연다.
+                    # 83·84항 예외 — 수준이 높은 금리는 오늘 움직임이 작아도
+                    # 오차 범위가 아니다. 이 예외가 없으면 재판정이 금리를 부정으로
+                    # 옮겨도 G6가 곧바로 혼조로 되돌린다. 그 왕복이 '국채금리 소폭
+                    # 상승'을 매번 혼조에 앉혀 놓고 있었다.
+                    # 84항에서 조건을 넓혔다 — 83항은 'v > 0'(오르는 중)만 열어
+                    # 뒀는데, 금리가 내렸는데도 4.78%라 부담인 카드가 하루 만에
+                    # 나왔다. 방향이 아니라 수준이 근거다. 다만 재료가 '여전히
+                    # 높은 수준'을 함께 말할 때만 연다 — 그냥 '금리 하락' 하나로
+                    # 부정을 주장하는 것은 여전히 위반이다.
                     if (key == 'yield_pct' and side == 'negative_factors'
-                            and v > 0 and _yield_level_high(snap)):
+                            and _yield_level_high(snap)
+                            and (v > 0 or re.search(
+                                r'여전히|높은\s*수준|높은\s*금리|고금리|수준\s*유지', text))):
                         break
                     if abs(v) < floor:
                         reasons.append(
