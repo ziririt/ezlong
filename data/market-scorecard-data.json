@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-09-04-01:38",
+      "timestamp_kst": "2026-09-04(금) 01:38 KST",
+      "key_event": {
+        "name": "AI 관련 기업 실적 호조 지속",
+        "name_en": "Continued Strong AI-Related Earnings",
+        "time": "정규장 진행 중",
+        "why": "AI 인프라 투자 기대, 기술주 투자 심리 강화",
+        "why_en": "Anticipation of AI infrastructure investment, strengthened tech sentiment"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "AI 관련 기업 실적 호조에 긍정 우위, 지정학적 긴장 지속으로 혼조",
+      "summary_en": "Positive bias due to strong AI earnings, mixed sentiment from ongoing geopolitical tensions",
+      "positive_factors": [
+        {
+          "score": 50,
+          "name": "AI 관련 기업 실적 기대감",
+          "name_en": "Optimism for AI-related company earnings",
+          "desc": "Broadcom, Nvidia 등 AI 관련 기업의 긍정적 전망 및 투자 확대 소식: 기술주 전반 상승",
+          "desc_en": "Positive outlook and increased investment news from AI-related companies like Broadcom and Nvidia: broad tech sector rise",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "달러 약세 전환",
+          "name_en": "Dollar weakness reversal",
+          "desc": "달러인덱스 DXY 98.87 (-0.55%) 하락: 수출 기업 실적 개선 기대 및 원자재 가격 지지",
+          "desc_en": "Dollar Index DXY 98.87 (-0.55%) decline: expectation of improved export company earnings and commodity price support",
+          "category": "dollar_fx"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "미 국채금리 여전히 높은 수준",
+          "name_en": "US Treasury yields remain high",
+          "desc": "미10년 국채금리 4.74%(-1.13%)로 소폭 하락에도 불구하고 높은 수준 유지: 성장주 할인율 부담 지속",
+          "desc_en": "Despite a slight decrease, US 10-year Treasury yield at 4.74% remains high: continued discount rate pressure on growth stocks",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 15,
+          "name": "주요 기업 규제 리스크 지속",
+          "name_en": "Ongoing regulatory risks for major companies",
+          "desc": "Apple의 영국 소송 및 Google의 독점 관련 뉴스: 빅테크 기업 규제 불확실성 잔존",
+          "desc_en": "Apple's UK lawsuit and Google's monopoly news: lingering regulatory uncertainty for big tech companies",
+          "category": "company_specific"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "WTI 유가 소폭 상승",
+          "name_en": "Slight rise in WTI crude oil",
+          "desc": "WTI 원유 91.51 (+0.49%) 소폭 상승: 인플레이션 압력 우려와 에너지 섹터 지지 상충",
+          "desc_en": "WTI crude oil 91.51 (+0.49%) slight increase: conflicting concerns over inflation pressure and support for energy sector",
+          "category": "oil_energy"
+        }
+      ],
+      "report": {
+        "overview": "- 오늘 미국 증시는 AI 관련 기업들의 실적 호조에 힘입어 긍정적인 흐름을 보였으나, 지정학적 긴장과 규제 리스크로 인해 혼조세 마감\n- AI 인프라 투자 기대감과 기술주 전반의 투자 심리 강화가 시장을 견인하며 총점 긍정 70대 부정 30으로 긍정 우위\n- 달러 약세 전환이 수출 기업 실적 개선 기대를 높였으나, 여전히 높은 미 국채금리와 빅테크 기업 규제 리스크가 부담으로 작용\n- WTI 유가 소폭 상승은 인플레이션 우려와 에너지 섹터 지지라는 상충되는 재료로 혼조세에 기여",
+        "positive": "- AI 관련 기업 실적 기대감: Broadcom의 2028년 AI 매출 전망과 Nvidia의 Hugging Face 인수 소식이 AI 생태계 확장 및 인프라 투자 기대를 높이며 기술주 전반의 투자 심리 강화.\n- 달러 약세 전환: 달러인덱스 DXY가 98.87로 0.55% 하락하며 달러 약세 전환. 이는 미국 수출 기업들의 실적 개선 기대감을 높이고 원자재 가격을 지지하여 증시에 긍정적 영향.",
+        "negative": "- 미 국채금리 여전히 높은 수준: 미 10년 국채금리가 4.74%(-1.13%)로 1.13% 소폭 하락했음에도 불구하고 여전히 높은 수준 유지. 이는 성장주에 대한 할인율 부담으로 작용하며 투자 심리 위축 요인으로 잔존.\n- 주요 기업 규제 리스크 지속: Apple이 영국에서 27억 달러 규모의 소송에 직면하고, Google이 독점 관련 뉴스로 불확실성에 직면. 이는 빅테크 기업 전반의 규제 리스크와 투자 심리 위축 우려를 지속.",
+        "mixed": "- WTI 유가 소폭 상승: WTI 원유 가격이 91.51달러로 0.49% 소폭 상승. 이는 인플레이션 압력에 대한 우려를 높일 수 있으나, 동시에 에너지 섹터 기업들의 실적 개선 기대를 지지하며 시장에 상충되는 영향.",
+        "watch": "- 고용보고서(8월분) 발표: 9월 4일(금) 08:30 ET 예정된 고용보고서 결과에 따라 연준의 통화정책 방향에 대한 시장의 기대가 변화하며 증시 변동성 확대 가능성.\n- 미 10년 국채금리 추이: 여전히 높은 수준을 유지하는 미 10년 국채금리의 추가적인 하락 또는 상승 여부가 성장주 전반의 투자 심리에 지속적인 영향.\n- WTI 유가 변동성: WTI 유가의 추가적인 상승 또는 하락 추이가 인플레이션 우려와 에너지 섹터 투자 심리에 미치는 영향 확인."
+      },
+      "report_at": "2026-09-04(금) 01:38 KST"
+    },
+    {
       "id": "2026-09-03-23:21",
       "timestamp_kst": "2026-09-03(목) 23:21 KST",
       "key_event": {
@@ -591,83 +659,8 @@
         "watch": "- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가적인 변동 여부, 상승세 지속 시 주식 시장에 대한 하방 압력으로 작용할 가능성.\n- WTI 유가 변동성: WTI 유가의 추가적인 상승 또는 하락 여부, 이는 인플레이션 우려 및 지정학적 긴장 완화 또는 심화의 신호로 해석될 수 있음.\n- 고용보고서 발표 전 포지셔닝: 8월 고용보고서(9월 4일(금) 08:30 ET) 발표를 앞두고 투자자들의 포지셔닝 변화, 이는 보고서 결과에 대한 기대감을 반영하며 시장의 단기적인 방향성을 결정할 수 있음."
       },
       "report_at": "2026-09-03(목) 07:29 KST"
-    },
-    {
-      "id": "2026-09-02-21:50",
-      "timestamp_kst": "2026-09-02(수) 21:50 KST",
-      "key_event": {
-        "name": "미-이란 긴장 지속",
-        "name_en": "US-Iran Tensions Persist",
-        "time": "프리마켓 진행 중",
-        "why": "지정학 리스크, 유가 변동성, 인플레이션 우려",
-        "why_en": "Geopolitical risk, oil price volatility, inflation concerns"
-      },
-      "positive_total": 50,
-      "negative_total": 50,
-      "summary": "미-이란 긴장 지속 및 인플레이션 우려로 팽팽한 균형 유지",
-      "summary_en": "Mixed sentiment prevails due to ongoing US-Iran tensions and inflation concerns",
-      "positive_factors": [
-        {
-          "score": 50,
-          "name": "고용 데이터 호조",
-          "name_en": "Positive Jobs Data",
-          "desc": "예상치 상회하는 고용 데이터 발표, 경제 연착륙 기대감 유지",
-          "desc_en": "Better-than-expected jobs data released, maintaining soft landing expectations",
-          "category": "macro_data"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "AI 밸류에이션 재평가 우려",
-          "name_en": "AI Valuation Reassessment Concerns",
-          "desc": "일부 AI 관련 기업 실적 발표 후 하락, 섹터 전반 밸류에이션 재평가 압력",
-          "desc_en": "Some AI-related companies declined after earnings, pressuring overall sector valuations",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "미-이란 지정학적 긴장 지속",
-          "name_en": "Persistent US-Iran Geopolitical Tensions",
-          "desc": "중동 지정학적 리스크 고조 지속, 유가 상승 압력 및 시장 불확실성 확대",
-          "desc_en": "Escalating Middle East geopolitical risks, increasing oil price pressure and market uncertainty",
-          "category": "geopolitics",
-          "score": 10
-        },
-        {
-          "name": "높은 국채금리 수준 지속",
-          "name_en": "Elevated Treasury Yields Persist",
-          "desc": "미10년 국채금리 4.78%(-0.33%)로 높은 수준 유지, 성장주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield remains high at 4.78%, increasing discount rate pressure on growth stocks",
-          "category": "rates_treasury",
-          "score": 10
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "WTI 유가 소폭 하락",
-          "name_en": "Slight Decline in WTI Oil Prices",
-          "desc": "WTI 유가 -1.31% 하락했으나, 미-이란 긴장으로 인한 상승 압력 여전해 방향성 혼조",
-          "desc_en": "WTI oil prices fell by -1.31%, but upward pressure from US-Iran tensions persists, leading to mixed signals",
-          "category": "oil_energy"
-        },
-        {
-          "name": "고용보고서 발표 대기",
-          "name_en": "Awaiting Jobs Report Release",
-          "desc": "8월 고용보고서(9월 4일(금) 08:30 ET) 발표를 앞두고 시장 관망세",
-          "desc_en": "Market awaiting the August Jobs Report (Sep 4th (Fri) 08:30 ET), leading to a wait-and-see approach",
-          "category": "macro_data"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총평: 미-이란 긴장 지속과 인플레이션 우려로 부정적 심리가 우세한 가운데, 고용 데이터 호조가 하방 압력을 일부 완충하는 혼조세 지속.\n- 주요 하방 압력: 중동 지정학적 리스크 고조로 인한 유가 변동성 확대 및 인플레이션 재점화 우려, 그리고 AI 관련 기업들의 밸류에이션 재평가 압력이 시장의 불안감을 가중.\n- 긍정적 요인: 예상치를 상회하는 고용 데이터 발표로 경제 연착륙에 대한 기대감이 유지되며, 시장의 급격한 하락을 방어하는 역할.\n- 전반적 흐름: 시장은 다가오는 고용보고서 발표를 앞두고 관망세를 보이며, 불확실성 속에서 주요 경제 지표와 지정학적 상황에 촉각을 곤두세우는 양상.",
-        "positive": "- 고용 데이터 호조: 예상치를 상회하는 고용 데이터 발표로 경제의 견조함이 확인되며, 연착륙 기대감이 유지되는 상황. 이는 Dow 지수 상승의 주요 원인 중 하나.\n- 경제 연착륙 기대감: 탄탄한 고용 시장은 소비 심리를 지지하고 경기 침체 우려를 완화하며, 시장 전반에 긍정적인 영향을 미치는 요인.",
-        "negative": "- AI 밸류에이션 재평가 우려: 일부 AI 관련 기업들의 실적 발표 후 주가 하락이 나타나면서, AI 섹터 전반에 걸쳐 밸류에이션 재평가 압력이 가중되는 상황. Credo의 실적 발표 후 주가 급락이 대표적인 사례.\n- 인플레이션 우려 지속: 미-이란 지정학적 긴장으로 인한 유가 상승 압력과 높은 국채금리 유지로 인플레이션 재점화에 대한 우려가 시장의 주요 하방 요인으로 작용. 10년 기대인플레이션이 2.35%로 상승 압력 잔존.",
-        "mixed": "- WTI 유가 소폭 하락: WTI 유가가 -1.31% 하락했으나, 미-이란 긴장 지속으로 인한 공급 차질 우려가 여전하여 유가 상승 압력이 상존하는 상황. 중동 지정학적 리스크가 유가 방향성에 혼조세 부여.\n- 고용보고서 발표 대기: 8월 고용보고서(9월 4일(금) 08:30 ET) 발표를 앞두고 시장 참여자들이 관망세를 유지하며, 데이터 결과에 따라 시장 방향성이 결정될 가능성.\n- 미-이란 지정학적 긴장 지속: 중동 지역의 지정학적 리스크 고조가 유가 상승 압력을 지속시키고 시장 전반의 불확실성을 확대하는 요인. 이는 S&P 500 및 Nasdaq 100 선물 하락의 배경.\n- 국채금리 상승 압력: 미10년 국채금리가 4.78%(-0.33%)로 높은 수준을 유지하며, 성장주 밸류에이션 할인율에 대한 부담을 가중. 채권 시장의 약세가 S&P 500 AI 랠리에 부담으로 작용.",
-        "watch": "- AVGO 실적 발표: Broadcom(AVGO) 실적 발표(9월 2일(수) 장 마감 후 ET, 약 8시간 뒤) 결과에 따라 반도체 섹터 및 기술주 전반의 투자 심리 변화 가능성.\n- 미-이란 지정학적 긴장 추이: 중동 지역의 지정학적 긴장 완화 또는 심화 여부에 따라 유가 변동성 및 시장 불확실성 변화 확인."
-      },
-      "report_at": "2026-09-02(수) 21:50 KST"
     }
   ],
-  "updated_at": "2026-09-03T14:22:23Z",
+  "updated_at": "2026-09-03T16:39:16Z",
   "max_entries": 10
 }
