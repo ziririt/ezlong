@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T20:31:06.761164+00:00",
-  "generatedAtKST": "2026-09-04 05:31 KST",
+  "generatedAt": "2026-09-03T20:37:47.843020+00:00",
+  "generatedAtKST": "2026-09-04 05:37 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -205,7 +205,7 @@
         "histogram": -0.6324
       },
       "high52": 542.3603,
-      "low52": 448.1274,
+      "low52": 448.1273,
       "dev200": 8.3072,
       "dev5": 0.8535,
       "dev20": 0.5046,
@@ -618,7 +618,7 @@
         "signal": -6.6776,
         "histogram": 5.6143
       },
-      "high52": 777.701,
+      "high52": 777.7011,
       "low52": 525.2332,
       "dev200": -1.7449,
       "dev5": 4.1252,
@@ -688,7 +688,7 @@
     "prevClose": 33,
     "prev1Week": 55,
     "prev1Month": 51,
-    "timestamp": "2026-09-03T20:19:12+00:00"
+    "timestamp": "2026-09-03T20:20:01+00:00"
   },
   "macro": {
     "yield10y": {
@@ -708,31 +708,48 @@
       "unit": "%"
     },
     "oil": {
-      "price": 91.74,
-      "change": 0.73,
-      "changePct": 0.8021,
+      "price": 91.72,
+      "change": 0.71,
+      "changePct": 0.7801,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 98.985,
-      "change": -0.575,
-      "changePct": -0.5775,
+      "price": 98.988,
+      "change": -0.572,
+      "changePct": -0.5745,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4518.2998,
-      "change": 152.0,
-      "changePct": 3.4812,
+      "price": 4519.2998,
+      "change": 153.0,
+      "changePct": 3.5041,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-09-03T20:31:06.761164+00:00",
+      "atKST": "2026-09-04 05:31 KST",
+      "qqq": {
+        "rsi": 52.87,
+        "macdHist": -0.6769,
+        "dev5": 0.5777,
+        "dev200": 9.3685,
+        "gear": 3,
+        "buyScore": 57,
+        "sellScore": 27,
+        "price": 717.67
+      },
+      "soxxMacdHist": -1.7835,
+      "fearAndGreed": 35,
+      "yield10y": 4.762
+    },
     {
       "at": "2026-09-03T20:22:39.061556+00:00",
       "atKST": "2026-09-04 05:22 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": -1.7667,
       "fearAndGreed": 44,
       "yield10y": 4.796
-    },
-    {
-      "at": "2026-09-01T19:31:08.934758+00:00",
-      "atKST": "2026-09-02 04:31 KST",
-      "qqq": {
-        "rsi": 46.4,
-        "macdHist": -0.9576,
-        "dev5": -1.0196,
-        "dev200": 7.9661,
-        "gear": 3,
-        "buyScore": 63,
-        "sellScore": 17,
-        "price": 707.31
-      },
-      "soxxMacdHist": -1.7444,
-      "fearAndGreed": 45,
-      "yield10y": 4.796
     }
   ],
-  "swingContinuity": "\ucd5c\uadfc \uba70\uce60\uac04 QQQ\uc758 \ub9e4\uc218/\ub9e4\ub3c4 \uc810\uc218\ub294 \ud070 \ubcc0\ud654 \uc5c6\uc774 \uc720\uc9c0\ub418\ub294 \uac00\uc6b4\ub370, \uc624\ub298\uc740 \ub9e4\ub3c4 \uc810\uc218\uac00 21\uc5d0\uc11c 27\ub85c \uc18c\ud3ed \uc0c1\uc2b9\ud558\uba70 \ub9e4\uc218\uc138\uac00 \uc870\uae08 \ub354 \uac15\ud574\uc9c0\ub294 \ud750\ub984\uc744 \ubcf4\uc600\uc2b5\ub2c8\ub2e4. RSI\uac00 52.87\ub85c \uc0c1\uc2b9\ud558\uba70 \uae0d\uc815\uc801\uc778 \uc2e0\ud638\ub97c \uac15\ud654\ud588\uc73c\ub098, SOXX\uac00 \ucd5c\uadfc 5\uac70\ub798\uc77c \uc911 3\uc77c\uac04 \ud558\ub77d\uc138\ub97c \ubcf4\uc778 \uac83\uacfc \ub2ec\ub9ac QQQ\ub294 \ub9c8\uc9c0\ub9c9 \uc774\ud2c0\uac04 \uc0c1\uc2b9\uc138\ub97c \uc774\uc5b4\uac00\ub294 \ucc28\uc774\ub97c \ubcf4\uc600\uc2b5\ub2c8\ub2e4.",
-  "swingContinuityEn": "QQQ's buy/sell scores remained largely stable over the past few days, but today saw a slight increase in selling pressure from 21 to 27, indicating a mild strengthening of buying momentum. While the RSI rose to 52.87, reinforcing a positive signal, QQQ showed a divergence from SOXX, which experienced declines on three of the last five trading days, as QQQ maintained its upward trend for the final two days."
+  "swingContinuity": null,
+  "swingContinuityEn": null
 }
