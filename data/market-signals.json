@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T09:22:50.358861+00:00",
-  "generatedAtKST": "2026-09-03 18:22 KST",
+  "generatedAt": "2026-09-03T09:37:36.929939+00:00",
+  "generatedAtKST": "2026-09-03 18:37 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -194,32 +194,32 @@
       "price": 530.62,
       "change": 2.87,
       "changePct": 0.5438,
-      "sma5": 532.044,
-      "sma20": 534.2748,
-      "sma50": 527.8359,
-      "sma200": 495.3936,
-      "rsi": 49.33,
+      "sma5": 531.878,
+      "sma20": 534.6398,
+      "sma50": 527.4556,
+      "sma200": 495.0637,
+      "rsi": 49.68,
       "macd": {
-        "macd": 1.1065,
-        "signal": 2.1804,
-        "histogram": -1.0739
+        "macd": 1.202,
+        "signal": 2.2962,
+        "histogram": -1.0942
       },
       "high52": 542.3603,
-      "low52": 446.4235,
-      "dev200": 7.1108,
-      "dev5": -0.2676,
-      "dev20": -0.6841,
+      "low52": 446.4236,
+      "dev200": 7.1822,
+      "dev5": -0.2365,
+      "dev20": -0.7519,
       "gear": 3,
       "vix": 15.210000038146973,
-      "rsi5dAgo": 54.7919,
-      "hist5dAgo": -0.7468,
+      "rsi5dAgo": 56.2493,
+      "hist5dAgo": -0.8179,
       "high5d": 535.22,
       "low5d": 527.75,
-      "high20dExcl": 539.173,
+      "high20dExcl": 542.3603,
       "low20dExcl": 527.073,
-      "volRatio": 1.0557,
+      "volRatio": 0.9879,
       "upDays5": 2,
-      "adx": 13.3389,
+      "adx": 13.1568,
       "adxStatus": "\ubb34\ucd94\uc138(\ucda9\uaca9 \uac00\ub2a5)",
       "buyScore": 57,
       "sellScore": 18,
@@ -230,9 +230,9 @@
       "recentDailyReturns": [
         0.54,
         -0.72,
-        -0.65,
-        -0.03,
-        0.19
+        -0.68,
+        0.19,
+        -0.19
       ]
     },
     "IWM": {
@@ -618,7 +618,7 @@
         "signal": -8.0812,
         "histogram": 3.8634
       },
-      "high52": 777.701,
+      "high52": 777.7011,
       "low52": 525.2332,
       "dev200": -4.6115,
       "dev5": 2.4682,
@@ -688,7 +688,7 @@
     "prevClose": 33,
     "prev1Week": 55,
     "prev1Month": 51,
-    "timestamp": "2026-09-03T09:01:46+00:00"
+    "timestamp": "2026-09-03T09:21:46+00:00"
   },
   "macro": {
     "yield10y": {
@@ -708,31 +708,48 @@
       "unit": "%"
     },
     "oil": {
-      "price": 91.4,
-      "change": 0.39,
-      "changePct": 0.4285,
+      "price": 91.54,
+      "change": 0.53,
+      "changePct": 0.5824,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 99.223,
-      "change": -0.337,
-      "changePct": -0.3385,
+      "price": 99.25,
+      "change": -0.31,
+      "changePct": -0.3114,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4485.2002,
-      "change": 118.9004,
-      "changePct": 2.7231,
+      "price": 4480.7002,
+      "change": 114.4004,
+      "changePct": 2.6201,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-09-03T09:22:50.358861+00:00",
+      "atKST": "2026-09-03 18:22 KST",
+      "qqq": {
+        "rsi": 47.62,
+        "macdHist": -1.1345,
+        "dev5": -0.6995,
+        "dev200": 8.1753,
+        "gear": 3,
+        "buyScore": 58,
+        "sellScore": 18,
+        "price": 709.24
+      },
+      "soxxMacdHist": -1.9092,
+      "fearAndGreed": 33,
+      "yield10y": 4.796
+    },
     {
       "at": "2026-09-03T09:07:40.852970+00:00",
       "atKST": "2026-09-03 18:07 KST",
@@ -3150,23 +3167,6 @@
     {
       "at": "2026-09-01T08:37:37.891775+00:00",
       "atKST": "2026-09-01 17:37 KST",
-      "qqq": {
-        "rsi": 52.09,
-        "macdHist": -0.4086,
-        "dev5": 0.2072,
-        "dev200": 9.4825,
-        "gear": 3,
-        "buyScore": 67,
-        "sellScore": 18,
-        "price": 716.76
-      },
-      "soxxMacdHist": -1.1778,
-      "fearAndGreed": 47,
-      "yield10y": 4.758
-    },
-    {
-      "at": "2026-09-01T08:22:40.280612+00:00",
-      "atKST": "2026-09-01 17:22 KST",
       "qqq": {
         "rsi": 52.09,
         "macdHist": -0.4086,
