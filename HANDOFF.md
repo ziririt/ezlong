@@ -1,12 +1,12 @@
 # HANDOFF: ezlong.com
 
-최종 갱신: 2026-09-02(수) 14:00 KST
+최종 갱신: 2026-09-05(토) 03:30 KST
 기준 커밋: `main` 최신
 성격: **최신 상태 한 장.** 이력을 밑에 쌓지 않는다. 인수인계할 때마다 통째로 덮어쓴다.
 과거 이력이 필요하면 `CHANGELOG.md`(2026-06-19부터, 57개 세션)를 본다.
 
 이 문서 하나만 읽고 바로 이어서 개발할 수 있게 쓴다.
-더 깊은 규칙은 `CLAUDE.md`(82항)가 본체다. 이 문서와 충돌하면 `CLAUDE.md`가 이긴다.
+더 깊은 규칙은 `CLAUDE.md`(86항)가 본체다. 이 문서와 충돌하면 `CLAUDE.md`가 이긴다.
 
 ---
 
@@ -22,7 +22,7 @@
 ### 1-1. 일하는 방식 (이게 제일 중요하다)
 
 성동님이 **실제 화면을 보고 지적**한다. 그 지적을 `CLAUDE.md`에 번호를 붙여 규칙으로
-박는다. 지금 82항까지 있다. **이 번호 체계가 이 프로젝트의 척추다.**
+박는다. 지금 86항까지 있다. **이 번호 체계가 이 프로젝트의 척추다.**
 
 지적은 늘 구체적이다.
 
@@ -61,10 +61,10 @@ AI가 만든 문장을 그대로 내보내지 않는다.
 ### 2-1. 규모
 
 - 루트 HTML 55장 + 언어판 110장 (en 24 · ja 23 · zh 21 · es 21 · pt 21)
-- `scripts/` 49개 (Python + Node)
+- `scripts/` 63개 (Python + Node)
 - `data/*.json` 286개
 - GitHub Actions 워크플로 24개
-- `CLAUDE.md` 약 3,600줄 · 82항
+- `CLAUDE.md` 3,899줄 · 86항
 - 저장소 약 355MB (`.git` 제외)
 
 ### 2-2. 완성되어 돌고 있는 것
@@ -108,9 +108,9 @@ AI가 만든 문장을 그대로 내보내지 않는다.
 - `firebase-hosting.yml`: main push → 배포. **2~3분**
 - `daily-backup.yml` · `keep-alive.yml`
 
-### 2-3. 최근에 끝난 일 (2026-08-26 ~ 09-02)
+### 2-3. 최근에 끝난 일 (2026-08-26 ~ 09-03)
 
-`CLAUDE.md` 75항부터 82항까지가 이 기간이다.
+`CLAUDE.md` 75항부터 86항까지가 이 기간이다.
 
 - **75항 갱신 보류 기록.** 게시를 포기했을 때 `record_hold()`로 사유를 남긴다.
   **`updated_at`은 건드리지 않는다**(감시견 자가치유 보존).
@@ -133,6 +133,20 @@ AI가 만든 문장을 그대로 내보내지 않는다.
   행선지는 같은 날 `/app/`에서 `/longtime/`·`/skybluenote/`로 한 번 바뀌었다.
 - `llms.txt` 스코어카드 횟수를 실제 8회로 수정 (오래된 미결이었다).
 - Skyblue Note 3.11.1 → 3.14.1, Long Time 1.9.98 → 1.9.104.
+- **83항 안전자산과 금리 수준** (09-02). 방향을 크기로만 재던 것을 고쳤다. 안전자산
+  상승은 긍정 불가(`_SUBJ_SAFE`), 10년물 4.50% 또는 30년물 5.00% 이상이면 '높은 구간'
+  (`_yield_level_high()`)으로 보고 G6 미세 변동 제거에서 면제.
+- **84항 혼조는 쓰레기통이 아니다** (09-02). 방향이 분명한 재료를 혼조에서 끌어올린다
+  (`promote_directional_mixed()`, 4-3c). 83항의 "오르는 중일 때" 조건이 하루도 못 가
+  뚫려서 "수준이 높고 설명이 부담·압박을 말하면"으로 넓혔다.
+- **85항 주가가 오른 것은 재료가 아니다** (09-02). 재료 **이름**은 원인이어야 한다.
+  `_price_result_name()` 신설, `FACTOR_RESULT_ONLY`에 '주가 강세·상승' 계열 추가,
+  `price_result_offenders()`가 집행 경로를 탄다. 63항의 가장 노골적인 형태가 긍정
+  20점을 달고 나갔던 사고다.
+- **86항 카드 머리와 점수 칸이 다른 이야기를 하면 안 된다** (09-03). G4가 모델이 붙인
+  `category` 대신 **이름의 글자**를 본다(`_company_only_factor()`). 핵심 이슈·요약에
+  나온 회사가 점수 칸에 없으면 재판정, 남으면 코드가 머리를 맞춘다
+  (`fix_offcard_topics()`, 4-6c). 점수·재료는 건드리지 않는다.
 
 ### 2-4. 체크포인트 태그 (되돌릴 때 쓴다)
 
@@ -143,6 +157,9 @@ AI가 만든 문장을 그대로 내보내지 않는다.
   ios-nonsafari-banner · index-cleanup · emdash-sweep · colon-separator
 - `cp-20260829-top9-divider`
 - `cp-20260831-app-promo` · `cp-20260831-app-link-align`
+- `cp-20260902-*`: safehaven-yield · yield-promote · mixed-directional ·
+  yield-level-unify · handoff
+- `cp-20260903-*`: price-result · g4-spillover · card-head
 
 ---
 
@@ -165,10 +182,12 @@ AI가 만든 문장을 그대로 내보내지 않는다.
 - 4-2: 가드레일 클램프
 - 4-3: 방향 집행
 - 4-3b: G4 한쪽 소멸 확인(76-2). 한쪽이 비면 `record_hold` 후 `sys.exit(0)`
+- 4-3c: 방향이 분명한 재료를 혼조에서 승격 (84항)
 - 4-4: 주말 처리 (58항: 주말을 '휴장'이라 부르지 않는다)
 - 4-5: 금리 표기
 - 4-5b: 양보 접속 교정 (78항)
 - 4-6: 요약
+- 4-6c: 카드 머리·요약을 점수 칸에 맞춤 (86항)
 - 4-7: 금리 보증
 - 4-7b: 혼조 노이즈 제거
 - 4-7d: 대기 재료 강등
@@ -192,6 +211,11 @@ AI가 만든 문장을 그대로 내보내지 않는다.
   보고서가 새로 끌어오면 그건 다른 판정이다. `report_body_scrub()`이 문장 단위로 자른다.
 - **아직 안 일어난 일은 방향이 없다(72항).** 대기 중인 이벤트는 긍정도 부정도 아니다.
 - **결과를 원인으로 포장하지 않는다(63항).**
+- **재료 이름은 원인이어야 한다(85항).** '엔비디아 주가 강세'는 결과다. 주가를 올린
+  원인이 호재 성격일 때 호재다. 원인을 못 찾으면 그 재료를 쓰지 않는다.
+  `_price_result_name()`
+- **카드 머리에 나온 회사는 점수 칸에도 있어야 한다(86항).** 없으면 코드가 머리에서
+  그 이름을 내린다. `fix_offcard_topics()`
 
 ---
 
@@ -215,7 +239,7 @@ AI가 만든 문장을 그대로 내보내지 않는다.
 ### 4-2. 80항 문장 부호 정리: 절반만 끝남
 
 - 긴 대시(U+2014)와 `&mdash;` 엔티티는 전부 정리했다.
-- **엔 대시(–)는 손대지 않았다. 현재 39개 파일에 남아 있다**
+- **엔 대시(–)는 손대지 않았다. 현재 48개 파일에 남아 있다**(2026-09-05 재측정)
   (`time/`·`skybluenote/` 제외 기준). 범위가 명확해서 다음 사람이 바로 집을 수 있다.
 
 ### 4-3. 번역 뒤처짐: 세 건
@@ -254,25 +278,28 @@ AI가 만든 문장을 그대로 내보내지 않는다.
 
 ## 5. 다음 사람이 할 일 (순서대로)
 
-### 0순위. 맥 git 원격의 평문 GitHub 토큰 폐기·재발급
+### 0순위. GitHub 토큰 정리 (절반 완료)
 
-성동님 맥의 `~/Developer/ezlong` 원격 URL에 **개인 액세스 토큰이 평문으로 박혀 있다.**
-`git remote -v` 한 줄이면 보인다.
+2026-09-05에 **fine-grained 토큰을 새로 발급했다.** `ziririt/ezlong` 한 저장소, Contents
+쓰기 권한. 이 토큰으로 맥 쪽 셸에서 push 인증이 통하는 것을 확인했다
+(`git push --dry-run origin main` → `Everything up-to-date`).
 
-**계정을 넘길 때마다 이 문제가 커진다.** 새 세션이 그 맥에 접근하는 순간 토큰도 같이
-노출된다. 두 달째 밀려 있다.
+남은 일 둘. **둘 다 성동님 손이 필요하다.**
 
-성동님 GitHub 로그인이 필요해서 AI가 대신 못 한다. **첫 대화에서 다시 요청할 것.**
+1. **구 토큰 폐기.** 맥 로컬 저장소(`/Users/ziririt/Developer/ezlong`)의 원격 URL에
+   개인 액세스 토큰이 평문으로 박혀 있다. GitHub → Settings → Developer settings →
+   Personal access tokens에서 그 토큰을 폐기한다. 로그인이 필요해 AI가 못 한다.
+2. **맥 로컬 원격 URL 정리.** 폐기하면 그 저장소는 push가 막히므로 URL을 바꾼다.
 
-1. GitHub → Settings → Developer settings → Personal access tokens → 기존 토큰 폐기
-2. 새 토큰 발급 (repo 권한만, 만료일 설정)
-3. 맥에서 원격 URL을 토큰 없는 형태로 바꾸고 키체인에 맡긴다
    ```
    cd ~/Developer/ezlong
    git remote set-url origin https://github.com/ziririt/ezlong.git
    git config --global credential.helper osxkeychain
    ```
+
    다음 push 때 한 번 물어보면 새 토큰을 넣는다. 그 뒤로는 키체인이 기억한다.
+   **Cowork 브리지는 `.git/config` 읽기를 막는다**(자격 증명 보호 장치다. 잘 막고 있는
+   것이다). 그래서 이 두 줄은 AI가 대신 못 하고 성동님 터미널에서 해야 한다.
 
 ### 1순위. 애드센스 재검토 (4-1)
 
@@ -286,7 +313,7 @@ AI가 만든 문장을 그대로 내보내지 않는다.
 
 ### 3순위. 엔 대시(–) 정리 (4-2)
 
-39개 파일. 80항의 남은 절반이다. **일괄 치환 안전장치를 반드시 쓴다**:
+48개 파일(2026-09-05 재측정). 80항의 남은 절반이다. **일괄 치환 안전장치를 반드시 쓴다**:
 대칭 diff 확인 + `stable-*` 태그(44항). 8장의 지뢰 첫 항목을 먼저 읽을 것.
 
 ### 4순위. 교차 감사에 hold 로그 붙이기 (4-5)
@@ -371,67 +398,68 @@ git fetch origin main -q && git reset --hard origin/main -q
 #    CLAUDE.md 를 읽는다. 최소한 최근 10개 항과 34·48·51·80항.
 ```
 
-### 7-2. 배포 경로: **샌드박스는 GitHub에 push할 수 없다**
+### 7-2. 배포 경로: 맥 쪽 셸에서 push한다 (2026-09-05 재확정)
 
-확인된 사실이다.
+**두 셸의 능력이 다르다. 이것이 운용의 뼈대다.**
 
-```
-git push --dry-run
-→ access denied by the git proxy: ziririt/ezlong is not in this session's
-  authorized repository set
-```
+- **클라우드 샌드박스**: clone·fetch는 되고 **push는 프록시가 막는다.**
+  `access denied by the git proxy: ziririt/ezlong is not in this session's authorized
+  repository set`. 라이브 `ezlong.com` curl도 막힌다(응답 000).
+  **Playwright 렌더 검증은 여기서 한다.**
+- **맥 쪽 셸(`device_bash`)**: 맥 안에서 도는 리눅스 셸이다. git이 있고 GitHub에 닿는다
+  (응답 200). clone은 자격 증명 없이 통과하고(프록시가 넣어 준다) **push만 토큰이
+  필요하다.** 라이브 curl은 여기서도 막힌다(000).
 
-그래서 **패치를 만들어 성동님 맥으로 보내고, 맥에서 적용·push** 한다.
+그래서 배포는 맥 쪽 셸에 **작업용 클론을 따로 두고** 거기서 push한다.
+성동님 로컬 저장소는 건드리지 않는다. 브리지가 그 저장소의 `.git/config`를 막아서
+어차피 git 명령이 안 돌아간다.
 
 ```bash
-# 1) 샌드박스에서 커밋 (고친 파일만)
+# 1) 세션마다 한 번: 작업용 클론 (14초, 약 610MB. $HOME은 세션 전용이라 매번 새로)
+cd $HOME && git clone --depth 1 --single-branch --branch main \
+  https://github.com/ziririt/ezlong.git ezpush
+
+# 2) 자격 증명. 토큰은 성동님이 준다. 연결 폴더 안에는 절대 저장하지 않는다
+umask 077
+printf 'https://ziririt:<TOKEN>@github.com\n' > $HOME/.git-credentials
+git config --global credential.helper store
+git config --global user.name ezlong
+git config --global user.email dev@ezlong.com
+
+# 3) push 직전 항상 최신화. 봇이 하루 200개씩 커밋해 경합이 상시다 (pull-first, 28항)
+cd $HOME/ezpush && git fetch --depth 1 origin main -q && git reset --hard origin/main -q
+
+# 4) 고친 파일만 명시 스테이징 (git add -A 금지)
 git add <파일들>
-git -c user.name=ezlong -c user.email=dev@ezlong.com commit -m "..."
+git commit -m "..."
+git push origin main
 
-# 2) 패치 생성
-git format-patch -1 --binary -o /tmp/pNN
-
-# 3) 파일을 사용자에게 전달 → file_uuid 획득   (Cowork: SendUserFile)
-
-# 4) 맥의 폴더로 쓰기   (Cowork: device_commit_files)
-#    → ~/Downloads/ezpatch/NNNN-slug.patch
-
-# 5) 맥에서 적용·push   (Cowork: osascript)
-cd ~/Developer/ezlong
-git fetch origin main -q
-git merge --ff-only origin/main -q
-git am -3 ~/Downloads/ezpatch/NNNN-slug.patch
-git push origin main -q
-
-# 6) 샌드박스 동기화
-git fetch origin main -q && git reset --hard origin/main -q
-
-# 7) 2~3분 대기 후 라이브 검증 (맥에서)
-curl -s "https://ezlong.com/파일?cb=$(date +%s)" | grep -c '새로 넣은 문자열'
-
-# 8) 체크포인트 태그
+# 5) 체크포인트 태그
 git tag -f cp-YYYYMMDD-slug && git push origin cp-YYYYMMDD-slug --force
+
+# 6) 2~3분 뒤 라이브 검증. 두 셸 다 curl이 막히므로 브라우저로 눈으로 본다
 ```
 
-**osascript 주의사항.** 맥에서 셸을 돌릴 때 반드시 앞에 붙인다.
+**클라우드에서 고친 것을 맥 쪽으로 옮기는 방법.** 클라우드에서 커밋하고
+`git format-patch -1 --binary`로 패치를 만든 뒤, SendUserFile → `device_commit_files`로
+연결 폴더에 내려놓고, 맥 쪽 셸에서 `git am -3`으로 얹는다. 20MB를 넘으면 `gzip -9`로
+줄인다(265파일 커밋이 20.8MB였고 gzip으로 6.3MB가 됐다). 파일 몇 개면 패치 없이 맥 쪽
+클론에 직접 써도 된다. **한글이 많은 내용은 base64로 넘긴다.** 명령줄로 그대로 넘기면
+깨진다.
 
-```
-export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
-export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
-```
-
-- 한글 파일명·커밋 메시지가 깨지지 않으려면 LANG 설정이 필수다.
-- **`grep -c`가 0을 반환하면 exit 1이라 스크립트가 거기서 죽는다.** `|| true`를 붙인다.
-- 20MB가 넘는 패치는 `gzip -9 -c`로 압축해 보내고 맥에서 `gunzip -k -f`.
-
-**봇 커밋과 충돌했을 때.** `git am`이 `data/*.json`에서 충돌하면 그 사이에 봇이 데이터를
+**봇 커밋과 충돌했을 때.** `git am`이 `data/*.json`에서 충돌하면 그 사이 봇이 데이터를
 갱신한 것이다.
 
 ```
 git am --abort
 ```
-샌드박스로 돌아가 `git checkout origin/main -- data/`로 데이터만 되돌리고 **코드만 다시
-커밋**한다. 데이터는 봇에게 맡긴다. 억지로 밀면 봇 데이터를 덮는다.
+
+`git checkout origin/main -- data/`로 데이터만 되돌리고 **코드만 다시 커밋**한다.
+데이터는 봇에게 맡긴다. 억지로 밀면 봇 데이터를 덮는다.
+
+**함정: 맥에 `aladin` 사용자 홈도 있다.** 그 아래 `~/developer/ezlong`은 이름만 같은
+**빈 폴더**다. 2026-09-05에 이걸로 반나절을 잃었다. 저장소는
+`/Users/ziririt/Developer/ezlong` 하나뿐이고, 연결 폴더도 그것을 붙여야 한다.
 
 ### 7-3. 배포 전 필수 검사
 
@@ -532,7 +560,8 @@ cat data/watchdog-status.json | head -20
 ### 9-1. 경로
 
 - 샌드박스 작업 사본: `/home/claude/ezlong`
-- 맥 저장소: `~/Developer/ezlong`
+- 맥 저장소(성동님 것. 읽기 전용으로 둔다): `/Users/ziririt/Developer/ezlong`
+- 맥 쪽 셸의 작업용 클론: `$HOME/ezpush` (세션 전용. 매번 새로 만든다)
 - 맥 패치 수신함: `~/Downloads/ezpatch/`
 - Playwright: `/home/claude/.npm-global/lib/node_modules/playwright`
 - Chromium: `/opt/pw-browsers/chromium`
