@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/*.pem)",
+      "Read(**/*.p12)",
+      "Read(**/serviceAccountKey*.json)",
+      "Read(**/*-firebase-adminsdk-*.json)",
+      "Read(**/.firebase/**)",
+      "Read(**/firebase-debug.log)",
+      "Read(**/*credentials*.json)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Edit(**/*.pem)",
+      "Edit(**/*.p12)",
+      "Edit(**/serviceAccountKey*.json)",
+      "Edit(**/*-firebase-adminsdk-*.json)",
+      "Edit(**/*credentials*.json)",
+      "Write(**/.env)",
+      "Write(**/.env.*)",
+      "Write(**/serviceAccountKey*.json)",
+      "Write(**/*-firebase-adminsdk-*.json)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git add -A:*)",
+      "Bash(git clean -fd:*)",
+      "Bash(rm -rf /:*)"
+    ]
+  }
+}
