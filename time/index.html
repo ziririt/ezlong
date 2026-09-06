@@ -77,7 +77,7 @@
   <meta name="apple-mobile-web-app-title" content="Long Time">
   <meta name="theme-color" content="#0D0D0F">
   <meta name="color-scheme" content="dark">
-  <link rel="stylesheet" href="styles.css?v=20260827-adheight-v10">
+  <link rel="stylesheet" href="styles.css?v=20260906-sleepwave-v11">
 </head>
 <body>
   <main class="clock-app" data-scene="midday">
@@ -422,7 +422,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.104</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.105</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -1175,14 +1175,42 @@
       </div>
       <!-- 2026-08-27 운영자: "수면 시작 화면인데 너무 동적인 느낌 부족. 에러난 줄.
            뭔가 살아있는 느낌. 하단에 수면 패턴을 상징하는 웨이브 애니메이션 어때?"
-           세 겹의 느린 파동이 서로 다른 속도로 흐른다(12·19·27초). 색은 이 화면의
-           '기상 시각' 하늘색 계열, 불투명도는 아주 낮게 — 잠을 방해하지 않는 선에서
-           화면이 멈춘 게 아니라는 것만 알린다. -->
+           2026-09-06 운영자: "너무 눈에 안 띈다. 컬러도 배경색에 묻히고 높이도 작아서
+           눈에 안 띈다. 역동성도 부족. 연하늘색·흰색 위주의 깨끗하고 깔끔한 컬러로,
+           맑은 공기로 숨쉬는 느낌으로, 호흡하듯이 편안하고 부드럽게 천천히."
+           → 네 겹으로 다시 짰다. 맑은 공기 한 겹(sleep-wave-air) + 물결 셋.
+           가로 흐름과 세로 호흡을 서로 다른 요소에 나눠 걸었다 — 둘 다 transform 이라
+           한 요소에 겹쳐 걸면 뒤엣것이 앞엣것을 지운다(그래서 g 와 path 로 나눴다).
+           각 겹의 주기(600 450 360)와 흐르는 거리를 맞춰 이음매가 보이지 않는다. -->
       <div class="sleep-wave" aria-hidden="true">
-        <svg viewBox="0 0 1800 150" preserveAspectRatio="none">
-          <path class="sleep-wave-a" d="M 0,62 C 60.12,32 119.88,32 180,62 C 240.12,92 299.88,92 360,62 C 420.12,32 479.88,32 540,62 C 600.12,92 659.88,92 720,62 C 780.12,32 839.88,32 900,62 C 960.12,92 1019.88,92 1080,62 C 1140.12,32 1199.88,32 1260,62 C 1320.12,92 1379.88,92 1440,62 C 1500.12,32 1559.88,32 1620,62 C 1680.12,92 1739.88,92 1800,62 L 1800,150 L 0,150 Z" />
-          <path class="sleep-wave-b" d="M 0,78 C 60.12,58 119.88,58 180,78 C 240.12,98 299.88,98 360,78 C 420.12,58 479.88,58 540,78 C 600.12,98 659.88,98 720,78 C 780.12,58 839.88,58 900,78 C 960.12,98 1019.88,98 1080,78 C 1140.12,58 1199.88,58 1260,78 C 1320.12,98 1379.88,98 1440,78 C 1500.12,58 1559.88,58 1620,78 C 1680.12,98 1739.88,98 1800,78 L 1800,150 L 0,150 Z" />
-          <path class="sleep-wave-c" d="M 0,92 C 60.12,80 119.88,80 180,92 C 240.12,104 299.88,104 360,92 C 420.12,80 479.88,80 540,92 C 600.12,104 659.88,104 720,92 C 780.12,80 839.88,80 900,92 C 960.12,104 1019.88,104 1080,92 C 1140.12,80 1199.88,80 1260,92 C 1320.12,104 1379.88,104 1440,92 C 1500.12,80 1559.88,80 1620,92 C 1680.12,104 1739.88,104 1800,92 L 1800,150 L 0,150 Z" />
+        <div class="sleep-wave-air"></div>
+        <svg viewBox="0 0 1800 240" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="swGradA" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.30" />
+              <stop offset="11%" stop-color="#e0f2fe" stop-opacity="0.115" />
+              <stop offset="24%" stop-color="#bae6fd" stop-opacity="0.03" />
+              <stop offset="40%" stop-color="#7dd3fc" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="swGradB" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#cfeeff" stop-opacity="0.26" />
+              <stop offset="12%" stop-color="#a5ddfb" stop-opacity="0.095" />
+              <stop offset="26%" stop-color="#7dd3fc" stop-opacity="0.025" />
+              <stop offset="42%" stop-color="#7dd3fc" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="swGradC" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22" />
+              <stop offset="13%" stop-color="#bae6fd" stop-opacity="0.08" />
+              <stop offset="30%" stop-color="#7dd3fc" stop-opacity="0.02" />
+              <stop offset="46%" stop-color="#7dd3fc" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <g class="sw-breath sw-breath-a"><path class="sleep-wave-a" d="M 0,84 C 100,44 200,44 300,84 C 400,124 500,124 600,84 C 700,44 800,44 900,84 C 1000,124 1100,124 1200,84 C 1300,44 1400,44 1500,84 C 1600,124 1700,124 1800,84 L 1800,240 L 0,240 Z" /></g>
+          <g class="sw-breath sw-breath-b"><path class="sleep-wave-b" d="M 0,116 C 75,86.6667 150,86.6667 225,116 C 300,145.333 375,145.333 450,116 C 525,86.6667 600,86.6667 675,116 C 750,145.333 825,145.333 900,116 C 975,86.6667 1050,86.6667 1125,116 C 1200,145.333 1275,145.333 1350,116 C 1425,86.6667 1500,86.6667 1575,116 C 1650,145.333 1725,145.333 1800,116 L 1800,240 L 0,240 Z" /></g>
+          <g class="sw-breath sw-breath-c"><path class="sleep-wave-c" d="M 0,146 C 60,124.667 120,124.667 180,146 C 240,167.333 300,167.333 360,146 C 420,124.667 480,124.667 540,146 C 600,167.333 660,167.333 720,146 C 780,124.667 840,124.667 900,146 C 960,167.333 1020,167.333 1080,146 C 1140,124.667 1200,124.667 1260,146 C 1320,167.333 1380,167.333 1440,146 C 1500,124.667 1560,124.667 1620,146 C 1680,167.333 1740,167.333 1800,146 L 1800,240 L 0,240 Z" /></g>
+          <g class="sw-breath sw-breath-a"><path class="sleep-wave-line sw-line-a" d="M 0,84 C 100,44 200,44 300,84 C 400,124 500,124 600,84 C 700,44 800,44 900,84 C 1000,124 1100,124 1200,84 C 1300,44 1400,44 1500,84 C 1600,124 1700,124 1800,84" /></g>
+          <g class="sw-breath sw-breath-b"><path class="sleep-wave-line sw-line-b" d="M 0,116 C 75,86.6667 150,86.6667 225,116 C 300,145.333 375,145.333 450,116 C 525,86.6667 600,86.6667 675,116 C 750,145.333 825,145.333 900,116 C 975,86.6667 1050,86.6667 1125,116 C 1200,145.333 1275,145.333 1350,116 C 1425,86.6667 1500,86.6667 1575,116 C 1650,145.333 1725,145.333 1800,116" /></g>
+          <g class="sw-breath sw-breath-c"><path class="sleep-wave-line sw-line-c" d="M 0,146 C 60,124.667 120,124.667 180,146 C 240,167.333 300,167.333 360,146 C 420,124.667 480,124.667 540,146 C 600,167.333 660,167.333 720,146 C 780,124.667 840,124.667 900,146 C 960,167.333 1020,167.333 1080,146 C 1140,124.667 1200,124.667 1260,146 C 1320,167.333 1380,167.333 1440,146 C 1500,124.667 1560,124.667 1620,146 C 1680,167.333 1740,167.333 1800,146" /></g>
         </svg>
       </div>
     </div>

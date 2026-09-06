@@ -6444,20 +6444,40 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
   100% { opacity: 1; }
 }
 
+/* 2026-09-06 — 수면 화면 하단 물결을 다시 짰다.
+   운영자: "너무 눈에 안 띈다. 컬러도 배경색에 묻히고 높이도 작다. 역동성도 부족.
+   연하늘색·흰색 위주의 깨끗하고 깔끔한 컬러로, 맑은 공기로 숨쉬는 느낌으로,
+   호흡하듯이 편안하고 부드럽게 천천히."
+   높이 18vh -> 28vh, 불투명도 3~4% -> 9~17%, 색은 흰색과 연하늘(#e0f2fe #bae6fd).
+   가로 흐름(drift)은 path 에, 세로 호흡(breath)은 감싼 g 에 나눠 걸었다 —
+   둘 다 transform 이라 한 요소에 겹쳐 걸면 뒤엣것이 앞엣것을 지운다.
+   호흡 주기는 9.5 / 11 / 13.5 초로 서로 어긋나게 뒀다. 딱 맞아떨어지면
+   기계처럼 보이고, 어긋나야 숨처럼 보인다. */
 .sleep-wave {
   position: absolute;
   z-index: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  height: clamp(96px, 18vh, 168px);
+  height: clamp(150px, 28vh, 300px);
   overflow: hidden;
   pointer-events: none;
-  /* 아래로 갈수록 진해지는 것이 아니라, 위쪽 가장자리를 녹여 배경에 스며들게. */
-  /* 위 가장자리는 배경에 녹이고, 바닥도 다시 가라앉힌다 — 파도의 능선만
-     은은히 남아 화면 아래가 통째로 밝아지지 않는다(실측 후 조정). */
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 46%, rgba(0,0,0,0.42) 100%);
-  mask-image: linear-gradient(180deg, transparent 0%, #000 46%, rgba(0,0,0,0.42) 100%);
+  /* 위 가장자리는 배경에 녹이고 바닥은 다시 가라앉힌다 — 능선만 또렷하게 남아
+     화면 아래가 통째로 밝아지지 않는다. */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.6) 16%, #000 44%, rgba(0,0,0,0.26) 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.6) 16%, #000 44%, rgba(0,0,0,0.26) 100%);
+  animation: sleepWaveBreath 11s ease-in-out infinite;
+}
+/* 맑은 공기 — 물결 위로 옅게 번지는 숨. 색이 아니라 공기처럼 보여야 한다. */
+.sleep-wave-air {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  bottom: 0;
+  height: 100%;
+  background: radial-gradient(135% 118% at 50% 104%, rgba(224,242,254,0.13) 0%, rgba(125,211,252,0.055) 38%, rgba(56,189,248,0) 72%);
+  animation: sleepAirBreath 13.5s ease-in-out infinite;
+  will-change: opacity, transform;
 }
 .sleep-wave svg {
   position: absolute;
@@ -6466,22 +6486,48 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
   width: 200%;
   height: 100%;
 }
-.sleep-wave path {
-  /* 이 화면의 '기상 시각' 하늘색과 같은 계열. 셋 다 1할 미만이다. */
-  fill: #7dd3fc;
-  will-change: transform;
+.sleep-wave path { will-change: transform; }
+.sw-breath { will-change: transform; }
+
+.sleep-wave-a { fill: url(#swGradA); animation: sleepWaveDriftA 44s linear infinite; }
+.sleep-wave-b { fill: url(#swGradB); animation: sleepWaveDriftB 31s linear infinite reverse; }
+.sleep-wave-c { fill: url(#swGradC); animation: sleepWaveDriftC 23s linear infinite; }
+/* 능선의 흰 선. 몸통은 빨리 사라지게 두고 이 선이 물결을 그린다 —
+   덩어리로 밝아지면 잠을 방해하지만 가는 선은 그렇지 않다.
+   preserveAspectRatio 가 none 이라 좌표계가 눌린다 — non-scaling-stroke 가 없으면
+   선 굵기가 세로로만 늘어나 지저분해진다. */
+.sleep-wave-line {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
 }
-.sleep-wave-a { fill-opacity: 0.032; animation: sleepWaveDrift 12s linear infinite; }
-.sleep-wave-b { fill-opacity: 0.026; animation: sleepWaveDrift 19s linear infinite reverse; }
-.sleep-wave-c { fill-opacity: 0.042; animation: sleepWaveDrift 27s linear infinite; }
-/* 한 주기(360)가 전체 폭(1800)의 20%다 — 딱 20%만 밀면 이음매가 보이지 않는다. */
-@keyframes sleepWaveDrift {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-20%); }
-}
+.sw-line-a { stroke: rgba(240,249,255,0.68); stroke-width: 1.7; animation: sleepWaveDriftA 44s linear infinite; }
+.sw-line-b { stroke: rgba(186,230,253,0.50); stroke-width: 1.4; animation: sleepWaveDriftB 31s linear infinite reverse; }
+.sw-line-c { stroke: rgba(125,211,252,0.38); stroke-width: 1.2; animation: sleepWaveDriftC 23s linear infinite; }
+
+.sw-breath-a { animation: sleepBreathA 11s ease-in-out infinite; }
+.sw-breath-b { animation: sleepBreathB 13.5s ease-in-out infinite; }
+.sw-breath-c { animation: sleepBreathC 9.5s ease-in-out infinite; }
+
+/* 흐르는 거리 = 그 겹의 한 주기. 600/1800=33.3333%, 450/1800=25%, 360/1800=20%.
+   딱 한 주기만 밀어야 되돌아올 때 이음매가 보이지 않는다. */
+@keyframes sleepWaveDriftA { from { transform: translateX(0); } to { transform: translateX(-33.3333%); } }
+@keyframes sleepWaveDriftB { from { transform: translateX(0); } to { transform: translateX(-25%); } }
+@keyframes sleepWaveDriftC { from { transform: translateX(0); } to { transform: translateX(-20%); } }
+
+/* 세로 호흡. 단위는 viewBox 사용자 좌표(240 중 몇) — 화면에서는 그 1.2배쯤이다. */
+@keyframes sleepBreathA { 0%, 100% { transform: translateY(7px); }  50% { transform: translateY(-11px); } }
+@keyframes sleepBreathB { 0%, 100% { transform: translateY(-8px); } 50% { transform: translateY(6px); } }
+@keyframes sleepBreathC { 0%, 100% { transform: translateY(5px); }  50% { transform: translateY(-7px); } }
+
+@keyframes sleepWaveBreath { 0%, 100% { opacity: 0.72; } 50% { opacity: 1; } }
+@keyframes sleepAirBreath  { 0%, 100% { opacity: 0.5; transform: translateY(12px); } 50% { opacity: 1; transform: translateY(-6px); } }
 
 @media (prefers-reduced-motion: reduce) {
   .sleep-screen-now .sn-c,
+  .sleep-wave,
+  .sleep-wave-air,
+  .sw-breath,
   .sleep-wave path { animation: none; }
 }
 
