@@ -1,6 +1,58 @@
 {
   "entries": [
     {
+      "id": "2026-09-07-08:20",
+      "timestamp_kst": "2026-09-07(월) 08:20 KST",
+      "key_event": {
+        "name": "미-이란 지정학적 긴장 지속",
+        "name_en": "US-Iran Geopolitical Tensions Persist",
+        "time": "직전 거래일 및 다음 주",
+        "why": "유가 변동성 확대, 시장 불확실성 증대, 위험 회피 심리",
+        "why_en": "Oil price volatility, increased market uncertainty, risk-off sentiment"
+      },
+      "positive_total": 45,
+      "negative_total": 55,
+      "summary": "지정학적 긴장 및 고금리 우려 지속으로 부정 우위 유지",
+      "summary_en": "Negative sentiment prevails due to persistent geopolitical tensions and high interest rate concerns",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "일부 기술주 긍정적 전망",
+          "name_en": "Positive Outlook for Select Tech Stocks",
+          "desc": "Nvidia의 향후 실적 전망 및 TSMC의 시장 가치 성장 예측 뉴스",
+          "desc_en": "News on Nvidia's future earnings outlook and TSMC's market value growth prediction",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 35,
+          "name": "미-이란 지정학적 긴장 고조",
+          "name_en": "Escalating US-Iran Geopolitical Tensions",
+          "desc": "미국의 이란 발사대 공격으로 유가 상승 압력 및 시장 불확실성 증대",
+          "desc_en": "US strikes on Iranian launchers increase oil price pressure and market uncertainty",
+          "category": "geopolitics"
+        },
+        {
+          "score": 20,
+          "name": "높은 국채금리 수준 지속",
+          "name_en": "Sustained High Treasury Yields",
+          "desc": "미10년 국채금리 4.78%(+0.46%)로 상승, 성장주 할인율 부담 지속",
+          "desc_en": "US 10-year Treasury yield rose to 4.78%(+0.46%), maintaining discount rate pressure on growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "WTI 원유 가격 안정화",
+          "name_en": "WTI Crude Oil Price Stabilization",
+          "desc": "WTI 원유 가격 91.48(+0.00%)로 안정화되었으나, 중동 긴장으로 상승 압력 상존",
+          "desc_en": "WTI crude oil price stabilized at 91.48(+0.00%), but upward pressure remains due to Middle East tensions",
+          "category": "oil_energy"
+        }
+      ]
+    },
+    {
       "id": "2026-09-07-07:03",
       "timestamp_kst": "2026-09-07(월) 07:03 KST",
       "key_event": {
@@ -585,60 +637,8 @@
         "watch": "- 미 국채금리 추이: 강력한 고용보고서 이후 미 10년물 국채금리의 추가 상승 여부가 기술주 및 성장주 전반의 투자 심리에 지속적인 영향을 미칠 것으로 예상.\n- 주요 지수 선물 흐름: 현재 하락 마감한 S&P 500, Dow, Nasdaq 지수 선물의 뉴욕 시장 개장 전 움직임이 당일 시장 방향성을 가늠하는 중요한 지표가 될 전망."
       },
       "report_at": "2026-09-05(토) 11:50 KST"
-    },
-    {
-      "id": "2026-09-05-08:07",
-      "timestamp_kst": "2026-09-05(토) 08:07 KST",
-      "key_event": {
-        "name": "8월 고용보고서 강세",
-        "name_en": "Strong August Jobs Report",
-        "time": "2026-09-04 08:30 ET 발표 완료",
-        "why": "Fed 통화정책 방향, 금리 인상 우려 재부각",
-        "why_en": "Fed monetary policy direction, renewed rate hike concerns"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "고용보고서 강세로 금리 인상 우려 재부각, 기술주 하락 압력 가중",
-      "summary_en": "Strong jobs report reignites rate hike fears, increasing pressure on tech stocks",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "AI 반도체 수요 지속",
-          "name_en": "Sustained AI Semiconductor Demand",
-          "desc": "엔비디아 등 AI 관련 기업 투자 기대감 유지, SOXX +3.37% 상승",
-          "desc_en": "Investment sentiment for AI-related companies like Nvidia remains positive, SOXX up +3.37%",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "고용보고서 강세발 금리 인상 우려",
-          "name_en": "Rate Hike Fears from Strong Jobs Report",
-          "desc": "8월 고용보고서 예상치 상회, Fed 추가 금리 인상 가능성 재부각",
-          "desc_en": "August jobs report exceeded expectations, rekindling Fed's potential for further rate hikes",
-          "category": "macro_data"
-        },
-        {
-          "score": 30,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 4.78%(+0.46%) 상승, 성장주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield rose to 4.78% (+0.46%), increasing discount rate pressure on growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 시장 총평: 8월 고용보고서의 예상치 상회로 인한 금리 인상 우려 재부각이 시장 전반에 하방 압력으로 작용, 기술주 중심의 하락세가 두드러진 하루.\n- 주요 원인: 견조한 고용 지표가 연방준비제도(Fed)의 추가 긴축 가능성을 높이며, 미 국채금리 상승을 촉발해 성장주 투자 심리 위축.\n- 하방 지지: 인공지능(AI) 반도체 관련 기업들의 지속적인 수요 기대감이 반도체 섹터의 강세를 이끌며 낙폭을 일부 제한.",
-        "positive": "- AI 반도체 수요 지속: 엔비디아(NVDA) 등 AI 관련 기업들에 대한 투자 기대감이 유지되며, 필라델피아 반도체 지수(SOXX)가 3.37% 상승.",
-        "negative": "- 고용보고서 강세발 금리 인상 우려: 8월 고용보고서가 예상치를 상회하는 강세를 보이면서, 연방준비제도(Fed)의 추가 금리 인상 가능성이 재부각. 이는 월스트리트 전반의 하락 마감을 이끌며 매파적 연준(Fed) 베팅을 강화.\n- 미 국채금리 상승: 미국 10년물 국채금리가 4.78%(+0.46%)로 0.46% 상승하며, 성장주에 대한 할인율 부담을 가중. 이는 기술주 중심의 나스닥 지수 하락 압력으로 작용.",
-        "mixed": "",
-        "watch": "- 미 국채금리 추이: 8월 고용보고서 강세 이후 상승세를 보인 미국 10년물 국채금리의 추가 상승 여부 확인. 금리 상승 지속 시 기술주 하방 압력 가중."
-      },
-      "report_at": "2026-09-05(토) 08:07 KST"
     }
   ],
-  "updated_at": "2026-09-06T22:03:45Z",
+  "updated_at": "2026-09-06T23:21:09Z",
   "max_entries": 10
 }
