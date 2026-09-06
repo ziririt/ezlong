@@ -1,81 +1,133 @@
-name: Daily Backup — HTML + Scripts + Images
+name: Daily Backup - 되감기 지점과 외부 사본
+
+# 이 워크플로가 하는 일 (docs/BACKUP.md 가 설명서다)
+# 1) 되감기 태그: 하루 두 번(KST 00:00, 09:00) backup/YYYY-MM-DD[-am] 태그를 찍는다.
+#    일간 10일, 주간 8주(backup/w-YYYY-Www), 월간 12개월(backup/m-YYYY-MM) 보존.
+#    stable-* 와 cp-* 태그는 이 워크플로가 절대 지우지 않는다.
+# 2) 전체 사본: git bundle(모든 브랜치·태그) + 핵심 파일을 Actions 아티팩트로 30일 보존.
+# 3) 외부 미러: 시크릿 MIRROR_GIT_URL 이 있으면 GitHub 밖 저장소로 --mirror push.
+#    GitHub 계정이 잠기거나 저장소가 사라져도 코드·이력·태그가 다른 곳에 남는다.
+#    시크릿이 없으면 이 단계는 조용히 건너뛴다(실패로 치지 않는다).
 
 on:
   schedule:
-    - cron: '0 15 * * *'   # 매일 KST 00:00 (UTC 15:00)
-  workflow_dispatch:         # 언제든 수동 실행 가능
+    - cron: '0 15 * * *'   # KST 00:00 (UTC 15:00 전날)
+    - cron: '0 0 * * *'    # KST 09:00 (UTC 00:00) 아침 지점
+  workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: daily-backup
+  cancel-in-progress: false
 
 jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo (full history)
+      - name: Checkout (full history + tags)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set backup date
-        run: echo "DATE=$(date -u +%Y-%m-%d)" >> $GITHUB_ENV
+      - name: Set names (KST 기준)
+        run: |
+          export TZ=Asia/Seoul
+          HOUR=$(date +%H)
+          DATE=$(date +%Y-%m-%d)
+          WEEK=$(date +%G-W%V)
+          MONTH=$(date +%Y-%m)
+          if [ "$HOUR" -ge 6 ] && [ "$HOUR" -lt 12 ]; then SUFFIX="-am"; else SUFFIX=""; fi
+          echo "DATE=$DATE"   >> $GITHUB_ENV
+          echo "WEEK=$WEEK"   >> $GITHUB_ENV
+          echo "MONTH=$MONTH" >> $GITHUB_ENV
+          echo "SUFFIX=$SUFFIX" >> $GITHUB_ENV
+          echo "DOW=$(date +%u)" >> $GITHUB_ENV
+          echo "DOM=$(date +%d)" >> $GITHUB_ENV
+          echo "지점 이름: backup/${DATE}${SUFFIX}"
 
-      - name: Create daily git tag (rollback 포인트)
+      - name: Rewind tags (일간·주간·월간)
         run: |
           git config user.name  "ezlong-backup-bot"
           git config user.email "backup@ezlong.com"
+          git fetch --tags -q
 
-          # 오늘 태그 생성 (이미 있으면 덮어씀)
-          git tag -f "backup/${{ env.DATE }}" HEAD
-          git push origin "backup/${{ env.DATE }}" --force
-          echo "✓ 태그 생성: backup/${{ env.DATE }}"
+          # 일간: 하루 두 번. 같은 이름이면 덮어쓴다(같은 날 재실행 대비)
+          git tag -f "backup/${DATE}${SUFFIX}" HEAD
+          git push origin "backup/${DATE}${SUFFIX}" --force -q
 
-          # 11일 이전 백업 태그 자동 삭제 (10일치만 보존)
-          git fetch --tags
-          CUTOFF=$(date -u -d "11 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-11d +%Y-%m-%d)
-          for tag in $(git tag -l "backup/*"); do
-            TAG_DATE="${tag#backup/}"
-            if [[ "$TAG_DATE" < "$CUTOFF" ]]; then
-              git push origin --delete "$tag" || true
-              git tag -d "$tag" || true
-              echo "→ 오래된 태그 삭제: $tag"
-            fi
-          done
+          # 주간: 월요일 00:00 실행에서만
+          if [ "$DOW" = "1" ] && [ -z "$SUFFIX" ]; then
+            git tag -f "backup/w-${WEEK}" HEAD
+            git push origin "backup/w-${WEEK}" --force -q
+          fi
+          # 월간: 1일 00:00 실행에서만
+          if [ "$DOM" = "01" ] && [ -z "$SUFFIX" ]; then
+            git tag -f "backup/m-${MONTH}" HEAD
+            git push origin "backup/m-${MONTH}" --force -q
+          fi
 
-      - name: Collect backup files
+          # 보존 정리. backup/ 접두어만 건드린다. stable-*, cp-* 는 손대지 않는다.
+          prune() {  # $1=패턴  $2=보존 개수
+            git tag -l "$1" | sort | head -n -"$2" | while read -r t; do
+              [ -n "$t" ] || continue
+              git push origin --delete "$t" -q || true
+              git tag -d "$t" >/dev/null || true
+              echo "정리: $t"
+            done
+          }
+          prune "backup/20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]"    10   # 일간 00:00 지점 10일
+          prune "backup/20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]-am" 10   # 일간 09:00 지점 10일
+          prune "backup/w-*"  8
+          prune "backup/m-*" 12
+          echo "현재 backup/ 태그 $(git tag -l 'backup/*' | wc -l)개"
+
+      - name: Full bundle (모든 브랜치와 태그)
         run: |
           mkdir -p _backup_upload
-          # HTML 파일 (중복 사본 제외)
-          for f in *.html; do
-            [[ "$f" == *" (1)"* ]] && continue
-            [[ "$f" == *" 2."* ]] && continue
-            [[ "$f" == *" 3."* ]] && continue
-            [[ "$f" == *" copy"* ]] && continue
-            cp "$f" _backup_upload/ 2>/dev/null || true
-          done
-          # scripts 폴더
-          cp -r scripts _backup_upload/ 2>/dev/null || true
-          # 핵심 이미지
-          for img in wallstreet.png logo.png logo-darkmode.png; do
-            cp "$img" _backup_upload/ 2>/dev/null || true
-          done
-          echo "=== 백업 파일 목록 ==="
-          ls _backup_upload/
-          echo "HTML: $(ls _backup_upload/*.html 2>/dev/null | wc -l)개"
+          git bundle create "_backup_upload/ezlong-${DATE}${SUFFIX}.bundle" --all
+          git bundle verify "_backup_upload/ezlong-${DATE}${SUFFIX}.bundle"
+          ls -lh _backup_upload/
 
-      - name: Upload as GitHub Actions artifact (10일 보존)
+      - name: Collect key files (빠른 부분 복구용)
+        run: |
+          mkdir -p _backup_upload/files
+          for f in *.html; do
+            case "$f" in *" (1)"*|*" 2."*|*" 3."*|*" copy"*) continue;; esac
+            cp "$f" _backup_upload/files/ 2>/dev/null || true
+          done
+          cp -r scripts .github firebase.json .firebaserc _backup_upload/files/ 2>/dev/null || true
+          cp CLAUDE.md HANDOFF.md CHANGELOG.md _backup_upload/files/ 2>/dev/null || true
+          cp -r docs _backup_upload/files/ 2>/dev/null || true
+          echo "HTML $(ls _backup_upload/files/*.html 2>/dev/null | wc -l)개"
+
+      - name: Upload artifact (30일 보존)
         uses: actions/upload-artifact@v4
         with:
-          name: ezlong-backup-${{ env.DATE }}
+          name: ezlong-backup-${{ env.DATE }}${{ env.SUFFIX }}
           path: _backup_upload/
-          retention-days: 10
+          retention-days: 30
+
+      - name: Mirror to external git (시크릿 있을 때만)
+        env:
+          MIRROR_GIT_URL: ${{ secrets.MIRROR_GIT_URL }}
+        run: |
+          if [ -z "$MIRROR_GIT_URL" ]; then
+            echo "MIRROR_GIT_URL 시크릿 없음: 외부 미러 건너뜀 (docs/BACKUP.md 3장 참조)"
+            exit 0
+          fi
+          git push --mirror "$MIRROR_GIT_URL" 2>&1 | sed -E 's#//[^@]*@#//***@#g' | tail -3
+          echo "외부 미러 push 완료"
 
       - name: Summary
         run: |
-          echo "## ✅ 백업 완료: ${{ env.DATE }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 복구 방법" >> $GITHUB_STEP_SUMMARY
-          echo "**특정 파일 복구:** \`git checkout backup/${{ env.DATE }} -- analyst-reports.html\`" >> $GITHUB_STEP_SUMMARY
-          echo "**전체 복구:** GitHub Actions → Artifacts 탭 → \`ezlong-backup-${{ env.DATE }}\` 다운로드" >> $GITHUB_STEP_SUMMARY
-          echo "**10일 이내 모든 날짜 태그:** \`git tag -l 'backup/*'\`" >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## 백업 완료: backup/${DATE}${SUFFIX}"
+            echo
+            echo "- 되감기 태그: \`git tag -l 'backup/*'\`"
+            echo "- 어제 아침으로 파일 하나 되감기: \`git checkout backup/<날짜>-am -- <파일>\`"
+            echo "- 전체 사본: 이 실행의 Artifacts 에서 \`ezlong-backup-${DATE}${SUFFIX}\` 내려받기 (30일)"
+            echo "- 절차 전문: docs/BACKUP.md"
+          } >> $GITHUB_STEP_SUMMARY
