@@ -3979,20 +3979,46 @@ G4가 모델이 스스로 붙인 `category`만 봤고, 그 재료는 `ai_tech_va
    통과 63%, 실패 38%". 기저율과 차이 없는 신호는 정보가 없다고 스스로 밝힌다.
 9. **종목 카드도 같은 검문을 받는다.** NVDA·TSLA 카드가 별도 문체·별도 규칙으로 돈다.
 
-### 88-2. 지금 어디까지 (2026-09-08 01:50 기준)
+### 88-2. 지금 어디까지 (2026-09-08 07:05 갱신)
 
-**브랜치 `wip/88-calendar-truth`에 보존돼 있다. `main` 아님.** 커밋 `177356b`.
+**원칙 3·4는 `main`에 들어갔다.** 병합 커밋 `1a0aa37`, 직전 대피소는
+`stable-20260908-pre88`. 라이브 확인 완료(web.app·ezlong.com 양쪽).
 
-- 완료: `data/nyse-calendar.json`(2026~2027, validUntil 2027-12-31),
-  `scripts/ez_calendar.py`(selftest 통과 - 노동절을 정확히 잡는다),
-  `scripts/ez-calendar.js`, `generate-swing-view.py` 연결(import 실패 시 요일 폴백),
-  `atmr-dashboard.html`의 브라우저 캘린더 로더·EZ_TRUTH·sessionWordsAllowed.
-- 남은 것: `ez-nav.js`의 `ezWeekPhase`가 `window.EZ_NYSE_HOLIDAYS`를 읽도록 연결,
-  `fetch-market-scorecard.py` 세션 판정 이관, 렌더 검증(360/430/1280 라이트·다크),
-  그리고 원칙 2·5·6·7·9 전부.
+들어간 것
 
-**`validUntil`이 지나면 캘린더가 거짓말을 시작한다.** `calendar_warning()`이 60일 전부터
-경고를 낸다. 그 경고가 보이면 다음 해 휴장일을 채우는 것이 그 세션의 일이다.
+- `data/nyse-calendar.json` — 2026~2027 휴장일 20개·조기폐장, validUntil 2027-12-31
+- `scripts/ez_calendar.py` — `session_phase` / `last_trading_day` / `closed_reason` /
+  `holiday_name` / `calendar_warning`. selftest 내장(노동절을 비거래일로 잡는지)
+- `scripts/ez-calendar.js` — 같은 규칙의 노드·브라우저판
+- `generate-swing-view.py` — 기준일이 **마지막 거래일**, 세션 판정 캘린더 우선.
+  스탠스 스트릭 창 15→60 + `stanceStreak` 단일 출처(31거래일째가 '15일째'로
+  찍히던 실사고)
+- `atmr-dashboard.html` — 브라우저 캘린더 로더(3초 상한, 실패해도 렌더),
+  **`EZ_TRUTH` 단일 진실값**, `sessionWordsAllowed` 출력 검문 플래그
+- `ez-nav.js` — `ezWeekPhase`가 `window.EZ_NYSE_HOLIDAYS`를 본다. 평일 공휴일도
+  'closed'로 취급(하위 호환). 이유는 `window.ezMarketClosedReason()`이 따로 답한다
+- `fetch-market-scorecard.py` — `get_us_session`이 공휴일을 'closed' + 공휴일명으로
+
+**검증(2026-09-08).** 렌더 360/430/1280 × 라이트·다크 6조합에서 가로 스크롤 0,
+캘린더 20일 로드, `EZ_TRUTH.cal = {asOf 2026-09-04, phase closed, closedReason
+holiday, sessionWordsAllowed false}` — 노동절에 마지막 거래일 09-04를 정확히 집었다.
+`top.streak = 31`(보유 일수 단일 출처), `top.leverageEntryAllowed = false`.
+
+**작업하다 확인한 것: 원칙 2·6도 이미 `buildTruth()` 안에 들어 있다.**
+`top.leverageEntryAllowed`(최상단이 'accumulate'일 때만 레버리지 진입 문구 개방),
+`top.oneXFull`(1배수가 찼으면 '추가 매수' 문구 차단), `EZ_THRESH`(임계값 한 벌).
+**다음 사람은 이걸 새로 만들지 말고 화면 문구가 실제로 이 값을 읽는지부터 확인한다.**
+
+**남은 것**
+
+- 원칙 5(출력 검문) — RSI 40 이상에 '과매도', 진입 기준 미달인데 '매수', Gear 1
+  신규 매수, 손익비 1 미만 플랜 표시, 텍스트 숫자와 팩트시트 불일치
+- 원칙 7(점수식 방향 항) — SOXX 백테스트 후 성동님 확인
+- 원칙 8(기저율 병기) · 원칙 9(종목 카드 동일 검문)
+- 별건 부채: `.tab-btn-sub`·`.bi-hint` 13px(origin부터 있던 14px 하한 위반)
+
+**`validUntil`이 지나면 캘린더가 거짓말을 시작한다.** `calendar_warning()`이 60일
+전부터 경고를 낸다. 그 경고가 보이면 다음 해 휴장일을 채우는 것이 그 세션의 일이다.
 
 ### 88-3. 인계 기록을 생활화한다 (2026-09-08, 성동님 지시)
 
