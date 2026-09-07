@@ -169,6 +169,18 @@ except Exception:
     ET_TZ = None  # 폴백: 세션 판정 불가 시 세션 블록 생략 (본 기능은 계속 동작)
 
 
+# 88항 - 거래일 캘린더. 단일 출처 data/nyse-calendar.json.
+# 없어도 파이프라인은 돌아야 하므로 실패는 조용히 폴백한다(요일 판정).
+try:
+    import ez_calendar as _cal
+    _cal_warn = _cal.calendar_warning()
+    if _cal_warn:
+        print(f'::warning::{_cal_warn}')
+except Exception as _cal_e:      # pragma: no cover
+    print(f'[warn] ez_calendar 로드 실패: {_cal_e}: 요일 판정으로 폴백')
+    _cal = None
+
+
 def get_us_session(dt_utc=None):
     """현재 미국 시장 세션 판정 (DST 자동 반영).
     returns (code, label) — pre/regular/post/closed/weekend"""
@@ -177,6 +189,18 @@ def get_us_session(dt_utc=None):
     now_et = (dt_utc or datetime.now(timezone.utc)).astimezone(ET_TZ)
     wd = now_et.weekday()
     hm = now_et.hour + now_et.minute / 60
+    # 88항 - 평일 공휴일. 요일만 보면 노동절에 '정규장'이 나오고, 그 라벨이
+    # 프롬프트를 타고 생성문에 '오늘 장 장중'으로 옮겨붙는다(2026-09-07 실사고).
+    # 'closed'로 돌려주는 이유: 이미 있는 코드라 소비처(체크 8·프롬프트 블록·
+    # scrub_weekend_closure_word)가 모르는 값을 받고 어긋날 일이 없다.
+    # 라벨에는 공휴일임을 밝힌다 - 58항이 평일 공휴일에는 '휴장'을 허용한다.
+    if _cal is not None:
+        try:
+            if _cal.is_holiday(now_et.date()):
+                nm = _cal.holiday_name(now_et.date()) or '공휴일'
+                return 'closed', f'휴장일({nm}) - 다음 장까지 갱신 없음'
+        except Exception:
+            pass
     if wd >= 5:
         # (58항) 주말에 장이 안 열리는 것을 '휴장'이라 부르지 않는다 — 라벨이
         # 그대로 프롬프트에 들어가 생성문에 옮겨붙기 때문에 여기서부터 막는다.

@@ -805,6 +805,37 @@
    ※ 같은 판정을 chief-strip.js 와 atmr-dashboard.html 이 함께 쓴다.
      여기 하나만 고치면 둘 다 따라온다 (공유 함수 동기화 원칙).
    ───────────────────────────────────────────────────────────── */
+/* 88항 - ET 날짜가 NYSE 공휴일인가. 캘린더가 없으면 false(모른다 = 평소대로). */
+function ezIsNyseHoliday(etDate) {
+  var list = window.EZ_NYSE_HOLIDAYS;
+  if (!list || !list.length) return false;
+  var y = etDate.getFullYear(),
+      m = ('0' + (etDate.getMonth() + 1)).slice(-2),
+      d = ('0' + etDate.getDate()).slice(-2);
+  return list.indexOf(y + '-' + m + '-' + d) !== -1;
+}
+
+/* 장이 안 열리는 이유: 'holiday' | 'weekend' | null(열려 있거나 야간).
+   ezWeekPhase 는 하위 호환을 위해 공휴일에도 'weekend'를 돌려준다 -
+   소비처(chief-strip.js 등)가 모르는 값을 받고 깨지지 않게 하려는 것이다.
+   문구를 정확히 쓰고 싶은 화면은 이 함수로 이유를 따로 물어본다.
+   (58항: 주말은 '휴장'이라 부르지 않지만, 평일 공휴일은 알릴 값이 있다.) */
+window.ezMarketClosedReason = function (now) {
+  now = now || new Date();
+  var et;
+  try {
+    et = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+  } catch (e) {
+    et = now;
+  }
+  if (ezIsNyseHoliday(et)) return 'holiday';
+  var ed = et.getDay(), em = et.getHours() * 60 + et.getMinutes();
+  if ((ed === 6) || (ed === 0) || (ed === 5 && em >= 1200) || (ed === 1 && em < 240)) {
+    return 'weekend';
+  }
+  return null;
+};
+
 window.ezWeekPhase = function (now) {
   now = now || new Date();
   var et;
@@ -818,6 +849,11 @@ window.ezWeekPhase = function (now) {
   // (58항) 이 구간을 화면 문구에서 '휴장'이라 부르지 않는다.
   var closed = (ed === 6) || (ed === 0) ||
                (ed === 5 && em >= 1200) || (ed === 1 && em < 240);
+  // 88항 - 평일 공휴일. 요일만 보면 노동절·추수감사절에 'session'이 나오고
+  // 화면이 '오늘의 시그널'이라며 없는 장의 장중을 서술한다(2026-09-07 실사고).
+  // 캘린더는 atmr-dashboard.html 이 채워 주는 window.EZ_NYSE_HOLIDAYS 하나다.
+  // 없으면(다른 페이지·로드 실패) 예전처럼 요일로만 판정한다 - 죽지 않는다.
+  if (!closed && ezIsNyseHoliday(et)) closed = true;
   if (!closed) return 'session';
   var d = now.getDay(), h = now.getHours();     // 여기부터는 보는 사람의 현지 시계
   if (d === 0 && h >= 9) return 'ahead';        // 현지 일요일 오전
