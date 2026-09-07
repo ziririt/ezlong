@@ -1,0 +1,24 @@
+{
+  "_doc": "NYSE 거래일 캘린더. 단일 출처(88항). 파이썬 scripts/ez_calendar.py, 노드 scripts/ez-calendar.js, 브라우저 ez-nav.js 가 이 파일을 읽는다. 값을 고치면 세 곳이 같이 바뀐다. validUntil 60일 전부터 생성기가 경고를 낸다: 그때 다음 해를 채운다.",
+  "timezone": "America/New_York",
+  "regular": { "open": "09:30", "close": "16:00", "pre": "04:00", "postEnd": "20:00" },
+  "earlyCloseTime": "13:00",
+  "validUntil": "2027-12-31",
+  "holidays": [
+    "2026-01-01", "2026-01-19", "2026-02-16", "2026-04-03", "2026-05-25",
+    "2026-06-19", "2026-07-03", "2026-09-07", "2026-11-26", "2026-12-25",
+    "2027-01-01", "2027-01-18", "2027-02-15", "2027-03-26", "2027-05-31",
+    "2027-06-18", "2027-07-05", "2027-09-06", "2027-11-25", "2027-12-24"
+  ],
+  "holidayNames": {
+    "2026-01-01": "New Year's Day", "2026-01-19": "MLK Day", "2026-02-16": "Presidents' Day",
+    "2026-04-03": "Good Friday", "2026-05-25": "Memorial Day", "2026-06-19": "Juneteenth",
+    "2026-07-03": "Independence Day (observed)", "2026-09-07": "Labor Day",
+    "2026-11-26": "Thanksgiving", "2026-12-25": "Christmas",
+    "2027-01-01": "New Year's Day", "2027-01-18": "MLK Day", "2027-02-15": "Presidents' Day",
+    "2027-03-26": "Good Friday", "2027-05-31": "Memorial Day", "2027-06-18": "Juneteenth (observed)",
+    "2027-07-05": "Independence Day (observed)", "2027-09-06": "Labor Day",
+    "2027-11-25": "Thanksgiving", "2027-12-24": "Christmas (observed)"
+  },
+  "earlyClose": [ "2026-11-27", "2026-12-24", "2027-11-26" ]
+}

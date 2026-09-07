@@ -26,6 +26,16 @@ try:
 except Exception:                      # 모듈이 없어도 본 기능은 죽지 않는다
     def _ez_scrub(o):
         return o
+try:
+    # 88항: 거래일 캘린더. 요일만 보고 세션을 판정하다 노동절(2026-09-07)에
+    # '오늘 장 장중'이라고 쓴 사고의 재발 방지. 단일 출처 data/nyse-calendar.json
+    import ez_calendar as _cal
+    _w = _cal.calendar_warning()
+    if _w:
+        print(_w)
+except Exception as _e:  # pragma: no cover
+    print(f'[warn] ez_calendar 로드 실패: {_e}: 요일 판정으로 폴백')
+    _cal = None
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SIGNALS = os.path.join(HERE, '..', 'data', 'market-signals.json')
@@ -70,8 +80,12 @@ def load(path, default=None):
 
 
 def et_day_of(generated_at_iso):
-    """generatedAt(UTC ISO) → 미국 동부 기준 날짜 문자열 (서머타임 어림, 3~11월 EDT)"""
+    """generatedAt(UTC ISO) → 그 시각 기준 **마지막 실제 거래일** (YYYY-MM-DD, ET).
+    88항: 캘린더 날짜가 아니라 거래일이다. 휴장일·주말·개장 전에는 직전 거래일을 돌려준다.
+    그래서 노동절에 돌아도 dataDay는 09-04이고, 스탠스 스트릭도 그날은 늘지 않는다."""
     dt = datetime.fromisoformat(generated_at_iso.replace('Z', '+00:00'))
+    if _cal is not None:
+        return _cal.last_trading_day(dt).isoformat()
     offset = -4 if 3 <= dt.month <= 11 else -5
     et = dt + timedelta(hours=offset)
     return et.strftime('%Y-%m-%d')
@@ -337,6 +351,8 @@ def session_date_label():
 def us_session_now():
     """지금 미국 시장이 어느 국면인지 — 'pre' | 'open' | 'post' | 'closed'.
     ET 기준. 3월 둘째 일요일~11월 첫째 일요일 EDT(-4), 그 밖 EST(-5)."""
+    if _cal is not None:
+        return _cal.session_phase()          # 88항: 휴장일은 'closed'
     u = datetime.now(timezone.utc)
     y = u.year
 
@@ -1784,7 +1800,9 @@ def main():
     SHORT = dict(accumulate='분할매수', accumulate_wait='매수대기', hold='보유',
                  trim='축소', risk_off='위험관리', wait='관망')
     flow = None
-    _hist = [h for h in comp.get('history', [])[-15:] if h.get('st')]
+    # 88항 단일 진실값: 15개 창으로 세면 31거래일째가 '15일째'로 찍힌다(2026-09-07 실사고).
+    # 현재 런의 길이는 stanceStreak 하나만 쓰고, 창은 등락 계산용으로만 넓게 잡는다.
+    _hist = [h for h in comp.get('history', [])[-60:] if h.get('st')]
     runs = []            # [스탠스, 일수, 시작 인덱스]
     for i, h in enumerate(_hist):
         if runs and runs[-1][0] == h['st']:
@@ -1814,11 +1832,11 @@ def main():
         if cur_n == 1:
             flow = f"오늘 판단 전환 — {SHORT[prev_s]} {prev_n}일 → 오늘부터 '{SHORT[cur_s]}'."
         else:
-            flow = _streak_line(SHORT[cur_s], cur_s, cur_n, _run_chg(cur_i)) + \
+            flow = _streak_line(SHORT[cur_s], cur_s, max(cur_n, streak), _run_chg(cur_i)) + \
                    f" (직전: {SHORT[prev_s]} {prev_n}일)"
-    elif runs and runs[-1][1] >= 3:
+    elif runs and max(runs[-1][1], streak) >= 3:
         cur_s, cur_n, cur_i = runs[-1]
-        flow = _streak_line(SHORT[cur_s], cur_s, cur_n, _run_chg(cur_i))
+        flow = _streak_line(SHORT[cur_s], cur_s, max(cur_n, streak), _run_chg(cur_i))
 
     # 성적 자기공개 — 방향 판단(강세/약세)만, 5거래일 후 수익률로 채점 (표본 15+부터 공개)
     grade = None
