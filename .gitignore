@@ -40,3 +40,7 @@ scripts/validate-photo-classifier-result*.json
 .music-panel-backup-*/
 .layout-backup-*/
 .tmp-*
+
+# 저장소 밖으로 빼두는 내보내기 폴더(bundle·zip 수백 MB). 실수 커밋 방지.
+_legacy-export/
+*.bundle
