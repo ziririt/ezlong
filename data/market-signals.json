@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-07T15:00:37.826426+00:00",
-  "generatedAtKST": "2026-09-08 00:00 KST",
+  "generatedAt": "2026-09-07T15:01:30.276584+00:00",
+  "generatedAtKST": "2026-09-08 00:01 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -205,7 +205,7 @@
         "histogram": -0.5229
       },
       "high52": 542.3603,
-      "low52": 448.1273,
+      "low52": 448.1274,
       "dev200": 7.6527,
       "dev5": 0.3551,
       "dev20": 0.0188,
@@ -618,7 +618,7 @@
         "signal": -4.9609,
         "histogram": 6.8669
       },
-      "high52": 777.7011,
+      "high52": 777.701,
       "low52": 525.2332,
       "dev200": -0.7781,
       "dev5": 3.7921,
@@ -716,9 +716,9 @@
       "unit": "USD"
     },
     "dxy": {
-      "price": 98.889,
-      "change": -0.271,
-      "changePct": -0.2733,
+      "price": 98.901,
+      "change": -0.259,
+      "changePct": -0.2612,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
@@ -733,6 +733,23 @@
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-09-07T15:00:37.826426+00:00",
+      "atKST": "2026-09-08 00:00 KST",
+      "qqq": {
+        "rsi": 53.63,
+        "macdHist": -0.2864,
+        "dev5": 0.6871,
+        "dev200": 9.4671,
+        "gear": 3,
+        "buyScore": 59,
+        "sellScore": 24,
+        "price": 718.96
+      },
+      "soxxMacdHist": -0.4138,
+      "fearAndGreed": 42,
+      "yield10y": 4.784
+    },
     {
       "at": "2026-09-07T14:31:12.394965+00:00",
       "atKST": "2026-09-07 23:31 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": -2.2194,
       "fearAndGreed": 33,
       "yield10y": 4.74
-    },
-    {
-      "at": "2026-09-03T13:30:13.156432+00:00",
-      "atKST": "2026-09-03 22:30 KST",
-      "qqq": {
-        "rsi": 47.62,
-        "macdHist": -1.1345,
-        "dev5": -0.6995,
-        "dev200": 8.1753,
-        "gear": 3,
-        "buyScore": 58,
-        "sellScore": 18,
-        "price": 709.24
-      },
-      "soxxMacdHist": -1.9092,
-      "fearAndGreed": 33,
-      "yield10y": 4.738
     }
   ],
-  "swingContinuity": "\ucd5c\uadfc \uba70\uce60\uac04 QQQ\uc758 \ub9e4\uc218\uc810\uc218\uc640 RSI\ub294 59, 53.63 \uad6c\uac04\uc5d0\uc11c \uc720\uc9c0\ub418\uba70 \ud6a1\ubcf4 \ud750\ub984\uc744 \ubcf4\uc600\uc2b5\ub2c8\ub2e4. \uc624\ub298 \uc5ed\uc2dc \ub3d9\uc77c\ud55c \uc810\uc218\ub85c \ub9c8\uac10\ud558\uba70 \ud070 \ubcc0\ud654\ub294 \uc5c6\uc5c8\uc73c\ub098, SOXX\uac00 3.52% \uc0c1\uc2b9\ud558\uba70 \ubc18\ub3c4\uccb4 \uc139\ud130\uc758 \uac15\uc138\uac00 \ub450\ub4dc\ub7ec\uc84c\uc2b5\ub2c8\ub2e4. \ub2e4\ub9cc TSLA\ub294 -5.92% \ud558\ub77d\ud558\uba70 \uac1c\ubcc4 \uc885\ubaa9\uc758 \ubcc0\ub3d9\uc131\uc774 \ud070 \uad6c\uac04\uc785\ub2c8\ub2e4.",
-  "swingContinuityEn": "QQQ's buy score and RSI have remained in the 59 and 53.63 range for the past few days, showing a sideways trend. Today's close at the same score indicates no significant change, but SOXX's 3.52% rise highlighted strength in the semiconductor sector. However, TSLA's -5.92% drop shows high volatility for individual stocks."
+  "swingContinuity": "\ucd5c\uadfc \uba70\uce60\uac04 QQQ\uc758 \ub9e4\uc218/\ub9e4\ub3c4 \uc810\uc218\uc640 RSI\ub294 53.63 \uad6c\uac04\uc5d0\uc11c \uc720\uc9c0\ub418\uba70 \ud070 \ubcc0\ud654\ub97c \ubcf4\uc774\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4. \uc624\ub298 \uc5ed\uc2dc \ub3d9\uc77c\ud55c \ud750\ub984\uc744 \uc774\uc5b4\uac00\uba70 \ud6a1\ubcf4 \uad6c\uac04\uc5d0 \uba38\ubb3c\ub800\uc2b5\ub2c8\ub2e4. \ub2e4\ub9cc, \ucd5c\uadfc 5\uac70\ub798\uc77c \ub3d9\uc548 SOXX\uc640 TSLA\uc758 \ub4f1\ub77d\ub960\uc774 \ud06c\uac8c \uc694\ub3d9\uce5c \ubc18\uba74, QQQ\uc640 NVDA\ub294 \uc0c1\ub300\uc801\uc73c\ub85c \uc548\uc815\uc801\uc778 \ud750\ub984\uc744 \ubcf4\uc600\uc2b5\ub2c8\ub2e4.",
+  "swingContinuityEn": "QQQ's buy/sell scores and RSI have remained stable around 53.63 for the past few days, with today showing no change and continuing this sideways trend. However, while SOXX and TSLA experienced significant volatility in their recent 5-day performance, QQQ and NVDA showed a relatively more stable pattern."
 }
