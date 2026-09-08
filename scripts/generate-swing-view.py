@@ -382,13 +382,15 @@ def prev_session_tag():
     lbl = session_date_label()
     if not lbl:
         return '직전 장'
+    # 89항: '오늘'은 보는 사람의 시계로 읽힌다. 뉴욕 장중(22:30~05:00 KST)이면
+    # 한국 독자의 '오늘'은 이미 다음 날이다. 상대어를 버리고 도시로 부른다.
     ph = us_session_now()
     if ph == 'pre':
-        return f'오늘 프리마켓({lbl})'
+        return f'뉴욕 프리마켓({lbl})'
     if ph == 'open':
-        return f'오늘 장({lbl}) 장중'
+        return f'뉴욕 장({lbl}) 장중'
     if ph == 'post':
-        return f'오늘 장({lbl}) 마감'
+        return f'뉴욕 장({lbl}) 마감'
     return f'직전 장({lbl})'
 
 
@@ -412,13 +414,13 @@ def _ctx_tag():
     lbl = session_date_label()
     if not lbl:
         return '직전 장'
-    ph = us_session_now()
+    ph = us_session_now()                    # 89항 - prev_session_tag()와 같은 이유
     if ph == 'pre':
-        return f'오늘 프리마켓({lbl})'
+        return f'뉴욕 프리마켓({lbl})'
     if ph == 'open':
-        return f'오늘 장({lbl}) 장중'
+        return f'뉴욕 장({lbl}) 장중'
     if ph == 'post':
-        return f'오늘 장({lbl})'
+        return f'뉴욕 장({lbl})'
     return f'직전 장({lbl})'
 
 
@@ -1530,6 +1532,13 @@ def desk_with_fable(view, sc_entry, ca):
   금지어: "주말 휴장", "휴장 중", "휴장일". 필요하면 "직전 장(금요일) 마감 기준"으로 쓴다.
   단, 추수감사절·크리스마스 같은 평일 공휴일 휴장은 '휴장'이라 써도 된다(알릴 값이 있다).
 - 오늘 날짜와 직전 장 정보는 초안 서술을 따를 것. '직전 장'을 언급할 때는 초안처럼 반드시 날짜를 병기하라 — 예: "직전 장(7월30일)".
+- [89항 — 시장 날짜에 상대어 금지] 이 글은 한국 독자가 한국 시계로 읽는다.
+  뉴욕 장중은 한국 시각으로 밤 10시 반~새벽 5시라, 뉴욕의 '오늘'과 독자의 '오늘'은
+  자주 다른 날이다. 그래서 시장 이야기에는 '오늘·어제·내일·금일·익일'을 쓰지 마라.
+  대신 날짜를 그대로 적고 어느 시장의 날짜인지 밝힌다 —
+  나쁨: "오늘 QQQ가 1.2% 올랐다" / 좋음: "9월4일(금) 뉴욕장에서 QQQ가 1.2% 올랐다".
+  나쁨: "오늘은 휴장이다" / 좋음: "9월7일(월) 뉴욕 증시는 노동절 휴장이다".
+  판단·행동을 말할 때(지금 무엇을 할지)는 '지금·이번 거래일·다음 장'을 쓴다.
 - [지금 장 국면] {_SESSION_PHASE_KO}. {_SESSION_PHASE_RULE}
 - [판단 연속성] {_FLOW_LINE}
 - [자기 평가 금지] 판단이 시장에 뒤처졌더라도 반성문·사과·자책을 쓰지 마라.

@@ -994,6 +994,17 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
   움직임이 작아 방향 판단은 유보" (끊어 읽히고 해석이 필요 없다)
 - 독자가 문장 해석에 신경 쓰게 하지 마라. 한눈에 읽히면 통과, 두 번 읽게 하면 실패다.
 
+=== 시장 날짜에 상대어를 쓰지 마라 (89항, 오너 지시) ===
+- 이 카드는 한국 독자가 한국 시계로 읽는다. 뉴욕 정규장은 한국 시각 22:30~05:00 이라
+  뉴욕의 '오늘'과 독자의 '오늘'은 하루의 절반 이상 서로 다른 날이다.
+- 그래서 시장 이야기에는 '오늘·어제·내일·금일·익일·전일'을 쓰지 않는다.
+  대신 날짜를 적고 어느 시장인지 밝힌다 — "9월4일(금, 뉴욕)".
+  나쁜 예: "오늘 미10년 4.70%" / 좋은 예: "9월4일(금, 뉴욕) 미10년 4.70%"
+  나쁜 예: "전일 대비 0.46%p 상승" / 좋은 예: "9월3일(목, 뉴욕) 대비 0.46%p 상승"
+- 지금 무엇을 할지(판단·행동)를 말할 때만 '지금·이번 거래일·다음 장'을 쓴다.
+- 이 규칙은 코드가 마지막에 다시 집행한다. 어기면 문장이 기계적으로 치환돼
+  글맛이 상한다 — 처음부터 날짜로 쓰는 편이 낫다.
+
 === 빼기보다 혼조 — 분석이 어려운 큰 축은 혼조로 분류한다 (64항, 오너 지시) ===
 - 시장을 짓누르는 큰 축(특히 **금리**)은 판단이 애매하다고 카드에서 지우면 안 된다.
   "살짝 하락했지만 긍정이라 하기엔 부족하다" 같은 상황이 바로 혼조 칸의 존재 이유다.
@@ -3019,6 +3030,114 @@ def _event_hits(text, ev, earns):
                 cands.append((earns[g], f"{tk} 실적", 'close', f"{tk} earnings"))
     return sorted(cands, key=lambda c: c[0])
 
+
+# ══════════════════════════════════════════════════════════════════════════
+# 89항 — 시장 날짜의 상대어 집행
+#
+# 발단: 2026-09-08 07:09 KST(= ET 09-07 18:09), 화면이 "오늘은 미국 휴장
+# (Labor Day)"이라고 썼다. 세션 판정은 ET로 옳았다. 틀린 것은 '오늘'이라는
+# 낱말이다 — 상대어는 코드의 시계가 아니라 **보는 사람의 시계**로 읽힌다.
+# 한국 독자의 오늘은 9월 8일이라 "9월 8일이 휴장"으로 오독됐다.
+#
+# 뉴욕 정규장은 한국 시각 22:30~05:00 이다. 즉 뉴욕장이 열려 있는 시간의
+# 절반 이상은 한국 날짜가 이미 다음 날이다. '오늘'은 하루의 절반을 틀린다.
+#
+# 원칙: 시장 문맥의 날짜는 절대 날짜로 말하고 어느 시장인지 밝힌다.
+#       판정·행동을 말할 때만 '지금·이번 거래일·다음 장'을 쓴다.
+# 집행: 프롬프트로 시켜도 새는 낱말이라 코드가 마지막에 바꾼다(원칙 1).
+# ══════════════════════════════════════════════════════════════════════════
+_DOW_KO = ('월', '화', '수', '목', '금', '토', '일')
+
+
+def _ny_label(d):
+    """date -> '9월4일(금, 뉴욕)'. 시장 날짜의 표준 표기."""
+    return f'{d.month}월{d.day}일({_DOW_KO[d.weekday()]}, 뉴욕)'
+
+
+def _rel_date_map():
+    """상대어 -> 절대 표기. 캘린더가 없으면 빈 dict(= 아무것도 안 바꾼다)."""
+    if _cal is None:
+        return {}
+    try:
+        d0 = _cal.last_trading_day()
+        import datetime as _dt
+        d1 = d0 - _dt.timedelta(days=1)
+        while not _cal.is_trading_day(d1):
+            d1 -= _dt.timedelta(days=1)
+        d2 = _cal.next_trading_day(d0)
+        return {'오늘': _ny_label(d0), '금일': _ny_label(d0),
+                '어제': _ny_label(d1), '전일': _ny_label(d1),
+                '내일': _ny_label(d2), '익일': _ny_label(d2)}
+    except Exception:
+        return {}
+
+
+# '오늘의 판단', '오늘 밤' 처럼 날짜가 아니라 시점·관용구인 자리는 건드리지 않는다.
+_REL_KEEP = re.compile(r'오늘(?:의\s*(?:판단|시그널|전략|행동))|오늘\s*밤')
+_REL_WORD = re.compile(r'오늘|금일|어제|전일|내일|익일')
+
+
+def _rewrite_relative_dates(text, m):
+    if not text or not m:
+        return text, []
+    hits = []
+
+    def _sub(mo):
+        w = mo.group(0)
+        # 보호 구간 안이면 그대로 둔다
+        st, en = mo.span()
+        for k in _REL_KEEP.finditer(text):
+            if k.start() <= st and en <= k.end():
+                return w
+        rep = m.get(w)
+        if not rep:
+            return w
+        hits.append(w)
+        return rep
+
+    out = _REL_WORD.sub(_sub, text)
+    # '9월4일(금, 뉴욕) 프리마켓 및 9월4일(금, 뉴욕) 정규장' 처럼 한 구절에서 두 번
+    # 반복되면 두 번째를 지운다. 같은 날짜를 두 번 말하는 문장은 읽기가 나쁘다.
+    for v in set(m.values()):
+        out = re.sub(re.escape(v) + r'(\s*[^,.]{1,24}?(?:및|과|와)\s*)' + re.escape(v),
+                     lambda mo, _v=v: _v + mo.group(1), out)
+    out = re.sub(r'(?<=\S)[ \t]{2,}(?=\S)', ' ', out)   # 중복 제거로 생긴 겹빈칸 정리
+    out = re.sub(r'[ \t]+([,.:)])', r'\1', out)
+    return out, hits
+
+
+def enforce_absolute_dates(obj):
+    """카드·보고서의 시장 문맥 상대어를 절대 날짜로 바꾼다. 판정·점수는 안 건드린다.
+    돌려주는 값은 (바뀐 자리, 원래 낱말) 목록 — 로그용."""
+    m = _rel_date_map()
+    if not m:
+        return []
+    fixed = []
+
+    def _walk(node, path):
+        if isinstance(node, dict):
+            for k, v in list(node.items()):
+                if k in ('sources', 'url', 'link', 'ticker', 'category', 'direction'):
+                    continue
+                _walk(v, f'{path}.{k}' if path else k)
+                if isinstance(v, str):
+                    nv, hits = _rewrite_relative_dates(v, m)
+                    if hits:
+                        node[k] = nv
+                        fixed.append((f'{path}.{k}' if path else k, ','.join(sorted(set(hits)))))
+        elif isinstance(node, list):
+            for i, v in enumerate(node):
+                _walk(v, f'{path}[{i}]')
+                if isinstance(v, str):
+                    nv, hits = _rewrite_relative_dates(v, m)
+                    if hits:
+                        node[i] = nv
+                        fixed.append((f'{path}[{i}]', ','.join(sorted(set(hits)))))
+
+    _walk(obj, '')
+    return fixed
+
+
 def annotate_event_dates(entry, now_utc=None):
     """예정 이벤트를 다루는 재료의 설명 끝에 뉴욕(ET) 날짜·시각을 붙인다.
     붙인 목록을 돌려준다 — 호출부가 로그를 찍는다."""
@@ -4777,10 +4896,17 @@ def main():
     for _hit in enforce_adverse_expect(entry):
         print(f"::warning::[76항] 악재 표현 교정: '{_hit}' → '우려'")
 
+    # 4-7f. 시장 날짜 상대어 → 절대 날짜 (89항) — 프롬프트로 시켜도 새는 낱말이라
+    # 코드가 마지막에 바꾼다. '오늘'은 보는 사람의 시계로 읽혀 하루의 절반을 틀린다.
+    for _where, _words in enforce_absolute_dates(entry):
+        print(f"::warning::[89항] 상대 날짜 교정: {_where} — '{_words}' → 절대 날짜(뉴욕)")
+
     # 4-8. 심층 보고서 (66항) — 확정된 카드를 A4 한 장으로 풀어 쓴다. 실패해도 카드는 나간다.
     try:
         rep = desk_deep_report(entry, headlines, rss_headlines, av_items, fred_rows, snap)
         if rep:
+            for _w, _wd in enforce_absolute_dates(rep):        # 89항 - 보고서도 같은 검문
+                print(f"::warning::[89항] 보고서 상대 날짜 교정: {_w} — '{_wd}'")
             entry['report'] = rep
             entry['report_at'] = kst_label(kst_now)
             print(f"  심층 보고서 생성: {sum(len(v) for v in rep.values())}자")
@@ -4798,6 +4924,7 @@ def main():
                 continue
             _r2 = desk_deep_report(_old, headlines, rss_headlines, av_items, fred_rows, snap)
             if _r2:
+                enforce_absolute_dates(_r2)                    # 89항 - 백필 보고서도 같은 검문
                 _old['report'] = _r2
                 _old['report_at'] = kst_label(kst_now)
                 _bf += 1

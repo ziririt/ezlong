@@ -2046,7 +2046,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">손실 중이라면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li id="tier1-avg-g3" data-for-gear="3"><span class="warn">판정 불러오는 중</span>: 실시간 지표로 오늘 물타기 가능 여부를 직접 판정합니다. 허용 시에도 소량(30% 이내) 한도.</li>
+                  <li id="tier1-avg-g3" data-for-gear="3"><span class="warn">판정 불러오는 중</span>: 실시간 지표로 현재 물타기 가능 여부를 직접 판정합니다. 허용 시에도 소량(30% 이내) 한도.</li>
                   <li data-for-gear="2"><span class="warn">지금처럼 방향이 불명확할 때</span>: 추가 매수 자제. 추세 방향 확인 후 재진입 권장</li>
                   <li data-for-gear="1"><span class="no">지금처럼 하락 추세일 때 물타기는 절대 금지</span>: 바닥이 어딘지 아무도 모릅니다. 더 사면 손실만 커집니다</li>
                 </ul>
@@ -2121,7 +2121,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">손실 중이라면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li id="tier2-avg-g3" data-for-gear="3"><span class="warn">판정 불러오는 중</span>: 실시간 지표로 오늘 물타기 가능 여부를 직접 판정합니다. 허용 시에도 소량(20% 이내) 한도.</li>
+                  <li id="tier2-avg-g3" data-for-gear="3"><span class="warn">판정 불러오는 중</span>: 실시간 지표로 현재 물타기 가능 여부를 직접 판정합니다. 허용 시에도 소량(20% 이내) 한도.</li>
                   <li data-for-gear="2"><span class="no">횡보 구간(Gear 2): 2배수 추가 매수 금지</span>: 방향이 결정되지 않은 구간에서 2배수 물타기는 어느 방향으로 튀어도 손실이 2배로 쌓입니다. 추가 없이 보유 포지션 유지 권고. Gear 3 복귀(200일선 위) 확인 후 재검토 권장</li>
                   <li data-for-gear="1"><span class="no">하락 추세(Gear 1): 물타기 금지, 오히려 축소 구간</span>: 하락 추세에서 2배수 물타기는 손실이 2배 속도로 불어납니다. 추가 매수 없이 보유 물량 절반 정리 권고. 남은 포지션 손절선 재확인, 하락 가속 시 전량 정리 권고</li>
                 </ul>
@@ -2196,7 +2196,7 @@ li.gear-other-sep { display: none !important; }
               <div class="ltier-cat-head">손실 중이라면</div>
               <div class="ltier-cat-body">
                 <ul class="dot-list">
-                  <li id="tier3-avg-g3" data-for-gear="3"><span class="warn">판정 불러오는 중</span>: 실시간 지표로 오늘 물타기 가능 여부를 직접 판정합니다. 허용 시에도 소량(10~15% 이내) 한도.</li>
+                  <li id="tier3-avg-g3" data-for-gear="3"><span class="warn">판정 불러오는 중</span>: 실시간 지표로 현재 물타기 가능 여부를 직접 판정합니다. 허용 시에도 소량(10~15% 이내) 한도.</li>
                   <li data-for-gear="2"><span class="no">횡보 구간(Gear 2): 3배수 물타기 절대 금지</span>: 방향이 불분명한 구간에서 3배수 추가는 하루 3% 하락이 9% 손실로 직결됩니다. 추가 없이 2배수 또는 1배수 전환으로 리스크 축소 권고. 3배수는 Gear 3에서만 허용됩니다</li>
                   <li data-for-gear="1"><span class="no">하락 추세(Gear 1): 3배수 물타기 금지, 전량 정리 검토 구간</span>: 하락 추세에서 3배수 추가는 손실이 3배 속도로 불어납니다. 물타기 대신 보유 물량 정리 권고. 손절선 이미 이탈했다면 전량 정리가 적절합니다. Gear 3 복귀 확인 후 새로 진입하는 것이 3배수를 들고 버티는 것보다 훨씬 낫습니다</li>
                 </ul>
@@ -2513,6 +2513,26 @@ function ezClosedReason(d) {
 }
 function ezHolidayName(ymd) { const cal = window.EZ_NYSE_CAL; return (cal && cal.holidayNames && cal.holidayNames[ymd]) || null; }
 function ezKoDate(ymd) { return `${parseInt(ymd.slice(5, 7), 10)}월 ${parseInt(ymd.slice(8, 10), 10)}일`; }
+/* 89항 - 시장 날짜는 뉴욕 기준임을 화면이 직접 말한다.
+   사고: 2026-09-08 07:09 KST(= ET 09-07 18:09)에 화면이 "오늘은 미국 휴장(Labor Day)"
+   이라고 썼다. 세션 판정은 ET로 옳았지만 '오늘'이라는 상대어는 보는 사람의 시계로
+   읽힌다: 한국 독자의 오늘은 9월 8일이라 "9월 8일이 휴장"으로 오독된다.
+   원칙 - 시장 문맥에서 상대어(오늘·어제·내일)를 쓰지 않는다. 절대 날짜로 말하고
+   뉴욕 기준임을 괄호로 밝힌다. 독자의 달력(페이지 제목 등)은 KST 그대로 둔다. */
+const _EZ_DOW_KO = ['일', '월', '화', '수', '목', '금', '토'];
+function ezDowKo(ymd) { const [y, m, d] = ymd.split('-').map(Number); return _EZ_DOW_KO[new Date(Date.UTC(y, m - 1, d)).getUTCDay()]; }
+/* '9월 4일(금, 뉴욕)' - 시장 날짜의 표준 표기. city:false 면 '9월 4일(금)'. */
+function ezNyDate(ymd, opt) {
+  if (!ymd || ymd.length < 10) return '';
+  const o = opt || {};
+  const base = `${parseInt(ymd.slice(5, 7), 10)}월 ${parseInt(ymd.slice(8, 10), 10)}일`;
+  const dow = o.dow === false ? '' : ezDowKo(ymd);
+  const city = o.city === false ? '' : '뉴욕';
+  const paren = [dow, city].filter(Boolean).join(', ');
+  return paren ? `${base}(${paren})` : base;
+}
+/* '9/4(금)' - 흐름 라인처럼 자리가 좁은 곳의 짧은 표기. 도시 기준은 라인 제목이 한 번 밝힌다. */
+function ezNyShort(ymd) { return `${parseInt(ymd.slice(5, 7), 10)}/${parseInt(ymd.slice(8, 10), 10)}(${ezDowKo(ymd)})`; }
 
 // (2) 임계값 한 벌. 카드·FAQ·정적 문구가 전부 여기 숫자를 말한다. 바꾸면 한 곳만 바꾼다.
 const EZ_THRESH = Object.freeze({
@@ -3953,25 +3973,31 @@ function renderActionPlan(qqq, voo, soxx, vix, dia, iwm) {
     // SOXX 당일 급락(-4% 이상)
     const soxxBigDrop = typeof soxxToday === 'number' && soxxToday <= -4;
 
+    /* 89항: recentDailyReturns[0]은 '마지막 거래일'의 수익률이지 보는 사람의 오늘이 아니다.
+       휴장일·주말·한국 새벽에 '오늘 -0.8%'는 거짓말이 된다. 거래일 날짜로 말한다. */
+    const _d0 = (window.EZ_TRUTH?.cal?.asOf) || ezLastTradingDay(new Date());
+    const _d1 = ezPrevTradingDay(_d0);
+    const _L0 = ezNyShort(_d0), _L1 = ezNyShort(_d1);
+
     if (qqqConsecDown) {
-      lines.push(`QQQ 이틀 연속 하락 (어제 ${qqqYest > 0 ? '+' : ''}${qqqYest?.toFixed(2)}% → 오늘 ${qqqToday?.toFixed(2)}%): 단기 하락 압력 지속 중`);
+      lines.push(`QQQ 이틀 연속 하락 (${_L1} ${qqqYest > 0 ? '+' : ''}${qqqYest?.toFixed(2)}% → ${_L0} ${qqqToday?.toFixed(2)}%): 단기 하락 압력 지속 중`);
     } else if (qqqBigDrop) {
-      lines.push(`QQQ 오늘 ${qqqToday?.toFixed(2)}% 급락: 단기 변동성 확대 구간`);
+      lines.push(`QQQ ${_L0} ${qqqToday?.toFixed(2)}% 급락: 단기 변동성 확대 구간`);
     }
 
     if (soxxBigDrop) {
-      lines.push(`SOXX(반도체) 오늘 ${soxxToday?.toFixed(2)}% 급락: 섹터 변동성 주의`);
+      lines.push(`SOXX(반도체) ${_L0} ${soxxToday?.toFixed(2)}% 급락: 섹터 변동성 주의`);
     }
 
     if (lines.length === 0) return '';
 
     const items = lines.map(l => `· ${l}`).join('<br>');
-    return `<b>오늘의 시장 흐름: 주의</b><br>${items}<br>· 위 흐름 감안 시 신규 진입은 분산 진입(1차 소량) 원칙 더욱 중요<br><br>`;
+    return `<b>최근 시장 흐름(뉴욕 거래일 기준): 주의</b><br>${items}<br>· 위 흐름 감안 시 신규 진입은 분산 진입(1차 소량) 원칙 더욱 중요<br><br>`;
   }
 
   // ── 3영업일 판단 연속성 라인 (2026-07-03) ─────────────────────────────────
   // 서버 스냅샷(previousSignals)의 QQQ 매수신호를 날짜별 마지막 값으로 추려 흐름 표시.
-  // 스냅샷은 거래일에만 쌓이므로 날짜 자체가 영업일: 휴일 테이블 불필요.
+  // 89항 정정: 스냅샷은 시간외·주말에도 쌓인다. 거래일 판정은 캘린더(ezLastTradingDay)가 한다.
     // 2026-08-05 사고 방어: JSON 덩어리가 화면에 나가지 않게 한 겹 더 막는다.
   // 서버 파서를 고쳤지만, 이미 localStorage 캐시에 들어간 옛 값이나 다른 경로로
   // 들어온 값까지는 서버가 못 막는다. 화면 직전에서 한 번 더 거른다.
@@ -4003,16 +4029,22 @@ function buildTrendLineHtml() {
         .filter(s => s && s.atKST && s.qqq && typeof s.qqq.buyScore === 'number')
         .sort((a, b) => (a.atKST < b.atKST ? -1 : 1));
       if (sorted.length < 2) return '';
+      /* 89항: 스냅샷의 생성 시각(KST)으로 묶으면 날짜가 하루 밀리고 비거래일이 섞인다.
+         실측(2026-09-08): KST 묶음은 9/5(토)·9/7(노동절)을 거래일처럼 찍었고 각 점이
+         근거 거래일보다 하루 뒤로 밀려 있었다. 스냅샷이 속한 뉴욕 거래일로 묶는다.
+         (스냅샷은 시간외에도 쌓인다: '거래일에만 쌓이므로 날짜가 곧 영업일'은 거짓이었다.) */
       const byDate = new Map();
-      for (const s of sorted) byDate.set(s.atKST.slice(0, 10), s.qqq.buyScore); // 날짜별 마지막 값
-      const days = [...byDate.entries()].slice(-4);
+      for (const s of sorted) {
+        const at = s.at ? new Date(s.at) : new Date(s.atKST.slice(0, 16).replace(' ', 'T') + ':00+09:00');
+        if (isNaN(at)) continue;
+        byDate.set(ezLastTradingDay(at), s.qqq.buyScore);   // 거래일별 마지막 값
+      }
+      const days = [...byDate.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1)).slice(-4);
       if (days.length < 2) return '';
-      const todayKST = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
-      const parts = days.map(([d, v]) =>
-        `${d === todayKST ? '오늘' : d.slice(5).replace('-', '/')} <b>${v}</b>`).join(' → ');
+      const parts = days.map(([d, v]) => `${ezNyShort(d)} <b>${v}</b>`).join(' → ');
       const diff  = days[days.length - 1][1] - days[0][1];
       const label = diff >= 5 ? '개선 흐름' : diff <= -5 ? '약화 흐름' : '횡보';
-      return `<div class="swing-trend-line">매수 신호 흐름 (QQQ 기준): ${parts}: ${label}</div>`;
+      return `<div class="swing-trend-line">매수 신호 흐름 (QQQ, 뉴욕 거래일 기준): ${parts}: ${label}</div>`;
     } catch { return ''; }
   }
   const trendLineHtml = buildTrendLineHtml();
@@ -4147,7 +4179,7 @@ function buildTrendLineHtml() {
       ? '분할 매수 최적 구간: QQQ·VOO 3-3-4 원칙으로 적극 진입'
       : '강한 매수 신호: 추세 회복 확인 후 분할 진입 시작';
     desc  = gear >= 3
-      ? `${buildRecentContextHtml()}<b>진입 근거</b><br>· 추세(Gear) <strong>${gearText}</strong>: 200일선 위. 기관 평균 매입단가 위에서 거래 중<br>· 매수 매력도 <strong>${score}점</strong>: 최적 구간(80점+). 복합 매수 신호 전부 충족<br>· RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>: 과매수 경고선(70) 아래, 추가 상승 여력 확보<br><br><b>3-3-4 분할 진입 원칙</b><br>· 한 번에 전량 매수 금지: 변동성 급등 시 대응 불가 상태가 됨<br>· 나눠 사면 하락해도 평균단가가 내려가 리스크 자동 관리<br>· 1차(30%) 오늘 → 2차(30%) 신호 75점+ 유지 확인 후 → 3차(40%) 추세 안정 후<br>· TQQQ·UPRO 레버리지도 진입 가능 구간: 단, 전체 계좌 20% 한도 엄수`
+      ? `${buildRecentContextHtml()}<b>진입 근거</b><br>· 추세(Gear) <strong>${gearText}</strong>: 200일선 위. 기관 평균 매입단가 위에서 거래 중<br>· 매수 매력도 <strong>${score}점</strong>: 최적 구간(80점+). 복합 매수 신호 전부 충족<br>· RSI <strong>${rsi?.toFixed(1) ?? ': '}</strong>: 과매수 경고선(70) 아래, 추가 상승 여력 확보<br><br><b>3-3-4 분할 진입 원칙</b><br>· 한 번에 전량 매수 금지: 변동성 급등 시 대응 불가 상태가 됨<br>· 나눠 사면 하락해도 평균단가가 내려가 리스크 자동 관리<br>· 1차(30%) 지금 → 2차(30%) 신호 75점+ 유지 확인 후 → 3차(40%) 추세 안정 후<br>· TQQQ·UPRO 레버리지도 진입 가능 구간: 단, 전체 계좌 20% 한도 엄수`
       : `${buildRecentContextHtml()}<b>진입 근거: 신호는 강하나 추세 확인 필요</b><br>· 매수 매력도 <strong>${score}점</strong>: 복합 신호 강함<br>· QQQ·VOO <strong>${gearText}</strong>: 200일선 위/아래 방향 미확정. 이 상태에서 레버리지 신규 매수 금지<br><br><b>대응 원칙</b><br>· Gear 3 전환 확인 후 1차(30%) 진입 시작<br>· TQQQ·UPRO 레버리지 ETF는 Gear 3 복귀 확인 전까지 보류`;
     pills = [
       {text: gearText,                            tone: gearTone},
@@ -4331,15 +4363,16 @@ function buildTrendLineHtml() {
     const _isHoliday = _closedWhy === 'holiday';
     const _PHASE_KO = { pre: '프리마켓', open: '장중', post: '마감 직후', closed: _isHoliday ? '휴장' : '장 마감' };
     const _phaseWas = window._swingView.session;
-    const _holName = _isHoliday ? (ezHolidayName(ezEtParts(_nowD).ymd) || '공휴일') : '';
+    const _holYmd  = ezEtParts(_nowD).ymd;                       // 89항: 휴장인 '그 날'은 뉴욕 날짜다
+    const _holName = _isHoliday ? (ezHolidayName(_holYmd) || '공휴일') : '';
     const _lastTd = (window.EZ_TRUTH?.cal?.asOf) || ezLastTradingDay(_nowD);
     const _wkNotice = (_wkPhase === 'session' && !_isHoliday) ? '' :
       `<div style="margin:0 0 10px;padding:8px 10px;border-radius:10px;background:var(--bd2,rgba(120,120,128,.12));color:var(--t2);font-size:14px;font-weight:600;line-height:1.55;">
          ${_isHoliday
-           ? `오늘은 <b>미국 휴장(${_holName})</b>이다. 아래 수치와 판단은 직전 거래일 <b>${ezKoDate(_lastTd)}</b> 종가 기준: 다음 개장 전까지 갱신 없음.`
+           ? `뉴욕 증시는 <b>${ezNyDate(_holYmd, { city: false })} 휴장(${_holName})</b>이다. 아래 수치와 판단은 직전 거래일 <b>${ezNyDate(_lastTd)}</b> 종가 기준: 다음 개장 전까지 갱신 없음.`
            : _useAhead
-           ? `아래는 <b>다음 장을 준비하는 전망</b>이다. 근거는 직전 장(${window._swingView.dataDay}) 마감 자료.`
-           : `아래는 <b>직전 장(${window._swingView.dataDay}) 마감 시점</b>의 판단이다. 다음 장 개장 전까지 갱신 없음.`}
+           ? `아래는 <b>다음 장을 준비하는 전망</b>이다. 근거는 직전 장 <b>${ezNyDate(_lastTd)}</b> 마감 자료.`
+           : `아래는 <b>직전 장 ${ezNyDate(_lastTd)} 마감 시점</b>의 판단이다. 다음 장 개장 전까지 갱신 없음.`}
        </div>`;
     const _phaseWarn = (_wkPhase !== 'session' || _isHoliday) ? _wkNotice
       : (_phaseWas && _PHASE_KO[_phaseWas] && _phaseWas !== _phaseNow)
@@ -4347,9 +4380,11 @@ function buildTrendLineHtml() {
            아래 논평은 <b>${_PHASE_KO[_phaseWas]}</b> 시점(${window._swingView.generatedAtKST})에 쓴 글이다. 지금은 <b>${_PHASE_KO[_phaseNow]}</b>: 문장 속 시점 표현은 위 기준 시각으로 읽을 것.
          </div>`
       : '';
+    /* 89항: 기준일은 뉴욕 거래일이다. '(미국장)'만으로는 어느 나라 달력인지 안 밝혀진다. */
+    const _asOfDay = window._swingView.dataDay || _lastTd;
     const _asOfTop = `<div style="margin:0 0 10px;color:var(--t3);font-size:14px;font-weight:600;">${
-      _useAhead ? `직전 장 ${window._swingView.dataDay}(미국장) 마감 자료 기준`
-                : `${window._swingView.generatedAtKST} 기준 · 기준일 ${window._swingView.dataDay}(미국장)`
+      _useAhead ? `직전 장 ${ezNyDate(_asOfDay)} 마감 자료 기준`
+                : `${window._swingView.generatedAtKST} 기준 · 기준일 ${ezNyDate(_asOfDay)}`
     }</div>` + _phaseWarn;
     desc  = _asOfTop
           + _flowLine
@@ -4361,7 +4396,7 @@ function buildTrendLineHtml() {
       {text: `확신도 ${_c.confidence ?? ': '}`, tone: 'positive'},
     ];
     if (window._swingView.stanceChangedToday && _wkPhase === 'session' && !_isHoliday) {
-      pills.unshift({text: '오늘 스탠스 변경', tone: 'positive'});
+      pills.unshift({text: '이번 거래일 스탠스 변경', tone: 'positive'});
     } else if ((window._swingView.stanceStreak ?? 1) >= 2) {
       pills.push({text: `${window._swingView.stanceStreak}거래일째 유지`, tone: 'neutral'});
     }
@@ -5313,21 +5348,26 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     const tslaBigMove = typeof tslaToday === 'number' && Math.abs(tslaToday) >= 3;
     const nvdaBigMove = typeof nvdaToday === 'number' && Math.abs(nvdaToday) >= 3;
 
+    // 89항: 상대어 대신 거래일 날짜. 자세한 사유는 buildRecentContextHtml 주석 참조.
+    const _d0 = (window.EZ_TRUTH?.cal?.asOf) || ezLastTradingDay(new Date());
+    const _d1 = ezPrevTradingDay(_d0);
+    const _L0 = ezNyShort(_d0), _L1 = ezNyShort(_d1);
+
     if (qqqConsecDown) {
-      lines.push(`QQQ 이틀 연속 하락 (어제 ${qqqYest >= 0 ? '+' : ''}${qqqYest?.toFixed(2)}% → 오늘 ${qqqToday?.toFixed(2)}%): 단기 하락 압력 지속 중`);
+      lines.push(`QQQ 이틀 연속 하락 (${_L1} ${qqqYest >= 0 ? '+' : ''}${qqqYest?.toFixed(2)}% → ${_L0} ${qqqToday?.toFixed(2)}%): 단기 하락 압력 지속 중`);
     } else if (qqqBigDrop) {
-      lines.push(`QQQ 오늘 ${qqqToday?.toFixed(2)}% 급락: 단기 변동성 확대 구간`);
+      lines.push(`QQQ ${_L0} ${qqqToday?.toFixed(2)}% 급락: 단기 변동성 확대 구간`);
     }
     if (soxxBigDrop) {
-      lines.push(`SOXX(반도체) 오늘 ${soxxToday?.toFixed(2)}% 급락: 섹터 전반 매도세 강화`);
+      lines.push(`SOXX(반도체) ${_L0} ${soxxToday?.toFixed(2)}% 급락: 섹터 전반 매도세 강화`);
     }
     if (tslaBigMove) {
       const dir = tslaToday > 0 ? '급등' : '급락';
-      lines.push(`TSLA 오늘 ${tslaToday >= 0 ? '+' : ''}${tslaToday?.toFixed(2)}% ${dir}`);
+      lines.push(`TSLA ${_L0} ${tslaToday >= 0 ? '+' : ''}${tslaToday?.toFixed(2)}% ${dir}`);
     }
     if (nvdaBigMove) {
       const dir = nvdaToday > 0 ? '급등' : '급락';
-      lines.push(`NVDA 오늘 ${nvdaToday >= 0 ? '+' : ''}${nvdaToday?.toFixed(2)}% ${dir}`);
+      lines.push(`NVDA ${_L0} ${nvdaToday >= 0 ? '+' : ''}${nvdaToday?.toFixed(2)}% ${dir}`);
     }
 
     if (lines.length === 0) return '';
@@ -5338,7 +5378,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     const items = lines.map(l => `<div style="margin-top:5px;padding-left:4px;border-left:2px solid ${borderColor}40;line-height:1.5;">· ${l}</div>`).join('');
 
     return `<div style="margin-bottom:20px;padding:14px 16px;border-radius:10px;background:var(--card);border-left:3px solid ${borderColor};border-top:1px solid var(--bd);border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);">
-      <div style="font-size:16px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:${labelColor};margin-bottom:6px;">오늘의 시장 흐름: 전략 수립 시 반드시 고려</div>
+      <div style="font-size:16px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:${labelColor};margin-bottom:6px;">최근 시장 흐름(뉴욕 거래일 기준): 전략 수립 시 반드시 고려</div>
       <div style="font-size:16px;font-weight:500;color:var(--t1);">${items}</div>
       <div style="font-size:16px;font-weight:600;color:var(--t2);margin-top:8px;padding-top:8px;border-top:1px solid var(--bd);">· 위 흐름이 반영된 상태에서 아래 전략 가이드를 확인할 것</div>
     </div>`;
@@ -5451,7 +5491,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       col1 = 'var(--bl)'; bg1 = 'rgba(0,122,255,0.06)'; bd1 = 'rgba(0,122,255,0.3)';
     } else if (compBuy >= TH.BUY_SCOUT) {
       act1 = 'QQQ·VOO 1차 분할 진입 적합 구간 (3-3-4 원칙)';
-      rsn1 = `<b>진입 근거</b><br>· 추세(Gear ${compGear}): 200일선 위. 장기 상승 추세 유효<br>· 매수 매력도 ${compBuy}점: 기준선(65점) 이상. 사려는 힘이 팔려는 힘보다 우세<br>· RSI ${rsi.toFixed(0)}: 과매수 경고선(70) 아래, 추가 상승 여지 있음<br><br><b>3-3-4 분할 진입 원칙</b><br>· 한 번에 전량 매수 금지: 예상치 못한 하락 시 대응 불가<br>· 1차(30%) 오늘 → 2차(30%) 신호 강화 확인 후 → 3차(40%) 추세 안정 후`;
+      rsn1 = `<b>진입 근거</b><br>· 추세(Gear ${compGear}): 200일선 위. 장기 상승 추세 유효<br>· 매수 매력도 ${compBuy}점: 기준선(65점) 이상. 사려는 힘이 팔려는 힘보다 우세<br>· RSI ${rsi.toFixed(0)}: 과매수 경고선(70) 아래, 추가 상승 여지 있음<br><br><b>3-3-4 분할 진입 원칙</b><br>· 한 번에 전량 매수 금지: 예상치 못한 하락 시 대응 불가<br>· 1차(30%) 지금 → 2차(30%) 신호 강화 확인 후 → 3차(40%) 추세 안정 후`;
 
       col1 = 'var(--gr)'; bg1 = 'var(--gr-s)'; bd1 = 'rgba(48,209,88,0.3)';
     } else if (compBuy >= TH.BUY_MIN) {
@@ -5795,7 +5835,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       }[tier];
       const macdOK = tier < 3 || macdHist > 0 || macdLine > 0;   // 3배수만 방향 확인 추가
       if (tier === 1 && oneXFull) {
-        return `<span class="no">오늘 ${spec.name} 물타기 없음: 1배수 칸이 계획 비중을 채운 상태</span>: 평단을 낮추려 더 사는 것은 칸을 넘기는 일. 손절선 재확인이 먼저.`;
+        return `<span class="no">현재 ${spec.name} 물타기 없음: 1배수 칸이 계획 비중을 채운 상태</span>: 평단을 낮추려 더 사는 것은 칸을 넘기는 일. 손절선 재확인이 먼저.`;
       }
       const buyMin = tier === 3 ? TH.LEV3_BUY : 60;
       const fail = [];
@@ -5809,11 +5849,11 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
         + (tier === 3 ? ` · MACD 라인 ${macdLine >= 0 ? '+' : ''}${macdLine.toFixed(2)}·히스토그램 ${macdHist >= 0 ? '+' : ''}${macdHist.toFixed(2)}` : '');
 
       if (fail.length) {
-        return `<span class="no">오늘 ${spec.name} 물타기 조건 미충족</span>: ${nums}.<br>`
+        return `<span class="no">현재 ${spec.name} 물타기 조건 미충족</span>: ${nums}.<br>`
           + `걸린 항목: ${fail.join(' / ')}. 이 항목이 해소되기 전에는 평단 낮추기 보류, 손절선 재확인이 먼저.`;
       }
       const sweet = rsi < RSI_SWEET;
-      return `<span class="ok">오늘 ${spec.name} 물타기 조건 충족: ${sweet ? `한도(${spec.cap}) 안에서 분할 추가 가능` : `한도의 절반(${spec.half} 이내)까지만`}</span>: ${nums}.<br>`
+      return `<span class="ok">현재 ${spec.name} 물타기 조건 충족: ${sweet ? `한도(${spec.cap}) 안에서 분할 추가 가능` : `한도의 절반(${spec.half} 이내)까지만`}</span>: ${nums}.<br>`
         + (sweet
             ? `RSI가 최적 매수대(40~${RSI_SWEET}) 안: 이 구간에서 계획된 분할을 집행하는 것이 이 분석의 원칙.`
             : `RSI ${rsi.toFixed(0)}은 최적대(40~${RSI_SWEET})를 넘어선 상태: 문을 닫을 자리는 아니지만 크기를 줄이는 자리. 금지가 아니라 절반.`)
@@ -6217,9 +6257,9 @@ function _deepAnalysisCardHtml(d, _ai) {
       // 88항: '오늘·어제'는 휴장일·주말에 거짓말이 된다(9/7 노동절에 '오늘 -0.8%'). 거래일 날짜로 말한다.
       const _td0 = (_TR?.cal?.asOf) || ezLastTradingDay(new Date());
       const _td1 = ezPrevTradingDay(_td0), _td2 = ezPrevTradingDay(_td1);
-      const _md  = ymd => `${parseInt(ymd.slice(5, 7), 10)}/${parseInt(ymd.slice(8, 10), 10)}`;
-      const _isToday = _td0 === ezEtParts(new Date()).ymd;
-      const _lbl0 = _isToday ? `오늘 ${_md(_td0)}` : `${_md(_td0)} 장`, _lbl1 = `${_md(_td1)} 장`, _lbl2 = `${_md(_td2)} 장`;
+      // 89항: '오늘'을 붙이면 한국 독자의 달력으로 읽힌다. 거래일 날짜와 요일만 말한다.
+      const _md  = ymd => ezNyShort(ymd);
+      const _lbl0 = `${_md(_td0)} 장`, _lbl1 = `${_md(_td1)} 장`, _lbl2 = `${_md(_td2)} 장`;
       let _summary = '';
       if (_consecDown) {
         _summary = `이틀 연속 하락(${_md(_td1)}·${_md(_td0)}): 단기 하락 압력 지속. 추격 진입 자제 구간`;
