@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-08T20:31:16.186001+00:00",
-  "generatedAtKST": "2026-09-09 05:31 KST",
+  "generatedAt": "2026-09-08T20:37:47.937482+00:00",
+  "generatedAtKST": "2026-09-09 05:37 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -688,7 +688,7 @@
     "prevClose": 42,
     "prev1Week": 31,
     "prev1Month": 64,
-    "timestamp": "2026-09-08T20:19:07+00:00"
+    "timestamp": "2026-09-08T20:20:01+00:00"
   },
   "macro": {
     "yield10y": {
@@ -708,31 +708,48 @@
       "unit": "%"
     },
     "oil": {
-      "price": 94.05,
-      "change": 2.57,
-      "changePct": 2.8094,
+      "price": 94.07,
+      "change": 2.59,
+      "changePct": 2.8312,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 98.852,
-      "change": -0.308,
-      "changePct": -0.3106,
+      "price": 98.865,
+      "change": -0.295,
+      "changePct": -0.2975,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4405.0,
-      "change": -24.7998,
-      "changePct": -0.5598,
+      "price": 4402.7998,
+      "change": -27.0,
+      "changePct": -0.6095,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-09-08T20:31:16.186001+00:00",
+      "atKST": "2026-09-09 05:31 KST",
+      "qqq": {
+        "rsi": 53.2,
+        "macdHist": -0.0784,
+        "dev5": 0.558,
+        "dev200": 9.2724,
+        "gear": 3,
+        "buyScore": 57,
+        "sellScore": 24,
+        "price": 718.36
+      },
+      "soxxMacdHist": 1.0828,
+      "fearAndGreed": 41,
+      "yield10y": 4.806
+    },
     {
       "at": "2026-09-08T20:22:41.065528+00:00",
       "atKST": "2026-09-09 05:22 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": -0.4138,
       "fearAndGreed": 42,
       "yield10y": 4.784
-    },
-    {
-      "at": "2026-09-04T20:01:24.531705+00:00",
-      "atKST": "2026-09-05 05:01 KST",
-      "qqq": {
-        "rsi": 53.63,
-        "macdHist": -0.2864,
-        "dev5": 0.6871,
-        "dev200": 9.4671,
-        "gear": 3,
-        "buyScore": 59,
-        "sellScore": 27,
-        "price": 718.96
-      },
-      "soxxMacdHist": -0.4138,
-      "fearAndGreed": 42,
-      "yield10y": 4.784
     }
   ],
-  "swingContinuity": "\ucd5c\uadfc \uba70\uce60\uac04 QQQ\uc758 \ub9e4\uc218\uc810\uc218\ub294 59\uc5d0\uc11c 55\ub85c \uc18c\ud3ed \ud558\ub77d\ud588\uc73c\ub098, 9\uc6d48\uc77c(\ud654, \ub274\uc695) 57\ub85c \ub2e4\uc2dc \ubc18\ub4f1\ud558\uba70 \uac1c\uc120 \ud750\ub984\uc744 \ubcf4\uc600\ub2e4. \ub9e4\ub3c4\uc810\uc218\ub294 27\uc5d0\uc11c 18\uae4c\uc9c0 \ud558\ub77d \ud6c4 9\uc6d48\uc77c(\ud654, \ub274\uc695) 24\ub85c \uc18c\ud3ed \ubc18\ub4f1\ud558\uba70 \ub9e4\ub3c4 \uc555\ub825\uc774 \uc644\ud654\ub418\ub294 \ubaa8\uc2b5\uc744 \ub098\ud0c0\ub0c8\ub2e4. RSI\ub294 53.63\uc5d0\uc11c 52.46\uc73c\ub85c \uc18c\ud3ed \ud558\ub77d \ud6c4 9\uc6d48\uc77c(\ud654, \ub274\uc695) 53.2\ub85c \ud68c\ubcf5\ud558\uba70 \uc911\ub9bd \uad6c\uac04\uc744 \uc720\uc9c0\ud588\ub2e4.",
-  "swingContinuityEn": "QQQ's buy score dipped slightly from 59 to 55 in recent days but improved today to 57. The sell score decreased from 27 to 18 before ticking up to 24 today, indicating easing selling pressure. The RSI recovered to 53.2 today from a low of 52.46, maintaining a neutral stance around 53.63."
+  "swingContinuity": null,
+  "swingContinuityEn": null
 }
