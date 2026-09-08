@@ -145,6 +145,11 @@
     if (el) return el;
     el = document.createElement('div');
     el.setAttribute('data-ez-promo', '');
+    /* 광고 자리가 이미 선언된 페이지면 **그 자리**를 쓴다. 오너가 가리킨 자리가
+       바로 거기다: 배너와 광고가 서로 다른 곳에 뜨면 나중에 광고를 켰을 때
+       화면이 통째로 달라진다. 자리는 하나여야 한다. */
+    var ad = document.querySelector('[data-ez-ad]');
+    if (ad && ad.parentNode) { ad.parentNode.insertBefore(el, ad); return el; }
     var nav = document.querySelector('.ez-nav, .ez-nav-bar, header, .nav');
     if (nav && nav.parentNode) nav.parentNode.insertBefore(el, nav.nextSibling);
     else document.body.insertBefore(el, document.body.firstChild);

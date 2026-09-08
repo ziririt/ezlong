@@ -264,6 +264,13 @@
   }
 
   function start() {
+    /* 92항: 한 자리에 둘을 띄우지 않는다.
+       광고를 아직 켜지 않는 동안 그 자리는 자사 앱 배너(ez-app-promo.js)가 쓴다.
+       그런데 미리보기(?ads=preview)를 한 번 켠 브라우저에는 그 상태가 30일 남아,
+       실제로 점선 상자와 진단 칩이 배너 자리를 차지하고 있었다(2026-09-09 실측).
+       ez-promo 를 선언한 페이지에서는 미리보기를 그리지 않는다 - 광고를 실제로
+       켤 때는 그 페이지의 ez-promo 메타를 걷어내므로 미리보기가 저절로 돌아온다. */
+    if (!LIVE && document.querySelector('meta[name="ez-promo"][content="on"]')) return;
     injectCss();
     if (PREVIEW) {
       ensureDemoSlot();
