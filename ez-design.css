@@ -299,45 +299,73 @@ a { color: inherit; }
   .ez-footer-nav-grid { grid-template-columns: repeat(2, 1fr); gap: 5px; }
 }
 
-/* ── 푸터 앱 소개 (2026-08-31, 82항) ──────────────────────────────
-   서비스 메뉴 그리드는 이 사이트의 도구 목록이다. 앱은 별개의 물건이라
-   같은 격자에 섞으면 "사이트 메뉴 하나"로 읽힌다. 줄을 따로 세우고
-   아이콘을 붙여 앱임을 그림으로 먼저 알린다. */
+/* ── 푸터 앱 소개 (2026-08-31 82항 신설 → 2026-09-09 92-2항에서 배너로 키움) ──
+   서비스 메뉴 그리드는 이 사이트의 도구 목록이다. 앱은 별개의 물건이라 같은
+   격자에 섞으면 "사이트 메뉴 하나"로 읽힌다.
+
+   처음엔 아이콘 34px 짜리 얇은 링크 줄이었는데 "너무 약하다"는 운영 지적을 받았다.
+   푸터는 페이지를 다 읽고 닿는 자리라 크게 말해도 된다 - 상단 배너가 지나가며 보는
+   안내라면 여기는 다 읽고 나서 보는 소개다. 아이콘 64px, 설명 한 문장, 링크까지. */
 .ez-footer-apps {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
-  padding-bottom: 28px; border-bottom: 1px solid var(--ez-border); margin-bottom: 28px;
-}
-.ez-footer-apps-title {
-  font-size: 14px; font-weight: 800; letter-spacing: .06em;
-  color: var(--ez-text2); margin-right: 4px; flex-shrink: 0;
-}
-.ez-footer-app {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 9px 15px 9px 10px; border-radius: 12px;
+  padding: 20px; border-radius: 18px;
   border: 1px solid var(--ez-border); background: var(--ez-card);
-  text-decoration: none; color: var(--ez-text2);
-  transition: background .12s, color .12s, border-color .12s;
+  margin-bottom: 28px;
 }
-.ez-footer-app:hover {
-  background: var(--ez-blue-dim); color: var(--ez-blue); border-color: rgba(0,113,227,0.25);
+.ez-footer-apps-head { margin-bottom: 14px; }
+.ez-footer-apps-title {
+  display: flex; align-items: center; gap: 6px; margin: 0 0 3px;
+  font-size: 17px; font-weight: 800; letter-spacing: -.01em; color: var(--ez-text);
+}
+.ez-footer-apps-title svg { flex-shrink: 0; color: var(--ez-text3); }
+.ez-footer-apps-sub { margin: 0; font-size: 14px; color: var(--ez-text3); line-height: 1.5; }
+.ez-footer-apps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ez-footer-app {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 16px; border-radius: 14px;
+  border: 1px solid var(--ez-border); background: var(--ez-bg);
+  text-decoration: none; color: var(--ez-text2);
+  transition: transform .12s ease, border-color .12s ease;
+}
+.ez-footer-app:active { transform: scale(.99); }
+@media (hover: hover) {
+  .ez-footer-app:hover { border-color: var(--ez-blue); }
 }
 /* 곡률 22.5%: iOS 홈 화면 아이콘과 같은 모양으로 보이게 한다. */
 .ez-footer-app img {
-  width: 34px; height: 34px; border-radius: 8px; display: block; flex-shrink: 0;
-  border: 1px solid var(--ez-border); background: var(--ez-bg);
+  width: 64px; height: 64px; border-radius: 14px; display: block; flex-shrink: 0;
+  box-shadow: 0 1px 5px rgba(0,0,0,.16);
 }
-.ez-footer-app b { display: block; font-size: 14px; font-weight: 700; line-height: 1.3; }
-.ez-footer-app small { display: block; font-size: 14px; font-weight: 500; opacity: .72; line-height: 1.3; }
-@media (max-width: 639px) {
+.ez-footer-app-body { min-width: 0; }
+.ez-footer-app small {
+  display: block; font-size: 14px; font-weight: 600; color: var(--ez-text3);
+  line-height: 1.35; margin-bottom: 2px;
+}
+.ez-footer-app b {
+  display: block; font-size: 19px; font-weight: 800; letter-spacing: -.015em;
+  line-height: 1.25; color: var(--ez-text); margin-bottom: 6px;
+}
+.ez-footer-app em {
+  display: block; font-style: normal; font-size: 14px; line-height: 1.55;
+  color: var(--ez-text2);
+}
+.ez-footer-app-go {
+  display: inline-flex; align-items: center; gap: 4px; margin-top: 9px;
+  font-size: 14px; font-weight: 700; color: var(--ez-blue);
+}
+@media (max-width: 699px) {
   /* 좁은 화면에서 2열로 나누면 'Long Time, Easy Life'가 석 줄로 접힌다(360px 실측).
      한 줄에 하나씩 두면 앱 이름이 한 줄에 들어가고 아이콘도 글과 나란히 선다. */
-  .ez-footer-apps { gap: 8px; }
-  .ez-footer-apps-title { width: 100%; margin-bottom: 2px; }
-  .ez-footer-app { flex: 1 1 100%; min-width: 0; }
+  .ez-footer-apps { padding: 16px; }
+  .ez-footer-apps-grid { grid-template-columns: 1fr; }
+  .ez-footer-app { padding: 14px; gap: 12px; }
+  .ez-footer-app img { width: 56px; height: 56px; border-radius: 13px; }
+  .ez-footer-app b { font-size: 17px; }
 }
-@media (prefers-color-scheme: dark) {
-  .ez-footer-app:hover { border-color: rgba(10,132,255,0.3); }
+@media (prefers-reduced-motion: reduce) {
+  .ez-footer-app { transition: none; }
+  .ez-footer-app:active { transform: none; }
 }
+
 
 /* ── EZ 푸터 (2026 리디자인) ────────────────────────────────────── */
 .ez-footer {
