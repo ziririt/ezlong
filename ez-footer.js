@@ -31,18 +31,46 @@
           '<a href="/life-balance-game.html" class="ez-footer-nav-item">밸런스게임: 마이 라이프</a>' +
         '</nav>' +
 
-        '<!-- 직접 만든 앱 (82항) -->' +
-        '<nav class="ez-footer-apps" aria-label="직접 만든 앱">' +
-          '<span class="ez-footer-apps-title">직접 만든 앱</span>' +
-          '<a href="/longtime/" class="ez-footer-app">' +
-            '<img src="/time/icons/pwa-512.png" alt="" width="34" height="34" loading="lazy">' +
-            '<span><b>Long Time, Easy Life</b><small>플립시계 · 기상 알람</small></span>' +
-          '</a>' +
-          '<a href="/skybluenote/" class="ez-footer-app">' +
-            '<img src="/skybluenote/web/icons/Icon-512.png" alt="" width="34" height="34" loading="lazy">' +
-            '<span><b>Skyblue Note</b><small>AI 답변 정리 노트</small></span>' +
-          '</a>' +
-        '</nav>' +
+        /* 직접 만든 앱 (82항 신설 → 92-2항에서 배너로 키움).
+           얇은 링크 줄로 두었더니 "너무 약하다"는 운영 지적을 받았다. 푸터는
+           페이지를 다 읽은 사람이 닿는 자리라, 여기서는 크게 말해도 된다.
+           상단 배너(ez-app-promo.js)와 같은 두 앱이지만 자리의 성격이 다르다 -
+           상단은 지나가며 보는 안내, 여기는 다 읽고 나서 보는 소개다. */
+        '<!-- 직접 만든 앱 (82항 · 92-2항) -->' +
+        '<section class="ez-footer-apps" aria-labelledby="ez-footer-apps-h">' +
+          '<div class="ez-footer-apps-head">' +
+            '<h2 class="ez-footer-apps-title" id="ez-footer-apps-h">' +
+              '<svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" aria-hidden="true">' +
+                '<rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2"/>' +
+                '<rect x="3" y="13" width="8" height="8" rx="2.2"/><rect x="13" y="13" width="8" height="8" rx="2.2"/>' +
+              '</svg> 직접 만든 앱</h2>' +
+            '<p class="ez-footer-apps-sub">설치 없이 웹에서 바로 열어 볼 수 있습니다.</p>' +
+          '</div>' +
+          '<div class="ez-footer-apps-grid">' +
+            '<a href="/longtime/" class="ez-footer-app">' +
+              '<img src="/time/icons/pwa-512.png" alt="" width="128" height="128" loading="lazy" decoding="async">' +
+              '<span class="ez-footer-app-body">' +
+                '<b>Long Time, Easy Life</b>' +
+                '<small>시계 · 스탠바이 · 기상 알람</small>' +
+                '<em>충전기에 꽂아 세워두면 큼직한 플립시계. 계절과 날씨에 맞춰 배경이 바뀌고 음악이 깨워 줍니다.</em>' +
+                '<span class="ez-footer-app-go">앱 소개 보기' +
+                  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>' +
+                '</span>' +
+              '</span>' +
+            '</a>' +
+            '<a href="/skybluenote/" class="ez-footer-app">' +
+              '<img src="/skybluenote/web/icons/Icon-512.png" alt="" width="128" height="128" loading="lazy" decoding="async">' +
+              '<span class="ez-footer-app-body">' +
+                '<b>Skyblue Note</b>' +
+                '<small>노트 · AI 답변 정리</small>' +
+                '<em>AI가 준 답을 붙여넣고 한 번 누르면 별표와 우물 정이 걷히고 깨진 표가 다시 섭니다.</em>' +
+                '<span class="ez-footer-app-go">앱 소개 보기' +
+                  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>' +
+                '</span>' +
+              '</span>' +
+            '</a>' +
+          '</div>' +
+        '</section>' +
 
         '<div class="ez-footer-top">' +
           '<div class="ez-footer-brand">' +
