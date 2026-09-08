@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-09-09-03:28",
+      "timestamp_kst": "2026-09-09(수) 03:28 KST",
+      "key_event": {
+        "name": "중동 지정학적 긴장 지속",
+        "name_en": "Middle East Geopolitical Tensions Persist",
+        "time": "현재 진행 중",
+        "why": "유가 상승 압력, 인플레이션 우려, 시장 불확실성 확대",
+        "why_en": "Upward pressure on oil prices, inflation concerns, increased market uncertainty"
+      },
+      "positive_total": 40,
+      "negative_total": 60,
+      "summary": "중동 지정학적 긴장 지속 및 인플레이션 우려로 부정 우위 유지",
+      "summary_en": "Negative sentiment prevails due to ongoing Middle East geopolitical tensions and inflation concerns",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "일부 반도체 기업 애널리스트 상향",
+          "name_en": "Analyst Upgrades for Select Semiconductor Firms",
+          "desc": "인텔(Intel) 주가 10% 상승: 애널리스트의 긍정적 평가 및 파운드리 사업 확장 기대",
+          "desc_en": "Intel stock up 10%: Driven by positive analyst ratings and expectations for foundry business expansion",
+          "category": "company_specific"
+        },
+        {
+          "score": 20,
+          "name": "달러 약세 전환",
+          "name_en": "Dollar Weakens",
+          "desc": "달러인덱스 DXY 98.88(-0.29%) 하락: 수출 기업 실적 개선 기대감",
+          "desc_en": "Dollar Index DXY falls to 98.88 (-0.29%): Raises expectations for improved performance of export-oriented companies",
+          "category": "dollar_fx"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 60,
+          "name": "중동 지정학적 긴장 지속",
+          "name_en": "Persistent Middle East Geopolitical Tensions",
+          "desc": "WTI 원유 92.76(+1.40%) 상승: 유가 100달러 이상 가능성 분석, 인플레이션 압력 가중",
+          "desc_en": "WTI crude oil rises to 92.76 (+1.40%): Analysis suggests oil prices could hit $100+, increasing inflationary pressure",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미 국채금리 수준",
+          "name_en": "US Treasury Yields",
+          "desc": "금리는 성장주 할인율을 좌우하는 핵심 변수. 9월8일(화, 뉴욕) 미10년 4.80%(+0.25%) · 미30년 5.26%(+0.21%). 움직임이 작아 방향 판단은 유보",
+          "desc_en": "Yields drive growth-stock discount rates. Today 미10년 4.80%(+0.25%) · 미30년 5.26%(+0.21%). Move too small to call: on hold",
+          "category": "rates_treasury"
+        }
+      ],
+      "report": {
+        "overview": "- 9월8일(화, 뉴욕) 미국 증시는 중동 지정학적 긴장 지속과 인플레이션 우려로 부정적 흐름을 유지하며 부정 우위 마감\n- 서부 텍사스산 원유(WTI) 가격 상승과 유가 100달러 돌파 가능성 분석이 인플레이션 압력을 가중하며 시장 불확실성 확대\n- 일부 반도체 기업의 애널리스트 상향 조정과 달러 약세 전환은 긍정적 요인으로 작용했으나, 시장 전반의 하락세를 상쇄하기에는 역부족\n- 미 국채금리 수준은 혼조세를 보이며 시장 방향성에 대한 명확한 신호를 제공하지 못하는 상황",
+        "positive": "- 일부 반도체 기업 애널리스트 상향: 인텔(Intel) 주가가 애널리스트의 긍정적 평가와 파운드리 사업 확장 기대감에 10% 상승하며 반도체 섹터 전반에 긍정적 분위기 형성.\n- 달러 약세 전환: 달러인덱스 DXY가 98.88로 0.29% 하락하며 약세로 전환, 이는 미국 수출 기업들의 실적 개선에 대한 기대감을 높이는 요인으로 작용.",
+        "negative": "- 중동 지정학적 긴장 지속: WTI 원유 가격이 1.40% 상승한 92.76달러를 기록하며 유가 100달러 이상 가능성 분석이 제기, 이는 인플레이션 압력을 가중시키고 시장 전반의 불확실성을 확대하는 주된 악재로 작용.",
+        "mixed": "- 미 국채금리 수준: 미 10년물 국채금리가 4.80%(+0.25%), 미 30년물 국채금리가 5.26%(+0.21%)로 소폭 상승했으나, 그 움직임이 크지 않아 성장주 할인율에 미치는 영향 및 시장 방향성 판단은 유보.",
+        "watch": "- PPI 생산자물가(8월분): 9월 10일(목) 08:30 ET 발표 예정인 생산자물가지수는 인플레이션 압력의 선행 지표로, 시장의 인플레이션 우려를 완화하거나 심화시킬 수 있는 핵심 변수."
+      },
+      "report_at": "2026-09-09(수) 03:28 KST"
+    },
+    {
       "id": "2026-09-09-01:48",
       "timestamp_kst": "2026-09-09(수) 01:48 KST",
       "key_event": {
@@ -538,68 +598,8 @@
         "watch": "- 미 국채금리 추이: 미10년 국채금리의 추가 상승 여부. 금리 상승세가 지속될 경우 성장주 전반에 대한 할인율 압박이 심화되어 시장 전반의 투자 심리 위축 가능성."
       },
       "report_at": "2026-09-08(화) 07:00 KST"
-    },
-    {
-      "id": "2026-09-08-04:05",
-      "timestamp_kst": "2026-09-08(화) 04:05 KST",
-      "key_event": {
-        "name": "AI 인프라 수요 견조",
-        "name_en": "Strong AI Infrastructure Demand",
-        "time": "정규장 진행 중",
-        "why": "반도체 섹터 강세, AI 관련 기업 투자 확대, 시장 심리 개선",
-        "why_en": "Semiconductor sector strength, increased investment in AI companies, improved market sentiment"
-      },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "AI 관련 기술주 강세 지속으로 긍정 우위 유지",
-      "summary_en": "Positive sentiment maintained due to continued strength in AI-related tech stocks",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "AI 인프라 투자 확대",
-          "name_en": "Expansion of AI Infrastructure Investment",
-          "desc": "Broadcom, Marvell 등 AI 인프라 관련 기업의 수요 견조 확인, 반도체 섹터 SOXX +3.35% 상승",
-          "desc_en": "Strong demand confirmed for AI infrastructure companies like Broadcom and Marvell, leading to SOXX +3.35% rise in semiconductor sector",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 25,
-          "name": "기술주 매수 심리 강화",
-          "name_en": "Strengthened Tech Stock Buying Sentiment",
-          "desc": "S&P 100 ETF의 AI 관련 주식 편입 및 기술주에 대한 긍정적 분석 기사 확산",
-          "desc_en": "S&P 100 ETF's inclusion of AI-related stocks and widespread positive analytical articles on tech stocks",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "고금리 우려 지속",
-          "name_en": "Persistent High Interest Rate Concerns",
-          "desc": "미10년 국채금리 4.78%(+0.46%) 상승, 성장주 할인율 압박 지속",
-          "desc_en": "US 10-year Treasury yield rose to 4.78%(+0.46%), continuing to pressure growth stock valuations",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 20,
-          "name": "지정학적 긴장 지속",
-          "name_en": "Ongoing Geopolitical Tensions",
-          "desc": "미-이란 지정학적 긴장 지속으로 유가 및 인플레이션 위험 상존, 시장 불확실성 증대",
-          "desc_en": "Continued US-Iran geopolitical tensions sustain oil and inflation risks, increasing market uncertainty",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- AI 기술주 강세: AI 인프라 수요 견조에 힘입어 기술주 중심의 시장 강세가 지속, 긍정 우위 유지.\n- 반도체 섹터 주도: Broadcom, Marvell 등 AI 인프라 관련 기업의 수요 확인으로 반도체 섹터가 시장 상승을 주도.\n- 고금리 및 지정학적 우려 상존: 미 10년 국채금리 상승과 중동 지정학적 긴장으로 인한 유가 및 인플레이션 위험이 시장의 불확실성을 높이는 요인으로 작용.",
-        "positive": "- AI 인프라 투자 확대: Broadcom, Marvell 등 AI 인프라 관련 기업들의 수요가 견조하게 확인되며 반도체 섹터 SOXX가 3.35% 상승하는 등 AI 관련 투자 확대 지속.\n- 기술주 매수 심리 강화: S&P 100 ETF가 AI 관련 주식을 편입하고 기술주에 대한 긍정적 분석 기사가 확산되면서 기술주 전반에 대한 매수 심리 강화.",
-        "negative": "- 고금리 우려 지속: 미 10년 국채금리가 4.78%(+0.46%)로 상승하며 성장주 할인율에 대한 압박이 지속, 시장 전반의 투자 심리 위축 가능성 상존.\n- 지정학적 긴장 지속: 미-이란 지정학적 긴장이 지속되면서 유가 상승 및 인플레이션 위험이 상존, 시장의 불확실성 증대.",
-        "mixed": "",
-        "watch": "- 미 10년 국채금리 추이: 고금리 우려가 지속되는 가운데 미 10년 국채금리의 추가 상승 여부 확인.\n- 유가 변동성: 지정학적 긴장으로 인한 유가 변동성 확대 여부 및 인플레이션 압력 변화 확인."
-      },
-      "report_at": "2026-09-08(화) 04:05 KST"
     }
   ],
-  "updated_at": "2026-09-08T16:49:06Z",
+  "updated_at": "2026-09-08T18:29:31Z",
   "max_entries": 10
 }
