@@ -1032,6 +1032,25 @@ window.EZ_ADS_LIVE = false;
 })();
 
 /* ─────────────────────────────────────────────────────────────
+   직접 만든 앱 홍보 배너 로더 (2026-09-09 신설, 92항)
+
+   애드센스는 아직 켜지 않는다(방문자 수가 이르다). 그 자리를 비워 두느니
+   이 사이트가 만든 앱 둘을 알린다. 광고 게이트와 **같은 방식, 다른 파일**이다 -
+   판정이 한 파일에서 두 갈래로 갈리면 반드시 한쪽이 뒤처진다(59항의 교훈).
+
+   지면 선언: <meta name="ez-promo" content="on">. 표시가 없는 페이지에는
+   아무것도 붙지 않는다. 앱 웹뷰 판정은 ez-app-promo.js 가 window.ezInAppWebview
+   하나로 한다(71항 단일 출처).
+   ───────────────────────────────────────────────────────────── */
+(function () {
+  if (!document.querySelector('meta[name="ez-promo"][content="on"]')) return;
+  var p = document.createElement('script');
+  p.src = '/ez-app-promo.js?v=20260909a';
+  p.defer = true;
+  (document.head || document.documentElement).appendChild(p);
+})();
+
+/* ─────────────────────────────────────────────────────────────
    법적 고지 바 (2026-08-26 신설, CLAUDE.md 73항)
 
    애드센스 '가치 없는 콘텐츠' 판정의 원인 하나가 소개·방침·약관 부재였다.
