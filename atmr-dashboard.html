@@ -2343,7 +2343,7 @@ li.gear-other-sep { display: none !important; }
       <div style="display:flex;flex-direction:column;gap:16px;">
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">오늘 나스닥100(QQQ) 사도 될까요?</summary>
-          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">점수가 곧 행동은 아닙니다. 점수(매수 매력도·매도 압력)는 재료이고, 최종 판단은 상단의 오늘의 시그널이 내립니다: 지금까지의 매매 판단 기록이 "이미 얼마나 진행했는지"를 기억하고, 신호의 돌파(이벤트)·급반등 관문·주봉 생명선까지 반영해 분할 매수 유리 / 보유 / 부분 익절 / 위험 관리 / 관망 중 하나로 확정합니다. 같은 점수라도 맥락에 따라 판단이 달라지는 것이 이 분석의 핵심입니다.</p>
+          <p style="margin-top:10px;font-size:16px;color:var(--t2);line-height:1.7;">점수가 곧 행동은 아닙니다. 점수(매수 매력도·매도 압력)는 재료이고, 최종 판단은 상단의 시그널 카드가 내립니다: 지금까지의 매매 판단 기록이 "이미 얼마나 진행했는지"를 기억하고, 신호의 돌파(이벤트)·급반등 관문·주봉 생명선까지 반영해 분할 매수 유리 / 보유 / 부분 익절 / 위험 관리 / 관망 중 하나로 확정합니다. 같은 점수라도 맥락에 따라 판단이 달라지는 것이 이 분석의 핵심입니다.</p>
         </details>
         <details style="border:1px solid var(--bd);border-radius:10px;padding:14px 18px;">
           <summary style="font-weight:700;cursor:pointer;font-size:16px;">엔비디아(NVDA) 지금 추격 매수해도 될까요?</summary>
@@ -2393,7 +2393,7 @@ li.gear-other-sep { display: none !important; }
           <div style="font-weight:800;color:var(--t1);font-size:16px;margin:14px 0 8px;">갱신 주기</div>
           <ul style="margin:0;padding-left:18px;">
             <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">점수: 미국 장중(KST 약 22:30~06:00) 30분 단위 재산출, 프리마켓·장후 각 1회</li>
-            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">종합 판단(오늘의 시그널): 미국 장마감 45분 후 확정, 이후 아침까지 2회 재점검(시간외 급변·차트 분석 반영)</li>
+            <li style="margin:0 0 7px;line-height:1.7;color:var(--t2);font-size:16px;">종합 판단(상단 시그널 카드): 미국 장마감 45분 후 확정, 이후 아침까지 2회 재점검(시간외 급변·차트 분석 반영)</li>
           </ul>
         </details>
       </div>
@@ -4524,7 +4524,7 @@ function buildTrendLineHtml() {
     `스윙 지수: ${score}점 (${fgLabel})\n` +
     `VIX: ${typeof vix === 'number' ? vix.toFixed(1) : ': '}\n` +
     `QQQ RSI: ${rsi?.toFixed(1) ?? ': '}, Gear: ${gear} (${gearText})\n` +
-    `오늘의 시그널: ${title}\n` +
+    `${_swingLabel}: ${title}\n` +
     (trendLineHtml ? `3영업일 흐름: ${trendLineHtml.replace(/<[^>]+>/g, '')}\n` : '') +
     `상세 분석: ${desc.replace(/<[^>]+>/g, '')}`;
 }
