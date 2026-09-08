@@ -36,15 +36,15 @@
       href: '/longtime/',
       icon: '/time/icons/pwa-512.png',
       name: 'Long Time, Easy Life',
-      kind: '시계 · 스탠바이 · 기상 알람',
-      desc: '충전기에 꽂아 세워두면 큼직한 플립시계. 날씨와 예보가 한눈에.'
+      kind: '시계 앱',
+      desc: '충전기에 꽂아 세워두면 큼직한 플립시계'
     },
     {
       href: '/skybluenote/',
       icon: '/skybluenote/web/icons/Icon-512.png',
       name: 'Skyblue Note',
-      kind: '노트 · AI 답변 정리',
-      desc: 'AI 답변을 붙여넣고 한 번 누르면 별표가 걷히고 표가 다시 섭니다.'
+      kind: '노트 앱',
+      desc: 'AI 답변을 붙여넣으면 깨진 표가 다시 섭니다'
     }
   ];
 
@@ -76,35 +76,36 @@
     return n;
   }
 
+  /* 2026-09-09 2차 — 한 앱씩, 높이 40%.
+     첫 판은 두 앱을 나란히 세웠더니 폰에서 353px 였다. 첫 화면의 3분의 1이라
+     "너무 높아서 다들 꺼버릴 듯"이라는 지적을 받았다. 배너가 본론을 밀어내면
+     그건 배너가 아니라 통행세다(41항).
+     그래서 둘 중 하나만 무작위로 세우고, 머리글을 없애 한 줄 카드로 눕혔다. */
   var CSS = [
-    '.ezpromo{margin:14px auto;max-width:var(--ez-max-w,1100px);padding:0 16px;box-sizing:border-box}',
-    '.ezpromo-in{position:relative;border:1px solid var(--ez-border,rgba(120,120,128,.24));border-radius:16px;',
-    'background:var(--ez-card,rgba(120,120,128,.06));padding:14px 16px 16px}',
-    '.ezpromo-head{display:flex;align-items:center;gap:6px;margin:0 0 10px;',
-    'font-size:14px;font-weight:800;letter-spacing:.02em;color:var(--ez-text3,#86868B)}',
-    '.ezpromo-head svg{flex:0 0 auto}',
-    '.ezpromo-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}',
-    '@media (max-width:699px){.ezpromo-grid{grid-template-columns:1fr}}',
-    '.ezpromo-card{display:flex;align-items:flex-start;gap:12px;text-decoration:none;',
-    'border:1px solid var(--ez-border,rgba(120,120,128,.22));border-radius:14px;',
-    'background:var(--ez-bg,#fff);padding:12px 14px;transition:transform 120ms ease,border-color 120ms ease}',
-    '.ezpromo-card:active{transform:scale(.985)}',
+    '.ezpromo{position:relative;margin:10px auto;max-width:var(--ez-max-w,1100px);',
+    'padding:0 16px;box-sizing:border-box}',
+    '.ezpromo-card{position:relative;display:flex;align-items:center;gap:13px;text-decoration:none;',
+    'border:1px solid var(--ez-border,rgba(120,120,128,.24));border-radius:14px;',
+    'background:var(--ez-card,rgba(120,120,128,.06));padding:13px 44px 13px 14px;',
+    'transition:transform 120ms ease,border-color 120ms ease}',
+    '.ezpromo-card:active{transform:scale(.99)}',
     '@media (hover:hover){.ezpromo-card:hover{border-color:var(--ez-blue,#2563EB)}}',
-    '.ezpromo-ico{flex:0 0 auto;width:48px;height:48px;border-radius:11px;',   /* 22.5% 곡률: 홈 화면과 같은 모양 */
+    /* 곡률 22.5%: 홈 화면 아이콘과 같은 모양 */
+    '.ezpromo-ico{flex:0 0 auto;width:46px;height:46px;border-radius:10px;',
     'box-shadow:0 1px 4px rgba(0,0,0,.14)}',
-    '.ezpromo-body{min-width:0}',
-    '.ezpromo-kind{margin:0 0 2px;font-size:14px;font-weight:600;color:var(--ez-text3,#86868B)}',
-    '.ezpromo-name{margin:0 0 4px;font-size:17px;font-weight:800;letter-spacing:-.01em;',
+    '.ezpromo-body{min-width:0;flex:1 1 auto}',
+    '.ezpromo-name{margin:0 0 2px;font-size:16px;font-weight:800;letter-spacing:-.01em;',
     'color:var(--ez-text,#1D1D1F);line-height:1.3}',
-    '.ezpromo-desc{margin:0;font-size:14px;line-height:1.55;color:var(--ez-text2,#515154)}',
-    /* 폰에서는 카드가 세로로 서므로 배너가 첫 화면을 통째로 먹는다. 본론이 밀리면
-       배너가 아니라 방해물이 된다(41항). 설명을 두 줄로 자른다 - 링크가 있으니
-       나머지는 소개 페이지에서 읽으면 된다. */
-    '@media (max-width:699px){.ezpromo-desc{display:-webkit-box;-webkit-line-clamp:2;',
-    '-webkit-box-orient:vertical;overflow:hidden}}',
-    '.ezpromo-go{display:inline-flex;align-items:center;gap:4px;margin-top:7px;',
-    'font-size:14px;font-weight:700;color:var(--ez-blue,#2563EB)}',
-    '.ezpromo-x{position:absolute;top:8px;right:8px;width:30px;height:30px;border:0;border-radius:8px;',
+    /* 한 줄로 자른다. 넘치면 말줄임 - 자세한 건 소개 페이지에서 읽는다. */
+    '.ezpromo-kind{font-size:14px;font-weight:600;color:var(--ez-text3,#86868B);letter-spacing:0}',
+    '.ezpromo-desc{margin:0;font-size:14px;line-height:1.45;color:var(--ez-text2,#515154);',
+    'display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}',
+    '@media (min-width:700px){.ezpromo-desc{-webkit-line-clamp:1}}',
+    '.ezpromo-go{flex:0 0 auto;display:inline-flex;align-items:center;gap:3px;',
+    'font-size:14px;font-weight:700;color:var(--ez-blue,#2563EB);white-space:nowrap}',
+    '@media (max-width:479px){.ezpromo-go span{display:none}}',   /* 좁으면 화살표만 */
+    '.ezpromo-x{position:absolute;top:50%;right:22px;transform:translateY(-50%);',
+    'width:30px;height:30px;border:0;border-radius:8px;z-index:2;',
     'background:transparent;color:var(--ez-text3,#86868B);font-size:16px;line-height:1;cursor:pointer;',
     'display:flex;align-items:center;justify-content:center}',
     '@media (hover:hover){.ezpromo-x:hover{background:rgba(120,120,128,.14)}}',
@@ -125,19 +126,19 @@
   var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"'
             + ' stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true">'
             + '<path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-  var GRID = '<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12" aria-hidden="true">'
-           + '<rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2"/>'
-           + '<rect x="3" y="13" width="8" height="8" rx="2.2"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg>';
 
   function cardHtml(a) {
+    /* 머리글 줄('직접 만든 앱')을 없앤 대신 종류를 이름 옆에 흐린 글씨로 붙였다.
+       줄을 하나 없애는 것이 높이를 가장 크게 줄이고, 맥락은 그대로 남는다.
+       설명은 폰 두 줄에 말줄임 없이 떨어지는 길이로 쓴다 - 잘린 문장은 실패다. */
     return '<a class="ezpromo-card" href="' + a.href + '">'
       + '<img class="ezpromo-ico" src="' + a.icon + '" alt="" width="96" height="96" loading="lazy" decoding="async">'
       + '<div class="ezpromo-body">'
-      + '<p class="ezpromo-kind">' + a.kind + '</p>'
-      + '<div class="ezpromo-name">' + a.name + '</div>'
+      + '<div class="ezpromo-name">' + a.name + '<span class="ezpromo-kind"> · ' + a.kind + '</span></div>'
       + '<p class="ezpromo-desc">' + a.desc + '</p>'
-      + '<span class="ezpromo-go">앱 소개 보기' + ARROW + '</span>'
-      + '</div></a>';
+      + '</div>'
+      + '<span class="ezpromo-go"><span>앱 소개</span>' + ARROW + '</span>'
+      + '</a>';
   }
 
   function slot() {
@@ -164,12 +165,12 @@
     injectCss();
     var host = slot();
     host.className = (host.className ? host.className + ' ' : '') + 'ezpromo';
-    host.innerHTML =
-      '<div class="ezpromo-in">'
-      + '<button type="button" class="ezpromo-x" aria-label="배너 닫기">&times;</button>'
-      + '<p class="ezpromo-head">' + GRID + ' 직접 만든 앱 · 설치 없이 웹에서 바로</p>'
-      + '<div class="ezpromo-grid">' + APPS.map(cardHtml).join('') + '</div>'
-      + '</div>';
+    /* 한 번에 하나만. 둘을 나란히 세우면 높이가 두 배가 되고, 읽는 사람은
+       무엇을 먼저 볼지 정하느라 둘 다 안 본다. 페이지를 열 때마다 무작위로
+       고르면 두 앱이 고르게 노출된다. */
+    var pick = APPS[Math.floor(Math.random() * APPS.length)];
+    host.innerHTML = cardHtml(pick)
+      + '<button type="button" class="ezpromo-x" aria-label="배너 닫기">&times;</button>';
     host.querySelector('.ezpromo-x').addEventListener('click', function () {
       lsSet(CLOSE_KEY, String(Date.now() + CLOSE_DAYS * 864e5));
       host.remove();
