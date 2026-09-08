@@ -3032,110 +3032,19 @@ def _event_hits(text, ev, earns):
 
 
 # ══════════════════════════════════════════════════════════════════════════
-# 89항 — 시장 날짜의 상대어 집행
-#
-# 발단: 2026-09-08 07:09 KST(= ET 09-07 18:09), 화면이 "오늘은 미국 휴장
-# (Labor Day)"이라고 썼다. 세션 판정은 ET로 옳았다. 틀린 것은 '오늘'이라는
-# 낱말이다 — 상대어는 코드의 시계가 아니라 **보는 사람의 시계**로 읽힌다.
-# 한국 독자의 오늘은 9월 8일이라 "9월 8일이 휴장"으로 오독됐다.
-#
-# 뉴욕 정규장은 한국 시각 22:30~05:00 이다. 즉 뉴욕장이 열려 있는 시간의
-# 절반 이상은 한국 날짜가 이미 다음 날이다. '오늘'은 하루의 절반을 틀린다.
-#
-# 원칙: 시장 문맥의 날짜는 절대 날짜로 말하고 어느 시장인지 밝힌다.
-#       판정·행동을 말할 때만 '지금·이번 거래일·다음 장'을 쓴다.
-# 집행: 프롬프트로 시켜도 새는 낱말이라 코드가 마지막에 바꾼다(원칙 1).
+# 89항 — 시장 날짜의 상대어 집행. 규칙 본체는 scripts/ez_daterule.py 하나다.
+# (처음엔 이 파일 안에 두었더니 generate-swing-view.py 가 만든 문장에 '오늘'이
+#  그대로 나갔다. 규칙이 두 벌이면 반드시 갈라진다 — 88항 원칙 3을 문장에도 적용.)
 # ══════════════════════════════════════════════════════════════════════════
-_DOW_KO = ('월', '화', '수', '목', '금', '토', '일')
-
-
-def _ny_label(d):
-    """date -> '9월4일(금, 뉴욕)'. 시장 날짜의 표준 표기."""
-    return f'{d.month}월{d.day}일({_DOW_KO[d.weekday()]}, 뉴욕)'
-
-
-def _rel_date_map():
-    """상대어 -> 절대 표기. 캘린더가 없으면 빈 dict(= 아무것도 안 바꾼다)."""
-    if _cal is None:
-        return {}
-    try:
-        d0 = _cal.last_trading_day()
-        import datetime as _dt
-        d1 = d0 - _dt.timedelta(days=1)
-        while not _cal.is_trading_day(d1):
-            d1 -= _dt.timedelta(days=1)
-        d2 = _cal.next_trading_day(d0)
-        return {'오늘': _ny_label(d0), '금일': _ny_label(d0),
-                '어제': _ny_label(d1), '전일': _ny_label(d1),
-                '내일': _ny_label(d2), '익일': _ny_label(d2)}
-    except Exception:
-        return {}
-
-
-# '오늘의 판단', '오늘 밤' 처럼 날짜가 아니라 시점·관용구인 자리는 건드리지 않는다.
-_REL_KEEP = re.compile(r'오늘(?:의\s*(?:판단|시그널|전략|행동))|오늘\s*밤')
-_REL_WORD = re.compile(r'오늘|금일|어제|전일|내일|익일')
-
-
-def _rewrite_relative_dates(text, m):
-    if not text or not m:
-        return text, []
-    hits = []
-
-    def _sub(mo):
-        w = mo.group(0)
-        # 보호 구간 안이면 그대로 둔다
-        st, en = mo.span()
-        for k in _REL_KEEP.finditer(text):
-            if k.start() <= st and en <= k.end():
-                return w
-        rep = m.get(w)
-        if not rep:
-            return w
-        hits.append(w)
-        return rep
-
-    out = _REL_WORD.sub(_sub, text)
-    # '9월4일(금, 뉴욕) 프리마켓 및 9월4일(금, 뉴욕) 정규장' 처럼 한 구절에서 두 번
-    # 반복되면 두 번째를 지운다. 같은 날짜를 두 번 말하는 문장은 읽기가 나쁘다.
-    for v in set(m.values()):
-        out = re.sub(re.escape(v) + r'(\s*[^,.]{1,24}?(?:및|과|와)\s*)' + re.escape(v),
-                     lambda mo, _v=v: _v + mo.group(1), out)
-    out = re.sub(r'(?<=\S)[ \t]{2,}(?=\S)', ' ', out)   # 중복 제거로 생긴 겹빈칸 정리
-    out = re.sub(r'[ \t]+([,.:)])', r'\1', out)
-    return out, hits
+try:
+    import ez_daterule as _dr
+except Exception as _dr_e:
+    print(f'[warn] ez_daterule 로드 실패: {_dr_e}: 상대 날짜 집행 건너뜀')
+    _dr = None
 
 
 def enforce_absolute_dates(obj):
-    """카드·보고서의 시장 문맥 상대어를 절대 날짜로 바꾼다. 판정·점수는 안 건드린다.
-    돌려주는 값은 (바뀐 자리, 원래 낱말) 목록 — 로그용."""
-    m = _rel_date_map()
-    if not m:
-        return []
-    fixed = []
-
-    def _walk(node, path):
-        if isinstance(node, dict):
-            for k, v in list(node.items()):
-                if k in ('sources', 'url', 'link', 'ticker', 'category', 'direction'):
-                    continue
-                _walk(v, f'{path}.{k}' if path else k)
-                if isinstance(v, str):
-                    nv, hits = _rewrite_relative_dates(v, m)
-                    if hits:
-                        node[k] = nv
-                        fixed.append((f'{path}.{k}' if path else k, ','.join(sorted(set(hits)))))
-        elif isinstance(node, list):
-            for i, v in enumerate(node):
-                _walk(v, f'{path}[{i}]')
-                if isinstance(v, str):
-                    nv, hits = _rewrite_relative_dates(v, m)
-                    if hits:
-                        node[i] = nv
-                        fixed.append((f'{path}[{i}]', ','.join(sorted(set(hits)))))
-
-    _walk(obj, '')
-    return fixed
+    return _dr.enforce(obj) if _dr is not None else []
 
 
 def annotate_event_dates(entry, now_utc=None):

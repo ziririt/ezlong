@@ -16,6 +16,15 @@ import urllib.request
 from datetime import datetime, timezone, timedelta
 
 try:
+    # 89항: 시장 날짜의 상대어 집행. 규칙 본체는 ez_daterule.py 하나 —
+    # 스코어카드·스윙뷰 생성기와 같은 자를 쓴다(88항 원칙 3).
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import ez_daterule as _dr
+except Exception as _dr_e:  # pragma: no cover
+    print(f'[warn] ez_daterule 로드 실패: {_dr_e}: 상대 날짜 집행 건너뜀')
+    _dr = None
+
+try:
     import yfinance as yf
 except ImportError:
     print("ERROR: yfinance 미설치. pip install yfinance 실행 필요.")
@@ -719,6 +728,10 @@ def generate_swing_continuity(processed, previous_signals, fg_data):
             "- 위에 주어진 숫자만 사용하라. 새로운 숫자를 지어내지 마라.\n"
             "- \"~하세요\", \"~하십시오\" 같은 명령형 금지. \"~구간\", \"~권고\", \"~흐름\" 같은 진단형 표현만 사용.\n"
             "- 오늘 점수가 며칠 전과 비교해 개선/악화/유지 중 무엇인지 반드시 언급하라.\n"
+            "- [89항] 시장 날짜에 '오늘·어제·내일'을 쓰지 마라. 이 글은 한국 독자가 "
+            "한국 시계로 읽는데, 뉴욕 장중은 한국 시각 22:30~05:00이라 뉴욕의 '오늘'과 "
+            "독자의 '오늘'은 자주 다른 날이다. 날짜를 그대로 적고 어느 시장인지 밝혀라 "
+            "- 나쁨: \"오늘 매수점수 61\" / 좋음: \"9월8일(화, 뉴욕) 매수점수 61\".\n"
             "- 종목 간 온도차가 있으면(예: 반도체만 유독 약세) 그 차이를 짚어라.\n"
             "- 마크다운 금지.\n\n"
             "[영어 병기 — 2026-07-29 신설]\n"
@@ -912,6 +925,19 @@ def main():
     # swingContinuityEn은 신규 키 — en/atmr-dashboard.html 전용.
     swing_continuity = _continuity.get('ko') if _continuity else None
     swing_continuity_en = _continuity.get('en') if _continuity else None
+
+    # 89항 — 연속성 서술의 '오늘·어제'를 절대 날짜로. 이 문장은 스윙 카드 상단
+    # 흐름 라인에 그대로 꽂히는데, 한국 새벽에 보면 '오늘'이 이미 다음 날이다.
+    # (2026-09-09 실사고: KST 02:25 화면에 "오늘 매수점수가 61로"가 떠 있었다.
+    #  근거는 뉴욕 9월 8일 장중 수치였다.) 영문판은 상대어 문제가 없어 건드리지 않는다.
+    if _dr is not None and swing_continuity:
+        try:
+            _wrap = {'t': swing_continuity}
+            for _w, _wd in _dr.enforce(_wrap):
+                print(f"::warning::[89항] 연속성 상대 날짜 교정: '{_wd}' → 절대 날짜(뉴욕)")
+            swing_continuity = _wrap['t']
+        except Exception as _de:
+            print(f'[warn] 89항 집행 실패(무시): {type(_de).__name__}: {_de}')
 
     output = {
         'generatedAt':    now.isoformat(),

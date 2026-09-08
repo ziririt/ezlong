@@ -36,6 +36,13 @@ try:
 except Exception as _e:  # pragma: no cover
     print(f'[warn] ez_calendar 로드 실패: {_e}: 요일 판정으로 폴백')
     _cal = None
+try:
+    # 89항: 시장 날짜의 상대어 집행. 규칙 본체는 ez_daterule.py 하나 —
+    # 스코어카드 생성기와 같은 자를 쓴다(88항 원칙 3을 문장 규칙에도 적용).
+    import ez_daterule as _dr
+except Exception as _e:  # pragma: no cover
+    print(f'[warn] ez_daterule 로드 실패: {_e}: 상대 날짜 집행 건너뜀')
+    _dr = None
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SIGNALS = os.path.join(HERE, '..', 'data', 'market-signals.json')
@@ -1957,6 +1964,17 @@ def main():
         # headline 이 통째로 자기 평가였던 경우 — 카드 제목이 비면 안 되므로
         # 스탠스 라벨로 대체한다(항상 존재하는 값).
         _dk['headline'] = (view.get('comp') or {}).get('stanceLabel') or '오늘의 판단'
+
+    # 89항 — 시장 날짜의 상대어를 절대 날짜로. 프롬프트로 시켜도 새는 낱말이라
+    # 화면에 나가기 직전에 코드가 바꾼다. 규칙 본체는 scripts/ez_daterule.py 하나다.
+    # (2026-09-09 실사고: 프롬프트만 걸어 뒀더니 "오늘 매수점수가 61로"가 그대로
+    #  나갔다. 한국 시각 새벽 2시, 독자의 '오늘'은 이미 다음 날이었다.)
+    if _dr is not None:
+        try:
+            for _w, _wd in _dr.enforce(view):
+                print(f"::warning::[89항] 상대 날짜 교정: {_w} — '{_wd}' → 절대 날짜(뉴욕)")
+        except Exception as _de:
+            print(f'[warn] 89항 집행 실패(무시): {type(_de).__name__}: {_de}')
 
     with open(LEDGER, 'w', encoding='utf-8') as f:
         json.dump(ledger, f, ensure_ascii=False, indent=1)
