@@ -2113,13 +2113,39 @@ a { text-decoration: none; color: inherit; }
           <a href="#books">저자 도서</a>
           <a href="#youtube">유튜브</a>
         </div>
-        <div class="footer-link-col">
-          <span class="footer-link-col-title">앱</span>
-          <a href="/longtime/">Long Time, Easy Life</a>
-          <a href="/skybluenote/">Skyblue Note</a>
-        </div>
       </div>
     </div>
+    <!-- 직접 만든 앱 (82항 · 92-2항) — 메인은 자체 푸터를 쓰므로 공용 푸터와
+         같은 마크업을 여기에도 둔다. 스타일은 ez-design.css 의 .ez-footer-apps
+         한 벌을 공유한다: 두 벌로 두면 한쪽이 반드시 뒤처진다(8항). -->
+    <section class="ez-footer-apps" aria-labelledby="main-footer-apps-h">
+      <div class="ez-footer-apps-head">
+        <h2 class="ez-footer-apps-title" id="main-footer-apps-h">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2.2"/><rect x="13" y="3" width="8" height="8" rx="2.2"/><rect x="3" y="13" width="8" height="8" rx="2.2"/><rect x="13" y="13" width="8" height="8" rx="2.2"/></svg> 직접 만든 앱</h2>
+        <p class="ez-footer-apps-sub">설치 없이 웹에서 바로 열어 볼 수 있습니다.</p>
+      </div>
+      <div class="ez-footer-apps-grid">
+        <a href="/longtime/" class="ez-footer-app">
+          <img src="/time/icons/pwa-512.png" alt="" width="128" height="128" loading="lazy" decoding="async">
+          <span class="ez-footer-app-body">
+            <b>Long Time, Easy Life</b>
+            <small>시계 · 스탠바이 · 기상 알람</small>
+            <em>충전기에 꽂아 세워두면 큼직한 플립시계. 계절과 날씨에 맞춰 배경이 바뀌고 음악이 깨워 줍니다.</em>
+            <span class="ez-footer-app-go">앱 소개 보기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </span>
+        </a>
+        <a href="/skybluenote/" class="ez-footer-app">
+          <img src="/skybluenote/web/icons/Icon-512.png" alt="" width="128" height="128" loading="lazy" decoding="async">
+          <span class="ez-footer-app-body">
+            <b>Skyblue Note</b>
+            <small>노트 · AI 답변 정리</small>
+            <em>AI가 준 답을 붙여넣고 한 번 누르면 별표와 우물 정이 걷히고 깨진 표가 다시 섭니다.</em>
+            <span class="ez-footer-app-go">앱 소개 보기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </span>
+        </a>
+      </div>
+    </section>
+
     <div class="footer-bottom">
       © 2025–2026 유니아빠 · EZLONG · easy.invest.good@gmail.com<br>
       본 서비스에서 제공하는 모든 시뮬레이션 수치는 참고용 추정치이며, 실제 투자 수익을 보장하지 않습니다. 투자 판단의 책임은 투자자 본인에게 있습니다.
