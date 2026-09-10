@@ -9659,5 +9659,32 @@ window.investmentQuotes = [
     "title": "마진 오브 세이프티 (Margin of Safety)",
     "author": "세스 클라만 (Seth Klarman)",
     "category": "patience"
+  },
+  {
+    "english": "Know what you own, and know why you own it.",
+    "text": "당신이 무엇을 소유하고 있는지, 그리고 왜 그것을 소유하고 있는지 알아야 한다.",
+    "title": "월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
+  },
+  {
+    "text": "나는 나에게 적은 손을 내밀어 눈물과 위안으로 잡는 최초의 악수.",
+    "title": "쉽게 씌어진 시",
+    "author": "윤동주",
+    "genre": "literature"
+  },
+  {
+    "english": "The first rule of compounding: Never interrupt it unnecessarily.",
+    "text": "복리의 제1원칙: 불필요하게 중단시키지 마라.",
+    "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "compound"
+  },
+  {
+    "english": "Time is your friend; impulse is your enemy.",
+    "text": "시간은 당신의 편이고, 충동은 당신의 적이다.",
+    "title": "뮤추얼펀드 상식 (Common Sense on Mutual Funds)",
+    "author": "존 보글 (John C. Bogle)",
+    "category": "mindset"
   }
 ];
