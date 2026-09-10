@@ -1,0 +1,49 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<link rel="stylesheet" href="base.css">
+<style>
+body{background:#CFE0F5}
+.card{
+  background:
+    radial-gradient(58% 46% at 84% 6%, #FFFFFF 0%, rgba(255,255,255,0) 60%),
+    linear-gradient(158deg, #EDF5FF 0%, #CFE1F6 50%, #A9C8EA 100%);
+  color:#10263F;
+}
+.copy{width:620px;padding-left:78px}
+.eyebrow{color:#1D4ED8}
+.title{font-size:74px;margin-bottom:26px}
+.desc{color:#3B587A;font-size:30px;max-width:520px;line-height:1.52}
+.dot{background:#1D4ED8}
+.stage{right:66px;top:74px}
+.p-main{
+  width:322px;height:692px;border-radius:40px;overflow:hidden;position:relative;
+  border:7px solid #1A2740;
+  box-shadow:0 40px 88px rgba(16,42,78,.34);
+}
+.p-main img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center}
+/* 시그니처 - 앱이 세운 표를 도려내 카드 위로 띄운다 */
+.tablecard{
+  position:absolute;right:250px;bottom:96px;z-index:5;
+  width:430px;border-radius:20px;overflow:hidden;background:#fff;
+  box-shadow:0 30px 62px rgba(16,42,78,.30), 0 0 0 1px rgba(16,42,78,.08);
+}
+.tablecard img{display:block;width:100%}
+.tabletag{
+  position:absolute;right:250px;bottom:66px;z-index:6;
+  font-size:22px;font-weight:800;color:#1D4ED8;letter-spacing:-.01em;
+}
+.hem{position:absolute;left:0;right:0;bottom:0;height:88px;z-index:4;
+  background:linear-gradient(to bottom, rgba(169,200,234,0), rgba(163,196,232,.96))}
+</style></head><body>
+<div class="card">
+  <div class="copy">
+    <div class="eyebrow">노트 · 메모</div>
+    <div class="title">Skyblue Note</div>
+    <div class="desc">AI 답변을 붙여넣고 한 번 누르면<br>깨진 표가 다시 섭니다.</div>
+    <div class="foot"><span class="dot"></span>ezlong.com/skybluenote</div>
+  </div>
+  <div class="stage">
+    <div class="p-main"><img src="../../app/shots/sn-android.png"></div>
+  </div>
+  <div class="hem"></div>
+  <div class="tablecard"><img src="sn-table.png"></div>
+</div></body></html>
