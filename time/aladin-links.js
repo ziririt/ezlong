@@ -297,5 +297,6 @@ window.aladinLinks = {
   "노멀 피플 (Normal People)|샐리 루니 (Sally Rooney)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=238232211&partner=friends327",
   "청포도|이육사": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=375426015&partner=friends327",
   "키르케 (Circe)|매들린 밀러 (Madeline Miller)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=241086530&partner=friends327",
-  "바람이 분다 당신이 좋다|이병률": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=17563850&partner=friends327"
+  "바람이 분다 당신이 좋다|이병률": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=17563850&partner=friends327",
+  "쉽게 씌어진 시|윤동주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=183891119&partner=friends327"
 };
