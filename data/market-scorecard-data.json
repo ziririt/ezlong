@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-09-12-01:42",
+      "timestamp_kst": "2026-09-12(토) 01:42 KST",
+      "key_event": {
+        "name": "8월 CPI 예상치 상회",
+        "name_en": "August CPI Exceeds Expectations",
+        "time": "9월 11일(금) 08:30 ET 발표 완료",
+        "why": "Fed 금리 인상 우려 증대, 시장 변동성 확대",
+        "why_en": "Increased Fed rate hike concerns, market volatility"
+      },
+      "positive_total": 40,
+      "negative_total": 60,
+      "summary": "8월 CPI 예상치 상회로 Fed 금리 인상 우려 증대, 부정 우위 지속",
+      "summary_en": "August CPI above expectations fuels Fed rate hike concerns, negative sentiment persists",
+      "positive_factors": [
+        {
+          "score": 25,
+          "name": "AI 서버 수요 증가",
+          "name_en": "Increased AI Server Demand",
+          "desc": "Oracle의 Capex 가이던스 상향으로 Hewlett Packard Enterprise와 Dell 11% 급등",
+          "desc_en": "Hewlett Packard Enterprise and Dell surge 11% on Oracle's Capex guidance lift",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 15,
+          "name": "WTI 원유 가격 하락",
+          "name_en": "WTI Crude Oil Price Decline",
+          "desc": "WTI 원유 100.12달러(-3.00%) 하락, 인플레이션 압력 완화 기대",
+          "desc_en": "WTI crude oil down 3.00% to $100.12, easing inflation concerns",
+          "category": "oil_energy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 35,
+          "name": "8월 CPI 예상치 상회",
+          "name_en": "August CPI Exceeds Expectations",
+          "desc": "8월 CPI 3.35%(전월 대비 +0.05%p)로 예상치 상회, Fed 금리 인상 압력 증대",
+          "desc_en": "August CPI at 3.35% (+0.05%p MoM) above expectations, increasing Fed rate hike pressure",
+          "category": "macro_data"
+        },
+        {
+          "score": 25,
+          "name": "Fed 금리 인상 우려 지속",
+          "name_en": "Persistent Fed Rate Hike Concerns",
+          "desc": "높은 인플레이션 지표로 Fed의 추가 금리 인상 가능성 증대",
+          "desc_en": "Elevated inflation data increases likelihood of further Fed rate hikes",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "FOMC 금리 결정 임박",
+          "name_en": "FOMC Rate Decision Nearing",
+          "desc": "9월 16일(수) 14:00 ET FOMC 금리 결정을 앞두고 시장 관망세",
+          "desc_en": "Market awaiting FOMC rate decision on Sep 16 (Wed) 14:00 ET",
+          "category": "fed_policy"
+        }
+      ],
+      "report": {
+        "overview": "- 9월11일(금, 뉴욕) 판의 결론: 8월 CPI 예상치 상회로 인한 Fed의 추가 금리 인상 우려가 시장 전반에 부정적인 영향을 미치며 부정 우위 지속.\n- 판을 만든 원인: 8월 CPI가 전월 대비 0.05%p 상승한 3.35%를 기록하며 예상치를 상회, Fed의 긴축 기조 장기화 가능성 증대.\n- 하단을 받치는 것: AI 서버 수요 증가와 WTI 원유 가격 하락이 인플레이션 압력 완화 및 특정 기술 섹터의 긍정적 모멘텀 제공.",
+        "positive": "- WTI 원유 가격 하락: WTI 원유 가격이 100.12달러로 3.00% 하락하며 인플레이션 압력 완화에 대한 기대감을 높여 시장에 긍정적 요인으로 작용.",
+        "negative": "- 8월 CPI 예상치 상회: 8월 소비자물가지수(CPI)가 3.35%를 기록, 전월 대비 0.05%p 상승하며 시장 예상치를 상회하여 Fed의 금리 인상 압력 증대.\n- Fed 금리 인상 우려 지속: 높은 인플레이션 지표가 발표되면서 연방준비제도(Fed)의 추가 금리 인상 가능성이 커져 시장의 변동성 확대 및 투자 심리 위축.",
+        "mixed": "- FOMC 금리 결정 임박: 9월 16일(수) 14:00 ET로 예정된 FOMC 금리 결정을 앞두고 시장은 관망세를 보이며, 결과에 따라 시장 방향성이 크게 달라질 수 있는 혼조 양상.",
+        "watch": "- 달러 인덱스 변동성: 인플레이션 지표와 금리 인상 우려에 민감하게 반응하는 달러 인덱스의 움직임이 글로벌 자금 흐름과 증시 변동성에 미칠 영향 확인."
+      },
+      "report_at": "2026-09-12(토) 01:42 KST"
+    },
+    {
       "id": "2026-09-11-22:21",
       "timestamp_kst": "2026-09-11(금) 22:21 KST",
       "key_event": {
@@ -597,67 +665,8 @@
         "watch": "- PPI 생산자물가(8월분) 발표: 9월 10일(목) 08:30 ET 예정. 생산자물가지수 발표는 소비자물가지수(CPI)의 선행 지표로, 인플레이션 압력의 강도를 가늠하는 중요한 단서 제공. 예상치를 상회할 경우 Fed의 긴축 기조 유지 가능성이 높아져 시장에 부정적 영향.\n- CPI 소비자물가(8월분) 발표: 9월 11일(금) 08:30 ET 예정. 연방준비제도(Fed)의 통화정책 결정에 가장 큰 영향을 미치는 핵심 지표. 예상보다 높은 수치는 금리 인상 또는 고금리 장기화 우려를 증폭시켜 증시 하방 압력으로 작용할 가능성.\n- 미 10년물 국채금리 추이: 현재 4.84%(+0.65%) 수준에서 추가 상승 여부 확인. 금리 상승은 성장주에 대한 할인율 부담을 가중시키므로, 금리 안정화 또는 하락 추세 전환 시 시장에 긍정적 요인으로 작용."
       },
       "report_at": "2026-09-10(목) 20:39 KST"
-    },
-    {
-      "id": "2026-09-10-18:20",
-      "timestamp_kst": "2026-09-10(목) 18:20 KST",
-      "key_event": {
-        "name": "유가 상승 및 인플레이션 우려 지속",
-        "name_en": "Oil Price Hike & Inflation Concerns Persist",
-        "time": "2026-09-10 프리마켓",
-        "why": "중동 지정학적 긴장 고조, 인플레이션 압력, FOMC 금리 결정 대기 (9월 16일(수) 14:00 ET)",
-        "why_en": "Geopolitical tensions in Middle East, inflation pressure, FOMC rate decision anticipation (Sep 16 (Wed) 14:00 ET)"
-      },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "유가 상승 및 인플레이션 우려 지속으로 긍정 우위 유지",
-      "summary_en": "Negative sentiment maintained due to persistent oil price hikes and inflation concerns",
-      "positive_factors": [
-        {
-          "score": 60,
-          "name": "TSMC 8월 매출 급증",
-          "name_en": "TSMC August Revenue Surge",
-          "desc": "세계 최대 파운드리 TSMC 8월 매출 53% 이상 급증, 반도체 업황 기대",
-          "desc_en": "World's largest contract chipmaker TSMC sees August revenue surge over 53%, boosting semiconductor outlook",
-          "category": "earnings_bellwether"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 40,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 4.84%(+0.65%), 미30년 국채금리 5.29%(+0.42%) 상승, 성장주 할인율 압박",
-          "desc_en": "US 10-year Treasury yield rises to 4.84% (+0.65%), 30-year yield to 5.29% (+0.42%), pressuring growth stock valuations",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "FOMC 금리 결정 대기",
-          "name_en": "FOMC Rate Decision Anticipation",
-          "desc": "9월 16일(수) 14:00 ET 예정된 FOMC 금리 결정을 앞두고 시장 불확실성 지속",
-          "desc_en": "Market uncertainty persists ahead of the FOMC rate decision scheduled for Sep 16 (Wed) 14:00 ET",
-          "category": "fed_policy"
-        },
-        {
-          "name": "유가 상승 및 인플레이션 압력",
-          "name_en": "Oil Price Surge & Inflationary Pressure",
-          "desc": "WTI 원유 97.22달러(+1.17%)로 상승, 중동 지정학적 긴장 고조로 인플레이션 우려 지속",
-          "desc_en": "WTI crude oil surges to $97.22 (+1.17%), geopolitical tensions in Middle East fuel inflation concerns",
-          "category": "oil_energy"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총평: 유가 상승과 인플레이션 우려 지속에도 불구하고 긍정 우위 유지.\n- 주요 원인: 세계 최대 파운드리 TSMC의 8월 매출 급증이 반도체 업황 전반에 대한 기대를 높이며 시장에 긍정적인 영향을 미침.\n- 하방 압력: 미 국채금리 상승은 성장주 할인율에 부담으로 작용하며 시장의 상승폭을 제한.\n- 불확실성 잔존: FOMC 금리 결정과 유가 상승으로 인한 인플레이션 압력이 시장의 혼조세를 유발.",
-        "positive": "- TSMC 8월 매출 급증: 세계 최대 파운드리 TSMC의 8월 매출이 전년 동월 대비 53% 이상 급증하며 반도체 업황 회복에 대한 기대감 증폭.",
-        "negative": "- 미 국채금리 상승: 미 10년물 국채금리가 4.84%(+0.65%), 미 30년물 국채금리가 5.29%(+0.42%)로 상승하며 성장주 가치 평가에 대한 할인율 압박 심화. 이는 기술 및 성장주 전반에 부정적인 영향 미침.",
-        "mixed": "- FOMC 금리 결정 대기: 9월 16일(수) 14:00 ET로 예정된 FOMC 금리 결정을 앞두고 시장은 관망세 유지. 연방준비제도(Fed)의 다음 금리 인상 여부에 대한 불확실성이 지속되며 투자자들의 신중한 접근 유발.\n- 유가 상승 및 인플레이션 압력: 서부 텍사스산 원유(WTI) 가격이 배럴당 97.22달러(+1.17%)로 상승하며 100달러를 넘어서는 움직임 포착. 중동 지정학적 긴장 고조로 인한 공급 불안이 인플레이션 우려를 지속시키며 증시 전반에 부담으로 작용하는 동시에 에너지 관련주에는 긍정적인 영향 미침.",
-        "watch": "- PPI 생산자물가(8월분) 발표: 9월 10일(목) 08:30 ET에 발표될 생산자물가지수(PPI)는 향후 소비자물가(CPI) 및 연방준비제도(Fed)의 통화 정책 결정에 중요한 선행 지표로 작용할 예정. 시장은 인플레이션 압력 완화 여부 주시.\n- CPI 소비자물가(8월분) 발표 앞둔 포지셔닝: 9월 11일(금) 08:30 ET에 발표될 소비자물가지수(CPI)를 앞두고 투자자들은 인플레이션 추세 확인을 위해 신중한 포지셔닝을 취할 것으로 예상. 이는 단기적인 시장 변동성 확대 가능성 내포.\n- 유가 및 국채금리 추이: 중동 지정학적 긴장 고조에 따른 국제 유가(WTI)의 추가 상승 여부와 미 국채금리(10년물, 30년물)의 변동성이 시장 전반의 투자 심리에 지속적으로 영향을 미칠 것으로 예상."
-      },
-      "report_at": "2026-09-10(목) 18:20 KST"
     }
   ],
-  "updated_at": "2026-09-11T13:22:19Z",
+  "updated_at": "2026-09-11T16:42:28Z",
   "max_entries": 10
 }
