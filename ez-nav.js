@@ -1045,7 +1045,7 @@ window.EZ_ADS_LIVE = false;
 (function () {
   if (!document.querySelector('meta[name="ez-promo"][content="on"]')) return;
   var p = document.createElement('script');
-  p.src = '/ez-app-promo.js?v=20260909a';
+  p.src = '/ez-app-promo.js?v=20260911a';
   p.defer = true;
   (document.head || document.documentElement).appendChild(p);
 })();

@@ -95,10 +95,14 @@
     'box-shadow:0 1px 4px rgba(0,0,0,.14)}',
     '.ezpromo-body{min-width:0;flex:1 1 auto}',
     '.ezpromo-name{margin:0 0 2px;font-size:16px;font-weight:800;letter-spacing:-.01em;',
+    'word-break:keep-all;',
     'color:var(--ez-text,#1D1D1F);line-height:1.3}',
     /* 한 줄로 자른다. 넘치면 말줄임 - 자세한 건 소개 페이지에서 읽는다. */
     '.ezpromo-kind{font-size:14px;font-weight:600;color:var(--ez-text3,#86868B);letter-spacing:0}',
+    /* keep-all: 한글은 기본값이 어절 중간에서 끊긴다. '큼직한 플립시 / 계' 로
+       갈라진 실사고가 있었다 - 두 줄 안에 들어가도 낱말이 쪼개지면 실패다. */
     '.ezpromo-desc{margin:0;font-size:14px;line-height:1.45;color:var(--ez-text2,#515154);',
+    'word-break:keep-all;overflow-wrap:break-word;',
     'display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}',
     '@media (min-width:700px){.ezpromo-desc{-webkit-line-clamp:1}}',
     '.ezpromo-go{flex:0 0 auto;display:inline-flex;align-items:center;gap:3px;',

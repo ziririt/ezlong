@@ -335,7 +335,9 @@ a { color: inherit; }
   width: 64px; height: 64px; border-radius: 14px; display: block; flex-shrink: 0;
   box-shadow: 0 1px 5px rgba(0,0,0,.16);
 }
-.ez-footer-app-body { min-width: 0; }
+/* keep-all: 한글 기본값은 어절 중간에서 끊는다. 앱 이름과 설명이 '플립시 / 계'
+   처럼 갈라지면 두 줄 안에 들어가도 읽는 사람에게는 실패다(92-3항). */
+.ez-footer-app-body { min-width: 0; word-break: keep-all; overflow-wrap: break-word; }
 .ez-footer-app small {
   display: block; font-size: 14px; font-weight: 600; color: var(--ez-text3);
   line-height: 1.35; margin-bottom: 2px;
