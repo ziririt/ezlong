@@ -41,6 +41,7 @@ data/.cache/
 # 때 그대로 쓴다). 페이지·메뉴·사이트맵은 이미 제거됨.
 data/market-regime.json
 data/market-regime-history.json
-# OG 카드 렌더 소스 - 결과물(og/*.png)만 배포하고 원본은 올리지 않는다.
-# 저장소 루트가 웹 루트라 두지 않으면 그대로 열린다(73항 얇은 페이지).
-scripts/og-cards/
+# 운영 스크립트 일체. 웹에서 로드하는 파일이 하나도 없는데(2026-09-11 실측:
+# src/href/fetch 참조 0건) .js/.mjs/.html/.sql 34개가 그대로 열리고 있었다.
+# .py/.sh 만 막고 있어서 생긴 구멍이다 - 확장자가 아니라 폴더로 막는다.
+scripts/
