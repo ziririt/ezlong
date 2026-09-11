@@ -37,6 +37,7 @@ import path from 'node:path';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT  = path.resolve(HERE, '../../og');
 const CARDS = [
+  ['site.html',        'og-1200x630.png'],        // 사이트 공통 - 149개 페이지가 쓴다
   ['app.html',         'og-app-1200x630.png'],
   ['longtime.html',    'og-longtime-1200x630.png'],
   ['skybluenote.html', 'og-skybluenote-1200x630.png'],
