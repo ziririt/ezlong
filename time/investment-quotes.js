@@ -9686,5 +9686,19 @@ window.investmentQuotes = [
     "title": "뮤추얼펀드 상식 (Common Sense on Mutual Funds)",
     "author": "존 보글 (John C. Bogle)",
     "category": "mindset"
+  },
+  {
+    "english": "The bird fights its way out of the egg. The egg is the world. Whoever wants to be born must first destroy a world.",
+    "text": "새는 알에서 나오려고 투쟁한다. 알은 세계다. 태어나려고 하는 자는 하나의 세계를 깨뜨리지 않으면 안 된다.",
+    "title": "데미안 (Demian)",
+    "author": "헤르만 헤세 (Hermann Hesse)",
+    "genre": "literature"
+  },
+  {
+    "english": "It is not the lives we regret not living that are the real problem. It is the regret itself. It's the regret that makes us shrivel and wither and feel like our own and other people's worst enemy.",
+    "text": "우리가 살아보지 못한 삶을 후회하는 것, 그것이 진짜 문제는 아니다. 진짜 문제는 후회 그 자체다. 그 후회가 우리를 움츠러들게 하고 시들게 하며, 나 자신에게도 남에게도 가장 나쁜 적으로 만들어버린다.",
+    "title": "미드나잇 라이브러리 (The Midnight Library)",
+    "author": "매트 헤이그 (Matt Haig)",
+    "genre": "literature"
   }
 ];
