@@ -9700,5 +9700,12 @@ window.investmentQuotes = [
     "title": "미드나잇 라이브러리 (The Midnight Library)",
     "author": "매트 헤이그 (Matt Haig)",
     "genre": "literature"
+  },
+  {
+    "english": "Our favorite holding period is forever.",
+    "text": "우리가 가장 좋아하는 보유 기간은 영원히다.",
+    "title": "버크셔 해서웨이 주주 서한",
+    "author": "워런 버핏",
+    "category": "compound"
   }
 ];

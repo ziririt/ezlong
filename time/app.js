@@ -12859,7 +12859,7 @@ var bedsideActive = false;
     return t("settings.alarm.daysWrap", { days: names }, "{days}요일");
   }
   function alarmHM(h, m) { return two(h) + ":" + two(m); }
-  function showAlarmConfirm(message, onYes, onNo) {
+  function showAlarmConfirm(message, onYes, onNo, yesLabel, noLabel) {
     var prev = document.getElementById("alarmConfirmOverlay");
     if (prev) { try { prev.remove(); } catch (e) { /* 무시 */ } }
     var ov = document.createElement("div");
@@ -12875,11 +12875,11 @@ var bedsideActive = false;
     var no = document.createElement("button");
     no.type = "button";
     no.className = "alarm-confirm-btn alarm-confirm-no";
-    no.textContent = t("settings.alarm.conflictAdd", null, "새로 추가");
+    no.textContent = noLabel || t("settings.alarm.conflictAdd", null, "새로 추가");
     var yes = document.createElement("button");
     yes.type = "button";
     yes.className = "alarm-confirm-btn alarm-confirm-yes";
-    yes.textContent = t("settings.alarm.conflictReplace", null, "기존 수정");
+    yes.textContent = yesLabel || t("settings.alarm.conflictReplace", null, "기존 수정");
     function closeIt() { try { ov.remove(); } catch (e) { /* 무시 */ } }
     no.addEventListener("click", function () { closeIt(); if (onNo) onNo(); });
     yes.addEventListener("click", function () { closeIt(); if (onYes) onYes(); });
@@ -13037,6 +13037,10 @@ var bedsideActive = false;
     // (수정 없이 취침만 눌러도 예약이 확실히 서도록. 안드로이드 MIUI에서
     //  예약이 누락돼 아예 안 울리던 경로를 원천 차단한다.)
     try { pushAlarmToNative(alarm); } catch (e) { /* 무시 */ }
+    // 2026-09-12 — **무엇을 걸었는지 적어 둔다.** 취침을 끌 때 그것을 거둬야
+    // 하는데, 그때 nextAlarm() 을 다시 부르면 시각이 흘러 다른 알람이 잡힐 수
+    // 있다(자정을 넘겼거나 알람이 여럿일 때). 건 놈을 이름으로 기억한다.
+    try { localStorage.setItem("ezlong:bedtimeAlarmId", String(alarm.id)); } catch (e) { /* 무시 */ }
     try { localStorage.setItem("ezlong:bedtimeStartAt", String(Date.now())); } catch (e) { /* 무시 */ }
     clearWakeLog();
     setBedtimeArmed(true);
@@ -13051,7 +13055,46 @@ var bedsideActive = false;
     try { if (typeof goToPage === "function") goToPage(0); } catch (error) { /* 무시 */ }
   }
 
+  // 2026-09-12 이슈 제보 — "'수면 취소' 버튼을 눌렀는데 정작 7시반에 아이폰
+  // 시스템의 알람이 울렸다. 이거 내가 직접 한 알람이 아니다."
+  //
+  // 운영자가 직접 거신 게 맞다. 우리 앱이 건 AlarmKit 알람이 iOS 시스템 알람
+  // 화면으로 뜬 것이다. 원인은 **대칭이 깨져 있었다는 것**:
+  //   enterBedtime() 은 pushAlarmToNative() 로 시스템 알람을 **건다**.
+  //   exitBedtime() 은 stopBedtime 만 보내고 그것을 **거두지 않았다.**
+  // 그래서 웹은 "안 울릴 것"이라 여기고(webWakeArmed=false) 시스템은 울렸다.
+  // 건 쪽과 거두는 쪽을 한 쌍으로 묶는다.
+  //
+  // 알람 목록에서 지우는 것이 아니라 **네이티브 예약만** 거둔다. 다음에
+  // '취침 시작'을 누르면 enterBedtime 이 다시 건다 — 그래서 반복 알람이
+  // 영영 죽어 버리는 사고가 없다.
+  function cancelBedtimeNativeAlarm() {
+    var id = "";
+    try { id = localStorage.getItem("ezlong:bedtimeAlarmId") || ""; } catch (e) { id = ""; }
+    if (!id) {
+      // 옛 판에서 취침을 시작했으면 적어 둔 이름이 없다. 그때는 지금 기준
+      // 다음 알람을 거둔다 — 없는 것보다 낫다.
+      try { var a = nextAlarm(); if (a) id = a.id; } catch (e) { /* 무시 */ }
+    }
+    if (!id) return;
+    try { postAlarmBridge({ action: "cancelWakeAlarm", id: id }); } catch (e) { /* 무시 */ }
+    try { localStorage.removeItem("ezlong:bedtimeAlarmId"); } catch (e) { /* 무시 */ }
+  }
+
+  /// 취침 화면의 [알람 끄기]. 누르면 정말 안 울리므로 한 번 묻는다 —
+  /// 이 버튼의 대가는 "아침에 못 일어나는 것"이라 되돌릴 수가 없다.
+  function askExitBedtime() {
+    showAlarmConfirm(
+      t("settings.alarm.sleepCancelAsk", null, "기상 알람을 끕니다. 다시 걸려면 '취침 시작'을 누르세요."),
+      function () { exitBedtime(); },
+      null,
+      t("settings.alarm.sleepCancelYes", null, "알람 끄기"),
+      t("settings.alarm.sleepCancelNo", null, "그대로 두기")
+    );
+  }
+
   function exitBedtime() {
+    cancelBedtimeNativeAlarm();
     webWakeArmed = false;
     stopWebWakeAudio();
     setBedtimeArmed(false);
@@ -14060,7 +14103,7 @@ var bedsideActive = false;
     updateSoundSummary();
     if (els.openConfig) els.openConfig.addEventListener("click", function () { openConfigScreen(false); });
     if (els.configBack) els.configBack.addEventListener("click", closeConfigScreen);
-    if (els.sleepCancel) els.sleepCancel.addEventListener("click", exitBedtime);
+    if (els.sleepCancel) els.sleepCancel.addEventListener("click", askExitBedtime);
     if (els.sleepEdit) els.sleepEdit.addEventListener("click", function () {
       if (els.sleep) els.sleep.hidden = true;
       try { if (typeof openSettings === "function") openSettings("alarm"); } catch (error) { /* 무시 */ }
