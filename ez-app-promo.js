@@ -172,7 +172,17 @@
     /* 한 번에 하나만. 둘을 나란히 세우면 높이가 두 배가 되고, 읽는 사람은
        무엇을 먼저 볼지 정하느라 둘 다 안 본다. 페이지를 열 때마다 무작위로
        고르면 두 앱이 고르게 노출된다. */
-    var pick = APPS[Math.floor(Math.random() * APPS.length)];
+    /* 95항 - 맨 위에 Long Time 설치 권유가 이미 떠 있으면 같은 앱을 또 권하지
+       않는다. 한 화면에서 같은 앱을 두 번 권하면 배너가 둘 다 죽는다.
+       설치 권유는 모바일에서만 뜨므로(사파리는 애플 배너, 그 외 iOS·안드로이드는
+       자체 배너), PC 에서는 두 앱이 그대로 번갈아 나온다 - 거기엔 중복이 없다.
+       판정은 ez-app-banner.js 가 내보내는 값 하나만 믿는다(단일 출처). */
+    var pool = window.ezAppInstallShown
+      ? APPS.filter(function (a) { return a.href !== '/longtime/'; })
+      : APPS;
+    if (!pool.length) return;                       // 걸러서 남는 게 없으면 안 그린다
+
+    var pick = pool[Math.floor(Math.random() * pool.length)];
     host.innerHTML = cardHtml(pick)
       + '<button type="button" class="ezpromo-x" aria-label="배너 닫기">&times;</button>';
     host.querySelector('.ezpromo-x').addEventListener('click', function () {

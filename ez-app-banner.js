@@ -78,6 +78,11 @@
 
   var IN_APP = inAppWebview();
 
+  /* 홍보 배너(ez-app-promo.js)가 읽는 단일 출처. 이 파일이 Long Time 설치를
+     권했는가를 알린다 - 권했으면 그쪽은 같은 앱을 또 권하지 않는다(95항).
+     판정을 두 파일이 각자 하면 반드시 한쪽이 뒤처진다(8항·71항). */
+  window.ezAppInstallShown = false;
+
   /* ── 1) 앱 안이면 배너를 만들지 않고, 이미 박혀 있는 것도 걷어낸다 ──── */
   if (IN_APP) {
     var m = declaredMeta();
@@ -115,6 +120,14 @@
 
   // 사파리는 위 메타 한 줄이 공식 배너를 그려 준다: 우리가 겹쳐 그리지 않는다.
   var STORE = isAndroid ? 'android' : (isIOS && !isSafariIOS ? 'ios' : null);
+
+  /* 사파리에서는 애플이 배너를 그리는지 JS 로 알 수 없다(이벤트도 DOM 흔적도 없다).
+     '메타가 우리 앱을 가리키는 iOS 사파리'면 떴다고 본다 - 틀릴 때는 애플이 앱을
+     못 주는 지역뿐이고, 그 경우 홍보 배너가 하나 덜 뜨는 것으로 끝난다. */
+  if (isSafariIOS && (meta.getAttribute('content') || '').indexOf(APP.iosId) >= 0) {
+    window.ezAppInstallShown = true;
+  }
+
   if (!STORE) return;
 
   // 이 페이지가 선언한 앱이 우리 앱이 아니면(예: Skyblue Note) 그리지 않는다
@@ -122,6 +135,8 @@
   if (declared.indexOf(APP.iosId) < 0) return;
 
   try { if (localStorage.getItem(CLOSED_KEY) === '1') return; } catch (e) {}
+
+  window.ezAppInstallShown = true;   // 여기까지 왔으면 자체 배너를 그린다
 
   var L = (function () {
     var m2 = /^\/(en|ja|zh|es|pt)\//.exec(location.pathname);
