@@ -9754,5 +9754,12 @@ window.investmentQuotes = [
     "title": "모든 순간이 꽃봉오리인 것을",
     "author": "정현종",
     "genre": "literature"
+  },
+  {
+    "english": "Although those who wait long enough will eventually recoup losses on a diversified portfolio of stocks, buying stocks at or below their historical valuation is the best way to guarantee superior returns.",
+    "text": "충분히 기다리면 분산된 주식 포트폴리오의 손실은 결국 회복된다. 하지만 역사적 평가 수준 이하에서 주식을 사는 것이야말로 초과 수익을 보장하는 가장 확실한 방법이다.",
+    "title": "주식에 장기투자하라 (Stocks for the Long Run)",
+    "author": "제러미 시겔 (Jeremy J. Siegel)",
+    "category": "mindset"
   }
 ];
