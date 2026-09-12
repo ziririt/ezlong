@@ -1178,7 +1178,9 @@ def _audience_en(stance, buy, sell, gear, rsi, hot, down, sig_label_en):
     elif gear >= 3 and buy >= 65:
         newbie = f'A small scaled entry is worth considering — uptrend plus a buy score of {buy}. That said, this stock\'s optimal entry is {sig_label_en}.'
     elif gear <= 1:
-        newbie = f'Waiting zone — before the valid signal ({sig_label_en}) fires, there is no statistical basis for entry.'
+        newbie = (f'Waiting zone — below the 200-day line (Gear 1), not even a scout tranche yet. Before the valid signal '
+                  f'({sig_label_en}) fires there is no statistical edge. Two triggers open the door: a turn up out of '
+                  f'oversold (start with half of the first 30%) or a reclaim of the 200-day (main tranche).')
     else:
         newbie = 'Watching zone — awaiting an entry signal.'
     if stance == 'accumulate' and _sig_on:
@@ -1241,9 +1243,12 @@ def _audience(stance, buy, sell, gear, rsi, hot, down, sig_label):
     elif gear >= 3 and buy >= 65:
         newbie = f'소량 분할 진입 검토 가능 — 상승 추세 + 매수점수 {buy}. 다만 이 종목의 최적 진입은 {sig_label}.'
     elif gear <= 1:
-        newbie = (f'소량 정찰대까지 가능 — 유효 신호({sig_label}) 전이라 통계적 우위는 없는 자리. '
-                  f'우위가 없다는 건 사지 말라가 아니라 크게 걸지 말라는 뜻. 목표 비중의 10~20%로 '
-                  f'시작하고 200일선 회복 시 증액, 직전 저점 이탈 시 철수.')
+        # 90-2항(2026-09-12): Gear 1 의 정찰대는 36항의 두 트리거(과매도 탈출 반전·200일선 회복) 중 하나가
+        # 켜질 때 연다. 트리거 없이 "소량은 가능"이라 쓰면 화면 검문(Gear 1 신규 매수 권고)에 걸려 문장이 통째로
+        # 대체된다 - 서버가 화면과 다른 말을 하는 셈이라 여기서부터 같은 말을 한다.
+        newbie = (f'신규 진입 대기 — 200일선 아래(Gear 1)라 정찰대도 아직. 유효 신호({sig_label}) 전이라 '
+                  f'통계적 우위도 없는 자리. 여는 조건 둘: 과매도 탈출 반전(1차 30%의 절반으로 시작), '
+                  f'200일선 회복(본대). 그 전까지 현금 유지, 들어가 있다면 직전 저점 이탈 시 철수.')
     else:
         newbie = '관망 구간 — 진입 신호 대기.'
     # 물타기 (손실 보유자의 추가 매수)
