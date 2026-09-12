@@ -410,8 +410,12 @@ a { text-decoration: none; color: inherit; }
   .tab-bar { grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .tab-btn { padding: 18px 8px; font-size: 16px; gap: 5px; min-height: 76px; }
   /* 2026-07-10: 좁은 3단 탭 컬럼에서 설명구가 2~3줄로 줄바꿈되어 어색해
-     보인다는 피드백: .bi-hint와 동일한 예외 패턴으로 축소 */
-  .tab-btn-sub { display: block; font-size: 13px; letter-spacing: 0; line-height: 1.35; word-break: keep-all; }
+     보인다는 피드백: .bi-hint와 동일한 예외 패턴으로 축소
+     2026-09-12 실측 - 그 축소는 목적을 달성하지 못했다. 360px 에서
+     13px 도 3줄, 14px 도 3줄로 줄 수가 같다(렌더 측정). 줄 수는 그대로인데
+     글자만 작아져 가독성만 잃은 셈이다. 14항 하한대로 14px 로 되돌린다.
+     줄 수를 줄이려면 크기가 아니라 문구를 줄여야 한다. */
+  .tab-btn-sub { display: block; font-size: 14px; letter-spacing: 0; line-height: 1.35; word-break: keep-all; }
 }
 .tab-pane { display: none; }
 .tab-pane.active { display: block; }
@@ -1525,22 +1529,25 @@ li.gear-other-sep { display: none !important; }
    쓰면 설명 텍스트가 4줄까지 줄바꿈되어 가독성을 오히려 해쳤다(이슈 제보).
    이 박스 컨텍스트에 한해서만 예외적으로 16px 미만을 허용: 사이트 전역
    16px 최소 규칙([[feedback_ezlong_typography_policy]])의 명시적 사용자
-   승인 예외 케이스. */
+   승인 예외 케이스.
+   2026-09-12: 그 예외는 '16px 미만'까지다. 14px 절대 하한(14항)은 예외를
+   받은 적이 없는데 13px·12.5px 로 내려가 있었다. 전부 14px 로 올렸다.
+   이 블록에서 14px 밑으로 다시 내리지 말 것. */
 @media (max-width: 520px) {
   .action-card { padding: 20px 16px; }
   .bi-col { padding: 16px 8px 14px; gap: 9px; }
   .bi-ball { width: 24px; height: 24px; border-width: 2px; }
   .bi-balls { gap: 7px; }
   .bi-label { font-size: 14px; letter-spacing: .14em; }
-  .bi-hint { font-size: 13px; line-height: 1.35; }
+  .bi-hint { font-size: 14px; line-height: 1.35; }
 }
 @media (max-width: 380px) {
   .action-card { padding: 18px 12px; }
   .bi-col { padding: 13px 5px 11px; }
   .bi-ball { width: 21px; height: 21px; }
   .bi-balls { gap: 5px; }
-  .bi-label { font-size: 13px; letter-spacing: .10em; }
-  .bi-hint { font-size: 12.5px; }
+  .bi-label { font-size: 14px; letter-spacing: .10em; }
+  .bi-hint { font-size: 14px; line-height: 1.3; }
 }
 
 /* ─── AI 상담 채팅 위젯 ───────────────────────── */

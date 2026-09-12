@@ -376,10 +376,22 @@ grep -n "interval.*range\|range.*interval" atmr-dashboard.html | grep -v "//\|#"
 ### 자동 점검 grep (코드 작성 후 즉시 실행)
 
 ```bash
-# 인라인 style 속성 내 위반 검사
-grep -n "font-size:1[013]px\|font-size: 1[013]px" atmr-dashboard.html | grep -v "ez-nav\|ez-footer"
+# 인라인 style 속성 내 위반 검사 - 소수점(12.5px)과 공유 파일까지 전부 본다
+grep -nE 'font-size:\s*(1[0-3](\.[0-9]+)?|[0-9](\.[0-9]+)?)px' \
+  atmr-dashboard.html *.html ez-nav.js ez-footer.js ez-design.css
 # 결과 0이어야 정상
 ```
+
+**2026-09-12 정정 - 검사 범위가 규칙 범위보다 좁으면 그만큼이 사각지대가 된다.**
+이전 grep 은 `1[013]px` 만 봐서 **12.5px 를 못 봤고**, `grep -v "ez-nav\|ez-footer"` 로
+**전 페이지가 로드하는 공유 파일 두 개를 구조적으로 제외**하고 있었다. 그래서
+`ez-nav.js` 의 `NEW` 배지가 11px 로 149개 페이지에 6주 넘게 떠 있었는데 검사는 매번
+0건을 보고했다. 규칙은 "DOM 텍스트 14px 미만 금지"이고 예외는 캔버스 렌더뿐이다 -
+검사도 같은 범위를 봐야 한다.
+
+**렌더로 확인할 때는 조상의 숨김까지 본다.** 요소 자신의 `display`·`visibility` 만
+보면 닫힌 모바일 메뉴 안의 요소가 위반으로 잡혀 오탐이 난다(2026-09-12 실제로 났다).
+`el.getClientRects().length` 이 0이거나 조상 중 하나라도 숨어 있으면 건너뛴다.
 
 ### 특히 위반 잦은 패턴 — 이 패턴 발견 즉시 수정
 
