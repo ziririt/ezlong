@@ -9768,5 +9768,12 @@ window.investmentQuotes = [
     "title": "비커밍 (Becoming)",
     "author": "미셸 오바마 (Michelle Obama)",
     "genre": "literature"
+  },
+  {
+    "english": "He who lives by the crystal ball is destined to eat ground glass.",
+    "text": "수정구슬에 의지해 미래를 점치려는 자는, 결국 깨진 유리 조각을 삼키게 된다.",
+    "title": "원칙 (Principles)",
+    "author": "레이 달리오 (Ray Dalio)",
+    "category": "mindset"
   }
 ];
