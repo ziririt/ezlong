@@ -9721,5 +9721,12 @@ window.investmentQuotes = [
     "title": "오베라는 남자 (A Man Called Ove)",
     "author": "프레드릭 배크만 (Fredrik Backman)",
     "genre": "literature"
+  },
+  {
+    "english": "The four most dangerous words in investing are: 'This time it's different.'",
+    "text": "투자에서 가장 위험한 네 단어는 '이번엔 다르다'이다.",
+    "title": "성공 투자의 황금률 (Golden Rules for Investment Success)",
+    "author": "존 템플턴 (John Templeton)",
+    "category": "mindset"
   }
 ];
