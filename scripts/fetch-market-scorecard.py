@@ -205,6 +205,17 @@ def get_us_session(dt_utc=None):
         # (58항) 주말에 장이 안 열리는 것을 '휴장'이라 부르지 않는다 — 라벨이
         # 그대로 프롬프트에 들어가 생성문에 옮겨붙기 때문에 여기서부터 막는다.
         return 'weekend', '주말(금요일 정규장 마감 후)'
+    # 88항: 평일 공휴일은 캘린더(단일 출처 data/nyse-calendar.json)가 판정한다. 요일만 보면 노동절 낮에 '정규장'.
+    try:
+        import ez_calendar as _cal
+        _ymd = now_et.date().isoformat()
+        if _cal.is_holiday(_ymd):
+            _nm = _cal.holiday_name(_ymd) or '공휴일'
+            return 'holiday', f'미국 공휴일 휴장({_nm}): 직전 거래일 {_cal.last_trading_day(dt_utc or datetime.now(timezone.utc)).isoformat()} 종가 기준'
+        if _cal.is_early_close(_ymd) and hm >= 13.0 and hm < 16.0:
+            return 'post', '조기 마감일 포스트마켓(13:00 ET 마감)'
+    except Exception as _e:
+        print(f'  [warn] ez_calendar 로드 실패: {_e}: 요일 판정으로 진행')
     if 4.0 <= hm < 9.5:
         return 'pre', '프리마켓'
     if 9.5 <= hm < 16.0:
@@ -618,6 +629,7 @@ def build_prompt(kst_now, equity_rows, macro_rows, headlines, prev_entries=None,
             'post':    "- 정규장은 이미 마감됐고 지금은 포스트마켓이다. 재료는 (1) 방금 끝난 정규장 결과를 만든 원인 (2) 다음 정규장에 영향을 줄 변수, 이 두 관점으로 선별하라.",
             'closed':  "- 정규장·포스트마켓 모두 끝난 야간이다. 재료는 (1) 직전 정규장 결과를 만든 원인 (2) 다음 정규장에 영향을 줄 변수, 이 두 관점으로 선별하라.",
             'weekend': "- 금요일 정규장이 끝난 뒤다. 재료는 직전 주 마감 상황과 다음 주 개장에 영향을 줄 변수 중심으로 선별하라.",
+            'holiday': "- 오늘은 미국 공휴일 휴장이다(88항). '장중'·'오늘 장'·'프리마켓'·'포스트마켓' 표현 금지. 수치는 전부 직전 거래일 종가이며 그렇게 밝혀라. 휴장 사실은 독자가 모를 수 있으니 한 번은 말한다.",
         }.get(session_code, "")
         session_block = f"""
 === 현재 미국 시장 세션: {session_label} (위반 시 전체 신뢰도 훼손) ===
@@ -1835,9 +1847,15 @@ def validate_content(entry, session_code='', snap=None):
         errors.append(_why)
 
     # ── 체크 5: 세션 용어 오용 (2026-07-03) — 포스트마켓 시간에 '프리마켓 약세' 같은 사고 방지 ──
-    if session_code in ('post', 'closed', 'weekend'):
+    if session_code in ('post', 'closed', 'weekend', 'holiday'):
         if any('프리마켓' in t for t in all_texts):
             errors.append(f"세션 오류: 현재 세션({session_code})인데 '프리마켓' 표현 사용 — 프리마켓은 아직 시작 전")
+    if session_code == 'holiday':
+        # 88항: 휴장일에 '장중'·'오늘 장'은 거짓이다(2026-09-07 노동절 실사고)
+        for t in all_texts:
+            if any(w in t for w in ('장중', '오늘 장', '포스트마켓', '시간외 거래')):
+                errors.append("세션 오류: 미국 공휴일 휴장인데 진행 중인 장처럼 서술('장중'·'오늘 장' 등)")
+                break
     if session_code == 'pre':
         if any('포스트마켓' in t for t in all_texts):
             errors.append("세션 오류: 현재 프리마켓인데 '포스트마켓' 표현 사용")

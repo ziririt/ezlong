@@ -36,6 +36,7 @@ try:
 except Exception as _e:  # pragma: no cover
     print(f'[warn] ez_calendar 로드 실패: {_e}: 요일 판정으로 폴백')
     _cal = None
+<<<<<<< Updated upstream
 try:
     # 89항: 시장 날짜의 상대어 집행. 규칙 본체는 ez_daterule.py 하나 —
     # 스코어카드 생성기와 같은 자를 쓴다(88항 원칙 3을 문장 규칙에도 적용).
@@ -43,6 +44,8 @@ try:
 except Exception as _e:  # pragma: no cover
     print(f'[warn] ez_daterule 로드 실패: {_e}: 상대 날짜 집행 건너뜀')
     _dr = None
+=======
+>>>>>>> Stashed changes
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SIGNALS = os.path.join(HERE, '..', 'data', 'market-signals.json')
@@ -810,8 +813,9 @@ def _chart_of(sym):
                 trend=a.get('trend') or '')
 
 
-def _reconcile(sym, st, label, kb):
-    """규칙 엔진 판단 + 차트 엔진 판독 → 하나의 결론. (st, label, kb) 반환."""
+def _reconcile(sym, st, label, kb, gear=None):
+    """규칙 엔진 판단 + 차트 엔진 판독 → 하나의 결론. (st, label, kb) 반환.
+    88항: 차트 판독은 문장을 보탤 수 있어도 Gear 1(200일선 아래)에서 신규 진입(accumulate)을 열 수는 없다."""
     ca = _chart_of(sym)
     if not ca:
         return st, label, kb
@@ -825,7 +829,11 @@ def _reconcile(sym, st, label, kb):
         line += f" · {ca['why']}"
 
     verdict = None
-    if buy_side and st in ('watch', 'wait'):
+    if buy_side and st in ('watch', 'wait') and gear is not None and gear <= 1:
+        label = '차트는 매수 쪽: 200일선 아래라 정찰대 보류'
+        verdict = ('차트 패턴은 매수를 말하지만 추세 기어 1(200일선 아래)에서는 신규 진입을 열지 않는다. '
+                   '두 판독이 갈릴 때 우선순위는 추세: 200일선 회복 또는 과매도 탈출 반전이 먼저다.')
+    elif buy_side and st in ('watch', 'wait'):
         st = 'accumulate'
         label = '지표·차트 모두 매수 쪽 — 1차 정찰대(30%) 자리'
         verdict = '지표와 차트 패턴 방향 일치 — 망설일 자리가 아니라 1차를 넣는 자리. 3-3-4의 1차 30%.'
@@ -847,6 +855,28 @@ def _reconcile(sym, st, label, kb):
         verdict = '차트 패턴도 같은 방향 — 조정 없이 그대로.'
 
     return st, label, kb + [_blk('차트 패턴 교차검증', line, verdict)]
+
+
+def _audit_view(sym, v):
+    """88항 검문. 판정(stance)이 숫자를 위반하면 내리고, 문장이 숫자와 어긋나면 경고한다.
+    규칙: Gear 1 + 검증 신호(매수점수 80+ 또는 RSI 30 미만) 없음 → accumulate 금지.
+          RSI 40 이상인데 '과매도'라고 단정(탈출·아님 서술 제외) → 경고.
+          휴장·마감인데 '장중' → 경고(생성기는 캘린더를 쓰므로 새로 생기면 버그)."""
+    n = v.get('nums') or {}
+    buy, gear, rsi = n.get('buy') or 50, n.get('gear') or 2, n.get('rsi')
+    sig_on = buy >= 80 or (rsi is not None and rsi < 30)
+    if v.get('stance') == 'accumulate' and gear <= 1 and not sig_on:
+        # 과매도 탈출 반전(tsla 경로)은 rsi5dAgo<42 를 전제로 하므로 RSI 50 미만이어야 자연스럽다
+        if rsi is None or rsi >= 50:
+            print(f'[audit] {sym}: Gear {gear}·매수점수 {buy}·RSI {rsi} 인데 accumulate → watch 로 내림')
+            v['stance'] = 'watch'
+            v['stanceLabel'] = '내리막: 신규 진입 조건 미충족, 보유자는 이탈선만 관리'
+            v['stanceLabelEn'] = 'Downtrend: entry conditions not met, holders manage the exit line only'
+    txt = ' '.join([v.get('commentary') or ''] + [str(i) for b in (v.get('blocks') or []) for i in ([b.get('h', '')] + list(b.get('items') or []))])
+    if rsi is not None and rsi >= 40 and _re.search(r'과매도', txt) and not _re.search(r'과매도\s*(구간\s*)?(탈출|아님|아니|미만|기준|신호)', txt):
+        print(f'[audit] {sym}: RSI {rsi:.0f} 인데 과매도 서술: {txt[:80]!r}')
+    if '장중' in txt and us_session_now() != 'open':
+        print(f'[audit] {sym}: 세션 {us_session_now()} 인데 장중 서술: {txt[:80]!r}')
 
 
 def tsla_view(s):
@@ -878,7 +908,9 @@ def tsla_view(s):
         _stage, _stage_word = _stage334(_days)
         _rt = _rally_txt(s)
         _devtxt = f'200일선 대비 {_dev:.0f}%' if _dev is not None else '200일선 아래'
-        if _escape or _days >= 2:
+        # 88항(2026-09-08): 정찰대 조건은 '과매도 탈출' 하나다. 단순 반등 일수(_days>=2)로 열면
+        # RSI 51 중립권 반등에도 "과매도에서 방향을 튼 자리"라고 쓰는 거짓말이 된다(9/7 실사고, 매수점수 49).
+        if _escape:
             st, label = 'accumulate', f'공포 구간 탈출 진행 — 1차 정찰대(30%) 자리'
             body = (f'{_rt}. {_devtxt}, RSI {rsi:.0f}. '
                     f'이 분석의 매수 타이밍 원칙은 "사람들이 가장 두려워할 때"이고, '
@@ -893,6 +925,17 @@ def tsla_view(s):
                        f'up out of oversold is exactly that spot. Still below the 200-day line, so this is the first '
                        f'30% tranche only — the second 30% waits for a reclaim of the 200-day, the final 40% for trend '
                        f'confirmation. Cut mechanically on a break of the prior low.')
+        elif _days >= 2:
+            st, label = 'watch', '내리막 속 반등: 과매도 탈출은 아님, 정찰대 보류'
+            _pv = f'RSI {_rsi_prev:.0f}→{rsi:.0f}' if _rsi_prev is not None else f'RSI {rsi:.0f}'
+            body = (f'{_rt}. {_devtxt}, {_pv}. 반등은 맞지만 공포 구간(RSI 42 미만)에서 튄 반등이 아니라 '
+                    f'중립권 반등이다. 이 분석의 1차 정찰대 조건은 "과매도에서 방향을 트는 순간" 하나이고 '
+                    f'지금은 그 조건이 아니다. 200일선 아래(Gear {gear})라 본대 조건도 아직. '
+                    f'매수점수 {buy}, 기준 미달. 기다리는 트리거 둘: 과매도 탈출 반전(1차 30%), 200일선 회복(2차 30%).')
+            body_en = (f'A {_days}-day rebound, {_pv.replace("RSI ", "RSI ")}, {_devtxt.replace("200일선 대비", "")} versus the '
+                       f'200-day line. A rebound, yes, but from neutral RSI rather than out of fear (RSI below 42), '
+                       f'so the first-tranche trigger is not met. Still below the 200-day, buy score {buy}: waiting '
+                       f'for either a turn up out of oversold (first 30%) or a reclaim of the 200-day (second 30%).')
         else:
             st, label = 'watch', '내리막 — 공포 반전 첫 신호에 1차 정찰대'
             body = (f'{_devtxt}, RSI {rsi:.0f} — 아직 반등 전환 신호 없음. '
@@ -917,7 +960,7 @@ def tsla_view(s):
              f'추세 기어 {gear} — ' + ('200일선 위' if gear >= 3 else '200일선 근처' if gear == 2 else '200일선 아래')),
         _blk('판단 근거', body.strip()),
     ]
-    st, label, _kb = _reconcile('TSLA', st, label, _kb)
+    st, label, _kb = _reconcile('TSLA', st, label, _kb, gear)
     return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
                 commentary=_mv + body,
                 commentaryEn=_move_prefix_en(s) + body_en,
@@ -1130,8 +1173,12 @@ def _audience_en(stance, buy, sell, gear, rsi, hot, down, sig_label_en):
         holder = 'Holding remains viable — this stock has low trend sensitivity. Manage exit criteria only.'
     else:
         holder = 'Holding zone — no sign of trend damage.'
-    if stance == 'accumulate':
+    _sig_on = (buy >= 80) or (rsi is not None and rsi < 30)
+    if stance == 'accumulate' and _sig_on:
         newbie = f'Valid zone for scaling in — {sig_label_en} is active. A small first tranche (within 30%) is the premise.'
+    elif stance == 'accumulate':
+        newbie = (f'Zone worth a scaled entry: the basis is a fear reversal (turn up out of oversold); the validated '
+                  f'signal ({sig_label_en}) has not fired. Small first tranche (within 30%), halved below the 200-day line.')
     elif overheated:
         newbie = 'New entries worth avoiding — overheated. Chasing here is statistically unfavorable.'
     elif gear >= 3 and buy >= 65:
@@ -1185,8 +1232,14 @@ def _audience(stance, buy, sell, gear, rsi, hot, down, sig_label):
     else:
         holder = '보유 유지 구간 — 추세 훼손 신호 없음.'
     # 신규 진입
-    if stance == 'accumulate':
+    # 88항: 검증 신호(매수점수 80+ 또는 RSI 30 미만)가 실제로 켜졌을 때만 '발동'이라고 쓴다.
+    # accumulate 가 공포 반전 경로로 왔으면 그 근거를 그대로 말한다(9/7: 매수점수 49에 '80 이상 발동' 표기 사고).
+    _sig_on = (buy >= 80) or (rsi is not None and rsi < 30)
+    if stance == 'accumulate' and _sig_on:
         newbie = f'분할 진입 검토 유효 구간 — {sig_label} 발동. 1회차는 소량(30% 이내) 전제.'
+    elif stance == 'accumulate':
+        newbie = (f'분할 진입 검토 구간: 근거는 공포 반전(과매도 탈출), 검증 신호({sig_label})는 아직 아님. '
+                  f'1회차는 소량(30% 이내) 전제, 200일선 아래면 절반으로.')
     elif overheated:
         newbie = '신규 진입 자제 구간 — 과열. 추격 진입은 통계적으로 불리.'
     elif gear >= 3 and buy >= 65:
@@ -1372,7 +1425,7 @@ def mega_view(sym, s):
     mv = _move_prefix(s)
     if mv:
         kb = [_move_blk(s)] + kb
-    st, label, kb = _reconcile(sym, st, label, kb)
+    st, label, kb = _reconcile(sym, st, label, kb, gear)
     return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
                 commentary=mv + body,
                 commentaryEn=_move_prefix_en(s) + body_en,
@@ -1419,7 +1472,7 @@ def nvda_view(s):
              f'추세 기어 {gear} — ' + ('200일선 위' if gear >= 3 else '200일선 근처' if gear == 2 else '200일선 아래')),
         _blk('판단 근거', body.strip()),
     ]
-    st, label, _kb = _reconcile('NVDA', st, label, _kb)
+    st, label, _kb = _reconcile('NVDA', st, label, _kb, gear)
     return dict(stance=st, stanceLabel=label, stanceLabelEn=_en(label),
                 commentary=_mv + body,
                 commentaryEn=_move_prefix_en(s) + body_en,
@@ -1930,6 +1983,11 @@ def main():
         megas={sym: mega_view(sym, syms[sym]) for sym in MEGA_ORDER
                if syms.get(sym) and syms[sym].get('buyScore') is not None},
     )
+
+    # 88항 출력 검문(원칙 5·9): 숫자와 어긋나는 판정·문장은 파일에 쓰기 전에 걸린다.
+    for _sym, _v in [('TSLA', view.get('tsla')), ('NVDA', view.get('nvda'))] + list((view.get('megas') or {}).items()):
+        if _v:
+            _audit_view(_sym, _v)
 
     _sc = (load_scorecard() or [None])[0]
     _ca = load_chart_engine()

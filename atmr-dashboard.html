@@ -2449,6 +2449,7 @@ window._swingView = null;
 //       숫자와 어긋나는 문장은 화면에 나가기 전에 검문(ezGuard)에서 걸린다.
 
 // (1) 거래일 캘린더: 단일 출처 data/nyse-calendar.json (파이썬 ez_calendar.py · 노드 ez-calendar.js 와 같은 파일)
+<<<<<<< Updated upstream
 window.EZ_NYSE_CAL = null;
 window.EZ_NYSE_HOLIDAYS = null;   // ez-nav.js 의 ezWeekPhase 가 이 배열을 본다
 const _EZ_CAL_URL = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/nyse-calendar.json';
@@ -2529,6 +2530,32 @@ function ezBaseRateLine(buy) {
     + `</div>`;
 }
 
+=======
+// 로더는 ez-nav.js(모든 페이지 공용)에 있다: window.ezCalReady / window.EZ_NYSE_CAL / window.EZ_NYSE_HOLIDAYS.
+// ez-nav.js 가 어떤 이유로 안 실렸을 때만 여기서 직접 읽는다(같은 로직, 폴백).
+if (!window.ezCalReady) {
+  window.EZ_NYSE_CAL = null; window.EZ_NYSE_HOLIDAYS = null;
+  window.ezCalReady = (async () => {
+    const bust = '?t=' + Math.floor(Date.now() / 3600000);
+    const urls = [];
+    if (/^https?:/.test(location.protocol)) urls.push('/data/nyse-calendar.json' + bust);
+    urls.push('https://raw.githubusercontent.com/ziririt/ezlong/main/data/nyse-calendar.json' + bust);
+    for (const u of urls) {
+      try {
+        const r = await fetch(u, { signal: AbortSignal.timeout(3000) });
+        if (!r.ok) continue;
+        const cal = await r.json();
+        if (!Array.isArray(cal.holidays)) continue;
+        cal._h = {}; cal.holidays.forEach(d => { cal._h[d] = 1; }); cal._e = {}; (cal.earlyClose || []).forEach(d => { cal._e[d] = 1; });
+        window.EZ_NYSE_CAL = cal; window.EZ_NYSE_HOLIDAYS = cal.holidays;
+        return cal;
+      } catch (e) { /* 다음 후보 */ }
+    }
+    console.warn('[ez-calendar] 캘린더 로드 실패: 요일 판정으로 폴백(휴장일 구분 불가)');
+    return null;
+  })();
+}
+>>>>>>> Stashed changes
 // ET 기준 { ymd, dow, min }
 function ezEtParts(d) {
   d = d || new Date();
@@ -2543,7 +2570,11 @@ function ezIsTradingDay(ymd, dow) {
   if (dow === undefined) { const [y, mo, da] = ymd.split('-').map(Number); dow = new Date(Date.UTC(y, mo - 1, da)).getUTCDay(); }
   if (dow === 0 || dow === 6) return false;
   const cal = window.EZ_NYSE_CAL;
+<<<<<<< Updated upstream
   return !(cal && cal._h.has(ymd));
+=======
+  return !(cal && cal._h[ymd]);
+>>>>>>> Stashed changes
 }
 function ezShiftYmd(ymd, days) { const [y, mo, da] = ymd.split('-').map(Number); return new Date(Date.UTC(y, mo - 1, da + days)).toISOString().slice(0, 10); }
 // 마지막 실제 거래일(ET). 오늘이 거래일이고 개장(09:30 ET) 후면 오늘.
@@ -2558,7 +2589,11 @@ function ezPrevTradingDay(ymd) { let y = ezShiftYmd(ymd, -1); for (let i = 0; i 
 function ezSessionPhase(d) {
   const p = ezEtParts(d);
   if (!ezIsTradingDay(p.ymd, p.dow)) return 'closed';
+<<<<<<< Updated upstream
   const cal = window.EZ_NYSE_CAL; const close = (cal && cal._e.has(p.ymd)) ? 13 * 60 : 16 * 60;
+=======
+  const cal = window.EZ_NYSE_CAL; const close = (cal && cal._e[p.ymd]) ? 13 * 60 : 16 * 60;
+>>>>>>> Stashed changes
   if (p.min >= 240 && p.min < 570) return 'pre';
   if (p.min >= 570 && p.min < close) return 'open';
   if (p.min >= close && p.min < 1200) return 'post';
@@ -2567,11 +2602,16 @@ function ezSessionPhase(d) {
 function ezClosedReason(d) {
   const p = ezEtParts(d);
   if (p.dow === 0 || p.dow === 6) return 'weekend';
+<<<<<<< Updated upstream
   const cal = window.EZ_NYSE_CAL; if (cal && cal._h.has(p.ymd)) return 'holiday';
+=======
+  const cal = window.EZ_NYSE_CAL; if (cal && cal._h[p.ymd]) return 'holiday';
+>>>>>>> Stashed changes
   return 'night';
 }
 function ezHolidayName(ymd) { const cal = window.EZ_NYSE_CAL; return (cal && cal.holidayNames && cal.holidayNames[ymd]) || null; }
 function ezKoDate(ymd) { return `${parseInt(ymd.slice(5, 7), 10)}월 ${parseInt(ymd.slice(8, 10), 10)}일`; }
+<<<<<<< Updated upstream
 /* 89항 - 시장 날짜는 뉴욕 기준임을 화면이 직접 말한다.
    사고: 2026-09-08 07:09 KST(= ET 09-07 18:09)에 화면이 "오늘은 미국 휴장(Labor Day)"
    이라고 썼다. 세션 판정은 ET로 옳았지만 '오늘'이라는 상대어는 보는 사람의 시계로
@@ -2601,6 +2641,8 @@ function ezJudgeBadge(now) {
     return ezSessionPhase(now || new Date()) === 'closed' ? '직전 장 판단' : '이번 거래일 판단';
   } catch (e) { return '판단' ; }
 }
+=======
+>>>>>>> Stashed changes
 
 // (2) 임계값 한 벌. 카드·FAQ·정적 문구가 전부 여기 숫자를 말한다. 바꾸면 한 곳만 바꾼다.
 const EZ_THRESH = Object.freeze({
@@ -2669,6 +2711,7 @@ function buildTruth(data, vix) {
 function ezGuard(text, facts, fallback) {
   if (!text) return text;
   const T = EZ_THRESH; let t = String(text); const why = [];
+<<<<<<< Updated upstream
   /* 2026-09-08 교정: '과매도' 글자만 보고 걸렀더니 참말을 죽였다.
      실측으로 버려진 문장 - "RSI 52.3→60.4로 과매도 구간 탈출 확인",
      "RSI가 과매도에서 방향을 튼", "RSI 과매도 탈출 + Higher Low 회복 초입".
@@ -2692,12 +2735,26 @@ function ezGuard(text, facts, fallback) {
       && /((현재|지금|오늘|이번)\s*장중|장중\s*(현재|지금|진행|이다|입니다)|진행\s*중인\s*장|급락\s*진행\s*중|급등\s*진행\s*중)/.test(t))
     why.push(`세션 ${facts.phase}인데 '장중' 서술`);
   if (facts.entryBlocked && /(진입\s*가능|신규\s*진입|1차\s*(진입|50%|30%)\s*가능)/.test(t)) why.push('청산 조건 켜진 상태의 진입 권고');
+=======
+  // '과매도'는 RSI 40 미만에서만 단정할 수 있다. '과매도 탈출'은 막 빠져나온 자리(RSI 50 미만)까지만 허용,
+  // '과매도 아님·미만·기준·신호' 같은 조건 서술은 허용. RSI 60에 '과매도 구간 탈출 확인'은 거짓(9/7 실사고).
+  if (facts.rsi != null && facts.rsi >= T.RSI_OVERSOLD && /과매도/.test(t)
+      && !/과매도\s*(구간\s*)?(아님|아니|미만|기준|신호|에서\s*방향을\s*트는)/.test(t)
+      && !(/과매도\s*(구간\s*)?탈출/.test(t) && facts.rsi < 50)) why.push(`RSI ${Math.round(facts.rsi)}인데 '과매도'`);
+  if (facts.buy != null && facts.buy < T.BUY_MIN && /(매수\s*우위|매수\s*자리|진입\s*가능|1차\s*(정찰대|진입|30%)|사볼|들어간다)/.test(t)) why.push(`매수점수 ${facts.buy}인데 매수 권고`);
+  if (facts.gear === 1 && /(신규\s*매수\s*(가능|검토|적합)|진입\s*가능|1차\s*(정찰대|진입)\s*(가능|적합|자리|투입|지금)|매수\s*자리|지표는\s*진입\s*구간|선에서\s*시작하고|지금이라도)/.test(t)) why.push('Gear 1인데 신규 매수 권고');
+  if (facts.rr != null && facts.rr < T.RR_MIN && /(플랜|목표가|손절가|진입가)/.test(t)) why.push(`손익비 ${facts.rr.toFixed(1)}인데 플랜 제시`);
+  if (facts.phase && facts.phase !== 'open' && /(장중|진행\s*중인\s*장|급락\s*진행\s*중|급등\s*진행\s*중)/.test(t)) why.push(`세션 ${facts.phase}인데 '장중' 서술`);
+  // '신규 진입 자제·대기·금지'는 옳은 문장이다. 권고형(가능·검토·적합)만 잡는다.
+  if (facts.entryBlocked && /(진입\s*(가능|적합)|신규\s*진입\s*(검토|적합|가능|권고)|분할\s*진입\s*검토|1차\s*(진입|50%|30%|정찰대)\s*(가능|적합|자리|투입))/.test(t)) why.push('진입 조건이 닫힌 상태(Gear 1·청산·관망)의 진입 권고');
+>>>>>>> Stashed changes
   if (!why.length) return t;
   console.warn('[ezGuard] 문장 폐기:', why.join(' / '), '|', t.slice(0, 80));
   window._ezGuardLog = (window._ezGuardLog || []).concat([{ why, text: t.slice(0, 120) }]);
   return fallback != null ? fallback : '';
 }
 
+<<<<<<< Updated upstream
 /* 88항 원칙 5 확장 (2026-09-08) - 검문의 적용 범위를 넓힌다.
    ezGuard 자체는 있었는데 종목 카드 한 곳에서만 불렸다. 검문은 '있다'가 아니라
    '모든 출구에 서 있다'여야 뜻이 있다. 최상단 스윙 카드·TSLA/NVDA·빅테크 카드의
@@ -2745,6 +2802,8 @@ function ezGuardList(items, facts, tag) {
   return kept.length ? kept : null;
 }
 
+=======
+>>>>>>> Stashed changes
 // TimesFM 1주 참고 지표 (2026-08-16, 운영 확정): 규칙 판단과 완전 분리.
 // 없으면 카드에 그 줄이 안 붙을 뿐, 어떤 판단도 바뀌지 않는다.
 window._tfmForecast = null;
@@ -2848,12 +2907,21 @@ function _v2KingCardHtml(sym) {
   const sv = window._swingView;
   const k = sym === 'TSLA' ? sv?.tsla : sv?.nvda;
   if (!k) return '';
+  const kf = _viewFacts(k, sym);
+  const kLabel = ezGuard(k.stanceLabel, kf, k.nums?.gear <= 1 ? '내리막: 신규 진입 조건 미충족' : '판단 보류: 문장이 숫자와 어긋나 검문에서 걸림');
   return `<div class="t9-box t9-box-hi">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+<<<<<<< Updated upstream
       <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">${ezJudgeBadge()}</span>
       <span style="font-weight:800;color:var(--t1);font-size:16px;">${k.stanceLabel}</span>
     </div>
     ${_blocksHtml(k.blocks, k.commentary, ezSymFacts(sym))}
+=======
+      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">${kf.phase === 'open' || kf.phase === 'pre' || kf.phase === 'post' ? '오늘의 판단' : '직전 장 기준 판단'}</span>
+      <span style="font-weight:800;color:var(--t1);font-size:16px;">${kLabel}</span>
+    </div>
+    ${_blocksHtml(k.blocks, k.commentary, kf)}
+>>>>>>> Stashed changes
     ${_tfmWeekLine(sym)}
   </div>`;
 }
@@ -4460,10 +4528,14 @@ function buildTrendLineHtml() {
     const _wa = window._swingView.weekAhead;
     const _useAhead = _wkPhase === 'ahead' && _wa?.headline && _wa?.core?.length;
     const _holToday = (typeof ezSessionPhase === 'function' && ezSessionPhase() === 'closed' && ezClosedReason() === 'holiday');
+<<<<<<< Updated upstream
     /* 89항: '오늘의 시그널'은 한국 독자의 달력으로 읽힌다. 뉴욕 장중은 한국 시각
        22:30~05:00이라, 장이 도는 시간의 절반 이상은 독자의 '오늘'이 이미 다음 날이다.
        판정 라벨은 독자의 달력이 아니라 '장'을 기준으로 부른다(ezJudgeBadge와 같은 계열). */
     _swingLabel = (_wkPhase === 'session' && !_holToday) ? '이번 거래일 시그널'
+=======
+    _swingLabel = (_wkPhase === 'session' && !_holToday) ? '오늘의 시그널'
+>>>>>>> Stashed changes
                 : _useAhead ? '새 주 전망' : '직전 장 마감 시그널';
     const _flowLine = (window._swingView.flow && !_useAhead)
       ? `<div style="margin:0 0 10px;color:var(--t2);font-size:16px;">${window._swingView.flow}</div>` : '';
@@ -4514,16 +4586,27 @@ function buildTrendLineHtml() {
     const _isHoliday = _closedWhy === 'holiday';
     const _PHASE_KO = { pre: '프리마켓', open: '장중', post: '마감 직후', closed: _isHoliday ? '휴장' : '장 마감' };
     const _phaseWas = window._swingView.session;
+<<<<<<< Updated upstream
     const _holYmd  = ezEtParts(_nowD).ymd;                       // 89항: 휴장인 '그 날'은 뉴욕 날짜다
     const _holName = _isHoliday ? (ezHolidayName(_holYmd) || '공휴일') : '';
+=======
+    const _holName = _isHoliday ? (ezHolidayName(ezEtParts(_nowD).ymd) || '공휴일') : '';
+>>>>>>> Stashed changes
     const _lastTd = (window.EZ_TRUTH?.cal?.asOf) || ezLastTradingDay(_nowD);
     const _wkNotice = (_wkPhase === 'session' && !_isHoliday) ? '' :
       `<div style="margin:0 0 10px;padding:8px 10px;border-radius:10px;background:var(--bd2,rgba(120,120,128,.12));color:var(--t2);font-size:14px;font-weight:600;line-height:1.55;">
          ${_isHoliday
+<<<<<<< Updated upstream
            ? `뉴욕 증시는 <b>${ezNyDate(_holYmd, { city: false })} 휴장(${_holName})</b>이다. 아래 수치와 판단은 직전 거래일 <b>${ezNyDate(_lastTd)}</b> 종가 기준: 다음 개장 전까지 갱신 없음.`
            : _useAhead
            ? `아래는 <b>다음 장을 준비하는 전망</b>이다. 근거는 직전 장 <b>${ezNyDate(_lastTd)}</b> 마감 자료.`
            : `아래는 <b>직전 장 ${ezNyDate(_lastTd)} 마감 시점</b>의 판단이다. 다음 장 개장 전까지 갱신 없음.`}
+=======
+           ? `오늘은 <b>미국 휴장(${_holName})</b>이다. 아래 수치와 판단은 직전 거래일 <b>${ezKoDate(_lastTd)}</b> 종가 기준: 다음 개장 전까지 갱신 없음.`
+           : _useAhead
+           ? `아래는 <b>다음 장을 준비하는 전망</b>이다. 근거는 직전 장(${window._swingView.dataDay}) 마감 자료.`
+           : `아래는 <b>직전 장(${window._swingView.dataDay}) 마감 시점</b>의 판단이다. 다음 장 개장 전까지 갱신 없음.`}
+>>>>>>> Stashed changes
        </div>`;
     const _phaseWarn = (_wkPhase !== 'session' || _isHoliday) ? _wkNotice
       : (_phaseWas && _PHASE_KO[_phaseWas] && _phaseWas !== _phaseNow)
@@ -4548,7 +4631,11 @@ function buildTrendLineHtml() {
       {text: `확신도 ${_c.confidence ?? ': '}`, tone: 'positive'},
     ];
     if (window._swingView.stanceChangedToday && _wkPhase === 'session' && !_isHoliday) {
+<<<<<<< Updated upstream
       pills.unshift({text: '이번 거래일 스탠스 변경', tone: 'positive'});
+=======
+      pills.unshift({text: '오늘 스탠스 변경', tone: 'positive'});
+>>>>>>> Stashed changes
     } else if ((window._swingView.stanceStreak ?? 1) >= 2) {
       pills.push({text: `${window._swingView.stanceStreak}거래일째 유지`, tone: 'neutral'});
     }
@@ -5987,7 +6074,11 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
       }[tier];
       const macdOK = tier < 3 || macdHist > 0 || macdLine > 0;   // 3배수만 방향 확인 추가
       if (tier === 1 && oneXFull) {
+<<<<<<< Updated upstream
         return `<span class="no">현재 ${spec.name} 물타기 없음: 1배수 칸이 계획 비중을 채운 상태</span>: 평단을 낮추려 더 사는 것은 칸을 넘기는 일. 손절선 재확인이 먼저.`;
+=======
+        return `<span class="no">오늘 ${spec.name} 물타기 없음: 1배수 칸이 계획 비중을 채운 상태</span>: 평단을 낮추려 더 사는 것은 칸을 넘기는 일. 손절선 재확인이 먼저.`;
+>>>>>>> Stashed changes
       }
       const buyMin = tier === 3 ? TH.LEV3_BUY : 60;
       const fail = [];
@@ -6409,9 +6500,15 @@ function _deepAnalysisCardHtml(d, _ai) {
       // 88항: '오늘·어제'는 휴장일·주말에 거짓말이 된다(9/7 노동절에 '오늘 -0.8%'). 거래일 날짜로 말한다.
       const _td0 = (_TR?.cal?.asOf) || ezLastTradingDay(new Date());
       const _td1 = ezPrevTradingDay(_td0), _td2 = ezPrevTradingDay(_td1);
+<<<<<<< Updated upstream
       // 89항: '오늘'을 붙이면 한국 독자의 달력으로 읽힌다. 거래일 날짜와 요일만 말한다.
       const _md  = ymd => ezNyShort(ymd);
       const _lbl0 = `${_md(_td0)} 장`, _lbl1 = `${_md(_td1)} 장`, _lbl2 = `${_md(_td2)} 장`;
+=======
+      const _md  = ymd => `${parseInt(ymd.slice(5, 7), 10)}/${parseInt(ymd.slice(8, 10), 10)}`;
+      const _isToday = _td0 === ezEtParts(new Date()).ymd;
+      const _lbl0 = _isToday ? `오늘 ${_md(_td0)}` : `${_md(_td0)} 장`, _lbl1 = `${_md(_td1)} 장`, _lbl2 = `${_md(_td2)} 장`;
+>>>>>>> Stashed changes
       let _summary = '';
       if (_consecDown) {
         _summary = `이틀 연속 하락(${_md(_td1)}·${_md(_td0)}): 단기 하락 압력 지속. 추격 진입 자제 구간`;
@@ -6888,8 +6985,8 @@ renderKings = function(tsla, nvda) {
     const ai = sym === 'TSLA' ? window._tslaAnalysis : window._nvdaAnalysis;
     const d = window._renderData?.[sym];
     holder.innerHTML = _v2KingCardHtml(sym)
-      + buildMegaAiHtml(ai)
-      + buildAudienceHtml(view?.audience)
+      + buildMegaAiHtml(ai, sym)
+      + buildAudienceHtml(view?.audience, sym)
       + (d ? buildMegaMetricsHtml(d) : '');
     const head = section.querySelector('.top9-sec-head');
     if (head) head.insertAdjacentElement('afterend', holder);
@@ -6993,23 +7090,34 @@ function selectTop9(sym) {
 }
 
 // 4분류 맞춤 행동 진단 카드: 스윙 전략 탭의 보유자/신규/물타기/불타기 분류를 종목 단위로
-function buildAudienceHtml(aud) {
+function buildAudienceHtml(aud, sym) {
   if (!aud) return '';
+  // 88항: 4분류 문장도 검문. 걸리면 그 분류의 안전 문장으로 바꾼다(빈칸으로 두면 독자는 '정보 없음'으로 읽는다).
+  const F = ezSymFacts(sym, null);
+  const safe = {
+    holder:  F.gear <= 1 ? '보유자: 200일선 아래 구간. 이탈 기준(직전 저점) 하나만 관리, 신규 추가는 없음.' : '보유자: 추세 훼손 신호 없으면 유지.',
+    newbie:  (F.buy != null && F.buy < EZ_THRESH.BUY_MIN) ? `신규 진입 대기: 매수 점수 ${F.buy}점(기준 ${EZ_THRESH.BUY_MIN} 미달). 신호가 켜질 때 다시 본다.`
+             : F.gear <= 1 ? '신규 진입 대기: 200일선 아래(Gear 1)에서는 정찰대도 열지 않는다. 과매도 탈출 반전 또는 200일선 회복이 먼저.'
+             : '신규 진입은 최상단 판정이 쌓기일 때만: 지금은 대기.',
+    avgdown: '물타기 보류: 진입 조건이 안 열린 자리에서는 평단 낮추기도 하지 않는다.',
+    pyramid: '불타기 금지 구간: 추세·점수 조건 미충족.',
+  };
   const row = (cls, label, txt) => `<div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(120,120,128,0.14);">
     <span class="ltier-cat-badge ${cls}" style="flex-shrink:0;">${label}</span>
     <span style="font-size:15px;line-height:1.6;color:var(--t1);">${txt}</span></div>`;
   return `<div class="t9-box">
     <div style="font-weight:800;color:var(--t1);font-size:16px;margin-bottom:6px;">맞춤 행동 진단</div>
-    ${row('hold', '보유자', aud.holder)}
-    ${row('buy', '첫매수', aud.newbie)}
-    ${row('avg', '물타기', aud.avgdown)}
-    ${row('fire', '불타기', aud.pyramid)}
+    ${row('hold', '보유자', ezGuard(aud.holder, F, safe.holder))}
+    ${row('buy', '첫매수', ezGuard(aud.newbie, F, safe.newbie))}
+    ${row('avg', '물타기', ezGuard(aud.avgdown, F, safe.avgdown))}
+    ${row('fire', '불타기', ezGuard(aud.pyramid, F, safe.pyramid))}
   </div>`;
 }
 
 // 블록형 코멘트 렌더 (2026-08-04 운영 지침): 소제목 + 닷블릿.
 // 한 문단 몇 줄짜리 서술은 한눈에 안 들어온다. 그룹핑해서 스캔 가능하게.
 // blocks가 없는 구버전 JSON은 기존 평문(commentary)으로 자동 폴백한다.
+<<<<<<< Updated upstream
 // 88항 원칙 5·9: facts 를 받으면 항목마다 숫자 검문을 건다. 안 주면 예전대로 그냥 그린다.
 function _blocksHtml(blocks, fallbackText, facts) {
   const _g = (arr, tag) => facts ? ezGuardList(arr, facts, tag) : (arr && arr.length ? arr : null);
@@ -7021,9 +7129,55 @@ function _blocksHtml(blocks, fallbackText, facts) {
   return blocks.filter(b => b && b.items && b.items.length).map(b => {
     const items = _g(b.items, `카드 '${b.h}'`);
     if (!items) return '';                       // 한 절이 통째로 걸리면 제목도 싣지 않는다
+=======
+/* 88항: 서버가 쓴 문장도 화면에 나가기 전에 검문(ezGuard)을 거친다. facts 는 그 종목의 숫자(view.nums)와 지금 세션.
+   검문에 걸린 항목은 빠지고, 항목이 다 빠진 블록은 사라진다. 소제목의 '장중'은 세션이 open 이 아니면 거래일 표기로 바뀐다. */
+/* 종목 숫자의 단일 진실값(원칙 3): 이 페이지가 화면에 찍는 숫자는 window._renderData[sym](클라이언트 재계산, 8항)이다.
+   서버 스윙뷰의 nums 는 그 다음. 판단 카드의 '지금 숫자'와 지표 카드의 '매수 매력도'가 49 vs 50 으로 갈리던 원인이 여기였다. */
+function ezSymFacts(sym, v) {
+  const d = (sym && window._renderData && window._renderData[sym]) || null;
+  const n = (v && v.nums) || {};
+  const T = window.EZ_TRUTH;
+  const buy  = (d && typeof d.buyScore === 'number') ? d.buyScore : (n.buy ?? null);
+  const sell = (d && typeof d.sellScore === 'number') ? d.sellScore : (n.sell ?? null);
+  const gear = (d && typeof d.gear === 'number') ? d.gear : (n.gear ?? null);
+  const rsi  = (d && typeof d.rsi === 'number') ? d.rsi : (n.rsi ?? null);
+  const exitOn = sell != null && sell >= EZ_THRESH.SELL_EXIT;
+  return { sym, rsi, buy, sell, gear,
+           phase: T?.cal?.phase || (typeof ezSessionPhase === 'function' ? ezSessionPhase() : null),
+           topOpen: T ? T.top.leverageEntryAllowed : true,
+           entryBlocked: (gear != null && gear <= 1) || exitOn,
+           source: d ? 'page' : (v && v.nums ? 'swing-view' : 'none') };
+}
+function _viewFacts(v, sym) { return ezSymFacts(sym, v); }
+// '지금 숫자' 블록은 서버 문장이 아니라 페이지 숫자로 다시 쓴다: 한 화면에 두 숫자가 있으면 안 된다.
+function _numsBlockItems(f) {
+  if (f.buy == null) return null;
+  const gearTxt = f.gear >= 3 ? '200일선 위' : f.gear === 2 ? '200일선 근처' : '200일선 아래';
+  return [`매수점수 ${f.buy} · 매도압력 ${f.sell ?? ': '} · RSI ${f.rsi != null ? Math.round(f.rsi) : ': '}`,
+          `추세 기어 ${f.gear ?? ': '}: ${gearTxt}`];
+}
+function _fixSessionHeading(h, facts) {
+  if (!h || !facts || facts.phase === 'open' || !/장중/.test(h)) return h;
+  const asOf = window.EZ_TRUTH?.cal?.asOf || (typeof ezLastTradingDay === 'function' ? ezLastTradingDay(new Date()) : null);
+  console.warn('[ezGuard] 소제목 장중 → 직전 장:', h);
+  return asOf ? `직전 장(${ezKoDate(asOf)})` : h.replace(/오늘 장\((.*?)\)\s*장중/, '직전 장($1)').replace(/장중/, '마감');
+}
+function _blocksHtml(blocks, fallbackText, facts) {
+  if (!Array.isArray(blocks) || !blocks.length) {
+    const ft = facts ? ezGuard(fallbackText, facts, '') : fallbackText;
+    return ft
+      ? `<p style="margin:0 0 10px;line-height:1.75;color:var(--t1);font-size:16px;">${ft}</p>` : '';
+  }
+  return blocks.filter(b => b && b.items && b.items.length).map(b => {
+    const srcItems = (facts && b.h === '지금 숫자' && _numsBlockItems(facts)) || b.items;
+    const items = facts ? srcItems.map(it => ezGuard(it, facts, '')).filter(Boolean) : srcItems;
+    if (!items.length) return '';
+    const h = facts ? _fixSessionHeading(b.h, facts) : b.h;
+>>>>>>> Stashed changes
     return `
     <div style="margin:0 0 12px;">
-      <div style="font-size:14px;font-weight:800;letter-spacing:.04em;color:var(--t3);margin-bottom:5px;">${b.h}</div>
+      <div style="font-size:14px;font-weight:800;letter-spacing:.04em;color:var(--t3);margin-bottom:5px;">${h}</div>
       <ul style="margin:0;padding:0;list-style:none;">
         ${items.map(it => `<li style="position:relative;padding-left:14px;margin-bottom:4px;font-size:16px;line-height:1.65;color:var(--t1);">
           <span style="position:absolute;left:0;top:0;color:var(--bl);font-weight:900;">·</span>${it}</li>`).join('')}
@@ -7035,12 +7189,21 @@ function _blocksHtml(blocks, fallbackText, facts) {
 function _megaStanceCardHtml(sym) {
   const m = window._swingView?.megas?.[sym];
   if (!m) return '';
+  const mf = _viewFacts(m, sym);
+  const mLabel = ezGuard(m.stanceLabel, mf, m.nums?.gear <= 1 ? '내리막: 신규 진입 조건 미충족' : '판단 보류: 문장이 숫자와 어긋나 검문에서 걸림');
   return `<div class="t9-box t9-box-hi">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+<<<<<<< Updated upstream
       <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">${ezJudgeBadge()}</span>
       <span style="font-weight:800;color:var(--t1);font-size:16px;">${m.stanceLabel}</span>
     </div>
     ${_blocksHtml(m.blocks, m.commentary, ezSymFacts(sym === 'GOOG' ? 'GOOGL' : sym))}
+=======
+      <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">${mf.phase === 'open' || mf.phase === 'pre' || mf.phase === 'post' ? '오늘의 판단' : '직전 장 기준 판단'}</span>
+      <span style="font-weight:800;color:var(--t1);font-size:16px;">${mLabel}</span>
+    </div>
+    ${_blocksHtml(m.blocks, m.commentary, mf)}
+>>>>>>> Stashed changes
     ${_tfmWeekLine(sym === 'GOOG' ? 'GOOGL' : sym)}
     <div style="color:var(--t3);font-size:14px;">확률·통계는 검증된 백테스트 결과만 인용 · 투자 판단의 참고 자료</div>
   </div>`;
@@ -7069,18 +7232,33 @@ function buildMegaMetricsHtml(d) {
 }
 
 // Gemini AI 차트분석 블록: 킹 카드의 트레이딩 플랜과 동일 정보 구성 (2026-08-04 연동)
-function buildMegaAiHtml(ai) {
+function buildMegaAiHtml(ai, sym) {
   if (!ai) return '';
-  const col = ai.action === '매수' ? 'var(--gr)' : ai.action === '매도' ? 'var(--rd)' : 'var(--t2)';
-  const mark = ai.action === '매수' ? '▲ 매수 우위' : ai.action === '매도' ? '▼ 매도 우위' : '◆ 관망';
-  const reason = ai.reason ? String(ai.reason).replace(/◆/g, '').replace(/\s{2,}/g, ' ').trim() : '';
-  const conti = ai.continuity
-    ? `<div class="ktp-continuity">${ai.continuity}</div>` : '';
+  /* 88항: 모델(Gemini)은 문장만 쓴다. 판정은 코드: 점수 미달·Gear 1·청산 조건이면 '매수'는 '관망'으로,
+     손익비 1 미만이면 플랜 레벨은 싣지 않는다. 문장은 ezGuard 검문. */
+  const F = ezSymFacts(sym, null);
+  const rrNum = (typeof ai.entry === 'number' && typeof ai.stop === 'number' && typeof ai.target === 'number' && ai.entry !== ai.stop)
+    ? (ai.target - ai.entry) / Math.abs(ai.entry - ai.stop) : null;
+  F.rr = rrNum;
+  const blocked = F.entryBlocked || (F.buy != null && F.buy < EZ_THRESH.BUY_MIN);
+  const action = (ai.action === '매수' && blocked) ? '관망' : ai.action;
+  if (action !== ai.action) console.warn('[ezGuard] ' + (sym || '?') + ' AI action 매수 → 관망 (점수 ' + F.buy + ', Gear ' + F.gear + ', 매도 ' + F.sell + ')');
+  const col = action === '매수' ? 'var(--gr)' : action === '매도' ? 'var(--rd)' : 'var(--t2)';
+  const mark = action === '매수' ? '▲ 매수 우위' : action === '매도' ? '▼ 매도 우위' : '◆ 관망';
+  const whyDown = action !== ai.action
+    ? `<div class="ktp-continuity" style="color:var(--t2)">모델은 매수 우위로 봤으나 코드 판정이 우선: ${
+        F.buy != null && F.buy < EZ_THRESH.BUY_MIN ? `매수 점수 ${F.buy}점(${EZ_THRESH.BUY_MIN} 미달)` :
+        F.gear <= 1 ? 'Gear 1(200일선 아래)' :
+        F.sell >= EZ_THRESH.SELL_EXIT ? `매도 압력 ${F.sell}(청산 기준 ${EZ_THRESH.SELL_EXIT})` : '진입 조건 미충족'}. 신규 진입 대기.</div>` : '';
+  const reason = ezGuard(ai.reason ? String(ai.reason).replace(/◆/g, '').replace(/\s{2,}/g, ' ').trim() : '', F, '');
+  const contiTx = ezGuard(ai.continuity, F, '');
+  const conti = contiTx ? `<div class="ktp-continuity">${contiTx}</div>` : '';
   let plan = '';
-  if (ai.entry && ai.stop && ai.target) {
+  if (ai.entry && ai.stop && ai.target && rrNum != null && rrNum < EZ_THRESH.RR_MIN) {
+    plan = `<div style="margin:10px 0 4px;padding:10px 12px;background:rgba(120,120,128,0.08);border-radius:10px;color:var(--t2);font-size:14px;line-height:1.6;">플랜 보류: 모델이 낸 레벨의 손익비가 ${rrNum.toFixed(1)}:1 로 1 미만이다. 손절 폭보다 목표 폭이 작은 플랜은 싣지 않는다.</div>`;
+  } else if (ai.entry && ai.stop && ai.target) {
     const f = v => typeof v === 'number' ? v.toFixed(2) : String(v ?? ': ');
-    const rr = (typeof ai.entry === 'number' && typeof ai.stop === 'number' && typeof ai.target === 'number' && ai.entry !== ai.stop)
-      ? ((ai.target - ai.entry) / Math.abs(ai.entry - ai.stop)).toFixed(1) + ':1' : ': ';
+    const rr = rrNum != null ? rrNum.toFixed(1) + ':1' : ': ';
     const lv = (l, v, c) => `<div style="flex:1;min-width:70px;text-align:center;">
       <div style="color:var(--t3);font-size:14px;">${l}</div>
       <div style="font-size:15px;font-weight:800;color:${c};">${v}</div></div>`;
@@ -7095,7 +7273,7 @@ function buildMegaAiHtml(ai) {
       <span style="font-weight:800;color:${col};font-size:16px;">${mark}</span>
       <span style="color:var(--t3);font-size:14px;">AI 차트분석 · 스윙 트레이딩 플랜</span>
     </div>
-    ${conti}
+    ${whyDown}${conti}
     ${reason ? `<p style="margin:0 0 4px;line-height:1.7;color:var(--t1);font-size:16px;">${reason}</p>` : ''}
     ${plan}
     ${inval}
@@ -7150,9 +7328,9 @@ function renderMegaCards(sym) {
   const d = window._renderData?.[sym];
   const ai = window._megaAi[sym];   // undefined=미로딩, null=없음, object=도착
   box.innerHTML = `${_megaStanceCardHtml(sym)}
-    ${ai ? buildMegaAiHtml(ai)
+    ${ai ? buildMegaAiHtml(ai, sym)
          : (ai === undefined ? '<div style="color:var(--t3);font-size:14px;margin:0 0 12px;">AI 차트분석 불러오는 중…</div>' : '')}
-    ${buildAudienceHtml(window._swingView?.megas?.[sym]?.audience)}
+    ${buildAudienceHtml(window._swingView?.megas?.[sym]?.audience, sym)}
     ${d ? buildMegaMetricsHtml(d)
         : '<div class="t9-box" style="color:var(--t2);font-size:16px;">데이터 수집 대기 구간: 다음 자동 갱신(장중 최대 30분 주기) 이후 표시됩니다.</div>'}
     ${_deepCardReady(d) ? `<details class="sv-det-page"><summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:10px 4px;">상세보기: 지표·점수·매매 기준 전체</summary><div>${_deepAnalysisCardHtml(d, ai || null)}</div></details>` : ''}`;

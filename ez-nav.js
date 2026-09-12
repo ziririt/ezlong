@@ -805,6 +805,7 @@
    ※ 같은 판정을 chief-strip.js 와 atmr-dashboard.html 이 함께 쓴다.
      여기 하나만 고치면 둘 다 따라온다 (공유 함수 동기화 원칙).
    ───────────────────────────────────────────────────────────── */
+<<<<<<< Updated upstream
 /* 88항 - ET 날짜가 NYSE 공휴일인가. 캘린더가 없으면 false(모른다 = 평소대로). */
 function ezIsNyseHoliday(etDate) {
   var list = window.EZ_NYSE_HOLIDAYS;
@@ -835,6 +836,36 @@ window.ezMarketClosedReason = function (now) {
   }
   return null;
 };
+=======
+/* 88항: NYSE 거래일 캘린더 로더. 단일 출처 data/nyse-calendar.json (저장소 루트 = 웹 루트라 같은 출처로 먼저,
+   실패하면 raw.githubusercontent). 모든 페이지가 ez-nav.js 를 실으므로 여기서 한 번 채우면
+   ezWeekPhase(여기) · chief-strip.js · atmr-dashboard.html 이 같은 배열을 본다. 대시보드는 이 promise 를 기다린다. */
+window.EZ_NYSE_CAL = window.EZ_NYSE_CAL || null;
+window.EZ_NYSE_HOLIDAYS = window.EZ_NYSE_HOLIDAYS || null;
+window.ezCalReady = window.ezCalReady || (function () {
+  var bust = '?t=' + Math.floor(Date.now() / 3600000);
+  var urls = [];
+  if (/^https?:/.test(location.protocol)) urls.push('/data/nyse-calendar.json' + bust);
+  urls.push('https://raw.githubusercontent.com/ziririt/ezlong/main/data/nyse-calendar.json' + bust);
+  function tryAt(i) {
+    if (i >= urls.length) { console.warn('[ez-calendar] 캘린더 로드 실패: 요일 판정으로 폴백(휴장일 구분 불가)'); return Promise.resolve(null); }
+    var ctl = (typeof AbortController === 'function') ? new AbortController() : null;
+    var timer = ctl ? setTimeout(function () { ctl.abort(); }, 3000) : null;
+    return fetch(urls[i], ctl ? { signal: ctl.signal } : {})
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (cal) {
+        if (timer) clearTimeout(timer);
+        if (!cal || !Array.isArray(cal.holidays)) return tryAt(i + 1);
+        cal._h = {}; cal.holidays.forEach(function (d) { cal._h[d] = 1; });
+        cal._e = {}; (cal.earlyClose || []).forEach(function (d) { cal._e[d] = 1; });
+        window.EZ_NYSE_CAL = cal; window.EZ_NYSE_HOLIDAYS = cal.holidays;
+        return cal;
+      })
+      .catch(function () { if (timer) clearTimeout(timer); return tryAt(i + 1); });
+  }
+  return tryAt(0);
+})();
+>>>>>>> Stashed changes
 
 window.ezWeekPhase = function (now) {
   now = now || new Date();
@@ -849,11 +880,21 @@ window.ezWeekPhase = function (now) {
   // (58항) 이 구간을 화면 문구에서 '휴장'이라 부르지 않는다.
   var closed = (ed === 6) || (ed === 0) ||
                (ed === 5 && em >= 1200) || (ed === 1 && em < 240);
+<<<<<<< Updated upstream
   // 88항 - 평일 공휴일. 요일만 보면 노동절·추수감사절에 'session'이 나오고
   // 화면이 '오늘의 시그널'이라며 없는 장의 장중을 서술한다(2026-09-07 실사고).
   // 캘린더는 atmr-dashboard.html 이 채워 주는 window.EZ_NYSE_HOLIDAYS 하나다.
   // 없으면(다른 페이지·로드 실패) 예전처럼 요일로만 판정한다 - 죽지 않는다.
   if (!closed && ezIsNyseHoliday(et)) closed = true;
+=======
+  /* 88항: 평일 공휴일(노동절 등)은 주말 국면과 다르다. 캘린더(window.EZ_NYSE_HOLIDAYS,
+     단일 출처 data/nyse-calendar.json 을 대시보드가 읽어 채움)에 오늘(ET)이 있으면 'holiday'.
+     캘린더가 안 실렸으면 종전처럼 요일만 본다(폴백). */
+  if (!closed && Array.isArray(window.EZ_NYSE_HOLIDAYS) && window.EZ_NYSE_HOLIDAYS.length) {
+    var ymd = et.getFullYear() + '-' + String(et.getMonth() + 1).padStart(2, '0') + '-' + String(et.getDate()).padStart(2, '0');
+    if (window.EZ_NYSE_HOLIDAYS.indexOf(ymd) >= 0) return 'holiday';
+  }
+>>>>>>> Stashed changes
   if (!closed) return 'session';
   var d = now.getDay(), h = now.getHours();     // 여기부터는 보는 사람의 현지 시계
   if (d === 0 && h >= 9) return 'ahead';        // 현지 일요일 오전
