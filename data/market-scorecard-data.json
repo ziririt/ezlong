@@ -1,6 +1,82 @@
 {
   "entries": [
     {
+      "id": "2026-09-13-08:20",
+      "timestamp_kst": "2026-09-13(일) 08:20 KST",
+      "key_event": {
+        "name": "FOMC 금리 결정 임박",
+        "name_en": "Impending FOMC Interest Rate Decision",
+        "time": "9월 16일(수) 14:00 ET",
+        "why": "향후 통화정책 방향 결정, 시장 불확실성 증대 (9월 16일(수) 14:00 ET)",
+        "why_en": "Determines future monetary policy, increases market uncertainty (Sep 16 (Wed) 14:00 ET)"
+      },
+      "positive_total": 50,
+      "negative_total": 50,
+      "summary": "기술주 강세 및 AI 수요 지속으로 팽팽한 균형, FOMC 경계감 혼조",
+      "summary_en": "Positive bias due to strong tech and sustained AI demand, mixed sentiment on FOMC caution",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "AI 관련 기술주 수요 지속",
+          "name_en": "Sustained Demand for AI-related Tech Stocks",
+          "desc": "AI 인프라 투자 지속 및 관련 기술 기업들의 긍정적 전망: GOOGL (+2.17%), AAPL (+2.07%) 등 주요 기술주 강세",
+          "desc_en": "Continued investment in AI infrastructure and positive outlook for related tech companies: Strong performance in major tech stocks like GOOGL (+2.17%), AAPL (+2.07%)",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "시장 변동성 완화",
+          "name_en": "Easing Market Volatility",
+          "desc": "VIX 공포지수 15.84 (-11.21%) 하락: 투자 심리 개선 및 위험 선호 심리 회복",
+          "desc_en": "VIX fear index declined to 15.84 (-11.21%): Improved investor sentiment and renewed risk appetite",
+          "category": "vix_risk_sentiment"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "FOMC 금리 인상 가능성 잔존",
+          "name_en": "Lingering Possibility of FOMC Rate Hike",
+          "desc": "높은 인플레이션 지표(CPI 3.35%, 근원 PCE 3.34%)로 Fed의 추가 금리 인상 압력 지속",
+          "desc_en": "Persistent inflationary data (CPI 3.35%, Core PCE 3.34%) maintains pressure on the Fed for further rate hikes",
+          "category": "fed_policy"
+        },
+        {
+          "score": 15,
+          "name": "미 국채금리 상승 압력",
+          "name_en": "Upward Pressure on US Treasury Yields",
+          "desc": "미10년 국채금리 4.97%(+0.63%) 상승: 높은 금리 수준 유지로 성장주 할인율 부담 지속",
+          "desc_en": "US 10-year Treasury yield rose to 4.97% (+0.63%): High interest rate levels continue to burden growth stock valuations",
+          "category": "rates_treasury"
+        },
+        {
+          "name": "중동 지정학적 긴장 지속",
+          "name_en": "Continued Geopolitical Tensions in Middle East",
+          "desc": "미-이란 교착 상태 및 이란 전쟁 우려 지속: 유가 상승 압력 및 시장 불확실성 증대",
+          "desc_en": "Ongoing US-Iran stalemate and war concerns: Upward pressure on oil prices and increased market uncertainty",
+          "category": "geopolitics",
+          "score": 10
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "FOMC 금리 결정 경계감",
+          "name_en": "FOMC Interest Rate Decision Caution",
+          "desc": "9월 16일(수) 14:00 ET 예정된 FOMC 금리 결정 앞두고 관망세: 통화정책 불확실성 상존",
+          "desc_en": "Market caution ahead of the FOMC interest rate decision scheduled for September 16 (Wed) 14:00 ET: Monetary policy uncertainty persists",
+          "category": "fed_policy"
+        }
+      ],
+      "report": {
+        "overview": "- 총점: 긍정 50 대 부정 50으로 시장은 팽팽한 균형을 유지하는 상황.\n- 주요 원인: AI 관련 기술주에 대한 지속적인 수요가 시장을 지지하는 반면, 다가오는 FOMC 금리 결정에 대한 경계감과 높은 인플레이션 지표가 하방 압력으로 작용하는 상황.\n- 하단 지지: VIX 공포지수 하락으로 투자 심리가 개선되며 시장 변동성이 완화되는 모습.",
+        "positive": "- AI 관련 기술주 수요 지속: AI 인프라 투자 및 관련 기술 기업들의 긍정적 전망이 지속되며 GOOGL (+2.17%), AAPL (+2.07%) 등 주요 기술주가 강세를 보임. 이는 AI 에이전트 및 제로 트러스트 성장 야심과 같은 기술 혁신에 대한 기대감에 기인함.\n- 시장 변동성 완화: VIX 공포지수가 15.84 (-11.21%)로 하락하며 투자 심리가 개선되고 위험 선호 심리가 회복되는 모습. 이는 시장의 단기적인 불확실성 감소를 반영함.",
+        "negative": "- FOMC 금리 인상 가능성 잔존: 높은 인플레이션 지표(CPI 3.35%, 근원 PCE 3.34%)가 지속되며 연방준비제도(Fed)의 추가 금리 인상 압력이 유지되는 상황. 이는 연준의 금리 인상 가능성을 높이는 요인으로 작용함.\n- 미 국채금리 상승 압력: 미 10년 국채금리가 4.97%(+0.63%)로 상승하며 높은 금리 수준이 유지되는 상황. 이는 성장주 할인율에 대한 부담으로 작용하여 주식 시장에 부정적인 영향을 미침.\n- 중동 지정학적 긴장 지속: 미국-이란 교착 상태와 이란 전쟁 우려가 지속되며 유가 상승 압력 및 시장 불확실성이 증대되는 상황. 이는 글로벌 경제에 대한 우려를 높이는 요인으로 작용함.",
+        "mixed": "- FOMC 금리 결정 경계감: 9월 16일(수) 14:00 ET로 예정된 FOMC 금리 결정을 앞두고 시장에 관망세가 짙어지는 상황. 연방준비제도의 통화정책 방향에 대한 불확실성이 상존하며 투자자들은 신중한 태도를 보이고 있음. 높은 인플레이션 지표는 금리 인상 가능성을 높이지만, 동시에 경기 둔화 우려도 존재하여 연준의 결정에 대한 예측이 엇갈리는 상황.",
+        "watch": "- 미 국채금리 추이: 미 10년 국채금리의 추가적인 상승 또는 하락 여부. 금리 상승은 성장주에 대한 할인율 부담을 가중시켜 시장 하방 압력으로 작용할 수 있으며, 금리 하락은 반대로 시장에 긍정적인 영향을 미칠 수 있음.\n- 유가 변동성: 중동 지정학적 긴장 상황에 따른 유가 변동성 추이. 유가 상승은 인플레이션 압력을 높여 연준의 긴축 기조를 강화할 수 있으며, 유가 하락은 인플레이션 완화 기대감을 높여 시장에 긍정적인 영향을 미칠 수 있음."
+      },
+      "report_at": "2026-09-13(일) 08:20 KST"
+    },
+    {
       "id": "2026-09-13-07:00",
       "timestamp_kst": "2026-09-13(일) 07:00 KST",
       "key_event": {
@@ -638,60 +714,8 @@
         "watch": "- 달러 인덱스 변동성: 인플레이션 지표와 금리 인상 우려에 민감하게 반응하는 달러 인덱스의 움직임이 글로벌 자금 흐름과 증시 변동성에 미칠 영향 확인."
       },
       "report_at": "2026-09-12(토) 01:42 KST"
-    },
-    {
-      "id": "2026-09-11-22:21",
-      "timestamp_kst": "2026-09-11(금) 22:21 KST",
-      "key_event": {
-        "name": "8월 CPI 예상치 상회",
-        "name_en": "August CPI Exceeds Expectations",
-        "time": "9월 11일(금) 08:30 ET 발표",
-        "why": "Fed 금리 인상 가능성 증대, 시장 변동성 확대",
-        "why_en": "Increased likelihood of Fed rate hike, market volatility"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "8월 CPI 예상치 상회로 Fed 금리 인상 우려 증대, 부정 우위 지속",
-      "summary_en": "August CPI exceeding expectations heightens Fed rate hike concerns, negative sentiment persists",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "WTI 원유 가격 하락",
-          "name_en": "WTI Crude Oil Price Decline",
-          "desc": "WTI 원유 98.94달러(-4.15%)로 하락: 인플레이션 압력 완화 기대",
-          "desc_en": "WTI crude oil drops to $98.94 (-4.15%): easing inflation concerns",
-          "category": "oil_energy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 65,
-          "name": "8월 CPI 예상치 상회",
-          "name_en": "August CPI Exceeds Expectations",
-          "desc": "8월 CPI 3.4%(예상 3.3%)로 발표: 인플레이션 지속 우려, Fed 금리 인상 가능성 증대",
-          "desc_en": "August CPI reported at 3.4% (vs. 3.3% expected): persistent inflation concerns, increased Fed rate hike probability",
-          "category": "macro_data"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "FOMC 금리 결정 임박",
-          "name_en": "FOMC Rate Decision Nearing",
-          "desc": "9월 16일(수) 14:00 ET FOMC 금리 결정 대기: 시장의 불확실성 증폭",
-          "desc_en": "Awaiting FOMC rate decision on September 16 (Wed) 14:00 ET: heightened market uncertainty",
-          "category": "fed_policy"
-        }
-      ],
-      "report": {
-        "overview": "- 현재 판 결론: 8월 CPI 예상치 상회로 인한 연방준비제도(Fed)의 금리 인상 우려가 증대되며 시장 전반에 부정적인 기류가 우세한 상황 지속.\n- 주요 원인: 8월 소비자물가지수(CPI)가 시장 예상치(3.3%)를 넘어선 3.4%를 기록하며 인플레이션 압력 지속에 대한 우려가 확산.\n- 시장 반응: 인플레이션 지속 우려로 Fed의 긴축 기조 장기화 가능성이 부각되며, 다우존스 선물은 상승세를 보였으나 전반적인 시장 변동성 확대 양상.\n- 하단 지지: WTI 원유 가격 하락(98.94달러, -4.15%)은 인플레이션 압력 완화에 대한 기대를 일부 제공하며 시장의 급격한 하락을 제한.",
-        "positive": "- WTI 원유 가격 하락: WTI 원유 가격이 98.94달러로 4.15% 하락하며 인플레이션 압력 완화에 대한 기대감 형성, 이는 Fed의 금리 인상 강도 조절 가능성에 대한 시장의 희망으로 작용.",
-        "negative": "- 8월 CPI 예상치 상회: 8월 소비자물가지수(CPI)가 전년 동월 대비 3.4% 상승하며 시장 예상치인 3.3%를 상회, 이는 인플레이션이 여전히 높은 수준을 유지하고 있음을 시사하며 Fed의 추가 금리 인상 가능성을 증대.",
-        "mixed": "- FOMC 금리 결정 임박: 9월 16일(수) 14:00 ET로 예정된 FOMC 금리 결정이 임박함에 따라 시장의 불확실성이 증폭, 투자자들은 Fed의 결정에 촉각을 곤두세우며 관망세 유지.",
-        "watch": "- 국채금리 추이: 10년물 및 2년물 미국 국채금리의 움직임 지속적인 확인, 특히 10Y-2Y 스프레드(0.39%)의 변화는 경기 선행 지표로서 시장의 방향성을 가늠하는 중요한 지표.\n- WTI 원유 가격 변동: WTI 원유 가격의 추가 하락 또는 반등 여부 확인, 이는 인플레이션 기대치와 Fed의 통화 정책 결정에 직접적인 영향을 미칠 수 있는 요소."
-      },
-      "report_at": "2026-09-11(금) 22:21 KST"
     }
   ],
-  "updated_at": "2026-09-12T22:02:10Z",
+  "updated_at": "2026-09-12T23:21:17Z",
   "max_entries": 10
 }
