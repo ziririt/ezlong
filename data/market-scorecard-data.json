@@ -1,6 +1,82 @@
 {
   "entries": [
     {
+      "id": "2026-09-13-07:00",
+      "timestamp_kst": "2026-09-13(일) 07:00 KST",
+      "key_event": {
+        "name": "FOMC 금리 결정 대기",
+        "name_en": "Anticipation for FOMC Rate Decision",
+        "time": "9월 16일(수) 14:00 ET",
+        "why": "향후 통화정책 방향 결정, 시장 불확실성 증대 (9월 16일(수) 14:00 ET)",
+        "why_en": "Determines future monetary policy, increases market uncertainty (Sep 16 (Wed) 14:00 ET)"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "기술주 강세 및 AI 수요 지속으로 긍정 우위, FOMC 경계감 혼조",
+      "summary_en": "Positive sentiment prevails due to tech strength and AI demand, mixed with FOMC caution",
+      "positive_factors": [
+        {
+          "score": 30,
+          "name": "AI 인프라 투자 지속",
+          "name_en": "Continued AI Infrastructure Investment",
+          "desc": "AI 관련 기술주 강세 유지, SOXX +2.49% 상승: AI 인프라 수요 지속 기대",
+          "desc_en": "AI-related tech stocks remain strong, SOXX up 2.49%: continued demand for AI infrastructure expected",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 15,
+          "name": "주요 기술 기업 규제 리스크 완화",
+          "name_en": "Reduced Regulatory Risk for Major Tech Firms",
+          "desc": "Google의 396MW 청정에너지 계약 등: 빅테크 규제 리스크 완화 기대감",
+          "desc_en": "Google's 396MW clean energy deal: easing regulatory concerns for big tech",
+          "category": "other"
+        },
+        {
+          "score": 15,
+          "name": "WTI 원유 가격 하락",
+          "name_en": "WTI Crude Oil Price Decline",
+          "desc": "WTI 원유 $100.05(-3.07%) 하락: 인플레이션 압력 완화 기대",
+          "desc_en": "WTI crude oil down to $100.05 (-3.07%): easing inflation pressure expectations",
+          "category": "oil_energy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "미10년 국채금리 상승",
+          "name_en": "US 10-Year Treasury Yield Rise",
+          "desc": "미10년 국채금리 4.97%(+0.63%) 상승: 성장주 할인율 압박 지속",
+          "desc_en": "US 10-year Treasury yield up to 4.97% (+0.63%): continued pressure on growth stock valuations",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 20,
+          "name": "높은 인플레이션 수준 지속",
+          "name_en": "Persistent High Inflation Levels",
+          "desc": "PCE 3.70%, CPI 3.35% 등 물가 지표 여전히 높아: Fed 추가 긴축 우려 잔존",
+          "desc_en": "PCE at 3.70%, CPI at 3.35%: inflation metrics remain high, persistent Fed tightening concerns",
+          "category": "macro_data"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "FOMC 금리 결정 경계감",
+          "name_en": "Caution Ahead of FOMC Rate Decision",
+          "desc": "9월 16일(수) 14:00 ET FOMC 금리 결정 임박: 통화정책 불확실성 증대",
+          "desc_en": "FOMC rate decision on Sep 16 (Wed) 14:00 ET approaching: increased monetary policy uncertainty",
+          "category": "fed_policy"
+        }
+      ],
+      "report": {
+        "overview": "- 총점: 기술주 강세와 AI 수요 지속에 힘입어 긍정 60 대 부정 40으로 긍정 우위.\n- 주요 원인: AI 인프라 투자 지속과 주요 기술 기업 규제 리스크 완화 기대감이 시장에 긍정적으로 작용.\n- 하방 압력: 미10년 국채금리 상승과 높은 인플레이션 수준 지속으로 인한 연준의 추가 긴축 우려가 시장에 부담.\n- 핵심 대기 이벤트: 다가오는 FOMC 금리 결정에 대한 경계감으로 시장 불확실성 증대.",
+        "positive": "- AI 인프라 투자 지속: AI 관련 기술주 강세가 유지되며, SOXX 지수가 2.49% 상승. AI 인프라 수요 지속에 대한 기대감으로 시장에 긍정적 영향.\n- 주요 기술 기업 규제 리스크 완화: Google이 396MW 규모의 청정에너지 계약을 체결하는 등 빅테크 기업들의 환경 및 사회적 책임 활동이 부각되며 규제 리스크 완화 기대감 형성.\n- WTI 원유 가격 하락: WTI 원유 가격이 100.05달러로 3.07% 하락. 이는 인플레이션 압력 완화에 대한 기대로 이어져 시장에 긍정적 요인으로 작용.",
+        "negative": "- 미10년 국채금리 상승: 미10년 국채금리가 4.97%(+0.63%)로 0.63% 상승. 이는 성장주에 대한 할인율 압박을 지속시켜 시장에 부정적 영향.\n- 높은 인플레이션 수준 지속: PCE 물가상승률이 3.70%(전년동월비), CPI 소비자물가 상승률이 3.35%(전년동월비)를 기록하며 여전히 높은 물가 지표를 보임. 이는 연방준비제도(Fed)의 추가 긴축 우려를 잔존시켜 시장에 부담.",
+        "mixed": "- FOMC 금리 결정 경계감: 9월 16일(수) 14:00 ET로 예정된 FOMC 금리 결정이 임박하며 시장에 불확실성 증대. 금리 인상 여부와 향후 통화정책 방향에 대한 예측이 엇갈리며 투자 심리가 혼조세를 보임.",
+        "watch": "- 미10년 국채금리 추이: 현재 4.97%(+0.63%) 수준인 미10년 국채금리의 추가 상승 여부 확인. 금리 상승은 성장주에 대한 압박을 가중시키고 시장 전반의 투자 심리에 부정적 영향을 미칠 수 있음.\n- WTI 원유 가격 변동: 현재 100.05달러 수준인 WTI 원유 가격의 추가 하락 또는 반등 여부 확인. 유가 변동은 인플레이션 기대감과 연준의 통화정책 결정에 중요한 영향을 미칠 수 있음."
+      },
+      "report_at": "2026-09-13(일) 07:00 KST"
+    },
+    {
       "id": "2026-09-12-23:20",
       "timestamp_kst": "2026-09-12(토) 23:20 KST",
       "key_event": {
@@ -614,75 +690,8 @@
         "watch": "- 국채금리 추이: 10년물 및 2년물 미국 국채금리의 움직임 지속적인 확인, 특히 10Y-2Y 스프레드(0.39%)의 변화는 경기 선행 지표로서 시장의 방향성을 가늠하는 중요한 지표.\n- WTI 원유 가격 변동: WTI 원유 가격의 추가 하락 또는 반등 여부 확인, 이는 인플레이션 기대치와 Fed의 통화 정책 결정에 직접적인 영향을 미칠 수 있는 요소."
       },
       "report_at": "2026-09-11(금) 22:21 KST"
-    },
-    {
-      "id": "2026-09-11-20:40",
-      "timestamp_kst": "2026-09-11(금) 20:40 KST",
-      "key_event": {
-        "name": "CPI 발표 대기",
-        "name_en": "Anticipation for CPI Release",
-        "time": "9월 11일(금) 08:30 ET",
-        "why": "향후 Fed 금리 결정에 주요 영향, 시장 변동성 확대 (9월 11일(금) 08:30 ET)",
-        "why_en": "Key influence on future Fed rate decisions, increasing market volatility (Sep 11 (Fri) 08:30 ET)"
-      },
-      "positive_total": 45,
-      "negative_total": 55,
-      "summary": "C부정 우위 유지",
-      "summary_en": "Negative sentiment persists amid CPI anticipation, despite falling oil prices and tech strength",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "WTI 유가 하락",
-          "name_en": "WTI Oil Price Decline",
-          "desc": "WTI 유가 99.51달러(-3.59%) 하락: 인플레이션 압력 완화 기대",
-          "desc_en": "WTI oil prices fell to $99.51 (-3.59%), raising hopes for easing inflationary pressure",
-          "category": "oil_energy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "PPI 생산자물가 상승",
-          "name_en": "PPI Producer Price Increase",
-          "desc": "8월 PPI 생산자물가 예상치 상회: 인플레이션 압력 지속 우려",
-          "desc_en": "August PPI exceeded expectations, raising concerns about persistent inflationary pressure",
-          "category": "macro_data"
-        },
-        {
-          "score": 25,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 4.94%(+2.21%) 상승: 성장주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield rose to 4.94% (+2.21%), increasing discount rate pressure on growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "CPI 소비자물가 발표 대기",
-          "name_en": "Anticipation for CPI Release",
-          "desc": "9월 11일(금) 08:30 ET CPI 발표 임박: 시장 방향성 결정에 핵심 변수, 관망세",
-          "desc_en": "CPI release on Sep 11 (Fri) 08:30 ET is imminent, a key variable for market direction, leading to a wait-and-see approach",
-          "category": "macro_data"
-        },
-        {
-          "name": "FOMC 금리 결정 임박",
-          "name_en": "FOMC Rate Decision Nears",
-          "desc": "9월 16일(수) 14:00 ET FOMC 금리 결정 대기: 통화정책 불확실성",
-          "desc_en": "FOMC rate decision on Sep 16 (Wed) 14:00 ET, leading to monetary policy uncertainty",
-          "category": "fed_policy"
-        }
-      ],
-      "report": {
-        "overview": "- 총점: 긍정 45점 대 부정 55점으로 부정 우위 지속.\n- 핵심 이슈: 미국 소비자물가지수(CPI) 발표를 앞두고 시장의 관망세가 짙어지는 상황.\n- 시장 변동성: CPI 발표가 향후 연방준비제도(Fed)의 금리 결정에 주요 영향을 미칠 것으로 예상되며, 시장 변동성 확대.\n- 주요 지표: WTI 유가 하락은 인플레이션 압력 완화 기대를 높였으나, 생산자물가지수(PPI) 상승과 미 국채금리 상승이 인플레이션 우려와 성장주 할인율 부담을 가중.",
-        "positive": "- WTI 유가 하락: WTI 유가가 99.51달러로 3.59% 하락하며 인플레이션 압력 완화 기대감 상승. 이는 Fed의 긴축 강도 완화 가능성으로 이어져 증시 전반에 긍정적 요인으로 작용.\n- 선물 시장 상승: 4일간의 시장 하락세 이후 나스닥, 다우, S&P 500 선물 지수 상승세. 특히 유가 하락 소식과 함께 다우존스 선물 지수 상승하며 시장 심리 개선.",
-        "negative": "- PPI 생산자물가 상승: 8월 생산자물가지수(PPI)가 예상치를 상회하며 인플레이션 압력 지속 우려 증폭. 이는 Fed의 긴축 기조 유지 가능성을 높여 시장에 부정적 영향.\n- 미 국채금리 상승: 미국 10년물 국채금리가 4.94%(+2.21%)로 2.21% 상승하며 성장주에 대한 할인율 부담 가중. 높은 국채금리는 기업의 자금 조달 비용 증가와 투자 심리 위축으로 이어져 기술주 중심의 시장에 악재로 작용.",
-        "mixed": "- CPI 소비자물가 발표 대기: 9월 11일(금) 08:30 ET에 발표될 소비자물가지수(CPI)가 시장 방향성 결정의 핵심 변수로 작용하며 관망세 심화. 인플레이션 데이터에 따라 Fed의 금리 인상 경로가 결정될 것이라는 전망.\n- FOMC 금리 결정 임박: 9월 16일(수) 14:00 ET에 예정된 연방공개시장위원회(FOMC) 금리 결정 대기. 통화정책 불확실성이 시장 전반에 혼조세를 야기하며 투자자들의 신중한 접근 유도.",
-        "watch": "- CPI 소비자물가 발표: 9월 11일(금) 08:30 ET에 발표될 8월 CPI 수치 확인. 예상치를 상회할 경우 Fed의 매파적 기조 강화 우려로 증시 하방 압력, 예상치 하회 시 긴축 완화 기대로 증시 상승 전환 가능성.\n- 미 국채금리 추이: CPI 발표 이후 미국 10년물 국채금리의 변동성 확인. 금리 추가 상승 시 성장주에 대한 부담 가중, 안정화 또는 하락 시 시장에 긍정적 신호.\n- 선물 지수 변동: CPI 발표 전후 나스닥, 다우, S&P 500 선물 지수의 실시간 추이 확인. 주요 경제 지표 발표에 따른 시장의 즉각적인 반응을 통해 단기적인 방향성 예측."
-      },
-      "report_at": "2026-09-11(금) 20:40 KST"
     }
   ],
-  "updated_at": "2026-09-12T14:21:10Z",
+  "updated_at": "2026-09-12T22:02:10Z",
   "max_entries": 10
 }
