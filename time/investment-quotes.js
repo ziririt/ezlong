@@ -9741,5 +9741,12 @@ window.investmentQuotes = [
     "title": "언테임드 (Untamed)",
     "author": "글레넌 도일 (Glennon Doyle)",
     "genre": "literature"
+  },
+  {
+    "english": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave.",
+    "text": "돈으로 잘 사는 것은 당신이 얼마나 똑똑한지와는 별 상관이 없고, 당신이 어떻게 행동하는지와 관련이 깊다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절 (Morgan Housel)",
+    "category": "mindset"
   }
 ];
