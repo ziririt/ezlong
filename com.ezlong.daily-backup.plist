@@ -9,10 +9,12 @@
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string>
-    <string>/Users/ziririt/Documents/Claude/Projects/미국주식투자자를 위한 ezlong.com/backup-before-session.sh</string>
+    <string>/Users/ziririt/Developer/ezlong/backup-before-session.sh</string>
   </array>
 
   <!-- 매일 오후 12:30 자동 실행 (점심시간) -->
+  <!-- 2026-09-12: 2026-07-30 저장소 이사 때 이 경로만 안 따라와서 종료코드 127 로
+       죽어 있었다. 마지막 백업이 8월 19일자였다. 맥의 실제 등록도 같이 고쳤다. -->
   <key>StartCalendarInterval</key>
   <dict>
     <key>Hour</key>

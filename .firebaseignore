@@ -45,3 +45,8 @@ data/market-regime-history.json
 # src/href/fetch 참조 0건) .js/.mjs/.html/.sql 34개가 그대로 열리고 있었다.
 # .py/.sh 만 막고 있어서 생긴 구멍이다 - 확장자가 아니라 폴더로 막는다.
 scripts/
+
+# 2026-09-12 추가 — LaunchAgent 정의(.plist)에는 성동님 홈 디렉터리 경로가 들어 있다.
+# 저장소에는 재설치용으로 두되 웹 루트로는 내보내지 않는다(37항 개인 지칭·경로 금지).
+*.plist
+**/*.plist
