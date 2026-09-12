@@ -691,9 +691,16 @@ body:has(.ca-fullscreen) { overflow-x: visible; }
 /* ── 익절/손절 타겟 그리드 ───────────────────────────────── */
 .ca-targets-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* 진입가 칸이 늘어 넷이 됐다(2026-09-13).
+     진입가 없이 익절·손절만 보여 주면 방문자가 현재가 기준으로 읽어,
+     같은 플랜의 손익비를 실제와 다르게 셈하게 된다. */
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   margin-bottom: 16px;
+}
+.ca-level-note {
+  font-size: 14px; line-height: 1.6; color: var(--ez-text2);
+  margin: -8px 0 16px; word-break: keep-all;
 }
 .ca-target-cell {
   padding: 10px 12px;
@@ -877,7 +884,7 @@ body:has(.ca-fullscreen) { overflow-x: visible; }
   .ca-ph-right { display: none; }
   .ca-ind-grid { grid-template-columns: repeat(2, 1fr); }
   .ca-ph-52-bar, .ca-ph-52-labels { width: 100px; }
-  .ca-targets-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .ca-targets-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
   .ca-target-cell-val { font-size: 16px; }
 }
 
@@ -1707,8 +1714,26 @@ function renderAnalysisPanel(analysis, currency) {
   })();
 
   // 익절/손절 타겟
+  /* 손익비는 '진입가' 기준이다. 화면이 진입가를 안 보여주면 방문자는 현재가 기준으로
+     읽게 되고, 같은 플랜이 다른 숫자로 보인다(13절 - 단일 진실값). 그래서 함께 싣는다. */
+  const _lvE = typeof ai.entry === 'number' ? ai.entry : null;
+  const _lvS = typeof ai.stopLoss === 'number' ? ai.stopLoss : null;
+  const _lvT = typeof ai.profitTarget1 === 'number' ? ai.profitTarget1 : null;
+  const _rr  = (_lvE != null && _lvS != null && _lvT != null && Math.abs(_lvE - _lvS) > 0)
+    ? Math.abs(_lvT - _lvE) / Math.abs(_lvE - _lvS) : null;
+  const levelNote = (_rr != null || ai.levelsAdjusted) ? `
+    <div class="ca-level-note">
+      ${_rr != null ? `진입가 기준 손익비 <b>${_rr.toFixed(1)} : 1</b>. 지금 가격이 아니라 진입가에 닿았을 때의 비율입니다.` : ''}
+      ${_rr != null && _rr < 1.5 ? ` <b style="color:${IS_DARK ? '#FF453A' : '#D92A2A'}">손익비가 1.5 미만이라 이 플랜은 실행 가치가 낮습니다</b>: 목표까지 벌 폭이 손절까지 잃을 폭에 비해 좁습니다. 진입을 서두르기보다 더 나은 자리를 기다리는 편이 낫습니다.` : ''}
+      ${ai.levelsAdjusted ? ` 이 레벨은 <b>변동성(ATR) 기준으로 보정</b>되었습니다: 모델이 낸 값이 실행 가능한 폭에 못 미쳤습니다(${ai.levelsAdjustedReason || '기준 미달'}). 본문 설명에 적힌 숫자와 다를 수 있습니다.` : ''}
+    </div>` : '';
+
   const targetsHtml = (ai.profitTarget1 || ai.profitTarget2 || ai.stopLoss) ? `
     <div class="ca-targets-grid">
+      <div class="ca-target-cell" style="background:var(--ez-card2);border:1px solid rgba(120,120,128,0.35)">
+        <div class="ca-target-cell-label" style="color:var(--ez-text)">진입 기준</div>
+        <div class="ca-target-cell-val" style="color:var(--ez-text)">${_lvE != null ? fmtPrice(_lvE, currency) : ': '}</div>
+      </div>
       <div class="ca-target-cell" style="background:var(--ez-card2);border:1px solid rgba(26,127,55,0.35)">
         <div class="ca-target-cell-label" style="color:var(--ez-text)">1차 익절</div>
         <div class="ca-target-cell-val" style="color:${IS_DARK?'#30D158':'#1A7F37'}">${ai.profitTarget1 ? fmtPrice(ai.profitTarget1, currency) : ': '}</div>
@@ -1721,7 +1746,7 @@ function renderAnalysisPanel(analysis, currency) {
         <div class="ca-target-cell-label" style="color:var(--ez-text)">손절 기준</div>
         <div class="ca-target-cell-val" style="color:${IS_DARK?'#FF453A':'#D92A2A'}">${ai.stopLoss ? fmtPrice(ai.stopLoss, currency) : ': '}</div>
       </div>
-    </div>` : '';
+    </div>${levelNote}` : '';
 
   return `<div class="ca-analysis">
     <div class="ca-analysis-top">

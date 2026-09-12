@@ -185,6 +185,115 @@ console.log('[4] 모델 포트폴리오: 종목별 기준일');
   ok('망가진 날짜에도 죽지 않는다', ctx.lagNote({ asOf: 'not-a-date' }) === '');
 }
 
+/* ── 5) 매매 레벨 검문 (배치 04) ───────────────────────────────────── */
+console.log('[5] 차트분석: 매매 레벨 실행가능성 검문');
+{
+  const src = fs.readFileSync(path.join(ROOT, 'scripts', 'generate-chart-analysis.js'), 'utf8');
+  const ctx = { Math, Number, isFinite, console: { warn() {} },
+                round: (v, d) => v == null ? null : Number(v.toFixed(d)) };
+  vm.createContext(ctx);
+  vm.runInContext(
+    src.slice(src.indexOf('function priceDecimals'), src.indexOf('function validateTradeLevels'))
+    + '\n' + cutFunction(src, 'validateTradeLevels')
+    + '\n' + cutFunction(src, 'deriveDisplayTargets'), ctx);
+
+  const swing = { support: 95, resistance: 115 }, pivot = { s1: 97, r1: 112 };
+
+  // 쓸 만한 레벨은 손대지 않는다
+  {
+    const r = ctx.validateTradeLevels(
+      { action: '매수', entry: 100, stop: 96, target: 110 }, 100, 3, swing, pivot, 'OK');
+    ok('통과: 조건을 만족하면 손대지 않는다', !r.levelsAdjusted, JSON.stringify(r).slice(0, 80));
+  }
+
+  // 손절폭이 ATR 1배 미만 -> 재산출
+  {
+    const r = ctx.validateTradeLevels(
+      { action: '관망', entry: 100, stop: 99.7, target: 100.3 }, 100, 3, swing, pivot, 'TSLA');
+    ok('좁은 손절: 재산출된다', r.levelsAdjusted === true);
+    ok('좁은 손절: 손절폭이 ATR 1배 이상', Math.abs(r.entry - r.stop) >= 3,
+       `${Math.abs(r.entry - r.stop)}`);
+    ok('좁은 손절: 손익비 1.5 이상',
+       Math.abs(r.target - r.entry) / Math.abs(r.entry - r.stop) >= 1.5);
+  }
+
+  // 손익비 미달 -> 재산출 ('매수'인데 목표가 손절보다 가까운 경우)
+  {
+    const r = ctx.validateTradeLevels(
+      { action: '매수', entry: 100, stop: 90, target: 103 }, 100, 5, swing, pivot, 'COHR');
+    ok('손익비 미달: 재산출된다', r.levelsAdjusted === true, r.levelsAdjustedReason);
+    ok('손익비 미달: 고친 뒤 1.5 이상',
+       Math.abs(r.target - r.entry) / Math.abs(r.entry - r.stop) >= 1.5);
+  }
+
+  // 방향 불일치 (매도인데 목표가 위)
+  {
+    const r = ctx.validateTradeLevels(
+      { action: '매도', entry: 100, stop: 95, target: 110 }, 100, 4, swing, pivot, 'X');
+    ok('매도 방향 불일치: 재산출된다', r.levelsAdjusted === true);
+    ok('매도: 목표 < 진입 < 손절', r.target < r.entry && r.entry < r.stop,
+       `${r.target} / ${r.entry} / ${r.stop}`);
+  }
+
+  // 목표 = 진입
+  {
+    const r = ctx.validateTradeLevels(
+      { action: '관망', entry: 100, stop: 96, target: 100 }, 100, 3, swing, pivot, 'AMZN');
+    ok('목표=진입: 재산출된다', r.levelsAdjusted === true, r.levelsAdjustedReason);
+  }
+
+  // 저가 자산 — 소수점 2자리로 뭉개지지 않는다
+  {
+    const r = ctx.validateTradeLevels(
+      { action: '관망', entry: 0.0851, stop: 0.0850, target: 0.0852 }, 0.0851, 0.004, null, null, 'DOGE-USD');
+    ok('저가 자산: 레벨이 뭉개지지 않는다', r.stop !== r.target && r.entry !== r.stop,
+       `${r.entry} / ${r.stop} / ${r.target}`);
+    ok('저가 자산: 손익비 1.5 이상',
+       Math.abs(r.target - r.entry) / Math.abs(r.entry - r.stop) >= 1.5);
+  }
+
+  // ATR 이 없어도 죽지 않는다
+  {
+    const r = ctx.validateTradeLevels(
+      { action: '매수', entry: 100, stop: 99.9, target: 100.1 }, 100, null, null, null, 'NEW');
+    ok('ATR 없음: 폴백으로 재산출', r.levelsAdjusted === true);
+    ok('ATR 없음: 손익비 1.5 이상',
+       Math.abs(r.target - r.entry) / Math.abs(r.entry - r.stop) >= 1.5);
+  }
+
+  // 표시값 파생 — 두 세트가 언제나 일치한다
+  {
+    const base = { action: '매수', entry: 100, stop: 96, target: 110,
+                   profitTarget1: 999, profitTarget2: 1, stopLoss: 500 };
+    const r = ctx.deriveDisplayTargets(base, 100);
+    ok('파생: 손절 표시 = stop', r.stopLoss === 96, String(r.stopLoss));
+    ok('파생: 1차 익절 = target', r.profitTarget1 === 110, String(r.profitTarget1));
+    ok('파생: 2차 익절이 1차보다 멀다', r.profitTarget2 > r.profitTarget1, String(r.profitTarget2));
+    ok('파생: 모델이 낸 엉뚱한 값을 덮는다', r.profitTarget1 !== 999 && r.stopLoss !== 500);
+  }
+
+  // 매도 방향 파생
+  {
+    const r = ctx.deriveDisplayTargets({ action: '매도', entry: 100, stop: 104, target: 92 }, 100);
+    ok('매도 파생: 2차 익절이 1차보다 아래', r.profitTarget2 < r.profitTarget1,
+       `${r.profitTarget1} / ${r.profitTarget2}`);
+  }
+
+  ok('산출물에 ATR 이 실린다', /atr:\s*round\(indicators\.atr/.test(src));
+  ok('프롬프트 규칙 8 이 ATR 기준으로 바뀌었다', /손절폭\*\* \|entry - stop\| 은 ATR/.test(src));
+  ok('"가장 가까운 값을 그대로 가져다" 지시가 사라졌다',
+     !/현재가에 가장 가까운 값을 그대로 가져다\n\s*채워라/.test(src));
+
+  const html = fs.readFileSync(path.join(ROOT, 'chart-analysis.html'), 'utf8');
+  ok('화면에 진입 기준 칸이 있다', /진입 기준/.test(html));
+  ok('화면이 진입가 기준 손익비를 말한다', /진입가 기준 손익비/.test(html));
+  ok('화면이 보정 사실을 밝힌다', /변동성\(ATR\) 기준으로 보정/.test(html));
+  ok('그리드가 네 칸이다', /grid-template-columns: repeat\(4, 1fr\)/.test(html));
+  ok('폰에서는 두 칸으로 접는다', /\.ca-targets-grid \{ grid-template-columns: repeat\(2, 1fr\)/.test(html));
+  ok('안내 글자가 14px 이상', /\.ca-level-note \{[^}]*font-size: 14px/.test(html));
+  ok('손익비 1.5 미만이면 경고한다', /손익비가 1\.5 미만이라 이 플랜은 실행 가치가 낮습니다/.test(html));
+}
+
 console.log(`\n통과 ${pass} / 실패 ${fails.length}`);
 if (fails.length) { console.log('\n실패'); fails.forEach(f => console.log('  · ' + f)); process.exit(1); }
 console.log('전부 통과.');

@@ -927,13 +927,155 @@ function sanitizeTradeLevels(result, price, swing, pivot, symbol) {
   } else {
     entry = pivot.pp ?? price; stop = supportLv; target = resistanceLv; invalidation = supportLv;
   }
+  const dp = priceDecimals(price);   // 저가 자산에서 2자리는 레벨을 뭉갠다
   const fixed = { ...result };
-  if (bad(result.entry))        fixed.entry        = round(entry, 2);
-  if (bad(result.stop))         fixed.stop          = round(stop, 2);
-  if (bad(result.target))       fixed.target        = round(target, 2);
-  if (bad(result.invalidation)) fixed.invalidation  = round(invalidation, 2);
+  if (bad(result.entry))        fixed.entry        = round(entry, dp);
+  if (bad(result.stop))         fixed.stop          = round(stop, dp);
+  if (bad(result.target))       fixed.target        = round(target, dp);
+  if (bad(result.invalidation)) fixed.invalidation  = round(invalidation, dp);
   console.warn(`  ⚠ ${symbol}: 트레이드 레벨 0값 감지(action=${result.action}) — 피벗/스윙 레벨로 대체`);
   return fixed;
+}
+
+/* 매매 레벨 실행가능성 검문 (2026-09-13 신설, 90항 - 출력 검문은 모든 출구에 선다)
+ *
+ * 증상: 배포된 66건을 전수 계산했더니 26건의 손익비가 1 미만이었다. 잃을 수 있는 돈이
+ * 벌 수 있는 돈보다 큰 설정이다. 'action=매수' 로 나온 종목 중에도 다섯이 그랬다
+ * (COHR 0.17 · MU 0.44 · MRVL 0.52 · SMH 0.59 · AAPL 0.95). 손절폭이 1.5% 미만인 것이
+ * 25건, TSLA 는 0.28% 였고 AMZN·INTU 는 목표가가 진입가와 같았다.
+ *
+ * 원인은 모델 등급이 아니라 프롬프트 규칙 8 이었다. 화면에 $0.00 이 뜨는 것을 막으려고
+ * "가장 가까운 피벗을 그대로 가져다 채워라" 라고 시켰더니, 모델이 현재가에서 0.3% 떨어진
+ * 피벗을 손절에 넣었다. sanitizeTradeLevels 는 0 만 잡고 0 아닌 헛값은 통과시켰다.
+ *
+ * 여기서는 '실행 가능한 폭' 을 본다. 변동성(ATR) 대비 손절폭, 손익비, 방향 정합.
+ * 미달이면 모델의 숫자를 버리고 ATR 기준으로 다시 만든다 — 그리고 그 사실을 필드에
+ * 남긴다(levelsAdjusted). 조용히 바꾸면 문장 속 숫자와 어긋나도 독자가 알 수 없다.
+ */
+/* 매매 레벨을 몇 자리로 적을 것인가.
+   증상(2026-09-13): 전부 소수점 2자리로 반올림하고 있었다. DOGE-USD 는 현재가가
+   $0.0851 이라 진입 0.09 / 손절 0.08 / 목표 0.09 가 되어 레벨이 통째로 뭉개졌다.
+   손익비도 방향 정합도 계산할 수 없는 숫자가 된다. 가격 크기에 맞춰 자른다. */
+function priceDecimals(p) {
+  const a = Math.abs(Number(p) || 0);
+  if (a >= 100)  return 2;
+  if (a >= 1)    return 2;
+  if (a >= 0.1)  return 4;
+  if (a >= 0.01) return 5;
+  return 6;
+}
+
+const TRADE_LV = Object.freeze({
+  MIN_STOP_ATR: 1.0,   // 손절폭 하한 - ATR 1배 미만이면 하루 변동에 그냥 털린다
+  MAX_STOP_ATR: 4.0,   // 손절폭 상한 - 이보다 넓으면 자금관리가 성립하지 않는다
+  MIN_RR:       1.5,   // 손익비 하한 - 스윙에서 1.5 미만은 이겨도 지는 구조다
+  STOP_ATR:     1.3,   // 재산출 손절 폭
+  RR_TARGET:    2.0,   // 재산출 손익비
+});
+
+function validateTradeLevels(result, price, atrVal, swing, pivot, symbol) {
+  if (!result) return result;
+  const n = v => (typeof v === 'number' && isFinite(v)) ? v : null;
+  const P = n(price), A = n(atrVal);
+  if (!P || P <= 0) return result;
+
+  // 매도 판정이면 아래를 보고, 그 외(매수·관망)는 위를 본다.
+  // 관망도 레벨은 있어야 한다 - 화면의 트레이드 플랜 카드가 그 값을 그대로 쓴다.
+  const isShort = result.action === '매도';
+
+  const entry  = n(result.entry);
+  const stop   = n(result.stop);
+  const target = n(result.target);
+
+  const fail = [];
+  if (entry === null || stop === null || target === null) fail.push('레벨 누락');
+  else {
+    // 방향 정합
+    const dirOK = isShort ? (target < entry && entry < stop) : (stop < entry && entry < target);
+    if (!dirOK) fail.push('방향 불일치');
+
+    const stopDist = Math.abs(entry - stop);
+    const rewDist  = Math.abs(target - entry);
+
+    if (stopDist <= 0) fail.push('손절폭 0');
+    else if (rewDist <= 0) fail.push('목표가 진입가와 같음');
+    else {
+      if (rewDist / stopDist < TRADE_LV.MIN_RR) {
+        fail.push(`손익비 ${(rewDist / stopDist).toFixed(2)} < ${TRADE_LV.MIN_RR}`);
+      }
+      // ATR 이 없으면(신규 상장 등) 변동성 검사는 건너뛴다. 가진 잣대로만 판정한다.
+      if (A && A > 0) {
+        const mult = stopDist / A;
+        if (mult < TRADE_LV.MIN_STOP_ATR) fail.push(`손절폭 ATR ${mult.toFixed(2)}배 < ${TRADE_LV.MIN_STOP_ATR}`);
+        else if (mult > TRADE_LV.MAX_STOP_ATR) fail.push(`손절폭 ATR ${mult.toFixed(2)}배 > ${TRADE_LV.MAX_STOP_ATR}`);
+      }
+    }
+  }
+
+  if (!fail.length) return result;   // 모델 숫자가 쓸 만하면 손대지 않는다
+
+  // ── 재산출 ──────────────────────────────────────────────────────────────
+  // ATR 이 없으면 현재가의 3% 를 대신 쓴다(대형주 일간 변동의 대략치).
+  const unit     = (A && A > 0) ? A : P * 0.03;
+  const stopDist = unit * TRADE_LV.STOP_ATR;
+  const rewDist  = stopDist * TRADE_LV.RR_TARGET;
+
+  let newStop, newTarget;
+  if (isShort) { newStop = P + stopDist; newTarget = P - rewDist; }
+  else         { newStop = P - stopDist; newTarget = P + rewDist; }
+
+  // 기술적으로 의미 있는 레벨이 허용 폭 안에 들어오면 그것을 쓴다.
+  // 변동성만으로 만든 선보다 실제 지지/저항이 낫다.
+  const cand = isShort
+    ? [swing && swing.resistance, pivot && pivot.r1].map(n).filter(v => v && v > P)
+    : [swing && swing.support,    pivot && pivot.s1].map(n).filter(v => v && v < P);
+  for (const c of cand) {
+    const d = Math.abs(P - c);
+    if (d >= unit * TRADE_LV.MIN_STOP_ATR && d <= unit * TRADE_LV.MAX_STOP_ATR) {
+      newStop   = c;
+      newTarget = isShort ? P - d * TRADE_LV.RR_TARGET : P + d * TRADE_LV.RR_TARGET;
+      break;
+    }
+  }
+
+  const dp  = priceDecimals(P);
+  const out = { ...result };
+  out.entry        = round(P, dp);
+  out.stop         = round(newStop, dp);
+  out.target       = round(newTarget, dp);
+  out.invalidation = round(newStop, dp);
+  out.levelsAdjusted = true;
+  out.levelsAdjustedReason = fail.join(' · ');
+  console.warn(`  ${symbol}: 매매 레벨 재산출 (${fail.join(' / ')}) -> 진입 ${out.entry} 손절 ${out.stop} 목표 ${out.target}`);
+  return out;
+}
+
+/* 익절·손절 표시값을 확정된 매매 레벨에서 파생시킨다.
+ *
+ * 증상: 화면(차트분석 페이지)이 쓰는 값은 entry/stop/target 이 아니라 별도 필드인
+ * profitTarget1 · profitTarget2 · stopLoss 였다. 이 셋은 어떤 검문도 받지 않았다.
+ * 배포된 66건을 계산해 보니 손익비 중앙값이 0.73 이고 43건이 1 미만이었다
+ * (AVGO 0.15 · AAPL 0.21). 손절이 현재가보다 위에 찍힌 것도 셋 있었고(IEF·LQD·TLT)
+ * 1차 익절이 현재가와 같은 것도 있었다(CIEN). 실행하면 이길 수 없는 설정이다.
+ *
+ * 더 근본적인 문제는 같은 판단에서 나온 두 벌의 숫자가 서로 따로 놀았다는 것이다.
+ * 13절(단일 진실값)에 어긋난다. 그래서 표시값을 별도로 받지 않고 매매 레벨에서
+ * 항상 파생시킨다 — 판정은 코드가 하고 모델은 문장만 쓴다.
+ *   손절 기준 = stop · 1차 익절 = target · 2차 익절 = 1차의 1.75 배 폭
+ */
+function deriveDisplayTargets(result, price) {
+  if (!result) return result;
+  const n = v => (typeof v === 'number' && isFinite(v)) ? v : null;
+  const e = n(result.entry), st = n(result.stop), tg = n(result.target);
+  if (e === null || st === null || tg === null) return result;
+
+  const dp   = priceDecimals(n(price) || e);
+  const span = tg - e;                       // 매수면 양수, 매도면 음수
+  const out  = { ...result };
+  out.stopLoss      = round(st, dp);
+  out.profitTarget1 = round(tg, dp);
+  out.profitTarget2 = round(e + span * 1.75, dp);
+  return out;
 }
 
 // ── Gemini AI 분석 ────────────────────────────────────────────────────────
@@ -1168,10 +1310,17 @@ ${weeklySection}${adxSection}${cciStochSection}${fibSection}${fourHSection}${qua
 
 7. 주봉-일봉 충돌 시: 결론은 일봉 기준. weeklyConflict에 충돌 내용 명시.
 
-8. entry/stop/target/invalidation 4개는 반드시 0이 아닌 실제 가격 숫자여야 한다 (절대 0 반환 금지 —
-   0은 "레벨 없음"이 아니라 화면에 "$0.00"로 그대로 노출된다). action="관망"이라 확신이 낮아도
-   위에 주어진 스윙 지지/저항, 피벗(PP/R1/R2/S1/S2) 중 현재가에 가장 가까운 값을 그대로 가져다
-   채워라 — 새로 추정하지 말고 이미 계산된 레벨을 재사용하면 된다.
+8. entry/stop/target/invalidation 4개는 0이 아닌 실제 가격이어야 하고, **실행 가능한 폭**이어야 한다.
+   0은 "레벨 없음"이 아니라 화면에 "$0.00"로 그대로 노출되고, 너무 좁은 손절은 하루 변동에
+   그냥 털린다. 아래 셋을 전부 지켜라 — 하나라도 어기면 네 숫자는 버려지고 코드가 ATR 기준으로
+   대체한다(생성 뒤 자동 검문이 선다).
+   - **손절폭** |entry - stop| 은 ATR(14) 의 1.0 ~ 4.0 배. 지금 ATR 은 ${ind.atr != null ? fmt(ind.atr) : 'N/A'} 다.
+     "현재가에 가장 가까운 피벗"을 손절로 쓰지 마라 — 0.3% 짜리 손절은 실행 불가다.
+   - **손익비** |target - entry| / |entry - stop| 은 1.5 이상. 이보다 낮으면 이겨도 지는 구조다.
+   - **방향 정합** 매수면 stop < entry < target, 매도면 target < entry < stop.
+   action="관망" 이라 확신이 낮아도 같은 규칙을 지켜라. 스윙 지지/저항이나 피벗이 위 폭 안에
+   들어오면 그 레벨을 우선 쓰고(기술적으로 의미 있는 자리가 낫다), 그런 레벨이 없으면
+   ATR 배수로 만들어라 — 손절 1.3×ATR, 목표 2.6×ATR 이 기본형이다.
 
 9. ADX가 20 미만인데 며칠 새 급락/급등이 있었다면, keyPoints나 riskNote 중 하나에
    반드시 "ADX ${ind.adx?.adx != null ? ind.adx.adx.toFixed(1) : 'N/A'}로 추세 미형성 — 충격성 변동 가능성"
@@ -1256,9 +1405,9 @@ ${weeklySection}${adxSection}${cciStochSection}${fibSection}${fourHSection}${qua
   "invalidation": 무효선 숫자,
   "weeklyConflict": "충돌 없음" 또는 "주봉은 XXX이나 일봉 신호 우선",
   "weeklyConflictEn": "weeklyConflict의 영어 버전 (충돌 없으면 'No conflict', 있으면 자연스러운 영어 문장)",
-  "profitTarget1": 1차 익절 목표가 숫자,
-  "profitTarget2": 2차 익절 목표가 숫자,
-  "stopLoss": 손절 기준가 숫자,
+  "profitTarget1": 1차 익절 목표가 숫자 (참고용으로만 채워라 - 생성 뒤 코드가 target 으로 덮어쓴다),
+  "profitTarget2": 2차 익절 목표가 숫자 (같음 - 코드가 1차의 1.75배 폭으로 덮어쓴다),
+  "stopLoss": 손절 기준가 숫자 (같음 - 코드가 stop 으로 덮어쓴다),
   "narrative": "반드시 단일 문자열(string)로 작성하라. JSON object나 배열로 반환하면 절대 안 된다. 아래 4개 섹션을 \\n으로 구분된 하나의 string 안에 모두 담아라. 섹션 제목은 대괄호로 감싸라([추세 위치] 형태). 각 항목은 · 으로 시작. 문장 끝은 서술어 없이 명사형으로 끝맺기 (예: '~구간', '~확인', '~진단', '~수준'). '~할 수 있다', '~가능성', '~예상', '~전망' 절대 금지. 항목마다 숫자값 필수 포함. 각 항목은 충분한 해석이 담긴 한 문장 — 너무 짧아서 의미 파악이 안 될 정도로 짧게 쓰지 마라. 섹션당 2~3개 항목.\n\n[추세 위치]\n· 현재가($숫자) vs SMA5/20/50($숫자/$숫자/$숫자) — 단기·중기 추세 위치 진단 + 상회/하회 여부\n· SMA100/200($숫자/$숫자) 대비 위치 — 중장기 추세 강도 판단\n· 52주 위치(%숫자) + 현 가격대 역사적 의미\n[모멘텀 지표]\n· RSI 궤적 (이전값→현재값) + 과매수/과매도/중립 판단 + 방향성 해석\n· MACD 히스토그램 궤적 (이전값→현재값) + 개선/악화 진단 + 추세 전환 신호 여부\n· 볼린저밴드 현재가 위치 (상단/중단/하단 $숫자) + 밴드폭 수준 해석\n[지지·저항 구조]\n· 스윙 지지선 ($숫자) + 근거 (피벗/스윙저점/이동평균 기반)\n· 스윙 저항선 ($숫자) + 돌파 시 의미\n· 5일/20일 고가·저가 패턴 (Higher Low / Lower High / 횡보) + 추세 해석\n[거래량·결론]\n· 거래량 비율 (5일 평균 대비 숫자배) + 움직임의 신뢰도 판단\n· 현 구간 진단 (축적/분배/상승추세/하락추세) + 진입·관망 조건 명시",
   "narrativeEn": "narrative의 영어 버전 (규칙 13 참조). [Trend Position]/[Momentum Indicators]/[Support & Resistance]/[Volume & Conclusion] 4개 섹션, 각 섹션 2~3개 항목, 항목은 '· '로 시작, 자연스러운 완결 문장, 숫자·달러 금액 반드시 포함, 단일 string으로 \\n 구분",
   "patternNote": "차트 패턴 또는 추세 채널 1~2문장, 명사형 종결",
@@ -1565,6 +1714,10 @@ async function processTicker(meta) {
   const quantBaseline = quantBaselineFor(symbol);
   let aiResult = await callGemini(meta, indicators, swing, pivot, price, weeklyInd, historyLines, quantBaseline, fourHInd);
   aiResult = sanitizeTradeLevels(aiResult, price, swing, pivot, symbol);
+  // 0 값만 막는 것으로는 부족하다. 폭과 손익비까지 본다(90항).
+  aiResult = validateTradeLevels(aiResult, price, indicators.atr, swing, pivot, symbol);
+  // 화면이 쓰는 익절·손절은 위에서 확정된 레벨에서 파생시킨다(13절 - 단일 진실값).
+  aiResult = deriveDisplayTargets(aiResult, price);
 
   // 판단 원장 기록 — Gemini 신규 판단 성공 시에만 (실패 시 기존 분석 보존 경로는 기록하지 않음)
   if (aiResult && aiResult.action) {
@@ -1695,6 +1848,10 @@ async function processTicker(meta) {
       macd:   indicators.macd,
       bb:     indicators.bb,
       adx:    indicators.adx,
+      /* ATR(14) — 계산은 하면서 산출물에는 안 싣고 있었다(2026-09-13 발견).
+         매매 레벨이 변동성 대비 몇 배인지 화면도 사후 검증도 볼 수 없었다.
+         레벨 검문(validateTradeLevels)의 잣대가 이 값이므로 함께 남긴다. */
+      atr:    round(indicators.atr,   4),
     },
     levels: {
       swingResistance: swing.resistance ? round(swing.resistance, 4) : null,
