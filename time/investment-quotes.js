@@ -9761,5 +9761,12 @@ window.investmentQuotes = [
     "title": "주식에 장기투자하라 (Stocks for the Long Run)",
     "author": "제러미 시겔 (Jeremy J. Siegel)",
     "category": "mindset"
+  },
+  {
+    "english": "Your story is what you have, what you will always have. It is something to own.",
+    "text": "당신의 이야기는 당신이 가진 전부다. 앞으로도 언제나 그럴 것이다. 그것은 스스로 소유해야 할 무언가다.",
+    "title": "비커밍 (Becoming)",
+    "author": "미셸 오바마 (Michelle Obama)",
+    "genre": "literature"
   }
 ];
