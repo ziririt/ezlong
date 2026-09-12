@@ -2449,10 +2449,12 @@ window._swingView = null;
 //       숫자와 어긋나는 문장은 화면에 나가기 전에 검문(ezGuard)에서 걸린다.
 
 // (1) 거래일 캘린더: 단일 출처 data/nyse-calendar.json (파이썬 ez_calendar.py · 노드 ez-calendar.js 와 같은 파일)
-window.EZ_NYSE_CAL = null;
-window.EZ_NYSE_HOLIDAYS = null;   // ez-nav.js 의 ezWeekPhase 가 이 배열을 본다
+// 2026-09-12: 로더 본체는 ez-nav.js(모든 페이지 공용)로 올라갔다. ez-nav.js 가 먼저 실렸으면 그 promise 를 그대로 쓴다.
+// 아래는 ez-nav.js 가 어떤 이유로 안 실렸을 때의 폴백(같은 규칙, 같은 파일).
+window.EZ_NYSE_CAL = window.EZ_NYSE_CAL || null;
+window.EZ_NYSE_HOLIDAYS = window.EZ_NYSE_HOLIDAYS || null;   // ez-nav.js 의 ezWeekPhase 가 이 배열을 본다
 const _EZ_CAL_URL = 'https://raw.githubusercontent.com/ziririt/ezlong/main/data/nyse-calendar.json';
-window.ezCalReady = (async () => {
+window.ezCalReady = window.ezCalReady || (async () => {
   // 저장소 루트가 곧 웹 루트: 같은 출처(/data/...)가 배포와 동시에 갱신되고 CORS 도 없다. 실패하면 raw 로.
   const urls = [];
   if (/^https?:/.test(location.protocol)) urls.push('/data/nyse-calendar.json?t=' + Math.floor(Date.now() / 3600000));
@@ -2683,15 +2685,27 @@ function ezGuard(text, facts, fallback) {
     || /과매도\s*(구간|영역|권|국면)?\s*(이다|입니다|상태|에\s*있|에\s*진입|진입|국면)/.test(t)
     || /과매도\s*(구간|영역)?\s*(에서|에)\s*(머물|머무|있)/.test(t);
   if (facts.rsi != null && facts.rsi >= T.RSI_OVERSOLD && _osClaim) why.push(`RSI ${Math.round(facts.rsi)}인데 '과매도'`);
-  if (facts.buy != null && facts.buy < T.BUY_MIN && /(매수\s*우위|매수\s*자리|진입\s*가능|1차\s*(정찰대|진입|30%)|사볼|들어간다)/.test(t)) why.push(`매수점수 ${facts.buy}인데 매수 권고`);
-  if (facts.gear === 1 && /(신규\s*매수|진입\s*가능|1차\s*(정찰대|진입)|매수\s*자리)/.test(t)) why.push('Gear 1인데 신규 매수 권고');
+  /* 2026-09-12 교정(90항 규칙 3 적용): '신규 매수'·'1차 정찰대'·'1차 30%' 낱말은 "신규 매수 금지",
+     "1차 정찰대 조건은 … 지금은 아니다", "트리거: 과매도 탈출 반전(1차 30%)" 같은 참말에도 들어간다.
+     잡는 것은 '지금 사라'는 권고형 주장이다. 시험표: scripts/ezguard-selftest.js */
+  const _buyClaim =
+       /(신규\s*매수|분할\s*매수|1차\s*(정찰대|진입)|정찰대)\s*[^.。]{0,6}(가능|적합|검토\s*가능|권고|지금\s*투입|투입|자리|들어간다)/.test(t)
+    || /(1차|2차|3차|신규|분할|정찰대|소량|레버리지|\d+\s*%)\s*[^.。]{0,8}진입\s*(가능|적합)(?!성)/.test(t)   // '국면 진입 가능성'은 매매 진입이 아니다
+    || /매수\s*자리/.test(t)
+    || /지표는\s*진입\s*구간/.test(t)
+    || /선에서\s*시작하고/.test(t)
+    || /지금이라도/.test(t);
+  if (facts.buy != null && facts.buy < T.BUY_MIN && (_buyClaim || /(매수\s*우위|사볼|들어간다)/.test(t))) why.push(`매수점수 ${facts.buy}인데 매수 권고`);
+  if (facts.gear === 1 && _buyClaim) why.push('Gear 1인데 신규 매수 권고');
   if (facts.rr != null && facts.rr < T.RR_MIN && /(플랜|목표가|손절가|진입가)/.test(t)) why.push(`손익비 ${facts.rr.toFixed(1)}인데 플랜 제시`);
   /* 2026-09-08 교정: '장중' 단독은 과거 사실 서술로도 쓰인다("9월4일 장중 저점").
      금지 대상은 '지금 장이 돌고 있다'는 **현재형 주장**이다. */
   if (facts.phase && facts.phase !== 'open'
       && /((현재|지금|오늘|이번)\s*장중|장중\s*(현재|지금|진행|이다|입니다)|진행\s*중인\s*장|급락\s*진행\s*중|급등\s*진행\s*중)/.test(t))
     why.push(`세션 ${facts.phase}인데 '장중' 서술`);
-  if (facts.entryBlocked && /(진입\s*가능|신규\s*진입|1차\s*(진입|50%|30%)\s*가능)/.test(t)) why.push('청산 조건 켜진 상태의 진입 권고');
+  // '신규 진입 자제·대기·금지'는 참말이다. 권고형(가능·검토·적합)만 잡는다.
+  if (facts.entryBlocked && (_buyClaim || /신규\s*진입\s*(검토|적합|가능|권고)|분할\s*진입\s*검토|1차\s*(진입|50%|30%)\s*(가능|적합)/.test(t)))
+    why.push('진입 조건이 닫힌 상태(Gear 1·청산·최상단 관망)의 진입 권고');
   if (!why.length) return t;
   console.warn('[ezGuard] 문장 폐기:', why.join(' / '), '|', t.slice(0, 80));
   window._ezGuardLog = (window._ezGuardLog || []).concat([{ why, text: t.slice(0, 120) }]);
@@ -2726,6 +2740,7 @@ function ezSymFacts(sym) {
   return {
     rsi:  d.rsi,
     buy:  d.buyScore,
+    sell,
     gear: d.gear,
     phase: T ? T.cal.phase : ezSessionPhase(),
     // 상위가 하위를 지배한다(원칙 2): 최상단이 진입을 막으면 종목 문장도 진입을 못 연다
@@ -2848,12 +2863,13 @@ function _v2KingCardHtml(sym) {
   const sv = window._swingView;
   const k = sym === 'TSLA' ? sv?.tsla : sv?.nvda;
   if (!k) return '';
+  const kf = ezSymFacts(sym);
   return `<div class="t9-box t9-box-hi">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
       <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">${ezJudgeBadge()}</span>
-      <span style="font-weight:800;color:var(--t1);font-size:16px;">${k.stanceLabel}</span>
+      <span style="font-weight:800;color:var(--t1);font-size:16px;">${ezGuard(k.stanceLabel, kf, _safeStanceLabel(kf))}</span>
     </div>
-    ${_blocksHtml(k.blocks, k.commentary, ezSymFacts(sym))}
+    ${_blocksHtml(k.blocks, k.commentary, kf)}
     ${_tfmWeekLine(sym)}
   </div>`;
 }
@@ -6888,8 +6904,8 @@ renderKings = function(tsla, nvda) {
     const ai = sym === 'TSLA' ? window._tslaAnalysis : window._nvdaAnalysis;
     const d = window._renderData?.[sym];
     holder.innerHTML = _v2KingCardHtml(sym)
-      + buildMegaAiHtml(ai)
-      + buildAudienceHtml(view?.audience)
+      + buildMegaAiHtml(ai, sym)
+      + buildAudienceHtml(view?.audience, sym)
       + (d ? buildMegaMetricsHtml(d) : '');
     const head = section.querySelector('.top9-sec-head');
     if (head) head.insertAdjacentElement('afterend', holder);
@@ -6993,17 +7009,38 @@ function selectTop9(sym) {
 }
 
 // 4분류 맞춤 행동 진단 카드: 스윙 전략 탭의 보유자/신규/물타기/불타기 분류를 종목 단위로
-function buildAudienceHtml(aud) {
+/* 2026-09-12(90항 규칙 1·5): 4분류 카드와 AI 차트분석 카드는 검문 없이 열려 있던 마지막 옆문이었다.
+   9/7 실사고: TSLA 매수점수 49·Gear 1 에 "분할 진입 검토 유효 구간: 매수점수 80 이상 극단 과매도 발동",
+   손익비 0.1:1 플랜이 그대로 화면에 섰다. 걸린 문장은 분류별 안전 문장으로 바꾼다(카드는 비지 않는다). */
+function _safeStanceLabel(F) {
+  if (F.gear === 1) return '내리막: 신규 진입 조건 미충족, 보유자는 이탈선만 관리';
+  if (F.entryBlocked) return '진입 대기: 상위 판정 또는 청산 조건이 진입을 막는 구간';
+  return '판단 보류: 문장이 숫자와 어긋나 검문에서 걸림';
+}
+function _safeAudience(F) {
+  const T = EZ_THRESH;
+  return {
+    holder:  F.gear === 1 ? '보유자: 200일선 아래 구간. 이탈 기준(직전 저점) 하나만 관리, 신규 추가는 없음.' : '보유자: 추세 훼손 신호 없으면 유지.',
+    newbie:  (F.buy != null && F.buy < T.BUY_MIN) ? `신규 진입 대기: 매수 점수 ${F.buy}점(기준 ${T.BUY_MIN} 미달). 신호가 켜질 때 다시 본다.`
+             : F.gear === 1 ? '신규 진입 대기: 200일선 아래(Gear 1)에서는 정찰대도 열지 않는다. 과매도 탈출 반전 또는 200일선 회복이 먼저.'
+             : '신규 진입 대기: 최상단 판정이 쌓기로 바뀌거나 청산 조건이 꺼질 때 다시 본다.',
+    avgdown: '물타기 보류: 진입 조건이 안 열린 자리에서는 평단 낮추기도 하지 않는다.',
+    pyramid: '불타기 금지 구간: 추세·점수 조건 미충족.',
+  };
+}
+function buildAudienceHtml(aud, sym) {
   if (!aud) return '';
+  const F = sym ? ezSymFacts(sym) : ezTopFacts();
+  const safe = _safeAudience(F);
   const row = (cls, label, txt) => `<div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(120,120,128,0.14);">
     <span class="ltier-cat-badge ${cls}" style="flex-shrink:0;">${label}</span>
     <span style="font-size:15px;line-height:1.6;color:var(--t1);">${txt}</span></div>`;
   return `<div class="t9-box">
     <div style="font-weight:800;color:var(--t1);font-size:16px;margin-bottom:6px;">맞춤 행동 진단</div>
-    ${row('hold', '보유자', aud.holder)}
-    ${row('buy', '첫매수', aud.newbie)}
-    ${row('avg', '물타기', aud.avgdown)}
-    ${row('fire', '불타기', aud.pyramid)}
+    ${row('hold', '보유자', ezGuard(aud.holder, F, safe.holder))}
+    ${row('buy', '첫매수', ezGuard(aud.newbie, F, safe.newbie))}
+    ${row('avg', '물타기', ezGuard(aud.avgdown, F, safe.avgdown))}
+    ${row('fire', '불타기', ezGuard(aud.pyramid, F, safe.pyramid))}
   </div>`;
 }
 
@@ -7011,6 +7048,20 @@ function buildAudienceHtml(aud) {
 // 한 문단 몇 줄짜리 서술은 한눈에 안 들어온다. 그룹핑해서 스캔 가능하게.
 // blocks가 없는 구버전 JSON은 기존 평문(commentary)으로 자동 폴백한다.
 // 88항 원칙 5·9: facts 를 받으면 항목마다 숫자 검문을 건다. 안 주면 예전대로 그냥 그린다.
+/* 2026-09-12: 소제목도 출구다. '오늘 장(9월7일) 장중'은 낱말 검문(현재형 '장중')을 비껴가지만
+   세션이 open 이 아니면 거짓이다. 거래일 표기로 바꾼다. */
+function _fixSessionHeading(h, facts) {
+  if (!h || !facts || facts.phase === 'open' || !/장중/.test(h)) return h;
+  const asOf = window.EZ_TRUTH?.cal?.asOf || ezLastTradingDay(new Date());
+  console.warn('[ezGuard] 소제목 장중 → 직전 장:', h);
+  return `직전 장(${ezKoDate(asOf)})`;
+}
+function _numsBlockItems(f) {
+  if (!f || f.buy == null) return null;
+  const gearTxt = f.gear >= 3 ? '200일선 위' : f.gear === 2 ? '200일선 근처' : '200일선 아래';
+  return [`매수점수 ${f.buy} · 매도압력 ${f.sell ?? ': '} · RSI ${f.rsi != null ? Math.round(f.rsi) : ': '}`,
+          `추세 기어 ${f.gear ?? ': '}: ${gearTxt}`];
+}
 function _blocksHtml(blocks, fallbackText, facts) {
   const _g = (arr, tag) => facts ? ezGuardList(arr, facts, tag) : (arr && arr.length ? arr : null);
   if (!Array.isArray(blocks) || !blocks.length) {
@@ -7019,11 +7070,15 @@ function _blocksHtml(blocks, fallbackText, facts) {
       ? `<p style="margin:0 0 10px;line-height:1.75;color:var(--t1);font-size:16px;">${_ft}</p>` : '';
   }
   return blocks.filter(b => b && b.items && b.items.length).map(b => {
-    const items = _g(b.items, `카드 '${b.h}'`);
+    /* 2026-09-12(원칙 3): '지금 숫자' 절은 서버 문장이 아니라 이 페이지의 숫자(EZ_TRUTH.sym)로 다시 쓴다.
+       판단 카드 '매수점수 49'와 지표 카드 '매수 매력도 50'이 한 화면에 같이 뜨던 원인이 여기였다. */
+    const src = (facts && b.h === '지금 숫자' && _numsBlockItems(facts)) || b.items;
+    const items = _g(src, `카드 '${b.h}'`);
     if (!items) return '';                       // 한 절이 통째로 걸리면 제목도 싣지 않는다
+    const h = facts ? _fixSessionHeading(b.h, facts) : b.h;
     return `
     <div style="margin:0 0 12px;">
-      <div style="font-size:14px;font-weight:800;letter-spacing:.04em;color:var(--t3);margin-bottom:5px;">${b.h}</div>
+      <div style="font-size:14px;font-weight:800;letter-spacing:.04em;color:var(--t3);margin-bottom:5px;">${h}</div>
       <ul style="margin:0;padding:0;list-style:none;">
         ${items.map(it => `<li style="position:relative;padding-left:14px;margin-bottom:4px;font-size:16px;line-height:1.65;color:var(--t1);">
           <span style="position:absolute;left:0;top:0;color:var(--bl);font-weight:900;">·</span>${it}</li>`).join('')}
@@ -7035,12 +7090,13 @@ function _blocksHtml(blocks, fallbackText, facts) {
 function _megaStanceCardHtml(sym) {
   const m = window._swingView?.megas?.[sym];
   if (!m) return '';
+  const mf = ezSymFacts(sym === 'GOOG' ? 'GOOGL' : sym);
   return `<div class="t9-box t9-box-hi">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
       <span style="background:#0a84ff;color:#fff;border-radius:6px;padding:2px 8px;font-size:14px;font-weight:700;">${ezJudgeBadge()}</span>
-      <span style="font-weight:800;color:var(--t1);font-size:16px;">${m.stanceLabel}</span>
+      <span style="font-weight:800;color:var(--t1);font-size:16px;">${ezGuard(m.stanceLabel, mf, _safeStanceLabel(mf))}</span>
     </div>
-    ${_blocksHtml(m.blocks, m.commentary, ezSymFacts(sym === 'GOOG' ? 'GOOGL' : sym))}
+    ${_blocksHtml(m.blocks, m.commentary, mf)}
     ${_tfmWeekLine(sym === 'GOOG' ? 'GOOGL' : sym)}
     <div style="color:var(--t3);font-size:14px;">확률·통계는 검증된 백테스트 결과만 인용 · 투자 판단의 참고 자료</div>
   </div>`;
@@ -7069,18 +7125,33 @@ function buildMegaMetricsHtml(d) {
 }
 
 // Gemini AI 차트분석 블록: 킹 카드의 트레이딩 플랜과 동일 정보 구성 (2026-08-04 연동)
-function buildMegaAiHtml(ai) {
+function buildMegaAiHtml(ai, sym) {
   if (!ai) return '';
-  const col = ai.action === '매수' ? 'var(--gr)' : ai.action === '매도' ? 'var(--rd)' : 'var(--t2)';
-  const mark = ai.action === '매수' ? '▲ 매수 우위' : ai.action === '매도' ? '▼ 매도 우위' : '◆ 관망';
-  const reason = ai.reason ? String(ai.reason).replace(/◆/g, '').replace(/\s{2,}/g, ' ').trim() : '';
-  const conti = ai.continuity
-    ? `<div class="ktp-continuity">${ai.continuity}</div>` : '';
+  /* 원칙 1·5: 모델(Gemini)은 문장만 쓴다. 판정은 코드다. 점수 미달·Gear 1·청산·최상단 관망이면 모델의 '매수'는
+     '관망'으로 내리고 그 이유를 한 줄 적는다. 손익비 1 미만이면 레벨을 싣지 않는다(레거시 심층 카드와 같은 규칙). */
+  const F = sym ? ezSymFacts(sym) : ezTopFacts();
+  const rrNum = (typeof ai.entry === 'number' && typeof ai.stop === 'number' && typeof ai.target === 'number' && ai.entry !== ai.stop)
+    ? (ai.target - ai.entry) / Math.abs(ai.entry - ai.stop) : null;
+  F.rr = rrNum;
+  const blocked = F.entryBlocked || (F.buy != null && F.buy < EZ_THRESH.BUY_MIN);
+  const action = (ai.action === '매수' && blocked) ? '관망' : ai.action;
+  if (action !== ai.action) console.warn('[ezGuard] ' + (sym || '?') + ' AI action 매수 → 관망 (점수 ' + F.buy + ', Gear ' + F.gear + ', 매도 ' + F.sell + ')');
+  const col = action === '매수' ? 'var(--gr)' : action === '매도' ? 'var(--rd)' : 'var(--t2)';
+  const mark = action === '매수' ? '▲ 매수 우위' : action === '매도' ? '▼ 매도 우위' : '◆ 관망';
+  const whyDown = action !== ai.action
+    ? `<div class="ktp-continuity" style="color:var(--t2)">모델은 매수 우위로 봤으나 코드 판정이 우선: ${
+        F.buy != null && F.buy < EZ_THRESH.BUY_MIN ? `매수 점수 ${F.buy}점(${EZ_THRESH.BUY_MIN} 미달)` :
+        F.gear === 1 ? 'Gear 1(200일선 아래)' :
+        (F.sell != null && F.sell >= EZ_THRESH.SELL_EXIT) ? `매도 압력 ${F.sell}(청산 기준 ${EZ_THRESH.SELL_EXIT})` : '최상단 판정이 진입을 막음'}. 신규 진입 대기.</div>` : '';
+  const reason = ezGuard(ai.reason ? String(ai.reason).replace(/◆/g, '').replace(/\s{2,}/g, ' ').trim() : '', F, '');
+  const contiTx = ezGuard(ai.continuity, F, '');
+  const conti = contiTx ? `<div class="ktp-continuity">${contiTx}</div>` : '';
   let plan = '';
-  if (ai.entry && ai.stop && ai.target) {
+  if (ai.entry && ai.stop && ai.target && rrNum != null && rrNum < EZ_THRESH.RR_MIN) {
+    plan = `<div style="margin:10px 0 4px;padding:10px 12px;background:rgba(120,120,128,0.08);border-radius:10px;color:var(--t2);font-size:14px;line-height:1.6;">플랜 보류: 모델이 낸 레벨의 손익비가 ${rrNum.toFixed(1)}:1 로 1 미만이다. 손절 폭보다 목표 폭이 작은 플랜은 싣지 않는다.</div>`;
+  } else if (ai.entry && ai.stop && ai.target) {
     const f = v => typeof v === 'number' ? v.toFixed(2) : String(v ?? ': ');
-    const rr = (typeof ai.entry === 'number' && typeof ai.stop === 'number' && typeof ai.target === 'number' && ai.entry !== ai.stop)
-      ? ((ai.target - ai.entry) / Math.abs(ai.entry - ai.stop)).toFixed(1) + ':1' : ': ';
+    const rr = rrNum != null ? rrNum.toFixed(1) + ':1' : ': ';
     const lv = (l, v, c) => `<div style="flex:1;min-width:70px;text-align:center;">
       <div style="color:var(--t3);font-size:14px;">${l}</div>
       <div style="font-size:15px;font-weight:800;color:${c};">${v}</div></div>`;
@@ -7095,7 +7166,7 @@ function buildMegaAiHtml(ai) {
       <span style="font-weight:800;color:${col};font-size:16px;">${mark}</span>
       <span style="color:var(--t3);font-size:14px;">AI 차트분석 · 스윙 트레이딩 플랜</span>
     </div>
-    ${conti}
+    ${whyDown}${conti}
     ${reason ? `<p style="margin:0 0 4px;line-height:1.7;color:var(--t1);font-size:16px;">${reason}</p>` : ''}
     ${plan}
     ${inval}
@@ -7150,9 +7221,9 @@ function renderMegaCards(sym) {
   const d = window._renderData?.[sym];
   const ai = window._megaAi[sym];   // undefined=미로딩, null=없음, object=도착
   box.innerHTML = `${_megaStanceCardHtml(sym)}
-    ${ai ? buildMegaAiHtml(ai)
+    ${ai ? buildMegaAiHtml(ai, sym)
          : (ai === undefined ? '<div style="color:var(--t3);font-size:14px;margin:0 0 12px;">AI 차트분석 불러오는 중…</div>' : '')}
-    ${buildAudienceHtml(window._swingView?.megas?.[sym]?.audience)}
+    ${buildAudienceHtml(window._swingView?.megas?.[sym]?.audience, sym)}
     ${d ? buildMegaMetricsHtml(d)
         : '<div class="t9-box" style="color:var(--t2);font-size:16px;">데이터 수집 대기 구간: 다음 자동 갱신(장중 최대 30분 주기) 이후 표시됩니다.</div>'}
     ${_deepCardReady(d) ? `<details class="sv-det-page"><summary style="cursor:pointer;font-weight:700;color:var(--ez-blue);font-size:16px;padding:10px 4px;">상세보기: 지표·점수·매매 기준 전체</summary><div>${_deepAnalysisCardHtml(d, ai || null)}</div></details>` : ''}`;

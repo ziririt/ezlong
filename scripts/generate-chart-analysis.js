@@ -16,6 +16,10 @@
 const https = require('https');
 const fs    = require('fs');
 const path  = require('path');
+// 88항(2026-09-12): 거래일 캘린더(단일 출처 data/nyse-calendar.json). 실패하면 요일 판정으로 폴백.
+let ezCal = null;
+try { ezCal = require('./ez-calendar'); const _w = ezCal.calendarWarning && ezCal.calendarWarning(); if (_w) console.warn(_w); }
+catch (e) { console.warn('[warn] ez-calendar 로드 실패: 요일 판정으로 폴백:', e.message); }
 
 /* 80항 - 화면 문구의 문장 부호. 파이썬 쪽 scripts/ez_text.py 와 같은 규칙이다.
    · 긴 대시(em dash)는 낱말 사이면 콜론, 줄머리면 목록 표시 '- '
@@ -300,7 +304,8 @@ function kstTimeStr(d = new Date()) {
 }
 
 // 최근 판단 컨텍스트: 날짜별 마지막 판단만 추려 최대 4일치(직전 3영업일 + 오늘 장중) 반환.
-// 파이프라인이 거래일에만 돌므로 원장에 존재하는 날짜 자체가 영업일 — 별도 휴일 테이블 불필요.
+// (88항 정정) "파이프라인이 거래일에만 돈다"는 가정은 틀렸다: 감시견은 휴장일에도 돌고, KST 날짜는 ET 거래일과
+// 어긋난다. d 가 이제 ET 거래일이므로 여기서 날짜별로 묶으면 그대로 거래일별이 된다.
 function ledgerContextLines(ledger, symbol) {
   const arr = Array.isArray(ledger[symbol]) ? ledger[symbol] : [];
   if (!arr.length) return null;
@@ -311,9 +316,15 @@ function ledgerContextLines(ledger, symbol) {
   return days.map(e => `${e.d} ${e.t || ''}: ${e.k}`).join('\n');
 }
 
+// 88항(2026-09-12): 원장의 날짜 d 는 '판단이 속한 미국 거래일(ET)'이다. 종전엔 KST 날짜여서 한 거래일이 두 날짜로
+// 갈라지고(장중 01시 KST 와 마감 06시 KST), 휴장일(9/7 노동절)에 돈 판단이 새 거래일처럼 쌓였다. kst 는 표시용으로 남긴다.
+function ledgerDay() {
+  try { if (ezCal) return ezCal.lastTradingDay(new Date()); } catch (e) { /* 폴백 */ }
+  return kstDateStr();
+}
 function appendLedger(ledger, symbol, summaryLine) {
   if (!Array.isArray(ledger[symbol])) ledger[symbol] = [];
-  ledger[symbol].push({ d: kstDateStr(), t: kstTimeStr(), k: summaryLine });
+  ledger[symbol].push({ d: ledgerDay(), kst: kstDateStr(), t: kstTimeStr(), k: summaryLine });
   if (ledger[symbol].length > LEDGER_MAX_PER_SYMBOL) {
     ledger[symbol] = ledger[symbol].slice(-LEDGER_MAX_PER_SYMBOL);
   }
@@ -1540,6 +1551,8 @@ async function processTicker(meta) {
   // 미국 주식: Yahoo Finance v8 API가 marketState를 누락하는 경우 시간 기반으로 직접 계산
   // 프리마켓 04:00~09:30 ET, 정규장 09:30~16:00 ET, 포스트마켓 16:00~20:00 ET
   function getUSMarketState() {
+    // 88항: 휴장일(노동절 등)은 캘린더가 안다. 요일만 보면 휴장일 낮에 'REGULAR' 가 나온다(9/7 실사고).
+    try { if (ezCal) return ezCal.usMarketState(new Date()); } catch (e) { /* 폴백 */ }
     const now = new Date();
     const etStr = now.toLocaleString('en-US', { timeZone: 'America/New_York' });
     const et = new Date(etStr);

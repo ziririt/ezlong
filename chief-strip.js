@@ -79,9 +79,15 @@
   }
 
   function boot() {
-    fetch(URL + '?t=' + Math.floor(Date.now() / 300000))
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(insert)
+    /* 88항(2026-09-12): 휴장일 판정(ezWeekPhase)은 캘린더가 실린 뒤에야 맞는다. ez-nav.js 의 로더를
+       최대 3.5초 기다린다. 없거나 늦으면 종전처럼 요일 판정으로 그린다. */
+    var calWait = window.ezCalReady
+      ? Promise.race([window.ezCalReady, new Promise(function (r) { setTimeout(r, 3500); })])
+      : Promise.resolve();
+    var viewP = fetch(URL + '?t=' + Math.floor(Date.now() / 300000))
+      .then(function (r) { return r.ok ? r.json() : null; });
+    Promise.all([viewP, calWait])
+      .then(function (a) { insert(a[0]); })
       .catch(function () {});
   }
   if (document.readyState === 'loading') {

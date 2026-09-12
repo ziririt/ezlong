@@ -805,6 +805,36 @@
    ※ 같은 판정을 chief-strip.js 와 atmr-dashboard.html 이 함께 쓴다.
      여기 하나만 고치면 둘 다 따라온다 (공유 함수 동기화 원칙).
    ───────────────────────────────────────────────────────────── */
+/* 88항 · 2026-09-12 보강 - 캘린더 로더를 여기(모든 페이지 공용)로 올린다.
+   종전에는 atmr-dashboard.html 만 data/nyse-calendar.json 을 읽어 window.EZ_NYSE_HOLIDAYS 를 채웠다.
+   그래서 chief-strip.js 가 얹힌 다른 페이지들은 평일 공휴일에도 '이번 거래일 판단'을 달았다.
+   단일 출처는 그대로 data/nyse-calendar.json 하나. 같은 출처(/data/…)를 먼저, 실패하면 raw 로.
+   대시보드는 window.ezCalReady 가 이미 있으면 그것을 쓴다(두 번 읽지 않는다). */
+window.EZ_NYSE_CAL = window.EZ_NYSE_CAL || null;
+window.EZ_NYSE_HOLIDAYS = window.EZ_NYSE_HOLIDAYS || null;
+window.ezCalReady = window.ezCalReady || (function () {
+  var bust = '?t=' + Math.floor(Date.now() / 3600000);
+  var urls = [];
+  if (/^https?:/.test(location.protocol)) urls.push('/data/nyse-calendar.json' + bust);
+  urls.push('https://raw.githubusercontent.com/ziririt/ezlong/main/data/nyse-calendar.json' + bust);
+  function tryAt(i) {
+    if (i >= urls.length) { return Promise.resolve(null); }
+    var ctl = (typeof AbortController === 'function') ? new AbortController() : null;
+    var timer = ctl ? setTimeout(function () { ctl.abort(); }, 3000) : null;
+    return fetch(urls[i], ctl ? { signal: ctl.signal } : {})
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (cal) {
+        if (timer) clearTimeout(timer);
+        if (!cal || !Array.isArray(cal.holidays)) return tryAt(i + 1);
+        cal._h = new Set(cal.holidays); cal._e = new Set(cal.earlyClose || []);
+        window.EZ_NYSE_CAL = cal; window.EZ_NYSE_HOLIDAYS = cal.holidays;
+        return cal;
+      })
+      .catch(function () { if (timer) clearTimeout(timer); return tryAt(i + 1); });
+  }
+  return tryAt(0);
+})();
+
 /* 88항 - ET 날짜가 NYSE 공휴일인가. 캘린더가 없으면 false(모른다 = 평소대로). */
 function ezIsNyseHoliday(etDate) {
   var list = window.EZ_NYSE_HOLIDAYS;
