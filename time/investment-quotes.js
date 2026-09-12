@@ -9787,5 +9787,12 @@ window.investmentQuotes = [
     "title": "하마터면 열심히 살 뻔했다",
     "author": "하완",
     "genre": "literature"
+  },
+  {
+    "english": "The success of contrarian strategies requires you at times to go against gut reactions, the prevailing beliefs in the marketplace, and the experts you respect.",
+    "text": "역발상 투자 전략이 성공하려면, 때로는 본능적인 반응과 시장에 팽배한 통념, 그리고 존경하는 전문가들의 의견까지도 거슬러야 한다.",
+    "title": "컨트래리언 투자 전략 (Contrarian Investment Strategies)",
+    "author": "데이비드 드레먼 (David Dreman)",
+    "category": "mindset"
   }
 ];
