@@ -298,5 +298,11 @@ window.aladinLinks = {
   "청포도|이육사": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=375426015&partner=friends327",
   "키르케 (Circe)|매들린 밀러 (Madeline Miller)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=241086530&partner=friends327",
   "바람이 분다 당신이 좋다|이병률": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=17563850&partner=friends327",
-  "쉽게 씌어진 시|윤동주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=183891119&partner=friends327"
+  "쉽게 씌어진 시|윤동주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=183891119&partner=friends327",
+  "오베라는 남자 (A Man Called Ove)|프레드릭 배크만 (Fredrik Backman)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=318299460&partner=friends327",
+  "국화 옆에서|서정주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=18739&partner=friends327",
+  "언테임드 (Untamed)|글레넌 도일 (Glennon Doyle)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=268590297&partner=friends327",
+  "모든 순간이 꽃봉오리인 것을|정현종": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=238004363&partner=friends327",
+  "주식에 장기투자하라 (Stocks for the Long Run)|제러미 시겔 (Jeremy J. Siegel)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=59375756&partner=friends327",
+  "모란이 피기까지는|김영랑": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=26528103&partner=friends327"
 };
