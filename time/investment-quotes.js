@@ -9714,5 +9714,12 @@ window.investmentQuotes = [
     "title": "시큐리티 애널리시스 (Security Analysis)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "english": "He was a man of black and white. And she was color. All the color he had.",
+    "text": "그는 흑과 백의 사람이었다. 그리고 그녀는 색이었다. 그가 가진 색의 전부였다.",
+    "title": "오베라는 남자 (A Man Called Ove)",
+    "author": "프레드릭 배크만 (Fredrik Backman)",
+    "genre": "literature"
   }
 ];
