@@ -313,6 +313,8 @@ table { min-width: 0; }
  ]
 }
 </script>
+<!-- 계산 공용 함수: 이율 환산 규칙의 단일 출처. 계산 코드보다 먼저 실행돼야 한다 -->
+<script src="/ez-finance.js"></script>
 </head>
 <body>
 <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">DCA 적립식 투자 복리 시뮬레이터</h1><!-- 화면 낭독기·검색엔진용 페이지 제목 (2026-08-26 SEO 점검: h1 부재 보강) -->
@@ -351,6 +353,11 @@ const { useState, useCallback, useRef, useEffect, memo } = React;
 /* ═══════════════════════════════════════════
    STATIC DATA
 ═══════════════════════════════════════════ */
+/* 참고 CAGR — 최근 강세 구간(대체로 최근 10년) 기준의 참고치이지 장기 평균이 아니다.
+   이 값을 20년·30년에 그대로 연장하면 실제보다 크게 부풀려진 그림이 나온다.
+   개별 종목일수록 심하다(NVDA 70% 를 20년 연장하면 현실에 없는 숫자가 된다).
+   화면 본문이 그 한계를 말하고 있으니 문구를 지우지 않는다.
+   갱신할 때는 어느 구간을 봤는지 여기 주석에 같이 적는다. */
 const CAGR = {
   QQQ:21,XLK:21,SOXX:29.5,SPY:14,SCHD:11.5,XLV:10.5,XLP:7.5,GLD:8.5,
   NVDA:70,AAPL:27.5,MSFT:24.5,GOOG:20,GOOGL:20,AMZN:22.5,META:19.5,
@@ -358,8 +365,8 @@ const CAGR = {
   "BRK-B":13.5,COST:23,V:19,JPM:15,LLY:33,KO:9.5,PG:9.5
 };
 const DESC = {
-  QQQ:"나스닥100 ETF. AI·빅테크 중심 성장주 바구니로 10년 연평균 약 21%.",
-  SPY:"S&P500 ETF. 미국 대형주 500개를 담은 장기 분산 투자의 교과서. 연평균 약 14%.",
+  QQQ:"나스닥100 ETF. AI·빅테크 중심 성장주 바구니. 아래 21%는 최근 10년 구간의 참고치이며 상장 이후 전체로 넓히면 훨씬 낮습니다.",
+  SPY:"S&P500 ETF. 미국 대형주 500개를 담은 장기 분산 투자의 교과서. 아래 14%는 최근 10년 구간의 참고치이며, 배당 포함 장기 평균은 10% 안팎입니다.",
   NVDA:"AI 반도체 독점 기업. 데이터센터 GPU 시장을 사실상 지배, 최근 5년 폭발적 성장.",
   TSLA:"전기차·에너지·AI 로봇 기업. 변동성이 크지만 장기 성장 스토리가 강력합니다.",
   AAPL:"글로벌 시총 1위 빅테크. 생태계 락인 효과와 서비스 매출 성장으로 안정적 수익률.",
@@ -385,7 +392,7 @@ const DESC = {
 function sN(v, fb=0){ const n=Number(v); return isNaN(n)||!isFinite(n)?fb:n; }
 
 function calcDCA(startUSD, monthlyUSD, annualRate, accumYears, totalYears, exRate, ret){
-  const mr=sN(annualRate)/100/12, ex=sN(exRate,1430);
+  const mr=EZFin.monthlyFromCAGR(sN(annualRate)/100), ex=sN(exRate,EZFin.USD_KRW);
   let val=sN(startUSD), inv=sN(startUSD), prev=sN(startUSD), first=0, nextX=2, wdAcc=0;
   const rows=[];
   for(let m=1;m<=sN(totalYears)*12;m++){
@@ -810,7 +817,7 @@ const SimInputSection=memo(function SimInputSection({
 /* ═══════════════════════════════════════════
    MAIN APP
 ═══════════════════════════════════════════ */
-const EX_RATE = 1380; // 원/달러 환율 (2026년 5월 기준 참고치: 설정 불필요)
+const EX_RATE = EZFin.USD_KRW; // 원/달러 — 단일 출처는 ez-finance.js (기준일 EZFin.USD_KRW_ASOF)
 
 function App(){
   // Sim 1

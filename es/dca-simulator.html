@@ -275,6 +275,8 @@
   *:active { transform: none !important; }
 }
 </style>
+<!-- 계산 공용 함수: 이율 환산 규칙의 단일 출처. 계산 코드보다 먼저 실행돼야 한다 -->
+<script src="/ez-finance.js"></script>
 </head>
 <body>
 <script src="/lang-banner.js"></script>
@@ -454,7 +456,7 @@ const DESC = {
 function sN(v, fb=0){ const n=Number(v); return isNaN(n)||!isFinite(n)?fb:n; }
 
 function calcDCA(startUSD, monthlyUSD, annualRate, accumYears, totalYears, exRate, ret){
-  const mr=sN(annualRate)/100/12, ex=sN(exRate,1);
+  const mr=EZFin.monthlyFromCAGR(sN(annualRate)/100), ex=sN(exRate,1);
   let val=sN(startUSD), inv=sN(startUSD), prev=sN(startUSD), first=0, nextX=2, wdAcc=0;
   const rows=[];
   for(let m=1;m<=sN(totalYears)*12;m++){

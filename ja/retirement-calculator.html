@@ -293,6 +293,8 @@
   *:active { transform: none !important; }
 }
 </style>
+<!-- 계산 공용 함수: 이율 환산 규칙의 단일 출처. 계산 코드보다 먼저 실행돼야 한다 -->
+<script src="/ez-finance.js"></script>
 </head>
 <body>
 <script src="/lang-banner.js"></script>
@@ -514,7 +516,7 @@ function calcWithdrawalMonthly(asset, wdPct=4){ return Math.round(sN(asset) * (w
 // long horizons: replaced with the identical loop to guarantee consistency).
 function calcForwardAsset(currentAsset, monthlyBudget, yearsLeft, cagr){
   if(yearsLeft <= 0) return sN(currentAsset);
-  const mr = sN(cagr)/100/12;
+  const mr = EZFin.monthlyFromCAGR(sN(cagr)/100);
   const n = yearsLeft * 12;
   const m = Math.max(0, sN(monthlyBudget));
   let val = sN(currentAsset);
@@ -524,7 +526,7 @@ function calcForwardAsset(currentAsset, monthlyBudget, yearsLeft, cagr){
 
 function calcAccumulation(currentAge, retireAge, currentAsset, monthly, annualRate){
   const years = retireAge - currentAge; if(years<=0) return [];
-  const mr = sN(annualRate)/100/12;
+  const mr = EZFin.monthlyFromCAGR(sN(annualRate)/100);
   const start = sN(currentAsset);
   const m = Math.max(0, sN(monthly));
   let val=start, inv=start;
@@ -546,7 +548,7 @@ function calcAccumulation(currentAge, retireAge, currentAsset, monthly, annualRa
 
 function calcWithdrawalSim(asset, monthlyWd, annualRate, totalYears=30){
   if(sN(asset) <= 0) return { rows:[{ year:0, asset:0 }], exhaustedYear:null };
-  const mr=sN(annualRate)/100/12;
+  const mr=EZFin.monthlyFromCAGR(sN(annualRate)/100);
   let val=sN(asset);
   const mWd=sN(monthlyWd);
   const rows=[{ year:0, asset:sN(asset) }];

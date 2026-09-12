@@ -407,6 +407,8 @@
   *:active { transform: none !important; }
 }
 </style>
+<!-- 계산 공용 함수: 이율 환산 규칙의 단일 출처. 계산 코드보다 먼저 실행돼야 한다 -->
+<script src="/ez-finance.js"></script>
 </head>
 <body>
 <script src="/lang-banner.js"></script>
@@ -762,7 +764,7 @@ function calculatePortfolioReturn(items) {
 
 function runSimulation(portfolio, init, monthly, duration) {
   const wr = calculatePortfolioReturn(portfolio);
-  const monthlyRate = Math.pow(1 + wr / 100, 1 / 12) - 1;
+  const monthlyRate = EZFin.monthlyFromCAGR(wr / 100);
   let bal = init;
   const results = [];
   for (let yr = 0; yr <= duration; yr++) {

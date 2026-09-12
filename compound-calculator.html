@@ -261,6 +261,10 @@ html, body {
   font-family: var(--font); font-size: 15px; font-weight: 500;
   color: var(--t1); min-width: 0;
 }
+.rate-note { margin-top: 14px; padding: 12px 14px; border-radius: 10px;
+  background: var(--bg2); border: 1px solid var(--bd);
+  font-size: 14px; line-height: 1.7; color: var(--t2); word-break: keep-all; }
+.rate-note b { color: var(--t1); font-weight: 700; }
 .input-unit { font-size: 13px; font-weight: 500; color: var(--t3); white-space: nowrap; margin-left: 6px; flex-shrink: 0; }
 
 /* 한국어 금액 표시 */
@@ -608,6 +612,8 @@ html, body {
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
      head 맨 끝에 둔다: 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
+<!-- 계산 공용 함수: 이율 환산 규칙의 단일 출처. 계산 코드보다 먼저 실행돼야 한다 -->
+<script src="/ez-finance.js"></script>
 </head>
 <body>
 <script src="/lang-banner.js"></script>
@@ -1282,7 +1288,23 @@ function renderLine(canvasId, datasets) {
 /* ═══════════════════════════════════════════════
    HTML 빌더
 ═══════════════════════════════════════════════ */
-function buildSummary(rows) {
+/* 명목 연이율과 실효 연수익률은 다르다.
+   이 계산기는 "연 N%"를 기간 수로 나눠 매기마다 붙이는 명목이율 방식이다.
+   같은 14% 라도 월 복리면 실제로는 14.93%, 일 복리면 15.02% 로 굴러간다.
+   증상: 다른 계산기들은 CAGR(기하) 기준이라 같은 입력에 다른 답이 나왔고,
+   화면이 그 차이를 말해 주지 않아 어느 쪽이 맞는지 알 방법이 없었다. */
+function rateNote(rate, unit) {
+  const r = Number(rate) / 100;
+  if (!isFinite(r) || r === 0) return '';
+  const per = unit === '월' ? 12 : unit === '일' ? 365 : 1;
+  if (per === 1) return '';
+  const eff = EZFin.effectiveAnnual(r, per) * 100;
+  return `<div class="rate-note">입력하신 <b>연 ${Number(rate)}%</b>를 ${per}로 나눠 매${unit} 붙이는 방식입니다(명목 연이율).
+    복리가 매${unit} 쌓이므로 <b>실제 연 수익률은 ${eff.toFixed(2)}%</b>가 됩니다.
+    CAGR(연평균 복리 수익률) 기준으로 보시려면 기간 단위를 '년'으로 바꾸십시오.</div>`;
+}
+
+function buildSummary(rows, rate, unit) {
   const last = rows[rows.length - 1];
   return `
     <div class="summary-grid">
@@ -1302,7 +1324,8 @@ function buildSummary(rows) {
         <div class="summary-label">총 투자금</div>
         <div class="summary-value">${fmtShort(last.invested)}</div>
       </div>
-    </div>`;
+    </div>
+    ${rateNote(rate, unit)}`;
 }
 
 function buildTable(rows, unit) {
@@ -1368,7 +1391,7 @@ function calculate() {
   const html = `
     <div class="card">
       <div class="card-title">계산 결과</div>
-      ${buildSummary(rows)}
+      ${buildSummary(rows, inp.rate, inp.unit)}
       <div class="chart-canvas-wrap"><canvas id="main-chart"></canvas></div>
       <hr class="section-divider"/>
       <div style="font-size:13px;font-weight:700;color:var(--t2);margin-bottom:12px;">기간별 상세</div>
@@ -1429,9 +1452,9 @@ function calculateCompare() {
   // 요약 섹션
   const summaryColClass = hasC ? 'cmp-3col' : 'cmp-2col';
   let summaryHTML = `<div class="${summaryColClass}">`;
-  summaryHTML += `<div><div class="cmp-section-label"><span class="badge badge-a">A</span>설정 A</div>${buildSummary(rA)}</div>`;
-  summaryHTML += `<div><div class="cmp-section-label"><span class="badge badge-b">B</span>설정 B</div>${buildSummary(rB)}</div>`;
-  if (hasC) summaryHTML += `<div><div class="cmp-section-label"><span class="badge badge-c">C</span>설정 C</div>${buildSummary(rC)}</div>`;
+  summaryHTML += `<div><div class="cmp-section-label"><span class="badge badge-a">A</span>설정 A</div>${buildSummary(rA, inpA.rate, inpA.unit)}</div>`;
+  summaryHTML += `<div><div class="cmp-section-label"><span class="badge badge-b">B</span>설정 B</div>${buildSummary(rB, inpB.rate, inpB.unit)}</div>`;
+  if (hasC) summaryHTML += `<div><div class="cmp-section-label"><span class="badge badge-c">C</span>설정 C</div>${buildSummary(rC, inpC.rate, inpC.unit)}</div>`;
   summaryHTML += '</div>';
 
   // 테이블 섹션
