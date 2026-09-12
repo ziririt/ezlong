@@ -9748,5 +9748,11 @@ window.investmentQuotes = [
     "title": "돈의 심리학 (The Psychology of Money)",
     "author": "모건 하우절 (Morgan Housel)",
     "category": "mindset"
+  },
+  {
+    "text": "더 열심히 그 순간을 사랑할 것을...\n모든 순간이 다아 꽃봉오리인 것을,\n내 열심에 따라 피어날 꽃봉오리인 것을!",
+    "title": "모든 순간이 꽃봉오리인 것을",
+    "author": "정현종",
+    "genre": "literature"
   }
 ];
