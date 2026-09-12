@@ -9728,5 +9728,11 @@ window.investmentQuotes = [
     "title": "성공 투자의 황금률 (Golden Rules for Investment Success)",
     "author": "존 템플턴 (John Templeton)",
     "category": "mindset"
+  },
+  {
+    "text": "한 송이의 국화꽃을 피우기 위해 봄부터 소쩍새는 그렇게 울었나 보다.",
+    "title": "국화 옆에서",
+    "author": "서정주",
+    "genre": "literature"
   }
 ];
