@@ -862,6 +862,49 @@ function pivotPoints(highs, lows, closes) {
   };
 }
 
+/* 분석 본문과 '그 분석이 만들어진 시각'을 함께 고른다.
+   세 갈래다.
+     1) Gemini 성공          -> 새 분석, 시각은 지금
+     2) 실패 + 기존 분석 있음 -> 기존 분석 보존, 시각도 기존 것 그대로 (이게 핵심이다)
+     3) 실패 + 기존도 없음    -> 폴백 플레이스홀더, 시각은 지금
+   2번에서 시각까지 새로 찍으면 옛 판단이 새 판단처럼 보인다. */
+function pickAnalysis(aiResult, safeSymbol, symbol, swing, nowISO) {
+  if (aiResult) return { analysis: aiResult, at: nowISO, preserved: false };
+
+  const existingPath = path.join(DATA_DIR, `analysis-${safeSymbol}.json`);
+  try {
+    if (fs.existsSync(existingPath)) {
+      const prev = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
+      const prevNarrative = prev?.analysis?.narrative ?? '';
+      if (prevNarrative && prevNarrative !== 'AI 분석 데이터를 불러오는 중입니다.' && prevNarrative.length > 30) {
+        // 옛 파일에 analysisAt 이 없으면(이 필드 도입 전 산출물) updatedAt 을 대신 쓴다.
+        const at = prev.analysisAt || prev.updatedAt || nowISO;
+        console.warn(`  Gemini 실패 - 기존 분석 보존: ${symbol} (분석 시각 ${at})`);
+        return { analysis: prev.analysis, at, preserved: true };
+      }
+    }
+  } catch (e) { /* 기존 파일 읽기 실패 - 폴백 사용 */ }
+
+  return {
+    analysis: {
+      trend: '분석 대기', strength: 0,
+      support:    swing.support    ? round(swing.support,    2) : null,
+      resistance: swing.resistance ? round(swing.resistance, 2) : null,
+      rsiStatus: 'N/A', macdStatus: 'N/A', bbStatus: 'N/A', stage: 'N/A',
+      action: '관망', buyScore: null,
+      profitTarget1: null, profitTarget2: null, stopLoss: null,
+      narrative: 'AI 분석 데이터를 불러오는 중입니다.',
+      narrativeEn: 'Loading AI analysis data.',
+      patternNote: null, patternNoteEn: null,
+      keyPoints: [], keyPointsEn: [],
+      riskNote: '', riskNoteEn: '',
+      scoreReasonEn: null, continuityEn: '',
+    },
+    at: nowISO,
+    preserved: false,
+  };
+}
+
 // Gemini가 entry/stop/target/invalidation을 0으로 반환하는 간헐적 프롬프트 미준수 방어.
 // 2026-07-09 확인: TSLA/VOO/DIA에서 action="관망"일 때 4개 필드가 전부 0으로 반환되어
 // atmr-dashboard.html 트레이드 플랜 카드에 "$0.00"로 노출됨(QQQ/NVDA/IWM은 같은 관망인데도
@@ -1611,12 +1654,23 @@ async function processTicker(meta) {
   };
 
   // 분석 요약 (AI 분석 패널용)
+  //
+  // 증상(2026-09-13): Gemini 가 실패하면 기존 분석 문장을 보존하면서 바깥 updatedAt 만
+  // 지금 시각으로 새로 찍었다. 화면은 그 값을 "최종 업데이트"로 보여 주므로, 석 달 전
+  // 분석이 오늘 만들어진 것처럼 보일 수 있었다. 시세 시각과 분석 시각은 다른 값이다.
+  //   updatedAt  : 이 파일을 쓴 시각 (시세·지표는 방금 것이 맞다)
+  //   analysisAt : 이 분석 문장이 만들어진 시각 (보존이면 옛 시각 그대로)
+  const nowISO = new Date().toISOString();
+  const picked = pickAnalysis(aiResult, safeSymbol, symbol, swing, nowISO);
+
   const analysisOut = {
     ticker:    symbol,
     name,
     assetType: meta.type,
     market:    meta.market || 'us',
-    updatedAt: new Date().toISOString(),
+    updatedAt: nowISO,
+    analysisAt: picked.at,
+    analysisPreserved: picked.preserved,
     price: {
       current:     round(price, 4),
       change:      prevClose ? round(price - prevClose, 4) : null,
@@ -1647,51 +1701,9 @@ async function processTicker(meta) {
       swingSupport:    swing.support    ? round(swing.support,    4) : null,
       pivot,
     },
-    analysis: (() => {
-      // Gemini 성공 → 새 분석 사용
-      if (aiResult) return aiResult;
-
-      // Gemini 실패 → 기존 파일에 유효한 분석이 있으면 보존 (플레이스홀더로 덮어쓰지 않음)
-      const existingPath = path.join(DATA_DIR, `analysis-${safeSymbol}.json`);
-      try {
-        if (fs.existsSync(existingPath)) {
-          const prev = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
-          const prevNarrative = prev?.analysis?.narrative ?? '';
-          if (prevNarrative && prevNarrative !== 'AI 분석 데이터를 불러오는 중입니다.' && prevNarrative.length > 30) {
-            console.warn(`  Gemini 실패 — 기존 분석 보존: ${symbol} (${prev.updatedAt ?? '날짜미상'})`);
-            return prev.analysis;
-          }
-        }
-      } catch (e) { /* 기존 파일 읽기 실패 — 폴백 사용 */ }
-
-      // 기존 유효 데이터 없음 → 폴백
-      return {
-        trend: '분석 대기',
-        strength: 0,
-        support:    swing.support    ? round(swing.support,    2) : null,
-        resistance: swing.resistance ? round(swing.resistance, 2) : null,
-        rsiStatus: 'N/A',
-        macdStatus: 'N/A',
-        bbStatus: 'N/A',
-        stage: 'N/A',
-        action: '관망',
-        buyScore: null,
-        profitTarget1: null,
-        profitTarget2: null,
-        stopLoss: null,
-        narrative: 'AI 분석 데이터를 불러오는 중입니다.',
-        narrativeEn: 'Loading AI analysis data.',
-        patternNote: null,
-        patternNoteEn: null,
-        keyPoints: [],
-        keyPointsEn: [],
-        riskNote: '',
-        riskNoteEn: '',
-        scoreReasonEn: null,
-        continuityEn: '',
-      };
-    })(),
+    analysis: picked.analysis,
   };
+
 
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 

@@ -194,7 +194,8 @@ window.addEventListener('load', function(){
       .page-hero { background: linear-gradient(160deg, rgba(10,132,255,0.10) 0%, rgba(10,132,255,0.03) 60%, transparent 100%); }
     }
 
-    .updated-at { font-size: 16px; color: var(--ez-text3); white-space: nowrap; }
+    /* 기준시각 문구가 "마지막 주봉 · 수집 시각"으로 길어졌다. nowrap 이면 폰에서 넘친다. */
+    .updated-at { font-size: 16px; color: var(--ez-text2); line-height: 1.5; word-break: keep-all; }
 
     /* ── Main ── */
     .main-wrap { max-width: 1200px; margin: 0 auto; padding: 20px 20px 0; }
@@ -876,6 +877,9 @@ function coppockCalc(closes) {
 }
 
 // ── 데이터 로드 ───────────────────────────────────────────────────────────
+// 받아온 파일들의 기준시각을 모아 둔다. 상단 타임스탬프가 이걸 읽는다.
+const dataStamps = [];
+
 async function fetchWeekly(symbol) {
   if (weeklyCache[symbol]) return weeklyCache[symbol];
   const url = DATA_BASE + 'mc-ohlcv-' + TICKERS[symbol].file + '-weekly.json';
@@ -885,13 +889,32 @@ async function fetchWeekly(symbol) {
   const bars = Array.isArray(json) ? json : (json.ohlcv || []);
   const ind  = (!Array.isArray(json) && json.ind) ? json.ind : null;
   if (!bars.length) throw new Error(symbol + ' 데이터 비어 있음');
-  const result = { bars, ind };
+  // 화면이 말하는 시각은 "지금"이 아니라 "이 데이터가 언제 것인가"여야 한다.
+  // 수집 시각(updatedAt)과 마지막 봉의 날짜(lastBarT)는 서로 다른 값이다 —
+  // 주봉은 금요일 종가로 닫히므로 월요일에 수집해도 마지막 봉은 지난 금요일이다.
+  const updatedAt = (!Array.isArray(json) && json.updatedAt) ? json.updatedAt : null;
+  const lastBarT  = bars[bars.length - 1] ? bars[bars.length - 1].t : null;
+  const result = { bars, ind, updatedAt, lastBarT };
+  dataStamps.push({ sym: symbol, updatedAt, lastBarT });
   weeklyCache[symbol] = result;
   return result;
 }
 
 // ── 코멘트 생성 ───────────────────────────────────────────────────────────
 function commentSma(smaData) {
+  // 증상: 전부 null 이면 belows 도 길이 0 이라 "3개 지수 모두 SMA 위" 라는 문장이 나왔다.
+  // 데이터가 없을 때 가장 강한 단정을 하던 셈이다.
+  const loaded = smaData.filter(Boolean);
+  if (loaded.length === 0) {
+    return '세 지수의 주봉 데이터를 받지 못했습니다. 지금 화면은 시장이 조용하다는 뜻이 아니라 판정할 재료가 없다는 뜻입니다. 잠시 뒤 새로고침하시거나 다른 시그널 카드를 참고하십시오.';
+  }
+  if (loaded.length < smaData.length) {
+    const got = loaded.map(d => d.sym).join('·');
+    const below = loaded.filter(d => d.pct < 0);
+    return got + ' ' + loaded.length + '개만 데이터가 들어왔습니다(나머지는 판정 불가). 받은 것 기준으로는 '
+      + (below.length ? below.map(d => d.sym).join('·') + '이(가) 30W SMA 아래입니다.' : '전부 30W SMA 위입니다.')
+      + ' 세 지수가 다 모이기 전에는 전면 판정으로 읽지 마십시오.';
+  }
   const belows = smaData.filter(d => d && d.pct < 0);
   const soxx = smaData.find(d => d && d.sym === 'SOXX');
   const qqq  = smaData.find(d => d && d.sym === 'QQQ');
@@ -956,12 +979,15 @@ async function updateSmaCard() {
     fetchWeekly('SPY'), fetchWeekly('QQQ'), fetchWeekly('SOXX'),
   ]);
   const syms = ['SPY','QQQ','SOXX'];
-  let allAbove = true, anyBelow = false, html = '';
+  // 증상: allAbove 를 true 로 시작해 실패한 종목은 그냥 건너뛰었다. 그래서 세 지수가
+  // 전부 실패해도 anyBelow=false, allAbove=true 가 남아 초록 '정상: SMA 위' 가 떴다.
+  // 판정은 '성공한 종목이 하나라도 있고 그 전부가 SMA 위' 일 때만 성립한다.
+  let okCount = 0, aboveCount = 0, anyBelow = false, html = '';
   const smaData = [];
   results.forEach((res, i) => {
     const sym = syms[i];
     if (res.status === 'rejected') {
-      html += `<div class="sma-row"><span class="sma-ticker">${sym}</span><span class="sma-values" style="color:var(--ez-hint)">데이터 없음</span><span class="sma-pct" style="color:var(--ez-hint)">: </span></div>`;
+      html += `<div class="sma-row"><span class="sma-ticker">${sym}</span><span class="sma-values" style="color:var(--ez-text2)">데이터 없음</span><span class="sma-pct" style="color:var(--ez-text2)">: </span></div>`;
       smaData.push(null); return;
     }
     const { bars } = res.value;
@@ -970,7 +996,8 @@ async function updateSmaCard() {
     const lastC = closes[n-1], lastS = sma30[n-1];
     if (lastS == null) { html += `<div class="sma-row"><span class="sma-ticker">${sym}</span><span class="sma-values">데이터 부족 (${n}주)</span><span class="sma-pct">: </span></div>`; smaData.push(null); return; }
     const pct = (lastC / lastS - 1) * 100, above = pct >= 0;
-    if (!above) { allAbove = false; anyBelow = true; }
+    okCount++;
+    if (above) aboveCount++; else anyBelow = true;
     smaData.push({ sym, pct, lastC, lastS });
     const sc = above ? 'var(--ez-green)' : 'var(--ez-red)';
     html += `<div class="sma-row">
@@ -980,9 +1007,13 @@ async function updateSmaCard() {
     </div>`;
   });
   rows.innerHTML = html;
-  if (anyBelow) { badge.innerHTML = '<span class="signal-badge badge-red">경보: SMA 이탈</span>'; card.className = 'signal-card alert-danger'; }
-  else if (allAbove) { badge.innerHTML = '<span class="signal-badge badge-green">정상: SMA 위</span>'; card.className = 'signal-card alert-ok'; }
-  else { badge.innerHTML = '<span class="signal-badge badge-amber">혼조</span>'; card.className = 'signal-card alert-warning'; }
+  if (okCount === 0) {
+    // 판정불가 — 초록도 빨강도 아니다. 데이터가 없는 것과 시장이 건강한 것은 다르다.
+    badge.innerHTML = '<span class="signal-badge badge-gray">판정 불가: 데이터 없음</span>';
+    card.className = 'signal-card';
+  } else if (anyBelow) { badge.innerHTML = '<span class="signal-badge badge-red">경보: SMA 이탈</span>'; card.className = 'signal-card alert-danger'; }
+  else if (aboveCount === okCount && okCount === syms.length) { badge.innerHTML = '<span class="signal-badge badge-green">정상: SMA 위</span>'; card.className = 'signal-card alert-ok'; }
+  else { badge.innerHTML = '<span class="signal-badge badge-amber">혼조: 일부 판정 불가</span>'; card.className = 'signal-card alert-warning'; }
   const cEl = document.getElementById('comment-sma');
   cEl.textContent = commentSma(smaData); cEl.style.display = '';
 }
@@ -1001,10 +1032,18 @@ async function updateBreadthCard() {
     bigEl.textContent = ': '; subEl.textContent = 'GitHub Actions 실행 후 RSP 데이터가 생성됩니다'; return;
   }
   const [rspBars, spyBars] = [rspD.bars, spyD.bars];
-  const W = 4, rN = rspBars.length, sN = spyBars.length;
-  if (rN < W + 1 || sN < W + 1) { badge.innerHTML = '<span class="signal-badge badge-gray">데이터 부족</span>'; return; }
-  const rspRet = (rspBars[rN-1].c / rspBars[rN-1-W].c - 1) * 100;
-  const spyRet = (spyBars[sN-1].c / spyBars[sN-1-W].c - 1) * 100;
+  const W = 4;
+  // 증상: 두 종목의 마지막 봉을 날짜 확인 없이 각각 썼다. 한쪽만 먼저 갱신되면
+  // 서로 다른 4주 구간을 비교하게 된다 — 괴리 수치가 통째로 틀린다.
+  // 두 계열에 공통으로 존재하는 마지막 주봉을 기준점으로 잡는다.
+  const spyByT = new Map(spyBars.map((b, i) => [b.t, i]));
+  let rI = -1, sI = -1;
+  for (let i = rspBars.length - 1; i >= 0; i--) {
+    if (spyByT.has(rspBars[i].t)) { rI = i; sI = spyByT.get(rspBars[i].t); break; }
+  }
+  if (rI < W || sI < W) { badge.innerHTML = '<span class="signal-badge badge-gray">판정 불가: 공통 주봉 부족</span>'; subEl.textContent = 'RSP 와 SPY 의 주봉 날짜가 맞지 않습니다'; return; }
+  const rspRet = (rspBars[rI].c / rspBars[rI-W].c - 1) * 100;
+  const spyRet = (spyBars[sI].c / spyBars[sI-W].c - 1) * 100;
   const diff = rspRet - spyRet;
   const rspEl = document.getElementById('breadth-rsp'), spyEl = document.getElementById('breadth-spy');
   rspEl.textContent = fmtPct(rspRet); rspEl.style.color = rspRet >= 0 ? 'var(--ez-green)' : 'var(--ez-red)';
@@ -1647,12 +1686,43 @@ window.addEventListener('resize', () => {
 });
 
 // ── 타임스탬프 ────────────────────────────────────────────────────────────
+// 증상: 여기서 new Date() 를 찍어 "지금"을 보여 주고 있었다. 주봉 데이터는 금요일
+// 종가로 닫히고 수집은 하루 한 번이라, 화면의 시각과 실제 데이터가 며칠씩 어긋났다.
+// 방문자는 그 시각을 데이터 기준으로 읽는다.
 function updateTimestamp() {
-  const kst = new Date(Date.now() + 9 * 3600 * 1000);
+  const el = document.getElementById('updated-at');
+  if (!el) return;
   const p = n => String(n).padStart(2, '0');
-  document.getElementById('updated-at').textContent =
-    kst.getUTCFullYear() + '-' + p(kst.getUTCMonth()+1) + '-' + p(kst.getUTCDate()) +
-    ' ' + p(kst.getUTCHours()) + ':' + p(kst.getUTCMinutes()) + ' KST';
+  const fmtKST = ms => {
+    const k = new Date(ms + 9 * 3600 * 1000);
+    return k.getUTCFullYear() + '-' + p(k.getUTCMonth()+1) + '-' + p(k.getUTCDate())
+         + ' ' + p(k.getUTCHours()) + ':' + p(k.getUTCMinutes());
+  };
+  const fmtDate = ms => {
+    const k = new Date(ms + 9 * 3600 * 1000);
+    return k.getUTCFullYear() + '-' + p(k.getUTCMonth()+1) + '-' + p(k.getUTCDate());
+  };
+
+  el.style.color = '';
+  const stamps = dataStamps.filter(d => d.updatedAt || d.lastBarT);
+  if (!stamps.length) { el.textContent = '데이터 기준시각 확인 불가'; return; }
+
+  // 여러 파일 중 가장 오래된 것을 쓴다 — 화면은 가장 뒤처진 재료의 시각을 말해야 한다.
+  const ups  = stamps.map(d => d.updatedAt ? Date.parse(d.updatedAt) : NaN).filter(n => !isNaN(n));
+  const bars = stamps.map(d => d.lastBarT).filter(t => typeof t === 'number');
+  const oldestUp  = ups.length  ? Math.min(...ups)          : null;
+  const lastBarMs = bars.length ? Math.min(...bars) * 1000   : null;
+
+  let txt = '';
+  if (lastBarMs != null) txt += '마지막 주봉 ' + fmtDate(lastBarMs);
+  if (oldestUp  != null) txt += (txt ? ' · ' : '') + '수집 ' + fmtKST(oldestUp) + ' KST';
+
+  // 재료가 열흘을 넘기면 화면이 스스로 말한다. 오래된 값을 최신인 척 두지 않는다.
+  if (oldestUp != null && Date.now() - oldestUp > 10 * 86400 * 1000) {
+    txt += ' · 갱신 지연';
+    el.style.color = 'var(--ez-red)';
+  }
+  el.textContent = txt;
 }
 
 // ── 초기화 ────────────────────────────────────────────────────────────────
@@ -1704,11 +1774,14 @@ async function updateTfmGauge() {
 
 async function initAll() {
   Object.keys(weeklyCache).forEach(k => delete weeklyCache[k]);
-  updateTimestamp();
+  dataStamps.length = 0;                      // 재수집이면 기준시각도 새로 모은다
+  const stampEl = document.getElementById('updated-at');
+  if (stampEl) { stampEl.textContent = '데이터 확인 중...'; stampEl.style.color = ''; }
   await Promise.allSettled([
     updateSmaCard(), updateBreadthCard(), updateVixCard(),
     updateCoppockCard(), updateTnxCard(), updateTfmGauge(),
   ]);
+  updateTimestamp();                          // 재료가 다 들어온 뒤에 시각을 말한다
   await renderChart(activeChart);
 }
 

@@ -43,6 +43,8 @@ except Exception:                      # 모듈이 없어도 본 기능은 죽�
 HERE = os.path.dirname(os.path.abspath(__file__))
 VIEW = os.path.join(HERE, '..', 'data', 'model-portfolio.json')
 KST = timezone(timedelta(hours=9))
+# 이 실행의 기준 시각. 종목별 asOf 와 문서 generatedAt 이 같은 값을 쓰게 한다.
+NOW_KST = datetime.now(KST)
 
 # 한국 상장 종목은 yfinance 에서 .KS 접미사를 쓴다.
 SUFFIX_KR = '.KS'
@@ -138,11 +140,34 @@ def main():
         h['rsiW'] = round(rsi, 1) if rsi is not None else None
         if h['rsiW'] is not None:
             rsi_n += 1
+        # 종목마다 기준일을 따로 찍는다.
+        # 증상: 한 종목이 실패하면 그 종목만 지난주 값을 유지하는데 문서 상단의
+        # generatedAt 은 새로 찍혔다. 화면에는 전부 최신인 것처럼 보인다.
+        # 실패는 로그에만 남고 방문자는 알 길이 없었다.
+        h['asOf'] = NOW_KST.strftime('%Y-%m-%d')
         ok.append(h['tk'])
 
     if not ok:
         print('::error::한 종목도 갱신하지 못했다 — 파일을 쓰지 않는다')
         return 1
+
+    # 이번에 못 받은 종목은 기준일이 옛날 그대로 남는다. 몇 개가 며칠 뒤처졌는지
+    # 여기서 세어 로그로 남기고, 같은 값을 화면이 읽어 '갱신 지연'을 표시한다.
+    today = NOW_KST.date()
+    lagged = []
+    for h in doc['holdings']:
+        a = h.get('asOf')
+        if not a:
+            lagged.append((h['tk'], None)); continue
+        try:
+            d = (today - datetime.strptime(a, '%Y-%m-%d').date()).days
+        except Exception:
+            lagged.append((h['tk'], None)); continue
+        if d >= 1:
+            lagged.append((h['tk'], d))
+    if lagged:
+        print('기준일 뒤처진 종목 %d 개: %s' % (
+            len(lagged), ', '.join('%s(%s일)' % (t, d if d is not None else '미상') for t, d in lagged[:10])))
 
     # 비중 합계 검증 — 기획 인수인계의 배포 중단 조건이다.
     total = round(sum(h['w'] for h in doc['holdings']), 3)

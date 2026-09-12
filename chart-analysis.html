@@ -1352,6 +1352,21 @@ async function selectTicker(symbol, safe) {
 }
 
 // ── 차트 뷰 전체 렌더링 ───────────────────────────────────────
+// 시세 시각과 분석 시각은 다른 값이다.
+//   updatedAt  : 파일을 쓴 시각 (시세·지표는 이 시점 것)
+//   analysisAt : 분석 문장이 만들어진 시각 (생성이 실패하면 옛 시각 그대로 남는다)
+// 증상: 둘을 한 값으로 쓰던 탓에, 생성이 실패해 보존된 옛 분석도 오늘 만든 것처럼
+// 보일 수 있었다. 둘이 어긋나면 화면이 그 사실을 말한다.
+function updatedLine(a) {
+  const quoteAt = a.updatedAt;
+  const anAt = a.analysisAt || a.updatedAt;   // 옛 산출물에는 analysisAt 이 없다
+  const base = '시세 기준: ' + fmtKST(quoteAt) + ' KST';
+  if (!a.analysisAt || anAt === quoteAt) return base;
+  const days = Math.floor((new Date(quoteAt) - new Date(anAt)) / 86400000);
+  if (days < 1) return base;
+  return base + ' · AI 분석: ' + fmtKST(anAt) + ' KST (' + days + '일 전 판단)';
+}
+
 function renderChartView(container, analysis, ohlcvData, ohlcvWeekly) {
   const currency = ohlcvData.currency || 'USD';
 
@@ -1378,7 +1393,7 @@ function renderChartView(container, analysis, ohlcvData, ohlcvWeekly) {
       <div class="ca-chart-wrap"><div class="ca-chart-label">MACD (12·26·9)</div><div id="chart-macd"></div></div>
     </div>
 
-    <div class="ca-updated">최종 업데이트: ${fmtKST(analysis.updatedAt)} KST</div>
+    <div class="ca-updated">${updatedLine(analysis)}</div>
   `;
 
   // 일봉/주봉 토글 바인딩
