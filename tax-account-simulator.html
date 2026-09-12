@@ -842,6 +842,8 @@ tr:last-child td{border-bottom:0}
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
      head 맨 끝에 둔다: 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
+<!-- 세율·한도의 단일 출처. 적용일과 근거를 파일 안에 함께 적는다 -->
+<script src="/ez-tax-rules.js"></script>
 </head>
 <body>
 <script src="/lang-banner.js"></script>
@@ -896,18 +898,22 @@ function fmtCompact(manwon){
 
 /* ─── ALLOCATION ─────────────────────────────────────── */
 function getAllocation(capital, liquidity){
+  const I = EZTax.RULES.ISA, P = EZTax.RULES.연금계좌;
+  const ISA_YEAR = I.연납입한도;                              // 2,000만원
+  const PEN      = P.연금저축_공제한도;                        // 600만원
+  const IRP      = P.세액공제한도 - P.연금저축_공제한도;       // 추가 300만원
   const alloc = {pension:0, irp:0, isa:0, direct:0};
   if (liquidity === 'high') {
-    alloc.isa = Math.min(capital, 2000);
+    alloc.isa = Math.min(capital, ISA_YEAR);
     alloc.direct = Math.max(0, capital - alloc.isa);
   } else if (liquidity === 'normal') {
-    alloc.pension = Math.min(capital, 600);
-    alloc.isa = Math.min(Math.max(0, capital - alloc.pension), 2000);
+    alloc.pension = Math.min(capital, PEN);
+    alloc.isa = Math.min(Math.max(0, capital - alloc.pension), ISA_YEAR);
     alloc.direct = Math.max(0, capital - alloc.pension - alloc.isa);
   } else {
-    alloc.pension = Math.min(capital, 600);
-    alloc.irp = Math.min(Math.max(0, capital - alloc.pension), 300);
-    alloc.isa = Math.min(Math.max(0, capital - alloc.pension - alloc.irp), 2000);
+    alloc.pension = Math.min(capital, PEN);
+    alloc.irp = Math.min(Math.max(0, capital - alloc.pension), IRP);
+    alloc.isa = Math.min(Math.max(0, capital - alloc.pension - alloc.irp), ISA_YEAR);
     alloc.direct = Math.max(0, capital - alloc.pension - alloc.irp - alloc.isa);
   }
   return alloc;
@@ -915,59 +921,87 @@ function getAllocation(capital, liquidity){
 
 /* ─── SIMULATION ENGINES ─────────────────────────────── */
 function simulateDirect(schedule, totalReturn, dividendYield){
-  const divTax = 0.154, capitalGainTax = 0.22, basicDeduction = 250;
+  const D = EZTax.RULES.직접투자;
   const priceGrowth = Math.max(-0.99, totalReturn - dividendYield);
   const yearly = [];
   let value = 0, basis = 0;
   for (let y = 1; y <= schedule.length; y++){
     const annual = schedule[y-1] || 0;
     value += annual; basis += annual;
-    value = value * (1 + priceGrowth + dividendYield * (1 - divTax));
-    const gain = Math.max(0, value - basis - basicDeduction);
-    const afterTax = value - gain * capitalGainTax;
+    value = value * (1 + priceGrowth + dividendYield * (1 - D.배당소득세));
+    // 표시값은 '지금 전부 팔면 세후 얼마' 다. 계좌 안의 value 는 세금을 떼지 않고
+    // 계속 굴러간다 - 직투의 과세이연 효과가 여기서 살아난다.
+    const afterTax = value - EZTax.overseasCapitalGainTax(value - basis);
     yearly.push({year:y, gross:value, afterTax, tax:value-afterTax, basis});
   }
   return yearly;
 }
 
+/* 연금 수령은 '몇 년에 걸쳐 받느냐' 로 세율이 갈린다. 연 수령액이 1,500만원을 넘으면
+   5.5% 가 아니라 16.5% 분리과세(또는 종합과세)가 된다. 화면에 이 가정을 적어 둔다. */
+const PENSION_WITHDRAW_YEARS = 20;   // 55세부터 20년 분할 수령 가정
+
 function simulatePension(schedule, age, creditRate, totalReturn, dividendYield, liquidity){
+  const P = EZTax.RULES.연금계좌;
   const yearly = [];
   let value = 0, contributionBasis = 0, creditedBasis = 0;
-  const taxCreditCap = 900;
   for (let y = 1; y <= schedule.length; y++){
-    const annual = schedule[y-1] || 0;
-    const credited = Math.min(annual, taxCreditCap);
-    const refund = credited * creditRate;
+    const annual   = schedule[y-1] || 0;               // 납입한도 초과분은 호출부가 이미 걷어냈다
+    const credited = Math.min(annual, P.세액공제한도);
+    const refund   = credited * creditRate;
     value += annual + refund;
     contributionBasis += annual; creditedBasis += credited;
     value = value * (1 + totalReturn);
-    const reaches55 = age + y >= 55;
+
+    // 과세제외 원금 - 세액공제를 받지 않은 납입액은 찾을 때도 세금이 없다.
+    // 증상: 중도해지 경로에서는 이걸 빼면서 정상 수령 경로에서는 평가액 전체에
+    // 5.5% 를 매기고 있었다. 같은 파일 안에서 규칙이 엇갈렸다.
+    const untaxedBasis = Math.max(0, contributionBasis - creditedBasis);
+    const reaches55 = age + y >= P.수령개시연령;
     const forcedEarlyExit = liquidity !== 'low' && !reaches55;
-    let afterTax, tax;
+
+    let tax, taxKind;
     if (forcedEarlyExit){
-      const nonPenaltyBasis = Math.max(0, contributionBasis - creditedBasis);
-      const taxableBase = Math.max(0, value - nonPenaltyBasis);
-      tax = taxableBase * 0.165;
-      afterTax = value - tax;
+      tax = EZTax.earlyExitTax(value, untaxedBasis);
+      taxKind = 'early';
     } else {
-      tax = value * 0.055;
-      afterTax = value - tax;
+      const startAge = Math.max(P.수령개시연령, age + y);
+      const r = EZTax.pensionWithdrawalTax(value, untaxedBasis, startAge, PENSION_WITHDRAW_YEARS);
+      tax = r.tax;
+      taxKind = r.separated ? 'separated' : 'pension';
     }
-    yearly.push({year:y, gross:value, afterTax, tax, basis:contributionBasis});
+    yearly.push({year:y, gross:value, afterTax:value - tax, tax, basis:contributionBasis, taxKind});
   }
   return yearly;
 }
 
-function simulateIsa(schedule, totalReturn){
-  const taxFree = 200, separateTax = 0.099;
+/* ISA 납입 스케줄을 '계좌에 들어가는 몫' 과 '넘쳐서 직투로 가는 몫' 으로 가른다.
+   증상: 연 2,000만원만 자르고 **총 1억 누적 한도를 안 봤다.** 6년 넣으면 1억 2,000만원이
+   전부 ISA 로 계산됐다. 페이지 FAQ 는 총 1억 한도라고 적고 있었으니 글과 계산이 어긋났다. */
+function splitIsaSchedule(schedule){
+  const I = EZTax.RULES.ISA;
+  let cum = 0;
+  const inIsa = [], rest = [];
+  for (const raw of schedule){
+    const a = raw || 0;
+    const room = Math.max(0, I.누적한도 - cum);
+    const put  = Math.min(a, I.연납입한도, room);
+    cum += put;
+    inIsa.push(put);
+    rest.push(a - put);
+  }
+  return { inIsa, rest };
+}
+
+function simulateIsa(schedule, totalReturn, isSeomin){
   const yearly = [];
   let value = 0, basis = 0;
   for (let y = 1; y <= schedule.length; y++){
     const annual = schedule[y-1] || 0;
     value += annual; basis += annual;
     value = value * (1 + totalReturn);
-    const gain = Math.max(0, value - basis - taxFree);
-    const tax = gain * separateTax;
+    // 비과세 한도는 만기 시 손익통산 후 1회 적용된다.
+    const tax = EZTax.isaTax(value - basis, isSeomin);
     yearly.push({year:y, gross:value, afterTax:value-tax, tax, basis});
   }
   return yearly;
@@ -1039,18 +1073,28 @@ function scheduleFromStages(age, years, stages){
 function buildScenario({age, schedule, income, liquidity, totalReturnPct, dividendPct}){
   const totalReturn   = totalReturnPct / 100;
   const dividendYield = dividendPct / 100;
-  const creditRate    = income === 'low' ? 0.165 : 0.132;
+  const creditRate    = EZTax.creditRate(income);
+  const isSeomin      = income === 'low';
+  const P             = EZTax.RULES.연금계좌;
   const firstAnnual   = schedule[0] || 0;
   const alloc         = getAllocation(firstAnnual, liquidity);
 
   const directOnly  = simulateDirect(schedule, totalReturn, dividendYield);
-  const pensionOnly = simulatePension(schedule, age, creditRate, totalReturn, dividendYield, liquidity);
 
-  const isaSchedule     = schedule.map(a => Math.min(a, 2000));
-  const isaRestSchedule = schedule.map(a => Math.max(0, a - 2000));
+  // 연금계좌 납입한도는 1,800만원이다(세액공제 한도 900만원과 다른 값).
+  // 초과분은 계좌에 넣을 수 없으므로 직투로 흘린다 - 안 그러면 없는 한도를 쓰는 셈이다.
+  const pensionCapped = schedule.map(a => Math.min(a || 0, P.납입한도));
+  const pensionRest   = schedule.map(a => Math.max(0, (a || 0) - P.납입한도));
+  const pensionOnly = combineRows([
+    simulatePension(pensionCapped, age, creditRate, totalReturn, dividendYield, liquidity),
+    simulateDirect(pensionRest, totalReturn, dividendYield)
+  ]);
+
+  // ISA 는 연 한도와 누적 한도를 함께 본다.
+  const isaSplit = splitIsaSchedule(schedule);
   const isaOnly = combineRows([
-    simulateIsa(isaSchedule, totalReturn),
-    simulateDirect(isaRestSchedule, totalReturn, dividendYield)
+    simulateIsa(isaSplit.inIsa, totalReturn, isSeomin),
+    simulateDirect(isaSplit.rest, totalReturn, dividendYield)
   ]);
 
   const pensionSched = [], isaBlendSched = [], directBlendSched = [];
@@ -1060,10 +1104,14 @@ function buildScenario({age, schedule, income, liquidity, totalReturnPct, divide
     isaBlendSched.push(y.isa);
     directBlendSched.push(y.direct);
   });
+  // 혼합도 같은 한도를 받는다. getAllocation 이 900만원까지만 배분하므로 연금 쪽은
+  // 대개 한도 안이지만, 규칙을 한 곳에서만 적용하면 나중에 배분을 바꿀 때 새는 자리가 된다.
+  const blendIsa = splitIsaSchedule(isaBlendSched);
+  const blendDirect = directBlendSched.map((v, i) => (v || 0) + (blendIsa.rest[i] || 0));
   const blend = combineRows([
-    simulateDirect(directBlendSched, totalReturn, dividendYield),
-    simulatePension(pensionSched, age, creditRate, totalReturn, dividendYield, liquidity),
-    simulateIsa(isaBlendSched, totalReturn)
+    simulateDirect(blendDirect, totalReturn, dividendYield),
+    simulatePension(pensionSched.map(a => Math.min(a || 0, P.납입한도)), age, creditRate, totalReturn, dividendYield, liquidity),
+    simulateIsa(blendIsa.inIsa, totalReturn, isSeomin)
   ]);
 
   return {alloc, directOnly, pensionOnly, isaOnly, blend, creditRate};
@@ -1611,8 +1659,19 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 </ol>
 <p>다만 이 순서는 <b>중간에 돈 쓸 일이 없다는 전제</b>에서만 맞습니다. 전세금이나 학자금처럼 예정된 지출이 있으면 순서가 뒤집힙니다. 계산기에서 유동성 필요도를 높게 잡아 확인해 보십시오.</p>
 
+<h2>세금을 어떻게 계산하는가</h2>
+<p>세율과 한도는 <b>한 파일에 모아</b> 두고 적용 기준일을 함께 적습니다. 흩어 두면 개정 때마다 빠뜨리는 자리가 생깁니다. 지금 쓰는 값의 기준일은 <b>2026년 9월 13일</b>이고, 2026년 세제개편 최종안에서 ISA 축소안이 철회되어 기존 한도가 그대로 유지됩니다.</p>
+<div class="ez-guide-kv"><div class="k">연금 수령 기간</div><div class="v"><b>55세부터 20년 분할 수령</b>으로 잡습니다. 연금은 몇 년에 걸쳐 받느냐로 세율이 갈리기 때문입니다</div></div>
+<div class="ez-guide-kv"><div class="k">연 1,500만원 기준</div><div class="v">연금소득이 이 금액을 넘으면 5.5%가 아니라 <b>16.5% 분리과세</b>(또는 종합과세)입니다. 초과분만이 아니라 전액이 대상입니다. 은퇴 자산이 클수록 여기 걸립니다</div></div>
+<div class="ez-guide-kv"><div class="k">연령별 세율</div><div class="v">연금소득세는 55~69세 5.5%, 70~79세 4.4%, 80세 이상 3.3%로 낮아집니다. 20년 수령이면 평균 5.2% 수준입니다</div></div>
+<div class="ez-guide-kv"><div class="k">과세제외 원금</div><div class="v">연금계좌 납입한도는 <b>연 1,800만원</b>인데 세액공제는 900만원까지입니다. 공제를 못 받은 나머지는 찾을 때도 세금이 없습니다</div></div>
+<div class="ez-guide-kv"><div class="k">ISA 한도</div><div class="v">연 2,000만원이면서 <b>누적 1억원</b>입니다. 5년이면 채워지고, 그 뒤 투자금은 직투로 흘려 계산합니다</div></div>
+<div class="ez-guide-kv"><div class="k">세액공제 환급금</div><div class="v">돌려받은 금액을 <b>같은 계좌에 다시 넣는다고</b> 봅니다. 실제로는 계좌 밖으로 나오므로, 재투자하지 않으시면 결과가 이보다 낮습니다</div></div>
+
 <h2>이 계산이 놓치는 것</h2>
 <ul>
+<li><b>ISA 만기 연금전환 추가공제가 빠져 있습니다.</b> ISA를 만기에 연금계좌로 옮기면 이전액의 10%(최대 300만원)를 추가로 세액공제받습니다. 꽤 큰 절세 카드인데 이 계산에는 아직 없습니다 — 실제 결과는 화면보다 유리할 수 있습니다.</li>
+<li><b>생산적금융 ISA는 반영하지 않았습니다.</b> 2027년 시행 예정으로 국회 심사 중입니다(2026년 9월 제출). 국내 주식 전용이고 이자·배당 <b>전액 비과세</b>에 기존 ISA와 중복 가입이 되는 제도라, 통과되면 계산이 달라집니다. 확정 전에 숫자를 바꾸면 틀린 법으로 틀린 법을 대체하는 셈이라 그대로 두었습니다. <b>12월 국회 처리 결과를 보고 반영하겠습니다.</b></li>
 <li><b>수익률이 매년 일정하다고 가정합니다.</b> 실제 시장은 −30%인 해와 +40%인 해가 섞여 있고, 특히 ISA는 만기 시점의 시장 상태에 따라 손익통산 결과가 달라집니다.</li>
 <li><b>세법은 바뀝니다.</b> 한도도 세율도 정치 일정에 따라 움직입니다. 20년 뒤에 지금 규칙이 그대로일 확률은 높지 않습니다.</li>
 <li><b>개인 사정이 빠져 있습니다.</b> 다른 소득, 부양가족, 기존 공제 항목에 따라 실제 환급액은 달라집니다. 큰 금액을 결정하실 때는 <b>세무 전문가와 상의하십시오.</b></li>
