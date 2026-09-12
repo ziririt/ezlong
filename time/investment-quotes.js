@@ -9707,5 +9707,12 @@ window.investmentQuotes = [
     "title": "버크셔 해서웨이 주주 서한",
     "author": "워런 버핏",
     "category": "compound"
+  },
+  {
+    "english": "In the short run, the market is a voting machine, but in the long run, it is a weighing machine.",
+    "text": "단기적으로 시장은 투표 기계지만, 장기적으로는 저울이다.",
+    "title": "시큐리티 애널리시스 (Security Analysis)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
   }
 ];
