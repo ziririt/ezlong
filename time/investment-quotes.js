@@ -9734,5 +9734,12 @@ window.investmentQuotes = [
     "title": "국화 옆에서",
     "author": "서정주",
     "genre": "literature"
+  },
+  {
+    "english": "This life is mine alone. So I have stopped asking people for directions to places they've never been. There is no map. We are all pioneers.",
+    "text": "이 삶은 온전히 나만의 것이다. 그래서 나는 아무도 가본 적 없는 곳으로 가는 길을 남에게 묻는 일을 그만두었다. 지도 같은 건 없다. 우리는 모두 개척자다.",
+    "title": "언테임드 (Untamed)",
+    "author": "글레넌 도일 (Glennon Doyle)",
+    "genre": "literature"
   }
 ];
