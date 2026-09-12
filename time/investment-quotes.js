@@ -9775,5 +9775,11 @@ window.investmentQuotes = [
     "title": "원칙 (Principles)",
     "author": "레이 달리오 (Ray Dalio)",
     "category": "mindset"
+  },
+  {
+    "text": "모란이 피기까지는, 나는 아직 나의 봄을 기다리고 있을 테요. 모란이 뚝뚝 떨어져 버린 날, 나는 비로소 봄을 여읜 설움에 잠길 테요.",
+    "title": "모란이 피기까지는",
+    "author": "김영랑",
+    "genre": "literature"
   }
 ];
