@@ -1,6 +1,6 @@
 {
- "generatedAtKST": "2026-09-12 13:57 KST",
- "generatedAt": "2026-09-12T04:57:00.006481Z",
+ "generatedAtKST": "2026-09-12 13:59 KST",
+ "generatedAt": "2026-09-12T04:59:42.304948Z",
  "dataDay": "2026-09-11",
  "session": "closed",
  "beta": true,
@@ -74,13 +74,13 @@
   },
   "audience": {
    "holder": "비중 조절 구간: 200일선 아래에서는 승률이 떨어지는 종목. 전량 정리가 아니라 목표 비중 축소로 대응, 200일선 회복 시 원복.",
-   "newbie": "소량 정찰대까지 가능: 유효 신호(매수점수 80 이상 극단 과매도) 전이라 통계적 우위는 없는 자리. 우위가 없다는 건 사지 말라가 아니라 크게 걸지 말라는 뜻. 목표 비중의 10~20%로 시작하고 200일선 회복 시 증액, 직전 저점 이탈 시 철수.",
+   "newbie": "신규 진입 대기: 200일선 아래(Gear 1)라 정찰대도 아직. 유효 신호(매수점수 80 이상 극단 과매도) 전이라 통계적 우위도 없는 자리. 여는 조건 둘: 과매도 탈출 반전(1차 30%의 절반으로 시작), 200일선 회복(본대). 그 전까지 현금 유지, 들어가 있다면 직전 저점 이탈 시 철수.",
    "avgdown": "물타기는 소량까지: 하락 추세에서 평단 낮추기는 손실 확대 이력이 있는 자리. 넣는다면 기존 수량의 10% 이내, 철수선(직전 저점)을 먼저 정하고. 그게 부담이면 물타기보다 비중 축소가 먼저.",
    "pyramid": "불타기 금지 구간: 하락 추세에서의 추가 매수는 원칙 밖."
   },
   "audienceEn": {
    "holder": "Exit criteria worth re-checking: below the 200-day line, trimming exposure is where the data points.",
-   "newbie": "Waiting zone: before the valid signal (extreme oversold with a buy score above 80) fires, there is no statistical basis for entry.",
+   "newbie": "Waiting zone: below the 200-day line (Gear 1), not even a scout tranche yet. Before the valid signal (extreme oversold with a buy score above 80) fires there is no statistical edge. Two triggers open the door: a turn up out of oversold (start with half of the first 30%) or a reclaim of the 200-day (main tranche).",
    "avgdown": "Averaging down is off the table: downtrend confirmed. Lowering your average before a bottom is confirmed has a record of widening losses.",
    "pyramid": "Pyramiding is off the table: adding into a downtrend is outside the principles."
   }
@@ -528,13 +528,13 @@
    },
    "audience": {
     "holder": "보유 유지: 이 종목은 하락 추세 구간의 이후 성과가 오히려 좋았던 이력. 공포 매도 비권고.",
-    "newbie": "소량 정찰대까지 가능: 유효 신호(RSI 30 미만 극단 과매도) 전이라 통계적 우위는 없는 자리. 우위가 없다는 건 사지 말라가 아니라 크게 걸지 말라는 뜻. 목표 비중의 10~20%로 시작하고 200일선 회복 시 증액, 직전 저점 이탈 시 철수.",
+    "newbie": "신규 진입 대기: 200일선 아래(Gear 1)라 정찰대도 아직. 유효 신호(RSI 30 미만 극단 과매도) 전이라 통계적 우위도 없는 자리. 여는 조건 둘: 과매도 탈출 반전(1차 30%의 절반으로 시작), 200일선 회복(본대). 그 전까지 현금 유지, 들어가 있다면 직전 저점 이탈 시 철수.",
     "avgdown": "역발상 이력이 있는 종목이나, 물타기는 RSI 30 미만 극단 과매도 발동 시에만: 현재는 대기.",
     "pyramid": "불타기 금지 구간: 하락 추세에서의 추가 매수는 원칙 밖."
    },
    "audienceEn": {
     "holder": "Holding intact: this name has historically performed better after downtrend stretches. Panic selling is not advised.",
-    "newbie": "Waiting zone: before the valid signal (extreme oversold below RSI 30) fires, there is no statistical basis for entry.",
+    "newbie": "Waiting zone: below the 200-day line (Gear 1), not even a scout tranche yet. Before the valid signal (extreme oversold below RSI 30) fires there is no statistical edge. Two triggers open the door: a turn up out of oversold (start with half of the first 30%) or a reclaim of the 200-day (main tranche).",
     "avgdown": "This name has a contrarian record, but averaging down applies only when extreme oversold below RSI 30 fires: currently waiting.",
     "pyramid": "Pyramiding is off the table: adding into a downtrend is outside the principles."
    }
@@ -607,46 +607,48 @@
   }
  },
  "desked": {
-  "headline": "1배수 칸은 목표 비중 그대로 유지: 레버리지 검토는 반등 확인 관문(현재 2/5) 통과가 열쇠",
+  "headline": "1배수 칸은 목표 비중 채운 채 보유 유지: 레버리지 검토는 반등 관문(2/5) 통과가 조건",
   "core": [
-   "9월11일(목) 뉴욕장 QQQ(나스닥100 ETF) [G]+0.9%[/G](715달러) 마감: 8월 CPI 발표와 시장 반응을 거치며 재료 분위기가 부정 우위(35 대 65)에서 [G]긍정 60 대 부정 40[/G]으로 단시간 반전",
-   "1배수 칸(QQQ·VOO·SOXX)은 목표 비중을 채운 지 35거래일째: 잔이 이미 가득 차 더 따를 자리가 없는 것이지, 시장이 사지 말라는 신호가 켜진 게 아님",
-   "사려는 힘 58, 팔려는 힘은 약한 수준(23/100), 장기 추세선(200일선) 위 [B]+8.44%[/B]: 큰 추세는 여전히 위쪽",
-   "레버리지 증액 검토는 반등 확인 관문 5개 중 [B]2개[/B]만 통과한 상태: 방향이 모일 때까지 신규 증액 유보"
+   "직전 장(9월11일) 뉴욕장에서 QQQ(나스닥100 ETF) [G]+0.9%[/G](715달러) 마감: 8월 CPI 발표를 소화하며 재료 분위기가 긍정 35 대 부정 65에서 [B]긍정 60 대 부정 40[/B]으로 단시간 반전",
+   "1배수 칸은 계획한 목표 비중을 채운 채 36거래일째 보유: 그 사이 [G]+4.6%[/G]. 채울 자리가 없는 것이지 시장 신호가 꺼진 것이 아닌 상태",
+   "사려는 힘 58/100, 팔려는 힘은 약한 수준(23/100), 추세 기어는 최상단(3단): QQQ가 200일선 위 +8.44% 구간, 이 구간의 20거래일 승률 [G]70%[/G]",
+   "레버리지 검토는 아직 유보: 차트의 반등 신뢰도가 초기 단계([B]관문 5개 중 2개 충족[/B])라 방향이 모일 때까지 1배수 유지가 원칙"
   ],
   "sections": [
    {
     "title": "직전 장 시황 (9월11일)",
     "bullets": [
-     "QQQ(나스닥100 ETF) +0.9%, 715달러 마감: 8월 CPI 예상치 상회가 누르던 분위기가 발표 소화 이후 긍정 60 대 부정 40으로 반전",
-     "긍정 쪽 원인 재료: WTI 원유 가격 하락, 물가 부담을 덜어주는 방향",
-     "부정 쪽 원인 재료: Fed 금리 인상 압력 지속, 지정학적 긴장 고조",
-     "혼조 변수: FOMC 금리 결정 임박, 다음 방향을 정하는 열쇠 재료"
+     "QQQ(나스닥100 ETF) +0.9%(715달러) 마감: 8월 CPI 발표 및 시장 반응이 분위기 반전의 핵심 이벤트",
+     "발표 직전까지는 8월 CPI 예상치 상회 우려가 시장을 누르던 국면: 발표 후 재료 균형이 긍정 60 대 부정 40으로 이동",
+     "물가 쪽 보조 재료: WTI 원유 가격 하락은 물가 부담을 덜어주는 방향",
+     "남은 부담 재료: [R]Fed 금리 인상 압력 지속[/R], 지정학적 긴장 고조",
+     "혼조 변수: FOMC 금리 결정 임박, 다음 방향의 분기점"
     ]
    },
    {
     "title": "터닝포인트 관문",
     "bullets": [
-     "차트 판정은 관망: 추세 자체는 강세, 반등 신뢰도는 초기 단계(관문 5개 중 2개 충족, 40%)",
-     "지표는 우호적, 차트 패턴은 아직 매수로 완전히 돌아서지 않은 상태: 두 갈래가 갈릴 때의 원칙은 보수적인 쪽",
-     "레버리지(2·3배수) 카드의 증액 검토 조건: 남은 관문의 추가 충족으로 방향이 모이는 것"
+     "차트 추세는 강세, 판정은 관망: 반등 신뢰도는 초기 단계로 확인 관문 5개 중 2개 충족(40%)",
+     "지표는 긍정 쪽으로 기울었으나 차트 패턴은 아직 매수로 돌아서지 않은 상태: 둘의 결이 다를 때 원칙은 보수적인 쪽",
+     "레버리지 검토 조건: 남은 관문이 채워져 지표와 차트의 방향이 한쪽으로 모이는 시점"
     ]
    },
    {
-    "title": "이번 거래일의 판단 (1배수 칸)",
+    "title": "오늘의 판단: 1배수 칸",
     "bullets": [
-     "1배수 칸은 목표 비중을 채운 채 유지: 35거래일째 목표와 현재 비중의 차이 없음, 추가 매수 단계 자체가 없는 구간",
-     "보유 판단 36일째, 그 사이 [G]+4.6%[/G]: 추세 진행 구간, 남은 차수는 조건 충족 시 집행",
-     "핵심 근거: 200일선 위 구간의 20거래일 승률 [B]70%[/B], 추세와 함께 가는 동안은 흔들림을 견디는 쪽이 통계적으로 유리했던 자리",
-     "지난 11년 이 시장 조합의 20거래일 평균 수익 +1.5%: 기대값도 위쪽"
+     "1배수(QQQ·VOO·SOXX) 칸은 목표 비중과 현재 비중의 차이가 없는 상태 35거래일째: 추가 매수 단계 자체가 없는 구간",
+     "목표 비중이 100%인 이유가 바로 추세 조건(기어 3단)이 좋아서: 만석이라 태울 자리가 없는 것이지 운행이 멈춘 것이 아닌 셈",
+     "보유 판단 36거래일째 성과 +4.6%: 추세 진행 구간, 남은 차수는 새 조건 점등 시 집행",
+     "매수점수 58, 매도압력 23: 팔 이유가 약한 수준이라 [B]보유 유지[/B]가 결론"
     ]
    },
    {
     "title": "교차검증과 리스크",
     "bullets": [
-     "팔려는 힘은 23/100으로 낮은 수준: 다만 60선 돌파 이력에서는 20거래일 평균 수익이 [R]+0.4%[/R]까지, 60거래일 기준 +0.1%까지 내려간 기록, 이 선이 뚫리면 계산이 달라지는 지점",
-     "FOMC 금리 결정 임박: 긍정 우위의 재료 균형이 하루에 뒤집힐 수 있는 가장 큰 단일 변수",
-     "성적 공개: 최근 31번의 방향 판단 중 17번이 5거래일 뒤 방향과 일치(55%), 이 숫자는 매일 갱신되며 악화돼도 그대로 공개"
+     "지난 11년 이 시장 조합의 20거래일 평균 수익 +1.5%: 지금 조합은 역사적으로 완만한 우상향 구간",
+     "QQQ 200일선 위 구간의 20거래일 승률 70%: 추세와 함께 가는 동안은 흔들림을 견디는 쪽이 통계적으로 유리했던 자리",
+     "경계 라인: [R]매도압력 60선 돌파[/R] 시 20거래일 평균이 +0.4%, 60거래일 기준 +0.1%까지 하락한 이력. 현재 23으로 여유 큰 상태",
+     "성적 공개: 최근 31번의 방향 판단 중 17번이 5거래일 뒤 방향과 일치(적중률 55%), 이 숫자는 매일 갱신"
     ]
    }
   ],
