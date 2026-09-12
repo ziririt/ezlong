@@ -9781,5 +9781,11 @@ window.investmentQuotes = [
     "title": "모란이 피기까지는",
     "author": "김영랑",
     "genre": "literature"
+  },
+  {
+    "text": "너무 괴롭거든 포기해라. 포기해도 괜찮다. 길은 절대 하나가 아니니까.",
+    "title": "하마터면 열심히 살 뻔했다",
+    "author": "하완",
+    "genre": "literature"
   }
 ];
