@@ -9821,5 +9821,12 @@ window.investmentQuotes = [
     "title": "우리가 빛의 속도로 갈 수 없다면",
     "author": "김초엽",
     "genre": "literature"
+  },
+  {
+    "english": "Investors and businesses are not paid in probabilities; they are paid in dollars. Accordingly, it is not how likely an event is to happen that matters, it is how much is made when it happens that should be the consideration.",
+    "text": "투자자와 기업은 확률로 보상받지 않는다. 달러로 보상받는다. 그러므로 중요한 것은 어떤 사건이 일어날 확률이 얼마나 되느냐가 아니라, 그 사건이 실제로 일어났을 때 얼마를 버느냐다.",
+    "title": "행운에 속지 마라 (Fooled by Randomness)",
+    "author": "나심 니콜라스 탈레브 (Nassim Nicholas Taleb)",
+    "category": "mindset"
   }
 ];
