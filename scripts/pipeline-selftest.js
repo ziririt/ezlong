@@ -294,6 +294,46 @@ console.log('[5] 차트분석: 매매 레벨 실행가능성 검문');
   ok('손익비 1.5 미만이면 경고한다', /손익비가 1\.5 미만이라 이 플랜은 실행 가치가 낮습니다/.test(html));
 }
 
+/* ── 6) 포트폴리오: 2배 레버리지 토글 제거 ─────────────────────────── */
+console.log('[6] 포트폴리오: 레버리지 토글 제거');
+{
+  // 증상: '2배 레버리지 추가 (QLD, USD)' 옵션이 있었는데, 국내 증권사 증거금 요건이
+  // 높아져 실제로 실행할 수 있는 경우가 거의 없어졌다. 계산상 가능한 것과 계좌에서
+  // 실행 가능한 것은 다르다 - 못 하는 선택지를 화면에 두면 그 자체가 오해를 만든다.
+  const LANGS = ['', 'en/', 'ja/', 'zh/', 'es/', 'pt/'];
+  LANGS.forEach(L => {
+    const f = L + 'portfolio-manager.html';
+    const fp = path.join(ROOT, f);
+    if (!fs.existsSync(fp)) return;
+    const h = fs.readFileSync(fp, 'utf8');
+    const tag = (L || 'ko/') + 'portfolio-manager';
+    ok(`${tag}: 토글 상태가 없다`,      !/isLeveraged/.test(h));
+    ok(`${tag}: 토글 UI 가 없다`,       !/leverage-row|lev-chk/.test(h));
+    ok(`${tag}: leverage 비중표가 없다`, !/leverage: \[/.test(h));
+    ok(`${tag}: isAgg 분기가 없다`,      !/isAgg/.test(h));
+    ok(`${tag}: 선택 함수가 한 인자`,    /function handleStyleSelect\(styleKey\) \{/.test(h));
+    ok(`${tag}: 비중을 그대로 쓴다`,     /const weights = s\.weights;/.test(h));
+
+    // 공격형 비중 합이 100 인지 — leverage 블록을 지우면서 배열이 상하지 않았는지 본다
+    const m = h.match(/AGGRESSIVE_AI: \{[\s\S]*?weights: \[([\s\S]*?)\]/);
+    ok(`${tag}: AGGRESSIVE_AI 비중표가 살아 있다`, !!m);
+    if (m) {
+      const sum = [...m[1].matchAll(/weight:\s*(\d+(?:\.\d+)?)/g)]
+        .reduce((a, x) => a + Number(x[1]), 0);
+      ok(`${tag}: 공격형 비중 합계 100`, Math.abs(sum - 100) < 1e-9, String(sum));
+    }
+  });
+
+  // 한국어판만 규제 사실을 적는다 - 다른 언어 독자는 한국 규제 대상이 아니다
+  const ko = fs.readFileSync(path.join(ROOT, 'portfolio-manager.html'), 'utf8');
+  ok('한국어판: 증거금 규제를 본문이 말한다', /증거금 요건이 크게 높아져/.test(ko));
+  ok('한국어판: 레버리지 상품 설명에도 표시', 
+     (ko.match(/국내 증권사 증거금 요건이 높아 실제 매수가 제한될 수 있습니다/g) || []).length === 4);
+  ok('한국어판: 변동성 감쇠 경고는 그대로 둔다', /변동성 감쇠/.test(ko));
+  const en = fs.readFileSync(path.join(ROOT, 'en', 'portfolio-manager.html'), 'utf8');
+  ok('영문판에는 한국 규제 문구를 넣지 않는다', !/증거금/.test(en));
+}
+
 console.log(`\n통과 ${pass} / 실패 ${fails.length}`);
 if (fails.length) { console.log('\n실패'); fails.forEach(f => console.log('  · ' + f)); process.exit(1); }
 console.log('전부 통과.');
