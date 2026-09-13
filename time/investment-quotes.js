@@ -9848,5 +9848,12 @@ window.investmentQuotes = [
     "title": "빈 집",
     "author": "기형도",
     "genre": "literature"
+  },
+  {
+    "english": "You are afraid of surrender because you don't want to lose control. But you never had any control; all you had was anxiety.",
+    "text": "당신은 통제력을 잃을까 봐 항복하기를 두려워한다. 하지만 당신은 애초에 아무런 통제력도 가진 적이 없었다. 당신이 가진 건 오직 불안뿐이었다.",
+    "title": "먹고 기도하고 사랑하라 (Eat, Pray, Love)",
+    "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
+    "genre": "literature"
   }
 ];
