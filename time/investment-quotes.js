@@ -9828,5 +9828,12 @@ window.investmentQuotes = [
     "title": "행운에 속지 마라 (Fooled by Randomness)",
     "author": "나심 니콜라스 탈레브 (Nassim Nicholas Taleb)",
     "category": "mindset"
+  },
+  {
+    "english": "I have learned that when you've done your homework, once you recognize that supply and demand are totally out of whack, and you make your move, you are definitely going to get very lucky.",
+    "text": "숙제를 다 끝내고, 수요와 공급이 완전히 어긋나 있다는 것을 알아차린 뒤에 움직인다면, 반드시 아주 큰 행운이 따르게 된다는 것을 나는 배웠다.",
+    "title": "핫 커모디티 (Hot Commodities)",
+    "author": "짐 로저스 (Jim Rogers)",
+    "category": "mindset"
   }
 ];
