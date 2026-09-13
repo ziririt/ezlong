@@ -9875,5 +9875,12 @@ window.investmentQuotes = [
     "title": "올 어바웃 러브 (All About Love)",
     "author": "벨 훅스 (bell hooks)",
     "genre": "literature"
+  },
+  {
+    "english": "Value investing doesn't always work. It just works over time.",
+    "text": "가치투자는 항상 통하지는 않는다. 다만 시간이 지나면 통한다.",
+    "title": "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)",
+    "author": "조엘 그린블랫 (Joel Greenblatt)",
+    "category": "mindset"
   }
 ];
