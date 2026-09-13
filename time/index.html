@@ -422,7 +422,7 @@
              span 없음). -->
         <header class="settings-head">
           <div>
-            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.106</span></h2>
+            <h2><span data-i18n="settings.title">설정</span><span class="settings-version" id="settingsVersion" aria-hidden="true">ver.1.9.107</span></h2>
           </div>
         </header>
         <!-- 2026-07-21 유저 요청: 스크롤해도 닫기 버튼이 항상 보이도록 헤더
@@ -438,6 +438,21 @@
              동작하지 않는다(그 환경엔 애초에 광고 자체가 없다). -->
         <section class="settings-block settings-card" data-i18n-aria="settings.premium.heading" aria-label="프리미엄">
           <h3 class="settings-subtitle" data-i18n="settings.premium.heading">프리미엄</h3>
+          <!-- 2026-09-13 신설 — 운영자: "지금 프리미엄 상황이라는 자부심을 느낄만한
+               뱃지가 나오면 좋겠다." 구독 중일 때만 보인다(무료 체험 중에는 안 보인다 —
+               체험 중인 분께 "이용 중"이라고 하면 그건 사실이 아니다).
+               app.js setupPremiumPresence 가 __FLIPZEN_SUBSCRIBED__ 를 보고 켠다. -->
+          <div class="premium-status" id="premiumStatusBadge" hidden>
+            <span class="premium-status-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 8l4.5 3L12 4l4.5 7L21 8l-1.8 10H4.8L3 8z"/>
+              </svg>
+            </span>
+            <span class="premium-status-text">
+              <span class="premium-status-title" data-i18n="settings.premium.activeTitle">프리미엄 이용 중</span>
+              <span class="premium-status-desc" data-i18n="settings.premium.activeDesc">아래 기능이 모두 열려 있습니다.</span>
+            </span>
+          </div>
           <!-- 2026-08-26 운영 지침 — 여기 애플워치 이야기만 있고 정작 주력인
                기상 알람 홍보가 없었다. "광고 제거, 기상 알람, 동영상 배경 등"
                한 줄로는 무엇을 얻는지 읽히지 않는다. 무엇을 주는지 하나씩,

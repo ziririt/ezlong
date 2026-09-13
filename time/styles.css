@@ -6625,3 +6625,119 @@ body.bedtime-mode .flip-clock { opacity: 0.9; }
   text-align: center;
   opacity: 0.45;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   2026-09-13 — 프리미엄 상태 표시와 전환 안내.
+   운영 피드백 셋을 한 덩이로 고친 자리다.
+     (1) 구독했는데 설정 맨 위에 여전히 구독 권유가 떠 있다
+     (2) 20초 동안 아무 안내가 없다
+     (3) 프리미엄이라는 자부심을 느낄 뱃지가 있으면 좋겠다
+   ───────────────────────────────────────────────────────────── */
+.premium-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 2px;
+  padding: 12px 13px;
+  border-radius: 13px;
+  color: #0f1a26;
+  background: linear-gradient(135deg, #9ad6ff 0%, #4aa8f0 55%, #2f8fdc 100%);
+  box-shadow: 0 6px 18px rgba(60, 150, 230, 0.28);
+}
+.premium-status[hidden] { display: none; }
+.premium-status-mark { display: flex; align-items: center; color: rgba(15, 26, 38, 0.86); }
+.premium-status-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.premium-status-title { font-size: 14.5px; font-weight: 800; letter-spacing: 0.01em; }
+.premium-status-desc { font-size: 12px; line-height: 1.45; color: rgba(15, 26, 38, 0.72); }
+
+/* 구독 중이면 권유를 감춘다. 이용 중인 분께 "업그레이드하세요"는 실례다. */
+body.is-premium .premium-upgrade-button,
+body.is-premium .premium-trial-note,
+body.is-premium .alarm-premium-hint { display: none !important; }
+/* 혜택 하나하나에 "이용 중"을 붙여 지금 무엇이 열려 있는지 눈으로 보이게 한다. */
+body.is-premium .premium-perk-title::after {
+  content: attr(data-on-label);
+  margin-left: 7px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #0d1520;
+  background: rgba(143, 208, 255, 0.92);
+  vertical-align: middle;
+}
+
+/* 전환 중 표시 — 화면 아래에 조용히 뜬다. */
+.premium-pending {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  z-index: 2147483000;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(18, 24, 33, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+.premium-pending-spin {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.28);
+  border-top-color: rgba(143, 208, 255, 0.95);
+  animation: premiumSpin 0.8s linear infinite;
+}
+@keyframes premiumSpin { to { transform: rotate(360deg); } }
+
+/* 켜진 순간 — 한가운데에서 한 번 확실히 말한다. */
+.premium-celebrate {
+  position: fixed; inset: 0; z-index: 2147483100;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  background: rgba(6, 10, 16, 0.72);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.premium-celebrate-card {
+  width: min(340px, 100%);
+  padding: 24px 22px 18px;
+  border-radius: 20px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.95);
+  background: linear-gradient(180deg, rgba(36, 48, 64, 0.98), rgba(20, 28, 38, 0.98));
+  border: 1px solid rgba(143, 208, 255, 0.28);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.55);
+  animation: premiumRise 0.36s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+@keyframes premiumRise {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+.premium-celebrate-mark { color: #8fd0ff; margin-bottom: 8px; }
+.premium-celebrate-title { font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
+.premium-celebrate-sub { margin-top: 6px; font-size: 12.5px; line-height: 1.5; color: rgba(255, 255, 255, 0.62); }
+.premium-celebrate-list { margin: 15px 0 4px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 7px; text-align: left; }
+.premium-celebrate-list li {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 11px; border-radius: 11px;
+  font-size: 13px; color: rgba(255, 255, 255, 0.88);
+  background: rgba(143, 208, 255, 0.10);
+  border: 1px solid rgba(143, 208, 255, 0.20);
+}
+.premium-celebrate-list li::before {
+  content: ""; flex: 0 0 auto; width: 7px; height: 7px; border-radius: 50%;
+  background: #8fd0ff;
+}
+.premium-celebrate-close {
+  margin-top: 14px; width: 100%; padding: 12px 0;
+  border: 0; border-radius: 13px; cursor: pointer;
+  font-size: 14px; font-weight: 700; color: #0d1520;
+  background: linear-gradient(180deg, #9ad6ff, #4aa8f0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .premium-pending-spin { animation: none; }
+  .premium-celebrate-card { animation: none; }
+}

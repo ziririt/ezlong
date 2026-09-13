@@ -12138,6 +12138,11 @@ var bedsideActive = false;
   };
   // 네트워크 변화 — 1.8 네이티브 브릿지가 부른다.
   window.__flipzenNetworkChanged = function () { tickMonitor(); };
+  // 2026-09-13 — 프리미엄이 켜지는 순간도 재생 판정 순간이다.
+  // 예전에는 다음 15초 감시 때까지 기다려야 영상 배경이 열렸다.
+  try {
+    document.addEventListener("flipzen:premium", function () { tickMonitor(); });
+  } catch (error) { /* 무시 */ }
 
   // 잠금 화면에 다녀오면 WKWebView 가 미디어 파이프라인을 끊어 영상이
   // 멈춘 채 굳는 일이 있다(운영자 실기기 제보). 3단 복구:
@@ -14149,4 +14154,186 @@ var bedsideActive = false;
   } else {
     init();
   }
+})();
+
+// ─────────────────────────────────────────────────────────────
+// 2026-09-13 신설 — 프리미엄 상태를 화면에 **바로** 반영한다.
+//
+// 운영자가 테스트로 월 구독을 하시고 남긴 말 그대로가 이 모듈의 명세다.
+//   "20초 정도 뒤에야 프리미엄 기능인 기상알람이 되었다. 20초 동안 아무런 안내도 없다."
+//   "설정 맨 위에 여전히 프리미엄 하라는 안내가 뜬다."
+//   "지금 프리미엄 상황이라는 자부심을 느낄만한 뱃지가 나오면 좋겠다."
+//
+// 20초는 결제가 느려서가 아니었다. 네이티브는 값을 바로 심었지만 **심었다고
+// 말해 주지 않아서**, 웹이 스스로 15초마다 다시 판정할 때까지 아무 일도
+// 일어나지 않은 것이다. 그래서 네이티브에 __flipzenPremiumChanged 를 만들고
+// (ContentView.swift pushPremium) 여기서 받는다.
+//
+// 값을 둘로 나눠 받는다 — 섞으면 무료 체험 중인 분께 "이용 중" 뱃지를 달게 된다.
+//   __FLIPZEN_PREMIUM__     기능을 열 것인가 (구독 + 설치 후 2주 무료 창)
+//   __FLIPZEN_SUBSCRIBED__  실제로 돈을 내고 계신가 (구독·평생구매만)
+// ─────────────────────────────────────────────────────────────
+(function setupPremiumPresence() {
+  var GRACE_MS = 14 * 24 * 60 * 60 * 1000;
+  var pendingEl = null;
+  var celebrateEl = null;
+  var pendingTimer = null;
+  var lastSubscribed = null;
+
+  function subscribed() { return window.__FLIPZEN_SUBSCRIBED__ === true; }
+
+  function premiumOn() {
+    if (window.__FLIPZEN_PREMIUM__ === true) return true;
+    try {
+      var v = localStorage.getItem("flipzen_first_seen");
+      if (!v) { v = String(Date.now()); localStorage.setItem("flipzen_first_seen", v); }
+      return (Date.now() - Number(v)) < GRACE_MS;
+    } catch (error) { return false; }
+  }
+
+  function applyPresence() {
+    try {
+      document.body.classList.toggle("is-premium", subscribed());
+    } catch (error) { /* 무시 */ }
+    var badge = document.getElementById("premiumStatusBadge");
+    if (badge) badge.hidden = !subscribed();
+    // 혜택 줄에 붙는 "이용 중" 꼬리표는 CSS content 가 읽어 간다.
+    // 문구를 CSS 에 박으면 번역이 안 되므로 여기서 심는다.
+    try {
+      var label = t("settings.premium.perkOn", null, "이용 중");
+      var titles = document.querySelectorAll(".premium-perk-title");
+      for (var i = 0; i < titles.length; i++) {
+        titles[i].setAttribute("data-on-label", label);
+      }
+    } catch (error) { /* 무시 */ }
+    try { localStorage.setItem("ezlong:premium", premiumOn() ? "1" : "0"); }
+    catch (error) { /* 무시 */ }
+  }
+
+  function hidePending() {
+    if (pendingTimer) { window.clearTimeout(pendingTimer); pendingTimer = null; }
+    if (pendingEl && pendingEl.parentNode) pendingEl.parentNode.removeChild(pendingEl);
+    pendingEl = null;
+  }
+
+  function showPending() {
+    if (pendingEl) return;
+    pendingEl = document.createElement("div");
+    pendingEl.className = "premium-pending";
+    pendingEl.setAttribute("role", "status");
+    var spin = document.createElement("span");
+    spin.className = "premium-pending-spin";
+    var text = document.createElement("span");
+    text.textContent = t("settings.premium.turningOn", null, "프리미엄을 켜는 중입니다");
+    pendingEl.appendChild(spin);
+    pendingEl.appendChild(text);
+    document.body.appendChild(pendingEl);
+    // 어떤 이유로든 끝 신호가 안 오면 스스로 내려간다.
+    // 영원히 도는 표시는 기다림보다 나쁘다.
+    pendingTimer = window.setTimeout(hidePending, 45000);
+  }
+
+  function showCelebrate() {
+    if (celebrateEl) return;
+    var perks = [
+      t("settings.premium.perkAlarm", null, "기상 알람"),
+      t("settings.premium.perkNoAds", null, "광고 없이"),
+      t("settings.premium.perkVideo", null, "동영상 배경")
+    ];
+    // 애플워치 줄은 iOS 앱에서만 뜻이 있다. 안드로이드에서는 index.html 의
+    // 같은 항목을 app.js 가 이미 숨긴다 — 여기서도 같은 기준을 쓴다.
+    var watchRow = document.getElementById("premiumPerkWatch");
+    if (watchRow && !watchRow.hidden) {
+      perks.push(t("settings.premium.perkWatch", null, "애플워치 앱"));
+    }
+
+    celebrateEl = document.createElement("div");
+    celebrateEl.className = "premium-celebrate";
+    celebrateEl.setAttribute("role", "dialog");
+    celebrateEl.setAttribute("aria-modal", "true");
+
+    var card = document.createElement("div");
+    card.className = "premium-celebrate-card";
+
+    var mark = document.createElement("div");
+    mark.className = "premium-celebrate-mark";
+    mark.innerHTML = '<svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l4.5 3L12 4l4.5 7L21 8l-1.8 10H4.8L3 8z"/></svg>';
+
+    var title = document.createElement("div");
+    title.className = "premium-celebrate-title";
+    title.textContent = t("settings.premium.doneTitle", null, "프리미엄이 켜졌습니다");
+
+    var sub = document.createElement("div");
+    sub.className = "premium-celebrate-sub";
+    sub.textContent = t("settings.premium.doneSub", null, "이제 아래 기능을 바로 쓰실 수 있습니다.");
+
+    var list = document.createElement("ul");
+    list.className = "premium-celebrate-list";
+    perks.forEach(function (name) {
+      var li = document.createElement("li");
+      li.textContent = name;
+      list.appendChild(li);
+    });
+
+    var close = document.createElement("button");
+    close.type = "button";
+    close.className = "premium-celebrate-close";
+    close.textContent = t("settings.premium.doneClose", null, "좋아요");
+    close.addEventListener("click", hideCelebrate);
+
+    card.appendChild(mark);
+    card.appendChild(title);
+    card.appendChild(sub);
+    card.appendChild(list);
+    card.appendChild(close);
+    celebrateEl.appendChild(card);
+    document.body.appendChild(celebrateEl);
+    try { close.focus(); } catch (error) { /* 무시 */ }
+  }
+
+  function hideCelebrate() {
+    if (celebrateEl && celebrateEl.parentNode) celebrateEl.parentNode.removeChild(celebrateEl);
+    celebrateEl = null;
+  }
+
+  // ── 네이티브가 부르는 두 창구 ──────────────────────────────
+  // 결제 시트에서 "구매"를 누른 직후. 아직 자격이 확인되기 전이다.
+  window.__flipzenPremiumPending = function (pending) {
+    if (pending) { showPending(); } else { hidePending(); }
+  };
+
+  // 자격이 정해진 순간. 값이 바뀌지 않았어도 부를 수 있다(그때는 조용히 지나간다).
+  window.__flipzenPremiumChanged = function (isPremium, isSubscribed) {
+    if (typeof isPremium === "boolean") window.__FLIPZEN_PREMIUM__ = isPremium;
+    if (typeof isSubscribed === "boolean") window.__FLIPZEN_SUBSCRIBED__ = isSubscribed;
+
+    hidePending();
+    applyPresence();
+
+    // 기능 게이트를 그 자리에서 다시 판정한다. 15초를 기다리지 않는다.
+    try { window.__flipzenAlarmRefresh && window.__flipzenAlarmRefresh(); }
+    catch (error) { /* 무시 */ }
+    try {
+      document.dispatchEvent(new CustomEvent("flipzen:premium", {
+        detail: { premium: premiumOn(), subscribed: subscribed() }
+      }));
+    } catch (error) { /* 무시 */ }
+
+    // 방금 켜졌을 때만 축하한다. 앱을 켤 때마다 축하하면 그건 광고다.
+    if (subscribed() && lastSubscribed === false) showCelebrate();
+    lastSubscribed = subscribed();
+  };
+
+  // 페이지가 뜰 때 지금 값으로 한 번 맞춘다(네이티브 주입이 늦게 올 수 있어
+  // 잠깐 동안 몇 번 더 따라잡는다 — ezlong:premium 미러와 같은 사정이다).
+  applyPresence();
+  lastSubscribed = subscribed();
+  var catchUp = 0;
+  var catchUpTimer = window.setInterval(function () {
+    catchUp += 1;
+    var before = subscribed();
+    applyPresence();
+    if (before !== lastSubscribed) lastSubscribed = before;
+    if (catchUp >= 20) window.clearInterval(catchUpTimer);
+  }, 1000);
 })();
