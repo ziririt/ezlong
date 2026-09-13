@@ -1,19 +1,18 @@
-/* 반등·반락 판별 패널. 원안은 외부 세션(Codex) 미리보기, 아래 둘을 더했다.
-   .rv-align  기존 판정과 견준 결과 (어긋나면 .rv-align-conflict)
+/* 반등·반락 판별 패널. 원안은 외부 세션(Codex) 미리보기.
+   2026-09-13: 고르는 장치(종목·상황 선택, 다시 확인 버튼)와 '기존 판정과 견주면'
+   상자를 들어냈다. 이 패널은 읽는 곳이지 조작하는 곳이 아니다.
    .rv-old    스냅샷이 하루를 넘겼을 때 시각 표기
-   글자 크기는 14항(14px 하한)을 지킨다. 터치 대상은 44px. */
+   글자 크기는 14항(14px 하한)을 지킨다. */
 #reversal-panel { margin:24px 0; padding:24px 0; border-top:1px solid var(--ez-border); border-bottom:1px solid var(--ez-border); color:var(--ez-text); font-size:16px; line-height:1.65; letter-spacing:0; }
 #reversal-panel * { box-sizing:border-box; letter-spacing:0; }
 #reversal-panel h2 { font-size:24px; margin:0; line-height:1.4; }
 #reversal-panel h3 { font-size:20px; margin:20px 0 8px; }
 #reversal-panel h4 { font-size:16px; margin:0 0 8px; }
 #reversal-panel p { margin:8px 0 16px; }
-.rv-head,.rv-controls { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.rv-head { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
 #reversal-panel .rv-kicker { color:var(--ez-blue); font-size:14px; font-weight:700; }
-#reversal-panel select,#reversal-panel button { min-height:44px; padding:8px 12px; font:inherit; background:var(--ez-surface); color:var(--ez-text); border:1px solid var(--ez-border); border-radius:8px; max-width:100%; }
-#reversal-panel button:disabled { cursor:wait; }
 #reversal-panel :focus-visible { outline:2px solid var(--ez-blue); outline-offset:3px; }
-.rv-axes,.rv-conditions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 24px; }
+.rv-axes { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 24px; }
 .rv-axes>div { padding:16px 0; border-top:1px solid var(--ez-border); }
 .rv-dir { display:block; color:var(--ez-text2); font-size:14px; font-weight:400; }
 #reversal-panel .rv-note,#rv-time { color:var(--ez-text2); font-size:14px; }
@@ -44,13 +43,9 @@
 #reversal-panel #rv-time.rv-old { color:#B87900; font-weight:600; }
 @media (prefers-color-scheme: dark) { #reversal-panel #rv-time.rv-old { color:#FFD60A; } }
 
-/* 기존 판정과 견준 결과 */
-.rv-align { margin-top:20px; padding:16px 18px; border-radius:10px; background:var(--ez-surface); border:1px solid var(--ez-border); }
-.rv-align h4 { font-size:16px; margin:0 0 6px; }
-.rv-align p { margin:0 0 8px; font-size:15px; }
-.rv-align p:last-child { margin-bottom:0; }
-.rv-align-nums { color:var(--ez-text2); font-size:14px; font-weight:600; }
-.rv-align-conflict { border-left:3px solid var(--ez-amber, #B87900); }
+/* 상황별 한 줄씩. 고르게 하지 않고 셋을 다 적는다. */
+.rv-cases { margin:16px 0; }
+.rv-cases b { font-weight:700; }
 
-@media(max-width:600px) { .rv-axes,.rv-conditions { grid-template-columns:1fr; } #reversal-panel h2 { font-size:22px; } .rv-head { align-items:flex-start; }
+@media(max-width:600px) { .rv-axes { grid-template-columns:1fr; } #reversal-panel h2 { font-size:22px; } .rv-head { align-items:flex-start; }
   .rv-m-name,.rv-l-name { min-width:100%; } .rv-member,.rv-level { padding:12px 0; } }

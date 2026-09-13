@@ -1816,13 +1816,16 @@ li.gear-other-sep { display: none !important; }
       <div class="pchip" id="pchip-VIX"><span class="pchip-lbl">VIX Fear Index</span><span class="pchip-val" id="live-price-VIX-strip">Loading…</span></div>
     </div>
 
-    <!-- ── 볼카운터 전광판 (탭 외부 고정) ── -->
-    <div id="ball-counter-bar"></div>
-
     <!-- ────────────────────────────────────────── -->
     <!-- TAB 1: 시장 신호 (Market Weather) -->
     <!-- ────────────────────────────────────────── -->
     <div class="tab-pane active" id="tab-market">
+
+      <!-- ── 볼카운터 (2026-09-13: 탭 외부 고정 -> 이 탭 안으로) ──
+           Feedback: the market read stayed pinned above the TOP9 tab. It speaks about
+           the **market**, so on a per-ticker screen it duplicated the call and blurred
+           which judgement the reader should act on. -->
+      <div id="ball-counter-bar"></div>
 
       <!-- 최근 시장 흐름 맥락 배너 -->
       <div id="recent-context-wrap"></div>
@@ -3746,7 +3749,7 @@ function buildTrendLineHtml() {
     ${holdColHtml(holdBalls)}
   </div>`;
 
-  // 볼카운터 전광판을 탭 외부 고정 영역에 렌더링
+  // 볼카운터 전광판 렌더링 (2026-09-13: 탭 외부 고정 -> 스윙 시그널 탭 안)
   // 플레이스홀더가 최소 1.8초 보이도록: 캐시 즉시 로드 시에도 사용자에게 노출
   const ballBar = document.getElementById('ball-counter-bar');
   if (ballBar) {

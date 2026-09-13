@@ -14,13 +14,18 @@
                           이 함수를 붙잡고 있어서, 개편이 원안의 판정을 바꾸지 않았음을 증명한다.
        evaluateMarket(snap) 세 지수 종합. 화면이 쓰는 것은 이쪽 하나뿐이다.
 
-     ezlong 에서 더한 것 둘.
-       1) 기존 판정(매수 점수·Gear)과 어긋날 때 그 사실을 말한다.
-          두 엔진은 철학이 다르다. 이 사이트의 S-CORE 는 FEAR 50% 라 공포가 클수록
-          점수가 오르고(36항), 이 엔진은 구조가 깨지면 기다리라고 한다.
-          어긋남을 숨기면 같은 화면에 다른 말이 남는다(13절). 숨기지 말고 설명한다.
-       2) 스냅샷이 몇 시간 전 것인지 숫자로 말한다.
-          생성 시각은 마지막 체결 시각이 아니다. 화면이 '지금'처럼 보이면 안 된다.
+     ezlong 에서 더한 것.
+       스냅샷이 몇 시간 전 것인지 숫자로 말한다.
+       생성 시각은 마지막 체결 시각이 아니다. 화면이 '지금'처럼 보이면 안 된다.
+
+     2026-09-13 두 번째 정리 - 화면에서 셋을 들어냈다(운영 피드백).
+       1) '기존 판정과 견주면' 상자. 같은 탭 아래에 매수 점수 카드와 Gear 박스가
+          제대로 있다. 여기서 숫자를 또 보여 주는 것은 중복이고, "견줄 근거가
+          약합니다" 같은 문장은 독자에게 아무 행동도 주지 않는다(41항).
+       2) '내 상황' 선택. 골라도 판정은 그대로고 맨 아래 문장 한 줄만 바뀌었다.
+          선택지는 무엇을 볼지 정하지 못했다는 뜻이다 - 세 상황을 그냥 다 적는다.
+       3) '다시 확인' 버튼. 스냅샷은 하루 한 번 갱신된다. 지금 눌러도 같은 파일이
+          온다. 버튼이 있으면 "누르면 최신이 온다"고 읽힌다 - 그건 거짓말이다.
 
      모델을 부르지 않는다. 판정은 코드가 하고 문장도 코드가 쓴다. */
   const VERSION = 'reversal-beta-1+ez2-market';
@@ -63,33 +68,6 @@
   };
   const STALE_MSG = '시세 스냅샷 시각을 확인할 수 없거나 ' + STALE_HOURS + '시간이 지났습니다.';
 
-  /* 기존 판정과의 관계. 어느 쪽이 옳다고 정하지 않는다 - 다른 것을 보고 있다고 말한다. */
-  function noteFor(bearish, bullish, high, low) {
-    if (bearish && high)
-      return '구조는 아래로 꺾였는데 매수 점수는 높습니다. 이 사이트의 점수는 '
-           + '공포가 클수록 올라가는 설계라(FEAR 50%), "떨어지는 중"과 "매수 매력이 크다"가 '
-           + '동시에 참일 수 있습니다. 이 패널은 지금 구조를, 점수는 심리를 봅니다.';
-    if (bullish && low)
-      return '구조는 위로 향하는데 매수 점수는 낮습니다. 이미 오른 뒤라 공포 지표가 '
-           + '식었다는 뜻일 수 있습니다. 추격 진입인지 아닌지를 먼저 가르십시오.';
-    if (bullish && high)
-      return '구조와 매수 점수가 같은 방향을 가리킵니다. 다만 같은 가격에서 나온 '
-           + '두 시선이라 서로를 증명하지는 않습니다.';
-    if (bearish && !high) return '구조와 매수 점수가 모두 신중한 쪽입니다.';
-    return '구조가 한쪽으로 기울지 않아 점수와 견줄 근거가 약합니다.';
-  }
-  const isBullish = state => /돌파|회복 우세|반등 시도/.test(state);
-  const isBearish = state => /이탈|반락|약세/.test(state);
-
-  function alignmentOf(state, s) {
-    if (!s || !valid(s.buyScore)) return null;
-    const bearish = isBearish(state), bullish = isBullish(state);
-    const high = s.buyScore >= 60, low = s.buyScore < 45;
-    return { buyScore: s.buyScore, sellScore: valid(s.sellScore) ? s.sellScore : null,
-             gear: valid(s.gear) ? s.gear : null, conflict: (bearish && high) || (bullish && low),
-             note: noteFor(bearish, bullish, high, low) };
-  }
-
   /* ── 종목 하나의 판정 (원안. 화면은 쓰지 않는다 - 위 주석 참고) ───────────── */
   function evaluate(snapshot, ticker, now = Date.now()) {
     const s = snapshot?.symbols?.[ticker];
@@ -118,7 +96,6 @@
     else if (p.below && p.down) state = '약세 지속 · 회복 미확인';
     return {ready:true, state, axes, time, ageHours:(now - time) / 3600000,
       price:s.price, support:s.low20dExcl, resistance:s.high20dExcl,
-      alignment: alignmentOf(state, s),
       reason:'확률이나 매매 명령이 아닌 규칙 기반 관찰입니다. 돌파·이탈 실패의 확정 판정에는 시계열 검증이 추가로 필요합니다.'};
   }
 
@@ -134,13 +111,10 @@
       const p = primitives(s);
       return { ...m, ready: !!p, p,
         price: p ? s.price : null, support: p ? s.low20dExcl : null, resistance: p ? s.high20dExcl : null,
-        buyScore: p && valid(s.buyScore) ? s.buyScore : null,
-        sellScore: p && valid(s.sellScore) ? s.sellScore : null,
-        gear: p && valid(s.gear) ? s.gear : null,
         trendUp: p ? p.trendUp : null,
         word: p ? wordOf(p) : '데이터 부족 - 판정에서 제외' };
     });
-    const bail = reason => ({ state:'판정 보류', reason, ready:false, axes:[], members, counts:null, alignment:null, lead:null });
+    const bail = reason => ({ state:'판정 보류', reason, ready:false, axes:[], members, counts:null, lead:null });
     if (time === null) return bail(STALE_MSG);
     const live = members.filter(m => m.ready);
     if (live.length < AGREE)
@@ -201,31 +175,20 @@
         : '반도체만 위로 향합니다. 지수가 따라오는지를 확인하기 전까지 시장 전체의 방향으로 읽지 않습니다.';
     }
 
-    /* 기존 판정과 견주기 - 세 지수의 매수 점수 평균으로 본다. */
-    let alignment = null;
-    const scored = live.filter(m => m.buyScore != null);
-    if (scored.length) {
-      const avg = Math.round(scored.reduce((a, m) => a + m.buyScore, 0) / scored.length);
-      const bearish = isBearish(state), bullish = isBullish(state);
-      const high = avg >= 60, low = avg < 45;
-      alignment = { avg, conflict: (bearish && high) || (bullish && low),
-        note: noteFor(bearish, bullish, high, low),
-        per: scored.map(m => ({ etf:m.etf, name:m.name, buyScore:m.buyScore, sellScore:m.sellScore, gear:m.gear })) };
-    }
-
-    return { ready:true, state, axes, members, lead, alignment,
+    return { ready:true, state, axes, members, lead,
       time, ageHours:(now - time) / 3600000,
       counts:{ n, breakdownN, breakoutN, aboveN, belowN, upN, downN, trendN, volUpN, volDownN, agree:AGREE },
       reason:'확률이나 매매 명령이 아닌 규칙 기반 관찰입니다. 나스닥100·S&P500·반도체 중 둘 이상이 같은 방향일 때만 시장을 판정합니다. 돌파·이탈 실패의 확정 판정에는 시계열 검증이 추가로 필요합니다.' };
   }
 
   if (typeof module !== 'undefined') module.exports = {evaluate, evaluateMarket, primitives, VERSION, STALE_HOURS, NOTICE_HOURS, AGREE, MARKET};
+  /* 여기서부터는 화면이다. 고르는 장치는 두지 않는다 - 이 패널은 읽는 곳이다. */
   if (!root.document) return;
   const host = document.getElementById('reversal-panel');
   if (!host) return;
   const escape = x => String(x).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  let snapshot, mode = 'watch';
-  host.innerHTML = `<div class="rv-head"><div><p class="rv-kicker">스윙 시그널 · 베타</p><h2>미국 시장 반등·반락 판별</h2><p class="rv-scope">나스닥100 QQQ · S&amp;P500 VOO · 반도체 SOXX 를 함께 봅니다. 개별 종목은 TOP9 집중분석에서 봅니다.</p></div></div><p id="rv-time">시세 스냅샷 확인 중…</p><div id="rv-result" aria-live="polite"></div><div class="rv-controls"><label>내 상황 <select id="rv-mode"><option value="watch">미보유 · 진입 검토</option><option value="hold">보유 · 유지/축소 검토</option><option value="add">보유 · 추가매수 검토</option></select></label><button type="button" id="rv-retry">다시 확인</button></div><div id="rv-plan"></div><details><summary>판정 기준과 한계</summary><p>일봉 지표 스냅샷을 이용합니다. 생성시각은 마지막 체결시각과 다릅니다. ${STALE_HOURS}시간 초과 또는 핵심 데이터 부족 시 판정을 보류하며, 판단 가능한 지수가 ${AGREE}곳 미만이면 판정하지 않습니다. S&amp;P500 대표는 이 사이트 전체가 VOO 를 씁니다. 세 지수가 갈릴 때는 갈렸다고 적고 한쪽으로 기울지 않습니다. 실적 일정·업종 비교·장중 확정 여부는 이번 판정에 포함하지 않습니다. 거래량 1.2배 같은 기준은 아직 적중률을 검증하지 않은 가정입니다. 성공률·수익성 검증 전 베타이며 기존 Gear·매매점수와 별도로 봅니다.</p></details>`;
+  let snapshot;
+  host.innerHTML = `<div class="rv-head"><div><p class="rv-kicker">스윙 시그널 · 베타</p><h2>미국 시장 반등·반락 판별</h2><p class="rv-scope">나스닥100 QQQ · S&amp;P500 VOO · 반도체 SOXX 를 함께 봅니다. 개별 종목은 TOP9 집중분석에서 봅니다.</p></div></div><p id="rv-time">시세 스냅샷 확인 중…</p><div id="rv-result" aria-live="polite"></div><div id="rv-plan"></div><details><summary>판정 기준과 한계</summary><p>일봉 지표 스냅샷을 이용합니다. 생성시각은 마지막 체결시각과 다릅니다. ${STALE_HOURS}시간 초과 또는 핵심 데이터 부족 시 판정을 보류하며, 판단 가능한 지수가 ${AGREE}곳 미만이면 판정하지 않습니다. S&amp;P500 대표는 이 사이트 전체가 VOO 를 씁니다. 세 지수가 갈릴 때는 갈렸다고 적고 한쪽으로 기울지 않습니다. 실적 일정·업종 비교·장중 확정 여부는 이번 판정에 포함하지 않습니다. 거래량 1.2배 같은 기준은 아직 적중률을 검증하지 않은 가정입니다. 성공률·수익성 검증 전 베타이며 기존 Gear·매매점수와 별도로 봅니다.</p></details>`;
   const price = x => '$' + x.toLocaleString('en-US', {maximumFractionDigits:2});
   function paint() {
     const r = evaluateMarket(snapshot);
@@ -247,24 +210,14 @@
     result.innerHTML += `<div class="rv-members">${r.members.map(m=>`<div class="rv-member${m.ready ? '' : ' rv-member-out'}"><span class="rv-m-name">${escape(m.name)} <b>${escape(m.etf)}</b></span><span class="rv-m-word">${escape(m.word)}</span><span class="rv-m-num">${m.ready ? escape(price(m.price)) + ' · 200일선 ' + (m.trendUp ? '위' : '아래') : ''}</span></div>`).join('')}</div>`;
     result.innerHTML += `<div class="rv-axes">${r.axes.map(a=>`<div><h4>${escape(a.name)} <span class="rv-dir">${a.direction>0?'상승 근거':a.direction<0?'하락 근거':'미확인·혼재'}</span></h4><p>${escape(a.text)}</p></div>`).join('')}</div>`;
     if (r.lead) result.innerHTML += `<p class="rv-lead">${escape(r.lead)}</p>`;
-    if (r.alignment) {
-      const a = r.alignment;
-      const nums = a.per.map(x => `${x.etf} 매수 ${x.buyScore}${x.gear != null ? ' · Gear ' + x.gear : ''}`).join(' / ');
-      result.innerHTML += `<div class="rv-align${a.conflict ? ' rv-align-conflict' : ''}"><h4>이 사이트의 기존 판정과 견주면</h4><p class="rv-align-nums">세 지수 매수 점수 평균 ${escape(String(a.avg))} — ${escape(nums)}</p><p>${escape(a.note)}</p></div>`;
-    }
-    const action = mode==='hold' ? '보유 규모와 감당할 손실을 먼저 점검하고, 지지 이탈 후 회복하지 못할 때 축소 계획을 재검토합니다.' : mode==='add' ? '추가매수로 지수 집중도가 커집니다. 평균단가 하락보다 추가 하락 시 계좌 손실을 먼저 비교합니다.' : '돌파 전 선진입과 돌파 후 지지 확인은 다른 계획입니다. 가격이 회복 조건을 충족하지 못하면 진입을 보류하는 선택도 남겨둡니다.';
-    plan.innerHTML = `<h3>다음에 확인할 조건</h3><div class="rv-levels">${r.members.filter(m=>m.ready).map(m=>`<div class="rv-level"><span class="rv-l-name">${escape(m.name)} <b>${escape(m.etf)}</b></span><span class="rv-l-up">상방 ${escape(price(m.resistance))}</span><span class="rv-l-dn">하방 ${escape(price(m.support))}</span></div>`).join('')}</div><p>상방은 직전 20일 고가, 하방은 직전 20일 저가입니다. ${escape(String(r.counts.agree))}곳 이상이 같은 쪽을 넘어설 때 시장 판정이 바뀝니다. 이미 넘어선 곳은 되돌아오는지를 관찰합니다.</p><p>${escape(action)}</p><p class="rv-note">두 가격은 관찰 기준이지 목표가·손절 권고가 아닙니다. 갭과 급변 시 원하는 가격에 거래하지 못할 수 있습니다.</p>`;
+    plan.innerHTML = `<h3>다음에 확인할 조건</h3><div class="rv-levels">${r.members.filter(m=>m.ready).map(m=>`<div class="rv-level"><span class="rv-l-name">${escape(m.name)} <b>${escape(m.etf)}</b></span><span class="rv-l-up">상방 ${escape(price(m.resistance))}</span><span class="rv-l-dn">하방 ${escape(price(m.support))}</span></div>`).join('')}</div><p>상방은 직전 20일 고가, 하방은 직전 20일 저가입니다. ${escape(String(r.counts.agree))}곳 이상이 같은 쪽을 넘어설 때 시장 판정이 바뀝니다. 이미 넘어선 곳은 되돌아오는지를 관찰합니다.</p><p class="rv-cases"><b>미보유라면</b> 돌파 전 선진입과 돌파 후 지지 확인은 다른 계획입니다. 회복 조건을 충족하지 못하면 진입을 보류하는 선택도 남겨둡니다.<br><b>보유 중이라면</b> 감당할 손실을 먼저 점검합니다. 지지를 잃고 회복하지 못할 때 축소 계획을 재검토합니다.<br><b>추가매수를 본다면</b> 평균단가가 내려가는 것보다 더 떨어졌을 때의 계좌 손실을 먼저 비교합니다.</p><p class="rv-note">두 가격은 관찰 기준이지 목표가·손절 권고가 아닙니다. 갭과 급변 시 원하는 가격에 거래하지 못할 수 있습니다.</p>`;
   }
   async function load() {
-    const button = document.getElementById('rv-retry');button.disabled=true;
     try {
       const response = await fetch('/data/market-signals.json',{cache:'no-store',signal:AbortSignal.timeout(15000)});
       if (!response.ok) throw new Error('HTTP');
       snapshot=await response.json();paint();
-    } catch (_) {snapshot=null;paint();document.getElementById('rv-time').textContent='시세를 가져오지 못했습니다. 다시 확인해 주세요.';}
-    finally {button.disabled=false;}
+    } catch (_) {snapshot=null;paint();document.getElementById('rv-time').textContent='시세를 가져오지 못했습니다. 페이지를 새로고침해 주십시오.';}
   }
-  document.getElementById('rv-mode').addEventListener('change', e=>{mode=e.target.value;paint();});
-  document.getElementById('rv-retry').addEventListener('click',load);
   load();
 })(typeof window !== 'undefined' ? window : globalThis);

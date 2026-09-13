@@ -4,7 +4,7 @@
 
    1부는 외부 세션(Codex)이 미리보기와 함께 넘긴 12건을 **그대로** 옮긴 것이다.
    원안의 판정이 반영 과정에서 달라지지 않았는지 보는 기준선이다.
-   2부는 ezlong 에서 더한 것 - 기존 판정과의 관계, 스냅샷 경과 시간.
+   2부는 ezlong 에서 더한 것 - 스냅샷 경과 시간, 모델 미호출, 화면 규칙.
    3부는 오늘 실제 데이터로 돌려 화면이 깨지지 않는지 본다.
    4부는 2026-09-13 개편 - 이 자리는 종목이 아니라 **미국 시장**을 판정한다.
    나스닥100·S&P500·반도체 셋을 종합하고, 둘 이상이 같은 방향일 때만 판정한다. */
@@ -53,39 +53,21 @@ console.log('\n[1부] 원안 12건 기준선');
 /* ══════════════════════════════════════════════════════════════════
    2부 — ezlong 에서 더한 것
 ══════════════════════════════════════════════════════════════════ */
-console.log('[2부] 기존 판정과의 관계 · 경과 시간');
+console.log('[2부] 경과 시간 · 모델 미호출 · 화면 규칙');
 {
   const now = Date.parse('2026-09-13T00:00:00Z');
   const base = {price:110,sma20:105,sma50:100,sma200:90,high20dExcl:115,low20dExcl:95,
                 rsi:55,rsi5dAgo:45,macd:{histogram:2},hist5dAgo:1,volRatio:1.3,changePct:1};
   const doc = s => ({generatedAt:new Date(now).toISOString(), symbols:{QQQ:{...base,...s}, VOO:base}});
 
-  /* 실측 재현(2026-09-13 IWM): 구조는 하방 이탈인데 매수 점수가 72 였다.
-     이 조합에서 화면이 어긋남을 말하지 않으면 13절 위반이다. */
+  /* 2026-09-13: '기존 판정과 견주면' 상자를 화면에서 들어냈다(운영 피드백).
+     같은 탭 아래에 매수 점수 카드와 Gear 박스가 이미 있어 중복이었다.
+     엔진도 그 값을 만들지 않는다 - 안 쓰는 계산을 남겨 두면 다음 사람이 되살린다. */
   {
     const r = evaluate(doc({price:94, buyScore:72, sellScore:11, gear:3}), 'QQQ', now);
-    ok('하방 이탈 + 높은 매수 점수 -> 어긋남으로 표시', r.alignment && r.alignment.conflict === true);
-    ok('어긋남 설명에 FEAR 설계를 밝힌다', /FEAR 50%/.test(r.alignment.note), r.alignment.note.slice(0, 50));
-    ok('기존 숫자를 그대로 싣는다',
-       r.alignment.buyScore === 72 && r.alignment.sellScore === 11 && r.alignment.gear === 3);
-  }
-  {
-    const r = evaluate(doc({price:120, buyScore:30, gear:1}), 'QQQ', now);
-    ok('돌파 + 낮은 매수 점수 -> 어긋남으로 표시', r.alignment.conflict === true);
-    ok('추격 진입 여부를 먼저 가르라고 말한다', /추격 진입/.test(r.alignment.note));
-  }
-  {
-    const r = evaluate(doc({price:120, buyScore:70, gear:3}), 'QQQ', now);
-    ok('돌파 + 높은 매수 점수 -> 어긋남 아님', r.alignment.conflict === false);
-    ok('같은 가격에서 나온 두 시선임을 밝힌다', /서로를 증명하지는/.test(r.alignment.note));
-  }
-  {
-    const r = evaluate(doc(), 'QQQ', now);           // buyScore 없음
-    ok('기존 점수가 없으면 견주지 않는다', r.alignment === null);
-  }
-  {
-    const r = evaluate(doc({price:94}), 'QQQ', now); // 판정은 되지만 점수 없음
-    ok('점수 없이도 본 판정은 나온다', r.ready === true && r.state === '하방 이탈 · 반락 경계');
+    ok('판정에 견주기 결과를 담지 않는다', r.alignment === undefined, JSON.stringify(r.alignment));
+    ok('점수가 있어도 본 판정은 그대로 나온다',
+       r.ready === true && r.state === '하방 이탈 · 반락 경계', r.state);
   }
 
   /* 경과 시간 */
@@ -129,7 +111,7 @@ console.log('[3부] 실제 데이터 전수');
   const syms = Object.keys(snap.symbols);
   ok('종목이 열 개 이상', syms.length >= 10, String(syms.length));
 
-  let ready = 0, withAlign = 0, conflicts = 0;
+  let ready = 0;
   syms.forEach(t => {
     const r = evaluate(snap, t, now);
     ok(`${t}: 판정이 문자열로 나온다`, typeof r.state === 'string' && r.state.length > 0);
@@ -139,11 +121,9 @@ console.log('[3부] 실제 데이터 전수');
     ok(`${t}: 축 방향이 -1/0/1`, r.axes.every(a => [-1,0,1].includes(a.direction)));
     ok(`${t}: 지지 < 저항`, r.support < r.resistance, `${r.support} / ${r.resistance}`);
     ok(`${t}: 가격이 유한값`, Number.isFinite(r.price));
-    if (r.alignment) { withAlign++; if (r.alignment.conflict) conflicts++; }
   });
   ok('절반 이상 판정된다', ready >= syms.length / 2, `${ready}/${syms.length}`);
-  ok('판정된 종목은 기존 점수와 견줘진다', withAlign === ready, `${withAlign}/${ready}`);
-  console.log(`   판정 ${ready}/${syms.length} · 기존 판정과 어긋남 ${conflicts}건`);
+  console.log(`   판정 ${ready}/${syms.length}`);
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -246,20 +226,16 @@ console.log('[4부] 세 지수 종합 - 미국 시장 판정');
     ok('갈린 쪽이 지수면 반도체 선행 문장을 쓰지 않는다', core.lead === null, String(core.lead));
   }
 
-  /* ── 기존 판정과 견주기: 세 지수 매수 점수 평균 ── */
+  /* ── 화면에서 들어낸 것들이 되살아나지 않는다 (2026-09-13 운영 피드백) ── */
   {
-    const r = evaluateMarket(mk({QQQ:{buyScore:70, sellScore:11, gear:3},
-                                 VOO:{buyScore:72, gear:3}, SOXX:{buyScore:74, gear:3}}), now);
-    ok('매수 점수를 평균한다', r.alignment.avg === 72, String(r.alignment.avg));
-    ok('지수별 점수를 그대로 싣는다', r.alignment.per.length === 3
-       && r.alignment.per[0].etf === 'QQQ' && r.alignment.per[0].buyScore === 70);
-    const conflict = evaluateMarket(mk({QQQ:{price:94, buyScore:72}, VOO:{price:94, buyScore:72},
-                                        SOXX:{buyScore:72}}), now);
-    ok('하방 이탈 + 높은 평균 점수 -> 어긋남', conflict.alignment.conflict === true);
-    ok('어긋남 설명에 FEAR 설계를 밝힌다', /FEAR 50%/.test(conflict.alignment.note));
-    const bare = mk();
-    ['QQQ','VOO','SOXX'].forEach(t => { delete bare.symbols[t].buyScore; });
-    ok('점수가 없으면 견주지 않는다', evaluateMarket(bare, now).alignment === null);
+    const r = evaluateMarket(mk({QQQ:{buyScore:70, gear:3}, VOO:{buyScore:72, gear:3},
+                                 SOXX:{buyScore:74, gear:3}}), now);
+    ok('시장 판정도 견주기 결과를 담지 않는다', r.alignment === undefined,
+       JSON.stringify(r.alignment));
+    ok('지수 줄에도 점수를 싣지 않는다',
+       r.members.every(m => m.buyScore === undefined && m.gear === undefined));
+    ok('점수가 있어도 본 판정은 그대로', r.ready === true && r.state === '회복 우세 · 추세 관찰',
+       r.state);
   }
 
   /* ── 지수별 상방·하방 기준 ── */
@@ -276,6 +252,14 @@ console.log('[4부] 세 지수 종합 - 미국 시장 판정');
     ok('화면은 evaluateMarket 을 부른다', /evaluateMarket\(snapshot\)/.test(src));
     ok('화면 상태에 종목 변수가 없다', !/ticker\s*=\s*'QQQ'/.test(src));
     ok('세 지수를 화면 안내에 적는다', /QQQ[\s\S]{0,40}VOO[\s\S]{0,40}SOXX/.test(src));
+    /* 주석에는 남아 있어도 된다 - 왜 뺐는지를 적었다. 실제 코드만 본다. */
+    const code = src.replace(/\/\*[\s\S]*?\*\//g, '');
+    ok("'기존 판정과 견주면' 상자가 없다", !/rv-align|견주면/.test(code));
+    ok("'내 상황' 선택이 없다", !/rv-mode|내 상황/.test(code));
+    ok("'다시 확인' 버튼이 없다", !/rv-retry|다시 확인/.test(code));
+    ok('화면에 고르는 장치가 아예 없다', !/<select|<button/.test(code));
+    ok('세 상황을 그냥 다 적는다',
+       /미보유라면[\s\S]{0,400}보유 중이라면[\s\S]{0,400}추가매수/.test(code));
     const css = fs.readFileSync(path.join(ROOT, 'swing-reversal.css'), 'utf8');
     ok('지수 줄 서식이 있다', /\.rv-member\b/.test(css) && /\.rv-level\b/.test(css));
   }
@@ -294,6 +278,13 @@ console.log('[4부] 세 지수 종합 - 미국 시장 판정');
     ok(`${f}: TAB_HASH 에 strategy 가 없다`, !/strategy: '#swing-strategy'/.test(h));
     ok(`${f}: 없는 탭 이름을 기본 탭으로 돌린다`, /if \(!document\.getElementById\(`tab-\$\{tab\}`\)\)/.test(h));
     ok(`${f}: 상담 위젯이 하나`, !/chat-strategy/.test(h));
+    /* TOP9 탭에서 시장 판정이 겹쳐 보이던 것을 고쳤다(2026-09-13 운영 피드백).
+       볼카운터와 반등·반락 패널은 스윙 시그널 탭 **안**에 있어야 한다. */
+    const market = h.slice(h.indexOf('id="tab-market"'), h.indexOf('/tab-market'));
+    if (/id="ball-counter-bar"/.test(h))
+      ok(`${f}: 볼카운터가 스윙 시그널 탭 안에 있다`, /id="ball-counter-bar"/.test(market));
+    if (/id="reversal-panel"/.test(h))
+      ok(`${f}: 반등·반락 패널이 스윙 시그널 탭 안에 있다`, /id="reversal-panel"/.test(market));
   });
   ['ez-nav.js', 'ez-footer.js'].forEach(f => {
     const j = fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -315,10 +306,10 @@ console.log('[4부] 세 지수 종합 - 미국 시장 판정');
     ok('실제 데이터: 세 지수 모두 재료가 있다', r.members.every(m => m.ready),
        r.members.filter(m => !m.ready).map(m => m.t).join(','));
     ok('실제 데이터: 축 문장이 비지 않는다', r.axes.every(a => a.text.length > 10));
-    ok('실제 데이터: 매수 점수 평균이 나온다', r.alignment && Number.isFinite(r.alignment.avg),
-       String(r.alignment && r.alignment.avg));
-    console.log(`   시장 판정: ${r.state} · 매수 점수 평균 ${r.alignment.avg}`
-      + ` · 판정 대상 ${r.counts.n}곳 · 갈림 ${r.lead ? '있음' : '없음'}`);
+    ok('실제 데이터: 지수별 상방·하방이 다 나온다',
+       r.members.every(m => m.resistance > m.support));
+    console.log(`   시장 판정: ${r.state} · 판정 대상 ${r.counts.n}곳`
+      + ` · 갈림 ${r.lead ? '있음' : '없음'}`);
   }
 
   /* primitives 는 두 함수가 같은 것을 쓴다 */
