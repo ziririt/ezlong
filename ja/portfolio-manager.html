@@ -253,8 +253,6 @@
     #pm-root .style-card-desc { font-size:14px; color:var(--t2); line-height:1.55; }
     #pm-root .style-card-check { position:absolute; top:16px; right:16px; width:20px; height:20px; border-radius:50%; background:var(--bl); display:flex; align-items:center; justify-content:center; }
     #pm-root .style-card-check svg { width:12px; height:12px; color:#fff; }
-    #pm-root .leverage-row { margin-top:12px; display:flex; align-items:center; gap:8px; padding-top:12px; border-top:1px solid var(--bd); }
-    #pm-root .leverage-label { font-size:14px; font-weight:600; color:var(--t2); }
     #pm-root .custom-row { margin-top:12px; padding-top:12px; border-top:1px solid var(--bd); }
     #pm-root .custom-input { width:100%; padding:8px 12px; border-radius:10px; border:1.5px solid var(--bd); background:var(--bg); color:var(--t1); font-size:14px; font-family:var(--font); outline:none; transition:border-color .15s; margin-bottom:8px; }
     #pm-root .custom-input:focus { border-color:var(--bl); }
@@ -606,12 +604,6 @@ const STYLES = {
       { ticker:'SMH', weight:30 }, { ticker:'XLK', weight:25 },
       { ticker:'BOTZ', weight:20 }, { ticker:'QTUM', weight:15 },
       { ticker:'JEPQ', weight:10 }
-    ],
-    leverage: [
-      { ticker:'SMH', weight:20 }, { ticker:'XLK', weight:18 },
-      { ticker:'BOTZ', weight:15 }, { ticker:'QTUM', weight:7 },
-      { ticker:'TQQQ', weight:15 }, { ticker:'SOXL', weight:15 },
-      { ticker:'USD', weight:10 }
     ]
   },
   MODERATE_AI: {
@@ -1074,7 +1066,6 @@ function App() {
   const [step, setStep] = useState(1);
   const [selectedStyle, setSelectedStyle] = useState(null);
   const [customText, setCustomText] = useState('');
-  const [isLeveraged, setIsLeveraged] = useState(false);
   const [portfolio, setPortfolio] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
@@ -1097,10 +1088,10 @@ function App() {
   const returnColor = weightedReturn >= 20 ? 'var(--rd)' : weightedReturn >= 12 ? 'var(--bl)' : weightedReturn >= 7 ? 'var(--gr)' : 'var(--t3)';
   const returnBg = weightedReturn >= 20 ? 'var(--rd-s)' : weightedReturn >= 12 ? 'var(--bl-s)' : weightedReturn >= 7 ? 'var(--gr-s)' : 'rgba(0,0,0,0.05)';
 
-  function handleStyleSelect(styleKey, lev) {
+  function handleStyleSelect(styleKey) {
     setSelectedStyle(styleKey);
     const s = STYLES[styleKey];
-    const weights = (lev && s.leverage) ? s.leverage : s.weights;
+    const weights = s.weights;
     setPortfolio(weights.map(w => ({
       etf: ETFS[w.ticker] || { ticker: w.ticker, name: w.ticker, category: 'Core', description: 'ユーザー追加', annualReturn: 10 },
       weight: w.weight
@@ -1131,7 +1122,7 @@ function App() {
   }
 
   function resetAll() {
-    setStep(1); setSelectedStyle(null); setCustomText(''); setIsLeveraged(false);
+    setStep(1); setSelectedStyle(null); setCustomText('');
     setPortfolio([]); setInitInvest(10000); setMonthlyAmt(500); setDuration(20);
   }
 
@@ -1143,29 +1134,18 @@ function App() {
         {Object.entries(STYLES).map(([key, s]) => {
           const isActive = selectedStyle === key;
           const isCustom = key === 'CUSTOM';
-          const isAgg = key === 'AGGRESSIVE_AI';
           return (
             <div key={key} className={`style-card ${isActive ? 'active' : ''}`}
               style={isActive ? { borderColor: s.color, background: s.bgColor } : {}}
               onClick={() => {
                 if (isCustom) { setSelectedStyle('CUSTOM'); return; }
-                handleStyleSelect(key, isAgg ? isLeveraged : false);
+                handleStyleSelect(key);
               }}>
               <div className="style-card-icon" style={{ background: s.bgColor, color: s.color }}>
                 {STYLE_ICONS[key]}
               </div>
               <div className="style-card-name">{s.label}</div>
               <div className="style-card-desc">{s.desc}</div>
-
-              {isAgg && (
-                <div className="leverage-row" onClick={e => e.stopPropagation()}>
-                  <input type="checkbox" checked={isLeveraged} id="lev-chk"
-                    onChange={e => setIsLeveraged(e.target.checked)}/>
-                  <label htmlFor="lev-chk" className="leverage-label" style={{cursor:'pointer'}}>
-                    2倍/3倍レバレッジを追加 (QLD, TQQQ, SOXL, USD)
-                  </label>
-                </div>
-              )}
 
               {isCustom && isActive && (
                 <div className="custom-row" onClick={e => e.stopPropagation()}>
@@ -1297,7 +1277,7 @@ function App() {
           <button className="pm-btn pm-btn-secondary btn-sm" style={{fontSize:14,padding:'8px 14px',borderRadius:8}}
             onClick={autoBalance}>均等配分</button>
           <button className="pm-btn pm-btn-secondary btn-sm" style={{fontSize:14,padding:'8px 14px',borderRadius:8}}
-            onClick={() => handleStyleSelect(selectedStyle, isLeveraged)}>リセット</button>
+            onClick={() => handleStyleSelect(selectedStyle)}>リセット</button>
         </div>
 
         <div className="btn-nav-row" style={{marginTop:20}}>

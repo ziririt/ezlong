@@ -217,8 +217,6 @@ a{text-decoration:none;color:inherit}
 .style-card-check svg{width:12px;height:12px;color:#fff}
 
 /* Leverage toggle */
-.leverage-row{margin-top:12px;display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--bd)}
-.leverage-label{font-size:12px;font-weight:600;color:var(--t2)}
 
 /* Custom input */
 .custom-row{margin-top:12px;padding-top:12px;border-top:1px solid var(--bd)}
@@ -420,12 +418,12 @@ const ETFS = {
   QQQM: { ticker: 'QQQM', name: 'QQQM / ACE 미국나스닥100', category: 'Core', description: '빅테크·AI 플랫폼 중심 나스닥 인덱스', annualReturn: 19.5 },
   VOO: { ticker: 'VOO', name: 'VOO/SPY / TIGER 미국S&P500', category: 'Core', description: '미국 대형주 500개 기업에 분산 투자하는 기본형 ETF', annualReturn: 13.5 },
   KODEX_AI_TECH: { ticker: 'KODEX_AI_TECH', name: 'KODEX 미국AI테크TOP10', category: 'Core', description: 'AI 대표 종목 집중 투자', annualReturn: 27.5 },
-  QLD: { ticker: 'QLD', name: 'ProShares Ultra QQQ (2배 레버리지)', category: 'Core', description: '나스닥 100 지수 일간 수익률의 2배 추종', annualReturn: 29 },
-  TQQQ: { ticker: 'TQQQ', name: 'ProShares UltraPro QQQ (3배)', category: 'Core', description: '나스닥 100 지수 일간 수익률의 3배 추종', annualReturn: 34 },
+  QLD: { ticker: 'QLD', name: 'ProShares Ultra QQQ (2배 레버리지)', category: 'Core', description: '나스닥 100 지수 일간 수익률의 2배 추종. 국내 증권사 증거금 요건이 높아 실제 매수가 제한될 수 있습니다.', annualReturn: 29 },
+  TQQQ: { ticker: 'TQQQ', name: 'ProShares UltraPro QQQ (3배)', category: 'Core', description: '나스닥 100 지수 일간 수익률의 3배 추종. 국내 증권사 증거금 요건이 높아 실제 매수가 제한될 수 있습니다.', annualReturn: 34 },
   SMH: { ticker: 'SMH', name: 'SOXX/SMH / TIGER 미국반도체MV', category: 'Infrastructure', description: 'AI 인프라 핵심 글로벌 반도체 하드웨어', annualReturn: 27 },
   TIGER_KR_SEMI: { ticker: 'TIGER_KR_SEMI', name: 'TIGER 반도체 TOP10', category: 'Infrastructure', description: 'SK하이닉스/삼성전자 등 55% 이상 포함된 한국 반도체 ETF', annualReturn: 15 },
-  USD: { ticker: 'USD', name: 'ProShares Ultra Semiconductors (2배)', category: 'Infrastructure', description: '반도체 섹터 일간 수익률의 2배 추종', annualReturn: 52.5 },
-  SOXL: { ticker: 'SOXL', name: 'Direxion Daily Semiconductor Bull 3X', category: 'Infrastructure', description: '반도체 섹터 일간 수익률의 3배 추종', annualReturn: 31 },
+  USD: { ticker: 'USD', name: 'ProShares Ultra Semiconductors (2배)', category: 'Infrastructure', description: '반도체 섹터 일간 수익률의 2배 추종. 국내 증권사 증거금 요건이 높아 실제 매수가 제한될 수 있습니다.', annualReturn: 52.5 },
+  SOXL: { ticker: 'SOXL', name: 'Direxion Daily Semiconductor Bull 3X', category: 'Infrastructure', description: '반도체 섹터 일간 수익률의 3배 추종. 국내 증권사 증거금 요건이 높아 실제 매수가 제한될 수 있습니다.', annualReturn: 31 },
   KODEX_POWER: { ticker: 'KODEX_POWER', name: 'KODEX 미국AI전력핵심인프라액티브', category: 'Satellite', description: 'AI 데이터센터 전력/냉각 인프라(버티브, 이튼 등) 전략적 베팅', annualReturn: 18 },
   TIGER_ROBO: { ticker: 'TIGER_ROBO', name: 'TIGER 글로벌AI&로보틱스INDXX', category: 'Satellite', description: 'AI와 로봇의 융합 테마 하드웨어/소프트웨어 밸류체인 전반', annualReturn: 15 },
   KIWOOM_Q: { ticker: 'KIWOOM_Q', name: 'KIWOOM 미국양자컴퓨팅', category: 'Satellite', description: '아이온큐 등 미래 기술 양자 컴퓨팅에 대한 소액 전략적 베팅', annualReturn: 20 },
@@ -462,12 +460,6 @@ const STYLES = {
       { ticker: 'SMH', weight: 24 }, { ticker: 'TIGER_KR_SEMI', weight: 11 },
       { ticker: 'KODEX_AI_TECH', weight: 35 }, { ticker: 'KODEX_POWER', weight: 20 },
       { ticker: 'KIWOOM_Q', weight: 10 }
-    ],
-    leverage: [
-      { ticker: 'SMH', weight: 20 }, { ticker: 'TIGER_KR_SEMI', weight: 9 },
-      { ticker: 'KODEX_AI_TECH', weight: 29 }, { ticker: 'KODEX_POWER', weight: 16 },
-      { ticker: 'KIWOOM_Q', weight: 8 }, { ticker: 'QLD', weight: 10 },
-      { ticker: 'USD', weight: 8 }
     ]
   },
   MODERATE_AI: {
@@ -926,7 +918,6 @@ function App() {
   const [step, setStep] = useState(1);
   const [selectedStyle, setSelectedStyle] = useState(null);
   const [customText, setCustomText] = useState('');
-  const [isLeveraged, setIsLeveraged] = useState(false);
   const [portfolio, setPortfolio] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
@@ -952,10 +943,10 @@ function App() {
   const returnColor = weightedReturn >= 20 ? 'var(--rd)' : weightedReturn >= 12 ? 'var(--bl)' : weightedReturn >= 7 ? 'var(--gr)' : 'var(--t3)';
   const returnBg = weightedReturn >= 20 ? 'var(--rd-s)' : weightedReturn >= 12 ? 'var(--bl-s)' : weightedReturn >= 7 ? 'var(--gr-s)' : 'rgba(0,0,0,0.05)';
 
-  function handleStyleSelect(styleKey, lev) {
+  function handleStyleSelect(styleKey) {
     setSelectedStyle(styleKey);
     const s = STYLES[styleKey];
-    const weights = (lev && s.leverage) ? s.leverage : s.weights;
+    const weights = s.weights;
     setPortfolio(weights.map(w => ({
       etf: ETFS[w.ticker] || { ticker: w.ticker, name: w.ticker, category: 'Core', description: '사용자 추가', annualReturn: 10 },
       weight: w.weight
@@ -990,7 +981,7 @@ function App() {
   }
 
   function resetAll() {
-    setStep(1); setSelectedStyle(null); setCustomText(''); setIsLeveraged(false);
+    setStep(1); setSelectedStyle(null); setCustomText('');
     setPortfolio([]); setInitInvest(1000); setMonthlyAmt(100); setDuration(20);
   }
 
@@ -1003,29 +994,18 @@ function App() {
         {Object.entries(STYLES).map(([key, s]) => {
           const isActive = selectedStyle === key;
           const isCustom = key === 'CUSTOM';
-          const isAgg = key === 'AGGRESSIVE_AI';
           return (
             <div key={key} className={`style-card ${isActive ? 'active' : ''}`}
               style={isActive ? { borderColor: s.color, background: s.bgColor } : {}}
               onClick={() => {
                 if (isCustom) { setSelectedStyle('CUSTOM'); return; }
-                handleStyleSelect(key, isAgg ? isLeveraged : false);
+                handleStyleSelect(key);
               }}>
               <div className="style-card-icon" style={{ background: s.bgColor, color: s.color }}>
                 {STYLE_ICONS[key]}
               </div>
               <div className="style-card-name">{s.label}</div>
               <div className="style-card-desc">{s.desc}</div>
-
-              {isAgg && (
-                <div className="leverage-row" onClick={e => e.stopPropagation()}>
-                  <input type="checkbox" checked={isLeveraged} id="lev-chk"
-                    onChange={e => setIsLeveraged(e.target.checked)}/>
-                  <label htmlFor="lev-chk" className="leverage-label" style={{cursor:'pointer'}}>
-                    2배 레버리지 추가 (QLD, USD)
-                  </label>
-                </div>
-              )}
 
               {isCustom && isActive && (
                 <div className="custom-row" onClick={e => e.stopPropagation()}>
@@ -1173,7 +1153,7 @@ function App() {
             균등 분배
           </button>
           <button className="btn btn-secondary btn-sm" style={{fontSize:12,padding:'8px 14px',borderRadius:8}}
-            onClick={() => handleStyleSelect(selectedStyle, isLeveraged)}>
+            onClick={() => handleStyleSelect(selectedStyle)}>
             초기화
           </button>
         </div>
@@ -1462,7 +1442,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 <h2>이 숫자를 믿으면 안 되는 이유</h2>
 <ul>
 <li><b>수익률이 매년 똑같다고 가정합니다.</b> 현실은 −30%인 해와 +40%인 해가 섞입니다. 평균이 같아도 순서가 다르면 결과가 달라지고, 특히 인출을 시작한 뒤라면 크게 달라집니다.</li>
-<li><b>레버리지 ETF는 특히 조심하십시오.</b> 목록에 TQQQ(3배), QLD(2배), SOXL 같은 상품이 있고 과거 수익률이 30%대로 잡혀 있습니다. 그런데 레버리지 상품은 <b>같은 자리로 돌아와도 손실이 남습니다.</b> 지수가 −10% 뒤 +11%로 제자리에 와도 3배 상품은 원금 아래에 있습니다. 이걸 변동성 감쇠라고 하는데, 이 계산기의 단순 복리 모델은 그 손실을 반영하지 못합니다. <b>레버리지 비중을 넣은 결과는 실제보다 반드시 낙관적입니다.</b></li>
+<li><b>레버리지 ETF는 특히 조심하십시오.</b> 목록에 TQQQ(3배), QLD(2배), SOXL 같은 상품이 있고 과거 수익률이 30%대로 잡혀 있습니다. 그런데 레버리지 상품은 <b>같은 자리로 돌아와도 손실이 남습니다.</b> 지수가 −10% 뒤 +11%로 제자리에 와도 3배 상품은 원금 아래에 있습니다. 이걸 변동성 감쇠라고 하는데, 이 계산기의 단순 복리 모델은 그 손실을 반영하지 못합니다. <b>레버리지 비중을 넣은 결과는 실제보다 반드시 낙관적입니다.</b> 그리고 국내 증권사에서 2배 이상 레버리지 상품은 증거금 요건이 크게 높아져 실제로 담기 어려워졌습니다. 계산상 가능한 것과 계좌에서 실행 가능한 것은 다릅니다.</li>
 <li><b>살아남은 상품만 있습니다.</b> 목록의 ETF는 지금까지 잘된 것들입니다. 10년 전에 이 목록을 고를 수 있었을지는 다른 문제입니다.</li>
 <li><b>세금·수수료·환율이 빠져 있습니다.</b> 실제 계좌의 수익률은 이보다 낮습니다.</li>
 </ul>
