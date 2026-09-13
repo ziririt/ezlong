@@ -1,3 +1,6 @@
+# 이름은 'Naver Content Sync' 로 두지만 2026-09-13 부터 인사이트 타임즈 수집도
+# 여기서 돈다. 감시견(scripts/watchdog.js)이 파일명(naver-sync.yml)으로 이 워크플로를
+# 가리키고 있어 이름을 바꾸지 않았다.
 name: Naver Content Sync
 
 on:
@@ -35,6 +38,13 @@ jobs:
 
       - name: Scrape Naver Premium Content
         run: node scripts/sync-naver.mjs
+
+      # 인사이트 타임즈 RSS -> data/insightimes.json (메인 화면의 코너가 읽는다).
+      # 실패해도 스크립트가 기존 파일을 그대로 두고 0 으로 끝난다 - 빈 목록을
+      # 써 넣어 화면이 "글이 없습니다"로 바뀌는 일은 없다(13절).
+      - name: Sync Insight Times
+        continue-on-error: true
+        run: node scripts/sync-insightimes.mjs
 
       - uses: actions/setup-python@v5
         with:
@@ -123,8 +133,10 @@ jobs:
           # 번역 캐시 — 이게 안 실리면 매일 463건×5개 언어를 처음부터 다시
           # 번역한다(약 195회 호출·40분). 캐시가 커밋돼야 다음날 두세 건만 돈다.
           # 신선도 판정에는 넣지 않는다 — 캐시만 바뀐 날에 배포할 이유가 없다.
+          # insightimes.json 은 신선도 판정에 넣지 않는다 - 화면이 저장소 원본(raw)을
+          # 직접 읽으므로 커밋만 되면 바로 반영된다. 배포를 부를 이유가 없다.
           git add data/.cache/brief-history-i18n.json data/.cache/brief-history-briefings.json \
-                  data/naver-content.json
+                  data/naver-content.json data/insightimes.json
           if git diff --staged --quiet; then
             echo "변경 없음, 커밋 생략"
           else
