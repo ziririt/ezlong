@@ -257,11 +257,14 @@ console.log('[4부] 세 지수 종합 - 미국 시장 판정');
     ok("'기존 판정과 견주면' 상자가 없다", !/rv-align|견주면/.test(code));
     ok("'내 상황' 선택이 없다", !/rv-mode|내 상황/.test(code));
     ok("'다시 확인' 버튼이 없다", !/rv-retry|다시 확인/.test(code));
+    ok('머리에 소제목(킥커)이 없다', !/rv-kicker/.test(code));
+    ok('검증 전이라는 사실은 한계 설명에 남는다', /검증 전 베타/.test(code));
     ok('화면에 고르는 장치가 아예 없다', !/<select|<button/.test(code));
     ok('세 상황을 그냥 다 적는다',
        /미보유라면[\s\S]{0,400}보유 중이라면[\s\S]{0,400}추가매수/.test(code));
     const css = fs.readFileSync(path.join(ROOT, 'swing-reversal.css'), 'utf8');
     ok('지수 줄 서식이 있다', /\.rv-member\b/.test(css) && /\.rv-level\b/.test(css));
+    ok('킥커 서식도 같이 지웠다', !/rv-kicker/.test(css));
   }
 
   /* ── 대시보드에서 탭이 하나 줄었다 ── */
@@ -285,6 +288,14 @@ console.log('[4부] 세 지수 종합 - 미국 시장 판정');
       ok(`${f}: 볼카운터가 스윙 시그널 탭 안에 있다`, /id="ball-counter-bar"/.test(market));
     if (/id="reversal-panel"/.test(h))
       ok(`${f}: 반등·반락 패널이 스윙 시그널 탭 안에 있다`, /id="reversal-panel"/.test(market));
+    /* 머리 세 자리의 순서 (2026-09-13 운영 지침): 요약이 먼저고 근거가 뒤다.
+       ① 볼카운터 ② 최근 흐름 ③ 반등·반락 판별 */
+    const iBall = market.indexOf('id="ball-counter-bar"');
+    const iCtx  = market.indexOf('id="recent-context-wrap"');
+    const iRv   = market.indexOf('id="reversal-panel"');
+    ok(`${f}: 볼카운터가 탭 맨 위`, iBall >= 0 && iBall < iCtx, `${iBall} / ${iCtx}`);
+    if (iRv >= 0)
+      ok(`${f}: 최근 흐름이 반등·반락 판별보다 앞`, iCtx < iRv, `${iCtx} / ${iRv}`);
   });
   ['ez-nav.js', 'ez-footer.js'].forEach(f => {
     const j = fs.readFileSync(path.join(ROOT, f), 'utf8');
