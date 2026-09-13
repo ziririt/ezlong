@@ -304,5 +304,6 @@ window.aladinLinks = {
   "언테임드 (Untamed)|글레넌 도일 (Glennon Doyle)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=268590297&partner=friends327",
   "모든 순간이 꽃봉오리인 것을|정현종": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=238004363&partner=friends327",
   "주식에 장기투자하라 (Stocks for the Long Run)|제러미 시겔 (Jeremy J. Siegel)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=59375756&partner=friends327",
-  "모란이 피기까지는|김영랑": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=26528103&partner=friends327"
+  "모란이 피기까지는|김영랑": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=26528103&partner=friends327",
+  "빈 집|기형도": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=6918217&partner=friends327"
 };
