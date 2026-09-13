@@ -1265,6 +1265,73 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 480px) {
   .ext-article-date { display: none; }   /* 좁은 화면에서는 제목에 자리를 준다 */
 }
+
+/* ─── 썸네일이 있는 외부 콘텐츠 목록 (인사이트 타임즈) ───────────────
+   제목만 열 줄 세우면 밋밋하다는 피드백. 지면 카드의 썸네일을 같이 가져온다.
+   번호는 뺐다 - 썸네일이 이미 시선의 닻이고, 순서는 위에서 아래로 읽힌다.
+   좁은 화면에서는 제목이 세 줄까지 접히는 편이 낫다(운영 지침). */
+.it-list { display: flex; flex-direction: column; }
+.it-item {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--bd);
+  text-decoration: none;
+  transition: opacity .15s;
+}
+.it-item:first-child { border-top: 1px solid var(--bd); }
+.it-item:hover { opacity: .65; }
+.it-item.no-thumb { grid-template-columns: minmax(0, 1fr); }
+.it-item.no-thumb .it-thumb { display: none; }
+.it-thumb {
+  width: 100%;
+  /* height:auto 가 없으면 <img> 의 height 속성이 aspect-ratio 를 이긴다.
+     그 속성은 이미지가 오기 전 자리를 잡아 주려고 둔 것이지 크기가 아니다. */
+  height: auto;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  background: var(--bd);
+  display: block;
+}
+.it-body { display: block; min-width: 0; }
+.it-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--t1);
+  line-height: 1.42;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.it-excerpt {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--t3);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.it-meta {
+  display: block;
+  margin-top: 7px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--t3);
+}
+.it-meta .it-sep { margin: 0 6px; opacity: .5; }
+@media (max-width: 600px) {
+  .it-item { grid-template-columns: 96px minmax(0, 1fr); gap: 13px; padding: 14px 0; }
+  .it-title { -webkit-line-clamp: 3; }
+  .it-excerpt { display: none; }        /* 좁은 화면에서는 제목에 자리를 준다 */
+}
 .naver-more-wrap {
   margin-top: 22px;
   display: flex;
@@ -1877,7 +1944,7 @@ a { text-decoration: none; color: inherit; }
       </p>
       <p class="naver-channel-title"><span class="naver-channel-label">Insight Times</span><span class="naver-channel-sep"> - </span><span class="naver-channel-name">내일 점심에 쓸 만한 이야기</span></p>
     </div>
-    <div class="naver-articles" id="insightimes-list">
+    <div class="it-list" id="insightimes-list">
       <p class="naver-loading">콘텐츠를 불러오는 중...</p>
     </div>
     <div class="naver-more-wrap">
@@ -2201,6 +2268,35 @@ function extDate(iso) {
   });
   return d.replace(/\.\s*$/, '').replace(/\.\s*/g, '.');
 }
+/* 번호형 한 줄 목록 (네이버 프리미엄 코너가 쓰던 모양) */
+function extRowHtml(a, i, opts) {
+  const when = opts.date ? extDate(a.publishedAt) : '';
+  return `
+      <a class="naver-article-item" href="${extHref(a.url)}" target="_blank" rel="noopener noreferrer">
+        <span class="naver-article-num">${String(i + 1).padStart(2, '0')}</span>
+        <span class="naver-article-title">${extEsc(a.title) || '(제목 없음)'}</span>
+        ${when ? `<span class="ext-article-date">${extEsc(when)}</span>` : ''}
+        <svg class="naver-article-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>`;
+}
+
+/* 썸네일형 카드 목록. 썸네일이 없는 항목(RSS 대체 경로)은 스스로 한 칸으로 접힌다 -
+   빈 회색 상자를 남기지 않는다. */
+function extCardHtml(a, i, opts) {
+  const when = opts.date ? extDate(a.publishedAt) : '';
+  const meta = [a.category, when].filter(Boolean).map(extEsc);
+  const thumb = /^https?:\/\//i.test(String(a.thumb || '')) ? a.thumb : '';
+  return `
+      <a class="it-item${thumb ? '' : ' no-thumb'}" href="${extHref(a.url)}" target="_blank" rel="noopener noreferrer">
+        ${thumb ? `<img class="it-thumb" src="${extEsc(thumb)}" alt="${extEsc(a.thumbAlt || '')}" loading="lazy" decoding="async" width="120" height="68">` : ''}
+        <span class="it-body">
+          <span class="it-title">${extEsc(a.title) || '(제목 없음)'}</span>
+          ${a.summary ? `<span class="it-excerpt">${extEsc(a.summary)}</span>` : ''}
+          ${meta.length ? `<span class="it-meta">${meta.join('<span class="it-sep">·</span>')}</span>` : ''}
+        </span>
+      </a>`;
+}
+
 async function loadExternalList(elId, dataUrl, opts = {}) {
   const el = document.getElementById(elId);
   if (!el) return;
@@ -2213,18 +2309,16 @@ async function loadExternalList(elId, dataUrl, opts = {}) {
       el.innerHTML = '<p class="naver-empty">아직 등록된 글이 없습니다.</p>';
       return;
     }
-    el.innerHTML = arts
-      .map((a, i) => {
-        const when = opts.date ? extDate(a.publishedAt) : '';
-        return `
-      <a class="naver-article-item" href="${extHref(a.url)}" target="_blank" rel="noopener noreferrer">
-        <span class="naver-article-num">${String(i + 1).padStart(2, '0')}</span>
-        <span class="naver-article-title">${extEsc(a.title) || '(제목 없음)'}</span>
-        ${when ? `<span class="ext-article-date">${extEsc(when)}</span>` : ''}
-        <svg class="naver-article-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>`;
-      })
-      .join('');
+    const row = opts.style === 'card' ? extCardHtml : extRowHtml;
+    el.innerHTML = arts.map((a, i) => row(a, i, opts)).join('');
+    /* 썸네일이 깨지면 그 자리를 접는다. onerror 는 위임이 안 되므로 캡처로 받는다. */
+    el.addEventListener('error', ev => {
+      const img = ev.target;
+      if (img && img.classList && img.classList.contains('it-thumb')) {
+        const item = img.closest('.it-item');
+        if (item) item.classList.add('no-thumb');
+      }
+    }, true);
   } catch (e) {
     el.innerHTML =
       '<p class="naver-empty">콘텐츠를 불러올 수 없습니다.</p>';
@@ -2233,7 +2327,7 @@ async function loadExternalList(elId, dataUrl, opts = {}) {
 /* 네이버 프리미엄 - 2026-09-13 잠시 내렸다. 되살리려면 아래 한 줄의 주석을 풀고
    위쪽 HTML 의 네이버 섹션 주석도 같이 푼다. 둘은 한 쌍이다. */
 // loadExternalList('naver-articles-list', EXT_LISTS.naver);
-loadExternalList('insightimes-list', EXT_LISTS.insightimes, { date: true });
+loadExternalList('insightimes-list', EXT_LISTS.insightimes, { date: true, style: 'card' });
 </script>
 
 <!-- 앱 웹뷰 외부 링크 처리는 ez-nav.js 로 옮겼다 (2026-08-08).
