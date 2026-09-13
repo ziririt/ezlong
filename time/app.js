@@ -14180,7 +14180,29 @@ var bedsideActive = false;
   var pendingTimer = null;
   var lastSubscribed = null;
 
-  function subscribed() { return window.__FLIPZEN_SUBSCRIBED__ === true; }
+  // 구독 중인가. 새 네이티브는 __FLIPZEN_SUBSCRIBED__ 로 정확히 알려준다.
+  //
+  // 2026-09-13 — 다만 **아직 옛 앱을 쓰고 계신 분이 대부분**이다. 옛 네이티브는
+  // 그 값을 안 내려준다. 그렇다고 뱃지를 못 보여 드릴 이유는 없다 — 옛 값
+  // 하나로도 거의 다 알 수 있다. __FLIPZEN_PREMIUM__ 는 "구독 또는 설치 후
+  // 2주 무료 창"이므로, **무료 창이 이미 끝난 사람이 그 값이 참이면 구독자다.**
+  // 무료 창 안에 있는 분은 판단을 미룬다(뱃지를 안 보인다) — 체험 중인 분께
+  // "이용 중"이라고 하는 실수는 절대 하지 않는다.
+  function subscribed() {
+    if (typeof window.__FLIPZEN_SUBSCRIBED__ === "boolean") {
+      return window.__FLIPZEN_SUBSCRIBED__;
+    }
+    if (window.__FLIPZEN_PREMIUM__ !== true) return false;
+    return !inGraceWindow();
+  }
+
+  function inGraceWindow() {
+    try {
+      var v = localStorage.getItem("flipzen_first_seen");
+      if (!v) return true;   // 처음 보는 기기 — 모르면 체험 중으로 본다(보수적)
+      return (Date.now() - Number(v)) < GRACE_MS;
+    } catch (error) { return true; }
+  }
 
   function premiumOn() {
     if (window.__FLIPZEN_PREMIUM__ === true) return true;
@@ -14224,7 +14246,7 @@ var bedsideActive = false;
     var spin = document.createElement("span");
     spin.className = "premium-pending-spin";
     var text = document.createElement("span");
-    text.textContent = t("settings.premium.turningOn", null, "프리미엄을 켜는 중입니다");
+    text.textContent = t("settings.premium.turningOn", null, "프리미엄을 켜는 중이에요");
     pendingEl.appendChild(spin);
     pendingEl.appendChild(text);
     document.body.appendChild(pendingEl);
@@ -14261,11 +14283,11 @@ var bedsideActive = false;
 
     var title = document.createElement("div");
     title.className = "premium-celebrate-title";
-    title.textContent = t("settings.premium.doneTitle", null, "프리미엄이 켜졌습니다");
+    title.textContent = t("settings.premium.doneTitle", null, "프리미엄이 켜졌어요");
 
     var sub = document.createElement("div");
     sub.className = "premium-celebrate-sub";
-    sub.textContent = t("settings.premium.doneSub", null, "이제 아래 기능을 바로 쓰실 수 있습니다.");
+    sub.textContent = t("settings.premium.doneSub", null, "이제 아래 기능을 바로 쓰실 수 있어요.");
 
     var list = document.createElement("ul");
     list.className = "premium-celebrate-list";
