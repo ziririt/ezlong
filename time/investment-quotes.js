@@ -9868,5 +9868,12 @@ window.investmentQuotes = [
     "title": "무소유",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "Love is as love does. Love is an act of will—namely, both an intention and an action. Will also implies choice. We do not have to love. We choose to love.",
+    "text": "사랑은 사랑이 하는 것으로 완성된다. 사랑은 의지의 행위, 곧 의도이자 행동이다. 의지에는 선택이 따른다. 우리는 사랑을 해야만 하는 것이 아니라, 사랑하기로 선택하는 것이다.",
+    "title": "올 어바웃 러브 (All About Love)",
+    "author": "벨 훅스 (bell hooks)",
+    "genre": "literature"
   }
 ];
