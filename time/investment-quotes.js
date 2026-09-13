@@ -9862,5 +9862,11 @@ window.investmentQuotes = [
     "title": "이기는 투자 (One Up on Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "text": "무소유란 아무것도 갖지 않는 것이 아니라, 불필요한 것을 갖지 않는 것이다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
   }
 ];
