@@ -9794,5 +9794,12 @@ window.investmentQuotes = [
     "title": "컨트래리언 투자 전략 (Contrarian Investment Strategies)",
     "author": "데이비드 드레먼 (David Dreman)",
     "category": "mindset"
+  },
+  {
+    "english": "The mistake most people make is answering the door just because Mr. Market knocks. You don't have to let him in.",
+    "text": "대부분의 사람들이 저지르는 실수는, 미스터 마켓이 문을 두드린다고 해서 그 문을 열어주는 것이다. 굳이 그를 안으로 들일 필요는 없다.",
+    "title": "루저 게임에서 승리하는 법 (Winning the Loser's Game)",
+    "author": "찰스 엘리스 (Charles Ellis)",
+    "category": "mindset"
   }
 ];
