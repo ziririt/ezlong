@@ -9835,5 +9835,12 @@ window.investmentQuotes = [
     "title": "핫 커모디티 (Hot Commodities)",
     "author": "짐 로저스 (Jim Rogers)",
     "category": "mindset"
+  },
+  {
+    "english": "The investor's chief problem—and even his worst enemy—is likely to be himself.",
+    "text": "투자자에게 가장 큰 문제, 어쩌면 최악의 적은 바로 자기 자신일 가능성이 크다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
   }
 ];
