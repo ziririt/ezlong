@@ -9842,5 +9842,11 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "text": "사랑을 잃고 나는 쓰네. 잘 있거라, 짧았던 밤들아. 창밖을 떠돌던 겨울 안개들아.",
+    "title": "빈 집",
+    "author": "기형도",
+    "genre": "literature"
   }
 ];
