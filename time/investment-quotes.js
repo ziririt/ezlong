@@ -9808,5 +9808,12 @@ window.investmentQuotes = [
     "title": "작은 아름다운 것들 (Tiny Beautiful Things)",
     "author": "셰릴 스트레이드 (Cheryl Strayed)",
     "genre": "literature"
+  },
+  {
+    "english": "A loss never bothers me after I take it. I forget it overnight. But being wrong and not taking the loss - that is what does damage to the pocket book and to the soul.",
+    "text": "손실을 봤다는 사실 자체는 나를 괴롭히지 않는다. 손절하고 나면 하룻밤 만에 잊어버리니까. 하지만 틀렸다는 걸 알면서도 손절하지 않는 것, 그것이야말로 지갑과 마음 모두에 진짜 상처를 남긴다.",
+    "title": "제시 리버모어의 회상 (Reminiscences of a Stock Operator)",
+    "author": "제시 리버모어 (Jesse Livermore)",
+    "category": "mindset"
   }
 ];
