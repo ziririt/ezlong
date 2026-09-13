@@ -11,7 +11,6 @@
         '<!-- 서비스 메뉴 그리드 (푸터 최상단) -->' +
         '<nav class="ez-footer-nav-grid" aria-label="서비스 메뉴">' +
           '<a href="/atmr-dashboard.html" class="ez-footer-nav-item">스윙 시그널 대시보드</a>' +
-          '<a href="/atmr-dashboard.html#swing-strategy" class="ez-footer-nav-item">스윙 전략 · 3-3-4 원칙</a>' +
           '<a href="/atmr-dashboard.html#top9" class="ez-footer-nav-item">TOP9 집중분석 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:3px;vertical-align:middle;">NEW</span></a>' +
           '<a href="/market-vs.html" class="ez-footer-nav-item">긍정 vs 부정 몇대몇</a>' +
           '<a href="/brief-history.html" class="ez-footer-nav-item">차트: 그날 무슨 일이 있었나 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:3px;vertical-align:middle;">NEW</span></a>' +

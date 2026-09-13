@@ -19,6 +19,27 @@
 #reversal-panel .rv-note,#rv-time { color:var(--ez-text2); font-size:14px; }
 #reversal-panel summary { min-height:44px; cursor:pointer; font-weight:600; }
 
+/* 세 지수 한 줄씩. 종목을 고르는 화면이 아니라 셋을 같이 보는 화면이다. */
+.rv-scope { color:var(--ez-text2); font-size:15px; margin:6px 0 0; max-width:62ch; }
+.rv-members { margin-top:20px; border-top:1px solid var(--ez-border); }
+.rv-member { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 16px; padding:14px 0; border-bottom:1px solid var(--ez-border); }
+.rv-m-name { font-weight:600; min-width:11em; }
+.rv-m-name b { font-weight:700; color:var(--ez-blue); }
+.rv-m-word { flex:1 1 12em; }
+.rv-m-num { color:var(--ez-text2); font-size:15px; }
+.rv-member-out .rv-m-word { color:var(--ez-text2); }
+
+/* 반도체만 갈라졌을 때의 한 문단 */
+.rv-lead { margin:18px 0 0; padding:14px 16px; border-radius:10px; background:var(--ez-surface); border:1px solid var(--ez-border); font-size:15px; }
+
+/* 지수별 상방·하방 기준 */
+.rv-levels { margin:12px 0 16px; border-top:1px solid var(--ez-border); }
+.rv-level { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 20px; padding:12px 0; border-bottom:1px solid var(--ez-border); }
+.rv-l-name { font-weight:600; min-width:11em; }
+.rv-l-name b { font-weight:700; color:var(--ez-blue); }
+.rv-l-up,.rv-l-dn { font-weight:600; font-size:15px; }
+.rv-l-dn { color:var(--ez-text2); }
+
 /* 스냅샷이 하루를 넘겼을 때. 노랑은 라이트모드 텍스트로 쓰지 않는다(5절) */
 #reversal-panel #rv-time.rv-old { color:#B87900; font-weight:600; }
 @media (prefers-color-scheme: dark) { #reversal-panel #rv-time.rv-old { color:#FFD60A; } }
@@ -31,4 +52,5 @@
 .rv-align-nums { color:var(--ez-text2); font-size:14px; font-weight:600; }
 .rv-align-conflict { border-left:3px solid var(--ez-amber, #B87900); }
 
-@media(max-width:600px) { .rv-axes,.rv-conditions { grid-template-columns:1fr; } #reversal-panel h2 { font-size:22px; } .rv-head { align-items:flex-start; } }
+@media(max-width:600px) { .rv-axes,.rv-conditions { grid-template-columns:1fr; } #reversal-panel h2 { font-size:22px; } .rv-head { align-items:flex-start; }
+  .rv-m-name,.rv-l-name { min-width:100%; } .rv-member,.rv-level { padding:12px 0; } }

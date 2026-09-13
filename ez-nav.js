@@ -30,11 +30,11 @@
       [p + 'atmr-dashboard.html', L.swing,    L.swing],
       /* 2026-08-04(운영 피드백): 한국어·영문과 달리 스윙이 한 덩어리로 남아 있었다.
          다만 ja/zh/es/pt의 /{lang}/atmr-dashboard.html은 탭이 없는 SEO 랜딩 페이지라
-         #swing-strategy·#top9 해시가 아무 동작도 하지 않는다. 그래서 이 둘만은 실제로
-         동작하는 영문 대시보드로 보낸다: 사이트 원칙("외국인이 굳이 한국어 웹을 볼
+         #top9 해시가 아무 동작도 하지 않는다. 그래서 이것만은 실제로 동작하는
+         영문 대시보드로 보낸다: 사이트 원칙("외국인이 굳이 한국어 웹을 볼
          필요가 없잖아")에 따라 한국어판이 아니라 영문판이 목적지다.
-         나중에 해당 언어 대시보드가 실제로 생기면 p + '...#top9' 로 되돌릴 것. */
-      ['/en/atmr-dashboard.html#swing-strategy', L.strategy, L.strategy],
+         나중에 해당 언어 대시보드가 실제로 생기면 p + '#top9' 로 되돌릴 것.
+         2026-09-13: '스윙 전략' 항목은 없앴다 - 그 탭이 스윙 시그널로 흡수됐다. */
       ['/en/atmr-dashboard.html#top9',           L.top9,     L.top9],
       [p + 'market-vs.html',      L.vs,       L.vs],
       [p + 'brief-history.html',  L.events,   L.events],
@@ -58,21 +58,21 @@
   }
 
   var LANG_LABELS = {
-    ja: { swing: 'スイングシグナル', strategy: 'スイング戦略', top9: 'TOP9集中分析', vs: '強気vs弱気', events: 'チャート：その日何が', prices: '株価情報', chart: 'AIチャート分析',
+    ja: { swing: 'スイングシグナル', top9: 'TOP9集中分析', vs: '強気vs弱気', events: 'チャート：その日何が', prices: '株価情報', chart: 'AIチャート分析',
           targets: '目標株価', cycle: 'マーケットサイクル', dca: 'DCAシミュレーター',
           folio: 'AIポートフォリオ', compound: '複利計算機', retire: '退職計算機',
           backtest: 'バックテスト', risk: '投資性向診断', quiz: '投資タイプ診断',
           game: 'バランスゲーム', autoGuide: '自動積立ガイド' },
-    zh: { swing: '波段信号', strategy: '波段策略', top9: 'TOP9集中分析', vs: '多空对比', events: '图表：那天发生了什么', prices: '股价信息', chart: 'AI图表分析',
+    zh: { swing: '波段信号', top9: 'TOP9集中分析', vs: '多空对比', events: '图表：那天发生了什么', prices: '股价信息', chart: 'AI图表分析',
           targets: '目标股价', cycle: '市场周期', dca: '定投模拟器',
           folio: 'AI投资组合', compound: '复利计算器', retire: '退休计算器',
           backtest: '回测', risk: '风险偏好测评', quiz: '投资类型测试', game: '平衡游戏' },
-    es: { swing: 'Señal de Swing', strategy: 'Estrategia Swing', top9: 'TOP9 a Fondo', vs: 'Alcista vs Bajista', events: 'Gráfico: qué pasó', prices: 'Precios', chart: 'Análisis IA',
+    es: { swing: 'Señal de Swing', top9: 'TOP9 a Fondo', vs: 'Alcista vs Bajista', events: 'Gráfico: qué pasó', prices: 'Precios', chart: 'Análisis IA',
           targets: 'Precio Objetivo', cycle: 'Ciclo de Mercado', dca: 'Simulador DCA',
           folio: 'Cartera IA', compound: 'Interés Compuesto', retire: 'Calc. Jubilación',
           backtest: 'Backtest', risk: 'Perfil de Riesgo', quiz: 'Tipo de Inversor',
           game: 'Juego de Equilibrio' },
-    pt: { swing: 'Sinal de Swing', strategy: 'Estratégia Swing', top9: 'TOP9 a Fundo', vs: 'Alta vs Baixa', events: 'Gráfico: o que houve', prices: 'Preços', chart: 'Análise IA',
+    pt: { swing: 'Sinal de Swing', top9: 'TOP9 a Fundo', vs: 'Alta vs Baixa', events: 'Gráfico: o que houve', prices: 'Preços', chart: 'Análise IA',
           targets: 'Preço-Alvo', cycle: 'Ciclo de Mercado', dca: 'Simulador DCA',
           folio: 'Carteira IA', compound: 'Juros Compostos', retire: 'Calc. Aposentadoria',
           backtest: 'Backtest', risk: 'Perfil de Risco', quiz: 'Tipo de Investidor',
@@ -81,7 +81,6 @@
 
   var linksEN = [
     ['/en/atmr-dashboard.html',        'Swing Signal',    'Swing Signal Dashboard'],
-    ['/en/atmr-dashboard.html#swing-strategy', 'Swing Strategy', 'Swing Strategy: 3-3-4 Rule'],
     ['/en/atmr-dashboard.html#top9',   'TOP9 Deep Dive',  'TOP9 Deep Dive: Big Tech'],
     ['/en/market-vs.html',             'Bull vs Bear',    'Bull vs Bear: AI Market Read'],
     ['/en/brief-history.html',         'Chart: What Happened', 'Chart: What Happened That Day: US Market Events'],
@@ -103,11 +102,14 @@
 
   /* [href, 짧은 이름(PC칩), 긴 이름(모바일 오버레이)]
      2026-08-04: 첫 항목을 3개로 분리 (운영 지침): 스윙 시그널 대시보드의
-     3개 탭(시그널/전략/TOP9)에 해시 딥링크로 각각 직접 진입. 활성 판정은
-     아래 루프에서 pathname+hash 조합으로 처리한다. */
+     탭에 해시 딥링크로 각각 직접 진입. 활성 판정은 아래 루프에서
+     pathname+hash 조합으로 처리한다.
+     2026-09-13: 탭이 둘로 줄어 메뉴도 둘이다(스윙 시그널 / TOP9 집중분석).
+     증상: 두 메뉴의 구분이 이용자에게 전달되지 않았다 - 같은 세 지수를 보고
+     같은 판단을 내리는 자리였다. #swing-strategy 링크는 밖에 남아 있으므로
+     대시보드가 그 해시를 스윙 시그널 탭으로 받는다. */
   var linksKR = [
     ['/atmr-dashboard.html',        '스윙 시그널',    "스윙 트레이더를 위한 '스윙 시그널'"],
-    ['/atmr-dashboard.html#swing-strategy', '스윙 전략', '스윙 전략: 3-3-4 원칙 · 레버리지 가이드'],
     ['/atmr-dashboard.html#top9',   'TOP9 집중분석',  'TOP9 집중분석: 테슬라·엔비디아 등 빅테크 9종 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
     ['/market-vs.html',             '긍정vs부정',     '긍정 vs 부정 몇대몇: AI 시황 분석'],
     ['/brief-history.html',         '차트: 그날 무슨 일이 있었나<span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 5px;margin-left:4px;vertical-align:middle;line-height:1.5;">NEW</span>', '차트: 그날 무슨 일이 있었나: 날짜별 미국 증시 이슈 <span style="display:inline-block;background:#ff3b30;color:#fff;font-size:14px;font-weight:800;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:middle;">NEW</span>'],
@@ -141,7 +143,9 @@
 
   /* 스윙 대시보드 탭 해시들: 이 중 하나가 떠 있으면 '스윙 시그널' 기본 항목이
      아니라 해당 탭 항목을 활성으로 표시 (#tsla-nvda는 #top9의 구 별칭) */
-  var swingTabHashes = ['#swing-strategy', '#top9', '#tsla-nvda', '#kings', '#tesla-nvidia'];
+  /* 2026-09-13: '#swing-strategy' 를 이 목록에서 뺐다. 그 해시는 이제 스윙 시그널
+     탭을 여므로, 기본 항목이 활성으로 남는 것이 맞다. */
+  var swingTabHashes = ['#top9', '#tsla-nvda', '#kings', '#tesla-nvidia'];
   var curHash = window.location.hash || '';
 
   /* 활성 판정을 함수로 뽑아둔다: 최초 렌더뿐 아니라 해시가 바뀔 때마다
@@ -247,7 +251,7 @@
   })();
 
   /* ── 0-A. 같은 페이지 안에서의 메뉴 이동 처리 (2026-08-05, 이슈 제보) ──
-     증상: '스윙 시그널 / 스윙 전략 / TOP9 집중분석' 세 메뉴는 전부
+     증상: '스윙 시그널 / TOP9 집중분석' 두 메뉴는 전부
      atmr-dashboard.html 한 파일의 탭이라 서로 이동해도 페이지가 언로드되지
      않는다. 그래서 모바일 전면 메뉴가 열린 채로 남고, 사용자 눈에는
      "눌렀는데 아무 일도 안 일어남 = 고장"으로 보인다.

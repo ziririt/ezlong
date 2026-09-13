@@ -363,7 +363,8 @@ a { text-decoration: none; color: inherit; }
 /* ── 탭 바: 3개 카드 버튼: 크고 주목받게 ─────────── */
 .tab-bar {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* 2026-09-13: 탭이 셋에서 둘로 줄었다(스윙 시그널·TOP9) */
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   margin-top: 20px;
   margin-bottom: 40px;
@@ -407,7 +408,7 @@ a { text-decoration: none; color: inherit; }
 }
 .tab-btn:not(.active):active { transform: scale(.98); }
 @media (max-width: 680px) {
-  .tab-bar { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .tab-bar { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .tab-btn { padding: 18px 8px; font-size: 16px; gap: 5px; min-height: 76px; }
   /* 2026-07-10: 좁은 3단 탭 컬럼에서 설명구가 2~3줄로 줄바꿈되어 어색해
      보인다는 피드백: .bi-hint와 동일한 예외 패턴으로 축소
@@ -1834,11 +1835,7 @@ li.gear-other-sep { display: none !important; }
     <div class="tab-bar">
       <button class="tab-btn active" data-tab="market" onclick="switchTab('market')">
         스윙 시그널
-        <span class="tab-btn-sub">나스닥100 · S&P500 · 반도체</span>
-      </button>
-      <button class="tab-btn" data-tab="strategy" onclick="switchTab('strategy')">
-        스윙 전략
-        <span class="tab-btn-sub">3-3-4 원칙 · 레버리지 가이드</span>
+        <span class="tab-btn-sub">나스닥100 · S&P500 · 반도체 · 3-3-4 전략</span>
       </button>
       <button class="tab-btn" data-tab="kings" onclick="switchTab('kings')">
         TOP9 <span class="tab-new-badge">NEW</span>
@@ -1931,60 +1928,11 @@ li.gear-other-sep { display: none !important; }
       <!-- 옵션 시장 수급 구조 (FlashAlpha SPY) -->
       <div id="options-wrap"></div>
 
-    </div><!-- /tab-market -->
 
-    <!-- ────────────────────────────────────────── -->
-    <!-- TAB 2: Two Kings (TSLA & NVDA) -->
-    <!-- ────────────────────────────────────────── -->
-    <div class="tab-pane" id="tab-kings">
-
-      <!-- ── TOP9 티커 바로가기 (2026-08-04 2차 개편) ─────────────────────
-           9종 전체를 세로로 펼치고, 7종 신규 섹션은 스크롤 접근 시 지연 렌더
-           (IntersectionObserver: TradingView 위젯 동시 로드 방지).
-           칩은 해당 섹션으로 스크롤 이동. 하단에 칩 바 한 벌 더(#top9-chip-bar-bottom). -->
-      <div id="top9-chip-bar" class="top9-chips"></div>
-
-      <!-- ── TSLA 섹션 ── -->
-      <div class="king-section is-lead">
-        <div class="top9-sec-head">테슬라 <span>TSLA</span></div>
-        <div class="tv-chart-card" style="margin-bottom:20px;">
-          <div class="tv-chart-label">Tesla TSLA <span>일봉 · TradingView</span></div>
-          <div class="tv-chart-frame" id="tv-TSLA"></div>
-        </div>
-        <div id="king-card-TSLA">
-          <div class="skeleton skel-card" style="height:320px;"></div>
-        </div>
-        <!-- AI 상담: TSLA -->
-        <div id="chat-tsla" style="margin-top:12px;"></div>
-      </div>
-
-      <!-- ── NVDA 섹션 ── -->
-      <div class="king-section">
-        <div class="top9-sec-head">엔비디아 <span>NVDA</span></div>
-        <div class="tv-chart-card" style="margin-bottom:20px;">
-          <div class="tv-chart-label">NVIDIA NVDA <span>일봉 · TradingView</span></div>
-          <div class="tv-chart-frame" id="tv-NVDA"></div>
-        </div>
-        <div id="king-card-NVDA">
-          <div class="skeleton skel-card" style="height:320px;"></div>
-        </div>
-        <!-- AI 상담: NVDA -->
-        <div id="chat-nvda" style="margin-top:12px;"></div>
-      </div>
-
-      <!-- ── 빅테크 7종 섹션 (스크롤 지연 렌더) ── -->
-      <div id="mega-sections"></div>
-
-      <!-- ── 하단 티커 바로가기 (맨 아래에서도 다른 종목 이동) ── -->
-      <div id="top9-chip-bar-bottom" class="top9-chips" style="margin-top:28px;"></div>
-
-    </div><!-- /tab-kings -->
-
-    <!-- ────────────────────────────────────────── -->
-    <!-- TAB 3: 전략 가이드 -->
-    <!-- ────────────────────────────────────────── -->
-    <div class="tab-pane" id="tab-strategy">
-
+      <!-- ── 스윙 전략 (2026-09-13: 옛 3번째 탭을 이 탭으로 흡수) ──────────
+           증상: 사용자가 "스윙 시그널"과 "스윙 전략"의 구분을 어려워했다.
+           같은 세 지수를 보고 같은 판단을 내리는 두 자리였으므로 하나로 합쳤다.
+           옛 해시 #swing-strategy 는 이 탭으로 보낸다(링크를 죽이지 않는다). -->
       <div class="strategy-section">
 
         <!-- ① 지금 상황 & 행동 지침 (동적 렌더링): 맨 위 -->
@@ -2334,15 +2282,59 @@ li.gear-other-sep { display: none !important; }
 
       </div><!-- /strategy-section -->
 
-      <!-- AI 상담: 전략 하단 배치 -->
-      <div id="chat-strategy" style="margin-top:24px;margin-bottom:12px;"></div>
 
-    </div><!-- /tab-strategy -->
+    </div><!-- /tab-market -->
+
+    <!-- ────────────────────────────────────────── -->
+    <!-- TAB 2: Two Kings (TSLA & NVDA) -->
+    <!-- ────────────────────────────────────────── -->
+    <div class="tab-pane" id="tab-kings">
+
+      <!-- ── TOP9 티커 바로가기 (2026-08-04 2차 개편) ─────────────────────
+           9종 전체를 세로로 펼치고, 7종 신규 섹션은 스크롤 접근 시 지연 렌더
+           (IntersectionObserver: TradingView 위젯 동시 로드 방지).
+           칩은 해당 섹션으로 스크롤 이동. 하단에 칩 바 한 벌 더(#top9-chip-bar-bottom). -->
+      <div id="top9-chip-bar" class="top9-chips"></div>
+
+      <!-- ── TSLA 섹션 ── -->
+      <div class="king-section is-lead">
+        <div class="top9-sec-head">테슬라 <span>TSLA</span></div>
+        <div class="tv-chart-card" style="margin-bottom:20px;">
+          <div class="tv-chart-label">Tesla TSLA <span>일봉 · TradingView</span></div>
+          <div class="tv-chart-frame" id="tv-TSLA"></div>
+        </div>
+        <div id="king-card-TSLA">
+          <div class="skeleton skel-card" style="height:320px;"></div>
+        </div>
+        <!-- AI 상담: TSLA -->
+        <div id="chat-tsla" style="margin-top:12px;"></div>
+      </div>
+
+      <!-- ── NVDA 섹션 ── -->
+      <div class="king-section">
+        <div class="top9-sec-head">엔비디아 <span>NVDA</span></div>
+        <div class="tv-chart-card" style="margin-bottom:20px;">
+          <div class="tv-chart-label">NVIDIA NVDA <span>일봉 · TradingView</span></div>
+          <div class="tv-chart-frame" id="tv-NVDA"></div>
+        </div>
+        <div id="king-card-NVDA">
+          <div class="skeleton skel-card" style="height:320px;"></div>
+        </div>
+        <!-- AI 상담: NVDA -->
+        <div id="chat-nvda" style="margin-top:12px;"></div>
+      </div>
+
+      <!-- ── 빅테크 7종 섹션 (스크롤 지연 렌더) ── -->
+      <div id="mega-sections"></div>
+
+      <!-- ── 하단 티커 바로가기 (맨 아래에서도 다른 종목 이동) ── -->
+      <div id="top9-chip-bar-bottom" class="top9-chips" style="margin-top:28px;"></div>
+
+    </div><!-- /tab-kings -->
 
     <!-- 하단 탭 바 -->
     <div class="tab-bar tab-bar-bottom">
       <button class="tab-btn" data-tab="market" onclick="switchTab('market'); window.scrollTo({top:0,behavior:'smooth'})">스윙 시그널</button>
-      <button class="tab-btn" data-tab="strategy" onclick="switchTab('strategy'); window.scrollTo({top:0,behavior:'smooth'})">스윙 전략</button>
       <button class="tab-btn" data-tab="kings" onclick="switchTab('kings'); window.scrollTo({top:0,behavior:'smooth'})">TOP9 집중분석 <span class="tab-new-badge">NEW</span></button>
     </div>
 
@@ -2849,7 +2841,7 @@ function _v2Colorize(s) {
     .replace(/\[B\](.*?)\[\/B\]/g, '<strong style="color:var(--ez-blue);font-weight:700;">$1</strong>');
 }
 
-// [v2] v2 판단 카드 헬퍼: 스윙 전략 탭 상단
+// [v2] v2 판단 카드 헬퍼: 스윙 시그널 탭의 전략 구역 상단
 function _v2ChiefCardHtml() {
   const sv = window._swingView;
   if (!sv?.comp) return '';
@@ -5512,7 +5504,7 @@ function renderStrategyGuide(qqq, voo, soxx, tsla, nvda, vixPrice) {
     return `<div style="font-size:16px;font-weight:800;letter-spacing:.10em;text-transform:uppercase;color:var(--bl);margin:24px 0 2px;padding-top:4px;">${text}</div>`;
   }
 
-  // ── 최근 시장 흐름 컨텍스트 배너 (스윙 전략 탭용) ────────────────────────
+  // ── 최근 시장 흐름 컨텍스트 배너 (스윙 시그널 탭) ────────────────────────
   function buildStrategyContextBanner() {
     const qqqRDR  = qqq?.recentDailyReturns  ?? [];
     const soxxRDR = soxx?.recentDailyReturns ?? [];
@@ -6392,7 +6384,7 @@ function _deepAnalysisCardHtml(d, _ai) {
     }
 
     // ── masterSignal 기반 시장 맥락 배너 ───────────────
-    // 스윙 시그널·스윙 전략 탭과 동일한 판단을 TSLA/NVDA 탭 상단에도 표시한다.
+    // 스윙 시그널 탭과 동일한 판단을 TOP9 탭 상단에도 표시한다.
     const ms = window.masterSignal;
     let msBanner = '';
     if (ms) {
@@ -6729,6 +6721,9 @@ function setUpdateTime(ts) {
 }
 
 function switchTab(tab) {
+  // 2026-09-13: 탭이 둘로 줄었다(스윙 시그널·TOP9). 없는 이름이 들어오면 기본 탭으로 돌린다 -
+  // 예전 코드는 getElementById 가 null 이면 그 자리에서 죽어 탭 전환 자체가 멈췄다.
+  if (!document.getElementById(`tab-${tab}`)) tab = 'market';
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
   document.getElementById(`tab-${tab}`).classList.add('active');
   // 2026-08-04: 상단·하단 탭 바 모두 data-tab 기준으로 활성 표시: 기존 인덱스
@@ -6737,19 +6732,20 @@ function switchTab(tab) {
     b.classList.toggle('active', b.dataset.tab === tab));
 
   // ── 탭 딥링크 (2026-07-03): 각 탭에 공유 가능한 해시 URL 부여 ──────────
-  // #swing-strategy = 스윙 전략, #tsla-nvda = TSLA·NVDA 집중 분석
-  const TAB_HASH = { market: '', strategy: '#swing-strategy', kings: '#top9' };
+  // #top9 = TOP9 집중분석. 스윙 시그널은 해시를 쓰지 않는다(기본 탭).
+  const TAB_HASH = { market: '', kings: '#top9' };
   try {
     history.replaceState(null, '', location.pathname + location.search + (TAB_HASH[tab] ?? ''));
   } catch (e) { /* 미지원 브라우저 무시 */ }
 }
 
 // ── 해시 딥링크 진입/변경 처리 (2026-07-03) ─────────────────────────────────
-// https://ezlong.com/atmr-dashboard.html#swing-strategy → 스윙 전략 탭 바로 열림
-// https://ezlong.com/atmr-dashboard.html#tsla-nvda      → TSLA·NVDA 탭 바로 열림
+// https://ezlong.com/atmr-dashboard.html#top9     → TOP9 집중분석 탭 바로 열림
+// 2026-09-13: 스윙 전략 탭이 스윙 시그널로 흡수됐다. 옛 해시는 버리지 않고
+// 스윙 시그널 탭으로 보낸다 - 밖에서 걸린 링크와 검색 결과가 죽으면 안 된다.
 function tabFromHash() {
   const h = (location.hash || '').toLowerCase();
-  if (h === '#swing-strategy' || h === '#strategy')                 return 'strategy';
+  if (h === '#swing-strategy' || h === '#strategy')                 return 'market';
   if (h === '#tsla-nvda' || h === '#kings' || h === '#tesla-nvidia' || h === '#top9') return 'kings';
   // 2026-08-05: 해시 없음 = 기본 탭(스윙 시그널). 예전엔 null을 돌려줘서,
   // #top9에서 메뉴로 '스윙 시그널'을 눌러 해시가 지워져도 탭이 그대로 남았다.
@@ -7025,7 +7021,7 @@ function selectTop9(sym) {
   setTimeout(go, 900);   // 위쪽 콘텐츠(카드·차트) 로딩으로 밀렸을 때 보정 재스크롤
 }
 
-// 4분류 맞춤 행동 진단 카드: 스윙 전략 탭의 보유자/신규/물타기/불타기 분류를 종목 단위로
+// 4분류 맞춤 행동 진단 카드: 전략 구역의 보유자/신규/물타기/불타기 분류를 종목 단위로
 /* 2026-09-12(90항 규칙 1·5): 4분류 카드와 AI 차트분석 카드는 검문 없이 열려 있던 마지막 옆문이었다.
    9/7 실사고: TSLA 매수점수 49·Gear 1 에 "분할 진입 검토 유효 구간: 매수점수 80 이상 극단 과매도 발동",
    손익비 0.1:1 플랜이 그대로 화면에 섰다. 걸린 문장은 분류별 안전 문장으로 바꾼다(카드는 비지 않는다). */
@@ -7861,7 +7857,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initChatWidget('chat-swing',     'swing',    '스윙 시그널: 이 분석에 대해 질문하기');
   initChatWidget('chat-tsla',      'tsla',     'TSLA 분석: 이 분석에 대해 질문하기');
   initChatWidget('chat-nvda',      'nvda',     'NVDA 분석: 이 분석에 대해 질문하기');
-  initChatWidget('chat-strategy',  'strategy', '스윙 전략에 대해 AI에게 질문하기');
 });
 </script>
 

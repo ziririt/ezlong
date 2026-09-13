@@ -344,10 +344,10 @@ a { text-decoration: none; color: inherit; }
 .update-time { display: none; }
 
 /* ─── 탭 네비게이션 ──────────────────────────────── */
-/* ── 탭 바: 3개 카드 버튼: 크고 주목받게 ─────────── */
+/* ── 탭 바: 2026-09-13 부터 2개 (Swing Signal · TOP9) ─────────── */
 .tab-bar {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   margin-top: 20px;
   margin-bottom: 40px;
@@ -391,7 +391,7 @@ a { text-decoration: none; color: inherit; }
 }
 .tab-btn:not(.active):active { transform: scale(.98); }
 @media (max-width: 680px) {
-  .tab-bar { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .tab-bar { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .tab-btn { padding: 18px 8px; font-size: 16px; gap: 5px; min-height: 76px; }
   /* 2026-07-10: 좁은 3단 탭 컬럼에서 설명구가 2~3줄로 줄바꿈되어 어색해
      보인다는 피드백: .bi-hint와 동일한 예외 패턴으로 축소 */
@@ -1801,11 +1801,7 @@ li.gear-other-sep { display: none !important; }
     <div class="tab-bar">
       <button class="tab-btn active" data-tab="market" onclick="switchTab('market')">
         Swing Signal
-        <span class="tab-btn-sub">Nasdaq 100 · S&P 500 · Semiconductors</span>
-      </button>
-      <button class="tab-btn" data-tab="strategy" onclick="switchTab('strategy')">
-        Swing Strategy
-        <span class="tab-btn-sub">3-3-4 Rule · Leverage Guide</span>
+        <span class="tab-btn-sub">Nasdaq 100 · S&P 500 · Semiconductors · 3-3-4</span>
       </button>
       <button class="tab-btn" data-tab="kings" onclick="switchTab('kings')">
         TOP9 <span class="tab-new-badge">NEW</span>
@@ -1889,57 +1885,11 @@ li.gear-other-sep { display: none !important; }
       <!-- 옵션 시장 수급 구조 (FlashAlpha SPY) -->
       <div id="options-wrap"></div>
 
-    </div><!-- /tab-market -->
 
-    <!-- ────────────────────────────────────────── -->
-    <!-- TAB 2: Two Kings (TSLA & NVDA) -->
-    <!-- ────────────────────────────────────────── -->
-    <div class="tab-pane" id="tab-kings">
-
-      <!-- TOP9 ticker shortcuts (top) -->
-      <div id="top9-chip-bar" class="top9-chips"></div>
-
-      <!-- ── TSLA section ── -->
-      <div class="king-section">
-        <div class="top9-sec-head">Tesla <span>TSLA</span></div>
-        <div class="tv-chart-card" style="margin-bottom:20px;">
-          <div class="tv-chart-label">Tesla TSLA <span>Daily · TradingView</span></div>
-          <div class="tv-chart-frame" id="tv-TSLA"></div>
-        </div>
-        <div id="king-card-TSLA">
-          <div class="skeleton skel-card" style="height:320px;"></div>
-        </div>
-        <!-- AI 상담: TSLA -->
-        <div id="chat-tsla" style="margin-top:12px;"></div>
-      </div>
-
-      <!-- ── NVDA section ── -->
-      <div class="king-section" style="margin-top:32px;">
-        <div class="top9-sec-head">NVIDIA <span>NVDA</span></div>
-        <div class="tv-chart-card" style="margin-bottom:20px;">
-          <div class="tv-chart-label">NVIDIA NVDA <span>Daily · TradingView</span></div>
-          <div class="tv-chart-frame" id="tv-NVDA"></div>
-        </div>
-        <div id="king-card-NVDA">
-          <div class="skeleton skel-card" style="height:320px;"></div>
-        </div>
-        <!-- AI 상담: NVDA -->
-        <div id="chat-nvda" style="margin-top:12px;"></div>
-      </div>
-
-      <!-- 7 additional mega-cap sections (lazy-rendered on scroll) -->
-      <div id="mega-sections"></div>
-
-      <!-- TOP9 ticker shortcuts (bottom) -->
-      <div id="top9-chip-bar-bottom" class="top9-chips" style="margin-top:28px;"></div>
-
-    </div><!-- /tab-kings -->
-
-    <!-- ────────────────────────────────────────── -->
-    <!-- TAB 3: 전략 가이드 -->
-    <!-- ────────────────────────────────────────── -->
-    <div class="tab-pane" id="tab-strategy">
-
+      <!-- ── Swing Strategy (2026-09-13: former 3rd tab absorbed into this tab) ──
+           Feedback: users could not tell "Swing Signal" and "Swing Strategy" apart.
+           Both read the same three indices and reach the same judgement, so they merged.
+           The old #swing-strategy hash now opens this tab (outside links stay alive). -->
       <div class="strategy-section">
 
         <!-- ① 지금 상황 & 행동 지침 (동적 렌더링): 맨 위 -->
@@ -2284,14 +2234,56 @@ li.gear-other-sep { display: none !important; }
       </div><!-- /strategy-section -->
 
       <!-- AI 상담: 전략 하단 배치 -->
-      <div id="chat-strategy" style="margin-top:24px;margin-bottom:12px;"></div>
 
-    </div><!-- /tab-strategy -->
+    </div><!-- /tab-market -->
+
+    <!-- ────────────────────────────────────────── -->
+    <!-- TAB 2: Two Kings (TSLA & NVDA) -->
+    <!-- ────────────────────────────────────────── -->
+    <div class="tab-pane" id="tab-kings">
+
+      <!-- TOP9 ticker shortcuts (top) -->
+      <div id="top9-chip-bar" class="top9-chips"></div>
+
+      <!-- ── TSLA section ── -->
+      <div class="king-section">
+        <div class="top9-sec-head">Tesla <span>TSLA</span></div>
+        <div class="tv-chart-card" style="margin-bottom:20px;">
+          <div class="tv-chart-label">Tesla TSLA <span>Daily · TradingView</span></div>
+          <div class="tv-chart-frame" id="tv-TSLA"></div>
+        </div>
+        <div id="king-card-TSLA">
+          <div class="skeleton skel-card" style="height:320px;"></div>
+        </div>
+        <!-- AI 상담: TSLA -->
+        <div id="chat-tsla" style="margin-top:12px;"></div>
+      </div>
+
+      <!-- ── NVDA section ── -->
+      <div class="king-section" style="margin-top:32px;">
+        <div class="top9-sec-head">NVIDIA <span>NVDA</span></div>
+        <div class="tv-chart-card" style="margin-bottom:20px;">
+          <div class="tv-chart-label">NVIDIA NVDA <span>Daily · TradingView</span></div>
+          <div class="tv-chart-frame" id="tv-NVDA"></div>
+        </div>
+        <div id="king-card-NVDA">
+          <div class="skeleton skel-card" style="height:320px;"></div>
+        </div>
+        <!-- AI 상담: NVDA -->
+        <div id="chat-nvda" style="margin-top:12px;"></div>
+      </div>
+
+      <!-- 7 additional mega-cap sections (lazy-rendered on scroll) -->
+      <div id="mega-sections"></div>
+
+      <!-- TOP9 ticker shortcuts (bottom) -->
+      <div id="top9-chip-bar-bottom" class="top9-chips" style="margin-top:28px;"></div>
+
+    </div><!-- /tab-kings -->
 
     <!-- 하단 탭 바 -->
     <div class="tab-bar tab-bar-bottom">
       <button class="tab-btn" data-tab="market" onclick="switchTab('market'); window.scrollTo({top:0,behavior:'smooth'})">Swing Signal</button>
-      <button class="tab-btn" data-tab="strategy" onclick="switchTab('strategy'); window.scrollTo({top:0,behavior:'smooth'})">Swing Strategy</button>
       <button class="tab-btn" data-tab="kings" onclick="switchTab('kings'); window.scrollTo({top:0,behavior:'smooth'})">TOP9 <span class="tab-new-badge">NEW</span></button>
     </div>
 
@@ -5816,6 +5808,9 @@ function setUpdateTime(ts) {
 }
 
 function switchTab(tab) {
+  // 2026-09-13: two tabs now (Swing Signal · TOP9). An unknown name falls back to
+  // the default tab - the old code threw on a null element and froze tab switching.
+  if (!document.getElementById(`tab-${tab}`)) tab = 'market';
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
   document.getElementById(`tab-${tab}`).classList.add('active');
   // 2026-08-04 (ported from KR): sync active state on BOTH top and bottom tab bars
@@ -5824,15 +5819,15 @@ function switchTab(tab) {
     b.classList.toggle('active', b.dataset.tab === tab));
 
   // ── 탭 딥링크 (2026-07-03): 각 탭에 공유 가능한 해시 URL 부여 ──────────
-  // #swing-strategy = 스윙 전략, #tsla-nvda = TSLA·NVDA 집중 분석
-  const TAB_HASH = { market: '', strategy: '#swing-strategy', kings: '#top9' };
+  // #top9 = TOP9 Deep Dive. Swing Signal is the default tab and uses no hash.
+  const TAB_HASH = { market: '', kings: '#top9' };
   try {
     history.replaceState(null, '', location.pathname + location.search + (TAB_HASH[tab] ?? ''));
   } catch (e) { /* 미지원 브라우저 무시 */ }
 }
 
 // ── 해시 딥링크 진입/변경 처리 (2026-07-03) ─────────────────────────────────
-// https://ezlong.com/atmr-dashboard.html#swing-strategy → 스윙 전략 탭 바로 열림
+// https://ezlong.com/en/atmr-dashboard.html#top9 → opens the TOP9 tab directly
 // https://ezlong.com/atmr-dashboard.html#tsla-nvda      → TSLA·NVDA 탭 바로 열림
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -6138,7 +6133,9 @@ try { renderTop9Chips(); megaScaffold(); refreshAsOfLabels(); } catch (e) {}
 
 function tabFromHash() {
   const h = (location.hash || '').toLowerCase();
-  if (h === '#swing-strategy' || h === '#strategy')                 return 'strategy';
+  // 2026-09-13: the Swing Strategy tab was absorbed into Swing Signal.
+  // Keep the old hash alive by sending it to the Swing Signal tab.
+  if (h === '#swing-strategy' || h === '#strategy')                 return 'market';
   if (h === '#tsla-nvda' || h === '#kings' || h === '#tesla-nvidia' || h === '#top9') return 'kings';
   // 2026-08-05: 해시 없음 = 기본 탭(스윙 시그널). 예전엔 null을 돌려줘서,
   // #top9에서 메뉴로 '스윙 시그널'을 눌러 해시가 지워져도 탭이 그대로 남았다.
@@ -6842,7 +6839,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initChatWidget('chat-swing',     'swing',    'Swing Signal: Ask About This Analysis');
   initChatWidget('chat-tsla',      'tsla',     'TSLA Analysis: Ask About This Analysis');
   initChatWidget('chat-nvda',      'nvda',     'NVDA Analysis: Ask About This Analysis');
-  initChatWidget('chat-strategy',  'strategy', 'Ask AI About Swing Strategy');
 });
 </script>
 
