@@ -1776,6 +1776,8 @@ li.gear-other-sep { display: none !important; }
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
      head 맨 끝에 둔다: 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
      그 메타보다 뒤에서 실행돼야 한다. -->
+<!-- 반등·반락 판별 패널 (2026-09-13). 원안은 외부 세션(Codex) 미리보기 -->
+<link rel="stylesheet" href="/swing-reversal.css">
 </head>
 
 <body>
@@ -1851,6 +1853,14 @@ li.gear-other-sep { display: none !important; }
       <div class="pchip" id="pchip-SPX"><span class="pchip-lbl">S&amp;P 500</span><span class="pchip-val" id="live-price-SPX">불러오는 중…</span></div>
       <div class="pchip" id="pchip-VIX"><span class="pchip-lbl">VIX 공포지수</span><span class="pchip-val" id="live-price-VIX-strip">불러오는 중…</span></div>
     </div>
+
+    <!-- ── 반등·반락 판별 (탭 외부 고정, 볼카운터 위) ──
+         지금 상승이 추세 전환인지 일시적 반등인지, 지금 하락이 눌림목인지 반락 시작인지를
+         가격 구조·모멘텀·거래 참여·시장 환경 네 축으로 나눠 본다.
+         판정은 코드가 한다 - 모델을 부르지 않는다.
+         기존 매수 점수·Gear 와 어긋나면 그 사실을 숨기지 않고 설명한다(13절). -->
+    <div id="reversal-panel"></div>
+    <script src="/swing-reversal.js"></script>
 
     <!-- ── 볼카운터 전광판 (탭 외부 고정) ── -->
     <div id="ball-counter-bar"></div>
