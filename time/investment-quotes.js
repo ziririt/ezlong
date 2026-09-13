@@ -9815,5 +9815,11 @@ window.investmentQuotes = [
     "title": "제시 리버모어의 회상 (Reminiscences of a Stock Operator)",
     "author": "제시 리버모어 (Jesse Livermore)",
     "category": "mindset"
+  },
+  {
+    "text": "하지만 우리가 빛의 속도로 갈 수조차 없다면… 우리는 점점 더 우주에 존재하는 외로움의 총합을 늘려 갈 뿐인 게 아닌가?",
+    "title": "우리가 빛의 속도로 갈 수 없다면",
+    "author": "김초엽",
+    "genre": "literature"
   }
 ];
