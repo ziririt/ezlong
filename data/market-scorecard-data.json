@@ -1,6 +1,81 @@
 {
   "entries": [
     {
+      "id": "2026-09-13-21:50",
+      "timestamp_kst": "2026-09-13(일) 21:50 KST",
+      "key_event": {
+        "name": "FOMC 금리 결정 임박",
+        "name_en": "Impending FOMC Rate Decision",
+        "time": "9월 16일(수) 14:00 ET",
+        "why": "향후 통화정책 방향 결정, 시장 불확실성 증대 (9월 16일(수) 14:00 ET)",
+        "why_en": "Determines future monetary policy, increases market uncertainty (Sep 16 (Wed) 14:00 ET)"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "AI 및 기술주 강세 지속으로 긍정 우위, FOMC 경계감 혼조",
+      "summary_en": "AI and tech strength maintains positive bias, mixed with FOMC caution",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "주요 기술 기업 클라우드 성장",
+          "name_en": "Major Tech Cloud Growth",
+          "desc": "Alphabet의 클라우드 백로그 5140억 달러 기록, Google Cloud의 성장 동력 부각",
+          "desc_en": "Alphabet's cloud backlog hit $514 billion, highlighting Google Cloud as a growth driver",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 30,
+          "name": "AI 인프라 투자 지속",
+          "name_en": "Continued AI Infrastructure Investment",
+          "desc": "Nvidia의 Anthropic 투자 및 SpaceX의 AI 고객 증가 소식으로 AI 인프라 투자 기대",
+          "desc_en": "Nvidia's investment in Anthropic and SpaceX's growing AI customer base signal continued AI infrastructure investment",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "AI 안전성 우려 및 둔화 요구",
+          "name_en": "AI Safety Concerns and Slowdown Calls",
+          "desc": "Anthropic, OpenAI, SpaceX 등 AI 리더들의 AI 개발 둔화 요구, 규제 리스크 부각",
+          "desc_en": "AI leaders like Anthropic, OpenAI, and SpaceX call for an AI slowdown, highlighting regulatory risks",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 10,
+          "name": "미10년 국채금리 상승",
+          "name_en": "US 10-Year Treasury Yield Rise",
+          "desc": "미10년 국채금리 4.97%(+0.63%)로 상승, 성장주 할인율 압박 지속",
+          "desc_en": "US 10-year Treasury yield rose to 4.97% (+0.63%), maintaining pressure on growth stock valuations",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "월스트리트 버블 경고",
+          "name_en": "Wall Street Bubble Warnings",
+          "desc": "일부 전문가들이 주식 시장의 과열을 경고하며 버블 가능성 언급, 시장의 신중론과 낙관론 혼재",
+          "desc_en": "Some experts warn of stock market overheating and potential bubbles, creating mixed cautious and optimistic sentiments",
+          "category": "vix_risk_sentiment"
+        },
+        {
+          "name": "FOMC 금리 인상 우려 지속",
+          "name_en": "Persistent FOMC Rate Hike Concerns",
+          "desc": "8월 CPI 상승 및 유가 상승으로 Fed의 금리 인상 가능성 재부각, 시장 경계감",
+          "desc_en": "August CPI rise and oil price increases reignite Fed rate hike possibilities, leading to market caution",
+          "category": "fed_policy"
+        }
+      ],
+      "report": {
+        "overview": "- 총점: AI 및 기술주 강세 지속에도 FOMC 경계감 혼재하며 긍정 75 대 부정 25로 긍정 우위 지속.\n- 주요 동력: 주요 기술 기업의 클라우드 성장 및 AI 인프라 투자 지속이 시장에 긍정적 영향.\n- 하방 압력: AI 안전성 우려와 미10년 국채금리 상승이 시장에 부담으로 작용.\n- 핵심 변수: FOMC 금리 결정 임박으로 향후 통화정책 방향에 대한 불확실성 증대.",
+        "positive": "- 주요 기술 기업 클라우드 성장: Alphabet의 클라우드 백로그가 5140억 달러를 기록하며 Google Cloud의 강력한 성장 동력을 부각, 전 분기 82% 매출 성장에 기여.\n- AI 인프라 투자 지속: Nvidia가 Anthropic에 투자하고 SpaceX의 AI 고객이 증가하는 소식이 전해지며 AI 인프라 투자에 대한 시장의 기대감 고조.",
+        "negative": "- AI 안전성 우려 및 둔화 요구: Anthropic, OpenAI, SpaceX 등 AI 산업 리더들이 AI 개발 둔화 및 안전성 강화를 요구하며 AI 관련 규제 리스크가 시장에 부각.\n- 미10년 국채금리 상승: 미10년 국채금리가 4.97%(+0.63%)로 상승하며 성장주에 대한 할인율 압박이 지속, 이는 20개월 만의 최고치 기록.",
+        "mixed": "- 월스트리트 버블 경고: 일부 전문가들이 주식 시장의 과열 가능성을 언급하며 버블 경고를 제기, 시장 내 신중론과 낙관론이 혼재하는 상황.\n- FOMC 금리 인상 우려 지속: 8월 CPI 소비자물가 상승률이 3.35%로 전월 대비 0.05%p 상승하고 유가가 상승하며 Fed의 금리 인상 가능성이 재부각, 시장의 경계감이 유지.",
+        "watch": "- 미10년 국채금리 추이: 미10년 국채금리의 추가 상승 여부가 성장주 전반의 투자 심리에 지속적인 영향을 미칠 전망.\n- 유가 및 인플레이션 지표: 국제 유가와 CPI 등 인플레이션 관련 지표의 변화가 Fed의 향후 통화정책 결정에 중요한 영향을 미칠 것으로 예상."
+      },
+      "report_at": "2026-09-13(일) 21:50 KST"
+    },
+    {
       "id": "2026-09-13-20:17",
       "timestamp_kst": "2026-09-13(일) 20:17 KST",
       "key_event": {
@@ -653,76 +728,8 @@
         "watch": "- 10년물 국채금리 추이: 인플레이션 우려와 금리 인상 압력 속에서 미국 10년물 국채금리의 변동성을 주시하며 시장의 금리 전망 변화를 파악.\n- 주요 지수 선물 흐름: S&P 500, Dow, Nasdaq 등 주요 지수 선물의 실시간 움직임을 통해 개장 전 투자 심리 및 시장 방향성 변화를 확인."
       },
       "report_at": "2026-09-12(토) 08:20 KST"
-    },
-    {
-      "id": "2026-09-12-07:00",
-      "timestamp_kst": "2026-09-12(토) 07:00 KST",
-      "key_event": {
-        "name": "8월 CPI 예상치 부합",
-        "name_en": "August CPI Meets Expectations",
-        "time": "9월 11일(금) 08:30 ET 발표 완료",
-        "why": "금리 인상 우려 완화, 시장 반등",
-        "why_en": "Easing rate hike concerns, market rebound"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "8월 CPI 예상치 부합으로 금리 인상 우려 완화, 긍정 우위 지속",
-      "summary_en": "August CPI met expectations, easing rate hike concerns, positive sentiment continues",
-      "positive_factors": [
-        {
-          "score": 55,
-          "name": "8월 CPI 예상치 부합",
-          "name_en": "August CPI Meets Expectations",
-          "desc": "CPI 소비자물가 8월분 예상치 부합: Fed 금리 인상 압력 완화",
-          "desc_en": "August CPI met expectations: Easing pressure on Fed to raise rates",
-          "category": "macro_data"
-        },
-        {
-          "score": 15,
-          "name": "WTI 유가 하락",
-          "name_en": "WTI Crude Oil Price Decline",
-          "desc": "WTI 원유 99.99 달러(-3.13%) 하락: 인플레이션 압력 완화 기대",
-          "desc_en": "WTI crude oil fell to $99.99 (-3.13%): Expectation of easing inflation pressure",
-          "category": "oil_energy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "높은 인플레이션 압력 지속",
-          "name_en": "Persistent High Inflation Pressure",
-          "desc": "PCE 물가 3.70%, 근원 PCE 3.34%로 여전히 높은 수준 유지: Fed 긴축 기조 유지 가능성",
-          "desc_en": "PCE inflation at 3.70% and Core PCE at 3.34% remain high: Potential for sustained Fed hawkish stance",
-          "category": "macro_data"
-        },
-        {
-          "score": 10,
-          "name": "미10년 국채금리 상승",
-          "name_en": "US 10-Year Treasury Yield Rise",
-          "desc": "미10년 국채금리 4.97%(+0.63%) 상승: 성장주 할인율 부담 지속",
-          "desc_en": "US 10-year Treasury yield rose to 4.97% (+0.63%): Continued discount rate pressure on growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "FOMC 금리 결정 임박",
-          "name_en": "Upcoming FOMC Rate Decision",
-          "desc": "9월 16일(수) 14:00 ET FOMC 금리 결정 대기: 시장의 관망세 유지",
-          "desc_en": "Awaiting FOMC rate decision on September 16 (Wed) 14:00 ET: Market maintains a wait-and-see attitude",
-          "category": "fed_policy"
-        }
-      ],
-      "report": {
-        "overview": "- 9월11일(금, 뉴욕) 판 결론: 8월 CPI 예상치 부합으로 금리 인상 우려가 완화되며 시장에 긍정적 기류가 우세한 상황.\n- 판의 원인: 8월 CPI 수치가 시장 예상치에 부합하여 연방준비제도(Fed)의 금리 인상 압력이 줄어들 것이라는 기대감 형성.\n- 하단 지지: 서부 텍사스산 원유(WTI) 가격 하락이 인플레이션 완화 기대를 더하며 긍정적 분위기 강화.\n- 상단 제약: 여전히 높은 근원 개인소비지출(PCE) 물가와 미국 10년물 국채금리 상승이 시장의 상승폭을 제한하는 양상.",
-        "positive": "- 8월 CPI 예상치 부합: 8월 소비자물가지수(CPI)가 시장 예상치에 부합하며 연방준비제도(Fed)의 금리 인상 압력이 완화될 것이라는 기대감 확산. 이는 증시 전반의 반등을 이끌며 미국 주요 지수인 다우존스, 나스닥, S&P 500이 상승하는 모습.\n- WTI 유가 하락: 서부 텍사스산 원유(WTI) 가격이 99.99달러로 3.13% 하락하며 인플레이션 압력 완화에 대한 기대감이 커지는 상황. 이는 전반적인 물가 상승 둔화에 기여할 것으로 전망.",
-        "negative": "- 높은 인플레이션 압력 지속: 2026년 7월 데이터 기준 개인소비지출(PCE) 물가상승률이 3.70%, 근원 PCE 물가상승률이 3.34%로 여전히 높은 수준을 유지. 이는 연방준비제도(Fed)가 긴축 기조를 유지할 가능성을 시사하며 시장에 부담으로 작용.\n- 미10년 국채금리 상승: 미국 10년물 국채금리가 4.97%(+0.63%)로 0.63% 상승하며 성장주에 대한 할인율 부담이 지속. 이는 기술주 등 성장주의 투자 매력을 저하시키는 요인으로 작용.",
-        "mixed": "- FOMC 금리 결정 임박: 9월 16일(수) 14:00 ET로 예정된 연방공개시장위원회(FOMC) 금리 결정을 앞두고 시장의 관망세가 유지되는 상황. 8월 CPI 예상치 부합으로 금리 동결 기대감이 커졌으나, 여전히 높은 인플레이션 지표들이 금리 인상 가능성을 완전히 배제할 수 없어 투자자들의 신중한 접근이 필요한 시점.",
-        "watch": "- FOMC 금리 결정: 9월 16일(수) 14:00 ET (약 116시간 뒤) 연방준비제도(Fed)의 금리 결정 및 기자회견 내용이 향후 시장 방향성을 결정할 핵심 변수.\n- 미10년 국채금리 추이: 현재 4.97%(+0.63%)로 상승한 미국 10년물 국채금리가 추가 상승할 경우 성장주에 대한 압박이 심화될 가능성.\n- WTI 유가 추이: 현재 99.99달러로 하락한 서부 텍사스산 원유(WTI) 가격이 추가 하락할 경우 인플레이션 완화 기대감이 더욱 강화될 가능성."
-      },
-      "report_at": "2026-09-12(토) 07:00 KST"
     }
   ],
-  "updated_at": "2026-09-13T11:18:24Z",
+  "updated_at": "2026-09-13T12:51:09Z",
   "max_entries": 10
 }
