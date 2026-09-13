@@ -9801,5 +9801,12 @@ window.investmentQuotes = [
     "title": "루저 게임에서 승리하는 법 (Winning the Loser's Game)",
     "author": "찰스 엘리스 (Charles Ellis)",
     "category": "mindset"
+  },
+  {
+    "english": "You don't have to know what you're going to do. You have to only know what you're going to do next.",
+    "text": "무엇을 해야 할지 다 알 필요는 없다. 다음에 무엇을 할지만 알면 된다.",
+    "title": "작은 아름다운 것들 (Tiny Beautiful Things)",
+    "author": "셰릴 스트레이드 (Cheryl Strayed)",
+    "genre": "literature"
   }
 ];
