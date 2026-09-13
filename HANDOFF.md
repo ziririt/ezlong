@@ -1,7 +1,7 @@
 # HANDOFF: ezlong.com
 
-최종 갱신: 2026-09-13(일) 16:30 KST (1번 주자 `ziririt@gmail.com` 클라우드 세션이 갱신)
-기준 커밋: `932baa8a1` (스윙 시그널 탭 머리 순서 확정 · 소제목 제거)
+최종 갱신: 2026-09-14(월) 01:55 KST (1번 주자 `ziririt@gmail.com` 클라우드 세션이 갱신)
+기준 커밋: `09508a284` (메인에 인사이트 타임즈 코너)
 성격: **최신 상태 한 장.** 이력을 밑에 쌓지 않는다. 인수인계할 때마다 통째로 덮어쓴다.
 과거 이력이 필요하면 `CHANGELOG.md`(2026-06-19부터, 57개 세션)를 본다.
 
@@ -516,6 +516,14 @@ chief-strip 이 얹힌 다른 페이지도 평일 공휴일을 안다. 상세는
 - 반등 패널에서 중복·조작 장치 제거, 시장 판정을 탭 안으로 - `cp-20260913-rv-cleanup`
   (탭 밖 고정이 TOP9 화면에 시장 판정을 겹쳐 놓고 있었다. 오너 확정으로
   '기존 판정과 견주면' 상자 · '내 상황' 선택 · '다시 확인' 버튼 셋 다 제거)
+- **메인 프리미엄 콘텐츠 자리를 인사이트 타임즈로 교체** - `cp-20260913-insightimes`
+  네이버 프리미엄 코너는 **지우지 않고 주석으로 감쌌다.** 되살리려면 두 곳을
+  같이 푼다 - `index.html` 의 `<section id="premium">` 주석과, 아래쪽 스크립트의
+  `// loadExternalList('naver-articles-list', EXT_LISTS.naver);` 한 줄. **둘은 한 쌍이다.**
+  새 파이프라인: `scripts/sync-insightimes.mjs` (insightimes.com/rss.xml ->
+  `data/insightimes.json`), `naver-sync.yml` 에 단계 추가(하루 세 번).
+  화면은 저장소 원본(raw.githubusercontent.com)을 직접 읽는다 - 봇 커밋이
+  Firebase 배포를 트리거하지 않기 때문이다(네이버 때부터 같은 구조).
 - 스윙 시그널 탭 머리 순서 확정 - `cp-20260913-tab-order`
   **① 볼카운터 ② 최근 흐름 ③ 반등·반락 판별.** 요약이 먼저고 근거가 뒤다.
   순서를 되돌리면 `swing-reversal-selftest.js` 가 잡는다(한국어·영문 둘 다).
