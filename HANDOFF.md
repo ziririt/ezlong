@@ -1,7 +1,7 @@
 # HANDOFF: ezlong.com
 
-최종 갱신: 2026-09-14(월) 01:55 KST (1번 주자 `ziririt@gmail.com` 클라우드 세션이 갱신)
-기준 커밋: `09508a284` (메인에 인사이트 타임즈 코너)
+최종 갱신: 2026-09-14(월) 07:30 KST (1번 주자 `ziririt@gmail.com` 클라우드 세션이 갱신)
+기준 커밋: `51b73ec51` (인사이트 타임즈 - 지면 순서 · 썸네일)
 성격: **최신 상태 한 장.** 이력을 밑에 쌓지 않는다. 인수인계할 때마다 통째로 덮어쓴다.
 과거 이력이 필요하면 `CHANGELOG.md`(2026-06-19부터, 57개 세션)를 본다.
 
@@ -520,8 +520,13 @@ chief-strip 이 얹힌 다른 페이지도 평일 공휴일을 안다. 상세는
   네이버 프리미엄 코너는 **지우지 않고 주석으로 감쌌다.** 되살리려면 두 곳을
   같이 푼다 - `index.html` 의 `<section id="premium">` 주석과, 아래쪽 스크립트의
   `// loadExternalList('naver-articles-list', EXT_LISTS.naver);` 한 줄. **둘은 한 쌍이다.**
-  새 파이프라인: `scripts/sync-insightimes.mjs` (insightimes.com/rss.xml ->
-  `data/insightimes.json`), `naver-sync.yml` 에 단계 추가(하루 세 번).
+  새 파이프라인: `scripts/sync-insightimes.mjs`, `naver-sync.yml` 에 단계 추가(하루 세 번).
+  **지면(insightimes.com)을 먼저 읽는다** - 편집이 배치한 순서와 썸네일·분류·날짜가
+  거기 있다. 읽은 순서를 다시 정렬하지 않는다. 지면에서 8건 미만이면 구조가 바뀐
+  것으로 보고 RSS 로 떨어지며, 그때는 썸네일이 없다(RSS 에 이미지 태그가 없다).
+  어디서 왔는지는 JSON 의 `via`(page/rss) 로 확인한다.
+  내린 글은 `scripts/insightimes-exclude.json` 으로 거른다 - 지면에서 내려도
+  주소와 RSS 항목은 한동안 살아 있어 자동으로는 못 걸러진다(실측: HEAD 200).
   화면은 저장소 원본(raw.githubusercontent.com)을 직접 읽는다 - 봇 커밋이
   Firebase 배포를 트리거하지 않기 때문이다(네이버 때부터 같은 구조).
 - 스윙 시그널 탭 머리 순서 확정 - `cp-20260913-tab-order`
