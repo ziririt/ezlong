@@ -14179,6 +14179,31 @@ var bedsideActive = false;
   var celebrateEl = null;
   var pendingTimer = null;
   var lastSubscribed = null;
+  // 2026-09-13 운영자: "매번 프리미엄 업그레이드 안내가 나온다. 한번만 나오면 된다."
+  //
+  // 내가 판정을 틀리게 짰다. 앱을 켤 때마다 웹은 **아무 값도 모르는 상태**로 시작하고
+  // (그때 subscribed() 는 false 다), 곧이어 네이티브가 "구독 중"이라고 알려 준다.
+  // 나는 그 false→true 를 **방금 켜진 것**으로 읽었다. 그건 켜진 게 아니라 **알게 된 것**이다.
+  //   모르던 것을 알게 된 것과, 없던 것이 생긴 것은 다르다.
+  // 그래서 축하는 두 조건이 같이 참일 때만 한다 —
+  //   (1) 이 기기에서 아직 축하한 적이 없고
+  //   (2) **방금 이 화면에서 결제를 눌렀다**(네이티브가 "켜는 중"을 보냈다)
+  // 둘째 조건이 핵심이다. 축하는 구독 상태에 붙는 것이 아니라 **결제라는 사건**에 붙는다.
+  var CELEBRATED_KEY = "ezlong:premiumCelebrated";
+  var purchaseStartedAt = 0;
+  var PURCHASE_WINDOW_MS = 3 * 60 * 1000;   // 결제를 누르고 3분 안에 켜지면 그 결제 덕분이다
+
+  function alreadyCelebrated() {
+    // 저장소를 못 읽는 환경이면 "이미 했다"로 본다 — 모를 때는 안 띄우는 쪽이 안전하다.
+    try { return localStorage.getItem(CELEBRATED_KEY) === "1"; }
+    catch (error) { return true; }
+  }
+  function markCelebrated() {
+    try { localStorage.setItem(CELEBRATED_KEY, "1"); } catch (error) { /* 무시 */ }
+  }
+  function purchaseJustHappened() {
+    return purchaseStartedAt > 0 && (Date.now() - purchaseStartedAt) < PURCHASE_WINDOW_MS;
+  }
 
   // 구독 중인가. 새 네이티브는 __FLIPZEN_SUBSCRIBED__ 로 정확히 알려준다.
   //
@@ -14321,7 +14346,12 @@ var bedsideActive = false;
   // ── 네이티브가 부르는 두 창구 ──────────────────────────────
   // 결제 시트에서 "구매"를 누른 직후. 아직 자격이 확인되기 전이다.
   window.__flipzenPremiumPending = function (pending) {
-    if (pending) { showPending(); } else { hidePending(); }
+    if (pending) {
+      purchaseStartedAt = Date.now();   // 축하할 자격은 여기서 생긴다
+      showPending();
+    } else {
+      hidePending();
+    }
   };
 
   // 자격이 정해진 순간. 값이 바뀌지 않았어도 부를 수 있다(그때는 조용히 지나간다).
@@ -14341,8 +14371,17 @@ var bedsideActive = false;
       }));
     } catch (error) { /* 무시 */ }
 
-    // 방금 켜졌을 때만 축하한다. 앱을 켤 때마다 축하하면 그건 광고다.
-    if (subscribed() && lastSubscribed === false) showCelebrate();
+    // 방금 **결제해서** 켜졌을 때만 축하한다. 앱을 켤 때마다 축하하면 그건 광고다.
+    if (subscribed()) {
+      if (purchaseJustHappened() && !alreadyCelebrated()) {
+        markCelebrated();
+        showCelebrate();
+      } else if (!alreadyCelebrated()) {
+        // 이미 구독 중인 분이다(결제를 지금 하신 게 아니다). 조용히 표시만 남긴다 —
+        // 나중에 어떤 이유로 값이 한 번 끊겼다 돌아와도 축하가 튀어나오지 않게.
+        markCelebrated();
+      }
+    }
     lastSubscribed = subscribed();
   };
 
@@ -14353,9 +14392,11 @@ var bedsideActive = false;
   var catchUp = 0;
   var catchUpTimer = window.setInterval(function () {
     catchUp += 1;
-    var before = subscribed();
     applyPresence();
-    if (before !== lastSubscribed) lastSubscribed = before;
+    // 네이티브 값이 늦게 들어와 여기서 처음 "구독 중"을 알게 되는 경우가 흔하다.
+    // 그것도 '알게 된 것'이지 '켜진 것'이 아니다 — 축하하지 않고 표시만 남긴다.
+    if (subscribed() && !alreadyCelebrated() && !purchaseJustHappened()) markCelebrated();
+    lastSubscribed = subscribed();
     if (catchUp >= 20) window.clearInterval(catchUpTimer);
   }, 1000);
 })();
