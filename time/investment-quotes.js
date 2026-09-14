@@ -9950,5 +9950,12 @@ window.investmentQuotes = [
     "title": "워런 버핏의 주주 서한 (The Essays of Warren Buffett: Lessons for Investors and Managers)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "mindset"
+  },
+  {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
+    "text": "건초더미에서 바늘을 찾으려 하지 마라. 그냥 건초더미 전체를 사라!",
+    "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
+    "author": "존 보글 (John Bogle)",
+    "category": "mindset"
   }
 ];
