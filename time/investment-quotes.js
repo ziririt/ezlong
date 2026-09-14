@@ -9923,5 +9923,12 @@ window.investmentQuotes = [
     "title": "현명한 투자자 개정판 해설 (The Intelligent Investor: Revised Edition, Commentary)",
     "author": "제이슨 즈웨이그 (Jason Zweig)",
     "category": "mindset"
+  },
+  {
+    "english": "On the stock exchange, two and two is never four, but five minus one.",
+    "text": "증권시장에서 2 더하기 2는 4가 아니라, 5에서 1을 뺀 값이다.",
+    "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
+    "author": "앙드레 코스톨라니 (André Kostolany)",
+    "category": "mindset"
   }
 ];
