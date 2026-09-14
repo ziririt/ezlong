@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-09-15-07:00",
+      "timestamp_kst": "2026-09-15(화) 07:00 KST",
+      "key_event": {
+        "name": "FOMC 금리 결정 임박",
+        "name_en": "Impending FOMC Rate Decision",
+        "time": "9월 16일(수) 14:00 ET",
+        "why": "향후 통화정책 방향 결정, 시장 불확실성 증대 (9월 16일(수) 14:00 ET)",
+        "why_en": "Determines future monetary policy, increases market uncertainty (Sep 16 (Wed) 14:00 ET)"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "AI 섹터 경계감 및 FOMC 불확실성 증대로 부정 우위 심화 지속",
+      "summary_en": "Negative sentiment deepened due to AI sector caution and FOMC uncertainty",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "일부 빅테크 기업 실적 기대",
+          "name_en": "Select Big Tech Earnings Expectations",
+          "desc": "MSFT, GOOGL 등 일부 빅테크 기업 포스트마켓 강세: AI 관련 투자 및 성장 기대감 반영",
+          "desc_en": "MSFT, GOOGL and other big tech show strength in post-market: Reflects AI investment and growth expectations",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "AI 밸류에이션 경계감 확산",
+          "name_en": "Spreading AI Valuation Caution",
+          "desc": "AI 산업 둔화 경고 및 칩메이커 약세: NVDA -2.64%, SOXX -5.30% 등 반도체 섹터 전반에 하방 압력",
+          "desc_en": "Warnings of AI industry slowdown and chipmaker weakness: NVDA -2.64%, SOXX -5.30%, broad downward pressure on semiconductor sector",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "미 국채금리 4.96%(-0.28%) 돌파",
+          "name_en": "US Treasury Yields Break 5%",
+          "desc": "벤치마크 미10년 국채금리 4.96%(-0.28%) 기록: 성장주 투자 매력 감소 및 시장 전반에 부담",
+          "desc_en": "Benchmark 10-year Treasury yield hits 5%: Reduces attractiveness of growth stocks and burdens overall market",
+          "category": "rates_treasury"
+        },
+        {
+          "name": "높은 국채금리 수준 지속",
+          "name_en": "Elevated Treasury Yields Persist",
+          "desc": "미10년 국채금리 4.96%(-0.28%), 미30년 국채금리 5.33%(-0.47%): 소폭 하락했으나 여전히 높은 수준으로 성장주 할인율 부담 지속",
+          "desc_en": "US 10-year Treasury yield at 4.96% (-0.28%), 30-year at 5.33% (-0.47%): Slight decrease but remains high, persistent discount rate pressure on growth stocks",
+          "category": "rates_treasury",
+          "score": 15
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "FOMC 금리 인상 경계감",
+          "name_en": "FOMC Rate Hike Caution",
+          "desc": "9월 16일(수) FOMC 금리 결정 임박: 인플레이션 지속 및 Fed의 매파적 기조 유지 가능성 우려",
+          "desc_en": "Impending FOMC rate decision on Sep 16 (Wed): Concerns over persistent inflation and potential for hawkish Fed stance",
+          "category": "fed_policy"
+        }
+      ],
+      "report": {
+        "overview": "- 시장 총평: AI 섹터 경계감과 FOMC 불확실성 증대로 부정적 심리가 지속되며 총점 긍정 35 대 부정 65로 부정 우위 심화.\n- 주요 하방 압력: AI 밸류에이션 경계감 확산에 따른 반도체 섹터 약세와 미 국채금리 상승 부담이 시장 전반에 하방 압력으로 작용.\n- 핵심 불확실성: 임박한 FOMC 금리 결정이 향후 통화정책 방향을 결정하며 시장의 불확실성을 증대.",
+        "positive": "- 일부 빅테크 기업 실적 기대: 마이크로소프트(MSFT), 알파벳(GOOGL) 등 일부 빅테크 기업의 포스트마켓 강세는 AI 관련 투자 및 성장 기대감이 반영된 결과.",
+        "negative": "- AI 밸류에이션 경계감 확산: AI 산업 둔화 경고와 함께 엔비디아(NVDA) -2.64%, 반도체 섹터 ETF(SOXX) -5.30% 등 반도체 섹터 전반에 하방 압력이 확산되며 시장 하락을 주도.\n- 미 국채금리 4.96%(-0.28%) 돌파: 벤치마크 미 10년 국채금리가 4.96%(-0.28%)를 기록하며 성장주 투자 매력을 감소시키고 시장 전반에 부담으로 작용.\n- 높은 국채금리 수준 지속: 미 10년 국채금리 4.96%(-0.28%), 미 30년 국채금리 5.33%(-0.47%)로 소폭 하락했음에도 여전히 높은 수준을 유지하며 성장주 할인율 부담 지속.",
+        "mixed": "- FOMC 금리 인상 경계감: 9월 16일(수) 14:00 ET로 예정된 FOMC 금리 결정이 임박한 가운데, 인플레이션 지속과 연방준비제도(Fed)의 매파적 기조 유지 가능성에 대한 우려가 시장에 혼재.",
+        "watch": "- FOMC 금리 결정: 9월 16일(수) 14:00 ET에 발표될 FOMC 금리 결정 및 통화정책 스탠스 확인을 통해 시장 불확실성 해소 여부 확인.\n- 미 국채금리 추이: 미 10년 국채금리 및 30년 국채금리의 추가적인 변동성 확인을 통해 성장주 할인율 부담 변화 감지.\n- 반도체 섹터 동향: 엔비디아(NVDA) 등 주요 칩메이커 주가와 반도체 섹터 ETF(SOXX)의 움직임을 통해 AI 밸류에이션 경계감의 지속 여부 확인."
+      },
+      "report_at": "2026-09-15(화) 07:00 KST"
+    },
+    {
       "id": "2026-09-15-04:48",
       "timestamp_kst": "2026-09-15(화) 04:48 KST",
       "key_event": {
@@ -605,83 +673,8 @@
         "watch": "- 미국 10년물 국채금리 추이: 현재 4.97%(+0.63%) 수준인 미국 10년물 국채금리의 추가 상승 여부가 성장주 전반의 투자 심리에 지속적인 영향을 미칠 것으로 예상. 금리 변동에 따른 시장 반응 확인.\n- 유가 변동성: 지정학적 긴장과 관련된 유가 변동성 추이가 인플레이션 압력과 연준의 통화정책에 미칠 영향을 주시. WTI 원유 가격의 100달러 선 유지 여부가 중요."
       },
       "report_at": "2026-09-13(일) 23:20 KST"
-    },
-    {
-      "id": "2026-09-13-21:50",
-      "timestamp_kst": "2026-09-13(일) 21:50 KST",
-      "key_event": {
-        "name": "FOMC 금리 결정 임박",
-        "name_en": "Impending FOMC Rate Decision",
-        "time": "9월 16일(수) 14:00 ET",
-        "why": "향후 통화정책 방향 결정, 시장 불확실성 증대 (9월 16일(수) 14:00 ET)",
-        "why_en": "Determines future monetary policy, increases market uncertainty (Sep 16 (Wed) 14:00 ET)"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "AI 및 기술주 강세 지속으로 긍정 우위, FOMC 경계감 혼조",
-      "summary_en": "AI and tech strength maintains positive bias, mixed with FOMC caution",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "주요 기술 기업 클라우드 성장",
-          "name_en": "Major Tech Cloud Growth",
-          "desc": "Alphabet의 클라우드 백로그 5140억 달러 기록, Google Cloud의 성장 동력 부각",
-          "desc_en": "Alphabet's cloud backlog hit $514 billion, highlighting Google Cloud as a growth driver",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 30,
-          "name": "AI 인프라 투자 지속",
-          "name_en": "Continued AI Infrastructure Investment",
-          "desc": "Nvidia의 Anthropic 투자 및 SpaceX의 AI 고객 증가 소식으로 AI 인프라 투자 기대",
-          "desc_en": "Nvidia's investment in Anthropic and SpaceX's growing AI customer base signal continued AI infrastructure investment",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 15,
-          "name": "AI 안전성 우려 및 둔화 요구",
-          "name_en": "AI Safety Concerns and Slowdown Calls",
-          "desc": "Anthropic, OpenAI, SpaceX 등 AI 리더들의 AI 개발 둔화 요구, 규제 리스크 부각",
-          "desc_en": "AI leaders like Anthropic, OpenAI, and SpaceX call for an AI slowdown, highlighting regulatory risks",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "미10년 국채금리 상승",
-          "name_en": "US 10-Year Treasury Yield Rise",
-          "desc": "미10년 국채금리 4.97%(+0.63%)로 상승, 성장주 할인율 압박 지속",
-          "desc_en": "US 10-year Treasury yield rose to 4.97% (+0.63%), maintaining pressure on growth stock valuations",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "월스트리트 버블 경고",
-          "name_en": "Wall Street Bubble Warnings",
-          "desc": "일부 전문가들이 주식 시장의 과열을 경고하며 버블 가능성 언급, 시장의 신중론과 낙관론 혼재",
-          "desc_en": "Some experts warn of stock market overheating and potential bubbles, creating mixed cautious and optimistic sentiments",
-          "category": "vix_risk_sentiment"
-        },
-        {
-          "name": "FOMC 금리 인상 우려 지속",
-          "name_en": "Persistent FOMC Rate Hike Concerns",
-          "desc": "8월 CPI 상승 및 유가 상승으로 Fed의 금리 인상 가능성 재부각, 시장 경계감",
-          "desc_en": "August CPI rise and oil price increases reignite Fed rate hike possibilities, leading to market caution",
-          "category": "fed_policy"
-        }
-      ],
-      "report": {
-        "overview": "- 총점: AI 및 기술주 강세 지속에도 FOMC 경계감 혼재하며 긍정 75 대 부정 25로 긍정 우위 지속.\n- 주요 동력: 주요 기술 기업의 클라우드 성장 및 AI 인프라 투자 지속이 시장에 긍정적 영향.\n- 하방 압력: AI 안전성 우려와 미10년 국채금리 상승이 시장에 부담으로 작용.\n- 핵심 변수: FOMC 금리 결정 임박으로 향후 통화정책 방향에 대한 불확실성 증대.",
-        "positive": "- 주요 기술 기업 클라우드 성장: Alphabet의 클라우드 백로그가 5140억 달러를 기록하며 Google Cloud의 강력한 성장 동력을 부각, 전 분기 82% 매출 성장에 기여.\n- AI 인프라 투자 지속: Nvidia가 Anthropic에 투자하고 SpaceX의 AI 고객이 증가하는 소식이 전해지며 AI 인프라 투자에 대한 시장의 기대감 고조.",
-        "negative": "- AI 안전성 우려 및 둔화 요구: Anthropic, OpenAI, SpaceX 등 AI 산업 리더들이 AI 개발 둔화 및 안전성 강화를 요구하며 AI 관련 규제 리스크가 시장에 부각.\n- 미10년 국채금리 상승: 미10년 국채금리가 4.97%(+0.63%)로 상승하며 성장주에 대한 할인율 압박이 지속, 이는 20개월 만의 최고치 기록.",
-        "mixed": "- 월스트리트 버블 경고: 일부 전문가들이 주식 시장의 과열 가능성을 언급하며 버블 경고를 제기, 시장 내 신중론과 낙관론이 혼재하는 상황.\n- FOMC 금리 인상 우려 지속: 8월 CPI 소비자물가 상승률이 3.35%로 전월 대비 0.05%p 상승하고 유가가 상승하며 Fed의 금리 인상 가능성이 재부각, 시장의 경계감이 유지.",
-        "watch": "- 미10년 국채금리 추이: 미10년 국채금리의 추가 상승 여부가 성장주 전반의 투자 심리에 지속적인 영향을 미칠 전망.\n- 유가 및 인플레이션 지표: 국제 유가와 CPI 등 인플레이션 관련 지표의 변화가 Fed의 향후 통화정책 결정에 중요한 영향을 미칠 것으로 예상."
-      },
-      "report_at": "2026-09-13(일) 21:50 KST"
     }
   ],
-  "updated_at": "2026-09-14T19:49:08Z",
+  "updated_at": "2026-09-14T22:02:19Z",
   "max_entries": 10
 }
