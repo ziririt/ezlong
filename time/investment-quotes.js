@@ -9936,5 +9936,12 @@ window.investmentQuotes = [
     "title": "다가오는 말들",
     "author": "은유",
     "genre": "literature"
+  },
+  {
+    "english": "Vulnerability is not winning or losing; it's having the courage to show up and be seen when we have no control over the outcome. Vulnerability is not weakness; it's our most accurate measure of courage.",
+    "text": "약함은 지는 것도 이기는 것도 아니다. 결과를 통제할 수 없는 순간에도 나서서 자신을 드러낼 용기를 갖는 것, 그것이 바로 약함이다. 약함은 나약함이 아니라 우리가 가진 용기를 가장 정확하게 재는 척도다.",
+    "title": "마음가면 (Daring Greatly)",
+    "author": "브레네 브라운 (Brené Brown)",
+    "genre": "literature"
   }
 ];
