@@ -9957,5 +9957,12 @@ window.investmentQuotes = [
     "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
     "author": "존 보글 (John Bogle)",
     "category": "mindset"
+  },
+  {
+    "english": "You can't predict. You can prepare.",
+    "text": "예측할 수는 없다. 준비할 수는 있다.",
+    "title": "투자에 대한 생각 (The Most Important Thing: Uncommon Sense for the Thoughtful Investor)",
+    "author": "하워드 막스 (Howard Marks)",
+    "category": "mindset"
   }
 ];

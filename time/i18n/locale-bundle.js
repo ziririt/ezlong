@@ -3,7 +3,7 @@
  *
  * 원본: i18n/locales/*.json
  * 생성: node scripts/build-locales.mjs
- * 생성 시각: 2026-08-27T00:44:18.253Z
+ * 생성 시각: 2026-09-14T22:06:50.914Z
  * 포함 로케일: en, es, ja, ko, pt, zh
  *
  * 이 파일은 클래식 스크립트다 (index.html 이 type="module" 을 쓰지 않음).
@@ -33,7 +33,14 @@
         "perkVideoDesc": "Moving scenery instead of a still photo changes the air in the room.",
         "perkWatch": "Apple Watch app",
         "perkWatchDesc": "The same flip clock and the same words, on your wrist.",
-        "trialNote": "Everything is free for your first two weeks."
+        "trialNote": "Everything is free for your first two weeks.",
+        "activeTitle": "Premium is on",
+        "activeDesc": "Everything below is unlocked.",
+        "perkOn": "On",
+        "turningOn": "Turning on Premium…",
+        "doneTitle": "Premium is on",
+        "doneSub": "Everything below is ready to use.",
+        "doneClose": "Got it"
       },
       "background": {
         "heading": "Background Photos",
@@ -558,7 +565,14 @@
         "perkVideoDesc": "Un paisaje en movimiento en lugar de una foto fija cambia el aire de la habitación.",
         "perkWatch": "App para Apple Watch",
         "perkWatchDesc": "El mismo reloj flip y las mismas palabras, en tu muñeca.",
-        "trialNote": "Las dos primeras semanas tras la instalación son gratis."
+        "trialNote": "Las dos primeras semanas tras la instalación son gratis.",
+        "activeTitle": "Premium activo",
+        "activeDesc": "Todo lo de abajo está desbloqueado.",
+        "perkOn": "Activo",
+        "turningOn": "Activando Premium…",
+        "doneTitle": "Premium activado",
+        "doneSub": "Ya puedes usar todo lo siguiente.",
+        "doneClose": "Entendido"
       },
       "background": {
         "heading": "Fotos de fondo",
@@ -1083,7 +1097,14 @@
         "perkVideoDesc": "止まった写真ではなく、動く風景が部屋の空気を変えます。",
         "perkWatch": "Apple Watch アプリ",
         "perkWatchDesc": "手首でも同じフリップ時計と同じ言葉を。",
-        "trialNote": "インストールから最初の2週間はすべて無料でお試しいただけます。"
+        "trialNote": "インストールから最初の2週間はすべて無料でお試しいただけます。",
+        "activeTitle": "プレミアム利用中",
+        "activeDesc": "以下の機能がすべて使えます。",
+        "perkOn": "利用中",
+        "turningOn": "プレミアムを有効にしています",
+        "doneTitle": "プレミアムが有効になりました",
+        "doneSub": "以下の機能をすぐにお使いいただけます。",
+        "doneClose": "OK"
       },
       "background": {
         "heading": "背景写真",
@@ -1608,7 +1629,14 @@
         "perkVideoDesc": "멈춰 있는 사진 대신 움직이는 풍경이 방의 공기를 바꿉니다.",
         "perkWatch": "애플워치 앱",
         "perkWatchDesc": "손목에서도 같은 플립시계와 같은 문장을 봅니다.",
-        "trialNote": "설치 후 첫 2주는 모두 무료로 써 보실 수 있습니다."
+        "trialNote": "설치 후 첫 2주는 모두 무료로 써 보실 수 있습니다.",
+        "activeTitle": "프리미엄 이용 중",
+        "activeDesc": "아래 기능이 모두 열려 있어요.",
+        "perkOn": "이용 중",
+        "turningOn": "프리미엄을 켜는 중이에요",
+        "doneTitle": "프리미엄이 켜졌어요",
+        "doneSub": "이제 아래 기능을 바로 쓰실 수 있어요.",
+        "doneClose": "좋아요"
       },
       "background": {
         "heading": "배경 사진",
@@ -2133,7 +2161,14 @@
         "perkVideoDesc": "Uma paisagem em movimento em vez de uma foto parada muda o ar do quarto.",
         "perkWatch": "App para Apple Watch",
         "perkWatchDesc": "O mesmo relógio flip e as mesmas palavras, no seu pulso.",
-        "trialNote": "As duas primeiras semanas após a instalação são gratuitas."
+        "trialNote": "As duas primeiras semanas após a instalação são gratuitas.",
+        "activeTitle": "Premium ativo",
+        "activeDesc": "Tudo abaixo está desbloqueado.",
+        "perkOn": "Ativo",
+        "turningOn": "Ativando o Premium…",
+        "doneTitle": "Premium ativado",
+        "doneSub": "Já pode usar tudo abaixo.",
+        "doneClose": "Entendi"
       },
       "background": {
         "heading": "Fotos de fundo",
@@ -2658,7 +2693,14 @@
         "perkVideoDesc": "流动的风景取代静止的照片，改变房间里的空气。",
         "perkWatch": "Apple Watch 应用",
         "perkWatchDesc": "在手腕上也能看到同样的翻页时钟和同样的文字。",
-        "trialNote": "安装后的前两周，全部功能免费试用。"
+        "trialNote": "安装后的前两周，全部功能免费试用。",
+        "activeTitle": "高级版已启用",
+        "activeDesc": "以下功能已全部开放。",
+        "perkOn": "使用中",
+        "turningOn": "正在启用高级版…",
+        "doneTitle": "高级版已启用",
+        "doneSub": "以下功能现在都可以使用了。",
+        "doneClose": "好的"
       },
       "background": {
         "heading": "背景照片",
