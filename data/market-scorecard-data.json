@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-09-14-17:28",
+      "timestamp_kst": "2026-09-14(월) 17:28 KST",
+      "key_event": {
+        "name": "FOMC 금리 결정 임박",
+        "name_en": "Impending FOMC Rate Decision",
+        "time": "9월 16일(수) 14:00 ET",
+        "why": "향후 통화정책 방향 결정, 시장 불확실성 증대 (9월 16일(수) 14:00 ET)",
+        "why_en": "Determining future monetary policy, increasing market uncertainty (Sep 16 (Wed) 14:00 ET)"
+      },
+      "positive_total": 20,
+      "negative_total": 80,
+      "summary": "AI 섹터 경계감 및 FOMC 불확실성 증대로 부정 우위 심화",
+      "summary_en": "Negative sentiment deepens due to AI sector caution and FOMC uncertainty",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "일부 매크로 지표 상승",
+          "name_en": "Select Macro Indicators Rise",
+          "desc": "S&P 500 선물 소폭 상승: 인플레이션 및 금리 우려 지속에도 일부 매수세 유입",
+          "desc_en": "S&P 500 futures show slight gains: Some buying interest despite persistent inflation and rate concerns",
+          "category": "macro_data"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 45,
+          "name": "AI 섹터 경고 발언",
+          "name_en": "AI Sector Warning Statements",
+          "desc": "Anthropic의 AI 성장 둔화 경고: 기술주 전반에 투자 심리 위축, NVDA -2.43% 하락",
+          "desc_en": "Anthropic's warning of AI growth slowdown: Damping investor sentiment across tech stocks, NVDA down -2.43%",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "국채금리 상승 압력",
+          "name_en": "Treasury Yields Rise",
+          "desc": "미10년 국채금리 4.97%(+0.63%) 상승: 높은 수준 유지, 성장주 할인율 부담 지속",
+          "desc_en": "US 10-year Treasury yield rises to 4.97% (+0.63%): Sustained high levels, continued pressure on growth stock valuations",
+          "category": "rates_treasury"
+        },
+        {
+          "name": "중동 지정학적 긴장 지속",
+          "name_en": "Ongoing Middle East Geopolitical Tensions",
+          "desc": "WTI 원유 가격 103.21(-0.04%)로 보합: 중동 긴장 지속에도 유가 상승 압력 제한적",
+          "desc_en": "WTI crude oil price stable at 103.21 (-0.04%): Limited upward pressure on oil prices despite ongoing Middle East tensions",
+          "category": "geopolitics",
+          "score": 15
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "FOMC 금리 인상 경계감",
+          "name_en": "FOMC Rate Hike Caution",
+          "desc": "FOMC 금리 결정 임박(9월 16일(수) 14:00 ET): 고인플레이션 지속으로 금리 인상 우려 증대",
+          "desc_en": "Impending FOMC rate decision (Sep 16th (Wed) 14:00 ET): Sustained high inflation fuels rate hike concerns",
+          "category": "fed_policy"
+        }
+      ],
+      "report": {
+        "overview": "- 9월11일(금, 뉴욕) 미국 증시는 AI 섹터 경계감과 FOMC를 앞둔 불확실성 증대로 부정적 우위 심화\n- Anthropic의 AI 성장 둔화 경고가 기술주 전반의 투자 심리를 위축시키며 Nasdaq 선물 하락 및 NVDA -2.43% 하락을 견인\n- FOMC 금리 결정 임박과 높은 수준을 유지하는 미 10년 국채금리 4.97%(+0.63%)는 시장 전반의 할인율 부담을 가중하며 부정적 압력 지속\n- 일부 매크로 지표 상승과 S&P 500 선물 소폭 상승에도 불구하고, 전반적인 시장은 주요 불확실성 요인에 대한 경계감 유지",
+        "positive": "- 일부 매크로 지표 상승: 고인플레이션 및 금리 인상 우려가 지속되는 상황에서도 S&P 500 선물 소폭 상승하며 일부 매수세 유입, 시장의 완전한 하방 압력에 대한 저항력 시사.",
+        "negative": "- AI 섹터 경고 발언: Anthropic의 AI 성장 둔화 경고가 기술주 전반의 투자 심리를 위축시키며, NVDA -2.43% 하락 및 Nasdaq 선물 하락 등 AI 관련주에 대한 부정적 전망 확산.\n- 국채금리 상승 압력: 미 10년 국채금리가 4.97%(+0.63%)로 높은 수준을 유지하며 성장주에 대한 할인율 부담을 지속적으로 가중, 투자자들의 위험 회피 심리 강화.\n- 중동 지정학적 긴장 지속: WTI 원유 가격이 103.21(-0.04%)로 보합세를 보였으나, 중동 지역의 지정학적 긴장이 지속되며 잠재적인 유가 상승 압력 및 시장 불확실성 잔존.",
+        "mixed": "- FOMC 금리 인상 경계감: 9월 16일(수) 14:00 ET로 예정된 FOMC 금리 결정이 임박하며, 고인플레이션 지속으로 인한 추가 금리 인상 우려가 증대되는 동시에, 향후 통화정책 방향에 대한 불확실성으로 시장은 관망세 유지.",
+        "watch": "- 미 10년 국채금리 추이: 현재 4.97%(+0.63%) 수준의 미 10년 국채금리가 FOMC 결정 전후로 어떻게 변동하는지 확인하며, 성장주 할인율 부담 및 전반적인 시장 유동성 변화를 주시.\n- AI 관련 기술주 동향: Anthropic의 경고 이후 NVDA(-2.43%) 등 AI 관련 기술주들의 추가 하락 여부 및 시장 전반의 기술주 투자 심리 변화를 면밀히 관찰."
+      },
+      "report_at": "2026-09-14(월) 17:28 KST"
+    },
+    {
       "id": "2026-09-14-14:20",
       "timestamp_kst": "2026-09-14(월) 14:20 KST",
       "key_event": {
@@ -642,84 +710,8 @@
         "watch": ""
       },
       "report_at": "2026-09-13(일) 11:50 KST"
-    },
-    {
-      "id": "2026-09-13-08:20",
-      "timestamp_kst": "2026-09-13(일) 08:20 KST",
-      "key_event": {
-        "name": "FOMC 금리 결정 임박",
-        "name_en": "Impending FOMC Interest Rate Decision",
-        "time": "9월 16일(수) 14:00 ET",
-        "why": "향후 통화정책 방향 결정, 시장 불확실성 증대 (9월 16일(수) 14:00 ET)",
-        "why_en": "Determines future monetary policy, increases market uncertainty (Sep 16 (Wed) 14:00 ET)"
-      },
-      "positive_total": 50,
-      "negative_total": 50,
-      "summary": "기술주 강세 및 AI 수요 지속으로 팽팽한 균형, FOMC 경계감 혼조",
-      "summary_en": "Positive bias due to strong tech and sustained AI demand, mixed sentiment on FOMC caution",
-      "positive_factors": [
-        {
-          "score": 30,
-          "name": "AI 관련 기술주 수요 지속",
-          "name_en": "Sustained Demand for AI-related Tech Stocks",
-          "desc": "AI 인프라 투자 지속 및 관련 기술 기업들의 긍정적 전망: GOOGL (+2.17%), AAPL (+2.07%) 등 주요 기술주 강세",
-          "desc_en": "Continued investment in AI infrastructure and positive outlook for related tech companies: Strong performance in major tech stocks like GOOGL (+2.17%), AAPL (+2.07%)",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 20,
-          "name": "시장 변동성 완화",
-          "name_en": "Easing Market Volatility",
-          "desc": "VIX 공포지수 15.84 (-11.21%) 하락: 투자 심리 개선 및 위험 선호 심리 회복",
-          "desc_en": "VIX fear index declined to 15.84 (-11.21%): Improved investor sentiment and renewed risk appetite",
-          "category": "vix_risk_sentiment"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "FOMC 금리 인상 가능성 잔존",
-          "name_en": "Lingering Possibility of FOMC Rate Hike",
-          "desc": "높은 인플레이션 지표(CPI 3.35%, 근원 PCE 3.34%)로 Fed의 추가 금리 인상 압력 지속",
-          "desc_en": "Persistent inflationary data (CPI 3.35%, Core PCE 3.34%) maintains pressure on the Fed for further rate hikes",
-          "category": "fed_policy"
-        },
-        {
-          "score": 15,
-          "name": "미 국채금리 상승 압력",
-          "name_en": "Upward Pressure on US Treasury Yields",
-          "desc": "미10년 국채금리 4.97%(+0.63%) 상승: 높은 금리 수준 유지로 성장주 할인율 부담 지속",
-          "desc_en": "US 10-year Treasury yield rose to 4.97% (+0.63%): High interest rate levels continue to burden growth stock valuations",
-          "category": "rates_treasury"
-        },
-        {
-          "name": "중동 지정학적 긴장 지속",
-          "name_en": "Continued Geopolitical Tensions in Middle East",
-          "desc": "미-이란 교착 상태 및 이란 전쟁 우려 지속: 유가 상승 압력 및 시장 불확실성 증대",
-          "desc_en": "Ongoing US-Iran stalemate and war concerns: Upward pressure on oil prices and increased market uncertainty",
-          "category": "geopolitics",
-          "score": 10
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "FOMC 금리 결정 경계감",
-          "name_en": "FOMC Interest Rate Decision Caution",
-          "desc": "9월 16일(수) 14:00 ET 예정된 FOMC 금리 결정 앞두고 관망세: 통화정책 불확실성 상존",
-          "desc_en": "Market caution ahead of the FOMC interest rate decision scheduled for September 16 (Wed) 14:00 ET: Monetary policy uncertainty persists",
-          "category": "fed_policy"
-        }
-      ],
-      "report": {
-        "overview": "- 총점: 긍정 50 대 부정 50으로 시장은 팽팽한 균형을 유지하는 상황.\n- 주요 원인: AI 관련 기술주에 대한 지속적인 수요가 시장을 지지하는 반면, 다가오는 FOMC 금리 결정에 대한 경계감과 높은 인플레이션 지표가 하방 압력으로 작용하는 상황.\n- 하단 지지: VIX 공포지수 하락으로 투자 심리가 개선되며 시장 변동성이 완화되는 모습.",
-        "positive": "- AI 관련 기술주 수요 지속: AI 인프라 투자 및 관련 기술 기업들의 긍정적 전망이 지속되며 GOOGL (+2.17%), AAPL (+2.07%) 등 주요 기술주가 강세를 보임. 이는 AI 에이전트 및 제로 트러스트 성장 야심과 같은 기술 혁신에 대한 기대감에 기인함.\n- 시장 변동성 완화: VIX 공포지수가 15.84 (-11.21%)로 하락하며 투자 심리가 개선되고 위험 선호 심리가 회복되는 모습. 이는 시장의 단기적인 불확실성 감소를 반영함.",
-        "negative": "- FOMC 금리 인상 가능성 잔존: 높은 인플레이션 지표(CPI 3.35%, 근원 PCE 3.34%)가 지속되며 연방준비제도(Fed)의 추가 금리 인상 압력이 유지되는 상황. 이는 연준의 금리 인상 가능성을 높이는 요인으로 작용함.\n- 미 국채금리 상승 압력: 미 10년 국채금리가 4.97%(+0.63%)로 상승하며 높은 금리 수준이 유지되는 상황. 이는 성장주 할인율에 대한 부담으로 작용하여 주식 시장에 부정적인 영향을 미침.\n- 중동 지정학적 긴장 지속: 미국-이란 교착 상태와 이란 전쟁 우려가 지속되며 유가 상승 압력 및 시장 불확실성이 증대되는 상황. 이는 글로벌 경제에 대한 우려를 높이는 요인으로 작용함.",
-        "mixed": "- FOMC 금리 결정 경계감: 9월 16일(수) 14:00 ET로 예정된 FOMC 금리 결정을 앞두고 시장에 관망세가 짙어지는 상황. 연방준비제도의 통화정책 방향에 대한 불확실성이 상존하며 투자자들은 신중한 태도를 보이고 있음. 높은 인플레이션 지표는 금리 인상 가능성을 높이지만, 동시에 경기 둔화 우려도 존재하여 연준의 결정에 대한 예측이 엇갈리는 상황.",
-        "watch": "- 미 국채금리 추이: 미 10년 국채금리의 추가적인 상승 또는 하락 여부. 금리 상승은 성장주에 대한 할인율 부담을 가중시켜 시장 하방 압력으로 작용할 수 있으며, 금리 하락은 반대로 시장에 긍정적인 영향을 미칠 수 있음.\n- 유가 변동성: 중동 지정학적 긴장 상황에 따른 유가 변동성 추이. 유가 상승은 인플레이션 압력을 높여 연준의 긴축 기조를 강화할 수 있으며, 유가 하락은 인플레이션 완화 기대감을 높여 시장에 긍정적인 영향을 미칠 수 있음."
-      },
-      "report_at": "2026-09-13(일) 08:20 KST"
     }
   ],
-  "updated_at": "2026-09-14T05:21:16Z",
+  "updated_at": "2026-09-14T08:29:26Z",
   "max_entries": 10
 }
