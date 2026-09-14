@@ -9882,5 +9882,12 @@ window.investmentQuotes = [
     "title": "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)",
     "author": "조엘 그린블랫 (Joel Greenblatt)",
     "category": "mindset"
+  },
+  {
+    "english": "The bird fights its way out of the egg. The egg is the world. Whoever wants to be born must first destroy a world.",
+    "text": "새는 알에서 나오려고 투쟁한다. 알은 세계이다. 태어나려는 자는 한 세계를 깨뜨리지 않으면 안 된다.",
+    "title": "데미안 (Demian)",
+    "author": "헤르만 헤세 (Hermann Hesse)",
+    "genre": "literature"
   }
 ];
