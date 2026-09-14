@@ -305,5 +305,13 @@ window.aladinLinks = {
   "모든 순간이 꽃봉오리인 것을|정현종": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=238004363&partner=friends327",
   "주식에 장기투자하라 (Stocks for the Long Run)|제러미 시겔 (Jeremy J. Siegel)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=59375756&partner=friends327",
   "모란이 피기까지는|김영랑": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=26528103&partner=friends327",
-  "빈 집|기형도": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=6918217&partner=friends327"
+  "빈 집|기형도": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=6918217&partner=friends327",
+  "올 어바웃 러브 (All About Love)|벨 훅스 (bell hooks)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=20478005&partner=friends327",
+  "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)|조엘 그린블랫 (Joel Greenblatt)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=648220&partner=friends327",
+  "고객의 요트는 어디에 있는가? (Where Are the Customers' Yachts?)|프레드 슈웨드 (Fred Schwed Jr.)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=17177064&partner=friends327",
+  "네가 어떤 삶을 살든 나는 너를 응원할 것이다|공지영": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=90062260&partner=friends327",
+  "빅 매직 (Big Magic: Creative Living Beyond Fear)|엘리자베스 길버트 (Elizabeth Gilbert)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=128488414&partner=friends327",
+  "돈, 뜨겁게 사랑하고 차갑게 다루어라|앙드레 코스톨라니 (André Kostolany)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=324898598&partner=friends327",
+  "워런 버핏의 주주 서한 (The Essays of Warren Buffett: Lessons for Investors and Managers)|워런 버핏 (Warren Buffett)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=298436020&partner=friends327",
+  "모든 주식을 소유하라 (The Little Book of Common Sense Investing)|존 보글 (John Bogle)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=372978368&partner=friends327"
 };
