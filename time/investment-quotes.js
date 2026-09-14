@@ -9943,5 +9943,12 @@ window.investmentQuotes = [
     "title": "마음가면 (Daring Greatly)",
     "author": "브레네 브라운 (Brené Brown)",
     "genre": "literature"
+  },
+  {
+    "english": "Price is what you pay. Value is what you get.",
+    "text": "가격은 당신이 지불하는 것이고, 가치는 당신이 얻는 것이다.",
+    "title": "워런 버핏의 주주 서한 (The Essays of Warren Buffett: Lessons for Investors and Managers)",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "mindset"
   }
 ];
