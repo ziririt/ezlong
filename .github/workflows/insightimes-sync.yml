@@ -1,0 +1,76 @@
+# 인사이트 타임스 지면 수집.
+#
+# 왜 따로 떼었나 (2026-09-14)
+#   처음에는 naver-sync.yml 에 단계 하나로 붙여 뒀다. 그런데 그 워크플로는
+#   이슈 생성·브리핑·번역까지 하느라 20분 넘게 돌고 Gemini 도 부른다.
+#   웹진이 글을 자주 올리게 되어 하루 여섯 번으로 늘리는데, 그 무거운 것을
+#   여섯 번 돌릴 이유가 없다. 이쪽은 지면 한 장 받아 JSON 하나 쓰는 게 전부다.
+#   naver-sync.yml 에서는 그 단계를 뺐다 - 한 파일을 두 워크플로가 쓰면
+#   어느 쪽이 이겼는지 아무도 모른다(13절: 단일 진실값).
+#
+# 시각은 전부 UTC 다. 한국시각으로 적어 두면 다음 사람이 헷갈린다.
+name: Insight Times Sync
+
+on:
+  schedule:
+    - cron: '5 0 * * *'    # 00:05 UTC = 09:05 KST
+    - cron: '0 1 * * *'    # 01:00 UTC = 10:00 KST
+    - cron: '35 1 * * *'   # 01:35 UTC = 10:35 KST
+    - cron: '50 2 * * *'   # 02:50 UTC = 11:50 KST
+    - cron: '0 6 * * *'    # 06:00 UTC = 15:00 KST
+    - cron: '45 9 * * *'   # 09:45 UTC = 18:45 KST
+  workflow_dispatch:
+
+# 깃허브 자체 cron 은 수 시간 밀리거나 통째로 건너뛴다. 여섯 슬롯을 둔 것은
+# 여섯 번을 보장받으려는 게 아니라, 몇 개가 밀려도 그날 안에는 돌게 하려는 것이다.
+# 감시견(scripts/watchdog.js)이 세 번째 안전망으로 하루 넘게 갱신이 없으면 재실행한다.
+
+concurrency:
+  group: insightimes-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 지면을 먼저 읽고, 못 읽으면 스크립트가 RSS 로 떨어진다.
+      # 어느 쪽도 안 되면 기존 파일을 그대로 두고 0 으로 끝난다 - 빈 목록을
+      # 써 넣어 화면이 "글이 없습니다"로 바뀌는 일은 없다(13절).
+      - name: 지면 수집
+        run: node scripts/sync-insightimes.mjs
+
+      - name: 바뀐 것만 커밋
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # git add 는 파일 명시. reset --hard 도 force push 도 쓰지 않는다(1절).
+          git add data/insightimes.json
+          if git diff --staged --quiet; then
+            echo "새 글 없음 - 커밋 생략"
+            exit 0
+          fi
+          git commit -m "chore: insight times sync $(TZ='Asia/Seoul' date +'%Y-%m-%d %H:%M KST')"
+
+          # 다른 워크플로나 사람이 그 사이 push 했을 수 있다. 한 번은 다시 얹어 본다.
+          # 이 파일은 기계가 통째로 다시 만드는 것이라 우리 쪽을 살려도 잃을 것이 없다.
+          git push origin main || {
+            git fetch origin main
+            git merge -X ours origin/main --no-edit || {
+              echo "::error::원격과 합류하지 못했다 - 다음 회차에 다시 만든다"
+              exit 1
+            }
+            git push origin main
+          }
+
+      # 화면은 저장소 원본(raw.githubusercontent.com)을 직접 읽는다.
+      # 그래서 이 파일이 커밋되면 배포를 기다리지 않고 바로 반영된다 -
+      # 여기서 firebase deploy 를 부르지 않는 이유다.
