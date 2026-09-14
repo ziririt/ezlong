@@ -197,6 +197,22 @@ const MONITORS = [
     // 며칠 전 글까지만 보이는 종류의 고장이라 아무도 눈치채지 못한다.
     // 트리거가 cron-job.org 한 곳에 몰려 있던 것도 같이 푼다(워크플로에
     // 깃허브 자체 예약 슬롯 추가 + 여기 감시 등록).
+    id:             'insightimes-sync',
+    name:           '인사이트 타임스 지면 수집',
+    workflow:       'insightimes-sync.yml',
+    checkFile:      'insightimes.json',
+    timestampField: 'updatedAt',
+    // 하루 여섯 번 돈다. 가장 긴 간격은 18:45 -> 다음날 09:05 = 14.3시간.
+    // 깃허브 cron 이 밀리는 폭을 감안해 18h 로 둔다.
+    maxAgeHours:    18.0,
+    // 웹진은 주말에도 글을 올린다. 장 시간과 무관하므로 늘 본다.
+    // 다만 가장 긴 공백(밤) 직후는 피한다 - KST 10:30~23:00 = UTC 01:30~14:00.
+    isActive: (now) => {
+      const h = now.getUTCHours() + now.getUTCMinutes() / 60;
+      return h >= 1.5 && h <= 14.0;
+    }
+  },
+  {
     id:             'naver-sync',
     name:           '네이버 채널 동기화',
     workflow:       'naver-sync.yml',
