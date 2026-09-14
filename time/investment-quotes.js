@@ -9902,5 +9902,12 @@ window.investmentQuotes = [
     "title": "네가 어떤 삶을 살든 나는 너를 응원할 것이다",
     "author": "공지영",
     "genre": "literature"
+  },
+  {
+    "english": "Risk means more things can happen than will happen.",
+    "text": "위험이란 실제로 일어나는 일보다 일어날 수 있는 일이 더 많다는 뜻이다.",
+    "title": "투자에 대한 생각 (The Most Important Thing)",
+    "author": "하워드 막스 (Howard Marks)",
+    "category": "mindset"
   }
 ];
