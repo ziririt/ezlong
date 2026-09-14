@@ -9964,5 +9964,12 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각 (The Most Important Thing: Uncommon Sense for the Thoughtful Investor)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "mindset"
+  },
+  {
+    "english": "The big money is not in the buying and the selling, but in the waiting.",
+    "text": "큰돈은 사고파는 데서 나오지 않는다. 기다림 속에서 나온다.",
+    "title": "불쌍한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "patience"
   }
 ];
