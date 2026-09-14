@@ -17,6 +17,14 @@
   <base href="/skybluenote/web/">
 
   <meta charset="UTF-8">
+  <!-- 2026-09-15: 구글 검색 목록에서 뺀다(한시).
+       증상: 애드센스가 ezlong.com 을 '가치가 별로 없는 콘텐츠'로 두 번째 거절.
+       실측: 이 페이지는 Flutter 웹 빌드라 화면을 캔버스로 그린다 - 크롤러가 받는
+       글자 수가 렌더 후에도 **0자**다. 색인돼 봐야 빈 페이지 한 장이고, 그 한 장이
+       도메인 전체 심사를 끌어내린다. 검색 유입이 필요한 페이지도 아니다.
+       앱 저장소 관할 파일이지만(9절) 색인 표시만 바꾸고 앱 동작은 건드리지 않았다.
+       되돌릴 때: 이 줄과 robots.txt Disallow, sitemap 항목을 함께 되살린다. -->
+  <meta name="robots" content="noindex,follow">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="AI 답변을 붙여넣고 한 번 누르면 깔끔해지는 노트. 표까지 다시 세웁니다.">
   <meta name="theme-color" content="#4FC3F7">
