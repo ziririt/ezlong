@@ -1201,7 +1201,7 @@ a { text-decoration: none; color: inherit; }
 
 /* ─── 외부 콘텐츠 목록 섹션 ───────────────────────
    클래스 이름은 `naver-` 로 시작하지만 네이버 전용이 아니다.
-   2026-09-13 부터 인사이트 타임즈 코너가 같은 서식을 쓴다.
+   2026-09-13 부터 인사이트 타임스 코너가 같은 서식을 쓴다.
    이름을 바꾸면 전 벌을 같이 고쳐야 해서 이름은 두고 주석으로 밝힌다. */
 .naver-channel-title {
   font-size: clamp(18px, 3vw, 24px);
@@ -1266,7 +1266,16 @@ a { text-decoration: none; color: inherit; }
   .ext-article-date { display: none; }   /* 좁은 화면에서는 제목에 자리를 준다 */
 }
 
-/* ─── 썸네일이 있는 외부 콘텐츠 목록 (인사이트 타임즈) ───────────────
+/* 웹진 슬로건. 소개 문장 바로 아래 한 줄. 본문보다 작지 않게(14항 하한) */
+.it-slogan {
+  margin: -12px 0 20px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--t3);
+  letter-spacing: -0.01em;
+}
+
+/* ─── 썸네일이 있는 외부 콘텐츠 목록 (인사이트 타임스) ───────────────
    제목만 열 줄 세우면 밋밋하다는 피드백. 지면 카드의 썸네일을 같이 가져온다.
    번호는 뺐다 - 썸네일이 이미 시선의 닻이고, 순서는 위에서 아래로 읽힌다.
    좁은 화면에서는 제목이 세 줄까지 접히는 편이 낫다(운영 지침). */
@@ -1931,7 +1940,7 @@ a { text-decoration: none; color: inherit; }
 </section>
 
 
-<!-- ── 인사이트 타임즈 ────────────────────────────────
+<!-- ── 인사이트 타임스 ────────────────────────────────
      2026-09-13: 네이버 프리미엄 콘텐츠 코너를 잠시 내리고 이 자리에 붙였다.
      아래 네이버 블록은 지우지 않고 주석으로 감싸 뒀다 - 되살릴 때 주석만 푼다.
      같이 풀 것: 이 파일 아래쪽 스크립트의 loadExternalList('naver-articles-list', ...) 한 줄. -->
@@ -1940,16 +1949,17 @@ a { text-decoration: none; color: inherit; }
     <div class="section-head">
       <p class="section-label">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
-        인사이트 타임즈
+        Insight Times
       </p>
-      <p class="naver-channel-title"><span class="naver-channel-label">Insight Times</span><span class="naver-channel-sep"> - </span><span class="naver-channel-name">내일 점심에 쓸 만한 이야기</span></p>
+      <p class="naver-channel-title"><span class="naver-channel-label">인사이트 타임스</span><span class="naver-channel-sep"> - </span><span class="naver-channel-name">주식 투자자의 지식교양 웹진</span></p>
+      <p class="it-slogan">하루를 읽고, 10년을 봅니다</p>
     </div>
     <div class="it-list" id="insightimes-list">
       <p class="naver-loading">콘텐츠를 불러오는 중...</p>
     </div>
     <div class="naver-more-wrap">
       <a href="https://insightimes.com" class="naver-more-btn" target="_blank" rel="noopener noreferrer">
-        인사이트 타임즈 전체 보기
+        인사이트 타임스 전체 보기
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
