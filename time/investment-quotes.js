@@ -9889,5 +9889,12 @@ window.investmentQuotes = [
     "title": "데미안 (Demian)",
     "author": "헤르만 헤세 (Hermann Hesse)",
     "genre": "literature"
+  },
+  {
+    "english": "Speculation is an effort, probably unsuccessful, to turn a little money into a lot. Investment is an effort, which should be successful, to prevent a lot of money from becoming a little.",
+    "text": "투기란 적은 돈을 큰돈으로 바꾸려는, 대개는 실패로 끝나는 시도다. 반면 투자란 큰돈이 적은 돈으로 줄어드는 것을 막으려는, 마땅히 성공해야 할 시도다.",
+    "title": "고객의 요트는 어디에 있는가? (Where Are the Customers' Yachts?)",
+    "author": "프레드 슈웨드 (Fred Schwed Jr.)",
+    "category": "mindset"
   }
 ];
