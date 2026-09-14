@@ -9896,5 +9896,11 @@ window.investmentQuotes = [
     "title": "고객의 요트는 어디에 있는가? (Where Are the Customers' Yachts?)",
     "author": "프레드 슈웨드 (Fred Schwed Jr.)",
     "category": "mindset"
+  },
+  {
+    "text": "네가 어떤 삶을 살든 나는 너를 응원할 것이다.",
+    "title": "네가 어떤 삶을 살든 나는 너를 응원할 것이다",
+    "author": "공지영",
+    "genre": "literature"
   }
 ];
