@@ -1339,7 +1339,9 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 600px) {
   .it-item { grid-template-columns: 96px minmax(0, 1fr); gap: 13px; padding: 14px 0; }
   .it-title { -webkit-line-clamp: 3; }
-  .it-excerpt { display: none; }        /* 좁은 화면에서는 제목에 자리를 준다 */
+  /* 2026-09-15: 좁은 화면에서도 요약을 남긴다. 제목만 늘어선 링크 목록과,
+     한 줄이라도 읽을 것이 붙은 목록은 사람에게도 심사자에게도 다른 물건이다.
+     제목 세 줄 + 요약 한 줄까지가 카드 하나의 상한이다. */
 }
 .naver-more-wrap {
   margin-top: 22px;
