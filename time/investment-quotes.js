@@ -9909,5 +9909,12 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각 (The Most Important Thing)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "mindset"
+  },
+  {
+    "english": "You do not need anyone's permission to live a creative life.",
+    "text": "창조적인 삶을 살기 위해 누군가의 허락이 필요한 것은 아니다.",
+    "title": "빅 매직 (Big Magic: Creative Living Beyond Fear)",
+    "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
+    "genre": "literature"
   }
 ];
