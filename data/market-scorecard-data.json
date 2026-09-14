@@ -1,6 +1,90 @@
 {
   "entries": [
     {
+      "id": "2026-09-14-11:50",
+      "timestamp_kst": "2026-09-14(월) 11:50 KST",
+      "key_event": {
+        "name": "FOMC 금리 결정 임박",
+        "name_en": "Impending FOMC Rate Decision",
+        "time": "9월 16일(수) 14:00 ET",
+        "why": "향후 통화정책 방향 결정, 시장 불확실성 증대 (9월 16일(수) 14:00 ET)",
+        "why_en": "Determines future monetary policy, increases market uncertainty (Sep 16 (Wed) 14:00 ET)"
+      },
+      "positive_total": 55,
+      "negative_total": 45,
+      "summary": "AI 및 기술주 강세 지속으로 긍정 우위, FOMC 경계감 혼조",
+      "summary_en": "Positive sentiment prevails with continued strength in AI and tech stocks, mixed with FOMC caution",
+      "positive_factors": [
+        {
+          "score": 25,
+          "name": "기술주 및 AI 관련 수요 지속",
+          "name_en": "Continued Demand for Tech and AI",
+          "desc": "AAPL, GOOGL 등 주요 기술주 강세, AI 산업 성장 기대감 유지",
+          "desc_en": "Major tech stocks like AAPL, GOOGL show strength, sustained optimism for AI industry growth",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 15,
+          "name": "시장 변동성 완화",
+          "name_en": "Market Volatility Easing",
+          "desc": "VIX 공포지수 15.84(-11.21%) 하락, 투자 심리 개선",
+          "desc_en": "VIX fear index drops to 15.84 (-11.21%), improving investor sentiment",
+          "category": "vix_risk_sentiment"
+        },
+        {
+          "score": 15,
+          "name": "캐시 우드의 경제 낙관론",
+          "name_en": "Cathie Wood's Economic Optimism",
+          "desc": "월스트리트가 반영하지 않는 경제 호황 가능성 언급",
+          "desc_en": "Mentions potential economic boom not priced in by Wall Street",
+          "category": "other"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "AI 산업 성장 둔화 경고",
+          "name_en": "Warning of AI Industry Slowdown",
+          "desc": "Anthropic 등 AI 기업의 성장 둔화 경고, 기술주 하락 압력",
+          "desc_en": "AI companies like Anthropic warn of slower growth, pressuring tech stocks",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 15,
+          "name": "유가 상승에 따른 인플레이션 압력",
+          "name_en": "Inflationary Pressure from Rising Oil Prices",
+          "desc": "WTI 원유 102.64(+2.59%) 상승, 중동 불안정 심화 우려",
+          "desc_en": "WTI crude oil rises to 102.64 (+2.59%), concerns over deepening Middle East instability",
+          "category": "oil_energy"
+        },
+        {
+          "score": 10,
+          "name": "미 국채금리 상승 압력",
+          "name_en": "Upward Pressure on US Treasury Yields",
+          "desc": "미10년 국채금리 4.97%(+0.63%) 상승, 5% 근접하며 성장주 할인율 부담",
+          "desc_en": "US 10-year Treasury yield rises to 4.97% (+0.63%), nearing 5% and pressuring growth stock valuations",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "FOMC 금리 결정 경계감",
+          "name_en": "FOMC Rate Decision Caution",
+          "desc": "9월 16일(수) 14:00 ET FOMC 금리 결정 임박, 시장 방향성 탐색",
+          "desc_en": "Impending FOMC rate decision on Sep 16 (Wed) 14:00 ET, market seeks direction",
+          "category": "fed_policy"
+        }
+      ],
+      "report": {
+        "overview": "- 총점: AI 및 기술주 강세가 지속되며 긍정 우위(총점 긍정 55 대 부정 45)로 마감, FOMC 금리 결정에 대한 경계감은 혼조세로 작용.\n- 시장 방향성: 주요 기술 기업들의 강세와 시장 변동성 완화가 긍정적 요인으로 작용하며 전반적인 투자 심리 개선.\n- 하방 압력: AI 산업 성장 둔화 경고와 유가 및 국채금리 상승이 인플레이션 압력과 성장주 할인율 부담을 가중하며 하방 압력으로 작용.\n- 주요 이벤트: 9월 16일(수) 14:00 ET로 예정된 FOMC 금리 결정이 시장의 향후 통화정책 방향을 결정할 핵심 변수로 부상.",
+        "positive": "- 기술주 및 AI 관련 수요 지속: 애플(AAPL), 구글(GOOGL) 등 주요 기술 기업들의 강세가 지속되며 AI 산업 성장에 대한 기대감 유지. 골드만삭스(Goldman Sachs)는 AI가 S&P 500 기업 이익 성장의 절반을 견인한다고 분석.\n- 시장 변동성 완화: VIX 공포지수가 15.84로 11.21% 하락하며 투자 심리 개선, 시장의 불확실성 감소 신호.\n- 캐시 우드의 경제 낙관론: 캐시 우드(Cathie Wood)는 월스트리트가 현재 가격에 반영하지 않는 경제 호황 가능성을 언급하며 시장에 긍정적인 전망 제시.",
+        "negative": "- AI 산업 성장 둔화 경고: Anthropic 등 일부 AI 기업들이 성장 둔화를 경고하며 기술주 전반에 하락 압력 작용.\n- 유가 상승에 따른 인플레이션 압력: 서부 텍사스산 원유(WTI) 가격이 102.64달러로 2.59% 상승, 중동 불안정 심화 우려가 글로벌 원유 공급을 압박하며 인플레이션 재점화 가능성 증대.\n- 미 국채금리 상승 압력: 미 10년물 국채금리가 4.97%(+0.63%)로 0.63% 상승하며 5%에 근접, 이는 성장주 할인율에 대한 부담을 가중하며 주식 시장에 부정적 영향.",
+        "mixed": "- FOMC 금리 결정 경계감: 9월 16일(수) 14:00 ET로 예정된 FOMC 금리 결정이 임박하며 시장은 방향성 탐색. 연준의 통화정책 방향에 대한 불확실성이 시장에 혼조세를 야기하며 투자자들은 관망세 유지. 트럼프 전 대통령은 연준에 금리 인하를 촉구했지만, 뜨거운 미국 인플레이션은 금리 인상 베팅을 강화.",
+        "watch": "- 미 국채금리 추이: 미 10년물 국채금리가 4.97%(+0.63%) 선을 돌파하는지 여부 확인, 이는 성장주 밸류에이션에 추가적인 압박으로 작용할 수 있는 지표.\n- 유가 변동성: 중동 정세 불안정 심화에 따른 유가 추가 상승 여부 확인, 이는 인플레이션 압력과 연준의 통화정책 결정에 영향을 미칠 수 있는 요인."
+      },
+      "report_at": "2026-09-14(월) 11:50 KST"
+    },
+    {
       "id": "2026-09-14-08:16",
       "timestamp_kst": "2026-09-14(월) 08:16 KST",
       "key_event": {
@@ -651,83 +735,8 @@
         "watch": "- 미10년 국채금리 추이: 현재 4.97%(+0.63%) 수준인 미10년 국채금리의 추가 상승 여부 확인. 금리 상승은 성장주에 대한 압박을 가중시키고 시장 전반의 투자 심리에 부정적 영향을 미칠 수 있음.\n- WTI 원유 가격 변동: 현재 100.05달러 수준인 WTI 원유 가격의 추가 하락 또는 반등 여부 확인. 유가 변동은 인플레이션 기대감과 연준의 통화정책 결정에 중요한 영향을 미칠 수 있음."
       },
       "report_at": "2026-09-13(일) 07:00 KST"
-    },
-    {
-      "id": "2026-09-12-23:20",
-      "timestamp_kst": "2026-09-12(토) 23:20 KST",
-      "key_event": {
-        "name": "FOMC 금리 결정 임박",
-        "name_en": "Impending FOMC Rate Decision",
-        "time": "9월 16일(수) 14:00 ET",
-        "why": "향후 통화정책 방향 결정, 시장 불확실성 증대 (9월 16일(수) 14:00 ET)",
-        "why_en": "Determines future monetary policy, increases market uncertainty (Sep 16 (Wed) 14:00 ET)"
-      },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "기술주 강세 및 AI 수요 지속으로 긍정 우위, FOMC 경계감 혼조",
-      "summary_en": "Positive bias due to tech strength and AI demand, mixed with FOMC caution",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "주요 기술 기업 AI 비전 강화",
-          "name_en": "Major Tech Firms Bolster AI Vision",
-          "desc": "애플의 AI 비전 및 AI 인프라 투자 지속 확인: 기술주 전반에 긍정적",
-          "desc_en": "Apple's AI vision and sustained AI infrastructure investment: positive for overall tech stocks",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 25,
-          "name": "WTI 원유 가격 하락",
-          "name_en": "WTI Crude Oil Price Decline",
-          "desc": "WTI 원유 100.05달러(-3.07%)로 하락: 인플레이션 압력 완화 기대",
-          "desc_en": "WTI crude oil falls to $100.05 (-3.07%): eases inflation pressure expectations",
-          "category": "oil_energy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "미10년 국채금리 상승",
-          "name_en": "US 10-Year Treasury Yield Rise",
-          "desc": "미10년 국채금리 4.97%(+0.63%)로 상승: 성장주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield rises to 4.97% (+0.63%): increases discount rate burden on growth stocks",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 20,
-          "name": "이란 핵 협정 관련 지정학적 긴장",
-          "name_en": "Geopolitical Tensions Over Iran Nuclear Deal",
-          "desc": "이란 핵 협정 미준수 선언: 중동 정세 불안정 및 유가 변동성 우려",
-          "desc_en": "Iran declares non-compliance with nuclear treaty: concerns over Middle East instability and oil price volatility",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "FOMC 금리 결정 경계감",
-          "name_en": "FOMC Rate Decision Caution",
-          "desc": "9월 16일(수) 14:00 ET FOMC 금리 결정을 앞두고 관망세: 시장 불확실성 증대",
-          "desc_en": "Market awaits FOMC rate decision on Sep 16 (Wed) 14:00 ET: increases market uncertainty",
-          "category": "fed_policy"
-        },
-        {
-          "name": "AI 관련 리스크 및 평가 논란",
-          "name_en": "AI-Related Risks and Valuation Debates",
-          "desc": "AI 산업의 7600억 달러 리스크 언급 및 일부 AI 주식 밸류에이션 논란 지속",
-          "desc_en": "Discussion of $760 billion AI industry risk and ongoing valuation debates for some AI stocks",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총평: 기술주 강세와 AI 수요 지속에 힘입어 긍정적 분위기가 우세하나, FOMC 금리 결정에 대한 경계감으로 혼조세가 잔존하는 상황.\n- 주요 동인: 애플의 AI 비전 강화 및 AI 인프라 투자 지속 확인이 기술주 전반에 긍정적인 영향을 미치며 시장을 견인.\n- 하방 압력: 미 10년 국채금리 상승과 이란 핵 협정 관련 지정학적 긴장이 시장에 부담으로 작용.\n- 핵심 이벤트: 다가오는 9월 16일(수) 14:00 ET FOMC 금리 결정이 향후 시장 방향성을 결정할 주요 변수.",
-        "positive": "- 주요 기술 기업 AI 비전 강화: 애플의 AI 비전 및 AI 인프라 투자 지속 확인이 기술주 전반에 긍정적 영향을 미치며, AI 산업의 성장 기대감을 높이는 상황.\n- WTI 원유 가격 하락: WTI 원유 가격이 100.05달러로 3.07% 하락하며 인플레이션 압력 완화에 대한 기대감을 형성. 이는 연준의 금리 인상 속도 조절 가능성에 대한 기대로 이어져 시장에 긍정적.",
-        "negative": "- 미10년 국채금리 상승: 미 10년 국채금리가 4.97%(+0.63%)로 0.63% 상승하며 성장주 할인율에 대한 부담을 가중. 이는 기술주 중심의 시장 상승세에 제동을 걸 수 있는 요인.\n- 이란 핵 협정 관련 지정학적 긴장: 이란의 핵 협정 미준수 선언으로 중동 정세 불안정 및 유가 변동성 우려가 증대. 이는 글로벌 경제 불확실성을 높여 투자 심리에 부정적 영향.",
-        "mixed": "- FOMC 금리 결정 경계감: 9월 16일(수) 14:00 ET FOMC 금리 결정을 앞두고 시장은 관망세를 보이며 불확실성이 증대. 연준의 통화정책 방향에 따라 시장이 크게 움직일 수 있다는 경계감이 혼재.\n- AI 관련 리스크 및 평가 논란: AI 산업에 대한 7600억 달러 규모의 리스크 언급과 일부 AI 주식의 밸류에이션 논란이 지속되며, AI 기술의 장밋빛 전망 이면에 잠재된 위험에 대한 우려가 상존. But Should. 기사와 연관).",
-        "watch": "- 미 10년 국채금리 추이: 현재 상승세를 보이는 미 10년 국채금리의 추가 상승 여부가 성장주 전반의 투자 심리에 지속적인 영향을 미칠 것으로 예상. 금리 안정화 시 기술주 반등 가능성.\n- WTI 원유 가격 변동성: 이란 핵 협정 관련 지정학적 긴장으로 인한 WTI 원유 가격의 추가 변동성 확인. 유가 상승 시 인플레이션 압력 재점화 우려로 시장에 부정적 영향."
-      },
-      "report_at": "2026-09-12(토) 23:20 KST"
     }
   ],
-  "updated_at": "2026-09-13T23:17:05Z",
+  "updated_at": "2026-09-14T02:51:11Z",
   "max_entries": 10
 }
