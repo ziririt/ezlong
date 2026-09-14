@@ -9930,5 +9930,11 @@ window.investmentQuotes = [
     "title": "돈, 뜨겁게 사랑하고 차갑게 다루어라",
     "author": "앙드레 코스톨라니 (André Kostolany)",
     "category": "mindset"
+  },
+  {
+    "text": "서로가 경쟁자가 아닌 경청자가 될 때, 삶의 결을 섬세하게 살피는 관찰자가 될 때 우린 누구나 괜찮은 사람이 된다.",
+    "title": "다가오는 말들",
+    "author": "은유",
+    "genre": "literature"
   }
 ];
