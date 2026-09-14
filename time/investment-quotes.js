@@ -9916,5 +9916,12 @@ window.investmentQuotes = [
     "title": "빅 매직 (Big Magic: Creative Living Beyond Fear)",
     "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
     "genre": "literature"
+  },
+  {
+    "english": "Investing is not about beating others at their own game. It is about controlling yourself at your own game.",
+    "text": "투자는 남들과 겨루어 이기는 게임이 아니다. 그것은 자기 자신이라는 게임 안에서, 스스로를 다스리는 일이다.",
+    "title": "현명한 투자자 개정판 해설 (The Intelligent Investor: Revised Edition, Commentary)",
+    "author": "제이슨 즈웨이그 (Jason Zweig)",
+    "category": "mindset"
   }
 ];
