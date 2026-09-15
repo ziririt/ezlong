@@ -9971,5 +9971,11 @@ window.investmentQuotes = [
     "title": "불쌍한 찰리의 연감 (Poor Charlie's Almanack)",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "patience"
+  },
+  {
+    "text": "가난한 내가 아름다운 나타샤를 사랑해서 오늘밤은 푹푹 눈이 나린다.",
+    "title": "나와 나타샤와 흰 당나귀",
+    "author": "백석",
+    "genre": "literature"
   }
 ];
