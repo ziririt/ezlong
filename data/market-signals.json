@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-15T20:21:16.092806+00:00",
-  "generatedAtKST": "2026-09-16 05:21 KST",
+  "generatedAt": "2026-09-15T20:22:40.489771+00:00",
+  "generatedAtKST": "2026-09-16 05:22 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -343,7 +343,7 @@
         "histogram": 1.5868
       },
       "high52": 339.7869,
-      "low52": 235.8288,
+      "low52": 235.8289,
       "dev200": 16.218,
       "dev5": 1.1046,
       "dev20": 3.7802,
@@ -389,7 +389,7 @@
         "histogram": 0.9689
       },
       "high52": 398.5413,
-      "low52": 236.8717,
+      "low52": 236.8716,
       "dev200": 1.7992,
       "dev5": 1.5339,
       "dev20": 1.0142,
@@ -618,7 +618,7 @@
         "signal": 9.3605,
         "histogram": 10.4375
       },
-      "high52": 777.701,
+      "high52": 777.7011,
       "low52": 525.2332,
       "dev200": 7.5779,
       "dev5": 2.1103,
@@ -683,12 +683,12 @@
     }
   },
   "fearAndGreed": {
-    "score": 28,
+    "score": 29,
     "rating": "fear",
     "prevClose": 31,
     "prev1Week": 39,
     "prev1Month": 64,
-    "timestamp": "2026-09-15T20:02:20+00:00"
+    "timestamp": "2026-09-15T20:07:16+00:00"
   },
   "macro": {
     "yield10y": {
@@ -708,31 +708,48 @@
       "unit": "%"
     },
     "oil": {
-      "price": 106.02,
-      "change": 4.63,
-      "changePct": 4.5665,
+      "price": 106.04,
+      "change": 4.65,
+      "changePct": 4.5863,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 99.644,
-      "change": 0.184,
-      "changePct": 0.185,
+      "price": 99.652,
+      "change": 0.192,
+      "changePct": 0.193,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4337.0,
-      "change": -14.8999,
-      "changePct": -0.3424,
+      "price": 4335.6001,
+      "change": -16.2998,
+      "changePct": -0.3745,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-09-15T20:21:16.092806+00:00",
+      "atKST": "2026-09-16 05:21 KST",
+      "qqq": {
+        "rsi": 43.98,
+        "macdHist": -1.2185,
+        "dev5": -0.8695,
+        "dev200": 6.7037,
+        "gear": 3,
+        "buyScore": 53,
+        "sellScore": 15,
+        "price": 704.54
+      },
+      "soxxMacdHist": -0.2384,
+      "fearAndGreed": 28,
+      "yield10y": 4.996
+    },
     {
       "at": "2026-09-15T20:07:37.514990+00:00",
       "atKST": "2026-09-16 05:07 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": 2.4325,
       "fearAndGreed": 34,
       "yield10y": 4.975
-    },
-    {
-      "at": "2026-09-11T19:31:09.568619+00:00",
-      "atKST": "2026-09-12 04:31 KST",
-      "qqq": {
-        "rsi": 51.26,
-        "macdHist": -0.4409,
-        "dev5": 0.0056,
-        "dev200": 8.5504,
-        "gear": 3,
-        "buyScore": 54,
-        "sellScore": 18,
-        "price": 715.63
-      },
-      "soxxMacdHist": 2.421,
-      "fearAndGreed": 34,
-      "yield10y": 4.975
     }
   ],
-  "swingContinuity": "9\uc6d4 14\uc77c\uacfc 15\uc77c \ub9e4\uc218\uc810\uc218\uac00 51\ub85c \uc720\uc9c0\ub41c \uac00\uc6b4\ub370, 9\uc6d415\uc77c(\ud654, \ub274\uc695) \ub9e4\uc218\uc810\uc218\ub294 53\uc73c\ub85c \uc18c\ud3ed \uac1c\uc120\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \ub2e4\ub9cc, RSI\uac00 44.52\uc5d0\uc11c 43.98\ub85c \ud558\ub77d\ud558\uba70 \uc57d\uc138 \ud750\ub984\uc774 \uc9c0\uc18d\ub418\ub294 \ubaa8\uc2b5\uc785\ub2c8\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ, SOXX, TSLA, NVDA \ubaa8\ub450 \ub4f1\ub77d\ub960\uc774 \ubd88\uc548\uc815\ud55c \uac00\uc6b4\ub370, \ud2b9\ud788 NVDA\ub294 9\uc6d4 14\uc77c(-3.36%)\uacfc 9\uc6d4 15\uc77c(-0.03%)\uc5d0 \uc0c1\ub300\uc801\uc73c\ub85c \ud070 \ud558\ub77d\ud3ed\uc744 \ubcf4\uc600\uc2b5\ub2c8\ub2e4.",
-  "swingContinuityEn": "While the buy score remained at 51 on September 14th and 15th, today's buy score improved slightly to 53. However, the RSI declined from 44.52 to 43.98, indicating a persistent weak trend. Amidst volatile daily returns for QQQ, SOXX, TSLA, and NVDA over the last five trading days, NVDA notably experienced larger drops on September 14th (-3.36%) and September 15th (-0.03%)."
+  "swingContinuity": null,
+  "swingContinuityEn": null
 }
