@@ -9971,5 +9971,12 @@ window.investmentQuotes = [
     "title": "나와 나타샤와 흰 당나귀",
     "author": "백석",
     "genre": "literature"
+  },
+  {
+    "english": "Time is your friend; impulse is your enemy.",
+    "text": "시간은 당신의 친구이고, 충동은 당신의 적이다.",
+    "title": "패자의 게임 (Winning the Loser's Game)",
+    "author": "찰스 엘리스 (Charles D. Ellis)",
+    "category": "mindset"
   }
 ];
