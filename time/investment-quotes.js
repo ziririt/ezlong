@@ -9978,5 +9978,11 @@ window.investmentQuotes = [
     "title": "패자의 게임 (Winning the Loser's Game)",
     "author": "찰스 엘리스 (Charles D. Ellis)",
     "category": "mindset"
+  },
+  {
+    "text": "결국 삶은 관계였고 관계는 소통이었다. 행복은 멀리 있지 않고 내 옆의 사람들과 마음을 나누는 데 있음을 이제 깨달았다.",
+    "title": "불편한 편의점",
+    "author": "김호연",
+    "genre": "literature"
   }
 ];
