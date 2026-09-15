@@ -1638,7 +1638,7 @@ function buildResult() {
   const genderNote = (profile.genderNote && profile.genderNote[genderTextKey] && profile.genderNote[genderTextKey] !== 'Não aplicável') ? profile.genderNote[genderTextKey] : null;
 
   const ids = porto.tickers.map(t => TICKER_TO_ID[t]).filter(Boolean);
-  const btUrl = 'https://ezlong.com/pt/backtest.html?a=' + ids.join(',');
+  const btUrl = 'https://ezlong.com/pt/backtest.html' + (ids.length ? '?a=' + ids.join(',') : '');
 
   const groupColors = { NT:'#3b82f6', NF:'#10b981', SJ:'#f59e0b', SP:'#ef4444' };
   const groupColor = groupColors[mbtiGroup] || '#6366f1';

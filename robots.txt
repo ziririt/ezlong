@@ -38,19 +38,15 @@ Disallow: /
 User-agent: BLEXBot
 Disallow: /
 
-# ── 데이터 원본 파일은 크롤링 불필요 ─────────────────────────────────────────
-# JSON 데이터 파일과 내부 설정 파일은 노출 불필요
+# ── 데이터 원본 파일 (2026-09-15 방식 변경) ──────────────────────────────────
+# 전에는 Disallow: /data/ 로 크롤 자체를 막았다. 그러면 크롤러가 들어오지
+# 못해 이미 색인된 JSON 을 빼낼 방법이 없다: 실제로 아홉 개가
+# '크롤링됨 · 색인 생성 안 됨' 으로 남아 있었다.
+# 지금은 크롤은 열어 두고 firebase.json 의 X-Robots-Tag: noindex 헤더로
+# 색인만 막는다. 크롤러가 들어와 헤더를 읽어야 색인에서 빠진다.
+# 이슈(브리프 히스토리) 페이지는 본문이 통째로 이 JSON 안에 있어서
+# 크롤이 열려 있어야 빈 껍데기로 읽히지 않는다: 이쪽에도 같은 방식이 맞다.
 User-agent: *
-# 이슈(브리프 히스토리) 페이지는 본문이 통째로 이 JSON 안에 있다. 막아두면
-# 크롤러가 빈 껍데기만 보고 간다 — 이 두 개만 열어둔다(공개 콘텐츠다).
-Allow: /data/brief-history.json
-Allow: /data/brief-history-chart.json
-Allow: /data/brief-history-en.json
-Allow: /data/brief-history-ja.json
-Allow: /data/brief-history-zh.json
-Allow: /data/brief-history-es.json
-Allow: /data/brief-history-pt.json
-Disallow: /data/
 Disallow: /options-latest.json
 Disallow: /firebase.json
 Disallow: /.firebaserc

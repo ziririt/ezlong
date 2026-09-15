@@ -6,6 +6,15 @@
     "public": ".",
     "headers": [
       {
+        "source": "/data/**",
+        "headers": [
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex"
+          }
+        ]
+      },
+      {
         "source": "**/*.html",
         "headers": [
           {
