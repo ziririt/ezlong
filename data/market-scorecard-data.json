@@ -1,6 +1,82 @@
 {
   "entries": [
     {
+      "id": "2026-09-17-17:19",
+      "timestamp_kst": "2026-09-17(목) 17:19 KST",
+      "key_event": {
+        "name": "FOMC 금리 결정 및 매파적 전망",
+        "name_en": "FOMC Rate Decision and Hawkish Outlook",
+        "time": "9월 16일(수) 14:00 ET 발표 완료",
+        "why": "향후 통화정책 방향 결정, 시장 불확실성 증대",
+        "why_en": "Determines future monetary policy, increases market uncertainty"
+      },
+      "positive_total": 20,
+      "negative_total": 80,
+      "summary": "FOMC 금리 인상 및 매파적 전망에도 기술주 중심의 상승세로 부정 우위 지속",
+      "summary_en": "Despite FOMC rate hike and hawkish outlook, tech-led gains persist, maintaining negative dominance",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "AI 섹터 성장 기대감 유지",
+          "name_en": "Sustained AI sector growth expectations",
+          "desc": "Microsoft의 AI 활용 및 Tesla의 로보택시 관련 뉴스 등 AI 기술 발전 기대감 지속",
+          "desc_en": "Continued anticipation for AI advancements, including Microsoft's AI applications and Tesla's Robotaxi news",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 35,
+          "name": "FOMC 금리 인상 및 매파적 전망",
+          "name_en": "FOMC rate hike and hawkish outlook",
+          "desc": "Fed 기준금리 3.63%로 인상, 추가 금리 인상 가능성 시사로 시장 금리 상승 압력",
+          "desc_en": "Fed raises benchmark interest rate to 3.63%, signaling potential for further hikes, increasing market rate pressure",
+          "category": "fed_policy"
+        },
+        {
+          "score": 20,
+          "name": "미10년 국채금리 상승",
+          "name_en": "US 10-year Treasury yield rise",
+          "desc": "미10년 국채금리 5.01%(+0.20%)로 상승하며 성장주 할인율에 부정적 영향",
+          "desc_en": "US 10-year Treasury yield rises to 5.01% (+0.20%), negatively impacting growth stock valuations",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 15,
+          "name": "근원 PCE 및 CPI 물가 상승률",
+          "name_en": "Core PCE and CPI inflation rates",
+          "desc": "근원 PCE 3.34%, CPI 3.35%로 높은 수준 유지: 인플레이션 압력 지속",
+          "desc_en": "Core PCE at 3.34% and CPI at 3.35% remain elevated, indicating persistent inflationary pressure",
+          "category": "macro_data"
+        },
+        {
+          "score": 10,
+          "name": "미-이란 지정학적 긴장 지속",
+          "name_en": "Continued US-Iran geopolitical tensions",
+          "desc": "이란 전쟁 종식 관련 트럼프 발언 및 호르무즈 해협 봉쇄 시도 등 지정학적 긴장 지속",
+          "desc_en": "Geopolitical tensions persist with Trump's remarks on Iran war and attempts to blockade Hormuz Strait",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "WTI 유가 변동성",
+          "name_en": "WTI oil price volatility",
+          "desc": "WTI 유가 101.78(-0.48%)로 소폭 하락했으나, 중동 지정학적 리스크로 인한 상승 압력 상존",
+          "desc_en": "WTI oil prices fell slightly to 101.78 (-0.48%), but upward pressure from Middle East geopolitical risks remains",
+          "category": "oil_energy"
+        }
+      ],
+      "report": {
+        "overview": "- 시장 총평: FOMC의 금리 인상과 매파적 전망에도 불구하고 기술주 중심의 상승세가 나타났으나, 전반적인 시장은 부정적 요인에 의해 지배되는 양상 지속.\n- 주요 원인: 연방준비제도(Fed)의 기준금리 인상 및 추가 인상 가능성 시사로 인한 통화정책 불확실성 증대와 시장 금리 상승 압력 심화가 핵심.\n- 하방 압력: 높은 수준의 근원 PCE 및 CPI 물가상승률, 미 10년 국채금리 상승, 그리고 중동 지정학적 긴장 지속이 시장의 하방 압력으로 작용.\n- 기술주 동향: AI 섹터 성장 기대감은 여전히 긍정적 재료로 작용하며 일부 기술주의 상승을 견인했으나, 거시경제적 악재를 상쇄하기에는 역부족.",
+        "positive": "- AI 섹터 성장 기대감 유지: Microsoft의 AI 활용 및 Tesla의 로보택시 관련 뉴스 등 AI 기술 발전 기대감이 지속적으로 시장에 긍정적인 영향을 미침. 특히 Microsoft의 원자로 라이선싱 AI 활용, Tesla의 로보택시 경쟁사 반응 등은 AI 기술의 실질적인 적용 가능성을 보여주며 투자 심리를 자극.",
+        "negative": "- FOMC 금리 인상 및 매파적 전망: 연방준비제도(Fed)가 기준금리를 3.63%로 인상하고 추가 금리 인상 가능성을 시사함에 따라, 시장 금리 상승 압력이 가중. 이는 투자자들로 하여금 향후 통화정책 방향에 대한 불확실성을 증대시키고, 증시 전반에 걸쳐 하방 압력으로 작용.\n- 미 10년 국채금리 상승: 미 10년 국채금리가 5.01%(+0.20%)로 상승하며 성장주 할인율에 부정적인 영향을 미침. 이는 미래 현금흐름 가치에 대한 할인율을 높여 성장주의 매력을 감소시키고, 전반적인 주식 시장에 부담으로 작용.\n- 근원 PCE 및 CPI 물가 상승률: 근원 PCE 물가상승률이 3.34%, CPI 소비자물가 상승률이 3.35%로 높은 수준을 유지하며 인플레이션 압력이 지속. 이는 Fed의 긴축 기조를 강화할 수 있는 요인으로 작용하며, 시장의 금리 인상 우려를 심화.\n- 미-이란 지정학적 긴장 지속: 이란 전쟁 종식 관련 트럼프 발언 및 호르무즈 해협 봉쇄 시도 등 중동 지역의 지정학적 긴장이 지속. 이는 국제 유가 변동성을 높이고 글로벌 경제 불확실성을 증대시켜 투자 심리에 부정적인 영향을 미침. CNBC, WSJ 등에서 트럼프의 이란 관련 발언 및 이란의 호르무즈 해협 시도에 대한 뉴스를 보도.",
+        "mixed": "- WTI 유가 변동성: WTI 유가가 101.78(-0.48%)로 소폭 하락했으나, 중동 지정학적 리스크로 인한 상승 압력이 상존. 이는 유가 하락이 단기적으로는 긍정적일 수 있으나, 언제든 지정학적 요인으로 인해 급등할 수 있다는 불확실성을 내포하여 시장에 혼조세를 유발.",
+        "watch": "- 미 10년 국채금리 추이: 현재 5.01%(+0.20%) 수준에서 미 10년 국채금리의 추가 상승 또는 하락 여부 확인. 상승 시 성장주에 대한 추가 할인 압력으로 작용, 하락 시 시장 부담 완화 예상.\n- WTI 유가 변동성: 중동 지정학적 리스크 관련 뉴스 플로우에 따른 WTI 유가의 방향성 확인. 유가 급등 시 인플레이션 압력 가중 및 증시 하방 압력으로 작용할 가능성 잔존."
+      },
+      "report_at": "2026-09-17(목) 17:19 KST"
+    },
+    {
       "id": "2026-09-17-14:11",
       "timestamp_kst": "2026-09-17(목) 14:11 KST",
       "key_event": {
@@ -642,75 +718,8 @@
         "watch": "- FOMC 금리 결정 발표: 9월 16일(수) 14:00 ET에 예정된 FOMC 금리 결정 및 연준의 통화정책 스탠스 발표가 시장의 방향성을 결정할 주요 변수.\n- 미10년 국채금리 추이: 현재 5.00%(+0.71%) 수준의 미10년 국채금리가 FOMC 발표 전후로 어떻게 변동하는지 확인, 성장주 밸류에이션 압박의 지속 여부 판단."
       },
       "report_at": "2026-09-16(수) 14:07 KST"
-    },
-    {
-      "id": "2026-09-16-11:50",
-      "timestamp_kst": "2026-09-16(수) 11:50 KST",
-      "key_event": {
-        "name": "FOMC 금리 결정 임박",
-        "name_en": "Impending FOMC Rate Decision",
-        "time": "9월 16일(수) 14:00 ET",
-        "why": "향후 통화정책 방향 결정, 시장 불확실성 증대 (9월 16일(수) 14:00 ET)",
-        "why_en": "Determines future monetary policy, increases market uncertainty (Sep 16 (Wed) 14:00 ET)"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "FOMC 금리 결정 경계감 및 고유가, 국채금리 상승 압력으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to FOMC rate decision caution, high oil prices, and rising Treasury yields",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "일부 AI 관련 기업 성장 기대",
-          "name_en": "Growth Expectations for Some AI-Related Companies",
-          "desc": "Nvidia의 대규모 자사주 매입 및 배당 발표, Blackstone의 AI 투자 확대 계획 등 일부 기업의 AI 관련 성장 기대감 유지",
-          "desc_en": "Nvidia's large buyback and dividend announcement, Blackstone's expanded AI investment plans maintain growth expectations for some AI-related companies",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "고유가 지속에 따른 인플레이션 압력",
-          "name_en": "Inflationary Pressure from Sustained High Oil Prices",
-          "desc": "WTI 원유 104.78달러(+1.80%)로 상승, 중동 지정학적 긴장 고조에 따른 유가 상승 압력 지속",
-          "desc_en": "WTI crude oil rises to $104.78 (+1.80%), sustained upward pressure on oil prices due to escalating Middle East geopolitical tensions",
-          "category": "oil_energy"
-        },
-        {
-          "score": 30,
-          "name": "미 국채금리 상승에 따른 할인율 부담",
-          "name_en": "Discount Rate Burden from Rising US Treasury Yields",
-          "desc": "미10년 국채금리 5.00%(+0.71%), 미30년 국채금리 5.36%(+0.66%)로 상승하며 성장주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield rises to 5.00% (+0.71%), 30-year yield to 5.36% (+0.66%), increasing discount rate burden on growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "FOMC 금리 결정 경계감",
-          "name_en": "FOMC Rate Decision Caution",
-          "desc": "9월 16일(수) 14:00 ET 예정된 FOMC 금리 결정을 앞두고 시장 전반의 관망세와 불확실성 증대",
-          "desc_en": "Market caution and increased uncertainty ahead of the FOMC rate decision scheduled for September 16th (Wed) 14:00 ET",
-          "category": "fed_policy"
-        },
-        {
-          "name": "AI 섹터 밸류에이션 논란",
-          "name_en": "AI Sector Valuation Debate",
-          "desc": "일부 AI 관련 기업의 긍정적 소식에도 불구하고, Wells Fargo의 S&P 500 목표치 하향 조정 등 AI 밸류에이션에 대한 경계감 혼재",
-          "desc_en": "Despite positive news from some AI-related companies, mixed sentiment on AI valuations due to Wells Fargo's lowered S&P 500 target and other concerns",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총평: FOMC 금리 결정에 대한 경계감과 고유가, 국채금리 상승 압력으로 인해 시장 전반의 부정적 심리가 우세한 상황 지속.\n- 주요 원인: 미국 연방준비제도(Fed)의 금리 결정 임박과 중동 지정학적 긴장에 따른 유가 상승, 그리고 미 국채금리 급등이 복합적으로 작용.\n- 하방 압력: S&P 500, Nasdaq, Dow 등 주요 지수가 하락 마감하며 투자자들의 금리 인상 전망을 반영.",
-        "positive": "- 일부 AI 관련 기업 성장 기대: Nvidia가 대규모 자사주 매입 및 배당을 발표하며 향후 3년간의 이익 지속에 대한 이사회 신뢰를 표명. Blackstone 또한 AI, 인프라, 펀드레이징 성장을 통해 수익 증대를 예상하며 AI 관련 기업들의 성장 기대감 유지.",
-        "negative": "- 고유가 지속에 따른 인플레이션 압력: WTI 원유 가격이 104.78달러로 상승하고 중동 지정학적 긴장이 고조되며 유가 상승 압력이 지속. 이는 인플레이션 재점화 우려를 증폭시켜 시장에 부정적 영향.\n- 미 국채금리 상승에 따른 할인율 부담: 미10년 국채금리가 5.00%(+0.71%), 미30년 국채금리가 5.36%(+0.66%)로 상승하며 2007년 이후 최고 수준을 기록. 이는 특히 성장주에 대한 할인율 부담을 가중시켜 주식 시장 전반에 하방 압력.",
-        "mixed": "- FOMC 금리 결정 경계감: 9월 16일(수) 14:00 ET로 예정된 FOMC 금리 결정을 앞두고 시장 전반에 관망세와 불확실성이 증대. 연준의 금리 인상 가능성이 높아지면서 투자자들이 신중한 태도를 보이며 시장 변동성 확대.\n- AI 섹터 밸류에이션 논란: Nvidia와 Blackstone의 긍정적 소식에도 불구하고, Wells Fargo가 S&P 500 목표치를 하향 조정하며 AI 관련 기업들의 밸류에이션에 대한 경계감이 혼재.",
-        "watch": "- FOMC 금리 결정 및 성명 발표: 9월 16일(수) 14:00 ET에 예정된 연방준비제도(Fed)의 금리 결정과 이후 발표될 성명 및 기자회견 내용이 향후 통화정책 방향과 시장 불확실성을 해소할 주요 변수.\n- 미 국채금리 추이: 미10년 및 미30년 국채금리가 현재 수준에서 추가 상승할 경우 성장주를 포함한 전반적인 주식 시장에 대한 할인율 부담이 더욱 가중될 가능성.\n- 국제 유가 변동성: WTI 원유 가격이 중동 지정학적 긴장과 맞물려 100달러 이상에서 지속될 경우 인플레이션 압력이 심화되어 시장 전반에 부정적 영향."
-      },
-      "report_at": "2026-09-16(수) 11:50 KST"
     }
   ],
-  "updated_at": "2026-09-17T05:12:16Z",
+  "updated_at": "2026-09-17T08:19:43Z",
   "max_entries": 10
 }
