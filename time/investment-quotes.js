@@ -10005,5 +10005,11 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "text": "이제 열심히 사는 인생은 끝이다. 견디는 삶은 충분히 살았다.",
+    "title": "하마터면 열심히 살 뻔했다",
+    "author": "하완",
+    "genre": "literature"
   }
 ];
