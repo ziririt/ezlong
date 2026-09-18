@@ -10025,5 +10025,12 @@ window.investmentQuotes = [
     "title": "에블린 휴고의 일곱 남편 (The Seven Husbands of Evelyn Hugo)",
     "author": "테일러 젠킨스 리드 (Taylor Jenkins Reid)",
     "genre": "literature"
+  },
+  {
+    "english": "Value investing is at its core the marriage of a contrarian streak and a calculator.",
+    "text": "가치투자는 본질적으로 역발상 기질과 계산기의 결합이다.",
+    "title": "마진 오브 세이프티 (Margin of Safety)",
+    "author": "세스 클라만 (Seth Klarman)",
+    "category": "mindset"
   }
 ];
