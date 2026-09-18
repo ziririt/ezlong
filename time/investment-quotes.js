@@ -10011,5 +10011,12 @@ window.investmentQuotes = [
     "title": "하마터면 열심히 살 뻔했다",
     "author": "하완",
     "genre": "literature"
+  },
+  {
+    "english": "The average man doesn't wish to be told that it is a bull or bear market. What he desires is to be told specifically which particular stock to buy or sell. He wants to get something for nothing. He does not wish to work. He doesn't even wish to have to think.",
+    "text": "일반 투자자는 지금이 강세장인지 약세장인지 듣고 싶어하지 않는다. 그가 원하는 것은 구체적으로 어떤 종목을 사고팔아야 하는지다. 그는 아무 대가 없이 무언가를 얻고 싶어한다. 일하고 싶지도, 심지어 생각하고 싶지도 않은 것이다.",
+    "title": "주식 매매하는 법 (How to Trade in Stocks)",
+    "author": "제시 리버모어 (Jesse Livermore)",
+    "category": "mindset"
   }
 ];
