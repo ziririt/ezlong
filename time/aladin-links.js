@@ -313,5 +313,8 @@ window.aladinLinks = {
   "빅 매직 (Big Magic: Creative Living Beyond Fear)|엘리자베스 길버트 (Elizabeth Gilbert)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=128488414&partner=friends327",
   "돈, 뜨겁게 사랑하고 차갑게 다루어라|앙드레 코스톨라니 (André Kostolany)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=324898598&partner=friends327",
   "워런 버핏의 주주 서한 (The Essays of Warren Buffett: Lessons for Investors and Managers)|워런 버핏 (Warren Buffett)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=298436020&partner=friends327",
-  "모든 주식을 소유하라 (The Little Book of Common Sense Investing)|존 보글 (John Bogle)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=372978368&partner=friends327"
+  "모든 주식을 소유하라 (The Little Book of Common Sense Investing)|존 보글 (John Bogle)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=372978368&partner=friends327",
+  "나와 나타샤와 흰 당나귀|백석": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=37606066&partner=friends327",
+  "불편한 편의점|김호연": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=290457417&partner=friends327",
+  "랜덤워크 투자수업 (A Random Walk Down Wall Street)|버턴 말킬 (Burton Malkiel)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=317061796&partner=friends327"
 };
