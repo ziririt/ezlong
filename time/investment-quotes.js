@@ -9991,5 +9991,12 @@ window.investmentQuotes = [
     "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
     "author": "버턴 말킬 (Burton Malkiel)",
     "category": "mindset"
+  },
+  {
+    "english": "Know what you own, and know why you own it.",
+    "text": "당신이 무엇을 소유하고 있는지, 왜 그것을 소유하고 있는지 알아야 한다.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up On Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
   }
 ];
