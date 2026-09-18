@@ -9984,5 +9984,12 @@ window.investmentQuotes = [
     "title": "불편한 편의점",
     "author": "김호연",
     "genre": "literature"
+  },
+  {
+    "english": "A blindfolded monkey throwing darts at a newspaper's financial pages could select a portfolio that would do just as well as one carefully selected by experts.",
+    "text": "눈을 가린 원숭이가 신문의 경제면에 다트를 던져 고른 포트폴리오도, 전문가가 신중하게 고른 포트폴리오 못지않은 성과를 낼 수 있다.",
+    "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
+    "author": "버턴 말킬 (Burton Malkiel)",
+    "category": "mindset"
   }
 ];
