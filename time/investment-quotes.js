@@ -9998,5 +9998,12 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅 (One Up On Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "english": "In the short run, the market is a voting machine, but in the long run, it is a weighing machine.",
+    "text": "단기적으로 보면 시장은 투표 기계와 같지만, 장기적으로 보면 저울과 같다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
   }
 ];
