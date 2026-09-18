@@ -10018,5 +10018,12 @@ window.investmentQuotes = [
     "title": "주식 매매하는 법 (How to Trade in Stocks)",
     "author": "제시 리버모어 (Jesse Livermore)",
     "category": "mindset"
+  },
+  {
+    "english": "Intimacy is impossible without trust.",
+    "text": "친밀함은 신뢰 없이는 불가능하다.",
+    "title": "에블린 휴고의 일곱 남편 (The Seven Husbands of Evelyn Hugo)",
+    "author": "테일러 젠킨스 리드 (Taylor Jenkins Reid)",
+    "genre": "literature"
   }
 ];
