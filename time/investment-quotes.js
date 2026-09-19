@@ -10147,5 +10147,12 @@ window.investmentQuotes = [
     "title": "파울라 (Paula)",
     "author": "이사벨 아옌데 (Isabel Allende)",
     "genre": "literature"
+  },
+  {
+    "english": "An asset is something that puts money in my pocket. A liability is something that takes money out of my pocket.",
+    "text": "자산이란 내 주머니에 돈을 넣어주는 것이고, 부채란 내 주머니에서 돈을 빼가는 것이다.",
+    "title": "부자 아빠 가난한 아빠 (Rich Dad Poor Dad)",
+    "author": "로버트 기요사키 (Robert Kiyosaki)",
+    "category": "mindset"
   }
 ];
