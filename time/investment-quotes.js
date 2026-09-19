@@ -10059,5 +10059,11 @@ window.investmentQuotes = [
     "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
     "author": "필립 피셔 (Philip A. Fisher)",
     "category": "mindset"
+  },
+  {
+    "text": "새는 날아가면서 뒤돌아보지 않는다.",
+    "title": "새는 날아가면서 뒤돌아보지 않는다",
+    "author": "류시화",
+    "genre": "literature"
   }
 ];
