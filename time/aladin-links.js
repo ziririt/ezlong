@@ -316,5 +316,9 @@ window.aladinLinks = {
   "모든 주식을 소유하라 (The Little Book of Common Sense Investing)|존 보글 (John Bogle)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=372978368&partner=friends327",
   "나와 나타샤와 흰 당나귀|백석": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=37606066&partner=friends327",
   "불편한 편의점|김호연": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=290457417&partner=friends327",
-  "랜덤워크 투자수업 (A Random Walk Down Wall Street)|버턴 말킬 (Burton Malkiel)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=317061796&partner=friends327"
+  "랜덤워크 투자수업 (A Random Walk Down Wall Street)|버턴 말킬 (Burton Malkiel)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=317061796&partner=friends327",
+  "에블린 휴고의 일곱 남편 (The Seven Husbands of Evelyn Hugo)|테일러 젠킨스 리드 (Taylor Jenkins Reid)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=317922925&partner=friends327",
+  "수필|피천득": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=551775&partner=friends327",
+  "새는 날아가면서 뒤돌아보지 않는다|류시화": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=102221816&partner=friends327",
+  "해변의 카프카 (Kafka on the Shore)|무라카미 하루키 (Haruki Murakami)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=424167&partner=friends327"
 };
