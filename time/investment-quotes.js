@@ -10154,5 +10154,11 @@ window.investmentQuotes = [
     "title": "부자 아빠 가난한 아빠 (Rich Dad Poor Dad)",
     "author": "로버트 기요사키 (Robert Kiyosaki)",
     "category": "mindset"
+  },
+  {
+    "text": "자세히 보아야 예쁘다\n오래 보아야 사랑스럽다\n너도 그렇다.",
+    "title": "풀꽃",
+    "author": "나태주",
+    "genre": "literature"
   }
 ];
