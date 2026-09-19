@@ -10085,5 +10085,12 @@ window.investmentQuotes = [
     "title": "돈의 심리학 (The Psychology of Money)",
     "author": "모건 하우절 (Morgan Housel)",
     "category": "mindset"
+  },
+  {
+    "english": "We teach girls to shrink themselves, to make themselves smaller.",
+    "text": "우리는 소녀들에게 스스로를 움츠러들게, 자신을 작게 만들라고 가르친다.",
+    "title": "우리는 모두 페미니스트가 되어야 합니다 (We Should All Be Feminists)",
+    "author": "치마만다 응고지 아디치에 (Chimamanda Ngozi Adichie)",
+    "genre": "literature"
   }
 ];
