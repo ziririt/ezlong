@@ -10105,5 +10105,12 @@ window.investmentQuotes = [
     "title": "무소유",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "Pain + Reflection = Progress. Pain is a signal that you need to find solutions so you can progress.",
+    "text": "고통 + 성찰 = 진보. 고통은 해결책을 찾아야 앞으로 나아갈 수 있다는 신호다.",
+    "title": "원칙 (Principles: Life and Work)",
+    "author": "레이 달리오 (Ray Dalio)",
+    "category": "mindset"
   }
 ];
