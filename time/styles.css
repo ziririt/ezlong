@@ -4469,18 +4469,7 @@ button { font: inherit; }
   to { transform: scaleX(1); }
 }
 
-@media (min-width: 820px) {
-  body {
-    display: flex;
-    justify-content: center;
-    background: #101722;
-  }
 
-  .clock-app {
-    width: min(100vw, 760px);
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 28px 90px rgba(0,0,0,0.42);
-  }
-}
 
 @media (max-width: 520px) {
   .sky-room {
@@ -6740,4 +6729,145 @@ body.is-premium .premium-perk-title::after {
 @media (prefers-reduced-motion: reduce) {
   .premium-pending-spin { animation: none; }
   .premium-celebrate-card { animation: none; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   ★ 아래 두 블록은 반드시 이 파일의 맨 끝에 있어야 한다 ★
+
+   @media 는 특이도를 올려 주지 않는다. 그래서 같은 선택자(.sky-room)를
+   쓰는 규칙끼리는 **파일에서 뒤에 오는 쪽이 이긴다.** 이 파일은 이미
+   그 함정에 두 번 데였고(3406행 주석, 4243행 주석), 2026-09-19 에
+   세 번째로 데였다 — 가로 두 칸 규칙을 파일 중간에 넣었더니 끝에 있는
+   `@media (max-height: 780px)` 블록이 세로 4행 격자를 도로 씌워
+   두 칸은 됐는데 행이 넷으로 남았다. 그 결과 셋째 행(문장 자리)이
+   285px 을 가져가고 시계 행이 찌그러져, 아이폰 가로에서는 시계가
+   화면 위로 31px 삐져나갔다(실측 `.clock-stage top=-31`).
+   블록을 옮기지 말 것.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ══════════════════════════════════════════════════════════════════
+   가로 화면 — 왼쪽 시계 · 오른쪽 문장/달력  (2026-09-19 신설)
+
+   왜 만들었나. 애플이 아이폰 듀오(폴더블)를 내놓으면서 "대응하세요"라는
+   공지를 보냈고(발표 2026-09-09, 출시 2026-10-23), 운영 지침로 우리 화면을
+   듀오 크기 넷으로 실제로 찍어 봤다(scripts/shoot-duo-shots.mjs).
+   거기서 드러난 것은 듀오 문제가 아니라 **우리가 가로 레이아웃을 가진 적이
+   없다**는 사실이었다.
+
+   지금까지의 격자는 세로 한 줄이다.
+     row1 상단줄 · row2 시계(1fr) · row3 문장/달력(clamp 210~300px) · row4 점
+   세로 화면에서는 이게 맞다. 그런데 가로로 누우면 높이가 400~670px 로
+   줄어드는데 row3 은 여전히 300px 을 가져가므로, 시계가 든 row2 가
+   minmax(0,1fr) 이라 제 내용보다 작게 찌그러진다. 찌그러진 만큼 내용이
+   칸 밖으로 흘러 아래 칸 위에 겹쳐 그려진다 — 실측 사진에서 달력과
+   음악 판이 포개져 보인 것이 그것이다(678x466 · 951x669 둘 다).
+   **지금 라이브에도 있는 고장이다.** 여태 티가 안 난 이유는 폭 820 이상
+   가로가 전부 데스크톱이었고, 데스크톱은 아래 블록이 760px 세로 카드로
+   감싸 세로처럼 보이게 했기 때문이다. 카드가 뚜껑 노릇을 했다.
+
+   그래서 가로에서는 격자를 아예 **두 칸**으로 바꾼다.
+     왼쪽  시계 한 벌(플립시계 + 날씨 한 줄 + 음악)
+     오른쪽 문장 또는 달력
+     위아래로 상단줄과 점은 두 칸을 가로지른다
+   듀오 안쪽 화면의 가로세로비 1.42 는 A4 와 같은 √2 에서 0.5% 안에 든다 —
+   세로로 길게 쌓기에는 애매하고 **좌우로 가르기에는 거의 이상적인 비율**이다.
+   같은 규칙이 오늘 아이폰 가로(874x402)와 아이패드 가로도 함께 고친다.
+
+   세로 화면은 이 블록에 들어오지 않는다(orientation: landscape) — 운영자가
+   매일 보시는 화면은 한 글자도 바뀌지 않는다.
+   데스크톱 브라우저도 들어오되, 바로 아래 블록이 다시 한 칸으로 되돌린다
+   (거기서는 앱이 760px 세로 카드 안에 들어 있어 두 칸이 답답하다).
+   ══════════════════════════════════════════════════════════════════ */
+@media (orientation: landscape) and (min-width: 600px) and (min-height: 380px) {
+  .sky-room {
+    /* 두 칸 · 세 줄. 칸을 명시하지 않으면 자동 배치가 엉뚱한 칸을 새로
+       만든다 — 이 파일이 2026-07-21 에 이미 한 번 데인 함정이라
+       다섯 자식 전부에 행과 열을 못 박는다(.sky-photo/.hero-shade 는
+       position:absolute 라 격자 바깥이다). */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    column-gap: clamp(12px, 2.5vw, 32px);
+  }
+
+  .top-bar   { grid-row: 1; grid-column: 1 / -1; }
+  .clock-stage { grid-row: 2; grid-column: 1; }
+  .quote-panel,
+  .calendar-panel { grid-row: 2; grid-column: 2; }
+  .scene-dots { grid-row: 3; grid-column: 1 / -1; }
+
+  .clock-stage {
+    /* 세로에서는 시계를 조금 위로 올려 아래 문장과 균형을 잡았는데,
+       두 칸에서는 제 칸 안에서 가운데 정렬이면 충분하다. */
+    transform: none;
+    align-self: center;
+  }
+
+  .quote-panel,
+  .calendar-panel {
+    /* 세로에서 쓰던 고정 높이(clamp 210~300px)는 이 칸에서 의미가 없다.
+       칸 높이에 맞추되 넘치면 그 안에서 스크롤한다. */
+    align-self: stretch;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  /* 문장 발(출처 + 진행막대)은 세로에서 좌우 두 칸이다. 이 칸은 화면 절반
+     이라 그 두 칸이 서로를 밀어, 실측 사진에서 `<The Four Pillars of
+     Investing> William J. Bernstein` 이 한 글자 폭으로 짜부라져 아홉 줄이
+     됐다. 여기서는 위아래로 쌓는다 — 출처가 한 줄로 펴진다. */
+  .quote-foot {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+}
+
+/* 아주 납작한 가로(높이 470px 미만 — 아이폰 가로 402, 듀오 바깥 가로 466)
+   에서는 왼쪽 칸에 시계·날씨·음악판을 다 넣을 수 없다. 실측으로 음악판
+   아랫부분이 화면 밑으로 잘렸다(.clock-stage bot=304, 칸은 283 까지).
+   음악을 없애는 것이 아니라 **큰 판만 접는다** — 재생·다음곡·음악정보
+   세 단추는 시계 바로 아래 줄에 그대로 남으므로 할 수 있는 일은 하나도
+   줄지 않는다. 세로로 돌리면 큰 판이 그대로 돌아온다. */
+@media (orientation: landscape) and (min-width: 600px) and (min-height: 380px) and (max-height: 470px) {
+  .music-info-panel { display: none; }
+}
+
+/* 2026-09-19 — "넓은 화면이면 데스크톱"이라는 전제를 고친다.
+   이 블록은 원래 데스크톱 브라우저에서 앱을 가운데 760px 폰 모양 카드로
+   보여 주려고 만들었고, 넓이만으로 데스크톱을 알아볼 수 있던 동안은 맞았다.
+   그 전제가 깨졌다 — **아이폰 듀오의 안쪽 화면은 펼쳐서 가로로 두면 951pt** 다.
+   820 을 넘으니 손에 쥔 전화기가 데스크톱 취급을 받아, 실측해 보니 무대가
+   760px 로 잘리고 좌우에 96px 씩 검은 띠가 생겼다(#pageTrack w=760 left=96).
+   손에 쥐는 기기에서 그건 그냥 레터박스다.
+   그래서 넓이만 묻지 말고 **진짜 마우스가 달렸는지를 함께 묻는다.**
+   데스크톱은 hover:hover · pointer:fine 이고 듀오·아이패드는 아니다.
+   지금 쓰는 아이폰(402pt)은 애초에 820 을 안 넘으므로 아무 변화가 없다. */
+@media (min-width: 820px) and (hover: hover) and (pointer: fine) {
+  body {
+    display: flex;
+    justify-content: center;
+    background: #101722;
+  }
+
+  .clock-app {
+    width: min(100vw, 760px);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 28px 90px rgba(0,0,0,0.42);
+  }
+
+  /* 2026-09-19 — 위 가로 두 칸 규칙을 여기서 되돌린다.
+     데스크톱 창은 가로로 넓지만 **앱 자체는 760px 세로 카드**다.
+     카드 안에서 두 칸으로 가르면 양쪽이 380px 씩이라 답답하다.
+     뷰포트가 아니라 앱이 놓인 모양을 기준으로 정해야 한다는 뜻이고,
+     지금은 이 되돌림이 가장 단순하고 확실한 방법이다. */
+  .sky-room {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) clamp(210px, 46vw, 300px) auto;
+    column-gap: 0;
+  }
+
+  .top-bar   { grid-row: 1; grid-column: 1; }
+  .clock-stage { grid-row: 2; grid-column: 1; transform: translateY(clamp(-54px, -5.4vh, -28px)); }
+  .quote-panel,
+  .calendar-panel { grid-row: 3; grid-column: 1; align-self: center; max-height: none; overflow-y: visible; }
+  .scene-dots { grid-row: 4; grid-column: 1; }
 }
