@@ -10140,5 +10140,12 @@ window.investmentQuotes = [
     "title": "버크셔 해서웨이 주주서한 (Berkshire Hathaway Chairman's Letter, 2008)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "mindset"
+  },
+  {
+    "english": "At the most difficult moments of my life, when it seemed that every door was closed to me, the taste of those apricots comes back to comfort me with the notion that abundance is always within reach, if only one knows how to find it.",
+    "text": "인생에서 가장 힘겨웠던 순간, 모든 문이 닫혀버린 것만 같던 그때도 그 살구의 맛은 다시 찾아와 나를 위로한다. 찾는 법만 안다면 풍요로움은 언제나 손 닿는 곳에 있다는 사실로.",
+    "title": "파울라 (Paula)",
+    "author": "이사벨 아옌데 (Isabel Allende)",
+    "genre": "literature"
   }
 ];
