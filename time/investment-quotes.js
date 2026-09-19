@@ -10045,5 +10045,12 @@ window.investmentQuotes = [
     "title": "불쌍한 찰리의 연감 (Poor Charlie's Almanack)",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "mindset"
+  },
+  {
+    "english": "how you love yourself is how you teach others to love you.",
+    "text": "네가 너 자신을 사랑하는 방식이, 곧 다른 사람에게 너를 사랑하는 법을 가르치는 방식이다.",
+    "title": "밀크 앤 허니 (Milk and Honey)",
+    "author": "루피 카우어 (Rupi Kaur)",
+    "genre": "literature"
   }
 ];
