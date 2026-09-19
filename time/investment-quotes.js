@@ -10119,5 +10119,12 @@ window.investmentQuotes = [
     "title": "먹고 기도하고 사랑하라 (Eat, Pray, Love)",
     "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
     "genre": "literature"
+  },
+  {
+    "english": "The takeaway from these studies is simple. Broad diversification is the only guaranteed way to approximate the superior returns that stocks have historically offered investors. Putting together a narrow portfolio of stocks may be a big winner, but usually is a loser.",
+    "text": "이 연구들이 주는 결론은 간단하다. 폭넓은 분산투자야말로 주식이 역사적으로 투자자에게 제공해온 우수한 수익률에 근접할 수 있는 유일하게 확실한 방법이다. 좁게 추린 소수 종목 포트폴리오는 큰 승자가 될 수도 있지만, 대개는 패자가 된다.",
+    "title": "주식에 장기투자하라 (Stocks for the Long Run)",
+    "author": "제러미 시겔 (Jeremy J. Siegel)",
+    "category": "mindset"
   }
 ];
