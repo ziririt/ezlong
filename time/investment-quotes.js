@@ -10092,5 +10092,12 @@ window.investmentQuotes = [
     "title": "우리는 모두 페미니스트가 되어야 합니다 (We Should All Be Feminists)",
     "author": "치마만다 응고지 아디치에 (Chimamanda Ngozi Adichie)",
     "genre": "literature"
+  },
+  {
+    "english": "Archimedes is often quoted as saying, \"Give me a lever long enough and a place to stand, and I can move the earth.\" In investing, that lever is time.",
+    "text": "아르키메데스는 이렇게 말했다고 전해진다. '충분히 긴 지렛대와 설 자리만 준다면 나는 지구도 움직일 수 있다.' 투자에서 그 지렛대는 바로 시간이다.",
+    "title": "패자의 게임 (Winning the Loser's Game)",
+    "author": "찰스 엘리스 (Charles D. Ellis)",
+    "category": "compound"
   }
 ];
