@@ -10099,5 +10099,11 @@ window.investmentQuotes = [
     "title": "패자의 게임 (Winning the Loser's Game)",
     "author": "찰스 엘리스 (Charles D. Ellis)",
     "category": "compound"
+  },
+  {
+    "text": "무소유란 아무것도 갖지 않는다는 것이 아니라 불필요한 것을 갖지 않는다는 것이다. 우리가 선택한 맑은 가난은 부보다 훨씬 값지고 고귀한 것이다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
   }
 ];
