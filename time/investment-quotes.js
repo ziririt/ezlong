@@ -10072,5 +10072,11 @@ window.investmentQuotes = [
     "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
     "author": "존 보글 (John C. Bogle)",
     "category": "patience"
+  },
+  {
+    "text": "우리는 만날 때에 떠날 것을 염려하는 것과 같이 떠날 때에 다시 만날 것을 믿습니다.",
+    "title": "님의 침묵",
+    "author": "한용운",
+    "genre": "literature"
   }
 ];
