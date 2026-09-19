@@ -9998,5 +9998,72 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅 (One Up On Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "english": "In the short run, the market is a voting machine, but in the long run, it is a weighing machine.",
+    "text": "단기적으로 보면 시장은 투표 기계와 같지만, 장기적으로 보면 저울과 같다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
+  },
+  {
+    "text": "이제 열심히 사는 인생은 끝이다. 견디는 삶은 충분히 살았다.",
+    "title": "하마터면 열심히 살 뻔했다",
+    "author": "하완",
+    "genre": "literature"
+  },
+  {
+    "english": "The average man doesn't wish to be told that it is a bull or bear market. What he desires is to be told specifically which particular stock to buy or sell. He wants to get something for nothing. He does not wish to work. He doesn't even wish to have to think.",
+    "text": "일반 투자자는 지금이 강세장인지 약세장인지 듣고 싶어하지 않는다. 그가 원하는 것은 구체적으로 어떤 종목을 사고팔아야 하는지다. 그는 아무 대가 없이 무언가를 얻고 싶어한다. 일하고 싶지도, 심지어 생각하고 싶지도 않은 것이다.",
+    "title": "주식 매매하는 법 (How to Trade in Stocks)",
+    "author": "제시 리버모어 (Jesse Livermore)",
+    "category": "mindset"
+  },
+  {
+    "english": "Intimacy is impossible without trust.",
+    "text": "친밀함은 신뢰 없이는 불가능하다.",
+    "title": "에블린 휴고의 일곱 남편 (The Seven Husbands of Evelyn Hugo)",
+    "author": "테일러 젠킨스 리드 (Taylor Jenkins Reid)",
+    "genre": "literature"
+  },
+  {
+    "english": "Value investing is at its core the marriage of a contrarian streak and a calculator.",
+    "text": "가치투자는 본질적으로 역발상 기질과 계산기의 결합이다.",
+    "title": "마진 오브 세이프티 (Margin of Safety)",
+    "author": "세스 클라만 (Seth Klarman)",
+    "category": "mindset"
+  },
+  {
+    "text": "수필은 청자연적이다. 수필은 난이요 학이요, 청초하고 몸맵시 있는 여인이다.",
+    "title": "수필",
+    "author": "피천득",
+    "genre": "literature"
+  },
+  {
+    "english": "Acquire worldly wisdom and adjust your behavior accordingly. If your new behavior gives you a little temporary unpopularity with your peer group, then to hell with them.",
+    "text": "세상의 지혜를 쌓고 그에 맞게 행동을 바꿔라. 그 새로운 행동 때문에 또래 집단 사이에서 잠깐 인기가 떨어지더라도 신경 쓰지 마라.",
+    "title": "불쌍한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "mindset"
+  },
+  {
+    "english": "how you love yourself is how you teach others to love you.",
+    "text": "네가 너 자신을 사랑하는 방식이, 곧 다른 사람에게 너를 사랑하는 법을 가르치는 방식이다.",
+    "title": "밀크 앤 허니 (Milk and Honey)",
+    "author": "루피 카우어 (Rupi Kaur)",
+    "genre": "literature"
+  },
+  {
+    "english": "The stock market is filled with individuals who know the price of everything, but the value of nothing.",
+    "text": "주식시장은 모든 것의 가격은 알지만 그 가치는 알지 못하는 사람들로 가득하다.",
+    "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔 (Philip A. Fisher)",
+    "category": "mindset"
+  },
+  {
+    "text": "새는 날아가면서 뒤돌아보지 않는다.",
+    "title": "새는 날아가면서 뒤돌아보지 않는다",
+    "author": "류시화",
+    "genre": "literature"
   }
 ];
