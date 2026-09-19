@@ -10032,5 +10032,11 @@ window.investmentQuotes = [
     "title": "마진 오브 세이프티 (Margin of Safety)",
     "author": "세스 클라만 (Seth Klarman)",
     "category": "mindset"
+  },
+  {
+    "text": "수필은 청자연적이다. 수필은 난이요 학이요, 청초하고 몸맵시 있는 여인이다.",
+    "title": "수필",
+    "author": "피천득",
+    "genre": "literature"
   }
 ];
