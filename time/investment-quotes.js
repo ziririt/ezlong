@@ -10038,5 +10038,12 @@ window.investmentQuotes = [
     "title": "수필",
     "author": "피천득",
     "genre": "literature"
+  },
+  {
+    "english": "Acquire worldly wisdom and adjust your behavior accordingly. If your new behavior gives you a little temporary unpopularity with your peer group, then to hell with them.",
+    "text": "세상의 지혜를 쌓고 그에 맞게 행동을 바꿔라. 그 새로운 행동 때문에 또래 집단 사이에서 잠깐 인기가 떨어지더라도 신경 쓰지 마라.",
+    "title": "불쌍한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "mindset"
   }
 ];
