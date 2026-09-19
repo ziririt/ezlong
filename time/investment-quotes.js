@@ -10126,5 +10126,12 @@ window.investmentQuotes = [
     "title": "주식에 장기투자하라 (Stocks for the Long Run)",
     "author": "제러미 시겔 (Jeremy J. Siegel)",
     "category": "mindset"
+  },
+  {
+    "english": "And once the storm is over, you won't remember how you made it through, how you managed to survive. You won't even be sure, in fact, whether the storm is really over. But one thing is certain. When you come out of the storm, you won't be the same person who walked in. That's what this storm's all about.",
+    "text": "폭풍이 지나가면 넌 어떻게 그걸 뚫고 살아남았는지 기억하지 못할 것이다. 그 폭풍이 정말로 끝난 것인지조차 분명치 않을 것이다. 하지만 한 가지는 분명하다. 폭풍에서 빠져나온 너는, 그곳으로 들어갔을 때의 네가 아니라는 것. 바로 그것이 이 폭풍의 의미다.",
+    "title": "해변의 카프카 (Kafka on the Shore)",
+    "author": "무라카미 하루키 (Haruki Murakami)",
+    "genre": "literature"
   }
 ];
