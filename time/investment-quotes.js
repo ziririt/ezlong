@@ -10112,5 +10112,12 @@ window.investmentQuotes = [
     "title": "원칙 (Principles: Life and Work)",
     "author": "레이 달리오 (Ray Dalio)",
     "category": "mindset"
+  },
+  {
+    "english": "You need to learn how to select your thoughts just the same way you select your clothes every day. This is a power you can cultivate.",
+    "text": "생각도 매일 입는 옷을 고르듯 골라야 한다. 이건 우리가 기를 수 있는 힘이다.",
+    "title": "먹고 기도하고 사랑하라 (Eat, Pray, Love)",
+    "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
+    "genre": "literature"
   }
 ];
