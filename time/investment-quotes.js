@@ -10065,5 +10065,12 @@ window.investmentQuotes = [
     "title": "새는 날아가면서 뒤돌아보지 않는다",
     "author": "류시화",
     "genre": "literature"
+  },
+  {
+    "english": "Time is your friend; impulse is your enemy.",
+    "text": "시간은 당신의 친구이고, 충동은 당신의 적이다.",
+    "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
+    "author": "존 보글 (John C. Bogle)",
+    "category": "patience"
   }
 ];
