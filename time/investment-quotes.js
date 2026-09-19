@@ -10160,5 +10160,12 @@ window.investmentQuotes = [
     "title": "풀꽃",
     "author": "나태주",
     "genre": "literature"
+  },
+  {
+    "english": "Gradually the waiting began to feel less like waiting and more like this was simply what life was: the distracting tasks undertaken while the thing you are waiting for continues not to happen.",
+    "text": "어느새 기다림은 기다림처럼 느껴지지 않았다. 오히려 이게 바로 삶이라는 생각이 들었다 — 기다리던 일은 좀처럼 일어나지 않고, 그동안 우리는 사소한 할 일들에 정신을 팔며 시간을 흘려보낸다.",
+    "title": "친구들과의 대화 (Conversations with Friends)",
+    "author": "샐리 루니 (Sally Rooney)",
+    "genre": "literature"
   }
 ];
