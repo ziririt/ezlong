@@ -10133,5 +10133,12 @@ window.investmentQuotes = [
     "title": "해변의 카프카 (Kafka on the Shore)",
     "author": "무라카미 하루키 (Haruki Murakami)",
     "genre": "literature"
+  },
+  {
+    "english": "A simple rule dictates my buying: be fearful when others are greedy, and be greedy when others are fearful.",
+    "text": "내가 주식을 살 때 따르는 단순한 원칙은 이것이다. 남들이 탐욕스러울 때는 두려워하고, 남들이 두려워할 때는 탐욕스러워져라.",
+    "title": "버크셔 해서웨이 주주서한 (Berkshire Hathaway Chairman's Letter, 2008)",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "mindset"
   }
 ];
