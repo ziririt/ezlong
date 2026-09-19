@@ -1101,8 +1101,20 @@ function syncFirstScreenHeight() {
   lastAppliedScreenHeight = viewportHeight;
   const touchDevice = window.matchMedia("(pointer: coarse)").matches;
   const standalone = isNativeWrapper || window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  // 2026-09-19 — 가로일 때는 이 보정을 훨씬 작게 잡는다.
+  // 이 값은 "모바일 사파리 주소창이 접혔다 폈다 하는 만큼 미리 키를 키워
+  // 둔다"는 뜻인데, 세로 기준으로 96~164px 을 잡아 왔다. 가로로 누우면
+  // 사파리 막대는 훨씬 납작해지는데 보정은 그대로라, 화면 높이가 402px 인
+  // 아이폰 가로에서 96px 은 전체의 24% 다 — 하단 'ezlong.com' 단추가
+  // 통째로 화면 밖으로 밀려난다(2026-09-19 헤드리스 실측: 뷰포트 402,
+  // sky-room 498, scene-dots top=387 bottom=428).
+  // 가로 두 칸 레이아웃을 넣으면서 같이 잡는다. 네이티브 앱은 예나 지금이나
+  // standalone 이라 이 보정 자체를 안 받는다(위 isNativeWrapper 주석 참조).
+  const isLandscape = (window.innerWidth || 0) > viewportHeight;
   const safariBottomGuard = touchDevice && !standalone
-    ? Math.min(164, Math.max(96, Math.round(viewportHeight * 0.09)))
+    ? (isLandscape
+        ? Math.min(64, Math.max(44, Math.round(viewportHeight * 0.09)))
+        : Math.min(164, Math.max(96, Math.round(viewportHeight * 0.09))))
     : 0;
   const userAgent = navigator.userAgent || "";
   const iOSSafari = touchDevice && /Safari/i.test(userAgent) && !/CriOS|FxiOS|EdgiOS/i.test(userAgent);
