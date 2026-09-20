@@ -10249,5 +10249,12 @@ window.investmentQuotes = [
     "title": "마진 오브 세이프티 (Margin of Safety)",
     "author": "세스 클라만 (Seth Klarman)",
     "category": "mindset"
+  },
+  {
+    "text": "'이게 사는 건가' 싶은 날과 '이 맛에 살지' 싶은 날 사이에는 계획과 의지가 필요한 법이다. 제철 행복이란 결국 그 '이 맛에 살지'의 순간을 늘려가는 일이다.",
+    "title": "제철 행복",
+    "author": "김신지",
+    "category": "에세이",
+    "genre": "literature"
   }
 ];
