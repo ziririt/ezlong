@@ -10221,5 +10221,12 @@ window.investmentQuotes = [
     "title": "내일, 또 내일, 또 내일 (Tomorrow, and Tomorrow, and Tomorrow)",
     "author": "가브리엘 제빈 (Gabrielle Zevin)",
     "genre": "literature"
+  },
+  {
+    "english": "Never buy anything from someone who is out of breath.",
+    "text": "숨이 차서 헐떡이는 사람에게서는 아무것도 사지 마라. 다급함은 판단력을 흐리게 하고, 서두르라고 재촉하는 목소리일수록 의심해야 한다.",
+    "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
+    "author": "버턴 말킬 (Burton G. Malkiel)",
+    "category": "mindset"
   }
 ];
