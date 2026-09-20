@@ -10180,5 +10180,12 @@ window.investmentQuotes = [
     "title": "서시 (하늘과 바람과 별과 시)",
     "author": "윤동주",
     "genre": "literature"
+  },
+  {
+    "english": "Rule No. 1: Most things will prove to be cyclical. Rule No. 2: Some of the greatest opportunities for gain and loss come when other people forget Rule No. 1.",
+    "text": "대부분의 것들은 결국 순환하기 마련이다. 그리고 사람들이 이 사실을 잊어버릴 때, 가장 큰 이익과 가장 큰 손실의 기회가 함께 찾아온다.",
+    "title": "투자에 대한 생각 (The Most Important Thing)",
+    "author": "하워드 막스 (Howard Marks)",
+    "category": "patience"
   }
 ];
