@@ -10194,5 +10194,12 @@ window.investmentQuotes = [
     "title": "빌러비드 (Beloved)",
     "author": "토니 모리슨 (Toni Morrison)",
     "genre": "literature"
+  },
+  {
+    "english": "In the short run, the market is a voting machine, but in the long run it is a weighing machine.",
+    "text": "단기적으로 보면 시장은 인기투표를 하는 기계와 같지만, 장기적으로 보면 정확하게 무게를 재는 저울과 같다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
   }
 ];
