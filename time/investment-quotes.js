@@ -10207,5 +10207,12 @@ window.investmentQuotes = [
     "title": "산속에서",
     "author": "나희덕",
     "genre": "literature"
+  },
+  {
+    "english": "Know what you own, and know why you own it.",
+    "text": "무엇을 소유하고 있는지, 그리고 왜 그것을 소유하고 있는지를 알아야 한다.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
   }
 ];
