@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-09-21-07:00",
+      "timestamp_kst": "2026-09-21(월) 07:00 KST",
+      "key_event": {
+        "name": "고금리 장기화 우려 지속",
+        "name_en": "Persistent Concerns over Prolonged High Interest Rates",
+        "time": "2026-09-20 직전 거래일 마감 기준",
+        "why": "미 국채금리 상승, 연준 매파적 스탠스, 성장주 할인율 압박",
+        "why_en": "Rising US Treasury yields, hawkish Fed stance, pressure on growth stock valuations"
+      },
+      "positive_total": 45,
+      "negative_total": 55,
+      "summary": "고금리 장기화 우려 및 연준의 매파적 스탠스로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to prolonged high interest rate concerns and hawkish Fed stance",
+      "positive_factors": [
+        {
+          "score": 25,
+          "name": "유가 하락",
+          "name_en": "Oil Price Decline",
+          "desc": "WTI 원유 96.08 USD (-5.03%) 하락: 인플레이션 압력 완화 기대",
+          "desc_en": "WTI crude oil fell to $96.08 USD (-5.03%), easing inflation concerns",
+          "category": "oil_energy"
+        },
+        {
+          "score": 20,
+          "name": "AI 산업 투자 확대",
+          "name_en": "Expanding AI Industry Investment",
+          "desc": "ASML 및 TSMC 등 칩 제조업체, AI 칩 생산 확대 계획 발표",
+          "desc_en": "Chipmakers like ASML and TSMC announce plans to expand AI chip production",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미10년 국채금리 5.00%(+1.03%), 미30년 국채금리 5.33%(+0.66%) 상승: 성장주 할인율 압박",
+          "desc_en": "US 10-year Treasury yield rose to 5.00% (+1.03%) and 30-year to 5.33% (+0.66%), pressuring growth stock valuations",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 20,
+          "name": "연준 매파적 스탠스 지속",
+          "name_en": "Continued Hawkish Fed Stance",
+          "desc": "연준 금리 인상 및 고금리 장기화 우려 지속: 시장 불확실성 증대",
+          "desc_en": "Fed's rate hikes and prolonged high interest rate concerns persist, increasing market uncertainty",
+          "category": "fed_policy"
+        },
+        {
+          "score": 10,
+          "name": "AI 버블 붕괴 경고",
+          "name_en": "AI Bubble Burst Warning",
+          "desc": "닷컴 버블 사례와 비교하며 AI 버블 붕괴 시 QQQ 회복 장기화 가능성 제기",
+          "desc_en": "Comparison to Dot-Com bubble suggests potential long recovery for QQQ if AI bubble bursts",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": [],
+      "report": {
+        "overview": "- 9월18일(금, 뉴욕) 미국 증시는 고금리 장기화 우려와 연방준비제도(Fed)의 매파적 스탠스 지속으로 부정적 우위가 유지되는 양상\n- 미 10년 및 30년 국채금리의 상승은 성장주 할인율에 압박을 가하며 시장 전반에 불확실성 증대\n- 유가 하락과 AI 산업 투자 확대는 긍정적 재료로 작용했으나, AI 버블 붕괴 경고와 고금리 우려를 상쇄하기에는 역부족\n- 총점 긍정 45 대 부정 55로 부정적 전망이 우세한 상황 지속",
+        "positive": "- 유가 하락: 서부 텍사스산 원유(WTI) 가격이 96.08달러로 5.03% 하락하며 인플레이션 압력 완화에 대한 기대를 높임. 이는 미국 증시 상승에 대한 희망을 제공하는 요인으로 작용.\n- AI 산업 투자 확대: ASML 및 TSMC와 같은 주요 칩 제조업체들이 AI 칩 생산 확대를 위한 계획을 발표하며 AI 산업 성장에 대한 긍정적 전망을 강화. 이는 반도체 섹터 전반에 대한 투자 심리를 개선하는 요인.",
+        "negative": "- 미 국채금리 상승: 미 10년 국채금리가 5.00%(+1.03%), 미 30년 국채금리가 5.33%(+0.66%)로 상승하며 성장주 가치 평가에 사용되는 할인율을 압박. 이는 기술주 중심의 시장에 부정적인 영향을 미치는 요인.\n- 연준 매파적 스탠스 지속: 연방준비제도(Fed)의 금리 인상 및 고금리 장기화에 대한 우려가 지속되며 시장 불확실성 증대. Fed의 금리 인상 결정은 끈적한 인플레이션과 빠른 성장을 반영하는 것으로 해석.\n- AI 버블 붕괴 경고: 닷컴 버블 사례와 비교하여 AI 버블 붕괴 시 QQQ(나스닥 100 추종 ETF) 회복이 2042년까지 장기화될 수 있다는 경고가 제기. 이는 AI 관련 기술주에 대한 투자 심리를 위축시키는 요인.",
+        "mixed": "",
+        "watch": "- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가 상승 여부 확인. 금리 상승세가 지속될 경우 성장주 할인율 압박 심화로 시장 전반의 하방 압력 증대.\n- 유가 변동성: WTI 원유 가격의 추가 하락 또는 반등 여부 확인. 유가 하락세가 지속될 경우 인플레이션 압력 완화 기대감으로 시장에 긍정적 영향, 반등 시 인플레이션 우려 재점화 가능성.\n- 주요 지수 선물 움직임: S&P 500 및 나스닥 100 선물 지수의 장전 움직임 확인. 이는 개장 전 투자 심리와 시장 방향성을 가늠하는 중요한 지표."
+      },
+      "report_at": "2026-09-21(월) 07:00 KST"
+    },
+    {
       "id": "2026-09-21-03:10",
       "timestamp_kst": "2026-09-21(월) 03:10 KST",
       "key_event": {
@@ -594,68 +662,8 @@
         "watch": "- 미 국채금리 추이: 미 10년물 및 30년물 국채금리의 추가적인 상승 또는 하락 여부가 성장주 투자 심리에 직접적인 영향을 미칠 것으로 예상.\n- 주요 지수 선물 흐름: 뉴욕 증시 개장 전 S&P 500, 나스닥 선물 지수의 움직임을 통해 시장의 전반적인 투자 심리 변화 확인."
       },
       "report_at": "2026-09-19(토) 23:20 KST"
-    },
-    {
-      "id": "2026-09-19-21:50",
-      "timestamp_kst": "2026-09-19(토) 21:50 KST",
-      "key_event": {
-        "name": "AI 투자 기대감 지속",
-        "name_en": "Continued AI Investment Optimism",
-        "time": "다음 주 개장 전까지",
-        "why": "기술주 투자 심리 개선, 반도체 섹터 강세 지속",
-        "why_en": "Improved tech investment sentiment, sustained strength in semiconductor sector"
-      },
-      "positive_total": 60,
-      "negative_total": 40,
-      "summary": "AI 투자 기대감 지속으로 긍정 우위 유지",
-      "summary_en": "Positive sentiment maintained due to ongoing AI investment expectations and falling oil prices",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "AI 기술 혁신 기대",
-          "name_en": "AI Technology Innovation Expectations",
-          "desc": "IonQ, Intel 등 AI 관련 기업들의 기술 발전 및 파트너십 소식으로 투자 심리 개선",
-          "desc_en": "Improved investment sentiment due to news of technological advancements and partnerships from AI-related companies like IonQ and Intel",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 15,
-          "name": "지정학적 긴장 완화 기대",
-          "name_en": "Easing Geopolitical Tensions Expected",
-          "desc": "이란 관련 지정학적 긴장 완화 가능성 언급, 유가 하락 압력으로 작용",
-          "desc_en": "Mention of potential easing of geopolitical tensions related to Iran, contributing to downward pressure on oil prices",
-          "category": "geopolitics"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "국채 금리 상승 부담",
-          "name_en": "Rising Treasury Yield Burden",
-          "desc": "미10년 국채금리 5.00%(+1.03%) 상승, 성장주 할인율에 부정적 영향",
-          "desc_en": "US 10-year Treasury yield rose to 5.00% (+1.03%), negatively impacting growth stock valuations",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 15,
-          "name": "AI 밸류에이션 경계론",
-          "name_en": "AI Valuation Caution",
-          "desc": "Ray Dalio 등 일부 전문가들이 AI 주식에 대한 신중론 제기, 과열 우려 잔존",
-          "desc_en": "Some experts, including Ray Dalio, express caution on AI stocks, with lingering concerns about overheating",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 9월18일(금, 뉴욕) 미국 주식 시장은 AI 투자 기대감 지속에 힘입어 긍정적인 흐름을 유지하며 총점 긍정 60대 부정 40으로 마감\n- AI 기술 혁신에 대한 기대감이 기술주 전반의 투자 심리를 개선하고 반도체 섹터의 강세를 이끌며 시장을 견인\n- 미 10년 국채금리 상승과 일부 전문가들의 AI 밸류에이션 경계론이 부정적인 요인으로 작용하며 상승폭을 제한\n- 이란 관련 지정학적 긴장 완화 가능성 언급은 유가 하락 압력으로 작용하며 인플레이션 우려를 일부 완화",
-        "positive": "- AI 기술 혁신 기대: IonQ의 AI 기반 양자 회로 기술 발전 및 Intel의 Terafab 파트너십을 통한 AI 파운드리 역량 강화 소식 등 AI 관련 기업들의 기술 발전과 파트너십 소식이 투자 심리를 개선하며 긍정적인 영향을 미침.\n- 지정학적 긴장 완화 기대: 이란 관련 지정학적 긴장 완화 가능성이 언급되며 유가 하락 압력으로 작용, 이는 인플레이션 우려를 완화하고 증시에 긍정적인 영향을 미칠 가능성 잔존.",
-        "negative": "- 국채 금리 상승 부담: 미 10년 국채금리가 5.00%(+1.03%)로 상승하며 성장주에 대한 할인율 부담을 가중, 이는 기술주를 포함한 성장주 전반에 부정적인 영향으로 작용.\n- AI 밸류에이션 경계론: Ray Dalio 등 일부 전문가들이 AI 주식의 과열 가능성에 대한 신중론을 제기하며, AI 관련 종목들의 밸류에이션 부담에 대한 경계심이 시장에 잔존.",
-        "mixed": "",
-        "watch": "- 미 10년 국채금리 추이: 국채금리 추가 상승 시 성장주 전반의 투자 심리 위축 가능성 확인.\n- 국제 유가 변동성: 이란 관련 지정학적 긴장 완화 기대감 지속 여부에 따른 유가 하락 압력 유지 여부 확인.\n- AI 관련 기업들의 추가 기술 발표 및 파트너십 소식: IonQ, Intel 등 AI 선두 기업들의 추가적인 긍정적 소식이 기술주 투자 심리 강화에 기여할지 여부 확인."
-      },
-      "report_at": "2026-09-19(토) 21:50 KST"
     }
   ],
-  "updated_at": "2026-09-20T18:10:45Z",
+  "updated_at": "2026-09-20T22:02:15Z",
   "max_entries": 10
 }
