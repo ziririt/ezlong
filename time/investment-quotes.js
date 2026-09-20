@@ -10214,5 +10214,12 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "english": "The idea that if you keep playing, you could win. No loss is permanent, because nothing is permanent, ever.",
+    "text": "계속 플레이하다 보면 언젠가 이길 수 있다는 생각. 어떤 패배도 영원하지 않다, 애초에 영원한 것은 아무것도 없으니까.",
+    "title": "내일, 또 내일, 또 내일 (Tomorrow, and Tomorrow, and Tomorrow)",
+    "author": "가브리엘 제빈 (Gabrielle Zevin)",
+    "genre": "literature"
   }
 ];
