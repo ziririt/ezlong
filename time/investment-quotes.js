@@ -10167,5 +10167,12 @@ window.investmentQuotes = [
     "title": "친구들과의 대화 (Conversations with Friends)",
     "author": "샐리 루니 (Sally Rooney)",
     "genre": "literature"
+  },
+  {
+    "english": "The three most harmful addictions are heroin, carbohydrates, and a monthly salary.",
+    "text": "가장 해로운 중독은 세 가지다. 헤로인과 탄수화물, 그리고 매달 받는 월급이다.",
+    "title": "안티프래질 (Antifragile: Things That Gain from Disorder)",
+    "author": "나심 니콜라스 탈레브 (Nassim Nicholas Taleb)",
+    "category": "behavior"
   }
 ];
