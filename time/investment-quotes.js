@@ -10235,5 +10235,12 @@ window.investmentQuotes = [
     "title": "Poor Charlie's Almanack",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "patience"
+  },
+  {
+    "english": "Your story is yours. You own it. You get to tell it the way you want to tell it.",
+    "text": "당신의 이야기는 오롯이 당신의 것이다. 당신이 원하는 방식으로 그것을 들려줄 권리도 당신에게 있다.",
+    "title": "비커밍 (Becoming)",
+    "author": "미셸 오바마 (Michelle Obama)",
+    "genre": "literature"
   }
 ];
