@@ -10228,5 +10228,12 @@ window.investmentQuotes = [
     "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
     "author": "버턴 말킬 (Burton G. Malkiel)",
     "category": "mindset"
+  },
+  {
+    "english": "The big money is not in the buying and the selling, but in the waiting.",
+    "text": "큰돈은 사고 파는 데서 나오는 것이 아니라, 기다리는 데서 나온다.",
+    "title": "Poor Charlie's Almanack",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "patience"
   }
 ];
