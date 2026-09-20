@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-09-21-03:10",
+      "timestamp_kst": "2026-09-21(월) 03:10 KST",
+      "key_event": {
+        "name": "고금리 장기화 우려 지속",
+        "name_en": "Persistent High Interest Rate Concerns",
+        "time": "2026-09-20 직전 정규장 마감 기준",
+        "why": "미 국채금리 상승, 연준 매파적 스탠스, 성장주 할인율 압박",
+        "why_en": "Rising US Treasury yields, hawkish Fed stance, pressure on growth stock valuations"
+      },
+      "positive_total": 40,
+      "negative_total": 60,
+      "summary": "고금리 장기화 우려 및 연준의 매파적 스탠스로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to prolonged high interest rate concerns and hawkish Fed stance",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "유가 하락 및 인플레이션 완화 기대",
+          "name_en": "Oil Price Decline & Inflation Easing Hopes",
+          "desc": "WTI 원유 96.08달러(-5.03%) 하락: 에너지 비용 감소 및 인플레이션 압력 완화 기대",
+          "desc_en": "WTI crude oil fell to $96.08 (-5.03%): Expectations of reduced energy costs and easing inflation pressure",
+          "category": "oil_energy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "미 국채금리 상승 지속",
+          "name_en": "Continued Rise in US Treasury Yields",
+          "desc": "미10년 국채금리 5.00%(+1.03%) 상승: 고금리 장기화 우려 및 성장주 할인율 압박",
+          "desc_en": "US 10-year Treasury yield rose to 5.00% (+1.03%): Concerns over prolonged high rates and pressure on growth stock valuations",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 20,
+          "name": "연준의 매파적 스탠스 지속",
+          "name_en": "Persistent Hawkish Fed Stance",
+          "desc": "월스트리트, 연준 추가 금리 인상 가능성 경계: 고금리 장기화 우려 가중",
+          "desc_en": "Wall Street braces for more Fed rate hikes: Intensifying concerns over prolonged high interest rates",
+          "category": "fed_policy"
+        },
+        {
+          "score": 15,
+          "name": "CPI 물가 상승률 재상승",
+          "name_en": "CPI Inflation Rate Reacceleration",
+          "desc": "CPI 소비자물가 상승률 3.35%(+0.05%p) 기록: 인플레이션 재점화 우려",
+          "desc_en": "CPI consumer inflation rate recorded 3.35% (+0.05%p): Concerns about inflation reacceleration",
+          "category": "macro_data"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "경기 침체 경고 신호",
+          "name_en": "Recession Warning Signals",
+          "desc": "일부 지표에서 경기 둔화 경고 신호 발생: 금리 인하 기대와 경기 침체 우려가 혼재",
+          "desc_en": "Some indicators show signs of economic slowdown: Mixed expectations of rate cuts and recession fears",
+          "category": "macro_data"
+        }
+      ],
+      "report": {
+        "overview": "- 현재 시황: 고금리 장기화 우려와 연준의 매파적 스탠스 지속으로 부정적 분위기 우위.\n- 주요 원인: 미 국채금리 상승과 CPI 물가 상승률 재상승이 인플레이션 압력 가중 및 성장주 할인율 압박.\n- 시장 반응: 유가 하락으로 인플레이션 완화 기대감이 일부 존재하나, 전반적인 고금리 환경에 대한 경계심 잔존.\n- 총점 분석: 긍정 40점 대 부정 60점으로, 부정적 요인이 시장에 더 큰 영향 미치는 상황.",
+        "positive": "- 유가 하락 및 인플레이션 완화 기대: WTI 원유 가격이 96.08달러로 5.03% 하락하며 에너지 비용 감소 및 전반적인 인플레이션 압력 완화 기대감 형성. 월스트리트저널은 유가 하락이 인플레이션 억제에 대한 희망을 높인다고 보도.",
+        "negative": "- 미 국채금리 상승 지속: 미 10년물 국채금리가 5.00%(+1.03%)를 기록하며 1.03% 상승. 이는 고금리 장기화 우려를 심화시키고, 특히 미래 현금 흐름에 의존하는 성장주에 대한 할인율 압박으로 작용. 월스트리트저널은 2년물 미 국채금리가 새로운 다년 최고치를 기록했다고 보도.\n- 연준의 매파적 스탠스 지속: 연방준비제도(Fed)의 추가 금리 인상 가능성에 대한 월스트리트의 경계심이 지속. AP통신은 연준의 금리 인상이 고착화된 인플레이션과 빠른 성장의 새로운 세계를 반영한다고 분석하며 고금리 장기화 우려 가중.\n- CPI 물가 상승률 재상승: 2026년 8월 CPI 소비자물가 상승률이 3.35%로 전월 대비 0.05%p 상승. 이는 인플레이션 재점화 우려를 키우며 연준의 긴축 기조 유지에 대한 압박으로 작용.",
+        "mixed": "- 경기 침체 경고 신호: 일부 경제 지표에서 경기 둔화 경고 신호가 발생하며 금리 인하에 대한 기대감과 동시에 경기 침체에 대한 우려가 혼재. 파이퍼 샌들러는 S&P 500 지수가 0.48% 하락하며 시장 폭이 약화되고 있다고 지적.",
+        "watch": "- 미 국채금리 추이: 미 10년물 국채금리가 5.00%(+1.03%) 수준에서 추가 상승 또는 하락하는지 여부 확인. 상승 시 성장주에 대한 추가 압박, 하락 시 시장 부담 완화.\n- 유가 변동성: WTI 원유 가격이 96.08달러 수준에서 안정화되거나 추가 하락하는지 여부. 유가 하락은 인플레이션 완화 기대를 강화할 수 있음.\n- 주요 지수 선물 흐름: S&P 500, 나스닥 등 주요 지수 선물이 현재 시점(뉴욕 09-20 14:10 ET) 이후 장 마감까지 어떤 방향성을 보이는지 확인."
+      },
+      "report_at": "2026-09-21(월) 03:10 KST"
+    },
+    {
       "id": "2026-09-21-01:25",
       "timestamp_kst": "2026-09-21(월) 01:25 KST",
       "key_event": {
@@ -586,91 +654,8 @@
         "watch": "- 미 10년 국채금리 추이: 국채금리 추가 상승 시 성장주 전반의 투자 심리 위축 가능성 확인.\n- 국제 유가 변동성: 이란 관련 지정학적 긴장 완화 기대감 지속 여부에 따른 유가 하락 압력 유지 여부 확인.\n- AI 관련 기업들의 추가 기술 발표 및 파트너십 소식: IonQ, Intel 등 AI 선두 기업들의 추가적인 긍정적 소식이 기술주 투자 심리 강화에 기여할지 여부 확인."
       },
       "report_at": "2026-09-19(토) 21:50 KST"
-    },
-    {
-      "id": "2026-09-19-18:20",
-      "timestamp_kst": "2026-09-19(토) 18:20 KST",
-      "key_event": {
-        "name": "유가 하락 및 AI 투자 기대 지속",
-        "name_en": "Continued Oil Decline and AI Investment Expectations",
-        "time": "직전 거래일 종가 기준",
-        "why": "인플레이션 완화 기대, 기술주 투자 심리 개선",
-        "why_en": "Expectations of easing inflation, improved tech stock sentiment"
-      },
-      "positive_total": 40,
-      "negative_total": 60,
-      "summary": "유가 하락 및 AI 투자 기대감으로 부정 우위 지속",
-      "summary_en": "Positive bias continues due to falling oil prices and AI investment expectations",
-      "positive_factors": [
-        {
-          "score": 25,
-          "name": "AI 투자 열기 지속",
-          "name_en": "Sustained AI Investment Enthusiasm",
-          "desc": "AI 관련 기업 투자 심리 개선, 기술주 전반의 긍정적 모멘텀",
-          "desc_en": "Improved investment sentiment for AI-related companies, positive momentum for tech stocks",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 15,
-          "name": "달러 약세 전환",
-          "name_en": "Weakening Dollar",
-          "desc": "달러인덱스 DXY 100.22(-0.01%)로 소폭 하락, 원자재 및 수출주에 긍정적",
-          "desc_en": "Dollar Index DXY slightly down to 100.22 (-0.01%), positive for commodities and export stocks",
-          "category": "dollar_fx"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 40,
-          "name": "높은 국채 금리 수준 부담",
-          "name_en": "Burden of High Treasury Yield Levels",
-          "desc": "미10년 국채금리 5.00%(+1.03%)로 여전히 높은 수준, 성장주 할인율 부담 지속",
-          "desc_en": "US 10-year Treasury yield remains high at 5.00%, continuing discount rate pressure on growth stocks",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 10,
-          "name": "AI 산업 설명 부족 논란",
-          "name_en": "Controversy over AI Industry Explanation",
-          "desc": "샘 알트먼, AI 산업 이점 설명 미흡 인정, 투자자 우려 일부 상존",
-          "desc_en": "Sam Altman admits poor explanation of AI benefits, some investor concerns remain",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "name": "중동 지정학적 긴장 지속",
-          "name_en": "Continued Geopolitical Tensions in the Middle East",
-          "desc": "이란 관련 뉴스 지속, 지정학적 불확실성 잔존하나 시장 영향 제한적",
-          "desc_en": "Iran-related news persists, geopolitical uncertainty remains but market impact is limited",
-          "category": "geopolitics",
-          "score": 10
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "유가 하락 및 인플레이션 완화 기대",
-          "name_en": "Falling Oil Prices and Inflation Easing Expectations",
-          "desc": "WTI 원유 100.30달러(-0.86%)로 하락하며 에너지 비용 부담 완화",
-          "desc_en": "WTI crude oil fell to $100.30 (-0.86%), easing energy cost burden",
-          "category": "oil_energy"
-        },
-        {
-          "name": "국채 금리 하락세",
-          "name_en": "Declining Treasury Yields",
-          "desc": "미10년 국채금리 5.00%(-1.03%)로 하락, 성장주 투자 매력 증대",
-          "desc_en": "US 10-year Treasury yield fell to 5.00% (-1.03%), increasing attractiveness for growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "report": {
-        "overview": "- 현재 시장 총점: 긍정 40 대 부정 60으로 부정 우위 지속되는 상황.\n- 주요 원인: 유가 하락으로 인한 인플레이션 완화 기대감에도 불구하고, AI 산업에 대한 투자 기대감이 여전히 부정적 요인과 혼재하며 시장에 불확실성 제공.\n- 하방 압력: 높은 수준의 미국 10년물 국채금리가 성장주 할인율 부담으로 작용하며 시장 전반의 하방 압력으로 작용 중.",
-        "positive": "- AI 투자 열기 지속: AI 관련 기업에 대한 투자 심리가 개선되며 기술주 전반에 긍정적인 모멘텀 형성.\n- 달러 약세 전환: 달러인덱스(DXY)가 100.22로 소폭 하락(-0.01%)하며 달러 약세 전환 조짐. 이는 원자재 가격 안정화 및 수출주에 긍정적인 영향을 미칠 가능성 상존.",
-        "negative": "- 높은 국채 금리 수준 부담: 미국 10년물 국채금리가 5.00%(+1.03%)로 여전히 높은 수준을 유지하며 성장주에 대한 할인율 부담 지속. 연방준비제도(Fed)의 금리 인상 기조가 지속될 것이라는 우려가 시장에 반영.\n- AI 산업 설명 부족 논란: 샘 알트먼이 AI 산업의 이점 설명 미흡을 인정하며 투자자들의 우려가 일부 상존.\n- 중동 지정학적 긴장 지속: 이란 관련 뉴스가 지속적으로 보도되며 지정학적 불확실성이 잔존. 사우디 송유관 공격 위협 등 에너지 공급망 불안정 우려가 시장에 제한적인 영향을 미치는 상황.",
-        "mixed": "- 유가 하락 및 인플레이션 완화 기대: 서부 텍사스산 원유(WTI) 가격이 100.30달러(-0.86%)로 하락하며 에너지 비용 부담 완화 기대감 증대. 이는 전반적인 인플레이션 압력 완화에 기여할 수 있는 긍정적 요인. 반면, 중동 지정학적 긴장 지속은 유가 하락폭을 제한하고 언제든 다시 상승할 수 있는 잠재적 위험으로 작용.\n- 국채 금리 하락세: 미국 10년물 국채금리가 5.00%(-1.03%)로 하락하며 성장주 투자 매력 증대. 이는 높은 금리 수준에 대한 부담을 일부 완화하는 긍정적 신호. 그러나 여전히 높은 절대적 금리 수준은 성장주 할인율 부담을 완전히 해소하기에는 역부족이라는 인식이 공존.",
-        "watch": "- 국채금리 추이 확인: 미국 10년물 국채금리가 5.00%(+1.03%) 수준을 유지하거나 추가 하락할 경우 성장주 투자 심리 개선 가능성 확인.\n- 유가 변동성 주시: 서부 텍사스산 원유(WTI) 가격이 100달러 선을 하회하며 추가 하락할 경우 인플레이션 완화 기대감 증폭 여부 확인.\n- 달러인덱스(DXY) 움직임: 달러인덱스(DXY)가 100.22 이하로 추가 하락하며 달러 약세 기조가 확고해질 경우 원자재 및 수출주에 대한 긍정적 영향 확대 여부 확인."
-      },
-      "report_at": "2026-09-19(토) 18:20 KST"
     }
   ],
-  "updated_at": "2026-09-20T16:25:47Z",
+  "updated_at": "2026-09-20T18:10:45Z",
   "max_entries": 10
 }
