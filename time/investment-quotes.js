@@ -10263,5 +10263,13 @@ window.investmentQuotes = [
     "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
     "author": "존 보글 (John C. Bogle)",
     "category": "patience"
+  },
+  {
+    "english": "Be brave enough to break your own heart.",
+    "text": "때로는 자신의 마음을 부술 만큼 용감해져야 할 때가 있다.",
+    "title": "타이니 뷰티풀 씽즈 (Tiny Beautiful Things)",
+    "author": "셰릴 스트레이드 (Cheryl Strayed)",
+    "category": "에세이",
+    "genre": "literature"
   }
 ];
