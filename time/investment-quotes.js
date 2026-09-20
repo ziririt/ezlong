@@ -10187,5 +10187,12 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각 (The Most Important Thing)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "patience"
+  },
+  {
+    "english": "Freeing yourself was one thing, claiming ownership of that freed self was another.",
+    "text": "스스로를 자유롭게 하는 것과, 그렇게 얻은 자유를 온전히 내 것으로 만드는 것은 전혀 다른 문제였다.",
+    "title": "빌러비드 (Beloved)",
+    "author": "토니 모리슨 (Toni Morrison)",
+    "genre": "literature"
   }
 ];
