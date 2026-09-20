@@ -10201,5 +10201,11 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "text": "먼 곳의 불빛은 나그네를 쉬게 하는 것이 아니라 계속 걸어갈 수 있게 해 준다는 것을",
+    "title": "산속에서",
+    "author": "나희덕",
+    "genre": "literature"
   }
 ];
