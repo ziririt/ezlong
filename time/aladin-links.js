@@ -320,5 +320,8 @@ window.aladinLinks = {
   "에블린 휴고의 일곱 남편 (The Seven Husbands of Evelyn Hugo)|테일러 젠킨스 리드 (Taylor Jenkins Reid)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=317922925&partner=friends327",
   "수필|피천득": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=551775&partner=friends327",
   "새는 날아가면서 뒤돌아보지 않는다|류시화": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=102221816&partner=friends327",
-  "해변의 카프카 (Kafka on the Shore)|무라카미 하루키 (Haruki Murakami)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=424167&partner=friends327"
+  "해변의 카프카 (Kafka on the Shore)|무라카미 하루키 (Haruki Murakami)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=424167&partner=friends327",
+  "부자 아빠 가난한 아빠 (Rich Dad Poor Dad)|로버트 기요사키 (Robert Kiyosaki)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=280148&partner=friends327",
+  "친구들과의 대화 (Conversations with Friends)|샐리 루니 (Sally Rooney)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=173785595&partner=friends327",
+  "빌러비드 (Beloved)|토니 모리슨 (Toni Morrison)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=210117307&partner=friends327"
 };
