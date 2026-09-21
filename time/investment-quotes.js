@@ -10334,5 +10334,12 @@ window.investmentQuotes = [
     "title": "유어 머니 앤 유어 브레인 (Your Money and Your Brain)",
     "author": "제이슨 즈웨이그 (Jason Zweig)",
     "category": "mindset"
+  },
+  {
+    "english": "Whenever you feel afraid, just remember. Courage is the root of change - and change is what we're chemically designed to do.",
+    "text": "두려움이 밀려올 때는 이것만 기억하면 된다. 용기는 변화의 뿌리이고, 변화는 우리가 화학적으로 그렇게 만들어진 존재라는 뜻이다.",
+    "title": "레슨 인 케미스트리 (Lessons in Chemistry)",
+    "author": "보니 가머스 (Bonnie Garmus)",
+    "genre": "literature"
   }
 ];
