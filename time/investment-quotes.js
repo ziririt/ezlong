@@ -10285,5 +10285,12 @@ window.investmentQuotes = [
     "title": "미드나잇 라이브러리 (The Midnight Library)",
     "author": "맷 헤이그 (Matt Haig)",
     "genre": "literature"
+  },
+  {
+    "english": "If the job has been correctly done when a common stock is purchased, the time to sell it is almost never.",
+    "text": "제대로 판단해서 산 주식이라면, 그것을 팔아야 할 때는 거의 오지 않는다.",
+    "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔 (Philip Fisher)",
+    "category": "mindset"
   }
 ];
