@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "id": "2026-09-21-14:19",
+      "timestamp_kst": "2026-09-21(월) 14:19 KST",
+      "key_event": {
+        "name": "고금리 장기화 우려 지속",
+        "name_en": "Persistent High Interest Rate Concerns",
+        "time": "2026-09-21 직전 정규장 마감 기준",
+        "why": "미 국채금리 상승, 연준 매파적 스탠스, 성장주 할인율 압박",
+        "why_en": "Rising US Treasury yields, hawkish Fed stance, pressure on growth stock valuations"
+      },
+      "positive_total": 45,
+      "negative_total": 55,
+      "summary": "고금리 장기화 우려 지속 및 연준의 매파적 스탠스로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to prolonged high interest rate concerns and hawkish Fed stance",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "AI 및 반도체 투자 기대감",
+          "name_en": "AI and Semiconductor Investment Expectations",
+          "desc": "Nvidia CEO 발언 및 반도체 ETF 강세: AI 산업 성장 지속 및 투자 심리 개선",
+          "desc_en": "Nvidia CEO's remarks and strong semiconductor ETF performance: Continued AI industry growth and improved investment sentiment",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 35,
+          "name": "미 국채금리 상승 지속",
+          "name_en": "Continued Rise in US Treasury Yields",
+          "desc": "미10년 국채금리 5.00%(+1.03%) 및 미30년 국채금리 5.33%(+0.66%) 상승: 고금리 장기화 우려 심화",
+          "desc_en": "US 10-year Treasury yield at 5.00%(+1.03%) and 30-year yield at 5.33%(+0.66%) rise: Deepening concerns over prolonged high interest rates",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 20,
+          "name": "AI 관련 잠재적 부채 경고",
+          "name_en": "Warning on Potential AI Liabilities",
+          "desc": "마이클 버리, 하이퍼스케일러의 3조 달러 AI 부채 경고: AI 밸류에이션 부담 가중",
+          "desc_en": "Michael Burry warns of $3 trillion in AI liabilities for hyperscalers: Increasing pressure on AI valuations",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "유가 상승 압력",
+          "name_en": "Upward Pressure on Oil Prices",
+          "desc": "WTI 원유 94.26(+0.60%) 상승: 인플레이션 압력 재점화 우려",
+          "desc_en": "WTI crude oil at 94.26(+0.60%) rise: Concerns about renewed inflationary pressure",
+          "category": "oil_energy"
+        }
+      ],
+      "report": {
+        "overview": "- 현재 시황: 고금리 장기화 우려와 연방준비제도(Fed)의 매파적 스탠스가 지속되며 부정적 요인이 우세한 상황 지속. 총점 긍정 45점 대 부정 55점으로 부정 우위.\n- 주요 원인: 미 국채금리 상승세가 지속되며 고금리 장기화에 대한 시장의 우려를 심화. 이는 성장주 밸류에이션에 대한 할인율 압박으로 작용.\n- 하방 지지: AI 및 반도체 산업에 대한 지속적인 투자 기대감이 일부 긍정적인 요인으로 작용하며 하방을 지지.",
+        "positive": "- AI 및 반도체 투자 기대감: 엔비디아(Nvidia) CEO의 AI 산업 성장 지속 발언과 반도체 ETF(예: SOXX)의 강세가 AI 산업에 대한 투자 심리 개선에 기여. 이는 AI 관련 기업들의 실적 기대감으로 이어지는 상황.",
+        "negative": "- 미 국채금리 상승 지속: 미 10년물 국채금리가 5.00%(+1.03%), 미 30년물 국채금리가 5.33%(+0.66%)로 상승하며 고금리 장기화에 대한 우려를 심화. 이는 주식 시장 전반, 특히 성장주에 대한 밸류에이션 부담 가중.\n- AI 관련 잠재적 부채 경고: 마이클 버리(Michael Burry)가 하이퍼스케일러 기업들의 3조 달러 규모 AI 관련 잠재적 부채를 경고하며 AI 산업의 밸류에이션 부담에 대한 경각심을 고조. 이는 AI 관련 주식에 대한 투자 심리에 부정적인 영향.",
+        "mixed": "- 유가 상승 압력: 서부 텍사스산 원유(WTI) 가격이 94.26달러(+0.60%)로 상승하며 인플레이션 압력 재점화에 대한 우려를 야기. 이는 연방준비제도(Fed)의 긴축 기조 장기화 가능성을 높이는 요인이나, 최근 미국-이란 외교 노력 및 사우디 수출 회복 기대감으로 유가 하락 가능성도 혼재.",
+        "watch": "- 미 국채금리 추이: 미 10년물 및 30년물 국채금리의 추가 상승 여부 확인. 고금리 장기화 우려가 지속될 경우 증시 전반에 추가적인 하방 압력으로 작용할 가능성.\n- 유가 변동성: WTI 원유 가격의 추가 상승 또는 하락 추이 확인. 중동 정세 및 주요 산유국의 생산량 변화에 따른 유가 변동이 인플레이션 압력 및 연방준비제도(Fed)의 통화 정책 스탠스에 영향.\n- 주요 지수 선물 흐름: 다우, S&P 500, 나스닥 선물 지수의 장전 흐름을 통해 개장 전 투자 심리 확인. 특히 기술주 중심의 나스닥 선물 추이가 AI 관련 이슈에 대한 시장의 민감도를 반영."
+      },
+      "report_at": "2026-09-21(월) 14:19 KST"
+    },
+    {
       "id": "2026-09-21-11:50",
       "timestamp_kst": "2026-09-21(월) 11:50 KST",
       "key_event": {
@@ -603,76 +663,8 @@
         "watch": "- 장기 국채금리 추이: 미국 10년물 및 30년물 국채금리의 추가 상승 여부 확인. 금리 상승세가 지속될 경우 성장주에 대한 할인율 부담이 더욱 커질 우려.\n- 원유 가격 변동성: WTI 원유 가격이 100달러 선을 유지하거나 추가 상승할 경우 인플레이션 압력이 심화될 수 있으므로 유가 추이 확인."
       },
       "report_at": "2026-09-20(일) 11:50 KST"
-    },
-    {
-      "id": "2026-09-20-08:20",
-      "timestamp_kst": "2026-09-20(일) 08:20 KST",
-      "key_event": {
-        "name": "AI 투자 기대감 지속",
-        "name_en": "Continued AI Investment Optimism",
-        "time": "직전 거래일 마감 기준",
-        "why": "기술주 투자 심리 개선, 반도체 섹터 강세 지속",
-        "why_en": "Improved tech investor sentiment, sustained strength in semiconductor sector"
-      },
-      "positive_total": 45,
-      "negative_total": 55,
-      "summary": "AI 투자 기대감 지속으로 부정 우위 유지",
-      "summary_en": "Positive bias maintained due to sustained AI investment optimism and falling oil prices",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "AI 산업 성장 기대감",
-          "name_en": "Optimism for AI Industry Growth",
-          "desc": "Bloom Energy의 데이터 센터 관련 대규모 수주잔고 소식: AI 인프라 투자 지속 확인",
-          "desc_en": "Bloom Energy's large data center backlog: confirms continued AI infrastructure investment",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 5.00%(+1.03%), 미30년 국채금리 5.33%(+0.66%) 상승: 성장주 할인율 압박",
-          "desc_en": "US 10-year Treasury yield rose to 5.00% (+1.03%), 30-year to 5.33% (+0.66%): pressure on growth stock valuations",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 20,
-          "name": "AI 수익성 우려 지속",
-          "name_en": "Persistent AI Profitability Concerns",
-          "desc": "Goldman Sachs, S&P 500의 AI 수익 증가세 2027년 둔화 경고: 장기적 수익성 불확실성",
-          "desc_en": "Goldman Sachs warns S&P 500 AI profit gains to fade in 2027: long-term profitability uncertainty",
-          "category": "ai_tech_valuation"
-        },
-        {
-          "score": 10,
-          "name": "이란 지정학적 긴장 지속",
-          "name_en": "Continued Iran Geopolitical Tensions",
-          "desc": "이란 전쟁 대치 지속 및 호르무즈 해협 관련 뉴스: 중동 불안정성 고조",
-          "desc_en": "Ongoing Iran war standoff and Strait of Hormuz news: heightened Middle East instability",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "WTI 원유 가격 하락",
-          "name_en": "WTI Crude Oil Price Decline",
-          "desc": "WTI 원유 가격 100.30달러(-0.86%) 하락: 에너지 비용 감소 및 인플레이션 완화 기대",
-          "desc_en": "WTI crude oil price fell to $100.30 (-0.86%): lower energy costs and inflation easing expectations",
-          "category": "oil_energy"
-        }
-      ],
-      "report": {
-        "overview": "- 총점: AI 투자 기대감 지속에도 불구하고 부정적 요인 우위로 총점 긍정 45 대 부정 55 기록.\n- 핵심 이슈: AI 투자 기대감 지속이 기술주 투자 심리 개선과 반도체 섹터 강세를 이끌었으나, 국채금리 상승과 AI 수익성 우려가 시장을 압박.\n- 시장 분위기: 미 국채금리 상승으로 성장주 할인율 압박이 심화되고, 장기적인 AI 수익성 불확실성 경고가 투자 심리에 부정적 영향.\n- 지정학적 리스크: 이란 지정학적 긴장 지속으로 중동 불안정성이 고조되며 시장에 추가적인 불확실성 잔존.",
-        "positive": "- AI 산업 성장 기대감: Bloom Energy가 데이터 센터 관련 대규모 수주잔고를 확보했다는 소식은 AI 인프라 투자가 견고하게 지속되고 있음을 확인. 이는 AI 관련 기술주 전반에 대한 긍정적 투자 심리 유지에 기여.",
-        "negative": "- 미 국채금리 상승: 미 10년 국채금리가 5.00%(+1.03%)로, 미 30년 국채금리가 5.33%(+0.66%)로 상승하며 성장주에 대한 할인율 압박이 심화. 이는 특히 미래 수익에 대한 기대감으로 주가가 형성되는 기술주에 부정적 영향.\n- AI 수익성 우려 지속: Goldman Sachs는 S&P 500 기업들의 AI 수익 증가세가 2027년부터 둔화될 수 있다고 경고하며, AI 관련 투자의 장기적인 수익성 불확실성에 대한 우려를 제기. 이는 단기적인 AI 기대감에도 불구하고 장기 투자 심리에 부담.\n- 이란 지정학적 긴장 지속: 이란과 관련된 전쟁 대치 상황 및 호르무즈 해협 관련 뉴스가 지속적으로 보도되며 중동 지역의 불안정성이 고조. 이는 글로벌 에너지 공급망과 지정학적 리스크에 대한 투자자들의 우려를 증폭.",
-        "mixed": "- WTI 원유 가격 하락: WTI 원유 가격이 100.30달러(-0.86%)로 하락하며 에너지 비용 감소와 인플레이션 완화에 대한 기대를 불러일으킴. 이는 기업의 생산 비용 부담을 줄이고 소비 심리를 개선할 수 있는 긍정적 요인. 반면, 유가 하락은 글로벌 경기 둔화에 대한 우려를 반영할 수도 있어 시장에 혼조세 유발.",
-        "watch": "- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가적인 상승 또는 하락 여부가 성장주 할인율에 지속적인 영향을 미치므로, 실시간 금리 변동 추이 확인.\n- 유가 변동성: WTI 원유 가격의 추가적인 변동이 에너지 비용 및 인플레이션 기대감에 미치는 영향을 주시. 유가 안정 또는 추가 하락 시 시장에 긍정적 신호로 작용 가능.\n- 지정학적 뉴스: 이란 관련 지정학적 긴장 완화 또는 심화 여부에 대한 새로운 뉴스 플로우를 주시. 중동 지역의 안정성 변화가 글로벌 시장에 미치는 영향 확인."
-      },
-      "report_at": "2026-09-20(일) 08:20 KST"
     }
   ],
-  "updated_at": "2026-09-21T02:51:10Z",
+  "updated_at": "2026-09-21T05:20:10Z",
   "max_entries": 10
 }
