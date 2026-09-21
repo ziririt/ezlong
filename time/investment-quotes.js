@@ -10292,5 +10292,12 @@ window.investmentQuotes = [
     "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
     "author": "필립 피셔 (Philip Fisher)",
     "category": "mindset"
+  },
+  {
+    "text": "우리가 지금 괴로운 이유는 우리의 믿음, 즉 노력이 우리를 자주 배신하기 때문이다. 나는 죽어라 열심히 노력하는데 고작 이 정도고, 누구는 아무런 노력을 안 하고도 많은 걸 가져서다.",
+    "title": "하마터면 열심히 살 뻔했다",
+    "author": "하완",
+    "category": "에세이",
+    "genre": "literature"
   }
 ];
