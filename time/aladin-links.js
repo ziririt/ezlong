@@ -323,5 +323,6 @@ window.aladinLinks = {
   "해변의 카프카 (Kafka on the Shore)|무라카미 하루키 (Haruki Murakami)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=424167&partner=friends327",
   "부자 아빠 가난한 아빠 (Rich Dad Poor Dad)|로버트 기요사키 (Robert Kiyosaki)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=280148&partner=friends327",
   "친구들과의 대화 (Conversations with Friends)|샐리 루니 (Sally Rooney)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=173785595&partner=friends327",
-  "빌러비드 (Beloved)|토니 모리슨 (Toni Morrison)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=210117307&partner=friends327"
+  "빌러비드 (Beloved)|토니 모리슨 (Toni Morrison)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=210117307&partner=friends327",
+  "어느 투자자의 회상 (Reminiscences of a Stock Operator)|에드윈 르페브르 (Edwin Lefevre)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=305342327&partner=friends327"
 };
