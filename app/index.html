@@ -31,41 +31,75 @@
   "name": "EZLONG 앱",
   "url": "https://ezlong.com/app/",
   "inLanguage": "ko",
-  "publisher": {"@type": "Organization", "name": "EZLONG", "url": "https://ezlong.com"},
+  "publisher": {
+    "@type": "Organization",
+    "name": "EZLONG",
+    "url": "https://ezlong.com"
+  },
   "mainEntity": {
     "@type": "ItemList",
     "itemListElement": [
-      {"@type": "ListItem", "position": 1, "item": {
-        "@type": "SoftwareApplication",
-        "name": "Skyblue Note",
-        "alternateName": ["스카이블루 노트", "블루스카이 노트"],
-        "url": "https://ezlong.com/skybluenote",
-        "applicationCategory": "ProductivityApplication",
-        "operatingSystem": "iOS, iPadOS, macOS, Android, Windows, Web",
-        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"},
-        "description": "챗GPT·클로드·제미나이 답변을 붙여넣으면 마크다운 기호와 군더더기를 걷어내고 깨진 표를 복구해 엑셀로 바로 복사하는 무료 노트 앱.",
-        "installUrl": "https://apps.apple.com/app/skyblue-note/id6802185169"
-      }},
-      {"@type": "ListItem", "position": 2, "item": {
-        "@type": "SoftwareApplication",
-        "name": "Long Time, Easy Life",
-        "url": "https://ezlong.com/time/",
-        "applicationCategory": "LifestyleApplication",
-        "operatingSystem": "iOS, watchOS, Web",
-        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"},
-        "description": "좋아하는 음악이 속삭이듯 시작해 서서히 커지며 깨워 주는 무료 기상 알람. 플립시계와 날씨, 애플워치 지원.",
-        "installUrl": "https://apps.apple.com/kr/app/id6793780938"
-      }},
-      {"@type": "ListItem", "position": 3, "item": {
-        "@type": "WebApplication",
-        "name": "Insight Times",
-        "alternateName": ["인사이트 타임스", "인사이트타임스"],
-        "url": "https://insightimes.com/",
-        "applicationCategory": "NewsApplication",
-        "operatingSystem": "Web, iOS, Android",
-        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"},
-        "description": "AI 시대 투자자의 인사이트. 반도체·빅테크·금리가 어느 회사 손익에 닿는지를 풀어 쓰는 무료 웹진. 평일 아침 미국장 마감 시황과 월요일 주간 전망, 뉴스레터와 영문판."
-      }}
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "WebApplication",
+          "name": "Insight Times",
+          "alternateName": [
+            "인사이트 타임스",
+            "인사이트타임스"
+          ],
+          "url": "https://insightimes.com/",
+          "applicationCategory": "NewsApplication",
+          "operatingSystem": "Web, iOS, Android",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "KRW"
+          },
+          "description": "AI 시대 투자자의 인사이트. 반도체·빅테크·금리가 어느 회사 손익에 닿는지를 풀어 쓰는 무료 웹진. 평일 아침 미국장 마감 시황과 월요일 주간 전망, 뉴스레터와 영문판."
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "SoftwareApplication",
+          "name": "Skyblue Note",
+          "alternateName": [
+            "스카이블루 노트",
+            "블루스카이 노트"
+          ],
+          "url": "https://ezlong.com/skybluenote",
+          "applicationCategory": "ProductivityApplication",
+          "operatingSystem": "iOS, iPadOS, macOS, Android, Windows, Web",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "KRW"
+          },
+          "description": "챗GPT·클로드·제미나이 답변을 붙여넣으면 마크다운 기호와 군더더기를 걷어내고 깨진 표를 복구해 엑셀로 바로 복사하는 무료 노트 앱.",
+          "installUrl": "https://apps.apple.com/app/skyblue-note/id6802185169"
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@type": "SoftwareApplication",
+          "name": "Long Time, Easy Life",
+          "url": "https://ezlong.com/time/",
+          "applicationCategory": "LifestyleApplication",
+          "operatingSystem": "iOS, watchOS, Web",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "KRW"
+          },
+          "description": "좋아하는 음악이 속삭이듯 시작해 서서히 커지며 깨워 주는 무료 기상 알람. 플립시계와 날씨, 애플워치 지원.",
+          "installUrl": "https://apps.apple.com/kr/app/id6793780938"
+        }
+      }
     ]
   }
 }
@@ -186,6 +220,45 @@
   <div class="wrap">
 
     <article class="card">
+      <p class="kind">웹진 · 미국 주식</p>
+      <h2><a class="plain" href="https://insightimes.com/">Insight Times</a></h2>
+      <p><a class="plain" href="https://insightimes.com/" tabindex="-1" aria-label="Insight Times 열기">AI 시대 투자자의 인사이트. 반도체와 빅테크, 금리와 유가가 어느 회사의
+         손익에 언제 닿는지를 풀어 씁니다. 평일 아침에는 전날 미국장 마감 시황, 월요일에는 한 주
+         전망이 올라오고, 뉴스레터로도 받아 볼 수 있습니다. 홈 화면에 올려 두면 앱처럼 열립니다.</a></p>
+      <div class="shots">
+        <figure>
+          <a class="plain" href="https://insightimes.com/" tabindex="-1">
+          <img src="shots/it-1.jpg" alt="Insight Times 첫 화면" loading="lazy">
+          <figcaption>첫 화면</figcaption>
+          </a>
+        </figure>
+        <figure>
+          <a class="plain" href="https://insightimes.com/" tabindex="-1">
+          <img src="shots/it-3.jpg" alt="기사 머리와 태그" loading="lazy">
+          <figcaption>기사</figcaption>
+          </a>
+        </figure>
+        <figure>
+          <a class="plain" href="https://insightimes.com/" tabindex="-1">
+          <img src="shots/it-2.jpg" alt="숫자를 크게 세운 기사 속 수치판" loading="lazy">
+          <figcaption>숫자로 읽기</figcaption>
+          </a>
+        </figure>
+        <figure>
+          <a class="plain" href="https://insightimes.com/en" tabindex="-1">
+          <img src="shots/it-4.jpg" alt="Insight Times 영문판 첫 화면" loading="lazy">
+          <figcaption>영문판</figcaption>
+          </a>
+        </figure>
+      </div>
+      <div class="links">
+        <a class="chip go" href="https://insightimes.com/">웹진 열기 <small>설치 없이</small></a>
+        <a class="chip" href="https://insightimes.com/#newsletter">뉴스레터 받기</a>
+        <a class="chip" href="https://insightimes.com/en">English</a>
+        <span class="badge">홈 화면에 추가하면 앱처럼</span>
+      </div>
+    </article>
+    <article class="card">
       <p class="kind">시계 · 스탠바이</p>
       <h2><a class="plain" href="/longtime/">Long Time, Easy Life</a></h2>
       <p><a class="plain" href="/longtime/" tabindex="-1" aria-label="Long Time, Easy Life 소개 보기">충전기에 꽂아 가로로 세워두면 큼직한 플립시계가 뜨고, 계절과 날씨와 시간에
@@ -278,45 +351,6 @@
         <a class="chip" href="https://apps.apple.com/app/skyblue-note/id6802185169">App Store</a>
         <span class="chip wait">Google Play <small>테스트 중</small></span>
         <span class="chip wait">Microsoft Store <small>준비 중</small></span>
-      </div>
-    </article>
-    <article class="card">
-      <p class="kind">웹진 · 미국 주식</p>
-      <h2><a class="plain" href="https://insightimes.com/">Insight Times</a></h2>
-      <p><a class="plain" href="https://insightimes.com/" tabindex="-1" aria-label="Insight Times 열기">AI 시대 투자자의 인사이트. 반도체와 빅테크, 금리와 유가가 어느 회사의
-         손익에 언제 닿는지를 풀어 씁니다. 평일 아침에는 전날 미국장 마감 시황, 월요일에는 한 주
-         전망이 올라오고, 뉴스레터로도 받아 볼 수 있습니다. 홈 화면에 올려 두면 앱처럼 열립니다.</a></p>
-      <div class="shots">
-        <figure>
-          <a class="plain" href="https://insightimes.com/" tabindex="-1">
-          <img src="shots/it-1.jpg" alt="Insight Times 첫 화면" loading="lazy">
-          <figcaption>첫 화면</figcaption>
-          </a>
-        </figure>
-        <figure>
-          <a class="plain" href="https://insightimes.com/" tabindex="-1">
-          <img src="shots/it-3.jpg" alt="기사 머리와 태그" loading="lazy">
-          <figcaption>기사</figcaption>
-          </a>
-        </figure>
-        <figure>
-          <a class="plain" href="https://insightimes.com/" tabindex="-1">
-          <img src="shots/it-2.jpg" alt="숫자를 크게 세운 기사 속 수치판" loading="lazy">
-          <figcaption>숫자로 읽기</figcaption>
-          </a>
-        </figure>
-        <figure>
-          <a class="plain" href="https://insightimes.com/en" tabindex="-1">
-          <img src="shots/it-4.jpg" alt="Insight Times 영문판 첫 화면" loading="lazy">
-          <figcaption>영문판</figcaption>
-          </a>
-        </figure>
-      </div>
-      <div class="links">
-        <a class="chip go" href="https://insightimes.com/">웹진 열기 <small>설치 없이</small></a>
-        <a class="chip" href="https://insightimes.com/#newsletter">뉴스레터 받기</a>
-        <a class="chip" href="https://insightimes.com/en">English</a>
-        <span class="badge">홈 화면에 추가하면 앱처럼</span>
       </div>
     </article>
 
