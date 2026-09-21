@@ -10327,5 +10327,12 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "english": "In order to learn from a mistake, you must first admit you made a mistake. It's much healthier to do that out loud than to kick yourself in private shame.",
+    "text": "실수에서 무언가를 배우려면, 먼저 실수를 저질렀다는 사실을 인정해야 한다. 혼자 조용히 자책하기보다 그것을 소리 내어 인정하는 편이 훨씬 건강하다.",
+    "title": "유어 머니 앤 유어 브레인 (Your Money and Your Brain)",
+    "author": "제이슨 즈웨이그 (Jason Zweig)",
+    "category": "mindset"
   }
 ];
