@@ -10278,5 +10278,12 @@ window.investmentQuotes = [
     "title": "성공 투자의 황금률 (Golden Rules for Investment Success)",
     "author": "존 템플턴 (John Templeton)",
     "category": "mindset"
+  },
+  {
+    "english": "The only way to learn is to live.",
+    "text": "삶을 실제로 살아내는 것, 그것만이 유일하게 배우는 방법이다.",
+    "title": "미드나잇 라이브러리 (The Midnight Library)",
+    "author": "맷 헤이그 (Matt Haig)",
+    "genre": "literature"
   }
 ];
