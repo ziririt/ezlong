@@ -10313,5 +10313,12 @@ window.investmentQuotes = [
     "title": "어느 투자자의 회상 (Reminiscences of a Stock Operator)",
     "author": "에드윈 르페브르 (Edwin Lefevre)",
     "category": "patience"
+  },
+  {
+    "english": "It is remarkable how much long-term advantage people like us have gotten by trying to be consistently not stupid, instead of trying to be very intelligent.",
+    "text": "우리 같은 사람들이 오랜 세월 쌓아온 우위는 뛰어난 지혜가 아니라, 꾸준히 어리석지 않으려 애쓴 데서 나왔다. 놀랍게도 그것만으로 충분했다.",
+    "title": "Poor Charlie's Almanack",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "mindset"
   }
 ];
