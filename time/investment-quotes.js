@@ -10320,5 +10320,12 @@ window.investmentQuotes = [
     "title": "Poor Charlie's Almanack",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "mindset"
+  },
+  {
+    "english": "Know what you own, and know why you own it.",
+    "text": "당신이 무엇을 보유하고 있는지, 그리고 왜 그것을 보유하고 있는지를 알아야 한다.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
   }
 ];
