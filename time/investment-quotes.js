@@ -10341,5 +10341,12 @@ window.investmentQuotes = [
     "title": "레슨 인 케미스트리 (Lessons in Chemistry)",
     "author": "보니 가머스 (Bonnie Garmus)",
     "genre": "literature"
+  },
+  {
+    "english": "Wealth is what you don't see.",
+    "text": "부는 우리 눈에 보이지 않는 것이다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절 (Morgan Housel)",
+    "category": "mindset"
   }
 ];
