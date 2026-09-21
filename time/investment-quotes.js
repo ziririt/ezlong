@@ -10381,5 +10381,12 @@ window.investmentQuotes = [
     "title": "비커밍 (Becoming)",
     "author": "미셸 오바마 (Michelle Obama)",
     "genre": "literature"
+  },
+  {
+    "english": "There are no good or bad stocks, there are only rising and falling stocks.",
+    "text": "좋은 주식도 나쁜 주식도 없다. 오르는 주식과 내리는 주식이 있을 뿐이다. 나는 이 사실을 받아들이고 나서야 비로소 감정을 걷어내고 흐름을 따라갈 수 있었다.",
+    "title": "나는 어떻게 주식투자로 2백만 달러를 벌었나 (How I Made $2,000,000 in the Stock Market)",
+    "author": "니콜라스 다바스 (Nicolas Darvas)",
+    "category": "mindset"
   }
 ];
