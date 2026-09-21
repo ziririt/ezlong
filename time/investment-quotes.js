@@ -10306,5 +10306,12 @@ window.investmentQuotes = [
     "title": "원칙 (Principles: Life and Work)",
     "author": "레이 달리오 (Ray Dalio)",
     "category": "mindset"
+  },
+  {
+    "english": "It never was my thinking that made the big money for me. It always was my sitting.",
+    "text": "나를 큰돈 벌게 해준 것은 생각이 아니라, 언제나 가만히 앉아 버티는 힘이었다.",
+    "title": "어느 투자자의 회상 (Reminiscences of a Stock Operator)",
+    "author": "에드윈 르페브르 (Edwin Lefevre)",
+    "category": "patience"
   }
 ];
