@@ -10348,5 +10348,11 @@ window.investmentQuotes = [
     "title": "돈의 심리학 (The Psychology of Money)",
     "author": "모건 하우절 (Morgan Housel)",
     "category": "mindset"
+  },
+  {
+    "text": "나 보기가 역겨워\n가실 때에는\n말없이 고이 보내 드리우리다",
+    "title": "진달래꽃",
+    "author": "김소월",
+    "genre": "literature"
   }
 ];
