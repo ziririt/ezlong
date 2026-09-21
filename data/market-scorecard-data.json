@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-09-22-07:00",
+      "timestamp_kst": "2026-09-22(화) 07:00 KST",
+      "key_event": {
+        "name": "AI 반도체 수요 재점화",
+        "name_en": "AI Semiconductor Demand Reignited",
+        "time": "2026-09-21 포스트마켓",
+        "why": "주요 AI 반도체 기업 주가 급등, 시장 심리 개선",
+        "why_en": "Key AI semiconductor stocks surge, market sentiment improves"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "AI 반도체 수요 재점화로 긍정 우위 지속",
+      "summary_en": "Continued positive sentiment driven by reignited AI semiconductor demand and strong tech sector performance",
+      "positive_factors": [
+        {
+          "score": 50,
+          "name": "AI 반도체 수요 재점화",
+          "name_en": "AI Semiconductor Demand Reignited",
+          "desc": "주요 AI 반도체 기업 주가 급등, TSMC 패키징 호황 기대",
+          "desc_en": "Key AI semiconductor stocks surge, anticipation of TSMC packaging boom",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "미-이란 외교 진전 기대",
+          "name_en": "US-Iran Diplomatic Progress Anticipated",
+          "desc": "US-Iran 외교 진전으로 유가 하락, WTI 91.97 달러(-2.13%)",
+          "desc_en": "US-Iran diplomatic progress leads to oil price decline, WTI at $91.97 (-2.13%)",
+          "category": "geopolitics"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "연준 매파적 스탠스 지속",
+          "name_en": "Fed's Hawkish Stance Continues",
+          "desc": "연준 인사들 추가 금리 인상 필요성 언급, 인플레이션 우려 잔존",
+          "desc_en": "Fed officials suggest more rate hikes needed, inflation concerns persist",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "미-중 정상회담 기대감",
+          "name_en": "US-China Summit Expectations",
+          "desc": "트럼프-시진핑 회담 가능성 언급, 엔비디아 중국 사업 전망 불확실성",
+          "desc_en": "Potential Trump-Xi meeting mentioned, uncertainty for Nvidia's China prospects",
+          "category": "geopolitics"
+        },
+        {
+          "name": "장기 국채금리 하락",
+          "name_en": "Long-Term Treasury Yields Decline",
+          "desc": "미10년 국채금리 4.96%(-0.70%) 하락, 성장주 투자 매력 증가",
+          "desc_en": "US 10-year Treasury yield falls to 4.96% (-0.70%), increasing appeal for growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "report": {
+        "overview": "- 시장 총평: AI 반도체 수요 재점화에 힘입어 긍정적 시장 분위기 지속, 총점 긍정 75 대 부정 25로 긍정 우위.\n- 핵심 동력: 주요 AI 반도체 기업들의 주가 급등과 TSMC 패키징 호황 기대감이 시장 심리 개선을 주도.\n- 하방 압력: 연준의 매파적 스탠스 유지와 인플레이션 우려 잔존이 시장의 잠재적 하방 압력으로 작용.\n- 혼조 요인: 미-중 정상회담 기대감과 장기 국채금리 하락은 시장에 양면적인 영향을 미치는 요인으로 작용.",
+        "positive": "- AI 반도체 수요 재점화: 주요 AI 반도체 기업들의 주가 급등으로 시장 심리 개선. Fastly가 AI 방화벽 출시로 14% 급등하고, Cloudflare 7%, Datadog 5% 상승. TSMC의 패키징 기술 호황에 대한 기대감으로 관련 칩 기업들의 수혜 전망.\n- 미-이란 외교 진전 기대: 미국과 이란 간 외교 진전 가능성 언급으로 국제 유가 하락. 서부 텍사스산 원유(WTI) 가격이 91.97 달러로 2.13% 하락하며 인플레이션 압력 완화 기대감 증대.",
+        "negative": "- 연준 매파적 스탠스 지속: 연방준비제도 인사들의 추가 금리 인상 필요성 언급으로 시장에 긴축 기조 유지 우려 잔존. PCE 물가상승률이 3.70%로 여전히 높은 수준을 유지하며 인플레이션에 대한 경계심 지속.",
+        "mixed": "- 미-중 정상회담 기대감: 트럼프 전 대통령과 시진핑 주석 간의 회담 가능성 언급으로 지정학적 불확실성 완화 기대감 형성. 그러나 엔비디아의 중국 사업 전망에 대한 불확실성이 동시에 제기되며 혼조세.\n- 장기 국채금리 하락: 미국 10년물 국채금리가 4.96%(-0.70%)로 0.70% 하락하며 성장주 투자 매력 증가. 그러나 금리 하락이 경기 둔화에 대한 우려를 반영할 수 있다는 해석도 공존하며 시장에 혼조 영향.",
+        "watch": "- 국채금리 추이: 미국 10년물 국채금리의 추가적인 하락 또는 반등 여부 확인. 금리 변동이 성장주 및 기술주에 미치는 영향 주시.\n- 유가 변동성: 미-이란 외교 진전 관련 추가 소식에 따른 국제 유가(WTI)의 안정화 또는 추가 변동성 확인.\n- 주요 지수 선물 흐름: 뉴욕 증시 개장 전 주요 지수 선물(예: 나스닥 100 선물)의 움직임을 통해 시장의 전반적인 투자 심리 변화 확인."
+      },
+      "report_at": "2026-09-22(화) 07:00 KST"
+    },
+    {
       "id": "2026-09-22-04:56",
       "timestamp_kst": "2026-09-22(화) 04:56 KST",
       "key_event": {
@@ -590,76 +657,8 @@
         "watch": "- 미 국채금리 추이: 미 10년물 및 30년물 국채금리의 추가적인 상승 또는 하락 여부 확인. 금리 변동은 성장주 할인율에 직접적인 영향을 미치므로 시장 방향성 판단의 주요 지표.\n- 유가 변동성: 중동 지정학적 긴장과 관련된 국제 유가(WTI, 브렌트유)의 추이 확인. 유가 상승은 인플레이션 압력을 가중시켜 연준의 통화정책에 영향을 미칠 수 있음.\n- 주요 지수 선물 흐름: S&P 500, 나스닥 100 등 주요 지수 선물의 실시간 움직임 확인. 이는 개장 전 시장 분위기와 투자 심리를 반영하는 지표."
       },
       "report_at": "2026-09-21(월) 08:23 KST"
-    },
-    {
-      "id": "2026-09-21-07:00",
-      "timestamp_kst": "2026-09-21(월) 07:00 KST",
-      "key_event": {
-        "name": "고금리 장기화 우려 지속",
-        "name_en": "Persistent Concerns over Prolonged High Interest Rates",
-        "time": "2026-09-20 직전 거래일 마감 기준",
-        "why": "미 국채금리 상승, 연준 매파적 스탠스, 성장주 할인율 압박",
-        "why_en": "Rising US Treasury yields, hawkish Fed stance, pressure on growth stock valuations"
-      },
-      "positive_total": 45,
-      "negative_total": 55,
-      "summary": "고금리 장기화 우려 및 연준의 매파적 스탠스로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to prolonged high interest rate concerns and hawkish Fed stance",
-      "positive_factors": [
-        {
-          "score": 25,
-          "name": "유가 하락",
-          "name_en": "Oil Price Decline",
-          "desc": "WTI 원유 96.08 USD (-5.03%) 하락: 인플레이션 압력 완화 기대",
-          "desc_en": "WTI crude oil fell to $96.08 USD (-5.03%), easing inflation concerns",
-          "category": "oil_energy"
-        },
-        {
-          "score": 20,
-          "name": "AI 산업 투자 확대",
-          "name_en": "Expanding AI Industry Investment",
-          "desc": "ASML 및 TSMC 등 칩 제조업체, AI 칩 생산 확대 계획 발표",
-          "desc_en": "Chipmakers like ASML and TSMC announce plans to expand AI chip production",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 25,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 5.00%(+1.03%), 미30년 국채금리 5.33%(+0.66%) 상승: 성장주 할인율 압박",
-          "desc_en": "US 10-year Treasury yield rose to 5.00% (+1.03%) and 30-year to 5.33% (+0.66%), pressuring growth stock valuations",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 20,
-          "name": "연준 매파적 스탠스 지속",
-          "name_en": "Continued Hawkish Fed Stance",
-          "desc": "연준 금리 인상 및 고금리 장기화 우려 지속: 시장 불확실성 증대",
-          "desc_en": "Fed's rate hikes and prolonged high interest rate concerns persist, increasing market uncertainty",
-          "category": "fed_policy"
-        },
-        {
-          "score": 10,
-          "name": "AI 버블 붕괴 경고",
-          "name_en": "AI Bubble Burst Warning",
-          "desc": "닷컴 버블 사례와 비교하며 AI 버블 붕괴 시 QQQ 회복 장기화 가능성 제기",
-          "desc_en": "Comparison to Dot-Com bubble suggests potential long recovery for QQQ if AI bubble bursts",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 9월18일(금, 뉴욕) 미국 증시는 고금리 장기화 우려와 연방준비제도(Fed)의 매파적 스탠스 지속으로 부정적 우위가 유지되는 양상\n- 미 10년 및 30년 국채금리의 상승은 성장주 할인율에 압박을 가하며 시장 전반에 불확실성 증대\n- 유가 하락과 AI 산업 투자 확대는 긍정적 재료로 작용했으나, AI 버블 붕괴 경고와 고금리 우려를 상쇄하기에는 역부족\n- 총점 긍정 45 대 부정 55로 부정적 전망이 우세한 상황 지속",
-        "positive": "- 유가 하락: 서부 텍사스산 원유(WTI) 가격이 96.08달러로 5.03% 하락하며 인플레이션 압력 완화에 대한 기대를 높임. 이는 미국 증시 상승에 대한 희망을 제공하는 요인으로 작용.\n- AI 산업 투자 확대: ASML 및 TSMC와 같은 주요 칩 제조업체들이 AI 칩 생산 확대를 위한 계획을 발표하며 AI 산업 성장에 대한 긍정적 전망을 강화. 이는 반도체 섹터 전반에 대한 투자 심리를 개선하는 요인.",
-        "negative": "- 미 국채금리 상승: 미 10년 국채금리가 5.00%(+1.03%), 미 30년 국채금리가 5.33%(+0.66%)로 상승하며 성장주 가치 평가에 사용되는 할인율을 압박. 이는 기술주 중심의 시장에 부정적인 영향을 미치는 요인.\n- 연준 매파적 스탠스 지속: 연방준비제도(Fed)의 금리 인상 및 고금리 장기화에 대한 우려가 지속되며 시장 불확실성 증대. Fed의 금리 인상 결정은 끈적한 인플레이션과 빠른 성장을 반영하는 것으로 해석.\n- AI 버블 붕괴 경고: 닷컴 버블 사례와 비교하여 AI 버블 붕괴 시 QQQ(나스닥 100 추종 ETF) 회복이 2042년까지 장기화될 수 있다는 경고가 제기. 이는 AI 관련 기술주에 대한 투자 심리를 위축시키는 요인.",
-        "mixed": "",
-        "watch": "- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가 상승 여부 확인. 금리 상승세가 지속될 경우 성장주 할인율 압박 심화로 시장 전반의 하방 압력 증대.\n- 유가 변동성: WTI 원유 가격의 추가 하락 또는 반등 여부 확인. 유가 하락세가 지속될 경우 인플레이션 압력 완화 기대감으로 시장에 긍정적 영향, 반등 시 인플레이션 우려 재점화 가능성.\n- 주요 지수 선물 움직임: S&P 500 및 나스닥 100 선물 지수의 장전 움직임 확인. 이는 개장 전 투자 심리와 시장 방향성을 가늠하는 중요한 지표."
-      },
-      "report_at": "2026-09-21(월) 07:00 KST"
     }
   ],
-  "updated_at": "2026-09-21T19:56:53Z",
+  "updated_at": "2026-09-21T22:02:32Z",
   "max_entries": 10
 }
