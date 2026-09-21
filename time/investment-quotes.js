@@ -10361,5 +10361,11 @@ window.investmentQuotes = [
     "title": "저스트 킵 바잉 (Just Keep Buying)",
     "author": "닉 매기울리 (Nick Maggiulli)",
     "category": "mindset"
+  },
+  {
+    "text": "세상에 행복이란 게 존재한다면 잠시 머무는 이 계절의 모습을 하고 있을 것이다.",
+    "title": "제철 행복",
+    "author": "김신지",
+    "genre": "literature"
   }
 ];
