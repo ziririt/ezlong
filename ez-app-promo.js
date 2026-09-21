@@ -58,7 +58,7 @@
       icon: '/assets/promo/insightimes-192.png',
       name: 'Insight Times',
       kind: '투자 웹진',
-      desc: '하루를 읽고, 10년을 봅니다: 주식 투자자의 지식교양 웹진',
+      desc: 'AI시대 투자자의 인사이트',
       go: '웹진 보기'
     }
   ];
