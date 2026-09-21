@@ -45,6 +45,21 @@
       name: 'Skyblue Note',
       kind: '노트 앱',
       desc: 'AI 답변을 붙여넣으면 깨진 표가 다시 섭니다'
+    },
+    /* 2026-09-22 - 앱이 아니라 웹진이다. 그래서 세 가지가 다르다.
+       ① 바깥 주소라 새 탭으로 연다: 읽던 ezlong 화면을 잃지 않게.
+       ② 오른쪽 안내가 '앱 소개'면 거짓말이다: go 로 따로 적는다.
+       ③ 한국어 웹진이라 한국어 페이지에서만 세운다(lang). 번역본 독자에게
+          읽을 수 없는 지면을 권하면 그건 배너가 아니라 소음이다. */
+    {
+      href: 'https://insightimes.com/',
+      external: true,
+      lang: 'ko',
+      icon: '/assets/promo/insightimes-192.png',
+      name: 'Insight Times',
+      kind: '투자 웹진',
+      desc: '하루를 읽고, 10년을 봅니다: 주식 투자자의 지식교양 웹진',
+      go: '웹진 보기'
     }
   ];
 
@@ -135,13 +150,14 @@
     /* 머리글 줄('직접 만든 앱')을 없앤 대신 종류를 이름 옆에 흐린 글씨로 붙였다.
        줄을 하나 없애는 것이 높이를 가장 크게 줄이고, 맥락은 그대로 남는다.
        설명은 폰 두 줄에 말줄임 없이 떨어지는 길이로 쓴다 - 잘린 문장은 실패다. */
-    return '<a class="ezpromo-card" href="' + a.href + '">'
+    var ext = a.external ? ' target="_blank" rel="noopener"' : '';
+    return '<a class="ezpromo-card" href="' + a.href + '"' + ext + '>'
       + '<img class="ezpromo-ico" src="' + a.icon + '" alt="" width="96" height="96" loading="lazy" decoding="async">'
       + '<div class="ezpromo-body">'
       + '<div class="ezpromo-name">' + a.name + '<span class="ezpromo-kind"> · ' + a.kind + '</span></div>'
       + '<p class="ezpromo-desc">' + a.desc + '</p>'
       + '</div>'
-      + '<span class="ezpromo-go"><span>앱 소개</span>' + ARROW + '</span>'
+      + '<span class="ezpromo-go"><span>' + (a.go || '앱 소개') + '</span>' + ARROW + '</span>'
       + '</a>';
   }
 
@@ -177,9 +193,12 @@
        설치 권유는 모바일에서만 뜨므로(사파리는 애플 배너, 그 외 iOS·안드로이드는
        자체 배너), PC 에서는 두 앱이 그대로 번갈아 나온다 - 거기엔 중복이 없다.
        판정은 ez-app-banner.js 가 내보내는 값 하나만 믿는다(단일 출처). */
-    var pool = window.ezAppInstallShown
-      ? APPS.filter(function (a) { return a.href !== '/longtime/'; })
-      : APPS;
+    var pageLang = (document.documentElement.getAttribute('lang') || 'ko').slice(0, 2).toLowerCase();
+    var pool = APPS.filter(function (a) {
+      if (a.lang && a.lang !== pageLang) return false;          // 웹진은 한국어 지면에만
+      if (window.ezAppInstallShown && a.href === '/longtime/') return false;
+      return true;
+    });
     if (!pool.length) return;                       // 걸러서 남는 게 없으면 안 그린다
 
     var pick = pool[Math.floor(Math.random() * pool.length)];
