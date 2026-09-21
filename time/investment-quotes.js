@@ -10354,5 +10354,12 @@ window.investmentQuotes = [
     "title": "진달래꽃",
     "author": "김소월",
     "genre": "literature"
+  },
+  {
+    "english": "To build wealth it didn't matter when you bought U.S. stocks, just that you bought them and kept buying them. It didn't matter if valuations were high or low. It didn't matter if you were in a bull market or a bear market. All that mattered was that you kept buying.",
+    "text": "돈을 벌기 위해 중요한 것은 언제 주식을 샀느냐가 아니었다. 얼마나 꾸준히 계속 사들였느냐였다. 밸류에이션이 높든 낮든, 강세장이든 약세장이든 상관없었다. 중요한 건 오직 계속 사는 것, 그것뿐이었다.",
+    "title": "저스트 킵 바잉 (Just Keep Buying)",
+    "author": "닉 매기울리 (Nick Maggiulli)",
+    "category": "mindset"
   }
 ];
