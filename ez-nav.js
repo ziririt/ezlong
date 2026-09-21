@@ -1066,6 +1066,95 @@ window.EZ_ADS_LIVE = false;
 })();
 
 /* ─────────────────────────────────────────────────────────────
+   인사이트 타임스 띠 배너: 헤더 **위** (2026-09-22 신설)
+
+   자리: 사이트 맨 꼭대기, 헤더보다 위. 헤더 **아래**의 카드 배너
+   (ez-app-promo.js)와는 다른 자리다. 처음에 그 카드 배너에 끼워 넣었다가
+   "헤더 상단"을 "헤더 바로 아래"로 잘못 읽은 것이었다. 꼭대기 띠는 스크롤과
+   함께 올라가고, 그 뒤로는 고정 헤더(sticky top:0)만 남는다: 읽는 자리를
+   오래 먹지 않는다.
+
+   - 한국어 지면에서만 선다(<html lang="ko">). 한국어 웹진이라 번역본 독자에게는 소음이다
+   - 앱 웹뷰 안에서는 서지 않는다(window.ezInAppWebview, 71항 단일 출처)
+   - 닫으면 14일. 카드 배너와 따로 기억한다(하나를 닫았다고 둘 다 사라지면 안 된다)
+   - 바깥 주소라 새 탭으로 연다
+   - 같은 것을 한 화면에 두 번 권하지 않는다(95항): 카드 배너 순환에서는 뺐다
+   ───────────────────────────────────────────────────────────── */
+(function () {
+  if (window.__ezTopStrip) return;
+  window.__ezTopStrip = true;
+
+  var KEY = 'ezlong:itStripClosed';
+  var DAYS = 14;
+  var URL_IT = 'https://insightimes.com/';
+
+  function start() {
+    var lang = (document.documentElement.getAttribute('lang') || 'ko').slice(0, 2).toLowerCase();
+    if (lang !== 'ko') return;
+    try { if (typeof window.ezInAppWebview === 'function' && window.ezInAppWebview()) return; } catch (e) { return; }
+    try {
+      var until = parseInt(localStorage.getItem(KEY) || '0', 10);
+      if (until && until > Date.now()) return;
+    } catch (e) { /* 저장소가 막혀도 띠는 선다 */ }
+    if (document.getElementById('ez-top-strip')) return;
+
+    var css = document.createElement('style');
+    css.setAttribute('data-ez-top-strip-css', '1');
+    /* 웹진의 얼굴이 검정 아이콘이라 띠도 먹색 하나로 간다. 라이트·다크 어느 쪽
+       헤더 위에 얹어도 헤더와 구분되고, 흰 글자 대비는 두 모드에서 같다. */
+    css.textContent = [
+      '#ez-top-strip{background:#0B0B0F;color:#F5F5F7;font-family:var(--ez-font,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif);position:relative;z-index:10000}',
+      '#ez-top-strip a{display:flex;align-items:center;justify-content:center;gap:10px;min-height:44px;',
+      'padding:6px 52px 6px 16px;box-sizing:border-box;color:inherit;text-decoration:none;max-width:1200px;margin:0 auto}',
+      '#ez-top-strip img{width:24px;height:24px;border-radius:6px;flex:0 0 auto}',
+      '#ez-top-strip .ts-name{font-size:15px;font-weight:800;letter-spacing:-.01em;white-space:nowrap}',
+      '#ez-top-strip .ts-copy{font-size:14px;font-weight:500;color:#D1D1D6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}',
+      '#ez-top-strip .ts-go{font-size:14px;font-weight:700;color:#6CB4FF;white-space:nowrap;display:inline-flex;align-items:center;gap:3px}',
+      '#ez-top-strip .ts-sep{color:#8E8E93;font-size:14px}',
+      '@media (hover:hover){#ez-top-strip a:hover .ts-go{text-decoration:underline}}',
+      '#ez-top-strip a:focus-visible{outline:2px solid #6CB4FF;outline-offset:-4px}',
+      '#ez-top-strip button{position:absolute;top:50%;right:10px;transform:translateY(-50%);width:32px;height:32px;',
+      'border:0;border-radius:8px;background:transparent;color:#AEAEB2;font-size:18px;line-height:1;cursor:pointer}',
+      '@media (hover:hover){#ez-top-strip button:hover{background:rgba(255,255,255,.12)}}',
+      /* 폰: 문장이 잘리면 실패다(말줄임 금지). 띠 전체가 링크라 화살표를 내리고,
+         360px 급에서는 아이콘이 이름을 대신한다. 그래도 카피는 끝까지 보인다. */
+      '@media (max-width:560px){#ez-top-strip .ts-go,#ez-top-strip .ts-sep{display:none}',
+      '#ez-top-strip a{justify-content:flex-start;gap:8px;padding-right:44px}#ez-top-strip .ts-name{font-size:14px}}',
+      '@media (max-width:380px){#ez-top-strip .ts-name{display:none}}'
+    ].join('');
+    (document.head || document.documentElement).appendChild(css);
+
+    var bar = document.createElement('div');
+    bar.id = 'ez-top-strip';
+    bar.setAttribute('role', 'region');
+    bar.setAttribute('aria-label', '인사이트 타임스 안내');
+    bar.innerHTML =
+      '<a href="' + URL_IT + '" target="_blank" rel="noopener">' +
+        '<img src="/assets/promo/insightimes-192.png" alt="" width="24" height="24" decoding="async">' +
+        '<span class="ts-name">Insight Times</span>' +
+        '<span class="ts-sep">·</span>' +
+        '<span class="ts-copy">AI시대 투자자의 인사이트</span>' +
+        '<span class="ts-go"><span class="ts-go-label">웹진 보기</span>' +
+          '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>' +
+        '</span>' +
+      '</a>' +
+      '<button type="button" aria-label="인사이트 타임스 안내 닫기">&times;</button>';
+    bar.querySelector('button').addEventListener('click', function () {
+      try { localStorage.setItem(KEY, String(Date.now() + DAYS * 864e5)); } catch (e) {}
+      bar.remove();
+    });
+
+    /* 헤더 앞에 둔다. 공용 헤더(#ez-nav)가 없는 메인은 자체 <nav class="nav"> 를 쓴다. */
+    var head = document.getElementById('ez-nav') || document.querySelector('body > nav, nav.nav, header');
+    if (head && head.parentNode) head.parentNode.insertBefore(bar, head);
+    else document.body.insertBefore(bar, document.body.firstChild);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+})();
+
+/* ─────────────────────────────────────────────────────────────
    직접 만든 앱 홍보 배너 로더 (2026-09-09 신설, 92항)
 
    애드센스는 아직 켜지 않는다(방문자 수가 이르다). 그 자리를 비워 두느니
@@ -1079,7 +1168,7 @@ window.EZ_ADS_LIVE = false;
 (function () {
   if (!document.querySelector('meta[name="ez-promo"][content="on"]')) return;
   var p = document.createElement('script');
-  p.src = '/ez-app-promo.js?v=20260922b';
+  p.src = '/ez-app-promo.js?v=20260922c';
   p.defer = true;
   (document.head || document.documentElement).appendChild(p);
 })();
