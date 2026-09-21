@@ -45,22 +45,10 @@
       name: 'Skyblue Note',
       kind: '노트 앱',
       desc: 'AI 답변을 붙여넣으면 깨진 표가 다시 섭니다'
-    },
-    /* 2026-09-22 - 앱이 아니라 웹진이다. 그래서 세 가지가 다르다.
-       ① 바깥 주소라 새 탭으로 연다: 읽던 ezlong 화면을 잃지 않게.
-       ② 오른쪽 안내가 '앱 소개'면 거짓말이다: go 로 따로 적는다.
-       ③ 한국어 웹진이라 한국어 페이지에서만 세운다(lang). 번역본 독자에게
-          읽을 수 없는 지면을 권하면 그건 배너가 아니라 소음이다. */
-    {
-      href: 'https://insightimes.com/',
-      external: true,
-      lang: 'ko',
-      icon: '/assets/promo/insightimes-192.png',
-      name: 'Insight Times',
-      kind: '투자 웹진',
-      desc: 'AI시대 투자자의 인사이트',
-      go: '웹진 보기'
     }
+    /* 인사이트 타임스는 2026-09-22 헤더 위 띠(ez-nav.js)로 옮겼다.
+       같은 것을 한 화면에 두 번 권하지 않는다(95항). 바깥 주소·lang·go
+       처리는 남겨 둔다: 다음에 웹진류를 여기 세울 때 그대로 쓴다. */
   ];
 
   function lsGet(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
