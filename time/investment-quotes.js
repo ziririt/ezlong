@@ -10271,5 +10271,12 @@ window.investmentQuotes = [
     "author": "셰릴 스트레이드 (Cheryl Strayed)",
     "category": "에세이",
     "genre": "literature"
+  },
+  {
+    "english": "The four most dangerous words in investing are: 'This time it's different.'",
+    "text": "투자에서 가장 위험한 네 단어는 '이번엔 다르다'이다. 시장의 역사는 되풀이되고, 사람들은 매번 이번만큼은 예외라고 믿는다.",
+    "title": "성공 투자의 황금률 (Golden Rules for Investment Success)",
+    "author": "존 템플턴 (John Templeton)",
+    "category": "mindset"
   }
 ];
