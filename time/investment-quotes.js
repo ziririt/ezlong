@@ -10374,5 +10374,12 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각 (The Most Important Thing)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "patience"
+  },
+  {
+    "english": "For me, becoming isn't about arriving somewhere or achieving a certain aim. I see it instead as forward motion, a means of evolving, a way to reach continuously toward a better self. The journey doesn't end.",
+    "text": "나에게 '되어가는 것'은 어딘가에 도달하거나 특정한 목표를 이루는 일이 아니다. 나는 그것을 오히려 앞으로 나아가는 움직임, 즉 진화해 가는 방식이자 더 나은 나 자신을 향해 계속해서 다가가는 여정으로 본다. 그 여정은 끝나지 않는다.",
+    "title": "비커밍 (Becoming)",
+    "author": "미셸 오바마 (Michelle Obama)",
+    "genre": "literature"
   }
 ];
