@@ -10299,5 +10299,12 @@ window.investmentQuotes = [
     "author": "하완",
     "category": "에세이",
     "genre": "literature"
+  },
+  {
+    "english": "If you don't look back at yourself from a year ago and think 'Wow, how stupid I was a year ago,' then you must not have learned much in the last year.",
+    "text": "1년 전의 내가 얼마나 어리석었는지 돌아보며 놀라지 않는다면, 지난 1년 동안 별로 배운 게 없다는 뜻이다.",
+    "title": "원칙 (Principles: Life and Work)",
+    "author": "레이 달리오 (Ray Dalio)",
+    "category": "mindset"
   }
 ];
