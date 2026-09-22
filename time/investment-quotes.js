@@ -10408,5 +10408,11 @@ window.investmentQuotes = [
     "title": "부자 아빠 가난한 아빠 (Rich Dad Poor Dad)",
     "author": "로버트 기요사키 (Robert Kiyosaki)",
     "category": "mindset"
+  },
+  {
+    "text": "나는 처음부터 내가 나인 줄 알았는데 내가 나이기까지 대체 얼마나 많은 손을 타야 했던 걸까.",
+    "title": "두근두근 내 인생",
+    "author": "김애란",
+    "genre": "literature"
   }
 ];
