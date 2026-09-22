@@ -10401,5 +10401,12 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "english": "Winners are not afraid of losing. But losers are. Failure is part of the process of success. People who avoid failure also avoid success.",
+    "text": "승자는 지는 것을 두려워하지 않는다. 그러나 패자는 두려워한다. 실패는 성공 과정의 일부다. 실패를 피하는 사람은 성공도 피하게 된다.",
+    "title": "부자 아빠 가난한 아빠 (Rich Dad Poor Dad)",
+    "author": "로버트 기요사키 (Robert Kiyosaki)",
+    "category": "mindset"
   }
 ];
