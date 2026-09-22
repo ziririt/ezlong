@@ -324,5 +324,9 @@ window.aladinLinks = {
   "부자 아빠 가난한 아빠 (Rich Dad Poor Dad)|로버트 기요사키 (Robert Kiyosaki)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=280148&partner=friends327",
   "친구들과의 대화 (Conversations with Friends)|샐리 루니 (Sally Rooney)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=173785595&partner=friends327",
   "빌러비드 (Beloved)|토니 모리슨 (Toni Morrison)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=210117307&partner=friends327",
-  "어느 투자자의 회상 (Reminiscences of a Stock Operator)|에드윈 르페브르 (Edwin Lefevre)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=305342327&partner=friends327"
+  "어느 투자자의 회상 (Reminiscences of a Stock Operator)|에드윈 르페브르 (Edwin Lefevre)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=305342327&partner=friends327",
+  "저스트 킵 바잉 (Just Keep Buying)|닉 매기울리 (Nick Maggiulli)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=360428407&partner=friends327",
+  "나를 키우는 말|이해인": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=24202401&partner=friends327",
+  "두근두근 내 인생|김애란": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=11905002&partner=friends327",
+  "겨울사랑|문정희": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=557198&partner=friends327"
 };
