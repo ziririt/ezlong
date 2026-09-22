@@ -1848,6 +1848,14 @@ async function loadAnalysis(symbol) {
     var a = d.analysis;
     if (!a || !a.narrative) return;
 
+    /* 오래된 분석은 싣지 않는다 (2026-09-22).
+       차트분석 파이프라인에서 빠진 종목(ARM·ORCL·DDOG 등)의 분석 파일이 6월
+       그대로 남아 있었고, 이 상세 창은 날짜 없이 그 서술을 띄웠다. ORCL 은
+       서술 속 '현재가 $244.58' 과 실제 가격 $148 대가 나란히 보였다.
+       분석 시각이 3일을 넘으면 창을 닫아 둔다. 주말·연휴를 넘기는 여유다. */
+    var at = Date.parse(d.analysisAt || d.updatedAt || '');
+    if (!at || (Date.now() - at) > 3 * 864e5) { secEl.style.display = 'none'; return; }
+
     var trendCls = a.trend === '강세' ? 'bull' : (a.trend === '약세' ? 'bear' : 'neut');
     var badges = '';
     if (a.trend) badges += '<span class="da-badge ' + trendCls + '">' + a.trend + '</span>';
@@ -1857,7 +1865,11 @@ async function loadAnalysis(symbol) {
     document.getElementById('da-narrative').innerHTML = renderNarrative(a.narrative || '');
     document.getElementById('da-risk').textContent = a.riskNote ? '주의: ' + a.riskNote : '';
 
-    document.getElementById('da-updated').textContent = '';
+    /* 이 서술이 언제 것인지 적는다(13절: 화면의 시각은 데이터의 시각이다). */
+    var k = new Date(at + 9 * 36e5);
+    document.getElementById('da-updated').textContent =
+      '분석 ' + (k.getUTCMonth() + 1) + '월 ' + k.getUTCDate() + '일 ' +
+      String(k.getUTCHours()).padStart(2, '0') + ':' + String(k.getUTCMinutes()).padStart(2, '0') + ' KST';
     secEl.style.display = '';
   } catch(e) {
     // 분석 파일 없음: 정상
