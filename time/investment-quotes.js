@@ -10388,5 +10388,11 @@ window.investmentQuotes = [
     "title": "나는 어떻게 주식투자로 2백만 달러를 벌었나 (How I Made $2,000,000 in the Stock Market)",
     "author": "니콜라스 다바스 (Nicolas Darvas)",
     "category": "mindset"
+  },
+  {
+    "text": "행복하다고 말하는 동안은\n나도 정말 행복해서\n마음에 맑은 샘이 흐르고",
+    "title": "나를 키우는 말",
+    "author": "이해인",
+    "genre": "literature"
   }
 ];
