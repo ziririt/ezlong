@@ -10427,5 +10427,12 @@ window.investmentQuotes = [
     "title": "스트리트 스마트 (Street Smarts)",
     "author": "짐 로저스 (Jim Rogers)",
     "category": "mindset"
+  },
+  {
+    "english": "Know what you own, and know why you own it.",
+    "text": "무엇을 갖고 있는지 알아야 하고, 왜 그것을 갖고 있는지도 알아야 한다.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
   }
 ];
