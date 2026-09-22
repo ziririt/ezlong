@@ -398,6 +398,27 @@ def main():
         'indices':   indices_data,   # 종합지수: SPX / NDX / DJI 실제 지수 값
     }
 
+    # ── 옛 값으로 새 값을 덮지 않는다 (2026-09-22) ──────────────────────
+    # 이 워크플로는 하루 두 번 돈다. 07:30 KST 실행은 정상인데, GitHub 기본
+    # cron 이 밀려 09:00 KST 전후(UTC 자정 뒤)에 도는 두 번째 실행에서는 야후
+    # 일봉의 마지막 날(직전 거래일) 종가가 NaN 으로 온다. 위 fetch_ticker 는
+    # NaN 을 걸러 한 칸 앞의 종가를 '현재가'로 쓰므로, 멀쩡한 07:30 결과가
+    # **하루 전 종가와 하루 전 등락률로 조용히 덮였다.** 2026-09-10 이후 평일
+    # 대부분이 그랬다(9/22: NVDA 227.38 +2.30% -> 222.27 +1.34%).
+    # 증상은 스파크라인 끝이 NaN 인 종목이 한꺼번에 생기는 것이다. 그러면
+    # 이번 결과를 버리고 기존 파일을 그대로 둔다(13절: 실패한 생성은 옛 값을
+    # 그 시각과 함께 보존한다).
+    import math as _m
+    def _nan_tail(x):
+        sp = x.get('sparkline') or []
+        return bool(sp) and (sp[-1] is None or (isinstance(sp[-1], float) and _m.isnan(sp[-1])))
+    checked = [x for x in top100_data + etf_data if x.get('sparkline')]
+    broken = sum(1 for x in checked if _nan_tail(x))
+    if checked and broken / len(checked) >= 0.2 and os.path.exists(OUTPUT_PATH):
+        print(f'::warning::마지막 일봉 종가가 비어 있는 종목 {broken}/{len(checked)} - '
+              f'직전 종가를 현재가로 착각할 수 있어 이번 결과를 쓰지 않고 기존 파일을 유지한다')
+        return
+
     # NaN/Infinity → None(null) 변환 — 브라우저 JSON.parse() 오류 방지
     def sanitize(obj):
         if isinstance(obj, float):
