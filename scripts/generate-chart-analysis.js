@@ -251,6 +251,12 @@ switch (GROUP) {
     tickersToProcess = [...TICKERS_US_STOCKS, ...TICKERS_US_ETFS];
     if (TIER === 'core') {
       tickersToProcess = tickersToProcess.filter(t => US_CORE.has(t.symbol));
+    } else if (TIER.startsWith('only=')) {
+      // 2026-09-22: 새로 넣은 종목만 지금 바로 돌린다(수동 실행 전용).
+      // 전체 45종을 장중에 돌리지 않고, 다음 아침 갱신을 기다리지도 않게.
+      const only = new Set(TIER.slice(5).split(',').map(s => s.trim().toUpperCase()).filter(Boolean));
+      tickersToProcess = tickersToProcess.filter(t => only.has(t.symbol.toUpperCase()));
+      if (!tickersToProcess.length) { console.error(`only= 에 맞는 종목이 없다: ${TIER}`); process.exit(1); }
     }
     break;
   case 'kr':     tickersToProcess = [...TICKERS_KR_ETFS, ...TICKERS_KR_STOCKS]; break;

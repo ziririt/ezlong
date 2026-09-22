@@ -40,6 +40,11 @@ on:
     - cron: '15 22 * * 0,1,2,3,4'   # KST 07:15 (UTC 전날 22:15, dow는 하루 당김) 아침 갱신
 
   workflow_dispatch:
+    inputs:
+      only:
+        description: '이 종목만 분석 (쉼표 구분, 예: SPCX,ORCL,ARM). 비우면 시각 규칙대로'
+        required: false
+        default: ''
 
 jobs:
   analyze:
@@ -108,6 +113,12 @@ jobs:
         # 실행의 상당수가 감시견의 workflow_dispatch 라 event.schedule 이 비어
         # 있고, 그걸로 나누면 감시견 실행이 전부 전체 분석이 되어 무의미해진다.
         run: |
+          ONLY="${{ github.event.inputs.only }}"
+          if [ -n "$ONLY" ]; then
+            echo "지정 종목만 분석: $ONLY"
+            node scripts/generate-chart-analysis.js us "only=$ONLY"
+            exit 0
+          fi
           ET_HOUR=$(TZ=America/New_York date +%H)
           if [ "$ET_HOUR" -ge 18 ]; then TIER=""; else TIER="core"; fi
           if [ -z "$TIER" ]; then
