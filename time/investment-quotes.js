@@ -10447,5 +10447,12 @@ window.investmentQuotes = [
     "title": "금융의 연금술 (The Alchemy of Finance)",
     "author": "조지 소로스 (George Soros)",
     "category": "mindset"
+  },
+  {
+    "english": "Marsh is not swamp. Marsh is a space of light, where grass grows in water, and water flows into the sky. Slow-moving creeks wander, carrying the orb of the sun with them to the sea.",
+    "text": "습지는 늪이 아니다. 습지는 빛의 공간이며, 그곳에서 풀은 물속에서 자라고 물은 하늘로 흘러간다. 천천히 움직이는 물줄기들은 태양의 둥근 빛을 실어 바다로 향한다.",
+    "title": "가재가 노래하는 곳 (Where the Crawdads Sing)",
+    "author": "델리아 오언스 (Delia Owens)",
+    "genre": "literature"
   }
 ];
