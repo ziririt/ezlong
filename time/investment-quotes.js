@@ -10440,5 +10440,12 @@ window.investmentQuotes = [
     "title": "겨울사랑",
     "author": "문정희",
     "genre": "literature"
+  },
+  {
+    "english": "Once we realize that imperfect understanding is the human condition there is no shame in being wrong, only in failing to correct our mistakes.",
+    "text": "불완전한 이해가 인간의 본질적 조건임을 깨닫는다면, 틀리는 것 자체는 부끄러운 일이 아니다. 부끄러운 것은 오직 그 실수를 바로잡지 못하는 것뿐이다.",
+    "title": "금융의 연금술 (The Alchemy of Finance)",
+    "author": "조지 소로스 (George Soros)",
+    "category": "mindset"
   }
 ];
