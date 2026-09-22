@@ -10394,5 +10394,12 @@ window.investmentQuotes = [
     "title": "나를 키우는 말",
     "author": "이해인",
     "genre": "literature"
+  },
+  {
+    "english": "In the short run, the market is a voting machine, but in the long run it is a weighing machine.",
+    "text": "단기적으로 보면 주식시장은 인기투표를 하는 기계와 같지만, 장기적으로 보면 무게를 정확히 재는 저울과 같다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
   }
 ];
