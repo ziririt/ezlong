@@ -10420,5 +10420,12 @@ window.investmentQuotes = [
     "title": "부지런한 사랑",
     "author": "이슬아",
     "genre": "literature"
+  },
+  {
+    "english": "If everyone thinks one way, it is likely to be wrong. If you can figure out that it is wrong, you are likely to make a lot of money.",
+    "text": "모두가 한 방향으로만 생각한다면 그건 틀렸을 가능성이 크다. 그 틀림을 알아챌 수 있다면 큰돈을 벌 가능성도 크다.",
+    "title": "스트리트 스마트 (Street Smarts)",
+    "author": "짐 로저스 (Jim Rogers)",
+    "category": "mindset"
   }
 ];
