@@ -10414,5 +10414,11 @@ window.investmentQuotes = [
     "title": "두근두근 내 인생",
     "author": "김애란",
     "genre": "literature"
+  },
+  {
+    "text": "부지런히 쓸 체력과 부지런히 사랑할 체력. 이 부드러운 체력이 우리들 자신뿐만 아니라 세계를 수호한다고 나는 믿는다.",
+    "title": "부지런한 사랑",
+    "author": "이슬아",
+    "genre": "literature"
   }
 ];
