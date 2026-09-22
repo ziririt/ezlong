@@ -346,6 +346,48 @@ async function triggerWorkflow(workflowFile) {
   console.log(`  → [트리거 완료] ${workflowFile}`);
 }
 
+
+// ─── 사이트 배포 감시 (2026-09-22 신설) ─────────────────────────────────
+// 위 감시는 전부 **저장소의 data/** 가 얼마나 새것인지만 본다. 그런데 2026-09-21
+// 18:05 KST 부터 약 13시간, Firebase 인증이 끊겨 배포가 11번 연속 실패했다.
+// 그동안 저장소 데이터는 제시간에 갱신됐으니 이 감시견은 전부 OK 였고, 사이트는
+// 옛 화면을 내보내고 있었다. "만들어졌다"와 "나갔다"는 다른 사실이다.
+// 배포 워크플로의 최근 성공 시각을 본다. 마지막 완료가 실패이고 마지막 성공이
+// DEPLOY_MAX_H 시간보다 오래됐으면 DEPLOY_STALLED 로 적는다. 워크플로 파일이
+// 이 값을 보고 빨갛게 끝나 GitHub 실패 알림 메일이 나간다.
+const DEPLOY_WORKFLOW = 'firebase-hosting.yml';
+const DEPLOY_MAX_H = 2;
+
+async function checkDeploy(now) {
+  const out = { name: '사이트 배포', workflow: DEPLOY_WORKFLOW, maxAgeHours: DEPLOY_MAX_H };
+  try {
+    const data = await githubFetch(
+      `/repos/${OWNER}/${REPO}/actions/workflows/${DEPLOY_WORKFLOW}/runs?per_page=30&branch=main`
+    );
+    const runs = (data.workflow_runs || []).filter(r => r.status === 'completed');
+    if (!runs.length) { out.status = 'NO_TIMESTAMP'; return out; }
+    const lastSuccess = runs.find(r => r.conclusion === 'success');
+    let failStreak = 0;
+    for (const r of runs) { if (r.conclusion === 'success') break; if (r.conclusion === 'failure') failStreak++; }
+    out.lastConclusion = runs[0].conclusion;
+    out.lastRunAt      = runs[0].created_at;
+    out.lastSuccessAt  = lastSuccess ? lastSuccess.created_at : null;
+    out.failStreak     = failStreak;
+    out.ageHours = lastSuccess
+      ? Math.round((now - new Date(lastSuccess.created_at)) / 36e5 * 10) / 10
+      : null;
+    const stalled = runs[0].conclusion === 'failure'
+      && (out.ageHours === null || out.ageHours > DEPLOY_MAX_H);
+    out.status = stalled ? 'DEPLOY_STALLED' : 'OK';
+    console.log(`[사이트 배포] 마지막 성공 ${out.lastSuccessAt || '없음'} (${out.ageHours}h 전), 연속 실패 ${failStreak}회 → ${out.status}`);
+  } catch (e) {
+    out.status = 'ERROR';
+    out.error = e.message;
+    console.error(`[사이트 배포] 확인 실패: ${e.message}`);
+  }
+  return out;
+}
+
 // ─── 메인 로직 ────────────────────────────────────────────────────────────
 async function main() {
   const now = new Date();
@@ -460,8 +502,12 @@ async function main() {
     }
   }
 
+  const deploy = await checkDeploy(now);
+  results.push(deploy);
+
   // ─── 결과 요약 ────────────────────────────────────────────────────────
   const summary = {
+    deployStalled: deploy.status === 'DEPLOY_STALLED',
     ok:          results.filter(r => r.status === 'OK').length,
     triggered:   results.filter(r => r.status === 'TRIGGERED').length,
     alreadyRunning: results.filter(r => r.status === 'ALREADY_RUNNING').length,
@@ -474,6 +520,7 @@ async function main() {
     lastRun:    nowISO,
     lastRunKST: nowKST,
     summary,
+    deploy,
     results,
   };
 

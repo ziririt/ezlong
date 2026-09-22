@@ -89,6 +89,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # ── 4-2. 사이트 배포가 멈췄으면 빨갛게 끝낸다 (2026-09-22) ──────────
+      # 상태 파일은 위에서 이미 커밋했다. 여기서 실패로 끝나야 GitHub 가 실패
+      # 알림 메일을 보낸다: 배포 인증이 끊겨도 아무도 모르던 13시간을 막는다.
+      - name: 사이트 배포 멈춤 확인
+        run: |
+          node -e "const s=require('./data/watchdog-status.json');const d=s.deploy||{};if(d.status==='DEPLOY_STALLED'){console.log('::error::사이트 배포가 멈췄다 - 마지막 성공 '+d.lastSuccessAt+' ('+d.ageHours+'h 전), 연속 실패 '+d.failStreak+'회. firebase-hosting.yml 로그를 확인하라');process.exit(1)}console.log('사이트 배포 정상: '+(d.status||'정보 없음'))"
+
       # ── 5. 실패 알림 ──────────────────────────────────────────────────
       - name: Notify on failure
         if: failure()
