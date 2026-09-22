@@ -10434,5 +10434,11 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "text": "눈송이처럼 너에게 가고 싶다. 머뭇거리지 말고 서성대지 말고 숨기지 말고, 그냥 네 하얀 생애 속에 뛰어들어 따스한 겨울이 되고 싶다. 천년 백설이 되고 싶다.",
+    "title": "겨울사랑",
+    "author": "문정희",
+    "genre": "literature"
   }
 ];
