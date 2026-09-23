@@ -1491,6 +1491,39 @@ def nvda_view(s):
 
 DESK_MODEL = 'claude-fable-5'
 
+# ── LLM 호출 상한 (2026-09-23 신설) ────────────────────────────────────────
+# 왜 있나: 2026-09 청구서에서 이 파이프라인이 평일 4.5달러, 월 환산 100달러
+# 넘게 썼다. 평일 실행이 14번이고 그때마다 데스크(LLM)를 부르기 때문이다.
+# 정상 운영에서는 이 상한에 걸리지 않는다(기본 20회). 이것은 정책이 아니라
+# **폭주 방지 차단기**다 - 감시견·수동 실행이 겹쳐 하루에 수십 번 돌면
+# 돈이 조용히 새기 때문이다. 실제로 2026-09-09 에 이 키로 하루 42달러가
+# 나간 적이 있다(원인 미상, Opus). 상한에 걸리면 규칙 논평으로 떨어진다 -
+# 규칙 논평은 언제나 화면의 숫자와 같은 값을 쓴다(13절).
+LLM_DAILY_CAP = int(os.environ.get('SWING_LLM_DAILY_CAP', '20') or '20')
+# 횟수는 판단 원장(swing-ledger.json)에 같이 적는다 - 이미 매 실행 커밋되는
+# 파일이라 새 파일을 만들지 않아도 실행 사이에 살아남는다(20항: 원장은 지우지 않는다).
+_LLM_BUDGET = {'ledger': None}
+
+
+def _llm_budget_ok(tag):
+    """오늘(KST) 이 파이프라인이 부른 LLM 횟수를 세고, 상한을 넘으면 False."""
+    import datetime as _dt
+    led = _LLM_BUDGET.get('ledger')
+    if led is None:
+        return True                      # 원장이 없으면 세지 않는다(단독 실행·시험)
+    today = (_dt.datetime.utcnow() + _dt.timedelta(hours=9)).strftime('%Y-%m-%d')
+    box = led.get('llmCalls')
+    if not isinstance(box, dict) or box.get('date') != today:
+        box = {'date': today, 'calls': 0}
+        led['llmCalls'] = box
+    if box.get('calls', 0) >= LLM_DAILY_CAP:
+        print(f'::warning::[{tag}] 오늘 LLM 호출 {box["calls"]}회 - 상한 {LLM_DAILY_CAP} 도달, '
+              f'규칙 논평으로 대체한다')
+        return False
+    box['calls'] = box.get('calls', 0) + 1
+    return True
+
+
 def desk_with_fable(view, sc_entry, ca):
     """최종 데스크 — 개조식 구조(소제목+닷블릿·명사형 종결)로 논평을 다듬는다.
     API 키 없음/호출 실패/검증 실패 시 None 반환 → 규칙 논평 그대로 사용 (파이프라인 불사불패).
@@ -1498,6 +1531,8 @@ def desk_with_fable(view, sc_entry, ca):
     import urllib.request
     key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
     if not key:
+        return None
+    if not _llm_budget_ok('데스크'):
         return None
     comp = view['comp']
     draft = '\n\n'.join(comp['commentary'])
@@ -1693,6 +1728,8 @@ def desk_week_ahead(view, sc_entry, ca):
     key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
     if not key:
         return None
+    if not _llm_budget_ok('새 주 전망'):
+        return None
     comp = view['comp']
     n = comp['nums']
     factors = ''
@@ -1838,6 +1875,7 @@ def main():
         pass
 
     ledger = load(LEDGER, {}) or {}
+    _LLM_BUDGET['ledger'] = ledger   # LLM 호출 상한 계수기를 원장에 얹는다(2026-09-23)
     comp = ledger.setdefault('comp', {})
     ll = lifeline_status()
     ll_cap = None
