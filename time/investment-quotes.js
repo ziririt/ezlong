@@ -10454,5 +10454,18 @@ window.investmentQuotes = [
     "title": "가재가 노래하는 곳 (Where the Crawdads Sing)",
     "author": "델리아 오언스 (Delia Owens)",
     "genre": "literature"
+  },
+  {
+    "text": "며칠 후, 난초처럼 말이 없는 친구가 놀러 왔기에 선뜻 그의 품에 분을 안겨주었다. 비로소 나는 얽매임에서 벗어난 것이다. 날듯 홀가분한 해방감.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
+  },
+  {
+    "english": "The paradox of investing is that the most reliable way to win is to avoid losing.",
+    "text": "투자의 역설은, 이기는 가장 확실한 방법이 지지 않는 것이라는 데 있다.",
+    "title": "승자의 게임",
+    "author": "찰스 엘리스 (Charles D. Ellis)",
+    "category": "mindset"
   }
 ];
