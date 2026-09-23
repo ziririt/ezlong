@@ -56,12 +56,12 @@
     }
   },
   "analysis": {
-    "trend": "횡보",
+    "trend": "강세",
     "strength": 3,
     "support": 98695,
     "resistance": 115010,
     "rsiStatus": "중립",
-    "macdStatus": "중립",
+    "macdStatus": "강세확산",
     "bbStatus": "중단",
     "stage": "축적구간",
     "action": "관망",
@@ -82,8 +82,8 @@
     "stop": 98695,
     "target": 145810,
     "invalidation": 98695,
-    "weeklyConflict": "충돌 없음",
-    "weeklyConflictEn": "No conflict",
+    "weeklyConflict": "주봉 RSI 48.5로 약세이나, 일봉은 중립 구간 횡보 중. 일봉 신호 우선.",
+    "weeklyConflictEn": "Weekly RSI at 48.5 shows weakness, but daily chart is consolidating in neutral zone. Daily signals take precedence.",
     "profitTarget1": 145810,
     "profitTarget2": 169367.5,
     "stopLoss": 98695,
@@ -110,9 +110,9 @@
       "resistanceReclaimed": false,
       "adxLowRisk": true,
       "higherTimeframeAligned": false,
-      "oversoldExtremeOrigin": false,
-      "score": "1/5",
-      "verdict": "위장 가능성: 신중 필요"
+      "oversoldExtremeOrigin": true,
+      "score": "2/5",
+      "verdict": "초기 단계: 확인 관문 남음"
     },
     "levelsAdjusted": true,
     "levelsAdjustedReason": "손익비 0.48 < 1.5"
