@@ -57,7 +57,7 @@ jobs:
           fi
           KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
           git commit -m "chore: 한국주식 가격 갱신 ${KST}"
-          git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
+          bash scripts/git-push-retry.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

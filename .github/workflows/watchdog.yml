@@ -85,7 +85,7 @@ jobs:
           git commit -m "chore: 감시견 상태 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 
           # git pull --rebase 금지 (CLAUDE.md Rule 16)
-          git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
+          bash scripts/git-push-retry.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
