@@ -163,9 +163,11 @@ const MONITORS = [
     workflow:       'swing-view.yml',
     checkFile:      'swing-view.json',
     timestampField: 'generatedAt',
-    // 설계상 가장 긴 슬롯 간격은 07:37→18:00 KST 의 야간 공백(10h)이라
-    // 그 구간은 아래 isActive 로 아예 제외한다. 활성 구간 안에서는 2.5h.
-    maxAgeHours:    2.5,
+    // 2026-09-23: 슬롯을 셋으로 줄였다(프리마켓·개장+15분·마감 후 1회).
+    // 활성 구간 안의 최대 공백이 18:00→22:45 KST 의 4.75h, 23:45→07:37 의 7.9h 다.
+    // 기준을 2.5h 로 두면 감시견이 매 시간 되살리기를 불러 줄인 비용이 도로
+    // 나간다 - 되살리기는 '슬롯이 통째로 빠졌을 때'만 돌아야 한다.
+    maxAgeHours:    9.0,
     // 미국 프리마켓~마감 후: KST 18:00~익일 07:40 = UTC 09:00~22:40, 평일
     isActive: (now) => {
       const day = now.getUTCDay();
