@@ -10467,5 +10467,12 @@ window.investmentQuotes = [
     "title": "승자의 게임",
     "author": "찰스 엘리스 (Charles D. Ellis)",
     "category": "mindset"
+  },
+  {
+    "english": "Someone's sitting in the shade today because someone planted a tree a long time ago.",
+    "text": "누군가 오늘 그늘 아래 앉아 있을 수 있는 것은, 오래전 누군가 나무를 심었기 때문이다.",
+    "title": "워런 버핏의 주주서한 (Warren Buffett's Letters to Berkshire Shareholders)",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "mindset"
   }
 ];
