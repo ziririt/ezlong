@@ -1499,6 +1499,17 @@ DESK_MODEL = 'claude-fable-5'
 # 돈이 조용히 새기 때문이다. 실제로 2026-09-09 에 이 키로 하루 42달러가
 # 나간 적이 있다(원인 미상, Opus). 상한에 걸리면 규칙 논평으로 떨어진다 -
 # 규칙 논평은 언제나 화면의 숫자와 같은 값을 쓴다(13절).
+def _api_err(e):
+    """API 실패 이유를 한 줄로. 400 은 본문을 봐야 이유를 안다 - 모델 이름이
+    틀렸는지, 크레딧이 바닥났는지, 요청이 큰지가 전부 400 으로 온다(2026-09-23).
+    키는 요청 헤더에만 있고 응답 본문에는 없다 - 그대로 찍어도 안전하다."""
+    try:
+        body = e.read().decode('utf-8', 'replace')[:300]
+        return f'{e} | {body}'
+    except Exception:
+        return str(e)
+
+
 LLM_DAILY_CAP = int(os.environ.get('SWING_LLM_DAILY_CAP', '6') or '6')
 # 횟수는 판단 원장(swing-ledger.json)에 같이 적는다 - 이미 매 실행 커밋되는
 # 파일이라 새 파일을 만들지 않아도 실행 사이에 살아남는다(20항: 원장은 지우지 않는다).
@@ -1688,7 +1699,7 @@ sections 3~5개: 직전 장 시황 / 터닝포인트 관문 / 오늘의 판단 /
                               for s in secs][:6],
                     model=DESK_MODEL)
     except Exception as e:
-        print(f'::warning::[데스크] 호출 실패 — 규칙 논평 사용: {e}')
+        print(f'::warning::[데스크] 호출 실패 — 규칙 논평 사용: {_api_err(e)}')
         return None
 
 
@@ -1813,7 +1824,7 @@ headline 은 다음 주의 결론 한 줄(관문 조건 하나 포함). core 는
         return dict(headline=d['headline'], core=core, forDay=view.get('dataDay'),
                     generatedAtKST=view.get('generatedAtKST'), model=DESK_MODEL)
     except Exception as e:
-        print(f'::warning::[새 주 전망] 호출 실패 — 직전 장 판단으로 폴백: {e}')
+        print(f'::warning::[새 주 전망] 호출 실패 — 직전 장 판단으로 폴백: {_api_err(e)}')
         return None
 
 
