@@ -56,7 +56,7 @@ jobs:
           else
             KST=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
             git commit -m "data: TimesFM 예측 대역 ${KST}"
-            git push origin main || (git fetch origin main && git rebase origin/main && git push origin main)
+            bash scripts/git-push-retry.sh
           fi
 
       # 봇 push는 firebase-hosting.yml을 트리거하지 않는다(16항) — 직접 배포.

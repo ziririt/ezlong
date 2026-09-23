@@ -79,7 +79,7 @@ jobs:
 
           git commit -m "chore: 크립토 차트 분석 업데이트 $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 
-          git push origin main || (git fetch origin main && git merge -X ours origin/main --no-edit && git push origin main)
+          bash scripts/git-push-retry.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
