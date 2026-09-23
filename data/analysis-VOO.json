@@ -3,56 +3,56 @@
   "name": "S&P500 ETF (Vanguard)",
   "assetType": "etf",
   "market": "us",
-  "updatedAt": "2026-09-23T14:19:56.714Z",
-  "analysisAt": "2026-09-23T14:19:56.714Z",
+  "updatedAt": "2026-09-23T17:15:16.214Z",
+  "analysisAt": "2026-09-23T17:15:16.214Z",
   "analysisPreserved": false,
   "price": {
-    "current": 708.84,
-    "change": -3.94,
-    "changePct": -0.55,
+    "current": 706.88,
+    "change": -5.9,
+    "changePct": -0.83,
     "high52": 716.39,
     "low52": 578.46,
-    "pos52": 94.5,
+    "pos52": 93.1,
     "marketState": "REGULAR",
-    "quoteTime": 1790173189,
+    "quoteTime": 1790183704,
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 703.442,
-    "sma50": 699.1654,
-    "sma100": 689.944,
-    "sma200": 657.3141,
-    "rsi": 55.89,
+    "sma20": 703.344,
+    "sma50": 699.1262,
+    "sma100": 689.9244,
+    "sma200": 657.3043,
+    "rsi": 54.09,
     "macd": {
-      "macd": 1.035413,
-      "signal": 0.655948,
-      "histogram": 0.379465
+      "macd": 0.879048,
+      "signal": 0.624675,
+      "histogram": 0.254373
     },
     "bb": {
-      "upper": 713.2599,
-      "middle": 703.442,
-      "lower": 693.6241,
-      "bandwidth": 0.0279
+      "upper": 712.9819,
+      "middle": 703.344,
+      "lower": 693.7061,
+      "bandwidth": 0.0274
     },
     "adx": {
-      "plusDI": 30.85,
-      "minusDI": 25.81,
+      "plusDI": 30.03,
+      "minusDI": 25.12,
       "adx": 12.37,
       "status": "무추세(충격 가능)"
     },
-    "atr": 6.2689
+    "atr": 6.4401
   },
   "levels": {
     "swingResistance": 712.67,
     "swingSupport": 700.47,
     "pivot": {
-      "pp": 703.99,
-      "r1": 718.93,
-      "r2": 729.03,
-      "s1": 693.89,
-      "s2": 678.95
+      "pp": 703.33,
+      "r1": 717.63,
+      "r2": 728.37,
+      "s1": 692.59,
+      "s2": 678.29
     }
   },
   "analysis": {
@@ -68,43 +68,43 @@
     "buyScore": 6,
     "scoreReason": "RSI 과매도 탈출 + Higher Low 회복 초입",
     "scoreReasonEn": "RSI exiting oversold + Higher Low recovery start",
-    "rsiTrajectory": "44.4 → 55.9 (과매도탈출)",
-    "rsiTrajectoryEn": "44.4 → 55.9 (exiting oversold)",
-    "macdTrajectory": "히스토 -1.5536 → 0.3795 (개선)",
-    "macdTrajectoryEn": "histo -1.5536 → 0.3795 (improving)",
-    "pricePattern": "Higher Low 회복 신호",
-    "pricePatternEn": "Higher Low recovery signal",
-    "volComment": "거래량비 0.13 (위축)",
+    "rsiTrajectory": "44.4 → 54.1 (과매도탈출)",
+    "rsiTrajectoryEn": "44.4 → 54.1 (exiting oversold)",
+    "macdTrajectory": "히스토 -1.5536 → 0.2544 (개선)",
+    "macdTrajectoryEn": "histogram -1.5536 → 0.2544 (improving)",
+    "pricePattern": "Higher Low 회복 초입",
+    "pricePatternEn": "Higher Low recovery start",
+    "volComment": "거래량비 0.26 (위축)",
     "bbPosition": "중단근처",
-    "reason": "직전 2거래일 연속 매수 판정 유지. RSI 44.4→55.9 과매도 구간 탈출 확인. MACD 히스토그램 -1.5536→0.3795 개선으로 상승 모멘텀 강화. 5일 저가($689.04)가 20일 저가($689.04)보다 높으므로 Higher Low 패턴 형성. SMA20($703.44) 상향 돌파 후 지지 확인 구간.",
-    "reasonEn": "Previous 2 consecutive buy signals maintained. RSI 44.4→55.9 confirmed exit from oversold territory. MACD histogram -1.5536→0.3795 improving, strengthening upward momentum. 5-day low ($689.04) is higher than 20-day low ($689.04), forming a Higher Low pattern. Confirmed support zone after breaking above SMA20 ($703.44).",
-    "entry": 708.84,
-    "stop": 700.47,
-    "target": 725.58,
-    "invalidation": 700.47,
+    "reason": "직전 3거래일 연속 매수 판독 유지. RSI 44.4→54.1 상승하며 과매도 구간 탈출 확인. MACD 히스토그램 -1.5536→0.2544 개선되며 상승 추세 강화. 52주 고가 대비 93.1% 위치에서 상승 여력 잔존.",
+    "reasonEn": "Previous 3 trading days maintained a buy signal. RSI rose from 44.4 to 54.1, confirming exit from oversold territory. MACD histogram improved from -1.5536 to 0.2544, strengthening the uptrend. At 93.1% of the 52-week high, upside potential remains.",
+    "entry": 706.88,
+    "stop": 692.59,
+    "target": 735.46,
+    "invalidation": 692.59,
     "weeklyConflict": "충돌 없음",
     "weeklyConflictEn": "No conflict",
-    "profitTarget1": 725.58,
-    "profitTarget2": 738.13,
-    "stopLoss": 700.47,
-    "narrative": "[추세 위치]\n· 현재가($708.84) vs SMA5/20/50($703.53/$703.44/$699.17): 단기·중기 추세 상회 진단\n· SMA100/200($689.94/$657.31) 대비 위치: 중장기 추세 강도 유지\n· 52주 위치(94.5%) + 현 가격대 역사적 고점 근접 구간\n[모멘텀 지표]\n· RSI 궤적 (44.4→55.9) + 과매도 탈출 판단 + 상승 방향성 확인\n· MACD 히스토그램 궤적 (-1.5536→0.3795) + 개선 진단 + 상승 추세 전환 신호\n· 볼린저밴드 현재가 위치(중단 $703.44 부근) + 밴드폭 정상 수준 해석\n[지지·저항 구조]\n· 스윙 지지선 ($700.47) + 이동평균 기반 지지\n· 스윙 저항선 ($712.67) + 돌파 시 추가 상승 기대\n· 5일/20일 고가·저가 패턴 (Higher Low) + 회복 추세 해석\n[거래량·결론]\n· 거래량 비율 (0.13배) + 움직임의 신뢰도 위축\n· 현 구간 진단 (상승추세) + 705.00 진입, 698.73 손절, 714.00 목표",
-    "narrativeEn": "[Trend Position]\n· Current price ($708.84) vs SMA5/20/50 ($703.53/$703.44/$699.17): short-term/mid-term trend above.\n· Position vs SMA100/200 ($689.94/$657.31): mid-to-long-term trend strength maintained.\n· 52-week position (94.5%) + price near historical highs.\n[Momentum Indicators]\n· RSI trajectory (44.4→55.9) + oversold exit confirmed + upward momentum.\n· MACD histogram trajectory (-1.5536→0.3795) + improvement diagnosed + bullish trend reversal signal.\n· Bollinger Band current price position (near mid-band $703.44) + normal band width interpretation.\n[Support & Resistance Structure]\n· Swing support ($700.47) + based on moving averages.\n· Swing resistance ($712.67) + potential for further upside on breakout.\n· 5-day/20-day high/low pattern (Higher Low) + recovery trend interpretation.\n[Volume & Conclusion]\n· Volume ratio (0.13x) + low confidence in movement.\n· Current phase diagnosis (uptrend) + entry at 705.00, stop at 698.73, target at 714.00.",
-    "patternNote": "Higher Low 패턴 형성하며 회복세 진입, 52주 고점 돌파 시 추가 상승 기대.",
-    "patternNoteEn": "Forming a Higher Low pattern and entering a recovery phase, with expectations of further upside on breaking the 52-week high.",
+    "profitTarget1": 735.46,
+    "profitTarget2": 756.9,
+    "stopLoss": 692.59,
+    "narrative": "[추세 위치]\n· 현재가($706.88) vs SMA5($703.14)/SMA20($703.34)/SMA50($699.13): 단기·중기 추세 상회 진단\n· SMA100($689.92)/SMA200($657.30) 대비 위치: 중장기 추세 강도 유지\n· 52주 위치(93.1%) + 현 가격대 역사적 고점 근접 구간\n[모멘텀 지표]\n· RSI 궤적 (44.4→54.1): 과매도 탈출 및 중립 구간 진입 확인\n· MACD 히스토그램 궤적 (-1.5536→0.2544): 개선세 확인, 상승 모멘텀 강화\n· 볼린저밴드 현재가 위치 (중단 $703.34): 중단선 부근 횡보, 상단 돌파 시도 가능성\n[지지·저항 구조]\n· 스윙 지지선 ($700.47): 피벗(PP $703.33) 및 SMA50 기반 지지 확인\n· 스윙 저항선 ($712.67): 52주 고가 및 볼린저밴드 상단과 근접\n· 5일/20일 고가·저가 패턴 (Higher Low 회복 초입): 상승 추세 지속 가능성 시사\n[거래량·결론]\n· 거래량 비율 (0.26배): 거래량 위축, 변동성 감소 구간\n· 현 구간 진단 (상승추세): 60일 연속 보유 판정 유지, 추가 상승 여력 확인",
+    "narrativeEn": "[Trend Position]\n· Current Price ($706.88) vs SMA5 ($703.14)/SMA20 ($703.34)/SMA50 ($699.13): Short- to mid-term uptrend confirmed\n· Position relative to SMA100 ($689.92)/SMA200 ($657.30): Mid- to long-term uptrend strength maintained\n· 52-week position (93.1%): Approaching historical high price range\n[Momentum Indicators]\n· RSI Trajectory (44.4→54.1): Confirmed exit from oversold and entry into neutral zone\n· MACD Histogram Trajectory (-1.5536→0.2544): Improvement confirmed, strengthening bullish momentum\n· Bollinger Band Current Price Position (Middle Band $703.34): Trading near the middle band, potential for upper band breakout\n[Support & Resistance Structure]\n· Swing Support ($700.47): Support confirmed based on Pivot Point (PP $703.33) and SMA50\n· Swing Resistance ($712.67): Near 52-week high and upper Bollinger Band\n· 5-day/20-day High/Low Pattern (Higher Low recovery start): Suggests potential for continued uptrend\n[Volume & Conclusion]\n· Volume Ratio (0.26x): Low volume, indicating reduced volatility\n· Current Phase Diagnosis (Uptrend): 60-day holding period maintained, confirming further upside potential",
+    "patternNote": "Higher Low 회복 초입 구간으로 상승 추세 지속 가능성 확인.",
+    "patternNoteEn": "Higher Low recovery start phase, confirming potential for continued uptrend.",
     "keyPoints": [
-      "RSI 44.4→55.9 과매도 구간 탈출 확인",
-      "MACD 히스토그램 -1.5536→0.3795 개선으로 상승 모멘텀 강화",
-      "SMA20($703.44) 상향 돌파 후 지지 확인 구간"
+      "RSI 44.4→54.1 과매도 탈출 및 중립 구간 진입",
+      "MACD 히스토그램 -1.5536→0.2544 개선으로 상승 모멘텀 강화",
+      "52주 고가 대비 93.1% 위치에서 상승 여력 잔존"
     ],
     "keyPointsEn": [
-      "RSI 44.4→55.9 confirmed exit from oversold territory",
-      "MACD histogram -1.5536→0.3795 improving, strengthening upward momentum",
-      "Confirmed support zone after breaking above SMA20 ($703.44)"
+      "RSI 44.4→54.1 exiting oversold and entering neutral zone",
+      "MACD histogram -1.5536→0.2544 improvement strengthening bullish momentum",
+      "At 93.1% of 52-week high, upside potential remains"
     ],
-    "riskNote": "거래량비 0.13으로 움직임의 신뢰도 위축, 52주 고점 근접으로 인한 차익 실현 매물 출회 가능성.",
-    "riskNoteEn": "Low confidence in movement due to volume ratio of 0.13, potential for profit-taking near 52-week high.",
-    "continuity": "직전 2거래일 연속 매수 판정 유지. RSI 44.4→55.9 상승, MACD 히스토그램 개선으로 상승 추세 지속 확인.",
-    "continuityEn": "The previous 2 consecutive buy signals have been maintained. RSI 44.4→55.9 rise and MACD histogram improvement confirm the continuation of the uptrend.",
+    "riskNote": "거래량비 0.26으로 위축되어 있어 급격한 변동 시 신뢰도 하락 가능성.",
+    "riskNoteEn": "Volume ratio of 0.26 indicates low conviction, potentially reducing reliability during sharp moves.",
+    "continuity": "직전 3거래일 연속 매수 판독 유지. RSI 44.4→54.1 상승 및 MACD 히스토그램 -1.5536→0.2544 개선으로 상승 추세 지속 판정.",
+    "continuityEn": "The buy signal has been maintained for the past 3 consecutive trading days. The uptrend is sustained with RSI rising from 44.4 to 54.1 and MACD histogram improving from -1.5536 to 0.2544.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
@@ -115,6 +115,6 @@
       "verdict": "초기 단계: 확인 관문 남음"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "손익비 1.44 < 1.5"
+    "levelsAdjustedReason": "손익비 1.00 < 1.5"
   }
 }
