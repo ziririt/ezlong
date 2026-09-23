@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-09-23-14:02",
+      "timestamp_kst": "2026-09-23(수) 14:02 KST",
+      "key_event": {
+        "name": "AI 반도체 수요 지속",
+        "name_en": "Sustained AI Semiconductor Demand",
+        "time": "2026-09-23 야간/시간외",
+        "why": "기술주 상승 견인, 시장 심리 개선, 나스닥 사상 최고치",
+        "why_en": "Driving tech stock rally, improving market sentiment, Nasdaq at all-time high"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "AI 반도체 수요 지속으로 긍정 우위 유지, 지정학적 위험 완화",
+      "summary_en": "Positive sentiment maintained due to sustained AI chip demand, easing geopolitical risks",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "AI 반도체 수요 지속",
+          "name_en": "Sustained AI Semiconductor Demand",
+          "desc": "AMD, Broadcom 등 AI 칩 관련 기업들의 긍정적 소식 지속, SOXX 1.96% 상승",
+          "desc_en": "Continued positive news from AI chip companies like AMD, Broadcom, SOXX up 1.96%",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 30,
+          "name": "지정학적 위험 완화",
+          "name_en": "Easing Geopolitical Risks",
+          "desc": "미-이란 외교 진전 기대 및 유가 하락(-1.05%), 시장 불확실성 감소",
+          "desc_en": "Expectations of US-Iran diplomatic progress and falling oil prices (-1.05%), reducing market uncertainty",
+          "category": "geopolitics"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "높은 국채금리 수준",
+          "name_en": "Elevated Treasury Yields",
+          "desc": "미10년 국채금리 4.97%(+0.10%)로 상승, 성장주 할인율에 지속적인 압박",
+          "desc_en": "US 10-year Treasury yield rose to 4.97% (+0.10%), maintaining pressure on growth stock valuations",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 10,
+          "name": "일부 AI 주식 밸류에이션 경고",
+          "name_en": "Valuation Warnings for Some AI Stocks",
+          "desc": "TSM 등 일부 AI 관련 주식의 고평가 경고 지속, 차익 실현 압력 상존",
+          "desc_en": "Ongoing warnings of overvaluation for some AI-related stocks like TSM, persistent profit-taking pressure",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "달러 강세 유지",
+          "name_en": "Dollar Strength Maintained",
+          "desc": "달러인덱스 100.71(+0.01%)로 강세 유지: 미국 자산 매력 증가 vs 수출 기업 실적 부담",
+          "desc_en": "Dollar Index maintained strength at 100.71 (+0.01%): increased attractiveness of US assets vs. burden on export companies' earnings",
+          "category": "dollar_fx"
+        }
+      ],
+      "report": {
+        "overview": "- 총점: AI 반도체 수요 지속에 힘입어 긍정 70 대 부정 30으로 긍정 우위 유지.\n- 핵심 이슈: AI 반도체 수요 지속이 기술주 전반의 상승을 견인하며 시장 심리 개선, 나스닥 사상 최고치 경신.\n- 시장 심리: 지정학적 위험 완화와 기술주 강세가 맞물려 전반적인 투자 심리 개선에 기여.\n- 하방 압력: 높은 국채금리 수준과 일부 AI 주식의 밸류에이션 경고는 지속적인 하방 압력으로 작용.",
+        "positive": "- AI 반도체 수요 지속: AMD, Broadcom 등 AI 칩 관련 기업들의 긍정적 소식이 지속되며 반도체 섹터 전반의 강세 시현. AMD는 Nvidia의 AI 네트워킹 시장에 대한 도전에서 수혜 가능성이 제기되었으며, Broadcom은 대규모 자사주 매입과 하이퍼스케일러와의 AI 칩 계약 소식으로 7.4% 상승. SOXX 지수 또한 1.96% 상승하며 AI 반도체 시장의 견조한 수요를 반영. 나스닥은 AI 주식 랠리에 힘입어 사상 최고치 기록.\n- 지정학적 위험 완화: 미국-이란 외교 진전 기대감이 형성되며 유가가 1.05% 하락. 이는 중동 지역의 긴장 완화 가능성을 시사하며 시장 불확실성 감소에 기여. API 재고 증가 소식과 맞물려 유가 하락세가 지속되며 투자 심리 개선.",
+        "negative": "- 높은 국채금리 수준: 미 10년 국채금리가 4.97%(+0.10%)로 0.10%p 상승하며 높은 수준을 유지. 이는 성장주에 대한 할인율을 높여 지속적인 밸류에이션 압박으로 작용. 연준 관계자들의 매파적 발언이 금리 상승 압력으로 작용하는 상황.\n- 일부 AI 주식 밸류에이션 경고: TSM 등 일부 AI 관련 주식에 대한 고평가 경고가 지속되며 차익 실현 압력이 상존. AI 관련 기업들의 주가 급등에 따른 밸류에이션 부담이 투자자들 사이에서 경계심으로 작용.",
+        "mixed": "- 달러 강세 유지: 달러인덱스가 100.71로 0.01% 상승하며 강세를 유지. 이는 미국 자산의 매력을 증가시켜 외국인 투자 유입에 긍정적이나, 동시에 미국 수출 기업들의 실적에는 환율 부담으로 작용하여 혼조세 유발.",
+        "watch": "- 국채금리 추이: 미 10년 국채금리 4.97%(+0.10%) 수준에서 추가 상승 여부 확인. 금리 상승 시 성장주에 대한 추가 압박 가능성.\n- 유가 변동성: 미-이란 외교 관련 추가 뉴스에 따른 유가 변동성 확인. 유가 하락 지속 시 인플레이션 압력 완화 및 시장 심리 개선 기대.\n- 달러인덱스 추이: 달러인덱스 100.71 수준에서 강세 지속 여부 확인. 달러 강세 심화 시 수출 기업 실적 부담 가중 가능성."
+      },
+      "report_at": "2026-09-23(수) 14:02 KST"
+    },
+    {
       "id": "2026-09-23-11:50",
       "timestamp_kst": "2026-09-23(수) 11:50 KST",
       "key_event": {
@@ -551,68 +619,8 @@
         "watch": "- 국채금리 추이: 높은 시장금리 수준이 유지되는 가운데, 10년물 및 2년물 국채금리 추이가 추가적인 금리 인상 우려를 완화하거나 심화시킬지 주목.\n- 유가 변동성: 미-이란 외교 불확실성 속에서 국제 유가(WTI, 브렌트유)의 급격한 변동이 인플레이션 압력을 가중시킬지 여부 확인."
       },
       "report_at": "2026-09-22(화) 14:17 KST"
-    },
-    {
-      "id": "2026-09-22-11:50",
-      "timestamp_kst": "2026-09-22(화) 11:50 KST",
-      "key_event": {
-        "name": "AI 반도체 수요 재점화",
-        "name_en": "AI Semiconductor Demand Reignited",
-        "time": "2026-09-21 정규장 마감 후",
-        "why": "주요 AI 반도체 기업 주가 급등, 시장 심리 개선",
-        "why_en": "Major AI semiconductor stocks surged, improving market sentiment"
-      },
-      "positive_total": 75,
-      "negative_total": 25,
-      "summary": "AI 반도체 수요 재점화로 긍정 우위 지속",
-      "summary_en": "Positive sentiment continues with reignited AI semiconductor demand",
-      "positive_factors": [
-        {
-          "score": 75,
-          "name": "AI 반도체 수요 재점화",
-          "name_en": "AI Semiconductor Demand Reignited",
-          "desc": "Nasdaq 3% 상승, AMD 1조 달러 클럽 진입 등 AI 관련주 강세",
-          "desc_en": "Nasdaq rose 3%, AMD entered $1 trillion club, strong performance in AI-related stocks",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 10,
-          "name": "Fed 매파적 스탠스 유지",
-          "name_en": "Fed Maintains Hawkish Stance",
-          "desc": "Fed 관계자, 인플레이션 지속 시 추가 금리 인상 가능성 언급",
-          "desc_en": "Fed officials mentioned potential for further rate hikes if inflation persists",
-          "category": "fed_policy"
-        },
-        {
-          "score": 15,
-          "name": "높은 인플레이션 수준 지속",
-          "name_en": "Persistent High Inflation Levels",
-          "desc": "근원 PCE 3.34%, PCE 3.70%, CPI 3.35% 등 여전히 높은 물가 수준 유지",
-          "desc_en": "Core PCE at 3.34%, PCE at 3.70%, CPI at 3.35%, indicating sustained high inflation levels",
-          "category": "macro_data"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미-이란 외교 불확실성",
-          "name_en": "US-Iran Diplomatic Uncertainty",
-          "desc": "미-이란 UN 회담 기대감과 이란 항공사 폐쇄 소식 등 상반된 뉴스 혼재",
-          "desc_en": "Mixed news on US-Iran UN talks anticipation and reports of Iranian airline shutdowns",
-          "category": "geopolitics"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총평: AI 반도체 수요 재점화에 힘입어 긍정적 우위 지속, 총점 긍정 75 대 부정 25로 집계.\n- 주요 상승 동력: AI 반도체 관련 기업들의 주가 급등과 나스닥 지수 상승이 시장 전반의 심리 개선을 견인.\n- 주요 하방 압력: 연방준비제도(Fed)의 매파적 스탠스 유지와 여전히 높은 인플레이션 수준이 증시 상승폭을 제한.",
-        "positive": "- AI 반도체 수요 재점화: 주요 AI 반도체 기업 주가 급등으로 시장 심리 개선, 나스닥 종합지수 3% 상승 마감, AMD는 1조 달러 클럽에 진입하며 AI 관련주 강세 시현.",
-        "negative": "- Fed 매파적 스탠스 유지: 연방준비제도 관계자, 인플레이션 지속 시 추가 금리 인상 가능성을 언급하며 시장에 긴축 우려 잔존.\n- 높은 인플레이션 수준 지속: 근원 PCE 물가상승률 3.34%, PCE 물가상승률 3.70%, CPI 소비자물가 상승률 3.35% 등 주요 물가 지표가 여전히 높은 수준을 유지하며 금리 인하 기대감 약화.",
-        "mixed": "- 미-이란 외교 불확실성: 유엔(UN) 회담을 통한 관계 개선 기대감과 이란 항공사 폐쇄 소식 등 상반된 뉴스가 혼재하며 중동 정세에 대한 시장의 불확실성 증대.",
-        "watch": "- 국채금리 추이: 10년물 국채금리 등 주요 국채금리의 변동성 확인, 인플레이션 및 Fed 정책 기대감 반영 여부 주시.\n- 유가 변동성: 국제 유가 추이 확인, 중동 정세 불확실성 및 글로벌 경기 둔화 우려에 따른 유가 등락이 시장에 미칠 영향 주시.\n- 주요 지수 선물 흐름: 뉴욕 증시 개장 전 다우, S&P 500, 나스닥 선물 지수의 움직임 확인, 시장의 전반적인 투자 심리 변화 예측."
-      },
-      "report_at": "2026-09-22(화) 11:50 KST"
     }
   ],
-  "updated_at": "2026-09-23T02:51:23Z",
+  "updated_at": "2026-09-23T05:03:20Z",
   "max_entries": 10
 }
