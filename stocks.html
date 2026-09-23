@@ -483,7 +483,11 @@
       <div class="ix-price" id="ix-sp-price">--</div>
       <div class="ix-pct flat" id="ix-sp-pct">--</div>
     </div>
-    <div class="ix-card" id="ix-nasdaq" onclick="openDetail('NDX')">
+    <!-- 22항: 이 카드의 Nasdaq 은 언제나 '종합지수'(^IXIC)다. 다른 앱이 'Nasdaq'
+         이라 부르는 선물(NQ)·나스닥100 과는 지수 자체가 다르다 - 자릿수부터 다르다.
+         카드 폭이 81px 라 '종합'을 붙이면 잘린다(360px 실측 94px): 이름은 그대로 두고
+         title 로 알린다. 정식 이름은 상세 창 머리에 'Nasdaq Composite Index' 로 뜬다. -->
+    <div class="ix-card" id="ix-nasdaq" title="나스닥 종합지수(^IXIC) - 나스닥100·선물과 다름" onclick="openDetail('NDX')">
       <div class="ix-name">Nasdaq</div>
       <div class="ix-spark" id="ix-qq-spark"></div>
       <div class="ix-price" id="ix-qq-price">--</div>
@@ -725,10 +729,10 @@ async function loadData() {
     if (r2 && r2.ok) {
       pricesData = await r2.json();
       var label = pricesData.updatedAtKST || allData.generatedAtKST || '';
-      document.getElementById('data-ts').textContent = label ? '주가 ' + label + ' · 15분마다 업데이트' : '';
+      setStampLine(label ? '주가 ' + label : '');
     } else {
       var label = allData.generatedAtKST || '';
-      document.getElementById('data-ts').textContent = label ? '스파크라인 ' + label : '';
+      setStampLine(label ? '스파크라인 ' + label : '');
     }
 
     // SPCX 폴백: stocks-data.json에 없을 경우 rank 6에 stub 삽입 (AMZN 바로 다음, 아마존 6위)
@@ -922,6 +926,31 @@ function cleanName(name) {
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ── 미국 정규장 시간대 여부 (간이 EDT UTC-4, 전역 재사용) ──────────────
+/* 머리 한 줄: 이 숫자가 "언제 것인가"를 적는다 (2026-09-23).
+   증상 제보 - 미국장이 닫힌 아침에 '15분마다 업데이트'만 떠 있어, 화면의 지수 세 개가
+   지금 값처럼 읽혔다. 실제로는 직전 장 마감값이고, 그 사이 선물은 따로 움직인다.
+   장이 닫혀 있으면 기준 거래일을 절대 날짜로 적는다(89항: 시장 문맥에 상대어 금지).
+   거래일 판정은 캘린더가 한다(88항) - ez-nav.js 의 ezLastSessionET. */
+function setStampLine(head) {
+  var el = document.getElementById('data-ts');
+  if (!el) return;
+  function paint() {
+    var tail = ' · 15분마다 업데이트';
+    if (!isUSMarketOpen() && typeof window.ezLastSessionET === 'function') {
+      var d = window.ezLastSessionET().split('-');   // YYYY-MM-DD
+      var DOW = ['일', '월', '화', '수', '목', '금', '토'];
+      var dow = DOW[new Date(+d[0], +d[1] - 1, +d[2]).getDay()];
+      tail = ' · ' + (+d[1]) + '월 ' + (+d[2]) + '일(' + dow + ', 뉴욕) 마감 기준';
+    }
+    el.textContent = head ? head + tail : '';
+  }
+  paint();
+  /* 캘린더는 비동기로 온다: 도착하면 공휴일까지 반영해 한 번 더 그린다. */
+  if (window.ezCalReady && typeof window.ezCalReady.then === 'function') {
+    window.ezCalReady.then(paint).catch(function () {});
+  }
+}
+
 function isUSMarketOpen() {
   var now  = new Date();
   var et   = new Date(now.getTime() - 4 * 3600000); // 간이 EDT(UTC-4)

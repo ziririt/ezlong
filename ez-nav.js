@@ -870,6 +870,28 @@ window.ezMarketClosedReason = function (now) {
   return null;
 };
 
+/* 88항 - 마지막으로 끝난 뉴욕 정규장 날짜(YYYY-MM-DD). 캘린더가 있으면 공휴일도 건너뛴다.
+   화면이 "이 숫자는 언제 것인가"를 적을 때 쓴다(13절). 거래일 판정은 언제나 캘린더가 한다.
+   ET 16:00 을 넘겼고 오늘이 거래일이면 오늘, 아니면 뒤로 걸어가며 가장 가까운 거래일. */
+window.ezLastSessionET = function (now) {
+  now = now || new Date();
+  var et;
+  try { et = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' })); }
+  catch (e) { et = new Date(now.getTime() - 4 * 3600000); }
+  function ymd(d) {
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+  }
+  function isSession(d) { return d.getDay() >= 1 && d.getDay() <= 5 && !ezIsNyseHoliday(d); }
+  var d = new Date(et.getTime());
+  if (!(isSession(d) && (d.getHours() * 60 + d.getMinutes()) >= 960)) {
+    for (var i = 0; i < 10; i++) {
+      d.setDate(d.getDate() - 1);
+      if (isSession(d)) break;
+    }
+  }
+  return ymd(d);
+};
+
 window.ezWeekPhase = function (now) {
   now = now || new Date();
   var et;
