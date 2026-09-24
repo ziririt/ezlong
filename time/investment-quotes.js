@@ -10474,5 +10474,12 @@ window.investmentQuotes = [
     "title": "워런 버핏의 주주서한 (Warren Buffett's Letters to Berkshire Shareholders)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "mindset"
+  },
+  {
+    "english": "Being too far ahead of your time is indistinguishable from being wrong.",
+    "text": "시대를 지나치게 앞서가는 것은 틀린 것과 구별되지 않는다.",
+    "title": "투자에 대한 생각 (The Most Important Thing)",
+    "author": "하워드 막스 (Howard Marks)",
+    "category": "mindset"
   }
 ];
