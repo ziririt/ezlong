@@ -328,5 +328,7 @@ window.aladinLinks = {
   "저스트 킵 바잉 (Just Keep Buying)|닉 매기울리 (Nick Maggiulli)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=360428407&partner=friends327",
   "나를 키우는 말|이해인": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=24202401&partner=friends327",
   "두근두근 내 인생|김애란": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=11905002&partner=friends327",
-  "겨울사랑|문정희": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=557198&partner=friends327"
+  "겨울사랑|문정희": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=557198&partner=friends327",
+  "워런 버핏 웨이 (The Warren Buffett Way)|로버트 G. 해그스트롬 (Robert G. Hagstrom)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=363738777&partner=friends327",
+  "하늘과 바람과 별과 시 (서시)|윤동주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=301092752&partner=friends327"
 };
