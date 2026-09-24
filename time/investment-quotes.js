@@ -10508,5 +10508,12 @@ window.investmentQuotes = [
     "title": "하늘과 바람과 별과 시 (서시)",
     "author": "윤동주",
     "genre": "literature"
+  },
+  {
+    "english": "Vulnerability is not weakness; it's our most accurate measure of courage.",
+    "text": "취약함은 약점이 아니다. 오히려 우리가 가진 용기를 가장 정확하게 가늠하는 척도다.",
+    "title": "마음가면 (Daring Greatly)",
+    "author": "브레네 브라운 (Brené Brown)",
+    "genre": "literature"
   }
 ];
