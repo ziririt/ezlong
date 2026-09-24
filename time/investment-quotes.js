@@ -10521,5 +10521,12 @@ window.investmentQuotes = [
     "title": "밝은 밤",
     "author": "최은영",
     "genre": "literature"
+  },
+  {
+    "english": "The big money is not in the buying or the selling, but in the waiting.",
+    "text": "큰 돈은 사고파는 데서 나오는 것이 아니라, 기다리는 데서 나온다.",
+    "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "patience"
   }
 ];
