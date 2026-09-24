@@ -29,16 +29,27 @@ for i in $(seq 1 "$ATTEMPTS"); do
   fi
   echo "push 거부됨 — 원격을 받아 다시 얹는다 (${i}/${ATTEMPTS})"
   git fetch origin main || true
+  # 얹는 방법은 둘이다. 깨끗하면 rebase(이력이 곧게 남는다), 충돌하거나 작업트리에
+  # 변경이 남아 있으면 merge -X ours.
+  #
+  # 2026-09-23 실패에서 배운 것: 같은 파일을 두 워크플로가 고치면 rebase 는 충돌한다
+  # (data/market-signals.json 은 'ATMR 시장 데이터 수집'과 '시간외 전용 수집'이 함께 쓴다).
+  # 첫 판에서는 그때 바로 실패로 끝냈는데, 그건 예전 동작(merge -X ours)보다 나쁘다 -
+  # 만들어 둔 데이터를 못 올리고 메일만 간다. 충돌하면 예전 방식으로 떨어진다.
+  # -X ours 는 '충돌한 조각만' 내 것을 쓴다. 상대 워크플로가 만든 다른 파일은
+  # 그대로 살아남는다(머지 자체는 양쪽을 합친다).
+  rebased=""
   if git diff --quiet && git diff --cached --quiet; then
-    if ! git rebase origin/main; then
+    if git rebase origin/main; then
+      rebased=1
+    else
       git rebase --abort || true
-      echo "::error::rebase 충돌 — 같은 파일을 두 워크플로가 고치고 있다. 수동 확인 필요"
-      exit 1
+      echo "rebase 충돌 - 같은 파일을 둘이 고쳤다. merge -X ours 로 떨어진다"
     fi
-  else
-    echo "작업트리에 변경이 남아 있어 merge -X ours 로 합친다"
+  fi
+  if [ -z "$rebased" ]; then
     git merge -X ours origin/main --no-edit || {
-      echo "::error::merge 실패 — 수동 확인 필요"; exit 1
+      echo "::error::merge 실패 - 수동 확인 필요"; exit 1
     }
   fi
   sleep $(( (RANDOM % 5) + 2 ))
