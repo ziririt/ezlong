@@ -10515,5 +10515,11 @@ window.investmentQuotes = [
     "title": "마음가면 (Daring Greatly)",
     "author": "브레네 브라운 (Brené Brown)",
     "genre": "literature"
+  },
+  {
+    "text": "마음이라는 것이 꺼내볼 수 있는 몸속 장기라면, 가끔 가슴에 손을 넣어 꺼내서 따듯한 물로 씻어주고 싶었다. 깨끗하게 씻어서 수건으로 물기를 닦고 해가 잘 들고 바람이 잘 통하는 곳에 널어놓고 싶었다.",
+    "title": "밝은 밤",
+    "author": "최은영",
+    "genre": "literature"
   }
 ];
