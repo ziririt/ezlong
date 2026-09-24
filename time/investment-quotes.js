@@ -10502,5 +10502,11 @@ window.investmentQuotes = [
     "title": "워런 버핏 웨이 (The Warren Buffett Way)",
     "author": "로버트 G. 해그스트롬 (Robert G. Hagstrom)",
     "category": "mindset"
+  },
+  {
+    "text": "죽는 날까지 하늘을 우러러 한 점 부끄럼이 없기를, 잎새에 이는 바람에도 나는 괴로워했다. 별을 노래하는 마음으로 모든 죽어가는 것을 사랑해야지. 그리고 나한테 주어진 길을 걸어가야겠다.",
+    "title": "하늘과 바람과 별과 시 (서시)",
+    "author": "윤동주",
+    "genre": "literature"
   }
 ];
