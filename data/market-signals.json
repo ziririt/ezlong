@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-24T23:49:33.583988+00:00",
-  "generatedAtKST": "2026-09-25 08:49 KST",
+  "generatedAt": "2026-09-24T23:50:24.594906+00:00",
+  "generatedAtKST": "2026-09-25 08:50 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -257,7 +257,7 @@
       "dev20": -2.5547,
       "gear": 3,
       "vix": 15.670000076293945,
-      "rsi5dAgo": 36.9381,
+      "rsi5dAgo": 36.938,
       "hist5dAgo": -1.0712,
       "high5d": 287.21,
       "low5d": 281.66,
@@ -708,9 +708,9 @@
       "unit": "%"
     },
     "oil": {
-      "price": 94.01,
-      "change": 1.85,
-      "changePct": 2.0074,
+      "price": 94.02,
+      "change": 1.86,
+      "changePct": 2.0182,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
@@ -724,15 +724,32 @@
       "unit": ""
     },
     "gold": {
-      "price": 4309.6001,
-      "change": -8.7998,
-      "changePct": -0.2038,
+      "price": 4309.7998,
+      "change": -8.6001,
+      "changePct": -0.1992,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-09-24T23:49:33.583988+00:00",
+      "atKST": "2026-09-25 08:49 KST",
+      "qqq": {
+        "rsi": 63.41,
+        "macdHist": 3.5566,
+        "dev5": 0.3673,
+        "dev200": 11.6907,
+        "gear": 3,
+        "buyScore": 77,
+        "sellScore": 28,
+        "price": 741.1
+      },
+      "soxxMacdHist": 7.4905,
+      "fearAndGreed": 36,
+      "yield10y": 5.162
+    },
     {
       "at": "2026-09-24T23:47:36.545837+00:00",
       "atKST": "2026-09-25 08:47 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": 6.8114,
       "fearAndGreed": 35,
       "yield10y": 4.968
-    },
-    {
-      "at": "2026-09-22T22:59:37.181014+00:00",
-      "atKST": "2026-09-23 07:59 KST",
-      "qqq": {
-        "rsi": 68.23,
-        "macdHist": 3.2851,
-        "dev5": 2.9619,
-        "dev200": 12.8531,
-        "gear": 3,
-        "buyScore": 67,
-        "sellScore": 63,
-        "price": 747.46
-      },
-      "soxxMacdHist": 6.8114,
-      "fearAndGreed": 35,
-      "yield10y": 4.968
     }
   ],
-  "swingContinuity": "9\uc6d423\uc77c(\ub274\uc695) \ub9e4\uc218\uc810\uc218 71\uc5d0\uc11c 9\uc6d424\uc77c(\ub274\uc695) 74\ub85c \uc18c\ud3ed \uc0c1\uc2b9 \ud6c4 9\uc6d424\uc77c(\ubaa9, \ub274\uc695) 77\uae4c\uc9c0 \uac1c\uc120\ub418\ub294 \ud750\ub984\uc744 \ubcf4\uc600\uc2b5\ub2c8\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\ub294 \ub4f1\ub77d\ub960\uc774 +0.63% \u2192 +2.88% \u2192 +0.81% \u2192 -0.84% \u2192 -0.01%\ub85c \ubcc0\ub3d9\uc131\uc774 \ud070 \uac00\uc6b4\ub370, 9\uc6d424\uc77c(\ubaa9, \ub274\uc695) \ub9e4\uc218\uc810\uc218 \uac1c\uc120\uc740 \uae0d\uc815\uc801\uc778 \uc2e0\ud638\ub85c \ud574\uc11d\ub420 \uc218 \uc788\uc2b5\ub2c8\ub2e4.",
-  "swingContinuityEn": "The buy score improved from 71 on Sep 23 (NY) to 74 on Sep 24 (NY), continuing its upward trend to 77 today. Amidst volatile daily returns for QQQ over the last five trading days (+0.63% \u2192 +2.88% \u2192 +0.81% \u2192 -0.84% \u2192 -0.01%), the improved buy score today can be interpreted as a positive signal."
+  "swingContinuity": null,
+  "swingContinuityEn": null
 }
