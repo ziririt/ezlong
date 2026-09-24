@@ -10481,5 +10481,26 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각 (The Most Important Thing)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "mindset"
+  },
+  {
+    "english": "Know what you own, and know why you own it.",
+    "text": "무엇을 갖고 있는지 알고, 왜 갖고 있는지 알아야 한다.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
+  },
+  {
+    "english": "In the short run, the market is a voting machine, but in the long run, it is a weighing machine.",
+    "text": "단기적으로 시장은 투표기이지만, 장기적으로는 저울이다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
+  },
+  {
+    "english": "Buy a stock the way you would buy a house. Understand and like it such that you'd be content to own it in the absence of any market.",
+    "text": "주식을 살 때는 집을 사듯이 사라. 시장이 없어도 소유한 것에 만족할 만큼 이해하고 좋아해야 한다.",
+    "title": "워런 버핏 웨이 (The Warren Buffett Way)",
+    "author": "로버트 G. 해그스트롬 (Robert G. Hagstrom)",
+    "category": "mindset"
   }
 ];
