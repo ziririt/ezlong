@@ -10561,5 +10561,12 @@ window.investmentQuotes = [
     "title": "여행의 이유",
     "author": "김영하",
     "genre": "literature"
+  },
+  {
+    "english": "People think that intimacy is about sex. But intimacy is about truth. When you realize you can tell someone your truth, when you can show yourself to them, when you stand in front of them bare and their response is 'you're safe with me'- that's intimacy.",
+    "text": "사람들은 친밀함이 섹스에 관한 것이라고 생각한다. 하지만 친밀함은 진실에 관한 것이다. 상대에게 나의 진실을 말할 수 있다는 걸, 있는 그대로의 나를 보여줄 수 있다는 걸, 발가벗은 채로 그 앞에 서도 '너는 나에게 안전해'라는 대답을 들을 수 있다는 걸 깨달을 때, 그것이 바로 친밀함이다.",
+    "title": "세븐 허즈번드 (The Seven Husbands of Evelyn Hugo)",
+    "author": "테일러 젠킨스 리드 (Taylor Jenkins Reid)",
+    "genre": "literature"
   }
 ];
