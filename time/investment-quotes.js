@@ -10555,5 +10555,11 @@ window.investmentQuotes = [
     "title": "와일드 (Wild)",
     "author": "셰릴 스트레이드 (Cheryl Strayed)",
     "genre": "literature"
+  },
+  {
+    "text": "과거에 대한 후회와 미래에 대한 불안, 우리의 현재를 위협하는 이 어두운 두 그림자로부터 벗어날 수 있기 때문에 나는 여행을 좋아한다.",
+    "title": "여행의 이유",
+    "author": "김영하",
+    "genre": "literature"
   }
 ];
