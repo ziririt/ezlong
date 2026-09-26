@@ -10568,5 +10568,12 @@ window.investmentQuotes = [
     "title": "세븐 허즈번드 (The Seven Husbands of Evelyn Hugo)",
     "author": "테일러 젠킨스 리드 (Taylor Jenkins Reid)",
     "genre": "literature"
+  },
+  {
+    "english": "Marianne had the sense that her real life was happening somewhere very far away, happening without her, and she didn't know if she would ever find out where it was or become part of it.",
+    "text": "마리안느는 자신의 진짜 삶이 아주 먼 어딘가에서, 자신과는 상관없이 흘러가고 있다는 느낌이 들었다. 그곳이 어디인지, 언젠가 그 삶의 일부가 될 수 있을지조차 알 수 없었다.",
+    "title": "노멀 피플 (Normal People)",
+    "author": "샐리 루니 (Sally Rooney)",
+    "genre": "literature"
   }
 ];
