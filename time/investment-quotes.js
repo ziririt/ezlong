@@ -10548,5 +10548,12 @@ window.investmentQuotes = [
     "title": "돈의 심리학 (The Psychology of Money)",
     "author": "모건 하우절 (Morgan Housel)",
     "category": "mindset"
+  },
+  {
+    "english": "Rock bottom became the solid foundation on which I rebuilt my life.",
+    "text": "바닥까지 내려간 그 자리가, 내가 삶을 다시 쌓아올린 단단한 토대가 되었다.",
+    "title": "와일드 (Wild)",
+    "author": "셰릴 스트레이드 (Cheryl Strayed)",
+    "genre": "literature"
   }
 ];
