@@ -10534,5 +10534,12 @@ window.investmentQuotes = [
     "title": "수선화에게",
     "author": "정호승",
     "genre": "literature"
+  },
+  {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack.",
+    "text": "건초더미에서 바늘을 찾으려 하지 마라. 그냥 건초더미를 통째로 사라.",
+    "title": "모든 주식을 소유하라 (Common Sense on Mutual Funds)",
+    "author": "존 보글 (John C. Bogle)",
+    "category": "mindset"
   }
 ];
