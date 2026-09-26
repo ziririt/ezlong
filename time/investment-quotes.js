@@ -10528,5 +10528,11 @@ window.investmentQuotes = [
     "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "patience"
+  },
+  {
+    "text": "울지 마라. 외로우니까 사람이다. 살아간다는 것은 외로움을 견디는 일이다.",
+    "title": "수선화에게",
+    "author": "정호승",
+    "genre": "literature"
   }
 ];
