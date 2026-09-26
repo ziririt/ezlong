@@ -10541,5 +10541,12 @@ window.investmentQuotes = [
     "title": "모든 주식을 소유하라 (Common Sense on Mutual Funds)",
     "author": "존 보글 (John C. Bogle)",
     "category": "mindset"
+  },
+  {
+    "english": "Spending money to show people how much money you have is the fastest way to have less money.",
+    "text": "돈을 얼마나 가졌는지 남에게 보여주려고 쓰는 것이야말로 돈을 가장 빨리 줄이는 방법이다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절 (Morgan Housel)",
+    "category": "mindset"
   }
 ];
