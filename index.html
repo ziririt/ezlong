@@ -1504,6 +1504,42 @@ a { text-decoration: none; color: inherit; }
   border: 1px solid var(--ez-border); border-radius: 16px;
   background: var(--ez-surface);
 }
+
+/* ── 읽을거리 코너 (2026-09-26) ───────────────────────────
+   사람이 쓴 글을 홈에서 한데 모아 보여 준다. 그전까지 글은 도구 페이지와
+   about 에서만 링크돼 있어서 홈만 본 사람에게는 없는 것과 같았다.
+   목록은 정적 HTML 이다: 데이터 파일에 의존하지 않으므로 봇이 멈춰도 남는다.
+   글을 새로 쓰면 이 목록에 한 줄을 직접 추가한다. */
+.read-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.read-item {
+  display: block;
+  padding: 18px 20px;
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  text-decoration: none;
+  background: var(--card);
+  transition: border-color .15s, transform .15s;
+}
+.read-item:hover { border-color: var(--bl-m); transform: translateY(-2px); }
+.read-kicker {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--bl);
+  margin: 0 0 8px;
+}
+.read-title {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--t1);
+  margin: 0 0 8px;
+  word-break: keep-all;
+}
+.read-desc { font-size: 15px; line-height: 1.6; color: var(--t2); margin: 0; word-break: keep-all; }
+@media (max-width: 720px) {
+  .read-list { grid-template-columns: minmax(0, 1fr); }
+}
 </style>
 <script src="/ez-app-banner.js"></script><!-- 앱 설치 배너 · 앱 웹뷰에서는 뜨지 않는다 (71항).
      head 맨 끝에 둔다: 페이지가 이미 선언한 apple-itunes-app 을 보고 판단하므로
@@ -1898,6 +1934,55 @@ a { text-decoration: none; color: inherit; }
   </div>
 </section>
 
+
+<!-- ── 읽을거리 (2026-09-26) ──────────────────────────────
+     사람이 직접 쓴 글을 홈에서 한데 모아 보여 준다. 정적 목록이므로
+     봇·데이터 파일과 무관하게 항상 남는다. 글을 새로 쓰면 여기에
+     .read-item 한 줄을 추가하고 sitemap.xml 에도 같이 넣는다. -->
+<section class="section" id="reads">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+        Reads
+      </p>
+      <h2 class="section-title">읽을거리</h2>
+      <p class="section-sub">계산으로 확인한 것만 씁니다. 도구로 바로 이어집니다.</p>
+    </div>
+    <div class="read-list">
+      <a class="read-item" href="split-buy-334.html">
+        <p class="read-kicker">매수 전략</p>
+        <h3 class="read-title">한 번에 다 사면 왜 늘 물릴까: 3-3-4 분할 매수의 계산</h3>
+        <p class="read-desc">같은 1,000만원으로 평단가가 100과 88.24로 갈립니다. 분할 매수가 불리한 경우까지 양쪽을 다 계산했습니다.</p>
+      </a>
+      <a class="read-item" href="auto-dca-guide.html">
+        <p class="read-kicker">자동 적립</p>
+        <h3 class="read-title">버튼을 누르지 않는 투자: 미국주식 자동 적립 설정 총정리</h3>
+        <p class="read-desc">카카오페이·토스·키움에서 자동 매수를 걸어 두는 방법과, 자동화가 실제로 무엇을 막아 주는지.</p>
+      </a>
+      <a class="read-item" href="nvda-monthly-dca-5years.html">
+        <p class="read-kicker">투자 시뮬레이션</p>
+        <h3 class="read-title">엔비디아 매달 50만원씩 5년 적립하면 얼마가 되나</h3>
+        <p class="read-desc">실제 월별 종가로 계산한 결과. 같은 기간 한 번에 넣었을 때와도 비교했습니다.</p>
+      </a>
+      <a class="read-item" href="aapl-vs-msft-dividend-dca.html">
+        <p class="read-kicker">투자 시뮬레이션</p>
+        <h3 class="read-title">애플과 마이크로소프트, 10년 적립식으로 비교하면</h3>
+        <p class="read-desc">배당 재투자를 넣었을 때와 뺐을 때가 얼마나 달라지는지 월별 종가로 따졌습니다.</p>
+      </a>
+      <a class="read-item" href="isa-irp-us-stock-tax-comparison.html">
+        <p class="read-kicker">절세 전략</p>
+        <h3 class="read-title">ISA로 미국주식 투자하면 세금 얼마나 아끼나</h3>
+        <p class="read-desc">일반 계좌·ISA·IRP를 같은 수익 금액에 놓고 세후 금액을 계산했습니다.</p>
+      </a>
+      <a class="read-item" href="fire-retirement-4percent-rule.html">
+        <p class="read-kicker">은퇴 설계</p>
+        <h3 class="read-title">월 300만원으로 은퇴하려면 얼마 모아야 할까</h3>
+        <p class="read-desc">4퍼센트 룰로 역산한 금액과, 그 규칙이 조기 은퇴에서 흔들리는 지점.</p>
+      </a>
+    </div>
+  </div>
+</section>
 
 <!-- ── 인사이트 타임스 ────────────────────────────────
      2026-09-13: 네이버 프리미엄 콘텐츠 코너를 잠시 내리고 그 자리에 붙였다.
