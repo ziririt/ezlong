@@ -10595,5 +10595,12 @@ window.investmentQuotes = [
     "title": "리스크",
     "author": "피터 번스타인",
     "category": "mindset"
+  },
+  {
+    "english": "Know what you own, and know why you own it.",
+    "text": "무엇을 소유하고 있는지, 그리고 왜 그것을 소유하고 있는지 알아야 한다.",
+    "title": "전설로 떠나는 월街의 영웅 (One Up On Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
   }
 ];
