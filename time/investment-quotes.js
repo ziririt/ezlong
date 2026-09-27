@@ -10581,5 +10581,12 @@ window.investmentQuotes = [
     "title": "하늘과 바람과 별과 시",
     "author": "윤동주",
     "genre": "literature"
+  },
+  {
+    "english": "The stock market is filled with individuals who know the price of everything, but the value of nothing.",
+    "text": "주식시장은 모든 것의 가격은 알지만 어떤 것의 가치도 모르는 사람들로 가득 차 있다.",
+    "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔 (Philip Fisher)",
+    "category": "mindset"
   }
 ];
