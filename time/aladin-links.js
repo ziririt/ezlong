@@ -331,5 +331,7 @@ window.aladinLinks = {
   "겨울사랑|문정희": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=557198&partner=friends327",
   "워런 버핏 웨이 (The Warren Buffett Way)|로버트 G. 해그스트롬 (Robert G. Hagstrom)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=363738777&partner=friends327",
   "하늘과 바람과 별과 시 (서시)|윤동주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=301092752&partner=friends327",
-  "모든 주식을 소유하라 (Common Sense on Mutual Funds)|존 보글 (John C. Bogle)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=372978368&partner=friends327"
+  "모든 주식을 소유하라 (Common Sense on Mutual Funds)|존 보글 (John C. Bogle)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=372978368&partner=friends327",
+  "하늘과 바람과 별과 시|윤동주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=400683526&partner=friends327",
+  "전설로 떠나는 월街의 영웅 (One Up On Wall Street)|피터 린치 (Peter Lynch)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=396483089&partner=friends327"
 };
