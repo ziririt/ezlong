@@ -10588,5 +10588,12 @@ window.investmentQuotes = [
     "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
     "author": "필립 피셔 (Philip Fisher)",
     "category": "mindset"
+  },
+  {
+    "english": "The riskiest moment is when you're right. That's when you're in the most trouble, because you tend to overstay the good decisions.",
+    "text": "가장 위험한 순간은 당신이 옳았을 때다. 그때가 가장 위태로운 순간이다. 좋은 결정에 지나치게 오래 머물러 있으려 하기 때문이다.",
+    "title": "리스크",
+    "author": "피터 번스타인",
+    "category": "mindset"
   }
 ];
