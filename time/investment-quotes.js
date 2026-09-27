@@ -10615,5 +10615,12 @@ window.investmentQuotes = [
     "title": "다가오는 말들",
     "author": "은유",
     "genre": "literature"
+  },
+  {
+    "english": "The investor's chief problem—and even his worst enemy—is likely to be himself.",
+    "text": "투자자에게 가장 큰 문제, 심지어 최악의 적은 다름 아닌 자기 자신일 가능성이 크다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
   }
 ];
