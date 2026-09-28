@@ -10656,5 +10656,12 @@ window.investmentQuotes = [
     "title": "최고의 주식 최적의 타이밍 (How to Make Money in Stocks)",
     "author": "윌리엄 J. 오닐 (William J. O'Neil)",
     "category": "mindset"
+  },
+  {
+    "english": "The stock market is a device for transferring money from the impatient to the patient.",
+    "text": "주식시장은 조급한 사람의 돈을 인내심 있는 사람에게 옮겨주는 장치다.",
+    "title": "워런 버핏의 주주서한 (Warren Buffett's Letters to Berkshire Shareholders)",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "patience"
   }
 ];
