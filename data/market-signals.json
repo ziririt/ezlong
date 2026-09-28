@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-28T22:01:23.802674+00:00",
-  "generatedAtKST": "2026-09-29 07:01 KST",
+  "generatedAt": "2026-09-28T22:31:09.413856+00:00",
+  "generatedAtKST": "2026-09-29 07:31 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -527,7 +527,7 @@
         "histogram": 2.6863
       },
       "high52": 476.2923,
-      "low52": 270.3685,
+      "low52": 270.3686,
       "dev200": 18.5207,
       "dev5": 0.4966,
       "dev20": 4.9954,
@@ -688,7 +688,7 @@
     "prevClose": 37,
     "prev1Week": 34,
     "prev1Month": 54,
-    "timestamp": "2026-09-28T21:45:23+00:00"
+    "timestamp": "2026-09-28T22:10:39+00:00"
   },
   "macro": {
     "yield10y": {
@@ -708,31 +708,48 @@
       "unit": "%"
     },
     "oil": {
-      "price": 93.29,
-      "change": 0.88,
-      "changePct": 0.9523,
+      "price": 93.21,
+      "change": 0.8,
+      "changePct": 0.8657,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 101.19,
-      "change": 0.22,
-      "changePct": 0.2179,
+      "price": 101.175,
+      "change": 0.205,
+      "changePct": 0.203,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4148.5,
-      "change": -172.7002,
-      "changePct": -3.9966,
+      "price": 4156.0,
+      "change": -165.2002,
+      "changePct": -3.823,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-09-28T22:01:23.802674+00:00",
+      "atKST": "2026-09-29 07:01 KST",
+      "qqq": {
+        "rsi": 58.73,
+        "macdHist": 2.7978,
+        "dev5": -0.7586,
+        "dev200": 10.8036,
+        "gear": 3,
+        "buyScore": 71,
+        "sellScore": 19,
+        "price": 736.53
+      },
+      "soxxMacdHist": 6.3757,
+      "fearAndGreed": 34,
+      "yield10y": 5.24
+    },
     {
       "at": "2026-09-28T21:52:39.654024+00:00",
       "atKST": "2026-09-29 06:52 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": 7.4905,
       "fearAndGreed": 36,
       "yield10y": 5.162
-    },
-    {
-      "at": "2026-09-24T21:37:38.874477+00:00",
-      "atKST": "2026-09-25 06:37 KST",
-      "qqq": {
-        "rsi": 63.41,
-        "macdHist": 3.5566,
-        "dev5": 0.3673,
-        "dev200": 11.6907,
-        "gear": 3,
-        "buyScore": 77,
-        "sellScore": 28,
-        "price": 741.1
-      },
-      "soxxMacdHist": 7.4905,
-      "fearAndGreed": 36,
-      "yield10y": 5.162
     }
   ],
-  "swingContinuity": "9\uc6d4 28\uc77c(\ub274\uc695) \ub9e4\uc218\uc810\uc218 67, \ub9e4\ub3c4\uc810\uc218 19, RSI 58.51\uc5d0\uc11c 9\uc6d428\uc77c(\uc6d4, \ub274\uc695) \ub9e4\uc218\uc810\uc218 71, \ub9e4\ub3c4\uc810\uc218 19, RSI 58.73\uc73c\ub85c \uc18c\ud3ed \uac1c\uc120\ub418\uc5c8\uc73c\ub098, \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\ub294 -1.07%, SOXX\ub294 -2.08%, TSLA\ub294 -3.94%\ub85c \ud558\ub77d\ud558\uba70 \uc804\ubc18\uc801\uc778 \uc57d\uc138\ub97c \ubcf4\uc600\uace0, \ud2b9\ud788 TSLA\uc758 \ud558\ub77d\ud3ed\uc774 \ub450\ub4dc\ub7ec\uc84c\uc2b5\ub2c8\ub2e4.",
-  "swingContinuityEn": "On September 28 (NY), the buy score was 67, sell score 19, and RSI 58.51. Today, these improved slightly to a buy score of 71, sell score 19, and RSI 58.73. However, the past 5 trading days showed overall weakness with QQQ down -1.07%, SOXX down -2.08%, and TSLA down -3.94%, with TSLA experiencing a particularly sharp decline."
+  "swingContinuity": "9\uc6d4 28\uc77c(\ub274\uc695) \ub9e4\uc218\uc810\uc218 67, \ub9e4\ub3c4\uc810\uc218 19, RSI 58.51\uc5d0\uc11c 9\uc6d428\uc77c(\uc6d4, \ub274\uc695) \ub9e4\uc218\uc810\uc218 71, \ub9e4\ub3c4\uc810\uc218 19, RSI 58.73\uc73c\ub85c \uc18c\ud3ed \uac1c\uc120\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\ub294 -1.07% \ud558\ub77d\ud558\uba70 \uc57d\uc138\ub97c \ubcf4\uc600\uace0, SOXX\ub294 -2.08%, TSLA\ub294 -3.94%\ub85c \ud558\ub77d\ud3ed\uc774 \ud655\ub300\ub418\uc5c8\uc73c\ub098 NVDA\ub294 +1.68% \uc0c1\uc2b9\ud558\uba70 \uc0c1\ub300\uc801\uc73c\ub85c \uac15\ud55c \ud750\ub984\uc744 \ubcf4\uc600\uc2b5\ub2c8\ub2e4.",
+  "swingContinuityEn": "Today's buy score of 71, sell score of 19, and RSI of 58.73 showed a slight improvement from September 28th (NY) levels of buy score 67, sell score 19, and RSI 58.51. Over the last 5 trading days, QQQ declined by -1.07%, SOXX fell -2.08%, and TSLA dropped -3.94%, indicating a widening downtrend, while NVDA showed relative strength with a +1.68% gain."
 }
