@@ -10636,5 +10636,12 @@ window.investmentQuotes = [
     "title": "비커밍 (Becoming)",
     "author": "미셸 오바마 (Michelle Obama)",
     "genre": "literature"
+  },
+  {
+    "english": "You don't have to understand life. You just have to live it.",
+    "text": "삶을 이해할 필요는 없다. 그저 살아내면 될 뿐이다.",
+    "title": "미드나잇 라이브러리 (The Midnight Library)",
+    "author": "매트 헤이그 (Matt Haig)",
+    "genre": "literature"
   }
 ];
