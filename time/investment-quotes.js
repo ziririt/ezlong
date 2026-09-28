@@ -10629,5 +10629,12 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각 (The Most Important Thing)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "patience"
+  },
+  {
+    "english": "Your story is what you have, what you will always have. It is something to own.",
+    "text": "당신의 이야기는 당신이 가진 것이며, 앞으로도 영원히 가질 것이다. 그것은 스스로 소유해야 할 무언가다.",
+    "title": "비커밍 (Becoming)",
+    "author": "미셸 오바마 (Michelle Obama)",
+    "genre": "literature"
   }
 ];
