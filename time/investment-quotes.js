@@ -10649,5 +10649,12 @@ window.investmentQuotes = [
     "title": "나그네",
     "author": "박목월",
     "genre": "literature"
+  },
+  {
+    "english": "Success in a free country is simple. Get a job, get an education, and learn to save and invest wisely.",
+    "text": "자유로운 나라에서 성공은 단순하다. 직업을 갖고, 배움을 얻고, 저축하며 현명하게 투자하는 법을 익히는 것이다.",
+    "title": "최고의 주식 최적의 타이밍 (How to Make Money in Stocks)",
+    "author": "윌리엄 J. 오닐 (William J. O'Neil)",
+    "category": "mindset"
   }
 ];
