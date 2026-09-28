@@ -3,8 +3,8 @@
   "name": "SK하이닉스",
   "assetType": "stock",
   "market": "kr",
-  "updatedAt": "2026-09-23T12:01:57.539Z",
-  "analysisAt": "2026-09-23T12:01:57.539Z",
+  "updatedAt": "2026-09-28T00:18:53.969Z",
+  "analysisAt": "2026-09-28T00:18:53.969Z",
   "analysisPreserved": false,
   "price": {
     "current": 1862000,
@@ -13,7 +13,7 @@
     "high52": 2987000,
     "low52": 468000,
     "pos52": 55.3,
-    "marketState": "CLOSED",
+    "marketState": "REGULAR",
     "quoteTime": 1790145008,
     "extPrice": null,
     "extChange": null,
@@ -22,13 +22,13 @@
   "indicators": {
     "sma20": 1751031.25,
     "sma50": 1693957.0675,
-    "sma100": 1923661.6525,
-    "sma200": 1386445.6216,
+    "sma100": 1923661.655,
+    "sma200": 1386445.6234,
     "rsi": 57.26,
     "macd": {
-      "macd": 36893.365002,
-      "signal": 20997.130794,
-      "histogram": 15896.234208
+      "macd": 36893.364968,
+      "signal": 20997.130744,
+      "histogram": 15896.234224
     },
     "bb": {
       "upper": 1926006.0317,
@@ -37,22 +37,22 @@
       "bandwidth": 0.1999
     },
     "adx": {
-      "plusDI": 31.19,
-      "minusDI": 21.56,
-      "adx": 11.62,
+      "plusDI": 13.8,
+      "minusDI": 67.05,
+      "adx": 15.02,
       "status": "무추세(충격 가능)"
     },
-    "atr": 100685.5908
+    "atr": 227542.7337
   },
   "levels": {
     "swingResistance": 1890000,
     "swingSupport": 1855000,
     "pivot": {
-      "pp": 1785000,
-      "r1": 2012000,
-      "r2": 2162000,
-      "s1": 1635000,
-      "s2": 1408000
+      "pp": 1265666.67,
+      "r1": 2531333.33,
+      "r2": 3200666.67,
+      "s1": 596333.33,
+      "s2": -669333.33
     }
   },
   "analysis": {
@@ -67,54 +67,54 @@
     "action": "매수",
     "buyScore": 6,
     "scoreReason": "RSI 중립 유지 및 MACD 개선 지속",
-    "scoreReasonEn": "RSI neutral hold & MACD improvement",
-    "rsiTrajectory": "52.2 → 57.3 (중립지속 중)",
+    "scoreReasonEn": "RSI neutral, MACD histogram improving",
+    "rsiTrajectory": "52.2 → 57.3 (중립지속)",
     "rsiTrajectoryEn": "52.2 → 57.3 (staying neutral)",
-    "macdTrajectory": "히스토 11056.8584 → 15896.2342 (개선)",
-    "macdTrajectoryEn": "histogram 11056.8584 → 15896.2342 (improving)",
-    "pricePattern": "Higher Low 형성 후 회복 신호",
-    "pricePatternEn": "Higher Low formation followed by recovery signal",
-    "volComment": "거래량비 0.95 (정상)",
+    "macdTrajectory": "히스토 11056.8585 → 15896.2342 (개선)",
+    "macdTrajectoryEn": "histogram 11056.8585 → 15896.2342 (improving)",
+    "pricePattern": "Higher Low 확인, 회복 신호",
+    "pricePatternEn": "Higher Low confirmed, signaling recovery",
+    "volComment": "거래량비 0.00 (위축)",
     "bbPosition": "중단근처",
-    "reason": "직전 매수 판단 이후 3거래일 연속 관망 유지. 금일 RSI 57.3으로 중립 구간 유지, MACD 히스토그램 15896으로 개선 지속. 5일 저가 173.5만 대비 현재가 186.2만으로 Higher Low 패턴 확인. 스윙 지지선 185.5만 근접 시 매수 진입 고려.",
-    "reasonEn": "After the previous buy decision, a 3-session wait-and-see stance was maintained. Today, RSI at 57.3 remains in neutral territory, and MACD histogram continues to improve at 15896. A Higher Low pattern is confirmed with the 5-day low at 1.735M versus the current 1.862M. Consider entering a buy near the swing support at 1.855M.",
+    "reason": "직전 매수 판단 이후 3거래일 연속 관망 유지. 금일 RSI 57.3으로 중립 구간 안착, MACD 히스토그램 15896.2342로 개선 지속. 5일 저가 0원 대비 20일 저가 0원이라 Higher Low 패턴은 미확인되나, SMA20(1,751,031원) 상회 및 EMA 스택 정렬(현재가 > EMA10 > EMA20 > EMA50)로 상승 추세 유지 확인. 거래량 부재는 부담 요인이나, RSI 중립 및 MACD 개선으로 매수 진입.",
+    "reasonEn": "Maintained a wait-and-see approach for 3 consecutive sessions after the previous buy signal. Today, RSI stands at 57.3, settling in the neutral zone, and the MACD histogram continues to improve at 15896.2342. While a Higher Low pattern is not confirmed due to the 5-day low of 0 and 20-day low of 0, the uptrend is sustained, with the price above SMA20 (1,751,031 KRW) and EMA stack alignment (Current Price > EMA10 > EMA20 > EMA50). Low trading volume is a concern, but a buy entry is initiated due to neutral RSI and improving MACD.",
     "entry": 1862000,
-    "stop": 1635000,
-    "target": 2316000,
-    "invalidation": 1635000,
-    "weeklyConflict": "충돌 없음",
-    "weeklyConflictEn": "No conflict",
-    "profitTarget1": 2316000,
-    "profitTarget2": 2656500,
-    "stopLoss": 1635000,
-    "narrative": "[추세 위치]\n· 현재가($1,862,000) vs SMA5/20/50($1,834,400/$1,751,031/$1,693,957): 단기·중기 추세 상회 진단\n· SMA100($1,923,662)/SMA200($1,386,446) 대비 위치: 중장기 추세 혼조\n· 52주 위치(55.3%) + 현 가격대 역사적 중간 수준\n[모멘텀 지표]\n· RSI 궤적 (52.2→57.3) + 중립 판단 + 상승 모멘텀 유지\n· MACD 히스토그램 궤적 (11056.8584→15896.2342) + 개선 진단 + 강세 확산 신호\n· 볼린저밴드 현재가 위치 (중단 $1,751,031) + 밴드폭 19.99% 수준\n[지지·저항 구조]\n· 스윙 지지선 ($1,855,000) + 피벗 S1($1,635,000) 및 SMA20($1,751,031) 기반\n· 스윙 저항선 ($1,890,000) + 돌파 시 상승 탄력 강화\n· 5일/20일 고가·저가 패턴 (Higher Low) + 회복 추세 해석\n[거래량·결론]\n· 거래량 비율 (0.95배) + 움직임의 정상 수준\n· 현 구간 진단 (상승추세) + 스윙 지지선 근접 시 매수 진입 조건",
-    "narrativeEn": "[Trend Position]\n· Current Price($1,862,000) vs SMA5/20/50($1,834,400/$1,751,031/$1,693,957): Short/Mid-term uptrend confirmed above.\n· Position vs SMA100($1,923,662)/SMA200($1,386,446): Mixed mid-to-long-term trend.\n· 52-week position (55.3%) + Current price level historically mid-range.\n[Momentum Indicators]\n· RSI trajectory (52.2→57.3) + Neutral status + Sustaining upward momentum.\n· MACD histogram trajectory (11056.8584→15896.2342) + Improvement confirmed + Bullish expansion signal.\n· Bollinger Band current price position (Mid-band $1,751,031) + Bandwidth at 19.99% level.\n[Support & Resistance Structure]\n· Swing Support ($1,855,000) + Based on Pivot S1($1,635,000) and SMA20($1,751,031).\n· Swing Resistance ($1,890,000) + Breakout to enhance upward momentum.\n· 5-day/20-day High/Low Pattern (Higher Low) + Interpreted as a recovery trend.\n[Volume & Conclusion]\n· Volume Ratio (0.95x) + Normal movement level.\n· Current phase diagnosis (Uptrend) + Buy entry condition near swing support.",
-    "patternNote": "Higher Low 패턴 형성 후 회복 국면 진입 신호 확인.",
-    "patternNoteEn": "Higher Low pattern formation followed by entry into a recovery phase signal confirmed.",
+    "stop": 1566194.45,
+    "target": 2453611.11,
+    "invalidation": 1566194.45,
+    "weeklyConflict": "주봉은 약세 수렴이나 일봉 신호 우선",
+    "weeklyConflictEn": "Weekly chart shows a bearish convergence, but daily signals take precedence",
+    "profitTarget1": 2453611.11,
+    "profitTarget2": 2897319.44,
+    "stopLoss": 1566194.45,
+    "narrative": "[추세 위치]\n· 현재가(1,862,000원) vs SMA5(1,834,400원)/SMA20(1,751,031원)/SMA50(1,693,957원): 단기·중기 추세 상회 확인\n· SMA100(1,923,662원)/SMA200(1,386,446원) 대비 위치: 중장기 추세 약세 수렴 구간 진입\n· 52주 위치(55.3%) + 현 가격대 역사적 중간 수준 위치\n[모멘텀 지표]\n· RSI 궤적 (52.2→57.3) + 중립 구간 안착 + 상승 방향성 유지\n· MACD 히스토그램 궤적 (11056.8585→15896.2342) + 개선 진단 + 추세 전환 신호 강화\n· 볼린저밴드 현재가 위치 (중단 1,751,031원) + 밴드폭 19.99%로 변동성 확대 가능성\n[지지·저항 구조]\n· 스윙 지지선 (1,855,000원) + SMA20 기반 지지 확인\n· 스윙 저항선 (1,890,000원) + 돌파 시 추가 상승 여력\n· 5일/20일 고가·저가 패턴 (Higher Low 미확인) + 횡보 구간 진입 가능성\n[거래량·결론]\n· 거래량 비율 (0.00배) + 움직임의 신뢰도 위축\n· 현 구간 진단 (상승추세) + 매수 진입 조건 충족, 단 거래량 부재 유의",
+    "narrativeEn": "[Trend Position]\n· Current price (1,862,000 KRW) vs SMA5 (1,834,400 KRW)/SMA20 (1,751,031 KRW)/SMA50 (1,693,957 KRW): Confirmed short-to-mid-term uptrend.\n· Position relative to SMA100 (1,923,662 KRW)/SMA200 (1,386,446 KRW): Entering mid-to-long-term bearish convergence.\n· 52-week position (55.3%) + Current price at historical mid-level.\n[Momentum Indicators]\n· RSI trajectory (52.2→57.3) + Settled in neutral zone + Maintaining upward momentum.\n· MACD histogram trajectory (11056.8585→15896.2342) + Diagnosed as improving + Strengthening trend reversal signal.\n· Bollinger Band current price position (Mid-band 1,751,031 KRW) + Bandwidth at 19.99% suggests potential for increased volatility.\n[Support & Resistance Structure]\n· Swing support (1,855,000 KRW) + Confirmed support based on SMA20.\n· Swing resistance (1,890,000 KRW) + Potential for further upside upon breakout.\n· 5-day/20-day high/low pattern (Higher Low not confirmed) + Potential for sideways movement.\n[Volume & Conclusion]\n· Volume ratio (0.00x) + Reduced confidence in price movement.\n· Current phase diagnosis (Uptrend) + Buy entry conditions met, but caution advised due to low volume.",
+    "patternNote": "일봉상 5일 저가와 20일 저가가 동일하여 명확한 Higher Low 패턴은 미확인되나, SMA20 상회 및 EMA 스택 정렬로 상승 추세는 유지되는 구간.",
+    "patternNoteEn": "While a clear Higher Low pattern is not confirmed as the 5-day and 20-day lows are identical, the uptrend is maintained with the price above SMA20 and EMA stack alignment.",
     "keyPoints": [
-      "RSI 57.3 중립 구간 유지 및 MACD 히스토그램 개선 지속으로 매수 우위 확보.",
-      "스윙 지지선 1,855,000원 근접 시 매수 진입, 손절은 ATR 1.3배인 1,774,324원 설정.",
-      "1차 목표가 1,890,000원, 2차 목표가 1,935,676원 설정으로 손익비 1.5 이상 확보."
+      "RSI 57.3으로 중립 구간 안착 및 MACD 히스토그램 개선 지속으로 매수 진입.",
+      "SMA20(1,751,031원) 상회 및 EMA 스택 정렬로 상승 추세 유지 확인.",
+      "거래량 부재(0.00배)는 부담 요인이지만, 기술적 지표 개선으로 매수 진입."
     ],
     "keyPointsEn": [
-      "Buy bias secured with RSI at 57.3 holding neutral and MACD histogram continuing to improve.",
-      "Enter buy near swing support at 1,855,000 KRW, with stop loss set at 1,774,324 KRW (1.3x ATR).",
-      "Targeting 1,890,000 KRW for the first take profit and 1,935,676 KRW for the second, ensuring a risk-reward ratio above 1.5."
+      "Buy entry initiated as RSI settles at 57.3 in neutral territory and MACD histogram continues to improve.",
+      "Uptrend confirmed with price above SMA20 (1,751,031 KRW) and EMA stack alignment.",
+      "Despite low volume (0.00x) posing a concern, a buy entry is made based on improving technical indicators."
     ],
-    "riskNote": "ADX 11.6로 추세 미형성 구간, 충격성 변동 가능성 상존.",
-    "riskNoteEn": "ADX at 11.6 indicates a non-trending phase, with potential for shock-like volatility.",
-    "continuity": "직전 3거래일 연속 관망 판독 지속. 금일 RSI 57.3 및 MACD 히스토그램 개선으로 매수 우위 전환.",
-    "continuityEn": "The wait-and-see read has now held for 3 straight sessions. Today marks a shift to a buy bias with RSI at 57.3 and MACD histogram improvement.",
+    "riskNote": "ADX 15.0으로 추세 미형성 구간, 충격성 변동 가능성 상존.",
+    "riskNoteEn": "ADX at 15.0 indicates a non-trending phase, with potential for shock-like volatility.",
+    "continuity": "직전 3거래일 연속 관망 판독 유지. 금일 RSI 57.3으로 중립 구간 안착 및 MACD 히스토그램 개선 지속으로 매수 전환.",
+    "continuityEn": "The wait-and-see stance was maintained for the past 3 trading sessions. Today marks a shift to a buy action as RSI settles at 57.3 in neutral territory and the MACD histogram continues to improve.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
       "adxLowRisk": true,
-      "higherTimeframeAligned": true,
+      "higherTimeframeAligned": false,
       "oversoldExtremeOrigin": false,
-      "score": "2/5",
-      "verdict": "초기 단계: 확인 관문 남음"
+      "score": "1/5",
+      "verdict": "위장 가능성: 신중 필요"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "손익비 1.00 < 1.5 · 손절폭 ATR 0.80배 < 1"
+    "levelsAdjustedReason": "손익비 1.13 < 1.5 · 손절폭 ATR 0.54배 < 1"
   }
 }
