@@ -10643,5 +10643,11 @@ window.investmentQuotes = [
     "title": "미드나잇 라이브러리 (The Midnight Library)",
     "author": "매트 헤이그 (Matt Haig)",
     "genre": "literature"
+  },
+  {
+    "text": "강나루 건너서 밀밭 길을\n구름에 달 가듯이\n가는 나그네",
+    "title": "나그네",
+    "author": "박목월",
+    "genre": "literature"
   }
 ];
