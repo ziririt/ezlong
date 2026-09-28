@@ -10622,5 +10622,12 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "english": "Being too far ahead of your time is indistinguishable from being wrong.",
+    "text": "시대를 너무 앞서가는 것은 틀린 것과 구별되지 않는다.",
+    "title": "투자에 대한 생각 (The Most Important Thing)",
+    "author": "하워드 막스 (Howard Marks)",
+    "category": "patience"
   }
 ];
