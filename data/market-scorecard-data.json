@@ -1,6 +1,80 @@
 {
   "entries": [
     {
+      "id": "2026-09-29-21:50",
+      "timestamp_kst": "2026-09-29(화) 21:50 KST",
+      "key_event": {
+        "name": "유가 하락 및 국채금리 안정화",
+        "name_en": "Oil Price Decline & Treasury Yield Stabilization",
+        "time": "2026-09-29 프리마켓",
+        "why": "인플레이션 압력 완화, 성장주 투자심리 개선",
+        "why_en": "Easing inflation pressure, improved growth stock sentiment"
+      },
+      "positive_total": 55,
+      "negative_total": 45,
+      "summary": "유가 하락 및 국채금리 안정화로 긍정 우위 전환",
+      "summary_en": "Positive sentiment shift due to falling oil prices and stabilizing Treasury yields",
+      "positive_factors": [
+        {
+          "score": 55,
+          "name": "WTI 유가 하락",
+          "name_en": "WTI Crude Oil Price Decline",
+          "desc": "WTI 원유 90.63달러(-3.71%) 하락: 에너지 비용 감소 및 인플레이션 압력 완화",
+          "desc_en": "WTI crude oil at $90.63 (-3.71%): Reduced energy costs and easing inflation pressure",
+          "category": "oil_energy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "지정학적 긴장 지속",
+          "name_en": "Ongoing Geopolitical Tensions",
+          "desc": "미-이란 긴장 고조 지속: 유가 변동성 및 시장 불확실성 유지",
+          "desc_en": "Continued US-Iran tensions: Sustained oil price volatility and market uncertainty",
+          "category": "geopolitics"
+        },
+        {
+          "score": 20,
+          "name": "높은 인플레이션 수준",
+          "name_en": "High Inflation Levels",
+          "desc": "근원 PCE 3.34%, CPI 3.35%로 여전히 높은 물가 수준: 연준 긴축 기조 유지 압력",
+          "desc_en": "Core PCE at 3.34% and CPI at 3.35%, indicating persistently high inflation: Pressure for Fed to maintain hawkish stance",
+          "category": "macro_data"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "기술주 혼조세",
+          "name_en": "Mixed Performance in Tech Stocks",
+          "desc": "TSLA, NVDA, GOOGL 강세 속 AAPL, MSFT 약세: 섹터 내 차별화된 움직임",
+          "desc_en": "TSLA, NVDA, GOOGL show strength while AAPL, MSFT decline: Differentiated movements within the sector",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "달러인덱스 소폭 상승",
+          "name_en": "Slight Rise in Dollar Index",
+          "desc": "달러인덱스 DXY 101.36(+0.07%) 소폭 상승: 수출 기업 실적에 미미한 영향",
+          "desc_en": "Dollar Index DXY at 101.36 (+0.07%) with a slight increase: Minor impact on export company earnings",
+          "category": "dollar_fx"
+        },
+        {
+          "name": "미 국채금리 하락",
+          "name_en": "US Treasury Yields Decline",
+          "desc": "미10년 국채금리 5.22%(-0.40%) 하락: 성장주 할인율 부담 완화",
+          "desc_en": "US 10-year Treasury yield at 5.22% (-0.40%): Easing discount rate burden for growth stocks",
+          "category": "rates_treasury"
+        }
+      ],
+      "report": {
+        "overview": "- 9월28일(월, 뉴욕) 시장 총평: 유가 하락과 국채금리 안정화에 힘입어 긍정적 투자 심리가 우위를 점한 하루.\n- 주요 원인: WTI 유가가 90달러 초반으로 하락하고, 미 국채 10년물 금리가 하락하며 인플레이션 압력 완화 기대감 확산.\n- 시장 반응: 에너지 비용 감소 및 성장주 할인율 부담 완화로 기술주 중심의 투자 심리 개선 조짐.\n- 하방 압력: 여전히 높은 근원 PCE 및 CPI 수치, 그리고 중동 지정학적 긴장 지속이 잠재적 불안 요인으로 잔존.",
+        "positive": "- WTI 유가 하락: WTI 원유 가격이 90.63달러로 3.71% 하락하며 에너지 비용 감소 및 전반적인 인플레이션 압력 완화 기대감 증대.\n- 미 국채금리 하락: 미 10년물 국채금리가 5.22%(-0.40%)로 0.40% 하락하며 성장주에 대한 할인율 부담이 완화, 기술주 투자 심리 개선에 기여.",
+        "negative": "- 지정학적 긴장 지속: 미-이란 간의 긴장이 고조되며 유가 변동성 및 중동 지역의 시장 불확실성이 지속될 수 있다는 우려 잔존.\n- 높은 인플레이션 수준: 근원 PCE 3.34%와 CPI 3.35%로 여전히 높은 물가 수준이 확인되며, 연방준비제도(Fed)의 긴축 기조 유지 압력으로 작용.",
+        "mixed": "- 기술주 혼조세: 테슬라(TSLA), 엔비디아(NVDA), 구글(GOOGL)이 강세를 보인 반면, 애플(AAPL), 마이크로소프트(MSFT)가 약세를 나타내며 기술주 섹터 내 차별화된 움직임 관찰.\n- 달러인덱스 소폭 상승: 달러인덱스(DXY)가 101.36으로 0.07% 소폭 상승했으나, 수출 기업 실적에 미치는 영향은 미미한 수준으로 평가.",
+        "watch": "- PCE 개인소비지출(8월분) 발표: 9월 30일(수) 08:30 ET 예정된 PCE 데이터 발표를 통해 인플레이션 추이 및 연준의 향후 통화 정책 방향에 대한 단서 확인.\n- GDP 확정치(2분기) 발표: 9월 30일(수) 08:30 ET 예정된 GDP 확정치 발표를 통해 미국 경제의 전반적인 성장 모멘텀 확인.\n- 미 10년 국채금리 추이: 유가 하락에도 불구하고 채권 시장의 변동성이 지속될 수 있어, 미 10년 국채금리의 추가 하락 또는 반등 여부 지속적인 관찰."
+      },
+      "report_at": "2026-09-29(화) 21:50 KST"
+    },
+    {
       "id": "2026-09-29-18:20",
       "timestamp_kst": "2026-09-29(화) 18:20 KST",
       "key_event": {
@@ -553,68 +627,8 @@
         "watch": "- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가 상승 여부가 성장주 전반에 미칠 영향 확인.\n- 유가 변동성: WTI 원유 가격의 추가 상승 또는 하락 여부가 인플레이션 우려에 미칠 영향 확인."
       },
       "report_at": "2026-09-28(월) 14:45 KST"
-    },
-    {
-      "id": "2026-09-28-11:50",
-      "timestamp_kst": "2026-09-28(월) 11:50 KST",
-      "key_event": {
-        "name": "AI 투자 기대감 지속",
-        "name_en": "Continued AI Investment Optimism",
-        "time": "직전 거래일 마감 기준",
-        "why": "기술주 중심 지수 상승, 반도체 섹터 강세",
-        "why_en": "Tech-led index gains, strong semiconductor sector"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "AI 투자 기대감 지속으로 긍정 우위 유지, 주요 경제지표 발표 경계감 혼조",
-      "summary_en": "AI investment optimism sustains positive bias, mixed sentiment ahead of key economic data",
-      "positive_factors": [
-        {
-          "score": 70,
-          "name": "AI 반도체 수요 급증",
-          "name_en": "Surging AI Chip Demand",
-          "desc": "TSMC Q3 실적 상승 전망: AI 칩 수요 급증 및 강력한 매출 성장 기대",
-          "desc_en": "TSMC Q3 earnings projected to rise: booming AI chip demand and strong revenue growth expected",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "미 국채금리 상승 압력",
-          "name_en": "US Treasury Yields Rising",
-          "desc": "미10년 국채금리 5.18%(+0.43%) 상승: 성장주 할인율 압박 및 투자 심리 위축",
-          "desc_en": "US 10-year Treasury yield rose to 5.18% (+0.43%): pressuring growth stock valuations and dampening investor sentiment",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 10,
-          "name": "빅테크 AI 회의론 제기",
-          "name_en": "Big Tech AI Skepticism",
-          "desc": "마이클 버리, 빅테크 AI 회의론 제기: 오라클 등 밸류에이션 재평가 가능성",
-          "desc_en": "Michael Burry raises skepticism on Big Tech AI: potential revaluation for Oracle and others",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "유가 상승 및 지정학적 긴장",
-          "name_en": "Oil Price Hike & Geopolitical Tensions",
-          "desc": "WTI 원유 93.49(+1.17%) 상승: 트럼프 이란 관련 발언 및 호르무즈 해협 봉쇄 위협",
-          "desc_en": "WTI crude rose to 93.49 (+1.17%): driven by Trump's Iran comments and Strait of Hormuz closure threats",
-          "category": "oil_energy"
-        }
-      ],
-      "report": {
-        "overview": "- 총점: AI 투자 기대감 지속으로 긍정 70 대 부정 30의 긍정 우위 유지.\n- 시장 분위기: 주요 경제지표 발표를 앞두고 경계감이 혼재하는 양상.\n- 핵심 동력: 기술주 중심의 지수 상승과 반도체 섹터 강세가 AI 투자 기대감을 견인.\n- 하방 압력: 미 국채금리 상승과 일부 빅테크 AI 회의론 제기가 시장에 부담으로 작용.",
-        "positive": "- AI 반도체 수요 급증: TSMC의 3분기 실적 상승 전망은 AI 칩 수요 급증과 강력한 매출 성장에 대한 기대를 반영.\n- AI 투자 기대감 지속: 이는 전반적인 기술주 강세와 시장의 긍정적 분위기를 유지하는 핵심 동력으로 작용.",
-        "negative": "- 미 국채금리 상승 압력: 미 10년 국채금리가 5.18%(+0.43%)로 상승하며 성장주 할인율에 대한 압박을 가하고 투자 심리를 위축. 이는 연준의 금리 인상 기조 지속 가능성과 인플레이션 우려(CPI 소비자물가 상승률 3.35%, 10년 기대인플레이션 2.34%)가 복합적으로 작용한 결과.\n- 빅테크 AI 회의론 제기: 마이클 버리(Michael Burry)가 빅테크 AI에 대한 회의론을 제기하며 오라클(Oracle) 등 일부 기업의 밸류에이션 재평가 가능성을 언급. 이는 AI 관련 기술주 전반에 대한 투자자들의 신중한 접근을 유도하며 잠재적인 하방 압력으로 작용.",
-        "mixed": "- 유가 상승 및 지정학적 긴장: WTI 원유가 93.49(+1.17%)로 상승한 것은 트럼프 전 대통령의 이란 관련 발언과 호르무즈 해협 봉쇄 위협 등 지정학적 긴장 고조에 기인. 유가 상승은 인플레이션 압력을 가중시켜 연준의 추가 금리 인상 가능성을 높이는 악재로 작용할 수 있으나, 동시에 에너지 섹터에는 긍정적인 영향을 미칠 수 있어 시장 전반에 혼조세를 유발.",
-        "watch": "- 미 국채금리 및 유가 추이: 향후 12시간 동안 미 10년 국채금리의 추가 상승 여부와 WTI 유가의 변동성은 시장의 투자 심리와 인플레이션 우려를 지속적으로 반영할 지표. 특히 유가의 급격한 상승은 인플레이션 재점화 우려를 키울 수 있어 지속적인 모니터링 필요."
-      },
-      "report_at": "2026-09-28(월) 11:50 KST"
     }
   ],
-  "updated_at": "2026-09-29T09:21:09Z",
+  "updated_at": "2026-09-29T12:51:16Z",
   "max_entries": 10
 }
