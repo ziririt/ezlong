@@ -10751,5 +10751,12 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "english": "Time is your friend; impulse is your enemy.",
+    "text": "시간은 당신의 편이고, 충동은 당신의 적이다.",
+    "title": "모든 주식을 소유하라 (Common Sense on Mutual Funds)",
+    "author": "존 보글 (John C. Bogle)",
+    "category": "mindset"
   }
 ];
