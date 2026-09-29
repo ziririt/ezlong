@@ -10663,5 +10663,11 @@ window.investmentQuotes = [
     "title": "워런 버핏의 주주서한 (Warren Buffett's Letters to Berkshire Shareholders)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "patience"
+  },
+  {
+    "text": "가난한 내가 아름다운 나타샤를 사랑해서 오늘 밤은 푹푹 눈이 나린다. 나타샤를 사랑은 하고 눈은 푹푹 날리고 나는 혼자 쓸쓸히 앉어 소주를 마신다.",
+    "title": "나와 나타샤와 흰 당나귀",
+    "author": "백석",
+    "genre": "literature"
   }
 ];
