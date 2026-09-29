@@ -10737,5 +10737,12 @@ window.investmentQuotes = [
     "title": "연금술사 (The Alchemist)",
     "author": "파울로 코엘료 (Paulo Coelho)",
     "genre": "literature"
+  },
+  {
+    "english": "Wide diversification is only required when investors do not understand what they are doing.",
+    "text": "광범위한 분산 투자는, 투자자 자신이 무엇을 하고 있는지 제대로 알지 못할 때에만 필요한 전략이다.",
+    "title": "버크셔 해서웨이 1993년 주주 서한 (Berkshire Hathaway Chairman's Letter, 1993)",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "mindset"
   }
 ];
