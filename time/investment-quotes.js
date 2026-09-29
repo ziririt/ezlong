@@ -10758,5 +10758,12 @@ window.investmentQuotes = [
     "title": "모든 주식을 소유하라 (Common Sense on Mutual Funds)",
     "author": "존 보글 (John C. Bogle)",
     "category": "mindset"
+  },
+  {
+    "english": "The safest and most potentially profitable thing is to buy something when no one likes it.",
+    "text": "가장 안전하면서도 동시에 가장 큰 수익을 낼 수 있는 일은, 아무도 그것을 좋아하지 않을 때 사는 것이다.",
+    "title": "투자에 대한 생각 (The Most Important Thing)",
+    "author": "하워드 막스 (Howard Marks)",
+    "category": "mindset"
   }
 ];
