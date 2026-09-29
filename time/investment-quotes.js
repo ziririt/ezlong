@@ -10669,5 +10669,12 @@ window.investmentQuotes = [
     "title": "나와 나타샤와 흰 당나귀",
     "author": "백석",
     "genre": "literature"
+  },
+  {
+    "english": "It never was my thinking that made the big money for me. It was always my sitting tight. Men who can both be right and sit tight are uncommon.",
+    "text": "나에게 큰돈을 벌어준 것은 결코 나의 판단력이 아니었다. 언제나 내가 가만히 앉아 버틴 것이었다. 옳으면서 동시에 진득하게 버틸 줄 아는 사람은 드물다.",
+    "title": "어느 주식 투자자의 회상 (Reminiscences of a Stock Operator)",
+    "author": "제시 리버모어 (Jesse Livermore)",
+    "category": "patience"
   }
 ];
