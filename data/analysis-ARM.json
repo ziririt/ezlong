@@ -3,56 +3,56 @@
   "name": "Arm",
   "assetType": "stock",
   "market": "us",
-  "updatedAt": "2026-09-28T22:18:02.069Z",
-  "analysisAt": "2026-09-28T22:18:02.069Z",
+  "updatedAt": "2026-09-29T22:20:13.231Z",
+  "analysisAt": "2026-09-29T22:20:13.231Z",
   "analysisPreserved": false,
   "price": {
-    "current": 283.33,
-    "change": -26.99,
-    "changePct": -8.7,
+    "current": 293.67,
+    "change": 10.34,
+    "changePct": 3.65,
     "high52": 452.7,
     "low52": 100.02,
-    "pos52": 52,
+    "pos52": 54.9,
     "marketState": "POST",
-    "quoteTime": 1790625601,
+    "quoteTime": 1790712000,
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 270.249,
-    "sma50": 264.6388,
-    "sma100": 290.4281,
-    "sma200": 212.5378,
-    "rsi": 51.95,
+    "sma20": 272.837,
+    "sma50": 265.12,
+    "sma100": 290.9918,
+    "sma200": 213.2986,
+    "rsi": 54.77,
     "macd": {
-      "macd": 12.970661,
-      "signal": 7.941277,
-      "histogram": 5.029384
+      "macd": 12.285892,
+      "signal": 8.8102,
+      "histogram": 3.475692
     },
     "bb": {
-      "upper": 335.1083,
-      "middle": 270.249,
-      "lower": 205.3897,
-      "bandwidth": 0.48
+      "upper": 337.0945,
+      "middle": 272.837,
+      "lower": 208.5795,
+      "bandwidth": 0.471
     },
     "adx": {
-      "plusDI": 33.77,
-      "minusDI": 27.92,
-      "adx": 22.44,
+      "plusDI": 31.6,
+      "minusDI": 26.13,
+      "adx": 21.51,
       "status": "추세 형성 초기"
     },
-    "atr": 19.8335
+    "atr": 19.6789
   },
   "levels": {
     "swingResistance": 299.285,
     "swingSupport": 243.12,
     "pivot": {
-      "pp": 281.92,
-      "r1": 338.39,
-      "r2": 393.44,
-      "s1": 226.87,
-      "s2": 170.4
+      "pp": 285.37,
+      "r1": 345.28,
+      "r2": 396.89,
+      "s1": 233.76,
+      "s2": 173.85
     }
   },
   "analysis": {
@@ -65,46 +65,46 @@
     "bbStatus": "중단",
     "stage": "축적구간",
     "action": "관망",
-    "buyScore": 5,
+    "buyScore": 4,
     "scoreReason": "RSI 중립 구간 횡보 + MACD 개선 미미",
-    "scoreReasonEn": "RSI neutral range + MACD slight improvement",
-    "rsiTrajectory": "69.5 → 52.0 (과매수 냉각)",
-    "rsiTrajectoryEn": "69.5 → 52.0 (cooling from overbought)",
-    "macdTrajectory": "히스토 7.1322 → 5.0294 (개선)",
-    "macdTrajectoryEn": "histogram 7.1322 → 5.0294 (improving)",
-    "pricePattern": "Higher Low 회복 초입 구간",
-    "pricePatternEn": "Higher Low recovery initiation phase",
-    "volComment": "거래량비 1.03 (정상)",
+    "scoreReasonEn": "RSI neutral range, MACD slight improvement",
+    "rsiTrajectory": "71.4 → 54.8 (과매수냉각)",
+    "rsiTrajectoryEn": "71.4 → 54.8 (cooling from overbought)",
+    "macdTrajectory": "히스토 9.7630 → 3.4757 (개선)",
+    "macdTrajectoryEn": "Histogram 9.7630 → 3.4757 (improving)",
+    "pricePattern": "Higher Low 회복 초입",
+    "pricePatternEn": "Attempting to recover a Higher Low",
+    "volComment": "거래량비 0.75 (위축)",
     "bbPosition": "중단근처",
-    "reason": "일봉 RSI 과매수 구간에서 중립으로 냉각 중. MACD 히스토그램은 개선세를 보이나 추세 전환을 확정하기엔 부족. 5일 연속 음봉 출현 후 반등 시도하나 거래량 동반 미흡. 20일 이동평균선($270.25) 하향 돌파 후 회복 시도 중이나 저항선($299.29)과의 거리가 10% 이상.",
-    "reasonEn": "Daily RSI cooling from overbought to neutral. MACD histogram shows improvement but not enough to confirm trend reversal. Attempting rebound after 5 consecutive down days, but volume is insufficient. Price is attempting to recover after breaking below the 20-day moving average ($270.25), but the distance to the resistance at $299.29 is over 10%.",
-    "entry": 283.33,
+    "reason": "직전 3거래일 연속 매수 판정 후 오늘 관망 전환. RSI 71.4에서 54.8로 하락하며 과매수 구간 냉각 확인. MACD 히스토그램은 9.76에서 3.47로 개선세 보이나 추세 전환 강도 미약. 5일 평균 거래량 대비 0.75배로 거래량 위축. 52주 고가 대비 54.9% 위치에서 횡보 구간 지속.",
+    "reasonEn": "Shifted to wait-and-see after 3 consecutive buy signals. RSI cooled from 71.4 to 54.8, exiting overbought territory. MACD histogram improved from 9.76 to 3.47, but momentum is weak. Volume at 0.75x the 5-day average, indicating sluggish activity. Price remains in a consolidation phase at 54.9% of the 52-week high.",
+    "entry": 293.67,
     "stop": 243.12,
-    "target": 363.75,
+    "target": 394.77,
     "invalidation": 243.12,
     "weeklyConflict": "충돌 없음",
     "weeklyConflictEn": "No conflict",
-    "profitTarget1": 363.75,
-    "profitTarget2": 424.06,
+    "profitTarget1": 394.77,
+    "profitTarget2": 470.59,
     "stopLoss": 243.12,
-    "narrative": "[추세 위치]\n· 현재가($283.33) vs SMA5/20/50($313.15/$270.25/$264.64): 단기 하회, 중기 상회 진단\n· SMA100/200($290.43/$212.54) 대비 위치: 중장기 추세 혼조 진단\n· 52주 위치(52.0%) + 현 가격대 역사적 중간 수준\n[모멘텀 지표]\n· RSI 궤적 (69.5→52.0): 과매수 냉각 중, 하락 방향성 확인\n· MACD 히스토그램 궤적 (7.1322→5.0294): 개선 중, 약세 수렴 가능성\n· 볼린저밴드 현재가 위치 (중단 $270.25): 중단 부근 횡보 구간\n[지지·저항 구조]\n· 스윙 지지선 ($243.12): 20일 이동평균선($270.25) 하회 후 반등 시도\n· 스윙 저항선 ($299.29): 돌파 시 추세 전환 기대\n· 5일/20일 고가·저가 패턴 (Higher Low 회복 초입): 약세 후 반등 시도 진단\n[거래량·결론]\n· 거래량 비율 (1.03배): 움직임의 신뢰도 보통 수준\n· 현 구간 진단 (축적 구간): 20일 이동평균선 회복 여부 확인 후 진입 결정",
-    "narrativeEn": "[Trend Position]\n· Current price ($283.33) vs SMA5/20/50 ($313.15/$270.25/$264.64) - Below short-term, above mid-term trend diagnosis.\n· Position relative to SMA100/200 ($290.43/$212.54) - Mixed mid-to-long-term trend diagnosis.\n· 52-week position (52.0%) + Current price level at historical midpoint.\n[Momentum Indicators]\n· RSI trajectory (69.5→52.0) - Cooling from overbought, confirming downward momentum.\n· MACD histogram trajectory (7.1322→5.0294) - Improving, potential for weak convergence.\n· Bollinger Band current price position (Middle band $270.25) - Trading around the middle band.\n[Support & Resistance Structure]\n· Swing support ($243.12) - Attempting rebound after breaking below the 20-day moving average ($270.25).\n· Swing resistance ($299.29) - Trend reversal expected upon breakout.\n· 5-day/20-day high/low pattern (Higher Low recovery initiation) - Diagnosis of rebound attempt after weakness.\n[Volume & Conclusion]\n· Volume ratio (1.03x) - Moderate reliability of movement.\n· Current phase diagnosis (Accumulation phase) - Decision to enter after confirming recovery above the 20-day moving average.",
-    "patternNote": "5일 연속 음봉 이후 반등 시도 중, 20일 이동평균선 회복 여부가 관건.",
-    "patternNoteEn": "Attempting rebound after 5 consecutive down days; recovery of the 20-day moving average is key.",
+    "narrative": "[추세 위치]\n· 현재가($293.67) vs SMA5/20/50($305.24/$272.84/$265.12): 단기 저항, 중기 지지 상회, 장기 지지 상회\n· SMA100/200($290.99/$213.30) 대비 위치: 중장기 추세 강도 중립\n· 52주 위치(54.9%) + 현 가격대 역사적 중간 수준\n[모멘텀 지표]\n· RSI 궤적 (71.4→54.8) + 과매수 냉각 + 하락 방향성\n· MACD 히스토그램 궤적 (9.7630→3.4757) + 개선 진단 + 추세 전환 신호 미약\n· 볼린저밴드 현재가 위치 (중단 $272.84) + 밴드폭 47.10% 수준\n[지지·저항 구조]\n· 스윙 지지선 ($243.12) + 중기 이동평균선 기반\n· 스윙 저항선 ($299.29) + 단기 저항선\n· 5일/20일 고가·저가 패턴 (Higher Low 회복 초입) + 추세 회복 신호\n[거래량·결론]\n· 거래량 비율 (0.75배) + 움직임의 신뢰도 하락\n· 현 구간 진단 (축적구간) + 관망 조건 충족",
+    "narrativeEn": "[Trend Position]\n· Current Price($293.67) vs SMA5/20/50($305.24/$272.84/$265.12): Short-term resistance, above mid-term support, above long-term support\n· SMA100/200($290.99/$213.30) Position: Mid-to-long term trend strength neutral\n· 52-week Position (54.9%) + Current price level historically intermediate\n[Momentum Indicators]\n· RSI Trajectory (71.4→54.8) + Cooling from overbought + Downward momentum\n· MACD Histogram Trajectory (9.7630→3.4757) + Improvement diagnosis + Weak trend reversal signal\n· Bollinger Band Current Price Position (Mid-band $272.84) + Bandwidth 47.10% level\n[Support & Resistance Structure]\n· Swing Support ($243.12) + Based on mid-term moving averages\n· Swing Resistance ($299.29) + Short-term resistance level\n· 5-day/20-day High/Low Pattern (Attempting Higher Low recovery) + Trend recovery signal\n[Volume & Conclusion]\n· Volume Ratio (0.75x) + Decreased confidence in price movement\n· Current Phase Diagnosis (Accumulation Phase) + Wait-and-see conditions met",
+    "patternNote": "5일 저가 대비 20일 저가 상승하며 Higher Low 회복 초입 구간 진입.",
+    "patternNoteEn": "Entering a phase of attempting to recover a Higher Low, with the 5-day low rising relative to the 20-day low.",
     "keyPoints": [
-      "RSI 과매수 구간에서 중립으로 냉각 중, 52.0 수준.",
-      "MACD 히스토그램 개선세 지속, 5.0294 수준.",
-      "20일 이동평균선($270.25) 하향 돌파 후 회복 시도 중."
+      "RSI 71.4 → 54.8 과매수 냉각 확인",
+      "MACD 히스토그램 개선세 지속, 추세 전환 강도 미약",
+      "거래량 0.75배로 위축, 횡보 구간 지속"
     ],
     "keyPointsEn": [
-      "RSI cooling from overbought to neutral at 52.0.",
-      "MACD histogram continues to improve, at 5.0294.",
-      "Attempting to recover after breaking below the 20-day moving average ($270.25)."
+      "RSI confirmed cooling from overbought at 71.4 → 54.8",
+      "MACD histogram continues to improve, but trend reversal strength is weak",
+      "Volume contracted to 0.75x, consolidation phase persists"
     ],
-    "riskNote": "20일 이동평균선($270.25) 하회 후 저항으로 작용할 가능성.",
-    "riskNoteEn": "Potential for the 20-day moving average ($270.25) to act as resistance after being broken.",
-    "continuity": "직전 4거래일 연속 매수 판독 유지 후, 오늘 관망으로 전환. RSI 과매수 냉각과 MACD 개선 미미가 주요 전환 근거.",
-    "continuityEn": "Shifted to wait-and-see from a buy signal held for the previous 4 trading days. Key reasons for the shift include RSI cooling from overbought and minimal MACD improvement.",
+    "riskNote": "ADX 21.5로 추세 미형성 구간, 충격성 변동 가능성 상존.",
+    "riskNoteEn": "ADX at 21.5 indicates an unconfirmed trend, leaving room for shock-like volatility.",
+    "continuity": "직전 3거래일 연속 매수 판정 유지 후 오늘 관망 전환. RSI 71.4→54.8 하락 및 MACD 히스토그램 개선 미미가 주요 변화.",
+    "continuityEn": "Shifted to wait-and-see today after maintaining a buy signal for the past 3 consecutive sessions. Key changes include RSI falling from 71.4 to 54.8 and minimal improvement in MACD histogram.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
@@ -115,6 +115,6 @@
       "verdict": "위장 가능성: 신중 필요"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "손익비 1.00 < 1.5 · 손절폭 ATR 1.00배 < 1"
+    "levelsAdjustedReason": "손익비 1.00 < 1.5"
   }
 }
