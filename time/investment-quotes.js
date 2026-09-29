@@ -10765,5 +10765,12 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각 (The Most Important Thing)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "mindset"
+  },
+  {
+    "english": "Far more money has been lost by investors preparing for corrections, or trying to anticipate corrections, than has been lost in corrections themselves.",
+    "text": "투자자들은 조정 그 자체보다, 조정에 대비하거나 예측하려다가 훨씬 더 많은 돈을 잃었다.",
+    "title": "주식투자 이렇게 하라 (One Up on Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "patience"
   }
 ];
