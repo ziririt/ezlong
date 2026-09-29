@@ -10683,5 +10683,12 @@ window.investmentQuotes = [
     "title": "레슨 인 케미스트리 (Lessons in Chemistry)",
     "author": "보니 가머스 (Bonnie Garmus)",
     "genre": "literature"
+  },
+  {
+    "english": "We have three baskets for investing: yes, no, and too tough to understand.",
+    "text": "우리에게는 투자를 위한 세 개의 바구니가 있다. '예스', '노', 그리고 '너무 어려워서 이해할 수 없음'이다.",
+    "title": "Poor Charlie's Almanack (가난한 찰리의 연감)",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "mindset"
   }
 ];
