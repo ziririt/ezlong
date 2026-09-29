@@ -10744,5 +10744,12 @@ window.investmentQuotes = [
     "title": "버크셔 해서웨이 1993년 주주 서한 (Berkshire Hathaway Chairman's Letter, 1993)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "mindset"
+  },
+  {
+    "english": "The investor's chief problem—and even his worst enemy—is likely to be himself.",
+    "text": "투자자의 가장 큰 문제, 어쩌면 최악의 적은 다름 아닌 자기 자신일 것이다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
   }
 ];
