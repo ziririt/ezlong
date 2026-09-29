@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-09-30-07:00",
+      "timestamp_kst": "2026-09-30(수) 07:00 KST",
+      "key_event": {
+        "name": "국채금리 상승 압력 지속",
+        "name_en": "Treasury Yields Maintain Upward Pressure",
+        "time": "2026-09-29 18:02 ET 포스트마켓",
+        "why": "성장주 할인율 부담, 인플레이션 우려 지속",
+        "why_en": "Growth stock discount rate burden, persistent inflation concerns"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "국채금리 상승 압력 지속으로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to continuous rise in Treasury yields and weakness in major tech stocks",
+      "positive_factors": [
+        {
+          "score": 20,
+          "name": "WTI 유가 급락",
+          "name_en": "WTI Crude Oil Plummets",
+          "desc": "WTI 원유 88.94 USD (-5.50%)로 급락: 인플레이션 압력 완화 기대",
+          "desc_en": "WTI crude oil sharply dropped to $88.94 (-5.50%), easing inflation concerns",
+          "category": "oil_energy"
+        },
+        {
+          "score": 15,
+          "name": "Fed 윌리엄스 발언",
+          "name_en": "Fed's Williams Comments",
+          "desc": "Fed 윌리엄스, 다음 금리 인상 긴급성 없다고 언급: 매파적 기조 완화 기대",
+          "desc_en": "Fed's Williams sees no urgency for next rate hike, easing hawkish sentiment",
+          "category": "fed_policy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 45,
+          "name": "장기 국채금리 상승",
+          "name_en": "Long-Term Treasury Yields Rise",
+          "desc": "미10년 국채금리 5.26%(+0.29%), 미30년 국채금리 5.59%(+0.59%) 상승: 성장주 할인율 부담 가중",
+          "desc_en": "US 10-year Treasury yield at 5.26% (+0.29%) and 30-year at 5.59% (+0.59%), increasing growth stock discount rate burden",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 20,
+          "name": "매파적 Fed 발언 지속",
+          "name_en": "Persistent Hawkish Fed Remarks",
+          "desc": "Fed 이사, 인플레이션 하락 위해 정책 조정 필요성 언급: 긴축 기조 유지 시사",
+          "desc_en": "Fed governor states policy adjustments likely needed to lower inflation, suggesting continued tightening",
+          "category": "fed_policy"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "이란-미국 긴장 지속",
+          "name_en": "Ongoing Iran-US Tensions",
+          "desc": "중동 공급 우려 속 유가 하락, 그러나 지역 동맹 강화 소식 등 지정학적 긴장 지속",
+          "desc_en": "Oil prices lower amid Middle East supply concerns, but geopolitical tensions persist with news of regional alliances strengthening",
+          "category": "geopolitics"
+        }
+      ],
+      "report": {
+        "overview": "- 9월29일(화, 뉴욕) 미국 증시는 국채금리 상승 압력 지속으로 부정적 우위 지속\n- 미 10년물 및 30년물 국채금리가 각각 5.26%, 5.59%까지 상승하며 성장주 할인율 부담 가중\n- Fed의 매파적 발언 지속과 인플레이션 우려가 시장 전반의 하방 압력으로 작용\n- WTI 유가 급락과 Fed 윌리엄스 이사의 비둘기파적 발언이 일부 긍정적 요인으로 작용했으나, 국채금리 상승의 부정적 영향을 상쇄하기에는 역부족",
+        "positive": "- WTI 유가 급락: WTI 원유 가격이 88.94 USD로 5.50% 급락하며 인플레이션 압력 완화에 대한 기대감 형성. 이는 에너지 비용 감소로 이어져 소비 심리 개선 및 기업 비용 부담 완화 가능성 시사.\n- Fed 윌리엄스 발언: 뉴욕 연은 총재 윌리엄스가 다음 금리 인상에 긴급성이 없다고 언급하며 Fed의 매파적 기조가 다소 완화될 수 있다는 기대감 조성. 이는 향후 통화 정책 경로에 대한 시장의 불안감을 일부 해소.",
+        "negative": "- 장기 국채금리 상승: 미 10년물 국채금리가 5.26%(+0.29%) 상승한 5.26%, 미 30년물 국채금리가 5.59%(+0.59%) 상승한 5.59%를 기록하며 장기 국채금리 상승 압력 지속. 이는 성장주에 대한 할인율 부담을 가중시키고 전반적인 주식 시장의 매력도를 하락시키는 요인으로 작용.\n- 매파적 Fed 발언 지속: Fed 이사가 인플레이션 하락을 위해 정책 조정 필요성을 언급하며 긴축 기조 유지에 대한 시그널을 지속. 이는 고금리 환경 장기화 우려를 키우고 시장의 위험 회피 심리를 자극.",
+        "mixed": "- 이란-미국 긴장 지속: 중동 지역의 지정학적 긴장이 지속되는 가운데, 이란-미국 간의 긴장 고조는 유가 변동성에 영향을 미침. 중동 공급 우려 속 유가는 하락했지만, 지역 동맹 강화 소식 등 지정학적 불안정성은 여전히 시장의 불확실성으로 잔존.",
+        "watch": "- PCE 개인소비지출(8월분) 및 GDP 확정치(2분기) 발표: 9월 30일(수) 08:30 ET 예정. 이 지표들은 Fed의 통화 정책 결정에 중요한 영향을 미치며, 인플레이션 및 경제 성장률에 대한 추가적인 단서 제공.\n- 미 10년물 및 30년물 국채금리 추이: 현재 높은 수준을 유지하고 있는 장기 국채금리의 추가 상승 또는 하락 여부가 시장의 방향성을 결정하는 주요 요인으로 작용."
+      },
+      "report_at": "2026-09-30(수) 07:00 KST"
+    },
+    {
       "id": "2026-09-30-04:55",
       "timestamp_kst": "2026-09-30(수) 04:55 KST",
       "key_event": {
@@ -552,68 +620,8 @@
         "watch": "- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가적인 상승 또는 하락 여부가 시장 전반의 투자 심리와 성장주에 미치는 영향 확인.\n- 국제 유가 변동성: WTI 원유 가격의 추가적인 변동성 및 지정학적 긴장 완화 또는 심화에 따른 유가 추이 확인.\n- PCE 개인소비지출(8월분) 및 GDP 확정치(2분기) 발표: 9월 30일(수) 08:30 ET에 예정된 주요 경제 지표 발표가 인플레이션 및 경제 성장 전망에 미치는 영향 확인."
       },
       "report_at": "2026-09-29(화) 04:48 KST"
-    },
-    {
-      "id": "2026-09-28-23:18",
-      "timestamp_kst": "2026-09-28(월) 23:18 KST",
-      "key_event": {
-        "name": "미-이란 긴장 고조 지속",
-        "name_en": "Continued US-Iran Tensions",
-        "time": "2026년 9월 28일 정규장",
-        "why": "시장 불확실성 확대, 인플레이션 우려 지속",
-        "why_en": "Increased market uncertainty, persistent inflation concerns"
-      },
-      "positive_total": 40,
-      "negative_total": 60,
-      "summary": "미-이란 긴장 고조 지속 및 금리 상승 압력으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to ongoing US-Iran tensions and rising interest rate pressure",
-      "positive_factors": [
-        {
-          "score": 40,
-          "name": "엔비디아 대규모 자사주 매입 발표",
-          "name_en": "Nvidia Announces Large Share Buyback",
-          "desc": "엔비디아의 기록적인 1500억 달러 자사주 매입 발표로 AI 및 반도체 섹터 투자 심리 개선",
-          "desc_en": "Nvidia's record $150 billion share buyback announcement improves investor sentiment in AI and semiconductor sectors",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "미-이란 긴장 고조 지속",
-          "name_en": "Continued US-Iran Tensions",
-          "desc": "트럼프의 이란 핵 협상 거부 발언으로 지정학적 긴장 고조, 시장 불확실성 확대",
-          "desc_en": "Trump's rejection of Iran nuclear deal escalates geopolitical tensions, increasing market uncertainty",
-          "category": "geopolitics"
-        },
-        {
-          "score": 25,
-          "name": "미 국채금리 상승 압력",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 5.22%(+0.75%) 상승, 성장주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield rises to 5.22% (+0.75%), increasing discount rate pressure on growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "유가 안정화 속 인플레이션 우려",
-          "name_en": "Oil Price Stabilization Amid Inflation Concerns",
-          "desc": "WTI 원유 가격 93.96 USD(-0.03%)로 안정화되었으나, 지정학적 긴장으로 인한 인플레이션 압력은 여전히 존재",
-          "desc_en": "WTI crude oil price stabilizes at $93.96 (-0.03%), but geopolitical tensions still pose inflation risks",
-          "category": "oil_energy"
-        }
-      ],
-      "report": {
-        "overview": "- 총평: 미-이란 긴장 고조와 금리 상승 압력 지속으로 시장 전반의 부정적 심리가 우위를 점하는 상황.\n- 주요 원인: 지정학적 리스크 확대 및 인플레이션 우려가 복합적으로 작용하며 투자 심리 위축.\n- 지수 동향: 다우존스, S&P 500, 나스닥 선물 모두 하락세를 보이며 시장 전반의 약세 반영.\n- 핵심 동력: 엔비디아의 대규모 자사주 매입 발표가 AI 및 반도체 섹터에 긍정적 영향을 주었으나, 거시적 악재를 상쇄하기에는 역부족인 상황.",
-        "positive": "- 엔비디아 대규모 자사주 매입 발표: 엔비디아의 1500억 달러 규모 자사주 매입 발표로 AI 및 반도체 섹터 전반에 대한 투자 심리 개선. 엔비디아 주가 급등하며 관련 기술주에 긍정적 영향.",
-        "negative": "- 미-이란 긴장 고조 지속: 트럼프 전 대통령의 이란 핵 협상 거부 발언으로 중동 지역의 지정학적 긴장이 고조되며 시장 불확실성 확대. 유가 상승 압력 및 인플레이션 우려 가중.\n- 미 국채금리 상승 압력: 미 10년물 국채금리가 5.22%(+0.75%)로 0.75%p 상승하며 성장주에 대한 할인율 부담 가중. 기술주 중심의 나스닥 지수 하락 압력으로 작용. Snowflake, Oracle, Datadog 등 소프트웨어 기업 주가 하락.",
-        "mixed": "- 유가 안정화 속 인플레이션 우려: WTI 원유 가격이 93.96 USD로 소폭 하락하며 안정화되는 모습을 보였으나, 미-이란 긴장 고조로 인한 지정학적 리스크가 여전히 인플레이션 압력으로 작용할 수 있다는 우려 잔존. 근원 PCE 물가상승률 3.34%, CPI 소비자물가 상승률 3.35%로 인플레이션 압력 지속.",
-        "watch": "- 미 10년물 국채금리 추이: 현재 5.22%(+0.75%) 수준에서 추가 상승 여부 확인. 금리 상승 압력 지속 시 성장주 전반에 대한 추가 하방 압력 발생 가능성.\n- WTI 유가 변동성: 현재 93.96 USD에서 지정학적 긴장 고조에 따른 급등 여부 확인. 유가 상승 시 인플레이션 우려 심화 및 시장 불확실성 증대.\n- PCE 개인소비지출(8월분) 및 GDP 확정치(2분기) 발표: 9월 30일(수) 08:30 ET 예정. 발표 지표가 예상치를 상회할 경우 인플레이션 압력 및 금리 인상 우려 재점화 가능성."
-      },
-      "report_at": "2026-09-28(월) 23:18 KST"
     }
   ],
-  "updated_at": "2026-09-29T19:55:53Z",
+  "updated_at": "2026-09-29T22:02:34Z",
   "max_entries": 10
 }
