@@ -10779,5 +10779,12 @@ window.investmentQuotes = [
     "title": "버크셔 해서웨이 1993년 주주 서한 (Berkshire Hathaway Chairman's Letter, 1993)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "mindset"
+  },
+  {
+    "english": "Marsh is not swamp. Marsh is a space of light, where grass grows in water, and water flows into the sky.",
+    "text": "습지는 늪이 아니다. 습지는 빛으로 가득한 공간, 물속에서 풀이 자라나고 물이 하늘로 흘러드는 곳이다.",
+    "title": "가재가 노래하는 곳 (Where the Crawdads Sing)",
+    "author": "델리아 오언스 (Delia Owens)",
+    "genre": "literature"
   }
 ];
