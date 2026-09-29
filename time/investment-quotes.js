@@ -10793,5 +10793,12 @@ window.investmentQuotes = [
     "title": "원칙 (Principles: Life and Work)",
     "author": "레이 달리오 (Ray Dalio)",
     "category": "mindset"
+  },
+  {
+    "english": "The bird fights its way out of the egg. The egg is the world. Whoever wants to be born must first destroy a world.",
+    "text": "새는 알에서 나오기 위해 투쟁한다. 알은 세계다. 태어나려는 자는 하나의 세계를 깨뜨려야 한다.",
+    "title": "데미안",
+    "author": "헤르만 헤세",
+    "genre": "literature"
   }
 ];
