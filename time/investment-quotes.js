@@ -10703,5 +10703,12 @@ window.investmentQuotes = [
     "title": "나는 어떻게 주식투자로 2백만 달러를 벌었나 (How I Made $2,000,000 in the Stock Market)",
     "author": "니콜라스 다바스 (Nicolas Darvas)",
     "category": "mindset"
+  },
+  {
+    "english": "I feel like I could eat the world raw.",
+    "text": "마치 이 세상을 날것 그대로 삼켜버릴 수 있을 것만 같았다.",
+    "title": "아킬레우스의 노래 (The Song of Achilles)",
+    "author": "매들린 밀러 (Madeline Miller)",
+    "genre": "literature"
   }
 ];
