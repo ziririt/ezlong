@@ -10800,5 +10800,12 @@ window.investmentQuotes = [
     "title": "데미안",
     "author": "헤르만 헤세",
     "genre": "literature"
+  },
+  {
+    "english": "I listened eagerly to what they had to say and religiously followed their tips. Whatever I was told to buy, I bought. It took me a long time to discover that this is one method that never works.",
+    "text": "나는 그들이 하는 말을 열심히 귀담아듣고 그들이 주는 정보를 맹목적으로 따랐다. 누군가 사라고 하면 나는 샀다. 이 방법이 절대 통하지 않는다는 것을 깨닫기까지는 오랜 시간이 걸렸다.",
+    "title": "나는 어떻게 주식투자로 2백만 달러를 벌었나 (How I Made $2,000,000 in the Stock Market)",
+    "author": "니콜라스 다바스 (Nicolas Darvas)",
+    "category": "mindset"
   }
 ];
