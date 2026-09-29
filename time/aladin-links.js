@@ -333,5 +333,8 @@ window.aladinLinks = {
   "하늘과 바람과 별과 시 (서시)|윤동주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=301092752&partner=friends327",
   "모든 주식을 소유하라 (Common Sense on Mutual Funds)|존 보글 (John C. Bogle)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=372978368&partner=friends327",
   "하늘과 바람과 별과 시|윤동주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=400683526&partner=friends327",
-  "전설로 떠나는 월街의 영웅 (One Up On Wall Street)|피터 린치 (Peter Lynch)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=396483089&partner=friends327"
+  "전설로 떠나는 월街의 영웅 (One Up On Wall Street)|피터 린치 (Peter Lynch)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=396483089&partner=friends327",
+  "즐거운 편지|황동규": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=306327366&partner=friends327",
+  "아킬레우스의 노래 (The Song of Achilles)|매들린 밀러 (Madeline Miller)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=274688269&partner=friends327",
+  "대추 한 알|장석주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=67527535&partner=friends327"
 };
