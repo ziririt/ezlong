@@ -10696,5 +10696,12 @@ window.investmentQuotes = [
     "title": "즐거운 편지",
     "author": "황동규",
     "genre": "literature"
+  },
+  {
+    "english": "I never buy at the bottom, and I always sell too soon.",
+    "text": "나는 절대 바닥에서 사지 않으며, 언제나 너무 일찍 판다.",
+    "title": "나는 어떻게 주식투자로 2백만 달러를 벌었나 (How I Made $2,000,000 in the Stock Market)",
+    "author": "니콜라스 다바스 (Nicolas Darvas)",
+    "category": "mindset"
   }
 ];
