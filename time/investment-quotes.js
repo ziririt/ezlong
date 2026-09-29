@@ -10690,5 +10690,11 @@ window.investmentQuotes = [
     "title": "Poor Charlie's Almanack (가난한 찰리의 연감)",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "mindset"
+  },
+  {
+    "text": "내 그대를 생각함은 항상 그대가 앉아 있는 배경에서 해가 지고 바람이 부는 일처럼 사소한 일일 것이나, 언젠가 그대가 한없이 괴로움 속을 헤맬 때 오랫동안 전해오던 그 사소함으로 그대를 불러보리라.",
+    "title": "즐거운 편지",
+    "author": "황동규",
+    "genre": "literature"
   }
 ];
