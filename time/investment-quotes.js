@@ -10786,5 +10786,12 @@ window.investmentQuotes = [
     "title": "가재가 노래하는 곳 (Where the Crawdads Sing)",
     "author": "델리아 오언스 (Delia Owens)",
     "genre": "literature"
+  },
+  {
+    "english": "The most valuable habit I've acquired is using pain to trigger quality reflections. If you can acquire this habit yourself, you will learn what causes your pain and what you can do about it, and it will have an enormous impact on your effectiveness.",
+    "text": "내가 얻은 가장 값진 습관은 고통을 양질의 성찰로 전환하는 것이다. 이 습관을 익히면 무엇이 그 고통을 유발하는지, 그리고 그것에 대해 무엇을 할 수 있는지 알게 되며, 이는 당신의 삶 전체에 엄청난 영향을 미친다.",
+    "title": "원칙 (Principles: Life and Work)",
+    "author": "레이 달리오 (Ray Dalio)",
+    "category": "mindset"
   }
 ];
