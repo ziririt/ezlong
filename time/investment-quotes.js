@@ -10772,5 +10772,12 @@ window.investmentQuotes = [
     "title": "주식투자 이렇게 하라 (One Up on Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "patience"
+  },
+  {
+    "english": "Diversification is a protection against ignorance. It makes very little sense if you know what you are doing.",
+    "text": "분산투자는 무지에 대한 보호막일 뿐이다. 자신이 무엇을 하고 있는지 제대로 안다면, 그것은 별 의미가 없다.",
+    "title": "버크셔 해서웨이 1993년 주주 서한 (Berkshire Hathaway Chairman's Letter, 1993)",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "mindset"
   }
 ];
