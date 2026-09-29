@@ -44,6 +44,7 @@ OFF_TOPIC = [
     ('/longtime/',           'Long Time, Easy Life 앱 소개'),
     ('/app/',                '앱 모아보기'),
     ('/flip-clock-alarm',    '플립시계 기상 알람 앱 소개'),
+    ('/send',                '1분 파일 (별개 서비스 · 클라우드플레어 워커가 따로 서비스한다)\n                              자기 사이트맵 /send/sitemap.xml 을 두고 robots.txt 로만 알린다'),
 ]
 
 # 정적은 짧지만 렌더하면 충분한 페이지. 넣을 때는 렌더 글자수를 주석에 남긴다.
@@ -76,13 +77,13 @@ def main():
 
     for u in urls:
         path, fp = local_path(u)
-        if not os.path.isfile(fp):
-            fails.append(f'파일이 없다: {path}')
-            continue
         off = next((why for pre, why in OFF_TOPIC if path.startswith(pre)), None)
         if off:
             fails.append(f'이 사이트의 주제가 아니다: {path}  ({off})'
                          '  — 사이트맵에서 뺀다. 색인까지 막을 필요는 없다')
+            continue
+        if not os.path.isfile(fp):
+            fails.append(f'파일이 없다: {path}')
             continue
         html = open(fp, encoding='utf-8', errors='replace').read()
         if re.search(r'<meta[^>]+name=["\']robots["\'][^>]*content=["\'][^"\']*noindex', html, re.I):
