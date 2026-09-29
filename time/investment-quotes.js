@@ -10717,5 +10717,11 @@ window.investmentQuotes = [
     "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "mindset"
+  },
+  {
+    "text": "저게 저절로 붉어질 리는 없다. 저 안에 태풍 몇 개, 저 안에 천둥 몇 개, 저 안에 벼락 몇 개.",
+    "title": "대추 한 알",
+    "author": "장석주",
+    "genre": "literature"
   }
 ];
