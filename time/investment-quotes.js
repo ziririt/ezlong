@@ -10676,5 +10676,12 @@ window.investmentQuotes = [
     "title": "어느 주식 투자자의 회상 (Reminiscences of a Stock Operator)",
     "author": "제시 리버모어 (Jesse Livermore)",
     "category": "patience"
+  },
+  {
+    "english": "Whenever you feel afraid, just remember. Courage is the root of change - and change is what we're chemically designed to do.",
+    "text": "두려울 때는 이것만 기억하세요. 용기는 변화의 뿌리이며, 변화야말로 우리가 화학적으로 타고난 소명입니다.",
+    "title": "레슨 인 케미스트리 (Lessons in Chemistry)",
+    "author": "보니 가머스 (Bonnie Garmus)",
+    "genre": "literature"
   }
 ];
