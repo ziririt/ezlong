@@ -10723,5 +10723,12 @@ window.investmentQuotes = [
     "title": "대추 한 알",
     "author": "장석주",
     "genre": "literature"
+  },
+  {
+    "english": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave.",
+    "text": "돈을 잘 관리하는 것은 당신이 얼마나 똑똑한가와는 큰 상관이 없고, 당신이 어떻게 행동하는가와 훨씬 더 깊은 관련이 있다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절 (Morgan Housel)",
+    "category": "mindset"
   }
 ];
