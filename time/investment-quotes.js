@@ -10710,5 +10710,12 @@ window.investmentQuotes = [
     "title": "아킬레우스의 노래 (The Song of Achilles)",
     "author": "매들린 밀러 (Madeline Miller)",
     "genre": "literature"
+  },
+  {
+    "english": "Acknowledging what you don't know is the dawning of wisdom.",
+    "text": "무엇을 모르는지 인정하는 것이야말로 지혜의 시작이다.",
+    "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "mindset"
   }
 ];
