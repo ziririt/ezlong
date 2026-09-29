@@ -44,7 +44,7 @@ OFF_TOPIC = [
     ('/longtime/',           'Long Time, Easy Life 앱 소개'),
     ('/app/',                '앱 모아보기'),
     ('/flip-clock-alarm',    '플립시계 기상 알람 앱 소개'),
-    ('/send',                '1분 파일 (별개 서비스 · 클라우드플레어 워커가 따로 서비스한다)\n                              자기 사이트맵 /send/sitemap.xml 을 두고 robots.txt 로만 알린다'),
+    ('/send',                '1분 파일 (send.ezlong.com 으로 옮겼다 · 여기는 301 안내만 한다)\n                              사이트맵은 send.ezlong.com/sitemap.xml 에 따로 있다'),
 ]
 
 # 정적은 짧지만 렌더하면 충분한 페이지. 넣을 때는 렌더 글자수를 주석에 남긴다.
