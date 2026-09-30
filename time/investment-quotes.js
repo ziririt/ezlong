@@ -10896,5 +10896,12 @@ window.investmentQuotes = [
     "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
     "author": "버턴 말킬 (Burton G. Malkiel)",
     "category": "mindset"
+  },
+  {
+    "english": "You need to learn how to select your thoughts just the same way you select your clothes every day. This is a power you can cultivate. If you want to control things in your life so bad, work on the mind. That's the only thing you should be trying to control.",
+    "text": "매일 입을 옷을 고르듯이, 당신의 생각도 골라내는 법을 배워야 해요. 이건 스스로 기를 수 있는 힘이에요. 삶의 무언가를 그토록 통제하고 싶다면, 마음을 다스리세요. 그게 당신이 통제해야 할 유일한 것이니까요.",
+    "title": "먹고 기도하고 사랑하라 (Eat, Pray, Love)",
+    "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
+    "genre": "literature"
   }
 ];
