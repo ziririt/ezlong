@@ -10834,5 +10834,12 @@ window.investmentQuotes = [
     "title": "언테임드 (Untamed)",
     "author": "글레넌 도일 (Glennon Doyle)",
     "genre": "literature"
+  },
+  {
+    "english": "If you don't lose money, most of the remaining alternatives are good ones.",
+    "text": "돈을 잃지만 않는다면, 남은 선택지들은 대부분 괜찮은 것들이다.",
+    "title": "당신도 주식시장의 천재가 될 수 있다 (You Can Be a Stock Market Genius)",
+    "author": "조엘 그린블라트",
+    "category": "mindset"
   }
 ];
