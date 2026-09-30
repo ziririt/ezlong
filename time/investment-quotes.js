@@ -10950,5 +10950,12 @@ window.investmentQuotes = [
     "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
     "author": "존 보글 (John C. Bogle)",
     "category": "mindset"
+  },
+  {
+    "english": "Value investing is at its core the marriage of a contrarian streak and a calculator.",
+    "text": "가치투자란 본질적으로 반골 기질과 냉철한 계산기의 결합이다.",
+    "title": "마진 오브 세이프티 (Margin of Safety)",
+    "author": "세스 클라만 (Seth Klarman)",
+    "category": "mindset"
   }
 ];
