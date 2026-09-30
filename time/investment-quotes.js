@@ -10882,5 +10882,12 @@ window.investmentQuotes = [
     "title": "벨 자 (The Bell Jar)",
     "author": "실비아 플라스 (Sylvia Plath)",
     "genre": "literature"
+  },
+  {
+    "english": "In the long run, the risks of being in stocks diminish, as the risks of not being in stocks increase.",
+    "text": "장기적으로 보면, 주식을 보유하지 않는 위험이 커지는 것과는 반대로 주식을 보유하는 위험은 오히려 줄어든다.",
+    "title": "주식에 장기투자하라 (Stocks for the Long Run)",
+    "author": "제러미 시겔 (Jeremy J. Siegel)",
+    "category": "mindset"
   }
 ];
