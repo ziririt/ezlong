@@ -59,8 +59,11 @@ jobs:
       # 재시도로 풀린다. 세 번 다 실패하면 npm 을 거치지 않는 공식 단독 실행 파일로 받는다.
       - name: Install Firebase CLI
         run: |
+          # 주 버전은 15 로 묶는다. 배포 로그가 "--token 인증은 다음 주 버전에서 제거"라고
+          # 경고한다(15.32.0 기준). 묶지 않으면 16 이 나오는 날 아무 예고 없이 모든 배포가
+          # 죽는다. 서비스 계정 인증으로 옮긴 뒤에 이 줄을 푼다.
           for i in 1 2 3; do
-            if npm install -g firebase-tools; then
+            if npm install -g firebase-tools@15; then
               echo "npm 설치 성공 ($i회차)"; firebase --version; exit 0
             fi
             echo "::warning::firebase-tools npm 설치 실패 $i/3 - 30초 뒤 재시도"
