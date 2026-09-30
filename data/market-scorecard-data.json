@@ -1,6 +1,82 @@
 {
   "entries": [
     {
+      "id": "2026-09-30-23:20",
+      "timestamp_kst": "2026-09-30(수) 23:20 KST",
+      "key_event": {
+        "name": "PCE 물가 둔화 및 고용 지표",
+        "name_en": "PCE Inflation Slowdown & Job Data",
+        "time": "2026년 9월 30일(수) 08:30 ET 발표 완료",
+        "why": "인플레이션 및 고용 지표, Fed 통화 정책 방향성 결정",
+        "why_en": "Inflation and employment data, Fed policy direction"
+      },
+      "positive_total": 55,
+      "negative_total": 45,
+      "summary": "PCE 물가 둔화로 금리 인상 우려 완화, 그러나 지정학적 긴장 지속으로 혼조세",
+      "summary_en": "PCE inflation slowdown eases rate hike concerns, but geopolitical tensions persist, leading to mixed sentiment",
+      "positive_factors": [
+        {
+          "score": 55,
+          "name": "PCE 물가 상승률 둔화",
+          "name_en": "PCE Inflation Rate Slowdown",
+          "desc": "8월 근원 PCE 물가상승률 3.01% (+0.02%p 전기대비), 예상치 하회하며 금리 인상 우려 완화",
+          "desc_en": "August Core PCE inflation rate at 3.01% (+0.02%p MoM), below expectations, easing rate hike concerns",
+          "category": "macro_data"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "미-이란 지정학적 긴장 지속",
+          "name_en": "US-Iran Geopolitical Tensions Persist",
+          "desc": "미-이란 협상 교착 상태 및 호르무즈 해협 관련 뉴스 지속, 유가 상승 압력 및 시장 불확실성 증대",
+          "desc_en": "Stalled US-Iran talks and Strait of Hormuz news persist, increasing oil price pressure and market uncertainty",
+          "category": "geopolitics"
+        },
+        {
+          "score": 10,
+          "name": "고용 지표 강세 지속",
+          "name_en": "Strong Employment Data Continues",
+          "desc": "실업률 4.10% 유지, Fed의 긴축 기조 유지 가능성 제기",
+          "desc_en": "Unemployment rate remains at 4.10%, raising possibility of continued Fed hawkish stance",
+          "category": "macro_data"
+        },
+        {
+          "score": 10,
+          "name": "AI 관련 빅테크 부채 우려",
+          "name_en": "Big Tech Debt Concerns in AI",
+          "desc": "AI 붐 속 빅테크 기업들의 부채 증가에 대한 우려 제기, 장기적 성장 부담",
+          "desc_en": "Concerns raised over increasing debt among big tech companies amid AI boom, long-term growth burden",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "높은 국채금리 수준 지속",
+          "name_en": "Elevated Treasury Yields Persist",
+          "desc": "미 30년 국채금리 5.61 (+0.29%)로 소폭 상승, 높은 금리 수준 유지로 성장주 할인율 부담 지속",
+          "desc_en": "US 30-year Treasury yield slightly rises to 5.61 (+0.29%), maintaining high interest rate levels and continued discount rate pressure on growth stocks",
+          "category": "rates_treasury",
+          "score": 10
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "WTI 원유 가격 소폭 상승",
+          "name_en": "WTI Crude Oil Price Slightly Rises",
+          "desc": "WTI 원유 90.81 (+1.12%)로 소폭 상승, 인플레이션 압력 우려와 지정학적 긴장 지속이 복합적으로 작용",
+          "desc_en": "WTI crude oil slightly rises to 90.81 (+1.12%), a mix of inflation pressure concerns and ongoing geopolitical tensions",
+          "category": "oil_energy"
+        }
+      ],
+      "report": {
+        "overview": "- 9월30일(수, 뉴욕) 미국 증시는 PCE 물가 둔화 소식에 금리 인상 우려가 완화되며 상승 출발했으나, 지정학적 긴장 및 고용 지표 강세 등 복합적인 요인으로 혼조세 마감\n- 8월 근원 PCE 물가상승률이 예상치를 하회하며 Fed의 긴축 완화 기대감이 형성, 주식 시장 전반에 긍정적인 영향을 미침\n- 그러나 미-이란 지정학적 긴장 지속과 높은 국채금리 수준, AI 관련 빅테크 부채 우려 등이 시장의 상승폭을 제한하며 투자 심리 위축\n- 전반적으로 인플레이션 둔화에 대한 안도감이 우세했으나, 여러 부정적 요인들이 상존하며 시장은 방향성을 탐색하는 모습",
+        "positive": "- PCE 물가 상승률 둔화: 8월 근원 PCE 물가상승률이 전년 동월 대비 3.01%를 기록, 전기 대비 0.02%p 소폭 상승했으나 시장 예상치를 하회하며 Fed의 금리 인상 우려를 완화.\n- 인플레이션 둔화에 따른 금리 인상 우려 완화: 이는 단기적으로 증시의 추가 상승 동력으로 작용.",
+        "negative": "- 미-이란 지정학적 긴장 지속: 미-이란 핵 협상 교착 상태와 호르무즈 해협을 둘러싼 긴장 고조가 지속되며 국제 유가 상승 압력으로 작용. WTI 원유 가격이 90.81달러로 소폭 상승하며 인플레이션 재점화 우려를 키우고, 시장 전반의 불확실성을 증대시키는 요인으로 작용.\n- 고용 지표 강세 지속: 8월 실업률이 4.10%로 전월과 동일한 수준을 유지하며 견조한 고용 시장을 시사.\n- AI 관련 빅테크 부채 우려: AI 붐 속에서 빅테크 기업들의 부채 증가에 대한 우려가 제기.\n- 높은 국채금리 수준 지속: 미 30년 국채금리가 5.61%(+0.29%)로 전기 대비 0.29%p 소폭 상승하며 높은 수준을 유지.",
+        "mixed": "- WTI 원유 가격 소폭 상승: WTI 원유 가격이 90.81달러로 1.12% 소폭 상승. 이는 한편으로는 지정학적 긴장 지속에 따른 공급 우려를 반영하며 인플레이션 압력을 높일 수 있으나, 다른 한편으로는 견조한 글로벌 경제 활동에 대한 기대를 반영하기도 함. 유가 상승이 인플레이션 압력으로 이어질지, 혹은 경제 활력의 신호로 해석될지에 따라 시장의 반응이 엇갈리는 혼조세 양상.",
+        "watch": "- 고용보고서(9월분) 발표: 10월 2일(금) 08:30 ET에 발표될 고용보고서 결과에 따라 Fed의 통화 정책 방향성에 대한 시장의 기대가 크게 변화할 수 있음. 예상보다 강한 고용 지표는 긴축 장기화 우려를, 약한 지표는 금리 인하 기대감을 높일 것.\n- 미 10년물 국채금리 추이: 현재 높은 수준을 유지하고 있는 미 10년물 국채금리가 추가적으로 상승할 경우 성장주에 대한 압박이 심화될 수 있으며, 반대로 하락할 경우 시장 전반의 투자 심리 개선에 기여할 것.\n- WTI 원유 가격 변동성: 미-이란 지정학적 긴장과 글로벌 수요 변화에 따른 WTI 원유 가격의 급격한 변동은 인플레이션 기대와 기업 실적에 직접적인 영향을 미치므로, 향후 12시간 동안의 유가 추이 확인 필요."
+      },
+      "report_at": "2026-09-30(수) 23:20 KST"
+    },
+    {
       "id": "2026-09-30-21:50",
       "timestamp_kst": "2026-09-30(수) 21:50 KST",
       "key_event": {
@@ -562,68 +638,8 @@
         "watch": "- PCE 개인소비지출(8월분) 및 GDP 확정치(2분기) 발표: 9월 30일(수) 08:30 ET 예정. 이 지표들은 연방준비제도의 통화정책 결정에 중요한 영향을 미치며, 인플레이션 압력과 경제 성장 둔화 여부를 판단하는 핵심 근거가 될 것.\n- 국채금리 추이: 미국 10년물 및 30년물 국채금리가 현재 수준에서 추가 상승할지, 혹은 하락 안정화될지 여부가 시장 전반의 투자 심리에 지속적으로 영향을 미칠 전망. 특히 성장주에 대한 할인율 부담이 관건.\n- 유가 변동성: WTI 유가가 90달러 선에서 추가 하락하여 인플레이션 완화 기대감을 이어갈지, 혹은 중동 정세 불안 등으로 다시 상승 전환할지 여부가 시장의 주요 관심사."
       },
       "report_at": "2026-09-30(수) 03:13 KST"
-    },
-    {
-      "id": "2026-09-29-23:20",
-      "timestamp_kst": "2026-09-29(화) 23:20 KST",
-      "key_event": {
-        "name": "유가 하락 및 국채금리 상승",
-        "name_en": "Oil Price Decline & Treasury Yields Rise",
-        "time": "2026-09-29 정규장",
-        "why": "인플레이션 압력 완화, 성장주 할인율 부담 지속",
-        "why_en": "Easing inflation pressure, persistent growth stock discount rate burden"
-      },
-      "positive_total": 45,
-      "negative_total": 55,
-      "summary": "유가 하락으로 인플레이션 압력 완화, 국채금리 상승으로 성장주 부담 지속",
-      "summary_en": "Easing inflation from oil price decline, but growth stocks remain pressured by rising Treasury yields",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "WTI 원유 가격 하락",
-          "name_en": "WTI Crude Oil Price Decline",
-          "desc": "WTI 원유 91.29달러(-3.01%) 하락: 인플레이션 압력 완화 기대감",
-          "desc_en": "WTI crude oil at $91.29 (-3.01%) decline: Easing inflation pressure expectations",
-          "category": "oil_energy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 5.25%(+0.21%), 미30년 국채금리 5.58%(+0.31%) 상승: 성장주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield at 5.25% (+0.21%), 30-year at 5.58% (+0.31%) rise: Increased discount rate burden for growth stocks",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 20,
-          "name": "주요 기술주 혼조세",
-          "name_en": "Mixed Performance in Major Tech Stocks",
-          "desc": "AAPL -1.74%, GOOGL -1.20%, MSFT -0.66% 하락: 시장 전반의 불확실성 반영",
-          "desc_en": "AAPL -1.74%, GOOGL -1.20%, MSFT -0.66% decline: Reflecting broader market uncertainty",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "달러인덱스 소폭 상승",
-          "name_en": "Slight Rise in Dollar Index",
-          "desc": "달러인덱스 DXY 101.39(+0.10%) 소폭 상승: 시장의 방향성 탐색",
-          "desc_en": "Dollar Index DXY at 101.39 (+0.10%) slight rise: Market searching for direction",
-          "category": "dollar_fx"
-        }
-      ],
-      "report": {
-        "overview": "- 현재 시황: 유가 하락으로 인플레이션 압력 완화 기대감이 형성되었으나, 국채금리 상승으로 성장주에 대한 할인율 부담이 지속되며 시장은 전반적으로 부정적인 흐름을 보임.\n- 주요 원인: WTI 원유 가격 하락이 인플레이션 완화 기대를 높였지만, 미 국채금리 상승이 기술주 중심의 성장주에 부담을 가중시키며 상쇄.\n- 시장 반응: 주요 기술주들의 혼조세는 이러한 불확실성을 반영하며 시장 전반의 방향성 탐색이 이어지는 모습.",
-        "positive": "- WTI 원유 가격 하락: WTI 원유가 91.29달러로 3.01% 하락하며 인플레이션 압력 완화에 대한 기대감을 높임. 이는 시장의 인플레이션 우려를 일부 해소하며 S&P 500과 나스닥 지수 선물 상승에 기여.",
-        "negative": "- 미 국채금리 상승: 미 10년 국채금리가 5.25%(+0.21%)로 0.21% 상승하고, 미 30년 국채금리가 5.58%(+0.31%)로 0.31% 상승하며 성장주에 대한 할인율 부담을 가중. 이는 기술주 중심의 시장에 부정적인 영향을 미치며, 채권 시장의 높은 변동성이 지속될 것이라는 전망 확산.\n- 주요 기술주 혼조세: AAPL이 1.74%, GOOGL이 1.20%, MSFT가 0.66% 하락하며 시장 전반의 불확실성을 반영. 국채금리 상승에 따른 성장주 할인율 부담이 기술주 전반에 걸쳐 약세로 작용.",
-        "mixed": "- 달러인덱스 소폭 상승: 달러인덱스 DXY가 101.39로 0.10% 소폭 상승하며 시장의 방향성 탐색이 이어지는 모습. 이는 글로벌 통화 긴축 정책과 에너지 충격으로 인한 인플레이션 우려가 지속되는 가운데, 안전자산 선호 심리와 위험 회피 심리가 혼재된 결과.",
-        "watch": "- PCE 개인소비지출(8월분) 및 GDP 확정치(2분기) 발표: 9월 30일(수) 08:30 ET에 발표될 예정인 핵심 인플레이션 지표와 경제 성장률 지표가 시장의 인플레이션 전망과 연준의 통화 정책 방향에 대한 단서를 제공하며 시장의 변동성을 확대할 가능성.\n- 미 국채금리 추이: 현재 상승세를 보이는 미 국채금리가 추가 상승할 경우 성장주에 대한 압박이 심화될 것이며, 반대로 하락 전환 시 성장주 반등의 기회가 될 수 있음.\n- WTI 원유 가격 추이: WTI 원유 가격의 추가 하락은 인플레이션 압력 완화 기대를 더욱 강화하여 시장에 긍정적으로 작용할 수 있으나, 반등 시 인플레이션 우려가 재점화될 가능성."
-      },
-      "report_at": "2026-09-29(화) 23:20 KST"
     }
   ],
-  "updated_at": "2026-09-30T12:51:22Z",
+  "updated_at": "2026-09-30T14:21:30Z",
   "max_entries": 10
 }
