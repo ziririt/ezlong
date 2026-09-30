@@ -10841,5 +10841,11 @@ window.investmentQuotes = [
     "title": "당신도 주식시장의 천재가 될 수 있다 (You Can Be a Stock Market Genius)",
     "author": "조엘 그린블라트",
     "category": "mindset"
+  },
+  {
+    "text": "하늘 아래 내가 받은 가장 커다란 선물은 오늘입니다. 오늘 받은 선물 가운데서도 가장 아름다운 선물은 당신입니다.",
+    "title": "선물",
+    "author": "나태주",
+    "genre": "literature"
   }
 ];
