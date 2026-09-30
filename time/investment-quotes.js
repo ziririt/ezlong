@@ -10910,5 +10910,11 @@ window.investmentQuotes = [
     "title": "인베스터스 매니페스토 (The Investor's Manifesto)",
     "author": "윌리엄 번스타인 (William J. Bernstein)",
     "category": "mindset"
+  },
+  {
+    "text": "무엇인가를 갖는다는 것은 다른 한편 무엇인가에 얽매인다는 것이다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
   }
 ];
