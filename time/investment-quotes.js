@@ -10854,5 +10854,12 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "english": "Vulnerability is the birthplace of love, belonging, joy, courage, empathy, and creativity.",
+    "text": "취약함은 사랑과 소속감, 기쁨과 용기, 공감과 창조성이 태어나는 자리다.",
+    "title": "대담하게 맞서기",
+    "author": "브레네 브라운 (Brené Brown)",
+    "genre": "literature"
   }
 ];
