@@ -10868,5 +10868,12 @@ window.investmentQuotes = [
     "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
     "author": "존 보글 (John C. Bogle)",
     "category": "mindset"
+  },
+  {
+    "english": "Successful investing is not about beating others at their game. It is about controlling yourself at your own game.",
+    "text": "성공적인 투자란 남들과의 게임에서 이기는 것이 아니다. 자기 자신이라는 게임을 통제하는 것이다.",
+    "title": "패자의 게임에서 승리하는 법",
+    "author": "찰스 엘리스 (Charles Ellis)",
+    "category": "mindset"
   }
 ];
