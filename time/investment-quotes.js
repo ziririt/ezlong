@@ -10820,5 +10820,12 @@ window.investmentQuotes = [
     "title": "보통의 존재",
     "author": "이석원",
     "genre": "literature"
+  },
+  {
+    "english": "There is nothing new in Wall Street. There can't be because speculation is as old as the hills. Whatever happens in the stock market today has happened before and will happen again.",
+    "text": "월스트리트에는 새로운 것이 없다. 투기는 언덕만큼이나 오래된 것이기 때문에 새로울 수가 없다. 오늘 주식시장에서 일어나는 일은 전에도 일어났고, 앞으로도 다시 일어날 것이다.",
+    "title": "어느 주식투자자의 회상 (Reminiscences of a Stock Operator)",
+    "author": "에드윈 르페브르 (Edwin Lefèvre)",
+    "category": "mindset"
   }
 ];
