@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-30T22:27:33.762328+00:00",
-  "generatedAtKST": "2026-10-01 07:27 KST",
+  "generatedAt": "2026-09-30T22:31:10.503767+00:00",
+  "generatedAtKST": "2026-10-01 07:31 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -724,15 +724,32 @@
       "unit": ""
     },
     "gold": {
-      "price": 4186.2998,
-      "change": 6.5996,
-      "changePct": 0.1579,
+      "price": 4186.0,
+      "change": 6.2998,
+      "changePct": 0.1507,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-09-30T22:27:33.762328+00:00",
+      "atKST": "2026-10-01 07:27 KST",
+      "qqq": {
+        "rsi": 60.46,
+        "macdHist": 1.8278,
+        "dev5": -0.0265,
+        "dev200": 11.0985,
+        "gear": 3,
+        "buyScore": 70,
+        "sellScore": 21,
+        "price": 739.77
+      },
+      "soxxMacdHist": 4.9941,
+      "fearAndGreed": 31,
+      "yield10y": 5.293
+    },
     {
       "at": "2026-09-30T22:01:20.860130+00:00",
       "atKST": "2026-10-01 07:01 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": 6.3757,
       "fearAndGreed": 34,
       "yield10y": 5.24
-    },
-    {
-      "at": "2026-09-28T21:37:41.743757+00:00",
-      "atKST": "2026-09-29 06:37 KST",
-      "qqq": {
-        "rsi": 58.73,
-        "macdHist": 2.7978,
-        "dev5": -0.7586,
-        "dev200": 10.8036,
-        "gear": 3,
-        "buyScore": 71,
-        "sellScore": 19,
-        "price": 736.53
-      },
-      "soxxMacdHist": 6.3757,
-      "fearAndGreed": 34,
-      "yield10y": 5.24
     }
   ],
-  "swingContinuity": "9\uc6d4 29\uc77c\uacfc 9\uc6d4 30\uc77c\uc758 \ub9e4\uc218\uc810\uc218 68, 67\uc5d0\uc11c 9\uc6d430\uc77c(\uc218, \ub274\uc695) 70\uc73c\ub85c \uc18c\ud3ed \uac1c\uc120\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\ub294 -0.01%\uc5d0\uc11c +0.25%\ub85c \ub4f1\ub77d\ub960\uc774 \uc18c\ud3ed \uc0c1\uc2b9\ud558\uba70 \uc57d\ubcf4\ud569 \ud750\ub984\uc744 \uc774\uc5b4\uac14\uc2b5\ub2c8\ub2e4. SOXX, TSLA, NVDA \uc5ed\uc2dc \ucd5c\uadfc 5\uac70\ub798\uc77c \ub4f1\ub77d\ub960\uc774 0.21%, 0.56%, 0.51%\ub85c \uc18c\ud3ed \ubc18\ub4f1\ud558\uba70 \uc804\ubc18\uc801\uc778 \uc57d\uc138 \uad6c\uac04\uc5d0\uc11c \ubc97\uc5b4\ub098\ub824\ub294 \uc6c0\uc9c1\uc784\uc744 \ubcf4\uc600\uc2b5\ub2c8\ub2e4.",
-  "swingContinuityEn": "The buy score improved slightly from 68 on September 29 and 67 on September 30 to 70 today. Over the past five trading days, QQQ's return rate has slightly increased from -0.01% to +0.25%, continuing a pattern of mild weakness. SOXX, TSLA, and NVDA also showed slight rebounds with their five-day return rates at +0.21%, +0.56%, and +0.51% respectively, indicating a move away from the overall weak zone."
+  "swingContinuity": "9\uc6d4 29\uc77c\uacfc 9\uc6d4 30\uc77c\uc758 \ub9e4\uc218\uc810\uc218 68, 67\uc5d0\uc11c 9\uc6d430\uc77c(\uc218, \ub274\uc695) 70\uc73c\ub85c \uc18c\ud3ed \uc0c1\uc2b9\ud558\uba70 \ub9e4\uc218\uc138\uac00 \uc720\uc9c0\ub418\ub294 \ud750\ub984\uc785\ub2c8\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\ub294 -0.01%\uc5d0\uc11c +0.25%\ub85c \ub4f1\ub77d\ub960\uc774 \uc18c\ud3ed \uac1c\uc120\ub418\uc5c8\uc73c\ub098, SOXX, TSLA, NVDA \ub4f1 \ubc18\ub3c4\uccb4 \uad00\ub828 \uc885\ubaa9\ub4e4\uc758 \ub4f1\ub77d\ub960 \ubcc0\ub3d9\uc131\uc774 \uc0c1\ub300\uc801\uc73c\ub85c \ud06c\uac8c \ub098\ud0c0\ub0ac\uc2b5\ub2c8\ub2e4. VIX 16.34, Fear&Greed 31 \uc9c0\ud45c\ub294 \uc2dc\uc7a5\uc758 \ubd88\uc548\uc815\uc131\uc744 \uc2dc\uc0ac\ud569\ub2c8\ub2e4.",
+  "swingContinuityEn": "The buy score has slightly increased from 68 on September 29th and 67 on September 30th to 70 today, indicating a sustained buying trend. Over the last 5 trading days, QQQ's return rate improved slightly from -0.01% to +0.25%, while semiconductor-related stocks like SOXX, TSLA, and NVDA showed relatively larger fluctuations. The VIX at 16.34 and Fear&Greed index at 31 suggest market uncertainty."
 }
