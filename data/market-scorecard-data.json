@@ -1,6 +1,81 @@
 {
   "entries": [
     {
+      "id": "2026-10-01-00:43",
+      "timestamp_kst": "2026-10-01(목) 00:43 KST",
+      "key_event": {
+        "name": "PCE 물가 둔화 및 고용 지표",
+        "name_en": "PCE Inflation Slowdown and Employment Data",
+        "time": "2026년 9월 30일(수) 08:30 ET 발표 완료",
+        "why": "인플레이션 및 고용 지표, Fed 통화 정책 방향성 결정",
+        "why_en": "Inflation and employment data, Fed monetary policy direction"
+      },
+      "positive_total": 60,
+      "negative_total": 40,
+      "summary": "PCE 물가 둔화로 금리 인상 우려 완화, 기술주 강세 지속",
+      "summary_en": "PCE inflation slowdown eases rate hike concerns, tech strength continues",
+      "positive_factors": [
+        {
+          "score": 60,
+          "name": "PCE 물가 둔화",
+          "name_en": "PCE Inflation Slowdown",
+          "desc": "8월 근원 PCE 물가상승률 3.01%, PCE 물가상승률 3.42%로 전월 대비 둔화: Fed 금리 인상 우려 완화",
+          "desc_en": "August Core PCE inflation 3.01%, PCE inflation 3.42%, slowing from previous month: Easing Fed rate hike concerns",
+          "category": "macro_data"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 20,
+          "name": "미 국채금리 상승",
+          "name_en": "US Treasury Yields Rise",
+          "desc": "미10년 국채금리 5.28%(+0.40%), 미30년 국채금리 5.63%(+0.70%) 상승: 성장주 할인율 압박 지속",
+          "desc_en": "US 10-year Treasury yield rises to 5.28% (+0.40%), 30-year to 5.63% (+0.70%): Continued pressure on growth stock valuations",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 10,
+          "name": "WTI 원유 가격 상승",
+          "name_en": "WTI Crude Oil Price Increase",
+          "desc": "WTI 원유 91.30 USD (+1.67%) 상승: 인플레이션 압력 재점화 우려",
+          "desc_en": "WTI crude oil rises to 91.30 USD (+1.67%): Concerns about renewed inflationary pressure",
+          "category": "oil_energy"
+        },
+        {
+          "score": 10,
+          "name": "지정학적 긴장 지속",
+          "name_en": "Persistent Geopolitical Tensions",
+          "desc": "미-이란 긴장 지속 및 이란의 에너지 인프라 안전 경고: 유가 상승 압력 및 시장 불확실성 증대",
+          "desc_en": "Continued US-Iran tensions and Iran's warning on energy infrastructure safety: Increased oil price pressure and market uncertainty",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "ADP 민간고용 예상치 상회",
+          "name_en": "ADP Private Sector Employment Exceeds Expectations",
+          "desc": "9월 민간고용 9만명 증가(예상 7만명): 고용 시장 강세는 경기 회복 신호이나, Fed 긴축 지속 우려 상존",
+          "desc_en": "September private sector employment rises by 90K (vs. 70K expected): Strong job market signals economic recovery, but concerns about continued Fed tightening persist",
+          "category": "macro_data"
+        },
+        {
+          "name": "고용보고서 발표 대기",
+          "name_en": "Anticipation of Employment Report",
+          "desc": "9월 고용보고서 10월 2일(금) 08:30 ET 발표 예정: 시장의 관망세 유지",
+          "desc_en": "September employment report scheduled for October 2nd (Fri) 08:30 ET: Market maintains a wait-and-see attitude",
+          "category": "macro_data"
+        }
+      ],
+      "report": {
+        "overview": "- 시장 총평: PCE 물가 둔화에 따른 금리 인상 우려 완화로 기술주 중심의 강세장 형성.\n- 주요 동인: 8월 근원 PCE 물가상승률 3.01%, PCE 물가상승률 3.42%로 전월 대비 둔화하며 연방준비제도(Fed)의 긴축 기조 완화 기대감 증폭.\n- 하방 압력: 미 국채금리 상승, WTI 원유 가격 상승, 지정학적 긴장 지속이 시장의 상승폭을 제한하며 인플레이션 재점화 및 성장주 할인율 압박 우려 상존.\n- 관망세 유지: 9월 고용보고서 발표를 앞두고 시장은 주요 경제 지표 확인 전까지 신중한 태도 유지.",
+        "positive": "- PCE 물가 둔화: 8월 근원 PCE 물가상승률이 3.01%, PCE 물가상승률이 3.42%를 기록하며 전월 대비 둔화. 이는 연방준비제도(Fed)의 금리 인상 압력을 완화하는 요인으로 작용, 시장 전반의 투자 심리 개선에 기여.\n- 기술주 강세: 인플레이션 둔화 신호에 힘입어 기술주 중심의 나스닥 지수가 1% 상승을 주도.",
+        "negative": "- 미 국채금리 상승: 미 10년 국채금리가 5.28%(+0.40%), 미 30년 국채금리가 5.63%(+0.70%)로 상승. 이는 성장주에 대한 할인율을 높여 기업 가치 평가에 부정적인 영향을 미치며, 특히 기술주 등 고성장 기업의 투자 매력을 저해.\n- WTI 원유 가격 상승: WTI 원유 가격이 91.30 USD(+1.67%)로 상승. 이는 인플레이션 압력이 재점화될 수 있다는 우려를 키우며, 연방준비제도(Fed)의 통화 정책 결정에 불확실성을 가중.\n- 지정학적 긴장 지속: 미국과 이란 간의 긴장이 지속되고 이란이 에너지 인프라 안전에 대한 경고를 발표. 이는 중동 지역의 원유 공급 불안정성을 높여 유가 상승 압력으로 작용하며, 글로벌 시장의 불확실성을 증대.",
+        "mixed": "- ADP 민간고용 예상치 상회: 9월 민간고용이 예상치 7만 명을 상회하는 9만 명 증가를 기록. 이는 견조한 고용 시장이 경기 회복의 신호로 해석될 수 있으나, 동시에 연방준비제도(Fed)의 긴축 기조가 예상보다 길어질 수 있다는 우려를 상존시켜 시장에 혼조세 유발.\n- 고용보고서 발표 대기: 9월 고용보고서가 10월 2일(금) 08:30 ET에 발표될 예정. 이 핵심 경제 지표 발표를 앞두고 투자자들은 고용 시장의 실제 강도를 확인하기 위해 관망세를 유지하며, 지표 결과에 따라 시장 방향성이 결정될 가능성 잔존.",
+        "watch": "- 9월 고용보고서 발표: 10월 2일(금) 08:30 ET에 발표될 9월 고용보고서 결과에 따라 연방준비제도(Fed)의 향후 통화 정책 방향성에 대한 시장의 기대가 크게 변화할 수 있음.\n- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가 상승 여부가 성장주 전반의 투자 심리에 지속적인 영향을 미칠 것으로 예상.\n- WTI 원유 가격 변동: WTI 원유 가격이 지정학적 긴장 및 수요-공급 균형 변화에 따라 추가 상승할 경우, 인플레이션 압력 재점화 우려가 증폭될 수 있음."
+      },
+      "report_at": "2026-10-01(목) 00:43 KST"
+    },
+    {
       "id": "2026-09-30-23:20",
       "timestamp_kst": "2026-09-30(수) 23:20 KST",
       "key_event": {
@@ -586,60 +661,8 @@
         "watch": "- PCE 개인소비지출 및 GDP 확정치 발표: 9월 30일(수) 08:30 ET에 발표될 8월 PCE 개인소비지출 및 2분기 GDP 확정치가 인플레이션 및 경제 성장 경로에 대한 추가 단서 제공 여부 확인.\n- 미 국채금리 추이: 현재 다년간 최고치 부근에 있는 미국 국채금리(10년물 5.26%(+0.29%), 30년물 5.59%)의 추가 상승 또는 하락 여부가 성장주 및 시장 전반에 미치는 영향 확인.\n- 유가 변동성: WTI 유가 급락(-5.20%) 이후 이란-미국 긴장 지속에 따른 유가 변동성(89.23달러)이 인플레이션 기대에 미치는 영향 확인."
       },
       "report_at": "2026-09-30(수) 04:55 KST"
-    },
-    {
-      "id": "2026-09-30-03:13",
-      "timestamp_kst": "2026-09-30(수) 03:13 KST",
-      "key_event": {
-        "name": "국채금리 상승 압력 지속",
-        "name_en": "Continued Upward Pressure on Treasury Yields",
-        "time": "2026-09-29 14:13 ET 정규장",
-        "why": "성장주 할인율 부담, 인플레이션 우려 지속",
-        "why_en": "Growth stock discount rate burden, persistent inflation concerns"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "국채금리 상승 압력 지속 및 매파적 Fed 발언으로 부정 우위 지속",
-      "summary_en": "Negative sentiment prevails due to persistent rising Treasury yields and hawkish Fed comments",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "WTI 유가 하락",
-          "name_en": "WTI Oil Price Decline",
-          "desc": "WTI 유가 90.13달러(-4.24%) 하락: 인플레이션 압력 완화 기대",
-          "desc_en": "WTI oil price fell to $90.13 (-4.24%): Expectations of easing inflation pressure",
-          "category": "oil_energy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "장기 국채금리 상승",
-          "name_en": "Long-term Treasury Yields Rise",
-          "desc": "미10년 국채금리 5.29%(+0.90%), 미30년 국채금리 5.61%(+0.90%) 상승: 성장주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield rose to 5.29% (+0.90%), 30-year to 5.61% (+0.90%): Increased discount rate burden on growth stocks",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 30,
-          "name": "Fed 매파적 발언",
-          "name_en": "Hawkish Fed Comments",
-          "desc": "Fed Barr 추가 금리 인상 가능성 시사: 인플레이션 억제 필요성 강조",
-          "desc_en": "Fed's Barr signaled more rate hikes are likely needed: Emphasized necessity to curb inflation",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 시장 총평: 국채금리 상승 압력과 연방준비제도(Fed)의 매파적 발언이 지속되며 증시 전반에 부정적인 영향 지속.\n- 주요 하락 요인: 장기 국채금리가 다년래 최고치를 경신하며 성장주 할인율에 부담 가중. Fed 관계자의 추가 금리 인상 가능성 시사 발언이 인플레이션 억제 필요성을 강조.\n- 부분적 완화 요인: 국제유가 하락이 인플레이션 압력 완화에 대한 기대를 불러일으키며 부정적 흐름을 일부 상쇄.\n- 지수 흐름: 다우존스 산업평균지수는 하락했으나, S&P 500과 나스닥 종합지수는 엔비디아, 오라클 등 일부 기술주의 강세에 힘입어 상대적으로 선방하는 혼조세 연출.",
-        "positive": "- WTI 유가 하락: WTI 유가가 90.13달러로 4.24% 하락하며 인플레이션 압력 완화에 대한 시장의 기대를 높임. 이는 공급 과잉 우려와 오만-이란 간 대화 가능성 등이 복합적으로 작용한 결과로 해석.\n- 인플레이션 압력 완화 기대: 유가 하락은 향후 소비자물가 상승률(CPI) 및 개인소비지출(PCE) 물가상승률 지표에 긍정적인 영향을 미칠 수 있다는 전망을 강화.",
-        "negative": "- 장기 국채금리 상승: 미국 10년물 국채금리가 5.29%(+0.90%), 30년물 국채금리가 5.61%(+0.90%) 상승하며 다년래 최고 수준을 기록. 이는 성장주 등 미래 현금흐름에 대한 할인율을 높여 기업 가치 평가에 부정적인 영향을 미침.\n- Fed 매파적 발언: Fed의 배러(Barr) 이사가 인플레이션 억제를 위해 추가 금리 인상이 필요할 수 있다고 발언. 이는 시장의 금리 인하 기대감을 약화시키고 긴축 기조가 장기화될 수 있다는 우려를 심화.",
-        "mixed": "",
-        "watch": "- PCE 개인소비지출(8월분) 및 GDP 확정치(2분기) 발표: 9월 30일(수) 08:30 ET 예정. 이 지표들은 연방준비제도의 통화정책 결정에 중요한 영향을 미치며, 인플레이션 압력과 경제 성장 둔화 여부를 판단하는 핵심 근거가 될 것.\n- 국채금리 추이: 미국 10년물 및 30년물 국채금리가 현재 수준에서 추가 상승할지, 혹은 하락 안정화될지 여부가 시장 전반의 투자 심리에 지속적으로 영향을 미칠 전망. 특히 성장주에 대한 할인율 부담이 관건.\n- 유가 변동성: WTI 유가가 90달러 선에서 추가 하락하여 인플레이션 완화 기대감을 이어갈지, 혹은 중동 정세 불안 등으로 다시 상승 전환할지 여부가 시장의 주요 관심사."
-      },
-      "report_at": "2026-09-30(수) 03:13 KST"
     }
   ],
-  "updated_at": "2026-09-30T14:21:30Z",
+  "updated_at": "2026-09-30T15:44:22Z",
   "max_entries": 10
 }
