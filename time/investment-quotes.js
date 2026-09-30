@@ -10814,5 +10814,11 @@ window.investmentQuotes = [
     "title": "위대한 기업에 투자하라 (Common Stocks and Uncommon Profits)",
     "author": "필립 피셔 (Philip Fisher)",
     "category": "mindset"
+  },
+  {
+    "text": "진정으로 굳은 결속은 대화가 끊기지 않는 사이가 아니라 침묵이 불편하지 않은 사이를 말한다.",
+    "title": "보통의 존재",
+    "author": "이석원",
+    "genre": "literature"
   }
 ];
