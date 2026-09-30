@@ -10827,5 +10827,12 @@ window.investmentQuotes = [
     "title": "어느 주식투자자의 회상 (Reminiscences of a Stock Operator)",
     "author": "에드윈 르페브르 (Edwin Lefèvre)",
     "category": "mindset"
+  },
+  {
+    "english": "This life is mine alone. So I have stopped asking people for directions to places they've never been.",
+    "text": "이 삶은 오직 나의 것이다. 그래서 나는 사람들에게, 그들이 한 번도 가본 적 없는 곳으로 가는 길을 묻는 일을 그만두었다.",
+    "title": "언테임드 (Untamed)",
+    "author": "글레넌 도일 (Glennon Doyle)",
+    "genre": "literature"
   }
 ];
