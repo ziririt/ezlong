@@ -10930,5 +10930,12 @@ window.investmentQuotes = [
     "title": "내일, 또 내일, 또 내일 (Tomorrow, and Tomorrow, and Tomorrow)",
     "author": "개브리얼 제빈 (Gabrielle Zevin)",
     "genre": "literature"
+  },
+  {
+    "english": "A truly great business must have an enduring ‘moat’ that protects excellent returns on invested capital.",
+    "text": "진정으로 위대한 기업은 투하자본에 대한 탁월한 수익률을 지켜주는, 오래도록 지속되는 '해자'를 반드시 갖추고 있어야 한다.",
+    "title": "버크셔 해서웨이 2007년 주주 서한 (Berkshire Hathaway Chairman's Letter, 2007)",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "mindset"
   }
 ];
