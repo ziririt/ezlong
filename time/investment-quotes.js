@@ -10937,5 +10937,11 @@ window.investmentQuotes = [
     "title": "버크셔 해서웨이 2007년 주주 서한 (Berkshire Hathaway Chairman's Letter, 2007)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "mindset"
+  },
+  {
+    "text": "나는 '절대 포기하지 마라'라는 말을 싫어한다. 목숨 빼곤 다 포기해도 좋다고 생각한다.",
+    "title": "하마터면 열심히 살 뻔했다",
+    "author": "하완",
+    "genre": "literature"
   }
 ];
