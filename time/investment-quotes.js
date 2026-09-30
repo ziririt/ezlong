@@ -10903,5 +10903,12 @@ window.investmentQuotes = [
     "title": "먹고 기도하고 사랑하라 (Eat, Pray, Love)",
     "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
     "genre": "literature"
+  },
+  {
+    "english": "Nothing is as likely to destroy your financial future as your own emotions.",
+    "text": "당신의 재정적 미래를 무너뜨릴 가능성이 가장 큰 것은 다름 아닌 당신 자신의 감정이다.",
+    "title": "인베스터스 매니페스토 (The Investor's Manifesto)",
+    "author": "윌리엄 번스타인 (William J. Bernstein)",
+    "category": "mindset"
   }
 ];
