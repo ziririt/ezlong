@@ -336,5 +336,8 @@ window.aladinLinks = {
   "전설로 떠나는 월街의 영웅 (One Up On Wall Street)|피터 린치 (Peter Lynch)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=396483089&partner=friends327",
   "즐거운 편지|황동규": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=306327366&partner=friends327",
   "아킬레우스의 노래 (The Song of Achilles)|매들린 밀러 (Madeline Miller)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=274688269&partner=friends327",
-  "대추 한 알|장석주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=67527535&partner=friends327"
+  "대추 한 알|장석주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=67527535&partner=friends327",
+  "보통의 존재|이석원": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=4785218&partner=friends327",
+  "대담하게 맞서기|브레네 브라운 (Brené Brown)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=24718613&partner=friends327",
+  "벨 자 (The Bell Jar)|실비아 플라스 (Sylvia Plath)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=2799669&partner=friends327"
 };
