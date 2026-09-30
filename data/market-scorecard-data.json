@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-10-01-07:00",
+      "timestamp_kst": "2026-10-01(목) 07:00 KST",
+      "key_event": {
+        "name": "기술주 강세 및 AI 기대",
+        "name_en": "Tech Strength & AI Optimism",
+        "time": "2026-09-30 포스트마켓",
+        "why": "주요 기술주 상승, AI 관련 기업 전망 개선",
+        "why_en": "Major tech stocks rise, AI company outlook improves"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "기술주 강세 및 AI 기대감으로 긍정 우위 지속",
+      "summary_en": "Positive sentiment continues with strong tech and AI optimism",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "AI 기술주 투자 심리 개선",
+          "name_en": "Improved AI Tech Investment Sentiment",
+          "desc": "Alphabet, Microsoft 등 주요 기술주 강세: AI 모델 출시 및 협력 기대감 반영",
+          "desc_en": "Major tech stocks like Alphabet, Microsoft show strength: reflecting optimism for AI model launches and collaborations",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 25,
+          "name": "마이크론 실적 호조",
+          "name_en": "Micron Earnings Beat Estimates",
+          "desc": "마이크론(MU) 실적 예상치 상회: 메모리 수요 회복 및 반도체 섹터 전반에 긍정적 신호",
+          "desc_en": "Micron (MU) earnings surpass expectations: signaling memory demand recovery and positive outlook for the broader semiconductor sector",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "미 국채금리 상승 지속",
+          "name_en": "US Treasury Yields Continue to Rise",
+          "desc": "미10년 국채금리 5.29%(+0.72%) 상승: 높은 금리 수준 유지로 성장주 할인율 부담 지속",
+          "desc_en": "US 10-year Treasury yield rises to 5.29%(+0.72%): sustained high rates continue to burden growth stock valuations",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "PCE 물가 상승률 소폭 상승",
+          "name_en": "PCE Inflation Rate Slight Increase",
+          "desc": "PCE 물가상승률(전년동월비) 3.42%(+0.06%p)로 소폭 상승: 인플레이션 압력 완화 기대와 금리 인상 경계심 혼재",
+          "desc_en": "PCE inflation rate (YoY) slightly rises to 3.42%(+0.06%p): mixed signals between easing inflation expectations and caution over rate hikes",
+          "category": "macro_data"
+        },
+        {
+          "name": "고용보고서 발표 대기",
+          "name_en": "Anticipation for Jobs Report",
+          "desc": "9월 고용보고서(10월 2일(금) 08:30 ET) 발표 대기: 고용 시장의 강세 또는 둔화 여부에 따라 시장 방향성 결정될 전망",
+          "desc_en": "Awaiting the September jobs report (Oct 2nd, 08:30 ET): market direction to be determined by the strength or slowdown of the labor market",
+          "category": "macro_data"
+        }
+      ],
+      "report": {
+        "overview": "- 9월30일(수, 뉴욕) 시황 총평: 기술주 강세와 AI 기대감에 힘입어 긍정 우위 지속, 총점 긍정 70 대 부정 30으로 마감.\n- 시장 상승 동력: 주요 기술 기업들의 AI 모델 출시 및 협력 기대감 반영으로 투자 심리 개선, 특히 Alphabet과 Microsoft의 강세가 두드러짐.\n- 반도체 섹터 호조: 마이크론(MU)의 예상치 상회 실적 발표는 메모리 수요 회복과 반도체 산업 전반에 긍정적인 신호로 작용.\n- 시장 하방 압력: 미 국채금리 상승 지속과 PCE 물가 상승률의 소폭 상승은 인플레이션 우려와 성장주 할인율 부담을 가중.",
+        "positive": "- AI 기술주 투자 심리 개선: Alphabet, Microsoft 등 주요 기술주가 AI 모델 출시 및 협력 기대감에 힘입어 강세를 보임. 이는 AI 관련 기업 전반의 전망 개선에 기여하며 시장에 긍정적인 영향을 미침.\n- 마이크론 실적 호조: 마이크론(MU)이 예상치를 상회하는 실적을 발표하며 메모리 수요 회복에 대한 기대감을 높임. 이는 반도체 섹터 전반에 긍정적인 신호로 작용하며, Dow Jones Futures에서도 마이크론의 실적 호조를 주요 이슈로 언급.",
+        "negative": "- 미 국채금리 상승 지속: 미 10년 국채금리가 5.29%(+0.72%)로 상승하며 높은 금리 수준을 유지. 이는 성장주에 대한 할인율 부담을 가중시켜 기술주 중심의 시장 상승을 제한하는 요인으로 작용. Dow Jones Futures에서도 국채금리 상승을 시장의 주요 하방 압력으로 지목.",
+        "mixed": "- PCE 물가 상승률 소폭 상승: PCE 물가상승률(전년동월비)이 3.42%(+0.06%p)로 소폭 상승. 이는 인플레이션 압력 완화에 대한 기대와 연방준비제도(Fed)의 추가 금리 인상 가능성에 대한 경계심이 혼재된 상황으로, S&P 500과 Nasdaq은 데이터 발표 후 혼조세를 보임.",
+        "watch": "- 고용보고서 발표 대기: 9월 고용보고서가 10월 2일(금) 08:30 ET에 발표될 예정. 고용 시장의 강세 또는 둔화 여부가 향후 연방준비제도(Fed)의 통화정책 방향과 시장의 전반적인 방향성을 결정할 중요한 변수로 작용할 전망.\n- 미 10년 국채금리 추이: 현재 5.29%(+0.72%) 수준의 미 10년 국채금리 추이를 지속적으로 주시. 금리 상승세가 꺾이지 않을 경우 성장주에 대한 투자 심리 위축이 심화될 수 있으며, 반대로 안정화될 경우 시장에 긍정적인 영향을 미칠 수 있음.\n- 주요 기술주 동향: Alphabet, Microsoft 등 주요 기술주들의 AI 관련 뉴스 및 주가 흐름을 면밀히 관찰. AI 기대감이 지속될 경우 시장 전반의 상승 동력이 유지될 수 있으나, 관련 이슈에 대한 부정적 소식 발생 시 시장에 하방 압력으로 작용할 수 있음."
+      },
+      "report_at": "2026-10-01(목) 07:00 KST"
+    },
+    {
       "id": "2026-10-01-04:55",
       "timestamp_kst": "2026-10-01(목) 04:55 KST",
       "key_event": {
@@ -582,76 +649,8 @@
         "watch": "- PCE 개인소비지출(8월분) 및 GDP 확정치(2분기) 발표: 9월 30일(수) 08:30 ET 예정. 연준의 주요 인플레이션 지표인 PCE 물가상승률(7월 3.70%) 추이와 경제 성장률이 시장 전반의 방향성을 결정할 주요 변수.\n- 국채금리 추이: 미 10년 및 30년 국채금리가 현재의 높은 수준을 유지하거나 추가 상승할 경우, 성장주를 중심으로 한 증시의 추가 하락 압력 가중.\n- 유가 변동성: 중동 지정학적 긴장 완화 또는 심화 여부에 따른 WTI 유가(89.27달러)의 추가 변동이 인플레이션 기대와 시장 심리에 미칠 영향 주시."
       },
       "report_at": "2026-09-30(수) 09:37 KST"
-    },
-    {
-      "id": "2026-09-30-08:20",
-      "timestamp_kst": "2026-09-30(수) 08:20 KST",
-      "key_event": {
-        "name": "국채금리 상승 압력 지속",
-        "name_en": "Treasury Yields Continue Upward Pressure",
-        "time": "2026-09-29 포스트마켓",
-        "why": "성장주 할인율 부담, 인플레이션 우려 지속",
-        "why_en": "Growth stock discount rate burden, persistent inflation concerns"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "국채금리 상승 압력 지속으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to continued upward pressure on Treasury yields",
-      "positive_factors": [
-        {
-          "score": 20,
-          "name": "WTI 유가 급락",
-          "name_en": "WTI Oil Prices Plunge",
-          "desc": "WTI 원유 89.32달러(-5.10%) 기록: 인플레이션 압력 완화 기대",
-          "desc_en": "WTI crude oil at $89.32 (-5.10%): Expectations of easing inflation pressure",
-          "category": "oil_energy"
-        },
-        {
-          "score": 15,
-          "name": "Fed 윌리엄스 발언",
-          "name_en": "Fed's Williams Remarks",
-          "desc": "Fed 윌리엄스, 추가 금리 인상 긴급성 없다고 언급: 금리 인상 우려 완화",
-          "desc_en": "Fed's Williams states no urgency for next rate hike: Easing rate hike concerns",
-          "category": "fed_policy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 30,
-          "name": "장기 국채금리 상승",
-          "name_en": "Long-term Treasury Yields Rise",
-          "desc": "미10년 국채금리 5.26%(+0.29%), 미30년 국채금리 5.59%(+0.59%): 성장주 할인율 부담 가중",
-          "desc_en": "US 10-year Treasury yield at 5.26% (+0.29%), 30-year at 5.59% (+0.59%): Increased burden on growth stock discount rates",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 20,
-          "name": "이란-미국 긴장 지속",
-          "name_en": "Persistent Iran-US Tensions",
-          "desc": "미-이란 적대 행위 심화 및 홍해 폐쇄 위협: 지정학적 리스크 고조",
-          "desc_en": "Intensifying US-Iran hostilities and Red Sea closure threat: Heightened geopolitical risk",
-          "category": "geopolitics"
-        },
-        {
-          "score": 15,
-          "name": "소비자 신뢰도 하락",
-          "name_en": "Declining Consumer Confidence",
-          "desc": "미국 소비자 신뢰도 12년 반래 최저치 근접: 노동 시장 우려 반영",
-          "desc_en": "US consumer confidence near 12.5-year low: Reflecting labor market fears",
-          "category": "macro_data"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 9월29일(화, 뉴욕) 미국 주식 시장은 국채금리 상승 압력 지속으로 부정적 우위 지속, 총점 긍정 35 대 부정 65로 마감\n- 미 10년 및 30년 국채금리가 각각 5.26%, 5.59%까지 상승하며 성장주 할인율 부담을 가중, 시장 전반에 하방 압력으로 작용\n- WTI 유가 급락과 Fed 윌리엄스 발언이 금리 인상 우려를 일부 완화했으나, 지정학적 리스크와 소비자 신뢰도 하락이 부정적 요인으로 작용\n- 주요 지수들은 대체로 소폭 하락 마감하며, 채권 수익률이 수십 년 만의 최고치 근처를 유지하는 상황을 반영",
-        "positive": "- WTI 유가 급락: WTI 원유 가격이 89.32달러로 5.10% 급락하며 인플레이션 압력 완화에 대한 기대를 높임. 이는 중동 공급 우려에도 불구하고 유가 하락이 인플레이션 완화에 긍정적으로 작용할 수 있다는 시장의 인식을 반영.\n- Fed 윌리엄스 발언: 뉴욕 연방준비은행 총재 윌리엄스가 추가 금리 인상에 대한 긴급성이 없다고 언급, 이는 시장의 금리 인상 우려를 일부 완화하며 투자 심리에 긍정적으로 작용.",
-        "negative": "- 장기 국채금리 상승: 미 10년 국채금리가 5.26%(+0.29%), 미 30년 국채금리가 5.59%(+0.59%)까지 상승하며 성장주 할인율 부담을 가중. 특히 30년물 국채금리는 2002년 이후 최고치를 기록하며 채권 시장의 매도세 심화를 반영.\n- 이란-미국 긴장 지속: 미국과 이란 간의 적대 행위 심화 및 홍해 폐쇄 위협이 지정학적 리스크를 고조. 이는 유가 변동성 확대와 글로벌 공급망 불안정으로 이어질 수 있다는 우려를 야기.\n- 소비자 신뢰도 하락: 미국 소비자 신뢰도가 12년 반래 최저치에 근접하며 노동 시장에 대한 우려를 반영. 이는 향후 소비 지출 둔화 가능성을 시사하며 경제 성장 전망에 부정적인 영향을 미침.",
-        "mixed": "",
-        "watch": "- PCE 개인소비지출(8월분)·GDP 확정치(2분기) 발표: 9월 30일(수) 08:30 ET (약 13시간 뒤), 인플레이션 및 경제 성장률에 대한 추가적인 단서 제공 여부 확인.\n- 미 10년 및 30년 국채금리 추이: 현재 높은 수준을 유지하고 있는 장기 국채금리의 추가 상승 또는 하락 여부가 시장의 성장주 할인율 부담에 지속적인 영향을 미칠 것으로 예상.\n- WTI 유가 변동성: 중동 지정학적 리스크와 인플레이션 완화 기대 사이에서 WTI 유가의 방향성 확인."
-      },
-      "report_at": "2026-09-30(수) 08:20 KST"
     }
   ],
-  "updated_at": "2026-09-30T19:55:42Z",
+  "updated_at": "2026-09-30T22:01:42Z",
   "max_entries": 10
 }
