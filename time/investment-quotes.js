@@ -10916,5 +10916,12 @@ window.investmentQuotes = [
     "title": "무소유",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "You have to figure out where you've got an edge. And you've got to play within your own circle of competence.",
+    "text": "자신이 어디서 우위를 가지고 있는지 파악해야 한다. 그리고 반드시 자신만의 능력범위 안에서 승부를 봐야 한다.",
+    "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "mindset"
   }
 ];
