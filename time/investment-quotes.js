@@ -10923,5 +10923,12 @@ window.investmentQuotes = [
     "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "mindset"
+  },
+  {
+    "english": "It's tomorrow, and tomorrow, and tomorrow. It's the possibility of infinite rebirth, infinite redemption.",
+    "text": "그것은 내일이고, 또 내일이고, 또 내일이다. 끝없이 다시 태어나고, 끝없이 구원받을 수 있다는 가능성이다.",
+    "title": "내일, 또 내일, 또 내일 (Tomorrow, and Tomorrow, and Tomorrow)",
+    "author": "개브리얼 제빈 (Gabrielle Zevin)",
+    "genre": "literature"
   }
 ];
