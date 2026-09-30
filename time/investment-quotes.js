@@ -10875,5 +10875,12 @@ window.investmentQuotes = [
     "title": "패자의 게임에서 승리하는 법",
     "author": "찰스 엘리스 (Charles Ellis)",
     "category": "mindset"
+  },
+  {
+    "english": "I took a deep breath and listened to the old brag of my heart. I am, I am, I am.",
+    "text": "나는 숨을 깊이 들이쉬고, 내 심장이 오래도록 되뇌는 소리에 귀를 기울였다. 나는 존재한다, 나는 존재한다, 나는 존재한다.",
+    "title": "벨 자 (The Bell Jar)",
+    "author": "실비아 플라스 (Sylvia Plath)",
+    "genre": "literature"
   }
 ];
