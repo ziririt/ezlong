@@ -10943,5 +10943,12 @@ window.investmentQuotes = [
     "title": "하마터면 열심히 살 뻔했다",
     "author": "하완",
     "genre": "literature"
+  },
+  {
+    "english": "The miracle of compounding returns is overwhelmed by the tyranny of compounding costs.",
+    "text": "복리 수익의 기적은 복리 비용의 폭정에 압도당하고 만다.",
+    "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
+    "author": "존 보글 (John C. Bogle)",
+    "category": "mindset"
   }
 ];
