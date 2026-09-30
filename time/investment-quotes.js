@@ -10889,5 +10889,12 @@ window.investmentQuotes = [
     "title": "주식에 장기투자하라 (Stocks for the Long Run)",
     "author": "제러미 시겔 (Jeremy J. Siegel)",
     "category": "mindset"
+  },
+  {
+    "english": "A blindfolded monkey throwing darts at a newspaper's stock listings could select a portfolio that would do just as well as one carefully selected by experts.",
+    "text": "눈을 가리고 신문의 주식 시세표에 다트를 던지는 원숭이가 골라낸 포트폴리오도, 전문가가 신중하게 골라낸 포트폴리오와 별반 다르지 않은 성과를 낸다.",
+    "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
+    "author": "버턴 말킬 (Burton G. Malkiel)",
+    "category": "mindset"
   }
 ];
