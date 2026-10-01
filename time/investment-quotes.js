@@ -10991,5 +10991,12 @@ window.investmentQuotes = [
     "title": "밀크 앤 허니 (Milk and Honey)",
     "author": "루피 카우르 (Rupi Kaur)",
     "genre": "literature"
+  },
+  {
+    "english": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave.",
+    "text": "돈 관리를 잘하는 것은 당신이 얼마나 똑똑한지와는 거의 상관이 없고, 당신이 어떻게 행동하는지와 훨씬 더 관련이 있다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절 (Morgan Housel)",
+    "category": "mindset"
   }
 ];
