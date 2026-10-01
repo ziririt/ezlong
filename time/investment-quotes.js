@@ -11067,5 +11067,11 @@ window.investmentQuotes = [
     "title": "원칙 (Principles: Life and Work)",
     "author": "레이 달리오 (Ray Dalio)",
     "category": "mindset"
+  },
+  {
+    "text": "흔들리며 피지 않는 꽃이 어디 있으랴. 이 세상 그 어떤 아름다운 꽃들도 다 흔들리면서 피었나니, 흔들리면서 줄기를 곧게 세웠나니.",
+    "title": "흔들리며 피는 꽃",
+    "author": "도종환",
+    "genre": "literature"
   }
 ];
