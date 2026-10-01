@@ -11019,5 +11019,12 @@ window.investmentQuotes = [
     "title": "데미안 (Demian)",
     "author": "헤르만 헤세 (Hermann Hesse)",
     "genre": "literature"
+  },
+  {
+    "english": "Rule number one: most things will prove to be cyclical. Rule number two: some of the greatest opportunities for gain and loss come when other people forget rule number one.",
+    "text": "제1원칙: 대부분의 것들은 결국 순환한다. 제2원칙: 가장 큰 이익과 손실의 기회는 사람들이 제1원칙을 잊을 때 찾아온다.",
+    "title": "투자에 대한 생각 (The Most Important Thing)",
+    "author": "하워드 막스 (Howard Marks)",
+    "category": "mindset"
   }
 ];
