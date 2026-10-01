@@ -11053,5 +11053,12 @@ window.investmentQuotes = [
     "title": "어느 주식투자자의 회상 (Reminiscences of a Stock Operator)",
     "author": "제시 리버모어 (Jesse Livermore)",
     "category": "patience"
+  },
+  {
+    "english": "A warrior believes in an end she can't see and fights for it. A warrior never gives up.",
+    "text": "전사는 보이지 않는 끝을 믿고 그것을 위해 싸운다. 전사는 결코 포기하지 않는다.",
+    "title": "포 윈즈 (The Four Winds)",
+    "author": "크리스틴 한나 (Kristin Hannah)",
+    "genre": "literature"
   }
 ];
