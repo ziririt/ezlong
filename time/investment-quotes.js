@@ -11060,5 +11060,12 @@ window.investmentQuotes = [
     "title": "포 윈즈 (The Four Winds)",
     "author": "크리스틴 한나 (Kristin Hannah)",
     "genre": "literature"
+  },
+  {
+    "english": "Pain + Reflection = Progress.",
+    "text": "고통에 성찰을 더하면 진보가 된다.",
+    "title": "원칙 (Principles: Life and Work)",
+    "author": "레이 달리오 (Ray Dalio)",
+    "category": "mindset"
   }
 ];
