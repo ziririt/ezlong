@@ -10977,5 +10977,12 @@ window.investmentQuotes = [
     "title": "바빌론 부자들의 돈 버는 지혜 (The Richest Man in Babylon)",
     "author": "조지 S. 클레이슨 (George S. Clason)",
     "category": "mindset"
+  },
+  {
+    "english": "Stop thinking about what your money can buy. Start thinking about what your money can earn.",
+    "text": "돈으로 무엇을 살 수 있을지 생각하지 마라. 그 돈이 무엇을 벌어들일 수 있을지를 생각하라.",
+    "title": "부에 이르는 가장 단순한 길 (The Simple Path to Wealth)",
+    "author": "JL 콜린스 (J.L. Collins)",
+    "category": "mindset"
   }
 ];
