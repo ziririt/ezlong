@@ -10998,5 +10998,12 @@ window.investmentQuotes = [
     "title": "돈의 심리학 (The Psychology of Money)",
     "author": "모건 하우절 (Morgan Housel)",
     "category": "mindset"
+  },
+  {
+    "english": "Love is an action, never simply a feeling.",
+    "text": "사랑은 행동이다. 그저 감정이 아니다.",
+    "title": "올 어바웃 러브 (All About Love)",
+    "author": "벨 훅스 (bell hooks)",
+    "genre": "literature"
   }
 ];
