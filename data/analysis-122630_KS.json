@@ -3,62 +3,62 @@
   "name": "KODEX 레버리지",
   "assetType": "etf_leveraged",
   "market": "kr",
-  "updatedAt": "2026-10-01T03:18:20.543Z",
-  "analysisAt": "2026-10-01T03:18:20.543Z",
+  "updatedAt": "2026-10-01T06:07:55.275Z",
+  "analysisAt": "2026-10-01T06:07:55.275Z",
   "analysisPreserved": false,
   "price": {
-    "current": 110530,
-    "change": 1060,
-    "changePct": 0.97,
+    "current": 112590,
+    "change": 3120,
+    "changePct": 2.85,
     "high52": 252500,
     "low52": 31855,
-    "pos52": 35.7,
+    "pos52": 36.6,
     "marketState": "REGULAR",
-    "quoteTime": 1790823492,
+    "quoteTime": 1790833667,
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 108501.75,
-    "sma50": 105552.5,
-    "sma100": 141762.85,
-    "sma200": 109417.425,
-    "rsi": 50.85,
+    "sma20": 108604.75,
+    "sma50": 105593.7,
+    "sma100": 141783.45,
+    "sma200": 109427.725,
+    "rsi": 52.62,
     "macd": {
-      "macd": 378.897533,
-      "signal": -207.294775,
-      "histogram": 586.192308
+      "macd": 543.228017,
+      "signal": -174.428678,
+      "histogram": 717.656695
     },
     "bb": {
-      "upper": 119937.1767,
-      "middle": 108501.75,
-      "lower": 97066.3233,
-      "bandwidth": 0.2108
+      "upper": 120147.9967,
+      "middle": 108604.75,
+      "lower": 97061.5033,
+      "bandwidth": 0.2126
     },
     "adx": {
-      "plusDI": 26.7,
-      "minusDI": 27.49,
+      "plusDI": 26.03,
+      "minusDI": 26.79,
       "adx": 8.91,
       "status": "무추세(충격 가능)"
     },
-    "atr": 7370.2916
+    "atr": 7560.2916
   },
   "levels": {
     "swingResistance": 115010,
     "swingSupport": 98695,
     "pivot": {
-      "pp": 108400,
-      "r1": 122210,
-      "r2": 133890,
-      "s1": 96720,
-      "s2": 82910
+      "pp": 109086.67,
+      "r1": 123583.33,
+      "r2": 134576.67,
+      "s1": 98093.33,
+      "s2": 83596.67
     }
   },
   "analysis": {
     "trend": "횡보",
     "strength": 3,
-    "support": 105553,
+    "support": 106015,
     "resistance": 115010,
     "rsiStatus": "중립",
     "macdStatus": "중립",
@@ -68,43 +68,43 @@
     "buyScore": 5,
     "scoreReason": "RSI 중립 구간 횡보, ADX 무추세 지속",
     "scoreReasonEn": "RSI neutral range consolidation, ADX trendless continuation",
-    "rsiTrajectory": "54.5 → 50.8 (중립 지속 중)",
-    "rsiTrajectoryEn": "54.5 → 50.8 (staying neutral)",
-    "macdTrajectory": "히스토 1247.3304 → 586.1923 (개선)",
-    "macdTrajectoryEn": "histo 1247.3304 → 586.1923 (improving)",
-    "pricePattern": "횡보: 5일 고가/저가와 20일 고가/저가 패턴 불일치",
-    "pricePatternEn": "Sideways: Mismatch between 5-day and 20-day high/low patterns",
-    "volComment": "거래량비 0.59 (위축)",
-    "bbPosition": "중단근처",
-    "reason": "직전 3거래일 연속 관망 유지. 금일 RSI 50.8로 중립 구간 횡보 지속, ADX 8.9로 무추세 국면 진입. 5일 평균 대비 거래량 비율 0.59로 위축된 거래량은 방향성 탐색에 대한 신뢰도를 낮춤. SMA200 대비 1.02% 상승했으나 SMA50 대비 -3.45% 하락하며 단기 변동성만 확대되는 모습. 추세 형성 위한 명확한 지표 정렬 부재.",
-    "reasonEn": "Previous 3 trading days maintained a wait-and-see approach. Today's RSI at 50.8 continues to hover in the neutral zone, and ADX at 8.9 indicates a trendless phase. The volume ratio of 0.59 relative to the 5-day average suggests subdued trading, lowering confidence in directional moves. Despite a 1.02% rise against SMA200, it's down 3.45% from SMA50, indicating only short-term volatility. Lacks clear indicator alignment for trend formation.",
-    "entry": 110530,
+    "rsiTrajectory": "54.5 → 52.6 (중립 지속 중)",
+    "rsiTrajectoryEn": "54.5 → 52.6 (staying neutral)",
+    "macdTrajectory": "히스토 1247.3304 → 717.6567 (개선)",
+    "macdTrajectoryEn": "histogram 1247.3304 → 717.6567 (improving)",
+    "pricePattern": "5일 고가/저가와 20일 고가/저가 패턴 불일치, 횡보 구간",
+    "pricePatternEn": "5-day and 20-day price range divergence, sideways pattern",
+    "volComment": "거래량비 0.95 (정상)",
+    "bbPosition": "중단",
+    "reason": "3거래일 연속 RSI 50선 부근 횡보, ADX 8.9로 추세 형성 미약. 5일 변동률 +2.85%로 단기 반등했으나 5일 고가 119,300원 돌파 실패. 20일 고가 120,080원 하회 중. 매수/매도 방향성 부재로 관망 유지.",
+    "reasonEn": "RSI has consolidated near the 50 level for 3 consecutive sessions, with ADX at 8.9 indicating weak trend formation. Despite a short-term rebound of +2.85% in the last 5 days, the 5-day high of 119,300 KRW was not breached. Price remains below the 20-day high of 120,080 KRW. Lack of directional conviction warrants a wait-and-see approach.",
+    "entry": 112590,
     "stop": 98695,
-    "target": 134200,
+    "target": 140380,
     "invalidation": 98695,
     "weeklyConflict": "충돌 없음",
     "weeklyConflictEn": "No conflict",
-    "profitTarget1": 134200,
-    "profitTarget2": 151952.5,
+    "profitTarget1": 140380,
+    "profitTarget2": 161222.5,
     "stopLoss": 98695,
-    "narrative": "[추세 위치]\n· 현재가(110,530원) vs SMA5/20/50(111,326원/108,502원/105,553원): 단기 하회, 중기 상회, 장기 상회\n· SMA100/200(141,763원/109,417원) 대비 위치: 중장기 하회, 단기 상회\n· 52주 위치(35.7%) + 현 가격대 역사적 저점 대비 회복 구간\n[모멘텀 지표]\n· RSI 궤적 (54.5→50.8): 중립 지속 중, 방향성 약화\n· MACD 히스토그램 궤적 (1247.3304→586.1923): 개선 중, 약세 전환 신호는 아직 미확인\n· 볼린저밴드 현재가 위치 (중단 108,502원): 중단 부근 횡보, 밴드폭 21.08%로 확대 후 축소 전환\n[지지·저항 구조]\n· 스윙 지지선 (98,695원): 피벗(108,400원) 및 SMA50(105,553원) 기반\n· 스윙 저항선 (115,010원): R1(122,210원) 하단 위치\n· 5일/20일 고가·저가 패턴: 횡보, 명확한 Higher Low 또는 Lower High 미형성\n[거래량·결론]\n· 거래량 비율 (0.59): 위축된 거래량, 움직임 신뢰도 하락\n· 현 구간 진단: 축적구간, 명확한 방향성 지표 부재로 인한 관망 조건",
-    "narrativeEn": "[Trend Position]\n· Current price (110,530 KRW) vs SMA5/20/50 (111,326 KRW / 108,502 KRW / 105,553 KRW): Below short-term, above mid-term, above long-term\n· Position vs SMA100/200 (141,763 KRW / 109,417 KRW): Below mid-long term, above short-term\n· 52-week position (35.7%) + Current price range is a recovery phase from historical lows\n[Momentum Indicators]\n· RSI trajectory (54.5→50.8): Staying neutral, weakening momentum\n· MACD histogram trajectory (1247.3304→586.1923): Improving, but no clear sign of bearish reversal yet\n· Bollinger Band current price position (Middle Band 108,502 KRW): Sideways near the middle band, band width expanded to 21.08% then contracting\n[Support & Resistance]\n· Swing Support (98,695 KRW): Based on Pivot (108,400 KRW) and SMA50 (105,553 KRW)\n· Swing Resistance (115,010 KRW): Below R1 (122,210 KRW)\n· 5-day/20-day High/Low Patterns: Sideways, no clear Higher Low or Lower High formation\n[Volume & Conclusion]\n· Volume Ratio (0.59): Subdued volume, reduced confidence in price movement\n· Current phase diagnosis: Accumulation phase, conditions for observation due to lack of clear directional indicators",
-    "patternNote": "5일 고가/저가와 20일 고가/저가 패턴이 일치하지 않아 명확한 추세 형성 미확인 구간.",
-    "patternNoteEn": "No clear trend formation confirmed as 5-day and 20-day high/low patterns do not align.",
+    "narrative": "[추세 위치]\n· 현재가(112,590원) vs SMA5/20/50(111,738원/108,605원/105,594원): 단기·중기 추세 상회, 중장기 추세 하회 진단\n· SMA100/200(141,783원/109,428원) 대비 위치: 중장기 추세 하회, 중장기 추세 하회\n· 52주 위치(36.6%) + 현 가격대 역사적 저점 대비 높은 수준\n[모멘텀 지표]\n· RSI 궤적 (54.5→52.6): 중립 구간 지속 중, 방향성 약화\n· MACD 히스토그램 궤적 (1247.3304→717.6567): 개선 중, 약세 수렴 신호\n· 볼린저밴드 현재가 위치 (중단 108,605원): 밴드폭 21.26%로 확장 후 수축 국면\n[지지·저항 구조]\n· 스윙 지지선 (98,695원): 피벗 S1(98,093원) 인접, 20일 저가(94,590원) 상회\n· 스윙 저항선 (115,010원): 5일 고가(119,300원) 하회, 돌파 시 단기 상승 전환 가능성\n· 5일/20일 고가·저가 패턴: 횡보 구간, 추세 형성 미약\n[거래량·결론]\n· 거래량 비율 (0.95배): 움직임의 신뢰도 보통 수준\n· 현 구간 진단 (축적구간): 매수/매도 방향성 부재로 관망 조건",
+    "narrativeEn": "[Trend Position]\n· Current price (112,590 KRW) vs SMA5/20/50 (111,738 KRW/108,605 KRW/105,594 KRW): short/mid-term trend above, long-term trend below\n· Position relative to SMA100/200 (141,783 KRW/109,428 KRW): below long-term trend, below long-term trend\n· 52-week position (36.6%) + current price level is high relative to historical lows\n[Momentum Indicators]\n· RSI trajectory (54.5→52.6): neutral range continuation, weakening momentum\n· MACD histogram trajectory (1247.3304→717.6567): improving, signal of bearish convergence\n· Bollinger Band current price position (mid-band 108,605 KRW): contraction phase after expansion with 21.26% band width\n[Support & Resistance Structure]\n· Swing support (98,695 KRW): near Pivot S1 (98,093 KRW), above 20-day low (94,590 KRW)\n· Swing resistance (115,010 KRW): below 5-day high (119,300 KRW), potential for short-term upside breakout\n· 5-day/20-day price range pattern: sideways consolidation, weak trend formation\n[Volume & Conclusion]\n· Volume ratio (0.95x): moderate confidence in price movement\n· Current phase diagnosis (Accumulation): conditions for observation due to lack of directional bias",
+    "patternNote": "5일 고가/저가와 20일 고가/저가 패턴 불일치, 횡보 구간 지속.",
+    "patternNoteEn": "Divergence between 5-day and 20-day price ranges, indicating continued consolidation.",
     "keyPoints": [
-      "RSI 50.8로 중립 구간 횡보 지속, 추세 전환 신호 미약.",
-      "ADX 8.9로 무추세 국면 진입, 변동성 확대 가능성.",
-      "거래량비 0.59로 위축된 거래량, 방향성 탐색 신뢰도 저하."
+      "3거래일 연속 RSI 50선 부근 횡보, ADX 8.9로 추세 형성 미약.",
+      "5일 변동률 +2.85%로 단기 반등했으나 5일 고가 119,300원 돌파 실패.",
+      "매수/매도 방향성 부재로 관망 유지."
     ],
     "keyPointsEn": [
-      "RSI at 50.8 continues neutral range consolidation, weak trend reversal signal.",
-      "ADX at 8.9 enters trendless phase, potential for increased volatility.",
-      "Volume ratio of 0.59 indicates subdued trading, lowering directional confidence."
+      "RSI consolidating near 50 for 3 sessions, ADX at 8.9 shows weak trend.",
+      "Short-term rebound of +2.85% failed to break 5-day high of 119,300 KRW.",
+      "Maintaining a wait-and-see approach due to lack of directional conviction."
     ],
-    "riskNote": "ADX 8.9로 추세 미형성 구간, 급격한 변동 시 되돌림 가능성 상존.",
-    "riskNoteEn": "ADX at 8.9 indicates a non-trending phase, with potential for reversals during sharp moves.",
-    "continuity": "직전 3거래일 연속 관망 판독 지속. 금일 RSI, ADX, 거래량 지표 모두 방향성 탐색에 대한 신뢰도를 낮추는 흐름을 보이며 관망 기조 유지.",
-    "continuityEn": "The wait-and-see read has now held for 3 straight sessions. Today's RSI, ADX, and volume indicators all show trends that lower confidence in directional exploration, maintaining the observation stance.",
+    "riskNote": "ADX 8.9로 추세 미형성 구간, 충격성 변동 가능성 상존.",
+    "riskNoteEn": "ADX at 8.9 indicates a non-trending environment, with potential for shock-like volatility.",
+    "continuity": "직전 3거래일 연속 관망 판독 지속. 금일 RSI 52.6, MACD 히스토그램 개선에도 불구하고 ADX 8.9로 추세 미형성, 5일 고가 돌파 실패로 관망 유지.",
+    "continuityEn": "The wait-and-see stance has been maintained for the past 3 consecutive trading sessions. Today's RSI at 52.6 and improving MACD histogram, coupled with ADX at 8.9 showing no trend and failure to break the 5-day high, warrants continued observation.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
@@ -115,6 +115,6 @@
       "verdict": "위장 가능성: 신중 필요"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "손익비 0.68 < 1.5"
+    "levelsAdjustedReason": "손익비 0.57 < 1.5"
   }
 }
