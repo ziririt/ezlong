@@ -339,5 +339,10 @@ window.aladinLinks = {
   "대추 한 알|장석주": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=67527535&partner=friends327",
   "보통의 존재|이석원": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=4785218&partner=friends327",
   "대담하게 맞서기|브레네 브라운 (Brené Brown)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=24718613&partner=friends327",
-  "벨 자 (The Bell Jar)|실비아 플라스 (Sylvia Plath)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=2799669&partner=friends327"
+  "벨 자 (The Bell Jar)|실비아 플라스 (Sylvia Plath)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=2799669&partner=friends327",
+  "내일, 또 내일, 또 내일 (Tomorrow, and Tomorrow, and Tomorrow)|개브리얼 제빈 (Gabrielle Zevin)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=323087470&partner=friends327",
+  "방문객|정현종": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=461229&partner=friends327",
+  "부에 이르는 가장 단순한 길 (The Simple Path to Wealth)|JL 콜린스 (J.L. Collins)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=379392258&partner=friends327",
+  "자기만의 방 (A Room of One's Own)|버지니아 울프 (Virginia Woolf)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=97899246&partner=friends327",
+  "엄마야 누나야|김소월": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=266116271&partner=friends327"
 };
