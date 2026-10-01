@@ -11033,5 +11033,12 @@ window.investmentQuotes = [
     "title": "자기만의 방 (A Room of One's Own)",
     "author": "버지니아 울프 (Virginia Woolf)",
     "genre": "literature"
+  },
+  {
+    "english": "In the short run, the market is a voting machine, but in the long run it is a weighing machine.",
+    "text": "단기적으로 주식시장은 투표 기계와 같지만, 장기적으로는 무게를 재는 저울과 같다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
   }
 ];
