@@ -10957,5 +10957,11 @@ window.investmentQuotes = [
     "title": "마진 오브 세이프티 (Margin of Safety)",
     "author": "세스 클라만 (Seth Klarman)",
     "category": "mindset"
+  },
+  {
+    "text": "사람이 온다는 건 실은 어마어마한 일이다. 그는 그의 과거와 현재와 그리고 그의 미래와 함께 오기 때문이다.",
+    "title": "방문객",
+    "author": "정현종",
+    "genre": "literature"
   }
 ];
