@@ -11026,5 +11026,12 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각 (The Most Important Thing)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "mindset"
+  },
+  {
+    "english": "Lock up your libraries if you like; but there is no gate, no lock, no bolt that you can set upon the freedom of my mind.",
+    "text": "서재의 문은 잠가도 좋다. 그러나 내 정신의 자유 위에는, 그 누구도 채울 수 있는 문도 자물쇠도 빗장도 없다.",
+    "title": "자기만의 방 (A Room of One's Own)",
+    "author": "버지니아 울프 (Virginia Woolf)",
+    "genre": "literature"
   }
 ];
