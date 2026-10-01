@@ -10984,5 +10984,12 @@ window.investmentQuotes = [
     "title": "부에 이르는 가장 단순한 길 (The Simple Path to Wealth)",
     "author": "JL 콜린스 (J.L. Collins)",
     "category": "mindset"
+  },
+  {
+    "english": "and here you are living despite it all.",
+    "text": "그 모든 걸 겪고도 당신은 지금 여기, 이렇게 살아 있다.",
+    "title": "밀크 앤 허니 (Milk and Honey)",
+    "author": "루피 카우르 (Rupi Kaur)",
+    "genre": "literature"
   }
 ];
