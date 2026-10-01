@@ -11046,5 +11046,12 @@ window.investmentQuotes = [
     "title": "엄마야 누나야",
     "author": "김소월",
     "genre": "literature"
+  },
+  {
+    "english": "It never was my thinking that made the big money for me. It was always my sitting. Got that? My sitting tight!",
+    "text": "나를 큰돈 벌게 해준 건 한 번도 나의 판단력이 아니었다. 언제나 내가 진득하게 버티고 앉아 있는 것이었다. 알겠는가? 바로 그 진득하게 버티기 말이다.",
+    "title": "어느 주식투자자의 회상 (Reminiscences of a Stock Operator)",
+    "author": "제시 리버모어 (Jesse Livermore)",
+    "category": "patience"
   }
 ];
