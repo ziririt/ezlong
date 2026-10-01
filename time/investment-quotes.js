@@ -10970,5 +10970,12 @@ window.investmentQuotes = [
     "title": "블랙 스완 (The Black Swan)",
     "author": "나심 니콜라스 탈레브 (Nassim Nicholas Taleb)",
     "category": "mindset"
+  },
+  {
+    "english": "Where the determination is, the way can be found.",
+    "text": "하고자 하는 의지만 있다면, 길은 반드시 찾아진다.",
+    "title": "바빌론 부자들의 돈 버는 지혜 (The Richest Man in Babylon)",
+    "author": "조지 S. 클레이슨 (George S. Clason)",
+    "category": "mindset"
   }
 ];
