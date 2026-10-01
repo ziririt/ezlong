@@ -11040,5 +11040,11 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "mindset"
+  },
+  {
+    "text": "엄마야 누나야 강변 살자. 뜰에는 반짝이는 금모래빛, 뒷문 밖에는 갈잎의 노래. 엄마야 누나야 강변 살자.",
+    "title": "엄마야 누나야",
+    "author": "김소월",
+    "genre": "literature"
   }
 ];
