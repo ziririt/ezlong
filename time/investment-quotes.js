@@ -10963,5 +10963,12 @@ window.investmentQuotes = [
     "title": "방문객",
     "author": "정현종",
     "genre": "literature"
+  },
+  {
+    "english": "History and societies do not crawl. They make jumps. They go from fracture to fracture, with a few vibrations in between.",
+    "text": "역사와 사회는 서서히 기어가지 않는다. 도약할 뿐이다. 균열에서 균열로 건너뛰며, 그 사이에는 약간의 흔들림만 있을 뿐이다.",
+    "title": "블랙 스완 (The Black Swan)",
+    "author": "나심 니콜라스 탈레브 (Nassim Nicholas Taleb)",
+    "category": "mindset"
   }
 ];
