@@ -11005,5 +11005,12 @@ window.investmentQuotes = [
     "title": "올 어바웃 러브 (All About Love)",
     "author": "벨 훅스 (bell hooks)",
     "genre": "literature"
+  },
+  {
+    "english": "Know what you own, and know why you own it. Behind every stock is a company — find out what it's doing.",
+    "text": "무엇을 소유하고 있는지, 또 왜 그것을 소유하고 있는지 알아야 한다. 모든 주식 뒤에는 회사가 있다 — 그 회사가 무엇을 하고 있는지부터 파악하라.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
   }
 ];
