@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-10-03-07:00",
+      "timestamp_kst": "2026-10-03(토) 07:00 KST",
+      "key_event": {
+        "name": "9월 고용보고서 둔화",
+        "name_en": "September Jobs Report Slowdown",
+        "time": "2026년 10월 2일(금) ET 08:30 발표",
+        "why": "Fed 통화정책 방향 결정, 금리 인상 우려 완화",
+        "why_en": "Influences Fed policy, eases rate hike concerns"
+      },
+      "positive_total": 75,
+      "negative_total": 25,
+      "summary": "9월 고용보고서 둔화로 금리 인상 우려 완화되며 긍정 우위 지속",
+      "summary_en": "Positive sentiment continues as weaker September jobs report eases rate hike concerns",
+      "positive_factors": [
+        {
+          "score": 55,
+          "name": "9월 고용보고서 둔화",
+          "name_en": "September Jobs Report Slowdown",
+          "desc": "9월 비농업 고용 2.9만명 증가, 실업률 4.2% 상승: Fed 금리 인상 우려 완화",
+          "desc_en": "Non-farm payrolls increased by 29,000 in September, unemployment rate rose to 4.2%: Easing Fed rate hike concerns",
+          "category": "macro_data"
+        },
+        {
+          "score": 20,
+          "name": "AI 관련 기업 실적 기대감",
+          "name_en": "AI-Related Company Earnings Expectations",
+          "desc": "AI 관련 기업들의 견조한 실적 및 긍정적 전망 지속: 기술주 전반에 긍정적 영향",
+          "desc_en": "Strong earnings and positive outlook continue for AI-related companies: Positive impact on tech sector overall",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "높은 국채금리 수준 유지",
+          "name_en": "Elevated Treasury Yields Persist",
+          "desc": "미10년 국채금리 5.28%(+0.76%)로 상승: 성장주 할인율 압박 지속",
+          "desc_en": "US 10-year Treasury yield rose to 5.28% (+0.76%): Continued pressure on growth stock valuations",
+          "category": "rates_treasury"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "WTI 유가 하락 및 지정학적 불확실성",
+          "name_en": "WTI Oil Price Decline and Geopolitical Uncertainty",
+          "desc": "WTI 유가 91.26 USD(-1.48%) 하락: 에너지 비용 완화 기대와 미-이란 회담 진전 가능성, 하지만 지정학적 긴장 잔존",
+          "desc_en": "WTI oil price fell to $91.26 (-1.48%): Expectations of easing energy costs and potential progress in US-Iran talks, yet geopolitical tensions remain",
+          "category": "oil_energy"
+        },
+        {
+          "name": "Fed 10월 금리 인상 우려 후퇴",
+          "name_en": "Fed October Rate Hike Concerns Recede",
+          "desc": "약한 고용보고서로 10월 금리 인상 가능성 축소: 시장 금리 인하 기대 반영",
+          "desc_en": "Weak jobs report reduces likelihood of October rate hike: Reflects market expectations for rate cuts",
+          "category": "fed_policy"
+        }
+      ],
+      "report": {
+        "overview": "- 10월2일(금, 뉴욕) 미국 증시는 9월 고용보고서 둔화에 따른 금리 인상 우려 완화로 긍정적인 흐름을 지속.\n- 총점 긍정 75 대 부정 25로, 연방준비제도(Fed)의 통화정책 방향 결정에 대한 시장의 기대감이 반영.\n- 특히 9월 비농업 고용이 예상보다 낮은 2.9만명 증가하고 실업률이 4.2%로 상승하면서, Fed의 금리 인상 속도 조절 가능성에 무게가 실리는 상황.\n- 인공지능(AI) 관련 기업들의 견조한 실적 기대감 또한 기술주 전반에 긍정적인 영향을 미치며 시장 상승을 견인.",
+        "positive": "- 9월 고용보고서 둔화: 9월 비농업 고용이 2.9만명 증가에 그치고 실업률이 4.2%로 상승하며, Fed의 금리 인상 우려가 완화. 이는 시장의 금리 인하 기대를 반영하며 주식 시장에 긍정적인 영향을 미침. 로이터 통신 등 주요 외신은 고용 지표 둔화가 금리 인상 우려를 잠재웠다고 보도.\n- AI 관련 기업 실적 기대감: AI 관련 기업들의 견조한 실적과 긍정적인 전망이 지속되며 기술주 전반에 긍정적인 영향을 미침. 엔비디아(Nvidia) 등 AI 관련 기업들이 약한 고용보고서에도 불구하고 사상 최고치를 기록하며 나스닥 100 지수 상승을 견인. 인베스터스 비즈니스 데일리와 시킹 알파는 AI 관련 기업들의 실적 호조와 긍정적인 전망을 강조.",
+        "negative": "- 높은 국채금리 수준 유지: 미10년 국채금리가 5.28%(+0.76%)로 상승하며 높은 수준을 유지. 이는 성장주에 대한 할인율 압박으로 작용하여 주식 시장에 부정적인 영향을 미침. 에너지나우 닷컴은 트럼프 행정부의 정책과 관련하여 채권 시장의 압력이 지속되고 있음을 시사.",
+        "mixed": "- WTI 유가 하락 및 지정학적 불확실성: WTI 유가가 91.26 USD(-1.48%)로 하락하며 에너지 비용 완화에 대한 기대를 높임. 이는 미국-이란 회담 진전 가능성에 대한 보도와 맞물려 긍정적인 요인으로 작용. 하지만 아나돌루 통신 등은 호르무즈 해협의 유류 흐름 회복과 미-이란 회담의 교착 상태를 언급하며 지정학적 긴장이 여전히 잔존하고 있음을 지적.\n- Fed 10월 금리 인상 우려 후퇴: 약한 고용보고서로 인해 10월 Fed 금리 인상 가능성이 축소되며 시장의 금리 인하 기대가 반영. CNBC와 로이터 통신은 약한 고용 지표 이후 10월 금리 인상 가능성이 낮아졌다고 보도. 그러나 볼티모어 선은 여전히 높은 인플레이션과 꾸준한 성장이 다음 금리 인상 시기에 대한 논쟁을 불러일으키고 있다고 언급하며 불확실성이 잔존.",
+        "watch": "- 미10년 국채금리 추이: 현재 높은 수준을 유지하고 있는 미10년 국채금리의 추가적인 상승 또는 하락 여부 확인. 금리 변동은 성장주 할인율에 직접적인 영향을 미치므로 시장 방향성 판단에 중요.\n- WTI 유가 변동성: 지정학적 불확실성과 미-이란 회담 관련 뉴스에 따른 WTI 유가의 추가적인 변동성 확인. 유가 안정은 인플레이션 우려 완화에 기여할 수 있음.\n- 주요 지수 선물 흐름: 뉴욕 증시 개장 전 다우, S&P 500, 나스닥 등 주요 지수 선물의 움직임을 통해 시장 참여자들의 심리 변화 및 포지셔닝 확인."
+      },
+      "report_at": "2026-10-03(토) 07:00 KST"
+    },
+    {
       "id": "2026-10-03-04:51",
       "timestamp_kst": "2026-10-03(토) 04:51 KST",
       "key_event": {
@@ -513,60 +580,8 @@
         "watch": "- 고용보고서 발표: 9월 고용보고서(10월 2일(금) 08:30 ET) 발표 결과에 따라 연방준비제도(Fed)의 통화정책 방향에 대한 시장의 기대가 크게 변화할 전망. 예상보다 강한 고용 지표는 추가 금리 인상 가능성을 높여 시장에 부정적으로 작용할 수 있음.\n- 미 국채금리 추이: 미 10년 국채금리의 추가 하락 또는 반등 여부가 시장의 성장주 투자 심리에 직접적인 영향을 미칠 것으로 예상. 금리 안정화는 증시 반등에 긍정적 요인.\n- WTI 원유 가격 동향: WTI 원유 가격의 추가 상승 여부가 인플레이션 우려를 심화시키고 증시에 하방 압력을 가할 수 있으므로 지속적인 모니터링 필요."
       },
       "report_at": "2026-10-02(금) 07:00 KST"
-    },
-    {
-      "id": "2026-10-02-05:17",
-      "timestamp_kst": "2026-10-02(금) 05:17 KST",
-      "key_event": {
-        "name": "고용보고서 발표 대기",
-        "name_en": "Anticipation for Jobs Report",
-        "time": "10월 2일(금) 08:30 ET",
-        "why": "향후 Fed 통화정책 방향 결정, 시장 변동성 확대 (10월 2일(금) 08:30 ET)",
-        "why_en": "Key for Fed policy direction, increased market volatility (Oct 2 (Fri) 08:30 ET)"
-      },
-      "positive_total": 45,
-      "negative_total": 55,
-      "summary": "고용보고서 발표 대기 속 국채금리 하락 전환으로 혼조세, 유가 상승 압력 지속",
-      "summary_en": "Mixed sentiment as Treasury yields decline ahead of jobs report, while oil prices continue upward pressure",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "미 국채금리 하락 전환",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 국채금리 5.24%(-1.06%) 하락: 기술주 및 성장주 투자 심리 개선",
-          "desc_en": "US 10-year Treasury yield at 5.24% (-1.06%) decline: Improved investor sentiment for tech and growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "WTI 유가 급등",
-          "name_en": "WTI Oil Prices Surge",
-          "desc": "WTI 원유 93.16 USD (+4.51%) 상승: 인플레이션 압력 및 지정학적 긴장 지속",
-          "desc_en": "WTI crude oil at 93.16 USD (+4.51%) rise: Persistent inflation pressure and geopolitical tensions",
-          "category": "oil_energy"
-        },
-        {
-          "score": 20,
-          "name": "달러인덱스 상승",
-          "name_en": "Dollar Index Rises",
-          "desc": "달러인덱스 DXY 102.04 (+0.49%) 상승: 미국 수출 기업 실적에 부정적 영향",
-          "desc_en": "Dollar Index DXY at 102.04 (+0.49%) rise: Negative impact on US export-oriented companies' earnings",
-          "category": "dollar_fx"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 10월1일(목, 뉴욕) 미국 증시는 고용보고서 발표를 앞두고 혼조세 마감: 국채금리 하락 전환으로 기술주 중심의 상승 압력이 있었으나, 유가 상승과 달러 강세가 전반적인 시장 심리를 위축시키는 요인으로 작용.\n- 총점은 긍정 45점 대 부정 55점으로 부정적 요인이 우세: 특히 WTI 유가 급등과 달러인덱스 상승이 시장에 부담을 주며, 다가오는 고용보고서에 대한 경계감이 반영.\n- 핵심 이슈는 10월 2일(금) 08: 30 ET에 발표될 고용보고서 대기: 이 보고서가 연방준비제도(Fed)의 향후 통화정책 방향을 결정하는 중요한 단서가 될 것으로 예상되며, 시장 변동성 확대 가능성 잔존.",
-        "positive": "- 미 국채금리 하락 전환: 미 10년 국채금리가 5.24%(-1.06%)로 9월30일(수, 뉴욕) 대비 1.06% 하락하며 기술주 및 성장주 투자 심리 개선. 로이터 통신에 따르면 국채금리 하락에 따라 주식 시장이 상승 전환하는 모습 관찰. 벤징가닷컴은 S&P 500 지수가 소폭 하락했음에도 10년물 국채금리가 5.24%(-1.06%)로 완화되었다고 보도.",
-        "negative": "- WTI 유가 급등: WTI 원유 가격이 93.16 USD로 9월30일(수, 뉴욕) 대비 4.51% 상승하며 인플레이션 압력 및 지정학적 긴장 지속. 아프리카뉴스닷컴은 미국-이란 회담 교착 상태와 연료 시장의 제한적인 공급이 유가 상승의 원인이라고 분석. 에너지나우닷컴은 오만-이란 회담을 주시하며 유가가 상승폭을 일부 반납했다고 보도했으나, 여전히 높은 수준 유지.\n- 달러인덱스 상승: 달러인덱스 DXY가 102.04로 9월30일(수, 뉴욕) 대비 0.49% 상승하며 미국 수출 기업 실적에 부정적 영향 우려. 달러 강세는 미국 기업의 해외 매출을 감소시키고, 국제 시장에서 미국산 제품의 가격 경쟁력을 약화시키는 요인으로 작용.",
-        "mixed": "- 고용보고서 발표 대기: 10월 2일(금) 08:30 ET에 발표될 고용보고서(9월분)는 연방준비제도(Fed)의 통화정책 방향을 결정하는 핵심 지표로, 시장의 기대와 우려가 교차. 스톤엑스에 따르면 고용보고서가 채권 시장의 혼란을 극복할 수 있을지에 대한 관심 집중. 뉴스 채널 3-12는 미국인들의 소비가 지속되고 있으며, 금요일 고용보고서가 이러한 추세가 지속될지 보여줄 것이라고 보도. 바이비트는 고용보고서 발표에 따른 비트코인, 금, S&P 500 등의 반응을 예측하며 시장의 높은 경계심을 시사.",
-        "watch": "- 고용보고서(9월분) 발표 결과 확인: 10월 2일(금) 08:30 ET에 발표될 고용보고서의 세부 내용(비농업 고용자 수, 실업률, 임금 상승률 등)이 연방준비제도(Fed)의 금리 인상 또는 동결 결정에 결정적인 영향을 미칠 것으로 예상. 예상치를 상회하는 강력한 고용 지표는 추가 금리 인상 가능성을 높여 시장에 부정적으로 작용할 수 있으며, 반대로 예상치를 하회할 경우 금리 인상 압력을 완화하여 긍정적으로 작용할 가능성 잔존.\n- 미 국채금리 추이 지속 확인: 고용보고서 발표 전후로 미 10년물 국채금리의 변동성 확대 가능성. 금리 하락 전환이 기술주 투자 심리 개선에 긍정적인 영향을 미쳤으나, 고용 지표에 따라 다시 상승 압력을 받을 수 있어 지속적인 모니터링 필요.\n- WTI 유가 및 달러인덱스 변동성 주시: 유가와 달러인덱스의 상승세가 인플레이션 압력과 수출 기업 실적에 부정적인 영향을 미치는 상황에서, 이들 지표의 추가 상승 여부가 시장 전반의 투자 심리에 중요한 영향을 미칠 것으로 예상."
-      },
-      "report_at": "2026-10-02(금) 05:17 KST"
     }
   ],
-  "updated_at": "2026-10-02T19:51:49Z",
+  "updated_at": "2026-10-02T22:01:50Z",
   "max_entries": 10
 }
