@@ -3,56 +3,56 @@
   "name": "S&P500 2X ETF",
   "assetType": "etf_leveraged",
   "market": "us",
-  "updatedAt": "2026-10-02T14:20:24.420Z",
-  "analysisAt": "2026-10-02T14:20:24.420Z",
+  "updatedAt": "2026-10-02T17:20:18.691Z",
+  "analysisAt": "2026-10-02T17:20:18.691Z",
   "analysisPreserved": false,
   "price": {
-    "current": 71.06,
-    "change": 1.47,
-    "changePct": 2.11,
+    "current": 70.57,
+    "change": 0.98,
+    "changePct": 1.41,
     "high52": 72.8,
     "low52": 48.63,
-    "pos52": 92.8,
+    "pos52": 90.8,
     "marketState": "REGULAR",
-    "quoteTime": 1790950816,
+    "quoteTime": 1790961521,
     "extPrice": null,
     "extChange": null,
     "extChangePct": null
   },
   "indicators": {
-    "sma20": 69.7486,
-    "sma50": 69.6882,
-    "sma100": 68.3437,
-    "sma200": 63.0986,
-    "rsi": 56.25,
+    "sma20": 69.7241,
+    "sma50": 69.6784,
+    "sma100": 68.3388,
+    "sma200": 63.0962,
+    "rsi": 54.05,
     "macd": {
-      "macd": 0.156911,
-      "signal": 0.12504,
-      "histogram": 0.031872
+      "macd": 0.117823,
+      "signal": 0.117222,
+      "histogram": 0.000601
     },
     "bb": {
-      "upper": 71.7834,
-      "middle": 69.7486,
-      "lower": 67.7138,
-      "bandwidth": 0.0583
+      "upper": 71.7063,
+      "middle": 69.7241,
+      "lower": 67.7419,
+      "bandwidth": 0.0569
     },
     "adx": {
-      "plusDI": 28.46,
-      "minusDI": 28.4,
-      "adx": 10.66,
+      "plusDI": 28.74,
+      "minusDI": 28.29,
+      "adx": 10.71,
       "status": "무추세(충격 가능)"
     },
-    "atr": 1.2182
+    "atr": 1.2231
   },
   "levels": {
     "swingResistance": 71.84,
     "swingSupport": 69.48,
     "pivot": {
-      "pp": 69.95,
-      "r1": 72.96,
-      "r2": 74.86,
-      "s1": 68.05,
-      "s2": 65.04
+      "pp": 69.79,
+      "r1": 72.63,
+      "r2": 74.7,
+      "s1": 67.72,
+      "s2": 64.88
     }
   },
   "analysis": {
@@ -66,45 +66,45 @@
     "stage": "상승추세",
     "action": "매수",
     "buyScore": 6,
-    "scoreReason": "RSI 중립 구간 안착, EMA 스택 정렬 유지",
-    "scoreReasonEn": "RSI neutral zone consolidation, EMA stack alignment maintained",
-    "rsiTrajectory": "55.8 → 56.3 (중립 지속 중)",
-    "rsiTrajectoryEn": "55.8 → 56.3 (staying neutral)",
-    "macdTrajectory": "히스토 0.1451 → 0.0319 (악화)",
-    "macdTrajectoryEn": "histogram 0.1451 → 0.0319 (worsening)",
-    "pricePattern": "Higher Low 패턴 확인, 5일 저가 $68.64 > 20일 저가 $66.94",
-    "pricePatternEn": "Higher Low pattern confirmed, 5-day low $68.64 > 20-day low $66.94",
-    "volComment": "거래량비 0.29 (위축)",
+    "scoreReason": "RSI 중립 안착 + EMA 스택 정렬 유지",
+    "scoreReasonEn": "RSI holding neutral + EMA stack alignment maintained",
+    "rsiTrajectory": "55.8 → 54.0 (중립 지속 중)",
+    "rsiTrajectoryEn": "55.8 → 54.0 (staying neutral)",
+    "macdTrajectory": "히스토 0.1451 → 0.0006 (개선)",
+    "macdTrajectoryEn": "histo 0.1451 → 0.0006 (improving)",
+    "pricePattern": "Higher Low 확인, 회복 신호",
+    "pricePatternEn": "Higher Low confirmed, recovery signal",
+    "volComment": "거래량비 0.77 (위축)",
     "bbPosition": "중단근처",
-    "reason": "EMA 스택 정렬 유지되며 중장기 추세 우위 지속. 5일 저가 $68.64가 20일 저가 $66.94 상회하며 회복 신호 확인. RSI 56.3으로 중립 구간 안착. MACD 히스토그램 악화는 단기 노이즈 가능성.",
-    "reasonEn": "EMA stack alignment maintained, continuing mid-to-long term trend advantage. 5-day low $68.64 above 20-day low $66.94 confirms recovery signal. RSI at 56.3 consolidates in neutral zone. MACD histogram worsening likely short-term noise.",
-    "entry": 71.06,
-    "stop": 69.48,
-    "target": 74.22,
-    "invalidation": 69.48,
+    "reason": "직전 판단(매수) 이후 50일 연속 상승 추세 유지. 현재가 $71.06 → $70.57 조정에도 RSI 56.3 → 54.0 중립 구간 안착. EMA 스택 정렬(현재가 > EMA10 > EMA20 > EMA50) 유지되며 상승 추세 지속 구간 진입.",
+    "reasonEn": "The uptrend has been maintained for 50 consecutive sessions since the last buy signal. Despite a pullback from $71.06 to $70.57, the RSI remains anchored in the neutral zone at 54.0. The EMA stack alignment (Current Price > EMA10 > EMA20 > EMA50) persists, indicating continued progression within the uptrend.",
+    "entry": 70.57,
+    "stop": 67.72,
+    "target": 76.27,
+    "invalidation": 67.72,
     "weeklyConflict": "충돌 없음",
     "weeklyConflictEn": "No conflict",
-    "profitTarget1": 74.22,
-    "profitTarget2": 76.59,
-    "stopLoss": 69.48,
-    "narrative": "[추세 위치]\n· 현재가($71.06) vs SMA5/20/50($70.08/$69.96/$69.36): 단기·중기 추세 상회 진단\n· SMA100/200($68.34/$63.10) 대비 위치: 중장기 추세 강도 판단, 상회 지속\n· 52주 위치(92.8%) + 현 가격대 역사적 고점 근접 구간\n[모멘텀 지표]\n· RSI 궤적 (55.8→56.3) + 중립 구간 안착 판단 + 방향성 유지 해석\n· MACD 히스토그램 궤적 (0.1451→0.0319) + 악화 진단 + 추세 전환 신호 미약\n· 볼린저밴드 현재가 위치 (상단 $71.78, 중단 $69.75) + 밴드폭 5.83% 수준 해석\n[지지·저항 구조]\n· 스윙 지지선 ($69.48) + 근거 (이동평균 기반)\n· 스윙 저항선 ($71.84) + 돌파 시 추가 상승 가능성\n· 5일/20일 고가·저가 패턴 (Higher Low) + 회복 추세 해석\n[거래량·결론]\n· 거래량 비율 (0.29배) + 움직임의 신뢰도 위축\n· 현 구간 진단 (상승추세) + 진입 조건 충족, 관망 조건 미충족",
-    "narrativeEn": "[Trend Position]\n· Current price ($71.06) vs SMA5/20/50 ($70.08/$69.96/$69.36): Diagnosing short-to-mid term trend above moving averages.\n· Position relative to SMA100/200 ($68.34/$63.10): Mid-to-long term trend strength assessment, maintaining an uptrend.\n· 52-week position (92.8%) + Current price level near historical highs.\n[Momentum Indicators]\n· RSI trajectory (55.8→56.3) + Assessment of consolidation in neutral zone + Interpreting maintained directionality.\n· MACD histogram trajectory (0.1451→0.0319) + Diagnosing worsening + Weak signal for trend reversal.\n· Bollinger Band current price position (Upper $71.78, Middle $69.75) + Interpreting band width at 5.83% level.\n[Support & Resistance Structure]\n· Swing support level ($69.48) + Basis (based on moving averages).\n· Swing resistance level ($71.84) + Potential for further upside on breakout.\n· 5-day/20-day high/low pattern (Higher Low) + Interpreting recovery trend.\n[Volume & Conclusion]\n· Volume ratio (0.29x) + Interpreting low confidence in price movement.\n· Current phase diagnosis (Uptrend) + Entry conditions met, wait-and-see conditions not met.",
-    "patternNote": "5일 저가 $68.64가 20일 저가 $66.94 상회하는 Higher Low 패턴 확인, 회복 추세 진입 신호.",
-    "patternNoteEn": "Higher Low pattern confirmed with 5-day low $68.64 above 20-day low $66.94, signaling entry into a recovery trend.",
+    "profitTarget1": 76.27,
+    "profitTarget2": 80.55,
+    "stopLoss": 67.72,
+    "narrative": "[추세 위치]\n· 현재가($70.57) vs SMA5/20/50($69.81/$69.72/$69.68): 단기·중기 추세 상회 진단\n· SMA100/200($68.34/$63.10) 대비 위치: 중장기 추세 강도 유지\n· 52주 위치(90.8%) + 현 가격대 역사적 고점 근접 구간\n[모멘텀 지표]\n· RSI 궤적 (55.8→54.0) + 중립 구간 지속 판단 + 방향성 유지 해석\n· MACD 히스토그램 궤적 (0.1451→0.0006) + 개선 진단 + 추세 전환 신호 가능성\n· 볼린저밴드 현재가 위치 (중단 $69.72 근처) + 밴드폭 5.69% 수준 해석\n[지지·저항 구조]\n· 스윙 지지선 ($69.48) + 근거 (피벗/스윙저점 기반)\n· 스윙 저항선 ($71.84) + 돌파 시 상승 추세 강화 의미\n· 5일/20일 고가·저가 패턴 (Higher Low 확인) + 회복 신호 해석\n[거래량·결론]\n· 거래량 비율 (0.77배) + 움직임의 신뢰도 위축 판단\n· 현 구간 진단 (상승추세) + 진입 조건 충족",
+    "narrativeEn": "[Trend Position]\n· Current Price ($70.57) vs SMA5/20/50 ($69.81/$69.72/$69.68): Short- to mid-term trend above confirmation.\n· Position vs SMA100/200 ($68.34/$63.10): Mid- to long-term trend strength maintained.\n· 52-week position (90.8%) + Current price level near historical highs.\n[Momentum Indicators]\n· RSI Trajectory (55.8→54.0) + Neutral zone sustained confirmation + Directional interpretation.\n· MACD Histogram Trajectory (0.1451→0.0006) + Improvement diagnosis + Potential trend reversal signal.\n· Bollinger Band Current Price Position (Near mid-band $69.72) + Bandwidth 5.69% level interpretation.\n[Support & Resistance Structure]\n· Swing Support ($69.48) + Basis (Pivot/Swing Low based).\n· Swing Resistance ($71.84) + Breakout signifies strengthening uptrend.\n· 5-day/20-day High/Low Pattern (Higher Low confirmed) + Recovery signal interpretation.\n[Volume & Conclusion]\n· Volume Ratio (0.77x) + Movement reliability interpreted as subdued.\n· Current phase diagnosis (Uptrend) + Entry condition met.",
+    "patternNote": "5일 고가 $71.13, 20일 고가 $71.85로 Lower High 패턴 형성 가능성 있으나, RSI 중립 구간 안착과 EMA 스택 정렬 유지로 상승 추세 지속 구간 진입.",
+    "patternNoteEn": "Potential Lower High pattern forming with 5-day high at $71.13 and 20-day high at $71.85, but RSI holding neutral and EMA stack alignment suggest continued uptrend progression.",
     "keyPoints": [
-      "EMA 스택 정렬 유지, 중장기 추세 우위 지속",
-      "RSI 56.3 중립 구간 안착, 매수세 지지 확인",
-      "5일 저가 $68.64 > 20일 저가 $66.94, 회복 신호 강화"
+      "RSI 54.0 중립 구간 안착, 50일 연속 상승 추세 유지",
+      "EMA 스택 정렬(현재가 > EMA10 > EMA20 > EMA50) 유지, 상승 추세 지속 구간 진입",
+      "5일 고가 $71.13, 20일 고가 $71.85로 Lower High 패턴 형성 가능성 있으나, 매수 진입"
     ],
     "keyPointsEn": [
-      "EMA stack alignment maintained, continuing mid-to-long term trend advantage",
-      "RSI at 56.3 consolidates in neutral zone, confirming buying support",
-      "5-day low $68.64 > 20-day low $66.94, strengthening recovery signal"
+      "RSI 54.0 anchored in neutral zone, maintaining 50-day uptrend.",
+      "EMA stack alignment (Current Price > EMA10 > EMA20 > EMA50) maintained, entering sustained uptrend phase.",
+      "Potential Lower High pattern with 5-day high at $71.13 and 20-day high at $71.85, but proceeding with buy entry."
     ],
-    "riskNote": "MACD 히스토그램 악화는 단기 되돌림 가능성 시사, 거래량 위축은 추세 지속력 약화 우려.",
-    "riskNoteEn": "MACD histogram worsening suggests potential for short-term pullback, while low volume raises concerns about trend sustainability.",
-    "continuity": "직전 3거래일 연속 관망 판독 유지. 금일 RSI 56.3으로 중립 구간 안착 및 5일 저가 $68.64가 20일 저가 $66.94 상회하며 매수 전환 근거 확보.",
-    "continuityEn": "The wait-and-see read has now held for 3 straight sessions. Today's RSI consolidation at 56.3 and the 5-day low $68.64 above the 20-day low $66.94 provide grounds for a shift to a buy action.",
+    "riskNote": "거래량 비율 0.77로 움직임의 신뢰도 위축, 추세 지속력 약화 가능성.",
+    "riskNoteEn": "Volume ratio of 0.77 indicates subdued movement reliability, posing a risk of weakened trend sustainability.",
+    "continuity": "직전 '매수(매수점수 6)' 판정 이후 50일 연속 상승 추세 유지. 오늘 $70.57 가격 조정에도 RSI 54.0 중립 구간 안착 및 EMA 스택 정렬 유지로 '매수' 판정 지속.",
+    "continuityEn": "The 'Buy (Buy Score 6)' decision from the previous period has been followed by 50 consecutive sessions of uptrend maintenance. Despite today's price adjustment to $70.57, the RSI holding at 54.0 in the neutral zone and sustained EMA stack alignment allow for the continuation of the 'Buy' decision.",
     "confluenceChecklist": {
       "volumeConfirmed": false,
       "resistanceReclaimed": false,
@@ -115,6 +115,6 @@
       "verdict": "초기 단계: 확인 관문 남음"
     },
     "levelsAdjusted": true,
-    "levelsAdjustedReason": "손익비 1.30 < 1.5"
+    "levelsAdjustedReason": "손익비 1.00 < 1.5"
   }
 }
