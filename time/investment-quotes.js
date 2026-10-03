@@ -11113,5 +11113,12 @@ window.investmentQuotes = [
     "title": "생각에 관한 생각 (Thinking, Fast and Slow)",
     "author": "대니얼 카너먼 (Daniel Kahneman)",
     "category": "mindset"
+  },
+  {
+    "english": "Whomever you become, whatever you make yourself into, that is who you always were. It was always in you. Not in Cambridge. In you. You are gold.",
+    "text": "당신이 누가 되든, 당신이 자신을 무엇으로 만들어가든, 그것은 당신이 늘 그래왔던 존재다. 그것은 늘 당신 안에 있었다. 케임브리지 안에 있던 게 아니라, 당신 안에. 당신은 금이다.",
+    "title": "배움의 발견 (Educated)",
+    "author": "타라 웨스트오버 (Tara Westover)",
+    "genre": "literature"
   }
 ];
