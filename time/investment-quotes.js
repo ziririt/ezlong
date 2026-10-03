@@ -11176,10 +11176,10 @@ window.investmentQuotes = [
     "genre": "literature"
   },
   {
-    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
-    "text": "건초더미에서 바늘을 찾으려 하지 마라. 그냥 건초더미 전체를 사라!",
-    "title": "모든 주식을 소유하라",
-    "author": "존 보글 (John Bogle)",
+    "english": "Anyone can be as good as the average investor in the stock market with no practice at all.",
+    "text": "주식시장에서는 아무런 연습도 없이도 누구나 평균적인 투자자만큼 잘할 수 있다.",
+    "title": "주식에 장기투자하라 (Stocks for the Long Run)",
+    "author": "제레미 시겔 (Jeremy Siegel)",
     "category": "mindset"
   }
 ];
