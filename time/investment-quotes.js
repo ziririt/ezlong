@@ -11073,5 +11073,11 @@ window.investmentQuotes = [
     "title": "흔들리며 피는 꽃",
     "author": "도종환",
     "genre": "literature"
+  },
+  {
+    "text": "풀이 눕는다. 바람보다도 더 빨리 눕는다. 바람보다도 더 빨리 울지만 바람보다 먼저 웃는다. 바람보다 먼저 일어난다.",
+    "title": "풀",
+    "author": "김수영",
+    "genre": "literature"
   }
 ];
