@@ -11181,5 +11181,11 @@ window.investmentQuotes = [
     "title": "주식에 장기투자하라 (Stocks for the Long Run)",
     "author": "제레미 시겔 (Jeremy Siegel)",
     "category": "mindset"
+  },
+  {
+    "text": "삶은 다른 사람들과의 경쟁이 아닌, 나 자신과 벌이는 장기 레이스입니다.",
+    "title": "멈추면, 비로소 보이는 것들",
+    "author": "혜민",
+    "genre": "literature"
   }
 ];
