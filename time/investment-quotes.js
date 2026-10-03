@@ -11133,5 +11133,12 @@ window.investmentQuotes = [
     "title": "쓰기의 말들",
     "author": "은유",
     "genre": "literature"
+  },
+  {
+    "english": "The rational man - like the Loch Ness monster - is sighted often, but photographed rarely.",
+    "text": "합리적인 인간이란 네스호의 괴물과 같다. 목격담은 넘쳐나지만, 사진으로 찍힌 적은 거의 없다.",
+    "title": "컨트래리언 투자 전략 (Contrarian Investment Strategies)",
+    "author": "데이비드 드레먼 (David Dreman)",
+    "category": "behavior"
   }
 ];
