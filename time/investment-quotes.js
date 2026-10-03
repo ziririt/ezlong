@@ -11120,5 +11120,12 @@ window.investmentQuotes = [
     "title": "배움의 발견 (Educated)",
     "author": "타라 웨스트오버 (Tara Westover)",
     "genre": "literature"
+  },
+  {
+    "english": "Choosing individual stocks without any idea of what you're looking for is like running through a dynamite factory with a burning match. You may live, but you're still an idiot.",
+    "text": "아무런 기준도 없이 개별 종목을 고르는 것은 불붙은 성냥을 들고 다이너마이트 공장을 뛰어다니는 것과 같다. 살아남을 수도 있겠지만, 그래도 당신은 여전히 멍청이다.",
+    "title": "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)",
+    "author": "조엘 그린블라트 (Joel Greenblatt)",
+    "category": "mindset"
   }
 ];
