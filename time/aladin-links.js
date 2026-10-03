@@ -344,5 +344,9 @@ window.aladinLinks = {
   "방문객|정현종": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=461229&partner=friends327",
   "부에 이르는 가장 단순한 길 (The Simple Path to Wealth)|JL 콜린스 (J.L. Collins)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=379392258&partner=friends327",
   "자기만의 방 (A Room of One's Own)|버지니아 울프 (Virginia Woolf)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=97899246&partner=friends327",
-  "엄마야 누나야|김소월": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=266116271&partner=friends327"
+  "엄마야 누나야|김소월": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=266116271&partner=friends327",
+  "생각에 관한 생각 (Thinking, Fast and Slow)|대니얼 카너먼 (Daniel Kahneman)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=140135544&partner=friends327",
+  "배움의 발견 (Educated)|타라 웨스트오버 (Tara Westover)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=222712341&partner=friends327",
+  "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)|조엘 그린블라트 (Joel Greenblatt)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=648220&partner=friends327",
+  "꽃잎|정채봉": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=198422401&partner=friends327"
 };
