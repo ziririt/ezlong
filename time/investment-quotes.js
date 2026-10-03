@@ -11086,5 +11086,12 @@ window.investmentQuotes = [
     "title": "버크셔 해서웨이 2001년 주주 서한 (Berkshire Hathaway Chairman's Letter, 2001)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "volatility"
+  },
+  {
+    "english": "And, when you want something, all the universe conspires in helping you to achieve it.",
+    "text": "네가 무언가를 간절히 원할 때, 온 우주는 그 꿈이 이루어지도록 도와준다.",
+    "title": "연금술사 (The Alchemist)",
+    "author": "파울로 코엘료 (Paulo Coelho)",
+    "genre": "literature"
   }
 ];
