@@ -11140,5 +11140,12 @@ window.investmentQuotes = [
     "title": "컨트래리언 투자 전략 (Contrarian Investment Strategies)",
     "author": "데이비드 드레먼 (David Dreman)",
     "category": "behavior"
+  },
+  {
+    "english": "For me, becoming isn't about arriving somewhere or achieving a certain aim. I see it instead as forward motion, a means of evolving, a way to reach continuously toward a better self. The journey doesn't end.",
+    "text": "나에게 되어가는 것은 어딘가에 도달하거나 특정한 목표를 이루는 것이 아니다. 나는 그것을 오히려 앞으로 나아가는 움직임으로, 진화해 가는 방법으로, 더 나은 자신을 향해 끊임없이 다가가는 길로 본다. 그 여정에는 끝이 없다.",
+    "title": "비커밍 (Becoming)",
+    "author": "미셸 오바마 (Michelle Obama)",
+    "genre": "literature"
   }
 ];
