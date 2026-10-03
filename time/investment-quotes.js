@@ -11147,5 +11147,12 @@ window.investmentQuotes = [
     "title": "비커밍 (Becoming)",
     "author": "미셸 오바마 (Michelle Obama)",
     "genre": "literature"
+  },
+  {
+    "english": "Everyone has the brainpower to make money in stocks. Not everyone has the stomach. If you are susceptible to selling everything in a panic, you ought to avoid stocks and stock mutual funds altogether.",
+    "text": "누구나 주식으로 돈을 벌 수 있는 두뇌는 가지고 있다. 하지만 누구나 그것을 견뎌낼 배짱을 가진 것은 아니다. 만약 당신이 패닉에 빠져 모든 걸 팔아치우기 쉬운 사람이라면, 주식이나 주식형 펀드는 아예 피하는 게 좋다.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
   }
 ];
