@@ -11106,5 +11106,12 @@ window.investmentQuotes = [
     "title": "쉽게 쓰여진 시",
     "author": "윤동주",
     "genre": "literature"
+  },
+  {
+    "english": "The illusion that we understand the past fosters overconfidence in our ability to predict the future.",
+    "text": "우리가 과거를 이해하고 있다는 착각은, 미래를 예측할 수 있다는 과도한 자신감을 키운다.",
+    "title": "생각에 관한 생각 (Thinking, Fast and Slow)",
+    "author": "대니얼 카너먼 (Daniel Kahneman)",
+    "category": "mindset"
   }
 ];
