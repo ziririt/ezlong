@@ -11169,10 +11169,10 @@ window.investmentQuotes = [
     "category": "patience"
   },
   {
-    "english": "You don't have to understand life. You just have to live it.",
-    "text": "삶을 다 이해할 필요는 없다. 그냥 살아내면 된다.",
-    "title": "미드나이트 라이브러리 (The Midnight Library)",
-    "author": "매트 헤이그 (Matt Haig)",
+    "english": "Although it's good to try new things and to keep an open mind, it's also extremely important to stay true to who you really are.",
+    "text": "새로운 것을 시도하고 마음을 열어두는 것도 좋지만, 진짜 내 모습으로 남는 것 역시 매우 중요하다.",
+    "title": "엘리너 올리펀트는 완전 괜찮아 (Eleanor Oliphant Is Completely Fine)",
+    "author": "게일 허니먼 (Gail Honeyman)",
     "genre": "literature"
   }
 ];
