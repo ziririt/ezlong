@@ -11187,5 +11187,12 @@ window.investmentQuotes = [
     "title": "멈추면, 비로소 보이는 것들",
     "author": "혜민",
     "genre": "literature"
+  },
+  {
+    "english": "In the abstract, life is a mixture of chance and choice. Chance can be thought of as the cards you are dealt in life. Choice is how you play them.",
+    "text": "인생이란 추상적으로 보면 우연과 선택이 뒤섞인 것이다. 우연은 삶에서 내게 주어진 카드라 할 수 있고, 선택은 그 카드를 어떻게 활용하느냐는 것이다.",
+    "title": "나는 어떻게 시장을 이겼나 (A Man for All Markets)",
+    "author": "에드워드 소프 (Edward O. Thorp)",
+    "category": "mindset"
   }
 ];
