@@ -11194,5 +11194,12 @@ window.investmentQuotes = [
     "title": "나는 어떻게 시장을 이겼나 (A Man for All Markets)",
     "author": "에드워드 소프 (Edward O. Thorp)",
     "category": "mindset"
+  },
+  {
+    "english": "We can do hard things.",
+    "text": "우리는 어려운 일도 해낼 수 있다.",
+    "title": "언테임드: 나는 길들지 않겠다 (Untamed)",
+    "author": "글레넌 도일 (Glennon Doyle)",
+    "genre": "literature"
   }
 ];
