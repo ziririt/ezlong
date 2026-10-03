@@ -11154,5 +11154,11 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "text": "새한테 말을 걸면\n내 목소리는 새소리\n꽃한테 말을 걸면\n내 목소리는 꽃잎",
+    "title": "꽃잎",
+    "author": "정채봉",
+    "genre": "literature"
   }
 ];
