@@ -11167,5 +11167,12 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "patience"
+  },
+  {
+    "english": "You don't have to understand life. You just have to live it.",
+    "text": "삶을 다 이해할 필요는 없다. 그냥 살아내면 된다.",
+    "title": "미드나이트 라이브러리 (The Midnight Library)",
+    "author": "매트 헤이그 (Matt Haig)",
+    "genre": "literature"
   }
 ];
