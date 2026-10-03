@@ -11127,5 +11127,11 @@ window.investmentQuotes = [
     "title": "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)",
     "author": "조엘 그린블라트 (Joel Greenblatt)",
     "category": "mindset"
+  },
+  {
+    "text": "남을 부러워하지 말고 자기가 발 디딘 삶에 근거해서 한 줄씩 쓰면 된다. 지금까지 살아왔다는 것은 누구나 글감이 있다는 것.",
+    "title": "쓰기의 말들",
+    "author": "은유",
+    "genre": "literature"
   }
 ];
