@@ -11093,5 +11093,12 @@ window.investmentQuotes = [
     "title": "연금술사 (The Alchemist)",
     "author": "파울로 코엘료 (Paulo Coelho)",
     "genre": "literature"
+  },
+  {
+    "english": "I don't want a lot of good investments; I want a few outstanding ones. If the job has been correctly done when a common stock is purchased, the time to sell it is almost never.",
+    "text": "나는 좋은 투자를 많이 하고 싶지 않다. 나는 소수의 탁월한 투자를 하고 싶을 뿐이다. 보통주를 매수할 때 그 판단이 제대로 이루어졌다면, 그것을 팔아야 할 때는 거의 찾아오지 않는다.",
+    "title": "보통주로 큰 수익을 얻는 법 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔 (Philip A. Fisher)",
+    "category": "mindset"
   }
 ];
