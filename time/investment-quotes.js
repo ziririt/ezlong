@@ -11174,5 +11174,12 @@ window.investmentQuotes = [
     "title": "엘리너 올리펀트는 완전 괜찮아 (Eleanor Oliphant Is Completely Fine)",
     "author": "게일 허니먼 (Gail Honeyman)",
     "genre": "literature"
+  },
+  {
+    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
+    "text": "건초더미에서 바늘을 찾으려 하지 마라. 그냥 건초더미 전체를 사라!",
+    "title": "모든 주식을 소유하라",
+    "author": "존 보글 (John Bogle)",
+    "category": "mindset"
   }
 ];
