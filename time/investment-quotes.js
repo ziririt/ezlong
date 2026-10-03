@@ -11100,5 +11100,11 @@ window.investmentQuotes = [
     "title": "보통주로 큰 수익을 얻는 법 (Common Stocks and Uncommon Profits)",
     "author": "필립 피셔 (Philip A. Fisher)",
     "category": "mindset"
+  },
+  {
+    "text": "창밖에 밤비가 속살거려\n육첩방은 남의 나라.\n시인이란 슬픈 천명인 줄 알면서도\n한 줄 시를 적어 볼까.",
+    "title": "쉽게 쓰여진 시",
+    "author": "윤동주",
+    "genre": "literature"
   }
 ];
