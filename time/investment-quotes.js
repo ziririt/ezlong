@@ -11160,5 +11160,12 @@ window.investmentQuotes = [
     "title": "꽃잎",
     "author": "정채봉",
     "genre": "literature"
+  },
+  {
+    "english": "The investor who permits himself to be stampeded or unduly worried by unjustified market declines in his holdings is perversely transforming his basic advantage into a basic disadvantage.",
+    "text": "근거 없는 시장 하락에 휩쓸려 동요하거나 지나치게 불안해하는 투자자는, 자신이 가진 근본적인 강점을 거꾸로 약점으로 바꿔버리는 셈이다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "patience"
   }
 ];
