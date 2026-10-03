@@ -11079,5 +11079,12 @@ window.investmentQuotes = [
     "title": "풀",
     "author": "김수영",
     "genre": "literature"
+  },
+  {
+    "english": "You only find out who is swimming naked when the tide goes out.",
+    "text": "밀물이 빠져나가야 비로소 누가 벌거벗은 채 수영하고 있었는지 드러난다.",
+    "title": "버크셔 해서웨이 2001년 주주 서한 (Berkshire Hathaway Chairman's Letter, 2001)",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "volatility"
   }
 ];
