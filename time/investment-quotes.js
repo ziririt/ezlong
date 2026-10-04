@@ -11207,5 +11207,12 @@ window.investmentQuotes = [
     "title": "늙는다는 것",
     "author": "박완서",
     "genre": "literature"
+  },
+  {
+    "english": "If you're not willing to react with equanimity to a market price decline of 50% two or three times a century, you're not fit to be a common shareholder, and you deserve the mediocre result you're going to get.",
+    "text": "한 세기에 두세 번은 시장 가격이 50% 하락하는 일이 반드시 온다. 이런 하락에 평정심으로 대응할 각오가 없다면, 당신은 보통주 주주가 될 자격이 없으며, 그저 평범한 결과를 받는 게 마땅하다.",
+    "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "mindset"
   }
 ];
