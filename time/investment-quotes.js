@@ -11275,5 +11275,11 @@ window.investmentQuotes = [
     "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
     "author": "존 보글 (John Bogle)",
     "category": "mindset"
+  },
+  {
+    "text": "크게 버리는 사람만이 크게 얻을 수 있다. 아무것도 갖지 않을 때 비로소 온 세상을 갖게 된다는 것, 그것이 무소유의 역리다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
   }
 ];
