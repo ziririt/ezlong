@@ -348,5 +348,8 @@ window.aladinLinks = {
   "생각에 관한 생각 (Thinking, Fast and Slow)|대니얼 카너먼 (Daniel Kahneman)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=140135544&partner=friends327",
   "배움의 발견 (Educated)|타라 웨스트오버 (Tara Westover)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=222712341&partner=friends327",
   "주식시장을 이기는 작은 책 (The Little Book That Beats the Market)|조엘 그린블라트 (Joel Greenblatt)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=648220&partner=friends327",
-  "꽃잎|정채봉": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=198422401&partner=friends327"
+  "꽃잎|정채봉": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=198422401&partner=friends327",
+  "엘리너 올리펀트는 완전 괜찮아 (Eleanor Oliphant Is Completely Fine)|게일 허니먼 (Gail Honeyman)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=204202708&partner=friends327",
+  "워런 버핏의 투자 원칙 (Buffett's Rules of Investing)|워런 버핏 (Warren Buffett)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=268987520&partner=friends327",
+  "밀크 앤 허니 (milk and honey)|루피 카우르 (Rupi Kaur)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=106779719&partner=friends327"
 };
