@@ -11268,5 +11268,12 @@ window.investmentQuotes = [
     "title": "우리는 모두 페미니스트가 되어야 합니다 (We Should All Be Feminists)",
     "author": "치마만다 응고지 아디치에 (Chimamanda Ngozi Adichie)",
     "genre": "literature"
+  },
+  {
+    "english": "Time is your friend; impulse is your enemy.",
+    "text": "시간은 당신의 친구이고, 충동은 당신의 적이다.",
+    "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
+    "author": "존 보글 (John Bogle)",
+    "category": "mindset"
   }
 ];
