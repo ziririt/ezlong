@@ -11234,5 +11234,12 @@ window.investmentQuotes = [
     "title": "생각에 관한 생각 (Thinking, Fast and Slow)",
     "author": "대니얼 카너먼 (Daniel Kahneman)",
     "category": "behavior"
+  },
+  {
+    "english": "Vulnerability is not winning or losing; it's having the courage to show up and be seen when we have no control over the outcome.",
+    "text": "취약함이란\n이기고 지는 문제가 아니다.\n결과를 전혀 통제할 수 없는 순간에도\n용기를 내어 나를 드러내고, 보이는 존재가 되는 것이다.",
+    "title": "대담하게 맞서기 (Daring Greatly)",
+    "author": "브레네 브라운 (Brené Brown)",
+    "genre": "literature"
   }
 ];
