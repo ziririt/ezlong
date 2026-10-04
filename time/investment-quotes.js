@@ -11227,5 +11227,12 @@ window.investmentQuotes = [
     "title": "워런 버핏의 투자 원칙 (Buffett's Rules of Investing)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "mindset"
+  },
+  {
+    "english": "We can be blind to the obvious, and we are also blind to our blindness.",
+    "text": "우리는 명백한 것에 눈이 멀 수 있고, 우리가 눈이 멀었다는 사실에도 눈이 멀 수 있다.",
+    "title": "생각에 관한 생각 (Thinking, Fast and Slow)",
+    "author": "대니얼 카너먼 (Daniel Kahneman)",
+    "category": "behavior"
   }
 ];
