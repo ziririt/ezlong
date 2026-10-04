@@ -11241,5 +11241,12 @@ window.investmentQuotes = [
     "title": "돈의 심리학 (The Psychology of Money)",
     "author": "모건 하우절 (Morgan Housel)",
     "category": "mindset"
+  },
+  {
+    "english": "if you were born with the weakness to fall you were also born with the strength to rise",
+    "text": "당신이 쓰러질 약함을 가지고 태어났다면, 다시 일어설 힘도 함께 가지고 태어난 것이다.",
+    "title": "밀크 앤 허니 (milk and honey)",
+    "author": "루피 카우르 (Rupi Kaur)",
+    "genre": "literature"
   }
 ];
