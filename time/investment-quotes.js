@@ -11261,5 +11261,12 @@ window.investmentQuotes = [
     "title": "현명한 투자자 (The Intelligent Investor)",
     "author": "벤저민 그레이엄 (Benjamin Graham)",
     "category": "behavior"
+  },
+  {
+    "english": "Culture does not make people. People make culture.",
+    "text": "문화가 사람을 만드는 것이 아니라, 사람이 문화를 만든다.",
+    "title": "우리는 모두 페미니스트가 되어야 합니다 (We Should All Be Feminists)",
+    "author": "치마만다 응고지 아디치에 (Chimamanda Ngozi Adichie)",
+    "genre": "literature"
   }
 ];
