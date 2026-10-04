@@ -11214,5 +11214,12 @@ window.investmentQuotes = [
     "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "mindset"
+  },
+  {
+    "english": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave.",
+    "text": "돈을 잘 다루는 일은 당신이 얼마나 똑똑한가와는 별로 상관이 없고, 당신이 어떻게 행동하는가와 훨씬 더 큰 상관이 있다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절 (Morgan Housel)",
+    "category": "mindset"
   }
 ];
