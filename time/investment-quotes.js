@@ -11214,5 +11214,11 @@ window.investmentQuotes = [
     "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "mindset"
+  },
+  {
+    "text": "무소유란 아무 것도 갖지 않는다는 것이 아니라 불필요한 것을 갖지 않는다는 뜻이다.",
+    "title": "무소유",
+    "author": "법정",
+    "genre": "literature"
   }
 ];
