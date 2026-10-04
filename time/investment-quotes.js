@@ -11234,5 +11234,11 @@ window.investmentQuotes = [
     "title": "생각에 관한 생각 (Thinking, Fast and Slow)",
     "author": "대니얼 카너먼 (Daniel Kahneman)",
     "category": "behavior"
+  },
+  {
+    "text": "자세히 보아야 예쁘다, 오래 보아야 사랑스럽다, 너도 그렇다.",
+    "title": "풀꽃",
+    "author": "나태주",
+    "genre": "literature"
   }
 ];
