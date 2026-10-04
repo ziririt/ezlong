@@ -11248,5 +11248,11 @@ window.investmentQuotes = [
     "title": "밀크 앤 허니 (milk and honey)",
     "author": "루피 카우르 (Rupi Kaur)",
     "genre": "literature"
+  },
+  {
+    "text": "수필은 흥미는 주지마는, 읽는 사람을 흥분시키지는 아니한다. 수필은 마음의 산책이다. 그 속에는 인생의 향기와 여운이 숨어있다.",
+    "title": "수필",
+    "author": "피천득",
+    "genre": "literature"
   }
 ];
