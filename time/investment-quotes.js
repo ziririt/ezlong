@@ -11201,5 +11201,11 @@ window.investmentQuotes = [
     "title": "언테임드: 나는 길들지 않겠다 (Untamed)",
     "author": "글레넌 도일 (Glennon Doyle)",
     "genre": "literature"
+  },
+  {
+    "text": "나이가 드니 마음 놓고 고무줄 바지를 입을 수 있는 것처럼 나 편한 대로 헐렁하게 살 수 있어서 좋고, 하고 싶지 않은 것을 안 할 수 있어 좋다. 다시 젊어지고 싶지 않다. 하고 싶지 않은 것을 안 하고 싶다고 말할 수 있는 자유가 얼마나 좋은데 젊음과 바꾸겠는가.",
+    "title": "늙는다는 것",
+    "author": "박완서",
+    "genre": "literature"
   }
 ];
