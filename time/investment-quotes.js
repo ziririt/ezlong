@@ -11220,5 +11220,12 @@ window.investmentQuotes = [
     "title": "무소유",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "Never invest in a business you cannot understand.",
+    "text": "이해할 수 없는 사업에는 절대로 투자하지 마라.",
+    "title": "워런 버핏의 투자 원칙 (Buffett's Rules of Investing)",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "mindset"
   }
 ];
