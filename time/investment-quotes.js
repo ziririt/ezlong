@@ -11214,5 +11214,12 @@ window.investmentQuotes = [
     "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "mindset"
+  },
+  {
+    "english": "You don't have to understand life. You just have to live it.",
+    "text": "삶이란 머리로 이해해야 하는 무언가가 아니다. 그저 살아내면 되는 것, 그뿐이다.",
+    "title": "미드나이트 라이브러리 (The Midnight Library)",
+    "author": "매트 헤이그 (Matt Haig)",
+    "genre": "literature"
   }
 ];
