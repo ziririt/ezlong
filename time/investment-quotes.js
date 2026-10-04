@@ -11281,5 +11281,12 @@ window.investmentQuotes = [
     "title": "무소유",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "There's a sunrise and a sunset every day and you can choose to be there for it. You can put yourself in the way of beauty.",
+    "text": "매일 해가 뜨고 해가 진다. 그 순간 속에 있기를 선택할 수 있다. 당신은 스스로를 아름다움이 머무는 자리에 세울 수 있다.",
+    "title": "와일드 (Wild)",
+    "author": "셰릴 스트레이드 (Cheryl Strayed)",
+    "genre": "literature"
   }
 ];
