@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-10-05-07:00",
+      "timestamp_kst": "2026-10-05(월) 07:00 KST",
+      "key_event": {
+        "name": "고용 둔화로 금리 인상 우려 완화",
+        "name_en": "Easing Rate Hike Concerns on Job Slowdown",
+        "time": "직전 주 마감 기준",
+        "why": "Fed 통화정책 방향 결정, 금리 인상 우려 완화",
+        "why_en": "Fed monetary policy direction, reduced rate hike fears"
+      },
+      "positive_total": 70,
+      "negative_total": 30,
+      "summary": "고용 둔화로 금리 인상 우려 완화되며 긍정 우위 지속",
+      "summary_en": "Positive sentiment continues as easing job market reduces rate hike concerns",
+      "positive_factors": [
+        {
+          "score": 40,
+          "name": "고용 시장 둔화 신호",
+          "name_en": "Signs of a Slowing Job Market",
+          "desc": "9월 29,000개 일자리 증가: Fed 금리 인상 압력 완화 기대",
+          "desc_en": "29,000 jobs added in September: Easing expectations for Fed rate hikes",
+          "category": "macro_data"
+        },
+        {
+          "score": 30,
+          "name": "유가 하락세 지속",
+          "name_en": "Continued Decline in Oil Prices",
+          "desc": "WTI 원유 91.11 USD(-1.64%) 기록: 인플레이션 압력 완화",
+          "desc_en": "WTI crude at $91.11 (-1.64%): Easing inflationary pressures",
+          "category": "oil_energy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 15,
+          "name": "미국 장기 국채금리 상승",
+          "name_en": "Rising US Long-Term Treasury Yields",
+          "desc": "미10년 국채금리 5.28%(+0.76%) 기록: 성장주 할인율 부담 가중",
+          "desc_en": "US 10-year Treasury yield at 5.28% (+0.76%): Increased discount rate pressure on growth stocks",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 15,
+          "name": "이란 지정학적 긴장 고조",
+          "name_en": "Escalating Geopolitical Tensions with Iran",
+          "desc": "이란, 호르무즈 해협 폐쇄 조건 제시: 에너지 공급 불확실성 증대",
+          "desc_en": "Iran sets conditions for Strait of Hormuz closure: Increased energy supply uncertainty",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "AI 투자 확산 및 재편",
+          "name_en": "AI Investment Expansion and Realignment",
+          "desc": "AI 투자, 반도체 외 섹터로 확대: 새로운 승자 탐색과 시장 재편 가능성 혼재",
+          "desc_en": "AI investments broadening beyond semiconductors: Mixed signals of new winners and market realignment",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "report": {
+        "overview": "- 총점: 고용 둔화로 인한 금리 인상 우려 완화가 시장에 긍정적으로 작용하며 긍정 70 대 부정 30으로 긍정 우위 지속.\n- 핵심 이슈: 미국 고용 시장 둔화 신호가 연방준비제도(Fed)의 통화정책 방향 결정에 영향을 미쳐 금리 인상 우려를 완화하는 요인으로 작용.\n- 시장 반응: S&P 500 지수 상승 및 AI 관련 주식 강세 등 긍정적 흐름이 관찰. (StoneX).",
+        "positive": "- 고용 시장 둔화 신호: 9월 미국 비농업 부문 일자리가 29,000개 증가에 그쳐 (247wallst.com), 이는 Fed의 금리 인상 압력 완화 기대로 이어져 시장에 긍정적 요인으로 작용. (확정 카드 40점).\n- 유가 하락세 지속: 서부 텍사스산 원유(WTI) 가격이 배럴당 91.11달러로 1.64% 하락하며 인플레이션 압력 완화에 기여. (확정 카드 30점).",
+        "negative": "- 미국 장기 국채금리 상승: 미 10년물 국채금리가 5.28%(+0.76%)로 0.76% 상승하여 (확정 카드) 성장주에 대한 할인율 부담을 가중. (Paul Krugman, Financial Times).\n- 이란 지정학적 긴장 고조: 이란이 호르무즈 해협 폐쇄 조건을 제시하며 (Al Jazeera, Seeking Alpha) 에너지 공급 불확실성을 증대시켜 시장에 부정적 영향. (확정 카드 15점).",
+        "mixed": "- AI 투자 확산 및 재편: AI 투자가 반도체 섹터 외 다른 산업으로 확대되면서 (Goldman Sachs) 새로운 시장 승자 탐색과 산업 재편 가능성이 혼재. (확정 카드).",
+        "watch": "- 미국 국채금리 추이: 미 10년물 국채금리 변동성 지속 여부 확인.\n- 유가 흐름: WTI 원유 가격의 추가 하락 또는 반등 여부 확인.\n- AI 관련 주식 동향: AI 투자 확산에 따른 반도체 외 섹터의 주가 움직임 확인."
+      },
+      "report_at": "2026-10-05(월) 07:00 KST"
+    },
+    {
       "id": "2026-10-05-03:35",
       "timestamp_kst": "2026-10-05(월) 03:35 KST",
       "key_event": {
@@ -563,68 +631,8 @@
         "watch": "- 미 국채금리 추이: 10년물 국채금리가 24년래 최고치를 기록한 가운데, 추가 상승 여부가 시장의 성장주 할인율에 지속적인 영향을 미칠 것으로 예상.\n- WTI 유가 변동성: 중동 지정학적 긴장이 지속되는 상황에서 WTI 유가의 추가적인 변동성 여부가 인플레이션 압력 및 소비 심리에 미치는 영향을 주시."
       },
       "report_at": "2026-10-03(토) 21:50 KST"
-    },
-    {
-      "id": "2026-10-03-18:20",
-      "timestamp_kst": "2026-10-03(토) 18:20 KST",
-      "key_event": {
-        "name": "9월 고용보고서 둔화",
-        "name_en": "September Jobs Report Slowdown",
-        "time": "2026-10-02 08:30 ET 발표 완료",
-        "why": "Fed 통화정책 방향 결정, 금리 인상 우려 완화",
-        "why_en": "Influences Fed monetary policy, eases rate hike concerns"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "9월 고용보고서 둔화로 금리 인상 우려 완화되며 긍정 우위 지속",
-      "summary_en": "Positive sentiment persists as softer September jobs report eases rate hike concerns.",
-      "positive_factors": [
-        {
-          "score": 45,
-          "name": "9월 고용보고서 둔화",
-          "name_en": "September Jobs Report Slowdown",
-          "desc": "9월 고용보고서, 예상치 하회하며 고용시장 둔화 신호: Fed 금리 인상 우려 완화",
-          "desc_en": "September jobs report fell short of expectations, signaling a cooling labor market and easing Fed rate hike concerns.",
-          "category": "macro_data"
-        },
-        {
-          "score": 25,
-          "name": "WTI 유가 하락",
-          "name_en": "WTI Oil Price Decline",
-          "desc": "WTI 원유 91.11(-1.64%) 하락: 인플레이션 압력 완화 및 에너지 비용 감소",
-          "desc_en": "WTI crude oil fell to 91.11 (-1.64%), easing inflationary pressures and reducing energy costs.",
-          "category": "oil_energy"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 20,
-          "name": "미 국채금리 상승",
-          "name_en": "US Treasury Yields Rise",
-          "desc": "미10년 국채금리 5.28%(+0.76%) 상승: 성장주 할인율 압박 지속",
-          "desc_en": "US 10-year Treasury yield rose to 5.28% (+0.76%), maintaining pressure on growth stock valuations.",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 10,
-          "name": "근원 PCE 물가 상승",
-          "name_en": "Core PCE Inflation Rise",
-          "desc": "근원 PCE 물가상승률 3.01%(+0.02%p) 기록: Fed 목표치 상회하며 인플레이션 우려 잔존",
-          "desc_en": "Core PCE inflation reached 3.01% (+0.02%p), exceeding Fed's target and indicating persistent inflation concerns.",
-          "category": "macro_data"
-        }
-      ],
-      "mixed_factors": [],
-      "report": {
-        "overview": "- 10월2일(금, 뉴욕) 장 총평: 9월 고용보고서 둔화로 인한 금리 인상 우려 완화가 시장에 긍정적으로 작용하며 전반적인 강세장 지속.\n- 주요 원인: 예상치를 하회한 9월 고용보고서 발표로 연방준비제도(Fed)의 추가 금리 인상 가능성이 낮아졌다는 해석이 지배적.\n- 시장 반응: 고용 지표 둔화가 인플레이션 압력 완화로 이어질 것이라는 기대감에 S&P 500 및 나스닥 선물 지수 상승.\n- 하단 지지: WTI 유가 하락이 인플레이션 압력을 추가로 완화하며 긍정적인 시장 분위기 형성.",
-        "positive": "- 9월 고용보고서 둔화: 9월 고용보고서에서 비농업 고용자 수가 예상치인 15만 명을 크게 하회하는 2만 9천 명 증가에 그치며 고용 시장 둔화 신호. 이는 연방준비제도(Fed)의 금리 인상 사이클 종료 가능성을 높여 금리 인상 우려 완화에 기여. 로이터 통신에 따르면, 고용 데이터 둔화는 금리 인상 우려을 잠재우며 주식 시장 상승을 견인.\n- WTI 유가 하락: WTI 원유 가격이 91.11달러로 1.64% 하락하며 인플레이션 압력 완화에 긍정적인 영향을 미침. 이란과의 적대적 관계 심화에도 불구하고, 시장은 이란발 공급 차질 우려보다는 전반적인 수요 둔화와 이란 원유 제재 완화 기대감에 반응하며 유가 하락세 지속. 마켓포스 아프리카에 따르면, 유가는 5일 만에 4% 하락하며 배럴당 100달러 아래로 유지.",
-        "negative": "- 미 국채금리 상승: 미국 10년물 국채금리가 5.28%(+0.76%)로 0.76% 상승하며 성장주에 대한 할인율 압박 지속. 고용보고서 둔화에도 불구하고 여전히 높은 수준을 유지하는 국채금리는 기업의 자금 조달 비용 증가와 미래 현금흐름 가치 하락으로 이어져 성장주 투자 심리에 부정적 영향.\n- 근원 PCE 물가 상승: 근원 PCE 물가상승률이 전월 대비 0.02%p 상승한 3.01%를 기록하며 연방준비제도(Fed)의 목표치인 2%를 상회. 이는 인플레이션 우려가 여전히 잔존하고 있음을 시사하며, Fed의 통화정책 긴축 기조가 예상보다 길어질 수 있다는 불확실성 제공. ABC7 아이위트니스 뉴스에 따르면, 인플레이션은 2023년 이후 최고 수준을 기록하며 물가 상승 압력 지속.",
-        "mixed": "",
-        "watch": "- 미 국채금리 추이: 10년물 국채금리가 현재 수준에서 추가 상승할 경우, 성장주에 대한 압박이 심화될 수 있으므로 지속적인 금리 움직임 확인 필요.\n- WTI 유가 변동성: 중동 정세 불안정으로 인한 유가 변동성이 커질 수 있으므로, WTI 유가의 추가 하락 또는 반등 여부 주시.\n- 연방기금금리 선물 시장: 연방기금금리 선물 시장에서 연방준비제도(Fed)의 12월 금리 인상 확률 변화를 통해 통화정책 방향에 대한 시장의 기대치 확인."
-      },
-      "report_at": "2026-10-03(토) 18:20 KST"
     }
   ],
-  "updated_at": "2026-10-04T18:36:02Z",
+  "updated_at": "2026-10-04T22:01:40Z",
   "max_entries": 10
 }
