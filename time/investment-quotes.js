@@ -11309,5 +11309,12 @@ window.investmentQuotes = [
     "title": "연금술사 (The Alchemist)",
     "author": "파울로 코엘료 (Paulo Coelho)",
     "genre": "literature"
+  },
+  {
+    "english": "Go for a business that any idiot can run – because sooner or later, any idiot probably is going to run it.",
+    "text": "어떤 바보라도 운영할 수 있을 만큼 단순하고 튼튼한 사업을 찾아라. 언젠가는 정말로 바보가 그 회사를 경영하게 될 날이 올 수도 있으니 말이다. 뛰어난 경영진 한 사람의 역량에만 기대는 회사가 아니라, 사업 구조 자체가 좋은 회사를 찾아야 오래도록 마음 편히 투자를 이어갈 수 있다.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "mindset"
   }
 ];
