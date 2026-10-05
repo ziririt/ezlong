@@ -11363,5 +11363,12 @@ window.investmentQuotes = [
     "title": "보통주로 큰 수익을 얻는 법 (Common Stocks and Uncommon Profits)",
     "author": "필립 피셔 (Philip A. Fisher)",
     "category": "mindset"
+  },
+  {
+    "english": "Let's face it, a lot of times love doesn't work out. Yet even when it fails, it connects you to others and, in the end, that is all you have, the connections.",
+    "text": "솔직히 말하면, 사랑은 대부분 뜻대로 되지 않는다. 하지만 사랑이 실패로 끝나도, 그 사랑은 우리를 누군가와 이어준다. 그리고 결국 우리에게 남는 건 그 이어짐, 그 관계들뿐이다.",
+    "title": "가재가 노래하는 곳 (Where the Crawdads Sing)",
+    "author": "딜리아 오언스 (Delia Owens)",
+    "genre": "literature"
   }
 ];
