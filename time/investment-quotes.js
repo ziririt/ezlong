@@ -11323,5 +11323,12 @@ window.investmentQuotes = [
     "title": "우리가 끝이야 (It Ends with Us)",
     "author": "콜린 후버 (Colleen Hoover)",
     "genre": "literature"
+  },
+  {
+    "english": "There is nothing new in Wall Street. There can't be because speculation is as old as the hills. Whatever happens in the stock market today has happened before and will happen again.",
+    "text": "월가에 새로운 것은 없다. 투기는 언덕만큼이나 오래된 것이기 때문이다. 오늘 주식시장에서 일어나는 일은 예전에도 있었고, 앞으로도 다시 일어날 것이다.",
+    "title": "어느 주식투자자의 회상 (Reminiscences of a Stock Operator)",
+    "author": "제시 리버모어 (Jesse Livermore)",
+    "category": "mindset"
   }
 ];
