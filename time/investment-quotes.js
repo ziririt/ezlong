@@ -11350,5 +11350,18 @@ window.investmentQuotes = [
     "title": "투자에 대한 생각 (The Most Important Thing)",
     "author": "하워드 막스 (Howard Marks)",
     "category": "mindset"
+  },
+  {
+    "text": "당연히 행복해지는 데에도 시간이 필요하다. 어렵게 찾은 방법은 두 가지. 오늘의 일과와 의무 사이에서 '틈틈이' 행복해지기, 그리고 앞날에 행복해질 시간을 '미리' 비워두기.",
+    "title": "제철 행복",
+    "author": "김신지",
+    "genre": "literature"
+  },
+  {
+    "english": "I don't want a lot of good investments; I want a few outstanding ones.",
+    "text": "나는 많은 좋은 투자처를 원하지 않는다. 나는 소수의 탁월한 투자처를 원할 뿐이다.",
+    "title": "보통주로 큰 수익을 얻는 법 (Common Stocks and Uncommon Profits)",
+    "author": "필립 피셔 (Philip A. Fisher)",
+    "category": "mindset"
   }
 ];
