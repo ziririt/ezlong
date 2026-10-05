@@ -11336,5 +11336,12 @@ window.investmentQuotes = [
     "title": "나목",
     "author": "박완서",
     "genre": "literature"
+  },
+  {
+    "english": "Your story is what you have, what you will always have. It is something to own.",
+    "text": "당신의 이야기는 당신이 가진 것이고, 앞으로도 언제까지나 가지고 있을 것이다. 그건 온전히 스스로 소유할 수 있는 무언가다.",
+    "title": "비커밍 (Becoming)",
+    "author": "미셸 오바마 (Michelle Obama)",
+    "genre": "literature"
   }
 ];
