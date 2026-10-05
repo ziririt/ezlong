@@ -351,5 +351,6 @@ window.aladinLinks = {
   "꽃잎|정채봉": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=198422401&partner=friends327",
   "엘리너 올리펀트는 완전 괜찮아 (Eleanor Oliphant Is Completely Fine)|게일 허니먼 (Gail Honeyman)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=204202708&partner=friends327",
   "워런 버핏의 투자 원칙 (Buffett's Rules of Investing)|워런 버핏 (Warren Buffett)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=268987520&partner=friends327",
-  "밀크 앤 허니 (milk and honey)|루피 카우르 (Rupi Kaur)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=106779719&partner=friends327"
+  "밀크 앤 허니 (milk and honey)|루피 카우르 (Rupi Kaur)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=106779719&partner=friends327",
+  "나목|박완서": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=339905072&partner=friends327"
 };
