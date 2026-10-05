@@ -11288,5 +11288,12 @@ window.investmentQuotes = [
     "title": "와일드 (Wild)",
     "author": "셰릴 스트레이드 (Cheryl Strayed)",
     "genre": "literature"
+  },
+  {
+    "english": "Owning our story and loving ourselves through that process is the bravest thing that we'll ever do.",
+    "text": "자신의 이야기를 있는 그대로 받아들이고, 그 과정에서 나 자신을 사랑하는 것. 그것이 우리가 할 수 있는 가장 용기 있는 일이다.",
+    "title": "불완전함의 선물 (The Gifts of Imperfection)",
+    "author": "브레네 브라운 (Brené Brown)",
+    "genre": "literature"
   }
 ];
