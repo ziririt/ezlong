@@ -11384,5 +11384,12 @@ window.investmentQuotes = [
     "title": "주식에 장기투자하라 (Stocks for the Long Run)",
     "author": "제레미 시겔 (Jeremy Siegel)",
     "category": "mindset"
+  },
+  {
+    "english": "Rule No. 1: Never lose money. Rule No. 2: Never forget rule No. 1.",
+    "text": "제1원칙, 절대 돈을 잃지 마라. 제2원칙, 제1원칙을 절대 잊지 마라.",
+    "title": "워런 버핏의 투자 원칙 (Buffett's Rules of Investing)",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "mindset"
   }
 ];
