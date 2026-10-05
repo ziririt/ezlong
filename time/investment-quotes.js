@@ -11370,5 +11370,12 @@ window.investmentQuotes = [
     "title": "가재가 노래하는 곳 (Where the Crawdads Sing)",
     "author": "딜리아 오언스 (Delia Owens)",
     "genre": "literature"
+  },
+  {
+    "english": "Risk is not inherent in an investment; it is always relative to the price paid.",
+    "text": "위험은 투자 그 자체에 내재된 것이 아니라, 언제나 지불한 가격에 상대적으로 존재한다.",
+    "title": "마진 오브 세이프티 (Margin of Safety)",
+    "author": "세스 클라만 (Seth Klarman)",
+    "category": "mindset"
   }
 ];
