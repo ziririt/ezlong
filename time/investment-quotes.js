@@ -11330,5 +11330,11 @@ window.investmentQuotes = [
     "title": "어느 주식투자자의 회상 (Reminiscences of a Stock Operator)",
     "author": "제시 리버모어 (Jesse Livermore)",
     "category": "mindset"
+  },
+  {
+    "text": "여인들의 눈앞엔 겨울이 있고, 나목에겐 아직 멀지만 봄에의 믿음이 있다. 봄에의 믿음. 나목을 저리도 의연하게 함이 바로 봄에의 믿음이리라.",
+    "title": "나목",
+    "author": "박완서",
+    "genre": "literature"
   }
 ];
