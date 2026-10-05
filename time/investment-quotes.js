@@ -11316,5 +11316,12 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "mindset"
+  },
+  {
+    "english": "I think the hardest thing about life is it doesn't stay one thing. It's always shifting.",
+    "text": "삶에서 가장 힘든 건, 그것이 하나의 모습으로 머물러 있지 않다는 점이라고 생각한다. 삶은 언제나 변하고, 또 변한다.",
+    "title": "우리가 끝이야 (It Ends with Us)",
+    "author": "콜린 후버 (Colleen Hoover)",
+    "genre": "literature"
   }
 ];
