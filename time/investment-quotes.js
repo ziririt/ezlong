@@ -11302,5 +11302,12 @@ window.investmentQuotes = [
     "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
     "author": "찰리 멍거 (Charlie Munger)",
     "category": "mindset"
+  },
+  {
+    "english": "The secret of life, though, is to fall seven times and get up eight times.",
+    "text": "인생의 비밀은, 사실 별거 없다. 일곱 번 넘어지면 여덟 번 일어서는 것, 그게 전부다.",
+    "title": "연금술사 (The Alchemist)",
+    "author": "파울로 코엘료 (Paulo Coelho)",
+    "genre": "literature"
   }
 ];
