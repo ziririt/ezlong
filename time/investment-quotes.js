@@ -11377,5 +11377,12 @@ window.investmentQuotes = [
     "title": "마진 오브 세이프티 (Margin of Safety)",
     "author": "세스 클라만 (Seth Klarman)",
     "category": "mindset"
+  },
+  {
+    "english": "In the short run, stocks are riskier than bonds. But in the long run, just the opposite is true: the safest investment for the long run has proved to be stocks, not bonds.",
+    "text": "단기적으로는 주식이 채권보다 위험하다. 하지만 장기적으로는 정반대가 진실이다. 장기투자에서 가장 안전한 자산은 주식이지, 채권이 아니라는 사실이 입증되었다.",
+    "title": "주식에 장기투자하라 (Stocks for the Long Run)",
+    "author": "제레미 시겔 (Jeremy Siegel)",
+    "category": "mindset"
   }
 ];
