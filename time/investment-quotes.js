@@ -11295,5 +11295,12 @@ window.investmentQuotes = [
     "title": "불완전함의 선물 (The Gifts of Imperfection)",
     "author": "브레네 브라운 (Brené Brown)",
     "genre": "literature"
+  },
+  {
+    "english": "It's not supposed to be easy. Anyone who finds it easy is stupid.",
+    "text": "투자는 쉬운 일이 아니다. 쉽다고 생각하는 사람이 있다면, 그가 어리석은 것이다.",
+    "title": "가난한 찰리의 연감 (Poor Charlie's Almanack)",
+    "author": "찰리 멍거 (Charlie Munger)",
+    "category": "mindset"
   }
 ];
