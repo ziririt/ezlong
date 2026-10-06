@@ -11411,5 +11411,18 @@ window.investmentQuotes = [
     "title": "원칙 (Principles: Life and Work)",
     "author": "레이 달리오 (Ray Dalio)",
     "category": "mindset"
+  },
+  {
+    "english": "The intelligent investor is a realist who sells to optimists and buys from pessimists.",
+    "text": "현명한 투자자는 낙관론자에게는 팔고, 비관론자에게는 사는 현실주의자다.",
+    "title": "현명한 투자자 (The Intelligent Investor)",
+    "author": "벤저민 그레이엄 (Benjamin Graham)",
+    "category": "mindset"
+  },
+  {
+    "text": "나무가 나무에게 말했습니다. 우리 더불어 숲이 되어 지키자.",
+    "title": "더불어숲",
+    "author": "신영복",
+    "genre": "literature"
   }
 ];
