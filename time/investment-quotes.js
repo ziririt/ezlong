@@ -11438,5 +11438,12 @@ window.investmentQuotes = [
     "title": "바빌론 부자의 돈 버는 지혜 (The Richest Man in Babylon)",
     "author": "조지 클레이슨 (George S. Clason)",
     "category": "mindset"
+  },
+  {
+    "english": "You need to learn how to select your thoughts just the same way you select your clothes every day. That's a power you can cultivate.",
+    "text": "매일 입을 옷을 고르듯, 당신의 생각도 골라낼 줄 알아야 해요. 그건 기를 수 있는 힘이에요.",
+    "title": "먹고 기도하고 사랑하라 (Eat, Pray, Love)",
+    "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
+    "genre": "literature"
   }
 ];
