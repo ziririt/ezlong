@@ -11391,5 +11391,12 @@ window.investmentQuotes = [
     "title": "워런 버핏의 투자 원칙 (Buffett's Rules of Investing)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "mindset"
+  },
+  {
+    "english": "A blindfolded monkey throwing darts at a newspaper's financial pages could select a portfolio that would do just as well as one carefully selected by experts.",
+    "text": "눈을 가린 원숭이가 신문의 주식 시세표에 다트를 던져서 고른 포트폴리오도, 전문가들이 신중하게 골라낸 포트폴리오만큼 좋은 성과를 낼 수 있다.",
+    "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
+    "author": "버튼 말킬 (Burton G. Malkiel)",
+    "category": "mindset"
   }
 ];
