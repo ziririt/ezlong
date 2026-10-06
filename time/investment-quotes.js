@@ -11391,12 +11391,5 @@ window.investmentQuotes = [
     "title": "워런 버핏의 투자 원칙 (Buffett's Rules of Investing)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "mindset"
-  },
-  {
-    "english": "Risk means more things can happen than will happen. The riskiest thing in the world is the belief that there is no risk.",
-    "text": "리스크란 일어날 수 있는 일이 실제로 일어나는 일보다 더 많다는 뜻이다. 세상에서 가장 위험한 것은, 위험이 없다는 믿음이다.",
-    "title": "투자에 대한 생각",
-    "author": "하워드 막스",
-    "category": "mindset"
   }
 ];
