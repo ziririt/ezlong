@@ -11472,5 +11472,12 @@ window.investmentQuotes = [
     "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
     "author": "피터 린치 (Peter Lynch)",
     "category": "patience"
+  },
+  {
+    "english": "Every time you're given a choice between disappointing someone else and disappointing yourself, your duty is to disappoint that someone else. Your job, throughout your entire life, is to disappoint as many people as it takes to avoid disappointing yourself.",
+    "text": "누군가를 실망시킬지, 나 자신을 실망시킬지 선택해야 하는 순간이 온다면 — 답은 정해져 있다. 그 사람을 실망시켜라.\n평생에 걸쳐 해야 할 일은 단 하나, 나를 저버리지 않기 위해 필요한 만큼 다른 사람들을 실망시키는 것이다.",
+    "title": "언테임드 (Untamed)",
+    "author": "글레넌 도일 (Glennon Doyle)",
+    "genre": "literature"
   }
 ];
