@@ -11479,5 +11479,12 @@ window.investmentQuotes = [
     "title": "언테임드 (Untamed)",
     "author": "글레넌 도일 (Glennon Doyle)",
     "genre": "literature"
+  },
+  {
+    "english": "There is a time to go long, a time to go short, and a time to go fishing.",
+    "text": "매수할 때가 있고, 매도할 때가 있고, 그리고 낚시하러 갈 때가 있다.",
+    "title": "어느 주식투자자의 회상 (Reminiscences of a Stock Operator)",
+    "author": "제시 리버모어 (Jesse Livermore)",
+    "category": "patience"
   }
 ];
