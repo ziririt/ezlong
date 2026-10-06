@@ -11465,5 +11465,12 @@ window.investmentQuotes = [
     "title": "미드나잇 라이브러리 (The Midnight Library)",
     "author": "매트 헤이그 (Matt Haig)",
     "genre": "literature"
+  },
+  {
+    "english": "Far more money has been lost by investors preparing for corrections, or trying to anticipate corrections, than has been lost in corrections themselves.",
+    "text": "교정 국면에 대비하거나 그것을 예측하려다가 투자자들이 잃은 돈이, 실제 교정 국면에서 잃은 돈보다 훨씬 많다.",
+    "title": "전설로 떠나는 월가의 영웅 (One Up on Wall Street)",
+    "author": "피터 린치 (Peter Lynch)",
+    "category": "patience"
   }
 ];
