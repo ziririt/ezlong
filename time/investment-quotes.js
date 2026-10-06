@@ -11431,5 +11431,12 @@ window.investmentQuotes = [
     "title": "낭만적 연애와 그 후의 일상 (The Course of Love)",
     "author": "알랭 드 보통 (Alain de Botton)",
     "genre": "literature"
+  },
+  {
+    "english": "A part of all you earn is yours to keep.",
+    "text": "벌어들인 돈의 일부는 반드시 내 것으로 남겨두어라.",
+    "title": "바빌론 부자의 돈 버는 지혜 (The Richest Man in Babylon)",
+    "author": "조지 클레이슨 (George S. Clason)",
+    "category": "mindset"
   }
 ];
