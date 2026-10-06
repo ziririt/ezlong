@@ -11398,5 +11398,11 @@ window.investmentQuotes = [
     "title": "랜덤워크 투자수업 (A Random Walk Down Wall Street)",
     "author": "버튼 말킬 (Burton G. Malkiel)",
     "category": "mindset"
+  },
+  {
+    "text": "지나온 삶을 돌아보면, 그러니까 내가 들인 시간과 노력을 기준으로 보면 나는 그 무엇보다 우선 작가였고, 그 다음으로는 역시 여행가였다. 글쓰기와 여행을 가장 많이, 열심히 해왔기 때문이다.",
+    "title": "여행의 이유",
+    "author": "김영하",
+    "genre": "literature"
   }
 ];
