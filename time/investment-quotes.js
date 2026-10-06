@@ -11452,5 +11452,11 @@ window.investmentQuotes = [
     "title": "워런 버핏의 주주서한 (Berkshire Hathaway Shareholder Letters, 1997)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "patience"
+  },
+  {
+    "text": "사람들은 의외로 흠 없는 것만큼이나 완전히 파괴되었다 다시 이어붙인 것에서 아름다움을 느끼니까요.",
+    "title": "시선으로부터,",
+    "author": "정세랑",
+    "genre": "literature"
   }
 ];
