@@ -1,11 +1,11 @@
 {
-  "lastRun": "2026-10-06T16:47:27.533Z",
-  "lastRunKST": "2026-10-07 01:47:27 KST",
+  "lastRun": "2026-10-06T17:17:45.449Z",
+  "lastRunKST": "2026-10-07 02:17:45 KST",
   "summary": {
     "deployStalled": false,
-    "ok": 8,
-    "triggered": 2,
-    "alreadyRunning": 0,
+    "ok": 7,
+    "triggered": 1,
+    "alreadyRunning": 2,
     "stale": 0,
     "skipped": 7,
     "errors": 0
@@ -18,7 +18,7 @@
     "lastRunAt": "2026-10-06T16:46:18Z",
     "lastSuccessAt": "2026-10-06T16:46:18Z",
     "failStreak": 0,
-    "ageHours": 0,
+    "ageHours": 0.5,
     "status": "OK"
   },
   "results": [
@@ -26,18 +26,18 @@
       "id": "us-chart",
       "name": "미국주식 차트분석",
       "workflow": "fetch-us-chart-analysis.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "lastUpdate": "2026-10-06T14:17:58.580Z",
-      "ageHours": 2.5,
+      "ageHours": 3,
       "maxAgeHours": 2.5,
-      "status": "OK",
-      "reason": "최신 (2.5h 전 업데이트)"
+      "status": "ALREADY_RUNNING",
+      "reason": "워크플로 이미 실행 중"
     },
     {
       "id": "kr-chart",
       "name": "한국주식 차트분석",
       "workflow": "fetch-kr-crypto-analysis.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -45,19 +45,19 @@
       "id": "crypto-chart",
       "name": "크립토 차트분석",
       "workflow": "fetch-crypto-analysis.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "lastUpdate": "2026-10-06T11:50:31.982Z",
-      "ageHours": 4.9,
+      "ageHours": 5.5,
       "maxAgeHours": 5,
-      "status": "OK",
-      "reason": "최신 (4.9h 전 업데이트)"
+      "status": "ALREADY_RUNNING",
+      "reason": "워크플로 이미 실행 중"
     },
     {
       "id": "market-data",
       "name": "ATMR 시장데이터",
       "workflow": "fetch-market-data.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
-      "lastUpdate": "2026-10-06T16:31:15.105990+00:00",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
+      "lastUpdate": "2026-10-06T17:01:26.102540+00:00",
       "ageHours": 0.3,
       "maxAgeHours": 1.5,
       "status": "OK",
@@ -67,73 +67,73 @@
       "id": "options",
       "name": "FlashAlpha 옵션데이터",
       "workflow": "fetch-options-data.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "lastUpdate": "2026-10-05T21:17:45.437Z",
-      "ageHours": 19.5,
+      "ageHours": 20,
       "maxAgeHours": 6,
       "status": "TRIGGERED",
-      "reason": "19.5h 지연 감지 → 자동 트리거"
+      "reason": "20h 지연 감지 → 자동 트리거"
     },
     {
       "id": "scorecard",
       "name": "긍정vs부정 스코어카드",
       "workflow": "market-scorecard.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "lastUpdate": "2026-10-06T15:45:52Z",
-      "ageHours": 1,
+      "ageHours": 1.5,
       "maxAgeHours": 8,
       "status": "OK",
-      "reason": "최신 (1h 전 업데이트)"
+      "reason": "최신 (1.5h 전 업데이트)"
     },
     {
       "id": "stocks-prices",
       "name": "심플 주가 실시간",
       "workflow": "fetch-stocks-prices.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
-      "lastUpdate": "2026-10-06T15:48:02.977340+00:00",
-      "ageHours": 1,
+      "checkedAt": "2026-10-06T17:17:45.449Z",
+      "lastUpdate": "2026-10-06T16:47:59.169005+00:00",
+      "ageHours": 0.5,
       "maxAgeHours": 0.75,
-      "status": "TRIGGERED",
-      "reason": "1h 지연 감지 → 자동 트리거"
+      "status": "OK",
+      "reason": "최신 (0.5h 전 업데이트)"
     },
     {
       "id": "stocks-data",
       "name": "심플 주가 일간(스파크라인)",
       "workflow": "fetch-stocks-data.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "lastUpdate": "2026-10-06T02:10:02.264770+00:00",
-      "ageHours": 14.6,
+      "ageHours": 15.1,
       "maxAgeHours": 26,
       "status": "OK",
-      "reason": "최신 (14.6h 전 업데이트)"
+      "reason": "최신 (15.1h 전 업데이트)"
     },
     {
       "id": "market-cycle",
       "name": "마켓 사이클 주봉",
       "workflow": "fetch-market-cycle.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "lastUpdate": "2026-10-06T02:11:37.550Z",
-      "ageHours": 14.6,
+      "ageHours": 15.1,
       "maxAgeHours": 30,
       "status": "OK",
-      "reason": "최신 (14.6h 전 업데이트)"
+      "reason": "최신 (15.1h 전 업데이트)"
     },
     {
       "id": "swing-view",
       "name": "스윙 시그널 판단",
       "workflow": "swing-view.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "lastUpdate": "2026-10-06T09:17:59.706831Z",
-      "ageHours": 7.5,
+      "ageHours": 8,
       "maxAgeHours": 9,
       "status": "OK",
-      "reason": "최신 (7.5h 전 업데이트)"
+      "reason": "최신 (8h 전 업데이트)"
     },
     {
       "id": "model-portfolio",
       "name": "모델 포트폴리오",
       "workflow": "model-portfolio.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -141,7 +141,7 @@
       "id": "insightimes-sync",
       "name": "인사이트 타임스 지면 수집",
       "workflow": "insightimes-sync.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -149,7 +149,7 @@
       "id": "naver-sync",
       "name": "네이버 채널 동기화",
       "workflow": "naver-sync.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -157,7 +157,7 @@
       "id": "weekly-risk",
       "name": "주간 위험 진단",
       "workflow": "weekly-risk.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -165,7 +165,7 @@
       "id": "swing-ai",
       "name": "AI 과매수·과매도 진단",
       "workflow": "swing-ai.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -173,7 +173,7 @@
       "id": "kr-prices",
       "name": "한국 주가",
       "workflow": "fetch-kr-prices.yml",
-      "checkedAt": "2026-10-06T16:47:27.533Z",
+      "checkedAt": "2026-10-06T17:17:45.449Z",
       "status": "SKIP",
       "reason": "비활성 시간대"
     },
@@ -185,7 +185,7 @@
       "lastRunAt": "2026-10-06T16:46:18Z",
       "lastSuccessAt": "2026-10-06T16:46:18Z",
       "failStreak": 0,
-      "ageHours": 0,
+      "ageHours": 0.5,
       "status": "OK"
     }
   ]
