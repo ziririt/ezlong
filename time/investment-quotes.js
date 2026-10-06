@@ -11404,5 +11404,12 @@ window.investmentQuotes = [
     "title": "여행의 이유",
     "author": "김영하",
     "genre": "literature"
+  },
+  {
+    "english": "He who lives by the crystal ball will eat shattered glass. Anyone who claims to know exactly what the future holds is either lying or deluded.",
+    "text": "수정구슬에 의지해 사는 자는 결국 깨진 유리를 삼키게 된다. 미래를 정확히 안다고 주장하는 사람은 거짓말을 하고 있거나, 스스로 속고 있는 것이다.",
+    "title": "원칙 (Principles: Life and Work)",
+    "author": "레이 달리오 (Ray Dalio)",
+    "category": "mindset"
   }
 ];
