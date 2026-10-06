@@ -11445,5 +11445,12 @@ window.investmentQuotes = [
     "title": "먹고 기도하고 사랑하라 (Eat, Pray, Love)",
     "author": "엘리자베스 길버트 (Elizabeth Gilbert)",
     "genre": "literature"
+  },
+  {
+    "english": "The stock market is a no-called-strike game. You don't have to swing at everything—you can wait for your pitch.",
+    "text": "주식시장은 스트라이크가 선언되지 않는 게임이다. 모든 공에 배트를 휘두를 필요는 없다 — 자신에게 맞는 공이 올 때까지 기다리면 된다.",
+    "title": "워런 버핏의 주주서한 (Berkshire Hathaway Shareholder Letters, 1997)",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "patience"
   }
 ];
