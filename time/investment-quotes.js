@@ -11424,5 +11424,12 @@ window.investmentQuotes = [
     "title": "더불어숲",
     "author": "신영복",
     "genre": "literature"
+  },
+  {
+    "english": "He will need to learn that love is a skill rather than an enthusiasm.",
+    "text": "이제 그는 사랑은 열정이라기보다 기술이라는 사실을 배워야만 할 것이다.",
+    "title": "낭만적 연애와 그 후의 일상 (The Course of Love)",
+    "author": "알랭 드 보통 (Alain de Botton)",
+    "genre": "literature"
   }
 ];
