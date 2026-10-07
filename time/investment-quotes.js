@@ -11486,5 +11486,11 @@ window.investmentQuotes = [
     "title": "어느 주식투자자의 회상 (Reminiscences of a Stock Operator)",
     "author": "제시 리버모어 (Jesse Livermore)",
     "category": "patience"
+  },
+  {
+    "text": "우리가 앞으로 살아가야 하는 이곳 지구를 생각했다. 도저히 사랑할 수 없는 세계를 마주하면서도 마침내 그것을 재건하기로 결심하는 사람들에 대해서도.",
+    "title": "지구 끝의 온실",
+    "author": "김초엽",
+    "genre": "literature"
   }
 ];
