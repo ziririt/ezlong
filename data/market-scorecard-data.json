@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-10-07-18:20",
+      "timestamp_kst": "2026-10-07(수) 18:20 KST",
+      "key_event": {
+        "name": "Fed 의사록 발표 대기",
+        "name_en": "Anticipation for Fed Minutes",
+        "time": "10월6일(화, 뉴욕) 정규장 중 발표 (ET)",
+        "why": "향후 통화정책 방향 단서, 시장 변동성 확대",
+        "why_en": "Clues on future monetary policy, increased market volatility"
+      },
+      "positive_total": 50,
+      "negative_total": 50,
+      "summary": "AI 반도체 실적 기대감 약화 및 Fed 의사록 경계감으로 팽팽한 균형 전환",
+      "summary_en": "Negative bias shifts due to weakened AI semiconductor earnings expectations and caution ahead of Fed minutes.",
+      "positive_factors": [
+        {
+          "score": 50,
+          "name": "일부 빅테크 실적 기대감",
+          "name_en": "Select Big Tech Earnings Expectations",
+          "desc": "AAPL (+0.31%), MSFT (+0.38%) 등 일부 빅테크 종목 프리마켓 강세",
+          "desc_en": "Some Big Tech stocks like AAPL (+0.31%) and MSFT (+0.38%) show strength in pre-market.",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 40,
+          "name": "AI 반도체 실적 기대감 약화",
+          "name_en": "Weakening AI Semiconductor Earnings Expectations",
+          "desc": "SOXX (-1.16%), NVDA (-0.60%) 등 AI 반도체 관련 종목 프리마켓 하락",
+          "desc_en": "AI semiconductor-related stocks like SOXX (-1.16%) and NVDA (-0.60%) decline in pre-market.",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "name": "지정학적 긴장 지속",
+          "name_en": "Persistent Geopolitical Tensions",
+          "desc": "이란 전쟁 관련 뉴스 지속, 유가 상승 압력 유지",
+          "desc_en": "Ongoing news regarding the Iran war, maintaining upward pressure on oil prices.",
+          "category": "geopolitics",
+          "score": 10
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "Fed 의사록 발표 대기",
+          "name_en": "Anticipation for Fed Minutes",
+          "desc": "10월6일(화, 뉴욕) 정규장 중 발표될 Fed 의사록에 대한 경계감: 매파적 기조 유지 시 시장 부담, 비둘기파적 전환 시 긍정적 영향 예상",
+          "desc_en": "Caution ahead of Fed minutes to be released during today's regular session: potential market burden if hawkish stance maintained, positive impact if dovish shift occurs.",
+          "category": "fed_policy"
+        },
+        {
+          "name": "미 국채금리 수준",
+          "name_en": "US Treasury Yields",
+          "desc": "금리는 성장주 할인율을 좌우하는 핵심 변수. 10월6일(화, 뉴욕) 미10년 5.27%(-0.79%) · 미30년 5.64%(-0.42%). 움직임이 작아 방향 판단은 유보",
+          "desc_en": "Yields drive growth-stock discount rates. Today 미10년 5.27%(-0.79%) · 미30년 5.64%(-0.42%). Move too small to call: on hold",
+          "category": "rates_treasury"
+        }
+      ],
+      "report": {
+        "overview": "- 10월6일(화, 뉴욕) 판의 결론: AI 반도체 실적 기대감 약화와 연방준비제도(Fed) 의사록 발표 대기 심리가 맞물리며 시장은 긍정 50 대 부정 50의 팽팽한 균형 상태로 전환.\n- 주요 원인: 일부 빅테크의 프리마켓 강세가 긍정적 요인으로 작용했으나, AI 반도체 관련 종목의 하락과 지정학적 긴장 지속이 부정적 요인으로 균형을 이룸.\n- 시장의 경계감: Fed 의사록 발표를 앞두고 향후 통화정책 방향에 대한 불확실성이 시장 전반에 경계감을 형성.",
+        "positive": "- 일부 빅테크 실적 기대감: 애플(AAPL)이 프리마켓에서 0.31% 상승하고 마이크로소프트(MSFT)가 0.38% 상승하는 등 일부 대형 기술 기업들의 실적에 대한 긍정적인 기대감이 시장에 유입.",
+        "negative": "- AI 반도체 실적 기대감 약화: AI 반도체 관련 상장지수펀드(ETF)인 SOXX가 프리마켓에서 1.16% 하락하고 엔비디아(NVDA)가 0.60% 하락하는 등 AI 반도체 섹터 전반에 대한 실적 기대감이 약화되는 모습.\n- 지정학적 긴장 지속: 이란 전쟁 관련 뉴스가 지속적으로 보도되며 유가 상승 압력이 유지되는 상황. EIA는 이란 전쟁으로 인한 글로벌 시장의 공급 긴축을 예상하며 유가 전망치를 상향 조정.",
+        "mixed": "- Fed 의사록 발표 대기: 10월 6일(화, 뉴욕) 정규장 중 발표될 연방공개시장위원회(FOMC) 의사록에 대한 시장의 경계감이 고조. 의사록 내용이 매파적 기조를 유지할 경우 시장에 부담으로 작용할 수 있으나, 비둘기파적 전환을 시사할 경우 긍정적인 영향을 미칠 것으로 예상됨에 따라 혼조세 유지.\n- 미 국채금리 수준: 10년물 미 국채금리가 5.27%(-0.79%)로 10월5일(월, 뉴욕) 대비 0.79% 하락하고 30년물 미 국채금리가 5.64%(-0.42%)로 10월5일(월, 뉴욕) 대비 0.42% 하락하는 등 소폭의 움직임을 보이며 방향성 판단이 유보. 국채금리는 성장주 할인율을 결정하는 핵심 변수로, 향후 추이에 따라 시장의 방향이 달라질 수 있어 혼조세 유지.",
+        "watch": "- Fed 의사록 내용 확인: 10월 6일(화, 뉴욕) 정규장 중 발표될 연방준비제도(Fed) 의사록의 세부 내용을 통해 향후 통화정책 방향에 대한 단서 확인.\n- 미 국채금리 추이: 미 10년물 및 30년물 국채금리의 추가적인 움직임을 통해 시장의 할인율 변동성 및 성장주 투자 심리 변화 확인.\n- 유가 변동성: 이란 전쟁 관련 뉴스 흐름에 따른 국제 유가의 추가 상승 또는 하락 여부를 통해 인플레이션 압력 및 지정학적 리스크 변화 확인."
+      },
+      "report_at": "2026-10-07(수) 18:20 KST"
+    },
+    {
       "id": "2026-10-07-15:21",
       "timestamp_kst": "2026-10-07(수) 15:21 KST",
       "key_event": {
@@ -565,92 +632,8 @@
         "watch": "- 미 국채금리 추이: 미 10년 및 30년 국채금리의 추가 상승 여부 확인. 금리 상승은 성장주에 대한 할인율 부담을 가중시켜 시장 전반에 부정적 영향을 미칠 수 있음.\n- WTI 원유 가격 변동성: 중동 지역의 지정학적 리스크 관련 뉴스 플로우와 이에 따른 WTI 원유 가격의 추가적인 상승 또는 하락 추이 확인. 유가 급등은 인플레이션 우려를 심화시킬 수 있음.\n- 주요 기술주 프리마켓 동향: 나스닥 지수와 주요 기술주들의 프리마켓 움직임 지속 확인. 기술주 실적 기대감이 유지될 경우 시장의 긍정적 분위기 지속 가능."
       },
       "report_at": "2026-10-06(화) 18:20 KST"
-    },
-    {
-      "id": "2026-10-06-15:46",
-      "timestamp_kst": "2026-10-06(화) 15:46 KST",
-      "key_event": {
-        "name": "기술주 실적 기대감 지속",
-        "name_en": "Sustained Tech Earnings Optimism",
-        "time": "2026년 10월 6일 뉴욕 정규장 마감 후",
-        "why": "나스닥 사상 최고치 경신, 주요 기술주 강세 지속",
-        "why_en": "Nasdaq hits record high, major tech stocks show continued strength"
-      },
-      "positive_total": 70,
-      "negative_total": 30,
-      "summary": "기술주 강세 및 실적 기대감으로 긍정 우위 지속, 지정학적 긴장과 금리 상승 압력은 부담으로 작용",
-      "summary_en": "Positive sentiment continues with strong tech performance and earnings optimism, while geopolitical tensions and rising interest rates remain a concern",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "기술주 실적 기대감",
-          "name_en": "Tech Earnings Optimism",
-          "desc": "나스닥 사상 최고치 경신, 주요 기술주 강세 지속: QQQ +0.92%, NVDA +2.55%, MSFT +1.59%",
-          "desc_en": "Nasdaq reaches record high, major tech stocks continue strong performance: QQQ +0.92%, NVDA +2.55%, MSFT +1.59%",
-          "category": "earnings_bellwether"
-        },
-        {
-          "score": 25,
-          "name": "Fed 금리 인상 우려 완화",
-          "name_en": "Easing Fed Rate Hike Concerns",
-          "desc": "9월 고용보고서 둔화 및 Fed의 12월 금리 인상 가능성 시사로 금리 인상 우려 완화",
-          "desc_en": "Weak September jobs report and Fed signaling potential December rate hike ease concerns over immediate rate hikes",
-          "category": "fed_policy"
-        },
-        {
-          "score": 10,
-          "name": "AI 및 에너지 섹터 투자 관심",
-          "name_en": "Investment Interest in AI & Energy",
-          "desc": "AI 및 에너지 관련 3개 종목 Q3 실적 기대감, Broadcom 목표가 상향 소식",
-          "desc_en": "Optimism for Q3 earnings in 3 AI and energy stocks, Broadcom price target raised",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 10,
-          "name": "미 국채금리 상승 압력",
-          "name_en": "Upward Pressure on US Treasury Yields",
-          "desc": "미10년 국채금리 5.31%(+0.64%) 및 30년 국채금리 5.66%(+0.62%) 상승, 성장주 할인율 압박",
-          "desc_en": "US 10-year Treasury yield rises to 5.31%(+0.64%) and 30-year to 5.66%(+0.62%), pressuring growth stock valuations",
-          "category": "rates_treasury"
-        },
-        {
-          "score": 10,
-          "name": "높은 인플레이션 및 금리 우려",
-          "name_en": "High Inflation & Rate Concerns",
-          "desc": "근원 PCE 3.01%, PCE 3.42%, CPI 3.35% 등 높은 물가 지표 지속, Fed 기준금리 3.75% 유지",
-          "desc_en": "Core PCE at 3.01%, PCE at 3.42%, CPI at 3.35% indicate persistent high inflation, Fed benchmark rate remains at 3.75%",
-          "category": "macro_data"
-        },
-        {
-          "name": "지정학적 긴장 지속",
-          "name_en": "Ongoing Geopolitical Tensions",
-          "desc": "미-이란 전쟁 우려 재부각 및 호르무즈 해협 통행료 관련 뉴스, 유가 상승 압력 지속",
-          "desc_en": "US-Iran war fears resurface, news on Hormuz Strait tolls, persistent upward pressure on oil prices",
-          "category": "geopolitics",
-          "score": 10
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "유가 하락과 지정학적 위험",
-          "name_en": "Oil Price Drop Amid Geopolitical Risks",
-          "desc": "WTI 원유 가격은 -1.08% 하락했으나, 지정학적 위험으로 인한 공급 우려가 상승 압력으로 작용하며 혼조세",
-          "desc_en": "WTI crude oil prices dropped by -1.08%, but geopolitical risks and supply concerns create upward pressure, leading to mixed sentiment",
-          "category": "oil_energy"
-        }
-      ],
-      "report": {
-        "overview": "- 현재 시황: 기술주 강세와 실적 기대감에 힘입어 긍정적인 시장 분위기 지속, 나스닥 사상 최고치 경신으로 투자 심리 개선.\n- 주요 동인: 9월 고용보고서 둔화로 인한 연준의 금리 인상 우려 완화와 AI 및 에너지 섹터에 대한 투자 관심 증가.\n- 하방 압력: 미 국채금리 상승 압력, 높은 인플레이션 지표 지속, 중동 지정학적 긴장 재부각으로 인한 유가 상승 우려 잔존.",
-        "positive": "- 기술주 실적 기대감: 나스닥 종합지수 사상 최고치 경신, 주요 기술주(QQQ +0.92%, NVDA +2.55%, MSFT +1.59%)의 강세 지속으로 투자자들의 실적 기대감 반영. 로이터 통신은 투자자들이 실적에 집중하며 나스닥이 사상 최고치를 기록했다고 보도.\n- Fed 금리 인상 우려 완화: 9월 고용보고서에서 미국이 예상치 못하게 일자리를 잃었다는 ABC7 로스앤젤레스 보도 등 둔화된 고용 지표 발표. 연방준비제도(Fed)의 12월 금리 인상 가능성 시사로 시장의 금리 인상 우려가 완화되며 주식 선물 시장 안정화. 인베스팅닷컴은 연준의 금리 인상 베팅 감소로 나스닥이 기록적인 상승을 보인 후 미국 주식 선물이 안정세를 보인다고 언급.\n- AI 및 에너지 섹터 투자 관심: AI 및 에너지 관련 3개 종목의 3분기 실적에 대한 기대감과 브로드컴(AVGO)의 목표가 상향 소식(무무, 600달러 가치 언급)으로 해당 섹터에 대한 투자 심리 강화. 잭스 인베스트먼트 리서치는 3분기 실적 발표 전 AI 및 에너지 관련 3개 종목을 매수할 것을 제안.",
-        "negative": "- 미 국채금리 상승 압력: 미 10년 국채금리 5.31%(+0.64%) 및 30년 국채금리 5.66%(+0.62%) 상승으로 성장주 할인율에 대한 압박 가중. 월스트리트저널은 미국과 유럽의 채권 수익률이 상승했다고 보도하며, 인베스코는 높은 국채 수익률에도 불구하고 주식이 탄력성을 유지할 수 있을지 의문을 제기.\n- 높은 인플레이션 및 금리 우려: 근원 PCE 물가상승률 3.01%, PCE 물가상승률 3.42%, CPI 소비자물가 상승률 3.35% 등 높은 물가 지표 지속. 연방준비제도(Fed)의 기준금리 3.75% 유지로 높은 인플레이션과 금리 환경에 대한 우려 잔존. 인베스팅닷컴은 인플레이션과 금리가 계속 주목받는 가운데 시장이 불확실성을 헤쳐나가고 있다고 분석.\n- 지정학적 긴장 지속: 미국-이란 전쟁 우려 재부각 및 호르무즈 해협 통행료 관련 뉴스(알자지라 보도)로 유가 상승 압력 지속. 스톡트위츠는 미국-이란 전쟁 우려가 재부각되면서 S&P 500, 나스닥, 다우지수가 하락 마감했다고 언급. CNN은 트럼프가 이란을 궁지로 몰아넣었지만 정권은 눈 하나 깜짝하지 않는다고 보도.",
-        "mixed": "- 유가 하락과 지정학적 위험: 서부 텍사스산 원유(WTI) 가격은 -1.08% 하락했으나, 중동 지정학적 위험으로 인한 공급 우려가 상승 압력으로 작용하며 혼조세. ING THINK는 공급 증가에도 불구하고 지정학적 위험으로 유가가 지지받고 있다고 분석. 시킹 알파는 유가 충격이 다른 어떤 것과도 다르다고 언급.",
-        "watch": "- 미 국채금리 추이: 미 10년물 및 30년물 국채금리의 추가 상승 여부 확인. 금리 상승 지속 시 성장주에 대한 할인율 압박 심화.\n- 유가 변동성: WTI 원유 가격의 추가 하락 또는 지정학적 긴장 고조에 따른 상승 전환 여부 확인. 유가 상승은 인플레이션 우려를 재점화할 가능성 잔존.\n- 주요 기술주 흐름: 나스닥 종합지수 및 주요 기술주(QQQ, NVDA, MSFT)의 강세 지속 여부 확인. 실적 기대감 유지 여부가 시장 전반의 투자 심리에 영향."
-      },
-      "report_at": "2026-10-06(화) 15:46 KST"
     }
   ],
-  "updated_at": "2026-10-07T06:21:24Z",
+  "updated_at": "2026-10-07T09:21:11Z",
   "max_entries": 10
 }
