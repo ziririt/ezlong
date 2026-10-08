@@ -11519,5 +11519,12 @@ window.investmentQuotes = [
     "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
     "author": "존 보글 (John Bogle)",
     "category": "mindset"
+  },
+  {
+    "english": "Investment success accrues not so much to the brilliant as to the disciplined.",
+    "text": "투자의 성공은 똑똑한 사람이 아니라 규율을 지키는 사람에게 돌아간다.",
+    "title": "투자의 네 기둥 (The Four Pillars of Investing)",
+    "author": "윌리엄 번스타인 (William J. Bernstein)",
+    "category": "mindset"
   }
 ];
