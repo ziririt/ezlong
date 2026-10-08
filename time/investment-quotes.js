@@ -11505,5 +11505,12 @@ window.investmentQuotes = [
     "title": "산에는 꽃이 피네",
     "author": "법정",
     "genre": "literature"
+  },
+  {
+    "english": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave.",
+    "text": "돈을 잘 다루는 것은 얼마나 똑똑한가의 문제가 아니라, 어떻게 행동하는가의 문제다.",
+    "title": "돈의 심리학 (The Psychology of Money)",
+    "author": "모건 하우절 (Morgan Housel)",
+    "category": "mindset"
   }
 ];
