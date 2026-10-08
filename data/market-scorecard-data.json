@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "2026-10-08-09:05",
+      "timestamp_kst": "2026-10-08(목) 09:05 KST",
+      "key_event": {
+        "name": "Fed 추가 금리 인상 시사",
+        "name_en": "Fed Signals Further Rate Hike",
+        "time": "2026-10-07 20:06 ET (직전 정규장)",
+        "why": "향후 통화정책 방향 단서, 시장 변동성 확대",
+        "why_en": "Clues on future monetary policy, increased market volatility"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "Fed 추가 금리 인상 시사 및 높은 국채금리로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to Fed's rate hike signal and high Treasury yields",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "일부 빅테크 실적 기대감",
+          "name_en": "Optimism for Select Big Tech Earnings",
+          "desc": "AAPL (+0.79%), GOOGL (+0.75%) 등 일부 빅테크 종목 포스트마켓 강세, 견조한 실적 기대 반영",
+          "desc_en": "Select big tech stocks like AAPL (+0.79%) and GOOGL (+0.75%) show strength in post-market, reflecting solid earnings expectations",
+          "category": "earnings_bellwether"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 30,
+          "name": "Fed 추가 금리 인상 시사",
+          "name_en": "Fed Signals Further Rate Hike",
+          "desc": "Fed 의사록, 연내 추가 금리 인상 필요성 시사: 매파적 기조 유지로 시장 금리 상승 압력",
+          "desc_en": "Fed minutes indicate need for another rate hike this year: Hawkish stance maintains upward pressure on market rates",
+          "category": "fed_policy"
+        },
+        {
+          "score": 20,
+          "name": "미 국채금리 상승 지속",
+          "name_en": "Continued Rise in US Treasury Yields",
+          "desc": "미10년 국채금리 5.28%(+0.15%), 미30년 국채금리 5.66%(+0.35%)로 상승: 성장주 할인율 부담 가중",
+          "desc_en": "US 10-year Treasury yield at 5.28%(+0.15%) and 30-year at 5.66%(+0.35%): Increasing discount rate burden for growth stocks",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 15,
+          "name": "지정학적 긴장 고조",
+          "name_en": "Heightened Geopolitical Tensions",
+          "desc": "미 백악관 이란 공격 계획 보도: 중동 지정학적 리스크 확대 및 유가 변동성 증가 우려",
+          "desc_en": "Reports of White House plans for strikes on Iran: Concerns over escalating Middle East geopolitical risks and oil price volatility",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "WTI 유가 하락 및 지정학적 상승 압력",
+          "name_en": "WTI Oil Prices Decline Amid Geopolitical Upward Pressure",
+          "desc": "WTI 유가 88.96달러(-1.39%) 하락: 에너지 비용 부담 완화 기대. 그러나 백악관의 이란 공격 계획 보도로 유가 상승 압력 잔존",
+          "desc_en": "WTI oil prices fell to $88.96 (-1.39%): Easing energy cost concerns. However, reports of White House plans for strikes on Iran maintain upward pressure on oil prices",
+          "category": "oil_energy"
+        },
+        {
+          "name": "CPI 발표 대기",
+          "name_en": "Awaiting CPI Release",
+          "desc": "9월 CPI 소비자물가(10월 14일(수) 08:30 ET) 발표 대기: 인플레이션 경로 불확실성 지속",
+          "desc_en": "Awaiting September CPI consumer price data (October 14th (Wed) 08:30 ET) release: Continued uncertainty regarding inflation trajectory",
+          "category": "macro_data"
+        }
+      ]
+    },
+    {
       "id": "2026-10-08-07:00",
       "timestamp_kst": "2026-10-08(목) 07:00 KST",
       "key_event": {
@@ -544,90 +611,8 @@
         "watch": "- 미 10년 국채금리 추이: 현재 5.27%(-0.79%) 수준에서 추가적인 하락 또는 반등 여부 확인, 이는 성장주 할인율과 인플레이션 우려에 직접적인 영향.\n- 달러인덱스 DXY 추이: 현재 101.85 수준에서 추가적인 약세 또는 강세 전환 여부 확인, 이는 수출 기업 실적 기대 및 원자재 가격 변동성에 영향."
       },
       "report_at": "2026-10-07(수) 05:08 KST"
-    },
-    {
-      "id": "2026-10-07-00:45",
-      "timestamp_kst": "2026-10-07(수) 00:45 KST",
-      "key_event": {
-        "name": "국채금리 및 유가 하락",
-        "name_en": "Treasury Yields and Oil Prices Decline",
-        "time": "2026-10-06 정규장",
-        "why": "인플레이션 우려 완화, 성장주 투자심리 개선",
-        "why_en": "Easing inflation concerns, improved growth stock sentiment"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "국채금리 하락 및 유가 안정으로 인플레이션 우려 완화, 부정 우위 지속",
-      "summary_en": "Easing inflation concerns due to falling Treasury yields and stable oil prices, positive sentiment continues",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "AI 랠리 지속",
-          "name_en": "AI Rally Continues",
-          "desc": "S&P 500, Nasdaq 신고점 경신: AI 관련 기술주 강세 지속",
-          "desc_en": "S&P 500, Nasdaq hit new peaks: sustained strength in AI-related tech stocks",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "지정학적 리스크 지속",
-          "name_en": "Persistent Geopolitical Risks",
-          "desc": "중동 지역 긴장 지속 및 일부 걸프 시장 하락: 투자 심리 위축",
-          "desc_en": "Continued tensions in the Middle East and declines in some Gulf markets: dampening investor sentiment",
-          "category": "geopolitics"
-        },
-        {
-          "score": 30,
-          "name": "높은 금리 수준 유지",
-          "name_en": "High Interest Rate Levels Persist",
-          "desc": "Fed 기준금리 3.75%로 높은 수준 유지: 성장주 할인율 부담 지속",
-          "desc_en": "Fed policy rate remains high at 3.75%: continued pressure on growth stock valuations due to discount rates",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "달러 약세 및 금 가격 상승",
-          "name_en": "Dollar Weakness and Gold Price Rise",
-          "desc": "달러인덱스 DXY 101.79(-0.34%) 하락 및 금 가격 4196.20(+1.00%) 상승: 인플레이션 우려 완화와 안전자산 선호 심리 혼재",
-          "desc_en": "DXY dollar index fell to 101.79 (-0.34%) and gold prices rose to $4196.20 (+1.00%): mixed signals of easing inflation concerns and safe-haven demand",
-          "category": "dollar_fx"
-        },
-        {
-          "name": "미 국채금리 하락",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 국채금리 5.26%(-0.96%) 하락: 인플레이션 우려 완화, 성장주 투자심리 개선",
-          "desc_en": "US 10-year Treasury yield fell to 5.26% (-0.96%): easing inflation concerns, improving growth stock sentiment",
-          "category": "rates_treasury"
-        },
-        {
-          "name": "WTI 유가 하락",
-          "name_en": "WTI Oil Prices Fall",
-          "desc": "WTI 원유 88.46달러(-1.44%) 하락: 에너지 비용 감소 및 인플레이션 압력 완화",
-          "desc_en": "WTI crude oil fell to $88.46 (-1.44%): reduced energy costs and easing inflationary pressures",
-          "category": "oil_energy"
-        }
-      ],
-      "report": {
-        "overview": "- 총점: 미국 주식 시장은 국채금리 하락과 유가 안정으로 인플레이션 우려가 완화되었음에도 불구하고, 지정학적 리스크와 높은 금리 수준 유지로 인해 부정적인 분위기가 우세한 상황 지속.\n- 시장 분위기: S&P 500과 Nasdaq은 AI 랠리에 힘입어 신고점을 경신하며 기술주 강세가 긍정적인 영향을 미쳤으나, 전반적인 투자 심리는 위축.\n- 주요 원인: 인플레이션 우려 완화 요인(국채금리 및 유가 하락)과 지정학적 리스크, 높은 금리 수준 유지라는 부정적 요인이 상충하며 혼조세 속 부정 우위 형성.",
-        "positive": "- AI 랠리 지속: S&P 500과 Nasdaq 지수가 신고점을 경신하며 AI 관련 기술주에 대한 투자 심리가 지속적으로 개선. Reuters와 NDTV Profit은 국채금리 하락과 유가 안정에 힘입어 S&P 500과 Nasdaq이 새로운 고점을 기록했다고 보도. Simply Wall Street는 미국 대형 성장주 내 AI 인프라 관련 3개 종목에 대한 투자자들의 관심이 높다고 언급.\n- 국채금리 하락: 미 10년물 국채금리가 5.26%(-0.96%)로 0.96% 하락하며 인플레이션 우려 완화 및 성장주 투자심리 개선에 기여. Reuters와 NDTV Profit은 국채금리 하락이 증시 상승에 긍정적인 영향을 미쳤다고 분석. 이는 성장주 할인율 부담을 일부 경감시키는 요인으로 작용.\n- WTI 유가 하락: WTI 원유 가격이 88.46달러로 1.44% 하락하며 에너지 비용 감소 및 인플레이션 압력 완화에 기여. WSJ은 원유 가격이 초기 상승분을 반납했다고 보도. 유가 하락은 소비자의 구매력 유지 및 기업의 생산 비용 절감에 긍정적인 신호.",
-        "negative": "- 지정학적 리스크 지속: 중동 지역의 긴장이 지속되며 일부 걸프 시장이 하락하는 등 투자 심리가 위축. Reuters는 지정학적 리스크가 걸프 시장에 부담을 주었다고 보도. CNN은 트럼프 행정부의 이란 압박이 지속되고 있다고 언급하며 중동 정세 불안이 해소되지 않고 있음을 시사.\n- 높은 금리 수준 유지: Fed 기준금리가 3.75%로 높은 수준을 유지하며 성장주에 대한 할인율 부담이 지속. Forbes는 연준의 금리 인상 시기에 투자 전략을 모색하는 기사를 게재하며 높은 금리 환경에 대한 시장의 우려를 반영. housingwire.com은 연준의 금리 인상이 모기지 금리에 미치는 영향을 분석하며 고금리 환경의 지속적인 영향을 강조.",
-        "mixed": "- 달러 약세 및 금 가격 상승: 달러인덱스 DXY가 101.79로 0.34% 하락하고 금 가격은 4196.20으로 1.00% 상승하며 인플레이션 우려 완화와 안전자산 선호 심리가 혼재. Bloomberg.com은 달러 강세와 금리 상승이 금 가격에 영향을 미친다고 분석했으나, 현재는 달러 약세와 금 가격 상승이 동시에 나타나며 시장의 복합적인 심리를 반영. 달러 약세는 인플레이션 압력 완화에 기여할 수 있으나, 금 가격 상승은 안전자산 선호 심리를 나타내 시장의 불확실성이 잔존함을 시사.",
-        "watch": "- 미 10년물 국채금리 추이: 현재 5.26%(-0.96%) 수준에서 추가 하락 여부 확인. 금리 하락은 성장주 투자심리 개선에 긍정적이나, 반등 시 시장에 부정적 영향 예상.\n- WTI 유가 추이: 현재 88.46달러 수준에서 추가 하락 여부 확인. 유가 하락은 인플레이션 우려 완화에 기여하나, 반등 시 물가 압력 재부각 우려.\n- 달러인덱스(DXY) 추이: 현재 101.79 수준에서 추가 약세 여부 확인. 달러 약세는 인플레이션 우려 완화에 긍정적이나, 급격한 변동은 시장 불안정성을 높일 수 있음."
-      },
-      "report_at": "2026-10-07(수) 00:45 KST"
     }
   ],
-  "updated_at": "2026-10-07T22:01:50Z",
-  "max_entries": 10,
-  "hold": {
-    "at": "2026-10-08(목) 08:20 KST",
-    "at_utc": "2026-10-07T23:21:27Z",
-    "kind": "direction",
-    "count": 1,
-    "reason": "한쪽 편의 근거가 실측 지표와 어긋나 자체 검증을 통과하지 못했습니다.",
-    "reason_en": "One side's evidence contradicted the measured market data, so it failed our own checks."
-  }
+  "updated_at": "2026-10-08T00:06:25Z",
+  "max_entries": 10
 }
