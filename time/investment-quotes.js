@@ -11492,5 +11492,12 @@ window.investmentQuotes = [
     "title": "지구 끝의 온실",
     "author": "김초엽",
     "genre": "literature"
+  },
+  {
+    "english": "A simple rule dictates my buying: Be fearful when others are greedy, and be greedy when others are fearful.",
+    "text": "다른 사람들이 탐욕스러울 때는 두려워하고, 다른 사람들이 두려워할 때는 탐욕스러워져라. 이것이 내가 따르는 단순한 투자 원칙이다.",
+    "title": "뉴욕타임스 기고문 (Buy American. I Am., 2008)",
+    "author": "워런 버핏 (Warren Buffett)",
+    "category": "mindset"
   }
 ];
