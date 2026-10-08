@@ -11519,11 +11519,5 @@ window.investmentQuotes = [
     "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
     "author": "존 보글 (John Bogle)",
     "category": "mindset"
-  },
-  {
-    "text": "그립고 아쉬움에 가슴 조이던 머언 먼 젊음의 뒤안길에서 인제는 돌아와 거울 앞에 서 있는 내 누님 같이 생긴 꽃이여.",
-    "title": "국화 옆에서",
-    "author": "서정주",
-    "genre": "literature"
   }
 ];
