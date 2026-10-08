@@ -11526,12 +11526,5 @@ window.investmentQuotes = [
     "title": "투자의 네 기둥 (The Four Pillars of Investing)",
     "author": "윌리엄 번스타인 (William J. Bernstein)",
     "category": "mindset"
-  },
-  {
-    "english": "Low risk and high uncertainty is a wonderful combination. You end with the classic Dhandho tagline: Heads, I win; tails, I don't lose much!",
-    "text": "낮은 리스크와 높은 불확실성의 조합은 더할 나위 없이 좋은 조합이다. 이 둘을 손에 쥐면 '단도(Dhandho)'의 고전적인 슬로건에 이르게 된다 — 앞면이 나오면 내가 이기고, 뒷면이 나와도 크게 잃지 않는다.",
-    "title": "단도 투자자 (The Dhandho Investor)",
-    "author": "모니시 파브라이 (Mohnish Pabrai)",
-    "category": "mindset"
   }
 ];
