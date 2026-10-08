@@ -356,5 +356,6 @@ window.aladinLinks = {
   "가재가 노래하는 곳 (Where the Crawdads Sing)|딜리아 오언스 (Delia Owens)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=342538099&partner=friends327",
   "더불어숲|신영복": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=71472529&partner=friends327",
   "낭만적 연애와 그 후의 일상 (The Course of Love)|알랭 드 보통 (Alain de Botton)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=97898944&partner=friends327",
-  "바빌론 부자의 돈 버는 지혜 (The Richest Man in Babylon)|조지 클레이슨 (George S. Clason)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=147997555&partner=friends327"
+  "바빌론 부자의 돈 버는 지혜 (The Richest Man in Babylon)|조지 클레이슨 (George S. Clason)": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=147997555&partner=friends327",
+  "지구 끝의 온실|김초엽": "https://www.aladin.co.kr/m/mproduct.aspx?ItemId=276926308&partner=friends327"
 };

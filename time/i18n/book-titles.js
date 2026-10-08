@@ -3,7 +3,7 @@
  * ★ 손으로 고치지 말 것 ★ data/book-i18n-map.json 을 고치고
  *   node scripts/build-book-titles.mjs 를 다시 돌리십시오.
  *
- * 생성: 2026-10-06 · 303권
+ * 생성: 2026-10-08 · 303권
  * (globalInclude:false 로 제외된 항목 1건)
  */
 (function (root, factory) {
