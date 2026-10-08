@@ -11499,5 +11499,11 @@ window.investmentQuotes = [
     "title": "뉴욕타임스 기고문 (Buy American. I Am., 2008)",
     "author": "워런 버핏 (Warren Buffett)",
     "category": "mindset"
+  },
+  {
+    "text": "무소유란 아무것도 갖지 않는다는 것이 아니라 불필요한 것을 갖지 않는다는 뜻이다.",
+    "title": "산에는 꽃이 피네",
+    "author": "법정",
+    "genre": "literature"
   }
 ];
