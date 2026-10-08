@@ -11512,12 +11512,5 @@ window.investmentQuotes = [
     "title": "돈의 심리학 (The Psychology of Money)",
     "author": "모건 하우절 (Morgan Housel)",
     "category": "mindset"
-  },
-  {
-    "english": "Don't look for the needle in the haystack. Just buy the haystack!",
-    "text": "건초더미에서 바늘을 찾으려 하지 마라. 건초더미 전체를 사면 된다.",
-    "title": "모든 주식을 소유하라 (The Little Book of Common Sense Investing)",
-    "author": "존 보글 (John Bogle)",
-    "category": "mindset"
   }
 ];
