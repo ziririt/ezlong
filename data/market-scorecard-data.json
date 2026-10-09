@@ -1,6 +1,80 @@
 {
   "entries": [
     {
+      "id": "2026-10-10-08:20",
+      "timestamp_kst": "2026-10-10(토) 08:20 KST",
+      "key_event": {
+        "name": "기술주 반등 및 AI 기대감 지속",
+        "name_en": "Tech Rebound and Sustained AI Optimism",
+        "time": "2026-10-09 포스트마켓",
+        "why": "주요 기술주 상승, AI 관련 뉴스, 시장 심리 개선",
+        "why_en": "Major tech stocks rise, positive AI news, improved market sentiment"
+      },
+      "positive_total": 45,
+      "negative_total": 55,
+      "summary": "기술주 반등 및 AI 기대감 지속으로 부정 우위 전환",
+      "summary_en": "Shift to positive bias due to tech rebound and sustained AI optimism",
+      "positive_factors": [
+        {
+          "score": 45,
+          "name": "AI 관련 투자 심리 개선",
+          "name_en": "Improved AI Investment Sentiment",
+          "desc": "AI 관련 기업 실적 기대감 및 Stifel 분석 보고서 등 긍정적 뉴스 유입",
+          "desc_en": "Positive news flow including earnings expectations for AI-related companies and Stifel analysis report",
+          "category": "ai_tech_valuation"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 35,
+          "name": "높은 국채금리 수준 유지",
+          "name_en": "Sustained High Treasury Yields",
+          "desc": "미10년 국채금리 5.24%(+0.25%)로 상승, 성장주 할인율 압박 지속",
+          "desc_en": "US 10-year Treasury yield rose to 5.24%(+0.25%), maintaining pressure on growth stock valuations",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 20,
+          "name": "인플레이션 압력 지속 우려",
+          "name_en": "Persistent Inflationary Pressure Concerns",
+          "desc": "WTI 원유 (+1.36%) 상승 및 근원 PCE, CPI 등 물가 지표 상승세 지속",
+          "desc_en": "WTI crude oil (+1.36%) rose, and inflation metrics like Core PCE and CPI continued their upward trend",
+          "category": "macro_data"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "9월 CPI 발표 대기",
+          "name_en": "Awaiting September CPI Release",
+          "desc": "10월 14일(수) 08:30 ET 예정된 CPI 발표를 앞두고 관망세, 시장 방향성 탐색",
+          "desc_en": "Market awaits the CPI release on October 14 (Wed) 08:30 ET, leading to a wait-and-see approach and search for direction",
+          "category": "macro_data"
+        },
+        {
+          "name": "Fed 금리 전망 불확실성",
+          "name_en": "Fed Interest Rate Outlook Uncertainty",
+          "desc": "Fed의 추가 금리 인상 가능성 언급과 시장의 금리 동결 기대가 혼재, 9월 FOMC 의사록 발표 대기 (10월 28일(수) 14:00 ET)",
+          "desc_en": "Mixed signals from Fed's hawkish comments on potential rate hikes and market expectations for a pause, awaiting September FOMC minutes (Oct 28 (Wed) 14:00 ET)",
+          "category": "fed_policy"
+        },
+        {
+          "name": "지정학적 긴장 완화 기대",
+          "name_en": "Anticipation of Easing Geopolitical Tensions",
+          "desc": "트럼프의 이란 공격 배제 발언 후 유가 하락, VIX 공포지수 (-3.76%) 하락",
+          "desc_en": "Oil prices fell after Trump ruled out Iran strikes, VIX (-3.76%) declined",
+          "category": "geopolitics"
+        }
+      ],
+      "report": {
+        "overview": "- 총점: 미국 증시는 기술주 반등과 AI 기대감 지속에도 불구하고, 부정적 재료가 우위를 점하며 총점 긍정 45 대 부정 55로 마감.\n- 시장 심리: 전반적으로 기술주 중심의 상승세가 나타났으나, 높은 국채금리와 인플레이션 압력 우려가 투자 심리를 위축시키는 요인으로 작용.\n- 주요 동인: AI 관련 투자 심리 개선이 긍정적 요인으로 작용했으나, 국채금리 상승과 인플레이션 압력 지속 우려가 부정적 요인으로 부각되며 시장을 압박.\n- 관망세: 다가오는 9월 CPI 발표와 Fed 금리 전망 불확실성으로 인해 시장은 방향성 탐색에 돌입한 상황.",
+        "positive": "- AI 관련 투자 심리 개선: AI 관련 기업들의 3분기 실적 기대감이 높아지고 있으며, Stifel 분석 보고서에서 AI 반도체 관련 기업들에 대한 긍정적인 전망을 제시하는 등 AI 섹터에 대한 투자 심리가 개선. (Reuters, Yahoo Finance).\n- 기술주 반등: 주요 기술주들이 상승세를 보이며 시장 전반의 심리 개선에 기여.",
+        "negative": "- 높은 국채금리 수준 유지: 미 10년 국채금리가 5.24%(+0.25%p)로 상승하며 성장주 할인율에 대한 압박이 지속.\n- 인플레이션 압력 지속 우려: WTI 원유 가격이 1.36% 상승하고, 근원 PCE 물가상승률 3.01%(+0.02%p), CPI 소비자물가 상승률 3.35%(+0.05%p) 등 주요 물가 지표들이 상승세를 지속하며 인플레이션 압력에 대한 우려가 잔존. (WSJ, Central Oregon Daily).",
+        "mixed": "- 9월 CPI 발표 대기: 10월 14일(수) 08:30 ET 예정된 9월 CPI 발표를 앞두고 시장은 인플레이션 경로에 대한 불확실성으로 관망세를 유지하며 방향성을 탐색. (WSJ, Newsquawk).\n- Fed 금리 전망 불확실성: Fed의 추가 금리 인상 가능성 언급(Florida Realtors)과 시장의 금리 동결 기대가 혼재된 가운데, 9월 FOMC 의사록 발표(10월 28일(수) 14:00 ET)를 대기하며 금리 정책 방향에 대한 불확실성이 잔존. (Admirals).\n- 지정학적 긴장 완화 기대: 트럼프 전 대통령의 이란 공격 배제 발언 이후 유가가 하락하고 VIX 공포지수가 3.76% 하락하는 등 지정학적 긴장 완화에 대한 기대감이 형성(WSJ, Marine Link)되었으나, 여전히 중동 정세 불안정으로 인한 유가 변동성 우려도 상존(EnergyNow.com).",
+        "watch": "- 10년 만기 국채금리 추이: 현재 높은 수준을 유지하고 있는 미 10년 국채금리의 추가 상승 또는 하락 여부가 기술주 및 성장주 전반의 투자 심리에 지속적인 영향을 미칠 것으로 판단."
+      },
+      "report_at": "2026-10-10(토) 08:20 KST"
+    },
+    {
       "id": "2026-10-10-07:00",
       "timestamp_kst": "2026-10-10(토) 07:00 KST",
       "key_event": {
@@ -602,74 +676,8 @@
         "watch": "- 유가 및 달러인덱스 추이: 중동 지정학적 긴장 완화 여부 및 Fed의 추가 발언에 따른 유가(WTI, 브렌트유)와 달러인덱스(DXY)의 실시간 변동성 추이를 통해 시장의 방향성 확인."
       },
       "report_at": "2026-10-09(금) 11:50 KST"
-    },
-    {
-      "id": "2026-10-09-10:18",
-      "timestamp_kst": "2026-10-09(금) 10:18 KST",
-      "key_event": {
-        "name": "지정학적 긴장 고조 및 유가 상승",
-        "name_en": "Escalating Geopolitical Tensions & Oil Price Hike",
-        "time": "직전 정규장 및 야간",
-        "why": "인플레이션 우려 재점화, 시장 변동성 확대",
-        "why_en": "Reignited inflation fears, increased market volatility"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "지정학적 긴장 고조으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to escalating geopolitical tensions and rising oil prices",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "달러 약세 전환",
-          "name_en": "Dollar Weakens",
-          "desc": "달러인덱스 DXY 102.06(-0.16%) 하락, 수출 기업 실적 개선 기대",
-          "desc_en": "Dollar Index DXY at 102.06 (-0.16%) declines, raising expectations for improved export company earnings",
-          "category": "dollar_fx"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 65,
-          "name": "지정학적 긴장 고조",
-          "name_en": "Geopolitical Tensions Escalate",
-          "desc": "이란 유조선 공격 확대로 유가 상승, 시장 변동성 확대 우려",
-          "desc_en": "Escalation of attacks on Iranian tankers drives oil prices up, raising concerns about market volatility",
-          "category": "geopolitics"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "CPI 소비자물가 발표 대기",
-          "name_en": "Awaiting CPI Consumer Price Data",
-          "desc": "10월 14일(수) 08:30 ET 발표 예정, 인플레이션 방향성 불확실성 증폭",
-          "desc_en": "Scheduled for release on Oct 14 (Wed) 08:30 ET, amplifying uncertainty regarding inflation direction",
-          "category": "macro_data"
-        },
-        {
-          "name": "미 국채금리 하락",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 국채금리 5.23%(-0.87%), 미30년 국채금리 5.61%(-0.97%) 하락, 성장주 할인율 부담 완화",
-          "desc_en": "US 10-year Treasury yield at 5.23% (-0.87%) and 30-year at 5.61% (-0.97%) decline, easing discount rate pressure on growth stocks",
-          "category": "rates_treasury"
-        },
-        {
-          "name": "Fed 매파적 발언 지속",
-          "name_en": "Continued Hawkish Fed Remarks",
-          "desc": "Fed Musalem, 긴축 통화 정책 필요성 언급, 시장 금리 인상 가능성 경계",
-          "desc_en": "Fed's Musalem emphasizes the need for tighter monetary policy, raising caution about potential interest rate hikes",
-          "category": "fed_policy"
-        }
-      ],
-      "report": {
-        "overview": "- 총점: 지정학적 긴장 고조로 인한 유가 상승 및 인플레이션 우려 재점화로 부정 우위 지속, 총점 긍정 35 대 부정 65 기록.\n- 시장 변동성 확대: 이란 유조선 공격 확대로 인한 유가 급등이 주요 원인으로 작용, S&P 500 및 Nasdaq 하락 마감.\n- 인플레이션 압력: 유가 상승과 Fed의 매파적 발언 지속으로 인플레이션 우려가 시장 전반에 확산, 투자 심리 위축.\n- 주요 지표 대기: 다가오는 CPI 소비자물가 발표가 시장의 인플레이션 방향성 판단에 중요한 변수로 작용할 전망.",
-        "positive": "- 달러 약세 전환: 달러인덱스 DXY가 102.06(-0.16%)로 하락하며 달러 약세 전환 신호, 수출 기업들의 실적 개선 기대감 형성.\n- 미 국채금리 하락: 미10년 국채금리 5.23%(-0.87%) 및 미30년 국채금리 5.61%(-0.97%) 하락, 성장주 할인율 부담 완화로 기술주 투자 심리 일부 개선.",
-        "negative": "- 지정학적 긴장 고조: 이란 유조선 공격 확대 소식으로 국제 유가가 급등, 브렌트유 104달러 선 돌파하며 인플레이션 우려 재점화 및 시장 변동성 확대.\n- 유가 상승: 이란의 유조선 공격 확대로 원유 공급 차질 우려가 커지며 유가가 급등, 기업들의 생산 비용 증가 및 소비자 물가 상승 압력 가중.\n- 인플레이션 우려 재점화: 유가 상승과 함께 Fed의 매파적 발언이 지속되며 인플레이션이 다시 가속화될 수 있다는 우려 확산, 시장 전반의 위험 회피 심리 강화.",
-        "mixed": "- CPI 소비자물가 발표 대기: 9월분 CPI 소비자물가(10월 14일(수) 08:30 ET 발표 예정)를 앞두고 인플레이션 방향성에 대한 불확실성 증폭, 시장은 발표 결과에 따라 큰 폭의 변동성 예상.\n- Fed 매파적 발언 지속: Fed Musalem 이 긴축 통화 정책의 필요성을 언급하며 시장 금리 인상 가능성에 대한 경계심 유지, 하지만 동시에 금리 인상에 시간을 둘 여지가 있다는 발언도 혼재하며 시장의 방향성 탐색 지속.",
-        "watch": "- 유가 변동성: 이란 관련 지정학적 긴장 고조에 따른 국제 유가(WTI, 브렌트유)의 추가 상승 여부 확인, 유가 104달러 이상 지속 시 인플레이션 우려 심화 및 증시 추가 하락 가능성.\n- 미 국채금리 추이: 미10년 국채금리 및 미30년 국채금리의 추가 하락 또는 반등 여부 확인, 금리 상승 시 성장주에 대한 할인율 부담 재확대."
-      },
-      "report_at": "2026-10-09(금) 10:18 KST"
     }
   ],
-  "updated_at": "2026-10-09T22:01:49Z",
+  "updated_at": "2026-10-09T23:21:18Z",
   "max_entries": 10
 }
