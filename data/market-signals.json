@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-13T22:01:27.986519+00:00",
-  "generatedAtKST": "2026-10-14 07:01 KST",
+  "generatedAt": "2026-10-13T22:31:15.396032+00:00",
+  "generatedAtKST": "2026-10-14 07:31 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -205,7 +205,7 @@
         "histogram": 0.9831
       },
       "high52": 541.1131,
-      "low52": 448.1895,
+      "low52": 448.1896,
       "dev200": 3.0528,
       "dev5": 0.3168,
       "dev20": 0.3903,
@@ -265,7 +265,7 @@
       "low20dExcl": 277.89,
       "volRatio": 1.1127,
       "upDays5": 1,
-      "adx": 38.4211,
+      "adx": 38.4356,
       "adxStatus": "\ub69c\ub837\ud55c \ucd94\uc138",
       "buyScore": 59,
       "sellScore": 10,
@@ -688,7 +688,7 @@
     "prevClose": 46,
     "prev1Week": 47,
     "prev1Month": 33,
-    "timestamp": "2026-10-13T21:40:57+00:00"
+    "timestamp": "2026-10-13T22:10:57+00:00"
   },
   "macro": {
     "yield10y": {
@@ -708,31 +708,48 @@
       "unit": "%"
     },
     "oil": {
-      "price": 94.79,
-      "change": 1.05,
-      "changePct": 1.1201,
+      "price": 94.73,
+      "change": 0.99,
+      "changePct": 1.0561,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 102.212,
-      "change": -0.368,
-      "changePct": -0.3587,
+      "price": 102.215,
+      "change": -0.365,
+      "changePct": -0.3558,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4184.2002,
-      "change": -6.3999,
-      "changePct": -0.1527,
+      "price": 4183.2998,
+      "change": -7.3003,
+      "changePct": -0.1742,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-10-13T22:01:27.986519+00:00",
+      "atKST": "2026-10-14 07:01 KST",
+      "qqq": {
+        "rsi": 54.74,
+        "macdHist": -0.6555,
+        "dev5": -0.7565,
+        "dev200": 10.6313,
+        "gear": 3,
+        "buyScore": 61,
+        "sellScore": 8,
+        "price": 743.57
+      },
+      "soxxMacdHist": -4.1337,
+      "fearAndGreed": 45,
+      "yield10y": 5.217
+    },
     {
       "at": "2026-10-13T21:52:41.966058+00:00",
       "atKST": "2026-10-14 06:52 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": -0.602,
       "fearAndGreed": 45,
       "yield10y": 5.244
-    },
-    {
-      "at": "2026-10-09T21:07:49.214391+00:00",
-      "atKST": "2026-10-10 06:07 KST",
-      "qqq": {
-        "rsi": 61.04,
-        "macdHist": 0.8433,
-        "dev5": -0.4265,
-        "dev200": 11.9834,
-        "gear": 3,
-        "buyScore": 68,
-        "sellScore": 18,
-        "price": 751.27
-      },
-      "soxxMacdHist": -0.602,
-      "fearAndGreed": 45,
-      "yield10y": 5.244
     }
   ],
-  "swingContinuity": "10\uc6d4 13\uc77c(\ubaa9, \ub274\uc695) \ub9e4\uc218\uc810\uc218 59\uc5d0\uc11c 10\uc6d413\uc77c(\ud654, \ub274\uc695) 61\ub85c \uc18c\ud3ed \uac1c\uc120\ub418\uc5c8\uc73c\ub098, RSI 54.01\uc5d0\uc11c 54.74\ub85c \ud070 \ubcc0\ud654 \uc5c6\ub294 \uad6c\uac04\uc774 \uc774\uc5b4\uc84c\uc2b5\ub2c8\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\uc640 SOXX\ub294 \uc57d\uc138\ub97c \ubcf4\uc778 \ubc18\uba74, NVDA\ub294 10\uc6d413\uc77c(\ud654, \ub274\uc695) +0.97%\ub85c \ubc18\ub4f1\ud558\uba70 \uc885\ubaa9 \uac04 \uc628\ub3c4\ucc28\ub97c \ubcf4\uc600\uc2b5\ub2c8\ub2e4.",
-  "swingContinuityEn": "The buy score improved slightly from 59 on Oct 13 (Thu, NY) to 61 today, but the RSI remained largely unchanged, moving from 54.01 to 54.74. While QQQ and SOXX showed weakness over the last 5 trading days, NVDA rebounded with +0.97% today, indicating a divergence among stocks."
+  "swingContinuity": "10\uc6d4 10\uc77c(\ub274\uc695) \ub9e4\uc218\uc810\uc218 68\uc5d0\uc11c 10\uc6d4 12\uc77c(\ub274\uc695) 60\uc73c\ub85c \ud558\ub77d\ud588\uc73c\ub098, 10\uc6d4 13\uc77c(\ub274\uc695) 59\ub97c \uac70\uccd0 10\uc6d413\uc77c(\ud654, \ub274\uc695)(\ub274\uc695) 61\ub85c \uc18c\ud3ed \ubc18\ub4f1\ud558\uba70 \ub9e4\uc218\uc138\uac00 \uc720\uc9c0\ub418\ub294 \ud750\ub984\uc785\ub2c8\ub2e4. \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\ub294 -0.25%\uc5d0\uc11c -1.34%\uae4c\uc9c0 \ud558\ub77d \ud6c4 \ub4f1\ub77d\uc744 \ubc18\ubcf5\ud588\uc73c\ub098, 10\uc6d413\uc77c(\ud654, \ub274\uc695)(\ub274\uc695) -0.33%\ub85c \ub9c8\uac10\ud558\uba70 \uc57d\ubcf4\ud569\uc138\ub97c \ubcf4\uc600\uc2b5\ub2c8\ub2e4. \ud2b9\ud788 SOXX\uc640 NVDA\uac00 \ucd5c\uadfc 5\uac70\ub798\uc77c \ub3d9\uc548 \uac01\uac01 -2.60%\uc640 -1.29%\uc758 \ud558\ub77d\uc138\ub97c \ubcf4\uc778 \ubc18\uba74, 10\uc6d413\uc77c(\ud654, \ub274\uc695)(\ub274\uc695)\uc740 \uac01\uac01 -0.17%\uc640 +0.97%\ub85c \uc0c1\ub300\uc801 \uac15\uc138\ub97c \ub098\ud0c0\ub0c8\uc2b5\ub2c8\ub2e4.",
+  "swingContinuityEn": "The buy score, after declining from 68 on Oct 10 (NY) to 60 on Oct 12 (NY), showed a slight rebound to 61 today (NY) after touching 59 on Oct 13 (NY), indicating a sustained buying trend. QQQ's performance over the last 5 trading days fluctuated after an initial drop from -0.25% to -1.34%, closing at -0.33% today (NY) in a weak consolidation. Notably, while SOXX and NVDA experienced declines of -2.60% and -1.29% respectively in the past 5 trading days, they showed relative strength today (NY) closing at -0.17% and +0.97%."
 }
