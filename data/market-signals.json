@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-13T02:29:54.719701+00:00",
-  "generatedAtKST": "2026-10-13 11:29 KST",
+  "generatedAt": "2026-10-13T02:31:20.254303+00:00",
+  "generatedAtKST": "2026-10-13 11:31 KST",
   "symbolCount": 15,
   "errorCount": 0,
   "dataSource": "yfinance",
@@ -708,31 +708,48 @@
       "unit": "%"
     },
     "oil": {
-      "price": 92.56,
-      "change": 0.71,
-      "changePct": 0.773,
+      "price": 92.55,
+      "change": 0.7,
+      "changePct": 0.7621,
       "symbol": "CL=F",
       "label": "WTI \uc6d0\uc720",
       "unit": "USD"
     },
     "dxy": {
-      "price": 102.44,
-      "change": 0.23,
-      "changePct": 0.225,
+      "price": 102.445,
+      "change": 0.235,
+      "changePct": 0.2299,
       "symbol": "DX-Y.NYB",
       "label": "\ub2ec\ub7ec\uc778\ub371\uc2a4 DXY",
       "unit": ""
     },
     "gold": {
-      "price": 4192.6001,
-      "change": -23.6997,
-      "changePct": -0.5621,
+      "price": 4191.2998,
+      "change": -25.0,
+      "changePct": -0.5929,
       "symbol": "GC=F",
       "label": "\uae08 Gold",
       "unit": "USD"
     }
   },
   "previousSignals": [
+    {
+      "at": "2026-10-13T02:29:54.719701+00:00",
+      "atKST": "2026-10-13 11:29 KST",
+      "qqq": {
+        "rsi": 56.71,
+        "macdHist": 0.0712,
+        "dev5": -0.8527,
+        "dev200": 11.0994,
+        "gear": 3,
+        "buyScore": 61,
+        "sellScore": 11,
+        "price": 746.04
+      },
+      "soxxMacdHist": -2.7543,
+      "fearAndGreed": 46,
+      "yield10y": 5.24
+    },
     {
       "at": "2026-10-13T02:15:21.853886+00:00",
       "atKST": "2026-10-13 11:15 KST",
@@ -3163,25 +3180,8 @@
       "soxxMacdHist": 3.4073,
       "fearAndGreed": 38,
       "yield10y": 5.231
-    },
-    {
-      "at": "2026-10-09T00:26:03.842671+00:00",
-      "atKST": "2026-10-09 09:26 KST",
-      "qqq": {
-        "rsi": 68.16,
-        "macdHist": 2.2755,
-        "dev5": 0.6228,
-        "dev200": 13.172,
-        "gear": 3,
-        "buyScore": 67,
-        "sellScore": 45,
-        "price": 757.73
-      },
-      "soxxMacdHist": 3.4073,
-      "fearAndGreed": 38,
-      "yield10y": 5.231
     }
   ],
-  "swingContinuity": "\ucd5c\uadfc \uba70\uce60\uac04 QQQ\uc758 \ub9e4\uc218\uc810\uc218\ub294 60\uc810\ub300 \ucd08\ubc18, \ub9e4\ub3c4\uc810\uc218\ub294 10\uc810\ub300 \ucd08\ubc18\uc744 \uc720\uc9c0\ud558\uba70 Gear 3 \uad6c\uac04\uc744 \ubcf4\uc600\uc2b5\ub2c8\ub2e4. 10\uc6d412\uc77c(\uc6d4, \ub274\uc695)(10-12)\uc758 \ub9e4\uc218\uc810\uc218 61, \ub9e4\ub3c4\uc810\uc218 11, RSI 56.71\uc740 \uc774\uc804 \uba70\uce60 \ud750\ub984\uacfc \uc720\uc0ac\ud558\uac8c \uc720\uc9c0\ub418\ub294 \ubaa8\uc2b5\uc785\ub2c8\ub2e4. \ub2e4\ub9cc, \ucd5c\uadfc 5\uac70\ub798\uc77c QQQ\ub294 -0.70%\ub85c \ud558\ub77d \ub9c8\uac10\ud558\uba70 SOXX(-2.60%), TSLA(-1.22%), NVDA(-1.29%) \ub4f1 \ub2e4\ub978 \uc885\ubaa9 \ub300\ube44 \uc0c1\ub300\uc801\uc73c\ub85c \uc120\ubc29\ud588\uc73c\ub098, \uc804\ubc18\uc801\uc778 \uae30\uc220\uc8fc \uc57d\uc138 \ud750\ub984\uc740 \uc9c0\uc18d\ub418\uace0 \uc788\uc2b5\ub2c8\ub2e4.",
-  "swingContinuityEn": "For the past few days, QQQ's buy score has hovered in the low 60s and sell score in the low teens, staying within Gear 3. Today's (10-12) metrics of buy score 61, sell score 11, and RSI 56.71 show a continuation of this recent trend. While QQQ closed down -0.70% over the last 5 trading days, outperforming other stocks like SOXX (-2.60%), TSLA (-1.22%), and NVDA (-1.29%), the overall weakness in tech stocks persists."
+  "swingContinuity": null,
+  "swingContinuityEn": null
 }
