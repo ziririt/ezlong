@@ -1,6 +1,57 @@
 {
   "entries": [
     {
+      "id": "2026-10-15-02:30",
+      "timestamp_kst": "2026-10-15(목) 02:30 KST",
+      "key_event": {
+        "name": "9월 CPI 예상치 상회",
+        "name_en": "September CPI Exceeds Expectations",
+        "time": "2026-10-14 08:30 ET 발표 완료",
+        "why": "인플레이션 압력 지속, Fed 추가 금리 인상 우려 확대",
+        "why_en": "Persistent inflation pressure, increased concerns over further Fed rate hikes"
+      },
+      "positive_total": 0,
+      "negative_total": 100,
+      "summary": "9월 CPI 예상치 상회 및 높은 금리 수준으로 부정 우위 지속",
+      "summary_en": "Continued negative bias due to higher-than-expected September CPI and high interest rates",
+      "positive_factors": [],
+      "negative_factors": [
+        {
+          "score": 45,
+          "name": "9월 CPI 예상치 상회",
+          "name_en": "September CPI Exceeds Expectations",
+          "desc": "CPI 소비자물가 상승률 3.72%(전월 대비 +0.36%p) 기록: 인플레이션 압력 지속",
+          "desc_en": "CPI inflation rate recorded 3.72% (+0.36%p MoM): persistent inflationary pressure",
+          "category": "macro_data"
+        },
+        {
+          "score": 35,
+          "name": "Fed 추가 금리 인상 우려 확대",
+          "name_en": "Increased Fed Rate Hike Concerns",
+          "desc": "높은 인플레이션 지표로 Fed의 추가 금리 인상 가능성 부각: 금리 인상 베팅 강화",
+          "desc_en": "Higher inflation data highlights possibility of further Fed rate hikes: strengthened rate hike bets",
+          "category": "fed_policy"
+        },
+        {
+          "score": 20,
+          "name": "지정학적 긴장 지속",
+          "name_en": "Ongoing Geopolitical Tensions",
+          "desc": "이란 공격 증가 및 원유 공급 제약 우려 지속: 유가 상승 압력 가중",
+          "desc_en": "Increased Iranian attacks and ongoing concerns over oil supply constraints: intensified upward pressure on oil prices",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "PPI 생산자물가 발표 대기",
+          "name_en": "Anticipation of PPI Producer Price Data",
+          "desc": "9월 PPI 생산자물가 발표(10월 15일(목) 08:30 ET) 대기: 향후 인플레이션 방향성 관망",
+          "desc_en": "Awaiting September PPI producer price data (Oct 15 (Thu) 08:30 ET): market observing future inflation direction",
+          "category": "macro_data"
+        }
+      ]
+    },
+    {
       "id": "2026-10-14-23:20",
       "timestamp_kst": "2026-10-14(수) 23:20 KST",
       "key_event": {
@@ -565,75 +616,8 @@
         "watch": "- CPI 소비자물가(9월분) 발표: 10월 14일(수) 08:30 ET에 발표될 CPI 데이터는 인플레이션 압력의 강도를 가늠하는 핵심 지표로, 시장의 방향성을 결정하는 중요한 변수.\n- 유가 변동성: 중동 지정학적 긴장 및 러시아-우크라이나 충돌 관련 뉴스에 따른 WTI 유가 추이 확인. 유가 추가 상승 시 인플레이션 우려 심화 및 증시 하방 압력 증대.\n- Fed 위원 발언: Fed Hammack 위원의 발언 이후 추가적인 Fed 위원들의 매파적 또는 비둘기파적 발언 여부 확인. 이는 향후 금리 정책 방향에 대한 시장의 기대를 조정하는 요인."
       },
       "report_at": "2026-10-13(화) 10:55 KST"
-    },
-    {
-      "id": "2026-10-13-08:20",
-      "timestamp_kst": "2026-10-13(화) 08:20 KST",
-      "key_event": {
-        "name": "CPI 발표 대기 및 유가 상승",
-        "name_en": "Anticipation of CPI Release and Rising Oil Prices",
-        "time": "10월 14일(수) 08:30 ET",
-        "why": "인플레이션 지표 경계감, Fed 금리 정책 불확실성, 지정학적 긴장 (10월 14일(수) 08:30 ET)",
-        "why_en": "Inflation data caution, Fed policy uncertainty, geopolitical tension (Oct 14 (Wed) 08:30 ET)"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "CPI 발표 대기 및 유가 상승 압력으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to CPI anticipation and rising oil prices",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "AI 인프라 투자 지속",
-          "name_en": "Continued AI Infrastructure Investment",
-          "desc": "AI 인프라 관련 기업에 대한 투자 기대감 지속",
-          "desc_en": "Sustained investor optimism for AI infrastructure-related companies",
-          "category": "ai_tech_valuation"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 45,
-          "name": "WTI 유가 급등",
-          "name_en": "Sharp Rise in WTI Oil Prices",
-          "desc": "WTI 원유 93.42 USD (+3.42%)로 급등: 인플레이션 압력 가중",
-          "desc_en": "WTI crude oil surged to 93.42 USD (+3.42%), increasing inflationary pressure",
-          "category": "oil_energy"
-        },
-        {
-          "score": 20,
-          "name": "Fed 매파적 발언",
-          "name_en": "Hawkish Fed Commentary",
-          "desc": "Fed Hammack, 인플레이션 고착화 방지를 위한 금리 인상 필요성 언급",
-          "desc_en": "Fed's Hammack emphasized the need for interest rate hikes to prevent entrenched inflation",
-          "category": "fed_policy"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "미 국채금리 수준",
-          "name_en": "US Treasury Yield Levels",
-          "desc": "미10년 국채금리 5.24%(-0.08%), 미30년 국채금리 5.60%(-0.04%)로 소폭 하락했으나 여전히 높은 수준 유지",
-          "desc_en": "US 10-year Treasury yield at 5.24% (-0.08%) and 30-year yield at 5.60% (-0.04%) saw slight declines but remain at elevated levels",
-          "category": "rates_treasury"
-        },
-        {
-          "name": "CPI 발표 대기",
-          "name_en": "Anticipation of CPI Release",
-          "desc": "10월 14일(수) 08:30 ET CPI 발표를 앞두고 인플레이션 경계감 고조",
-          "desc_en": "Heightened inflation concerns ahead of the CPI release on Oct 14 (Wed) 08:30 ET",
-          "category": "macro_data"
-        }
-      ],
-      "report": {
-        "overview": "- 시장 총평: CPI 발표 대기 및 유가 상승 압력으로 부정적 우위 지속되는 양상.\n- 주요 원인: WTI 유가 급등과 Fed 매파적 발언이 인플레이션 경계감을 고조시키며 시장에 부정적 영향.\n- 하방 압력: 다가오는 CPI 발표에 대한 불확실성과 지정학적 긴장으로 인한 유가 상승 압력이 증시 하방 압력으로 작용.",
-        "positive": "- AI 인프라 투자 지속: AI 인프라 관련 기업에 대한 투자 기대감 지속. Simply Wall Street에 따르면 데이터 센터 지출 관련 AI 인프라 기업에 대한 관심 증가.",
-        "negative": "- WTI 유가 급등: WTI 원유 가격이 93.42 USD로 3.42% 급등하며 인플레이션 압력 가중. WSJ과 Reuters는 러시아-우크라이나 분쟁으로 인한 유가 상승을 지적. Oil & Gas 360은 이란의 호르무즈 제안 검토와 관련하여 석유 공급 불확실성이 지속되는 점을 언급하며 지정학적 긴장이 유가 상승을 부추기는 요인으로 작용.\n- Fed 매파적 발언: Fed Hammack 위원이 인플레이션 고착화 방지를 위한 금리 인상 필요성을 언급. CNBC는 Hammack 위원이 '인플레이션 심리' 고착화를 피하기 위해 더 높은 금리가 필요할 수 있다고 발언했음을 보도. 富途牛牛는 Hammack 위원이 인플레이션 기대 고착화를 막기 위해 더 빠르고 빈번한 소규모 금리 조정이 필요하다고 언급하며 시장에 매파적 신호 전달.",
-        "mixed": "- 미 국채금리 수준: 미 10년 국채금리 5.24%(-0.08%), 미 30년 국채금리 5.60%(-0.04%)로 소폭 하락했으나 여전히 높은 수준 유지. Palisadian-Post는 정부의 차입과 대출 기관의 비용 청구를 언급하며 높은 금리 수준의 배경을 설명. TheStreet는 모기지 금리가 7.5%에 근접하는 상황에서 채권 시장의 불확실성 잔존.\n- CPI 발표 대기: 10월 14일(수) 08:30 ET CPI 발표를 앞두고 인플레이션 경계감 고조. Investopedia는 수요일 인플레이션 보고서에 대한 기대감을 언급하며 시장의 불확실성 반영. Reuters는 실적 발표와 경제 데이터 발표를 앞두고 나스닥이 하락했다고 보도하며 CPI 발표 전 시장의 관망세 시사.",
-        "watch": "- CPI 소비자물가(9월분) 발표: 10월 14일(수) 08:30 ET, 인플레이션 압력의 실제 수준 확인 및 Fed 금리 정책 방향에 대한 단서 제공 여부.\n- WTI 유가 추이: 지정학적 긴장 및 공급 불확실성 지속에 따른 유가 변동성 확인, 인플레이션 압력 가중 여부.\n- 미 국채금리 변동성: CPI 발표를 앞두고 10년물 및 30년물 국채금리의 추가적인 방향성 확인, 시장의 금리 인상 우려 변화 여부."
-      },
-      "report_at": "2026-10-13(화) 08:20 KST"
     }
   ],
-  "updated_at": "2026-10-14T14:21:22Z",
+  "updated_at": "2026-10-14T17:31:38Z",
   "max_entries": 10
 }
