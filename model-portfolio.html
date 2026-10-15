@@ -1010,8 +1010,9 @@
     D = data;
     document.getElementById('risk').innerHTML = '<p><b>리스크 고지</b></p>' +
       D.disclaimer.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
-      '<p style="margin-top:14px">데이터 출처 ' + esc(D.meta.priceSource) + ' · 기준일 ' +
-      esc(D.meta.asOf) + ' 종가 · ' + esc(D.meta.version) + '</p>';
+      '<p style="margin-top:14px">데이터 출처 ' + esc(D.meta.priceSource) + ' · 기준 ' +
+      /* 종가가 찍힌 장의 날짜(시장별). 예전 데이터에는 closeLabel 이 없어 실행일로 폴백한다 */
+      (D.meta.closeLabel ? esc(D.meta.closeLabel) : esc(D.meta.asOf)) + ' 종가 · ' + esc(D.meta.version) + '</p>';
     rerender(false);
   }
 

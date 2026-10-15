@@ -79,27 +79,67 @@ def rsi_wilder(closes, period=RSI_PERIOD):
     return 100.0 - (100.0 / (1.0 + rs))
 
 
+# ── 진행 중인 봉을 빼는 기준 (2026-10-16) ───────────────────────────
+# 증상(10/12 실측): 보조 예약(월 08:00 KST)이 깃허브 지연으로 월 11:13 KST 에 돌아
+# 한국 종목 종가 자리에 장중 가격이 들어갔다(SK하이닉스 1,634,500 - 직전 종가
+# 10/8 1,681,000 도, 그날 종가 1,605,000 도 아니다). 화면은 '직전 정규장 종가'라고
+# 적고 있었다. yfinance 일봉은 장중이면 오늘 봉을 진행 중인 값으로 붙여 준다.
+# 시장별로 '마감 + 20분' 전에 붙은 오늘 봉은 확정값이 아니므로 버린다.
+from zoneinfo import ZoneInfo
+MARKET_CLOSE = {          # (시간대, 정규장 마감 + 20분)
+    'KR': (ZoneInfo('Asia/Seoul'), (15, 50)),
+    'US': (ZoneInfo('America/New_York'), (16, 20)),
+}
+
+
+def _market(sym):
+    return 'KR' if sym.endswith(SUFFIX_KR) else 'US'
+
+
+def _completed(df, sym, now_utc=None):
+    """진행 중인 오늘 봉을 뺀 일봉. 인덱스는 거래소 현지 날짜다."""
+    if df is None or not len(df):
+        return df
+    tz, (hh, mm) = MARKET_CLOSE[_market(sym)]
+    now = (now_utc or datetime.now(timezone.utc)).astimezone(tz)
+    last = df.index[-1]
+    last_date = last.date() if hasattr(last, 'date') else last
+    if last_date == now.date() and (now.hour, now.minute) < (hh, mm):
+        return df.iloc[:-1]
+    return df
+
+
 def fetch_one(yf, sym):
-    """(종가, 52주 저점, 52주 고점, 주간RSI14) — 실패 항목은 None."""
+    """(종가, 52주 저점, 52주 고점, 주간RSI14, 종가 날짜) — 실패 항목은 None.
+    2026-10-16: 일봉 하나에서 전부 뽑는다. 주봉을 따로 받으면 진행 중인 주가
+    섞이고, 종가·범위·RSI 가 서로 다른 시점을 보게 된다."""
     t = yf.Ticker(sym)
+    dl = _completed(t.history(period='3y', interval='1d', auto_adjust=False), sym)
+    if dl is None or not len(dl) or 'Close' not in dl:
+        return None, None, None, None, None
+    close = dl['Close'].dropna()
+    if not len(close):
+        return None, None, None, None, None
+    px = float(close.iloc[-1])
+    bar_date = close.index[-1].date().isoformat()
 
-    # 주봉 3년치 — 52주 범위와 주간 RSI 를 같은 소스에서 뽑는다.
-    wk = t.history(period='3y', interval='1wk', auto_adjust=False)
-    closes = [float(x) for x in wk['Close'].dropna().tolist()] if len(wk) else []
-    rsi = rsi_wilder(closes) if len(closes) >= MIN_WEEKS else None
-
-    # 종가는 일봉에서 — 주봉의 마지막 값은 '진행 중인 주'라 확정값이 아니다.
-    dl = t.history(period='5d', interval='1d', auto_adjust=False)
-    px = float(dl['Close'].dropna().iloc[-1]) if len(dl.get('Close', [])) else None
-
+    # 52주 범위: 마지막 확정 봉에서 365일 안쪽
+    cut = close.index[-1] - timedelta(days=365)
+    yr = dl[dl.index > cut]
     lo = hi = None
-    yr = t.history(period='1y', interval='1d', auto_adjust=False)
-    if len(yr):
-        lows, highs = yr['Low'].dropna(), yr['High'].dropna()
-        if len(lows) and len(highs):
-            lo, hi = float(lows.min()), float(highs.max())
+    lows, highs = yr['Low'].dropna(), yr['High'].dropna()
+    if len(lows) and len(highs):
+        lo, hi = float(lows.min()), float(highs.max())
 
-    return px, lo, hi, rsi
+    # 주간 RSI: 주(월~일)마다 마지막 확정 종가. 이번 주가 진행 중이면 그 주의
+    # 마지막 값은 지금까지의 확정 종가다(진행 중인 봉은 위에서 이미 뺐다).
+    last_by_week = {}
+    for d, v in zip(close.index, close.tolist()):
+        iso = d.isocalendar()
+        last_by_week[(iso[0], iso[1])] = float(v)     # 날짜순이라 마지막 값이 남는다
+    closes = [last_by_week[k] for k in sorted(last_by_week)]
+    rsi = rsi_wilder(closes) if len(closes) >= MIN_WEEKS else None
+    return px, lo, hi, rsi, bar_date
 
 
 def main():
@@ -117,7 +157,7 @@ def main():
     for h in doc['holdings']:
         sym = yf_symbol(h)
         try:
-            px, lo, hi, rsi = fetch_one(yf, sym)
+            px, lo, hi, rsi, bar_date = fetch_one(yf, sym)
         except Exception as e:                       # noqa: BLE001 — 한 종목 실패가 전체를 막지 않는다
             failed.append((h['tk'], str(e)[:60]))
             continue
@@ -145,6 +185,8 @@ def main():
         # generatedAt 은 새로 찍혔다. 화면에는 전부 최신인 것처럼 보인다.
         # 실패는 로그에만 남고 방문자는 알 길이 없었다.
         h['asOf'] = NOW_KST.strftime('%Y-%m-%d')
+        # 이 값이 어느 장의 종가인가 - 거래소 현지 날짜(89항: 시장 날짜는 절대 날짜로)
+        h['barDate'] = bar_date
         ok.append(h['tk'])
 
     if not ok:
@@ -212,7 +254,20 @@ def main():
 
     now = datetime.now(KST)
     doc['meta']['asOf'] = now.strftime('%Y-%m-%d')
-    doc['meta']['asOfLabel'] = now.strftime('%Y-%m-%d') + ' 기준 · 직전 정규장 종가'
+    # 2026-10-16: 실행일(KST)이 아니라 종가가 찍힌 장의 날짜를 적는다.
+    # '2026-10-12 기준'은 미국 10/9(금)·한국 10/8(목) 종가를 월요일 날짜로 부르고 있었다.
+    WD = '월화수목금토일'
+    def _lab(ds):
+        d = datetime.strptime(ds, '%Y-%m-%d')
+        return f'{d.month}월 {d.day}일({WD[d.weekday()]})'
+    us_d = max((h['barDate'] for h in doc['holdings'] if h.get('barDate') and h.get('c') != '₩'), default=None)
+    kr_d = max((h['barDate'] for h in doc['holdings'] if h.get('barDate') and h.get('c') == '₩'), default=None)
+    parts = []
+    if us_d: parts.append('미국 ' + _lab(us_d))
+    if kr_d: parts.append('한국 ' + _lab(kr_d))
+    doc['meta']['closeLabel'] = ' · '.join(parts) if parts else None
+    doc['meta']['asOfLabel'] = (doc['meta']['closeLabel'] + ' 종가 기준') if parts \
+        else now.strftime('%Y-%m-%d') + ' 기준 · 직전 정규장 종가'
     doc['meta']['updatedKST'] = now.strftime('%Y-%m-%d %H:%M KST')
     doc['meta']['priceSource'] = 'Yahoo Finance (yfinance)'
     iso = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
