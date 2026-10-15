@@ -2014,6 +2014,9 @@ def main():
         generatedAt=datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
         dataDay=day,
         session=us_session_now(),
+        # 이 실행을 들여보낸 관문 슬롯(pre|open|post). push·강제 실행은 None -
+        # 관문은 이 값과 ET 날짜로 같은 슬롯 중복을 막는다(swing-view-gate.py, 2026-10-16).
+        gateSlot=(os.environ.get('SWING_SLOT') or None),
         beta=True,
         stanceChangedToday=changed,
         lifeline=(dict(count=ll['count'], broken=[n for n, b in ll['detail'] if b]) if ll else None),

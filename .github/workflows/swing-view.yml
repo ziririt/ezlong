@@ -14,7 +14,8 @@ on:
     - cron: '0  9 * * 1-5'    # 18:00 KST 프리마켓 (여름 ET 05:00 / 겨울 ET 04:00)
     - cron: '45 13 * * 1-5'   # 22:45 KST = 여름 ET 09:45 (개장 +15분)
     - cron: '45 14 * * 1-5'   # 23:45 KST = 겨울 ET 09:45 (개장 +15분)
-    - cron: '37 22 * * 1-5'   # 07:37 KST 마감 후 1회 — 차트분석 엔진(~06:52)까지 반영된 시점
+    - cron: '37 22 * * 1-5'   # 07:37 KST = 여름 ET 18:37 마감 후 1회 — 차트분석 엔진(~06:52)까지 반영된 시점
+    - cron: '37 23 * * 1-5'   # 08:37 KST = 겨울 ET 18:37 마감 후 1회 (2026-10-16 추가, 계절 짝)
     # ── 2026-08-08 추가: 주말 '새 주 전망' ────────────────────────────
     # 미국장은 금 마감 후 월요일까지 열리지 않는다. 그 사이 카드는 금요일 글을
     # 계속 걸고 있었다. 화면은 보는 사람의 현지 일요일 오전부터 '새 주 전망'으로
@@ -23,6 +24,11 @@ on:
     - cron: '0 18 * * 6'      # 토 18:00 UTC = 일 03:00 KST — 본실행
     - cron: '0  6 * * 0'      # 일 06:00 UTC = 일 15:00 KST — 늦은 시간대 보조
   workflow_dispatch:
+    inputs:
+      force:
+        description: '시각·중복 관문을 건너뛰고 지금 돌린다(yes)'
+        required: false
+        default: 'no'
   push:
     branches: [main]
     paths: ['scripts/generate-swing-view.py', '.github/workflows/swing-view.yml']
@@ -30,34 +36,38 @@ concurrency:
   group: swing-view
   cancel-in-progress: false
 jobs:
-  # ── 슬롯 판정 (2026-09-23) ────────────────────────────────────────────
-  # 계절마다 크론이 한 시간씩 어긋나 KST 크론을 둘 걸어 둔다. 실제 실행은
-  # ET 시각으로 가린다 - 그래야 한 계절에 하나만 돈다. 예약 실행만 가리고,
-  # 수동 실행·push 는 언제나 돈다(감시견의 되살리기가 수동 실행 경로다).
+  # ── 슬롯 판정 (2026-09-23 신설, 2026-10-16 개정) ─────────────────────
+  # 2026-10-16 개정 이유(실측 9/25~10/15): 깃허브 예약 실행이 2~4시간씩 밀려
+  # '개장 +15분'·'마감 후' 예약이 창을 놓쳐 거의 매일 건너뛰어졌다. 그 공백을
+  # 감시견의 수동 실행이 ET 14시대(KST 새벽 3시대)에 메웠는데, 수동 실행은
+  # 관문을 그냥 통과했다. 평일 판단이 '프리마켓 + 장중 오후' 두 번이 됐다 -
+  # "장중은 한국 시각 12시까지만, 마감 후 1번"과 정반대다.
+  # 이제 예약·수동 모두 scripts/swing-view-gate.py 를 지난다:
+  #   창(평일 ET): 프리마켓 04:00~09:29 / 개장 09:30~한국 자정 / 마감 후 18:30~23:59
+  #   같은 ET 날짜에 같은 슬롯을 이미 돌았으면 건너뛴다(밀린 예약과 되살리기가 겹쳐도 한 번).
+  # 창을 넓혀 밀린 예약도 창 안이면 돌게 했다. 시각·중복을 무시하려면
+  # workflow_dispatch 의 force=yes 로 돌린다. push 는 코드 확인용으로 언제나 돈다.
   gate:
     runs-on: ubuntu-latest
     outputs:
       go: ${{ steps.slot.outputs.go }}
+      slot: ${{ steps.slot.outputs.slot }}
     steps:
+      # ref: main - 예약·수동 실행은 '만들어진 때'의 커밋을 받는다. 앞 실행 뒤에
+      # 줄 서 있던 실행이 옛 swing-view.json 을 보면 같은 슬롯을 또 돈다(감사 지적).
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          sparse-checkout: |
+            data/swing-view.json
+            scripts/swing-view-gate.py
+          sparse-checkout-cone-mode: false
       - name: 이 시각이 도는 슬롯인가
         id: slot
-        run: |
-          if [ "${{ github.event_name }}" != "schedule" ]; then
-            echo "수동·push 실행 - 그대로 진행"; echo "go=yes" >> "$GITHUB_OUTPUT"; exit 0
-          fi
-          ET_DOW=$(TZ=America/New_York date +%u)
-          ET_MIN=$(( 10#$(TZ=America/New_York date +%H) * 60 + 10#$(TZ=America/New_York date +%M) ))
-          if [ "$ET_DOW" -ge 6 ]; then
-            echo "주말 - 새 주 전망 슬롯"; echo "go=yes" >> "$GITHUB_OUTPUT"; exit 0
-          fi
-          # 프리마켓 04:00~05:30 · 개장+15분 09:30~10:05 · 마감 후 17:30~19:00 (ET)
-          if { [ "$ET_MIN" -ge 240 ] && [ "$ET_MIN" -le 330 ]; } \
-          || { [ "$ET_MIN" -ge 570 ] && [ "$ET_MIN" -le 605 ]; } \
-          || { [ "$ET_MIN" -ge 1050 ] && [ "$ET_MIN" -le 1140 ]; }; then
-            echo "ET ${ET_MIN} 분 - 도는 슬롯"; echo "go=yes" >> "$GITHUB_OUTPUT"
-          else
-            echo "ET ${ET_MIN} 분 - 계절이 다른 크론이다. 건너뛴다"; echo "go=no" >> "$GITHUB_OUTPUT"
-          fi
+        env:
+          EVENT: ${{ github.event_name }}
+          FORCE: ${{ github.event.inputs.force }}
+        run: python3 scripts/swing-view-gate.py >> "$GITHUB_OUTPUT"
 
   run:
     needs: gate
@@ -66,11 +76,13 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with: { ref: main }
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
       - name: Generate swing view
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SWING_SLOT: ${{ needs.gate.outputs.slot }}
         run: python scripts/generate-swing-view.py
       - name: Commit & push
         run: |

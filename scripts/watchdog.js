@@ -123,7 +123,12 @@ const MONITORS = [
     timestampField: 'updatedAt',
     // 설계 10분 주기지만 GitHub cron이 1~3h씩 밀리는 실측(2026-07-02) →
     // 45분 넘게 낡으면 재트리거해 체감 최대 지연을 ~1h 이내로 억제.
-    maxAgeHours:    0.75,
+    // 2026-10-16: 실제 주기가 한 시간이었다(10/14~15 실측) - 화면은 "15분마다".
+    // 6분으로 내려 감시견이 도는 30분마다 깨운다(실행 중이면 겹쳐 깨우지 않는다).
+    // 깨어난 실행이 정규장 중이면 시작 14분 뒤 한 번 더 받는다(fetch-stocks-prices.yml)
+    // - 정규장 15분·시간외 30분. 12분이면 2회차가 16~20분 뒤에 찍혀 다음 점검에서
+    // '아직 신선'으로 보이고 한 회를 건너뛴다(감사 지적).
+    maxAgeHours:    0.1,
     // cron 활성 구간: UTC 평일 08:00~23:59 (KST 17:00~익일 08:59)
     isActive: (now) => {
       const day = now.getUTCDay();
@@ -164,15 +169,21 @@ const MONITORS = [
     checkFile:      'swing-view.json',
     timestampField: 'generatedAt',
     // 2026-09-23: 슬롯을 셋으로 줄였다(프리마켓·개장+15분·마감 후 1회).
-    // 활성 구간 안의 최대 공백이 18:00→22:45 KST 의 4.75h, 23:45→07:37 의 7.9h 다.
-    // 기준을 2.5h 로 두면 감시견이 매 시간 되살리기를 불러 줄인 비용이 도로
-    // 나간다 - 되살리기는 '슬롯이 통째로 빠졌을 때'만 돌아야 한다.
-    maxAgeHours:    9.0,
-    // 미국 프리마켓~마감 후: KST 18:00~익일 07:40 = UTC 09:00~22:40, 평일
+    // 2026-10-16 개정: 9h 기준 + 하루 종일 활성이었더니, 밀려서 빠진 개장·마감 후
+    // 슬롯을 감시견이 ET 14시대(KST 새벽 3시대)에 되살렸다 - 장중 오후 판단이 매일
+    // 한 번씩 나갔다(운영 지시 위반). 이제 감시견은 '돌 수 있는 창' 안에서만 본다.
+    // 창은 swing-view-gate.py 와 같다. 창 안에서 4h 넘게 낡았으면(= 그 슬롯이 빠졌으면)
+    // 되살리고, 실제로 돌지 말지는 관문이 한 번 더 판정한다(같은 슬롯 중복 방지).
+    maxAgeHours:    4.0,
     isActive: (now) => {
-      const day = now.getUTCDay();
-      const h   = now.getUTCHours() + now.getUTCMinutes() / 60;
-      return day >= 1 && day <= 5 && h >= 9.0 && h <= 22.6;
+      const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York', weekday: 'short', hour: '2-digit',
+        minute: '2-digit', hourCycle: 'h23' }).formatToParts(now).map(x => [x.type, x.value]));
+      if (p.weekday === 'Sat' || p.weekday === 'Sun') return false;
+      const m = (+p.hour) * 60 + (+p.minute);
+      if (m >= 240 && m <= 569) return true;                         // 프리마켓
+      if (m >= 570 && now.getUTCHours() < 15) return true;           // 개장 ~ 한국 자정
+      return m >= 1110 && m <= 1439;                                  // 마감 후 18:30 ET~
     }
   },
   {
