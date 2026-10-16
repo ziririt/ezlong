@@ -1,6 +1,74 @@
 {
   "entries": [
     {
+      "id": "2026-10-17-01:52",
+      "timestamp_kst": "2026-10-17(토) 01:52 KST",
+      "key_event": {
+        "name": "AI 밸류에이션 우려 지속",
+        "name_en": "Persistent AI Valuation Concerns",
+        "time": "2026-10-17 01:52 KST",
+        "why": "기술주 전반 하락, 투자 심리 위축",
+        "why_en": "Broad tech sector decline, weakened investor sentiment"
+      },
+      "positive_total": 35,
+      "negative_total": 65,
+      "summary": "AI 밸류에이션 우려으로 부정 우위 지속",
+      "summary_en": "Negative sentiment persists due to AI valuation concerns and rising Treasury yields",
+      "positive_factors": [
+        {
+          "score": 35,
+          "name": "Fed Warsh 금리 동결 기대",
+          "name_en": "Fed Warsh's remarks on rate hold expectation",
+          "desc": "Fed Warsh 발언으로 10월 금리 동결 기대감 확산: Binance Square 커뮤니티 인사이트",
+          "desc_en": "Fed Warsh's comments fueled expectations of an October rate hold: Binance Square community insights",
+          "category": "fed_policy"
+        }
+      ],
+      "negative_factors": [
+        {
+          "score": 25,
+          "name": "AI 밸류에이션 우려 심화",
+          "name_en": "Deepening AI valuation concerns",
+          "desc": "S&P 500 기술주 주도 하락: AI 관련 우려 지속 (StoneX 1.6h전)",
+          "desc_en": "S&P 500 led lower by tech as AI worries linger (StoneX 1.6h ago)",
+          "category": "ai_tech_valuation"
+        },
+        {
+          "score": 20,
+          "name": "미 국채금리 상승 압력",
+          "name_en": "Upward pressure on US Treasury yields",
+          "desc": "미10년 국채금리 5.13%(+0.75%) 상승, 미30년 국채금리 5.46%(+0.50%) 상승",
+          "desc_en": "US 10-year Treasury yield rose to 5.13% (+0.75%), 30-year yield to 5.46% (+0.50%)",
+          "category": "rates_treasury"
+        },
+        {
+          "score": 20,
+          "name": "지정학적 긴장 고조",
+          "name_en": "Heightened geopolitical tensions",
+          "desc": "중동 지역 안보 위협 고조: TV7 Israel News (48분전)",
+          "desc_en": "Escalating security threats across the Middle East: TV7 Israel News (48 mins ago)",
+          "category": "geopolitics"
+        }
+      ],
+      "mixed_factors": [
+        {
+          "name": "WTI 원유 가격 상승",
+          "name_en": "WTI Crude Oil Price Increase",
+          "desc": "WTI 원유 98.35 USD (+2.80%) 상승: 지정학적 리스크와 재고 감소가 주간 상승세 지지 (Yahoo Finance UK 7.6h전)",
+          "desc_en": "WTI crude oil rose to 98.35 USD (+2.80%): Hormuz shipping risks and US inventory draw support weekly gains (Yahoo Finance UK 7.6h ago)",
+          "category": "oil_energy"
+        }
+      ],
+      "report": {
+        "overview": "- 총점: AI 밸류에이션 우려와 지정학적 긴장 고조로 부정적 요인이 우세하며, 총점 긍정 35 대 부정 65로 부정 우위 지속.\n- 핵심 이슈: AI 관련 기술주의 밸류에이션 우려가 지속되며 S&P 500 기술주 전반의 하락을 주도, 투자 심리 위축.\n- 거시 경제: 미 국채금리 상승 압력과 중동 지역의 지정학적 긴장 고조가 시장 전반에 하방 압력으로 작용.\n- 긍정 요인: Fed Warsh 발언으로 10월 금리 동결 기대감이 확산되며 일부 긍정적 영향을 미쳤으나, 전반적인 부정적 흐름을 상쇄하기에는 역부족.",
+        "positive": "- Fed Warsh 금리 동결 기대: Fed Warsh의 발언 이후 10월 금리 동결에 대한 기대감이 확산. Binance Square 커뮤니티 인사이트에 따르면, 트레이더들은 10월 금리 인상 확률이 약 17%까지 하락할 것으로 예상하며 시장에 긍정적인 영향을 미침.",
+        "negative": "- AI 밸류에이션 우려 심화: AI 관련 기술주들의 밸류에이션에 대한 우려가 지속적으로 심화. StoneX 분석에 따르면, S&P 500 지수가 기술주 주도로 주간 하락세를 보이며 투자 심리가 위축. Investment Week에서도 칩 주식과 글로벌 지수가 미국 인플레이션 급등 이후 계속 하락하고 있다고 언급.\n- 미 국채금리 상승 압력: 미 10년 국채금리가 5.13%(+0.75%), 미 30년 국채금리가 5.46%(+0.50%)로 상승. 이는 기업의 자금 조달 비용 증가와 주식 시장의 매력도 하락으로 이어져 시장에 부정적인 영향을 미침.\n- 지정학적 긴장 고조: TV7 Israel News에 따르면, 중동 지역의 안보 위협이 고조되며 지정학적 리스크가 시장에 부담으로 작용. 이는 투자자들의 안전자산 선호 심리를 강화하고 주식 시장의 불확실성을 높이는 요인으로 작용.",
+        "mixed": "- WTI 원유 가격 상승: WTI 원유 가격이 98.35 USD (+2.80%)로 상승. 이는 중동 지역의 지정학적 리스크 고조와 미국 원유 재고 감소가 주간 상승세를 지지한 결과. 유가 상승은 에너지 기업에는 긍정적이나, 전반적인 인플레이션 압력을 높여 소비 심리 위축 및 기업 비용 증가로 이어질 수 있어 시장 전반에는 혼조세를 야기.",
+        "watch": "- 국채금리 추이 확인: 미 10년 및 30년 국채금리의 추가 상승 여부 확인. 금리 상승 압력이 지속될 경우 기술주를 포함한 전반적인 시장에 부정적인 영향을 미칠 가능성.\n- 중동 지정학적 상황 주시: 중동 지역의 안보 위협 관련 추가 뉴스 및 관련 유가 변동성 확인. 지정학적 긴장이 고조될 경우 유가 상승 및 안전자산 선호 심리 강화로 이어질 수 있음."
+      },
+      "report_at": "2026-10-17(토) 01:52 KST"
+    },
+    {
       "id": "2026-10-16-22:48",
       "timestamp_kst": "2026-10-16(금) 22:48 KST",
       "key_event": {
@@ -563,68 +631,8 @@
         "watch": "- 미 10년 국채금리 추이: 높은 금리 수준이 성장주 할인율에 지속적인 부담을 주는 가운데, 미 10년 국채금리의 추가적인 상승 또는 하락 여부가 시장의 방향성을 결정하는 주요 지표로 작용."
       },
       "report_at": "2026-10-16(금) 04:00 KST"
-    },
-    {
-      "id": "2026-10-16-02:17",
-      "timestamp_kst": "2026-10-16(금) 02:17 KST",
-      "key_event": {
-        "name": "9월 PPI 예상치 상회 지속",
-        "name_en": "September PPI Exceeds Expectations Continuously",
-        "time": "10월 15일(목) 08:30 ET 발표 완료",
-        "why": "인플레이션 압력 지속, Fed 추가 금리 인상 우려",
-        "why_en": "Persistent inflation pressure, Fed additional rate hike concerns"
-      },
-      "positive_total": 35,
-      "negative_total": 65,
-      "summary": "9월 PPI 예상치 상회 및 높은 금리 수준 지속으로 부정 우위 지속",
-      "summary_en": "Negative sentiment persists due to September PPI exceeding expectations and sustained high interest rates",
-      "positive_factors": [
-        {
-          "score": 35,
-          "name": "미 국채금리 하락",
-          "name_en": "US Treasury Yields Decline",
-          "desc": "미10년 국채금리 5.09%(-1.98%) 하락: 성장주 할인율 압박 일부 완화",
-          "desc_en": "US 10-year Treasury yield fell to 5.09% (-1.98%), slightly easing pressure on growth stock valuations",
-          "category": "rates_treasury"
-        }
-      ],
-      "negative_factors": [
-        {
-          "score": 35,
-          "name": "9월 PPI 예상치 상회",
-          "name_en": "September PPI Exceeds Expectations",
-          "desc": "생산자물가 4년 6개월 만에 최대 상승: 인플레이션 압력 지속, Fed 추가 금리 인상 우려 확대",
-          "desc_en": "Producer prices saw largest gain in 4.5 years, indicating persistent inflation pressure and increasing concerns about further Fed rate hikes",
-          "category": "macro_data"
-        },
-        {
-          "score": 30,
-          "name": "높은 금리 수준 지속",
-          "name_en": "Sustained High Interest Rates",
-          "desc": "미10년 국채금리 5.09%(-1.98%), 미30년 국채금리 5.42%(-1.85%): 성장주 밸류에이션 부담 지속",
-          "desc_en": "US 10-year Treasury yield at 5.09% and 30-year yield at 5.42%, maintaining valuation pressure on growth stocks",
-          "category": "rates_treasury"
-        }
-      ],
-      "mixed_factors": [
-        {
-          "name": "WTI 원유 가격 상승",
-          "name_en": "WTI Crude Oil Price Increase",
-          "desc": "WTI 원유 96.53(+2.68%) 상승: 러시아-우크라이나 전쟁 등 지정학적 긴장 지속으로 인플레이션 압력 우려와 경기 둔화 우려 상존",
-          "desc_en": "WTI crude oil rose to 96.53 (+2.68%) due to ongoing geopolitical tensions like the Russia-Ukraine war, raising inflation concerns while also hinting at potential economic slowdown",
-          "category": "oil_energy"
-        }
-      ],
-      "report": {
-        "overview": "- 현재 시황: 9월 생산자물가지수(PPI)의 예상치 상회와 지속적인 고금리 환경으로 인해 미국 증시는 부정적 우위 지속.\n- 주요 원인: 인플레이션 압력 지속 및 연방준비제도(Fed)의 추가 금리 인상 우려 확대가 시장 전반에 하방 압력으로 작용.\n- 시장 반응: 기술주 중심의 나스닥 지수가 약 한 달 만에 최저치로 하락하고, S&P 500 지수 내 84%의 종목이 조정 국면에 진입하는 등 전반적인 투자 심리 위축.",
-        "positive": "- 미 국채금리 하락: 미 10년물 국채금리가 5.09%(-1.98%)로 10월14일(수, 뉴욕) 대비 1.98% 하락하며, 성장주 밸류에이션 할인율 압박 일부 완화. (Reuters, Yahoo Finance UK).",
-        "negative": "- 9월 PPI 예상치 상회: 9월 생산자물가지수(PPI)가 4년 6개월 만에 최대 상승폭을 기록하며 인플레이션 압력 지속. 이는 연방준비제도(Fed)의 추가 금리 인상 우려를 확대하는 요인으로 작용. (Reuters, Boston Herald, investingLive).\n- 높은 금리 수준 지속: 미 10년물 국채금리가 5.09%(-1.98%), 미 30년물 국채금리가 5.42%(-1.85%)로 여전히 높은 수준을 유지. 이는 성장주 밸류에이션에 지속적인 부담으로 작용하며, 특히 기술주 중심의 시장 하락을 심화. (investingLive, Yahoo Finance).",
-        "mixed": "- WTI 원유 가격 상승: WTI 원유 가격이 96.53달러로 2.68% 상승. 러시아-우크라이나 전쟁 등 지정학적 긴장 지속으로 인한 공급 불안정은 인플레이션 압력 우려를 높이는 반면, 고유가는 경기 둔화 우려를 동시에 상존시키는 혼조세. (WSJ, Reuters, EnergyNow.com).",
-        "watch": "- 미 국채금리 추이: 미 10년물 국채금리 등 주요 국채금리의 추가 하락 여부 확인. 금리 하락 시 성장주 밸류에이션 부담 완화로 긍정적 요인.\n- 유가 변동성: WTI 원유 가격의 추가 상승 또는 하락 여부 확인. 유가 변동은 인플레이션 압력 및 경기 둔화 우려에 직접적인 영향.\n- 주요 지수 선물 흐름: S&P 500 및 나스닥 100 선물 지수의 움직임을 통해 개장 전 시장 심리 변화 확인."
-      },
-      "report_at": "2026-10-16(금) 02:17 KST"
     }
   ],
-  "updated_at": "2026-10-16T13:48:51Z",
+  "updated_at": "2026-10-16T16:53:22Z",
   "max_entries": 10
 }
